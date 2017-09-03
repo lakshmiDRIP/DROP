@@ -75,17 +75,11 @@ public class DerivedZeroRate extends org.drip.state.discount.ZeroCurve {
 		final java.util.Map<java.lang.Integer, java.lang.Double> mapZeroRate)
 	{
 		try {
-			// System.out.println ("\tDF: " + dc.df (iDate) + " | " + dblYearFraction);
-
 			double dblZeroRate = org.drip.analytics.support.Helper.DF2Yield (iFreq, dc.df (iDate),
 				dblYearFraction) + dblShift;
 
-			// System.out.println ("\t\tDF: " + dc.df (iDate) + " | " + dblYearFraction + " | " + dblZeroRate);
-
 			mapDF.put (iDate, org.drip.analytics.support.Helper.Yield2DF (iFreq, dblZeroRate,
 				dblYearFraction));
-
-			// System.out.println ("\tDone");
 
 			mapZeroRate.put (iDate, dblZeroRate);
 
@@ -191,19 +185,11 @@ public class DerivedZeroRate extends org.drip.state.discount.ZeroCurve {
 
 			int iPeriodEndDate = period.endDate();
 
-			// System.out.println ("\t" + iPeriodStartDate + " -> " + iPeriodEndDate);
-
 			try {
-				/* System.out.println ("\t" + iValueDate + ": " +
-					org.drip.analytics.daycount.Convention.YearFraction (iValueDate, iPeriodPayDate, strDC,
-						bApplyCpnEOMAdj, new org.drip.analytics.daycount.ActActDCParams (iFreq,
-							iPeriodEndDate - iPeriodStartDate), strCalendar)); */
-
 				if (!EntryFromDiscountCurve (dc, iPeriodPayDate, iFreq,
 					org.drip.analytics.daycount.Convention.YearFraction (iValueDate, iPeriodPayDate, strDC,
-						bApplyCpnEOMAdj, new org.drip.analytics.daycount.ActActDCParams (iFreq,
-							iPeriodEndDate - iPeriodStartDate), strCalendar), dblZCBump, mapDF,
-								mapZeroRate))
+						true, new org.drip.analytics.daycount.ActActDCParams (iFreq, iPeriodEndDate -
+							iPeriodStartDate), strCalendar), dblZCBump, mapDF, mapZeroRate))
 					return null;
 			} catch (java.lang.Exception e) {
 				e.printStackTrace();

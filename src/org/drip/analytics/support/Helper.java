@@ -253,13 +253,8 @@ public class Helper {
 		throws java.lang.Exception
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (dblYield) || !org.drip.quant.common.NumberUtil.IsValid
-			(dblTime)) {
-			System.out.println (dblYield + " | " + dblTime);
-
-			System.exit (36);
-
+			(dblTime))
 			throw new java.lang.Exception ("Helper::YieldDF => Bad yield/time");
-		}
 
 		int iFreq = (0 == iFreqIn) ? 2 : iFreqIn;
 
