@@ -60,13 +60,13 @@ import org.drip.state.govvie.GovvieCurve;
  */
 
 /**
- * CUSIP_21079NAA9 demonstrates Sink Fixed Coupon Multi-flavor Pricing and Relative Value Measure Generation
- *  for CUSIP 21079NAA9.
+ * Nellore demonstrates Sink Fixed Coupon Multi-flavor Pricing and Relative Value Measure Generation for
+ *  Nellore.
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class CUSIP_21079NAA9 {
+public class Nellore {
 
 	private static final MergedDiscountForwardCurve FundingCurve (
 		final JulianDate dtSpot,
@@ -509,14 +509,14 @@ public class CUSIP_21079NAA9 {
 			0.0308  // 30Y
 		};
 
-		JulianDate dtEffective = DateUtil.CreateFromYMD (2007,  4, 10);
-		JulianDate dtMaturity  = DateUtil.CreateFromYMD (2022,  4, 19);
-		double dblCoupon = 0.05983;
-		double dblCleanPrice = 1.1175;
+		JulianDate dtEffective = DateUtil.CreateFromYMD (2016,  5, 18);
+		JulianDate dtMaturity  = DateUtil.CreateFromYMD (2028,  5, 10);
+		double dblCoupon = 0.04875;
+		double dblCleanPrice = 1.00005;
 		int iFreq = 2;
-		String strCUSIP = "21079NAA9";
+		String strCUSIP = "Nellore";
 		String strDayCount = "30/360";
-		String strDateFactor = "4/10/2007;1;4/19/2010;0.982290349;10/19/2010;0.964621289;4/19/2011;0.947016908;10/19/2011;0.929477203;4/19/2012;0.912002175;10/19/2012;0.894591825;4/19/2013;0.877246152;10/19/2013;0.859965156;4/19/2014;0.842748837;10/19/2014;0.825597196;4/19/2015;0.808510231;10/19/2015;0.790382291;4/19/2016;0.772361827;10/19/2016;0.754448839;4/19/2017;0.736643329;10/19/2017;0.718945295;4/19/2018;0.701354738;10/19/2018;0.683871658;4/19/2019;0.666496054;10/19/2019;0.64720945;4/19/2020;0.607138654;10/19/2020;0.518776192;4/19/2021;0.358884783;10/19/2021;0.150205598";
+		String strDateFactor = "5/18/2016;1;5/10/2017;0.976275687;11/10/2017;0.952560487;5/10/2018;0.928845291;11/10/2018;0.905130091;5/10/2019;0.881414892;11/10/2019;0.857699692;5/10/2020;0.833984496;11/10/2020;0.810269296;5/10/2021;0.786554097;11/10/2021;0.762838897;5/10/2022;0.739123697;11/10/2022;0.715408501;5/10/2023;0.691693301;11/10/2023;0.667978102;5/10/2024;0.644262902;11/10/2024;0.620547702;5/10/2025;0.596832506;11/10/2025;0.573117307;5/10/2026;0.549402107;11/10/2026;0.525686907;5/10/2027;0.501971711;11/10/2027;0.478256512";
 
 		BondComponent bondBullet = BondBuilder.CreateSimpleFixed (
 			strCUSIP,

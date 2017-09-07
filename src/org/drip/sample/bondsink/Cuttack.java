@@ -60,13 +60,13 @@ import org.drip.state.govvie.GovvieCurve;
  */
 
 /**
- * CUSIP_33972PAA7 demonstrates Sink Fixed Coupon Multi-flavor Pricing and Relative Value Measure Generation
- *  for CUSIP 33972PAA7.
+ * Cuttack demonstrates Sink Fixed Coupon Multi-flavor Pricing and Relative Value Measure Generation for
+ *  Cuttack.
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class CUSIP_33972PAA7 {
+public class Cuttack {
 
 	private static final MergedDiscountForwardCurve FundingCurve (
 		final JulianDate dtSpot,
@@ -509,14 +509,14 @@ public class CUSIP_33972PAA7 {
 			0.0308  // 30Y
 		};
 
-		JulianDate dtEffective = DateUtil.CreateFromYMD (2016,  7, 20);
-		JulianDate dtMaturity  = DateUtil.CreateFromYMD (2038,  3,  1);
-		double dblCoupon = 0.04125;
-		double dblCleanPrice = 0.9467973;
+		JulianDate dtEffective = DateUtil.CreateFromYMD (2007,  4, 10);
+		JulianDate dtMaturity  = DateUtil.CreateFromYMD (2022,  4, 19);
+		double dblCoupon = 0.05983;
+		double dblCleanPrice = 1.1175;
 		int iFreq = 2;
-		String strCUSIP = "33972PAA7";
+		String strCUSIP = "Cuttack";
 		String strDayCount = "30/360";
-		String strDateFactor = "7/20/2016;1;9/30/2019;0.9863;3/31/2020;0.9708;9/30/2020;0.9544;3/31/2021;0.9376;9/30/2021;0.9198;3/31/2022;0.9031;9/30/2022;0.8839;3/31/2023;0.8644;9/30/2023;0.8441;3/31/2024;0.8233;9/30/2024;0.8013;3/31/2025;0.7821;9/30/2025;0.7593;3/31/2026;0.7366;9/30/2026;0.7135;3/31/2027;0.6901;9/30/2027;0.6659;3/31/2028;0.6435;9/30/2028;0.6185;3/31/2029;0.5931;9/30/2029;0.5668;3/31/2030;0.5401;9/30/2030;0.5124;3/31/2031;0.4868;9/30/2031;0.4577;3/31/2032;0.428;9/30/2032;0.397;3/31/2033;0.3655;9/30/2033;0.3327;3/31/2034;0.3014;9/30/2034;0.2666;3/31/2035;0.2312;9/30/2035;0.1945;3/31/2036;0.157;9/30/2036;0.1179;3/31/2037;0.0814;9/30/2037;0.0402";
+		String strDateFactor = "4/10/2007;1;4/19/2010;0.982290349;10/19/2010;0.964621289;4/19/2011;0.947016908;10/19/2011;0.929477203;4/19/2012;0.912002175;10/19/2012;0.894591825;4/19/2013;0.877246152;10/19/2013;0.859965156;4/19/2014;0.842748837;10/19/2014;0.825597196;4/19/2015;0.808510231;10/19/2015;0.790382291;4/19/2016;0.772361827;10/19/2016;0.754448839;4/19/2017;0.736643329;10/19/2017;0.718945295;4/19/2018;0.701354738;10/19/2018;0.683871658;4/19/2019;0.666496054;10/19/2019;0.64720945;4/19/2020;0.607138654;10/19/2020;0.518776192;4/19/2021;0.358884783;10/19/2021;0.150205598";
 
 		BondComponent bondBullet = BondBuilder.CreateSimpleFixed (
 			strCUSIP,
@@ -527,10 +527,7 @@ public class CUSIP_33972PAA7 {
 			strDayCount,
 			dtEffective,
 			dtMaturity,
-			null, /* Array2D.FromDateFactorVertex (
-				strDateFactor,
-				dtMaturity.julian()
-			), */
+			null,
 			null
 		);
 
