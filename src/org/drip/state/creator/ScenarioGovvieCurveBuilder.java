@@ -309,7 +309,7 @@ public class ScenarioGovvieCurveBuilder {
 				org.drip.spline.grid.OverlappingStretchSpan
 					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
 						(strName, aiPredictorOrdinate, adblResponseValue, aSCBC, null,
-							org.drip.spline.stretch.BoundarySettings.NaturalStandard(),
+							org.drip.spline.stretch.BoundarySettings.FloatingStandard(),
 								org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE)));
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();

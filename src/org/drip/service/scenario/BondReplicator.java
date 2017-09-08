@@ -1096,6 +1096,8 @@ public class BondReplicator {
 			return null;
 		}
 
+		System.out.println ("Workout: " + new org.drip.analytics.date.JulianDate (iWorkoutDate));
+
 		return arr;
 	}
 }

@@ -207,14 +207,12 @@ public class CompositePeriodBuilder {
 			if (SHORT_STUB == iPSEC)
 				lsEdgeDate.add (iMaturityDate);
 			else if (LONG_STUB == iPSEC) {
-				lsEdgeDate.remove (lsEdgeDate.size() - 1);
+				if (1 != lsEdgeDate.size()) lsEdgeDate.remove (lsEdgeDate.size() - 1);
 
 				lsEdgeDate.add (iMaturityDate);
 			}
 		} else if (iEdgeDate == iMaturityDate)
 			lsEdgeDate.add (iMaturityDate);
-
-		if (null == dap) return lsEdgeDate;
 
 		java.util.List<java.lang.Integer> lsAdjustedEdgeDate = new java.util.ArrayList<java.lang.Integer>();
 
@@ -226,6 +224,8 @@ public class CompositePeriodBuilder {
 			lsAdjustedEdgeDate.add (DAPAdjust (lsEdgeDate.get (i), dap));
 
 		lsAdjustedEdgeDate.add (lsEdgeDate.get (iNumDate - 1));
+
+		if (1 == lsAdjustedEdgeDate.size()) lsAdjustedEdgeDate.add (1, iMaturityDate);
 
 		return lsAdjustedEdgeDate;
 	}
@@ -279,14 +279,12 @@ public class CompositePeriodBuilder {
 			else if (FULL_FRONT_PERIOD == iPSEC)
 				lsEdgeDate.add (0, iEdgeDate);
 			else if (LONG_STUB == iPSEC) {
-				lsEdgeDate.remove (0);
+				if (1 != lsEdgeDate.size()) lsEdgeDate.remove (0);
 
 				lsEdgeDate.add (0, iEffectiveDate);
 			}
 		} else if (dtEdge.julian() == iEffectiveDate)
 			lsEdgeDate.add (0, iEffectiveDate);
-
-		if (null == dap) return lsEdgeDate;
 
 		java.util.List<java.lang.Integer> lsAdjustedEdgeDate = new java.util.ArrayList<java.lang.Integer>();
 

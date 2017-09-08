@@ -1035,11 +1035,6 @@ public class LatentMarketStateBuilder {
 		java.lang.String strBenchmarkTreasuryCode =
 			org.drip.market.issue.TreasurySettingContainer.CurrencyBenchmarkCode (strCurrency);
 
-		/* return null == strBenchmarkTreasuryCode || strBenchmarkTreasuryCode.isEmpty() ? null :
-			org.drip.state.creator.ScenarioGovvieCurveBuilder.CustomSplineCurve (strBenchmarkTreasuryCode,
-				dtSpot.addBusDays (0, strCurrency), strBenchmarkTreasuryCode, strCurrency, aiDate, adblQuote,
-					scbc); */
-
 		return null == strBenchmarkTreasuryCode || strBenchmarkTreasuryCode.isEmpty() ? null :
 			org.drip.state.creator.ScenarioGovvieCurveBuilder.CustomSplineCurve (strBenchmarkTreasuryCode,
 				dtSpot, strBenchmarkTreasuryCode, strCurrency, aiDate, adblQuote, scbc);
