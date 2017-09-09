@@ -151,7 +151,6 @@ public class DerivedZeroRate extends org.drip.state.discount.ZeroCurve {
 			return null;
 
 		int iFreq = 0 == iFreqZC ? 2 : iFreqZC;
-		boolean bApplyCpnEOMAdj = bApplyEOMAdjZC;
 		java.lang.String strCalendar = strCalendarZC;
 
 		java.lang.String strDC = null == strDCZC || strDCZC.isEmpty() ? "30/360" : strDCZC;
@@ -160,8 +159,6 @@ public class DerivedZeroRate extends org.drip.state.discount.ZeroCurve {
 			strDC = vcp.yieldDayCount();
 
 			iFreq = vcp.yieldFreq();
-
-			bApplyCpnEOMAdj = vcp.applyYieldEOMAdj();
 
 			strCalendar = vcp.yieldCalendar();
 		}
@@ -203,14 +200,14 @@ public class DerivedZeroRate extends org.drip.state.discount.ZeroCurve {
 
 		try {
 			if (!EntryFromDiscountCurve (dc, iWorkoutDate, iFreq,
-				org.drip.analytics.daycount.Convention.YearFraction (iValueDate, iWorkoutDate, strDC,
-					bApplyCpnEOMAdj, aap, strCalendar), dblZCBump, mapDF, mapZeroRate))
+				org.drip.analytics.daycount.Convention.YearFraction (iValueDate, iWorkoutDate, strDC, true,
+					aap, strCalendar), dblZCBump, mapDF, mapZeroRate))
 				return null;
 
 			if (iValueDate != iCashPayDate) {
 				if (!EntryFromDiscountCurve (dc, iCashPayDate, iFreq,
 					org.drip.analytics.daycount.Convention.YearFraction (iValueDate, iCashPayDate, strDC,
-						bApplyCpnEOMAdj, aap, strCalendar), dblZCBump, mapDF, mapZeroRate))
+						true, aap, strCalendar), dblZCBump, mapDF, mapZeroRate))
 					return null;
 			}
 		} catch (java.lang.Exception e) {

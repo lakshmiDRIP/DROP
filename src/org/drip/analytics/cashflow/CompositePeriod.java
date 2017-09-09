@@ -841,6 +841,8 @@ public abstract class CompositePeriod {
 
 		int iNumPeriodUnit = _lsCUP.size();
 
+		double dblUnitAccrual = 1.;
+
 		try {
 			if (org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_ARITHMETIC ==
 				_iAccrualCompoundingRule) {
@@ -858,7 +860,6 @@ public abstract class CompositePeriod {
 			} else if (org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC
 				== _iAccrualCompoundingRule) {
 				double dblDCF = 0.;
-				double dblUnitAccrual = 1.;
 
 				for (int i = 0; i < iNumPeriodUnit; ++i) {
 					org.drip.analytics.cashflow.ComposableUnitPeriod cup = _lsCUP.get (i);

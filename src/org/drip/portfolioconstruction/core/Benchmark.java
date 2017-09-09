@@ -55,27 +55,27 @@ package org.drip.portfolioconstruction.core;
 public class Benchmark extends org.drip.portfolioconstruction.core.Block {
 	private java.lang.String _strType = "";
 	private java.lang.String _strCategory = "";
-	private org.drip.portfolioconstruction.asset.Portfolio _pf = null;
+	private org.drip.portfolioconstruction.core.AssetHoldings _ah = null;
 
 	/**
-	 * Construct a Standard Benchmark Instance
+	 * Construct a Standard Benchmark Instance Without Cash
 	 * 
 	 * @param strName The Benchmark Name
 	 * @param strType The Benchmark Type
 	 * @param strDescription The Benchmark Description
-	 * @param pf The Benchmark Portfolio Instance
+	 * @param ah The Benchmark Holdings
 	 * 
-	 * @return The Standard Benchmark Instance
+	 * @return The Standard Benchmark Instance Without Cash
 	 */
 
 	public static final Benchmark Standard (
 		final java.lang.String strName,
 		final java.lang.String strType,
 		final java.lang.String strCategory,
-		final org.drip.portfolioconstruction.asset.Portfolio pf)
+		final org.drip.portfolioconstruction.core.AssetHoldings ah)
 	{
 		try {
-			return new Benchmark (strName, strName, strName, strType, strCategory, pf);
+			return new Benchmark (strName, strName, strName, strType, strCategory, ah);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -91,7 +91,7 @@ public class Benchmark extends org.drip.portfolioconstruction.core.Block {
 	 * @param strDescription The Benchmark Description
 	 * @param strType The Benchmark Type
 	 * @param strDescription The Benchmark Description
-	 * @param pf The Benchmark Portfolio Instance
+	 * @param ah The Benchmark Holdings
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -102,13 +102,13 @@ public class Benchmark extends org.drip.portfolioconstruction.core.Block {
 		final java.lang.String strDescription,
 		final java.lang.String strType,
 		final java.lang.String strCategory,
-		final org.drip.portfolioconstruction.asset.Portfolio pf)
+		final org.drip.portfolioconstruction.core.AssetHoldings ah)
 		throws java.lang.Exception
 	{
 		super (strName, strID, strDescription);
 
 		if (null == (_strType = strType) || _strType.isEmpty() || null == (_strCategory = strCategory) ||
-			_strCategory.isEmpty() || null == (_pf = pf))
+			_strCategory.isEmpty() || null == (_ah = ah))
 			throw new java.lang.Exception ("Benchmark Constructor => Invalid Inputs");
 	}
 
@@ -135,13 +135,13 @@ public class Benchmark extends org.drip.portfolioconstruction.core.Block {
 	}
 
 	/**
-	 * Retrieve the Benchmark Portfolio Instance
+	 * Retrieve the Benchmark Holdings
 	 * 
-	 * @return The Benchmark Portfolio Instance
+	 * @return The Benchmark Holdings
 	 */
 
-	public org.drip.portfolioconstruction.asset.Portfolio portfolio()
+	public org.drip.portfolioconstruction.core.AssetHoldings holdings()
 	{
-		return _pf;
+		return _ah;
 	}
 }

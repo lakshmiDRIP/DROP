@@ -53,7 +53,7 @@ package org.drip.portfolioconstruction.core;
  */
 
 public class Account extends org.drip.portfolioconstruction.core.Block {
-	private org.drip.portfolioconstruction.asset.Portfolio _pf = null;
+	private org.drip.portfolioconstruction.core.AssetHoldings _ah = null;
 	private org.drip.portfolioconstruction.core.Benchmark _bmTracking = null;
 
 	/**
@@ -62,7 +62,7 @@ public class Account extends org.drip.portfolioconstruction.core.Block {
 	 * @param strName The Account Name
 	 * @param strID The Account ID
 	 * @param strDescription The Account Description
-	 * @param pf The Account Portfolio Instance
+	 * @param ah The Account Holdings
 	 * @param bmTracking The Tracking Benchmark
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
@@ -72,25 +72,25 @@ public class Account extends org.drip.portfolioconstruction.core.Block {
 		final java.lang.String strName,
 		final java.lang.String strID,
 		final java.lang.String strDescription,
-		final org.drip.portfolioconstruction.asset.Portfolio pf,
+		final org.drip.portfolioconstruction.core.AssetHoldings ah,
 		final org.drip.portfolioconstruction.core.Benchmark bmTracking)
 		throws java.lang.Exception
 	{
 		super (strName, strID, strDescription);
 
-		_pf = pf;
+		_ah = ah;
 		_bmTracking = bmTracking;
 	}
 
 	/**
-	 * Retrieve the Portfolio Instance
+	 * Retrieve the Holdings
 	 * 
-	 * @return The Portfolio Instance
+	 * @return The Holdings
 	 */
 
-	public org.drip.portfolioconstruction.asset.Portfolio portfolio()
+	public org.drip.portfolioconstruction.core.AssetHoldings holdings()
 	{
-		return _pf;
+		return _ah;
 	}
 
 	/**
@@ -102,5 +102,16 @@ public class Account extends org.drip.portfolioconstruction.core.Block {
 	public org.drip.portfolioconstruction.core.Benchmark trackingBenchmark()
 	{
 		return _bmTracking;
+	}
+
+	/**
+	 * Retrieve the Currency
+	 * 
+	 * @return The Currency
+	 */
+
+	public java.lang.String currency()
+	{
+		return _ah.currency();
 	}
 }

@@ -174,7 +174,7 @@ public class ScenarioCreditCurveBuilder {
 
 			for (int i = 0; i < adblSurvivalProbability.length; ++i) {
 				if (!org.drip.quant.common.NumberUtil.IsValid (adblSurvivalProbability[i]) ||
-					aiSurvivalDate[i] <= iPeriodBegin || dblSurvivalBegin <= adblSurvivalProbability[i])
+					aiSurvivalDate[i] <= iPeriodBegin || dblSurvivalBegin < adblSurvivalProbability[i])
 					return null;
 
 				adblHazard[i] = 365.25 / (aiSurvivalDate[i] - iPeriodBegin) * java.lang.Math.log

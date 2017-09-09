@@ -361,7 +361,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 			if (!org.drip.quant.common.NumberUtil.IsValid (dblScalingNotional))
 				dblScalingNotional = notional (iPeriodStartDate);
 
-			org.drip.analytics.output.CompositePeriodCouponMetrics cpcm = couponMetrics (iValueDate,
+			org.drip.analytics.output.CompositePeriodCouponMetrics cpcm = couponMetrics (iPeriodEndDate,
 				valParams, csqc);
 
 			if (null == cpcm)

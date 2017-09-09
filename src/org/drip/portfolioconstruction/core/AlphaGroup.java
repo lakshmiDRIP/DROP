@@ -47,61 +47,11 @@ package org.drip.portfolioconstruction.core;
  */
 
 /**
- * Asset holds the Details of a given Asset.
+ * AlphaGroup contains the Group of Alphas for the specified Set of Assets.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Asset extends org.drip.portfolioconstruction.core.Block {
-	public java.lang.String _strSector = "";
-	public java.lang.String _strCurrency = "";
+public class AlphaGroup {
 
-	/**
-	 * Asset Constructor
-	 * 
-	 * @param strName The Asset Name
-	 * @param strID The Asset ID
-	 * @param strDescription The Asset Description
-	 * @param strCurrency The Asset Currency
-	 * @param strSector The Asset Sector
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public Asset (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final java.lang.String strCurrency,
-		final java.lang.String strSector)
-		throws java.lang.Exception
-	{
-		super (strName, strID, strDescription);
-
-		if (null == (_strCurrency = strCurrency) || _strCurrency.isEmpty() || null == (_strSector =
-			strSector) || _strSector.isEmpty())
-			throw new java.lang.Exception ("Asset Constructor => Invalid Inputs");
-	}
-
-	/**
-	 * Retrieve the Asset Currency
-	 * 
-	 * @return The Asset Currency
-	 */
-
-	public java.lang.String currency()
-	{
-		return _strCurrency;
-	}
-
-	/**
-	 * Retrieve the Asset Sector
-	 * 
-	 * @return The Asset Sector
-	 */
-
-	public java.lang.String sector()
-	{
-		return _strSector;
-	}
 }
