@@ -47,46 +47,29 @@ package org.drip.portfolioconstruction.core;
  */
 
 /**
- * AlphaGroup contains the Group of Alphas for the specified Set of Assets.
+ * Factor holds the Details of a specific Factor.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class AlphaGroup extends org.drip.portfolioconstruction.core.AttributeMarginal {
+public class Factor extends org.drip.portfolioconstruction.core.Block {
 
 	/**
-	 * AlphaGroup Constructor
+	 * Factor Constructor
 	 * 
-	 * @param strName The Name
-	 * @param strID The ID
-	 * @param strDescription The Description
+	 * @param strName The Asset Name
+	 * @param strID The Asset ID
+	 * @param strDescription The Asset Description
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public AlphaGroup (
+	public Factor (
 		final java.lang.String strName,
 		final java.lang.String strID,
 		final java.lang.String strDescription)
 		throws java.lang.Exception
 	{
 		super (strName, strID, strDescription);
-	}
-
-	/**
-	 * Retrieve the Asset's Alpha
-	 * 
-	 * @param strAssetID The Asset ID
-	 * 
-	 * @return The Asset's Alpha
-	 * 
-	 * @throws Thrown if the Inputs are Invalid
-	 */
-
-	public double alpha (
-		final java.lang.String strAssetID)
-		throws java.lang.Exception
-	{
-		return attribute (strAssetID);
 	}
 }

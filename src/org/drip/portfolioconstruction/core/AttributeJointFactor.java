@@ -47,142 +47,85 @@ package org.drip.portfolioconstruction.core;
  */
 
 /**
- * AssetHoldings is a Portfolio of Holdings in the specified Set of Assets.
+ * AttributeJointFactor contains the Factor Based Attributes that determines the Correlation between the Pair
+ *	of Assets.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class AssetHoldings extends org.drip.portfolioconstruction.core.Block {
-	private java.lang.String _strCurrency = "";
+public class AttributeJointFactor extends org.drip.portfolioconstruction.core.Block {
+	private java.util.Map<java.lang.String, java.lang.Double> _mapFactorLoading = new
+		org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
 
-	private org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double> _mapQuantity = new
+	private java.util.Map<java.lang.String, java.lang.Double> _mapFactorCovariance = new
+		org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
+
+	private java.util.Map<java.lang.String, java.lang.Double> _mapSpecificRisk = new
 		org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
 
 	/**
-	 * AssetHoldings Constructor
+	 * AttributeJointFactor Constructor
 	 * 
-	 * @param strName The Asset Name
-	 * @param strID The Asset ID
-	 * @param strDescription The Asset Description
-	 * @param strCurrency The Account Currency
+	 * @param strName The Name
+	 * @param strID The ID
+	 * @param strDescription The Description
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public AssetHoldings (
+	public AttributeJointFactor (
 		final java.lang.String strName,
 		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final java.lang.String strCurrency)
+		final java.lang.String strDescription)
 		throws java.lang.Exception
 	{
 		super (strName, strID, strDescription);
-
-		if (null == (_strCurrency = strCurrency))
-			throw new java.lang.Exception ("AssetHoldings Constructor => Invalid Inputs");
 	}
 
 	/**
-	 * Retrieve the Set of Asset IDs
+	 * Retrieve the Map of Factor Loadings
 	 * 
-	 * @return The Set of Asset IDs
+	 * @return Map of Factor Loadings
 	 */
 
-	public java.util.Set<java.lang.String> assets()
+	public java.util.Map<java.lang.String, java.lang.Double> factorLoadings()
 	{
-		return _mapQuantity.keySet();
+		return _mapFactorLoading;
 	}
 
 	/**
-	 * Retrieve the Map of Holdings Amount
+	 * Retrieve the Map of Factor Covariance
 	 * 
-	 * @return The Map of Holdings Amount
+	 * @return Map of Factor Covariance
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> quantityMap()
+	public java.util.Map<java.lang.String, java.lang.Double> factorCovariance()
 	{
-		return _mapQuantity;
+		return _mapFactorCovariance;
 	}
 
 	/**
-	 * Add an Asset/Amount Pair
+	 * Retrieve the Map of Specific Risks
+	 * 
+	 * @return Map of Specific Risks
+	 */
+
+	public java.util.Map<java.lang.String, java.lang.Double> specificRisk()
+	{
+		return _mapSpecificRisk;
+	}
+
+	/**
+	 * Indicate if the Asset is contained in the Joint Factor Model
 	 * 
 	 * @param strAssetID The Asset ID
-	 * @param dblQuantity The Amount in the Portfolio
 	 * 
-	 * @return TRUE => The Asset/Amount has been successfully added
+	 * @return TRUE => The Asset is contained in the Joint Factor Model
 	 */
 
-	public boolean add (
-		final java.lang.String strAssetID,
-		final double dblQuantity)
+	public boolean containsAsset (
+		final java.lang.String strAssetID)
 	{
-		if (null == strAssetID || strAssetID.isEmpty() || !org.drip.quant.common.NumberUtil.IsValid
-			(dblQuantity))
-			return false;
-
-		_mapQuantity.put (strAssetID, dblQuantity);
-
-		return true;
-	}
-
-	/**
-	 * Indicates if an Asset exists in the Holdings
-	 * 
-	 * @param strID The Asset ID
-	 * 
-	 * @return TRUE => The Asset is Part of the Holdings (may have Zero Value though)
-	 */
-
-	public boolean contains (
-		final java.lang.String strID)
-	{
-		return null != strID && !_mapQuantity.containsKey (strID);
-	}
-
-	/**
-	 * Retrieves the Holdings Quantity for the Asset (if it exists)
-	 * 
-	 * @param strID The Asset ID
-	 * 
-	 * @return The Holdings Quantity for the Asset (if it exists)
-	 * 
-	 * @throws Thrown if the Inputs are Invalid
-	 */
-
-	public double quantity (
-		final java.lang.String strID)
-		throws java.lang.Exception
-	{
-		if (!contains (strID)) throw new java.lang.Exception ("AssetHoldings::quantity => Invalid Inputs");
-
-		return _mapQuantity.get (strID);
-	}
-
-	/**
-	 * Retrieve the Currency
-	 * 
-	 * @return The Currency
-	 */
-
-	public java.lang.String currency()
-	{
-		return _strCurrency;
-	}
-
-	/**
-	 * Retrieves the Cash Holdings
-	 * 
-	 * @return The Cash Holdings
-	 */
-
-	public double cash()
-	{
-		try {
-			return quantity ("CASH::" + _strCurrency);
-		} catch (java.lang.Exception e) {
-		}
-
-		return 0.;
+		return null != strAssetID && _mapSpecificRisk.containsKey (strAssetID);
 	}
 }

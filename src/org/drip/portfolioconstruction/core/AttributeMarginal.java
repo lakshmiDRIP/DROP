@@ -47,142 +47,84 @@ package org.drip.portfolioconstruction.core;
  */
 
 /**
- * AssetHoldings is a Portfolio of Holdings in the specified Set of Assets.
+ * AttributeMarginal contains the Marginal Attributes for the specified Set of Assets.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class AssetHoldings extends org.drip.portfolioconstruction.core.Block {
-	private java.lang.String _strCurrency = "";
-
-	private org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double> _mapQuantity = new
+public class AttributeMarginal extends org.drip.portfolioconstruction.core.Block {
+	private org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double> _mapAttribute = new
 		org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
 
 	/**
-	 * AssetHoldings Constructor
+	 * AttributeMarginal Constructor
 	 * 
-	 * @param strName The Asset Name
-	 * @param strID The Asset ID
-	 * @param strDescription The Asset Description
-	 * @param strCurrency The Account Currency
+	 * @param strName The Name
+	 * @param strID The ID
+	 * @param strDescription The Description
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public AssetHoldings (
+	public AttributeMarginal (
 		final java.lang.String strName,
 		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final java.lang.String strCurrency)
+		final java.lang.String strDescription)
 		throws java.lang.Exception
 	{
 		super (strName, strID, strDescription);
-
-		if (null == (_strCurrency = strCurrency))
-			throw new java.lang.Exception ("AssetHoldings Constructor => Invalid Inputs");
 	}
 
 	/**
-	 * Retrieve the Set of Asset IDs
-	 * 
-	 * @return The Set of Asset IDs
-	 */
-
-	public java.util.Set<java.lang.String> assets()
-	{
-		return _mapQuantity.keySet();
-	}
-
-	/**
-	 * Retrieve the Map of Holdings Amount
-	 * 
-	 * @return The Map of Holdings Amount
-	 */
-
-	public java.util.Map<java.lang.String, java.lang.Double> quantityMap()
-	{
-		return _mapQuantity;
-	}
-
-	/**
-	 * Add an Asset/Amount Pair
+	 * Add an Asset and its Attribute
 	 * 
 	 * @param strAssetID The Asset ID
-	 * @param dblQuantity The Amount in the Portfolio
+	 * @param dblAttribute The Attribute
 	 * 
-	 * @return TRUE => The Asset/Amount has been successfully added
+	 * @return TRUE => The Asset's Attribute successfully added.
 	 */
 
 	public boolean add (
 		final java.lang.String strAssetID,
-		final double dblQuantity)
+		final double dblAttribute)
 	{
 		if (null == strAssetID || strAssetID.isEmpty() || !org.drip.quant.common.NumberUtil.IsValid
-			(dblQuantity))
+			(dblAttribute))
 			return false;
 
-		_mapQuantity.put (strAssetID, dblQuantity);
+		_mapAttribute.put (strAssetID, dblAttribute);
 
 		return true;
 	}
 
 	/**
-	 * Indicates if an Asset exists in the Holdings
+	 * Retrieve the Asset's Attribute
 	 * 
-	 * @param strID The Asset ID
+	 * @param strAssetID The Asset ID
 	 * 
-	 * @return TRUE => The Asset is Part of the Holdings (may have Zero Value though)
-	 */
-
-	public boolean contains (
-		final java.lang.String strID)
-	{
-		return null != strID && !_mapQuantity.containsKey (strID);
-	}
-
-	/**
-	 * Retrieves the Holdings Quantity for the Asset (if it exists)
-	 * 
-	 * @param strID The Asset ID
-	 * 
-	 * @return The Holdings Quantity for the Asset (if it exists)
+	 * @return The Asset's Attribute
 	 * 
 	 * @throws Thrown if the Inputs are Invalid
 	 */
 
-	public double quantity (
-		final java.lang.String strID)
+	public double attribute (
+		final java.lang.String strAssetID)
 		throws java.lang.Exception
 	{
-		if (!contains (strID)) throw new java.lang.Exception ("AssetHoldings::quantity => Invalid Inputs");
+		if (null == strAssetID || strAssetID.isEmpty() || !_mapAttribute.containsKey (strAssetID))
+			throw new java.lang.Exception ("AttributeMarginal::attribute => Invalid Inputs");
 
-		return _mapQuantity.get (strID);
+		return _mapAttribute.get (strAssetID);
 	}
 
 	/**
-	 * Retrieve the Currency
+	 * Retrieve the Map of Asset Attributes
 	 * 
-	 * @return The Currency
+	 * @return Map of the Asset Attributes
 	 */
 
-	public java.lang.String currency()
+	public java.util.Map<java.lang.String, java.lang.Double> attribute()
 	{
-		return _strCurrency;
-	}
-
-	/**
-	 * Retrieves the Cash Holdings
-	 * 
-	 * @return The Cash Holdings
-	 */
-
-	public double cash()
-	{
-		try {
-			return quantity ("CASH::" + _strCurrency);
-		} catch (java.lang.Exception e) {
-		}
-
-		return 0.;
+		return _mapAttribute;
 	}
 }
