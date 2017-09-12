@@ -1,5 +1,5 @@
 
-package org.drip.portfolioconstruction.core;
+package org.drip.portfolioconstruction.risk;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,17 +47,17 @@ package org.drip.portfolioconstruction.core;
  */
 
 /**
- * AttributeJointDense contains the Joint Dense Attributes for the Pair of the Set of Assets.
+ * AttributeVolatilityAlphaUncertainty contains the Group of Alpha Uncertainties for the specified Group of
+ *  Assets.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class AttributeJointDense extends org.drip.portfolioconstruction.core.Block {
-	private org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double> _mapAttribute = new
-		org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
+public class AttributeVolatilityAlphaUncertainty extends
+	org.drip.portfolioconstruction.risk.AttributeJointDense {
 
 	/**
-	 * AttributeJointDense Constructor
+	 * AttributeVolatilityAlphaUncertainty Constructor
 	 * 
 	 * @param strName The Name
 	 * @param strID The ID
@@ -66,76 +66,12 @@ public class AttributeJointDense extends org.drip.portfolioconstruction.core.Blo
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public AttributeJointDense (
+	public AttributeVolatilityAlphaUncertainty (
 		final java.lang.String strName,
 		final java.lang.String strID,
 		final java.lang.String strDescription)
 		throws java.lang.Exception
 	{
 		super (strName, strID, strDescription);
-	}
-
-	/**
-	 * Add the Attribute for an Asset Pair
-	 * 
-	 * @param strAssetID1 The Asset ID #1
-	 * @param strAssetID2 The Asset ID #2
-	 * @param dblAttribute The Attribute
-	 * 
-	 * @return TRUE => The Asset Pair's Attribute successfully added.
-	 */
-
-	public boolean add (
-		final java.lang.String strAssetID1,
-		final java.lang.String strAssetID2,
-		final double dblAttribute)
-	{
-		if (null == strAssetID1 || strAssetID1.isEmpty() || null == strAssetID2 || strAssetID2.isEmpty() ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblAttribute))
-			return false;
-
-		_mapAttribute.put (strAssetID1 + "::" + strAssetID2, dblAttribute);
-
-		_mapAttribute.put (strAssetID2 + "::" + strAssetID1, dblAttribute);
-
-		return true;
-	}
-
-	/**
-	 * Retrieve the Pair Attribute
-	 * 
-	 * @param strAssetID1 The Asset ID #1
-	 * @param strAssetID2 The Asset ID #2
-	 * 
-	 * @return The Pair Attribute
-	 * 
-	 * @throws Thrown if the Inputs are Invalid
-	 */
-
-	public double attribute (
-		final java.lang.String strAssetID1,
-		final java.lang.String strAssetID2)
-		throws java.lang.Exception
-	{
-		if (null == strAssetID1 || strAssetID1.isEmpty() || null == strAssetID2 || strAssetID2.isEmpty())
-			throw new java.lang.Exception ("AttributeJointDense::attribute => Invalid Inputs");
-
-		java.lang.String strJointAtributeKey = strAssetID1 + "::" + strAssetID2;
-
-		if (!_mapAttribute.containsKey (strAssetID1 + "::" + strAssetID2))
-			throw new java.lang.Exception ("AttributeJointDense::attribute => Invalid Inputs");
-
-		return _mapAttribute.get (strJointAtributeKey);
-	}
-
-	/**
-	 * Retrieve the Map of Asset Attributes
-	 * 
-	 * @return Map of the Asset Attributes
-	 */
-
-	public java.util.Map<java.lang.String, java.lang.Double> attribute()
-	{
-		return _mapAttribute;
 	}
 }

@@ -1,5 +1,5 @@
 
-package org.drip.portfolioconstruction.core;
+package org.drip.portfolioconstruction.risk;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,24 +47,17 @@ package org.drip.portfolioconstruction.core;
  */
 
 /**
- * AttributeJointFactor contains the Factor Based Attributes that determines the Correlation between the Pair
- *	of Assets.
+ * AttributeJointDense contains the Joint Dense Attributes for the Pair of the Set of Assets.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class AttributeJointFactor extends org.drip.portfolioconstruction.core.Block {
-	private java.util.Map<java.lang.String, java.lang.Double> _mapFactorLoading = new
-		org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
-
-	private java.util.Map<java.lang.String, java.lang.Double> _mapFactorCovariance = new
-		org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
-
-	private java.util.Map<java.lang.String, java.lang.Double> _mapSpecificRisk = new
+public class AttributeJointDense extends org.drip.portfolioconstruction.core.Block {
+	private org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double> _mapAttribute = new
 		org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
 
 	/**
-	 * AttributeJointFactor Constructor
+	 * AttributeJointDense Constructor
 	 * 
 	 * @param strName The Name
 	 * @param strID The ID
@@ -73,7 +66,7 @@ public class AttributeJointFactor extends org.drip.portfolioconstruction.core.Bl
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public AttributeJointFactor (
+	public AttributeJointDense (
 		final java.lang.String strName,
 		final java.lang.String strID,
 		final java.lang.String strDescription)
@@ -83,49 +76,66 @@ public class AttributeJointFactor extends org.drip.portfolioconstruction.core.Bl
 	}
 
 	/**
-	 * Retrieve the Map of Factor Loadings
+	 * Add the Attribute for an Asset Pair
 	 * 
-	 * @return Map of Factor Loadings
+	 * @param strAssetID1 The Asset ID #1
+	 * @param strAssetID2 The Asset ID #2
+	 * @param dblAttribute The Attribute
+	 * 
+	 * @return TRUE => The Asset Pair's Attribute successfully added.
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> factorLoadings()
+	public boolean add (
+		final java.lang.String strAssetID1,
+		final java.lang.String strAssetID2,
+		final double dblAttribute)
 	{
-		return _mapFactorLoading;
+		if (null == strAssetID1 || strAssetID1.isEmpty() || null == strAssetID2 || strAssetID2.isEmpty() ||
+			!org.drip.quant.common.NumberUtil.IsValid (dblAttribute))
+			return false;
+
+		_mapAttribute.put (strAssetID1 + "::" + strAssetID2, dblAttribute);
+
+		_mapAttribute.put (strAssetID2 + "::" + strAssetID1, dblAttribute);
+
+		return true;
 	}
 
 	/**
-	 * Retrieve the Map of Factor Covariance
+	 * Retrieve the Pair Attribute
 	 * 
-	 * @return Map of Factor Covariance
+	 * @param strAssetID1 The Asset ID #1
+	 * @param strAssetID2 The Asset ID #2
+	 * 
+	 * @return The Pair Attribute
+	 * 
+	 * @throws Thrown if the Inputs are Invalid
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> factorCovariance()
+	public double attribute (
+		final java.lang.String strAssetID1,
+		final java.lang.String strAssetID2)
+		throws java.lang.Exception
 	{
-		return _mapFactorCovariance;
+		if (null == strAssetID1 || strAssetID1.isEmpty() || null == strAssetID2 || strAssetID2.isEmpty())
+			throw new java.lang.Exception ("AttributeJointDense::attribute => Invalid Inputs");
+
+		java.lang.String strJointAtributeKey = strAssetID1 + "::" + strAssetID2;
+
+		if (!_mapAttribute.containsKey (strAssetID1 + "::" + strAssetID2))
+			throw new java.lang.Exception ("AttributeJointDense::attribute => Invalid Inputs");
+
+		return _mapAttribute.get (strJointAtributeKey);
 	}
 
 	/**
-	 * Retrieve the Map of Specific Risks
+	 * Retrieve the Map of Asset Attributes
 	 * 
-	 * @return Map of Specific Risks
+	 * @return Map of the Asset Attributes
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> specificRisk()
+	public java.util.Map<java.lang.String, java.lang.Double> attribute()
 	{
-		return _mapSpecificRisk;
-	}
-
-	/**
-	 * Indicate if the Asset is contained in the Joint Factor Model
-	 * 
-	 * @param strAssetID The Asset ID
-	 * 
-	 * @return TRUE => The Asset is contained in the Joint Factor Model
-	 */
-
-	public boolean containsAsset (
-		final java.lang.String strAssetID)
-	{
-		return null != strAssetID && _mapSpecificRisk.containsKey (strAssetID);
+		return _mapAttribute;
 	}
 }

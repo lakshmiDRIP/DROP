@@ -1,5 +1,5 @@
 
-package org.drip.portfolioconstruction.core;
+package org.drip.portfolioconstruction.risk;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,74 +47,29 @@ package org.drip.portfolioconstruction.core;
  */
 
 /**
- * FactorLoading contains the Factor Loadings and Specific Risks for a Specific Asset.
+ * AssetCovarianceFactor contains the Joint Factor Covariance for the Pair of the Set of Assets.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class FactorLoading {
-	private double _dblSpecificRisk = java.lang.Double.NaN;
-
-	private java.util.Map<java.lang.String, java.lang.Double> _mapCoefficient = new
-		org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
+public class AssetCovarianceFactor extends org.drip.portfolioconstruction.risk.AttributeJointFactor {
 
 	/**
-	 * FactorLoading Constructor
+	 * AssetCovarianceFactor Constructor
 	 * 
-	 * @param dblSpecificRisk The Asset-specific Risk
+	 * @param strName The Name
+	 * @param strID The ID
+	 * @param strDescription The Description
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public FactorLoading (
-		final double dblSpecificRisk)
+	public AssetCovarianceFactor (
+		final java.lang.String strName,
+		final java.lang.String strID,
+		final java.lang.String strDescription)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblSpecificRisk = dblSpecificRisk))
-			throw new java.lang.Exception ("FactorLoading Constructor => Invalid Inputs");
-	}
-
-	/**
-	 * Add a Factor Coefficient
-	 * 
-	 * @param strFactorID Factor ID
-	 * @param dblCoefficient Factor Coefficient
-	 * 
-	 * @return TRUE => The Factor Coefficient successfully added
-	 */
-
-	public boolean addCoefficient (
-		final java.lang.String strFactorID,
-		final double dblCoefficient)
-	{
-		if (null == strFactorID || strFactorID.isEmpty() || !org.drip.quant.common.NumberUtil.IsValid
-			(dblCoefficient))
-			return false;
-
-		_mapCoefficient.put (strFactorID, dblCoefficient);
-
-		return true;
-	}
-
-	/**
-	 * Retrieve the Asset's Specific Risk
-	 * 
-	 * @return The Asset's Specific Risk
-	 */
-
-	public double specificRisk()
-	{
-		return _dblSpecificRisk;
-	}
-
-	/**
-	 * Retrieve the Factor Loading Coefficients
-	 * 
-	 * @return The Factor Loading Coefficients
-	 */
-
-	public java.util.Map<java.lang.String, java.lang.Double> coefficients()
-	{
-		return _mapCoefficient;
+		super (strName, strID, strDescription);
 	}
 }
