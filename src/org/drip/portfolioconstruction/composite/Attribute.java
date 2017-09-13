@@ -1,5 +1,5 @@
 
-package org.drip.portfolioconstruction.core;
+package org.drip.portfolioconstruction.composite;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,61 +47,84 @@ package org.drip.portfolioconstruction.core;
  */
 
 /**
- * Asset holds the Details of a given Asset.
+ * Attribute contains the Marginal Attributes for the specified Set of Assets.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Asset extends org.drip.portfolioconstruction.core.Block {
-	public java.lang.String _strSector = "";
-	public java.lang.String _strCurrency = "";
+public class Attribute extends org.drip.portfolioconstruction.unit.Block {
+	private org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double> _mapAttribute = new
+		org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
 
 	/**
-	 * Asset Constructor
+	 * Attribute Constructor
 	 * 
-	 * @param strName The Asset Name
-	 * @param strID The Asset ID
-	 * @param strDescription The Asset Description
-	 * @param strCurrency The Asset Currency
-	 * @param strSector The Asset Sector
+	 * @param strName The Name
+	 * @param strID The ID
+	 * @param strDescription The Description
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public Asset (
+	public Attribute (
 		final java.lang.String strName,
 		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final java.lang.String strCurrency,
-		final java.lang.String strSector)
+		final java.lang.String strDescription)
 		throws java.lang.Exception
 	{
 		super (strName, strID, strDescription);
-
-		if (null == (_strCurrency = strCurrency) || _strCurrency.isEmpty() || null == (_strSector =
-			strSector) || _strSector.isEmpty())
-			throw new java.lang.Exception ("Asset Constructor => Invalid Inputs");
 	}
 
 	/**
-	 * Retrieve the Asset Currency
+	 * Add an Asset's Attribute
 	 * 
-	 * @return The Asset Currency
+	 * @param strAssetID The Asset ID
+	 * @param dblAttribute The Attribute
+	 * 
+	 * @return TRUE => The Asset's Attribute successfully added.
 	 */
 
-	public java.lang.String currency()
+	public boolean add (
+		final java.lang.String strAssetID,
+		final double dblAttribute)
 	{
-		return _strCurrency;
+		if (null == strAssetID || strAssetID.isEmpty() || !org.drip.quant.common.NumberUtil.IsValid
+			(dblAttribute))
+			return false;
+
+		_mapAttribute.put (strAssetID, dblAttribute);
+
+		return true;
 	}
 
 	/**
-	 * Retrieve the Asset Sector
+	 * Retrieve the Asset's Attribute Value
 	 * 
-	 * @return The Asset Sector
+	 * @param strAssetID The Asset ID
+	 * 
+	 * @return The Asset's Attribute Value
+	 * 
+	 * @throws Thrown if the Inputs are Invalid
 	 */
 
-	public java.lang.String sector()
+	public double value (
+		final java.lang.String strAssetID)
+		throws java.lang.Exception
 	{
-		return _strSector;
+		if (null == strAssetID || strAssetID.isEmpty() || !_mapAttribute.containsKey (strAssetID))
+			throw new java.lang.Exception ("Attribute::attribute => Invalid Inputs");
+
+		return _mapAttribute.get (strAssetID);
+	}
+
+	/**
+	 * Retrieve the Map of Asset Attributes
+	 * 
+	 * @return Map of the Asset Attributes
+	 */
+
+	public java.util.Map<java.lang.String, java.lang.Double> attribute()
+	{
+		return _mapAttribute;
 	}
 }

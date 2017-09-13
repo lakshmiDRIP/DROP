@@ -1,5 +1,5 @@
 
-package org.drip.portfolioconstruction.core;
+package org.drip.portfolioconstruction.unit;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,24 +47,14 @@ package org.drip.portfolioconstruction.core;
  */
 
 /**
- * Factor holds the Details of a specific Factor.
+ * TransactionCost contains the Parameters for the specified Transaction Cost Scheme.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Factor extends org.drip.portfolioconstruction.core.Block {
+public abstract class TransactionCost extends org.drip.portfolioconstruction.unit.Block {
 
-	/**
-	 * Factor Constructor
-	 * 
-	 * @param strName The Asset Name
-	 * @param strID The Asset ID
-	 * @param strDescription The Asset Description
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public Factor (
+	protected TransactionCost (
 		final java.lang.String strName,
 		final java.lang.String strID,
 		final java.lang.String strDescription)

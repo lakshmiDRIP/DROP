@@ -1,5 +1,5 @@
 
-package org.drip.portfolioconstruction.risk;
+package org.drip.portfolioconstruction.optimizer;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,27 +47,33 @@ package org.drip.portfolioconstruction.risk;
  */
 
 /**
- * AttributeJointDense contains the Joint Dense Attributes for the Pair of the Set of Assets.
+ * ObjectiveTerm holds the Details of a given Objective Term.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class AttributeJointDense extends org.drip.portfolioconstruction.unit.Block implements
-	org.drip.portfolioconstruction.risk.AssetCovariance {
-	private org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double> _mapAttribute = new
-		org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
+public class ObjectiveTerm extends org.drip.portfolioconstruction.unit.Block {
+	private double _dblEta = java.lang.Double.NaN;
+
+	private java.util.Map<java.lang.String, org.drip.portfolioconstruction.composite.Attribute> _mapAttribute
+		= new
+			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.composite.Attribute>();
+
+	private java.util.Map<java.lang.String, org.drip.portfolioconstruction.composite.Classification>
+		_mapClassification = new
+			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.composite.Classification>();
 
 	/**
-	 * AttributeJointDense Constructor
+	 * ObjectiveTerm Constructor
 	 * 
-	 * @param strName The Name
-	 * @param strID The ID
-	 * @param strDescription The Description
+	 * @param strName The Asset Name
+	 * @param strID The Asset ID
+	 * @param strDescription The Asset Description
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public AttributeJointDense (
+	public ObjectiveTerm (
 		final java.lang.String strName,
 		final java.lang.String strID,
 		final java.lang.String strDescription)
@@ -77,66 +83,36 @@ public class AttributeJointDense extends org.drip.portfolioconstruction.unit.Blo
 	}
 
 	/**
-	 * Add the Attribute for an Asset Pair
+	 * Retrieve the Confidence Level (Eta) of the Objective Term
 	 * 
-	 * @param strAssetID1 The Asset ID #1
-	 * @param strAssetID2 The Asset ID #2
-	 * @param dblAttribute The Attribute
-	 * 
-	 * @return TRUE => The Asset Pair's Attribute successfully added.
+	 * @return Confidence Level (Eta) of the Objective Term
 	 */
 
-	public boolean add (
-		final java.lang.String strAssetID1,
-		final java.lang.String strAssetID2,
-		final double dblAttribute)
+	public double eta()
 	{
-		if (null == strAssetID1 || strAssetID1.isEmpty() || null == strAssetID2 || strAssetID2.isEmpty() ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblAttribute))
-			return false;
-
-		_mapAttribute.put (strAssetID1 + "::" + strAssetID2, dblAttribute);
-
-		_mapAttribute.put (strAssetID2 + "::" + strAssetID1, dblAttribute);
-
-		return true;
+		return _dblEta;
 	}
 
 	/**
-	 * Retrieve the Pair Attribute
+	 * Retrieve the Attributes relevant to the Objective Term
 	 * 
-	 * @param strAssetID1 The Asset ID #1
-	 * @param strAssetID2 The Asset ID #2
-	 * 
-	 * @return The Pair Attribute
-	 * 
-	 * @throws Thrown if the Inputs are Invalid
+	 * @return Map of Attributes relevant to the Objective Term
 	 */
 
-	public double attribute (
-		final java.lang.String strAssetID1,
-		final java.lang.String strAssetID2)
-		throws java.lang.Exception
-	{
-		if (null == strAssetID1 || strAssetID1.isEmpty() || null == strAssetID2 || strAssetID2.isEmpty())
-			throw new java.lang.Exception ("AttributeJointDense::attribute => Invalid Inputs");
-
-		java.lang.String strJointAtributeKey = strAssetID1 + "::" + strAssetID2;
-
-		if (!_mapAttribute.containsKey (strAssetID1 + "::" + strAssetID2))
-			throw new java.lang.Exception ("AttributeJointDense::attribute => Invalid Inputs");
-
-		return _mapAttribute.get (strJointAtributeKey);
-	}
-
-	/**
-	 * Retrieve the Map of Asset Attributes
-	 * 
-	 * @return Map of the Asset Attributes
-	 */
-
-	public java.util.Map<java.lang.String, java.lang.Double> attribute()
+	public java.util.Map<java.lang.String, org.drip.portfolioconstruction.composite.Attribute> attributes()
 	{
 		return _mapAttribute;
+	}
+
+	/**
+	 * Retrieve the Classifications relevant to the Objective Term
+	 * 
+	 * @return Map of Classifications relevant to the Objective Term
+	 */
+
+	public java.util.Map<java.lang.String, org.drip.portfolioconstruction.composite.Classification>
+		classifications()
+	{
+		return _mapClassification;
 	}
 }

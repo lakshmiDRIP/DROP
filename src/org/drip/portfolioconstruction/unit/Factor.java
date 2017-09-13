@@ -1,5 +1,5 @@
 
-package org.drip.portfolioconstruction.core;
+package org.drip.portfolioconstruction.unit;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,84 +47,29 @@ package org.drip.portfolioconstruction.core;
  */
 
 /**
- * AttributeMarginal contains the Marginal Attributes for the specified Set of Assets.
+ * Factor holds the Details of a specific Factor.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class AttributeMarginal extends org.drip.portfolioconstruction.core.Block {
-	private org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double> _mapAttribute = new
-		org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
+public class Factor extends org.drip.portfolioconstruction.unit.Block {
 
 	/**
-	 * AttributeMarginal Constructor
+	 * Factor Constructor
 	 * 
-	 * @param strName The Name
-	 * @param strID The ID
-	 * @param strDescription The Description
+	 * @param strName The Asset Name
+	 * @param strID The Asset ID
+	 * @param strDescription The Asset Description
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public AttributeMarginal (
+	public Factor (
 		final java.lang.String strName,
 		final java.lang.String strID,
 		final java.lang.String strDescription)
 		throws java.lang.Exception
 	{
 		super (strName, strID, strDescription);
-	}
-
-	/**
-	 * Add an Asset and its Attribute
-	 * 
-	 * @param strAssetID The Asset ID
-	 * @param dblAttribute The Attribute
-	 * 
-	 * @return TRUE => The Asset's Attribute successfully added.
-	 */
-
-	public boolean add (
-		final java.lang.String strAssetID,
-		final double dblAttribute)
-	{
-		if (null == strAssetID || strAssetID.isEmpty() || !org.drip.quant.common.NumberUtil.IsValid
-			(dblAttribute))
-			return false;
-
-		_mapAttribute.put (strAssetID, dblAttribute);
-
-		return true;
-	}
-
-	/**
-	 * Retrieve the Asset's Attribute
-	 * 
-	 * @param strAssetID The Asset ID
-	 * 
-	 * @return The Asset's Attribute
-	 * 
-	 * @throws Thrown if the Inputs are Invalid
-	 */
-
-	public double attribute (
-		final java.lang.String strAssetID)
-		throws java.lang.Exception
-	{
-		if (null == strAssetID || strAssetID.isEmpty() || !_mapAttribute.containsKey (strAssetID))
-			throw new java.lang.Exception ("AttributeMarginal::attribute => Invalid Inputs");
-
-		return _mapAttribute.get (strAssetID);
-	}
-
-	/**
-	 * Retrieve the Map of Asset Attributes
-	 * 
-	 * @return Map of the Asset Attributes
-	 */
-
-	public java.util.Map<java.lang.String, java.lang.Double> attribute()
-	{
-		return _mapAttribute;
 	}
 }

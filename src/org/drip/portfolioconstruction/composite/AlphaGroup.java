@@ -1,5 +1,5 @@
 
-package org.drip.portfolioconstruction.core;
+package org.drip.portfolioconstruction.composite;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,77 +47,29 @@ package org.drip.portfolioconstruction.core;
  */
 
 /**
- * LocalUniverse contains all the Assets in the Local Universe.
+ * AlphaGroup contains the Group of Alphas for the specified Set of Assets.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class LocalUniverse {
-	private java.util.Map<java.lang.String, org.drip.portfolioconstruction.core.Asset> _mapAsset = new
-		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.core.Asset>();
+public class AlphaGroup extends org.drip.portfolioconstruction.composite.Attribute {
 
 	/**
-	 * Empty LocalUniverse Constructor
+	 * AlphaGroup Constructor
+	 * 
+	 * @param strName The Name
+	 * @param strID The ID
+	 * @param strDescription The Description
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public LocalUniverse()
+	public AlphaGroup (
+		final java.lang.String strName,
+		final java.lang.String strID,
+		final java.lang.String strDescription)
+		throws java.lang.Exception
 	{
-	}
-
-	/**
-	 * Add an Asset to the Local Universe
-	 * 
-	 * @param a Asset to be added
-	 * 
-	 * @return TRUE => The Asset has been added successfully
-	 */
-
-	public boolean add (
-		final org.drip.portfolioconstruction.core.Asset a)
-	{
-		if (null == a) return false;
-
-		_mapAsset.put (a.id(), a);
-
-		return true;
-	}
-
-	/**
-	 * Indicate if the Asset is contained in the Local Universe
-	 * 
-	 * @param a The Asset Instance
-	 * 
-	 * @return TRUE => The Asset is contained in the Local Universe
-	 */
-
-	public boolean contains (
-		final org.drip.portfolioconstruction.core.Asset a)
-	{
-		return null != a && _mapAsset.containsKey (a.id());
-	}
-
-	/**
-	 * Indicate if the Asset is contained in the Local Universe
-	 * 
-	 * @param strAssetID The Asset ID
-	 * 
-	 * @return TRUE => The Asset is contained in the Local Universe
-	 */
-
-	public boolean contains (
-		final java.lang.String strAssetID)
-	{
-		return null != strAssetID && !strAssetID.isEmpty() && _mapAsset.containsKey (strAssetID);
-	}
-
-	/**
-	 * Retrieve the List of the Asset Identifiers
-	 * 
-	 * @return The List of the Asset Identifiers
-	 */
-
-	public java.util.Set<java.lang.String> ids()
-	{
-		return _mapAsset.keySet();
+		super (strName, strID, strDescription);
 	}
 }

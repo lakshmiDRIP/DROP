@@ -1,5 +1,5 @@
 
-package org.drip.portfolioconstruction.risk;
+package org.drip.portfolioconstruction.composite;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,17 +47,17 @@ package org.drip.portfolioconstruction.risk;
  */
 
 /**
- * AttributeVolatilityAlphaUncertainty contains the Group of Alpha Uncertainties for the specified Group of
- *  Assets.
+ * Classification contains the Classifications for the specified Set of Assets.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class AttributeVolatilityAlphaUncertainty extends
-	org.drip.portfolioconstruction.risk.AttributeJointDense {
+public class Classification extends org.drip.portfolioconstruction.unit.Block {
+	private org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Boolean> _mapMembership = new
+		org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Boolean>();
 
 	/**
-	 * AttributeVolatilityAlphaUncertainty Constructor
+	 * Classification Constructor
 	 * 
 	 * @param strName The Name
 	 * @param strID The ID
@@ -66,12 +66,63 @@ public class AttributeVolatilityAlphaUncertainty extends
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public AttributeVolatilityAlphaUncertainty (
+	public Classification (
 		final java.lang.String strName,
 		final java.lang.String strID,
 		final java.lang.String strDescription)
 		throws java.lang.Exception
 	{
 		super (strName, strID, strDescription);
+	}
+
+	/**
+	 * Add an Asset's Membership
+	 * 
+	 * @param strAssetID The Asset ID
+	 * @param bMembership The Membership TURUE or FALSE
+	 * 
+	 * @return TRUE => The Asset's Attribute successfully added.
+	 */
+
+	public boolean add (
+		final java.lang.String strAssetID,
+		final boolean bMembership)
+	{
+		if (null == strAssetID || strAssetID.isEmpty()) return false;
+
+		_mapMembership.put (strAssetID, bMembership);
+
+		return true;
+	}
+
+	/**
+	 * Retrieve the Asset's Membership
+	 * 
+	 * @param strAssetID The Asset ID
+	 * 
+	 * @return The Asset's Membership
+	 * 
+	 * @throws Thrown if the Inputs are Invalid
+	 */
+
+	public boolean membership (
+		final java.lang.String strAssetID)
+		throws java.lang.Exception
+	{
+		if (null == strAssetID || strAssetID.isEmpty() || !_mapMembership.containsKey (strAssetID))
+			throw new java.lang.Exception ("Classification::membership => Invalid Inputs");
+
+		return _mapMembership.get (strAssetID);
+	}
+
+	/**
+	 * Retrieve the Map of Asset Classification
+	 * 
+	 * @return Map of the Asset Classification
+	 */
+
+	public java.util.Map<java.lang.String, java.lang.Boolean> membership()
+	{
+		return _mapMembership;
 	}
 }

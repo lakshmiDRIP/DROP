@@ -1,5 +1,5 @@
 
-package org.drip.portfolioconstruction.core;
+package org.drip.portfolioconstruction.risk;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,101 +47,29 @@ package org.drip.portfolioconstruction.core;
  */
 
 /**
- * Benchmark holds the Details of a given Benchmark.
+ * AlphaUncertaintyGroup contains the Group of Alpha Uncertainties for the specified Group of Assets.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Benchmark extends org.drip.portfolioconstruction.core.Block {
-	private java.lang.String _strType = "";
-	private java.lang.String _strCategory = "";
-	private org.drip.portfolioconstruction.core.AssetHoldings _ah = null;
+public class AlphaUncertaintyGroup extends org.drip.portfolioconstruction.risk.AttributeJointDense {
 
 	/**
-	 * Construct a Standard Benchmark Instance Without Cash
+	 * AlphaUncertaintyGroup Constructor
 	 * 
-	 * @param strName The Benchmark Name
-	 * @param strType The Benchmark Type
-	 * @param strDescription The Benchmark Description
-	 * @param ah The Benchmark Holdings
-	 * 
-	 * @return The Standard Benchmark Instance Without Cash
-	 */
-
-	public static final Benchmark Standard (
-		final java.lang.String strName,
-		final java.lang.String strType,
-		final java.lang.String strCategory,
-		final org.drip.portfolioconstruction.core.AssetHoldings ah)
-	{
-		try {
-			return new Benchmark (strName, strName, strName, strType, strCategory, ah);
-		} catch (java.lang.Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Benchmark Constructor
-	 * 
-	 * @param strName The Benchmark Name
-	 * @param strID The Benchmark ID
-	 * @param strDescription The Benchmark Description
-	 * @param strType The Benchmark Type
-	 * @param strDescription The Benchmark Description
-	 * @param ah The Benchmark Holdings
+	 * @param strName The Name
+	 * @param strID The ID
+	 * @param strDescription The Description
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public Benchmark (
+	public AlphaUncertaintyGroup (
 		final java.lang.String strName,
 		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final java.lang.String strType,
-		final java.lang.String strCategory,
-		final org.drip.portfolioconstruction.core.AssetHoldings ah)
+		final java.lang.String strDescription)
 		throws java.lang.Exception
 	{
 		super (strName, strID, strDescription);
-
-		if (null == (_strType = strType) || _strType.isEmpty() || null == (_strCategory = strCategory) ||
-			_strCategory.isEmpty() || null == (_ah = ah))
-			throw new java.lang.Exception ("Benchmark Constructor => Invalid Inputs");
-	}
-
-	/**
-	 * Retrieve the Benchmark Type
-	 * 
-	 * @return The Benchmark Type
-	 */
-
-	public java.lang.String type()
-	{
-		return _strType;
-	}
-
-	/**
-	 * Retrieve the Benchmark Category
-	 * 
-	 * @return The Benchmark Category
-	 */
-
-	public java.lang.String category()
-	{
-		return _strCategory;
-	}
-
-	/**
-	 * Retrieve the Benchmark Holdings
-	 * 
-	 * @return The Benchmark Holdings
-	 */
-
-	public org.drip.portfolioconstruction.core.AssetHoldings holdings()
-	{
-		return _ah;
 	}
 }

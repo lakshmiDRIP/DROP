@@ -1,5 +1,5 @@
 
-package org.drip.portfolioconstruction.core;
+package org.drip.portfolioconstruction.unit;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,46 +47,90 @@ package org.drip.portfolioconstruction.core;
  */
 
 /**
- * AlphaGroup contains the Group of Alphas for the specified Set of Assets.
+ * TaxAccountingScheme contains the Attributes for the specified Tax Accounting Scheme.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class AlphaGroup extends org.drip.portfolioconstruction.core.AttributeMarginal {
+public class TaxAccountingScheme extends org.drip.portfolioconstruction.unit.Block {
+	private int _iWashDays = -1;
+	private int _iShortTermDays = -1;
+	private double _dblLongTermTaxRate = java.lang.Double.NaN;
+	private double _dblShortTermTaxRate = java.lang.Double.NaN;
 
 	/**
-	 * AlphaGroup Constructor
+	 * TaxAccountingScheme Constructor
 	 * 
 	 * @param strName The Name
 	 * @param strID The ID
 	 * @param strDescription The Description
+	 * @param dblShortTermTaxRate Short Term Tax Rate
+	 * @param dblLongTermTaxRate Long Term Tax Rate
+	 * @param iShortTermDays Short Term Days
+	 * @param iWashDays Wash Days
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public AlphaGroup (
+	public TaxAccountingScheme (
 		final java.lang.String strName,
 		final java.lang.String strID,
-		final java.lang.String strDescription)
+		final java.lang.String strDescription,
+		final double dblShortTermTaxRate,
+		final double dblLongTermTaxRate,
+		final int iShortTermDays,
+		final int iWashDays)
 		throws java.lang.Exception
 	{
 		super (strName, strID, strDescription);
+
+		if (!org.drip.quant.common.NumberUtil.IsValid (_dblShortTermTaxRate = dblShortTermTaxRate) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_dblLongTermTaxRate = dblLongTermTaxRate) || -1 >=
+				(_iShortTermDays = iShortTermDays) || -1 >= (_iWashDays = iWashDays))
+			throw new java.lang.Exception ("TaxAccountingScheme Constructor => Invalid Inputs");
 	}
 
 	/**
-	 * Retrieve the Asset's Alpha
+	 * Retrieve the Short Term Tax Rate
 	 * 
-	 * @param strAssetID The Asset ID
-	 * 
-	 * @return The Asset's Alpha
-	 * 
-	 * @throws Thrown if the Inputs are Invalid
+	 * @return The Short Term Tax Rate
 	 */
 
-	public double alpha (
-		final java.lang.String strAssetID)
-		throws java.lang.Exception
+	public double shortTermTaxRate()
 	{
-		return attribute (strAssetID);
+		return _dblShortTermTaxRate;
+	}
+
+	/**
+	 * Retrieve the Long Term Tax Rate
+	 * 
+	 * @return The Long Term Tax Rate
+	 */
+
+	public double longTermTaxRate()
+	{
+		return _dblLongTermTaxRate;
+	}
+
+	/**
+	 * Retrieve the Short Term Days
+	 * 
+	 * @return The Short Term Days
+	 */
+
+	public int shortTermDays()
+	{
+		return _iShortTermDays;
+	}
+
+	/**
+	 * Retrieve the Wash Days
+	 * 
+	 * @return The Wash Days
+	 */
+
+	public int washDays()
+	{
+		return _iWashDays;
 	}
 }

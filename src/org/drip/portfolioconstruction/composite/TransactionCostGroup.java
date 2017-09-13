@@ -1,5 +1,5 @@
 
-package org.drip.portfolioconstruction.core;
+package org.drip.portfolioconstruction.composite;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,71 +47,62 @@ package org.drip.portfolioconstruction.core;
  */
 
 /**
- * Account holds the Current Portfolio (if any) along with the Creation/Maintenance Mandate.
+ * TransactionCostGroup contains the Transaction Cost Values for the specified Set of Assets.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Account extends org.drip.portfolioconstruction.core.Block {
-	private org.drip.portfolioconstruction.core.AssetHoldings _ah = null;
-	private org.drip.portfolioconstruction.core.Benchmark _bmTracking = null;
+public class TransactionCostGroup {
+	private
+		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.unit.TransactionCost>
+		_mapTransactionCost = new
+			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.unit.TransactionCost>();
 
 	/**
-	 * Account Constructor
+	 * Add an Asset's Transaction Cost
 	 * 
-	 * @param strName The Account Name
-	 * @param strID The Account ID
-	 * @param strDescription The Account Description
-	 * @param ah The Account Holdings
-	 * @param bmTracking The Tracking Benchmark
+	 * @param strAssetID The Asset ID
+	 * @param tc The Asset's Transaction Cost
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @return TRUE => The Asset's Transaction Cost successfully added.
 	 */
 
-	public Account (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final org.drip.portfolioconstruction.core.AssetHoldings ah,
-		final org.drip.portfolioconstruction.core.Benchmark bmTracking)
-		throws java.lang.Exception
+	public boolean add (
+		final java.lang.String strAssetID,
+		final org.drip.portfolioconstruction.unit.TransactionCost tc)
 	{
-		super (strName, strID, strDescription);
+		if (null == strAssetID || strAssetID.isEmpty() || null == tc) return false;
 
-		_ah = ah;
-		_bmTracking = bmTracking;
+		_mapTransactionCost.put (strAssetID, tc);
+
+		return true;
 	}
 
 	/**
-	 * Retrieve the Holdings
+	 * Retrieve the Asset's Transaction Cost
 	 * 
-	 * @return The Holdings
+	 * @param strAssetID The Asset ID
+	 * 
+	 * @return The Asset's Transaction Cost
 	 */
 
-	public org.drip.portfolioconstruction.core.AssetHoldings holdings()
+	public org.drip.portfolioconstruction.unit.TransactionCost get (
+		final java.lang.String strAssetID)
 	{
-		return _ah;
+		if (null == strAssetID || strAssetID.isEmpty() || !_mapTransactionCost.containsKey (strAssetID))
+			return null;
+
+		return _mapTransactionCost.get (strAssetID);
 	}
 
 	/**
-	 * Retrieve the Tracking Benchmark Instance
+	 * Retrieve the Map of Transaction Costs
 	 * 
-	 * @return The Tracking Benchmark Instance
+	 * @return Map of the Transaction Costs
 	 */
 
-	public org.drip.portfolioconstruction.core.Benchmark trackingBenchmark()
+	public java.util.Map<java.lang.String, org.drip.portfolioconstruction.unit.TransactionCost> map()
 	{
-		return _bmTracking;
-	}
-
-	/**
-	 * Retrieve the Currency
-	 * 
-	 * @return The Currency
-	 */
-
-	public java.lang.String currency()
-	{
-		return _ah.currency();
+		return _mapTransactionCost;
 	}
 }
