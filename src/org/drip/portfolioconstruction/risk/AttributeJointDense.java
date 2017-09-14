@@ -52,7 +52,7 @@ package org.drip.portfolioconstruction.risk;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AttributeJointDense extends org.drip.portfolioconstruction.unit.Block implements
+public class AttributeJointDense extends org.drip.portfolioconstruction.core.Block implements
 	org.drip.portfolioconstruction.risk.AssetCovariance {
 	private org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double> _mapAttribute = new
 		org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();

@@ -53,7 +53,7 @@ package org.drip.portfolioconstruction.risk;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AttributeJointFactor extends org.drip.portfolioconstruction.unit.Block implements
+public class AttributeJointFactor extends org.drip.portfolioconstruction.core.Block implements
 	org.drip.portfolioconstruction.risk.AssetCovariance {
 	private java.util.Map<java.lang.String, java.lang.Double> _mapAssetFactorLoading = new
 		org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();

@@ -1,5 +1,5 @@
 
-package org.drip.portfolioconstruction.composite;
+package org.drip.portfolioconstruction.optimizer;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,62 +47,75 @@ package org.drip.portfolioconstruction.composite;
  */
 
 /**
- * TransactionCostGroup contains the Transaction Cost Values for the specified Set of Assets.
+ * Strategy holds the Details of a given Strategy.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class TransactionCostGroup {
-	private
-		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.core.TransactionCost>
-		_mapTransactionCost = new
-			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.core.TransactionCost>();
+public class Strategy extends org.drip.portfolioconstruction.core.Block {
+	private boolean _bAllowCrossOver = false;
+	private boolean _bIgnoreCompliance = false;
+	private boolean _bAllowGrandFathering = false;
 
 	/**
-	 * Add an Asset's Transaction Cost
+	 * Strategy Constructor
 	 * 
-	 * @param strAssetID The Asset ID
-	 * @param tc The Asset's Transaction Cost
+	 * @param strName The Constraint Name
+	 * @param strID The Constraint ID
+	 * @param strDescription The Constraint Description
+	 * @param bAllowGrandFathering TRUE => Grand-fathering of the "Previous" is to be performed
+	 * @param bAllowCrossOver TRUE => Cross-Over is allowed
+	 * @param bIgnoreCompliance TRUE => Ignore Compliance
 	 * 
-	 * @return TRUE => The Asset's Transaction Cost successfully added.
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public boolean add (
-		final java.lang.String strAssetID,
-		final org.drip.portfolioconstruction.core.TransactionCost tc)
+	public Strategy (
+		final java.lang.String strName,
+		final java.lang.String strID,
+		final java.lang.String strDescription,
+		final boolean bAllowGrandFathering,
+		final boolean bAllowCrossOver,
+		final boolean bIgnoreCompliance)
+		throws java.lang.Exception
 	{
-		if (null == strAssetID || strAssetID.isEmpty() || null == tc) return false;
+		super (strName, strID, strDescription);
 
-		_mapTransactionCost.put (strAssetID, tc);
-
-		return true;
+		_bAllowCrossOver = bAllowCrossOver;
+		_bIgnoreCompliance = bIgnoreCompliance;
+		_bAllowGrandFathering = bAllowGrandFathering;
 	}
 
 	/**
-	 * Retrieve the Asset's Transaction Cost
+	 * Indicate if Grand-fathering of the "Previous" is to be performed
 	 * 
-	 * @param strAssetID The Asset ID
-	 * 
-	 * @return The Asset's Transaction Cost
+	 * @return TRUE => Grand-fathering of the "Previous" is to be performed
 	 */
 
-	public org.drip.portfolioconstruction.core.TransactionCost get (
-		final java.lang.String strAssetID)
+	public boolean allowGrandFathering()
 	{
-		if (null == strAssetID || strAssetID.isEmpty() || !_mapTransactionCost.containsKey (strAssetID))
-			return null;
-
-		return _mapTransactionCost.get (strAssetID);
+		return _bAllowGrandFathering;
 	}
 
 	/**
-	 * Retrieve the Map of Transaction Costs
+	 * Indicate if Cross Over is allowed
 	 * 
-	 * @return Map of the Transaction Costs
+	 * @return TRUE => Cross-Over is allowed
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.portfolioconstruction.core.TransactionCost> map()
+	public boolean allowCrossOver()
 	{
-		return _mapTransactionCost;
+		return _bAllowCrossOver;
+	}
+
+	/**
+	 * Indicate if Compliance Checks are to be ignored
+	 * 
+	 * @return TRUE => Compliance Checks are to be ignored
+	 */
+
+	public boolean ignoreCompliance()
+	{
+		return _bIgnoreCompliance;
 	}
 }

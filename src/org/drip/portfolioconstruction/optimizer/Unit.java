@@ -1,5 +1,5 @@
 
-package org.drip.portfolioconstruction.unit;
+package org.drip.portfolioconstruction.optimizer;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,29 +47,28 @@ package org.drip.portfolioconstruction.unit;
  */
 
 /**
- * Factor holds the Details of a specific Factor.
+ * Unit specifies the Denomination of the Limits for a given Constraint Term.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Factor extends org.drip.portfolioconstruction.unit.Block {
+public class Unit {
 
 	/**
-	 * Factor Constructor
-	 * 
-	 * @param strName The Asset Name
-	 * @param strID The Asset ID
-	 * @param strDescription The Asset Description
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * Constraint Unit - PERCENT
 	 */
 
-	public Factor (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription)
-		throws java.lang.Exception
-	{
-		super (strName, strID, strDescription);
-	}
+	public static final int PERCENT = 1;
+
+	/**
+	 * Constraint Unit - QUANTITY
+	 */
+
+	public static final int QUANTITY = 2;
+
+	/**
+	 * Constraint Unit - CURRENCY
+	 */
+
+	public static final int CURRENCY = 3;
 }

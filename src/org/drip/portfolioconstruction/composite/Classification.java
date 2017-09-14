@@ -52,7 +52,7 @@ package org.drip.portfolioconstruction.composite;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Classification extends org.drip.portfolioconstruction.unit.Block {
+public class Classification extends org.drip.portfolioconstruction.core.Block {
 	private org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Boolean> _mapMembership = new
 		org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Boolean>();
 

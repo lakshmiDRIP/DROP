@@ -1,5 +1,5 @@
 
-package org.drip.portfolioconstruction.unit;
+package org.drip.portfolioconstruction.core;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,101 +47,61 @@ package org.drip.portfolioconstruction.unit;
  */
 
 /**
- * Block forms the Base underneath all Portfolio Construction Objects.
+ * Asset holds the Details of a given Asset.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Block {
-	private java.lang.String _strID = "";
-	private java.lang.String _strName = "";
-	private java.util.Date _dateTimeStamp = null;
-	private java.lang.String _strDescription = "";
+public class Asset extends org.drip.portfolioconstruction.core.Block {
+	public java.lang.String _strSector = "";
+	public java.lang.String _strCurrency = "";
 
 	/**
-	 * Construct a Standard Instance of a Block
+	 * Asset Constructor
 	 * 
-	 * @param strName The Block Name
-	 * 
-	 * @return The Standard Block Instance
-	 */
-
-	public static final Block Standard (
-		final java.lang.String strName)
-	{
-		try {
-			return new Block (strName, strName, strName);
-		} catch (java.lang.Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Block Constructor
-	 * 
-	 * @param strName The Name
-	 * @param strID The ID
-	 * @param strDescription The Description
+	 * @param strName The Asset Name
+	 * @param strID The Asset ID
+	 * @param strDescription The Asset Description
+	 * @param strCurrency The Asset Currency
+	 * @param strSector The Asset Sector
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public Block (
+	public Asset (
 		final java.lang.String strName,
 		final java.lang.String strID,
-		final java.lang.String strDescription)
+		final java.lang.String strDescription,
+		final java.lang.String strCurrency,
+		final java.lang.String strSector)
 		throws java.lang.Exception
 	{
-		if (null == (_strName = strName) || _strName.isEmpty() || null == (_strID = strID) ||
-			_strID.isEmpty() || null == (_strDescription = strDescription) || _strDescription.isEmpty())
-			throw new java.lang.Exception ("Block Constructor => Invalid Inputs");
+		super (strName, strID, strDescription);
 
-		_dateTimeStamp = new java.util.Date();
+		if (null == (_strCurrency = strCurrency) || _strCurrency.isEmpty() || null == (_strSector =
+			strSector) || _strSector.isEmpty())
+			throw new java.lang.Exception ("Asset Constructor => Invalid Inputs");
 	}
 
 	/**
-	 * Retrieve the Name
+	 * Retrieve the Asset Currency
 	 * 
-	 * @return The Name
+	 * @return The Asset Currency
 	 */
 
-	public java.lang.String name()
+	public java.lang.String currency()
 	{
-		return _strName;
+		return _strCurrency;
 	}
 
 	/**
-	 * Retrieve the ID
+	 * Retrieve the Asset Sector
 	 * 
-	 * @return The ID
+	 * @return The Asset Sector
 	 */
 
-	public java.lang.String id()
+	public java.lang.String sector()
 	{
-		return _strID;
-	}
-
-	/**
-	 * Retrieve the Description
-	 * 
-	 * @return The Description
-	 */
-
-	public java.lang.String description()
-	{
-		return _strDescription;
-	}
-
-	/**
-	 * Retrieve the Creation Time Stamp
-	 * 
-	 * @return The Creation Time Stamp
-	 */
-
-	public java.util.Date timeStamp()
-	{
-		return _dateTimeStamp;
+		return _strSector;
 	}
 }

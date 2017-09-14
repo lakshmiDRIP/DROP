@@ -1,5 +1,5 @@
 
-package org.drip.portfolioconstruction.unit;
+package org.drip.portfolioconstruction.core;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -52,13 +52,14 @@ package org.drip.portfolioconstruction.unit;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Account extends org.drip.portfolioconstruction.unit.Block {
+public class Account extends org.drip.portfolioconstruction.core.Block {
 	private org.drip.portfolioconstruction.composite.Holdings _ah = null;
 	private org.drip.portfolioconstruction.composite.AlphaGroup _ag = null;
-	private org.drip.portfolioconstruction.unit.TaxAccountingScheme _tas = null;
+	private org.drip.portfolioconstruction.core.TaxAccountingScheme _tas = null;
 	private org.drip.portfolioconstruction.risk.AlphaUncertaintyGroup _aug = null;
 	private org.drip.portfolioconstruction.composite.Benchmark _bmTracking = null;
 	private org.drip.portfolioconstruction.composite.Benchmark _bmObjective = null;
+	private org.drip.portfolioconstruction.risk.AssetCovariance _acRiskModel = null;
 	private org.drip.portfolioconstruction.composite.TransactionCostGroup _tcg = null;
 
 	/**
@@ -78,7 +79,7 @@ public class Account extends org.drip.portfolioconstruction.unit.Block {
 		final java.lang.String strID,
 		final java.lang.String strDescription,
 		final org.drip.portfolioconstruction.composite.Holdings ah,
-		final org.drip.portfolioconstruction.unit.TaxAccountingScheme tas)
+		final org.drip.portfolioconstruction.core.TaxAccountingScheme tas)
 		throws java.lang.Exception
 	{
 		super (strName, strID, strDescription);
@@ -154,6 +155,17 @@ public class Account extends org.drip.portfolioconstruction.unit.Block {
 	}
 
 	/**
+	 * Retrieve the Risk Model
+	 * 
+	 * @return The Risk Model
+	 */
+
+	public org.drip.portfolioconstruction.risk.AssetCovariance riskModel()
+	{
+		return _acRiskModel;
+	}
+
+	/**
 	 * Retrieve the Transaction Cost Group Instance
 	 * 
 	 * @return The Transaction Cost Group Instance
@@ -170,7 +182,7 @@ public class Account extends org.drip.portfolioconstruction.unit.Block {
 	 * @return The Tax Accounting Scheme
 	 */
 
-	public org.drip.portfolioconstruction.unit.TaxAccountingScheme taxAccountingScheme()
+	public org.drip.portfolioconstruction.core.TaxAccountingScheme taxAccountingScheme()
 	{
 		return _tas;
 	}
@@ -180,7 +192,7 @@ public class Account extends org.drip.portfolioconstruction.unit.Block {
 	 * 
 	 * @param bmTracking The Tracking Benchmark
 	 * 
-	 * @return The ObjTrackingective Benchmark successfully set
+	 * @return The Tracking Benchmark successfully set
 	 */
 
 	public boolean setTrackingBenchmark (
@@ -240,6 +252,23 @@ public class Account extends org.drip.portfolioconstruction.unit.Block {
 		if (null == aug) return false;
 
 		_aug = aug;
+		return true;
+	}
+
+	/**
+	 * Set the Risk Model
+	 * 
+	 * @param acRiskModel The Risk Model
+	 * 
+	 * @return The Risk Model
+	 */
+
+	public boolean setRiskModel (
+		final org.drip.portfolioconstruction.risk.AssetCovariance acRiskModel)
+	{
+		if (null == acRiskModel) return false;
+
+		_acRiskModel = acRiskModel;
 		return true;
 	}
 

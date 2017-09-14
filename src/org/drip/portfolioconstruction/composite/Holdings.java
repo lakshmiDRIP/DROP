@@ -52,7 +52,7 @@ package org.drip.portfolioconstruction.composite;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Holdings extends org.drip.portfolioconstruction.unit.Block {
+public class Holdings extends org.drip.portfolioconstruction.core.Block {
 	private java.lang.String _strCurrency = "";
 
 	private org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double> _mapQuantity = new

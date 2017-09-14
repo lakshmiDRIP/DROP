@@ -1,5 +1,5 @@
 
-package org.drip.portfolioconstruction.unit;
+package org.drip.portfolioconstruction.core;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,19 +47,101 @@ package org.drip.portfolioconstruction.unit;
  */
 
 /**
- * TransactionCost contains the Parameters for the specified Transaction Cost Scheme.
+ * Block forms the Base underneath all Portfolio Construction Objects.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class TransactionCost extends org.drip.portfolioconstruction.unit.Block {
+public class Block {
+	private java.lang.String _strID = "";
+	private java.lang.String _strName = "";
+	private java.util.Date _dateTimeStamp = null;
+	private java.lang.String _strDescription = "";
 
-	protected TransactionCost (
+	/**
+	 * Construct a Standard Instance of a Block
+	 * 
+	 * @param strName The Block Name
+	 * 
+	 * @return The Standard Block Instance
+	 */
+
+	public static final Block Standard (
+		final java.lang.String strName)
+	{
+		try {
+			return new Block (strName, strName, strName);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Block Constructor
+	 * 
+	 * @param strName The Name
+	 * @param strID The ID
+	 * @param strDescription The Description
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public Block (
 		final java.lang.String strName,
 		final java.lang.String strID,
 		final java.lang.String strDescription)
 		throws java.lang.Exception
 	{
-		super (strName, strID, strDescription);
+		if (null == (_strName = strName) || _strName.isEmpty() || null == (_strID = strID) ||
+			_strID.isEmpty() || null == (_strDescription = strDescription) || _strDescription.isEmpty())
+			throw new java.lang.Exception ("Block Constructor => Invalid Inputs");
+
+		_dateTimeStamp = new java.util.Date();
+	}
+
+	/**
+	 * Retrieve the Name
+	 * 
+	 * @return The Name
+	 */
+
+	public java.lang.String name()
+	{
+		return _strName;
+	}
+
+	/**
+	 * Retrieve the ID
+	 * 
+	 * @return The ID
+	 */
+
+	public java.lang.String id()
+	{
+		return _strID;
+	}
+
+	/**
+	 * Retrieve the Description
+	 * 
+	 * @return The Description
+	 */
+
+	public java.lang.String description()
+	{
+		return _strDescription;
+	}
+
+	/**
+	 * Retrieve the Creation Time Stamp
+	 * 
+	 * @return The Creation Time Stamp
+	 */
+
+	public java.util.Date timeStamp()
+	{
+		return _dateTimeStamp;
 	}
 }

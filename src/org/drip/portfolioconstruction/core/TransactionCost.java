@@ -1,5 +1,5 @@
 
-package org.drip.portfolioconstruction.composite;
+package org.drip.portfolioconstruction.core;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,62 +47,19 @@ package org.drip.portfolioconstruction.composite;
  */
 
 /**
- * TransactionCostGroup contains the Transaction Cost Values for the specified Set of Assets.
+ * TransactionCost contains the Parameters for the specified Transaction Cost Scheme.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class TransactionCostGroup {
-	private
-		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.core.TransactionCost>
-		_mapTransactionCost = new
-			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.core.TransactionCost>();
+public abstract class TransactionCost extends org.drip.portfolioconstruction.core.Block {
 
-	/**
-	 * Add an Asset's Transaction Cost
-	 * 
-	 * @param strAssetID The Asset ID
-	 * @param tc The Asset's Transaction Cost
-	 * 
-	 * @return TRUE => The Asset's Transaction Cost successfully added.
-	 */
-
-	public boolean add (
-		final java.lang.String strAssetID,
-		final org.drip.portfolioconstruction.core.TransactionCost tc)
+	protected TransactionCost (
+		final java.lang.String strName,
+		final java.lang.String strID,
+		final java.lang.String strDescription)
+		throws java.lang.Exception
 	{
-		if (null == strAssetID || strAssetID.isEmpty() || null == tc) return false;
-
-		_mapTransactionCost.put (strAssetID, tc);
-
-		return true;
-	}
-
-	/**
-	 * Retrieve the Asset's Transaction Cost
-	 * 
-	 * @param strAssetID The Asset ID
-	 * 
-	 * @return The Asset's Transaction Cost
-	 */
-
-	public org.drip.portfolioconstruction.core.TransactionCost get (
-		final java.lang.String strAssetID)
-	{
-		if (null == strAssetID || strAssetID.isEmpty() || !_mapTransactionCost.containsKey (strAssetID))
-			return null;
-
-		return _mapTransactionCost.get (strAssetID);
-	}
-
-	/**
-	 * Retrieve the Map of Transaction Costs
-	 * 
-	 * @return Map of the Transaction Costs
-	 */
-
-	public java.util.Map<java.lang.String, org.drip.portfolioconstruction.core.TransactionCost> map()
-	{
-		return _mapTransactionCost;
+		super (strName, strID, strDescription);
 	}
 }

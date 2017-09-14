@@ -52,9 +52,7 @@ package org.drip.portfolioconstruction.optimizer;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ObjectiveTerm extends org.drip.portfolioconstruction.unit.Block {
-	private double _dblEta = java.lang.Double.NaN;
-
+public class ObjectiveTerm extends org.drip.portfolioconstruction.core.Block {
 	private java.util.Map<java.lang.String, org.drip.portfolioconstruction.composite.Attribute> _mapAttribute
 		= new
 			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.composite.Attribute>();
@@ -80,17 +78,6 @@ public class ObjectiveTerm extends org.drip.portfolioconstruction.unit.Block {
 		throws java.lang.Exception
 	{
 		super (strName, strID, strDescription);
-	}
-
-	/**
-	 * Retrieve the Confidence Level (Eta) of the Objective Term
-	 * 
-	 * @return Confidence Level (Eta) of the Objective Term
-	 */
-
-	public double eta()
-	{
-		return _dblEta;
 	}
 
 	/**

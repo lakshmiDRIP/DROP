@@ -10,6 +10,8 @@ import org.drip.product.creator.BondBuilder;
 import org.drip.product.credit.BondComponent;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
+import org.drip.service.scenario.BondReplicationRun;
+import org.drip.service.scenario.BondReplicator;
 import org.drip.service.template.LatentMarketStateBuilder;
 import org.drip.state.discount.MergedDiscountForwardCurve;
 import org.drip.state.identifier.ForwardLabel;
@@ -60,12 +62,12 @@ import org.drip.state.identifier.ForwardLabel;
  */
 
 /**
- * Belgaum demonstrates the Analytics Calculation/Reconciliation for the Bond Belgaum.
+ * Udaipur demonstrates the Analytics Calculation/Reconciliation for the Bond Udaipur.
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class Belgaum {
+public class Udaipur {
 
 	public static final void main (
 		final String[] astArgs)
@@ -84,16 +86,16 @@ public class Belgaum {
 		};
 
 		double[] adblDepositQuote = new double[] {
-			0.013161 // 2D
+			0.0130411 // 2D
 		};
 
 		double[] adblFuturesQuote = new double[] {
-			0.013225,	// 98.6775
-			0.01425,	// 98.575
-			0.01475,	// 98.525
-			0.01525,	// 98.475
-			0.01575,    // 98.425
-			0.01650     // 98.350
+			0.01345,	// 98.655
+			0.01470,	// 98.530
+			0.01575,	// 98.425
+			0.01660,	// 98.340
+			0.01745,    // 98.255
+			0.01845     // 98.155
 		};
 
 		String[] astrFixFloatTenor = new String[] {
@@ -117,50 +119,103 @@ public class Belgaum {
 		};
 
 		double[] adblFixFloatQuote = new double[] {
-			0.015540, //  2Y
-			0.016423, //  3Y
-			0.017209, //  4Y
-			0.017980, //  5Y
-			0.018743, //  6Y
-			0.019455, //  7Y
-			0.020080, //  8Y
-			0.020651, //  9Y
-			0.021195, // 10Y
-			0.021651, // 11Y
-			0.022065, // 12Y
-			0.022952, // 15Y
-			0.023825, // 20Y
-			0.024175, // 25Y
-			0.024347, // 30Y
-			0.024225, // 40Y
-			0.023968  // 50Y
+			0.016410, //  2Y
+			0.017863, //  3Y
+			0.019030, //  4Y
+			0.020035, //  5Y
+			0.020902, //  6Y
+			0.021660, //  7Y
+			0.022307, //  8Y
+			0.022879, //  9Y
+			0.023363, // 10Y
+			0.023820, // 11Y
+			0.024172, // 12Y
+			0.024934, // 15Y
+			0.025581, // 20Y
+			0.025906, // 25Y
+			0.025973, // 30Y
+			0.025838, // 40Y
+			0.025560  // 50Y
 		};
 
-		double dblSpread = 0.0066;
+		String[] astrGovvieTenor = new String[] {
+			"1Y",
+			"2Y",
+			"3Y",
+			"5Y",
+			"7Y",
+			"10Y",
+			"20Y",
+			"30Y"
+		};
+
+		double[] adblGovvieYield = new double[] {
+			0.01219, //  1Y
+			0.01391, //  2Y
+			0.01590, //  3Y
+			0.01937, //  5Y
+			0.02200, //  7Y
+			0.02378, // 10Y
+			0.02677, // 20Y
+			0.02927  // 30Y
+		};
+
+		String[] astrCreditTenor = new String[] {
+			"06M",
+			"01Y",
+			"02Y",
+			"03Y",
+			"04Y",
+			"05Y",
+			"07Y",
+			"10Y"
+		};
+
+		double[] adblCreditQuote = new double[] {
+			 10.,	//  6M
+			 12.,	//  1Y
+			 15.,	//  2Y
+			 19.,	//  3Y
+			 24.,	//  4Y
+			 28.,	//  5Y
+			 38.,	//  7Y
+			 51.	// 10Y
+		};
+
+		double dblFX = 1;
+		int iSettleLag = 3;
+		double dblSpread = 0.0029;
 		String strCurrency = "USD";
-		double dblCleanPrice = 1.00717;
-		double dblResetRate = 0.0190167 - dblSpread;
+		double dblCleanPrice = 1.0;
+		double dblIssuePrice = 1.0;
+		double dblZSpreadBump = 20.;
+		String strTreasuryCode = "UST";
+		double dblIssueAmount = 7.50e8;
+		double dblCustomYieldBump = 20.;
+		double dblCustomCreditBasisBump = 20.;
+		double dblSpreadDurationMultiplier = 5.;
+		double dblResetRate = 0.0158483 - dblSpread;
 
 		JulianDate dtEffective = DateUtil.CreateFromYMD (
-			2016,
-			6,
-			14
+			2007,
+			4,
+			30
 		);
 
 		JulianDate dtMaturity = DateUtil.CreateFromYMD (
-			2019,
+			2037,
 			6,
-			14
+			28
 		);
 
 		BondComponent bond = BondBuilder.CreateSimpleFloater (
-			"Belgaum",
+			"Udaipur",
 			"USD",
 			"USD-3M",
 			"",
-			0.0066,
+			dblSpread,
 			4,
-			"30/360",
+			"Act/360",
 			dtEffective,
 			dtMaturity,
 			null,
@@ -302,5 +357,34 @@ public class Belgaum {
 		System.out.println ("\t||----------------------------------------------------------------------------------------------------------------------||");
 
 		System.out.println();
+
+		BondReplicator abr = new BondReplicator (
+			dblCleanPrice,
+			dblIssuePrice,
+			dblIssueAmount,
+			dtSpot,
+			astrDepositTenor,
+			adblDepositQuote,
+			adblFuturesQuote,
+			astrFixFloatTenor,
+			adblFixFloatQuote,
+			dblCustomYieldBump,
+			dblCustomCreditBasisBump,
+			dblZSpreadBump,
+			dblSpreadDurationMultiplier,
+			strTreasuryCode,
+			astrGovvieTenor,
+			adblGovvieYield,
+			astrCreditTenor,
+			adblCreditQuote,
+			dblFX,
+			dblResetRate,
+			iSettleLag,
+			bond
+		);
+
+		BondReplicationRun abrr = abr.generateRun();
+
+		System.out.println (abrr.display());
 	}
 }

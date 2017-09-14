@@ -1,5 +1,5 @@
 
-package org.drip.portfolioconstruction.unit;
+package org.drip.portfolioconstruction.optimizer;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,61 +47,59 @@ package org.drip.portfolioconstruction.unit;
  */
 
 /**
- * Asset holds the Details of a given Asset.
+ * SoftConstraint holds the Details of a Soft Constraint.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Asset extends org.drip.portfolioconstruction.unit.Block {
-	public java.lang.String _strSector = "";
-	public java.lang.String _strCurrency = "";
+public class SoftConstraint {
+	private java.lang.String _strPenaltyType = "";
+	private double _dblPenaltyAmount = java.lang.Double.NaN;
+	private double _dblViolationEdgeLimit = java.lang.Double.NaN;
 
-	/**
-	 * Asset Constructor
-	 * 
-	 * @param strName The Asset Name
-	 * @param strID The Asset ID
-	 * @param strDescription The Asset Description
-	 * @param strCurrency The Asset Currency
-	 * @param strSector The Asset Sector
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public Asset (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final java.lang.String strCurrency,
-		final java.lang.String strSector)
+	public SoftConstraint (
+		final java.lang.String strPenaltyType,
+		final double dblPenaltyAmount,
+		final double dblViolationEdgeLimit)
 		throws java.lang.Exception
 	{
-		super (strName, strID, strDescription);
+		if (null == (_strPenaltyType = strPenaltyType) || _strPenaltyType.isEmpty() ||
+			!org.drip.quant.common.NumberUtil.IsValid (_dblPenaltyAmount = dblPenaltyAmount))
+			throw new java.lang.Exception ("SoftConstraint Constructor => Invalid Inputs");
 
-		if (null == (_strCurrency = strCurrency) || _strCurrency.isEmpty() || null == (_strSector =
-			strSector) || _strSector.isEmpty())
-			throw new java.lang.Exception ("Asset Constructor => Invalid Inputs");
+		_dblViolationEdgeLimit = dblViolationEdgeLimit;
 	}
 
 	/**
-	 * Retrieve the Asset Currency
+	 * Retrieve the Soft Constraint Penalty Type
 	 * 
-	 * @return The Asset Currency
+	 * @return The Soft Constraint Penalty Type
 	 */
 
-	public java.lang.String currency()
+	public java.lang.String penaltyType()
 	{
-		return _strCurrency;
+		return _strPenaltyType;
 	}
 
 	/**
-	 * Retrieve the Asset Sector
+	 * Retrieve the Soft Constraint Penalty Amount
 	 * 
-	 * @return The Asset Sector
+	 * @return The Soft Constraint Penalty Amount
 	 */
 
-	public java.lang.String sector()
+	public double penaltyAmount()
 	{
-		return _strSector;
+		return _dblPenaltyAmount;
+	}
+
+	/**
+	 * Retrieve the Hard Lower/Upper Violation Edge Limit
+	 * 
+	 * @return The Hard Lower/Upper Violation Edge Limit
+	 */
+
+	public double violationEdgeLimit()
+	{
+		return _dblViolationEdgeLimit;
 	}
 }

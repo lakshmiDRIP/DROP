@@ -52,7 +52,7 @@ package org.drip.portfolioconstruction.composite;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Benchmark extends org.drip.portfolioconstruction.unit.Block {
+public class Benchmark extends org.drip.portfolioconstruction.core.Block {
 	private java.lang.String _strType = "";
 	private java.lang.String _strCategory = "";
 	private org.drip.portfolioconstruction.composite.Holdings _ah = null;

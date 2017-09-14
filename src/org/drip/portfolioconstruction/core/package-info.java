@@ -5,4 +5,4 @@
  * @author Lakshmi Krishnamurthy
  */
 
-package org.drip.portfolioconstruction.unit;
+package org.drip.portfolioconstruction.core;

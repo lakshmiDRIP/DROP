@@ -1,5 +1,5 @@
 
-package org.drip.portfolioconstruction.composite;
+package org.drip.portfolioconstruction.core;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,62 +47,77 @@ package org.drip.portfolioconstruction.composite;
  */
 
 /**
- * TransactionCostGroup contains the Transaction Cost Values for the specified Set of Assets.
+ * LocalUniverse contains all the Assets in the Local Universe.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class TransactionCostGroup {
-	private
-		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.core.TransactionCost>
-		_mapTransactionCost = new
-			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.core.TransactionCost>();
+public class LocalUniverse {
+	private java.util.Map<java.lang.String, org.drip.portfolioconstruction.core.Asset> _mapAsset = new
+		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.core.Asset>();
 
 	/**
-	 * Add an Asset's Transaction Cost
+	 * Empty LocalUniverse Constructor
+	 */
+
+	public LocalUniverse()
+	{
+	}
+
+	/**
+	 * Add an Asset to the Local Universe
 	 * 
-	 * @param strAssetID The Asset ID
-	 * @param tc The Asset's Transaction Cost
+	 * @param a Asset to be added
 	 * 
-	 * @return TRUE => The Asset's Transaction Cost successfully added.
+	 * @return TRUE => The Asset has been added successfully
 	 */
 
 	public boolean add (
-		final java.lang.String strAssetID,
-		final org.drip.portfolioconstruction.core.TransactionCost tc)
+		final org.drip.portfolioconstruction.core.Asset a)
 	{
-		if (null == strAssetID || strAssetID.isEmpty() || null == tc) return false;
+		if (null == a) return false;
 
-		_mapTransactionCost.put (strAssetID, tc);
+		_mapAsset.put (a.id(), a);
 
 		return true;
 	}
 
 	/**
-	 * Retrieve the Asset's Transaction Cost
+	 * Indicate if the Asset is contained in the Local Universe
 	 * 
-	 * @param strAssetID The Asset ID
+	 * @param a The Asset Instance
 	 * 
-	 * @return The Asset's Transaction Cost
+	 * @return TRUE => The Asset is contained in the Local Universe
 	 */
 
-	public org.drip.portfolioconstruction.core.TransactionCost get (
-		final java.lang.String strAssetID)
+	public boolean contains (
+		final org.drip.portfolioconstruction.core.Asset a)
 	{
-		if (null == strAssetID || strAssetID.isEmpty() || !_mapTransactionCost.containsKey (strAssetID))
-			return null;
-
-		return _mapTransactionCost.get (strAssetID);
+		return null != a && _mapAsset.containsKey (a.id());
 	}
 
 	/**
-	 * Retrieve the Map of Transaction Costs
+	 * Indicate if the Asset is contained in the Local Universe
 	 * 
-	 * @return Map of the Transaction Costs
+	 * @param strAssetID The Asset ID
+	 * 
+	 * @return TRUE => The Asset is contained in the Local Universe
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.portfolioconstruction.core.TransactionCost> map()
+	public boolean contains (
+		final java.lang.String strAssetID)
 	{
-		return _mapTransactionCost;
+		return null != strAssetID && !strAssetID.isEmpty() && _mapAsset.containsKey (strAssetID);
+	}
+
+	/**
+	 * Retrieve the List of the Asset Identifiers
+	 * 
+	 * @return The List of the Asset Identifiers
+	 */
+
+	public java.util.Set<java.lang.String> ids()
+	{
+		return _mapAsset.keySet();
 	}
 }

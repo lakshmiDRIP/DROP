@@ -1,5 +1,5 @@
 
-package org.drip.portfolioconstruction.composite;
+package org.drip.portfolioconstruction.core;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,62 +47,90 @@ package org.drip.portfolioconstruction.composite;
  */
 
 /**
- * TransactionCostGroup contains the Transaction Cost Values for the specified Set of Assets.
+ * TaxAccountingScheme contains the Attributes for the specified Tax Accounting Scheme.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class TransactionCostGroup {
-	private
-		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.core.TransactionCost>
-		_mapTransactionCost = new
-			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.core.TransactionCost>();
+public class TaxAccountingScheme extends org.drip.portfolioconstruction.core.Block {
+	private int _iWashDays = -1;
+	private int _iShortTermDays = -1;
+	private double _dblLongTermTaxRate = java.lang.Double.NaN;
+	private double _dblShortTermTaxRate = java.lang.Double.NaN;
 
 	/**
-	 * Add an Asset's Transaction Cost
+	 * TaxAccountingScheme Constructor
 	 * 
-	 * @param strAssetID The Asset ID
-	 * @param tc The Asset's Transaction Cost
+	 * @param strName The Name
+	 * @param strID The ID
+	 * @param strDescription The Description
+	 * @param dblShortTermTaxRate Short Term Tax Rate
+	 * @param dblLongTermTaxRate Long Term Tax Rate
+	 * @param iShortTermDays Short Term Days
+	 * @param iWashDays Wash Days
 	 * 
-	 * @return TRUE => The Asset's Transaction Cost successfully added.
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public boolean add (
-		final java.lang.String strAssetID,
-		final org.drip.portfolioconstruction.core.TransactionCost tc)
+	public TaxAccountingScheme (
+		final java.lang.String strName,
+		final java.lang.String strID,
+		final java.lang.String strDescription,
+		final double dblShortTermTaxRate,
+		final double dblLongTermTaxRate,
+		final int iShortTermDays,
+		final int iWashDays)
+		throws java.lang.Exception
 	{
-		if (null == strAssetID || strAssetID.isEmpty() || null == tc) return false;
+		super (strName, strID, strDescription);
 
-		_mapTransactionCost.put (strAssetID, tc);
-
-		return true;
+		if (!org.drip.quant.common.NumberUtil.IsValid (_dblShortTermTaxRate = dblShortTermTaxRate) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_dblLongTermTaxRate = dblLongTermTaxRate) || -1 >=
+				(_iShortTermDays = iShortTermDays) || -1 >= (_iWashDays = iWashDays))
+			throw new java.lang.Exception ("TaxAccountingScheme Constructor => Invalid Inputs");
 	}
 
 	/**
-	 * Retrieve the Asset's Transaction Cost
+	 * Retrieve the Short Term Tax Rate
 	 * 
-	 * @param strAssetID The Asset ID
-	 * 
-	 * @return The Asset's Transaction Cost
+	 * @return The Short Term Tax Rate
 	 */
 
-	public org.drip.portfolioconstruction.core.TransactionCost get (
-		final java.lang.String strAssetID)
+	public double shortTermTaxRate()
 	{
-		if (null == strAssetID || strAssetID.isEmpty() || !_mapTransactionCost.containsKey (strAssetID))
-			return null;
-
-		return _mapTransactionCost.get (strAssetID);
+		return _dblShortTermTaxRate;
 	}
 
 	/**
-	 * Retrieve the Map of Transaction Costs
+	 * Retrieve the Long Term Tax Rate
 	 * 
-	 * @return Map of the Transaction Costs
+	 * @return The Long Term Tax Rate
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.portfolioconstruction.core.TransactionCost> map()
+	public double longTermTaxRate()
 	{
-		return _mapTransactionCost;
+		return _dblLongTermTaxRate;
+	}
+
+	/**
+	 * Retrieve the Short Term Days
+	 * 
+	 * @return The Short Term Days
+	 */
+
+	public int shortTermDays()
+	{
+		return _iShortTermDays;
+	}
+
+	/**
+	 * Retrieve the Wash Days
+	 * 
+	 * @return The Wash Days
+	 */
+
+	public int washDays()
+	{
+		return _iWashDays;
 	}
 }
