@@ -47,17 +47,17 @@ package org.drip.portfolioconstruction.composite;
  */
 
 /**
- * Attribute contains the Marginal Attributes for the specified Set of Assets.
+ * BlockClassification contains the Classifications for the specified Set of Assets.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Attribute extends org.drip.portfolioconstruction.core.Block {
-	private org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double> _mapAttribute = new
-		org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
+public class BlockClassification extends org.drip.portfolioconstruction.core.Block {
+	private org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Boolean> _mapMembership = new
+		org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Boolean>();
 
 	/**
-	 * Attribute Constructor
+	 * Classification Constructor
 	 * 
 	 * @param strName The Name
 	 * @param strID The ID
@@ -66,7 +66,7 @@ public class Attribute extends org.drip.portfolioconstruction.core.Block {
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public Attribute (
+	public BlockClassification (
 		final java.lang.String strName,
 		final java.lang.String strID,
 		final java.lang.String strDescription)
@@ -76,55 +76,94 @@ public class Attribute extends org.drip.portfolioconstruction.core.Block {
 	}
 
 	/**
-	 * Add an Asset's Attribute
+	 * Add an Asset's Membership
 	 * 
 	 * @param strAssetID The Asset ID
-	 * @param dblAttribute The Attribute
+	 * @param bMembership The Membership TURUE or FALSE
 	 * 
 	 * @return TRUE => The Asset's Attribute successfully added.
 	 */
 
 	public boolean add (
 		final java.lang.String strAssetID,
-		final double dblAttribute)
+		final boolean bMembership)
 	{
-		if (null == strAssetID || strAssetID.isEmpty() || !org.drip.quant.common.NumberUtil.IsValid
-			(dblAttribute))
-			return false;
+		if (null == strAssetID || strAssetID.isEmpty()) return false;
 
-		_mapAttribute.put (strAssetID, dblAttribute);
+		_mapMembership.put (strAssetID, bMembership);
 
 		return true;
 	}
 
 	/**
-	 * Retrieve the Asset's Attribute Value
+	 * Retrieve the Asset's Membership
 	 * 
 	 * @param strAssetID The Asset ID
 	 * 
-	 * @return The Asset's Attribute Value
+	 * @return The Asset's Membership
 	 * 
 	 * @throws Thrown if the Inputs are Invalid
 	 */
 
-	public double value (
+	public boolean membership (
 		final java.lang.String strAssetID)
 		throws java.lang.Exception
 	{
-		if (null == strAssetID || strAssetID.isEmpty() || !_mapAttribute.containsKey (strAssetID))
-			throw new java.lang.Exception ("Attribute::attribute => Invalid Inputs");
+		if (null == strAssetID || strAssetID.isEmpty() || !_mapMembership.containsKey (strAssetID))
+			throw new java.lang.Exception ("Classification::membership => Invalid Inputs");
 
-		return _mapAttribute.get (strAssetID);
+		return _mapMembership.get (strAssetID);
 	}
 
 	/**
-	 * Retrieve the Map of Asset Attributes
+	 * Retrieve the Map of Asset Classification
 	 * 
-	 * @return Map of the Asset Attributes
+	 * @return Map of the Asset Classification
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> attribute()
+	public java.util.Map<java.lang.String, java.lang.Boolean> membership()
 	{
-		return _mapAttribute;
+		return _mapMembership;
+	}
+
+	/**
+	 * Constrict the Classification Values to those of the Holdings
+	 * 
+	 * @param holdings The Holdings Instance
+	 * 
+	 * @return The Array of Classification Values
+	 */
+
+	public double[] constrict (
+		final org.drip.portfolioconstruction.composite.Holdings holdings)
+	{
+		if (null == holdings) return null;
+
+		java.util.Set<java.lang.String> setAsset = holdings.assets();
+
+		java.util.Set<java.lang.Double> setValue = new java.util.HashSet<java.lang.Double>();
+
+		for (java.lang.String strAssetID : setAsset) {
+			try {
+				setValue.add (java.lang.Double.parseDouble (new java.lang.Boolean (membership
+					(strAssetID)).toString()));
+			} catch (java.lang.Exception e) {
+				e.printStackTrace();
+
+				return null;
+			}
+		}
+
+		int iNumAsset = setAsset.size();
+
+		if (setValue.size() != iNumAsset) return null;
+
+		int iAssetCount = 0;
+		double[] adblAssetAttributeValue = new double[iNumAsset];
+
+		for (double dblAssetValue : setValue)
+			adblAssetAttributeValue[iAssetCount++] = dblAssetValue;
+
+		return adblAssetAttributeValue;
 	}
 }

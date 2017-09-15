@@ -159,29 +159,54 @@ public class EmbeddedOptionSchedule {
 		final java.lang.String strFloatIndex,
 		final double dblFixToFloatSpread)
 	{
+		return FromAmerican (iValDate, aiDate, adblFactor, bIsPut, iNoticePeriod, 30, bFixToFloatOnExercise,
+			dblFixToFloatExerciseDate, strFloatIndex, dblFixToFloatSpread);
+	}
+
+	/**
+	 * Create the discretized American EOS schedule from the array of dates and factors
+	 * 
+	 * @param iValDate Valuation Date - date to which the component is assumed to not have been exercised
+	 * @param aiDate Array of dates
+	 * @param adblFactor Matched Array of Factors
+	 * @param bIsPut True (Put), False (Call)
+	 * @param iNoticePeriod Exercise Notice Period
+	 * @param iCallDiscretization Call Discretization Period Unit
+	 * @param bFixToFloatOnExercise True - component becomes a floater on call
+	 * @param dblFixToFloatExerciseDate Date at which the fix to float conversion happens
+	 * @param strFloatIndex Floater Rate Index
+	 * @param dblFixToFloatSpread Floater Spread
+	 * 
+	 * @return Discretized EOS
+	 */
+
+	public static final EmbeddedOptionSchedule FromAmerican (
+		final int iValDate,
+		final int aiDate[],
+		final double adblFactor[],
+		final boolean bIsPut,
+		final int iNoticePeriod,
+		final int iCallDiscretization,
+		final boolean bFixToFloatOnExercise,
+		final double dblFixToFloatExerciseDate,
+		final java.lang.String strFloatIndex,
+		final double dblFixToFloatSpread)
+	{
 		if (null == aiDate || aiDate.length == 0 || null == adblFactor || adblFactor.length == 0 ||
-			aiDate.length != adblFactor.length)
+			aiDate.length != adblFactor.length || 0 >= iCallDiscretization)
 			return null;
 
-		int i = 0;
-		int iCallDiscretization = 30;
-		int iScheduleStart = iValDate;
-
-		if (iValDate < aiDate[0]) iScheduleStart = aiDate[0];
+		int iCallDate = aiDate[0];
 
 		java.util.ArrayList<java.lang.Integer> liCallDates = new java.util.ArrayList<java.lang.Integer>();
 
 		java.util.ArrayList<java.lang.Double> ldblCallFactors = new java.util.ArrayList<java.lang.Double>();
 
-		for (; i < aiDate.length; ++i) {
-			int iCallDate = iScheduleStart;
-
-			if (0 != i) iCallDate = aiDate[i - 1];
-
+		for (int i = 1; i < aiDate.length; ++i) {
 			while (iCallDate <= aiDate[i]) {
 				liCallDates.add (iCallDate);
 
-				ldblCallFactors.add (adblFactor[i]);
+				ldblCallFactors.add (adblFactor[i - 1]);
 
 				iCallDate += iCallDiscretization;
 			}
@@ -189,10 +214,10 @@ public class EmbeddedOptionSchedule {
 
 		int[] aiEOSDate = new int[liCallDates.size()];
 
-		i = 0;
+		int i = 0;
 
-		for (int iCallDate : liCallDates)
-			aiEOSDate[i++] = iCallDate;
+		for (int iEOSDate : liCallDates)
+			aiEOSDate[i++] = iEOSDate;
 
 		double[] adblEOSFactor = new double[ldblCallFactors.size()];
 

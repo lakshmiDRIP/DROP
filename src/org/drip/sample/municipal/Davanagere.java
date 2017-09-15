@@ -60,13 +60,13 @@ import org.drip.state.govvie.GovvieCurve;
  */
 
 /**
- * CUSIP_033177XV3 demonstrates EOS Fixed Coupon Multi-flavor Pricing and Relative Value Measure Generation
- *  for CUSIP 033177XV3.
+ * Davanagere demonstrates EOS Fixed Coupon Multi-flavor Pricing and Relative Value Measure Generation for
+ *  Davanagere.
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class CUSIP_033177XV3 {
+public class Davanagere {
 
 	private static final MergedDiscountForwardCurve FundingCurve (
 		final JulianDate dtSpot,
@@ -405,7 +405,7 @@ public class CUSIP_033177XV3 {
 		double dblCoupon = 0.06558;
 		double dblCleanPrice = 1.08641;
 		int iFreq = 2;
-		String strCUSIP = "033177XV3";
+		String strCUSIP = "Davanagere";
 		String strDayCount = "30/360";
 		int[] aiExerciseDate = new int[] {
 			DateUtil.CreateFromYMD (2019, 12,  1).julian(),

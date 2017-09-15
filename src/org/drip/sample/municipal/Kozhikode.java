@@ -1,5 +1,5 @@
 
-package org.drip.sample.cma;
+package org.drip.sample.municipal;
 
 import org.drip.analytics.date.*;
 import org.drip.param.creator.MarketParamsBuilder;
@@ -7,8 +7,8 @@ import org.drip.param.market.CurveSurfaceQuoteContainer;
 import org.drip.param.valuation.*;
 import org.drip.product.creator.BondBuilder;
 import org.drip.product.credit.BondComponent;
-import org.drip.product.definition.Component;
-import org.drip.quant.common.*;
+import org.drip.product.params.EmbeddedOptionSchedule;
+import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.service.template.*;
 import org.drip.state.discount.MergedDiscountForwardCurve;
@@ -60,13 +60,13 @@ import org.drip.state.govvie.GovvieCurve;
  */
 
 /**
- * CUSIP_USP7807HAR68 demonstrates Pricing and Relative Value Measure Generation Functionality for the Sinker
- * 	USP7807HAR68.
+ * Kozhikode demonstrates EOS Fixed/Float Coupon Multi-flavor Pricing and Relative Value Measure
+ *  Generation for Kozhikode.
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class CUSIP_USP7807HAR68 {
+public class Kozhikode {
 
 	private static final MergedDiscountForwardCurve FundingCurve (
 		final JulianDate dtSpot,
@@ -131,7 +131,7 @@ public class CUSIP_USP7807HAR68 {
 			0.027655 + dblBump  // 50Y
 		};
 
-		MergedDiscountForwardCurve dcFunding = LatentMarketStateBuilder.SmoothFundingCurve (
+		return LatentMarketStateBuilder.SmoothFundingCurve (
 			dtSpot,
 			strCurrency,
 			astrDepositMaturityTenor,
@@ -143,120 +143,6 @@ public class CUSIP_USP7807HAR68 {
 			adblFixFloatQuote,
 			"SwapRate"
 		);
-
-		Component[] aDepositComp = OTCInstrumentBuilder.FundingDeposit (
-			dtSpot,
-			strCurrency,
-			astrDepositMaturityTenor
-		);
-
-		Component[] aFuturesComp = ExchangeInstrumentBuilder.ForwardRateFuturesPack (
-			dtSpot,
-			adblFuturesQuote.length,
-			strCurrency
-		);
-
-		Component[] aFixFloatComp = OTCInstrumentBuilder.FixFloatStandard (
-			dtSpot,
-			strCurrency,
-			"ALL",
-			astrFixFloatMaturityTenor,
-			"MAIN",
-			0.
-		);
-
-		ValuationParams valParams = new ValuationParams (
-			dtSpot,
-			dtSpot,
-			strCurrency
-		);
-
-		CurveSurfaceQuoteContainer csqc = MarketParamsBuilder.Create (
-			dcFunding,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null
-		);
-
-		System.out.println();
-
-		System.out.println ("\t|-------------------------------------||");
-
-		System.out.println ("\t|        DEPOSIT INPUT vs. CALC       ||");
-
-		System.out.println ("\t|-------------------------------------||");
-
-		for (int i = 0; i < aDepositComp.length; ++i)
-			System.out.println ("\t| [" + aDepositComp[i].maturityDate() + "] =" +
-				FormatUtil.FormatDouble (aDepositComp[i].measureValue (
-					valParams,
-					null,
-					csqc,
-					null,
-					"ForwardRate"
-				), 1, 6, 1.) + " |" +
-				FormatUtil.FormatDouble (adblDepositQuote[i], 1, 6, 1.) + " ||"
-			);
-
-		System.out.println ("\t|-------------------------------------||");
-
-		System.out.println();
-
-		System.out.println ("\t|-------------------------------------||");
-
-		System.out.println ("\t|        FUTURES INPUT vs. CALC       ||");
-
-		System.out.println ("\t|-------------------------------------||");
-
-		for (int i = 0; i < aFuturesComp.length; ++i)
-			System.out.println ("\t| [" + aFuturesComp[i].maturityDate() + "] =" +
-				FormatUtil.FormatDouble (aFuturesComp[i].measureValue (
-					valParams,
-					null,
-					csqc,
-					null,
-					"ForwardRate"
-				), 1, 6, 1.) + " |" +
-				FormatUtil.FormatDouble (adblFuturesQuote[i], 1, 6, 1.) + " ||"
-			);
-
-		System.out.println ("\t|-------------------------------------||");
-
-		System.out.println();
-
-		System.out.println ("\t|------------------------------------------------|| ");
-
-		System.out.println ("\t|          FIX-FLOAT INPUTS vs CALIB             ||");
-
-		System.out.println ("\t|------------------------------------------------|| ");
-
-		for (int i = 0; i < aFixFloatComp.length; ++i)
-			System.out.println ("\t| [" + aFixFloatComp[i].maturityDate() + "] =" +
-				FormatUtil.FormatDouble (aFixFloatComp[i].measureValue (
-					valParams,
-					null,
-					csqc,
-					null,
-					"CalibSwapRate"
-				), 1, 6, 1.) + " |" +
-				FormatUtil.FormatDouble (adblFixFloatQuote[i], 1, 6, 1.) + " |" +
-				FormatUtil.FormatDouble (aFixFloatComp[i].measureValue (
-					valParams,
-					null,
-					csqc,
-					null,
-					"FairPremium"
-				), 1, 6, 1.) + " ||"
-			);
-
-		System.out.println ("\t|------------------------------------------------||");
-
-		System.out.println();
-
-		return dcFunding;
 	}
 
 	private static final GovvieCurve GovvieCurve (
@@ -288,7 +174,7 @@ public class CUSIP_USP7807HAR68 {
 			dtSpot.addTenor ("30Y")
 		};
 
-		GovvieCurve gc = LatentMarketStateBuilder.GovvieCurve (
+		return LatentMarketStateBuilder.GovvieCurve (
 			strCode,
 			dtSpot,
 			adtEffective,
@@ -298,54 +184,10 @@ public class CUSIP_USP7807HAR68 {
 			"Yield",
 			LatentMarketStateBuilder.SHAPE_PRESERVING
 		);
-
-		BondComponent[] aComp = TreasuryBuilder.FromCode (
-			strCode,
-			adtEffective,
-			adtMaturity,
-			adblCoupon
-		);
-
-		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());
-
-		CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();
-
-		csqc.setGovvieState (gc);
-
-		System.out.println();
-
-		System.out.println ("\t|-------------------------------------------||");
-
-		System.out.println ("\t|       TREASURY INPUT vs CALIB YIELD       ||");
-
-		System.out.println ("\t|-------------------------------------------||");
-
-		for (int i = 0; i < aComp.length; ++i)
-			System.out.println ("\t| " + aComp[i].name() + " | " +
-				FormatUtil.FormatDouble (adblYield[i], 1, 3, 100.) + "% | " +
-				FormatUtil.FormatDouble (aComp[i].yieldFromPrice (
-					valParams,
-					null,
-					null,
-					aComp[i].maturityDate().julian(),
-					1.,
-					aComp[i].priceFromYield (
-						valParams,
-						null,
-						null,
-						gc.yield (aComp[i].maturityDate().julian())
-					)
-				), 1, 3, 100.) + "% ||"
-			);
-
-		System.out.println ("\t|-------------------------------------------||");
-
-		return gc;
 	}
 
 	private static final void RVMeasures (
-		final BondComponent bondBullet,
-		final BondComponent bondSinker,
+		final BondComponent bond,
 		final JulianDate dtValue,
 		final CurveSurfaceQuoteContainer csqc,
 		final double dblCleanPrice)
@@ -353,13 +195,13 @@ public class CUSIP_USP7807HAR68 {
 	{
 		JulianDate dtSettle = dtValue.addBusDays (
 			0,
-			bondBullet.currency()
+			bond.currency()
 		);
 
 		ValuationParams valParams = new ValuationParams (
 			dtValue,
 			dtSettle,
-			bondBullet.currency()
+			bond.currency()
 		);
 
 		System.out.println();
@@ -376,13 +218,17 @@ public class CUSIP_USP7807HAR68 {
 
 		double dblYTM = Double.NaN;
 		double dblYTW = Double.NaN;
+		double dblOASTM = Double.NaN;
 		double dblOASTW = Double.NaN;
 		double dblWALTM = Double.NaN;
 		double dblWALTW = Double.NaN;
+		double dblZSpreadTM = Double.NaN;
 		double dblZSpreadTW = Double.NaN;
+		double dblOASDurationTW = Double.NaN;
+		double dblModifiedDurationTM = Double.NaN;
 		double dblModifiedDurationTW = Double.NaN;
 
-		WorkoutInfo wi = bondBullet.exerciseYieldFromPrice (
+		WorkoutInfo wi = bond.exerciseYieldFromPrice (
 			valParams,
 			csqc,
 			null,
@@ -392,30 +238,39 @@ public class CUSIP_USP7807HAR68 {
 		try {
 			dblYTW = wi.yield();
 
-			dblYTM = bondBullet.yieldFromPrice (
+			dblYTM = bond.yieldFromPrice (
 				valParams,
 				csqc,
 				null,
-				bondBullet.maturityDate().julian(),
+				bond.maturityDate().julian(),
 				1.,
 				dblCleanPrice
 			);
 
-			dblWALTW = bondSinker.weightedAverageLife (
+			dblWALTW = bond.weightedAverageLife (
 				valParams,
 				csqc,
 				wi.date(),
 				wi.factor()
 			);
 
-			dblWALTM = bondSinker.weightedAverageLife (
+			dblWALTM = bond.weightedAverageLife (
 				valParams,
 				csqc,
-				bondSinker.maturityDate().julian(),
+				bond.maturityDate().julian(),
 				1.
 			);
 
-			dblZSpreadTW = bondBullet.zSpreadFromYield (
+			dblZSpreadTM = bond.zSpreadFromYield (
+				valParams,
+				csqc,
+				null,
+				bond.maturityDate().julian(),
+				1.,
+				dblYTM
+			);
+
+			dblZSpreadTW = bond.zSpreadFromYield (
 				valParams,
 				csqc,
 				null,
@@ -424,7 +279,16 @@ public class CUSIP_USP7807HAR68 {
 				wi.yield()
 			);
 
-			dblOASTW = bondBullet.oasFromYield (
+			dblOASTM = bond.oasFromYield (
+				valParams,
+				csqc,
+				null,
+				wi.date(),
+				wi.factor(),
+				dblYTM
+			);
+
+			dblOASTW = bond.oasFromYield (
 				valParams,
 				csqc,
 				null,
@@ -433,7 +297,27 @@ public class CUSIP_USP7807HAR68 {
 				wi.yield()
 			);
 
-			dblModifiedDurationTW = bondSinker.modifiedDurationFromPrice (
+			dblOASDurationTW = (
+				dblCleanPrice - bond.priceFromOAS (
+					valParams,
+					csqc,
+					null,
+					wi.date(),
+					wi.factor(),
+					dblOASTW + 0.0001
+				)
+			) / dblCleanPrice;
+
+			dblModifiedDurationTM = bond.modifiedDurationFromPrice (
+				valParams,
+				csqc,
+				null,
+				bond.maturityDate().julian(),
+				1.,
+				dblCleanPrice
+			);
+
+			dblModifiedDurationTW = bond.modifiedDurationFromPrice (
 				valParams,
 				csqc,
 				null,
@@ -445,31 +329,39 @@ public class CUSIP_USP7807HAR68 {
 			// e.printStackTrace();
 		}
 
-		System.out.println ("\t Bond Name                 => " + bondSinker.name());
+		System.out.println ("\t Bond Name                 => " + bond.name());
 
-		System.out.println ("\t Effective Date            => " + bondSinker.effectiveDate());
+		System.out.println ("\t Effective Date            => " + bond.effectiveDate());
 
-		System.out.println ("\t Maturity Date             => " + bondSinker.maturityDate());
+		System.out.println ("\t Maturity Date             => " + bond.maturityDate());
 
 		System.out.println ("\t Exercise Date             => " + new JulianDate (wi.date()));
 
 		System.out.println ("\t Price                     => " + FormatUtil.FormatDouble (dblCleanPrice, 1, 5, 100.));
 
-		System.out.println ("\t Bond Accrued              => " + FormatUtil.FormatDouble (bondBullet.accrued (dtValue.julian(), csqc), 1, 4, 100.));
+		System.out.println ("\t Bond Accrued              => " + FormatUtil.FormatDouble (bond.accrued (dtValue.julian(), csqc), 1, 4, 100.));
 
-		System.out.println ("\t Bond YTW                  => " + FormatUtil.FormatDouble (dblYTW, 1, 3, 100.) + "%");
+		System.out.println ("\t Bond YTM                  => " + FormatUtil.FormatDouble (dblYTM, 1, 2, 100.) + "%");
 
-		System.out.println ("\t Bond YTM                  => " + FormatUtil.FormatDouble (dblYTM, 1, 3, 100.) + "%");
+		System.out.println ("\t Bond YTW                  => " + FormatUtil.FormatDouble (dblYTW, 1, 2, 100.) + "%");
 
-		System.out.println ("\t Bond WAL TW               => " + FormatUtil.FormatDouble (dblWALTW, 1, 3, 1.));
+		System.out.println ("\t Bond WAL TM               => " + FormatUtil.FormatDouble (dblWALTM, 2, 1, 1.));
 
-		System.out.println ("\t Bond WAL TM               => " + FormatUtil.FormatDouble (dblWALTM, 1, 3, 1.));
+		System.out.println ("\t Bond WAL TW               => " + FormatUtil.FormatDouble (dblWALTW, 2, 1, 1.));
 
-		System.out.println ("\t Bond Modified Duration TW => " + FormatUtil.FormatDouble (dblModifiedDurationTW, 1, 4, 10000.));
+		System.out.println ("\t Bond Modified Duration TM => " + FormatUtil.FormatDouble (dblModifiedDurationTM, 2, 4, 10000.));
 
-		System.out.println ("\t Bond Z Spread TW          => " + FormatUtil.FormatDouble (dblZSpreadTW, 1, 1, 10000.));
+		System.out.println ("\t Bond Modified Duration TW => " + FormatUtil.FormatDouble (dblModifiedDurationTW, 2, 4, 10000.));
 
-		System.out.println ("\t Bond OAS TW               => " + FormatUtil.FormatDouble (dblOASTW, 1, 1, 10000.));
+		System.out.println ("\t Bond OAS Duration         => " + FormatUtil.FormatDouble (dblOASDurationTW, 2, 4, 10000.));
+
+		System.out.println ("\t Bond Z Spread TM          => " + FormatUtil.FormatDouble (dblZSpreadTM, 3, 0, 10000.));
+
+		System.out.println ("\t Bond Z Spread TW          => " + FormatUtil.FormatDouble (dblZSpreadTW, 3, 0, 10000.));
+
+		System.out.println ("\t Bond OAS TM               => " + FormatUtil.FormatDouble (dblOASTM, 3, 0, 10000.));
+
+		System.out.println ("\t Bond OAS TW               => " + FormatUtil.FormatDouble (dblOASTW, 3, 0, 10000.));
 	}
 
 	public static final void main (
@@ -478,7 +370,11 @@ public class CUSIP_USP7807HAR68 {
 	{
 		EnvManager.InitEnv ("");
 
-		JulianDate dtSpot = DateUtil.Today();
+		JulianDate dtSpot = DateUtil.CreateFromYMD (
+			2017,
+			DateUtil.MARCH,
+			24
+		);
 
 		String strCurrency = "USD";
 		String strTreasuryCode = "UST";
@@ -505,16 +401,99 @@ public class CUSIP_USP7807HAR68 {
 			0.0308  // 30Y
 		};
 
-		JulianDate dtEffective = DateUtil.CreateFromYMD (2013, 11, 15);
-		JulianDate dtMaturity  = DateUtil.CreateFromYMD (2026, 11, 15);
-		double dblCoupon = 0.06000;
-		double dblCleanPrice = 0.38500;
+		JulianDate dtEffective = DateUtil.CreateFromYMD (2016,  5, 23);
+		JulianDate dtMaturity  = DateUtil.CreateFromYMD (2036,  5, 23);
+		double dblCoupon = 0.0303;
+		double dblCleanPrice = 0.93898;
 		int iFreq = 2;
-		String strCUSIP = "USP7807HAR68";
+		String strCUSIP = "Kozhikode";
 		String strDayCount = "30/360";
-		String strDateFactor = "5/15/2024;1.000000000;5/15/2025;0.666666667;5/15/2026;0.333333333";
+		int[] aiExerciseDate = new int[] {
+			DateUtil.CreateFromYMD (2016, 11, 23).julian(),
+			DateUtil.CreateFromYMD (2017,  5, 23).julian(),
+			DateUtil.CreateFromYMD (2017, 11, 23).julian(),
+			DateUtil.CreateFromYMD (2018,  5, 23).julian(),
+			DateUtil.CreateFromYMD (2018, 11, 23).julian(),
+			DateUtil.CreateFromYMD (2019,  5, 23).julian(),
+			DateUtil.CreateFromYMD (2019, 11, 23).julian(),
+			DateUtil.CreateFromYMD (2020,  5, 23).julian(),
+			DateUtil.CreateFromYMD (2020, 11, 23).julian(),
+			DateUtil.CreateFromYMD (2021,  5, 23).julian(),
+			DateUtil.CreateFromYMD (2021, 11, 23).julian(),
+			DateUtil.CreateFromYMD (2022,  5, 23).julian(),
+			DateUtil.CreateFromYMD (2022, 11, 23).julian(),
+			DateUtil.CreateFromYMD (2023,  5, 23).julian(),
+			DateUtil.CreateFromYMD (2023, 11, 23).julian(),
+			DateUtil.CreateFromYMD (2024,  5, 23).julian(),
+			DateUtil.CreateFromYMD (2024, 11, 23).julian(),
+			DateUtil.CreateFromYMD (2025,  5, 23).julian(),
+			DateUtil.CreateFromYMD (2025, 11, 23).julian(),
+			DateUtil.CreateFromYMD (2026,  5, 23).julian(),
+			DateUtil.CreateFromYMD (2026, 11, 23).julian(),
+			DateUtil.CreateFromYMD (2027,  5, 23).julian(),
+			DateUtil.CreateFromYMD (2027, 11, 23).julian(),
+			DateUtil.CreateFromYMD (2028,  5, 23).julian(),
+			DateUtil.CreateFromYMD (2028, 11, 23).julian(),
+			DateUtil.CreateFromYMD (2029,  5, 23).julian(),
+			DateUtil.CreateFromYMD (2029, 11, 23).julian(),
+			DateUtil.CreateFromYMD (2030,  5, 23).julian(),
+			DateUtil.CreateFromYMD (2030, 11, 23).julian(),
+			DateUtil.CreateFromYMD (2031,  5, 23).julian(),
+			DateUtil.CreateFromYMD (2031, 11, 23).julian(),
+			DateUtil.CreateFromYMD (2032,  5, 23).julian(),
+			DateUtil.CreateFromYMD (2032, 11, 23).julian(),
+			DateUtil.CreateFromYMD (2033,  5, 23).julian(),
+			DateUtil.CreateFromYMD (2033, 11, 23).julian(),
+			DateUtil.CreateFromYMD (2034,  5, 23).julian(),
+			DateUtil.CreateFromYMD (2034, 11, 23).julian(),
+			DateUtil.CreateFromYMD (2035,  5, 23).julian(),
+			DateUtil.CreateFromYMD (2035, 11, 23).julian(),
+			DateUtil.CreateFromYMD (2036,  5, 23).julian(),
+		};
+		double[] adblExercisePrice = new double[] {
+			1.,
+			1.,
+			1.,
+			1.,
+			1.,
+			1.,
+			1.,
+			1.,
+			1.,
+			1.,
+			1.,
+			1.,
+			1.,
+			1.,
+			1.,
+			1.,
+			1.,
+			1.,
+			1.,
+			1.,
+			1.,
+			1.,
+			1.,
+			1.,
+			1.,
+			1.,
+			1.,
+			1.,
+			1.,
+			1.,
+			1.,
+			1.,
+			1.,
+			1.,
+			1.,
+			1.,
+			1.,
+			1.,
+			1.,
+			1.,
+		};
 
-		BondComponent bondBullet = BondBuilder.CreateSimpleFixed (
+		BondComponent bond = BondBuilder.CreateSimpleFixed (
 			strCUSIP,
 			strCurrency,
 			"",
@@ -527,25 +506,21 @@ public class CUSIP_USP7807HAR68 {
 			null
 		);
 
-		BondComponent bondSinker = BondBuilder.CreateSimpleFixed (
-			strCUSIP,
-			strCurrency,
+		EmbeddedOptionSchedule eos = new EmbeddedOptionSchedule (
+			aiExerciseDate,
+			adblExercisePrice,
+			false,
+			5,
+			false,
+			Double.NaN,
 			"",
-			dblCoupon,
-			iFreq,
-			strDayCount,
-			dtEffective,
-			dtMaturity,
-			Array2D.FromDateFactorVertex (
-				strDateFactor,
-				dtMaturity.julian()
-			),
-			null
+			Double.NaN
 		);
 
+		bond.setEmbeddedCallSchedule (eos);
+
 		RVMeasures (
-			bondBullet,
-			bondSinker,
+			bond,
 			dtSpot,
 			MarketParamsBuilder.Create (
 				FundingCurve (
@@ -567,5 +542,7 @@ public class CUSIP_USP7807HAR68 {
 			),
 			dblCleanPrice
 		);
+
+		System.out.println();
 	}
 }

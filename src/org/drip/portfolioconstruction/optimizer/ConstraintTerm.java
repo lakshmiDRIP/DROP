@@ -58,7 +58,7 @@ public class ConstraintTerm extends org.drip.portfolioconstruction.core.Block {
 	private org.drip.portfolioconstruction.optimizer.Unit _unit = null;
 	private org.drip.portfolioconstruction.optimizer.Scope _scope = null;
 	private org.drip.portfolioconstruction.optimizer.SoftConstraint _sc = null;
-	private org.drip.portfolioconstruction.composite.Classification _classSelection = null;
+	private org.drip.portfolioconstruction.composite.BlockClassification _classSelection = null;
 
 	/**
 	 * ConstraintTerm Constructor
@@ -80,7 +80,7 @@ public class ConstraintTerm extends org.drip.portfolioconstruction.core.Block {
 		final java.lang.String strID,
 		final java.lang.String strDescription,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
-		final org.drip.portfolioconstruction.composite.Classification classSelection,
+		final org.drip.portfolioconstruction.composite.BlockClassification classSelection,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
 		final double dblMinimum,
 		final double dblMaximum)
@@ -141,7 +141,7 @@ public class ConstraintTerm extends org.drip.portfolioconstruction.core.Block {
 	 * @return The Constraint Selection
 	 */
 
-	public org.drip.portfolioconstruction.composite.Classification selection()
+	public org.drip.portfolioconstruction.composite.BlockClassification selection()
 	{
 		return _classSelection;
 	}

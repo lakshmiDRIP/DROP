@@ -53,5 +53,43 @@ package org.drip.portfolioconstruction.optimizer;
  */
 
 public class ObjectiveFunction {
+	private java.util.List<org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit> _lsOTU = new
+		java.util.ArrayList<org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit>();
 
+	/**
+	 * Retrieve the List of Objective Terms
+	 * 
+	 * @return The List of Objective Terms
+	 */
+
+	public java.util.List<org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit> list()
+	{
+		return _lsOTU;
+	}
+
+	/**
+	 * Evaluate the Objective Function over the List of Objective Terms
+	 * 
+	 * @param lsadblParameter List of the Objective Term Parameters
+	 * 
+	 * @return The Result of the Evaluation
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double evaluate (
+		final java.util.List<double[]> lsadblParameter)
+		throws java.lang.Exception
+	{
+		if (null == lsadblParameter || lsadblParameter.size() != _lsOTU.size())
+			throw new java.lang.Exception ("ObjectiveFunction::evaluate => Invalid Inputs");
+
+		int i = 0;
+		double dblValue = 0.;
+
+		for (org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit otu : _lsOTU)
+			dblValue += otu.term().rdtoR1().evaluate (lsadblParameter.get (i++));
+
+		return dblValue;
+	}
 }

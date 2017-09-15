@@ -52,7 +52,7 @@ package org.drip.portfolioconstruction.composite;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AlphaGroup extends org.drip.portfolioconstruction.composite.Attribute {
+public class AlphaGroup extends org.drip.portfolioconstruction.composite.BlockAttribute {
 
 	/**
 	 * AlphaGroup Constructor

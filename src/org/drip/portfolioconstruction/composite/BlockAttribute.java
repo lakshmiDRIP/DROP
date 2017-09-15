@@ -47,81 +47,52 @@ package org.drip.portfolioconstruction.composite;
  */
 
 /**
- * Holdings is a Portfolio of Holdings in the specified Set of Assets.
+ * BlockAttribute contains the Marginal Attributes for the specified Set of Assets.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Holdings extends org.drip.portfolioconstruction.core.Block {
-	private java.lang.String _strCurrency = "";
-
-	private org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double> _mapQuantity = new
+public class BlockAttribute extends org.drip.portfolioconstruction.core.Block {
+	private org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double> _mapAttribute = new
 		org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
 
 	/**
-	 * Holdings Constructor
+	 * BlockAttribute Constructor
 	 * 
-	 * @param strName The Asset Name
-	 * @param strID The Asset ID
-	 * @param strDescription The Asset Description
-	 * @param strCurrency The Account Currency
+	 * @param strName The Name
+	 * @param strID The ID
+	 * @param strDescription The Description
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public Holdings (
+	public BlockAttribute (
 		final java.lang.String strName,
 		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final java.lang.String strCurrency)
+		final java.lang.String strDescription)
 		throws java.lang.Exception
 	{
 		super (strName, strID, strDescription);
-
-		if (null == (_strCurrency = strCurrency))
-			throw new java.lang.Exception ("Holdings Constructor => Invalid Inputs");
 	}
 
 	/**
-	 * Retrieve the Set of Asset IDs
-	 * 
-	 * @return The Set of Asset IDs
-	 */
-
-	public java.util.Set<java.lang.String> assets()
-	{
-		return _mapQuantity.keySet();
-	}
-
-	/**
-	 * Retrieve the Map of Holdings Amount
-	 * 
-	 * @return The Map of Holdings Amount
-	 */
-
-	public java.util.Map<java.lang.String, java.lang.Double> quantityMap()
-	{
-		return _mapQuantity;
-	}
-
-	/**
-	 * Add an Asset/Amount Pair
+	 * Add an Asset's Attribute
 	 * 
 	 * @param strAssetID The Asset ID
-	 * @param dblQuantity The Amount in the Portfolio
+	 * @param dblAttribute The Attribute
 	 * 
-	 * @return TRUE => The Asset/Amount has been successfully added
+	 * @return TRUE => The Asset's Attribute successfully added.
 	 */
 
 	public boolean add (
 		final java.lang.String strAssetID,
-		final double dblQuantity)
+		final double dblAttribute)
 	{
 		if (null == strAssetID || strAssetID.isEmpty() || !org.drip.quant.common.NumberUtil.IsValid
-			(dblQuantity))
+			(dblAttribute))
 			return false;
 
-		_mapQuantity.put (strAssetID, dblQuantity);
+		_mapAttribute.put (strAssetID, dblAttribute);
 
 		return true;
 	}
@@ -137,52 +108,77 @@ public class Holdings extends org.drip.portfolioconstruction.core.Block {
 	public boolean contains (
 		final java.lang.String strAssetID)
 	{
-		return null != strAssetID && !_mapQuantity.containsKey (strAssetID);
+		return null != strAssetID && !_mapAttribute.containsKey (strAssetID);
 	}
 
 	/**
-	 * Retrieves the Holdings Quantity for the Asset (if it exists)
+	 * Retrieve the Asset's Attribute Value
 	 * 
-	 * @param strID The Asset ID
+	 * @param strAssetID The Asset ID
 	 * 
-	 * @return The Holdings Quantity for the Asset (if it exists)
+	 * @return The Asset's Attribute Value
 	 * 
 	 * @throws Thrown if the Inputs are Invalid
 	 */
 
-	public double quantity (
-		final java.lang.String strID)
+	public double value (
+		final java.lang.String strAssetID)
 		throws java.lang.Exception
 	{
-		if (!contains (strID)) throw new java.lang.Exception ("Holdings::quantity => Invalid Inputs");
+		if (null == strAssetID || strAssetID.isEmpty() || !_mapAttribute.containsKey (strAssetID))
+			throw new java.lang.Exception ("BlockAttribute::attribute => Invalid Inputs");
 
-		return _mapQuantity.get (strID);
+		return _mapAttribute.get (strAssetID);
 	}
 
 	/**
-	 * Retrieve the Currency
+	 * Retrieve the Map of Asset Attributes
 	 * 
-	 * @return The Currency
+	 * @return Map of the Asset Attributes
 	 */
 
-	public java.lang.String currency()
+	public java.util.Map<java.lang.String, java.lang.Double> attribute()
 	{
-		return _strCurrency;
+		return _mapAttribute;
 	}
 
 	/**
-	 * Retrieves the Cash Holdings
+	 * Constrict the Attribute Values to those of the Holdings
 	 * 
-	 * @return The Cash Holdings
+	 * @param holdings The Holdings Instance
+	 * 
+	 * @return The Array of Attribute Values
 	 */
 
-	public double cash()
+	public double[] constrict (
+		final org.drip.portfolioconstruction.composite.Holdings holdings)
 	{
-		try {
-			return quantity ("CASH::" + _strCurrency);
-		} catch (java.lang.Exception e) {
+		if (null == holdings) return null;
+
+		java.util.Set<java.lang.String> setAsset = holdings.assets();
+
+		java.util.Set<java.lang.Double> setValue = new java.util.HashSet<java.lang.Double>();
+
+		for (java.lang.String strAssetID : setAsset) {
+			try {
+				setValue.add (value (strAssetID));
+			} catch (java.lang.Exception e) {
+				e.printStackTrace();
+
+				return null;
+			}
 		}
 
-		return 0.;
+		int iNumAsset = setAsset.size();
+
+		if (setValue.size() != iNumAsset) return null;
+
+		int iAssetCount = 0;
+		double[] adblAssetAttributeValue = new double[iNumAsset];
+
+		for (double dblAssetValue : setValue)
+			adblAssetAttributeValue[iAssetCount++] = dblAssetValue;
+
+		return adblAssetAttributeValue;
 	}
 }

@@ -60,13 +60,13 @@ import org.drip.state.govvie.GovvieCurve;
  */
 
 /**
- * CUSIP_3130A1JB5 demonstrates EOS Fixed/Float Coupon Multi-flavor Pricing and Relative Value Measure
- *  Generation for CUSIP 3130A1JB5.
+ * Kurnool demonstrates EOS Fixed/Float Coupon Multi-flavor Pricing and Relative Value Measure Generation for
+ *  Kurnool.
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class CUSIP_3130A1JB5 {
+public class Kurnool {
 
 	private static final MergedDiscountForwardCurve FundingCurve (
 		final JulianDate dtSpot,
@@ -405,7 +405,7 @@ public class CUSIP_3130A1JB5 {
 		double dblCoupon = 0.0400;
 		double dblCleanPrice = 1.00085;
 		int iFreq = 2;
-		String strCUSIP = "3130A1JB5";
+		String strCUSIP = "Kurnool";
 		String strDayCount = "30/360";
 		int[] aiExerciseDate = new int[] {
 			DateUtil.CreateFromYMD (2017,  4, 11).julian(),

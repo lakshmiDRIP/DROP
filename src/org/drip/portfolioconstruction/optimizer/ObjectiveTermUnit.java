@@ -1,5 +1,5 @@
 
-package org.drip.portfolioconstruction.composite;
+package org.drip.portfolioconstruction.optimizer;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,82 +47,69 @@ package org.drip.portfolioconstruction.composite;
  */
 
 /**
- * Classification contains the Classifications for the specified Set of Assets.
+ * ObjectiveTermUnit holds the Details of a Single Objective Term that forms the Strategy.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Classification extends org.drip.portfolioconstruction.core.Block {
-	private org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Boolean> _mapMembership = new
-		org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Boolean>();
+public class ObjectiveTermUnit {
+	private boolean _bIsActive = false;
+	private double _dblWeight = java.lang.Double.NaN;
+	private org.drip.portfolioconstruction.optimizer.ObjectiveTerm _objTerm = null;
 
 	/**
-	 * Classification Constructor
+	 * ObjectiveTermUnit Constructor
 	 * 
-	 * @param strName The Name
-	 * @param strID The ID
-	 * @param strDescription The Description
+	 * @param objTerm The Objective Term
+	 * @param dblWeight The Objective Term Weight
+	 * @param bIsActive TRUE => The Objective Term is Active
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws java.lang.Exception
 	 */
 
-	public Classification (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription)
+	public ObjectiveTermUnit (
+		final org.drip.portfolioconstruction.optimizer.ObjectiveTerm objTerm,
+		final double dblWeight,
+		final boolean bIsActive)
 		throws java.lang.Exception
 	{
-		super (strName, strID, strDescription);
+		if (null == (_objTerm = objTerm) || !org.drip.quant.common.NumberUtil.IsValid (_dblWeight =
+			dblWeight))
+			throw new java.lang.Exception ("ObjectiveTermUnit Constructor => Invalid Inputs");
+
+		_bIsActive = bIsActive;
 	}
 
 	/**
-	 * Add an Asset's Membership
+	 * Indicate if the Objective Term is Active
 	 * 
-	 * @param strAssetID The Asset ID
-	 * @param bMembership The Membership TURUE or FALSE
-	 * 
-	 * @return TRUE => The Asset's Attribute successfully added.
+	 * @return TRUE => The Objective Term is Active
 	 */
 
-	public boolean add (
-		final java.lang.String strAssetID,
-		final boolean bMembership)
+	public boolean isActive()
 	{
-		if (null == strAssetID || strAssetID.isEmpty()) return false;
-
-		_mapMembership.put (strAssetID, bMembership);
-
-		return true;
+		return _bIsActive;
 	}
 
 	/**
-	 * Retrieve the Asset's Membership
+	 * Weight of the Objective Term
 	 * 
-	 * @param strAssetID The Asset ID
-	 * 
-	 * @return The Asset's Membership
-	 * 
-	 * @throws Thrown if the Inputs are Invalid
+	 * @return Weight of the Objective Term
 	 */
 
-	public boolean membership (
-		final java.lang.String strAssetID)
-		throws java.lang.Exception
+	public double weight()
 	{
-		if (null == strAssetID || strAssetID.isEmpty() || !_mapMembership.containsKey (strAssetID))
-			throw new java.lang.Exception ("Classification::membership => Invalid Inputs");
-
-		return _mapMembership.get (strAssetID);
+		return _dblWeight;
 	}
 
 	/**
-	 * Retrieve the Map of Asset Classification
+	 * Retrieve the Objective Term
 	 * 
-	 * @return Map of the Asset Classification
+	 * @return TRUE => The Objective Term
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Boolean> membership()
+	public org.drip.portfolioconstruction.optimizer.ObjectiveTerm term()
 	{
-		return _mapMembership;
+		return _objTerm;
 	}
 }

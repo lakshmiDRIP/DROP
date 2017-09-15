@@ -53,20 +53,23 @@ package org.drip.portfolioconstruction.optimizer;
  */
 
 public class ObjectiveTerm extends org.drip.portfolioconstruction.core.Block {
-	private java.util.Map<java.lang.String, org.drip.portfolioconstruction.composite.Attribute> _mapAttribute
-		= new
-			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.composite.Attribute>();
+	private java.util.Map<java.lang.String, org.drip.portfolioconstruction.composite.BlockAttribute>
+		_mapAttribute = new
+			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.composite.BlockAttribute>();
 
-	private java.util.Map<java.lang.String, org.drip.portfolioconstruction.composite.Classification>
+	private java.util.Map<java.lang.String, org.drip.portfolioconstruction.composite.BlockClassification>
 		_mapClassification = new
-			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.composite.Classification>();
+			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.composite.BlockClassification>();
+
+	private org.drip.function.definition.RdToR1 _rdToR1 = null;
 
 	/**
 	 * ObjectiveTerm Constructor
 	 * 
-	 * @param strName The Asset Name
-	 * @param strID The Asset ID
-	 * @param strDescription The Asset Description
+	 * @param strName The Objective Term Name
+	 * @param strID The Objective Term ID
+	 * @param strDescription The Objective Term Description
+	 * @param rdToR1 The R^d To R^1 Objective Term Function
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -74,10 +77,14 @@ public class ObjectiveTerm extends org.drip.portfolioconstruction.core.Block {
 	public ObjectiveTerm (
 		final java.lang.String strName,
 		final java.lang.String strID,
-		final java.lang.String strDescription)
+		final java.lang.String strDescription,
+		final org.drip.function.definition.RdToR1 rdToR1)
 		throws java.lang.Exception
 	{
 		super (strName, strID, strDescription);
+
+		if (null == (_rdToR1 = rdToR1))
+			throw new java.lang.Exception ("ObjectiveTerm Constructor => Invalid Inputs");
 	}
 
 	/**
@@ -86,7 +93,8 @@ public class ObjectiveTerm extends org.drip.portfolioconstruction.core.Block {
 	 * @return Map of Attributes relevant to the Objective Term
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.portfolioconstruction.composite.Attribute> attributes()
+	public java.util.Map<java.lang.String, org.drip.portfolioconstruction.composite.BlockAttribute>
+		attributes()
 	{
 		return _mapAttribute;
 	}
@@ -97,9 +105,20 @@ public class ObjectiveTerm extends org.drip.portfolioconstruction.core.Block {
 	 * @return Map of Classifications relevant to the Objective Term
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.portfolioconstruction.composite.Classification>
+	public java.util.Map<java.lang.String, org.drip.portfolioconstruction.composite.BlockClassification>
 		classifications()
 	{
 		return _mapClassification;
+	}
+
+	/**
+	 * The R^d To R^1 Objective Function
+	 * 
+	 * @return The R^d To R^1 Objective Function
+	 */
+
+	public org.drip.function.definition.RdToR1 rdtoR1()
+	{
+		return _rdToR1;
 	}
 }
