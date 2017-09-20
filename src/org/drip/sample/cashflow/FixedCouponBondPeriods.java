@@ -242,6 +242,8 @@ public class FixedCouponBondPeriods {
 			strDayCount,
 			dtEffective,
 			dtMaturity,
+			DateUtil.CreateFromYMD (2015, 11,  4).julian(),
+			DateUtil.CreateFromYMD (2034, 11,  4).julian(),
 			null,
 			null
 		);

@@ -243,6 +243,8 @@ public class FloatingCouponBondPeriods {
 			strDayCount,
 			dtEffective,
 			dtMaturity,
+			DateUtil.CreateFromYMD (2016, 12, 18).julian(),
+			DateUtil.CreateFromYMD (2019,  9, 18).julian(),
 			null,
 			null
 		);

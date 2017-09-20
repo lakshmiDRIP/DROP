@@ -100,8 +100,8 @@ public class ActActDCParams {
 	{
 		_iFreq = iFreq;
 
-		if (0 >= (_iFreq = iFreq) || !org.drip.quant.common.NumberUtil.IsValid (_iNumDays = iNumDays) ||
-			0 >= _iNumDays)
+		if (0 >= (_iFreq = iFreq) || !org.drip.quant.common.NumberUtil.IsValid (_iNumDays = iNumDays) || 0 >=
+			_iNumDays)
 			throw new java.lang.Exception ("ActActDCParams ctr: Invalid inputs");
 	}
 

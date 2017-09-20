@@ -835,7 +835,7 @@ public class CompositePeriodBuilder {
 		if (null == lsCompositeEdgeDate) return null;
 
 		int iNumEdge = lsCompositeEdgeDate.size();
-		
+
 		if (2 > iNumEdge) return null;
 
 		java.util.List<org.drip.analytics.cashflow.CompositePeriod> lsCFP = new

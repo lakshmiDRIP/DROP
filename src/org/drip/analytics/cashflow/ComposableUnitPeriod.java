@@ -99,7 +99,8 @@ public abstract class ComposableUnitPeriod {
 
 		_dblFullCouponDCF = _ucas.couponDCFOffOfFreq() ? 1. / _iFreq :
 			org.drip.analytics.daycount.Convention.YearFraction (_iStartDate, _iEndDate, _ucas.couponDC(),
-				_ucas.couponEOMAdjustment(), null, _ucas.calendar());
+				_ucas.couponEOMAdjustment(), org.drip.analytics.daycount.ActActDCParams.FromFrequency
+					(_iFreq), _ucas.calendar());
 	}
 
 	/**
