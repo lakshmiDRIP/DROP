@@ -52,9 +52,20 @@ package org.drip.portfolioconstruction.optimizer;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ObjectiveFunction {
+public class ObjectiveFunction extends org.drip.function.definition.RdToR1 {
+	private int _iDimension = -1;
+
 	private java.util.List<org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit> _lsOTU = new
 		java.util.ArrayList<org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit>();
+
+	/**
+	 * Empty Objective Function Constructor
+	 */
+
+	public ObjectiveFunction()
+	{
+		super (null);
+	}
 
 	/**
 	 * Retrieve the List of Objective Terms
@@ -67,28 +78,33 @@ public class ObjectiveFunction {
 		return _lsOTU;
 	}
 
-	/**
-	 * Evaluate the Objective Function over the List of Objective Terms
-	 * 
-	 * @param lsadblParameter List of the Objective Term Parameters
-	 * 
-	 * @return The Result of the Evaluation
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
+	@Override public int dimension()
+	{
+		return _iDimension;
+	}
 
-	public double evaluate (
-		final java.util.List<double[]> lsadblParameter)
+	@Override public double evaluate (
+		final double[] adblVariate)
 		throws java.lang.Exception
 	{
-		if (null == lsadblParameter || lsadblParameter.size() != _lsOTU.size())
-			throw new java.lang.Exception ("ObjectiveFunction::evaluate => Invalid Inputs");
-
-		int i = 0;
 		double dblValue = 0.;
 
 		for (org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit otu : _lsOTU)
-			dblValue += otu.term().rdtoR1().evaluate (lsadblParameter.get (i++));
+			dblValue += otu.term().rdtoR1().evaluate (adblVariate);
+
+		return dblValue;
+	}
+
+	@Override public double derivative (
+		final double[] adblVariate,
+		final int iVariateIndex,
+		final int iOrder)
+		throws java.lang.Exception
+	{
+		double dblValue = 0.;
+
+		for (org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit otu : _lsOTU)
+			dblValue += otu.term().rdtoR1().derivative (adblVariate, iVariateIndex, iOrder);
 
 		return dblValue;
 	}

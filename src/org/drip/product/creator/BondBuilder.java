@@ -254,6 +254,14 @@ public class BondBuilder {
 	 * @param dtMaturity Maturity Date
 	 * @param iFirstCouponDate First Coupon Date
 	 * @param iPenultimateCouponDate Penultimate Coupon Date
+	 * @param dapPay Pay Date Adjustment Parameters
+	 * @param dapReset Reset Date Adjustment Parameters
+	 * @param dapMaturity Maturity Date Adjustment Parameters
+	 * @param dapEffective Effective Date Adjustment Parameters
+	 * @param dapPeriodEnd Period End Date Adjustment Parameters
+	 * @param dapAccrualEnd Accrual Date Adjustment Parameters
+	 * @param dapPeriodStart Period Start Date Adjustment Parameters
+	 * @param dapAccrualStart Accrual Start  Date Adjustment Parameters
 	 * @param fsPrincipalOutstanding Outstanding Principal schedule
 	 * @param fsCoupon Bond Coupon Schedule
 	 * 
@@ -271,6 +279,14 @@ public class BondBuilder {
 		final org.drip.analytics.date.JulianDate dtMaturity,
 		final int iFirstCouponDate,
 		final int iPenultimateCouponDate,
+		final org.drip.analytics.daycount.DateAdjustParams dapPay,
+		final org.drip.analytics.daycount.DateAdjustParams dapReset,
+		final org.drip.analytics.daycount.DateAdjustParams dapMaturity,
+		final org.drip.analytics.daycount.DateAdjustParams dapEffective,
+		final org.drip.analytics.daycount.DateAdjustParams dapPeriodEnd,
+		final org.drip.analytics.daycount.DateAdjustParams dapAccrualEnd,
+		final org.drip.analytics.daycount.DateAdjustParams dapPeriodStart,
+		final org.drip.analytics.daycount.DateAdjustParams dapAccrualStart,
 		final org.drip.quant.common.Array2D fsPrincipalOutstanding,
 		final org.drip.quant.common.Array2D fsCoupon)
 	{
@@ -325,14 +341,14 @@ public class BondBuilder {
 				dblCoupon,
 				strDayCount,
 				strDayCount,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
+				dapPay,
+				dapReset,
+				dapMaturity,
+				dapEffective,
+				dapPeriodEnd,
+				dapAccrualEnd,
+				dapPeriodStart,
+				dapAccrualStart,
 				"",
 				false,
 				strCurrency,
@@ -463,7 +479,7 @@ public class BondBuilder {
 	}
 
 	/**
-	 * Create a Floating Rate Bond from the First and Penultimate COupon Dates, and the other Parameters
+	 * Create a Floating Rate Bond from the First and Penultimate Coupon Dates, and the other Parameters
 	 * 
 	 * @param strName Bond Name
 	 * @param strCurrency Bond Currency
@@ -476,6 +492,14 @@ public class BondBuilder {
 	 * @param dtMaturity Maturity Date
 	 * @param iFirstCouponDate First Coupon Date
 	 * @param iPenultimateCouponDate Penultimate Coupon Date
+	 * @param dapPay Pay Date Adjustment Parameters
+	 * @param dapReset Reset Date Adjustment Parameters
+	 * @param dapMaturity Maturity Date Adjustment Parameters
+	 * @param dapEffective Effective Date Adjustment Parameters
+	 * @param dapPeriodEnd Period End Date Adjustment Parameters
+	 * @param dapAccrualEnd Accrual Date Adjustment Parameters
+	 * @param dapPeriodStart Period Start Date Adjustment Parameters
+	 * @param dapAccrualStart Accrual Start  Date Adjustment Parameters
 	 * @param fsPrincipalOutstanding Outstanding Principal Schedule
 	 * @param fsCoupon Coupon Schedule
 	 * 
@@ -494,6 +518,14 @@ public class BondBuilder {
 		final org.drip.analytics.date.JulianDate dtMaturity,
 		final int iFirstCouponDate,
 		final int iPenultimateCouponDate,
+		final org.drip.analytics.daycount.DateAdjustParams dapPay,
+		final org.drip.analytics.daycount.DateAdjustParams dapReset,
+		final org.drip.analytics.daycount.DateAdjustParams dapMaturity,
+		final org.drip.analytics.daycount.DateAdjustParams dapEffective,
+		final org.drip.analytics.daycount.DateAdjustParams dapPeriodEnd,
+		final org.drip.analytics.daycount.DateAdjustParams dapAccrualEnd,
+		final org.drip.analytics.daycount.DateAdjustParams dapPeriodStart,
+		final org.drip.analytics.daycount.DateAdjustParams dapAccrualStart,
 		final org.drip.quant.common.Array2D fsPrincipalOutstanding,
 		final org.drip.quant.common.Array2D fsCoupon)
 	{
@@ -553,14 +585,14 @@ public class BondBuilder {
 				dblSpread,
 				strDayCount,
 				strDayCount,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
+				dapPay,
+				dapReset,
+				dapMaturity,
+				dapEffective,
+				dapPeriodEnd,
+				dapAccrualEnd,
+				dapPeriodStart,
+				dapAccrualStart,
 				"",
 				false,
 				strCurrency,

@@ -56,6 +56,8 @@ public class Strategy extends org.drip.portfolioconstruction.core.Block {
 	private boolean _bAllowCrossOver = false;
 	private boolean _bIgnoreCompliance = false;
 	private boolean _bAllowGrandFathering = false;
+	private org.drip.portfolioconstruction.optimizer.ObjectiveFunction _of = null;
+	private org.drip.portfolioconstruction.optimizer.ConstraintHierarchy _ch = null;
 
 	/**
 	 * Strategy Constructor
@@ -63,6 +65,8 @@ public class Strategy extends org.drip.portfolioconstruction.core.Block {
 	 * @param strName The Constraint Name
 	 * @param strID The Constraint ID
 	 * @param strDescription The Constraint Description
+	 * @param of The Objective Function
+	 * @param ch Constraint Hierarchy
 	 * @param bAllowGrandFathering TRUE => Grand-fathering of the "Previous" is to be performed
 	 * @param bAllowCrossOver TRUE => Cross-Over is allowed
 	 * @param bIgnoreCompliance TRUE => Ignore Compliance
@@ -74,6 +78,8 @@ public class Strategy extends org.drip.portfolioconstruction.core.Block {
 		final java.lang.String strName,
 		final java.lang.String strID,
 		final java.lang.String strDescription,
+		final org.drip.portfolioconstruction.optimizer.ObjectiveFunction of,
+		final org.drip.portfolioconstruction.optimizer.ConstraintHierarchy ch,
 		final boolean bAllowGrandFathering,
 		final boolean bAllowCrossOver,
 		final boolean bIgnoreCompliance)
@@ -81,9 +87,12 @@ public class Strategy extends org.drip.portfolioconstruction.core.Block {
 	{
 		super (strName, strID, strDescription);
 
+		_ch = ch;
 		_bAllowCrossOver = bAllowCrossOver;
 		_bIgnoreCompliance = bIgnoreCompliance;
 		_bAllowGrandFathering = bAllowGrandFathering;
+
+		if (null == (_of = of)) throw new java.lang.Exception ("Strategy Construtor => Invalind Inputs");
 	}
 
 	/**
@@ -117,5 +126,38 @@ public class Strategy extends org.drip.portfolioconstruction.core.Block {
 	public boolean ignoreCompliance()
 	{
 		return _bIgnoreCompliance;
+	}
+
+	/**
+	 * Retrieve the Objective Function
+	 * 
+	 * @return The Objective Function
+	 */
+
+	public org.drip.portfolioconstruction.optimizer.ObjectiveFunction objectiveFunction()
+	{
+		return _of;
+	}
+
+	/**
+	 * Retrieve the Constraint Hierarchy
+	 * 
+	 * @return The Constraint Hierarchy
+	 */
+
+	public org.drip.portfolioconstruction.optimizer.ConstraintHierarchy constraintHierarchy()
+	{
+		return _ch;
+	}
+
+	/**
+	 * Retrieve the Array of Constraint Attributes
+	 * 
+	 * @return The Array of Constraint Attributes
+	 */
+
+	public double[] constraintAttributes()
+	{
+		return null;
 	}
 }

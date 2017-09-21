@@ -184,12 +184,15 @@ public abstract class RdToR1 {
 	 * @param iOrder Order of the derivative to be computed
 	 * 
 	 * @return The Derivative
+	 * 
+	 * @throws java.lang.Exception Thrown if the Derivative cannot be calculated
 	 */
 
 	public double derivative (
 		final double[] adblVariate,
 		final int iVariateIndex,
 		final int iOrder)
+		throws java.lang.Exception
 	{
 		return differential (adblVariate, iVariateIndex, iOrder).calcSlope (true);
 	}

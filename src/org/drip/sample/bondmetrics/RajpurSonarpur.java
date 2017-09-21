@@ -2,6 +2,7 @@
 package org.drip.sample.bondmetrics;
 
 import org.drip.analytics.date.*;
+import org.drip.analytics.daycount.*;
 import org.drip.product.creator.BondBuilder;
 import org.drip.product.credit.BondComponent;
 import org.drip.product.params.EmbeddedOptionSchedule;
@@ -80,8 +81,8 @@ public class RajpurSonarpur {
 
 		JulianDate dtSpot = DateUtil.CreateFromYMD (
 			2017,
-			DateUtil.AUGUST,
-			29
+			DateUtil.SEPTEMBER,
+			20
 		);
 
 		String[] astrDepositTenor = new String[] {
@@ -189,11 +190,11 @@ public class RajpurSonarpur {
 		int iSettleLag = 3;
 		int iCouponFreq = 2;
 		String strName = "RajpurSonarpur";
-		double dblCleanPrice = 1.02295;
+		double dblCleanPrice = 1.03125;
 		double dblIssuePrice = 1.0;
 		String strCurrency = "USD";
 		double dblZSpreadBump = 20.;
-		double dblCouponRate = 0.0600;
+		double dblCouponRate = 0.06125;
 		double dblIssueAmount = 5.25e08;
 		String strTreasuryCode = "UST";
 		double dblCustomYieldBump = 20.;
@@ -202,13 +203,13 @@ public class RajpurSonarpur {
 		double dblSpreadDurationMultiplier = 5.;
 
 		JulianDate dtEffective = DateUtil.CreateFromYMD (
-			2014,
-			4,
-			3
+			2013,
+			9,
+			12
 		);
 
 		JulianDate dtMaturity = DateUtil.CreateFromYMD (
-			2022,
+			2021,
 			10,
 			15
 		);
@@ -222,29 +223,51 @@ public class RajpurSonarpur {
 			strCouponDayCount,
 			dtEffective,
 			dtMaturity,
+			DateUtil.CreateFromYMD (
+				2014,
+				4,
+				15
+			).julian(),
+			DateUtil.CreateFromYMD (
+				2021,
+				4,
+				15
+			).julian(),
+			new DateAdjustParams (
+				Convention.DATE_ROLL_FOLLOWING,
+				0,
+				strCurrency
+			),
+			null,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null,
 			null,
 			null
 		);
 
 		SetEOS (
 			bond,
-			EmbeddedOptionSchedule.FromAmerican (
-				dtSpot.julian(),
+			new EmbeddedOptionSchedule (
+				// dtSpot.julian(),
 				new int[] {
-					DateUtil.CreateFromYMD (2017, 04, 15).julian(),
-					DateUtil.CreateFromYMD (2018, 04, 15).julian(),
-					DateUtil.CreateFromYMD (2019, 04, 15).julian(),
-					DateUtil.CreateFromYMD (2020, 04, 15).julian(),
+					DateUtil.CreateFromYMD (2016, 10, 15).julian(),
+					DateUtil.CreateFromYMD (2017, 10, 15).julian(),
+					DateUtil.CreateFromYMD (2018, 10, 15).julian(),
+					DateUtil.CreateFromYMD (2019, 10, 15).julian(),
 				},
 				new double[] {
-					1.045,
-					1.030,
-					1.010,
-					1.000,
+					1.04594,
+					1.03063,
+					1.01531,
+					1.00000,
 				},
 				false,
 				15,
-				30,
+				// 1,
 				false,
 				Double.NaN,
 				"",
