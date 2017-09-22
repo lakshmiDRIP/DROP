@@ -9,7 +9,6 @@ import org.drip.param.market.CurveSurfaceQuoteContainer;
 import org.drip.param.valuation.ValuationParams;
 import org.drip.product.creator.BondBuilder;
 import org.drip.product.credit.BondComponent;
-import org.drip.product.params.EmbeddedOptionSchedule;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.service.scenario.*;
@@ -62,23 +61,12 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
  */
 
 /**
- * Rajpur Sonarpur generates the Full Suite of Replication Metrics for a Sample Bond.
+ * Gopalpur generates the Full Suite of Replication Metrics for a Sample Bond.
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class RajpurSonarpur {
-
-	private static final void SetEOS (
-		final BondComponent bond,
-		final EmbeddedOptionSchedule eosCall,
-		final EmbeddedOptionSchedule eosPut)
-		throws java.lang.Exception
-	{
-		if (null != eosPut) bond.setEmbeddedPutSchedule (eosPut);
-
-		if (null != eosCall) bond.setEmbeddedCallSchedule (eosCall);
-	}
+public class Gopalpur {
 
 	public static final void main (
 		final String[] astArgs)
@@ -196,12 +184,12 @@ public class RajpurSonarpur {
 		double dblFX = 1.;
 		int iSettleLag = 3;
 		int iCouponFreq = 2;
-		String strName = "RajpurSonarpur";
-		double dblCleanPrice = 1.03125;
+		String strName = "Gopalpur";
+		double dblCleanPrice = 1.0;
 		double dblIssuePrice = 1.0;
 		String strCurrency = "USD";
 		double dblZSpreadBump = 20.;
-		double dblCouponRate = 0.06125;
+		double dblCouponRate = 0.06875;
 		double dblIssueAmount = 5.25e08;
 		String strTreasuryCode = "UST";
 		double dblCustomYieldBump = 20.;
@@ -210,14 +198,14 @@ public class RajpurSonarpur {
 		double dblSpreadDurationMultiplier = 5.;
 
 		JulianDate dtEffective = DateUtil.CreateFromYMD (
-			2013,
-			9,
-			12
+			2017,
+			2,
+			16
 		);
 
 		JulianDate dtMaturity = DateUtil.CreateFromYMD (
-			2021,
-			10,
+			2025,
+			2,
 			15
 		);
 
@@ -231,13 +219,13 @@ public class RajpurSonarpur {
 			dtEffective,
 			dtMaturity,
 			DateUtil.CreateFromYMD (
-				2014,
-				4,
+				2017,
+				8,
 				15
 			).julian(),
 			DateUtil.CreateFromYMD (
-				2021,
-				4,
+				2024,
+				8,
 				15
 			).julian(),
 			new DateAdjustParams (
@@ -253,33 +241,6 @@ public class RajpurSonarpur {
 			null,
 			null,
 			null,
-			null
-		);
-
-		SetEOS (
-			bond,
-			new EmbeddedOptionSchedule (
-				// dtSpot.julian(),
-				new int[] {
-					DateUtil.CreateFromYMD (2016, 10, 15).julian(),
-					DateUtil.CreateFromYMD (2017, 10, 15).julian(),
-					DateUtil.CreateFromYMD (2018, 10, 15).julian(),
-					DateUtil.CreateFromYMD (2019, 10, 15).julian(),
-				},
-				new double[] {
-					1.04594,
-					1.03063,
-					1.01531,
-					1.00000,
-				},
-				false,
-				15,
-				// 1,
-				false,
-				Double.NaN,
-				"",
-				Double.NaN
-			),
 			null
 		);
 
@@ -406,13 +367,13 @@ public class RajpurSonarpur {
 
 		System.out.println ("\t|| " +
 			DateUtil.YYYYMMDD (dtEffective.julian()) + " => " +
-			DateUtil.YYYYMMDD (dtMaturity.julian()) + " | " +
-			DateUtil.YYYYMMDD (dtMaturity.julian()) + " | ? | " +
+			DateUtil.YYYYMMDD (bond.maturityDate().julian()) + " | " +
+			DateUtil.YYYYMMDD (bond.maturityDate().julian()) + " | ? | " +
 			bond.fundingLabel().fullyQualifiedName() + " | ? | " +
 			FormatUtil.FormatDouble (0., 1, 3, 100.) + "% | " +
 			FormatUtil.FormatDouble (0., 1, 4, 1.) + " | " +
 			FormatUtil.FormatDouble (0., 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (bond.notional (dtMaturity.julian()), 1, 4, 1.) + " | " +
+			FormatUtil.FormatDouble (bond.notional (bond.maturityDate().julian()), 1, 4, 1.) + " | " +
 			FormatUtil.FormatDouble (1., 1, 4, 1.) + " | " +
 			FormatUtil.FormatDouble (1., 2, 2, 100.) + "% ||"
 		);

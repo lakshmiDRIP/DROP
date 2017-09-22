@@ -688,7 +688,7 @@ public class Convention {
 
 		int iRolledDate = iDate;
 
-		while (0 != iNumDaysToRoll) {
+		if (0 == iNumDaysToRoll) {
 			if (DATE_ROLL_FOLLOWING == iRollMode || DATE_ROLL_MODIFIED_FOLLOWING == iRollMode ||
 				DATE_ROLL_MODIFIED_FOLLOWING_BIMONTHLY == iRollMode) {
 				while (IsHoliday (iRolledDate, strCalendarSet))
@@ -697,8 +697,19 @@ public class Convention {
 				while (IsHoliday (iRolledDate, strCalendarSet))
 					--iRolledDate;
 			}
+		} else {
+			while (0 != iNumDaysToRoll) {
+				if (DATE_ROLL_FOLLOWING == iRollMode || DATE_ROLL_MODIFIED_FOLLOWING == iRollMode ||
+					DATE_ROLL_MODIFIED_FOLLOWING_BIMONTHLY == iRollMode) {
+					while (IsHoliday (iRolledDate, strCalendarSet))
+						++iRolledDate;
+				} else if (DATE_ROLL_PREVIOUS == iRollMode || DATE_ROLL_MODIFIED_PREVIOUS == iRollMode) {
+					while (IsHoliday (iRolledDate, strCalendarSet))
+						--iRolledDate;
+				}
 
-			--iNumDaysToRoll;
+				--iNumDaysToRoll;
+			}
 		}
 
 		if (DATE_ROLL_MODIFIED_FOLLOWING == iRollMode) {

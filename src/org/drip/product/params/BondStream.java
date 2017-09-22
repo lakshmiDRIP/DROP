@@ -150,7 +150,7 @@ public class BondStream extends org.drip.product.rates.Stream {
 						org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC);
 
 			org.drip.param.period.CompositePeriodSetting cps = new
-				org.drip.param.period.CompositePeriodSetting (iFreq, strTenor, strCurrency, null, 1., null,
+				org.drip.param.period.CompositePeriodSetting (iFreq, strTenor, strCurrency, dapPay, 1., null,
 					null, null, creditLabel);
 
 			java.util.List<java.lang.Integer> lsStreamEdgeDate = bPeriodsFromForward ?
@@ -273,7 +273,7 @@ public class BondStream extends org.drip.product.rates.Stream {
 						org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC);
 
 			org.drip.param.period.CompositePeriodSetting cps = new
-				org.drip.param.period.CompositePeriodSetting (iFreq, strTenor, strCurrency, null, 1., null,
+				org.drip.param.period.CompositePeriodSetting (iFreq, strTenor, strCurrency, dapPay, 1., null,
 					null, null, creditLabel);
 
 			java.util.List<java.lang.Integer> lsStreamEdgeDate = bPeriodsFromForward ?
@@ -288,7 +288,7 @@ public class BondStream extends org.drip.product.rates.Stream {
 
 			lsStreamEdgeDate.add (0, iEffectiveDate);
 
-			lsStreamEdgeDate.add (iMaturityDate);
+			lsStreamEdgeDate.add (null == dapMaturity ? iMaturityDate : dapMaturity.roll (iMaturityDate));
 
 			if (null == forwardLabel) {
 				org.drip.param.period.ComposableFixedUnitSetting cfus = new

@@ -1,20 +1,20 @@
 
 package org.drip.sample.bondmetrics;
 
-import org.drip.analytics.cashflow.CompositePeriod;
+import org.drip.analytics.cashflow.*;
 import org.drip.analytics.date.*;
-import org.drip.analytics.daycount.*;
+import org.drip.analytics.daycount.Convention;
+import org.drip.analytics.daycount.DateAdjustParams;
 import org.drip.param.creator.MarketParamsBuilder;
 import org.drip.param.market.CurveSurfaceQuoteContainer;
 import org.drip.param.valuation.ValuationParams;
 import org.drip.product.creator.BondBuilder;
 import org.drip.product.credit.BondComponent;
-import org.drip.product.params.EmbeddedOptionSchedule;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.service.scenario.*;
 import org.drip.service.template.LatentMarketStateBuilder;
 import org.drip.state.discount.MergedDiscountForwardCurve;
+import org.drip.state.identifier.ForwardLabel;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -62,23 +62,12 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
  */
 
 /**
- * Rajpur Sonarpur generates the Full Suite of Replication Metrics for a Sample Bond.
+ * Agartala demonstrates the Analytics Calculation/Reconciliation for the Bond Agartala.
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class RajpurSonarpur {
-
-	private static final void SetEOS (
-		final BondComponent bond,
-		final EmbeddedOptionSchedule eosCall,
-		final EmbeddedOptionSchedule eosPut)
-		throws java.lang.Exception
-	{
-		if (null != eosPut) bond.setEmbeddedPutSchedule (eosPut);
-
-		if (null != eosCall) bond.setEmbeddedCallSchedule (eosCall);
-	}
+public class Agartala {
 
 	public static final void main (
 		final String[] astArgs)
@@ -89,7 +78,7 @@ public class RajpurSonarpur {
 		JulianDate dtSpot = DateUtil.CreateFromYMD (
 			2017,
 			DateUtil.SEPTEMBER,
-			20
+			1
 		);
 
 		String[] astrDepositTenor = new String[] {
@@ -97,16 +86,16 @@ public class RajpurSonarpur {
 		};
 
 		double[] adblDepositQuote = new double[] {
-			0.0130411 // 2D
+			0.013161 // 2D
 		};
 
 		double[] adblFuturesQuote = new double[] {
-			0.01345,	// 98.655
-			0.01470,	// 98.530
-			0.01575,	// 98.425
-			0.01660,	// 98.340
-			0.01745,    // 98.255
-			0.01845     // 98.155
+			0.013225,	// 98.6775
+			0.01425,	// 98.575
+			0.01475,	// 98.525
+			0.01525,	// 98.475
+			0.01575,    // 98.425
+			0.01650     // 98.350
 		};
 
 		String[] astrFixFloatTenor = new String[] {
@@ -129,116 +118,62 @@ public class RajpurSonarpur {
 			"50Y"
 		};
 
-		String[] astrGovvieTenor = new String[] {
-			"1Y",
-			"2Y",
-			"3Y",
-			"5Y",
-			"7Y",
-			"10Y",
-			"20Y",
-			"30Y"
-		};
-
 		double[] adblFixFloatQuote = new double[] {
-			0.016410, //  2Y
-			0.017863, //  3Y
-			0.019030, //  4Y
-			0.020035, //  5Y
-			0.020902, //  6Y
-			0.021660, //  7Y
-			0.022307, //  8Y
-			0.022879, //  9Y
-			0.023363, // 10Y
-			0.023820, // 11Y
-			0.024172, // 12Y
-			0.024934, // 15Y
-			0.025581, // 20Y
-			0.025906, // 25Y
-			0.025973, // 30Y
-			0.025838, // 40Y
-			0.025560  // 50Y
+			0.015540, //  2Y
+			0.016423, //  3Y
+			0.017209, //  4Y
+			0.017980, //  5Y
+			0.018743, //  6Y
+			0.019455, //  7Y
+			0.020080, //  8Y
+			0.020651, //  9Y
+			0.021195, // 10Y
+			0.021651, // 11Y
+			0.022065, // 12Y
+			0.022952, // 15Y
+			0.023825, // 20Y
+			0.024175, // 25Y
+			0.024347, // 30Y
+			0.024225, // 40Y
+			0.023968  // 50Y
 		};
 
-		double[] adblGovvieYield = new double[] {
-			0.01219, //  1Y
-			0.01391, //  2Y
-			0.01590, //  3Y
-			0.01937, //  5Y
-			0.02200, //  7Y
-			0.02378, // 10Y
-			0.02677, // 20Y
-			0.02927  // 30Y
-		};
-
-		String[] astrCreditTenor = new String[] {
-			"06M",
-			"01Y",
-			"02Y",
-			"03Y",
-			"04Y",
-			"05Y",
-			"07Y",
-			"10Y"
-		};
-
-		double[] adblCreditQuote = new double[] {
-			 60.,	//  6M
-			 68.,	//  1Y
-			 88.,	//  2Y
-			102.,	//  3Y
-			121.,	//  4Y
-			138.,	//  5Y
-			168.,	//  7Y
-			188.	// 10Y
-		};
-
-		double dblFX = 1.;
-		int iSettleLag = 3;
-		int iCouponFreq = 2;
-		String strName = "RajpurSonarpur";
-		double dblCleanPrice = 1.03125;
-		double dblIssuePrice = 1.0;
+		double dblSpread = 0.0060;
 		String strCurrency = "USD";
-		double dblZSpreadBump = 20.;
-		double dblCouponRate = 0.06125;
-		double dblIssueAmount = 5.25e08;
-		String strTreasuryCode = "UST";
-		double dblCustomYieldBump = 20.;
-		String strCouponDayCount = "30/360";
-		double dblCustomCreditBasisBump = 20.;
-		double dblSpreadDurationMultiplier = 5.;
+		double dblCleanPrice = 1.00717;
+		double dblResetRate = 0.0191722 - dblSpread;
 
 		JulianDate dtEffective = DateUtil.CreateFromYMD (
-			2013,
-			9,
+			2016,
+			6,
 			12
 		);
 
 		JulianDate dtMaturity = DateUtil.CreateFromYMD (
-			2021,
-			10,
-			15
+			2019,
+			5,
+			24
 		);
 
-		BondComponent bond = BondBuilder.CreateSimpleFixed (
-			strName,
+		BondComponent bond = BondBuilder.CreateSimpleFloater (
+			"Agartala",
 			strCurrency,
-			strName,
-			dblCouponRate,
-			iCouponFreq,
-			strCouponDayCount,
+			strCurrency + "-3M",
+			"",
+			dblSpread,
+			4,
+			"Act/360",
 			dtEffective,
 			dtMaturity,
 			DateUtil.CreateFromYMD (
-				2014,
-				4,
-				15
+				2016,
+				8,
+				24
 			).julian(),
 			DateUtil.CreateFromYMD (
-				2021,
-				4,
-				15
+				2019,
+				2,
+				24
 			).julian(),
 			new DateAdjustParams (
 				Convention.DATE_ROLL_FOLLOWING,
@@ -256,61 +191,10 @@ public class RajpurSonarpur {
 			null
 		);
 
-		SetEOS (
-			bond,
-			new EmbeddedOptionSchedule (
-				// dtSpot.julian(),
-				new int[] {
-					DateUtil.CreateFromYMD (2016, 10, 15).julian(),
-					DateUtil.CreateFromYMD (2017, 10, 15).julian(),
-					DateUtil.CreateFromYMD (2018, 10, 15).julian(),
-					DateUtil.CreateFromYMD (2019, 10, 15).julian(),
-				},
-				new double[] {
-					1.04594,
-					1.03063,
-					1.01531,
-					1.00000,
-				},
-				false,
-				15,
-				// 1,
-				false,
-				Double.NaN,
-				"",
-				Double.NaN
-			),
-			null
-		);
+		CompositeFloatingPeriod cfp = (CompositeFloatingPeriod) bond.stream().containingPeriod (dtSpot.julian());
 
-		BondReplicator abr = new BondReplicator (
-			dblCleanPrice,
-			dblIssuePrice,
-			dblIssueAmount,
-			dtSpot,
-			astrDepositTenor,
-			adblDepositQuote,
-			adblFuturesQuote,
-			astrFixFloatTenor,
-			adblFixFloatQuote,
-			dblCustomYieldBump,
-			dblCustomCreditBasisBump,
-			dblZSpreadBump,
-			dblSpreadDurationMultiplier,
-			strTreasuryCode,
-			astrGovvieTenor,
-			adblGovvieYield,
-			astrCreditTenor,
-			adblCreditQuote,
-			dblFX,
-			Double.NaN,
-			iSettleLag,
-			bond
-		);
-
-		BondReplicationRun abrr = abr.generateRun();
-
-		System.out.println (abrr.display());
+		int iResetDate = ((org.drip.analytics.cashflow.ComposableUnitFloatingPeriod) (cfp.periods().get
+			(0))).referenceIndexPeriod().fixingDate();
 
 		MergedDiscountForwardCurve mdfc = LatentMarketStateBuilder.SmoothFundingCurve (
 			dtSpot,
@@ -335,7 +219,31 @@ public class RajpurSonarpur {
 			null
 		);
 
+		ForwardLabel fl = bond.floaterSetting().fri();
+
+		csqc.setFixing (iResetDate, fl, dblResetRate);
+
 		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());
+
+		double dblYield = bond.yieldFromPrice (
+			ValuationParams.Spot (dtSpot.julian()),
+			csqc,
+			null,
+			dblCleanPrice
+		);
+
+		System.out.println ("Price In  : " + dblCleanPrice);
+
+		System.out.println ("Yield Out : " + dblYield);
+
+		System.out.println ("Price Out : " +
+			bond.priceFromYield (
+				ValuationParams.Spot (dtSpot.julian()),
+				csqc,
+				null,
+				dblYield
+			)
+		);
 
 		System.out.println();
 
@@ -382,7 +290,7 @@ public class RajpurSonarpur {
 
 			int iStartDate = p.startDate();
 
-			dblCouponRate = bond.couponMetrics (
+			double dblCouponRate = bond.couponMetrics (
 				iEndDate,
 				valParams,
 				csqc
@@ -406,13 +314,13 @@ public class RajpurSonarpur {
 
 		System.out.println ("\t|| " +
 			DateUtil.YYYYMMDD (dtEffective.julian()) + " => " +
-			DateUtil.YYYYMMDD (dtMaturity.julian()) + " | " +
-			DateUtil.YYYYMMDD (dtMaturity.julian()) + " | ? | " +
+			DateUtil.YYYYMMDD (bond.maturityDate().julian()) + " | " +
+			DateUtil.YYYYMMDD (bond.maturityDate().julian()) + " | ? | " +
 			bond.fundingLabel().fullyQualifiedName() + " | ? | " +
 			FormatUtil.FormatDouble (0., 1, 3, 100.) + "% | " +
 			FormatUtil.FormatDouble (0., 1, 4, 1.) + " | " +
 			FormatUtil.FormatDouble (0., 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (bond.notional (dtMaturity.julian()), 1, 4, 1.) + " | " +
+			FormatUtil.FormatDouble (bond.notional (bond.maturityDate().julian()), 1, 4, 1.) + " | " +
 			FormatUtil.FormatDouble (1., 1, 4, 1.) + " | " +
 			FormatUtil.FormatDouble (1., 2, 2, 100.) + "% ||"
 		);
