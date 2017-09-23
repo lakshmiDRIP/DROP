@@ -113,6 +113,20 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 	protected org.drip.product.params.EmbeddedOptionSchedule _eosPut = null;
 	protected org.drip.product.params.EmbeddedOptionSchedule _eosCall = null;
 
+	private int terminationAdjust (
+		final int iDate)
+	{
+		org.drip.analytics.daycount.DateAdjustParams dap = _terminationSetting.dap();
+
+		try {
+			return null == dap ? iDate : dap.roll (iDate);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return iDate;
+	}
+
 	private double treasuryBenchmarkYield (
 		final org.drip.param.valuation.ValuationParams valParams,
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqc,
@@ -146,7 +160,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 		org.drip.state.govvie.GovvieCurve gc = csqc.govvieState (govvieLabel());
 
-		return null == gc ? java.lang.Double.NaN : gc.yield (iWorkoutDate);
+		return null == gc ? java.lang.Double.NaN : gc.yield (terminationAdjust (iWorkoutDate));
 	}
 
 	private org.drip.param.valuation.WorkoutInfo exerciseCallYieldFromPrice (
@@ -419,8 +433,8 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 		return (((dblCumulativePeriodPV + dblWorkoutFactor * org.drip.analytics.support.Helper.Yield2DF
 			(iFrequency, dblYield, s_bYieldDFOffofCouponAccrualDCF ? dblPeriodYearFract :
-				org.drip.analytics.daycount.Convention.YearFraction (iValueDate, iWorkoutDate, strDC,
-					bApplyCpnEOMAdj, aap, strCalendar)) * notional (iWorkoutDate)) /
+				org.drip.analytics.daycount.Convention.YearFraction (iValueDate, terminationAdjust
+					(iWorkoutDate), strDC, bApplyCpnEOMAdj, aap, strCalendar)) * notional (iWorkoutDate)) /
 						org.drip.analytics.support.Helper.Yield2DF (iFrequency, dblYield,
 							org.drip.analytics.daycount.Convention.YearFraction (iValueDate, iCashPayDate,
 								strDC, bApplyCpnEOMAdj, aap, strCalendar))) - accrued (iValueDate, csqc)) /
@@ -757,7 +771,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 					dblPeriodCreditRiskyPrincipalPV *= dblSurvProb;
 
 					for (org.drip.analytics.cashflow.LossQuadratureMetrics lqm : period.lossMetrics (this,
-						valParams, pricerParams, iWorkoutDate, csqc)) {
+						valParams, pricerParams, terminationAdjust (iWorkoutDate), csqc)) {
 						if (null == lqm) continue;
 
 						int iSubPeriodEndDate = lqm.endDate();
@@ -1076,8 +1090,8 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 			iCashPayDate = valParams.cashPayDate();
 		}
 
-		return ((dblPV + dblWorkoutFactor * dc.df (iWorkoutDate) * notional (iWorkoutDate)) / dc.df
-			(iCashPayDate) - accrued (iValueDate, csqc)) / dblScalingNotional;
+		return ((dblPV + dblWorkoutFactor * dc.df (terminationAdjust (iWorkoutDate)) * notional
+			(iWorkoutDate)) / dc.df (iCashPayDate) - accrued (iValueDate, csqc)) / dblScalingNotional;
 	}
 
 	/**
@@ -1160,7 +1174,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 		org.drip.state.govvie.GovvieCurve gc = csqc.govvieState (govvieLabel());;
 
-		return null == gc ? java.lang.Double.NaN : gc.yield (iWorkoutDate);
+		return null == gc ? java.lang.Double.NaN : gc.yield (terminationAdjust (iWorkoutDate));
 	}
 
 	@Override public boolean setTreasuryBenchmark (
@@ -1459,15 +1473,16 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		return _stream.maturity();
 	}
 
+	@Override public org.drip.analytics.date.JulianDate maturityPayDate()
+	{
+		java.util.List<org.drip.analytics.cashflow.CompositePeriod> lsCP = couponPeriods();
+
+		return new org.drip.analytics.date.JulianDate (lsCP.get (lsCP.size() - 1).payDate());
+	}
+
 	@Override public org.drip.analytics.date.JulianDate firstCouponDate()
 	{
-		try {
-			return new org.drip.analytics.date.JulianDate (couponPeriods().get (0).endDate());
-		} catch (java.lang.Exception e) {
-			if (!s_bSuppressErrors) e.printStackTrace();
-		}
-
-		return null;
+		return new org.drip.analytics.date.JulianDate (couponPeriods().get (0).endDate());
 	}
 
 	@Override public java.util.List<org.drip.analytics.cashflow.CompositePeriod> couponPeriods()
@@ -2464,9 +2479,9 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 		try {
 			zc = org.drip.state.curve.DerivedZeroRate.FromBaseCurve (freq(), couponDC(), currency(),
-				_stream.couponEOMAdjustment(), lsCompositePeriod, iWorkoutDate, iValueDate, iCashPayDate,
-					dcBase, dblBump, null == vcp ? (null == _quoteConvention ? null :
-						_quoteConvention.valuationCustomizationParams()) : vcp, new
+				_stream.couponEOMAdjustment(), lsCompositePeriod, terminationAdjust (iWorkoutDate),
+					iValueDate, iCashPayDate, dcBase, dblBump, null == vcp ? (null == _quoteConvention ? null
+						: _quoteConvention.valuationCustomizationParams()) : vcp, new
 							org.drip.spline.params.SegmentCustomBuilderControl
 								(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 									new org.drip.spline.basis.PolynomialFunctionSetParams (2),
@@ -2528,8 +2543,8 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 			if (bTerminateCouponFlow) break;
 		}
 
-		return ((dblPV + dblWorkoutFactor * zc.df (iWorkoutDate) * notional (iWorkoutDate)) /
-			zc.df (iCashPayDate) - accrued (iValueDate, csqc)) / dblScalingNotional;
+		return ((dblPV + dblWorkoutFactor * zc.df (terminationAdjust (iWorkoutDate)) * notional
+			(iWorkoutDate)) / zc.df (iCashPayDate) - accrued (iValueDate, csqc)) / dblScalingNotional;
 	}
 
 	@Override public double priceFromFundingCurve (
@@ -2699,9 +2714,9 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 		if (!_notionalSetting.priceOffOfOriginalNotional()) dblScalingNotional = notional (iWorkoutDate);
 
-		return ((dblPV + dblWorkoutFactor * dcFunding.df (iWorkoutDate) * cc.survival (iWorkoutDate) *
-			notional (iWorkoutDate)) / dcFunding.df (iCashPayDate) - accrued (iValueDate, csqc)) /
-				dblScalingNotional;
+		return ((dblPV + dblWorkoutFactor * dcFunding.df (terminationAdjust (iWorkoutDate)) * cc.survival
+			(iWorkoutDate) * notional (iWorkoutDate)) / dcFunding.df (iCashPayDate) - accrued (iValueDate,
+				csqc)) / dblScalingNotional;
 	}
 
 	@Override public double aswFromBondBasis (
@@ -8639,8 +8654,8 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 		double dblRedemptionPV = dblWorkoutFactor * org.drip.analytics.support.Helper.Yield2DF (iFrequency,
 			dblYield, s_bYieldDFOffofCouponAccrualDCF ? dblPeriodYearFract :
-				org.drip.analytics.daycount.Convention.YearFraction (iValueDate, iWorkoutDate, strDC,
-					bApplyCpnEOMAdj, aap, strCalendar)) * notional (iWorkoutDate);
+				org.drip.analytics.daycount.Convention.YearFraction (iValueDate, terminationAdjust
+					(iWorkoutDate), strDC, bApplyCpnEOMAdj, aap, strCalendar)) * notional (iWorkoutDate);
 
 		return (dblCumulativePeriodDuration + dblPeriodYearFract * dblRedemptionPV) / (dblCumulativePeriodPV
 			+ dblRedemptionPV);

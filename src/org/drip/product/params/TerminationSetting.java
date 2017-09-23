@@ -63,6 +63,7 @@ public class TerminationSetting implements org.drip.product.params.Validatable {
 	private boolean _bIsDefaulted = false;
 	private boolean _bIsPerpetual = false;
 	private boolean _bHasBeenExercised = false;
+	private org.drip.analytics.daycount.DateAdjustParams _dap = null;
 
 	/**
 	 * Construct the TerminationSetting object from the perpetual flag, defaulted flag, and the has
@@ -71,13 +72,16 @@ public class TerminationSetting implements org.drip.product.params.Validatable {
 	 * @param bIsPerpetual True (component is perpetual)
 	 * @param bIsDefaulted True (component has defaulted)
 	 * @param bHasBeenExercised True (component has been exercised)
+	 * @param dap The Termination Date Adjustment Parameters
 	 */
 
 	public TerminationSetting (
 		final boolean bIsPerpetual,
 		final boolean bIsDefaulted,
-		final boolean bHasBeenExercised)
+		final boolean bHasBeenExercised,
+		final org.drip.analytics.daycount.DateAdjustParams dap)
 	{
+		_dap = dap;
 		_bIsPerpetual = bIsPerpetual;
 		_bIsDefaulted = bIsDefaulted;
 		_bHasBeenExercised = bHasBeenExercised;
@@ -119,5 +123,16 @@ public class TerminationSetting implements org.drip.product.params.Validatable {
 	public boolean exercised()
 	{
 		return _bHasBeenExercised;
+	}
+
+	/**
+	 * Retrieve the Termination Setting Date Adjustment Parameters
+	 * 
+	 * @return The Termination Setting Date Adjustment Parameters
+	 */
+
+	public org.drip.analytics.daycount.DateAdjustParams dap()
+	{
+		return _dap;
 	}
 }

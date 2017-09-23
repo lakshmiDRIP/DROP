@@ -273,6 +273,17 @@ public abstract class Component implements org.drip.product.definition.Component
 		throws java.lang.Exception;
 
 	/**
+	 * Get the Maturity Pay Date
+	 * 
+	 * @return Maturity Pay Date
+	 */
+
+	public org.drip.analytics.date.JulianDate maturityPayDate()
+	{
+		return maturityDate();
+	}
+
+	/**
 	 * Calculate the value of the given Product's measure
 	 * 
 	 * @param valParams ValuationParams

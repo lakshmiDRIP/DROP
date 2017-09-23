@@ -1545,7 +1545,7 @@ public class BondProductBuilder {
 	public org.drip.product.params.TerminationSetting getCFTEParams()
 	{
 		org.drip.product.params.TerminationSetting cfteParams = new
-			org.drip.product.params.TerminationSetting (_bIsPerpetual, _bIsDefaulted, _bHasBeenCalled);
+			org.drip.product.params.TerminationSetting (_bIsPerpetual, _bIsDefaulted, _bHasBeenCalled, null);
 
 		return cfteParams.validate() ? cfteParams : null;
 	}

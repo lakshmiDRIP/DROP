@@ -204,7 +204,8 @@ public class BondBuilder {
 			new org.drip.product.params.TerminationSetting (
 				false,
 				false,
-				false
+				false,
+				null
 			),
 			org.drip.product.params.BondStream.Create (
 				dtMaturity.julian(),
@@ -329,7 +330,8 @@ public class BondBuilder {
 			new org.drip.product.params.TerminationSetting (
 				false,
 				false,
-				false
+				false,
+				dapMaturity
 			),
 			org.drip.product.params.BondStream.FromFirstPenultimateCouponDate (
 				dtMaturity.julian(),
@@ -441,7 +443,8 @@ public class BondBuilder {
 			new org.drip.product.params.TerminationSetting (
 				false,
 				false,
-				false
+				false,
+				null
 			),
 			org.drip.product.params.BondStream.Create (
 				dtMaturity.julian(),
@@ -573,7 +576,8 @@ public class BondBuilder {
 			new org.drip.product.params.TerminationSetting (
 				false,
 				false,
-				false
+				false,
+				dapMaturity
 			),
 			org.drip.product.params.BondStream.FromFirstPenultimateCouponDate (
 				dtMaturity.julian(),
@@ -764,7 +768,8 @@ public class BondBuilder {
 			new org.drip.product.params.TerminationSetting (
 				false,
 				false,
-				false
+				false,
+				null
 			),
 			stream,
 			new org.drip.product.params.NotionalSetting (

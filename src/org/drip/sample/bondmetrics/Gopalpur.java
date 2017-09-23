@@ -368,7 +368,7 @@ public class Gopalpur {
 		System.out.println ("\t|| " +
 			DateUtil.YYYYMMDD (dtEffective.julian()) + " => " +
 			DateUtil.YYYYMMDD (bond.maturityDate().julian()) + " | " +
-			DateUtil.YYYYMMDD (bond.maturityDate().julian()) + " | ? | " +
+			DateUtil.YYYYMMDD (bond.maturityPayDate().julian()) + " | ? | " +
 			bond.fundingLabel().fullyQualifiedName() + " | ? | " +
 			FormatUtil.FormatDouble (0., 1, 3, 100.) + "% | " +
 			FormatUtil.FormatDouble (0., 1, 4, 1.) + " | " +
