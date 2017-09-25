@@ -1475,9 +1475,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 	@Override public org.drip.analytics.date.JulianDate maturityPayDate()
 	{
-		java.util.List<org.drip.analytics.cashflow.CompositePeriod> lsCP = couponPeriods();
-
-		return new org.drip.analytics.date.JulianDate (lsCP.get (lsCP.size() - 1).payDate());
+		return new org.drip.analytics.date.JulianDate (terminationAdjust (maturityDate().julian()));
 	}
 
 	@Override public org.drip.analytics.date.JulianDate firstCouponDate()
