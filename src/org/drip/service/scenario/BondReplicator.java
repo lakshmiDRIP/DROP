@@ -182,9 +182,9 @@ public class BondReplicator {
 		_valParams = new org.drip.param.valuation.ValuationParams (_dtSpot, _dtSettle, strCurrency);
 
 		org.drip.state.discount.MergedDiscountForwardCurve mdfc =
-			org.drip.service.template.LatentMarketStateBuilder.SmoothFundingCurve (_dtSpot, strCurrency,
-				_astrDepositTenor, _adblDepositQuote, "ForwardRate", _adblFuturesQuote, "ForwardRate",
-					_astrFixFloatTenor, _adblFixFloatQuote, "SwapRate");
+			org.drip.service.template.LatentMarketStateBuilder.ShapePreservingFundingCurve (_dtSpot,
+				strCurrency, _astrDepositTenor, _adblDepositQuote, "ForwardRate", _adblFuturesQuote,
+					"ForwardRate", _astrFixFloatTenor, _adblFixFloatQuote, "SwapRate");
 
 		if (null == mdfc) throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
 
@@ -219,21 +219,22 @@ public class BondReplicator {
 			throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
 
 		if (null == (_csqcFunding01Up = org.drip.param.creator.MarketParamsBuilder.Create
-			(org.drip.service.template.LatentMarketStateBuilder.SmoothFundingCurve (_dtSpot, strCurrency,
-				_astrDepositTenor, org.drip.analytics.support.Helper.ParallelNodeBump (_adblDepositQuote,
-					0.0001), "ForwardRate", org.drip.analytics.support.Helper.ParallelNodeBump
-						(_adblFuturesQuote, 0.0001), "ForwardRate", _astrFixFloatTenor,
-							org.drip.analytics.support.Helper.ParallelNodeBump (_adblFixFloatQuote, 0.0001),
-								"SwapRate"), gc, null, null, null, null, null)))
+			(org.drip.service.template.LatentMarketStateBuilder.ShapePreservingFundingCurve (_dtSpot,
+				strCurrency, _astrDepositTenor, org.drip.analytics.support.Helper.ParallelNodeBump
+					(_adblDepositQuote, 0.0001), "ForwardRate",
+						org.drip.analytics.support.Helper.ParallelNodeBump (_adblFuturesQuote, 0.0001),
+							"ForwardRate", _astrFixFloatTenor,
+								org.drip.analytics.support.Helper.ParallelNodeBump (_adblFixFloatQuote,
+									0.0001), "SwapRate"), gc, null, null, null, null, null)))
 			throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
 
 		if (_bond.isFloater() && !_csqcFunding01Up.setFixing (_iResetDate, fl, _dblResetRate + 0.0001))
 			throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
 
 		if (null == (_csqcFundingEuroDollar = org.drip.param.creator.MarketParamsBuilder.Create
-			(org.drip.service.template.LatentMarketStateBuilder.SmoothFundingCurve (_dtSpot, strCurrency,
-				_astrDepositTenor, _adblDepositQuote, "ForwardRate", _adblFuturesQuote, "ForwardRate", null,
-					null, "SwapRate"), gc, null, null, null, null, null)))
+			(org.drip.service.template.LatentMarketStateBuilder.ShapePreservingFundingCurve (_dtSpot,
+				strCurrency, _astrDepositTenor, _adblDepositQuote, "ForwardRate", _adblFuturesQuote,
+					"ForwardRate", null, null, "SwapRate"), gc, null, null, null, null, null)))
 			throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
 
 		if (_bond.isFloater() && !_csqcFundingEuroDollar.setFixing (_iResetDate, fl, _dblResetRate))
@@ -243,7 +244,7 @@ public class BondReplicator {
 			org.drip.service.template.LatentMarketStateBuilder.BumpedFundingCurve (_dtSpot, strCurrency,
 				_astrDepositTenor, _adblDepositQuote, "ForwardRate", _adblFuturesQuote, "ForwardRate",
 					_astrFixFloatTenor, _adblFixFloatQuote, "SwapRate",
-						org.drip.service.template.LatentMarketStateBuilder.SMOOTH, 0.0001, false);
+						org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING, 0.0001, false);
 
 		if (null == mapTenorFunding)
 			throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
@@ -978,10 +979,10 @@ public class BondReplicator {
 				return null;
 
 			if (!arr.addNamedField (new org.drip.service.scenario.NamedField ("Z_Vol_OAS",
-				dblZSpreadToMaturity)))
+				dblZSpreadToExercise)))
 				return null;
 
-			if (!arr.addNamedField (new org.drip.service.scenario.NamedField ("OAS", dblZSpreadToExercise)))
+			if (!arr.addNamedField (new org.drip.service.scenario.NamedField ("OAS", dblZSpreadToMaturity)))
 				return null;
 
 			if (!arr.addNamedField (new org.drip.service.scenario.NamedField ("TSY OAS", dblOASToExercise)))

@@ -234,10 +234,12 @@ public class Muzaffarnagar {
 					DateUtil.CreateFromYMD (2016, 03, 15).julian(),
 					DateUtil.CreateFromYMD (2017, 03, 15).julian(),
 					DateUtil.CreateFromYMD (2018, 03, 15).julian(),
+					DateUtil.CreateFromYMD (2020, 03, 15).julian(),
 				},
 				new double[] {
 					1.04625,
 					1.02313,
+					1.00000,
 					1.00000,
 				},
 				false,
