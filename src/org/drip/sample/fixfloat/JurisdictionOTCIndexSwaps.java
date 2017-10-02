@@ -221,13 +221,18 @@ public class JurisdictionOTCIndexSwaps {
 	 */
 
 	private static final void OTCRun (
-		final JulianDate dtSpot,
+		final JulianDate dtToday,
 		final String strCurrency,
 		final String strLocation,
 		final String[] astrOTCMaturityTenor,
 		final String strIndex)
 		throws Exception
 	{
+		JulianDate dtSpot = dtToday.addTenorAndAdjust (
+			"0D",
+			strCurrency
+		);
+
 		/*
 		 * Construct the Array of Deposit Instruments and their Quotes from the given set of parameters
 		 */
@@ -413,7 +418,7 @@ public class JurisdictionOTCIndexSwaps {
 
 		EnvManager.InitEnv ("");
 
-		JulianDate dtToday = DateUtil.Today().addTenor ("0D");
+		JulianDate dtToday = DateUtil.Today();
 
 		String[] astrOTCMaturityTenor = new String[] {
 			"1Y",

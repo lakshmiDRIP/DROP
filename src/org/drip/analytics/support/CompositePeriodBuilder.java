@@ -401,14 +401,16 @@ public class CompositePeriodBuilder {
 		org.drip.analytics.date.JulianDate dtEdge = new org.drip.analytics.date.JulianDate (iStartDate);
 
 		while (iEdgeDate < iEndDate) {
-			lsEdgeDate.add (DAPAdjust (iEdgeDate, dap));
+			int iAdjustedEdgeDate = DAPAdjust (iEdgeDate, dap);
+
+			if (!lsEdgeDate.contains (iAdjustedEdgeDate)) lsEdgeDate.add (iAdjustedEdgeDate);
 
 			if (null == (dtEdge = dtEdge.addTenor (strPeriodTenor))) return null;
 
 			iEdgeDate = dtEdge.julian();
 		}
 
-		lsEdgeDate.add (iEndDate);
+		if (!lsEdgeDate.contains (iEndDate)) lsEdgeDate.add (iEndDate);
 
 		return lsEdgeDate;
 	}
