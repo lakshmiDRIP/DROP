@@ -809,20 +809,20 @@ public class BondReplicator {
 			double dblBondBasisToExercise = _bond.bondBasisFromPrice (_valParams, _csqcFundingBase, null,
 				iWorkoutDate, dblWorkoutFactor, _dblCurrentPrice);
 
-			double dblModifiedDurationFromBondBasis = (_dblCurrentPrice - _bond.priceFromBondBasis
-				(_valParams, _csqcFunding01Up, null, dblBondBasisToMaturity)) / _dblCurrentPrice;
+			double dblModifiedDurationToMaturity = (_dblCurrentPrice - _bond.priceFromBondBasis (_valParams,
+				_csqcFunding01Up, null, dblBondBasisToMaturity)) / _dblCurrentPrice;
 
 			double dblMacaulayDurationToMaturity = _bond.macaulayDurationFromPrice (_valParams,
 				_csqcFundingBase, null, _dblCurrentPrice);
 
-			double dblModifiedDurationFromBondBasisToWorst = (_dblCurrentPrice - _bond.priceFromBondBasis
-				(_valParams, _csqcFunding01Up, null, iWorkoutDate, dblWorkoutFactor, dblBondBasisToExercise))
-					/ _dblCurrentPrice;
+			double dblModifiedDurationToExercise = (_dblCurrentPrice - _bond.priceFromBondBasis (_valParams,
+				_csqcFunding01Up, null, iWorkoutDate, dblWorkoutFactor, dblBondBasisToExercise)) /
+					_dblCurrentPrice;
 
-			double dblDV01 = 0.5 * (_bond.priceFromYield (_valParams, _csqcFundingBase, null, iWorkoutDate,
-				dblWorkoutFactor, dblYieldToExercise - 0.0001 * _dblCustomYieldBump) - _bond.priceFromYield
-					(_valParams, _csqcFundingBase, null, iWorkoutDate, dblWorkoutFactor, dblYieldToExercise +
-						0.0001 * _dblCustomYieldBump)) / _dblCustomYieldBump;
+			double dblYield01 = 0.5 * (_bond.priceFromYield (_valParams, _csqcFundingBase, null,
+				iWorkoutDate, dblWorkoutFactor, dblYieldToExercise - 0.0001 * _dblCustomYieldBump) -
+					_bond.priceFromYield (_valParams, _csqcFundingBase, null, iWorkoutDate, dblWorkoutFactor,
+						dblYieldToExercise + 0.0001 * _dblCustomYieldBump)) / _dblCustomYieldBump;
 
 			double dblCreditBasisToExercise = _bond.creditBasisFromPrice (_valParams, _csqcCreditBase, null,
 				iWorkoutDate, dblWorkoutFactor, _dblCurrentPrice);
@@ -875,6 +875,9 @@ public class BondReplicator {
 			double dblWALCouponOnlyToExercise = _bond.weightedAverageLifeCouponOnly (_valParams,
 				_csqcFundingBase, iWorkoutDate, dblWorkoutFactor);
 
+			double dblWALCreditToExercise = _bond.weightedAverageLifeCredit (_valParams, _csqcCreditBase,
+				iWorkoutDate, dblWorkoutFactor);
+
 			double dblOASToExercise = _bond.oasFromPrice (_valParams, _csqcFundingBase, null, iWorkoutDate,
 				dblWorkoutFactor, _dblCurrentPrice);
 
@@ -882,7 +885,7 @@ public class BondReplicator {
 				iWorkoutDate, dblWorkoutFactor, _dblIssuePrice);
 
 			double dblAccruedInterestFactor = dblAccrued * _dblFX;
-			double dblEffectiveDuration = dblDV01 / _dblCurrentPrice;
+			double dblEffectiveDuration = dblYield01 / _dblCurrentPrice;
 			double dblSpreadDuration$ = dblSpreadDuration * _dblIssueAmount;
 
 			for (java.util.Map.Entry<java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer>
@@ -975,7 +978,7 @@ public class BondReplicator {
 				dblNominalYield)))
 				return null;
 
-			if (!arr.addNamedField (new org.drip.service.scenario.NamedField ("Z_Spread", dblOASToMaturity)))
+			if (!arr.addNamedField (new org.drip.service.scenario.NamedField ("Z_Spread", dblOASToExercise)))
 				return null;
 
 			if (!arr.addNamedField (new org.drip.service.scenario.NamedField ("Z_Vol_OAS",
@@ -985,11 +988,11 @@ public class BondReplicator {
 			if (!arr.addNamedField (new org.drip.service.scenario.NamedField ("OAS", dblZSpreadToMaturity)))
 				return null;
 
-			if (!arr.addNamedField (new org.drip.service.scenario.NamedField ("TSY OAS", dblOASToExercise)))
+			if (!arr.addNamedField (new org.drip.service.scenario.NamedField ("TSY OAS", dblOASToMaturity)))
 				return null;
 
 			if (!arr.addNamedField (new org.drip.service.scenario.NamedField ("MOD DUR",
-				dblModifiedDurationFromBondBasis)))
+				dblModifiedDurationToMaturity)))
 				return null;
 
 			if (!arr.addNamedField (new org.drip.service.scenario.NamedField ("MACAULAY DURATION",
@@ -997,7 +1000,7 @@ public class BondReplicator {
 				return null;
 
 			if (!arr.addNamedField (new org.drip.service.scenario.NamedField ("MOD DUR TO WORST",
-				dblModifiedDurationFromBondBasisToWorst)))
+				dblModifiedDurationToExercise)))
 				return null;
 
 			if (!arr.addNamedField (new org.drip.service.scenario.NamedField ("EFFECTIVE DURATION",
@@ -1020,7 +1023,8 @@ public class BondReplicator {
 				dblSpreadDuration$)))
 				return null;
 
-			if (!arr.addNamedField (new org.drip.service.scenario.NamedField ("DV01", dblDV01))) return null;
+			if (!arr.addNamedField (new org.drip.service.scenario.NamedField ("DV01", dblYield01)))
+				return null;
 
 			if (!arr.addNamedField (new org.drip.service.scenario.NamedField ("CV01", dblCV01))) return null;
 
@@ -1065,7 +1069,12 @@ public class BondReplicator {
 					dblWALCouponOnlyToExercise)))
 				return null;
 
-			if (!arr.addNamedField (new org.drip.service.scenario.NamedField ("WAL4", dblWALToExercise)))
+			if (!arr.addNamedField (new org.drip.service.scenario.NamedField ("WAL4",
+				dblWALPrincipalOnlyToExercise)))
+				return null;
+
+			if (!arr.addNamedField (new org.drip.service.scenario.NamedField ("WAL_Adj",
+				dblWALCreditToExercise)))
 				return null;
 
 			if (!arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap ("LIBOR KRD",

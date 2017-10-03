@@ -606,6 +606,81 @@ public abstract class MergedDiscountForwardCurve extends org.drip.state.discount
 		return regime.responseValue (iDate);
 	}
 
+	/**
+	 * Proxy the Manifest Measure Value using the Closest Node for the given Date
+	 * 
+	 * @param strManifestMeasure The Manifest Measure to be Proxied
+	 * @param iDate Date
+	 * 
+	 * @return The Measure Value Proxy
+	 * 
+	 * @throws java.lang.Exception Thrown if the Manifest Measure Proxy cannot be computed
+	 */
+
+	public double proxyManifestMeasure (
+		final java.lang.String strManifestMeasure,
+		final int iDate)
+		throws java.lang.Exception
+	{
+		if (null == strManifestMeasure || strManifestMeasure.isEmpty())
+			throw new java.lang.Exception
+				("MergedDiscountForwardCurve::proxyManifestMeasure => Invalid input");
+
+		org.drip.product.definition.CalibratableComponent[] aCalibComp = calibComp();
+
+		if (null == aCalibComp)
+			throw new java.lang.Exception
+				("MergedDiscountForwardCurve::proxyManifestMeasure => Calib Components not available");
+
+		int iNumComponent = aCalibComp.length;
+
+		if (0 == iNumComponent)
+			throw new java.lang.Exception
+				("MergedDiscountForwardCurve::proxyManifestMeasure => Calib Components not available");
+
+		java.util.List<java.lang.Integer> lsDate = new java.util.ArrayList<java.lang.Integer>();
+
+		java.util.List<java.lang.Double> lsQuote = new java.util.ArrayList<java.lang.Double>();
+
+		for (int i = 0; i < iNumComponent; ++i) {
+			if (null == aCalibComp[i])
+				throw new java.lang.Exception
+					("MergedDiscountForwardCurve::proxyManifestMeasure => Cannot locate a component");
+
+			org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> mapManifestMeasure =
+				manifestMeasure (aCalibComp[i].primaryCode());
+
+			if (mapManifestMeasure.containsKey (strManifestMeasure)) {
+				lsDate.add (aCalibComp[i].maturityDate().julian());
+
+				lsQuote.add (mapManifestMeasure.get (strManifestMeasure));
+			}
+		}
+
+		int iNumEstimationComponent = lsDate.size();
+
+		if (0 == iNumEstimationComponent)
+			throw new java.lang.Exception
+				("MergedDiscountForwardCurve::proxyManifestMeasure => Estimation Components not available");
+
+		if (1 == iNumEstimationComponent) return lsQuote.get (0);
+
+		int iDatePrev = lsDate.get (0);
+
+		if (iDate <= iDatePrev) return lsQuote.get (0);
+
+		for (int i = 1; i < iNumEstimationComponent; ++i) {
+			int iDateCurr = lsDate.get (i);
+
+			if (iDatePrev <= iDate && iDate < iDateCurr)
+				return iDate - iDatePrev > iDateCurr - iDate ? lsQuote.get (i) : lsQuote.get (i - 1);
+
+			iDatePrev = iDateCurr;
+		}
+
+		return lsQuote.get (iNumEstimationComponent - 1);
+	}
+
 	@Override public boolean setCCIS (
 		final org.drip.analytics.input.CurveConstructionInputSet ccis)
 	{
