@@ -1,15 +1,15 @@
 # DROP
 
-**v3.07**  *4 October 2017*
+**v3.16**  *5 October 2017*
 
 DROP aims to collects the models and provides libraries for fixed income valuation and adjustments, asset allocation and transaction cost analytics, and supporting libraries in numerical optimization and statistical learning.
 
 DROP is composed of four main libraries:
 
- * [Asset Allocation] (https://github.com/lakshmiDRIP/DRIP-Asset-Allocation)
- * [Fixed Income Analytics] (https://github.com/lakshmiDRIP/DRIP-Fixed-Income)
- * [Numerical Optimization] (https://github.com/lakshmiDRIP/DRIP-Numerical-Optimizer)
- * [Statistical Learning] (https://github.com/lakshmiDRIP/DRIP-Statistical-Learning)
+ * [Asset Allocation] (https://lakshmidrip.github.io/DROP/assetallocation.md)
+ * [Fixed Income Analytics] (https://lakshmidrip.github.io/DROP/fixedincome.html)
+ * [Numerical Optimization] (https://lakshmidrip.github.io/DROP/numericaloptimizer.html)
+ * [Statistical Learning] (https://lakshmidrip.github.io/DROP/statisticallearning.html)
 
 
 ## Installation
