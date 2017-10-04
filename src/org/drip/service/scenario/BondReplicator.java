@@ -863,6 +863,9 @@ public class BondReplicator {
 			double dblJSpreadToExercise = _bond.jSpreadFromPrice (_valParams, _csqcFundingBase, null,
 				iWorkoutDate, dblWorkoutFactor, _dblCurrentPrice);
 
+			double dblNSpreadToExercise = _bond.nSpreadFromPrice (_valParams, _csqcFundingBase, null,
+				iWorkoutDate, dblWorkoutFactor, _dblCurrentPrice);
+
 			double dblWALToExercise = _bond.weightedAverageLife (_valParams, _csqcFundingBase, iWorkoutDate,
 				dblWorkoutFactor);
 
@@ -1050,6 +1053,10 @@ public class BondReplicator {
 
 			if (!arr.addNamedField (new org.drip.service.scenario.NamedField ("J-Spread",
 				dblJSpreadToExercise)))
+				return null;
+
+			if (!arr.addNamedField (new org.drip.service.scenario.NamedField ("N-Spread",
+				dblNSpreadToExercise)))
 				return null;
 
 			if (!arr.addNamedField (new org.drip.service.scenario.NamedField ("WAL To Worst",
