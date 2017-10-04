@@ -9,7 +9,7 @@ DROP is composed of four main libraries:
  * [Asset Allocation] (https://lakshmidrip.github.io/DROP/assetallocation.md)
  * [Fixed Income Analytics] (https://lakshmidrip.github.io/DROP/fixedincome.html)
  * [Numerical Optimization] (https://lakshmidrip.github.io/DROP/numericaloptimizer.html)
- * [Statistical Learning] (https:/lakshmidrip.github.io/DROP/statisticallearning.html)
+ * [Statistical Learning] (https://lakshmidrip.github.io/DROP/statisticallearning.html)
 
 
 ## Installation
