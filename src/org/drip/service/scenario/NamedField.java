@@ -70,8 +70,7 @@ public class NamedField {
 		final double dblValue)
 		throws java.lang.Exception
 	{
-		if (null == (_strName = strName) || _strName.isEmpty() || !org.drip.quant.common.NumberUtil.IsValid
-			(_dblValue = dblValue))
+		if (null == (_strName = strName) || _strName.isEmpty())
 			throw new java.lang.Exception ("NamedField Constructor => Invalid Inputs");
 	}
 
