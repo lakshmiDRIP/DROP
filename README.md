@@ -1,10 +1,10 @@
-# DRIP
+# DROP
 
 **v3.07**  *4 October 2017*
 
-DRIP aims to collects the models and provides libraries for fixed income valuation and adjustments, asset allocation and transaction cost analytics, and supporting libraries in numerical optimization and statistical learning.
+DROP aims to collects the models and provides libraries for fixed income valuation and adjustments, asset allocation and transaction cost analytics, and supporting libraries in numerical optimization and statistical learning.
 
-DRIP is composed of four main libraries:
+DROP is composed of four main libraries:
 
  * [Asset Allocation] (https://github.com/lakshmiDRIP/DRIP-Asset-Allocation)
  * [Fixed Income Analytics] (https://github.com/lakshmiDRIP/DRIP-Fixed-Income)
@@ -19,7 +19,7 @@ DRIP is composed of four main libraries:
 
 ## Samples
 
- * The Java sample suite is also available as part of the developement load.
+ * The Java sample suite is also available as part of the development load.
  * The Excel samples are present on their own folder.
  * Test data is present in the Daemons folder.
 
@@ -27,7 +27,7 @@ DRIP is composed of four main libraries:
 ## Documentation
 
  * The API Javadoc is available as part of the main development load.
- * DRIP Technical Specifications are in their corresponding folders
+ * DROP Technical Specifications are in their corresponding folders
  * Dated Release Notes in the ReleaseNotes Folder
  * External Reference Publications in the corresponding folder
  * User guide is a work in progress!
