@@ -83,7 +83,7 @@ public class AttributeJointDense extends org.drip.portfolioconstruction.core.Blo
 	 * @param strAssetID2 The Asset ID #2
 	 * @param dblAttribute The Attribute
 	 * 
-	 * @return TRUE => The Asset Pair's Attribute successfully added.
+	 * @return TRUE - The Asset Pair's Attribute successfully added.
 	 */
 
 	public boolean add (
@@ -110,7 +110,7 @@ public class AttributeJointDense extends org.drip.portfolioconstruction.core.Blo
 	 * 
 	 * @return The Pair Attribute
 	 * 
-	 * @throws Thrown if the Inputs are Invalid
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double attribute (

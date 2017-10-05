@@ -69,7 +69,7 @@ public class LocalUniverse {
 	 * 
 	 * @param a Asset to be added
 	 * 
-	 * @return TRUE => The Asset has been added successfully
+	 * @return TRUE - The Asset has been added successfully
 	 */
 
 	public boolean add (
@@ -87,7 +87,7 @@ public class LocalUniverse {
 	 * 
 	 * @param a The Asset Instance
 	 * 
-	 * @return TRUE => The Asset is contained in the Local Universe
+	 * @return TRUE - The Asset is contained in the Local Universe
 	 */
 
 	public boolean contains (
@@ -101,7 +101,7 @@ public class LocalUniverse {
 	 * 
 	 * @param strAssetID The Asset ID
 	 * 
-	 * @return TRUE => The Asset is contained in the Local Universe
+	 * @return TRUE - The Asset is contained in the Local Universe
 	 */
 
 	public boolean contains (

@@ -720,23 +720,35 @@ public class BondReplicator {
 		double dblYield01 = java.lang.Double.NaN;
 		double dblNominalYield = java.lang.Double.NaN;
 		double dblBEYToMaturity = java.lang.Double.NaN;
+		double dblOASToExercise = java.lang.Double.NaN;
 		double dblOASToMaturity = java.lang.Double.NaN;
+		double dblWALToExercise = java.lang.Double.NaN;
 		double dblSpreadDuration = java.lang.Double.NaN;
 		double dblYieldToMaturity = java.lang.Double.NaN;
+		double dblParOASToExercise = java.lang.Double.NaN;
+		double dblESpreadToExercise = java.lang.Double.NaN;
+		double dblISpreadToExercise = java.lang.Double.NaN;
+		double dblJSpreadToExercise = java.lang.Double.NaN;
+		double dblNSpreadToExercise = java.lang.Double.NaN;
 		double dblZSpreadToExercise = java.lang.Double.NaN;
 		double dblZSpreadToMaturity = java.lang.Double.NaN;
 		double dblBondBasisToExercise = java.lang.Double.NaN;
 		double dblBondBasisToMaturity = java.lang.Double.NaN;
 		double dblConvexityToExercise = java.lang.Double.NaN;
+		double dblWALCreditToExercise = java.lang.Double.NaN;
 		double dblCreditBasisToExercise = java.lang.Double.NaN;
+		double dblWALLossOnlyToExercise = java.lang.Double.NaN;
 		double dblYieldFromPriceNextPut = java.lang.Double.NaN;
 		double dblYieldFromPriceNextCall = java.lang.Double.NaN;
+		double dblWALCouponOnlyToExercise = java.lang.Double.NaN;
+		double dblDiscountMarginToExercise = java.lang.Double.NaN;
 		double dblParCreditBasisToExercise = java.lang.Double.NaN;
 		double dblYieldToMaturityFwdCoupon = java.lang.Double.NaN;
 		double dblEffectiveDurationAdjusted = java.lang.Double.NaN;
 		double dblMacaulayDurationToMaturity = java.lang.Double.NaN;
 		double dblModifiedDurationToExercise = java.lang.Double.NaN;
 		double dblModifiedDurationToMaturity = java.lang.Double.NaN;
+		double dblWALPrincipalOnlyToExercise = java.lang.Double.NaN;
 
 		int iSpotDate = _dtSpot.julian();
 
@@ -976,48 +988,94 @@ public class BondReplicator {
 		}
 
 		try {
-			double dblDiscountMarginToExercise = dblYieldToExercise - _csqcFundingBase.fundingState
+			dblDiscountMarginToExercise = dblYieldToExercise - _csqcFundingBase.fundingState
 				(_bond.fundingLabel()).libor (_valParams.valueDate(), "1M");
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
 
-			double dblESpreadToExercise = _bond.isFloater() ? _bond.discountMarginFromPrice (_valParams,
+		try {
+			dblESpreadToExercise = _bond.isFloater() ? _bond.discountMarginFromPrice (_valParams,
 				_csqcFundingEuroDollar, null, iWorkoutDate, dblWorkoutFactor, _dblCurrentPrice) :
 					_bond.zSpreadFromPrice (_valParams, _csqcFundingEuroDollar, null, iWorkoutDate,
 						dblWorkoutFactor, _dblCurrentPrice);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
 
-			double dblISpreadToExercise = _bond.iSpreadFromPrice (_valParams, _csqcFundingBase, null,
-				iWorkoutDate, dblWorkoutFactor, _dblCurrentPrice);
-
-			double dblJSpreadToExercise = _bond.jSpreadFromPrice (_valParams, _csqcFundingBase, null,
-				iWorkoutDate, dblWorkoutFactor, _dblCurrentPrice);
-
-			double dblNSpreadToExercise = _bond.nSpreadFromPrice (_valParams, _csqcFundingBase, null,
-				iWorkoutDate, dblWorkoutFactor, _dblCurrentPrice);
-
-			double dblWALToExercise = _bond.weightedAverageLife (_valParams, _csqcFundingBase, iWorkoutDate,
-				dblWorkoutFactor);
-
-			double dblWALPrincipalOnlyToExercise = _bond.weightedAverageLifePrincipalOnly (_valParams,
-				_csqcFundingBase, iWorkoutDate, dblWorkoutFactor);
-
-			double dblWALLossOnlyToExercise = _bond.weightedAverageLifeLossOnly (_valParams, _csqcCreditBase,
-				iWorkoutDate, dblWorkoutFactor);
-
-			double dblWALCouponOnlyToExercise = _bond.weightedAverageLifeCouponOnly (_valParams,
-				_csqcFundingBase, iWorkoutDate, dblWorkoutFactor);
-
-			double dblWALCreditToExercise = _bond.weightedAverageLifeCredit (_valParams, _csqcCreditBase,
-				iWorkoutDate, dblWorkoutFactor);
-
-			double dblOASToExercise = _bond.oasFromPrice (_valParams, _csqcFundingBase, null, iWorkoutDate,
+		try {
+			dblISpreadToExercise = _bond.iSpreadFromPrice (_valParams, _csqcFundingBase, null, iWorkoutDate,
 				dblWorkoutFactor, _dblCurrentPrice);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
 
-			double dblParOASToExercise = _bond.oasFromPrice (_valParams, _csqcFundingBase, null,
-				iWorkoutDate, dblWorkoutFactor, _dblIssuePrice);
+		try {
+			dblJSpreadToExercise = _bond.jSpreadFromPrice (_valParams, _csqcFundingBase, null, iWorkoutDate,
+				dblWorkoutFactor, _dblCurrentPrice);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
 
-			double dblAccruedInterestFactor = dblAccrued * _dblFX;
-			double dblEffectiveDuration = dblYield01 / _dblCurrentPrice;
-			double dblSpreadDuration$ = dblSpreadDuration * _dblIssueAmount;
+		try {
+			dblNSpreadToExercise = _bond.nSpreadFromPrice (_valParams, _csqcFundingBase, null, iWorkoutDate,
+				dblWorkoutFactor, _dblCurrentPrice);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
 
+		try {
+			dblWALToExercise = _bond.weightedAverageLife (_valParams, _csqcFundingBase, iWorkoutDate,
+				dblWorkoutFactor);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+			dblWALPrincipalOnlyToExercise = _bond.weightedAverageLifePrincipalOnly (_valParams,
+				_csqcFundingBase, iWorkoutDate, dblWorkoutFactor);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+			dblWALLossOnlyToExercise = _bond.weightedAverageLifeLossOnly (_valParams, _csqcCreditBase,
+				iWorkoutDate, dblWorkoutFactor);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+			dblWALCouponOnlyToExercise = _bond.weightedAverageLifeCouponOnly (_valParams, _csqcFundingBase,
+				iWorkoutDate, dblWorkoutFactor);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+			dblWALCreditToExercise = _bond.weightedAverageLifeCredit (_valParams, _csqcCreditBase,
+				iWorkoutDate, dblWorkoutFactor);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+			dblOASToExercise = _bond.oasFromPrice (_valParams, _csqcFundingBase, null, iWorkoutDate,
+				dblWorkoutFactor, _dblCurrentPrice);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+			dblParOASToExercise = _bond.oasFromPrice (_valParams, _csqcFundingBase, null, iWorkoutDate,
+				dblWorkoutFactor, _dblIssuePrice);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		double dblEffectiveDuration = dblYield01 / _dblCurrentPrice;
+
+		try {
 			for (java.util.Map.Entry<java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer>
 				meCSQC : _mapCSQCFunding.entrySet()) {
 				java.lang.String strKey = meCSQC.getKey();
@@ -1077,7 +1135,7 @@ public class BondReplicator {
 				return null;
 
 			if (!arr.addNamedField (new org.drip.service.scenario.NamedField ("Accrued Interest Factor",
-				dblAccruedInterestFactor)))
+				dblAccrued * _dblFX)))
 				return null;
 
 			if (!arr.addNamedField (new org.drip.service.scenario.NamedField ("Yield To Maturity",
@@ -1150,7 +1208,7 @@ public class BondReplicator {
 				return null;
 
 			if (!arr.addNamedField (new org.drip.service.scenario.NamedField ("Spread Dur $",
-				dblSpreadDuration$)))
+				dblSpreadDuration * _dblIssueAmount)))
 				return null;
 
 			if (!arr.addNamedField (new org.drip.service.scenario.NamedField ("DV01", dblYield01)))

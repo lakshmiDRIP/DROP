@@ -203,7 +203,7 @@ public class AttributeJointFactor extends org.drip.portfolioconstruction.core.Bl
 	 * @param strFactorID The Factor ID
 	 * @param dblFactorLoading The Factor Loading Coefficient
 	 * 
-	 * @return TRUE => The Asset's Factor Loading Coefficient successfully added
+	 * @return TRUE - The Asset's Factor Loading Coefficient successfully added
 	 */
 
 	public boolean addAssetFactorLoading (
@@ -229,7 +229,7 @@ public class AttributeJointFactor extends org.drip.portfolioconstruction.core.Bl
 	 * @param strFactorID2 The Factor #2 ID
 	 * @param dblFactorCovariance The Cross Factor Covariance
 	 * 
-	 * @return TRUE => The Cross Factor Covariance successfully added
+	 * @return TRUE - The Cross Factor Covariance successfully added
 	 */
 
 	public boolean addFactorCovariance (
@@ -254,7 +254,7 @@ public class AttributeJointFactor extends org.drip.portfolioconstruction.core.Bl
 	 * @param strAssetID The Asset ID
 	 * @param dblSpecificRisk The Asset's Specific Risk
 	 * 
-	 * @return TRUE => The Asset's Specific Risk successfully added
+	 * @return TRUE - The Asset's Specific Risk successfully added
 	 */
 
 	public boolean addSpecificRisk (
@@ -275,7 +275,7 @@ public class AttributeJointFactor extends org.drip.portfolioconstruction.core.Bl
 	 * 
 	 * @param strAssetID The Asset ID
 	 * 
-	 * @return TRUE => The Asset is represented
+	 * @return TRUE - The Asset is represented
 	 */
 
 	public boolean containsAsset (
@@ -290,7 +290,7 @@ public class AttributeJointFactor extends org.drip.portfolioconstruction.core.Bl
 	 * 
 	 * @param strFactorID The Factor ID
 	 * 
-	 * @return TRUE => The Factor is available
+	 * @return TRUE - The Factor is available
 	 */
 
 	public boolean containsFactor (
@@ -360,7 +360,7 @@ public class AttributeJointFactor extends org.drip.portfolioconstruction.core.Bl
 	 * 
 	 * @return The Cross Factor Covariance Entry
 	 * 
-	 * @throws Thrown if the Inputs are Invalid
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double factorCovariance (
@@ -381,7 +381,7 @@ public class AttributeJointFactor extends org.drip.portfolioconstruction.core.Bl
 	 * 
 	 * @return The Specific Risk Entry
 	 * 
-	 * @throws Thrown if the Inputs are Invalid
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double specificRisk (

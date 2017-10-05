@@ -64,7 +64,7 @@ public class TransactionCostGroup {
 	 * @param strAssetID The Asset ID
 	 * @param tc The Asset's Transaction Cost
 	 * 
-	 * @return TRUE => The Asset's Transaction Cost successfully added.
+	 * @return TRUE - The Asset's Transaction Cost successfully added.
 	 */
 
 	public boolean add (

@@ -138,7 +138,7 @@ public class ConstraintHierarchy {
 	/**
 	 * Indicate if the Constraint Array is non-Feudal
 	 * 
-	 * @return TRUE => The Constraint Array is non-Feudal
+	 * @return TRUE - The Constraint Array is non-Feudal
 	 */
 
 	public boolean nonFeudal()

@@ -110,7 +110,7 @@ public class Holdings extends org.drip.portfolioconstruction.core.Block {
 	 * @param strAssetID The Asset ID
 	 * @param dblQuantity The Amount in the Portfolio
 	 * 
-	 * @return TRUE => The Asset/Amount has been successfully added
+	 * @return TRUE - The Asset/Amount has been successfully added
 	 */
 
 	public boolean add (
@@ -131,7 +131,7 @@ public class Holdings extends org.drip.portfolioconstruction.core.Block {
 	 * 
 	 * @param strAssetID The Asset ID
 	 * 
-	 * @return TRUE => The Asset is Part of the Holdings (may have Zero Value though)
+	 * @return TRUE - The Asset is Part of the Holdings (may have Zero Value though)
 	 */
 
 	public boolean contains (
@@ -147,7 +147,7 @@ public class Holdings extends org.drip.portfolioconstruction.core.Block {
 	 * 
 	 * @return The Holdings Quantity for the Asset (if it exists)
 	 * 
-	 * @throws Thrown if the Inputs are Invalid
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double quantity (

@@ -81,7 +81,7 @@ public class BlockClassification extends org.drip.portfolioconstruction.core.Blo
 	 * @param strAssetID The Asset ID
 	 * @param bMembership The Membership TURUE or FALSE
 	 * 
-	 * @return TRUE => The Asset's Attribute successfully added.
+	 * @return TRUE - The Asset's Attribute successfully added.
 	 */
 
 	public boolean add (
@@ -102,7 +102,7 @@ public class BlockClassification extends org.drip.portfolioconstruction.core.Blo
 	 * 
 	 * @return The Asset's Membership
 	 * 
-	 * @throws Thrown if the Inputs are Invalid
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public boolean membership (

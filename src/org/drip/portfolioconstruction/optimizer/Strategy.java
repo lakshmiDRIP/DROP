@@ -67,9 +67,9 @@ public class Strategy extends org.drip.portfolioconstruction.core.Block {
 	 * @param strDescription The Constraint Description
 	 * @param of The Objective Function
 	 * @param ch Constraint Hierarchy
-	 * @param bAllowGrandFathering TRUE => Grand-fathering of the "Previous" is to be performed
-	 * @param bAllowCrossOver TRUE => Cross-Over is allowed
-	 * @param bIgnoreCompliance TRUE => Ignore Compliance
+	 * @param bAllowGrandFathering TRUE - Grand-fathering of the "Previous" is to be performed
+	 * @param bAllowCrossOver TRUE - Cross-Over is allowed
+	 * @param bIgnoreCompliance TRUE - Ignore Compliance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -98,7 +98,7 @@ public class Strategy extends org.drip.portfolioconstruction.core.Block {
 	/**
 	 * Indicate if Grand-fathering of the "Previous" is to be performed
 	 * 
-	 * @return TRUE => Grand-fathering of the "Previous" is to be performed
+	 * @return TRUE - Grand-fathering of the "Previous" is to be performed
 	 */
 
 	public boolean allowGrandFathering()
@@ -109,7 +109,7 @@ public class Strategy extends org.drip.portfolioconstruction.core.Block {
 	/**
 	 * Indicate if Cross Over is allowed
 	 * 
-	 * @return TRUE => Cross-Over is allowed
+	 * @return TRUE - Cross-Over is allowed
 	 */
 
 	public boolean allowCrossOver()
@@ -120,7 +120,7 @@ public class Strategy extends org.drip.portfolioconstruction.core.Block {
 	/**
 	 * Indicate if Compliance Checks are to be ignored
 	 * 
-	 * @return TRUE => Compliance Checks are to be ignored
+	 * @return TRUE - Compliance Checks are to be ignored
 	 */
 
 	public boolean ignoreCompliance()

@@ -72,6 +72,8 @@ public class NamedField {
 	{
 		if (null == (_strName = strName) || _strName.isEmpty())
 			throw new java.lang.Exception ("NamedField Constructor => Invalid Inputs");
+
+		_dblValue = dblValue;
 	}
 
 	/**

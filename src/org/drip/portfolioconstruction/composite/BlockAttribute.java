@@ -81,7 +81,7 @@ public class BlockAttribute extends org.drip.portfolioconstruction.core.Block {
 	 * @param strAssetID The Asset ID
 	 * @param dblAttribute The Attribute
 	 * 
-	 * @return TRUE => The Asset's Attribute successfully added.
+	 * @return TRUE - The Asset's Attribute successfully added.
 	 */
 
 	public boolean add (
@@ -102,7 +102,7 @@ public class BlockAttribute extends org.drip.portfolioconstruction.core.Block {
 	 * 
 	 * @param strAssetID The Asset ID
 	 * 
-	 * @return TRUE => The Asset is Part of the Holdings (may have Zero Value though)
+	 * @return TRUE - The Asset is Part of the Holdings (may have Zero Value though)
 	 */
 
 	public boolean contains (
@@ -118,7 +118,7 @@ public class BlockAttribute extends org.drip.portfolioconstruction.core.Block {
 	 * 
 	 * @return The Asset's Attribute Value
 	 * 
-	 * @throws Thrown if the Inputs are Invalid
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double value (

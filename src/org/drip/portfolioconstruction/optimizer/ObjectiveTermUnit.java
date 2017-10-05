@@ -62,9 +62,9 @@ public class ObjectiveTermUnit {
 	 * 
 	 * @param objTerm The Objective Term
 	 * @param dblWeight The Objective Term Weight
-	 * @param bIsActive TRUE => The Objective Term is Active
+	 * @param bIsActive TRUE - The Objective Term is Active
 	 * 
-	 * @throws java.lang.Exception
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ObjectiveTermUnit (
@@ -83,7 +83,7 @@ public class ObjectiveTermUnit {
 	/**
 	 * Indicate if the Objective Term is Active
 	 * 
-	 * @return TRUE => The Objective Term is Active
+	 * @return TRUE - The Objective Term is Active
 	 */
 
 	public boolean isActive()
@@ -105,7 +105,7 @@ public class ObjectiveTermUnit {
 	/**
 	 * Retrieve the Objective Term
 	 * 
-	 * @return TRUE => The Objective Term
+	 * @return TRUE - The Objective Term
 	 */
 
 	public org.drip.portfolioconstruction.optimizer.ObjectiveTerm term()

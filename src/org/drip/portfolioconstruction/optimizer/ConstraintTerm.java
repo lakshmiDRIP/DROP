@@ -101,7 +101,7 @@ public class ConstraintTerm extends org.drip.portfolioconstruction.core.Block {
 	 * 
 	 * @param sc The Soft Constraint
 	 * 
-	 * @return TRUE => The Soft Constraint successfully set
+	 * @return TRUE - The Soft Constraint successfully set
 	 */
 
 	public boolean setSoftConstraint (

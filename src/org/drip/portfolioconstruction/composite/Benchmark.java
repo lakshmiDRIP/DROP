@@ -62,7 +62,7 @@ public class Benchmark extends org.drip.portfolioconstruction.core.Block {
 	 * 
 	 * @param strName The Benchmark Name
 	 * @param strType The Benchmark Type
-	 * @param strDescription The Benchmark Description
+	 * @param strCategory The Benchmark Category
 	 * @param ah The Benchmark Holdings
 	 * 
 	 * @return The Standard Benchmark Instance Without Cash
@@ -90,7 +90,7 @@ public class Benchmark extends org.drip.portfolioconstruction.core.Block {
 	 * @param strID The Benchmark ID
 	 * @param strDescription The Benchmark Description
 	 * @param strType The Benchmark Type
-	 * @param strDescription The Benchmark Description
+	 * @param strCategory The Benchmark Category
 	 * @param ah The Benchmark Holdings
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
