@@ -5594,8 +5594,8 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 		int iFreq = freq();
 
-		return null == _floaterSetting ? dblYield - dcFunding.libor (iValueDate, ((int) (12. / (0 == iFreq
-			? 2 : iFreq))) + "M") : dblYield - indexRate (iValueDate, csqc,
+		return null == _floaterSetting ? dblYield - dcFunding.libor (iValueDate, ((int) (12. / (0 == iFreq ?
+			2 : iFreq))) + "M") : dblYield - indexRate (iValueDate, csqc,
 				(org.drip.analytics.cashflow.CompositeFloatingPeriod) currentPeriod (iValueDate));
 	}
 
@@ -7844,12 +7844,12 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		throws java.lang.Exception
 	{
 		if (null == csqc || !org.drip.quant.common.NumberUtil.IsValid (dblYield))
-			throw new java.lang.Exception ("BondComponent::iSpreadFromYield => Invalid inputs");
+			throw new java.lang.Exception ("BondComponent::iSpreadFromYield => Invalid Inputs");
 
 		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqc.fundingState (fundingLabel());
 
 		if (null == dcFunding)
-			throw new java.lang.Exception ("BondComponent::iSpreadFromYield => Invalid inputs");
+			throw new java.lang.Exception ("BondComponent::iSpreadFromYield => Invalid Inputs");
 
 		return dblYield - dcFunding.estimateManifestMeasure ("SwapRate", iWorkoutDate);
 	}
@@ -8476,7 +8476,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		throws java.lang.Exception
 	{
 		if (null != _eosCall || null != _eosPut)
-			throw new java.lang.Exception ("BondComponent::iSpreadFromYieldSpreadToOptimalExercise => " +
+			throw new java.lang.Exception ("BondComponent::jSpreadFromYieldSpreadToOptimalExercise => " +
 				"Cant calc J Spread from Yield Spread to optimal exercise for bonds w emb option");
 
 		return jSpreadFromYieldSpread (valParams, csqc, vcp, maturityDate().julian(), 1., dblYieldSpread);

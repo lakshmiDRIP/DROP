@@ -1284,18 +1284,19 @@ public class BondReplicator {
 			if (!arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap ("Govvie KPRD",
 				mapGovvieKPRD)))
 				return null;
-
-			if (!arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap ("Credit KRD",
-				mapCreditKRD)))
-				return null;
-
-			if (!arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap ("Credit KPRD",
-				mapCreditKPRD)))
-				return null;
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 
 			return null;
+		}
+
+		try {
+			arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap ("Credit KRD", mapCreditKRD));
+
+			arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap ("Credit KPRD",
+				mapCreditKPRD));
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
 		}
 
 		System.out.println ("Workout        : " + new org.drip.analytics.date.JulianDate (iWorkoutDate));
