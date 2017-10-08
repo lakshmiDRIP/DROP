@@ -196,7 +196,7 @@ public class R1JointJumpDiffusion {
 
 		double[] adblCounterPartyDefaultIndicator = SequenceGenerator.Uniform (iNumTimeStep);
 
-		double[] adblTimeWidth = new double[iNumTimeStep + 1];
+		double[] adblTimeWidth = new double[iNumTimeStep];
 
 		for (int i = 0; i < iNumTimeStep; ++i)
 			adblTimeWidth[i] = dblTimeWidth;

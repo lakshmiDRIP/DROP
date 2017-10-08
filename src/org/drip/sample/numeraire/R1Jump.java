@@ -91,7 +91,7 @@ public class R1Jump {
 		double dblTerminalAssetNumeraire = 1.;
 
 		int iNumTimeStep = (int) (1. / dblTimeWidth);
-		double[] adblTimeWidth = new double[iNumTimeStep + 1];
+		double[] adblTimeWidth = new double[iNumTimeStep];
 
 		for (int i = 0; i < iNumTimeStep; ++i)
 			adblTimeWidth[i] = dblTimeWidth;

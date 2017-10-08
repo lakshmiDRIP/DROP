@@ -135,7 +135,7 @@ public class R1JointDiffusion {
 		double dblTerminalCollateralNumeraire = 1.;
 
 		int iNumTimeStep = (int) (dblTime / dblTimeWidth);
-		double[] adblTimeWidth = new double[iNumTimeStep + 1];
+		double[] adblTimeWidth = new double[iNumTimeStep];
 
 		for (int i = 0; i < iNumTimeStep; ++i)
 			adblTimeWidth[i] = dblTimeWidth;
