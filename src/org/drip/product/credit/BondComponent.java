@@ -116,7 +116,8 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 	private int terminationAdjust (
 		final int iDate)
 	{
-		org.drip.analytics.daycount.DateAdjustParams dap = _terminationSetting.dap();
+		org.drip.analytics.daycount.DateAdjustParams dap = null == _terminationSetting ? null :
+			_terminationSetting.dap();
 
 		try {
 			return null == dap ? iDate : dap.roll (iDate);
@@ -2553,8 +2554,8 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		if (null != vcp)
 			bApplyFlatForwardRate = vcp.applyFlatForwardRate();
 		else {
-			org.drip.param.valuation.ValuationCustomizationParams vcpQuote =
-				_quoteConvention.valuationCustomizationParams();
+			org.drip.param.valuation.ValuationCustomizationParams vcpQuote = null == _quoteConvention ? null
+				: _quoteConvention.valuationCustomizationParams();
 
 			if (null != vcpQuote) bApplyFlatForwardRate = vcpQuote.applyFlatForwardRate();
 		}
@@ -2592,7 +2593,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 												org.drip.function.r1tor1.QuadraticRationalShapeControl (0.)),
 													null));
 		} catch (java.lang.Exception e) {
-			if (!s_bSuppressErrors) e.printStackTrace();
+			e.printStackTrace();
 		}
 
 		if (null == zc)
