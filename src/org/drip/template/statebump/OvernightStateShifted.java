@@ -81,13 +81,13 @@ public class OvernightStateShifted {
 
 		String[] astrDepositMaturityTenor = new String[] {
 			"01D",
-			"02D",
+			// "02D",
 			"03D"
 		};
 
 		double[] adblDepositQuote = new double[] {
 			0.0004,		// 1D
-			0.0004,		// 2D
+			// 0.0004,		// 2D
 			0.0004		// 3D
 		};
 
