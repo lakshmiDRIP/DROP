@@ -188,11 +188,9 @@ public class Udaipur {
 		String strCurrency = "USD";
 		double dblCleanPrice = 1.0;
 		double dblIssuePrice = 1.0;
-		double dblZSpreadBump = 20.;
+		double dblSpreadBump = 20.;
 		String strTreasuryCode = "UST";
 		double dblIssueAmount = 7.50e8;
-		double dblCustomYieldBump = 20.;
-		double dblCustomCreditBasisBump = 20.;
 		double dblSpreadDurationMultiplier = 5.;
 		double dblResetRate = 0.0158483 - dblSpread;
 
@@ -358,7 +356,7 @@ public class Udaipur {
 
 		System.out.println();
 
-		BondReplicator abr = new BondReplicator (
+		BondReplicator abr = BondReplicator.Standard (
 			dblCleanPrice,
 			dblIssuePrice,
 			dblIssueAmount,
@@ -368,9 +366,7 @@ public class Udaipur {
 			adblFuturesQuote,
 			astrFixFloatTenor,
 			adblFixFloatQuote,
-			dblCustomYieldBump,
-			dblCustomCreditBasisBump,
-			dblZSpreadBump,
+			dblSpreadBump,
 			dblSpreadDurationMultiplier,
 			strTreasuryCode,
 			astrGovvieTenor,

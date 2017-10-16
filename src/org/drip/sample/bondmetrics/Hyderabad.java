@@ -192,13 +192,11 @@ public class Hyderabad {
 		double dblCleanPrice = 1.;
 		double dblIssuePrice = 1.;
 		String strCurrency = "USD";
-		double dblZSpreadBump = 20.;
+		double dblSpreadBump = 20.;
 		double dblCouponRate = 0.04377;
 		double dblIssueAmount = 1.0;
 		String strTreasuryCode = "UST";
-		double dblCustomYieldBump = 20.;
 		String strCouponDayCount = "30/360";
-		double dblCustomCreditBasisBump = 20.;
 		double dblSpreadDurationMultiplier = 5.;
 
 		JulianDate dtEffective = DateUtil.CreateFromYMD (
@@ -245,7 +243,7 @@ public class Hyderabad {
 			null
 		);
 
-		BondReplicator abr = new BondReplicator (
+		BondReplicator abr = BondReplicator.Standard (
 			dblCleanPrice,
 			dblIssuePrice,
 			dblIssueAmount,
@@ -255,9 +253,7 @@ public class Hyderabad {
 			adblFuturesQuote,
 			astrFixFloatTenor,
 			adblFixFloatQuote,
-			dblCustomYieldBump,
-			dblCustomCreditBasisBump,
-			dblZSpreadBump,
+			dblSpreadBump,
 			dblSpreadDurationMultiplier,
 			strTreasuryCode,
 			astrGovvieTenor,

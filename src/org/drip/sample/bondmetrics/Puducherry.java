@@ -193,13 +193,11 @@ public class Puducherry {
 		double dblCleanPrice = 0.4;
 		double dblIssuePrice = 0.4;
 		String strCurrency = "USD";
-		double dblZSpreadBump = 20.;
+		double dblSpreadBump = 20.;
 		double dblCouponRate = 0.00000;
 		double dblIssueAmount = 903433.6;
 		String strTreasuryCode = "UST";
-		double dblCustomYieldBump = 20.;
 		String strCouponDayCount = "30/360";
-		double dblCustomCreditBasisBump = 20.;
 		double dblSpreadDurationMultiplier = 5.;
 		String strDateFactor = "1/1/2050;903433.6;1/1/2051;843446.4;1/1/2052;787414.4;1/1/2053;735008.0;7/1/2053;170403.2";
 
@@ -238,7 +236,7 @@ public class Puducherry {
 			null
 		);
 
-		BondReplicator abr = new BondReplicator (
+		BondReplicator abr = BondReplicator.Standard (
 			dblCleanPrice,
 			dblIssuePrice,
 			dblIssueAmount,
@@ -248,9 +246,7 @@ public class Puducherry {
 			adblFuturesQuote,
 			astrFixFloatTenor,
 			adblFixFloatQuote,
-			dblCustomYieldBump,
-			dblCustomCreditBasisBump,
-			dblZSpreadBump,
+			dblSpreadBump,
 			dblSpreadDurationMultiplier,
 			strTreasuryCode,
 			astrGovvieTenor,

@@ -539,13 +539,11 @@ public class Reconciler_Sink {
 		double dblCleanPrice = 0.4;
 		double dblIssuePrice = 0.4;
 		String strCurrency = "USD";
-		double dblZSpreadBump = 20.;
+		double dblSpreadBump = 20.;
 		double dblCouponRate = 0.00000;
 		double dblIssueAmount = 903433.6;
 		String strTreasuryCode = "UST";
-		double dblCustomYieldBump = 20.;
 		String strCouponDayCount = "30/360";
-		double dblCustomCreditBasisBump = 20.;
 		double dblSpreadDurationMultiplier = 5.;
 		String strDateFactor = "1/1/2050;903433.6;1/1/2051;843446.4;1/1/2052;787414.4;1/1/2053;735008.0;7/1/2053;170403.2";
 
@@ -837,7 +835,7 @@ public class Reconciler_Sink {
 				null,
 				wi.date(),
 				wi.factor(),
-				dblYieldToExercise - 0.0001 * dblCustomYieldBump
+				dblYieldToExercise - 0.0001 * dblSpreadBump
 			) -
 			bond.priceFromYield (
 				valParams,
@@ -845,9 +843,9 @@ public class Reconciler_Sink {
 				null,
 				wi.date(),
 				wi.factor(),
-				dblYieldToExercise + 0.0001 * dblCustomYieldBump
+				dblYieldToExercise + 0.0001 * dblSpreadBump
 			)
-		) / dblCustomYieldBump;
+		) / dblSpreadBump;
 
 		double dblEffectiveDuration = dblDV01 / dblCleanPrice;
 
@@ -876,7 +874,7 @@ public class Reconciler_Sink {
 				null,
 				wi.date(),
 				wi.factor(),
-				dblCreditBasisToExercise - dblCustomCreditBasisBump
+				dblCreditBasisToExercise - dblSpreadBump
 			) -
 			bond.priceFromCreditBasis (
 				valParams,
@@ -884,9 +882,9 @@ public class Reconciler_Sink {
 				null,
 				wi.date(),
 				wi.factor(),
-				dblCreditBasisToExercise + dblCustomCreditBasisBump
+				dblCreditBasisToExercise + dblSpreadBump
 			)
-		) / dblCleanPrice / dblCustomCreditBasisBump;
+		) / dblCleanPrice / dblSpreadBump;
 
 		double dblSpreadDuration = dblSpreadDurationMultiplier * (dblCleanPrice -
 			bond.priceFromZSpread (
@@ -895,7 +893,7 @@ public class Reconciler_Sink {
 				null,
 				wi.date(),
 				wi.factor(),
-				dblZSpreadToExercise + 0.0001 * dblZSpreadBump
+				dblZSpreadToExercise + 0.0001 * dblSpreadBump
 			)
 		) / dblCleanPrice;
 
@@ -1138,7 +1136,7 @@ public class Reconciler_Sink {
 
 		System.out.println();
 
-		BondReplicator ar = new BondReplicator (
+		BondReplicator ar = BondReplicator.Standard (
 			dblCleanPrice,
 			dblIssuePrice,
 			dblIssueAmount,
@@ -1148,9 +1146,7 @@ public class Reconciler_Sink {
 			adblFuturesQuote,
 			astrFixFloatTenor,
 			adblFixFloatQuote,
-			dblCustomYieldBump,
-			dblCustomCreditBasisBump,
-			dblZSpreadBump,
+			dblSpreadBump,
 			dblSpreadDurationMultiplier,
 			strTreasuryCode,
 			astrGovvieTenor,

@@ -192,13 +192,11 @@ public class Thane {
 		double dblCleanPrice = 1.;
 		double dblIssuePrice = 1.;
 		String strCurrency = "USD";
-		double dblZSpreadBump = 20.;
+		double dblSpreadBump = 20.;
 		double dblCouponRate = 0.09375;
 		double dblIssueAmount = 7.50e8;
 		String strTreasuryCode = "UST";
-		double dblCustomYieldBump = 20.;
 		String strCouponDayCount = "30/360";
-		double dblCustomCreditBasisBump = 20.;
 		double dblSpreadDurationMultiplier = 5.;
 
 		JulianDate dtEffective = DateUtil.CreateFromYMD (
@@ -232,7 +230,7 @@ public class Thane {
 			null
 		);
 
-		BondReplicator abr = new BondReplicator (
+		BondReplicator abr = BondReplicator.Standard (
 			dblCleanPrice,
 			dblIssuePrice,
 			dblIssueAmount,
@@ -242,9 +240,7 @@ public class Thane {
 			adblFuturesQuote,
 			astrFixFloatTenor,
 			adblFixFloatQuote,
-			dblCustomYieldBump,
-			dblCustomCreditBasisBump,
-			dblZSpreadBump,
+			dblSpreadBump,
 			dblSpreadDurationMultiplier,
 			strTreasuryCode,
 			astrGovvieTenor,

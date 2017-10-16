@@ -539,13 +539,11 @@ public class Reconciler_Call {
 		double dblCleanPrice = 1.;
 		double dblIssuePrice = 1.;
 		String strCurrency = "USD";
-		double dblZSpreadBump = 20.;
+		double dblSpreadBump = 20.;
 		double dblIssueAmount = 2.60e7;
 		String strTreasuryCode = "UST";
-		double dblCustomYieldBump = 20.;
 		double dblFullFirstCoupon = 0.0425;
 		String strCouponDayCount = "30/360";
-		double dblCustomCreditBasisBump = 20.;
 		double dblSpreadDurationMultiplier = 5.;
 
 		JulianDate dtEffective = DateUtil.CreateFromYMD (
@@ -882,7 +880,7 @@ public class Reconciler_Call {
 				null,
 				wi.date(),
 				wi.factor(),
-				dblYieldToExercise - 0.0001 * dblCustomYieldBump
+				dblYieldToExercise - 0.0001 * dblSpreadBump
 			) -
 			bond.priceFromYield (
 				valParams,
@@ -890,9 +888,9 @@ public class Reconciler_Call {
 				null,
 				wi.date(),
 				wi.factor(),
-				dblYieldToExercise + 0.0001 * dblCustomYieldBump
+				dblYieldToExercise + 0.0001 * dblSpreadBump
 			)
-		) / dblCustomYieldBump;
+		) / dblSpreadBump;
 
 		double dblEffectiveDuration = dblDV01 / dblCleanPrice;
 
@@ -921,7 +919,7 @@ public class Reconciler_Call {
 				null,
 				wi.date(),
 				wi.factor(),
-				dblCreditBasisToExercise - dblCustomCreditBasisBump
+				dblCreditBasisToExercise - dblSpreadBump
 			) -
 			bond.priceFromCreditBasis (
 				valParams,
@@ -929,9 +927,9 @@ public class Reconciler_Call {
 				null,
 				wi.date(),
 				wi.factor(),
-				dblCreditBasisToExercise + dblCustomCreditBasisBump
+				dblCreditBasisToExercise + dblSpreadBump
 			)
-		) / dblCleanPrice / dblCustomCreditBasisBump;
+		) / dblCleanPrice / dblSpreadBump;
 
 		double dblSpreadDuration = dblSpreadDurationMultiplier * (dblCleanPrice -
 			bond.priceFromDiscountMargin (
@@ -940,7 +938,7 @@ public class Reconciler_Call {
 				null,
 				wi.date(),
 				wi.factor(),
-				dblZSpreadToExercise + 0.0001 * dblZSpreadBump
+				dblZSpreadToExercise + 0.0001 * dblSpreadBump
 			)
 		) / dblCleanPrice;
 
@@ -1199,7 +1197,7 @@ public class Reconciler_Call {
 			wi.factor()
 		);
 
-		BondReplicator ar = new BondReplicator (
+		BondReplicator ar = BondReplicator.Standard (
 			dblCleanPrice,
 			dblIssuePrice,
 			dblIssueAmount,
@@ -1209,9 +1207,7 @@ public class Reconciler_Call {
 			adblFuturesQuote,
 			astrFixFloatTenor,
 			adblFixFloatQuote,
-			dblCustomYieldBump,
-			dblCustomCreditBasisBump,
-			dblZSpreadBump,
+			dblSpreadBump,
 			dblSpreadDurationMultiplier,
 			strTreasuryCode,
 			astrGovvieTenor,
