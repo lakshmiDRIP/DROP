@@ -61,6 +61,7 @@ public class BondReplicator {
 	private double[] _adblFixFloatQuote = null;
 	private double _dblFX = java.lang.Double.NaN;
 	private java.lang.String _strGovvieCode = "";
+	private boolean _bMarketPriceCreditMetrics = false;
 	private java.lang.String[] _astrCreditTenor = null;
 	private java.lang.String[] _astrGovvieTenor = null;
 	private double _dblTenorBump = java.lang.Double.NaN;
@@ -175,6 +176,7 @@ public class BondReplicator {
 				strGovvieCode,
 				astrGovvieTenor,
 				adblGovvieQuote,
+				true,
 				astrCreditTenor,
 				adblCreditQuote,
 				dblFX,
@@ -209,6 +211,7 @@ public class BondReplicator {
 	 * @param strGovvieCode Govvie Code
 	 * @param astrGovvieTenor Array of Govvie Tenor
 	 * @param adblGovvieQuote Array of Govvie Quotes
+	 * @param bMarketPriceCreditMetrics Generate the Credit Metrics from the Market Price
 	 * @param astrCreditTenor Array of Credit Tenors
 	 * @param adblCreditQuote Array of Credit Quotes
 	 * @param dblFX FX Rate Applicable
@@ -237,6 +240,7 @@ public class BondReplicator {
 		final java.lang.String strGovvieCode,
 		final java.lang.String[] astrGovvieTenor,
 		final double[] adblGovvieQuote,
+		final boolean bMarketPriceCreditMetrics,
 		final java.lang.String[] astrCreditTenor,
 		final double[] adblCreditQuote,
 		final double dblFX,
@@ -267,6 +271,7 @@ public class BondReplicator {
 		_astrFixFloatTenor = astrFixFloatTenor;
 		_dblCustomYieldBump = dblCustomYieldBump;
 		_dblCustomCreditBasisBump = dblCustomCreditBasisBump;
+		_bMarketPriceCreditMetrics = bMarketPriceCreditMetrics;
 		_dblSpreadDurationMultiplier = dblSpreadDurationMultiplier;
 
 		java.lang.String strCurrency = _bond.currency();
@@ -417,50 +422,53 @@ public class BondReplicator {
 				throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
 		}
 
-		org.drip.state.identifier.CreditLabel cl = _bond.creditLabel();
+		if (_bMarketPriceCreditMetrics) {
+			org.drip.state.identifier.CreditLabel cl = _bond.creditLabel();
 
-		if (null != cl) {
-			java.lang.String strReferenceEntity = cl.referenceEntity();
+			if (null != cl) {
+				java.lang.String strReferenceEntity = cl.referenceEntity();
 
-			if (null == (_csqcCreditBase = org.drip.param.creator.MarketParamsBuilder.Create (mdfc, gc,
-				org.drip.service.template.LatentMarketStateBuilder.CreditCurve (_dtSpot, strReferenceEntity,
-					_astrCreditTenor, _adblCreditQuote, _adblCreditQuote, "FairPremium", mdfc), null, null,
-						null, null)))
-				throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
-
-			if (_bond.isFloater() && !_csqcCreditBase.setFixing (_iResetDate, fl, _dblResetRate))
-				throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
-
-			if (null == (_csqcCredit01Up = org.drip.param.creator.MarketParamsBuilder.Create (mdfc, gc,
-				org.drip.service.template.LatentMarketStateBuilder.CreditCurve (_dtSpot, strReferenceEntity,
-					_astrCreditTenor, _adblCreditQuote, org.drip.analytics.support.Helper.ParallelNodeBump
-						(_adblCreditQuote, _dblTenorBump), "FairPremium", mdfc), null, null, null, null)))
-				throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
-
-			if (_bond.isFloater() && !_csqcCredit01Up.setFixing (_iResetDate, fl, _dblResetRate))
-				throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
-
-			java.util.Map<java.lang.String, org.drip.state.credit.CreditCurve> mapTenorCredit =
-				org.drip.service.template.LatentMarketStateBuilder.BumpedCreditCurve (_dtSpot,
-					strReferenceEntity, _astrCreditTenor, _adblCreditQuote, _adblCreditQuote, "FairPremium",
-						mdfc, _dblTenorBump, false);
-
-			if (null == mapTenorCredit)
-				throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
-
-			for (java.util.Map.Entry<java.lang.String, org.drip.state.credit.CreditCurve> meTenorCredit :
-				mapTenorCredit.entrySet()) {
-				org.drip.param.market.CurveSurfaceQuoteContainer csqcCreditTenor =
-					org.drip.param.creator.MarketParamsBuilder.Create (mdfc, gc, meTenorCredit.getValue(),
-						null, null, null, null);
-
-				if (null == csqcCreditTenor)
+				if (null == (_csqcCreditBase = org.drip.param.creator.MarketParamsBuilder.Create (mdfc, gc,
+					org.drip.service.template.LatentMarketStateBuilder.CreditCurve (_dtSpot,
+						strReferenceEntity, _astrCreditTenor, _adblCreditQuote, _adblCreditQuote,
+							"FairPremium", mdfc), null, null, null, null)))
 					throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
 
-				_mapCSQCCredit.put (meTenorCredit.getKey(), csqcCreditTenor);
-
-				if (_bond.isFloater() && !csqcCreditTenor.setFixing (_iResetDate, fl, _dblResetRate))
+				if (_bond.isFloater() && !_csqcCreditBase.setFixing (_iResetDate, fl, _dblResetRate))
 					throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
+
+				if (null == (_csqcCredit01Up = org.drip.param.creator.MarketParamsBuilder.Create (mdfc, gc,
+					org.drip.service.template.LatentMarketStateBuilder.CreditCurve (_dtSpot,
+						strReferenceEntity, _astrCreditTenor, _adblCreditQuote,
+							org.drip.analytics.support.Helper.ParallelNodeBump (_adblCreditQuote,
+								_dblTenorBump), "FairPremium", mdfc), null, null, null, null)))
+					throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
+
+				if (_bond.isFloater() && !_csqcCredit01Up.setFixing (_iResetDate, fl, _dblResetRate))
+					throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
+
+				java.util.Map<java.lang.String, org.drip.state.credit.CreditCurve> mapTenorCredit =
+					org.drip.service.template.LatentMarketStateBuilder.BumpedCreditCurve (_dtSpot,
+						strReferenceEntity, _astrCreditTenor, _adblCreditQuote, _adblCreditQuote,
+							"FairPremium", mdfc, _dblTenorBump, false);
+
+				if (null == mapTenorCredit)
+					throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
+
+				for (java.util.Map.Entry<java.lang.String, org.drip.state.credit.CreditCurve> meTenorCredit :
+					mapTenorCredit.entrySet()) {
+					org.drip.param.market.CurveSurfaceQuoteContainer csqcCreditTenor =
+						org.drip.param.creator.MarketParamsBuilder.Create (mdfc, gc,
+							meTenorCredit.getValue(), null, null, null, null);
+
+					if (null == csqcCreditTenor)
+						throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
+
+					_mapCSQCCredit.put (meTenorCredit.getKey(), csqcCreditTenor);
+
+					if (_bond.isFloater() && !csqcCreditTenor.setFixing (_iResetDate, fl, _dblResetRate))
+						throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
+				}
 			}
 		}
 	}
@@ -650,6 +658,17 @@ public class BondReplicator {
 	public double[] govvieQuote()
 	{
 		return _adblGovvieQuote;
+	}
+
+	/**
+	 * Retrieve the Flag that indicates the Generation the Credit Metrics from the Market Price
+	 * 
+	 * @return TRUE - Generate the Credit Metrics from the Market Price
+	 */
+
+	public boolean creditMetricsFromMarketPrice()
+	{
+		return _bMarketPriceCreditMetrics;
 	}
 
 	/**
@@ -1114,25 +1133,28 @@ public class BondReplicator {
 		}
 
 		try {
-			dblCreditBasisToExercise = _bond.creditBasisFromPrice (_valParams, _csqcCreditBase, null,
-				iWorkoutDate, dblWorkoutFactor, _dblCurrentPrice);
+			if (null != _csqcCreditBase)
+				dblCreditBasisToExercise = _bond.creditBasisFromPrice (_valParams, _csqcCreditBase, null,
+					iWorkoutDate, dblWorkoutFactor, _dblCurrentPrice);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
-			dblParCreditBasisToExercise = _bond.creditBasisFromPrice (_valParams, _csqcCreditBase, null,
-				iWorkoutDate, dblWorkoutFactor, _dblIssuePrice);
+			if (null != _csqcCreditBase)
+				dblParCreditBasisToExercise = _bond.creditBasisFromPrice (_valParams, _csqcCreditBase, null,
+					iWorkoutDate, dblWorkoutFactor, _dblIssuePrice);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
-			dblEffectiveDurationAdjusted = 0.5 * (_bond.priceFromCreditBasis (_valParams, _csqcCreditBase,
-				null, iWorkoutDate, dblWorkoutFactor, dblCreditBasisToExercise - _dblCustomCreditBasisBump) -
-					_bond.priceFromCreditBasis (_valParams, _csqcCreditBase, null, iWorkoutDate,
-						dblWorkoutFactor, dblCreditBasisToExercise + _dblCustomCreditBasisBump)) /
-							_dblCurrentPrice / _dblCustomCreditBasisBump;
+			if (null != _csqcCreditBase)
+				dblEffectiveDurationAdjusted = 0.5 * (_bond.priceFromCreditBasis (_valParams,
+					_csqcCreditBase, null, iWorkoutDate, dblWorkoutFactor, dblCreditBasisToExercise -
+						_dblCustomCreditBasisBump) - _bond.priceFromCreditBasis (_valParams, _csqcCreditBase,
+							null, iWorkoutDate, dblWorkoutFactor, dblCreditBasisToExercise +
+								_dblCustomCreditBasisBump)) / _dblCurrentPrice / _dblCustomCreditBasisBump;
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -1149,8 +1171,9 @@ public class BondReplicator {
 		}
 
 		try {
-			dblCV01 = _dblCurrentPrice - _bond.priceFromCreditBasis (_valParams, _csqcCredit01Up, null,
-				iWorkoutDate, dblWorkoutFactor, dblCreditBasisToExercise);
+			if (null != _csqcCredit01Up)
+				dblCV01 = _dblCurrentPrice - _bond.priceFromCreditBasis (_valParams, _csqcCredit01Up, null,
+					iWorkoutDate, dblWorkoutFactor, dblCreditBasisToExercise);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -1214,8 +1237,9 @@ public class BondReplicator {
 		}
 
 		try {
-			dblWALLossOnlyToExercise = _bond.weightedAverageLifeLossOnly (_valParams, _csqcCreditBase,
-				iWorkoutDate, dblWorkoutFactor);
+			if (null != _csqcCreditBase)
+				dblWALLossOnlyToExercise = _bond.weightedAverageLifeLossOnly (_valParams, _csqcCreditBase,
+					iWorkoutDate, dblWorkoutFactor);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -1228,8 +1252,9 @@ public class BondReplicator {
 		}
 
 		try {
-			dblWALCreditToExercise = _bond.weightedAverageLifeCredit (_valParams, _csqcCreditBase,
-				iWorkoutDate, dblWorkoutFactor);
+			if (null != _csqcCreditBase)
+				dblWALCreditToExercise = _bond.weightedAverageLifeCredit (_valParams, _csqcCreditBase,
+					iWorkoutDate, dblWorkoutFactor);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -1307,19 +1332,21 @@ public class BondReplicator {
 							_dblIssuePrice / _dblTenorBump);
 			}
 
-			for (java.util.Map.Entry<java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer>
-				meCSQC : _mapCSQCCredit.entrySet()) {
-				java.lang.String strKey = meCSQC.getKey();
+			if (null != _mapCSQCCredit) {
+				for (java.util.Map.Entry<java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer>
+					meCSQC : _mapCSQCCredit.entrySet()) {
+					java.lang.String strKey = meCSQC.getKey();
 
-				org.drip.param.market.CurveSurfaceQuoteContainer csqcTenor = meCSQC.getValue();
+					org.drip.param.market.CurveSurfaceQuoteContainer csqcTenor = meCSQC.getValue();
 
-				mapCreditKRD.put (strKey, (_dblCurrentPrice - _bond.priceFromCreditBasis (_valParams,
-					csqcTenor, null, iWorkoutDate, dblWorkoutFactor, dblCreditBasisToExercise)) /
-						_dblCurrentPrice);
+					mapCreditKRD.put (strKey, (_dblCurrentPrice - _bond.priceFromCreditBasis (_valParams,
+						csqcTenor, null, iWorkoutDate, dblWorkoutFactor, dblCreditBasisToExercise)) /
+							_dblCurrentPrice);
 
-				mapCreditKPRD.put (strKey, (_dblIssuePrice - _bond.priceFromCreditBasis (_valParams,
-					csqcTenor, null, iWorkoutDate, dblWorkoutFactor, dblParCreditBasisToExercise)) /
-						_dblIssuePrice);
+					mapCreditKPRD.put (strKey, (_dblIssuePrice - _bond.priceFromCreditBasis (_valParams,
+						csqcTenor, null, iWorkoutDate, dblWorkoutFactor, dblParCreditBasisToExercise)) /
+							_dblIssuePrice);
+				}
 			}
 
 			if (!arr.addNamedField (new org.drip.service.scenario.NamedField ("Price", _dblCurrentPrice)))
@@ -1501,10 +1528,13 @@ public class BondReplicator {
 		}
 
 		try {
-			arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap ("Credit KRD", mapCreditKRD));
+			if (null != mapCreditKRD)
+				arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap ("Credit KRD",
+					mapCreditKRD));
 
-			arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap ("Credit KPRD",
-				mapCreditKPRD));
+			if (null != mapCreditKPRD)
+				arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap ("Credit KPRD",
+					mapCreditKPRD));
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
