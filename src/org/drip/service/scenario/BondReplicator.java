@@ -374,11 +374,6 @@ public class BondReplicator {
 			_mapCSQCFundingUp.put (strKey, csqcFundingTenorUp);
 
 			_mapCSQCFundingDown.put (strKey, csqcFundingTenorDown);
-
-			if (_bond.isFloater() && (!csqcFundingTenorUp.setFixing (_iResetDate, fl, _dblResetRate + 0.0001
-				* _dblTenorBump) || !csqcFundingTenorDown.setFixing (_iResetDate, fl, _dblResetRate - 0.0001
-					* _dblTenorBump)))
-				throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
 		}
 
 		java.util.Map<java.lang.String, org.drip.state.govvie.GovvieCurve> mapTenorGovvieUp =
@@ -471,10 +466,14 @@ public class BondReplicator {
 					throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
 			}
 		} else {
+			org.drip.param.definition.CalibrationParams cp = new org.drip.param.definition.CalibrationParams
+				("Price", 0, _bond.exerciseYieldFromPrice (_valParams, _csqcFundingBase, null,
+					_dblCurrentPrice));
+
 			org.drip.state.credit.CreditCurve ccBase =
 				org.drip.state.creator.ScenarioCreditCurveBuilder.Custom (strReferenceEntity, _dtSpot, new
 					org.drip.product.definition.CalibratableComponent[] {bond}, mdfc, new double[]
-						{_dblCurrentPrice}, new java.lang.String[] {"FairPrice"}, 0.40, false);
+						{_dblCurrentPrice}, new java.lang.String[] {"FairPrice"}, 0.40, false, cp);
 
 			if (null == ccBase || null == (_csqcCreditBase =
 				org.drip.param.creator.MarketParamsBuilder.Create (mdfc, gc, ccBase, null, null, null,
@@ -949,6 +948,8 @@ public class BondReplicator {
 		double dblModifiedDurationToExercise = java.lang.Double.NaN;
 		double dblModifiedDurationToMaturity = java.lang.Double.NaN;
 		double dblWALPrincipalOnlyToExercise = java.lang.Double.NaN;
+		java.util.Map<java.lang.String, java.lang.Double> mapCreditKRD = null;
+		java.util.Map<java.lang.String, java.lang.Double> mapCreditKPRD = null;
 
 		int iSpotDate = _dtSpot.julian();
 
@@ -983,9 +984,6 @@ public class BondReplicator {
 
 		java.util.Map<java.lang.String, java.lang.Double> mapGovvieKPRD = new
 			org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
-
-		java.util.Map<java.lang.String, java.lang.Double> mapCreditKRD = null;
-		java.util.Map<java.lang.String, java.lang.Double> mapCreditKPRD = null;
 
 		try {
 			if (null != eosCall) {

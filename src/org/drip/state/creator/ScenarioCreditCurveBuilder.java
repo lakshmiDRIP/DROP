@@ -90,6 +90,38 @@ public class ScenarioCreditCurveBuilder {
 	 * @param astrCalibMeasure Array of calibration Measures
 	 * @param dblRecovery Recovery Rate
 	 * @param bFlat Whether the Calibration is based off of a flat spread
+	 * @param cp The Calibration Parameters
+	 * 
+	 * @return The cooked Credit Curve
+	 */
+
+	public static final org.drip.state.credit.CreditCurve Custom (
+		final java.lang.String strName,
+		final org.drip.analytics.date.JulianDate dtSpot,
+		final org.drip.product.definition.CalibratableComponent[] aCalibInst,
+		final org.drip.state.discount.MergedDiscountForwardCurve dc,
+		final double[] adblCalibQuote,
+		final java.lang.String[] astrCalibMeasure,
+		final double dblRecovery,
+		final boolean bFlat,
+		final org.drip.param.definition.CalibrationParams cp)
+	{
+		return null == dtSpot ? null : org.drip.state.boot.CreditCurveScenario.Standard (strName,
+			org.drip.param.valuation.ValuationParams.Spot (dtSpot.julian()), aCalibInst, adblCalibQuote,
+				astrCalibMeasure, dblRecovery, bFlat, dc, null, null, null);
+	}
+
+	/**
+	 * Calibrate the base credit curve from the input credit instruments, measures, and the quotes
+	 * 
+	 * @param strName Credit Curve Name
+	 * @param dtSpot Spot Date
+	 * @param aCalibInst Array of calibration instruments
+	 * @param dc Discount Curve
+	 * @param adblCalibQuote Array of Instrument Quotes
+	 * @param astrCalibMeasure Array of calibration Measures
+	 * @param dblRecovery Recovery Rate
+	 * @param bFlat Whether the Calibration is based off of a flat spread
 	 * 
 	 * @return The cooked Credit Curve
 	 */
@@ -104,9 +136,8 @@ public class ScenarioCreditCurveBuilder {
 		final double dblRecovery,
 		final boolean bFlat)
 	{
-		return null == dtSpot ? null : org.drip.state.boot.CreditCurveScenario.Standard (strName,
-			org.drip.param.valuation.ValuationParams.Spot (dtSpot.julian()), aCalibInst, adblCalibQuote,
-				astrCalibMeasure, dblRecovery, bFlat, dc, null, null, null);
+		return Custom (strName, dtSpot, aCalibInst, dc, adblCalibQuote, astrCalibMeasure, dblRecovery, bFlat,
+			null);
 	}
 
 	/**
