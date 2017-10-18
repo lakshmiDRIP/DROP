@@ -114,6 +114,7 @@ public class CreditCurveScenario {
 	 * @param gc Govvie Curve
 	 * @param lsfc Latent State Fixings Container
 	 * @param vcp Valuation Customization Parameters
+	 * @param cp The Calibration Parameters
 	 * 
 	 * @return CreditCurve Instance
 	 */
@@ -129,7 +130,8 @@ public class CreditCurveScenario {
 		final org.drip.state.discount.MergedDiscountForwardCurve dc,
 		final org.drip.state.govvie.GovvieCurve gc,
 		final org.drip.param.market.LatentStateFixingsContainer lsfc,
-		final org.drip.param.valuation.ValuationCustomizationParams vcp)
+		final org.drip.param.valuation.ValuationCustomizationParams vcp,
+		final org.drip.param.definition.CalibrationParams cp)
 	{
 		if (null == valParams || null == aCalibInst || null == adblCalibQuote || null == astrCalibMeasure ||
 			null == dc)
@@ -164,7 +166,7 @@ public class CreditCurveScenario {
 			if (null == tqm) return null;
 
 			if (!org.drip.state.nonlinear.NonlinearCurveBuilder.CreditCurve (valParams, aCalibInst[i],
-				tqm._dblQuote, tqm._strMeasure, bFlat, i, ebcc, dc, gc, pricerParams, lsfc, vcp))
+				tqm._dblQuote, tqm._strMeasure, bFlat, i, ebcc, dc, gc, pricerParams, lsfc, vcp, cp))
 				return null;
 		}
 
@@ -224,7 +226,7 @@ public class CreditCurveScenario {
 				adblTenorQuote[j] += (j == i ? dblBump : 0.);
 
 			if (null == (aCreditCurve[i] = Standard (strName, valParams, aCalibInst, adblTenorQuote,
-				astrCalibMeasure, dblRecovery, bFlat, dc, gc, lsfc, vcp)))
+				astrCalibMeasure, dblRecovery, bFlat, dc, gc, lsfc, vcp, null)))
 				return null;
 		}
 
@@ -286,7 +288,7 @@ public class CreditCurveScenario {
 				adblTenorQuote[j] = adblCalibQuote[j] + (j == i ? dblBump : 0.);
 
 			if (null == (cc = Standard (strName, valParams, aCalibInst, adblTenorQuote, astrCalibMeasure,
-				dblRecovery, bFlat, dc, gc, lsfc, vcp)))
+				dblRecovery, bFlat, dc, gc, lsfc, vcp, null)))
 				return null;
 
 			mapTenorCreditCurve.put (org.drip.analytics.date.DateUtil.YYYYMMDD

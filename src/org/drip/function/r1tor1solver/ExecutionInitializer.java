@@ -355,7 +355,8 @@ public class ExecutionInitializer {
 
 		int iNumExpansions = bcp.getNumExpansions();
 
-		org.drip.function.r1tor1solver.BracketingOutput bop = new org.drip.function.r1tor1solver.BracketingOutput();
+		org.drip.function.r1tor1solver.BracketingOutput bop = new
+			org.drip.function.r1tor1solver.BracketingOutput();
 
 		StartingVariateOF sv = initializeBracketingVariate (iNumExpansions, getStartingBracketVariate (bcp,
 			ih), getStartingBracketWidth (bcp, ih), bcp.getBracketWidthExpansionFactor(), bop);

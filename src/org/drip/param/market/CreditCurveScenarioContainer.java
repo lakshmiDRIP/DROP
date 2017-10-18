@@ -176,20 +176,20 @@ public class CreditCurveScenarioContainer {
 		final int iScenario)
 	{
 		if (null == (_ccBase = org.drip.state.boot.CreditCurveScenario.Standard (strName, valParams,
-			_aCalibInst, adblQuote, astrCalibMeasure, dblRecovery, bFlat, dc, gc, lsfc, vcp)))
+			_aCalibInst, adblQuote, astrCalibMeasure, dblRecovery, bFlat, dc, gc, lsfc, vcp, null)))
 			return false;
 
 		if (0 != (org.drip.param.market.CreditCurveScenarioContainer.CC_FLAT_UP & iScenario)) {
 			if (null == (_ccBumpUp = org.drip.state.boot.CreditCurveScenario.Standard (strName, valParams,
-				_aCalibInst, org.drip.analytics.support.Helper.BumpQuotes (adblQuote,
-					_dblCouponBump, false), astrCalibMeasure, dblRecovery, bFlat, dc, gc, lsfc, vcp)))
+				_aCalibInst, org.drip.analytics.support.Helper.BumpQuotes (adblQuote, _dblCouponBump, false),
+					astrCalibMeasure, dblRecovery, bFlat, dc, gc, lsfc, vcp, null)))
 				return false;
 		}
 
 		if (0 != (org.drip.param.market.CreditCurveScenarioContainer.CC_FLAT_DN & iScenario)) {
 			if (null == (_ccBumpDn = org.drip.state.boot.CreditCurveScenario.Standard (strName, valParams,
 				_aCalibInst, org.drip.analytics.support.Helper.BumpQuotes (adblQuote, -_dblCouponBump,
-					false), astrCalibMeasure, dblRecovery, bFlat, dc, gc, lsfc, vcp)))
+					false), astrCalibMeasure, dblRecovery, bFlat, dc, gc, lsfc, vcp, null)))
 				return false;
 		}
 
@@ -210,14 +210,14 @@ public class CreditCurveScenarioContainer {
 		if (0 != (org.drip.param.market.CreditCurveScenarioContainer.CC_RR_FLAT_UP & iScenario)) {
 			if (null == (_ccRecoveryUp = org.drip.state.boot.CreditCurveScenario.Standard (strName,
 				valParams, _aCalibInst, adblQuote, astrCalibMeasure, dblRecovery + _dblRecoveryBump, bFlat,
-					dc, gc, lsfc, vcp)))
+					dc, gc, lsfc, vcp, null)))
 				return false;
 		}
 
 		if (0 != (org.drip.param.market.CreditCurveScenarioContainer.CC_RR_FLAT_DN & iScenario)) {
 			if (null == (_ccRecoveryDn = org.drip.state.boot.CreditCurveScenario.Standard (strName,
 				valParams, _aCalibInst, adblQuote, astrCalibMeasure, dblRecovery - _dblRecoveryBump, bFlat,
-					dc, gc, lsfc, vcp)))
+					dc, gc, lsfc, vcp, null)))
 				return false;
 		}
 
@@ -271,7 +271,7 @@ public class CreditCurveScenarioContainer {
 
 		org.drip.state.credit.CreditCurve ccBaseCustom = org.drip.state.boot.CreditCurveScenario.Standard
 			(strName, valParams, _aCalibInst, adblQuote, astrCalibMeasure, dblRecovery, bFlat, null == dcAdj
-				? dc : dcAdj, null == gcAdj ? gc : gcAdj, lsfc, vcp);
+				? dc : dcAdj, null == gcAdj ? gc : gcAdj, lsfc, vcp, null);
 
 		if (null == ccBaseCustom) return false;
 

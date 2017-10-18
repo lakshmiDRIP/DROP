@@ -108,7 +108,7 @@ public class ScenarioCreditCurveBuilder {
 	{
 		return null == dtSpot ? null : org.drip.state.boot.CreditCurveScenario.Standard (strName,
 			org.drip.param.valuation.ValuationParams.Spot (dtSpot.julian()), aCalibInst, adblCalibQuote,
-				astrCalibMeasure, dblRecovery, bFlat, dc, null, null, null);
+				astrCalibMeasure, dblRecovery, bFlat, dc, null, null, null, cp);
 	}
 
 	/**

@@ -86,11 +86,12 @@ public class NonlinearCurveBuilder {
 		private java.lang.String _strCalibMeasure = "";
 		private double _dblCalibValue = java.lang.Double.NaN;
 		private org.drip.state.govvie.GovvieCurve _gc = null;
-		private org.drip.state.discount.MergedDiscountForwardCurve _dc = null;
+		private org.drip.param.definition.CalibrationParams _cp = null;
 		private org.drip.product.definition.Component _calibComp = null;
 		private org.drip.param.valuation.ValuationParams _valParams = null;
 		private org.drip.state.credit.ExplicitBootCreditCurve _ebcc = null;
 		private org.drip.param.pricer.CreditPricerParams _pricerParams = null;
+		private org.drip.state.discount.MergedDiscountForwardCurve _dc = null;
 		private org.drip.param.market.LatentStateFixingsContainer _lsfc = null;
 		private org.drip.param.valuation.ValuationCustomizationParams _vcp = null;
 
@@ -106,7 +107,8 @@ public class NonlinearCurveBuilder {
 			final org.drip.state.govvie.GovvieCurve gc,
 			final org.drip.param.pricer.CreditPricerParams pricerParams,
 			final org.drip.param.market.LatentStateFixingsContainer lsfc,
-			final org.drip.param.valuation.ValuationCustomizationParams vcp)
+			final org.drip.param.valuation.ValuationCustomizationParams vcp,
+			final org.drip.param.definition.CalibrationParams cp)
 			throws java.lang.Exception
 		{
 			super (null);
@@ -123,9 +125,11 @@ public class NonlinearCurveBuilder {
 			_strCalibMeasure = strCalibMeasure;
 			_iCurveSegmentIndex = iCurveSegmentIndex;
 
-			_pricerParams = new org.drip.param.pricer.CreditPricerParams (pricerParams.unitSize(), new
-				org.drip.param.definition.CalibrationParams (strCalibMeasure, 0, null),
-					pricerParams.survivalToPayDate(), pricerParams.discretizationScheme());
+			if (null == (_cp = cp))
+				_cp = new org.drip.param.definition.CalibrationParams (strCalibMeasure, 0, null);
+
+			_pricerParams = new org.drip.param.pricer.CreditPricerParams (pricerParams.unitSize(), _cp,
+				pricerParams.survivalToPayDate(), pricerParams.discretizationScheme());
 		}
 
 		@Override public double evaluate (
@@ -158,6 +162,7 @@ public class NonlinearCurveBuilder {
 	 * @param pricerParams Input Pricer Parameters
 	 * @param lsfc The Latent State Fixings Container
 	 * @param vcp Valuation Customization Parameters
+	 * @param cp The Calibration Parameters
 	 * 
 	 * @return The successfully calibrated State Hazard Rate Point
 	 */
@@ -174,13 +179,14 @@ public class NonlinearCurveBuilder {
 		final org.drip.state.govvie.GovvieCurve gc,
 		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.LatentStateFixingsContainer lsfc,
-		final org.drip.param.valuation.ValuationCustomizationParams vcp)
+		final org.drip.param.valuation.ValuationCustomizationParams vcp,
+		final org.drip.param.definition.CalibrationParams cp)
 	{
 		try {
 			org.drip.function.r1tor1solver.FixedPointFinderOutput rfop = new
 				org.drip.function.r1tor1solver.FixedPointFinderZheng (0., new CreditCurveCalibrator
 					(valParams, calibComp, dblCalibValue, strCalibMeasure, bFlat, iCurveSegmentIndex, ebcc,
-						dc, gc, pricerParams, lsfc, vcp), true).findRoot();
+						dc, gc, pricerParams, lsfc, vcp, cp), true).findRoot();
 
 			return null != rfop && rfop.containsRoot();
 		} catch (java.lang.Exception e) {

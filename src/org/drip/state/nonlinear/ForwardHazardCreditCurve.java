@@ -233,7 +233,7 @@ public class ForwardHazardCreditCurve extends org.drip.state.credit.ExplicitBoot
 			try {
 				org.drip.state.nonlinear.NonlinearCurveBuilder.CreditCurve (_valParam, _aCalibInst[i],
 					adblCalibQuote[i] = _adblCalibQuote[i] + dblShift, _astrCalibMeasure[i], _bFlat, i, cc,
-						_dc, _gc, _pricerParam, _lsfc, _quotingParams);
+						_dc, _gc, _pricerParam, _lsfc, _quotingParams, null);
 			} catch (java.lang.Exception e) {
 				e.printStackTrace();
 
@@ -279,7 +279,7 @@ public class ForwardHazardCreditCurve extends org.drip.state.credit.ExplicitBoot
 				org.drip.state.nonlinear.NonlinearCurveBuilder.CreditCurve (_valParam, _aCalibInst[i],
 					adblCalibQuote[i] = _adblCalibQuote[i] + (i == iSpanIndex ? dblShift : 0.),
 						_astrCalibMeasure[i], _bFlat, i, cc, _dc, _gc, _pricerParam, _lsfc,
-							_quotingParams);
+							_quotingParams, null);
 			} catch (java.lang.Exception e) {
 				e.printStackTrace();
 
@@ -326,7 +326,7 @@ public class ForwardHazardCreditCurve extends org.drip.state.credit.ExplicitBoot
 			try {
 				org.drip.state.nonlinear.NonlinearCurveBuilder.CreditCurve (_valParam, _aCalibInst[i],
 					dblFlatNodeValue, _astrCalibMeasure[i], true, i, cc, _dc, _gc, _pricerParam, _lsfc,
-						_quotingParams);
+						_quotingParams, null);
 			} catch (java.lang.Exception e) {
 				e.printStackTrace();
 
@@ -428,7 +428,7 @@ public class ForwardHazardCreditCurve extends org.drip.state.credit.ExplicitBoot
 					try {
 						org.drip.state.nonlinear.NonlinearCurveBuilder.CreditCurve (_valParam,
 							_aCalibInst[i], adblQuoteBumped[i], _astrCalibMeasure[i], _bFlat, i, cc, _dc,
-								_gc, _pricerParam, _lsfc, _quotingParams);
+								_gc, _pricerParam, _lsfc, _quotingParams, null);
 					} catch (java.lang.Exception e) {
 						e.printStackTrace();
 

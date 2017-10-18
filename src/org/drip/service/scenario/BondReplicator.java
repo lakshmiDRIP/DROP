@@ -466,14 +466,13 @@ public class BondReplicator {
 					throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
 			}
 		} else {
-			org.drip.param.definition.CalibrationParams cp = new org.drip.param.definition.CalibrationParams
-				("Price", 0, _bond.exerciseYieldFromPrice (_valParams, _csqcFundingBase, null,
-					_dblCurrentPrice));
-
 			org.drip.state.credit.CreditCurve ccBase =
 				org.drip.state.creator.ScenarioCreditCurveBuilder.Custom (strReferenceEntity, _dtSpot, new
 					org.drip.product.definition.CalibratableComponent[] {bond}, mdfc, new double[]
-						{_dblCurrentPrice}, new java.lang.String[] {"FairPrice"}, 0.40, false, cp);
+						{_dblCurrentPrice}, new java.lang.String[] {"Price"}, 0.40, false, new
+							org.drip.param.definition.CalibrationParams ("Price", 0,
+								_bond.exerciseYieldFromPrice (_valParams, _csqcFundingBase, null,
+									_dblCurrentPrice)));
 
 			if (null == ccBase || null == (_csqcCreditBase =
 				org.drip.param.creator.MarketParamsBuilder.Create (mdfc, gc, ccBase, null, null, null,
