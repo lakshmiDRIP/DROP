@@ -3,15 +3,13 @@ package org.drip.sample.bondmetrics;
 
 import org.drip.analytics.cashflow.*;
 import org.drip.analytics.date.*;
-import org.drip.param.creator.MarketParamsBuilder;
 import org.drip.param.market.CurveSurfaceQuoteContainer;
 import org.drip.param.valuation.ValuationParams;
 import org.drip.product.creator.BondBuilder;
 import org.drip.product.credit.BondComponent;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.service.scenario.BondReplicationRun;
-import org.drip.service.scenario.BondReplicator;
+import org.drip.service.scenario.*;
 import org.drip.service.template.LatentMarketStateBuilder;
 import org.drip.state.discount.MergedDiscountForwardCurve;
 import org.drip.state.identifier.ForwardLabel;
@@ -210,7 +208,7 @@ public class Udaipur {
 			"Udaipur",
 			"USD",
 			"USD-3M",
-			"",
+			"Udaipur",
 			dblSpread,
 			4,
 			"Act/360",
@@ -238,15 +236,38 @@ public class Udaipur {
 			"SwapRate"
 		);
 
-		CurveSurfaceQuoteContainer csqc = MarketParamsBuilder.Create (
-			mdfc,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null
+		BondReplicator abr = BondReplicator.Standard (
+			dblCleanPrice,
+			dblIssuePrice,
+			dblIssueAmount,
+			dtSpot,
+			astrDepositTenor,
+			adblDepositQuote,
+			adblFuturesQuote,
+			astrFixFloatTenor,
+			adblFixFloatQuote,
+			dblSpreadBump,
+			dblSpreadDurationMultiplier,
+			strTreasuryCode,
+			astrGovvieTenor,
+			adblGovvieYield,
+			astrCreditTenor,
+			adblCreditQuote,
+			dblFX,
+			dblResetRate,
+			iSettleLag,
+			bond
 		);
+
+		BondReplicationRun abrr = abr.generateRun();
+
+		System.out.println (abrr.display());
+
+		System.out.println ("\t||----------------------------------------------------------------------------------------------------------------------||");
+
+		System.out.println();
+
+		CurveSurfaceQuoteContainer csqc = abr.creditBaseCSQC();
 
 		ForwardLabel fl = bond.floaterSetting().fri();
 
@@ -273,8 +294,6 @@ public class Udaipur {
 				dblYield
 			)
 		);
-
-		System.out.println();
 
 		System.out.println ("\t||----------------------------------------------------------------------------------------------------------------------||");
 
@@ -355,32 +374,5 @@ public class Udaipur {
 		System.out.println ("\t||----------------------------------------------------------------------------------------------------------------------||");
 
 		System.out.println();
-
-		BondReplicator abr = BondReplicator.Standard (
-			dblCleanPrice,
-			dblIssuePrice,
-			dblIssueAmount,
-			dtSpot,
-			astrDepositTenor,
-			adblDepositQuote,
-			adblFuturesQuote,
-			astrFixFloatTenor,
-			adblFixFloatQuote,
-			dblSpreadBump,
-			dblSpreadDurationMultiplier,
-			strTreasuryCode,
-			astrGovvieTenor,
-			adblGovvieYield,
-			astrCreditTenor,
-			adblCreditQuote,
-			dblFX,
-			dblResetRate,
-			iSettleLag,
-			bond
-		);
-
-		BondReplicationRun abrr = abr.generateRun();
-
-		System.out.println (abrr.display());
 	}
 }

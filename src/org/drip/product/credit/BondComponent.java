@@ -406,7 +406,9 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 			double dblCouponNotional = dblPeriodStartNotional;
 
-			if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END == iPeriodAmortizationMode)
+			if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_START == iPeriodAmortizationMode)
+				dblCouponNotional = dblPeriodStartNotional;
+			else if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END == iPeriodAmortizationMode)
 				dblCouponNotional = dblPeriodEndNotional;
 			else if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_EFFECTIVE ==
 				iPeriodAmortizationMode)
@@ -417,8 +419,8 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 			dblCumulativePeriodPV += (period.accrualDCF (iPeriodEndDate) * (bApplyFlatForwardRate ?
 				dblFlatForwardRate : cpcm.rate() + (bApplyCouponExtension ?
-					_couponSetting.couponRateExtension() : 0.)) * dblCouponNotional + dblPeriodStartNotional
-						- dblPeriodEndNotional) * dblYieldAnnuity;
+					_couponSetting.couponRateExtension() : 0.)) * couponFactor (iPeriodEndDate) *
+						dblCouponNotional + dblPeriodStartNotional - dblPeriodEndNotional) * dblYieldAnnuity;
 
 			if (bTerminateCouponFlow) break;
 		}
@@ -756,7 +758,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 				}
 
 				double dblPeriodCreditRisklessDirtyDV01 = 0.0001 * period.accrualDCF (iPeriodEndDate) *
-					dblPeriodAnnuity * notional (iPeriodStartDate, iPeriodEndDate);
+					dblPeriodAnnuity * notional (iPeriodStartDate);
 
 				double dblPeriodCreditRiskessPrincipalPV = (notional (iPeriodStartDate) - notional
 					(iPeriodEndDate)) * dblPeriodAnnuity;
@@ -805,9 +807,13 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 				dblCreditRiskyPrincipalPV += dblPeriodCreditRiskyPrincipalPV;
 				dblCreditRisklessDirtyDV01 += dblPeriodCreditRisklessDirtyDV01;
 				dblCreditRisklessPrincipalPV += dblPeriodCreditRiskessPrincipalPV;
-				dblCreditRiskyDirtyCouponPV += 10000. * dblPeriodCoupon * dblPeriodCreditRiskyDirtyDV01;
-				dblCreditRisklessDirtyCouponPV += 10000. * dblPeriodCoupon *
+
+				dblCreditRiskyDirtyCouponPV += 10000. * dblPeriodCoupon * couponFactor (iPeriodEndDate) *
+					dblPeriodCreditRiskyDirtyDV01;
+
+				dblCreditRisklessDirtyCouponPV += 10000. * dblPeriodCoupon * couponFactor (iPeriodEndDate) *
 					dblPeriodCreditRisklessDirtyDV01;
+
 				dblCreditRiskyDirtyIndexCouponPV += 10000. * dblPeriodBaseRate *
 					dblPeriodCreditRiskyDirtyDV01;
 				dblCreditRisklessDirtyIndexCouponPV += 10000. * dblPeriodBaseRate *
@@ -1065,7 +1071,9 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 			int iPeriodAmortizationMode = _notionalSetting.periodAmortizationMode();
 
-			if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END == iPeriodAmortizationMode)
+			if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_START == iPeriodAmortizationMode)
+				dblCouponNotional = dblPeriodStartNotional;
+			else if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END == iPeriodAmortizationMode)
 				dblCouponNotional = dblPeriodEndNotional;
 			else if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_EFFECTIVE ==
 				iPeriodAmortizationMode)
@@ -1075,7 +1083,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 				dblFlatForwardRate = pcm.rate();
 
 			dblPV += period.accrualDCF (iAccrualEndDate) * dblPeriodAnnuity * (bApplyFlatForward ?
-				dblFlatForwardRate : pcm.rate()) * dblCouponNotional;
+				dblFlatForwardRate : pcm.rate()) * couponFactor (iNotionalEndDate) * dblCouponNotional;
 
 			dblPV += (dblPeriodStartNotional - dblPeriodEndNotional) * dblPeriodAnnuity;
 
@@ -1356,6 +1364,17 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 			throw new java.lang.Exception ("BondComponent::initialNotional => Bad state/inputs");
 
 		return _notionalSetting.notionalAmount();
+	}
+
+	public double couponFactor (
+		final int iDate)
+		throws java.lang.Exception
+	{
+		if (null == _couponSetting) return 1.;
+
+		org.drip.quant.common.Array2D fsCoupon = _couponSetting.factorSchedule();
+
+		return null == fsCoupon ? 1. : fsCoupon.y (iDate);
 	}
 
 	@Override public double recovery (
@@ -1955,7 +1974,8 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 				if (!org.drip.quant.common.NumberUtil.IsValid (dblCoupon))
 					throw new java.lang.Exception ("BondComponent::accrued => Invalid Coupon For " + dt);
 
-				return period.accrualDCF (iDate) * dblCoupon * notional (iEndDate);
+				return period.accrualDCF (iDate) * dblCoupon * notional (iStartDate) * couponFactor
+					(iEndDate);
 			}
 		}
 
@@ -1979,7 +1999,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 				org.drip.analytics.date.DateUtil.YYYYMMDD (iValueDate) + " greater than Work-out " +
 					org.drip.analytics.date.DateUtil.YYYYMMDD (iWorkoutDate));
 
-		double iPeriodEndDate = 0.;
+		int iPeriodEndDate = 0;
 		double dblTotalCashflow = 0.;
 		boolean bTerminateCouponFlow = false;
 		double dblTimeWeightedTotalCashflow = 0.;
@@ -2022,7 +2042,9 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 			int iPeriodAmortizationMode = _notionalSetting.periodAmortizationMode();
 
-			if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END == iPeriodAmortizationMode)
+			if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_START == iPeriodAmortizationMode)
+				dblCouponNotional = dblPeriodStartNotional;
+			else if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END == iPeriodAmortizationMode)
 				dblCouponNotional = dblPeriodEndNotional;
 			else if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_EFFECTIVE ==
 				iPeriodAmortizationMode)
@@ -2035,7 +2057,8 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 				dblFlatForwardRate = cpcm.rate();
 
 			double dblPeriodCashflow = dblPeriodTimeWidth * (bApplyFlatForward ? dblFlatForwardRate :
-				cpcm.rate()) * dblCouponNotional + dblPeriodStartNotional - dblPeriodEndNotional;
+				cpcm.rate()) * couponFactor (iPeriodEndDate) * dblCouponNotional + dblPeriodStartNotional -
+					dblPeriodEndNotional;
 
 			dblTotalCashflow += dblPeriodCashflow;
 			iPeriodEndDate += (iAccrualEndDate - iAccrualStartDate);
@@ -2119,7 +2142,9 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 			int iPeriodAmortizationMode = _notionalSetting.periodAmortizationMode();
 
-			if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END == iPeriodAmortizationMode)
+			if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_START == iPeriodAmortizationMode)
+				dblCouponNotional = dblPeriodStartNotional;
+			else if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END == iPeriodAmortizationMode)
 				dblCouponNotional = dblPeriodEndNotional;
 			else if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_EFFECTIVE ==
 				iPeriodAmortizationMode)
@@ -2132,7 +2157,8 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 				dblFlatForwardRate = cpcm.rate();
 
 			double dblPeriodCashflow = dblPeriodTimeWidth * (bApplyFlatForward ? dblFlatForwardRate :
-				cpcm.rate()) * dblCouponNotional + dblPeriodStartNotional - dblPeriodEndNotional;
+				cpcm.rate()) * couponFactor (iNotionalEndDate) * dblCouponNotional + dblPeriodStartNotional -
+					dblPeriodEndNotional;
 
 			dblTotalCashflow += dblPeriodCashflow;
 			dblPeriodEndTime += dblPeriodTimeWidth;
@@ -2287,7 +2313,9 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 			int iPeriodAmortizationMode = _notionalSetting.periodAmortizationMode();
 
-			if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END == iPeriodAmortizationMode)
+			if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_START == iPeriodAmortizationMode)
+				dblCouponNotional = dblPeriodStartNotional;
+			else if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END == iPeriodAmortizationMode)
 				dblCouponNotional = dblPeriodEndNotional;
 			else if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_EFFECTIVE ==
 				iPeriodAmortizationMode)
@@ -2300,7 +2328,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 				dblFlatForwardRate = cpcm.rate();
 
 			double dblPeriodCashflow = dblPeriodTimeWidth * (bApplyFlatForward ? dblFlatForwardRate :
-				cpcm.rate()) * dblCouponNotional;
+				cpcm.rate()) * couponFactor (iNotionalEndDate) * dblCouponNotional;
 
 			dblTotalCashflow += dblPeriodCashflow;
 			dblPeriodEndTime += dblPeriodTimeWidth;
@@ -2380,7 +2408,9 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 			int iPeriodAmortizationMode = _notionalSetting.periodAmortizationMode();
 
-			if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END == iPeriodAmortizationMode)
+			if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_START == iPeriodAmortizationMode)
+				dblCouponNotional = dblPeriodStartNotional;
+			else if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END == iPeriodAmortizationMode)
 				dblCouponNotional = dblPeriodEndNotional;
 			else if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_EFFECTIVE ==
 				iPeriodAmortizationMode)
@@ -2393,9 +2423,9 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 				dblFlatForwardRate = cpcm.rate();
 
 			double dblPeriodLossCashflow = (dblPeriodTimeWidth * (bApplyFlatForward ? dblFlatForwardRate :
-				cpcm.rate()) * dblCouponNotional + dblPeriodStartNotional - dblPeriodEndNotional) *
-					cc.survival (iPeriodPayDate) * (1. - cc.effectiveRecovery (iPeriodStartDate,
-						period.endDate()));
+				cpcm.rate()) * couponFactor (iNotionalEndDate) * dblCouponNotional + dblPeriodStartNotional -
+					dblPeriodEndNotional) * cc.survival (iPeriodPayDate) * (1. - cc.effectiveRecovery
+						(iPeriodStartDate, period.endDate()));
 
 			dblPeriodEndTime += dblPeriodTimeWidth;
 			dblTotalLossCashflow += dblPeriodLossCashflow;
@@ -2480,7 +2510,9 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 			int iPeriodAmortizationMode = _notionalSetting.periodAmortizationMode();
 
-			if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END == iPeriodAmortizationMode)
+			if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_START == iPeriodAmortizationMode)
+				dblCouponNotional = dblPeriodStartNotional;
+			else if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END == iPeriodAmortizationMode)
 				dblCouponNotional = dblPeriodEndNotional;
 			else if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_EFFECTIVE ==
 				iPeriodAmortizationMode)
@@ -2495,9 +2527,9 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 			double dblPeriodSurvival = cc.survival (iPeriodPayDate);
 
 			double dblPeriodLossCashflow = (dblPeriodTimeWidth * (bApplyFlatForward ? dblFlatForwardRate :
-				cpcm.rate()) * dblCouponNotional + dblPeriodStartNotional - dblPeriodEndNotional) *
-					(dblPeriodSurvival * (1. - cc.effectiveRecovery (iPeriodStartDate, period.endDate())) +
-						1. - dblPeriodSurvival);
+				cpcm.rate()) * couponFactor (iNotionalEndDate) * dblCouponNotional + dblPeriodStartNotional -
+					dblPeriodEndNotional) * (dblPeriodSurvival * (1. - cc.effectiveRecovery
+						(iPeriodStartDate, iNotionalEndDate)) + 1. - dblPeriodSurvival);
 
 			dblPeriodEndTime += dblPeriodTimeWidth;
 			dblTotalLossCashflow += dblPeriodLossCashflow;
@@ -2624,7 +2656,10 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 				iNotionalEndDate = iWorkoutDate;
 			}
 
-			if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END ==
+			if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_START ==
+				_notionalSetting.periodAmortizationMode())
+				dblCouponNotional = dblPeriodStartNotional;
+			else if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END ==
 				_notionalSetting.periodAmortizationMode())
 				dblCouponNotional = dblPeriodEndNotional;
 			else if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_EFFECTIVE ==
@@ -2640,8 +2675,8 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 				dblFlatForwardRate = cpcm.rate();
 
 			dblPV += (period.accrualDCF (iAccrualEndDate) * (bApplyFlatForwardRate ? dblFlatForwardRate :
-				cpcm.rate()) * dblCouponNotional + dblPeriodStartNotional - dblPeriodEndNotional) * zc.df
-					(iPeriodPayDate);
+				cpcm.rate()) * couponFactor (iNotionalEndDate) * dblCouponNotional + dblPeriodStartNotional -
+					dblPeriodEndNotional) * zc.df (iPeriodPayDate);
 
 			if (bTerminateCouponFlow) break;
 		}
@@ -2770,15 +2805,17 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 			double dblCouponNotional = dblPeriodStartNotional;
 
-			if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END == iPeriodAmortizationMode)
+			if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_START == iPeriodAmortizationMode)
+				dblCouponNotional = notional (iPeriodStartDate);
+			else if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END == iPeriodAmortizationMode)
 				dblCouponNotional = notional (iPeriodEndDate);
 			else if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_EFFECTIVE ==
 				iPeriodAmortizationMode)
 				dblCouponNotional = notional (iPeriodStartDate, iPeriodEndDate);
 
-			dblPV += (period.accrualDCF (iPeriodEndDate) * dblPeriodCoupon * dblCouponNotional +
-				dblPeriodStartNotional - dblPeriodEndNotional) * dcFunding.df (iPeriodPayDate) *
-					cpcm.cumulative() * cc.survival (iPeriodEndDate);
+			dblPV += (period.accrualDCF (iPeriodEndDate) * dblPeriodCoupon * couponFactor (iPeriodEndDate) *
+				dblCouponNotional + dblPeriodStartNotional - dblPeriodEndNotional) * dcFunding.df
+					(iPeriodPayDate) * cpcm.cumulative() * cc.survival (iPeriodEndDate);
 
 			for (org.drip.analytics.cashflow.LossQuadratureMetrics lqm : period.lossMetrics (this, valParams,
 				pricerParams, iPeriodEndDate, csqc)) {
@@ -9141,7 +9178,9 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 			double dblCouponNotional = dblPeriodStartNotional;
 
-			if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END == iAmortizationMode)
+			if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_START == iAmortizationMode)
+				dblCouponNotional = notional (iPeriodStartDate);
+			else if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END == iAmortizationMode)
 				dblCouponNotional = dblPeriodEndNotional;
 			else if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_EFFECTIVE == iAmortizationMode)
 				dblCouponNotional = notional (iPeriodStartDate, iPeriodEndDate);
@@ -9150,7 +9189,8 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 				dblFlatForwardRate = cpcm.rate();
 
 			double dblCouponPV = period.accrualDCF (iPeriodEndDate) * (bApplyFlatForwardRate ?
-				dblFlatForwardRate : cpcm.rate()) * dblYieldAnnuity * dblCouponNotional;
+				dblFlatForwardRate : cpcm.rate()) * couponFactor (iPeriodEndDate) * dblYieldAnnuity *
+					dblCouponNotional;
 
 			double dblPeriodNotionalPV = (dblPeriodStartNotional - dblPeriodEndNotional) * dblYieldAnnuity;
 			dblCumulativePeriodDuration += dblPeriodYearFract * (dblCouponPV + dblPeriodNotionalPV);
@@ -15810,7 +15850,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 			double dblPeriodAnnuity = dcFunding.df (iPeriodPayDate) * cpcm.cumulative();
 
 			double dblPeriodDirtyDV01 = 0.0001 * period.accrualDCF (iPeriodEndDate) * dblPeriodAnnuity *
-				notional (iPeriodStartDate, iPeriodEndDate);
+				notional (iPeriodStartDate);
 
 			double dblPeriodPrincipalPV = (notional (iPeriodStartDate) - notional (iPeriodEndDate)) *
 				dblPeriodAnnuity;
@@ -15843,13 +15883,15 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 							dblSubPeriodDF * dblSubPeriodNotional;
 
 					dblRecoveryPV += (bUseCurveRecovery ? cc.effectiveRecovery (iSubPeriodStartDate,
-						iSubPeriodEndDate) : dblProductRecovery) * dblSubPeriodSurvival * dblSubPeriodNotional
-							* dblSubPeriodDF;
+						iSubPeriodEndDate) : dblProductRecovery) * dblSubPeriodSurvival *
+							dblSubPeriodNotional * dblSubPeriodDF;
 				}
 			}
 
 			dblPrincipalPV += dblPeriodPrincipalPV;
-			dblDirtyCouponPV += 10000. * dblPeriodCoupon * dblPeriodDirtyDV01;
+
+			dblDirtyCouponPV += 10000. * dblPeriodCoupon * couponFactor (iPeriodEndDate) *
+				dblPeriodDirtyDV01;
 		}
 
 		double dblParPV = dcFunding.df (iMaturityDate) * notional (iMaturityDate);

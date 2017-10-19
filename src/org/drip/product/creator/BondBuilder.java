@@ -652,8 +652,6 @@ public class BondBuilder {
 				!org.drip.quant.common.NumberUtil.IsValid (dblCouponRate) || 0 == iCouponFrequency)
 			return null;
 
-		System.out.println ("Here");
-
 		int iEffectiveDate = dtEffective.julian();
 
 		int iNumPeriod = adtPeriodEnd.length;
@@ -665,8 +663,6 @@ public class BondBuilder {
 		double[] adblPeriodEndPrincipal = new double[iNumPeriod];
 		double[] adblPrincipalFactor = new double[iNumPeriod + 1];
 		double[] adblPeriodEndPrincipalFactor = new double[iNumPeriod];
-
-		System.out.println (iNumPeriod + " | " + adblPrincipalAmount.length + " | " + adblCouponAmount.length);
 
 		if (0 == iNumPeriod || iNumPeriod != adblCouponAmount.length || iNumPeriod !=
 			adblPrincipalAmount.length)
@@ -697,17 +693,47 @@ public class BondBuilder {
 				java.util.List<org.drip.analytics.cashflow.ComposableUnitPeriod> lsCUP = new
 					java.util.ArrayList<org.drip.analytics.cashflow.ComposableUnitPeriod>();
 
-				lsCUP.add (new org.drip.analytics.cashflow.ComposableUnitFixedPeriod (iPeriodStartDate,
-					aiPeriodEndDate[i], new org.drip.param.period.UnitCouponAccrualSetting (iCouponFrequency,
-						strDayCount, false, strDayCount, false, strCurrency, false,
-							org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC),
-					new org.drip.param.period.ComposableFixedUnitSetting ((12 / iCouponFrequency) + "M",
-						org.drip.analytics.support.CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR, null,
-							dblCouponRate, 0., strCurrency)));
+				lsCUP.add (
+					new org.drip.analytics.cashflow.ComposableUnitFixedPeriod (
+						iPeriodStartDate,
+						aiPeriodEndDate[i],
+						new org.drip.param.period.UnitCouponAccrualSetting (
+							iCouponFrequency,
+							strDayCount,
+							false,
+							strDayCount,
+							false,
+							strCurrency,
+							false,
+							org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC
+						),
+						new org.drip.param.period.ComposableFixedUnitSetting (
+							(12 / iCouponFrequency) + "M",
+							org.drip.analytics.support.CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
+							null,
+							dblCouponRate,
+							0.,
+							strCurrency
+						)
+					)
+				);
 
-				lsCouponPeriod.add (new org.drip.analytics.cashflow.CompositeFixedPeriod (new
-					org.drip.param.period.CompositePeriodSetting (iCouponFrequency, (12 / iCouponFrequency) +
-						"M", strCurrency, null, adblPrincipalAmount[i], null, null, null, null), lsCUP));
+				lsCouponPeriod.add (
+					new org.drip.analytics.cashflow.CompositeFixedPeriod (
+						new org.drip.param.period.CompositePeriodSetting (
+							iCouponFrequency,
+							(12 / iCouponFrequency) + "M",
+							strCurrency,
+							null,
+							adblPrincipalAmount[i],
+							null,
+							null,
+							null,
+							null
+						),
+						lsCUP
+					)
+				);
 			} catch (java.lang.Exception e) {
 				e.printStackTrace();
 
@@ -783,7 +809,7 @@ public class BondBuilder {
 					aiPrincipalDate,
 					adblPrincipalFactor
 				),
-				org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END,
+				org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_START,
 				false
 			)
 		);

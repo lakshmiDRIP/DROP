@@ -711,6 +711,34 @@ public class Matrix {
 	}
 
 	/**
+	 * Compute the Sum of the Input Vector
+	 * 
+	 * @param adbl The Input Vector
+	 * 
+	 * @return TRUE - The Sum of the Input Vector
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final double Sum (
+		final double[] adbl)
+		throws java.lang.Exception
+	{
+		if (null == adbl || !org.drip.quant.common.NumberUtil.IsValid (adbl))
+			throw new java.lang.Exception ("Matrix::Sum => Invalid Inputs");
+
+		double dblSum = 0.;
+		int iSize = adbl.length;
+
+		if (0 == iSize) throw new java.lang.Exception ("Matrix::Sum => Invalid Inputs");
+
+		for (int i = 0; i < iSize; ++i)
+			dblSum += adbl[i];
+
+		return dblSum;
+	}
+
+	/**
 	 * Compute the Modulus of the Input Vector
 	 * 
 	 * @param adbl The Input Vector
