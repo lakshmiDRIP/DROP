@@ -652,6 +652,8 @@ public class BondBuilder {
 				!org.drip.quant.common.NumberUtil.IsValid (dblCouponRate) || 0 == iCouponFrequency)
 			return null;
 
+		System.out.println ("Here");
+
 		int iEffectiveDate = dtEffective.julian();
 
 		int iNumPeriod = adtPeriodEnd.length;
@@ -663,6 +665,8 @@ public class BondBuilder {
 		double[] adblPeriodEndPrincipal = new double[iNumPeriod];
 		double[] adblPrincipalFactor = new double[iNumPeriod + 1];
 		double[] adblPeriodEndPrincipalFactor = new double[iNumPeriod];
+
+		System.out.println (iNumPeriod + " | " + adblPrincipalAmount.length + " | " + adblCouponAmount.length);
 
 		if (0 == iNumPeriod || iNumPeriod != adblCouponAmount.length || iNumPeriod !=
 			adblPrincipalAmount.length)
