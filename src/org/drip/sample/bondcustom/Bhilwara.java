@@ -1,0 +1,727 @@
+
+package org.drip.sample.bondcustom;
+
+import org.drip.analytics.cashflow.CompositePeriod;
+import org.drip.analytics.date.*;
+import org.drip.product.creator.BondBuilder;
+import org.drip.product.credit.BondComponent;
+import org.drip.quant.common.FormatUtil;
+import org.drip.quant.linearalgebra.Matrix;
+import org.drip.service.env.EnvManager;
+import org.drip.service.scenario.*;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an "AS IS" BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * Bhilwara generates the Full Suite of Replication Metrics for Bond Bhilwara.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class Bhilwara {
+
+	public static final void main (
+		final String[] astArgs)
+		throws Exception
+	{
+		EnvManager.InitEnv ("");
+
+		JulianDate dtSpot = DateUtil.CreateFromYMD (
+			2017,
+			DateUtil.OCTOBER,
+			5
+		);
+
+		String[] astrDepositTenor = new String[] {
+			"2D"
+		};
+
+		double[] adblDepositQuote = new double[] {
+			0.0130411 // 2D
+		};
+
+		double[] adblFuturesQuote = new double[] {
+			0.01345,	// 98.655
+			0.01470,	// 98.530
+			0.01575,	// 98.425
+			0.01660,	// 98.340
+			0.01745,    // 98.255
+			0.01845     // 98.155
+		};
+
+		String[] astrFixFloatTenor = new String[] {
+			"02Y",
+			"03Y",
+			"04Y",
+			"05Y",
+			"06Y",
+			"07Y",
+			"08Y",
+			"09Y",
+			"10Y",
+			"11Y",
+			"12Y",
+			"15Y",
+			"20Y",
+			"25Y",
+			"30Y",
+			"40Y",
+			"50Y"
+		};
+
+		String[] astrGovvieTenor = new String[] {
+			"1Y",
+			"2Y",
+			"3Y",
+			"5Y",
+			"7Y",
+			"10Y",
+			"20Y",
+			"30Y"
+		};
+
+		double[] adblFixFloatQuote = new double[] {
+			0.016410, //  2Y
+			0.017863, //  3Y
+			0.019030, //  4Y
+			0.020035, //  5Y
+			0.020902, //  6Y
+			0.021660, //  7Y
+			0.022307, //  8Y
+			0.022879, //  9Y
+			0.023363, // 10Y
+			0.023820, // 11Y
+			0.024172, // 12Y
+			0.024934, // 15Y
+			0.025581, // 20Y
+			0.025906, // 25Y
+			0.025973, // 30Y
+			0.025838, // 40Y
+			0.025560  // 50Y
+		};
+
+		double[] adblGovvieYield = new double[] {
+			0.01219, //  1Y
+			0.01391, //  2Y
+			0.01590, //  3Y
+			0.01937, //  5Y
+			0.02200, //  7Y
+			0.02378, // 10Y
+			0.02677, // 20Y
+			0.02927  // 30Y
+		};
+
+		String[] astrCreditTenor = new String[] {
+			"06M",
+			"01Y",
+			"02Y",
+			"03Y",
+			"04Y",
+			"05Y",
+			"07Y",
+			"10Y"
+		};
+
+		double[] adblCreditQuote = new double[] {
+			 60.,	//  6M
+			 68.,	//  1Y
+			 88.,	//  2Y
+			102.,	//  3Y
+			121.,	//  4Y
+			138.,	//  5Y
+			168.,	//  7Y
+			188.	// 10Y
+		};
+
+		double dblFX = 1.;
+		int iSettleLag = 3;
+		int iCouponFreq = 12;
+		String strName = "Bhilwara";
+		double dblCleanPrice = 0.95;
+		double dblIssuePrice = 1.;
+		String strCurrency = "USD";
+		double dblSpreadBump = 20.;
+		double dblCouponRate = 0.03; 
+		String strTreasuryCode = "UST";
+		String strCouponDayCount = "30/360";
+		double dblSpreadDurationMultiplier = 5.;
+
+		org.drip.analytics.date.JulianDate[] adtPeriodEnd = new org.drip.analytics.date.JulianDate[] {
+			DateUtil.CreateFromYMD (2017, DateUtil.SEPTEMBER, 25),
+			DateUtil.CreateFromYMD (2017, DateUtil.OCTOBER  , 25),
+			DateUtil.CreateFromYMD (2017, DateUtil.NOVEMBER , 25),
+			DateUtil.CreateFromYMD (2017, DateUtil.DECEMBER , 25),
+			DateUtil.CreateFromYMD (2018, DateUtil.JANUARY  , 25),
+			DateUtil.CreateFromYMD (2018, DateUtil.FEBRUARY , 25),
+			DateUtil.CreateFromYMD (2018, DateUtil.MARCH    , 25),
+			DateUtil.CreateFromYMD (2018, DateUtil.APRIL    , 25),
+			DateUtil.CreateFromYMD (2018, DateUtil.MAY      , 25),
+			DateUtil.CreateFromYMD (2018, DateUtil.JUNE     , 25),
+			DateUtil.CreateFromYMD (2018, DateUtil.JULY     , 25),
+			DateUtil.CreateFromYMD (2018, DateUtil.AUGUST   , 25),
+			DateUtil.CreateFromYMD (2018, DateUtil.SEPTEMBER, 25),
+			DateUtil.CreateFromYMD (2018, DateUtil.OCTOBER  , 25),
+			DateUtil.CreateFromYMD (2018, DateUtil.NOVEMBER , 25),
+			DateUtil.CreateFromYMD (2018, DateUtil.DECEMBER , 25),
+			DateUtil.CreateFromYMD (2019, DateUtil.JANUARY  , 25),
+			DateUtil.CreateFromYMD (2019, DateUtil.FEBRUARY , 25),
+			DateUtil.CreateFromYMD (2019, DateUtil.MARCH    , 25),
+			DateUtil.CreateFromYMD (2019, DateUtil.APRIL    , 25),
+			DateUtil.CreateFromYMD (2019, DateUtil.MAY      , 25),
+			DateUtil.CreateFromYMD (2019, DateUtil.JUNE     , 25),
+			DateUtil.CreateFromYMD (2019, DateUtil.JULY     , 25),
+			DateUtil.CreateFromYMD (2019, DateUtil.AUGUST   , 25),
+			DateUtil.CreateFromYMD (2019, DateUtil.SEPTEMBER, 25),
+			DateUtil.CreateFromYMD (2019, DateUtil.OCTOBER  , 25),
+			DateUtil.CreateFromYMD (2019, DateUtil.NOVEMBER , 25),
+			DateUtil.CreateFromYMD (2019, DateUtil.DECEMBER , 25),
+			DateUtil.CreateFromYMD (2020, DateUtil.JANUARY  , 25),
+			DateUtil.CreateFromYMD (2020, DateUtil.FEBRUARY , 25),
+			DateUtil.CreateFromYMD (2020, DateUtil.MARCH    , 25),
+			DateUtil.CreateFromYMD (2020, DateUtil.APRIL    , 25),
+			DateUtil.CreateFromYMD (2020, DateUtil.MAY      , 25),
+			DateUtil.CreateFromYMD (2020, DateUtil.JUNE     , 25),
+			DateUtil.CreateFromYMD (2020, DateUtil.JULY     , 25),
+			DateUtil.CreateFromYMD (2020, DateUtil.AUGUST   , 25),
+			DateUtil.CreateFromYMD (2020, DateUtil.SEPTEMBER, 25),
+			DateUtil.CreateFromYMD (2020, DateUtil.OCTOBER  , 25),
+			DateUtil.CreateFromYMD (2020, DateUtil.NOVEMBER , 25),
+			DateUtil.CreateFromYMD (2020, DateUtil.DECEMBER , 25),
+			DateUtil.CreateFromYMD (2021, DateUtil.JANUARY  , 25),
+			DateUtil.CreateFromYMD (2021, DateUtil.FEBRUARY , 25),
+			DateUtil.CreateFromYMD (2021, DateUtil.MARCH    , 25),
+			DateUtil.CreateFromYMD (2021, DateUtil.APRIL    , 25),
+			DateUtil.CreateFromYMD (2021, DateUtil.MAY      , 25),
+			DateUtil.CreateFromYMD (2021, DateUtil.JUNE     , 25),
+			DateUtil.CreateFromYMD (2021, DateUtil.JULY     , 25),
+			DateUtil.CreateFromYMD (2021, DateUtil.AUGUST   , 25),
+			DateUtil.CreateFromYMD (2021, DateUtil.SEPTEMBER, 25),
+			DateUtil.CreateFromYMD (2021, DateUtil.OCTOBER  , 25),
+			DateUtil.CreateFromYMD (2021, DateUtil.NOVEMBER , 25),
+			DateUtil.CreateFromYMD (2021, DateUtil.DECEMBER , 25),
+			DateUtil.CreateFromYMD (2022, DateUtil.JANUARY  , 25),
+			DateUtil.CreateFromYMD (2022, DateUtil.FEBRUARY , 25),
+			DateUtil.CreateFromYMD (2022, DateUtil.MARCH    , 25),
+			DateUtil.CreateFromYMD (2022, DateUtil.APRIL    , 25),
+			DateUtil.CreateFromYMD (2022, DateUtil.MAY      , 25),
+			DateUtil.CreateFromYMD (2022, DateUtil.JUNE     , 25),
+			DateUtil.CreateFromYMD (2022, DateUtil.JULY     , 25),
+			DateUtil.CreateFromYMD (2022, DateUtil.AUGUST   , 25),
+			DateUtil.CreateFromYMD (2022, DateUtil.SEPTEMBER, 25),
+			DateUtil.CreateFromYMD (2022, DateUtil.OCTOBER  , 25),
+			DateUtil.CreateFromYMD (2022, DateUtil.NOVEMBER , 25),
+			DateUtil.CreateFromYMD (2022, DateUtil.DECEMBER , 25),
+			DateUtil.CreateFromYMD (2023, DateUtil.JANUARY  , 25),
+			DateUtil.CreateFromYMD (2023, DateUtil.FEBRUARY , 25),
+			DateUtil.CreateFromYMD (2023, DateUtil.MARCH    , 25),
+			DateUtil.CreateFromYMD (2023, DateUtil.APRIL    , 25),
+			DateUtil.CreateFromYMD (2023, DateUtil.MAY      , 25),
+			DateUtil.CreateFromYMD (2023, DateUtil.JUNE     , 25),
+			DateUtil.CreateFromYMD (2023, DateUtil.JULY     , 25),
+			DateUtil.CreateFromYMD (2023, DateUtil.AUGUST   , 25),
+			DateUtil.CreateFromYMD (2023, DateUtil.SEPTEMBER, 25),
+			DateUtil.CreateFromYMD (2023, DateUtil.OCTOBER  , 25),
+			DateUtil.CreateFromYMD (2023, DateUtil.NOVEMBER , 25),
+			DateUtil.CreateFromYMD (2023, DateUtil.DECEMBER , 25),
+			DateUtil.CreateFromYMD (2024, DateUtil.JANUARY  , 25),
+			DateUtil.CreateFromYMD (2024, DateUtil.FEBRUARY , 25),
+			DateUtil.CreateFromYMD (2024, DateUtil.MARCH    , 25),
+			DateUtil.CreateFromYMD (2024, DateUtil.APRIL    , 25),
+			DateUtil.CreateFromYMD (2024, DateUtil.MAY      , 25),
+			DateUtil.CreateFromYMD (2024, DateUtil.JUNE     , 25),
+			DateUtil.CreateFromYMD (2024, DateUtil.JULY     , 25),
+			DateUtil.CreateFromYMD (2024, DateUtil.AUGUST   , 25),
+			DateUtil.CreateFromYMD (2024, DateUtil.SEPTEMBER, 25),
+			DateUtil.CreateFromYMD (2024, DateUtil.OCTOBER  , 25),
+			DateUtil.CreateFromYMD (2024, DateUtil.NOVEMBER , 25),
+			DateUtil.CreateFromYMD (2024, DateUtil.DECEMBER , 25),
+			DateUtil.CreateFromYMD (2025, DateUtil.JANUARY  , 25),
+			DateUtil.CreateFromYMD (2025, DateUtil.FEBRUARY , 25),
+			DateUtil.CreateFromYMD (2025, DateUtil.MARCH    , 25),
+			DateUtil.CreateFromYMD (2025, DateUtil.APRIL    , 25),
+			DateUtil.CreateFromYMD (2025, DateUtil.MAY      , 25),
+			DateUtil.CreateFromYMD (2025, DateUtil.JUNE     , 25),
+			DateUtil.CreateFromYMD (2025, DateUtil.JULY     , 25),
+			DateUtil.CreateFromYMD (2025, DateUtil.AUGUST   , 25),
+			DateUtil.CreateFromYMD (2025, DateUtil.SEPTEMBER, 25),
+			DateUtil.CreateFromYMD (2025, DateUtil.OCTOBER  , 25),
+			DateUtil.CreateFromYMD (2025, DateUtil.NOVEMBER , 25),
+			DateUtil.CreateFromYMD (2025, DateUtil.DECEMBER , 25),
+			DateUtil.CreateFromYMD (2026, DateUtil.JANUARY  , 25),
+			DateUtil.CreateFromYMD (2026, DateUtil.FEBRUARY , 25),
+			DateUtil.CreateFromYMD (2026, DateUtil.MARCH    , 25),
+			DateUtil.CreateFromYMD (2026, DateUtil.APRIL    , 25),
+			DateUtil.CreateFromYMD (2026, DateUtil.MAY      , 25),
+			DateUtil.CreateFromYMD (2026, DateUtil.JUNE     , 25),
+			DateUtil.CreateFromYMD (2026, DateUtil.JULY     , 25),
+			DateUtil.CreateFromYMD (2026, DateUtil.AUGUST   , 25),
+			DateUtil.CreateFromYMD (2026, DateUtil.SEPTEMBER, 25),
+			DateUtil.CreateFromYMD (2026, DateUtil.OCTOBER  , 25),
+			DateUtil.CreateFromYMD (2026, DateUtil.NOVEMBER , 25),
+			DateUtil.CreateFromYMD (2026, DateUtil.DECEMBER , 25),
+			DateUtil.CreateFromYMD (2027, DateUtil.JANUARY  , 25),
+			DateUtil.CreateFromYMD (2027, DateUtil.FEBRUARY , 25),
+			DateUtil.CreateFromYMD (2027, DateUtil.MARCH    , 25),
+			DateUtil.CreateFromYMD (2027, DateUtil.APRIL    , 25),
+			DateUtil.CreateFromYMD (2027, DateUtil.MAY      , 25),
+			DateUtil.CreateFromYMD (2027, DateUtil.JUNE     , 25),
+			DateUtil.CreateFromYMD (2027, DateUtil.JULY     , 25),
+			DateUtil.CreateFromYMD (2027, DateUtil.AUGUST   , 25),
+			DateUtil.CreateFromYMD (2027, DateUtil.SEPTEMBER, 25),
+			DateUtil.CreateFromYMD (2027, DateUtil.OCTOBER  , 25),
+			DateUtil.CreateFromYMD (2027, DateUtil.NOVEMBER , 25),
+			DateUtil.CreateFromYMD (2027, DateUtil.DECEMBER , 25),
+			DateUtil.CreateFromYMD (2028, DateUtil.JANUARY  , 25),
+			DateUtil.CreateFromYMD (2028, DateUtil.FEBRUARY , 25),
+			DateUtil.CreateFromYMD (2028, DateUtil.MARCH    , 25),
+			DateUtil.CreateFromYMD (2028, DateUtil.APRIL    , 25),
+			DateUtil.CreateFromYMD (2028, DateUtil.MAY      , 25),
+			DateUtil.CreateFromYMD (2028, DateUtil.JUNE     , 25),
+			DateUtil.CreateFromYMD (2028, DateUtil.JULY     , 25),
+			DateUtil.CreateFromYMD (2028, DateUtil.AUGUST   , 25),
+			DateUtil.CreateFromYMD (2028, DateUtil.SEPTEMBER, 25),
+			DateUtil.CreateFromYMD (2028, DateUtil.OCTOBER  , 25),
+			DateUtil.CreateFromYMD (2028, DateUtil.NOVEMBER , 25),
+			DateUtil.CreateFromYMD (2028, DateUtil.DECEMBER , 25),
+			DateUtil.CreateFromYMD (2029, DateUtil.JANUARY  , 25),
+			DateUtil.CreateFromYMD (2029, DateUtil.FEBRUARY , 25),
+			DateUtil.CreateFromYMD (2029, DateUtil.MARCH    , 25),
+			DateUtil.CreateFromYMD (2029, DateUtil.APRIL    , 25),
+			DateUtil.CreateFromYMD (2029, DateUtil.MAY      , 25),
+			DateUtil.CreateFromYMD (2029, DateUtil.JUNE     , 25),
+			DateUtil.CreateFromYMD (2029, DateUtil.JULY     , 25),
+			DateUtil.CreateFromYMD (2029, DateUtil.AUGUST   , 25),
+			DateUtil.CreateFromYMD (2029, DateUtil.SEPTEMBER, 25),
+			DateUtil.CreateFromYMD (2029, DateUtil.OCTOBER  , 25),
+			DateUtil.CreateFromYMD (2029, DateUtil.NOVEMBER , 25),
+			DateUtil.CreateFromYMD (2029, DateUtil.DECEMBER , 25),
+			DateUtil.CreateFromYMD (2030, DateUtil.JANUARY  , 25),
+			DateUtil.CreateFromYMD (2030, DateUtil.FEBRUARY , 25),
+			DateUtil.CreateFromYMD (2030, DateUtil.MARCH    , 25),
+			DateUtil.CreateFromYMD (2030, DateUtil.APRIL    , 25),
+			DateUtil.CreateFromYMD (2030, DateUtil.MAY      , 25),
+			DateUtil.CreateFromYMD (2030, DateUtil.JUNE     , 25),
+			DateUtil.CreateFromYMD (2030, DateUtil.JULY     , 25),
+			DateUtil.CreateFromYMD (2030, DateUtil.AUGUST   , 25),
+			DateUtil.CreateFromYMD (2030, DateUtil.SEPTEMBER, 25),
+			DateUtil.CreateFromYMD (2030, DateUtil.OCTOBER  , 25),
+			DateUtil.CreateFromYMD (2030, DateUtil.NOVEMBER , 25),
+			DateUtil.CreateFromYMD (2030, DateUtil.DECEMBER , 25),
+			DateUtil.CreateFromYMD (2031, DateUtil.JANUARY  , 25),
+			DateUtil.CreateFromYMD (2031, DateUtil.FEBRUARY , 25),
+			DateUtil.CreateFromYMD (2031, DateUtil.MARCH    , 25),
+			DateUtil.CreateFromYMD (2031, DateUtil.APRIL    , 25),
+			DateUtil.CreateFromYMD (2031, DateUtil.MAY      , 25),
+			DateUtil.CreateFromYMD (2031, DateUtil.JUNE     , 25),
+			DateUtil.CreateFromYMD (2031, DateUtil.JULY     , 25),
+			DateUtil.CreateFromYMD (2031, DateUtil.AUGUST   , 25),
+			DateUtil.CreateFromYMD (2031, DateUtil.SEPTEMBER, 25),
+			DateUtil.CreateFromYMD (2031, DateUtil.OCTOBER  , 25),
+			DateUtil.CreateFromYMD (2031, DateUtil.NOVEMBER , 25),
+			DateUtil.CreateFromYMD (2031, DateUtil.DECEMBER , 25),
+			DateUtil.CreateFromYMD (2032, DateUtil.JANUARY  , 25),
+			DateUtil.CreateFromYMD (2032, DateUtil.FEBRUARY , 25),
+			DateUtil.CreateFromYMD (2032, DateUtil.MARCH    , 25),
+			DateUtil.CreateFromYMD (2032, DateUtil.APRIL    , 25),
+			DateUtil.CreateFromYMD (2032, DateUtil.MAY      , 25),
+			DateUtil.CreateFromYMD (2032, DateUtil.JUNE     , 25),
+			DateUtil.CreateFromYMD (2032, DateUtil.JULY     , 25),
+			DateUtil.CreateFromYMD (2032, DateUtil.AUGUST   , 25),
+			DateUtil.CreateFromYMD (2032, DateUtil.SEPTEMBER, 25),
+			DateUtil.CreateFromYMD (2032, DateUtil.OCTOBER  , 25),
+			DateUtil.CreateFromYMD (2032, DateUtil.NOVEMBER , 25),
+			DateUtil.CreateFromYMD (2032, DateUtil.DECEMBER , 25),
+			DateUtil.CreateFromYMD (2033, DateUtil.JANUARY  , 25),
+			DateUtil.CreateFromYMD (2033, DateUtil.FEBRUARY , 25),
+			DateUtil.CreateFromYMD (2033, DateUtil.MARCH    , 25),
+			DateUtil.CreateFromYMD (2033, DateUtil.APRIL    , 25),
+			DateUtil.CreateFromYMD (2033, DateUtil.MAY      , 25),
+			DateUtil.CreateFromYMD (2033, DateUtil.JUNE     , 25),
+			DateUtil.CreateFromYMD (2033, DateUtil.JULY     , 25),
+			DateUtil.CreateFromYMD (2033, DateUtil.AUGUST   , 25),
+			DateUtil.CreateFromYMD (2033, DateUtil.SEPTEMBER, 25),
+			DateUtil.CreateFromYMD (2033, DateUtil.OCTOBER  , 25),
+			DateUtil.CreateFromYMD (2033, DateUtil.NOVEMBER , 25),
+			DateUtil.CreateFromYMD (2033, DateUtil.DECEMBER , 25),
+			DateUtil.CreateFromYMD (2034, DateUtil.JANUARY  , 25),
+			DateUtil.CreateFromYMD (2034, DateUtil.FEBRUARY , 25),
+			DateUtil.CreateFromYMD (2034, DateUtil.MARCH    , 25),
+			DateUtil.CreateFromYMD (2034, DateUtil.APRIL    , 25),
+			DateUtil.CreateFromYMD (2034, DateUtil.MAY      , 25),
+			DateUtil.CreateFromYMD (2034, DateUtil.JUNE     , 25),
+			DateUtil.CreateFromYMD (2034, DateUtil.JULY     , 25),
+			DateUtil.CreateFromYMD (2034, DateUtil.AUGUST   , 25),
+			DateUtil.CreateFromYMD (2034, DateUtil.SEPTEMBER, 25),
+			DateUtil.CreateFromYMD (2034, DateUtil.OCTOBER  , 25),
+			DateUtil.CreateFromYMD (2034, DateUtil.NOVEMBER , 25),
+			DateUtil.CreateFromYMD (2034, DateUtil.DECEMBER , 25),
+			DateUtil.CreateFromYMD (2035, DateUtil.JANUARY  , 25),
+			DateUtil.CreateFromYMD (2035, DateUtil.FEBRUARY , 25),
+			DateUtil.CreateFromYMD (2035, DateUtil.MARCH    , 25),
+			DateUtil.CreateFromYMD (2035, DateUtil.APRIL    , 25),
+			DateUtil.CreateFromYMD (2035, DateUtil.MAY      , 25),
+			DateUtil.CreateFromYMD (2035, DateUtil.JUNE     , 25),
+			DateUtil.CreateFromYMD (2035, DateUtil.JULY     , 25),
+			DateUtil.CreateFromYMD (2035, DateUtil.AUGUST   , 25),
+			DateUtil.CreateFromYMD (2035, DateUtil.SEPTEMBER, 25),
+			DateUtil.CreateFromYMD (2035, DateUtil.OCTOBER  , 25),
+			DateUtil.CreateFromYMD (2035, DateUtil.NOVEMBER , 25),
+			DateUtil.CreateFromYMD (2035, DateUtil.DECEMBER , 25),
+			DateUtil.CreateFromYMD (2036, DateUtil.JANUARY  , 25),
+			DateUtil.CreateFromYMD (2036, DateUtil.FEBRUARY , 25),
+			DateUtil.CreateFromYMD (2036, DateUtil.MARCH    , 25),
+			DateUtil.CreateFromYMD (2036, DateUtil.APRIL    , 25),
+			DateUtil.CreateFromYMD (2036, DateUtil.MAY      , 25),
+			DateUtil.CreateFromYMD (2036, DateUtil.JUNE     , 25),
+			DateUtil.CreateFromYMD (2036, DateUtil.JULY     , 25),
+		};
+
+		double[] adblPrincipalPayDown = new double[] {
+			299135.42,
+			293800.82,
+			286422.31,
+			284811.34,
+			280035.33,
+			270326.05,
+			269712.70,
+			26144.16,
+			256686.70,
+			251454.94,
+			248096.89,
+			241975.08,
+			241697.45,
+			236817.23,
+			233143.59,
+			231739.14,
+			227993.33,
+			225400.55,
+			224352.13,
+			220835.71,
+			215670.45,
+			218278.54,
+			213286.08,
+			210099.94,
+			210256.27,
+			207185.92,
+			204347.86,
+			203127.82,
+			200332.53,
+			200631.41,
+			199262.80,
+			194534.04,
+			203827.56,
+			192652.24,
+			189464.50,
+			201054.55,
+			188939.02,
+			214387.68,
+			187778.97,
+			179343.85,
+			189669.13,
+			176363.67,
+			176262.86,
+			168645.72,
+			168773.49,
+			166805.04,
+			164318.82,
+			163155.09,
+			158829.45,
+			158789.33,
+			153827.32,
+			152677.48,
+			150337.52,
+			147447.05,
+			146919.10,
+			142388.33,
+			140765.07,
+			136984.46,
+			137165.33,
+			133432.66,
+			130939.82,
+			131192.67,
+			128281.73,
+			125889.89,
+			126159.02,
+			122344.40,
+			124132.89,
+			122375.65,
+			120127.34,
+			117469.89,
+			117736.91,
+			115135.15,
+			113499.44,
+			112833.61,
+			110775.61,
+			111019.29,
+			109454.50,
+			107044.35,
+			107304.17,
+			104936.76,
+			102638.27,
+			103708.20,
+			101424.44,
+			99234.51,
+			99074.90,
+			97679.15,
+			97152.74,
+			95778.72,
+			94487.89,
+			94296.53,
+			93807.05,
+			91373.77,
+			90147.87,
+			89973.49,
+			88748.25,
+			87150.09,
+			86341.31,
+			84805.19,
+			85035.19,
+			83563.64,
+			82420.58,
+			81926.86,
+			81809.16,
+			79025.70,
+			79569.20,
+			78101.88,
+			76748.40,
+			76940.91,
+			75569.06,
+			75122.18,
+			74700.40,
+			73086.81,
+			73516.53,
+			71935.57,
+			72108.42,
+			70278.22,
+			70124.85,
+			68881.26,
+			68243.67,
+			67843.46,
+			66097.31,
+			66779.19,
+			65100.05,
+			64735.20,
+			64617.74,
+			63200.82,
+			62602.68,
+			62505.70,
+			61656.14,
+			60573.31,
+			60449.54,
+			59391.79,
+			58820.86,
+			58500.20,
+			57261.46,
+			57610.98,
+			56846.90,
+			55588.17,
+			55932.23,
+			54960.87,
+			54458.37,
+			53721.51,
+			53414.67,
+			52280.72,
+			52361.31,
+			51657.14,
+			50765.54,
+			50672.24,
+			50201.50,
+			49525.75,
+			49624.48,
+			48581.40,
+			47743.86,
+			48215.40,
+			47388.72,
+			45990.91,
+			45912.95,
+			45477.28,
+			44876.02,
+			44461.64,
+			43872.03,
+			43957.13,
+			43706.39,
+			42798.64,
+			42231.38,
+			42307.78,
+			41759.21,
+			41203.77,
+			40805.59,
+			40262.53,
+			40141.05,
+			39463.11,
+			39090.44,
+			38863.93,
+			38639.77,
+			37840.46,
+			37912.67,
+			37273.86,
+			36920.28,
+			36702.69,
+			35953.59,
+			36263.93,
+			35397.65,
+			35187.49,
+			35106.59,
+			34518.72,
+			34556.59,
+			33857.24,
+			33655.11,
+			32982.42,
+			33257.16,
+			32581.87,
+			32155.38,
+			32186.68,
+			31649.70,
+			31229.88,
+			31254.65,
+			30376.70,
+			30617.78,
+			30216.11,
+			29821.74,
+			29328.58,
+			29350.86,
+			28867.66,
+			28591.17,
+			28412.39,
+			27852.78,
+			27964.98,
+			27604.96,
+			27156.64,
+			27264.30,
+			26832.91,
+			26576.29,
+			26205.21,
+			26048.68,
+			31263.96,
+			37878.87,
+			33808.14,
+			24634.37,
+			24583.50,
+			25933.13,
+			37250.03,
+			91357.96,
+			704382.83,
+			558714.10,
+			319083.90,
+			13025.09,
+		};
+
+		double[] adblCouponAmount = new double[] {
+		};
+
+		double dblIssueAmount = Matrix.Sum (adblPrincipalPayDown);
+
+		JulianDate dtEffective = DateUtil.CreateFromYMD (
+			2017,
+			DateUtil.AUGUST,
+			25
+		);
+
+		BondComponent bond = BondBuilder.CreateBondFromCF (
+			strName,
+			dtEffective,
+			strCurrency,
+			strName,
+			strCouponDayCount,
+			dblIssueAmount,
+			dblCouponRate,
+			iCouponFreq,
+			adtPeriodEnd,
+			adblCouponAmount,
+			adblPrincipalPayDown,
+			true
+		);
+
+		BondReplicator abr = BondReplicator.Standard (
+			dblCleanPrice,
+			dblIssuePrice,
+			dblIssueAmount,
+			dtSpot,
+			astrDepositTenor,
+			adblDepositQuote,
+			adblFuturesQuote,
+			astrFixFloatTenor,
+			adblFixFloatQuote,
+			dblSpreadBump,
+			dblSpreadDurationMultiplier,
+			strTreasuryCode,
+			astrGovvieTenor,
+			adblGovvieYield,
+			astrCreditTenor,
+			adblCreditQuote,
+			dblFX,
+			Double.NaN,
+			iSettleLag,
+			bond
+		);
+
+		BondReplicationRun abrr = abr.generateRun();
+
+		System.out.println (abrr.display());
+
+		double dblBalance = 1.;
+
+		for (CompositePeriod p : bond.couponPeriods()) {
+			int iEndDate = p.endDate();
+
+			int iStartDate = p.startDate();
+
+			double dblPrincipalPayDown = bond.notional (iStartDate) - bond.notional (iEndDate);
+
+			double dblInterest = dblCouponRate * p.couponDCF() * bond.notional (iStartDate) * bond.couponFactor (iEndDate);
+
+			dblBalance -= dblPrincipalPayDown;
+
+			System.out.println (
+				"\t" + new JulianDate (iEndDate) + " => " +
+				FormatUtil.FormatDouble (dblPrincipalPayDown, 8, 2, dblIssueAmount) + " | " +
+				FormatUtil.FormatDouble (dblInterest, 6, 2, dblIssueAmount) + " | " +
+				FormatUtil.FormatDouble (dblPrincipalPayDown + dblInterest, 8, 2, dblIssueAmount) + " | " +
+				FormatUtil.FormatDouble (dblBalance, 8, 2, dblIssueAmount) + " ||"
+			);
+		}
+	}
+}

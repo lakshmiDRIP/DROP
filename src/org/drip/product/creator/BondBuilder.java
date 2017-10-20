@@ -664,6 +664,8 @@ public class BondBuilder {
 		double[] adblPrincipalFactor = new double[iNumPeriod + 1];
 		double[] adblPeriodEndPrincipalFactor = new double[iNumPeriod];
 
+		System.out.println (iNumPeriod + " | " + adblPrincipalAmount.length + " | " + adblCouponAmount.length);
+
 		if (0 == iNumPeriod || iNumPeriod != adblCouponAmount.length || iNumPeriod !=
 			adblPrincipalAmount.length)
 			return null;
