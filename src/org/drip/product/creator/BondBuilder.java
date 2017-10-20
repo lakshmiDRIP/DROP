@@ -664,8 +664,6 @@ public class BondBuilder {
 		double[] adblPrincipalFactor = new double[iNumPeriod + 1];
 		double[] adblPeriodEndPrincipalFactor = new double[iNumPeriod];
 
-		System.out.println (iNumPeriod + " | " + adblPrincipalAmount.length + " | " + adblCouponAmount.length);
-
 		if (0 == iNumPeriod || iNumPeriod != adblCouponAmount.length || iNumPeriod !=
 			adblPrincipalAmount.length)
 			return null;
@@ -913,5 +911,96 @@ public class BondBuilder {
 		);
 
 		return tsyBond;
+	}
+
+	public static final org.drip.product.credit.BondComponent SimpleFixToFloat (
+		final java.lang.String strName,
+		final java.lang.String strCurrency,
+		final java.lang.String strCreditCurveName,
+		final double dblCoupon,
+		final int iFreq,
+		final java.lang.String strDayCount,
+		final org.drip.analytics.date.JulianDate dtEffective,
+		final org.drip.analytics.date.JulianDate dtFloatStart,
+		final org.drip.analytics.date.JulianDate dtMaturity,
+		final org.drip.quant.common.Array2D fsPrincipalOutstanding,
+		final org.drip.quant.common.Array2D fsCoupon)
+	{
+		if (null == strName || strName.isEmpty() || null == strCurrency || strCurrency.isEmpty() || null ==
+			dtEffective || null == dtFloatStart || null == dtMaturity ||
+				!org.drip.quant.common.NumberUtil.IsValid (dblCoupon))
+			return null;
+
+		return CreateBondFromParams (
+			null,
+			new org.drip.product.params.IdentifierSet (
+				strName,
+				strName,
+				strName,
+				strName
+			),
+			new org.drip.product.params.CouponSetting (
+				fsCoupon,
+				"",
+				dblCoupon,
+				java.lang.Double.NaN,
+				java.lang.Double.NaN
+			),
+			null,
+			new org.drip.product.params.QuoteConvention (
+				null,
+				"",
+				dtEffective.julian(),
+				100.,
+				0,
+				strCurrency,
+				org.drip.analytics.daycount.Convention.DATE_ROLL_ACTUAL
+			),
+			new org.drip.product.params.CreditSetting (
+				30,
+				java.lang.Double.NaN,
+				true,
+				strCreditCurveName,
+				true
+			),
+			new org.drip.product.params.TerminationSetting (
+				false,
+				false,
+				false,
+				null
+			),
+			org.drip.product.params.BondStream.Create (
+				dtMaturity.julian(),
+				dtEffective.julian(),
+				java.lang.Integer.MIN_VALUE,
+				java.lang.Integer.MIN_VALUE,
+				dtEffective.julian(),
+				iFreq,
+				dblCoupon,
+				strDayCount,
+				strDayCount,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				"",
+				false,
+				strCurrency,
+				strCurrency,
+				null,
+				!org.drip.quant.common.StringUtil.IsEmpty (strCreditCurveName) ?
+					org.drip.state.identifier.CreditLabel.Standard (strCreditCurveName) : null
+			), new org.drip.product.params.NotionalSetting (
+				100.,
+				strCurrency,
+				fsPrincipalOutstanding,
+				org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END,
+				false
+			)
+		);
 	}
 }

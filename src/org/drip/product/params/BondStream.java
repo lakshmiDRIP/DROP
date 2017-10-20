@@ -66,6 +66,103 @@ public class BondStream extends org.drip.product.rates.Stream {
 	private int _iFinalMaturityDate = java.lang.Integer.MIN_VALUE;
 
 	/**
+	 * Construct an Instance of BondStream from the First/Penultimate Dates using the specified Parameters
+	 * 
+	 * @param iMaturityDate Maturity Date
+	 * @param iEffectiveDate Effective Date
+	 * @param iFinalMaturityDate Final Maturity Date
+	 * @param iFirstCouponDate First Coupon Date
+	 * @param iPenultimateCouponDate Penultimate Coupon Date
+	 * @param iFreq Coupon Frequency
+	 * @param dblCoupon Coupon Rate
+	 * @param strCouponDC Coupon day count convention
+	 * @param strAccrualDC Accrual day count convention
+	 * @param dapPay Pay Date Adjustment Parameters
+	 * @param dapReset Reset Date Adjustment Parameters
+	 * @param dapMaturity Maturity Date Adjustment Parameters
+	 * @param dapEffective Effective Date Adjustment Parameters
+	 * @param dapPeriodEnd Period End Date Adjustment Parameters
+	 * @param dapAccrualEnd Accrual Date Adjustment Parameters
+	 * @param dapPeriodStart Period Start Date Adjustment Parameters
+	 * @param dapAccrualStart Accrual Start  Date Adjustment Parameters
+	 * @param strMaturityType Maturity Type
+	 * @param bPeriodsFromForward Generate Periods forward (True) or Backward (False)
+	 * @param strCalendar Optional Holiday Calendar for Accrual Calculations
+	 * @param strCurrency Coupon Currency
+	 * @param forwardLabel The Forward Label
+	 * @param creditLabel The Credit Label
+	 * 
+	 * @return The BondStream Instance
+	 */
+
+	public static final BondStream FromFirstPenultimateCouponDate (
+		final int iMaturityDate,
+		final int iEffectiveDate,
+		final int iFinalMaturityDate,
+		final int iFirstCouponDate,
+		final int iPenultimateCouponDate,
+		final int iFreq,
+		final double dblCoupon,
+		final java.lang.String strCouponDC,
+		final java.lang.String strAccrualDC,
+		final org.drip.analytics.daycount.DateAdjustParams dapPay,
+		final org.drip.analytics.daycount.DateAdjustParams dapReset,
+		final org.drip.analytics.daycount.DateAdjustParams dapMaturity,
+		final org.drip.analytics.daycount.DateAdjustParams dapEffective,
+		final org.drip.analytics.daycount.DateAdjustParams dapPeriodEnd,
+		final org.drip.analytics.daycount.DateAdjustParams dapAccrualEnd,
+		final org.drip.analytics.daycount.DateAdjustParams dapPeriodStart,
+		final org.drip.analytics.daycount.DateAdjustParams dapAccrualStart,
+		final java.lang.String strMaturityType,
+		final boolean bPeriodsFromForward,
+		final java.lang.String strCalendar,
+		final java.lang.String strCurrency,
+		final org.drip.state.identifier.ForwardLabel forwardLabel,
+		final org.drip.state.identifier.CreditLabel creditLabel)
+	{
+		java.util.List<org.drip.analytics.cashflow.CompositePeriod> lsCouponPeriod = null == forwardLabel ?
+			org.drip.product.creator.StreamBuilder.FirstPenultimateDateFixedStream (
+				iEffectiveDate,
+				iMaturityDate,
+				iFirstCouponDate,
+				iPenultimateCouponDate,
+				iFreq,
+				dblCoupon,
+				strCouponDC,
+				strAccrualDC,
+				dapPay,
+				dapMaturity,
+				dapAccrualEnd,
+				strCurrency,
+				creditLabel
+			) : org.drip.product.creator.StreamBuilder.FirstPenultimateDateFloatStream (
+				iEffectiveDate,
+				iMaturityDate,
+				iFirstCouponDate,
+				iPenultimateCouponDate,
+				iFreq,
+				dblCoupon,
+				dapPay,
+				dapMaturity,
+				dapAccrualEnd,
+				forwardLabel,
+				creditLabel
+			);
+
+		try {
+			return new BondStream (
+				lsCouponPeriod,
+				iFinalMaturityDate,
+				strMaturityType
+			);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * Construct and Instance of BondStream from the specified Parameters
 	 * 
 	 * @param iMaturityDate Maturity Date
@@ -159,136 +256,6 @@ public class BondStream extends org.drip.product.rates.Stream {
 						org.drip.analytics.support.CompositePeriodBuilder.BackwardEdgeDates (dtEffective,
 							dtMaturity, strTenor, dapAccrualEnd,
 								org.drip.analytics.support.CompositePeriodBuilder.LONG_STUB);
-
-			if (null == forwardLabel) {
-				org.drip.param.period.ComposableFixedUnitSetting cfus = new
-					org.drip.param.period.ComposableFixedUnitSetting (strTenor,
-						org.drip.analytics.support.CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE, null,
-							dblCoupon, 0., strCurrency);
-
-				lsCouponPeriod = org.drip.analytics.support.CompositePeriodBuilder.FixedCompositeUnit
-					(lsStreamEdgeDate, cps, ucas, cfus);
-			} else {
-				org.drip.param.period.ComposableFloatingUnitSetting cfus = new
-					org.drip.param.period.ComposableFloatingUnitSetting (strTenor,
-						org.drip.analytics.support.CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE, null,
-							forwardLabel,
-								org.drip.analytics.support.CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
-					dblCoupon);
-
-				lsCouponPeriod = org.drip.analytics.support.CompositePeriodBuilder.FloatingCompositeUnit
-					(lsStreamEdgeDate, cps, cfus);
-			}
-
-			return new BondStream (lsCouponPeriod, iFinalMaturityDate, strMaturityType);
-		} catch (java.lang.Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Construct an Instance of BondStream from the First/Penultimate Dates using the specified Parameters
-	 * 
-	 * @param iMaturityDate Maturity Date
-	 * @param iEffectiveDate Effective Date
-	 * @param iFinalMaturityDate Final Maturity Date
-	 * @param iFirstCouponDate First Coupon Date
-	 * @param iPenultimateCouponDate Penultimate Coupon Date
-	 * @param iFreq Coupon Frequency
-	 * @param dblCoupon Coupon Rate
-	 * @param strCouponDC Coupon day count convention
-	 * @param strAccrualDC Accrual day count convention
-	 * @param dapPay Pay Date Adjustment Parameters
-	 * @param dapReset Reset Date Adjustment Parameters
-	 * @param dapMaturity Maturity Date Adjustment Parameters
-	 * @param dapEffective Effective Date Adjustment Parameters
-	 * @param dapPeriodEnd Period End Date Adjustment Parameters
-	 * @param dapAccrualEnd Accrual Date Adjustment Parameters
-	 * @param dapPeriodStart Period Start Date Adjustment Parameters
-	 * @param dapAccrualStart Accrual Start  Date Adjustment Parameters
-	 * @param strMaturityType Maturity Type
-	 * @param bPeriodsFromForward Generate Periods forward (True) or Backward (False)
-	 * @param strCalendar Optional Holiday Calendar for accrual calculations
-	 * @param strCurrency Coupon Currency
-	 * @param forwardLabel The Forward Label
-	 * @param creditLabel The Credit Label
-	 * 
-	 * @return The BondStream Instance
-	 */
-
-	public static final BondStream FromFirstPenultimateCouponDate (
-		final int iMaturityDate,
-		final int iEffectiveDate,
-		final int iFinalMaturityDate,
-		final int iFirstCouponDate,
-		final int iPenultimateCouponDate,
-		final int iFreq,
-		final double dblCoupon,
-		final java.lang.String strCouponDC,
-		final java.lang.String strAccrualDC,
-		final org.drip.analytics.daycount.DateAdjustParams dapPay,
-		final org.drip.analytics.daycount.DateAdjustParams dapReset,
-		final org.drip.analytics.daycount.DateAdjustParams dapMaturity,
-		final org.drip.analytics.daycount.DateAdjustParams dapEffective,
-		final org.drip.analytics.daycount.DateAdjustParams dapPeriodEnd,
-		final org.drip.analytics.daycount.DateAdjustParams dapAccrualEnd,
-		final org.drip.analytics.daycount.DateAdjustParams dapPeriodStart,
-		final org.drip.analytics.daycount.DateAdjustParams dapAccrualStart,
-		final java.lang.String strMaturityType,
-		final boolean bPeriodsFromForward,
-		final java.lang.String strCalendar,
-		final java.lang.String strCurrency,
-		final org.drip.state.identifier.ForwardLabel forwardLabel,
-		final org.drip.state.identifier.CreditLabel creditLabel)
-	{
-		boolean bCouponEOMAdj = null == strCouponDC ? false : strCouponDC.toUpperCase().contains ("EOM");
-
-		int iCouponDCIndex = null == strCouponDC ? -1 : strCouponDC.indexOf (" NON");
-
-		java.lang.String strCouponDCAdj = -1 != iCouponDCIndex ? strCouponDC.substring (0, iCouponDCIndex) :
-			strCouponDC;
-
-		boolean bAccrualEOMAdj = null == strAccrualDC ? false : strAccrualDC.toUpperCase().contains ("EOM");
-
-		int iAccrualDCIndex = null == strAccrualDC ? -1 : strAccrualDC.indexOf (" NON");
-
-		java.lang.String strAccrualDCAdj = -1 != iAccrualDCIndex ? strAccrualDC.substring (0,
-			iAccrualDCIndex) : strAccrualDC;
-
-		org.drip.analytics.date.JulianDate dtFirstCoupon = new org.drip.analytics.date.JulianDate
-			(iFirstCouponDate);
-
-		org.drip.analytics.date.JulianDate dtPenultimateCoupon = new org.drip.analytics.date.JulianDate
-			(iPenultimateCouponDate);
-
-		java.lang.String strTenor = (12 / iFreq) + "M";
-		java.util.List<org.drip.analytics.cashflow.CompositePeriod> lsCouponPeriod = null;
-
-		try {
-			org.drip.param.period.UnitCouponAccrualSetting ucas = new
-				org.drip.param.period.UnitCouponAccrualSetting (iFreq, strCouponDCAdj, bCouponEOMAdj,
-					strAccrualDCAdj, bAccrualEOMAdj, strCurrency, false,
-						org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC);
-
-			org.drip.param.period.CompositePeriodSetting cps = new
-				org.drip.param.period.CompositePeriodSetting (iFreq, strTenor, strCurrency, dapPay, 1., null,
-					null, null, creditLabel);
-
-			java.util.List<java.lang.Integer> lsStreamEdgeDate = bPeriodsFromForward ?
-				org.drip.analytics.support.CompositePeriodBuilder.ForwardEdgeDates (dtFirstCoupon,
-					dtPenultimateCoupon, strTenor, dapAccrualEnd,
-						org.drip.analytics.support.CompositePeriodBuilder.LONG_STUB) :
-							org.drip.analytics.support.CompositePeriodBuilder.BackwardEdgeDates
-								(dtFirstCoupon, dtPenultimateCoupon, strTenor, dapAccrualEnd,
-									org.drip.analytics.support.CompositePeriodBuilder.LONG_STUB);
-
-			if (null == lsStreamEdgeDate) return null;
-
-			lsStreamEdgeDate.add (0, iEffectiveDate);
-
-			lsStreamEdgeDate.add (null == dapMaturity ? iMaturityDate : dapMaturity.roll (iMaturityDate));
 
 			if (null == forwardLabel) {
 				org.drip.param.period.ComposableFixedUnitSetting cfus = new
