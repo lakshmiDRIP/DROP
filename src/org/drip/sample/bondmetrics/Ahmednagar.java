@@ -180,11 +180,11 @@ public class Ahmednagar {
 		int iSettleLag = 3;
 		int iCouponFreq = 12;
 		String strName = "Ahmednagar";
-		double dblCleanPrice = 1.;
+		double dblCleanPrice = 0.95;
 		double dblIssuePrice = 1.;
 		String strCurrency = "USD";
 		double dblSpreadBump = 20.;
-		double dblCouponRate = 0.01; 
+		double dblCouponRate = 0.03; 
 		String strTreasuryCode = "UST";
 		String strCouponDayCount = "30/360";
 		double dblSpreadDurationMultiplier = 5.;

@@ -309,11 +309,10 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		boolean bApplyFlatForwardRate = false;
 		int iCashPayDate = java.lang.Integer.MIN_VALUE;
 		double dblFlatForwardRate = java.lang.Double.NaN;
-		double dblScalingNotional = java.lang.Double.NaN;
 		org.drip.analytics.daycount.ActActDCParams aap = null;
 
-		if (null != _notionalSetting && _notionalSetting.priceOffOfOriginalNotional())
-			dblScalingNotional = 1.;
+		double dblScalingNotional = null != _notionalSetting && _notionalSetting.priceOffOfOriginalNotional()
+			? 1. : notional (iValueDate);
 
 		int iFrequency = freq();
 
@@ -372,9 +371,6 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 				iPeriodEndDate = iWorkoutDate;
 				bTerminateCouponFlow = true;
 			}
-
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblScalingNotional))
-				dblScalingNotional = notional (iPeriodStartDate);
 
 			org.drip.analytics.output.CompositePeriodCouponMetrics cpcm = couponMetrics (iPeriodEndDate,
 				valParams, csqc);
@@ -1013,15 +1009,14 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		boolean bTerminateCouponFlow = false;
 		int iCashPayDate = java.lang.Integer.MIN_VALUE;
 		double dblFlatForwardRate = java.lang.Double.NaN;
-		double dblScalingNotional = java.lang.Double.NaN;
+
+		double dblScalingNotional = null != _notionalSetting && _notionalSetting.priceOffOfOriginalNotional()
+			? 1. : notional (iValueDate);
 
 		org.drip.param.valuation.ValuationCustomizationParams vcp = null == _quoteConvention ? null :
 			_quoteConvention.valuationCustomizationParams();
 
 		boolean bApplyFlatForward = null == vcp ? false : vcp.applyFlatForwardRate();
-
-		if (null != _notionalSetting && _notionalSetting.priceOffOfOriginalNotional())
-			dblScalingNotional = 1.;
 
 		if (0. != dblBump) {
 			if (PRICE_OFF_OF_FUNDING_CURVE == iDiscountCurveType)
@@ -1041,9 +1036,6 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 			if (iPeriodPayDate < iValueDate) continue;
 
 			int iPeriodStartDate = period.startDate();
-
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblScalingNotional))
-				dblScalingNotional = notional (iPeriodStartDate);
 
 			int iAccrualEndDate = period.endDate();
 
@@ -2581,7 +2573,9 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		org.drip.state.discount.ZeroCurve zc = null;
 		int iCashPayDate = java.lang.Integer.MIN_VALUE;
 		double dblFlatForwardRate = java.lang.Double.NaN;
-		double dblScalingNotional = java.lang.Double.NaN;
+
+		double dblScalingNotional = null != _notionalSetting && _notionalSetting.priceOffOfOriginalNotional()
+			? 1. : notional (iValueDate);
 
 		if (null != vcp)
 			bApplyFlatForwardRate = vcp.applyFlatForwardRate();
@@ -2606,9 +2600,6 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 			iCashPayDate = valParams.cashPayDate();
 		}
-
-		if (null != _notionalSetting && _notionalSetting.priceOffOfOriginalNotional())
-			dblScalingNotional = 1.;
 
 		java.util.List<org.drip.analytics.cashflow.CompositePeriod> lsCompositePeriod = couponPeriods();
 
@@ -2639,9 +2630,6 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 			int iPeriodStartDate = period.startDate();
 
 			double dblPeriodStartNotional = notional (iPeriodStartDate);
-
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblScalingNotional))
-				dblScalingNotional = dblPeriodStartNotional;
 
 			int iAccrualEndDate = period.endDate();
 
@@ -2751,10 +2739,12 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 				("BondComponent::priceFromCreditCurve => Cannot create adjusted Curve");
 
 		double dblPV = 0.;
-		double dblScalingNotional = 1.;
 		boolean bTerminateCashFlow = false;
 		int iCashPayDate = java.lang.Integer.MIN_VALUE;
 		double dblFlatForwardRate = java.lang.Double.NaN;
+
+		double dblScalingNotional = null != _notionalSetting && _notionalSetting.priceOffOfOriginalNotional()
+			? 1. : notional (iValueDate);
 
 		org.drip.param.valuation.ValuationCustomizationParams vcp = null == _quoteConvention ? null :
 			_quoteConvention.valuationCustomizationParams();
@@ -2851,8 +2841,6 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 			iCashPayDate = valParams.cashPayDate();
 		}
-
-		if (!_notionalSetting.priceOffOfOriginalNotional()) dblScalingNotional = notional (iWorkoutDate);
 
 		return ((dblPV + dblWorkoutFactor * dcFunding.df (terminationAdjust (iWorkoutDate)) * cc.survival
 			(iWorkoutDate) * notional (iWorkoutDate)) / dcFunding.df (iCashPayDate) - accrued (iValueDate,

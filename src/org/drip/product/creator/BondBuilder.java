@@ -793,7 +793,7 @@ public class BondBuilder {
 				java.lang.Double.NaN,
 				true,
 				strCreditCurveName,
-				true
+				false
 			),
 			new org.drip.product.params.TerminationSetting (
 				false,
