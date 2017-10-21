@@ -1003,4 +1003,152 @@ public class BondBuilder {
 			)
 		);
 	}
+
+	/**
+	 * Construct a Fixed To Float Bond Component
+	 * 
+	 * @param strName Bond Name
+	 * @param strCreditCurveName Credit Curve Name
+	 * @param iEffectiveDate Effective Date
+	 * @param iFixedStreamEndDate Fixed Stream End Date
+	 * @param iFixedFirstCouponDate Fixed Stream First Coupon Date
+	 * @param iFixedPenultimateCouponDate Fixed Stream Penultimate Coupon Date
+	 * @param iFixedFreq Fixed Stream Coupon Frequency
+	 * @param dblFixedCoupon Fixed Stream Coupon Rate
+	 * @param strFixedCouponDC Fixed Stream Coupon Day Count
+	 * @param strFixedAccrualDC Fixed Stream Accrual Day Count
+	 * @param iMaturityDate Maturity Date
+	 * @param iFloatFirstCouponDate Float Stream First Coupon Date
+	 * @param iFloatPenultimateCouponDate Float Stream Penultimate Coupon Date
+	 * @param iFloatFreq Float Stream Coupon Frequency
+	 * @param dblFloatSpread Float Stream Spread
+	 * @param strFloatIndex Float Stream Rate Index
+	 * @param dapPay Pay Date Adjustment Parameters
+	 * @param dapReset Reset Date Adjustment Parameters
+	 * @param dapMaturity Maturity Date Adjustment Parameters
+	 * @param dapEffective Effective Date Adjustment Parameters
+	 * @param dapPeriodEnd Period End Date Adjustment Parameters
+	 * @param dapAccrualEnd Accrual Date Adjustment Parameters
+	 * @param dapPeriodStart Period Start Date Adjustment Parameters
+	 * @param dapAccrualStart Accrual Start  Date Adjustment Parameters
+	 * 
+	 * @return The Bond Component
+	 */
+
+	public static final org.drip.product.credit.BondComponent FixedToFloat (
+		final java.lang.String strName,
+		final java.lang.String strCreditCurveName,
+		final int iEffectiveDate,
+		final int iFixedStreamEndDate,
+		final int iFixedFirstCouponDate,
+		final int iFixedPenultimateCouponDate,
+		final int iFixedFreq,
+		final double dblFixedCoupon,
+		final java.lang.String strFixedCouponDC,
+		final java.lang.String strFixedAccrualDC,
+		final int iMaturityDate,
+		final int iFloatFirstCouponDate,
+		final int iFloatPenultimateCouponDate,
+		final int iFloatFreq,
+		final double dblFloatSpread,
+		final java.lang.String strFloatIndex,
+		final org.drip.analytics.daycount.DateAdjustParams dapPay,
+		final org.drip.analytics.daycount.DateAdjustParams dapReset,
+		final org.drip.analytics.daycount.DateAdjustParams dapMaturity,
+		final org.drip.analytics.daycount.DateAdjustParams dapEffective,
+		final org.drip.analytics.daycount.DateAdjustParams dapPeriodEnd,
+		final org.drip.analytics.daycount.DateAdjustParams dapAccrualEnd,
+		final org.drip.analytics.daycount.DateAdjustParams dapPeriodStart,
+		final org.drip.analytics.daycount.DateAdjustParams dapAccrualStart)
+	{
+		try {
+			org.drip.state.identifier.ForwardLabel forwardLabel =
+				org.drip.state.identifier.ForwardLabel.Standard (strFloatIndex);
+
+			if (null == forwardLabel) return null;
+
+			java.lang.String strCurrency = forwardLabel.currency();
+
+			return CreateBondFromParams (
+				null,
+				new org.drip.product.params.IdentifierSet (
+					strName,
+					strName,
+					strName,
+					strCurrency
+				),
+				new org.drip.product.params.CouponSetting (
+					null,
+					"",
+					dblFloatSpread,
+					java.lang.Double.NaN,
+					java.lang.Double.NaN
+				),
+				new org.drip.product.params.FloaterSetting (
+					strFloatIndex,
+					"",
+					dblFloatSpread,
+					java.lang.Double.NaN
+				),
+				new org.drip.product.params.QuoteConvention (
+					null,
+					"",
+					iEffectiveDate,
+					100.,
+					0,
+					strCurrency,
+					org.drip.analytics.daycount.Convention.DATE_ROLL_ACTUAL
+				),
+				new org.drip.product.params.CreditSetting (
+					30,
+					java.lang.Double.NaN,
+					true,
+					strCreditCurveName,
+					true
+				),
+				new org.drip.product.params.TerminationSetting (
+					false,
+					false,
+					false,
+					null
+				),
+				new org.drip.product.params.BondStream (
+					org.drip.product.creator.StreamBuilder.FirstPenultimateDateFixedFloat (
+						iEffectiveDate,
+						iFixedStreamEndDate,
+						iFixedFirstCouponDate,
+						iFixedPenultimateCouponDate,
+						iFixedFreq,
+						dblFixedCoupon,
+						strFixedCouponDC,
+						strFixedAccrualDC,
+						iMaturityDate,
+						iFloatFirstCouponDate,
+						iFloatPenultimateCouponDate,
+						iFloatFreq,
+						dblFloatSpread,
+						dapPay,
+						dapPeriodEnd,
+						dapAccrualEnd,
+						org.drip.state.identifier.ForwardLabel.Standard (strFloatIndex),
+						!org.drip.quant.common.StringUtil.IsEmpty (strCreditCurveName) ?
+							org.drip.state.identifier.CreditLabel.Standard (strCreditCurveName) : null
+					),
+					iMaturityDate,
+					""
+				),
+				new org.drip.product.params.NotionalSetting (
+					100.,
+					strCurrency,
+					null,
+					org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END,
+					false
+				)
+			);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 }

@@ -299,12 +299,16 @@ public class BondReplicator {
 		if (null == gc) throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
 
 		if (_bond.isFloater()) {
-			org.drip.analytics.cashflow.CompositeFloatingPeriod cfp =
-				(org.drip.analytics.cashflow.CompositeFloatingPeriod) _bond.stream().containingPeriod
-					(_dtSpot.julian());
+			org.drip.analytics.cashflow.CompositePeriod cp = _bond.stream().containingPeriod
+				(_dtSpot.julian());
 
-			_iResetDate = ((org.drip.analytics.cashflow.ComposableUnitFloatingPeriod) (cfp.periods().get
-				(0))).referenceIndexPeriod().fixingDate();
+			if (null != cp && cp instanceof org.drip.analytics.cashflow.CompositeFloatingPeriod) {
+				org.drip.analytics.cashflow.CompositeFloatingPeriod cfp =
+					(org.drip.analytics.cashflow.CompositeFloatingPeriod) cp;
+
+				_iResetDate = ((org.drip.analytics.cashflow.ComposableUnitFloatingPeriod) (cfp.periods().get
+					(0))).referenceIndexPeriod().fixingDate();
+			}
 		}
 
 		if (null == (_csqcFundingBase = org.drip.param.creator.MarketParamsBuilder.Create (mdfc, gc, null,
@@ -313,7 +317,8 @@ public class BondReplicator {
 
 		org.drip.state.identifier.ForwardLabel fl = _bond.isFloater() ? _bond.floaterSetting().fri() : null;
 
-		if (_bond.isFloater() && !_csqcFundingBase.setFixing (_iResetDate, fl, _dblResetRate))
+		if ((_bond.isFloater() && java.lang.Integer.MIN_VALUE != _iResetDate) && !_csqcFundingBase.setFixing
+			(_iResetDate, fl, _dblResetRate))
 			throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
 
 		if (null == (_csqcFunding01Up = org.drip.param.creator.MarketParamsBuilder.Create
@@ -326,8 +331,8 @@ public class BondReplicator {
 									0.0001 * _dblTenorBump), "SwapRate"), gc, null, null, null, null, null)))
 			throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
 
-		if (_bond.isFloater() && !_csqcFunding01Up.setFixing (_iResetDate, fl, _dblResetRate + 0.0001 *
-			_dblTenorBump))
+		if ((_bond.isFloater() && java.lang.Integer.MIN_VALUE != _iResetDate) && !_csqcFunding01Up.setFixing
+			(_iResetDate, fl, _dblResetRate + 0.0001 * _dblTenorBump))
 			throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
 
 		if (null == (_csqcFundingEuroDollar = org.drip.param.creator.MarketParamsBuilder.Create
@@ -336,7 +341,8 @@ public class BondReplicator {
 					"ForwardRate", null, null, "SwapRate"), gc, null, null, null, null, null)))
 			throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
 
-		if (_bond.isFloater() && !_csqcFundingEuroDollar.setFixing (_iResetDate, fl, _dblResetRate))
+		if ((_bond.isFloater() && java.lang.Integer.MIN_VALUE != _iResetDate) &&
+			!_csqcFundingEuroDollar.setFixing (_iResetDate, fl, _dblResetRate))
 			throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
 
 		java.util.Map<java.lang.String, org.drip.state.discount.MergedDiscountForwardCurve> mapTenorFundingUp
@@ -410,8 +416,9 @@ public class BondReplicator {
 
 			_mapCSQCGovvieDown.put (strKey, csqcGovvieTenorDown);
 
-			if (_bond.isFloater() && (!csqcGovvieTenorUp.setFixing (_iResetDate, fl, _dblResetRate) ||
-				!csqcGovvieTenorDown.setFixing (_iResetDate, fl, _dblResetRate)))
+			if ((_bond.isFloater() && java.lang.Integer.MIN_VALUE != _iResetDate) &&
+				(!csqcGovvieTenorUp.setFixing (_iResetDate, fl, _dblResetRate) ||
+					!csqcGovvieTenorDown.setFixing (_iResetDate, fl, _dblResetRate)))
 				throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
 		}
 
