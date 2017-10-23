@@ -5620,9 +5620,15 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 		int iFreq = freq();
 
-		return null == _floaterSetting ? dblYield - dcFunding.libor (iValueDate, ((int) (12. / (0 == iFreq ?
-			2 : iFreq))) + "M") : dblYield - indexRate (iValueDate, csqc,
-				(org.drip.analytics.cashflow.CompositeFloatingPeriod) currentPeriod (iValueDate));
+		org.drip.analytics.cashflow.CompositePeriod cp = currentPeriod (iValueDate);
+
+		if (null == cp)
+			throw new java.lang.Exception ("BondComponent::discountMarginFromYield => Invalid inputs");
+
+		return null == _floaterSetting || !(cp instanceof
+			org.drip.analytics.cashflow.CompositeFloatingPeriod) ? dblYield - dcFunding.libor (iValueDate,
+				((int) (12. / (0 == iFreq ? 2 : iFreq))) + "M") : dblYield - indexRate (iValueDate, csqc,
+					(org.drip.analytics.cashflow.CompositeFloatingPeriod) cp);
 	}
 
 	@Override public double discountMarginFromYield (
@@ -12881,9 +12887,16 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 		int iFreq = freq();
 
-		return null == _floaterSetting ? dblDiscountMargin + dcFunding.libor (iValueDate, ((int) (12. / (0 ==
-			iFreq ? 2 : iFreq))) + "M") : dblDiscountMargin + indexRate (iValueDate, csqc,
-				(org.drip.analytics.cashflow.CompositeFloatingPeriod) currentPeriod (iValueDate));
+		org.drip.analytics.cashflow.CompositePeriod cp = currentPeriod (iValueDate);
+
+		if (null == cp)
+			throw new java.lang.Exception ("BondComponent::yieldFromDiscountMargin => Invalid inputs");
+
+		return null == _floaterSetting || !(cp instanceof
+			org.drip.analytics.cashflow.CompositeFloatingPeriod) ? dblDiscountMargin + dcFunding.libor
+				(iValueDate, ((int) (12. / (0 == iFreq ? 2 : iFreq))) + "M") : dblDiscountMargin + indexRate
+					(iValueDate, csqc, (org.drip.analytics.cashflow.CompositeFloatingPeriod) currentPeriod
+						(iValueDate));
 	}
 
 	@Override public double yieldFromDiscountMargin (
