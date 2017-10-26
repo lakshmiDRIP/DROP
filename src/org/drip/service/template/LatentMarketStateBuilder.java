@@ -1484,6 +1484,106 @@ public class LatentMarketStateBuilder {
 	}
 
 	/**
+	 * Construct a Map of Tenor Bumped Funding Curve Based off of the Underlying Forward Curve Shift
+	 * 
+	 * @param dtSpot The Spot Date
+	 * @param strCurrency Currency
+	 * @param astrDepositMaturityTenor Array of Deposit Maturity Tenors
+	 * @param adblDepositQuote Array of Deposit Quotes
+	 * @param strDepositMeasure Deposit Calibration Measure
+	 * @param adblFuturesQuote Array of Futures Quotes
+	 * @param strFuturesMeasure Futures Calibration Measure
+	 * @param astrFixFloatMaturityTenor Array of Fix Float Swap Maturity Tenors
+	 * @param adblFixFloatQuote Array of Fix Float Swap Quotes
+	 * @param strFixFloatMeasure Fix Float Calibration Measure
+	 * @param iLatentStateType SHAPE_PRESERVING/SMOOTH
+	 * @param dblBump The Tenor Node Bump Amount
+	 * @param bIsProportional TRUE - The Bump Applied is Proportional
+	 * 
+	 * @return The Tenor Bumped Funding Curve Map
+	 */
+
+	public static final
+		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.discount.MergedDiscountForwardCurve>
+			BumpedForwardFundingCurve (
+				final org.drip.analytics.date.JulianDate dtSpot,
+				final java.lang.String strCurrency,
+				final java.lang.String[] astrDepositMaturityTenor,
+				final double[] adblDepositQuote,
+				final java.lang.String strDepositMeasure,
+				final double[] adblFuturesQuote,
+				final java.lang.String strFuturesMeasure,
+				final java.lang.String[] astrFixFloatMaturityTenor,
+				final double[] adblFixFloatQuote,
+				final java.lang.String strFixFloatMeasure,
+				final int iLatentStateType,
+				final double dblBump,
+				final boolean bIsProportional)
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (dblBump)) return null;
+
+		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.discount.MergedDiscountForwardCurve>
+			mapBumpedCurve = new
+				org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.discount.MergedDiscountForwardCurve>();
+
+		org.drip.state.discount.MergedDiscountForwardCurve dcFundingBase = FundingCurve (dtSpot, strCurrency,
+			astrDepositMaturityTenor, adblDepositQuote, strDepositMeasure, adblFuturesQuote,
+				strFuturesMeasure, astrFixFloatMaturityTenor, adblFixFloatQuote, strFixFloatMeasure,
+					iLatentStateType);
+
+		if (null == dcFundingBase) return null;
+
+		int iNumDeposit = null == astrDepositMaturityTenor ? 0 : astrDepositMaturityTenor.length;
+		int iNumFixFloat = null == adblFixFloatQuote ? 0 : adblFixFloatQuote.length;
+		int iNumFutures = null == adblFuturesQuote ? 0 : adblFuturesQuote.length;
+		int iNumDepositFutures = iNumDeposit + iNumFutures;
+		int iNumDepositFuturesFixFloat = iNumDepositFutures + iNumFixFloat;
+		int[] aiDate = new int[iNumDepositFuturesFixFloat];
+
+		for (int i = 0; i < iNumDeposit; ++i)
+			aiDate[i] = dtSpot.addTenor (astrDepositMaturityTenor[i]).julian();
+
+		org.drip.product.rates.SingleStreamComponent[] aSSC =
+			org.drip.service.template.ExchangeInstrumentBuilder.ForwardRateFuturesPack (dtSpot, iNumFutures,
+				strCurrency);
+
+		for (int i = iNumDeposit; i < iNumDepositFutures; ++i)
+			aiDate[i] = aSSC[i - iNumDeposit].maturityDate().julian();
+
+		for (int i = iNumDepositFutures; i < iNumDepositFuturesFixFloat; ++i)
+			aiDate[i] = dtSpot.addTenor (astrFixFloatMaturityTenor[i - iNumDepositFutures]).julian();
+
+		org.drip.state.nonlinear.FlatForwardDiscountCurve ffdc = dcFundingBase.flatNativeForward (aiDate,
+			0.);
+
+		if (null == ffdc) return null;
+
+		mapBumpedCurve.put ("base", ffdc);
+
+		org.drip.state.nonlinear.FlatForwardDiscountCurve ffdcBumped = dcFundingBase.flatNativeForward
+			(aiDate, dblBump);
+
+		if (null == ffdcBumped) return null;
+
+		mapBumpedCurve.put ("bump", ffdcBumped);
+
+		int iDateLeft = dtSpot.julian();
+
+		for (int i = 0; i < iNumDepositFuturesFixFloat; ++i) {
+			org.drip.state.nonlinear.FlatForwardDiscountCurve ffdcTenorBumped =
+				dcFundingBase.flatNativeForwardEI (aiDate, iDateLeft, aiDate[i], dblBump);
+
+			if (null == ffdcTenorBumped) return null;
+
+			mapBumpedCurve.put ("tenor::" + i, ffdcTenorBumped);
+
+			iDateLeft = aiDate[i];
+		}
+
+		return mapBumpedCurve;
+	}
+
+	/**
 	 * Construct a Map of Tenor Bumped Forward Curve Based off of the Input Exchange/OTC Market Instruments
 	 * 
 	 * @param dtSpot Spot Date

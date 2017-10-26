@@ -346,14 +346,14 @@ public class BondReplicator {
 			throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
 
 		java.util.Map<java.lang.String, org.drip.state.discount.MergedDiscountForwardCurve> mapTenorFundingUp
-			= org.drip.service.template.LatentMarketStateBuilder.BumpedFundingCurve (_dtSpot, strCurrency,
+			= org.drip.service.template.LatentMarketStateBuilder.BumpedForwardFundingCurve (_dtSpot, strCurrency,
 				_astrDepositTenor, _adblDepositQuote, "ForwardRate", _adblFuturesQuote, "ForwardRate",
 					_astrFixFloatTenor, _adblFixFloatQuote, "SwapRate",
 						org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING, 0.0001 *
 							_dblTenorBump, false);
 
 		java.util.Map<java.lang.String, org.drip.state.discount.MergedDiscountForwardCurve>
-			mapTenorFundingDown = org.drip.service.template.LatentMarketStateBuilder.BumpedFundingCurve
+			mapTenorFundingDown = org.drip.service.template.LatentMarketStateBuilder.BumpedForwardFundingCurve
 				(_dtSpot, strCurrency, _astrDepositTenor, _adblDepositQuote, "ForwardRate",
 					_adblFuturesQuote, "ForwardRate", _astrFixFloatTenor, _adblFixFloatQuote, "SwapRate",
 						org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING, -0.0001 *

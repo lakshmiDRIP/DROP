@@ -106,4 +106,190 @@ public abstract class DiscountCurve implements org.drip.analytics.definition.Cur
 
 		return null;
 	}
+
+	/**
+	 * Construct Flat Native Forward Instance of the Curve at the specified Date Nodes
+	 * 
+	 * @param aiDate Array of Date Nodes
+	 * @param dblBump The Bump Amount
+	 * 
+	 * @return The Flat Forward Instance
+	 */
+
+	public org.drip.state.nonlinear.FlatForwardDiscountCurve flatNativeForward (
+		final int[] aiDate,
+		final double dblBump)
+	{
+		if (null == aiDate || !org.drip.quant.common.NumberUtil.IsValid (dblBump)) return null;
+
+		int iNumNode = aiDate.length;
+		double[] adblForwardRate = 0 == iNumNode ? null : new double [iNumNode];
+
+		if (0 == iNumNode) return null;
+
+		java.lang.String strCurrency = currency();
+
+		org.drip.market.otc.FixedFloatSwapConvention ffsc =
+			org.drip.market.otc.IBORFixedFloatContainer.ConventionFromJurisdiction (strCurrency);
+
+		if (null == ffsc) return null;
+
+		org.drip.param.period.UnitCouponAccrualSetting ucas =
+			ffsc.floatStreamConvention().floaterIndex().ucas();
+
+		org.drip.analytics.date.JulianDate dtStart = epoch();
+
+		int iFreq = ucas.freq();
+
+		java.lang.String strDayCount = ucas.couponDC();
+
+		org.drip.analytics.daycount.ActActDCParams aap =
+			org.drip.analytics.daycount.ActActDCParams.FromFrequency (iFreq);
+
+		try {
+			for (int i = 0; i < iNumNode; ++i) {
+				int iStartDate = 0 == i ? dtStart.julian() : aiDate[i - 1];
+
+				adblForwardRate[i] = ((df (iStartDate) / df (aiDate[i])) - 1.) /
+					org.drip.analytics.daycount.Convention.YearFraction (iStartDate, aiDate[i], strDayCount,
+						false, aap, strCurrency) + dblBump;
+			}
+
+			return new org.drip.state.nonlinear.FlatForwardDiscountCurve (dtStart, strCurrency, aiDate,
+				adblForwardRate, true, strDayCount, iFreq);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct Flat Native Forward Instance of the Curve at the specified Date Node Tenors
+	 * 
+	 * @param astrTenor Array of Date Tenors
+	 * @param dblBump The Bump Amount
+	 * 
+	 * @return The Flat Forward Instance
+	 */
+
+	public org.drip.state.nonlinear.FlatForwardDiscountCurve flatNativeForward (
+		final java.lang.String[] astrTenor,
+		final double dblBump)
+	{
+		if (null == astrTenor || !org.drip.quant.common.NumberUtil.IsValid (dblBump)) return null;
+
+		int iNumNode = astrTenor.length;
+		double[] adblForwardRate = 0 == iNumNode ? null : new double [iNumNode];
+
+		if (0 == iNumNode) return null;
+
+		java.lang.String strCurrency = currency();
+
+		org.drip.market.otc.FixedFloatSwapConvention ffsc =
+			org.drip.market.otc.IBORFixedFloatContainer.ConventionFromJurisdiction (strCurrency);
+
+		if (null == ffsc) return null;
+
+		org.drip.param.period.UnitCouponAccrualSetting ucas =
+			ffsc.floatStreamConvention().floaterIndex().ucas();
+
+		org.drip.analytics.date.JulianDate dtStart = epoch();
+
+		int iFreq = ucas.freq();
+
+		java.lang.String strDayCount = ucas.couponDC();
+
+		org.drip.analytics.daycount.ActActDCParams aap =
+			org.drip.analytics.daycount.ActActDCParams.FromFrequency (iFreq);
+
+		int[] aiDate = new int[iNumNode];
+
+		try {
+			for (int i = 0; i < iNumNode; ++i) {
+				org.drip.analytics.date.JulianDate dtTenor = dtStart.addTenor (astrTenor[i]);
+
+				if (null == dtTenor) return null;
+
+				aiDate[i] = dtTenor.julian();
+
+				int iStartDate = 0 == i ? dtStart.julian() : aiDate[i - 1];
+
+				adblForwardRate[i] = ((df (iStartDate) / df (aiDate[i])) - 1.) /
+					org.drip.analytics.daycount.Convention.YearFraction (iStartDate, aiDate[i], strDayCount,
+						false, aap, strCurrency) + dblBump;
+			}
+
+			return new org.drip.state.nonlinear.FlatForwardDiscountCurve (dtStart, strCurrency, aiDate,
+				adblForwardRate, true, strDayCount, iFreq);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct Flat Native Forward Instance of the Curve at the specified Date Nodes with
+	 * 	(Exclusive/Inclusive) Bumps applied within the Tenors
+	 * 
+	 * @param aiDate Array of Date Nodes
+	 * @param iDateLeft The Left (Exclusive) Date
+	 * @param iDateRight The Right (Inclusive) Date
+	 * @param dblBump The Bump Amount
+	 * 
+	 * @return The Flat Forward Instance
+	 */
+
+	public org.drip.state.nonlinear.FlatForwardDiscountCurve flatNativeForwardEI (
+		final int[] aiDate,
+		final int iDateLeft,
+		final int iDateRight,
+		final double dblBump)
+	{
+		if (null == aiDate || iDateLeft >= iDateRight || !org.drip.quant.common.NumberUtil.IsValid (dblBump))
+			return null;
+
+		int iNumNode = aiDate.length;
+		double[] adblForwardRate = 0 == iNumNode ? null : new double [iNumNode];
+
+		if (0 == iNumNode) return null;
+
+		java.lang.String strCurrency = currency();
+
+		org.drip.market.otc.FixedFloatSwapConvention ffsc =
+			org.drip.market.otc.IBORFixedFloatContainer.ConventionFromJurisdiction (strCurrency);
+
+		if (null == ffsc) return null;
+
+		org.drip.param.period.UnitCouponAccrualSetting ucas =
+			ffsc.floatStreamConvention().floaterIndex().ucas();
+
+		org.drip.analytics.date.JulianDate dtStart = epoch();
+
+		int iFreq = ucas.freq();
+
+		java.lang.String strDayCount = ucas.couponDC();
+
+		org.drip.analytics.daycount.ActActDCParams aap =
+			org.drip.analytics.daycount.ActActDCParams.FromFrequency (iFreq);
+
+		try {
+			for (int i = 0; i < iNumNode; ++i) {
+				int iStartDate = 0 == i ? dtStart.julian() : aiDate[i - 1];
+
+				adblForwardRate[i] = ((df (iStartDate) / df (aiDate[i])) - 1.) /
+					org.drip.analytics.daycount.Convention.YearFraction (iStartDate, aiDate[i], strDayCount,
+						false, aap, strCurrency) + (aiDate[i] >= iDateLeft && aiDate[i] < iDateRight ?
+							dblBump : 0.);
+			}
+
+			return new org.drip.state.nonlinear.FlatForwardDiscountCurve (dtStart, strCurrency, aiDate,
+				adblForwardRate, true, strDayCount, iFreq);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 }
