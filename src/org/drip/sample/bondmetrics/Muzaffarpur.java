@@ -164,18 +164,18 @@ public class Muzaffarpur {
 		};
 
 		double[] adblGovvieYield = new double[] {
-				0.0099,
-				0.0104,
-				0.0119,
-				0.0131,
-				0.0145,
-				0.0159,
-				0.0189,
-				0.0211,
-				0.0227,
-				0.02397,
-				0.0257,
-				0.028
+			0.0099,
+			0.0104,
+			0.0119,
+			0.0131,
+			0.0145,
+			0.0159,
+			0.0189,
+			0.0211,
+			0.0227,
+			0.02397,
+			0.0257,
+			0.028
 		};
 
 		String[] astrCreditTenor = new String[] {
@@ -204,7 +204,7 @@ public class Muzaffarpur {
 		int iSettleLag = 3;
 		double dblSpread = 0.01;
 		String strCurrency = "USD";
-		double dblCleanPrice = 1.; // 0.91734;
+		double dblCleanPrice = 0.91734;
 		double dblIssuePrice = 1.0;
 		double dblSpreadBump = 20.;
 		String strTreasuryCode = "UST";
@@ -228,7 +228,7 @@ public class Muzaffarpur {
 			"Muzaffarpur",
 			"USD",
 			"USD-3M",
-			"Udaipur",
+			"Muzaffarpur",
 			dblSpread,
 			4,
 			"Act/360",
@@ -306,7 +306,7 @@ public class Muzaffarpur {
 
 		System.out.println (abrr.display());
 
-		/* System.out.println ("\t||----------------------------------------------------------------------------------------------------------------------||");
+		System.out.println ("\t||----------------------------------------------------------------------------------------------------------------------||");
 
 		System.out.println();
 
@@ -416,6 +416,6 @@ public class Muzaffarpur {
 
 		System.out.println ("\t||----------------------------------------------------------------------------------------------------------------------||");
 
-		System.out.println(); */
+		System.out.println();
 	}
 }
