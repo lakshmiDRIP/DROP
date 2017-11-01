@@ -1575,8 +1575,7 @@ public class LatentMarketStateBuilder {
 
 			if (null == ffdcTenorBumped) return null;
 
-			mapBumpedCurve.put ("tenor::" + new org.drip.analytics.date.JulianDate (aiDate[i]),
-				ffdcTenorBumped);
+			mapBumpedCurve.put ("tenor::" + i, ffdcTenorBumped);
 
 			iDateLeft = aiDate[i];
 		}

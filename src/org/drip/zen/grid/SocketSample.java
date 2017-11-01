@@ -33,11 +33,11 @@ public class SocketSample {
 
 		System.out.println ("[Server] => The Server is listening on port " + listenerPort);
 
+    	Socket s = mySocketListener.accept();
+
+		System.out.println ("[Server] => Received a Connection from Client " + s);
+
 		while (true) {
-	    	Socket s = mySocketListener.accept();
-
-			System.out.println ("[Server] => Received a Connection from Client " + s);
-
 			InputStream inputStream = s.getInputStream();
 
 			InputStreamReader inputReader = new InputStreamReader (inputStream);
@@ -46,42 +46,53 @@ public class SocketSample {
 
 			java.lang.String request = bufferedReader.readLine();
 
-        	System.out.println ("[Server] => " + request);
+        	System.out.println ("[" + s.toString() + "] => " + request);
 
     		OutputStream outputStream = s.getOutputStream();
 
     		PrintWriter pw = new PrintWriter (outputStream, true);
 
-        	pw.write ("I am OK - looks like our sockets talked to each other\n");
+    		String response = System.console().readLine();
+
+        	pw.write (response + "\n");
 
         	pw.flush();
 		}
 	}
 
-	@SuppressWarnings ("resource") static void RunClient (String serverAddress, int serverPort, String message)
+	@SuppressWarnings ("resource") static void RunClient (String serverAddress, int serverPort)
 		throws Exception
 	{
 		Socket clientSocket = new Socket (serverAddress, serverPort);
 
 		System.out.println ("[Client] => The Client connected to " + serverAddress + "/" + serverPort);
 
-		OutputStream outputStream = clientSocket.getOutputStream();
+		boolean listenForMessages = true;
 
-		PrintWriter pw = new PrintWriter (outputStream, true);
+		while (listenForMessages) {
+			OutputStream outputStream = clientSocket.getOutputStream();
 
-    	pw.write (message + "\n");
+			String message = System.console().readLine();
 
-    	pw.flush();
+			PrintWriter pw = new PrintWriter (outputStream, true);
 
-		InputStream inputStream = clientSocket.getInputStream();
+	    	pw.write (message + "\n");
 
-		InputStreamReader inputReader = new InputStreamReader (inputStream);
+	    	pw.flush();
 
-		BufferedReader bufferedReader = new BufferedReader (inputReader);
+			InputStream inputStream = clientSocket.getInputStream();
 
-		java.lang.String response = bufferedReader.readLine();
+			InputStreamReader inputReader = new InputStreamReader (inputStream);
 
-    	System.out.println ("[Client] => " + response);
+			BufferedReader bufferedReader = new BufferedReader (inputReader);
+
+			java.lang.String response = bufferedReader.readLine();
+
+	    	System.out.println ("[" + serverAddress + ":" + serverPort + "] => " + response);
+
+	    	if (response.equalsIgnoreCase ("bye") || response.equalsIgnoreCase ("quit"))
+	    		listenForMessages = false;
+		}
 	}
 
 	public static final void main (String[] inputArray)
@@ -89,7 +100,6 @@ public class SocketSample {
 	{
 		String server = "127.0.0.1";
 		int listenerPort = 9090;
-		String sampleMessage = "Hi How are you doing?";
 
 		String command = inputArray[0];
 
@@ -97,6 +107,6 @@ public class SocketSample {
 			RunServer (listenerPort);
 
 		if (command.equalsIgnoreCase ("CLIENT"))
-			RunClient (server, listenerPort, sampleMessage);
+			RunClient (server, listenerPort);
 	}
 }

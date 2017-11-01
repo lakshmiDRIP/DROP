@@ -9,6 +9,7 @@ import org.drip.market.otc.*;
 import org.drip.param.market.CurveSurfaceQuoteContainer;
 import org.drip.param.valuation.ValuationParams;
 import org.drip.product.rates.FixFloatComponent;
+import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.service.template.LatentMarketStateBuilder;
 import org.drip.state.discount.MergedDiscountForwardCurve;
@@ -339,7 +340,7 @@ public class CMEFixFloat {
 			null
 		);
 
-		String strMaturityTenor = "7Y";
+		String strMaturityTenor = "5Y";
 		double dblFixedCoupon = 0.021893;
 
 		JulianDate dtEffective = DateUtil.CreateFromYMD (
@@ -384,5 +385,63 @@ public class CMEFixFloat {
 
 		for (Map.Entry<String, Double> me : mapOutput.entrySet())
 			System.out.println ("\t\t" + me.getKey() + " => " + me.getValue());
-	}
+
+		System.out.println();
+
+		System.out.println ("\tClean Price       =>" +
+			FormatUtil.FormatDouble (mapOutput.get ("CleanPrice"), 1, 4, 1.)
+		);
+
+		System.out.println ("\tDirty Price       =>" +
+			FormatUtil.FormatDouble (mapOutput.get ("DirtyPrice"), 1, 4, 1.)
+		);
+
+		System.out.println ("\tFixed Stream PV   =>  " +
+			FormatUtil.FormatDouble (mapOutput.get ("ReferencePV"), 1, 8, 1.)
+		);
+
+		System.out.println ("\tFloat Stream PV   =>  " +
+			FormatUtil.FormatDouble (mapOutput.get ("DerivedPV"), 1, 8, 1.)
+		);
+
+		System.out.println ("\tFixed Stream PV   =>  " +
+			FormatUtil.FormatDouble (mapOutput.get ("ReferencePV"), 1, 8, 1.)
+		);
+
+		System.out.println ("\tFixed Stream DV01 =>  " +
+			FormatUtil.FormatDouble (mapOutput.get ("ReferenceDV01"), 1, 8, 10000.)
+		);
+
+		System.out.println ("\tFloat Stream DV01 =>  " +
+			FormatUtil.FormatDouble (mapOutput.get ("DerivedDV01"), 1, 8, 10000.)
+		);
+
+		System.out.println ("\tFixing 01         =>  " +
+			FormatUtil.FormatDouble (mapOutput.get ("Fixing01"), 1, 8, 10000.)
+		);
+
+		System.out.println ("\tClean PV          =>  " +
+			FormatUtil.FormatDouble (mapOutput.get ("CleanPV"), 1, 8, 1.)
+		);
+
+		System.out.println ("\tDirty PV          =>  " +
+			FormatUtil.FormatDouble (mapOutput.get ("DirtyPV"), 1, 8, 1.)
+		);
+
+		System.out.println ("\tFixed Accrued     =>  " +
+			FormatUtil.FormatDouble (mapOutput.get ("FixedAccrued"), 1, 8, 1.)
+		);
+
+		System.out.println ("\tFloat Accrued     =>  " +
+			FormatUtil.FormatDouble (mapOutput.get ("FloatAccrued"), 1, 8, 1.)
+		);
+
+		System.out.println ("\tAccrued           =>  " +
+			FormatUtil.FormatDouble (mapOutput.get ("Accrued"), 1, 8, 1.)
+		);
+
+		System.out.println ("\tPar Swap Rate     =>  " +
+			FormatUtil.FormatDouble (mapOutput.get ("ParSwapRate"), 1, 4, 100.) + "%"
+		);
+ 	}
 }

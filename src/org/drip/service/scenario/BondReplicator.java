@@ -98,11 +98,11 @@ public class BondReplicator {
 			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.param.market.CurveSurfaceQuoteContainer>();
 
 	private java.util.Map<java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer>
-		_mapCSQCFundingUp = new
+		_mapCSQCForwardFundingUp = new
 			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.param.market.CurveSurfaceQuoteContainer>();
 
 	private java.util.Map<java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer>
-		_mapCSQCFundingDown = new
+		_mapCSQCForwardFundingDown = new
 			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.param.market.CurveSurfaceQuoteContainer>();
 
 	/**
@@ -345,41 +345,43 @@ public class BondReplicator {
 			!_csqcFundingEuroDollar.setFixing (_iResetDate, fl, _dblResetRate))
 			throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
 
-		java.util.Map<java.lang.String, org.drip.state.discount.MergedDiscountForwardCurve> mapTenorFundingUp
-			= org.drip.service.template.LatentMarketStateBuilder.BumpedForwardFundingCurve (_dtSpot, strCurrency,
-				_astrDepositTenor, _adblDepositQuote, "ForwardRate", _adblFuturesQuote, "ForwardRate",
-					_astrFixFloatTenor, _adblFixFloatQuote, "SwapRate",
-						org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING, 0.0001 *
-							_dblTenorBump, false);
+		java.util.Map<java.lang.String, org.drip.state.discount.MergedDiscountForwardCurve>
+			mapTenorForwardFundingUp =
+				org.drip.service.template.LatentMarketStateBuilder.BumpedForwardFundingCurve (_dtSpot,
+					strCurrency, _astrDepositTenor, _adblDepositQuote, "ForwardRate", _adblFuturesQuote,
+						"ForwardRate", _astrFixFloatTenor, _adblFixFloatQuote, "SwapRate",
+							org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING, 0.0001 *
+								_dblTenorBump, false);
 
 		java.util.Map<java.lang.String, org.drip.state.discount.MergedDiscountForwardCurve>
-			mapTenorFundingDown = org.drip.service.template.LatentMarketStateBuilder.BumpedForwardFundingCurve
-				(_dtSpot, strCurrency, _astrDepositTenor, _adblDepositQuote, "ForwardRate",
-					_adblFuturesQuote, "ForwardRate", _astrFixFloatTenor, _adblFixFloatQuote, "SwapRate",
-						org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING, -0.0001 *
-							_dblTenorBump, false);
+			mapTenorForwardFundingDown =
+				org.drip.service.template.LatentMarketStateBuilder.BumpedForwardFundingCurve (_dtSpot,
+					strCurrency, _astrDepositTenor, _adblDepositQuote, "ForwardRate", _adblFuturesQuote,
+						"ForwardRate", _astrFixFloatTenor, _adblFixFloatQuote, "SwapRate",
+							org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING, -0.0001 *
+								_dblTenorBump, false);
 
-		if (null == mapTenorFundingUp || null == mapTenorFundingDown)
+		if (null == mapTenorForwardFundingUp || null == mapTenorForwardFundingDown)
 			throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
 
 		for (java.util.Map.Entry<java.lang.String, org.drip.state.discount.MergedDiscountForwardCurve>
-			meTenorFundingUp : mapTenorFundingUp.entrySet()) {
-			java.lang.String strKey = meTenorFundingUp.getKey();
+			meTenorForwardFundingUp : mapTenorForwardFundingUp.entrySet()) {
+			java.lang.String strKey = meTenorForwardFundingUp.getKey();
 
-			org.drip.param.market.CurveSurfaceQuoteContainer csqcFundingTenorUp =
-				org.drip.param.creator.MarketParamsBuilder.Create (meTenorFundingUp.getValue(), gc, null,
-					null, null, null, null);
-
-			org.drip.param.market.CurveSurfaceQuoteContainer csqcFundingTenorDown =
-				org.drip.param.creator.MarketParamsBuilder.Create (mapTenorFundingDown.get (strKey), gc,
+			org.drip.param.market.CurveSurfaceQuoteContainer csqcForwardFundingTenorUp =
+				org.drip.param.creator.MarketParamsBuilder.Create (meTenorForwardFundingUp.getValue(), gc,
 					null, null, null, null, null);
 
-			if (null == csqcFundingTenorUp || null == csqcFundingTenorDown)
+			org.drip.param.market.CurveSurfaceQuoteContainer csqcForwardFundingTenorDown =
+				org.drip.param.creator.MarketParamsBuilder.Create (mapTenorForwardFundingDown.get (strKey),
+					gc, null, null, null, null, null);
+
+			if (null == csqcForwardFundingTenorUp || null == csqcForwardFundingTenorDown)
 				throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
 
-			_mapCSQCFundingUp.put (strKey, csqcFundingTenorUp);
+			_mapCSQCForwardFundingUp.put (strKey, csqcForwardFundingTenorUp);
 
-			_mapCSQCFundingDown.put (strKey, csqcFundingTenorDown);
+			_mapCSQCForwardFundingDown.put (strKey, csqcForwardFundingTenorDown);
 		}
 
 		java.util.Map<java.lang.String, org.drip.state.govvie.GovvieCurve> mapTenorGovvieUp =
@@ -769,27 +771,27 @@ public class BondReplicator {
 	}
 
 	/**
-	 * Retrieve the Map of the Tenor Bumped Up Instances of the Funding Curve CSQC
+	 * Retrieve the Map of the Tenor Bumped Up Instances of the Forward Funding Curve CSQC
 	 * 
-	 * @return The Map of the Tenor Bumped Up Instances of the Funding Curve CSQC
+	 * @return The Map of the Tenor Bumped Up Instances of the Forward Funding Curve CSQC
 	 */
 
 	public java.util.Map<java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer>
-		fundingTenorCSQCUp()
+		forwardFundingTenorCSQCUp()
 	{
-		return _mapCSQCFundingUp;
+		return _mapCSQCForwardFundingUp;
 	}
 
 	/**
-	 * Retrieve the Map of the Tenor Bumped Down Instances of the Funding Curve CSQC
+	 * Retrieve the Map of the Tenor Bumped Down Instances of the Forward Funding Curve CSQC
 	 * 
-	 * @return The Map of the Tenor Bumped Down Instances of the Funding Curve CSQC
+	 * @return The Map of the Tenor Bumped Down Instances of the Forward Funding Curve CSQC
 	 */
 
 	public java.util.Map<java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer>
-		fundingTenorCSQCDown()
+		forwardFundingTenorCSQCDown()
 	{
-		return _mapCSQCFundingDown;
+		return _mapCSQCForwardFundingDown;
 	}
 
 	/**
@@ -1312,38 +1314,38 @@ public class BondReplicator {
 
 		try {
 			for (java.util.Map.Entry<java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer>
-				meCSQCUp : _mapCSQCFundingUp.entrySet()) {
+				meCSQCUp : _mapCSQCForwardFundingUp.entrySet()) {
 				java.lang.String strKey = meCSQCUp.getKey();
 
 				org.drip.param.market.CurveSurfaceQuoteContainer csqcTenorUp = meCSQCUp.getValue();
 
-				org.drip.param.market.CurveSurfaceQuoteContainer csqcTenorDown = _mapCSQCFundingDown.get
-					(strKey);
+				org.drip.param.market.CurveSurfaceQuoteContainer csqcTenorDown =
+					_mapCSQCForwardFundingDown.get (strKey);
 
-				double dblTenorUpPrice = _bond.isFloater() ? _bond.priceFromDiscountMargin (_valParams,
-					csqcTenorUp, null, iWorkoutDate, dblWorkoutFactor, dblZSpreadToExercise) :
+				double dblTenorForwardUpPrice = _bond.isFloater() ? _bond.priceFromDiscountMargin
+					(_valParams, csqcTenorUp, null, iWorkoutDate, dblWorkoutFactor, dblZSpreadToExercise) :
 						_bond.priceFromZSpread (_valParams, csqcTenorUp, null, iWorkoutDate,
 							dblWorkoutFactor, dblZSpreadToExercise);
 
-				double dblTenorUpParPrice = _bond.isFloater() ? _bond.priceFromDiscountMargin (_valParams,
-					csqcTenorUp, null, iWorkoutDate, dblWorkoutFactor, dblParZSpreadToExercise) :
-						_bond.priceFromZSpread (_valParams, csqcTenorUp, null, iWorkoutDate,
+				double dblTenorForwardUpParPrice = _bond.isFloater() ? _bond.priceFromDiscountMargin
+					(_valParams, csqcTenorUp, null, iWorkoutDate, dblWorkoutFactor, dblParZSpreadToExercise)
+						: _bond.priceFromZSpread (_valParams, csqcTenorUp, null, iWorkoutDate,
 							dblWorkoutFactor, dblParZSpreadToExercise);
 
-				double dblTenorDownPrice = _bond.isFloater() ? _bond.priceFromDiscountMargin (_valParams,
-					csqcTenorDown, null, iWorkoutDate, dblWorkoutFactor, dblZSpreadToExercise) :
+				double dblTenorForwardDownPrice = _bond.isFloater() ? _bond.priceFromDiscountMargin
+					(_valParams, csqcTenorDown, null, iWorkoutDate, dblWorkoutFactor, dblZSpreadToExercise) :
 						_bond.priceFromZSpread (_valParams, csqcTenorDown, null, iWorkoutDate,
 							dblWorkoutFactor, dblZSpreadToExercise);
 
-				double dblTenorDownParPrice = _bond.isFloater() ? _bond.priceFromDiscountMargin (_valParams,
-					csqcTenorDown, null, iWorkoutDate, dblWorkoutFactor, dblParZSpreadToExercise) :
-						_bond.priceFromZSpread (_valParams, csqcTenorDown, null, iWorkoutDate,
-							dblWorkoutFactor, dblParZSpreadToExercise);
+				double dblTenorForwardDownParPrice = _bond.isFloater() ? _bond.priceFromDiscountMargin
+					(_valParams, csqcTenorDown, null, iWorkoutDate, dblWorkoutFactor,
+						dblParZSpreadToExercise) : _bond.priceFromZSpread (_valParams, csqcTenorDown, null,
+							iWorkoutDate, dblWorkoutFactor, dblParZSpreadToExercise);
 
-				mapLIBORKRD.put (strKey, 0.5 * (dblTenorDownPrice - dblTenorUpPrice) / _dblCurrentPrice /
-					_dblTenorBump);
+				mapLIBORKRD.put (strKey, 0.5 * (dblTenorForwardDownPrice - dblTenorForwardUpPrice) /
+					_dblCurrentPrice / _dblTenorBump);
 
-				mapLIBORKPRD.put (strKey, 0.5 * (dblTenorDownParPrice - dblTenorUpParPrice) /
+				mapLIBORKPRD.put (strKey, 0.5 * (dblTenorForwardDownParPrice - dblTenorForwardUpParPrice) /
 					_dblIssuePrice / _dblTenorBump);
 			}
 
