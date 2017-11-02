@@ -109,6 +109,28 @@ public abstract class GovvieCurve extends org.drip.state.discount.DiscountCurve 
 		return yield (epoch().addTenor (strTenor));
 	}
 
+	@Override public double forwardYield (
+		final int iDate1,
+		final int iDate2)
+		throws java.lang.Exception
+	{
+		if (iDate1 >= iDate2) throw new java.lang.Exception ("GovvieCurve::forwardYield => Invalid Inputs");
+
+		double dblForwardDCF = org.drip.analytics.daycount.Convention.YearFraction (iDate1, iDate2,
+			_strDayCount, false, org.drip.analytics.daycount.ActActDCParams.FromFrequency (_iFreq),
+				_strCurrency);
+
+		double dblDF1 = org.drip.analytics.support.Helper.Yield2DF  (_iFreq, yield (iDate1),
+			org.drip.analytics.daycount.Convention.YearFraction (_iEpochDate, iDate1, _strDayCount, false,
+				org.drip.analytics.daycount.ActActDCParams.FromFrequency (_iFreq), _strCurrency));
+
+		double dblDF2 = org.drip.analytics.support.Helper.Yield2DF  (_iFreq, yield (iDate2),
+			org.drip.analytics.daycount.Convention.YearFraction (_iEpochDate, iDate2, _strDayCount, false,
+				org.drip.analytics.daycount.ActActDCParams.FromFrequency (_iFreq), _strCurrency));
+
+		return ((dblDF1 / dblDF2) - 1.) / dblForwardDCF;
+	}
+
 	@Override public double df (
 		final int iDate)
 		throws java.lang.Exception

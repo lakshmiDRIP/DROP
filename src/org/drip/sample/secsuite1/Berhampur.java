@@ -1,5 +1,5 @@
 
-package org.drip.sample.bondcustom;
+package org.drip.sample.secsuite1;
 
 import org.drip.analytics.date.*;
 import org.drip.analytics.daycount.Convention;
@@ -55,12 +55,12 @@ import org.drip.service.scenario.*;
  */
 
 /**
- * Ahmednagar generates the Full Suite of Replication Metrics for Bond Ahmednagar.
+ * Berhampur generates the Full Suite of Replication Metrics for Bond Berhampur.
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class Ahmednagar {
+public class Berhampur {
 
 	public static final void main (
 		final String[] astArgs)
@@ -204,9 +204,21 @@ public class Ahmednagar {
 			28
 		);
 
+		JulianDate dtFixedPenultimateCoupon = DateUtil.CreateFromYMD (
+			2027,
+			DateUtil.FEBRUARY,
+			28
+		);
+
 		JulianDate dtFixedEnd = DateUtil.CreateFromYMD (
 			2027,
 			DateUtil.AUGUST,
+			28
+		);
+
+		JulianDate dtFloatFirstCoupon = DateUtil.CreateFromYMD (
+			2028,
+			DateUtil.FEBRUARY,
 			28
 		);
 
@@ -228,11 +240,13 @@ public class Ahmednagar {
 			dtEffective.julian(),
 			dtFixedEnd.julian(),
 			dtFixedFirstCoupon.julian(),
+			dtFixedPenultimateCoupon.julian(),
 			iFixedFreq,
 			dblFixedCoupon,
 			strFixedDayCount,
 			strFixedDayCount,
 			dtMaturity.julian(),
+			dtFloatFirstCoupon.julian(),
 			dtFloatPenultimateCoupon.julian(),
 			iFloatFreq,
 			dblFloatSpread,

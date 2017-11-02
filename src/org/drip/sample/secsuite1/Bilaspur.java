@@ -1,5 +1,5 @@
 
-package org.drip.sample.bondcustom;
+package org.drip.sample.secsuite1;
 
 import org.drip.analytics.cashflow.*;
 import org.drip.analytics.date.*;
@@ -61,12 +61,12 @@ import org.drip.state.identifier.ForwardLabel;
  */
 
 /**
- * Sambalpur demonstrates the Analytics Calculation/Reconciliation for the Bond Sambalpur.
+ * Bilaspur demonstrates the Analytics Calculation/Reconciliation for the Bond Bilaspur.
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class Sambalpur {
+public class Bilaspur {
 
 	private static final void SetEOS (
 		final BondComponent bond,
@@ -196,31 +196,31 @@ public class Sambalpur {
 		int iSettleLag = 3;
 		double dblSpread = 0.0;
 		String strCurrency = "USD";
-		double dblCleanPrice = 1.0029125;
-		double dblIssuePrice = 1.0;
+		double dblCleanPrice = 0.8920835;
+		double dblIssuePrice = 0.995;
 		double dblSpreadBump = 20.;
 		String strTreasuryCode = "UST";
 		double dblIssueAmount = 7.50e8;
 		double dblSpreadDurationMultiplier = 5.;
-		double dblResetRate = 0.045614 - dblSpread;
+		double dblResetRate = 0.045839 - dblSpread;
 
 		JulianDate dtEffective = DateUtil.CreateFromYMD (
-			2017,
-			2,
-			7
+			2013,
+			5,
+			9
 		);
 
 		JulianDate dtMaturity = DateUtil.CreateFromYMD (
-			2024,
-			2,
-			7
+			2020,
+			5,
+			9
 		);
 
 		BondComponent bond = BondBuilder.CreateSimpleFloater (
-			"Sambalpur",
+			"Bilaspur",
 			"USD",
 			"USD-3M",
-			"Sambalpur",
+			"Bilaspur",
 			dblSpread,
 			4,
 			"Act/360",
@@ -235,9 +235,9 @@ public class Sambalpur {
 			EmbeddedOptionSchedule.FromAmerican (
 				dtSpot.julian(),
 				new int[] {
-					DateUtil.CreateFromYMD (2017, 2, 7).julian(),
-					DateUtil.CreateFromYMD (2017, 8, 7).julian(),
-					DateUtil.CreateFromYMD (2024, 2, 7).julian(),
+					DateUtil.CreateFromYMD (2013,  6, 30).julian(),
+					DateUtil.CreateFromYMD (2013, 12, 30).julian(),
+					DateUtil.CreateFromYMD (2020,  5,  9).julian(),
 				},
 				new double[] {
 					1.01,

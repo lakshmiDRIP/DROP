@@ -5,4 +5,4 @@
  * @author Lakshmi Krishnamurthy
  */
 
-package org.drip.sample.bondcustom;
+package org.drip.sample.secsuite1;

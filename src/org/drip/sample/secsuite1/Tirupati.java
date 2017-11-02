@@ -1,5 +1,5 @@
 
-package org.drip.sample.bondcustom;
+package org.drip.sample.secsuite1;
 
 import org.drip.analytics.cashflow.CompositePeriod;
 import org.drip.analytics.date.*;

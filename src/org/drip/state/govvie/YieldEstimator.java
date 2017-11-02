@@ -115,4 +115,20 @@ public interface YieldEstimator {
 		final int iDate,
 		final double dblDCF)
 		throws java.lang.Exception;
+
+	/**
+	 * Estimate the Forward Yield between the specified Dates
+	 * 
+	 * @param iDate1 First Date
+	 * @param iDate2 Second Date
+	 * 
+	 * @return The Forward Yield
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double forwardYield (
+		final int iDate1,
+		final int iDate2)
+		throws java.lang.Exception;
 }
