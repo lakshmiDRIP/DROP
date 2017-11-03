@@ -2,8 +2,7 @@
 package org.drip.sample.secsuite1;
 
 import org.drip.analytics.date.*;
-import org.drip.analytics.daycount.Convention;
-import org.drip.analytics.daycount.DateAdjustParams;
+import org.drip.analytics.daycount.*;
 import org.drip.product.creator.BondBuilder;
 import org.drip.product.credit.BondComponent;
 import org.drip.service.env.EnvManager;
@@ -179,7 +178,7 @@ public class Ahmednagar {
 		int iSettleLag = 3;
 		int iFixedFreq = 2;
 		int iFloatFreq = 4;
-		String strName = "Berhampur";
+		String strName = "Ahmednagar";
 		double dblCleanPrice = 1.;
 		double dblIssuePrice = 1.;
 		String strCurrency = "USD";

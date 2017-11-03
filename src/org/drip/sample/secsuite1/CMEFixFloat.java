@@ -78,12 +78,12 @@ public class CMEFixFloat {
 
 		String[] astrDepositMaturityTenor = new String[] {
 			"1D",
-			"3D"
+			// "3D"
 		};
 
 		double[] adblDepositQuote = new double[] {
 			0.0004,		// 1D
-			0.0004		// 3D
+			// 0.0004		// 3D
 		};
 
 		String[] astrShortEndOISMaturityTenor = new String[] {
