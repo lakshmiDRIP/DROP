@@ -1120,14 +1120,14 @@ public class BondBuilder {
 			iEffectiveDate,
 			iFixedStreamEndDate,
 			iFixedFirstCouponDate,
-			new org.drip.analytics.date.JulianDate (iFixedStreamEndDate).subtractTenor (iFixedFreq +
+			new org.drip.analytics.date.JulianDate (iFixedStreamEndDate).subtractTenor ((12 / iFixedFreq) +
 				"M").julian(),
 			iFixedFreq,
 			dblFixedCoupon,
 			strFixedCouponDC,
 			strFixedAccrualDC,
 			iMaturityDate,
-			new org.drip.analytics.date.JulianDate (iFixedStreamEndDate).addTenor (iFloatFreq +
+			new org.drip.analytics.date.JulianDate (iFixedStreamEndDate).addTenor ((12 / iFloatFreq) +
 				"M").julian(),
 			iFloatPenultimateCouponDate,
 			iFloatFreq,

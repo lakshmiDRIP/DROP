@@ -1121,7 +1121,7 @@ public class BondReplicator {
 
 		try {
 			dblModifiedDurationToMaturity = (_dblCurrentPrice - _bond.priceFromBondBasis (_valParams,
-				_csqcFunding01Up, null, dblBondBasisToMaturity)) / _dblCurrentPrice;
+				_csqcFunding01Up, null, dblBondBasisToMaturity)) / _dblCurrentPrice / _dblTenorBump;
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -1136,7 +1136,7 @@ public class BondReplicator {
 		try {
 			dblModifiedDurationToExercise = (_dblCurrentPrice - _bond.priceFromBondBasis (_valParams,
 				_csqcFunding01Up, null, iWorkoutDate, dblWorkoutFactor, dblBondBasisToExercise)) /
-					_dblCurrentPrice;
+					_dblCurrentPrice / _dblTenorBump;
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -1584,6 +1584,9 @@ public class BondReplicator {
 
 		System.out.println ("Next Call Date : " + new org.drip.analytics.date.JulianDate (iNextCallDate) +
 			" | " + dblNextCallFactor);
+
+		System.out.println ("Maturity Date  : " + new org.drip.analytics.date.JulianDate (iMaturityDate) +
+			" | 1.0");
 
 		return arr;
 	}
