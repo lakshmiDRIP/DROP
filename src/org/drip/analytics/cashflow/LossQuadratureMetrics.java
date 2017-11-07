@@ -53,11 +53,11 @@ package org.drip.analytics.cashflow;
  */
 
 /**
- * LossPeriodCurveFactors is an implementation of the period class enhanced by the loss period measures. It
- * 	exports the following functionality:
+ * LossPeriodCurveFactors is an Implementation of the Period Class enhanced by the Loss Period Measures. It
+ * 	exports the following Functionality:
  * 
- * 	- Start/end survival probabilities, period effective notional/recovery/discount factor
- * 	- Serialization into and de-serialization out of byte arrays
+ * - Start/End Survival Probabilities, Period Effective Notional/Recovery/Discount Factor - Serialization
+ * 	into and De-serialization out of Byte Arrays
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -85,7 +85,7 @@ public class LossQuadratureMetrics {
 	 * @param cc Credit Curve
 	 * @param iDefaultLag Default Pay Lag
 	 * 
-	 * @return LossPeriodCurveFactors instance
+	 * @return LossPeriodCurveFactors Instance
 	 */
 
 	public static final LossQuadratureMetrics MakeDefaultPeriod (
@@ -98,15 +98,29 @@ public class LossQuadratureMetrics {
 		final org.drip.state.credit.CreditCurve cc,
 		final int iDefaultLag)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblAccrualDCF) ||
+		if (
+			!org.drip.quant.common.NumberUtil.IsValid (dblAccrualDCF) ||
 			!org.drip.quant.common.NumberUtil.IsValid (dblEffectiveNotional) ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblEffectiveRecovery) || null == dc || null == cc)
+			!org.drip.quant.common.NumberUtil.IsValid (dblEffectiveRecovery) ||
+			null == dc ||
+			null == cc
+		)
 			return null;
 
 		try {
-			return new LossQuadratureMetrics (iStartDate, iEndDate, cc.survival (iStartDate), cc.survival
-				(iEndDate), dblAccrualDCF, dblEffectiveNotional, dblEffectiveRecovery, dc.effectiveDF
-					(iStartDate + iDefaultLag, iEndDate + iDefaultLag));
+			return new LossQuadratureMetrics (
+				iStartDate,
+				iEndDate,
+				cc.survival (iStartDate),
+				cc.survival (iEndDate),
+				dblAccrualDCF,
+				dblEffectiveNotional,
+				dblEffectiveRecovery,
+				dc.effectiveDF (
+					iStartDate + iDefaultLag,
+					iEndDate + iDefaultLag
+				)
+			);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -115,7 +129,7 @@ public class LossQuadratureMetrics {
 	}
 
 	/**
-	 * Create a LossPeriodCurveFactors instance from the period dates and the curve measures
+	 * Create a LossPeriodCurveFactors Instance from the Period Dates and the Curve Measures
 	 * 
 	 * @param iStartDate Period Start Date
 	 * @param iEndDate Period End Date
@@ -137,15 +151,31 @@ public class LossQuadratureMetrics {
 		final org.drip.state.credit.CreditCurve cc,
 		final int iDefaultLag)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblAccrualDCF) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblEffectiveNotional) || null == dc || null == cc)
+		if (
+			!org.drip.quant.common.NumberUtil.IsValid (dblAccrualDCF) ||
+			!org.drip.quant.common.NumberUtil.IsValid (dblEffectiveNotional) ||
+			null == dc ||
+			null == cc
+		)
 			return null;
 
 		try {
-			return new LossQuadratureMetrics (iStartDate, iEndDate, cc.survival (iStartDate), cc.survival
-				(iEndDate), dblAccrualDCF, dblEffectiveNotional, cc.effectiveRecovery (iStartDate +
-					iDefaultLag, iEndDate + iDefaultLag), dc.effectiveDF (iStartDate + iDefaultLag, iEndDate
-						+ iDefaultLag));
+			return new LossQuadratureMetrics (
+				iStartDate,
+				iEndDate,
+				cc.survival (iStartDate),
+				cc.survival (iEndDate),
+				dblAccrualDCF,
+				dblEffectiveNotional,
+				cc.effectiveRecovery (
+					iStartDate + iDefaultLag,
+					iEndDate + iDefaultLag
+				),
+				dc.effectiveDF (
+					iStartDate + iDefaultLag,
+					iEndDate + iDefaultLag
+				)
+			);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -154,7 +184,7 @@ public class LossQuadratureMetrics {
 	}
 
 	/**
-	 * Elaborate LossPeriodCurveFactors constructor
+	 * LossPeriodCurveFactors Constructor
 	 * 
 	 * @param iStartDate Period Start Date
 	 * @param iEndDate Period End Date
@@ -179,14 +209,15 @@ public class LossQuadratureMetrics {
 		final double dblEffectiveDF)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblStartSurvival = dblStartSurvival) ||
+		if (
+			!org.drip.quant.common.NumberUtil.IsValid (_dblStartSurvival = dblStartSurvival) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_dblEndSurvival = dblEndSurvival) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblAccrualDCF = dblAccrualDCF) ||
-					!org.drip.quant.common.NumberUtil.IsValid (_dblEffectiveNotional = dblEffectiveNotional)
-						|| !org.drip.quant.common.NumberUtil.IsValid (_dblEffectiveRecovery =
-							dblEffectiveRecovery) || !org.drip.quant.common.NumberUtil.IsValid
-								(_dblEffectiveDF = dblEffectiveDF))
-			throw new java.lang.Exception ("LossPeriodCurveFactors ctr: Invalid params");
+			!org.drip.quant.common.NumberUtil.IsValid (_dblAccrualDCF = dblAccrualDCF) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_dblEffectiveNotional = dblEffectiveNotional) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_dblEffectiveRecovery = dblEffectiveRecovery) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_dblEffectiveDF = dblEffectiveDF)
+		)
+			throw new java.lang.Exception ("LossPeriodCurveFactors Constructor => Invalid params");
 
 		_iEndDate = iEndDate;
 		_iStartDate = iStartDate;
@@ -204,9 +235,9 @@ public class LossQuadratureMetrics {
 	}
 
 	/**
-	 * Survival Probability at the period beginning
+	 * Survival Probability at the Period Beginning
 	 * 
-	 * @return Survival Probability at the period beginning
+	 * @return Survival Probability at the Period Beginning
 	 */
 
 	public double startSurvival()
@@ -226,9 +257,9 @@ public class LossQuadratureMetrics {
 	}
 
 	/**
-	 * Survival at the period end
+	 * Survival at the Period End
 	 * 
-	 * @return Survival at the period end
+	 * @return Survival at the Period End
 	 */
 
 	public double endSurvival()
@@ -237,9 +268,9 @@ public class LossQuadratureMetrics {
 	}
 
 	/**
-	 * Get the period's effective notional
+	 * Get the Period Effective Notional
 	 * 
-	 * @return Period's effective notional
+	 * @return Period Effective Notional
 	 */
 
 	public double effectiveNotional()
@@ -248,9 +279,9 @@ public class LossQuadratureMetrics {
 	}
 
 	/**
-	 * Get the period's effective recovery
+	 * Get the Period Effective Recovery
 	 * 
-	 * @return Period's effective recovery
+	 * @return Period Effective Recovery
 	 */
 
 	public double effectiveRecovery()
@@ -259,9 +290,9 @@ public class LossQuadratureMetrics {
 	}
 
 	/**
-	 * Get the period's effective discount factor
+	 * Get the Period Effective Discount Factor
 	 * 
-	 * @return Period's effective discount factor
+	 * @return Period Effective Discount Factor
 	 */
 
 	public double effectiveDF()
@@ -270,9 +301,9 @@ public class LossQuadratureMetrics {
 	}
 
 	/**
-	 * Get the period's Accrual Day Count Fraction
+	 * Get the Period Accrual Day Count Fraction
 	 * 
-	 * @return Period's Accrual Day Count Fraction
+	 * @return Period Accrual Day Count Fraction
 	 */
 
 	public double accrualDCF()

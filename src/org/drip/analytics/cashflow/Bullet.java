@@ -6,6 +6,7 @@ package org.drip.analytics.cashflow;
  */
 
 /*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
@@ -50,8 +51,10 @@ package org.drip.analytics.cashflow;
  */
 
 /**
- * Bullet holds the point realizations for the latent states relevant to terminal valuation of a bullet cash
- *  flow.
+ * Bullet is designed to hold the Point Realizations of the Latent States relevant to Terminal Valuation of a
+ *  Bullet Cash Flow. Current it contains the Period Dates, Period Latent State Identifiers, and the
+ *  "Extensive" Fields.
+ * 
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -79,38 +82,71 @@ public class Bullet {
 	 */
 
 	private double _dblBaseNotional = java.lang.Double.NaN;
-	private org.drip.quant.common.Array2D _notlSchedule = null;
+	private org.drip.quant.common.Array2D _a2DNotionalSchedule = null;
 
 	private org.drip.analytics.output.ConvexityAdjustment convexityAdjustment (
 		final int iValueDate,
-		final org.drip.param.market.CurveSurfaceQuoteContainer csqs)
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqc)
 	{
+		org.drip.state.identifier.FXLabel fxLabel = fxLabel();
+
 		org.drip.state.identifier.CreditLabel creditLabel = creditLabel();
 
 		org.drip.state.identifier.FundingLabel fundingLabel = fundingLabel();
-
-		org.drip.state.identifier.FXLabel fxLabel = fxLabel();
 
 		org.drip.analytics.output.ConvexityAdjustment convAdj = new
 			org.drip.analytics.output.ConvexityAdjustment();
 
 		try {
-			if (!convAdj.setCreditFunding (null != csqs ? java.lang.Math.exp
-				(org.drip.analytics.support.OptionHelper.IntegratedCrossVolQuanto (csqs.creditVolatility
-					(creditLabel), csqs.fundingVolatility (fundingLabel), csqs.creditFundingCorrelation
-						(creditLabel, fundingLabel), iValueDate, _iPayDate)) : 1.))
+			if (
+				!convAdj.setCreditFunding (
+					null != csqc ? java.lang.Math.exp (
+						org.drip.analytics.support.OptionHelper.IntegratedCrossVolQuanto (
+							csqc.creditVolatility (creditLabel),
+							csqc.fundingVolatility (fundingLabel),
+							csqc.creditFundingCorrelation (
+								creditLabel,
+								fundingLabel
+							),
+							iValueDate,
+							_iPayDate
+						)
+					) : 1.
+				))
 				return null;
 
-			if (!convAdj.setCreditFX (null != csqs && isFXMTM() ? java.lang.Math.exp
-				(org.drip.analytics.support.OptionHelper.IntegratedCrossVolQuanto (csqs.creditVolatility
-					(creditLabel), csqs.fxVolatility (fxLabel), csqs.creditFXCorrelation (creditLabel,
-						fxLabel), iValueDate, _iPayDate)) : 1.))
+			if (
+				!convAdj.setCreditFX (
+					null != csqc && isFXMTM() ? java.lang.Math.exp (
+						org.drip.analytics.support.OptionHelper.IntegratedCrossVolQuanto (
+							csqc.creditVolatility (creditLabel),
+							csqc.fxVolatility (fxLabel),
+							csqc.creditFXCorrelation (
+								creditLabel,
+								fxLabel
+							),
+							iValueDate,
+							_iPayDate
+						)
+					) : 1.
+				))
 				return null;
 
-			if (!convAdj.setFundingFX (null != csqs && isFXMTM() ? java.lang.Math.exp
-				(org.drip.analytics.support.OptionHelper.IntegratedCrossVolQuanto (csqs.fundingVolatility
-					(fundingLabel), csqs.fxVolatility (fxLabel), csqs.fundingFXCorrelation (fundingLabel,
-						fxLabel), iValueDate, _iPayDate)) : 1.))
+			if (
+				!convAdj.setFundingFX (
+					null != csqc && isFXMTM() ? java.lang.Math.exp (
+						org.drip.analytics.support.OptionHelper.IntegratedCrossVolQuanto (
+							csqc.fundingVolatility (fundingLabel),
+							csqc.fxVolatility (fxLabel),
+							csqc.fundingFXCorrelation (
+								fundingLabel,
+								fxLabel
+							),
+							iValueDate,
+							_iPayDate
+						)
+					) : 1.
+				))
 				return null;
 
 			return convAdj;
@@ -122,18 +158,18 @@ public class Bullet {
 	}
 
 	/**
-	 * Construct a Bullet instance from the specified parameters
+	 * Construct a Bullet Instance from the specified Parameters
 	 * 
 	 * @param iTerminalDate Period End Date
 	 * @param iPayDate Period Pay Date
-	 * @param iFXFixingDate The FX Fixing Date for non-MTM'ed Cash-flow
+	 * @param iFXFixingDate FX Fixing Date for non-MTM Cash-flow
 	 * @param dblBaseNotional Coupon Period Base Notional
-	 * @param notlSchedule Coupon Period Notional Schedule
+	 * @param a2DNotionalSchedule Coupon Period Notional Schedule
 	 * @param strPayCurrency Pay Currency
 	 * @param strCouponCurrency Coupon Currency
-	 * @param creditLabel The Credit Label
+	 * @param creditLabel Credit Label
 	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public Bullet (
@@ -141,28 +177,28 @@ public class Bullet {
 		final int iPayDate,
 		final int iFXFixingDate,
 		final double dblBaseNotional,
-		final org.drip.quant.common.Array2D notlSchedule,
+		final org.drip.quant.common.Array2D a2DNotionalSchedule,
 		final java.lang.String strPayCurrency,
 		final java.lang.String strCouponCurrency,
 		final org.drip.state.identifier.CreditLabel creditLabel)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblBaseNotional = dblBaseNotional) || null ==
-			(_strPayCurrency = strPayCurrency) || _strPayCurrency.isEmpty() || null == (_strCouponCurrency =
-				strCouponCurrency) || _strCouponCurrency.isEmpty())
-		throw new java.lang.Exception ("Bullet ctr: Invalid inputs");
+		if (!org.drip.quant.common.NumberUtil.IsValid (_dblBaseNotional = dblBaseNotional) ||
+			null == (_strPayCurrency = strPayCurrency) || _strPayCurrency.isEmpty() ||
+			null == (_strCouponCurrency = strCouponCurrency) || _strCouponCurrency.isEmpty())
+		throw new java.lang.Exception ("Bullet Constructor => Invalid inputs");
 
 		_iPayDate = iPayDate;
 		_creditLabel = creditLabel;
 		_iFXFixingDate = iFXFixingDate;
 		_iTerminalDate = iTerminalDate;
 
-		if (null == (_notlSchedule = notlSchedule))
-			_notlSchedule = org.drip.quant.common.Array2D.BulletSchedule();
+		if (null == (_a2DNotionalSchedule = a2DNotionalSchedule))
+			_a2DNotionalSchedule = org.drip.quant.common.Array2D.BulletSchedule();
 	}
 
 	/**
-	 * Return the Terminal Date
+	 * Retrieve the Terminal Date
 	 * 
 	 * @return Terminal Date
 	 */
@@ -173,7 +209,7 @@ public class Bullet {
 	}
 
 	/**
-	 * Return the period Pay Date
+	 * Retrieve the Period Pay Date
 	 * 
 	 * @return Period Pay Date
 	 */
@@ -184,7 +220,7 @@ public class Bullet {
 	}
 
 	/**
-	 * Return the period FX Fixing Date
+	 * Retrieve the Period FX Fixing Date
 	 * 
 	 * @return Period FX Fixing Date
 	 */
@@ -197,26 +233,26 @@ public class Bullet {
 	/**
 	 * Coupon Period FX
 	 * 
-	 * @param csqs Market Parameters
+	 * @param csqc Market Parameters
 	 * 
-	 * @return The Period FX
+	 * @return Period FX
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double fx (
-		final org.drip.param.market.CurveSurfaceQuoteContainer csqs)
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqc)
 		throws java.lang.Exception
 	{
 		org.drip.state.identifier.FXLabel fxLabel = fxLabel();
 
 		if (null == fxLabel) return 1.;
 
-		if (null == csqs) throw new java.lang.Exception ("Bullet::fx => Invalid Inputs");
+		if (null == csqc) throw new java.lang.Exception ("Bullet::fx => Invalid Inputs");
 
-		if (!isFXMTM()) return csqs.fixing (_iFXFixingDate, fxLabel);
+		if (!isFXMTM()) return csqc.fixing (_iFXFixingDate, fxLabel);
 
-		org.drip.state.fx.FXCurve fxfc = csqs.fxState (fxLabel);
+		org.drip.state.fx.FXCurve fxfc = csqc.fxState (fxLabel);
 
 		if (null == fxfc)
 			throw new java.lang.Exception ("Bullet::fx => No Curve for " + fxLabel.fullyQualifiedName());
@@ -225,9 +261,9 @@ public class Bullet {
 	}
 
 	/**
-	 * Is this Cash Flow FX MTM'ed?
+	 * Is the Cash Flow FX MTM?
 	 * 
-	 * @return true - FX MTM is on (i.e., FX is not driven by fixing)
+	 * @return true - FX MTM is on (i.e., FX is not driven by FX Fixing)
 	 */
 
 	public boolean isFXMTM()
@@ -276,11 +312,11 @@ public class Bullet {
 
 	public org.drip.quant.common.Array2D notionalSchedule()
 	{
-		return _notlSchedule;
+		return _a2DNotionalSchedule;
 	}
 
 	/**
-	 * Notional Corresponding to the specified Date
+	 * Notional corresponding to the specified Date
 	 * 
 	 * @param iDate The Specified Date
 	 * 
@@ -293,7 +329,7 @@ public class Bullet {
 		final int iDate)
 		throws java.lang.Exception
 	{
-		return _dblBaseNotional * (null == _notlSchedule ? 1. : _notlSchedule.y (iDate));
+		return _dblBaseNotional * (null == _a2DNotionalSchedule ? 1. : _a2DNotionalSchedule.y (iDate));
 	}
 
 	/**
@@ -312,7 +348,12 @@ public class Bullet {
 		final int iDate2)
 		throws java.lang.Exception
 	{
-		return _dblBaseNotional * (null == _notlSchedule ? 1. : _notlSchedule.y (iDate1, iDate2));
+		return _dblBaseNotional * (
+			null == _a2DNotionalSchedule ? 1. : _a2DNotionalSchedule.y (
+				iDate1,
+				iDate2
+			)
+		);
 	}
 
 	/**
@@ -361,17 +402,17 @@ public class Bullet {
 	}
 
 	/**
-	 * Compute the Metrics at the Specified Valuation Date
+	 * Compute the Metrics at the specified Valuation Date
 	 * 
 	 * @param iValueDate Valuation Date
-	 * @param csqs The Market Curve Surface/Quote Set
+	 * @param csqc The Market Curve Surface/Quote Set
 	 * 
 	 * @return The Metrics at the specified Valuation Date
 	 */
 
 	public org.drip.analytics.output.BulletMetrics metrics (
 		final int iValueDate,
-		final org.drip.param.market.CurveSurfaceQuoteContainer csqs)
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqc)
 	{
 		double dblDF = 1.;
 		double dblSurvival = 1.;
@@ -380,21 +421,34 @@ public class Bullet {
 
 		org.drip.state.identifier.FundingLabel fundingLabel = fundingLabel();
 
-		org.drip.state.credit.CreditCurve cc = null == csqs ? null : csqs.creditState (_creditLabel);
+		org.drip.state.credit.CreditCurve cc = null == csqc ? null :
+			csqc.creditState (_creditLabel);
 
-		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = null == csqs ? null : csqs.fundingState
-			(fundingLabel);
+		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = null == csqc ? null :
+			csqc.fundingState (fundingLabel);
 
 		try {
-			double dblFX = fx (csqs);
+			double dblFX = fx (csqc);
 
 			if (null != dcFunding) dblDF = dcFunding.df (_iPayDate);
 
 			if (null != cc) dblSurvival = cc.survival (_iPayDate);
 
-			return new org.drip.analytics.output.BulletMetrics (_iTerminalDate, _iPayDate, notional
-				(_iTerminalDate), dblSurvival, dblDF, dblFX, convexityAdjustment (iValueDate, csqs),
-					_creditLabel, fundingLabel, fxLabel);
+			return new org.drip.analytics.output.BulletMetrics (
+				_iTerminalDate,
+				_iPayDate,
+				notional (_iTerminalDate),
+				dblSurvival,
+				dblDF,
+				dblFX,
+				convexityAdjustment (
+					iValueDate,
+					csqc
+				),
+				_creditLabel,
+				fundingLabel,
+				fxLabel
+			);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -405,16 +459,16 @@ public class Bullet {
 	/**
 	 * Generate the Funding Predictor/Response Constraint
 	 * 
-	 * @param iValueDate The Valuation Date
-	 * @param csqs The Market Curve Surface/Quote Set
-	 * @param pqs Product Quote Set
+	 * @param iValueDate Valuation Date
+	 * @param csqc Market Curve Surface/Quote Set
+	 * @param pqs Calibration Product Quote Set
 	 * 
 	 * @return The Funding Predictor/Response Constraint
 	 */
 
 	public org.drip.state.estimator.PredictorResponseWeightConstraint fundingPRWC (
 		final int iValueDate,
-		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqc,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
 		if (null == pqs) return null;
@@ -424,7 +478,10 @@ public class Bullet {
 		org.drip.state.estimator.PredictorResponseWeightConstraint prwc = new
 			org.drip.state.estimator.PredictorResponseWeightConstraint();
 
-		org.drip.analytics.output.BulletMetrics bm = metrics (iValueDate, csqs);
+		org.drip.analytics.output.BulletMetrics bm = metrics (
+			iValueDate,
+			csqc
+		);
 
 		if (null == bm) return null;
 
@@ -438,11 +495,21 @@ public class Bullet {
 
 				double dblDiscountFactorFundingLoading = meDiscountFactorLoading.getValue();
 
-				if (!prwc.addPredictorResponseWeight (iDateAnchor, dblDiscountFactorFundingLoading))
+				if (
+					!prwc.addPredictorResponseWeight (
+						iDateAnchor,
+						dblDiscountFactorFundingLoading
+					)
+				)
 					return null;
 
-				if (!prwc.addDResponseWeightDManifestMeasure ("PV", iDateAnchor,
-					dblDiscountFactorFundingLoading))
+				if (
+					!prwc.addDResponseWeightDManifestMeasure (
+						"PV",
+						iDateAnchor,
+						dblDiscountFactorFundingLoading
+					)
+				)
 					return null;
 			}
 		} else
@@ -450,7 +517,13 @@ public class Bullet {
 
 		if (!prwc.updateValue (dblPV)) return null;
 
-		if (!prwc.updateDValueDManifestMeasure ("PV", 1.)) return null;
+		if (
+			!prwc.updateDValueDManifestMeasure (
+				"PV",
+				1.
+			)
+		)
+			return null;
 
 		return prwc;
 	}

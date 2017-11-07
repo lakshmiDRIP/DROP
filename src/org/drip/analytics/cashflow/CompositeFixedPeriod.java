@@ -6,6 +6,7 @@ package org.drip.analytics.cashflow;
  */
 
 /*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
@@ -50,7 +51,8 @@ package org.drip.analytics.cashflow;
  */
 
 /**
- * CompositeFixedPeriod implements the composed fixed coupon period functionality.
+ * CompositeFixedPeriod implements the composed fixed coupon period functionality. It customizes the Period
+ * 	Quote Set and the Basis Quote for the Fixed Period.
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -71,7 +73,10 @@ public class CompositeFixedPeriod extends org.drip.analytics.cashflow.CompositeP
 		final java.util.List<org.drip.analytics.cashflow.ComposableUnitPeriod> lsCUP)
 		throws java.lang.Exception
 	{
-		super (cps, lsCUP);
+		super (
+			cps,
+			lsCUP
+		);
 	}
 
 	@Override public org.drip.product.calib.CompositePeriodQuoteSet periodQuoteSet (
@@ -80,8 +85,7 @@ public class CompositeFixedPeriod extends org.drip.analytics.cashflow.CompositeP
 	{
 		if (null == pqs || !(pqs instanceof org.drip.product.calib.FixedStreamQuoteSet)) return null;
 
-		org.drip.product.calib.FixedStreamQuoteSet fsqs = (org.drip.product.calib.FixedStreamQuoteSet)
-			pqs;
+		org.drip.product.calib.FixedStreamQuoteSet fsqs = (org.drip.product.calib.FixedStreamQuoteSet) pqs;
 
 		org.drip.analytics.cashflow.ComposableUnitPeriod cup = periods().get (0);
 

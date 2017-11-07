@@ -6,6 +6,7 @@ package org.drip.analytics.cashflow;
  */
 
 /*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
@@ -50,9 +51,9 @@ package org.drip.analytics.cashflow;
  */
 
 /**
- * ComposableUnitPeriod contains the cash flow periods' composable unit period details. Currently it
- *  holds the accrual start date, the accrual end date, the fixed coupon, the basis spread, coupon and
- *  accrual day counts, and the EOM adjustment flags.
+ * ComposableUnitPeriod represents the Cash Flow Periods' Composable Unit Period Details. Currently it holds
+ *  the Accrual Start Date, the Accrual End Date, the Fixed Coupon, the Basis Spread, the Coupon and the
+ *  Accrual Day Counts, as well as the EOM Adjustment Flags.
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -91,16 +92,24 @@ public abstract class ComposableUnitPeriod {
 		final org.drip.param.period.UnitCouponAccrualSetting ucas)
 		throws java.lang.Exception
 	{
-		if ((_iStartDate = iStartDate) >= (_iEndDate = iEndDate) || null == (_strTenor = strTenor) ||
-			strTenor.isEmpty() || null == (_ucas = ucas))
+		if (
+			(_iStartDate = iStartDate) >= (_iEndDate = iEndDate) ||
+			null == (_strTenor = strTenor) || strTenor.isEmpty() ||
+			null == (_ucas = ucas)
+		)
 			throw new java.lang.Exception ("ComposableUnitPeriod ctr: Invalid Inputs");
 
 		_iFreq = org.drip.analytics.support.Helper.TenorToFreq (_strTenor);
 
 		_dblFullCouponDCF = _ucas.couponDCFOffOfFreq() ? 1. / _iFreq :
-			org.drip.analytics.daycount.Convention.YearFraction (_iStartDate, _iEndDate, _ucas.couponDC(),
-				_ucas.couponEOMAdjustment(), org.drip.analytics.daycount.ActActDCParams.FromFrequency
-					(_iFreq), _ucas.calendar());
+			org.drip.analytics.daycount.Convention.YearFraction (
+				_iStartDate,
+				_iEndDate,
+				_ucas.couponDC(),
+				_ucas.couponEOMAdjustment(),
+				org.drip.analytics.daycount.ActActDCParams.FromFrequency (_iFreq),
+				_ucas.calendar()
+			);
 	}
 
 	/**
@@ -236,7 +245,7 @@ public abstract class ComposableUnitPeriod {
 	}
 
 	/**
-	 * Place the Date Node Location in relation to the segment Location
+	 * Place the Date Node Location in Relation to the Segment Location
 	 * 
 	 * @param iDateNode The Node Ordinate
 	 * 
@@ -260,8 +269,8 @@ public abstract class ComposableUnitPeriod {
 	 * 
 	 * @return The Accrual DCF
 	 * 
-	 * @throws java.lang.Exception Thrown if inputs are invalid, or if the date does not lie within the
-	 * 	period
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid, or if the Date does not lie within the
+	 * 	Period
 	 */
 
 	public double accrualDCF (
@@ -272,8 +281,10 @@ public abstract class ComposableUnitPeriod {
 			throw new java.lang.Exception
 				("ComposableUnitPeriod::accrualDCF => Invalid in-period accrual date!");
 
-		org.drip.analytics.daycount.ActActDCParams aap = new org.drip.analytics.daycount.ActActDCParams
-			(_iFreq, _iEndDate - _iStartDate);
+		org.drip.analytics.daycount.ActActDCParams aap = new org.drip.analytics.daycount.ActActDCParams (
+			_iFreq,
+			_iEndDate - _iStartDate
+		);
 
 		java.lang.String strAccrualDC = accrualDC();
 
@@ -281,33 +292,44 @@ public abstract class ComposableUnitPeriod {
 
 		boolean bAccrualEOMAdjustment = accrualEOMAdjustment();
 
-		return org.drip.analytics.daycount.Convention.YearFraction (_iStartDate, iAccrualEnd, strAccrualDC,
-			bAccrualEOMAdjustment, aap, strCalendar) / org.drip.analytics.daycount.Convention.YearFraction
-				(_iStartDate, _iEndDate, strAccrualDC, bAccrualEOMAdjustment, aap, strCalendar) *
-					_dblFullCouponDCF;
+		return org.drip.analytics.daycount.Convention.YearFraction (
+			_iStartDate,
+			iAccrualEnd,
+			strAccrualDC,
+			bAccrualEOMAdjustment,
+			aap,
+			strCalendar
+		) / org.drip.analytics.daycount.Convention.YearFraction (
+			_iStartDate,
+			_iEndDate,
+			strAccrualDC,
+			bAccrualEOMAdjustment,
+			aap,
+			strCalendar
+		) * _dblFullCouponDCF;
 	}
 
 	/**
 	 * Get the Period Full Coupon Rate
 	 * 
-	 * @param csqs The Market Curve and Surface
+	 * @param csqc The Market Curve and Surface
 	 * 
 	 * @return The Period Full Coupon Rate
 	 * 
-	 * @throws java.lang.Exception Thrown if the full Coupon Rate cannot be calculated
+	 * @throws java.lang.Exception Thrown if the Full Coupon Rate cannot be calculated
 	 */
 
 	public double fullCouponRate (
-		final org.drip.param.market.CurveSurfaceQuoteContainer csqs)
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqc)
 		throws java.lang.Exception
 	{
-		return baseRate (csqs) + basis();
+		return baseRate (csqc) + basis();
 	}
 
 	/**
 	 * Get the Period Base Coupon Rate
 	 * 
-	 * @param csqs The Market Curve and Surface
+	 * @param csqc The Market Curve and Surface
 	 * 
 	 * @return The Period Base Coupon Rate
 	 * 
@@ -315,7 +337,7 @@ public abstract class ComposableUnitPeriod {
 	 */
 
 	public abstract double baseRate (
-		final org.drip.param.market.CurveSurfaceQuoteContainer csqs)
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqc)
 		throws java.lang.Exception;
 
 	/**

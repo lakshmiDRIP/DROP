@@ -6,6 +6,7 @@ package org.drip.analytics.cashflow;
  */
 
 /*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
@@ -50,15 +51,15 @@ package org.drip.analytics.cashflow;
  */
 
 /**
- * ComposableUnitFixedPeriod contains the fixed cash flow periods' composable sub period details. Currently
- *  it holds the accrual start date, the accrual end date, the fixed coupon, the basis spread, coupon and
- *  accrual day counts, and the EOM adjustment flags.
+ * ComposableUnitFixedPeriod represents the Fixed Cash Flow Periods' Composable Period Details. Currently it
+ *  holds the Accrual Start Date, the Accrual End Date, the Fixed Coupon, the Basis Spread, the Coupon Rate,
+ *  and the Accrual Day Counts, as well as the EOM Adjustment Flags.
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class ComposableUnitFixedPeriod extends org.drip.analytics.cashflow.ComposableUnitPeriod {
-	private org.drip.param.period.ComposableFixedUnitSetting _cufs = null;
+	private org.drip.param.period.ComposableFixedUnitSetting _cfus = null;
 
 	/**
 	 * The ComposableUnitFixedPeriod constructor
@@ -66,7 +67,7 @@ public class ComposableUnitFixedPeriod extends org.drip.analytics.cashflow.Compo
 	 * @param iStartDate Accrual Start Date
 	 * @param iEndDate Accrual End Date
 	 * @param ucas Unit Coupon/Accrual Setting
-	 * @param cufs Composable Unit Fixed Setting
+	 * @param cfus Composable Unit Fixed Setting
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -75,29 +76,34 @@ public class ComposableUnitFixedPeriod extends org.drip.analytics.cashflow.Compo
 		final int iStartDate,
 		final int iEndDate,
 		final org.drip.param.period.UnitCouponAccrualSetting ucas,
-		final org.drip.param.period.ComposableFixedUnitSetting cufs)
+		final org.drip.param.period.ComposableFixedUnitSetting cfus)
 		throws java.lang.Exception
 	{
-		super (iStartDate, iEndDate, cufs.tenor(), ucas);
+		super (
+			iStartDate,
+			iEndDate,
+			cfus.tenor(),
+			ucas
+		);
 
-		if (null == (_cufs = cufs))
-			throw new java.lang.Exception ("ComposableUnitFixedPeriod ctr: Invalid Inputs");
+		if (null == (_cfus = cfus))
+			throw new java.lang.Exception ("ComposableUnitFixedPeriod Constructor => Invalid Inputs");
 	}
 
 	@Override public double baseRate (
-		final org.drip.param.market.CurveSurfaceQuoteContainer csqs)
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqc)
 		throws java.lang.Exception
 	{
-		return _cufs.fixedCoupon();
+		return _cfus.fixedCoupon();
 	}
 
 	@Override public double basis()
 	{
-		return _cufs.basis();
+		return _cfus.basis();
 	}
 
 	@Override public java.lang.String couponCurrency()
 	{
-		return _cufs.couponCurrency();
+		return _cfus.couponCurrency();
 	}
 }

@@ -6,6 +6,7 @@ package org.drip.analytics.cashflow;
  */
 
 /*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
@@ -50,7 +51,8 @@ package org.drip.analytics.cashflow;
  */
 
 /**
- * CompositeFloatingPeriod implements the composite floating coupon period functionality.
+ * CompositeFloatingPeriod implements the Composite Floating Coupon Period Functionality. It customizes the
+ *  Period Quote Set and the Basis Quote for the Floating Period.
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -71,7 +73,10 @@ public class CompositeFloatingPeriod extends org.drip.analytics.cashflow.Composi
 		final java.util.List<org.drip.analytics.cashflow.ComposableUnitPeriod> lsCUP)
 		throws java.lang.Exception
 	{
-		super (cps, lsCUP);
+		super (
+			cps,
+			lsCUP
+		);
 	}
 
 	@Override public org.drip.product.calib.CompositePeriodQuoteSet periodQuoteSet (

@@ -6,6 +6,7 @@ package org.drip.analytics.cashflow;
  */
 
 /*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
@@ -50,8 +51,8 @@ package org.drip.analytics.cashflow;
  */
 
 /**
- * ReferenceIndexPeriod contains the cash flow period details. Currently it holds the start date, the end
- * 	date, the fixing date, and the reference floating index if any.
+ * ReferenceIndexPeriod contains the Cash Flow Period Details. Currently it holds the Start Date, the End
+ * 	Date, the Fixing Date, and the Reference Floating Index if any.
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -64,11 +65,11 @@ public class ReferenceIndexPeriod {
 	private org.drip.state.identifier.ForwardLabel _forwardLabel = null;
 
 	/**
-	 * The ReferenceIndexPeriod constructor
+	 * The ReferenceIndexPeriod Constructor
 	 * 
-	 * @param iStartDate The Reference Period Start Date
-	 * @param iEndDate The Reference Period End Date
-	 * @param forwardLabel The Period Forward Label
+	 * @param iStartDate Reference Period Start Date
+	 * @param iEndDate Reference Period End Date
+	 * @param forwardLabel Period Forward Label
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -79,7 +80,10 @@ public class ReferenceIndexPeriod {
 		final org.drip.state.identifier.ForwardLabel forwardLabel)
 		throws java.lang.Exception
 	{
-		if ((_iEndDate = iEndDate) <= (_iStartDate = iStartDate) || null == (_forwardLabel = forwardLabel))
+		if (
+			(_iEndDate = iEndDate) <= (_iStartDate = iStartDate) ||
+			null == (_forwardLabel = forwardLabel)
+		)
 			throw new java.lang.Exception ("ReferenceIndexPeriod ctr: Invalid Inputs");
 
 		org.drip.analytics.daycount.DateAdjustParams dapFixing =
@@ -90,8 +94,14 @@ public class ReferenceIndexPeriod {
 		org.drip.param.period.UnitCouponAccrualSetting ucas = _forwardLabel.ucas();
 
 		_dblDCF = ucas.couponDCFOffOfFreq() ? 1. / ucas.freq() :
-			org.drip.analytics.daycount.Convention.YearFraction (_iStartDate, _iEndDate, ucas.couponDC(),
-				ucas.couponEOMAdjustment(), null, ucas.calendar());
+			org.drip.analytics.daycount.Convention.YearFraction (
+				_iStartDate,
+				_iEndDate,
+				ucas.couponDC(),
+				ucas.couponEOMAdjustment(),
+				null,
+				ucas.calendar()
+			);
 	}
 
 	/**
