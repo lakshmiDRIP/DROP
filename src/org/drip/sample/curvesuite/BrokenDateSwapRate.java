@@ -1,8 +1,14 @@
 
 package org.drip.sample.curvesuite;
 
+import java.util.Map;
+
 import org.drip.analytics.date.*;
-import org.drip.analytics.support.Helper;
+import org.drip.market.otc.*;
+import org.drip.param.creator.MarketParamsBuilder;
+import org.drip.param.market.CurveSurfaceQuoteContainer;
+import org.drip.param.valuation.ValuationParams;
+import org.drip.product.rates.FixFloatComponent;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.service.template.LatentMarketStateBuilder;
@@ -54,13 +60,34 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
  */
 
 /**
- * BrokenDateLIBORForward generates the LIBOR Forward's over Monthly Increments with Maturity up to 60 Years
- *  for different Forward Tenors.
+ * BrokenDateSwapRate generates the Swap Rate for Monthly Increments in Maturity over 60 Years.
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class BrokenDateLIBORForward {
+public class BrokenDateSwapRate {
+
+	private static final FixFloatComponent OTCIRS (
+		final JulianDate dtSpot,
+		final String strCurrency,
+		final String strMaturityTenor,
+		final double dblCoupon)
+	{
+		FixedFloatSwapConvention ffsc = IBORFixedFloatContainer.ConventionFromJurisdiction (
+			strCurrency,
+			"NYC",
+			strMaturityTenor,
+			"MAIN"
+		);
+
+		return ffsc.createFixFloatComponent (
+			dtSpot,
+			strMaturityTenor,
+			dblCoupon,
+			0.,
+			1.
+		);
+	}
 
 	private static final MergedDiscountForwardCurve FundingCurve (
 		final JulianDate dtSpot,
@@ -144,52 +171,62 @@ public class BrokenDateLIBORForward {
 	{
 		EnvManager.InitEnv ("");
 
+		int iNumMonth = 720;
+		String strCurrency = "USD";
+
 		JulianDate dtSpot = DateUtil.CreateFromYMD (
 			2017,
 			DateUtil.OCTOBER,
 			5
 		);
 
-		int iNumMonth = 720;
-		String strCurrency = "USD";
-		String[] astrForwardTenor = new String[] {
-			 "1M",
-			 "2M",
-			 "3M",
-			 "6M",
-			"12M"
-		};
-
 		MergedDiscountForwardCurve mdfc = FundingCurve (
 			dtSpot,
 			strCurrency
 		);
 
-		System.out.println
-			("SpotDate,ViewDate,ForwardTenor,ViewDiscountFactor,ViewForwardDiscountFactor, ForwardRate");
+		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());
 
-		for (int i = 0; i < iNumMonth; ++i) {
-			JulianDate dtView = 0 == i ? dtSpot : dtSpot.addMonths (i);
+		CurveSurfaceQuoteContainer csqc = MarketParamsBuilder.Create (
+			mdfc,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null
+		);
 
-			double dblDFView = mdfc.df (dtView);
+		System.out.println ("SpotDate,MaturityTenor,MaturityDate,SwapRate,CleanFixedDV01");
 
-			for (int j = 0; j < astrForwardTenor.length; ++j) {
-				JulianDate dtForward = dtView.addTenor (astrForwardTenor[j]);
+		for (int i = 1; i <= iNumMonth; ++i) {
+			String strMaturityTenor = i + "M";
 
-				double dblDFForward = mdfc.df (dtForward);
+			FixFloatComponent ffc = OTCIRS (
+				dtSpot,
+				strCurrency,
+				strMaturityTenor,
+				0.
+			);
 
-				double dblForwardRate = ((dblDFView / dblDFForward) - 1.) /
-					Helper.TenorToFreq (astrForwardTenor[j]);
+			Map<String, Double> mapOutput = ffc.value (
+				valParams,
+				null,
+				csqc,
+				null
+			);
 
-				System.out.println (
-					dtSpot + "," +
-					dtView + "," +
-					astrForwardTenor[j] + "," +
-					FormatUtil.FormatDouble (dblDFView, 1, 8, 1.) + "," +
-					FormatUtil.FormatDouble (dblDFForward, 1, 8, 1.) + "," +
-					FormatUtil.FormatDouble (dblForwardRate, 1, 8, 1.)
-				);
-			}
+			double dblSwapRate = mapOutput.get ("SwapRate");
+
+			double dblSwapDV01 = mapOutput.get ("CleanFixedDV01");
+
+			System.out.println (
+				dtSpot + "," +
+				strMaturityTenor + "," +
+				ffc.maturityDate() + "," +
+				FormatUtil.FormatDouble (dblSwapRate, 1, 8, 100.) + "%" + "," +
+				FormatUtil.FormatDouble (dblSwapDV01, 1, 8, 10000.)
+			);
 		}
 	}
 }

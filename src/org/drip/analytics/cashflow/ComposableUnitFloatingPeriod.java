@@ -168,7 +168,7 @@ public class ComposableUnitFloatingPeriod extends org.drip.analytics.cashflow.Co
 					iFixingDate,
 					forwardLabel
 				);
-
+		} else {
 			org.drip.analytics.date.JulianDate dtValidFixing = lookBackProjectionDate (
 				csqc,
 				(org.drip.market.definition.OvernightIndex) floaterIndex
