@@ -6,6 +6,7 @@ package org.drip.service.scenario;
  */
 
 /*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
  *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
@@ -71,6 +72,7 @@ public class BondReplicator {
 	private double _dblIssueAmount = java.lang.Double.NaN;
 	private double _dblZSpreadBump = java.lang.Double.NaN;
 	private double _dblCurrentPrice = java.lang.Double.NaN;
+	private double _dblRecoveryRate = java.lang.Double.NaN;
 	private double _dblCustomYieldBump = java.lang.Double.NaN;
 	private org.drip.analytics.date.JulianDate _dtSpot = null;
 	private org.drip.product.credit.BondComponent _bond = null;
@@ -180,6 +182,7 @@ public class BondReplicator {
 				dblFX,
 				dblResetRate,
 				iSettleLag,
+				0.4,
 				bond
 			);
 		} catch (java.lang.Exception e) {
@@ -215,6 +218,7 @@ public class BondReplicator {
 	 * @param dblFX FX Rate Applicable
 	 * @param dblResetRate Reset Rate Applicable
 	 * @param iSettleLag Settlement Lag
+	 * @param dblRecovery Recovery Rate
 	 * @param bond Bond Component Instance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
@@ -244,6 +248,7 @@ public class BondReplicator {
 		final double dblFX,
 		final double dblResetRate,
 		final int iSettleLag,
+		final double dblRecoveryRate,
 		final org.drip.product.credit.BondComponent bond)
 		throws java.lang.Exception
 	{
@@ -251,7 +256,9 @@ public class BondReplicator {
 			!org.drip.quant.common.NumberUtil.IsValid (_dblIssuePrice = dblIssuePrice) ||
 				!org.drip.quant.common.NumberUtil.IsValid (_dblIssueAmount = dblIssueAmount) || null ==
 					(_dtSpot = dtSpot) || !org.drip.quant.common.NumberUtil.IsValid (_dblFX = dblFX) || 0. >=
-						_dblFX || 0 > (_iSettleLag = iSettleLag) || null == (_bond = bond))
+						_dblFX || 0 > (_iSettleLag = iSettleLag) || !org.drip.quant.common.NumberUtil.IsValid
+							(_dblRecoveryRate = dblRecoveryRate) || 0. >= _dblRecoveryRate || null == (_bond
+								= bond))
 			throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
 
 		_dblResetRate = dblResetRate;
@@ -478,7 +485,7 @@ public class BondReplicator {
 			org.drip.state.credit.CreditCurve ccBase =
 				org.drip.state.creator.ScenarioCreditCurveBuilder.Custom (strReferenceEntity, _dtSpot, new
 					org.drip.product.definition.CalibratableComponent[] {bond}, mdfc, new double[]
-						{_dblCurrentPrice}, new java.lang.String[] {"Price"}, 0.40, false, new
+						{_dblCurrentPrice}, new java.lang.String[] {"Price"}, _dblRecoveryRate, false, new
 							org.drip.param.definition.CalibrationParams ("Price", 0,
 								_bond.exerciseYieldFromPrice (_valParams, _csqcFundingBase, null,
 									_dblCurrentPrice)));
@@ -490,8 +497,8 @@ public class BondReplicator {
 
 			_csqcCredit01Up = org.drip.param.creator.MarketParamsBuilder.Create (mdfc, gc,
 				org.drip.state.creator.ScenarioCreditCurveBuilder.FlatHazard (_dtSpot.julian(),
-					strReferenceEntity, strCurrency, ccBase.hazard (bond.maturityDate()) + 0.0001, 0.40),
-						null, null, null, null);
+					strReferenceEntity, strCurrency, ccBase.hazard (bond.maturityDate()) + 0.0001,
+						_dblRecoveryRate), null, null, null, null);
 		}
 	}
 
@@ -592,6 +599,17 @@ public class BondReplicator {
 	public double[] fixFloatQuote()
 	{
 		return _adblFixFloatQuote;
+	}
+
+	/**
+	 * Retrieve the Recovery Rate
+	 * 
+	 * @return The Recovery Rate
+	 */
+
+	public double recoveryRate()
+	{
+		return _dblRecoveryRate;
 	}
 
 	/**
@@ -1181,7 +1199,7 @@ public class BondReplicator {
 					org.drip.state.credit.CreditCurve ccAdj =
 						org.drip.state.creator.ScenarioCreditCurveBuilder.FlatHazard (_dtSpot.julian(),
 							cl.referenceEntity(), strCurrency, ccBase.hazard (_bond.maturityDate()) + 0.0001
-								* _dblCustomCreditBasisBump, 0.40);
+								* _dblCustomCreditBasisBump, _dblRecoveryRate);
 
 					if (null != ccAdj)
 						dblEffectiveDurationAdjusted = (_dblCurrentPrice - _bond.priceFromCreditBasis

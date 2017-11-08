@@ -18,7 +18,8 @@ package org.drip.spline.params;
  *  
  *  DRIP is composed of four main libraries:
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/ * Copyright (C) 2018 Lakshmi Krishnamurthy
+
  *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
  *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
  *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
