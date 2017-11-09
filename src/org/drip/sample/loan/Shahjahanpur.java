@@ -1,5 +1,5 @@
 
-package org.drip.sample.securitysuite;
+package org.drip.sample.loan;
 
 import org.drip.analytics.cashflow.*;
 import org.drip.analytics.date.*;
@@ -61,12 +61,12 @@ import org.drip.state.identifier.ForwardLabel;
  */
 
 /**
- * Satara demonstrates the Analytics Calculation/Reconciliation for the Bond Satara.
+ * Shahjahanpur demonstrates the Analytics Calculation/Reconciliation for the Bond Shahjahanpur.
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class Satara {
+public class Shahjahanpur {
 
 	private static final void SetEOS (
 		final BondComponent bond,
@@ -196,31 +196,31 @@ public class Satara {
 		int iSettleLag = 3;
 		double dblSpread = 0.0;
 		String strCurrency = "USD";
-		double dblCleanPrice = 0.99875;
-		double dblIssuePrice = 0.995;
+		double dblCleanPrice = 1.0041375;
+		double dblIssuePrice = 0.99875;
 		double dblSpreadBump = 20.;
 		String strTreasuryCode = "UST";
 		double dblIssueAmount = 7.50e8;
 		double dblSpreadDurationMultiplier = 5.;
-		double dblResetRate = 0.043091 - dblSpread;
+		double dblResetRate = 0.045552 - dblSpread;
 
 		JulianDate dtEffective = DateUtil.CreateFromYMD (
-			2014,
+			2017,
 			4,
-			10
+			7
 		);
 
 		JulianDate dtMaturity = DateUtil.CreateFromYMD (
-			2021,
-			4,
-			10
+			2024,
+			3,
+			31
 		);
 
 		BondComponent bond = BondBuilder.CreateSimpleFloater (
-			"Satara",
+			"Shahjahanpur",
 			"USD",
 			"USD-3M",
-			"Satara",
+			"Shahjahanpur",
 			dblSpread,
 			4,
 			"Act/360",
@@ -235,9 +235,9 @@ public class Satara {
 			EmbeddedOptionSchedule.FromAmerican (
 				dtSpot.julian(),
 				new int[] {
-					DateUtil.CreateFromYMD (2014,  4, 10).julian(),
-					DateUtil.CreateFromYMD (2014, 10, 10).julian(),
-					DateUtil.CreateFromYMD (2021,  4, 10).julian(),
+					DateUtil.CreateFromYMD (2017,  4,  7).julian(),
+					DateUtil.CreateFromYMD (2017, 10,  7).julian(),
+					DateUtil.CreateFromYMD (2024,  3, 31).julian(),
 				},
 				new double[] {
 					1.01,

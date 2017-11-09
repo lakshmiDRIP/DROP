@@ -53,12 +53,13 @@ import org.drip.state.govvie.GovvieCurve;
  */
 
 /**
- * GovvieCurveForwardYield generates the Sequence of Forward Govvie Yield in the Currency specified.
+ * ForwardGovvieYield generates the Forward Govvie Yields over Monthly Increments with Maturity up to 60Y for
+ *  different Govvie Tenors.
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class GovvieCurveForwardYield {
+public class ForwardGovvieYield {
 
 	private static final GovvieCurve GovvieCurve (
 		final JulianDate dtSpot,
@@ -123,22 +124,19 @@ public class GovvieCurveForwardYield {
 
 		EnvManager.InitEnv ("");
 
+		int iNumMonth = 720;
 		String strCode = "UST";
-		int iNumForwardDays = 500;
-		String[] astrForwardTenor = new String[] {
+		String[] astrGovvieTenor = new String[] {
 			 "1M",
-			 "2M",
 			 "3M",
-			 "4M",
 			 "6M",
-			"12M",
+			 "1Y",
 			 "2Y",
 			 "3Y",
-			 "3Y",
-			 "4Y",
 			 "5Y",
 			 "7Y",
 			"10Y",
+			"20Y",
 			"30Y"
 		};
 
@@ -155,20 +153,23 @@ public class GovvieCurveForwardYield {
 
 		System.out.println ("SpotDate,ForwardGap,ForwardTenor,ForwardStartDate,ForwardEndDate,ForwardYield");
 
-		for (int i = 0; i < astrForwardTenor.length; ++i) {
-			for (int j = 0; j < iNumForwardDays; ++j) {
-				JulianDate dtStart = dtSpot.addDays (j);
+		for (int i = 0; i <= iNumMonth; ++i) {
+			JulianDate dtForward = dtSpot.addMonths (i);
 
-				JulianDate dtEnd = dtStart.addTenor (astrForwardTenor[i]);
+			for (int j = 0; j < astrGovvieTenor.length; ++j) {
+				JulianDate dtMaturity = dtForward.addTenor (astrGovvieTenor[j]);
 
 				System.out.println (
 					dtSpot + "," +
 					j + "," +
-					astrForwardTenor[i] + "," +
-					dtStart + "," +
-					dtEnd + "," +
+					astrGovvieTenor[j] + "," +
+					dtForward + "," +
+					dtMaturity + "," +
 					FormatUtil.FormatDouble (
-						gc.forwardYield (dtStart.julian(), dtEnd.julian()), 1, 8, 100.)
+						gc.forwardYield (
+							dtForward.julian(),
+							dtMaturity.julian()
+						), 1, 8, 100.)
 					+ "%"
 				);
 			}

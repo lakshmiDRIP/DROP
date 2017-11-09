@@ -78,92 +78,50 @@ public class CMEFixFloat {
 
 		String[] astrDepositMaturityTenor = new String[] {
 			"1D",
-			// "3D"
 		};
 
 		double[] adblDepositQuote = new double[] {
-			0.0004,		// 1D
-			// 0.0004		// 3D
+			0.0116,		// 1D
 		};
 
 		String[] astrShortEndOISMaturityTenor = new String[] {
-			"1W",
-			"2W",
-			"3W",
-			"1M"
+			 "1W",
+			 "2W",
+			 "3W",
+			 "1M",
+			 "2M",
+			 "3M",
+			 "4M",
+			 "5M",
+			 "6M",
+			 "9M",
+			"12M",
+			"18M",
+			 "2Y",
+			 "3Y",
+			 "4Y",
+			 "5Y",
+			"10Y",
 		};
 
 		double[] adblShortEndOISQuote = new double[] {
-			0.00070,    //   1W
-			0.00069,    //   2W
-			0.00078,    //   3W
-			0.00074     //   1M
-		};
-
-		String[] astrOISFuturesEffectiveTenor = new String[] {
-			"1M",
-			"2M",
-			"3M",
-			"4M",
-			"5M"
-		};
-
-		String[] astrOISFuturesMaturityTenor = new String[] {
-			"1M",
-			"1M",
-			"1M",
-			"1M",
-			"1M"
-		};
-
-		double[] adblOISFuturesQuote = new double[] {
-			 0.00046,    //   1M x 1M
-			 0.00016,    //   2M x 1M
-			-0.00007,    //   3M x 1M
-			-0.00013,    //   4M x 1M
-			-0.00014     //   5M x 1M
-		};
-
-		String[] astrLongEndOISMaturityTenor = new String[] {
-			"15M",
-			"18M",
-			"21M",
-			"02Y",
-			"03Y",
-			"04Y",
-			"05Y",
-			"06Y",
-			"07Y",
-			"08Y",
-			"09Y",
-			"10Y",
-			"11Y",
-			"12Y",
-			"15Y",
-			"20Y",
-			"25Y",
-			"30Y"
-		};
-
-		double[] adblLongEndOISQuote = new double[] {
-			0.00002,    //  15M
-			0.00008,    //  18M
-			0.00021,    //  21M
-			0.00036,    //   2Y
-			0.00127,    //   3Y
-			0.00274,    //   4Y
-			0.00456,    //   5Y
-			0.00647,    //   6Y
-			0.00827,    //   7Y
-			0.00996,    //   8Y
-			0.01147,    //   9Y
-			0.01280,    //  10Y
-			0.01404,    //  11Y
-			0.01516,    //  12Y
-			0.01764,    //  15Y
-			0.01939,    //  20Y
-			0.02003,    //  25Y
-			0.02038     //  30Y
+			0.0117,    //   1W
+			0.0115,    //   2W
+			0.0116,    //   3W
+			0.0116,    //   1M
+			0.0120,    //   2M
+			0.0125,    //   3M
+			0.0128,    //   4M
+			0.0131,    //   5M
+			0.0133,    //   6M
+			0.0139,    //   9M
+			0.0146,    //  12M
+			0.0154,    //  18M
+			0.0161,    //   2Y
+			0.0171,    //   3Y
+			0.0179,    //   4Y
+			0.0185,    //   5Y
+			0.0206,    //  10Y
 		};
 
 		return LatentMarketStateBuilder.SmoothOvernightCurve (
@@ -175,12 +133,12 @@ public class CMEFixFloat {
 			astrShortEndOISMaturityTenor,
 			adblShortEndOISQuote,
 			"SwapRate",
-			astrOISFuturesEffectiveTenor,
-			astrOISFuturesMaturityTenor,
-			adblOISFuturesQuote,
+			null,
+			null,
+			null,
 			"SwapRate",
-			astrLongEndOISMaturityTenor,
-			adblLongEndOISQuote,
+			null,
+			null,
 			"SwapRate"
 		);
 	}
@@ -195,10 +153,14 @@ public class CMEFixFloat {
 
 		EnvManager.InitEnv ("");
 
-		String strCurrency = "GBP";
-		String strForwardTenor = "6M";
+		String strCurrency = "USD";
+		String strForwardTenor = "3M";
 
-		JulianDate dtSpot = DateUtil.Today();
+		JulianDate dtSpot = DateUtil.CreateFromYMD (
+			2017,
+			DateUtil.SEPTEMBER,
+			1
+		);
 
 		MergedDiscountForwardCurve dcOvernight = OvernightCurve (
 			dtSpot,
@@ -212,73 +174,14 @@ public class CMEFixFloat {
 
 		String[] astrDepositMaturityTenor = new String[] {
 			"1D",
-			"1W",
-			"2W",
-			"3W",
-			"1M",
-			"2M",
-			"3M",
-			"4M",
-			"5M"
 		};
 
 		double[] adblDepositQuote = new double[] {
-			0.003565,	// 1D
-			0.003858,	// 1W
-			0.003840,	// 2W
-			0.003922,	// 3W
-			0.003869,	// 1M
-			0.003698,	// 2M
-			0.003527,	// 3M
-			0.003342,	// 4M
-			0.003225	// 5M
-		};
-
-		String[] astrFRAExerciseTenor = new String[] {
-			"00D",
-			"01M",
-			"02M",
-			"03M",
-			"04M",
-			"05M",
-			"06M",
-			"07M",
-			"08M",
-			"09M",
-			"10M",
-			"11M",
-			"12M",
-			"13M",
-			"14M",
-			"15M",
-			"16M",
-			"17M",
-			"18M"
-		};
-
-		double[] adblFRAQuote = new double[] {
-			0.003120,	//  0D
-			0.002930,	//  1M
-			0.002720,	//  2M
-			0.002600,	//  3M
-			0.002560,	//  4M
-			0.002520,	//  5M
-			0.002480,	//  6M
-			0.002540,	//  7M
-			0.002610,	//  8M
-			0.002670,	//  9M
-			0.002790,	// 10M
-			0.002910,	// 11M
-			0.003030,	// 12M
-			0.003180,	// 13M
-			0.003350,	// 14M
-			0.003520,	// 15M
-			0.003710,	// 16M
-			0.003890,	// 17M
-			0.004090	// 18M
+			0.013161,	// 1D
 		};
 
 		String[] astrFixFloatMaturityTenor = new String[] {
+			"02Y",
 			"03Y",
 			"04Y",
 			"05Y",
@@ -287,35 +190,34 @@ public class CMEFixFloat {
 			"08Y",
 			"09Y",
 			"10Y",
+			"11Y",
 			"12Y",
 			"15Y",
 			"20Y",
 			"25Y",
 			"30Y",
-			"35Y",
 			"40Y",
 			"50Y",
-			"60Y"
 		};
 
 		double[] adblFixFloatQuote = new double[] {
-			0.004240,	//  3Y
-			0.005760,	//  4Y			
-			0.007620,	//  5Y
-			0.009540,	//  6Y
-			0.011350,	//  7Y
-			0.013030,	//  8Y
-			0.014520,	//  9Y
-			0.015840,	// 10Y
-			0.018090,	// 12Y
-			0.020370,	// 15Y
-			0.021870,	// 20Y
-			0.022340,	// 25Y
-			0.022560,	// 30Y
-			0.022950,	// 35Y
-			0.023480,	// 40Y
-			0.024210,	// 50Y
-			0.024630	// 60Y
+			0.015540,	//  2Y
+			0.016423,	//  3Y
+			0.017209,	//  4Y			
+			0.017980,	//  5Y
+			0.018743,	//  6Y
+			0.019455,	//  7Y
+			0.020080,	//  8Y
+			0.020651,	//  9Y
+			0.021195,	// 10Y
+			0.021651,	// 11Y
+			0.022065,	// 12Y
+			0.022952,	// 15Y
+			0.023825,	// 20Y
+			0.024175,	// 25Y
+			0.024347,	// 30Y
+			0.024225,	// 40Y
+			0.023968,	// 50Y
 		};
 
 		ForwardCurve fc = LatentMarketStateBuilder.ShapePreservingForwardCurve (
@@ -324,8 +226,8 @@ public class CMEFixFloat {
 			astrDepositMaturityTenor,
 			adblDepositQuote,
 			"ForwardRate",
-			astrFRAExerciseTenor,
-			adblFRAQuote,
+			null,
+			null,
 			"ParForwardRate",
 			astrFixFloatMaturityTenor,
 			adblFixFloatQuote,
@@ -340,7 +242,7 @@ public class CMEFixFloat {
 			null
 		);
 
-		String strMaturityTenor = "5Y";
+		String strMaturityTenor = "7Y";
 		double dblFixedCoupon = 0.021893;
 
 		JulianDate dtEffective = DateUtil.CreateFromYMD (
