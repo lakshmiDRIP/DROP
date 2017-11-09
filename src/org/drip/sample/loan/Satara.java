@@ -61,7 +61,7 @@ import org.drip.state.identifier.ForwardLabel;
  */
 
 /**
- * Satara demonstrates the Analytics Calculation/Reconciliation for the Bond Satara.
+ * Satara demonstrates the Analytics Calculation/Reconciliation for the Loan Satara.
  * 
  * @author Lakshmi Krishnamurthy
  */

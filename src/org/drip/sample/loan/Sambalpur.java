@@ -61,7 +61,7 @@ import org.drip.state.identifier.ForwardLabel;
  */
 
 /**
- * Sambalpur demonstrates the Analytics Calculation/Reconciliation for the Bond Sambalpur.
+ * Sambalpur demonstrates the Analytics Calculation/Reconciliation for the Loan Sambalpur.
  * 
  * @author Lakshmi Krishnamurthy
  */

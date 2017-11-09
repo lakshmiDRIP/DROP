@@ -61,7 +61,7 @@ import org.drip.state.identifier.ForwardLabel;
  */
 
 /**
- * Bilaspur demonstrates the Analytics Calculation/Reconciliation for the Bond Bilaspur.
+ * Bilaspur demonstrates the Analytics Calculation/Reconciliation for the Loan Bilaspur.
  * 
  * @author Lakshmi Krishnamurthy
  */

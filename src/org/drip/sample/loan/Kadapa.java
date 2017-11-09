@@ -61,7 +61,7 @@ import org.drip.state.identifier.ForwardLabel;
  */
 
 /**
- * Kadapa demonstrates the Analytics Calculation/Reconciliation for the Bond Kadapa.
+ * Kadapa demonstrates the Analytics Calculation/Reconciliation for the Loan Kadapa.
  * 
  * @author Lakshmi Krishnamurthy
  */

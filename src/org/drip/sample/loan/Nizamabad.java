@@ -7,7 +7,6 @@ import org.drip.param.market.CurveSurfaceQuoteContainer;
 import org.drip.param.valuation.ValuationParams;
 import org.drip.product.creator.BondBuilder;
 import org.drip.product.credit.BondComponent;
-import org.drip.product.params.EmbeddedOptionSchedule;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.service.scenario.*;
@@ -61,23 +60,12 @@ import org.drip.state.identifier.ForwardLabel;
  */
 
 /**
- * Bijapur demonstrates the Analytics Calculation/Reconciliation for the Loan Bijapur.
+ * Nizamabad demonstrates the Analytics Calculation/Reconciliation for the Loan Nizamabad.
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class Bijapur {
-
-	private static final void SetEOS (
-		final BondComponent bond,
-		final EmbeddedOptionSchedule eosCall,
-		final EmbeddedOptionSchedule eosPut)
-		throws java.lang.Exception
-	{
-		if (null != eosPut) bond.setEmbeddedPutSchedule (eosPut);
-
-		if (null != eosCall) bond.setEmbeddedCallSchedule (eosCall);
-	}
+public class Nizamabad {
 
 	public static final void main (
 		final String[] astArgs)
@@ -194,64 +182,39 @@ public class Bijapur {
 
 		double dblFX = 1;
 		int iSettleLag = 3;
-		double dblSpread = 0.0;
+		double dblSpread = 0.0625;
 		String strCurrency = "USD";
-		double dblCleanPrice = 0.9545;
-		double dblIssuePrice = 0.9975;
+		double dblCleanPrice = 1.0;
+		double dblIssuePrice = 0.995;
 		double dblSpreadBump = 20.;
 		String strTreasuryCode = "UST";
-		double dblIssueAmount = 7.50e8;
+		double dblIssueAmount = 244387500.;
 		double dblSpreadDurationMultiplier = 5.;
-		double dblResetRate = 0.046003 - dblSpread;
+		double dblResetRate = adblDepositQuote[0];
 
 		JulianDate dtEffective = DateUtil.CreateFromYMD (
-			2014,
-			7,
-			25
+			2017,
+			6,
+			15
 		);
 
 		JulianDate dtMaturity = DateUtil.CreateFromYMD (
-			2021,
-			7,
-			25
+			2024,
+			6,
+			15
 		);
 
 		BondComponent bond = BondBuilder.CreateSimpleFloater (
-			"Bijapur",
+			"Nizamabad",
 			"USD",
 			"USD-3M",
-			"Bijapur",
+			"Nizamabad",
 			dblSpread,
 			4,
 			"Act/360",
 			dtEffective,
 			dtMaturity,
 			null,
-			null
-		);
-
-		SetEOS (
-			bond,
-			EmbeddedOptionSchedule.FromAmerican (
-				dtSpot.julian(),
-				new int[] {
-					DateUtil.CreateFromYMD (2014, 7, 25).julian(),
-					DateUtil.CreateFromYMD (2015, 7, 25).julian(),
-					DateUtil.CreateFromYMD (2021, 7, 25).julian(),
-				},
-				new double[] {
-					1.01,
-					1.00,
-					1.00,
-				},
-				false,
-				15,
-				15,
-				false,
-				Double.NaN,
-				"",
-				Double.NaN
-			),
 			null
 		);
 

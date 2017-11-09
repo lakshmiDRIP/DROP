@@ -61,7 +61,7 @@ import org.drip.state.identifier.ForwardLabel;
  */
 
 /**
- * Shahjahanpur demonstrates the Analytics Calculation/Reconciliation for the Bond Shahjahanpur.
+ * Shahjahanpur demonstrates the Analytics Calculation/Reconciliation for the Loan Shahjahanpur.
  * 
  * @author Lakshmi Krishnamurthy
  */

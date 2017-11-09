@@ -61,7 +61,7 @@ import org.drip.state.identifier.ForwardLabel;
  */
 
 /**
- * Avadi demonstrates the Analytics Calculation/Reconciliation for the Bond Avadi.
+ * Avadi demonstrates the Analytics Calculation/Reconciliation for the Loan Avadi.
  * 
  * @author Lakshmi Krishnamurthy
  */

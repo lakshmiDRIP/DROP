@@ -61,7 +61,7 @@ import org.drip.state.identifier.ForwardLabel;
  */
 
 /**
- * Kollam demonstrates the Analytics Calculation/Reconciliation for the Bond Kollam.
+ * Kollam demonstrates the Analytics Calculation/Reconciliation for the Loan Kollam.
  * 
  * @author Lakshmi Krishnamurthy
  */
