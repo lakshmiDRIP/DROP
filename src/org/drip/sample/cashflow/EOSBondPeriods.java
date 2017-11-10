@@ -6,8 +6,7 @@ import org.drip.analytics.date.*;
 import org.drip.analytics.output.ConvexityAdjustment;
 import org.drip.param.creator.MarketParamsBuilder;
 import org.drip.param.market.CurveSurfaceQuoteContainer;
-import org.drip.param.valuation.ValuationParams;
-import org.drip.param.valuation.WorkoutInfo;
+import org.drip.param.valuation.*;
 import org.drip.product.creator.BondBuilder;
 import org.drip.product.credit.BondComponent;
 import org.drip.product.params.EmbeddedOptionSchedule;
@@ -24,6 +23,7 @@ import org.drip.state.govvie.GovvieCurve;
  */
 
 /*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
  *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
