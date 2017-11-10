@@ -1,5 +1,5 @@
 
-package org.drip.sample.curvesuite;
+package org.drip.sample.intexfeed;
 
 import java.util.Map;
 
@@ -180,12 +180,23 @@ public class ForwardSwapRate {
 		int iNumMonth = 720;
 		String strCurrency = "USD";
 		String[] astrSwapTenor = new String[] {
-			 "2Y",
-			 "5Y",
+			"02Y",
+			"03Y",
+			"04Y",
+			"05Y",
+			"06Y",
+			"07Y",
+			"08Y",
+			"09Y",
 			"10Y",
+			"11Y",
+			"12Y",
 			"15Y",
 			"20Y",
-			"30Y"
+			"25Y",
+			"30Y",
+			"40Y",
+			"50Y"
 		};
 
 		MergedDiscountForwardCurve mdfc = FundingCurve (

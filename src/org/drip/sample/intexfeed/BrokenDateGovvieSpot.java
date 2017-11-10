@@ -1,12 +1,11 @@
 
-package org.drip.sample.curvesuite;
+package org.drip.sample.intexfeed;
 
 import org.drip.analytics.date.*;
-import org.drip.analytics.support.Helper;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.service.template.LatentMarketStateBuilder;
-import org.drip.state.discount.MergedDiscountForwardCurve;
+import org.drip.state.govvie.GovvieCurve;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -54,94 +53,75 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
  */
 
 /**
- * LIBORForward generates the Sequence of LIBOR Forward in the Currency specified.
+ * BrokenDateGovvieSpot generates the Sequence of Govvie Yields with Monthly Increments in Maturity over 60
+ *  Years.
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class LIBORForward {
+public class BrokenDateGovvieSpot {
 
-	private static final MergedDiscountForwardCurve FundingCurve (
+	private static final GovvieCurve GovvieCurve (
 		final JulianDate dtSpot,
-		final String strCurrency)
+		final String strCode)
 		throws Exception
 	{
-		String[] astrDepositMaturityTenor = new String[] {
-			"2D"
-		};
-
-		double[] adblDepositQuote = new double[] {
-			0.0130411 // 2D
-		};
-
-		double[] adblFuturesQuote = new double[] {
-			0.01345,	// 98.655
-			0.01470,	// 98.530
-			0.01575,	// 98.425
-			0.01660,	// 98.340
-			0.01745,  	// 98.255
-			0.01845   	// 98.155
-		};
-
-		String[] astrFixFloatMaturityTenor = new String[] {
-			"02Y",
-			"03Y",
-			"04Y",
-			"05Y",
-			"06Y",
-			"07Y",
-			"08Y",
-			"09Y",
-			"10Y",
-			"11Y",
-			"12Y",
-			"15Y",
-			"20Y",
-			"25Y",
-			"30Y",
-			"40Y",
-			"50Y"
-		};
-
-		double[] adblFixFloatQuote = new double[] {
-			0.016410, //  2Y
-			0.017863, //  3Y
-			0.019030, //  4Y
-			0.020035, //  5Y
-			0.020902, //  6Y
-			0.021660, //  7Y
-			0.022307, //  8Y
-			0.022879, //  9Y
-			0.023363, // 10Y
-			0.023820, // 11Y
-			0.024172, // 12Y
-			0.024934, // 15Y
-			0.025581, // 20Y
-			0.025906, // 25Y
-			0.025973, // 30Y
-			0.025838, // 40Y
-			0.025560  // 50Y
-		};
-
-		return LatentMarketStateBuilder.SmoothFundingCurve (
+		return LatentMarketStateBuilder.GovvieCurve (
+			strCode,
 			dtSpot,
-			strCurrency,
-			astrDepositMaturityTenor,
-			adblDepositQuote,
-			"ForwardRate",
-			adblFuturesQuote,
-			"ForwardRate",
-			astrFixFloatMaturityTenor,
-			adblFixFloatQuote,
-			"SwapRate"
+			new JulianDate[] {
+				dtSpot,
+				dtSpot,
+				dtSpot,
+				dtSpot,
+				dtSpot,
+				dtSpot,
+				dtSpot,
+				dtSpot
+			},
+			new JulianDate[] {
+				dtSpot.addTenor ("1Y"),
+				dtSpot.addTenor ("2Y"),
+				dtSpot.addTenor ("3Y"),
+				dtSpot.addTenor ("5Y"),
+				dtSpot.addTenor ("7Y"),
+				dtSpot.addTenor ("10Y"),
+				dtSpot.addTenor ("20Y"),
+				dtSpot.addTenor ("30Y")
+			},
+			new double[] {
+				0.01219, //  1Y
+				0.01391, //  2Y
+				0.01590, //  3Y
+				0.01937, //  5Y
+				0.02200, //  7Y
+				0.02378, // 10Y
+				0.02677, // 20Y
+				0.02927  // 30Y
+			},
+			new double[] {
+				0.01219, //  1Y
+				0.01391, //  2Y
+				0.01590, //  3Y
+				0.01937, //  5Y
+				0.02200, //  7Y
+				0.02378, // 10Y
+				0.02677, // 20Y
+				0.02927  // 30Y
+			},
+			"Yield",
+			LatentMarketStateBuilder.SHAPE_PRESERVING
 		);
 	}
 
 	public static final void main (
-		final String[] astArgs)
+		final String[] astrArgs)
 		throws Exception
 	{
 		EnvManager.InitEnv ("");
+
+		String strCode = "UST";
+		int iNumMonthlyTenor = 720;
 
 		JulianDate dtSpot = DateUtil.CreateFromYMD (
 			2017,
@@ -149,43 +129,22 @@ public class LIBORForward {
 			5
 		);
 
-		int iNumForwardDays = 500;
-		String strCurrency = "USD";
-		String[] astrForwardTenor = new String[] {
-			 "0D",
-			 "1M",
-			 "2M",
-			 "3M",
-			 "4M",
-			 "6M",
-			"12M"
-		};
-
-		MergedDiscountForwardCurve mdfc = FundingCurve (
+		GovvieCurve gc = GovvieCurve (
 			dtSpot,
-			strCurrency
+			strCode
 		);
 
-		System.out.println ("SpotDate,ForwardGap,ForwardTenor,ForwardStartDate,ForwardEndDate,ForwardRate");
+		System.out.println ("SpotDate,MaturityTenor,MaturityDate,MaturityYield");
 
-		for (int i = 0; i < astrForwardTenor.length; ++i) {
-			double dblTenorDCF = 1. / ((double) Helper.TenorToFreq (astrForwardTenor[i]));
+		for (int i = 0; i < iNumMonthlyTenor; ++i) {
+			JulianDate dtMaturity = dtSpot.addMonths (i);
 
-			for (int j = 0; j < iNumForwardDays; ++j) {
-				JulianDate dtStart = dtSpot.addDays (j);
-
-				JulianDate dtEnd = dtStart.addTenor (astrForwardTenor[i]);
-
-				System.out.println (
-					dtSpot + "," +
-					j + "," +
-					astrForwardTenor[i] + "," +
-					dtStart + "," +
-					dtEnd + "," +
-					FormatUtil.FormatDouble (
-						dblTenorDCF * (mdfc.df (dtStart) / mdfc.df (dtEnd) - 1.), 1, 8, 100.) + "%"
-				);
-			}
+			System.out.println (
+				dtSpot + "," +
+				i + "M," +
+				dtMaturity + "," +
+				FormatUtil.FormatDouble (gc.yield (dtMaturity), 1, 8, 100.) + "%"
+			);
 		}
 	}
 }

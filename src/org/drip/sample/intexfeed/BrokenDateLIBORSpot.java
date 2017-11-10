@@ -1,18 +1,15 @@
 
-package org.drip.sample.curvesuite;
-
-import java.util.Map;
+package org.drip.sample.intexfeed;
 
 import org.drip.analytics.date.*;
+import org.drip.analytics.daycount.Convention;
+import org.drip.analytics.support.Helper;
 import org.drip.market.otc.*;
-import org.drip.param.creator.MarketParamsBuilder;
-import org.drip.param.market.CurveSurfaceQuoteContainer;
-import org.drip.param.valuation.ValuationParams;
-import org.drip.product.rates.FixFloatComponent;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.service.template.LatentMarketStateBuilder;
 import org.drip.state.discount.MergedDiscountForwardCurve;
+import org.drip.state.identifier.ForwardLabel;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -60,88 +57,36 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
  */
 
 /**
- * BrokenDateOISRate generates the OIS Rate for Monthly Increments in Maturity over 60 Years.
+ * BrokenDateLIBORSpot generates the LIBOR's at the Broken Date Tenors in the Currency specified.
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class BrokenDateOISRate {
+public class BrokenDateLIBORSpot {
 
-	private static final FixFloatComponent OTCOISFixFloat (
-		final JulianDate dtSpot,
-		final String strCurrency,
-		final String strMaturityTenor)
-	{
-		FixedFloatSwapConvention ffsc = OvernightFixedFloatContainer.FundConventionFromJurisdiction (
-			strCurrency
-		);
-
-		return ffsc.createFixFloatComponent (
-			dtSpot,
-			strMaturityTenor,
-			0.,
-			0.,
-			1.
-		);
-	}
-
-	private static final MergedDiscountForwardCurve OvernightCurve (
+	private static final MergedDiscountForwardCurve FundingCurve (
 		final JulianDate dtSpot,
 		final String strCurrency)
 		throws Exception
 	{
 		String[] astrDepositMaturityTenor = new String[] {
-			"1D",
-			// "3D"
+			"2D"
 		};
 
 		double[] adblDepositQuote = new double[] {
-			0.0004,		// 1D
-			// 0.0004		// 3D
+			0.0130411 // 2D
 		};
 
-		String[] astrShortEndOISMaturityTenor = new String[] {
-			"1W",
-			"2W",
-			"3W",
-			"1M"
+		double[] adblFuturesQuote = new double[] {
+			0.01345,	// 98.655
+			0.01470,	// 98.530
+			0.01575,	// 98.425
+			0.01660,	// 98.340
+			0.01745,  	// 98.255
+			0.01845   	// 98.155
 		};
 
-		double[] adblShortEndOISQuote = new double[] {
-			0.00070,    //   1W
-			0.00069,    //   2W
-			0.00078,    //   3W
-			0.00074     //   1M
-		};
-
-		String[] astrOISFuturesEffectiveTenor = new String[] {
-			"1M",
-			"2M",
-			"3M",
-			"4M",
-			"5M"
-		};
-
-		String[] astrOISFuturesMaturityTenor = new String[] {
-			"1M",
-			"1M",
-			"1M",
-			"1M",
-			"1M"
-		};
-
-		double[] adblOISFuturesQuote = new double[] {
-			 0.00046,    //   1M x 1M
-			 0.00016,    //   2M x 1M
-			-0.00007,    //   3M x 1M
-			-0.00013,    //   4M x 1M
-			-0.00014     //   5M x 1M
-		};
-
-		String[] astrLongEndOISMaturityTenor = new String[] {
-			"15M",
-			"18M",
-			"21M",
+		String[] astrFixFloatMaturityTenor = new String[] {
 			"02Y",
 			"03Y",
 			"04Y",
@@ -156,57 +101,50 @@ public class BrokenDateOISRate {
 			"15Y",
 			"20Y",
 			"25Y",
-			"30Y"
+			"30Y",
+			"40Y",
+			"50Y"
 		};
 
-		double[] adblLongEndOISQuote = new double[] {
-			0.00002,    //  15M
-			0.00008,    //  18M
-			0.00021,    //  21M
-			0.00036,    //   2Y
-			0.00127,    //   3Y
-			0.00274,    //   4Y
-			0.00456,    //   5Y
-			0.00647,    //   6Y
-			0.00827,    //   7Y
-			0.00996,    //   8Y
-			0.01147,    //   9Y
-			0.01280,    //  10Y
-			0.01404,    //  11Y
-			0.01516,    //  12Y
-			0.01764,    //  15Y
-			0.01939,    //  20Y
-			0.02003,    //  25Y
-			0.02038     //  30Y
+		double[] adblFixFloatQuote = new double[] {
+			0.016410, //  2Y
+			0.017863, //  3Y
+			0.019030, //  4Y
+			0.020035, //  5Y
+			0.020902, //  6Y
+			0.021660, //  7Y
+			0.022307, //  8Y
+			0.022879, //  9Y
+			0.023363, // 10Y
+			0.023820, // 11Y
+			0.024172, // 12Y
+			0.024934, // 15Y
+			0.025581, // 20Y
+			0.025906, // 25Y
+			0.025973, // 30Y
+			0.025838, // 40Y
+			0.025560  // 50Y
 		};
 
-		return LatentMarketStateBuilder.SmoothOvernightCurve (
+		return LatentMarketStateBuilder.SmoothFundingCurve (
 			dtSpot,
 			strCurrency,
 			astrDepositMaturityTenor,
 			adblDepositQuote,
-			"Rate",
-			astrShortEndOISMaturityTenor,
-			adblShortEndOISQuote,
-			"SwapRate",
-			astrOISFuturesEffectiveTenor,
-			astrOISFuturesMaturityTenor,
-			adblOISFuturesQuote,
-			"SwapRate",
-			astrLongEndOISMaturityTenor,
-			adblLongEndOISQuote,
+			"ForwardRate",
+			adblFuturesQuote,
+			"ForwardRate",
+			astrFixFloatMaturityTenor,
+			adblFixFloatQuote,
 			"SwapRate"
 		);
 	}
 
 	public static final void main (
-		final String[] astrArgs)
+		final String[] astArgs)
 		throws Exception
 	{
 		EnvManager.InitEnv ("");
-
-		int iNumMonth = 720;
-		String strCurrency = "USD";
 
 		JulianDate dtSpot = DateUtil.CreateFromYMD (
 			2017,
@@ -214,49 +152,64 @@ public class BrokenDateOISRate {
 			5
 		);
 
-		MergedDiscountForwardCurve mdfc = OvernightCurve (
+		int iNumMonth = 720;
+		String strCurrency = "USD";
+
+		FixedFloatSwapConvention ffsc = IBORFixedFloatContainer.ConventionFromJurisdiction (strCurrency);
+
+		ForwardLabel forwardLabel = ffsc.floatStreamConvention().floaterIndex();
+
+		String strLIBORDayCount = forwardLabel.floaterIndex().dayCount();
+
+		int iLIBORFreq = Helper.TenorToFreq (forwardLabel.tenor());
+
+		MergedDiscountForwardCurve mdfc = FundingCurve (
 			dtSpot,
 			strCurrency
 		);
 
-		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());
-
-		CurveSurfaceQuoteContainer csqc = MarketParamsBuilder.Create (
-			mdfc,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null
-		);
+		System.out.println ("SpotDate,ForwardTenor,ForwardDate,ZeroPrice,LIBOR,ZeroRate");
 
 		for (int i = 1; i <= iNumMonth; ++i) {
-			String strMaturityTenor = i + "M";
+			String strTenor = i + "M";
 
-			FixFloatComponent ffc = OTCOISFixFloat (
-				dtSpot,
-				strCurrency,
-				strMaturityTenor
+			JulianDate dtForward = dtSpot.addMonths (i);
+
+			double dblDFForward = mdfc.df (strTenor);
+
+			double dblLIBOR = Helper.DF2Yield (
+				iLIBORFreq,
+				dblDFForward,
+				Convention.YearFraction (
+					dtSpot.julian(),
+					dtForward.julian(),
+					strLIBORDayCount,
+					false,
+					null,
+					strCurrency
+				)
 			);
 
-			Map<String, Double> mapOutput = ffc.value (
-				valParams,
-				null,
-				csqc,
-				null
+			double dblZero = Helper.DF2Yield (
+				4,
+				dblDFForward,
+				Convention.YearFraction (
+					dtSpot.julian(),
+					dtForward.julian(),
+					"30/360",
+					false,
+					null,
+					strCurrency
+				)
 			);
-
-			double dblOISRate = mapOutput.get ("SwapRate");
-
-			double dblOISDV01 = mapOutput.get ("CleanFixedDV01");
 
 			System.out.println (
 				dtSpot + "," +
-				strMaturityTenor + "," +
-				ffc.maturityDate() + "," +
-				FormatUtil.FormatDouble (dblOISRate, 1, 8, 100.) + "%" + "," +
-				FormatUtil.FormatDouble (dblOISDV01, 1, 8, 10000.)
+				strTenor + "," +
+				dtForward + "," +
+				FormatUtil.FormatDouble (dblDFForward, 1, 6, 1.) + "," +
+				FormatUtil.FormatDouble (dblLIBOR, 1, 6, 100.) + "%," +
+				FormatUtil.FormatDouble (dblZero, 1, 6, 100.) + "%"
 			);
 		}
 	}

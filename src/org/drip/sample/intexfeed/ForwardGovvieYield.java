@@ -1,5 +1,5 @@
 
-package org.drip.sample.curvesuite;
+package org.drip.sample.intexfeed;
 
 import org.drip.analytics.date.*;
 import org.drip.quant.common.FormatUtil;
