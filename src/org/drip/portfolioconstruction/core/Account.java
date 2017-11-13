@@ -57,8 +57,8 @@ public class Account extends org.drip.portfolioconstruction.core.Block {
 	private org.drip.portfolioconstruction.composite.Holdings _ah = null;
 	private org.drip.portfolioconstruction.composite.AlphaGroup _ag = null;
 	private org.drip.portfolioconstruction.core.TaxAccountingScheme _tas = null;
-	private org.drip.portfolioconstruction.risk.AlphaUncertaintyGroup _aug = null;
 	private org.drip.portfolioconstruction.composite.Benchmark _bmTracking = null;
+	private org.drip.portfolioconstruction.risk.AlphaUncertaintyGroup _aug = null;
 	private org.drip.portfolioconstruction.composite.Benchmark _bmObjective = null;
 	private org.drip.portfolioconstruction.risk.AssetCovariance _acRiskModel = null;
 	private org.drip.portfolioconstruction.composite.TransactionCostGroup _tcg = null;

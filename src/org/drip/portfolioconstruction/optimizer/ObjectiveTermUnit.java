@@ -63,22 +63,20 @@ public class ObjectiveTermUnit {
 	 * 
 	 * @param objTerm The Objective Term
 	 * @param dblWeight The Objective Term Weight
-	 * @param bIsActive TRUE - The Objective Term is Active
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ObjectiveTermUnit (
 		final org.drip.portfolioconstruction.optimizer.ObjectiveTerm objTerm,
-		final double dblWeight,
-		final boolean bIsActive)
+		final double dblWeight)
 		throws java.lang.Exception
 	{
 		if (null == (_objTerm = objTerm) || !org.drip.quant.common.NumberUtil.IsValid (_dblWeight =
 			dblWeight))
 			throw new java.lang.Exception ("ObjectiveTermUnit Constructor => Invalid Inputs");
 
-		_bIsActive = bIsActive;
+		_bIsActive = true;
 	}
 
 	/**
@@ -90,6 +88,32 @@ public class ObjectiveTermUnit {
 	public boolean isActive()
 	{
 		return _bIsActive;
+	}
+
+	/**
+	 * Turn ON the Objective Term Unit
+	 * 
+	 * @return The Objective Term Unit is ON
+	 */
+
+	public boolean activate()
+	{
+		boolean bIsActiveOld = _bIsActive;
+		_bIsActive = true;
+		return bIsActiveOld;
+	}
+
+	/**
+	 * Turn OFF the Objective Term Unit
+	 * 
+	 * @return The Objective Term Unit is OFF
+	 */
+
+	public boolean deactivate()
+	{
+		boolean bIsActiveOld = _bIsActive;
+		_bIsActive = false;
+		return bIsActiveOld;
 	}
 
 	/**

@@ -69,6 +69,24 @@ public class ObjectiveFunction extends org.drip.function.definition.RdToR1 {
 	}
 
 	/**
+	 * Add the Objective Term Unit Instance
+	 * 
+	 * @param otu The Objective Term Unit Instance
+	 * 
+	 * @return TRUE - The Objective Term Unit Instance successfully added
+	 */
+
+	public boolean addObjectiveTermUnit (
+		final org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit otu)
+	{
+		if (null == otu || _lsOTU.contains (otu)) return false;
+
+		_lsOTU.add (otu);
+
+		return true;
+	}
+
+	/**
 	 * Retrieve the List of Objective Terms
 	 * 
 	 * @return The List of Objective Terms
@@ -90,8 +108,9 @@ public class ObjectiveFunction extends org.drip.function.definition.RdToR1 {
 	{
 		double dblValue = 0.;
 
-		for (org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit otu : _lsOTU)
-			dblValue += otu.term().rdtoR1().evaluate (adblVariate);
+		for (org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit otu : _lsOTU) {
+			if (otu.isActive()) dblValue += otu.weight() * otu.term().rdtoR1().evaluate (adblVariate);
+		}
 
 		return dblValue;
 	}
@@ -104,8 +123,14 @@ public class ObjectiveFunction extends org.drip.function.definition.RdToR1 {
 	{
 		double dblValue = 0.;
 
-		for (org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit otu : _lsOTU)
-			dblValue += otu.term().rdtoR1().derivative (adblVariate, iVariateIndex, iOrder);
+		for (org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit otu : _lsOTU) {
+			if (otu.isActive())
+				dblValue += otu.weight() * otu.term().rdtoR1().derivative (
+					adblVariate,
+					iVariateIndex,
+					iOrder
+				);
+		}
 
 		return dblValue;
 	}

@@ -56,10 +56,10 @@ package org.drip.portfolioconstruction.optimizer;
 public class ConstraintTerm extends org.drip.portfolioconstruction.core.Block {
 	private double _dblMaximum = java.lang.Double.NaN;
 	private double _dblMinimum = java.lang.Double.NaN;
+	private org.drip.function.definition.RdToR1 _rdToR1 = null;
 	private org.drip.portfolioconstruction.optimizer.Unit _unit = null;
 	private org.drip.portfolioconstruction.optimizer.Scope _scope = null;
 	private org.drip.portfolioconstruction.optimizer.SoftConstraint _sc = null;
-	private org.drip.portfolioconstruction.composite.BlockClassification _classSelection = null;
 
 	/**
 	 * ConstraintTerm Constructor
@@ -67,8 +67,8 @@ public class ConstraintTerm extends org.drip.portfolioconstruction.core.Block {
 	 * @param strName The Constraint Name
 	 * @param strID The Constraint ID
 	 * @param strDescription The Constraint Description
+	 * @param rdToR1 The R^d To R^1 Constraint Term
 	 * @param scope The Constraint Scope
-	 * @param classSelection The Constraint Selection
 	 * @param unit The Constraint Unit
 	 * @param dblMinimum The Constraint Minimum
 	 * @param dblMaximum The Constraint Maximum
@@ -80,8 +80,8 @@ public class ConstraintTerm extends org.drip.portfolioconstruction.core.Block {
 		final java.lang.String strName,
 		final java.lang.String strID,
 		final java.lang.String strDescription,
+		final org.drip.function.definition.RdToR1 rdToR1,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
-		final org.drip.portfolioconstruction.composite.BlockClassification classSelection,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
 		final double dblMinimum,
 		final double dblMaximum)
@@ -89,29 +89,21 @@ public class ConstraintTerm extends org.drip.portfolioconstruction.core.Block {
 	{
 		super (strName, strID, strDescription);
 
-		if (null == (_scope = scope) || null == (_unit = unit) || (!org.drip.quant.common.NumberUtil.IsValid
-			(_dblMinimum = dblMinimum) && !org.drip.quant.common.NumberUtil.IsValid (_dblMaximum =
-				dblMaximum)))
+		if (null == (_rdToR1 = rdToR1) || null == (_scope = scope) || null == (_unit = unit) ||
+			(!org.drip.quant.common.NumberUtil.IsValid (_dblMinimum = dblMinimum) &&
+				!org.drip.quant.common.NumberUtil.IsValid (_dblMaximum = dblMaximum)))
 			throw new java.lang.Exception ("ConstraintTerm Constructor => Invalid Inputs");
-
-		_classSelection = classSelection;
 	}
 
 	/**
-	 * Set the Soft Constraint
+	 * The R^d To R^1 Constraint Term
 	 * 
-	 * @param sc The Soft Constraint
-	 * 
-	 * @return TRUE - The Soft Constraint successfully set
+	 * @return The R^d To R^1 Constraint Term
 	 */
 
-	public boolean setSoftConstraint (
-		final org.drip.portfolioconstruction.optimizer.SoftConstraint sc)
+	public org.drip.function.definition.RdToR1 rdtoR1()
 	{
-		if (null == sc) return false;
-
-		_sc = sc;
-		return true;
+		return _rdToR1;
 	}
 
 	/**
@@ -134,17 +126,6 @@ public class ConstraintTerm extends org.drip.portfolioconstruction.core.Block {
 	public org.drip.portfolioconstruction.optimizer.Scope scope()
 	{
 		return _scope;
-	}
-
-	/**
-	 * Retrieve the Constraint Selection
-	 * 
-	 * @return The Constraint Selection
-	 */
-
-	public org.drip.portfolioconstruction.composite.BlockClassification selection()
-	{
-		return _classSelection;
 	}
 
 	/**
@@ -178,5 +159,22 @@ public class ConstraintTerm extends org.drip.portfolioconstruction.core.Block {
 	public double maximum()
 	{
 		return _dblMaximum;
+	}
+
+	/**
+	 * Set the Soft Constraint
+	 * 
+	 * @param sc The Soft Constraint
+	 * 
+	 * @return TRUE - The Soft Constraint successfully set
+	 */
+
+	public boolean setSoftConstraint (
+		final org.drip.portfolioconstruction.optimizer.SoftConstraint sc)
+	{
+		if (null == sc) return false;
+
+		_sc = sc;
+		return true;
 	}
 }

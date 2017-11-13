@@ -54,8 +54,8 @@ package org.drip.portfolioconstruction.composite;
  */
 
 public class BlockClassification extends org.drip.portfolioconstruction.core.Block {
-	private org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Boolean> _mapMembership = new
-		org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Boolean>();
+	private org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Boolean> _mapMembership = new
+		org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Boolean>();
 
 	/**
 	 * Classification Constructor

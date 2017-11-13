@@ -18,6 +18,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 import org.drip.state.identifier.ForwardLabel;
 
 /*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 

@@ -93,7 +93,7 @@ public class Strategy extends org.drip.portfolioconstruction.core.Block {
 		_bIgnoreCompliance = bIgnoreCompliance;
 		_bAllowGrandFathering = bAllowGrandFathering;
 
-		if (null == (_of = of)) throw new java.lang.Exception ("Strategy Construtor => Invalind Inputs");
+		if (null == (_of = of)) throw new java.lang.Exception ("Strategy Construtor => Invalid Inputs");
 	}
 
 	/**

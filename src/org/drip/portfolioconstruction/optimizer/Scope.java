@@ -72,4 +72,33 @@ public class Scope {
 	 */
 
 	public static final int PORTFOLIO = 3;
+
+	private int _iLevel = 0;
+
+	/**
+	 * Scope Constructor
+	 * 
+	 * @param iLevel The Level of the Scope
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public Scope (
+		final int iLevel)
+		throws java.lang.Exception
+	{
+		if (ASSET != (_iLevel = iLevel) && SELECTION != _iLevel && PORTFOLIO != _iLevel)
+			throw new java.lang.Exception ("Scope Constructor => Invalid Inputs");
+	}
+
+	/**
+	 * Retrieve the Scope Level
+	 * 
+	 * @return The Scope Level
+	 */
+
+	public int level()
+	{
+		return _iLevel;
+	}
 }

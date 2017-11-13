@@ -56,8 +56,8 @@ package org.drip.portfolioconstruction.composite;
 public class Holdings extends org.drip.portfolioconstruction.core.Block {
 	private java.lang.String _strCurrency = "";
 
-	private org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double> _mapQuantity = new
-		org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
+	private org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> _mapQuantity = new
+		org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>();
 
 	/**
 	 * Holdings Constructor
@@ -185,5 +185,26 @@ public class Holdings extends org.drip.portfolioconstruction.core.Block {
 		}
 
 		return 0.;
+	}
+
+	/**
+	 * Retrieve the Array Form of the Holdings Quantity
+	 * 
+	 * @return Array Form of the Holdings Quantity
+	 */
+
+	public double[] toArray()
+	{
+		int iSize = _mapQuantity.size();
+
+		if (0 == iSize) return null;
+
+		int i = 0;
+		double[] adblQuantity = new double[iSize];
+
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> meQuantity : _mapQuantity.entrySet())
+			adblQuantity[i++] = meQuantity.getValue();
+
+		return adblQuantity;
 	}
 }

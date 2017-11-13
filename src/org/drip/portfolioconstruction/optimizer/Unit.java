@@ -72,4 +72,34 @@ public class Unit {
 	 */
 
 	public static final int CURRENCY = 3;
+
+	private int _iDenomination = 0;
+
+	/**
+	 * Unit Constructor
+	 * 
+	 * @param iDenomination The Unit Denomination
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public Unit (
+		final int iDenomination)
+		throws java.lang.Exception
+	{
+		if (PERCENT != (_iDenomination = iDenomination) && QUANTITY != _iDenomination && CURRENCY !=
+			_iDenomination)
+			throw new java.lang.Exception ("Unit Constructor => Invalid Inputs");
+	}
+
+	/**
+	 * Retrieve the Denomination of the Unit
+	 * 
+	 * @return The Denomination of the Unit
+	 */
+
+	public int denomination()
+	{
+		return _iDenomination;
+	}
 }

@@ -58,6 +58,16 @@ public class SoftConstraint {
 	private double _dblPenaltyAmount = java.lang.Double.NaN;
 	private double _dblViolationEdgeLimit = java.lang.Double.NaN;
 
+	/**
+	 * SoftConstraint Constructor
+	 * 
+	 * @param strPenaltyType The Penalty Type
+	 * @param dblPenaltyAmount The Penalty Amount
+	 * @param dblViolationEdgeLimit The Limit that is considered to be a Violation
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
 	public SoftConstraint (
 		final java.lang.String strPenaltyType,
 		final double dblPenaltyAmount,

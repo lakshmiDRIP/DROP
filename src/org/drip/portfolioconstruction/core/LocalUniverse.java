@@ -78,7 +78,10 @@ public class LocalUniverse {
 	{
 		if (null == a) return false;
 
-		_mapAsset.put (a.id(), a);
+		_mapAsset.put (
+			a.id(),
+			a
+		);
 
 		return true;
 	}
