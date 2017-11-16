@@ -73,4 +73,43 @@ public class AssetCovarianceDense extends org.drip.portfolioconstruction.risk.At
 	{
 		super (strName, strID, strDescription);
 	}
+
+	/**
+	 * Constrict the Covariance Matrix to those of the Holdings
+	 * 
+	 * @param holdings The Holdings Instance
+	 * 
+	 * @return The Constricted Covariance Matrix
+	 */
+
+	public double[][] constrict (
+		final org.drip.portfolioconstruction.composite.Holdings holdings)
+	{
+		if (null == holdings) return null;
+
+		java.util.Set<java.lang.String> setAsset = holdings.assets();
+
+		int iSize = setAsset.size();
+
+		java.util.Map<java.lang.String, java.lang.Double> mapCovariance = attribute();
+
+		int i = 0;
+		double[][] aadblAssetCovariance = new double[iSize][iSize];
+
+		for (java.lang.String strAsset1 : setAsset) {
+			int j = 0;
+
+			for (java.lang.String strAsset2 : setAsset) {
+				java.lang.String strKey = strAsset1 + "::" + strAsset2;
+
+				if (!mapCovariance.containsKey (strKey)) return null;
+
+				aadblAssetCovariance[i][j++] = mapCovariance.get (strKey);
+			}
+
+			++i;
+		}
+
+		return aadblAssetCovariance;
+	}
 }

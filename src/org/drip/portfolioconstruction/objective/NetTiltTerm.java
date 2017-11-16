@@ -53,88 +53,34 @@ package org.drip.portfolioconstruction.objective;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NetTiltTerm extends org.drip.portfolioconstruction.optimizer.ObjectiveTerm {
-	private double[] _adblMagnitude = null;
-	private double[] _adblMembership = null;
-	private org.drip.portfolioconstruction.composite.BlockAttribute _baTiltWeight = null;
-	private org.drip.portfolioconstruction.composite.BlockClassification _bcTiltSet = null;
+public class NetTiltTerm extends org.drip.portfolioconstruction.objective.TiltTerm {
 
 	/**
 	 * NetTiltTerm Constructor
 	 * 
 	 * @param strName The Objective Term Name
-	 * @param strID The Objective Term ID
-	 * @param strDescription The Objective Term Description
 	 * @param holdingsInitial The Initial Holdings
-	 * @param baTiltWeight The Tilt Weight Block Attribute
-	 * @param bcTiltSet The Tilt Set Block Classification
+	 * @param baMagnitude The Tilt Magnitude Block Attribute
+	 * @param bcMembership The Tilt Membership Block Classification
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public NetTiltTerm (
 		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
 		final org.drip.portfolioconstruction.composite.Holdings holdingsInitial,
-		final org.drip.portfolioconstruction.composite.BlockAttribute baTiltWeight,
-		final org.drip.portfolioconstruction.composite.BlockClassification bcTiltSet)
+		final org.drip.portfolioconstruction.composite.BlockAttribute baMagnitude,
+		final org.drip.portfolioconstruction.composite.BlockClassification bcMembership)
 		throws java.lang.Exception
 	{
-		super (strName, strID, strDescription, holdingsInitial);
-
-		if (null == (_baTiltWeight = baTiltWeight) || null == (_bcTiltSet = bcTiltSet))
-			throw new java.lang.Exception ("NetTiltTerm Constructor => Invalid Inputs");
-
-		if (null == (_adblMagnitude = _baTiltWeight.constrict (holdingsInitial)))
-			throw new java.lang.Exception ("NetTiltTerm Constructor => Invalid Inputs");
-
-		if (null == (_adblMembership = _bcTiltSet.constrict (holdingsInitial)))
-			throw new java.lang.Exception ("NetTiltTerm Constructor => Invalid Inputs");
-	}
-
-	/**
-	 * Retrieve the Array of Tilt Weights
-	 *  
-	 * @return The Array of Tilt Weights
-	 */
-
-	public double[] weight()
-	{
-		return _adblMagnitude;
-	}
-
-	/**
-	 * Retrieve the Tilt Weight Block Attribute
-	 *  
-	 * @return The Tilt Weight Block Attribute
-	 */
-
-	public org.drip.portfolioconstruction.composite.BlockAttribute weightAttribute()
-	{
-		return _baTiltWeight;
-	}
-
-	/**
-	 * Retrieve the Array of Tilt Set Membership
-	 *  
-	 * @return The Array of Tilt Set Membership
-	 */
-
-	public double[] membership()
-	{
-		return _adblMembership;
-	}
-
-	/**
-	 * Retrieve the Tilt Set Block Classification
-	 *  
-	 * @return The Tilt Set Block Classification
-	 */
-
-	public org.drip.portfolioconstruction.composite.BlockClassification membershipClassification()
-	{
-		return _bcTiltSet;
+		super (
+			strName,
+			"OBJECTIVE_TERM_NET_TILT",
+			"Net Tilt Objective Term",
+			holdingsInitial,
+			baMagnitude,
+			bcMembership
+		);
 	}
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
@@ -142,7 +88,7 @@ public class NetTiltTerm extends org.drip.portfolioconstruction.optimizer.Object
 		return new org.drip.function.definition.RdToR1 (null) {
 			@Override public int dimension()
 			{
-				return _adblMagnitude.length;
+				return initialHoldingsArray().length;
 			}
 
 			@Override public double evaluate (
@@ -158,10 +104,14 @@ public class NetTiltTerm extends org.drip.portfolioconstruction.optimizer.Object
 				if (iDimension != dimension())
 					throw new java.lang.Exception ("NetTiltTerm::rdToR1::evaluate => Invalid Inputs");
 
+				double[] adblWeight = magnitude();
+
+				double[] adblMembership = membership();
+
 				double[] adblInitialHoldings = initialHoldingsArray();
 
 				for (int i = 0; i < iDimension; ++i)
-					dblValue += _adblMagnitude[i] * _adblMembership[i] * java.lang.Math.abs (adblVariate[i] -
+					dblValue += adblWeight[i] * adblMembership[i] * java.lang.Math.abs (adblVariate[i] -
 						adblInitialHoldings[i]);
 
 				return dblValue;
@@ -184,10 +134,8 @@ public class NetTiltTerm extends org.drip.portfolioconstruction.optimizer.Object
 
 				if (2 <= iOrder) return 0.;
 
-				double dblVariateHoldings = initialHoldingsArray()[iVariateIndex];
-
-				return (adblVariate[iVariateIndex] > dblVariateHoldings ? 1. : -1.) *
-					_adblMagnitude[iVariateIndex] * _adblMembership[iVariateIndex];
+				return (adblVariate[iVariateIndex] > initialHoldingsArray()[iVariateIndex] ? 1. : -1.) *
+					magnitude()[iVariateIndex] * membership()[iVariateIndex];
 			}
 		};
 	}

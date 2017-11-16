@@ -155,7 +155,6 @@ public class BondReplicator {
 		final double dblResetRate,
 		final int iSettleLag,
 		final org.drip.product.credit.BondComponent bond)
-		throws java.lang.Exception
 	{
 		try {
 			return new BondReplicator (
@@ -218,7 +217,7 @@ public class BondReplicator {
 	 * @param dblFX FX Rate Applicable
 	 * @param dblResetRate Reset Rate Applicable
 	 * @param iSettleLag Settlement Lag
-	 * @param dblRecovery Recovery Rate
+	 * @param dblRecoveryRate Recovery Rate
 	 * @param bond Bond Component Instance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid

@@ -48,8 +48,8 @@ package org.drip.portfolioconstruction.risk;
  */
 
 /**
- * AttributeJointFactor contains the Factor Based Attributes that determines the Correlation between the Pair
- *	of Assets.
+ * AttributeJointFactor contains the Factor Based Loadings that determines the Joint Attributes between the
+ *  Pair of Assets.
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -62,10 +62,10 @@ public class AttributeJointFactor extends org.drip.portfolioconstruction.core.Bl
 	private java.util.Map<java.lang.String, java.lang.Double> _mapFactorAssetLoading = new
 		org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
 
-	private java.util.Map<java.lang.String, java.lang.Double> _mapFactorCovariance = new
+	private java.util.Map<java.lang.String, java.lang.Double> _mapFactorFactorAttribute = new
 		org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
 
-	private java.util.Map<java.lang.String, java.lang.Double> _mapSpecificRisk = new
+	private java.util.Map<java.lang.String, java.lang.Double> _mapAssetSpecificAttribute = new
 		org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
 
 	/**
@@ -77,7 +77,7 @@ public class AttributeJointFactor extends org.drip.portfolioconstruction.core.Bl
 	 * @param astrAssetID Array of Asset IDs
 	 * @param astrFactorID Array of FactorIDs
 	 * @param aadblAssetFactorLoading Matrix of Asset-Factor Loadings
-	 * @param aadblFactorCovariance Matrix of Factor Covariances
+	 * @param aadblFactorAttribute Matrix of Factor Attributes
 	 * @param adblSpecificRisk Array of Specific Risks
 	 * 
 	 * @return The Standard Instance of AttributeJointFactor
@@ -90,11 +90,11 @@ public class AttributeJointFactor extends org.drip.portfolioconstruction.core.Bl
 		final java.lang.String[] astrAssetID,
 		final java.lang.String[] astrFactorID,
 		final double[][] aadblAssetFactorLoading,
-		final double[][] aadblFactorCovariance,
+		final double[][] aadblFactorAttribute,
 		final double[] adblSpecificRisk)
 	{
 		if (null == astrAssetID || null == astrFactorID || null == aadblAssetFactorLoading || null ==
-			aadblFactorCovariance || null == adblSpecificRisk)
+			aadblFactorAttribute || null == adblSpecificRisk)
 			return null;
 
 		AttributeJointFactor ajf = null;
@@ -102,7 +102,7 @@ public class AttributeJointFactor extends org.drip.portfolioconstruction.core.Bl
 		int iNumFactor = astrFactorID.length;
 
 		if (0 == iNumAsset || 0 == iNumFactor || iNumAsset != aadblAssetFactorLoading.length || iNumFactor !=
-			aadblFactorCovariance.length || iNumAsset != adblSpecificRisk.length)
+			aadblFactorAttribute.length || iNumAsset != adblSpecificRisk.length)
 			return null;
 
 		try {
@@ -126,7 +126,7 @@ public class AttributeJointFactor extends org.drip.portfolioconstruction.core.Bl
 		for (int iFactor1 = 0; iFactor1 < iNumFactor; ++iFactor1) {
 			for (int iFactor2 = 0; iFactor2 < iNumFactor; ++iFactor2) {
 				if (!ajf.addFactorCovariance (astrFactorID[iFactor1], astrFactorID[iFactor2],
-					aadblFactorCovariance[iFactor1][iFactor2]))
+					aadblFactorAttribute[iFactor1][iFactor2]))
 					return null;
 			}
 		}
@@ -176,25 +176,25 @@ public class AttributeJointFactor extends org.drip.portfolioconstruction.core.Bl
 	}
 
 	/**
-	 * Retrieve the Factor Covariance Map
+	 * Retrieve the Factor-to-Factor Attribute Map
 	 * 
-	 * @return The Factor Covariance Map
+	 * @return The Factor-to-Joint Attribute Map
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> factorCovariance()
+	public java.util.Map<java.lang.String, java.lang.Double> factorJointAttribute()
 	{
-		return _mapFactorCovariance;
+		return _mapFactorFactorAttribute;
 	}
 
 	/**
-	 * Retrieve the Specific Risk
+	 * Retrieve the Asset Specific Attribute
 	 * 
-	 * @return The Specific Risk
+	 * @return The Asset Specific Attribute
 	 */
 
 	public java.util.Map<java.lang.String, java.lang.Double> specificRisk()
 	{
-		return _mapSpecificRisk;
+		return _mapAssetSpecificAttribute;
 	}
 
 	/**
@@ -242,9 +242,9 @@ public class AttributeJointFactor extends org.drip.portfolioconstruction.core.Bl
 			|| !org.drip.quant.common.NumberUtil.IsValid (dblFactorCovariance))
 			return false;
 
-		_mapFactorCovariance.put (strFactorID1 + "::" + strFactorID2, dblFactorCovariance);
+		_mapFactorFactorAttribute.put (strFactorID1 + "::" + strFactorID2, dblFactorCovariance);
 
-		_mapFactorCovariance.put (strFactorID2 + "::" + strFactorID1, dblFactorCovariance);
+		_mapFactorFactorAttribute.put (strFactorID2 + "::" + strFactorID1, dblFactorCovariance);
 
 		return true;
 	}
@@ -266,7 +266,7 @@ public class AttributeJointFactor extends org.drip.portfolioconstruction.core.Bl
 			(dblSpecificRisk))
 			return false;
 
-		_mapSpecificRisk.put (strAssetID, dblSpecificRisk);
+		_mapAssetSpecificAttribute.put (strAssetID, dblSpecificRisk);
 
 		return true;
 	}
@@ -283,7 +283,7 @@ public class AttributeJointFactor extends org.drip.portfolioconstruction.core.Bl
 		final java.lang.String strAssetID)
 	{
 		return null != strAssetID && !strAssetID.isEmpty() && _mapAssetFactorLoading.containsKey
-			(strAssetID) && _mapSpecificRisk.containsKey (strAssetID);
+			(strAssetID) && _mapAssetSpecificAttribute.containsKey (strAssetID);
 	}
 
 	/**
@@ -298,7 +298,7 @@ public class AttributeJointFactor extends org.drip.portfolioconstruction.core.Bl
 		final java.lang.String strFactorID)
 	{
 		return null != strFactorID && !strFactorID.isEmpty() && _mapFactorAssetLoading.containsKey
-			(strFactorID) && _mapFactorCovariance.containsKey (strFactorID);
+			(strFactorID) && _mapFactorFactorAttribute.containsKey (strFactorID);
 	}
 
 	/**
@@ -372,26 +372,26 @@ public class AttributeJointFactor extends org.drip.portfolioconstruction.core.Bl
 		if (!containsFactor (strFactorID1) || !containsFactor (strFactorID2))
 			throw new java.lang.Exception ("AttributeJointFactor::factorCovariance => Invalid Inputs");
 
-		return _mapFactorCovariance.get (strFactorID1 + "::" + strFactorID2);
+		return _mapFactorFactorAttribute.get (strFactorID1 + "::" + strFactorID2);
 	}
 
 	/**
-	 * Retrieve the Specific Risk Entry
+	 * Retrieve the Asset Specific Attribute
 	 * 
 	 * @param strAssetID The Asset ID
 	 * 
-	 * @return The Specific Risk Entry
+	 * @return The Asset Specific Attribute
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double specificRisk (
+	public double assetSpecificAttribute (
 		final java.lang.String strAssetID)
 		throws java.lang.Exception
 	{
 		if (!containsFactor (strAssetID))
-			throw new java.lang.Exception ("AttributeJointFactor::specificRisk => Invalid Inputs");
+			throw new java.lang.Exception ("AttributeJointFactor::assetSpecificAttribute => Invalid Inputs");
 
-		return _mapSpecificRisk.get (strAssetID);
+		return _mapAssetSpecificAttribute.get (strAssetID);
 	}
 }

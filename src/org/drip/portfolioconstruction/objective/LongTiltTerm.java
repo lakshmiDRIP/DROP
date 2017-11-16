@@ -48,93 +48,39 @@ package org.drip.portfolioconstruction.objective;
  */
 
 /**
- * TiltLongTerm holds the Details of Tilt Long Unit Objective Term.
+ * LongTiltTerm holds the Details of Long Tilt Unit Objective Term.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class TiltLongTerm extends org.drip.portfolioconstruction.optimizer.ObjectiveTerm {
-	private double[] _adblMagnitude = null;
-	private double[] _adblMembership = null;
-	private org.drip.portfolioconstruction.composite.BlockAttribute _baTiltWeight = null;
-	private org.drip.portfolioconstruction.composite.BlockClassification _bcTiltSet = null;
+public class LongTiltTerm extends org.drip.portfolioconstruction.objective.TiltTerm {
 
 	/**
-	 * TiltLongTerm Constructor
+	 * LongTiltTerm Constructor
 	 * 
 	 * @param strName The Objective Term Name
-	 * @param strID The Objective Term ID
-	 * @param strDescription The Objective Term Description
 	 * @param holdingsInitial The Initial Holdings
-	 * @param baTiltWeight The Tilt Weight Block Attribute
-	 * @param bcTiltSet The Tilt Set Block Classification
+	 * @param baMagnitude The Tilt Magnitude Block Attribute
+	 * @param bcMembership The Tilt Membership Block Classification
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public TiltLongTerm (
+	public LongTiltTerm (
 		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
 		final org.drip.portfolioconstruction.composite.Holdings holdingsInitial,
-		final org.drip.portfolioconstruction.composite.BlockAttribute baTiltWeight,
-		final org.drip.portfolioconstruction.composite.BlockClassification bcTiltSet)
+		final org.drip.portfolioconstruction.composite.BlockAttribute baMagnitude,
+		final org.drip.portfolioconstruction.composite.BlockClassification bcMembership)
 		throws java.lang.Exception
 	{
-		super (strName, strID, strDescription, holdingsInitial);
-
-		if (null == (_baTiltWeight = baTiltWeight) || null == (_bcTiltSet = bcTiltSet))
-			throw new java.lang.Exception ("TiltLongTerm Constructor => Invalid Inputs");
-
-		if (null == (_adblMagnitude = _baTiltWeight.constrict (holdingsInitial)))
-			throw new java.lang.Exception ("TiltLongTerm Constructor => Invalid Inputs");
-
-		if (null == (_adblMembership = _bcTiltSet.constrict (holdingsInitial)))
-			throw new java.lang.Exception ("TiltLongTerm Constructor => Invalid Inputs");
-	}
-
-	/**
-	 * Retrieve the Array of Tilt Weights
-	 *  
-	 * @return The Array of Tilt Weights
-	 */
-
-	public double[] weight()
-	{
-		return _adblMagnitude;
-	}
-
-	/**
-	 * Retrieve the Tilt Weight Block Attribute
-	 *  
-	 * @return The Tilt Weight Block Attribute
-	 */
-
-	public org.drip.portfolioconstruction.composite.BlockAttribute weightAttribute()
-	{
-		return _baTiltWeight;
-	}
-
-	/**
-	 * Retrieve the Array of Tilt Set Membership
-	 *  
-	 * @return The Array of Tilt Set Membership
-	 */
-
-	public double[] membership()
-	{
-		return _adblMembership;
-	}
-
-	/**
-	 * Retrieve the Tilt Set Block Classification
-	 *  
-	 * @return The Tilt Set Block Classification
-	 */
-
-	public org.drip.portfolioconstruction.composite.BlockClassification membershipClassification()
-	{
-		return _bcTiltSet;
+		super (
+			strName,
+			"OBJECTIVE_TERM_LONG_TILT",
+			"Long Tilt Objective Term",
+			holdingsInitial,
+			baMagnitude,
+			bcMembership
+		);
 	}
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
@@ -142,7 +88,7 @@ public class TiltLongTerm extends org.drip.portfolioconstruction.optimizer.Objec
 		return new org.drip.function.definition.RdToR1 (null) {
 			@Override public int dimension()
 			{
-				return _adblMagnitude.length;
+				return initialHoldingsArray().length;
 			}
 
 			@Override public double evaluate (
@@ -150,19 +96,23 @@ public class TiltLongTerm extends org.drip.portfolioconstruction.optimizer.Objec
 				throws java.lang.Exception
 			{
 				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate))
-					throw new java.lang.Exception ("TiltLongTerm::rdToR1::evaluate => Invalid Inputs");
+					throw new java.lang.Exception ("LongTiltTerm::rdToR1::evaluate => Invalid Inputs");
 
 				double dblValue = 0.;
 				int iDimension = adblVariate.length;
 
 				if (iDimension != dimension())
-					throw new java.lang.Exception ("TiltLongTerm::rdToR1::evaluate => Invalid Inputs");
+					throw new java.lang.Exception ("LongTiltTerm::rdToR1::evaluate => Invalid Inputs");
+
+				double[] adblMagnitude = magnitude();
+
+				double[] adblMembership = membership();
 
 				double[] adblInitialHoldings = initialHoldingsArray();
 
 				for (int i = 0; i < iDimension; ++i)
-					dblValue += _adblMagnitude[i] * _adblMembership[i] * (java.lang.Math.abs (adblVariate[i])
-						- java.lang.Math.abs (adblInitialHoldings[i]));
+					dblValue += adblMagnitude[i] * adblMembership[i] * (java.lang.Math.abs (adblVariate[i]) -
+						java.lang.Math.abs (adblInitialHoldings[i]));
 
 				return dblValue;
 			}
@@ -175,19 +125,17 @@ public class TiltLongTerm extends org.drip.portfolioconstruction.optimizer.Objec
 			{
 				if (0 == iOrder || null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid
 					(adblVariate))
-					throw new java.lang.Exception ("TiltLongTerm::rdToR1::derivative => Invalid Inputs");
+					throw new java.lang.Exception ("LongTiltTerm::rdToR1::derivative => Invalid Inputs");
 
 				int iDimension = adblVariate.length;
 
 				if (iDimension != dimension() || iVariateIndex >= iDimension)
-					throw new java.lang.Exception ("TiltLongTerm::rdToR1::derivative => Invalid Inputs");
+					throw new java.lang.Exception ("LongTiltTerm::rdToR1::derivative => Invalid Inputs");
 
 				if (2 <= iOrder) return 0.;
 
-				double dblVariateHoldings = initialHoldingsArray()[iVariateIndex];
-
-				return (adblVariate[iVariateIndex] > dblVariateHoldings ? 1. : -1.) *
-					_adblMagnitude[iVariateIndex] * _adblMembership[iVariateIndex];
+				return (adblVariate[iVariateIndex] > initialHoldingsArray()[iVariateIndex] ? 1. : -1.) *
+					magnitude()[iVariateIndex] * membership()[iVariateIndex];
 			}
 		};
 	}
