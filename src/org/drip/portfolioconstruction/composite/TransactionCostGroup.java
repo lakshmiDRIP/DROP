@@ -80,6 +80,20 @@ public class TransactionCostGroup {
 	}
 
 	/**
+	 * Indicate if the Asset's Transaction Cost is Available
+	 * 
+	 * @param strAssetID The Asset ID
+	 * 
+	 * @return TRUE - The Asset's Transaction Cost is Available
+	 */
+
+	public boolean contains (
+		final java.lang.String strAssetID)
+	{
+		return null != strAssetID && !strAssetID.isEmpty() && _mapTransactionCost.containsKey (strAssetID);
+	}
+
+	/**
 	 * Retrieve the Asset's Transaction Cost
 	 * 
 	 * @param strAssetID The Asset ID
@@ -105,5 +119,29 @@ public class TransactionCostGroup {
 	public java.util.Map<java.lang.String, org.drip.portfolioconstruction.core.TransactionCost> map()
 	{
 		return _mapTransactionCost;
+	}
+
+	/**
+	 * Constrict the Transaction Cost Array to those of the Holdings
+	 * 
+	 * @param holdings The Holdings Instance
+	 * 
+	 * @return The Array of Transaction Cost Objects
+	 */
+
+	public org.drip.portfolioconstruction.core.TransactionCost[] constrict (
+		final org.drip.portfolioconstruction.composite.Holdings holdings)
+	{
+		if (null == holdings) return null;
+
+		java.util.Set<java.lang.String> setAsset = holdings.assets();
+
+		java.util.List<org.drip.portfolioconstruction.core.TransactionCost> lsTransactionCost = new
+			java.util.ArrayList<org.drip.portfolioconstruction.core.TransactionCost>();
+
+		for (java.lang.String strAssetID : setAsset)
+			lsTransactionCost.add (contains (strAssetID) ? get (strAssetID) : null);
+
+		return (org.drip.portfolioconstruction.core.TransactionCost[]) lsTransactionCost.toArray();
 	}
 }

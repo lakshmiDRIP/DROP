@@ -53,13 +53,14 @@ package org.drip.portfolioconstruction.objective;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CustomNetTaxGainsTerm extends org.drip.portfolioconstruction.objective.TaxTerm {
+public class CustomNetTaxGainsTerm extends org.drip.portfolioconstruction.objective.TaxTerm
+{
 
 	/**
 	 * CustomNetTaxGainsTerm Constructor
 	 * 
 	 * @param strName Name of the Objective Function
-	 * @param holdingsInitial The Initial Holdings
+	 * @param adblInitialHoldings The Initial Holdings
 	 * @param taxationScheme The Taxation Scheme
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
@@ -67,7 +68,7 @@ public class CustomNetTaxGainsTerm extends org.drip.portfolioconstruction.object
 
 	public CustomNetTaxGainsTerm (
 		final java.lang.String strName,
-		final org.drip.portfolioconstruction.composite.Holdings holdingsInitial,
+		final double[] adblInitialHoldings,
 		final org.drip.portfolioconstruction.objective.TaxationScheme taxationScheme)
 		throws java.lang.Exception
 	{
@@ -75,14 +76,15 @@ public class CustomNetTaxGainsTerm extends org.drip.portfolioconstruction.object
 			strName,
 			"OT_CUSTOM_NET_TAX_GAINS",
 			"Portfolio Custom Net Tax Gains Objective Term",
-			holdingsInitial,
+			adblInitialHoldings,
 			taxationScheme
 		);
 	}
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
 	{
-		return new org.drip.function.definition.RdToR1 (null) {
+		return new org.drip.function.definition.RdToR1 (null)
+		{
 			@Override public int dimension()
 			{
 				return initialHoldingsArray().length;

@@ -48,65 +48,101 @@ package org.drip.portfolioconstruction.objective;
  */
 
 /**
- * ReturnsTerm holds the Details of the Portfolio Returns Based Objective Terms. Returns can be Absolute or
- *  in relation to a Benchmark.
+ * RobustErrorTerm optimizes the Error in the Target Expected Absolute Return of the Portfolio on the
+ *  Absence of Benchmark, and the Error in the Benchmark-Adjusted Returns Otherwise.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class ReturnsTerm extends org.drip.portfolioconstruction.optimizer.ObjectiveTerm
-{
-	private double[] _adblAlpha = null;
-	private double[] _adblBenchmarkConstrictedHoldings = null;
+public abstract class RobustErrorTerm extends org.drip.portfolioconstruction.objective.ReturnsTerm {
+	private double[][] _aadblAssetCovariance = null;
+	private double[][] _aadblAlphaUncertainty = null;
+	private double _dblConfidenceLevel = java.lang.Double.NaN;
 
-	protected ReturnsTerm (
+	/**
+	 * RobustErrorTerm Constructor
+	 * 
+	 * @param strName Name of the Expected Returns Objective Term
+	 * @param adblInitialHoldings Initial Holdings
+	 * @param adblAlpha Asset Alpha
+	 * @param aadblAlphaUncertainty Alpha Uncertainty Matrix
+	 * @param aadblAssetCovariance Asset Co-variance Matrix
+	 * @param adblBenchmarkConstrictedHoldings Benchmark Constricted Holdings
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public RobustErrorTerm (
 		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
 		final double[] adblInitialHoldings,
 		final double[] adblAlpha,
+		final double[][] aadblAlphaUncertainty,
+		final double[][] aadblAssetCovariance,
 		final double[] adblBenchmarkConstrictedHoldings)
 		throws java.lang.Exception
 	{
 		super (
 			strName,
-			strID,
-			strDescription,
-			"RETURNS",
-			adblInitialHoldings
+			"OT_ROBUST",
+			"Robust Error Portfolio Returns Objective Term",
+			adblInitialHoldings,
+			adblAlpha,
+			adblBenchmarkConstrictedHoldings
 		);
 
 		int iNumAsset = adblInitialHoldings.length;
 
-		if (null == (_adblAlpha = adblAlpha) || !org.drip.quant.common.NumberUtil.IsValid (_adblAlpha) ||
-			iNumAsset != _adblAlpha.length)
-			throw new java.lang.Exception ("ReturnsTerm Constructor => Invalid Inputs");
+		if (null == (_aadblAlphaUncertainty = aadblAlphaUncertainty) || iNumAsset !=
+			_aadblAlphaUncertainty.length)
+			throw new java.lang.Exception ("RobustErrorTerm Constructor => Invalid Inputs");
 
-		if (null != (_adblBenchmarkConstrictedHoldings = adblBenchmarkConstrictedHoldings) && (iNumAsset !=
-			_adblBenchmarkConstrictedHoldings.length || !org.drip.quant.common.NumberUtil.IsValid
-				(_adblBenchmarkConstrictedHoldings)))
-			throw new java.lang.Exception ("RiskTerm Constructor => Invalid Inputs");
+		for (int i = 0; i < iNumAsset; ++i) {
+			if (null == _aadblAlphaUncertainty[i] || !org.drip.quant.common.NumberUtil.IsValid
+				(_aadblAlphaUncertainty[i]) || iNumAsset != _aadblAlphaUncertainty[i].length)
+				throw new java.lang.Exception ("RobustErrorTerm Constructor => Invalid Inputs");
+		}
+
+		if (null == (_aadblAssetCovariance = aadblAssetCovariance) || iNumAsset !=
+			_aadblAssetCovariance.length)
+			throw new java.lang.Exception ("RobustErrorTerm Constructor => Invalid Inputs");
+
+		for (int i = 0; i < iNumAsset; ++i) {
+			if (null == _aadblAssetCovariance[i] || !org.drip.quant.common.NumberUtil.IsValid
+				(_aadblAssetCovariance[i]) || iNumAsset != _aadblAssetCovariance[i].length)
+				throw new java.lang.Exception ("RobustErrorTerm Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
-	 * Retrieve the Array of Alphas
-	 *  
-	 * @return The Array of Alphas
-	 */
-
-	public double[] alpha()
-	{
-		return _adblAlpha;
-	}
-
-	/**
-	 * Retrieve the Benchmark Constricted Holdings
+	 * Retrieve the Confidence Level (i.e., Eta)
 	 * 
-	 * @return The Benchmark Constricted Holdings
+	 * @return The Confidence Level (i.e., Eta)
 	 */
 
-	public double[] benchmarkConstrictedHoldings()
+	public double confidenceLevel()
 	{
-		return _adblBenchmarkConstrictedHoldings;
+		return _dblConfidenceLevel;
+	}
+
+	/**
+	 * Retrieve the Asset Co-variance Matrix
+	 * 
+	 * @return The Asset Co-variance Matrix
+	 */
+
+	public double[][] assetCovariance()
+	{
+		return _aadblAssetCovariance;
+	}
+
+	/**
+	 * Retrieve the Alpha Uncertainty Matrix
+	 * 
+	 * @return The Alpha Uncertainty Matrix
+	 */
+
+	public double[][] alphaUncertainty()
+	{
+		return _aadblAlphaUncertainty;
 	}
 }

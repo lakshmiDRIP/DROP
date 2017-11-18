@@ -59,27 +59,27 @@ public class ShortTiltTerm extends org.drip.portfolioconstruction.objective.Tilt
 	 * ShortTiltTerm Constructor
 	 * 
 	 * @param strName The Objective Term Name
-	 * @param holdingsInitial The Initial Holdings
-	 * @param baMagnitude The Tilt Magnitude Block Attribute
-	 * @param bcMembership The Tilt Membership Block Classification
+	 * @param adblInitialHoldings The Initial Holdings
+	 * @param adblMagnitude The Tilt Magnitude Block Attribute
+	 * @param adblMembership The Tilt Membership Block Classification
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ShortTiltTerm (
 		final java.lang.String strName,
-		final org.drip.portfolioconstruction.composite.Holdings holdingsInitial,
-		final org.drip.portfolioconstruction.composite.BlockAttribute baMagnitude,
-		final org.drip.portfolioconstruction.composite.BlockClassification bcMembership)
+		final double[] adblInitialHoldings,
+		final double[] adblMagnitude,
+		final double[] adblMembership)
 		throws java.lang.Exception
 	{
 		super (
 			strName,
 			"OBJECTIVE_TERM_SHORT_TILT",
 			"Short Tilt Objective Term",
-			holdingsInitial,
-			baMagnitude,
-			bcMembership
+			adblInitialHoldings,
+			adblMagnitude,
+			adblMembership
 		);
 	}
 

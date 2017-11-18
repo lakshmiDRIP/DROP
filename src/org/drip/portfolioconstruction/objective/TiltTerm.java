@@ -56,16 +56,14 @@ package org.drip.portfolioconstruction.objective;
 public abstract class TiltTerm extends org.drip.portfolioconstruction.optimizer.ObjectiveTerm {
 	private double[] _adblMagnitude = null;
 	private double[] _adblMembership = null;
-	private org.drip.portfolioconstruction.composite.BlockAttribute _baMagnitude = null;
-	private org.drip.portfolioconstruction.composite.BlockClassification _bcMembership = null;
 
 	protected TiltTerm (
 		final java.lang.String strName,
 		final java.lang.String strID,
 		final java.lang.String strDescription,
-		final org.drip.portfolioconstruction.composite.Holdings holdingsInitial,
-		final org.drip.portfolioconstruction.composite.BlockAttribute baMagnitude,
-		final org.drip.portfolioconstruction.composite.BlockClassification bcMembership)
+		final double[] adblInitialHoldings,
+		final double[] adblMagnitude,
+		final double[] adblMembership)
 		throws java.lang.Exception
 	{
 		super (
@@ -73,16 +71,17 @@ public abstract class TiltTerm extends org.drip.portfolioconstruction.optimizer.
 			strID,
 			strDescription,
 			"TILT",
-			holdingsInitial
+			adblInitialHoldings
 		);
 
-		if (null == (_baMagnitude = baMagnitude) || null == (_bcMembership = bcMembership))
+		int iNumInitialHoldings = adblInitialHoldings.length;
+
+		if (null == (_adblMagnitude = adblMagnitude) || !org.drip.quant.common.NumberUtil.IsValid
+			(_adblMagnitude) || iNumInitialHoldings != _adblMagnitude.length)
 			throw new java.lang.Exception ("TiltTerm Constructor => Invalid Inputs");
 
-		if (null == (_adblMagnitude = _baMagnitude.constrict (holdingsInitial)))
-			throw new java.lang.Exception ("TiltTerm Constructor => Invalid Inputs");
-
-		if (null == (_adblMembership = _bcMembership.constrict (holdingsInitial)))
+		if (null == (_adblMembership = adblMembership) || !org.drip.quant.common.NumberUtil.IsValid
+			(_adblMembership) || iNumInitialHoldings != _adblMembership.length)
 			throw new java.lang.Exception ("TiltTerm Constructor => Invalid Inputs");
 	}
 
@@ -98,17 +97,6 @@ public abstract class TiltTerm extends org.drip.portfolioconstruction.optimizer.
 	}
 
 	/**
-	 * Retrieve the Tilt Magnitude Block Attributes
-	 *  
-	 * @return The Tilt Magnitude Block Attributes
-	 */
-
-	public org.drip.portfolioconstruction.composite.BlockAttribute magnitudeAttribute()
-	{
-		return _baMagnitude;
-	}
-
-	/**
 	 * Retrieve the Array of Tilt Memberships
 	 *  
 	 * @return The Array of Tilt Memberships
@@ -117,16 +105,5 @@ public abstract class TiltTerm extends org.drip.portfolioconstruction.optimizer.
 	public double[] membership()
 	{
 		return _adblMembership;
-	}
-
-	/**
-	 * Retrieve the Tilt Membership Block Classification
-	 *  
-	 * @return The Tilt Membership Block Classification
-	 */
-
-	public org.drip.portfolioconstruction.composite.BlockClassification membershipClassification()
-	{
-		return _bcMembership;
 	}
 }

@@ -48,36 +48,37 @@ package org.drip.portfolioconstruction.objective;
  */
 
 /**
- * TaxLiabilityTerm holds the Details of the Portfolio Net Tax Liability Objective Term.
+ * FixedChargeSellTerm implements the Objective Term that optimizes the Cost of the Sell Trades in the Target
+ *  Portfolio under a Fixed Charge from the Starting Allocation.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class TaxLiabilityTerm extends org.drip.portfolioconstruction.objective.TaxTerm
+public class FixedChargeSellTerm extends org.drip.portfolioconstruction.objective.TransactionCostTerm
 {
 
 	/**
-	 * TaxLiabilityTerm Constructor
+	 * FixedChargeSellTerm Conastructor
 	 * 
-	 * @param strName Name of the Objective Function
-	 * @param adblInitialHoldings The Initial Holdings
-	 * @param taxationScheme The Taxation Scheme
+	 * @param strName Name of the Objective Term
+	 * @param adblInitialHoldings Initial Holdings
+	 * @param aTransactionCost Array of Asset Transaction Cost Instances
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public TaxLiabilityTerm (
+	public FixedChargeSellTerm (
 		final java.lang.String strName,
 		final double[] adblInitialHoldings,
-		final org.drip.portfolioconstruction.objective.TaxationScheme taxationScheme)
+		final org.drip.portfolioconstruction.core.TransactionCost[] aTransactionCost)
 		throws java.lang.Exception
 	{
 		super (
 			strName,
-			"OT_TAX_LIABILITY",
-			"Portfolio Net Tax Liability Objective Term",
+			"OT_FIXED_CHARGE_SELL_COST",
+			"Fixed Charge Sell Only Transaction Cost Objective Function",
 			adblInitialHoldings,
-			taxationScheme
+			aTransactionCost
 		);
 	}
 
@@ -94,10 +95,29 @@ public class TaxLiabilityTerm extends org.drip.portfolioconstruction.objective.T
 				final double[] adblVariate)
 				throws java.lang.Exception
 			{
-				return taxationScheme().taxLiability (
-					initialHoldingsArray(),
-					adblVariate
-				);
+				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate))
+					throw new java.lang.Exception ("FixedChargeSellTerm::rdToR1::evaluate => Invalid Input");
+
+				org.drip.portfolioconstruction.core.TransactionCost[] aTransactionCost = transactionCost();
+
+				double[] adblInitialHoldings = initialHoldingsArray();
+
+				int iNumAsset = aTransactionCost.length;
+				double dblFixedCostBuyTerm = 0.;
+
+				if (adblVariate.length != iNumAsset)
+					throw new java.lang.Exception
+						("FixedChargeSellTerm::rdToR1::evaluate => Invalid Variate Dimension");
+
+				for (int i = 0; i < iNumAsset; ++i) {
+					if (adblVariate[i] < adblInitialHoldings[i])
+						dblFixedCostBuyTerm += aTransactionCost[i].estimate (
+							adblInitialHoldings[i],
+							adblVariate[i]
+					);
+				}
+
+				return dblFixedCostBuyTerm;
 			}
 		};
 	}

@@ -48,57 +48,52 @@ package org.drip.portfolioconstruction.objective;
  */
 
 /**
- * TaxLiabilityTerm holds the Details of the Portfolio Net Tax Liability Objective Term.
+ * TransactionCostTerm implements the Objective Term that models the Cost associated with a Portfolio
+ *  Transaction.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class TaxLiabilityTerm extends org.drip.portfolioconstruction.objective.TaxTerm
+public abstract class TransactionCostTerm extends org.drip.portfolioconstruction.optimizer.ObjectiveTerm
 {
+	private org.drip.portfolioconstruction.core.TransactionCost[] _aTransactionCost = null;
 
-	/**
-	 * TaxLiabilityTerm Constructor
-	 * 
-	 * @param strName Name of the Objective Function
-	 * @param adblInitialHoldings The Initial Holdings
-	 * @param taxationScheme The Taxation Scheme
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public TaxLiabilityTerm (
+	protected TransactionCostTerm (
 		final java.lang.String strName,
+		final java.lang.String strID,
+		final java.lang.String strDescription,
 		final double[] adblInitialHoldings,
-		final org.drip.portfolioconstruction.objective.TaxationScheme taxationScheme)
+		final org.drip.portfolioconstruction.core.TransactionCost[] aTransactionCost)
 		throws java.lang.Exception
 	{
 		super (
 			strName,
-			"OT_TAX_LIABILITY",
-			"Portfolio Net Tax Liability Objective Term",
-			adblInitialHoldings,
-			taxationScheme
+			strID,
+			strDescription,
+			"TRANSACTION_COST",
+			adblInitialHoldings
 		);
+
+		int iNumAsset = adblInitialHoldings.length;
+
+		if (null == (_aTransactionCost = aTransactionCost) || iNumAsset != _aTransactionCost.length)
+			throw new java.lang.Exception ("TransactionCostTerm Constructor => Invalid Inputs");
+
+		for (int i = 0; i < iNumAsset; ++i)
+		{
+			if (null == _aTransactionCost[i])
+				throw new java.lang.Exception ("TransactionCostTerm Constructor => Invalid Inputs");
+		}
 	}
 
-	@Override public org.drip.function.definition.RdToR1 rdtoR1()
-	{
-		return new org.drip.function.definition.RdToR1 (null)
-		{
-			@Override public int dimension()
-			{
-				return initialHoldingsArray().length;
-			}
+	/**
+	 * Retrieve the Array of Transaction Costs
+	 * 
+	 * @return The Transaction Cost Array
+	 */
 
-			@Override public double evaluate (
-				final double[] adblVariate)
-				throws java.lang.Exception
-			{
-				return taxationScheme().taxLiability (
-					initialHoldingsArray(),
-					adblVariate
-				);
-			}
-		};
+	public org.drip.portfolioconstruction.core.TransactionCost[] transactionCost()
+	{
+		return _aTransactionCost;
 	}
 }

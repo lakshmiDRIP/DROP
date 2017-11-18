@@ -60,7 +60,7 @@ public abstract class TaxTerm extends org.drip.portfolioconstruction.optimizer.O
 		final java.lang.String strName,
 		final java.lang.String strID,
 		final java.lang.String strDescription,
-		final org.drip.portfolioconstruction.composite.Holdings holdingsInitial,
+		final double[] adblInitialHoldings,
 		final org.drip.portfolioconstruction.objective.TaxationScheme taxationScheme)
 		throws java.lang.Exception
 	{
@@ -69,7 +69,7 @@ public abstract class TaxTerm extends org.drip.portfolioconstruction.optimizer.O
 			strID,
 			strDescription,
 			"TAX",
-			holdingsInitial
+			adblInitialHoldings
 		);
 
 		if (null == (_taxationScheme = taxationScheme))

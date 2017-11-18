@@ -48,44 +48,47 @@ package org.drip.portfolioconstruction.objective;
  */
 
 /**
- * StandardDeviationTerm holds the Details of the Portfolio Risk (StandardDeviation) Objective Term. Standard
- * 	Deviation can be Absolute or in relation to a Benchmark.
+ * StandardDeviationTerm holds the Details of the Portfolio Risk (Standard Deviation) Objective Term.
+ *  Standard Deviation can be Absolute or in relation to a Benchmark.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class StandardDeviationTerm extends org.drip.portfolioconstruction.objective.RiskTerm {
+public class StandardDeviationTerm extends org.drip.portfolioconstruction.objective.RiskTerm
+{
 
 	/**
 	 * StandardDeviationTerm Constructor
 	 * 
 	 * @param strName Name of the Objective Function
-	 * @param holdingsInitial The Initial Holdings
-	 * @param taxationScheme The Taxation Scheme
+	 * @param adblInitialHoldings The Initial Holdings
+	 * @param aadblAssetCovariance The Asset Covariance
+	 * @param adblBenchmarkConstrictedHoldings The Constricted Benchmark Holdings
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public StandardDeviationTerm (
 		final java.lang.String strName,
-		final org.drip.portfolioconstruction.composite.Holdings holdingsInitial,
-		final org.drip.portfolioconstruction.risk.AssetCovariance assetCovariance,
-		final org.drip.portfolioconstruction.composite.Benchmark benchmark)
+		final double[] adblInitialHoldings,
+		final double[][] aadblAssetCovariance,
+		final double[] adblBenchmarkConstrictedHoldings)
 		throws java.lang.Exception
 	{
 		super (
 			strName,
 			"OT_STANDARD_DEVIATION",
 			"Standard Deviation Objective Term",
-			holdingsInitial,
-			assetCovariance,
-			benchmark
+			adblInitialHoldings,
+			aadblAssetCovariance,
+			adblBenchmarkConstrictedHoldings
 		);
 	}
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
 	{
-		return new org.drip.function.definition.RdToR1 (null) {
+		return new org.drip.function.definition.RdToR1 (null)
+		{
 			@Override public int dimension()
 			{
 				return initialHoldingsArray().length;
@@ -101,7 +104,7 @@ public class StandardDeviationTerm extends org.drip.portfolioconstruction.object
 
 				double[] adblBenchmarkHoldings = benchmarkConstrictedHoldings();
 
-				double[][] aadblCovariance = assetCovarianceMatrix();
+				double[][] aadblCovariance = assetCovariance();
 
 				int iNumAsset = aadblCovariance.length;
 				double dblCovariance = 0.;

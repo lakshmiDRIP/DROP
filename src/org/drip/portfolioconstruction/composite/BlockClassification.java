@@ -142,11 +142,11 @@ public class BlockClassification extends org.drip.portfolioconstruction.core.Blo
 
 		java.util.Set<java.lang.String> setAsset = holdings.assets();
 
-		java.util.Set<java.lang.Double> setValue = new java.util.HashSet<java.lang.Double>();
+		java.util.List<java.lang.Double> lsValue = new java.util.ArrayList<java.lang.Double>();
 
 		for (java.lang.String strAssetID : setAsset) {
 			try {
-				setValue.add (java.lang.Double.parseDouble (new java.lang.Boolean (membership
+				lsValue.add (java.lang.Double.parseDouble (new java.lang.Boolean (membership
 					(strAssetID)).toString()));
 			} catch (java.lang.Exception e) {
 				e.printStackTrace();
@@ -157,12 +157,12 @@ public class BlockClassification extends org.drip.portfolioconstruction.core.Blo
 
 		int iNumAsset = setAsset.size();
 
-		if (setValue.size() != iNumAsset) return null;
+		if (lsValue.size() != iNumAsset) return null;
 
 		int iAssetCount = 0;
 		double[] adblAssetAttributeValue = new double[iNumAsset];
 
-		for (double dblAssetValue : setValue)
+		for (double dblAssetValue : lsValue)
 			adblAssetAttributeValue[iAssetCount++] = dblAssetValue;
 
 		return adblAssetAttributeValue;

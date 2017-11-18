@@ -56,14 +56,13 @@ package org.drip.portfolioconstruction.optimizer;
 public abstract class ObjectiveTerm extends org.drip.portfolioconstruction.core.Block {
 	private java.lang.String _strCategory = "";
 	private double[] _adblInitialHoldings = null;
-	private org.drip.portfolioconstruction.composite.Holdings _holdingsInitial = null;
 
 	protected ObjectiveTerm (
 		final java.lang.String strName,
 		final java.lang.String strID,
 		final java.lang.String strDescription,
 		final java.lang.String strCategory,
-		final org.drip.portfolioconstruction.composite.Holdings holdingsInitial)
+		final double[] adblInitialHoldings)
 		throws java.lang.Exception
 	{
 		super (
@@ -72,9 +71,13 @@ public abstract class ObjectiveTerm extends org.drip.portfolioconstruction.core.
 			strDescription
 		);
 
-		if (null == (_strCategory = strCategory) || _strCategory.isEmpty() || null == (_holdingsInitial =
-			holdingsInitial) || null == (_adblInitialHoldings = initialHoldings().toArray()))
+		if (null == (_strCategory = strCategory) || _strCategory.isEmpty() || null == (_adblInitialHoldings =
+			adblInitialHoldings) || 0 == _adblInitialHoldings.length)
 			throw new java.lang.Exception ("ObjectiveTerm Constructor => Invalid Inputs");
+
+		/* if (null == (_strCategory = strCategory) || _strCategory.isEmpty() || null == (_holdingsInitial =
+			holdingsInitial) || null == (_adblInitialHoldings = initialHoldings().toArray()))
+			throw new java.lang.Exception ("ObjectiveTerm Constructor => Invalid Inputs"); */
 	}
 
 	/**
@@ -86,17 +89,6 @@ public abstract class ObjectiveTerm extends org.drip.portfolioconstruction.core.
 	public java.lang.String category()
 	{
 		return _strCategory;
-	}
-
-	/**
-	 * Retrieve the Initial Holdings
-	 *  
-	 * @return The Initial Holdings
-	 */
-
-	public org.drip.portfolioconstruction.composite.Holdings initialHoldings()
-	{
-		return _holdingsInitial;
 	}
 
 	/**

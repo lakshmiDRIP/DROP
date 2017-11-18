@@ -54,33 +54,34 @@ package org.drip.portfolioconstruction.objective;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ExpectedReturnsTerm extends org.drip.portfolioconstruction.objective.ReturnsTerm {
+public class ExpectedReturnsTerm extends org.drip.portfolioconstruction.objective.ReturnsTerm
+{
 
 	/**
 	 * ExpectedReturnsTerm Constructor
 	 * 
 	 * @param strName Name of the Expected Returns Objective Term
-	 * @param holdingsInitial Initial Holdings
-	 * @param baAlpha Alpha Attributes
-	 * @param benchmark Benchmark
+	 * @param adblInitialHoldings Initial Holdings
+	 * @param adblAlpha Asset Alpha
+	 * @param adblBenchmarkConstrictedHoldings Benchmark Constricted Holdings
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ExpectedReturnsTerm (
 		final java.lang.String strName,
-		final org.drip.portfolioconstruction.composite.Holdings holdingsInitial,
-		final org.drip.portfolioconstruction.composite.BlockAttribute baAlpha,
-		final org.drip.portfolioconstruction.composite.Benchmark benchmark)
+		final double[] adblInitialHoldings,
+		final double[] adblAlpha,
+		final double[] adblBenchmarkConstrictedHoldings)
 		throws java.lang.Exception
 	{
 		super (
 			strName,
 			"OT_EXPECTED_RETURN",
 			"Expected Portfolio Returns Objective Term",
-			holdingsInitial,
-			baAlpha,
-			benchmark
+			adblInitialHoldings,
+			adblAlpha,
+			adblBenchmarkConstrictedHoldings
 		);
 	}
 

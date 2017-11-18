@@ -63,4 +63,20 @@ public abstract class TransactionCost extends org.drip.portfolioconstruction.cor
 	{
 		super (strName, strID, strDescription);
 	}
+
+	/**
+	 * Estimate the Transaction Cost for a Single Holdings Change
+	 * 
+	 * @param dblInitial Initial Holdings
+	 * @param dblFinal Final Holdings
+	 * 
+	 * @return The Transaction Cost Estimate
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public abstract double estimate (
+		final double dblInitial,
+		final double dblFinal)
+		throws java.lang.Exception;
 }

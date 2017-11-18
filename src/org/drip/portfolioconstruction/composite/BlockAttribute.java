@@ -158,11 +158,11 @@ public class BlockAttribute extends org.drip.portfolioconstruction.core.Block {
 
 		java.util.Set<java.lang.String> setAsset = holdings.assets();
 
-		java.util.Set<java.lang.Double> setValue = new java.util.HashSet<java.lang.Double>();
+		java.util.List<java.lang.Double> lsValue = new java.util.ArrayList<java.lang.Double>();
 
 		for (java.lang.String strAssetID : setAsset) {
 			try {
-				setValue.add (value (strAssetID));
+				lsValue.add (value (strAssetID));
 			} catch (java.lang.Exception e) {
 				e.printStackTrace();
 
@@ -172,12 +172,12 @@ public class BlockAttribute extends org.drip.portfolioconstruction.core.Block {
 
 		int iNumAsset = setAsset.size();
 
-		if (setValue.size() != iNumAsset) return null;
+		if (lsValue.size() != iNumAsset) return null;
 
 		int iAssetCount = 0;
 		double[] adblAssetAttributeValue = new double[iNumAsset];
 
-		for (double dblAssetValue : setValue)
+		for (double dblAssetValue : lsValue)
 			adblAssetAttributeValue[iAssetCount++] = dblAssetValue;
 
 		return adblAssetAttributeValue;
