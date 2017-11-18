@@ -53,7 +53,8 @@ package org.drip.portfolioconstruction.risk;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AssetCovarianceFactor extends org.drip.portfolioconstruction.risk.AttributeJointFactor {
+public class AssetCovarianceFactor extends org.drip.portfolioconstruction.risk.AttributeJointFactor
+	implements org.drip.portfolioconstruction.risk.AssetCovariance {
 
 	/**
 	 * AssetCovarianceFactor Constructor
@@ -72,5 +73,36 @@ public class AssetCovarianceFactor extends org.drip.portfolioconstruction.risk.A
 		throws java.lang.Exception
 	{
 		super (strName, strID, strDescription);
+	}
+
+	@Override public double[][] constrict (
+		final org.drip.portfolioconstruction.composite.Holdings holdings)
+	{
+		if (null == holdings) return null;
+
+		java.util.Set<java.lang.String> setAsset = holdings.assets();
+
+		int iSize = setAsset.size();
+
+		int i = 0;
+		double[][] aadblAssetCovariance = new double[iSize][iSize];
+
+		for (java.lang.String strAsset1 : setAsset) {
+			int j = 0;
+
+			for (java.lang.String strAsset2 : setAsset) {
+				try {
+					aadblAssetCovariance[i][j++] = crossAssetAttribute (strAsset1, strAsset2);
+				} catch (java.lang.Exception e) {
+					e.printStackTrace();
+
+					return null;
+				}
+			}
+
+			++i;
+		}
+
+		return aadblAssetCovariance;
 	}
 }

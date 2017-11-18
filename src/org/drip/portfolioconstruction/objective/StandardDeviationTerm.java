@@ -1,5 +1,5 @@
 
-package org.drip.portfolioconstruction.risk;
+package org.drip.portfolioconstruction.objective;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -48,95 +48,80 @@ package org.drip.portfolioconstruction.risk;
  */
 
 /**
- * AttributeJointDense contains the Joint Dense Attributes for the Pair of the Set of Assets.
+ * StandardDeviationTerm holds the Details of the Portfolio Risk (StandardDeviation) Objective Term. Standard
+ * 	Deviation can be Absolute or in relation to a Benchmark.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class AttributeJointDense extends org.drip.portfolioconstruction.core.Block {
-	private org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> _mapAttribute = new
-		org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>();
+public class StandardDeviationTerm extends org.drip.portfolioconstruction.objective.RiskTerm {
 
 	/**
-	 * AttributeJointDense Constructor
+	 * StandardDeviationTerm Constructor
 	 * 
-	 * @param strName The Name
-	 * @param strID The ID
-	 * @param strDescription The Description
+	 * @param strName Name of the Objective Function
+	 * @param holdingsInitial The Initial Holdings
+	 * @param taxationScheme The Taxation Scheme
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public AttributeJointDense (
+	public StandardDeviationTerm (
 		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription)
+		final org.drip.portfolioconstruction.composite.Holdings holdingsInitial,
+		final org.drip.portfolioconstruction.risk.AssetCovariance assetCovariance,
+		final org.drip.portfolioconstruction.composite.Benchmark benchmark)
 		throws java.lang.Exception
 	{
-		super (strName, strID, strDescription);
+		super (
+			strName,
+			"OT_STANDARD_DEVIATION",
+			"Standard Deviation Objective Term",
+			holdingsInitial,
+			assetCovariance,
+			benchmark
+		);
 	}
 
-	/**
-	 * Add the Attribute for an Asset Pair
-	 * 
-	 * @param strAssetID1 The Asset ID #1
-	 * @param strAssetID2 The Asset ID #2
-	 * @param dblAttribute The Attribute
-	 * 
-	 * @return TRUE - The Asset Pair's Attribute successfully added.
-	 */
-
-	public boolean add (
-		final java.lang.String strAssetID1,
-		final java.lang.String strAssetID2,
-		final double dblAttribute)
+	@Override public org.drip.function.definition.RdToR1 rdtoR1()
 	{
-		if (null == strAssetID1 || strAssetID1.isEmpty() || null == strAssetID2 || strAssetID2.isEmpty() ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblAttribute))
-			return false;
+		return new org.drip.function.definition.RdToR1 (null) {
+			@Override public int dimension()
+			{
+				return initialHoldingsArray().length;
+			}
 
-		_mapAttribute.put (strAssetID1 + "::" + strAssetID2, dblAttribute);
+			@Override public double evaluate (
+				final double[] adblVariate)
+				throws java.lang.Exception
+			{
+				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate))
+					throw new java.lang.Exception
+						("StandardDeviationTerm::rdToR1::evaluate => Invalid Input");
 
-		_mapAttribute.put (strAssetID2 + "::" + strAssetID1, dblAttribute);
+				double[] adblBenchmarkHoldings = benchmarkConstrictedHoldings();
 
-		return true;
-	}
+				double[][] aadblCovariance = assetCovarianceMatrix();
 
-	/**
-	 * Retrieve the Pair Attribute
-	 * 
-	 * @param strAssetID1 The Asset ID #1
-	 * @param strAssetID2 The Asset ID #2
-	 * 
-	 * @return The Pair Attribute
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
+				int iNumAsset = aadblCovariance.length;
+				double dblCovariance = 0.;
 
-	public double attribute (
-		final java.lang.String strAssetID1,
-		final java.lang.String strAssetID2)
-		throws java.lang.Exception
-	{
-		if (null == strAssetID1 || strAssetID1.isEmpty() || null == strAssetID2 || strAssetID2.isEmpty())
-			throw new java.lang.Exception ("AttributeJointDense::attribute => Invalid Inputs");
+				if (adblVariate.length != iNumAsset)
+					throw new java.lang.Exception
+						("StandardDeviationTerm::rdToR1::evaluate => Invalid Variate Dimension");
 
-		java.lang.String strJointAtributeKey = strAssetID1 + "::" + strAssetID2;
+				for (int i = 0; i < iNumAsset; ++i) {
+					double dblOuterAdjustedVariate = null == adblBenchmarkHoldings ? adblVariate[i] :
+						adblVariate[i] - adblBenchmarkHoldings[i];
 
-		if (!_mapAttribute.containsKey (strAssetID1 + "::" + strAssetID2))
-			throw new java.lang.Exception ("AttributeJointDense::attribute => Invalid Inputs");
+					for (int j = 0; j < iNumAsset; ++j)
+						dblCovariance += aadblCovariance[i][j] * dblOuterAdjustedVariate * (null ==
+							adblBenchmarkHoldings ? adblVariate[j] : adblVariate[j] -
+								adblBenchmarkHoldings[j]);
+				}
 
-		return _mapAttribute.get (strJointAtributeKey);
-	}
-
-	/**
-	 * Retrieve the Map of Asset Attributes
-	 * 
-	 * @return Map of the Asset Attributes
-	 */
-
-	public java.util.Map<java.lang.String, java.lang.Double> attribute()
-	{
-		return _mapAttribute;
+				return java.lang.Math.sqrt (dblCovariance);
+			}
+		};
 	}
 }

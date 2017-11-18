@@ -207,4 +207,44 @@ public class Holdings extends org.drip.portfolioconstruction.core.Block {
 
 		return adblQuantity;
 	}
+
+	/**
+	 * Constrict "This" Holdings to those of the Assets in the "Other" Holdings
+	 * 
+	 * @param holdingsOther The Other Holdings Instance
+	 * 
+	 * @return Constriction of "This" Holdings
+	 */
+
+	public double[] constrict (
+		final org.drip.portfolioconstruction.composite.Holdings holdingsOther)
+	{
+		if (null == holdingsOther) return null;
+
+		java.util.Set<java.lang.String> setAsset = holdingsOther.assets();
+
+		java.util.Set<java.lang.Double> setValue = new java.util.HashSet<java.lang.Double>();
+
+		for (java.lang.String strAssetID : setAsset) {
+			try {
+				setValue.add (contains (strAssetID) ? quantity (strAssetID) : 0.);
+			} catch (java.lang.Exception e) {
+				e.printStackTrace();
+
+				return null;
+			}
+		}
+
+		int iNumAsset = setAsset.size();
+
+		if (setValue.size() != iNumAsset) return null;
+
+		int iAssetCount = 0;
+		double[] adblAssetAttributeValue = new double[iNumAsset];
+
+		for (double dblAssetValue : setValue)
+			adblAssetAttributeValue[iAssetCount++] = dblAssetValue;
+
+		return adblAssetAttributeValue;
+	}
 }

@@ -1,5 +1,5 @@
 
-package org.drip.portfolioconstruction.risk;
+package org.drip.portfolioconstruction.objective;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -48,95 +48,75 @@ package org.drip.portfolioconstruction.risk;
  */
 
 /**
- * AttributeJointDense contains the Joint Dense Attributes for the Pair of the Set of Assets.
+ * ExpectedReturnsTerm holds the Details of the Portfolio Expected Returns Based Objective Terms. Expected
+ * 	Returns can be Absolute or in relation to a Benchmark.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class AttributeJointDense extends org.drip.portfolioconstruction.core.Block {
-	private org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> _mapAttribute = new
-		org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>();
+public class ExpectedReturnsTerm extends org.drip.portfolioconstruction.objective.ReturnsTerm {
 
 	/**
-	 * AttributeJointDense Constructor
+	 * ExpectedReturnsTerm Constructor
 	 * 
-	 * @param strName The Name
-	 * @param strID The ID
-	 * @param strDescription The Description
+	 * @param strName Name of the Expected Returns Objective Term
+	 * @param holdingsInitial Initial Holdings
+	 * @param baAlpha Alpha Attributes
+	 * @param benchmark Benchmark
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public AttributeJointDense (
+	public ExpectedReturnsTerm (
 		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription)
+		final org.drip.portfolioconstruction.composite.Holdings holdingsInitial,
+		final org.drip.portfolioconstruction.composite.BlockAttribute baAlpha,
+		final org.drip.portfolioconstruction.composite.Benchmark benchmark)
 		throws java.lang.Exception
 	{
-		super (strName, strID, strDescription);
+		super (
+			strName,
+			"OT_EXPECTED_RETURN",
+			"Expected Portfolio Returns Objective Term",
+			holdingsInitial,
+			baAlpha,
+			benchmark
+		);
 	}
 
-	/**
-	 * Add the Attribute for an Asset Pair
-	 * 
-	 * @param strAssetID1 The Asset ID #1
-	 * @param strAssetID2 The Asset ID #2
-	 * @param dblAttribute The Attribute
-	 * 
-	 * @return TRUE - The Asset Pair's Attribute successfully added.
-	 */
-
-	public boolean add (
-		final java.lang.String strAssetID1,
-		final java.lang.String strAssetID2,
-		final double dblAttribute)
+	@Override public org.drip.function.definition.RdToR1 rdtoR1()
 	{
-		if (null == strAssetID1 || strAssetID1.isEmpty() || null == strAssetID2 || strAssetID2.isEmpty() ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblAttribute))
-			return false;
+		return new org.drip.function.definition.RdToR1 (null)
+		{
+			@Override public int dimension()
+			{
+				return initialHoldingsArray().length;
+			}
 
-		_mapAttribute.put (strAssetID1 + "::" + strAssetID2, dblAttribute);
+			@Override public double evaluate (
+				final double[] adblVariate)
+				throws java.lang.Exception
+			{
+				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate))
+					throw new java.lang.Exception ("ExpectedReturnsTerm::rdToR1::evaluate => Invalid Input");
 
-		_mapAttribute.put (strAssetID2 + "::" + strAssetID1, dblAttribute);
+				double[] adblAlpha = alpha();
 
-		return true;
-	}
+				double dblExpectedReturn = 0.;
+				int iNumAsset = adblAlpha.length;
 
-	/**
-	 * Retrieve the Pair Attribute
-	 * 
-	 * @param strAssetID1 The Asset ID #1
-	 * @param strAssetID2 The Asset ID #2
-	 * 
-	 * @return The Pair Attribute
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
+				if (adblVariate.length != iNumAsset)
+					throw new java.lang.Exception
+						("ExpectedReturnsTerm::rdToR1::evaluate => Invalid Variate Dimension");
 
-	public double attribute (
-		final java.lang.String strAssetID1,
-		final java.lang.String strAssetID2)
-		throws java.lang.Exception
-	{
-		if (null == strAssetID1 || strAssetID1.isEmpty() || null == strAssetID2 || strAssetID2.isEmpty())
-			throw new java.lang.Exception ("AttributeJointDense::attribute => Invalid Inputs");
+				double[] adblBenchmarkHoldings = benchmarkConstrictedHoldings();
 
-		java.lang.String strJointAtributeKey = strAssetID1 + "::" + strAssetID2;
+				for (int i = 0; i < iNumAsset; ++i)
+					dblExpectedReturn += adblAlpha[i] * (adblVariate[i] - (null == adblBenchmarkHoldings ? 0.
+						: adblBenchmarkHoldings[i]));
 
-		if (!_mapAttribute.containsKey (strAssetID1 + "::" + strAssetID2))
-			throw new java.lang.Exception ("AttributeJointDense::attribute => Invalid Inputs");
-
-		return _mapAttribute.get (strJointAtributeKey);
-	}
-
-	/**
-	 * Retrieve the Map of Asset Attributes
-	 * 
-	 * @return Map of the Asset Attributes
-	 */
-
-	public java.util.Map<java.lang.String, java.lang.Double> attribute()
-	{
-		return _mapAttribute;
+				return dblExpectedReturn;
+			}
+		};
 	}
 }

@@ -48,10 +48,21 @@ package org.drip.portfolioconstruction.risk;
  */
 
 /**
- * AssetCovariance contains the Abstract Joint Covariance (Dense/Factor) for the Pair of the Set of Assets.
+ * AssetCovariance contains the Abstract Joint Co-variance (Dense/Factor) for the Pair of the Set of Assets.
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public interface AssetCovariance {
+
+	/**
+	 * Constrict the Co-variance Matrix to those of the Holdings
+	 * 
+	 * @param holdings The Holdings Instance
+	 * 
+	 * @return The Constricted Co-variance Matrix
+	 */
+
+	public double[][] constrict (
+		final org.drip.portfolioconstruction.composite.Holdings holdings);
 }

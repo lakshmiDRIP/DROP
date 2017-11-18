@@ -53,7 +53,8 @@ package org.drip.portfolioconstruction.risk;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AssetCovarianceDense extends org.drip.portfolioconstruction.risk.AttributeJointDense {
+public class AssetCovarianceDense extends org.drip.portfolioconstruction.risk.AttributeJointDense implements
+	org.drip.portfolioconstruction.risk.AssetCovariance {
 
 	/**
 	 * AssetCovarianceDense Constructor
@@ -74,15 +75,7 @@ public class AssetCovarianceDense extends org.drip.portfolioconstruction.risk.At
 		super (strName, strID, strDescription);
 	}
 
-	/**
-	 * Constrict the Covariance Matrix to those of the Holdings
-	 * 
-	 * @param holdings The Holdings Instance
-	 * 
-	 * @return The Constricted Covariance Matrix
-	 */
-
-	public double[][] constrict (
+	@Override public double[][] constrict (
 		final org.drip.portfolioconstruction.composite.Holdings holdings)
 	{
 		if (null == holdings) return null;

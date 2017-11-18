@@ -48,13 +48,15 @@ package org.drip.portfolioconstruction.objective;
  */
 
 /**
- * RiskTerm holds the Details of the Portfolio Risk Objective Term. Variance can be Absolute or in relation
- *  to a Benchmark, and can be measured as Variance or Standard Deviation.
+ * RiskTerm holds the Details of the Portfolio Risk Objective Term. Risk can be Absolute or in relation to a
+ *  Benchmark, and can be measured as Variance or Standard Deviation.
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public abstract class RiskTerm extends org.drip.portfolioconstruction.optimizer.ObjectiveTerm {
+	private double[][] _aadblCovariance = null;
+	private double[] _adblBenchmarkConstrictedHoldings = null;
 	private org.drip.portfolioconstruction.composite.Benchmark _benchmark = null;
 	private org.drip.portfolioconstruction.risk.AssetCovariance _assetCovariance = null;
 
@@ -75,7 +77,12 @@ public abstract class RiskTerm extends org.drip.portfolioconstruction.optimizer.
 			holdingsInitial
 		);
 
-		if (null == (_assetCovariance = assetCovariance) || null == (_benchmark = benchmark))
+		if (null == (_assetCovariance = assetCovariance) || null == (_aadblCovariance =
+			assetCovariance.constrict (holdingsInitial)))
+			throw new java.lang.Exception ("RiskTerm Constructor => Invalid Inputs");
+
+		if (null != (_benchmark = benchmark) && null == (_adblBenchmarkConstrictedHoldings =
+			_benchmark.holdings().constrict (holdingsInitial)))
 			throw new java.lang.Exception ("RiskTerm Constructor => Invalid Inputs");
 	}
 
@@ -91,6 +98,17 @@ public abstract class RiskTerm extends org.drip.portfolioconstruction.optimizer.
 	}
 
 	/**
+	 * Retrieve the Asset Co-variance Matrix
+	 * 
+	 * @return The Asset Co-variance Matrix
+	 */
+
+	public double[][] assetCovarianceMatrix()
+	{
+		return _aadblCovariance;
+	}
+
+	/**
 	 * Retrieve the Benchmark
 	 * 
 	 * @return The Benchmark
@@ -99,5 +117,16 @@ public abstract class RiskTerm extends org.drip.portfolioconstruction.optimizer.
 	public org.drip.portfolioconstruction.composite.Benchmark benchmark()
 	{
 		return _benchmark;
+	}
+
+	/**
+	 * Retrieve the Benchmark Constricted Holdings
+	 * 
+	 * @return The Benchmark Constricted Holdings
+	 */
+
+	public double[] benchmarkConstrictedHoldings()
+	{
+		return _adblBenchmarkConstrictedHoldings;
 	}
 }
