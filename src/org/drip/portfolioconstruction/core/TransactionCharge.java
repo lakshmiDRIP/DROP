@@ -1,5 +1,5 @@
 
-package org.drip.portfolioconstruction.objective;
+package org.drip.portfolioconstruction.core;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -48,52 +48,40 @@ package org.drip.portfolioconstruction.objective;
  */
 
 /**
- * TransactionCostTerm implements the Objective Term that models the Cost associated with a Portfolio
- *  Transaction.
+ * TransactionCharge contains the Parameters for the specified Transaction Charge Scheme.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class TransactionCostTerm extends org.drip.portfolioconstruction.optimizer.ObjectiveTerm
+public abstract class TransactionCharge extends org.drip.portfolioconstruction.core.Block
 {
-	private org.drip.portfolioconstruction.core.TransactionCost[] _aTransactionCost = null;
 
-	protected TransactionCostTerm (
+	protected TransactionCharge (
 		final java.lang.String strName,
 		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final double[] adblInitialHoldings,
-		final org.drip.portfolioconstruction.core.TransactionCost[] aTransactionCost)
+		final java.lang.String strDescription)
 		throws java.lang.Exception
 	{
 		super (
 			strName,
 			strID,
-			strDescription,
-			"TRANSACTION_COST",
-			adblInitialHoldings
+			strDescription
 		);
-
-		int iNumAsset = adblInitialHoldings.length;
-
-		if (null == (_aTransactionCost = aTransactionCost) || iNumAsset != _aTransactionCost.length)
-			throw new java.lang.Exception ("TransactionCostTerm Constructor => Invalid Inputs");
-
-		for (int i = 0; i < iNumAsset; ++i)
-		{
-			if (null == _aTransactionCost[i])
-				throw new java.lang.Exception ("TransactionCostTerm Constructor => Invalid Inputs");
-		}
 	}
 
 	/**
-	 * Retrieve the Array of Transaction Costs
+	 * Estimate the Transaction Charge for a Single Holdings Change
 	 * 
-	 * @return The Transaction Cost Array
+	 * @param dblInitial Initial Holdings
+	 * @param dblFinal Final Holdings
+	 * 
+	 * @return The Transaction Charge Estimate
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public org.drip.portfolioconstruction.core.TransactionCost[] transactionCost()
-	{
-		return _aTransactionCost;
-	}
+	public abstract double estimate (
+		final double dblInitial,
+		final double dblFinal)
+		throws java.lang.Exception;
 }

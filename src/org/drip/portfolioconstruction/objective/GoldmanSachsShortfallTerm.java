@@ -1,5 +1,5 @@
 
-package org.drip.portfolioconstruction.core;
+package org.drip.portfolioconstruction.objective;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -48,35 +48,78 @@ package org.drip.portfolioconstruction.core;
  */
 
 /**
- * TransactionCost contains the Parameters for the specified Transaction Cost Scheme.
+ * GoldmanSachsShortfallTerm implements the Objective Term that optimizes the Charge incurred by the Buy/Sell
+ *  Trades in the Target Portfolio using the Goldman Sachs Shortfall Model from the Starting Allocation.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class TransactionCost extends org.drip.portfolioconstruction.core.Block {
-
-	protected TransactionCost (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription)
-		throws java.lang.Exception
-	{
-		super (strName, strID, strDescription);
-	}
+public class GoldmanSachsShortfallTerm extends org.drip.portfolioconstruction.objective.TransactionChargeTerm
+{
 
 	/**
-	 * Estimate the Transaction Cost for a Single Holdings Change
+	 * GoldmanSachsShortfallTerm Constructor
 	 * 
-	 * @param dblInitial Initial Holdings
-	 * @param dblFinal Final Holdings
-	 * 
-	 * @return The Transaction Cost Estimate
+	 * @param strName Name of the Objective Term
+	 * @param adblInitialHoldings Initial Holdings
+	 * @param aTCGSS Array of Asset Goldman Sachs Transaction Charge Instances
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public abstract double estimate (
-		final double dblInitial,
-		final double dblFinal)
-		throws java.lang.Exception;
+	public GoldmanSachsShortfallTerm (
+		final java.lang.String strName,
+		final double[] adblInitialHoldings,
+		final org.drip.portfolioconstruction.core.TransactionChargeGoldmanSachsShortfall[] aTCGSS)
+		throws java.lang.Exception
+	{
+		super (
+			strName,
+			"OT_GOLDMAN_SACHS_SHORTFALL_TRANSACTION_CHARGE",
+			"Goldman Sachs Shortfall Objective Function",
+			adblInitialHoldings,
+			aTCGSS
+		);
+	}
+
+	@Override public org.drip.function.definition.RdToR1 rdtoR1()
+	{
+		return new org.drip.function.definition.RdToR1 (null)
+		{
+			@Override public int dimension()
+			{
+				return initialHoldingsArray().length;
+			}
+
+			@Override public double evaluate (
+				final double[] adblVariate)
+				throws java.lang.Exception
+			{
+				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate))
+					throw new java.lang.Exception
+						("GoldmanSachsShortfallTerm::rdToR1::evaluate => Invalid Input");
+
+				org.drip.portfolioconstruction.core.TransactionChargeGoldmanSachsShortfall[] aTCGSS =
+					(org.drip.portfolioconstruction.core.TransactionChargeGoldmanSachsShortfall[])
+						transactionCharge();
+
+				double[] adblInitialHoldings = initialHoldingsArray();
+
+				int iNumAsset = aTCGSS.length;
+				double dblGoldmanSachsShortfallChargeTerm = 0.;
+
+				if (adblVariate.length != iNumAsset)
+					throw new java.lang.Exception
+						("GoldmanSachsShortfallTerm::rdToR1::evaluate => Invalid Variate Dimension");
+
+				for (int i = 0; i < iNumAsset; ++i)
+					dblGoldmanSachsShortfallChargeTerm += aTCGSS[i].estimate (
+						adblInitialHoldings[i],
+						adblVariate[i]
+					);
+
+				return dblGoldmanSachsShortfallChargeTerm;
+			}
+		};
+	}
 }

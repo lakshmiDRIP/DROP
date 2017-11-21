@@ -48,13 +48,13 @@ package org.drip.portfolioconstruction.objective;
  */
 
 /**
- * FixedChargeBuyTerm implements the Objective Term that optimizes the Cost of the Buy Trades in the Target
- *  Portfolio under a Fixed Charge from the Starting Allocation.
+ * FixedChargeBuyTerm implements the Objective Term that optimizes the Charges incurred by the Buy Trades in
+ *  the Target Portfolio under a Fixed Charge from the Starting Allocation.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class FixedChargeBuyTerm extends org.drip.portfolioconstruction.objective.TransactionCostTerm
+public class FixedChargeBuyTerm extends org.drip.portfolioconstruction.objective.TransactionChargeTerm
 {
 
 	/**
@@ -62,7 +62,7 @@ public class FixedChargeBuyTerm extends org.drip.portfolioconstruction.objective
 	 * 
 	 * @param strName Name of the Objective Term
 	 * @param adblInitialHoldings Initial Holdings
-	 * @param aTransactionCost Array of Asset Transaction Cost Instances
+	 * @param aTCF Array of Asset Fixed Transaction Charge Instances
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -70,15 +70,15 @@ public class FixedChargeBuyTerm extends org.drip.portfolioconstruction.objective
 	public FixedChargeBuyTerm (
 		final java.lang.String strName,
 		final double[] adblInitialHoldings,
-		final org.drip.portfolioconstruction.core.TransactionCost[] aTransactionCost)
+		final org.drip.portfolioconstruction.core.TransactionChargeFixed[] aTCF)
 		throws java.lang.Exception
 	{
 		super (
 			strName,
-			"OT_FIXED_CHARGE_BUY_COST",
-			"Fixed Charge Buy Only Transaction Cost Objective Function",
+			"OT_FIXED_BUY_CHARGE",
+			"Fixed Charge Buy Only Transaction Charge Objective Function",
 			adblInitialHoldings,
-			aTransactionCost
+			aTCF
 		);
 	}
 
@@ -98,12 +98,13 @@ public class FixedChargeBuyTerm extends org.drip.portfolioconstruction.objective
 				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate))
 					throw new java.lang.Exception ("FixedChargeBuyTerm::rdToR1::evaluate => Invalid Input");
 
-				org.drip.portfolioconstruction.core.TransactionCost[] aTransactionCost = transactionCost();
+				org.drip.portfolioconstruction.core.TransactionChargeFixed[] aTCF =
+					(org.drip.portfolioconstruction.core.TransactionChargeFixed[]) transactionCharge();
 
 				double[] adblInitialHoldings = initialHoldingsArray();
 
-				int iNumAsset = aTransactionCost.length;
-				double dblFixedCostBuyTerm = 0.;
+				int iNumAsset = aTCF.length;
+				double dblFixedChargeBuyTerm = 0.;
 
 				if (adblVariate.length != iNumAsset)
 					throw new java.lang.Exception
@@ -111,13 +112,13 @@ public class FixedChargeBuyTerm extends org.drip.portfolioconstruction.objective
 
 				for (int i = 0; i < iNumAsset; ++i) {
 					if (adblVariate[i] > adblInitialHoldings[i])
-						dblFixedCostBuyTerm += aTransactionCost[i].estimate (
+						dblFixedChargeBuyTerm += aTCF[i].estimate (
 							adblInitialHoldings[i],
 							adblVariate[i]
 					);
 				}
 
-				return dblFixedCostBuyTerm;
+				return dblFixedChargeBuyTerm;
 			}
 		};
 	}

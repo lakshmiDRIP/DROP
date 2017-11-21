@@ -55,9 +55,9 @@ package org.drip.portfolioconstruction.composite;
 
 public class TransactionCostGroup {
 	private
-		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.core.TransactionCost>
+		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.core.TransactionCharge>
 		_mapTransactionCost = new
-			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.core.TransactionCost>();
+			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.core.TransactionCharge>();
 
 	/**
 	 * Add an Asset's Transaction Cost
@@ -70,7 +70,7 @@ public class TransactionCostGroup {
 
 	public boolean add (
 		final java.lang.String strAssetID,
-		final org.drip.portfolioconstruction.core.TransactionCost tc)
+		final org.drip.portfolioconstruction.core.TransactionCharge tc)
 	{
 		if (null == strAssetID || strAssetID.isEmpty() || null == tc) return false;
 
@@ -101,7 +101,7 @@ public class TransactionCostGroup {
 	 * @return The Asset's Transaction Cost
 	 */
 
-	public org.drip.portfolioconstruction.core.TransactionCost get (
+	public org.drip.portfolioconstruction.core.TransactionCharge get (
 		final java.lang.String strAssetID)
 	{
 		if (null == strAssetID || strAssetID.isEmpty() || !_mapTransactionCost.containsKey (strAssetID))
@@ -116,7 +116,7 @@ public class TransactionCostGroup {
 	 * @return Map of the Transaction Costs
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.portfolioconstruction.core.TransactionCost> map()
+	public java.util.Map<java.lang.String, org.drip.portfolioconstruction.core.TransactionCharge> map()
 	{
 		return _mapTransactionCost;
 	}
@@ -129,19 +129,19 @@ public class TransactionCostGroup {
 	 * @return The Array of Transaction Cost Objects
 	 */
 
-	public org.drip.portfolioconstruction.core.TransactionCost[] constrict (
+	public org.drip.portfolioconstruction.core.TransactionCharge[] constrict (
 		final org.drip.portfolioconstruction.composite.Holdings holdings)
 	{
 		if (null == holdings) return null;
 
 		java.util.Set<java.lang.String> setAsset = holdings.assets();
 
-		java.util.List<org.drip.portfolioconstruction.core.TransactionCost> lsTransactionCost = new
-			java.util.ArrayList<org.drip.portfolioconstruction.core.TransactionCost>();
+		java.util.List<org.drip.portfolioconstruction.core.TransactionCharge> lsTransactionCost = new
+			java.util.ArrayList<org.drip.portfolioconstruction.core.TransactionCharge>();
 
 		for (java.lang.String strAssetID : setAsset)
 			lsTransactionCost.add (contains (strAssetID) ? get (strAssetID) : null);
 
-		return (org.drip.portfolioconstruction.core.TransactionCost[]) lsTransactionCost.toArray();
+		return (org.drip.portfolioconstruction.core.TransactionCharge[]) lsTransactionCost.toArray();
 	}
 }
