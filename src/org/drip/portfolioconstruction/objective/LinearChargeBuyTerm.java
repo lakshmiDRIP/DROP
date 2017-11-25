@@ -88,7 +88,7 @@ public class LinearChargeBuyTerm extends org.drip.portfolioconstruction.objectiv
 		{
 			@Override public int dimension()
 			{
-				return initialHoldingsArray().length;
+				return initialHoldings().length;
 			}
 
 			@Override public double evaluate (
@@ -101,7 +101,7 @@ public class LinearChargeBuyTerm extends org.drip.portfolioconstruction.objectiv
 				org.drip.portfolioconstruction.core.TransactionChargeLinear[] aTCL =
 					(org.drip.portfolioconstruction.core.TransactionChargeLinear[]) transactionCharge();
 
-				double[] adblInitialHoldings = initialHoldingsArray();
+				double[] adblInitialHoldings = initialHoldings();
 
 				double dblLinearChargeBuyTerm = 0.;
 				int iNumAsset = aTCL.length;

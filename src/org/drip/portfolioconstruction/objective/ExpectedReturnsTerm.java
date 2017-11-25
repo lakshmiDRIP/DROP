@@ -91,7 +91,7 @@ public class ExpectedReturnsTerm extends org.drip.portfolioconstruction.objectiv
 		{
 			@Override public int dimension()
 			{
-				return initialHoldingsArray().length;
+				return initialHoldings().length;
 			}
 
 			@Override public double evaluate (

@@ -87,7 +87,7 @@ public class NetTaxGainsTerm extends org.drip.portfolioconstruction.objective.Ta
 		{
 			@Override public int dimension()
 			{
-				return initialHoldingsArray().length;
+				return initialHoldings().length;
 			}
 
 			@Override public double evaluate (
@@ -95,7 +95,7 @@ public class NetTaxGainsTerm extends org.drip.portfolioconstruction.objective.Ta
 				throws java.lang.Exception
 			{
 				return taxationScheme().standardNetTaxGainUS (
-					initialHoldingsArray(),
+					initialHoldings(),
 					adblVariate
 				);
 			}

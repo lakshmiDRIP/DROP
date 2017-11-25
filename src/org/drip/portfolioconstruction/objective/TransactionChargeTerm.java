@@ -96,4 +96,44 @@ public abstract class TransactionChargeTerm extends org.drip.portfolioconstructi
 	{
 		return _aTransactionCharge;
 	}
+
+	@Override public org.drip.function.definition.RdToR1 rdtoR1()
+	{
+		return new org.drip.function.definition.RdToR1 (null)
+		{
+			@Override public int dimension()
+			{
+				return initialHoldings().length;
+			}
+
+			@Override public double evaluate (
+				final double[] adblVariate)
+				throws java.lang.Exception
+			{
+				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate))
+					throw new java.lang.Exception
+						("TransactionChargeTerm::rdToR1::evaluate => Invalid Input");
+
+				org.drip.portfolioconstruction.core.TransactionCharge[] aTransactionCharge =
+					transactionCharge();
+
+				double[] adblInitialHoldings = initialHoldings();
+
+				int iNumAsset = aTransactionCharge.length;
+				double dblFixedChargeTerm = 0.;
+
+				if (adblVariate.length != iNumAsset)
+					throw new java.lang.Exception
+						("TransactionChargeTerm::rdToR1::evaluate => Invalid Variate Dimension");
+
+				for (int i = 0; i < iNumAsset; ++i)
+					dblFixedChargeTerm += aTransactionCharge[i].estimate (
+						adblInitialHoldings[i],
+						adblVariate[i]
+					);
+
+				return dblFixedChargeTerm;
+			}
+		};
+	}
 }

@@ -91,7 +91,7 @@ public class StandardDeviationTerm extends org.drip.portfolioconstruction.object
 		{
 			@Override public int dimension()
 			{
-				return initialHoldingsArray().length;
+				return initialHoldings().length;
 			}
 
 			@Override public double evaluate (

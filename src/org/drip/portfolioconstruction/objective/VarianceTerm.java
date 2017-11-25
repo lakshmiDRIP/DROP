@@ -91,7 +91,7 @@ public class VarianceTerm extends org.drip.portfolioconstruction.objective.RiskT
 		{
 			@Override public int dimension()
 			{
-				return initialHoldingsArray().length;
+				return initialHoldings().length;
 			}
 
 			@Override public double evaluate (

@@ -53,8 +53,7 @@ package org.drip.portfolioconstruction.optimizer;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class ObjectiveTerm extends org.drip.portfolioconstruction.core.Block {
-	private java.lang.String _strCategory = "";
+public abstract class ObjectiveTerm extends org.drip.portfolioconstruction.optimizer.FormulationTerm {
 	private double[] _adblInitialHoldings = null;
 
 	protected ObjectiveTerm (
@@ -68,27 +67,12 @@ public abstract class ObjectiveTerm extends org.drip.portfolioconstruction.core.
 		super (
 			strName,
 			strID,
-			strDescription
+			strDescription,
+			strCategory
 		);
 
-		if (null == (_strCategory = strCategory) || _strCategory.isEmpty() || null == (_adblInitialHoldings =
-			adblInitialHoldings) || 0 == _adblInitialHoldings.length)
+		if (null == (_adblInitialHoldings = adblInitialHoldings) || 0 == _adblInitialHoldings.length)
 			throw new java.lang.Exception ("ObjectiveTerm Constructor => Invalid Inputs");
-
-		/* if (null == (_strCategory = strCategory) || _strCategory.isEmpty() || null == (_holdingsInitial =
-			holdingsInitial) || null == (_adblInitialHoldings = initialHoldings().toArray()))
-			throw new java.lang.Exception ("ObjectiveTerm Constructor => Invalid Inputs"); */
-	}
-
-	/**
-	 * Retrieve the Objective Term Category
-	 *  
-	 * @return The Objective Term Category
-	 */
-
-	public java.lang.String category()
-	{
-		return _strCategory;
 	}
 
 	/**
@@ -97,16 +81,8 @@ public abstract class ObjectiveTerm extends org.drip.portfolioconstruction.core.
 	 * @return Array of Initial Holdings
 	 */
 
-	public double[] initialHoldingsArray()
+	public double[] initialHoldings()
 	{
 		return _adblInitialHoldings;
 	}
-
-	/**
-	 * The R^d To R^1 Objective Term
-	 * 
-	 * @return The R^d To R^1 Objective Term
-	 */
-
-	public abstract org.drip.function.definition.RdToR1 rdtoR1();
 }

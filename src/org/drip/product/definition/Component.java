@@ -73,19 +73,11 @@ public abstract class Component implements org.drip.product.definition.Component
 		final org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> mapCalc)
 		throws java.lang.Exception
 	{
-		if (null == strMeasure || strMeasure.isEmpty() || null == mapCalc)
+		if (null == strMeasure || strMeasure.isEmpty() || null == mapCalc || !mapCalc.containsKey
+			(strMeasure))
 			throw new java.lang.Exception ("Component::measureValue => Invalid Inputs");
 
-		java.util.Set<java.util.Map.Entry<java.lang.String, java.lang.Double>> mapES = mapCalc.entrySet();
-
-		if (null == mapES || 0 == mapES.size())
-			throw new java.lang.Exception ("Component::measureValue => Invalid Inputs");
-
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> me : mapES) {
-			if (me.getKey().equalsIgnoreCase (strMeasure)) return me.getValue();
-		}
-
-		throw new java.lang.Exception ("Component::measureValue => Invalid Measure: " + strMeasure);
+		return mapCalc.get (strMeasure);
 	}
 
 	protected boolean adjustForCashSettle (

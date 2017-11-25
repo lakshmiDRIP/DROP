@@ -1,5 +1,5 @@
 
-package org.drip.portfolioconstruction.optimizer;
+package org.drip.portfolioconstruction.constraint;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -48,112 +48,75 @@ package org.drip.portfolioconstruction.optimizer;
  */
 
 /**
- * ConstraintTerm holds the Details of a given Constraint Term.
+ * LimitExposureTermNet holds the Details of a Limit Net Exposure Constraint Term.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class ConstraintTerm extends org.drip.portfolioconstruction.optimizer.FormulationTerm {
-	private double _dblMaximum = java.lang.Double.NaN;
-	private double _dblMinimum = java.lang.Double.NaN;
-	private org.drip.portfolioconstruction.optimizer.Unit _unit = null;
-	private org.drip.portfolioconstruction.optimizer.Scope _scope = null;
-	private org.drip.portfolioconstruction.optimizer.SoftConstraint _sc = null;
+public class LimitExposureTermNet extends org.drip.portfolioconstruction.constraint.LimitExposureTerm {
 
-	protected ConstraintTerm (
+	/**
+	 * LimitExposureTermNet Constructor
+	 * 
+	 * @param strName Name of the Constraint
+	 * @param scope Scope of the Constraint - ACCOUNT/ASSET/SET
+	 * @param unit Unit of the Constraint
+	 * @param dblMinimum Minimum Value of the Constraint
+	 * @param dblMaximum Maximum Value of the Constraint
+	 * @param adblWeight Array of the Exposure Weights
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public LimitExposureTermNet (
 		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final java.lang.String strCategory,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
 		final double dblMinimum,
-		final double dblMaximum)
+		final double dblMaximum,
+		final double[] adblWeight)
 		throws java.lang.Exception
 	{
 		super (
 			strName,
-			strID,
-			strDescription,
-			strCategory
+			"CT_LIMIT_NET_EXPOSURE",
+			"Constrains the Net Exposure",
+			scope,
+			unit,
+			dblMinimum,
+			dblMaximum,
+			adblWeight
 		);
-
-		if (null == (_scope = scope) ||
-			null == (_unit = unit) ||
-			(!org.drip.quant.common.NumberUtil.IsValid (_dblMinimum = dblMinimum) &&
-			!org.drip.quant.common.NumberUtil.IsValid (_dblMaximum = dblMaximum)))
-			throw new java.lang.Exception ("ConstraintTerm Constructor => Invalid Inputs");
 	}
 
-	/**
-	 * Retrieve the Soft Constraint
-	 * 
-	 * @return The Soft Constraint
-	 */
-
-	public org.drip.portfolioconstruction.optimizer.SoftConstraint softContraint()
+	@Override public org.drip.function.definition.RdToR1 rdtoR1()
 	{
-		return _sc;
-	}
+		return new org.drip.function.definition.RdToR1 (null)
+		{
+			@Override public int dimension()
+			{
+				return weight().length;
+			}
 
-	/**
-	 * Retrieve the Constraint Scope
-	 * 
-	 * @return The Constraint Scope
-	 */
+			@Override public double evaluate (
+				final double[] adblVariate)
+				throws java.lang.Exception
+			{
+				double[] adblWeight = weight();
 
-	public org.drip.portfolioconstruction.optimizer.Scope scope()
-	{
-		return _scope;
-	}
+				double dblConstraintValue = 0.;
+				int iNumAsset = adblWeight.length;
 
-	/**
-	 * Retrieve the Constraint Unit
-	 * 
-	 * @return The Constraint Unit
-	 */
+				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate) ||
+					adblVariate.length != iNumAsset)
+					throw new java.lang.Exception
+						("LimitExposureTermNet::rdToR1::evaluate => Invalid Variate Dimension");
 
-	public org.drip.portfolioconstruction.optimizer.Unit unit()
-	{
-		return _unit;
-	}
+				for (int i = 0; i < iNumAsset; ++i)
+					dblConstraintValue += adblWeight[i] * adblVariate[i];
 
-	/**
-	 * Retrieve the Constraint Minimum
-	 * 
-	 * @return The Constraint Minimum
-	 */
-
-	public double minimum()
-	{
-		return _dblMinimum;
-	}
-
-	/**
-	 * Retrieve the Constraint Maximum
-	 * 
-	 * @return The Constraint Maximum
-	 */
-
-	public double maximum()
-	{
-		return _dblMaximum;
-	}
-
-	/**
-	 * Set the Soft Constraint
-	 * 
-	 * @param sc The Soft Constraint
-	 * 
-	 * @return TRUE - The Soft Constraint successfully set
-	 */
-
-	public boolean setSoftConstraint (
-		final org.drip.portfolioconstruction.optimizer.SoftConstraint sc)
-	{
-		if (null == sc) return false;
-
-		_sc = sc;
-		return true;
+				return dblConstraintValue;
+			}
+		};
 	}
 }

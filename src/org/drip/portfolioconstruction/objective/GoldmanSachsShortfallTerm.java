@@ -88,7 +88,7 @@ public class GoldmanSachsShortfallTerm extends org.drip.portfolioconstruction.ob
 		{
 			@Override public int dimension()
 			{
-				return initialHoldingsArray().length;
+				return initialHoldings().length;
 			}
 
 			@Override public double evaluate (
@@ -103,7 +103,7 @@ public class GoldmanSachsShortfallTerm extends org.drip.portfolioconstruction.ob
 					(org.drip.portfolioconstruction.core.TransactionChargeGoldmanSachsShortfall[])
 						transactionCharge();
 
-				double[] adblInitialHoldings = initialHoldingsArray();
+				double[] adblInitialHoldings = initialHoldings();
 
 				int iNumAsset = aTCGSS.length;
 				double dblGoldmanSachsShortfallChargeTerm = 0.;

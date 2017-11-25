@@ -88,7 +88,7 @@ public class MarketImpactChargeTerm extends org.drip.portfolioconstruction.objec
 		{
 			@Override public int dimension()
 			{
-				return initialHoldingsArray().length;
+				return initialHoldings().length;
 			}
 
 			@Override public double evaluate (
@@ -103,7 +103,7 @@ public class MarketImpactChargeTerm extends org.drip.portfolioconstruction.objec
 					(org.drip.portfolioconstruction.core.TransactionChargeMarketImpact[])
 						transactionCharge();
 
-				double[] adblInitialHoldings = initialHoldingsArray();
+				double[] adblInitialHoldings = initialHoldings();
 
 				int iNumAsset = aTCMI.length;
 				double dblMarketImpactChargeTerm = 0.;

@@ -87,7 +87,7 @@ public class TaxLiabilityTerm extends org.drip.portfolioconstruction.objective.T
 		{
 			@Override public int dimension()
 			{
-				return initialHoldingsArray().length;
+				return initialHoldings().length;
 			}
 
 			@Override public double evaluate (
@@ -95,7 +95,7 @@ public class TaxLiabilityTerm extends org.drip.portfolioconstruction.objective.T
 				throws java.lang.Exception
 			{
 				return taxationScheme().taxLiability (
-					initialHoldingsArray(),
+					initialHoldings(),
 					adblVariate
 				);
 			}

@@ -1498,7 +1498,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 	@Override public java.util.List<org.drip.analytics.cashflow.CompositePeriod> couponPeriods()
 	{
-		return null == _stream ? null : _stream.periods();
+		return _stream.periods();
 	}
 
 	@Override public org.drip.param.valuation.CashSettleParams cashSettleParams()

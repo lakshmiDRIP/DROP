@@ -88,7 +88,7 @@ public class FixedChargeBuyTerm extends org.drip.portfolioconstruction.objective
 		{
 			@Override public int dimension()
 			{
-				return initialHoldingsArray().length;
+				return initialHoldings().length;
 			}
 
 			@Override public double evaluate (
@@ -101,7 +101,7 @@ public class FixedChargeBuyTerm extends org.drip.portfolioconstruction.objective
 				org.drip.portfolioconstruction.core.TransactionChargeFixed[] aTCF =
 					(org.drip.portfolioconstruction.core.TransactionChargeFixed[]) transactionCharge();
 
-				double[] adblInitialHoldings = initialHoldingsArray();
+				double[] adblInitialHoldings = initialHoldings();
 
 				int iNumAsset = aTCF.length;
 				double dblFixedChargeBuyTerm = 0.;

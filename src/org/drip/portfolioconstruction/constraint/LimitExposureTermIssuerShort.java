@@ -1,5 +1,5 @@
 
-package org.drip.portfolioconstruction.optimizer;
+package org.drip.portfolioconstruction.constraint;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -48,112 +48,96 @@ package org.drip.portfolioconstruction.optimizer;
  */
 
 /**
- * ConstraintTerm holds the Details of a given Constraint Term.
+ * LimitExposureTermIssuerShort holds the Details of a Limit Issuer Short Exposure Constraint Term.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class ConstraintTerm extends org.drip.portfolioconstruction.optimizer.FormulationTerm {
-	private double _dblMaximum = java.lang.Double.NaN;
-	private double _dblMinimum = java.lang.Double.NaN;
-	private org.drip.portfolioconstruction.optimizer.Unit _unit = null;
-	private org.drip.portfolioconstruction.optimizer.Scope _scope = null;
-	private org.drip.portfolioconstruction.optimizer.SoftConstraint _sc = null;
+public class LimitExposureTermIssuerShort extends org.drip.portfolioconstruction.constraint.LimitExposureTerm
+{
+	private double[] _adblIssuerSelection = null;
 
-	protected ConstraintTerm (
+	/**
+	 * LimitExposureTermIssuerShort Constructor
+	 * 
+	 * @param strName Name of the Constraint
+	 * @param scope Scope of the Constraint - ACCOUNT/ASSET/SET
+	 * @param unit Unit of the Constraint
+	 * @param dblMinimum Minimum Value of the Constraint
+	 * @param dblMaximum Maximum Value of the Constraint
+	 * @param adblWeight Array of the Exposure Weights
+	 * @param adblIssuerSelection Array of Issuer Selection
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public LimitExposureTermIssuerShort (
 		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final java.lang.String strCategory,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
 		final double dblMinimum,
-		final double dblMaximum)
+		final double dblMaximum,
+		final double[] adblWeight,
+		final double[] adblIssuerSelection)
 		throws java.lang.Exception
 	{
 		super (
 			strName,
-			strID,
-			strDescription,
-			strCategory
+			"CT_LIMIT_ISSUER_SHORT_EXPOSURE",
+			"Constrains the Issuer Short Exposure",
+			scope,
+			unit,
+			dblMinimum,
+			dblMaximum,
+			adblWeight
 		);
 
-		if (null == (_scope = scope) ||
-			null == (_unit = unit) ||
-			(!org.drip.quant.common.NumberUtil.IsValid (_dblMinimum = dblMinimum) &&
-			!org.drip.quant.common.NumberUtil.IsValid (_dblMaximum = dblMaximum)))
-			throw new java.lang.Exception ("ConstraintTerm Constructor => Invalid Inputs");
+		if (null == (_adblIssuerSelection = adblIssuerSelection) || adblWeight.length !=
+			_adblIssuerSelection.length)
+			throw new java.lang.Exception ("LimitExposureTermIssuerShort Constructor => Invalid Index");
 	}
 
 	/**
-	 * Retrieve the Soft Constraint
+	 * Retrieve the Issuer Selection Array
 	 * 
-	 * @return The Soft Constraint
+	 * @return The Issuer Selection Array
 	 */
 
-	public org.drip.portfolioconstruction.optimizer.SoftConstraint softContraint()
+	public double[] issuerSelection()
 	{
-		return _sc;
+		return _adblIssuerSelection;
 	}
 
-	/**
-	 * Retrieve the Constraint Scope
-	 * 
-	 * @return The Constraint Scope
-	 */
-
-	public org.drip.portfolioconstruction.optimizer.Scope scope()
+	@Override public org.drip.function.definition.RdToR1 rdtoR1()
 	{
-		return _scope;
-	}
+		return new org.drip.function.definition.RdToR1 (null)
+		{
+			@Override public int dimension()
+			{
+				return weight().length;
+			}
 
-	/**
-	 * Retrieve the Constraint Unit
-	 * 
-	 * @return The Constraint Unit
-	 */
+			@Override public double evaluate (
+				final double[] adblVariate)
+				throws java.lang.Exception
+			{
+				double[] adblWeight = weight();
 
-	public org.drip.portfolioconstruction.optimizer.Unit unit()
-	{
-		return _unit;
-	}
+				double dblConstraintValue = 0.;
+				int iNumAsset = adblWeight.length;
 
-	/**
-	 * Retrieve the Constraint Minimum
-	 * 
-	 * @return The Constraint Minimum
-	 */
+				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate) ||
+					adblVariate.length != iNumAsset)
+					throw new java.lang.Exception
+						("LimitExposureTermIssuerShort::rdToR1::evaluate => Invalid Variate Dimension");
 
-	public double minimum()
-	{
-		return _dblMinimum;
-	}
+				for (int i = 0; i < iNumAsset; ++i) {
+					if (adblWeight[i] < 0.)
+						dblConstraintValue += _adblIssuerSelection[i] * adblWeight[i] * adblVariate[i];
+				}
 
-	/**
-	 * Retrieve the Constraint Maximum
-	 * 
-	 * @return The Constraint Maximum
-	 */
-
-	public double maximum()
-	{
-		return _dblMaximum;
-	}
-
-	/**
-	 * Set the Soft Constraint
-	 * 
-	 * @param sc The Soft Constraint
-	 * 
-	 * @return TRUE - The Soft Constraint successfully set
-	 */
-
-	public boolean setSoftConstraint (
-		final org.drip.portfolioconstruction.optimizer.SoftConstraint sc)
-	{
-		if (null == sc) return false;
-
-		_sc = sc;
-		return true;
+				return dblConstraintValue;
+			}
+		};
 	}
 }

@@ -48,112 +48,48 @@ package org.drip.portfolioconstruction.optimizer;
  */
 
 /**
- * ConstraintTerm holds the Details of a given Constraint Term.
+ * FormulationTerm holds the Core Objective/Constraint Formulation Terms. It includes the R^d->R^1 Objective
+ * 	and/or Constraints as well as their Category.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class ConstraintTerm extends org.drip.portfolioconstruction.optimizer.FormulationTerm {
-	private double _dblMaximum = java.lang.Double.NaN;
-	private double _dblMinimum = java.lang.Double.NaN;
-	private org.drip.portfolioconstruction.optimizer.Unit _unit = null;
-	private org.drip.portfolioconstruction.optimizer.Scope _scope = null;
-	private org.drip.portfolioconstruction.optimizer.SoftConstraint _sc = null;
+public abstract class FormulationTerm extends org.drip.portfolioconstruction.core.Block {
+	private java.lang.String _strCategory = "";
 
-	protected ConstraintTerm (
+	protected FormulationTerm (
 		final java.lang.String strName,
 		final java.lang.String strID,
 		final java.lang.String strDescription,
-		final java.lang.String strCategory,
-		final org.drip.portfolioconstruction.optimizer.Scope scope,
-		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum)
+		final java.lang.String strCategory)
 		throws java.lang.Exception
 	{
 		super (
 			strName,
 			strID,
-			strDescription,
-			strCategory
+			strDescription
 		);
 
-		if (null == (_scope = scope) ||
-			null == (_unit = unit) ||
-			(!org.drip.quant.common.NumberUtil.IsValid (_dblMinimum = dblMinimum) &&
-			!org.drip.quant.common.NumberUtil.IsValid (_dblMaximum = dblMaximum)))
-			throw new java.lang.Exception ("ConstraintTerm Constructor => Invalid Inputs");
+		if (null == (_strCategory = strCategory) || _strCategory.isEmpty())
+			throw new java.lang.Exception ("FormulationTerm Constructor => Invalid Inputs");
 	}
 
 	/**
-	 * Retrieve the Soft Constraint
-	 * 
-	 * @return The Soft Constraint
+	 * Retrieve the Objective Term Category
+	 *  
+	 * @return The Objective Term Category
 	 */
 
-	public org.drip.portfolioconstruction.optimizer.SoftConstraint softContraint()
+	public java.lang.String category()
 	{
-		return _sc;
+		return _strCategory;
 	}
 
 	/**
-	 * Retrieve the Constraint Scope
+	 * The R^d To R^1 Objective Term
 	 * 
-	 * @return The Constraint Scope
+	 * @return The R^d To R^1 Objective Term
 	 */
 
-	public org.drip.portfolioconstruction.optimizer.Scope scope()
-	{
-		return _scope;
-	}
-
-	/**
-	 * Retrieve the Constraint Unit
-	 * 
-	 * @return The Constraint Unit
-	 */
-
-	public org.drip.portfolioconstruction.optimizer.Unit unit()
-	{
-		return _unit;
-	}
-
-	/**
-	 * Retrieve the Constraint Minimum
-	 * 
-	 * @return The Constraint Minimum
-	 */
-
-	public double minimum()
-	{
-		return _dblMinimum;
-	}
-
-	/**
-	 * Retrieve the Constraint Maximum
-	 * 
-	 * @return The Constraint Maximum
-	 */
-
-	public double maximum()
-	{
-		return _dblMaximum;
-	}
-
-	/**
-	 * Set the Soft Constraint
-	 * 
-	 * @param sc The Soft Constraint
-	 * 
-	 * @return TRUE - The Soft Constraint successfully set
-	 */
-
-	public boolean setSoftConstraint (
-		final org.drip.portfolioconstruction.optimizer.SoftConstraint sc)
-	{
-		if (null == sc) return false;
-
-		_sc = sc;
-		return true;
-	}
+	public abstract org.drip.function.definition.RdToR1 rdtoR1();
 }

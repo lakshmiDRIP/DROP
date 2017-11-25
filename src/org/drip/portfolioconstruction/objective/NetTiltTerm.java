@@ -88,7 +88,7 @@ public class NetTiltTerm extends org.drip.portfolioconstruction.objective.TiltTe
 		return new org.drip.function.definition.RdToR1 (null) {
 			@Override public int dimension()
 			{
-				return initialHoldingsArray().length;
+				return initialHoldings().length;
 			}
 
 			@Override public double evaluate (
@@ -108,7 +108,7 @@ public class NetTiltTerm extends org.drip.portfolioconstruction.objective.TiltTe
 
 				double[] adblMembership = membership();
 
-				double[] adblInitialHoldings = initialHoldingsArray();
+				double[] adblInitialHoldings = initialHoldings();
 
 				for (int i = 0; i < iDimension; ++i)
 					dblValue += adblWeight[i] * adblMembership[i] * java.lang.Math.abs (adblVariate[i] -
@@ -134,7 +134,7 @@ public class NetTiltTerm extends org.drip.portfolioconstruction.objective.TiltTe
 
 				if (2 <= iOrder) return 0.;
 
-				return (adblVariate[iVariateIndex] > initialHoldingsArray()[iVariateIndex] ? 1. : -1.) *
+				return (adblVariate[iVariateIndex] > initialHoldings()[iVariateIndex] ? 1. : -1.) *
 					magnitude()[iVariateIndex] * membership()[iVariateIndex];
 			}
 		};

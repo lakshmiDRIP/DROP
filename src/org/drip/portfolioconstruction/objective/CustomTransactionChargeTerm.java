@@ -48,78 +48,38 @@ package org.drip.portfolioconstruction.objective;
  */
 
 /**
- * FixedChargeSellTerm implements the Objective Term that optimizes the Charge incurred by the Sell Trades in
- *  the Target Portfolio under a Fixed Charge from the Starting Allocation.
+ * CustomTransactionChargeTerm implements the Objective Term that models the Custom Transaction Charge
+ *  associated with a Portfolio Transaction.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class FixedChargeSellTerm extends org.drip.portfolioconstruction.objective.TransactionChargeTerm
+public abstract class CustomTransactionChargeTerm extends
+	org.drip.portfolioconstruction.optimizer.ObjectiveTerm
 {
 
 	/**
-	 * FixedChargeSellTerm Conastructor
+	 * CustomTransactionChargeTerm Constructor
 	 * 
 	 * @param strName Name of the Objective Term
 	 * @param adblInitialHoldings Initial Holdings
-	 * @param aTCF Array of Asset Transaction Charge Instances
+	 * @param aTransactionCharge Array of Asset Transaction Charge Instances
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public FixedChargeSellTerm (
+	public CustomTransactionChargeTerm (
 		final java.lang.String strName,
 		final double[] adblInitialHoldings,
-		final org.drip.portfolioconstruction.core.TransactionChargeFixed[] aTCF)
+		final org.drip.portfolioconstruction.core.TransactionCharge[] aTransactionCharge)
 		throws java.lang.Exception
 	{
 		super (
 			strName,
-			"OT_FIXED_SELL_CHARGE",
-			"Fixed Charge Sell Only Transaction Charge Objective Function",
-			adblInitialHoldings,
-			aTCF
+			"OT_TRANSACTION_CHARGE",
+			"Optimizes for Transaction Charge for Trades",
+			"TRANSACTION_CHARGE",
+			adblInitialHoldings
 		);
-	}
-
-	@Override public org.drip.function.definition.RdToR1 rdtoR1()
-	{
-		return new org.drip.function.definition.RdToR1 (null)
-		{
-			@Override public int dimension()
-			{
-				return initialHoldings().length;
-			}
-
-			@Override public double evaluate (
-				final double[] adblVariate)
-				throws java.lang.Exception
-			{
-				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate))
-					throw new java.lang.Exception ("FixedChargeSellTerm::rdToR1::evaluate => Invalid Input");
-
-				org.drip.portfolioconstruction.core.TransactionChargeFixed[] aTCF =
-					(org.drip.portfolioconstruction.core.TransactionChargeFixed[]) transactionCharge();
-
-				double[] adblInitialHoldings = initialHoldings();
-
-				int iNumAsset = aTCF.length;
-				double dblFixedChargeSellTerm = 0.;
-
-				if (adblVariate.length != iNumAsset)
-					throw new java.lang.Exception
-						("FixedChargeSellTerm::rdToR1::evaluate => Invalid Variate Dimension");
-
-				for (int i = 0; i < iNumAsset; ++i) {
-					if (adblVariate[i] < adblInitialHoldings[i])
-						dblFixedChargeSellTerm += aTCF[i].estimate (
-							adblInitialHoldings[i],
-							adblVariate[i]
-						);
-				}
-
-				return dblFixedChargeSellTerm;
-			}
-		};
 	}
 }

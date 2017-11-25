@@ -1,5 +1,5 @@
 
-package org.drip.portfolioconstruction.optimizer;
+package org.drip.portfolioconstruction.constraint;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -48,112 +48,48 @@ package org.drip.portfolioconstruction.optimizer;
  */
 
 /**
- * ConstraintTerm holds the Details of a given Constraint Term.
+ * LimitExposureTerm holds the Details of a Limit Exposure Constraint Term - Limits can be Absolute/Net etc.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class ConstraintTerm extends org.drip.portfolioconstruction.optimizer.FormulationTerm {
-	private double _dblMaximum = java.lang.Double.NaN;
-	private double _dblMinimum = java.lang.Double.NaN;
-	private org.drip.portfolioconstruction.optimizer.Unit _unit = null;
-	private org.drip.portfolioconstruction.optimizer.Scope _scope = null;
-	private org.drip.portfolioconstruction.optimizer.SoftConstraint _sc = null;
+public abstract class LimitExposureTerm extends org.drip.portfolioconstruction.optimizer.ConstraintTerm {
+	private double[] _adblWeight = null;
 
-	protected ConstraintTerm (
+	protected LimitExposureTerm (
 		final java.lang.String strName,
 		final java.lang.String strID,
 		final java.lang.String strDescription,
-		final java.lang.String strCategory,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
 		final double dblMinimum,
-		final double dblMaximum)
+		final double dblMaximum,
+		final double[] adblWeight)
 		throws java.lang.Exception
 	{
 		super (
 			strName,
 			strID,
 			strDescription,
-			strCategory
+			"LIMIT_EXPOSURE",
+			scope,
+			unit,
+			dblMinimum,
+			dblMaximum
 		);
 
-		if (null == (_scope = scope) ||
-			null == (_unit = unit) ||
-			(!org.drip.quant.common.NumberUtil.IsValid (_dblMinimum = dblMinimum) &&
-			!org.drip.quant.common.NumberUtil.IsValid (_dblMaximum = dblMaximum)))
-			throw new java.lang.Exception ("ConstraintTerm Constructor => Invalid Inputs");
+		if (null == (_adblWeight = adblWeight) || !org.drip.quant.common.NumberUtil.IsValid (_adblWeight))
+			throw new java.lang.Exception ("LimitExposureTerm Constructor => Invalid Inputs");
 	}
 
 	/**
-	 * Retrieve the Soft Constraint
+	 * Retrieve the Array of the Limit Absolute Exposure Weights
 	 * 
-	 * @return The Soft Constraint
+	 * @return Array of the Limit Absolute Exposure Weights
 	 */
 
-	public org.drip.portfolioconstruction.optimizer.SoftConstraint softContraint()
+	public double[] weight()
 	{
-		return _sc;
-	}
-
-	/**
-	 * Retrieve the Constraint Scope
-	 * 
-	 * @return The Constraint Scope
-	 */
-
-	public org.drip.portfolioconstruction.optimizer.Scope scope()
-	{
-		return _scope;
-	}
-
-	/**
-	 * Retrieve the Constraint Unit
-	 * 
-	 * @return The Constraint Unit
-	 */
-
-	public org.drip.portfolioconstruction.optimizer.Unit unit()
-	{
-		return _unit;
-	}
-
-	/**
-	 * Retrieve the Constraint Minimum
-	 * 
-	 * @return The Constraint Minimum
-	 */
-
-	public double minimum()
-	{
-		return _dblMinimum;
-	}
-
-	/**
-	 * Retrieve the Constraint Maximum
-	 * 
-	 * @return The Constraint Maximum
-	 */
-
-	public double maximum()
-	{
-		return _dblMaximum;
-	}
-
-	/**
-	 * Set the Soft Constraint
-	 * 
-	 * @param sc The Soft Constraint
-	 * 
-	 * @return TRUE - The Soft Constraint successfully set
-	 */
-
-	public boolean setSoftConstraint (
-		final org.drip.portfolioconstruction.optimizer.SoftConstraint sc)
-	{
-		if (null == sc) return false;
-
-		_sc = sc;
-		return true;
+		return _adblWeight;
 	}
 }

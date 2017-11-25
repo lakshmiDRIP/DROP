@@ -59,6 +59,70 @@ public class TransactionChargeMarketImpact extends org.drip.portfolioconstructio
 	private double _dblCoefficient = java.lang.Double.NaN;
 
 	/**
+	 * Construction of the Two-Third's Power Law TransactionChargeMarketImpact Instance
+	 * 
+	 * @param strName Transaction Charge Name
+	 * @param strID Transaction Charge ID
+	 * @param strDescription Description of the Transaction Charge
+	 * @param dblCoefficient Transaction Charge Coefficient
+	 * 
+	 * @return The Two-Third's Power Law TransactionChargeMarketImpact Instance
+	 */
+
+	public static final TransactionChargeMarketImpact TwoThirdsPowerLaw (
+		final java.lang.String strName,
+		final java.lang.String strID,
+		final java.lang.String strDescription,
+		final double dblCoefficient)
+	{
+		try {
+			return new TransactionChargeMarketImpact (
+				strName,
+				strID,
+				strDescription,
+				dblCoefficient,
+				2. / 3.
+			);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construction of the Three-Fifth's Power Law TransactionChargeMarketImpact Instance
+	 * 
+	 * @param strName Transaction Charge Name
+	 * @param strID Transaction Charge ID
+	 * @param strDescription Description of the Transaction Charge
+	 * @param dblCoefficient Transaction Charge Coefficient
+	 * 
+	 * @return The Three-Fifth's Power Law TransactionChargeMarketImpact Instance
+	 */
+
+	public static final TransactionChargeMarketImpact ThreeFifthsPowerLaw (
+		final java.lang.String strName,
+		final java.lang.String strID,
+		final java.lang.String strDescription,
+		final double dblCoefficient)
+	{
+		try {
+			return new TransactionChargeMarketImpact (
+				strName,
+				strID,
+				strDescription,
+				dblCoefficient,
+				3. / 5.
+			);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * TransactionChargeMarketImpact Constructor
 	 * 
 	 * @param strName Transaction Charge Name
