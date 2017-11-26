@@ -1,6 +1,6 @@
 # DROP
 
-**v3.16**  *5 October 2017*
+**v3.19**  *24 November 2017*
 
 DROP aims to collects the models and provides libraries for fixed income valuation and adjustments, asset allocation and transaction cost analytics, and supporting libraries in numerical optimization and statistical learning.
 
