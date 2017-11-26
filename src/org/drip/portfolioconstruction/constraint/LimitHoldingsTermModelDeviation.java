@@ -48,50 +48,66 @@ package org.drip.portfolioconstruction.constraint;
  */
 
 /**
- * LimitExposureTermIssuerLong holds the Details of a Limit Issuer Long Exposure Constraint Term.
+ * LimitHoldingsTermModelDeviation holds the Details of a Limit Holdings Benchmark Weights Absolute Deviation
+ * 	Constraint Term.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class LimitExposureTermIssuerLong extends
-	org.drip.portfolioconstruction.constraint.LimitExposureTermIssuer
+public class LimitHoldingsTermModelDeviation extends
+	org.drip.portfolioconstruction.constraint.LimitHoldingsTerm
 {
+	private double[] _adblBenchmarkConstrictedHoldings = null;
 
 	/**
-	 * LimitExposureTermIssuerLong Constructor
+	 * LimitHoldingsTermModelDeviation Constructor
 	 * 
-	 * @param strName Name of the Constraint
-	 * @param scope Scope of the Constraint - ACCOUNT/ASSET/SET
-	 * @param unit Unit of the Constraint
-	 * @param dblMinimum Minimum Value of the Constraint
-	 * @param dblMaximum Maximum Value of the Constraint
-	 * @param adblPrice Array of the Asset Prices
-	 * @param adblIssuerSelection Array of Issuer Selection
+	 * @param strName Name of the LimitHoldingsTermModelDeviation Constraint
+	 * @param scope Scope of the LimitHoldingsTermModelDeviation Constraint
+	 * @param unit Unit of the LimitHoldingsTermModelDeviation Constraint
+	 * @param dblMinimum Minimum Value of the LimitHoldingsTermModelDeviation Constraint
+	 * @param dblMaximum Maximum Value of the LimitHoldingsTermModelDeviation Constraint
+	 * @param adblBenchmarkConstrictedHoldings Array of the Benchmark Constricted Holdings
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid/Inconsistent
 	 */
 
-	public LimitExposureTermIssuerLong (
+	public LimitHoldingsTermModelDeviation (
 		final java.lang.String strName,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
 		final double dblMinimum,
 		final double dblMaximum,
-		final double[] adblPrice,
-		final double[] adblIssuerSelection)
+		final double[] adblBenchmarkConstrictedHoldings)
 		throws java.lang.Exception
 	{
 		super (
 			strName,
-			"CT_LIMIT_ISSUER_LONG_EXPOSURE",
-			"Constrains the Issuer Long Exposure",
+			"CT_LIMIT_MODEL_DEVIATION",
+			"Limit Holdings Model Deviation Constaint Term",
 			scope,
 			unit,
 			dblMinimum,
 			dblMaximum,
-			adblPrice,
-			adblIssuerSelection
+			null == adblBenchmarkConstrictedHoldings ? 0 : adblBenchmarkConstrictedHoldings.length
 		);
+
+		if (null == (_adblBenchmarkConstrictedHoldings = adblBenchmarkConstrictedHoldings) || 0 !=
+			_adblBenchmarkConstrictedHoldings.length || !org.drip.quant.common.NumberUtil.IsValid
+				(_adblBenchmarkConstrictedHoldings))
+			throw new java.lang.Exception
+				("LimitHoldingsTermModelDeviation Constructor => Invalid Selection");
+	}
+
+	/**
+	 * Retrieve the Array of Benchmark Constricted Holdings
+	 * 
+	 * @return Array of Benchmark Constricted Holdings
+	 */
+
+	public double[] benchmarkConstrictedHoldings()
+	{
+		return _adblBenchmarkConstrictedHoldings;
 	}
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
@@ -100,30 +116,24 @@ public class LimitExposureTermIssuerLong extends
 		{
 			@Override public int dimension()
 			{
-				return price().length;
+				return size();
 			}
 
 			@Override public double evaluate (
 				final double[] adblVariate)
 				throws java.lang.Exception
 			{
-				double[] adblPrice = price();
-
 				double dblConstraintValue = 0.;
-				int iNumAsset = adblPrice.length;
-
-				double[] adblIssuerSelection = issuerSelection();
+				int iNumAsset = _adblBenchmarkConstrictedHoldings.length;
 
 				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate) ||
 					adblVariate.length != iNumAsset)
 					throw new java.lang.Exception
-						("LimitExposureTermIssuerLong::rdToR1::evaluate => Invalid Variate Dimension");
+						("LimitHoldingsTermModelDeviation::rdToR1::evaluate => Invalid Variate Dimension");
 
 				for (int i = 0; i < iNumAsset; ++i)
-				{
-					if (adblVariate[i] > 0.)
-						dblConstraintValue += adblIssuerSelection[i] * adblPrice[i] * adblVariate[i];
-				}
+					dblConstraintValue += java.lang.Math.abs (_adblBenchmarkConstrictedHoldings[i] -
+						adblVariate[i]);
 
 				return dblConstraintValue;
 			}

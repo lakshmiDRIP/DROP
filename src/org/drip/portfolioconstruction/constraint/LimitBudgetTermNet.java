@@ -48,49 +48,42 @@ package org.drip.portfolioconstruction.constraint;
  */
 
 /**
- * LimitExposureTermIssuerLong holds the Details of a Limit Issuer Long Exposure Constraint Term.
+ * LimitBudgetTermNet holds the Details of a Limit Net Budget Constraint Term.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class LimitExposureTermIssuerLong extends
-	org.drip.portfolioconstruction.constraint.LimitExposureTermIssuer
+public class LimitBudgetTermNet extends org.drip.portfolioconstruction.constraint.LimitBudgetTerm
 {
 
 	/**
-	 * LimitExposureTermIssuerLong Constructor
+	 * LimitBudgetTermNet Constructor
 	 * 
 	 * @param strName Name of the Constraint
 	 * @param scope Scope of the Constraint - ACCOUNT/ASSET/SET
 	 * @param unit Unit of the Constraint
-	 * @param dblMinimum Minimum Value of the Constraint
-	 * @param dblMaximum Maximum Value of the Constraint
-	 * @param adblPrice Array of the Asset Prices
-	 * @param adblIssuerSelection Array of Issuer Selection
+	 * @param dblBudget Budget Value of the Constraint
+	 * @param adblWeight Array of the Exposure Weights
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public LimitExposureTermIssuerLong (
+	public LimitBudgetTermNet (
 		final java.lang.String strName,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
-		final double[] adblPrice,
-		final double[] adblIssuerSelection)
+		final double dblBudget,
+		final double[] adblWeight)
 		throws java.lang.Exception
 	{
 		super (
 			strName,
-			"CT_LIMIT_ISSUER_LONG_EXPOSURE",
-			"Constrains the Issuer Long Exposure",
+			"CT_BUDGET",
+			"Constrains the Net Budget",
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum,
-			adblPrice,
-			adblIssuerSelection
+			dblBudget,
+			adblWeight
 		);
 	}
 
@@ -100,30 +93,25 @@ public class LimitExposureTermIssuerLong extends
 		{
 			@Override public int dimension()
 			{
-				return price().length;
+				return weight().length;
 			}
 
 			@Override public double evaluate (
 				final double[] adblVariate)
 				throws java.lang.Exception
 			{
-				double[] adblPrice = price();
+				double[] adblWeight = weight();
 
 				double dblConstraintValue = 0.;
-				int iNumAsset = adblPrice.length;
-
-				double[] adblIssuerSelection = issuerSelection();
+				int iNumAsset = adblWeight.length;
 
 				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate) ||
 					adblVariate.length != iNumAsset)
 					throw new java.lang.Exception
-						("LimitExposureTermIssuerLong::rdToR1::evaluate => Invalid Variate Dimension");
+						("LimitExposureBudgetNet::rdToR1::evaluate => Invalid Variate Dimension");
 
 				for (int i = 0; i < iNumAsset; ++i)
-				{
-					if (adblVariate[i] > 0.)
-						dblConstraintValue += adblIssuerSelection[i] * adblPrice[i] * adblVariate[i];
-				}
+					dblConstraintValue += adblWeight[i] * adblVariate[i];
 
 				return dblConstraintValue;
 			}

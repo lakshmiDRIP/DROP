@@ -141,6 +141,17 @@ public abstract class ConstraintTerm extends org.drip.portfolioconstruction.opti
 	}
 
 	/**
+	 * Indicate if this is an Equality Constraint
+	 * 
+	 * @return TRUE - This is an Equality Constraint
+	 */
+
+	public boolean isEquality()
+	{
+		return _dblMaximum == _dblMinimum;
+	}
+
+	/**
 	 * Set the Soft Constraint
 	 * 
 	 * @param sc The Soft Constraint

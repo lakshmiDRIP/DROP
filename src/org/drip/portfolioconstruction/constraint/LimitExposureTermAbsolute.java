@@ -53,7 +53,8 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LimitExposureTermAbsolute extends org.drip.portfolioconstruction.constraint.LimitExposureTerm {
+public class LimitExposureTermAbsolute extends org.drip.portfolioconstruction.constraint.LimitExposureTerm
+{
 
 	/**
 	 * LimitExposureTermAbsolute Constructor
@@ -63,7 +64,7 @@ public class LimitExposureTermAbsolute extends org.drip.portfolioconstruction.co
 	 * @param unit Unit of the Constraint
 	 * @param dblMinimum Minimum Value of the Constraint
 	 * @param dblMaximum Maximum Value of the Constraint
-	 * @param adblWeight Array of the Exposure Weights
+	 * @param adblPrice Array of the Asset Prices
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -74,7 +75,7 @@ public class LimitExposureTermAbsolute extends org.drip.portfolioconstruction.co
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
 		final double dblMinimum,
 		final double dblMaximum,
-		final double[] adblWeight)
+		final double[] adblPrice)
 		throws java.lang.Exception
 	{
 		super (
@@ -85,7 +86,7 @@ public class LimitExposureTermAbsolute extends org.drip.portfolioconstruction.co
 			unit,
 			dblMinimum,
 			dblMaximum,
-			adblWeight
+			adblPrice
 		);
 	}
 
@@ -95,17 +96,17 @@ public class LimitExposureTermAbsolute extends org.drip.portfolioconstruction.co
 		{
 			@Override public int dimension()
 			{
-				return weight().length;
+				return price().length;
 			}
 
 			@Override public double evaluate (
 				final double[] adblVariate)
 				throws java.lang.Exception
 			{
-				double[] adblWeight = weight();
+				double[] adblPrice = price();
 
 				double dblConstraintValue = 0.;
-				int iNumAsset = adblWeight.length;
+				int iNumAsset = adblPrice.length;
 
 				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate) ||
 					adblVariate.length != iNumAsset)
@@ -113,7 +114,7 @@ public class LimitExposureTermAbsolute extends org.drip.portfolioconstruction.co
 						("LimitExposureTermAbsolute::rdToR1::evaluate => Invalid Variate Dimension");
 
 				for (int i = 0; i < iNumAsset; ++i)
-					dblConstraintValue += java.lang.Math.abs (adblWeight[i] * adblVariate[i]);
+					dblConstraintValue += java.lang.Math.abs (adblPrice[i] * adblVariate[i]);
 
 				return dblConstraintValue;
 			}

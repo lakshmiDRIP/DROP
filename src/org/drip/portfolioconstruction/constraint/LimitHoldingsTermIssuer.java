@@ -48,85 +48,50 @@ package org.drip.portfolioconstruction.constraint;
  */
 
 /**
- * LimitExposureTermIssuerLong holds the Details of a Limit Issuer Long Exposure Constraint Term.
+ * LimitHoldingsTermIssuer abstracts the Limit Issuer Holdings Constraint Term.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class LimitExposureTermIssuerLong extends
-	org.drip.portfolioconstruction.constraint.LimitExposureTermIssuer
+public abstract class LimitHoldingsTermIssuer extends
+	org.drip.portfolioconstruction.constraint.LimitHoldingsTerm
 {
+	private double[] _adblIssuerSelection = null;
 
-	/**
-	 * LimitExposureTermIssuerLong Constructor
-	 * 
-	 * @param strName Name of the Constraint
-	 * @param scope Scope of the Constraint - ACCOUNT/ASSET/SET
-	 * @param unit Unit of the Constraint
-	 * @param dblMinimum Minimum Value of the Constraint
-	 * @param dblMaximum Maximum Value of the Constraint
-	 * @param adblPrice Array of the Asset Prices
-	 * @param adblIssuerSelection Array of Issuer Selection
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public LimitExposureTermIssuerLong (
+	protected LimitHoldingsTermIssuer (
 		final java.lang.String strName,
+		final java.lang.String strID,
+		final java.lang.String strDescription,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
 		final double dblMinimum,
 		final double dblMaximum,
-		final double[] adblPrice,
 		final double[] adblIssuerSelection)
 		throws java.lang.Exception
 	{
 		super (
 			strName,
-			"CT_LIMIT_ISSUER_LONG_EXPOSURE",
-			"Constrains the Issuer Long Exposure",
+			strID,
+			strDescription,
 			scope,
 			unit,
 			dblMinimum,
 			dblMaximum,
-			adblPrice,
-			adblIssuerSelection
+			null == adblIssuerSelection ? 0 : adblIssuerSelection.length
 		);
+
+		if (null == (_adblIssuerSelection = adblIssuerSelection) || 0 != _adblIssuerSelection.length)
+			throw new java.lang.Exception ("LimitHoldingsTermIssuer Constructor => Invalid Selection");
 	}
 
-	@Override public org.drip.function.definition.RdToR1 rdtoR1()
+	/**
+	 * Retrieve the Issuer Selection Array
+	 * 
+	 * @return The Issuer Selection Array
+	 */
+
+	public double[] issuerSelection()
 	{
-		return new org.drip.function.definition.RdToR1 (null)
-		{
-			@Override public int dimension()
-			{
-				return price().length;
-			}
-
-			@Override public double evaluate (
-				final double[] adblVariate)
-				throws java.lang.Exception
-			{
-				double[] adblPrice = price();
-
-				double dblConstraintValue = 0.;
-				int iNumAsset = adblPrice.length;
-
-				double[] adblIssuerSelection = issuerSelection();
-
-				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate) ||
-					adblVariate.length != iNumAsset)
-					throw new java.lang.Exception
-						("LimitExposureTermIssuerLong::rdToR1::evaluate => Invalid Variate Dimension");
-
-				for (int i = 0; i < iNumAsset; ++i)
-				{
-					if (adblVariate[i] > 0.)
-						dblConstraintValue += adblIssuerSelection[i] * adblPrice[i] * adblVariate[i];
-				}
-
-				return dblConstraintValue;
-			}
-		};
+		return _adblIssuerSelection;
 	}
 }

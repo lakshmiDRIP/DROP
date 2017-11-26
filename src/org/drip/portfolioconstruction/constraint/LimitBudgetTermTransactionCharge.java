@@ -48,50 +48,79 @@ package org.drip.portfolioconstruction.constraint;
  */
 
 /**
- * LimitExposureTermIssuerLong holds the Details of a Limit Issuer Long Exposure Constraint Term.
+ * LimitBudgetTermTransactionCharge holds the Details of a After Transaction Charge Limit Budget Constraint
+ *  Term.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class LimitExposureTermIssuerLong extends
-	org.drip.portfolioconstruction.constraint.LimitExposureTermIssuer
+public class LimitBudgetTermTransactionCharge extends
+	org.drip.portfolioconstruction.constraint.LimitBudgetTerm
 {
+	private double[] _adblInitialHoldings = null;
+	private org.drip.portfolioconstruction.core.TransactionCharge[] _aTransactionCharge = null;
 
 	/**
-	 * LimitExposureTermIssuerLong Constructor
+	 * LimitBudgetTermTransactionCharge Constructor
 	 * 
 	 * @param strName Name of the Constraint
 	 * @param scope Scope of the Constraint - ACCOUNT/ASSET/SET
 	 * @param unit Unit of the Constraint
-	 * @param dblMinimum Minimum Value of the Constraint
-	 * @param dblMaximum Maximum Value of the Constraint
-	 * @param adblPrice Array of the Asset Prices
-	 * @param adblIssuerSelection Array of Issuer Selection
+	 * @param dblBudget Budget Value of the Constraint
+	 * @param adblWeight Array of the Exposure Weights
+	 * @param adblInitialHoldings Array of Initial Holdings
+	 * @param aTransactionCharge Array of Transaction Charge Instances
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public LimitExposureTermIssuerLong (
+	public LimitBudgetTermTransactionCharge (
 		final java.lang.String strName,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
-		final double[] adblPrice,
-		final double[] adblIssuerSelection)
+		final double dblBudget,
+		final double[] adblWeight,
+		final double[] adblInitialHoldings,
+		final org.drip.portfolioconstruction.core.TransactionCharge[] aTransactionCharge)
 		throws java.lang.Exception
 	{
 		super (
 			strName,
-			"CT_LIMIT_ISSUER_LONG_EXPOSURE",
-			"Constrains the Issuer Long Exposure",
+			"CT_AFTER_TRANSACTION_CHARGE_BUDGET",
+			"Constrains the After Transaction Charge Allocation Budget",
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum,
-			adblPrice,
-			adblIssuerSelection
+			dblBudget,
+			adblWeight
 		);
+
+		if (null == (_adblInitialHoldings = adblInitialHoldings) || 0 == _adblInitialHoldings.length ||
+			!org.drip.quant.common.NumberUtil.IsValid (_adblInitialHoldings))
+			throw new java.lang.Exception ("LimitBudgetTermTransactionCharge Constructor => Invalid Inputs");
+
+		int iNumAsset = _adblInitialHoldings.length;
+
+		if (null == (_aTransactionCharge = aTransactionCharge) || iNumAsset != _aTransactionCharge.length ||
+			iNumAsset != adblWeight.length)
+			throw new java.lang.Exception ("LimitBudgetTermTransactionCharge Constructor => Invalid Inputs");
+
+		for (int i = 0; i < iNumAsset; ++i)
+		{
+			if (null == _aTransactionCharge[i])
+				throw new java.lang.Exception
+					("LimitBudgetTermTransactionCharge Constructor => Invalid Inputs");
+		}
+	}
+
+	/**
+	 * Retrieve the Array of Transaction Charges
+	 * 
+	 * @return The Transaction Charge Array
+	 */
+
+	public org.drip.portfolioconstruction.core.TransactionCharge[] transactionCharge()
+	{
+		return _aTransactionCharge;
 	}
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
@@ -100,29 +129,30 @@ public class LimitExposureTermIssuerLong extends
 		{
 			@Override public int dimension()
 			{
-				return price().length;
+				return weight().length;
 			}
 
 			@Override public double evaluate (
 				final double[] adblVariate)
 				throws java.lang.Exception
 			{
-				double[] adblPrice = price();
+				double[] adblWeight = weight();
 
 				double dblConstraintValue = 0.;
-				int iNumAsset = adblPrice.length;
-
-				double[] adblIssuerSelection = issuerSelection();
+				int iNumAsset = adblWeight.length;
 
 				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate) ||
 					adblVariate.length != iNumAsset)
 					throw new java.lang.Exception
-						("LimitExposureTermIssuerLong::rdToR1::evaluate => Invalid Variate Dimension");
+						("LimitBudgetTermTransactionCharge::rdToR1::evaluate => Invalid Variate Dimension");
 
-				for (int i = 0; i < iNumAsset; ++i)
-				{
-					if (adblVariate[i] > 0.)
-						dblConstraintValue += adblIssuerSelection[i] * adblPrice[i] * adblVariate[i];
+				for (int i = 0; i < iNumAsset; ++i) {
+					dblConstraintValue += (adblWeight[i] * adblVariate[i] -
+						_aTransactionCharge[i].estimate (
+							_adblInitialHoldings[i],
+							adblVariate[i]
+						)
+					);
 				}
 
 				return dblConstraintValue;
@@ -130,3 +160,4 @@ public class LimitExposureTermIssuerLong extends
 		};
 	}
 }
+

@@ -54,7 +54,7 @@ package org.drip.portfolioconstruction.constraint;
  */
 
 public abstract class LimitExposureTerm extends org.drip.portfolioconstruction.optimizer.ConstraintTerm {
-	private double[] _adblWeight = null;
+	private double[] _adblPrice = null;
 
 	protected LimitExposureTerm (
 		final java.lang.String strName,
@@ -64,7 +64,7 @@ public abstract class LimitExposureTerm extends org.drip.portfolioconstruction.o
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
 		final double dblMinimum,
 		final double dblMaximum,
-		final double[] adblWeight)
+		final double[] adblPrice)
 		throws java.lang.Exception
 	{
 		super (
@@ -78,18 +78,18 @@ public abstract class LimitExposureTerm extends org.drip.portfolioconstruction.o
 			dblMaximum
 		);
 
-		if (null == (_adblWeight = adblWeight) || !org.drip.quant.common.NumberUtil.IsValid (_adblWeight))
+		if (null == (_adblPrice = adblPrice) || !org.drip.quant.common.NumberUtil.IsValid (_adblPrice))
 			throw new java.lang.Exception ("LimitExposureTerm Constructor => Invalid Inputs");
 	}
 
 	/**
-	 * Retrieve the Array of the Limit Absolute Exposure Weights
+	 * Retrieve the Array of the Prices
 	 * 
-	 * @return Array of the Limit Absolute Exposure Weights
+	 * @return Array of the Prices
 	 */
 
-	public double[] weight()
+	public double[] price()
 	{
-		return _adblWeight;
+		return _adblPrice;
 	}
 }

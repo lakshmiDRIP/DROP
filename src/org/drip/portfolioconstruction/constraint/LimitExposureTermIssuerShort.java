@@ -53,9 +53,9 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LimitExposureTermIssuerShort extends org.drip.portfolioconstruction.constraint.LimitExposureTerm
+public class LimitExposureTermIssuerShort extends
+	org.drip.portfolioconstruction.constraint.LimitExposureTermIssuer
 {
-	private double[] _adblIssuerSelection = null;
 
 	/**
 	 * LimitExposureTermIssuerShort Constructor
@@ -65,7 +65,7 @@ public class LimitExposureTermIssuerShort extends org.drip.portfolioconstruction
 	 * @param unit Unit of the Constraint
 	 * @param dblMinimum Minimum Value of the Constraint
 	 * @param dblMaximum Maximum Value of the Constraint
-	 * @param adblWeight Array of the Exposure Weights
+	 * @param adblPrice Array of Asset Prices
 	 * @param adblIssuerSelection Array of Issuer Selection
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
@@ -77,7 +77,7 @@ public class LimitExposureTermIssuerShort extends org.drip.portfolioconstruction
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
 		final double dblMinimum,
 		final double dblMaximum,
-		final double[] adblWeight,
+		final double[] adblPrice,
 		final double[] adblIssuerSelection)
 		throws java.lang.Exception
 	{
@@ -89,23 +89,9 @@ public class LimitExposureTermIssuerShort extends org.drip.portfolioconstruction
 			unit,
 			dblMinimum,
 			dblMaximum,
-			adblWeight
+			adblPrice,
+			adblIssuerSelection
 		);
-
-		if (null == (_adblIssuerSelection = adblIssuerSelection) || adblWeight.length !=
-			_adblIssuerSelection.length)
-			throw new java.lang.Exception ("LimitExposureTermIssuerShort Constructor => Invalid Index");
-	}
-
-	/**
-	 * Retrieve the Issuer Selection Array
-	 * 
-	 * @return The Issuer Selection Array
-	 */
-
-	public double[] issuerSelection()
-	{
-		return _adblIssuerSelection;
 	}
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
@@ -114,26 +100,29 @@ public class LimitExposureTermIssuerShort extends org.drip.portfolioconstruction
 		{
 			@Override public int dimension()
 			{
-				return weight().length;
+				return price().length;
 			}
 
 			@Override public double evaluate (
 				final double[] adblVariate)
 				throws java.lang.Exception
 			{
-				double[] adblWeight = weight();
+				double[] adblPrice = price();
 
 				double dblConstraintValue = 0.;
-				int iNumAsset = adblWeight.length;
+				int iNumAsset = adblPrice.length;
+
+				double[] adblIssuerSelection = issuerSelection();
 
 				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate) ||
 					adblVariate.length != iNumAsset)
 					throw new java.lang.Exception
 						("LimitExposureTermIssuerShort::rdToR1::evaluate => Invalid Variate Dimension");
 
-				for (int i = 0; i < iNumAsset; ++i) {
-					if (adblWeight[i] < 0.)
-						dblConstraintValue += _adblIssuerSelection[i] * adblWeight[i] * adblVariate[i];
+				for (int i = 0; i < iNumAsset; ++i)
+				{
+					if (adblVariate[i] < 0.)
+						dblConstraintValue += adblIssuerSelection[i] * adblPrice[i] * adblVariate[i];
 				}
 
 				return dblConstraintValue;
