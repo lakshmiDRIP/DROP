@@ -70,7 +70,7 @@ public class FixedChargeBuyTerm extends org.drip.portfolioconstruction.objective
 	public FixedChargeBuyTerm (
 		final java.lang.String strName,
 		final double[] adblInitialHoldings,
-		final org.drip.portfolioconstruction.core.TransactionChargeFixed[] aTCF)
+		final org.drip.portfolioconstruction.cost.TransactionChargeFixed[] aTCF)
 		throws java.lang.Exception
 	{
 		super (
@@ -98,8 +98,8 @@ public class FixedChargeBuyTerm extends org.drip.portfolioconstruction.objective
 				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate))
 					throw new java.lang.Exception ("FixedChargeBuyTerm::rdToR1::evaluate => Invalid Input");
 
-				org.drip.portfolioconstruction.core.TransactionChargeFixed[] aTCF =
-					(org.drip.portfolioconstruction.core.TransactionChargeFixed[]) transactionCharge();
+				org.drip.portfolioconstruction.cost.TransactionChargeFixed[] aTCF =
+					(org.drip.portfolioconstruction.cost.TransactionChargeFixed[]) transactionCharge();
 
 				double[] adblInitialHoldings = initialHoldings();
 

@@ -1,5 +1,5 @@
 
-package org.drip.portfolioconstruction.objective;
+package org.drip.portfolioconstruction.cost;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -48,78 +48,63 @@ package org.drip.portfolioconstruction.objective;
  */
 
 /**
- * MarketImpactChargeTerm implements the Objective Term that optimizes the Charge incurred by the Buy/Sell
- *  Trades in the Target Portfolio under a specified Market Impact Charge from the Starting Allocation.
+ * TransactionChargeFixed contains the Parameters for the Fixed Transaction Charge Scheme.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class MarketImpactChargeTerm extends org.drip.portfolioconstruction.objective.TransactionChargeTerm
-{
+public class TransactionChargeFixed extends org.drip.portfolioconstruction.cost.TransactionCharge {
+	private double _dblFixedCharge = java.lang.Double.NaN;
 
 	/**
-	 * MarketImpactChargeTerm Conastructor
+	 * TransactionChargeFixed Constructor
 	 * 
-	 * @param strName Name of the Objective Term
-	 * @param adblInitialHoldings Initial Holdings
-	 * @param aTCMI Array of Asset Market Impact Transaction Charge Instances
+	 * @param strName Transaction Charge Name
+	 * @param strID Transaction Charge ID
+	 * @param strDescription Description of the Transaction Charge
+	 * @param dblFixedCharge Fixed Transaction Charge
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public MarketImpactChargeTerm (
+	 public TransactionChargeFixed (
 		final java.lang.String strName,
-		final double[] adblInitialHoldings,
-		final org.drip.portfolioconstruction.cost.TransactionCharge[] aTCMI)
+		final java.lang.String strID,
+		final java.lang.String strDescription,
+		final double dblFixedCharge)
 		throws java.lang.Exception
 	{
 		super (
 			strName,
-			"OT_MARKET_IMPACT_TRANSACTION_CHARGE",
-			"Market Impact Transaction Charge Objective Function",
-			adblInitialHoldings,
-			aTCMI
+			strID,
+			strDescription
 		);
+
+		if (!org.drip.quant.common.NumberUtil.IsValid (_dblFixedCharge = dblFixedCharge) || 0. >
+			_dblFixedCharge)
+			throw new java.lang.Exception ("TransactionChargeFixed Constructor => Invalid Charge");
 	}
 
-	@Override public org.drip.function.definition.RdToR1 rdtoR1()
+	/**
+	 * Retrieve the Fixed Transaction Cost Charge
+	 * 
+	 * @return The Fixed Transaction Cost Charge
+	 */
+
+	public double fixedCharge()
 	{
-		return new org.drip.function.definition.RdToR1 (null)
-		{
-			@Override public int dimension()
-			{
-				return initialHoldings().length;
-			}
+		return _dblFixedCharge;
+	}
 
-			@Override public double evaluate (
-				final double[] adblVariate)
-				throws java.lang.Exception
-			{
-				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate))
-					throw new java.lang.Exception
-						("MarketImpactChargeTerm::rdToR1::evaluate => Invalid Input");
+	@Override public double estimate (
+		final double dblInitial,
+		final double dblFinal)
+		throws java.lang.Exception
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (dblInitial) ||
+			!org.drip.quant.common.NumberUtil.IsValid (dblFinal))
+			throw new java.lang.Exception ("TransactionChargeFixed::estimate => Invalid Inputs");
 
-				org.drip.portfolioconstruction.cost.TransactionChargeMarketImpact[] aTCMI =
-					(org.drip.portfolioconstruction.cost.TransactionChargeMarketImpact[])
-						transactionCharge();
-
-				double[] adblInitialHoldings = initialHoldings();
-
-				int iNumAsset = aTCMI.length;
-				double dblMarketImpactChargeTerm = 0.;
-
-				if (adblVariate.length != iNumAsset)
-					throw new java.lang.Exception
-						("MarketImpactChargeTerm::rdToR1::evaluate => Invalid Variate Dimension");
-
-				for (int i = 0; i < iNumAsset; ++i)
-					dblMarketImpactChargeTerm += aTCMI[i].estimate (
-						adblInitialHoldings[i],
-						adblVariate[i]
-					);
-
-				return dblMarketImpactChargeTerm;
-			}
-		};
+		return _dblFixedCharge;
 	}
 }

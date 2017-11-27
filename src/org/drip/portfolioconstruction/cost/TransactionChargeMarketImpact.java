@@ -1,5 +1,5 @@
 
-package org.drip.portfolioconstruction.core;
+package org.drip.portfolioconstruction.cost;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -53,7 +53,7 @@ package org.drip.portfolioconstruction.core;
  * @author Lakshmi Krishnamurthy
  */
 
-public class TransactionChargeMarketImpact extends org.drip.portfolioconstruction.core.TransactionCharge
+public class TransactionChargeMarketImpact extends org.drip.portfolioconstruction.cost.TransactionCharge
 {
 	private double _dblExponent = java.lang.Double.NaN;
 	private double _dblCoefficient = java.lang.Double.NaN;

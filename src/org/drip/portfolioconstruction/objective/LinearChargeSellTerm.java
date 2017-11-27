@@ -70,7 +70,7 @@ public class LinearChargeSellTerm extends org.drip.portfolioconstruction.objecti
 	public LinearChargeSellTerm (
 		final java.lang.String strName,
 		final double[] adblInitialHoldings,
-		final org.drip.portfolioconstruction.core.TransactionChargeLinear[] aTCL)
+		final org.drip.portfolioconstruction.cost.TransactionChargeLinear[] aTCL)
 		throws java.lang.Exception
 	{
 		super (
@@ -99,8 +99,8 @@ public class LinearChargeSellTerm extends org.drip.portfolioconstruction.objecti
 					throw new java.lang.Exception
 						("LinearChargeSellTerm::rdToR1::evaluate => Invalid Input");
 
-				org.drip.portfolioconstruction.core.TransactionChargeLinear[] aTCL =
-					(org.drip.portfolioconstruction.core.TransactionChargeLinear[]) transactionCharge();
+				org.drip.portfolioconstruction.cost.TransactionChargeLinear[] aTCL =
+					(org.drip.portfolioconstruction.cost.TransactionChargeLinear[]) transactionCharge();
 
 				double[] adblInitialHoldings = initialHoldings();
 

@@ -1,5 +1,5 @@
 
-package org.drip.portfolioconstruction.objective;
+package org.drip.portfolioconstruction.constraint;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -48,37 +48,45 @@ package org.drip.portfolioconstruction.objective;
  */
 
 /**
- * MarketImpactChargeTerm implements the Objective Term that optimizes the Charge incurred by the Buy/Sell
- *  Trades in the Target Portfolio under a specified Market Impact Charge from the Starting Allocation.
+ * LimitNamesTermIssuerLong holds the Details of Count of the Total Long Active Assets in the Holdings.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class MarketImpactChargeTerm extends org.drip.portfolioconstruction.objective.TransactionChargeTerm
+public class LimitNamesTermIssuerLong extends org.drip.portfolioconstruction.constraint.LimitNamesTermIssuer
 {
 
 	/**
-	 * MarketImpactChargeTerm Conastructor
+	 * LimitNamesTermIssuerLong Constructor
 	 * 
-	 * @param strName Name of the Objective Term
-	 * @param adblInitialHoldings Initial Holdings
-	 * @param aTCMI Array of Asset Market Impact Transaction Charge Instances
+	 * @param strName Name of the LimitNamesTermLong Constraint
+	 * @param scope Scope of the LimitNamesTermLong Constraint
+	 * @param unit Unit of the LimitNamesTermLong Constraint
+	 * @param dblMinimum Minimum of the Constraint
+	 * @param dblMaximum Maximum of the Constraint
+	 * @param adblIssuerSelection Array of the Issuer Selection
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public MarketImpactChargeTerm (
+	public LimitNamesTermIssuerLong (
 		final java.lang.String strName,
-		final double[] adblInitialHoldings,
-		final org.drip.portfolioconstruction.cost.TransactionCharge[] aTCMI)
+		final org.drip.portfolioconstruction.optimizer.Scope scope,
+		final org.drip.portfolioconstruction.optimizer.Unit unit,
+		final double dblMinimum,
+		final double dblMaximum,
+		final double[] adblIssuerSelection)
 		throws java.lang.Exception
 	{
 		super (
 			strName,
-			"OT_MARKET_IMPACT_TRANSACTION_CHARGE",
-			"Market Impact Transaction Charge Objective Function",
-			adblInitialHoldings,
-			aTCMI
+			"CT_LIMIT_LONG_NAMES",
+			"Limits the Total Number of Active Long Names in the Holdings",
+			scope,
+			unit,
+			dblMinimum,
+			dblMaximum,
+			adblIssuerSelection
 		);
 	}
 
@@ -88,37 +96,29 @@ public class MarketImpactChargeTerm extends org.drip.portfolioconstruction.objec
 		{
 			@Override public int dimension()
 			{
-				return initialHoldings().length;
+				return issuerSelection().length;
 			}
 
 			@Override public double evaluate (
 				final double[] adblVariate)
 				throws java.lang.Exception
 			{
-				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate))
+				double[] adblIssuerSelection = issuerSelection();
+
+				int iNameCount = 0;
+				int iNumAsset = adblIssuerSelection.length;
+
+				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate) ||
+					adblVariate.length != iNumAsset)
 					throw new java.lang.Exception
-						("MarketImpactChargeTerm::rdToR1::evaluate => Invalid Input");
-
-				org.drip.portfolioconstruction.cost.TransactionChargeMarketImpact[] aTCMI =
-					(org.drip.portfolioconstruction.cost.TransactionChargeMarketImpact[])
-						transactionCharge();
-
-				double[] adblInitialHoldings = initialHoldings();
-
-				int iNumAsset = aTCMI.length;
-				double dblMarketImpactChargeTerm = 0.;
-
-				if (adblVariate.length != iNumAsset)
-					throw new java.lang.Exception
-						("MarketImpactChargeTerm::rdToR1::evaluate => Invalid Variate Dimension");
+						("LimitNamesTermIssuerLong::rdToR1::evaluate => Invalid Variate Dimension");
 
 				for (int i = 0; i < iNumAsset; ++i)
-					dblMarketImpactChargeTerm += aTCMI[i].estimate (
-						adblInitialHoldings[i],
-						adblVariate[i]
-					);
+				{
+					if (0 < adblVariate[i] && 0. != adblIssuerSelection[i]) ++iNameCount;
+				}
 
-				return dblMarketImpactChargeTerm;
+				return iNameCount;
 			}
 		};
 	}

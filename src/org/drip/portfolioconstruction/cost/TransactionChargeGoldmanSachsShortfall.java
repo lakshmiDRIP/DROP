@@ -1,5 +1,5 @@
 
-package org.drip.portfolioconstruction.core;
+package org.drip.portfolioconstruction.cost;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -48,15 +48,16 @@ package org.drip.portfolioconstruction.core;
  */
 
 /**
- * TransactionCharge contains the Parameters for the specified Transaction Charge Scheme.
+ * TransactionChargeGoldmanSachsShortfall contains the Parameters for the Goldman Sachs Shortfall Model.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class TransactionCharge extends org.drip.portfolioconstruction.core.Block
+public abstract class TransactionChargeGoldmanSachsShortfall extends
+	org.drip.portfolioconstruction.cost.TransactionCharge
 {
 
-	protected TransactionCharge (
+	protected TransactionChargeGoldmanSachsShortfall (
 		final java.lang.String strName,
 		final java.lang.String strID,
 		final java.lang.String strDescription)
@@ -68,20 +69,4 @@ public abstract class TransactionCharge extends org.drip.portfolioconstruction.c
 			strDescription
 		);
 	}
-
-	/**
-	 * Estimate the Transaction Charge for a Single Holdings Change
-	 * 
-	 * @param dblInitial Initial Holdings
-	 * @param dblFinal Final Holdings
-	 * 
-	 * @return The Transaction Charge Estimate
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public abstract double estimate (
-		final double dblInitial,
-		final double dblFinal)
-		throws java.lang.Exception;
 }

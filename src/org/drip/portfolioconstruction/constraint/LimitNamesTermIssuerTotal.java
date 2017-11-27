@@ -1,5 +1,5 @@
 
-package org.drip.portfolioconstruction.core;
+package org.drip.portfolioconstruction.constraint;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -48,63 +48,78 @@ package org.drip.portfolioconstruction.core;
  */
 
 /**
- * TransactionChargeFixed contains the Parameters for the Fixed Transaction Charge Scheme.
+ * LimitNamesTermIssuerTotal holds the Details of Count of the Total Active Assets in the Holdings.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class TransactionChargeFixed extends org.drip.portfolioconstruction.core.TransactionCharge {
-	private double _dblFixedCharge = java.lang.Double.NaN;
+public class LimitNamesTermIssuerTotal extends org.drip.portfolioconstruction.constraint.LimitNamesTermIssuer
+{
 
 	/**
-	 * TransactionChargeFixed Constructor
+	 * LimitNamesTermIssuerTotal Constructor
 	 * 
-	 * @param strName Transaction Charge Name
-	 * @param strID Transaction Charge ID
-	 * @param strDescription Description of the Transaction Charge
-	 * @param dblFixedCharge Fixed Transaction Charge
+	 * @param strName Name of the LimitNumberTermTotal Constraint
+	 * @param scope Scope of the LimitNumberTermTotal Constraint
+	 * @param unit Unit of the LimitNumberTermTotal Constraint
+	 * @param dblMinimum Minimum of the Constraint
+	 * @param dblMaximum Maximum of the Constraint
+	 * @param adblIssuerSelection Array of the Issuer Selections
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	 public TransactionChargeFixed (
+	public LimitNamesTermIssuerTotal (
 		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final double dblFixedCharge)
+		final org.drip.portfolioconstruction.optimizer.Scope scope,
+		final org.drip.portfolioconstruction.optimizer.Unit unit,
+		final double dblMinimum,
+		final double dblMaximum,
+		final double[] adblIssuerSelection)
 		throws java.lang.Exception
 	{
 		super (
 			strName,
-			strID,
-			strDescription
+			"CT_LIMIT_TOTAL_NAMES",
+			"Limits the Total Number of Active Names in the Holdings",
+			scope,
+			unit,
+			dblMinimum,
+			dblMaximum,
+			adblIssuerSelection
 		);
-
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblFixedCharge = dblFixedCharge) || 0. >
-			_dblFixedCharge)
-			throw new java.lang.Exception ("TransactionChargeFixed Constructor => Invalid Charge");
 	}
 
-	/**
-	 * Retrieve the Fixed Transaction Cost Charge
-	 * 
-	 * @return The Fixed Transaction Cost Charge
-	 */
-
-	public double fixedCharge()
+	@Override public org.drip.function.definition.RdToR1 rdtoR1()
 	{
-		return _dblFixedCharge;
-	}
+		return new org.drip.function.definition.RdToR1 (null)
+		{
+			@Override public int dimension()
+			{
+				return issuerSelection().length;
+			}
 
-	@Override public double estimate (
-		final double dblInitial,
-		final double dblFinal)
-		throws java.lang.Exception
-	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblInitial) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblFinal))
-			throw new java.lang.Exception ("TransactionChargeFixed::estimate => Invalid Inputs");
+			@Override public double evaluate (
+				final double[] adblVariate)
+				throws java.lang.Exception
+			{
+				double[] adblIssuerSelection = issuerSelection();
 
-		return _dblFixedCharge;
+				int iNumAsset = adblIssuerSelection.length;
+				double dblNameCount = 0;
+
+				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate) ||
+					adblVariate.length != iNumAsset)
+					throw new java.lang.Exception
+						("LimitNamesTermIssuerTotal::rdToR1::evaluate => Invalid Variate Dimension");
+
+				for (int i = 0; i < iNumAsset; ++i)
+				{
+					if (0 != adblVariate[i] && 0. != adblIssuerSelection[i]) ++dblNameCount;
+				}
+
+				return dblNameCount;
+			}
+		};
 	}
 }

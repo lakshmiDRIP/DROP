@@ -5,4 +5,4 @@
  * @author Lakshmi Krishnamurthy
  */
 
-package org.drip.portfolioconstruction.charge;
+package org.drip.portfolioconstruction.cost;

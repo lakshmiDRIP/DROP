@@ -1,5 +1,5 @@
 
-package org.drip.portfolioconstruction.objective;
+package org.drip.portfolioconstruction.constraint;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -48,78 +48,50 @@ package org.drip.portfolioconstruction.objective;
  */
 
 /**
- * MarketImpactChargeTerm implements the Objective Term that optimizes the Charge incurred by the Buy/Sell
- *  Trades in the Target Portfolio under a specified Market Impact Charge from the Starting Allocation.
+ * LimitHoldingsTermMinimumPeriod holds the Details of Limit Minimum Holdings Period Constraint Term.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class MarketImpactChargeTerm extends org.drip.portfolioconstruction.objective.TransactionChargeTerm
+public abstract class LimitHoldingsTermMinimumPeriod extends
+	org.drip.portfolioconstruction.constraint.LimitHoldingsTerm
 {
+	private double _dblMinimumHoldingsPeriod = java.lang.Double.NaN;
 
-	/**
-	 * MarketImpactChargeTerm Conastructor
-	 * 
-	 * @param strName Name of the Objective Term
-	 * @param adblInitialHoldings Initial Holdings
-	 * @param aTCMI Array of Asset Market Impact Transaction Charge Instances
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public MarketImpactChargeTerm (
+	protected LimitHoldingsTermMinimumPeriod (
 		final java.lang.String strName,
-		final double[] adblInitialHoldings,
-		final org.drip.portfolioconstruction.cost.TransactionCharge[] aTCMI)
+		final org.drip.portfolioconstruction.optimizer.Scope scope,
+		final org.drip.portfolioconstruction.optimizer.Unit unit,
+		final double dblMinimum,
+		final double dblMaximum,
+		final int iSize,
+		final double dblMinimumHoldingsPeriod)
 		throws java.lang.Exception
 	{
 		super (
 			strName,
-			"OT_MARKET_IMPACT_TRANSACTION_CHARGE",
-			"Market Impact Transaction Charge Objective Function",
-			adblInitialHoldings,
-			aTCMI
+			"CT_LIMIT_MINIMUM_HOLDING_PERIOD",
+			"Constrains the Minimum Holdings Period",
+			scope,
+			unit,
+			dblMinimum,
+			dblMaximum,
+			iSize
 		);
+
+		if (!org.drip.quant.common.NumberUtil.IsValid (_dblMinimumHoldingsPeriod = dblMinimumHoldingsPeriod)
+			|| 0. >= _dblMinimumHoldingsPeriod)
+			throw new java.lang.Exception ("LimitHoldingsTermMinimumPeriod Constructor => Invalid Inputs");
 	}
 
-	@Override public org.drip.function.definition.RdToR1 rdtoR1()
+	/**
+	 * Retrieve the Minimum Holdings Period
+	 * 
+	 * @return The Minimum Holdings Period
+	 */
+
+	public double minimumHoldingsPeriod()
 	{
-		return new org.drip.function.definition.RdToR1 (null)
-		{
-			@Override public int dimension()
-			{
-				return initialHoldings().length;
-			}
-
-			@Override public double evaluate (
-				final double[] adblVariate)
-				throws java.lang.Exception
-			{
-				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate))
-					throw new java.lang.Exception
-						("MarketImpactChargeTerm::rdToR1::evaluate => Invalid Input");
-
-				org.drip.portfolioconstruction.cost.TransactionChargeMarketImpact[] aTCMI =
-					(org.drip.portfolioconstruction.cost.TransactionChargeMarketImpact[])
-						transactionCharge();
-
-				double[] adblInitialHoldings = initialHoldings();
-
-				int iNumAsset = aTCMI.length;
-				double dblMarketImpactChargeTerm = 0.;
-
-				if (adblVariate.length != iNumAsset)
-					throw new java.lang.Exception
-						("MarketImpactChargeTerm::rdToR1::evaluate => Invalid Variate Dimension");
-
-				for (int i = 0; i < iNumAsset; ++i)
-					dblMarketImpactChargeTerm += aTCMI[i].estimate (
-						adblInitialHoldings[i],
-						adblVariate[i]
-					);
-
-				return dblMarketImpactChargeTerm;
-			}
-		};
+		return _dblMinimumHoldingsPeriod;
 	}
 }

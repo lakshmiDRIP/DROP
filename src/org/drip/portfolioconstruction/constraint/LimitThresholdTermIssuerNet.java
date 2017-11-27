@@ -1,5 +1,5 @@
 
-package org.drip.portfolioconstruction.core;
+package org.drip.portfolioconstruction.constraint;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -48,64 +48,77 @@ package org.drip.portfolioconstruction.core;
  */
 
 /**
- * TransactionChargeLinear contains the Parameters for the Linear Transaction Charge Scheme.
+ * LimitThresholdTermIssuerNet implements the Issuer Net Portfolio Holdings as long as they are not Zero.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class TransactionChargeLinear extends org.drip.portfolioconstruction.core.TransactionCharge
+public class LimitThresholdTermIssuerNet extends
+	org.drip.portfolioconstruction.constraint.LimitThresholdTermIssuer
 {
-	private double _dblLinearCharge = java.lang.Double.NaN;
 
 	/**
-	 * TransactionChargeLinear Constructor
+	 * LimitThresholdTermIssuerNet Constructor
 	 * 
-	 * @param strName Transaction Charge Name
-	 * @param strID Transaction Charge ID
-	 * @param strDescription Description of the Transaction Charge
-	 * @param dblLinearCharge Linear Transaction Charge
+	 * @param strName Name of the LimitThresholdTermIssuerNet Constraint
+	 * @param scope Scope of the LimitThresholdTermIssuerNet Constraint
+	 * @param unit Unit of the LimitThresholdTermIssuerNet Constraint
+	 * @param dblMinimum Minimum Limit Value of the Constraint
+	 * @param dblMaximum Maximum Limit Value of the Constraint
+	 * @param adblIssuerSelection Array of the Issuer Selections
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	 public TransactionChargeLinear (
+	public LimitThresholdTermIssuerNet (
 		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final double dblLinearCharge)
+		final org.drip.portfolioconstruction.optimizer.Scope scope,
+		final org.drip.portfolioconstruction.optimizer.Unit unit,
+		final double dblMinimum,
+		final double dblMaximum,
+		final double[] adblIssuerSelection)
 		throws java.lang.Exception
 	{
 		super (
 			strName,
-			strID,
-			strDescription
+			"CT_LIMIT_THRESHOLD_NET_HOLDINGS",
+			"Issuer Threshold Limit Net Issuer Holdings",
+			scope,
+			unit,
+			dblMinimum,
+			dblMaximum,
+			adblIssuerSelection
 		);
-
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLinearCharge = dblLinearCharge) || 0. >
-			_dblLinearCharge)
-			throw new java.lang.Exception ("TransactionChargeLinear Constuctor => Invalid Linear Charge");
 	}
 
-	/**
-	 * Retrieve the Linear Transaction Charge
-	 * 
-	 * @return The Linear Transaction Charge
-	 */
-
-	public double linearCharge()
+	@Override public org.drip.function.definition.RdToR1 rdtoR1()
 	{
-		return _dblLinearCharge;
-	}
+		return new org.drip.function.definition.RdToR1 (null)
+		{
+			@Override public int dimension()
+			{
+				return issuerSelection().length;
+			}
 
-	@Override public double estimate (
-		final double dblInitial,
-		final double dblFinal)
-		throws java.lang.Exception
-	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblInitial) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblFinal))
-			throw new java.lang.Exception ("TransactionChargeLinear::estimate => Invalid Inputs");
+			@Override public double evaluate (
+				final double[] adblVariate)
+				throws java.lang.Exception
+			{
+				double[] adblIssuerSelection = issuerSelection();
 
-		return _dblLinearCharge * java.lang.Math.abs (dblFinal - dblInitial);
+				int iNumAsset = adblIssuerSelection.length;
+				double dblConstraintValue = 0.;
+
+				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate) ||
+					adblVariate.length != iNumAsset)
+					throw new java.lang.Exception
+						("LimitThresholdTermIssuerNet::rdToR1::evaluate => Invalid Variate Dimension");
+
+				for (int i = 0; i < iNumAsset; ++i)
+					dblConstraintValue += adblIssuerSelection[i] * adblVariate[i];
+
+				return dblConstraintValue;
+			}
+		};
 	}
 }

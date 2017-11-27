@@ -71,7 +71,7 @@ public abstract class CustomTransactionChargeTerm extends
 	public CustomTransactionChargeTerm (
 		final java.lang.String strName,
 		final double[] adblInitialHoldings,
-		final org.drip.portfolioconstruction.core.TransactionCharge[] aTransactionCharge)
+		final org.drip.portfolioconstruction.cost.TransactionCharge[] aTransactionCharge)
 		throws java.lang.Exception
 	{
 		super (

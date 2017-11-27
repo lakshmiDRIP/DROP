@@ -70,7 +70,7 @@ public class ShortSellChargeTerm extends org.drip.portfolioconstruction.objectiv
 	public ShortSellChargeTerm (
 		final java.lang.String strName,
 		final double[] adblInitialHoldings,
-		final org.drip.portfolioconstruction.core.TransactionCharge[] aTC)
+		final org.drip.portfolioconstruction.cost.TransactionCharge[] aTC)
 		throws java.lang.Exception
 	{
 		super (
@@ -98,7 +98,7 @@ public class ShortSellChargeTerm extends org.drip.portfolioconstruction.objectiv
 				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate))
 					throw new java.lang.Exception ("ShortSellChargeTerm::rdToR1::evaluate => Invalid Input");
 
-				org.drip.portfolioconstruction.core.TransactionCharge[] aTCF = transactionCharge();
+				org.drip.portfolioconstruction.cost.TransactionCharge[] aTCF = transactionCharge();
 
 				double[] adblInitialHoldings = initialHoldings();
 

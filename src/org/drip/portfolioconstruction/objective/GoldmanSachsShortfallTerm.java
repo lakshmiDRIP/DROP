@@ -70,7 +70,7 @@ public class GoldmanSachsShortfallTerm extends org.drip.portfolioconstruction.ob
 	public GoldmanSachsShortfallTerm (
 		final java.lang.String strName,
 		final double[] adblInitialHoldings,
-		final org.drip.portfolioconstruction.core.TransactionChargeGoldmanSachsShortfall[] aTCGSS)
+		final org.drip.portfolioconstruction.cost.TransactionChargeGoldmanSachsShortfall[] aTCGSS)
 		throws java.lang.Exception
 	{
 		super (
@@ -99,8 +99,8 @@ public class GoldmanSachsShortfallTerm extends org.drip.portfolioconstruction.ob
 					throw new java.lang.Exception
 						("GoldmanSachsShortfallTerm::rdToR1::evaluate => Invalid Input");
 
-				org.drip.portfolioconstruction.core.TransactionChargeGoldmanSachsShortfall[] aTCGSS =
-					(org.drip.portfolioconstruction.core.TransactionChargeGoldmanSachsShortfall[])
+				org.drip.portfolioconstruction.cost.TransactionChargeGoldmanSachsShortfall[] aTCGSS =
+					(org.drip.portfolioconstruction.cost.TransactionChargeGoldmanSachsShortfall[])
 						transactionCharge();
 
 				double[] adblInitialHoldings = initialHoldings();

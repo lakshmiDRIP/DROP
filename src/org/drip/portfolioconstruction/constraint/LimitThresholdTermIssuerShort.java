@@ -1,5 +1,5 @@
 
-package org.drip.portfolioconstruction.core;
+package org.drip.portfolioconstruction.constraint;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -48,25 +48,79 @@ package org.drip.portfolioconstruction.core;
  */
 
 /**
- * TransactionChargeGoldmanSachsShortfall contains the Parameters for the Goldman Sachs Shortfall Model.
+ * LimitThresholdTermIssuerShort implements the Issuer Short Portfolio Holdings as long as they are not Zero.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class TransactionChargeGoldmanSachsShortfall extends
-	org.drip.portfolioconstruction.core.TransactionCharge
+public class LimitThresholdTermIssuerShort extends
+	org.drip.portfolioconstruction.constraint.LimitThresholdTermIssuer
 {
 
-	protected TransactionChargeGoldmanSachsShortfall (
+	/**
+	 * LimitThresholdTermIssuerShort Constructor
+	 * 
+	 * @param strName Name of the LimitThresholdTermIssuerNet Constraint
+	 * @param scope Scope of the LimitThresholdTermIssuerNet Constraint
+	 * @param unit Unit of the LimitThresholdTermIssuerNet Constraint
+	 * @param dblMinimum Minimum Limit Value of the Constraint
+	 * @param dblMaximum Maximum Limit Value of the Constraint
+	 * @param adblIssuerSelection Array of the Issuer Selections
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public LimitThresholdTermIssuerShort (
 		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription)
+		final org.drip.portfolioconstruction.optimizer.Scope scope,
+		final org.drip.portfolioconstruction.optimizer.Unit unit,
+		final double dblMinimum,
+		final double dblMaximum,
+		final double[] adblIssuerSelection)
 		throws java.lang.Exception
 	{
 		super (
 			strName,
-			strID,
-			strDescription
+			"CT_LIMIT_THRESHOLD_SHORT_HOLDINGS",
+			"Issuer Threshold Limit Short Issuer Holdings",
+			scope,
+			unit,
+			dblMinimum,
+			dblMaximum,
+			adblIssuerSelection
 		);
+	}
+
+	@Override public org.drip.function.definition.RdToR1 rdtoR1()
+	{
+		return new org.drip.function.definition.RdToR1 (null)
+		{
+			@Override public int dimension()
+			{
+				return issuerSelection().length;
+			}
+
+			@Override public double evaluate (
+				final double[] adblVariate)
+				throws java.lang.Exception
+			{
+				double[] adblIssuerSelection = issuerSelection();
+
+				int iNumAsset = adblIssuerSelection.length;
+				double dblConstraintValue = 0.;
+
+				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate) ||
+					adblVariate.length != iNumAsset)
+					throw new java.lang.Exception
+						("LimitThresholdTermIssuerShort::rdToR1::evaluate => Invalid Variate Dimension");
+
+				for (int i = 0; i < iNumAsset; ++i)
+				{
+					if (adblVariate[i] < 0.) dblConstraintValue += adblIssuerSelection[i] * adblVariate[i];
+				}
+
+				return dblConstraintValue;
+			}
+		};
 	}
 }

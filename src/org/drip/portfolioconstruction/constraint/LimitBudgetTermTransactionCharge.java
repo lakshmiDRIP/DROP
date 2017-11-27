@@ -58,7 +58,7 @@ public class LimitBudgetTermTransactionCharge extends
 	org.drip.portfolioconstruction.constraint.LimitBudgetTerm
 {
 	private double[] _adblInitialHoldings = null;
-	private org.drip.portfolioconstruction.core.TransactionCharge[] _aTransactionCharge = null;
+	private org.drip.portfolioconstruction.cost.TransactionCharge[] _aTransactionCharge = null;
 
 	/**
 	 * LimitBudgetTermTransactionCharge Constructor
@@ -81,7 +81,7 @@ public class LimitBudgetTermTransactionCharge extends
 		final double dblBudget,
 		final double[] adblWeight,
 		final double[] adblInitialHoldings,
-		final org.drip.portfolioconstruction.core.TransactionCharge[] aTransactionCharge)
+		final org.drip.portfolioconstruction.cost.TransactionCharge[] aTransactionCharge)
 		throws java.lang.Exception
 	{
 		super (
@@ -118,7 +118,7 @@ public class LimitBudgetTermTransactionCharge extends
 	 * @return The Transaction Charge Array
 	 */
 
-	public org.drip.portfolioconstruction.core.TransactionCharge[] transactionCharge()
+	public org.drip.portfolioconstruction.cost.TransactionCharge[] transactionCharge()
 	{
 		return _aTransactionCharge;
 	}

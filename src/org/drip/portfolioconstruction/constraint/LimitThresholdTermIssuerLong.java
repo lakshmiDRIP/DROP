@@ -1,5 +1,5 @@
 
-package org.drip.portfolioconstruction.objective;
+package org.drip.portfolioconstruction.constraint;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -48,37 +48,46 @@ package org.drip.portfolioconstruction.objective;
  */
 
 /**
- * MarketImpactChargeTerm implements the Objective Term that optimizes the Charge incurred by the Buy/Sell
- *  Trades in the Target Portfolio under a specified Market Impact Charge from the Starting Allocation.
+ * LimitThresholdTermIssuerLong implements the Issuer Long Portfolio Holdings as long as they are not Zero.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class MarketImpactChargeTerm extends org.drip.portfolioconstruction.objective.TransactionChargeTerm
+public class LimitThresholdTermIssuerLong extends
+	org.drip.portfolioconstruction.constraint.LimitThresholdTermIssuer
 {
 
 	/**
-	 * MarketImpactChargeTerm Conastructor
+	 * LimitThresholdTermIssuerLong Constructor
 	 * 
-	 * @param strName Name of the Objective Term
-	 * @param adblInitialHoldings Initial Holdings
-	 * @param aTCMI Array of Asset Market Impact Transaction Charge Instances
+	 * @param strName Name of the LimitThresholdTermIssuerNet Constraint
+	 * @param scope Scope of the LimitThresholdTermIssuerNet Constraint
+	 * @param unit Unit of the LimitThresholdTermIssuerNet Constraint
+	 * @param dblMinimum Minimum Limit Value of the Constraint
+	 * @param dblMaximum Maximum Limit Value of the Constraint
+	 * @param adblIssuerSelection Array of the Issuer Selections
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public MarketImpactChargeTerm (
+	public LimitThresholdTermIssuerLong (
 		final java.lang.String strName,
-		final double[] adblInitialHoldings,
-		final org.drip.portfolioconstruction.cost.TransactionCharge[] aTCMI)
+		final org.drip.portfolioconstruction.optimizer.Scope scope,
+		final org.drip.portfolioconstruction.optimizer.Unit unit,
+		final double dblMinimum,
+		final double dblMaximum,
+		final double[] adblIssuerSelection)
 		throws java.lang.Exception
 	{
 		super (
 			strName,
-			"OT_MARKET_IMPACT_TRANSACTION_CHARGE",
-			"Market Impact Transaction Charge Objective Function",
-			adblInitialHoldings,
-			aTCMI
+			"CT_LIMIT_THRESHOLD_LONG_HOLDINGS",
+			"Issuer Threshold Limit Long Issuer Holdings",
+			scope,
+			unit,
+			dblMinimum,
+			dblMaximum,
+			adblIssuerSelection
 		);
 	}
 
@@ -88,37 +97,29 @@ public class MarketImpactChargeTerm extends org.drip.portfolioconstruction.objec
 		{
 			@Override public int dimension()
 			{
-				return initialHoldings().length;
+				return issuerSelection().length;
 			}
 
 			@Override public double evaluate (
 				final double[] adblVariate)
 				throws java.lang.Exception
 			{
-				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate))
+				double[] adblIssuerSelection = issuerSelection();
+
+				int iNumAsset = adblIssuerSelection.length;
+				double dblConstraintValue = 0.;
+
+				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate) ||
+					adblVariate.length != iNumAsset)
 					throw new java.lang.Exception
-						("MarketImpactChargeTerm::rdToR1::evaluate => Invalid Input");
-
-				org.drip.portfolioconstruction.cost.TransactionChargeMarketImpact[] aTCMI =
-					(org.drip.portfolioconstruction.cost.TransactionChargeMarketImpact[])
-						transactionCharge();
-
-				double[] adblInitialHoldings = initialHoldings();
-
-				int iNumAsset = aTCMI.length;
-				double dblMarketImpactChargeTerm = 0.;
-
-				if (adblVariate.length != iNumAsset)
-					throw new java.lang.Exception
-						("MarketImpactChargeTerm::rdToR1::evaluate => Invalid Variate Dimension");
+						("LimitThresholdTermIssuerLong::rdToR1::evaluate => Invalid Variate Dimension");
 
 				for (int i = 0; i < iNumAsset; ++i)
-					dblMarketImpactChargeTerm += aTCMI[i].estimate (
-						adblInitialHoldings[i],
-						adblVariate[i]
-					);
+				{
+					if (adblVariate[i] > 0.) dblConstraintValue += adblIssuerSelection[i] * adblVariate[i];
+				}
 
-				return dblMarketImpactChargeTerm;
+				return dblConstraintValue;
 			}
 		};
 	}

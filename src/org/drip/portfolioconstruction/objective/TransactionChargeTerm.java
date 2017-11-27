@@ -56,14 +56,14 @@ package org.drip.portfolioconstruction.objective;
 
 public abstract class TransactionChargeTerm extends org.drip.portfolioconstruction.optimizer.ObjectiveTerm
 {
-	private org.drip.portfolioconstruction.core.TransactionCharge[] _aTransactionCharge = null;
+	private org.drip.portfolioconstruction.cost.TransactionCharge[] _aTransactionCharge = null;
 
 	protected TransactionChargeTerm (
 		final java.lang.String strName,
 		final java.lang.String strID,
 		final java.lang.String strDescription,
 		final double[] adblInitialHoldings,
-		final org.drip.portfolioconstruction.core.TransactionCharge[] aTransactionCharge)
+		final org.drip.portfolioconstruction.cost.TransactionCharge[] aTransactionCharge)
 		throws java.lang.Exception
 	{
 		super (
@@ -92,7 +92,7 @@ public abstract class TransactionChargeTerm extends org.drip.portfolioconstructi
 	 * @return The Transaction Charge Array
 	 */
 
-	public org.drip.portfolioconstruction.core.TransactionCharge[] transactionCharge()
+	public org.drip.portfolioconstruction.cost.TransactionCharge[] transactionCharge()
 	{
 		return _aTransactionCharge;
 	}
@@ -114,7 +114,7 @@ public abstract class TransactionChargeTerm extends org.drip.portfolioconstructi
 					throw new java.lang.Exception
 						("TransactionChargeTerm::rdToR1::evaluate => Invalid Input");
 
-				org.drip.portfolioconstruction.core.TransactionCharge[] aTransactionCharge =
+				org.drip.portfolioconstruction.cost.TransactionCharge[] aTransactionCharge =
 					transactionCharge();
 
 				double[] adblInitialHoldings = initialHoldings();
