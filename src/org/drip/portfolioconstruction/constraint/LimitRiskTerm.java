@@ -48,17 +48,16 @@ package org.drip.portfolioconstruction.constraint;
  */
 
 /**
- * LimitTradesTermIssuer abstracts the Issuer Targets the Count of Portfolio Trades.
+ * LimitRiskTerm holds the Details of a Limit Risk Constraint Term.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class LimitTradesTermIssuer extends org.drip.portfolioconstruction.optimizer.ConstraintTerm
+public abstract class LimitRiskTerm extends org.drip.portfolioconstruction.optimizer.ConstraintTerm
 {
-	private double[] _adblInitialHoldings = null;
-	private double[] _adblIssuerSelection = null;
+	private double[][] _aadblAssetCovariance = null;
 
-	protected LimitTradesTermIssuer (
+	protected LimitRiskTerm (
 		final java.lang.String strName,
 		final java.lang.String strID,
 		final java.lang.String strDescription,
@@ -66,52 +65,44 @@ public abstract class LimitTradesTermIssuer extends org.drip.portfolioconstructi
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
 		final double dblMinimum,
 		final double dblMaximum,
-		final double[] adblIssuerSelection,
-		final double[] adblInitialHoldings)
+		final double[][] aadblAssetCovariance)
 		throws java.lang.Exception
 	{
 		super (
 			strName,
 			strID,
 			strDescription,
-			"LIMIT_TRADES",
+			"LIMIT_RISK",
 			scope,
 			unit,
 			dblMinimum,
 			dblMaximum
 		);
 
-		if (null == (_adblIssuerSelection = adblIssuerSelection) || null == (_adblInitialHoldings =
-			adblInitialHoldings))
-			throw new java.lang.Exception ("LimitTradesTermIssuer Constructor => Invalid Section");
+		if (null == (_aadblAssetCovariance = aadblAssetCovariance))
+			throw new java.lang.Exception ("LimitRiskTerm Constructor => Invalid Covariance");
 
-		int iNumAsset = _adblIssuerSelection.length;
+		int iNumAsset = _aadblAssetCovariance.length;
 
-		if (0 == iNumAsset || _adblInitialHoldings.length == iNumAsset ||
-			!org.drip.quant.common.NumberUtil.IsValid (_adblIssuerSelection)||
-				!org.drip.quant.common.NumberUtil.IsValid (_adblInitialHoldings))
-			throw new java.lang.Exception ("LimitTradesTermIssuer Constructor => Invalid Section");
+		if (0 == iNumAsset)
+			throw new java.lang.Exception ("LimitRiskTerm Constructor => Invalid Covariance");
+
+		for (int i = 0; i < iNumAsset; ++i)
+		{
+			if (null == _aadblAssetCovariance[i] || iNumAsset != _aadblAssetCovariance[i].length ||
+				!org.drip.quant.common.NumberUtil.IsValid (_aadblAssetCovariance[i]))
+				throw new java.lang.Exception ("LimitRiskTerm Constructor => Invalid Covariance");
+		}
 	}
 
 	/**
-	 * Retrieve the Initial Holdings Array
+	 * Retrieve the Asset Co-variance
 	 * 
-	 * @return Initial Holdings Array
+	 * @return The Asset Co-variance
 	 */
 
-	public double[] initialHoldings()
+	public double[][] assetCovariance()
 	{
-		return _adblInitialHoldings;
-	}
-
-	/**
-	 * Retrieve the Issuer Selection Array
-	 * 
-	 * @return Issuer Selection Array
-	 */
-
-	public double[] issuerSelection()
-	{
-		return _adblIssuerSelection;
+		return _aadblAssetCovariance;
 	}
 }

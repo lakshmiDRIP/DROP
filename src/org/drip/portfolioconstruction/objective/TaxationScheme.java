@@ -56,7 +56,7 @@ package org.drip.portfolioconstruction.objective;
 public interface TaxationScheme {
 
 	/**
-	 * Computes the Standard Net US Tax Gain
+	 * Compute the Standard Net US Tax Gain
 	 * 
 	 * @param adblInitialHoldings The Initial Holdings Array
 	 * @param adblFinalHoldings The Final Holdings Array
@@ -72,7 +72,7 @@ public interface TaxationScheme {
 		throws java.lang.Exception;
 
 	/**
-	 * Computes the Custom Net Tax Gain
+	 * Compute the Custom Net Tax Gain
 	 * 
 	 * @param adblInitialHoldings The Initial Holdings Array
 	 * @param adblFinalHoldings The Final Holdings Array
@@ -88,7 +88,71 @@ public interface TaxationScheme {
 		throws java.lang.Exception;
 
 	/**
-	 * Computes the Tax Liability
+	 * Compute the Custom Gross Tax Gain
+	 * 
+	 * @param adblInitialHoldings The Initial Holdings Array
+	 * @param adblFinalHoldings The Final Holdings Array
+	 * 
+	 * @return The Custom Net Tax Gain
+	 * 
+	 * @throws java.lang.Exception Thrown if the Custom Gross Tax Gain cannot be calculated
+	 */
+
+	public abstract double customGrossTaxGain (
+		final double[] adblInitialHoldings,
+		final double[] adblFinalHoldings)
+		throws java.lang.Exception;
+
+	/**
+	 * Compute the Custom Net Tax Loss
+	 * 
+	 * @param adblInitialHoldings The Initial Holdings Array
+	 * @param adblFinalHoldings The Final Holdings Array
+	 * 
+	 * @return The Custom Net Tax Loss
+	 * 
+	 * @throws java.lang.Exception Thrown if the Custom Net Tax Loss cannot be calculated
+	 */
+
+	public abstract double customNetTaxLoss (
+		final double[] adblInitialHoldings,
+		final double[] adblFinalHoldings)
+		throws java.lang.Exception;
+
+	/**
+	 * Compute the Custom Gross Tax Loss
+	 * 
+	 * @param adblInitialHoldings The Initial Holdings Array
+	 * @param adblFinalHoldings The Final Holdings Array
+	 * 
+	 * @return The Custom Net Tax Loss
+	 * 
+	 * @throws java.lang.Exception Thrown if the Custom Gross Tax Loss cannot be calculated
+	 */
+
+	public abstract double customGrossTaxLoss (
+		final double[] adblInitialHoldings,
+		final double[] adblFinalHoldings)
+		throws java.lang.Exception;
+
+	/**
+	 * Compute the Long Term Tax Gain
+	 * 
+	 * @param adblInitialHoldings The Initial Holdings Array
+	 * @param adblFinalHoldings The Final Holdings Array
+	 * 
+	 * @return The Long Term Tax Gain
+	 * 
+	 * @throws java.lang.Exception Thrown if the Long Term Tax Gain cannot be calculated
+	 */
+
+	public abstract double longTermTaxGain (
+		final double[] adblInitialHoldings,
+		final double[] adblFinalHoldings)
+		throws java.lang.Exception;
+
+	/**
+	 * Compute the Tax Liability
 	 * 
 	 * @param adblInitialHoldings The Initial Holdings Array
 	 * @param adblFinalHoldings The Final Holdings Array

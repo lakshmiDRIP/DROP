@@ -48,20 +48,31 @@ package org.drip.portfolioconstruction.constraint;
  */
 
 /**
- * LimitTradesTermIssuer abstracts the Issuer Targets the Count of Portfolio Trades.
+ * LimitTradesTermIssuerSell abstracts the Issuer Targets the Count of Total Sell Portfolio Trades.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class LimitTradesTermIssuer extends org.drip.portfolioconstruction.optimizer.ConstraintTerm
+public class LimitTradesTermIssuerSell extends
+	org.drip.portfolioconstruction.constraint.LimitTradesTermIssuer
 {
-	private double[] _adblInitialHoldings = null;
-	private double[] _adblIssuerSelection = null;
 
-	protected LimitTradesTermIssuer (
+	/**
+	 * LimitTradesTermIssuerSell Constructor
+	 * 
+	 * @param strName Name of the LimitTradesTermIssuerNet Constraint
+	 * @param scope Scope of the LimitTradesTermIssuerNet Constraint
+	 * @param unit Unit of the LimitTradesTermIssuerNet Constraint
+	 * @param dblMinimum Minimum Value for the Constraint
+	 * @param dblMaximum Maximum Value for the Constraint
+	 * @param adblIssuerSelection Issuer Selection Flag Array
+	 * @param adblInitialHoldings Initial Holdings Array
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Inconsistent/Invalid
+	 */
+
+	public LimitTradesTermIssuerSell (
 		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
 		final double dblMinimum,
@@ -72,46 +83,49 @@ public abstract class LimitTradesTermIssuer extends org.drip.portfolioconstructi
 	{
 		super (
 			strName,
-			strID,
-			strDescription,
-			"LIMIT_TRADES",
+			"CT_LIMIT_NUMBER_OF_SELL_TRADES",
+			"Constrains the Total Count of Sell Trades",
 			scope,
 			unit,
 			dblMinimum,
-			dblMaximum
+			dblMaximum,
+			adblIssuerSelection,
+			adblInitialHoldings
 		);
-
-		if (null == (_adblIssuerSelection = adblIssuerSelection) || null == (_adblInitialHoldings =
-			adblInitialHoldings))
-			throw new java.lang.Exception ("LimitTradesTermIssuer Constructor => Invalid Section");
-
-		int iNumAsset = _adblIssuerSelection.length;
-
-		if (0 == iNumAsset || _adblInitialHoldings.length == iNumAsset ||
-			!org.drip.quant.common.NumberUtil.IsValid (_adblIssuerSelection)||
-				!org.drip.quant.common.NumberUtil.IsValid (_adblInitialHoldings))
-			throw new java.lang.Exception ("LimitTradesTermIssuer Constructor => Invalid Section");
 	}
 
-	/**
-	 * Retrieve the Initial Holdings Array
-	 * 
-	 * @return Initial Holdings Array
-	 */
-
-	public double[] initialHoldings()
+	@Override public org.drip.function.definition.RdToR1 rdtoR1()
 	{
-		return _adblInitialHoldings;
-	}
+		return new org.drip.function.definition.RdToR1 (null)
+		{
+			@Override public int dimension()
+			{
+				return issuerSelection().length;
+			}
 
-	/**
-	 * Retrieve the Issuer Selection Array
-	 * 
-	 * @return Issuer Selection Array
-	 */
+			@Override public double evaluate (
+				final double[] adblVariate)
+				throws java.lang.Exception
+			{
+				double[] adblInitialHoldings = initialHoldings();
 
-	public double[] issuerSelection()
-	{
-		return _adblIssuerSelection;
+				double[] adblIssuerSelection = issuerSelection();
+
+				int iNumAsset = adblIssuerSelection.length;
+				double dblTradeCount = 0;
+
+				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate) ||
+					adblVariate.length != iNumAsset)
+					throw new java.lang.Exception
+						("LimitTradesTermIssuerSell::rdToR1::evaluate => Invalid Variate Dimension");
+
+				for (int i = 0; i < iNumAsset; ++i)
+				{
+					if (adblInitialHoldings[i] > adblVariate[i]) dblTradeCount += adblIssuerSelection[i];
+				}
+
+				return dblTradeCount;
+			}
+		};
 	}
 }

@@ -53,7 +53,8 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class LimitBudgetTerm extends org.drip.portfolioconstruction.optimizer.ConstraintTerm {
+public abstract class LimitBudgetTerm extends org.drip.portfolioconstruction.optimizer.ConstraintTerm
+{
 	private double[] _adblWeight = null;
 
 	protected LimitBudgetTerm (

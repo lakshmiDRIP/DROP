@@ -48,55 +48,61 @@ package org.drip.portfolioconstruction.constraint;
  */
 
 /**
- * LimitTradesTermIssuer abstracts the Issuer Targets the Count of Portfolio Trades.
+ * LimitRiskTermMarginal holds the Details of a Relative Marginal Contribution Based Limit Risk Constraint
+ *  Term.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class LimitTradesTermIssuer extends org.drip.portfolioconstruction.optimizer.ConstraintTerm
+public class LimitRiskTermMarginal extends org.drip.portfolioconstruction.constraint.LimitRiskTerm
 {
 	private double[] _adblInitialHoldings = null;
-	private double[] _adblIssuerSelection = null;
 
-	protected LimitTradesTermIssuer (
+	/**
+	 * LimitRiskTermMarginal Constructor
+	 * 
+	 * @param strName Name of the LimitRiskTermMarginal Constraint
+	 * @param scope Scope of the LimitRiskTermMarginal Constraint
+	 * @param unit Unit of the LimitRiskTermMarginal Constraint
+	 * @param dblMinimum Minimum Limit Value of the LimitRiskTermMarginal Constraint
+	 * @param dblMaximum Maximum Limit Value of the LimitRiskTermMarginal Constraint
+	 * @param aadblAssetCovariance Asset Co-variance
+	 * @param adblInitialHoldings Array of the Initial Holdings
+	 * 
+	 * @throws java.lang.Exception Throw if the Inputs are Invalid
+	 */
+
+	public LimitRiskTermMarginal (
 		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
 		final double dblMinimum,
 		final double dblMaximum,
-		final double[] adblIssuerSelection,
+		final double[][] aadblAssetCovariance,
 		final double[] adblInitialHoldings)
 		throws java.lang.Exception
 	{
 		super (
 			strName,
-			strID,
-			strDescription,
-			"LIMIT_TRADES",
+			"CT_LIMIT_MARGINAL_RISK_CONTRIBUTION",
+			"Limits the Marginal Contribution to the Total Risk",
 			scope,
 			unit,
 			dblMinimum,
-			dblMaximum
+			dblMaximum,
+			aadblAssetCovariance
 		);
 
-		if (null == (_adblIssuerSelection = adblIssuerSelection) || null == (_adblInitialHoldings =
-			adblInitialHoldings))
-			throw new java.lang.Exception ("LimitTradesTermIssuer Constructor => Invalid Section");
-
-		int iNumAsset = _adblIssuerSelection.length;
-
-		if (0 == iNumAsset || _adblInitialHoldings.length == iNumAsset ||
-			!org.drip.quant.common.NumberUtil.IsValid (_adblIssuerSelection)||
-				!org.drip.quant.common.NumberUtil.IsValid (_adblInitialHoldings))
-			throw new java.lang.Exception ("LimitTradesTermIssuer Constructor => Invalid Section");
+		if (null == (_adblInitialHoldings = adblInitialHoldings) || _adblInitialHoldings.length !=
+			aadblAssetCovariance[0].length || !org.drip.quant.common.NumberUtil.IsValid
+				(_adblInitialHoldings))
+			throw new java.lang.Exception ("LimitRiskTermMarginal Constructor => Invalid Initial Holdings");
 	}
 
 	/**
 	 * Retrieve the Initial Holdings Array
 	 * 
-	 * @return Initial Holdings Array
+	 * @return The Initial Holdings Array
 	 */
 
 	public double[] initialHoldings()
@@ -104,14 +110,40 @@ public abstract class LimitTradesTermIssuer extends org.drip.portfolioconstructi
 		return _adblInitialHoldings;
 	}
 
-	/**
-	 * Retrieve the Issuer Selection Array
-	 * 
-	 * @return Issuer Selection Array
-	 */
-
-	public double[] issuerSelection()
+	@Override public org.drip.function.definition.RdToR1 rdtoR1()
 	{
-		return _adblIssuerSelection;
+		return new org.drip.function.definition.RdToR1 (null)
+		{
+			@Override public int dimension()
+			{
+				return assetCovariance().length;
+			}
+
+			@Override public double evaluate (
+				final double[] adblVariate)
+				throws java.lang.Exception
+			{
+				double[][] aadblAssetCovariance = assetCovariance();
+
+				int iNumAsset = aadblAssetCovariance.length;
+				double dblMarginalVariance = 0;
+
+				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate) ||
+					adblVariate.length != iNumAsset)
+					throw new java.lang.Exception
+						("LimitRiskTermMarginal::rdToR1::evaluate => Invalid Variate Dimension");
+
+				for (int i = 0; i < iNumAsset; ++i)
+				{
+					double dblHoldingsDifferentialI = adblVariate[i] - _adblInitialHoldings[i];
+
+					for (int j = 0; j < iNumAsset; ++j)
+						dblMarginalVariance += dblHoldingsDifferentialI * aadblAssetCovariance[i][j] *
+							(adblVariate[j] - _adblInitialHoldings[j]);
+				}
+
+				return dblMarginalVariance;
+			}
+		};
 	}
 }

@@ -48,70 +48,69 @@ package org.drip.portfolioconstruction.constraint;
  */
 
 /**
- * LimitTradesTermIssuer abstracts the Issuer Targets the Count of Portfolio Trades.
+ * LimitTaxTermLiability holds the Details of a Limit Tax Liability Constraint Term.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class LimitTradesTermIssuer extends org.drip.portfolioconstruction.optimizer.ConstraintTerm
+public class LimitTaxTermLiability extends org.drip.portfolioconstruction.constraint.LimitTaxTerm
 {
-	private double[] _adblInitialHoldings = null;
-	private double[] _adblIssuerSelection = null;
 
-	protected LimitTradesTermIssuer (
+	/**
+	 * LimitTaxTermLiability Constructor
+	 * 
+	 * @param strName Name of the LimitTaxTermLiability Constraint
+	 * @param scope Scope of the LimitTaxTermLiability Constraint
+	 * @param unit Unit of the LimitTaxTermLiability Constraint
+	 * @param dblMinimum Minimum Value of the LimitTaxTermLiability Constraint
+	 * @param dblMaximum Maximum Value of the LimitTaxTermLiability Constraint
+	 * @param taxationScheme Taxation Scheme
+	 * @param adblInitialHoldings Array of the Initial Holdings
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public LimitTaxTermLiability (
 		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
 		final double dblMinimum,
 		final double dblMaximum,
-		final double[] adblIssuerSelection,
+		final org.drip.portfolioconstruction.objective.TaxationScheme taxationScheme,
 		final double[] adblInitialHoldings)
 		throws java.lang.Exception
 	{
 		super (
 			strName,
-			strID,
-			strDescription,
-			"LIMIT_TRADES",
+			"CT_LIMIT_NET_TAX_LIABILITY",
+			"Constrains the Tax Liability",
 			scope,
 			unit,
 			dblMinimum,
-			dblMaximum
+			dblMaximum,
+			taxationScheme,
+			adblInitialHoldings
 		);
-
-		if (null == (_adblIssuerSelection = adblIssuerSelection) || null == (_adblInitialHoldings =
-			adblInitialHoldings))
-			throw new java.lang.Exception ("LimitTradesTermIssuer Constructor => Invalid Section");
-
-		int iNumAsset = _adblIssuerSelection.length;
-
-		if (0 == iNumAsset || _adblInitialHoldings.length == iNumAsset ||
-			!org.drip.quant.common.NumberUtil.IsValid (_adblIssuerSelection)||
-				!org.drip.quant.common.NumberUtil.IsValid (_adblInitialHoldings))
-			throw new java.lang.Exception ("LimitTradesTermIssuer Constructor => Invalid Section");
 	}
 
-	/**
-	 * Retrieve the Initial Holdings Array
-	 * 
-	 * @return Initial Holdings Array
-	 */
-
-	public double[] initialHoldings()
+	@Override public org.drip.function.definition.RdToR1 rdtoR1()
 	{
-		return _adblInitialHoldings;
-	}
+		return new org.drip.function.definition.RdToR1 (null)
+		{
+			@Override public int dimension()
+			{
+				return initialHoldings().length;
+			}
 
-	/**
-	 * Retrieve the Issuer Selection Array
-	 * 
-	 * @return Issuer Selection Array
-	 */
-
-	public double[] issuerSelection()
-	{
-		return _adblIssuerSelection;
+			@Override public double evaluate (
+				final double[] adblVariate)
+				throws java.lang.Exception
+			{
+				return taxationScheme().taxLiability (
+					initialHoldings(),
+					adblVariate
+				);
+			}
+		};
 	}
 }
