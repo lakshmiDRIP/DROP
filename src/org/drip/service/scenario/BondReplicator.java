@@ -79,10 +79,12 @@ public class BondReplicator {
 	private double _dblCustomCreditBasisBump = java.lang.Double.NaN;
 	private double _dblSpreadDurationMultiplier = java.lang.Double.NaN;
 
+	private double _dblLogNormalVolatility = 0.1;
 	private double _dblResetRate = java.lang.Double.NaN;
 	private int _iResetDate = java.lang.Integer.MIN_VALUE;
 	private org.drip.analytics.date.JulianDate _dtSettle = null;
 	private org.drip.param.valuation.ValuationParams _valParams = null;
+	private org.drip.service.scenario.EOSMetricsReplicator _emr = null;
 	private org.drip.param.market.CurveSurfaceQuoteContainer _csqcCreditBase = null;
 	private org.drip.param.market.CurveSurfaceQuoteContainer _csqcCredit01Up = null;
 	private org.drip.param.market.CurveSurfaceQuoteContainer _csqcFundingBase = null;
@@ -499,6 +501,22 @@ public class BondReplicator {
 					strReferenceEntity, strCurrency, ccBase.hazard (bond.maturityDate()) + 0.0001,
 						_dblRecoveryRate), null, null, null, null);
 		}
+
+		_emr = !_bond.callable() && _bond.putable() ? null :
+			org.drip.service.scenario.EOSMetricsReplicator.Standard (
+				_bond,
+				_valParams,
+				_csqcFundingBase,
+				new org.drip.state.sequence.GovvieBuilderSettings (
+					_dtSpot,
+					_strGovvieCode,
+					_astrGovvieTenor,
+					_adblGovvieQuote,
+					_adblGovvieQuote
+				),
+				_dblLogNormalVolatility,
+				_dblCurrentPrice
+			);
 	}
 
 	/**
@@ -922,6 +940,17 @@ public class BondReplicator {
 	public double resetRate()
 	{
 		return _dblResetRate;
+	}
+
+	/**
+	 * Retrieve the EOS Metrics Replicator
+	 * 
+	 * @return The EOS Metrics Replicator
+	 */
+
+	public org.drip.service.scenario.EOSMetricsReplicator eosMetricsReplicator()
+	{
+		return _emr;
 	}
 
 	/**
@@ -1405,6 +1434,22 @@ public class BondReplicator {
 						csqcTenor, null, iWorkoutDate, dblWorkoutFactor, dblParCreditBasisToExercise)) /
 							_dblIssuePrice);
 				}
+			}
+
+			org.drip.analytics.output.BondEOSMetrics bem = null == _emr ? null : _emr.generateRun();
+
+			if (null != bem)
+			{
+				if (!arr.addNamedField (new org.drip.service.scenario.NamedField ("MCOAS", bem.oas())))
+					return null;
+
+				if (!arr.addNamedField (new org.drip.service.scenario.NamedField ("MCDuration",
+					bem.oasDuration())))
+					return null;
+
+				if (!arr.addNamedField (new org.drip.service.scenario.NamedField ("MCConvexity",
+					bem.oasConvexity())))
+					return null;
 			}
 
 			if (!arr.addNamedField (new org.drip.service.scenario.NamedField ("Price", _dblCurrentPrice)))

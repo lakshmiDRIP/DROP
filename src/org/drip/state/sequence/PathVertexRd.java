@@ -199,7 +199,7 @@ public class PathVertexRd {
 					try {
 						aaJDEU[iDimension][iTimeVertex] = new
 							org.drip.measure.realization.JumpDiffusionEdgeUnit
-								(adblTimeIncrement[iDimension], adblRd[iDimension], 0.);
+								(adblTimeIncrement[iTimeVertex], adblRd[iDimension], 0.);
 					} catch (java.lang.Exception e) {
 						e.printStackTrace();
 
