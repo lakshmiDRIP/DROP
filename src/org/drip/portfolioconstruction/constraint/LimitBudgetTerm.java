@@ -55,7 +55,7 @@ package org.drip.portfolioconstruction.constraint;
 
 public abstract class LimitBudgetTerm extends org.drip.portfolioconstruction.optimizer.ConstraintTerm
 {
-	private double[] _adblWeight = null;
+	private double[] _adblPrice = null;
 
 	protected LimitBudgetTerm (
 		final java.lang.String strName,
@@ -64,7 +64,7 @@ public abstract class LimitBudgetTerm extends org.drip.portfolioconstruction.opt
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
 		final double dblBudget,
-		final double[] adblWeight)
+		final double[] adblPrice)
 		throws java.lang.Exception
 	{
 		super (
@@ -78,18 +78,18 @@ public abstract class LimitBudgetTerm extends org.drip.portfolioconstruction.opt
 			dblBudget
 		);
 
-		if (null == (_adblWeight = adblWeight) || !org.drip.quant.common.NumberUtil.IsValid (_adblWeight))
+		if (null == (_adblPrice = adblPrice) || !org.drip.quant.common.NumberUtil.IsValid (_adblPrice))
 			throw new java.lang.Exception ("LimitBudgetTerm Constructor => Invalid Inputs");
 	}
 
 	/**
-	 * Retrieve the Array of the Limit Absolute Exposure Weights
+	 * Retrieve the Array of the Asset Prices
 	 * 
-	 * @return Array of the Limit Absolute Exposure Weights
+	 * @return Array of the Asset Prices
 	 */
 
-	public double[] weight()
+	public double[] price()
 	{
-		return _adblWeight;
+		return _adblPrice;
 	}
 }

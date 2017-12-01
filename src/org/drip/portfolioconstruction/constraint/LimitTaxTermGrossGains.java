@@ -103,12 +103,12 @@ public class LimitTaxTermGrossGains extends org.drip.portfolioconstruction.const
 			}
 
 			@Override public double evaluate (
-				final double[] adblVariate)
+				final double[] adblFinalHoldings)
 				throws java.lang.Exception
 			{
 				return taxationScheme().customGrossTaxGain (
 					initialHoldings(),
-					adblVariate
+					adblFinalHoldings
 				);
 			}
 		};

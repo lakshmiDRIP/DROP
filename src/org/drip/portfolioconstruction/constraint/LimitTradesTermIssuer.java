@@ -81,15 +81,15 @@ public abstract class LimitTradesTermIssuer extends org.drip.portfolioconstructi
 			dblMaximum
 		);
 
-		if (null == (_adblIssuerSelection = adblIssuerSelection) || null == (_adblInitialHoldings =
-			adblInitialHoldings))
+		if (null == (_adblIssuerSelection = adblIssuerSelection) ||
+			null == (_adblInitialHoldings = adblInitialHoldings))
 			throw new java.lang.Exception ("LimitTradesTermIssuer Constructor => Invalid Section");
 
 		int iNumAsset = _adblIssuerSelection.length;
 
 		if (0 == iNumAsset || _adblInitialHoldings.length == iNumAsset ||
 			!org.drip.quant.common.NumberUtil.IsValid (_adblIssuerSelection)||
-				!org.drip.quant.common.NumberUtil.IsValid (_adblInitialHoldings))
+			!org.drip.quant.common.NumberUtil.IsValid (_adblInitialHoldings))
 			throw new java.lang.Exception ("LimitTradesTermIssuer Constructor => Invalid Section");
 	}
 

@@ -48,24 +48,24 @@ package org.drip.portfolioconstruction.composite;
  */
 
 /**
- * TransactionCostGroup contains the Transaction Cost Values for the specified Set of Assets.
+ * TransactionChargeGroup contains the Transaction Charge Values for the specified Set of Assets.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class TransactionCostGroup {
+public class TransactionChargeGroup {
 	private
 		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.cost.TransactionCharge>
-		_mapTransactionCost = new
+		_mapTransactionCharge = new
 			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.cost.TransactionCharge>();
 
 	/**
-	 * Add an Asset's Transaction Cost
+	 * Add an Asset's Transaction Charge
 	 * 
 	 * @param strAssetID The Asset ID
-	 * @param tc The Asset's Transaction Cost
+	 * @param tc The Asset's Transaction Charge
 	 * 
-	 * @return TRUE - The Asset's Transaction Cost successfully added.
+	 * @return TRUE - The Asset's Transaction Charge successfully added.
 	 */
 
 	public boolean add (
@@ -74,59 +74,59 @@ public class TransactionCostGroup {
 	{
 		if (null == strAssetID || strAssetID.isEmpty() || null == tc) return false;
 
-		_mapTransactionCost.put (strAssetID, tc);
+		_mapTransactionCharge.put (strAssetID, tc);
 
 		return true;
 	}
 
 	/**
-	 * Indicate if the Asset's Transaction Cost is Available
+	 * Indicate if the Asset's Transaction Charge is Available
 	 * 
 	 * @param strAssetID The Asset ID
 	 * 
-	 * @return TRUE - The Asset's Transaction Cost is Available
+	 * @return TRUE - The Asset's Transaction Charge is Available
 	 */
 
 	public boolean contains (
 		final java.lang.String strAssetID)
 	{
-		return null != strAssetID && !strAssetID.isEmpty() && _mapTransactionCost.containsKey (strAssetID);
+		return null != strAssetID && !strAssetID.isEmpty() && _mapTransactionCharge.containsKey (strAssetID);
 	}
 
 	/**
-	 * Retrieve the Asset's Transaction Cost
+	 * Retrieve the Asset's Transaction Charge
 	 * 
 	 * @param strAssetID The Asset ID
 	 * 
-	 * @return The Asset's Transaction Cost
+	 * @return The Asset's Transaction Charge
 	 */
 
 	public org.drip.portfolioconstruction.cost.TransactionCharge get (
 		final java.lang.String strAssetID)
 	{
-		if (null == strAssetID || strAssetID.isEmpty() || !_mapTransactionCost.containsKey (strAssetID))
+		if (null == strAssetID || strAssetID.isEmpty() || !_mapTransactionCharge.containsKey (strAssetID))
 			return null;
 
-		return _mapTransactionCost.get (strAssetID);
+		return _mapTransactionCharge.get (strAssetID);
 	}
 
 	/**
-	 * Retrieve the Map of Transaction Costs
+	 * Retrieve the Map of Transaction Charge
 	 * 
-	 * @return Map of the Transaction Costs
+	 * @return Map of the Transaction Charge
 	 */
 
 	public java.util.Map<java.lang.String, org.drip.portfolioconstruction.cost.TransactionCharge> map()
 	{
-		return _mapTransactionCost;
+		return _mapTransactionCharge;
 	}
 
 	/**
-	 * Constrict the Transaction Cost Array to those of the Holdings
+	 * Constrict the Transaction Charge Array to those of the Holdings
 	 * 
 	 * @param holdings The Holdings Instance
 	 * 
-	 * @return The Array of Transaction Cost Objects
+	 * @return The Array of Transaction Charge Objects
 	 */
 
 	public org.drip.portfolioconstruction.cost.TransactionCharge[] constrict (
@@ -136,12 +136,12 @@ public class TransactionCostGroup {
 
 		java.util.Set<java.lang.String> setAsset = holdings.assets();
 
-		java.util.List<org.drip.portfolioconstruction.cost.TransactionCharge> lsTransactionCost = new
+		java.util.List<org.drip.portfolioconstruction.cost.TransactionCharge> lsTransactionCharge = new
 			java.util.ArrayList<org.drip.portfolioconstruction.cost.TransactionCharge>();
 
 		for (java.lang.String strAssetID : setAsset)
-			lsTransactionCost.add (contains (strAssetID) ? get (strAssetID) : null);
+			lsTransactionCharge.add (contains (strAssetID) ? get (strAssetID) : null);
 
-		return (org.drip.portfolioconstruction.cost.TransactionCharge[]) lsTransactionCost.toArray();
+		return (org.drip.portfolioconstruction.cost.TransactionCharge[]) lsTransactionCharge.toArray();
 	}
 }

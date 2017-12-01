@@ -100,7 +100,7 @@ public class LimitNamesTermIssuerShort extends org.drip.portfolioconstruction.co
 			}
 
 			@Override public double evaluate (
-				final double[] adblVariate)
+				final double[] adblFinalHoldings)
 				throws java.lang.Exception
 			{
 				double[] adblIssuerSelection = issuerSelection();
@@ -108,14 +108,14 @@ public class LimitNamesTermIssuerShort extends org.drip.portfolioconstruction.co
 				int iNameCount = 0;
 				int iNumAsset = adblIssuerSelection.length;
 
-				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate) ||
-					adblVariate.length != iNumAsset)
+				if (null == adblFinalHoldings || !org.drip.quant.common.NumberUtil.IsValid
+					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
 					throw new java.lang.Exception
 						("LimitNamesTermIssuerShort::rdToR1::evaluate => Invalid Variate Dimension");
 
 				for (int i = 0; i < iNumAsset; ++i)
 				{
-					if (0. > adblVariate[i] && 0. != adblIssuerSelection[i]) ++iNameCount;
+					if (0. > adblFinalHoldings[i] && 0. != adblIssuerSelection[i]) ++iNameCount;
 				}
 
 				return iNameCount;

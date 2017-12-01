@@ -103,12 +103,12 @@ public class LimitTaxTermNetLoss extends org.drip.portfolioconstruction.constrai
 			}
 
 			@Override public double evaluate (
-				final double[] adblVariate)
+				final double[] adblFinalHoldings)
 				throws java.lang.Exception
 			{
 				return taxationScheme().customNetTaxLoss (
 					initialHoldings(),
-					adblVariate
+					adblFinalHoldings
 				);
 			}
 		};

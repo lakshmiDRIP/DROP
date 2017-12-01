@@ -67,7 +67,7 @@ public class LimitBudgetTermTransactionCharge extends
 	 * @param scope Scope of the Constraint - ACCOUNT/ASSET/SET
 	 * @param unit Unit of the Constraint
 	 * @param dblBudget Budget Value of the Constraint
-	 * @param adblWeight Array of the Exposure Weights
+	 * @param adblPrice Array of Asset Prices
 	 * @param adblInitialHoldings Array of Initial Holdings
 	 * @param aTransactionCharge Array of Transaction Charge Instances
 	 * 
@@ -79,7 +79,7 @@ public class LimitBudgetTermTransactionCharge extends
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
 		final double dblBudget,
-		final double[] adblWeight,
+		final double[] adblPrice,
 		final double[] adblInitialHoldings,
 		final org.drip.portfolioconstruction.cost.TransactionCharge[] aTransactionCharge)
 		throws java.lang.Exception
@@ -91,7 +91,7 @@ public class LimitBudgetTermTransactionCharge extends
 			scope,
 			unit,
 			dblBudget,
-			adblWeight
+			adblPrice
 		);
 
 		if (null == (_adblInitialHoldings = adblInitialHoldings) || 0 == _adblInitialHoldings.length ||
@@ -101,7 +101,7 @@ public class LimitBudgetTermTransactionCharge extends
 		int iNumAsset = _adblInitialHoldings.length;
 
 		if (null == (_aTransactionCharge = aTransactionCharge) || iNumAsset != _aTransactionCharge.length ||
-			iNumAsset != adblWeight.length)
+			iNumAsset != adblPrice.length)
 			throw new java.lang.Exception ("LimitBudgetTermTransactionCharge Constructor => Invalid Inputs");
 
 		for (int i = 0; i < iNumAsset; ++i)
@@ -129,28 +129,28 @@ public class LimitBudgetTermTransactionCharge extends
 		{
 			@Override public int dimension()
 			{
-				return weight().length;
+				return price().length;
 			}
 
 			@Override public double evaluate (
-				final double[] adblVariate)
+				final double[] adblFinalHoldings)
 				throws java.lang.Exception
 			{
-				double[] adblWeight = weight();
+				double[] adblPrice = price();
 
 				double dblConstraintValue = 0.;
-				int iNumAsset = adblWeight.length;
+				int iNumAsset = adblPrice.length;
 
-				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate) ||
-					adblVariate.length != iNumAsset)
+				if (null == adblFinalHoldings || !org.drip.quant.common.NumberUtil.IsValid
+					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
 					throw new java.lang.Exception
 						("LimitBudgetTermTransactionCharge::rdToR1::evaluate => Invalid Variate Dimension");
 
 				for (int i = 0; i < iNumAsset; ++i) {
-					dblConstraintValue += (adblWeight[i] * adblVariate[i] -
+					dblConstraintValue += (adblPrice[i] * (adblFinalHoldings[i] - _adblInitialHoldings[i]) -
 						_aTransactionCharge[i].estimate (
 							_adblInitialHoldings[i],
-							adblVariate[i]
+							adblFinalHoldings[i]
 						)
 					);
 				}

@@ -102,7 +102,7 @@ public class LimitHoldingsTermIssuerLongShort extends
 			}
 
 			@Override public double evaluate (
-				final double[] adblVariate)
+				final double[] adblFinalHoldings)
 				throws java.lang.Exception
 			{
 				double[] adblIssuerSelection = issuerSelection();
@@ -111,17 +111,17 @@ public class LimitHoldingsTermIssuerLongShort extends
 				double dblConstraintShortValue = 0.;
 				double dblConstraintLongValue = 0.;
 
-				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate) ||
-					adblVariate.length != iNumAsset)
+				if (null == adblFinalHoldings || !org.drip.quant.common.NumberUtil.IsValid
+					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
 					throw new java.lang.Exception
 						("LimitHoldingsTermIssuerLongShort::rdToR1::evaluate => Invalid Variate Dimension");
 
 				for (int i = 0; i < iNumAsset; ++i)
 				{
-					if (adblVariate[i] > 0.)
-						dblConstraintLongValue += adblIssuerSelection[i] * adblVariate[i];
+					if (adblFinalHoldings[i] > 0.)
+						dblConstraintLongValue += adblIssuerSelection[i] * adblFinalHoldings[i];
 					else
-						dblConstraintShortValue += adblIssuerSelection[i] * adblVariate[i];
+						dblConstraintShortValue += adblIssuerSelection[i] * adblFinalHoldings[i];
 				}
 
 				return dblConstraintLongValue / dblConstraintShortValue;

@@ -55,7 +55,7 @@ package org.drip.portfolioconstruction.constraint;
 
 public class LimitRiskTermVariance extends org.drip.portfolioconstruction.constraint.LimitRiskTerm
 {
-	private double[] _adblBenchmarkConstrictedHoldings = null;
+	private double[] _adblBenchmarkHoldings = null;
 
 	/**
 	 * LimitRiskTermVariance Constructor
@@ -66,7 +66,7 @@ public class LimitRiskTermVariance extends org.drip.portfolioconstruction.constr
 	 * @param dblMinimum Minimum Limit Value of the LimitRiskTermVariance Constraint
 	 * @param dblMaximum Maximum Limit Value of the LimitRiskTermVariance Constraint
 	 * @param aadblAssetCovariance Asset Co-variance
-	 * @param adblBenchmarkConstrictedHoldings Array of the Benchmark Holdings
+	 * @param adblBenchmarkHoldings Array of the Benchmark Holdings
 	 * 
 	 * @throws java.lang.Exception Throw if the Inputs are Invalid
 	 */
@@ -78,7 +78,7 @@ public class LimitRiskTermVariance extends org.drip.portfolioconstruction.constr
 		final double dblMinimum,
 		final double dblMaximum,
 		final double[][] aadblAssetCovariance,
-		final double[] adblBenchmarkConstrictedHoldings)
+		final double[] adblBenchmarkHoldings)
 		throws java.lang.Exception
 	{
 		super (
@@ -92,11 +92,11 @@ public class LimitRiskTermVariance extends org.drip.portfolioconstruction.constr
 			aadblAssetCovariance
 		);
 
-		int iNumBenchmarkHoldings = null == (_adblBenchmarkConstrictedHoldings =
-			adblBenchmarkConstrictedHoldings) ? 0 : _adblBenchmarkConstrictedHoldings.length;
+		int iNumBenchmarkHoldings = null == (_adblBenchmarkHoldings = adblBenchmarkHoldings) ? 0 :
+			_adblBenchmarkHoldings.length;
 
 		if (0 != iNumBenchmarkHoldings && (aadblAssetCovariance[0].length != iNumBenchmarkHoldings ||
-			!org.drip.quant.common.NumberUtil.IsValid (_adblBenchmarkConstrictedHoldings)))
+			!org.drip.quant.common.NumberUtil.IsValid (_adblBenchmarkHoldings)))
 			throw new java.lang.Exception ("LimitRiskTermVariance Constructor => Invalid Benchmark");
 	}
 
@@ -106,9 +106,9 @@ public class LimitRiskTermVariance extends org.drip.portfolioconstruction.constr
 	 * @return The Constricted Benchmark Holdings
 	 */
 
-	public double[] benchmarkConstrictedHoldings()
+	public double[] benchmarkHoldings()
 	{
-		return _adblBenchmarkConstrictedHoldings;
+		return _adblBenchmarkHoldings;
 	}
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
@@ -121,7 +121,7 @@ public class LimitRiskTermVariance extends org.drip.portfolioconstruction.constr
 			}
 
 			@Override public double evaluate (
-				final double[] adblVariate)
+				final double[] adblFinalHoldings)
 				throws java.lang.Exception
 			{
 				double[][] aadblAssetCovariance = assetCovariance();
@@ -129,24 +129,22 @@ public class LimitRiskTermVariance extends org.drip.portfolioconstruction.constr
 				int iNumAsset = aadblAssetCovariance.length;
 				double dblVariance = 0;
 
-				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate) ||
-					adblVariate.length != iNumAsset)
+				if (null == adblFinalHoldings || !org.drip.quant.common.NumberUtil.IsValid
+					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
 					throw new java.lang.Exception
 						("LimitRiskTermVariance::rdToR1::evaluate => Invalid Variate Dimension");
 
 				for (int i = 0; i < iNumAsset; ++i)
 				{
-					double dblHoldingsOffsetI = adblVariate[i];
+					double dblHoldingsOffsetI = adblFinalHoldings[i];
 
-					if (null != _adblBenchmarkConstrictedHoldings)
-						dblHoldingsOffsetI -= _adblBenchmarkConstrictedHoldings[i];
+					if (null != _adblBenchmarkHoldings) dblHoldingsOffsetI -= _adblBenchmarkHoldings[i];
 
 					for (int j = 0; j < iNumAsset; ++j)
 					{
-						double dblHoldingsOffsetJ = adblVariate[j];
+						double dblHoldingsOffsetJ = adblFinalHoldings[j];
 
-						if (null != _adblBenchmarkConstrictedHoldings)
-							dblHoldingsOffsetJ -= _adblBenchmarkConstrictedHoldings[j];
+						if (null != _adblBenchmarkHoldings) dblHoldingsOffsetJ -= _adblBenchmarkHoldings[j];
 
 						dblVariance += dblHoldingsOffsetI * aadblAssetCovariance[i][j] * dblHoldingsOffsetJ;
 					}

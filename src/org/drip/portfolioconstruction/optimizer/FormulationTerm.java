@@ -48,7 +48,7 @@ package org.drip.portfolioconstruction.optimizer;
  */
 
 /**
- * FormulationTerm holds the Core Objective/Constraint Formulation Terms. It includes the R^d->R^1 Objective
+ * FormulationTerm holds the Core Objective/Constraint Formulation Terms. It includes the R^d To R^1 Objective
  * 	and/or Constraints as well as their Category.
  *
  * @author Lakshmi Krishnamurthy

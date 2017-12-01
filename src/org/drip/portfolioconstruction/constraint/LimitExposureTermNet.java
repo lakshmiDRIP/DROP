@@ -99,7 +99,7 @@ public class LimitExposureTermNet extends org.drip.portfolioconstruction.constra
 			}
 
 			@Override public double evaluate (
-				final double[] adblVariate)
+				final double[] adblFinalHoldings)
 				throws java.lang.Exception
 			{
 				double[] adblPrice = price();
@@ -107,13 +107,13 @@ public class LimitExposureTermNet extends org.drip.portfolioconstruction.constra
 				double dblConstraintValue = 0.;
 				int iNumAsset = adblPrice.length;
 
-				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate) ||
-					adblVariate.length != iNumAsset)
+				if (null == adblFinalHoldings || !org.drip.quant.common.NumberUtil.IsValid
+					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
 					throw new java.lang.Exception
 						("LimitExposureTermNet::rdToR1::evaluate => Invalid Variate Dimension");
 
 				for (int i = 0; i < iNumAsset; ++i)
-					dblConstraintValue += adblPrice[i] * adblVariate[i];
+					dblConstraintValue += adblPrice[i] * adblFinalHoldings[i];
 
 				return dblConstraintValue;
 			}

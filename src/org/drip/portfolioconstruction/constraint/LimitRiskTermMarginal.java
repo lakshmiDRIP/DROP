@@ -93,9 +93,9 @@ public class LimitRiskTermMarginal extends org.drip.portfolioconstruction.constr
 			aadblAssetCovariance
 		);
 
-		if (null == (_adblInitialHoldings = adblInitialHoldings) || _adblInitialHoldings.length !=
-			aadblAssetCovariance[0].length || !org.drip.quant.common.NumberUtil.IsValid
-				(_adblInitialHoldings))
+		if (null == (_adblInitialHoldings = adblInitialHoldings) ||
+			_adblInitialHoldings.length != aadblAssetCovariance[0].length ||
+			!org.drip.quant.common.NumberUtil.IsValid (_adblInitialHoldings))
 			throw new java.lang.Exception ("LimitRiskTermMarginal Constructor => Invalid Initial Holdings");
 	}
 
@@ -120,7 +120,7 @@ public class LimitRiskTermMarginal extends org.drip.portfolioconstruction.constr
 			}
 
 			@Override public double evaluate (
-				final double[] adblVariate)
+				final double[] adblFinalHoldings)
 				throws java.lang.Exception
 			{
 				double[][] aadblAssetCovariance = assetCovariance();
@@ -128,18 +128,18 @@ public class LimitRiskTermMarginal extends org.drip.portfolioconstruction.constr
 				int iNumAsset = aadblAssetCovariance.length;
 				double dblMarginalVariance = 0;
 
-				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate) ||
-					adblVariate.length != iNumAsset)
+				if (null == adblFinalHoldings || !org.drip.quant.common.NumberUtil.IsValid
+					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
 					throw new java.lang.Exception
 						("LimitRiskTermMarginal::rdToR1::evaluate => Invalid Variate Dimension");
 
 				for (int i = 0; i < iNumAsset; ++i)
 				{
-					double dblHoldingsDifferentialI = adblVariate[i] - _adblInitialHoldings[i];
+					double dblHoldingsDifferentialI = adblFinalHoldings[i] - _adblInitialHoldings[i];
 
 					for (int j = 0; j < iNumAsset; ++j)
 						dblMarginalVariance += dblHoldingsDifferentialI * aadblAssetCovariance[i][j] *
-							(adblVariate[j] - _adblInitialHoldings[j]);
+							(adblFinalHoldings[j] - _adblInitialHoldings[j]);
 				}
 
 				return dblMarginalVariance;

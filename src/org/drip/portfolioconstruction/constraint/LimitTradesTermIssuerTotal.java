@@ -104,7 +104,7 @@ public class LimitTradesTermIssuerTotal extends
 			}
 
 			@Override public double evaluate (
-				final double[] adblVariate)
+				final double[] adblFinalHoldings)
 				throws java.lang.Exception
 			{
 				double[] adblInitialHoldings = initialHoldings();
@@ -114,14 +114,15 @@ public class LimitTradesTermIssuerTotal extends
 				int iNumAsset = adblIssuerSelection.length;
 				double dblTradeCount = 0;
 
-				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate) ||
-					adblVariate.length != iNumAsset)
+				if (null == adblFinalHoldings || !org.drip.quant.common.NumberUtil.IsValid
+					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
 					throw new java.lang.Exception
 						("LimitTradesTermIssuerTotal::rdToR1::evaluate => Invalid Variate Dimension");
 
 				for (int i = 0; i < iNumAsset; ++i)
 				{
-					if (adblInitialHoldings[i] != adblVariate[i]) dblTradeCount += adblIssuerSelection[i];
+					if (adblInitialHoldings[i] != adblFinalHoldings[i])
+						dblTradeCount += adblIssuerSelection[i];
 				}
 
 				return dblTradeCount;

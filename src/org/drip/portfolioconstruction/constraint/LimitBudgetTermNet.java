@@ -63,7 +63,7 @@ public class LimitBudgetTermNet extends org.drip.portfolioconstruction.constrain
 	 * @param scope Scope of the Constraint - ACCOUNT/ASSET/SET
 	 * @param unit Unit of the Constraint
 	 * @param dblBudget Budget Value of the Constraint
-	 * @param adblWeight Array of the Exposure Weights
+	 * @param adblPrice Array of Asset Prices
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -73,7 +73,7 @@ public class LimitBudgetTermNet extends org.drip.portfolioconstruction.constrain
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
 		final double dblBudget,
-		final double[] adblWeight)
+		final double[] adblPrice)
 		throws java.lang.Exception
 	{
 		super (
@@ -83,7 +83,7 @@ public class LimitBudgetTermNet extends org.drip.portfolioconstruction.constrain
 			scope,
 			unit,
 			dblBudget,
-			adblWeight
+			adblPrice
 		);
 	}
 
@@ -93,25 +93,25 @@ public class LimitBudgetTermNet extends org.drip.portfolioconstruction.constrain
 		{
 			@Override public int dimension()
 			{
-				return weight().length;
+				return price().length;
 			}
 
 			@Override public double evaluate (
-				final double[] adblVariate)
+				final double[] adblFinalHoldings)
 				throws java.lang.Exception
 			{
-				double[] adblWeight = weight();
+				double[] adblPrice = price();
 
 				double dblConstraintValue = 0.;
-				int iNumAsset = adblWeight.length;
+				int iNumAsset = adblPrice.length;
 
-				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate) ||
-					adblVariate.length != iNumAsset)
+				if (null == adblFinalHoldings || !org.drip.quant.common.NumberUtil.IsValid
+					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
 					throw new java.lang.Exception
 						("LimitExposureBudgetNet::rdToR1::evaluate => Invalid Variate Dimension");
 
 				for (int i = 0; i < iNumAsset; ++i)
-					dblConstraintValue += adblWeight[i] * adblVariate[i];
+					dblConstraintValue += adblPrice[i] * adblFinalHoldings[i];
 
 				return dblConstraintValue;
 			}

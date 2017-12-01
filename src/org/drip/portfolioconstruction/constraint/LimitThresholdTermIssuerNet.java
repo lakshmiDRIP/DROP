@@ -101,7 +101,7 @@ public class LimitThresholdTermIssuerNet extends
 			}
 
 			@Override public double evaluate (
-				final double[] adblVariate)
+				final double[] adblFinalHoldings)
 				throws java.lang.Exception
 			{
 				double[] adblIssuerSelection = issuerSelection();
@@ -109,13 +109,13 @@ public class LimitThresholdTermIssuerNet extends
 				int iNumAsset = adblIssuerSelection.length;
 				double dblConstraintValue = 0.;
 
-				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate) ||
-					adblVariate.length != iNumAsset)
+				if (null == adblFinalHoldings || !org.drip.quant.common.NumberUtil.IsValid
+					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
 					throw new java.lang.Exception
 						("LimitThresholdTermIssuerNet::rdToR1::evaluate => Invalid Variate Dimension");
 
 				for (int i = 0; i < iNumAsset; ++i)
-					dblConstraintValue += adblIssuerSelection[i] * adblVariate[i];
+					dblConstraintValue += adblIssuerSelection[i] * adblFinalHoldings[i];
 
 				return dblConstraintValue;
 			}

@@ -103,12 +103,12 @@ public class LimitTaxTermLongGains extends org.drip.portfolioconstruction.constr
 			}
 
 			@Override public double evaluate (
-				final double[] adblVariate)
+				final double[] adblFinalHoldings)
 				throws java.lang.Exception
 			{
 				return taxationScheme().longTermTaxGain (
 					initialHoldings(),
-					adblVariate
+					adblFinalHoldings
 				);
 			}
 		};

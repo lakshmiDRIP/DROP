@@ -61,7 +61,7 @@ public class Account extends org.drip.portfolioconstruction.core.Block {
 	private org.drip.portfolioconstruction.risk.AlphaUncertaintyGroup _aug = null;
 	private org.drip.portfolioconstruction.composite.Benchmark _bmObjective = null;
 	private org.drip.portfolioconstruction.risk.AssetCovariance _acRiskModel = null;
-	private org.drip.portfolioconstruction.composite.TransactionCostGroup _tcg = null;
+	private org.drip.portfolioconstruction.composite.TransactionChargeGroup _tcg = null;
 
 	/**
 	 * Account Constructor
@@ -172,7 +172,7 @@ public class Account extends org.drip.portfolioconstruction.core.Block {
 	 * @return The Transaction Cost Group Instance
 	 */
 
-	public org.drip.portfolioconstruction.composite.TransactionCostGroup transactionCostGroup()
+	public org.drip.portfolioconstruction.composite.TransactionChargeGroup transactionCostGroup()
 	{
 		return _tcg;
 	}
@@ -282,7 +282,7 @@ public class Account extends org.drip.portfolioconstruction.core.Block {
 	 */
 
 	public boolean setTransactionCostGroup (
-		final org.drip.portfolioconstruction.composite.TransactionCostGroup tcg)
+		final org.drip.portfolioconstruction.composite.TransactionChargeGroup tcg)
 	{
 		if (null == tcg) return false;
 

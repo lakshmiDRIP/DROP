@@ -100,20 +100,20 @@ public class LimitHoldingsTermAbsolute extends org.drip.portfolioconstruction.co
 			}
 
 			@Override public double evaluate (
-				final double[] adblVariate)
+				final double[] adblFinalHoldings)
 				throws java.lang.Exception
 			{
 				int iNumAsset = size();
 
 				double dblConstraintValue = 0.;
 
-				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate) ||
-					adblVariate.length != iNumAsset)
+				if (null == adblFinalHoldings || !org.drip.quant.common.NumberUtil.IsValid
+					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
 					throw new java.lang.Exception
 						("LimitHoldingsTermAbsolute::rdToR1::evaluate => Invalid Variate Dimension");
 
 				for (int i = 0; i < iNumAsset; ++i)
-					dblConstraintValue += java.lang.Math.abs (adblVariate[i]);
+					dblConstraintValue += java.lang.Math.abs (adblFinalHoldings[i]);
 
 				return dblConstraintValue;
 			}
