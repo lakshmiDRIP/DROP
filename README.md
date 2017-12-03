@@ -2,7 +2,7 @@
 
 **v3.20**  *1 December 2017*
 
-DROP contains an implementation of the models and provides libraries for fixed income valuation and adjustments, asset allocation and transaction cost analytics, and supporting libraries in numerical optimization and statistical learning.
+DROP implements the model libraries and provides systems for fixed income valuation and adjustments, asset allocation and transaction cost analytics, and supporting libraries in numerical optimization and statistical learning.
 
 DROP is composed of four main libraries:
 
