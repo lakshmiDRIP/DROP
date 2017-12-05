@@ -3,7 +3,8 @@
 **v3.20**  *1 December 2017*
 
 [![Build Status](https://travis-ci.org/lakshmiDRIP/DROP.svg)](https://travis-ci.org/lakshmiDRIP/DROP)
-[![License MIT](https://img.shields.io/badge/license-Apache-blue.svg)](https://github.com/lakshmiDRIP/DROP/tree/master/LICENSE)
+[![codecov.io](http://codecov.io/github/lakshmiDRIP/DROP/coverage.svg?branch=master)](https://codecov.io/gh/lakshmiDRIP/DROP/branch/master)
+[![License](https://img.shields.io/badge/license-Apache-blue.svg)](https://github.com/lakshmiDRIP/DROP/tree/master/LICENSE)
 
 DROP implements the model libraries and provides systems for fixed income valuation and adjustments, asset allocation and transaction cost analytics, and supporting libraries in numerical optimization and statistical learning.
 
