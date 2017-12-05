@@ -71,29 +71,24 @@ javadoc
     options.links("http://docs.oracle.com/javase/7/docs/api/")
 }
 
-task sourcesJar(type: Jar, dependsOn: classes)
-{
+task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = "sources"
     from sourceSets.main.allSource
 }
 
-task javadocJar(type: Jar, dependsOn: javadoc)
-{
+task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = "javadoc"
     from javadoc.destinationDir
 }
 
-artifacts
-{
+artifacts {
     archives jar
     archives sourcesJar
     archives javadocJar
 }
 
-jar
-{
-    manifest
-    {
+jar {
+    manifest {
         name = "DROP"
         instruction "Bundle-Vendor", "DROP Contributors"
         instruction "Bundle-DocURL", "https://github.com/lakshmiDRIP/DROP"
