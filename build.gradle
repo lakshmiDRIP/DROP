@@ -1,9 +1,11 @@
-apply plugin: 'java-library'
-apply plugin: 'jacoco'
-
 repositories
 {
     jcenter()
+    mavenCentral()
+    maven
+    {
+        url "https://plugins.gradle.org/m2/"
+    }
 }
 
 dependencies
@@ -15,6 +17,232 @@ dependencies
     testImplementation 'junit:junit:4.12'
 }
 
+group = "org.drip"
+ext.githubProjectName = "DROP"
+
+version = project.properties["release.version"]
+
+def releaseTag = System.getenv("TRAVIS_TAG");
+if (releaseTag != null && !releaseTag.isEmpty()) {
+    if (releaseTag.startsWith("v")) {
+        releaseTag = releaseTag.substring(1);
+    }
+    version = releaseTag;
+    project.properties.put("release.version", releaseTag);
+
+    println("Releasing with version " + version);
+}
+
+description = "DROP implements the model libraries and provides systems for fixed income valuation and adjustments, asset allocation and transaction cost analytics, and supporting libraries in numerical optimization and statistical learning."
+
+apply plugin: "java-library"
+apply plugin: "jacoco"
+apply plugin: "maven"
+
+sourceCompatibility = JavaVersion.VERSION_1_6
+targetCompatibility = JavaVersion.VERSION_1_6
+
+javadoc
+{
+    failOnError = false
+    exclude "**/internal/**"
+    exclude "**/jmh/**"
+    exclude "**/perf/**"
+    exclude "**/test/**"
+    exclude "**/zen/**"
+    options
+    {
+        windowTitle = "DROP Javadoc ${project.version}"
+    }
+    options.addStringOption("top").value = ""
+    options.addStringOption("doctitle").value = ""
+    options.addStringOption("header").value = ""
+
+    options.links("http://docs.oracle.com/javase/7/docs/api/")
+}
+
+task sourcesJar(type: Jar, dependsOn: classes)
+{
+    classifier = "sources"
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc)
+{
+    classifier = "javadoc"
+    from javadoc.destinationDir
+}
+
+artifacts
+{
+    archives jar
+    archives sourcesJar
+    archives javadocJar
+}
+
+jar
+{
+    manifest
+    {
+        name = "DROP"
+        instruction "Bundle-Vendor", "DROP Contributors"
+        instruction "Bundle-DocURL", "https://github.com/lakshmiDRIP/DROP"
+        instruction "Import-Package", "!org.junit,!junit.framework,*"
+        instruction "Eclipse-ExtensibleAPI", "true"
+        instruction "Automatic-Module-Name", "org.drip"
+    }
+}
+
+license
+{
+    header rootProject.file("HEADER")
+    ext.year = Calendar.getInstance().get(Calendar.YEAR)
+    skipExistingHeaders true
+    ignoreFailures true
+    excludes(["**/*.md", "**/*.txt"])
+}
+
+apply plugin: "maven-publish"
+
+install
+{
+    repositories.mavenInstaller.pom.project
+    {
+        name "DROP"
+        description "Fixed Income, Portfolio Construction, XVA, TCost Libraries"
+        url "https://github.com/lakshmiDRIP/DROP"
+        licenses
+        {
+            license
+            {
+                name "The Apache Software License, Version 2.0"
+                url "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                distribution "repo"
+            }
+        }
+        developers
+        {
+            developer
+            {
+                id "lakshmiDRIP"
+                name "Lakshmi Krishnamurthy"
+                email "lakshmimv7977@gmail.com"
+            }
+        }
+        scm
+        {
+            connection "scm:git:git@github.com:lakshmiDRIP/DROP.git"
+            url "scm:git:git@github.com:lakshmiDRIP/DROP.git"
+            developerConnection "scm:git:git@github.com:lakshmiDRIP/DROP.git"
+        }
+        issueManagement
+        {
+            system "github"
+            url "https://github.com/lakshmiDRIP/DROP/issues"
+        }
+    }
+}
+
+publishing
+{
+    publications
+    {
+        mavenJava(MavenPublication)
+        {
+            from components.java
+            artifact (sourcesJar) 
+            { 
+                classifier = "sources"
+            }
+        }
+    }
+}
+
+publishing.publications.all
+{
+  pom.withXml
+  {
+    asNode().dependencies."*".findAll()
+    {
+      it.scope.text() == "runtime" && project.configurations.compile.allDependencies.find { dep ->
+        dep.name == it.artifactId.text()
+      }
+    }.each { it.scope*.value = "compile"}
+  }
+}
+
+jmh
+{
+    jmhVersion = jmhLibVersion
+    humanOutputFile = null
+    includeTests = false
+
+    if (project.hasProperty("jmh"))
+    {
+        include = ".*" + project.jmh + ".*"
+        println("JMH: " + include);
+    }
+}
+
+plugins.withType(EclipsePlugin)
+{
+    project.eclipse.classpath.plusConfigurations += [ configurations.jmh ]
+}
+
+test
+{
+    testLogging
+    {
+        events=["skipped", "failed"]
+        exceptionFormat="full"
+
+        debug.events = ["skipped", "failed"]
+        debug.exceptionFormat="full"
+
+        info.events = ["failed", "skipped"]
+        info.exceptionFormat="full"
+        
+        warn.events = ["failed", "skipped"]
+        warn.exceptionFormat="full"
+    }
+
+    maxHeapSize = "1200m"
+
+    if (System.getenv("CI") == null)
+    {
+        maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
+    }
+}
+
+check.dependsOn testng 
+
+jacoco
+{
+    toolVersion = "0.7.9" // See http://www.eclemma.org/jacoco/.
+}
+
+task GCandMem(dependsOn: "check") doLast
+{
+    print("Memory usage before: ")
+    println(java.lang.management.ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getUsed() / 1024.0 / 1024.0)
+    System.gc()
+    Thread.sleep(200)
+    print("Memory usage: ")
+    println(java.lang.management.ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getUsed() / 1024.0 / 1024.0)
+}
+
+task GCandMem2(dependsOn: "test") doLast
+{
+    print("Memory usage before: ")
+    println(java.lang.management.ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getUsed() / 1024.0 / 1024.0)
+    System.gc()
+    Thread.sleep(200)
+    print("Memory usage: ")
+    println(java.lang.management.ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getUsed() / 1024.0 / 1024.0)
+}
+
+testng.dependsOn GCandMem2
+
 jacocoTestReport
 {
     reports
@@ -22,5 +250,85 @@ jacocoTestReport
         xml.enabled true
         html.enabled false
     }
+
+    afterEvaluate {
+        classDirectories = files(classDirectories.files.collect
+        {
+            fileTree(dir: it,
+                    exclude: ["org/drip/tck/**"])
+        })
+    }
 }
 
+jacocoTestReport.dependsOn GCandMem
+
+build.dependsOn jacocoTestReport
+
+if (rootProject.hasProperty("releaseMode"))
+{
+  if ("branch".equals(rootProject.releaseMode))
+  {
+    println("ReleaseMode: " + rootProject.releaseMode);
+    artifactory
+    {
+        contextUrl = "https://oss.jfrog.org"
+    
+        publish
+        {
+            repository {
+                repoKey = "oss-snapshot-local"
+    
+                username = rootProject.bintrayUser
+                password = rootProject.bintrayKey
+            }
+    
+            defaults
+            {
+                publishConfigs("archives")
+            }
+        }
+    }
+    
+    build.finalizedBy(artifactoryPublish)
+  }
+
+   if ("full".equals(rootProject.releaseMode))
+   {
+      def rver = version;
+
+      println("ReleaseMode: " + rootProject.releaseMode + " version " + rver);
+
+      bintray
+      {
+         user = rootProject.bintrayUser
+         key = rootProject.bintrayKey
+         configurations = ["archives"]
+         publish = true
+         pkg
+         {
+           repo = "DROP"
+           name = "DROP"
+           userOrg = "DRIP"
+           labels = ["DRIP", "DROP"]
+           licenses = ["Apache-2.0"]
+           vcsUrl = "https://github.com/lakshmiDRIP/DROP.git"
+           version
+           {
+             name = rver
+             gpg
+             {
+                sign = true
+             }
+             mavenCentralSync {
+               sync = true 
+               user = rootProject.sonatypeUsername
+               password = rootProject.sonatypePassword
+               close = "1"
+             }
+           }
+         }
+      }
+      
+      build.finalizedBy(bintrayUpload)
+   }
+}
