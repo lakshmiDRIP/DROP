@@ -1,20 +1,14 @@
-repositories
+buildscript
 {
+  repositories
+  { 
     jcenter()
     mavenCentral()
     maven
     {
         url "https://plugins.gradle.org/m2/"
     }
-}
-
-dependencies
-{
-    api 'org.apache.commons:commons-math3:3.6.1'
-
-    implementation 'com.google.guava:guava:21.0'
-
-    testImplementation 'junit:junit:4.12'
+  }
 }
 
 group = "org.drip"
@@ -23,8 +17,10 @@ ext.githubProjectName = "DROP"
 version = project.properties["release.version"]
 
 def releaseTag = System.getenv("TRAVIS_TAG");
-if (releaseTag != null && !releaseTag.isEmpty()) {
-    if (releaseTag.startsWith("v")) {
+if (releaseTag != null && !releaseTag.isEmpty())
+{
+    if (releaseTag.startsWith("v"))
+    {
         releaseTag = releaseTag.substring(1);
     }
     version = releaseTag;
@@ -41,6 +37,20 @@ apply plugin: "maven"
 
 sourceCompatibility = JavaVersion.VERSION_1_6
 targetCompatibility = JavaVersion.VERSION_1_6
+
+repositories
+{
+  mavenCentral()
+}
+
+dependencies
+{
+    api 'org.apache.commons:commons-math3:3.6.1'
+
+    implementation 'com.google.guava:guava:21.0'
+
+    testImplementation 'junit:junit:4.12'
+}
 
 javadoc
 {
