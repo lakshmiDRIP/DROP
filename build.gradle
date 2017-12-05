@@ -216,8 +216,6 @@ test
     }
 }
 
-check.dependsOn testng 
-
 jacoco
 {
     toolVersion = "0.7.9" // See http://www.eclemma.org/jacoco/.
@@ -240,8 +238,6 @@ task GCandMem2(dependsOn: "test") doLast {
     print("Memory usage: ")
     println(java.lang.management.ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getUsed() / 1024.0 / 1024.0)
 }
-
-testng.dependsOn GCandMem2
 
 jacocoTestReport {
     reports {
