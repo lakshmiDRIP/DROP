@@ -1,5 +1,7 @@
 # DROP
 
+[![Join the chat at https://gitter.im/lakshmiDRIPDROP/Lobby](https://badges.gitter.im/lakshmiDRIPDROP/Lobby.svg)](https://gitter.im/lakshmiDRIPDROP/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 **v3.20**  *1 December 2017*
 
 [![Build Status](https://travis-ci.org/lakshmiDRIP/DROP.svg)](https://travis-ci.org/lakshmiDRIP/DROP)
