@@ -68,7 +68,6 @@ javadoc
 {
     failOnError = false
     exclude "**/internal/**"
-    exclude "**/jmh/**"
     exclude "**/perf/**"
     exclude "**/test/**"
     exclude "**/zen/**"
@@ -185,19 +184,6 @@ publishing.publications.all
       }
     }.each { it.scope*.value = "compile"}
   }
-}
-
-jmh
-{
-    jmhVersion = jmhLibVersion
-    humanOutputFile = null
-    includeTests = false
-
-    if (project.hasProperty("jmh"))
-    {
-        include = ".*" + project.jmh + ".*"
-        println("JMH: " + include);
-    }
 }
 
 plugins.withType(EclipsePlugin)
