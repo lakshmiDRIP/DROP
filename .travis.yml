@@ -5,5 +5,20 @@ sudo: required
 before_install:
  - chmod +x gradlew
 
+install: true
+
+
 script:
-  - ./gradlew clean build -i --continue
+  - gradle/buildThroughTravis.sh
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+
+cache:
+
+  directories:
+
+  - $HOME/.m2
+
+  - $HOME/.gradle
+
