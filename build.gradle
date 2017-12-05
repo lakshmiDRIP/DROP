@@ -226,8 +226,7 @@ jacoco
     toolVersion = "0.7.9" // See http://www.eclemma.org/jacoco/.
 }
 
-task GCandMem(dependsOn: "check") doLast
-{
+task GCandMem(dependsOn: "check") doLast {
     print("Memory usage before: ")
     println(java.lang.management.ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getUsed() / 1024.0 / 1024.0)
     System.gc()
@@ -236,8 +235,7 @@ task GCandMem(dependsOn: "check") doLast
     println(java.lang.management.ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getUsed() / 1024.0 / 1024.0)
 }
 
-task GCandMem2(dependsOn: "test") doLast
-{
+task GCandMem2(dependsOn: "test") doLast {
     print("Memory usage before: ")
     println(java.lang.management.ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getUsed() / 1024.0 / 1024.0)
     System.gc()
@@ -248,10 +246,8 @@ task GCandMem2(dependsOn: "test") doLast
 
 testng.dependsOn GCandMem2
 
-jacocoTestReport
-{
-    reports
-    {
+jacocoTestReport {
+    reports {
         xml.enabled true
         html.enabled false
     }
@@ -269,17 +265,13 @@ jacocoTestReport.dependsOn GCandMem
 
 build.dependsOn jacocoTestReport
 
-if (rootProject.hasProperty("releaseMode"))
-{
-  if ("branch".equals(rootProject.releaseMode))
-  {
+if (rootProject.hasProperty("releaseMode")) {
+  if ("branch".equals(rootProject.releaseMode)) {
     println("ReleaseMode: " + rootProject.releaseMode);
-    artifactory
-    {
+    artifactory {
         contextUrl = "https://oss.jfrog.org"
     
-        publish
-        {
+        publish {
             repository {
                 repoKey = "oss-snapshot-local"
     
@@ -287,8 +279,7 @@ if (rootProject.hasProperty("releaseMode"))
                 password = rootProject.bintrayKey
             }
     
-            defaults
-            {
+            defaults {
                 publishConfigs("archives")
             }
         }
@@ -297,31 +288,26 @@ if (rootProject.hasProperty("releaseMode"))
     build.finalizedBy(artifactoryPublish)
   }
 
-   if ("full".equals(rootProject.releaseMode))
-   {
+   if ("full".equals(rootProject.releaseMode)) {
       def rver = version;
 
       println("ReleaseMode: " + rootProject.releaseMode + " version " + rver);
 
-      bintray
-      {
+      bintray {
          user = rootProject.bintrayUser
          key = rootProject.bintrayKey
          configurations = ["archives"]
          publish = true
-         pkg
-         {
+         pkg {
            repo = "DROP"
            name = "DROP"
            userOrg = "DRIP"
            labels = ["DRIP", "DROP"]
            licenses = ["Apache-2.0"]
            vcsUrl = "https://github.com/lakshmiDRIP/DROP.git"
-           version
-           {
+           version {
              name = rver
-             gpg
-             {
+             gpg {
                 sign = true
              }
              mavenCentralSync {
