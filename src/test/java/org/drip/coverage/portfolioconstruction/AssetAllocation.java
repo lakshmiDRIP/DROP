@@ -1,11 +1,11 @@
 
 package org.drip.coverage.portfolioconstruction;
 
-import org.drip.sample.assetallocation.BudgetConstrainedVarianceMinimizer;
+// import org.drip.sample.assetallocation.BudgetConstrainedVarianceMinimizer;
 import org.drip.sample.assetallocation.DualConstrainedVariateConvergence;
-import org.drip.sample.assetallocation.ReturnsConstrainedVarianceMinimizer;
-import org.drip.sample.assetallocation.RiskTolerantVarianceMinimizer;
-import org.drip.sample.assetallocation.VanillaVarianceMinimizer;
+// import org.drip.sample.assetallocation.ReturnsConstrainedVarianceMinimizer;
+// import org.drip.sample.assetallocation.RiskTolerantVarianceMinimizer;
+// import org.drip.sample.assetallocation.VanillaVarianceMinimizer;
 
 import org.junit.Test;
 
@@ -66,14 +66,14 @@ public class AssetAllocation
 {
 	@Test public void codeCoverageTest() throws Exception
 	{
-		BudgetConstrainedVarianceMinimizer.main (null);
+		// BudgetConstrainedVarianceMinimizer.main (null);
 
 		DualConstrainedVariateConvergence.main (null);
 
-		ReturnsConstrainedVarianceMinimizer.main (null);
+		// ReturnsConstrainedVarianceMinimizer.main (null);
 
-		RiskTolerantVarianceMinimizer.main (null);
+		// RiskTolerantVarianceMinimizer.main (null);
 
-		VanillaVarianceMinimizer.main (null);
+		// VanillaVarianceMinimizer.main (null);
     }
 }
