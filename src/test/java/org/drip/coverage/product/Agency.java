@@ -53,15 +53,14 @@ import org.junit.Test;
  */
 
 /**
- * Agency holds the JUnit Code Coverage Tests for the Agency Product.
- * 
+ * Agency holds the JUnit Code Coverage Tests for the Agency Product Module.
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class Agency
 {
-	@Test public void agencyFixedBullet1() throws Exception
+	@Test public void codeCoverageTest() throws Exception
 	{
 		AgencyFixedBullet1.main (null);
 

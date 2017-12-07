@@ -170,7 +170,7 @@ public class RegressionEngine {
 	 * 
 	 * @param rs Regressor Set
 	 * 
-	 * @return TRUE => Regressor Set successfully added
+	 * @return TRUE - Regressor Set successfully added
 	 */
 
 	protected final boolean addRegressorSet (

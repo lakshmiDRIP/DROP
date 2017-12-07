@@ -1,6 +1,6 @@
 
 /**
- * Product Code Coverage Estimation Suite
+ * Product Module Code Coverage Estimation Suite
  *
  * @author Lakshmi Krishnamurthy
  */
