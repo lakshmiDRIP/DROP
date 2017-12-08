@@ -1,3 +1,5 @@
+install: travis_wait 30 mvn install
+
 language: java
 
 sudo: required
@@ -6,10 +8,7 @@ before_install:
  - chmod +x gradlew
  - chmod +x gradle/buildThroughTravis.sh
 
-install:
-  - true
-  - travis_wait 30 mvn install
-
+install: true
 
 script:
   - gradle/buildThroughTravis.sh
