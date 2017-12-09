@@ -14,6 +14,7 @@ buildscript
     classpath "gradle.plugin.nl.javadude.gradle.plugins:license-gradle-plugin:0.13.1"
     classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3"
     classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.5.2"
+    classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6.1"
   }
 }
 
@@ -37,10 +38,6 @@ if (releaseTag != null && !releaseTag.isEmpty())
 
 description = "DROP implements the model libraries and provides systems for fixed income valuation and adjustments, asset allocation and transaction cost analytics, and supporting libraries in numerical optimization and statistical learning."
 
-plugins {
-    id "org.sonarqube" version "2.5"
-}
-
 apply plugin: "java-library"
 apply plugin: "jacoco"
 apply plugin: "ru.vyarus.animalsniffer"
@@ -49,6 +46,7 @@ apply plugin: "osgi"
 apply plugin: "com.github.hierynomus.license"
 apply plugin: "com.jfrog.bintray"
 apply plugin: "com.jfrog.artifactory"
+apply plugin: "org.sonarqube"
 
 sourceCompatibility = JavaVersion.VERSION_1_6
 targetCompatibility = JavaVersion.VERSION_1_6
