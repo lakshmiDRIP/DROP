@@ -4,12 +4,6 @@ language: java
 
 sudo: required
 
-addons:
-  sonarcloud:
-    organization: drip
-    token:
-      secure: db688c873006dda2e5380fc8fc1774343568df0a
-
 before_install:
  - chmod +x gradlew
  - chmod +x gradle/buildThroughTravis.sh
@@ -18,7 +12,6 @@ install: true
 
 script:
   - gradle/buildThroughTravis.sh
-  - sonar-scanner
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
@@ -30,4 +23,3 @@ cache:
   - $HOME/.m2
 
   - $HOME/.gradle
-
