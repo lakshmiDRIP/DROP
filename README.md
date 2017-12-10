@@ -12,8 +12,7 @@ DROP is composed of four main libraries:
  * [Statistical Learning] (https://lakshmidrip.github.io/DROP/StatisticalLearningModule.html)
 
 
-[![Travis](https://travis-ci.org/lakshmiDRIP/DROP.svg)](https://travis-ci.org/lakshmiDRIP/DROP) 
-
+[![Travis](https://travis-ci.org/lakshmiDRIP/DROP.svg)](https://travis-ci.org/lakshmiDRIP/DROP)
 [![Git](https://img.shields.io/github/release/lakshmiDRIP/DROP.svg)](https://github.com/release/lakshmiDRIP/DROP) 
 
 [![Git](http://dmlc.github.io/img/apache2.svg)](./LICENSE) 
