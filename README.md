@@ -6,6 +6,7 @@
 [![codecov.io](http://codecov.io/github/lakshmiDRIP/DROP/coverage.svg?branch=master)](https://codecov.io/gh/lakshmiDRIP/DROP/branch/master)
 [![License](https://img.shields.io/badge/license-Apache-blue.svg)](https://github.com/lakshmiDRIP/DROP/blob/master/LICENSE)
 [![Join the chat at https://gitter.im/lakshmiDRIPDROP](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/lakshmiDRIPDROP?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/7270e4b57c50483699448bf32721ab10)](https://www.codacy.com/app/lakshmiDRIP/DROP?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=DROP/DROP&amp;utm_campaign=Badge_Grade)
 [![Coverity Scan Build Status](https://scan.coverity.com/projects/lakshmidrip-drop)](https://scan.coverity.com/projects/14574)
 
 DROP implements the model libraries and provides systems for fixed income valuation and adjustments, asset allocation and transaction cost analytics, and supporting libraries in numerical optimization and statistical learning.
