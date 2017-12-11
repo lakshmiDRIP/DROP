@@ -13,7 +13,7 @@ DROP is composed of four main libraries:
 
 ## Pointers
 
-[![Travis](https://travis-ci.org/lakshmiDRIP/DROP.svg)](https://travis-ci.org/lakshmiDRIP/DROP)    [![Build status](https://ci.appveyor.com/api/projects/status/m5p8sfeth4cewr4v?svg=true)](https://ci.appveyor.com/project/lakshmiDRIP/drop)    
+[![Travis](https://travis-ci.org/lakshmiDRIP/DROP.svg)](https://travis-ci.org/lakshmiDRIP/DROP)    [![CircleCI](https://circleci.com/gh/lakshmiDRIP/DROP.svg?style=svg)](https://circleci.com/gh/lakshmiDRIP/DROP)    [![Build status](https://ci.appveyor.com/api/projects/status/m5p8sfeth4cewr4v?svg=true)](https://ci.appveyor.com/project/lakshmiDRIP/drop)    
 [![Git](https://img.shields.io/github/release/lakshmiDRIP/DROP.svg)](https://github.com/release/lakshmiDRIP/DROP)    
 [![Git](http://dmlc.github.io/img/apache2.svg)](./LICENSE)    
 [![Join the chat at https://gitter.im/lakshmiDRIPDROP](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/lakshmiDRIPDROP?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)    
