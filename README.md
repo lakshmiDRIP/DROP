@@ -24,7 +24,7 @@ DROP is composed of four main libraries:
 
 [![Documentation Status](https://readthedocs.org/projects/xgboost/badge/?version=latest)](https://lakshmidrip.github.io/DROP/)  [![Javadoc](https://readthedocs.org/projects/xgboost/badge/?version=latest)](https://lakshmidrip.github.io/DROP/Javadoc/index.html)  [![Other](https://readthedocs.org/projects/xgboost/badge/?version=latest)](https://github.com/lakshmiDRIP/DROP/tree/master/Docs)
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/7270e4b57c50483699448bf32721ab10)](https://www.codacy.com/app/lakshmiDRIP/DROP?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=DROP/DROP&amp;utm_campaign=Badge_Grade) [![codecov.io](http://codecov.io/github/lakshmiDRIP/DROP/coverage.svg?branch=master)](https://codecov.io/gh/lakshmiDRIP/DROP/branch/master)  [![Coverage Status](https://coveralls.io/repos/github/lakshmiDRIP/DROP/badge.svg)](https://coveralls.io/github/lakshmiDRIP/DROP)  [![Coverity Scan Build Status](https://scan.coverity.com/projects/lakshmidrip-drop)](https://scan.coverity.com/projects/14574)  [![Coverity Scan Build Status](https://scan.coverity.com/projects/lakshmidrip-drop)](https://scan.coverity.com/projects/lakshmidrip-drop)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/7270e4b57c50483699448bf32721ab10)](https://www.codacy.com/app/lakshmiDRIP/DROP?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=DROP/DROP&amp;utm_campaign=Badge_Grade) [![codecov.io](http://codecov.io/github/lakshmiDRIP/DROP/coverage.svg?branch=master)](https://codecov.io/gh/lakshmiDRIP/DROP/branch/master)  [![Coverage Status](https://coveralls.io/repos/github/lakshmiDRIP/DROP/badge.svg)](https://coveralls.io/github/lakshmiDRIP/DROP) 
 
 ## Installation
 
