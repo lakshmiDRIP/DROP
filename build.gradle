@@ -46,6 +46,7 @@ apply plugin: "osgi"
 apply plugin: "com.github.hierynomus.license"
 apply plugin: "com.jfrog.bintray"
 apply plugin: "com.jfrog.artifactory"
+apply plugin: "com.github.kt3k.coveralls"
 
 sourceCompatibility = JavaVersion.VERSION_1_6
 targetCompatibility = JavaVersion.VERSION_1_6
@@ -242,7 +243,7 @@ task GCandMem2(dependsOn: "test") doLast {
 jacocoTestReport {
     reports {
         xml.enabled true
-        html.enabled false
+        html.enabled true
     }
 
     afterEvaluate {
