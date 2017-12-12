@@ -12,15 +12,13 @@ install: true
 
 script:
   - gradle/buildThroughTravis.sh
+  - ./gradlew build jacocoTestReport
 
 after_success:
+  - ./gradlew test jacocoTestReport coveralls
   - bash <(curl -s https://codecov.io/bash)
 
 cache:
-
   directories:
-
   - $HOME/.m2
-
   - $HOME/.gradle
-
