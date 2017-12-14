@@ -178,18 +178,18 @@ public class Ulhasnagar {
 		int iSettleLag = 3;
 		int iCouponFreq = 2;
 		String strName = "Ulhasnagar";
-		double dblCleanPrice = 1.08961;
+		double dblCleanPrice = 0.78961;
 		double dblIssuePrice = 1.;
 		String strCurrency = "USD";
 		double dblSpreadBump = 20.;
-		double dblCouponRate = 0.05875;
+		double dblCouponRate = 0.00;
 		double dblIssueAmount = 1.0;
 		String strTreasuryCode = "UST";
 		String strCouponDayCount = "30/360";
 		double dblSpreadDurationMultiplier = 5.;
 
 		JulianDate dtEffective = DateUtil.CreateFromYMD (
-			2015,
+			2018,
 			2,
 			15
 		);
