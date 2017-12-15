@@ -7,6 +7,8 @@ sudo: required
 before_install:
  - chmod +x gradlew
  - chmod +x gradle/buildThroughTravis.sh
+ - sudo apt-get install jq
+ - wget -O ~/codacy-coverage-reporter-assembly-latest.jar $(curl https://api.github.com/repos/codacy/codacy-coverage-reporter/releases/latest | jq -r .assets[0].browser_download_url)
 
 install: true
 
@@ -17,6 +19,7 @@ script:
 after_success:
   - ./gradlew test jacocoTestReport coveralls
   - bash <(curl -s https://codecov.io/bash)
+  - java -cp ~/codacy-coverage-reporter-assembly-latest.jar com.codacy.CodacyCoverageReporter -l Java -r build/reports/jacoco/test/jacocoTestReport.xml
 
 cache:
   directories:
