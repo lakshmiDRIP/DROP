@@ -242,12 +242,12 @@ public class JurisdictionOTCIndexSwaps {
 			dtSpot,
 			strCurrency,
 			new int[] {
-				1, 2, 7, 14, 30, 60
+				1, 7, 14, 30, 60
 			}
 		);
 
 		double[] adblDepositQuote = new double[] {
-			0.0013, 0.0017, 0.0017, 0.0018, 0.0020, 0.0023
+			0.0013, 0.0017, 0.0018, 0.0020, 0.0023
 		};
 
 		/*
@@ -267,7 +267,7 @@ public class JurisdictionOTCIndexSwaps {
 
 		SingleStreamComponent[] aEDFComp = SingleStreamComponentBuilder.ForwardRateFuturesPack (
 			dtSpot,
-			8,
+			4,
 			strCurrency
 		);
 
