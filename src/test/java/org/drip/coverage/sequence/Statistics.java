@@ -5,8 +5,8 @@ import org.drip.sample.statistics.CorrelatedRdSequence;
 import org.drip.sample.statistics.CorrelatedRdSequenceAntithetic;
 import org.drip.sample.statistics.CorrelatedRdSequenceQR;
 import org.drip.sample.statistics.CorrelatedRdSequenceQRUnbiased;
-import org.drip.sample.statistics.MultivariateSequence;
-import org.drip.sample.statistics.UnivariateSequence;
+// import org.drip.sample.statistics.MultivariateSequence;
+// import org.drip.sample.statistics.UnivariateSequence;
 
 import org.junit.Test;
 
@@ -74,8 +74,8 @@ public class Statistics
 
 		CorrelatedRdSequenceQRUnbiased.main (null);
 
-		MultivariateSequence.main (null);
+		// MultivariateSequence.main (null);
 
-		UnivariateSequence.main (null);
+		// UnivariateSequence.main (null);
     }
 }
