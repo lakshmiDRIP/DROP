@@ -1,12 +1,13 @@
 
-package org.drip.coverage.sequence;
+package org.drip.coverage.xva;
 
-import org.drip.sample.statistics.CorrelatedRdSequence;
-import org.drip.sample.statistics.CorrelatedRdSequenceAntithetic;
-import org.drip.sample.statistics.CorrelatedRdSequenceQR;
-import org.drip.sample.statistics.CorrelatedRdSequenceQRUnbiased;
-// import org.drip.sample.statistics.MultivariateSequence;
-// import org.drip.sample.statistics.UnivariateSequence;
+import org.drip.sample.xva.CollateralizedCollateralGroup;
+import org.drip.sample.xva.CollateralizedCollateralGroupCorrelated;
+import org.drip.sample.xva.PortfolioCollateralEstimate;
+import org.drip.sample.xva.UncollateralizedCollateralGroup;
+import org.drip.sample.xva.UncollateralizedCollateralGroupCorrelated;
+import org.drip.sample.xva.ZeroThresholdCollateralGroup;
+import org.drip.sample.xva.ZeroThresholdCollateralGroupCorrelated;
 
 import org.junit.Test;
 
@@ -57,25 +58,27 @@ import org.junit.Test;
  */
 
 /**
- * Statistics holds the JUnit Code Coverage Tests for the Statistics Sequence Module.
+ * XVA holds the JUnit Code Coverage Tests for the Core XVA Module.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Statistics
+public class XVA
 {
 	@Test public void codeCoverageTest() throws Exception
 	{
-		CorrelatedRdSequence.main (null);
+		CollateralizedCollateralGroup.main (null);
 
-		CorrelatedRdSequenceAntithetic.main (null);
+		CollateralizedCollateralGroupCorrelated.main (null);
 
-		CorrelatedRdSequenceQR.main (null);
+		PortfolioCollateralEstimate.main (null);
 
-		CorrelatedRdSequenceQRUnbiased.main (null);
+		UncollateralizedCollateralGroup.main (null);
 
-		// MultivariateSequence.main (null);
+		UncollateralizedCollateralGroupCorrelated.main (null);
 
-		// UnivariateSequence.main (null);
+		ZeroThresholdCollateralGroup.main (null);
+
+		ZeroThresholdCollateralGroupCorrelated.main (null);
     }
 }

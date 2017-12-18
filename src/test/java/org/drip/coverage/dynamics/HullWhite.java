@@ -1,12 +1,10 @@
 
-package org.drip.coverage.xva;
+package org.drip.coverage.dynamics;
 
-import org.drip.sample.burgard2012.CounterPartyHazardHigh;
-import org.drip.sample.burgard2012.CounterPartyHazardLow;
-import org.drip.sample.burgard2012.CounterPartyHazardMedium;
-import org.drip.sample.burgard2012.EulerTrajectoryEvolutionScheme;
-import org.drip.sample.burgard2012.FixFloatVABank;
-import org.drip.sample.burgard2012.FixFloatVACounterParty;
+import org.drip.sample.hullwhite.EvolutionMetrics;
+import org.drip.sample.hullwhite.ShortRateDynamics;
+import org.drip.sample.hullwhite.TrinomialTreeCalibration;
+import org.drip.sample.hullwhite.TrinomialTreeEvolution;
 
 import org.junit.Test;
 
@@ -57,25 +55,21 @@ import org.junit.Test;
  */
 
 /**
- * Burgard2012 holds the JUnit Code Coverage Tests for the Burgard-Kjaer (2012) XVA Module.
+ * HullWhite holds the JUnit Code Coverage Tests for the Hull White Dynamics Module.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Burgard2012
+public class HullWhite
 {
 	@Test public void codeCoverageTest() throws Exception
 	{
-		CounterPartyHazardHigh.main (null);
+		EvolutionMetrics.main (null);
 
-		CounterPartyHazardLow.main (null);
+		ShortRateDynamics.main (null);
 
-		CounterPartyHazardMedium.main (null);
+		TrinomialTreeCalibration.main (null);
 
-		EulerTrajectoryEvolutionScheme.main (null);
-
-		FixFloatVABank.main (null);
-
-		FixFloatVACounterParty.main (null);
+		TrinomialTreeEvolution.main (null);
     }
 }

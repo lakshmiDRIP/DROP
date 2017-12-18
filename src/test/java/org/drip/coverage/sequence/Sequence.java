@@ -1,9 +1,12 @@
 
-package org.drip.coverage.function;
+package org.drip.coverage.sequence;
 
-import org.drip.sample.semidefinite.DualConstrainedEllipsoidVariance;
-import org.drip.sample.semidefinite.TwoVariateConstrainedVariance;
-import org.drip.sample.semidefinite.WeightConstrainedEllipsoidVariance;
+import org.drip.sample.sequence.DualRandomSequenceBound;
+import org.drip.sample.sequence.IIDSequenceSumBound;
+import org.drip.sample.sequence.IntegerRandomSequenceBound;
+import org.drip.sample.sequence.PoissonRandomSequenceBound;
+import org.drip.sample.sequence.SingleRandomSequenceBound;
+import org.drip.sample.sequence.UnitRandomSequenceBound;
 
 import org.junit.Test;
 
@@ -54,19 +57,25 @@ import org.junit.Test;
  */
 
 /**
- * SemiDefinite holds the JUnit Code Coverage Tests for the Semi-Definite Function Module.
+ * Sequence holds the JUnit Code Coverage Tests for the Sequence Limit Sequence Module.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class SemiDefinite
+public class Sequence
 {
 	@Test public void codeCoverageTest() throws Exception
 	{
-		DualConstrainedEllipsoidVariance.main (null);
+		DualRandomSequenceBound.main (null);
 
-		TwoVariateConstrainedVariance.main (null);
+		IIDSequenceSumBound.main (null);
 
-		WeightConstrainedEllipsoidVariance.main (null);;
+		IntegerRandomSequenceBound.main (null);
+
+		PoissonRandomSequenceBound.main (null);
+
+		SingleRandomSequenceBound.main (null);
+
+		UnitRandomSequenceBound.main (null);
 	}
 }

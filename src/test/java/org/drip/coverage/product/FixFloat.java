@@ -1,11 +1,17 @@
 
 package org.drip.coverage.product;
 
-import org.drip.sample.stochasticvolatility.AlbrecherMayerSchoutensTistaert;
-import org.drip.sample.stochasticvolatility.CallPriceSplineSurface;
-import org.drip.sample.stochasticvolatility.CallVolSplineSurface;
-import org.drip.sample.stochasticvolatility.HestonAMSTPayoffTransform;
-import org.drip.sample.stochasticvolatility.StandardHestonPricingMeasures;
+import org.drip.sample.fixfloat.AmortizingCapitalizingAccruingSwap;
+import org.drip.sample.fixfloat.CustomFixFloatSwap;
+import org.drip.sample.fixfloat.InAdvanceIMMSwap;
+import org.drip.sample.fixfloat.InAdvanceSwap;
+import org.drip.sample.fixfloat.InArrearsSwap;
+import org.drip.sample.fixfloat.JurisdictionOTCIndexDefinitions;
+import org.drip.sample.fixfloat.JurisdictionOTCIndexSwaps;
+import org.drip.sample.fixfloat.LongTenorSwap;
+import org.drip.sample.fixfloat.RollerCoasterSwap;
+import org.drip.sample.fixfloat.ShortTenorSwap;
+import org.drip.sample.fixfloat.StepUpStepDown;
 
 import org.junit.Test;
 
@@ -56,23 +62,35 @@ import org.junit.Test;
  */
 
 /**
- * StochasticVolatility holds the JUnit Code Coverage Tests for the StochasticVolatility Product Module.
+ * FixFloat holds the JUnit Code Coverage Tests for the FixFloat IRS Product Module.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class StochasticVolatility
+public class FixFloat
 {
 	@Test public void codeCoverageTest() throws Exception
 	{
-		AlbrecherMayerSchoutensTistaert.main (null);
+		AmortizingCapitalizingAccruingSwap.main (null);
 
-		CallPriceSplineSurface.main (null);
+		CustomFixFloatSwap.main (null);
 
-		CallVolSplineSurface.main (null);
+		InAdvanceIMMSwap.main (null);
 
-		HestonAMSTPayoffTransform.main (null);
+		InAdvanceSwap.main (null);
 
-		StandardHestonPricingMeasures.main (null);
+		InArrearsSwap.main (null);
+
+		JurisdictionOTCIndexDefinitions.main (null);
+
+		JurisdictionOTCIndexSwaps.main (null);
+
+		LongTenorSwap.main (null);
+
+		RollerCoasterSwap.main (null);
+
+		ShortTenorSwap.main (null);
+
+		StepUpStepDown.main (null);
     }
 }

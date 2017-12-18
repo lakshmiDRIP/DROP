@@ -1,11 +1,10 @@
 
-package org.drip.coverage.dynamics;
+package org.drip.coverage.treasury;
 
-import org.drip.sample.hjm.G2PlusPlusDynamics;
-import org.drip.sample.hjm.MultiFactorDynamics;
-import org.drip.sample.hjm.MultiFactorQMDynamics;
-import org.drip.sample.hjm.PrincipalComponentDynamics;
-import org.drip.sample.hjm.PrincipalComponentQMDynamics;
+import org.drip.sample.sovereign.SovereignFixedBullet;
+import org.drip.sample.sovereign.ZeroCouponBullet1;
+import org.drip.sample.sovereign.ZeroCouponBullet2;
+import org.drip.sample.sovereign.ZeroCouponBullet3;
 
 import org.junit.Test;
 
@@ -56,23 +55,21 @@ import org.junit.Test;
  */
 
 /**
- * HJM holds the JUnit Code Coverage Tests for the HJM Dynamics Module.
+ * Sovereign holds the JUnit Code Coverage Tests for the Sovereign Treasury Module.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class HJM
+public class Sovereign
 {
 	@Test public void codeCoverageTest() throws Exception
 	{
-		G2PlusPlusDynamics.main (null);
+		SovereignFixedBullet.main (null);
 
-		MultiFactorDynamics.main (null);
+		ZeroCouponBullet1.main (null);
 
-		MultiFactorQMDynamics.main (null);
+		ZeroCouponBullet2.main (null);
 
-		PrincipalComponentDynamics.main (null);
-
-		PrincipalComponentQMDynamics.main (null);
+		ZeroCouponBullet3.main (null);
     }
 }

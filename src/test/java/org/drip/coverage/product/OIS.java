@@ -1,15 +1,12 @@
 
-package org.drip.coverage.treasury;
+package org.drip.coverage.product;
 
-import org.drip.sample.treasuryfutures.ContractDefinitions;
-import org.drip.sample.treasuryfutures.ContractEligibilitySettlementDefinitions;
-import org.drip.sample.treasuryfutures.ExchangeTradedOptionDefinitions;
-import org.drip.sample.treasuryfutures.ExpiryDeliveryTradingDates;
-import org.drip.sample.treasuryfutures.UST02Y;
-import org.drip.sample.treasuryfutures.UST05Y;
-import org.drip.sample.treasuryfutures.UST10Y;
-import org.drip.sample.treasuryfutures.UST30Y;
-import org.drip.sample.treasuryfutures.USTULTRA;
+import org.drip.sample.ois.CrossOvernightFloatingStream;
+import org.drip.sample.ois.IndexFundCurvesReconciliation;
+import org.drip.sample.ois.JurisdictionOTCInstrumentDefinitions;
+import org.drip.sample.ois.JurisdictionOTCInstrumentMeasures;
+import org.drip.sample.ois.OvernightArithmeticCompoundingConvexity;
+import org.drip.sample.ois.OvernightJurisdictionIndexDefinition;
 
 import org.junit.Test;
 
@@ -60,31 +57,25 @@ import org.junit.Test;
  */
 
 /**
- * TreasuryFutures holds the JUnit Code Coverage Tests for the Futures Treasury Module.
+ * OIS holds the JUnit Code Coverage Tests for the OIS Product Module.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class TreasuryFutures
+public class OIS
 {
 	@Test public void codeCoverageTest() throws Exception
 	{
-		ContractDefinitions.main (null);
+		CrossOvernightFloatingStream.main (null);
 
-		ContractEligibilitySettlementDefinitions.main (null);
+		IndexFundCurvesReconciliation.main (null);
 
-		ExchangeTradedOptionDefinitions.main (null);
+		JurisdictionOTCInstrumentDefinitions.main (null);
 
-		ExpiryDeliveryTradingDates.main (null);
+		JurisdictionOTCInstrumentMeasures.main (null);
 
-		UST02Y.main (null);
+		OvernightArithmeticCompoundingConvexity.main (null);
 
-		UST05Y.main (null);
-
-		UST10Y.main (null);
-
-		UST30Y.main (null);
-
-		USTULTRA.main (null);
+		OvernightJurisdictionIndexDefinition.main (null);
     }
 }
