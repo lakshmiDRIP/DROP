@@ -75,9 +75,10 @@ public class ForwardVolatilityState {
 		String strFRATenor = "3M";
 		String strCurrency = "GBP";
 
-		JulianDate dtSpot = DateUtil.Today().addBusDays (
-			0,
-			strCurrency
+		JulianDate dtSpot = DateUtil.CreateFromYMD (
+			2017,
+			DateUtil.DECEMBER,
+			19
 		);
 
 		ForwardLabel forwardLabel = ForwardLabel.Create (
@@ -150,8 +151,8 @@ public class ForwardVolatilityState {
 			0.0234, //  "3Y",
 			0.0343, //  "4Y",
 			0.0491, //  "5Y",
-			0.0768, //  "7Y"
-			0.1075  // "10Y"
+			0.0868, //  "7Y"
+			0.1175  // "10Y"
 		};
 
 		VolatilityCurve vcForward = LatentMarketStateBuilder.ForwardRateVolatilityCurve (
