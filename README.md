@@ -41,6 +41,7 @@ DROP is composed of four main libraries:
  * Dated Release Notes in the ReleaseNotes Folder
  * External Reference Publications in the corresponding folder
  * User guide is a work in progress!
+ * [Credits] (https://lakshmidrip.github.io/DROP/credits.html)
 
 ## Contact
 
