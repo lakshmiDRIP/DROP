@@ -6,10 +6,10 @@ DROP implements the model libraries and provides systems for fixed income valuat
 
 DROP is composed of four main libraries:
 
- * [Asset Allocation] (https://lakshmidrip.github.io/DROP/AssetAllocationModule.html)
- * [Fixed Income Analytics] (https://lakshmidrip.github.io/DROP/FixedIncomeModule.html)
- * [Numerical Optimization] (https://lakshmidrip.github.io/DROP/NumericalOptimizerModule.html)
- * [Statistical Learning] (https://lakshmidrip.github.io/DROP/StatisticalLearningModule.html)
+* [Asset Allocation] (https://lakshmidrip.github.io/DROP/AssetAllocationModule.html)
+* [Fixed Income Analytics] (https://lakshmidrip.github.io/DROP/FixedIncomeModule.html)
+* [Numerical Optimization] (https://lakshmidrip.github.io/DROP/NumericalOptimizerModule.html)
+* [Statistical Learning] (https://lakshmidrip.github.io/DROP/StatisticalLearningModule.html)
 
 ## Pointers
 
@@ -41,9 +41,10 @@ DROP is composed of four main libraries:
  * Dated Release Notes in the ReleaseNotes Folder
  * External Reference Publications in the corresponding folder
  * User guide is a work in progress!
+ * [Credits] (https://lakshmidrip.github.io/DROP/credits.html)
 
 ## Contact
 
-lakshmi7977@gmail.com
+lakshmidrip7977@gmail.com
 
 [![codecov.io](https://codecov.io/gh/lakshmiDRIP/DROP/branch/master/graphs/sunburst.svg)](https://codecov.io/gh/lakshmiDRIP/DROP/branch/master)  [![codecov.io](https://codecov.io/gh/lakshmiDRIP/DROP/branch/master/graphs/icicle.svg)](https://codecov.io/gh/lakshmiDRIP/DROP/branch/master)  [![codecov.io](https://codecov.io/gh/lakshmiDRIP/DROP/branch/master/graphs/tree.svg)](https://codecov.io/gh/lakshmiDRIP/DROP/branch/master)  [![codecov.io](https://codecov.io/gh/lakshmiDRIP/DROP/branch/master/graphs/commits.svg)](https://codecov.io/gh/lakshmiDRIP/DROP/branch/master)  
