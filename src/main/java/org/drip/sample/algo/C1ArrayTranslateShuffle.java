@@ -87,5 +87,7 @@ public class C1ArrayTranslateShuffle {
 
 			iBigStringPivot -= iBigStringBlock;
 		}
+
+		EnvManager.TerminateEnv();
 	}
 }
