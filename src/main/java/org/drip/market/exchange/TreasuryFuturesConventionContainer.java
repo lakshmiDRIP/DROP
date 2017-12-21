@@ -56,9 +56,8 @@ package org.drip.market.exchange;
  */
 
 public class TreasuryFuturesConventionContainer {
-	private static final java.util.Map<java.lang.String, org.drip.market.exchange.TreasuryFuturesConvention>
-		_mapFutures = new
-			java.util.TreeMap<java.lang.String, org.drip.market.exchange.TreasuryFuturesConvention>();
+	private static java.util.Map<java.lang.String, org.drip.market.exchange.TreasuryFuturesConvention>
+		_mapFutures = null;
 
 	/**
 	 * Initialize the Bond Futures Convention Container with the Conventions
@@ -68,6 +67,11 @@ public class TreasuryFuturesConventionContainer {
 
 	public static final boolean Init()
 	{
+		if (null != _mapFutures) return true;
+
+		_mapFutures = new java.util.TreeMap<java.lang.String,
+			org.drip.market.exchange.TreasuryFuturesConvention>();
+
 		int[] aiStandardDeliveryMonth = {org.drip.analytics.date.DateUtil.FEBRUARY,
 			org.drip.analytics.date.DateUtil.MAY, org.drip.analytics.date.DateUtil.AUGUST,
 				org.drip.analytics.date.DateUtil.NOVEMBER};

@@ -65,7 +65,10 @@ public class C1ArrayTranslateShuffle {
 		final String[] astrArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		String strBigString = "abcdefghijklmnopqrstuvwxyzABCDEFGIHJKLMNOPQRSTUVWXYZ0123456789!~@#$%^&*(){}[]<>,.?/";
 		int iBigStringPivot = 35;

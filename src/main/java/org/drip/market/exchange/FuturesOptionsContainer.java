@@ -57,9 +57,8 @@ package org.drip.market.exchange;
  */
 
 public class FuturesOptionsContainer {
-	private static final java.util.Map<java.lang.String, org.drip.market.exchange.FuturesOptions>
-		_mapFuturesOptions = new
-			java.util.TreeMap<java.lang.String, org.drip.market.exchange.FuturesOptions>();
+	private static java.util.Map<java.lang.String, org.drip.market.exchange.FuturesOptions>
+		_mapFuturesOptions = null;
 
 	/**
 	 * Initialize the Overnight Index Container with the Overnight Indexes
@@ -69,6 +68,11 @@ public class FuturesOptionsContainer {
 
 	public static final boolean Init()
 	{
+		if (null != _mapFuturesOptions) return true;
+
+		_mapFuturesOptions = new
+			java.util.TreeMap<java.lang.String, org.drip.market.exchange.FuturesOptions>();
+
 		try {
 			org.drip.product.params.LastTradingDateSetting ltdsMidCurveQuarterly = new
 				org.drip.product.params.LastTradingDateSetting

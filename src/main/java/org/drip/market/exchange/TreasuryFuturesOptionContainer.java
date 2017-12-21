@@ -56,9 +56,8 @@ package org.drip.market.exchange;
  */
 
 public class TreasuryFuturesOptionContainer {
-	private static final java.util.Map<java.lang.String,
-		org.drip.market.exchange.TreasuryFuturesOptionConvention> _mapFuturesOptions = new
-			java.util.TreeMap<java.lang.String, org.drip.market.exchange.TreasuryFuturesOptionConvention>();
+	private static java.util.Map<java.lang.String, org.drip.market.exchange.TreasuryFuturesOptionConvention>
+		_mapFuturesOptions = null;
 
 	/**
 	 * Initialize the Treasury Futures Options Convention Container with the Conventions
@@ -68,6 +67,11 @@ public class TreasuryFuturesOptionContainer {
 
 	public static final boolean Init()
 	{
+		if (null != _mapFuturesOptions) return true;
+
+		_mapFuturesOptions = new java.util.TreeMap<java.lang.String,
+			org.drip.market.exchange.TreasuryFuturesOptionConvention>();
+
 		try {
 			org.drip.product.params.LastTradingDateSetting[] aLTDS = new
 				org.drip.product.params.LastTradingDateSetting[] {new

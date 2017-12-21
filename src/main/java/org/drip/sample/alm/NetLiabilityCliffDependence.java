@@ -103,7 +103,10 @@ public class NetLiabilityCliffDependence {
 		final String[] args)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		double dblAfterTaxIncome = 800.;
 		double dblIncomeReplacementRate  = 0.35;
@@ -186,6 +189,6 @@ public class NetLiabilityCliffDependence {
 
 		System.out.println ("\t||-------------------------------------------||");
 
-		System.out.println();
+		EnvManager.TerminateEnv();
 	}
 }

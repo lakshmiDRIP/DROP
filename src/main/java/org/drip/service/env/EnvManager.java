@@ -61,57 +61,36 @@ package org.drip.service.env;
  */
 
 public class EnvManager {
-	private static org.drip.service.env.FrameContext s_FrameContext = null;
-	private static org.drip.service.env.BuildRecord s_MostRecentBuildRecord = null;
+	private static boolean s_bInvocationCapture = false;
 
 	/**
 	 * Initialize the logger, the database connections, the day count parameters, and day count objects.
 	 * 
 	 * @param strConfig String representing the full path of the configuration file
+	 * @param bInvocationCapture TRUE - Run the Invocation Capture
 	 * 
 	 * @return SQL Statement representing the initialized object.
 	 */
 
 	public static final java.sql.Statement InitEnv (
-		final java.lang.String strConfig)
+		final java.lang.String strConfig,
+		final boolean bInvocationCapture)
 	{
-		if (!org.drip.service.env.BuildManager.Init())
+		if (s_bInvocationCapture = bInvocationCapture)
 		{
-			System.out.println ("EnvManager::InitEnv => Cannot Initialize Build Manager!");
+			if (!org.drip.service.env.InvocationManager.Init())
+			{
+				System.out.println ("EnvManager::InitEnv => Cannot Initialize Invocation Manager!");
+
+				return null;
+			}
+		}
+
+		if (!org.drip.analytics.support.Logger.Init (strConfig)) {
+			System.out.println ("EnvManager::InitEnv => Cannot Initialize Logger Manager!");
 
 			return null;
 		}
-
-		s_MostRecentBuildRecord = org.drip.service.env.BuildManager.latestBuildRecord();
-
-		s_FrameContext = new org.drip.service.env.FrameContext();
-
-		System.out.println();
-
-		System.out.println ("\t|-----------------------------------------------------------------|");
-
-		System.out.println ("\t|");
-
-		System.out.println ("\t|    Copyright (C) 2011-2018 (DRIP)");
-
-		System.out.println ("\t|");
-
-		System.out.println ("\t|    Build Version  => " + s_MostRecentBuildRecord.dripVersion() +
-			" dual mode");
-
-		System.out.println ("\t|    Build JVM (TM) => " + s_MostRecentBuildRecord.javaVersion());
-
-		System.out.println ("\t|    Build Snap     => " + s_MostRecentBuildRecord.timeStamp());
-
-		System.out.println ("\t|    Start Time     => " + s_FrameContext.startTime());
-
-		System.out.println ("\t|");
-
-		System.out.println ("\t|-----------------------------------------------------------------|");
-
-		System.out.println();
-
-		org.drip.analytics.support.Logger.Init (strConfig);
 
 		if (!org.drip.service.env.CacheManager.Init()) {
 			System.out.println ("EnvManager::InitEnv => Cannot Initialize Cache Manager!");
@@ -234,7 +213,34 @@ public class EnvManager {
 			return null;
 		}
 
+		if (s_bInvocationCapture)
+		{
+			if (!org.drip.service.env.InvocationManager.Setup())
+			{
+				System.out.println ("EnvManager::InitEnv => Cannot Setup Invocation Manager!");
+
+				return null;
+			}
+		}
+
 		return org.drip.param.config.ConfigLoader.OracleInit (strConfig);
+	}
+
+	/**
+	 * Initialize the Environment Setup
+	 * 
+	 * @param strConfig String representing the full path of the configuration file
+	 * 
+	 * @return SQL Statement representing the initialized object.
+	 */
+
+	public static final java.sql.Statement InitEnv (
+		final java.lang.String strConfig)
+	{
+		return InitEnv (
+			strConfig,
+			true
+		);
 	}
 
 	/**
@@ -245,37 +251,6 @@ public class EnvManager {
 
 	public static final boolean TerminateEnv()
 	{
-		if (!s_FrameContext.recordFinish()) return false;
-
-		System.out.println();
-
-		System.out.println ("\t|-----------------------------------------------------------------|");
-
-		System.out.println ("\t|");
-
-		System.out.println ("\t|    Copyright (C) 2011-2018 (DRIP)");
-
-		System.out.println ("\t|");
-
-		System.out.println ("\t|    Build Version  => " + s_MostRecentBuildRecord.dripVersion() +
-			" dual mode");
-
-		System.out.println ("\t|    Build JVM (TM) => " + s_MostRecentBuildRecord.javaVersion());
-
-		System.out.println ("\t|    Build Snap     => " + s_MostRecentBuildRecord.timeStamp());
-
-		System.out.println ("\t|    Start Time     => " + s_FrameContext.startTime());
-
-		System.out.println ("\t|    Finish Time    => " + s_FrameContext.finishTime());
-
-		System.out.println ("\t|    Time Elapsed   => " + s_FrameContext.elapsed (true));
-
-		System.out.println ("\t|");
-
-		System.out.println ("\t|-----------------------------------------------------------------|");
-
-		System.out.println();
-
-		return true;
+		return s_bInvocationCapture ? org.drip.service.env.InvocationManager.Terminate() : true;
 	}
 }

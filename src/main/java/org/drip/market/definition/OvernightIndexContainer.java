@@ -58,15 +58,12 @@ package org.drip.market.definition;
  */
 
 public class OvernightIndexContainer {
-	private static final
+	private static
 		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.market.definition.OvernightIndex>
-			_mapJurisdictionOvernightIndex = new
-				org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.market.definition.OvernightIndex>();
-
-	private static final
+			_mapNamedOvernightIndex = null;
+	private static
 		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.market.definition.OvernightIndex>
-			_mapNamedOvernightIndex = new
-				org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.market.definition.OvernightIndex>();
+			_mapJurisdictionOvernightIndex = null;
 
 	/**
 	 * Initialize the Overnight Index Container with the Overnight Indexes
@@ -76,6 +73,14 @@ public class OvernightIndexContainer {
 
 	public static final boolean Init()
 	{
+		if (null != _mapNamedOvernightIndex) return true;
+
+		_mapNamedOvernightIndex = new
+			org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.market.definition.OvernightIndex>();
+
+		_mapJurisdictionOvernightIndex = new
+			org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.market.definition.OvernightIndex>();
+
 		try {
 			org.drip.market.definition.OvernightIndex oiAUD = new org.drip.market.definition.OvernightIndex
 				("AUD-RBA ON AONIA", "AONIA", "AUD", "Act/365", "AUD", "ON", 0,

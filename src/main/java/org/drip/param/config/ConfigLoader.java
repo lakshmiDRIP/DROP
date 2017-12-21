@@ -67,6 +67,9 @@ package org.drip.param.config;
  */
 
 public class ConfigLoader {
+	private static boolean s_bInit = false;
+	private static java.sql.Statement s_Statement = null;
+
 	private static final int IntegerTagValue (
 		final org.w3c.dom.Element eTag,
 		final java.lang.String strTag)
@@ -394,6 +397,10 @@ public class ConfigLoader {
 	public static java.sql.Statement OracleInit (
 		final java.lang.String strConfigFile)
 	{
+		if (s_bInit) return s_Statement;
+
+		s_bInit = true;
+
 		org.w3c.dom.Document doc = NormalizedXMLDoc (strConfigFile);
 
 		if (null == doc) return null;
@@ -422,7 +429,7 @@ public class ConfigLoader {
 
 			conn.setAutoCommit (false);
 
-			return conn.createStatement();
+			return s_Statement = conn.createStatement();
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}

@@ -55,9 +55,8 @@ package org.drip.market.otc;
  */
 
 public class CreditIndexConventionContainer {
-	private static final java.util.Map<java.lang.String, org.drip.market.otc.CreditIndexConvention>
-		_mapIndexConvention = new java.util.TreeMap<java.lang.String,
-			org.drip.market.otc.CreditIndexConvention>();
+	private static java.util.Map<java.lang.String, org.drip.market.otc.CreditIndexConvention>
+		_mapIndexConvention = null;
 
 	private static final boolean AddIndexConvention (
 		final java.lang.String strIndexType,
@@ -105,6 +104,11 @@ public class CreditIndexConventionContainer {
 
 	public static final boolean Init()
 	{
+		if (null != _mapIndexConvention) return true;
+
+		_mapIndexConvention = new java.util.TreeMap<java.lang.String,
+			org.drip.market.otc.CreditIndexConvention>();
+
 		if (!AddCDXNAIG5YSeries ("S15", org.drip.analytics.date.DateUtil.CreateFromYMD (2010,
 			org.drip.analytics.date.DateUtil.SEPTEMBER, 20), org.drip.analytics.date.DateUtil.CreateFromYMD
 				(2015, org.drip.analytics.date.DateUtil.DECEMBER, 20)))

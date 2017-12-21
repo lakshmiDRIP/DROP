@@ -56,8 +56,8 @@ package org.drip.market.otc;
  */
 
 public class IBORFloatFloatContainer {
-	private static final java.util.Map<java.lang.String, org.drip.market.otc.FloatFloatSwapConvention>
-		_mapConvention = new java.util.TreeMap<java.lang.String, org.drip.market.otc.FloatFloatSwapConvention>();
+	private static java.util.Map<java.lang.String, org.drip.market.otc.FloatFloatSwapConvention>
+		_mapConvention = null;
 
 	/**
 	 * Initialize the Float-Float Conventions Container with the pre-set Float-Float Contracts
@@ -68,6 +68,11 @@ public class IBORFloatFloatContainer {
 
 	public static final boolean Init()
 	{
+		if (null != _mapConvention) return true;
+
+		_mapConvention = new java.util.TreeMap<java.lang.String,
+			org.drip.market.otc.FloatFloatSwapConvention>();
+
 		try {
 			_mapConvention.put ("AUD", new org.drip.market.otc.FloatFloatSwapConvention ("AUD", "6M", true,
 				false, true, false, 1));

@@ -495,6 +495,8 @@ public class Convention {
 	public static final boolean Init (
 		final java.lang.String strCalendarSetLoc)
 	{
+		if (null != s_mapLocHols) return true;
+
 		if (!SetDCCalc()) return false;
 
 		if (INIT_FROM_HOLS_SOURCE == s_iInitHols) {

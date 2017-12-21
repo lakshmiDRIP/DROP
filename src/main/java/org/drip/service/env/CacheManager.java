@@ -72,6 +72,8 @@ public class CacheManager {
 
 	public static final boolean Init()
 	{
+		if (null != s_mapCache) return true;
+
 		s_mapCache = new java.util.concurrent.ConcurrentHashMap<java.lang.String, java.lang.String>();
 
 		return true;

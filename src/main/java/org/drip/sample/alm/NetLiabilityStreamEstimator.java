@@ -64,7 +64,10 @@ public class NetLiabilityStreamEstimator {
 		final String[] astrArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		double dblAfterTaxIncome = 800.;
 		double dblRetirementAge = 65.;
@@ -172,5 +175,7 @@ public class NetLiabilityStreamEstimator {
 		);
 
 		System.out.println ("\t||-------------------------------------------------||\n");
+
+		EnvManager.TerminateEnv();
 	}
 }

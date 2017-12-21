@@ -56,12 +56,9 @@ package org.drip.market.definition;
  */
 
 public class FXSettingContainer {
-	private static final java.util.Map<java.lang.String, java.lang.Integer> _mapCurrencyOrder = new
-		java.util.TreeMap<java.lang.String, java.lang.Integer>();
-
-	private static final java.util.Map<java.lang.String, org.drip.product.params.CurrencyPair>
-		_mapCurrencyPair = new java.util.TreeMap<java.lang.String,
-			org.drip.product.params.CurrencyPair>();
+	private static java.util.Map<java.lang.String, java.lang.Integer> _mapCurrencyOrder = null;
+	private static java.util.Map<java.lang.String, org.drip.product.params.CurrencyPair> _mapCurrencyPair =
+		null;
 
 	private static final void SetUpCurrencyPair (
 		final java.lang.String strCurrency1,
@@ -81,6 +78,12 @@ public class FXSettingContainer {
 
 	public static final boolean Init()
 	{
+		if (null != _mapCurrencyOrder) return true;
+
+		_mapCurrencyOrder = new java.util.TreeMap<java.lang.String, java.lang.Integer>();
+
+		_mapCurrencyPair = new java.util.TreeMap<java.lang.String, org.drip.product.params.CurrencyPair>();
+
 		_mapCurrencyOrder.put ("EUR", 1);
 
 		_mapCurrencyOrder.put ("GBP", 2);

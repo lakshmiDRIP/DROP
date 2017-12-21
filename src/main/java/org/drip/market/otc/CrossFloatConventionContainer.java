@@ -56,9 +56,8 @@ package org.drip.market.otc;
  */
 
 public class CrossFloatConventionContainer {
-	private static final java.util.Map<java.lang.String, org.drip.market.otc.CrossFloatSwapConvention>
-		_mapConvention = new java.util.TreeMap<java.lang.String,
-			org.drip.market.otc.CrossFloatSwapConvention>();
+	private static java.util.Map<java.lang.String, org.drip.market.otc.CrossFloatSwapConvention>
+		_mapConvention = null;
 
 	private static final boolean AddCrossCurrencyConvention (
 		final org.drip.market.otc.CrossFloatStreamConvention referenceConvention,
@@ -95,6 +94,11 @@ public class CrossFloatConventionContainer {
 
 	public static final boolean Init()
 	{
+		if (null != _mapConvention) return true;
+
+		_mapConvention = new java.util.TreeMap<java.lang.String,
+			org.drip.market.otc.CrossFloatSwapConvention>();
+
 		try {
 			org.drip.market.otc.CrossFloatStreamConvention referenceConventionDerivedQuote = new
 				org.drip.market.otc.CrossFloatStreamConvention ("USD", "3M", false);

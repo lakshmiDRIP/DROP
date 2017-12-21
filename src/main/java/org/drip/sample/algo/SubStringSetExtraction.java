@@ -65,7 +65,10 @@ public class SubStringSetExtraction {
 	public static void main (
 		final String[] astrArgs)
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		String strMaster = "abc";
 
@@ -83,5 +86,7 @@ public class SubStringSetExtraction {
 		System.out.println ("Contiguous Set: " + SubStringSetExtractor.Contiguous (strMaster));
 
 		System.out.println ();
+
+		EnvManager.TerminateEnv();
 	}
 }

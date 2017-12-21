@@ -55,15 +55,12 @@ package org.drip.market.exchange;
  */
 
 public class TreasuryFuturesContractContainer {
-	private static final
+	private static
 		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.market.exchange.TreasuryFuturesContract>
-			_mapNameContract = new
-				org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.market.exchange.TreasuryFuturesContract>();
-
-	private static final
+			_mapNameContract = null;
+	private static
 		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.market.exchange.TreasuryFuturesContract>
-			_mapCodeTenorContract = new
-				org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.market.exchange.TreasuryFuturesContract>();
+			_mapCodeTenorContract = null;
 
 	private static final boolean AddContract (
 		final java.lang.String[] astrName,
@@ -97,6 +94,14 @@ public class TreasuryFuturesContractContainer {
 
 	public static final boolean Init()
 	{
+		if (null != _mapNameContract) return true;
+
+		_mapNameContract = new
+			org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.market.exchange.TreasuryFuturesContract>();
+
+		_mapCodeTenorContract = new
+			org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.market.exchange.TreasuryFuturesContract>();
+
 		/*
 		 * Australian Treasury Futures
 		 */

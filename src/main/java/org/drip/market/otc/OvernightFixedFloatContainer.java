@@ -57,9 +57,8 @@ package org.drip.market.otc;
  */
 
 public class OvernightFixedFloatContainer {
-	private static final java.util.Map<java.lang.String, org.drip.market.otc.FixedFloatSwapConvention>
-		_mapFundConvention = new java.util.TreeMap<java.lang.String,
-			org.drip.market.otc.FixedFloatSwapConvention>();
+	private static java.util.Map<java.lang.String, org.drip.market.otc.FixedFloatSwapConvention>
+		_mapFundConvention = null;
 
 	/**
 	 * Initialize the Fix-Float Conventions Container with the pre-set Fix-Float Contracts
@@ -70,6 +69,11 @@ public class OvernightFixedFloatContainer {
 
 	public static final boolean Init()
 	{
+		if (null != _mapFundConvention) return true;
+
+		_mapFundConvention = new java.util.TreeMap<java.lang.String,
+			org.drip.market.otc.FixedFloatSwapConvention>();
+
 		try {
 			_mapFundConvention.put ("AUD", new org.drip.market.otc.FixedFloatSwapConvention (new
 				org.drip.market.otc.FixedStreamConvention ("AUD", "Act/365", "AUD", "1Y", "1Y",

@@ -65,6 +65,8 @@ public class BuildManager
 
 	public static final boolean Init()
 	{
+		if (null != s_aBuildRecord) return true;
+
 		try {
 			s_aBuildRecord = new org.drip.service.env.BuildRecord[] {
 				new org.drip.service.env.BuildRecord (

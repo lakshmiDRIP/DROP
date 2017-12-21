@@ -86,7 +86,7 @@ public class Logger {
 
 	public static final int DEBUG = 4;
 
-	private static boolean _sbInit = false;
+	private static boolean s_bInit = false;
 	private static java.io.BufferedWriter _writeLog = null;
 
 	private static final java.lang.String ImprintPreSub (
@@ -114,18 +114,20 @@ public class Logger {
 	public static boolean Init (
 		final java.lang.String strConfigFile)
 	{
-		if (null == strConfigFile || strConfigFile.isEmpty()) return false;
+		if (null == strConfigFile || strConfigFile.isEmpty()) return true;
+
+		if (s_bInit) return true;
 
 		try {
 			_writeLog = new java.io.BufferedWriter (new java.io.FileWriter
 				(org.drip.param.config.ConfigLoader.LoggerLocation (strConfigFile)));
 
-			return _sbInit = true;
+			return s_bInit = true;
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
 
-		return _sbInit = false;
+		return s_bInit = false;
 	}
 
 	/**
@@ -143,7 +145,7 @@ public class Logger {
 		final boolean bHardLog,
 		final java.lang.String strMsg)
 	{
-		if (!_sbInit || null == strMsg || strMsg.isEmpty()) return false;
+		if (!s_bInit || null == strMsg || strMsg.isEmpty()) return false;
 
 		if (bHardLog) {
 			try {

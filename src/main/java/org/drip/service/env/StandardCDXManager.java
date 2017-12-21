@@ -68,26 +68,20 @@ package org.drip.service.env;
 
 public class StandardCDXManager {
 	private static org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.product.definition.BasketProduct>
-		_mapStandardCDX = new
-			org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.product.definition.BasketProduct>();
-
+		_mapStandardCDX = null;
 	private static org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.product.params.StandardCDXParams>
-		_mapStandardCDXParams = new
-			org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.product.params.StandardCDXParams>();
-
+		_mapStandardCDXParams = null;
 	private static
 		org.drip.analytics.support.CaseInsensitiveTreeMap<java.util.Map<org.drip.analytics.date.JulianDate,
-			java.lang.Integer>> _mmIndexFirstCouponSeries = new
-				org.drip.analytics.support.CaseInsensitiveTreeMap<java.util.Map<org.drip.analytics.date.JulianDate,
-					java.lang.Integer>>();
-
+			java.lang.Integer>> _mmIndexFirstCouponSeries = null;
 	private static org.drip.analytics.support.CaseInsensitiveTreeMap<java.util.Map<java.lang.Integer,
-		org.drip.analytics.date.JulianDate>> _mmIndexSeriesFirstCoupon = new
-			org.drip.analytics.support.CaseInsensitiveTreeMap<java.util.Map<java.lang.Integer,
-				org.drip.analytics.date.JulianDate>>();
+		org.drip.analytics.date.JulianDate>> _mmIndexSeriesFirstCoupon = null;
 
 	private static final boolean SetupStandardCDXParams()
 	{
+		_mapStandardCDXParams = new
+			org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.product.params.StandardCDXParams>();
+
 		try {
 			_mapStandardCDXParams.put ("CDX.NA.IG", new org.drip.product.params.StandardCDXParams (125,
 				"USD", 0.01));
@@ -510,6 +504,19 @@ public class StandardCDXManager {
 
 	public static final boolean InitStandardCDXSeries()
 	{
+		if (null != _mapStandardCDX) return true;
+
+		_mapStandardCDX = new
+			org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.product.definition.BasketProduct>();
+
+		_mmIndexFirstCouponSeries = new
+			org.drip.analytics.support.CaseInsensitiveTreeMap<java.util.Map<org.drip.analytics.date.JulianDate,
+			java.lang.Integer>>();
+
+		_mmIndexSeriesFirstCoupon = new
+			org.drip.analytics.support.CaseInsensitiveTreeMap<java.util.Map<java.lang.Integer,
+				org.drip.analytics.date.JulianDate>>();
+
 		if (!PresetNA_IG_HY_HVOL_HYBB_HYBSeries()) {
 			System.out.println ("Cannot initialize NA_IG_HY_HVOL_HYBB_HYB");
 

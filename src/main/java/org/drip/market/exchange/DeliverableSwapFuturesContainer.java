@@ -56,9 +56,8 @@ package org.drip.market.exchange;
  */
 
 public class DeliverableSwapFuturesContainer {
-	private static final java.util.Map<java.lang.String, org.drip.market.exchange.DeliverableSwapFutures>
-		_mapFutures = new
-			java.util.TreeMap<java.lang.String, org.drip.market.exchange.DeliverableSwapFutures>();
+	private static java.util.Map<java.lang.String, org.drip.market.exchange.DeliverableSwapFutures>
+		_mapFutures = null;
 
 
 	/**
@@ -70,6 +69,11 @@ public class DeliverableSwapFuturesContainer {
 
 	public static final boolean Init()
 	{
+		if (null != _mapFutures) return true;
+
+		_mapFutures = new java.util.TreeMap<java.lang.String,
+			org.drip.market.exchange.DeliverableSwapFutures>();
+
 		try {
 			_mapFutures.put ("USD-2Y", new org.drip.market.exchange.DeliverableSwapFutures ("USD", "2Y",
 				100000., 0.0025, new org.drip.product.params.LastTradingDateSetting

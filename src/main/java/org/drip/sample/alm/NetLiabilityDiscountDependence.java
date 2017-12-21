@@ -97,7 +97,10 @@ public class NetLiabilityDiscountDependence {
 		final String[] astrArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		double dblAfterTaxIncome = 800.;
 		double dblRetirementAge = 65.;
@@ -178,6 +181,6 @@ public class NetLiabilityDiscountDependence {
 
 		System.out.println ("\t||-------------------------------------------------||");
 
-		System.out.println();
+		EnvManager.TerminateEnv();
 	}
 }

@@ -4,6 +4,7 @@ package org.drip.sample.algo;
 import java.util.List;
 
 import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
 import org.drip.spaces.big.SubMatrixSetExtractor;
 
 /*
@@ -67,6 +68,11 @@ public class SubMatrixSetExtraction {
 		final String[] astrArgs)
 		throws Exception
 	{
+		EnvManager.InitEnv (
+			"",
+			true
+		);
+
 		int iSize = 4;
 		double[][] aadbl = new double[iSize][iSize];
 
@@ -114,6 +120,8 @@ public class SubMatrixSetExtraction {
 			}
 		}
 
-		System.out.println ();
+		System.out.println();
+
+		EnvManager.TerminateEnv();
 	}
 }

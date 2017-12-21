@@ -58,15 +58,12 @@ package org.drip.market.definition;
  */
 
 public class IBORIndexContainer {
-	private static final
+	private static
 		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.market.definition.IBORIndex>
-			_mapJurisdictionIBORIndex = new
-				org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.market.definition.IBORIndex>();
-
-	private static final
+			_mapNamedIBORIndex = null;
+	private static
 		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.market.definition.IBORIndex>
-			_mapNamedIBORIndex = new
-				org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.market.definition.IBORIndex>();
+			_mapJurisdictionIBORIndex = null;
 
 	/**
 	 * Initialize the IBOR Index Container with the Overnight Indexes
@@ -76,6 +73,14 @@ public class IBORIndexContainer {
 
 	public static final boolean Init()
 	{
+		if (null != _mapNamedIBORIndex) return true;
+
+		_mapNamedIBORIndex = new
+			org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.market.definition.IBORIndex>();
+
+		_mapJurisdictionIBORIndex = new
+			org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.market.definition.IBORIndex>();
+
 		try {
 			org.drip.market.definition.IBORIndex iborAUD = new org.drip.market.definition.IBORIndex
 				("AUD-BBSW", "BBSW", "AUD", "Act/365", "AUD", 0, "1M", "6M",

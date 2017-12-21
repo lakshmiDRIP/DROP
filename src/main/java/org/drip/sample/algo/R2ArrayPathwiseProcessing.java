@@ -2,6 +2,7 @@
 package org.drip.sample.algo;
 
 import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
 import org.drip.spaces.big.BigR2Array;
 
 /*
@@ -149,6 +150,11 @@ public class R2ArrayPathwiseProcessing {
 		final String[] astrArgs)
 		throws Exception
 	{
+		EnvManager.InitEnv (
+			"",
+			true
+		);
+
 		int iSize = 5;
 		int iNumSim = 1000000;
 		int iNumRunSet = 5;
@@ -171,6 +177,6 @@ public class R2ArrayPathwiseProcessing {
 			System.out.println ("\t||--------------------------------------||");
 		}
 
-		System.out.println ();
+		EnvManager.TerminateEnv();
 	}
 }

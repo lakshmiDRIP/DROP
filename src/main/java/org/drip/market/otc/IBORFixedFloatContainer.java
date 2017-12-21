@@ -56,9 +56,8 @@ package org.drip.market.otc;
  */
 
 public class IBORFixedFloatContainer {
-	private static final java.util.Map<java.lang.String, org.drip.market.otc.FixedFloatSwapConvention>
-		_mapConvention = new java.util.TreeMap<java.lang.String,
-			org.drip.market.otc.FixedFloatSwapConvention>();
+	private static java.util.Map<java.lang.String, org.drip.market.otc.FixedFloatSwapConvention>
+		_mapConvention = null;
 
 	private static final java.lang.String TenorSubKey (
 		final java.lang.String strCurrency,
@@ -94,6 +93,11 @@ public class IBORFixedFloatContainer {
 
 	public static final boolean Init()
 	{
+		if (null != _mapConvention) return true;
+
+		_mapConvention = new java.util.TreeMap<java.lang.String,
+			org.drip.market.otc.FixedFloatSwapConvention>();
+
 		try {
 			_mapConvention.put ("AUD|ALL|36M|MAIN", new org.drip.market.otc.FixedFloatSwapConvention (new
 				org.drip.market.otc.FixedStreamConvention ("AUD", "Act/365", "AUD", "3M", "3M",

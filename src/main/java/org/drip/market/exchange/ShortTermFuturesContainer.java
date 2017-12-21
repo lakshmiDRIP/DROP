@@ -57,9 +57,8 @@ package org.drip.market.exchange;
  */
 
 public class ShortTermFuturesContainer {
-	private static final java.util.Map<java.lang.String, org.drip.market.exchange.ShortTermFutures>
-		_mapFutures = new
-			java.util.TreeMap<java.lang.String, org.drip.market.exchange.ShortTermFutures>();
+	private static java.util.Map<java.lang.String, org.drip.market.exchange.ShortTermFutures> _mapFutures =
+		null;
 
 	/**
 	 * Initialize the Short Term Futures Container with the pre-set Short Term Contracts
@@ -70,6 +69,10 @@ public class ShortTermFuturesContainer {
 
 	public static final boolean Init()
 	{
+		if (null != _mapFutures) return true;
+
+		_mapFutures = new java.util.TreeMap<java.lang.String, org.drip.market.exchange.ShortTermFutures>();
+
 		try {
 			_mapFutures.put ("CAD-CDOR-3M", new org.drip.market.exchange.ShortTermFutures (new
 				java.lang.String[] {"MX"}, 1000000.));

@@ -55,12 +55,9 @@ package org.drip.market.issue;
  */
 
 public class TreasurySettingContainer {
-	private static final java.util.Map<java.lang.String, org.drip.market.issue.TreasurySetting>
-		_mapTreasurySetting = new
-			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.market.issue.TreasurySetting>();
-
-	private static final java.util.Map<java.lang.String, java.lang.String> _mapCurrencyTreasuryCode = new
-		org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.String>();
+	private static java.util.Map<java.lang.String, java.lang.String> _mapCurrencyTreasuryCode = null;
+	private static java.util.Map<java.lang.String, org.drip.market.issue.TreasurySetting> _mapTreasurySetting
+		= null;
 
 	private static final boolean AddSetting (
 		final java.lang.String strCode,
@@ -89,6 +86,14 @@ public class TreasurySettingContainer {
 
 	public static final boolean Init()
 	{
+		if (null != _mapCurrencyTreasuryCode) return true;
+
+		_mapCurrencyTreasuryCode = new
+				org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.String>();
+
+		 _mapTreasurySetting = new
+			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.market.issue.TreasurySetting>();
+
 		if (!AddSetting ("AGB", "AUD", 2, "DCAct_Act_UST", "AUD")) return false;
 
 		if (!AddSetting ("BTPS", "EUR", 2, "DCAct_Act_UST", "EUR")) return false;

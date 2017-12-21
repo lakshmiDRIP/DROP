@@ -2,6 +2,7 @@
 package org.drip.sample.algo;
 
 import org.drip.quant.common.*;
+import org.drip.service.env.EnvManager;
 import org.drip.spaces.big.BigR1Array;
 
 /*
@@ -196,6 +197,11 @@ public class R1ArrayInSituSort {
 		final String[] astrArgs)
 		throws Exception
 	{
+		EnvManager.InitEnv (
+			"",
+			true
+		);
+
 		int iNumRandom = 50;
 
 		QuickSort (
@@ -217,5 +223,7 @@ public class R1ArrayInSituSort {
 			iNumRandom,
 			"HEAPSORT"
 		);
+
+		EnvManager.TerminateEnv();
 	}
 }

@@ -1342,4 +1342,41 @@ public class Helper {
 
 		return adblBumpedNode;
 	}
+
+	/**
+	 * Converts the Nano-Second Interval into aH:bM:cS:dMS Format
+	 * 
+	 * @param lElapsedNanos The Elapsed Nano Time
+	 *
+	 * @return The Nano-Second Interval in the aH:bM:cS:dMS Format
+	 */
+
+	public static final java.lang.String IntervalHMSMS (
+		final long lElapsedNanos)
+	{
+		if (0 >= lElapsedNanos) return "";
+
+		java.lang.String strHMS = "";
+		long lElapsedSeconds = (long) ((0.5 + lElapsedNanos) * 1.e-09);
+		long lElapsedMillis = (lElapsedNanos - lElapsedSeconds * 1000000000) / 1000000;
+
+		if (lElapsedSeconds >= 3600)
+		{
+			strHMS = strHMS + (lElapsedSeconds / 3600) + " h ";
+			lElapsedSeconds = lElapsedSeconds % 3600;
+		}
+
+		if (lElapsedSeconds >= 60)
+		{
+			strHMS = strHMS + (lElapsedSeconds / 60) + " m ";
+			lElapsedSeconds = lElapsedSeconds % 60;
+		}
+
+		if (lElapsedSeconds > 0)
+		{
+			strHMS = strHMS + lElapsedSeconds + " s ";
+		}
+
+		return strHMS + lElapsedMillis + " ms";
+	}
 }
