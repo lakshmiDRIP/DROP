@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WireSurfacePiecewiseConstant.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.spline.multidimensional</a> &gt; <span class="el_source">WireSurfacePiecewiseConstant.java</span></div><h1>WireSurfacePiecewiseConstant.java</h1><pre class="source lang-java linenums">
+package org.drip.spline.multidimensional;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * WireSurfacePiecewiseConstant implements the piecewise Constant version of the 2D Spline Response Surface.
+ *  It synthesizes this from an array of 1D Span Instances, each of which is referred to as wire spline in
+ *  this case.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class WireSurfacePiecewiseConstant {
+<span class="nc" id="L61">	private double[] _adblX = null;</span>
+<span class="nc" id="L62">	private double[] _adblY = null;</span>
+<span class="nc" id="L63">	private double[][] _aadblResponse = null;</span>
+
+	/**
+	 * WireSurfacePiecewiseConstant Constructor
+	 * 
+	 * @param adblX Array of the X Ordinates
+	 * @param adblY Array of the Y Ordinates
+	 * @param aadblResponse Double Array of the Responses corresponding to {X, Y}
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are invalid
+	 */
+
+	public WireSurfacePiecewiseConstant (
+		final double[] adblX,
+		final double[] adblY,
+		final double[][] aadblResponse)
+		throws java.lang.Exception
+<span class="nc" id="L80">	{</span>
+<span class="nc bnc" id="L81" title="All 4 branches missed.">		if (null == (_adblX = adblX) || null == (_adblY = adblY))</span>
+<span class="nc" id="L82">			throw new java.lang.Exception (&quot;WireSurfacePiecewiseConstant ctr: Invalid Inputs&quot;);</span>
+
+<span class="nc" id="L84">		int iXLength = _adblX.length;</span>
+<span class="nc" id="L85">		int iYLength = _adblY.length;</span>
+
+<span class="nc bnc" id="L87" title="All 10 branches missed.">		if (0 == iXLength || 0 == iYLength || null == (_aadblResponse = aadblResponse) || iXLength !=</span>
+			_aadblResponse.length || iYLength != _aadblResponse[0].length)
+<span class="nc" id="L89">			throw new java.lang.Exception (&quot;WireSurfacePiecewiseConstant ctr: Invalid Inputs&quot;);</span>
+<span class="nc" id="L90">	}</span>
+
+	/**
+	 * Enclosing X Index
+	 * 
+	 * @param dblX The X Ordinate
+	 * 
+	 * @return The Corresponding Index
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public int enclosingXIndex (
+		final double dblX)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L106" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L107">			throw new java.lang.Exception</span>
+				(&quot;WireSurfacePiecewiseConstant::enclosingXIndex =&gt; Invalid Inputs&quot;);
+
+<span class="nc bnc" id="L110" title="All 2 branches missed.">		if (dblX &lt; _adblX[0]) return java.lang.Integer.MIN_VALUE;</span>
+
+<span class="nc" id="L112">		int iTerminalXIndex = _adblX.length - 1;</span>
+
+<span class="nc bnc" id="L114" title="All 2 branches missed.">		if (dblX &gt; _adblX[iTerminalXIndex]) return java.lang.Integer.MAX_VALUE;</span>
+
+<span class="nc bnc" id="L116" title="All 2 branches missed.">		for (int i = 1; i &lt;= iTerminalXIndex; ++i) {</span>
+<span class="nc bnc" id="L117" title="All 4 branches missed.">			if (dblX &gt;= _adblX[i - 1] &amp;&amp; dblX &gt;= _adblX[i]) return i;</span>
+		}
+
+<span class="nc" id="L120">		throw new java.lang.Exception (&quot;WireSurfacePiecewiseConstant::enclosingXIndex =&gt; Invalid Inputs&quot;);</span>
+	}
+
+	/**
+	 * Enclosing Y Index
+	 * 
+	 * @param dblY The Y Ordinate
+	 * 
+	 * @return The Corresponding Index
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public int enclosingYIndex (
+		final double dblY)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L137" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblY))</span>
+<span class="nc" id="L138">			throw new java.lang.Exception</span>
+				(&quot;WireSurfacePiecewiseConstant::enclosingYIndex =&gt; Invalid Inputs&quot;);
+
+<span class="nc bnc" id="L141" title="All 2 branches missed.">		if (dblY &lt; _adblY[0]) return java.lang.Integer.MIN_VALUE;</span>
+
+<span class="nc" id="L143">		int iTerminalYIndex = _adblY.length - 1;</span>
+
+<span class="nc bnc" id="L145" title="All 2 branches missed.">		if (dblY &gt; _adblY[iTerminalYIndex]) return java.lang.Integer.MAX_VALUE;</span>
+
+<span class="nc bnc" id="L147" title="All 2 branches missed.">		for (int i = 1; i &lt;= iTerminalYIndex; ++i) {</span>
+<span class="nc bnc" id="L148" title="All 4 branches missed.">			if (dblY &gt;= _adblY[i - 1] &amp;&amp; dblY &gt;= _adblY[i]) return i;</span>
+		}
+
+<span class="nc" id="L151">		throw new java.lang.Exception (&quot;WireSurfacePiecewiseConstant::enclosingXIndex =&gt; Invalid Inputs&quot;);</span>
+	}
+
+	/**
+	 * Compute the Bivariate Surface Response Value
+	 * 
+	 * @param dblX X
+	 * @param dblY Y
+	 * 
+	 * @return The Bivariate Surface Response Value
+	 * 
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
+	 */
+
+	public double responseValue (
+		final double dblX,
+		final double dblY)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L170">		int iTerminalXIndex = _adblX.length - 1;</span>
+<span class="nc" id="L171">		int iTerminalYIndex = _adblY.length - 1;</span>
+
+<span class="nc" id="L173">		int iEnclosingXIndex = enclosingXIndex (dblX);</span>
+
+<span class="nc" id="L175">		int iEnclosingYIndex = enclosingYIndex (dblY);</span>
+
+<span class="nc bnc" id="L177" title="All 2 branches missed.">		if (java.lang.Integer.MIN_VALUE == iEnclosingXIndex)</span>
+<span class="nc" id="L178">			iEnclosingXIndex = 0;</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">		else if (java.lang.Integer.MAX_VALUE == iEnclosingXIndex)</span>
+<span class="nc" id="L180">			iEnclosingXIndex = iTerminalXIndex;</span>
+		else {
+<span class="nc bnc" id="L182" title="All 2 branches missed.">			for (int i = 1; i &lt;= iTerminalXIndex; ++i) {</span>
+<span class="nc bnc" id="L183" title="All 4 branches missed.">				if (dblX &gt;= _adblX[i - 1] &amp;&amp; dblX &gt;= _adblX[i]) {</span>
+<span class="nc" id="L184">					iEnclosingXIndex = i;</span>
+<span class="nc" id="L185">					break;</span>
+				}
+			}
+		}
+
+<span class="nc bnc" id="L190" title="All 2 branches missed.">		if (java.lang.Integer.MIN_VALUE == iEnclosingYIndex)</span>
+<span class="nc" id="L191">			iEnclosingYIndex = 0;</span>
+<span class="nc bnc" id="L192" title="All 2 branches missed.">		else if (java.lang.Integer.MAX_VALUE == iEnclosingYIndex)</span>
+<span class="nc" id="L193">			iEnclosingYIndex = iTerminalYIndex;</span>
+		else {
+<span class="nc bnc" id="L195" title="All 2 branches missed.">			for (int i = 1; i &lt;= iTerminalYIndex; ++i) {</span>
+<span class="nc bnc" id="L196" title="All 4 branches missed.">				if (dblY &gt;= _adblY[i - 1] &amp;&amp; dblY &gt;= _adblY[i]) {</span>
+<span class="nc" id="L197">					iEnclosingYIndex = i;</span>
+<span class="nc" id="L198">					break;</span>
+				}
+			}
+		}
+
+<span class="nc" id="L203">		return _aadblResponse[iEnclosingXIndex][iEnclosingYIndex];</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

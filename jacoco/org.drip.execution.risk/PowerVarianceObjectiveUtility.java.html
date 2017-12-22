@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PowerVarianceObjectiveUtility.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.execution.risk</a> &gt; <span class="el_source">PowerVarianceObjectiveUtility.java</span></div><h1>PowerVarianceObjectiveUtility.java</h1><pre class="source lang-java linenums">
+package org.drip.execution.risk;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * PowerVarianceObjectiveUtility implements the Mean-Power-Variance Objective Utility Function that needs to
+ *  be optimized to extract the Optimal Execution Trajectory. The Exact Objective Function is of the Form:
+ *  
+ *  			U[x] = E[x] + lambda * (V[x] ^p)
+ *  
+ *  where p is greater than 0. p = 1 is the Regular Mean-Variance, and p = 0.5 is VaR Minimization (L-VaR).
+ *  The References are:
+ * 
+ * 	- Almgren, R., and N. Chriss (1999): Value under Liquidation, Risk 12 (12).
+ * 
+ * 	- Almgren, R., and N. Chriss (2000): Optimal Execution of Portfolio Transactions, Journal of Risk, 3 (2),
+ * 		5-39.
+ * 
+ * 	- Almgren, R. (2003): Optimal Execution with Non-linear Impact Functions and Trading Enhanced Risk,
+ * 		Applied Mathematical Finance, 10, 1-18.
+ *
+ * 	- Artzner, P., F. Delbaen, J. M. Eber, and D. Heath (1999): Coherent Measures of Risk, Mathematical
+ * 		Finance, 9, 203-228.
+ *
+ * 	- Basak, S., and A. Shapiro (2001): Value-at-Risk Based Risk Management: Optimal Policies and Asset
+ * 		Prices, Review of Financial Studies, 14, 371-405.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class PowerVarianceObjectiveUtility implements org.drip.execution.risk.ObjectiveUtility {
+<span class="nc" id="L78">	private double _dblRiskAversion = java.lang.Double.NaN;</span>
+<span class="nc" id="L79">	private double _dblVarianceExponent = java.lang.Double.NaN;</span>
+
+	/**
+	 * Generate the Liquidity VaR Version of the Power Variance Utility Function
+	 * 
+	 * @param dblRiskAversion The Risk Aversion Parameter
+	 * 
+	 * @return The Liquidity VaR Version of the Power Variance Utility Function
+	 */
+
+	public static final PowerVarianceObjectiveUtility LiquidityVaR (
+		final double dblRiskAversion)
+	{
+		try {
+<span class="nc" id="L93">			return new PowerVarianceObjectiveUtility (0.5, dblRiskAversion);</span>
+<span class="nc" id="L94">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L95">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L98">		return null;</span>
+	}
+
+	/**
+	 * PowerVarianceObjectiveUtility Constructor
+	 * 
+	 * @param dblVarianceExponent The Variance Exponent
+	 * @param dblRiskAversion The Risk Aversion Parameter
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public PowerVarianceObjectiveUtility (
+		final double dblVarianceExponent,
+		final double dblRiskAversion)
+		throws java.lang.Exception
+<span class="nc" id="L114">	{</span>
+<span class="nc bnc" id="L115" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblVarianceExponent = dblVarianceExponent) || 0. &gt;</span>
+<span class="nc bnc" id="L116" title="All 4 branches missed.">			_dblVarianceExponent || !org.drip.quant.common.NumberUtil.IsValid (_dblRiskAversion =</span>
+				dblRiskAversion) || 0. &gt; _dblRiskAversion)
+<span class="nc" id="L118">			throw new java.lang.Exception (&quot;PowerVarianceObjectiveUtility Constructor =&gt; Invalid Inputs!&quot;);</span>
+<span class="nc" id="L119">	}</span>
+
+	/**
+	 * Retrieve the Risk Aversion Parameter
+	 * 
+	 * @return The Risk Aversion Parameter
+	 */
+
+	public double riskAversion()
+	{
+<span class="nc" id="L129">		return _dblRiskAversion;</span>
+	}
+
+	/**
+	 * Retrieve the Variance Exponent
+	 * 
+	 * @return The Variance Exponent
+	 */
+
+	public double varianceExponent()
+	{
+<span class="nc" id="L140">		return _dblVarianceExponent;</span>
+	}
+
+	@Override public org.drip.execution.sensitivity.ControlNodesGreek sensitivity (
+		final org.drip.execution.sensitivity.TrajectoryControlNodesGreek tcngExpectation,
+		final org.drip.execution.sensitivity.TrajectoryControlNodesGreek tcngVariance)
+	{
+<span class="nc bnc" id="L147" title="All 4 branches missed.">		if (null == tcngExpectation || null == tcngVariance) return null;</span>
+
+<span class="nc" id="L149">		double[] adblVarianceJacobian = tcngVariance.innerJacobian();</span>
+
+<span class="nc bnc" id="L151" title="All 2 branches missed.">		if (null == adblVarianceJacobian) return null;</span>
+
+<span class="nc" id="L153">		double dblVarianceValue = tcngVariance.value();</span>
+
+<span class="nc" id="L155">		double[][] aadblVarianceHessian = tcngVariance.innerHessian();</span>
+
+<span class="nc" id="L157">		double[] adblExpectationJacobian = tcngExpectation.innerJacobian();</span>
+
+<span class="nc" id="L159">		double[][] aadblExpectationHessian = tcngExpectation.innerHessian();</span>
+
+<span class="nc" id="L161">		int iNumControlNode = adblVarianceJacobian.length;</span>
+<span class="nc" id="L162">		double[] adblObjectiveJacobian = new double[iNumControlNode];</span>
+<span class="nc" id="L163">		double[][] aadblObjectiveHessian = new double[iNumControlNode][iNumControlNode];</span>
+
+<span class="nc" id="L165">		double dblJacobianMultiplier = _dblVarianceExponent * _dblRiskAversion * java.lang.Math.pow</span>
+<span class="nc" id="L166">			(dblVarianceValue, _dblVarianceExponent - 1.);</span>
+
+<span class="nc" id="L168">		double dblJacobianProductMultiplier = _dblVarianceExponent * (_dblVarianceExponent - 1.) *</span>
+<span class="nc" id="L169">			_dblRiskAversion * java.lang.Math.pow (dblVarianceValue, _dblVarianceExponent - 2.);</span>
+
+<span class="nc bnc" id="L171" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumControlNode; ++i) {</span>
+<span class="nc" id="L172">			adblObjectiveJacobian[i] = adblExpectationJacobian[i] + dblJacobianMultiplier *</span>
+				adblVarianceJacobian[i];
+
+<span class="nc bnc" id="L175" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumControlNode; ++j)</span>
+<span class="nc" id="L176">				aadblObjectiveHessian[i][j] = aadblExpectationHessian[i][j] + dblJacobianProductMultiplier *</span>
+					adblVarianceJacobian[i] * adblVarianceJacobian[j] + dblJacobianMultiplier *
+						aadblVarianceHessian[i][j];
+		}
+
+		try {
+<span class="nc" id="L182">			return new org.drip.execution.sensitivity.ControlNodesGreek (tcngExpectation.value() +</span>
+<span class="nc" id="L183">				_dblRiskAversion * java.lang.Math.pow (dblVarianceValue, _dblVarianceExponent),</span>
+					adblObjectiveJacobian, aadblObjectiveHessian);
+<span class="nc" id="L185">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L186">			e.printStackTrace();</span>
+		}
+<span class="nc" id="L188">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

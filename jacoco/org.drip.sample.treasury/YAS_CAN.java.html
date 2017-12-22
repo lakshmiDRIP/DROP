@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>YAS_CAN.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.treasury</a> &gt; <span class="el_source">YAS_CAN.java</span></div><h1>YAS_CAN.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.treasury;
+
+import org.drip.analytics.cashflow.CompositePeriod;
+import org.drip.analytics.date.*;
+import org.drip.market.otc.*;
+import org.drip.param.creator.*;
+import org.drip.param.market.CurveSurfaceQuoteContainer;
+import org.drip.param.valuation.ValuationParams;
+import org.drip.product.creator.*;
+import org.drip.product.credit.BondComponent;
+import org.drip.product.definition.CalibratableComponent;
+import org.drip.product.rates.FixFloatComponent;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.state.creator.ScenarioDiscountCurveBuilder;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+import org.drip.state.identifier.ForwardLabel;
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * YAS_CAN contains the sample demonstrating the replication of Bloomberg's Canadian Govvie CAD Bond YAS
+ *  Functionality.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L71">public class YAS_CAN {</span>
+
+	private static BondComponent TSYBond (
+		final JulianDate dtEffective,
+		final JulianDate dtMaturity,
+		final int iFreq,
+		final String strDayCount,
+		final String strCurrency,
+		final double dblCoupon)
+		throws Exception
+	{
+<span class="nc" id="L82">		return BondBuilder.CreateSimpleFixed (</span>
+<span class="nc" id="L83">			&quot;CAN &quot; + FormatUtil.FormatDouble (dblCoupon, 1, 2, 100.) + &quot; &quot; + dtMaturity,</span>
+			strCurrency,
+			&quot;&quot;,
+			dblCoupon,
+			iFreq,
+			strDayCount,
+			dtEffective,
+			dtMaturity,
+			null,
+			null
+		);
+	}
+
+	private static final FixFloatComponent OTCIRS (
+		final JulianDate dtSpot,
+		final String strCurrency,
+		final String strMaturityTenor,
+		final double dblCoupon)
+	{
+<span class="nc" id="L102">		FixedFloatSwapConvention ffConv = IBORFixedFloatContainer.ConventionFromJurisdiction (</span>
+			strCurrency,
+			&quot;ALL&quot;,
+			strMaturityTenor,
+			&quot;MAIN&quot;
+		);
+
+<span class="nc" id="L109">		return ffConv.createFixFloatComponent (</span>
+			dtSpot,
+			strMaturityTenor,
+			dblCoupon,
+			0.,
+			1.
+		);
+	}
+
+	/*
+	 * Sample demonstrating building of rates curve from cash/future/swaps
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static MergedDiscountForwardCurve BuildRatesCurveFromInstruments (
+		final JulianDate dtStart,
+		final String[] astrCashTenor,
+		final double[] adblCashRate,
+		final String[] astrIRSTenor,
+		final double[] adblIRSRate,
+		final double dblBump,
+		final String strCurrency)
+		throws Exception
+	{
+<span class="nc" id="L134">		int iNumDCInstruments = astrCashTenor.length + adblIRSRate.length;</span>
+<span class="nc" id="L135">		int aiDate[] = new int[iNumDCInstruments];</span>
+<span class="nc" id="L136">		double adblRate[] = new double[iNumDCInstruments];</span>
+<span class="nc" id="L137">		String astrCalibMeasure[] = new String[iNumDCInstruments];</span>
+<span class="nc" id="L138">		double adblCompCalibValue[] = new double[iNumDCInstruments];</span>
+<span class="nc" id="L139">		CalibratableComponent aCompCalib[] = new CalibratableComponent[iNumDCInstruments];</span>
+
+		// Cash Calibration
+
+<span class="nc" id="L143">		JulianDate dtCashEffective = dtStart.addBusDays (</span>
+			1,
+			strCurrency
+		);
+
+<span class="nc bnc" id="L148" title="All 2 branches missed.">		for (int i = 0; i &lt; astrCashTenor.length; ++i) {</span>
+<span class="nc" id="L149">			astrCalibMeasure[i] = &quot;Rate&quot;;</span>
+<span class="nc" id="L150">			adblRate[i] = java.lang.Double.NaN;</span>
+<span class="nc" id="L151">			adblCompCalibValue[i] = adblCashRate[i] + dblBump;</span>
+
+<span class="nc" id="L153">			aCompCalib[i] = SingleStreamComponentBuilder.Deposit (</span>
+				dtCashEffective,
+<span class="nc" id="L155">				new JulianDate (aiDate[i] = dtCashEffective.addTenor (astrCashTenor[i]).julian()),</span>
+<span class="nc" id="L156">				ForwardLabel.Create (</span>
+					strCurrency,
+					astrCashTenor[i]
+				)
+			);
+		}
+
+		// IRS Calibration
+
+<span class="nc" id="L165">		JulianDate dtIRSEffective = dtStart.addBusDays (2, strCurrency);</span>
+
+<span class="nc bnc" id="L167" title="All 2 branches missed.">		for (int i = 0; i &lt; astrIRSTenor.length; ++i) {</span>
+<span class="nc" id="L168">			astrCalibMeasure[i + astrCashTenor.length] = &quot;Rate&quot;;</span>
+<span class="nc" id="L169">			adblRate[i + astrCashTenor.length] = java.lang.Double.NaN;</span>
+<span class="nc" id="L170">			adblCompCalibValue[i + astrCashTenor.length] = adblIRSRate[i] + dblBump;</span>
+
+<span class="nc" id="L172">			aiDate[i + astrCashTenor.length] = dtIRSEffective.addTenor (astrIRSTenor[i]).julian();</span>
+
+<span class="nc" id="L174">			aCompCalib[i + astrCashTenor.length] = OTCIRS (</span>
+				dtIRSEffective,
+				strCurrency,
+				astrIRSTenor[i],
+				0.
+			);
+		}
+
+		/*
+		 * Build the IR curve from the components, their calibration measures, and their calibration quotes.
+		 */
+
+<span class="nc" id="L186">		return ScenarioDiscountCurveBuilder.NonlinearBuild (</span>
+			dtStart,
+			strCurrency,
+			aCompCalib,
+			adblCompCalibValue,
+			astrCalibMeasure,
+			null
+		);
+	}
+
+	private static final MergedDiscountForwardCurve FundingCurve (
+		final JulianDate dtSpot,
+		final String strCurrency)
+		throws Exception
+	{
+<span class="nc" id="L201">		String[] astrCashTenor = new String[] {&quot;3M&quot;};</span>
+<span class="nc" id="L202">		double[] adblCashRate = new double[] {0.00276};</span>
+<span class="nc" id="L203">		String[] astrIRSTenor = new String[] {   &quot;1Y&quot;,    &quot;2Y&quot;,    &quot;3Y&quot;,    &quot;4Y&quot;,    &quot;5Y&quot;,    &quot;6Y&quot;,    &quot;7Y&quot;,</span>
+			   &quot;8Y&quot;,    &quot;9Y&quot;,   &quot;10Y&quot;,   &quot;11Y&quot;,   &quot;12Y&quot;,   &quot;15Y&quot;,   &quot;20Y&quot;,   &quot;25Y&quot;,   &quot;30Y&quot;,   &quot;40Y&quot;,   &quot;50Y&quot;};
+<span class="nc" id="L205">		double[] adblIRSRate = new double[]  {0.00367, 0.00533, 0.00843, 0.01238, 0.01609, 0.01926, 0.02191,</span>
+			0.02406, 0.02588, 0.02741, 0.02870, 0.02982, 0.03208, 0.03372, 0.03445, 0.03484, 0.03501, 0.03484};
+
+<span class="nc" id="L208">		return BuildRatesCurveFromInstruments (</span>
+			dtSpot,
+			astrCashTenor,
+			adblCashRate,
+			astrIRSTenor,
+			adblIRSRate,
+			0.,
+			strCurrency
+		);
+	}
+
+	private static final void TSYMetrics (
+		final BondComponent tsyBond,
+		final double dblNotional,
+		final JulianDate dtSettle,
+		final CurveSurfaceQuoteContainer mktParams,
+		final double dblCleanPrice)
+		throws Exception
+	{
+<span class="nc" id="L227">		double dblAccrued = tsyBond.accrued (</span>
+<span class="nc" id="L228">			dtSettle.julian(),</span>
+			null
+		);
+
+<span class="nc" id="L232">		double dblYield = tsyBond.yieldFromPrice (</span>
+			new ValuationParams (
+				dtSettle,
+				dtSettle,
+<span class="nc" id="L236">				tsyBond.currency()</span>
+			),
+			mktParams,
+			null,
+			dblCleanPrice
+		);
+
+<span class="nc" id="L243">		double dblModifiedDuration = tsyBond.modifiedDurationFromPrice (</span>
+			new ValuationParams (
+				dtSettle,
+				dtSettle,
+<span class="nc" id="L247">				tsyBond.currency()</span>
+			),
+			mktParams,
+			null,
+			dblCleanPrice
+		);
+
+<span class="nc" id="L254">		double dblRisk = tsyBond.yield01FromPrice (</span>
+			new ValuationParams (
+				dtSettle,
+				dtSettle,
+<span class="nc" id="L258">				tsyBond.currency()</span>
+			),
+			mktParams,
+			null,
+			dblCleanPrice
+		);
+
+<span class="nc" id="L265">		double dblConvexity = tsyBond.convexityFromPrice (</span>
+			new ValuationParams (
+				dtSettle,
+				dtSettle,
+<span class="nc" id="L269">				tsyBond.currency()</span>
+			),
+			mktParams,
+			null,
+			dblCleanPrice
+		);
+
+<span class="nc" id="L276">		JulianDate dtPreviousCouponDate = tsyBond.previousCouponDate (dtSettle);</span>
+
+<span class="nc" id="L278">		System.out.println();</span>
+
+<span class="nc" id="L280">		System.out.println (&quot;\t\t&quot; + tsyBond.name());</span>
+
+<span class="nc" id="L282">		System.out.println (&quot;\tPrice             : &quot; + FormatUtil.FormatDouble (dblCleanPrice, 1, 4, 100.));</span>
+
+<span class="nc" id="L284">		System.out.println (&quot;\tYield             : &quot; + FormatUtil.FormatDouble (dblYield, 1, 4, 100.) + &quot;%&quot;);</span>
+
+<span class="nc" id="L286">		System.out.println (&quot;\tSettle            :  &quot; + dtSettle);</span>
+
+<span class="nc" id="L288">		System.out.println();</span>
+
+<span class="nc" id="L290">		System.out.println (&quot;\tModified Duration : &quot; + FormatUtil.FormatDouble (dblModifiedDuration, 1, 4, 10000.));</span>
+
+<span class="nc" id="L292">		System.out.println (&quot;\tRisk              : &quot; + FormatUtil.FormatDouble (dblRisk, 1, 4, 10000.));</span>
+
+<span class="nc" id="L294">		System.out.println (&quot;\tConvexity         : &quot; + FormatUtil.FormatDouble (dblConvexity * dblNotional, 1, 4, 1.));</span>
+
+<span class="nc" id="L296">		System.out.println (&quot;\tDV01              : &quot; + FormatUtil.FormatDouble (dblRisk * dblNotional, 1, 0, 1.));</span>
+
+<span class="nc" id="L298">		System.out.println();</span>
+
+<span class="nc" id="L300">		System.out.println (&quot;\tPrevious Coupon Date :  &quot; + dtPreviousCouponDate);</span>
+
+<span class="nc" id="L302">		System.out.println (&quot;\tFace                 : &quot; + FormatUtil.FormatDouble (dblNotional, 1, 2, 1.));</span>
+
+<span class="nc" id="L304">		System.out.println (&quot;\tPrincipal            : &quot; + FormatUtil.FormatDouble (dblCleanPrice * dblNotional, 1, 2, 1.));</span>
+
+<span class="nc" id="L306">		System.out.println (&quot;\tAccrued              : &quot; + FormatUtil.FormatDouble (dblAccrued * dblNotional, 1, 2, 1.));</span>
+
+<span class="nc" id="L308">		System.out.println (&quot;\tTotal                : &quot; + FormatUtil.FormatDouble ((dblCleanPrice + dblAccrued) * dblNotional, 1, 2, 1.));</span>
+
+<span class="nc" id="L310">		System.out.println (&quot;\tAccrual Days         : &quot; + (dtSettle.julian() - dtPreviousCouponDate.julian()));</span>
+<span class="nc" id="L311">	}</span>
+
+	public static final void main (
+		final String astrArgs[])
+		throws Exception
+	{
+<span class="nc" id="L317">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L319">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+			2015,
+			DateUtil.MAY,
+			1
+		);
+
+<span class="nc" id="L325">		JulianDate dtEffective = DateUtil.CreateFromYMD (</span>
+			2012,
+			DateUtil.JULY,
+			30
+		);
+
+<span class="nc" id="L331">		JulianDate dtMaturity = DateUtil.CreateFromYMD (</span>
+			2023,
+			DateUtil.JUNE,
+			1
+		);
+
+<span class="nc" id="L337">		int iFreq = 2;</span>
+<span class="nc" id="L338">		String strDayCount = &quot;DCAct_Act_UST&quot;;</span>
+<span class="nc" id="L339">		String strCurrency = &quot;CAD&quot;;</span>
+<span class="nc" id="L340">		double dblCoupon = 0.015;</span>
+<span class="nc" id="L341">		double dblNotional = 1000000.;</span>
+<span class="nc" id="L342">		double dblCleanPrice = 1.002;</span>
+
+<span class="nc" id="L344">		BondComponent tsyBond = TSYBond (</span>
+			dtEffective,
+			dtMaturity,
+			iFreq,
+			strDayCount,
+			strCurrency,
+			dblCoupon
+		);
+
+<span class="nc" id="L353">		System.out.println();</span>
+
+<span class="nc" id="L355">		System.out.println (&quot;\tEffective : &quot; + tsyBond.effectiveDate());</span>
+
+<span class="nc" id="L357">		System.out.println (&quot;\tMaturity  : &quot; + tsyBond.maturityDate());</span>
+
+<span class="nc" id="L359">		System.out.println();</span>
+
+<span class="nc" id="L361">		MergedDiscountForwardCurve dc = FundingCurve (</span>
+			dtSpot,
+			strCurrency
+		);
+
+<span class="nc" id="L366">		TSYMetrics (</span>
+			tsyBond,
+			dblNotional,
+			dtSpot,
+<span class="nc" id="L370">			MarketParamsBuilder.Create (</span>
+				dc,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null
+			),
+			dblCleanPrice
+		);
+
+<span class="nc" id="L382">		System.out.println (&quot;\n\tCashflow\n\t--------&quot;);</span>
+
+<span class="nc bnc" id="L384" title="All 2 branches missed.">		for (CompositePeriod p : tsyBond.couponPeriods())</span>
+<span class="nc" id="L385">			System.out.println (&quot;\t\t&quot; +</span>
+<span class="nc" id="L386">				DateUtil.YYYYMMDD (p.startDate()) + &quot; | &quot; +</span>
+<span class="nc" id="L387">				DateUtil.YYYYMMDD (p.endDate()) + &quot; | &quot; +</span>
+<span class="nc" id="L388">				DateUtil.YYYYMMDD (p.payDate()) + &quot; | &quot; +</span>
+<span class="nc" id="L389">				FormatUtil.FormatDouble (p.couponDCF(), 1, 4, 1.) + &quot; ||&quot;</span>
+			);
+<span class="nc" id="L391">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

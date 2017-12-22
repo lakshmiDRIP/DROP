@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CDXRefData.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.feed.loader</a> &gt; <span class="el_source">CDXRefData.java</span></div><h1>CDXRefData.java</h1><pre class="source lang-java linenums">
+package org.drip.feed.loader;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * Copyright (C) 2012 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * CDXRefData contains the functionality to load the standard CDX reference data and definitions, and create
+ * 	compile time static classes for these definitions.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L62">public class CDXRefData {</span>
+	private static final boolean s_bBlog = false;
+	private static final boolean s_bSuppressErr = true;
+	private static final boolean s_bPrintCDXRefDataDump = false;
+
+	private static final org.drip.product.params.CDXRefDataParams CreateCDXRefDataFromRecord (
+		final java.lang.String[] astrArgs,
+		final java.io.BufferedWriter bw)
+	{
+<span class="nc bnc" id="L71" title="All 4 branches missed.">		if (null == astrArgs || 43 != astrArgs.length) System.exit (333);</span>
+
+<span class="nc" id="L73">		java.lang.String strCurveID = org.drip.quant.common.StringUtil.ProcessInputForNULL (astrArgs[0],</span>
+			false);
+
+		if (s_bBlog) System.out.println (&quot;Curve ID: &quot; + strCurveID);
+
+<span class="nc" id="L78">		java.lang.String strSPN = org.drip.quant.common.StringUtil.ProcessInputForNULL (astrArgs[1], false);</span>
+
+		if (s_bBlog) System.out.println (&quot;SPN: &quot; + strSPN);
+
+<span class="nc" id="L82">		java.lang.String strIndexLabel = org.drip.quant.common.StringUtil.ProcessInputForNULL (astrArgs[2],</span>
+			false);
+
+		if (s_bBlog) System.out.println (&quot;Index Label: &quot; + strIndexLabel);
+
+<span class="nc" id="L87">		java.lang.String strIndexName = org.drip.quant.common.StringUtil.ProcessInputForNULL (astrArgs[3],</span>
+			false);
+
+		if (s_bBlog) System.out.println (&quot;Index Name: &quot; + strIndexName);
+
+<span class="nc" id="L92">		java.lang.String strCurveName = org.drip.quant.common.StringUtil.ProcessInputForNULL (astrArgs[4],</span>
+			false);
+
+		if (s_bBlog) System.out.println (&quot;Curve Name: &quot; + strCurveName);
+
+<span class="nc" id="L97">		org.drip.analytics.date.JulianDate dtIssueDate =</span>
+			org.drip.analytics.date.DateUtil.MakeJulianFromDDMMMYY
+<span class="nc" id="L99">				(org.drip.quant.common.StringUtil.ProcessInputForNULL (astrArgs[5], false), &quot;-&quot;);</span>
+
+<span class="nc bnc" id="L101" title="All 2 branches missed.">		if (null == dtIssueDate) {</span>
+<span class="nc" id="L102">			System.out.println (&quot;Bad Issue Date for Curve ID &quot; + strCurveID);</span>
+
+<span class="nc" id="L104">			return null;</span>
+		}
+
+		if (s_bBlog) System.out.println (&quot;Issue Date: &quot; + dtIssueDate);
+
+<span class="nc" id="L109">		org.drip.analytics.date.JulianDate dtMaturityDate =</span>
+			org.drip.analytics.date.DateUtil.MakeJulianFromDDMMMYY
+<span class="nc" id="L111">				(org.drip.quant.common.StringUtil.ProcessInputForNULL (astrArgs[6], false), &quot;-&quot;);</span>
+
+<span class="nc bnc" id="L113" title="All 2 branches missed.">		if (null == dtMaturityDate) {</span>
+<span class="nc" id="L114">			System.out.println (&quot;Bad Maturity Date for Curve ID &quot; + strCurveID);</span>
+
+<span class="nc" id="L116">			return null;</span>
+		}
+
+		if (s_bBlog) System.out.println (&quot;Maturity Date: &quot; + dtMaturityDate);
+
+<span class="nc" id="L121">		double dblCoupon = java.lang.Double.NaN;</span>
+
+		try {
+<span class="nc" id="L124">			dblCoupon = 0.0001 * new java.lang.Double (astrArgs[7]);</span>
+<span class="nc" id="L125">		} catch (java.lang.Exception e) {</span>
+			if (!s_bSuppressErr) e.printStackTrace();
+
+<span class="nc" id="L128">			dblCoupon = 0.;</span>
+<span class="nc" id="L129">		}</span>
+
+		if (s_bBlog) System.out.println (&quot;Coupon: &quot; + dblCoupon);
+
+<span class="nc" id="L133">		java.lang.String strCurrency = org.drip.quant.common.StringUtil.ProcessInputForNULL (astrArgs[8],</span>
+			false);
+
+		if (s_bBlog) System.out.println (&quot;Currency: &quot; + strCurrency);
+
+<span class="nc" id="L138">		java.lang.String strDayCount = org.drip.quant.common.StringUtil.ProcessInputForNULL (astrArgs[9],</span>
+			false);
+
+		if (s_bBlog) System.out.println (&quot;DayCount: &quot; + strDayCount);
+
+<span class="nc" id="L143">		java.lang.String strFullFirstStub = org.drip.quant.common.StringUtil.ProcessInputForNULL</span>
+<span class="nc" id="L144">			(astrArgs[10], false);</span>
+
+<span class="nc" id="L146">		boolean bFullFirstStub = &quot;lf&quot;.equalsIgnoreCase (strFullFirstStub);</span>
+
+		if (s_bBlog) System.out.println (&quot;Full First Stub: &quot; + bFullFirstStub);
+
+<span class="nc" id="L150">		double dblRecovery = java.lang.Double.NaN;</span>
+
+		try {
+<span class="nc" id="L153">			dblRecovery = 0.01 * new java.lang.Double (astrArgs[11]);</span>
+<span class="nc" id="L154">		} catch (java.lang.Exception e) {</span>
+			if (!s_bSuppressErr) e.printStackTrace();
+
+<span class="nc" id="L157">			dblRecovery = 0.;</span>
+<span class="nc" id="L158">		}</span>
+
+		if (s_bBlog) System.out.println (&quot;Recovery: &quot; + dblRecovery);
+
+<span class="nc" id="L162">		int iFrequency = 0;</span>
+
+<span class="nc" id="L164">		java.lang.String strFrequency = org.drip.quant.common.StringUtil.ProcessInputForNULL (astrArgs[12],</span>
+			false);
+
+<span class="nc bnc" id="L167" title="All 2 branches missed.">		if (&quot;Q&quot;.equalsIgnoreCase (strFrequency))</span>
+<span class="nc" id="L168">			iFrequency = 4;</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">		else if (&quot;S&quot;.equalsIgnoreCase (strFrequency))</span>
+<span class="nc" id="L170">			iFrequency = 2;</span>
+
+		if (s_bBlog) System.out.println (&quot;Frequency: &quot; + iFrequency);
+
+<span class="nc" id="L174">		java.lang.String strRedID = org.drip.quant.common.StringUtil.ProcessInputForNULL (astrArgs[13],</span>
+			false);
+
+		if (s_bBlog) System.out.println (&quot;RedID: &quot; + strRedID);
+
+<span class="nc" id="L179">		java.lang.String strIndexClass = org.drip.quant.common.StringUtil.ProcessInputForNULL (astrArgs[14],</span>
+			false);
+
+		if (s_bBlog) System.out.println (&quot;Index Class: &quot; + strIndexClass);
+
+<span class="nc" id="L184">		int iIndexSeries = 0;</span>
+
+		try {
+<span class="nc" id="L187">			iIndexSeries = new java.lang.Integer (astrArgs[15]);</span>
+<span class="nc" id="L188">		} catch (java.lang.Exception e) {</span>
+			if (!s_bSuppressErr) e.printStackTrace();
+<span class="nc" id="L190">		}</span>
+
+		if (s_bBlog) System.out.println (&quot;Index Series: &quot; + iIndexSeries);
+
+<span class="nc" id="L194">		java.lang.String strIndexGroupName = org.drip.quant.common.StringUtil.ProcessInputForNULL</span>
+<span class="nc" id="L195">			(astrArgs[16], false);</span>
+
+		if (s_bBlog) System.out.println (&quot;Index Group Name: &quot; + strIndexGroupName);
+
+<span class="nc" id="L199">		java.lang.String strIndexShortName = org.drip.quant.common.StringUtil.ProcessInputForNULL</span>
+<span class="nc" id="L200">			(astrArgs[17], false);</span>
+
+		if (s_bBlog) System.out.println (&quot;Index Short Name: &quot; + strIndexShortName);
+
+<span class="nc" id="L204">		java.lang.String strIndexShortGroupName = org.drip.quant.common.StringUtil.ProcessInputForNULL</span>
+<span class="nc" id="L205">			(astrArgs[18], false);</span>
+
+		if (s_bBlog) System.out.println (&quot;Index Short Group Name: &quot; + strIndexShortGroupName);
+
+<span class="nc" id="L209">		int iIndexVersion = 0;</span>
+
+		try {
+<span class="nc" id="L212">			iIndexVersion = new java.lang.Integer (astrArgs[19]);</span>
+<span class="nc" id="L213">		} catch (java.lang.Exception e) {</span>
+			if (!s_bSuppressErr) e.printStackTrace();
+<span class="nc" id="L215">		}</span>
+
+		if (s_bBlog) System.out.println (&quot;Index Version: &quot; + iIndexVersion);
+
+<span class="nc" id="L219">		int iIndexLifeSpan = 0;</span>
+
+		try {
+<span class="nc" id="L222">			iIndexLifeSpan = new java.lang.Integer (astrArgs[20]);</span>
+<span class="nc" id="L223">		} catch (java.lang.Exception e) {</span>
+			if (!s_bSuppressErr) e.printStackTrace();
+<span class="nc" id="L225">		}</span>
+
+		if (s_bBlog) System.out.println (&quot;Index Life Span: &quot; + iIndexLifeSpan);
+
+<span class="nc" id="L229">		java.lang.String strCurvyCurveID = org.drip.quant.common.StringUtil.ProcessInputForNULL (astrArgs[21],</span>
+			false);
+
+		if (s_bBlog) System.out.println (&quot;Curvy Curve ID: &quot; + strCurvyCurveID);
+
+<span class="nc" id="L234">		double dblIndexFactor = java.lang.Double.NaN;</span>
+
+		try {
+<span class="nc" id="L237">			dblIndexFactor = 0.01 * new java.lang.Double (astrArgs[22]);</span>
+<span class="nc" id="L238">		} catch (java.lang.Exception e) {</span>
+			if (!s_bSuppressErr) e.printStackTrace();
+<span class="nc" id="L240">		}</span>
+
+		if (s_bBlog) System.out.println (&quot;Index Factor: &quot; + dblIndexFactor);
+
+<span class="nc" id="L244">		int iOriginalComponentCount = 0;</span>
+
+		try {
+<span class="nc" id="L247">			iOriginalComponentCount = new java.lang.Integer (astrArgs[23]);</span>
+<span class="nc" id="L248">		} catch (java.lang.Exception e) {</span>
+			if (!s_bSuppressErr) e.printStackTrace();
+<span class="nc" id="L250">		}</span>
+
+		if (s_bBlog) System.out.println (&quot;Original Component Count: &quot; + iOriginalComponentCount);
+
+<span class="nc" id="L254">		int iDefaultedComponentCount = 0;</span>
+
+		try {
+<span class="nc" id="L257">			new java.lang.Integer (astrArgs[24]);</span>
+<span class="nc" id="L258">		} catch (java.lang.Exception e) {</span>
+			if (!s_bSuppressErr) e.printStackTrace();
+<span class="nc" id="L260">		}</span>
+
+		if (s_bBlog) System.out.println (&quot;Defaulted Component Count: &quot; + iDefaultedComponentCount);
+
+<span class="nc" id="L264">		java.lang.String strLocation = org.drip.quant.common.StringUtil.ProcessInputForNULL (astrArgs[26],</span>
+			false);
+
+		if (s_bBlog) System.out.println (&quot;Location: &quot; + strLocation);
+
+<span class="nc" id="L269">		boolean bPayAccrued = &quot;1&quot;.equalsIgnoreCase (astrArgs[27]);</span>
+
+		if (s_bBlog) System.out.println (&quot;Pay Accrued: &quot; + bPayAccrued);
+
+<span class="nc" id="L273">		boolean bKnockOutOnDefault = &quot;1&quot;.equalsIgnoreCase (astrArgs[28]);</span>
+
+		if (s_bBlog) System.out.println (&quot;KO Def: &quot; + bKnockOutOnDefault);
+
+<span class="nc" id="L277">		boolean bQuoteAsCDS = &quot;1&quot;.equalsIgnoreCase (astrArgs[33]);</span>
+
+		if (s_bBlog) System.out.println (&quot;Quote As CDS: &quot; + bQuoteAsCDS);
+
+<span class="nc" id="L281">		java.lang.String strBBGTicker = org.drip.quant.common.StringUtil.ProcessInputForNULL (astrArgs[41],</span>
+			false);
+
+		if (s_bBlog) System.out.println (&quot;BBG Ticker: &quot; + strBBGTicker);
+
+<span class="nc" id="L286">		java.lang.String strShortName = org.drip.quant.common.StringUtil.ProcessInputForNULL (astrArgs[42],</span>
+			false);
+
+		if (s_bBlog) System.out.println (&quot;Short Name: &quot; + strShortName);
+
+<span class="nc" id="L291">		org.drip.product.params.CDXRefDataParams cdxrd =</span>
+<span class="nc" id="L292">			org.drip.product.params.CDXRefDataParams.CreateCDXRefDataBuilder (strCurveID, strSPN,</span>
+<span class="nc" id="L293">				strIndexLabel, strIndexName, strCurveName, dtIssueDate.julian(),</span>
+<span class="nc" id="L294">					dtMaturityDate.julian(), dblCoupon, strCurrency, strDayCount, bFullFirstStub,</span>
+						dblRecovery, iFrequency, strRedID, strIndexClass, iIndexSeries, strIndexGroupName,
+							strIndexShortName, strIndexShortGroupName, iIndexVersion, iIndexLifeSpan,
+								strCurvyCurveID, dblIndexFactor, iOriginalComponentCount,
+									iDefaultedComponentCount, strLocation, bPayAccrued, bKnockOutOnDefault,
+										bQuoteAsCDS, strBBGTicker, strShortName);
+
+		if (s_bBlog) System.out.println (&quot;CDXRD = &quot; + cdxrd);
+
+<span class="nc bnc" id="L303" title="All 2 branches missed.">		if (null == cdxrd) return null;</span>
+
+<span class="nc" id="L305">		java.lang.String strCDXRD = cdxrd.setConstructionString();</span>
+
+		if (s_bPrintCDXRefDataDump) System.out.println (strCDXRD);
+
+		try {
+<span class="nc bnc" id="L310" title="All 2 branches missed.">			if (null != bw) {</span>
+<span class="nc" id="L311">				bw.write (strCDXRD);</span>
+
+<span class="nc" id="L313">				bw.flush();</span>
+			}
+<span class="nc" id="L315">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L316">			e.printStackTrace();</span>
+<span class="nc" id="L317">		}</span>
+
+<span class="nc" id="L319">		return cdxrd;</span>
+	}
+
+	private static final boolean LoadCDXDefinitions (
+		final java.lang.String strCDXRefDataFile)
+	{
+<span class="nc bnc" id="L325" title="All 4 branches missed.">		if (null == strCDXRefDataFile || strCDXRefDataFile.isEmpty()) {</span>
+<span class="nc" id="L326">			System.out.println (&quot;Invalid CDX Ref Data File: &quot; + strCDXRefDataFile);</span>
+
+<span class="nc" id="L328">			return false;</span>
+		}
+
+<span class="nc" id="L331">		int iNumIndices = 0;</span>
+<span class="nc" id="L332">		int iNumFunctions = 0;</span>
+<span class="nc" id="L333">		int iNumFailedToLoad = 0;</span>
+<span class="nc" id="L334">		int iNumIndicesPerFunction = 100;</span>
+<span class="nc" id="L335">		java.io.BufferedWriter bw = null;</span>
+<span class="nc" id="L336">		java.lang.String strCDXRefDataLine = &quot;&quot;;</span>
+<span class="nc" id="L337">		java.io.BufferedReader iobrCDXRefData = null;</span>
+
+		try {
+<span class="nc" id="L340">			iobrCDXRefData = new java.io.BufferedReader (new java.io.FileReader (strCDXRefDataFile));</span>
+<span class="nc" id="L341">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L342">			e.printStackTrace();</span>
+
+<span class="nc" id="L344">			return false;</span>
+<span class="nc" id="L345">		}</span>
+
+		try {
+<span class="nc" id="L348">			bw = new java.io.BufferedWriter (new java.io.FileWriter</span>
+				(&quot;C:\\Lakshmi\\BondAnal\\org\\drip\\product\\creator\\CDXRefDataHolder.java&quot;));
+
+<span class="nc" id="L351">			bw.write (&quot;\npackage org.drip.product.creator;\n\n&quot;);</span>
+
+<span class="nc" id="L353">			bw.write</span>
+<span class="nc" id="L354">				(&quot;/*\n * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-\n */\n&quot;);</span>
+
+<span class="nc" id="L356">			bw.write (&quot;\n/*\n *    GENERATED on &quot; + new java.util.Date().toString() +</span>
+				&quot; ---- DO NOT DELETE\n */\n&quot;);
+
+<span class="nc" id="L359">			bw.write (&quot;\n/*!\n * Copyright (C) 2012 Lakshmi Krishnamurthy\n *\n&quot;);</span>
+
+<span class="nc" id="L361">			bw.write (&quot; * This file is part of CreditAnalytics, a free-software/open-source library for\n&quot;);</span>
+
+<span class="nc" id="L363">			bw.write</span>
+<span class="nc" id="L364">				(&quot; *		fixed income analysts and developers - http://www.credit-trader.org\n *\n&quot;);</span>
+
+<span class="nc" id="L366">			bw.write</span>
+<span class="nc" id="L367">				(&quot; * CreditAnalytics is a free, full featured, fixed income credit analytics library,\n&quot;);</span>
+
+<span class="nc" id="L369">			bw.write (&quot; * 		developed with a special focus&quot;);</span>
+
+<span class="nc" id="L371">			bw.write (&quot; towards the needs of the bonds and credit products community.\n *\n&quot;);</span>
+
+<span class="nc" id="L373">			bw.write (&quot; *  Licensed under the Apache License, Version 2.0 (the \&quot;License\&quot;);\n&quot;);</span>
+
+<span class="nc" id="L375">			bw.write (&quot; *   	you may not use this file except in compliance with the License.\n&quot;);</span>
+
+<span class="nc" id="L377">			bw.write (&quot; *\n *  You may obtain a copy of the License at\n&quot;);</span>
+
+<span class="nc" id="L379">			bw.write (&quot; *  	http://www.apache.org/licenses/LICENSE-2.0\n *\n&quot;);</span>
+
+<span class="nc" id="L381">			bw.write (&quot; *  Unless required by applicable law or agreed to in writing, software\n&quot;);</span>
+
+<span class="nc" id="L383">			bw.write (&quot; *  	distributed under the License is distributed on an \&quot;AS IS\&quot; BASIS,\n&quot;);</span>
+
+<span class="nc" id="L385">			bw.write (&quot; *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n&quot;);</span>
+
+<span class="nc" id="L387">			bw.write (&quot; *  \n *  See the License for the specific language governing permissions and\n&quot;);</span>
+
+<span class="nc" id="L389">			bw.write (&quot; *  	limitations under the License.\n */\n\n&quot;);</span>
+
+<span class="nc" id="L391">			bw.write (&quot;public class CDXRefDataHolder {\n\tpublic &quot;);</span>
+
+<span class="nc" id="L393">			bw.write (&quot;static org.drip.analytics.support.CaseInsensitiveMap&lt;org.drip.product.creator.CDXRefDataBuilder&gt; &quot;);</span>
+
+<span class="nc" id="L395">			bw.write (&quot;_mapCDXRefData\n\t\t= new &quot;);</span>
+
+<span class="nc" id="L397">			bw.write (&quot;org.drip.analytics.support.AnalyticsHelper.CaseInsensitiveMap&lt;org.drip.product.creator.CDXRefDataBuilder&gt;();&quot;);</span>
+
+<span class="nc" id="L399">			bw.write (&quot;\n\n\tpublic static org.drip.analytics.support.CaseInsensitiveMap&lt;&quot;);</span>
+
+<span class="nc" id="L401">			bw.write (&quot;java.util.Map&lt;org.drip.analytics.date.JulianDate,\n\t\tjava.lang.Integer&gt;&gt; &quot;);</span>
+
+<span class="nc" id="L403">			bw.write (&quot;_mmCDXRDBFirstCouponSeries = new org.drip.analytics.support.CaseInsensitiveMap&lt;\n\t\t\t&quot;);</span>
+
+<span class="nc" id="L405">			bw.write (&quot;java.util.Map&lt;org.drip.analytics.date.JulianDate, java.lang.Integer&gt;&gt;();\n\n\t&quot;);</span>
+
+<span class="nc" id="L407">			bw.write (&quot;public static org.drip.analytics.support.CaseInsensitiveMap&lt;java.util.Map&lt;java.lang.Integer,&quot;);</span>
+
+<span class="nc" id="L409">			bw.write (&quot;\n\t\torg.drip.analytics.date.JulianDate&gt;&gt; _mmCDXRDBSeriesFirstCoupon = new &quot;);</span>
+
+<span class="nc" id="L411">			bw.write (&quot;org.drip.analytics.support.CaseInsensitiveMap&lt;\n\t\t\t&quot;);</span>
+
+<span class="nc" id="L413">			bw.write (&quot;java.util.Map&lt;java.lang.Integer, org.drip.analytics.date.JulianDate&gt;&gt;();\n\n\t&quot;);</span>
+
+<span class="nc" id="L415">			bw.write (&quot;private static final boolean UpdateCDXRefDataMap (\n\t\tfinal java.lang.String &quot;);</span>
+
+<span class="nc" id="L417">			bw.write (&quot;strCDXName,\n\t\tfinal org.drip.product.creator.CDXRefDataBuilder cdxrd)\n\t{\n&quot;);</span>
+
+<span class="nc" id="L419">			bw.write (&quot;\t\tif (null == cdxrd) {\n&quot;);</span>
+
+<span class="nc" id="L421">			bw.write (&quot;\t\t\tSystem.out.println (\&quot;No CDX ref data for \&quot; + strCDXName);\n\n&quot;);</span>
+
+<span class="nc" id="L423">			bw.write (&quot;\t\t\treturn false;\n\t\t}\n\n&quot;);</span>
+
+<span class="nc" id="L425">			bw.write (&quot;\t\t_mapCDXRefData.put (strCDXName, cdxrd);\n\n\t\t&quot;);</span>
+
+<span class="nc" id="L427">			bw.write (&quot;java.util.Map&lt;org.drip.analytics.date.JulianDate, java.lang.Integer&gt; &quot;);</span>
+
+<span class="nc" id="L429">			bw.write (&quot;mapFirstCouponSeries =\n\t\t\t_mmCDXRDBFirstCouponSeries.get &quot;);</span>
+
+<span class="nc" id="L431">			bw.write (&quot;(cdxrd._strIndexClass + \&quot;.\&quot; + cdxrd._strIndexGroupName);\n\n\t\t&quot;);</span>
+
+<span class="nc" id="L433">			bw.write (&quot;if (null == mapFirstCouponSeries)\n\t\t\tmapFirstCouponSeries = new &quot;);</span>
+
+<span class="nc" id="L435">			bw.write (&quot;java.util.TreeMap&lt;org.drip.analytics.date.JulianDate, java.lang.Integer&gt;();\n\n\t\t&quot;);</span>
+
+<span class="nc" id="L437">			bw.write (&quot;mapFirstCouponSeries.put (cdxrd._dtMaturity.subtractTenor (cdxrd._iIndexLifeSpan + &quot;);</span>
+
+<span class="nc" id="L439">			bw.write (&quot;\&quot;Y\&quot;),\n\t\t\tcdxrd._iIndexSeries);&quot;);</span>
+
+<span class="nc" id="L441">			bw.write (&quot;\n\n\t\t_mmCDXRDBFirstCouponSeries.put (cdxrd._strIndexClass + \&quot;.\&quot; + &quot;);</span>
+
+<span class="nc" id="L443">			bw.write (&quot;cdxrd._strIndexGroupName,\n\t\t\tmapFirstCouponSeries);\n\n&quot;);</span>
+
+<span class="nc" id="L445">			bw.write (&quot;\t\tjava.util.Map&lt;java.lang.Integer, org.drip.analytics.date.JulianDate&gt; &quot;);</span>
+
+<span class="nc" id="L447">			bw.write (&quot;mapSeriesFirstCoupon = \n\t\t\t&quot;);</span>
+
+<span class="nc" id="L449">			bw.write (&quot;_mmCDXRDBSeriesFirstCoupon.get (cdxrd._strIndexClass + \&quot;.\&quot; + &quot;);</span>
+
+<span class="nc" id="L451">			bw.write (&quot;cdxrd._strIndexGroupName);\n\n&quot;);</span>
+
+<span class="nc" id="L453">			bw.write (&quot;\t\tif (null == mapSeriesFirstCoupon)\n&quot;);</span>
+
+<span class="nc" id="L455">			bw.write (&quot;\t\t\tmapSeriesFirstCoupon = new java.util.TreeMap&lt;java.lang.Integer, &quot;);</span>
+
+<span class="nc" id="L457">			bw.write (&quot;org.drip.analytics.date.JulianDate&gt;();\n\n&quot;);</span>
+
+<span class="nc" id="L459">			bw.write (&quot;\t\tmapSeriesFirstCoupon.put (cdxrd._iIndexSeries, cdxrd._dtMaturity.subtractTenor &quot;);</span>
+
+<span class="nc" id="L461">			bw.write (&quot;(cdxrd._iIndexLifeSpan\n\t\t\t+ \&quot;Y\&quot;));\n\n&quot;);</span>
+
+<span class="nc" id="L463">			bw.write (&quot;\t\t_mmCDXRDBSeriesFirstCoupon.put (cdxrd._strIndexClass + \&quot;.\&quot; + &quot;);</span>
+
+<span class="nc" id="L465">			bw.write (&quot;cdxrd._strIndexGroupName,\n\t\t\tmapSeriesFirstCoupon);\n\n&quot;);</span>
+
+<span class="nc" id="L467">			bw.write (&quot;\t\treturn true;\n\t}\n&quot;);</span>
+
+<span class="nc" id="L469">			bw.write (&quot;\n\tprivate static final boolean InitCDXRefDataSet&quot; + ++iNumFunctions + &quot;()\n\t{\n&quot;);</span>
+
+<span class="nc bnc" id="L471" title="All 2 branches missed.">			while (null != (strCDXRefDataLine = iobrCDXRefData.readLine())) {</span>
+<span class="nc" id="L472">				++iNumIndices;</span>
+
+<span class="nc" id="L474">				java.lang.String[] astrCDXRefDataRecord = strCDXRefDataLine.split (&quot;,&quot;);</span>
+
+<span class="nc" id="L476">				org.drip.product.params.CDXRefDataParams cdxrd = CreateCDXRefDataFromRecord</span>
+<span class="nc" id="L477">					(astrCDXRefDataRecord, bw);</span>
+
+<span class="nc bnc" id="L479" title="All 2 branches missed.">				if (null == cdxrd)</span>
+<span class="nc" id="L480">					System.out.println (++iNumFailedToLoad + &quot; / &quot; + iNumIndices + &quot; failed to load!&quot;);</span>
+
+<span class="nc bnc" id="L482" title="All 2 branches missed.">				if (0 == (iNumIndices % iNumIndicesPerFunction)) {</span>
+<span class="nc" id="L483">					bw.write (&quot;\t\treturn true;\n\t}\n\n\tprivate &quot;);</span>
+
+<span class="nc" id="L485">					bw.write (&quot;static final boolean InitCDXRefDataSet&quot; + ++iNumFunctions + &quot;()\n\t{\n&quot;);</span>
+				}
+<span class="nc" id="L487">			}</span>
+
+<span class="nc" id="L489">			bw.write (&quot;\t\treturn true;\n\t}\n\n\t&quot;);</span>
+
+<span class="nc" id="L491">			bw.write (&quot;public static final boolean InitFullCDXRefDataSet()\n\t{\n&quot;);</span>
+
+<span class="nc bnc" id="L493" title="All 2 branches missed.">			for (int i = 1 ; i &lt;= iNumFunctions; ++i)</span>
+<span class="nc" id="L494">				bw.write (&quot;\t\tif (!InitCDXRefDataSet&quot; + i + &quot;()) return false;\n\n&quot;);</span>
+
+<span class="nc" id="L496">			bw.write (&quot;\t\treturn true;\n\t}\n}\n&quot;);</span>
+
+<span class="nc" id="L498">			bw.close();</span>
+
+<span class="nc" id="L500">			iobrCDXRefData.close();</span>
+<span class="nc" id="L501">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L502">			e.printStackTrace();</span>
+
+<span class="nc" id="L504">			return false;</span>
+<span class="nc" id="L505">		}</span>
+
+<span class="nc" id="L507">		System.out.println (iNumFailedToLoad + &quot; / &quot; + iNumIndices + &quot; failed to load!&quot;);</span>
+
+<span class="nc" id="L509">		return true;</span>
+	}
+
+	public static void main (
+		final java.lang.String[] astrArgs)
+	{
+<span class="nc" id="L515">		LoadCDXDefinitions (&quot;C:\\Lakshmi\\RefDataAndMarks\\CDXRefData1Raw.csv&quot;);</span>
+<span class="nc" id="L516">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -502,10 +502,13 @@ public class RelativeValueMeasuresGeneration {
 	{
 		// String strConfig = "c:\\Lakshmi\\BondAnal\\Config.xml";
 
-		String strConfig = "";
-
-		EnvManager.InitEnv (strConfig);
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		BondRVMeasuresSample();
+
+		EnvManager.TerminateEnv();
 	}
 }

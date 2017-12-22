@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NonlinearGovvieCurve.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.govvie</a> &gt; <span class="el_source">NonlinearGovvieCurve.java</span></div><h1>NonlinearGovvieCurve.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.govvie;
+
+/*
+ * Credit Product imports
+ */
+
+import org.drip.analytics.date.*;
+import org.drip.param.valuation.*;
+import org.drip.product.definition.*;
+import org.drip.param.creator.*;
+import org.drip.product.creator.*;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.state.creator.ScenarioDiscountCurveBuilder;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * Copyright (C) 2012 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * NonlinearGovvieCurve contains a demo of construction and usage of the non-linear treasury discount curve
+ *  from government bond inputs. It shows the following:
+ * 	- Create on-the-run TSY bond set.
+ * 	- Calibrate a discount curve off of the on-the-run yields and calculate the implied zeroes and DF's.
+ * 	- Price an off-the-run TSY.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L79">public class NonlinearGovvieCurve {</span>
+
+	/*
+	 * Sample demonstrating creation of simple fixed coupon treasury bond
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final Bond CreateTSYBond (
+		final String strName,
+		final double dblCoupon,
+		final JulianDate dt,
+		int iNumYears)
+		throws Exception
+	{
+<span class="nc" id="L94">		return BondBuilder.CreateSimpleFixed (	// Simple Fixed Rate Bond</span>
+			strName,					// Name
+			&quot;USD&quot;,						// Fictitious Treasury Curve Name
+			&quot;&quot;,							// Empty Credit Curve
+			dblCoupon,					// Bond Coupon
+			2, 							// Frequency
+			&quot;Act/Act&quot;,					// Day Count
+			dt, 						// Effective
+<span class="nc" id="L102">			dt.addYears (iNumYears),	// Maturity</span>
+			null,						// Principal Schedule
+			null
+		);
+	}
+
+	/*
+	 * Sample demonstrating creation of a set of the on-the-run treasury bonds
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final Bond[] CreateOnTheRunTSYBondSet (
+		final JulianDate dt,
+		final String[] astrTSYBondName,
+		final int[] aiMaturityYear,
+		final double[] adblCoupon)
+		throws Exception
+	{
+<span class="nc" id="L121">		Bond aTSYBond[] = new Bond[astrTSYBondName.length];</span>
+
+<span class="nc bnc" id="L123" title="All 2 branches missed.">		for (int i = 0; i &lt; astrTSYBondName.length; ++i)</span>
+<span class="nc" id="L124">			aTSYBond[i] = CreateTSYBond (</span>
+				astrTSYBondName[i],
+				adblCoupon[i],
+				dt,
+				aiMaturityYear[i]
+			);
+
+<span class="nc" id="L131">		return aTSYBond;</span>
+	}
+
+	/*
+	 * Sample demonstrating building of the treasury discount curve based off the on-the run instruments and their yields
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final MergedDiscountForwardCurve BuildOnTheRunTSYDiscountCurve (
+		final JulianDate dt,
+		final Bond[] aTSYBond,
+		final double[] adblCalibYield)
+		throws Exception
+	{
+<span class="nc" id="L146">		String astrCalibMeasure[] = new String[aTSYBond.length];</span>
+
+<span class="nc bnc" id="L148" title="All 2 branches missed.">		for (int i = 0; i &lt; aTSYBond.length; ++i)</span>
+<span class="nc" id="L149">			astrCalibMeasure[i] = &quot;Yield&quot;;</span>
+
+<span class="nc" id="L151">		return ScenarioDiscountCurveBuilder.NonlinearBuild (</span>
+			dt,
+			&quot;USD&quot;,
+			aTSYBond,
+			adblCalibYield,
+			astrCalibMeasure,
+			null
+		);
+	}
+
+	/*
+	 * Sample demonstrating calculation of the yields of the input on the run treasury instruments
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final double[] GetOnTheRunYield (
+		final JulianDate dt,
+		final MergedDiscountForwardCurve dcTSY,
+		final Bond[] aTSYBond)
+		throws Exception
+	{
+<span class="nc" id="L173">		double adblYield[] = new double[aTSYBond.length];</span>
+
+<span class="nc bnc" id="L175" title="All 2 branches missed.">		for (int i = 0; i &lt; aTSYBond.length; ++i) {</span>
+<span class="nc" id="L176">			double dblPrice = aTSYBond[i].priceFromFundingCurve (</span>
+				new ValuationParams (
+<span class="nc" id="L178">					DateUtil.Today(),</span>
+<span class="nc" id="L179">					DateUtil.Today(),</span>
+					&quot;USD&quot;
+				),
+<span class="nc" id="L182">				MarketParamsBuilder.Discount (dcTSY),</span>
+<span class="nc" id="L183">				aTSYBond[i].maturityDate().julian(),</span>
+				1.,
+				0.
+			);
+
+<span class="nc" id="L188">			System.out.println (&quot;\tPrice[&quot; + aTSYBond[i].name() + &quot;]: &quot; +</span>
+<span class="nc" id="L189">				FormatUtil.FormatDouble (dblPrice, 2, 3, 100.));</span>
+
+<span class="nc" id="L191">			double dblYield = aTSYBond[i].yieldFromPrice (</span>
+				new ValuationParams (
+<span class="nc" id="L193">					DateUtil.Today(),</span>
+<span class="nc" id="L194">					DateUtil.Today(),</span>
+					&quot;USD&quot;
+				),
+<span class="nc" id="L197">				MarketParamsBuilder.Discount (dcTSY),</span>
+				null,
+				dblPrice
+			);
+
+<span class="nc" id="L202">			System.out.println (&quot;\tYield[&quot; + aTSYBond[i].name() + &quot;]: &quot; +</span>
+<span class="nc" id="L203">				FormatUtil.FormatDouble (dblYield, 1, 3, 100.));</span>
+		}
+
+<span class="nc" id="L206">		return adblYield;</span>
+	}
+
+	/*
+	 * This sample illustrates the construction and validation of the Treasury Curve API. It demonstrates the
+	 * 	following:
+	 * 	- Create the on-the-run treasury bonds.
+	 * 	- Create the on-the-run treasury discount curve from the treasury bonds.
+	 * 	- Compare the implied and the input yields for the on-the-run's.
+	 * 	- Calculate the yield of an off-the-run instrument off of the on-the-run yield discount curve and
+	 * 		cross verify it with the price.
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final void TreasuryCurveSample()
+		throws Exception
+	{
+		/*
+		 * Initialize the Credit Analytics Library
+		 */
+
+<span class="nc" id="L228">		String strConfig = &quot;&quot;;</span>
+
+<span class="nc" id="L230">		EnvManager.InitEnv (strConfig);</span>
+
+		/*
+		 * Define name, maturity, coupon, and the market yield of the input on-the-run treasuries  
+		 */
+
+<span class="nc" id="L236">		final String[] astrTSYName = new String[] {&quot;TSY2YON&quot;, &quot;TSY3YON&quot;, &quot;TSY5YON&quot;, &quot;TSY7YON&quot;, &quot;TSY10YON&quot;, &quot;TSY30YON&quot;};</span>
+<span class="nc" id="L237">		final int[] aiMaturityYear = new int[] {2, 3, 5, 7, 10, 30};</span>
+<span class="nc" id="L238">		final double[] adblCoupon = new double[] {0.0200, 0.0250, 0.0300, 0.0325, 0.0375, 0.0400};</span>
+<span class="nc" id="L239">		final double[] adblCalibYield = new double[] {0.0200, 0.0250, 0.0300, 0.0325, 0.0375, 0.0400};</span>
+
+		/*
+		 * Create the on-the-run treasury bonds
+		 */
+
+<span class="nc" id="L245">		long lTime = System.nanoTime();</span>
+
+<span class="nc" id="L247">		Bond[] aTSYBond = CreateOnTheRunTSYBondSet (</span>
+<span class="nc" id="L248">			DateUtil.Today(),</span>
+			astrTSYName,
+			aiMaturityYear,
+			adblCoupon
+		);
+
+		/*
+		 * Create the on-the-run treasury discount curve
+		 */
+
+<span class="nc" id="L258">		MergedDiscountForwardCurve dcTSY = BuildOnTheRunTSYDiscountCurve (</span>
+<span class="nc" id="L259">			DateUtil.Today(),</span>
+			aTSYBond,
+			adblCalibYield
+		);
+
+		/*
+		 * Compare the implied discount rate and input yields - in general they DO NOT match 
+		 */
+
+<span class="nc bnc" id="L268" title="All 2 branches missed.">		for (int i = 0; i &lt; astrTSYName.length; ++i) {</span>
+<span class="nc" id="L269">			String strTenor = aiMaturityYear[i] + &quot;Y&quot;;</span>
+
+<span class="nc" id="L271">			System.out.println (&quot;Zero[&quot; + strTenor + &quot;]: &quot; + dcTSY.zero (strTenor) +</span>
+				&quot;; Yield[&quot; + strTenor + &quot;]: &quot; + adblCalibYield[i]);
+		}
+
+<span class="nc" id="L275">		System.out.println (&quot;\n----\n&quot;);</span>
+
+<span class="nc" id="L277">		double[] adblYield = GetOnTheRunYield (</span>
+<span class="nc" id="L278">			DateUtil.Today(),</span>
+			dcTSY,
+			aTSYBond
+		);
+
+		/*
+		 * Compare the implied and the input yields for the on-the-run's - they DO match 
+		 */
+
+<span class="nc bnc" id="L287" title="All 2 branches missed.">		for (int i = 0; i &lt; astrTSYName.length; ++i) {</span>
+<span class="nc" id="L288">			String strTenor = aiMaturityYear[i] + &quot;Y&quot;;</span>
+
+<span class="nc" id="L290">			System.out.println (&quot;CalcYield[&quot; + strTenor + &quot;]: &quot; + adblYield[i] + &quot;; Input[&quot; + strTenor + &quot;]: &quot; + adblCalibYield[i]);</span>
+		}
+
+		/*
+		 * Finally calculate the yield of an off-the-run instrument off of the on-the-run yield discount curve 
+		 */
+
+		/*
+		 * Construct off-the-run
+		 */
+
+<span class="nc" id="L301">		int iOffTheRunMaturityYears = 10;</span>
+
+<span class="nc" id="L303">		Bond bondOffTheRun = BondBuilder.CreateSimpleFixed (	// Simple Fixed Rate Bond</span>
+			&quot;USD&quot; + iOffTheRunMaturityYears + &quot;YOFF&quot;,
+			&quot;USD&quot;,
+			&quot;&quot;,
+			0.0375,
+			2,
+			&quot;Act/Act&quot;,
+<span class="nc" id="L310">			DateUtil.Today(),</span>
+<span class="nc" id="L311">			DateUtil.Today().addYears (iOffTheRunMaturityYears),	// off-the-run</span>
+			null,
+			null
+		);
+
+		/*
+		 * Calculate price for off-the-run
+		 */
+
+<span class="nc" id="L320">		double dblPrice = bondOffTheRun.priceFromFundingCurve (</span>
+			new ValuationParams (
+<span class="nc" id="L322">				DateUtil.Today(),</span>
+<span class="nc" id="L323">				DateUtil.Today(),</span>
+				&quot;USD&quot;
+			),
+<span class="nc" id="L326">			MarketParamsBuilder.Discount (dcTSY),</span>
+<span class="nc" id="L327">			bondOffTheRun.maturityDate().julian(),</span>
+			1.,
+			0.
+		);
+
+<span class="nc" id="L332">		System.out.println (&quot;\nOff-The-Run Price[&quot; + iOffTheRunMaturityYears + &quot;Y]: &quot; + dblPrice);</span>
+
+		/*
+		 * Calculate yield for off-the-run
+		 */
+
+<span class="nc" id="L338">		double dblYieldOffTheRun = bondOffTheRun.yieldFromPrice (</span>
+			new ValuationParams (
+<span class="nc" id="L340">				DateUtil.Today(),</span>
+<span class="nc" id="L341">				DateUtil.Today(),</span>
+				&quot;USD&quot;
+			),
+<span class="nc" id="L344">			MarketParamsBuilder.Discount (dcTSY),</span>
+			null,
+			dblPrice
+		);
+
+<span class="nc" id="L349">		System.out.println (&quot;\nOff-The-Run Yield[&quot; + iOffTheRunMaturityYears + &quot;Y]: &quot; + dblYieldOffTheRun);</span>
+
+<span class="nc" id="L351">		System.out.println (&quot;\tTime =&gt; &quot; + (System.nanoTime() - lTime) * 1.e-06 + &quot; ms&quot;);</span>
+<span class="nc" id="L352">	}</span>
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+<span class="nc" id="L358">		TreasuryCurveSample();</span>
+<span class="nc" id="L359">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

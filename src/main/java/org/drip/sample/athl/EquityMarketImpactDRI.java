@@ -110,7 +110,10 @@ public class EquityMarketImpactDRI {
 		final String[] astrArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		String strAssetName = "DRI";
 		double dblAverageDailyVolume = 1929000.;
@@ -252,5 +255,7 @@ public class EquityMarketImpactDRI {
 			);
 
 		System.out.println ("\t|-------------------------------------------------||\n");
+
+		EnvManager.TerminateEnv();
 	}
 }

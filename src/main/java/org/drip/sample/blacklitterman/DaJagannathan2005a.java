@@ -71,7 +71,10 @@ public class DaJagannathan2005a {
 		final String[] astArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		String[] astrAssetID = new String[] {
 			"A",
@@ -298,5 +301,7 @@ public class DaJagannathan2005a {
 		}
 
 		System.out.println ("\t|------------------------||");
+
+		EnvManager.TerminateEnv();
 	}
 }

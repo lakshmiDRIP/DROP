@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TrajectoryEvolutionScheme.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.xva.pde</a> &gt; <span class="el_source">TrajectoryEvolutionScheme.java</span></div><h1>TrajectoryEvolutionScheme.java</h1><pre class="source lang-java linenums">
+package org.drip.xva.pde;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * TrajectoryEvolutionScheme holds the Evolution Edges of a Trajectory evolved in a Dynamically Adaptive
+ *  Manner, as laid out in Burgard and Kjaer (2014). The References are:
+ *  
+ *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
+ *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
+ *  
+ *  - Cesari, G., J. Aquilina, N. Charpillon, X. Filipovic, G. Lee, and L. Manda (2009): Modeling, Pricing,
+ *  	and Hedging Counter-party Credit Exposure - A Technical Guide, Springer Finance, New York.
+ *  
+ *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk, Risk 20 (2) 86-90.
+ *  
+ *  - Li, B., and Y. Tang (2007): Quantitative Analysis, Derivatives Modeling, and Trading Strategies in the
+ *  	Presence of Counter-party Credit Risk for the Fixed Income Market, World Scientific Publishing,
+ *  	Singapore.
+ * 
+ *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
+ *  	21 (2) 97-102.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class TrajectoryEvolutionScheme {
+<span class="nc" id="L73">	private org.drip.xva.universe.TradeablesContainer _tc = null;</span>
+<span class="nc" id="L74">	private org.drip.xva.definition.PDEEvolutionControl _pdeec = null;</span>
+
+	/**
+	 * TrajectoryEvolutionScheme Constructor
+	 * 
+	 * @param tc The Universe of Trade-able Assets
+	 * @param pdeec The XVA Control Settings
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public TrajectoryEvolutionScheme (
+		final org.drip.xva.universe.TradeablesContainer tc,
+		final org.drip.xva.definition.PDEEvolutionControl pdeec)
+		throws java.lang.Exception
+<span class="nc" id="L89">	{</span>
+<span class="nc bnc" id="L90" title="All 4 branches missed.">		if (null == (_tc = tc) || null == (_pdeec = pdeec))</span>
+<span class="nc" id="L91">			throw new java.lang.Exception (&quot;TrajectoryEvolutionScheme Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L92">	}</span>
+
+	/**
+	 * Retrieve the Universe of Trade-able Assets
+	 * 
+	 * @return The Universe of Trade-able Assets
+	 */
+
+	public org.drip.xva.universe.TradeablesContainer universe()
+	{
+<span class="nc" id="L102">		return _tc;</span>
+	}
+
+	/**
+	 * Retrieve the XVA Control Settings
+	 * 
+	 * @return The XVA Control Settings
+	 */
+
+	public org.drip.xva.definition.PDEEvolutionControl pdeec()
+	{
+<span class="nc" id="L113">		return _pdeec;</span>
+	}
+
+	/**
+	 * Re-balance the Cash Account and generate the Derivative Value Update
+	 * 
+	 * @param etvStart The Starting Evolution Trajectory Vertex
+	 * @param me Market Edge Instance
+	 * 
+	 * @return The CashAccountRebalancer Instance
+	 */
+
+	public org.drip.xva.derivative.CashAccountRebalancer rebalanceCash (
+		final org.drip.xva.derivative.EvolutionTrajectoryVertex etvStart,
+		final org.drip.xva.universe.MarketEdge me)
+	{
+<span class="nc bnc" id="L129" title="All 4 branches missed.">		if (null == etvStart || null == me) return null;</span>
+
+<span class="nc" id="L131">		org.drip.xva.derivative.ReplicationPortfolioVertex rpvStart = etvStart.replicationPortfolioVertex();</span>
+
+<span class="nc" id="L133">		double dblAssetNumeraireUnitsStart = rpvStart.assetNumeraireUnits();</span>
+
+<span class="nc" id="L135">		double dblBankSeniorNumeraireUnitsStart = rpvStart.bankSeniorNumeraireUnits();</span>
+
+<span class="nc" id="L137">		double dblCounterPartyNumeraireUnitsStart = rpvStart.counterPartyNumeraireUnits();</span>
+
+<span class="nc" id="L139">		double dblBankSubordinateNumeraireUnitsStart = rpvStart.bankSubordinateNumeraireUnits();</span>
+
+<span class="nc" id="L141">		org.drip.xva.universe.MarketVertex mvStart = me.start();</span>
+
+<span class="nc" id="L143">		org.drip.xva.universe.MarketVertex mvFinish = me.finish();</span>
+
+<span class="nc" id="L145">		org.drip.xva.universe.EntityMarketVertex emvBankStart = mvStart.bank();</span>
+
+<span class="nc" id="L147">		org.drip.xva.universe.EntityMarketVertex emvBankFinish = mvFinish.bank();</span>
+
+<span class="nc" id="L149">		org.drip.xva.universe.EntityMarketVertex emvCounterPartyFinish = mvFinish.counterParty();</span>
+
+<span class="nc" id="L151">		double dblAssetNumeraireFinish = mvFinish.assetNumeraire();</span>
+
+<span class="nc" id="L153">		double dblBankSeniorFundingNumeraireFinish = emvBankFinish.seniorFundingNumeraire().forward();</span>
+
+<span class="nc" id="L155">		double dblCounterPartyNumeraireFinish = emvCounterPartyFinish.seniorFundingNumeraire().forward();</span>
+
+<span class="nc" id="L157">		double dblBankSubordinateFundingNumeraireStart = java.lang.Double.NaN;</span>
+<span class="nc" id="L158">		double dblBankSubordinateFundingNumeraireFinish = java.lang.Double.NaN;</span>
+
+<span class="nc" id="L160">		org.drip.xva.universe.NumeraireMarketVertex nmvBankSubordinateFundingStart =</span>
+<span class="nc" id="L161">			emvBankStart.seniorFundingNumeraire();</span>
+
+<span class="nc" id="L163">		org.drip.xva.universe.NumeraireMarketVertex nmvBankSubordinateFundingFinish =</span>
+<span class="nc" id="L164">			emvBankFinish.seniorFundingNumeraire();</span>
+
+<span class="nc bnc" id="L166" title="All 4 branches missed.">		if (null != nmvBankSubordinateFundingStart &amp;&amp; null != nmvBankSubordinateFundingFinish) {</span>
+<span class="nc" id="L167">			dblBankSubordinateFundingNumeraireStart = nmvBankSubordinateFundingStart.forward();</span>
+
+<span class="nc" id="L169">			dblBankSubordinateFundingNumeraireFinish = nmvBankSubordinateFundingFinish.forward();</span>
+		}
+
+<span class="nc" id="L172">		double dblTimeIncrement = me.vertexIncrement() / 365.25;</span>
+
+<span class="nc" id="L174">		double dblAssetCashChange = dblAssetNumeraireUnitsStart * _tc.asset().cashAccumulationRate() *</span>
+			dblAssetNumeraireFinish * dblTimeIncrement;
+
+<span class="nc" id="L177">		org.drip.xva.universe.Tradeable tCounterPartyNumeraire = _tc.counterPartyFunding();</span>
+
+<span class="nc" id="L179">		double dblCounterPartyCashAccumulation = dblCounterPartyNumeraireUnitsStart *</span>
+<span class="nc" id="L180">			tCounterPartyNumeraire.cashAccumulationRate() * dblCounterPartyNumeraireFinish *</span>
+				dblTimeIncrement;
+
+<span class="nc" id="L183">		double dblCounterPartyPositionValueChange = dblCounterPartyNumeraireUnitsStart *</span>
+<span class="nc" id="L184">			(dblCounterPartyNumeraireFinish - mvStart.counterParty().seniorFundingNumeraire().forward());</span>
+
+<span class="nc" id="L186">		double dblCashAccountBalance = -1. * etvStart.assetGreekVertex().derivativeXVAValue() -</span>
+			dblBankSeniorNumeraireUnitsStart * dblBankSeniorFundingNumeraireFinish;
+
+<span class="nc bnc" id="L189" title="All 2 branches missed.">		if (org.drip.quant.common.NumberUtil.IsValid (dblBankSubordinateFundingNumeraireFinish))</span>
+<span class="nc" id="L190">			dblCashAccountBalance -= dblBankSubordinateNumeraireUnitsStart *</span>
+				dblBankSubordinateFundingNumeraireFinish;
+
+<span class="nc" id="L193">		org.drip.xva.universe.Tradeable tCollateralScheme = _tc.collateralScheme();</span>
+
+<span class="nc" id="L195">		org.drip.xva.universe.Tradeable tBankSeniorFunding = _tc.bankSeniorFunding();</span>
+
+<span class="nc bnc" id="L197" title="All 2 branches missed.">		double dblBankCashAccumulation = dblCashAccountBalance * (dblCashAccountBalance &gt; 0. ?</span>
+<span class="nc" id="L198">			tCollateralScheme.cashAccumulationRate() : tBankSeniorFunding.cashAccumulationRate()) *</span>
+				dblTimeIncrement;
+
+<span class="nc" id="L201">		double dblDerivativeXVAValueChange = -1. * (dblAssetNumeraireUnitsStart * (dblAssetNumeraireFinish -</span>
+<span class="nc" id="L202">			mvStart.assetNumeraire()) + dblBankSeniorNumeraireUnitsStart *</span>
+<span class="nc" id="L203">				(dblBankSeniorFundingNumeraireFinish - emvBankStart.seniorFundingNumeraire().forward()) +</span>
+					dblCounterPartyPositionValueChange + (dblAssetCashChange +
+						dblCounterPartyCashAccumulation + dblBankCashAccumulation) * dblTimeIncrement);
+
+<span class="nc bnc" id="L207" title="All 2 branches missed.">		if (org.drip.quant.common.NumberUtil.IsValid (dblBankSubordinateFundingNumeraireStart) &amp;&amp;</span>
+<span class="nc bnc" id="L208" title="All 2 branches missed.">			org.drip.quant.common.NumberUtil.IsValid (dblBankSubordinateFundingNumeraireFinish))</span>
+<span class="nc" id="L209">			dblDerivativeXVAValueChange += dblBankSubordinateNumeraireUnitsStart *</span>
+				(dblBankSubordinateFundingNumeraireFinish - dblBankSubordinateFundingNumeraireStart);
+
+		try {
+<span class="nc" id="L213">			return new org.drip.xva.derivative.CashAccountRebalancer (new</span>
+				org.drip.xva.derivative.CashAccountEdge (dblAssetCashChange, dblBankCashAccumulation *
+					 dblTimeIncrement, dblCounterPartyCashAccumulation * dblTimeIncrement),
+					 	dblDerivativeXVAValueChange);
+<span class="nc" id="L217">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L218">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L221">		return null;</span>
+	}
+
+	/**
+	 * Execute a Single Euler Time Step Walk
+	 * 
+	 * @param me Market Edge Instance
+	 * @param bko The Burgard Kjaer Operator Instance
+	 * @param etvStart The Starting ETV Instance
+	 * @param dblCollateral The Applicable Collateral
+	 * 
+	 * @return The Evolution Trajectory Edge
+	 */
+
+	public org.drip.xva.derivative.EvolutionTrajectoryEdge eulerWalk (
+		final org.drip.xva.universe.MarketEdge me,
+		final org.drip.xva.pde.BurgardKjaerOperator bko,
+		final org.drip.xva.derivative.EvolutionTrajectoryVertex etvStart,
+		final double dblCollateral)
+	{
+<span class="nc bnc" id="L241" title="All 6 branches missed.">		if (null == me || null == bko || null == etvStart) return null;</span>
+
+<span class="nc" id="L243">		org.drip.xva.derivative.AssetGreekVertex agvStart = etvStart.assetGreekVertex();</span>
+
+<span class="nc" id="L245">		org.drip.xva.pde.BurgardKjaerEdgeRun bker = bko.edgeRun (me, etvStart, dblCollateral);</span>
+
+<span class="nc" id="L247">		double dblTimeStart = etvStart.time();</span>
+
+<span class="nc" id="L249">		double dblTimeIncrement = me.vertexIncrement() / 365.25;</span>
+
+<span class="nc bnc" id="L251" title="All 2 branches missed.">		if (null == bker) return null;</span>
+
+<span class="nc" id="L253">		double dblTheta = bker.theta();</span>
+
+<span class="nc" id="L255">		double dblAssetNumeraireBump = bker.assetNumeraireBump();</span>
+
+<span class="nc" id="L257">		double dblThetaAssetNumeraireUp = bker.thetaAssetNumeraireUp();</span>
+
+<span class="nc" id="L259">		double dblThetaAssetNumeraireDown = bker.thetaAssetNumeraireDown();</span>
+
+<span class="nc" id="L261">		org.drip.xva.universe.MarketVertex mvFinish = me.finish();</span>
+
+<span class="nc" id="L263">		org.drip.xva.universe.EntityMarketVertex emvBankFinish = mvFinish.bank();</span>
+
+<span class="nc" id="L265">		org.drip.xva.universe.EntityMarketVertex emvCounterPartyFinish = mvFinish.counterParty();</span>
+
+<span class="nc" id="L267">		double dblDerivativeXVAValueDeltaFinish = agvStart.derivativeXVAValueDelta() + 0.5 *</span>
+			(dblThetaAssetNumeraireUp - dblThetaAssetNumeraireDown) * dblTimeIncrement /
+				dblAssetNumeraireBump;
+
+<span class="nc" id="L271">		double dblCounterPartyGainOnBankDefault = java.lang.Double.NaN;</span>
+<span class="nc" id="L272">		double dblGainOnCounterPartyDefaultFinish = java.lang.Double.NaN;</span>
+
+<span class="nc" id="L274">		double dblDerivativeXVAValueFinish = agvStart.derivativeXVAValue() - dblTheta * dblTimeIncrement;</span>
+
+		try {
+<span class="nc" id="L277">			org.drip.xva.definition.CloseOutGeneral cog = new org.drip.xva.definition.CloseOutBilateral</span>
+<span class="nc" id="L278">				(emvBankFinish.seniorRecoveryRate(), emvCounterPartyFinish.seniorRecoveryRate());</span>
+
+<span class="nc" id="L280">			dblCounterPartyGainOnBankDefault = cog.bankDefault (dblDerivativeXVAValueFinish);</span>
+
+<span class="nc" id="L282">			dblGainOnCounterPartyDefaultFinish = -1. * (dblDerivativeXVAValueFinish - cog.counterPartyDefault</span>
+<span class="nc" id="L283">				(dblDerivativeXVAValueFinish));</span>
+<span class="nc" id="L284">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L285">			e.printStackTrace();</span>
+
+<span class="nc" id="L287">			return null;</span>
+<span class="nc" id="L288">		}</span>
+
+<span class="nc" id="L290">		double dblBankSubordinateFundingNumeraire = java.lang.Double.NaN;</span>
+<span class="nc" id="L291">		double dblGainOnBankDefaultFinish = -1. * (dblDerivativeXVAValueFinish -</span>
+			dblCounterPartyGainOnBankDefault);
+
+<span class="nc" id="L294">		double dblCounterPartyNumeraireUnitsFinish = dblGainOnCounterPartyDefaultFinish /</span>
+<span class="nc" id="L295">			emvCounterPartyFinish.seniorFundingNumeraire().forward();</span>
+
+<span class="nc" id="L297">		org.drip.xva.derivative.CashAccountRebalancer car = rebalanceCash (etvStart, me);</span>
+
+<span class="nc bnc" id="L299" title="All 2 branches missed.">		if (null == car) return null;</span>
+
+<span class="nc" id="L301">		org.drip.xva.derivative.CashAccountEdge cae = car.cashAccount();</span>
+
+<span class="nc" id="L303">		double dblBankSeniorFundingNumeraire = emvBankFinish.seniorFundingNumeraire().forward();</span>
+
+<span class="nc" id="L305">		org.drip.xva.universe.NumeraireMarketVertex nmvBankSubordinateFunding =</span>
+<span class="nc" id="L306">			emvBankFinish.subordinateFundingNumeraire();</span>
+
+<span class="nc bnc" id="L308" title="All 2 branches missed.">		if (null != nmvBankSubordinateFunding)</span>
+<span class="nc" id="L309">			dblBankSubordinateFundingNumeraire = nmvBankSubordinateFunding.forward();</span>
+
+<span class="nc" id="L311">		org.drip.xva.universe.Tradeable tCollateralScheme = _tc.collateralScheme();</span>
+
+		try {
+<span class="nc" id="L314">			org.drip.xva.derivative.EvolutionTrajectoryVertex etvFinish = new</span>
+				org.drip.xva.derivative.EvolutionTrajectoryVertex (
+				dblTimeStart + dblTimeIncrement,
+				new org.drip.xva.derivative.ReplicationPortfolioVertex (
+					-1. * dblDerivativeXVAValueDeltaFinish,
+					dblGainOnBankDefaultFinish / dblBankSeniorFundingNumeraire,
+<span class="nc bnc" id="L320" title="All 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (dblBankSubordinateFundingNumeraire) ? 0. :</span>
+						dblGainOnBankDefaultFinish / dblBankSubordinateFundingNumeraire,
+					dblCounterPartyNumeraireUnitsFinish,
+<span class="nc" id="L323">					etvStart.replicationPortfolioVertex().cashAccount() + cae.accumulation()</span>
+				),
+				new org.drip.xva.derivative.AssetGreekVertex (
+					dblDerivativeXVAValueFinish,
+					dblDerivativeXVAValueDeltaFinish,
+<span class="nc" id="L328">					agvStart.derivativeXVAValueGamma() +</span>
+						(dblThetaAssetNumeraireUp + dblThetaAssetNumeraireDown - 2. * dblTheta) *
+						dblTimeIncrement / (dblAssetNumeraireBump * dblAssetNumeraireBump),
+<span class="nc" id="L331">					agvStart.derivativeFairValue() * java.lang.Math.exp (</span>
+						-1. * dblTimeIncrement *
+<span class="nc" id="L333">						tCollateralScheme.numeraireEvolver().evaluator().drift().value (</span>
+							new org.drip.measure.realization.JumpDiffusionVertex (
+								dblTimeStart - 0.5 * dblTimeIncrement,
+<span class="nc" id="L336">								me.start().collateralSchemeNumeraire().forward(),</span>
+								0.,
+								false
+							)
+						)
+					)
+				),
+				dblGainOnBankDefaultFinish,
+				dblGainOnCounterPartyDefaultFinish,
+				dblCollateral,
+<span class="nc" id="L346">				bker.derivativeXVAHedgeErrorGrowth()</span>
+			);
+
+<span class="nc" id="L349">			return new org.drip.xva.derivative.EvolutionTrajectoryEdge (etvStart, etvFinish, cae);</span>
+<span class="nc" id="L350">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L351">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L354">		return null;</span>
+	}
+
+	/**
+	 * Execute a Sequential Array of Euler Time Step Walks
+	 * 
+	 * @param aMV Array of Market Vertexes
+	 * @param bko The Burgard Kjaer Operator Instance
+	 * @param etvStart The Starting EET Instance
+	 * @param dblCollateral The Applicable Collateral
+	 * 
+	 * @return Array of EvolutionTrajectoryEdge Instances
+	 */
+
+	public org.drip.xva.derivative.EvolutionTrajectoryEdge[] eulerWalk (
+		final org.drip.xva.universe.MarketVertex[] aMV,
+		final org.drip.xva.pde.BurgardKjaerOperator bko,
+		final org.drip.xva.derivative.EvolutionTrajectoryVertex etvStart,
+		final double dblCollateral)
+	{
+<span class="nc bnc" id="L374" title="All 2 branches missed.">		if (null == aMV) return null;</span>
+
+<span class="nc" id="L376">		int iNumTimeStep = aMV.length;</span>
+<span class="nc" id="L377">		org.drip.xva.derivative.EvolutionTrajectoryVertex etv = etvStart;</span>
+<span class="nc bnc" id="L378" title="All 2 branches missed.">		org.drip.xva.derivative.EvolutionTrajectoryEdge[] aETE = 1 &gt;= iNumTimeStep ? null : new</span>
+			org.drip.xva.derivative.EvolutionTrajectoryEdge[iNumTimeStep - 1];
+
+<span class="nc bnc" id="L381" title="All 2 branches missed.">		if (0 == iNumTimeStep) return null;</span>
+
+<span class="nc bnc" id="L383" title="All 2 branches missed.">		for (int i = iNumTimeStep - 2; i &gt;= 0; --i) {</span>
+			try {
+<span class="nc bnc" id="L385" title="All 2 branches missed.">				if (null == (aETE[i] = eulerWalk (new org.drip.xva.universe.MarketEdge (aMV[i], aMV[i + 1]),</span>
+					bko, etv, dblCollateral)))
+<span class="nc" id="L387">					return null;</span>
+<span class="nc" id="L388">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L389">				e.printStackTrace();</span>
+<span class="nc" id="L390">			}</span>
+
+<span class="nc" id="L392">			etv = aETE[i].vertexFinish();</span>
+		}
+
+<span class="nc" id="L395">		return aETE;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

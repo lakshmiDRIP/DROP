@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LinearTemporaryImpact.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.execution.cost</a> &gt; <span class="el_source">LinearTemporaryImpact.java</span></div><h1>LinearTemporaryImpact.java</h1><pre class="source lang-java linenums">
+package org.drip.execution.cost;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * LinearTemporaryImpact computes and holds the Optimal Trajectory using the Linear Temporary Impact Function
+ *  for the given set of Inputs. It provides a Default Unconstrained Trajectory Implementation. The
+ *  References are:
+ * 
+ * 	- Bertsimas, D., and A. W. Lo (1998): Optimal Control of Execution Costs, Journal of Financial Markets 1
+ * 		1-50.
+ * 
+ * 	- Almgren, R., and N. Chriss (2000): Optimal Execution of Portfolio Transactions, Journal of Risk 3 (2)
+ * 		5-39.
+ * 
+ * 	- Brunnermeier, L. K., and L. H. Pedersen (2005): Predatory Trading, Journal of Finance 60 (4) 1825-1863.
+ *
+ * 	- Almgren, R., and J. Lorenz (2006): Bayesian Adaptive Trading with a Daily Cycle, Journal of Trading 1
+ * 		(4) 38-46.
+ * 
+ * 	- Kissell, R., and R. Malamut (2007): Algorithmic Decision Making Framework, Journal of Trading 1 (1)
+ * 		12-21.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class LinearTemporaryImpact {
+<span class="nc" id="L74">	private double _dblSpotTime = java.lang.Double.NaN;</span>
+<span class="nc" id="L75">	private double _dblFinishTime = java.lang.Double.NaN;</span>
+<span class="nc" id="L76">	private double _dblSpotHoldings = java.lang.Double.NaN;</span>
+<span class="nc" id="L77">	private double _dblGrossPriceChange = java.lang.Double.NaN;</span>
+<span class="nc" id="L78">	private double _dblTransactionCostGain = java.lang.Double.NaN;</span>
+<span class="nc" id="L79">	private double _dblStaticTransactionCost = java.lang.Double.NaN;</span>
+<span class="nc" id="L80">	private double _dblInstantaneousTradeRate = java.lang.Double.NaN;</span>
+<span class="nc" id="L81">	private org.drip.execution.bayesian.PriorConditionalCombiner _pcc = null;</span>
+<span class="nc" id="L82">	private org.drip.execution.impact.TransactionFunctionLinear _tflTemporary = null;</span>
+<span class="nc" id="L83">	private org.drip.execution.optimum.EfficientTradingTrajectoryContinuous _ectt = null;</span>
+
+	/**
+	 * Generate an Unconstrained LinearTemporaryImpact Instance
+	 * 
+	 * @param dblSpotTime Spot Time
+	 * @param dblFinishTime Finish Time
+	 * @param dblSpotHoldings Spot Holdings
+	 * @param pcc The Prior/Conditional Combiner
+	 * @param dblGrossPriceChange The Gross Price Change
+	 * @param tflTemporary The Temporary Linear Impact Function
+	 * 
+	 * @return The Unconstrained LinearTemporaryImpact Instance
+	 */
+
+	public static final LinearTemporaryImpact Unconstrained (
+		final double dblSpotTime,
+		final double dblFinishTime,
+		final double dblSpotHoldings,
+		final org.drip.execution.bayesian.PriorConditionalCombiner pcc,
+		final double dblGrossPriceChange,
+		final org.drip.execution.impact.TransactionFunctionLinear tflTemporary)
+	{
+<span class="nc bnc" id="L106" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblSpotTime) ||</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblFinishTime) ||</span>
+<span class="nc bnc" id="L108" title="All 6 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (dblSpotHoldings) || null == pcc || null ==</span>
+					tflTemporary)
+<span class="nc" id="L110">			return null;</span>
+
+<span class="nc" id="L112">		final double dblHorizon = dblFinishTime - dblSpotTime;</span>
+
+<span class="nc" id="L114">		org.drip.measure.gaussian.R1UnivariateNormal r1unPosterior = pcc.posteriorDriftDistribution</span>
+<span class="nc" id="L115">			(dblGrossPriceChange);</span>
+
+<span class="nc bnc" id="L117" title="All 2 branches missed.">		if (null == r1unPosterior) return null;</span>
+
+<span class="nc" id="L119">		final double dblScaledDrift = 0.25 * r1unPosterior.mean() / tflTemporary.slope();</span>
+
+<span class="nc" id="L121">		org.drip.function.definition.R1ToR1 r1ToR1Holdings = new org.drip.function.definition.R1ToR1 (null) {</span>
+			@Override public double evaluate (
+				final double dblTau)
+				throws java.lang.Exception
+			{
+<span class="nc bnc" id="L126" title="All 2 branches missed.">				if (0. &gt;= dblHorizon) return 0.;</span>
+
+<span class="nc bnc" id="L128" title="All 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblTau))</span>
+<span class="nc" id="L129">					throw new java.lang.Exception</span>
+						(&quot;LinearTemporaryImpact::Holdings::evaluate =&gt; Invalid Inputs&quot;);
+
+<span class="nc bnc" id="L132" title="All 2 branches missed.">				if (dblTau &lt;= dblSpotTime) return dblSpotHoldings;</span>
+
+<span class="nc bnc" id="L134" title="All 2 branches missed.">				if (dblTau &gt;= dblFinishTime) return 0.;</span>
+
+<span class="nc" id="L136">				return (dblFinishTime - dblTau) * (dblSpotHoldings / (dblFinishTime - dblSpotTime) -</span>
+					dblScaledDrift * (dblTau - dblSpotTime));
+			}
+		};
+
+		try {
+<span class="nc bnc" id="L142" title="All 2 branches missed.">			return new LinearTemporaryImpact (dblSpotTime, dblFinishTime, dblSpotHoldings, pcc,</span>
+				dblGrossPriceChange, tflTemporary, dblFinishTime - dblSpotTime, r1ToR1Holdings, 0 &gt;=
+					dblHorizon ? 0. : dblSpotHoldings / dblHorizon + dblScaledDrift * dblHorizon);
+<span class="nc" id="L145">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L146">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L149">		return null;</span>
+	}
+
+	protected LinearTemporaryImpact (
+		final double dblSpotTime,
+		final double dblFinishTime,
+		final double dblSpotHoldings,
+		final org.drip.execution.bayesian.PriorConditionalCombiner pcc,
+		final double dblGrossPriceChange,
+		final org.drip.execution.impact.TransactionFunctionLinear tflTemporary,
+		final double dblCharacteristicTime,
+		final org.drip.function.definition.R1ToR1 r1ToR1Holdings,
+		final double dblInstantaneousTradeRate)
+		throws java.lang.Exception
+<span class="nc" id="L163">	{</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblSpotTime = dblSpotTime) ||</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblFinishTime = dblFinishTime) ||</span>
+<span class="nc bnc" id="L166" title="All 4 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblSpotHoldings = dblSpotHoldings) || null ==</span>
+<span class="nc bnc" id="L167" title="All 6 branches missed.">					(_pcc = pcc) || !org.drip.quant.common.NumberUtil.IsValid (_dblGrossPriceChange =</span>
+						dblGrossPriceChange) || null == (_tflTemporary = tflTemporary) || null ==
+							r1ToR1Holdings || !org.drip.quant.common.NumberUtil.IsValid
+<span class="nc bnc" id="L170" title="All 2 branches missed.">								(_dblInstantaneousTradeRate = dblInstantaneousTradeRate))</span>
+<span class="nc" id="L171">			throw new java.lang.Exception (&quot;LinearTemporaryImpact Constructor =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc" id="L173">		final double dblLiquidityCoefficient = _tflTemporary.slope();</span>
+
+<span class="nc" id="L175">		double dblDriftEstimate = _pcc.posteriorDriftDistribution (_dblGrossPriceChange).mean();</span>
+
+<span class="nc" id="L177">		final double dblExecutionTime = _dblFinishTime - _dblSpotTime;</span>
+<span class="nc" id="L178">		_dblStaticTransactionCost = _dblSpotHoldings * _dblSpotHoldings * dblLiquidityCoefficient /</span>
+			dblExecutionTime + 0.5 * _dblSpotHoldings * dblDriftEstimate * dblExecutionTime -
+				dblExecutionTime * dblExecutionTime * dblExecutionTime * dblDriftEstimate * dblDriftEstimate
+					/ (48. * dblLiquidityCoefficient);
+
+<span class="nc" id="L183">		double dblDriftConfidence = _pcc.prior().confidence();</span>
+
+<span class="nc" id="L185">		final double dblPriceVolatility = _pcc.conditional().priceVolatility();</span>
+
+<span class="nc" id="L187">		org.drip.function.definition.R1ToR1 r1ToR1HoldingsSquared = new org.drip.function.definition.R1ToR1</span>
+<span class="nc" id="L188">			(null) {</span>
+			@Override public double evaluate (
+				final double dblTime)
+				throws java.lang.Exception
+			{
+<span class="nc" id="L193">				double dblHoldings = r1ToR1Holdings.evaluate (dblTime);</span>
+
+<span class="nc" id="L195">				return dblHoldings * dblHoldings;</span>
+			}
+		};
+
+<span class="nc" id="L199">		final double dblRho = dblPriceVolatility * dblPriceVolatility / (dblDriftConfidence *</span>
+			dblDriftConfidence * dblExecutionTime);
+
+<span class="nc" id="L202">		org.drip.function.definition.R1ToR1 r1ToR1Quadrature = new org.drip.function.definition.R1ToR1 (null)</span>
+<span class="nc" id="L203">		{</span>
+			@Override public double evaluate (
+				final double dblDelta)
+				throws java.lang.Exception
+			{
+<span class="nc bnc" id="L208" title="All 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblDelta))</span>
+<span class="nc" id="L209">					throw new java.lang.Exception</span>
+						(&quot;LinearTemporaryImpact::r1ToR1Quadrature::evaluate =&gt; Invalid Inputs&quot;);
+
+<span class="nc" id="L212">				double dblRemainingTime = 1. - dblDelta;</span>
+<span class="nc" id="L213">				double dblDimensionlessTime = dblDelta + dblRho;</span>
+<span class="nc" id="L214">				return dblRemainingTime * dblRemainingTime * dblRemainingTime / (dblDimensionlessTime *</span>
+					dblDimensionlessTime);
+			}
+		};
+
+<span class="nc" id="L219">		_dblTransactionCostGain = dblPriceVolatility * dblPriceVolatility * dblExecutionTime *</span>
+<span class="nc" id="L220">			dblExecutionTime / (48. * linearTemporaryImpact().slope()) * r1ToR1Quadrature.integrate (0., 1.);</span>
+
+<span class="nc" id="L222">		org.drip.function.definition.R1ToR1 r1ToR1TradeRate = new org.drip.function.definition.R1ToR1 (null)</span>
+<span class="nc" id="L223">		{</span>
+			@Override public double evaluate (
+				final double dblS)
+				throws java.lang.Exception
+			{
+<span class="nc" id="L228">				return r1ToR1Holdings.derivative (dblS, 1);</span>
+			}
+		};
+
+<span class="nc" id="L232">		final org.drip.function.definition.R1ToR1 r1ToR1TransactionCostExpectationRate = new</span>
+<span class="nc" id="L233">			org.drip.function.definition.R1ToR1 (null) {</span>
+			@Override public double evaluate (
+				final double dblTime)
+				throws java.lang.Exception
+			{
+<span class="nc" id="L238">				double dblTradeRate = r1ToR1Holdings.derivative (dblTime, 1);</span>
+
+<span class="nc" id="L240">				return dblLiquidityCoefficient * dblLiquidityCoefficient * dblTradeRate * dblTradeRate;</span>
+			}
+		};
+
+<span class="nc" id="L244">		org.drip.function.definition.R1ToR1 r1ToR1TransactionCostExpectation = new</span>
+<span class="nc" id="L245">			org.drip.function.definition.R1ToR1 (null) {</span>
+			@Override public double evaluate (
+				final double dblTime)
+				throws java.lang.Exception
+			{
+<span class="nc" id="L250">				return r1ToR1TransactionCostExpectationRate.integrate (dblTime, dblExecutionTime);</span>
+			}
+		};
+
+<span class="nc" id="L254">		final org.drip.function.definition.R1ToR1 r1ToR1TransactionCostVarianceRate = new</span>
+<span class="nc" id="L255">			org.drip.function.definition.R1ToR1 (null) {</span>
+			@Override public double evaluate (
+				final double dblTime)
+				throws java.lang.Exception
+			{
+<span class="nc" id="L260">				double dblHoldings = r1ToR1Holdings.evaluate (dblTime);</span>
+
+<span class="nc" id="L262">				return dblPriceVolatility * dblPriceVolatility * dblHoldings * dblHoldings;</span>
+			}
+		};
+
+<span class="nc" id="L266">		org.drip.function.definition.R1ToR1 r1ToR1TransactionCostVariance = new</span>
+<span class="nc" id="L267">			org.drip.function.definition.R1ToR1 (null) {</span>
+			@Override public double evaluate (
+				final double dblTime)
+				throws java.lang.Exception
+			{
+<span class="nc" id="L272">				return r1ToR1TransactionCostVarianceRate.integrate (dblTime, dblExecutionTime);</span>
+			}
+		};
+
+<span class="nc" id="L276">		_ectt = new org.drip.execution.optimum.EfficientTradingTrajectoryContinuous (dblExecutionTime,</span>
+			_dblStaticTransactionCost + _dblTransactionCostGain, dblPriceVolatility * dblPriceVolatility *
+<span class="nc" id="L278">				r1ToR1HoldingsSquared.integrate (_dblSpotTime, _dblFinishTime), dblCharacteristicTime,</span>
+					dblLiquidityCoefficient * _dblSpotHoldings / (dblExecutionTime * dblLiquidityCoefficient
+<span class="nc" id="L280">						* java.lang.Math.sqrt (dblExecutionTime)), r1ToR1Holdings, r1ToR1TradeRate,</span>
+							r1ToR1TransactionCostExpectation, r1ToR1TransactionCostVariance);
+<span class="nc" id="L282">	}</span>
+
+	/**
+	 * Retrieve the Spot Time
+	 * 
+	 * @return The Spot Time
+	 */
+
+	public double spotTime()
+	{
+<span class="nc" id="L292">		return _dblSpotTime;</span>
+	}
+
+	/**
+	 * Retrieve the Finish Time
+	 * 
+	 * @return The Finish Time
+	 */
+
+	public double finishTime()
+	{
+<span class="nc" id="L303">		return _dblFinishTime;</span>
+	}
+
+	/**
+	 * Retrieve the Spot Holdings
+	 * 
+	 * @return The Spot Holdings
+	 */
+
+	public double spotHoldings()
+	{
+<span class="nc" id="L314">		return _dblSpotHoldings;</span>
+	}
+
+	/**
+	 * Retrieve the Prior/Conditional Distributions Combiner
+	 * 
+	 * @return The Prior/Conditional Distributions Combiner
+	 */
+
+	public org.drip.execution.bayesian.PriorConditionalCombiner combiner()
+	{
+<span class="nc" id="L325">		return _pcc;</span>
+	}
+
+	/**
+	 * Retrieve the Gross Price Change
+	 * 
+	 * @return The Gross Price Change
+	 */
+
+	public double grossPriceChange()
+	{
+<span class="nc" id="L336">		return _dblGrossPriceChange;</span>
+	}
+
+	/**
+	 * Retrieve the Drift Expectation Estimate
+	 * 
+	 * @return The Drift Expectation Estimate
+	 */
+
+	public double driftExpectationEstimate()
+	{
+<span class="nc" id="L347">		return _pcc.posteriorDriftDistribution (_dblGrossPriceChange).mean();</span>
+	}
+
+	/**
+	 * Retrieve the Drift Volatility Estimate
+	 * 
+	 * @return The Drift Volatility Estimate
+	 */
+
+	public double driftVolatilityEstimate()
+	{
+<span class="nc" id="L358">		return java.lang.Math.sqrt (_pcc.posteriorDriftDistribution (_dblGrossPriceChange).variance());</span>
+	}
+
+	/**
+	 * Retrieve the Linear Temporary Market Impact Function
+	 * 
+	 * @return The Linear Temporary Market Impact Function
+	 */
+
+	public org.drip.execution.impact.TransactionFunctionLinear linearTemporaryImpact()
+	{
+<span class="nc" id="L369">		return _tflTemporary;</span>
+	}
+
+	/**
+	 * Retrieve the Holdings Trajectory
+	 * 
+	 * @return The Holdings Trajectory
+	 */
+
+	public org.drip.execution.optimum.EfficientTradingTrajectoryContinuous trajectory()
+	{
+<span class="nc" id="L380">		return _ectt;</span>
+	}
+
+	/**
+	 * Retrieve the Instantaneous Trade Rate
+	 * 
+	 * @return The Instantaneous Trade Rate
+	 */
+
+	public double instantaneousTradeRate()
+	{
+<span class="nc" id="L391">		return _dblInstantaneousTradeRate;</span>
+	}
+
+	/**
+	 * Estimate of the Static Transaction Cost
+	 * 
+	 * @return The Static Transaction Cost Estimate
+	 */
+
+	public double staticTransactionCost()
+	{
+<span class="nc" id="L402">		return _dblStaticTransactionCost;</span>
+	}
+
+	/**
+	 * Estimate the Transaction Cost Gain available from the Bayesian Drift
+	 * 
+	 * @return The Transaction Cost Gain available from the Bayesian Drift
+	 */
+
+	public double transactionCostGain()
+	{
+<span class="nc" id="L413">		return _dblTransactionCostGain;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

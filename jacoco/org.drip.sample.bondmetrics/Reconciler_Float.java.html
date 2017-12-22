@@ -1,0 +1,1526 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Reconciler_Float.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.bondmetrics</a> &gt; <span class="el_source">Reconciler_Float.java</span></div><h1>Reconciler_Float.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.bondmetrics;
+
+import java.util.*;
+
+import org.drip.analytics.cashflow.*;
+import org.drip.analytics.date.*;
+import org.drip.param.creator.MarketParamsBuilder;
+import org.drip.param.market.CurveSurfaceQuoteContainer;
+import org.drip.param.valuation.*;
+import org.drip.product.creator.BondBuilder;
+import org.drip.product.credit.BondComponent;
+import org.drip.product.params.EmbeddedOptionSchedule;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.service.scenario.*;
+import org.drip.service.template.LatentMarketStateBuilder;
+import org.drip.state.credit.CreditCurve;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+import org.drip.state.govvie.GovvieCurve;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * Reconciler_Float demonstrates the Analytics Calculation/Reconciliation for the Floater Bond KWA6SA.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L74">public class Reconciler_Float {</span>
+
+	private static final MergedDiscountForwardCurve FundingCurve (
+		final JulianDate dtSpot,
+		final String strCurrency,
+		final double dblBump)
+		throws Exception
+	{
+<span class="nc" id="L82">		String[] astrDepositMaturityTenor = new String[] {</span>
+			&quot;2D&quot;
+		};
+
+<span class="nc" id="L86">		double[] adblDepositQuote = new double[] {</span>
+			0.0130411 + dblBump // 2D
+		};
+
+<span class="nc" id="L90">		double[] adblFuturesQuote = new double[] {</span>
+			0.01345 + dblBump,	// 98.655
+			0.01470 + dblBump,	// 98.530
+			0.01575 + dblBump,	// 98.425
+			0.01660 + dblBump,	// 98.340
+			0.01745 + dblBump,  // 98.255
+			0.01845 + dblBump   // 98.155
+		};
+
+<span class="nc" id="L99">		String[] astrFixFloatMaturityTenor = new String[] {</span>
+			&quot;02Y&quot;,
+			&quot;03Y&quot;,
+			&quot;04Y&quot;,
+			&quot;05Y&quot;,
+			&quot;06Y&quot;,
+			&quot;07Y&quot;,
+			&quot;08Y&quot;,
+			&quot;09Y&quot;,
+			&quot;10Y&quot;,
+			&quot;11Y&quot;,
+			&quot;12Y&quot;,
+			&quot;15Y&quot;,
+			&quot;20Y&quot;,
+			&quot;25Y&quot;,
+			&quot;30Y&quot;,
+			&quot;40Y&quot;,
+			&quot;50Y&quot;
+		};
+
+<span class="nc" id="L119">		double[] adblFixFloatQuote = new double[] {</span>
+			0.016410 + dblBump, //  2Y
+			0.017863 + dblBump, //  3Y
+			0.019030 + dblBump, //  4Y
+			0.020035 + dblBump, //  5Y
+			0.020902 + dblBump, //  6Y
+			0.021660 + dblBump, //  7Y
+			0.022307 + dblBump, //  8Y
+			0.022879 + dblBump, //  9Y
+			0.023363 + dblBump, // 10Y
+			0.023820 + dblBump, // 11Y
+			0.024172 + dblBump, // 12Y
+			0.024934 + dblBump, // 15Y
+			0.025581 + dblBump, // 20Y
+			0.025906 + dblBump, // 25Y
+			0.025973 + dblBump, // 30Y
+			0.025838 + dblBump, // 40Y
+			0.025560 + dblBump  // 50Y
+		};
+
+<span class="nc" id="L139">		return LatentMarketStateBuilder.SmoothFundingCurve (</span>
+			dtSpot,
+			strCurrency,
+			astrDepositMaturityTenor,
+			adblDepositQuote,
+			&quot;ForwardRate&quot;,
+			adblFuturesQuote,
+			&quot;ForwardRate&quot;,
+			astrFixFloatMaturityTenor,
+			adblFixFloatQuote,
+			&quot;SwapRate&quot;
+		);
+	}
+
+	private static final Map&lt;String, MergedDiscountForwardCurve&gt; TenorBumpedFundingCurve (
+		final JulianDate dtSpot,
+		final String strCurrency,
+		final double dblBump)
+		throws Exception
+	{
+<span class="nc" id="L159">		String[] astrDepositMaturityTenor = new String[] {</span>
+			&quot;2D&quot;
+		};
+
+<span class="nc" id="L163">		double[] adblDepositQuote = new double[] {</span>
+			0.0130411 // 2D
+		};
+
+<span class="nc" id="L167">		double[] adblFuturesQuote = new double[] {</span>
+			0.01345,	// 98.655
+			0.01470,	// 98.530
+			0.01575,	// 98.425
+			0.01660,	// 98.340
+			0.01745,    // 98.255
+			0.01845     // 98.155
+		};
+
+<span class="nc" id="L176">		String[] astrFixFloatMaturityTenor = new String[] {</span>
+			&quot;02Y&quot;,
+			&quot;03Y&quot;,
+			&quot;04Y&quot;,
+			&quot;05Y&quot;,
+			&quot;06Y&quot;,
+			&quot;07Y&quot;,
+			&quot;08Y&quot;,
+			&quot;09Y&quot;,
+			&quot;10Y&quot;,
+			&quot;11Y&quot;,
+			&quot;12Y&quot;,
+			&quot;15Y&quot;,
+			&quot;20Y&quot;,
+			&quot;25Y&quot;,
+			&quot;30Y&quot;,
+			&quot;40Y&quot;,
+			&quot;50Y&quot;
+		};
+
+<span class="nc" id="L196">		double[] adblFixFloatQuote = new double[] {</span>
+			0.016410, //  2Y
+			0.017863, //  3Y
+			0.019030, //  4Y
+			0.020035, //  5Y
+			0.020902, //  6Y
+			0.021660, //  7Y
+			0.022307, //  8Y
+			0.022879, //  9Y
+			0.023363, // 10Y
+			0.023820, // 11Y
+			0.024172, // 12Y
+			0.024934, // 15Y
+			0.025581, // 20Y
+			0.025906, // 25Y
+			0.025973, // 30Y
+			0.025838, // 40Y
+			0.025560  // 50Y
+		};
+
+<span class="nc" id="L216">		return LatentMarketStateBuilder.BumpedFundingCurve (</span>
+			dtSpot,
+			strCurrency,
+			astrDepositMaturityTenor,
+			adblDepositQuote,
+			&quot;ForwardRate&quot;,
+			adblFuturesQuote,
+			&quot;ForwardRate&quot;,
+			astrFixFloatMaturityTenor,
+			adblFixFloatQuote,
+			&quot;SwapRate&quot;,
+			LatentMarketStateBuilder.SMOOTH,
+			dblBump,
+			false
+		);
+	}
+
+	private static final GovvieCurve GovvieCurve (
+		final JulianDate dtSpot,
+		final String strCode,
+		final double[] adblGovvieYield)
+		throws Exception
+	{
+<span class="nc" id="L239">		return LatentMarketStateBuilder.GovvieCurve (</span>
+			strCode,
+			dtSpot,
+			new JulianDate[] {
+				dtSpot,
+				dtSpot,
+				dtSpot,
+				dtSpot,
+				dtSpot,
+				dtSpot,
+				dtSpot,
+				dtSpot
+			},
+			new JulianDate[] {
+<span class="nc" id="L253">				dtSpot.addTenor (&quot;1Y&quot;),</span>
+<span class="nc" id="L254">				dtSpot.addTenor (&quot;2Y&quot;),</span>
+<span class="nc" id="L255">				dtSpot.addTenor (&quot;3Y&quot;),</span>
+<span class="nc" id="L256">				dtSpot.addTenor (&quot;5Y&quot;),</span>
+<span class="nc" id="L257">				dtSpot.addTenor (&quot;7Y&quot;),</span>
+<span class="nc" id="L258">				dtSpot.addTenor (&quot;10Y&quot;),</span>
+<span class="nc" id="L259">				dtSpot.addTenor (&quot;20Y&quot;),</span>
+<span class="nc" id="L260">				dtSpot.addTenor (&quot;30Y&quot;)</span>
+			},
+			adblGovvieYield,
+			adblGovvieYield,
+			&quot;Yield&quot;,
+			LatentMarketStateBuilder.SHAPE_PRESERVING
+		);
+	}
+
+	private static final Map&lt;String, GovvieCurve&gt; TenorBumpedGovvieCurve (
+		final JulianDate dtSpot,
+		final String strCode,
+		final double dblBump,
+		final double[] adblGovvieYield)
+		throws Exception
+	{
+<span class="nc" id="L276">		return LatentMarketStateBuilder.BumpedGovvieCurve (</span>
+			strCode,
+			dtSpot,
+			new JulianDate[] {
+				dtSpot,
+				dtSpot,
+				dtSpot,
+				dtSpot,
+				dtSpot,
+				dtSpot,
+				dtSpot,
+				dtSpot
+			},
+			new JulianDate[] {
+<span class="nc" id="L290">				dtSpot.addTenor (&quot;1Y&quot;),</span>
+<span class="nc" id="L291">				dtSpot.addTenor (&quot;2Y&quot;),</span>
+<span class="nc" id="L292">				dtSpot.addTenor (&quot;3Y&quot;),</span>
+<span class="nc" id="L293">				dtSpot.addTenor (&quot;5Y&quot;),</span>
+<span class="nc" id="L294">				dtSpot.addTenor (&quot;7Y&quot;),</span>
+<span class="nc" id="L295">				dtSpot.addTenor (&quot;10Y&quot;),</span>
+<span class="nc" id="L296">				dtSpot.addTenor (&quot;20Y&quot;),</span>
+<span class="nc" id="L297">				dtSpot.addTenor (&quot;30Y&quot;)</span>
+			},
+			adblGovvieYield,
+			adblGovvieYield,
+			&quot;Yield&quot;,
+			LatentMarketStateBuilder.SHAPE_PRESERVING,
+			dblBump,
+			false
+		);
+	}
+
+	private static final CreditCurve CreditCurve (
+		final JulianDate dtSpot,
+		final String strCreditCurve,
+		final MergedDiscountForwardCurve mdfc,
+		final String[] astrCreditTenor,
+		final double dblBump)
+		throws Exception
+	{
+<span class="nc" id="L316">		return LatentMarketStateBuilder.CreditCurve (</span>
+			dtSpot,
+			strCreditCurve,
+			astrCreditTenor,
+			new double[] {
+				 60.,	//  6M
+				 68.,	//  1Y
+				 88.,	//  2Y
+				102.,	//  3Y
+				121.,	//  4Y
+				138.,	//  5Y
+				168.,	//  7Y
+				188.	// 10Y
+			},
+			new double[] {
+				 60. + dblBump,	//  6M
+				 68. + dblBump,	//  1Y
+				 88. + dblBump,	//  2Y
+				102. + dblBump,	//  3Y
+				121. + dblBump,	//  4Y
+				138. + dblBump,	//  5Y
+				168. + dblBump,	//  7Y
+				188. + dblBump	// 10Y
+			},
+			&quot;FairPremium&quot;,
+			mdfc
+		);
+	}
+
+	private static final Map&lt;String, CreditCurve&gt; TenorBumpedCreditCurve (
+		final JulianDate dtSpot,
+		final String strCreditCurve,
+		final MergedDiscountForwardCurve mdfc,
+		final double dblBump)
+		throws Exception
+	{
+<span class="nc" id="L352">		return LatentMarketStateBuilder.BumpedCreditCurve (</span>
+			dtSpot,
+			strCreditCurve,
+			new String[] {
+				&quot;06M&quot;,
+				&quot;01Y&quot;,
+				&quot;02Y&quot;,
+				&quot;03Y&quot;,
+				&quot;04Y&quot;,
+				&quot;05Y&quot;,
+				&quot;07Y&quot;,
+				&quot;10Y&quot;
+			},
+			new double[] {
+				 60.,	//  6M
+				 68.,	//  1Y
+				 88.,	//  2Y
+				102.,	//  3Y
+				121.,	//  4Y
+				138.,	//  5Y
+				168.,	//  7Y
+				188.	// 10Y
+			},
+			new double[] {
+				 60.,	//  6M
+				 68.,	//  1Y
+				 88.,	//  2Y
+				102.,	//  3Y
+				121.,	//  4Y
+				138.,	//  5Y
+				168.,	//  7Y
+				188.	// 10Y
+			},
+			&quot;FairPremium&quot;,
+			mdfc,
+			dblBump,
+			false
+		);
+	}
+
+	private static final void SetEOS (
+		final BondComponent bond,
+		final EmbeddedOptionSchedule eosCall,
+		final EmbeddedOptionSchedule eosPut)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L398" title="All 2 branches missed.">		if (null != eosPut) bond.setEmbeddedPutSchedule (eosPut);</span>
+
+<span class="nc bnc" id="L400" title="All 2 branches missed.">		if (null != eosCall) bond.setEmbeddedCallSchedule (eosCall);</span>
+<span class="nc" id="L401">	}</span>
+
+	private static final int NextCallDate (
+		final BondComponent bond,
+		final int iSpotDate)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L408">		EmbeddedOptionSchedule eosCall = bond.callSchedule();</span>
+
+<span class="nc bnc" id="L410" title="All 2 branches missed.">		return null == eosCall ? bond.maturityDate().julian() : eosCall.nextDate (iSpotDate);</span>
+	}
+
+	private static final double NextCallFactor (
+		final BondComponent bond,
+		final int iSpotDate)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L418">		EmbeddedOptionSchedule eosCall = bond.callSchedule();</span>
+
+<span class="nc bnc" id="L420" title="All 2 branches missed.">		return null == eosCall ? 1. : eosCall.nextFactor (iSpotDate);</span>
+	}
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+<span class="nc" id="L427">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L429">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+			2017,
+			DateUtil.JULY,
+			10
+		);
+
+<span class="nc" id="L435">		String[] astrDepositTenor = new String[] {</span>
+			&quot;2D&quot;
+		};
+
+<span class="nc" id="L439">		double[] adblDepositQuote = new double[] {</span>
+			0.0130411 // 2D
+		};
+
+<span class="nc" id="L443">		double[] adblFuturesQuote = new double[] {</span>
+			0.01345,	// 98.655
+			0.01470,	// 98.530
+			0.01575,	// 98.425
+			0.01660,	// 98.340
+			0.01745,    // 98.255
+			0.01845     // 98.155
+		};
+
+<span class="nc" id="L452">		String[] astrFixFloatTenor = new String[] {</span>
+			&quot;02Y&quot;,
+			&quot;03Y&quot;,
+			&quot;04Y&quot;,
+			&quot;05Y&quot;,
+			&quot;06Y&quot;,
+			&quot;07Y&quot;,
+			&quot;08Y&quot;,
+			&quot;09Y&quot;,
+			&quot;10Y&quot;,
+			&quot;11Y&quot;,
+			&quot;12Y&quot;,
+			&quot;15Y&quot;,
+			&quot;20Y&quot;,
+			&quot;25Y&quot;,
+			&quot;30Y&quot;,
+			&quot;40Y&quot;,
+			&quot;50Y&quot;
+		};
+
+<span class="nc" id="L472">		String[] astrGovvieTenor = new String[] {</span>
+			&quot;1Y&quot;,
+			&quot;2Y&quot;,
+			&quot;3Y&quot;,
+			&quot;5Y&quot;,
+			&quot;7Y&quot;,
+			&quot;10Y&quot;,
+			&quot;20Y&quot;,
+			&quot;30Y&quot;
+		};
+
+<span class="nc" id="L483">		double[] adblFixFloatQuote = new double[] {</span>
+			0.016410, //  2Y
+			0.017863, //  3Y
+			0.019030, //  4Y
+			0.020035, //  5Y
+			0.020902, //  6Y
+			0.021660, //  7Y
+			0.022307, //  8Y
+			0.022879, //  9Y
+			0.023363, // 10Y
+			0.023820, // 11Y
+			0.024172, // 12Y
+			0.024934, // 15Y
+			0.025581, // 20Y
+			0.025906, // 25Y
+			0.025973, // 30Y
+			0.025838, // 40Y
+			0.025560  // 50Y
+		};
+
+<span class="nc" id="L503">		double[] adblGovvieYield = new double[] {</span>
+			0.01219, //  1Y
+			0.01391, //  2Y
+			0.01590, //  3Y
+			0.01937, //  5Y
+			0.02200, //  7Y
+			0.02378, // 10Y
+			0.02677, // 20Y
+			0.02927  // 30Y
+		};
+
+<span class="nc" id="L514">		String[] astrCreditTenor = new String[] {</span>
+			&quot;06M&quot;,
+			&quot;01Y&quot;,
+			&quot;02Y&quot;,
+			&quot;03Y&quot;,
+			&quot;04Y&quot;,
+			&quot;05Y&quot;,
+			&quot;07Y&quot;,
+			&quot;10Y&quot;
+		};
+
+<span class="nc" id="L525">		double[] adblCreditQuote = new double[] {</span>
+			 60.,	//  6M
+			 68.,	//  1Y
+			 88.,	//  2Y
+			102.,	//  3Y
+			121.,	//  4Y
+			138.,	//  5Y
+			168.,	//  7Y
+			188.	// 10Y
+		};
+
+<span class="nc" id="L536">		double dblFX = 1.;</span>
+<span class="nc" id="L537">		int iSettleLag = 3;</span>
+<span class="nc" id="L538">		int iCouponFreq = 12;</span>
+<span class="nc" id="L539">		String strName = &quot;KWA6SA&quot;;</span>
+<span class="nc" id="L540">		double dblCleanPrice = 1.;</span>
+<span class="nc" id="L541">		double dblIssuePrice = 1.;</span>
+<span class="nc" id="L542">		String strCurrency = &quot;USD&quot;;</span>
+<span class="nc" id="L543">		double dblSpreadBump = 20.;</span>
+<span class="nc" id="L544">		double dblIssueAmount = 2.60e7;</span>
+<span class="nc" id="L545">		String strTreasuryCode = &quot;UST&quot;;</span>
+<span class="nc" id="L546">		double dblFullFirstCoupon = 0.0425;</span>
+<span class="nc" id="L547">		String strCouponDayCount = &quot;30/360&quot;;</span>
+<span class="nc" id="L548">		double dblSpreadDurationMultiplier = 5.;</span>
+
+<span class="nc" id="L550">		JulianDate dtEffective = DateUtil.CreateFromYMD (</span>
+			2015,
+			9,
+			18
+		);
+
+<span class="nc" id="L556">		JulianDate dtMaturity = DateUtil.CreateFromYMD (</span>
+			2025,
+			10,
+			1
+		);
+
+<span class="nc" id="L562">		int iSpotDate = dtSpot.julian();</span>
+
+<span class="nc" id="L564">		JulianDate dtSettle = dtSpot.addBusDays (</span>
+			iSettleLag,
+			strCurrency
+		);
+
+<span class="nc" id="L569">		ValuationParams valParams = new ValuationParams (</span>
+			dtSpot,
+			dtSettle,
+			strCurrency
+		);
+
+<span class="nc" id="L575">		MergedDiscountForwardCurve mdfcBase = FundingCurve (</span>
+			dtSpot,
+			strCurrency,
+			0.
+		);
+
+<span class="nc" id="L581">		double dblUSD3MLIBOR = mdfcBase.libor (</span>
+			dtSpot,
+			(12 / iCouponFreq) + &quot;M&quot;
+		);
+
+<span class="nc" id="L586">		double dblResetRate = dblUSD3MLIBOR;</span>
+<span class="nc" id="L587">		String strRateIndex = strCurrency + &quot;-&quot; + (12 / iCouponFreq) + &quot;M&quot;;</span>
+
+<span class="nc" id="L589">		BondComponent bond = BondBuilder.CreateSimpleFloater (</span>
+			strName,
+			strCurrency,
+			strRateIndex,
+			strName,
+			dblFullFirstCoupon - dblUSD3MLIBOR,
+			iCouponFreq,
+			&quot;30/360&quot;,
+			dtEffective,
+			dtMaturity,
+			null,
+			null
+		);
+
+<span class="nc" id="L603">		CompositeFloatingPeriod cfp = (CompositeFloatingPeriod) bond.stream().containingPeriod (iSpotDate);</span>
+
+<span class="nc" id="L605">		int iResetDate = ((ComposableUnitFloatingPeriod) (cfp.periods().get (0))).referenceIndexPeriod().fixingDate();</span>
+
+<span class="nc" id="L607">		SetEOS (</span>
+			bond,
+			new EmbeddedOptionSchedule (
+				new int[] {
+<span class="nc" id="L611">					DateUtil.CreateFromYMD (2019, 02, 14).julian(),</span>
+				},
+				new double[] {
+					1.0000,
+				},
+				false,
+				15,
+				false,
+				Double.NaN,
+				&quot;&quot;,
+				Double.NaN
+			),
+			null
+		);
+
+<span class="nc" id="L626">		GovvieCurve gc = GovvieCurve (</span>
+			dtSpot,
+			strTreasuryCode,
+			adblGovvieYield
+		);
+
+<span class="nc" id="L632">		CurveSurfaceQuoteContainer csqcBase = MarketParamsBuilder.Create (</span>
+			mdfcBase,
+			gc,
+			null,
+			null,
+			null,
+			null,
+			null
+		);
+
+<span class="nc" id="L642">		csqcBase.setFixing (</span>
+			iResetDate,
+<span class="nc" id="L644">			bond.floaterSetting().fri(),</span>
+			dblResetRate
+		);
+
+<span class="nc" id="L648">		CurveSurfaceQuoteContainer csqcCreditBase = MarketParamsBuilder.Create (</span>
+			mdfcBase,
+			gc,
+<span class="nc" id="L651">			CreditCurve (</span>
+				dtSpot,
+				strName,
+				mdfcBase,
+				astrCreditTenor,
+				0.
+			),
+			null,
+			null,
+			null,
+			null
+		);
+
+<span class="nc" id="L664">		csqcCreditBase.setFixing (</span>
+			iResetDate,
+<span class="nc" id="L666">			bond.floaterSetting().fri(),</span>
+			dblResetRate
+		);
+
+<span class="nc" id="L670">		CurveSurfaceQuoteContainer csqcBumped01Up = MarketParamsBuilder.Create (</span>
+<span class="nc" id="L671">			FundingCurve (</span>
+				dtSpot,
+				strCurrency,
+				0.0001
+			),
+			gc,
+			null,
+			null,
+			null,
+			null,
+			null
+		);
+
+<span class="nc" id="L684">		csqcBumped01Up.setFixing (</span>
+			iResetDate,
+<span class="nc" id="L686">			bond.floaterSetting().fri(),</span>
+			dblResetRate + 0.0001
+		);
+
+<span class="nc" id="L690">		CurveSurfaceQuoteContainer csqcCreditBumped01Up = MarketParamsBuilder.Create (</span>
+			mdfcBase,
+			gc,
+<span class="nc" id="L693">			CreditCurve (</span>
+				dtSpot,
+				strName,
+				mdfcBase,
+				astrCreditTenor,
+				1.
+			),
+			null,
+			null,
+			null,
+			null
+		);
+
+<span class="nc" id="L706">		csqcCreditBumped01Up.setFixing (</span>
+			iResetDate,
+<span class="nc" id="L708">			bond.floaterSetting().fri(),</span>
+			dblResetRate
+		);
+
+<span class="nc" id="L712">		double dblAccrued = bond.accrued (</span>
+<span class="nc" id="L713">			dtSettle.julian(),</span>
+			csqcBase
+		);
+
+<span class="nc" id="L717">		WorkoutInfo wi = bond.exerciseYieldFromPrice (</span>
+			valParams,
+			csqcBase,
+			null,
+			dblCleanPrice
+		);
+
+<span class="nc" id="L724">		double dblBondBasisToMaturity = bond.bondBasisFromPrice (</span>
+			valParams,
+			csqcBase,
+			null,
+			dblCleanPrice
+		);
+
+<span class="nc" id="L731">		double dblModifiedDurationToMaturity = (</span>
+<span class="nc" id="L732">			dblCleanPrice - bond.priceFromBondBasis (</span>
+				valParams,
+				csqcBumped01Up,
+				null,
+				dblBondBasisToMaturity
+			)
+		) / dblCleanPrice;
+
+<span class="nc" id="L740">		double dblYieldToMaturity = bond.yieldFromPrice (</span>
+			valParams,
+			csqcBase,
+			null,
+			dblCleanPrice
+		);
+
+<span class="nc" id="L747">		double dblBondEquivalentYieldToMaturity = bond.yieldFromPrice (</span>
+			valParams,
+			csqcBase,
+<span class="nc" id="L750">			ValuationCustomizationParams.BondEquivalent (strCurrency),</span>
+			dblCleanPrice
+		);
+
+<span class="nc" id="L754">		double dblFlatForwardRateYieldToMaturity = bond.yieldFromPrice (</span>
+			valParams,
+			csqcBase,
+			new ValuationCustomizationParams (
+				strCouponDayCount,
+				iCouponFreq,
+				false,
+				null,
+				strCurrency,
+				false,
+				true
+			),
+			dblCleanPrice
+		);
+
+<span class="nc" id="L769">		double dblYieldToExercise = bond.yieldFromPrice (</span>
+			valParams,
+			csqcBase,
+			null,
+<span class="nc" id="L773">			wi.date(),</span>
+<span class="nc" id="L774">			wi.factor(),</span>
+			dblCleanPrice
+		);
+
+<span class="nc" id="L778">		double dblYieldToNextCall = bond.yieldFromPrice (</span>
+			valParams,
+			csqcBase,
+			null,
+<span class="nc" id="L782">			NextCallDate (</span>
+				bond,
+				iSpotDate
+			),
+<span class="nc" id="L786">			NextCallFactor (</span>
+				bond,
+				iSpotDate
+			),
+			dblCleanPrice
+		);
+
+<span class="nc" id="L793">		double dblNominalYield = bond.yieldFromPrice (</span>
+			valParams,
+			csqcBase,
+			null,
+			dblIssuePrice
+		);
+
+<span class="nc" id="L800">		double dblOASToMaturity = bond.oasFromPrice (</span>
+			valParams,
+			csqcBase,
+			null,
+			dblCleanPrice
+		);
+
+<span class="nc" id="L807">		double dblOASToExercise = bond.oasFromPrice (</span>
+			valParams,
+			csqcBase,
+			null,
+<span class="nc" id="L811">			wi.date(),</span>
+<span class="nc" id="L812">			wi.factor(),</span>
+			dblCleanPrice
+		);
+
+<span class="nc" id="L816">		double dblZSpreadToMaturity = bond.discountMarginFromPrice (</span>
+			valParams,
+			csqcBase,
+			null,
+			dblCleanPrice
+		);
+
+<span class="nc" id="L823">		double dblZSpreadToExercise = bond.discountMarginFromPrice (</span>
+			valParams,
+			csqcBase,
+			null,
+<span class="nc" id="L827">			wi.date(),</span>
+<span class="nc" id="L828">			wi.factor(),</span>
+			dblCleanPrice
+		);
+
+<span class="nc" id="L832">		double dblParZSpreadToExercise = bond.discountMarginFromPrice (</span>
+			valParams,
+			csqcBase,
+			null,
+<span class="nc" id="L836">			wi.date(),</span>
+<span class="nc" id="L837">			wi.factor(),</span>
+			1.
+		);
+
+<span class="nc" id="L841">		double dblParOASToExercise = bond.oasFromPrice (</span>
+			valParams,
+			csqcBase,
+			null,
+<span class="nc" id="L845">			wi.date(),</span>
+<span class="nc" id="L846">			wi.factor(),</span>
+			1.
+		);
+
+<span class="nc" id="L850">		double dblMacaulayDurationToMaturity = bond.macaulayDurationFromPrice (</span>
+			valParams,
+			csqcBase,
+			null,
+			dblCleanPrice
+		);
+
+<span class="nc" id="L857">		double dblBondBasisToExercise = bond.bondBasisFromPrice (</span>
+			valParams,
+			csqcBase,
+			null,
+<span class="nc" id="L861">			wi.date(),</span>
+<span class="nc" id="L862">			wi.factor(),</span>
+			dblCleanPrice
+		);
+
+<span class="nc" id="L866">		double dblModifiedDurationToWorst = (</span>
+<span class="nc" id="L867">			dblCleanPrice - bond.priceFromBondBasis (</span>
+				valParams,
+				csqcBumped01Up,
+				null,
+<span class="nc" id="L871">				wi.date(),</span>
+<span class="nc" id="L872">				wi.factor(),</span>
+				dblBondBasisToExercise
+			)
+		) / dblCleanPrice;
+
+<span class="nc" id="L877">		double dblDV01 = 0.5 * (</span>
+<span class="nc" id="L878">			bond.priceFromYield (</span>
+				valParams,
+				csqcBase,
+				null,
+<span class="nc" id="L882">				wi.date(),</span>
+<span class="nc" id="L883">				wi.factor(),</span>
+				dblYieldToExercise - 0.0001 * dblSpreadBump
+			) -
+<span class="nc" id="L886">			bond.priceFromYield (</span>
+				valParams,
+				csqcBase,
+				null,
+<span class="nc" id="L890">				wi.date(),</span>
+<span class="nc" id="L891">				wi.factor(),</span>
+				dblYieldToExercise + 0.0001 * dblSpreadBump
+			)
+		) / dblSpreadBump;
+
+<span class="nc" id="L896">		double dblEffectiveDuration = dblDV01 / dblCleanPrice;</span>
+
+<span class="nc" id="L898">		double dblCreditBasisToExercise = bond.creditBasisFromPrice (</span>
+			valParams,
+			csqcCreditBase,
+			null,
+<span class="nc" id="L902">			wi.date(),</span>
+<span class="nc" id="L903">			wi.factor(),</span>
+			dblCleanPrice
+		);
+
+<span class="nc" id="L907">		double dblParCreditBasisToExercise = bond.creditBasisFromPrice (</span>
+			valParams,
+			csqcCreditBase,
+			null,
+<span class="nc" id="L911">			wi.date(),</span>
+<span class="nc" id="L912">			wi.factor(),</span>
+			1.
+		);
+
+<span class="nc" id="L916">		double dblEffectiveDurationAdj = 0.5 * (</span>
+<span class="nc" id="L917">			bond.priceFromCreditBasis (</span>
+				valParams,
+				csqcCreditBase,
+				null,
+<span class="nc" id="L921">				wi.date(),</span>
+<span class="nc" id="L922">				wi.factor(),</span>
+				dblCreditBasisToExercise - dblSpreadBump
+			) -
+<span class="nc" id="L925">			bond.priceFromCreditBasis (</span>
+				valParams,
+				csqcCreditBase,
+				null,
+<span class="nc" id="L929">				wi.date(),</span>
+<span class="nc" id="L930">				wi.factor(),</span>
+				dblCreditBasisToExercise + dblSpreadBump
+			)
+		) / dblCleanPrice / dblSpreadBump;
+
+<span class="nc" id="L935">		double dblSpreadDuration = dblSpreadDurationMultiplier * (dblCleanPrice -</span>
+<span class="nc" id="L936">			bond.priceFromDiscountMargin (</span>
+				valParams,
+				csqcBase,
+				null,
+<span class="nc" id="L940">				wi.date(),</span>
+<span class="nc" id="L941">				wi.factor(),</span>
+				dblZSpreadToExercise + 0.0001 * dblSpreadBump
+			)
+		) / dblCleanPrice;
+
+<span class="nc" id="L946">		double dblCV01 = dblCleanPrice - bond.priceFromCreditBasis (</span>
+			valParams,
+			csqcCreditBumped01Up,
+			null,
+<span class="nc" id="L950">			wi.date(),</span>
+<span class="nc" id="L951">			wi.factor(),</span>
+			dblCreditBasisToExercise
+		);
+
+<span class="nc" id="L955">		Map&lt;String, Double&gt; mapLIBORKRD = new HashMap&lt;String, Double&gt;();</span>
+
+<span class="nc" id="L957">		Map&lt;String, Double&gt; mapLIBORKPRD = new HashMap&lt;String, Double&gt;();</span>
+
+<span class="nc" id="L959">		Map&lt;String, MergedDiscountForwardCurve&gt; mapFundingCurve = TenorBumpedFundingCurve (</span>
+			dtSpot,
+			strCurrency,
+			0.0001
+		);
+
+<span class="nc bnc" id="L965" title="All 2 branches missed.">		for (Map.Entry&lt;String, MergedDiscountForwardCurve&gt; meFunding : mapFundingCurve.entrySet()) {</span>
+<span class="nc" id="L966">			CurveSurfaceQuoteContainer csqcFunding = MarketParamsBuilder.Create (</span>
+<span class="nc" id="L967">				meFunding.getValue(),</span>
+				gc,
+				null,
+				null,
+				null,
+				null,
+				null
+			);
+
+<span class="nc" id="L976">			csqcFunding.setFixing (</span>
+				iResetDate,
+<span class="nc" id="L978">				bond.floaterSetting().fri(),</span>
+				dblResetRate + 0.0001
+			);
+
+<span class="nc" id="L982">			mapLIBORKRD.put (</span>
+<span class="nc" id="L983">				meFunding.getKey(),</span>
+<span class="nc" id="L984">				(dblCleanPrice - bond.priceFromDiscountMargin (</span>
+					valParams,
+					csqcFunding,
+					null,
+<span class="nc" id="L988">					wi.date(),</span>
+<span class="nc" id="L989">					wi.factor(),</span>
+					dblZSpreadToExercise
+				)) / dblCleanPrice
+			);
+
+<span class="nc" id="L994">			mapLIBORKPRD.put (</span>
+<span class="nc" id="L995">				meFunding.getKey(),</span>
+<span class="nc" id="L996">				1. - bond.priceFromDiscountMargin (</span>
+					valParams,
+					csqcFunding,
+					null,
+<span class="nc" id="L1000">					wi.date(),</span>
+<span class="nc" id="L1001">					wi.factor(),</span>
+					dblParZSpreadToExercise
+				)
+			);
+<span class="nc" id="L1005">		}</span>
+
+<span class="nc" id="L1007">		Map&lt;String, Double&gt; mapGovvieKRD = new HashMap&lt;String, Double&gt;();</span>
+
+<span class="nc" id="L1009">		Map&lt;String, Double&gt; mapGovvieKPRD = new HashMap&lt;String, Double&gt;();</span>
+
+<span class="nc" id="L1011">		Map&lt;String, GovvieCurve&gt; mapGovvieCurve = TenorBumpedGovvieCurve (</span>
+			dtSpot,
+			strTreasuryCode,
+			0.0001,
+			adblGovvieYield
+		);
+
+<span class="nc bnc" id="L1018" title="All 2 branches missed.">		for (Map.Entry&lt;String, GovvieCurve&gt; meGovvie : mapGovvieCurve.entrySet()) {</span>
+<span class="nc" id="L1019">			CurveSurfaceQuoteContainer csqcGovvie = MarketParamsBuilder.Create (</span>
+				mdfcBase,
+<span class="nc" id="L1021">				meGovvie.getValue(),</span>
+				null,
+				null,
+				null,
+				null,
+				null
+			);
+
+<span class="nc" id="L1029">			csqcGovvie.setFixing (</span>
+				iResetDate,
+<span class="nc" id="L1031">				bond.floaterSetting().fri(),</span>
+				dblResetRate
+			);
+
+<span class="nc" id="L1035">			mapGovvieKRD.put (</span>
+<span class="nc" id="L1036">				meGovvie.getKey(),</span>
+<span class="nc" id="L1037">				(dblCleanPrice - bond.priceFromOAS (</span>
+					valParams,
+					csqcGovvie,
+					null,
+<span class="nc" id="L1041">					wi.date(),</span>
+<span class="nc" id="L1042">					wi.factor(),</span>
+					dblOASToExercise
+				)) / dblCleanPrice
+			);
+
+<span class="nc" id="L1047">			mapGovvieKPRD.put (</span>
+<span class="nc" id="L1048">				meGovvie.getKey(),</span>
+<span class="nc" id="L1049">				1. - bond.priceFromOAS (</span>
+					valParams,
+					csqcGovvie,
+					null,
+<span class="nc" id="L1053">					wi.date(),</span>
+<span class="nc" id="L1054">					wi.factor(),</span>
+					dblParOASToExercise
+				)
+			);
+<span class="nc" id="L1058">		}</span>
+
+<span class="nc" id="L1060">		Map&lt;String, Double&gt; mapCreditKRD = new HashMap&lt;String, Double&gt;();</span>
+
+<span class="nc" id="L1062">		Map&lt;String, Double&gt; mapCreditKPRD = new HashMap&lt;String, Double&gt;();</span>
+
+<span class="nc" id="L1064">		Map&lt;String, CreditCurve&gt; mapCreditCurve = TenorBumpedCreditCurve (</span>
+			dtSpot,
+			strName,
+			mdfcBase,
+			1.
+		);
+
+<span class="nc bnc" id="L1071" title="All 2 branches missed.">		for (Map.Entry&lt;String, CreditCurve&gt; meCredit : mapCreditCurve.entrySet()) {</span>
+<span class="nc" id="L1072">			CurveSurfaceQuoteContainer csqcCredit = MarketParamsBuilder.Create (</span>
+				mdfcBase,
+				gc,
+<span class="nc" id="L1075">				meCredit.getValue(),</span>
+				null,
+				null,
+				null,
+				null
+			);
+
+<span class="nc" id="L1082">			csqcCredit.setFixing (</span>
+				iResetDate,
+<span class="nc" id="L1084">				bond.floaterSetting().fri(),</span>
+				dblResetRate
+			);
+
+<span class="nc" id="L1088">			mapCreditKRD.put (</span>
+<span class="nc" id="L1089">				meCredit.getKey(),</span>
+<span class="nc" id="L1090">				(dblCleanPrice - bond.priceFromCreditBasis (</span>
+					valParams,
+					csqcCredit,
+					null,
+<span class="nc" id="L1094">					wi.date(),</span>
+<span class="nc" id="L1095">					wi.factor(),</span>
+					dblCreditBasisToExercise
+				)) / dblCleanPrice
+			);
+
+<span class="nc" id="L1100">			mapCreditKPRD.put (</span>
+<span class="nc" id="L1101">				meCredit.getKey(),</span>
+<span class="nc" id="L1102">				1. - bond.priceFromCreditBasis (</span>
+					valParams,
+					csqcCredit,
+					null,
+<span class="nc" id="L1106">					wi.date(),</span>
+<span class="nc" id="L1107">					wi.factor(),</span>
+					dblParCreditBasisToExercise
+				)
+			);
+<span class="nc" id="L1111">		}</span>
+
+<span class="nc" id="L1113">		double dblConvexityToExercise = bond.convexityFromPrice (</span>
+			valParams,
+			csqcBase,
+			null,
+<span class="nc" id="L1117">			wi.date(),</span>
+<span class="nc" id="L1118">			wi.factor(),</span>
+			dblCleanPrice
+		);
+
+<span class="nc" id="L1122">		double dblDiscountMarginToExercise = dblYieldToExercise - mdfcBase.libor (</span>
+			dtSpot,
+			&quot;1M&quot;
+		);
+
+<span class="nc" id="L1127">		double dblESpreadToExercise = bond.discountMarginFromPrice (</span>
+			valParams,
+<span class="nc" id="L1129">			MarketParamsBuilder.Create (</span>
+<span class="nc" id="L1130">				LatentMarketStateBuilder.SmoothFundingCurve (</span>
+					dtSpot,
+					strCurrency,
+					astrDepositTenor,
+					adblDepositQuote,
+					&quot;ForwardRate&quot;,
+					adblFuturesQuote,
+					&quot;ForwardRate&quot;,
+					null,
+					null,
+					&quot;SwapRate&quot;
+				),
+				gc,
+				null,
+				null,
+				null,
+				null,
+				null
+			),
+			null,
+<span class="nc" id="L1150">			wi.date(),</span>
+<span class="nc" id="L1151">			wi.factor(),</span>
+			dblCleanPrice
+		);
+
+<span class="nc" id="L1155">		double dblISpreadToExercise = bond.iSpreadFromPrice (</span>
+			valParams,
+			csqcBase,
+			null,
+<span class="nc" id="L1159">			wi.date(),</span>
+<span class="nc" id="L1160">			wi.factor(),</span>
+			dblCleanPrice
+		);
+
+<span class="nc" id="L1164">		double dblJSpreadToExercise = bond.jSpreadFromPrice (</span>
+			valParams,
+			csqcBase,
+			null,
+<span class="nc" id="L1168">			wi.date(),</span>
+<span class="nc" id="L1169">			wi.factor(),</span>
+			dblCleanPrice
+		);
+
+<span class="nc" id="L1173">		double dblWALToExercise = bond.weightedAverageLife (</span>
+			valParams,
+			csqcBase,
+<span class="nc" id="L1176">			wi.date(),</span>
+<span class="nc" id="L1177">			wi.factor()</span>
+		);
+
+<span class="nc" id="L1180">		double dblWALPrincipalOnlyToExercise = bond.weightedAverageLifePrincipalOnly (</span>
+			valParams,
+			csqcBase,
+<span class="nc" id="L1183">			wi.date(),</span>
+<span class="nc" id="L1184">			wi.factor()</span>
+		);
+
+<span class="nc" id="L1187">		double dblWALLossOnlyToExercise = bond.weightedAverageLifeLossOnly (</span>
+			valParams,
+			csqcCreditBase,
+<span class="nc" id="L1190">			wi.date(),</span>
+<span class="nc" id="L1191">			wi.factor()</span>
+		);
+
+<span class="nc" id="L1194">		double dblWALCouponOnlyToExercise = bond.weightedAverageLifeCouponOnly (</span>
+			valParams,
+			csqcBase,
+<span class="nc" id="L1197">			wi.date(),</span>
+<span class="nc" id="L1198">			wi.factor()</span>
+		);
+
+<span class="nc" id="L1201">		BondReplicator ar = BondReplicator.Standard (</span>
+			dblCleanPrice,
+			dblIssuePrice,
+			dblIssueAmount,
+			dtSpot,
+			astrDepositTenor,
+			adblDepositQuote,
+			adblFuturesQuote,
+			astrFixFloatTenor,
+			adblFixFloatQuote,
+			dblSpreadBump,
+			dblSpreadDurationMultiplier,
+			strTreasuryCode,
+			astrGovvieTenor,
+			adblGovvieYield,
+			astrCreditTenor,
+			adblCreditQuote,
+			dblFX,
+			dblUSD3MLIBOR,
+			iSettleLag,
+			bond
+		);
+
+<span class="nc" id="L1224">		BondReplicationRun arr = ar.generateRun();</span>
+
+<span class="nc" id="L1226">		Map&lt;String, NamedField&gt; mapNF = arr.namedField();</span>
+
+<span class="nc" id="L1228">		Map&lt;String, NamedFieldMap&gt; mapNFM = arr.namedFieldMap();</span>
+
+<span class="nc" id="L1230">		NamedFieldMap nfmLIBORKRD = mapNFM.get (&quot;LIBOR KRD&quot;);</span>
+
+<span class="nc" id="L1232">		NamedFieldMap nfmLIBORKPRD = mapNFM.get (&quot;LIBOR KPRD&quot;);</span>
+
+<span class="nc" id="L1234">		NamedFieldMap nfmGovvieKRD = mapNFM.get (&quot;Govvie KRD&quot;);</span>
+
+<span class="nc" id="L1236">		NamedFieldMap nfmGovvieKPRD = mapNFM.get (&quot;Govvie KPRD&quot;);</span>
+
+<span class="nc" id="L1238">		NamedFieldMap nfmCreditKRD = mapNFM.get (&quot;Credit KRD&quot;);</span>
+
+<span class="nc" id="L1240">		NamedFieldMap nfmCreditKPRD = mapNFM.get (&quot;Credit KPRD&quot;);</span>
+
+<span class="nc" id="L1242">		System.out.println();</span>
+
+<span class="nc" id="L1244">		System.out.println (&quot;\t||------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L1246">		System.out.println (</span>
+			&quot;\t|| ID                      =&gt;  &quot; +
+			strName + &quot;-&quot; + strCurrency
+		);
+
+<span class="nc" id="L1251">		System.out.println (</span>
+			&quot;\t|| Price                   =&gt; &quot; +
+<span class="nc" id="L1253">			FormatUtil.FormatDouble (dblCleanPrice, 3, 3, 100.) + &quot; | &quot; +</span>
+<span class="nc" id="L1254">			FormatUtil.FormatDouble (mapNF.get (&quot;Price&quot;).value(), 3, 3, 100.)</span>
+		);
+
+<span class="nc" id="L1257">		System.out.println (</span>
+			&quot;\t|| Market Value            =&gt; &quot; +
+<span class="nc" id="L1259">			FormatUtil.FormatDouble (dblCleanPrice * dblIssueAmount, 7, 2, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L1260">			FormatUtil.FormatDouble (mapNF.get (&quot;Market Value&quot;).value(), 7, 2, 1.)</span>
+		);
+
+<span class="nc" id="L1263">		System.out.println (</span>
+			&quot;\t|| Accrued                 =&gt; &quot; +
+<span class="nc" id="L1265">			FormatUtil.FormatDouble (dblAccrued, 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L1266">			FormatUtil.FormatDouble (mapNF.get (&quot;Accrued&quot;).value(), 1, 4, 1.)</span>
+		);
+
+<span class="nc" id="L1269">		System.out.println (</span>
+			&quot;\t|| Accrued                 =&gt; &quot; +
+<span class="nc" id="L1271">			FormatUtil.FormatDouble (dblAccrued * dblIssueAmount, 5, 2, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L1272">			FormatUtil.FormatDouble (mapNF.get (&quot;Accrued$&quot;).value(), 5, 2, 1.)</span>
+		);
+
+<span class="nc" id="L1275">		System.out.println (</span>
+			&quot;\t|| Accrued Interest Factor =&gt; &quot; +
+<span class="nc" id="L1277">			FormatUtil.FormatDouble (dblAccrued * dblFX, 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L1278">			FormatUtil.FormatDouble (mapNF.get (&quot;Accrued Interest Factor&quot;).value(), 1, 4, 1.)</span>
+		);
+
+<span class="nc" id="L1281">		System.out.println (</span>
+			&quot;\t|| Yield To Maturity       =&gt; &quot; +
+<span class="nc" id="L1283">			FormatUtil.FormatDouble (dblYieldToMaturity, 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="nc" id="L1284">			FormatUtil.FormatDouble (mapNF.get (&quot;Yield To Maturity&quot;).value(), 1, 2, 100.) + &quot;%&quot;</span>
+		);
+
+<span class="nc" id="L1287">		System.out.println (</span>
+			&quot;\t|| Yield To Maturity CBE   =&gt; &quot; +
+<span class="nc" id="L1289">			FormatUtil.FormatDouble (dblBondEquivalentYieldToMaturity, 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="nc" id="L1290">			FormatUtil.FormatDouble (mapNF.get (&quot;Yield To Maturity CBE&quot;).value(), 1, 2, 100.) + &quot;%&quot;</span>
+		);
+
+<span class="nc" id="L1293">		System.out.println (</span>
+			&quot;\t|| YTM fwdCpn              =&gt; &quot; +
+<span class="nc" id="L1295">			FormatUtil.FormatDouble (dblFlatForwardRateYieldToMaturity, 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="nc" id="L1296">			FormatUtil.FormatDouble (mapNF.get (&quot;YTM fwdCpn&quot;).value(), 1, 2, 100.) + &quot;%&quot;</span>
+		);
+
+<span class="nc" id="L1299">		System.out.println (</span>
+			&quot;\t|| Yield To Worst          =&gt; &quot; +
+<span class="nc" id="L1301">			FormatUtil.FormatDouble (dblYieldToExercise, 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="nc" id="L1302">			FormatUtil.FormatDouble (mapNF.get (&quot;Yield To Worst&quot;).value(), 1, 2, 100.) + &quot;%&quot;</span>
+		);
+
+<span class="nc" id="L1305">		System.out.println (</span>
+			&quot;\t|| YIELD TO CALL           =&gt; &quot; +
+<span class="nc" id="L1307">			FormatUtil.FormatDouble (dblYieldToNextCall, 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="nc" id="L1308">			FormatUtil.FormatDouble (mapNF.get (&quot;YIELD TO CALL&quot;).value(), 1, 2, 100.) + &quot;%&quot;</span>
+		);
+
+<span class="nc" id="L1311">		System.out.println (</span>
+			&quot;\t|| Nominal Yield           =&gt; &quot; +
+<span class="nc" id="L1313">			FormatUtil.FormatDouble (dblNominalYield, 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="nc" id="L1314">			FormatUtil.FormatDouble (mapNF.get (&quot;Nominal Yield&quot;).value(), 1, 2, 100.) + &quot;%&quot;</span>
+		);
+
+<span class="nc" id="L1317">		System.out.println (</span>
+			&quot;\t|| Z_Spread                =&gt; &quot; +
+<span class="nc" id="L1319">			FormatUtil.FormatDouble (dblOASToMaturity, 3, 1, 10000.) + &quot; | &quot; +</span>
+<span class="nc" id="L1320">			FormatUtil.FormatDouble (mapNF.get (&quot;Z_Spread&quot;).value(), 3, 1, 10000.)</span>
+		);
+
+<span class="nc" id="L1323">		System.out.println (</span>
+			&quot;\t|| Z_Vol_OAS               =&gt; &quot; +
+<span class="nc" id="L1325">			FormatUtil.FormatDouble (dblZSpreadToMaturity, 3, 1, 10000.) + &quot; | &quot; +</span>
+<span class="nc" id="L1326">			FormatUtil.FormatDouble (mapNF.get (&quot;Z_Vol_OAS&quot;).value(), 3, 1, 10000.)</span>
+		);
+
+<span class="nc" id="L1329">		System.out.println (</span>
+			&quot;\t|| OAS                     =&gt; &quot; +
+<span class="nc" id="L1331">			FormatUtil.FormatDouble (dblZSpreadToExercise, 3, 1, 10000.) + &quot; | &quot; +</span>
+<span class="nc" id="L1332">			FormatUtil.FormatDouble (mapNF.get (&quot;OAS&quot;).value(), 3, 1, 10000.)</span>
+		);
+
+<span class="nc" id="L1335">		System.out.println (</span>
+			&quot;\t|| TSY OAS                 =&gt; &quot; +
+<span class="nc" id="L1337">			FormatUtil.FormatDouble (dblOASToExercise, 3, 1, 10000.) + &quot; | &quot; +</span>
+<span class="nc" id="L1338">			FormatUtil.FormatDouble (mapNF.get (&quot;TSY OAS&quot;).value(), 3, 1, 10000.)</span>
+		);
+
+<span class="nc" id="L1341">		System.out.println (</span>
+			&quot;\t|| MOD DUR                 =&gt; &quot; +
+<span class="nc" id="L1343">			FormatUtil.FormatDouble (dblModifiedDurationToMaturity, 1, 3, 10000.) + &quot; | &quot; +</span>
+<span class="nc" id="L1344">			FormatUtil.FormatDouble (mapNF.get (&quot;MOD DUR&quot;).value(), 1, 3, 10000.)</span>
+		);
+
+<span class="nc" id="L1347">		System.out.println (</span>
+			&quot;\t|| MACAULAY DURATION       =&gt; &quot; +
+<span class="nc" id="L1349">			FormatUtil.FormatDouble (dblMacaulayDurationToMaturity, 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L1350">			FormatUtil.FormatDouble (mapNF.get (&quot;MACAULAY DURATION&quot;).value(), 1, 3, 1.)</span>
+		);
+
+<span class="nc" id="L1353">		System.out.println (</span>
+			&quot;\t|| MOD DUR TO WORST        =&gt; &quot; +
+<span class="nc" id="L1355">			FormatUtil.FormatDouble (dblModifiedDurationToWorst, 1, 3, 10000.) + &quot; | &quot; +</span>
+<span class="nc" id="L1356">			FormatUtil.FormatDouble (mapNF.get (&quot;MOD DUR TO WORST&quot;).value(), 1, 3, 10000.)</span>
+		);
+
+<span class="nc" id="L1359">		System.out.println (</span>
+			&quot;\t|| EFFECTIVE DURATION      =&gt; &quot; +
+<span class="nc" id="L1361">			FormatUtil.FormatDouble (dblEffectiveDuration, 1, 3, 10000.) + &quot; | &quot; +</span>
+<span class="nc" id="L1362">			FormatUtil.FormatDouble (mapNF.get (&quot;EFFECTIVE DURATION&quot;).value(), 1, 3, 10000.)</span>
+		);
+
+<span class="nc" id="L1365">		System.out.println (</span>
+			&quot;\t|| EFFECTIVE DURATION ADJ  =&gt; &quot; +
+<span class="nc" id="L1367">			FormatUtil.FormatDouble (dblEffectiveDurationAdj, 1, 3, 10000.) + &quot; | &quot; +</span>
+<span class="nc" id="L1368">			FormatUtil.FormatDouble (mapNF.get (&quot;EFFECTIVE DURATION ADJ&quot;).value(), 1, 3, 10000.)</span>
+		);
+
+<span class="nc" id="L1371">		System.out.println (</span>
+			&quot;\t|| OAD MULT                =&gt; &quot; +
+<span class="nc" id="L1373">			FormatUtil.FormatDouble (dblEffectiveDurationAdj / dblEffectiveDuration, 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L1374">			FormatUtil.FormatDouble (mapNF.get (&quot;OAD MULT&quot;).value(), 1, 3, 1.)</span>
+		);
+
+<span class="nc" id="L1377">		System.out.println (</span>
+			&quot;\t|| Spread Dur              =&gt; &quot; +
+<span class="nc" id="L1379">			FormatUtil.FormatDouble (dblSpreadDuration, 1, 3, 100.) + &quot; | &quot; +</span>
+<span class="nc" id="L1380">			FormatUtil.FormatDouble (mapNF.get (&quot;Spread Dur&quot;).value(), 1, 3, 100.)</span>
+		);
+
+<span class="nc" id="L1383">		System.out.println (</span>
+			&quot;\t|| Spread Dur              =&gt; &quot; +
+<span class="nc" id="L1385">			FormatUtil.FormatDouble (dblSpreadDuration * dblIssueAmount, 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L1386">			FormatUtil.FormatDouble (mapNF.get (&quot;Spread Dur $&quot;).value(), 1, 3, 1.)</span>
+		);
+
+<span class="nc" id="L1389">		System.out.println (</span>
+			&quot;\t|| DV01                    =&gt; &quot; +
+<span class="nc" id="L1391">			FormatUtil.FormatDouble (dblDV01, 1, 3, 10000.) + &quot; | &quot; +</span>
+<span class="nc" id="L1392">			FormatUtil.FormatDouble (mapNF.get (&quot;DV01&quot;).value(), 1, 3, 10000.)</span>
+		);
+
+<span class="nc" id="L1395">		System.out.println (</span>
+			&quot;\t|| CV01                    =&gt; &quot; +
+<span class="nc" id="L1397">			FormatUtil.FormatDouble (dblCV01, 1, 3, 10000.) + &quot; | &quot; +</span>
+<span class="nc" id="L1398">			FormatUtil.FormatDouble (mapNF.get (&quot;CV01&quot;).value(), 1, 3, 10000.)</span>
+		);
+
+<span class="nc" id="L1401">		System.out.println (</span>
+			&quot;\t|| Convexity               =&gt; &quot; +
+<span class="nc" id="L1403">			FormatUtil.FormatDouble (dblConvexityToExercise, 1, 3, 1000000.) + &quot; | &quot; +</span>
+<span class="nc" id="L1404">			FormatUtil.FormatDouble (mapNF.get (&quot;Convexity&quot;).value(), 1, 3, 1000000.)</span>
+		);
+
+<span class="nc" id="L1407">		System.out.println (</span>
+			&quot;\t|| Modified Convexity      =&gt; &quot; +
+<span class="nc" id="L1409">			FormatUtil.FormatDouble (dblConvexityToExercise, 1, 3, 1000000.) + &quot; | &quot; +</span>
+<span class="nc" id="L1410">			FormatUtil.FormatDouble (mapNF.get (&quot;Modified Convexity&quot;).value(), 1, 3, 1000000.)</span>
+		);
+
+<span class="nc" id="L1413">		System.out.println (</span>
+			&quot;\t|| DISCOUNT MARGIN         =&gt; &quot; +
+<span class="nc" id="L1415">			FormatUtil.FormatDouble (dblDiscountMarginToExercise, 3, 1, 10000.) + &quot; | &quot; +</span>
+<span class="nc" id="L1416">			FormatUtil.FormatDouble (mapNF.get (&quot;DISCOUNT MARGIN&quot;).value(), 3, 1, 10000.)</span>
+		);
+
+<span class="nc" id="L1419">		System.out.println (</span>
+			&quot;\t|| E-Spread                =&gt; &quot; +
+<span class="nc" id="L1421">			FormatUtil.FormatDouble (dblESpreadToExercise, 3, 1, 10000.) + &quot; | &quot; +</span>
+<span class="nc" id="L1422">			FormatUtil.FormatDouble (mapNF.get (&quot;E-Spread&quot;).value(), 3, 1, 10000.)</span>
+		);
+
+<span class="nc" id="L1425">		System.out.println (</span>
+			&quot;\t|| I-Spread                =&gt; &quot; +
+<span class="nc" id="L1427">			FormatUtil.FormatDouble (dblISpreadToExercise, 3, 1, 10000.) + &quot; | &quot; +</span>
+<span class="nc" id="L1428">			FormatUtil.FormatDouble (mapNF.get (&quot;I-Spread&quot;).value(), 3, 1, 10000.)</span>
+		);
+
+<span class="nc" id="L1431">		System.out.println (</span>
+			&quot;\t|| J-Spread                =&gt; &quot; +
+<span class="nc" id="L1433">			FormatUtil.FormatDouble (dblJSpreadToExercise, 3, 1, 10000.) + &quot; | &quot; +</span>
+<span class="nc" id="L1434">			FormatUtil.FormatDouble (mapNF.get (&quot;J-Spread&quot;).value(), 3, 1, 10000.)</span>
+		);
+
+<span class="nc" id="L1437">		System.out.println (</span>
+			&quot;\t|| WAL To Worst            =&gt; &quot; +
+<span class="nc" id="L1439">			FormatUtil.FormatDouble (dblWALToExercise, 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L1440">			FormatUtil.FormatDouble (mapNF.get (&quot;WAL To Worst&quot;).value(), 1, 3, 1.)</span>
+		);
+
+<span class="nc" id="L1443">		System.out.println (</span>
+			&quot;\t|| WAL                     =&gt; &quot; +
+<span class="nc" id="L1445">			FormatUtil.FormatDouble (dblWALPrincipalOnlyToExercise, 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L1446">			FormatUtil.FormatDouble (mapNF.get (&quot;WAL&quot;).value(), 1, 3, 1.)</span>
+		);
+
+<span class="nc" id="L1449">		System.out.println (</span>
+			&quot;\t|| WAL2                    =&gt; &quot; +
+<span class="nc" id="L1451">			FormatUtil.FormatDouble (dblWALLossOnlyToExercise, 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L1452">			FormatUtil.FormatDouble (mapNF.get (&quot;WAL2&quot;).value(), 1, 3, 1.)</span>
+		);
+
+<span class="nc" id="L1455">		System.out.println (</span>
+			&quot;\t|| WAL3                    =&gt; &quot; +
+<span class="nc" id="L1457">			FormatUtil.FormatDouble (dblWALCouponOnlyToExercise, 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L1458">			FormatUtil.FormatDouble (mapNF.get (&quot;WAL3&quot;).value(), 1, 3, 1.)</span>
+		);
+
+<span class="nc" id="L1461">		System.out.println (</span>
+			&quot;\t|| WAL4                    =&gt; &quot; +
+<span class="nc" id="L1463">			FormatUtil.FormatDouble (dblWALToExercise, 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L1464">			FormatUtil.FormatDouble (mapNF.get (&quot;WAL4&quot;).value(), 1, 3, 1.)</span>
+		);
+
+<span class="nc" id="L1467">		System.out.println (&quot;\t||------------------------------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L1469" title="All 2 branches missed.">		for (Map.Entry&lt;String, Double&gt; meLIBORKRD : mapLIBORKRD.entrySet())</span>
+<span class="nc" id="L1470">			System.out.println (</span>
+<span class="nc" id="L1471">				&quot;\t|| LIBOR KRD &quot; + meLIBORKRD.getKey() + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L1472">				FormatUtil.FormatDouble (meLIBORKRD.getValue(), 1, 3, 10000.) + &quot; | &quot; +</span>
+<span class="nc" id="L1473">				FormatUtil.FormatDouble (nfmLIBORKRD.value().get (meLIBORKRD.getKey()), 1, 3, 10000.)</span>
+			);
+
+<span class="nc" id="L1476">		System.out.println (&quot;\t||------------------------------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L1478" title="All 2 branches missed.">		for (Map.Entry&lt;String, Double&gt; meLIBORKPRD : mapLIBORKPRD.entrySet())</span>
+<span class="nc" id="L1479">			System.out.println (</span>
+<span class="nc" id="L1480">				&quot;\t|| LIBOR KPRD &quot; + meLIBORKPRD.getKey() + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L1481">				FormatUtil.FormatDouble (meLIBORKPRD.getValue(), 1, 3, 10000.) + &quot; | &quot; +</span>
+<span class="nc" id="L1482">				FormatUtil.FormatDouble (nfmLIBORKPRD.value().get (meLIBORKPRD.getKey()), 1, 3, 10000.)</span>
+			);
+
+<span class="nc" id="L1485">		System.out.println (&quot;\t||------------------------------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L1487" title="All 2 branches missed.">		for (Map.Entry&lt;String, Double&gt; meGovvieKRD : mapGovvieKRD.entrySet())</span>
+<span class="nc" id="L1488">			System.out.println (</span>
+<span class="nc" id="L1489">				&quot;\t|| Govvie KRD &quot; + meGovvieKRD.getKey() + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L1490">				FormatUtil.FormatDouble (meGovvieKRD.getValue(), 1, 3, 10000.) + &quot; | &quot; +</span>
+<span class="nc" id="L1491">				FormatUtil.FormatDouble (nfmGovvieKRD.value().get (meGovvieKRD.getKey()), 1, 3, 10000.)</span>
+			);
+
+<span class="nc" id="L1494">		System.out.println (&quot;\t||------------------------------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L1496" title="All 2 branches missed.">		for (Map.Entry&lt;String, Double&gt; meGovvieKPRD : mapGovvieKPRD.entrySet())</span>
+<span class="nc" id="L1497">			System.out.println (</span>
+<span class="nc" id="L1498">				&quot;\t|| Govvie KPRD &quot; + meGovvieKPRD.getKey() + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L1499">				FormatUtil.FormatDouble (meGovvieKPRD.getValue(), 1, 3, 10000.) + &quot; | &quot; +</span>
+<span class="nc" id="L1500">				FormatUtil.FormatDouble (nfmGovvieKPRD.value().get (meGovvieKPRD.getKey()), 1, 3, 10000.)</span>
+			);
+
+<span class="nc" id="L1503">		System.out.println (&quot;\t||------------------------------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L1505" title="All 2 branches missed.">		for (Map.Entry&lt;String, Double&gt; meCreditKRD : mapCreditKRD.entrySet())</span>
+<span class="nc" id="L1506">			System.out.println (</span>
+<span class="nc" id="L1507">				&quot;\t|| Credit KRD &quot; + meCreditKRD.getKey() + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L1508">				FormatUtil.FormatDouble (meCreditKRD.getValue(), 1, 3, 10000.) + &quot; | &quot; +</span>
+<span class="nc" id="L1509">				FormatUtil.FormatDouble (nfmCreditKRD.value().get (meCreditKRD.getKey()), 1, 3, 10000.)</span>
+			);
+
+<span class="nc" id="L1512">		System.out.println (&quot;\t||------------------------------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L1514" title="All 2 branches missed.">		for (Map.Entry&lt;String, Double&gt; meCreditKPRD : mapCreditKPRD.entrySet())</span>
+<span class="nc" id="L1515">			System.out.println (</span>
+<span class="nc" id="L1516">				&quot;\t|| Credit KPRD &quot; + meCreditKPRD.getKey() + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L1517">				FormatUtil.FormatDouble (meCreditKPRD.getValue(), 1, 3, 10000.) + &quot; | &quot; +</span>
+<span class="nc" id="L1518">				FormatUtil.FormatDouble (nfmCreditKPRD.value().get (meCreditKPRD.getKey()), 1, 3, 10000.)</span>
+			);
+
+<span class="nc" id="L1521">		System.out.println (&quot;\t||------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L1523">		System.out.println();</span>
+<span class="nc" id="L1524">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

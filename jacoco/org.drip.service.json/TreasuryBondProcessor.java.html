@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TreasuryBondProcessor.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.service.json</a> &gt; <span class="el_source">TreasuryBondProcessor.java</span></div><h1>TreasuryBondProcessor.java</h1><pre class="source lang-java linenums">
+package org.drip.service.json;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for fixed income analysts and developers -
+ * 		http://www.credit-trader.org/Begin.html
+ * 
+ *  DRIP is a free, full featured, fixed income rates, credit, and FX analytics library with a focus towards
+ *  	pricing/valuation, risk, and market making.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * TreasuryBondProcessor Sets Up and Executes a JSON Based In/Out Processing Service for Treasury Bonds.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L39">public class TreasuryBondProcessor {</span>
+
+	/**
+	 * JSON Based in/out Treasury Bond Secular Metrics Thunker
+	 * 
+	 * @param jsonParameter JSON Treasury Bond Request Parameters
+	 * 
+	 * @return JSON Treasury Bond Secular Metrics Response
+	 */
+
+	@SuppressWarnings (&quot;unchecked&quot;) static final org.drip.json.simple.JSONObject SecularMetrics (
+		final org.drip.json.simple.JSONObject jsonParameter)
+	{
+<span class="nc" id="L52">		java.lang.String strTreasuryCode = org.drip.json.parser.Converter.StringEntry (jsonParameter,</span>
+			&quot;TreasuryCode&quot;);
+
+<span class="nc" id="L55">		org.drip.analytics.date.JulianDate dtEffective = org.drip.json.parser.Converter.DateEntry</span>
+<span class="nc" id="L56">			(jsonParameter, &quot;EffectiveDate&quot;);</span>
+
+<span class="nc bnc" id="L58" title="All 2 branches missed.">		if (null == dtEffective) return null;</span>
+
+<span class="nc" id="L60">		int iEffectiveDate = dtEffective.julian();</span>
+
+<span class="nc" id="L62">		org.drip.analytics.date.JulianDate dtMaturity = org.drip.json.parser.Converter.DateEntry</span>
+<span class="nc" id="L63">			(jsonParameter, &quot;MaturityDate&quot;);</span>
+
+<span class="nc bnc" id="L65" title="All 2 branches missed.">		if (null == dtMaturity) return null;</span>
+
+<span class="nc" id="L67">		org.drip.analytics.date.JulianDate dtSettle = org.drip.json.parser.Converter.DateEntry</span>
+<span class="nc" id="L68">			(jsonParameter, &quot;SettleDate&quot;);</span>
+
+<span class="nc bnc" id="L70" title="All 2 branches missed.">		if (null == dtSettle) return null;</span>
+
+<span class="nc" id="L72">		int iSettleDate = dtSettle.julian();</span>
+
+<span class="nc" id="L74">		double dblYield = java.lang.Double.NaN;</span>
+<span class="nc" id="L75">		double dblCoupon = java.lang.Double.NaN;</span>
+<span class="nc" id="L76">		double dblNotional = java.lang.Double.NaN;</span>
+<span class="nc" id="L77">		double dblCleanPrice = java.lang.Double.NaN;</span>
+
+		try {
+<span class="nc" id="L80">			dblCoupon = org.drip.json.parser.Converter.DoubleEntry (jsonParameter, &quot;Coupon&quot;);</span>
+
+<span class="nc" id="L82">			dblNotional = org.drip.json.parser.Converter.DoubleEntry (jsonParameter, &quot;Notional&quot;);</span>
+
+<span class="nc" id="L84">			dblCleanPrice = org.drip.json.parser.Converter.DoubleEntry (jsonParameter, &quot;CleanPrice&quot;);</span>
+<span class="nc" id="L85">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L86">			e.printStackTrace();</span>
+
+<span class="nc" id="L88">			return null;</span>
+<span class="nc" id="L89">		}</span>
+
+<span class="nc" id="L91">		org.drip.market.issue.TreasurySetting ts =</span>
+<span class="nc" id="L92">			org.drip.market.issue.TreasurySettingContainer.TreasurySetting (strTreasuryCode);</span>
+
+<span class="nc bnc" id="L94" title="All 2 branches missed.">		if (null == ts) return null;</span>
+
+<span class="nc" id="L96">		int iFrequency = ts.frequency();</span>
+
+<span class="nc" id="L98">		java.lang.String strDayCount = ts.dayCount();</span>
+
+<span class="nc" id="L100">		org.drip.product.definition.Bond tsy = org.drip.product.creator.BondBuilder.Treasury (ts.code(),</span>
+<span class="nc" id="L101">			dtEffective, dtMaturity, ts.currency(), dblCoupon, iFrequency, strDayCount);</span>
+
+<span class="nc bnc" id="L103" title="All 4 branches missed.">		if (null == tsy || tsy.maturityDate().julian() &lt;= iSettleDate) return null;</span>
+
+<span class="nc" id="L105">		java.lang.String strCurrency = tsy.payCurrency();</span>
+
+<span class="nc" id="L107">		org.drip.param.valuation.ValuationParams valParams = org.drip.param.valuation.ValuationParams.Spot</span>
+<span class="nc" id="L108">			(iSettleDate);</span>
+
+		try {
+<span class="nc" id="L111">			dblYield = tsy.yield01FromPrice (valParams, null, null, dblCleanPrice);</span>
+<span class="nc" id="L112">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L113">			e.printStackTrace();</span>
+
+<span class="nc" id="L115">			return null;</span>
+<span class="nc" id="L116">		}</span>
+
+<span class="nc" id="L118">		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();</span>
+
+<span class="nc" id="L120">		org.drip.json.simple.JSONArray jsonCouponFlowArray = new org.drip.json.simple.JSONArray();</span>
+
+<span class="nc bnc" id="L122" title="All 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod cp : tsy.couponPeriods()) {</span>
+<span class="nc" id="L123">			org.drip.json.simple.JSONObject jsonCouponFlow = new org.drip.json.simple.JSONObject();</span>
+
+<span class="nc" id="L125">			org.drip.analytics.output.CompositePeriodCouponMetrics cpcm = cp.couponMetrics (iEffectiveDate,</span>
+				null);
+
+<span class="nc bnc" id="L128" title="All 2 branches missed.">			if (null == cpcm) return null;</span>
+
+<span class="nc" id="L130">			double dblPeriodCouponRate = cpcm.rate();</span>
+
+<span class="nc" id="L132">			jsonCouponFlow.put (&quot;CouponRate&quot;, dblPeriodCouponRate);</span>
+
+			try {
+<span class="nc" id="L135">				int iPeriodStartDate = cp.startDate();</span>
+
+<span class="nc" id="L137">				int iPeriodEndDate = cp.endDate();</span>
+
+<span class="nc" id="L139">				double dblYieldDF = org.drip.analytics.support.Helper.Yield2DF (iFrequency, dblYield,</span>
+<span class="nc" id="L140">					org.drip.analytics.daycount.Convention.YearFraction (iEffectiveDate, iPeriodEndDate,</span>
+						strDayCount, false, null, strCurrency));
+
+<span class="nc" id="L143">				jsonCouponFlow.put (&quot;StartDate&quot;, new org.drip.analytics.date.JulianDate</span>
+<span class="nc" id="L144">					(iPeriodStartDate).toString());</span>
+
+<span class="nc" id="L146">				jsonCouponFlow.put (&quot;EndDate&quot;, new org.drip.analytics.date.JulianDate</span>
+<span class="nc" id="L147">					(iPeriodEndDate).toString());</span>
+
+<span class="nc" id="L149">				jsonCouponFlow.put (&quot;PayDate&quot;, new org.drip.analytics.date.JulianDate</span>
+<span class="nc" id="L150">					(cp.payDate()).toString());</span>
+
+<span class="nc" id="L152">				double dblCouponDCF = cp.couponDCF();</span>
+
+<span class="nc" id="L154">				jsonCouponFlow.put (&quot;AccrualDays&quot;, org.drip.analytics.daycount.Convention.DaysAccrued</span>
+<span class="nc" id="L155">					(iPeriodStartDate, iPeriodEndDate, strDayCount, false, null, strCurrency));</span>
+
+<span class="nc" id="L157">				jsonCouponFlow.put (&quot;AccrualFraction&quot;, dblCouponDCF);</span>
+
+<span class="nc" id="L159">				double dblCouponAmount = dblPeriodCouponRate * dblCouponDCF * dblNotional;</span>
+
+<span class="nc" id="L161">				jsonCouponFlow.put (&quot;CouponAmount&quot;, dblCouponAmount);</span>
+
+<span class="nc" id="L163">				jsonCouponFlow.put (&quot;YieldDF&quot;, dblYieldDF);</span>
+<span class="nc" id="L164">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L165">				e.printStackTrace();</span>
+
+<span class="nc" id="L167">				return null;</span>
+<span class="nc" id="L168">			}</span>
+
+<span class="nc" id="L170">			jsonCouponFlowArray.add (jsonCouponFlow);</span>
+<span class="nc" id="L171">		}</span>
+
+<span class="nc" id="L173">		jsonResponse.put (&quot;CouponFlow&quot;, jsonCouponFlowArray);</span>
+
+<span class="nc" id="L175">		jsonResponse.put (&quot;CleanPrice&quot;, 100. * dblCleanPrice);</span>
+
+<span class="nc" id="L177">		jsonResponse.put (&quot;Face&quot;, dblNotional);</span>
+
+<span class="nc" id="L179">		org.drip.analytics.date.JulianDate dtPreviousCouponDate = tsy.previousCouponDate (dtSettle);</span>
+
+<span class="nc bnc" id="L181" title="All 2 branches missed.">		if (null != dtPreviousCouponDate) {</span>
+<span class="nc" id="L182">			jsonResponse.put (&quot;AccrualDays&quot;, iSettleDate - dtPreviousCouponDate.julian());</span>
+
+<span class="nc" id="L184">			jsonResponse.put (&quot;PreviousCouponDate&quot;, dtPreviousCouponDate.toString());</span>
+		}
+
+		try {
+<span class="nc" id="L188">			double dblAccruedAmount = tsy.accrued (iSettleDate, null) * dblNotional;</span>
+
+<span class="nc" id="L190">			double dblCurrentPrincipal = tsy.notional (dtPreviousCouponDate.julian()) * dblNotional;</span>
+
+<span class="nc" id="L192">			double dblRisk = tsy.yield01FromPrice (valParams, null, null, dblCleanPrice);</span>
+
+<span class="nc" id="L194">			jsonResponse.put (&quot;Accrued&quot;, dblAccruedAmount);</span>
+
+<span class="nc" id="L196">			jsonResponse.put (&quot;Convexity&quot;, tsy.convexityFromPrice (valParams, null, null, dblCleanPrice));</span>
+
+<span class="nc" id="L198">			jsonResponse.put (&quot;CurrentPrincipal&quot;, dblCurrentPrincipal);</span>
+
+<span class="nc" id="L200">			jsonResponse.put (&quot;DV01&quot;, dblRisk * dblNotional);</span>
+
+<span class="nc" id="L202">			jsonResponse.put (&quot;ModifiedDuration&quot;, tsy.modifiedDurationFromPrice (valParams, null, null,</span>
+				dblCleanPrice));
+
+<span class="nc" id="L205">			jsonResponse.put (&quot;Notional&quot;, dblNotional);</span>
+
+<span class="nc" id="L207">			jsonResponse.put (&quot;NPV&quot;, dblCurrentPrincipal + dblAccruedAmount);</span>
+
+<span class="nc" id="L209">			jsonResponse.put (&quot;Risk&quot;, dblRisk);</span>
+
+<span class="nc" id="L211">			jsonResponse.put (&quot;SettleDate&quot;, dtSettle.toString());</span>
+
+<span class="nc" id="L213">			jsonResponse.put (&quot;Total&quot;, dblCurrentPrincipal + dblAccruedAmount);</span>
+
+<span class="nc" id="L215">			jsonResponse.put (&quot;Yield&quot;, tsy.yieldFromPrice (valParams, null, null, dblCleanPrice));</span>
+<span class="nc" id="L216">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L217">			e.printStackTrace();</span>
+
+<span class="nc" id="L219">			return null;</span>
+<span class="nc" id="L220">		}</span>
+
+<span class="nc" id="L222">		return jsonResponse;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

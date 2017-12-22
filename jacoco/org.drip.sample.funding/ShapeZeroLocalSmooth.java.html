@@ -1,0 +1,1019 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ShapeZeroLocalSmooth.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.funding</a> &gt; <span class="el_source">ShapeZeroLocalSmooth.java</span></div><h1>ShapeZeroLocalSmooth.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.funding;
+
+import org.drip.analytics.date.*;
+import org.drip.analytics.definition.LatentStateStatic;
+import org.drip.function.r1tor1.QuadraticRationalShapeControl;
+import org.drip.market.otc.*;
+import org.drip.param.creator.*;
+import org.drip.param.valuation.*;
+import org.drip.product.creator.*;
+import org.drip.product.definition.CalibratableComponent;
+import org.drip.product.rates.*;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.spline.basis.*;
+import org.drip.spline.params.*;
+import org.drip.spline.pchip.LocalMonotoneCkGenerator;
+import org.drip.spline.stretch.*;
+import org.drip.state.creator.ScenarioDiscountCurveBuilder;
+import org.drip.state.discount.*;
+import org.drip.state.estimator.*;
+import org.drip.state.identifier.*;
+import org.drip.state.inference.*;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * ShapeZeroLocalSmooth demonstrates the usage of different local smoothing techniques involved in the
+ * 	funding curve creation. It shows the following:
+ * 	- Construct the Array of Cash/Swap Instruments and their Quotes from the given set of parameters.
+ * 	- Construct the Cash/Swap Instrument Set Stretch Builder.
+ * 	- Set up the Linear Curve Calibrator using the following parameters:
+ * 		- Cubic Exponential Mixture Basis Spline Set
+ * 		- Ck = 2, Segment Curvature Penalty = 2
+ * 		- Quadratic Rational Shape Controller
+ * 		- Natural Boundary Setting
+ * 	- Set up the Akima Local Curve Control parameters as follows:
+ * 		- C1 Akima Monotone Smoothener with spurious extrema elimination and monotone filtering applied
+ * 		- Zero Rate Quantification Metric
+ * 		- Cubic Polynomial Basis Spline Set
+ * 		- Ck = 2, Segment Curvature Penalty = 2
+ * 		- Quadratic Rational Shape Controller
+ * 		- Natural Boundary Setting
+ * 	- Set up the Harmonic Local Curve Control parameters as follows:
+ * 		- C1 Harmonic Monotone Smoothener with spurious extrema elimination and monotone filtering applied
+ * 		- Zero Rate Quantification Metric
+ * 		- Cubic Polynomial Basis Spline Set
+ * 		- Ck = 2, Segment Curvature Penalty = 2
+ * 		- Quadratic Rational Shape Controller
+ * 		- Natural Boundary Setting
+ * 	- Set up the Hyman 1983 Local Curve Control parameters as follows:
+ * 		- C1 Hyman 1983 Monotone Smoothener with spurious extrema elimination and monotone filtering applied
+ * 		- Zero Rate Quantification Metric
+ * 		- Cubic Polynomial Basis Spline Set
+ * 		- Ck = 2, Segment Curvature Penalty = 2
+ * 		- Quadratic Rational Shape Controller
+ * 		- Natural Boundary Setting
+ * 	- Set up the Hyman 1989 Local Curve Control parameters as follows:
+ * 		- C1 Akima Monotone Smoothener with spurious extrema elimination and monotone filtering applied
+ * 		- Zero Rate Quantification Metric
+ * 		- Cubic Polynomial Basis Spline Set
+ * 		- Ck = 2, Segment Curvature Penalty = 2
+ * 		- Quadratic Rational Shape Controller
+ * 		- Natural Boundary Setting
+ * 	- Set up the Huynh-Le Floch Delimited Local Curve Control parameters as follows:
+ * 		- C1 Huynh-Le Floch Delimited Monotone Smoothener with spurious extrema elimination and monotone filtering applied
+ * 		- Zero Rate Quantification Metric
+ * 		- Cubic Polynomial Basis Spline Set
+ * 		- Ck = 2, Segment Curvature Penalty = 2
+ * 		- Quadratic Rational Shape Controller
+ * 		- Natural Boundary Setting
+ * 	- Set up the Kruger Local Curve Control parameters as follows:
+ * 		- C1 Kruger Monotone Smoothener with spurious extrema elimination and monotone filtering applied
+ * 		- Zero Rate Quantification Metric
+ * 		- Cubic Polynomial Basis Spline Set
+ * 		- Ck = 2, Segment Curvature Penalty = 2
+ * 		- Quadratic Rational Shape Controller
+ * 		- Natural Boundary Setting
+ * 	- Construct the Shape Preserving Discount Curve by applying the linear curve calibrator to the array
+ * 		of Cash and Swap Stretches.
+ * 	- Construct the Akima Locally Smoothened Discount Curve by applying the linear curve calibrator and
+ * 		the Local Curve Control parameters to the array of Cash and Swap Stretches and the shape
+ * 		preserving discount curve.
+ * 	- Construct the Harmonic Locally Smoothened Discount Curve by applying the linear curve calibrator
+ * 		and the Local Curve Control parameters to the array of Cash and Swap Stretches and the shape
+ * 		preserving discount curve.
+ * 	- Construct the Hyman 1983 Locally Smoothened Discount Curve by applying the linear curve calibrator
+ * 		and the Local Curve Control parameters to the array of Cash and Swap Stretches and the shape
+ * 		preserving discount curve.
+ * 	- Construct the Hyman 1989 Locally Smoothened Discount Curve by applying the linear curve calibrator
+ * 		and the Local Curve Control parameters to the array of Cash and Swap Stretches and the shape
+ * 		preserving discount curve.
+ * 	- Construct the Huynh-Le Floch Delimiter Locally Smoothened Discount Curve by applying the linear
+ * 		curve calibrator and the Local Curve Control parameters to the array of Cash and Swap Stretches
+ * 		and the shape preserving discount curve.
+ * 	- Construct the Kruger Locally Smoothened Discount Curve by applying the linear curve calibrator and
+ * 		the Local Curve Control parameters to the array of Cash and Swap Stretches and the shape
+ * 		preserving discount curve.
+ * 	- Cross-Comparison of the Cash/Swap Calibration Instrument &quot;Rate&quot; metric across the different curve
+ * 		construction methodologies.
+ *  - Cross-Comparison of the Swap Calibration Instrument &quot;Rate&quot; metric across the different curve
+ *  	construction methodologies for a sequence of bespoke swap instruments.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L154">public class ShapeZeroLocalSmooth {</span>
+
+	private static final FixFloatComponent OTCIRS (
+		final JulianDate dtSpot,
+		final String strCurrency,
+		final String strMaturityTenor,
+		final double dblCoupon)
+	{
+<span class="nc" id="L162">		FixedFloatSwapConvention ffConv = IBORFixedFloatContainer.ConventionFromJurisdiction (</span>
+			strCurrency,
+			&quot;ALL&quot;,
+			strMaturityTenor,
+			&quot;MAIN&quot;
+		);
+
+<span class="nc" id="L169">		return ffConv.createFixFloatComponent (</span>
+			dtSpot,
+			strMaturityTenor,
+			dblCoupon,
+			0.,
+			1.
+		);
+	}
+
+	/*
+	 * Construct the Array of Deposit Instruments from the given set of parameters
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final SingleStreamComponent[] DepositInstrumentsFromMaturityDays (
+		final JulianDate dtEffective,
+		final String strCurrency,
+		final int[] aiDay)
+		throws Exception
+	{
+<span class="nc" id="L190">		SingleStreamComponent[] aDeposit = new SingleStreamComponent[aiDay.length];</span>
+
+<span class="nc bnc" id="L192" title="All 2 branches missed.">		for (int i = 0; i &lt; aiDay.length; ++i)</span>
+<span class="nc" id="L193">			aDeposit[i] = SingleStreamComponentBuilder.Deposit (</span>
+				dtEffective,
+<span class="nc" id="L195">				dtEffective.addBusDays (</span>
+					aiDay[i],
+					strCurrency
+				),
+<span class="nc" id="L199">				ForwardLabel.Create (</span>
+					&quot;USD&quot;,
+					&quot;3M&quot;
+				)
+			);
+
+<span class="nc" id="L205">		return aDeposit;</span>
+	}
+
+	/*
+	 * Construct the Array of Swap Instruments from the given set of parameters
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final FixFloatComponent[] SwapInstrumentsFromMaturityTenor (
+		final JulianDate dtSpot,
+		final String strCurrency,
+		final String[] astrMaturityTenor)
+		throws Exception
+	{
+<span class="nc" id="L220">		FixFloatComponent[] aIRS = new FixFloatComponent[astrMaturityTenor.length];</span>
+
+<span class="nc bnc" id="L222" title="All 2 branches missed.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
+<span class="nc" id="L223">			aIRS[i] = OTCIRS (</span>
+				dtSpot,
+				strCurrency,
+				astrMaturityTenor[i],
+				0.
+			);
+
+<span class="nc" id="L230">		return aIRS;</span>
+	}
+
+	/*
+	 * This sample demonstrates the usage of different local smoothing techniques involved in the discount
+	 * 	curve creation. It shows the following:
+	 * 	- Construct the Array of Cash/Swap Instruments and their Quotes from the given set of parameters.
+	 * 	- Construct the Cash/Swap Instrument Set Stretch Builder.
+	 * 	- Set up the Linear Curve Calibrator using the following parameters:
+	 * 		- Cubic Exponential Mixture Basis Spline Set
+	 * 		- Ck = 2, Segment Curvature Penalty = 2
+	 * 		- Quadratic Rational Shape Controller
+	 * 		- Natural Boundary Setting
+	 * 	- Set up the Akima Local Curve Control parameters as follows:
+	 * 		- C1 Akima Monotone Smoothener with spurious extrema elimination and monotone filtering applied
+	 * 		- Zero Rate Quantification Metric
+	 * 		- Cubic Polynomial Basis Spline Set
+	 * 		- Ck = 2, Segment Curvature Penalty = 2
+	 * 		- Quadratic Rational Shape Controller
+	 * 		- Natural Boundary Setting
+	 * 	- Set up the Harmonic Local Curve Control parameters as follows:
+	 * 		- C1 Harmonic Monotone Smoothener with spurious extrema elimination and monotone filtering applied
+	 * 		- Zero Rate Quantification Metric
+	 * 		- Cubic Polynomial Basis Spline Set
+	 * 		- Ck = 2, Segment Curvature Penalty = 2
+	 * 		- Quadratic Rational Shape Controller
+	 * 		- Natural Boundary Setting
+	 * 	- Set up the Hyman 1983 Local Curve Control parameters as follows:
+	 * 		- C1 Hyman 1983 Monotone Smoothener with spurious extrema elimination and monotone filtering applied
+	 * 		- Zero Rate Quantification Metric
+	 * 		- Cubic Polynomial Basis Spline Set
+	 * 		- Ck = 2, Segment Curvature Penalty = 2
+	 * 		- Quadratic Rational Shape Controller
+	 * 		- Natural Boundary Setting
+	 * 	- Set up the Hyman 1989 Local Curve Control parameters as follows:
+	 * 		- C1 Akima Monotone Smoothener with spurious extrema elimination and monotone filtering applied
+	 * 		- Zero Rate Quantification Metric
+	 * 		- Cubic Polynomial Basis Spline Set
+	 * 		- Ck = 2, Segment Curvature Penalty = 2
+	 * 		- Quadratic Rational Shape Controller
+	 * 		- Natural Boundary Setting
+	 * 	- Set up the Huynh-Le Floch Delimited Local Curve Control parameters as follows:
+	 * 		- C1 Huynh-Le Floch Delimited Monotone Smoothener with spurious extrema elimination and monotone filtering applied
+	 * 		- Zero Rate Quantification Metric
+	 * 		- Cubic Polynomial Basis Spline Set
+	 * 		- Ck = 2, Segment Curvature Penalty = 2
+	 * 		- Quadratic Rational Shape Controller
+	 * 		- Natural Boundary Setting
+	 * 	- Set up the Kruger Local Curve Control parameters as follows:
+	 * 		- C1 Kruger Monotone Smoothener with spurious extrema elimination and monotone filtering applied
+	 * 		- Zero Rate Quantification Metric
+	 * 		- Cubic Polynomial Basis Spline Set
+	 * 		- Ck = 2, Segment Curvature Penalty = 2
+	 * 		- Quadratic Rational Shape Controller
+	 * 		- Natural Boundary Setting
+	 * 	- Construct the Shape Preserving Discount Curve by applying the linear curve calibrator to the array
+	 * 		of Cash and Swap Stretches.
+	 * 	- Construct the Akima Locally Smoothened Discount Curve by applying the linear curve calibrator and
+	 * 		the Local Curve Control parameters to the array of Cash and Swap Stretches and the shape
+	 * 		preserving discount curve.
+	 * 	- Construct the Harmonic Locally Smoothened Discount Curve by applying the linear curve calibrator
+	 * 		and the Local Curve Control parameters to the array of Cash and Swap Stretches and the shape
+	 * 		preserving discount curve.
+	 * 	- Construct the Hyman 1983 Locally Smoothened Discount Curve by applying the linear curve calibrator
+	 * 		and the Local Curve Control parameters to the array of Cash and Swap Stretches and the shape
+	 * 		preserving discount curve.
+	 * 	- Construct the Hyman 1989 Locally Smoothened Discount Curve by applying the linear curve calibrator
+	 * 		and the Local Curve Control parameters to the array of Cash and Swap Stretches and the shape
+	 * 		preserving discount curve.
+	 * 	- Construct the Huynh-Le Floch Delimiter Locally Smoothened Discount Curve by applying the linear
+	 * 		curve calibrator and the Local Curve Control parameters to the array of Cash and Swap Stretches
+	 * 		and the shape preserving discount curve.
+	 * 	- Construct the Kruger Locally Smoothened Discount Curve by applying the linear curve calibrator and
+	 * 		the Local Curve Control parameters to the array of Cash and Swap Stretches and the shape
+	 * 		preserving discount curve.
+	 * 	- Cross-Comparison of the Cash/Swap Calibration Instrument &quot;Rate&quot; metric across the different curve
+	 * 		construction methodologies.
+	 *  - Cross-Comparison of the Swap Calibration Instrument &quot;Rate&quot; metric across the different curve
+	 *  	construction methodologies for a sequence of bespoke swap instruments.
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final void ShapeDFZeroLocalSmoothSample (
+		final JulianDate dtSpot,
+		final String strCurrency)
+		throws Exception
+	{
+		/*
+		 * Construct the Array of Deposit Instruments and their Quotes from the given set of parameters
+		 */
+
+<span class="nc" id="L322">		SingleStreamComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (</span>
+			dtSpot,
+			strCurrency,
+			new int[] {
+				1, 2, 7, 14, 30, 60
+			}
+		);
+
+<span class="nc" id="L330">		double[] adblDepositQuote = new double[] {</span>
+			0.0013, 0.0017, 0.0017, 0.0018, 0.0020, 0.0023
+		};
+
+		/*
+		 * Construct the Deposit Instrument Set Stretch Builder
+		 */
+
+<span class="nc" id="L338">		LatentStateStretchSpec depositStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
+			&quot;DEPOSIT&quot;,
+			aDepositComp,
+			&quot;ForwardRate&quot;,
+			adblDepositQuote
+		);
+
+		/*
+		 * Construct the Array of EDF Instruments and their Quotes from the given set of parameters
+		 */
+
+<span class="nc" id="L349">		SingleStreamComponent[] aEDFComp = SingleStreamComponentBuilder.ForwardRateFuturesPack (</span>
+			dtSpot,
+			8,
+			strCurrency
+		);
+
+<span class="nc" id="L355">		double[] adblEDFQuote = new double[] {</span>
+			0.0027, 0.0032, 0.0041, 0.0054, 0.0077, 0.0104, 0.0134, 0.0160
+		};
+
+		/*
+		 * Construct the EDF Instrument Set Stretch Builder
+		 */
+
+<span class="nc" id="L363">		LatentStateStretchSpec edfStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
+			&quot;EDF&quot;,
+			aEDFComp,
+			&quot;ForwardRate&quot;,
+			adblEDFQuote
+		);
+
+		/*
+		 * Construct the Array of Swap Instruments and their Quotes from the given set of parameters
+		 */
+
+<span class="nc" id="L374">		FixFloatComponent[] aSwapComp = SwapInstrumentsFromMaturityTenor (</span>
+			dtSpot,
+			strCurrency,
+			new java.lang.String[] {
+				&quot;4Y&quot;, &quot;5Y&quot;, &quot;6Y&quot;, &quot;7Y&quot;, &quot;8Y&quot;, &quot;9Y&quot;, &quot;10Y&quot;, &quot;11Y&quot;, &quot;12Y&quot;, &quot;15Y&quot;, &quot;20Y&quot;, &quot;25Y&quot;, &quot;30Y&quot;, &quot;40Y&quot;, &quot;50Y&quot;
+			}
+		);
+
+<span class="nc" id="L382">		double[] adblSwapQuote = new double[] {</span>
+			0.0166, 0.0206, 0.0241, 0.0269, 0.0292, 0.0311, 0.0326, 0.0340, 0.0351, 0.0375, 0.0393, 0.0402, 0.0407, 0.0409, 0.0409
+		};
+
+		/*
+		 * Construct the Swap Instrument Set Stretch Builder
+		 */
+
+<span class="nc" id="L390">		LatentStateStretchSpec swapStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
+			&quot;SWAP&quot;,
+			aSwapComp,
+			&quot;SwapRate&quot;,
+			adblSwapQuote
+		);
+
+<span class="nc" id="L397">		LatentStateStretchSpec[] aStretchSpec = new LatentStateStretchSpec[] {</span>
+			depositStretch,
+			edfStretch,
+			swapStretch
+		};
+
+		/*
+		 * Set up the Linear Curve Calibrator using the following parameters:
+		 * 	- Cubic Exponential Mixture Basis Spline Set
+		 * 	- Ck = 2, Segment Curvature Penalty = 2
+		 * 	- Quadratic Rational Shape Controller
+		 * 	- Natural Boundary Setting
+		 */
+
+<span class="nc" id="L411">		LinearLatentStateCalibrator lcc = new LinearLatentStateCalibrator (</span>
+			new SegmentCustomBuilderControl (
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+				new PolynomialFunctionSetParams (4),
+<span class="nc" id="L415">				SegmentInelasticDesignControl.Create (</span>
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
+				null
+			),
+<span class="nc" id="L425">			BoundarySettings.NaturalStandard(),</span>
+			MultiSegmentSequence.CALIBRATE,
+			null,
+			null
+		);
+
+<span class="nc" id="L431">		ValuationParams valParams = new ValuationParams (</span>
+			dtSpot,
+			dtSpot,
+			strCurrency
+		);
+
+		/*
+		 * Construct the Shape Preserving Discount Curve by applying the linear curve calibrator to the array
+		 *  of Deposit, Futures, and Swap Stretches.
+		 */
+
+<span class="nc" id="L442">		MergedDiscountForwardCurve dcShapePreserving = ScenarioDiscountCurveBuilder.ShapePreservingDFBuild (</span>
+			strCurrency,
+			lcc,
+			aStretchSpec,
+			valParams,
+			null,
+			null,
+			null,
+			1.
+		);
+
+		/*
+		 * Set up the Akima Local Curve Control parameters as follows:
+		 * 	- C1 Akima Monotone Smoothener with spurious extrema elimination and monotone filtering applied
+		 * 	- Zero Rate Quantification Metric
+		 * 	- Cubic Polynomial Basis Spline Set
+		 * 	- Ck = 2, Segment Curvature Penalty = 2
+		 * 	- Quadratic Rational Shape Controller
+		 * 	- Natural Boundary Setting
+		 */
+
+<span class="nc" id="L463">		LocalControlCurveParams lccpAkima = new LocalControlCurveParams (</span>
+			LocalMonotoneCkGenerator.C1_AKIMA,
+			LatentStateStatic.DISCOUNT_QM_ZERO_RATE,
+			new SegmentCustomBuilderControl (
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+				new PolynomialFunctionSetParams (4),
+<span class="nc" id="L469">				SegmentInelasticDesignControl.Create (</span>
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
+				null
+			),
+			MultiSegmentSequence.CALIBRATE,
+			null,
+			null,
+			true,
+			true
+		);
+
+		/*
+		 * Set up the Harmonic Local Curve Control parameters as follows:
+		 * 	- C1 Harmonic Monotone Smoothener with spurious extrema elimination and monotone filtering
+		 * 		applied
+		 * 	- Zero Rate Quantification Metric
+		 * 	- Cubic Polynomial Basis Spline Set
+		 * 	- Ck = 2, Segment Curvature Penalty = 2
+		 * 	- Quadratic Rational Shape Controller
+		 * 	- Natural Boundary Setting
+		 */
+
+<span class="nc" id="L497">		LocalControlCurveParams lccpHarmonic = new LocalControlCurveParams (</span>
+			LocalMonotoneCkGenerator.C1_HARMONIC,
+			LatentStateStatic.DISCOUNT_QM_ZERO_RATE,
+			new SegmentCustomBuilderControl (
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+				new PolynomialFunctionSetParams (4),
+<span class="nc" id="L503">				SegmentInelasticDesignControl.Create (</span>
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
+				null
+			),
+			MultiSegmentSequence.CALIBRATE,
+			null,
+			null,
+			true,
+			true
+		);
+
+		/*
+		 * Set up the Hyman 1983 Local Curve Control parameters as follows:
+		 * 	- C1 Hyman 1983 Monotone Smoothener with spurious extrema elimination and monotone filtering
+		 * 		applied
+		 * 	- Zero Rate Quantification Metric
+		 * 	- Cubic Polynomial Basis Spline Set
+		 * 	- Ck = 2, Segment Curvature Penalty = 2
+		 * 	- Quadratic Rational Shape Controller
+		 * 	- Natural Boundary Setting
+		 */
+
+<span class="nc" id="L531">		LocalControlCurveParams lccpHyman83 = new LocalControlCurveParams (</span>
+			LocalMonotoneCkGenerator.C1_HYMAN83,
+			LatentStateStatic.DISCOUNT_QM_ZERO_RATE,
+			new SegmentCustomBuilderControl (
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+				new PolynomialFunctionSetParams (4),
+<span class="nc" id="L537">				SegmentInelasticDesignControl.Create (</span>
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
+				null
+			),
+			MultiSegmentSequence.CALIBRATE,
+			null,
+			null,
+			true,
+			true
+		);
+
+		/*
+		 * Set up the Hyman 1989 Local Curve Control parameters as follows:
+		 * 	- C1 Hyman 1989 Monotone Smoothener with spurious extrema elimination and monotone filtering
+		 * 		applied
+		 * 	- Zero Rate Quantification Metric
+		 * 	- Cubic Polynomial Basis Spline Set
+		 * 	- Ck = 2, Segment Curvature Penalty = 2
+		 * 	- Quadratic Rational Shape Controller
+		 * 	- Natural Boundary Setting
+		 */
+
+<span class="nc" id="L565">		LocalControlCurveParams lccpHyman89 = new LocalControlCurveParams (</span>
+			LocalMonotoneCkGenerator.C1_HYMAN89,
+			LatentStateStatic.DISCOUNT_QM_ZERO_RATE,
+			new SegmentCustomBuilderControl (
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+				new PolynomialFunctionSetParams (4),
+<span class="nc" id="L571">				SegmentInelasticDesignControl.Create (</span>
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
+				null
+			),
+			MultiSegmentSequence.CALIBRATE,
+			null,
+			null,
+			true,
+			true
+		);
+
+		/*
+		 * Set up the Huynh-LeFloch Limiter Local Curve Control parameters as follows:
+		 * 	- C1 Huynh-LeFloch Limiter Monotone Smoothener with spurious extrema elimination and monotone
+		 * 		filtering applied
+		 * 	- Zero Rate Quantification Metric
+		 * 	- Cubic Polynomial Basis Spline Set
+		 * 	- Ck = 2, Segment Curvature Penalty = 2
+		 * 	- Quadratic Rational Shape Controller
+		 * 	- Natural Boundary Setting
+		 */
+
+<span class="nc" id="L599">		LocalControlCurveParams lccpHuynhLeFloch = new LocalControlCurveParams (</span>
+			LocalMonotoneCkGenerator.C1_HUYNH_LE_FLOCH,
+			LatentStateStatic.DISCOUNT_QM_ZERO_RATE,
+			new SegmentCustomBuilderControl (
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+				new PolynomialFunctionSetParams (4),
+<span class="nc" id="L605">				SegmentInelasticDesignControl.Create (</span>
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
+				null
+			),
+			MultiSegmentSequence.CALIBRATE,
+			null,
+			null,
+			true,
+			true
+		);
+
+		/*
+		 * Set up the Kruger Local Curve Control parameters as follows:
+		 * 	- C1 Kruger Monotone Smoothener with spurious extrema elimination and monotone filtering applied
+		 * 	- Zero Rate Quantification Metric
+		 * 	- Cubic Polynomial Basis Spline Set
+		 * 	- Ck = 2, Segment Curvature Penalty = 2
+		 * 	- Quadratic Rational Shape Controller
+		 * 	- Natural Boundary Setting
+		 */
+
+<span class="nc" id="L632">		LocalControlCurveParams lccpKruger = new LocalControlCurveParams (</span>
+			LocalMonotoneCkGenerator.C1_KRUGER,
+			LatentStateStatic.DISCOUNT_QM_ZERO_RATE,
+			new SegmentCustomBuilderControl (
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+				new PolynomialFunctionSetParams (4),
+<span class="nc" id="L638">				SegmentInelasticDesignControl.Create (</span>
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
+				null
+			),
+			MultiSegmentSequence.CALIBRATE,
+			null,
+			null,
+			true,
+			true
+		);
+
+		/*
+		 * Construct the Akima Locally Smoothened Discount Curve by applying the linear curve calibrator and
+		 * 	the Local Curve Control parameters to the array of Cash and Swap Stretches and the shape
+		 * 	preserving discount curve.
+		 */
+
+<span class="nc" id="L661">		MergedDiscountForwardCurve dcLocalAkima = ScenarioDiscountCurveBuilder.SmoothingLocalControlBuild (</span>
+			dcShapePreserving,
+			lcc,
+			lccpAkima,
+			valParams,
+			null,
+			null,
+			null
+		);
+
+		/*
+		 * Construct the Harmonic Locally Smoothened Discount Curve by applying the linear curve calibrator
+		 * 	and the Local Curve Control parameters to the array of Cash and Swap Stretches and the shape
+		 * 	preserving discount curve.
+		 */
+
+<span class="nc" id="L677">		MergedDiscountForwardCurve dcLocalHarmonic = ScenarioDiscountCurveBuilder.SmoothingLocalControlBuild (</span>
+			dcShapePreserving,
+			lcc,
+			lccpHarmonic,
+			valParams,
+			null,
+			null,
+			null
+		);
+
+		/*
+		 * Construct the Hyman 1983 Locally Smoothened Discount Curve by applying the linear curve calibrator
+		 * 	and the Local Curve Control parameters to the array of Cash and Swap Stretches and the shape
+		 * 	preserving discount curve.
+		 */
+
+<span class="nc" id="L693">		MergedDiscountForwardCurve dcLocalHyman83 = ScenarioDiscountCurveBuilder.SmoothingLocalControlBuild (</span>
+			dcShapePreserving,
+			lcc,
+			lccpHyman83,
+			valParams,
+			null,
+			null,
+			null
+		);
+
+		/*
+		 * Construct the Hyman 1989 Locally Smoothened Discount Curve by applying the linear curve calibrator
+		 * 	and the Local Curve Control parameters to the array of Cash and Swap Stretches and the shape
+		 * 	preserving discount curve.
+		 */
+
+<span class="nc" id="L709">		MergedDiscountForwardCurve dcLocalHyman89 = ScenarioDiscountCurveBuilder.SmoothingLocalControlBuild (</span>
+			dcShapePreserving,
+			lcc,
+			lccpHyman89,
+			valParams,
+			null,
+			null,
+			null
+		);
+
+		/*
+		 * Construct the Huynh-Le Floch delimited Locally Smoothened Discount Curve by applying the linear
+		 * 	curve calibrator and the Local Curve Control parameters to the array of Cash and Swap Stretches
+		 * 	and the shape preserving discount curve.
+		 */
+
+<span class="nc" id="L725">		MergedDiscountForwardCurve dcLocalHuynhLeFloch = ScenarioDiscountCurveBuilder.SmoothingLocalControlBuild (</span>
+			dcShapePreserving,
+			lcc,
+			lccpHuynhLeFloch,
+			valParams,
+			null,
+			null,
+			null
+		);
+
+		/*
+		 * Construct the Kruger Locally Smoothened Discount Curve by applying the linear curve calibrator and
+		 *  the Local Curve Control parameters to the array of Cash and Swap Stretches and the shape
+		 * 	preserving discount curve.
+		 */
+
+<span class="nc" id="L741">		MergedDiscountForwardCurve dcLocalKruger = ScenarioDiscountCurveBuilder.SmoothingLocalControlBuild (</span>
+			dcShapePreserving,
+			lcc,
+			lccpKruger,
+			valParams,
+			null,
+			null,
+			null
+		);
+
+		/*
+		 * Cross-Comparison of the Cash Calibration Instrument &quot;Rate&quot; metric across the different curve
+		 * 	construction methodologies.
+		 */
+
+<span class="nc" id="L756">		System.out.println (&quot;\n\t-------------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+
+<span class="nc" id="L758">		System.out.println (&quot;\t--------------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+
+<span class="nc" id="L760">		System.out.println (&quot;\t                                                DEPOSIT INSTRUMENTS CALIBRATION RECOVERY&quot;);</span>
+
+<span class="nc" id="L762">		System.out.println (&quot;\t--------------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+
+<span class="nc" id="L764">		System.out.println (&quot;\t        SHAPE PRESERVING   |  LOCAL AKIMA  | LOCAL HARMONIC | LOCAL HYMAN83 | LOCAL HYMAN89 | LOCAL HUYNHLF | LOCAL KRUGER  |  INPUT QUOTE  &quot;);</span>
+
+<span class="nc" id="L766">		System.out.println (&quot;\t--------------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+
+<span class="nc" id="L768">		System.out.println (&quot;\t--------------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+
+<span class="nc bnc" id="L770" title="All 2 branches missed.">		for (int i = 0; i &lt; aDepositComp.length; ++i)</span>
+<span class="nc" id="L771">			System.out.println (&quot;\t[&quot; + aDepositComp[i].maturityDate() + &quot;] = &quot; +</span>
+<span class="nc" id="L772">				FormatUtil.FormatDouble (</span>
+<span class="nc" id="L773">					aDepositComp[i].measureValue (</span>
+						valParams,
+						null,
+<span class="nc" id="L776">						MarketParamsBuilder.Create (dcShapePreserving, null, null, null, null, null, null),</span>
+						null,
+						&quot;Rate&quot;),
+					1, 6, 1.) + &quot;   |   &quot; +
+<span class="nc" id="L780">				FormatUtil.FormatDouble (</span>
+<span class="nc" id="L781">					aDepositComp[i].measureValue (</span>
+						valParams,
+						null,
+<span class="nc" id="L784">						MarketParamsBuilder.Create (dcLocalAkima, null, null, null, null, null, null),</span>
+						null,
+						&quot;Rate&quot;),
+					1, 6, 1.) + &quot;   |   &quot; +
+<span class="nc" id="L788">				FormatUtil.FormatDouble (</span>
+<span class="nc" id="L789">					aDepositComp[i].measureValue (</span>
+						valParams,
+						null,
+<span class="nc" id="L792">						MarketParamsBuilder.Create (dcLocalHarmonic, null, null, null, null, null, null),</span>
+						null,
+						&quot;Rate&quot;),
+					1, 6, 1.) + &quot;    |   &quot; +
+<span class="nc" id="L796">				FormatUtil.FormatDouble (</span>
+<span class="nc" id="L797">					aDepositComp[i].measureValue (</span>
+						valParams,
+						null,
+<span class="nc" id="L800">						MarketParamsBuilder.Create (dcLocalHyman83, null, null, null, null, null, null),</span>
+						null,
+						&quot;Rate&quot;),
+					1, 6, 1.) + &quot;   |   &quot; +
+<span class="nc" id="L804">				FormatUtil.FormatDouble (</span>
+<span class="nc" id="L805">					aDepositComp[i].measureValue (</span>
+						valParams,
+						null,
+<span class="nc" id="L808">						MarketParamsBuilder.Create (dcLocalHyman89, null, null, null, null, null, null),</span>
+						null,
+						&quot;Rate&quot;),
+					1, 6, 1.) + &quot;   |   &quot; +
+<span class="nc" id="L812">				FormatUtil.FormatDouble (</span>
+<span class="nc" id="L813">					aDepositComp[i].measureValue (</span>
+						valParams,
+						null,
+<span class="nc" id="L816">						MarketParamsBuilder.Create (dcLocalHuynhLeFloch, null, null, null, null, null, null),</span>
+						null,
+						&quot;Rate&quot;),
+					1, 6, 1.) + &quot;   |   &quot; +
+<span class="nc" id="L820">				FormatUtil.FormatDouble (</span>
+<span class="nc" id="L821">					aDepositComp[i].measureValue (</span>
+						valParams,
+						null,
+<span class="nc" id="L824">						MarketParamsBuilder.Create (dcLocalKruger, null, null, null, null, null, null),</span>
+						null,
+						&quot;Rate&quot;),
+					1, 6, 1.) + &quot;   |   &quot; +
+<span class="nc" id="L828">				FormatUtil.FormatDouble (adblDepositQuote[i], 1, 6, 1.)</span>
+			);
+
+		/*
+		 * Cross-Comparison of the Swap Calibration Instrument &quot;Rate&quot; metric across the different curve
+		 * 	construction methodologies.
+		 */
+
+<span class="nc" id="L836">		System.out.println (&quot;\n\t--------------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+
+<span class="nc" id="L838">		System.out.println (&quot;\t--------------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+
+<span class="nc" id="L840">		System.out.println (&quot;\t                                                 SWAP INSTRUMENTS CALIBRATION RECOVERY&quot;);</span>
+
+<span class="nc" id="L842">		System.out.println (&quot;\t--------------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+
+<span class="nc" id="L844">		System.out.println (&quot;\t        SHAPE PRESERVING   |  LOCAL AKIMA  | LOCAL HARMONIC | LOCAL HYMAN83 | LOCAL HYMAN89 | LOCAL HUYNHLF | LOCAL KRUGER  |  INPUT QUOTE  &quot;);</span>
+
+<span class="nc" id="L846">		System.out.println (&quot;\t--------------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+
+<span class="nc" id="L848">		System.out.println (&quot;\t--------------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+
+<span class="nc bnc" id="L850" title="All 2 branches missed.">		for (int i = 0; i &lt; aSwapComp.length; ++i)</span>
+<span class="nc" id="L851">			System.out.println (&quot;\t[&quot; + aSwapComp[i].maturityDate() + &quot;] = &quot; +</span>
+<span class="nc" id="L852">				FormatUtil.FormatDouble (</span>
+<span class="nc" id="L853">					aSwapComp[i].measureValue (</span>
+						valParams,
+						null,
+<span class="nc" id="L856">						MarketParamsBuilder.Create (dcShapePreserving, null, null, null, null, null, null),</span>
+						null,
+						&quot;CalibSwapRate&quot;),
+					1, 6, 1.) + &quot;   |   &quot; +
+<span class="nc" id="L860">				FormatUtil.FormatDouble (</span>
+<span class="nc" id="L861">					aSwapComp[i].measureValue (</span>
+						valParams,
+						null,
+<span class="nc" id="L864">						MarketParamsBuilder.Create (dcLocalAkima, null, null, null, null, null, null),</span>
+						null,
+						&quot;CalibSwapRate&quot;),
+					1, 6, 1.) + &quot;   |   &quot; +
+<span class="nc" id="L868">				FormatUtil.FormatDouble (</span>
+<span class="nc" id="L869">					aSwapComp[i].measureValue (</span>
+						valParams,
+						null,
+<span class="nc" id="L872">						MarketParamsBuilder.Create (dcLocalHarmonic, null, null, null, null, null, null),</span>
+						null,
+						&quot;CalibSwapRate&quot;),
+					1, 6, 1.) + &quot;    |   &quot; +
+<span class="nc" id="L876">				FormatUtil.FormatDouble (</span>
+<span class="nc" id="L877">					aSwapComp[i].measureValue (</span>
+						valParams,
+						null,
+<span class="nc" id="L880">						MarketParamsBuilder.Create (dcLocalHyman83, null, null, null, null, null, null),</span>
+						null,
+						&quot;CalibSwapRate&quot;),
+					1, 6, 1.) + &quot;   |   &quot; +
+<span class="nc" id="L884">				FormatUtil.FormatDouble (</span>
+<span class="nc" id="L885">					aSwapComp[i].measureValue (</span>
+						valParams,
+						null,
+<span class="nc" id="L888">						MarketParamsBuilder.Create (dcLocalHyman89, null, null, null, null, null, null),</span>
+						null,
+						&quot;CalibSwapRate&quot;),
+					1, 6, 1.) + &quot;   |   &quot; +
+<span class="nc" id="L892">				FormatUtil.FormatDouble (</span>
+<span class="nc" id="L893">					aSwapComp[i].measureValue (</span>
+						valParams,
+						null,
+<span class="nc" id="L896">						MarketParamsBuilder.Create (dcLocalHuynhLeFloch, null, null, null, null, null, null),</span>
+						null,
+						&quot;CalibSwapRate&quot;),
+					1, 6, 1.) + &quot;   |   &quot; +
+<span class="nc" id="L900">				FormatUtil.FormatDouble (</span>
+<span class="nc" id="L901">					aSwapComp[i].measureValue (</span>
+						valParams,
+						null,
+<span class="nc" id="L904">						MarketParamsBuilder.Create (dcLocalKruger, null, null, null, null, null, null),</span>
+						null,
+						&quot;CalibSwapRate&quot;),
+					1, 6, 1.) + &quot;   |   &quot; +
+<span class="nc" id="L908">				FormatUtil.FormatDouble (adblSwapQuote[i], 1, 6, 1.)</span>
+			);
+
+		/*
+		 * Cross-Comparison of the Swap Calibration Instrument &quot;Rate&quot; metric across the different curve
+		 * 	construction methodologies for a sequence of bespoke swap instruments.
+		 */
+
+<span class="nc" id="L916">		CalibratableComponent[] aCC = SwapInstrumentsFromMaturityTenor (</span>
+			dtSpot,
+			strCurrency,
+			new java.lang.String[] {
+				&quot;3Y&quot;, &quot;6Y&quot;, &quot;9Y&quot;, &quot;12Y&quot;, &quot;15Y&quot;, &quot;18Y&quot;, &quot;21Y&quot;, &quot;24Y&quot;, &quot;27Y&quot;, &quot;30Y&quot;
+			}
+		);
+
+<span class="nc" id="L924">		System.out.println (&quot;\n\t--------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+
+<span class="nc" id="L926">		System.out.println (&quot;\t--------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+
+<span class="nc" id="L928">		System.out.println (&quot;\t                                                BESPOKE SWAPS PAR RATE&quot;);</span>
+
+<span class="nc" id="L930">		System.out.println (&quot;\t--------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+
+<span class="nc" id="L932">		System.out.println (&quot;\t        SHAPE PRESERVING   |  LOCAL AKIMA  | LOCAL HARMONIC | LOCAL HYMAN83  | LOCAL HYMAN89  | LOCAL HUYNHLF  | LOCAL KRUGER &quot;);</span>
+
+<span class="nc" id="L934">		System.out.println (&quot;\t--------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+
+<span class="nc" id="L936">		System.out.println (&quot;\t--------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+
+<span class="nc bnc" id="L938" title="All 2 branches missed.">		for (int i = 0; i &lt; aCC.length; ++i)</span>
+<span class="nc" id="L939">			System.out.println (&quot;\t[&quot; + aCC[i].maturityDate() + &quot;] = &quot; +</span>
+<span class="nc" id="L940">				FormatUtil.FormatDouble (</span>
+<span class="nc" id="L941">					aCC[i].measureValue (</span>
+						valParams,
+						null,
+<span class="nc" id="L944">					MarketParamsBuilder.Create (dcShapePreserving, null, null, null, null, null, null),</span>
+					null,
+					&quot;CalibSwapRate&quot;),
+				1, 6, 1.) + &quot;   |   &quot; +
+<span class="nc" id="L948">				FormatUtil.FormatDouble (</span>
+<span class="nc" id="L949">					aCC[i].measureValue (</span>
+						valParams,
+						null,
+<span class="nc" id="L952">					MarketParamsBuilder.Create (dcLocalAkima, null, null, null, null, null, null),</span>
+					null,
+					&quot;CalibSwapRate&quot;),
+				1, 6, 1.) + &quot;   |   &quot; +
+<span class="nc" id="L956">				FormatUtil.FormatDouble (</span>
+<span class="nc" id="L957">					aCC[i].measureValue (</span>
+						valParams,
+						null,
+<span class="nc" id="L960">					MarketParamsBuilder.Create (dcLocalHarmonic, null, null, null, null, null, null),</span>
+					null,
+					&quot;CalibSwapRate&quot;),
+				1, 6, 1.) + &quot;    |   &quot; +
+<span class="nc" id="L964">				FormatUtil.FormatDouble (</span>
+<span class="nc" id="L965">					aCC[i].measureValue (</span>
+						valParams,
+						null,
+<span class="nc" id="L968">					MarketParamsBuilder.Create (dcLocalHyman83, null, null, null, null, null, null),</span>
+					null,
+					&quot;CalibSwapRate&quot;),
+					1, 6, 1.) + &quot;    |   &quot; +
+<span class="nc" id="L972">				FormatUtil.FormatDouble (</span>
+<span class="nc" id="L973">					aCC[i].measureValue (</span>
+						valParams,
+						null,
+<span class="nc" id="L976">					MarketParamsBuilder.Create (dcLocalHyman89, null, null, null, null, null, null),</span>
+					null,
+					&quot;CalibSwapRate&quot;),
+					1, 6, 1.) + &quot;    |   &quot; +
+<span class="nc" id="L980">				FormatUtil.FormatDouble (</span>
+<span class="nc" id="L981">					aCC[i].measureValue (</span>
+						valParams,
+						null,
+<span class="nc" id="L984">					MarketParamsBuilder.Create (dcLocalHuynhLeFloch, null, null, null, null, null, null),</span>
+					null,
+					&quot;CalibSwapRate&quot;),
+					1, 6, 1.) + &quot;    |   &quot; +
+<span class="nc" id="L988">				FormatUtil.FormatDouble (</span>
+<span class="nc" id="L989">					aCC[i].measureValue (</span>
+						valParams,
+						null,
+<span class="nc" id="L992">					MarketParamsBuilder.Create (dcLocalKruger, null, null, null, null, null, null),</span>
+					null,
+					&quot;CalibSwapRate&quot;),
+				1, 6, 1.)
+			);
+<span class="nc" id="L997">	}</span>
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+		/*
+		 * Initialize the Credit Analytics Library
+		 */
+
+<span class="nc" id="L1007">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L1009">		JulianDate dtToday = DateUtil.Today().addTenor (&quot;0D&quot;);</span>
+
+<span class="nc" id="L1011">		String strCurrency = &quot;USD&quot;;</span>
+
+<span class="nc" id="L1013">		ShapeDFZeroLocalSmoothSample (</span>
+			dtToday,
+			strCurrency
+		);
+<span class="nc" id="L1017">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

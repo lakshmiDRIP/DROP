@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ReplicationPortfolioVertex.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.xva.derivative</a> &gt; <span class="el_source">ReplicationPortfolioVertex.java</span></div><h1>ReplicationPortfolioVertex.java</h1><pre class="source lang-java linenums">
+package org.drip.xva.derivative;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * ReplicationPortfolioVertex contains the Dynamic Replicating Portfolio of the Pay-out using the Assets in
+ *  the Economy, from the Bank's View Point. The References are:
+ *  
+ *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
+ *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
+ *  
+ *  - Cesari, G., J. Aquilina, N. Charpillon, X. Filipovic, G. Lee, and L. Manda (2009): Modeling, Pricing,
+ *  	and Hedging Counter-party Credit Exposure - A Technical Guide, Springer Finance, New York.
+ *  
+ *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk, Risk 20 (2) 86-90.
+ *  
+ *  - Li, B., and Y. Tang (2007): Quantitative Analysis, Derivatives Modeling, and Trading Strategies in the
+ *  	Presence of Counter-party Credit Risk for the Fixed Income Market, World Scientific Publishing,
+ *  	Singapore.
+ * 
+ *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
+ *  	21 (2) 97-102.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class ReplicationPortfolioVertex {
+<span class="nc" id="L73">	private double _dblCashAccount = java.lang.Double.NaN;</span>
+<span class="nc" id="L74">	private double _dblAssetNumeraireUnits = java.lang.Double.NaN;</span>
+<span class="nc" id="L75">	private double _dblBankSeniorNumeraireUnits = java.lang.Double.NaN;</span>
+<span class="nc" id="L76">	private double _dblCounterPartyNumeraireUnits = java.lang.Double.NaN;</span>
+<span class="nc" id="L77">	private double _dblBankSubordinateNumeraireUnits = java.lang.Double.NaN;</span>
+
+	/**
+	 * Construct a ReplicationPortfolioVertex Instance without the Zero Recovery Bank Numeraire
+	 * 
+	 * @param dblAssetNumeraireUnits The Asset Numeraire Units
+	 * @param dblBankSeniorNumeraireUnits The Bank Senior Numeraire Units
+	 * @param dblCounterPartyNumeraireUnits The Counter Party Numeraire Replication Units
+	 * @param dblCashAccount The Cash Account
+	 * 
+	 * @return The ReplicationPortfolioVertex Instance without the Zero Recovery Bank Numeraire
+	 */
+
+	public static final ReplicationPortfolioVertex Standard (
+		final double dblAssetNumeraireUnits,
+		final double dblBankSeniorNumeraireUnits,
+		final double dblCounterPartyNumeraireUnits,
+		final double dblCashAccount)
+	{
+		try {
+<span class="nc" id="L97">			return new ReplicationPortfolioVertex (dblAssetNumeraireUnits, dblBankSeniorNumeraireUnits, 0.,</span>
+				dblCounterPartyNumeraireUnits, dblCashAccount);
+<span class="nc" id="L99">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L100">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L103">		return null;</span>
+	}
+
+	/**
+	 * ReplicationPortfolioVertex Constructor
+	 * 
+	 * @param dblAssetNumeraireUnits The Asset Numeraire Units
+	 * @param dblBankSeniorNumeraireUnits The Bank Senior Numeraire Units
+	 * @param dblBankSubordinateNumeraireUnits The Bank Subordinate Numeraire Units
+	 * @param dblCounterPartyNumeraireUnits The Counter Party Numeraire Units
+	 * @param dblCashAccount The Cash Account
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public ReplicationPortfolioVertex (
+		final double dblAssetNumeraireUnits,
+		final double dblBankSeniorNumeraireUnits,
+		final double dblBankSubordinateNumeraireUnits,
+		final double dblCounterPartyNumeraireUnits,
+		final double dblCashAccount)
+		throws java.lang.Exception
+<span class="nc" id="L125">	{</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblBankSeniorNumeraireUnits =</span>
+			dblBankSeniorNumeraireUnits) || !org.drip.quant.common.NumberUtil.IsValid
+<span class="nc bnc" id="L128" title="All 2 branches missed.">				(_dblBankSubordinateNumeraireUnits = dblBankSubordinateNumeraireUnits) ||</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblCounterPartyNumeraireUnits =</span>
+						dblCounterPartyNumeraireUnits) || !org.drip.quant.common.NumberUtil.IsValid
+<span class="nc bnc" id="L131" title="All 2 branches missed.">							(_dblCashAccount = dblCashAccount))</span>
+<span class="nc" id="L132">			throw new java.lang.Exception (&quot;ReplicationPortfolioVertex Constructor =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc" id="L134">		_dblAssetNumeraireUnits = dblAssetNumeraireUnits;</span>
+<span class="nc" id="L135">	}</span>
+
+	/**
+	 * Retrieve the Number of Asset Numeraire Units
+	 * 
+	 * @return The Number of Asset Numeraire Units
+	 */
+
+	public double assetNumeraireUnits()
+	{
+<span class="nc" id="L145">		return _dblAssetNumeraireUnits;</span>
+	}
+
+	/**
+	 * Retrieve the Number of Bank Senior Numeraire Units
+	 * 
+	 * @return The Number of Bank Senior Numeraire Units
+	 */
+
+	public double bankSeniorNumeraireUnits()
+	{
+<span class="nc" id="L156">		return _dblBankSeniorNumeraireUnits;</span>
+	}
+
+	/**
+	 * Retrieve the Number of Bank Subordinate Numeraire Units
+	 * 
+	 * @return The Number of Bank Subordinate Numeraire Units
+	 */
+
+	public double bankSubordinateNumeraireUnits()
+	{
+<span class="nc" id="L167">		return _dblBankSubordinateNumeraireUnits;</span>
+	}
+
+	/**
+	 * Retrieve the Counter Party Numeraire Units
+	 * 
+	 * @return The Counter Party Numeraire Units
+	 */
+
+	public double counterPartyNumeraireUnits()
+	{
+<span class="nc" id="L178">		return _dblCounterPartyNumeraireUnits;</span>
+	}
+
+	/**
+	 * Retrieve the Cash Account Amount
+	 * 
+	 * @return The Cash Account Amount
+	 */
+
+	public double cashAccount()
+	{
+<span class="nc" id="L189">		return _dblCashAccount;</span>
+	}
+
+	/**
+	 * Compute the Market Value of the Bank Position Pre-Default
+	 * 
+	 * @param mv The Market Vertex
+	 * 
+	 * @return The Market Value of the Bank Position Pre-Default
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double bankPreDefaultPositionValue (
+		final org.drip.xva.universe.MarketVertex mv)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L206" title="All 2 branches missed.">		if (null == mv)</span>
+<span class="nc" id="L207">			throw new java.lang.Exception</span>
+				(&quot;ReplicationPortfolioVertex::bankPreDefaultPositionValue =&gt; Invalid Inputs&quot;);
+
+<span class="nc" id="L210">		org.drip.xva.universe.EntityMarketVertex emvBank = mv.bank();</span>
+
+<span class="nc" id="L212">		double dblValue = -1. * emvBank.seniorFundingNumeraire().forward() * _dblBankSeniorNumeraireUnits;</span>
+
+<span class="nc" id="L214">		org.drip.xva.universe.NumeraireMarketVertex nmvBankSubordinateFunding =</span>
+<span class="nc" id="L215">			emvBank.subordinateFundingNumeraire();</span>
+
+<span class="nc bnc" id="L217" title="All 2 branches missed.">		if (null != nmvBankSubordinateFunding)</span>
+<span class="nc" id="L218">			dblValue -= nmvBankSubordinateFunding.forward() * _dblBankSubordinateNumeraireUnits;</span>
+
+<span class="nc" id="L220">		return dblValue;</span>
+	}
+
+	/**
+	 * Compute the Market Value of the Bank Position Post-Default
+	 * 
+	 * @param mv The Market Vertex
+	 * 
+	 * @return The Market Value of the Bank Position Post-Default
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double bankPostDefaultPositionValue (
+		final org.drip.xva.universe.MarketVertex mv)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L237" title="All 2 branches missed.">		if (null == mv)</span>
+<span class="nc" id="L238">			throw new java.lang.Exception</span>
+				(&quot;ReplicationPortfolioVertex::bankPostDefaultPositionValue =&gt; Invalid Inputs&quot;);
+
+<span class="nc" id="L241">		org.drip.xva.universe.EntityMarketVertex emvBank = mv.bank();</span>
+
+<span class="nc" id="L243">		double dblValue = emvBank.seniorFundingNumeraire().forward() * _dblBankSeniorNumeraireUnits *</span>
+<span class="nc" id="L244">			emvBank.seniorRecoveryRate();</span>
+
+<span class="nc" id="L246">		org.drip.xva.universe.NumeraireMarketVertex nmvBankSubordinateFunding =</span>
+<span class="nc" id="L247">			emvBank.subordinateFundingNumeraire();</span>
+
+<span class="nc bnc" id="L249" title="All 2 branches missed.">		if (null != nmvBankSubordinateFunding)</span>
+<span class="nc" id="L250">			dblValue -= nmvBankSubordinateFunding.forward() * _dblBankSubordinateNumeraireUnits *</span>
+<span class="nc" id="L251">				emvBank.subordinateRecoveryRate();</span>
+
+<span class="nc" id="L253">		return dblValue;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FlatForwardFXCurve.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.state.nonlinear</a> &gt; <span class="el_source">FlatForwardFXCurve.java</span></div><h1>FlatForwardFXCurve.java</h1><pre class="source lang-java linenums">
+package org.drip.state.nonlinear;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * FlatForwardVolatilityCurve manages the Volatility Latent State, using the Forward Volatility as the State
+ *  Response Representation.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class FlatForwardFXCurve extends org.drip.state.fx.ExplicitBootFXCurve {
+<span class="nc" id="L60">	private int[] _aiPillarDate = null;</span>
+<span class="nc" id="L61">	private double[] _adblFXForward = null;</span>
+<span class="nc" id="L62">	private double _dblFXSpot = java.lang.Double.NaN;</span>
+
+	private double nodeBasis (
+		final int iNodeDate,
+		final org.drip.param.valuation.ValuationParams valParam,
+		final org.drip.state.discount.MergedDiscountForwardCurve dcNum,
+		final org.drip.state.discount.MergedDiscountForwardCurve dcDenom,
+		final boolean bBasisOnDenom)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L72">		return new org.drip.product.fx.FXForwardComponent (&quot;FXFWD_&quot; +</span>
+<span class="nc" id="L73">			org.drip.quant.common.StringUtil.GUID(), currencyPair(), epoch().julian(), iNodeDate, 1.,</span>
+<span class="nc" id="L74">				null).discountCurveBasis (valParam, dcNum, dcDenom, _dblFXSpot, fx (iNodeDate),</span>
+					bBasisOnDenom);
+	}
+
+	/**
+	 * FlatForwardVolatilityCurve Constructor
+	 * 
+	 * @param iEpochDate Epoch Date
+	 * @param cp Currency Pair
+	 * @param dblFXSpot FX Spot
+	 * @param aiPillarDate Array of the Pillar Dates
+	 * @param adblFXForward Array of the corresponding FX Forward Nodes
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public FlatForwardFXCurve (
+		final int iEpochDate,
+		final org.drip.product.params.CurrencyPair cp,
+		final double dblFXSpot,
+		final int[] aiPillarDate,
+		final double[] adblFXForward)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L98">		super (iEpochDate, cp);</span>
+
+<span class="nc bnc" id="L100" title="All 8 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblFXSpot = dblFXSpot) || null == (_aiPillarDate =</span>
+			aiPillarDate) || null == (_adblFXForward = adblFXForward) || _aiPillarDate.length !=
+				_adblFXForward.length)
+<span class="nc" id="L103">			throw new java.lang.Exception (&quot;FlatForwardFXCurve ctr =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc" id="L105">		int iNumPillar = _aiPillarDate.length;</span>
+
+<span class="nc bnc" id="L107" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumPillar; ++i) {</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (_adblFXForward[i]))</span>
+<span class="nc" id="L109">				throw new java.lang.Exception (&quot;FlatForwardFXCurve ctr =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="nc" id="L111">	}</span>
+
+	@Override public double fx (
+		final int iDate)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L117" title="All 2 branches missed.">		if (iDate &lt;= _iEpochDate) return _adblFXForward[0];</span>
+
+<span class="nc" id="L119">		int iNumPillar = _adblFXForward.length;</span>
+
+<span class="nc bnc" id="L121" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumPillar; ++i) {</span>
+<span class="nc bnc" id="L122" title="All 4 branches missed.">			if (_aiPillarDate[i - 1] &lt;= iDate &amp;&amp; _aiPillarDate[i] &gt; iDate) return _adblFXForward[i];</span>
+		}
+
+<span class="nc" id="L125">		return _adblFXForward[iNumPillar - 1];</span>
+	}
+
+	/**
+	 * Retrieve the FX Spot
+	 * 
+	 * @return The FX Spot
+	 */
+
+	public double fxSpot()
+	{
+<span class="nc" id="L136">		return _dblFXSpot;</span>
+	}
+
+	@Override public double[] zeroBasis (
+		final int[] aiDateNode,
+		final org.drip.param.valuation.ValuationParams valParams,
+		final org.drip.state.discount.MergedDiscountForwardCurve dcNum,
+		final org.drip.state.discount.MergedDiscountForwardCurve dcDenom,
+		final boolean bBasisOnDenom)
+	{
+<span class="nc bnc" id="L146" title="All 2 branches missed.">		if (null == aiDateNode) return null;</span>
+
+<span class="nc" id="L148">		int iNumBasis = aiDateNode.length;</span>
+<span class="nc" id="L149">		double[] adblBasis = new double[iNumBasis];</span>
+
+<span class="nc bnc" id="L151" title="All 2 branches missed.">		if (0 == iNumBasis) return null;</span>
+
+<span class="nc bnc" id="L153" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumBasis; ++i) {</span>
+			try {
+<span class="nc" id="L155">				adblBasis[i] = nodeBasis (aiDateNode[i], valParams, dcNum, dcDenom, bBasisOnDenom);</span>
+<span class="nc" id="L156">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L157">				e.printStackTrace();</span>
+
+<span class="nc" id="L159">				return null;</span>
+<span class="nc" id="L160">			}</span>
+		}
+
+<span class="nc" id="L163">		return adblBasis;</span>
+	}
+
+	@Override public double[] impliedNodeRates (
+		final int[] aiDateNode,
+		final org.drip.param.valuation.ValuationParams valParams,
+		final org.drip.state.discount.MergedDiscountForwardCurve dcNum,
+		final org.drip.state.discount.MergedDiscountForwardCurve dcDenom,
+		final boolean bBasisOnDenom)
+	{
+<span class="nc bnc" id="L173" title="All 2 branches missed.">		if (null == aiDateNode) return null;</span>
+
+<span class="nc" id="L175">		int iNumBasis = aiDateNode.length;</span>
+<span class="nc" id="L176">		double[] adblImpliedNodeRate = new double[iNumBasis];</span>
+
+<span class="nc bnc" id="L178" title="All 2 branches missed.">		if (0 == iNumBasis) return null;</span>
+
+<span class="nc bnc" id="L180" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumBasis; ++i) {</span>
+			try {
+<span class="nc" id="L182">				double dblBaseImpliedRate = java.lang.Double.NaN;</span>
+
+<span class="nc bnc" id="L184" title="All 2 branches missed.">				if (bBasisOnDenom)</span>
+<span class="nc" id="L185">					dblBaseImpliedRate = dcNum.zero (aiDateNode[i]);</span>
+				else
+<span class="nc" id="L187">					dblBaseImpliedRate = dcDenom.zero (aiDateNode[i]);</span>
+
+<span class="nc" id="L189">				adblImpliedNodeRate[i] = dblBaseImpliedRate + nodeBasis (i,	valParams, dcNum, dcDenom,</span>
+					bBasisOnDenom);
+<span class="nc" id="L191">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L192">				e.printStackTrace();</span>
+<span class="nc" id="L193">			}</span>
+		}
+
+<span class="nc" id="L196">		return adblImpliedNodeRate;</span>
+	}
+
+	@Override public double[] bootstrapBasis (
+		final int[] aiDateNode,
+		final org.drip.param.valuation.ValuationParams valParams,
+		final org.drip.state.discount.MergedDiscountForwardCurve dcNum,
+		final org.drip.state.discount.MergedDiscountForwardCurve dcDenom,
+		final boolean bBasisOnDenom)
+	{
+<span class="nc bnc" id="L206" title="All 2 branches missed.">		if (null == aiDateNode) return null;</span>
+
+<span class="nc" id="L208">		int iNumBasis = aiDateNode.length;</span>
+<span class="nc" id="L209">		double[] adblBasis = new double[iNumBasis];</span>
+<span class="nc bnc" id="L210" title="All 2 branches missed.">		org.drip.state.discount.MergedDiscountForwardCurve dcBasis = bBasisOnDenom ? dcDenom : dcNum;</span>
+
+<span class="nc bnc" id="L212" title="All 4 branches missed.">		if (0 == iNumBasis || null == dcBasis) return null;</span>
+
+<span class="nc bnc" id="L214" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumBasis; ++i) {</span>
+			try {
+<span class="nc bnc" id="L216" title="All 2 branches missed.">				if (bBasisOnDenom)</span>
+<span class="nc" id="L217">					adblBasis[i] = nodeBasis (aiDateNode[i], valParams, dcNum, dcBasis, true);</span>
+				else
+<span class="nc" id="L219">					adblBasis[i] = nodeBasis (aiDateNode[i], valParams, dcBasis, dcDenom, false);</span>
+<span class="nc" id="L220">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L221">				e.printStackTrace();</span>
+
+<span class="nc" id="L223">				return null;</span>
+<span class="nc" id="L224">			}</span>
+		}
+
+<span class="nc" id="L227">		return adblBasis;</span>
+	}
+
+	@Override public org.drip.state.discount.MergedDiscountForwardCurve bootstrapBasisDC (
+		final int[] aiDateNode,
+		final org.drip.param.valuation.ValuationParams valParams,
+		final org.drip.state.discount.MergedDiscountForwardCurve dcNum,
+		final org.drip.state.discount.MergedDiscountForwardCurve dcDenom,
+		final boolean bBasisOnDenom)
+	{
+<span class="nc" id="L237">		double[] adblImpliedRate = impliedNodeRates (aiDateNode, valParams, dcNum, dcDenom, bBasisOnDenom);</span>
+
+<span class="nc bnc" id="L239" title="All 2 branches missed.">		if (null == adblImpliedRate) return null;</span>
+
+<span class="nc" id="L241">		int iNumDF = adblImpliedRate.length;</span>
+<span class="nc" id="L242">		double[] adblDF = new double[iNumDF];</span>
+<span class="nc bnc" id="L243" title="All 2 branches missed.">		org.drip.state.discount.MergedDiscountForwardCurve dc = bBasisOnDenom ? dcDenom : dcNum;</span>
+
+<span class="nc bnc" id="L245" title="All 2 branches missed.">		if (0 == iNumDF) return null;</span>
+
+<span class="nc" id="L247">		int iSpotDate = valParams.valueDate();</span>
+
+<span class="nc" id="L249">		java.lang.String strCurrency = dc.currency();</span>
+
+<span class="nc bnc" id="L251" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumDF; ++i)</span>
+<span class="nc" id="L252">			adblDF[i] = java.lang.Math.exp (-1. * adblImpliedRate[i] * (aiDateNode[i] - iSpotDate) /</span>
+				365.25);
+
+		try {
+<span class="nc" id="L256">			return org.drip.state.creator.ScenarioDiscountCurveBuilder.CubicPolynomialDiscountCurve</span>
+<span class="nc" id="L257">				(strCurrency + &quot;::BASIS&quot;, new org.drip.analytics.date.JulianDate (iSpotDate), strCurrency,</span>
+					aiDateNode, adblDF);
+<span class="nc" id="L259">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L260">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L263">		return null;</span>
+	}
+
+	@Override public double rate (
+		final int[] aiDateNode,
+		final org.drip.param.valuation.ValuationParams valParams,
+		final org.drip.state.discount.MergedDiscountForwardCurve dcNum,
+		final org.drip.state.discount.MergedDiscountForwardCurve dcDenom,
+		final int iDate,
+		final boolean bBasisOnDenom)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L275">		org.drip.state.discount.MergedDiscountForwardCurve dcImplied = bootstrapBasisDC (aiDateNode, valParams, dcNum,</span>
+			dcDenom, bBasisOnDenom);
+
+<span class="nc bnc" id="L278" title="All 2 branches missed.">		if (null == dcImplied)</span>
+<span class="nc" id="L279">			throw new java.lang.Exception (&quot;BasisSplineFXForward::rate: Cannot imply basis DC!&quot;);</span>
+
+<span class="nc" id="L281">		return dcImplied.zero (iDate);</span>
+	}
+
+	@Override public org.drip.quant.calculus.WengertJacobian jackDForwardDManifestMeasure (
+		final java.lang.String strManifestMeasure,
+		final int iDate)
+	{
+<span class="nc" id="L288">		return null;</span>
+	}
+
+	@Override public boolean setNodeValue (
+		final int iNodeIndex,
+		final double dblValue)
+	{
+<span class="nc bnc" id="L295" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue) || iNodeIndex &gt; _adblFXForward.length)</span>
+<span class="nc" id="L296">			return false;</span>
+
+<span class="nc bnc" id="L298" title="All 2 branches missed.">		for (int i = iNodeIndex; i &lt; _adblFXForward.length; ++i)</span>
+<span class="nc" id="L299">			_adblFXForward[i] = dblValue;</span>
+
+<span class="nc" id="L301">		return true;</span>
+	}
+
+	@Override public boolean bumpNodeValue (
+		final int iNodeIndex,
+		final double dblValue)
+	{
+<span class="nc bnc" id="L308" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue) || iNodeIndex &gt; _adblFXForward.length)</span>
+<span class="nc" id="L309">			return false;</span>
+
+<span class="nc bnc" id="L311" title="All 2 branches missed.">		for (int i = iNodeIndex; i &lt; _adblFXForward.length; ++i)</span>
+<span class="nc" id="L312">			_adblFXForward[i] += dblValue;</span>
+
+<span class="nc" id="L314">		return true;</span>
+	}
+
+	@Override public boolean setFlatValue (
+		final double dblValue)
+	{
+<span class="nc bnc" id="L320" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue)) return false;</span>
+
+<span class="nc bnc" id="L322" title="All 2 branches missed.">		for (int i = 0; i &lt; _adblFXForward.length; ++i)</span>
+<span class="nc" id="L323">			_adblFXForward[i] = dblValue;</span>
+
+<span class="nc" id="L325">		return true;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BoundedUniformIntegerDistribution.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.measure.discrete</a> &gt; <span class="el_source">BoundedUniformIntegerDistribution.java</span></div><h1>BoundedUniformIntegerDistribution.java</h1><pre class="source lang-java linenums">
+package org.drip.measure.discrete;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * BoundedUniformIntegerDistribution implements the Univariate Bounded Uniform Integer Distribution, with the
+ *  Integer being generated between a(n inclusive) lower and an upper Bound.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class BoundedUniformIntegerDistribution extends org.drip.measure.continuous.R1 {
+<span class="fc" id="L60">	private int _iStart = -1;</span>
+<span class="fc" id="L61">	private int _iFinish = -1;</span>
+
+	/**
+	 * Construct a Univariate Bounded Uniform Integer Distribution
+	 * 
+	 * @param iStart The Starting Integer
+	 * @param iFinish The Finishing Integer
+	 * 
+	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 */
+
+	public BoundedUniformIntegerDistribution (
+		final int iStart,
+		final int iFinish)
+		throws java.lang.Exception
+<span class="fc" id="L76">	{</span>
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">		if ((_iFinish = iFinish) &lt;= (_iStart = iStart))</span>
+<span class="nc" id="L78">			throw new java.lang.Exception (&quot;BoundedUniformIntegerDistribution constructor: Invalid inputs&quot;);</span>
+<span class="fc" id="L79">	}</span>
+
+	/**
+	 * Retrieve the Start
+	 * 
+	 * @return The Start
+	 */
+
+	public int start()
+	{
+<span class="nc" id="L89">		return _iStart;</span>
+	}
+
+	/**
+	 * Retrieve the Finish
+	 * 
+	 * @return The Finish
+	 */
+
+	public int finish()
+	{
+<span class="nc" id="L100">		return _iFinish;</span>
+	}
+
+	@Override public double cumulative (
+		final double dblX)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L107" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L108">			throw new java.lang.Exception</span>
+				(&quot;BoundedUniformIntegerDistribution::cumulative =&gt; Invalid inputs&quot;);
+
+<span class="nc bnc" id="L111" title="All 2 branches missed.">		if (dblX &lt;= _iStart) return 0.;</span>
+
+<span class="nc bnc" id="L113" title="All 2 branches missed.">		if (dblX &gt;= _iFinish) return 1.;</span>
+
+<span class="nc" id="L115">		return (dblX - _iStart) / (_iFinish - _iStart);</span>
+	}
+
+	@Override public double incremental (
+		final double dblXLeft,
+		final double dblXRight)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L123">		return cumulative (dblXRight) - cumulative (dblXLeft);</span>
+	}
+
+	@Override public double invCumulative (
+		final double dblY)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L130" title="All 6 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblY) || dblY &lt; 0. || dblY &gt; 1.)</span>
+<span class="nc" id="L131">			throw new java.lang.Exception</span>
+				(&quot;BoundedUniformIntegerDistribution::invCumulative =&gt; Invalid inputs&quot;);
+
+<span class="nc" id="L134">	    return dblY * (_iFinish - _iStart) + _iStart;</span>
+	}
+
+	@Override public double density (
+		final double dblX)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L141">		throw new java.lang.Exception</span>
+			(&quot;BoundedUniformIntegerDistribution::density =&gt; Not available for discrete distributions&quot;);
+	}
+
+	@Override public double mean()
+	{
+<span class="fc" id="L147">	    return 0.5 * (_iFinish + _iStart);</span>
+	}
+
+	@Override public double variance()
+	{
+<span class="fc" id="L152">	    return (_iFinish - _iStart) * (_iFinish - _iStart) / 12.;</span>
+	}
+
+	@Override public org.drip.quant.common.Array2D histogram()
+	{
+<span class="nc" id="L157">		int iGridWidth = _iFinish - _iStart;</span>
+<span class="nc" id="L158">		double[] adblX = new double[iGridWidth];</span>
+<span class="nc" id="L159">		double[] adblY = new double[iGridWidth];</span>
+
+<span class="nc bnc" id="L161" title="All 2 branches missed.">		for (int i = 0; i &lt; iGridWidth; ++i) {</span>
+<span class="nc" id="L162">			adblY[i] = 1. / iGridWidth;</span>
+<span class="nc" id="L163">			adblX[i] = _iStart + (i + 1);</span>
+		}
+
+		try {
+			
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+<span class="nc" id="L172">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

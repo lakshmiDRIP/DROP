@@ -1,0 +1,2375 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LatentMarketStateBuilder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.service.template</a> &gt; <span class="el_source">LatentMarketStateBuilder.java</span></div><h1>LatentMarketStateBuilder.java</h1><pre class="source lang-java linenums">
+package org.drip.service.template;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * LatentMarketStateBuilder contains static Helper API to facilitate Construction of the Latent Market States
+ * 	as Curves/Surfaces.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L59">public class LatentMarketStateBuilder {</span>
+
+	/**
+	 * Shape Preserving Latent State
+	 */
+
+	public static final int SHAPE_PRESERVING = 0;
+
+	/**
+	 * Smoothened Latent State
+	 */
+
+	public static final int SMOOTH = 1;
+
+	/**
+	 * Construct a Funding Curve Based off of the Input Exchange/OTC Market Instruments Using the specified
+	 *  Spline
+	 * 
+	 * @param dtSpot The Spot Date
+	 * @param strCurrency Currency
+	 * @param astrDepositMaturityTenor Array of Deposit Maturity Tenors
+	 * @param adblDepositQuote Array of Deposit Quotes
+	 * @param strDepositMeasure Deposit Calibration Measure
+	 * @param adblFuturesQuote Array of Futures Quotes
+	 * @param strFuturesMeasure Futures Calibration Measure
+	 * @param astrFixFloatMaturityTenor Array of Fix Float Swap Maturity Tenors
+	 * @param adblFixFloatQuote Array of Fix Float Swap Quotes
+	 * @param strFixFloatMeasure Fix Float Calibration Measure
+	 * @param scbc Segment Custom Builder Control
+	 * 
+	 * @return The Funding Curve Instance
+	 */
+
+	public static final org.drip.state.discount.MergedDiscountForwardCurve FundingCurve (
+		final org.drip.analytics.date.JulianDate dtSpot,
+		final java.lang.String strCurrency,
+		final java.lang.String[] astrDepositMaturityTenor,
+		final double[] adblDepositQuote,
+		final java.lang.String strDepositMeasure,
+		final double[] adblFuturesQuote,
+		final java.lang.String strFuturesMeasure,
+		final java.lang.String[] astrFixFloatMaturityTenor,
+		final double[] adblFixFloatQuote,
+		final java.lang.String strFixFloatMeasure,
+		final org.drip.spline.params.SegmentCustomBuilderControl scbc)
+	{
+<span class="pc bpc" id="L105" title="3 of 6 branches missed.">		if (null == dtSpot || null == strCurrency || strCurrency.isEmpty()) return null;</span>
+
+<span class="fc" id="L107">		org.drip.analytics.date.JulianDate dtEffective = dtSpot.addBusDays (0, strCurrency);</span>
+
+<span class="fc" id="L109">		org.drip.state.inference.LatentStateStretchSpec lsssDeposit = null;</span>
+<span class="fc" id="L110">		org.drip.state.inference.LatentStateStretchSpec lsssFutures = null;</span>
+<span class="fc" id="L111">		org.drip.state.inference.LatentStateStretchSpec lsssFixFloat = null;</span>
+<span class="fc bfc" id="L112" title="All 2 branches covered.">		int iNumFuturesComp = null == adblFuturesQuote ? 0 : adblFuturesQuote.length;</span>
+<span class="pc bpc" id="L113" title="1 of 2 branches missed.">		int iNumDepositQuote = null == adblDepositQuote ? 0 : adblDepositQuote.length;</span>
+<span class="pc bpc" id="L114" title="1 of 2 branches missed.">		int iNumFixFloatQuote = null == adblFixFloatQuote ? 0 : adblFixFloatQuote.length;</span>
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">		int iNumDepositComp = null == astrDepositMaturityTenor ? 0 : astrDepositMaturityTenor.length;</span>
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">		int iNumFixFloatComp = null == astrFixFloatMaturityTenor ? 0 : astrFixFloatMaturityTenor.length;</span>
+
+<span class="pc bpc" id="L118" title="2 of 4 branches missed.">		if (iNumDepositQuote != iNumDepositComp || iNumFixFloatQuote != iNumFixFloatComp) return null;</span>
+
+<span class="pc bpc" id="L120" title="1 of 2 branches missed.">		if (0 != iNumDepositComp)</span>
+<span class="fc" id="L121">			lsssDeposit = org.drip.state.estimator.LatentStateStretchBuilder.ForwardFundingStretchSpec</span>
+<span class="fc" id="L122">				(&quot;DEPOSIT&quot;, org.drip.service.template.OTCInstrumentBuilder.FundingDeposit (dtEffective,</span>
+					strCurrency, astrDepositMaturityTenor), strDepositMeasure, adblDepositQuote);
+
+<span class="fc bfc" id="L125" title="All 2 branches covered.">		if (0 != iNumFuturesComp)</span>
+<span class="fc" id="L126">			lsssFutures = org.drip.state.estimator.LatentStateStretchBuilder.ForwardFundingStretchSpec</span>
+<span class="fc" id="L127">				(&quot;FUTURES&quot;, org.drip.service.template.ExchangeInstrumentBuilder.ForwardRateFuturesPack</span>
+<span class="fc" id="L128">					(dtEffective, iNumFuturesComp, strCurrency), strFuturesMeasure, adblFuturesQuote);</span>
+
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">		if (0 != iNumFixFloatComp)</span>
+<span class="fc" id="L131">			lsssFixFloat = org.drip.state.estimator.LatentStateStretchBuilder.ForwardFundingStretchSpec</span>
+<span class="fc" id="L132">				(&quot;FIXFLOAT&quot;, org.drip.service.template.OTCInstrumentBuilder.FixFloatStandard (dtEffective,</span>
+					strCurrency, &quot;ALL&quot;, astrFixFloatMaturityTenor, &quot;MAIN&quot;, 0.), strFixFloatMeasure,
+						adblFixFloatQuote);
+
+		try {
+<span class="fc" id="L137">			org.drip.state.inference.LinearLatentStateCalibrator lcc = new</span>
+				org.drip.state.inference.LinearLatentStateCalibrator (scbc,
+<span class="fc" id="L139">					org.drip.spline.stretch.BoundarySettings.NaturalStandard(),</span>
+						org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE, null, null);
+
+<span class="fc" id="L142">			return org.drip.state.creator.ScenarioDiscountCurveBuilder.ShapePreservingDFBuild (strCurrency,</span>
+				lcc, new org.drip.state.inference.LatentStateStretchSpec[] {lsssDeposit, lsssFutures,
+<span class="fc" id="L144">					lsssFixFloat}, org.drip.param.valuation.ValuationParams.Spot (dtSpot.julian()), null,</span>
+						null, null, 1.);
+<span class="nc" id="L146">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L147">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L150">		return null;</span>
+	}
+
+	/**
+	 * Construct a Shape Preserving Funding Curve Based off of the Input Exchange/OTC Market Instruments
+	 * 
+	 * @param dtSpot The Spot Date
+	 * @param strCurrency Currency
+	 * @param astrDepositMaturityTenor Array of Deposit Maturity Tenors
+	 * @param adblDepositQuote Array of Deposit Quotes
+	 * @param strDepositMeasure Deposit Calibration Measure
+	 * @param adblFuturesQuote Array of Futures Quotes
+	 * @param strFuturesMeasure Futures Calibration Measure
+	 * @param astrFixFloatMaturityTenor Array of Fix Float Swap Maturity Tenors
+	 * @param adblFixFloatQuote Array of Fix Float Swap Quotes
+	 * @param strFixFloatMeasure Fix Float Calibration Measure
+	 * 
+	 * @return The Funding Curve Instance
+	 */
+
+	public static final org.drip.state.discount.MergedDiscountForwardCurve ShapePreservingFundingCurve (
+		final org.drip.analytics.date.JulianDate dtSpot,
+		final java.lang.String strCurrency,
+		final java.lang.String[] astrDepositMaturityTenor,
+		final double[] adblDepositQuote,
+		final java.lang.String strDepositMeasure,
+		final double[] adblFuturesQuote,
+		final java.lang.String strFuturesMeasure,
+		final java.lang.String[] astrFixFloatMaturityTenor,
+		final double[] adblFixFloatQuote,
+		final java.lang.String strFixFloatMeasure)
+	{
+		try {
+<span class="nc" id="L183">			return FundingCurve (dtSpot, strCurrency, astrDepositMaturityTenor, adblDepositQuote,</span>
+				strDepositMeasure, adblFuturesQuote, strFuturesMeasure, astrFixFloatMaturityTenor,
+					adblFixFloatQuote, strFixFloatMeasure, new
+						org.drip.spline.params.SegmentCustomBuilderControl
+							(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
+								org.drip.spline.basis.PolynomialFunctionSetParams (2),
+<span class="nc" id="L189">									org.drip.spline.params.SegmentInelasticDesignControl.Create (0, 2), new</span>
+										org.drip.spline.params.ResponseScalingShapeControl (true, new
+											org.drip.function.r1tor1.QuadraticRationalShapeControl (0.)),
+												null));
+<span class="nc" id="L193">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L194">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L197">		return null;</span>
+	}
+
+	/**
+	 * Construct a Smooth Funding Curve Based off of the Input Exchange/OTC Market Instruments
+	 * 
+	 * @param dtSpot The Spot Date
+	 * @param strCurrency Currency
+	 * @param astrDepositMaturityTenor Array of Deposit Maturity Tenors
+	 * @param adblDepositQuote Array of Deposit Quotes
+	 * @param strDepositMeasure Deposit Calibration Measure
+	 * @param adblFuturesQuote Array of Futures Quotes
+	 * @param strFuturesMeasure Futures Calibration Measure
+	 * @param astrFixFloatMaturityTenor Array of Fix Float Swap Maturity Tenors
+	 * @param adblFixFloatQuote Array of Fix Float Swap Quotes
+	 * @param strFixFloatMeasure Fix Float Calibration Measure
+	 * 
+	 * @return The Funding Curve Instance
+	 */
+
+	public static final org.drip.state.discount.MergedDiscountForwardCurve SmoothFundingCurve (
+		final org.drip.analytics.date.JulianDate dtSpot,
+		final java.lang.String strCurrency,
+		final java.lang.String[] astrDepositMaturityTenor,
+		final double[] adblDepositQuote,
+		final java.lang.String strDepositMeasure,
+		final double[] adblFuturesQuote,
+		final java.lang.String strFuturesMeasure,
+		final java.lang.String[] astrFixFloatMaturityTenor,
+		final double[] adblFixFloatQuote,
+		final java.lang.String strFixFloatMeasure)
+	{
+		try {
+<span class="fc" id="L230">			return FundingCurve (dtSpot, strCurrency, astrDepositMaturityTenor, adblDepositQuote,</span>
+				strDepositMeasure, adblFuturesQuote, strFuturesMeasure, astrFixFloatMaturityTenor,
+					adblFixFloatQuote, strFixFloatMeasure, new
+						org.drip.spline.params.SegmentCustomBuilderControl
+							(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
+								org.drip.spline.basis.PolynomialFunctionSetParams (4),
+<span class="fc" id="L236">									org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), new</span>
+										org.drip.spline.params.ResponseScalingShapeControl (true, new
+											org.drip.function.r1tor1.QuadraticRationalShapeControl (0.)),
+												null));
+<span class="nc" id="L240">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L241">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L244">		return null;</span>
+	}
+
+	/**
+	 * Construct a Funding Curve Based off of the Input Exchange/OTC Market Instruments
+	 * 
+	 * @param dtSpot The Spot Date
+	 * @param strCurrency Currency
+	 * @param astrDepositMaturityTenor Array of Deposit Maturity Tenors
+	 * @param adblDepositQuote Array of Deposit Quotes
+	 * @param strDepositMeasure Deposit Calibration Measure
+	 * @param adblFuturesQuote Array of Futures Quotes
+	 * @param strFuturesMeasure Futures Calibration Measure
+	 * @param astrFixFloatMaturityTenor Array of Fix Float Swap Maturity Tenors
+	 * @param adblFixFloatQuote Array of Fix Float Swap Quotes
+	 * @param strFixFloatMeasure Fix Float Calibration Measure
+	 * @param iLatentStateType SHAPE_PRESERVING/SMOOTH
+	 * 
+	 * @return The Funding Curve Instance
+	 */
+
+	public static final org.drip.state.discount.MergedDiscountForwardCurve FundingCurve (
+		final org.drip.analytics.date.JulianDate dtSpot,
+		final java.lang.String strCurrency,
+		final java.lang.String[] astrDepositMaturityTenor,
+		final double[] adblDepositQuote,
+		final java.lang.String strDepositMeasure,
+		final double[] adblFuturesQuote,
+		final java.lang.String strFuturesMeasure,
+		final java.lang.String[] astrFixFloatMaturityTenor,
+		final double[] adblFixFloatQuote,
+		final java.lang.String strFixFloatMeasure,
+		final int iLatentStateType)
+	{
+<span class="nc bnc" id="L278" title="All 2 branches missed.">		if (SHAPE_PRESERVING == iLatentStateType)</span>
+<span class="nc" id="L279">			return ShapePreservingFundingCurve (dtSpot, strCurrency, astrDepositMaturityTenor, adblDepositQuote,</span>
+				strDepositMeasure, adblFuturesQuote, strFuturesMeasure, astrFixFloatMaturityTenor,
+					adblFixFloatQuote, strFixFloatMeasure);
+
+<span class="nc bnc" id="L283" title="All 2 branches missed.">		if (SMOOTH == iLatentStateType)</span>
+<span class="nc" id="L284">			return SmoothFundingCurve (dtSpot, strCurrency, astrDepositMaturityTenor, adblDepositQuote,</span>
+				strDepositMeasure, adblFuturesQuote, strFuturesMeasure, astrFixFloatMaturityTenor,
+					adblFixFloatQuote, strFixFloatMeasure);
+
+<span class="nc" id="L288">		return null;</span>
+	}
+
+	/**
+	 * Construct a Instance of the Forward Curve off of Exchange/OTC Market Instruments
+	 * 
+	 * @param dtSpot Spot Date
+	 * @param forwardLabel Forward Label
+	 * @param astrDepositMaturityTenor Array of Deposit Maturity Tenors
+	 * @param adblDepositQuote Array of the Deposit Instrument Quotes
+	 * @param strDepositMeasure The Deposit Instrument Calibration Measure
+	 * @param astrFRAMaturityTenor Array of FRA Maturity Tenors
+	 * @param adblFRAQuote Array of the FRA Instrument Quotes
+	 * @param strFRAMeasure The FRA Instrument Calibration Measure
+	 * @param astrFixFloatMaturityTenor Array of Fix-Float Maturity Tenors
+	 * @param adblFixFloatQuote Array of the Fix-Float Quotes
+	 * @param strFixFloatMeasure The Fix-Float Calibration Measure
+	 * @param astrFloatFloatMaturityTenor Array of Float-Float Maturity Tenors
+	 * @param adblFloatFloatQuote Array of the Float-Float Quotes
+	 * @param strFloatFloatMeasure The Float-Float Calibration Measure
+	 * @param astrSyntheticFloatFloatMaturityTenor Array of Synthetic Float-Float Maturity Tenors
+	 * @param adblSyntheticFloatFloatQuote Array of the Synthetic Float-Float Quotes
+	 * @param strSyntheticFloatFloatMeasure The Synthetic Float-Float Calibration Measure
+	 * @param dc The Base Discount Curve
+	 * @param fcReference The Reference Forward Curve
+	 * @param scbc Segment Custom Builder Control Parameters
+	 * 
+	 * @return Instance of the Forward Curve
+	 */
+
+	public static final org.drip.state.forward.ForwardCurve ForwardCurve (
+		final org.drip.analytics.date.JulianDate dtSpot,
+		final org.drip.state.identifier.ForwardLabel forwardLabel,
+		final java.lang.String[] astrDepositMaturityTenor,
+		final double[] adblDepositQuote,
+		final java.lang.String strDepositMeasure,
+		final java.lang.String[] astrFRAMaturityTenor,
+		final double[] adblFRAQuote,
+		final java.lang.String strFRAMeasure,
+		final java.lang.String[] astrFixFloatMaturityTenor,
+		final double[] adblFixFloatQuote,
+		final java.lang.String strFixFloatMeasure,
+		final java.lang.String[] astrFloatFloatMaturityTenor,
+		final double[] adblFloatFloatQuote,
+		final java.lang.String strFloatFloatMeasure,
+		final java.lang.String[] astrSyntheticFloatFloatMaturityTenor,
+		final double[] adblSyntheticFloatFloatQuote,
+		final java.lang.String strSyntheticFloatFloatMeasure,
+		final org.drip.state.discount.MergedDiscountForwardCurve dc,
+		final org.drip.state.forward.ForwardCurve fcReference,
+		final org.drip.spline.params.SegmentCustomBuilderControl scbc)
+	{
+<span class="pc bpc" id="L340" title="3 of 6 branches missed.">		if (null == dtSpot || null == forwardLabel || null == dc) return null;</span>
+
+<span class="fc" id="L342">		java.lang.String strCurrency = forwardLabel.currency();</span>
+
+<span class="fc" id="L344">		org.drip.analytics.date.JulianDate dtEffective = dtSpot.addBusDays (0, strCurrency);</span>
+
+<span class="fc" id="L346">		org.drip.state.inference.LatentStateStretchSpec lsssFRA = null;</span>
+<span class="fc" id="L347">		org.drip.state.inference.LinearLatentStateCalibrator lcc = null;</span>
+<span class="pc bpc" id="L348" title="1 of 2 branches missed.">		int iNumFRAQuote = null == adblFRAQuote ? 0 : adblFRAQuote.length;</span>
+<span class="fc" id="L349">		org.drip.state.inference.LatentStateStretchSpec lsssDeposit = null;</span>
+<span class="fc" id="L350">		org.drip.state.inference.LatentStateStretchSpec lsssFixFloat = null;</span>
+<span class="fc" id="L351">		org.drip.state.inference.LatentStateStretchSpec lsssFloatFloat = null;</span>
+<span class="pc bpc" id="L352" title="1 of 2 branches missed.">		int iNumDepositQuote = null == adblDepositQuote ? 0 : adblDepositQuote.length;</span>
+<span class="fc" id="L353">		org.drip.state.inference.LatentStateStretchSpec lsssSyntheticFloatFloat = null;</span>
+<span class="pc bpc" id="L354" title="1 of 2 branches missed.">		int iNumFRAComp = null == astrFRAMaturityTenor ? 0 : astrFRAMaturityTenor.length;</span>
+<span class="pc bpc" id="L355" title="1 of 2 branches missed.">		int iNumFixFloatQuote = null == adblFixFloatQuote ? 0 : adblFixFloatQuote.length;</span>
+<span class="pc bpc" id="L356" title="1 of 2 branches missed.">		int iNumFloatFloatQuote = null == adblFloatFloatQuote ? 0 : adblFloatFloatQuote.length;</span>
+<span class="pc bpc" id="L357" title="1 of 2 branches missed.">		int iNumDepositComp = null == astrDepositMaturityTenor ? 0 : astrDepositMaturityTenor.length;</span>
+<span class="pc bpc" id="L358" title="1 of 2 branches missed.">		int iNumFixFloatComp = null == astrFixFloatMaturityTenor ? 0 : astrFixFloatMaturityTenor.length;</span>
+<span class="pc bpc" id="L359" title="1 of 2 branches missed.">		int iNumFloatFloatComp = null == astrFloatFloatMaturityTenor ? 0 :</span>
+			astrFloatFloatMaturityTenor.length;
+<span class="fc bfc" id="L361" title="All 2 branches covered.">		int iNumSyntheticFloatFloatQuote = null == adblSyntheticFloatFloatQuote ? 0 :</span>
+			adblSyntheticFloatFloatQuote.length;
+<span class="fc bfc" id="L363" title="All 2 branches covered.">		int iNumSyntheticFloatFloatComp = null == astrSyntheticFloatFloatMaturityTenor ? 0 :</span>
+			astrSyntheticFloatFloatMaturityTenor.length;
+
+<span class="pc bpc" id="L366" title="5 of 10 branches missed.">		if (iNumDepositQuote != iNumDepositComp || iNumFRAQuote != iNumFRAComp || iNumFixFloatQuote !=</span>
+			iNumFixFloatComp || iNumFloatFloatQuote != iNumFloatFloatComp || iNumSyntheticFloatFloatQuote !=
+				iNumSyntheticFloatFloatComp)
+<span class="nc" id="L369">			return null;</span>
+
+<span class="pc bpc" id="L371" title="1 of 2 branches missed.">		if (0 != iNumDepositComp)</span>
+<span class="fc" id="L372">			lsssDeposit = org.drip.state.estimator.LatentStateStretchBuilder.ForwardStretchSpec (&quot;DEPOSIT&quot;,</span>
+<span class="fc" id="L373">				org.drip.service.template.OTCInstrumentBuilder.ForwardRateDeposit (dtEffective,</span>
+					astrDepositMaturityTenor, forwardLabel), strDepositMeasure, adblDepositQuote);
+
+<span class="pc bpc" id="L376" title="1 of 2 branches missed.">		if (0 != iNumFRAComp)</span>
+<span class="fc" id="L377">			lsssFRA = org.drip.state.estimator.LatentStateStretchBuilder.ForwardStretchSpec (&quot;FRA&quot;,</span>
+<span class="fc" id="L378">				org.drip.service.template.OTCInstrumentBuilder.FRAStandard (dtEffective, forwardLabel,</span>
+					astrFRAMaturityTenor, adblFRAQuote), strFRAMeasure, adblFRAQuote);
+
+<span class="pc bpc" id="L381" title="1 of 2 branches missed.">		if (0 != iNumFixFloatComp)</span>
+<span class="fc" id="L382">			lsssFixFloat = org.drip.state.estimator.LatentStateStretchBuilder.ForwardStretchSpec (&quot;FIXFLOAT&quot;,</span>
+<span class="fc" id="L383">				org.drip.service.template.OTCInstrumentBuilder.FixFloatCustom (dtEffective, forwardLabel,</span>
+					astrFixFloatMaturityTenor), strFixFloatMeasure, adblFixFloatQuote);
+
+<span class="pc bpc" id="L386" title="1 of 2 branches missed.">		if (0 != iNumFloatFloatComp)</span>
+<span class="nc" id="L387">			lsssFloatFloat = org.drip.state.estimator.LatentStateStretchBuilder.ForwardStretchSpec</span>
+<span class="nc" id="L388">				(&quot;FLOATFLOAT&quot;, org.drip.service.template.OTCInstrumentBuilder.FloatFloat (dtEffective,</span>
+<span class="nc" id="L389">					strCurrency, forwardLabel.tenor(), astrFloatFloatMaturityTenor, 0.),</span>
+						strFloatFloatMeasure, adblFloatFloatQuote);
+
+<span class="fc bfc" id="L392" title="All 2 branches covered.">		if (0 != iNumSyntheticFloatFloatComp)</span>
+<span class="fc" id="L393">			lsssSyntheticFloatFloat = org.drip.state.estimator.LatentStateStretchBuilder.ForwardStretchSpec</span>
+<span class="fc" id="L394">				(&quot;SYNTHETICFLOATFLOAT&quot;, org.drip.service.template.OTCInstrumentBuilder.FloatFloat</span>
+<span class="fc" id="L395">					(dtEffective, strCurrency, forwardLabel.tenor(), astrSyntheticFloatFloatMaturityTenor,</span>
+						0.), strSyntheticFloatFloatMeasure, adblSyntheticFloatFloatQuote);
+
+<span class="fc" id="L398">		org.drip.state.inference.LatentStateStretchSpec[] aStretchSpec = new</span>
+			org.drip.state.inference.LatentStateStretchSpec[] {lsssDeposit, lsssFRA, lsssFixFloat,
+				lsssFloatFloat, lsssSyntheticFloatFloat};
+
+		try {
+<span class="fc" id="L403">			lcc = new org.drip.state.inference.LinearLatentStateCalibrator (scbc,</span>
+<span class="fc" id="L404">				org.drip.spline.stretch.BoundarySettings.NaturalStandard(),</span>
+					org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE, null, null);
+
+<span class="fc" id="L407">			return org.drip.state.creator.ScenarioForwardCurveBuilder.ShapePreservingForwardCurve (lcc,</span>
+				aStretchSpec, forwardLabel, org.drip.param.valuation.ValuationParams.Spot
+<span class="pc bpc" id="L409" title="1 of 2 branches missed.">					(dtEffective.julian()), null, org.drip.param.creator.MarketParamsBuilder.Create (dc,</span>
+						fcReference, null, null, null, null, null, null), null, 0 == iNumDepositComp ?
+							adblFRAQuote[0] : adblDepositQuote[0]);
+<span class="nc" id="L412">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L413">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L416">		return null;</span>
+	}
+
+	/**
+	 * Construct a Instance of the Shape Preserving Forward Curve off of Exchange/OTC Market Instruments
+	 * 
+	 * @param dtSpot Spot Date
+	 * @param forwardLabel Forward Label
+	 * @param astrDepositMaturityTenor Array of Deposit Maturity Tenors
+	 * @param adblDepositQuote Array of the Deposit Instrument Quotes
+	 * @param strDepositMeasure The Deposit Instrument Calibration Measure
+	 * @param astrFRAMaturityTenor Array of FRA Maturity Tenors
+	 * @param adblFRAQuote Array of the FRA Instrument Quotes
+	 * @param strFRAMeasure The FRA Instrument Calibration Measure
+	 * @param astrFixFloatMaturityTenor Array of Fix-Float Maturity Tenors
+	 * @param adblFixFloatQuote Array of the Fix-Float Quotes
+	 * @param strFixFloatMeasure The Fix-Float Calibration Measure
+	 * @param astrFloatFloatMaturityTenor Array of Float-Float Maturity Tenors
+	 * @param adblFloatFloatQuote Array of the Float-Float Quotes
+	 * @param strFloatFloatMeasure The Float-Float Calibration Measure
+	 * @param astrSyntheticFloatFloatMaturityTenor Array of Synthetic Float-Float Maturity Tenors
+	 * @param adblSyntheticFloatFloatQuote Array of the Synthetic Float-Float Quotes
+	 * @param strSyntheticFloatFloatMeasure The Synthetic Float-Float Calibration Measure
+	 * @param dc The Base Discount Curve
+	 * @param fcReference The Reference Forward Curve
+	 * 
+	 * @return Instance of the Forward Curve
+	 */
+
+	public static final org.drip.state.forward.ForwardCurve ShapePreservingForwardCurve (
+		final org.drip.analytics.date.JulianDate dtSpot,
+		final org.drip.state.identifier.ForwardLabel forwardLabel,
+		final java.lang.String[] astrDepositMaturityTenor,
+		final double[] adblDepositQuote,
+		final java.lang.String strDepositMeasure,
+		final java.lang.String[] astrFRAMaturityTenor,
+		final double[] adblFRAQuote,
+		final java.lang.String strFRAMeasure,
+		final java.lang.String[] astrFixFloatMaturityTenor,
+		final double[] adblFixFloatQuote,
+		final java.lang.String strFixFloatMeasure,
+		final java.lang.String[] astrFloatFloatMaturityTenor,
+		final double[] adblFloatFloatQuote,
+		final java.lang.String strFloatFloatMeasure,
+		final java.lang.String[] astrSyntheticFloatFloatMaturityTenor,
+		final double[] adblSyntheticFloatFloatQuote,
+		final java.lang.String strSyntheticFloatFloatMeasure,
+		final org.drip.state.discount.MergedDiscountForwardCurve dc,
+		final org.drip.state.forward.ForwardCurve fcReference)
+	{
+		try {
+<span class="nc" id="L467">			return ForwardCurve (dtSpot, forwardLabel, astrDepositMaturityTenor, adblDepositQuote,</span>
+				strDepositMeasure, astrFRAMaturityTenor, adblFRAQuote, strFRAMeasure,
+					astrFixFloatMaturityTenor, adblFixFloatQuote, strFixFloatMeasure,
+						astrFloatFloatMaturityTenor, adblFloatFloatQuote, strFloatFloatMeasure,
+							astrSyntheticFloatFloatMaturityTenor, adblSyntheticFloatFloatQuote,
+								strSyntheticFloatFloatMeasure, dc, fcReference, new
+									org.drip.spline.params.SegmentCustomBuilderControl
+										(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+				new org.drip.spline.basis.PolynomialFunctionSetParams (2),
+<span class="nc" id="L476">					org.drip.spline.params.SegmentInelasticDesignControl.Create (0, 2), new</span>
+						org.drip.spline.params.ResponseScalingShapeControl (true, new
+							org.drip.function.r1tor1.QuadraticRationalShapeControl (0.)), null));
+<span class="nc" id="L479">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L480">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L483">		return null;</span>
+	}
+
+	/**
+	 * Construct a Instance of Smooth Forward Curve off of Exchange/OTC Market Instruments
+	 * 
+	 * @param dtSpot Spot Date
+	 * @param forwardLabel Forward Label
+	 * @param astrDepositMaturityTenor Array of Deposit Maturity Tenors
+	 * @param adblDepositQuote Array of the Deposit Instrument Quotes
+	 * @param strDepositMeasure The Deposit Instrument Calibration Measure
+	 * @param astrFRAMaturityTenor Array of FRA Maturity Tenors
+	 * @param adblFRAQuote Array of the FRA Instrument Quotes
+	 * @param strFRAMeasure The FRA Instrument Calibration Measure
+	 * @param astrFixFloatMaturityTenor Array of Fix-Float Maturity Tenors
+	 * @param adblFixFloatQuote Array of the Fix-Float Quotes
+	 * @param strFixFloatMeasure The Fix-Float Calibration Measure
+	 * @param astrFloatFloatMaturityTenor Array of Float-Float Maturity Tenors
+	 * @param adblFloatFloatQuote Array of the Float-Float Quotes
+	 * @param strFloatFloatMeasure The Float-Float Calibration Measure
+	 * @param astrSyntheticFloatFloatMaturityTenor Array of Synthetic Float-Float Maturity Tenors
+	 * @param adblSyntheticFloatFloatQuote Array of the Synthetic Float-Float Quotes
+	 * @param strSyntheticFloatFloatMeasure The Synthetic Float-Float Calibration Measure
+	 * @param dc The Base Discount Curve
+	 * @param fcReference The Reference Forward Curve
+	 * 
+	 * @return Instance of the Forward Curve
+	 */
+
+	public static final org.drip.state.forward.ForwardCurve SmoothForwardCurve (
+		final org.drip.analytics.date.JulianDate dtSpot,
+		final org.drip.state.identifier.ForwardLabel forwardLabel,
+		final java.lang.String[] astrDepositMaturityTenor,
+		final double[] adblDepositQuote,
+		final java.lang.String strDepositMeasure,
+		final java.lang.String[] astrFRAMaturityTenor,
+		final double[] adblFRAQuote,
+		final java.lang.String strFRAMeasure,
+		final java.lang.String[] astrFixFloatMaturityTenor,
+		final double[] adblFixFloatQuote,
+		final java.lang.String strFixFloatMeasure,
+		final java.lang.String[] astrFloatFloatMaturityTenor,
+		final double[] adblFloatFloatQuote,
+		final java.lang.String strFloatFloatMeasure,
+		final java.lang.String[] astrSyntheticFloatFloatMaturityTenor,
+		final double[] adblSyntheticFloatFloatQuote,
+		final java.lang.String strSyntheticFloatFloatMeasure,
+		final org.drip.state.discount.MergedDiscountForwardCurve dc,
+		final org.drip.state.forward.ForwardCurve fcReference)
+	{
+		try {
+<span class="fc" id="L534">			return ForwardCurve (dtSpot, forwardLabel, astrDepositMaturityTenor, adblDepositQuote,</span>
+				strDepositMeasure, astrFRAMaturityTenor, adblFRAQuote, strFRAMeasure,
+					astrFixFloatMaturityTenor, adblFixFloatQuote, strFixFloatMeasure,
+						astrFloatFloatMaturityTenor, adblFloatFloatQuote, strFloatFloatMeasure,
+							astrSyntheticFloatFloatMaturityTenor, adblSyntheticFloatFloatQuote,
+								strSyntheticFloatFloatMeasure, dc, fcReference, new
+									org.drip.spline.params.SegmentCustomBuilderControl
+										(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+				new org.drip.spline.basis.PolynomialFunctionSetParams (4),
+<span class="fc" id="L543">					org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), new</span>
+						org.drip.spline.params.ResponseScalingShapeControl (true, new
+							org.drip.function.r1tor1.QuadraticRationalShapeControl (0.)), null));
+<span class="nc" id="L546">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L547">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L550">		return null;</span>
+	}
+
+	/**
+	 * Construct a Instance of the Smooth/Shape Preserving Forward Curve off of Exchange/OTC Market
+	 *  Instruments
+	 * 
+	 * @param dtSpot Spot Date
+	 * @param forwardLabel Forward Label
+	 * @param astrDepositMaturityTenor Array of Deposit Maturity Tenors
+	 * @param adblDepositQuote Array of the Deposit Instrument Quotes
+	 * @param strDepositMeasure The Deposit Instrument Calibration Measure
+	 * @param astrFRAMaturityTenor Array of FRA Maturity Tenors
+	 * @param adblFRAQuote Array of the FRA Instrument Quotes
+	 * @param strFRAMeasure The FRA Instrument Calibration Measure
+	 * @param astrFixFloatMaturityTenor Array of Fix-Float Maturity Tenors
+	 * @param adblFixFloatQuote Array of the Fix-Float Quotes
+	 * @param strFixFloatMeasure The Fix-Float Calibration Measure
+	 * @param astrFloatFloatMaturityTenor Array of Float-Float Maturity Tenors
+	 * @param adblFloatFloatQuote Array of the Float-Float Quotes
+	 * @param strFloatFloatMeasure The Float-Float Calibration Measure
+	 * @param astrSyntheticFloatFloatMaturityTenor Array of Synthetic Float-Float Maturity Tenors
+	 * @param adblSyntheticFloatFloatQuote Array of the Synthetic Float-Float Quotes
+	 * @param strSyntheticFloatFloatMeasure The Synthetic Float-Float Calibration Measure
+	 * @param dc The Base Discount Curve
+	 * @param fcReference The Reference Forward Curve
+	 * @param iLatentStateType SHAPE_PRESERVING/SMOOTH
+	 * 
+	 * @return Instance of the Forward Curve
+	 */
+
+	public static final org.drip.state.forward.ForwardCurve ForwardCurve (
+		final org.drip.analytics.date.JulianDate dtSpot,
+		final org.drip.state.identifier.ForwardLabel forwardLabel,
+		final java.lang.String[] astrDepositMaturityTenor,
+		final double[] adblDepositQuote,
+		final java.lang.String strDepositMeasure,
+		final java.lang.String[] astrFRAMaturityTenor,
+		final double[] adblFRAQuote,
+		final java.lang.String strFRAMeasure,
+		final java.lang.String[] astrFixFloatMaturityTenor,
+		final double[] adblFixFloatQuote,
+		final java.lang.String strFixFloatMeasure,
+		final java.lang.String[] astrFloatFloatMaturityTenor,
+		final double[] adblFloatFloatQuote,
+		final java.lang.String strFloatFloatMeasure,
+		final java.lang.String[] astrSyntheticFloatFloatMaturityTenor,
+		final double[] adblSyntheticFloatFloatQuote,
+		final java.lang.String strSyntheticFloatFloatMeasure,
+		final org.drip.state.discount.MergedDiscountForwardCurve dc,
+		final org.drip.state.forward.ForwardCurve fcReference,
+		final int iLatentStateType)
+	{
+<span class="nc bnc" id="L603" title="All 2 branches missed.">		if (SHAPE_PRESERVING == iLatentStateType)</span>
+<span class="nc" id="L604">			return ShapePreservingForwardCurve (dtSpot, forwardLabel, astrDepositMaturityTenor,</span>
+				adblDepositQuote, strDepositMeasure, astrFRAMaturityTenor, adblFRAQuote, strFRAMeasure,
+					astrFixFloatMaturityTenor, adblFixFloatQuote, strFixFloatMeasure,
+						astrFloatFloatMaturityTenor, adblFloatFloatQuote, strFloatFloatMeasure,
+							astrSyntheticFloatFloatMaturityTenor, adblSyntheticFloatFloatQuote,
+								strSyntheticFloatFloatMeasure, dc, fcReference);
+
+<span class="nc bnc" id="L611" title="All 2 branches missed.">		if (SMOOTH == iLatentStateType)</span>
+<span class="nc" id="L612">			return SmoothForwardCurve (dtSpot, forwardLabel, astrDepositMaturityTenor, adblDepositQuote,</span>
+				strDepositMeasure, astrFRAMaturityTenor, adblFRAQuote, strFRAMeasure,
+					astrFixFloatMaturityTenor, adblFixFloatQuote, strFixFloatMeasure,
+						astrFloatFloatMaturityTenor, adblFloatFloatQuote, strFloatFloatMeasure,
+							astrSyntheticFloatFloatMaturityTenor, adblSyntheticFloatFloatQuote,
+								strSyntheticFloatFloatMeasure, dc, fcReference);
+
+<span class="nc" id="L619">		return null;</span>
+	}
+
+	/**
+	 * Construct an Overnight Curve from Overnight Exchange/OTC Market Instruments
+	 * 
+	 * @param dtSpot Spot Date
+	 * @param strCurrency Currency
+	 * @param astrDepositMaturityTenor Array of Deposit Maturity Tenors
+	 * @param adblDepositQuote Array of Deposit Quotes
+	 * @param strDepositMeasure Deposit Measure
+	 * @param astrShortEndOISMaturityTenor Array of Short End OIS Maturity Tenors
+	 * @param adblShortEndOISQuote Array of Short End OIS Quotes
+	 * @param strShortEndOISMeasure Short End OIS Measure
+	 * @param astrOISFuturesEffectiveTenor Array of OIS Futures Effective Tenors
+	 * @param astrOISFuturesMaturityTenor Array of OIS Futures Maturity Tenors
+	 * @param adblOISFuturesQuote Array of OIS Futures Quotes
+	 * @param strOISFuturesMeasure OIS Futures Measure
+	 * @param astrLongEndOISMaturityTenor Array of Long End OIS Maturity Tenors
+	 * @param adblLongEndOISQuote Array of Long End OIS Quotes
+	 * @param strLongEndOISMeasure Long End OIS Measure
+	 * @param scbc Segment Custom Builder Control
+	 * 
+	 * @return Overnight Curve from Overnight OTC Instruments
+	 */
+
+	public static final org.drip.state.discount.MergedDiscountForwardCurve OvernightCurve (
+		final org.drip.analytics.date.JulianDate dtSpot,
+		final String strCurrency,
+		final java.lang.String[] astrDepositMaturityTenor,
+		final double[] adblDepositQuote,
+		final java.lang.String strDepositMeasure,
+		final java.lang.String[] astrShortEndOISMaturityTenor,
+		final double[] adblShortEndOISQuote,
+		final java.lang.String strShortEndOISMeasure,
+		final java.lang.String[] astrOISFuturesEffectiveTenor,
+		final java.lang.String[] astrOISFuturesMaturityTenor,
+		final double[] adblOISFuturesQuote,
+		final java.lang.String strOISFuturesMeasure,
+		final java.lang.String[] astrLongEndOISMaturityTenor,
+		final double[] adblLongEndOISQuote,
+		final java.lang.String strLongEndOISMeasure,
+		final org.drip.spline.params.SegmentCustomBuilderControl scbc)
+	{
+<span class="pc bpc" id="L663" title="1 of 2 branches missed.">		if (null == dtSpot) return null;</span>
+
+<span class="fc" id="L665">		org.drip.state.inference.LatentStateStretchSpec lsssDeposit = null;</span>
+<span class="fc" id="L666">		org.drip.state.inference.LatentStateStretchSpec lsssOISFutures = null;</span>
+<span class="fc" id="L667">		org.drip.state.inference.LatentStateStretchSpec lsssLongEndOIS = null;</span>
+<span class="fc" id="L668">		org.drip.state.inference.LatentStateStretchSpec lsssShortEndOIS = null;</span>
+<span class="pc bpc" id="L669" title="1 of 2 branches missed.">		int iNumDepositQuote = null == adblDepositQuote ? 0 : adblDepositQuote.length;</span>
+<span class="pc bpc" id="L670" title="1 of 2 branches missed.">		int iNumOISFuturesQuote = null == adblOISFuturesQuote ? 0 : adblOISFuturesQuote.length;</span>
+<span class="pc bpc" id="L671" title="1 of 2 branches missed.">		int iNumLongEndOISQuote = null == adblLongEndOISQuote ? 0 : adblLongEndOISQuote.length;</span>
+<span class="pc bpc" id="L672" title="1 of 2 branches missed.">		int iNumShortEndOISQuote = null == adblShortEndOISQuote ? 0 : adblShortEndOISQuote.length;</span>
+<span class="pc bpc" id="L673" title="1 of 2 branches missed.">		int iNumDepositComp = null == astrDepositMaturityTenor ? 0 : astrDepositMaturityTenor.length;</span>
+<span class="pc bpc" id="L674" title="1 of 2 branches missed.">		int iNumOISFuturesComp = null == astrOISFuturesMaturityTenor ? 0 :</span>
+			astrOISFuturesMaturityTenor.length;
+<span class="pc bpc" id="L676" title="1 of 2 branches missed.">		int iNumOISFuturesComp2 = null == astrOISFuturesEffectiveTenor ? 0 :</span>
+			astrOISFuturesEffectiveTenor.length;
+<span class="pc bpc" id="L678" title="1 of 2 branches missed.">		int iNumLongEndOISComp = null == astrLongEndOISMaturityTenor ? 0 :</span>
+			astrLongEndOISMaturityTenor.length;
+<span class="pc bpc" id="L680" title="1 of 2 branches missed.">		int iNumShortEndOISComp = null == astrShortEndOISMaturityTenor ? 0 :</span>
+			astrShortEndOISMaturityTenor.length;
+
+<span class="pc bpc" id="L683" title="5 of 10 branches missed.">		if (iNumDepositQuote != iNumDepositComp || iNumShortEndOISQuote != iNumShortEndOISComp ||</span>
+			iNumOISFuturesQuote != iNumOISFuturesComp || iNumOISFuturesComp2 != iNumOISFuturesComp ||
+				iNumLongEndOISQuote != iNumLongEndOISComp)
+<span class="nc" id="L686">			return null;</span>
+
+<span class="fc" id="L688">		org.drip.analytics.date.JulianDate dtEffective = dtSpot.addBusDays (0, strCurrency);</span>
+
+<span class="pc bpc" id="L690" title="1 of 2 branches missed.">		if (0 != iNumDepositComp)</span>
+<span class="fc" id="L691">			lsssDeposit = org.drip.state.estimator.LatentStateStretchBuilder.ForwardFundingStretchSpec</span>
+<span class="fc" id="L692">				(&quot;DEPOSIT&quot;, org.drip.service.template.OTCInstrumentBuilder.OvernightDeposit (dtEffective,</span>
+					strCurrency, astrDepositMaturityTenor), strDepositMeasure, adblDepositQuote);
+
+<span class="pc bpc" id="L695" title="1 of 2 branches missed.">		if (0 != iNumShortEndOISComp)</span>
+<span class="fc" id="L696">			lsssShortEndOIS = org.drip.state.estimator.LatentStateStretchBuilder.ForwardFundingStretchSpec</span>
+<span class="fc" id="L697">				(&quot;SHORTENDOIS&quot;, org.drip.service.template.OTCInstrumentBuilder.OISFixFloat (dtEffective,</span>
+					strCurrency, astrShortEndOISMaturityTenor, adblShortEndOISQuote, false),
+						strShortEndOISMeasure, adblShortEndOISQuote);
+
+<span class="pc bpc" id="L701" title="1 of 2 branches missed.">		if (0 != iNumOISFuturesComp)</span>
+<span class="fc" id="L702">			lsssOISFutures = org.drip.state.estimator.LatentStateStretchBuilder.ForwardFundingStretchSpec</span>
+<span class="fc" id="L703">				(&quot;OISFUTURES&quot;, org.drip.service.template.OTCInstrumentBuilder.OISFixFloatFutures</span>
+<span class="fc" id="L704">					(dtEffective, strCurrency, astrOISFuturesEffectiveTenor, astrOISFuturesMaturityTenor,</span>
+						adblOISFuturesQuote, false), strOISFuturesMeasure, adblOISFuturesQuote);
+
+<span class="pc bpc" id="L707" title="1 of 2 branches missed.">		if (0 != iNumLongEndOISComp)</span>
+<span class="fc" id="L708">			lsssLongEndOIS = org.drip.state.estimator.LatentStateStretchBuilder.ForwardFundingStretchSpec</span>
+<span class="fc" id="L709">				(&quot;LONGENDOIS&quot;, org.drip.service.template.OTCInstrumentBuilder.OISFixFloat (dtEffective,</span>
+					strCurrency, astrLongEndOISMaturityTenor, adblLongEndOISQuote, false),
+						strLongEndOISMeasure, adblLongEndOISQuote);
+
+		try {
+<span class="fc" id="L714">			org.drip.state.inference.LinearLatentStateCalibrator lcc = new</span>
+				org.drip.state.inference.LinearLatentStateCalibrator (scbc,
+<span class="fc" id="L716">					org.drip.spline.stretch.BoundarySettings.NaturalStandard(),</span>
+						org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE, null, null);
+
+<span class="fc" id="L719">			return org.drip.state.creator.ScenarioDiscountCurveBuilder.ShapePreservingDFBuild (strCurrency,</span>
+				lcc, new org.drip.state.inference.LatentStateStretchSpec[] {lsssDeposit, lsssShortEndOIS,
+					lsssOISFutures, lsssLongEndOIS}, org.drip.param.valuation.ValuationParams.Spot
+<span class="fc" id="L722">						(dtEffective.julian()), null, null, null, 1.);</span>
+<span class="nc" id="L723">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L724">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L727">		return null;</span>
+	}
+
+	/**
+	 * Construct a Shape Preserving Overnight Curve from Overnight Exchange/OTC Market Instruments
+	 * 
+	 * @param dtSpot Spot Date
+	 * @param strCurrency Currency
+	 * @param astrDepositMaturityTenor Array of Deposit Maturity Tenors
+	 * @param adblDepositQuote Array of Deposit Quotes
+	 * @param strDepositMeasure Deposit Measure
+	 * @param astrShortEndOISMaturityTenor Array of Short End OIS Maturity Tenors
+	 * @param adblShortEndOISQuote Array of Short End OIS Quotes
+	 * @param strShortEndOISMeasure Short End OIS Measure
+	 * @param astrOISFuturesEffectiveTenor Array of OIS Futures Effective Tenors
+	 * @param astrOISFuturesMaturityTenor Array of OIS Futures Maturity Tenors
+	 * @param adblOISFuturesQuote Array of OIS Futures Quotes
+	 * @param strOISFuturesMeasure OIS Futures Measure
+	 * @param astrLongEndOISMaturityTenor Array of Long End OIS Maturity Tenors
+	 * @param adblLongEndOISQuote Array of Long End OIS Quotes
+	 * @param strLongEndOISMeasure Long End OIS Measure
+	 * 
+	 * @return Overnight Curve from Overnight OTC Instruments
+	 */
+
+	public static final org.drip.state.discount.MergedDiscountForwardCurve ShapePreservingOvernightCurve (
+		final org.drip.analytics.date.JulianDate dtSpot,
+		final String strCurrency,
+		final java.lang.String[] astrDepositMaturityTenor,
+		final double[] adblDepositQuote,
+		final java.lang.String strDepositMeasure,
+		final java.lang.String[] astrShortEndOISMaturityTenor,
+		final double[] adblShortEndOISQuote,
+		final java.lang.String strShortEndOISMeasure,
+		final java.lang.String[] astrOISFuturesEffectiveTenor,
+		final java.lang.String[] astrOISFuturesMaturityTenor,
+		final double[] adblOISFuturesQuote,
+		final java.lang.String strOISFuturesMeasure,
+		final java.lang.String[] astrLongEndOISMaturityTenor,
+		final double[] adblLongEndOISQuote,
+		final java.lang.String strLongEndOISMeasure)
+	{
+		try {
+<span class="nc" id="L770">			return OvernightCurve (dtSpot, strCurrency, astrDepositMaturityTenor, adblDepositQuote,</span>
+				strDepositMeasure, astrShortEndOISMaturityTenor, adblShortEndOISQuote, strShortEndOISMeasure,
+					astrOISFuturesEffectiveTenor, astrOISFuturesMaturityTenor, adblOISFuturesQuote,
+						strOISFuturesMeasure, astrLongEndOISMaturityTenor, adblLongEndOISQuote,
+							strLongEndOISMeasure, new org.drip.spline.params.SegmentCustomBuilderControl
+								(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+									new org.drip.spline.basis.PolynomialFunctionSetParams (2),
+<span class="nc" id="L777">										org.drip.spline.params.SegmentInelasticDesignControl.Create (0, 2),</span>
+											new org.drip.spline.params.ResponseScalingShapeControl (true, new
+												org.drip.function.r1tor1.QuadraticRationalShapeControl (0.)),
+													null));
+<span class="nc" id="L781">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L782">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L785">		return null;</span>
+	}
+
+	/**
+	 * Construct a Smooth Overnight Curve from Overnight Exchange/OTC Market Instruments
+	 * 
+	 * @param dtSpot Spot Date
+	 * @param strCurrency Currency
+	 * @param astrDepositMaturityTenor Array of Deposit Maturity Tenors
+	 * @param adblDepositQuote Array of Deposit Quotes
+	 * @param strDepositMeasure Deposit Measure
+	 * @param astrShortEndOISMaturityTenor Array of Short End OIS Maturity Tenors
+	 * @param adblShortEndOISQuote Array of Short End OIS Quotes
+	 * @param strShortEndOISMeasure Short End OIS Measure
+	 * @param astrOISFuturesEffectiveTenor Array of OIS Futures Effective Tenors
+	 * @param astrOISFuturesMaturityTenor Array of OIS Futures Maturity Tenors
+	 * @param adblOISFuturesQuote Array of OIS Futures Quotes
+	 * @param strOISFuturesMeasure OIS Futures Measure
+	 * @param astrLongEndOISMaturityTenor Array of Long End OIS Maturity Tenors
+	 * @param adblLongEndOISQuote Array of Long End OIS Quotes
+	 * @param strLongEndOISMeasure Long End OIS Measure
+	 * 
+	 * @return Overnight Curve from Overnight OTC Instruments
+	 */
+
+	public static final org.drip.state.discount.MergedDiscountForwardCurve SmoothOvernightCurve (
+		final org.drip.analytics.date.JulianDate dtSpot,
+		final String strCurrency,
+		final java.lang.String[] astrDepositMaturityTenor,
+		final double[] adblDepositQuote,
+		final java.lang.String strDepositMeasure,
+		final java.lang.String[] astrShortEndOISMaturityTenor,
+		final double[] adblShortEndOISQuote,
+		final java.lang.String strShortEndOISMeasure,
+		final java.lang.String[] astrOISFuturesEffectiveTenor,
+		final java.lang.String[] astrOISFuturesMaturityTenor,
+		final double[] adblOISFuturesQuote,
+		final java.lang.String strOISFuturesMeasure,
+		final java.lang.String[] astrLongEndOISMaturityTenor,
+		final double[] adblLongEndOISQuote,
+		final java.lang.String strLongEndOISMeasure)
+	{
+		try {
+<span class="fc" id="L828">			return OvernightCurve (dtSpot, strCurrency, astrDepositMaturityTenor, adblDepositQuote,</span>
+				strDepositMeasure, astrShortEndOISMaturityTenor, adblShortEndOISQuote, strShortEndOISMeasure,
+					astrOISFuturesEffectiveTenor, astrOISFuturesMaturityTenor, adblOISFuturesQuote,
+						strOISFuturesMeasure, astrLongEndOISMaturityTenor, adblLongEndOISQuote,
+							strLongEndOISMeasure, new org.drip.spline.params.SegmentCustomBuilderControl
+								(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+									new org.drip.spline.basis.PolynomialFunctionSetParams (4),
+<span class="fc" id="L835">										org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2),</span>
+											new org.drip.spline.params.ResponseScalingShapeControl (true, new
+												org.drip.function.r1tor1.QuadraticRationalShapeControl (0.)),
+													null));
+<span class="nc" id="L839">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L840">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L843">		return null;</span>
+	}
+
+	/**
+	 * Construct an Overnight Curve from Overnight Exchange/OTC Market Instruments
+	 * 
+	 * @param dtSpot Spot Date
+	 * @param strCurrency Currency
+	 * @param astrDepositMaturityTenor Array of Deposit Maturity Tenors
+	 * @param adblDepositQuote Array of Deposit Quotes
+	 * @param strDepositMeasure Deposit Measure
+	 * @param astrShortEndOISMaturityTenor Array of Short End OIS Maturity Tenors
+	 * @param adblShortEndOISQuote Array of Short End OIS Quotes
+	 * @param strShortEndOISMeasure Short End OIS Measure
+	 * @param astrOISFuturesEffectiveTenor Array of OIS Futures Effective Tenors
+	 * @param astrOISFuturesMaturityTenor Array of OIS Futures Maturity Tenors
+	 * @param adblOISFuturesQuote Array of OIS Futures Quotes
+	 * @param strOISFuturesMeasure OIS Futures Measure
+	 * @param astrLongEndOISMaturityTenor Array of Long End OIS Maturity Tenors
+	 * @param adblLongEndOISQuote Array of Long End OIS Quotes
+	 * @param strLongEndOISMeasure Long End OIS Measure
+	 * @param iLatentStateType SHAPE PRESERVING/SMOOTH
+	 * 
+	 * @return Overnight Curve from Overnight OTC Instruments
+	 */
+
+	public static final org.drip.state.discount.MergedDiscountForwardCurve OvernightCurve (
+		final org.drip.analytics.date.JulianDate dtSpot,
+		final String strCurrency,
+		final java.lang.String[] astrDepositMaturityTenor,
+		final double[] adblDepositQuote,
+		final java.lang.String strDepositMeasure,
+		final java.lang.String[] astrShortEndOISMaturityTenor,
+		final double[] adblShortEndOISQuote,
+		final java.lang.String strShortEndOISMeasure,
+		final java.lang.String[] astrOISFuturesEffectiveTenor,
+		final java.lang.String[] astrOISFuturesMaturityTenor,
+		final double[] adblOISFuturesQuote,
+		final java.lang.String strOISFuturesMeasure,
+		final java.lang.String[] astrLongEndOISMaturityTenor,
+		final double[] adblLongEndOISQuote,
+		final java.lang.String strLongEndOISMeasure,
+		final int iLatentStateType)
+	{
+<span class="nc bnc" id="L887" title="All 2 branches missed.">		if (SHAPE_PRESERVING == iLatentStateType)</span>
+<span class="nc" id="L888">			return ShapePreservingOvernightCurve (dtSpot, strCurrency, astrDepositMaturityTenor,</span>
+				adblDepositQuote, strDepositMeasure, astrShortEndOISMaturityTenor, adblShortEndOISQuote,
+					strShortEndOISMeasure, astrOISFuturesEffectiveTenor, astrOISFuturesMaturityTenor,
+						adblOISFuturesQuote, strOISFuturesMeasure, astrLongEndOISMaturityTenor,
+							adblLongEndOISQuote, strLongEndOISMeasure);
+
+<span class="nc bnc" id="L894" title="All 2 branches missed.">		if (SMOOTH == iLatentStateType)</span>
+<span class="nc" id="L895">			return SmoothOvernightCurve (dtSpot, strCurrency, astrDepositMaturityTenor, adblDepositQuote,</span>
+				strDepositMeasure, astrShortEndOISMaturityTenor, adblShortEndOISQuote, strShortEndOISMeasure,
+					astrOISFuturesEffectiveTenor, astrOISFuturesMaturityTenor, adblOISFuturesQuote,
+						strOISFuturesMeasure, astrLongEndOISMaturityTenor, adblLongEndOISQuote,
+							strLongEndOISMeasure);
+
+<span class="nc" id="L901">		return null;</span>
+	}
+
+	/**
+	 * Construct a Credit Curve from Overnight Exchange/OTC Market Instruments
+	 * 
+	 * @param dtSpot Spot Date
+	 * @param strCredit Credit Curve
+	 * @param astrMaturityTenor Maturity Tenor
+	 * @param adblCoupon Coupon Array
+	 * @param adblQuote Array of Market Quotes
+	 * @param strMeasure Calibration Measure
+	 * @param dc Discount Curve
+	 * 
+	 * @return The Credit Curve Instance
+	 */
+
+	public static final org.drip.state.credit.CreditCurve CreditCurve (
+		final org.drip.analytics.date.JulianDate dtSpot,
+		final java.lang.String strCredit,
+		final java.lang.String[] astrMaturityTenor,
+		final double[] adblCoupon,
+		final double[] adblQuote,
+		final java.lang.String strMeasure,
+		final org.drip.state.discount.MergedDiscountForwardCurve dc)
+	{
+<span class="pc bpc" id="L927" title="2 of 4 branches missed.">		if (null == dtSpot || null == dc) return null;</span>
+
+<span class="fc" id="L929">		java.lang.String strCurrency = dc.currency();</span>
+
+<span class="fc" id="L931">		org.drip.analytics.date.JulianDate dtEffective = dtSpot.addBusDays (0, strCurrency);</span>
+
+<span class="fc" id="L933">		org.drip.product.definition.CreditDefaultSwap[] aCDS =</span>
+<span class="fc" id="L934">			org.drip.service.template.OTCInstrumentBuilder.CDS (dtEffective, astrMaturityTenor, adblCoupon,</span>
+				strCurrency, strCredit);
+
+<span class="pc bpc" id="L937" title="1 of 2 branches missed.">		if (null == aCDS) return null;</span>
+
+<span class="fc" id="L939">		int iNumCDS = aCDS.length;</span>
+<span class="fc" id="L940">		java.lang.String[] astrMeasure = new java.lang.String[iNumCDS];</span>
+
+<span class="pc bpc" id="L942" title="1 of 2 branches missed.">		if (0 == iNumCDS) return null;</span>
+
+<span class="fc bfc" id="L944" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumCDS; ++i)</span>
+<span class="fc" id="L945">			astrMeasure[i] = strMeasure;</span>
+
+<span class="fc" id="L947">		return org.drip.state.creator.ScenarioCreditCurveBuilder.Custom (strCredit, dtEffective, aCDS, dc,</span>
+<span class="pc bpc" id="L948" title="1 of 2 branches missed.">			adblQuote, astrMeasure, &quot;CAD&quot;.equalsIgnoreCase (strCurrency) || &quot;EUR&quot;.equalsIgnoreCase</span>
+<span class="pc bpc" id="L949" title="5 of 6 branches missed.">				(strCurrency) || &quot;GBP&quot;.equalsIgnoreCase (strCurrency) || &quot;HKD&quot;.equalsIgnoreCase (strCurrency)</span>
+<span class="pc bnc" id="L950" title="All 2 branches missed.">					|| &quot;USD&quot;.equalsIgnoreCase (strCurrency) ? 0.40 : 0.25, &quot;QuotedSpread&quot;.equals</span>
+<span class="fc" id="L951">						(strMeasure));</span>
+	}
+
+	/**
+	 * Construct a Credit Curve from the specified Calibration CDS Instruments
+	 * 
+	 * @param dtSpot Spot Date
+	 * @param aCDS Array of the Calibration CDS Instruments
+	 * @param adblQuote Array of Market Quotes
+	 * @param strMeasure Calibration Measure
+	 * @param dc Discount Curve
+	 * 
+	 * @return The Credit Curve Instance
+	 */
+
+	public static final org.drip.state.credit.CreditCurve CreditCurve (
+		final org.drip.analytics.date.JulianDate dtSpot,
+		final org.drip.product.definition.CreditDefaultSwap[] aCDS,
+		final double[] adblQuote,
+		final java.lang.String strMeasure,
+		final org.drip.state.discount.MergedDiscountForwardCurve dc)
+	{
+<span class="nc bnc" id="L973" title="All 4 branches missed.">		if (null == dtSpot || null == dc) return null;</span>
+
+<span class="nc" id="L975">		java.lang.String strCurrency = dc.currency();</span>
+
+<span class="nc bnc" id="L977" title="All 2 branches missed.">		if (null == aCDS) return null;</span>
+
+<span class="nc" id="L979">		int iNumCDS = aCDS.length;</span>
+<span class="nc" id="L980">		java.lang.String[] astrMeasure = new java.lang.String[iNumCDS];</span>
+
+<span class="nc bnc" id="L982" title="All 2 branches missed.">		if (0 == iNumCDS) return null;</span>
+
+<span class="nc bnc" id="L984" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumCDS; ++i)</span>
+<span class="nc" id="L985">			astrMeasure[i] = strMeasure;</span>
+
+<span class="nc" id="L987">		return org.drip.state.creator.ScenarioCreditCurveBuilder.Custom</span>
+<span class="nc" id="L988">			(aCDS[0].creditLabel().referenceEntity(), dtSpot, aCDS, dc, adblQuote, astrMeasure,</span>
+<span class="nc bnc" id="L989" title="All 4 branches missed.">				&quot;CAD&quot;.equalsIgnoreCase (strCurrency) || &quot;EUR&quot;.equalsIgnoreCase (strCurrency) ||</span>
+<span class="nc bnc" id="L990" title="All 4 branches missed.">					&quot;GBP&quot;.equalsIgnoreCase (strCurrency) || &quot;HKD&quot;.equalsIgnoreCase (strCurrency) ||</span>
+<span class="nc bnc" id="L991" title="All 2 branches missed.">						&quot;USD&quot;.equalsIgnoreCase (strCurrency) ? 0.40 : 0.25, &quot;QuotedSpread&quot;.equals</span>
+<span class="nc" id="L992">							(strMeasure));</span>
+	}
+
+	/**
+	 * Construct a Govvie Curve from the Treasury Instruments
+	 * 
+	 * @param strCode Treasury Code
+	 * @param dtSpot Spot Date
+	 * @param adtEffective Array of Effective Dates
+	 * @param adtMaturity Array of Maturity Dates
+	 * @param adblCoupon Array of Coupons
+	 * @param adblQuote Array of Market Quotes
+	 * @param strMeasure Calibration Measure
+	 * @param scbc Segment Custom Builder Control Parameters
+	 * 
+	 * @return The Govvie Curve Instance
+	 */
+
+	public static final org.drip.state.govvie.GovvieCurve GovvieCurve (
+		final java.lang.String strCode,
+		final org.drip.analytics.date.JulianDate dtSpot,
+		final org.drip.analytics.date.JulianDate[] adtEffective,
+		final org.drip.analytics.date.JulianDate[] adtMaturity,
+		final double[] adblCoupon,
+		final double[] adblQuote,
+		final java.lang.String strMeasure,
+		final org.drip.spline.params.SegmentCustomBuilderControl scbc)
+	{
+<span class="fc" id="L1020">		org.drip.product.credit.BondComponent[] aTreasury =</span>
+<span class="fc" id="L1021">			org.drip.service.template.TreasuryBuilder.FromCode (strCode, adtEffective, adtMaturity,</span>
+				adblCoupon);
+
+<span class="pc bpc" id="L1024" title="1 of 2 branches missed.">		if (null == aTreasury) return null;</span>
+
+<span class="fc" id="L1026">		int iNumTreasury = aTreasury.length;</span>
+<span class="fc" id="L1027">		int[] aiDate = new int[iNumTreasury];</span>
+
+<span class="pc bpc" id="L1029" title="2 of 4 branches missed.">		if (0 == iNumTreasury || adblQuote.length != iNumTreasury) return null;</span>
+
+<span class="fc bfc" id="L1031" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTreasury; ++i)</span>
+<span class="fc" id="L1032">			aiDate[i] = adtMaturity[i].julian();</span>
+
+<span class="fc" id="L1034">		java.lang.String strCurrency = aTreasury[0].currency();</span>
+
+<span class="fc" id="L1036">		java.lang.String strBenchmarkTreasuryCode =</span>
+<span class="fc" id="L1037">			org.drip.market.issue.TreasurySettingContainer.CurrencyBenchmarkCode (strCurrency);</span>
+
+<span class="pc bpc" id="L1039" title="2 of 4 branches missed.">		return null == strBenchmarkTreasuryCode || strBenchmarkTreasuryCode.isEmpty() ? null :</span>
+<span class="fc" id="L1040">			org.drip.state.creator.ScenarioGovvieCurveBuilder.CustomSplineCurve (strBenchmarkTreasuryCode,</span>
+				dtSpot, strBenchmarkTreasuryCode, strCurrency, aiDate, adblQuote, scbc);
+	}
+
+	/**
+	 * Construct a Shape Preserving Govvie Curve from the Treasury Instruments
+	 * 
+	 * @param strCode Treasury Code
+	 * @param dtSpot Spot Date
+	 * @param adtEffective Array of Effective Dates
+	 * @param adtMaturity Array of Maturity Dates
+	 * @param adblCoupon Array of Coupons
+	 * @param adblQuote Array of Market Quotes
+	 * @param strMeasure Calibration Measure
+	 * 
+	 * @return The Govvie Curve Instance
+	 */
+
+	public static final org.drip.state.govvie.GovvieCurve ShapePreservingGovvieCurve (
+		final java.lang.String strCode,
+		final org.drip.analytics.date.JulianDate dtSpot,
+		final org.drip.analytics.date.JulianDate[] adtEffective,
+		final org.drip.analytics.date.JulianDate[] adtMaturity,
+		final double[] adblCoupon,
+		final double[] adblQuote,
+		final java.lang.String strMeasure)
+	{
+		try {
+<span class="fc" id="L1068">			return GovvieCurve (strCode, dtSpot, adtEffective, adtMaturity, adblCoupon, adblQuote,</span>
+				strMeasure, new org.drip.spline.params.SegmentCustomBuilderControl
+					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
+						org.drip.spline.basis.PolynomialFunctionSetParams (2),
+<span class="fc" id="L1072">							org.drip.spline.params.SegmentInelasticDesignControl.Create (0, 2), null, null));</span>
+<span class="nc" id="L1073">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1074">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L1077">		return null;</span>
+	}
+
+	/**
+	 * Construct a Smooth Govvie Curve from the Treasury Instruments
+	 * 
+	 * @param strCode Treasury Code
+	 * @param dtSpot Spot Date
+	 * @param adtEffective Array of Effective Dates
+	 * @param adtMaturity Array of Maturity Dates
+	 * @param adblCoupon Array of Coupons
+	 * @param adblQuote Array of Market Quotes
+	 * @param strMeasure Calibration Measure
+	 * 
+	 * @return The Govvie Curve Instance
+	 */
+
+	public static final org.drip.state.govvie.GovvieCurve SmoothGovvieCurve (
+		final java.lang.String strCode,
+		final org.drip.analytics.date.JulianDate dtSpot,
+		final org.drip.analytics.date.JulianDate[] adtEffective,
+		final org.drip.analytics.date.JulianDate[] adtMaturity,
+		final double[] adblCoupon,
+		final double[] adblQuote,
+		final java.lang.String strMeasure)
+	{
+		try {
+<span class="nc" id="L1104">			return GovvieCurve (strCode, dtSpot, adtEffective, adtMaturity, adblCoupon, adblQuote,</span>
+				strMeasure, new org.drip.spline.params.SegmentCustomBuilderControl
+					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
+						org.drip.spline.basis.PolynomialFunctionSetParams (4),
+<span class="nc" id="L1108">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
+<span class="nc" id="L1109">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1110">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L1113">		return null;</span>
+	}
+
+	/**
+	 * Construct a Govvie Curve from the Treasury Instruments
+	 * 
+	 * @param strCode Treasury Code
+	 * @param dtSpot Spot Date
+	 * @param adtEffective Array of Effective Dates
+	 * @param adtMaturity Array of Maturity Dates
+	 * @param adblCoupon Array of Coupons
+	 * @param adblQuote Array of Market Quotes
+	 * @param strMeasure Calibration Measure
+	 * @param iLatentStateType SHAPE PRESERVING/SMOOTH
+	 * 
+	 * @return The Govvie Curve Instance
+	 */
+
+	public static final org.drip.state.govvie.GovvieCurve GovvieCurve (
+		final java.lang.String strCode,
+		final org.drip.analytics.date.JulianDate dtSpot,
+		final org.drip.analytics.date.JulianDate[] adtEffective,
+		final org.drip.analytics.date.JulianDate[] adtMaturity,
+		final double[] adblCoupon,
+		final double[] adblQuote,
+		final java.lang.String strMeasure,
+		final int iLatentStateType)
+	{
+<span class="pc bpc" id="L1141" title="1 of 2 branches missed.">		if (SHAPE_PRESERVING == iLatentStateType)</span>
+<span class="fc" id="L1142">			return ShapePreservingGovvieCurve (strCode, dtSpot, adtEffective, adtMaturity, adblCoupon,</span>
+				adblQuote, strMeasure);
+
+<span class="nc bnc" id="L1145" title="All 2 branches missed.">		if (SMOOTH == iLatentStateType)</span>
+<span class="nc" id="L1146">			return SmoothGovvieCurve (strCode, dtSpot, adtEffective, adtMaturity, adblCoupon, adblQuote,</span>
+				strMeasure);
+
+<span class="nc" id="L1149">		return null;</span>
+	}
+
+	/**
+	 * Construct an FX Curve from the FX Forward Instruments
+	 * 
+	 * @param dtSpot Spot Date
+	 * @param cp The FX Currency Pair
+	 * @param astrMaturityTenor Array of Maturity Tenors
+	 * @param adblQuote Array of FX Forwards
+	 * @param strMeasure Calibration Measure
+	 * @param dblFXSpot FX Spot
+	 * @param scbc Segment Custom Builder Builder Parameters
+	 * 
+	 * @return The FX Curve Instance
+	 */
+
+	public static final org.drip.state.fx.FXCurve FXCurve (
+		final org.drip.analytics.date.JulianDate dtSpot,
+		final org.drip.product.params.CurrencyPair cp,
+		final java.lang.String[] astrMaturityTenor,
+		final double[] adblQuote,
+		final java.lang.String strMeasure,
+		final double dblFXSpot,
+		final org.drip.spline.params.SegmentCustomBuilderControl scbc)
+	{
+<span class="pc bpc" id="L1175" title="2 of 4 branches missed.">		if (null == dtSpot || null == cp) return null;</span>
+
+<span class="fc" id="L1177">		org.drip.analytics.date.JulianDate dtEffective = dtSpot.addBusDays (0, cp.denomCcy());</span>
+
+<span class="fc" id="L1179">		org.drip.product.fx.FXForwardComponent[] aFXFC =</span>
+<span class="fc" id="L1180">			org.drip.service.template.OTCInstrumentBuilder.FXForward (dtEffective, cp, astrMaturityTenor);</span>
+
+<span class="pc bpc" id="L1182" title="1 of 2 branches missed.">		if (null == aFXFC) return null;</span>
+
+<span class="fc" id="L1184">		int iNumFXFC = aFXFC.length;</span>
+
+<span class="pc bpc" id="L1186" title="2 of 4 branches missed.">		if (0 == iNumFXFC || adblQuote.length != iNumFXFC) return null;</span>
+
+<span class="fc" id="L1188">		return org.drip.state.creator.ScenarioFXCurveBuilder.ShapePreservingFXCurve ( cp.code(), cp,</span>
+<span class="fc" id="L1189">			org.drip.param.valuation.ValuationParams.Spot (dtEffective.julian()), null, null, null, aFXFC,</span>
+				strMeasure, adblQuote, dblFXSpot, scbc);
+	}
+
+	/**
+	 * Construct a Shape Preserving FX Curve from the FX Forward Instruments
+	 * 
+	 * @param dtSpot Spot Date
+	 * @param cp The FX Currency Pair
+	 * @param astrMaturityTenor Array of Maturity Tenors
+	 * @param adblQuote Array of FX Forwards
+	 * @param strMeasure Calibration Measure
+	 * @param dblFXSpot FX Spot
+	 * 
+	 * @return The FX Curve Instance
+	 */
+
+	public static final org.drip.state.fx.FXCurve ShapePreservingFXCurve (
+		final org.drip.analytics.date.JulianDate dtSpot,
+		final org.drip.product.params.CurrencyPair cp,
+		final java.lang.String[] astrMaturityTenor,
+		final double[] adblQuote,
+		final java.lang.String strMeasure,
+		final double dblFXSpot)
+	{
+		try {
+<span class="nc" id="L1215">			return FXCurve (dtSpot, cp, astrMaturityTenor, adblQuote, strMeasure, dblFXSpot, new</span>
+				org.drip.spline.params.SegmentCustomBuilderControl
+					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
+						org.drip.spline.basis.PolynomialFunctionSetParams (2),
+<span class="nc" id="L1219">							org.drip.spline.params.SegmentInelasticDesignControl.Create (0, 2), null, null));</span>
+<span class="nc" id="L1220">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1221">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L1224">		return null;</span>
+	}
+
+	/**
+	 * Construct a Smooth FX Curve from the FX Forward Instruments
+	 * 
+	 * @param dtSpot Spot Date
+	 * @param cp The FX Currency Pair
+	 * @param astrMaturityTenor Array of Maturity Tenors
+	 * @param adblQuote Array of FX Forwards
+	 * @param strMeasure Calibration Measure
+	 * @param dblFXSpot FX Spot
+	 * 
+	 * @return The FX Curve Instance
+	 */
+
+	public static final org.drip.state.fx.FXCurve SmoothFXCurve (
+		final org.drip.analytics.date.JulianDate dtSpot,
+		final org.drip.product.params.CurrencyPair cp,
+		final java.lang.String[] astrMaturityTenor,
+		final double[] adblQuote,
+		final java.lang.String strMeasure,
+		final double dblFXSpot)
+	{
+		try {
+<span class="fc" id="L1249">			return FXCurve (dtSpot, cp, astrMaturityTenor, adblQuote, strMeasure, dblFXSpot, new</span>
+				org.drip.spline.params.SegmentCustomBuilderControl
+					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
+						org.drip.spline.basis.PolynomialFunctionSetParams (4),
+<span class="fc" id="L1253">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
+<span class="nc" id="L1254">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1255">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L1258">		return null;</span>
+	}
+
+	/**
+	 * Construct an FX Curve from the FX Forward Instruments
+	 * 
+	 * @param dtSpot Spot Date
+	 * @param cp The FX Currency Pair
+	 * @param astrMaturityTenor Array of Maturity Tenors
+	 * @param adblQuote Array of FX Forwards
+	 * @param strMeasure Calibration Measure
+	 * @param dblFXSpot FX Spot
+	 * @param iLatentStateType SHAPE PRESERVING/SMOOTH
+	 * 
+	 * @return The FX Curve Instance
+	 */
+
+	public static final org.drip.state.fx.FXCurve FXCurve (
+		final org.drip.analytics.date.JulianDate dtSpot,
+		final org.drip.product.params.CurrencyPair cp,
+		final java.lang.String[] astrMaturityTenor,
+		final double[] adblQuote,
+		final java.lang.String strMeasure,
+		final double dblFXSpot,
+		final int iLatentStateType)
+	{
+<span class="nc bnc" id="L1284" title="All 2 branches missed.">		if (SHAPE_PRESERVING == iLatentStateType)</span>
+<span class="nc" id="L1285">			return ShapePreservingFXCurve (dtSpot, cp, astrMaturityTenor, adblQuote, strMeasure, dblFXSpot);</span>
+
+<span class="nc bnc" id="L1287" title="All 2 branches missed.">		if (SMOOTH == iLatentStateType)</span>
+<span class="nc" id="L1288">			return SmoothFXCurve (dtSpot, cp, astrMaturityTenor, adblQuote, strMeasure, dblFXSpot);</span>
+
+<span class="nc" id="L1290">		return null;</span>
+	}
+
+	/**
+	 * Forward Rate Volatility Latent State Construction from Cap/Floor Instruments
+	 * 
+	 * @param dtSpot Spot Date
+	 * @param forwardLabel Forward Label
+	 * @param bIsCap TRUE - Create and Use Array of Caps
+	 * @param astrMaturityTenor Array of Cap/floor Maturities
+	 * @param adblStrike Array of Cap/Floor Strikes
+	 * @param adblQuote Array of Cap/Floor Quotes
+	 * @param strMeasure Calibration Measure
+	 * @param dc Discount Curve Instance
+	 * @param fc Forward Curve Instance
+	 * 
+	 * @return Instance of the Forward Rate Volatility Curve
+	 */
+
+	public static final org.drip.state.volatility.VolatilityCurve ForwardRateVolatilityCurve (
+		final org.drip.analytics.date.JulianDate dtSpot,
+		final org.drip.state.identifier.ForwardLabel forwardLabel,
+		final boolean bIsCap,
+		final java.lang.String[] astrMaturityTenor,
+		final double[] adblStrike,
+		final double[] adblQuote,
+		final java.lang.String strMeasure,
+		final org.drip.state.discount.MergedDiscountForwardCurve dc,
+		final org.drip.state.forward.ForwardCurve fc)
+	{
+<span class="pc bpc" id="L1320" title="3 of 6 branches missed.">		if (null == dtSpot || null == astrMaturityTenor || null == dc) return null;</span>
+
+<span class="fc" id="L1322">		org.drip.analytics.date.JulianDate dtEffective = dtSpot.addBusDays (0, dc.currency());</span>
+
+<span class="fc" id="L1324">		int iNumComp = astrMaturityTenor.length;</span>
+<span class="fc" id="L1325">		java.lang.String[] astrCalibMeasure = new java.lang.String[iNumComp];</span>
+
+<span class="pc bpc" id="L1327" title="1 of 2 branches missed.">		if (0 == iNumComp) return null;</span>
+
+<span class="fc bfc" id="L1329" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumComp; ++i)</span>
+<span class="fc" id="L1330">			astrCalibMeasure[i] = strMeasure;</span>
+
+<span class="fc" id="L1332">		return org.drip.state.creator.ScenarioLocalVolatilityBuilder.NonlinearBuild</span>
+<span class="fc" id="L1333">			(forwardLabel.fullyQualifiedName() + &quot;::VOL&quot;, dtEffective, forwardLabel,</span>
+<span class="fc" id="L1334">				org.drip.service.template.OTCInstrumentBuilder.CapFloor (dtEffective, forwardLabel,</span>
+					astrMaturityTenor, adblStrike, bIsCap), adblQuote, astrCalibMeasure, dc, fc, null);
+	}
+
+	/**
+	 * Construct a Map of Tenor Bumped Funding Curve Based off of the Input Exchange/OTC Market Instruments
+	 * 
+	 * @param dtSpot The Spot Date
+	 * @param strCurrency Currency
+	 * @param astrDepositMaturityTenor Array of Deposit Maturity Tenors
+	 * @param adblDepositQuote Array of Deposit Quotes
+	 * @param strDepositMeasure Deposit Calibration Measure
+	 * @param adblFuturesQuote Array of Futures Quotes
+	 * @param strFuturesMeasure Futures Calibration Measure
+	 * @param astrFixFloatMaturityTenor Array of Fix Float Swap Maturity Tenors
+	 * @param adblFixFloatQuote Array of Fix Float Swap Quotes
+	 * @param strFixFloatMeasure Fix Float Calibration Measure
+	 * @param iLatentStateType SHAPE_PRESERVING/SMOOTH
+	 * @param dblBump The Tenor Node Bump Amount
+	 * @param bIsProportional TRUE - The Bump Applied is Proportional
+	 * 
+	 * @return The Tenor Bumped Funding Curve Map
+	 */
+
+	public static final
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.discount.MergedDiscountForwardCurve&gt;
+			BumpedFundingCurve (
+				final org.drip.analytics.date.JulianDate dtSpot,
+				final java.lang.String strCurrency,
+				final java.lang.String[] astrDepositMaturityTenor,
+				final double[] adblDepositQuote,
+				final java.lang.String strDepositMeasure,
+				final double[] adblFuturesQuote,
+				final java.lang.String strFuturesMeasure,
+				final java.lang.String[] astrFixFloatMaturityTenor,
+				final double[] adblFixFloatQuote,
+				final java.lang.String strFixFloatMeasure,
+				final int iLatentStateType,
+				final double dblBump,
+				final boolean bIsProportional)
+	{
+<span class="nc bnc" id="L1375" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBump)) return null;</span>
+
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.discount.MergedDiscountForwardCurve&gt;
+<span class="nc" id="L1378">			mapBumpedCurve = new</span>
+				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.discount.MergedDiscountForwardCurve&gt;();
+
+		try {
+<span class="nc" id="L1382">			org.drip.param.definition.ManifestMeasureTweak mmtFLAT = new</span>
+				org.drip.param.definition.ManifestMeasureTweak
+					(org.drip.param.definition.ManifestMeasureTweak.FLAT, bIsProportional, dblBump);
+
+<span class="nc bnc" id="L1386" title="All 2 branches missed.">			if (null != adblDepositQuote) {</span>
+<span class="nc" id="L1387">				int iNumDeposit = adblDepositQuote.length;</span>
+
+<span class="nc bnc" id="L1389" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumDeposit; ++i) {</span>
+<span class="nc" id="L1390">					org.drip.state.discount.MergedDiscountForwardCurve dcDepositQuoteBumped = FundingCurve</span>
+<span class="nc" id="L1391">						(dtSpot, strCurrency, astrDepositMaturityTenor,</span>
+<span class="nc" id="L1392">							org.drip.analytics.support.Helper.TweakManifestMeasure (adblDepositQuote, new</span>
+								org.drip.param.definition.ManifestMeasureTweak (i, bIsProportional,
+									dblBump)), strDepositMeasure, adblFuturesQuote, strFuturesMeasure,
+										astrFixFloatMaturityTenor, adblFixFloatQuote, strFixFloatMeasure,
+											iLatentStateType);
+
+<span class="nc bnc" id="L1398" title="All 2 branches missed.">					if (null != dcDepositQuoteBumped)</span>
+<span class="nc" id="L1399">						mapBumpedCurve.put (&quot;DEPOSIT::&quot; + astrDepositMaturityTenor[i],</span>
+							dcDepositQuoteBumped);
+				}
+			}
+
+<span class="nc" id="L1404">			double[] adblDepositParallelBump = org.drip.analytics.support.Helper.TweakManifestMeasure</span>
+<span class="nc" id="L1405">				(adblDepositQuote, mmtFLAT);</span>
+
+<span class="nc" id="L1407">			org.drip.state.discount.MergedDiscountForwardCurve dcDepositQuoteBumped = FundingCurve (dtSpot,</span>
+				strCurrency, astrDepositMaturityTenor, adblDepositParallelBump, strDepositMeasure,
+					adblFuturesQuote, strFuturesMeasure, astrFixFloatMaturityTenor, adblFixFloatQuote,
+						strFixFloatMeasure, iLatentStateType);
+
+<span class="nc bnc" id="L1412" title="All 2 branches missed.">			if (null != dcDepositQuoteBumped) mapBumpedCurve.put (&quot;DEPOSIT::PLL&quot;, dcDepositQuoteBumped);</span>
+
+<span class="nc bnc" id="L1414" title="All 2 branches missed.">			if (null != adblFuturesQuote) {</span>
+<span class="nc" id="L1415">				int iNumFutures = adblFuturesQuote.length;</span>
+
+<span class="nc bnc" id="L1417" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumFutures; ++i) {</span>
+<span class="nc" id="L1418">				org.drip.state.discount.MergedDiscountForwardCurve dcFuturesQuoteBumped = FundingCurve</span>
+<span class="nc" id="L1419">					(dtSpot, strCurrency, astrDepositMaturityTenor, adblDepositQuote, strDepositMeasure,</span>
+<span class="nc" id="L1420">						org.drip.analytics.support.Helper.TweakManifestMeasure (adblFuturesQuote, new</span>
+							org.drip.param.definition.ManifestMeasureTweak (i, bIsProportional, dblBump)),
+								strFuturesMeasure, astrFixFloatMaturityTenor, adblFixFloatQuote,
+									strFixFloatMeasure, iLatentStateType);
+
+<span class="nc bnc" id="L1425" title="All 2 branches missed.">				if (null != dcFuturesQuoteBumped) mapBumpedCurve.put (&quot;FUTURES::&quot; + i, dcFuturesQuoteBumped);</span>
+				}
+			}
+
+<span class="nc" id="L1429">			double[] adblFuturesParallelBump = org.drip.analytics.support.Helper.TweakManifestMeasure</span>
+<span class="nc" id="L1430">				(adblFuturesQuote, mmtFLAT);</span>
+
+<span class="nc" id="L1432">			org.drip.state.discount.MergedDiscountForwardCurve dcFuturesQuoteBumped = FundingCurve (dtSpot,</span>
+				strCurrency, astrDepositMaturityTenor, adblDepositQuote, strDepositMeasure,
+					adblFuturesParallelBump, strFuturesMeasure, astrFixFloatMaturityTenor, adblFixFloatQuote,
+						strFixFloatMeasure, iLatentStateType);
+
+<span class="nc bnc" id="L1437" title="All 2 branches missed.">			if (null != dcFuturesQuoteBumped) mapBumpedCurve.put (&quot;FUTURES::P&quot;, dcFuturesQuoteBumped);</span>
+
+<span class="nc bnc" id="L1439" title="All 2 branches missed.">			if (null != adblFixFloatQuote) {</span>
+<span class="nc" id="L1440">				int iNumFixFloat = adblFixFloatQuote.length;</span>
+
+<span class="nc bnc" id="L1442" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumFixFloat; ++i) {</span>
+<span class="nc" id="L1443">					org.drip.state.discount.MergedDiscountForwardCurve dcFixFloatQuoteBumped = FundingCurve</span>
+<span class="nc" id="L1444">						(dtSpot, strCurrency, astrDepositMaturityTenor, adblDepositQuote, strDepositMeasure,</span>
+							adblFuturesQuote, strFuturesMeasure, astrFixFloatMaturityTenor,
+<span class="nc" id="L1446">								org.drip.analytics.support.Helper.TweakManifestMeasure (adblFixFloatQuote,</span>
+									new org.drip.param.definition.ManifestMeasureTweak (i, bIsProportional,
+										dblBump)), strFixFloatMeasure, iLatentStateType);
+
+<span class="nc bnc" id="L1450" title="All 2 branches missed.">					if (null != dcFixFloatQuoteBumped)</span>
+<span class="nc" id="L1451">						mapBumpedCurve.put (&quot;FIXFLOAT::&quot; + astrFixFloatMaturityTenor[i],</span>
+							dcFixFloatQuoteBumped);
+				}
+
+<span class="nc" id="L1455">				double[] adblFixFloatParallelBump = org.drip.analytics.support.Helper.TweakManifestMeasure</span>
+<span class="nc" id="L1456">					(adblFixFloatQuote, mmtFLAT);</span>
+
+<span class="nc" id="L1458">				org.drip.state.discount.MergedDiscountForwardCurve dcFixFloatQuoteBumped = FundingCurve</span>
+<span class="nc" id="L1459">					(dtSpot, strCurrency, astrDepositMaturityTenor, adblDepositQuote, strDepositMeasure,</span>
+						adblFuturesQuote, strFuturesMeasure, astrFixFloatMaturityTenor,
+							adblFixFloatParallelBump, strFixFloatMeasure, iLatentStateType);
+
+<span class="nc bnc" id="L1463" title="All 2 branches missed.">				if (null != dcFixFloatQuoteBumped)</span>
+<span class="nc" id="L1464">					mapBumpedCurve.put (&quot;FIXFLOAT::PLL&quot;, dcFixFloatQuoteBumped);</span>
+
+<span class="nc" id="L1466">				org.drip.state.discount.MergedDiscountForwardCurve dcFundingBase = FundingCurve (dtSpot,</span>
+					strCurrency, astrDepositMaturityTenor, adblDepositQuote, strDepositMeasure,
+						adblFuturesQuote, strFuturesMeasure, astrFixFloatMaturityTenor, adblFixFloatQuote,
+							strFixFloatMeasure, iLatentStateType);
+
+<span class="nc bnc" id="L1471" title="All 2 branches missed.">				if (null != dcFundingBase) mapBumpedCurve.put (&quot;BASE&quot;, dcFundingBase);</span>
+
+<span class="nc" id="L1473">				org.drip.state.discount.MergedDiscountForwardCurve dcFundingBumped = FundingCurve (dtSpot,</span>
+					strCurrency, astrDepositMaturityTenor, adblDepositParallelBump, strDepositMeasure,
+						adblFuturesParallelBump, strFuturesMeasure, astrFixFloatMaturityTenor,
+							adblFixFloatParallelBump, strFixFloatMeasure, iLatentStateType);
+
+<span class="nc bnc" id="L1478" title="All 2 branches missed.">				if (null != dcFundingBumped) mapBumpedCurve.put (&quot;BUMP&quot;, dcFundingBumped);</span>
+			}
+<span class="nc" id="L1480">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1481">			e.printStackTrace();</span>
+<span class="nc" id="L1482">		}</span>
+
+<span class="nc" id="L1484">		return mapBumpedCurve;</span>
+	}
+
+	/**
+	 * Construct a Map of Tenor Bumped Funding Curve Based off of the Underlying Forward Curve Shift
+	 * 
+	 * @param dtSpot The Spot Date
+	 * @param strCurrency Currency
+	 * @param astrDepositMaturityTenor Array of Deposit Maturity Tenors
+	 * @param adblDepositQuote Array of Deposit Quotes
+	 * @param strDepositMeasure Deposit Calibration Measure
+	 * @param adblFuturesQuote Array of Futures Quotes
+	 * @param strFuturesMeasure Futures Calibration Measure
+	 * @param astrFixFloatMaturityTenor Array of Fix Float Swap Maturity Tenors
+	 * @param adblFixFloatQuote Array of Fix Float Swap Quotes
+	 * @param strFixFloatMeasure Fix Float Calibration Measure
+	 * @param iLatentStateType SHAPE_PRESERVING/SMOOTH
+	 * @param dblBump The Tenor Node Bump Amount
+	 * @param bIsProportional TRUE - The Bump Applied is Proportional
+	 * 
+	 * @return The Tenor Bumped Funding Curve Map
+	 */
+
+	public static final
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.discount.MergedDiscountForwardCurve&gt;
+			BumpedForwardFundingCurve (
+				final org.drip.analytics.date.JulianDate dtSpot,
+				final java.lang.String strCurrency,
+				final java.lang.String[] astrDepositMaturityTenor,
+				final double[] adblDepositQuote,
+				final java.lang.String strDepositMeasure,
+				final double[] adblFuturesQuote,
+				final java.lang.String strFuturesMeasure,
+				final java.lang.String[] astrFixFloatMaturityTenor,
+				final double[] adblFixFloatQuote,
+				final java.lang.String strFixFloatMeasure,
+				final int iLatentStateType,
+				final double dblBump,
+				final boolean bIsProportional)
+	{
+<span class="nc bnc" id="L1524" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBump)) return null;</span>
+
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.discount.MergedDiscountForwardCurve&gt;
+<span class="nc" id="L1527">			mapBumpedCurve = new</span>
+				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.discount.MergedDiscountForwardCurve&gt;();
+
+<span class="nc" id="L1530">		org.drip.state.discount.MergedDiscountForwardCurve dcFundingBase = FundingCurve (dtSpot, strCurrency,</span>
+			astrDepositMaturityTenor, adblDepositQuote, strDepositMeasure, adblFuturesQuote,
+				strFuturesMeasure, astrFixFloatMaturityTenor, adblFixFloatQuote, strFixFloatMeasure,
+					iLatentStateType);
+
+<span class="nc bnc" id="L1535" title="All 2 branches missed.">		if (null == dcFundingBase) return null;</span>
+
+<span class="nc bnc" id="L1537" title="All 2 branches missed.">		int iNumDeposit = null == astrDepositMaturityTenor ? 0 : astrDepositMaturityTenor.length;</span>
+<span class="nc bnc" id="L1538" title="All 2 branches missed.">		int iNumFixFloat = null == adblFixFloatQuote ? 0 : adblFixFloatQuote.length;</span>
+<span class="nc bnc" id="L1539" title="All 2 branches missed.">		int iNumFutures = null == adblFuturesQuote ? 0 : adblFuturesQuote.length;</span>
+<span class="nc" id="L1540">		int iNumDepositFutures = iNumDeposit + iNumFutures;</span>
+<span class="nc" id="L1541">		int iNumDepositFuturesFixFloat = iNumDepositFutures + iNumFixFloat;</span>
+<span class="nc" id="L1542">		int[] aiDate = new int[iNumDepositFuturesFixFloat];</span>
+
+<span class="nc bnc" id="L1544" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumDeposit; ++i)</span>
+<span class="nc" id="L1545">			aiDate[i] = dtSpot.addTenor (astrDepositMaturityTenor[i]).julian();</span>
+
+<span class="nc" id="L1547">		org.drip.product.rates.SingleStreamComponent[] aSSC =</span>
+<span class="nc" id="L1548">			org.drip.service.template.ExchangeInstrumentBuilder.ForwardRateFuturesPack (dtSpot, iNumFutures,</span>
+				strCurrency);
+
+<span class="nc bnc" id="L1551" title="All 2 branches missed.">		for (int i = iNumDeposit; i &lt; iNumDepositFutures; ++i)</span>
+<span class="nc" id="L1552">			aiDate[i] = aSSC[i - iNumDeposit].maturityDate().julian();</span>
+
+<span class="nc bnc" id="L1554" title="All 2 branches missed.">		for (int i = iNumDepositFutures; i &lt; iNumDepositFuturesFixFloat; ++i)</span>
+<span class="nc" id="L1555">			aiDate[i] = dtSpot.addTenor (astrFixFloatMaturityTenor[i - iNumDepositFutures]).julian();</span>
+
+<span class="nc" id="L1557">		org.drip.state.nonlinear.FlatForwardDiscountCurve ffdc = dcFundingBase.flatNativeForward (aiDate,</span>
+			0.);
+
+<span class="nc bnc" id="L1560" title="All 2 branches missed.">		if (null == ffdc) return null;</span>
+
+<span class="nc" id="L1562">		mapBumpedCurve.put (&quot;base&quot;, ffdc);</span>
+
+<span class="nc" id="L1564">		org.drip.state.nonlinear.FlatForwardDiscountCurve ffdcBumped = dcFundingBase.flatNativeForward</span>
+<span class="nc" id="L1565">			(aiDate, dblBump);</span>
+
+<span class="nc bnc" id="L1567" title="All 2 branches missed.">		if (null == ffdcBumped) return null;</span>
+
+<span class="nc" id="L1569">		mapBumpedCurve.put (&quot;bump&quot;, ffdcBumped);</span>
+
+<span class="nc" id="L1571">		int iDateLeft = dtSpot.julian();</span>
+
+<span class="nc bnc" id="L1573" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumDepositFuturesFixFloat; ++i) {</span>
+<span class="nc" id="L1574">			org.drip.state.nonlinear.FlatForwardDiscountCurve ffdcTenorBumped =</span>
+<span class="nc" id="L1575">				dcFundingBase.flatNativeForwardEI (aiDate, iDateLeft, aiDate[i], dblBump);</span>
+
+<span class="nc bnc" id="L1577" title="All 2 branches missed.">			if (null == ffdcTenorBumped) return null;</span>
+
+<span class="nc" id="L1579">			mapBumpedCurve.put (&quot;tenor::&quot; + i, ffdcTenorBumped);</span>
+
+<span class="nc" id="L1581">			iDateLeft = aiDate[i];</span>
+		}
+
+<span class="nc" id="L1584">		return mapBumpedCurve;</span>
+	}
+
+	/**
+	 * Construct a Map of Tenor Bumped Forward Curve Based off of the Input Exchange/OTC Market Instruments
+	 * 
+	 * @param dtSpot Spot Date
+	 * @param forwardLabel Forward Label
+	 * @param astrDepositMaturityTenor Array of Deposit Maturity Tenors
+	 * @param adblDepositQuote Array of the Deposit Instrument Quotes
+	 * @param strDepositMeasure The Deposit Instrument Calibration Measure
+	 * @param astrFRAMaturityTenor Array of FRA Maturity Tenors
+	 * @param adblFRAQuote Array of the FRA Instrument Quotes
+	 * @param strFRAMeasure The FRA Instrument Calibration Measure
+	 * @param astrFixFloatMaturityTenor Array of Fix-Float Maturity Tenors
+	 * @param adblFixFloatQuote Array of the Fix-Float Quotes
+	 * @param strFixFloatMeasure The Fix-Float Calibration Measure
+	 * @param astrFloatFloatMaturityTenor Array of Float-Float Maturity Tenors
+	 * @param adblFloatFloatQuote Array of the Float-Float Quotes
+	 * @param strFloatFloatMeasure The Float-Float Calibration Measure
+	 * @param astrSyntheticFloatFloatMaturityTenor Array of Synthetic Float-Float Maturity Tenors
+	 * @param adblSyntheticFloatFloatQuote Array of the Synthetic Float-Float Quotes
+	 * @param strSyntheticFloatFloatMeasure The Synthetic Float-Float Calibration Measure
+	 * @param dc The Base Discount Curve
+	 * @param fcReference The Reference Forward Curve
+	 * @param iLatentStateType SHAPE_PRESERVING/SMOOTH
+	 * @param dblBump The Tenor Node Bump Amount
+	 * @param bIsProportional TRUE - The Bump Applied is Proportional
+	 * 
+	 * @return The Tenor Bumped Forward Curve Map
+	 */
+
+	public static final
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.forward.ForwardCurve&gt;
+			BumpedForwardCurve (
+				final org.drip.analytics.date.JulianDate dtSpot,
+				final org.drip.state.identifier.ForwardLabel forwardLabel,
+				final java.lang.String[] astrDepositMaturityTenor,
+				final double[] adblDepositQuote,
+				final java.lang.String strDepositMeasure,
+				final java.lang.String[] astrFRAMaturityTenor,
+				final double[] adblFRAQuote,
+				final java.lang.String strFRAMeasure,
+				final java.lang.String[] astrFixFloatMaturityTenor,
+				final double[] adblFixFloatQuote,
+				final java.lang.String strFixFloatMeasure,
+				final java.lang.String[] astrFloatFloatMaturityTenor,
+				final double[] adblFloatFloatQuote,
+				final java.lang.String strFloatFloatMeasure,
+				final java.lang.String[] astrSyntheticFloatFloatMaturityTenor,
+				final double[] adblSyntheticFloatFloatQuote,
+				final java.lang.String strSyntheticFloatFloatMeasure,
+				final org.drip.state.discount.MergedDiscountForwardCurve dc,
+				final org.drip.state.forward.ForwardCurve fcReference,
+				final int iLatentStateType,
+				final double dblBump,
+				final boolean bIsProportional)
+	{
+<span class="nc bnc" id="L1642" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBump)) return null;</span>
+
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.forward.ForwardCurve&gt;
+<span class="nc" id="L1645">			mapBumpedCurve = new</span>
+				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.forward.ForwardCurve&gt;();
+
+		try {
+<span class="nc" id="L1649">			org.drip.param.definition.ManifestMeasureTweak mmtFLAT = new</span>
+				org.drip.param.definition.ManifestMeasureTweak
+					(org.drip.param.definition.ManifestMeasureTweak.FLAT, bIsProportional, dblBump);
+
+<span class="nc bnc" id="L1653" title="All 2 branches missed.">			if (null != adblDepositQuote) {</span>
+<span class="nc" id="L1654">				int iNumDeposit = adblDepositQuote.length;</span>
+
+<span class="nc bnc" id="L1656" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumDeposit; ++i) {</span>
+<span class="nc" id="L1657">					org.drip.state.forward.ForwardCurve fcDepositQuoteBumped = ForwardCurve (dtSpot,</span>
+						forwardLabel, astrDepositMaturityTenor,
+<span class="nc" id="L1659">							org.drip.analytics.support.Helper.TweakManifestMeasure (adblDepositQuote, new</span>
+								org.drip.param.definition.ManifestMeasureTweak (i, bIsProportional,
+									dblBump)), strDepositMeasure, astrFRAMaturityTenor, adblFRAQuote,
+										strFRAMeasure, astrFixFloatMaturityTenor, adblFixFloatQuote,
+											strFixFloatMeasure, astrFloatFloatMaturityTenor,
+												adblFloatFloatQuote, strFloatFloatMeasure,
+													astrSyntheticFloatFloatMaturityTenor,
+														adblSyntheticFloatFloatQuote,
+															strSyntheticFloatFloatMeasure, dc, fcReference,
+																iLatentStateType);
+
+<span class="nc bnc" id="L1670" title="All 2 branches missed.">					if (null != fcDepositQuoteBumped)</span>
+<span class="nc" id="L1671">						mapBumpedCurve.put (&quot;DEPOSIT::&quot; + astrDepositMaturityTenor[i],</span>
+							fcDepositQuoteBumped);
+				}
+			}
+
+<span class="nc" id="L1676">			double[] adblDepositParallelBump = org.drip.analytics.support.Helper.TweakManifestMeasure</span>
+<span class="nc" id="L1677">				(adblDepositQuote, mmtFLAT);</span>
+
+<span class="nc" id="L1679">			org.drip.state.forward.ForwardCurve fcDepositQuoteBumped = ForwardCurve (dtSpot, forwardLabel,</span>
+				astrDepositMaturityTenor, adblDepositParallelBump, strDepositMeasure, astrFRAMaturityTenor,
+					adblFRAQuote, strFRAMeasure, astrFixFloatMaturityTenor, adblFixFloatQuote,
+						strFixFloatMeasure, astrFloatFloatMaturityTenor, adblFloatFloatQuote,
+							strFloatFloatMeasure, astrSyntheticFloatFloatMaturityTenor,
+								adblSyntheticFloatFloatQuote, strSyntheticFloatFloatMeasure, dc,
+									fcReference, iLatentStateType);
+
+<span class="nc bnc" id="L1687" title="All 2 branches missed.">			if (null != fcDepositQuoteBumped) mapBumpedCurve.put (&quot;DEPOSIT::PLL&quot;, fcDepositQuoteBumped);</span>
+
+<span class="nc bnc" id="L1689" title="All 2 branches missed.">			if (null != adblFRAQuote) {</span>
+<span class="nc" id="L1690">				int iNumFRA = adblFRAQuote.length;</span>
+
+<span class="nc bnc" id="L1692" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumFRA; ++i) {</span>
+<span class="nc" id="L1693">					org.drip.state.forward.ForwardCurve fcFRAQuoteBumped = ForwardCurve (dtSpot,</span>
+						forwardLabel, astrDepositMaturityTenor, adblDepositQuote, strDepositMeasure,
+							astrFRAMaturityTenor, org.drip.analytics.support.Helper.TweakManifestMeasure
+<span class="nc" id="L1696">								(adblFRAQuote, new org.drip.param.definition.ManifestMeasureTweak (i,</span>
+									bIsProportional, dblBump)), strFRAMeasure, astrFixFloatMaturityTenor,
+										adblFixFloatQuote, strFixFloatMeasure, astrFloatFloatMaturityTenor,
+											adblFloatFloatQuote, strFloatFloatMeasure,
+												astrSyntheticFloatFloatMaturityTenor,
+													adblSyntheticFloatFloatQuote,
+														strSyntheticFloatFloatMeasure, dc, fcReference,
+															iLatentStateType);
+
+<span class="nc bnc" id="L1705" title="All 2 branches missed.">					if (null != fcFRAQuoteBumped)</span>
+<span class="nc" id="L1706">						mapBumpedCurve.put (&quot;FRA::&quot; + astrFRAMaturityTenor[i], fcFRAQuoteBumped);</span>
+				}
+			}
+
+<span class="nc" id="L1710">			double[] adblFRAParallelBump = org.drip.analytics.support.Helper.TweakManifestMeasure</span>
+<span class="nc" id="L1711">				(adblFRAQuote, mmtFLAT);</span>
+
+<span class="nc" id="L1713">			org.drip.state.forward.ForwardCurve fcFRAQuoteBumped = ForwardCurve (dtSpot, forwardLabel,</span>
+				astrDepositMaturityTenor, adblDepositQuote, strDepositMeasure, astrFRAMaturityTenor,
+					adblFRAParallelBump, strFRAMeasure, astrFixFloatMaturityTenor, adblFixFloatQuote,
+						strFixFloatMeasure, astrFloatFloatMaturityTenor, adblFloatFloatQuote,
+							strFloatFloatMeasure, astrSyntheticFloatFloatMaturityTenor,
+								adblSyntheticFloatFloatQuote, strSyntheticFloatFloatMeasure, dc,
+									fcReference, iLatentStateType);
+
+<span class="nc bnc" id="L1721" title="All 2 branches missed.">			if (null != fcFRAQuoteBumped) mapBumpedCurve.put (&quot;FRA::PLL&quot;, fcFRAQuoteBumped);</span>
+
+<span class="nc bnc" id="L1723" title="All 2 branches missed.">			if (null != adblFixFloatQuote) {</span>
+<span class="nc" id="L1724">				int iNumFixFloat = adblFixFloatQuote.length;</span>
+
+<span class="nc bnc" id="L1726" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumFixFloat; ++i) {</span>
+<span class="nc" id="L1727">					org.drip.state.forward.ForwardCurve fcFixFloatQuoteBumped = ForwardCurve (dtSpot,</span>
+						forwardLabel, astrDepositMaturityTenor, adblDepositQuote, strDepositMeasure,
+							astrFRAMaturityTenor, adblFRAQuote, strFRAMeasure, astrFixFloatMaturityTenor,
+<span class="nc" id="L1730">								org.drip.analytics.support.Helper.TweakManifestMeasure (adblFixFloatQuote,</span>
+									new org.drip.param.definition.ManifestMeasureTweak (i, bIsProportional,
+										dblBump)), strFixFloatMeasure, astrFloatFloatMaturityTenor,
+											adblFloatFloatQuote, strFloatFloatMeasure,
+												astrSyntheticFloatFloatMaturityTenor,
+													adblSyntheticFloatFloatQuote,
+														strSyntheticFloatFloatMeasure, dc, fcReference,
+															iLatentStateType);
+
+<span class="nc bnc" id="L1739" title="All 2 branches missed.">					if (null != fcFixFloatQuoteBumped)</span>
+<span class="nc" id="L1740">						mapBumpedCurve.put (&quot;FIXFLOAT::&quot; + astrFixFloatMaturityTenor[i],</span>
+							fcFixFloatQuoteBumped);
+				}
+			}
+
+<span class="nc" id="L1745">			double[] adblFixFloatParallelBump = org.drip.analytics.support.Helper.TweakManifestMeasure</span>
+<span class="nc" id="L1746">				(adblFixFloatQuote, mmtFLAT);</span>
+
+<span class="nc" id="L1748">			org.drip.state.forward.ForwardCurve fcFixFloatQuoteBumped = ForwardCurve (dtSpot, forwardLabel,</span>
+				astrDepositMaturityTenor, adblDepositQuote, strDepositMeasure, astrFRAMaturityTenor,
+					adblFRAQuote, strFRAMeasure, astrFixFloatMaturityTenor, adblFixFloatParallelBump,
+						strFixFloatMeasure, astrFloatFloatMaturityTenor, adblFloatFloatQuote,
+							strFloatFloatMeasure, astrSyntheticFloatFloatMaturityTenor,
+								adblSyntheticFloatFloatQuote, strSyntheticFloatFloatMeasure, dc,
+									fcReference, iLatentStateType);
+
+<span class="nc bnc" id="L1756" title="All 2 branches missed.">			if (null != fcFixFloatQuoteBumped) mapBumpedCurve.put (&quot;FIXFLOAT::PLL&quot;, fcFixFloatQuoteBumped);</span>
+
+<span class="nc bnc" id="L1758" title="All 2 branches missed.">			if (null != adblFloatFloatQuote) {</span>
+<span class="nc" id="L1759">				int iNumFloatFloat = adblFloatFloatQuote.length;</span>
+
+<span class="nc bnc" id="L1761" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumFloatFloat; ++i) {</span>
+<span class="nc" id="L1762">					org.drip.state.forward.ForwardCurve fcFloatFloatQuoteBumped = ForwardCurve (dtSpot,</span>
+						forwardLabel, astrDepositMaturityTenor, adblDepositQuote, strDepositMeasure,
+							astrFRAMaturityTenor, adblFRAQuote, strFRAMeasure, astrFixFloatMaturityTenor,
+								adblFRAQuote, strFixFloatMeasure, astrFloatFloatMaturityTenor,
+									org.drip.analytics.support.Helper.TweakManifestMeasure
+<span class="nc" id="L1767">										(adblFloatFloatQuote, new</span>
+											org.drip.param.definition.ManifestMeasureTweak (i,
+												bIsProportional, dblBump)), strFloatFloatMeasure,
+													astrSyntheticFloatFloatMaturityTenor,
+														adblSyntheticFloatFloatQuote,
+															strSyntheticFloatFloatMeasure, dc, fcReference,
+																iLatentStateType);
+
+<span class="nc bnc" id="L1775" title="All 2 branches missed.">					if (null != fcFloatFloatQuoteBumped)</span>
+<span class="nc" id="L1776">						mapBumpedCurve.put (&quot;FLOATFLOAT::&quot; + astrFloatFloatMaturityTenor[i],</span>
+							fcFloatFloatQuoteBumped);
+				}
+			}
+
+<span class="nc" id="L1781">			double[] adblFloatFloatParallelBump = org.drip.analytics.support.Helper.TweakManifestMeasure</span>
+<span class="nc" id="L1782">				(adblFloatFloatQuote, mmtFLAT);</span>
+
+<span class="nc" id="L1784">			org.drip.state.forward.ForwardCurve fcFloatFloatQuoteBumped = ForwardCurve (dtSpot, forwardLabel,</span>
+				astrDepositMaturityTenor, adblDepositQuote, strDepositMeasure, astrFRAMaturityTenor,
+					adblFRAQuote, strFRAMeasure, astrFixFloatMaturityTenor, adblFixFloatQuote,
+						strFixFloatMeasure, astrFloatFloatMaturityTenor, adblFloatFloatParallelBump,
+							strFloatFloatMeasure, astrSyntheticFloatFloatMaturityTenor,
+								adblSyntheticFloatFloatQuote, strSyntheticFloatFloatMeasure, dc,
+									fcReference, iLatentStateType);
+
+<span class="nc bnc" id="L1792" title="All 2 branches missed.">			if (null != fcFloatFloatQuoteBumped)</span>
+<span class="nc" id="L1793">				mapBumpedCurve.put (&quot;FLOATFLOAT::PLL&quot;, fcFloatFloatQuoteBumped);</span>
+
+<span class="nc bnc" id="L1795" title="All 2 branches missed.">			if (null != adblSyntheticFloatFloatQuote) {</span>
+<span class="nc" id="L1796">				int iNumSyntheticFloatFloat = adblSyntheticFloatFloatQuote.length;</span>
+
+<span class="nc bnc" id="L1798" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumSyntheticFloatFloat; ++i) {</span>
+<span class="nc" id="L1799">					org.drip.state.forward.ForwardCurve fcSyntheticFloatFloatQuoteBumped = ForwardCurve</span>
+<span class="nc" id="L1800">						(dtSpot, forwardLabel, astrDepositMaturityTenor, adblDepositQuote, strDepositMeasure,</span>
+							astrFRAMaturityTenor, adblFRAQuote, strFRAMeasure, astrFixFloatMaturityTenor,
+								adblFixFloatQuote, strFixFloatMeasure, astrFloatFloatMaturityTenor,
+									adblFloatFloatQuote, strFloatFloatMeasure,
+										astrSyntheticFloatFloatMaturityTenor,
+											org.drip.analytics.support.Helper.TweakManifestMeasure
+<span class="nc" id="L1806">												(adblSyntheticFloatFloatQuote, new</span>
+													org.drip.param.definition.ManifestMeasureTweak (i,
+														bIsProportional, dblBump)),
+															strSyntheticFloatFloatMeasure, dc, fcReference,
+																iLatentStateType);
+
+<span class="nc bnc" id="L1812" title="All 2 branches missed.">					if (null != fcSyntheticFloatFloatQuoteBumped)</span>
+<span class="nc" id="L1813">						mapBumpedCurve.put (&quot;SYNTHETICFLOATFLOAT::&quot; +</span>
+							astrSyntheticFloatFloatMaturityTenor[i], fcSyntheticFloatFloatQuoteBumped);
+				}
+			}
+
+<span class="nc" id="L1818">			double[] adblSyntheticFloatFloatParallelBump =</span>
+<span class="nc" id="L1819">				org.drip.analytics.support.Helper.TweakManifestMeasure (adblSyntheticFloatFloatQuote,</span>
+					mmtFLAT);
+
+<span class="nc" id="L1822">			org.drip.state.forward.ForwardCurve fcSyntheticFloatFloatQuoteBumped = ForwardCurve (dtSpot,</span>
+				forwardLabel, astrDepositMaturityTenor, adblDepositQuote, strDepositMeasure,
+					astrFRAMaturityTenor, adblFRAQuote, strFRAMeasure, astrFixFloatMaturityTenor,
+						adblFixFloatQuote, strFixFloatMeasure, astrFloatFloatMaturityTenor,
+							adblFloatFloatQuote, strFloatFloatMeasure, astrSyntheticFloatFloatMaturityTenor,
+								adblSyntheticFloatFloatParallelBump, strSyntheticFloatFloatMeasure, dc,
+									fcReference, iLatentStateType);
+
+<span class="nc bnc" id="L1830" title="All 2 branches missed.">			if (null != fcSyntheticFloatFloatQuoteBumped)</span>
+<span class="nc" id="L1831">				mapBumpedCurve.put (&quot;SYNTHETICFLOATFLOAT::PLL&quot;, fcSyntheticFloatFloatQuoteBumped);</span>
+
+<span class="nc" id="L1833">			org.drip.state.forward.ForwardCurve fcQuoteBase = ForwardCurve (dtSpot, forwardLabel,</span>
+				astrDepositMaturityTenor, adblDepositQuote, strDepositMeasure, astrFRAMaturityTenor,
+					adblFRAQuote, strFRAMeasure, astrFixFloatMaturityTenor, adblFixFloatQuote,
+						strFixFloatMeasure, astrFloatFloatMaturityTenor, adblFloatFloatQuote,
+							strFloatFloatMeasure, astrSyntheticFloatFloatMaturityTenor,
+								adblSyntheticFloatFloatQuote, strSyntheticFloatFloatMeasure, dc,
+									fcReference, iLatentStateType);
+
+<span class="nc bnc" id="L1841" title="All 2 branches missed.">			if (null != fcQuoteBase) mapBumpedCurve.put (&quot;BASE&quot;, fcQuoteBase);</span>
+
+<span class="nc" id="L1843">			org.drip.state.forward.ForwardCurve fcQuoteBump = ForwardCurve (dtSpot, forwardLabel,</span>
+				astrDepositMaturityTenor, adblDepositParallelBump, strDepositMeasure, astrFRAMaturityTenor,
+					adblFRAParallelBump, strFRAMeasure, astrFixFloatMaturityTenor, adblFixFloatParallelBump,
+						strFixFloatMeasure, astrFloatFloatMaturityTenor, adblFloatFloatParallelBump,
+							strFloatFloatMeasure, astrSyntheticFloatFloatMaturityTenor,
+								adblSyntheticFloatFloatParallelBump, strSyntheticFloatFloatMeasure, dc,
+									fcReference, iLatentStateType);
+
+<span class="nc bnc" id="L1851" title="All 2 branches missed.">			if (null != fcQuoteBump) mapBumpedCurve.put (&quot;BUMP&quot;, fcQuoteBump);</span>
+<span class="nc" id="L1852">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1853">			e.printStackTrace();</span>
+<span class="nc" id="L1854">		}</span>
+
+<span class="nc" id="L1856">		return mapBumpedCurve;</span>
+	}
+
+	/**
+	 * Construct a Map of Tenor + Parallel Bumped Overnight Curves
+	 * 
+	 * @param dtSpot Spot Date
+	 * @param strCurrency Currency
+	 * @param astrDepositMaturityTenor Array of Deposit Maturity Tenors
+	 * @param adblDepositQuote Array of Deposit Quotes
+	 * @param strDepositMeasure Deposit Measure
+	 * @param astrShortEndOISMaturityTenor Array of Short End OIS Maturity Tenors
+	 * @param adblShortEndOISQuote Array of Short End OIS Quotes
+	 * @param strShortEndOISMeasure Short End OIS Measure
+	 * @param astrOISFuturesEffectiveTenor Array of OIS Futures Effective Tenors
+	 * @param astrOISFuturesMaturityTenor Array of OIS Futures Maturity Tenors
+	 * @param adblOISFuturesQuote Array of OIS Futures Quotes
+	 * @param strOISFuturesMeasure OIS Futures Measure
+	 * @param astrLongEndOISMaturityTenor Array of Long End OIS Maturity Tenors
+	 * @param adblLongEndOISQuote Array of Long End OIS Quotes
+	 * @param strLongEndOISMeasure Long End OIS Measure
+	 * @param iLatentStateType SHAPE PRESERVING/SMOOTH
+	 * @param dblBump The Tenor Node Bump Amount
+	 * @param bIsProportional TRUE - The Bump Applied is Proportional
+	 * 
+	 * @return Map of Overnight Curves
+	 */
+
+	public static final
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.discount.MergedDiscountForwardCurve&gt;
+			BumpedOvernightCurve (
+		final org.drip.analytics.date.JulianDate dtSpot,
+		final String strCurrency,
+		final java.lang.String[] astrDepositMaturityTenor,
+		final double[] adblDepositQuote,
+		final java.lang.String strDepositMeasure,
+		final java.lang.String[] astrShortEndOISMaturityTenor,
+		final double[] adblShortEndOISQuote,
+		final java.lang.String strShortEndOISMeasure,
+		final java.lang.String[] astrOISFuturesEffectiveTenor,
+		final java.lang.String[] astrOISFuturesMaturityTenor,
+		final double[] adblOISFuturesQuote,
+		final java.lang.String strOISFuturesMeasure,
+		final java.lang.String[] astrLongEndOISMaturityTenor,
+		final double[] adblLongEndOISQuote,
+		final java.lang.String strLongEndOISMeasure,
+		final int iLatentStateType,
+		final double dblBump,
+		final boolean bIsProportional)
+	{
+<span class="nc bnc" id="L1906" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBump)) return null;</span>
+
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.discount.MergedDiscountForwardCurve&gt;
+<span class="nc" id="L1909">			mapBumpedCurve = new</span>
+				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.discount.MergedDiscountForwardCurve&gt;();
+
+		try {
+<span class="nc" id="L1913">			org.drip.param.definition.ManifestMeasureTweak mmtFLAT = new</span>
+				org.drip.param.definition.ManifestMeasureTweak
+					(org.drip.param.definition.ManifestMeasureTweak.FLAT, bIsProportional, dblBump);
+
+<span class="nc bnc" id="L1917" title="All 2 branches missed.">			if (null != adblDepositQuote) {</span>
+<span class="nc" id="L1918">				int iNumDeposit = adblDepositQuote.length;</span>
+
+<span class="nc bnc" id="L1920" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumDeposit; ++i) {</span>
+<span class="nc" id="L1921">					org.drip.state.discount.MergedDiscountForwardCurve dcOvernightDepositBumped =</span>
+<span class="nc" id="L1922">						OvernightCurve (dtSpot, strCurrency, astrDepositMaturityTenor,</span>
+<span class="nc" id="L1923">							org.drip.analytics.support.Helper.TweakManifestMeasure (adblDepositQuote, new</span>
+								org.drip.param.definition.ManifestMeasureTweak (i, bIsProportional,
+									dblBump)), strDepositMeasure, astrShortEndOISMaturityTenor,
+										adblShortEndOISQuote, strShortEndOISMeasure,
+											astrOISFuturesEffectiveTenor, astrOISFuturesMaturityTenor,
+												adblOISFuturesQuote, strOISFuturesMeasure,
+													astrLongEndOISMaturityTenor, adblLongEndOISQuote,
+														strLongEndOISMeasure, iLatentStateType);
+
+<span class="nc bnc" id="L1932" title="All 2 branches missed.">					if (null != dcOvernightDepositBumped)</span>
+<span class="nc" id="L1933">						mapBumpedCurve.put (&quot;DEPOSIT::&quot; + astrDepositMaturityTenor[i],</span>
+							dcOvernightDepositBumped);
+				}
+			}
+
+<span class="nc" id="L1938">			double[] adblDepositParallelBump = org.drip.analytics.support.Helper.TweakManifestMeasure</span>
+<span class="nc" id="L1939">				(adblDepositQuote, mmtFLAT);</span>
+
+<span class="nc" id="L1941">			org.drip.state.discount.MergedDiscountForwardCurve dcOvernightDepositBumped = OvernightCurve</span>
+<span class="nc" id="L1942">				(dtSpot, strCurrency, astrDepositMaturityTenor, adblDepositParallelBump, strDepositMeasure,</span>
+					astrShortEndOISMaturityTenor, adblShortEndOISQuote, strShortEndOISMeasure,
+						astrOISFuturesEffectiveTenor, astrOISFuturesMaturityTenor, adblOISFuturesQuote,
+							strOISFuturesMeasure, astrLongEndOISMaturityTenor, adblLongEndOISQuote,
+								strLongEndOISMeasure, iLatentStateType);
+
+<span class="nc bnc" id="L1948" title="All 2 branches missed.">			if (null != dcOvernightDepositBumped)</span>
+<span class="nc" id="L1949">				mapBumpedCurve.put (&quot;DEPOSIT::PLL&quot;, dcOvernightDepositBumped);</span>
+
+<span class="nc bnc" id="L1951" title="All 2 branches missed.">			if (null != adblShortEndOISQuote) {</span>
+<span class="nc" id="L1952">				int iNumShortEndOIS = adblShortEndOISQuote.length;</span>
+
+<span class="nc bnc" id="L1954" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumShortEndOIS; ++i) {</span>
+<span class="nc" id="L1955">					org.drip.state.discount.MergedDiscountForwardCurve dcOvernightShortEndOISBumped =</span>
+<span class="nc" id="L1956">						OvernightCurve (dtSpot, strCurrency, astrDepositMaturityTenor, adblDepositQuote,</span>
+							strDepositMeasure, astrShortEndOISMaturityTenor,
+<span class="nc" id="L1958">								org.drip.analytics.support.Helper.TweakManifestMeasure (adblShortEndOISQuote,</span>
+									new org.drip.param.definition.ManifestMeasureTweak (i, bIsProportional,
+										dblBump)), strShortEndOISMeasure, astrOISFuturesEffectiveTenor,
+											astrOISFuturesMaturityTenor, adblOISFuturesQuote,
+												strOISFuturesMeasure, astrLongEndOISMaturityTenor,
+													adblLongEndOISQuote, strLongEndOISMeasure,
+														iLatentStateType);
+
+<span class="nc bnc" id="L1966" title="All 2 branches missed.">					if (null != dcOvernightShortEndOISBumped)</span>
+<span class="nc" id="L1967">						mapBumpedCurve.put (&quot;SHORTENDOIS::&quot; + astrShortEndOISMaturityTenor[i],</span>
+							dcOvernightShortEndOISBumped);
+				}
+			}
+
+<span class="nc" id="L1972">			double[] adblShortEndOISParallelBump = org.drip.analytics.support.Helper.TweakManifestMeasure</span>
+<span class="nc" id="L1973">				(adblShortEndOISQuote, mmtFLAT);</span>
+
+<span class="nc" id="L1975">			org.drip.state.discount.MergedDiscountForwardCurve dcOvernightShortEndOISBumped = OvernightCurve</span>
+<span class="nc" id="L1976">				(dtSpot, strCurrency, astrDepositMaturityTenor, adblDepositQuote, strDepositMeasure,</span>
+					astrShortEndOISMaturityTenor, adblShortEndOISParallelBump, strShortEndOISMeasure,
+						astrOISFuturesEffectiveTenor, astrOISFuturesMaturityTenor,
+							adblOISFuturesQuote, strOISFuturesMeasure, astrLongEndOISMaturityTenor,
+								adblLongEndOISQuote, strLongEndOISMeasure, iLatentStateType);
+
+<span class="nc bnc" id="L1982" title="All 2 branches missed.">			if (null != dcOvernightShortEndOISBumped)</span>
+<span class="nc" id="L1983">				mapBumpedCurve.put (&quot;SHORTENDOIS::PLL&quot;, dcOvernightShortEndOISBumped);</span>
+
+<span class="nc bnc" id="L1985" title="All 2 branches missed.">			if (null != adblOISFuturesQuote) {</span>
+<span class="nc" id="L1986">				int iNumOISFutures = adblOISFuturesQuote.length;</span>
+
+<span class="nc bnc" id="L1988" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumOISFutures; ++i) {</span>
+<span class="nc" id="L1989">					org.drip.state.discount.MergedDiscountForwardCurve dcOvernightOISFuturesBumped =</span>
+<span class="nc" id="L1990">						OvernightCurve (dtSpot, strCurrency, astrDepositMaturityTenor, adblDepositQuote,</span>
+							strDepositMeasure, astrShortEndOISMaturityTenor, adblShortEndOISQuote,
+								strShortEndOISMeasure, astrOISFuturesEffectiveTenor,
+									astrOISFuturesMaturityTenor,
+										org.drip.analytics.support.Helper.TweakManifestMeasure
+<span class="nc" id="L1995">											(adblOISFuturesQuote, new</span>
+												org.drip.param.definition.ManifestMeasureTweak (i,
+													bIsProportional, dblBump)), strOISFuturesMeasure,
+														astrLongEndOISMaturityTenor, adblLongEndOISQuote,
+															strLongEndOISMeasure, iLatentStateType);
+
+<span class="nc bnc" id="L2001" title="All 2 branches missed.">					if (null != dcOvernightOISFuturesBumped)</span>
+<span class="nc" id="L2002">						mapBumpedCurve.put (&quot;OISFUTURES::&quot; + astrOISFuturesEffectiveTenor[i] + &quot; x &quot; +</span>
+							astrOISFuturesMaturityTenor[i], dcOvernightOISFuturesBumped);
+				}
+			}
+
+<span class="nc" id="L2007">			double[] adblOISFuturesParallelBump = org.drip.analytics.support.Helper.TweakManifestMeasure</span>
+<span class="nc" id="L2008">				(adblOISFuturesQuote, mmtFLAT);</span>
+
+<span class="nc" id="L2010">			org.drip.state.discount.MergedDiscountForwardCurve dcOvernightOISFuturesBumped = OvernightCurve</span>
+<span class="nc" id="L2011">				(dtSpot, strCurrency, astrDepositMaturityTenor, adblDepositQuote, strDepositMeasure,</span>
+					astrShortEndOISMaturityTenor, adblShortEndOISQuote, strShortEndOISMeasure,
+						astrOISFuturesEffectiveTenor, astrOISFuturesMaturityTenor,
+							adblOISFuturesParallelBump, strOISFuturesMeasure, astrLongEndOISMaturityTenor,
+								adblLongEndOISQuote, strLongEndOISMeasure, iLatentStateType);
+
+<span class="nc bnc" id="L2017" title="All 2 branches missed.">			if (null != dcOvernightOISFuturesBumped)</span>
+<span class="nc" id="L2018">				mapBumpedCurve.put (&quot;OISFUTURES::PARALLEL&quot;, dcOvernightOISFuturesBumped);</span>
+
+<span class="nc bnc" id="L2020" title="All 2 branches missed.">			if (null != adblLongEndOISQuote) {</span>
+<span class="nc" id="L2021">				int iNumLongEndOIS = adblLongEndOISQuote.length;</span>
+
+<span class="nc bnc" id="L2023" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumLongEndOIS; ++i) {</span>
+<span class="nc" id="L2024">					org.drip.state.discount.MergedDiscountForwardCurve dcOvernightLongEndOISBumped =</span>
+<span class="nc" id="L2025">						OvernightCurve (dtSpot, strCurrency, astrDepositMaturityTenor, adblDepositQuote,</span>
+							strDepositMeasure, astrShortEndOISMaturityTenor, adblShortEndOISQuote,
+								strShortEndOISMeasure, astrOISFuturesEffectiveTenor,
+									astrOISFuturesMaturityTenor, adblOISFuturesQuote, strOISFuturesMeasure,
+										astrLongEndOISMaturityTenor,
+											org.drip.analytics.support.Helper.TweakManifestMeasure
+<span class="nc" id="L2031">												(adblLongEndOISQuote, new</span>
+													org.drip.param.definition.ManifestMeasureTweak (i,
+														bIsProportional, dblBump)), strLongEndOISMeasure,
+															iLatentStateType);
+
+<span class="nc bnc" id="L2036" title="All 2 branches missed.">					if (null != dcOvernightLongEndOISBumped)</span>
+<span class="nc" id="L2037">						mapBumpedCurve.put (&quot;LONGENDOIS::&quot; + astrLongEndOISMaturityTenor[i],</span>
+							dcOvernightLongEndOISBumped);
+				}
+			}
+
+<span class="nc" id="L2042">			double[] adblLongEndOISParallelBump = org.drip.analytics.support.Helper.TweakManifestMeasure</span>
+<span class="nc" id="L2043">				(adblLongEndOISQuote, mmtFLAT);</span>
+
+<span class="nc" id="L2045">			org.drip.state.discount.MergedDiscountForwardCurve dcOvernightLongEndOISBumped = OvernightCurve</span>
+<span class="nc" id="L2046">				(dtSpot, strCurrency, astrDepositMaturityTenor, adblDepositQuote, strDepositMeasure,</span>
+					astrShortEndOISMaturityTenor, adblShortEndOISQuote, strShortEndOISMeasure,
+						astrOISFuturesEffectiveTenor, astrOISFuturesMaturityTenor, adblOISFuturesQuote,
+							strOISFuturesMeasure, astrLongEndOISMaturityTenor, adblLongEndOISParallelBump,
+								strLongEndOISMeasure, iLatentStateType);
+
+<span class="nc bnc" id="L2052" title="All 2 branches missed.">			if (null != dcOvernightLongEndOISBumped)</span>
+<span class="nc" id="L2053">				mapBumpedCurve.put (&quot;LONGENDOIS::PLL&quot;, dcOvernightLongEndOISBumped);</span>
+
+<span class="nc" id="L2055">			org.drip.state.discount.MergedDiscountForwardCurve dcOvernightBase = OvernightCurve (dtSpot,</span>
+				strCurrency, astrDepositMaturityTenor, adblDepositQuote, strDepositMeasure,
+					astrShortEndOISMaturityTenor, adblShortEndOISQuote, strShortEndOISMeasure,
+						astrOISFuturesEffectiveTenor, astrOISFuturesMaturityTenor, adblOISFuturesQuote,
+							strOISFuturesMeasure, astrLongEndOISMaturityTenor, adblLongEndOISQuote,
+								strLongEndOISMeasure, iLatentStateType);
+
+<span class="nc bnc" id="L2062" title="All 2 branches missed.">			if (null != dcOvernightBase) mapBumpedCurve.put (&quot;BASE&quot;, dcOvernightBase);</span>
+
+<span class="nc" id="L2064">			org.drip.state.discount.MergedDiscountForwardCurve dcOvernightBump = OvernightCurve (dtSpot,</span>
+				strCurrency, astrDepositMaturityTenor, adblDepositParallelBump, strDepositMeasure,
+					astrShortEndOISMaturityTenor, adblShortEndOISParallelBump, strShortEndOISMeasure,
+						astrOISFuturesEffectiveTenor, astrOISFuturesMaturityTenor,
+							adblOISFuturesParallelBump, strOISFuturesMeasure, astrLongEndOISMaturityTenor,
+								adblLongEndOISParallelBump, strLongEndOISMeasure, iLatentStateType);
+
+<span class="nc bnc" id="L2071" title="All 2 branches missed.">			if (null != dcOvernightBump) mapBumpedCurve.put (&quot;BUMP&quot;, dcOvernightBump);</span>
+<span class="nc" id="L2072">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L2073">			e.printStackTrace();</span>
+
+<span class="nc" id="L2075">			return null;</span>
+<span class="nc" id="L2076">		}</span>
+
+<span class="nc" id="L2078">		return mapBumpedCurve;</span>
+	}
+
+	/**
+	 * Construct a Tenor + Parallel Map of Bumped Credit Curves from Overnight Exchange/OTC Market Instruments
+	 * 
+	 * @param dtSpot Spot Date
+	 * @param strCredit Credit Curve
+	 * @param astrMaturityTenor Maturity Tenor
+	 * @param adblCoupon Coupon Array
+	 * @param adblQuote Array of Market Quotes
+	 * @param strMeasure Calibration Measure
+	 * @param dc Discount Curve
+	 * @param dblBump The Tenor Node Bump Amount
+	 * @param bIsProportional TRUE - The Bump Applied is Proportional
+	 * 
+	 * @return Map of Bumped Credit Curves
+	 */
+
+	public static final org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.credit.CreditCurve&gt;
+		BumpedCreditCurve (
+			final org.drip.analytics.date.JulianDate dtSpot,
+			final java.lang.String strCredit,
+			final java.lang.String[] astrMaturityTenor,
+			final double[] adblCoupon,
+			final double[] adblQuote,
+			final java.lang.String strMeasure,
+			final org.drip.state.discount.MergedDiscountForwardCurve dc,
+			final double dblBump,
+			final boolean bIsProportional)
+	{
+<span class="nc bnc" id="L2109" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBump)) return null;</span>
+
+<span class="nc" id="L2111">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.credit.CreditCurve&gt; mapBumpedCurve =</span>
+			new org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.credit.CreditCurve&gt;();
+
+<span class="nc bnc" id="L2114" title="All 2 branches missed.">		if (null != adblQuote) {</span>
+<span class="nc" id="L2115">			int iNumComp = adblQuote.length;</span>
+
+<span class="nc bnc" id="L2117" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumComp; ++i) {</span>
+				try {
+<span class="nc" id="L2119">					org.drip.state.credit.CreditCurve ccBumped = CreditCurve (dtSpot, strCredit,</span>
+						astrMaturityTenor, adblCoupon, org.drip.analytics.support.Helper.TweakManifestMeasure
+<span class="nc" id="L2121">							(adblQuote, new org.drip.param.definition.ManifestMeasureTweak (i,</span>
+								bIsProportional, dblBump)), strMeasure, dc);
+
+<span class="nc bnc" id="L2124" title="All 2 branches missed.">					if (null != ccBumped) mapBumpedCurve.put (&quot;CDS::&quot; + astrMaturityTenor[i], ccBumped);</span>
+<span class="nc" id="L2125">				} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L2126">					e.printStackTrace();</span>
+<span class="nc" id="L2127">				}</span>
+			}
+		}
+
+		try {
+<span class="nc" id="L2132">			org.drip.state.credit.CreditCurve ccBase = CreditCurve (dtSpot, strCredit, astrMaturityTenor,</span>
+				adblCoupon, adblQuote, strMeasure, dc);
+
+<span class="nc bnc" id="L2135" title="All 2 branches missed.">			if (null != ccBase) mapBumpedCurve.put (&quot;BASE&quot;, ccBase);</span>
+
+<span class="nc" id="L2137">			org.drip.state.credit.CreditCurve ccBumped = CreditCurve (dtSpot, strCredit, astrMaturityTenor,</span>
+<span class="nc" id="L2138">				adblCoupon, org.drip.analytics.support.Helper.TweakManifestMeasure (adblQuote, new</span>
+					org.drip.param.definition.ManifestMeasureTweak
+						(org.drip.param.definition.ManifestMeasureTweak.FLAT, bIsProportional, dblBump)),
+							strMeasure, dc);
+
+<span class="nc bnc" id="L2143" title="All 2 branches missed.">			if (null != ccBumped) mapBumpedCurve.put (&quot;BUMP&quot;, ccBumped);</span>
+<span class="nc" id="L2144">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L2145">			e.printStackTrace();</span>
+<span class="nc" id="L2146">		}</span>
+
+<span class="nc" id="L2148">		return mapBumpedCurve;</span>
+	}
+
+	/**
+	 * Construct a Tenor + Parallel Map of Govvie Curves from the Treasury Instruments
+	 * 
+	 * @param strCode The Govvie Code
+	 * @param dtSpot Spot Date
+	 * @param adtEffective Array of Effective Dates
+	 * @param adtMaturity Array of Maturity Dates
+	 * @param adblCoupon Array of Coupons
+	 * @param adblQuote Array of Market Quotes
+	 * @param strMeasure Calibration Measure
+	 * @param iLatentStateType SHAPE PRESERVING/SMOOTH
+	 * @param dblBump The Tenor Node Bump Amount
+	 * @param bIsProportional TRUE - The Bump Applied is Proportional
+	 * 
+	 * @return Map of Govvie Curve Instance
+	 */
+
+	public static final org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.govvie.GovvieCurve&gt;
+		BumpedGovvieCurve (
+			final java.lang.String strCode,
+			final org.drip.analytics.date.JulianDate dtSpot,
+			final org.drip.analytics.date.JulianDate[] adtEffective,
+			final org.drip.analytics.date.JulianDate[] adtMaturity,
+			final double[] adblCoupon,
+			final double[] adblQuote,
+			final java.lang.String strMeasure,
+			final int iLatentStateType,
+			final double dblBump,
+			final boolean bIsProportional)
+	{
+<span class="pc bpc" id="L2181" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBump)) return null;</span>
+
+<span class="fc" id="L2183">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.govvie.GovvieCurve&gt; mapBumpedCurve =</span>
+			new org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.govvie.GovvieCurve&gt;();
+
+<span class="pc bpc" id="L2186" title="1 of 2 branches missed.">		if (null != adblQuote) {</span>
+<span class="fc" id="L2187">			int iNumComp = adblQuote.length;</span>
+
+<span class="fc bfc" id="L2189" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumComp; ++i) {</span>
+				try {
+<span class="fc" id="L2191">					org.drip.state.govvie.GovvieCurve gcBumped = GovvieCurve (strCode, dtSpot, adtEffective,</span>
+						adtMaturity, adblCoupon, org.drip.analytics.support.Helper.TweakManifestMeasure
+<span class="fc" id="L2193">							(adblQuote, new org.drip.param.definition.ManifestMeasureTweak (i,</span>
+								bIsProportional, dblBump)), strMeasure, iLatentStateType);
+
+<span class="pc bpc" id="L2196" title="1 of 2 branches missed.">					if (null != gcBumped) mapBumpedCurve.put (&quot;TSY::&quot; + adtMaturity[i], gcBumped);</span>
+<span class="nc" id="L2197">				} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L2198">					e.printStackTrace();</span>
+<span class="fc" id="L2199">				}</span>
+			}
+		}
+
+		try {
+<span class="fc" id="L2204">			org.drip.state.govvie.GovvieCurve gcBase = GovvieCurve (strCode, dtSpot, adtEffective,</span>
+				adtMaturity, adblCoupon, adblQuote, strMeasure, iLatentStateType);
+
+<span class="pc bpc" id="L2207" title="1 of 2 branches missed.">			if (null != gcBase) mapBumpedCurve.put (&quot;BASE&quot;, gcBase);</span>
+
+<span class="fc" id="L2209">			org.drip.state.govvie.GovvieCurve gcBumped = GovvieCurve (strCode, dtSpot, adtEffective,</span>
+<span class="fc" id="L2210">				adtMaturity, adblCoupon, org.drip.analytics.support.Helper.TweakManifestMeasure (adblQuote,</span>
+					new org.drip.param.definition.ManifestMeasureTweak
+						(org.drip.param.definition.ManifestMeasureTweak.FLAT, bIsProportional, dblBump)),
+							strMeasure, iLatentStateType);
+
+<span class="pc bpc" id="L2215" title="1 of 2 branches missed.">			if (null != gcBumped) mapBumpedCurve.put (&quot;BUMP&quot;, gcBumped);</span>
+<span class="nc" id="L2216">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L2217">			e.printStackTrace();</span>
+<span class="fc" id="L2218">		}</span>
+
+<span class="fc" id="L2220">		return mapBumpedCurve;</span>
+	}
+
+	/**
+	 * Construct a Tenor + Parallel Map of FX Curve from the FX Instruments
+	 * 
+	 * @param dtSpot Spot Date
+	 * @param cp The FX Currency Pair
+	 * @param astrMaturityTenor Array of Maturity Tenors
+	 * @param adblQuote Array of FX Forwards
+	 * @param strMeasure Calibration Measure
+	 * @param dblFXSpot FX Spot
+	 * @param iLatentStateType SHAPE PRESERVING/SMOOTH
+	 * @param dblBump The Tenor Node Bump Amount
+	 * @param bIsProportional TRUE - The Bump Applied is Proportional
+	 * 
+	 * @return Map of FX Curve Instance
+	 */
+
+	public static final org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.fx.FXCurve&gt;
+		BumpedFXCurve (
+			final org.drip.analytics.date.JulianDate dtSpot,
+			final org.drip.product.params.CurrencyPair cp,
+			final java.lang.String[] astrMaturityTenor,
+			final double[] adblQuote,
+			final java.lang.String strMeasure,
+			final double dblFXSpot,
+			final int iLatentStateType,
+			final double dblBump,
+			final boolean bIsProportional)
+	{
+<span class="nc bnc" id="L2251" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBump)) return null;</span>
+
+<span class="nc" id="L2253">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.fx.FXCurve&gt; mapBumpedCurve = new</span>
+			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.fx.FXCurve&gt;();
+
+<span class="nc bnc" id="L2256" title="All 2 branches missed.">		if (null != adblQuote) {</span>
+<span class="nc" id="L2257">			int iNumComp = adblQuote.length;</span>
+
+<span class="nc bnc" id="L2259" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumComp; ++i) {</span>
+				try {
+<span class="nc" id="L2261">					org.drip.state.fx.FXCurve fxCurveBumped = FXCurve (dtSpot, cp, astrMaturityTenor,</span>
+<span class="nc" id="L2262">						org.drip.analytics.support.Helper.TweakManifestMeasure (adblQuote, new</span>
+							org.drip.param.definition.ManifestMeasureTweak (i, bIsProportional, dblBump)),
+								strMeasure, dblFXSpot, iLatentStateType);
+
+<span class="nc bnc" id="L2266" title="All 2 branches missed.">					if (null != fxCurveBumped)</span>
+<span class="nc" id="L2267">						mapBumpedCurve.put (&quot;FXFWD::&quot; + astrMaturityTenor[i], fxCurveBumped);</span>
+<span class="nc" id="L2268">				} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L2269">					e.printStackTrace();</span>
+<span class="nc" id="L2270">				}</span>
+			}
+		}
+
+		try {
+<span class="nc" id="L2275">			org.drip.state.fx.FXCurve fxCurveBase = FXCurve (dtSpot, cp, astrMaturityTenor, adblQuote,</span>
+				strMeasure, dblFXSpot, iLatentStateType);
+
+<span class="nc bnc" id="L2278" title="All 2 branches missed.">			if (null != fxCurveBase) mapBumpedCurve.put (&quot;BASE&quot;, fxCurveBase);</span>
+
+<span class="nc" id="L2280">			org.drip.state.fx.FXCurve fxCurveBump = FXCurve (dtSpot, cp, astrMaturityTenor,</span>
+<span class="nc" id="L2281">				org.drip.analytics.support.Helper.TweakManifestMeasure (adblQuote, new</span>
+					org.drip.param.definition.ManifestMeasureTweak
+						(org.drip.param.definition.ManifestMeasureTweak.FLAT, bIsProportional, dblBump)),
+							strMeasure, dblFXSpot, iLatentStateType);
+
+<span class="nc bnc" id="L2286" title="All 2 branches missed.">			if (null != fxCurveBump) mapBumpedCurve.put (&quot;BUMP&quot;, fxCurveBump);</span>
+<span class="nc" id="L2287">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L2288">			e.printStackTrace();</span>
+<span class="nc" id="L2289">		}</span>
+
+<span class="nc" id="L2291">		return mapBumpedCurve;</span>
+	}
+
+	/**
+	 * Construct a Tenor + Parallel Forward Volatility Latent State Construction from Cap/Floor Instruments
+	 * 
+	 * @param dtSpot Spot Date
+	 * @param forwardLabel Forward Label
+	 * @param bIsCap TRUE - Create and Use Array of Caps
+	 * @param astrMaturityTenor Array of Cap/floor Maturities
+	 * @param adblStrike Array of Cap/Floor Strikes
+	 * @param adblQuote Array of Cap/Floor Quotes
+	 * @param strMeasure Calibration Measure
+	 * @param dc Discount Curve Instance
+	 * @param fc Forward Curve Instance
+	 * @param dblBump The Tenor Node Bump Amount
+	 * @param bIsProportional TRUE - The Bump Applied is Proportional
+	 * 
+	 * @return Map of Forward Volatility Curve Instance
+	 */
+
+	public static final
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.volatility.VolatilityCurve&gt;
+			BumpedForwardVolatilityCurve (
+				final org.drip.analytics.date.JulianDate dtSpot,
+				final org.drip.state.identifier.ForwardLabel forwardLabel,
+				final boolean bIsCap,
+				final java.lang.String[] astrMaturityTenor,
+				final double[] adblStrike,
+				final double[] adblQuote,
+				final java.lang.String strMeasure,
+				final org.drip.state.discount.MergedDiscountForwardCurve dc,
+				final org.drip.state.forward.ForwardCurve fc,
+				final double dblBump,
+				final boolean bIsProportional)
+	{
+<span class="nc bnc" id="L2327" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBump)) return null;</span>
+
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.volatility.VolatilityCurve&gt;
+<span class="nc" id="L2330">			mapBumpedCurve = new</span>
+				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.volatility.VolatilityCurve&gt;();
+
+<span class="nc bnc" id="L2333" title="All 2 branches missed.">		if (null != adblQuote) {</span>
+<span class="nc" id="L2334">			int iNumComp = adblQuote.length;</span>
+
+<span class="nc bnc" id="L2336" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumComp; ++i) {</span>
+				try {
+<span class="nc" id="L2338">					org.drip.state.volatility.VolatilityCurve forwardVolatilityCurveBumped =</span>
+<span class="nc" id="L2339">						ForwardRateVolatilityCurve (dtSpot, forwardLabel, bIsCap, astrMaturityTenor,</span>
+<span class="nc" id="L2340">							adblStrike, org.drip.analytics.support.Helper.TweakManifestMeasure (adblQuote,</span>
+								new org.drip.param.definition.ManifestMeasureTweak (i, bIsProportional,
+									dblBump)), strMeasure, dc, fc);
+
+<span class="nc bnc" id="L2344" title="All 2 branches missed.">					if (null != forwardVolatilityCurveBumped)</span>
+<span class="nc" id="L2345">						mapBumpedCurve.put (&quot;CAPFLOOR::&quot; + astrMaturityTenor[i],</span>
+							forwardVolatilityCurveBumped);
+<span class="nc" id="L2347">				} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L2348">					e.printStackTrace();</span>
+<span class="nc" id="L2349">				}</span>
+			}
+		}
+
+		try {
+<span class="nc" id="L2354">			org.drip.state.volatility.VolatilityCurve forwardVolatilityCurveBase = ForwardRateVolatilityCurve</span>
+<span class="nc" id="L2355">				(dtSpot, forwardLabel, bIsCap, astrMaturityTenor, adblStrike, adblQuote, strMeasure, dc, fc);</span>
+
+<span class="nc bnc" id="L2357" title="All 2 branches missed.">			if (null != forwardVolatilityCurveBase) mapBumpedCurve.put (&quot;BASE&quot;, forwardVolatilityCurveBase);</span>
+
+<span class="nc" id="L2359">			org.drip.state.volatility.VolatilityCurve forwardVolatilityCurveBumped =</span>
+<span class="nc" id="L2360">				ForwardRateVolatilityCurve (dtSpot, forwardLabel, bIsCap, astrMaturityTenor, adblStrike,</span>
+<span class="nc" id="L2361">					org.drip.analytics.support.Helper.TweakManifestMeasure (adblQuote, new</span>
+						org.drip.param.definition.ManifestMeasureTweak
+							(org.drip.param.definition.ManifestMeasureTweak.FLAT, bIsProportional, dblBump)),
+								strMeasure, dc, fc);
+
+<span class="nc bnc" id="L2366" title="All 2 branches missed.">			if (null != forwardVolatilityCurveBumped)</span>
+<span class="nc" id="L2367">				mapBumpedCurve.put (&quot;BUMP&quot;, forwardVolatilityCurveBumped);</span>
+<span class="nc" id="L2368">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L2369">			e.printStackTrace();</span>
+<span class="nc" id="L2370">		}</span>
+
+<span class="nc" id="L2372">		return mapBumpedCurve;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

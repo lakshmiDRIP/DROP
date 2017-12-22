@@ -1125,12 +1125,15 @@ public class CoreCashFlowMeasures {
 	{
 		// String strConfig = "c:\\Lakshmi\\BondAnal\\Config.xml";
 
-		String strConfig = "";
-
-		EnvManager.InitEnv (strConfig);
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		CustomBondAPISample();
 
 		BondCDSCurveCalibration();
+
+		EnvManager.TerminateEnv();
 	}
 }

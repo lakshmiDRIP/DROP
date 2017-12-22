@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WorkoutInfo.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.param.valuation</a> &gt; <span class="el_source">WorkoutInfo.java</span></div><h1>WorkoutInfo.java</h1><pre class="source lang-java linenums">
+package org.drip.param.valuation;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * Copyright (C) 2012 Lakshmi Krishnamurthy
+ * Copyright (C) 2011 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * WorkoutInfo is the place-holder for the work-out parameters. It contains the date, the factor, the type,
+ *  and the yield of the work-out.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class WorkoutInfo {
+
+	/**
+	 * Work out type Call
+	 */
+
+	public static final int WO_TYPE_CALL = 1;
+
+	/**
+	 * Work out type Put
+	 */
+
+	public static final int WO_TYPE_PUT = 2;
+
+	/**
+	 * Work out type Maturity
+	 */
+
+	public static final int WO_TYPE_MATURITY = 3;
+
+<span class="fc" id="L83">	private int _iWOType = WO_TYPE_MATURITY;</span>
+<span class="fc" id="L84">	private int _iDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L85">	private double _dblYield = java.lang.Double.NaN;</span>
+<span class="fc" id="L86">	private double _dblExerciseFactor = java.lang.Double.NaN;</span>
+
+	/**
+	 * Constructor: Construct the class from the work-out date, yield, exercise factor, and type
+	 * 
+	 * @param iDate Work-out Date
+	 * @param dblYield Work-out Yield
+	 * @param dblExerciseFactor Work-out Factor
+	 * @param iWOType Work out Type
+	 * 
+	 * @throws java.lang.Exception Thrown if input is invalid
+	 */
+
+	public WorkoutInfo (
+		final int iDate,
+		final double dblYield,
+		final double dblExerciseFactor,
+		final int iWOType)
+		throws java.lang.Exception
+<span class="fc" id="L105">	{</span>
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblYield = dblYield) ||</span>
+<span class="pc bpc" id="L107" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblExerciseFactor = dblExerciseFactor))</span>
+<span class="nc" id="L108">			throw new java.lang.Exception (&quot;WorkoutInfo ctr: One of wkout dat/yld/ex factor came out NaN!&quot;);</span>
+
+<span class="fc" id="L110">		_iDate = iDate;</span>
+<span class="fc" id="L111">		_iWOType = iWOType;</span>
+<span class="fc" id="L112">	}</span>
+
+	/**
+	 * Retrieve the Work-out Date
+	 * 
+	 * @return The Work-out Date
+	 */
+
+	public int date()
+	{
+<span class="fc" id="L122">		return _iDate;</span>
+	}
+
+	/**
+	 * Retrieve the Work-out Yield
+	 * 
+	 * @return The Work-out Yield
+	 */
+
+	public double yield()
+	{
+<span class="fc" id="L133">		return _dblYield;</span>
+	}
+
+	/**
+	 * Retrieve the Work-out Factor
+	 * 
+	 * @return The Work-out Factor
+	 */
+
+	public double factor()
+	{
+<span class="fc" id="L144">		return _dblExerciseFactor;</span>
+	}
+
+	/**
+	 * Retrieve the Work-out Type
+	 * 
+	 * @return The Work-out Type
+	 */
+
+	public int type()
+	{
+<span class="fc" id="L155">		return _iWOType;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

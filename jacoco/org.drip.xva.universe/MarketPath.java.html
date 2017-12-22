@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MarketPath.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.xva.universe</a> &gt; <span class="el_source">MarketPath.java</span></div><h1>MarketPath.java</h1><pre class="source lang-java linenums">
+package org.drip.xva.universe;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * MarketPath holds the Vertex Market Realizations at the Trajectory Vertexes along the Path of a Simulation.
+ *  The References are:&lt;br&gt;&lt;br&gt;
+ *  
+ *  - Burgard, C., and M. Kjaer (2013): Funding Strategies, Funding Costs &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;24 (12)&lt;/b&gt; 82-87.
+ *  
+ *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
+ *  	and Funding Costs &lt;i&gt;Journal of Credit Risk&lt;/i&gt; &lt;b&gt;7 (3)&lt;/b&gt; 1-19.
+ *  
+ *  - Burgard, C., and M. Kjaer (2014): In the Balance &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;24 (11)&lt;/b&gt; 72-75.
+ *  
+ *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;20 (2)&lt;/b&gt; 86-90.
+ *  
+ *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing
+ *  	&lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;21 (2)&lt;/b&gt; 97-102.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class MarketPath {
+<span class="fc" id="L70">	private org.drip.xva.universe.MarketVertex[] _aMV = null;</span>
+
+	/**
+	 * MarketPath Constructor
+	 * 
+	 * @param aMV Array of the Numeraire Vertexes
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public MarketPath (
+		final org.drip.xva.universe.MarketVertex[] aMV)
+		throws java.lang.Exception
+<span class="fc" id="L83">	{</span>
+<span class="pc bpc" id="L84" title="2 of 4 branches missed.">		if (null == (_aMV = aMV) || 0 == _aMV.length)</span>
+<span class="nc" id="L85">			throw new java.lang.Exception (&quot;MarketPath Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L86">	}</span>
+
+	/**
+	 * Retrieve the Array of the Vertex Anchor Dates
+	 * 
+	 * @return The Array of the Vertex Anchor Dates
+	 */
+
+	public org.drip.analytics.date.JulianDate[] anchors()
+	{
+<span class="nc" id="L96">		int iNumVertex = _aMV.length;</span>
+<span class="nc" id="L97">		org.drip.analytics.date.JulianDate[] adtVertex = new org.drip.analytics.date.JulianDate[iNumVertex];</span>
+
+<span class="nc bnc" id="L99" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVertex; ++i)</span>
+<span class="nc" id="L100">			adtVertex[i] = _aMV[i].anchor();</span>
+
+<span class="nc" id="L102">		return adtVertex;</span>
+	}
+
+	/**
+	 * Array of the Market Vertexes
+	 * 
+	 * @return The Market Vertexes
+	 */
+
+	public org.drip.xva.universe.MarketVertex[] vertexes()
+	{
+<span class="fc" id="L113">		return _aMV;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

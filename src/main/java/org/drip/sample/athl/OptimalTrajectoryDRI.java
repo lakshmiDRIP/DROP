@@ -84,7 +84,10 @@ public class OptimalTrajectoryDRI {
 		final String[] astrArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		String strAssetName = "DRI";
 		double dblAverageDailyVolume = 1929000.;
@@ -193,5 +196,7 @@ public class OptimalTrajectoryDRI {
 		);
 
 		System.out.println ("\t|---------------------------------------------------------------------||");
+
+		EnvManager.TerminateEnv();
 	}
 }

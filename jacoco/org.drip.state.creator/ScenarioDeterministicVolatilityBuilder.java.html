@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ScenarioDeterministicVolatilityBuilder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.state.creator</a> &gt; <span class="el_source">ScenarioDeterministicVolatilityBuilder.java</span></div><h1>ScenarioDeterministicVolatilityBuilder.java</h1><pre class="source lang-java linenums">
+package org.drip.state.creator;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * ScenarioDeterministicVolatilityBuilder implements the construction of the basis spline deterministic
+ * 	volatility term structure using the input instruments and their quotes.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L60">public class ScenarioDeterministicVolatilityBuilder {</span>
+
+	/**
+	 * Construct the Deterministic Volatility Term Structure Instance using the specified Custom Spline
+	 * 
+	 * @param strName Name of the the Term Structure Instance
+	 * @param dtStart The Start Date
+	 * @param strCurrency Currency
+	 * @param aiDate Array of Dates
+	 * @param adblImpliedVolatility Array of Implied Volatility Nodes
+	 * @param scbc Segment Custom Builder Parameters
+	 * 
+	 * @return Instance of the Term Structure
+	 */
+
+	public static final org.drip.state.volatility.VolatilityCurve CustomSplineTermStructure (
+		final java.lang.String strName,
+		final org.drip.analytics.date.JulianDate dtStart,
+		final java.lang.String strCurrency,
+		final int[] aiDate,
+		final double[] adblImpliedVolatility,
+		final org.drip.spline.params.SegmentCustomBuilderControl scbc)
+	{
+<span class="nc bnc" id="L83" title="All 12 branches missed.">		if (null == strName || strName.isEmpty() || null == dtStart || null == aiDate || null ==</span>
+			adblImpliedVolatility || null == scbc)
+<span class="nc" id="L85">			return null;</span>
+
+<span class="nc" id="L87">		int iNumDate = aiDate.length;</span>
+<span class="nc" id="L88">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new</span>
+			org.drip.spline.params.SegmentCustomBuilderControl[iNumDate - 1];
+
+<span class="nc bnc" id="L91" title="All 4 branches missed.">		if (0 == iNumDate || iNumDate != adblImpliedVolatility.length) return null;</span>
+
+<span class="nc bnc" id="L93" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumDate - 1; ++i)</span>
+<span class="nc" id="L94">			aSCBC[i] = scbc;</span>
+
+		try {
+<span class="nc" id="L97">			return new org.drip.state.curve.BasisSplineDeterministicVolatility (dtStart.julian(),</span>
+<span class="nc" id="L98">				org.drip.state.identifier.CustomLabel.Standard (strName), strCurrency, new</span>
+					org.drip.spline.grid.OverlappingStretchSpan
+						(org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
+<span class="nc" id="L101">							(strName, aiDate, adblImpliedVolatility, aSCBC, null,</span>
+<span class="nc" id="L102">								org.drip.spline.stretch.BoundarySettings.NaturalStandard(),</span>
+									org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE)));
+<span class="nc" id="L104">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L105">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L108">		return null;</span>
+	}
+
+	/**
+	 * Construct the Deterministic Volatility Term Structure Instance based off of a Cubic Polynomial Spline
+	 * 
+	 * @param strName Name of the the Term Structure Instance
+	 * @param dtStart The Start Date
+	 * @param strCurrency Currency
+	 * @param astrTenor Array of Tenors
+	 * @param adblImpliedVolatility Array of Implied Volatility Nodes
+	 * 
+	 * @return The Deterministic Volatility Term Structure Instance based off of a Cubic Polynomial Spline
+	 */
+
+	public static final org.drip.state.volatility.VolatilityCurve CubicPolynomialTermStructure (
+		final java.lang.String strName,
+		final org.drip.analytics.date.JulianDate dtStart,
+		final java.lang.String strCurrency,
+		final java.lang.String[] astrTenor,
+		final double[] adblImpliedVolatility)
+	{
+<span class="nc bnc" id="L130" title="All 4 branches missed.">		if (null == dtStart || null == astrTenor) return null;</span>
+
+<span class="nc" id="L132">		int iNumTenor = astrTenor.length;</span>
+<span class="nc" id="L133">		int[] aiDate = new int[iNumTenor];</span>
+
+<span class="nc bnc" id="L135" title="All 2 branches missed.">		if (0 == iNumTenor) return null;</span>
+
+<span class="nc bnc" id="L137" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
+<span class="nc" id="L138">			aiDate[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
+
+		try {
+<span class="nc" id="L141">			return CustomSplineTermStructure (strName, dtStart, strCurrency, aiDate, adblImpliedVolatility,</span>
+				new org.drip.spline.params.SegmentCustomBuilderControl
+					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
+						org.drip.spline.basis.PolynomialFunctionSetParams (4),
+<span class="nc" id="L145">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
+<span class="nc" id="L146">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L147">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L150">		return null;</span>
+	}
+
+	/**
+	 * Construct the Deterministic Volatility Term Structure Instance based off of a Quartic Polynomial
+	 * `Spline
+	 * 
+	 * @param strName Name of the the Term Structure Instance
+	 * @param dtStart The Start Date
+	 * @param strCurrency Currency
+	 * @param astrTenor Array of Tenors
+	 * @param adblImpliedVolatility Array of Implied Volatility Nodes
+	 * 
+	 * @return The Deterministic Volatility Term Structure Instance based off of a Quartic Polynomial Spline
+	 */
+
+	public static final org.drip.state.volatility.VolatilityCurve QuarticPolynomialTermStructure
+		(final java.lang.String strName,
+		final org.drip.analytics.date.JulianDate dtStart,
+		final java.lang.String strCurrency,
+		final java.lang.String[] astrTenor,
+		final double[] adblImpliedVolatility)
+	{
+<span class="nc bnc" id="L173" title="All 4 branches missed.">		if (null == dtStart || null == astrTenor) return null;</span>
+
+<span class="nc" id="L175">		int iNumTenor = astrTenor.length;</span>
+<span class="nc" id="L176">		int[] aiDate = new int[iNumTenor];</span>
+
+<span class="nc bnc" id="L178" title="All 2 branches missed.">		if (0 == iNumTenor) return null;</span>
+
+<span class="nc bnc" id="L180" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
+<span class="nc" id="L181">			aiDate[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
+
+		try {
+<span class="nc" id="L184">			return CustomSplineTermStructure (strName, dtStart, strCurrency, aiDate, adblImpliedVolatility,</span>
+				new org.drip.spline.params.SegmentCustomBuilderControl
+					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
+						org.drip.spline.basis.PolynomialFunctionSetParams (5),
+<span class="nc" id="L188">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
+<span class="nc" id="L189">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L190">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L193">		return null;</span>
+	}
+
+	/**
+	 * Construct the Deterministic Volatility Term Structure Instance based off of a Kaklis-Pandelis
+	 * 	Polynomial Tension Spline
+	 * 
+	 * @param strName Name of the the Term Structure Instance
+	 * @param dtStart The Start Date
+	 * @param strCurrency Currency
+	 * @param astrTenor Array of Tenors
+	 * @param adblImpliedVolatility Array of Implied Volatility Nodes
+	 * 
+	 * @return The Deterministic Volatility Term Structure Instance based off of a Kaklis-Pandelis Polynomial
+	 * 	Tension Spline
+	 */
+
+	public static final org.drip.state.volatility.VolatilityCurve KaklisPandelisTermStructure (
+		final java.lang.String strName,
+		final org.drip.analytics.date.JulianDate dtStart,
+		final java.lang.String strCurrency,
+		final java.lang.String[] astrTenor,
+		final double[] adblImpliedVolatility)
+	{
+<span class="nc bnc" id="L217" title="All 4 branches missed.">		if (null == dtStart || null == astrTenor) return null;</span>
+
+<span class="nc" id="L219">		int iNumTenor = astrTenor.length;</span>
+<span class="nc" id="L220">		int[] aiDate = new int[iNumTenor];</span>
+
+<span class="nc bnc" id="L222" title="All 2 branches missed.">		if (0 == iNumTenor) return null;</span>
+
+<span class="nc bnc" id="L224" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
+<span class="nc" id="L225">			aiDate[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
+
+		try {
+<span class="nc" id="L228">			return CustomSplineTermStructure (strName, dtStart, strCurrency, aiDate, adblImpliedVolatility,</span>
+				new org.drip.spline.params.SegmentCustomBuilderControl
+					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KAKLIS_PANDELIS, new
+						org.drip.spline.basis.KaklisPandelisSetParams (2),
+<span class="nc" id="L232">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
+<span class="nc" id="L233">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L234">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L237">		return null;</span>
+	}
+
+	/**
+	 * Construct the Deterministic Volatility Term Structure Instance based off of a KLK Hyperbolic Tension
+	 * 	Spline
+	 * 
+	 * @param strName Name of the the Term Structure Instance
+	 * @param dtStart The Start Date
+	 * @param strCurrency Currency
+	 * @param astrTenor Array of Tenors
+	 * @param adblImpliedVolatility Array of Implied Volatility Nodes
+	 * @param dblTension Tension
+	 * 
+	 * @return The Deterministic Volatility Term Structure Instance based off of a KLK Hyperbolic Tension
+	 * 	Spline
+	 */
+
+	public static final org.drip.state.volatility.VolatilityCurve KLKHyperbolicTermStructure (
+		final java.lang.String strName,
+		final org.drip.analytics.date.JulianDate dtStart,
+		final java.lang.String strCurrency,
+		final java.lang.String[] astrTenor,
+		final double[] adblImpliedVolatility,
+		final double dblTension)
+	{
+<span class="nc bnc" id="L263" title="All 4 branches missed.">		if (null == dtStart || null == astrTenor) return null;</span>
+
+<span class="nc" id="L265">		int iNumTenor = astrTenor.length;</span>
+<span class="nc" id="L266">		int[] aiDate = new int[iNumTenor];</span>
+
+<span class="nc bnc" id="L268" title="All 2 branches missed.">		if (0 == iNumTenor) return null;</span>
+
+<span class="nc bnc" id="L270" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
+<span class="nc" id="L271">			aiDate[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
+
+		try {
+<span class="nc" id="L274">			return CustomSplineTermStructure (strName, dtStart, strCurrency, aiDate, adblImpliedVolatility,</span>
+				new org.drip.spline.params.SegmentCustomBuilderControl
+					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
+						new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
+<span class="nc" id="L278">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
+<span class="nc" id="L279">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L280">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L283">		return null;</span>
+	}
+
+	/**
+	 * Construct the Deterministic Volatility Term Structure Instance based off of a KLK Rational Linear
+	 * 	Tension Spline
+	 * 
+	 * @param strName Name of the the Term Structure Instance
+	 * @param dtStart The Start Date
+	 * @param strCurrency Currency
+	 * @param astrTenor Array of Tenors
+	 * @param adblImpliedVolatility Array of Implied Volatility Nodes
+	 * @param dblTension Tension
+	 * 
+	 * @return The Deterministic Volatility Term Structure Instance based off of a KLK Rational Linear
+	 * 	Tension Spline
+	 */
+
+	public static final org.drip.state.volatility.VolatilityCurve KLKRationalLinearTermStructure (
+		final java.lang.String strName,
+		final org.drip.analytics.date.JulianDate dtStart,
+		final java.lang.String strCurrency,
+		final java.lang.String[] astrTenor,
+		final double[] adblImpliedVolatility,
+		final double dblTension)
+	{
+<span class="nc bnc" id="L309" title="All 4 branches missed.">		if (null == dtStart || null == astrTenor) return null;</span>
+
+<span class="nc" id="L311">		int iNumTenor = astrTenor.length;</span>
+<span class="nc" id="L312">		int[] aiDate = new int[iNumTenor];</span>
+
+<span class="nc bnc" id="L314" title="All 2 branches missed.">		if (0 == iNumTenor) return null;</span>
+
+<span class="nc bnc" id="L316" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
+<span class="nc" id="L317">			aiDate[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
+
+		try {
+<span class="nc" id="L320">			return CustomSplineTermStructure (strName, dtStart, strCurrency, aiDate, adblImpliedVolatility,</span>
+				new org.drip.spline.params.SegmentCustomBuilderControl
+					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_LINEAR_TENSION,
+						new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
+<span class="nc" id="L324">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
+<span class="nc" id="L325">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L326">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L329">		return null;</span>
+	}
+
+	/**
+	 * Construct the Deterministic Volatility Term Structure Instance based off of a KLK Rational Quadratic
+	 * 	Tension Spline
+	 * 
+	 * @param strName Name of the the Term Structure Instance
+	 * @param dtStart The Start Date
+	 * @param strCurrency Currency
+	 * @param astrTenor Array of Tenors
+	 * @param adblImpliedVolatility Array of Implied Volatility Nodes
+	 * @param dblTension Tension
+	 * 
+	 * @return The Deterministic Volatility Term Structure Instance based off of a KLK Rational Quadratic
+	 * 	Tension Spline
+	 */
+
+	public static final org.drip.state.volatility.VolatilityCurve
+		KLKRationalQuadraticTermStructure (
+			final java.lang.String strName,
+			final org.drip.analytics.date.JulianDate dtStart,
+			final java.lang.String strCurrency,
+			final java.lang.String[] astrTenor,
+			final double[] adblImpliedVolatility,
+			final double dblTension)
+	{
+<span class="nc bnc" id="L356" title="All 4 branches missed.">		if (null == dtStart || null == astrTenor) return null;</span>
+
+<span class="nc" id="L358">		int iNumTenor = astrTenor.length;</span>
+<span class="nc" id="L359">		int[] aiDate = new int[iNumTenor];</span>
+
+<span class="nc bnc" id="L361" title="All 2 branches missed.">		if (0 == iNumTenor) return null;</span>
+
+<span class="nc bnc" id="L363" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
+<span class="nc" id="L364">			aiDate[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
+
+		try {
+<span class="nc" id="L367">			return CustomSplineTermStructure (strName, dtStart, strCurrency, aiDate, adblImpliedVolatility,</span>
+				new org.drip.spline.params.SegmentCustomBuilderControl
+					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_QUADRATIC_TENSION,
+				new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
+<span class="nc" id="L371">					org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
+<span class="nc" id="L372">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L373">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L376">		return null;</span>
+	}
+
+	/**
+	 * Construct the Flat Constant Forward Volatility Forward Curve
+	 * 
+	 * @param iEpochDate Epoch Date
+	 * @param label Forward Volatility Label
+	 * @param strCurrency Currency
+	 * @param dblFlatVolatility Flat Volatility
+	 * 
+	 * @return The Volatility Curve Instance
+	 */
+
+	public static final org.drip.state.volatility.VolatilityCurve FlatForward (
+		final int iEpochDate,
+		final org.drip.state.identifier.VolatilityLabel label,
+		final java.lang.String strCurrency,
+		final double dblFlatVolatility)
+	{
+		try {
+<span class="fc" id="L397">			return new org.drip.state.nonlinear.FlatForwardVolatilityCurve (iEpochDate, label, strCurrency,</span>
+				new int[] {iEpochDate}, new double[] {dblFlatVolatility});
+<span class="nc" id="L399">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L400">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L403">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

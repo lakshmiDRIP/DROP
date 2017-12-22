@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EDFJacobianRegressorSet.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.regression.curvejacobian</a> &gt; <span class="el_source">EDFJacobianRegressorSet.java</span></div><h1>EDFJacobianRegressorSet.java</h1><pre class="source lang-java linenums">
+package org.drip.regression.curvejacobian;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * EDFJacobianRegressorSet implements the regression analysis set for the EDF product related Sensitivity
+ *  Jacobians. Specifically, it computes the PVDF micro-Jack.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="fc" id="L61">public class EDFJacobianRegressorSet implements org.drip.regression.core.RegressorSet {</span>
+<span class="fc" id="L62">	private java.lang.String _strRegressionScenario =</span>
+		&quot;org.drip.analytics.definition.EDFDiscountCurve.CompPVDFJacobian&quot;;
+
+<span class="fc" id="L65">	private java.util.List&lt;org.drip.regression.core.UnitRegressor&gt; _setRegressors = new</span>
+		java.util.ArrayList&lt;org.drip.regression.core.UnitRegressor&gt;();
+
+	@Override public java.util.List&lt;org.drip.regression.core.UnitRegressor&gt; getRegressorSet()
+	{
+<span class="fc" id="L70">		return _setRegressors;</span>
+	}
+
+	@Override public boolean setupRegressors()
+	{
+		try {
+<span class="fc" id="L76">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor (&quot;EDFJacobian&quot;,</span>
+<span class="fc" id="L77">				_strRegressionScenario) {</span>
+<span class="fc" id="L78">				org.drip.analytics.date.JulianDate dtStart = null;</span>
+<span class="fc" id="L79">				org.drip.state.discount.MergedDiscountForwardCurve dcEDF = null;</span>
+<span class="fc" id="L80">				org.drip.quant.calculus.WengertJacobian wjPVDF = null;</span>
+<span class="fc" id="L81">				org.drip.quant.calculus.WengertJacobian aWJComp[] = null;</span>
+<span class="fc" id="L82">				org.drip.product.definition.CalibratableComponent aCompCalib[] = null;</span>
+
+				@Override public boolean preRegression()
+				{
+<span class="fc" id="L86">					int NUM_DC_INSTR = 8;</span>
+<span class="fc" id="L87">					int aiDate[] = new int[NUM_DC_INSTR];</span>
+<span class="fc" id="L88">					double adblRate[] = new double[NUM_DC_INSTR];</span>
+<span class="fc" id="L89">					double adblCompCalibValue[] = new double[NUM_DC_INSTR];</span>
+<span class="fc" id="L90">					aWJComp = new org.drip.quant.calculus.WengertJacobian[NUM_DC_INSTR];</span>
+<span class="fc" id="L91">					java.lang.String astrCalibMeasure[] = new java.lang.String[NUM_DC_INSTR];</span>
+<span class="fc" id="L92">					aCompCalib = new</span>
+						org.drip.product.definition.CalibratableComponent[NUM_DC_INSTR];
+
+<span class="fc" id="L95">					dtStart = org.drip.analytics.date.DateUtil.CreateFromYMD (2011, 4, 6);</span>
+
+<span class="fc" id="L97">					adblCompCalibValue[0] = .0027;</span>
+<span class="fc" id="L98">					adblCompCalibValue[1] = .0032;</span>
+<span class="fc" id="L99">					adblCompCalibValue[2] = .0041;</span>
+<span class="fc" id="L100">					adblCompCalibValue[3] = .0054;</span>
+<span class="fc" id="L101">					adblCompCalibValue[4] = .0077;</span>
+<span class="fc" id="L102">					adblCompCalibValue[5] = .0104;</span>
+<span class="fc" id="L103">					adblCompCalibValue[6] = .0134;</span>
+<span class="fc" id="L104">					adblCompCalibValue[7] = .0160;</span>
+<span class="fc" id="L105">					org.drip.analytics.date.JulianDate dtEDFStart = dtStart;</span>
+
+<span class="fc" id="L107">					org.drip.product.definition.CalibratableComponent[] aEDF =</span>
+						org.drip.product.creator.SingleStreamComponentBuilder.ForwardRateFuturesPack
+<span class="fc" id="L109">							(dtStart, 8, &quot;USD&quot;);</span>
+
+<span class="fc bfc" id="L111" title="All 2 branches covered.">					for (int i = 0; i &lt; NUM_DC_INSTR; ++i) {</span>
+<span class="fc" id="L112">						adblRate[i] = 0.01;</span>
+<span class="fc" id="L113">						aCompCalib[i] = aEDF[i];</span>
+<span class="fc" id="L114">						astrCalibMeasure[i] = &quot;Rate&quot;;</span>
+
+<span class="fc" id="L116">						aiDate[i] = dtEDFStart.addDays ((i + 1) * 91).julian();</span>
+					}
+
+<span class="fc" id="L119">					return null != (dcEDF =</span>
+<span class="pc bpc" id="L120" title="1 of 2 branches missed.">						org.drip.state.creator.ScenarioDiscountCurveBuilder.NonlinearBuild (dtStart, &quot;USD&quot;,</span>
+							aCompCalib, adblCompCalibValue, astrCalibMeasure, null));
+				}
+
+				@Override public boolean execRegression()
+				{
+<span class="fc bfc" id="L126" title="All 2 branches covered.">					for (int i = 0; i &lt; aCompCalib.length; ++i) {</span>
+						try {
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">							if (null == (aWJComp[i] = aCompCalib[i].jackDDirtyPVDManifestMeasure (new</span>
+								org.drip.param.valuation.ValuationParams (dtStart, dtStart, &quot;USD&quot;), null,
+<span class="fc" id="L130">									org.drip.param.creator.MarketParamsBuilder.Create (dcEDF, null,</span>
+										null, null, null, null, null), null)))
+<span class="nc" id="L132">								return false;</span>
+<span class="nc" id="L133">						} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L134">							e.printStackTrace();</span>
+
+<span class="nc" id="L136">							return false;</span>
+<span class="fc" id="L137">						}</span>
+					}
+
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">					return null != (wjPVDF = dcEDF.compJackDPVDManifestMeasure (dtStart));</span>
+				}
+
+				@Override public boolean postRegression (
+					final org.drip.regression.core.RegressionRunDetail rnvd)
+				{
+<span class="fc bfc" id="L146" title="All 2 branches covered.">					for (int i = 0; i &lt; aCompCalib.length; ++i) {</span>
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">						if (!rnvd.set (&quot;PVDFMicroJack_&quot; + aCompCalib[i].name(), aWJComp[i].displayString()))</span>
+<span class="nc" id="L148">							return false;</span>
+					}
+
+<span class="fc" id="L151">					return rnvd.set (&quot;CompPVDFJacobian&quot;, &quot;&quot; + wjPVDF.displayString());</span>
+				}
+			});
+<span class="nc" id="L154">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L155">			e.printStackTrace();</span>
+<span class="fc" id="L156">		}</span>
+
+<span class="fc" id="L158">		return true;</span>
+	}
+
+	@Override public java.lang.String getSetName()
+	{
+<span class="fc" id="L163">		return _strRegressionScenario;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UnitRegressionExecutor.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.regression.core</a> &gt; <span class="el_source">UnitRegressionExecutor.java</span></div><h1>UnitRegressionExecutor.java</h1><pre class="source lang-java linenums">
+package org.drip.regression.core;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * Copyright (C) 2012 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * UnitRegressionExecutor implements the UnitRegressor, and splits the regression execution into pre-,
+ * 	execute, and post-regression. It provides default implementations for pre-regression and post-regression.
+ * 	Most typical regressors only need to over-ride the execRegression method.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public abstract class UnitRegressionExecutor implements org.drip.regression.core.UnitRegressor {
+	private static final boolean _bDisplayStatus = false;
+
+<span class="fc" id="L66">	private java.lang.String _strRegressorSet = &quot;&quot;;</span>
+<span class="fc" id="L67">	private java.lang.String _strRegressorName = &quot;&quot;;</span>
+
+	/**
+	 * Constructor for the unit regression executor
+	 * 
+	 * @param strRegressorName Name of the unit regressor
+	 * @param strRegressorSet Name of the regressor set
+	 * 
+	 * @throws java.lang.Exception Thrown if inputs are invalid
+	 */
+
+	protected UnitRegressionExecutor (
+		final java.lang.String strRegressorName,
+		final java.lang.String strRegressorSet)
+		throws java.lang.Exception
+<span class="fc" id="L82">	{</span>
+<span class="pc bpc" id="L83" title="3 of 6 branches missed.">		if (null == (_strRegressorName = strRegressorName) || strRegressorName.isEmpty() || null ==</span>
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">			(_strRegressorSet = strRegressorSet) || _strRegressorSet.isEmpty())</span>
+<span class="nc" id="L85">			throw new java.lang.Exception (&quot;UnitRegressionExecutor ctr: Invalid inputs&quot;);</span>
+<span class="fc" id="L86">	}</span>
+
+	/**
+	 * One-time initialization to set up the objects needed for the regression
+	 * 
+	 * @return TRUE - Initialization successful
+	 */
+
+	public boolean preRegression()
+	{
+<span class="fc" id="L96">		return true;</span>
+	}
+
+	/**
+	 * Execute the regression call within this function
+	 * 
+	 * @return The result of the regression
+	 */
+
+	public abstract boolean execRegression();
+
+	/**
+	 * Clean-up of the objects set-up for the regression
+	 * 
+	 * @param rnvd Regression Run Detail object to capture the regression details
+	 * 
+	 * @return TRUE - Clean-up successful
+	 */
+
+	public boolean postRegression (
+		final org.drip.regression.core.RegressionRunDetail rnvd)
+	{
+<span class="fc" id="L118">		return true;</span>
+	}
+
+	@Override public org.drip.regression.core.RegressionRunOutput regress()
+	{
+<span class="fc" id="L123">		org.drip.regression.core.RegressionRunOutput ro = null;</span>
+
+		try {
+<span class="fc" id="L126">			ro = new org.drip.regression.core.RegressionRunOutput (_strRegressorSet + &quot;.&quot; +</span>
+				_strRegressorName);
+<span class="nc" id="L128">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L129">			e.printStackTrace();</span>
+
+<span class="nc" id="L131">			return null;</span>
+<span class="fc" id="L132">		}</span>
+
+<span class="fc bfc" id="L134" title="All 2 branches covered.">		if (!preRegression()) {</span>
+			if (_bDisplayStatus)
+				System.out.println (_strRegressorSet + &quot;.&quot; + _strRegressorName +
+					&quot;: Cannot set-up the regressor!&quot;);
+
+<span class="fc" id="L139">			return null;</span>
+		}
+
+<span class="fc" id="L142">		long lStartTime = System.nanoTime();</span>
+
+<span class="fc bfc" id="L144" title="All 2 branches covered.">		if (!execRegression()) {</span>
+			if (_bDisplayStatus)
+				System.out.println (_strRegressorSet + &quot;.&quot; + _strRegressorName + &quot;: failed&quot;);
+
+<span class="fc" id="L148">			ro.setTerminationStatus (false);</span>
+
+<span class="fc" id="L150">			return ro;</span>
+		}
+
+<span class="fc" id="L153">		ro._lExecTime = (long) (1.e-03 * (System.nanoTime() - lStartTime));</span>
+
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">		if (!postRegression (ro.getRegressionDetail())) {</span>
+			if (_bDisplayStatus)
+				System.out.println (_strRegressorSet + &quot;.&quot; + _strRegressorName +
+					&quot;: Regressor clean-up unsuccessful!&quot;);
+
+<span class="nc" id="L160">			return null;</span>
+		}
+
+		if (_bDisplayStatus) System.out.println (_strRegressorSet + &quot;.&quot; + _strRegressorName + &quot;: succeeded&quot;);
+
+<span class="fc" id="L165">		ro.setTerminationStatus (true);</span>
+
+<span class="fc" id="L167">		return ro;</span>
+	}
+
+	@Override public java.lang.String getName()
+	{
+<span class="fc" id="L172">		return _strRegressorName;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

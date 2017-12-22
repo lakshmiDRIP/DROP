@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CustomSwapMeasures.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.oisapi</a> &gt; <span class="el_source">CustomSwapMeasures.java</span></div><h1>CustomSwapMeasures.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.oisapi;
+
+import java.util.*;
+
+import org.drip.analytics.date.*;
+import org.drip.service.product.OvernightIndexSwapAPI;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * CustomSwapMeasures demonstrates the Invocation and Usage of the OIS API.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L62">public class CustomSwapMeasures {</span>
+
+	public static void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+<span class="nc" id="L68">		JulianDate dtSpot = DateUtil.Today();</span>
+
+<span class="nc" id="L70">		String strOISCurrency = &quot;USD&quot;;</span>
+<span class="nc" id="L71">		String strOISTenor = &quot;3W&quot;;</span>
+<span class="nc" id="L72">		double dblOISCoupon = 0.0043;</span>
+
+<span class="nc" id="L74">		String[] astrOvernightCurveDepositTenor = new String[] {</span>
+			&quot;1D&quot;
+		};
+
+<span class="nc" id="L78">		double[] adblOvernightCurveDepositQuote = new double[] {</span>
+			0.0010
+		};
+
+<span class="nc" id="L82">		String[] astrOvernightCurveOISTenor = new String[] {</span>
+			&quot;1W&quot;,
+			&quot;2W&quot;,
+			&quot;3W&quot;,
+			&quot;1M&quot;,
+			&quot;2M&quot;,
+			&quot;3M&quot;,
+			&quot;4M&quot;,
+			&quot;5M&quot;,
+			&quot;6M&quot;,
+			&quot;9M&quot;,
+			&quot;1Y&quot;,
+			&quot;18M&quot;,
+			&quot;2Y&quot;,
+			&quot;3Y&quot;,
+			&quot;4Y&quot;,
+			&quot;5Y&quot;
+		};
+
+<span class="nc" id="L101">		double[] adblOvernightCurveOISQuote = new double[] {</span>
+			0.0020,	// 1W
+			0.0028,	// 2W
+			0.0043,	// 3W
+			0.0064,	// 1M
+			0.0086,	// 2M
+			0.0109,	// 3M
+			0.0133,	// 4M
+			0.0154,	// 5M
+			0.0171,	// 6M
+			0.0210,	// 9M
+			0.0231,	// 1Y
+			0.0234,	// 18M
+			0.0235,	// 2Y
+			0.0235,	// 3Y
+			0.0237,	// 4Y
+			0.0240	// 5Y
+		};
+
+<span class="nc" id="L120">		Map&lt;String, Double&gt; mapMeasures = OvernightIndexSwapAPI.ValuationMetrics (</span>
+			strOISCurrency,
+			strOISTenor,
+			dblOISCoupon,
+<span class="nc" id="L124">			dtSpot.julian(),</span>
+			astrOvernightCurveDepositTenor,
+			adblOvernightCurveDepositQuote,
+			astrOvernightCurveOISTenor,
+			adblOvernightCurveOISQuote,
+			false
+		);
+
+<span class="nc" id="L132">		Set&lt;String&gt; setstrKeys = mapMeasures.keySet();</span>
+
+<span class="nc bnc" id="L134" title="All 2 branches missed.">		for (String strKey : setstrKeys)</span>
+<span class="nc" id="L135">			System.out.println (&quot;\t&quot; + strKey + &quot; =&gt; &quot; + mapMeasures.get (strKey));</span>
+<span class="nc" id="L136">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

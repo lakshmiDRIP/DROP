@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Variable.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.analytics.eventday</a> &gt; <span class="el_source">Variable.java</span></div><h1>Variable.java</h1><pre class="source lang-java linenums">
+package org.drip.analytics.eventday;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * Copyright (C) 2012 Lakshmi Krishnamurthy
+ * Copyright (C) 2011 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * Variable class contains the rule characterizing the variable holiday’s month, day in week, week in month,
+ * 	and the weekend days. Specific holidays in the given year are generated using these rules.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class Variable extends Base {
+<span class="nc" id="L64">	private int _iMonth = 0;</span>
+<span class="nc" id="L65">	private int _iWeekDay = 0;</span>
+<span class="nc" id="L66">	private int _iWeekInMonth = 0;</span>
+<span class="nc" id="L67">	private boolean _bFromFront = true;</span>
+<span class="nc" id="L68">	private org.drip.analytics.eventday.Weekend _wkend = null;</span>
+
+	/**
+	 * Construct the object from the week, day, month, from front/back, week end, and description
+	 * 
+	 * @param iWeekInMonth Week of the Month
+	 * @param iWeekDay Day of the Week
+	 * @param iMonth Month
+	 * @param bFromFront From Front (true), Back (false)
+	 * @param wkend Weekend
+	 * @param strDescription Description
+	 */
+
+	public Variable (
+		final int iWeekInMonth,
+		final int iWeekDay,
+		final int iMonth,
+		final boolean bFromFront,
+		final Weekend wkend,
+		final java.lang.String strDescription)
+	{
+<span class="nc" id="L89">		super (strDescription);</span>
+
+<span class="nc" id="L91">		_wkend = wkend;</span>
+<span class="nc" id="L92">		_iMonth = iMonth;</span>
+<span class="nc" id="L93">		_iWeekDay = iWeekDay;</span>
+<span class="nc" id="L94">		_bFromFront = bFromFront;</span>
+<span class="nc" id="L95">		_iWeekInMonth = iWeekInMonth;</span>
+<span class="nc" id="L96">	}</span>
+
+	@Override public int dateInYear (
+		final int iYear,
+		final boolean bAdjustForWeekend)
+	{
+<span class="nc" id="L102">		int iDate = java.lang.Integer.MIN_VALUE;</span>
+
+		try {
+<span class="nc bnc" id="L105" title="All 2 branches missed.">			if (_bFromFront)</span>
+<span class="nc" id="L106">				iDate = (org.drip.analytics.date.DateUtil.CreateFromYMD (iYear, _iMonth,</span>
+<span class="nc" id="L107">					_iWeekDay)).julian() + (7 * (_iWeekInMonth - 1));</span>
+			else {
+<span class="nc" id="L109">				iDate = (org.drip.analytics.date.DateUtil.CreateFromYMD (iYear, _iMonth,</span>
+<span class="nc" id="L110">					org.drip.analytics.date.DateUtil.DaysInMonth (_iMonth, iYear))).julian() - (7 *</span>
+						(_iWeekInMonth - 1));
+
+<span class="nc bnc" id="L113" title="All 2 branches missed.">				while (_iWeekDay != (iDate % 7)) --iDate;</span>
+			}
+
+<span class="nc bnc" id="L116" title="All 2 branches missed.">			if (bAdjustForWeekend) return Base.rollHoliday (iDate, true, _wkend);</span>
+<span class="nc" id="L117">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L118">			e.printStackTrace();</span>
+<span class="nc" id="L119">		}</span>
+
+<span class="nc" id="L121">		return iDate;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

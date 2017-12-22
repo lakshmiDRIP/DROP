@@ -513,7 +513,10 @@ public class CorporateIssueMetrics {
 		final String[] astrArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		JulianDate dtSpot = DateUtil.CreateFromYMD (
 			2015,
@@ -660,5 +663,7 @@ public class CorporateIssueMetrics {
 		}
 
 		System.out.println ("\t|------------------------------------------------------------------------------------------------------------------------------------------------------||");
+
+		EnvManager.TerminateEnv();
 	}
 }

@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DiscountCurveScenarioContainer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.param.market</a> &gt; <span class="el_source">DiscountCurveScenarioContainer.java</span></div><h1>DiscountCurveScenarioContainer.java</h1><pre class="source lang-java linenums">
+package org.drip.param.market;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * Copyright (C) 2012 Lakshmi Krishnamurthy
+ * Copyright (C) 2011 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * DiscountCurveScenarioContainer implements the RatesScenarioCurve abstract class that exposes the interface
+ *  the constructs scenario discount curves. The following curve construction scenarios are supported:
+ *  - Base, flat/tenor up/down by arbitrary bumps
+ *  - Tenor bumped discount curve set - keyed using the tenor.
+ *	- NTP-based custom scenario curves.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class DiscountCurveScenarioContainer {
+
+	/**
+	 * Base Discount Curve
+	 */
+
+	public static final int DC_BASE = 0;
+
+	/**
+	 * Discount Curve Parallel Bump Up
+	 */
+
+	public static final int DC_FLAT_UP = 1;
+
+	/**
+	 * Discount Curve Parallel Bump Down
+	 */
+
+	public static final int DC_FLAT_DN = 2;
+
+	/**
+	 * Discount Curve Tenor Bump Up
+	 */
+
+	public static final int DC_TENOR_UP = 4;
+
+	/**
+	 * Discount Curve Tenor Bump Down
+	 */
+
+	public static final int DC_TENOR_DN = 8;
+
+<span class="nc" id="L98">	private org.drip.state.discount.MergedDiscountForwardCurve _dcBase = null;</span>
+<span class="nc" id="L99">	private org.drip.state.discount.MergedDiscountForwardCurve _dcBumpUp = null;</span>
+<span class="nc" id="L100">	private org.drip.state.discount.MergedDiscountForwardCurve _dcBumpDn = null;</span>
+<span class="nc" id="L101">	private org.drip.product.definition.CalibratableComponent[] _aCalibInst = null;</span>
+<span class="nc" id="L102">	private org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.discount.MergedDiscountForwardCurve&gt;</span>
+		_mapDCCustom = null;
+<span class="nc" id="L104">	private org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.discount.MergedDiscountForwardCurve&gt;</span>
+		_mapDCBumpUp = null;
+<span class="nc" id="L106">	private org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.discount.MergedDiscountForwardCurve&gt;</span>
+		_mapDCBumpDn = null;
+
+	/**
+	 * Constructs an DiscountCurveScenarioContainer instance from the corresponding
+	 * 	DiscountCurveScenarioGenerator
+	 * 
+	 * @param aCalibInst Array of calibration instruments
+	 * 
+	 * @throws java.lang.Exception Thrown if the IRCurveScenarioGenerator instance is invalid
+	 */
+
+	public DiscountCurveScenarioContainer (
+		final org.drip.product.definition.CalibratableComponent[] aCalibInst)
+		throws java.lang.Exception
+<span class="nc" id="L121">	{</span>
+<span class="nc bnc" id="L122" title="All 4 branches missed.">		if (null == (_aCalibInst = aCalibInst) || 0 == _aCalibInst.length)</span>
+<span class="nc" id="L123">			throw new java.lang.Exception (&quot;DiscountCurveScenarioContainer ctr =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L124">	}</span>
+
+	/**
+	 * Generate the set of discount curves from the scenario specified, and the instrument quotes
+	 * 
+	 * @param valParams Valuation Parameters
+	 * @param gc The Govvie Curve
+	 * @param adblCalibQuote Matched array of the calibration instrument quotes
+	 * @param astrCalibMeasure Matched array of the calibration instrument measures
+	 * @param dblBump Amount of bump to be applied
+	 * @param lsfc Latent State Fixings Container
+	 * @param vcp Valuation Customization Parameters
+	 * @param iDCMode One of the values in the DC_ enum listed above.
+	 * 
+	 * @return Success (true), failure (false)
+	 */
+
+	public boolean cookScenarioDC (
+		final org.drip.param.valuation.ValuationParams valParams,
+		final org.drip.state.govvie.GovvieCurve gc,
+		final double[] adblCalibQuote,
+		final java.lang.String[] astrCalibMeasure,
+		final double dblBump,
+		final org.drip.param.market.LatentStateFixingsContainer lsfc,
+		final org.drip.param.valuation.ValuationCustomizationParams vcp,
+		final int iDCMode)
+	{
+<span class="nc bnc" id="L151" title="All 2 branches missed.">		if (null == (_dcBase = org.drip.state.boot.DiscountCurveScenario.Standard (valParams, _aCalibInst,</span>
+			adblCalibQuote, astrCalibMeasure, 0., gc, lsfc, vcp)))
+<span class="nc" id="L153">			return false;</span>
+
+<span class="nc bnc" id="L155" title="All 2 branches missed.">		if (0 != (org.drip.param.market.DiscountCurveScenarioContainer.DC_FLAT_UP &amp; iDCMode)) {</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">			if (null == (_dcBumpUp = org.drip.state.boot.DiscountCurveScenario.Standard (valParams,</span>
+				_aCalibInst, adblCalibQuote, astrCalibMeasure, dblBump, gc, lsfc, vcp)))
+<span class="nc" id="L158">				return false;</span>
+		}
+
+<span class="nc bnc" id="L161" title="All 2 branches missed.">		if (0 != (org.drip.param.market.DiscountCurveScenarioContainer.DC_FLAT_DN &amp; iDCMode)) {</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">			if (null == (_dcBumpDn = org.drip.state.boot.DiscountCurveScenario.Standard (valParams,</span>
+				_aCalibInst, adblCalibQuote, astrCalibMeasure, -dblBump, gc, lsfc, vcp)))
+<span class="nc" id="L164">				return false;</span>
+		}
+
+<span class="nc bnc" id="L167" title="All 2 branches missed.">		if (0 != (org.drip.param.market.DiscountCurveScenarioContainer.DC_TENOR_UP &amp; iDCMode)) {</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">			if (null == (_mapDCBumpUp = org.drip.state.boot.DiscountCurveScenario.TenorMap (valParams,</span>
+				_aCalibInst, adblCalibQuote, astrCalibMeasure, dblBump, gc, lsfc, vcp)))
+<span class="nc" id="L170">				return false;</span>
+		}
+
+<span class="nc bnc" id="L173" title="All 2 branches missed.">		if (0 != (org.drip.param.market.DiscountCurveScenarioContainer.DC_TENOR_DN &amp; iDCMode)) {</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">			if (null == (_mapDCBumpDn = org.drip.state.boot.DiscountCurveScenario.TenorMap (valParams,</span>
+				_aCalibInst, adblCalibQuote, astrCalibMeasure, -dblBump, gc, lsfc, vcp)))
+<span class="nc" id="L176">				return false;</span>
+		}
+
+<span class="nc" id="L179">		return true;</span>
+	}
+
+	/**
+	 * Return the base Discount Curve
+	 * 
+	 * @return The base Discount Curve
+	 */
+
+	public org.drip.state.discount.MergedDiscountForwardCurve base()
+	{
+<span class="nc" id="L190">		return _dcBase;</span>
+	}
+
+	/**
+	 * Return the Bump Up Discount Curve
+	 * 
+	 * @return The Bump Up Discount Curve
+	 */
+
+	public org.drip.state.discount.MergedDiscountForwardCurve bumpUp()
+	{
+<span class="nc" id="L201">		return _dcBumpUp;</span>
+	}
+
+	/**
+	 * Return the Bump Down Discount Curve
+	 * 
+	 * @return The Bump Down Discount Curve
+	 */
+
+	public org.drip.state.discount.MergedDiscountForwardCurve bumpDown()
+	{
+<span class="nc" id="L212">		return _dcBumpDn;</span>
+	}
+
+	/**
+	 * Return the map of the tenor Bump Up Discount Curve
+	 * 
+	 * @return The map of the tenor Bump Up Discount Curve
+	 */
+
+	public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.discount.MergedDiscountForwardCurve&gt;
+		tenorBumpUp()
+	{
+<span class="nc" id="L224">		return _mapDCBumpUp;</span>
+	}
+
+	/**
+	 * Return the map of the tenor Bump Down Discount Curve
+	 * 
+	 * @return The map of the tenor Bump Down Discount Curve
+	 */
+
+	public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.discount.MergedDiscountForwardCurve&gt;
+		tenorBumpDown()
+	{
+<span class="nc" id="L236">		return _mapDCBumpDn;</span>
+	}
+
+	/**
+	 * Return the Custom Discount curve map
+	 * 
+	 * @return The Custom Discount curve Map
+	 */
+
+	public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.discount.MergedDiscountForwardCurve&gt; custom()
+	{
+<span class="nc" id="L247">		return _mapDCCustom;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

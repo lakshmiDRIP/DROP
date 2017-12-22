@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CollateralGroupSpecification.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.xva.set</a> &gt; <span class="el_source">CollateralGroupSpecification.java</span></div><h1>CollateralGroupSpecification.java</h1><pre class="source lang-java linenums">
+package org.drip.xva.set;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * CollateralGroupSpecification contains the Specifications of a Collateral Group. The References are:
+ *  
+ *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
+ *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
+ *  
+ *  - Burgard, C., and M. Kjaer (2014): In the Balance, Risk, 24 (11) 72-75.
+ *  
+ *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk, Risk 20 (2) 86-90.
+ *  
+ *  - Li, B., and Y. Tang (2007): Quantitative Analysis, Derivatives Modeling, and Trading Strategies in the
+ *  	Presence of Counter-party Credit Risk for the Fixed Income Market, World Scientific Publishing,
+ *  	Singapore.
+ * 
+ *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
+ *  	21 (2) 97-102.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class CollateralGroupSpecification extends org.drip.xva.set.RollUpGroupSpecification {
+<span class="fc" id="L71">	private double _dblIndependentAmount = java.lang.Double.NaN;</span>
+<span class="fc" id="L72">	private double _dblMinimumTransferAmount = java.lang.Double.NaN;</span>
+<span class="fc" id="L73">	private org.drip.function.definition.R1ToR1 _r1ToR1BankThreshold = null;</span>
+<span class="fc" id="L74">	private org.drip.function.definition.R1ToR1[] _aR1ToR1CounterPartyThreshold = null;</span>
+
+	/**
+	 * Generate a Zero-Threshold Instance of the Named Collateral Group
+	 * 
+	 * @param strName The Collateral Group Name
+	 * 
+	 * @return The Zero-Threshold Instance of the Named Collateral Group
+	 */
+
+	public static final CollateralGroupSpecification ZeroThreshold (
+		final java.lang.String strName)
+	{
+		try {
+<span class="nc" id="L88">			return new CollateralGroupSpecification (org.drip.quant.common.StringUtil.GUID(), strName, null,</span>
+				null, 0., 0.);
+<span class="nc" id="L90">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L91">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L94">		return null;</span>
+	}
+
+	/**
+	 * Generate a Fixed-Threshold Instance of the Named Collateral Group
+	 * 
+	 * @param strName The Collateral Group Name
+	 * @param dblCounterPartyThreshold The Fixed Counter Party Threshold
+	 * @param dblBankThreshold The Fixed Bank Threshold
+	 * 
+	 * @return The Fixed-Threshold Instance of the Named Collateral Group
+	 */
+
+	public static final CollateralGroupSpecification FixedThreshold (
+		final java.lang.String strName,
+		final double dblCounterPartyThreshold,
+		final double dblBankThreshold)
+	{
+<span class="pc bpc" id="L112" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblCounterPartyThreshold) || 0. &gt;</span>
+<span class="pc bpc" id="L113" title="2 of 4 branches missed.">			dblCounterPartyThreshold || !org.drip.quant.common.NumberUtil.IsValid (dblBankThreshold) || 0. &lt;</span>
+				dblBankThreshold)
+<span class="nc" id="L115">			return null;</span>
+
+		try {
+<span class="fc" id="L118">			return new CollateralGroupSpecification (org.drip.quant.common.StringUtil.GUID(), strName, new</span>
+				org.drip.function.r1tor1.FlatUnivariate[] {new org.drip.function.r1tor1.FlatUnivariate
+					(dblCounterPartyThreshold)}, new org.drip.function.r1tor1.FlatUnivariate
+						(dblBankThreshold), 0., 0.);
+<span class="nc" id="L122">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L123">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L126">		return null;</span>
+	}
+
+	/**
+	 * CollateralGroupSpecification Constructor
+	 * 
+	 * @param strID The Collateral Group ID
+	 * @param strName The Collateral Group Name
+	 * @param aR1ToR1CounterPartyThreshold The Array of Collateral Group Counter Party Threshold R^1 - R^1
+	 * 		Functions
+	 * @param r1ToR1BankThreshold The Collateral Group Bank Threshold R^1 - R^1 Function
+	 * @param dblMinimumTransferAmount The Collateral Group Minimum Transfer Amount
+	 * @param dblIndependentAmount The Collateral Group Independent Amount
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public CollateralGroupSpecification (
+		final java.lang.String strID,
+		final java.lang.String strName,
+		final org.drip.function.definition.R1ToR1[] aR1ToR1CounterPartyThreshold,
+		final org.drip.function.definition.R1ToR1 r1ToR1BankThreshold,
+		final double dblMinimumTransferAmount,
+		final double dblIndependentAmount)
+		throws java.lang.Exception
+	{
+<span class="fc" id="L152">		super (strID, strName);</span>
+
+<span class="pc bpc" id="L154" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblMinimumTransferAmount = dblMinimumTransferAmount)</span>
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">			|| !org.drip.quant.common.NumberUtil.IsValid (_dblIndependentAmount = dblIndependentAmount))</span>
+<span class="nc" id="L156">			throw new java.lang.Exception (&quot;CollateralGroupSpecification Constructor =&gt; Invalid Inputs&quot;);</span>
+
+<span class="fc" id="L158">		_r1ToR1BankThreshold = r1ToR1BankThreshold;</span>
+<span class="fc" id="L159">		_aR1ToR1CounterPartyThreshold = aR1ToR1CounterPartyThreshold;</span>
+<span class="fc" id="L160">	}</span>
+
+	/**
+	 * Retrieve the Array of the Collateral Group Counter Party Threshold R^1 - R^1 Functions
+	 * 
+	 * @return The Array of the Collateral Group Counter Party Threshold R^1 - R^1 Functions
+	 */
+
+	public org.drip.function.definition.R1ToR1[] counterPartyThreshold()
+	{
+<span class="fc" id="L170">		return _aR1ToR1CounterPartyThreshold;</span>
+	}
+
+	/**
+	 * Retrieve the Collateral Group Bank Threshold R^1 - R^1 Function
+	 * 
+	 * @return The Collateral Group Bank Threshold R^1 - R^1 Function
+	 */
+
+	public org.drip.function.definition.R1ToR1 bankThreshold()
+	{
+<span class="fc" id="L181">		return _r1ToR1BankThreshold;</span>
+	}
+
+	/**
+	 * Retrieve the Collateral Group Minimum Transfer Amount
+	 * 
+	 * @return The Collateral Group Minimum Transfer Amount
+	 */
+
+	public double minimumTransferAmount()
+	{
+<span class="nc" id="L192">		return _dblMinimumTransferAmount;</span>
+	}
+
+	/**
+	 * Retrieve the Collateral Group Independent Amount
+	 * 
+	 * @return The Collateral Group Independent Amount
+	 */
+
+	public double independentAmount()
+	{
+<span class="nc" id="L203">		return _dblIndependentAmount;</span>
+	}
+
+	/**
+	 * Retrieve the Flag specifying whether the Collateral Group is Uncollateralized
+	 * 
+	 * @return TRUE - The Collateral Group is Uncollateralized
+	 */
+
+	public boolean isUncollateralized()
+	{
+<span class="nc bnc" id="L214" title="All 4 branches missed.">		return null == _aR1ToR1CounterPartyThreshold &amp;&amp; null == _r1ToR1BankThreshold;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

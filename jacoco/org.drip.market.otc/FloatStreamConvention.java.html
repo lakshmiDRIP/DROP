@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FloatStreamConvention.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.market.otc</a> &gt; <span class="el_source">FloatStreamConvention.java</span></div><h1>FloatStreamConvention.java</h1><pre class="source lang-java linenums">
+package org.drip.market.otc;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * FloatStreamConvention contains the details of the Floating Stream of an OTC IBOR/Overnight fix-float Swap
+ *  Contract.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class FloatStreamConvention {
+<span class="fc" id="L60">	private java.lang.String _strCompositePeriodTenor = &quot;&quot;;</span>
+<span class="fc" id="L61">	private org.drip.state.identifier.ForwardLabel _forwardLabel = null;</span>
+
+	/**
+	 * FloatStreamConvention Constructor
+	 * 
+	 * @param forwardLabel The Forward Label
+	 * @param strCompositePeriodTenor Composite Period Tenor
+	 * 
+	 * @throws java.lang.Exception Thrown if Inputs are invalid
+	 */
+
+	public FloatStreamConvention (
+		final org.drip.state.identifier.ForwardLabel forwardLabel,
+		final java.lang.String strCompositePeriodTenor)
+		throws java.lang.Exception
+<span class="fc" id="L76">	{</span>
+<span class="pc bpc" id="L77" title="2 of 4 branches missed.">		if (null == (_forwardLabel = forwardLabel) || null == (_strCompositePeriodTenor =</span>
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">			strCompositePeriodTenor) || _strCompositePeriodTenor.isEmpty())</span>
+<span class="nc" id="L79">			throw new java.lang.Exception (&quot;FloatStreamConvention ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L80">	}</span>
+
+	/**
+	 * Retrieve the Forward Label
+	 * 
+	 * @return The Forward Label
+	 */
+
+	public org.drip.state.identifier.ForwardLabel floaterIndex()
+	{
+<span class="fc" id="L90">		return _forwardLabel;</span>
+	}
+
+	/**
+	 * Retrieve the Composite Period Tenor
+	 * 
+	 * @return The Composite Period Tenor
+	 */
+
+	public java.lang.String compositePeriodTenor()
+	{
+<span class="nc" id="L101">		return _strCompositePeriodTenor;</span>
+	}
+
+	/**
+	 * Create a Floating Stream Instance
+	 * 
+	 * @param dtEffective Effective Date
+	 * @param strMaturityTenor Maturity Tenor
+	 * @param dblBasis Basis
+	 * @param dblNotional Notional
+	 * 
+	 * @return The Fixed Stream Instance
+	 */
+
+	public org.drip.product.rates.Stream createStream (
+		final org.drip.analytics.date.JulianDate dtEffective,
+		final java.lang.String strMaturityTenor,
+		final double dblBasis,
+		final double dblNotional)
+	{
+<span class="fc" id="L121">		boolean bOvernight = _forwardLabel.overnight();</span>
+
+		try {
+<span class="fc bfc" id="L124" title="All 2 branches covered.">			org.drip.param.period.ComposableFloatingUnitSetting cfus = new</span>
+				org.drip.param.period.ComposableFloatingUnitSetting (bOvernight ? &quot;ON&quot; :
+<span class="fc bfc" id="L126" title="All 2 branches covered.">					_forwardLabel.tenor(), bOvernight ?</span>
+						org.drip.analytics.support.CompositePeriodBuilder.EDGE_DATE_SEQUENCE_OVERNIGHT :
+							org.drip.analytics.support.CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
+								null, _forwardLabel,
+									org.drip.analytics.support.CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
+				dblBasis);
+
+<span class="fc bfc" id="L133" title="All 2 branches covered.">			org.drip.param.period.CompositePeriodSetting cps = new</span>
+				org.drip.param.period.CompositePeriodSetting (bOvernight ? 360 :
+<span class="fc" id="L135">					org.drip.analytics.support.Helper.TenorToFreq (_strCompositePeriodTenor),</span>
+<span class="fc" id="L136">						_strCompositePeriodTenor, _forwardLabel.currency(), null, dblNotional, null, null,</span>
+							null, null);
+
+<span class="fc bfc" id="L139" title="All 2 branches covered.">			java.util.List&lt;java.lang.Integer&gt; lsEdgeDate = bOvernight ? </span>
+<span class="fc" id="L140">				org.drip.analytics.support.CompositePeriodBuilder.OvernightEdgeDates (dtEffective,</span>
+<span class="fc" id="L141">					dtEffective.addTenor (strMaturityTenor), null):</span>
+<span class="fc" id="L142">						org.drip.analytics.support.CompositePeriodBuilder.RegularEdgeDates (dtEffective,</span>
+							_strCompositePeriodTenor, strMaturityTenor, null);
+
+<span class="fc" id="L145">			return new org.drip.product.rates.Stream</span>
+<span class="fc" id="L146">				(org.drip.analytics.support.CompositePeriodBuilder.FloatingCompositeUnit (lsEdgeDate, cps,</span>
+					cfus));
+<span class="nc" id="L148">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L149">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L152">		return null;</span>
+	}
+
+	@Override public java.lang.String toString()
+	{
+<span class="nc" id="L157">		return &quot;[FLOAT: &quot; + _forwardLabel.fullyQualifiedName() + &quot; | &quot; + _strCompositePeriodTenor + &quot;]&quot;;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

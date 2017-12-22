@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BayesianDriftTransactionDependence.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.trend</a> &gt; <span class="el_source">BayesianDriftTransactionDependence.java</span></div><h1>BayesianDriftTransactionDependence.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.trend;
+
+import org.drip.execution.bayesian.*;
+import org.drip.execution.cost.LinearTemporaryImpact;
+import org.drip.execution.impact.ParticipationRateLinear;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * BayesianDriftTransactionDependence demonstrates the Gains achieved from using an Optimal Trajectory for a
+ *  Price Process as a Function of the Bayesian Drift Parameters. The References are:
+ * 
+ * 	- Bertsimas, D., and A. W. Lo (1998): Optimal Control of Execution Costs, Journal of Financial Markets 1
+ * 		1-50.
+ * 
+ * 	- Almgren, R., and N. Chriss (2000): Optimal Execution of Portfolio Transactions, Journal of Risk 3 (2)
+ * 		5-39.
+ * 
+ * 	- Brunnermeier, L. K., and L. H. Pedersen (2005): Predatory Trading, Journal of Finance 60 (4) 1825-1863.
+ *
+ * 	- Almgren, R., and J. Lorenz (2006): Bayesian Adaptive Trading with a Daily Cycle, Journal of Trading 1
+ * 		(4) 38-46.
+ * 
+ * 	- Kissell, R., and R. Malamut (2007): Algorithmic Decision Making Framework, Journal of Trading 1 (1)
+ * 		12-21.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L78">public class BayesianDriftTransactionDependence {</span>
+
+	static final void RunScenario (
+		final double dblAlphaBar,
+		final double dblNu,
+		final double dblSigma,
+		final double dblT,
+		final ParticipationRateLinear prlTemporary)
+		throws Exception
+	{
+<span class="nc" id="L88">		PriorDriftDistribution pdd = new PriorDriftDistribution (</span>
+			dblAlphaBar,
+			dblNu
+		);
+
+<span class="nc" id="L93">		double dblTimeWidth = 0.5 * dblT;</span>
+
+<span class="nc" id="L95">		double[] adblAlpha = pdd.realizedDrift (2);</span>
+
+<span class="nc" id="L97">		ConditionalPriceDistribution cpd0 = new ConditionalPriceDistribution (</span>
+			adblAlpha[0],
+			dblSigma,
+			1.0 * dblTimeWidth
+		);
+
+<span class="nc" id="L103">		double dblPriceSwing0 = cpd0.priceVolatilitySwing();</span>
+
+<span class="nc" id="L105">		double dblRealizedPriceChange0 = adblAlpha[0] * dblTimeWidth + dblPriceSwing0;</span>
+
+<span class="nc" id="L107">		PriorConditionalCombiner pcc0 = new PriorConditionalCombiner (</span>
+			pdd,
+			cpd0
+		);
+
+<span class="nc" id="L112">		LinearTemporaryImpact lti0 = LinearTemporaryImpact.Unconstrained (</span>
+			1.0 * dblTimeWidth,
+			dblT,
+			1.,
+			pcc0,
+			dblRealizedPriceChange0,
+			prlTemporary
+		);
+
+<span class="nc" id="L121">		double dblX0 = 1. - lti0.instantaneousTradeRate() * dblTimeWidth;</span>
+
+<span class="nc" id="L123">		ConditionalPriceDistribution cpd1 = new ConditionalPriceDistribution (</span>
+			adblAlpha[1],
+			dblSigma,
+			2.0 * dblTimeWidth
+		);
+
+<span class="nc" id="L129">		double dblPriceSwing1 = cpd1.priceVolatilitySwing();</span>
+
+<span class="nc" id="L131">		double dblRealizedPriceChange1 = adblAlpha[1] * dblTimeWidth + dblPriceSwing1;</span>
+
+<span class="nc" id="L133">		PriorConditionalCombiner pcc1 = new PriorConditionalCombiner (</span>
+			pdd,
+			cpd1
+		);
+
+<span class="nc" id="L138">		LinearTemporaryImpact lti1 = LinearTemporaryImpact.Unconstrained (</span>
+			1.0 * dblTimeWidth,
+			dblT,
+			dblX0,
+			pcc1,
+			dblRealizedPriceChange1,
+			prlTemporary
+		);
+
+<span class="nc" id="L147">		System.out.println (</span>
+			&quot;\t|[&quot; +
+<span class="nc" id="L149">			FormatUtil.FormatDouble (dblAlphaBar, 1, 1, 1.) + &quot;,&quot; +</span>
+<span class="nc" id="L150">			FormatUtil.FormatDouble (dblNu, 1, 1, 1.) + &quot;,&quot; +</span>
+<span class="nc" id="L151">			FormatUtil.FormatDouble (dblSigma, 1, 1, 1.) + &quot;] =&gt; &quot; +</span>
+<span class="nc" id="L152">			FormatUtil.FormatDouble (lti0.trajectory().transactionCostExpectation(), 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L153">			FormatUtil.FormatDouble (lti0.trajectory().transactionCostVariance(), 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L154">			FormatUtil.FormatDouble (lti0.staticTransactionCost(), 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L155">			FormatUtil.FormatDouble (lti0.transactionCostGain(), 1, 3, 1.) + &quot; || &quot; +</span>
+<span class="nc" id="L156">			FormatUtil.FormatDouble (lti1.trajectory().transactionCostExpectation(), 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L157">			FormatUtil.FormatDouble (lti1.trajectory().transactionCostVariance(), 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L158">			FormatUtil.FormatDouble (lti1.staticTransactionCost(), 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L159">			FormatUtil.FormatDouble (lti1.transactionCostGain(), 1, 3, 1.) + &quot; ||&quot;</span>
+		);
+<span class="nc" id="L161">	}</span>
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+<span class="nc" id="L167">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L169">		double dblT = 1.;</span>
+<span class="nc" id="L170">		double dblEta = 0.07;</span>
+
+<span class="nc" id="L172">		double[] adblNu = new double[] {</span>
+			0.5,
+			1.0,
+			2.0
+		};
+
+<span class="nc" id="L178">		double[] adblSigma = new double[] {</span>
+			0.5,
+			1.7,
+			2.9
+		};
+
+<span class="nc" id="L184">		double[] adblAlphaBar = new double[] {</span>
+			0.2,
+			0.7,
+			1.2
+		};
+
+<span class="nc" id="L190">		ParticipationRateLinear prlTemporary = ParticipationRateLinear.SlopeOnly (dblEta);</span>
+
+<span class="nc" id="L192">		System.out.println();</span>
+
+<span class="nc" id="L194">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L196">		System.out.println (&quot;\t|                     BAYESIAN GAIN INPUT DRIFT DISTRIBUTION DEPENDENCE                     ||&quot;);</span>
+
+<span class="nc" id="L198">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L200">		System.out.println (&quot;\t|                                                                                           ||&quot;);</span>
+
+<span class="nc" id="L202">		System.out.println (&quot;\t|        Inputs L -&gt; R:                                                                     ||&quot;);</span>
+
+<span class="nc" id="L204">		System.out.println (&quot;\t|             - Alpha Bar                                                                   ||&quot;);</span>
+
+<span class="nc" id="L206">		System.out.println (&quot;\t|             - Sigma                                                                       ||&quot;);</span>
+
+<span class="nc" id="L208">		System.out.println (&quot;\t|             - Nu                                                                          ||&quot;);</span>
+
+<span class="nc" id="L210">		System.out.println (&quot;\t|                                                                                           ||&quot;);</span>
+
+<span class="nc" id="L212">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L214">		System.out.println (&quot;\t|                                                                                           ||&quot;);</span>
+
+<span class="nc" id="L216">		System.out.println (&quot;\t|        Outputs L -&gt; R:                                                                    ||&quot;);</span>
+
+<span class="nc" id="L218">		System.out.println (&quot;\t|                                                                                           ||&quot;);</span>
+
+<span class="nc" id="L220">		System.out.println (&quot;\t|             - Phase #1 Transaction Cost Expectation                                       ||&quot;);</span>
+
+<span class="nc" id="L222">		System.out.println (&quot;\t|             - Phase #1 Transaction Cost Variance                                          ||&quot;);</span>
+
+<span class="nc" id="L224">		System.out.println (&quot;\t|             - Phase #1 Static Transaction Cost                                            ||&quot;);</span>
+
+<span class="nc" id="L226">		System.out.println (&quot;\t|             - Phase #1 Transaction Cost Gain                                              ||&quot;);</span>
+
+<span class="nc" id="L228">		System.out.println (&quot;\t|             - Phase #2 Transaction Cost Expectation                                       ||&quot;);</span>
+
+<span class="nc" id="L230">		System.out.println (&quot;\t|             - Phase #2 Transaction Cost Variance                                          ||&quot;);</span>
+
+<span class="nc" id="L232">		System.out.println (&quot;\t|             - Phase #2 Static Transaction Cost                                            ||&quot;);</span>
+
+<span class="nc" id="L234">		System.out.println (&quot;\t|             - Phase #2 Transaction Cost Gain                                              ||&quot;);</span>
+
+<span class="nc" id="L236">		System.out.println (&quot;\t|                                                                                           ||&quot;);</span>
+
+<span class="nc" id="L238">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L240" title="All 2 branches missed.">		for (double dblAlphaBar : adblAlphaBar) {</span>
+<span class="nc bnc" id="L241" title="All 2 branches missed.">			for (double dblNu : adblNu) {</span>
+<span class="nc bnc" id="L242" title="All 2 branches missed.">				for (double dblSigma : adblSigma)</span>
+<span class="nc" id="L243">					RunScenario (</span>
+						dblAlphaBar,
+						dblNu,
+						dblSigma,
+						dblT,
+						prlTemporary
+					);
+			}
+		}
+
+<span class="nc" id="L253">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L254">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

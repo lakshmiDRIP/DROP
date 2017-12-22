@@ -1,0 +1,520 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FloatFloatFloatFloat.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.cross</a> &gt; <span class="el_source">FloatFloatFloatFloat.java</span></div><h1>FloatFloatFloatFloat.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.cross;
+
+import java.util.*;
+
+import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.support.*;
+import org.drip.function.r1tor1.FlatUnivariate;
+import org.drip.param.market.CurveSurfaceQuoteContainer;
+import org.drip.param.period.*;
+import org.drip.param.valuation.*;
+import org.drip.product.fx.ComponentPair;
+import org.drip.product.params.*;
+import org.drip.product.rates.*;
+import org.drip.quant.common.*;
+import org.drip.service.env.EnvManager;
+import org.drip.state.creator.*;
+import org.drip.state.identifier.*;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * FloatFloatFloatFloat demonstrates the construction, the usage, and the eventual valuation of the Cross
+ *  Currency Basis Swap built out of a pair of float-float swaps.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L76">public class FloatFloatFloatFloat {</span>
+
+	private static final FloatFloatComponent MakeFloatFloatSwap (
+		final JulianDate dtEffective,
+		final boolean bFXMTM,
+		final String strPayCurrency,
+		final String strCouponCurrency,
+		final String strMaturityTenor,
+		final int iTenorInMonthsReference,
+		final int iTenorInMonthsDerived)
+		throws Exception
+	{
+<span class="nc" id="L88">		ComposableFloatingUnitSetting cfusReference = new ComposableFloatingUnitSetting (</span>
+			iTenorInMonthsReference + &quot;M&quot;,
+			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
+			null,
+<span class="nc" id="L92">			ForwardLabel.Create (</span>
+				strCouponCurrency,
+				iTenorInMonthsReference + &quot;M&quot;
+			),
+			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
+			0.
+		);
+
+<span class="nc" id="L100">		ComposableFloatingUnitSetting cfusDerived = new ComposableFloatingUnitSetting (</span>
+			iTenorInMonthsDerived + &quot;M&quot;,
+			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
+			null,
+<span class="nc" id="L104">			ForwardLabel.Create (</span>
+				strCouponCurrency,
+				iTenorInMonthsDerived + &quot;M&quot;
+			),
+			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
+			0.
+		);
+
+<span class="nc bnc" id="L112" title="All 2 branches missed.">		CompositePeriodSetting cpsReference = new CompositePeriodSetting (</span>
+			12 / iTenorInMonthsReference,
+			iTenorInMonthsReference + &quot;M&quot;,
+			strPayCurrency,
+			null,
+			-1.,
+			null,
+			null,
+			bFXMTM ? null : new FixingSetting (
+				FixingSetting.FIXING_PRESET_STATIC,
+				null,
+<span class="nc" id="L123">				dtEffective.julian()</span>
+			),
+			null
+		);
+
+<span class="nc bnc" id="L128" title="All 2 branches missed.">		CompositePeriodSetting cpsDerived = new CompositePeriodSetting (</span>
+			12 / iTenorInMonthsDerived,
+			iTenorInMonthsDerived + &quot;M&quot;,
+			strPayCurrency,
+			null,
+			1.,
+			null,
+			null,
+			bFXMTM ? null : new FixingSetting (
+				FixingSetting.FIXING_PRESET_STATIC,
+				null,
+<span class="nc" id="L139">				dtEffective.julian()</span>
+			),
+			null
+		);
+
+<span class="nc" id="L144">		List&lt;Integer&gt; lsReferenceStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
+			dtEffective,
+			iTenorInMonthsReference + &quot;M&quot;,
+			strMaturityTenor,
+			null
+		);
+
+<span class="nc" id="L151">		List&lt;Integer&gt; lsDerivedStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
+			dtEffective,
+			iTenorInMonthsDerived + &quot;M&quot;,
+			strMaturityTenor,
+			null
+		);
+
+<span class="nc" id="L158">		Stream referenceStream = new Stream (</span>
+<span class="nc" id="L159">			CompositePeriodBuilder.FloatingCompositeUnit (</span>
+				lsReferenceStreamEdgeDate,
+				cpsReference,
+				cfusReference
+			)
+		);
+
+<span class="nc" id="L166">		Stream derivedStream = new Stream (</span>
+<span class="nc" id="L167">			CompositePeriodBuilder.FloatingCompositeUnit (</span>
+				lsDerivedStreamEdgeDate,
+				cpsDerived,
+				cfusDerived
+			)
+		);
+
+<span class="nc" id="L174">		CashSettleParams csp = new CashSettleParams (</span>
+			0,
+			strPayCurrency,
+			0
+		);
+
+<span class="nc" id="L180">		return new FloatFloatComponent (</span>
+			referenceStream,
+			derivedStream,
+			csp
+		);
+	}
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+<span class="nc" id="L191">		String strReferenceCurrency = &quot;USD&quot;;</span>
+<span class="nc" id="L192">		String strDerivedCurrency = &quot;EUR&quot;;</span>
+
+<span class="nc" id="L194">		double dblReference3MForwardRate = 0.00750;</span>
+<span class="nc" id="L195">		double dblReference6MForwardRate = 0.01000;</span>
+<span class="nc" id="L196">		double dblDerived3MForwardRate = 0.00375;</span>
+<span class="nc" id="L197">		double dblDerived6MForwardRate = 0.00625;</span>
+<span class="nc" id="L198">		double dblReferenceFundingRate = 0.02;</span>
+<span class="nc" id="L199">		double dblReferenceDerivedFXRate = 1. / 1.28;</span>
+
+<span class="nc" id="L201">		double dblReference3MForwardVol = 0.3;</span>
+<span class="nc" id="L202">		double dblReference6MForwardVol = 0.3;</span>
+<span class="nc" id="L203">		double dblDerived3MForwardVol = 0.3;</span>
+<span class="nc" id="L204">		double dblDerived6MForwardVol = 0.3;</span>
+<span class="nc" id="L205">		double dblReferenceFundingVol = 0.3;</span>
+<span class="nc" id="L206">		double dblReferenceDerivedFXVol = 0.3;</span>
+
+<span class="nc" id="L208">		double dblReference3MForwardFundingCorr = 0.15;</span>
+<span class="nc" id="L209">		double dblReference6MForwardFundingCorr = 0.15;</span>
+<span class="nc" id="L210">		double dblDerived3MForwardFundingCorr = 0.15;</span>
+<span class="nc" id="L211">		double dblDerived6MForwardFundingCorr = 0.15;</span>
+
+<span class="nc" id="L213">		double dblReference3MForwardFXCorr = 0.15;</span>
+<span class="nc" id="L214">		double dblReference6MForwardFXCorr = 0.15;</span>
+<span class="nc" id="L215">		double dblDerived3MForwardFXCorr = 0.15;</span>
+<span class="nc" id="L216">		double dblDerived6MForwardFXCorr = 0.15;</span>
+
+<span class="nc" id="L218">		double dblFundingFXCorr = 0.15;</span>
+
+		/*
+		 * Initialize the Credit Analytics Library
+		 */
+
+<span class="nc" id="L224">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L226">		JulianDate dtToday = org.drip.analytics.date.DateUtil.Today();</span>
+
+<span class="nc" id="L228">		ValuationParams valParams = new ValuationParams (</span>
+			dtToday,
+			dtToday,
+			strReferenceCurrency
+		);
+
+<span class="nc" id="L234">		ForwardLabel fri3MReference = ForwardLabel.Create (</span>
+			strReferenceCurrency,
+			&quot;3M&quot;
+		);
+
+<span class="nc" id="L239">		ForwardLabel fri6MReference = ForwardLabel.Create (</span>
+			strReferenceCurrency,
+			&quot;6M&quot;
+		);
+
+<span class="nc" id="L244">		ForwardLabel fri3MDerived = ForwardLabel.Create (</span>
+			strDerivedCurrency,
+			&quot;3M&quot;
+		);
+
+<span class="nc" id="L249">		ForwardLabel fri6MDerived = ForwardLabel.Create (</span>
+			strDerivedCurrency,
+			&quot;6M&quot;
+		);
+
+<span class="nc" id="L254">		FundingLabel fundingLabelReference = FundingLabel.Standard (strReferenceCurrency);</span>
+
+<span class="nc" id="L256">		CurrencyPair cp = CurrencyPair.FromCode (strReferenceCurrency + &quot;/&quot; + strDerivedCurrency);</span>
+
+<span class="nc" id="L258">		FXLabel fxLabel = FXLabel.Standard (cp);</span>
+
+<span class="nc" id="L260">		FloatFloatComponent floatFloatReference = MakeFloatFloatSwap (</span>
+			dtToday,
+			false,
+			strReferenceCurrency,
+			strReferenceCurrency,
+			&quot;2Y&quot;,
+			6,
+			3
+		);
+
+<span class="nc" id="L270">		floatFloatReference.setPrimaryCode (</span>
+			&quot;FLOAT::FLOAT::&quot; + strReferenceCurrency + &quot;::&quot; + strReferenceCurrency + &quot;_3M::&quot; + strReferenceCurrency + &quot;_6M::2Y&quot;
+		);
+
+<span class="nc" id="L274">		FloatFloatComponent floatFloatDerivedMTM = MakeFloatFloatSwap (</span>
+			dtToday,
+			true,
+			strReferenceCurrency,
+			strDerivedCurrency,
+			&quot;2Y&quot;,
+			6,
+			3
+		);
+
+<span class="nc" id="L284">		floatFloatDerivedMTM.setPrimaryCode (</span>
+			&quot;FLOAT::FLOAT::MTM::&quot; + strReferenceCurrency + &quot;::&quot; + strDerivedCurrency + &quot;_3M::&quot; + strDerivedCurrency + &quot;_6M::2Y&quot;
+		);
+
+<span class="nc" id="L288">		ComponentPair cpMTM = new ComponentPair (</span>
+			&quot;FFFF_MTM&quot;,
+			floatFloatReference,
+			floatFloatDerivedMTM,
+			null
+		);
+
+<span class="nc" id="L295">		FloatFloatComponent floatFloatDerivedNonMTM = MakeFloatFloatSwap (</span>
+			dtToday,
+			false,
+			strReferenceCurrency,
+			strDerivedCurrency,
+			&quot;2Y&quot;,
+			6,
+			3
+		);
+
+<span class="nc" id="L305">		floatFloatDerivedNonMTM.setPrimaryCode (</span>
+			&quot;FLOAT::FLOAT::NONMTM::&quot; + strReferenceCurrency + &quot;::&quot; + strDerivedCurrency + &quot;_3M::&quot; + strDerivedCurrency + &quot;_6M::2Y&quot;
+		);
+
+<span class="nc" id="L309">		ComponentPair cpNonMTM = new ComponentPair (</span>
+			&quot;FFFF_NonMTM&quot;,
+			floatFloatReference,
+			floatFloatDerivedNonMTM,
+			null
+		);
+
+<span class="nc" id="L316">		CurveSurfaceQuoteContainer mktParams = new CurveSurfaceQuoteContainer();</span>
+
+<span class="nc" id="L318">		mktParams.setFixing (</span>
+			dtToday,
+			fxLabel,
+			dblReferenceDerivedFXRate
+		);
+
+<span class="nc" id="L324">		mktParams.setForwardState (</span>
+<span class="nc" id="L325">			ScenarioForwardCurveBuilder.FlatForwardForwardCurve (</span>
+				dtToday,
+				fri3MReference,
+				dblReference3MForwardRate
+			)
+		);
+
+<span class="nc" id="L332">		mktParams.setForwardState (</span>
+<span class="nc" id="L333">			ScenarioForwardCurveBuilder.FlatForwardForwardCurve (</span>
+				dtToday,
+				fri6MReference,
+				dblReference6MForwardRate
+			)
+		);
+
+<span class="nc" id="L340">		mktParams.setForwardState (</span>
+<span class="nc" id="L341">			ScenarioForwardCurveBuilder.FlatForwardForwardCurve (</span>
+				dtToday,
+				fri3MDerived,
+				dblDerived3MForwardRate
+			)
+		);
+
+<span class="nc" id="L348">		mktParams.setForwardState (</span>
+<span class="nc" id="L349">			ScenarioForwardCurveBuilder.FlatForwardForwardCurve (</span>
+				dtToday,
+				fri6MDerived,
+				dblDerived6MForwardRate
+			)
+		);
+
+<span class="nc" id="L356">		mktParams.setFundingState (</span>
+<span class="nc" id="L357">			ScenarioDiscountCurveBuilder.ExponentiallyCompoundedFlatRate (</span>
+				dtToday,
+				strReferenceCurrency,
+				dblReferenceFundingRate
+			)
+		);
+
+<span class="nc" id="L364">		mktParams.setFXState (</span>
+<span class="nc" id="L365">			ScenarioFXCurveBuilder.CubicPolynomialCurve (</span>
+<span class="nc" id="L366">				fxLabel.fullyQualifiedName(),</span>
+				dtToday,
+				cp,
+				new String[] {&quot;10Y&quot;},
+				new double[] {dblReferenceDerivedFXRate},
+				dblReferenceDerivedFXRate
+			)
+		);
+
+<span class="nc" id="L375">		mktParams.setForwardVolatility (</span>
+<span class="nc" id="L376">			ScenarioDeterministicVolatilityBuilder.FlatForward (</span>
+<span class="nc" id="L377">				dtToday.julian(),</span>
+<span class="nc" id="L378">				VolatilityLabel.Standard (fri3MReference),</span>
+<span class="nc" id="L379">				fri3MReference.currency(),</span>
+				dblReference3MForwardVol
+			)
+		);
+
+<span class="nc" id="L384">		mktParams.setForwardVolatility (</span>
+<span class="nc" id="L385">			ScenarioDeterministicVolatilityBuilder.FlatForward (</span>
+<span class="nc" id="L386">				dtToday.julian(),</span>
+<span class="nc" id="L387">				VolatilityLabel.Standard (fri6MReference),</span>
+<span class="nc" id="L388">				fri6MReference.currency(),</span>
+				dblReference6MForwardVol
+			)
+		);
+
+<span class="nc" id="L393">		mktParams.setForwardVolatility (</span>
+<span class="nc" id="L394">			ScenarioDeterministicVolatilityBuilder.FlatForward (</span>
+<span class="nc" id="L395">				dtToday.julian(),</span>
+<span class="nc" id="L396">				VolatilityLabel.Standard (fri3MDerived),</span>
+<span class="nc" id="L397">				fri3MDerived.currency(),</span>
+				dblDerived3MForwardVol
+			)
+		);
+
+<span class="nc" id="L402">		mktParams.setForwardVolatility (</span>
+<span class="nc" id="L403">			ScenarioDeterministicVolatilityBuilder.FlatForward (</span>
+<span class="nc" id="L404">				dtToday.julian(),</span>
+<span class="nc" id="L405">				VolatilityLabel.Standard (fri6MDerived),</span>
+<span class="nc" id="L406">				fri6MDerived.currency(),</span>
+				dblDerived6MForwardVol
+			)
+		);
+
+<span class="nc" id="L411">		mktParams.setFundingVolatility (</span>
+<span class="nc" id="L412">			ScenarioDeterministicVolatilityBuilder.FlatForward (</span>
+<span class="nc" id="L413">				dtToday.julian(),</span>
+<span class="nc" id="L414">				VolatilityLabel.Standard (fundingLabelReference),</span>
+				strReferenceCurrency,
+				dblReferenceFundingVol
+			)
+		);
+
+<span class="nc" id="L420">		mktParams.setFXVolatility (</span>
+<span class="nc" id="L421">			ScenarioDeterministicVolatilityBuilder.FlatForward (</span>
+<span class="nc" id="L422">				dtToday.julian(),</span>
+<span class="nc" id="L423">				VolatilityLabel.Standard (fxLabel),</span>
+				strDerivedCurrency,
+				dblReferenceDerivedFXVol
+			)
+		);
+
+<span class="nc" id="L429">		mktParams.setForwardFundingCorrelation (</span>
+			fri3MReference,
+			fundingLabelReference,
+			new FlatUnivariate (dblReference3MForwardFundingCorr)
+		);
+
+<span class="nc" id="L435">		mktParams.setForwardFundingCorrelation (</span>
+			fri6MReference,
+			fundingLabelReference,
+			new FlatUnivariate (dblReference6MForwardFundingCorr)
+		);
+
+<span class="nc" id="L441">		mktParams.setForwardFundingCorrelation (</span>
+			fri3MDerived,
+			fundingLabelReference,
+			new FlatUnivariate (dblDerived3MForwardFundingCorr)
+		);
+
+<span class="nc" id="L447">		mktParams.setForwardFundingCorrelation (</span>
+			fri6MDerived,
+			fundingLabelReference,
+			new FlatUnivariate (dblDerived6MForwardFundingCorr)
+		);
+
+<span class="nc" id="L453">		mktParams.setForwardFXCorrelation (</span>
+			fri3MReference,
+			fxLabel,
+			new FlatUnivariate (dblReference3MForwardFXCorr)
+		);
+
+<span class="nc" id="L459">		mktParams.setForwardFXCorrelation (</span>
+			fri6MReference,
+			fxLabel,
+			new FlatUnivariate (dblReference6MForwardFXCorr)
+		);
+
+<span class="nc" id="L465">		mktParams.setForwardFXCorrelation (</span>
+			fri3MDerived,
+			fxLabel,
+			new FlatUnivariate (dblDerived3MForwardFXCorr)
+		);
+
+<span class="nc" id="L471">		mktParams.setForwardFXCorrelation (</span>
+			fri6MDerived,
+			fxLabel,
+			new FlatUnivariate (dblDerived6MForwardFXCorr)
+		);
+
+<span class="nc" id="L477">		mktParams.setFundingFXCorrelation (</span>
+			fundingLabelReference,
+			fxLabel,
+			new FlatUnivariate (dblFundingFXCorr)
+		);
+
+<span class="nc" id="L483">		CaseInsensitiveTreeMap&lt;Double&gt; mapMTMOutput = cpMTM.value (</span>
+			valParams,
+			null,
+			mktParams,
+			null
+		);
+
+<span class="nc" id="L490">		CaseInsensitiveTreeMap&lt;Double&gt; mapNonMTMOutput = cpNonMTM.value (</span>
+			valParams,
+			null,
+			mktParams,
+			null
+		);
+
+<span class="nc bnc" id="L497" title="All 2 branches missed.">		for (Map.Entry&lt;String, Double&gt; me : mapMTMOutput.entrySet()) {</span>
+<span class="nc" id="L498">			String strKey = me.getKey();</span>
+
+<span class="nc bnc" id="L500" title="All 4 branches missed.">			if (null != me.getValue() &amp;&amp; null != mapNonMTMOutput.get (strKey)) {</span>
+<span class="nc" id="L501">				double dblMTMMeasure = me.getValue();</span>
+
+<span class="nc" id="L503">				double dblNonMTMMeasure = mapNonMTMOutput.get (strKey);</span>
+
+<span class="nc bnc" id="L505" title="All 2 branches missed.">				String strReconcile = NumberUtil.WithinTolerance (</span>
+					dblMTMMeasure,
+					dblNonMTMMeasure,
+					1.e-08,
+					1.e-04
+				) ? &quot;RECONCILES&quot; : &quot;DOES NOT RECONCILE&quot;;
+
+<span class="nc" id="L512">				System.out.println (&quot;\t&quot; +</span>
+<span class="nc" id="L513">					FormatUtil.FormatDouble (dblMTMMeasure, 1, 8, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L514">					FormatUtil.FormatDouble (dblNonMTMMeasure, 1, 8, 1.) + &quot; | &quot; +</span>
+					strReconcile + &quot; &lt;= &quot; + strKey);
+			}
+<span class="nc" id="L517">		}</span>
+<span class="nc" id="L518">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

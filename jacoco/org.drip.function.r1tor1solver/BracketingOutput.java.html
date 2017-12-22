@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BracketingOutput.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.function.r1tor1solver</a> &gt; <span class="el_source">BracketingOutput.java</span></div><h1>BracketingOutput.java</h1><pre class="source lang-java linenums">
+package org.drip.function.r1tor1solver;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * Copyright (C) 2012 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * BracketingOutput carries the results of the bracketing initialization.
+ * 
+ * 	In addition to the fields of ExecutionInitializationOutput, BracketingOutput holds the left/right bracket
+ *  	variates and the corresponding values for the objective function.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class BracketingOutput extends org.drip.function.r1tor1solver.ExecutionInitializationOutput {
+<span class="fc" id="L65">	private double _dblOFLeft = java.lang.Double.NaN;</span>
+<span class="fc" id="L66">	private double _dblOFRight = java.lang.Double.NaN;</span>
+<span class="fc" id="L67">	private double _dblVariateLeft = java.lang.Double.NaN;</span>
+<span class="fc" id="L68">	private double _dblVariateRight = java.lang.Double.NaN;</span>
+
+	/**
+	 * Default BracketingOutput constructor: Initializes the output
+	 */
+
+	public BracketingOutput()
+	{
+<span class="fc" id="L76">		super();</span>
+<span class="fc" id="L77">	}</span>
+
+	/**
+	 * Return the left Variate
+	 * 
+	 * @return Left Variate
+	 */
+
+	public double getVariateLeft()
+	{
+<span class="fc" id="L87">		return _dblVariateLeft;</span>
+	}
+
+	/**
+	 * Return the Right Variate
+	 * 
+	 * @return Right Variate
+	 */
+
+	public double getVariateRight()
+	{
+<span class="fc" id="L98">		return _dblVariateRight;</span>
+	}
+
+	/**
+	 * Return the left OF
+	 * 
+	 * @return Left OF
+	 */
+
+	public double getOFLeft()
+	{
+<span class="fc" id="L109">		return _dblOFLeft;</span>
+	}
+
+	/**
+	 * Return the Right OF
+	 * 
+	 * @return Right OF
+	 */
+
+	public double getOFRight()
+	{
+<span class="fc" id="L120">		return _dblOFRight;</span>
+	}
+
+	/**
+	 * Set the brackets in the output object
+	 * 
+	 * @param dblVariateLeft Left Variate
+	 * @param dblVariateRight Right Variate
+	 * @param dblOFLeft Left OF
+	 * @param dblOFRight Right OF
+	 * @param dblStartingVariate Starting Variate
+	 * 
+	 * @return TRUE - Successfully set
+	 */
+
+	public boolean done (
+		final double dblVariateLeft,
+		final double dblVariateRight,
+		final double dblOFLeft,
+		final double dblOFRight,
+		final double dblStartingVariate)
+	{
+<span class="pc bpc" id="L142" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblVariateLeft = dblVariateLeft) ||</span>
+<span class="pc bpc" id="L143" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblVariateRight = dblVariateRight) ||</span>
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblOFLeft = dblOFLeft) ||</span>
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblOFRight = dblOFRight) ||</span>
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">						!setStartingVariate (dblStartingVariate))</span>
+<span class="nc" id="L147">			return false;</span>
+
+<span class="fc" id="L149">		return done();</span>
+	}
+
+	/**
+	 * Make a ConvergenceOutput for the Open Method from the bracketing output
+	 * 
+	 * @return The ConvergenceOutput object
+	 */
+
+	public org.drip.function.r1tor1solver.ConvergenceOutput makeConvergenceVariate()
+	{
+<span class="nc" id="L160">		org.drip.function.r1tor1solver.ConvergenceOutput cop = null;</span>
+
+		try {
+<span class="nc" id="L163">			cop = new org.drip.function.r1tor1solver.ConvergenceOutput (this);</span>
+<span class="nc" id="L164">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L165">			e.printStackTrace();</span>
+<span class="nc" id="L166">		}</span>
+
+<span class="nc bnc" id="L168" title="All 2 branches missed.">		return cop.done (getStartingVariate()) ? cop : null;</span>
+	}
+
+	@Override public java.lang.String displayString()
+	{
+<span class="fc" id="L173">		java.lang.StringBuffer sb = new java.lang.StringBuffer();</span>
+
+<span class="fc" id="L175">		sb.append (super.displayString());</span>
+
+<span class="fc" id="L177">		sb.append (&quot;\n\t\tLeft Bracket: &quot; + getVariateLeft());</span>
+
+<span class="fc" id="L179">		sb.append (&quot;\n\t\tRight Bracket: &quot; + getVariateRight());</span>
+
+<span class="fc" id="L181">		sb.append (&quot;\n\t\tLeft OF: &quot; + getOFLeft());</span>
+
+<span class="fc" id="L183">		sb.append (&quot;\n\t\tRight OF: &quot; + getOFRight());</span>
+
+<span class="fc" id="L185">		return sb.toString();</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

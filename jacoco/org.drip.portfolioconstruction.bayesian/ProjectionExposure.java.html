@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProjectionExposure.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.portfolioconstruction.bayesian</a> &gt; <span class="el_source">ProjectionExposure.java</span></div><h1>ProjectionExposure.java</h1><pre class="source lang-java linenums">
+package org.drip.portfolioconstruction.bayesian;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * ProjectionExposure holds the Projection Exposure Loadings that Weight the Exposure to the Projection Pick
+ * 	Portfolio. The Reference is:
+ *  
+ *  - He. G., and R. Litterman (1999): The Intuition behind the Black-Litterman Model Portfolios, Goldman
+ *  	Sachs Asset Management
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class ProjectionExposure {
+<span class="nc" id="L62">	private double[] _adblIntraViewComponent = null;</span>
+<span class="nc" id="L63">	private double[] _adblInterViewComponent = null;</span>
+<span class="nc" id="L64">	private double[] _adblPriorViewComponent = null;</span>
+<span class="nc" id="L65">	private double[][] _aadblCompositeConfidenceCovariance = null;</span>
+
+	/**
+	 * ProjectionExposure Constructor
+	 * 
+	 * @param adblIntraViewComponent Array of Per-View View-Specific Exposure Component
+	 * @param adblInterViewComponent Array of Per-View Exposure Contribution from other Views
+	 * @param adblPriorViewComponent Array of View-Specific Per-View Components
+	 * @param aadblCompositeConfidenceCovariance Composite Confidence Co-variance Matrix
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public ProjectionExposure (
+		final double[] adblIntraViewComponent,
+		final double[] adblInterViewComponent,
+		final double[] adblPriorViewComponent,
+		final double[][] aadblCompositeConfidenceCovariance)
+		throws java.lang.Exception
+<span class="nc" id="L84">	{</span>
+<span class="nc bnc" id="L85" title="All 8 branches missed.">		if (null == (_adblIntraViewComponent = adblIntraViewComponent) || null == (_adblInterViewComponent =</span>
+			adblInterViewComponent) || null == (_adblPriorViewComponent = adblPriorViewComponent) || null ==
+				(_aadblCompositeConfidenceCovariance = aadblCompositeConfidenceCovariance))
+<span class="nc" id="L88">			throw new java.lang.Exception (&quot;ProjectionExposure Constructor =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc" id="L90">		int iNumView = _adblIntraViewComponent.length;</span>
+
+<span class="nc bnc" id="L92" title="All 8 branches missed.">		if (0 == iNumView || iNumView != _adblInterViewComponent.length || iNumView !=</span>
+			_adblPriorViewComponent.length || iNumView != _aadblCompositeConfidenceCovariance.length)
+<span class="nc" id="L94">			throw new java.lang.Exception (&quot;ProjectionExposure Constructor =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc bnc" id="L96" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumView; ++i) {</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (_adblIntraViewComponent[i]) ||</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_adblInterViewComponent[i]) ||</span>
+<span class="nc bnc" id="L99" title="All 6 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_adblPriorViewComponent[i]) || null ==</span>
+						_aadblCompositeConfidenceCovariance[i] || iNumView !=
+							_aadblCompositeConfidenceCovariance[i].length)
+<span class="nc" id="L102">				throw new java.lang.Exception (&quot;ProjectionExposure Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="nc" id="L104">	}</span>
+
+	/**
+	 * Retrieve the Single View Joint Contribution Component
+	 * 
+	 * @return The Single View Joint Contribution Component
+	 */
+
+	public double[] intraViewComponent()
+	{
+<span class="nc" id="L114">		return _adblIntraViewComponent;</span>
+	}
+
+	/**
+	 * Retrieve the View/View Joint Contribution Component
+	 * 
+	 * @return The View/View Joint Contribution Component
+	 */
+
+	public double[] interViewComponent()
+	{
+<span class="nc" id="L125">		return _adblInterViewComponent;</span>
+	}
+
+	/**
+	 * Retrieve the Prior/View Joint Contribution Component
+	 * 
+	 * @return The Prior/View Joint Contribution Component
+	 */
+
+	public double[] priorViewComponent()
+	{
+<span class="nc" id="L136">		return _adblPriorViewComponent;</span>
+	}
+
+	/**
+	 * Retrieve the Composite Confidence Co-variance
+	 * 
+	 * @return The Composite Confidence Co-variance
+	 */
+
+	public double[][] compositeConfidenceCovariance()
+	{
+<span class="nc" id="L147">		return _aadblCompositeConfidenceCovariance;</span>
+	}
+
+	/**
+	 * Compute the Array of Cumulative View Loading Components
+	 * 
+	 * @return The Array of Cumulative View Loading Components
+	 */
+
+	public double[] cumulativeViewComponent()
+	{
+<span class="nc" id="L158">		int iNumView = _adblIntraViewComponent.length;</span>
+<span class="nc" id="L159">		double[] adblViewLoading = new double[iNumView];</span>
+
+<span class="nc bnc" id="L161" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumView; ++i)</span>
+<span class="nc" id="L162">			adblViewLoading[i] = _adblIntraViewComponent[i] + _adblInterViewComponent[i] +</span>
+				_adblPriorViewComponent[i];
+
+<span class="nc" id="L165">		return adblViewLoading;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

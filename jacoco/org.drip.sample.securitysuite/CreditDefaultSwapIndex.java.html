@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CreditDefaultSwapIndex.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.securitysuite</a> &gt; <span class="el_source">CreditDefaultSwapIndex.java</span></div><h1>CreditDefaultSwapIndex.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.securitysuite;
+
+import java.util.Map;
+
+import org.drip.analytics.cashflow.CompositePeriod;
+import org.drip.analytics.date.*;
+import org.drip.analytics.support.CaseInsensitiveTreeMap;
+import org.drip.param.creator.MarketParamsBuilder;
+import org.drip.param.market.CurveSurfaceQuoteContainer;
+import org.drip.param.pricer.CreditPricerParams;
+import org.drip.param.valuation.ValuationParams;
+import org.drip.product.creator.CDSBuilder;
+import org.drip.product.definition.CreditDefaultSwap;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.service.template.LatentMarketStateBuilder;
+import org.drip.state.credit.CreditCurve;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * CreditDefaultSwapIndex demonstrates the Analytics Calculation/Reconciliation for a CDX.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L73">public class CreditDefaultSwapIndex {</span>
+
+	private static final MergedDiscountForwardCurve FundingCurve (
+		final JulianDate dtSpot,
+		final String strCurrency,
+		final double dblBump)
+		throws Exception
+	{
+<span class="nc" id="L81">		String[] astrDepositMaturityTenor = new String[] {</span>
+			&quot;2D&quot;
+		};
+
+<span class="nc" id="L85">		double[] adblDepositQuote = new double[] {</span>
+			0.013161 + dblBump // 2D
+		};
+
+<span class="nc" id="L89">		double[] adblFuturesQuote = new double[] {</span>
+			0.013225 + dblBump,	// 98.6775
+			0.014250 + dblBump,	// 98.5750
+			0.014750 + dblBump,	// 98.5250
+			0.015250 + dblBump,	// 98.4750
+			0.015750 + dblBump,  // 98.4250
+			0.016500 + dblBump   // 98.3500
+		};
+
+<span class="nc" id="L98">		String[] astrFixFloatMaturityTenor = new String[] {</span>
+			&quot;02Y&quot;,
+			&quot;03Y&quot;,
+			&quot;04Y&quot;,
+			&quot;05Y&quot;,
+			&quot;06Y&quot;,
+			&quot;07Y&quot;,
+			&quot;08Y&quot;,
+			&quot;09Y&quot;,
+			&quot;10Y&quot;,
+			&quot;11Y&quot;,
+			&quot;12Y&quot;,
+			&quot;15Y&quot;,
+			&quot;20Y&quot;,
+			&quot;25Y&quot;,
+			&quot;30Y&quot;,
+			&quot;40Y&quot;,
+			&quot;50Y&quot;
+		};
+
+<span class="nc" id="L118">		double[] adblFixFloatQuote = new double[] {</span>
+			0.015540 + dblBump, //  2Y
+			0.016423 + dblBump, //  3Y
+			0.017209 + dblBump, //  4Y
+			0.017980 + dblBump, //  5Y
+			0.018743 + dblBump, //  6Y
+			0.019455 + dblBump, //  7Y
+			0.020080 + dblBump, //  8Y
+			0.020651 + dblBump, //  9Y
+			0.021195 + dblBump, // 10Y
+			0.021651 + dblBump, // 11Y
+			0.022065 + dblBump, // 12Y
+			0.022952 + dblBump, // 15Y
+			0.023825 + dblBump, // 20Y
+			0.024175 + dblBump, // 25Y
+			0.024347 + dblBump, // 30Y
+			0.024225 + dblBump, // 40Y
+			0.023968 + dblBump  // 50Y
+		};
+
+<span class="nc" id="L138">		return LatentMarketStateBuilder.SmoothFundingCurve (</span>
+			dtSpot,
+			strCurrency,
+			astrDepositMaturityTenor,
+			adblDepositQuote,
+			&quot;ForwardRate&quot;,
+			adblFuturesQuote,
+			&quot;ForwardRate&quot;,
+			astrFixFloatMaturityTenor,
+			adblFixFloatQuote,
+			&quot;SwapRate&quot;
+		);
+	}
+
+	private static final CreditCurve CreditCurve (
+		final JulianDate dtSpot,
+		final String strCreditCurve,
+		final MergedDiscountForwardCurve mdfc,
+		final double dblBump)
+		throws Exception
+	{
+<span class="nc" id="L159">		return LatentMarketStateBuilder.CreditCurve (</span>
+			dtSpot,
+			strCreditCurve,
+			new String[] {
+				 &quot;6M&quot;,
+				 &quot;1Y&quot;,
+				 &quot;2Y&quot;,
+				 &quot;3Y&quot;,
+				 &quot;4Y&quot;,
+				 &quot;5Y&quot;,
+				 &quot;7Y&quot;,
+				&quot;10Y&quot;,
+				&quot;20Y&quot;,
+				&quot;30Y&quot;,
+			},
+			new double[] {
+				392.509,	//  6M
+				320.707,	//  1Y
+				393.624,	//  2Y
+				472.869,	//  3Y
+				570.360,	//  4Y
+				663.920,	//  5Y
+				779.463,	//  7Y
+				957.555, 	// 10Y
+				908.712, 	// 20Y
+				900.297, 	// 30Y
+			},
+			new double[] {
+				392.509,	//  6M
+				320.707,	//  1Y
+				393.624,	//  2Y
+				472.869,	//  3Y
+				570.360,	//  4Y
+				663.920,	//  5Y
+				779.463,	//  7Y
+				957.555, 	// 10Y
+				908.712, 	// 20Y
+				900.297, 	// 30Y
+			},
+			&quot;FairPremium&quot;,
+			mdfc
+		);
+	}
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+<span class="nc" id="L207">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L209">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+			2017,
+			DateUtil.SEPTEMBER,
+			17
+		);
+
+<span class="nc" id="L215">		JulianDate dtIssue = DateUtil.CreateFromYMD (</span>
+			2017,
+			DateUtil.JUNE,
+			20
+		);
+
+<span class="nc" id="L221">		String strCDXTenor = &quot;5Y&quot;;</span>
+<span class="nc" id="L222">		String strCurrency = &quot;USD&quot;;</span>
+<span class="nc" id="L223">		String strCDXName = &quot;CDXNAHY&quot;;</span>
+<span class="nc" id="L224">		double dblCDXFixedCoupon = 0.05;</span>
+
+<span class="nc" id="L226">		CreditDefaultSwap cdx = CDSBuilder.CreateSNAC (</span>
+			dtIssue,
+			strCDXTenor,
+			dblCDXFixedCoupon,
+			strCDXName
+		);
+
+<span class="nc" id="L233">		MergedDiscountForwardCurve mdfc = FundingCurve (</span>
+			dtSpot,
+			strCurrency,
+			0.
+		);
+
+<span class="nc" id="L239">		CreditCurve cc = CreditCurve (</span>
+			dtSpot,
+			strCDXName,
+			mdfc,
+			0.
+		);
+
+<span class="nc" id="L246">		CurveSurfaceQuoteContainer csqc = MarketParamsBuilder.Credit (</span>
+			mdfc,
+			cc
+		);
+
+<span class="nc" id="L251">		ValuationParams valParams = new ValuationParams (</span>
+			dtSpot,
+			dtSpot,
+			strCurrency
+		);
+
+<span class="nc" id="L257">		CreditPricerParams pricerParams = CreditPricerParams.Standard();</span>
+
+<span class="nc" id="L259">		CaseInsensitiveTreeMap&lt;Double&gt; mapOutput = cdx.value (</span>
+			valParams,
+			pricerParams,
+			csqc,
+			null
+		);
+
+<span class="nc" id="L266">		System.out.println (&quot;&quot;);</span>
+
+<span class="nc" id="L268">		System.out.println (&quot;\t |-----------------------------------------------|&quot;);</span>
+
+<span class="nc bnc" id="L270" title="All 2 branches missed.">		for (Map.Entry&lt;String, Double&gt; me : mapOutput.entrySet())</span>
+<span class="nc" id="L271">			System.out.println (&quot;\t | &quot; + me.getKey() + &quot; =&gt; &quot; + me.getValue());</span>
+
+<span class="nc" id="L273">		System.out.println (&quot;\t |-----------------------------------------------|&quot;);</span>
+
+<span class="nc" id="L275">		System.out.println (&quot;&quot;);</span>
+
+<span class="nc" id="L277">		System.out.println (&quot;\t |---------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L279" title="All 2 branches missed.">		for (CompositePeriod p : cdx.couponPeriods())</span>
+<span class="nc" id="L280">			System.out.println (</span>
+				&quot;\t | &quot; +
+<span class="nc" id="L282">				DateUtil.YYYYMMDD (p.startDate()) + &quot; | &quot; +</span>
+<span class="nc" id="L283">				DateUtil.YYYYMMDD (p.endDate()) + &quot; | &quot; +</span>
+<span class="nc" id="L284">				DateUtil.YYYYMMDD (p.payDate()) + &quot; | &quot; +</span>
+<span class="nc" id="L285">				FormatUtil.FormatDouble (p.couponDCF(), 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L286">				FormatUtil.FormatDouble (p.couponDCF(), 1, 2, 0.01 * 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L287">				FormatUtil.FormatDouble (mdfc.df (p.payDate()), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L288">				FormatUtil.FormatDouble (cc.survival (p.payDate()), 1, 4, 1.) + &quot; ||&quot;</span>
+			);
+
+<span class="nc" id="L291">		System.out.println (&quot;\t |---------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L292">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OE1KeyRateDuration.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.treasuryfuturesrisk</a> &gt; <span class="el_source">OE1KeyRateDuration.java</span></div><h1>OE1KeyRateDuration.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.treasuryfuturesrisk;
+
+import java.util.*;
+
+import org.drip.analytics.date.JulianDate;
+import org.drip.feed.loader.*;
+import org.drip.historical.sensitivity.TenorDurationNodeMetrics;
+import org.drip.market.exchange.*;
+import org.drip.market.issue.*;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.service.product.TreasuryFuturesAPI;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * OE1KeyRateDuration demonstrates the Computation of the Key Rate Duration for the OE1 Treasury Futures.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L68">public class OE1KeyRateDuration {</span>
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+<span class="nc" id="L74">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L76">		String strFuturesCode = &quot;OE1&quot;;</span>
+
+<span class="nc" id="L78">		TreasuryFuturesContract tfc = TreasuryFuturesContractContainer.TreasuryFuturesContract (strFuturesCode);</span>
+
+<span class="nc" id="L80">		String strTreasuryCode = tfc.code();</span>
+
+<span class="nc" id="L82">		TreasurySetting ts = TreasurySettingContainer.TreasurySetting (strTreasuryCode);</span>
+
+<span class="nc" id="L84">		String strTreasuryMarkLocation = &quot;C:\\DRIP\\CreditAnalytics\\Daemons\\Transforms\\TreasuryYieldMarks\\&quot; +</span>
+<span class="nc" id="L85">			TreasurySettingContainer.CurrencyBenchmarkCode (ts.currency()) + &quot;BenchmarksReconstituted.csv&quot;;</span>
+<span class="nc" id="L86">		String strPrintLocation = &quot;C:\\DRIP\\CreditAnalytics\\Daemons\\Transforms\\TreasuryFuturesCloses\\&quot; +</span>
+			strFuturesCode + &quot;ClosesReconstitutor.csv&quot;;
+
+<span class="nc" id="L89">		CSVGrid csvGridTreasuryMark = CSVParser.StringGrid (</span>
+			strTreasuryMarkLocation,
+			true
+		);
+
+<span class="nc" id="L94">		JulianDate[] adtTreasuryMark = csvGridTreasuryMark.dateArrayAtColumn (0);</span>
+
+<span class="nc" id="L96">		double[] adblYield02Y = csvGridTreasuryMark.doubleArrayAtColumn (1);</span>
+
+<span class="nc" id="L98">		double[] adblYield03Y = csvGridTreasuryMark.doubleArrayAtColumn (2);</span>
+
+<span class="nc" id="L100">		double[] adblYield04Y = csvGridTreasuryMark.doubleArrayAtColumn (3);</span>
+
+<span class="nc" id="L102">		double[] adblYield05Y = csvGridTreasuryMark.doubleArrayAtColumn (4);</span>
+
+<span class="nc" id="L104">		double[] adblYield07Y = csvGridTreasuryMark.doubleArrayAtColumn (5);</span>
+
+<span class="nc" id="L106">		double[] adblYield10Y = csvGridTreasuryMark.doubleArrayAtColumn (6);</span>
+
+<span class="nc" id="L108">		double[] adblYield20Y = csvGridTreasuryMark.doubleArrayAtColumn (7);</span>
+
+<span class="nc" id="L110">		double[] adblYield30Y = csvGridTreasuryMark.doubleArrayAtColumn (8);</span>
+
+<span class="nc" id="L112">		Map&lt;JulianDate, Double&gt; mapTreasuryMark02Y = new TreeMap&lt;JulianDate, Double&gt;();</span>
+
+<span class="nc" id="L114">		Map&lt;JulianDate, Double&gt; mapTreasuryMark03Y = new TreeMap&lt;JulianDate, Double&gt;();</span>
+
+<span class="nc" id="L116">		Map&lt;JulianDate, Double&gt; mapTreasuryMark04Y = new TreeMap&lt;JulianDate, Double&gt;();</span>
+
+<span class="nc" id="L118">		Map&lt;JulianDate, Double&gt; mapTreasuryMark05Y = new TreeMap&lt;JulianDate, Double&gt;();</span>
+
+<span class="nc" id="L120">		Map&lt;JulianDate, Double&gt; mapTreasuryMark07Y = new TreeMap&lt;JulianDate, Double&gt;();</span>
+
+<span class="nc" id="L122">		Map&lt;JulianDate, Double&gt; mapTreasuryMark10Y = new TreeMap&lt;JulianDate, Double&gt;();</span>
+
+<span class="nc" id="L124">		Map&lt;JulianDate, Double&gt; mapTreasuryMark20Y = new TreeMap&lt;JulianDate, Double&gt;();</span>
+
+<span class="nc" id="L126">		Map&lt;JulianDate, Double&gt; mapTreasuryMark30Y = new TreeMap&lt;JulianDate, Double&gt;();</span>
+
+<span class="nc bnc" id="L128" title="All 2 branches missed.">		for (int i = 0; i &lt; adtTreasuryMark.length; ++i) {</span>
+<span class="nc" id="L129">			mapTreasuryMark02Y.put (adtTreasuryMark[i], adblYield02Y[i]);</span>
+
+<span class="nc" id="L131">			mapTreasuryMark03Y.put (adtTreasuryMark[i], adblYield03Y[i]);</span>
+
+<span class="nc" id="L133">			mapTreasuryMark04Y.put (adtTreasuryMark[i], adblYield04Y[i]);</span>
+
+<span class="nc" id="L135">			mapTreasuryMark05Y.put (adtTreasuryMark[i], adblYield05Y[i]);</span>
+
+<span class="nc" id="L137">			mapTreasuryMark07Y.put (adtTreasuryMark[i], adblYield07Y[i]);</span>
+
+<span class="nc" id="L139">			mapTreasuryMark10Y.put (adtTreasuryMark[i], adblYield10Y[i]);</span>
+
+<span class="nc" id="L141">			mapTreasuryMark20Y.put (adtTreasuryMark[i], adblYield20Y[i]);</span>
+
+<span class="nc" id="L143">			mapTreasuryMark30Y.put (adtTreasuryMark[i], adblYield30Y[i]);</span>
+		}
+
+<span class="nc" id="L146">		CSVGrid csvGrid = CSVParser.StringGrid (</span>
+			strPrintLocation,
+			true
+		);
+
+<span class="nc" id="L151">		JulianDate[] adtSpot = csvGrid.dateArrayAtColumn (0);</span>
+
+<span class="nc" id="L153">		double[] adblCleanPrice = csvGrid.doubleArrayAtColumn (2);</span>
+
+<span class="nc" id="L155">		double[] adblCoupon = csvGrid.doubleArrayAtColumn (3);</span>
+
+<span class="nc" id="L157">		JulianDate[] adtEffective = csvGrid.dateArrayAtColumn (4);</span>
+
+<span class="nc" id="L159">		JulianDate[] adtMaturity = csvGrid.dateArrayAtColumn (5);</span>
+
+<span class="nc" id="L161">		JulianDate[] adtExpiry = csvGrid.dateArrayAtColumn (6);</span>
+
+<span class="nc" id="L163">		int iNumCompute = adtSpot.length;</span>
+<span class="nc" id="L164">		JulianDate[] adtEffectiveCompute = new JulianDate[iNumCompute];</span>
+<span class="nc" id="L165">		JulianDate[] adtMaturityCompute = new JulianDate[iNumCompute];</span>
+<span class="nc" id="L166">		double[] adblCouponCompute = new double[iNumCompute];</span>
+<span class="nc" id="L167">		JulianDate[] adtExpiryCompute = new JulianDate[iNumCompute];</span>
+<span class="nc" id="L168">		JulianDate[] adtSpotCompute = new JulianDate[iNumCompute];</span>
+<span class="nc" id="L169">		double[] adblCleanPriceCompute = new double[iNumCompute];</span>
+<span class="nc" id="L170">		double[][] aadblComputeYield = new double[iNumCompute][8];</span>
+<span class="nc" id="L171">		String[] astrBenchmarkTenor = new String[] {</span>
+			&quot;2Y&quot;,
+			&quot;3Y&quot;,
+			&quot;4Y&quot;,
+			&quot;5Y&quot;,
+			&quot;7Y&quot;,
+			&quot;10Y&quot;,
+			&quot;20Y&quot;,
+			&quot;30Y&quot;
+		};
+
+<span class="nc bnc" id="L182" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumCompute; ++i) {</span>
+<span class="nc" id="L183">			adtEffectiveCompute[i] = adtEffective[i];</span>
+<span class="nc" id="L184">			adtMaturityCompute[i] = adtMaturity[i];</span>
+<span class="nc" id="L185">			adblCouponCompute[i] = adblCoupon[i];</span>
+<span class="nc" id="L186">			adtExpiryCompute[i] = adtExpiry[i];</span>
+<span class="nc" id="L187">			adtSpotCompute[i] = adtSpot[i];</span>
+<span class="nc" id="L188">			adblCleanPriceCompute[i] = adblCleanPrice[i];</span>
+
+<span class="nc" id="L190">			aadblComputeYield[i][0] = mapTreasuryMark02Y.get (adtSpotCompute[i]);</span>
+
+<span class="nc" id="L192">			aadblComputeYield[i][1] = mapTreasuryMark03Y.get (adtSpotCompute[i]);</span>
+
+<span class="nc" id="L194">			aadblComputeYield[i][2] = mapTreasuryMark04Y.get (adtSpotCompute[i]);</span>
+
+<span class="nc" id="L196">			aadblComputeYield[i][3] = mapTreasuryMark05Y.get (adtSpotCompute[i]);</span>
+
+<span class="nc" id="L198">			aadblComputeYield[i][4] = mapTreasuryMark07Y.get (adtSpotCompute[i]);</span>
+
+<span class="nc" id="L200">			aadblComputeYield[i][5] = mapTreasuryMark10Y.get (adtSpotCompute[i]);</span>
+
+<span class="nc" id="L202">			aadblComputeYield[i][6] = mapTreasuryMark20Y.get (adtSpotCompute[i]);</span>
+
+<span class="nc" id="L204">			aadblComputeYield[i][7] = mapTreasuryMark30Y.get (adtSpotCompute[i]);</span>
+		}
+
+<span class="nc" id="L207">		List&lt;TenorDurationNodeMetrics&gt; lsTDNM = TreasuryFuturesAPI.HorizonKeyRateDuration (</span>
+			strTreasuryCode,
+			adtEffectiveCompute,
+			adtMaturityCompute,
+			adblCouponCompute,
+			adtExpiryCompute,
+			adtSpotCompute,
+			adblCleanPriceCompute,
+			astrBenchmarkTenor,
+			aadblComputeYield
+		);
+
+<span class="nc" id="L219">		System.out.println (&quot;SpotDate,ExpiryDate,CTDName,SpotCTDCleanPrice,ExpiryCTDCleanPrice,SpotGSpread,ExpiryGSpread,SpotYield,ExpiryYield,Parallel,2Y,3Y,4Y,5Y,7Y,10Y,20Y,30Y&quot;);</span>
+
+<span class="nc bnc" id="L221" title="All 2 branches missed.">		for (TenorDurationNodeMetrics tdnm : lsTDNM) {</span>
+<span class="nc" id="L222">			String strTDNM =</span>
+<span class="nc" id="L223">				tdnm.dateSnap() + &quot;,&quot; +</span>
+<span class="nc" id="L224">				tdnm.date (&quot;ExpiryDate&quot;) + &quot;,&quot; +</span>
+<span class="nc" id="L225">				tdnm.c1 (&quot;CTDName&quot;) + &quot;,&quot; +</span>
+<span class="nc" id="L226">				FormatUtil.FormatDouble (tdnm.r1 (&quot;SpotCTDCleanPrice&quot;), 1, 5, 100.) + &quot;,&quot; +</span>
+<span class="nc" id="L227">				FormatUtil.FormatDouble (tdnm.r1 (&quot;ExpiryCTDCleanPrice&quot;), 1, 5, 100.) + &quot;,&quot; +</span>
+<span class="nc" id="L228">				FormatUtil.FormatDouble (tdnm.r1 (&quot;SpotGSpread&quot;), 1, 1, 10000.) + &quot;,&quot; +</span>
+<span class="nc" id="L229">				FormatUtil.FormatDouble (tdnm.r1 (&quot;ExpiryGSpread&quot;), 1, 1, 10000.) + &quot;,&quot; +</span>
+<span class="nc" id="L230">				FormatUtil.FormatDouble (tdnm.r1 (&quot;SpotYield&quot;), 1, 4, 100.) + &quot;,&quot; +</span>
+<span class="nc" id="L231">				FormatUtil.FormatDouble (tdnm.r1 (&quot;ExpiryYield&quot;), 1, 4, 100.) + &quot;,&quot; +</span>
+<span class="nc" id="L232">				FormatUtil.FormatDouble (tdnm.r1 (&quot;ParallelKRD&quot;), 1, 4, 1.);</span>
+
+<span class="nc bnc" id="L234" title="All 2 branches missed.">			for (Map.Entry&lt;String, Double&gt; meTDNM : tdnm.krdMap().entrySet())</span>
+<span class="nc" id="L235">				strTDNM += &quot;,&quot; + FormatUtil.FormatDouble (meTDNM.getValue(), 1, 4, 1.);</span>
+
+<span class="nc" id="L237">			System.out.println (strTDNM);</span>
+<span class="nc" id="L238">		}</span>
+<span class="nc" id="L239">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CSVGrid.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.feed.loader</a> &gt; <span class="el_source">CSVGrid.java</span></div><h1>CSVGrid.java</h1><pre class="source lang-java linenums">
+package org.drip.feed.loader;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * CSVGrid Holds the Outputs of a CSV Parsing Exercise.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class CSVGrid {
+<span class="nc" id="L59">	private java.lang.String[] _astrHeader = null;</span>
+<span class="nc" id="L60">	private java.util.List&lt;java.lang.String[]&gt; _lsastr = null;</span>
+
+	/**
+	 * Convert the String Element to double. Fall back is NaN.
+	 * 
+	 * @param strElement String Element
+	 * 
+	 * @return The Return Value
+	 */
+
+	public static final double ToDouble (
+		final java.lang.String strElement)
+	{
+<span class="nc bnc" id="L73" title="All 4 branches missed.">		if (null == strElement || strElement.trim().isEmpty()) return java.lang.Double.NaN;</span>
+
+		try {
+<span class="nc" id="L76">			return java.lang.Double.parseDouble (strElement);</span>
+<span class="nc" id="L77">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L78">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L81">		return java.lang.Double.NaN;</span>
+	}
+
+	/**
+	 * Convert the String Element to int. Fall back is MIN_VALUE.
+	 * 
+	 * @param strElement String Element
+	 * 
+	 * @return The Return Value
+	 */
+
+	public static final int ToInteger (
+		final java.lang.String strElement)
+	{
+<span class="nc bnc" id="L95" title="All 4 branches missed.">		if (null == strElement || strElement.trim().isEmpty()) return java.lang.Integer.MIN_VALUE;</span>
+
+		try {
+<span class="nc" id="L98">			return java.lang.Integer.parseInt (strElement);</span>
+<span class="nc" id="L99">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L100">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L103">		return java.lang.Integer.MIN_VALUE;</span>
+	}
+
+	/**
+	 * Convert the String Element to a JulianDate Instance.
+	 * 
+	 * @param strElement String Element
+	 * 
+	 * @return The Return Value
+	 */
+
+	public static final org.drip.analytics.date.JulianDate ToDate (
+		final java.lang.String strElement)
+	{
+<span class="nc" id="L117">		org.drip.analytics.date.JulianDate dt = org.drip.analytics.date.DateUtil.CreateFromDDMMMYYYY</span>
+<span class="nc" id="L118">			(strElement.trim());</span>
+
+<span class="nc bnc" id="L120" title="All 4 branches missed.">		if (null != dt || null != (dt = org.drip.analytics.date.DateUtil.MakeJulianFromDDMMMYY (strElement,</span>
+			&quot;-&quot;)))
+<span class="nc" id="L122">			return dt;</span>
+
+<span class="nc" id="L124">		return org.drip.analytics.date.DateUtil.CreateFromMDY (strElement, &quot;-&quot;);</span>
+	}
+
+	/**
+	 * Empty CSVGrid Constructor
+	 */
+
+	public CSVGrid()
+<span class="nc" id="L132">	{</span>
+<span class="nc" id="L133">	}</span>
+
+	/**
+	 * Retrieve the Underlying CSV Grid
+	 * 
+	 * @return The Underlying CSV Field Grid
+	 */
+
+	public java.util.List&lt;java.lang.String[]&gt; grid()
+	{
+<span class="nc" id="L143">		return _lsastr;</span>
+	}
+
+	/**
+	 * Retrieve the Size of the Sample Set
+	 * 
+	 * @return Size of the Sample Set
+	 */
+
+	public int size()
+	{
+<span class="nc bnc" id="L154" title="All 2 branches missed.">		return null == _lsastr ? 0 : _lsastr.size();</span>
+	}
+
+	/**
+	 * Set the Column Headers
+	 * 
+	 * @param astrHeader The Column Headers
+	 * 
+	 * @return TRUE - Column Headers successfully set
+	 */
+
+	public boolean setHeader (
+		final java.lang.String[] astrHeader)
+	{
+<span class="nc bnc" id="L168" title="All 4 branches missed.">		if (null == astrHeader || 0 == astrHeader.length) return false;</span>
+
+<span class="nc" id="L170">		_astrHeader = astrHeader;</span>
+<span class="nc" id="L171">		return true;</span>
+	}
+
+	/**
+	 * Add a String Array to the Grid
+	 * 
+	 * @param astr The String Array
+	 * 
+	 * @return TRUE - The String Array successfully added
+	 */
+
+	public boolean add (
+		final java.lang.String[] astr)
+	{
+<span class="nc bnc" id="L185" title="All 4 branches missed.">		if (null == astr || 0 == astr.length) return false;</span>
+
+<span class="nc bnc" id="L187" title="All 2 branches missed.">		if (null == _lsastr) _lsastr = new java.util.ArrayList&lt;java.lang.String[]&gt;();</span>
+
+<span class="nc" id="L189">		_lsastr.add (astr);</span>
+
+<span class="nc" id="L191">		return true;</span>
+	}
+
+	/**
+	 * Retrieve the Array of Headers
+	 * 
+	 * @return The Header Array
+	 */
+
+	public java.lang.String[] headers()
+	{
+<span class="nc" id="L202">		return _astrHeader;</span>
+	}
+
+	/**
+	 * Retrieve the Header identified by the Index
+	 * 
+	 * @param iIndex The Index
+	 * 
+	 * @return The Header identified by the Index
+	 */
+
+	public java.lang.String header (
+		final int iIndex)
+	{
+<span class="nc bnc" id="L216" title="All 4 branches missed.">		return null == _astrHeader || _astrHeader.length &lt;= iIndex ? null : _astrHeader[iIndex];</span>
+	}
+
+	/**
+	 * 
+	 * Retrieve the Array of String Values corresponding to the specified Column Index
+	 * 
+	 * @param iColumn The Column Index
+	 * 
+	 * @return The Array of Strings
+	 */
+
+	public java.lang.String[] stringArrayAtColumn (
+		final int iColumn)
+	{
+<span class="nc bnc" id="L231" title="All 2 branches missed.">		if (0 &gt; iColumn) return null;</span>
+
+<span class="nc" id="L233">		int iRow = 0;</span>
+
+<span class="nc" id="L235">		java.lang.String[] astrColumn = new java.lang.String[_lsastr.size()];</span>
+
+<span class="nc bnc" id="L237" title="All 2 branches missed.">		for (java.lang.String[] astr : _lsastr) {</span>
+<span class="nc bnc" id="L238" title="All 4 branches missed.">			if (null == astr || astr.length &lt;= iColumn) return null;</span>
+
+<span class="nc" id="L240">			astrColumn[iRow++] = astr[iColumn];</span>
+<span class="nc" id="L241">		}</span>
+
+<span class="nc" id="L243">		return astrColumn;</span>
+	}
+
+	/**
+	 * Retrieve the Array of Integer Values corresponding to the specified Column Index
+	 * 
+	 * @param iColumn The Column Index
+	 * 
+	 * @return The Array of Integers
+	 */
+
+	public int[] intArrayAtColumn (
+		final int iColumn)
+	{
+<span class="nc bnc" id="L257" title="All 2 branches missed.">		if (0 &gt; iColumn) return null;</span>
+
+<span class="nc" id="L259">		int iRow = 0;</span>
+
+<span class="nc" id="L261">		int[] ai = new int[_lsastr.size()];</span>
+
+<span class="nc bnc" id="L263" title="All 2 branches missed.">		for (java.lang.String[] astr : _lsastr) {</span>
+<span class="nc bnc" id="L264" title="All 4 branches missed.">			if (null == astr || astr.length &lt;= iColumn) return null;</span>
+
+<span class="nc" id="L266">			ai[iRow++] = ToInteger (astr[iColumn]);</span>
+<span class="nc" id="L267">		}</span>
+
+<span class="nc" id="L269">		return ai;</span>
+	}
+
+	/**
+	 * Retrieve the Array of Double Values corresponding to the specified Column Index
+	 * 
+	 * @param iColumn The Column Index
+	 * @param dblScaler The Scaling Multiplier
+	 * 
+	 * @return The Array of Doubles
+	 */
+
+	public double[] doubleArrayAtColumn (
+		final int iColumn,
+		final double dblScaler)
+	{
+<span class="nc bnc" id="L285" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblScaler) || 0 &gt; iColumn) return null;</span>
+
+<span class="nc" id="L287">		int iRow = 0;</span>
+
+<span class="nc" id="L289">		double[] adbl = new double[_lsastr.size()];</span>
+
+<span class="nc bnc" id="L291" title="All 2 branches missed.">		for (java.lang.String[] astr : _lsastr) {</span>
+<span class="nc bnc" id="L292" title="All 4 branches missed.">			if (null == astr || astr.length &lt;= iColumn) return null;</span>
+
+<span class="nc" id="L294">			adbl[iRow++] = dblScaler * ToDouble (astr[iColumn]);</span>
+<span class="nc" id="L295">		}</span>
+
+<span class="nc" id="L297">		return adbl;</span>
+	}
+
+	/**
+	 * Retrieve the Array of Double Values corresponding to the specified Column Index
+	 * 
+	 * @param iColumn The Column Index
+	 * 
+	 * @return The Array of Doubles
+	 */
+
+	public double[] doubleArrayAtColumn (
+		final int iColumn)
+	{
+<span class="nc" id="L311">		return doubleArrayAtColumn (iColumn, 1.);</span>
+	}
+
+	/**
+	 * Retrieve the Array of JulianDate corresponding to the specified Column Index
+	 * 
+	 * @param iColumn The Column Index
+	 * 
+	 * @return The Array of JulianDate
+	 */
+
+	public org.drip.analytics.date.JulianDate[] dateArrayAtColumn (
+		final int iColumn)
+	{
+<span class="nc bnc" id="L325" title="All 2 branches missed.">		if (0 &gt; iColumn) return null;</span>
+
+<span class="nc" id="L327">		int iRow = 0;</span>
+
+<span class="nc" id="L329">		org.drip.analytics.date.JulianDate[] adt = new org.drip.analytics.date.JulianDate[_lsastr.size()];</span>
+
+<span class="nc bnc" id="L331" title="All 2 branches missed.">		for (java.lang.String[] astr : _lsastr) {</span>
+<span class="nc bnc" id="L332" title="All 4 branches missed.">			if (null == astr || astr.length &lt;= iColumn) return null;</span>
+
+<span class="nc" id="L334">			adt[iRow++] = ToDate (astr[iColumn]);</span>
+<span class="nc" id="L335">		}</span>
+
+<span class="nc" id="L337">		return adt;</span>
+	}
+
+	/**
+	 * Construct a Historical Map of Scaled/Keyed Double
+	 * 
+	 * @param dblScaler The Scale to be applied
+	 * 
+	 * @return Historical Map of Scaled/Keyed Double
+	 */
+
+	public java.util.Map&lt;org.drip.analytics.date.JulianDate, java.util.Map&lt;java.lang.Double,
+		java.lang.Double&gt;&gt;
+			doubleMap (
+				final double dblScaler)
+	{
+<span class="nc bnc" id="L353" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblScaler) || null == _lsastr) return null;</span>
+
+<span class="nc" id="L355">		int iNumClose = _lsastr.size();</span>
+
+<span class="nc bnc" id="L357" title="All 2 branches missed.">		if (0 == iNumClose) return null;</span>
+
+<span class="nc" id="L359">		java.lang.String[] astrHeader = _lsastr.get (0);</span>
+
+<span class="nc" id="L361">		int iNumMark = astrHeader.length;</span>
+<span class="nc" id="L362">		double adblHeader[] = new double[iNumMark];</span>
+
+<span class="nc bnc" id="L364" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumMark; ++i) {</span>
+<span class="nc bnc" id="L365" title="All 4 branches missed.">			if (null == astrHeader[i] || astrHeader[i].isEmpty()) return null;</span>
+
+<span class="nc" id="L367">			double dblHeader = java.lang.Double.NaN;</span>
+
+<span class="nc" id="L369">			java.lang.String strHeader = astrHeader[i].trim();</span>
+
+<span class="nc bnc" id="L371" title="All 4 branches missed.">			if (null == strHeader || strHeader.isEmpty()) return null;</span>
+
+			try {
+<span class="nc" id="L374">				dblHeader = new java.lang.Double (strHeader);</span>
+<span class="nc" id="L375">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L376">				e.printStackTrace();</span>
+
+<span class="nc" id="L378">				return null;</span>
+<span class="nc" id="L379">			}</span>
+
+<span class="nc bnc" id="L381" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblHeader)) return null;</span>
+
+<span class="nc" id="L383">			adblHeader[i] = dblHeader;;</span>
+		}
+
+		java.util.Map&lt;org.drip.analytics.date.JulianDate, java.util.Map&lt;java.lang.Double, java.lang.Double&gt;&gt;
+<span class="nc" id="L387">			mapClose = new java.util.TreeMap&lt;org.drip.analytics.date.JulianDate,</span>
+				java.util.Map&lt;java.lang.Double, java.lang.Double&gt;&gt;();
+
+<span class="nc bnc" id="L390" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumClose; ++i) {</span>
+<span class="nc" id="L391">			java.util.Map&lt;java.lang.Double, java.lang.Double&gt; mapClosingMark = new</span>
+				java.util.TreeMap&lt;java.lang.Double, java.lang.Double&gt;();
+
+<span class="nc" id="L394">			java.lang.String[] astrClosingMark = _lsastr.get (i);</span>
+
+<span class="nc bnc" id="L396" title="All 2 branches missed.">			for (int j = 1; j &lt; iNumMark; ++j) {</span>
+<span class="nc" id="L397">				double dblClosingMark = java.lang.Double.NaN;</span>
+
+<span class="nc bnc" id="L399" title="All 4 branches missed.">				java.lang.String strClosingMark = null == astrClosingMark[j] || astrClosingMark[j].isEmpty()</span>
+<span class="nc" id="L400">					? null : astrClosingMark[j].trim();</span>
+
+				try {
+<span class="nc bnc" id="L403" title="All 4 branches missed.">					if (null != strClosingMark &amp;&amp; !strClosingMark.isEmpty())</span>
+<span class="nc" id="L404">						dblClosingMark = new java.lang.Double (strClosingMark);</span>
+<span class="nc" id="L405">				} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L406">				}</span>
+
+<span class="nc bnc" id="L408" title="All 2 branches missed.">				if (org.drip.quant.common.NumberUtil.IsValid (dblClosingMark))</span>
+<span class="nc" id="L409">					mapClosingMark.put (adblHeader[j], dblScaler * dblClosingMark);</span>
+			}
+
+<span class="nc bnc" id="L412" title="All 2 branches missed.">			if (0 != mapClosingMark.size())</span>
+<span class="nc" id="L413">				mapClose.put (org.drip.analytics.date.DateUtil.CreateFromDDMMMYYYY (astrClosingMark[0]),</span>
+					mapClosingMark);
+		}
+
+<span class="nc" id="L417">		return mapClose;</span>
+	}
+
+	/**
+	 * Construct a Historical Map of Scaled/Keyed/Tenor Ordered Double
+	 * 
+	 * @param dblScaler The Scale to be applied
+	 * 
+	 * @return Historical Map of Scaled/Keyed/Tenor Ordered Double
+	 */
+
+	public java.util.Map&lt;org.drip.analytics.date.JulianDate, org.drip.feed.loader.InstrumentSetTenorQuote&gt;
+		groupedOrderedDouble (
+			final double dblScaler)
+	{
+<span class="nc bnc" id="L432" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblScaler) || null == _lsastr) return null;</span>
+
+<span class="nc" id="L434">		int iNumClose = _lsastr.size();</span>
+
+<span class="nc bnc" id="L436" title="All 2 branches missed.">		if (0 == iNumClose) return null;</span>
+
+<span class="nc" id="L438">		java.lang.String[] astrHeader = _lsastr.get (0);</span>
+
+<span class="nc" id="L440">		int iNumMark = astrHeader.length;</span>
+<span class="nc" id="L441">		java.lang.String[] astrTenor = new java.lang.String[iNumMark - 1];</span>
+<span class="nc" id="L442">		java.lang.String[] astrInstrument = new java.lang.String[iNumMark - 1];</span>
+
+<span class="nc bnc" id="L444" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumMark; ++i) {</span>
+<span class="nc" id="L445">			astrHeader[i].trim();</span>
+
+<span class="nc bnc" id="L447" title="All 4 branches missed.">			if (null == astrHeader[i] || astrHeader[i].isEmpty()) astrHeader[i] = &quot;@:#&quot;;</span>
+
+<span class="nc" id="L449">			java.lang.String[] astrInstrumentTenor = org.drip.quant.common.StringUtil.Split</span>
+<span class="nc" id="L450">				(astrHeader[i].trim(), &quot;:&quot;);</span>
+
+<span class="nc bnc" id="L452" title="All 4 branches missed.">			if (null == astrInstrumentTenor || 2 != astrInstrumentTenor.length) return null;</span>
+
+<span class="nc" id="L454">			astrTenor[i - 1] = astrInstrumentTenor[1];</span>
+<span class="nc" id="L455">			astrInstrument[i - 1] = astrInstrumentTenor[0];</span>
+		}
+
+		java.util.Map&lt;org.drip.analytics.date.JulianDate, org.drip.feed.loader.InstrumentSetTenorQuote&gt;
+<span class="nc" id="L459">			mapISTQ = new java.util.TreeMap&lt;org.drip.analytics.date.JulianDate,</span>
+				org.drip.feed.loader.InstrumentSetTenorQuote&gt;();
+
+<span class="nc bnc" id="L462" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumClose; ++i) {</span>
+<span class="nc" id="L463">			java.lang.String[] astrClosingMark = _lsastr.get (i);</span>
+
+<span class="nc" id="L465">			org.drip.feed.loader.InstrumentSetTenorQuote istq = new</span>
+				org.drip.feed.loader.InstrumentSetTenorQuote();
+
+<span class="nc bnc" id="L468" title="All 2 branches missed.">			for (int j = 1; j &lt; iNumMark; ++j) {</span>
+<span class="nc" id="L469">				double dblClosingMark = java.lang.Double.NaN;</span>
+
+<span class="nc bnc" id="L471" title="All 4 branches missed.">				java.lang.String strClosingMark = null == astrClosingMark[j] || astrClosingMark[j].isEmpty()</span>
+<span class="nc" id="L472">					? null : astrClosingMark[j].trim();</span>
+
+				try {
+<span class="nc bnc" id="L475" title="All 4 branches missed.">					if (null != strClosingMark &amp;&amp; !strClosingMark.isEmpty())</span>
+<span class="nc" id="L476">						dblClosingMark = new java.lang.Double (strClosingMark);</span>
+<span class="nc" id="L477">				} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L478">				}</span>
+
+<span class="nc" id="L480">				istq.add (astrInstrument[j - 1], astrTenor[j - 1], dblClosingMark, dblScaler);</span>
+			}
+
+<span class="nc bnc" id="L483" title="All 2 branches missed.">			if (!istq.isEmpty())</span>
+<span class="nc" id="L484">				mapISTQ.put (org.drip.analytics.date.DateUtil.CreateFromDDMMMYYYY (astrClosingMark[0]),</span>
+					istq);
+		}
+
+<span class="nc" id="L488">		return mapISTQ;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

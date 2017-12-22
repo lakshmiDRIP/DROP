@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NonlinearCurveMeasures.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.funding</a> &gt; <span class="el_source">NonlinearCurveMeasures.java</span></div><h1>NonlinearCurveMeasures.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.funding;
+
+/*
+ * Credit Product imports
+ */
+
+import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.support.*;
+import org.drip.market.otc.*;
+import org.drip.param.period.*;
+import org.drip.param.valuation.*;
+import org.drip.product.creator.*;
+import org.drip.product.definition.*;
+import org.drip.product.rates.*;
+import org.drip.param.creator.*;
+import org.drip.quant.calculus.WengertJacobian;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.state.creator.ScenarioDiscountCurveBuilder;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+import org.drip.state.identifier.ForwardLabel;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * Copyright (C) 2012 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * NonlinearCurveMeasures contains a demo of the Non-linear Rates Analytics API Usage. It shows the
+ *  following:
+ * 
+ * 	- Build a discount curve using: cash instruments only, EDF instruments only, IRS instruments only, or all
+ * 		of them strung together.
+ * 	- Re-calculate the component input measure quotes from the calibrated discount curve object.
+ * 	- Compute the PVDF Wengert Jacobian across all the instruments used in the curve construction.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L87">public class NonlinearCurveMeasures {</span>
+
+	private static final FixFloatComponent OTCIRS (
+		final JulianDate dtSpot,
+		final String strCurrency,
+		final String strMaturityTenor,
+		final double dblCoupon)
+	{
+<span class="nc" id="L95">		FixedFloatSwapConvention ffConv = IBORFixedFloatContainer.ConventionFromJurisdiction (</span>
+			strCurrency,
+			&quot;ALL&quot;,
+			strMaturityTenor,
+			&quot;MAIN&quot;
+		);
+
+<span class="nc" id="L102">		return ffConv.createFixFloatComponent (</span>
+			dtSpot,
+			strMaturityTenor,
+			dblCoupon,
+			0.,
+			1.
+		);
+	}
+
+	/*
+	 * Sample API demonstrating the creation of the discount curve from the rates input instruments
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	public static void DiscountCurveFromRatesInstruments()
+		throws Exception
+	{
+<span class="nc" id="L120">		int NUM_DC_INSTR = 30;</span>
+<span class="nc" id="L121">		double adblRate[] = new double[NUM_DC_INSTR];</span>
+<span class="nc" id="L122">		int aiMaturityDate[] = new int[NUM_DC_INSTR];</span>
+<span class="nc" id="L123">		String astrCalibMeasure[] = new String[NUM_DC_INSTR];</span>
+<span class="nc" id="L124">		double adblCompCalibValue[] = new double[NUM_DC_INSTR];</span>
+<span class="nc" id="L125">		CalibratableComponent aCompCalib[] = new CalibratableComponent[NUM_DC_INSTR];</span>
+
+<span class="nc" id="L127">		JulianDate dtStart = org.drip.analytics.date.DateUtil.CreateFromYMD (</span>
+			2011,
+			4,
+			6
+		);
+
+		// First 7 instruments - cash calibration
+
+<span class="nc" id="L135">		JulianDate dtCashEffective = dtStart.addBusDays (1, &quot;USD&quot;);</span>
+
+<span class="nc" id="L137">		aiMaturityDate[0] = dtCashEffective.addBusDays (1, &quot;USD&quot;).julian(); // ON</span>
+
+<span class="nc" id="L139">		aiMaturityDate[1] = dtCashEffective.addBusDays (2, &quot;USD&quot;).julian(); // 1D (TN)</span>
+
+<span class="nc" id="L141">		aiMaturityDate[2] = dtCashEffective.addBusDays (7, &quot;USD&quot;).julian(); // 1W</span>
+
+<span class="nc" id="L143">		aiMaturityDate[3] = dtCashEffective.addBusDays (14, &quot;USD&quot;).julian(); // 2W</span>
+
+<span class="nc" id="L145">		aiMaturityDate[4] = dtCashEffective.addBusDays (30, &quot;USD&quot;).julian(); // 1M</span>
+
+<span class="nc" id="L147">		aiMaturityDate[5] = dtCashEffective.addBusDays (60, &quot;USD&quot;).julian(); // 2M</span>
+
+<span class="nc" id="L149">		aiMaturityDate[6] = dtCashEffective.addBusDays (90, &quot;USD&quot;).julian(); // 3M</span>
+
+		/*
+		 * Cash Rate Quotes
+		 */
+
+<span class="nc" id="L155">		adblCompCalibValue[0] = .0013;</span>
+<span class="nc" id="L156">		adblCompCalibValue[1] = .0017;</span>
+<span class="nc" id="L157">		adblCompCalibValue[2] = .0017;</span>
+<span class="nc" id="L158">		adblCompCalibValue[3] = .0018;</span>
+<span class="nc" id="L159">		adblCompCalibValue[4] = .0020;</span>
+<span class="nc" id="L160">		adblCompCalibValue[5] = .0023;</span>
+<span class="nc" id="L161">		adblCompCalibValue[6] = .0026;</span>
+
+<span class="nc" id="L163">		ComposableFloatingUnitSetting cfus = new ComposableFloatingUnitSetting (</span>
+			&quot;3M&quot;,
+			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE,
+			null,
+<span class="nc" id="L167">			ForwardLabel.Create (</span>
+				&quot;USD&quot;,
+				&quot;3M&quot;
+			),
+			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
+			0.
+		);
+
+<span class="nc" id="L175">		CompositePeriodSetting cps = new CompositePeriodSetting (</span>
+			4,
+			&quot;3M&quot;,
+			&quot;USD&quot;,
+			null,
+			1.,
+			null,
+			null,
+			null,
+			null
+		);
+
+<span class="nc" id="L187">		CashSettleParams csp = new CashSettleParams (</span>
+			0,
+			&quot;USD&quot;,
+			0
+		);
+
+<span class="nc bnc" id="L193" title="All 2 branches missed.">		for (int i = 0; i &lt; 7; ++i) {</span>
+<span class="nc" id="L194">			adblRate[i] = 0.01;</span>
+<span class="nc" id="L195">			astrCalibMeasure[i] = &quot;Rate&quot;;</span>
+
+<span class="nc" id="L197">			aCompCalib[i] = SingleStreamComponentBuilder.Deposit (</span>
+				dtCashEffective, // Effective
+<span class="nc" id="L199">				new JulianDate (aiMaturityDate[i]).addBusDays (</span>
+					2,
+					&quot;USD&quot;
+				), // Maturity
+<span class="nc" id="L203">				ForwardLabel.Create (</span>
+					&quot;USD&quot;,
+					&quot;3M&quot;
+				)
+			);
+
+<span class="nc" id="L209">			aCompCalib[i] = new SingleStreamComponent (</span>
+				&quot;DEPOSIT_&quot; + aiMaturityDate[i],
+				new Stream (
+<span class="nc" id="L212">					CompositePeriodBuilder.FloatingCompositeUnit (</span>
+<span class="nc" id="L213">						CompositePeriodBuilder.EdgePair (</span>
+							dtStart,
+<span class="nc" id="L215">							new JulianDate (aiMaturityDate[i]).addBusDays (</span>
+								2,
+								&quot;USD&quot;
+							)
+						),
+						cps,
+						cfus
+					)
+				),
+				csp
+			);
+
+<span class="nc" id="L227">			aCompCalib[i].setPrimaryCode (aCompCalib[i].name());</span>
+		}
+
+		// Next 8 instruments - EDF calibration
+
+<span class="nc" id="L232">		adblCompCalibValue[7] = .0027;</span>
+<span class="nc" id="L233">		adblCompCalibValue[8] = .0032;</span>
+<span class="nc" id="L234">		adblCompCalibValue[9] = .0041;</span>
+<span class="nc" id="L235">		adblCompCalibValue[10] = .0054;</span>
+<span class="nc" id="L236">		adblCompCalibValue[11] = .0077;</span>
+<span class="nc" id="L237">		adblCompCalibValue[12] = .0104;</span>
+<span class="nc" id="L238">		adblCompCalibValue[13] = .0134;</span>
+<span class="nc" id="L239">		adblCompCalibValue[14] = .0160;</span>
+
+<span class="nc" id="L241">		CalibratableComponent[] aEDF = SingleStreamComponentBuilder.ForwardRateFuturesPack (</span>
+			dtStart,
+			8,
+			&quot;USD&quot;
+		);
+
+<span class="nc bnc" id="L247" title="All 2 branches missed.">		for (int i = 0; i &lt; 8; ++i) {</span>
+<span class="nc" id="L248">			adblRate[i + 7] = 0.01;</span>
+<span class="nc" id="L249">			aCompCalib[i + 7] = aEDF[i];</span>
+<span class="nc" id="L250">			astrCalibMeasure[i + 7] = &quot;Rate&quot;;</span>
+
+<span class="nc" id="L252">			aiMaturityDate[i + 7] = aEDF[i].maturityDate().julian();</span>
+		}
+
+		// Final 15 instruments - IRS calibration
+
+<span class="nc" id="L257">		JulianDate dtIRSEffective = dtStart.addBusDays (</span>
+			2,
+			&quot;USD&quot;
+		);
+
+<span class="nc" id="L262">		String[] astrIRSTenor = new String[] {</span>
+			&quot;4Y&quot;,
+			&quot;5Y&quot;,
+			&quot;6Y&quot;,
+			&quot;7Y&quot;,
+			&quot;8Y&quot;,
+			&quot;9Y&quot;,
+			&quot;10Y&quot;,
+			&quot;11Y&quot;,
+			&quot;12Y&quot;,
+			&quot;15Y&quot;,
+			&quot;20Y&quot;,
+			&quot;25Y&quot;,
+			&quot;30Y&quot;,
+			&quot;40Y&quot;,
+			&quot;50Y&quot;,
+		};
+
+<span class="nc" id="L280">		aiMaturityDate[15] = dtIRSEffective.addTenor (astrIRSTenor[0]).julian();</span>
+
+<span class="nc" id="L282">		aiMaturityDate[16] = dtIRSEffective.addTenor (astrIRSTenor[1]).julian();</span>
+
+<span class="nc" id="L284">		aiMaturityDate[17] = dtIRSEffective.addTenor (astrIRSTenor[2]).julian();</span>
+
+<span class="nc" id="L286">		aiMaturityDate[18] = dtIRSEffective.addTenor (astrIRSTenor[3]).julian();</span>
+
+<span class="nc" id="L288">		aiMaturityDate[19] = dtIRSEffective.addTenor (astrIRSTenor[4]).julian();</span>
+
+<span class="nc" id="L290">		aiMaturityDate[20] = dtIRSEffective.addTenor (astrIRSTenor[5]).julian();</span>
+
+<span class="nc" id="L292">		aiMaturityDate[21] = dtIRSEffective.addTenor (astrIRSTenor[6]).julian();</span>
+
+<span class="nc" id="L294">		aiMaturityDate[22] = dtIRSEffective.addTenor (astrIRSTenor[7]).julian();</span>
+
+<span class="nc" id="L296">		aiMaturityDate[23] = dtIRSEffective.addTenor (astrIRSTenor[8]).julian();</span>
+
+<span class="nc" id="L298">		aiMaturityDate[24] = dtIRSEffective.addTenor (astrIRSTenor[9]).julian();</span>
+
+<span class="nc" id="L300">		aiMaturityDate[25] = dtIRSEffective.addTenor (astrIRSTenor[10]).julian();</span>
+
+<span class="nc" id="L302">		aiMaturityDate[26] = dtIRSEffective.addTenor (astrIRSTenor[11]).julian();</span>
+
+<span class="nc" id="L304">		aiMaturityDate[27] = dtIRSEffective.addTenor (astrIRSTenor[12]).julian();</span>
+
+<span class="nc" id="L306">		aiMaturityDate[28] = dtIRSEffective.addTenor (astrIRSTenor[13]).julian();</span>
+
+<span class="nc" id="L308">		aiMaturityDate[29] = dtIRSEffective.addTenor (astrIRSTenor[14]).julian();</span>
+
+<span class="nc" id="L310">		adblCompCalibValue[15] = .0166;</span>
+<span class="nc" id="L311">		adblCompCalibValue[16] = .0206;</span>
+<span class="nc" id="L312">		adblCompCalibValue[17] = .0241;</span>
+<span class="nc" id="L313">		adblCompCalibValue[18] = .0269;</span>
+<span class="nc" id="L314">		adblCompCalibValue[19] = .0292;</span>
+<span class="nc" id="L315">		adblCompCalibValue[20] = .0311;</span>
+<span class="nc" id="L316">		adblCompCalibValue[21] = .0326;</span>
+<span class="nc" id="L317">		adblCompCalibValue[22] = .0340;</span>
+<span class="nc" id="L318">		adblCompCalibValue[23] = .0351;</span>
+<span class="nc" id="L319">		adblCompCalibValue[24] = .0375;</span>
+<span class="nc" id="L320">		adblCompCalibValue[25] = .0393;</span>
+<span class="nc" id="L321">		adblCompCalibValue[26] = .0402;</span>
+<span class="nc" id="L322">		adblCompCalibValue[27] = .0407;</span>
+<span class="nc" id="L323">		adblCompCalibValue[28] = .0409;</span>
+<span class="nc" id="L324">		adblCompCalibValue[29] = .0409;</span>
+
+<span class="nc bnc" id="L326" title="All 2 branches missed.">		for (int i = 0; i &lt; 15; ++i) {</span>
+<span class="nc" id="L327">			astrCalibMeasure[i + 15] = &quot;Rate&quot;;</span>
+<span class="nc" id="L328">			adblRate[i + 15] = 0.01;</span>
+
+<span class="nc" id="L330">			aCompCalib[i + 15] = OTCIRS (</span>
+				dtIRSEffective,
+				&quot;USD&quot;,
+				astrIRSTenor[i],
+				0.
+			);
+		}
+
+		/*
+		 * Build the IR curve from the components, their calibration measures, and their calibration quotes.
+		 */
+
+<span class="nc" id="L342">		MergedDiscountForwardCurve dc = ScenarioDiscountCurveBuilder.NonlinearBuild (</span>
+			dtStart,
+			&quot;USD&quot;,
+			aCompCalib,
+			adblCompCalibValue,
+			astrCalibMeasure,
+			null
+		);
+
+		/*
+		 * Re-calculate the component input measure quotes from the calibrated discount curve object
+		 */
+
+<span class="nc bnc" id="L355" title="All 2 branches missed.">		for (int i = 0; i &lt; aCompCalib.length; ++i)</span>
+<span class="nc" id="L356">			System.out.println (astrCalibMeasure[i] + &quot;[&quot; + i + &quot;] = &quot; +</span>
+<span class="nc" id="L357">				FormatUtil.FormatDouble (aCompCalib[i].measureValue (new ValuationParams (dtStart, dtStart, &quot;USD&quot;), null,</span>
+<span class="nc" id="L358">					MarketParamsBuilder.Create (dc, null, null, null, null, null, null),</span>
+<span class="nc" id="L359">						null, astrCalibMeasure[i]), 1, 5, 1.) + &quot; | &quot; + FormatUtil.FormatDouble (adblCompCalibValue[i], 1, 5, 1.));</span>
+
+<span class="nc bnc" id="L361" title="All 2 branches missed.">		for (int i = 0; i &lt; aCompCalib.length; ++i) {</span>
+<span class="nc" id="L362">			WengertJacobian wjComp = aCompCalib[i].jackDDirtyPVDManifestMeasure (</span>
+				new ValuationParams (
+					dtStart,
+					dtStart,
+					&quot;USD&quot;
+				),
+				null,
+<span class="nc" id="L369">				MarketParamsBuilder.Create (</span>
+					dc,
+					null,
+					null,
+					null,
+					null,
+					null,
+					null
+				),
+				null
+			);
+
+<span class="nc bnc" id="L381" title="All 2 branches missed.">			System.out.println (&quot;PV/DF Micro Jack[&quot; + aCompCalib[i].name() + &quot;]=&quot; +</span>
+<span class="nc" id="L382">				(null == wjComp ? null : wjComp.displayString()));</span>
+		}
+<span class="nc" id="L384">	}</span>
+
+	public static final void main (
+		final String astrArgs[])
+		throws Exception
+	{
+<span class="nc" id="L390">		String strConfig = &quot;&quot;;</span>
+
+<span class="nc" id="L392">		EnvManager.InitEnv (strConfig);</span>
+
+<span class="nc" id="L394">		long lStart = System.nanoTime();</span>
+
+<span class="nc" id="L396">		DiscountCurveFromRatesInstruments();</span>
+
+<span class="nc" id="L398">		System.out.println (&quot;Time Taken: &quot; + ((int)(1.e-09 * (System.nanoTime() - lStart))) + &quot; sec&quot;);</span>
+<span class="nc" id="L399">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

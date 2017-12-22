@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BondClientCashFlow.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.service</a> &gt; <span class="el_source">BondClientCashFlow.java</span></div><h1>BondClientCashFlow.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.service;
+
+import org.drip.analytics.date.*;
+import org.drip.json.parser.Converter;
+import org.drip.json.simple.JSONObject;
+import org.drip.service.env.EnvManager;
+import org.drip.service.json.KeyHoleSkeleton;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * BondClientCashFlow demonstrates the Invocation and Examination of the JSON-based Bond Valuation Service for
+ * 	generating the Bond Cash Flows.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L63">public class BondClientCashFlow {</span>
+
+	@SuppressWarnings (&quot;unchecked&quot;) public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+<span class="nc" id="L69">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L71">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+			2017,
+			DateUtil.MAY,
+			9
+		);
+
+<span class="nc" id="L77">		String strCurrency = &quot;USD&quot;;</span>
+<span class="nc" id="L78">		String strReferenceEntity = &quot;DRIP&quot;;</span>
+
+<span class="nc" id="L80">		String[] astrDepositMaturityTenor = new String[] {</span>
+			&quot;2D&quot;
+		};
+
+<span class="nc" id="L84">		double[] adblDepositQuote = new double[] {</span>
+			0.0103456 // 2D
+		};
+
+<span class="nc" id="L88">		double[] adblFuturesQuote = new double[] {</span>
+			0.01070,
+			0.01235,
+			0.01360
+		};
+
+<span class="nc" id="L94">		String[] astrFixFloatMaturityTenor = new String[] {</span>
+			&quot;01Y&quot;,
+			&quot;02Y&quot;,
+			&quot;03Y&quot;,
+			&quot;04Y&quot;,
+			&quot;05Y&quot;,
+			&quot;06Y&quot;,
+			&quot;07Y&quot;,
+			&quot;08Y&quot;,
+			&quot;09Y&quot;,
+			&quot;10Y&quot;,
+			&quot;11Y&quot;,
+			&quot;12Y&quot;,
+			&quot;15Y&quot;,
+			&quot;20Y&quot;,
+			&quot;25Y&quot;,
+			&quot;30Y&quot;,
+			&quot;40Y&quot;,
+			&quot;50Y&quot;
+		};
+
+<span class="nc" id="L115">		double[] adblFixFloatQuote = new double[] {</span>
+			0.012484, //  1Y
+			0.014987, //  2Y
+			0.017036, //  3Y
+			0.018624, //  4Y
+			0.019868, //  5Y
+			0.020921, //  6Y
+			0.021788, //  7Y
+			0.022530, //  8Y
+			0.023145, //  9Y
+			0.023685, // 10Y
+			0.024153, // 11Y
+			0.024562, // 12Y
+			0.025389, // 15Y
+			0.026118, // 20Y
+			0.026368, // 25Y
+			0.026432, // 30Y
+			0.026339, // 40Y
+			0.026122  // 50Y
+		};
+
+<span class="nc" id="L136">		String[] astrCDSMaturityTenor = new String[] {</span>
+			&quot;06M&quot;,
+			&quot;01Y&quot;,
+			&quot;02Y&quot;,
+			&quot;03Y&quot;,
+			&quot;04Y&quot;,
+			&quot;05Y&quot;,
+			&quot;07Y&quot;,
+			&quot;10Y&quot;
+		};
+
+<span class="nc" id="L147">		double[] adblCDSQuote = new double[] {</span>
+			 60.,	//  6M
+			 68.,	//  1Y
+			 88.,	//  2Y
+			102.,	//  3Y
+			121.,	//  4Y
+			138.,	//  5Y
+			168.,	//  7Y
+			188.	// 10Y
+		};
+
+<span class="nc" id="L158">		JulianDate dtEffective = DateUtil.CreateFromYMD (</span>
+			2012,
+			DateUtil.APRIL,
+			12
+		);
+
+<span class="nc" id="L164">		JulianDate dtMaturity = DateUtil.CreateFromYMD (</span>
+			2027,
+			DateUtil.APRIL,
+			12
+		);
+
+<span class="nc" id="L170">		JSONObject jsonParameters = new JSONObject();</span>
+
+<span class="nc" id="L172">		jsonParameters.put (&quot;SpotDate&quot;, dtSpot.toString());</span>
+
+<span class="nc" id="L174">		jsonParameters.put (&quot;Currency&quot;, strCurrency);</span>
+
+<span class="nc" id="L176">		jsonParameters.put (&quot;DepositTenor&quot;, Converter.Array (astrDepositMaturityTenor));</span>
+
+<span class="nc" id="L178">		jsonParameters.put (&quot;DepositQuote&quot;, Converter.Array (adblDepositQuote));</span>
+
+<span class="nc" id="L180">		jsonParameters.put (&quot;FuturesQuote&quot;, Converter.Array (adblFuturesQuote));</span>
+
+<span class="nc" id="L182">		jsonParameters.put (&quot;FixFloatTenor&quot;, Converter.Array (astrFixFloatMaturityTenor));</span>
+
+<span class="nc" id="L184">		jsonParameters.put (&quot;FixFloatQuote&quot;, Converter.Array (adblFixFloatQuote));</span>
+
+<span class="nc" id="L186">		jsonParameters.put (&quot;CDSTenor&quot;, Converter.Array (astrCDSMaturityTenor));</span>
+
+<span class="nc" id="L188">		jsonParameters.put (&quot;CDSQuote&quot;, Converter.Array (adblCDSQuote));</span>
+
+<span class="nc" id="L190">		jsonParameters.put (&quot;ReferenceEntity&quot;, strReferenceEntity);</span>
+
+<span class="nc" id="L192">		jsonParameters.put (&quot;BondName&quot;, &quot;  PDVSA  5.3750 12-APR-2027 &quot;);</span>
+
+<span class="nc" id="L194">		jsonParameters.put (&quot;BondCoupon&quot;, 0.053750);</span>
+
+<span class="nc" id="L196">		jsonParameters.put (&quot;BondFrequency&quot;, 2);</span>
+
+<span class="nc" id="L198">		jsonParameters.put (&quot;BondDayCount&quot;, &quot;30/360&quot;);</span>
+
+<span class="nc" id="L200">		jsonParameters.put (&quot;BondEffectiveDate&quot;, dtEffective.toString());</span>
+
+<span class="nc" id="L202">		jsonParameters.put (&quot;BondMaturityDate&quot;, dtMaturity.toString());</span>
+
+<span class="nc" id="L204">		jsonParameters.put (&quot;BondCleanPrice&quot;, 0.38239);</span>
+
+<span class="nc" id="L206">		jsonParameters.put (&quot;BondValueNotional&quot;, 1000000.);</span>
+
+<span class="nc" id="L208">		JSONObject jsonRequest = new JSONObject();</span>
+
+<span class="nc" id="L210">		jsonRequest.put (&quot;API&quot;, &quot;BOND::CASHFLOWS&quot;);</span>
+
+<span class="nc" id="L212">		jsonRequest.put (&quot;Parameters&quot;, jsonParameters);</span>
+
+<span class="nc" id="L214">		System.out.println (&quot;\n\t|---------------- JSON REQUEST -----------------|\n&quot;);</span>
+
+<span class="nc" id="L216">		System.out.println (jsonRequest.toJSONString());</span>
+
+<span class="nc" id="L218">		System.out.println (&quot;\n\t|---------------- JSON RESPONSE ----------------|\n&quot;);</span>
+
+<span class="nc" id="L220">		System.out.println (KeyHoleSkeleton.Thunker (jsonRequest.toJSONString()));</span>
+<span class="nc" id="L221">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,532 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Array2D.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.quant.common</a> &gt; <span class="el_source">Array2D.java</span></div><h1>Array2D.java</h1><pre class="source lang-java linenums">
+package org.drip.quant.common;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * Copyright (C) 2012 Lakshmi Krishnamurthy
+ * Copyright (C) 2011 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * Array2D the contains array of x and y. It provides methods to create/access different varieties of x/y
+ *  schedule creation.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class Array2D {
+<span class="fc" id="L64">	private double _adblX[] = null;</span>
+<span class="fc" id="L65">	private double _adblY[] = null;</span>
+
+	/**
+	 * Generate the Array2D Schedule from the String Representation of the Vertex Dates and Edge Payments
+	 * 	Combination.
+	 * 
+	 * @param strDateAmountVertex The String Array consisting of the Date and the Amount Vertexes
+	 * @param iMaturityDate The Maturity Date
+	 * @param dblInitialAmount The Initial Amount
+	 * 
+	 * @return The Array2D Instance
+	 */
+
+	public static final Array2D FromDateAmountVertex (
+		final java.lang.String strDateAmountVertex,
+		final int iMaturityDate,
+		final double dblInitialAmount)
+	{
+<span class="nc bnc" id="L83" title="All 4 branches missed.">		if (null == strDateAmountVertex || strDateAmountVertex.isEmpty() ||</span>
+<span class="nc bnc" id="L84" title="All 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblInitialAmount) || 0. &gt;= dblInitialAmount)</span>
+<span class="nc" id="L85">			return null;</span>
+
+<span class="nc" id="L87">		java.lang.String[] astrDateAmountEdge = org.drip.quant.common.StringUtil.Split (strDateAmountVertex,</span>
+			&quot;;&quot;);
+
+<span class="nc bnc" id="L90" title="All 2 branches missed.">		if (null == astrDateAmountEdge) return null;</span>
+
+<span class="nc" id="L92">		int iNumDateFactorPair = astrDateAmountEdge.length;</span>
+<span class="nc" id="L93">		int iNumVertex = iNumDateFactorPair / 2 + 1;</span>
+<span class="nc" id="L94">		double[] adblVertexDate = new double[iNumVertex];</span>
+<span class="nc" id="L95">		double[] adblVertexFactor = new double[iNumVertex];</span>
+<span class="nc" id="L96">		double[] adblVertexOutstanding = new double[iNumVertex];</span>
+<span class="nc" id="L97">		adblVertexOutstanding[0] = dblInitialAmount;</span>
+
+<span class="nc bnc" id="L99" title="All 4 branches missed.">		if (0 == iNumDateFactorPair || 1 == iNumDateFactorPair % 2) return null;</span>
+
+<span class="nc bnc" id="L101" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVertex - 1; ++i) {</span>
+<span class="nc" id="L102">			org.drip.analytics.date.JulianDate dt = org.drip.analytics.date.DateUtil.FromMDY</span>
+<span class="nc" id="L103">				(astrDateAmountEdge[2 * i], &quot;/&quot;);</span>
+
+<span class="nc" id="L105">			java.lang.String strEdgeAmount = astrDateAmountEdge[2 * i + 1];</span>
+
+<span class="nc bnc" id="L107" title="All 6 branches missed.">			if (null == dt || null == strEdgeAmount || strEdgeAmount.isEmpty()) return null;</span>
+
+<span class="nc" id="L109">			adblVertexDate[i] = dt.julian();</span>
+
+<span class="nc" id="L111">			double dblPrincipalPayAmount = java.lang.Double.parseDouble (strEdgeAmount.trim());</span>
+
+<span class="nc bnc" id="L113" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblPrincipalPayAmount)) return null;</span>
+
+<span class="nc bnc" id="L115" title="All 4 branches missed.">			if (0. &gt;= dblPrincipalPayAmount || 0. &gt;= (adblVertexOutstanding[i + 1] = adblVertexOutstanding[i]</span>
+				- dblPrincipalPayAmount))
+<span class="nc" id="L117">				return null;</span>
+		}
+
+<span class="nc bnc" id="L120" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVertex; ++i)</span>
+<span class="nc" id="L121">			adblVertexFactor[i] = adblVertexOutstanding[i] / dblInitialAmount;</span>
+
+<span class="nc" id="L123">		adblVertexDate[iNumVertex - 1] = iMaturityDate;</span>
+
+<span class="nc" id="L125">		return FromArray (adblVertexDate, adblVertexFactor);</span>
+	}
+
+	/**
+	 * Generate an Array2D Instance from the String Array containing semi-colon delimited Date/Factor Vertex
+	 *  Pair
+	 * 
+	 * @param strDateFactorVertex The String Array containing semi-colon delimited Date/Edge Pair
+	 * @param iMaturityDate The Maturity Date
+	 * @param dblInitialAmount The Initial Amount
+	 * 
+	 * @return The Array2D Instance
+	 */
+
+	public static final Array2D FromDateFactorVertex (
+		final java.lang.String strDateFactorVertex,
+		final int iMaturityDate,
+		final double dblInitialAmount)
+	{
+<span class="nc bnc" id="L144" title="All 4 branches missed.">		if (null == strDateFactorVertex || strDateFactorVertex.isEmpty() ||</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblInitialAmount))</span>
+<span class="nc" id="L146">			return null;</span>
+
+<span class="nc" id="L148">		java.lang.String[] astrDateFactorVertex = org.drip.quant.common.StringUtil.Split</span>
+<span class="nc" id="L149">			(strDateFactorVertex, &quot;;&quot;);</span>
+
+<span class="nc bnc" id="L151" title="All 2 branches missed.">		if (null == astrDateFactorVertex) return null;</span>
+
+<span class="nc" id="L153">		int iNumDateFactorPair = astrDateFactorVertex.length;</span>
+<span class="nc" id="L154">		int iNumVertex = iNumDateFactorPair / 2 + 1;</span>
+<span class="nc" id="L155">		double[] adblVertexDate = new double[iNumVertex];</span>
+<span class="nc" id="L156">		double[] adblVertexFactor = new double[iNumVertex];</span>
+<span class="nc" id="L157">		adblVertexFactor[0] = 1.;</span>
+
+<span class="nc bnc" id="L159" title="All 4 branches missed.">		if (0 == iNumDateFactorPair || 1 == iNumDateFactorPair % 2) return null;</span>
+
+<span class="nc bnc" id="L161" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVertex - 1; ++i) {</span>
+<span class="nc" id="L162">			org.drip.analytics.date.JulianDate dt = org.drip.analytics.date.DateUtil.FromMDY</span>
+<span class="nc" id="L163">				(astrDateFactorVertex[2 * i], &quot;/&quot;);</span>
+
+<span class="nc" id="L165">			java.lang.String strFactor = astrDateFactorVertex[2 * i + 1];</span>
+
+<span class="nc bnc" id="L167" title="All 6 branches missed.">			if (null == dt || null == strFactor || strFactor.isEmpty()) return null;</span>
+
+<span class="nc" id="L169">			adblVertexDate[i] = dt.julian();</span>
+
+<span class="nc bnc" id="L171" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (adblVertexFactor[i + 1] =</span>
+<span class="nc" id="L172">				java.lang.Double.parseDouble (strFactor.trim()) / dblInitialAmount))</span>
+<span class="nc" id="L173">				return null;</span>
+		}
+
+<span class="nc" id="L176">		adblVertexDate[iNumVertex - 1] = iMaturityDate;</span>
+
+<span class="nc" id="L178">		return FromArray (adblVertexDate, adblVertexFactor);</span>
+	}
+
+	/**
+	 * Generate an Array2D Instance from the String Array containing semi-colon delimited Date/Factor Vertex
+	 *  Pair
+	 * 
+	 * @param strDateFactorVertex The String Array containing semi-colon delimited Date/Edge Pair
+	 * @param iMaturityDate The Maturity Date
+	 * 
+	 * @return The Array2D Instance
+	 */
+
+	public static final Array2D FromDateFactorVertex (
+		final java.lang.String strDateFactorVertex,
+		final int iMaturityDate)
+	{
+<span class="nc bnc" id="L195" title="All 4 branches missed.">		if (null == strDateFactorVertex || strDateFactorVertex.isEmpty()) return null;</span>
+
+<span class="nc" id="L197">		java.lang.String[] astrDateFactorVertex = org.drip.quant.common.StringUtil.Split</span>
+<span class="nc" id="L198">			(strDateFactorVertex, &quot;;&quot;);</span>
+
+<span class="nc bnc" id="L200" title="All 2 branches missed.">		if (null == astrDateFactorVertex) return null;</span>
+
+<span class="nc" id="L202">		int iNumDateFactorPair = astrDateFactorVertex.length;</span>
+<span class="nc" id="L203">		int iNumVertex = iNumDateFactorPair / 2 + 1;</span>
+<span class="nc" id="L204">		double[] adblVertexDate = new double[iNumVertex];</span>
+<span class="nc" id="L205">		double[] adblVertexFactor = new double[iNumVertex];</span>
+<span class="nc" id="L206">		adblVertexFactor[0] = 1.;</span>
+
+<span class="nc bnc" id="L208" title="All 4 branches missed.">		if (0 == iNumDateFactorPair || 1 == iNumDateFactorPair % 2) return null;</span>
+
+<span class="nc bnc" id="L210" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVertex - 1; ++i) {</span>
+<span class="nc" id="L211">			org.drip.analytics.date.JulianDate dt = org.drip.analytics.date.DateUtil.FromMDY</span>
+<span class="nc" id="L212">				(astrDateFactorVertex[2 * i], &quot;/&quot;);</span>
+
+<span class="nc" id="L214">			java.lang.String strFactor = astrDateFactorVertex[2 * i + 1];</span>
+
+<span class="nc bnc" id="L216" title="All 6 branches missed.">			if (null == dt || null == strFactor || strFactor.isEmpty()) return null;</span>
+
+<span class="nc" id="L218">			adblVertexDate[i] = dt.julian();</span>
+
+<span class="nc bnc" id="L220" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (adblVertexFactor[i + 1] =</span>
+<span class="nc" id="L221">				java.lang.Double.parseDouble (strFactor.trim())))</span>
+<span class="nc" id="L222">				return null;</span>
+		}
+
+<span class="nc" id="L225">		adblVertexDate[iNumVertex - 1] = iMaturityDate;</span>
+
+<span class="nc" id="L227">		return FromArray (adblVertexDate, adblVertexFactor);</span>
+	}
+
+	/**
+	 * Create the Array2D Instance from a Matched String Array of X and Y
+	 * 
+	 * @param strX String Array of X
+	 * @param strY String Array of Y
+	 * 
+	 * @return The Array2D Instance
+	 */
+
+	public static final Array2D FromStringSet (
+		final java.lang.String strX,
+		final java.lang.String strY)
+	{
+<span class="nc bnc" id="L243" title="All 8 branches missed.">		if (null == strX || strX.isEmpty() || null == strY || strY.isEmpty()) return null;</span>
+
+		try {
+<span class="nc" id="L246">			return new Array2D (org.drip.quant.common.StringUtil.MakeDoubleArrayFromStringTokenizer (new</span>
+				java.util.StringTokenizer (strX, &quot;;&quot;)),
+<span class="nc" id="L248">					org.drip.quant.common.StringUtil.MakeDoubleArrayFromStringTokenizer (new</span>
+						java.util.StringTokenizer (strY, &quot;;&quot;)));
+<span class="nc" id="L250">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L251">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L254">		return null;</span>
+	}
+
+	/**
+	 * Create the Array2D Instance from a Matched Array of X and Y
+	 * 
+	 * @param adblX Array of X
+	 * @param adblY Array of Y
+	 * 
+	 * @return The Array2D Instance
+	 */
+
+	public static final Array2D FromArray (
+		final double[] adblX,
+		final double[] adblY)
+	{
+		try {
+<span class="fc" id="L271">			return new Array2D (adblX, adblY);</span>
+<span class="nc" id="L272">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L273">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L276">		return null;</span>
+	}
+
+	/**
+	 * Create the Array2D Instance from a Matched Array of X and Y
+	 * 
+	 * @param aiX Array of X
+	 * @param adblY Array of Y
+	 * 
+	 * @return The Array2D Instance
+	 */
+
+	public static final Array2D FromArray (
+		final int[] aiX,
+		final double[] adblY)
+	{
+<span class="pc bpc" id="L292" title="1 of 2 branches missed.">		if (null == aiX) return null;</span>
+
+<span class="fc" id="L294">		int iSize = aiX.length;</span>
+<span class="fc" id="L295">		double[] adblX = new double[iSize];</span>
+
+<span class="pc bpc" id="L297" title="1 of 2 branches missed.">		if (0 == iSize) return null;</span>
+
+<span class="fc bfc" id="L299" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i)</span>
+<span class="fc" id="L300">			adblX[i] = aiX[i];</span>
+
+<span class="fc" id="L302">		return FromArray (adblX, adblY);</span>
+	}
+
+	/**
+	 * Create the Array2D Instance from a Matched Array of X and Y Deltas
+	 * 
+	 * @param adblX Array of X
+	 * @param adblYDelta Array of Y Deltas
+	 * @param dblYInitial The Initial Value of Y
+	 * 
+	 * @return The Array2D Instance
+	 */
+
+	public static final Array2D FromXYDeltaArray (
+		final double[] adblX,
+		final double[] adblYDelta,
+		final double dblYInitial)
+	{
+<span class="nc bnc" id="L320" title="All 6 branches missed.">		if (null == adblX || null == adblYDelta || !org.drip.quant.common.NumberUtil.IsValid (dblYInitial))</span>
+<span class="nc" id="L321">			return null;</span>
+
+<span class="nc" id="L323">		int i = 0;</span>
+<span class="nc" id="L324">		int iLength = adblX.length;</span>
+<span class="nc" id="L325">		double[] adblY = new double[iLength];</span>
+<span class="nc" id="L326">		adblY[0] = dblYInitial;</span>
+
+<span class="nc bnc" id="L328" title="All 4 branches missed.">		if (0 == iLength || iLength != adblYDelta.length) return null;</span>
+
+<span class="nc bnc" id="L330" title="All 2 branches missed.">		for (double dblYDelta : adblYDelta) {</span>
+<span class="nc bnc" id="L331" title="All 2 branches missed.">			if (i &lt; iLength - 1) adblY[i + 1] = adblY[i] - dblYDelta;</span>
+
+<span class="nc" id="L333">			++i;</span>
+		}
+
+		try {
+<span class="nc" id="L337">			return new Array2D (adblX, adblY);</span>
+<span class="nc" id="L338">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L339">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L342">		return null;</span>
+	}
+
+	/**
+	 * Create an Array2D Instance from the Flat Unit Y
+	 * 
+	 * @return The Array2D Instance
+	 */
+
+	public static final Array2D BulletSchedule()
+	{
+<span class="fc" id="L353">		double[] adblFactor = new double[1];</span>
+<span class="fc" id="L354">		double[] adblDate = new double[1];</span>
+<span class="fc" id="L355">		adblFactor[0] = 1.;</span>
+
+<span class="fc" id="L357">		adblDate[0] = org.drip.analytics.date.DateUtil.CreateFromYMD (1900, 1, 1).julian();</span>
+
+		try {
+<span class="fc" id="L360">			return new Array2D (adblDate, adblFactor);</span>
+<span class="nc" id="L361">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L362">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L365">		return null;</span>
+	}
+
+	private Array2D (
+		final double[] adblX,
+		final double[] adblY)
+		throws java.lang.Exception
+<span class="fc" id="L372">	{</span>
+<span class="pc bpc" id="L373" title="2 of 4 branches missed.">		if (null == adblX || null == adblY) throw new java.lang.Exception (&quot;Array2D ctr =&gt; Invalid params&quot;);</span>
+
+<span class="fc" id="L375">		int iLength = adblX.length;</span>
+<span class="fc" id="L376">		_adblX = new double[iLength];</span>
+<span class="fc" id="L377">		_adblY = new double[iLength];</span>
+
+<span class="pc bpc" id="L379" title="2 of 4 branches missed.">		if (0 == iLength || iLength != adblY.length)</span>
+<span class="nc" id="L380">			throw new java.lang.Exception (&quot;Array2D ctr =&gt; Invalid params&quot;);</span>
+
+<span class="fc bfc" id="L382" title="All 2 branches covered.">		for (int i = 0; i &lt; iLength; ++i) {</span>
+<span class="pc bpc" id="L383" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (_adblX[i] = adblX[i]) ||</span>
+<span class="pc bpc" id="L384" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_adblY[i] = adblY[i]))</span>
+<span class="nc" id="L385">				throw new java.lang.Exception (&quot;Array2D ctr =&gt; Invalid params&quot;);</span>
+		}
+<span class="fc" id="L387">	}</span>
+
+	/**
+	 * Retrieve the Y given X
+	 * 
+	 * @param dblX X
+	 * 
+	 * @return Y 
+	 * 
+	 * @throws java.lang.Exception Thrown if the Y cannot be computed
+	 */
+
+	public double y (
+		final double dblX)
+		throws java.lang.Exception
+	{
+<span class="pc bpc" id="L403" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L404">			throw new java.lang.Exception (&quot;Array2D::y =&gt; Invalid Input&quot;);</span>
+
+<span class="fc bfc" id="L406" title="All 2 branches covered.">		if (dblX &lt;= _adblX[0]) return _adblY[0];</span>
+
+<span class="fc" id="L408">		int iLength = _adblX.length;</span>
+
+<span class="fc bfc" id="L410" title="All 2 branches covered.">		for (int i = 1; i &lt; iLength; ++i) {</span>
+<span class="pc bpc" id="L411" title="1 of 4 branches missed.">			if (dblX &gt; _adblX[i - 1] &amp;&amp; dblX &lt;= _adblX[i]) return _adblY[i];</span>
+		}
+
+<span class="fc" id="L414">		return _adblY[iLength - 1];</span>
+	}
+
+	/**
+	 * Retrieve the Index that corresponds to the given X
+	 * 
+	 * @param dblX X
+	 * 
+	 * @return Index 
+	 * 
+	 * @throws java.lang.Exception Thrown if the Index cannot be computed
+	 */
+
+	public int index (
+		final double dblX)
+		throws java.lang.Exception
+	{
+<span class="pc bpc" id="L431" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L432">			throw new java.lang.Exception (&quot;Array2D::index =&gt; Invalid Input/State&quot;);</span>
+
+<span class="fc bfc" id="L434" title="All 2 branches covered.">		if (dblX &lt;= _adblX[0]) return 0;</span>
+
+<span class="fc" id="L436">		int iLength = _adblX.length;</span>
+
+<span class="fc bfc" id="L438" title="All 2 branches covered.">		for (int i = 1; i &lt; iLength; ++i) {</span>
+<span class="fc bfc" id="L439" title="All 2 branches covered.">			if (dblX &lt;= _adblX[i]) return i;</span>
+		}
+
+<span class="fc" id="L442">		return iLength - 1;</span>
+	}
+
+	/**
+	 * Retrieve the X-Weighted Y
+	 * 
+	 * @param dblStartX Start X
+	 * @param dblEndX End X
+	 * 
+	 * @return The X-Weighted Y 
+	 * 
+	 * @throws java.lang.Exception Thrown if the Y cannot be computed
+	 */
+
+	public double y (
+		final double dblStartX,
+		final double dblEndX)
+		throws java.lang.Exception
+	{
+<span class="pc bpc" id="L461" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblStartX) ||</span>
+<span class="pc bpc" id="L462" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblEndX))</span>
+<span class="nc" id="L463">			throw new java.lang.Exception (&quot;Array2D::y =&gt; Invalid Inputs&quot;);</span>
+
+<span class="fc" id="L465">		int iEndIndex = index (dblEndX);</span>
+
+<span class="fc" id="L467">		int iStartIndex = index (dblStartX);</span>
+
+<span class="fc bfc" id="L469" title="All 2 branches covered.">		if (iStartIndex == iEndIndex) return _adblY[iStartIndex];</span>
+
+<span class="fc" id="L471">		double dblWeightedY = _adblY[iStartIndex] * (_adblX[iStartIndex] - dblStartX);</span>
+
+<span class="fc bfc" id="L473" title="All 2 branches covered.">		for (int i = iStartIndex + 1; i &lt;= iEndIndex; ++i)</span>
+<span class="fc" id="L474">			dblWeightedY += _adblY[i] * (_adblX[i] - _adblX[i - 1]);</span>
+
+<span class="fc" id="L476">		return (dblWeightedY + _adblY[iEndIndex] * (dblEndX - _adblX[iEndIndex])) / (dblEndX - dblStartX);</span>
+	}
+
+	/**
+	 * Retrieve the Array of X
+	 * 
+	 * @return Array of X
+	 */
+
+	public double[] x()
+	{
+<span class="nc" id="L487">		return _adblX;</span>
+	}
+
+	/**
+	 * Retrieve the Array of Y
+	 * 
+	 * @return Array of Y
+	 */
+
+	public double[] y()
+	{
+<span class="nc" id="L498">		return _adblY;</span>
+	}
+
+	/**
+	 * Indicate if this Array2D Instance matches the &quot;other&quot; Entry-by-Entry
+	 * 
+	 * @param a2DOther The &quot;Other&quot; Array2D Instance
+	 * 
+	 * @return TRUE - The Array2D Instances match Entry-by-Entry
+	 */
+
+	public boolean match (
+		final Array2D a2DOther)
+	{
+<span class="nc bnc" id="L512" title="All 2 branches missed.">		if (null == a2DOther) return false;</span>
+
+<span class="nc" id="L514">		double[] adblOtherX = a2DOther._adblX;</span>
+<span class="nc" id="L515">		double[] adblOtherY = a2DOther._adblY;</span>
+<span class="nc" id="L516">		int iNumOtherX = adblOtherX.length;</span>
+<span class="nc" id="L517">		int iNumOtherY = adblOtherY.length;</span>
+
+<span class="nc bnc" id="L519" title="All 4 branches missed.">		if (iNumOtherX != _adblX.length || iNumOtherY != _adblY.length) return false;</span>
+
+<span class="nc bnc" id="L521" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumOtherX; ++i) {</span>
+<span class="nc bnc" id="L522" title="All 2 branches missed.">			if (adblOtherX[i] != _adblX[i]) return false;</span>
+		}
+
+<span class="nc bnc" id="L525" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumOtherY; ++i) {</span>
+<span class="nc bnc" id="L526" title="All 2 branches missed.">			if (adblOtherY[i] != _adblY[i]) return false;</span>
+		}
+
+<span class="nc" id="L529">		return true;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

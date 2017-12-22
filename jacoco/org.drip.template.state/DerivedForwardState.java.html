@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DerivedForwardState.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.template.state</a> &gt; <span class="el_source">DerivedForwardState.java</span></div><h1>DerivedForwardState.java</h1><pre class="source lang-java linenums">
+package org.drip.template.state;
+
+import org.drip.analytics.date.*;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.service.template.LatentMarketStateBuilder;
+import org.drip.state.discount.*;
+import org.drip.state.forward.ForwardCurve;
+import org.drip.state.identifier.ForwardLabel;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * DerivedForwardState sets up the Calibration of the Derived Forward Latent State and examine the Emitted
+ *  Metrics.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L67">public class DerivedForwardState {</span>
+
+	private static final MergedDiscountForwardCurve OvernightCurve (
+		final JulianDate dtSpot,
+		final String strCurrency)
+		throws Exception
+	{
+<span class="fc" id="L74">		String[] astrDepositMaturityTenor = new String[] {</span>
+			&quot;1D&quot;,
+			// &quot;2D&quot;,
+			&quot;3D&quot;
+		};
+
+<span class="fc" id="L80">		double[] adblDepositQuote = new double[] {</span>
+			0.0004,		// 1D
+			// 0.0004,		// 2D
+			0.0004		// 3D
+		};
+
+<span class="fc" id="L86">		String[] astrShortEndOISMaturityTenor = new String[] {</span>
+			&quot;1W&quot;,
+			&quot;2W&quot;,
+			&quot;3W&quot;,
+			&quot;1M&quot;
+		};
+
+<span class="fc" id="L93">		double[] adblShortEndOISQuote = new double[] {</span>
+			0.00070,    //   1W
+			0.00069,    //   2W
+			0.00078,    //   3W
+			0.00074     //   1M
+		};
+
+<span class="fc" id="L100">		String[] astrOISFuturesEffectiveTenor = new String[] {</span>
+			&quot;1M&quot;,
+			&quot;2M&quot;,
+			&quot;3M&quot;,
+			&quot;4M&quot;,
+			&quot;5M&quot;
+		};
+
+<span class="fc" id="L108">		String[] astrOISFuturesMaturityTenor = new String[] {</span>
+			&quot;1M&quot;,
+			&quot;1M&quot;,
+			&quot;1M&quot;,
+			&quot;1M&quot;,
+			&quot;1M&quot;
+		};
+
+<span class="fc" id="L116">		double[] adblOISFuturesQuote = new double[] {</span>
+			 0.00046,    //   1M x 1M
+			 0.00016,    //   2M x 1M
+			-0.00007,    //   3M x 1M
+			-0.00013,    //   4M x 1M
+			-0.00014     //   5M x 1M
+		};
+
+<span class="fc" id="L124">		String[] astrLongEndOISMaturityTenor = new String[] {</span>
+			&quot;15M&quot;,
+			&quot;18M&quot;,
+			&quot;21M&quot;,
+			&quot;02Y&quot;,
+			&quot;03Y&quot;,
+			&quot;04Y&quot;,
+			&quot;05Y&quot;,
+			&quot;06Y&quot;,
+			&quot;07Y&quot;,
+			&quot;08Y&quot;,
+			&quot;09Y&quot;,
+			&quot;10Y&quot;,
+			&quot;11Y&quot;,
+			&quot;12Y&quot;,
+			&quot;15Y&quot;,
+			&quot;20Y&quot;,
+			&quot;25Y&quot;,
+			&quot;30Y&quot;
+		};
+
+<span class="fc" id="L145">		double[] adblLongEndOISQuote = new double[] {</span>
+			0.00002,    //  15M
+			0.00008,    //  18M
+			0.00021,    //  21M
+			0.00036,    //   2Y
+			0.00127,    //   3Y
+			0.00274,    //   4Y
+			0.00456,    //   5Y
+			0.00647,    //   6Y
+			0.00827,    //   7Y
+			0.00996,    //   8Y
+			0.01147,    //   9Y
+			0.01280,    //  10Y
+			0.01404,    //  11Y
+			0.01516,    //  12Y
+			0.01764,    //  15Y
+			0.01939,    //  20Y
+			0.02003,    //  25Y
+			0.02038     //  30Y
+		};
+
+<span class="fc" id="L166">		return LatentMarketStateBuilder.SmoothOvernightCurve (</span>
+			dtSpot,
+			strCurrency,
+			astrDepositMaturityTenor,
+			adblDepositQuote,
+			&quot;Rate&quot;,
+			astrShortEndOISMaturityTenor,
+			adblShortEndOISQuote,
+			&quot;SwapRate&quot;,
+			astrOISFuturesEffectiveTenor,
+			astrOISFuturesMaturityTenor,
+			adblOISFuturesQuote,
+			&quot;SwapRate&quot;,
+			astrLongEndOISMaturityTenor,
+			adblLongEndOISQuote,
+			&quot;SwapRate&quot;
+		);
+	}
+
+	private static final ForwardCurve Reference (
+		final JulianDate dtSpot,
+		final MergedDiscountForwardCurve dcOvernight,
+		final String strReferenceForwardTenor)
+		throws Exception
+	{
+<span class="fc" id="L191">		ForwardLabel forwardLabel = ForwardLabel.Create (</span>
+<span class="fc" id="L192">			dcOvernight.currency(),</span>
+			strReferenceForwardTenor
+		);
+
+<span class="fc" id="L196">		String[] astrDepositMaturityTenor = new String[] {</span>
+			&quot;1D&quot;,
+			&quot;1W&quot;,
+			&quot;2W&quot;,
+			&quot;3W&quot;,
+			&quot;1M&quot;,
+			&quot;2M&quot;,
+			&quot;3M&quot;,
+			&quot;4M&quot;,
+			&quot;5M&quot;
+		};
+
+<span class="fc" id="L208">		double[] adblDepositQuote = new double[] {</span>
+			0.003565,	// 1D
+			0.003858,	// 1W
+			0.003840,	// 2W
+			0.003922,	// 3W
+			0.003869,	// 1M
+			0.003698,	// 2M
+			0.003527,	// 3M
+			0.003342,	// 4M
+			0.003225	// 5M
+		};
+
+<span class="fc" id="L220">		String[] astrFRAMaturityTenor = new String[] {</span>
+			&quot;00D&quot;,
+			&quot;01M&quot;,
+			&quot;02M&quot;,
+			&quot;03M&quot;,
+			&quot;04M&quot;,
+			&quot;05M&quot;,
+			&quot;06M&quot;,
+			&quot;07M&quot;,
+			&quot;08M&quot;,
+			&quot;09M&quot;,
+			&quot;10M&quot;,
+			&quot;11M&quot;,
+			&quot;12M&quot;,
+			&quot;13M&quot;,
+			&quot;14M&quot;,
+			&quot;15M&quot;,
+			&quot;16M&quot;,
+			&quot;17M&quot;,
+			&quot;18M&quot;
+		};
+
+<span class="fc" id="L242">		double[] adblFRAQuote = new double[] {</span>
+			0.003120,	//  0D
+			0.002930,	//  1M
+			0.002720,	//  2M
+			0.002600,	//  3M
+			0.002560,	//  4M
+			0.002520,	//  5M
+			0.002480,	//  6M
+			0.002540,	//  7M
+			0.002610,	//  8M
+			0.002670,	//  9M
+			0.002790,	// 10M
+			0.002910,	// 11M
+			0.003030,	// 12M
+			0.003180,	// 13M
+			0.003350,	// 14M
+			0.003520,	// 15M
+			0.003710,	// 16M
+			0.003890,	// 17M
+			0.004090	// 18M
+		};
+
+<span class="fc" id="L264">		String[] astrFixFloatMaturityTenor = new String[] {</span>
+			&quot;03Y&quot;,
+			&quot;04Y&quot;,
+			&quot;05Y&quot;,
+			&quot;06Y&quot;,
+			&quot;07Y&quot;,
+			&quot;08Y&quot;,
+			&quot;09Y&quot;,
+			&quot;10Y&quot;,
+			&quot;12Y&quot;,
+			&quot;15Y&quot;,
+			&quot;20Y&quot;,
+			&quot;25Y&quot;,
+			&quot;30Y&quot;,
+			&quot;35Y&quot;,
+			&quot;40Y&quot;,
+			&quot;50Y&quot;,
+			&quot;60Y&quot;
+		};
+
+<span class="fc" id="L284">		double[] adblFixFloatQuote = new double[] {</span>
+			0.004240,	//  3Y
+			0.005760,	//  4Y			
+			0.007620,	//  5Y
+			0.009540,	//  6Y
+			0.011350,	//  7Y
+			0.013030,	//  8Y
+			0.014520,	//  9Y
+			0.015840,	// 10Y
+			0.018090,	// 12Y
+			0.020370,	// 15Y
+			0.021870,	// 20Y
+			0.022340,	// 25Y
+			0.022560,	// 30Y
+			0.022950,	// 35Y
+			0.023480,	// 40Y
+			0.024210,	// 50Y
+			0.024630	// 60Y
+		};
+
+<span class="fc" id="L304">		return LatentMarketStateBuilder.SmoothForwardCurve (</span>
+			dtSpot,
+			forwardLabel,
+			astrDepositMaturityTenor,
+			adblDepositQuote,
+			&quot;ForwardRate&quot;,
+			astrFRAMaturityTenor,
+			adblFRAQuote,
+			&quot;ParForwardRate&quot;,
+			astrFixFloatMaturityTenor,
+			adblFixFloatQuote,
+			&quot;SwapRate&quot;,
+			null,
+			null,
+			&quot;DerivedParBasisSpread&quot;,
+			null,
+			null,
+			&quot;DerivedParBasisSpread&quot;,
+			dcOvernight,
+			null
+		);
+	}
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+		/*
+		 * Initialize the Credit Analytics Library
+		 */
+
+<span class="fc" id="L335">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="fc" id="L337">		String strCurrency = &quot;EUR&quot;;</span>
+<span class="fc" id="L338">		String strDerivedForwardTenor = &quot;3M&quot;;</span>
+<span class="fc" id="L339">		String strReferenceForwardTenor = &quot;6M&quot;;</span>
+
+<span class="fc" id="L341">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+			2017,
+			DateUtil.DECEMBER,
+			21
+		);
+
+<span class="fc" id="L347">		MergedDiscountForwardCurve dcOvernight = OvernightCurve (</span>
+			dtSpot,
+			strCurrency
+		);
+
+<span class="fc" id="L352">		ForwardCurve fcReference = Reference (</span>
+			dtSpot,
+			dcOvernight,
+			strReferenceForwardTenor
+		);
+
+<span class="fc" id="L358">		ForwardLabel forwardLabel = ForwardLabel.Create (</span>
+			strCurrency,
+			strDerivedForwardTenor
+		);
+
+<span class="fc" id="L363">		String[] astrDepositMaturityTenor = new String[] {</span>
+			&quot;2W&quot;,
+			&quot;3W&quot;,
+			&quot;1M&quot;,
+			&quot;2M&quot;
+		};
+
+<span class="fc" id="L370">		double[] adblDepositQuote = new double[] {</span>
+			0.001865,	// 2W
+			0.001969,	// 3W
+			0.001951,	// 1M
+			0.001874	// 2M
+		};
+
+<span class="fc" id="L377">		String[] astrFRAMaturityTenor = new String[] {</span>
+			&quot;00D&quot;,
+			&quot;01M&quot;,
+			&quot;03M&quot;,
+			&quot;06M&quot;,
+			&quot;09M&quot;,
+			&quot;12M&quot;,
+			&quot;15M&quot;,
+			&quot;18M&quot;,
+			&quot;21M&quot;
+		};
+
+<span class="fc" id="L389">		double[] adblFRAQuote = new double[] {</span>
+			0.001790,	//  0D
+			0.001775,	//  1M
+			0.001274,	//  3M
+			0.001222,	//  6M
+			0.001269,	//  9M
+			0.001565,	// 12M
+			0.001961,	// 15M
+			0.002556,	// 18M
+			0.003101	// 21M
+		};
+
+<span class="fc" id="L401">		String[] astrFixFloatMaturityTenor = new String[] {</span>
+			&quot;03Y&quot;,
+			&quot;04Y&quot;,
+			&quot;05Y&quot;,
+			&quot;06Y&quot;,
+			&quot;07Y&quot;,
+			&quot;08Y&quot;,
+			&quot;09Y&quot;,
+			&quot;10Y&quot;,
+			&quot;12Y&quot;,
+			&quot;15Y&quot;,
+			&quot;20Y&quot;,
+			&quot;25Y&quot;,
+			&quot;30Y&quot;
+		};
+
+<span class="fc" id="L417">		double[] adblFixFloatQuote = new double[] {</span>
+			0.002850,	//  3Y
+			0.004370,	//  4Y
+			0.006230,	//  5Y
+			0.008170,	//  6Y
+			0.010000,	//  7Y
+			0.011710,	//  8Y
+			0.013240,	//  9Y
+			0.014590,	// 10Y
+			0.016920,	// 12Y
+			0.019330,	// 15Y
+			0.020990,	// 20Y
+			0.021560,	// 25Y
+			0.021860 	// 30Y
+		};
+
+<span class="fc" id="L433">		String[] astrSyntheticFloatFloatMaturityTenor = new String[] {</span>
+			&quot;35Y&quot;,
+			&quot;40Y&quot;,
+			&quot;50Y&quot;,
+			&quot;60Y&quot;
+		};
+
+<span class="fc" id="L440">		double[] adblSyntheticFloatFloatQuote = new double[] {</span>
+			0.00065,	// 35Y
+			0.00060,	// 40Y
+			0.00054,	// 50Y
+			0.00050		// 60Y
+		};
+
+<span class="fc" id="L447">		ForwardCurve fcDerived = LatentMarketStateBuilder.SmoothForwardCurve (</span>
+			dtSpot,
+			forwardLabel,
+			astrDepositMaturityTenor,
+			adblDepositQuote,
+			&quot;ForwardRate&quot;,
+			astrFRAMaturityTenor,
+			adblFRAQuote,
+			&quot;ParForwardRate&quot;,
+			astrFixFloatMaturityTenor,
+			adblFixFloatQuote,
+			&quot;SwapRate&quot;,
+			null,
+			null,
+			&quot;DerivedParBasisSpread&quot;,
+			astrSyntheticFloatFloatMaturityTenor,
+			adblSyntheticFloatFloatQuote,
+			&quot;DerivedParBasisSpread&quot;,
+			dcOvernight,
+			fcReference
+		);
+
+<span class="fc" id="L469">		String strLatentStateLabel = fcDerived.label().fullyQualifiedName();</span>
+
+<span class="fc" id="L471">		System.out.println (&quot;\n\n\t||-------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc bfc" id="L473" title="All 2 branches covered.">		for (int i = 0; i &lt; adblDepositQuote.length; ++i)</span>
+<span class="fc" id="L474">			System.out.println (</span>
+				&quot;\t||  &quot; + strLatentStateLabel +
+				&quot; |  DEPOSIT  | &quot; + astrDepositMaturityTenor[i] + &quot;  | &quot; +
+<span class="fc" id="L477">				FormatUtil.FormatDouble (adblDepositQuote[i], 1, 4, 100.) +</span>
+				&quot;% | Forward Rate | &quot; +
+<span class="fc" id="L479">				FormatUtil.FormatDouble (fcDerived.forward (astrDepositMaturityTenor[i]), 1, 4, 100.) +</span>
+				&quot;%  ||&quot;
+			);
+
+<span class="fc" id="L483">		System.out.println (&quot;\t||-------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L485">		System.out.println (&quot;\n\n\t||--------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc bfc" id="L487" title="All 2 branches covered.">		for (int i = 0; i &lt; adblFRAQuote.length; ++i)</span>
+<span class="fc" id="L488">			System.out.println (</span>
+				&quot;\t||  &quot; + strLatentStateLabel +
+				&quot; |  FRA  | &quot; + astrFRAMaturityTenor[i] + &quot;  | &quot; +
+<span class="fc" id="L491">				FormatUtil.FormatDouble (adblFRAQuote[i], 1, 4, 100.) +</span>
+				&quot;% | Par Forward Rate | &quot; +
+<span class="fc" id="L493">				FormatUtil.FormatDouble (fcDerived.forward (dtSpot.addTenor (astrFRAMaturityTenor[i]).addTenor (strDerivedForwardTenor)), 1, 4, 100.) +</span>
+				&quot;%  ||&quot;
+			);
+
+<span class="fc" id="L497">		System.out.println (&quot;\t||--------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L499">		System.out.println (&quot;\n\n\t||-------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc bfc" id="L501" title="All 2 branches covered.">		for (int i = 0; i &lt; adblFixFloatQuote.length; ++i)</span>
+<span class="fc" id="L502">			System.out.println (</span>
+				&quot;\t||  &quot; + strLatentStateLabel +
+				&quot; |  FIX FLOAT  | &quot; + astrFixFloatMaturityTenor[i] + &quot;  | &quot; +
+<span class="fc" id="L505">				FormatUtil.FormatDouble (adblFixFloatQuote[i], 1, 4, 100.) +</span>
+				&quot;% | Swap Rate | &quot; +
+<span class="fc" id="L507">				FormatUtil.FormatDouble (fcDerived.forward (astrFixFloatMaturityTenor[i]), 1, 4, 100.) +</span>
+				&quot;%  ||&quot;
+			);
+
+<span class="fc" id="L511">		System.out.println (&quot;\t||-------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L513">		System.out.println (&quot;\n\n\t||----------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc bfc" id="L515" title="All 2 branches covered.">		for (int i = 0; i &lt; adblSyntheticFloatFloatQuote.length; ++i)</span>
+<span class="fc" id="L516">			System.out.println (</span>
+				&quot;\t||  &quot; + strLatentStateLabel +
+				&quot; |  SYNTHETIC FLOAT FLOAT  | &quot; + astrSyntheticFloatFloatMaturityTenor[i] + &quot;  | &quot; +
+<span class="fc" id="L519">				FormatUtil.FormatDouble (adblSyntheticFloatFloatQuote[i], 1, 2, 10000.) +</span>
+				&quot; bp | Derived Par Basis Spread | &quot; +
+<span class="fc" id="L521">				FormatUtil.FormatDouble (fcDerived.forward (astrSyntheticFloatFloatMaturityTenor[i]), 1, 4, 100.) +</span>
+				&quot;%  ||&quot;
+			);
+
+<span class="fc" id="L525">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------------||\n&quot;);</span>
+<span class="fc" id="L526">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

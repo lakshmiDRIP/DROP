@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InteriorFixedPointFinder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.function.rdtor1solver</a> &gt; <span class="el_source">InteriorFixedPointFinder.java</span></div><h1>InteriorFixedPointFinder.java</h1><pre class="source lang-java linenums">
+package org.drip.function.rdtor1solver;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * InteriorFixedPointFinder generates the Iterators for solving R^d To R^1 Convex/Non-Convex Functions Under
+ * 	Inequality Constraints loaded using a Barrier Coefficient.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class InteriorFixedPointFinder extends org.drip.function.rdtor1solver.FixedRdFinder {
+<span class="fc" id="L59">	private double _dblBarrierStrength = java.lang.Double.NaN;</span>
+<span class="fc" id="L60">	private org.drip.function.rdtor1.BoundMultivariate[] _aBM = null;</span>
+<span class="fc" id="L61">	private org.drip.function.definition.RdToR1[] _aRdToR1InequalityConstraint = null;</span>
+
+	private org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier incremental (
+		final org.drip.function.rdtor1solver.ObjectiveFunctionPointMetrics ofpm,
+		final org.drip.function.rdtor1solver.ConstraintFunctionPointMetrics cfpmInequality)
+	{
+<span class="pc bpc" id="L67" title="2 of 4 branches missed.">		if (null == ofpm || null == cfpmInequality) return null;</span>
+
+<span class="fc" id="L69">		int iDimension = ofpm.dimension();</span>
+
+<span class="fc" id="L71">		int iNumInequalityConstraint = cfpmInequality.count();</span>
+
+<span class="fc" id="L73">		double[] adblObjectiveFunctionJacobian = ofpm.jacobian();</span>
+
+<span class="fc" id="L75">		double[][] aadblObjectiveFunctionHessian = ofpm.hessian();</span>
+
+<span class="fc" id="L77">		double[] adblInequalityConstraintMultiplierIncrement = new double[iNumInequalityConstraint];</span>
+<span class="fc" id="L78">		double[] adblVariateIncrement = new double[iDimension];</span>
+<span class="fc" id="L79">		int iMSize = iDimension + iNumInequalityConstraint;</span>
+<span class="fc" id="L80">		double[][] aadblM = new double[iMSize][iMSize];</span>
+<span class="fc" id="L81">		double[] adblRHS = new double[iMSize];</span>
+
+<span class="pc bpc" id="L83" title="2 of 4 branches missed.">		if (0 == iDimension || iDimension != cfpmInequality.dimension()) return null;</span>
+
+<span class="fc" id="L85">		double[] adblInequalityConstraintMultiplier = cfpmInequality.multiplier();</span>
+
+<span class="fc" id="L87">		double[][] aadblInequalityConstraintJacobian = cfpmInequality.jacobian();</span>
+
+<span class="fc" id="L89">		double[] adblInequalityConstraintValue = cfpmInequality.value();</span>
+
+<span class="fc bfc" id="L91" title="All 2 branches covered.">		for (int i = 0; i &lt; iDimension; ++i) {</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">			for (int j = 0; j &lt; iDimension; ++j)</span>
+<span class="fc" id="L93">				aadblM[i][j] = aadblObjectiveFunctionHessian[i][j];</span>
+
+<span class="fc bfc" id="L95" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumInequalityConstraint; ++j)</span>
+<span class="fc" id="L96">				aadblM[i][j + iDimension] = -1. * aadblInequalityConstraintJacobian[i][j];</span>
+		}
+
+<span class="fc bfc" id="L99" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumInequalityConstraint; ++i) {</span>
+<span class="fc bfc" id="L100" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumInequalityConstraint; ++j)</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">				aadblM[i + iDimension][j + iDimension] = i == j ? adblInequalityConstraintValue[i] : 0.;</span>
+
+<span class="fc bfc" id="L103" title="All 2 branches covered.">			for (int j = 0; j &lt; iDimension; ++j)</span>
+<span class="fc" id="L104">				aadblM[i + iDimension][j] = adblInequalityConstraintMultiplier[i] *</span>
+					aadblInequalityConstraintJacobian[j][i];
+		}
+
+<span class="fc bfc" id="L108" title="All 2 branches covered.">		for (int i = 0; i &lt; iMSize; ++i) {</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">			if (i &lt; iDimension) {</span>
+<span class="fc" id="L110">				adblRHS[i] = -1. * adblObjectiveFunctionJacobian[i];</span>
+
+<span class="fc bfc" id="L112" title="All 2 branches covered.">				for (int j = 0; j &lt; iNumInequalityConstraint; ++j)</span>
+<span class="fc" id="L113">					adblRHS[i] += aadblInequalityConstraintJacobian[i][j] *</span>
+						adblInequalityConstraintMultiplier[j];
+			} else {
+<span class="fc" id="L116">				int iConstraintIndex = i - iDimension;</span>
+<span class="fc" id="L117">				adblRHS[i] = _dblBarrierStrength - adblInequalityConstraintValue[iConstraintIndex] *</span>
+					adblInequalityConstraintMultiplier[iConstraintIndex];
+			}
+		}
+
+<span class="fc" id="L122">		org.drip.quant.linearalgebra.LinearizationOutput lo =</span>
+<span class="fc" id="L123">			org.drip.quant.linearalgebra.LinearSystemSolver.SolveUsingMatrixInversion (aadblM, adblRHS);</span>
+
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">		if (null == lo) return null;</span>
+
+<span class="fc" id="L127">		double[] adblIncrement = lo.getTransformedRHS();</span>
+
+<span class="pc bpc" id="L129" title="2 of 4 branches missed.">		if (null == adblIncrement || adblIncrement.length != iMSize) return null;</span>
+
+<span class="fc bfc" id="L131" title="All 2 branches covered.">		for (int i = 0; i &lt; iMSize; ++i) {</span>
+<span class="fc bfc" id="L132" title="All 2 branches covered.">			if (i &lt; iDimension)</span>
+<span class="fc" id="L133">				adblVariateIncrement[i] = adblIncrement[i];</span>
+			else
+<span class="fc" id="L135">				adblInequalityConstraintMultiplierIncrement[i - iDimension] = adblIncrement[i];</span>
+		}
+
+		try {
+<span class="fc" id="L139">			return new org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier (true,</span>
+				adblVariateIncrement, adblInequalityConstraintMultiplierIncrement);
+<span class="nc" id="L141">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L142">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L145">		return null;</span>
+	}
+
+	/**
+	 * InteriorFixedPointFinder Constructor
+	 * 
+	 * @param rdToR1ObjectiveFunction The Objective Function
+	 * @param aRdToR1InequalityConstraint Array of Inequality Constraints
+	 * @param lsec The Line Step Evolution Control
+	 * @param cc Convergence Control Parameters
+	 * @param dblBarrierStrength Barrier Strength
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public InteriorFixedPointFinder (
+		final org.drip.function.definition.RdToR1 rdToR1ObjectiveFunction,
+		final org.drip.function.definition.RdToR1[] aRdToR1InequalityConstraint,
+		final org.drip.function.rdtor1descent.LineStepEvolutionControl lsec,
+		final org.drip.function.rdtor1solver.ConvergenceControl cc,
+		final double dblBarrierStrength)
+		throws java.lang.Exception
+	{
+<span class="fc" id="L168">		super (rdToR1ObjectiveFunction, lsec, cc);</span>
+
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">		if (null == (_aRdToR1InequalityConstraint = aRdToR1InequalityConstraint) ||</span>
+<span class="pc bpc" id="L171" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblBarrierStrength = dblBarrierStrength))</span>
+<span class="nc" id="L172">			throw new java.lang.Exception (&quot;InteriorFixedPointFinder Constructor =&gt; Invalid Inputs&quot;);</span>
+
+<span class="fc" id="L174">		int iNumInequalityConstraint = _aRdToR1InequalityConstraint.length;</span>
+<span class="pc bpc" id="L175" title="1 of 2 branches missed.">		_aBM = 0 == iNumInequalityConstraint ? null : new</span>
+			org.drip.function.rdtor1.BoundMultivariate[iNumInequalityConstraint];
+
+<span class="pc bpc" id="L178" title="1 of 2 branches missed.">		if (0 == iNumInequalityConstraint)</span>
+<span class="nc" id="L179">			throw new java.lang.Exception (&quot;InteriorFixedPointFinder Constructor =&gt; Invalid Inputs&quot;);</span>
+
+<span class="fc bfc" id="L181" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumInequalityConstraint; ++i) {</span>
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">			if (null == _aRdToR1InequalityConstraint[i])</span>
+<span class="nc" id="L183">				throw new java.lang.Exception (&quot;InteriorFixedPointFinder Constructor =&gt; Invalid Inputs&quot;);</span>
+
+<span class="fc bfc" id="L185" title="All 2 branches covered.">			if (_aRdToR1InequalityConstraint[i] instanceof org.drip.function.rdtor1.BoundMultivariate)</span>
+<span class="fc" id="L186">				_aBM[i] = (org.drip.function.rdtor1.BoundMultivariate) _aRdToR1InequalityConstraint[i];</span>
+		}
+<span class="fc" id="L188">	}</span>
+
+	/**
+	 * Retrieve the Array of Inequality Constraints
+	 * 
+	 * @return The Array of Inequality Constraints
+	 */
+
+	public org.drip.function.definition.RdToR1[] inequalityConstraints()
+	{
+<span class="nc" id="L198">		return _aRdToR1InequalityConstraint;</span>
+	}
+
+	/**
+	 * Retrieve the Barrier Strength
+	 * 
+	 * @return The Barrier Strength
+	 */
+
+	public double barrierStrength()
+	{
+<span class="nc" id="L209">		return _dblBarrierStrength;</span>
+	}
+
+	@Override public org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier increment (
+		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicmCurrent)
+	{
+<span class="pc bpc" id="L215" title="1 of 2 branches missed.">		if (null == vicmCurrent) return null;</span>
+
+<span class="fc" id="L217">		double[] adblVariate = vicmCurrent.variates();</span>
+
+<span class="fc" id="L219">		int iNumVariate = adblVariate.length;</span>
+<span class="fc" id="L220">		int iNumInequalityConstraint = _aRdToR1InequalityConstraint.length;</span>
+<span class="fc" id="L221">		double[] adblInequalityConstraintValue = new double[iNumInequalityConstraint];</span>
+<span class="fc" id="L222">		double[][] aadblInequalityConstraintJacobian = new double[iNumVariate][iNumInequalityConstraint];</span>
+
+<span class="pc bpc" id="L224" title="1 of 2 branches missed.">		if (0 == iNumInequalityConstraint) return null;</span>
+
+<span class="fc bfc" id="L226" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumInequalityConstraint; ++i) {</span>
+			try {
+<span class="fc" id="L228">				adblInequalityConstraintValue[i] = _aRdToR1InequalityConstraint[i].evaluate (adblVariate);</span>
+<span class="nc" id="L229">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L230">				e.printStackTrace();</span>
+
+<span class="nc" id="L232">				return null;</span>
+<span class="fc" id="L233">			}</span>
+
+<span class="fc" id="L235">			double[] adblInequalityConstraintJacobian = _aRdToR1InequalityConstraint[i].jacobian</span>
+<span class="fc" id="L236">				(adblVariate);</span>
+
+<span class="pc bpc" id="L238" title="1 of 2 branches missed.">			if (null == adblInequalityConstraintJacobian) return null;</span>
+
+<span class="fc bfc" id="L240" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumVariate; ++j)</span>
+<span class="fc" id="L241">				aadblInequalityConstraintJacobian[j][i] = adblInequalityConstraintJacobian[j];</span>
+		}
+
+<span class="fc" id="L244">		org.drip.function.definition.RdToR1 rdToR1ObjectiveFunction = objectiveFunction();</span>
+
+		try {
+<span class="fc" id="L247">			return incremental (new org.drip.function.rdtor1solver.ObjectiveFunctionPointMetrics</span>
+<span class="fc" id="L248">				(rdToR1ObjectiveFunction.jacobian (adblVariate), rdToR1ObjectiveFunction.hessian</span>
+<span class="fc" id="L249">					(adblVariate)), new org.drip.function.rdtor1solver.ConstraintFunctionPointMetrics</span>
+						(adblInequalityConstraintValue, aadblInequalityConstraintJacobian,
+<span class="fc" id="L251">							vicmCurrent.constraintMultipliers()));</span>
+<span class="nc" id="L252">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L253">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L256">		return null;</span>
+	}
+
+	@Override public org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier next (
+		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vcmtCurrent,
+		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vcmtIncrement,
+		final double dblIncrementFraction)
+	{
+<span class="fc" id="L264">		return org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier.Add (vcmtCurrent,</span>
+			vcmtIncrement, dblIncrementFraction, _aBM);
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EmpiricalPenaltySupremumEstimator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.learning.rxtor1</a> &gt; <span class="el_source">EmpiricalPenaltySupremumEstimator.java</span></div><h1>EmpiricalPenaltySupremumEstimator.java</h1><pre class="source lang-java linenums">
+package org.drip.learning.rxtor1;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * EmpiricalPenaltySupremumEstimator contains the Implementation of the Empirical Penalty Supremum Estimator
+ *  dependent on Multivariate Random Variables where the Multivariate Function is a Linear Combination of
+ *   Bounded Univariate Functions acting on each Random Variate.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class EmpiricalPenaltySupremumEstimator extends org.drip.sequence.functional.BoundedMultivariateRandom {
+
+	/**
+	 * Supremum Penalty computed off of Empirical Loss
+	 */
+
+	public static final int SUPREMUM_PENALTY_EMPIRICAL_LOSS = 1;
+
+	/**
+	 * Supremum Penalty computed off of Structural Loss
+	 */
+
+	public static final int SUPREMUM_PENALTY_STRUCTURAL_LOSS = 2;
+
+	/**
+	 * Supremum Penalty computed off of Regularized Loss
+	 */
+
+	public static final int SUPREMUM_PENALTY_REGULARIZED_LOSS = 4;
+
+	/**
+	 * Supremum Penalty computed off of Empirical Risk
+	 */
+
+	public static final int SUPREMUM_PENALTY_EMPIRICAL_RISK = 8;
+
+	/**
+	 * Supremum Penalty computed off of Structural Risk
+	 */
+
+	public static final int SUPREMUM_PENALTY_STRUCTURAL_RISK = 16;
+
+	/**
+	 * Supremum Penalty computed off of Regularized Risk
+	 */
+
+	public static final int SUPREMUM_PENALTY_REGULARIZED_RISK = 32;
+
+<span class="nc" id="L98">	private int _iSupremumPenaltyLossMode = -1;</span>
+<span class="nc" id="L99">	private org.drip.measure.continuous.R1R1 _distR1R1 = null;</span>
+<span class="nc" id="L100">	private org.drip.measure.continuous.RdR1 _distRdR1 = null;</span>
+<span class="nc" id="L101">	private org.drip.spaces.rxtor1.NormedR1ToNormedR1[] _aR1ToR1 = null;</span>
+<span class="nc" id="L102">	private org.drip.spaces.rxtor1.NormedRdToNormedR1[] _aRdToR1 = null;</span>
+<span class="nc" id="L103">	private org.drip.spaces.instance.GeneralizedValidatedVector _gvviY = null;</span>
+<span class="nc" id="L104">	private org.drip.learning.rxtor1.EmpiricalLearningMetricEstimator _elme = null;</span>
+
+	/**
+	 * EmpiricalPenaltySupremumEstimator Constructor
+	 * 
+	 * @param iSupremumPenaltyLossMode Supremum Loss Penalty Mode
+	 * @param elme The Empirical Learning Metric Estimator Instance
+	 * @param gvviY The Validated Outcome Instance
+	 * @param distR1R1 R^1 R^1 Multivariate Measure
+	 * @param distRdR1 R^d R^1 Multivariate Measure
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public EmpiricalPenaltySupremumEstimator (
+		final int iSupremumPenaltyLossMode,
+		final org.drip.learning.rxtor1.EmpiricalLearningMetricEstimator elme,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY,
+		final org.drip.measure.continuous.R1R1 distR1R1,
+		final org.drip.measure.continuous.RdR1 distRdR1)
+		throws java.lang.Exception
+<span class="nc" id="L125">	{</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">		if (null == (_elme = elme))</span>
+<span class="nc" id="L127">			throw new java.lang.Exception (&quot;EmpiricalPenaltySupremumEstimator ctr: Invalid Inputs&quot;);</span>
+
+<span class="nc" id="L129">		org.drip.spaces.rxtor1.NormedRxToNormedR1[] aRxToR1 = _elme.functionClass().functionSpaces();</span>
+
+<span class="nc bnc" id="L131" title="All 2 branches missed.">		if (null == aRxToR1)</span>
+<span class="nc" id="L132">			throw new java.lang.Exception (&quot;EmpiricalPenaltySupremumEstimator ctr: Invalid Inputs&quot;);</span>
+
+<span class="nc bnc" id="L134" title="All 2 branches missed.">		if (aRxToR1 instanceof org.drip.spaces.rxtor1.NormedR1ToNormedR1[])</span>
+<span class="nc" id="L135">			_aR1ToR1 = (org.drip.spaces.rxtor1.NormedR1ToNormedR1[]) aRxToR1;</span>
+		else
+<span class="nc" id="L137">			_aRdToR1 = (org.drip.spaces.rxtor1.NormedRdToNormedR1[]) aRxToR1;</span>
+
+<span class="nc" id="L139">		_gvviY = gvviY;</span>
+<span class="nc" id="L140">		_distR1R1 = distR1R1;</span>
+<span class="nc" id="L141">		_distRdR1 = distRdR1;</span>
+<span class="nc" id="L142">		int iNumRxToR1 = aRxToR1.length;</span>
+<span class="nc" id="L143">		_iSupremumPenaltyLossMode = iSupremumPenaltyLossMode;</span>
+
+<span class="nc bnc" id="L145" title="All 4 branches missed.">		if (SUPREMUM_PENALTY_EMPIRICAL_LOSS == _iSupremumPenaltyLossMode &amp;&amp; null == _gvviY)</span>
+<span class="nc" id="L146">			throw new java.lang.Exception (&quot;EmpiricalPenaltySupremumEstimator ctr: Invalid Inputs&quot;);</span>
+
+<span class="nc bnc" id="L148" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumRxToR1; ++i) {</span>
+<span class="nc bnc" id="L149" title="All 2 branches missed.">			if (null == aRxToR1[i])</span>
+<span class="nc" id="L150">				throw new java.lang.Exception (&quot;EmpiricalPenaltySupremumEstimator ctr: Invalid Inputs&quot;);</span>
+		}
+<span class="nc" id="L152">	}</span>
+
+	/**
+	 * The Supremum Penalty Loss Mode Flag
+	 * 
+	 * @return The Supremum Penalty Loss Mode Flag
+	 */
+
+	public int supremumPenaltyLossMode()
+	{
+<span class="nc" id="L162">		return _iSupremumPenaltyLossMode;</span>
+	}
+
+	/**
+	 * Retrieve the Empirical Learning Metric Estimator Instance
+	 * 
+	 * @return The Empirical Learning Metric Estimator Instance
+	 */
+
+	public org.drip.learning.rxtor1.EmpiricalLearningMetricEstimator elme()
+	{
+<span class="nc" id="L173">		return _elme;</span>
+	}
+
+	/**
+	 * Retrieve the Validated Outcome Instance
+	 * 
+	 * @return The Validated Outcome Instance
+	 */
+
+	public org.drip.spaces.instance.GeneralizedValidatedVector empiricalOutcomes()
+	{
+<span class="nc" id="L184">		return _gvviY;</span>
+	}
+
+	/**
+	 * Compute the Empirical Penalty Supremum for the specified R^1 Input Space
+	 * 
+	 * @param gvviX The R^1 Input Space
+	 * 
+	 * @return The Empirical Penalty Supremum for the specified R^1 Input Space
+	 */
+
+	public org.drip.learning.rxtor1.EmpiricalPenaltySupremum supremumR1 (
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX)
+	{
+<span class="nc bnc" id="L198" title="All 2 branches missed.">		if (null == _aR1ToR1) return null;</span>
+
+<span class="nc" id="L200">		int iSupremumIndex  = 0;</span>
+<span class="nc" id="L201">		int iNumR1ToR1 = _aR1ToR1.length;</span>
+<span class="nc" id="L202">		double dblSupremumPenaltyLoss = 0.;</span>
+
+<span class="nc bnc" id="L204" title="All 2 branches missed.">		for (int i = 0 ; i &lt; iNumR1ToR1; ++i) {</span>
+<span class="nc" id="L205">			org.drip.function.definition.R1ToR1 funcR1ToR1 = _aR1ToR1[i].function();</span>
+
+<span class="nc bnc" id="L207" title="All 2 branches missed.">			if (null == funcR1ToR1) return null;</span>
+
+<span class="nc" id="L209">			double dblPenaltyLoss = 0.;</span>
+
+			try {
+<span class="nc bnc" id="L212" title="All 2 branches missed.">				if (SUPREMUM_PENALTY_EMPIRICAL_LOSS == _iSupremumPenaltyLossMode)</span>
+<span class="nc" id="L213">					dblPenaltyLoss += _elme.empiricalLoss (funcR1ToR1, gvviX, _gvviY);</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">				else if (SUPREMUM_PENALTY_STRUCTURAL_LOSS == _iSupremumPenaltyLossMode)</span>
+<span class="nc" id="L215">					dblPenaltyLoss += _elme.structuralLoss (funcR1ToR1, gvviX);</span>
+<span class="nc bnc" id="L216" title="All 2 branches missed.">				else if (SUPREMUM_PENALTY_REGULARIZED_LOSS == _iSupremumPenaltyLossMode)</span>
+<span class="nc" id="L217">					dblPenaltyLoss += _elme.regularizedLoss (funcR1ToR1, gvviX, _gvviY);</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">				else if (SUPREMUM_PENALTY_EMPIRICAL_RISK == _iSupremumPenaltyLossMode)</span>
+<span class="nc" id="L219">					dblPenaltyLoss += _elme.empiricalRisk (_distR1R1, funcR1ToR1, gvviX, _gvviY);</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">				else if (SUPREMUM_PENALTY_STRUCTURAL_RISK == _iSupremumPenaltyLossMode)</span>
+<span class="nc" id="L221">					dblPenaltyLoss += _elme.structuralRisk (_distR1R1, funcR1ToR1, gvviX, _gvviY);</span>
+<span class="nc bnc" id="L222" title="All 2 branches missed.">				else if (SUPREMUM_PENALTY_REGULARIZED_RISK == _iSupremumPenaltyLossMode)</span>
+<span class="nc" id="L223">					dblPenaltyLoss += _elme.regularizedRisk (_distR1R1, funcR1ToR1, gvviX, _gvviY);</span>
+<span class="nc" id="L224">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L225">				e.printStackTrace();</span>
+
+<span class="nc" id="L227">				return null;</span>
+<span class="nc" id="L228">			}</span>
+
+<span class="nc bnc" id="L230" title="All 2 branches missed.">			if (dblPenaltyLoss &gt; dblSupremumPenaltyLoss) {</span>
+<span class="nc" id="L231">				iSupremumIndex = i;</span>
+<span class="nc" id="L232">				dblSupremumPenaltyLoss = dblPenaltyLoss;</span>
+			}
+		}
+
+		try {
+<span class="nc" id="L237">			return new org.drip.learning.rxtor1.EmpiricalPenaltySupremum (iSupremumIndex,</span>
+<span class="nc" id="L238">				dblSupremumPenaltyLoss / gvviX.sampleSize());</span>
+<span class="nc" id="L239">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L240">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L243">		return null;</span>
+	}
+
+	/**
+	 * Compute the Empirical Penalty Supremum for the specified R^d Input Space
+	 * 
+	 * @param gvviX The R^d Input Space
+	 * 
+	 * @return The Empirical Penalty Supremum for the specified R^d Input Space
+	 */
+
+	public org.drip.learning.rxtor1.EmpiricalPenaltySupremum supremumRd (
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX)
+	{
+<span class="nc bnc" id="L257" title="All 2 branches missed.">		if (null == _aRdToR1) return null;</span>
+
+<span class="nc" id="L259">		int iSupremumIndex  = 0;</span>
+<span class="nc" id="L260">		int iNumRdToR1 = _aRdToR1.length;</span>
+<span class="nc" id="L261">		double dblSupremumPenaltyLoss = 0.;</span>
+
+<span class="nc bnc" id="L263" title="All 2 branches missed.">		for (int i = 0 ; i &lt; iNumRdToR1; ++i) {</span>
+<span class="nc" id="L264">			org.drip.function.definition.RdToR1 funcRdToR1 = _aRdToR1[i].function();</span>
+
+<span class="nc bnc" id="L266" title="All 2 branches missed.">			if (null == funcRdToR1) return null;</span>
+
+<span class="nc" id="L268">			double dblPenaltyLoss = 0.;</span>
+
+			try {
+<span class="nc bnc" id="L271" title="All 2 branches missed.">				if (SUPREMUM_PENALTY_EMPIRICAL_LOSS == _iSupremumPenaltyLossMode)</span>
+<span class="nc" id="L272">					dblPenaltyLoss += _elme.empiricalLoss (funcRdToR1, gvviX, _gvviY);</span>
+<span class="nc bnc" id="L273" title="All 2 branches missed.">				else if (SUPREMUM_PENALTY_STRUCTURAL_LOSS == _iSupremumPenaltyLossMode)</span>
+<span class="nc" id="L274">					dblPenaltyLoss += _elme.structuralLoss (funcRdToR1, gvviX);</span>
+<span class="nc bnc" id="L275" title="All 2 branches missed.">				else if (SUPREMUM_PENALTY_REGULARIZED_LOSS == _iSupremumPenaltyLossMode)</span>
+<span class="nc" id="L276">					dblPenaltyLoss += _elme.regularizedLoss (funcRdToR1, gvviX, _gvviY);</span>
+<span class="nc bnc" id="L277" title="All 2 branches missed.">				else if (SUPREMUM_PENALTY_EMPIRICAL_RISK == _iSupremumPenaltyLossMode)</span>
+<span class="nc" id="L278">					dblPenaltyLoss += _elme.empiricalRisk (_distRdR1, funcRdToR1, gvviX, _gvviY);</span>
+<span class="nc bnc" id="L279" title="All 2 branches missed.">				else if (SUPREMUM_PENALTY_STRUCTURAL_RISK == _iSupremumPenaltyLossMode)</span>
+<span class="nc" id="L280">					dblPenaltyLoss += _elme.structuralRisk (_distRdR1, funcRdToR1, gvviX, _gvviY);</span>
+<span class="nc bnc" id="L281" title="All 2 branches missed.">				else if (SUPREMUM_PENALTY_REGULARIZED_RISK == _iSupremumPenaltyLossMode)</span>
+<span class="nc" id="L282">					dblPenaltyLoss += _elme.regularizedRisk (_distRdR1, funcRdToR1, gvviX, _gvviY);</span>
+<span class="nc" id="L283">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L284">				e.printStackTrace();</span>
+
+<span class="nc" id="L286">				return null;</span>
+<span class="nc" id="L287">			}</span>
+
+<span class="nc bnc" id="L289" title="All 2 branches missed.">			if (dblPenaltyLoss &gt; dblSupremumPenaltyLoss) {</span>
+<span class="nc" id="L290">				iSupremumIndex = i;</span>
+<span class="nc" id="L291">				dblSupremumPenaltyLoss = dblPenaltyLoss;</span>
+			}
+		}
+
+		try {
+<span class="nc" id="L296">			return new org.drip.learning.rxtor1.EmpiricalPenaltySupremum (iSupremumIndex,</span>
+<span class="nc" id="L297">				dblSupremumPenaltyLoss / gvviX.sampleSize());</span>
+<span class="nc" id="L298">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L299">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L302">		return null;</span>
+	}
+
+	/**
+	 * Compute the Empirical Penalty Supremum for the specified R^1/R^d Input Space
+	 * 
+	 * @param gvviX The R^1/R^d Input Space
+	 * 
+	 * @return The Empirical Penalty Supremum for the specified R^1/R^d Input Space
+	 */
+
+	public org.drip.learning.rxtor1.EmpiricalPenaltySupremum supremum (
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX)
+	{
+<span class="nc" id="L316">		org.drip.learning.rxtor1.EmpiricalPenaltySupremum epsR1 = supremumR1 (gvviX);</span>
+
+<span class="nc bnc" id="L318" title="All 2 branches missed.">		return null == epsR1 ? supremumRd (gvviX) : epsR1;</span>
+	}
+
+	/**
+	 * Retrieve the Supremum R^1 To R^1 Function Instance for the specified Variate Sequence
+	 * 
+	 * @param adblX The Predictor Instance
+	 * 
+	 * @return The Supremum R^1 To R^1 Function Instance
+	 */
+
+	public org.drip.function.definition.R1ToR1 supremumR1ToR1 (
+		final double[] adblX)
+	{
+<span class="nc" id="L332">		org.drip.learning.rxtor1.EmpiricalPenaltySupremum eps = null;</span>
+
+		try {
+<span class="nc" id="L335">			eps = supremumR1 (new org.drip.spaces.instance.ValidatedR1</span>
+<span class="nc" id="L336">				(org.drip.spaces.tensor.R1ContinuousVector.Standard(), adblX));</span>
+<span class="nc" id="L337">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L338">			e.printStackTrace();</span>
+
+<span class="nc" id="L340">			return null;</span>
+<span class="nc" id="L341">		}</span>
+
+<span class="nc" id="L343">		return _aR1ToR1[eps.index()].function();</span>
+	}
+
+	/**
+	 * Retrieve the Supremum R^d To R^1 Function Instance for the specified Variate Sequence
+	 * 
+	 * @param aadblX The Predictor Instance
+	 * 
+	 * @return The Supremum R^d To R^1 Function Instance
+	 */
+
+	public org.drip.function.definition.RdToR1 supremumRdToR1 (
+		final double[][] aadblX)
+	{
+<span class="nc" id="L357">		org.drip.learning.rxtor1.EmpiricalPenaltySupremum eps = null;</span>
+
+		try {
+<span class="nc" id="L360">			eps = supremumRd (new org.drip.spaces.instance.ValidatedRd</span>
+<span class="nc" id="L361">				(org.drip.spaces.tensor.RdContinuousVector.Standard (aadblX.length), aadblX));</span>
+<span class="nc" id="L362">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L363">			e.printStackTrace();</span>
+
+<span class="nc" id="L365">			return null;</span>
+<span class="nc" id="L366">		}</span>
+
+<span class="nc" id="L368">		return _aRdToR1[eps.index()].function();</span>
+	}
+
+	@Override public int dimension()
+	{
+<span class="nc" id="L373">		return -1;</span>
+	}
+
+	@Override public double evaluate (
+		final double[] adblX)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L380">		org.drip.learning.rxtor1.EmpiricalPenaltySupremum eps = supremumR1 (new</span>
+<span class="nc" id="L381">			org.drip.spaces.instance.ValidatedR1 (org.drip.spaces.tensor.R1ContinuousVector.Standard(),</span>
+				adblX));
+
+<span class="nc bnc" id="L384" title="All 2 branches missed.">		if (null == eps)</span>
+<span class="nc" id="L385">			throw new java.lang.Exception (&quot;EmpiricalPenaltySupremumEstimator::evaluate =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc" id="L387">		return eps.value();</span>
+	}
+
+	/**
+	 * Retrieve the Worst-case Loss over the Multivariate Sequence
+	 * 
+	 * @param aadblX The Multivariate Array
+	 * 
+	 * @return The Worst-case Loss over the Multivariate Sequence
+	 * 
+	 * @throws java.lang.Exception Thrown if the Worst-Case Loss cannot be computed
+	 */
+
+	public double evaluate (
+		final double[][] aadblX)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L404" title="All 2 branches missed.">		if (null == aadblX)</span>
+<span class="nc" id="L405">			throw new java.lang.Exception (&quot;EmpiricalPenaltySupremumEstimator::evaluate =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc" id="L407">		org.drip.learning.rxtor1.EmpiricalPenaltySupremum eps = supremumRd (new</span>
+			org.drip.spaces.instance.ValidatedRd (org.drip.spaces.tensor.RdContinuousVector.Standard
+<span class="nc" id="L409">				(aadblX.length), aadblX));</span>
+
+<span class="nc bnc" id="L411" title="All 2 branches missed.">		if (null == eps)</span>
+<span class="nc" id="L412">			throw new java.lang.Exception (&quot;EmpiricalPenaltySupremumEstimator::evaluate =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc" id="L414">		return eps.value();</span>
+	}
+
+	@Override public double targetVariateVarianceBound (
+		final int iTargetVariateIndex)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L421">		return 1. / (_gvviY.sampleSize() * _gvviY.sampleSize());</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

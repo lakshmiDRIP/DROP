@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CreditIndexAPI.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.service.product</a> &gt; <span class="el_source">CreditIndexAPI.java</span></div><h1>CreditIndexAPI.java</h1><pre class="source lang-java linenums">
+package org.drip.service.product;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * CreditIndexAPI contains the Functionality associated with the Horizon Analysis of the CDS Index.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L57">public class CreditIndexAPI {</span>
+
+	static class ParCDS {
+<span class="nc" id="L60">		double _dblFairPremium = java.lang.Double.NaN;</span>
+<span class="nc" id="L61">		double _dblFixedCoupon = java.lang.Double.NaN;</span>
+<span class="nc" id="L62">		org.drip.product.definition.CreditDefaultSwap _cds = null;</span>
+
+		ParCDS (
+			final org.drip.product.definition.CreditDefaultSwap cds,
+			final double dblFixedCoupon,
+			final double dblFairPremium)
+<span class="nc" id="L68">		{</span>
+<span class="nc" id="L69">			_cds = cds;</span>
+<span class="nc" id="L70">			_dblFixedCoupon = dblFixedCoupon;</span>
+<span class="nc" id="L71">			_dblFairPremium = dblFairPremium;</span>
+<span class="nc" id="L72">		}</span>
+
+		double fairPremium()
+		{
+<span class="nc" id="L76">			return _dblFairPremium;</span>
+		}
+
+		double fixedCoupon()
+		{
+<span class="nc" id="L81">			return _dblFixedCoupon;</span>
+		}
+
+		org.drip.product.definition.CreditDefaultSwap cds()
+		{
+<span class="nc" id="L86">			return _cds;</span>
+		}
+	};
+
+	private static final ParCDS HorizonCreditIndex (
+		final org.drip.state.discount.DiscountCurve dc,
+		final org.drip.state.credit.CreditCurve cc,
+		final java.lang.String strFullCreditIndexName)
+	{
+<span class="nc" id="L95">		org.drip.market.otc.CreditIndexConvention cic =</span>
+			org.drip.market.otc.CreditIndexConventionContainer.ConventionFromFullName
+<span class="nc" id="L97">				(strFullCreditIndexName);</span>
+
+<span class="nc bnc" id="L99" title="All 2 branches missed.">		if (null == cic) return null;</span>
+
+<span class="nc" id="L101">		org.drip.product.definition.CreditDefaultSwap cdsIndex = cic.indexCDS();</span>
+
+<span class="nc bnc" id="L103" title="All 2 branches missed.">		if (null == cdsIndex) return null;</span>
+
+<span class="nc" id="L105">		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new</span>
+			org.drip.param.market.CurveSurfaceQuoteContainer();
+
+<span class="nc bnc" id="L108" title="All 2 branches missed.">		if (!csqc.setFundingState ((org.drip.state.discount.MergedDiscountForwardCurve) dc) ||</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">			!csqc.setCreditState (cc))</span>
+<span class="nc" id="L110">			return null;</span>
+
+		try {
+<span class="nc" id="L113">			return new ParCDS (cdsIndex, cic.fixedCoupon(), 0.0001 * cdsIndex.measureValue</span>
+<span class="nc" id="L114">				(org.drip.param.valuation.ValuationParams.Spot (dc.epoch().julian()), null, csqc, null,</span>
+					&quot;FairPremium&quot;));
+<span class="nc" id="L116">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L117">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L120">		return null;</span>
+	}
+
+	private static final org.drip.historical.attribution.CDSMarketSnap MarketValuationSnap (
+		final org.drip.product.definition.CreditDefaultSwap cds,
+		final org.drip.state.discount.DiscountCurve dc,
+		final org.drip.state.credit.CreditCurve cc,
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqc,
+		final double dblRollDownFairPremium)
+	{
+<span class="nc bnc" id="L130" title="All 2 branches missed.">		if (!csqc.setFundingState ((org.drip.state.discount.MergedDiscountForwardCurve) dc) ||</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">			!csqc.setCreditState (cc))</span>
+<span class="nc" id="L132">			return null;</span>
+
+<span class="nc" id="L134">		org.drip.analytics.date.JulianDate dt = dc.epoch();</span>
+
+<span class="nc" id="L136">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapCDS = cds.value</span>
+<span class="nc" id="L137">			(org.drip.param.valuation.ValuationParams.Spot (dt.julian()), null, csqc, null);</span>
+
+<span class="nc bnc" id="L139" title="All 6 branches missed.">		if (null == mapCDS || !mapCDS.containsKey (&quot;Accrued&quot;) || !mapCDS.containsKey (&quot;CleanDV01&quot;) ||</span>
+<span class="nc bnc" id="L140" title="All 4 branches missed.">			!mapCDS.containsKey (&quot;CleanPV&quot;) || !mapCDS.containsKey (&quot;CleanCouponPV&quot;) || !mapCDS.containsKey</span>
+<span class="nc bnc" id="L141" title="All 4 branches missed.">				(&quot;CumulativeCouponAmount&quot;) || !mapCDS.containsKey (&quot;FairPremium&quot;) || !mapCDS.containsKey</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">					(&quot;LossPV&quot;))</span>
+<span class="nc" id="L143">			return null;</span>
+
+<span class="nc" id="L145">		double dblCleanPV = mapCDS.get (&quot;CleanPV&quot;);</span>
+
+<span class="nc" id="L147">		double dblFairPremium = 0.0001 * mapCDS.get (&quot;FairPremium&quot;);</span>
+
+<span class="nc" id="L149">		org.drip.analytics.date.JulianDate dtEffective = cds.effectiveDate();</span>
+
+<span class="nc" id="L151">		double dblFairPremiumSensitivity = 10000. * mapCDS.get (&quot;CleanDV01&quot;);</span>
+
+		try {
+<span class="nc" id="L154">			org.drip.historical.attribution.CDSMarketSnap cdsms = new</span>
+				org.drip.historical.attribution.CDSMarketSnap (dt, dblCleanPV);
+
+<span class="nc bnc" id="L157" title="All 4 branches missed.">			return cdsms.setEffectiveDate (dtEffective) &amp;&amp; cdsms.setMaturityDate (cds.maturityDate()) &amp;&amp;</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">				cdsms.setCleanDV01 (dblFairPremiumSensitivity) &amp;&amp; cdsms.setCurrentFairPremium</span>
+<span class="nc bnc" id="L159" title="All 4 branches missed.">					(dblFairPremium) &amp;&amp; cdsms.setRollDownFairPremium (dblRollDownFairPremium) &amp;&amp;</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">						cdsms.setAccrued (mapCDS.get (&quot;Accrued&quot;)) &amp;&amp; cdsms.setCumulativeCouponAmount</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">							(mapCDS.get (&quot;CumulativeCouponAmount&quot;)) &amp;&amp; cdsms.setCreditLabel</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">								(cds.creditLabel().fullyQualifiedName()) &amp;&amp; cdsms.setRecoveryRate</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">									(cds.recovery (dtEffective.julian(), cc)) &amp;&amp; cdsms.setCouponPV</span>
+<span class="nc bnc" id="L164" title="All 4 branches missed.">										(mapCDS.get (&quot;CleanCouponPV&quot;)) &amp;&amp; cdsms.setLossPV (mapCDS.get</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">											(&quot;LossPV&quot;)) &amp;&amp; cdsms.setFairPremiumMarketFactor (dblFairPremium,</span>
+												-1. * dblFairPremiumSensitivity, dblRollDownFairPremium) ?
+													cdsms : null;
+<span class="nc" id="L168">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L169">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L172">		return null;</span>
+	}
+
+	private static final double RollDownFairPremium (
+		final org.drip.product.definition.CreditDefaultSwap cds,
+		final int iSpotDate,
+		final org.drip.state.discount.DiscountCurve dcPrevious,
+		final org.drip.state.credit.CreditCurve ccPrevious,
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqc)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L183" title="All 2 branches missed.">		if (!csqc.setFundingState ((org.drip.state.discount.MergedDiscountForwardCurve) dcPrevious) ||</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">			!csqc.setCreditState (ccPrevious))</span>
+<span class="nc" id="L185">			throw new java.lang.Exception (&quot;CreditIndexAPI::RollDownFairPremium =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc" id="L187">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapCDS = cds.value</span>
+<span class="nc" id="L188">			(org.drip.param.valuation.ValuationParams.Spot (iSpotDate), null, csqc, null);</span>
+
+<span class="nc bnc" id="L190" title="All 4 branches missed.">		if (null == mapCDS || !mapCDS.containsKey (&quot;FairPremium&quot;))</span>
+<span class="nc" id="L191">			throw new java.lang.Exception (&quot;CreditIndexAPI::RollDownFairPremium =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc" id="L193">		return 0.0001 * mapCDS.get (&quot;FairPremium&quot;);</span>
+	}
+
+	/**
+	 * Generate the CDS Horizon Change Attribution
+	 * 
+	 * @param dcFirst The First Discount Curve
+	 * @param ccFirst The First Credit Curve
+	 * @param dcSecond The Second Discount Curve
+	 * @param ccSecond The Second Credit Curve
+	 * @param strFullCreditIndexName The Full Credit Index Name
+	 * 
+	 * @return The CDS Horizon Change Attribution
+	 */
+
+	public static final org.drip.historical.attribution.PositionChangeComponents HorizonChangeAttribution (
+		final org.drip.state.discount.DiscountCurve dcFirst,
+		final org.drip.state.credit.CreditCurve ccFirst,
+		final org.drip.state.discount.DiscountCurve dcSecond,
+		final org.drip.state.credit.CreditCurve ccSecond,
+		final java.lang.String strFullCreditIndexName)
+	{
+<span class="nc bnc" id="L215" title="All 8 branches missed.">		if (null == dcFirst || null == ccFirst || null == dcSecond || null == ccSecond) return null;</span>
+
+<span class="nc" id="L217">		int iFirstDate = dcFirst.epoch().julian();</span>
+
+<span class="nc" id="L219">		int iSecondDate = dcSecond.epoch().julian();</span>
+
+<span class="nc" id="L221">		java.lang.String strCurrency = dcSecond.currency();</span>
+
+<span class="nc bnc" id="L223" title="All 4 branches missed.">		if (!strCurrency.equalsIgnoreCase (dcFirst.currency()) || iFirstDate &gt;= iSecondDate ||</span>
+<span class="nc bnc" id="L224" title="All 4 branches missed.">			ccFirst.epoch().julian() != iFirstDate || ccSecond.epoch().julian() != iSecondDate)</span>
+<span class="nc" id="L225">			return null;</span>
+
+<span class="nc" id="L227">		ParCDS parCDS = HorizonCreditIndex (dcFirst, ccFirst, strFullCreditIndexName);</span>
+
+<span class="nc bnc" id="L229" title="All 2 branches missed.">		if (null == parCDS) return null;</span>
+
+<span class="nc" id="L231">		org.drip.product.definition.CreditDefaultSwap cds = parCDS.cds();</span>
+
+<span class="nc bnc" id="L233" title="All 2 branches missed.">		if (null == cds) return null;</span>
+
+<span class="nc" id="L235">		double dblFixedCoupon = parCDS.fixedCoupon();</span>
+
+<span class="nc" id="L237">		double dblInitialFairPremium = parCDS.fairPremium();</span>
+
+<span class="nc" id="L239">		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new</span>
+			org.drip.param.market.CurveSurfaceQuoteContainer();
+
+<span class="nc" id="L242">		double dblRollDownFairPremium = java.lang.Double.NaN;</span>
+
+		try {
+<span class="nc" id="L245">			dblRollDownFairPremium = RollDownFairPremium (cds, iSecondDate, dcFirst, ccFirst, csqc);</span>
+<span class="nc" id="L246">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L247">			e.printStackTrace();</span>
+
+<span class="nc" id="L249">			return null;</span>
+<span class="nc" id="L250">		}</span>
+
+<span class="nc bnc" id="L252" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblRollDownFairPremium)) return null;</span>
+
+<span class="nc" id="L254">		org.drip.historical.attribution.CDSMarketSnap cdsmsFirst = MarketValuationSnap (cds, dcFirst,</span>
+			ccFirst, csqc, dblRollDownFairPremium);
+
+<span class="nc bnc" id="L257" title="All 4 branches missed.">		if (null == cdsmsFirst || !cdsmsFirst.setInitialFairPremium (dblInitialFairPremium) ||</span>
+<span class="nc bnc" id="L258" title="All 2 branches missed.">			!cdsmsFirst.setFixedCoupon (dblFixedCoupon))</span>
+<span class="nc" id="L259">			return null;</span>
+
+<span class="nc" id="L261">		org.drip.historical.attribution.CDSMarketSnap cdsmsSecond = MarketValuationSnap (cds, dcSecond,</span>
+			ccSecond, csqc, dblRollDownFairPremium);
+
+<span class="nc bnc" id="L264" title="All 4 branches missed.">		if (null == cdsmsSecond || !cdsmsSecond.setInitialFairPremium (dblInitialFairPremium) ||</span>
+<span class="nc bnc" id="L265" title="All 2 branches missed.">			!cdsmsSecond.setFixedCoupon (dblFixedCoupon))</span>
+<span class="nc" id="L266">			return null;</span>
+
+		try {
+<span class="nc" id="L269">			return new org.drip.historical.attribution.PositionChangeComponents (false, cdsmsFirst,</span>
+<span class="nc" id="L270">				cdsmsSecond, cdsmsSecond.cumulativeCouponAmount() - cdsmsFirst.cumulativeCouponAmount(),</span>
+					null);
+<span class="nc" id="L272">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L273">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L276">		return null;</span>
+	}
+
+	/**
+	 * Generate the Funding/Credit Curve Horizon Metrics
+	 * 
+	 * @param adtSpot Array of Spot
+	 * @param iHorizonGap The Horizon Gap
+	 * @param astrFundingFixingMaturityTenor Array of Funding Fixing Maturity Tenors
+	 * @param aadblFundingFixingQuote Double Array of Funding Fixing Swap Rates
+	 * @param astrFullCreditIndexName Array of the Full Credit Index Names
+	 * @param adblCreditIndexQuotedSpread Array of the Quoted Spreads
+	 * 
+	 * @return The Funding/Credit Curve Horizon Metrics
+	 */
+
+	public static final java.util.List&lt;org.drip.historical.attribution.PositionChangeComponents&gt;
+		HorizonChangeAttribution (
+			final org.drip.analytics.date.JulianDate[] adtSpot,
+			final int iHorizonGap,
+			final java.lang.String[] astrFundingFixingMaturityTenor,
+			final double[][] aadblFundingFixingQuote,
+			final java.lang.String[] astrFullCreditIndexName,
+			final double[] adblCreditIndexQuotedSpread)
+	{
+<span class="nc bnc" id="L301" title="All 12 branches missed.">		if (null == adtSpot || 0 &gt;= iHorizonGap || null == astrFundingFixingMaturityTenor || null ==</span>
+			aadblFundingFixingQuote || null == astrFullCreditIndexName || null ==
+				adblCreditIndexQuotedSpread)
+<span class="nc" id="L304">			return null;</span>
+
+<span class="nc" id="L306">		int iNumClose = adtSpot.length;</span>
+<span class="nc" id="L307">		int iNumFundingInstrument = astrFundingFixingMaturityTenor.length;</span>
+
+<span class="nc" id="L309">		java.util.List&lt;org.drip.historical.attribution.PositionChangeComponents&gt; lsPCC = new</span>
+			java.util.ArrayList&lt;org.drip.historical.attribution.PositionChangeComponents&gt;();
+
+<span class="nc bnc" id="L312" title="All 2 branches missed.">		for (int i = iHorizonGap; i &lt; iNumClose; ++i) {</span>
+<span class="nc bnc" id="L313" title="All 2 branches missed.">			int iNumSecondFundingQuote = null == aadblFundingFixingQuote[i] ? 0 :</span>
+				aadblFundingFixingQuote[i].length;
+<span class="nc bnc" id="L315" title="All 2 branches missed.">			int iNumFirstFundingQuote = null == aadblFundingFixingQuote[i - iHorizonGap] ? 0 :</span>
+				aadblFundingFixingQuote[i - iHorizonGap].length;
+
+<span class="nc bnc" id="L318" title="All 8 branches missed.">			if (0 == iNumFirstFundingQuote || iNumFirstFundingQuote != iNumFundingInstrument || 0 ==</span>
+				iNumSecondFundingQuote || iNumSecondFundingQuote != iNumFundingInstrument)
+<span class="nc" id="L320">				continue;</span>
+
+<span class="nc" id="L322">			org.drip.market.otc.CreditIndexConvention cic =</span>
+				org.drip.market.otc.CreditIndexConventionContainer.ConventionFromFullName
+<span class="nc" id="L324">					(astrFullCreditIndexName[i]);</span>
+
+<span class="nc bnc" id="L326" title="All 2 branches missed.">			if (null == cic) return null;</span>
+
+<span class="nc" id="L328">			java.lang.String strCurrency = cic.currency();</span>
+
+<span class="nc" id="L330">			org.drip.product.definition.CreditDefaultSwap cdsIndex = cic.indexCDS();</span>
+
+<span class="nc" id="L332">			org.drip.state.discount.MergedDiscountForwardCurve dcFundingFixingFirst =</span>
+<span class="nc" id="L333">				org.drip.service.template.LatentMarketStateBuilder.FundingCurve (adtSpot[i - iHorizonGap],</span>
+					strCurrency, null, null, &quot;ForwardRate&quot;, null, &quot;ForwardRate&quot;,
+						astrFundingFixingMaturityTenor, aadblFundingFixingQuote[i - iHorizonGap], &quot;SwapRate&quot;,
+							org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING);
+
+<span class="nc" id="L338">			org.drip.state.credit.CreditCurve ccFirst =</span>
+<span class="nc" id="L339">				org.drip.service.template.LatentMarketStateBuilder.CreditCurve (adtSpot[i - iHorizonGap], new</span>
+					org.drip.product.definition.CreditDefaultSwap[] {cdsIndex}, new double[]
+						{adblCreditIndexQuotedSpread[i - iHorizonGap]}, &quot;FairPremium&quot;, dcFundingFixingFirst);
+
+<span class="nc" id="L343">			org.drip.state.discount.MergedDiscountForwardCurve dcFundingFixingSecond =</span>
+<span class="nc" id="L344">				org.drip.service.template.LatentMarketStateBuilder.FundingCurve (adtSpot[i], strCurrency,</span>
+					null, null, &quot;ForwardRate&quot;, null, &quot;ForwardRate&quot;, astrFundingFixingMaturityTenor,
+						aadblFundingFixingQuote[i], &quot;SwapRate&quot;,
+							org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING);
+
+<span class="nc" id="L349">			org.drip.state.credit.CreditCurve ccSecond =</span>
+<span class="nc" id="L350">				org.drip.service.template.LatentMarketStateBuilder.CreditCurve (adtSpot[i], new</span>
+					org.drip.product.definition.CreditDefaultSwap[] {cdsIndex}, new double[]
+						{adblCreditIndexQuotedSpread[i]}, &quot;FairPremium&quot;, dcFundingFixingSecond);
+
+<span class="nc" id="L354">			lsPCC.add (HorizonChangeAttribution (dcFundingFixingFirst, ccFirst, dcFundingFixingSecond,</span>
+				ccSecond, astrFullCreditIndexName[i]));
+		}
+
+<span class="nc" id="L358">		return lsPCC;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

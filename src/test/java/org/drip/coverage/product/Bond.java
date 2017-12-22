@@ -6,7 +6,7 @@ import org.drip.sample.bond.CoreCashFlowMeasures;
 import org.drip.sample.bond.CorporateIssueMetrics;
 import org.drip.sample.bond.MultiCallExerciseMetrics;
 import org.drip.sample.bond.MultiCallMonteCarlo;
-import org.drip.sample.bond.RegressionSplineBondCurve;
+import org.drip.sample.bond.RegressionSplineCashCurve;
 import org.drip.sample.bond.RelativeValueMeasuresGeneration;
 
 import org.junit.Test;
@@ -77,7 +77,7 @@ public class Bond
 
 		MultiCallMonteCarlo.main (null);
 
-		RegressionSplineBondCurve.main (null);
+		RegressionSplineCashCurve.main (null);
 
 		RelativeValueMeasuresGeneration.main (null);
     }

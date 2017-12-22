@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OptimalTrajectoryWithDrift.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.almgrenchriss</a> &gt; <span class="el_source">OptimalTrajectoryWithDrift.java</span></div><h1>OptimalTrajectoryWithDrift.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.almgrenchriss;
+
+import org.drip.execution.capture.*;
+import org.drip.execution.dynamics.*;
+import org.drip.execution.impact.*;
+import org.drip.execution.nonadaptive.DiscreteAlmgrenChrissDrift;
+import org.drip.execution.optimum.AlmgrenChrissDriftDiscrete;
+import org.drip.execution.parameters.*;
+import org.drip.execution.profiletime.UniformParticipationRateLinear;
+import org.drip.function.r1tor1.FlatUnivariate;
+import org.drip.measure.gaussian.R1UnivariateNormal;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * OptimalTrajectoryWithDrift demonstrates the Generation of the Optimal Trading Trajectory in accordance with
+ *  the Specification of Almgren and Chriss (2000) for the given Risk Aversion Parameter inclusive of the
+ *  Asset Drift. The References are:
+ * 
+ * 	- Almgren, R., and N. Chriss (1999): Value under Liquidation, Risk 12 (12).
+ * 
+ * 	- Almgren, R., and N. Chriss (2000): Optimal Execution of Portfolio Transactions, Journal of Risk 3 (2)
+ * 		5-39.
+ * 
+ * 	- Bertsimas, D., and A. W. Lo (1998): Optimal Control of Execution Costs, Journal of Financial Markets,
+ * 		1, 1-50.
+ *
+ * 	- Chan, L. K. C., and J. Lakonishak (1995): The Behavior of Stock Prices around Institutional Trades,
+ * 		Journal of Finance, 50, 1147-1174.
+ *
+ * 	- Keim, D. B., and A. Madhavan (1997): Transaction Costs and Investment Style: An Inter-exchange
+ * 		Analysis of Institutional Equity Trades, Journal of Financial Economics, 46, 265-292.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L85">public class OptimalTrajectoryWithDrift {</span>
+
+	public static void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+<span class="fc" id="L91">		EnvManager.InitEnv (</span>
+			&quot;&quot;,
+			true
+		);
+
+<span class="fc" id="L96">		double dblS0 = 50.;</span>
+<span class="fc" id="L97">		double dblX = 1000000.;</span>
+<span class="fc" id="L98">		double dblT = 5.;</span>
+<span class="fc" id="L99">		int iN = 5;</span>
+<span class="fc" id="L100">		double dblAnnualVolatility = 0.30;</span>
+<span class="fc" id="L101">		double dblAnnualReturns = 0.10;</span>
+<span class="fc" id="L102">		double dblBidAsk = 0.125;</span>
+<span class="fc" id="L103">		double dblDailyVolume = 5.e06;</span>
+<span class="fc" id="L104">		double dblDailyVolumePermanentImpact = 0.1;</span>
+<span class="fc" id="L105">		double dblDailyVolumeTemporaryImpact = 0.01;</span>
+<span class="fc" id="L106">		double dblLambdaU = 1.e-06;</span>
+
+<span class="fc" id="L108">		ArithmeticPriceDynamicsSettings apds = ArithmeticPriceDynamicsSettings.FromAnnualReturnsSettings (</span>
+			dblAnnualReturns,
+			dblAnnualVolatility,
+			0.,
+			dblS0
+		);
+
+<span class="fc" id="L115">		double dblAlpha = apds.drift();</span>
+
+<span class="fc" id="L117">		double dblSigma = apds.epochVolatility();</span>
+
+<span class="fc" id="L119">		PriceMarketImpactLinear pmil = new PriceMarketImpactLinear (</span>
+			new AssetTransactionSettings (
+				dblS0,
+				dblDailyVolume,
+				dblBidAsk
+			),
+			dblDailyVolumePermanentImpact,
+			dblDailyVolumeTemporaryImpact
+		);
+
+<span class="fc" id="L129">		ParticipationRateLinear prlPermanent = (ParticipationRateLinear) pmil.permanentTransactionFunction();</span>
+
+<span class="fc" id="L131">		ParticipationRateLinear prlTemporary = (ParticipationRateLinear) pmil.temporaryTransactionFunction();</span>
+
+<span class="fc" id="L133">		LinearPermanentExpectationParameters lpep = ArithmeticPriceEvolutionParametersBuilder.LinearExpectation (</span>
+			new ArithmeticPriceDynamicsSettings (
+				dblAlpha,
+				new FlatUnivariate (dblSigma),
+				0.
+			),
+			new UniformParticipationRateLinear (prlPermanent),
+			new UniformParticipationRateLinear (prlTemporary)
+		);
+
+<span class="fc" id="L143">		DiscreteAlmgrenChrissDrift dacd = DiscreteAlmgrenChrissDrift.Standard (</span>
+			dblX,
+			dblT,
+			iN,
+			lpep,
+			dblLambdaU
+		);
+
+<span class="fc" id="L151">		AlmgrenChrissDriftDiscrete acdd = (AlmgrenChrissDriftDiscrete) dacd.generate();</span>
+
+<span class="fc" id="L153">		double[] adblTradeListDriftAdjustment = acdd.tradeListDriftAdjustment();</span>
+
+<span class="fc" id="L155">		double[] adblHoldingsDriftAdjustment = acdd.holdingsDriftAdjustment();</span>
+
+<span class="fc" id="L157">		double[] adblExecutionTimeNode = acdd.executionTimeNode();</span>
+
+<span class="fc" id="L159">		double[] adblTradeList = acdd.tradeList();</span>
+
+<span class="fc" id="L161">		double[] adblHoldings = acdd.holdings();</span>
+
+<span class="fc" id="L163">		LinearImpactTrajectoryEstimator lite = new LinearImpactTrajectoryEstimator (acdd);</span>
+
+<span class="fc" id="L165">		TrajectoryShortfallAggregate tsa = lite.totalCostDistributionDetail (lpep);</span>
+
+<span class="fc" id="L167">		double[] adblIncrementalPermanentImpact = tsa.incrementalPermanentImpactExpectation();</span>
+
+<span class="fc" id="L169">		double[] adblIncrementalTemporaryImpact = tsa.incrementalTemporaryImpactExpectation();</span>
+
+<span class="fc" id="L171">		double[] adblCumulativePermanentImpact = tsa.cumulativePermanentImpactExpectation();</span>
+
+<span class="fc" id="L173">		double[] adblCumulativeTemporaryImpact = tsa.cumulativeTemporaryImpactExpectation();</span>
+
+<span class="fc" id="L175">		double[] adblIncrementalShortfallVariance = tsa.incrementalVariance();</span>
+
+<span class="fc" id="L177">		double[] adblCumulativeShortfallVariance = tsa.cumulativeVariance();</span>
+
+<span class="fc" id="L179">		double[] adblIncrementalShortfallMean = tsa.incrementalExpectation();</span>
+
+<span class="fc" id="L181">		double[] adblCumulativeShortfallMean = tsa.cumulativeExpectation();</span>
+
+<span class="fc" id="L183">		R1UnivariateNormal r1un = lite.totalCostDistributionSynopsis (lpep);</span>
+
+<span class="fc" id="L185">		System.out.println (&quot;\n\t|---------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L187">		System.out.println (&quot;\t| ALMGREN-CHRISS TRAJECTORY GENERATOR INPUTS  ||&quot;);</span>
+
+<span class="fc" id="L189">		System.out.println (&quot;\t|---------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L191">		System.out.println (&quot;\t| Initial Stock Price           : &quot; + dblS0);</span>
+
+<span class="fc" id="L193">		System.out.println (&quot;\t| Initial Holdings              : &quot; + dblX);</span>
+
+<span class="fc" id="L195">		System.out.println (&quot;\t| Liquidation Time              : &quot; + dblT);</span>
+
+<span class="fc" id="L197">		System.out.println (&quot;\t| Number of Time Periods        : &quot; + iN);</span>
+
+<span class="fc" id="L199">		System.out.println (&quot;\t| Annual Volatility             :&quot; + FormatUtil.FormatDouble (dblAnnualVolatility, 1, 0, 100.) + &quot;%&quot;);</span>
+
+<span class="fc" id="L201">		System.out.println (&quot;\t| Annual Growth                 :&quot; + FormatUtil.FormatDouble (dblAnnualReturns, 1, 0, 100.) + &quot;%&quot;);</span>
+
+<span class="fc" id="L203">		System.out.println (&quot;\t| Bid-Ask Spread                : &quot; + dblBidAsk);</span>
+
+<span class="fc" id="L205">		System.out.println (&quot;\t| Daily Volume                  : &quot; + dblDailyVolume);</span>
+
+<span class="fc" id="L207">		System.out.println (&quot;\t| Daily Volume Temporary Impact : &quot; + dblDailyVolumeTemporaryImpact);</span>
+
+<span class="fc" id="L209">		System.out.println (&quot;\t| Daily Volume Permanent Impact : &quot; + dblDailyVolumePermanentImpact);</span>
+
+<span class="fc" id="L211">		System.out.println (&quot;\t| Daily Volume 5 million Shares : &quot; + prlPermanent.slope());</span>
+
+<span class="fc" id="L213">		System.out.println (&quot;\t| Static Holdings 11,000 Shares : &quot; + dblLambdaU);</span>
+
+<span class="fc" id="L215">		System.out.println (&quot;\t|&quot;);</span>
+
+<span class="fc" id="L217">		System.out.println (</span>
+			&quot;\t| Daily Volatility              : &quot; +
+<span class="fc" id="L219">			FormatUtil.FormatDouble (dblSigma, 1, 4, 1.)</span>
+		);
+
+<span class="fc" id="L222">		System.out.println (</span>
+			&quot;\t| Daily Returns                 : &quot; +
+<span class="fc" id="L224">			FormatUtil.FormatDouble (dblAlpha, 1, 4, 1.)</span>
+		);
+
+<span class="fc" id="L227">		System.out.println (&quot;\t| Temporary Impact Fixed Offset :  &quot; + prlTemporary.offset());</span>
+
+<span class="fc" id="L229">		System.out.println (&quot;\t| Eta                           :  &quot; + prlTemporary.slope());</span>
+
+<span class="fc" id="L231">		System.out.println (&quot;\t| Gamma                         :  &quot; + prlPermanent.slope());</span>
+
+<span class="fc" id="L233">		System.out.println (&quot;\t|---------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L235">		System.out.println (&quot;\n\t|-------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L237">		System.out.println (&quot;\t|           AC2000 Optimal Trajectory             ||&quot;);</span>
+
+<span class="fc" id="L239">		System.out.println (&quot;\t|           ------ ------- ----------             ||&quot;);</span>
+
+<span class="fc" id="L241">		System.out.println (&quot;\t|     L -&gt; R:                                     ||&quot;);</span>
+
+<span class="fc" id="L243">		System.out.println (&quot;\t|             Time Node                           ||&quot;);</span>
+
+<span class="fc" id="L245">		System.out.println (&quot;\t|             Holdings                            ||&quot;);</span>
+
+<span class="fc" id="L247">		System.out.println (&quot;\t|             Trade Amount                        ||&quot;);</span>
+
+<span class="fc" id="L249">		System.out.println (&quot;\t|             Holdings Drift Adjustment           ||&quot;);</span>
+
+<span class="fc" id="L251">		System.out.println (&quot;\t|             Trade Amount Drift Adjustment       ||&quot;);</span>
+
+<span class="fc" id="L253">		System.out.println (&quot;\t|-------------------------------------------------||&quot;);</span>
+
+<span class="fc bfc" id="L255" title="All 2 branches covered.">		for (int i = 0; i &lt;= iN; ++i) {</span>
+<span class="fc bfc" id="L256" title="All 2 branches covered.">			if (i == 0)</span>
+<span class="fc" id="L257">				System.out.println (</span>
+<span class="fc" id="L258">					&quot;\t|&quot; + FormatUtil.FormatDouble (adblExecutionTimeNode[i], 1, 0, 1.) + &quot; =&gt; &quot; +</span>
+<span class="fc" id="L259">					FormatUtil.FormatDouble (adblHoldings[i], 7, 1, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L260">					FormatUtil.FormatDouble (0., 6, 1, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L261">					FormatUtil.FormatDouble (adblHoldingsDriftAdjustment[i], 4, 1, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L262">					FormatUtil.FormatDouble (0., 4, 1, 1.) + &quot; ||&quot;</span>
+				);
+			else
+<span class="fc" id="L265">				System.out.println (</span>
+<span class="fc" id="L266">					&quot;\t|&quot; + FormatUtil.FormatDouble (adblExecutionTimeNode[i], 1, 0, 1.) + &quot; =&gt; &quot; +</span>
+<span class="fc" id="L267">					FormatUtil.FormatDouble (adblHoldings[i], 7, 1, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L268">					FormatUtil.FormatDouble (adblTradeList[i - 1], 6, 1, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L269">					FormatUtil.FormatDouble (adblHoldingsDriftAdjustment[i], 4, 1, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L270">					FormatUtil.FormatDouble (adblTradeListDriftAdjustment[i - 1], 4, 1, 1.) + &quot; ||&quot;</span>
+				);
+		}
+
+<span class="fc" id="L274">		System.out.println (&quot;\t|-------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L276">		System.out.println (&quot;\n\t|-----------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L278">		System.out.println (&quot;\t|               PERIOD LEVEL COST DISTRIBUTION              ||&quot;);</span>
+
+<span class="fc" id="L280">		System.out.println (&quot;\t|-----------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L282">		System.out.println (&quot;\t|  PERIOD   |          MEAN         |        VARIANCE       ||&quot;);</span>
+
+<span class="fc" id="L284">		System.out.println (&quot;\t|-----------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L286">		System.out.println (&quot;\t|  PERIOD   |    INCR   |    CUML   |    INCR   |    CUML   ||&quot;);</span>
+
+<span class="fc" id="L288">		System.out.println (&quot;\t|-----------------------------------------------------------||&quot;);</span>
+
+<span class="fc bfc" id="L290" title="All 2 branches covered.">		for (int i = 0; i &lt; adblIncrementalShortfallMean.length; ++i)</span>
+<span class="fc" id="L291">			System.out.println (</span>
+				&quot;\t| PERIOD #&quot; + (i + 1) + &quot; | &quot; +
+<span class="fc" id="L293">				FormatUtil.FormatDouble (adblIncrementalShortfallMean[i], 6, 1, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L294">				FormatUtil.FormatDouble (adblCumulativeShortfallMean[i], 6, 1, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L295">				FormatUtil.FormatDouble (adblIncrementalShortfallVariance[i], 6, 1, 1.e-06) + &quot; | &quot; +</span>
+<span class="fc" id="L296">				FormatUtil.FormatDouble (adblCumulativeShortfallVariance[i], 6, 1, 1.e-06) + &quot; ||&quot;</span>
+			);
+
+<span class="fc" id="L299">		System.out.println (&quot;\t|-----------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L301">		System.out.println (&quot;\n\t|-----------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L303">		System.out.println (&quot;\t|            PERIOD LEVEL COST IMPACT CONTRIBUTION          ||&quot;);</span>
+
+<span class="fc" id="L305">		System.out.println (&quot;\t|-----------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L307">		System.out.println (&quot;\t|  PERIOD   |       PERMANENT       |       TEMPORARY       ||&quot;);</span>
+
+<span class="fc" id="L309">		System.out.println (&quot;\t|-----------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L311">		System.out.println (&quot;\t|  PERIOD   |    INCR   |    CUML   |    INCR   |    CUML   ||&quot;);</span>
+
+<span class="fc" id="L313">		System.out.println (&quot;\t|-----------------------------------------------------------||&quot;);</span>
+
+<span class="fc bfc" id="L315" title="All 2 branches covered.">		for (int i = 0; i &lt; adblIncrementalPermanentImpact.length; ++i)</span>
+<span class="fc" id="L316">			System.out.println (</span>
+				&quot;\t| PERIOD #&quot; + (i + 1) + &quot; | &quot; +
+<span class="fc" id="L318">				FormatUtil.FormatDouble (adblIncrementalPermanentImpact[i], 6, 1, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L319">				FormatUtil.FormatDouble (adblCumulativePermanentImpact[i], 6, 1, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L320">				FormatUtil.FormatDouble (adblIncrementalTemporaryImpact[i], 6, 1, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L321">				FormatUtil.FormatDouble (adblCumulativeTemporaryImpact[i], 6, 1, 1.) + &quot; ||&quot;</span>
+			);
+
+<span class="fc" id="L324">		System.out.println (&quot;\t|-----------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L326">		System.out.println (&quot;\n\t|--------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L328">		System.out.println (&quot;\t| TRANSACTION COST RECONCILIATION: AC2000 vs. EXPLICIT LINEAR  ||&quot;);</span>
+
+<span class="fc" id="L330">		System.out.println (&quot;\t|--------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L332">		System.out.println (</span>
+			&quot;\t| Transaction Cost Expectation         : &quot; +
+<span class="fc" id="L334">			FormatUtil.FormatDouble (r1un.mean(), 6, 1, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L335">			FormatUtil.FormatDouble (acdd.transactionCostExpectation(), 6, 1, 1.) + &quot; ||&quot;</span>
+		);
+
+<span class="fc" id="L338">		System.out.println (</span>
+			&quot;\t| Transaction Cost Variance (X 10^-06) : &quot; +
+<span class="fc" id="L340">			FormatUtil.FormatDouble (r1un.variance(), 6, 1, 1.e-06) + &quot; | &quot; +</span>
+<span class="fc" id="L341">			FormatUtil.FormatDouble (acdd.transactionCostVariance(), 6, 1, 1.e-06) + &quot; ||&quot;</span>
+		);
+
+<span class="fc" id="L344">		System.out.println (&quot;\t|--------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L346">		System.out.println (&quot;\n\t|---------------------------------||&quot;);</span>
+
+<span class="fc" id="L348">		System.out.println (&quot;\t|       AC2000 METRICS DUMP       ||&quot;);</span>
+
+<span class="fc" id="L350">		System.out.println (&quot;\t|---------------------------------||&quot;);</span>
+
+<span class="fc" id="L352">		System.out.println (&quot;\t| Kappa                  : &quot; + FormatUtil.FormatDouble (acdd.kappa(), 1, 3, 1.) + &quot; ||&quot;);</span>
+
+<span class="fc" id="L354">		System.out.println (&quot;\t| Kappa Tilda            : &quot; + FormatUtil.FormatDouble (acdd.kappaTilda(), 1, 3, 1.) + &quot; ||&quot;);</span>
+
+<span class="fc" id="L356">		System.out.println (&quot;\t| Half Life              : &quot; + FormatUtil.FormatDouble (acdd.halfLife(), 1, 3, 1.) + &quot; ||&quot;);</span>
+
+		// System.out.println (&quot;\t| Market Power: &quot; + FormatUtil.FormatDouble (acdd.marketPower(), 1, 4, 1.) + &quot; ||&quot;);
+
+<span class="fc" id="L360">		System.out.println (&quot;\t| Residual Holdings      : &quot; + FormatUtil.FormatDouble (acdd.residualHolding(), 5, 0, 1.) + &quot; ||&quot;);</span>
+
+<span class="fc" id="L362">		System.out.println (&quot;\t| Drift Gain Upper Bound : &quot; + FormatUtil.FormatDouble (acdd.driftGainUpperBound(), 2, 1, 1.) + &quot; ||&quot;);</span>
+
+<span class="fc" id="L364">		System.out.println (&quot;\t|---------------------------------||&quot;);</span>
+
+<span class="fc" id="L366">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L367">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

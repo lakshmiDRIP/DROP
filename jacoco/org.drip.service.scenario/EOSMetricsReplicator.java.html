@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EOSMetricsReplicator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.service.scenario</a> &gt; <span class="el_source">EOSMetricsReplicator.java</span></div><h1>EOSMetricsReplicator.java</h1><pre class="source lang-java linenums">
+package org.drip.service.scenario;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * EOSMetricsReplicator generates the EOS Metrics for Bonds with Embedded Option Schedules.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class EOSMetricsReplicator
+{
+<span class="nc" id="L58">	private int _iNumPath = -1;</span>
+<span class="nc" id="L59">	private double _dblPrice = java.lang.Double.NaN;</span>
+<span class="nc" id="L60">	private org.drip.product.credit.BondComponent _bond = null;</span>
+<span class="nc" id="L61">	private org.drip.measure.process.DiffusionEvolver _de = null;</span>
+<span class="nc" id="L62">	private org.drip.state.sequence.GovvieBuilderSettings _gbs = null;</span>
+<span class="nc" id="L63">	private org.drip.param.valuation.ValuationParams _valParams = null;</span>
+<span class="nc" id="L64">	private org.drip.param.market.CurveSurfaceQuoteContainer _csqc = null;</span>
+
+	/**
+	 * Standard Static EOSMetricsReplicator Creator
+	 * 
+	 * @param bond Bond Instance
+	 * @param valParams Valuation Parameters
+	 * @param csqc Market Parameters
+	 * @param gbs Govvie Builder Settings
+	 * @param dblLogNormalVolatility Long Normal Treasury Forward Volatility
+	 * @param dblPrice Market Price
+	 * 
+	 * @return EOSMetricsReplicator Instance
+	 */
+
+	public static final EOSMetricsReplicator Standard (
+		final org.drip.product.credit.BondComponent bond,
+		final org.drip.param.valuation.ValuationParams valParams,
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqc,
+		final org.drip.state.sequence.GovvieBuilderSettings gbs,
+		final double dblLogNormalVolatility,
+		final double dblPrice)
+	{
+		try {
+<span class="nc" id="L88">			return new EOSMetricsReplicator (</span>
+				bond,
+				valParams,
+				csqc,
+				gbs,
+				new org.drip.measure.process.DiffusionEvolver (
+<span class="nc" id="L94">					org.drip.measure.dynamics.DiffusionEvaluatorLogarithmic.Standard (</span>
+						0.,
+						dblLogNormalVolatility
+					)
+				),
+				50,
+				dblPrice
+			);
+<span class="nc" id="L102">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L103">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L106">		return null;</span>
+	}
+
+	/**
+	 * EOSMetricsReplicator Constructor
+	 * 
+	 * @param bond Bond Instance
+	 * @param valParams Valuation Parameters
+	 * @param csqc Market Parameters
+	 * @param gbs Govvie Builder Settings
+	 * @param de Diffusion Evolver
+	 * @param iNumPath Number of Simulation Paths
+	 * @param dblPrice Market Price
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid/Inconsistent
+	 */
+
+	public EOSMetricsReplicator (
+		final org.drip.product.credit.BondComponent bond,
+		final org.drip.param.valuation.ValuationParams valParams,
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqc,
+		final org.drip.state.sequence.GovvieBuilderSettings gbs,
+		final org.drip.measure.process.DiffusionEvolver de,
+		final int iNumPath,
+		final double dblPrice)
+		throws java.lang.Exception
+<span class="nc" id="L132">	{</span>
+<span class="nc bnc" id="L133" title="All 16 branches missed.">		if (null == (_bond = bond) || (!_bond.callable() &amp;&amp; _bond.putable()) ||</span>
+			null == (_valParams = valParams) ||
+			null == (_csqc = csqc) ||
+			null == (_gbs = gbs) ||
+			null == (_de = de) ||
+			0 &gt;= (_iNumPath = iNumPath) ||
+<span class="nc bnc" id="L139" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblPrice = dblPrice))</span>
+<span class="nc" id="L140">			throw new java.lang.Exception (&quot;EOSMetricsReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L141">	}</span>
+
+	/**
+	 * Retrieve the Underlying Bond
+	 * 
+	 * @return The Underlying Bond
+	 */
+
+	public org.drip.product.credit.BondComponent bond()
+	{
+<span class="nc" id="L151">		return _bond;</span>
+	}
+
+	/**
+	 * Retrieve the Valuation Parameters
+	 * 
+	 * @return The Valuation Parameters
+	 */
+
+	public org.drip.param.valuation.ValuationParams valuationParameters()
+	{
+<span class="nc" id="L162">		return _valParams;</span>
+	}
+
+	/**
+	 * Retrieve the Market Parameters
+	 * 
+	 * @return The Market Parameters
+	 */
+
+	public org.drip.param.market.CurveSurfaceQuoteContainer marketParameters()
+	{
+<span class="nc" id="L173">		return _csqc;</span>
+	}
+
+	/**
+	 * Retrieve the Price
+	 * 
+	 * @return The Price
+	 */
+
+	public double price()
+	{
+<span class="nc" id="L184">		return _dblPrice;</span>
+	}
+
+	/**
+	 * Retrieve the Diffusion Evolver
+	 * 
+	 * @return The Diffusion Evolver
+	 */
+
+	public org.drip.measure.process.DiffusionEvolver diffusionEvolver()
+	{
+<span class="nc" id="L195">		return _de;</span>
+	}
+
+	/**
+	 * Retrieve the Govvie Builder Settings
+	 * 
+	 * @return The Govvie Builder Settings
+	 */
+
+	public org.drip.state.sequence.GovvieBuilderSettings govvieBuilderSetting()
+	{
+<span class="nc" id="L206">		return _gbs;</span>
+	}
+
+	/**
+	 * Retrieve the Number of Simulation Paths
+	 * 
+	 * @return The Number of Simulation Paths
+	 */
+
+	public int numPath()
+	{
+<span class="nc" id="L217">		return _iNumPath;</span>
+	}
+
+	/**
+	 * Generate an Instance of a Replication Run
+	 * 
+	 * @return Instance of a Replication Run
+	 */
+
+	public org.drip.analytics.output.BondEOSMetrics generateRun()
+	{
+<span class="nc bnc" id="L228" title="All 2 branches missed.">		return _bond.callable() ? _bond.callMetrics (</span>
+			_valParams,
+			_csqc,
+			null,
+			_dblPrice,
+			_gbs,
+			_de,
+			_iNumPath
+<span class="nc" id="L236">		) :  _bond.putMetrics (</span>
+			_valParams,
+			_csqc,
+			null,
+			_dblPrice,
+			_gbs,
+			_de,
+			_iNumPath
+		);
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

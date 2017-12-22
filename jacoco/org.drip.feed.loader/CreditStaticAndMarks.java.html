@@ -1,0 +1,1961 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CreditStaticAndMarks.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.feed.loader</a> &gt; <span class="el_source">CreditStaticAndMarks.java</span></div><h1>CreditStaticAndMarks.java</h1><pre class="source lang-java linenums">
+package org.drip.feed.loader;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * Copyright (C) 2012 Lakshmi Krishnamurthy
+ * Copyright (C) 2011 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * CreditStaticAndMarks contains functionality to load a variety of Credit and Rates Product reference data
+ * 	and closing marks. It exposes the following functionality:
+ * 	- Load the bond reference data, static data, amortization schedule and EOS
+ * 	- Build the bond instance entities from the reference data
+ * 	- Load the bond, CDS, and Rates product Closing Marks.
+ * 	- Load and build the Holiday Calendars
+ * 
+ * CreditStaticAndMarks assumes the appropriate connections are available to load the data.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L69">class CreditStaticAndMarks {</span>
+	private static final boolean m_bBlog = false;
+<span class="nc" id="L71">	private static java.lang.String INVALID_BBG_FIELD_START = &quot;#N/A&quot;;</span>
+
+	public static java.lang.String makeSQLClearISINOrCUSIP (
+		final java.lang.String[] astrRecord)
+	{
+<span class="nc bnc" id="L76" title="All 4 branches missed.">		if (null == astrRecord || 0 == astrRecord.length) return null;</span>
+
+<span class="nc" id="L78">		java.lang.String strISIN = astrRecord[1];</span>
+<span class="nc" id="L79">		java.lang.String strCUSIP = astrRecord[0];</span>
+
+<span class="nc bnc" id="L81" title="All 4 branches missed.">		if (null == strISIN || strISIN.isEmpty()) return null;</span>
+
+<span class="nc bnc" id="L83" title="All 4 branches missed.">		if (null == strCUSIP || strCUSIP.isEmpty()) return null;</span>
+
+<span class="nc" id="L85">		java.lang.StringBuilder sb = new java.lang.StringBuilder();</span>
+
+<span class="nc" id="L87">		sb.append (&quot;delete from BondRef where ISIN = '&quot;).append (strISIN).append (&quot;' or CUSIP = '&quot;).append</span>
+<span class="nc" id="L88">			(strCUSIP).append (&quot;'&quot;);</span>
+
+<span class="nc" id="L90">		return sb.toString();</span>
+	}
+
+	private static java.lang.String makeSQLClearMarksForBondDate (
+		final java.lang.String[] astrRecord)
+	{
+<span class="nc bnc" id="L96" title="All 4 branches missed.">		if (null == astrRecord || 0 == astrRecord.length) return null;</span>
+
+<span class="nc" id="L98">		java.lang.String strIDType = astrRecord[6];</span>
+
+<span class="nc bnc" id="L100" title="All 6 branches missed.">		if (null == strIDType || 0 == strIDType.length() || (!&quot;ISIN&quot;.equalsIgnoreCase (strIDType) &amp;&amp;</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">			!&quot;CUSIP&quot;.equalsIgnoreCase (strIDType))) {</span>
+<span class="nc" id="L102">			System.out.println (&quot;Unknown ID Type: &quot; + strIDType);</span>
+
+<span class="nc" id="L104">			return null;</span>
+		}
+
+<span class="nc" id="L107">		java.lang.String strID = astrRecord[1];</span>
+<span class="nc" id="L108">		java.lang.String strORAMarkDate = &quot;&quot;;</span>
+
+		try {
+<span class="nc" id="L111">			strORAMarkDate = org.drip.analytics.date.DateUtil.MakeOracleDateFromBBGDate</span>
+<span class="nc" id="L112">				(astrRecord[3].trim());</span>
+<span class="nc" id="L113">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L114">			System.out.println (&quot;Bad mark date &quot; + astrRecord[1] + &quot; for &quot; + strIDType + &quot; &quot; + strID);</span>
+
+<span class="nc" id="L116">			return null;</span>
+<span class="nc" id="L117">		}</span>
+
+<span class="nc" id="L119">		java.lang.StringBuilder sb = new java.lang.StringBuilder();</span>
+
+<span class="nc" id="L121">		sb.append (&quot;delete from BondMarks where ID = '&quot;).append (strID).append (&quot;' and MarkDate = '&quot;).append</span>
+<span class="nc" id="L122">			(strORAMarkDate).append (&quot;'&quot;);</span>
+
+<span class="nc" id="L124">		return sb.toString();</span>
+	}
+
+	private static java.lang.String makeSQLBondMarksInsert (
+		final java.lang.String[] astrRecord)
+	{
+<span class="nc bnc" id="L130" title="All 4 branches missed.">		if (null == astrRecord || 0 == astrRecord.length) return null;</span>
+
+<span class="nc" id="L132">		java.lang.String strIDType = astrRecord[6];</span>
+
+<span class="nc bnc" id="L134" title="All 6 branches missed.">		if (null == strIDType || 0 == strIDType.length() || (!&quot;ISIN&quot;.equalsIgnoreCase (strIDType) &amp;&amp;</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">			!&quot;CUSIP&quot;.equalsIgnoreCase (strIDType))) {</span>
+<span class="nc" id="L136">			System.out.println (&quot;Unknown ID Type: &quot; + strIDType);</span>
+
+<span class="nc" id="L138">			return null;</span>
+		}
+
+<span class="nc" id="L141">		java.lang.String strID = astrRecord[1];</span>
+<span class="nc" id="L142">		java.lang.String strORAMarkDate = &quot;&quot;;</span>
+
+		try {
+<span class="nc" id="L145">			strORAMarkDate = org.drip.analytics.date.DateUtil.MakeOracleDateFromBBGDate (astrRecord[3].trim());</span>
+<span class="nc" id="L146">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L147">			System.out.println (&quot;Bad mark date &quot; + astrRecord[1] + &quot; for &quot; + strIDType + &quot; &quot; + strID);</span>
+
+<span class="nc" id="L149">			return null;</span>
+<span class="nc" id="L150">		}</span>
+
+<span class="nc" id="L152">		double dblMarkValue = java.lang.Double.NaN;</span>
+
+		try {
+<span class="nc" id="L155">			dblMarkValue = new java.lang.Double (astrRecord[2].trim()).doubleValue();</span>
+<span class="nc" id="L156">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L157">			System.out.println (&quot;Bad mark &quot; + astrRecord[2] + &quot; for &quot; + strIDType + &quot; &quot; + strID);</span>
+
+<span class="nc" id="L159">			return null;</span>
+<span class="nc" id="L160">		}</span>
+
+<span class="nc" id="L162">		java.lang.StringBuilder sb = new java.lang.StringBuilder();</span>
+
+<span class="nc" id="L164">		sb.append (&quot;insert into BondMarks values('&quot;).append (strIDType).append (&quot;', '&quot;).append (strID).append</span>
+<span class="nc" id="L165">			(&quot;', '&quot;).append (strORAMarkDate).append (&quot;', &quot;).append (dblMarkValue).append (&quot;)&quot;);</span>
+
+<span class="nc" id="L167">		return sb.toString();</span>
+	}
+
+	private static java.lang.String makeSQLClear_FODATA (
+		final java.lang.String[] astrValRecord)
+	{
+<span class="nc bnc" id="L173" title="All 4 branches missed.">		if (null == astrValRecord || 0 == astrValRecord.length) return null;</span>
+
+<span class="nc" id="L175">		java.lang.String strISIN = astrValRecord[40];</span>
+
+<span class="nc bnc" id="L177" title="All 4 branches missed.">		if (null == strISIN || strISIN.isEmpty()) return null;</span>
+
+<span class="nc" id="L179">		return &quot;delete from BondRef where ISIN = '&quot; + strISIN + &quot;'&quot;;</span>
+	}
+
+	private static java.lang.String makeSQLInsert_FODATA (
+		final java.lang.String[] astrValRecord)
+	{
+<span class="nc bnc" id="L185" title="All 4 branches missed.">		if (null == astrValRecord || 0 == astrValRecord.length) return null;</span>
+
+<span class="nc" id="L187">		java.lang.String strCUSIP = astrValRecord[42];</span>
+
+<span class="nc bnc" id="L189" title="All 4 branches missed.">		if (null == strCUSIP || strCUSIP.isEmpty()) return null;</span>
+
+<span class="nc" id="L191">		java.lang.String strISIN = astrValRecord[40];</span>
+
+<span class="nc bnc" id="L193" title="All 4 branches missed.">		if (null == strISIN || strISIN.isEmpty()) return null;</span>
+
+<span class="nc" id="L195">		java.lang.String strName = astrValRecord[59];</span>
+
+<span class="nc bnc" id="L197" title="All 4 branches missed.">		if (null == strName || strName.isEmpty()) return null;</span>
+
+<span class="nc" id="L199">		java.lang.String strDescription = astrValRecord[59];</span>
+
+<span class="nc bnc" id="L201" title="All 4 branches missed.">		if (null == strDescription || strDescription.isEmpty()) return null;</span>
+
+<span class="nc" id="L203">		java.lang.String strTicker = astrValRecord[3];</span>
+
+<span class="nc bnc" id="L205" title="All 4 branches missed.">		if (null == strTicker || strTicker.isEmpty()) return null;</span>
+
+<span class="nc" id="L207">		double dblCoupon = 0.;</span>
+
+		try {
+<span class="nc" id="L210">			dblCoupon = new java.lang.Double (astrValRecord[4].trim()).doubleValue();</span>
+<span class="nc" id="L211">		} catch (java.lang.Exception e) {</span>
+			if (m_bBlog) System.out.println (&quot;Bad coupon &quot; + astrValRecord[4] + &quot; for ISIN &quot; + strISIN);
+<span class="nc" id="L213">		}</span>
+
+<span class="nc" id="L215">		java.lang.String strOracleMaturity = &quot;&quot;;</span>
+
+		try {
+<span class="nc" id="L218">			strOracleMaturity = org.drip.analytics.date.DateUtil.MakeOracleDateFromBBGDate</span>
+<span class="nc" id="L219">				(astrValRecord[5].trim());</span>
+<span class="nc" id="L220">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L221">			System.out.println (&quot;Bad maturity &quot; + astrValRecord[5] + &quot; for ISIN &quot; + strISIN);</span>
+
+<span class="nc" id="L223">			return null;</span>
+<span class="nc" id="L224">		}</span>
+
+<span class="nc" id="L226">		java.lang.String strOracleAnnounce = &quot;&quot;;</span>
+
+		try {
+<span class="nc" id="L229">			strOracleAnnounce = org.drip.analytics.date.DateUtil.MakeOracleDateFromBBGDate</span>
+<span class="nc" id="L230">				(astrValRecord[29].trim());</span>
+<span class="nc" id="L231">		} catch (java.lang.Exception e) {</span>
+			if (m_bBlog)
+				System.out.println (&quot;Bad announce date &quot; + astrValRecord[29] + &quot; for ISIN &quot; + strISIN);
+<span class="nc" id="L234">		}</span>
+
+<span class="nc" id="L236">		java.lang.String strOracleFirstSettle = &quot;&quot;;</span>
+
+		try {
+<span class="nc" id="L239">			strOracleFirstSettle = org.drip.analytics.date.DateUtil.MakeOracleDateFromBBGDate</span>
+<span class="nc" id="L240">				(astrValRecord[31].trim());</span>
+<span class="nc" id="L241">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L242">			System.out.println (&quot;Bad first settle &quot; + astrValRecord[31] + &quot; for ISIN &quot; + strISIN);</span>
+
+<span class="nc" id="L244">			return null;</span>
+<span class="nc" id="L245">		}</span>
+
+<span class="nc" id="L247">		java.lang.String strOracleFirstCoupon = &quot;&quot;;</span>
+
+		try {
+<span class="nc" id="L250">			strOracleFirstCoupon = org.drip.analytics.date.DateUtil.MakeOracleDateFromBBGDate</span>
+<span class="nc" id="L251">				(astrValRecord[33].trim());</span>
+<span class="nc" id="L252">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L253">		}</span>
+
+<span class="nc bnc" id="L255" title="All 4 branches missed.">		if (null == strOracleFirstCoupon || strOracleFirstCoupon.isEmpty())</span>
+<span class="nc" id="L256">			strOracleFirstCoupon = strOracleFirstSettle;</span>
+
+<span class="nc bnc" id="L258" title="All 4 branches missed.">		if (null == strOracleAnnounce || strOracleAnnounce.isEmpty())</span>
+<span class="nc" id="L259">			strOracleAnnounce = strOracleFirstCoupon;</span>
+
+<span class="nc" id="L261">		java.lang.String strCurrency = astrValRecord[67];</span>
+
+<span class="nc bnc" id="L263" title="All 4 branches missed.">		if (null == strCurrency || strCurrency.isEmpty()) return null;</span>
+
+<span class="nc" id="L265">		int iCouponFreq = 0;</span>
+
+		try {
+<span class="nc" id="L268">			iCouponFreq = (int) new java.lang.Double (astrValRecord[12].trim()).doubleValue();</span>
+<span class="nc" id="L269">		} catch (java.lang.Exception e) {</span>
+			if (m_bBlog)
+				System.out.println (&quot;Bad coupon freq &quot; + astrValRecord[12] + &quot; for ISIN &quot; + strISIN);
+<span class="nc" id="L272">		}</span>
+
+<span class="nc" id="L274">		java.lang.String strDayCount = org.drip.analytics.support.Helper.GetDayCountFromBBGCode</span>
+<span class="nc" id="L275">			(astrValRecord[16]);</span>
+
+<span class="nc bnc" id="L277" title="All 4 branches missed.">		if (null == strDayCount || strDayCount.isEmpty()) return null;</span>
+
+<span class="nc" id="L279">		double dblFloatSpread = 0.;</span>
+
+		try {
+<span class="nc" id="L282">			dblFloatSpread = new java.lang.Double (astrValRecord[78].trim()).doubleValue();</span>
+<span class="nc" id="L283">		} catch (java.lang.Exception e) {</span>
+			if (m_bBlog)
+				System.out.println (&quot;Bad float spread &quot; + astrValRecord[78] + &quot; for ISIN &quot; + strISIN);
+<span class="nc" id="L286">		}</span>
+
+<span class="nc" id="L288">		java.lang.String strRateIndex =</span>
+<span class="nc" id="L289">			org.drip.analytics.support.Helper.RateIndexFromCcyAndCouponFreq (strCurrency,</span>
+				iCouponFreq);
+
+<span class="nc" id="L292">		java.lang.String strCalendar = astrValRecord[19];</span>
+
+<span class="nc bnc" id="L294" title="All 2 branches missed.">		if (strCalendar.startsWith (INVALID_BBG_FIELD_START)) strCalendar = &quot;&quot;;</span>
+
+<span class="nc" id="L296">		java.lang.String strMoodys = &quot;&quot;;</span>
+<span class="nc" id="L297">		java.lang.String strSnP = &quot;&quot;;</span>
+<span class="nc" id="L298">		java.lang.String strFitch = &quot;&quot;;</span>
+<span class="nc" id="L299">		java.lang.String strIndustrySector = astrValRecord[54];</span>
+<span class="nc" id="L300">		java.lang.String strIndustryGroup = astrValRecord[55];</span>
+<span class="nc" id="L301">		java.lang.String strSnrSub = astrValRecord[20];</span>
+<span class="nc" id="L302">		java.lang.String strIssuer = astrValRecord[0];</span>
+<span class="nc" id="L303">		double dblAmountIssued = 0.;</span>
+
+		try {
+<span class="nc" id="L306">			dblAmountIssued = new java.lang.Double (astrValRecord[21].trim()).doubleValue();</span>
+<span class="nc" id="L307">		} catch (java.lang.Exception e) {</span>
+			if (m_bBlog) System.out.println (&quot;Bad issue amt &quot; + astrValRecord[21] + &quot; for ISIN &quot; + strISIN);
+<span class="nc" id="L309">		}</span>
+
+<span class="nc" id="L311">		double dblAmountOutstanding = 0.;</span>
+
+		try {
+<span class="nc" id="L314">			dblAmountOutstanding = new java.lang.Double (astrValRecord[22].trim()).doubleValue();</span>
+<span class="nc" id="L315">		} catch (java.lang.Exception e) {</span>
+			if (m_bBlog)
+				System.out.println (&quot;Bad outstanding amt &quot; + astrValRecord[22] + &quot; for ISIN &quot; + strISIN);
+<span class="nc" id="L318">		}</span>
+
+<span class="nc" id="L320">		java.lang.String strOracleIssue = &quot;&quot;;</span>
+
+		try {
+<span class="nc" id="L323">			strOracleIssue = org.drip.analytics.date.DateUtil.MakeOracleDateFromBBGDate</span>
+<span class="nc" id="L324">				(astrValRecord[29].trim());</span>
+<span class="nc" id="L325">		} catch (java.lang.Exception e) {</span>
+			if (m_bBlog) System.out.println (&quot;Bad issue date &quot; + astrValRecord[29] + &quot; for ISIN &quot; + strISIN);
+<span class="nc" id="L327">		}</span>
+
+<span class="nc" id="L329">		java.lang.String strCouponDates = &quot;&quot;;</span>
+<span class="nc" id="L330">		java.lang.String strCouponFactors = &quot;&quot;;</span>
+<span class="nc" id="L331">		java.lang.String strNotionalDates = &quot;&quot;;</span>
+<span class="nc" id="L332">		java.lang.String strNotionalFactors = &quot;&quot;;</span>
+<span class="nc" id="L333">		java.lang.String strIssuerSPN = &quot;&quot;;</span>
+<span class="nc" id="L334">		java.lang.String strFloatQuote = &quot;FullCoupon&quot;;</span>
+
+<span class="nc" id="L336">		java.lang.StringBuilder sb = new java.lang.StringBuilder();</span>
+
+<span class="nc" id="L338">		sb.append (&quot;INSERT INTO BondRef VALUES (&quot;);</span>
+
+<span class="nc" id="L340">		sb.append (&quot;'&quot; + strISIN + &quot;',&quot;);</span>
+
+<span class="nc" id="L342">		sb.append (&quot;'&quot; + strCUSIP + &quot;',&quot;);</span>
+
+<span class="nc" id="L344">		sb.append (&quot;'&quot; + strName + &quot;',&quot;);</span>
+
+<span class="nc" id="L346">		sb.append (&quot;'&quot; + strDescription + &quot;',&quot;);</span>
+
+<span class="nc" id="L348">		sb.append (&quot;'&quot; + strTicker + &quot;',&quot;);</span>
+
+<span class="nc" id="L350">		sb.append (dblCoupon + &quot;,&quot;);</span>
+
+<span class="nc" id="L352">		sb.append (&quot;'&quot; + strOracleMaturity + &quot;',&quot;);</span>
+
+<span class="nc" id="L354">		sb.append (&quot;'&quot; + strOracleAnnounce + &quot;',&quot;);</span>
+
+<span class="nc" id="L356">		sb.append (&quot;'&quot; + strOracleFirstSettle + &quot;',&quot;);</span>
+
+<span class="nc" id="L358">		sb.append (&quot;'&quot; + strOracleFirstCoupon + &quot;',&quot;);</span>
+
+<span class="nc" id="L360">		sb.append (&quot;'&quot; + strCurrency + &quot;',&quot;);</span>
+
+<span class="nc" id="L362">		sb.append (iCouponFreq + &quot;,&quot;);</span>
+
+<span class="nc" id="L364">		sb.append (&quot;'&quot; + strDayCount + &quot;',&quot;);</span>
+
+<span class="nc" id="L366">		sb.append (dblFloatSpread + &quot;,&quot;);</span>
+
+<span class="nc" id="L368">		sb.append (&quot;'&quot; + strRateIndex + &quot;',&quot;);</span>
+
+<span class="nc" id="L370">		sb.append (&quot;'&quot; + strCalendar + &quot;',&quot;);</span>
+
+<span class="nc" id="L372">		sb.append (&quot;'&quot; + strMoodys + &quot;',&quot;);</span>
+
+<span class="nc" id="L374">		sb.append (&quot;'&quot; + strSnP + &quot;',&quot;);</span>
+
+<span class="nc" id="L376">		sb.append (&quot;'&quot; + strFitch + &quot;',&quot;);</span>
+
+<span class="nc" id="L378">		sb.append (&quot;'&quot; + strIndustrySector + &quot;',&quot;);</span>
+
+<span class="nc" id="L380">		sb.append (&quot;'&quot; + strIndustryGroup + &quot;',&quot;);</span>
+
+<span class="nc" id="L382">		sb.append (&quot;'&quot; + strSnrSub + &quot;',&quot;);</span>
+
+<span class="nc" id="L384">		sb.append (&quot;'&quot; + strIssuer + &quot;',&quot;);</span>
+
+<span class="nc" id="L386">		sb.append (dblAmountIssued + &quot;,&quot;);</span>
+
+<span class="nc" id="L388">		sb.append (dblAmountOutstanding + &quot;,&quot;);</span>
+
+<span class="nc" id="L390">		sb.append (&quot;'&quot; + strOracleIssue + &quot;',&quot;);</span>
+
+<span class="nc" id="L392">		sb.append (&quot;'&quot; + strCouponDates + &quot;',&quot;);</span>
+
+<span class="nc" id="L394">		sb.append (&quot;'&quot; + strCouponFactors + &quot;',&quot;);</span>
+
+<span class="nc" id="L396">		sb.append (&quot;'&quot; + strNotionalDates + &quot;',&quot;);</span>
+
+<span class="nc" id="L398">		sb.append (&quot;'&quot; + strNotionalFactors + &quot;',&quot;);</span>
+
+<span class="nc" id="L400">		sb.append (&quot;'&quot; + strIssuerSPN + &quot;',&quot;);</span>
+
+<span class="nc" id="L402">		sb.append (&quot;'&quot; + strFloatQuote + &quot;')&quot;);</span>
+
+<span class="nc" id="L404">		return sb.toString();</span>
+	}
+
+	private static final java.lang.String ClearISINDateTypeFromEOS (
+		final java.lang.String[] astrEOS)
+	{
+<span class="nc" id="L410">		java.lang.String strISIN = astrEOS[1].trim();</span>
+
+<span class="nc" id="L412">		java.lang.String strOracleExerciseStartDate = &quot;&quot;;</span>
+
+		try {
+<span class="nc" id="L415">			strOracleExerciseStartDate = org.drip.analytics.date.DateUtil.MakeOracleDateFromBBGDate</span>
+<span class="nc" id="L416">				(astrEOS[2].trim());</span>
+<span class="nc" id="L417">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L418">			System.out.println (&quot;Bad exercise date &quot; + astrEOS[2] + &quot; for ISIN &quot; + strISIN);</span>
+
+<span class="nc" id="L420">			return &quot;&quot;;</span>
+<span class="nc" id="L421">		}</span>
+
+<span class="nc" id="L423">		java.lang.String strOracleExerciseEndDate = &quot;&quot;;</span>
+
+		try {
+<span class="nc" id="L426">			strOracleExerciseEndDate = org.drip.analytics.date.DateUtil.MakeOracleDateFromBBGDate</span>
+<span class="nc" id="L427">				(astrEOS[4].trim());</span>
+<span class="nc" id="L428">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L429">			System.out.println (&quot;Bad exercise date &quot; + astrEOS[4] + &quot; for ISIN &quot; + strISIN);</span>
+
+<span class="nc" id="L431">			return &quot;&quot;;</span>
+<span class="nc" id="L432">		}</span>
+
+<span class="nc" id="L434">		java.lang.String strCallOrPut = astrEOS[8].trim();</span>
+
+<span class="nc" id="L436">		java.lang.String strEuroOrAmer = astrEOS[9].trim();</span>
+
+<span class="nc" id="L438">		return &quot;delete from EOS where ISIN = '&quot; + strISIN + &quot;' and ExerciseStartDate = '&quot; +</span>
+			strOracleExerciseStartDate + &quot;' and ExerciseEndDate = '&quot; + strOracleExerciseEndDate +
+				&quot;' and CallOrPut = '&quot; + strCallOrPut + &quot;' and EuroAmer = '&quot; + strEuroOrAmer + &quot;'&quot;;
+	}
+
+	private static final java.lang.String InsertIntoEOS (
+		final java.lang.String[] astrEOS)
+	{
+<span class="nc" id="L446">		java.lang.String strISIN = astrEOS[1].trim();</span>
+
+<span class="nc" id="L448">		java.lang.String strOracleExerciseStartDate = &quot;&quot;;</span>
+
+		try {
+<span class="nc" id="L451">			strOracleExerciseStartDate = org.drip.analytics.date.DateUtil.MakeOracleDateFromBBGDate</span>
+<span class="nc" id="L452">				(astrEOS[2].trim());</span>
+<span class="nc" id="L453">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L454">			System.out.println (&quot;Bad exercise start &quot; + astrEOS[2] + &quot; for ISIN &quot; + strISIN);</span>
+
+<span class="nc" id="L456">			return null;</span>
+<span class="nc" id="L457">		}</span>
+
+<span class="nc" id="L459">		java.lang.String strOracleExerciseEndDate = &quot;&quot;;</span>
+
+		try {
+<span class="nc" id="L462">			strOracleExerciseEndDate = org.drip.analytics.date.DateUtil.MakeOracleDateFromBBGDate</span>
+<span class="nc" id="L463">				(astrEOS[4].trim());</span>
+<span class="nc" id="L464">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L465">			System.out.println (&quot;Bad exercise end &quot; + astrEOS[4] + &quot; for ISIN &quot; + strISIN);</span>
+
+<span class="nc" id="L467">			return null;</span>
+<span class="nc" id="L468">		}</span>
+
+<span class="nc" id="L470">		double dblExerciseFactor = java.lang.Double.NaN;</span>
+
+		try {
+<span class="nc" id="L473">			dblExerciseFactor = new java.lang.Double (astrEOS[6].trim()).doubleValue();</span>
+<span class="nc" id="L474">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L475">			System.out.println (&quot;Bad exercise factor &quot; + astrEOS[6] + &quot; for ISIN &quot; + strISIN);</span>
+
+<span class="nc" id="L477">			return null;</span>
+<span class="nc" id="L478">		}</span>
+
+<span class="nc" id="L480">		java.lang.String strExerciseCallOrPut = astrEOS[8].trim();</span>
+
+<span class="nc" id="L482">		java.lang.String strExerciseEuroOrAmer = astrEOS[9].trim();</span>
+
+<span class="nc" id="L484">		java.lang.String strStrikeType = astrEOS[12].trim();</span>
+
+<span class="nc" id="L486">		int iKnockoutOnDefault = 1;</span>
+
+		try {
+<span class="nc" id="L489">			iKnockoutOnDefault = (int) new java.lang.Double (astrEOS[13].trim()).doubleValue();</span>
+<span class="nc" id="L490">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L491">			System.out.println (&quot;Bad knockout on default &quot; + astrEOS[13] + &quot; for ISIN &quot; + strISIN);</span>
+
+<span class="nc" id="L493">			return null;</span>
+<span class="nc" id="L494">		}</span>
+
+<span class="nc" id="L496">		return &quot;insert into EOS values('&quot; + strISIN + &quot;', '&quot; + strOracleExerciseStartDate + &quot;', '&quot; +</span>
+			strOracleExerciseEndDate + &quot;', &quot; + dblExerciseFactor + &quot;, '&quot; + strExerciseCallOrPut + &quot;', '&quot; +
+				strExerciseEuroOrAmer + &quot;', '&quot; + strStrikeType + &quot;', &quot; + iKnockoutOnDefault + &quot;, 'N')&quot;;
+	}
+
+	private static final java.lang.String ClearFromIREOD (
+		final java.lang.String[] astrIREOD)
+	{
+<span class="nc" id="L504">		java.lang.String strType = astrIREOD[3].trim();</span>
+
+<span class="nc" id="L506">		java.lang.String strCurrency = astrIREOD[4].trim();</span>
+
+<span class="nc" id="L508">		java.lang.String strOracleCloseDate = &quot;&quot;;</span>
+
+		try {
+<span class="nc" id="L511">			strOracleCloseDate = org.drip.analytics.date.DateUtil.MakeOracleDateFromBBGDate</span>
+<span class="nc" id="L512">				(astrIREOD[1].trim());</span>
+<span class="nc" id="L513">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L514">			System.out.println (&quot;Bad date &quot; + astrIREOD[1] + &quot; for &quot; + strCurrency);</span>
+
+<span class="nc" id="L516">			return null;</span>
+<span class="nc" id="L517">		}</span>
+
+<span class="nc" id="L519">		return &quot;delete from IR_EOD where EOD = '&quot; + strOracleCloseDate + &quot;' and Currency = '&quot; +</span>
+			strCurrency + &quot;' and Type = '&quot; + strType + &quot;'&quot;;
+	}
+
+	private static final java.lang.String InsertIntoIREOD (
+		final java.lang.String[] astrIREOD)
+	{
+<span class="nc" id="L526">		java.lang.String strType = astrIREOD[3].trim();</span>
+
+<span class="nc" id="L528">		java.lang.String strCurrency = astrIREOD[4].trim();</span>
+
+<span class="nc" id="L530">		java.lang.String strOracleCloseDate = &quot;&quot;;</span>
+<span class="nc" id="L531">		double dbl1D = java.lang.Double.NaN;</span>
+<span class="nc" id="L532">		double dbl1M = java.lang.Double.NaN;</span>
+<span class="nc" id="L533">		double dbl2M = java.lang.Double.NaN;</span>
+<span class="nc" id="L534">		double dbl3M = java.lang.Double.NaN;</span>
+<span class="nc" id="L535">		double dbl4M = java.lang.Double.NaN;</span>
+<span class="nc" id="L536">		double dbl5M = java.lang.Double.NaN;</span>
+<span class="nc" id="L537">		double dbl6M = java.lang.Double.NaN;</span>
+<span class="nc" id="L538">		double dbl9M = java.lang.Double.NaN;</span>
+<span class="nc" id="L539">		double dbl1Y = java.lang.Double.NaN;</span>
+<span class="nc" id="L540">		double dbl18M = java.lang.Double.NaN;</span>
+<span class="nc" id="L541">		double dbl2Y = java.lang.Double.NaN;</span>
+<span class="nc" id="L542">		double dbl3Y = java.lang.Double.NaN;</span>
+<span class="nc" id="L543">		double dbl4Y = java.lang.Double.NaN;</span>
+<span class="nc" id="L544">		double dbl5Y = java.lang.Double.NaN;</span>
+<span class="nc" id="L545">		double dbl6Y = java.lang.Double.NaN;</span>
+<span class="nc" id="L546">		double dbl7Y = java.lang.Double.NaN;</span>
+<span class="nc" id="L547">		double dbl8Y = java.lang.Double.NaN;</span>
+<span class="nc" id="L548">		double dbl9Y = java.lang.Double.NaN;</span>
+<span class="nc" id="L549">		double dbl10Y = java.lang.Double.NaN;</span>
+<span class="nc" id="L550">		double dbl12Y = java.lang.Double.NaN;</span>
+<span class="nc" id="L551">		double dbl15Y = java.lang.Double.NaN;</span>
+<span class="nc" id="L552">		double dbl20Y = java.lang.Double.NaN;</span>
+<span class="nc" id="L553">		double dbl25Y = java.lang.Double.NaN;</span>
+<span class="nc" id="L554">		double dbl30Y = java.lang.Double.NaN;</span>
+<span class="nc" id="L555">		double dbl40Y = java.lang.Double.NaN;</span>
+
+		try {
+<span class="nc" id="L558">			strOracleCloseDate = org.drip.analytics.date.DateUtil.MakeOracleDateFromBBGDate</span>
+<span class="nc" id="L559">				(astrIREOD[1].trim());</span>
+
+<span class="nc" id="L561">			dbl1D = new java.lang.Double (astrIREOD[5].trim()).doubleValue();</span>
+
+<span class="nc" id="L563">			dbl1M = new java.lang.Double (astrIREOD[6].trim()).doubleValue();</span>
+
+<span class="nc" id="L565">			dbl2M = new java.lang.Double (astrIREOD[7].trim()).doubleValue();</span>
+
+<span class="nc" id="L567">			dbl3M = new java.lang.Double (astrIREOD[8].trim()).doubleValue();</span>
+
+<span class="nc" id="L569">			dbl4M = new java.lang.Double (astrIREOD[9].trim()).doubleValue();</span>
+
+<span class="nc" id="L571">			dbl5M = new java.lang.Double (astrIREOD[10].trim()).doubleValue();</span>
+
+<span class="nc" id="L573">			dbl6M = new java.lang.Double (astrIREOD[11].trim()).doubleValue();</span>
+
+<span class="nc" id="L575">			dbl9M = new java.lang.Double (astrIREOD[12].trim()).doubleValue();</span>
+
+<span class="nc" id="L577">			dbl1Y = new java.lang.Double (astrIREOD[13].trim()).doubleValue();</span>
+
+<span class="nc" id="L579">			dbl18M = new java.lang.Double (astrIREOD[14].trim()).doubleValue();</span>
+
+<span class="nc" id="L581">			dbl2Y = new java.lang.Double (astrIREOD[15].trim()).doubleValue();</span>
+
+<span class="nc" id="L583">			dbl3Y = new java.lang.Double (astrIREOD[16].trim()).doubleValue();</span>
+
+<span class="nc" id="L585">			dbl4Y = new java.lang.Double (astrIREOD[17].trim()).doubleValue();</span>
+
+<span class="nc" id="L587">			dbl5Y = new java.lang.Double (astrIREOD[18].trim()).doubleValue();</span>
+
+<span class="nc" id="L589">			dbl6Y = new java.lang.Double (astrIREOD[19].trim()).doubleValue();</span>
+
+<span class="nc" id="L591">			dbl7Y = new java.lang.Double (astrIREOD[20].trim()).doubleValue();</span>
+
+<span class="nc" id="L593">			dbl8Y = new java.lang.Double (astrIREOD[21].trim()).doubleValue();</span>
+
+<span class="nc" id="L595">			dbl9Y = new java.lang.Double (astrIREOD[22].trim()).doubleValue();</span>
+
+<span class="nc" id="L597">			dbl10Y = new java.lang.Double (astrIREOD[23].trim()).doubleValue();</span>
+
+<span class="nc" id="L599">			dbl12Y = new java.lang.Double (astrIREOD[24].trim()).doubleValue();</span>
+
+<span class="nc" id="L601">			dbl15Y = new java.lang.Double (astrIREOD[25].trim()).doubleValue();</span>
+
+<span class="nc" id="L603">			dbl20Y = new java.lang.Double (astrIREOD[26].trim()).doubleValue();</span>
+
+<span class="nc" id="L605">			dbl25Y = new java.lang.Double (astrIREOD[27].trim()).doubleValue();</span>
+
+<span class="nc" id="L607">			dbl30Y = new java.lang.Double (astrIREOD[28].trim()).doubleValue();</span>
+
+<span class="nc" id="L609">			dbl40Y = new java.lang.Double (astrIREOD[29].trim()).doubleValue();</span>
+<span class="nc" id="L610">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L611">			System.out.println (&quot;Bad input marks for ccy &quot; + strCurrency);</span>
+
+<span class="nc" id="L613">			return null;</span>
+<span class="nc" id="L614">		}</span>
+
+<span class="nc" id="L616">		java.lang.String str1DType = astrIREOD[30].trim();</span>
+
+<span class="nc" id="L618">		java.lang.String str1MType = astrIREOD[31].trim();</span>
+
+<span class="nc" id="L620">		java.lang.String str2MType = astrIREOD[32].trim();</span>
+
+<span class="nc" id="L622">		java.lang.String str3MType = astrIREOD[33].trim();</span>
+
+<span class="nc" id="L624">		java.lang.String str4MType = astrIREOD[34].trim();</span>
+
+<span class="nc" id="L626">		java.lang.String str5MType = astrIREOD[35].trim();</span>
+
+<span class="nc" id="L628">		java.lang.String str6MType = astrIREOD[36].trim();</span>
+
+<span class="nc" id="L630">		java.lang.String str9MType = astrIREOD[37].trim();</span>
+
+<span class="nc" id="L632">		java.lang.String str1YType = astrIREOD[38].trim();</span>
+
+<span class="nc" id="L634">		java.lang.String str18MType = astrIREOD[39].trim();</span>
+
+<span class="nc" id="L636">		java.lang.String str2YType = astrIREOD[40].trim();</span>
+
+<span class="nc" id="L638">		java.lang.String str3YType = astrIREOD[41].trim();</span>
+
+<span class="nc" id="L640">		java.lang.String str4YType = astrIREOD[42].trim();</span>
+
+<span class="nc" id="L642">		java.lang.String str5YType = astrIREOD[43].trim();</span>
+
+<span class="nc" id="L644">		java.lang.String str6YType = astrIREOD[44].trim();</span>
+
+<span class="nc" id="L646">		java.lang.String str7YType = astrIREOD[45].trim();</span>
+
+<span class="nc" id="L648">		java.lang.String str8YType = astrIREOD[46].trim();</span>
+
+<span class="nc" id="L650">		java.lang.String str9YType = astrIREOD[47].trim();</span>
+
+<span class="nc" id="L652">		java.lang.String str10YType = astrIREOD[48].trim();</span>
+
+<span class="nc" id="L654">		java.lang.String str12YType = astrIREOD[49].trim();</span>
+
+<span class="nc" id="L656">		java.lang.String str15YType = astrIREOD[50].trim();</span>
+
+<span class="nc" id="L658">		java.lang.String str20YType = astrIREOD[51].trim();</span>
+
+<span class="nc" id="L660">		java.lang.String str25YType = astrIREOD[52].trim();</span>
+
+<span class="nc" id="L662">		java.lang.String str30YType = astrIREOD[53].trim();</span>
+
+<span class="nc" id="L664">		java.lang.String str40YType = astrIREOD[54].trim();</span>
+
+<span class="nc" id="L666">		java.lang.StringBuilder sbInsertIREOD = new java.lang.StringBuilder();</span>
+
+<span class="nc" id="L668">		sbInsertIREOD.append (&quot;insert into IR_EOD values(&quot;);</span>
+
+<span class="nc" id="L670">		sbInsertIREOD.append (&quot;'&quot;).append (strOracleCloseDate).append (&quot;', &quot;);</span>
+
+<span class="nc" id="L672">		sbInsertIREOD.append (&quot;'&quot;).append (strType).append (&quot;', &quot;);</span>
+
+<span class="nc" id="L674">		sbInsertIREOD.append (&quot;'&quot;).append (strCurrency).append (&quot;', &quot;);</span>
+
+<span class="nc" id="L676">		sbInsertIREOD.append (dbl1D).append (&quot;, &quot;);</span>
+
+<span class="nc" id="L678">		sbInsertIREOD.append (dbl1M).append (&quot;, &quot;);</span>
+
+<span class="nc" id="L680">		sbInsertIREOD.append (dbl2M).append (&quot;, &quot;);</span>
+
+<span class="nc" id="L682">		sbInsertIREOD.append (dbl3M).append (&quot;, &quot;);</span>
+
+<span class="nc" id="L684">		sbInsertIREOD.append (dbl4M).append (&quot;, &quot;);</span>
+
+<span class="nc" id="L686">		sbInsertIREOD.append (dbl5M).append (&quot;, &quot;);</span>
+
+<span class="nc" id="L688">		sbInsertIREOD.append (dbl6M).append (&quot;, &quot;);</span>
+
+<span class="nc" id="L690">		sbInsertIREOD.append (dbl9M).append (&quot;, &quot;);</span>
+
+<span class="nc" id="L692">		sbInsertIREOD.append (dbl1Y).append (&quot;, &quot;);</span>
+
+<span class="nc" id="L694">		sbInsertIREOD.append (dbl18M).append (&quot;, &quot;);</span>
+
+<span class="nc" id="L696">		sbInsertIREOD.append (dbl2Y).append (&quot;, &quot;);</span>
+
+<span class="nc" id="L698">		sbInsertIREOD.append (dbl3Y).append (&quot;, &quot;);</span>
+
+<span class="nc" id="L700">		sbInsertIREOD.append (dbl4Y).append (&quot;, &quot;);</span>
+
+<span class="nc" id="L702">		sbInsertIREOD.append (dbl5Y).append (&quot;, &quot;);</span>
+
+<span class="nc" id="L704">		sbInsertIREOD.append (dbl6Y).append (&quot;, &quot;);</span>
+
+<span class="nc" id="L706">		sbInsertIREOD.append (dbl7Y).append (&quot;, &quot;);</span>
+
+<span class="nc" id="L708">		sbInsertIREOD.append (dbl8Y).append (&quot;, &quot;);</span>
+
+<span class="nc" id="L710">		sbInsertIREOD.append (dbl9Y).append (&quot;, &quot;);</span>
+
+<span class="nc" id="L712">		sbInsertIREOD.append (dbl10Y).append (&quot;, &quot;);</span>
+
+<span class="nc" id="L714">		sbInsertIREOD.append (dbl12Y).append (&quot;, &quot;);</span>
+
+<span class="nc" id="L716">		sbInsertIREOD.append (dbl15Y).append (&quot;, &quot;);</span>
+
+<span class="nc" id="L718">		sbInsertIREOD.append (dbl20Y).append (&quot;, &quot;);</span>
+
+<span class="nc" id="L720">		sbInsertIREOD.append (dbl25Y).append (&quot;, &quot;);</span>
+
+<span class="nc" id="L722">		sbInsertIREOD.append (dbl30Y).append (&quot;, &quot;);</span>
+
+<span class="nc" id="L724">		sbInsertIREOD.append (dbl40Y).append (&quot;, &quot;);</span>
+
+<span class="nc" id="L726">		sbInsertIREOD.append (&quot;'&quot;).append (str1DType).append (&quot;', &quot;);</span>
+
+<span class="nc" id="L728">		sbInsertIREOD.append (&quot;'&quot;).append (str1MType).append (&quot;', &quot;);</span>
+
+<span class="nc" id="L730">		sbInsertIREOD.append (&quot;'&quot;).append (str2MType).append (&quot;', &quot;);</span>
+
+<span class="nc" id="L732">		sbInsertIREOD.append (&quot;'&quot;).append (str3MType).append (&quot;', &quot;);</span>
+
+<span class="nc" id="L734">		sbInsertIREOD.append (&quot;'&quot;).append (str4MType).append (&quot;', &quot;);</span>
+
+<span class="nc" id="L736">		sbInsertIREOD.append (&quot;'&quot;).append (str5MType).append (&quot;', &quot;);</span>
+
+<span class="nc" id="L738">		sbInsertIREOD.append (&quot;'&quot;).append (str6MType).append (&quot;', &quot;);</span>
+
+<span class="nc" id="L740">		sbInsertIREOD.append (&quot;'&quot;).append (str9MType).append (&quot;', &quot;);</span>
+
+<span class="nc" id="L742">		sbInsertIREOD.append (&quot;'&quot;).append (str1YType).append (&quot;', &quot;);</span>
+
+<span class="nc" id="L744">		sbInsertIREOD.append (&quot;'&quot;).append (str18MType).append (&quot;', &quot;);</span>
+
+<span class="nc" id="L746">		sbInsertIREOD.append (&quot;'&quot;).append (str2YType).append (&quot;', &quot;);</span>
+
+<span class="nc" id="L748">		sbInsertIREOD.append (&quot;'&quot;).append (str3YType).append (&quot;', &quot;);</span>
+
+<span class="nc" id="L750">		sbInsertIREOD.append (&quot;'&quot;).append (str4YType).append (&quot;', &quot;);</span>
+
+<span class="nc" id="L752">		sbInsertIREOD.append (&quot;'&quot;).append (str5YType).append (&quot;', &quot;);</span>
+
+<span class="nc" id="L754">		sbInsertIREOD.append (&quot;'&quot;).append (str6YType).append (&quot;', &quot;);</span>
+
+<span class="nc" id="L756">		sbInsertIREOD.append (&quot;'&quot;).append (str7YType).append (&quot;', &quot;);</span>
+
+<span class="nc" id="L758">		sbInsertIREOD.append (&quot;'&quot;).append (str8YType).append (&quot;', &quot;);</span>
+
+<span class="nc" id="L760">		sbInsertIREOD.append (&quot;'&quot;).append (str9YType).append (&quot;', &quot;);</span>
+
+<span class="nc" id="L762">		sbInsertIREOD.append (&quot;'&quot;).append (str10YType).append (&quot;', &quot;);</span>
+
+<span class="nc" id="L764">		sbInsertIREOD.append (&quot;'&quot;).append (str12YType).append (&quot;', &quot;);</span>
+
+<span class="nc" id="L766">		sbInsertIREOD.append (&quot;'&quot;).append (str15YType).append (&quot;', &quot;);</span>
+
+<span class="nc" id="L768">		sbInsertIREOD.append (&quot;'&quot;).append (str20YType).append (&quot;', &quot;);</span>
+
+<span class="nc" id="L770">		sbInsertIREOD.append (&quot;'&quot;).append (str25YType).append (&quot;', &quot;);</span>
+
+<span class="nc" id="L772">		sbInsertIREOD.append (&quot;'&quot;).append (str30YType).append (&quot;', &quot;);</span>
+
+<span class="nc" id="L774">		sbInsertIREOD.append (&quot;'&quot;).append (str40YType).append (&quot;')&quot;);</span>
+
+<span class="nc" id="L776">		return sbInsertIREOD.toString();</span>
+	}
+
+	private static final java.lang.String ClearFromCREOD (
+		final java.lang.String[] astrCREOD)
+	{
+<span class="nc" id="L782">		java.lang.String strSPN = astrCREOD[6].trim();</span>
+
+<span class="nc" id="L784">		java.lang.String strOracleCloseDate = &quot;&quot;;</span>
+
+		try {
+<span class="nc" id="L787">			strOracleCloseDate = org.drip.analytics.date.DateUtil.MakeOracleDateFromBBGDate</span>
+<span class="nc" id="L788">				(astrCREOD[2].trim());</span>
+<span class="nc" id="L789">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L790">			System.out.println (&quot;Bad date &quot; + astrCREOD[2] + &quot; for &quot; + strSPN);</span>
+
+<span class="nc" id="L792">			return null;</span>
+<span class="nc" id="L793">		}</span>
+
+<span class="nc" id="L795">		return &quot;delete from CR_EOD where EOD = '&quot; + strOracleCloseDate + &quot;' and SPN = '&quot; + strSPN + &quot;'&quot;;</span>
+	}
+
+	private static final java.lang.String InsertIntoCREOD (
+		final java.lang.String[] astrCREOD)
+	{
+<span class="nc" id="L801">		java.lang.String strName = astrCREOD[4].trim();</span>
+
+<span class="nc" id="L803">		java.lang.String strSPN = astrCREOD[6].trim();</span>
+
+<span class="nc" id="L805">		java.lang.String strOracleCloseDate = &quot;&quot;;</span>
+<span class="nc" id="L806">		double dblRecRate = java.lang.Double.NaN;</span>
+<span class="nc" id="L807">		double dblCR3M = java.lang.Double.NaN;</span>
+<span class="nc" id="L808">		double dblCR6M = java.lang.Double.NaN;</span>
+<span class="nc" id="L809">		double dblCR9M = java.lang.Double.NaN;</span>
+<span class="nc" id="L810">		double dblCR1Y = java.lang.Double.NaN;</span>
+<span class="nc" id="L811">		double dblCR18M = java.lang.Double.NaN;</span>
+<span class="nc" id="L812">		double dblCR2Y = java.lang.Double.NaN;</span>
+<span class="nc" id="L813">		double dblCR3Y = java.lang.Double.NaN;</span>
+<span class="nc" id="L814">		double dblCR4Y = java.lang.Double.NaN;</span>
+<span class="nc" id="L815">		double dblCR5Y = java.lang.Double.NaN;</span>
+<span class="nc" id="L816">		double dblCR6Y = java.lang.Double.NaN;</span>
+<span class="nc" id="L817">		double dblCR7Y = java.lang.Double.NaN;</span>
+<span class="nc" id="L818">		double dblCR8Y = java.lang.Double.NaN;</span>
+<span class="nc" id="L819">		double dblCR9Y = java.lang.Double.NaN;</span>
+<span class="nc" id="L820">		double dblCR10Y = java.lang.Double.NaN;</span>
+<span class="nc" id="L821">		double dblCR11Y = java.lang.Double.NaN;</span>
+<span class="nc" id="L822">		double dblCR12Y = java.lang.Double.NaN;</span>
+<span class="nc" id="L823">		double dblCR15Y = java.lang.Double.NaN;</span>
+<span class="nc" id="L824">		double dblCR20Y = java.lang.Double.NaN;</span>
+<span class="nc" id="L825">		double dblCR30Y = java.lang.Double.NaN;</span>
+<span class="nc" id="L826">		double dblCR40Y = java.lang.Double.NaN;</span>
+
+		try {
+<span class="nc" id="L829">			strOracleCloseDate = org.drip.analytics.date.DateUtil.MakeOracleDateFromBBGDate</span>
+<span class="nc" id="L830">				(astrCREOD[2].trim());</span>
+
+<span class="nc" id="L832">			dblRecRate = new java.lang.Double (astrCREOD[7].trim()).doubleValue();</span>
+
+<span class="nc" id="L834">			dblCR3M = new java.lang.Double (astrCREOD[8].trim()).doubleValue();</span>
+
+<span class="nc" id="L836">			dblCR6M = new java.lang.Double (astrCREOD[9].trim()).doubleValue();</span>
+
+<span class="nc" id="L838">			dblCR9M = new java.lang.Double (astrCREOD[10].trim()).doubleValue();</span>
+
+<span class="nc" id="L840">			dblCR1Y = new java.lang.Double (astrCREOD[11].trim()).doubleValue();</span>
+
+<span class="nc" id="L842">			dblCR18M = new java.lang.Double (astrCREOD[12].trim()).doubleValue();</span>
+
+<span class="nc" id="L844">			dblCR2Y = new java.lang.Double (astrCREOD[13].trim()).doubleValue();</span>
+
+<span class="nc" id="L846">			dblCR3Y = new java.lang.Double (astrCREOD[14].trim()).doubleValue();</span>
+
+<span class="nc" id="L848">			dblCR4Y = new java.lang.Double (astrCREOD[15].trim()).doubleValue();</span>
+
+<span class="nc" id="L850">			dblCR5Y = new java.lang.Double (astrCREOD[16].trim()).doubleValue();</span>
+
+<span class="nc" id="L852">			dblCR6Y = new java.lang.Double (astrCREOD[17].trim()).doubleValue();</span>
+
+<span class="nc" id="L854">			dblCR7Y = new java.lang.Double (astrCREOD[18].trim()).doubleValue();</span>
+
+<span class="nc" id="L856">			dblCR8Y = new java.lang.Double (astrCREOD[19].trim()).doubleValue();</span>
+
+<span class="nc" id="L858">			dblCR9Y = new java.lang.Double (astrCREOD[20].trim()).doubleValue();</span>
+
+<span class="nc" id="L860">			dblCR10Y = new java.lang.Double (astrCREOD[21].trim()).doubleValue();</span>
+
+<span class="nc" id="L862">			dblCR11Y = new java.lang.Double (astrCREOD[22].trim()).doubleValue();</span>
+
+<span class="nc" id="L864">			dblCR12Y = new java.lang.Double (astrCREOD[23].trim()).doubleValue();</span>
+
+<span class="nc" id="L866">			dblCR15Y = new java.lang.Double (astrCREOD[26].trim()).doubleValue();</span>
+
+<span class="nc" id="L868">			dblCR20Y = new java.lang.Double (astrCREOD[31].trim()).doubleValue();</span>
+
+<span class="nc" id="L870">			dblCR30Y = new java.lang.Double (astrCREOD[37].trim()).doubleValue();</span>
+
+<span class="nc" id="L872">			dblCR40Y = new java.lang.Double (astrCREOD[39].trim()).doubleValue();</span>
+<span class="nc" id="L873">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L874">			System.out.println (&quot;Bad input marks for SPN &quot; + strSPN);</span>
+
+<span class="nc" id="L876">			e.printStackTrace();</span>
+
+<span class="nc" id="L878">			return null;</span>
+<span class="nc" id="L879">		}</span>
+
+<span class="nc" id="L881">		java.lang.StringBuilder sb = new java.lang.StringBuilder();</span>
+
+<span class="nc" id="L883">		sb.append (&quot;insert into CR_EOD values(&quot;);</span>
+
+<span class="nc" id="L885">		sb.append (&quot;'&quot; + strOracleCloseDate + &quot;', &quot;);</span>
+
+<span class="nc" id="L887">		sb.append (&quot;'&quot; + strName + &quot;', &quot;);</span>
+
+<span class="nc" id="L889">		sb.append (&quot;'&quot; + strSPN + &quot;', &quot;);</span>
+
+<span class="nc" id="L891">		sb.append (dblRecRate + &quot;, &quot;);</span>
+
+<span class="nc" id="L893">		sb.append (dblCR3M + &quot;, &quot;);</span>
+
+<span class="nc" id="L895">		sb.append (dblCR6M + &quot;, &quot;);</span>
+
+<span class="nc" id="L897">		sb.append (dblCR9M + &quot;, &quot;);</span>
+
+<span class="nc" id="L899">		sb.append (dblCR1Y + &quot;, &quot;);</span>
+
+<span class="nc" id="L901">		sb.append (dblCR18M + &quot;, &quot;);</span>
+
+<span class="nc" id="L903">		sb.append (dblCR2Y + &quot;, &quot;);</span>
+
+<span class="nc" id="L905">		sb.append (dblCR3Y + &quot;, &quot;);</span>
+
+<span class="nc" id="L907">		sb.append (dblCR4Y + &quot;, &quot;);</span>
+
+<span class="nc" id="L909">		sb.append (dblCR5Y + &quot;, &quot;);</span>
+
+<span class="nc" id="L911">		sb.append (dblCR6Y + &quot;, &quot;);</span>
+
+<span class="nc" id="L913">		sb.append (dblCR7Y + &quot;, &quot;);</span>
+
+<span class="nc" id="L915">		sb.append (dblCR8Y + &quot;, &quot;);</span>
+
+<span class="nc" id="L917">		sb.append (dblCR9Y + &quot;, &quot;);</span>
+
+<span class="nc" id="L919">		sb.append (dblCR10Y + &quot;, &quot;);</span>
+
+<span class="nc" id="L921">		sb.append (dblCR11Y + &quot;, &quot;);</span>
+
+<span class="nc" id="L923">		sb.append (dblCR12Y + &quot;, &quot;);</span>
+
+<span class="nc" id="L925">		sb.append (dblCR15Y + &quot;, &quot;);</span>
+
+<span class="nc" id="L927">		sb.append (dblCR20Y + &quot;, &quot;);</span>
+
+<span class="nc" id="L929">		sb.append (dblCR30Y + &quot;, &quot;);</span>
+
+<span class="nc" id="L931">		sb.append (dblCR40Y + &quot;)&quot;);</span>
+
+<span class="nc" id="L933">		return sb.toString();</span>
+	}
+
+	private static java.lang.String makeSQLClearISIN2 (
+		final java.lang.String[] astrBondRef2)
+	{
+<span class="nc" id="L939">		java.lang.String strISIN = astrBondRef2[0];</span>
+
+<span class="nc bnc" id="L941" title="All 4 branches missed.">		if (null == strISIN || strISIN.isEmpty()) return null;</span>
+
+<span class="nc" id="L943">		return &quot;delete from BondRef where ISIN = '&quot; + strISIN + &quot;'&quot;;</span>
+	}
+
+	private static java.lang.String makeSQLInsert2 (
+		final java.lang.String[] astrBondRef2)
+	{
+<span class="nc" id="L949">		java.lang.String strCUSIP = astrBondRef2[40];</span>
+
+<span class="nc bnc" id="L951" title="All 4 branches missed.">		if (null == strCUSIP || strCUSIP.isEmpty()) return null;</span>
+
+<span class="nc" id="L953">		java.lang.String strISIN = astrBondRef2[0];</span>
+
+<span class="nc bnc" id="L955" title="All 4 branches missed.">		if (null == strISIN || strISIN.isEmpty()) return null;</span>
+
+<span class="nc" id="L957">		java.lang.String strName = astrBondRef2[2];</span>
+
+<span class="nc bnc" id="L959" title="All 4 branches missed.">		if (null == strName || strName.isEmpty()) return null;</span>
+
+<span class="nc" id="L961">		java.lang.String strDescription = astrBondRef2[2];</span>
+
+<span class="nc bnc" id="L963" title="All 4 branches missed.">		if (null == strDescription || strDescription.isEmpty()) return null;</span>
+
+<span class="nc" id="L965">		System.out.println (astrBondRef2[1]);</span>
+
+<span class="nc" id="L967">		java.lang.String[] astrTicker = astrBondRef2[1].split (&quot; &quot;);</span>
+
+<span class="nc" id="L969">		java.lang.String strTicker = astrTicker[0];</span>
+<span class="nc" id="L970">		double dblCoupon = 0.;</span>
+
+		try {
+<span class="nc" id="L973">			dblCoupon = new java.lang.Double (astrBondRef2[11].trim()).doubleValue();</span>
+<span class="nc" id="L974">		} catch (java.lang.Exception e) {</span>
+			if (m_bBlog) System.out.println (&quot;Bad coupon &quot; + astrBondRef2[11] + &quot; for ISIN &quot; + strISIN);
+<span class="nc" id="L976">		}</span>
+
+<span class="nc" id="L978">		java.lang.String strOracleMaturity = &quot;&quot;;</span>
+
+		try {
+<span class="nc" id="L981">			strOracleMaturity = org.drip.analytics.date.DateUtil.MakeOracleDateFromBBGDate</span>
+<span class="nc" id="L982">				(astrBondRef2[8].trim());</span>
+<span class="nc" id="L983">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L984">			System.out.println (&quot;Bad maturity &quot; + astrBondRef2[8] + &quot; for ISIN &quot; + strISIN);</span>
+
+<span class="nc" id="L986">			return null;</span>
+<span class="nc" id="L987">		}</span>
+
+<span class="nc" id="L989">		java.lang.String strOracleFirstSettle = &quot;&quot;;</span>
+
+		try {
+<span class="nc" id="L992">			strOracleFirstSettle = org.drip.analytics.date.DateUtil.MakeOracleDateFromBBGDate</span>
+<span class="nc" id="L993">				(astrBondRef2[6].trim());</span>
+<span class="nc" id="L994">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L995">			System.out.println (&quot;Bad first settle &quot; + astrBondRef2[6] + &quot; for ISIN &quot; + strISIN);</span>
+
+<span class="nc" id="L997">			return null;</span>
+<span class="nc" id="L998">		}</span>
+
+<span class="nc" id="L1000">		java.lang.String strOracleFirstCoupon = &quot;&quot;;</span>
+
+		try {
+<span class="nc" id="L1003">			strOracleFirstCoupon = org.drip.analytics.date.DateUtil.MakeOracleDateFromBBGDate</span>
+<span class="nc" id="L1004">				(astrBondRef2[6].trim());</span>
+<span class="nc" id="L1005">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1006">			System.out.println (&quot;Bad first coupon &quot; + astrBondRef2[6] + &quot; for ISIN &quot; + strISIN);</span>
+
+<span class="nc" id="L1008">			return null;</span>
+<span class="nc" id="L1009">		}</span>
+
+<span class="nc" id="L1011">		java.lang.String strOracleAnnounce = strOracleFirstCoupon;</span>
+
+<span class="nc" id="L1013">		java.lang.String strCurrency = astrBondRef2[5];</span>
+
+<span class="nc bnc" id="L1015" title="All 4 branches missed.">		if (null == strCurrency || strCurrency.isEmpty()) return null;</span>
+
+<span class="nc" id="L1017">		int iCouponFreq = 0;</span>
+
+<span class="nc" id="L1019">		java.lang.String strCouponFreq = astrBondRef2[13];</span>
+
+<span class="nc bnc" id="L1021" title="All 2 branches missed.">		if (&quot;A&quot;.equalsIgnoreCase (strCouponFreq))</span>
+<span class="nc" id="L1022">			iCouponFreq = 1;</span>
+<span class="nc bnc" id="L1023" title="All 2 branches missed.">		else if (&quot;M&quot;.equalsIgnoreCase (strCouponFreq))</span>
+<span class="nc" id="L1024">			iCouponFreq = 12;</span>
+<span class="nc bnc" id="L1025" title="All 2 branches missed.">		else if (&quot;Q&quot;.equalsIgnoreCase (strCouponFreq))</span>
+<span class="nc" id="L1026">			iCouponFreq = 4;</span>
+<span class="nc bnc" id="L1027" title="All 2 branches missed.">		else if (&quot;S&quot;.equalsIgnoreCase (strCouponFreq))</span>
+<span class="nc" id="L1028">			iCouponFreq = 2;</span>
+
+<span class="nc" id="L1030">		java.lang.String strDayCount = astrBondRef2[14];</span>
+
+<span class="nc bnc" id="L1032" title="All 4 branches missed.">		if (null == strDayCount || strDayCount.isEmpty()) return null;</span>
+
+<span class="nc" id="L1034">		double dblFloatSpread = 0.;</span>
+
+		try {
+<span class="nc" id="L1037">			dblFloatSpread = new java.lang.Double (astrBondRef2[12].trim()).doubleValue();</span>
+<span class="nc" id="L1038">		} catch (java.lang.Exception e) {</span>
+			if (m_bBlog)
+				System.out.println (&quot;Bad float spread &quot; + astrBondRef2[12] + &quot; for ISIN &quot; + strISIN);
+<span class="nc" id="L1041">		}</span>
+
+<span class="nc" id="L1043">		java.lang.String strRateIndex = &quot;&quot;;</span>
+<span class="nc" id="L1044">		java.lang.String strCalendar = astrBondRef2[5];</span>
+
+<span class="nc bnc" id="L1046" title="All 2 branches missed.">		if (strCalendar.startsWith (INVALID_BBG_FIELD_START)) strCalendar = &quot;&quot;;</span>
+
+<span class="nc" id="L1048">		java.lang.String strMoodys = &quot;&quot;;</span>
+<span class="nc" id="L1049">		java.lang.String strSnP = &quot;&quot;;</span>
+<span class="nc" id="L1050">		java.lang.String strFitch = &quot;&quot;;</span>
+<span class="nc" id="L1051">		java.lang.String strIndustrySector = &quot;&quot;;</span>
+<span class="nc" id="L1052">		java.lang.String strIndustryGroup = &quot;&quot;;</span>
+<span class="nc" id="L1053">		java.lang.String strSnrSub = &quot;&quot;;</span>
+<span class="nc" id="L1054">		java.lang.String strIssuer = astrBondRef2[2];</span>
+<span class="nc" id="L1055">		double dblAmountIssued = 0.;</span>
+<span class="nc" id="L1056">		double dblAmountOutstanding = 0.;</span>
+<span class="nc" id="L1057">		java.lang.String strOracleIssue = &quot;&quot;;</span>
+
+		try {
+<span class="nc" id="L1060">			strOracleIssue = org.drip.analytics.date.DateUtil.MakeOracleDateFromBBGDate</span>
+<span class="nc" id="L1061">				(astrBondRef2[6].trim());</span>
+<span class="nc" id="L1062">		} catch (java.lang.Exception e) {</span>
+			if (m_bBlog) System.out.println (&quot;Bad issue date &quot; + astrBondRef2[6] + &quot; for ISIN &quot; + strISIN);
+<span class="nc" id="L1064">		}</span>
+
+<span class="nc" id="L1066">		java.lang.String strCouponDates = &quot;&quot;;</span>
+<span class="nc" id="L1067">		java.lang.String strCouponFactors = &quot;&quot;;</span>
+<span class="nc" id="L1068">		java.lang.String strNotionalDates = &quot;&quot;;</span>
+<span class="nc" id="L1069">		java.lang.String strNotionalFactors = &quot;&quot;;</span>
+<span class="nc" id="L1070">		java.lang.String strIssuerSPN = astrBondRef2[3];</span>
+<span class="nc" id="L1071">		java.lang.String strFloatQuote = &quot;&quot;;</span>
+
+<span class="nc" id="L1073">		java.lang.StringBuilder sb = new java.lang.StringBuilder();</span>
+
+<span class="nc" id="L1075">		sb.append (&quot;INSERT INTO BondRef VALUES (&quot;);</span>
+
+<span class="nc" id="L1077">		sb.append (&quot;'&quot; + strISIN + &quot;',&quot;);</span>
+
+<span class="nc" id="L1079">		sb.append (&quot;'&quot; + strCUSIP + &quot;',&quot;);</span>
+
+<span class="nc" id="L1081">		sb.append (&quot;'&quot; + strName + &quot;',&quot;);</span>
+
+<span class="nc" id="L1083">		sb.append (&quot;'&quot; + strDescription + &quot;',&quot;);</span>
+
+<span class="nc" id="L1085">		sb.append (&quot;'&quot; + strTicker + &quot;',&quot;);</span>
+
+<span class="nc" id="L1087">		sb.append (dblCoupon + &quot;,&quot;);</span>
+
+<span class="nc" id="L1089">		sb.append (&quot;'&quot; + strOracleMaturity + &quot;',&quot;);</span>
+
+<span class="nc" id="L1091">		sb.append (&quot;'&quot; + strOracleAnnounce + &quot;',&quot;);</span>
+
+<span class="nc" id="L1093">		sb.append (&quot;'&quot; + strOracleFirstSettle + &quot;',&quot;);</span>
+
+<span class="nc" id="L1095">		sb.append (&quot;'&quot; + strOracleFirstCoupon + &quot;',&quot;);</span>
+
+<span class="nc" id="L1097">		sb.append (&quot;'&quot; + strCurrency + &quot;',&quot;);</span>
+
+<span class="nc" id="L1099">		sb.append (iCouponFreq + &quot;,&quot;);</span>
+
+<span class="nc" id="L1101">		sb.append (&quot;'&quot; + strDayCount + &quot;',&quot;);</span>
+
+<span class="nc" id="L1103">		sb.append (dblFloatSpread + &quot;,&quot;);</span>
+
+<span class="nc" id="L1105">		sb.append (&quot;'&quot; + strRateIndex + &quot;',&quot;);</span>
+
+<span class="nc" id="L1107">		sb.append (&quot;'&quot; + strCalendar + &quot;',&quot;);</span>
+
+<span class="nc" id="L1109">		sb.append (&quot;'&quot; + strMoodys + &quot;',&quot;);</span>
+
+<span class="nc" id="L1111">		sb.append (&quot;'&quot; + strSnP + &quot;',&quot;);</span>
+
+<span class="nc" id="L1113">		sb.append (&quot;'&quot; + strFitch + &quot;',&quot;);</span>
+
+<span class="nc" id="L1115">		sb.append (&quot;'&quot; + strIndustrySector + &quot;',&quot;);</span>
+
+<span class="nc" id="L1117">		sb.append (&quot;'&quot; + strIndustryGroup + &quot;',&quot;);</span>
+
+<span class="nc" id="L1119">		sb.append (&quot;'&quot; + strSnrSub + &quot;',&quot;);</span>
+
+<span class="nc" id="L1121">		sb.append (&quot;'&quot; + strIssuer + &quot;',&quot;);</span>
+
+<span class="nc" id="L1123">		sb.append (dblAmountIssued + &quot;,&quot;);</span>
+
+<span class="nc" id="L1125">		sb.append (dblAmountOutstanding + &quot;,&quot;);</span>
+
+<span class="nc" id="L1127">		sb.append (&quot;'&quot; + strOracleIssue + &quot;',&quot;);</span>
+
+<span class="nc" id="L1129">		sb.append (&quot;'&quot; + strCouponDates + &quot;',&quot;);</span>
+
+<span class="nc" id="L1131">		sb.append (&quot;'&quot; + strCouponFactors + &quot;',&quot;);</span>
+
+<span class="nc" id="L1133">		sb.append (&quot;'&quot; + strNotionalDates + &quot;',&quot;);</span>
+
+<span class="nc" id="L1135">		sb.append (&quot;'&quot; + strNotionalFactors + &quot;',&quot;);</span>
+
+<span class="nc" id="L1137">		sb.append (&quot;'&quot; + strIssuerSPN + &quot;',&quot;);</span>
+
+<span class="nc" id="L1139">		sb.append (&quot;'&quot; + strFloatQuote + &quot;')&quot;);</span>
+
+<span class="nc" id="L1141">		return sb.toString();</span>
+	}
+
+	private static java.lang.String makeSQLClearAmortScheduleEntry (
+		final java.lang.String[] astrAmortizationSchedule)
+	{
+<span class="nc bnc" id="L1147" title="All 4 branches missed.">		if (null == astrAmortizationSchedule || 5 != astrAmortizationSchedule.length) return null;</span>
+
+<span class="nc" id="L1149">		java.lang.String strOracleAmortizationDate = &quot;&quot;;</span>
+
+<span class="nc" id="L1151">		java.lang.String strCUSIP = astrAmortizationSchedule[1].trim();</span>
+
+<span class="nc bnc" id="L1153" title="All 4 branches missed.">		if (null == strCUSIP || strCUSIP.isEmpty()) return null;</span>
+
+<span class="nc" id="L1155">		java.lang.StringBuilder sb = new java.lang.StringBuilder();</span>
+
+		try {
+<span class="nc" id="L1158">			strOracleAmortizationDate = org.drip.analytics.date.DateUtil.MakeOracleDateFromBBGDate</span>
+<span class="nc" id="L1159">				(astrAmortizationSchedule[2].trim());</span>
+<span class="nc" id="L1160">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1161">			System.out.println (&quot;Bad date &quot; + astrAmortizationSchedule[2] + &quot; for CUSIP &quot; + strCUSIP);</span>
+
+<span class="nc" id="L1163">			return null;</span>
+<span class="nc" id="L1164">		}</span>
+
+<span class="nc" id="L1166">		sb.append (&quot;delete from AmortizationSchedule where CUSIP = '&quot;).append (strCUSIP).append</span>
+<span class="nc" id="L1167">			(&quot;' and AmortDate = '&quot;).append (strOracleAmortizationDate).append (&quot;'&quot;);</span>
+
+<span class="nc" id="L1169">		return sb.toString();</span>
+	}
+
+	private static final java.lang.String InsertIntoAmortizationSchedule (
+		final java.lang.String[] astrAmortizationSchedule)
+	{
+<span class="nc bnc" id="L1175" title="All 4 branches missed.">		if (null == astrAmortizationSchedule || 5 != astrAmortizationSchedule.length) return null;</span>
+
+<span class="nc" id="L1177">		java.lang.String strCUSIP = astrAmortizationSchedule[1].trim();</span>
+
+<span class="nc" id="L1179">		java.lang.String strOracleAmortizationDate = &quot;&quot;;</span>
+<span class="nc" id="L1180">		double dblPrincipalPaydown = java.lang.Double.NaN;</span>
+
+		try {
+<span class="nc" id="L1183">			strOracleAmortizationDate = org.drip.analytics.date.DateUtil.MakeOracleDateFromBBGDate</span>
+<span class="nc" id="L1184">				(astrAmortizationSchedule[2].trim());</span>
+<span class="nc" id="L1185">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1186">			System.out.println (&quot;Bad date &quot; + astrAmortizationSchedule[2] + &quot; for CUSIP &quot; + strCUSIP);</span>
+
+<span class="nc" id="L1188">			return null;</span>
+<span class="nc" id="L1189">		}</span>
+
+		try {
+<span class="nc" id="L1192">			dblPrincipalPaydown = new java.lang.Double (astrAmortizationSchedule[4].trim());</span>
+<span class="nc" id="L1193">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1194">			System.out.println (&quot;Bad paydown factor &quot; + astrAmortizationSchedule[4] + &quot; for CUSIP &quot; +</span>
+				strCUSIP);
+
+<span class="nc" id="L1197">			return null;</span>
+<span class="nc" id="L1198">		}</span>
+
+<span class="nc" id="L1200">		return &quot;insert into AmortizationSchedule values('&quot; + strCUSIP + &quot;', '&quot; + strOracleAmortizationDate +</span>
+			&quot;', &quot; + dblPrincipalPaydown + &quot;)&quot;;
+	}
+
+	private static void LoadBondRef()
+		throws java.lang.Exception
+	{
+		/* int iNumBonds = 0;
+		java.lang.String strValDataLine = &quot;&quot;;
+		java.io.BufferedReader inValData = null;
+
+		System.out.println (&quot;Loading BondRef ...&quot;);
+
+		oracle.jdbc.pool.OracleDataSource ds = new oracle.jdbc.pool.OracleDataSource();
+
+		ds.setDriverType (&quot;thin&quot;);
+
+		ds.setServerName (&quot;localhost&quot;);
+
+		ds.setPortNumber (1521);
+
+		ds.setDatabaseName (&quot;XE&quot;);
+
+		ds.setUser (&quot;hr&quot;);
+
+		ds.setPassword (&quot;hr&quot;);
+
+		java.sql.Connection con = ds.getConnection();
+
+		java.sql.Statement stmt = con.createStatement();
+
+		try {
+			inValData = new java.io.BufferedReader (new java.io.FileReader
+				(&quot;c:\\Lakshmi\\java\\BondAnal\\Data\\BondStaticRef\\FullTickers_Base\\RefDataSet.csv&quot;));
+		} catch (java.lang.Exception e) {
+			System.out.println (&quot;Cannot open Val Data record file&quot;);
+
+			return;
+		}
+
+		while (null != (strValDataLine = inValData.readLine())) {
+			int iNumRecord = 0;
+			java.lang.String astrValRecord[] = new java.lang.String[33];
+
+			java.util.StringTokenizer stValData = new java.util.StringTokenizer (strValDataLine, &quot;,&quot;);
+
+			while (stValData.hasMoreTokens()) {
+				java.lang.String stValDataField = stValData.nextToken();
+
+				astrValRecord[iNumRecord++] = stValDataField;
+			}
+
+			java.lang.String strSQLClear = makeSQLClearISINOrCUSIP (astrValRecord);
+
+			if (null != strSQLClear) stmt.executeUpdate (strSQLClear);
+
+			java.lang.String strSQLInsert = makeSQLInsert (astrValRecord);
+
+			if (null != strSQLInsert) {
+				if (m_bBlog) System.out.println (&quot;SQL[&quot; + iNumBonds + &quot;]: &quot; + strSQLInsert);
+
+				stmt.executeUpdate (strSQLInsert);
+			}
+
+			++iNumBonds;
+		}
+
+		inValData.close();
+
+		System.out.println (&quot;Loaded &quot; + iNumBonds + &quot; into BondRef.&quot;); */
+<span class="nc" id="L1270">	}</span>
+
+	private static void LoadBondRef2()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L1275">		int iNumBonds = 0;</span>
+<span class="nc" id="L1276">		java.lang.String strBondRef2Line = &quot;&quot;;</span>
+<span class="nc" id="L1277">		java.io.BufferedReader inBondRef2 = null;</span>
+
+<span class="nc" id="L1279">		System.out.println (&quot;Loading BondRef2 ...&quot;);</span>
+
+<span class="nc" id="L1281">		java.sql.Statement stmt = org.drip.param.config.ConfigLoader.OracleInit</span>
+<span class="nc" id="L1282">			(&quot;c:\\Lakshmi\\java\\BondAnal\\Config.xml&quot;);</span>
+
+		try {
+<span class="nc" id="L1285">			inBondRef2 = new java.io.BufferedReader (new java.io.FileReader</span>
+				(&quot;C:\\Lakshmi\\RefDataAndMarks\\17Jan2012\\Bond.csv&quot;));
+<span class="nc" id="L1287">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1288">			System.out.println (&quot;Cannot open BondRef record file&quot;);</span>
+
+<span class="nc" id="L1290">			return;</span>
+<span class="nc" id="L1291">		}</span>
+
+<span class="nc bnc" id="L1293" title="All 2 branches missed.">		while (null != (strBondRef2Line = inBondRef2.readLine())) {</span>
+<span class="nc" id="L1294">			java.lang.String[] astrBondRef2Record = strBondRef2Line.split (&quot;,&quot;);</span>
+
+<span class="nc" id="L1296">			java.lang.String strSQLClear = makeSQLClearISIN2 (astrBondRef2Record);</span>
+
+<span class="nc bnc" id="L1298" title="All 2 branches missed.">			if (null != strSQLClear) stmt.executeUpdate (strSQLClear);</span>
+
+<span class="nc" id="L1300">			java.lang.String strSQLInsert = makeSQLInsert2 (astrBondRef2Record);</span>
+
+<span class="nc bnc" id="L1302" title="All 2 branches missed.">			if (null != strSQLInsert) {</span>
+				if (m_bBlog) System.out.println (&quot;SQL[&quot; + iNumBonds + &quot;]: &quot; + strSQLInsert);
+
+<span class="nc" id="L1305">				stmt.executeUpdate (strSQLInsert);</span>
+			}
+
+<span class="nc" id="L1308">			++iNumBonds;</span>
+<span class="nc" id="L1309">		}</span>
+
+<span class="nc" id="L1311">		inBondRef2.close();</span>
+
+<span class="nc" id="L1313">		System.out.println (&quot;Loaded &quot; + iNumBonds + &quot; into BondRef2&quot;);</span>
+<span class="nc" id="L1314">	}</span>
+
+	private static void LoadBondRef_FODATA()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L1319">		int iNumBonds = 0;</span>
+<span class="nc" id="L1320">		java.lang.String strBondRefLine = &quot;&quot;;</span>
+<span class="nc" id="L1321">		java.io.BufferedReader inBondRef = null;</span>
+
+<span class="nc" id="L1323">		System.out.println (&quot;Loading BondRef_FODATA ...&quot;);</span>
+
+<span class="nc" id="L1325">		java.sql.Statement stmt = org.drip.param.config.ConfigLoader.OracleInit</span>
+<span class="nc" id="L1326">			(&quot;c:\\Lakshmi\\java\\BondAnal\\Config.xml&quot;);</span>
+
+		try {
+<span class="nc" id="L1329">			inBondRef = new java.io.BufferedReader (new java.io.FileReader</span>
+				(&quot;C:\\Lakshmi\\RefDataAndMarks\\17Jan2012\\Bond.csv&quot;));
+<span class="nc" id="L1331">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1332">			System.out.println (&quot;Cannot open BondRef record file&quot;);</span>
+
+<span class="nc" id="L1334">			return;</span>
+<span class="nc" id="L1335">		}</span>
+
+<span class="nc bnc" id="L1337" title="All 2 branches missed.">		while (null != (strBondRefLine = inBondRef.readLine())) {</span>
+<span class="nc" id="L1338">			java.lang.String[] astrBondRefRecord = strBondRefLine.split (&quot;,&quot;);</span>
+
+<span class="nc" id="L1340">			java.lang.String strSQLClear = makeSQLClear_FODATA (astrBondRefRecord);</span>
+
+<span class="nc bnc" id="L1342" title="All 2 branches missed.">			if (null != strSQLClear) stmt.executeUpdate (strSQLClear);</span>
+
+<span class="nc" id="L1344">			java.lang.String strSQLInsert = makeSQLInsert_FODATA (astrBondRefRecord);</span>
+
+<span class="nc bnc" id="L1346" title="All 2 branches missed.">			if (null != strSQLInsert) {</span>
+				if (m_bBlog) System.out.println (&quot;SQL[&quot; + iNumBonds + &quot;]: &quot; + strSQLInsert);
+
+<span class="nc" id="L1349">				stmt.executeUpdate (strSQLInsert);</span>
+			}
+
+<span class="nc" id="L1352">			++iNumBonds;</span>
+<span class="nc" id="L1353">		}</span>
+
+<span class="nc" id="L1355">		inBondRef.close();</span>
+
+<span class="nc" id="L1357">		System.out.println (&quot;Loaded &quot; + iNumBonds + &quot; into BondRef_FODATA&quot;);</span>
+<span class="nc" id="L1358">	}</span>
+
+	private static void LoadBondMarks()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L1363">		int iNumMarks = 0;</span>
+<span class="nc" id="L1364">		java.lang.String strMarksLine = &quot;&quot;;</span>
+<span class="nc" id="L1365">		java.io.BufferedReader inMarks = null;</span>
+
+<span class="nc" id="L1367">		System.out.println (&quot;Loading BondMark ...&quot;);</span>
+
+<span class="nc" id="L1369">		java.sql.Statement stmt = org.drip.param.config.ConfigLoader.OracleInit</span>
+<span class="nc" id="L1370">			(&quot;c:\\Lakshmi\\java\\BondAnal\\Config.xml&quot;);</span>
+
+		try {
+<span class="nc" id="L1373">			inMarks = new java.io.BufferedReader (new java.io.FileReader</span>
+				(&quot;c:\\Lakshmi\\java\\BondAnal\\Data\\BondStaticRef\\Marks\\MatrixPricer_Prices_0715.csv&quot;));
+<span class="nc" id="L1375">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1376">			System.out.println (&quot;Cannot open marks file&quot;);</span>
+
+<span class="nc" id="L1378">			return;</span>
+<span class="nc" id="L1379">		}</span>
+
+<span class="nc bnc" id="L1381" title="All 2 branches missed.">		while (null != (strMarksLine = inMarks.readLine())) {</span>
+<span class="nc" id="L1382">			int iNumMarksRecord = 0;</span>
+<span class="nc" id="L1383">			java.lang.String astrMarks[] = new java.lang.String[9];</span>
+
+<span class="nc" id="L1385">			java.util.StringTokenizer stMarks = new java.util.StringTokenizer (strMarksLine, &quot;,&quot;);</span>
+
+<span class="nc bnc" id="L1387" title="All 2 branches missed.">			while (stMarks.hasMoreTokens()) {</span>
+<span class="nc" id="L1388">				java.lang.String strMarks = stMarks.nextToken();</span>
+
+<span class="nc" id="L1390">				astrMarks[iNumMarksRecord++] = strMarks;</span>
+<span class="nc" id="L1391">			}</span>
+
+<span class="nc" id="L1393">			java.lang.String strSQLClearMarks = makeSQLClearMarksForBondDate (astrMarks);</span>
+
+<span class="nc bnc" id="L1395" title="All 2 branches missed.">			if (null != strSQLClearMarks) {</span>
+				if (m_bBlog) System.out.println (&quot;SQL[&quot; + iNumMarks + &quot;]: &quot; + strSQLClearMarks);
+
+<span class="nc" id="L1398">				stmt.executeUpdate (strSQLClearMarks);</span>
+			}
+
+<span class="nc" id="L1401">			java.lang.String strSQLInsertMarks = makeSQLBondMarksInsert (astrMarks);</span>
+
+<span class="nc bnc" id="L1403" title="All 2 branches missed.">			if (null != strSQLInsertMarks) {</span>
+				if (m_bBlog) System.out.println (&quot;SQL[&quot; + iNumMarks + &quot;]: &quot; + strSQLInsertMarks);
+
+<span class="nc" id="L1406">				stmt.executeUpdate (strSQLInsertMarks);</span>
+			}
+
+<span class="nc" id="L1409">			++iNumMarks;</span>
+<span class="nc" id="L1410">		}</span>
+
+<span class="nc" id="L1412">		inMarks.close();</span>
+
+<span class="nc" id="L1414">		System.out.println (&quot;Loaded &quot; + iNumMarks + &quot; into BondMark.&quot;);</span>
+<span class="nc" id="L1415">	}</span>
+
+	private static void LoadHolidayCalendar (
+		final java.lang.String strHolLoc,
+		final java.lang.String strHolLocFile)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L1422">		java.lang.String strHolsLine = &quot;&quot;;</span>
+<span class="nc" id="L1423">		java.io.BufferedReader inHolCal = null;</span>
+
+<span class="nc" id="L1425">		System.out.println (&quot;Loading &quot; + strHolLoc + &quot; from &quot; + strHolLocFile);</span>
+
+<span class="nc" id="L1427">		java.sql.Statement stmt = org.drip.param.config.ConfigLoader.OracleInit</span>
+<span class="nc" id="L1428">			(&quot;c:\\Lakshmi\\java\\BondAnal\\Config.xml&quot;);</span>
+
+		try {
+<span class="nc" id="L1431">			inHolCal = new java.io.BufferedReader (new java.io.FileReader (strHolLocFile));</span>
+<span class="nc" id="L1432">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1433">			System.out.println (&quot;Cannot open hol cal file&quot;);</span>
+
+<span class="nc" id="L1435">			return;</span>
+<span class="nc" id="L1436">		}</span>
+
+<span class="nc bnc" id="L1438" title="All 2 branches missed.">		while (null != (strHolsLine = inHolCal.readLine())) {</span>
+<span class="nc" id="L1439">			java.util.StringTokenizer stHolFields = new java.util.StringTokenizer (strHolsLine, &quot;	&quot;);</span>
+
+			try {
+<span class="nc" id="L1442">				int iFieldNum = 0;</span>
+<span class="nc" id="L1443">				java.lang.String[] astrHolFields = new java.lang.String[2];</span>
+<span class="nc" id="L1444">				astrHolFields[0] = &quot;&quot;;</span>
+<span class="nc" id="L1445">				astrHolFields[1] = &quot;&quot;;</span>
+<span class="nc" id="L1446">				java.lang.String strORAHoliday = &quot;&quot;;</span>
+
+<span class="nc bnc" id="L1448" title="All 4 branches missed.">				while (stHolFields.hasMoreTokens() &amp;&amp; iFieldNum &lt; astrHolFields.length)</span>
+<span class="nc" id="L1449">					astrHolFields[iFieldNum++] = stHolFields.nextToken();</span>
+
+<span class="nc" id="L1451">				java.lang.String strTextHol = astrHolFields[0].trim();</span>
+
+				try {
+<span class="nc" id="L1454">					strORAHoliday = org.drip.analytics.date.DateUtil.MakeOracleDateFromYYYYMMDD (strTextHol);</span>
+<span class="nc" id="L1455">				} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1456">					java.util.StringTokenizer stTextHol = new java.util.StringTokenizer (strTextHol, &quot; &quot;);</span>
+
+<span class="nc" id="L1458">					strORAHoliday = org.drip.analytics.date.DateUtil.MakeOracleDateFromYYYYMMDD</span>
+<span class="nc" id="L1459">						(stTextHol.nextToken().trim());</span>
+<span class="nc" id="L1460">				}</span>
+
+<span class="nc" id="L1462">				java.lang.String strDescription = astrHolFields[1].trim();</span>
+
+<span class="nc bnc" id="L1464" title="All 4 branches missed.">				if (null != strDescription &amp;&amp; !strDescription.isEmpty())</span>
+<span class="nc" id="L1465">					strDescription = strDescription.replaceAll (&quot;'&quot;, &quot;&quot;);</span>
+				else
+<span class="nc" id="L1467">					strDescription = &quot;&quot;;</span>
+
+<span class="nc" id="L1469">				stmt.executeUpdate (&quot;delete from Holidays where Location = '&quot; + strHolLoc +</span>
+					&quot;' and Holiday = '&quot; + strORAHoliday + &quot;'&quot;);
+
+<span class="nc" id="L1472">				stmt.executeUpdate (&quot;insert into Holidays values('&quot; + strHolLoc + &quot;', '&quot; + strORAHoliday +</span>
+					&quot;', '&quot; + strDescription + &quot;')&quot;);
+<span class="nc" id="L1474">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1475">				System.out.println (strHolLoc + &quot;: Check line &quot; + strHolsLine);</span>
+<span class="nc" id="L1476">			}</span>
+<span class="nc" id="L1477">		}</span>
+
+<span class="nc" id="L1479">		inHolCal.close();</span>
+<span class="nc" id="L1480">	}</span>
+
+	private static void LoadHolsToHolderSource (
+		final java.io.BufferedWriter bw,
+		final java.lang.String strHolLoc,
+		final java.lang.String strHolLocFile)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L1488">		java.lang.String strHolsLine = &quot;&quot;;</span>
+<span class="nc" id="L1489">		java.io.BufferedReader inHolCal = null;</span>
+
+<span class="nc" id="L1491">		System.out.println (&quot;Loading &quot; + strHolLoc + &quot; from &quot; + strHolLocFile);</span>
+
+		try {
+<span class="nc" id="L1494">			inHolCal = new java.io.BufferedReader (new java.io.FileReader (strHolLocFile));</span>
+<span class="nc" id="L1495">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1496">			System.out.println (&quot;Cannot open hol cal file&quot;);</span>
+
+<span class="nc" id="L1498">			return;</span>
+<span class="nc" id="L1499">		}</span>
+
+<span class="nc bnc" id="L1501" title="All 2 branches missed.">		while (null != (strHolsLine = inHolCal.readLine())) {</span>
+<span class="nc" id="L1502">			java.util.StringTokenizer stHolFields = new java.util.StringTokenizer (strHolsLine, &quot;	&quot;);</span>
+
+			try {
+<span class="nc" id="L1505">				java.lang.String[] astrHolFields = new java.lang.String[2];</span>
+<span class="nc" id="L1506">				java.lang.String strORAHoliday = &quot;&quot;;</span>
+<span class="nc" id="L1507">				astrHolFields[0] = &quot;&quot;;</span>
+<span class="nc" id="L1508">				astrHolFields[1] = &quot;&quot;;</span>
+<span class="nc" id="L1509">				int iFieldNum = 0;</span>
+
+<span class="nc bnc" id="L1511" title="All 4 branches missed.">				while (stHolFields.hasMoreTokens() &amp;&amp; iFieldNum &lt; astrHolFields.length)</span>
+<span class="nc" id="L1512">					astrHolFields[iFieldNum++] = stHolFields.nextToken();</span>
+
+<span class="nc" id="L1514">				java.lang.String strTextHol = astrHolFields[0].trim();</span>
+
+				try {
+<span class="nc" id="L1517">					strORAHoliday = org.drip.analytics.date.DateUtil.MakeOracleDateFromYYYYMMDD (strTextHol);</span>
+<span class="nc" id="L1518">				} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1519">					java.util.StringTokenizer stTextHol = new java.util.StringTokenizer (strTextHol, &quot; &quot;);</span>
+
+<span class="nc" id="L1521">					strORAHoliday = org.drip.analytics.date.DateUtil.MakeOracleDateFromYYYYMMDD</span>
+<span class="nc" id="L1522">						(stTextHol.nextToken().trim());</span>
+<span class="nc" id="L1523">				}</span>
+
+<span class="nc" id="L1525">				java.lang.String strDescription = astrHolFields[1].trim();</span>
+
+<span class="nc bnc" id="L1527" title="All 4 branches missed.">				if (null != strDescription &amp;&amp; !strDescription.isEmpty())</span>
+<span class="nc" id="L1528">					strDescription = strDescription.replaceAll (&quot;'&quot;, &quot;&quot;);</span>
+				else
+<span class="nc" id="L1530">					strDescription = &quot;&quot;;</span>
+
+<span class="nc" id="L1532">				java.lang.String strLocHolDates = &quot;lh.addStaticHoliday (\&quot;&quot; + strORAHoliday + &quot;\&quot;, \&quot;&quot; +</span>
+					strDescription + &quot;\&quot;);&quot;;
+
+				if (m_bBlog) System.out.println (strLocHolDates);
+
+<span class="nc" id="L1537">				bw.write (&quot;\t\t&quot; + strLocHolDates + &quot;\n\n&quot;);</span>
+<span class="nc" id="L1538">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1539">				System.out.println (strHolLoc + &quot;: Check line &quot; + strHolsLine);</span>
+<span class="nc" id="L1540">			}</span>
+<span class="nc" id="L1541">		}</span>
+
+<span class="nc" id="L1543">		bw.flush();</span>
+
+<span class="nc" id="L1545">		inHolCal.close();</span>
+<span class="nc" id="L1546">	}</span>
+
+	private static final void LoadHolCals()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L1551">		java.lang.String strHolDir = &quot;c:\\Lakshmi\\java\\BondAnal\\Data\\Holidays\\&quot;;</span>
+
+<span class="nc" id="L1553">		java.io.File f = new java.io.File (strHolDir);</span>
+
+<span class="nc" id="L1555">		java.lang.String[] astrFile = f.list();</span>
+
+<span class="nc bnc" id="L1557" title="All 2 branches missed.">		for (int i = 0; i &lt; astrFile.length; ++i) {</span>
+<span class="nc" id="L1558">			java.util.StringTokenizer stLoc = new java.util.StringTokenizer (astrFile[i], &quot;.&quot;);</span>
+
+<span class="nc" id="L1560">			java.lang.String strPrefix = stLoc.nextToken();</span>
+
+<span class="nc bnc" id="L1562" title="All 2 branches missed.">			if (!&quot;holiday&quot;.equalsIgnoreCase (strPrefix)) continue;</span>
+
+<span class="nc" id="L1564">			LoadHolidayCalendar (stLoc.nextToken().toUpperCase(), strHolDir + astrFile[i]);</span>
+		}
+<span class="nc" id="L1566">	}</span>
+
+	private static final void AccumulateHolidays()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L1571">		java.lang.String strHolDir = &quot;c:\\Lakshmi\\BondAnal\\Data\\Holidays\\&quot;;</span>
+
+<span class="nc" id="L1573">		java.io.File f = new java.io.File (strHolDir);</span>
+
+<span class="nc" id="L1575">		java.lang.String[] astrFile = f.list();</span>
+
+<span class="nc bnc" id="L1577" title="All 2 branches missed.">		for (int i = 0; i &lt; astrFile.length; ++i) {</span>
+<span class="nc" id="L1578">			java.util.StringTokenizer stLoc = new java.util.StringTokenizer (astrFile[i], &quot;.&quot;);</span>
+
+<span class="nc" id="L1580">			java.lang.String strPrefix = stLoc.nextToken();</span>
+
+<span class="nc bnc" id="L1582" title="All 2 branches missed.">			if (!&quot;holiday&quot;.equalsIgnoreCase (strPrefix)) continue;</span>
+
+<span class="nc" id="L1584">			java.lang.String strSuffix = stLoc.nextToken().toUpperCase();</span>
+
+<span class="nc" id="L1586">			java.io.BufferedWriter bw = new java.io.BufferedWriter (new java.io.FileWriter</span>
+				(&quot;c:\\DRIP\\CreditAnalytics\\org\\drip\\analytics\\holset\\&quot; + strSuffix + &quot;Holiday.java&quot;));
+
+<span class="nc" id="L1589">			bw.write (&quot;\npackage org.drip.analytics.holset;\n\n&quot;);</span>
+
+<span class="nc" id="L1591">			bw.write</span>
+<span class="nc" id="L1592">				(&quot;/*\n * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-\n */\n&quot;);</span>
+
+<span class="nc" id="L1594">			bw.write (&quot;\n/*\n *    GENERATED on &quot; + new java.util.Date().toString() +</span>
+				&quot; ---- DO NOT DELETE\n */\n&quot;);
+
+<span class="nc" id="L1597">			bw.write (&quot;\n/*!\n * Copyright (C) 2013 Lakshmi Krishnamurthy\n&quot;);</span>
+
+<span class="nc" id="L1599">			bw.write (&quot; * Copyright (C) 2012 Lakshmi Krishnamurthy\n&quot;);</span>
+
+<span class="nc" id="L1601">			bw.write (&quot; * Copyright (C) 2011 Lakshmi Krishnamurthy\n *\n&quot;);</span>
+
+<span class="nc" id="L1603">			bw.write (&quot; * This file is part of CreditAnalytics, a free-software/open-source library for\n&quot;);</span>
+
+<span class="nc" id="L1605">			bw.write (&quot; *		fixed income analysts and developers - http://www.credit-trader.org\n *\n&quot;);</span>
+
+<span class="nc" id="L1607">			bw.write (&quot; * CreditAnalytics is a free, full featured, fixed income credit analytics library,&quot;);</span>
+
+<span class="nc" id="L1609">			bw.write (&quot; developed with a special focus\n&quot;);</span>
+
+<span class="nc" id="L1611">			bw.write (&quot; * 		towards the needs of the bonds and credit products community.\n *\n&quot;);</span>
+
+<span class="nc" id="L1613">			bw.write (&quot; *  Licensed under the Apache License, Version 2.0 (the \&quot;License\&quot;);\n&quot;);</span>
+
+<span class="nc" id="L1615">			bw.write (&quot; *   	you may not use this file except in compliance with the License.\n&quot;);</span>
+
+<span class="nc" id="L1617">			bw.write (&quot; *\n *  You may obtain a copy of the License at\n&quot;);</span>
+
+<span class="nc" id="L1619">			bw.write (&quot; *  	http://www.apache.org/licenses/LICENSE-2.0\n *\n&quot;);</span>
+
+<span class="nc" id="L1621">			bw.write (&quot; *  Unless required by applicable law or agreed to in writing, software\n&quot;);</span>
+
+<span class="nc" id="L1623">			bw.write (&quot; *  	distributed under the License is distributed on an \&quot;AS IS\&quot; BASIS,\n&quot;);</span>
+
+<span class="nc" id="L1625">			bw.write (&quot; *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n&quot;);</span>
+
+<span class="nc" id="L1627">			bw.write (&quot; *  \n *  See the License for the specific language governing permissions and\n&quot;);</span>
+
+<span class="nc" id="L1629">			bw.write (&quot; *  	limitations under the License.\n */\n\n&quot;);</span>
+
+<span class="nc" id="L1631">			bw.write (&quot;public class &quot; + strSuffix +</span>
+				&quot;Holiday implements org.drip.analytics.holset.LocationHoliday {\n&quot;);
+
+<span class="nc" id="L1634">			bw.write (&quot;\tpublic &quot; + strSuffix + &quot;Holiday()\n\t{\n\t}\n\n&quot;);</span>
+
+<span class="nc" id="L1636">			bw.write (&quot;\tpublic java.lang.String getHolidayLoc()\n\t{\n&quot;);</span>
+
+<span class="nc" id="L1638">			bw.write (&quot;\t\treturn \&quot;&quot; + strSuffix + &quot;\&quot;;\n\t}\n\n&quot;);</span>
+
+<span class="nc" id="L1640">			bw.write (&quot;\tpublic org.drip.analytics.holiday.Locale getHolidaySet()\n\t{&quot;);</span>
+
+<span class="nc" id="L1642">			bw.write (&quot;\n\t\torg.drip.analytics.holiday.Locale lh = new\n&quot;);</span>
+
+<span class="nc" id="L1644">			bw.write (&quot;\t\t\torg.drip.analytics.holiday.Locale();\n\n&quot;);</span>
+
+<span class="nc" id="L1646">			LoadHolsToHolderSource (bw, strSuffix, strHolDir + astrFile[i]);</span>
+
+<span class="nc" id="L1648">			bw.write (&quot;\t\tlh.addStandardWeekend();\n\n&quot;);</span>
+
+<span class="nc" id="L1650">			bw.write (&quot;\t\treturn lh;\n\t}\n}\n&quot;);</span>
+
+<span class="nc" id="L1652">			bw.close();</span>
+		}
+<span class="nc" id="L1654">	}</span>
+
+	private static final void LoadEOS()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L1659">		int iNumSchedules = 0;</span>
+<span class="nc" id="L1660">		java.lang.String strEOSLine = &quot;&quot;;</span>
+<span class="nc" id="L1661">		java.io.BufferedReader inEOS = null;</span>
+
+<span class="nc" id="L1663">		java.sql.Statement stmt = org.drip.param.config.ConfigLoader.OracleInit</span>
+<span class="nc" id="L1664">			(&quot;c:\\Lakshmi\\BondAnal\\Config.xml&quot;);</span>
+
+<span class="nc" id="L1666">		System.out.println (&quot;Loading EOS ...&quot;);</span>
+
+		try {
+<span class="nc" id="L1669">			inEOS = new java.io.BufferedReader (new java.io.FileReader</span>
+				(&quot;C:\\Lakshmi\\RefDataAndMarks\\17Jan2012\\OptionSchedule.csv&quot;));
+<span class="nc" id="L1671">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1672">			System.out.println (&quot;Cannot open EOS file&quot;);</span>
+
+<span class="nc" id="L1674">			return;</span>
+<span class="nc" id="L1675">		}</span>
+
+<span class="nc bnc" id="L1677" title="All 2 branches missed.">		while (null != (strEOSLine = inEOS.readLine())) {</span>
+<span class="nc" id="L1678">			int iNumRecord = 0;</span>
+<span class="nc" id="L1679">			java.lang.String astrEOS[] = new java.lang.String[14];</span>
+
+<span class="nc" id="L1681">			java.util.StringTokenizer stEOS = new java.util.StringTokenizer (strEOSLine, &quot;,&quot;);</span>
+
+<span class="nc bnc" id="L1683" title="All 2 branches missed.">			while (stEOS.hasMoreTokens()) {</span>
+<span class="nc" id="L1684">				java.lang.String strEOS = stEOS.nextToken();</span>
+
+<span class="nc" id="L1686">				astrEOS[iNumRecord++] = strEOS;</span>
+<span class="nc" id="L1687">			}</span>
+
+<span class="nc" id="L1689">			java.lang.String strClearEOS = ClearISINDateTypeFromEOS (astrEOS);</span>
+
+<span class="nc bnc" id="L1691" title="All 4 branches missed.">			if (null != strClearEOS &amp;&amp; !strClearEOS.isEmpty()) stmt.executeQuery (strClearEOS);</span>
+
+<span class="nc" id="L1693">			java.lang.String strInsertEOS = InsertIntoEOS (astrEOS);</span>
+
+<span class="nc bnc" id="L1695" title="All 4 branches missed.">			if (null != strInsertEOS &amp;&amp; !strInsertEOS.isEmpty())</span>
+<span class="nc" id="L1696">				stmt.executeQuery (strInsertEOS);</span>
+
+<span class="nc" id="L1698">			++iNumSchedules;</span>
+<span class="nc" id="L1699">		}</span>
+
+<span class="nc" id="L1701">		inEOS.close();</span>
+
+<span class="nc" id="L1703">		System.out.println (&quot;Loaded &quot; + iNumSchedules + &quot; into EOS.&quot;);</span>
+<span class="nc" id="L1704">	}</span>
+
+	private static final void LoadAmortizationSchedule()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L1709">		int iNumSchedules = 0;</span>
+<span class="nc" id="L1710">		java.lang.String strAmortizationScheduleLine = &quot;&quot;;</span>
+<span class="nc" id="L1711">		java.io.BufferedReader inAmortizationSchedule = null;</span>
+
+<span class="nc" id="L1713">		java.sql.Statement stmt = org.drip.param.config.ConfigLoader.OracleInit</span>
+<span class="nc" id="L1714">			(&quot;c:\\Lakshmi\\java\\BondAnal\\Config.xml&quot;);</span>
+
+<span class="nc" id="L1716">		System.out.println (&quot;Loading AmortizationSchedule ...&quot;);</span>
+
+		try {
+<span class="nc" id="L1719">			inAmortizationSchedule = new java.io.BufferedReader (new java.io.FileReader</span>
+				(&quot;C:\\Lakshmi\\RefDataAndMarks\\17Jan2012\\AmortizationSchedule.csv&quot;));
+<span class="nc" id="L1721">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1722">			System.out.println (&quot;Cannot open AmortizationSchedule file&quot;);</span>
+
+<span class="nc" id="L1724">			return;</span>
+<span class="nc" id="L1725">		}</span>
+
+<span class="nc bnc" id="L1727" title="All 2 branches missed.">		while (null != (strAmortizationScheduleLine = inAmortizationSchedule.readLine())) {</span>
+<span class="nc" id="L1728">			int iNumRecord = 0;</span>
+<span class="nc" id="L1729">			java.lang.String astrAmortizationSchedule[] = new java.lang.String[5];</span>
+
+<span class="nc" id="L1731">			java.util.StringTokenizer stAmortizationSchedule = new java.util.StringTokenizer</span>
+				(strAmortizationScheduleLine, &quot;,&quot;);
+
+<span class="nc bnc" id="L1734" title="All 2 branches missed.">			while (stAmortizationSchedule.hasMoreTokens()) {</span>
+<span class="nc" id="L1735">				java.lang.String strAmortizationSchedule = stAmortizationSchedule.nextToken();</span>
+
+<span class="nc" id="L1737">				astrAmortizationSchedule[iNumRecord++] = strAmortizationSchedule;</span>
+<span class="nc" id="L1738">			}</span>
+
+<span class="nc" id="L1740">			java.lang.String strClearAmortizationSchedule = makeSQLClearAmortScheduleEntry</span>
+<span class="nc" id="L1741">				(astrAmortizationSchedule);</span>
+
+<span class="nc bnc" id="L1743" title="All 4 branches missed.">			if (null != strClearAmortizationSchedule &amp;&amp; !strClearAmortizationSchedule.isEmpty())</span>
+<span class="nc" id="L1744">				stmt.executeQuery (strClearAmortizationSchedule);</span>
+
+<span class="nc" id="L1746">			java.lang.String strInsertAmortizationSchedule = InsertIntoAmortizationSchedule</span>
+<span class="nc" id="L1747">				(astrAmortizationSchedule);</span>
+
+<span class="nc bnc" id="L1749" title="All 4 branches missed.">			if (null != strInsertAmortizationSchedule &amp;&amp; !strInsertAmortizationSchedule.isEmpty())</span>
+<span class="nc" id="L1750">				stmt.executeQuery (strInsertAmortizationSchedule);</span>
+
+<span class="nc" id="L1752">			++iNumSchedules;</span>
+<span class="nc" id="L1753">		}</span>
+
+<span class="nc" id="L1755">		inAmortizationSchedule.close();</span>
+
+<span class="nc" id="L1757">		System.out.println (&quot;Loaded &quot; + iNumSchedules + &quot; into AmortizationSchedule.&quot;);</span>
+<span class="nc" id="L1758">	}</span>
+
+	private static final void LoadIREOD()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L1763">		int iNumIREOD = 0;</span>
+<span class="nc" id="L1764">		java.lang.String strIREODLine = &quot;&quot;;</span>
+<span class="nc" id="L1765">		java.io.BufferedReader inIREOD = null;</span>
+
+<span class="nc" id="L1767">		System.out.println (&quot;Loading IREOD ...&quot;);</span>
+
+<span class="nc" id="L1769">		java.sql.Statement stmt = org.drip.param.config.ConfigLoader.OracleInit</span>
+<span class="nc" id="L1770">			(&quot;c:\\Lakshmi\\BondAnal\\Config.xml&quot;);</span>
+
+		try {
+<span class="nc" id="L1773">			inIREOD = new java.io.BufferedReader (new java.io.FileReader</span>
+				(&quot;C:\\Lakshmi\\RefDataAndMarks\\17Jan2012\\EODIRCurves.csv&quot;));
+<span class="nc" id="L1775">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1776">			System.out.println (&quot;Cannot open IREOD file&quot;);</span>
+
+<span class="nc" id="L1778">			return;</span>
+<span class="nc" id="L1779">		}</span>
+
+<span class="nc bnc" id="L1781" title="All 2 branches missed.">		while (null != (strIREODLine = inIREOD.readLine())) {</span>
+<span class="nc" id="L1782">			int iNumRecord = 0;</span>
+<span class="nc" id="L1783">			java.lang.String astrIREOD[] = new java.lang.String[58];</span>
+
+<span class="nc" id="L1785">			java.util.StringTokenizer stIREOD = new java.util.StringTokenizer (strIREODLine, &quot;,&quot;);</span>
+
+<span class="nc bnc" id="L1787" title="All 2 branches missed.">			while (stIREOD.hasMoreTokens())</span>
+<span class="nc" id="L1788">				astrIREOD[iNumRecord++] = stIREOD.nextToken();</span>
+
+<span class="nc" id="L1790">			java.lang.String strClearIREOD = ClearFromIREOD (astrIREOD);</span>
+
+<span class="nc bnc" id="L1792" title="All 4 branches missed.">			if (null != strClearIREOD &amp;&amp; !strClearIREOD.isEmpty()) stmt.executeQuery (strClearIREOD);</span>
+
+<span class="nc" id="L1794">			java.lang.String strInsertIREOD = InsertIntoIREOD (astrIREOD);</span>
+
+<span class="nc bnc" id="L1796" title="All 4 branches missed.">			if (null != strInsertIREOD &amp;&amp; !strInsertIREOD.isEmpty()) stmt.executeQuery (strInsertIREOD);</span>
+
+<span class="nc" id="L1798">			++iNumIREOD;</span>
+<span class="nc" id="L1799">		}</span>
+
+<span class="nc" id="L1801">		inIREOD.close();</span>
+
+<span class="nc" id="L1803">		System.out.println (&quot;Loaded &quot; + iNumIREOD + &quot; into IR_EOD.&quot;);</span>
+<span class="nc" id="L1804">	}</span>
+
+	private static final void LoadBondSPN()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L1809">		int iNumSPN = 0;</span>
+<span class="nc" id="L1810">		java.lang.String strSPNLine = &quot;&quot;;</span>
+<span class="nc" id="L1811">		java.io.BufferedReader inSPN = null;</span>
+
+<span class="nc" id="L1813">		System.out.println (&quot;Loading SPN ...&quot;);</span>
+
+<span class="nc" id="L1815">		java.sql.Statement stmt = org.drip.param.config.ConfigLoader.OracleInit</span>
+<span class="nc" id="L1816">			(&quot;c:\\Lakshmi\\java\\BondAnal\\Config.xml&quot;);</span>
+
+		try {
+<span class="nc" id="L1819">			inSPN = new java.io.BufferedReader (new java.io.FileReader</span>
+				(&quot;c:\\Lakshmi\\BondAnal\\Data\\BondStaticRef\\Closes\\Bond.csv&quot;));
+<span class="nc" id="L1821">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1822">			System.out.println (&quot;Cannot open SPN file&quot;);</span>
+
+<span class="nc" id="L1824">			return;</span>
+<span class="nc" id="L1825">		}</span>
+
+<span class="nc bnc" id="L1827" title="All 2 branches missed.">		while (null != (strSPNLine = inSPN.readLine())) {</span>
+<span class="nc" id="L1828">			java.lang.String[] astrSPN = strSPNLine.split (&quot;,&quot;);</span>
+
+<span class="nc" id="L1830">			java.lang.String strISIN = astrSPN[0];</span>
+<span class="nc" id="L1831">			java.lang.String strSPN = astrSPN[3];</span>
+
+<span class="nc bnc" id="L1833" title="All 8 branches missed.">			if (null != strSPN &amp;&amp; !strSPN.isEmpty() &amp;&amp; null != strSPN &amp;&amp; !strSPN.isEmpty()) {</span>
+<span class="nc" id="L1834">				stmt.executeQuery (&quot;update BondRef set IssuerSPN = '&quot; + strSPN + &quot;' where ISIN = '&quot; + strISIN</span>
+					+ &quot;'&quot;);
+
+<span class="nc" id="L1837">				++iNumSPN;</span>
+			}
+<span class="nc" id="L1839">		}</span>
+
+<span class="nc" id="L1841">		System.out.println (&quot;Loaded &quot; + iNumSPN + &quot; SPNs into BondRef.&quot;);</span>
+
+<span class="nc" id="L1843">		inSPN.close();</span>
+<span class="nc" id="L1844">	}</span>
+
+	private static final void LoadCREOD()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L1849">		int iNumCREOD = 0;</span>
+<span class="nc" id="L1850">		java.lang.String strCREODLine = &quot;&quot;;</span>
+<span class="nc" id="L1851">		java.io.BufferedReader inCREOD = null;</span>
+
+<span class="nc" id="L1853">		System.out.println (&quot;Loading CREOD ...&quot;);</span>
+
+<span class="nc" id="L1855">		java.sql.Statement stmt = org.drip.param.config.ConfigLoader.OracleInit</span>
+<span class="nc" id="L1856">			(&quot;c:\\Lakshmi\\BondAnal\\Config.xml&quot;);</span>
+
+		try {
+<span class="nc" id="L1859">			inCREOD = new java.io.BufferedReader (new java.io.FileReader</span>
+				(&quot;c:\\Lakshmi\\BondAnal\\Data\\BondStaticRef\\Closes\\EODCR_2Q_2011.csv&quot;));
+<span class="nc" id="L1861">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1862">			System.out.println (&quot;Cannot open CREOD file&quot;);</span>
+
+<span class="nc" id="L1864">			return;</span>
+<span class="nc" id="L1865">		}</span>
+
+<span class="nc bnc" id="L1867" title="All 2 branches missed.">		while (null != (strCREODLine = inCREOD.readLine())) {</span>
+<span class="nc" id="L1868">			java.lang.String[] astrCREOD = strCREODLine.split (&quot;,&quot;);</span>
+
+<span class="nc" id="L1870">			java.lang.String strClearCREOD = ClearFromCREOD (astrCREOD);</span>
+
+<span class="nc bnc" id="L1872" title="All 4 branches missed.">			if (null != strClearCREOD &amp;&amp; !strClearCREOD.isEmpty()) stmt.executeQuery (strClearCREOD);</span>
+
+<span class="nc" id="L1874">			java.lang.String strInsertCREOD = InsertIntoCREOD (astrCREOD);</span>
+
+<span class="nc bnc" id="L1876" title="All 4 branches missed.">			if (null != strInsertCREOD &amp;&amp; !strInsertCREOD.isEmpty()) {</span>
+<span class="nc" id="L1877">				System.out.println (strInsertCREOD);</span>
+
+<span class="nc" id="L1879">				stmt.executeQuery (strInsertCREOD);</span>
+			}
+
+<span class="nc" id="L1882">			++iNumCREOD;</span>
+<span class="nc" id="L1883">		}</span>
+
+<span class="nc" id="L1885">		System.out.println (&quot;Loaded &quot; + iNumCREOD + &quot; into CREOD.&quot;);</span>
+
+<span class="nc" id="L1887">		inCREOD.close();</span>
+<span class="nc" id="L1888">	}</span>
+
+	public static void main (
+		final java.lang.String[] astrArgs)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L1894" title="All 4 branches missed.">		if (0 &lt; astrArgs.length &amp;&amp; &quot;-loadbondref2&quot;.equalsIgnoreCase (astrArgs[0])) {</span>
+<span class="nc" id="L1895">			LoadBondRef2();</span>
+
+<span class="nc" id="L1897">			return;</span>
+		}
+
+<span class="nc bnc" id="L1900" title="All 4 branches missed.">		if (0 &lt; astrArgs.length &amp;&amp; &quot;-loadbondref_fodata&quot;.equalsIgnoreCase (astrArgs[0])) {</span>
+<span class="nc" id="L1901">			LoadBondRef_FODATA();</span>
+
+<span class="nc" id="L1903">			return;</span>
+		}
+
+<span class="nc bnc" id="L1906" title="All 4 branches missed.">		if (0 &lt; astrArgs.length &amp;&amp; &quot;-bondmarks&quot;.equalsIgnoreCase (astrArgs[0])) {</span>
+<span class="nc" id="L1907">			LoadBondMarks();</span>
+
+<span class="nc" id="L1909">			return;</span>
+		}
+
+<span class="nc bnc" id="L1912" title="All 4 branches missed.">		if (0 &lt; astrArgs.length &amp;&amp; &quot;-holcals&quot;.equalsIgnoreCase (astrArgs[0])) {</span>
+<span class="nc" id="L1913">			LoadHolCals();</span>
+
+<span class="nc" id="L1915">			return;</span>
+		}
+
+<span class="nc bnc" id="L1918" title="All 4 branches missed.">		if (0 &lt; astrArgs.length &amp;&amp; &quot;-acchols&quot;.equalsIgnoreCase (astrArgs[0])) {</span>
+<span class="nc" id="L1919">			AccumulateHolidays();</span>
+
+<span class="nc" id="L1921">			return;</span>
+		}
+
+<span class="nc bnc" id="L1924" title="All 4 branches missed.">		if (0 &lt; astrArgs.length &amp;&amp; &quot;-eos&quot;.equalsIgnoreCase (astrArgs[0])) {</span>
+<span class="nc" id="L1925">			LoadEOS();</span>
+
+<span class="nc" id="L1927">			return;</span>
+		}
+
+<span class="nc bnc" id="L1930" title="All 4 branches missed.">		if (0 &lt; astrArgs.length &amp;&amp; &quot;-amortsched&quot;.equalsIgnoreCase (astrArgs[0])) {</span>
+<span class="nc" id="L1931">			LoadAmortizationSchedule();</span>
+
+<span class="nc" id="L1933">			return;</span>
+		}
+
+<span class="nc bnc" id="L1936" title="All 4 branches missed.">		if (0 &lt; astrArgs.length &amp;&amp; &quot;-ireod&quot;.equalsIgnoreCase (astrArgs[0])) {</span>
+<span class="nc" id="L1937">			LoadIREOD();</span>
+
+<span class="nc" id="L1939">			return;</span>
+		}
+
+<span class="nc bnc" id="L1942" title="All 4 branches missed.">		if (0 &lt; astrArgs.length &amp;&amp; &quot;-creod&quot;.equalsIgnoreCase (astrArgs[0])) {</span>
+<span class="nc" id="L1943">			LoadCREOD();</span>
+
+<span class="nc" id="L1945">			return;</span>
+		}
+
+<span class="nc bnc" id="L1948" title="All 4 branches missed.">		if (0 &lt; astrArgs.length &amp;&amp; &quot;-spn&quot;.equalsIgnoreCase (astrArgs[0])) {</span>
+<span class="nc" id="L1949">			LoadBondSPN();</span>
+
+<span class="nc" id="L1951">			return;</span>
+		}
+
+<span class="nc" id="L1954">		LoadBondRef();</span>
+
+<span class="nc" id="L1956">		LoadEOS();</span>
+
+<span class="nc" id="L1958">		LoadBondSPN();</span>
+<span class="nc" id="L1959">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DiscreteTradingTrajectory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.execution.strategy</a> &gt; <span class="el_source">DiscreteTradingTrajectory.java</span></div><h1>DiscreteTradingTrajectory.java</h1><pre class="source lang-java linenums">
+package org.drip.execution.strategy;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * DiscreteTradingTrajectory holds the Trajectory of a Trading Block that is to be executed over a Discrete
+ *  Time Set. The References are:
+ * 
+ * 	- Almgren, R., and N. Chriss (1999): Value under Liquidation, Risk 12 (12).
+ * 
+ * 	- Almgren, R., and N. Chriss (2000): Optimal Execution of Portfolio Transactions, Journal of Risk 3 (2)
+ * 		5-39.
+ * 
+ * 	- Bertsimas, D., and A. W. Lo (1998): Optimal Control of Execution Costs, Journal of Financial Markets,
+ * 		1, 1-50.
+ *
+ * 	- Chan, L. K. C., and J. Lakonishak (1995): The Behavior of Stock Prices around Institutional Trades,
+ * 		Journal of Finance, 50, 1147-1174.
+ *
+ * 	- Keim, D. B., and A. Madhavan (1997): Transaction Costs and Investment Style: An Inter-exchange
+ * 		Analysis of Institutional Equity Trades, Journal of Financial Economics, 46, 265-292.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class DiscreteTradingTrajectory implements org.drip.execution.strategy.TradingTrajectory {
+<span class="fc" id="L73">	private double[] _adblHoldings = null;</span>
+<span class="fc" id="L74">	private double[] _adblTradeList = null;</span>
+<span class="fc" id="L75">	private double[] _adblExecutionTimeNode = null;</span>
+
+	/**
+	 * Construct a Standard DiscreteTradingTrajectory Instance
+	 * 
+	 * @param adblExecutionTimeNode Array containing the Trajectory Time Nodes
+	 * @param adblHoldings Array containing the Holdings
+	 * 
+	 * @return The DiscreteTradingTrajectory Instance
+	 */
+
+	public static DiscreteTradingTrajectory Standard (
+		final double[] adblExecutionTimeNode,
+		final double[] adblHoldings)
+	{
+<span class="nc bnc" id="L90" title="All 2 branches missed.">		if (null == adblHoldings) return null;</span>
+
+<span class="nc" id="L92">		int iNumExecutionTime = adblHoldings.length;</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">		double[] adblTradeList = 1 &gt;= iNumExecutionTime ? null : new double[iNumExecutionTime - 1];</span>
+
+<span class="nc bnc" id="L95" title="All 2 branches missed.">		if (1 &gt;= iNumExecutionTime) return null;</span>
+
+<span class="nc bnc" id="L97" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumExecutionTime - 1; ++i)</span>
+<span class="nc" id="L98">			adblTradeList[i] = adblHoldings[i + 1] - adblHoldings[i];</span>
+
+		try {
+<span class="nc" id="L101">			return new DiscreteTradingTrajectory (adblExecutionTimeNode, adblHoldings, adblTradeList);</span>
+<span class="nc" id="L102">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L103">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L106">		return null;</span>
+	}
+
+	/**
+	 * Construct a Linear DiscreteTradingTrajectory Instance
+	 * 
+	 * @param adblExecutionTimeNode Array of the Execution Time Nodes
+	 * @param dblStartHoldings Trajectory Start Holdings
+	 * @param dblFinishHoldings Trajectory Finish Holdings
+	 * 
+	 * @return The Linear TradingTrajectory Instance
+	 */
+
+	public static final DiscreteTradingTrajectory Linear (
+		final double[] adblExecutionTimeNode,
+		final double dblStartHoldings,
+		final double dblFinishHoldings)
+	{
+<span class="nc bnc" id="L124" title="All 2 branches missed.">		if (null == adblExecutionTimeNode || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="nc bnc" id="L125" title="All 4 branches missed.">			(adblExecutionTimeNode) || !org.drip.quant.common.NumberUtil.IsValid (dblStartHoldings) ||</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (dblFinishHoldings))</span>
+<span class="nc" id="L127">			return null;</span>
+
+<span class="nc" id="L129">		int iNumNode = adblExecutionTimeNode.length;</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">		double[] adblHoldings = 1 &gt;= iNumNode ? null : new double[iNumNode];</span>
+<span class="nc" id="L131">		double dblHoldingsChangeRate = (dblFinishHoldings - dblStartHoldings) /</span>
+			(adblExecutionTimeNode[iNumNode - 1] - adblExecutionTimeNode[0]);
+
+<span class="nc bnc" id="L134" title="All 2 branches missed.">		if (1 &gt;= iNumNode) return null;</span>
+
+<span class="nc bnc" id="L136" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumNode; ++i)</span>
+<span class="nc" id="L137">			adblHoldings[i] = dblStartHoldings + dblHoldingsChangeRate * i;</span>
+
+<span class="nc" id="L139">		return DiscreteTradingTrajectory.Standard (adblExecutionTimeNode, adblHoldings);</span>
+	}
+
+	/**
+	 * DiscreteTradingTrajectory Constructor
+	 * 
+	 * @param adblExecutionTimeNode Array containing the Trajectory Time Nodes
+	 * @param adblHoldings Array containing the Holdings
+	 * @param adblTradeList Array containing the Trade List
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public DiscreteTradingTrajectory (
+		final double[] adblExecutionTimeNode,
+		final double[] adblHoldings,
+		final double[] adblTradeList)
+		throws java.lang.Exception
+<span class="fc" id="L157">	{</span>
+<span class="pc bpc" id="L158" title="3 of 6 branches missed.">		if (null == (_adblHoldings = adblHoldings) || null == (_adblTradeList = adblTradeList) || null ==</span>
+			(_adblExecutionTimeNode = adblExecutionTimeNode))
+<span class="nc" id="L160">			throw new java.lang.Exception (&quot;DiscreteTradingTrajectory Constructor =&gt; Invalid Inputs!&quot;);</span>
+
+<span class="fc" id="L162">		int iNumExecutionTime = _adblExecutionTimeNode.length;</span>
+
+<span class="pc bpc" id="L164" title="3 of 6 branches missed.">		if (1 &gt;= iNumExecutionTime || iNumExecutionTime != _adblHoldings.length || iNumExecutionTime - 1 !=</span>
+<span class="pc bpc" id="L165" title="1 of 2 branches missed.">			_adblTradeList.length || !org.drip.quant.common.NumberUtil.IsValid (_adblHoldings[0]) ||</span>
+<span class="pc bpc" id="L166" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_adblExecutionTimeNode[0]))</span>
+<span class="nc" id="L167">			throw new java.lang.Exception (&quot;DiscreteTradingTrajectory Constructor =&gt; Invalid Inputs!&quot;);</span>
+
+<span class="fc bfc" id="L169" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumExecutionTime; ++i) {</span>
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (_adblHoldings[i]) ||</span>
+<span class="pc bpc" id="L171" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_adblTradeList[i - 1]) ||</span>
+<span class="pc bpc" id="L172" title="2 of 4 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_adblExecutionTimeNode[i]) ||</span>
+						_adblExecutionTimeNode[i - 1] &gt;= _adblExecutionTimeNode[i])
+<span class="nc" id="L174">				throw new java.lang.Exception (&quot;DiscreteTradingTrajectory Constructor =&gt; Invalid Inputs!&quot;);</span>
+		}
+<span class="fc" id="L176">	}</span>
+
+	@Override public double tradeSize()
+	{
+<span class="nc" id="L180">		return _adblHoldings[0];</span>
+	}
+
+	@Override public double executedBlockSize()
+	{
+<span class="nc" id="L185">		return _adblHoldings[_adblHoldings.length - 1] - _adblHoldings[0];</span>
+	}
+
+	@Override public double executionTime()
+	{
+<span class="nc" id="L190">		return _adblExecutionTimeNode[_adblExecutionTimeNode.length - 1] - _adblExecutionTimeNode[0];</span>
+	}
+
+	@Override public double instantTradeRate()
+	{
+<span class="nc" id="L195">		return executedBlockSize() / executionTime();</span>
+	}
+
+	/**
+	 * Retrieve the Array containing the Execution Time Nodes Sequence
+	 * 
+	 * @return The Array containing the Execution Time Nodes Sequence
+	 */
+
+	public double[] executionTimeNode()
+	{
+<span class="fc" id="L206">		return _adblExecutionTimeNode;</span>
+	}
+
+	/**
+	 * Retrieve the Array of the Number of Units Outstanding
+	 * 
+	 * @return The Array of the Number of Units Outstanding
+	 */
+
+	public double[] holdings()
+	{
+<span class="fc" id="L217">		return _adblHoldings;</span>
+	}
+
+	/**
+	 * Retrieve the Trade List, i.e., the Array of the Number of Units executed
+	 * 
+	 * @return The Trade List, i.e., the Array of the Number of Units executed
+	 */
+
+	public double[] tradeList()
+	{
+<span class="fc" id="L228">		return _adblTradeList;</span>
+	}
+
+	/**
+	 * Retrieve the Number of Trades
+	 * 
+	 * @return The Number of Trades
+	 */
+
+	public int numberOfTrades()
+	{
+<span class="nc" id="L239">		return _adblHoldings.length - 1;</span>
+	}
+
+	/**
+	 * Retrieve the Array of the Inner Holdings
+	 * 
+	 * @return The Array of the Inner Holdings
+	 */
+
+	public double[] innerHoldings()
+	{
+<span class="nc" id="L250">		int iNumInnerHoldings = _adblHoldings.length - 2;</span>
+<span class="nc" id="L251">		double[] adblInnerHoldings = new double[iNumInnerHoldings];</span>
+
+<span class="nc bnc" id="L253" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInnerHoldings; ++i)</span>
+<span class="nc" id="L254">			adblInnerHoldings[i] = _adblHoldings[i + 1];</span>
+
+<span class="nc" id="L256">		return adblInnerHoldings;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

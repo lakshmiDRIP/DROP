@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TreasurySetting.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.market.issue</a> &gt; <span class="el_source">TreasurySetting.java</span></div><h1>TreasurySetting.java</h1><pre class="source lang-java linenums">
+package org.drip.market.issue;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * TreasurySetting contains the Definitions of the Settings of different Jurisdiction Treasuries.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class TreasurySetting {
+<span class="fc" id="L60">	private int _iFrequency = -1;</span>
+<span class="fc" id="L61">	private java.lang.String _strCode = &quot;&quot;;</span>
+<span class="fc" id="L62">	private java.lang.String _strCalendar = &quot;&quot;;</span>
+<span class="fc" id="L63">	private java.lang.String _strCurrency = &quot;&quot;;</span>
+<span class="fc" id="L64">	private java.lang.String _strDayCount = &quot;&quot;;</span>
+
+	/**
+	 * TreasurySetting Constructor
+	 * 
+	 * @param strCode Treasury Code
+	 * @param strCurrency Currency
+	 * @param iFrequency Frequency
+	 * @param strDayCount Day Count
+	 * @param strCalendar Calendar
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public TreasurySetting (
+		final java.lang.String strCode,
+		final java.lang.String strCurrency,
+		final int iFrequency,
+		final java.lang.String strDayCount,
+		final java.lang.String strCalendar)
+		throws java.lang.Exception
+<span class="fc" id="L85">	{</span>
+<span class="pc bpc" id="L86" title="3 of 6 branches missed.">		if (null == (_strCode = strCode) || _strCode.isEmpty() || null == (_strCurrency = strCurrency) ||</span>
+<span class="pc bpc" id="L87" title="3 of 6 branches missed.">			_strCurrency.isEmpty() || 0 &gt;= (_iFrequency = iFrequency) || null == (_strDayCount =</span>
+<span class="pc bpc" id="L88" title="2 of 4 branches missed.">				strDayCount) || _strDayCount.isEmpty() || null == (_strCalendar = strCalendar) ||</span>
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">					_strCalendar.isEmpty())</span>
+<span class="nc" id="L90">			throw new java.lang.Exception (&quot;TreasurySetting ctr =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L91">	}</span>
+
+	/**
+	 * Retrieve the Treasury Code
+	 * 
+	 * @return The Treasury Code
+	 */
+
+	public java.lang.String code()
+	{
+<span class="fc" id="L101">		return _strCode;</span>
+	}
+
+	/**
+	 * Retrieve the Currency
+	 * 
+	 * @return The Currency
+	 */
+
+	public java.lang.String currency()
+	{
+<span class="fc" id="L112">		return _strCurrency;</span>
+	}
+
+	/**
+	 * Retrieve the Frequency
+	 * 
+	 * @return The Frequency
+	 */
+
+	public int frequency()
+	{
+<span class="fc" id="L123">		return _iFrequency;</span>
+	}
+
+	/**
+	 * Retrieve the Day Count
+	 * 
+	 * @return The Day Count
+	 */
+
+	public java.lang.String dayCount()
+	{
+<span class="fc" id="L134">		return _strDayCount;</span>
+	}
+
+	/**
+	 * Retrieve the Calendar
+	 * 
+	 * @return The Calendar
+	 */
+
+	public java.lang.String calendar()
+	{
+<span class="nc" id="L145">		return _strCalendar;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

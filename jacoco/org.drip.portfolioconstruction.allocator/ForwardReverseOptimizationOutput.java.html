@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ForwardReverseOptimizationOutput.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.portfolioconstruction.allocator</a> &gt; <span class="el_source">ForwardReverseOptimizationOutput.java</span></div><h1>ForwardReverseOptimizationOutput.java</h1><pre class="source lang-java linenums">
+package org.drip.portfolioconstruction.allocator;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * ForwardReverseOptimizationOutput holds the Metrics that result from a Forward/Reverse Optimization Run.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class ForwardReverseOptimizationOutput extends
+	org.drip.portfolioconstruction.allocator.OptimizationOutput {
+<span class="fc" id="L59">	private double _dblRiskAversion = java.lang.Double.NaN;</span>
+<span class="fc" id="L60">	private double[] _adblExpectedAssetExcessReturns = null;</span>
+<span class="fc" id="L61">	private double[][] _aadblAssetExcessReturnsCovariance = null;</span>
+
+	/**
+	 * Construct an Instance of ForwardReverseOptimizationOutput from a Standard Reverse Optimize Operation
+	 * 
+	 * @param pfEquilibrium The Equilibrium Portfolio
+	 * @param aadblAssetExcessReturnsCovariance Pair-wse Asset Excess Returns Co-variance Matrix
+	 * @param dblRiskAversion The Risk Aversion Parameter
+	 * 
+	 * @return The Instance of ForwardReverseOptimizationOutput from a Standard Reverse Optimize Operation
+	 */
+
+	public static final ForwardReverseOptimizationOutput Reverse (
+		final org.drip.portfolioconstruction.asset.Portfolio pfEquilibrium,
+		final double[][] aadblAssetExcessReturnsCovariance,
+		final double dblRiskAversion)
+	{
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">		if (null == pfEquilibrium) return null;</span>
+
+<span class="fc" id="L80">		double[] adblAssetWeight = pfEquilibrium.weights();</span>
+
+<span class="fc" id="L82">		int iNumAsset = adblAssetWeight.length;</span>
+
+<span class="fc" id="L84">		double[] adblExpectedAssetExcessReturns = org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="fc" id="L85">			(aadblAssetExcessReturnsCovariance, pfEquilibrium.weights());</span>
+
+<span class="pc bpc" id="L87" title="1 of 2 branches missed.">		if (null == adblExpectedAssetExcessReturns);</span>
+
+<span class="fc bfc" id="L89" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumAsset; ++i)</span>
+<span class="fc" id="L90">			adblExpectedAssetExcessReturns[i] = adblExpectedAssetExcessReturns [i] * dblRiskAversion;</span>
+
+<span class="fc" id="L92">		return ForwardReverseOptimizationOutput.Standard (pfEquilibrium, dblRiskAversion,</span>
+			aadblAssetExcessReturnsCovariance, adblExpectedAssetExcessReturns);
+	}
+
+	/**
+	 * Construct an Instance of ForwardReverseOptimizationOutput from a Standard Forward Optimize Operation
+	 * 
+	 * @param astrAssetID The Array of the Assets in the Portfolio
+	 * @param adblExpectedAssetExcessReturns Array of Expected Excess Returns
+	 * @param aadblAssetExcessReturnsCovariance Excess Returns Co-variance Matrix
+	 * @param dblRiskAversion The Risk Aversion Parameter
+	 * 
+	 * @return The Instance of ForwardReverseOptimizationOutput from a Standard Forward Optimize Operation
+	 */
+
+	public static final ForwardReverseOptimizationOutput Forward (
+		final java.lang.String[] astrAssetID,
+		final double[] adblExpectedAssetExcessReturns,
+		final double[][] aadblAssetExcessReturnsCovariance,
+		final double dblRiskAversion)
+	{
+<span class="pc bpc" id="L113" title="1 of 2 branches missed.">		if (null == astrAssetID) return null;</span>
+
+<span class="fc" id="L115">		int iNumAsset = astrAssetID.length;</span>
+
+<span class="fc" id="L117">		double[] adblAssetWeight = org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="fc" id="L118">			(org.drip.quant.linearalgebra.Matrix.InvertUsingGaussianElimination</span>
+<span class="fc" id="L119">				(aadblAssetExcessReturnsCovariance), adblExpectedAssetExcessReturns);</span>
+
+<span class="pc bpc" id="L121" title="2 of 4 branches missed.">		if (null == adblAssetWeight || iNumAsset != adblAssetWeight.length) return null;</span>
+
+<span class="fc bfc" id="L123" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumAsset; ++i)</span>
+<span class="fc" id="L124">			adblAssetWeight[i] = adblAssetWeight[i] / dblRiskAversion;</span>
+
+<span class="fc" id="L126">		return ForwardReverseOptimizationOutput.Standard</span>
+<span class="fc" id="L127">			(org.drip.portfolioconstruction.asset.Portfolio.Standard (astrAssetID, adblAssetWeight),</span>
+				dblRiskAversion, aadblAssetExcessReturnsCovariance, adblExpectedAssetExcessReturns);
+	}
+
+	/**
+	 * Construct a Standard Instance of ForwardReverseOptimizationOutput
+	 * 
+	 * @param pfOptimal The Optimal Equilibrium Portfolio
+	 * @param dblRiskAversion The Risk Aversion Parameter
+	 * @param aadblAssetExcessReturnsCovariance Pair-wise Asset Excess Returns Co-variance Matrix
+	 * @param adblExpectedAssetExcessReturns Array of Expected Excess Returns
+	 * 
+	 * @return The Standard Instance of ForwardReverseOptimizationOutput
+	 */
+
+	public static final ForwardReverseOptimizationOutput Standard (
+		final org.drip.portfolioconstruction.asset.Portfolio pfOptimal,
+		final double dblRiskAversion,
+		final double[][] aadblAssetExcessReturnsCovariance,
+		final double[] adblExpectedAssetExcessReturns)
+	{
+<span class="pc bpc" id="L148" title="2 of 4 branches missed.">		if (null == pfOptimal || null == adblExpectedAssetExcessReturns) return null;</span>
+
+<span class="fc" id="L150">		double[] adblAssetWeight = pfOptimal.weights();</span>
+
+<span class="fc" id="L152">		int iNumAsset = adblAssetWeight.length;</span>
+<span class="fc" id="L153">		double dblPortfolioExcessReturnsMean = 0.;</span>
+<span class="fc" id="L154">		double dblPortfolioExcessReturnsVariance = 0.;</span>
+
+<span class="pc bpc" id="L156" title="1 of 2 branches missed.">		if (iNumAsset != adblExpectedAssetExcessReturns.length) return null;</span>
+
+<span class="fc" id="L158">		double[] adblImpliedBeta = org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="fc" id="L159">			(aadblAssetExcessReturnsCovariance, adblAssetWeight);</span>
+
+<span class="pc bpc" id="L161" title="1 of 2 branches missed.">		if (null == adblImpliedBeta) return null;</span>
+
+<span class="fc bfc" id="L163" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumAsset; ++i) {</span>
+<span class="fc" id="L164">			dblPortfolioExcessReturnsMean += adblAssetWeight[i] * adblExpectedAssetExcessReturns[i];</span>
+
+<span class="fc bfc" id="L166" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumAsset; ++j)</span>
+<span class="fc" id="L167">				dblPortfolioExcessReturnsVariance += adblAssetWeight[i] * adblAssetWeight[j] *</span>
+					aadblAssetExcessReturnsCovariance[i][j];
+		}
+
+<span class="fc bfc" id="L171" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumAsset; ++i)</span>
+<span class="fc" id="L172">			adblImpliedBeta[i] = adblImpliedBeta[i] / dblPortfolioExcessReturnsVariance;</span>
+
+<span class="fc" id="L174">		double dblPortfolioExcessReturnsSigma = java.lang.Math.sqrt (dblPortfolioExcessReturnsVariance);</span>
+
+		try {
+<span class="fc" id="L177">			return new ForwardReverseOptimizationOutput (pfOptimal, new</span>
+				org.drip.portfolioconstruction.asset.PortfolioMetrics (dblPortfolioExcessReturnsMean,
+					dblPortfolioExcessReturnsVariance, dblPortfolioExcessReturnsSigma,
+						dblPortfolioExcessReturnsMean / dblPortfolioExcessReturnsSigma, adblImpliedBeta),
+							dblRiskAversion, aadblAssetExcessReturnsCovariance,
+								adblExpectedAssetExcessReturns);
+<span class="nc" id="L183">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L184">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L187">		return null;</span>
+	}
+
+	/**
+	 * ForwardReverseOptimizationOutput Constructor
+	 * 
+	 * @param pfOptimal The Optimal Equilibrium Portfolio
+	 * @param pmOptimal The Optimal Equilibrium Portfolio Metrics
+	 * @param dblRiskAversion The Risk Aversion Parameter
+	 * @param aadblAssetExcessReturnsCovariance Pair-wise Asset Excess Returns Co-variance Matrix
+	 * @param adblExpectedAssetExcessReturns Array of Expected Excess Returns
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public ForwardReverseOptimizationOutput (
+		final org.drip.portfolioconstruction.asset.Portfolio pfOptimal,
+		final org.drip.portfolioconstruction.asset.PortfolioMetrics pmOptimal,
+		final double dblRiskAversion,
+		final double[][] aadblAssetExcessReturnsCovariance,
+		final double[] adblExpectedAssetExcessReturns)
+		throws java.lang.Exception
+	{
+<span class="fc" id="L210">		super (pfOptimal, pmOptimal);</span>
+
+<span class="pc bpc" id="L212" title="1 of 2 branches missed.">		if (null == (_aadblAssetExcessReturnsCovariance = aadblAssetExcessReturnsCovariance) ||</span>
+<span class="pc bpc" id="L213" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblRiskAversion = dblRiskAversion) || null ==</span>
+				(_adblExpectedAssetExcessReturns = adblExpectedAssetExcessReturns))
+<span class="nc" id="L215">			throw new java.lang.Exception (&quot;ForwardReverseOptimizationOutput Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L216">	}</span>
+
+	/**
+	 * Retrieve the Excess Returns Co-variance Matrix between each Pair-wise Asset
+	 * 
+	 * @return The Excess Returns Co-variance Matrix between each Pair-wise Asset
+	 */
+
+	public double[][] assetExcessReturnsCovariance()
+	{
+<span class="fc" id="L226">		return _aadblAssetExcessReturnsCovariance;</span>
+	}
+
+	/**
+	 * Retrieve the Risk Aversion Coefficient
+	 * 
+	 * @return The Risk Aversion Coefficient
+	 */
+
+	public double riskAversion()
+	{
+<span class="fc" id="L237">		return _dblRiskAversion;</span>
+	}
+
+	/**
+	 * Retrieve the Array of Expected Excess Returns for each Asset
+	 * 
+	 * @return The Array of Expected Excess Returns for each Asset
+	 */
+
+	public double[] expectedAssetExcessReturns()
+	{
+<span class="fc" id="L248">		return _adblExpectedAssetExcessReturns;</span>
+	}
+
+	/**
+	 * Compute the Portfolio Relative Metrics using the specified Benchmark
+	 * 
+	 * @param pmBenchmark The Benchmark Metrics
+	 * 
+	 * @return The Portfolio Relative Metrics using the specified Benchmark
+	 */
+
+	public org.drip.portfolioconstruction.asset.PortfolioBenchmarkMetrics benchmarkMetrics (
+		final org.drip.portfolioconstruction.asset.PortfolioMetrics pmBenchmark)
+	{
+<span class="pc bpc" id="L262" title="1 of 2 branches missed.">		if (null == pmBenchmark) return null;</span>
+
+<span class="fc" id="L264">		org.drip.portfolioconstruction.asset.PortfolioMetrics pm = optimalMetrics();</span>
+
+		try {
+<span class="fc" id="L267">			double dblBeta = org.drip.quant.linearalgebra.Matrix.DotProduct (optimalPortfolio().weights(),</span>
+<span class="fc" id="L268">				pmBenchmark.impliedBeta());</span>
+
+<span class="fc" id="L270">			double dblActiveBeta = dblBeta - 1.;</span>
+
+<span class="fc" id="L272">			double dblPortfolioExcessReturnsMean = pm.excessReturnsMean();</span>
+
+<span class="fc" id="L274">			double dblBenchmarkExcessReturnsMean = pmBenchmark.excessReturnsMean();</span>
+
+<span class="fc" id="L276">			double dblBenchmarkExcessReturnsVariance = pmBenchmark.excessReturnsVariance();</span>
+
+<span class="fc" id="L278">			double dblResidualRisk = java.lang.Math.sqrt (pm.excessReturnsVariance() - dblBeta * dblBeta *</span>
+				dblBenchmarkExcessReturnsVariance);
+
+<span class="fc" id="L281">			return new org.drip.portfolioconstruction.asset.PortfolioBenchmarkMetrics (dblBeta,</span>
+<span class="fc" id="L282">				dblActiveBeta, java.lang.Math.sqrt (dblResidualRisk * dblResidualRisk + dblActiveBeta *</span>
+					dblActiveBeta * dblBenchmarkExcessReturnsVariance), dblPortfolioExcessReturnsMean -
+						dblBenchmarkExcessReturnsMean, dblResidualRisk, dblPortfolioExcessReturnsMean -
+							dblBeta * dblBenchmarkExcessReturnsMean);
+<span class="nc" id="L286">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L287">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L290">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

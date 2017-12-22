@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CompositePeriodQuoteSet.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.product.calib</a> &gt; <span class="el_source">CompositePeriodQuoteSet.java</span></div><h1>CompositePeriodQuoteSet.java</h1><pre class="source lang-java linenums">
+package org.drip.product.calib;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * CompositePeriodQuoteSet implements the composite period's calibration quote set functionality.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class CompositePeriodQuoteSet extends org.drip.product.calib.ProductQuoteSet {
+
+	/**
+	 * CompositePeriodQuoteSet constructor
+	 * 
+	 * @param aLSS Array of Latent State Specification
+	 * 
+	 * @throws java.lang.Exception Thrown if inputs are invalid
+	 */
+
+	public CompositePeriodQuoteSet (
+		final org.drip.state.representation.LatentStateSpecification[] aLSS)
+		throws java.lang.Exception
+	{
+<span class="fc" id="L73">		super (aLSS);</span>
+<span class="fc" id="L74">	}</span>
+
+	/**
+	 * Set the Base Rate
+	 * 
+	 * @param dblBaseRate The Base Rate
+	 * 
+	 * @return TRUE - Base Rate successfully set
+	 */
+
+	public boolean setBaseRate (
+		final double dblBaseRate)
+	{
+<span class="fc" id="L87">		return set (&quot;BaseRate&quot;, dblBaseRate);</span>
+	}
+
+	/**
+	 * Indicate if the Base Rate Field exists
+	 * 
+	 * @return TRUE - Base Rate Field Exists
+	 */
+
+	public boolean containsBaseRate()
+	{
+<span class="fc" id="L98">		return contains (&quot;BaseRate&quot;);</span>
+	}
+
+	/**
+	 * Get the Period Base Coupon Rate
+	 * 
+	 * @return The Period Base Coupon Rate
+	 * 
+	 * @throws java.lang.Exception Thrown if the Base Rate Field does not exist
+	 */
+
+	public double baseRate()
+		throws java.lang.Exception
+	{
+<span class="fc" id="L112">		return get (&quot;BaseRate&quot;);</span>
+	}
+
+	/**
+	 * Set the Basis
+	 * 
+	 * @param dblBasis The Basis
+	 * 
+	 * @return TRUE - Basis successfully set
+	 */
+
+	public boolean setBasis (
+		final double dblBasis)
+	{
+<span class="fc" id="L126">		return set (&quot;Basis&quot;, dblBasis);</span>
+	}
+
+	/**
+	 * Indicate if the Basis Field exists
+	 * 
+	 * @return TRUE - Basis Field Exists
+	 */
+
+	public boolean containsBasis()
+	{
+<span class="fc" id="L137">		return contains (&quot;Basis&quot;);</span>
+	}
+
+	/**
+	 * Get the Period Coupon Basis
+	 * 
+	 * @return The Period Coupon Basis
+	 * 
+	 * @throws java.lang.Exception Thrown if the Basis Field does not exist
+	 */
+
+	public double basis()
+		throws java.lang.Exception
+	{
+<span class="fc" id="L151">		return get (&quot;Basis&quot;);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

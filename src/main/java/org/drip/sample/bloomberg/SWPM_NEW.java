@@ -759,7 +759,10 @@ public class SWPM_NEW {
 		 * Initialize the Credit Analytics Library
 		 */
 
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		JulianDate dtSpot = DateUtil.CreateFromYMD (
 			2015,
@@ -824,5 +827,7 @@ public class SWPM_NEW {
 
 		for (Map.Entry<String, Double> me : mapSwap.entrySet())
 			System.out.println ("\t" + me.getKey() + " => " + FormatUtil.FormatDouble (me.getValue(), 1, 8, 1.) + " |");
+
+		EnvManager.TerminateEnv();
 	}
 }

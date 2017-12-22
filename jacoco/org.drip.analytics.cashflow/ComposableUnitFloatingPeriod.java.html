@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ComposableUnitFloatingPeriod.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.analytics.cashflow</a> &gt; <span class="el_source">ComposableUnitFloatingPeriod.java</span></div><h1>ComposableUnitFloatingPeriod.java</h1><pre class="source lang-java linenums">
+package org.drip.analytics.cashflow;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for models for MPT framework, Black Litterman Strategy Incorporator,
+ *  	Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * ComposableUnitFloatingPeriod contains the Cash Flow Periods' Composable Period Details. Currently it holds
+ *  the Accrual Start Date, the Accrual End Date, the Fixing Date, the Spread over the Index, and the
+ * 	corresponding Reference Index Period.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class ComposableUnitFloatingPeriod extends org.drip.analytics.cashflow.ComposableUnitPeriod {
+<span class="fc" id="L62">	private double _dblSpread = java.lang.Double.NaN;</span>
+<span class="fc" id="L63">	private org.drip.analytics.cashflow.ReferenceIndexPeriod _rip = null;</span>
+
+	private org.drip.analytics.date.JulianDate lookBackProjectionDate (
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqc,
+		final org.drip.market.definition.OvernightIndex oi)
+	{
+<span class="nc" id="L69">		int iSkipBackDay = 0;</span>
+<span class="nc" id="L70">		org.drip.analytics.date.JulianDate dtFixing = null;</span>
+
+<span class="nc" id="L72">		org.drip.state.identifier.ForwardLabel forwardLabel = _rip.forwardLabel();</span>
+
+<span class="nc" id="L74">		org.drip.market.definition.FloaterIndex floaterIndex = forwardLabel.floaterIndex();</span>
+
+<span class="nc" id="L76">		int iLookBackProjectionWindow = oi.publicationLag();</span>
+
+		try {
+<span class="nc" id="L79">			dtFixing = new org.drip.analytics.date.JulianDate (_rip.fixingDate());</span>
+
+<span class="nc bnc" id="L81" title="All 2 branches missed.">			while (iSkipBackDay &lt;= iLookBackProjectionWindow) {</span>
+<span class="nc" id="L82">				if (</span>
+<span class="nc bnc" id="L83" title="All 2 branches missed.">					csqc.available (</span>
+						dtFixing,
+						forwardLabel
+					)
+				)
+<span class="nc" id="L88">				return dtFixing;</span>
+
+<span class="nc bnc" id="L90" title="All 2 branches missed.">				if (null == (dtFixing = dtFixing.subtractBusDays (</span>
+					1,
+<span class="nc" id="L92">					floaterIndex.calendar()</span>
+				)))
+<span class="nc" id="L94">					return null;</span>
+
+<span class="nc" id="L96">				iSkipBackDay += 1;</span>
+			}
+<span class="nc" id="L98">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L99">			e.printStackTrace();</span>
+<span class="nc" id="L100">		}</span>
+
+<span class="nc" id="L102">		return null;</span>
+	}
+
+	/**
+	 * The ComposableUnitFloatingPeriod Constructor
+	 * 
+	 * @param iStartDate Accrual Start Date
+	 * @param iEndDate Accrual End Date
+	 * @param strTenor The Composable Period Tenor
+	 * @param rip The Reference Index Period
+	 * @param dblSpread The Floater Spread
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public ComposableUnitFloatingPeriod (
+		final int iStartDate,
+		final int iEndDate,
+		final java.lang.String strTenor,
+		final org.drip.analytics.cashflow.ReferenceIndexPeriod rip,
+		final double dblSpread)
+		throws java.lang.Exception
+	{
+<span class="fc" id="L125">		super (</span>
+			iStartDate,
+			iEndDate,
+			strTenor,
+<span class="fc" id="L129">			rip.forwardLabel().ucas()</span>
+		);
+
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblSpread = dblSpread))</span>
+<span class="nc" id="L133">			throw new java.lang.Exception (&quot;ComposableUnitFloatingPeriod Constructor =&gt; Invalid Inputs&quot;);</span>
+
+<span class="fc" id="L135">		_rip = rip;</span>
+<span class="fc" id="L136">	}</span>
+
+	/**
+	 * Retrieve the Reference Rate for the Floating Period
+	 * 
+	 * @param csqc The Market Curve and Surface
+	 * 
+	 * @return The Reference Rate for the Floating Period
+	 * 
+	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 */
+
+	@Override public double baseRate (
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqc)
+		throws java.lang.Exception
+	{
+<span class="pc bpc" id="L152" title="1 of 2 branches missed.">		if (null == csqc) return java.lang.Double.NaN;</span>
+
+<span class="fc" id="L154">		org.drip.state.identifier.ForwardLabel forwardLabel = _rip.forwardLabel();</span>
+
+<span class="fc" id="L156">		org.drip.market.definition.FloaterIndex floaterIndex = forwardLabel.floaterIndex();</span>
+
+<span class="pc bpc" id="L158" title="1 of 2 branches missed.">		if (!(floaterIndex instanceof org.drip.market.definition.OvernightIndex)) {</span>
+<span class="fc" id="L159">			int iFixingDate = _rip.fixingDate();</span>
+
+<span class="fc" id="L161">			if (</span>
+<span class="pc bpc" id="L162" title="1 of 2 branches missed.">				csqc.available (</span>
+					iFixingDate,
+					forwardLabel
+				)
+			)
+<span class="nc" id="L167">				return csqc.fixing (</span>
+					iFixingDate,
+					forwardLabel
+				);
+<span class="fc" id="L171">		} else {</span>
+<span class="nc" id="L172">			org.drip.analytics.date.JulianDate dtValidFixing = lookBackProjectionDate (</span>
+				csqc,
+				(org.drip.market.definition.OvernightIndex) floaterIndex
+			);
+
+<span class="nc bnc" id="L177" title="All 2 branches missed.">			if (null != dtValidFixing)</span>
+<span class="nc" id="L178">				return csqc.fixing (</span>
+					dtValidFixing,
+					forwardLabel
+				);
+		}
+
+<span class="fc" id="L184">		int iReferencePeriodEndDate = _rip.endDate();</span>
+
+<span class="fc" id="L186">		org.drip.state.forward.ForwardRateEstimator fre = csqc.forwardState (forwardLabel);</span>
+
+<span class="fc bfc" id="L188" title="All 2 branches covered.">		if (null != fre) return fre.forward (iReferencePeriodEndDate);</span>
+
+<span class="fc" id="L190">		java.lang.String strForwardCurrency = forwardLabel.currency();</span>
+
+<span class="fc" id="L192">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqc.fundingState</span>
+<span class="fc" id="L193">			(org.drip.state.identifier.FundingLabel.Standard (strForwardCurrency));</span>
+
+<span class="pc bpc" id="L195" title="1 of 2 branches missed.">		if (null == dcFunding)</span>
+<span class="nc" id="L196">			throw new java.lang.Exception</span>
+				(&quot;ComposableUnitFloatingPeriod::baseRate =&gt; Cannot locate Funding Curve &quot; +
+					strForwardCurrency);
+
+<span class="fc" id="L200">		int iEpochDate = dcFunding.epoch().julian();</span>
+
+<span class="fc" id="L202">		int iReferencePeriodStartDate = _rip.startDate();</span>
+
+<span class="fc bfc" id="L204" title="All 2 branches covered.">		if (iEpochDate &gt; iReferencePeriodStartDate)</span>
+<span class="fc" id="L205">			iReferencePeriodEndDate = new org.drip.analytics.date.JulianDate (iReferencePeriodStartDate =</span>
+<span class="fc" id="L206">				iEpochDate).addTenor (forwardLabel.tenor()).julian();</span>
+
+<span class="fc" id="L208">		return dcFunding.libor (</span>
+			iReferencePeriodStartDate,
+			iReferencePeriodEndDate,
+<span class="fc" id="L211">			_rip.dcf()</span>
+		);
+	}
+
+	@Override public double basis()
+	{
+<span class="fc" id="L217">		return _dblSpread;</span>
+	}
+
+	@Override public java.lang.String couponCurrency()
+	{
+<span class="fc" id="L222">		return _rip.forwardLabel().currency();</span>
+	}
+
+	/**
+	 * Retrieve the Reference Index Period
+	 * 
+	 * @return The Reference Index Period
+	 */
+
+	public org.drip.analytics.cashflow.ReferenceIndexPeriod referenceIndexPeriod()
+	{
+<span class="fc" id="L233">		return _rip;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

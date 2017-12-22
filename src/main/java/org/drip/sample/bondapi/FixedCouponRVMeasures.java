@@ -69,7 +69,10 @@ public class FixedCouponRVMeasures {
 		final String[] astrArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		int iSpotDate = DateUtil.CreateFromYMD (
 			2015,
@@ -353,5 +356,7 @@ public class FixedCouponRVMeasures {
 		}
 
 		System.out.println ("\t|------------------------------------------------------------------------------------------------------||");
+
+		EnvManager.TerminateEnv();
 	}
 }

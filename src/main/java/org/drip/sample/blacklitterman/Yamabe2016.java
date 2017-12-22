@@ -72,7 +72,10 @@ public class Yamabe2016 {
 		final String[] astArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		double dblTau = 1.0000;
 		double dblRiskAversion = 2.6;
@@ -385,5 +388,7 @@ public class Yamabe2016 {
 		}
 
 		System.out.println ("\t|-------------------------------------------||\n");
+
+		EnvManager.TerminateEnv();
 	}
 }

@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CustomRiskUtilitySettings.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.portfolioconstruction.allocator</a> &gt; <span class="el_source">CustomRiskUtilitySettings.java</span></div><h1>CustomRiskUtilitySettings.java</h1><pre class="source lang-java linenums">
+package org.drip.portfolioconstruction.allocator;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * CustomRiskUtilitySettings contains the settings used to generate the Risk Objective Utility Function. It
+ *  accommodates both the Risk Tolerance and Risk Aversion Variants.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class CustomRiskUtilitySettings {
+<span class="fc" id="L59">	private double _dblRiskAversion = java.lang.Double.NaN;</span>
+<span class="fc" id="L60">	private double _dblRiskTolerance = java.lang.Double.NaN;</span>
+
+	/**
+	 * The Variance Minimizer CustomRiskUtilitySettings Instance
+	 * 
+	 * @return The Variance Minimizer CustomRiskUtilitySettings Instance
+	 */
+
+	public static final CustomRiskUtilitySettings VarianceMinimizer()
+	{
+		try {
+<span class="fc" id="L71">			return new CustomRiskUtilitySettings (1., 0.);</span>
+<span class="nc" id="L72">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L73">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L76">		return null;</span>
+	}
+
+	/**
+	 * The Risk Tolerant Variance Minimizer CustomRiskUtilitySettings Instance
+	 * 
+	 * @param dblRiskTolerance The Risk Tolerance Parameter
+	 * 
+	 * @return The Risk Tolerant Variance Minimizer CustomRiskUtilitySettings Instance
+	 */
+
+	public static final CustomRiskUtilitySettings RiskTolerant (
+		final double dblRiskTolerance)
+	{
+		try {
+<span class="nc" id="L91">			return new CustomRiskUtilitySettings (1., dblRiskTolerance);</span>
+<span class="nc" id="L92">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L93">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L96">		return null;</span>
+	}
+
+	/**
+	 * The Risk Aversion Variance Minimizer CustomRiskUtilitySettings Instance
+	 * 
+	 * @param dblRiskAversion The Risk Aversion Parameter
+	 * 
+	 * @return The Risk Aversion Variance Minimizer CustomRiskUtilitySettings Instance
+	 */
+
+	public static final CustomRiskUtilitySettings RiskAversion (
+		final double dblRiskAversion)
+	{
+		try {
+<span class="nc" id="L111">			return new CustomRiskUtilitySettings (dblRiskAversion, 1.);</span>
+<span class="nc" id="L112">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L113">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L116">		return null;</span>
+	}
+
+	/**
+	 * CustomRiskUtilitySettings Constructor
+	 * 
+	 * @param dblRiskAversion The Risk Aversion Parameter
+	 * @param dblRiskTolerance The Risk Tolerance Parameter
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public CustomRiskUtilitySettings (
+		final double dblRiskAversion,
+		final double dblRiskTolerance)
+		throws java.lang.Exception
+<span class="fc" id="L132">	{</span>
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblRiskAversion = dblRiskAversion) ||</span>
+<span class="pc bpc" id="L134" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblRiskTolerance = dblRiskTolerance) || 0. &gt;</span>
+				_dblRiskTolerance)
+<span class="nc" id="L136">			throw new java.lang.Exception (&quot;CustomRiskUtilitySettings Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L137">	}</span>
+
+	/**
+	 * Retrieve the Risk Aversion Factor
+	 * 
+	 * @return The Risk Aversion Factor
+	 */
+
+	public double riskAversion()
+	{
+<span class="nc" id="L147">		return _dblRiskAversion;</span>
+	}
+
+	/**
+	 * Retrieve the Risk Tolerance Factor
+	 * 
+	 * @return The Risk Tolerance Factor
+	 */
+
+	public double riskTolerance()
+	{
+<span class="nc" id="L158">		return _dblRiskTolerance;</span>
+	}
+
+	/**
+	 * Retrieve the Custom Risk Objective Utility Multivariate
+	 * 
+	 * @param astrAssetID Array of the Asset IDs
+	 * @param ausp The Asset Universe Statistical Properties Instance
+	 * 
+	 * @return The Custom Risk Objective Utility Multivariate
+	 */
+
+	public org.drip.function.definition.RdToR1 riskObjectiveUtility (
+		final java.lang.String[] astrAssetID,
+		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties ausp)
+	{
+<span class="pc bpc" id="L174" title="2 of 4 branches missed.">		if (null == astrAssetID || null == ausp) return null;</span>
+
+<span class="fc" id="L176">		int iNumAsset = astrAssetID.length;</span>
+<span class="fc" id="L177">		double[] adblExpectedReturns = new double[iNumAsset];</span>
+<span class="fc" id="L178">		double[][] aadblCovariance = new double[iNumAsset][iNumAsset];</span>
+<span class="fc" id="L179">		org.drip.portfolioconstruction.params.AssetStatisticalProperties[] aASP = new</span>
+			org.drip.portfolioconstruction.params.AssetStatisticalProperties[iNumAsset];
+
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">		if (0 == iNumAsset) return null;</span>
+
+<span class="fc bfc" id="L184" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumAsset; ++i) {</span>
+<span class="pc bpc" id="L185" title="1 of 2 branches missed.">			if (null == (aASP[i] = ausp.asp (astrAssetID[i]))) return null;</span>
+
+<span class="fc" id="L187">			adblExpectedReturns[i] = aASP[i].expectedReturn();</span>
+		}
+
+<span class="fc bfc" id="L190" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumAsset; ++i) {</span>
+<span class="fc" id="L191">			double dblVarianceI = aASP[i].variance();</span>
+
+<span class="fc bfc" id="L193" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumAsset; ++j) {</span>
+				try {
+<span class="fc bfc" id="L195" title="All 2 branches covered.">					aadblCovariance[i][j] = java.lang.Math.sqrt (dblVarianceI * aASP[j].variance()) * (i == j</span>
+<span class="fc" id="L196">						? 1. : ausp.correlation (astrAssetID[i], astrAssetID[j]));</span>
+<span class="nc" id="L197">				} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L198">					e.printStackTrace();</span>
+
+<span class="nc" id="L200">					return null;</span>
+<span class="fc" id="L201">				}</span>
+			}
+		}
+
+		try {
+<span class="fc" id="L206">			return new org.drip.function.rdtor1.RiskObjectiveUtilityMultivariate (aadblCovariance,</span>
+<span class="fc" id="L207">				adblExpectedReturns, _dblRiskAversion, _dblRiskTolerance, ausp.riskFreeRate());</span>
+<span class="nc" id="L208">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L209">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L212">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

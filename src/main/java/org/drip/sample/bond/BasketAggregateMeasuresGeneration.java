@@ -632,10 +632,13 @@ public class BasketAggregateMeasuresGeneration {
 	{
 		// String strConfig = "c:\\Lakshmi\\BondAnal\\Config.xml";
 
-		String strConfig = "";
-
-		EnvManager.InitEnv (strConfig);
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		BasketBondAPISample();
+
+		EnvManager.TerminateEnv();
 	}
 }

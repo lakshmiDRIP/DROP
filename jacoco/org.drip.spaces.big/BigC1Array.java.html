@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BigC1Array.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.spaces.big</a> &gt; <span class="el_source">BigC1Array.java</span></div><h1>BigC1Array.java</h1><pre class="source lang-java linenums">
+package org.drip.spaces.big;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * BigC1Array contains the Functionality to Process and Manipulate the Character Array backing the Big
+ * 	String.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class BigC1Array {
+<span class="fc" id="L60">	private int _iLength = -1;</span>
+<span class="fc" id="L61">	private char[] _ach = null;</span>
+
+	private int WrapIndex (
+		final int iIndex)
+	{
+<span class="fc bfc" id="L66" title="All 2 branches covered.">		if (iIndex &gt;= _iLength) return iIndex - _iLength;</span>
+
+<span class="fc bfc" id="L68" title="All 2 branches covered.">		if (iIndex &lt; 0) return iIndex + _iLength;</span>
+
+<span class="fc" id="L70">		return iIndex;</span>
+	}
+
+	/**
+	 * BigC1Array Constructor
+	 * 
+	 * @param ach Character Array
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public BigC1Array (
+		final char[] ach)
+		throws java.lang.Exception
+<span class="fc" id="L84">	{</span>
+<span class="pc bpc" id="L85" title="2 of 4 branches missed.">		if (null == (_ach = ach) || 0 == (_iLength = _ach.length))</span>
+<span class="nc" id="L86">			throw new java.lang.Exception (&quot;BigC1Array ctr =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L87">	}</span>
+
+	/**
+	 * Retrieve the Character Array
+	 * 
+	 * @return The Character Array
+	 */
+
+	public char[] charArray()
+	{
+<span class="fc" id="L97">		return _ach;</span>
+	}
+
+	/**
+	 * Translate the String at around the Pivot Index using the String Block
+	 * 
+	 * @param iPivotIndex The Pivot Index
+	 * @param iBlockSize The Block Size
+	 * 
+	 * @return TRUE - The Translation succeeded
+	 */
+
+	public boolean translateAtPivot (
+		final int iPivotIndex,
+		final int iBlockSize)
+	{
+<span class="pc bpc" id="L113" title="2 of 4 branches missed.">		if (0 &gt;= iPivotIndex || 0 &gt;= iBlockSize) return false;</span>
+
+<span class="fc" id="L115">		int iLength = _ach.length;</span>
+<span class="fc" id="L116">		char[] achTemp = new char[iBlockSize];</span>
+
+<span class="pc bpc" id="L118" title="2 of 4 branches missed.">		if (iPivotIndex &gt;= iLength || iBlockSize &gt;= iLength - iPivotIndex - 1) return false;</span>
+
+<span class="fc bfc" id="L120" title="All 2 branches covered.">		for (int i = iPivotIndex - iBlockSize; i &lt; iPivotIndex; ++i)</span>
+<span class="fc" id="L121">			achTemp[i - iPivotIndex + iBlockSize] = _ach[i];</span>
+
+<span class="fc bfc" id="L123" title="All 2 branches covered.">		for (int i = 0; i &lt; iLength - iBlockSize; ++i)</span>
+<span class="fc" id="L124">			_ach[WrapIndex (iPivotIndex - iBlockSize + i)] = _ach[WrapIndex (iPivotIndex + i)];</span>
+
+<span class="fc bfc" id="L126" title="All 2 branches covered.">		for (int i = 0; i &lt; iBlockSize; ++i)</span>
+<span class="fc" id="L127">			_ach[WrapIndex (iPivotIndex - 2 * iBlockSize + i)] = achTemp[i];</span>
+
+<span class="fc" id="L129">		return true;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

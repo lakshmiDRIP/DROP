@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>R1ToR1Integrator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.quant.calculus</a> &gt; <span class="el_source">R1ToR1Integrator.java</span></div><h1>R1ToR1Integrator.java</h1><pre class="source lang-java linenums">
+package org.drip.quant.calculus;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * R1ToR1Integrator implements the following routines for integrating the R^1 To R^1 objective Function:
+ * 	- Linear Quadrature
+ * 	- Mid-Point Scheme
+ * 	- Trapezoidal Scheme
+ * 	- Simpson/Simpson38 schemes
+ * 	- Boole Scheme
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L65">public class R1ToR1Integrator {</span>
+	private final static int NUM_QUAD = 10000;
+
+	/**
+	 * Compute the function's integral within the specified limits using the LinearQuadrature technique.
+	 * 
+	 * @param funcR1ToR1 R1ToR1 Function
+	 * @param dblLeft Left Variate
+	 * @param dblRight Right Variate
+	 * 
+	 * @return The Integral
+	 * 
+	 * @throws java.lang.Exception Thrown if the error cannot be computed
+	 */
+
+	public static final double LinearQuadrature (
+		final org.drip.function.definition.R1ToR1 funcR1ToR1,
+		final double dblLeft,
+		final double dblRight)
+		throws java.lang.Exception
+	{
+<span class="pc bpc" id="L86" title="2 of 4 branches missed.">		if (null == funcR1ToR1 || !org.drip.quant.common.NumberUtil.IsValid (dblLeft) ||</span>
+<span class="pc bpc" id="L87" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblRight) || dblLeft &gt; dblRight)</span>
+<span class="nc" id="L88">			throw new java.lang.Exception (&quot;R1ToR1Integrator::LinearQuadrature =&gt; Invalid Inputs&quot;);</span>
+
+<span class="pc bpc" id="L90" title="1 of 2 branches missed.">		if (dblLeft == dblRight) return 0.;</span>
+
+<span class="fc" id="L92">		double dblWidth = (dblRight - dblLeft) / NUM_QUAD;</span>
+<span class="fc" id="L93">		double dblX = dblLeft + dblWidth;</span>
+<span class="fc" id="L94">		double dblAUArea = 0.;</span>
+
+<span class="fc bfc" id="L96" title="All 2 branches covered.">		while (dblX &lt;= dblRight) {</span>
+<span class="fc" id="L97">			double dblY = funcR1ToR1.evaluate (dblX - 0.5 * dblWidth);</span>
+
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblLeft))</span>
+<span class="nc" id="L100">				throw new java.lang.Exception</span>
+					(&quot;R1ToR1Integrator::LinearQuadrature =&gt; Cannot calculate an intermediate Y&quot;);
+
+<span class="fc" id="L103">			dblAUArea += dblY * dblWidth;</span>
+<span class="fc" id="L104">			dblX += dblWidth;</span>
+<span class="fc" id="L105">		}</span>
+
+<span class="fc" id="L107">		return dblAUArea;</span>
+	}
+
+	/**
+	 * Compute the function's integral within the specified limits using the Mid-point rule.
+	 * 
+	 * @param funcR1ToR1 R1ToR1 Function
+	 * @param dblLeft Left Variate
+	 * @param dblRight Right Variate
+	 * 
+	 * @return The Integral
+	 * 
+	 * @throws java.lang.Exception Thrown if the error cannot be computed
+	 */
+
+	public static final double MidPoint (
+		final org.drip.function.definition.R1ToR1 funcR1ToR1,
+		final double dblLeft,
+		final double dblRight)
+		throws java.lang.Exception
+	{
+<span class="pc bpc" id="L128" title="2 of 4 branches missed.">		if (null == funcR1ToR1 || !org.drip.quant.common.NumberUtil.IsValid (dblLeft) ||</span>
+<span class="pc bpc" id="L129" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblRight) || dblLeft &gt; dblRight)</span>
+<span class="nc" id="L130">			throw new java.lang.Exception (&quot;R1ToR1Integrator::MidPoint =&gt; Invalid Inputs&quot;);</span>
+
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">		if (dblLeft == dblRight) return 0.;</span>
+
+<span class="fc" id="L134">		double dblYMid = funcR1ToR1.evaluate (0.5 * (dblLeft + dblRight));</span>
+
+<span class="pc bpc" id="L136" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblYMid))</span>
+<span class="nc" id="L137">			throw new java.lang.Exception (&quot;R1ToR1Integrator::MidPoint =&gt; Cannot calculate Y at &quot; + 0.5 *</span>
+				(dblLeft + dblRight));
+
+<span class="fc" id="L140">		return (dblRight - dblLeft) * dblYMid;</span>
+	}
+
+	/**
+	 * Compute the function's integral within the specified limits using the Trapezoidal rule.
+	 * 
+	 * @param funcR1ToR1 R1ToR1 Function
+	 * @param dblLeft Left Variate
+	 * @param dblRight Right Variate
+	 * 
+	 * @return The Integral
+	 * 
+	 * @throws java.lang.Exception Thrown if the error cannot be computed
+	 */
+
+	public static final double Trapezoidal (
+		final org.drip.function.definition.R1ToR1 funcR1ToR1,
+		final double dblLeft,
+		final double dblRight)
+		throws java.lang.Exception
+	{
+<span class="pc bpc" id="L161" title="2 of 4 branches missed.">		if (null == funcR1ToR1 || !org.drip.quant.common.NumberUtil.IsValid (dblLeft) ||</span>
+<span class="pc bpc" id="L162" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblRight) || dblLeft &gt; dblRight)</span>
+<span class="nc" id="L163">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Trapezoidal =&gt; Invalid Inputs&quot;);</span>
+
+<span class="pc bpc" id="L165" title="1 of 2 branches missed.">		if (dblLeft == dblRight) return 0.;</span>
+
+<span class="fc" id="L167">		double dblYLeft = funcR1ToR1.evaluate (dblLeft);</span>
+
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblYLeft))</span>
+<span class="nc" id="L170">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Trapezoidal =&gt; Cannot calculate Y at &quot; +</span>
+				dblLeft);
+
+<span class="fc" id="L173">		double dblYRight = funcR1ToR1.evaluate (dblRight);</span>
+
+<span class="pc bpc" id="L175" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblYLeft))</span>
+<span class="nc" id="L176">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Trapezoidal =&gt; Cannot calculate Y at &quot; +</span>
+				dblRight);
+
+<span class="fc" id="L179">		return 0.5 * (dblRight - dblLeft) * (dblYLeft + dblYRight);</span>
+	}
+
+	/**
+	 * Compute the function's integral within the specified limits using the Simpson rule.
+	 * 
+	 * @param funcR1ToR1 R1ToR1 Function
+	 * @param dblLeft Left Variate
+	 * @param dblRight Right Variate
+	 * 
+	 * @return The Integral
+	 * 
+	 * @throws java.lang.Exception Thrown if the error cannot be computed
+	 */
+
+	public static final double Simpson (
+		final org.drip.function.definition.R1ToR1 funcR1ToR1,
+		final double dblLeft,
+		final double dblRight)
+		throws java.lang.Exception
+	{
+<span class="pc bpc" id="L200" title="2 of 4 branches missed.">		if (null == funcR1ToR1 || !org.drip.quant.common.NumberUtil.IsValid (dblLeft) ||</span>
+<span class="pc bpc" id="L201" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblRight) || dblLeft &gt; dblRight)</span>
+<span class="nc" id="L202">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Simpson =&gt; Invalid Inputs&quot;);</span>
+
+<span class="pc bpc" id="L204" title="1 of 2 branches missed.">		if (dblLeft == dblRight) return 0.;</span>
+
+<span class="fc" id="L206">		double dblYLeft = funcR1ToR1.evaluate (dblLeft);</span>
+
+<span class="pc bpc" id="L208" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblYLeft))</span>
+<span class="nc" id="L209">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Simpson =&gt; Cannot calculate Y at &quot; + dblLeft);</span>
+
+<span class="fc" id="L211">		double dblXMid = 0.5 * (dblLeft + dblRight);</span>
+
+<span class="fc" id="L213">		double dblYMid = funcR1ToR1.evaluate (dblXMid);</span>
+
+<span class="pc bpc" id="L215" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblYMid))</span>
+<span class="nc" id="L216">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Simpson =&gt; Cannot calculate Y at &quot; + dblXMid);</span>
+
+<span class="fc" id="L218">		double dblYRight = funcR1ToR1.evaluate (dblRight);</span>
+
+<span class="pc bpc" id="L220" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblYRight))</span>
+<span class="nc" id="L221">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Simpson =&gt; Cannot calculate Y at &quot; + dblRight);</span>
+
+<span class="fc" id="L223">		return (dblRight - dblLeft) / 6. * (dblYLeft + 4. * dblYMid + dblYRight);</span>
+	}
+
+	/**
+	 * Compute the function's integral within the specified limits using the Simpson 3/8 rule.
+	 * 
+	 * @param funcR1ToR1 R1ToR1 Function
+	 * @param dblLeft Left Variate
+	 * @param dblRight Right Variate
+	 * 
+	 * @return The Integral
+	 * 
+	 * @throws java.lang.Exception Thrown if the error cannot be computed
+	 */
+
+	public static final double Simpson38 (
+		final org.drip.function.definition.R1ToR1 funcR1ToR1,
+		final double dblLeft,
+		final double dblRight)
+		throws java.lang.Exception
+	{
+<span class="pc bpc" id="L244" title="2 of 4 branches missed.">		if (null == funcR1ToR1 || !org.drip.quant.common.NumberUtil.IsValid (dblLeft) ||</span>
+<span class="pc bpc" id="L245" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblRight) || dblLeft &gt; dblRight)</span>
+<span class="nc" id="L246">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Simpson38 =&gt; Invalid Inputs&quot;);</span>
+
+<span class="pc bpc" id="L248" title="1 of 2 branches missed.">		if (dblLeft == dblRight) return 0.;</span>
+
+<span class="fc" id="L250">		double dblY0 = funcR1ToR1.evaluate (dblLeft);</span>
+
+<span class="pc bpc" id="L252" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblY0))</span>
+<span class="nc" id="L253">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Simpson38 =&gt; Cannot calculate Y at &quot; +</span>
+				dblLeft);
+
+<span class="fc" id="L256">		double dblX1 = (2. * dblLeft + dblRight) / 3.;</span>
+
+<span class="fc" id="L258">		double dblY1 = funcR1ToR1.evaluate (dblX1);</span>
+
+<span class="pc bpc" id="L260" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblY1))</span>
+<span class="nc" id="L261">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Simpson38 =&gt; Cannot calculate Y at &quot; + dblX1);</span>
+
+<span class="fc" id="L263">		double dblX2 = (dblLeft + 2. * dblRight) / 3.;</span>
+
+<span class="fc" id="L265">		double dblY2 = funcR1ToR1.evaluate (dblX2);</span>
+
+<span class="pc bpc" id="L267" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblY2))</span>
+<span class="nc" id="L268">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Simpson38 =&gt; Cannot calculate Y at &quot; + dblX2);</span>
+
+<span class="fc" id="L270">		double dblY3 = funcR1ToR1.evaluate (dblRight);</span>
+
+<span class="pc bpc" id="L272" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblY3))</span>
+<span class="nc" id="L273">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Simpson38 =&gt; Cannot calculate Y at &quot; +</span>
+				dblRight);
+
+<span class="fc" id="L276">		return (dblRight - dblLeft) * (0.125 * dblY0 + 0.375 * dblY1 + 0.375 * dblY2 + 0.125 * dblY3);</span>
+	}
+
+	/**
+	 * Compute the function's integral within the specified limits using the Boole rule.
+	 * 
+	 * @param funcR1ToR1 R1ToR1 Function
+	 * @param dblLeft Left Variate
+	 * @param dblRight Right Variate
+	 * 
+	 * @return The Integral
+	 * 
+	 * @throws java.lang.Exception Thrown if the error cannot be computed
+	 */
+
+	public static final double Boole (
+		final org.drip.function.definition.R1ToR1 funcR1ToR1,
+		final double dblLeft,
+		final double dblRight)
+		throws java.lang.Exception
+	{
+<span class="pc bpc" id="L297" title="2 of 4 branches missed.">		if (null == funcR1ToR1 || !org.drip.quant.common.NumberUtil.IsValid (dblLeft) ||</span>
+<span class="pc bpc" id="L298" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblRight) || dblLeft &gt; dblRight)</span>
+<span class="nc" id="L299">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Boole =&gt; Invalid Inputs&quot;);</span>
+
+<span class="fc bfc" id="L301" title="All 2 branches covered.">		if (dblLeft == dblRight) return 0.;</span>
+
+<span class="fc" id="L303">		double dblY0 = funcR1ToR1.evaluate (dblLeft);</span>
+
+<span class="pc bpc" id="L305" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblY0))</span>
+<span class="nc" id="L306">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Boole =&gt; Cannot calculate Y at &quot; + dblLeft);</span>
+
+<span class="fc" id="L308">		double dblX1 = 0.25 * dblLeft + 0.75 * dblRight;</span>
+
+<span class="fc" id="L310">		double dblY1 = funcR1ToR1.evaluate (dblX1);</span>
+
+<span class="pc bpc" id="L312" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblY1))</span>
+<span class="nc" id="L313">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Boole =&gt; Cannot calculate Y at &quot; + dblX1);</span>
+
+<span class="fc" id="L315">		double dblX2 = 0.5 * (dblLeft + dblRight);</span>
+
+<span class="fc" id="L317">		double dblY2 = funcR1ToR1.evaluate (dblX2);</span>
+
+<span class="pc bpc" id="L319" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblY2))</span>
+<span class="nc" id="L320">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Boole =&gt; Cannot calculate Y at &quot; + dblX2);</span>
+
+<span class="fc" id="L322">		double dblX3 = 0.75 * dblLeft + 0.25 * dblRight;</span>
+
+<span class="fc" id="L324">		double dblY3 = funcR1ToR1.evaluate (dblX3);</span>
+
+<span class="pc bpc" id="L326" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblY3))</span>
+<span class="nc" id="L327">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Boole =&gt; Cannot calculate Y at &quot; + dblX3);</span>
+
+<span class="fc" id="L329">		double dblY4 = funcR1ToR1.evaluate (dblRight);</span>
+
+<span class="pc bpc" id="L331" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblY4))</span>
+<span class="nc" id="L332">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Boole =&gt; Cannot calculate Y at &quot; + dblRight);</span>
+
+<span class="fc" id="L334">		return (dblRight - dblLeft) / 90 * (7 * dblY0 + 32 * dblY1 + 12 * dblY2 + 32 * dblY3 + 7 * dblY4);</span>
+	}
+
+	/**
+	 * Integrate Numerically over [-infinity, +infinity] using a Change of Variables
+	 * 
+	 * @param funcR1ToR1 The R1ToR1 Function
+	 * 
+	 * @return The Numerical Integrand
+	 * 
+	 * @throws java.lang.Exception Thrown if the Integral cannot be computed
+	 */
+
+	public static final double LeftInfiniteRightInfinite (
+		final org.drip.function.definition.R1ToR1 funcR1ToR1)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L351" title="All 2 branches missed.">		if (null == funcR1ToR1)</span>
+<span class="nc" id="L352">			throw new java.lang.Exception (&quot;IntegratorR1ToR1::LeftInfiniteRightInfinite =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc" id="L354">		org.drip.function.definition.R1ToR1 auTransformed = new</span>
+<span class="nc" id="L355">			org.drip.function.definition.R1ToR1 (null) {</span>
+			@Override public double evaluate (
+				final double dblX)
+				throws java.lang.Exception
+			{
+<span class="nc bnc" id="L360" title="All 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L361">					throw new java.lang.Exception</span>
+						(&quot;IntegratorR1ToR1::LeftInfiniteRightInfinite =&gt; Invalid Inputs&quot;);
+
+<span class="nc" id="L364">				double dblX2 = dblX * dblX;</span>
+<span class="nc" id="L365">				double dblXTransform = 1. / (1. - dblX2);</span>
+
+<span class="nc" id="L367">				return (1. + dblX2) / (dblXTransform * dblXTransform) * funcR1ToR1.evaluate (dblX /</span>
+					dblXTransform);
+			}
+		};
+
+<span class="nc" id="L372">		return auTransformed.integrate (-1., +1.);</span>
+	}
+
+	/**
+	 * Integrate the specified Function Numerically from -infinity to the specified Right Limit
+	 * 
+	 * @param funcR1ToR1 The Input R1ToR1 Function
+	 * @param dblRight The Right Integration Limit
+	 * 
+	 * @return The Results of the Integration
+	 * 
+	 * @throws java.lang.Exception Thrown if the Integrand cannot be evaluated
+	 */
+
+	public static final double LeftInfinite (
+		final org.drip.function.definition.R1ToR1 funcR1ToR1,
+		final double dblRight)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L391" title="All 4 branches missed.">		if (null == funcR1ToR1 || !org.drip.quant.common.NumberUtil.IsValid (dblRight))</span>
+<span class="nc" id="L392">			throw new java.lang.Exception (&quot;IntegratorR1ToR1::LeftInfinite =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc" id="L394">		org.drip.function.definition.R1ToR1 auTransformed = new</span>
+<span class="nc" id="L395">			org.drip.function.definition.R1ToR1 (null) {</span>
+			@Override public double evaluate (
+				final double dblX)
+				throws java.lang.Exception
+			{
+<span class="nc bnc" id="L400" title="All 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L401">					throw new java.lang.Exception (&quot;IntegratorR1ToR1::LeftInfinite =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc" id="L403">				return (funcR1ToR1.evaluate (dblRight - ((1. - dblX) / dblX))) / (dblX * dblX);</span>
+			}
+		};
+
+<span class="nc" id="L407">		return auTransformed.integrate (0., +1.);</span>
+	}
+
+	/**
+	 * Integrate the specified Function Numerically from the specified Left Limit to +infinity
+	 * 
+	 * @param funcR1ToR1 The Input R1ToR1 Function
+	 * @param dblLeft The Left Integration Limit
+	 * 
+	 * @return The Results of the Integration
+	 * 
+	 * @throws java.lang.Exception Thrown if the Integrand cannot be evaluated
+	 */
+
+	public static final double RightInfinite (
+		final org.drip.function.definition.R1ToR1 funcR1ToR1,
+		final double dblLeft)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L426" title="All 4 branches missed.">		if (null == funcR1ToR1 || !org.drip.quant.common.NumberUtil.IsValid (dblLeft))</span>
+<span class="nc" id="L427">			throw new java.lang.Exception (&quot;IntegratorR1ToR1::RightInfinite =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc" id="L429">		org.drip.function.definition.R1ToR1 auTransformed = new</span>
+<span class="nc" id="L430">			org.drip.function.definition.R1ToR1 (null) {</span>
+			@Override public double evaluate (
+				final double dblX)
+				throws java.lang.Exception
+			{
+<span class="nc bnc" id="L435" title="All 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L436">					throw new java.lang.Exception (&quot;IntegratorR1ToR1::RightInfinite =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc" id="L438">				double dblXInversion = 1. - dblX;</span>
+
+<span class="nc" id="L440">				return (funcR1ToR1.evaluate (dblLeft + (dblX / dblXInversion))) / (dblXInversion *</span>
+					dblXInversion);
+			}
+		};
+
+<span class="nc" id="L445">		return auTransformed.integrate (0., +1.);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,899 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CompositePeriodBuilder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.analytics.support</a> &gt; <span class="el_source">CompositePeriodBuilder.java</span></div><h1>CompositePeriodBuilder.java</h1><pre class="source lang-java linenums">
+package org.drip.analytics.support;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * CompositePeriodBuilder exposes the composite period construction functionality.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L59">public class CompositePeriodBuilder {</span>
+
+	/**
+	 * Edge Date Generation Sequence - Forward
+	 */
+
+	public static final int EDGE_DATE_SEQUENCE_FORWARD = 0;
+
+	/**
+	 * Edge Date Generation Sequence - Reverse
+	 */
+
+	public static final int EDGE_DATE_SEQUENCE_REVERSE = 1;
+
+	/**
+	 * Edge Date Generation Sequence - Regular
+	 */
+
+	public static final int EDGE_DATE_SEQUENCE_REGULAR = 2;
+
+	/**
+	 * Edge Date Generation Sequence - Overnight
+	 */
+
+	public static final int EDGE_DATE_SEQUENCE_OVERNIGHT = 4;
+
+	/**
+	 * Edge Date Generation Sequence - Single Edge Date Pair Between Dates
+	 */
+
+	public static final int EDGE_DATE_SEQUENCE_SINGLE = 8;
+
+	/**
+	 * Period Set Generation Customization - Short Stub (i.e., No adjustment on either end)
+	 */
+
+	public static final int SHORT_STUB = 0;
+
+	/**
+	 * Period Set Generation Customization - Merge the front periods to produce a long front
+	 */
+
+	public static final int FULL_FRONT_PERIOD = 1;
+
+	/**
+	 * Period Set Generation Customization - Long Stub (if present) belongs to the front/back end depending
+	 * 	upon backwards/forwards generation scheme
+	 */
+
+	public static final int LONG_STUB = 2;
+
+	/**
+	 * Reference Period Fixing is IN-ARREARS (i.e., displaced one period to the right) of the Coupon Period
+	 */
+
+	public static final int REFERENCE_PERIOD_IN_ARREARS = 0;
+
+	/**
+	 * Reference Period Fixing is IN-ADVANCE (i.e., the same as that) of the Coupon Period
+	 */
+
+	public static final int REFERENCE_PERIOD_IN_ADVANCE = 1;
+
+	/**
+	 * Accrual Compounding Rule - Arithmetic
+	 */
+
+	public static final int ACCRUAL_COMPOUNDING_RULE_ARITHMETIC = 1;
+
+	/**
+	 * Accrual Compounding Rule - Geometric
+	 */
+
+	public static final int ACCRUAL_COMPOUNDING_RULE_GEOMETRIC = 2;
+
+	private static final int DAPAdjust (
+		final int iDate,
+		final org.drip.analytics.daycount.DateAdjustParams dap)
+	{
+<span class="fc bfc" id="L138" title="All 2 branches covered.">		if (null == dap) return iDate;</span>
+
+		try {
+<span class="fc" id="L141">			return dap.roll (iDate);</span>
+<span class="nc" id="L142">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L143">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L146">		return iDate;</span>
+	}
+
+	/**
+	 * Verify if the Specified Accrual Compounding Rule is a Valid One
+	 * 
+	 * @param iAccrualCompoundingRule The Accrual Compounding Rule
+	 * 
+	 * @return TRUE - The Accrual Compounding Rule is valid
+	 */
+
+	public static final boolean ValidateCompoundingRule (
+		final int iAccrualCompoundingRule)
+	{
+<span class="pc bpc" id="L160" title="1 of 4 branches missed.">		return ACCRUAL_COMPOUNDING_RULE_ARITHMETIC == iAccrualCompoundingRule ||</span>
+			ACCRUAL_COMPOUNDING_RULE_GEOMETRIC == iAccrualCompoundingRule;
+	}
+
+	/**
+	 * Generate a list of period edge dates forward from the start.
+	 * 
+	 * @param dtEffective Effective date
+	 * @param dtMaturity Maturity date
+	 * @param strTenor Period Tenor
+	 * @param dap Inner Date Adjustment Parameters
+	 * @param iPSEC Period Set Edge Customizer Setting
+	 * 
+	 * @return List of Period Edge Dates
+	 */
+
+	public static final java.util.List&lt;java.lang.Integer&gt; ForwardEdgeDates (
+		final org.drip.analytics.date.JulianDate dtEffective,
+		final org.drip.analytics.date.JulianDate dtMaturity,
+		final java.lang.String strTenor,
+		final org.drip.analytics.daycount.DateAdjustParams dap,
+		final int iPSEC)
+	{
+<span class="nc bnc" id="L183" title="All 8 branches missed.">		if (null == dtEffective || null == dtMaturity || null == strTenor || strTenor.isEmpty()) return null;</span>
+
+<span class="nc" id="L185">		java.lang.String strPeriodRollTenor = &quot;&quot;;</span>
+<span class="nc" id="L186">		org.drip.analytics.date.JulianDate dtEdge = dtEffective;</span>
+
+<span class="nc" id="L188">		int iMaturityDate = dtMaturity.julian();</span>
+
+<span class="nc" id="L190">		int iEdgeDate = dtEdge.julian();</span>
+
+<span class="nc bnc" id="L192" title="All 2 branches missed.">		if (iEdgeDate &gt;= iMaturityDate) return null;</span>
+
+<span class="nc" id="L194">		java.util.List&lt;java.lang.Integer&gt; lsEdgeDate = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
+
+<span class="nc bnc" id="L196" title="All 2 branches missed.">		while (iEdgeDate &lt; iMaturityDate) {</span>
+<span class="nc" id="L197">			lsEdgeDate.add (iEdgeDate);</span>
+
+<span class="nc" id="L199">			strPeriodRollTenor = org.drip.analytics.support.Helper.AggregateTenor</span>
+<span class="nc" id="L200">				(strPeriodRollTenor, strTenor);</span>
+
+<span class="nc bnc" id="L202" title="All 2 branches missed.">			if (null == (dtEdge = dtMaturity.addTenor (strPeriodRollTenor))) return null;</span>
+
+<span class="nc" id="L204">			iEdgeDate = dtEdge.julian();</span>
+		}
+
+<span class="nc bnc" id="L207" title="All 2 branches missed.">		if (iEdgeDate &gt; iMaturityDate) {</span>
+<span class="nc bnc" id="L208" title="All 2 branches missed.">			if (SHORT_STUB == iPSEC)</span>
+<span class="nc" id="L209">				lsEdgeDate.add (iMaturityDate);</span>
+<span class="nc bnc" id="L210" title="All 2 branches missed.">			else if (LONG_STUB == iPSEC) {</span>
+<span class="nc bnc" id="L211" title="All 2 branches missed.">				if (1 != lsEdgeDate.size()) lsEdgeDate.remove (lsEdgeDate.size() - 1);</span>
+
+<span class="nc" id="L213">				lsEdgeDate.add (iMaturityDate);</span>
+			}
+<span class="nc bnc" id="L215" title="All 2 branches missed.">		} else if (iEdgeDate == iMaturityDate)</span>
+<span class="nc" id="L216">			lsEdgeDate.add (iMaturityDate);</span>
+
+<span class="nc" id="L218">		java.util.List&lt;java.lang.Integer&gt; lsAdjustedEdgeDate = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
+
+<span class="nc" id="L220">		lsAdjustedEdgeDate.add (lsEdgeDate.get (0));</span>
+
+<span class="nc" id="L222">		int iNumDate = lsEdgeDate.size();</span>
+
+<span class="nc bnc" id="L224" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumDate - 1; ++i)</span>
+<span class="nc" id="L225">			lsAdjustedEdgeDate.add (DAPAdjust (lsEdgeDate.get (i), dap));</span>
+
+<span class="nc" id="L227">		lsAdjustedEdgeDate.add (lsEdgeDate.get (iNumDate - 1));</span>
+
+<span class="nc bnc" id="L229" title="All 2 branches missed.">		if (1 == lsAdjustedEdgeDate.size()) lsAdjustedEdgeDate.add (1, iMaturityDate);</span>
+
+<span class="nc" id="L231">		return lsAdjustedEdgeDate;</span>
+	}
+
+	/**
+	 * Generate a list of period edge dates backward from the end.
+	 * 
+	 * @param dtEffective Effective date
+	 * @param dtMaturity Maturity date
+	 * @param strTenor Period Tenor
+	 * @param dap Inner Date Adjustment Parameters
+	 * @param iPSEC Period Set Edge Customizer Setting
+	 * 
+	 * @return List of Period Edge Dates
+	 */
+
+	public static final java.util.List&lt;java.lang.Integer&gt; BackwardEdgeDates (
+		final org.drip.analytics.date.JulianDate dtEffective,
+		final org.drip.analytics.date.JulianDate dtMaturity,
+		final java.lang.String strTenor,
+		final org.drip.analytics.daycount.DateAdjustParams dap,
+		final int iPSEC)
+	{
+<span class="pc bpc" id="L253" title="4 of 8 branches missed.">		if (null == dtEffective || null == dtMaturity || null == strTenor || strTenor.isEmpty()) return null;</span>
+
+<span class="fc" id="L255">		int iEffectiveDate = dtEffective.julian();</span>
+
+<span class="fc" id="L257">		java.lang.String strPeriodRollTenor = &quot;&quot;;</span>
+<span class="fc" id="L258">		org.drip.analytics.date.JulianDate dtEdge = dtMaturity;</span>
+
+<span class="fc" id="L260">		int iEdgeDate = dtEdge.julian();</span>
+
+<span class="pc bpc" id="L262" title="1 of 2 branches missed.">		if (iEffectiveDate &gt;= iEdgeDate) return null;</span>
+
+<span class="fc" id="L264">		java.util.List&lt;java.lang.Integer&gt; lsEdgeDate = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
+
+<span class="fc bfc" id="L266" title="All 2 branches covered.">		while (iEdgeDate &gt; iEffectiveDate) {</span>
+<span class="fc" id="L267">			lsEdgeDate.add (0, iEdgeDate);</span>
+
+<span class="fc" id="L269">			strPeriodRollTenor = org.drip.analytics.support.Helper.AggregateTenor (strPeriodRollTenor,</span>
+				strTenor);
+
+<span class="pc bpc" id="L272" title="1 of 2 branches missed.">			if (null == (dtEdge = dtMaturity.subtractTenor (strPeriodRollTenor))) return null;</span>
+
+<span class="fc" id="L274">			iEdgeDate = dtEdge.julian();</span>
+		}
+
+<span class="fc bfc" id="L277" title="All 2 branches covered.">		if (iEdgeDate &lt; iEffectiveDate) {</span>
+<span class="fc bfc" id="L278" title="All 2 branches covered.">			if (SHORT_STUB == iPSEC)</span>
+<span class="fc" id="L279">				lsEdgeDate.add (0, iEffectiveDate);</span>
+<span class="pc bpc" id="L280" title="1 of 2 branches missed.">			else if (FULL_FRONT_PERIOD == iPSEC)</span>
+<span class="nc" id="L281">				lsEdgeDate.add (0, iEdgeDate);</span>
+<span class="pc bpc" id="L282" title="1 of 2 branches missed.">			else if (LONG_STUB == iPSEC) {</span>
+<span class="pc bpc" id="L283" title="1 of 2 branches missed.">				if (1 != lsEdgeDate.size()) lsEdgeDate.remove (0);</span>
+
+<span class="fc" id="L285">				lsEdgeDate.add (0, iEffectiveDate);</span>
+			}
+<span class="pc bpc" id="L287" title="1 of 2 branches missed.">		} else if (dtEdge.julian() == iEffectiveDate)</span>
+<span class="fc" id="L288">			lsEdgeDate.add (0, iEffectiveDate);</span>
+
+<span class="fc" id="L290">		java.util.List&lt;java.lang.Integer&gt; lsAdjustedEdgeDate = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
+
+<span class="fc" id="L292">		lsAdjustedEdgeDate.add (lsEdgeDate.get (0));</span>
+
+<span class="fc" id="L294">		int iNumDate = lsEdgeDate.size();</span>
+
+<span class="fc bfc" id="L296" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumDate - 1; ++i)</span>
+<span class="fc" id="L297">			lsAdjustedEdgeDate.add (DAPAdjust (lsEdgeDate.get (i), dap));</span>
+
+<span class="fc" id="L299">		lsAdjustedEdgeDate.add (lsEdgeDate.get (iNumDate - 1));</span>
+
+<span class="fc" id="L301">		return lsAdjustedEdgeDate;</span>
+	}
+
+	/**
+	 * Generate a list of regular period edge dates forward from the start.
+	 * 
+	 * @param dtEffective Effective date
+	 * @param strPeriodTenor Period Tenor
+	 * @param strMaturityTenor Period Tenor
+	 * @param dap Inner Date Adjustment Parameters
+	 * 
+	 * @return List of Period Edge Dates
+	 */
+
+	public static final java.util.List&lt;java.lang.Integer&gt; RegularEdgeDates (
+		final org.drip.analytics.date.JulianDate dtEffective,
+		final java.lang.String strPeriodTenor,
+		final java.lang.String strMaturityTenor,
+		final org.drip.analytics.daycount.DateAdjustParams dap)
+	{
+<span class="pc bpc" id="L321" title="4 of 8 branches missed.">		if (null == dtEffective || null == strPeriodTenor || strPeriodTenor.isEmpty() || null ==</span>
+<span class="pc bpc" id="L322" title="1 of 2 branches missed.">			strMaturityTenor || strMaturityTenor.isEmpty())</span>
+<span class="nc" id="L323">			return null;</span>
+
+<span class="fc" id="L325">		int iPeriodTenorMonth = -1;</span>
+<span class="fc" id="L326">		int iMaturityTenorMonth = -1;</span>
+<span class="fc" id="L327">		int iPeriodMaturityTenorComparison = -1;</span>
+
+<span class="fc" id="L329">		int iMaturityDate = dtEffective.addTenor (strMaturityTenor).julian();</span>
+
+<span class="fc" id="L331">		java.util.List&lt;java.lang.Integer&gt; lsEdgeDate = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
+
+		try {
+<span class="fc" id="L334">			iPeriodMaturityTenorComparison = org.drip.analytics.support.Helper.TenorCompare (strPeriodTenor,</span>
+				strMaturityTenor);
+<span class="nc" id="L336">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L337">			e.printStackTrace();</span>
+
+<span class="nc" id="L339">			return null;</span>
+<span class="fc" id="L340">		}</span>
+
+<span class="pc bpc" id="L342" title="1 of 4 branches missed.">		if (org.drip.analytics.support.Helper.LEFT_TENOR_EQUALS == iPeriodMaturityTenorComparison ||</span>
+			org.drip.analytics.support.Helper.LEFT_TENOR_GREATER == iPeriodMaturityTenorComparison) {
+<span class="fc" id="L344">			lsEdgeDate.add (dtEffective.julian());</span>
+
+<span class="fc" id="L346">			lsEdgeDate.add (iMaturityDate);</span>
+
+<span class="fc" id="L348">			return lsEdgeDate;</span>
+		}
+
+		try {
+<span class="fc" id="L352">			iPeriodTenorMonth = org.drip.analytics.support.Helper.TenorToMonths (strPeriodTenor);</span>
+
+<span class="fc" id="L354">			iMaturityTenorMonth = org.drip.analytics.support.Helper.TenorToMonths (strMaturityTenor);</span>
+<span class="nc" id="L355">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L356">			e.printStackTrace();</span>
+
+<span class="nc" id="L358">			return null;</span>
+<span class="fc" id="L359">		}</span>
+
+<span class="fc" id="L361">		org.drip.analytics.date.JulianDate dtEdge = dtEffective;</span>
+<span class="fc" id="L362">		int iNumPeriod = iMaturityTenorMonth / iPeriodTenorMonth;</span>
+
+<span class="fc" id="L364">		lsEdgeDate.add (dtEdge.julian());</span>
+
+<span class="fc bfc" id="L366" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPeriod; ++i) {</span>
+<span class="fc" id="L367">			dtEdge = dtEdge.addTenor (strPeriodTenor);</span>
+
+<span class="fc" id="L369">			int iEdgeDate = dtEdge.julian();</span>
+
+<span class="fc bfc" id="L371" title="All 2 branches covered.">			if (iEdgeDate &lt; iMaturityDate) lsEdgeDate.add (DAPAdjust (iEdgeDate, dap));</span>
+		}
+
+<span class="fc" id="L374">		lsEdgeDate.add (iMaturityDate);</span>
+
+<span class="fc" id="L376">		return lsEdgeDate;</span>
+	}
+
+	/**
+	 * Generate a list of regular period edge dates forward from the start.
+	 * 
+	 * @param iStartDate Start Date
+	 * @param iEndDate End Date
+	 * @param strPeriodTenor Period Tenor
+	 * @param dap Inner Date Adjustment Parameters
+	 * 
+	 * @return List of Period Edge Dates
+	 */
+
+	public static final java.util.List&lt;java.lang.Integer&gt; RegularEdgeDates (
+		final int iStartDate,
+		final int iEndDate,
+		final java.lang.String strPeriodTenor,
+		final org.drip.analytics.daycount.DateAdjustParams dap)
+	{
+<span class="pc bpc" id="L396" title="3 of 6 branches missed.">		if (iStartDate &gt;= iEndDate || null == strPeriodTenor || strPeriodTenor.isEmpty()) return null;</span>
+
+<span class="fc" id="L398">		java.util.List&lt;java.lang.Integer&gt; lsEdgeDate = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
+
+<span class="fc" id="L400">		int iEdgeDate = iStartDate;</span>
+
+<span class="fc" id="L402">		org.drip.analytics.date.JulianDate dtEdge = new org.drip.analytics.date.JulianDate (iStartDate);</span>
+
+<span class="fc bfc" id="L404" title="All 2 branches covered.">		while (iEdgeDate &lt; iEndDate) {</span>
+<span class="fc" id="L405">			int iAdjustedEdgeDate = DAPAdjust (iEdgeDate, dap);</span>
+
+<span class="pc bpc" id="L407" title="1 of 2 branches missed.">			if (!lsEdgeDate.contains (iAdjustedEdgeDate)) lsEdgeDate.add (iAdjustedEdgeDate);</span>
+
+<span class="pc bpc" id="L409" title="1 of 2 branches missed.">			if (null == (dtEdge = dtEdge.addTenor (strPeriodTenor))) return null;</span>
+
+<span class="fc" id="L411">			iEdgeDate = dtEdge.julian();</span>
+<span class="fc" id="L412">		}</span>
+
+<span class="pc bpc" id="L414" title="1 of 2 branches missed.">		if (!lsEdgeDate.contains (iEndDate)) lsEdgeDate.add (iEndDate);</span>
+
+<span class="fc" id="L416">		return lsEdgeDate;</span>
+	}
+
+	/**
+	 * Generate a list of the IMM period edge dates forward from the spot date.
+	 * 
+	 * @param dtSpot Spot Date
+	 * @param iRollMonths Number of Months to Roll to the Next IMM Date
+	 * @param strPeriodTenor Period Tenor
+	 * @param strMaturityTenor Period Tenor
+	 * @param dap Inner Date Adjustment Parameters
+	 * 
+	 * @return List of IMM Period Edge Dates
+	 */
+
+	public static final java.util.List&lt;java.lang.Integer&gt; IMMEdgeDates (
+		final org.drip.analytics.date.JulianDate dtSpot,
+		final int iRollMonths,
+		final java.lang.String strPeriodTenor,
+		final java.lang.String strMaturityTenor,
+		final org.drip.analytics.daycount.DateAdjustParams dap)
+	{
+<span class="nc bnc" id="L438" title="All 2 branches missed.">		if (null == dtSpot) return null;</span>
+
+		try {
+<span class="nc" id="L441">			return RegularEdgeDates (dtSpot.nextRatesFuturesIMM (iRollMonths), strPeriodTenor,</span>
+				strMaturityTenor, dap);
+<span class="nc" id="L443">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L444">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L447">		return null;</span>
+	}
+
+	/**
+	 * Generate the List of Overnight Edge Dates between the specified dates, using the specified Calendar
+	 * 
+	 * @param dtStart Start Date
+	 * @param dtEnd End Date
+	 * @param strCalendar Calendar
+	 * 
+	 * @return List of Overnight Edge Dates
+	 */
+
+	public static final java.util.List&lt;java.lang.Integer&gt; OvernightEdgeDates (
+		final org.drip.analytics.date.JulianDate dtStart,
+		final org.drip.analytics.date.JulianDate dtEnd,
+		final java.lang.String strCalendar)
+	{
+<span class="pc bpc" id="L465" title="2 of 4 branches missed.">		if (null == dtStart || null == dtEnd) return null;</span>
+
+<span class="fc" id="L467">		org.drip.analytics.date.JulianDate dtEdge = dtStart;</span>
+
+<span class="fc" id="L469">		int iEndDate = dtEnd.julian();</span>
+
+<span class="fc" id="L471">		int iEdgeDate = dtEdge.julian();</span>
+
+<span class="pc bpc" id="L473" title="1 of 2 branches missed.">		if (iEndDate &lt;= iEdgeDate) return null;</span>
+
+<span class="fc" id="L475">		java.util.List&lt;java.lang.Integer&gt; lsOvernightEdgeDate = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
+
+<span class="fc bfc" id="L477" title="All 2 branches covered.">		while (iEdgeDate &lt; iEndDate) {</span>
+<span class="fc" id="L478">			lsOvernightEdgeDate.add (iEdgeDate);</span>
+
+<span class="pc bpc" id="L480" title="1 of 2 branches missed.">			if (null == (dtEdge = dtEdge.addBusDays (1, strCalendar))) return null;</span>
+
+<span class="fc" id="L482">			iEdgeDate = dtEdge.julian();</span>
+		}
+
+<span class="fc" id="L485">		lsOvernightEdgeDate.add (iEndDate);</span>
+
+<span class="fc" id="L487">		return lsOvernightEdgeDate;</span>
+	}
+
+	/**
+	 * Generate a single Spanning Edge Pair between the specified dates, using the specified Calendar
+	 * 
+	 * @param dtStart Start Date
+	 * @param dtEnd End Date
+	 * 
+	 * @return List Containing the Pair
+	 */
+
+	public static final java.util.List&lt;java.lang.Integer&gt; EdgePair (
+		final org.drip.analytics.date.JulianDate dtStart,
+		final org.drip.analytics.date.JulianDate dtEnd)
+	{
+<span class="pc bpc" id="L503" title="2 of 4 branches missed.">		if (null == dtStart || null == dtEnd) return null;</span>
+
+<span class="fc" id="L505">		int iEndDate = dtEnd.julian();</span>
+
+<span class="fc" id="L507">		int iStartDate = dtStart.julian();</span>
+
+<span class="pc bpc" id="L509" title="1 of 2 branches missed.">		if (iEndDate &lt;= iStartDate) return null;</span>
+
+<span class="fc" id="L511">		java.util.List&lt;java.lang.Integer&gt; lsOvernightEdgeDate = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
+
+<span class="fc" id="L513">		lsOvernightEdgeDate.add (iStartDate);</span>
+
+<span class="fc" id="L515">		lsOvernightEdgeDate.add (iEndDate);</span>
+
+<span class="fc" id="L517">		return lsOvernightEdgeDate;</span>
+	}
+
+	/**
+	 * Construct a Reference Period using the Start/End Dates, Fixing DAP, Forward Label, and the Reference
+	 * 	Period Arrears Type
+	 * 
+	 * @param dtStart Start Date
+	 * @param dtEnd End Date
+	 * @param forwardLabel Forward Label
+	 * @param iReferencePeriodArrearsType Reference Period Arrears Type
+	 * 
+	 * @return The Reference Period
+	 */
+
+	public static final org.drip.analytics.cashflow.ReferenceIndexPeriod MakeReferencePeriod (
+		final org.drip.analytics.date.JulianDate dtStart,
+		final org.drip.analytics.date.JulianDate dtEnd,
+		final org.drip.state.identifier.ForwardLabel forwardLabel,
+		final int iReferencePeriodArrearsType)
+	{
+<span class="pc bpc" id="L538" title="3 of 6 branches missed.">		if (null == dtStart || null == dtEnd || null == forwardLabel) return null;</span>
+
+<span class="fc" id="L540">		java.lang.String strForwardTenor = forwardLabel.tenor();</span>
+
+<span class="pc bpc" id="L542" title="1 of 2 branches missed.">		int iReferencePeriodStartDate = REFERENCE_PERIOD_IN_ARREARS == iReferencePeriodArrearsType ?</span>
+<span class="pc" id="L543">			dtStart.addTenor (strForwardTenor).julian() : dtStart.julian();</span>
+
+<span class="pc bpc" id="L545" title="1 of 2 branches missed.">		int iReferencePeriodEndDate = REFERENCE_PERIOD_IN_ARREARS == iReferencePeriodArrearsType ?</span>
+<span class="pc" id="L546">			dtEnd.addTenor (strForwardTenor).julian() : dtEnd.julian();</span>
+
+		try {
+<span class="fc" id="L549">			return new org.drip.analytics.cashflow.ReferenceIndexPeriod (iReferencePeriodStartDate,</span>
+				iReferencePeriodEndDate, forwardLabel);
+<span class="nc" id="L551">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L552">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L555">		return null;</span>
+	}
+
+	/**
+	 * Generate a list of period edge dates forward from the start.
+	 * 
+	 * @param iEffective Effective Date
+	 * @param iMaturity Maturity Date
+	 * @param strTenor Period Tenor
+	 * @param dap Inner Date Adjustment Parameters
+	 * @param iPSEC Period Set Edge Customizer Setting
+	 * 
+	 * @return List of Period Edge Dates
+	 */
+
+	public static final java.util.List&lt;java.lang.Integer&gt; ForwardEdgeDates (
+		final int iEffective,
+		final int iMaturity,
+		final java.lang.String strTenor,
+		final org.drip.analytics.daycount.DateAdjustParams dap,
+		final int iPSEC)
+	{
+<span class="nc" id="L577">		return ForwardEdgeDates (new org.drip.analytics.date.JulianDate (iEffective), new</span>
+			org.drip.analytics.date.JulianDate (iMaturity), strTenor, dap, iPSEC);
+	}
+
+	/**
+	 * Generate a list of period edge dates backward from the end.
+	 * 
+	 * @param iEffective Effective Date
+	 * @param iMaturity Maturity Date
+	 * @param strTenor Period Tenor
+	 * @param dap Inner Date Adjustment Parameters
+	 * @param iPSEC Period Set Edge Customizer Setting
+	 * 
+	 * @return List of Period Edge Dates
+	 */
+
+	public static final java.util.List&lt;java.lang.Integer&gt; BackwardEdgeDates (
+		final int iEffective,
+		final int iMaturity,
+		final java.lang.String strTenor,
+		final org.drip.analytics.daycount.DateAdjustParams dap,
+		final int iPSEC)
+	{
+<span class="nc" id="L600">		return BackwardEdgeDates (new org.drip.analytics.date.JulianDate (iEffective), new</span>
+			org.drip.analytics.date.JulianDate (iMaturity), strTenor, dap, iPSEC);
+	}
+
+	/**
+	 * Generate a list of regular period edge dates forward from the start.
+	 * 
+	 * @param iEffective Effective Date
+	 * @param strPeriodTenor Period Tenor
+	 * @param strMaturityTenor Period Tenor
+	 * @param dap Inner Date Adjustment Parameters
+	 * 
+	 * @return List of Period Edge Dates
+	 */
+
+	public static final java.util.List&lt;java.lang.Integer&gt; RegularEdgeDates (
+		final int iEffective,
+		final java.lang.String strPeriodTenor,
+		final java.lang.String strMaturityTenor,
+		final org.drip.analytics.daycount.DateAdjustParams dap)
+	{
+<span class="fc" id="L621">		return RegularEdgeDates (new org.drip.analytics.date.JulianDate (iEffective), strPeriodTenor,</span>
+			strMaturityTenor, dap);
+	}
+
+	/**
+	 * Generate the List of Overnight Edge Dates between the specified dates, using the specified Calendar
+	 * 
+	 * @param iStartDate Start Date
+	 * @param iEndDate End Date
+	 * @param strCalendar Calendar
+	 * 
+	 * @return List of Overnight Edge Dates
+	 */
+
+	public static final java.util.List&lt;java.lang.Integer&gt; OvernightEdgeDates (
+		final int iStartDate,
+		final int iEndDate,
+		final java.lang.String strCalendar)
+	{
+<span class="fc" id="L640">		return OvernightEdgeDates (new org.drip.analytics.date.JulianDate (iStartDate), new</span>
+			org.drip.analytics.date.JulianDate (iEndDate), strCalendar);
+	}
+
+	/**
+	 * Construct a Reference Period using the Start/End Dates, Fixing DAP, Forward Label, and the Reference
+	 * 	Period Arrears Type
+	 * 
+	 * @param iStartDate Start Date
+	 * @param iEndDate End Date
+	 * @param forwardLabel Forward Label
+	 * @param iReferencePeriodArrearsType Reference Period Arrears Type
+	 * 
+	 * @return The Reference Period
+	 */
+
+	public static final org.drip.analytics.cashflow.ReferenceIndexPeriod MakeReferencePeriod (
+		final int iStartDate,
+		final int iEndDate,
+		final org.drip.state.identifier.ForwardLabel forwardLabel,
+		final int iReferencePeriodArrearsType)
+	{
+<span class="fc" id="L662">		return MakeReferencePeriod (new org.drip.analytics.date.JulianDate (iStartDate), new</span>
+			org.drip.analytics.date.JulianDate (iEndDate), forwardLabel, iReferencePeriodArrearsType);
+	}
+
+	/**
+	 * Retrieve the List of Edge Dates across all Units
+	 * 
+	 * @param iUnitPeriodStartDate Unit Period Start Date
+	 * @param iUnitPeriodEndDate Unit Period End Date
+	 * @param strCalendar Unit Date Generation Calendar
+	 * @param cubs Composable Unit Builder Setting
+	 * 
+	 * @return List of Edge Dates across all Units
+	 */
+
+	public static final java.util.List&lt;java.lang.Integer&gt; UnitDateEdges (
+		final int iUnitPeriodStartDate,
+		final int iUnitPeriodEndDate,
+		final java.lang.String strCalendar,
+		final org.drip.param.period.ComposableUnitBuilderSetting cubs)
+	{
+<span class="pc bpc" id="L683" title="1 of 2 branches missed.">		if (null == cubs) return null;</span>
+
+<span class="fc" id="L685">		int iEdgeDateSequenceScheme = cubs.edgeDateSequenceScheme();</span>
+
+<span class="fc bfc" id="L687" title="All 2 branches covered.">		if (EDGE_DATE_SEQUENCE_SINGLE == iEdgeDateSequenceScheme) {</span>
+<span class="pc bpc" id="L688" title="1 of 2 branches missed.">			if (iUnitPeriodStartDate &gt;= iUnitPeriodEndDate) return null;</span>
+
+<span class="fc" id="L690">			java.util.List&lt;java.lang.Integer&gt; lsEdgeDates = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
+
+<span class="fc" id="L692">			lsEdgeDates.add (iUnitPeriodStartDate);</span>
+
+<span class="fc" id="L694">			lsEdgeDates.add (iUnitPeriodEndDate);</span>
+
+<span class="fc" id="L696">			return lsEdgeDates;</span>
+		}
+
+<span class="fc bfc" id="L699" title="All 2 branches covered.">		if (EDGE_DATE_SEQUENCE_REGULAR == iEdgeDateSequenceScheme)</span>
+<span class="fc" id="L700">			return RegularEdgeDates (iUnitPeriodStartDate, iUnitPeriodEndDate, cubs.tenor(), cubs.dapEdge());</span>
+
+<span class="pc bpc" id="L702" title="1 of 2 branches missed.">		if (EDGE_DATE_SEQUENCE_OVERNIGHT == iEdgeDateSequenceScheme)</span>
+<span class="fc" id="L703">			return OvernightEdgeDates (iUnitPeriodStartDate, iUnitPeriodEndDate, strCalendar);</span>
+
+<span class="nc" id="L705">		return null;</span>
+	}
+
+	/**
+	 * Construct the List of Composable Fixed Units from the inputs
+	 * 
+	 * @param iUnitPeriodStartDate Unit Period Start Date
+	 * @param iUnitPeriodEndDate Unit Period End Date
+	 * @param ucas Unit Coupon/Accrual Setting
+	 * @param cfus Composable Fixed Unit Setting
+	 * 
+	 * @return The List of Composable Floating Units
+	 */
+
+	public static final java.util.List&lt;org.drip.analytics.cashflow.ComposableUnitPeriod&gt; FixedUnits (
+		final int iUnitPeriodStartDate,
+		final int iUnitPeriodEndDate,
+		final org.drip.param.period.UnitCouponAccrualSetting ucas,
+		final org.drip.param.period.ComposableFixedUnitSetting cfus)
+	{
+<span class="pc bpc" id="L725" title="1 of 2 branches missed.">		if (null == cfus) return null;</span>
+
+<span class="fc" id="L727">		java.util.List&lt;java.lang.Integer&gt; lsUnitEdgeDate = UnitDateEdges (iUnitPeriodStartDate,</span>
+<span class="fc" id="L728">			iUnitPeriodEndDate, ucas.calendar(), cfus);</span>
+
+<span class="pc bpc" id="L730" title="1 of 2 branches missed.">		if (null == lsUnitEdgeDate) return null;</span>
+
+<span class="fc" id="L732">		int iNumDate = lsUnitEdgeDate.size();</span>
+
+<span class="pc bpc" id="L734" title="1 of 2 branches missed.">		if (2 &gt; iNumDate) return null;</span>
+
+<span class="fc" id="L736">		java.util.List&lt;org.drip.analytics.cashflow.ComposableUnitPeriod&gt; lsCUP = new</span>
+			java.util.ArrayList&lt;org.drip.analytics.cashflow.ComposableUnitPeriod&gt;();
+
+<span class="fc bfc" id="L739" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumDate; ++i) {</span>
+			try {
+<span class="fc" id="L741">				lsCUP.add (new org.drip.analytics.cashflow.ComposableUnitFixedPeriod (lsUnitEdgeDate.get</span>
+<span class="fc" id="L742">					(i - 1), lsUnitEdgeDate.get (i), ucas, cfus));</span>
+<span class="nc" id="L743">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L744">				e.printStackTrace();</span>
+
+<span class="nc" id="L746">				return null;</span>
+<span class="fc" id="L747">			}</span>
+		}
+
+<span class="fc" id="L750">		return lsCUP;</span>
+	}
+
+	/**
+	 * Construct the List of Composable Floating Units from the inputs
+	 * 
+	 * @param iUnitPeriodStartDate Unit Period Start Date
+	 * @param iUnitPeriodEndDate Unit Period End Date
+	 * @param cfus Composable Floating Unit Setting
+	 * 
+	 * @return The List of Composable Floating Units
+	 */
+
+	public static final java.util.List&lt;org.drip.analytics.cashflow.ComposableUnitPeriod&gt; FloatingUnits (
+		final int iUnitPeriodStartDate,
+		final int iUnitPeriodEndDate,
+		final org.drip.param.period.ComposableFloatingUnitSetting cfus)
+	{
+<span class="pc bpc" id="L768" title="1 of 2 branches missed.">		if (null == cfus) return null;</span>
+
+<span class="fc" id="L770">		org.drip.state.identifier.ForwardLabel forwardLabel = cfus.forwardLabel();</span>
+
+<span class="fc" id="L772">		java.lang.String strCalendar = forwardLabel.floaterIndex().calendar();</span>
+
+<span class="fc" id="L774">		java.util.List&lt;java.lang.Integer&gt; lsUnitEdgeDate = UnitDateEdges (iUnitPeriodStartDate,</span>
+			iUnitPeriodEndDate, strCalendar, cfus);
+
+<span class="pc bpc" id="L777" title="1 of 2 branches missed.">		if (null == lsUnitEdgeDate) return null;</span>
+
+<span class="fc" id="L779">		int iNumDate = lsUnitEdgeDate.size();</span>
+
+<span class="pc bpc" id="L781" title="1 of 2 branches missed.">		if (2 &gt; iNumDate) return null;</span>
+
+<span class="fc" id="L783">		java.util.List&lt;org.drip.analytics.cashflow.ComposableUnitPeriod&gt; lsCUP = new</span>
+			java.util.ArrayList&lt;org.drip.analytics.cashflow.ComposableUnitPeriod&gt;();
+
+<span class="fc" id="L786">		double dblSpread = cfus.spread();</span>
+
+<span class="fc" id="L788">		java.lang.String strUnitTenor = cfus.tenor();</span>
+
+<span class="fc" id="L790">		java.lang.String strForwardTenor = forwardLabel.tenor();</span>
+
+<span class="fc" id="L792">		int iReferencePeriodArrearsType = cfus.referencePeriodArrearsType();</span>
+
+<span class="fc" id="L794">		boolean bComposableForwardPeriodsMatch = cfus.tenor().equalsIgnoreCase (strForwardTenor);</span>
+
+<span class="fc bfc" id="L796" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumDate; ++i) {</span>
+<span class="fc" id="L797">			int iUnitStartDate = lsUnitEdgeDate.get (i - 1);</span>
+
+<span class="fc" id="L799">			int iUnitEndDate = lsUnitEdgeDate.get (i);</span>
+
+<span class="fc" id="L801">			int iReferencePeriodEndDate = iUnitEndDate;</span>
+
+<span class="pc bpc" id="L803" title="1 of 2 branches missed.">			int iReferencePeriodStartDate = bComposableForwardPeriodsMatch ? iUnitStartDate : new</span>
+<span class="nc" id="L804">				org.drip.analytics.date.JulianDate (iUnitEndDate).subtractTenorAndAdjust (strForwardTenor,</span>
+<span class="pc" id="L805">					strCalendar).julian();</span>
+
+			try {
+<span class="fc" id="L808">				lsCUP.add (new org.drip.analytics.cashflow.ComposableUnitFloatingPeriod (iUnitStartDate,</span>
+<span class="fc" id="L809">					iUnitEndDate, strUnitTenor, MakeReferencePeriod (iReferencePeriodStartDate,</span>
+						iReferencePeriodEndDate, forwardLabel, iReferencePeriodArrearsType), dblSpread));
+<span class="nc" id="L811">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L812">				e.printStackTrace();</span>
+
+<span class="nc" id="L814">				return null;</span>
+<span class="fc" id="L815">			}</span>
+		}
+
+<span class="fc" id="L818">		return lsCUP;</span>
+	}
+
+	/**
+	 * Construct the List of Composite Fixed Periods from the corresponding composable Fixed Period Units
+	 * 
+	 * @param lsCompositeEdgeDate The Composite Period Edge Dates
+	 * @param cps Composite Period Setting Instance
+	 * @param ucas Unit Coupon/Accrual Setting
+	 * @param cfus Composable Fixed Unit Setting
+	 * 
+	 * @return List of Composite Fixed Periods
+	 */
+
+	public static final java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; FixedCompositeUnit (
+		final java.util.List&lt;java.lang.Integer&gt; lsCompositeEdgeDate,
+		final org.drip.param.period.CompositePeriodSetting cps,
+		final org.drip.param.period.UnitCouponAccrualSetting ucas,
+		final org.drip.param.period.ComposableFixedUnitSetting cfus)
+	{
+<span class="pc bpc" id="L838" title="1 of 2 branches missed.">		if (null == lsCompositeEdgeDate) return null;</span>
+
+<span class="fc" id="L840">		int iNumEdge = lsCompositeEdgeDate.size();</span>
+
+<span class="pc bpc" id="L842" title="1 of 2 branches missed.">		if (2 &gt; iNumEdge) return null;</span>
+
+<span class="fc" id="L844">		java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; lsCFP = new</span>
+			java.util.ArrayList&lt;org.drip.analytics.cashflow.CompositePeriod&gt;();
+
+<span class="fc bfc" id="L847" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumEdge; ++i) {</span>
+			try {
+<span class="fc" id="L849">				lsCFP.add (new org.drip.analytics.cashflow.CompositeFixedPeriod (cps, FixedUnits</span>
+<span class="fc" id="L850">					(lsCompositeEdgeDate.get (i - 1), lsCompositeEdgeDate.get (i), ucas, cfus)));</span>
+<span class="nc" id="L851">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L852">				e.printStackTrace();</span>
+
+<span class="nc" id="L854">				return null;</span>
+<span class="fc" id="L855">			}</span>
+		}
+
+<span class="fc" id="L858">		return lsCFP;</span>
+	}
+
+	/**
+	 * Construct the List of Composite Floating Period from the corresponding composable Floating Period Units
+	 * 
+	 * @param lsCompositeEdgeDate The Composite Period Edge Dates
+	 * @param cps Composite Period Setting Instance
+	 * @param cfus Composable Floating Unit Setting
+	 * 
+	 * @return List of Composite Floating Periods
+	 */
+
+	public static final java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; FloatingCompositeUnit (
+		final java.util.List&lt;java.lang.Integer&gt; lsCompositeEdgeDate,
+		final org.drip.param.period.CompositePeriodSetting cps,
+		final org.drip.param.period.ComposableFloatingUnitSetting cfus)
+	{
+<span class="pc bpc" id="L876" title="1 of 2 branches missed.">		if (null == lsCompositeEdgeDate) return null;</span>
+
+<span class="fc" id="L878">		int iNumEdge = lsCompositeEdgeDate.size();</span>
+
+<span class="pc bpc" id="L880" title="1 of 2 branches missed.">		if (2 &gt; iNumEdge) return null;</span>
+
+<span class="fc" id="L882">		java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; lsCFP = new</span>
+			java.util.ArrayList&lt;org.drip.analytics.cashflow.CompositePeriod&gt;();
+
+<span class="fc bfc" id="L885" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumEdge; ++i) {</span>
+			try {
+<span class="fc" id="L887">				lsCFP.add (new org.drip.analytics.cashflow.CompositeFloatingPeriod (cps, FloatingUnits</span>
+<span class="fc" id="L888">					(lsCompositeEdgeDate.get (i - 1), lsCompositeEdgeDate.get (i), cfus)));</span>
+<span class="nc" id="L889">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L890">				e.printStackTrace();</span>
+
+<span class="nc" id="L892">				return null;</span>
+<span class="fc" id="L893">			}</span>
+		}
+
+<span class="fc" id="L896">		return lsCFP;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

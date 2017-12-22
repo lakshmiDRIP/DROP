@@ -1,0 +1,902 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LocalMonotoneCkGenerator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.spline.pchip</a> &gt; <span class="el_source">LocalMonotoneCkGenerator.java</span></div><h1>LocalMonotoneCkGenerator.java</h1><pre class="source lang-java linenums">
+package org.drip.spline.pchip;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * LocalMonotoneCkGenerator generates customized Local Stretch by trading off Ck for local control. This
+ * 	class implements the following variants: Akima, Bessel, Harmonic, Hyman83, Hyman89, Kruger, Monotone
+ *  Convex, as well as the Van Leer and the Huynh/LeFloch limiters.
+ *  
+ *  It also provides the following custom control on the resulting C1:
+ *  - Eliminate the Spurious Extrema in the Input C1 Entry.
+ *  - Apply the Monotone Filter in the Input C1 Entry.
+ *  - Generate a Vanilla C1 Array from the specified Array of Predictor Ordinates and the Response Values.
+ *  - Verify if the given Quintic Polynomial is Monotone using the Hyman89 Algorithm, and generate it if
+ *  	necessary.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class LocalMonotoneCkGenerator {
+
+	/**
+	 * C1 Type: Vanilla
+	 */
+
+	public static final java.lang.String C1_VANILLA = &quot;C1_VANILLA&quot;;
+
+	/**
+	 * C1 Type: Akima
+	 */
+
+	public static final java.lang.String C1_AKIMA = &quot;C1_AKIMA&quot;;
+
+	/**
+	 * C1 Type: Bessel
+	 */
+
+	public static final java.lang.String C1_BESSEL = &quot;C1_BESSEL&quot;;
+
+	/**
+	 * C1 Type: Harmonic
+	 */
+
+	public static final java.lang.String C1_HARMONIC = &quot;C1_HARMONIC&quot;;
+
+	/**
+	 * C1 Type: Huynh - Le Floch Limiter
+	 */
+
+	public static final java.lang.String C1_HUYNH_LE_FLOCH = &quot;C1_HUYNH_LE_FLOCH&quot;;
+
+	/**
+	 * C1 Type: Hyman83
+	 */
+
+	public static final java.lang.String C1_HYMAN83 = &quot;C1_HYMAN83&quot;;
+
+	/**
+	 * C1 Type: Hyman89
+	 */
+
+	public static final java.lang.String C1_HYMAN89 = &quot;C1_HYMAN89&quot;;
+
+	/**
+	 * C1 Type: Kruger
+	 */
+
+	public static final java.lang.String C1_KRUGER = &quot;C1_KRUGER&quot;;
+
+	/**
+	 * C1 Type: Monotone Convex
+	 */
+
+	public static final java.lang.String C1_MONOTONE_CONVEX = &quot;C1_MONOTONE_CONVEX&quot;;
+
+	/**
+	 * C1 Type: Van Leer Limiter
+	 */
+
+	public static final java.lang.String C1_VAN_LEER = &quot;C1_VAN_LEER&quot;;
+
+<span class="fc" id="L131">	private double[] _adblC1 = null;</span>
+<span class="fc" id="L132">	private double[] _adblResponseValue = null;</span>
+<span class="fc" id="L133">	private double[] _adblPredictorOrdinate = null;</span>
+
+	/**
+	 * Eliminate the Spurious Extrema in the Input C1 Entry
+	 * 
+	 * @param adblC1 The C1 Array in which the Spurious Extrema is to be eliminated
+	 * @param adblLinearC1 Array of the Linear C1 Entries
+	 * 
+	 * @return The C1 Array with the Spurious Extrema eliminated
+	 */
+
+	public static final double[] EliminateSpuriousExtrema (
+		final double[] adblC1,
+		final double[] adblLinearC1)
+	{
+<span class="pc bpc" id="L148" title="2 of 4 branches missed.">		if (null == adblC1 || null == adblLinearC1) return null;</span>
+
+<span class="fc" id="L150">		int iNumEntries = adblC1.length;</span>
+<span class="fc" id="L151">		double[] adblUpdatedC1 = new double[iNumEntries];</span>
+<span class="fc" id="L152">		adblUpdatedC1[0] = adblC1[0];</span>
+<span class="fc" id="L153">		adblUpdatedC1[iNumEntries - 1] = adblC1[iNumEntries - 1];</span>
+
+<span class="pc bpc" id="L155" title="2 of 4 branches missed.">		if (1 &gt;= iNumEntries || iNumEntries != adblLinearC1.length + 1) return null;</span>
+
+<span class="fc bfc" id="L157" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumEntries - 1; ++i)</span>
+<span class="fc bfc" id="L158" title="All 2 branches covered.">			adblUpdatedC1[i] = 0. &lt; adblLinearC1[i] ? java.lang.Math.min (java.lang.Math.max (0., adblC1[i]),</span>
+<span class="fc" id="L159">				java.lang.Math.min (adblLinearC1[i], adblLinearC1[i - 1])) : java.lang.Math.max</span>
+<span class="fc" id="L160">					(java.lang.Math.min (0., adblC1[i]), java.lang.Math.max (adblLinearC1[i],</span>
+						adblLinearC1[i - 1]));
+
+<span class="fc" id="L163">		return adblUpdatedC1;</span>
+	}
+
+	/**
+	 * Apply the Monotone Filter in the Input C1 Entry
+	 * 
+	 * @param adblC1 The C1 Array in which the Monotone Filter is to be applied
+	 * @param adblLinearC1 Array of the Linear C1 Entries
+	 * 
+	 * @return The C1 Array with the Monotone Filter applied
+	 */
+
+	public static final double[] ApplyMonotoneFilter (
+		final double[] adblC1,
+		final double[] adblLinearC1)
+	{
+<span class="pc bpc" id="L179" title="2 of 4 branches missed.">		if (null == adblC1 || null == adblLinearC1) return null;</span>
+
+<span class="fc" id="L181">		int iNumEntries = adblC1.length;</span>
+<span class="fc" id="L182">		double[] adblUpdatedC1 = new double[iNumEntries];</span>
+<span class="fc" id="L183">		adblUpdatedC1[0] = adblC1[0];</span>
+
+<span class="pc bpc" id="L185" title="2 of 4 branches missed.">		if (1 &gt;= iNumEntries || iNumEntries != adblLinearC1.length + 1) return null;</span>
+
+<span class="fc bfc" id="L187" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumEntries; ++i) {</span>
+<span class="fc bfc" id="L188" title="All 2 branches covered.">			if (0 == i) {</span>
+<span class="pc bpc" id="L189" title="1 of 4 branches missed.">				if (adblC1[0] * adblLinearC1[0] &gt; 0. &amp;&amp; adblLinearC1[0] * adblLinearC1[1] &gt; 0. &amp;&amp;</span>
+<span class="fc bfc" id="L190" title="All 2 branches covered.">					java.lang.Math.abs (adblC1[0]) &lt; 3. * java.lang.Math.abs (adblLinearC1[0]))</span>
+<span class="fc" id="L191">					adblUpdatedC1[0] = 3. * adblLinearC1[0];</span>
+<span class="fc bfc" id="L192" title="All 2 branches covered.">				else if (adblC1[0] * adblLinearC1[0] &lt;= 0.)</span>
+<span class="fc" id="L193">					adblUpdatedC1[0] = 0.;</span>
+<span class="pc bpc" id="L194" title="1 of 2 branches missed.">			} else if (iNumEntries == i) {</span>
+<span class="nc bnc" id="L195" title="All 4 branches missed.">				if (adblC1[i] * adblLinearC1[i - 1] &gt; 0. &amp;&amp; adblLinearC1[i - 1] * adblLinearC1[i - 2] &gt; 0. &amp;&amp;</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">					java.lang.Math.abs (adblC1[i]) &lt; 3. * java.lang.Math.abs (adblLinearC1[i - 1]))</span>
+<span class="nc" id="L197">					adblUpdatedC1[i] = 3. * adblLinearC1[i - 1];</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">				else if (adblC1[i] * adblLinearC1[i - 1] &lt;= 0.)</span>
+<span class="nc" id="L199">					adblUpdatedC1[i] = 0.;</span>
+			} else
+<span class="fc" id="L201">				adblUpdatedC1[i] = adblC1[i];</span>
+		}
+
+<span class="fc" id="L204">		return adblUpdatedC1;</span>
+	}
+
+	/**
+	 * Generate a Vanilla C1 Array from the specified Array of Predictor Ordinates and the Response Values
+	 * 
+	 * @param adblPredictorOrdinate The Predictor Ordinate Array
+	 * @param adblResponseValue The Response Value Array
+	 * 
+	 * @return The C1 Array
+	 */
+
+	public static final double[] LinearC1 (
+		final double[] adblPredictorOrdinate,
+		final double[] adblResponseValue)
+	{
+<span class="fc" id="L220">		int iNumSegment = adblResponseValue.length - 1;</span>
+<span class="fc" id="L221">		double[] adblLinearC1 = new double[iNumSegment];</span>
+
+<span class="fc bfc" id="L223" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSegment; ++i)</span>
+<span class="fc" id="L224">			adblLinearC1[i] = (adblResponseValue[i + 1] - adblResponseValue[i]) /</span>
+				(adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i]);
+
+<span class="fc" id="L227">		return adblLinearC1;</span>
+	}
+
+	/**
+	 * Generate a Bessel C1 Array from the specified Array of Predictor Ordinates and the Response Values
+	 * 
+	 * @param adblPredictorOrdinate The Predictor Ordinate Array
+	 * @param adblResponseValue The Response Value Array
+	 * 
+	 * @return The C1 Array
+	 */
+
+	public static final double[] BesselC1 (
+		final double[] adblPredictorOrdinate,
+		final double[] adblResponseValue)
+	{
+<span class="fc" id="L243">		int iNumResponse = adblResponseValue.length;</span>
+<span class="fc" id="L244">		double[] adblBesselC1 = new double[iNumResponse];</span>
+
+<span class="fc bfc" id="L246" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumResponse; ++i) {</span>
+<span class="fc bfc" id="L247" title="All 2 branches covered.">			if (0 == i) {</span>
+<span class="fc" id="L248">				adblBesselC1[i] = (adblPredictorOrdinate[2] + adblPredictorOrdinate[1] - 2. *</span>
+					adblPredictorOrdinate[0]) * (adblResponseValue[1] - adblResponseValue[0]) /
+						(adblPredictorOrdinate[1] - adblPredictorOrdinate[0]);
+<span class="fc" id="L251">				adblBesselC1[i] -= (adblPredictorOrdinate[1] - adblPredictorOrdinate[0]) *</span>
+					(adblResponseValue[2] - adblResponseValue[1]) / (adblPredictorOrdinate[2] -
+						adblPredictorOrdinate[1]);
+<span class="fc" id="L254">				adblBesselC1[i] /= (adblPredictorOrdinate[2] - adblPredictorOrdinate[0]);</span>
+<span class="fc bfc" id="L255" title="All 2 branches covered.">			} else if (iNumResponse - 1 == i) {</span>
+<span class="fc" id="L256">				adblBesselC1[i] = (adblPredictorOrdinate[iNumResponse - 1] -</span>
+					adblPredictorOrdinate[iNumResponse - 2]) * (adblResponseValue[iNumResponse - 2] -
+						adblResponseValue[iNumResponse - 3]) / (adblPredictorOrdinate[iNumResponse - 2] -
+							adblPredictorOrdinate[iNumResponse - 3]);
+<span class="fc" id="L260">				adblBesselC1[i] -= (2. * adblPredictorOrdinate[iNumResponse - 1] -</span>
+					adblPredictorOrdinate[iNumResponse - 2] - adblPredictorOrdinate[iNumResponse - 3]) *
+						(adblResponseValue[iNumResponse - 1] - adblResponseValue[iNumResponse - 2]) /
+							(adblPredictorOrdinate[iNumResponse - 1] -
+								adblPredictorOrdinate[iNumResponse - 2]);
+<span class="fc" id="L265">				adblBesselC1[i] /= (adblPredictorOrdinate[iNumResponse - 1] -</span>
+					adblPredictorOrdinate[iNumResponse - 3]);
+			} else {
+<span class="fc" id="L268">				adblBesselC1[i] = (adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i]) *</span>
+					(adblResponseValue[i] - adblResponseValue[i - 1]) / (adblPredictorOrdinate[i] -
+						adblPredictorOrdinate[i - 1]);
+<span class="fc" id="L271">				adblBesselC1[i] += (adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1]) *</span>
+					(adblResponseValue[i + 1] - adblResponseValue[i]) / (adblPredictorOrdinate[i + 1] -
+						adblPredictorOrdinate[i]);
+<span class="fc" id="L274">				adblBesselC1[i] /= (adblPredictorOrdinate[iNumResponse - 1] -</span>
+					adblPredictorOrdinate[iNumResponse - 3]);
+			}
+		}
+
+<span class="fc" id="L279">		return adblBesselC1;</span>
+	}
+
+	/**
+	 * Generate a Hyman83 C1 Array from the specified Array of Predictor Ordinates and the Response Values
+	 * 
+	 * 	Hyman (1983) Accurate Monotonicity Preserving Cubic Interpolation -
+	 *  	SIAM J on Numerical Analysis 4 (4), 645-654.
+	 * 
+	 * @param adblPredictorOrdinate The Predictor Ordinate Array
+	 * @param adblResponseValue The Response Value Array
+	 * 
+	 * @return The C1 Array
+	 */
+
+	public static final double[] Hyman83C1 (
+		final double[] adblPredictorOrdinate,
+		final double[] adblResponseValue)
+	{
+<span class="fc" id="L298">		int iNumResponse = adblResponseValue.length;</span>
+<span class="fc" id="L299">		double dblLinearSlopePrev = java.lang.Double.NaN;</span>
+<span class="fc" id="L300">		double[] adblHyman83C1 = new double[iNumResponse];</span>
+
+<span class="fc bfc" id="L302" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumResponse; ++i) {</span>
+<span class="fc" id="L303">			adblHyman83C1[i] = 0.;</span>
+<span class="fc bfc" id="L304" title="All 2 branches covered.">			double dblLinearSlope = iNumResponse - 1 != i ? (adblResponseValue[i + 1] - adblResponseValue[i])</span>
+				/ (adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i]) : java.lang.Double.NaN;
+
+<span class="fc bfc" id="L307" title="All 4 branches covered.">			if (0 != i &amp;&amp; iNumResponse - 1 != i) {</span>
+<span class="fc" id="L308">				double dblMonotoneIndicator = dblLinearSlopePrev * dblLinearSlope;</span>
+
+<span class="fc bfc" id="L310" title="All 2 branches covered.">				if (0. &lt;= dblMonotoneIndicator)</span>
+<span class="fc" id="L311">					adblHyman83C1[i] = 3. * dblMonotoneIndicator / (java.lang.Math.max (dblLinearSlope,</span>
+<span class="fc" id="L312">						dblLinearSlopePrev) + 2. * java.lang.Math.min (dblLinearSlope, dblLinearSlopePrev));</span>
+			}
+
+<span class="fc" id="L315">			dblLinearSlopePrev = dblLinearSlope;</span>
+		}
+
+<span class="fc" id="L318">		return adblHyman83C1;</span>
+	}
+
+	/**
+	 * Generate a Hyman89 C1 Array from the specified Array of Predictor Ordinates and the Response Values
+	 * 
+	 * 	Doherty, Edelman, and Hyman (1989) Non-negative, monotonic, or convexity preserving cubic and quintic
+	 *  	Hermite interpolation - Mathematics of Computation 52 (186), 471-494.
+	 * 
+	 * @param adblPredictorOrdinate The Predictor Ordinate Array
+	 * @param adblResponseValue The Response Value Array
+	 * 
+	 * @return The C1 Array
+	 */
+
+	public static final double[] Hyman89C1 (
+		final double[] adblPredictorOrdinate,
+		final double[] adblResponseValue)
+	{
+<span class="fc" id="L337">		int iNumResponse = adblResponseValue.length;</span>
+<span class="fc" id="L338">		double[] adblHyman89C1 = new double[iNumResponse];</span>
+
+<span class="fc" id="L340">		double[] adblNodeC1 = LinearC1 (adblPredictorOrdinate, adblResponseValue);</span>
+
+<span class="fc" id="L342">		double[] adblBesselC1 = BesselC1 (adblPredictorOrdinate, adblResponseValue);</span>
+
+<span class="fc bfc" id="L344" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumResponse; ++i) {</span>
+<span class="fc bfc" id="L345" title="All 4 branches covered.">			if (i &lt; 2 || i &gt;= iNumResponse - 2)</span>
+<span class="fc" id="L346">				adblHyman89C1[i] = adblBesselC1[i];</span>
+			else {
+<span class="fc" id="L348">				double dMuMinus = (adblNodeC1[i - 1] * (2. * (adblPredictorOrdinate[i] -</span>
+					adblPredictorOrdinate[i - 1]) + adblPredictorOrdinate[i - 1] -
+						adblPredictorOrdinate[i - 2]) - adblNodeC1[i - 2] * (adblPredictorOrdinate[i] -
+							adblPredictorOrdinate[i - 1])) / (adblPredictorOrdinate[i] -
+								adblPredictorOrdinate[i - 2]);
+<span class="fc" id="L353">				double dMu0 = (adblNodeC1[i - 1] * (adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i])</span>
+					+ adblNodeC1[i] * (adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1])) /
+						(adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i - 1]);
+<span class="fc" id="L356">				double dMuPlus = (adblNodeC1[i] * (2. * (adblPredictorOrdinate[i + 1] -</span>
+					adblPredictorOrdinate[i]) + adblPredictorOrdinate[i + 2] - adblPredictorOrdinate[i + 1])
+						- adblNodeC1[i + 1] * (adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i])) /
+							(adblPredictorOrdinate[i + 2] - adblPredictorOrdinate[i]);
+
+				try {
+<span class="fc" id="L362">					double dblM = 3 * org.drip.quant.common.NumberUtil.Minimum (new double[]</span>
+<span class="fc" id="L363">						{java.lang.Math.abs (adblNodeC1[i - 1]), java.lang.Math.abs (adblNodeC1[i]),</span>
+<span class="fc" id="L364">							java.lang.Math.abs (dMu0), java.lang.Math.abs (dMuPlus)});</span>
+
+<span class="fc bfc" id="L366" title="All 2 branches covered.">					if (!org.drip.quant.common.NumberUtil.SameSign (new double[] {dMu0, dMuMinus,</span>
+							adblNodeC1[i - 1] - adblNodeC1[i - 2], adblNodeC1[i] - adblNodeC1[i - 1]}))
+<span class="fc" id="L368">						dblM = java.lang.Math.max (dblM, 1.5 * java.lang.Math.min (java.lang.Math.abs (dMu0),</span>
+<span class="fc" id="L369">							java.lang.Math.abs (dMuMinus)));</span>
+<span class="pc bpc" id="L370" title="1 of 2 branches missed.">					else if (!org.drip.quant.common.NumberUtil.SameSign (new double[] {-dMu0, -dMuPlus,</span>
+							adblNodeC1[i] - adblNodeC1[i - 1], adblNodeC1[i + 1] - adblNodeC1[i]}))
+<span class="fc" id="L372">						dblM = java.lang.Math.max (dblM, 1.5 * java.lang.Math.min (java.lang.Math.abs (dMu0),</span>
+<span class="fc" id="L373">							java.lang.Math.abs (dMuPlus)));</span>
+
+<span class="fc" id="L375">					adblHyman89C1[i] = 0.;</span>
+
+<span class="pc bpc" id="L377" title="1 of 2 branches missed.">					if (adblBesselC1[i] * dMu0 &gt; 0.)</span>
+<span class="fc" id="L378">						adblHyman89C1[i] = adblBesselC1[i] / java.lang.Math.abs (adblBesselC1[i]) *</span>
+<span class="fc" id="L379">							java.lang.Math.min (java.lang.Math.abs (adblBesselC1[i]), dblM);</span>
+<span class="nc" id="L380">				} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L381">					e.printStackTrace();</span>
+
+<span class="nc" id="L383">					return null;</span>
+<span class="fc" id="L384">				}</span>
+			}
+		}
+
+<span class="fc" id="L388">		return adblHyman89C1;</span>
+	}
+
+	/**
+	 * Generate a Harmonic C1 Array from the specified Array of Predictor Ordinates and the Response Values
+	 * 
+	 * 	Fritcsh and Butland (1984) A Method for constructing local monotonic piece-wise cubic interpolants -
+	 *  	SIAM J on Scientific and Statistical Computing 5, 300-304.
+	 * 
+	 * @param adblPredictorOrdinate The Predictor Ordinate Array
+	 * @param adblResponseValue The Response Value Array
+	 * 
+	 * @return The C1 Array
+	 */
+
+	public static final double[] HarmonicC1 (
+		final double[] adblPredictorOrdinate,
+		final double[] adblResponseValue)
+	{
+<span class="fc" id="L407">		int iNumResponse = adblResponseValue.length;</span>
+<span class="fc" id="L408">		double[] adblHarmonicC1 = new double[iNumResponse];</span>
+
+<span class="fc" id="L410">		double[] adblLinearC1 = LinearC1 (adblPredictorOrdinate, adblResponseValue);</span>
+
+<span class="fc bfc" id="L412" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumResponse; ++i) {</span>
+<span class="fc bfc" id="L413" title="All 2 branches covered.">			if (0 == i) {</span>
+<span class="fc" id="L414">				adblHarmonicC1[i] = (adblPredictorOrdinate[2] + adblPredictorOrdinate[1] - 2. *</span>
+					adblPredictorOrdinate[0]) * adblLinearC1[0] / (adblPredictorOrdinate[2] -
+						adblPredictorOrdinate[0]);
+<span class="fc" id="L417">				adblHarmonicC1[i] -= (adblPredictorOrdinate[1] - adblPredictorOrdinate[0]) * adblLinearC1[1]</span>
+					/ (adblPredictorOrdinate[2] - adblPredictorOrdinate[0]);
+<span class="fc bfc" id="L419" title="All 2 branches covered.">			} else if (iNumResponse - 1 == i) {</span>
+<span class="fc" id="L420">				adblHarmonicC1[i] = -(adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1]) *</span>
+					adblLinearC1[i - 2] / (adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 2]);
+<span class="fc" id="L422">				adblHarmonicC1[i] += (2. * adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1] -</span>
+					adblPredictorOrdinate[i - 2]) * adblLinearC1[i - 1] / (adblPredictorOrdinate[i] -
+						adblPredictorOrdinate[i - 2]);
+			} else {
+<span class="fc bfc" id="L426" title="All 2 branches covered.">				if (adblLinearC1[i - 1] * adblLinearC1[i] &lt;= 0.)</span>
+<span class="fc" id="L427">					adblHarmonicC1[i] = 0.;</span>
+				else {
+<span class="fc" id="L429">					adblHarmonicC1[i] = (adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1] + 2. *</span>
+						(adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i])) / (3. *
+							(adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i])) / adblLinearC1[i - 1];
+<span class="fc" id="L432">					adblHarmonicC1[i] += (adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i] + 2. *</span>
+						(adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1])) / (3. *
+							(adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i])) / adblLinearC1[i];
+<span class="fc" id="L435">					adblHarmonicC1[i] = 1. / adblHarmonicC1[i];</span>
+				}
+			}
+		}
+
+<span class="fc" id="L440">		return adblHarmonicC1;</span>
+	}
+
+	/**
+	 * Generate a Van Leer Limiter C1 Array from the specified Array of Predictor Ordinates and the Response
+	 *  Values.
+	 * 
+	 * 	Van Leer (1974) Towards the Ultimate Conservative Difference Scheme. II - Monotonicity and
+	 * 		Conservation combined in a Second-Order Scheme, Journal of Computational Physics 14 (4), 361-370.
+	 * 
+	 * @param adblPredictorOrdinate The Predictor Ordinate Array
+	 * @param adblResponseValue The Response Value Array
+	 * 
+	 * @return The C1 Array
+	 */
+
+	public static final double[] VanLeerLimiterC1 (
+		final double[] adblPredictorOrdinate,
+		final double[] adblResponseValue)
+	{
+<span class="fc" id="L460">		int iNumResponse = adblResponseValue.length;</span>
+<span class="fc" id="L461">		double[] dblVanLeerLimiterC1 = new double[iNumResponse];</span>
+
+<span class="fc" id="L463">		double[] adblNodeC1 = LinearC1 (adblPredictorOrdinate, adblResponseValue);</span>
+
+<span class="fc bfc" id="L465" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumResponse; ++i) {</span>
+<span class="fc bfc" id="L466" title="All 2 branches covered.">			if (0 == i) {</span>
+<span class="fc" id="L467">				dblVanLeerLimiterC1[i] = (adblPredictorOrdinate[2] + adblPredictorOrdinate[1] - 2. *</span>
+					adblPredictorOrdinate[0]) * adblNodeC1[0] / (adblPredictorOrdinate[2] -
+						adblPredictorOrdinate[0]);
+<span class="fc" id="L470">				dblVanLeerLimiterC1[i] -= (adblPredictorOrdinate[1] - adblPredictorOrdinate[0]) *</span>
+					adblNodeC1[1] / (adblPredictorOrdinate[2] - adblPredictorOrdinate[0]);
+<span class="fc bfc" id="L472" title="All 2 branches covered.">			} else if (iNumResponse - 1 == i) {</span>
+<span class="fc" id="L473">				dblVanLeerLimiterC1[i] = -(adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1]) *</span>
+					adblNodeC1[i - 2] / (adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 2]);
+<span class="fc" id="L475">				dblVanLeerLimiterC1[i] += (2. * adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1] -</span>
+					adblPredictorOrdinate[i - 2]) * adblNodeC1[i - 1] / (adblPredictorOrdinate[i] -
+						adblPredictorOrdinate[i - 2]);
+			} else {
+<span class="pc bpc" id="L479" title="1 of 2 branches missed.">				if (0. != adblNodeC1[i - 1]) {</span>
+<span class="fc" id="L480">					double dblR = adblNodeC1[i] / adblNodeC1[i - 1];</span>
+
+<span class="fc" id="L482">					double dblRAbsolute = java.lang.Math.abs (dblR);</span>
+
+<span class="fc" id="L484">					dblVanLeerLimiterC1[i] = adblNodeC1[i] * (dblR + dblRAbsolute) / (1. + dblRAbsolute);</span>
+<span class="pc bnc" id="L485" title="All 2 branches missed.">				} else if (0. &gt;= adblNodeC1[i])</span>
+<span class="nc" id="L486">					dblVanLeerLimiterC1[i] = 0.;</span>
+<span class="nc bnc" id="L487" title="All 2 branches missed.">				else if (0. &lt; adblNodeC1[i])</span>
+<span class="nc" id="L488">					dblVanLeerLimiterC1[i] = 2. * adblNodeC1[i];</span>
+			}
+		}
+
+<span class="fc" id="L492">		return dblVanLeerLimiterC1;</span>
+	}
+
+	/**
+	 * Generate a Huynh Le Floch Limiter C1 Array from the specified Array of Predictor Ordinates and the
+	 *  Response Values.
+	 * 
+	 * 	Huynh (1993) Accurate Monotone Cubic Interpolation, SIAM J on Numerical Analysis 30 (1), 57-100.
+	 * 
+	 * @param adblPredictorOrdinate The Predictor Ordinate Array
+	 * @param adblResponseValue The Response Value Array
+	 * 
+	 * @return The C1 Array
+	 */
+
+	public static final double[] HuynhLeFlochLimiterC1 (
+		final double[] adblPredictorOrdinate,
+		final double[] adblResponseValue)
+	{
+<span class="fc" id="L511">		int iNumResponse = adblResponseValue.length;</span>
+<span class="fc" id="L512">		double[] adblHuynhLeFlochLimiterC1 = new double[iNumResponse];</span>
+
+<span class="fc" id="L514">		double[] adblNodeC1 = LinearC1 (adblPredictorOrdinate, adblResponseValue);</span>
+
+<span class="fc bfc" id="L516" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumResponse; ++i) {</span>
+<span class="fc bfc" id="L517" title="All 2 branches covered.">			if (0 == i) {</span>
+<span class="fc" id="L518">				adblHuynhLeFlochLimiterC1[i] = (adblPredictorOrdinate[2] + adblPredictorOrdinate[1] - 2. *</span>
+					adblPredictorOrdinate[0]) * adblNodeC1[0] / (adblPredictorOrdinate[2] -
+						adblPredictorOrdinate[0]);
+<span class="fc" id="L521">				adblHuynhLeFlochLimiterC1[i] -= (adblPredictorOrdinate[1] - adblPredictorOrdinate[0]) *</span>
+					adblNodeC1[1] / (adblPredictorOrdinate[2] - adblPredictorOrdinate[0]);
+<span class="fc bfc" id="L523" title="All 2 branches covered.">			} else if (iNumResponse - 1 == i) {</span>
+<span class="fc" id="L524">				adblHuynhLeFlochLimiterC1[i] = -(adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1]) *</span>
+					adblNodeC1[i - 2] / (adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 2]);
+<span class="fc" id="L526">				adblHuynhLeFlochLimiterC1[i] += (2. * adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1]</span>
+					- adblPredictorOrdinate[i - 2]) * adblNodeC1[i - 1] / (adblPredictorOrdinate[i] -
+						adblPredictorOrdinate[i - 2]);
+			} else {
+<span class="fc" id="L530">				double dblMonotoneIndicator = adblNodeC1[i] * adblNodeC1[i - 1];</span>
+
+<span class="fc bfc" id="L532" title="All 2 branches covered.">				if (0. &lt; dblMonotoneIndicator)</span>
+<span class="fc" id="L533">					adblHuynhLeFlochLimiterC1[i] = 3. * dblMonotoneIndicator * (adblNodeC1[i] +</span>
+						adblNodeC1[i - 1]) / (adblNodeC1[i] * adblNodeC1[i] + adblNodeC1[i - 1] *
+							adblNodeC1[i - 1] * 4. * dblMonotoneIndicator);
+				else
+<span class="fc" id="L537">					adblHuynhLeFlochLimiterC1[i] = 0.;</span>
+			}
+		}
+
+<span class="fc" id="L541">		return adblHuynhLeFlochLimiterC1;</span>
+	}
+
+	/**
+	 * Generate a Kruger C1 Array from the specified Array of Predictor Ordinates and the Response Values.
+	 * 
+	 * 	Kruger (2002) Constrained Cubic Spline Interpolations for Chemical Engineering Application,
+	 *  	http://www.korf.co.uk/spline.pdf
+	 * 
+	 * @param adblPredictorOrdinate The Predictor Ordinate Array
+	 * @param adblResponseValue The Response Value Array
+	 * 
+	 * @return The C1 Array
+	 */
+
+	public static final double[] KrugerC1 (
+		final double[] adblPredictorOrdinate,
+		final double[] adblResponseValue)
+	{
+<span class="fc" id="L560">		int iNumResponse = adblResponseValue.length;</span>
+<span class="fc" id="L561">		double[] adblKrugerSlope = new double[iNumResponse];</span>
+
+<span class="fc" id="L563">		double[] adblSlopeC1 = LinearC1 (adblPredictorOrdinate, adblResponseValue);</span>
+
+<span class="pc bpc" id="L565" title="2 of 4 branches missed.">		if (null == adblSlopeC1 || adblSlopeC1.length != iNumResponse - 1) return null;</span>
+
+<span class="fc bfc" id="L567" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumResponse; ++i) {</span>
+<span class="fc bfc" id="L568" title="All 4 branches covered.">			if (0 != i &amp;&amp; iNumResponse - 1 != i) {</span>
+<span class="fc bfc" id="L569" title="All 2 branches covered.">				if (adblSlopeC1[i - 1] * adblSlopeC1[i] &lt;= 0.)</span>
+<span class="fc" id="L570">					adblKrugerSlope[i] = 0.;</span>
+				else
+<span class="fc" id="L572">					adblKrugerSlope[i] = 2. / ((1. / adblSlopeC1[i - 1]) + (1. / adblSlopeC1[i]));</span>
+			}
+		}
+
+<span class="fc" id="L576">		adblKrugerSlope[0] = 3.5 * adblSlopeC1[0] - 0.5 * adblKrugerSlope[1];</span>
+<span class="fc" id="L577">		adblKrugerSlope[iNumResponse - 1] = 3.5 * adblSlopeC1[iNumResponse - 2] - 0.5 *</span>
+			adblKrugerSlope[iNumResponse - 2];
+<span class="fc" id="L579">		return adblKrugerSlope;</span>
+	}
+
+	/**
+	 * Generate a Akima C1 Array from the specified Array of Predictor Ordinates and the Response Values.
+	 * 
+	 * 	Akima (1970): A New Method of Interpolation and Smooth Curve Fitting based on Local Procedures,
+	 * 		Journal of the Association for the Computing Machinery 17 (4), 589-602.
+	 * 
+	 * @param adblPredictorOrdinate The Predictor Ordinate Array
+	 * @param adblResponseValue The Response Value Array
+	 * 
+	 * @return The C1 Array
+	 */
+
+	public static final double[] AkimaC1 (
+		final double[] adblPredictorOrdinate,
+		final double[] adblResponseValue)
+	{
+<span class="fc" id="L598">		org.drip.spline.pchip.AkimaLocalC1Generator alcr =</span>
+<span class="fc" id="L599">			org.drip.spline.pchip.AkimaLocalC1Generator.Create (adblPredictorOrdinate, adblResponseValue);</span>
+
+<span class="pc bpc" id="L601" title="1 of 2 branches missed.">		return null == alcr ? null : alcr.C1();</span>
+	}
+
+	/**
+	 * Verify if the given Quintic Polynomial is Monotone using the Hyman89 Algorithm
+	 * 
+	 * 	Doherty, Edelman, and Hyman (1989) Non-negative, monotonic, or convexity preserving cubic and quintic
+	 *  	Hermite interpolation - Mathematics of Computation 52 (186), 471-494.
+	 * 
+	 * @param adblPredictorOrdinate Array of Predictor Ordinates
+	 * @param adblResponseValue Array of Response Values
+	 * @param adblFirstDerivative Array of First Derivatives
+	 * @param adblSecondDerivative Array of Second Derivatives
+	 * 
+	 * @return TRUE - The given Quintic Polynomial is Monotone
+	 * 
+	 * @throws java.lang.Exception Thrown if the Monotonicity cannot be determined
+	 */
+
+	public static final boolean VerifyHyman89QuinticMonotonicity (
+		final double[] adblPredictorOrdinate,
+		final double[] adblResponseValue,
+		final double[] adblFirstDerivative,
+		final double[] adblSecondDerivative)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L627" title="All 8 branches missed.">		if (null == adblPredictorOrdinate || null == adblResponseValue || null == adblFirstDerivative || null</span>
+			== adblSecondDerivative)
+<span class="nc" id="L629">			throw new java.lang.Exception</span>
+				(&quot;LocalMonotoneCkGenerator::VerifyHyman89QuinticMonotonicity =&gt; Invalid Inputs&quot;);
+
+<span class="nc" id="L632">		int iNumPredictor = adblPredictorOrdinate.length;</span>
+
+<span class="nc bnc" id="L634" title="All 8 branches missed.">		if (1 &gt;= iNumPredictor || iNumPredictor != adblResponseValue.length || iNumPredictor !=</span>
+			adblResponseValue.length || iNumPredictor != adblResponseValue.length)
+<span class="nc" id="L636">			throw new java.lang.Exception</span>
+				(&quot;LocalMonotoneCkGenerator::VerifyHyman89QuinticMonotonicity =&gt; Invalid Inputs&quot;);
+
+<span class="nc bnc" id="L639" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumPredictor - 1; ++i) {</span>
+<span class="nc" id="L640">			double dblAbsoluteResponseValue = java.lang.Math.abs (adblResponseValue[i]);</span>
+
+<span class="nc bnc" id="L642" title="All 2 branches missed.">			double dblResponseValueSign = adblResponseValue[i] &gt; 0. ? 1. : -1.;</span>
+<span class="nc" id="L643">			double dblHMinus = (adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1]);</span>
+<span class="nc" id="L644">			double dblHPlus = (adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i]);</span>
+
+<span class="nc bnc" id="L646" title="All 4 branches missed.">			if (-5. * dblAbsoluteResponseValue / dblHPlus &gt; dblResponseValueSign * adblFirstDerivative[i] ||</span>
+				5. * dblAbsoluteResponseValue / dblHMinus &lt; dblResponseValueSign * adblFirstDerivative[i])
+<span class="nc" id="L648">				return false;</span>
+
+<span class="nc" id="L650">			if (dblResponseValueSign * adblSecondDerivative[i] &lt; dblResponseValueSign * java.lang.Math.max</span>
+<span class="nc bnc" id="L651" title="All 2 branches missed.">				(8. * adblFirstDerivative[i] / dblHMinus - 20. * adblResponseValue[i] / dblHMinus /</span>
+					dblHMinus, -8. * adblFirstDerivative[i] / dblHPlus - 20. * adblResponseValue[i] /
+						dblHPlus / dblHPlus))
+<span class="nc" id="L654">				return false;</span>
+		}
+
+<span class="nc" id="L657">		return true;</span>
+	}
+
+	/**
+	 * Generate C1 Slope Quintic Polynomial is Monotone using the Hyman89 Algorithm
+	 * 
+	 * 	Doherty, Edelman, and Hyman (1989) Non-negative, monotonic, or convexity preserving cubic and quintic
+	 *  	Hermite interpolation - Mathematics of Computation 52 (186), 471-494.
+	 * 
+	 * @param adblPredictorOrdinate Array of Predictor Ordinates
+	 * @param adblResponseValue Array of Response Values
+	 * @param adblFirstDerivative Array of First Derivatives
+	 * @param adblSecondDerivative Array of Second Derivatives
+	 * 
+	 * @return The C1 Slope Quintic Stretch
+	 */
+
+	public static final double[] Hyman89QuinticMonotoneC1 (
+		final double[] adblPredictorOrdinate,
+		final double[] adblResponseValue,
+		final double[] adblFirstDerivative,
+		final double[] adblSecondDerivative)
+	{
+<span class="nc bnc" id="L680" title="All 8 branches missed.">		if (null == adblPredictorOrdinate || null == adblResponseValue || null == adblFirstDerivative || null</span>
+			== adblSecondDerivative)
+<span class="nc" id="L682">			return null;</span>
+
+<span class="nc" id="L684">		int iNumPredictor = adblPredictorOrdinate.length;</span>
+
+<span class="nc bnc" id="L686" title="All 8 branches missed.">		if (1 &gt;= iNumPredictor || iNumPredictor != adblResponseValue.length || iNumPredictor !=</span>
+			adblResponseValue.length || iNumPredictor != adblResponseValue.length)
+<span class="nc" id="L688">			return null;</span>
+
+<span class="nc" id="L690">		double[] adblAdjFirstDerivative = new double[iNumPredictor];</span>
+
+<span class="nc" id="L692">		double[] adblNodeC1 = LinearC1 (adblPredictorOrdinate, adblResponseValue);</span>
+
+<span class="nc" id="L694">		double[] adblBesselC1 = BesselC1 (adblPredictorOrdinate, adblResponseValue);</span>
+
+<span class="nc bnc" id="L696" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumPredictor; ++i) {</span>
+<span class="nc bnc" id="L697" title="All 4 branches missed.">			if (i &lt; 2 || i &gt;= iNumPredictor - 2)</span>
+<span class="nc" id="L698">				adblAdjFirstDerivative[i] = adblBesselC1[i];</span>
+			else {
+<span class="nc" id="L700">				double dblSign = 0.;</span>
+<span class="nc" id="L701">				double dblHMinus = (adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1]);</span>
+<span class="nc" id="L702">				double dblHPlus = (adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i]);</span>
+
+<span class="nc bnc" id="L704" title="All 2 branches missed.">				if (adblFirstDerivative[i - 1] * adblFirstDerivative[i] &lt; 0.)</span>
+<span class="nc bnc" id="L705" title="All 2 branches missed.">					dblSign = adblResponseValue[i] &gt; 0. ? 1. : -1.;</span>
+
+<span class="nc" id="L707">				double dblMinSlope = java.lang.Math.min (java.lang.Math.abs (adblFirstDerivative[i - 1]),</span>
+<span class="nc" id="L708">					java.lang.Math.abs (adblFirstDerivative[i]));</span>
+
+<span class="nc bnc" id="L710" title="All 2 branches missed.">				if (dblSign &gt;= 0.)</span>
+<span class="nc" id="L711">					adblAdjFirstDerivative[i] = java.lang.Math.min (java.lang.Math.max (0.,</span>
+						adblFirstDerivative[i]), 5. * dblMinSlope);
+				else
+<span class="nc" id="L714">					adblAdjFirstDerivative[i] = java.lang.Math.max (java.lang.Math.min (0.,</span>
+						adblFirstDerivative[i]), -5. * dblMinSlope);
+
+<span class="nc" id="L717">				double dblA = java.lang.Math.max (0., adblAdjFirstDerivative[i] / adblNodeC1[i - 1]);</span>
+
+<span class="nc" id="L719">				double dblB = java.lang.Math.max (0., adblAdjFirstDerivative[i + 1] / adblNodeC1[i]);</span>
+
+<span class="nc bnc" id="L721" title="All 2 branches missed.">				double dblDPlus = adblAdjFirstDerivative[i] * adblNodeC1[i] &gt; 0. ? adblAdjFirstDerivative[i]</span>
+					: 0.;
+<span class="nc bnc" id="L723" title="All 2 branches missed.">				double dblDMinus = adblAdjFirstDerivative[i] * adblNodeC1[i - 1] &gt; 0. ?</span>
+					adblAdjFirstDerivative[i] : 0.;
+<span class="nc" id="L725">				double dblALeft = (-7.9 * dblDPlus - 0.26 * dblDPlus * dblB) / dblHPlus;</span>
+<span class="nc" id="L726">				double dblARight = ((20. - 2. * dblB) * adblNodeC1[i] - 8. * dblDPlus - 0.48 * dblDPlus *</span>
+					dblB) / dblHPlus;
+<span class="nc" id="L728">				double dblBLeft = ((2. * dblA - 20.) * adblNodeC1[i - 1] + 8. * dblDMinus - 0.48 * dblDMinus</span>
+					* dblA) / dblHMinus;
+<span class="nc" id="L730">				double dblBRight = (7.9 * dblDMinus + 0.26 * dblDMinus * dblA) / dblHMinus;</span>
+
+<span class="nc bnc" id="L732" title="All 4 branches missed.">				if (dblARight &lt;= dblBLeft || dblALeft &gt;= dblBRight) {</span>
+<span class="nc" id="L733">					double dblDenom = ((8. + 0.48 * dblB) / dblHPlus) + ((8. + 0.48 * dblA) / dblHMinus);</span>
+<span class="nc" id="L734">					adblAdjFirstDerivative[i] = (20. - 2. * dblB) * adblNodeC1[i] / dblHPlus;</span>
+<span class="nc" id="L735">					adblAdjFirstDerivative[i] += (20. - 2. * dblA) * adblNodeC1[i - 1] / dblHMinus;</span>
+<span class="nc" id="L736">					adblAdjFirstDerivative[i] /= dblDenom;</span>
+				}
+			}
+		}
+
+<span class="nc" id="L741">		return adblAdjFirstDerivative;</span>
+	}
+
+	/**
+	 * Generate the Local Control Stretch in accordance with the desired Customization Parameters
+	 * 
+	 * @param adblPredictorOrdinate The Predictor Ordinate Array
+	 * @param adblResponseValue The Response Value Array
+	 * @param strGeneratorType The C1 Generator Type
+	 * @param bEliminateSpuriousExtrema TRUE - Eliminate Spurious Extrema
+	 * @param bApplyMonotoneFilter TRUE - Apply Monotone Filter
+	 * 
+	 * @return Instance of the Local Control Stretch
+	 */
+
+	public static final LocalMonotoneCkGenerator Create (
+		final double[] adblPredictorOrdinate,
+		final double[] adblResponseValue,
+		final java.lang.String strGeneratorType,
+		final boolean bEliminateSpuriousExtrema,
+		final boolean bApplyMonotoneFilter)
+	{
+		try {
+<span class="fc" id="L764">			LocalMonotoneCkGenerator lcr = new LocalMonotoneCkGenerator (adblPredictorOrdinate,</span>
+				adblResponseValue);
+
+<span class="pc bpc" id="L767" title="1 of 2 branches missed.">			if (!lcr.generateC1 (strGeneratorType)) return null;</span>
+
+<span class="pc bpc" id="L769" title="2 of 4 branches missed.">			if (bEliminateSpuriousExtrema &amp;&amp; !lcr.eliminateSpuriousExtrema()) return null;</span>
+
+<span class="fc bfc" id="L771" title="All 2 branches covered.">			if (bApplyMonotoneFilter) {</span>
+<span class="pc bpc" id="L772" title="1 of 2 branches missed.">				if (!lcr.applyMonotoneFilter()) return null;</span>
+			}
+
+<span class="fc" id="L775">			return lcr;</span>
+<span class="nc" id="L776">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L777">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L780">		return null;</span>
+	}
+
+	/**
+	 * Generate the Local Control Stretch in accordance with the desired Customization Parameters
+	 * 
+	 * @param aiPredictorOrdinate The Predictor Ordinate Array
+	 * @param adblResponseValue The Response Value Array
+	 * @param strGeneratorType The C1 Generator Type
+	 * @param bEliminateSpuriousExtrema TRUE - Eliminate Spurious Extrema
+	 * @param bApplyMonotoneFilter TRUE - Apply Monotone Filter
+	 * 
+	 * @return Instance of the Local Control Stretch
+	 */
+
+	public static final LocalMonotoneCkGenerator Create (
+		final int[] aiPredictorOrdinate,
+		final double[] adblResponseValue,
+		final java.lang.String strGeneratorType,
+		final boolean bEliminateSpuriousExtrema,
+		final boolean bApplyMonotoneFilter)
+	{
+<span class="nc bnc" id="L802" title="All 2 branches missed.">		if (null == aiPredictorOrdinate) return null;</span>
+
+<span class="nc" id="L804">		int iNumPredictorOrdinate = aiPredictorOrdinate.length;</span>
+<span class="nc" id="L805">		double[] adblPredictorOrdinate = new double[iNumPredictorOrdinate];</span>
+
+<span class="nc bnc" id="L807" title="All 2 branches missed.">		if (0 == iNumPredictorOrdinate) return null;</span>
+
+<span class="nc bnc" id="L809" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumPredictorOrdinate; ++i)</span>
+<span class="nc" id="L810">			adblPredictorOrdinate[i] = aiPredictorOrdinate[i];</span>
+
+<span class="nc" id="L812">		return Create (adblPredictorOrdinate, adblResponseValue, strGeneratorType, bEliminateSpuriousExtrema,</span>
+			bApplyMonotoneFilter);
+	}
+
+	private LocalMonotoneCkGenerator (
+		final double[] adblPredictorOrdinate,
+		final double[] adblResponseValue)
+		throws java.lang.Exception
+<span class="fc" id="L820">	{</span>
+<span class="pc bpc" id="L821" title="2 of 4 branches missed.">		if (null == (_adblPredictorOrdinate = adblPredictorOrdinate) || null == (_adblResponseValue =</span>
+			adblResponseValue))
+<span class="nc" id="L823">			throw new java.lang.Exception (&quot;LocalMonotoneCkGenerator ctr: Invalid Inputs!&quot;);</span>
+
+<span class="fc" id="L825">		int iSize = _adblPredictorOrdinate.length;</span>
+
+<span class="pc bpc" id="L827" title="2 of 4 branches missed.">		if (0 == iSize || iSize != _adblResponseValue.length)</span>
+<span class="nc" id="L828">			throw new java.lang.Exception (&quot;LocalMonotoneCkGenerator ctr: Invalid Inputs!&quot;);</span>
+<span class="fc" id="L829">	}</span>
+
+	private boolean generateC1 (
+		final java.lang.String strGeneratorType)
+	{
+<span class="pc bpc" id="L834" title="2 of 4 branches missed.">		if (null == strGeneratorType || strGeneratorType.isEmpty()) return false;</span>
+
+<span class="fc bfc" id="L836" title="All 2 branches covered.">		if (C1_AKIMA.equalsIgnoreCase (strGeneratorType))</span>
+<span class="pc bpc" id="L837" title="2 of 4 branches missed.">			return null != (_adblC1 = AkimaC1 (_adblPredictorOrdinate, _adblResponseValue)) &amp;&amp; 0 !=</span>
+				_adblC1.length;
+
+<span class="fc bfc" id="L840" title="All 2 branches covered.">		if (C1_BESSEL.equalsIgnoreCase (strGeneratorType))</span>
+<span class="pc bpc" id="L841" title="2 of 4 branches missed.">			return null != (_adblC1 = BesselC1 (_adblPredictorOrdinate, _adblResponseValue)) &amp;&amp; 0 !=</span>
+				_adblC1.length;
+
+<span class="fc bfc" id="L844" title="All 2 branches covered.">		if (C1_HARMONIC.equalsIgnoreCase (strGeneratorType))</span>
+<span class="pc bpc" id="L845" title="2 of 4 branches missed.">			return null != (_adblC1 = HarmonicC1 (_adblPredictorOrdinate, _adblResponseValue)) &amp;&amp; 0 !=</span>
+				_adblC1.length;
+
+<span class="fc bfc" id="L848" title="All 2 branches covered.">		if (C1_HUYNH_LE_FLOCH.equalsIgnoreCase (strGeneratorType))</span>
+<span class="pc bpc" id="L849" title="2 of 4 branches missed.">			return null != (_adblC1 = HuynhLeFlochLimiterC1 (_adblPredictorOrdinate, _adblResponseValue)) &amp;&amp;</span>
+				0 != _adblC1.length;
+
+<span class="fc bfc" id="L852" title="All 2 branches covered.">		if (C1_HYMAN83.equalsIgnoreCase (strGeneratorType))</span>
+<span class="pc bpc" id="L853" title="2 of 4 branches missed.">			return null != (_adblC1 = Hyman83C1 (_adblPredictorOrdinate, _adblResponseValue)) &amp;&amp; 0 !=</span>
+				_adblC1.length;
+
+<span class="fc bfc" id="L856" title="All 2 branches covered.">		if (C1_HYMAN89.equalsIgnoreCase (strGeneratorType))</span>
+<span class="pc bpc" id="L857" title="2 of 4 branches missed.">			return null != (_adblC1 = Hyman89C1 (_adblPredictorOrdinate, _adblResponseValue)) &amp;&amp; 0 !=</span>
+				_adblC1.length;
+
+<span class="fc bfc" id="L860" title="All 2 branches covered.">		if (C1_KRUGER.equalsIgnoreCase (strGeneratorType))</span>
+<span class="pc bpc" id="L861" title="2 of 4 branches missed.">			return null != (_adblC1 = KrugerC1 (_adblPredictorOrdinate, _adblResponseValue)) &amp;&amp; 0 !=</span>
+				_adblC1.length;
+
+<span class="pc bpc" id="L864" title="1 of 2 branches missed.">		if (C1_MONOTONE_CONVEX.equalsIgnoreCase (strGeneratorType))</span>
+<span class="nc bnc" id="L865" title="All 4 branches missed.">			return null != (_adblC1 = BesselC1 (_adblPredictorOrdinate, _adblResponseValue)) &amp;&amp; 0 !=</span>
+			_adblC1.length;
+
+<span class="pc bpc" id="L868" title="1 of 2 branches missed.">		if (C1_VANILLA.equalsIgnoreCase (strGeneratorType))</span>
+<span class="nc bnc" id="L869" title="All 4 branches missed.">			return null != (_adblC1 = LinearC1 (_adblPredictorOrdinate, _adblResponseValue)) &amp;&amp; 0 !=</span>
+				_adblC1.length;
+
+<span class="pc bpc" id="L872" title="1 of 2 branches missed.">		if (C1_VAN_LEER.equalsIgnoreCase (strGeneratorType))</span>
+<span class="pc bpc" id="L873" title="2 of 4 branches missed.">			return null != (_adblC1 = VanLeerLimiterC1 (_adblPredictorOrdinate, _adblResponseValue)) &amp;&amp; 0 !=</span>
+				_adblC1.length;
+
+<span class="nc" id="L876">		return false;</span>
+	}
+
+	private boolean eliminateSpuriousExtrema()
+	{
+<span class="pc bpc" id="L881" title="2 of 4 branches missed.">		return null != (_adblC1 = EliminateSpuriousExtrema (_adblC1, LinearC1 (_adblPredictorOrdinate,</span>
+			_adblResponseValue))) &amp;&amp; 0 != _adblC1.length; 
+	}
+
+	private boolean applyMonotoneFilter()
+	{
+<span class="pc bpc" id="L887" title="2 of 4 branches missed.">		return null != (_adblC1 = ApplyMonotoneFilter (_adblC1, LinearC1 (_adblPredictorOrdinate,</span>
+			_adblResponseValue))) &amp;&amp; 0 != _adblC1.length; 
+	}
+
+	/**
+	 * Retrieve the C1 Array
+	 * 
+	 * @return The C1 Array
+	 */
+
+	public double[] C1()
+	{
+<span class="fc" id="L899">		return _adblC1;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

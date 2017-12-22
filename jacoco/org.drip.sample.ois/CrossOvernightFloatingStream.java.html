@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CrossOvernightFloatingStream.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.ois</a> &gt; <span class="el_source">CrossOvernightFloatingStream.java</span></div><h1>CrossOvernightFloatingStream.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.ois;
+
+import java.util.*;
+
+import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.daycount.Convention;
+import org.drip.analytics.support.*;
+import org.drip.function.r1tor1.*;
+import org.drip.market.definition.OvernightIndex;
+import org.drip.market.otc.*;
+import org.drip.param.creator.*;
+import org.drip.param.market.*;
+import org.drip.param.period.*;
+import org.drip.param.valuation.*;
+import org.drip.product.creator.*;
+import org.drip.product.definition.CalibratableComponent;
+import org.drip.product.rates.*;
+import org.drip.quant.common.*;
+import org.drip.service.env.EnvManager;
+import org.drip.spline.basis.PolynomialFunctionSetParams;
+import org.drip.spline.params.*;
+import org.drip.spline.stretch.*;
+import org.drip.state.creator.*;
+import org.drip.state.discount.*;
+import org.drip.state.estimator.LatentStateStretchBuilder;
+import org.drip.state.identifier.*;
+import org.drip.state.inference.*;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * CrossOvernightStream demonstrates the construction, customization, and valuation of Cross-Currency
+ * 	Overnight Floating Streams.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L86">public class CrossOvernightFloatingStream {</span>
+
+	private static final FixFloatComponent OTCOISFixFloat (
+		final JulianDate dtSpot,
+		final String strCurrency,
+		final String strMaturityTenor,
+		final double dblCoupon)
+	{
+<span class="nc" id="L94">		FixedFloatSwapConvention ffConv = OvernightFixedFloatContainer.FundConventionFromJurisdiction (</span>
+			strCurrency
+		);
+
+<span class="nc" id="L98">		return ffConv.createFixFloatComponent (</span>
+			dtSpot,
+			strMaturityTenor,
+			dblCoupon,
+			0.,
+			1.
+		);
+	}
+
+	/*
+	 * Construct the Array of Deposit Instruments from the given set of parameters
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final SingleStreamComponent[] DepositInstrumentsFromMaturityDays (
+		final JulianDate dtEffective,
+		final String strCurrency,
+		final int[] aiDay)
+		throws Exception
+	{
+<span class="nc" id="L119">		SingleStreamComponent[] aDeposit = new SingleStreamComponent[aiDay.length];</span>
+
+<span class="nc bnc" id="L121" title="All 2 branches missed.">		for (int i = 0; i &lt; aiDay.length; ++i)</span>
+<span class="nc" id="L122">			aDeposit[i] = SingleStreamComponentBuilder.Deposit (</span>
+				dtEffective,
+<span class="nc" id="L124">				dtEffective.addBusDays (</span>
+					aiDay[i],
+					strCurrency
+				),
+<span class="nc" id="L128">				OvernightLabel.Create (</span>
+					strCurrency
+				)
+			);
+
+<span class="nc" id="L133">		return aDeposit;</span>
+	}
+
+	/*
+	 * Construct the Array of Swap Instruments from the given set of parameters
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final FixFloatComponent[] OISFromMaturityTenor (
+		final JulianDate dtSpot,
+		final String strCurrency,
+		final String[] astrMaturityTenor,
+		final double[] adblCoupon)
+		throws Exception
+	{
+<span class="nc" id="L149">		FixFloatComponent[] aOIS = new FixFloatComponent[astrMaturityTenor.length];</span>
+
+<span class="nc bnc" id="L151" title="All 2 branches missed.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
+<span class="nc" id="L152">			aOIS[i] = OTCOISFixFloat (</span>
+				dtSpot,
+				strCurrency,
+				astrMaturityTenor[i],
+				adblCoupon[i]
+			);
+
+<span class="nc" id="L159">		return aOIS;</span>
+	}
+
+	private static final MergedDiscountForwardCurve CustomOISCurveBuilderSample (
+		final JulianDate dtSpot,
+		final String strCurrency)
+		throws Exception
+	{
+		/*
+		 * Construct the Array of Deposit Instruments and their Quotes from the given set of parameters
+		 */
+
+<span class="nc" id="L171">		SingleStreamComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (</span>
+			dtSpot,
+			strCurrency,
+			new int[] {
+				1, 2, 3, 7, 14, 21, 30, 60
+			}
+		);
+
+<span class="nc" id="L179">		double[] adblDepositQuote = new double[] {</span>
+			0.01200, 0.01200, 0.01200, 0.01450, 0.01550, 0.01600, 0.01660, 0.01850, // Cash
+		};
+
+		/*
+		 * Construct the Deposit Instrument Set Stretch Builder
+		 */
+
+<span class="nc" id="L187">		LatentStateStretchSpec depositStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
+			&quot;DEPOSIT&quot;,
+			aDepositComp,
+			&quot;ForwardRate&quot;,
+			adblDepositQuote
+		);
+
+		/*
+		 * Construct the Array of EDF Instruments and their Quotes from the given set of parameters
+		 */
+
+<span class="nc" id="L198">		SingleStreamComponent[] aEDFComp = SingleStreamComponentBuilder.ForwardRateFuturesPack (</span>
+			dtSpot,
+			4,
+			strCurrency
+		);
+
+<span class="nc" id="L204">		double[] adblEDFQuote = new double[] {</span>
+			0.01612, 0.01580, 0.01589, 0.01598
+		};
+
+		/*
+		 * Construct the Cash Instrument Set Stretch Builder
+		 */
+
+<span class="nc" id="L212">		LatentStateStretchSpec edfStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
+			&quot;EDF&quot;,
+			aEDFComp,
+			&quot;ForwardRate&quot;,
+			adblEDFQuote
+		);
+
+		/*
+		 * Construct the Array of OIS Instruments and their Quotes from the given set of parameters
+		 */
+
+<span class="nc" id="L223">		double[] adblOISQuote = new double[] {</span>
+			0.02604,    //  4Y
+			0.02808,    //  5Y
+			0.02983,    //  6Y
+			0.03136,    //  7Y
+			0.03268,    //  8Y
+			0.03383,    //  9Y
+			0.03488     // 10Y
+		};
+
+<span class="nc" id="L233">		CalibratableComponent[] aOISComp = OISFromMaturityTenor (</span>
+			dtSpot,
+			strCurrency,
+			new java.lang.String[] {
+				&quot;4Y&quot;, &quot;5Y&quot;, &quot;6Y&quot;, &quot;7Y&quot;, &quot;8Y&quot;, &quot;9Y&quot;, &quot;10Y&quot;
+			},
+			adblOISQuote
+		);
+
+		/*
+		 * Construct the OIS Instrument Set Stretch Builder
+		 */
+
+<span class="nc" id="L246">		LatentStateStretchSpec oisStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
+			&quot;SWAP&quot;,
+			aOISComp,
+			&quot;SwapRate&quot;,
+			adblOISQuote
+		);
+
+<span class="nc" id="L253">		LatentStateStretchSpec[] aStretchSpec = new LatentStateStretchSpec[] {</span>
+			depositStretch,
+			edfStretch,
+			oisStretch
+		};
+
+		/*
+		 * Set up the Linear Curve Calibrator using the following parameters:
+		 * 	- Cubic Exponential Mixture Basis Spline Set
+		 * 	- Ck = 2, Segment Curvature Penalty = 2
+		 * 	- Quadratic Rational Shape Controller
+		 * 	- Natural Boundary Setting
+		 */
+
+<span class="nc" id="L267">		LinearLatentStateCalibrator lcc = new LinearLatentStateCalibrator (</span>
+			new SegmentCustomBuilderControl (
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+				new PolynomialFunctionSetParams (4),
+<span class="nc" id="L271">				SegmentInelasticDesignControl.Create (</span>
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
+				null
+			),
+<span class="nc" id="L281">			BoundarySettings.NaturalStandard(),</span>
+			MultiSegmentSequence.CALIBRATE,
+			null,
+			null
+		);
+
+		/*
+		 * Construct the Shape Preserving Discount Curve by applying the linear curve calibrator to the array
+		 *  of Cash and Swap Stretches.
+		 */
+
+<span class="nc" id="L292">		return ScenarioDiscountCurveBuilder.ShapePreservingDFBuild (</span>
+			strCurrency,
+			lcc,
+			aStretchSpec,
+			new ValuationParams (
+				dtSpot,
+				dtSpot,
+				strCurrency
+			),
+			null,
+			null,
+			null,
+			1.
+		);
+	}
+
+	private static final LatentStateFixingsContainer SetFlatOvernightFixings (
+		final JulianDate dtStart,
+		final JulianDate dtEnd,
+		final JulianDate dtValue,
+		final ForwardLabel fri,
+		final double dblFlatFixing,
+		final double dblNotional)
+		throws Exception
+	{
+<span class="nc" id="L317">		LatentStateFixingsContainer lsfc = new LatentStateFixingsContainer();</span>
+
+<span class="nc" id="L319">		double dblAccount = 1.;</span>
+
+<span class="nc" id="L321">		int iPrevDate = dtStart.julian();</span>
+
+<span class="nc" id="L323">		JulianDate dt = dtStart.addDays (1);</span>
+
+<span class="nc bnc" id="L325" title="All 2 branches missed.">		while (dt.julian() &lt;= dtEnd.julian()) {</span>
+<span class="nc" id="L326">			lsfc.add (</span>
+				dt,
+				fri,
+				dblFlatFixing
+			);
+
+<span class="nc bnc" id="L332" title="All 2 branches missed.">			if (dt.julian() &lt;= dtValue.julian()) {</span>
+<span class="nc" id="L333">				double dblAccrualFraction = Convention.YearFraction (</span>
+					iPrevDate,
+<span class="nc" id="L335">					dt.julian(),</span>
+					&quot;Act/360&quot;,
+					false,
+					null,
+					&quot;USD&quot;
+				);
+
+<span class="nc" id="L342">				dblAccount *= (1. + dblFlatFixing * dblAccrualFraction);</span>
+			}
+
+<span class="nc" id="L345">			iPrevDate = dt.julian();</span>
+
+<span class="nc" id="L347">			dt = dt.addBusDays (</span>
+				1,
+				&quot;USD&quot;
+			);
+		}
+
+<span class="nc" id="L353">		System.out.println (&quot;\tManual Calc Float Accrued (Geometric Compounding): &quot; + (dblAccount - 1.) * dblNotional);</span>
+
+<span class="nc" id="L355">		System.out.println (&quot;\tManual Calc Float Accrued (Arithmetic Compounding): &quot; +</span>
+<span class="nc" id="L356">			((dtValue.julian() - dtStart.julian()) * dblNotional * dblFlatFixing / 360.));</span>
+
+<span class="nc" id="L358">		return lsfc;</span>
+	}
+
+	public static final Map&lt;String, Double&gt; CompoundingRun (
+		final ForwardLabel fri)
+		throws Exception
+	{
+<span class="nc" id="L365">		double dblOISVol = 0.3;</span>
+<span class="nc" id="L366">		double dblUSDFundingVol = 0.3;</span>
+<span class="nc" id="L367">		double dblUSDFundingUSDOISCorrelation = 0.3;</span>
+
+<span class="nc" id="L369">		String strCurrency = fri.currency();</span>
+
+<span class="nc" id="L371">		JulianDate dtToday = org.drip.analytics.date.DateUtil.Today().addTenorAndAdjust (</span>
+			&quot;0D&quot;,
+			strCurrency
+		);
+
+<span class="nc" id="L376">		MergedDiscountForwardCurve dc = CustomOISCurveBuilderSample (</span>
+			dtToday,
+			strCurrency
+		);
+
+<span class="nc" id="L381">		JulianDate dtCustomOISStart = dtToday.subtractTenor (&quot;2M&quot;);</span>
+
+<span class="nc" id="L383">		JulianDate dtCustomOISMaturity = dtToday.addTenor (&quot;4M&quot;);</span>
+
+<span class="nc" id="L385">		CompositePeriodSetting cpsFloating = new CompositePeriodSetting (</span>
+			360,
+			&quot;ON&quot;,
+			strCurrency,
+			null,
+			-1.,
+			null,
+			null,
+			null,
+			null
+		);
+
+<span class="nc" id="L397">		ComposableFloatingUnitSetting cfusFloating = new ComposableFloatingUnitSetting (</span>
+			&quot;ON&quot;,
+			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_OVERNIGHT,
+			null,
+			fri,
+			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
+			0.
+		);
+
+<span class="nc" id="L406">		List&lt;Integer&gt; lsFloatingStreamEdgeDate = CompositePeriodBuilder.OvernightEdgeDates (</span>
+			dtCustomOISStart,
+<span class="nc" id="L408">			dtCustomOISStart.addTenorAndAdjust (</span>
+				&quot;6M&quot;,
+				strCurrency
+			),
+			strCurrency
+		);
+
+<span class="nc" id="L415">		Stream floatStream = new Stream (</span>
+<span class="nc" id="L416">			CompositePeriodBuilder.FloatingCompositeUnit (</span>
+				lsFloatingStreamEdgeDate,
+				cpsFloating,
+				cfusFloating
+			)
+		);
+
+<span class="nc" id="L423">		CurveSurfaceQuoteContainer mktParams = MarketParamsBuilder.Create (</span>
+			dc,
+			null,
+			null,
+			null,
+			null,
+			null,
+<span class="nc" id="L430">			SetFlatOvernightFixings (</span>
+				dtCustomOISStart,
+				dtCustomOISMaturity,
+				dtToday,
+				fri,
+				0.003,
+				-1.
+			)
+		);
+
+<span class="nc" id="L440">		ValuationParams valParams = new ValuationParams (</span>
+			dtToday,
+			dtToday,
+			strCurrency
+		);
+
+<span class="nc" id="L446">		FundingLabel fundingLabelUSD = FundingLabel.Standard (&quot;USD&quot;);</span>
+
+<span class="nc" id="L448">		mktParams.setForwardVolatility (</span>
+<span class="nc" id="L449">			ScenarioDeterministicVolatilityBuilder.FlatForward (</span>
+<span class="nc" id="L450">				dtToday.julian(),</span>
+<span class="nc" id="L451">				VolatilityLabel.Standard (fri),</span>
+<span class="nc" id="L452">				fri.currency(),</span>
+				dblOISVol
+			)
+		);
+
+<span class="nc" id="L457">		mktParams.setFundingVolatility (</span>
+<span class="nc" id="L458">			ScenarioDeterministicVolatilityBuilder.FlatForward (</span>
+<span class="nc" id="L459">				dtToday.julian(),</span>
+<span class="nc" id="L460">				VolatilityLabel.Standard (fundingLabelUSD),</span>
+				&quot;USD&quot;,
+				dblUSDFundingVol
+			)
+		);
+
+<span class="nc" id="L466">		mktParams.setForwardFundingCorrelation (</span>
+			fri,
+			fundingLabelUSD,
+			new FlatUnivariate (dblUSDFundingUSDOISCorrelation)
+		);
+
+<span class="nc" id="L472">		return floatStream.value (</span>
+			valParams,
+			null,
+			mktParams,
+			null
+		);
+	}
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+		/*
+		 * Initialize the Credit Analytics Library
+		 */
+
+<span class="nc" id="L488">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L490">		String strCurrency = &quot;USD&quot;;</span>
+
+<span class="nc" id="L492">		Map&lt;String, Double&gt; mapArithmeticOutput = CompoundingRun (</span>
+<span class="nc" id="L493">			OvernightLabel.Create (</span>
+				strCurrency
+			)
+		);
+
+<span class="nc" id="L498">		Map&lt;String, Double&gt; mapGeometricOutput = CompoundingRun (</span>
+<span class="nc" id="L499">			ForwardLabel.Create (</span>
+				new OvernightIndex (
+					strCurrency + &quot;OIS&quot;,
+					&quot;OIS&quot;,
+					strCurrency,
+					&quot;Act/360&quot;,
+					strCurrency,
+					&quot;ON&quot;,
+					0,
+					CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC
+				),
+				&quot;ON&quot;
+			)
+		);
+
+<span class="nc" id="L514">		System.out.println (&quot;\n\t-----------------------------------&quot;);</span>
+
+<span class="nc" id="L516">		System.out.println (&quot;\t  GEOMETRIC |  ARITHMETIC | CHECK&quot;);</span>
+
+<span class="nc" id="L518">		System.out.println (&quot;\t-----------------------------------\n&quot;);</span>
+
+<span class="nc bnc" id="L520" title="All 2 branches missed.">		for (Map.Entry&lt;String, Double&gt; meGeometric : mapGeometricOutput.entrySet()) {</span>
+<span class="nc" id="L521">			String strKey = meGeometric.getKey();</span>
+
+<span class="nc" id="L523">			double dblGeometricMeasure = meGeometric.getValue();</span>
+
+<span class="nc" id="L525">			double dblArithmeticMeasure = mapArithmeticOutput.get (strKey);</span>
+
+<span class="nc bnc" id="L527" title="All 2 branches missed.">			String strMatch = NumberUtil.WithinTolerance (</span>
+				dblGeometricMeasure,
+				dblArithmeticMeasure,
+				1.e-08,
+				1.e-04
+			) ?
+			&quot;MATCH &quot; :
+			&quot;DIFFER&quot;;
+
+<span class="nc" id="L536">			System.out.println (&quot;\t&quot; +</span>
+<span class="nc" id="L537">				FormatUtil.FormatDouble (dblGeometricMeasure, 1, 8, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L538">				FormatUtil.FormatDouble (dblArithmeticMeasure, 1, 8, 1.) + &quot; | &quot; +</span>
+				strMatch + &quot; &lt;= &quot; + strKey
+			);
+<span class="nc" id="L541">		}</span>
+<span class="nc" id="L542">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

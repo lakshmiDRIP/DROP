@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BondCouponMeasures.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.analytics.output</a> &gt; <span class="el_source">BondCouponMeasures.java</span></div><h1>BondCouponMeasures.java</h1><pre class="source lang-java linenums">
+package org.drip.analytics.output;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * Copyright (C) 2012 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * This class encapsulates the parsimonius but complete set of the cash-flow oriented coupon measures
+ * 	generated out of a full bond analytics run to a given work-out. These are:
+ * 	- DV01
+ * 	- PV Measures (Coupon PV, Index Coupon PV, PV)
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class BondCouponMeasures {
+<span class="fc" id="L65">	private double _dblDV01 = java.lang.Double.NaN;</span>
+<span class="fc" id="L66">	private double _dblIndexCouponPV = java.lang.Double.NaN;</span>
+<span class="fc" id="L67">	private double _dblCouponPV = java.lang.Double.NaN;</span>
+<span class="fc" id="L68">	private double _dblPV = java.lang.Double.NaN;</span>
+
+	/**
+	 * BondCouponMeasures constructor
+	 * 
+	 * @param dblDV01 DV01
+	 * @param dblIndexCouponPV Index Coupon PV
+	 * @param dblCouponPV Coupon PV
+	 * @param dblPV PV
+	 * 
+	 * @throws java.lang.Exception Thrown if inputs are invalid
+	 */
+
+	public BondCouponMeasures (
+		final double dblDV01,
+		final double dblIndexCouponPV,
+		final double dblCouponPV,
+		final double dblPV)
+		throws java.lang.Exception
+<span class="fc" id="L87">	{</span>
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblDV01 = dblDV01) ||</span>
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblCouponPV = dblCouponPV) ||</span>
+<span class="pc bpc" id="L90" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblPV = dblPV))</span>
+<span class="nc" id="L91">			throw new java.lang.Exception (&quot;BondCouponMeasures ctr: Invalid Inputs!&quot;);</span>
+
+<span class="fc" id="L93">		_dblIndexCouponPV = dblIndexCouponPV;</span>
+<span class="fc" id="L94">	}</span>
+
+	/**
+	 * Adjust the bond coupon measures by a cash settlement discount factor
+	 * 
+	 * @param dblCashPayDF Cash Pay discount factor
+	 * 
+	 * @return TRUE - if the adjustment has been successfully applied
+	 */
+
+	public boolean adjustForSettlement (
+		final double dblCashPayDF)
+	{
+<span class="pc bpc" id="L107" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblCashPayDF)) return false;</span>
+
+<span class="fc" id="L109">		_dblDV01 /= dblCashPayDF;</span>
+<span class="fc" id="L110">		_dblIndexCouponPV /= dblCashPayDF;</span>
+<span class="fc" id="L111">		_dblCouponPV /= dblCashPayDF;</span>
+<span class="fc" id="L112">		_dblPV /= dblCashPayDF;</span>
+<span class="fc" id="L113">		return true;</span>
+	}
+
+	/**
+	 * Retrieve the DV01
+	 * 
+	 * @return DV01
+	 */
+
+	public double dv01()
+	{
+<span class="fc" id="L124">		return _dblDV01;</span>
+	}
+
+	/**
+	 * Retrieve the Index Coupon PV
+	 * 
+	 * @return Index Coupon PV
+	 */
+
+	public double indexCouponPV()
+	{
+<span class="fc" id="L135">		return _dblIndexCouponPV;</span>
+	}
+
+	/**
+	 * Retrieve the Coupon PV
+	 * 
+	 * @return Coupon PV
+	 */
+
+	public double couponPV()
+	{
+<span class="fc" id="L146">		return _dblCouponPV;</span>
+	}
+
+	/**
+	 * Retrieve the PV
+	 * 
+	 * @return PV
+	 */
+
+	public double pv()
+	{
+<span class="fc" id="L157">		return _dblPV;</span>
+	}
+
+	/**
+	 * Adjust Measures for accrued
+	 * 
+	 * @param dblAccrued01 Accrued 01
+	 * @param dblCoupon Coupon during the accrued phase
+	 * @param dblIndex Index Rate during the accrued phase
+	 * @param bDirtyFromClean True - Change measures from Clean to Dirty
+	 * 
+	 * @return True - if the adjustment has been successfully applied
+	 */
+
+	public boolean adjustForAccrual (
+		final double dblAccrued01,
+		final double dblCoupon,
+		final double dblIndex,
+		final boolean bDirtyFromClean)
+	{
+<span class="pc bpc" id="L177" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblAccrued01) ||</span>
+<span class="pc bpc" id="L178" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblCoupon))</span>
+<span class="nc" id="L179">			return false;</span>
+
+<span class="pc bpc" id="L181" title="1 of 2 branches missed.">		if (bDirtyFromClean)</span>
+<span class="nc" id="L182">			_dblDV01 -= dblAccrued01;</span>
+		else
+<span class="fc" id="L184">			_dblDV01 += dblAccrued01;</span>
+
+<span class="pc bpc" id="L186" title="1 of 2 branches missed.">		if (bDirtyFromClean)</span>
+<span class="nc" id="L187">			_dblIndexCouponPV -= dblAccrued01 * dblIndex;</span>
+		else
+<span class="fc" id="L189">			_dblIndexCouponPV += dblAccrued01 * dblIndex;</span>
+
+<span class="pc bpc" id="L191" title="1 of 2 branches missed.">		if (bDirtyFromClean)</span>
+<span class="nc" id="L192">			_dblCouponPV -= dblAccrued01 * dblCoupon;</span>
+		else
+<span class="fc" id="L194">			_dblCouponPV += dblAccrued01 * dblCoupon;</span>
+
+<span class="pc bpc" id="L196" title="1 of 2 branches missed.">		if (bDirtyFromClean)</span>
+<span class="nc" id="L197">			_dblPV -= dblAccrued01 * dblCoupon;</span>
+		else
+<span class="fc" id="L199">			_dblPV += dblAccrued01 * dblCoupon;</span>
+
+<span class="fc" id="L201">		return true;</span>
+	}
+
+	/**
+	 * Return the state as a named measure map
+	 * 
+	 * @param strPrefix Measure name prefix
+	 * 
+	 * @return Map of the measures
+	 */
+
+	public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; toMap (
+		final java.lang.String strPrefix)
+	{
+<span class="fc" id="L215">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapMeasures = new</span>
+			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
+
+<span class="fc" id="L218">		mapMeasures.put (strPrefix + &quot;DV01&quot;, _dblDV01);</span>
+
+<span class="fc" id="L220">		mapMeasures.put (strPrefix + &quot;IndexCouponPV&quot;, _dblIndexCouponPV);</span>
+
+<span class="fc" id="L222">		mapMeasures.put (strPrefix + &quot;CouponPV&quot;, _dblCouponPV);</span>
+
+<span class="fc" id="L224">		mapMeasures.put (strPrefix + &quot;PV&quot;, _dblPV);</span>
+
+<span class="fc" id="L226">		return mapMeasures;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

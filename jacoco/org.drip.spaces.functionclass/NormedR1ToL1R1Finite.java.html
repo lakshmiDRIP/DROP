@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NormedR1ToL1R1Finite.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.spaces.functionclass</a> &gt; <span class="el_source">NormedR1ToL1R1Finite.java</span></div><h1>NormedR1ToL1R1Finite.java</h1><pre class="source lang-java linenums">
+package org.drip.spaces.functionclass;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * NormedR1ToL1R1Finite implements the Class f E F : Normed R^1 To L1 R^1 Spaces of Finite Functions.
+ * 
+ * The Reference we've used is:
+ * 
+ * 	- Carl, B., and I. Stephani (1990): Entropy, Compactness, and Approximation of Operators, Cambridge
+ * 		University Press, Cambridge UK.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class NormedR1ToL1R1Finite extends org.drip.spaces.functionclass.NormedR1ToNormedR1Finite {
+
+	/**
+	 * Create Bounded R^1 To Bounded L1 R^1 Function Class for the specified Bounded Class of Finite
+	 *  Functions
+	 * 
+	 * @param dblMaureyConstant Maurey Constant
+	 * @param aR1ToR1 The Bounded R^1 To Bounded R^1 Function Set
+	 * @param dblPredictorSupport The Set Predictor Support
+	 * @param dblResponseBound The Set Response Bound
+	 * 
+	 * @return The Bounded R^1 To Bounded R^1 Function Class for the specified Function Set
+	 */
+
+	public static final NormedR1ToL1R1Finite BoundedPredictorBoundedResponse (
+		final double dblMaureyConstant,
+		final org.drip.function.definition.R1ToR1[] aR1ToR1,
+		final double dblPredictorSupport,
+		final double dblResponseBound)
+	{
+<span class="nc bnc" id="L83" title="All 2 branches missed.">		if (null == aR1ToR1) return null;</span>
+
+<span class="nc" id="L85">		int iNumFunction = aR1ToR1.length;</span>
+<span class="nc" id="L86">		org.drip.spaces.rxtor1.NormedR1ToNormedR1[] aR1ToR1FunctionSpace = new</span>
+			org.drip.spaces.rxtor1.NormedR1ToNormedR1[iNumFunction];
+
+<span class="nc bnc" id="L89" title="All 2 branches missed.">		if (0 == iNumFunction) return null;</span>
+
+		try {
+<span class="nc" id="L92">			org.drip.spaces.metric.R1Continuous r1ContinuousInput = new org.drip.spaces.metric.R1Continuous</span>
+				(-0.5 * dblPredictorSupport, 0.5 * dblPredictorSupport, null, 1);
+
+<span class="nc" id="L95">			org.drip.spaces.metric.R1Continuous r1ContinuousOutput = new org.drip.spaces.metric.R1Continuous</span>
+				(-0.5 * dblResponseBound, 0.5 * dblResponseBound, null, 1);
+
+<span class="nc bnc" id="L98" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumFunction; ++i)</span>
+<span class="nc" id="L99">				aR1ToR1FunctionSpace[i] = new org.drip.spaces.rxtor1.NormedR1ContinuousToR1Continuous</span>
+					(r1ContinuousInput, r1ContinuousOutput, aR1ToR1[i]);
+
+<span class="nc" id="L102">			return new NormedR1ToL1R1Finite (dblMaureyConstant, aR1ToR1FunctionSpace);</span>
+<span class="nc" id="L103">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L104">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L107">		return null;</span>
+	}
+
+	protected NormedR1ToL1R1Finite (
+		final double dblMaureyConstant,
+		final org.drip.spaces.rxtor1.NormedR1ToNormedR1[] aR1ToR1FunctionSpace)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L115">		super (dblMaureyConstant, aR1ToR1FunctionSpace);</span>
+<span class="nc" id="L116">	}</span>
+
+	@Override public org.drip.spaces.cover.FunctionClassCoveringBounds agnosticCoveringNumberBounds()
+	{
+<span class="nc" id="L120">		org.drip.spaces.rxtor1.NormedR1ToNormedR1[] aNormedR1ToNormedR1 =</span>
+<span class="nc" id="L121">			(org.drip.spaces.rxtor1.NormedR1ToNormedR1[]) functionSpaces();</span>
+
+<span class="nc" id="L123">		int iNumFunction = aNormedR1ToNormedR1.length;</span>
+<span class="nc" id="L124">		double dblResponseLowerBound = java.lang.Double.NaN;</span>
+<span class="nc" id="L125">		double dblResponseUpperBound = java.lang.Double.NaN;</span>
+<span class="nc" id="L126">		double dblPredictorLowerBound = java.lang.Double.NaN;</span>
+<span class="nc" id="L127">		double dblPredictorUpperBound = java.lang.Double.NaN;</span>
+
+<span class="nc bnc" id="L129" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumFunction; ++i) {</span>
+<span class="nc" id="L130">			org.drip.spaces.rxtor1.NormedR1ToNormedR1 r1Tor1 = aNormedR1ToNormedR1[i];</span>
+
+<span class="nc" id="L132">			org.drip.spaces.metric.R1Normed runsInput = r1Tor1.inputMetricVectorSpace();</span>
+
+<span class="nc" id="L134">			org.drip.spaces.metric.R1Normed runsOutput = r1Tor1.outputMetricVectorSpace();</span>
+
+<span class="nc bnc" id="L136" title="All 4 branches missed.">			if (!runsInput.isPredictorBounded() || !runsOutput.isPredictorBounded()) return null;</span>
+
+<span class="nc" id="L138">			double dblResponseLeftBound = runsOutput.leftEdge();</span>
+
+<span class="nc" id="L140">			double dblPredictorLeftBound = runsInput.leftEdge();</span>
+
+<span class="nc" id="L142">			double dblResponseRightBound = runsOutput.rightEdge();</span>
+
+<span class="nc" id="L144">			double dblPredictorRightBound = runsInput.rightEdge();</span>
+
+<span class="nc bnc" id="L146" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorLowerBound))</span>
+<span class="nc" id="L147">				dblPredictorLowerBound = dblPredictorLeftBound;</span>
+			else {
+<span class="nc bnc" id="L149" title="All 2 branches missed.">				if (dblPredictorLowerBound &gt; dblPredictorLeftBound)</span>
+<span class="nc" id="L150">					dblPredictorLowerBound = dblPredictorLeftBound;</span>
+			}
+
+<span class="nc bnc" id="L153" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorUpperBound))</span>
+<span class="nc" id="L154">				dblPredictorUpperBound = dblPredictorRightBound;</span>
+			else {
+<span class="nc bnc" id="L156" title="All 2 branches missed.">				if (dblPredictorUpperBound &lt; dblPredictorRightBound)</span>
+<span class="nc" id="L157">					dblPredictorUpperBound = dblPredictorRightBound;</span>
+			}
+
+<span class="nc bnc" id="L160" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblResponseLowerBound))</span>
+<span class="nc" id="L161">				dblResponseLowerBound = dblResponseLeftBound;</span>
+			else {
+<span class="nc bnc" id="L163" title="All 2 branches missed.">				if (dblResponseLowerBound &gt; dblResponseLeftBound)</span>
+<span class="nc" id="L164">					dblResponseLowerBound = dblResponseLeftBound;</span>
+			}
+
+<span class="nc bnc" id="L167" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblResponseUpperBound))</span>
+<span class="nc" id="L168">				dblResponseUpperBound = dblResponseRightBound;</span>
+			else {
+<span class="nc bnc" id="L170" title="All 2 branches missed.">				if (dblResponseUpperBound &lt; dblResponseRightBound)</span>
+<span class="nc" id="L171">					dblResponseUpperBound = dblResponseRightBound;</span>
+			}
+		}
+
+<span class="nc" id="L175">		double dblVariation = dblResponseUpperBound - dblResponseLowerBound;</span>
+
+		try {
+<span class="nc" id="L178">			return new org.drip.spaces.cover.L1R1CoveringBounds (dblPredictorUpperBound -</span>
+				dblPredictorLowerBound, dblVariation, dblVariation);
+<span class="nc" id="L180">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L181">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L184">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

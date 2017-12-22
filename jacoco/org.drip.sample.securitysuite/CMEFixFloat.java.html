@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CMEFixFloat.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.securitysuite</a> &gt; <span class="el_source">CMEFixFloat.java</span></div><h1>CMEFixFloat.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.securitysuite;
+
+import java.util.Map;
+
+import org.drip.analytics.date.*;
+import org.drip.analytics.support.CaseInsensitiveTreeMap;
+import org.drip.market.otc.*;
+import org.drip.param.market.CurveSurfaceQuoteContainer;
+import org.drip.param.valuation.ValuationParams;
+import org.drip.product.rates.FixFloatComponent;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.service.template.LatentMarketStateBuilder;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+import org.drip.state.forward.ForwardCurve;
+import org.drip.state.identifier.ForwardLabel;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * CMEFixFloat demonstrates the Analytics Calculation/Reconciliation for the CME Cleared Fix-Float IRS.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L71">public class CMEFixFloat {</span>
+
+	private static final MergedDiscountForwardCurve OvernightCurve (
+		final JulianDate dtSpot,
+		final String strCurrency)
+		throws Exception
+	{
+<span class="nc" id="L78">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L80">		String[] astrDepositMaturityTenor = new String[] {</span>
+			&quot;1D&quot;,
+		};
+
+<span class="nc" id="L84">		double[] adblDepositQuote = new double[] {</span>
+			0.0116,		// 1D
+		};
+
+<span class="nc" id="L88">		String[] astrShortEndOISMaturityTenor = new String[] {</span>
+			 &quot;1W&quot;,
+			 &quot;2W&quot;,
+			 &quot;3W&quot;,
+			 &quot;1M&quot;,
+			 &quot;2M&quot;,
+			 &quot;3M&quot;,
+			 &quot;4M&quot;,
+			 &quot;5M&quot;,
+			 &quot;6M&quot;,
+			 &quot;9M&quot;,
+			&quot;12M&quot;,
+			&quot;18M&quot;,
+			 &quot;2Y&quot;,
+			 &quot;3Y&quot;,
+			 &quot;4Y&quot;,
+			 &quot;5Y&quot;,
+			&quot;10Y&quot;,
+		};
+
+<span class="nc" id="L108">		double[] adblShortEndOISQuote = new double[] {</span>
+			0.0117,    //   1W
+			0.0115,    //   2W
+			0.0116,    //   3W
+			0.0116,    //   1M
+			0.0120,    //   2M
+			0.0125,    //   3M
+			0.0128,    //   4M
+			0.0131,    //   5M
+			0.0133,    //   6M
+			0.0139,    //   9M
+			0.0146,    //  12M
+			0.0154,    //  18M
+			0.0161,    //   2Y
+			0.0171,    //   3Y
+			0.0179,    //   4Y
+			0.0185,    //   5Y
+			0.0206,    //  10Y
+		};
+
+<span class="nc" id="L128">		return LatentMarketStateBuilder.SmoothOvernightCurve (</span>
+			dtSpot,
+			strCurrency,
+			astrDepositMaturityTenor,
+			adblDepositQuote,
+			&quot;Rate&quot;,
+			astrShortEndOISMaturityTenor,
+			adblShortEndOISQuote,
+			&quot;SwapRate&quot;,
+			null,
+			null,
+			null,
+			&quot;SwapRate&quot;,
+			null,
+			null,
+			&quot;SwapRate&quot;
+		);
+	}
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+		/*
+		 * Initialize the Credit Analytics Library
+		 */
+
+<span class="nc" id="L155">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L157">		String strCurrency = &quot;USD&quot;;</span>
+<span class="nc" id="L158">		String strForwardTenor = &quot;3M&quot;;</span>
+
+<span class="nc" id="L160">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+			2017,
+			DateUtil.SEPTEMBER,
+			1
+		);
+
+<span class="nc" id="L166">		MergedDiscountForwardCurve dcOvernight = OvernightCurve (</span>
+			dtSpot,
+			strCurrency
+		);
+
+<span class="nc" id="L171">		ForwardLabel forwardLabel = ForwardLabel.Create (</span>
+			strCurrency,
+			strForwardTenor
+		);
+
+<span class="nc" id="L176">		String[] astrDepositMaturityTenor = new String[] {</span>
+			&quot;1D&quot;,
+		};
+
+<span class="nc" id="L180">		double[] adblDepositQuote = new double[] {</span>
+			0.013161,	// 1D
+		};
+
+<span class="nc" id="L184">		String[] astrFixFloatMaturityTenor = new String[] {</span>
+			&quot;02Y&quot;,
+			&quot;03Y&quot;,
+			&quot;04Y&quot;,
+			&quot;05Y&quot;,
+			&quot;06Y&quot;,
+			&quot;07Y&quot;,
+			&quot;08Y&quot;,
+			&quot;09Y&quot;,
+			&quot;10Y&quot;,
+			&quot;11Y&quot;,
+			&quot;12Y&quot;,
+			&quot;15Y&quot;,
+			&quot;20Y&quot;,
+			&quot;25Y&quot;,
+			&quot;30Y&quot;,
+			&quot;40Y&quot;,
+			&quot;50Y&quot;,
+		};
+
+<span class="nc" id="L204">		double[] adblFixFloatQuote = new double[] {</span>
+			0.015540,	//  2Y
+			0.016423,	//  3Y
+			0.017209,	//  4Y			
+			0.017980,	//  5Y
+			0.018743,	//  6Y
+			0.019455,	//  7Y
+			0.020080,	//  8Y
+			0.020651,	//  9Y
+			0.021195,	// 10Y
+			0.021651,	// 11Y
+			0.022065,	// 12Y
+			0.022952,	// 15Y
+			0.023825,	// 20Y
+			0.024175,	// 25Y
+			0.024347,	// 30Y
+			0.024225,	// 40Y
+			0.023968,	// 50Y
+		};
+
+<span class="nc" id="L224">		ForwardCurve fc = LatentMarketStateBuilder.ShapePreservingForwardCurve (</span>
+			dtSpot,
+			forwardLabel,
+			astrDepositMaturityTenor,
+			adblDepositQuote,
+			&quot;ForwardRate&quot;,
+			null,
+			null,
+			&quot;ParForwardRate&quot;,
+			astrFixFloatMaturityTenor,
+			adblFixFloatQuote,
+			&quot;SwapRate&quot;,
+			null,
+			null,
+			&quot;DerivedParBasisSpread&quot;,
+			null,
+			null,
+			&quot;DerivedParBasisSpread&quot;,
+			dcOvernight,
+			null
+		);
+
+<span class="nc" id="L246">		String strMaturityTenor = &quot;7Y&quot;;</span>
+<span class="nc" id="L247">		double dblFixedCoupon = 0.021893;</span>
+
+<span class="nc" id="L249">		JulianDate dtEffective = DateUtil.CreateFromYMD (</span>
+			2017,
+			DateUtil.JULY,
+			8
+		);
+
+<span class="nc" id="L255">		FixedFloatSwapConvention ffsc = IBORFixedFloatContainer.ConventionFromJurisdiction (</span>
+			strCurrency,
+			&quot;ALL&quot;,
+			strMaturityTenor,
+			&quot;MAIN&quot;
+		);
+
+<span class="nc" id="L262">		FixFloatComponent ffc = ffsc.createFixFloatComponent (</span>
+			dtEffective,
+			strMaturityTenor,
+			dblFixedCoupon,
+			0.,
+			1.
+		);
+
+<span class="nc" id="L270">		CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();</span>
+
+<span class="nc" id="L272">		csqc.setFundingState (dcOvernight);</span>
+
+<span class="nc" id="L274">		csqc.setForwardState (fc);</span>
+
+<span class="nc" id="L276">		ValuationParams valParams = new ValuationParams (</span>
+			dtSpot,
+			dtSpot,
+			strCurrency
+		);
+
+<span class="nc" id="L282">		CaseInsensitiveTreeMap&lt;Double&gt; mapOutput = ffc.value (</span>
+			valParams,
+			null,
+			csqc,
+			null
+		);
+
+<span class="nc bnc" id="L289" title="All 2 branches missed.">		for (Map.Entry&lt;String, Double&gt; me : mapOutput.entrySet())</span>
+<span class="nc" id="L290">			System.out.println (&quot;\t\t&quot; + me.getKey() + &quot; =&gt; &quot; + me.getValue());</span>
+
+<span class="nc" id="L292">		System.out.println();</span>
+
+<span class="nc" id="L294">		System.out.println (&quot;\tClean Price       =&gt;&quot; +</span>
+<span class="nc" id="L295">			FormatUtil.FormatDouble (mapOutput.get (&quot;CleanPrice&quot;), 1, 4, 1.)</span>
+		);
+
+<span class="nc" id="L298">		System.out.println (&quot;\tDirty Price       =&gt;&quot; +</span>
+<span class="nc" id="L299">			FormatUtil.FormatDouble (mapOutput.get (&quot;DirtyPrice&quot;), 1, 4, 1.)</span>
+		);
+
+<span class="nc" id="L302">		System.out.println (&quot;\tFixed Stream PV   =&gt;  &quot; +</span>
+<span class="nc" id="L303">			FormatUtil.FormatDouble (mapOutput.get (&quot;ReferencePV&quot;), 1, 8, 1.)</span>
+		);
+
+<span class="nc" id="L306">		System.out.println (&quot;\tFloat Stream PV   =&gt;  &quot; +</span>
+<span class="nc" id="L307">			FormatUtil.FormatDouble (mapOutput.get (&quot;DerivedPV&quot;), 1, 8, 1.)</span>
+		);
+
+<span class="nc" id="L310">		System.out.println (&quot;\tFixed Stream PV   =&gt;  &quot; +</span>
+<span class="nc" id="L311">			FormatUtil.FormatDouble (mapOutput.get (&quot;ReferencePV&quot;), 1, 8, 1.)</span>
+		);
+
+<span class="nc" id="L314">		System.out.println (&quot;\tFixed Stream DV01 =&gt;  &quot; +</span>
+<span class="nc" id="L315">			FormatUtil.FormatDouble (mapOutput.get (&quot;ReferenceDV01&quot;), 1, 8, 10000.)</span>
+		);
+
+<span class="nc" id="L318">		System.out.println (&quot;\tFloat Stream DV01 =&gt;  &quot; +</span>
+<span class="nc" id="L319">			FormatUtil.FormatDouble (mapOutput.get (&quot;DerivedDV01&quot;), 1, 8, 10000.)</span>
+		);
+
+<span class="nc" id="L322">		System.out.println (&quot;\tFixing 01         =&gt;  &quot; +</span>
+<span class="nc" id="L323">			FormatUtil.FormatDouble (mapOutput.get (&quot;Fixing01&quot;), 1, 8, 10000.)</span>
+		);
+
+<span class="nc" id="L326">		System.out.println (&quot;\tClean PV          =&gt;  &quot; +</span>
+<span class="nc" id="L327">			FormatUtil.FormatDouble (mapOutput.get (&quot;CleanPV&quot;), 1, 8, 1.)</span>
+		);
+
+<span class="nc" id="L330">		System.out.println (&quot;\tDirty PV          =&gt;  &quot; +</span>
+<span class="nc" id="L331">			FormatUtil.FormatDouble (mapOutput.get (&quot;DirtyPV&quot;), 1, 8, 1.)</span>
+		);
+
+<span class="nc" id="L334">		System.out.println (&quot;\tFixed Accrued     =&gt;  &quot; +</span>
+<span class="nc" id="L335">			FormatUtil.FormatDouble (mapOutput.get (&quot;FixedAccrued&quot;), 1, 8, 1.)</span>
+		);
+
+<span class="nc" id="L338">		System.out.println (&quot;\tFloat Accrued     =&gt;  &quot; +</span>
+<span class="nc" id="L339">			FormatUtil.FormatDouble (mapOutput.get (&quot;FloatAccrued&quot;), 1, 8, 1.)</span>
+		);
+
+<span class="nc" id="L342">		System.out.println (&quot;\tAccrued           =&gt;  &quot; +</span>
+<span class="nc" id="L343">			FormatUtil.FormatDouble (mapOutput.get (&quot;Accrued&quot;), 1, 8, 1.)</span>
+		);
+
+<span class="nc" id="L346">		System.out.println (&quot;\tPar Swap Rate     =&gt;  &quot; +</span>
+<span class="nc" id="L347">			FormatUtil.FormatDouble (mapOutput.get (&quot;ParSwapRate&quot;), 1, 4, 100.) + &quot;%&quot;</span>
+		);
+<span class="nc" id="L349"> 	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

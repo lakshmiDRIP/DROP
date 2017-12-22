@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LongOnlyMarkovitzBullet.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.efficientfrontier</a> &gt; <span class="el_source">LongOnlyMarkovitzBullet.java</span></div><h1>LongOnlyMarkovitzBullet.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.efficientfrontier;
+
+import java.util.*;
+
+import org.drip.function.rdtor1descent.LineStepEvolutionControl;
+import org.drip.function.rdtor1solver.InteriorPointBarrierControl;
+import org.drip.measure.statistics.MultivariateMoments;
+import org.drip.portfolioconstruction.allocator.*;
+import org.drip.portfolioconstruction.asset.*;
+import org.drip.portfolioconstruction.mpt.MarkovitzBullet;
+import org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * LongOnlyMarkovitzBullet demonstrates the Construction of the Efficient Frontier using the Constrained Mean
+ *  Variance Optimizer for a Long-Only Portfolio.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L70">public class LongOnlyMarkovitzBullet {</span>
+
+	private static void DisplayPortfolioMetrics (
+		final OptimizationOutput optPort)
+		throws Exception
+	{
+<span class="nc" id="L76">		AssetComponent[] aACGlobalMinimum = optPort.optimalPortfolio().assets();</span>
+
+<span class="nc" id="L78">		String strDump = &quot;\t|&quot; +</span>
+<span class="nc" id="L79">			FormatUtil.FormatDouble (optPort.optimalMetrics().excessReturnsMean(), 1, 4, 100.) + &quot;% |&quot; +</span>
+<span class="nc" id="L80">			FormatUtil.FormatDouble (optPort.optimalMetrics().excessReturnsStandardDeviation(), 1, 4, 100.) + &quot; |&quot;;</span>
+
+<span class="nc bnc" id="L82" title="All 2 branches missed.">		for (AssetComponent ac : aACGlobalMinimum)</span>
+<span class="nc" id="L83">			strDump += &quot; &quot; + FormatUtil.FormatDouble (ac.amount(), 3, 2, 100.) + &quot;% |&quot;;</span>
+
+<span class="nc" id="L85">		System.out.println (strDump + &quot;|&quot;);</span>
+<span class="nc" id="L86">	}</span>
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+<span class="nc" id="L92">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L94">		String[] astrAssetName = new String[] {</span>
+			&quot;TOK&quot;,
+			&quot;EWJ&quot;,
+			&quot;HYG&quot;,
+			&quot;LQD&quot;,
+			&quot;EMD&quot;,
+			&quot;GSG&quot;,
+			&quot;BWX&quot;
+		};
+
+<span class="nc" id="L104">		double[] adblAssetLowerBound = new double[] {</span>
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00
+		};
+
+<span class="nc" id="L114">		double[] adblAssetUpperBound = new double[] {</span>
+			1.00,
+			1.00,
+			1.00,
+			1.00,
+			1.00,
+			1.00,
+			1.00
+		};
+
+<span class="nc" id="L124">		double[] adblAssetExpectedReturns = new double[] {</span>
+			0.008430,
+			0.007230,
+			0.006450,
+			0.002560,
+			0.004480,
+			0.006840,
+			0.001670
+		};
+
+<span class="nc" id="L134">		double[][] aadblAssetReturnsCovariance = new double[][] {</span>
+			{0.002733, 0.002083, 0.001593, 0.000488, 0.001172, 0.002312, 0.000710},
+			{0.002083, 0.002768, 0.001302, 0.000457, 0.001105, 0.001647, 0.000563},
+			{0.001593, 0.001302, 0.001463, 0.000639, 0.001050, 0.001110, 0.000519},
+			{0.000488, 0.000457, 0.000639, 0.000608, 0.000663, 0.000042, 0.000370},
+			{0.001172, 0.001105, 0.001050, 0.000663, 0.001389, 0.000825, 0.000661},
+			{0.002312, 0.001647, 0.001110, 0.000042, 0.000825, 0.005211, 0.000749},
+			{0.000710, 0.000563, 0.000519, 0.000370, 0.000661, 0.000749, 0.000703}
+		};
+
+<span class="nc" id="L144">		AssetUniverseStatisticalProperties ausp = AssetUniverseStatisticalProperties.FromMultivariateMetrics (</span>
+<span class="nc" id="L145">			MultivariateMoments.Standard (</span>
+				astrAssetName,
+				adblAssetExpectedReturns,
+				aadblAssetReturnsCovariance
+			)
+		);
+
+<span class="nc" id="L152">		double[][] aadblCovarianceMatrix = ausp.covariance (astrAssetName);</span>
+
+<span class="nc" id="L154">		System.out.println (&quot;\n\n\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L156">		System.out.println (&quot;\t|                                  CROSS ASSET COVARIANCE MATRIX                                 ||&quot;);</span>
+
+<span class="nc" id="L158">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L160">		String strHeader = &quot;\t|     |&quot;;</span>
+
+<span class="nc bnc" id="L162" title="All 2 branches missed.">		for (int i = 0; i &lt; astrAssetName.length; ++i)</span>
+<span class="nc" id="L163">			strHeader += &quot;    &quot; + astrAssetName[i] + &quot;     |&quot;;</span>
+
+<span class="nc" id="L165">		System.out.println (strHeader + &quot;|&quot;);</span>
+
+<span class="nc" id="L167">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L169" title="All 2 branches missed.">		for (int i = 0; i &lt; astrAssetName.length; ++i) {</span>
+<span class="nc" id="L170">			String strDump = &quot;\t| &quot; + astrAssetName[i] + &quot; &quot;;</span>
+
+<span class="nc bnc" id="L172" title="All 2 branches missed.">			for (int j = 0; j &lt; astrAssetName.length; ++j)</span>
+<span class="nc" id="L173">				strDump += &quot;|&quot; + FormatUtil.FormatDouble (aadblCovarianceMatrix[i][j], 1, 8, 1.) + &quot; &quot;;</span>
+
+<span class="nc" id="L175">			System.out.println (strDump + &quot;||&quot;);</span>
+		}
+
+<span class="nc" id="L178">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||\n\n&quot;);</span>
+
+<span class="nc" id="L180">		System.out.println (&quot;\t|-------------------||&quot;);</span>
+
+<span class="nc" id="L182">		System.out.println (&quot;\t|   ASSET BOUNDS    ||&quot;);</span>
+
+<span class="nc" id="L184">		System.out.println (&quot;\t|-------------------||&quot;);</span>
+
+<span class="nc bnc" id="L186" title="All 2 branches missed.">		for (int i = 0; i &lt; astrAssetName.length; ++i)</span>
+<span class="nc" id="L187">			System.out.println (</span>
+				&quot;\t| &quot; + astrAssetName[i] + &quot; | &quot; +
+<span class="nc" id="L189">				FormatUtil.FormatDouble (adblAssetLowerBound[i], 2, 0, 100.) + &quot;% | &quot; +</span>
+<span class="nc" id="L190">				FormatUtil.FormatDouble (adblAssetUpperBound[i], 2, 0, 100.) + &quot;% ||&quot;</span>
+			);
+
+<span class="nc" id="L193">		System.out.println (&quot;\t|-------------------||\n\n&quot;);</span>
+
+<span class="nc" id="L195">		InteriorPointBarrierControl ipbc = InteriorPointBarrierControl.Standard();</span>
+
+<span class="nc" id="L197">		System.out.println (&quot;\t|--------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L199">		System.out.println (&quot;\t|  INTERIOR POINT METHOD BARRIER PARAMETERS  ||&quot;);</span>
+
+<span class="nc" id="L201">		System.out.println (&quot;\t|--------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L203">		System.out.println (&quot;\t|    Barrier Decay Velocity        : &quot; + 1. / ipbc.decayVelocity());</span>
+
+<span class="nc" id="L205">		System.out.println (&quot;\t|    Barrier Decay Steps           : &quot; + ipbc.numDecaySteps());</span>
+
+<span class="nc" id="L207">		System.out.println (&quot;\t|    Initial Barrier Strength      : &quot; + ipbc.initialStrength());</span>
+
+<span class="nc" id="L209">		System.out.println (&quot;\t|    Barrier Convergence Tolerance : &quot; + ipbc.relativeTolerance());</span>
+
+<span class="nc" id="L211">		System.out.println (&quot;\t|--------------------------------------------||\n\n&quot;);</span>
+
+<span class="nc" id="L213">		ConstrainedMeanVarianceOptimizer cmva = new ConstrainedMeanVarianceOptimizer (</span>
+			ipbc,
+<span class="nc" id="L215">			LineStepEvolutionControl.NocedalWrightStrongWolfe (false)</span>
+		);
+
+<span class="nc" id="L218">		BoundedPortfolioConstructionParameters bpcp = new BoundedPortfolioConstructionParameters (</span>
+			astrAssetName,
+<span class="nc" id="L220">			CustomRiskUtilitySettings.VarianceMinimizer(),</span>
+			new PortfolioEqualityConstraintSettings (
+				PortfolioEqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT,
+				Double.NaN
+			)
+		);
+
+<span class="nc bnc" id="L227" title="All 2 branches missed.">		for (int i = 0; i &lt; astrAssetName.length; ++i)</span>
+<span class="nc" id="L228">			bpcp.addBound (</span>
+				astrAssetName[i],
+				adblAssetLowerBound[i],
+				adblAssetUpperBound[i]
+			);
+
+<span class="nc" id="L234">		int iFrontierSampleUnits = 20;</span>
+
+<span class="nc" id="L236">		MarkovitzBullet mb = cmva.efficientFrontier (</span>
+			bpcp,
+			ausp,
+			iFrontierSampleUnits
+		);
+
+<span class="nc" id="L242">		System.out.println (&quot;\n\n\t|-----------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L244">		System.out.println (&quot;\t|                     GLOBAL MINIMUM VARIANCE AND MAXIMUM RETURNS PORTFOLIOS                    ||&quot;);</span>
+
+<span class="nc" id="L246">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L248">		strHeader = &quot;\t| RETURNS | RISK % |&quot;;</span>
+
+<span class="nc bnc" id="L250" title="All 2 branches missed.">		for (int i = 0; i &lt; astrAssetName.length; ++i)</span>
+<span class="nc" id="L251">			strHeader += &quot;   &quot; + astrAssetName[i] + &quot;    |&quot;;</span>
+
+<span class="nc" id="L253">		System.out.println (strHeader + &quot;|&quot;);</span>
+
+<span class="nc" id="L255">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L257">		DisplayPortfolioMetrics (mb.globalMinimumVariance());</span>
+
+<span class="nc" id="L259">		DisplayPortfolioMetrics (mb.longOnlyMaximumReturns());</span>
+
+<span class="nc" id="L261">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------||\n\n\n&quot;);</span>
+
+<span class="nc" id="L263">		TreeMap&lt;Double, OptimizationOutput&gt; mapFrontierPortfolio = mb.optimalPortfolios();</span>
+
+<span class="nc" id="L265">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L267">		System.out.println (&quot;\t|         EFFICIENT FRONTIER: PORTFOLIO RISK &amp; RETURNS + CORRESPONDING ASSET ALLOCATION         ||&quot;);</span>
+
+<span class="nc" id="L269">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L271">		System.out.println (strHeader + &quot;|&quot;);</span>
+
+<span class="nc" id="L273">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L275" title="All 2 branches missed.">		for (Map.Entry&lt;Double, OptimizationOutput&gt; me : mapFrontierPortfolio.entrySet())</span>
+<span class="nc" id="L276">			DisplayPortfolioMetrics (me.getValue());</span>
+
+<span class="nc" id="L278">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------||\n\n&quot;);</span>
+<span class="nc" id="L279">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

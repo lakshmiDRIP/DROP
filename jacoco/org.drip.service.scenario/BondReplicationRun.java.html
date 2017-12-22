@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BondReplicationRun.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.service.scenario</a> &gt; <span class="el_source">BondReplicationRun.java</span></div><h1>BondReplicationRun.java</h1><pre class="source lang-java linenums">
+package org.drip.service.scenario;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * BondReplicationRun holds the Results of a Full Bond Replication Run,
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class BondReplicationRun {
+<span class="nc" id="L57">	private java.util.Map&lt;java.lang.String, org.drip.service.scenario.NamedField&gt; _mapNF = new</span>
+		org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.service.scenario.NamedField&gt;();
+
+<span class="nc" id="L60">	private java.util.Map&lt;java.lang.String, org.drip.service.scenario.NamedFieldMap&gt; _mapNFM = new</span>
+		org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.service.scenario.NamedFieldMap&gt;();
+
+	/**
+	 * Empty ReplicationRun Constructor
+	 */
+
+	public BondReplicationRun()
+<span class="nc" id="L68">	{</span>
+<span class="nc" id="L69">	}</span>
+
+	/**
+	 * Add a Named Field
+	 * 
+	 * @param nf The Named Field
+	 * 
+	 * @return TRUE - The Named Field Successfully added
+	 */
+
+	public boolean addNamedField (
+		final org.drip.service.scenario.NamedField nf)
+	{
+<span class="nc bnc" id="L82" title="All 2 branches missed.">		if (null == nf) return false;</span>
+
+<span class="nc" id="L84">		_mapNF.put (nf.name(), nf);</span>
+
+<span class="nc" id="L86">		return true;</span>
+	}
+
+	/**
+	 * Add a Named Field Map
+	 * 
+	 * @param nfm The Named Field Map
+	 * 
+	 * @return TRUE - The Named Field Map Successfully added
+	 */
+
+	public boolean addNamedFieldMap (
+		final org.drip.service.scenario.NamedFieldMap nfm)
+	{
+<span class="nc bnc" id="L100" title="All 2 branches missed.">		if (null == nfm) return false;</span>
+
+<span class="nc" id="L102">		_mapNFM.put (nfm.name(), nfm);</span>
+
+<span class="nc" id="L104">		return true;</span>
+	}
+
+	/**
+	 * Retrieve the Named Field Metrics
+	 * 
+	 * @return The Named Field Metrics
+	 */
+
+	public java.util.Map&lt;java.lang.String, org.drip.service.scenario.NamedField&gt; namedField()
+	{
+<span class="nc" id="L115">		return _mapNF;</span>
+	}
+
+	/**
+	 * Retrieve the Named Field Map Metrics
+	 * 
+	 * @return The Named Field Map Metrics
+	 */
+
+	public java.util.Map&lt;java.lang.String, org.drip.service.scenario.NamedFieldMap&gt; namedFieldMap()
+	{
+<span class="nc" id="L126">		return _mapNFM;</span>
+	}
+
+	/**
+	 * Generate The Headers
+	 * 
+	 * @return The Headers
+	 */
+
+	public java.lang.String header()
+	{
+<span class="nc" id="L137">		java.lang.String strHeader = &quot;&quot;;</span>
+
+		for (java.util.Map.Entry&lt;java.lang.String, org.drip.service.scenario.NamedField&gt; meNF :
+<span class="nc bnc" id="L140" title="All 2 branches missed.">			_mapNF.entrySet())</span>
+<span class="nc" id="L141">			strHeader = strHeader + meNF.getKey() + &quot;,&quot;;</span>
+
+		for (java.util.Map.Entry&lt;java.lang.String, org.drip.service.scenario.NamedFieldMap&gt; meNFM :
+<span class="nc bnc" id="L144" title="All 2 branches missed.">			_mapNFM.entrySet()) {</span>
+<span class="nc" id="L145">			java.lang.String strNFMKey = meNFM.getKey() + &quot;,&quot;;</span>
+
+<span class="nc" id="L147">			org.drip.service.scenario.NamedFieldMap nfm = meNFM.getValue();</span>
+
+<span class="nc bnc" id="L149" title="All 2 branches missed.">			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; meNFMEntry : nfm.value().entrySet())</span>
+<span class="nc" id="L150">				strHeader = strHeader + strNFMKey + &quot;::&quot; + meNFMEntry.getKey() + &quot;,&quot;;</span>
+<span class="nc" id="L151">		}</span>
+
+<span class="nc" id="L153">		return strHeader;</span>
+	}
+
+	/**
+	 * Generate The Values
+	 * 
+	 * @return The Values
+	 */
+
+	public java.lang.String value()
+	{
+<span class="nc" id="L164">		java.lang.String strValue = &quot;&quot;;</span>
+
+		for (java.util.Map.Entry&lt;java.lang.String, org.drip.service.scenario.NamedField&gt; meNF :
+<span class="nc bnc" id="L167" title="All 2 branches missed.">			_mapNF.entrySet())</span>
+<span class="nc" id="L168">			strValue = strValue + meNF.getValue().value() + &quot;,&quot;;</span>
+
+		for (java.util.Map.Entry&lt;java.lang.String, org.drip.service.scenario.NamedFieldMap&gt; meNFM :
+<span class="nc bnc" id="L171" title="All 2 branches missed.">			_mapNFM.entrySet()) {</span>
+<span class="nc" id="L172">			org.drip.service.scenario.NamedFieldMap nfm = meNFM.getValue();</span>
+
+<span class="nc bnc" id="L174" title="All 2 branches missed.">			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; meNFMEntry : nfm.value().entrySet())</span>
+<span class="nc" id="L175">				strValue = strValue + meNFMEntry.getValue() + &quot;,&quot;;</span>
+<span class="nc" id="L176">		}</span>
+
+<span class="nc" id="L178">		return strValue;</span>
+	}
+
+	/**
+	 * Display the Measures
+	 * 
+	 * @return The Measures
+	 */
+
+	public java.lang.String display()
+	{
+<span class="nc" id="L189">		java.lang.String strValue = &quot;&quot;;</span>
+
+		for (java.util.Map.Entry&lt;java.lang.String, org.drip.service.scenario.NamedField&gt; meNF :
+<span class="nc bnc" id="L192" title="All 2 branches missed.">			_mapNF.entrySet())</span>
+<span class="nc" id="L193">			strValue = strValue + meNF.getKey() + &quot; =&gt; &quot; + meNF.getValue().value() + &quot;\n&quot;;</span>
+
+		for (java.util.Map.Entry&lt;java.lang.String, org.drip.service.scenario.NamedFieldMap&gt; meNFM :
+<span class="nc bnc" id="L196" title="All 2 branches missed.">			_mapNFM.entrySet()) {</span>
+<span class="nc" id="L197">			org.drip.service.scenario.NamedFieldMap nfm = meNFM.getValue();</span>
+
+<span class="nc" id="L199">			java.lang.String strNFMKey = meNFM.getKey();</span>
+
+<span class="nc bnc" id="L201" title="All 2 branches missed.">			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; meNFMEntry : nfm.value().entrySet())</span>
+<span class="nc" id="L202">				strValue = strValue + strNFMKey + &quot;::&quot; + meNFMEntry.getKey() + &quot; =&gt; &quot; + meNFMEntry.getValue()</span>
+					+ &quot;\n&quot;;
+<span class="nc" id="L204">		}</span>
+
+<span class="nc" id="L206">		return strValue;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

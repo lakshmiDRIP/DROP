@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NormedRxToNormedRd.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.spaces.rxtord</a> &gt; <span class="el_source">NormedRxToNormedRd.java</span></div><h1>NormedRxToNormedRd.java</h1><pre class="source lang-java linenums">
+package org.drip.spaces.rxtord;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * NormedRxToNormedRd is the abstract Class that exposes f : Normed R^x (x .gte. 1) To Normed R^d Function
+ *  Space.
+ * 
+ * The Reference we've used is:
+ * 
+ * 	- Carl, B., and I. Stephani (1990): Entropy, Compactness, and Approximation of Operators, Cambridge
+ * 		University Press, Cambridge UK.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L64">public abstract class NormedRxToNormedRd {</span>
+
+	/**
+	 * Retrieve the Input Metric Vector Space
+	 * 
+	 * @return The Input Metric Vector Space
+	 */
+
+	public abstract org.drip.spaces.metric.GeneralizedMetricVectorSpace inputMetricVectorSpace();
+
+	/**
+	 * Retrieve the Output Metric Vector Space
+	 * 
+	 * @return The Output Metric Vector Space
+	 */
+
+	public abstract org.drip.spaces.metric.RdNormed outputMetricVectorSpace();
+
+	/**
+	 * Retrieve the Sample Supremum Norm Array
+	 * 
+	 * @param gvvi The Validated Vector Space Instance
+	 * 
+	 * @return The Sample Supremum Norm Array
+	 */
+
+	public abstract double[] sampleSupremumNorm (
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi);
+
+	/**
+	 * Retrieve the Sample Metric Norm Array
+	 * 
+	 * @param gvvi The Validated Vector Space Instance
+	 * 
+	 * @return The Sample Metric Norm Array
+	 */
+
+	public abstract double[] sampleMetricNorm (
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi);
+
+	/**
+	 * Retrieve the Sample Covering Number Array
+	 * 
+	 * @param gvvi The Validated Vector Space Instance
+	 * @param dblCover The Cover
+	 * 
+	 * @return The Sample Covering Number Array
+	 */
+
+	public double[] sampleCoveringNumber (
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi,
+		final double dblCover)
+	{
+<span class="nc bnc" id="L117" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. &gt;= dblCover) return null;</span>
+
+<span class="nc" id="L119">		double[] adblSampleMetricNorm = sampleMetricNorm (gvvi);</span>
+
+<span class="nc bnc" id="L121" title="All 2 branches missed.">		if (null == adblSampleMetricNorm) return null;</span>
+
+<span class="nc" id="L123">		int iOutputDimensionality = adblSampleMetricNorm.length;</span>
+<span class="nc" id="L124">		double[] adblSampleCoveringNumber = new double[iOutputDimensionality];</span>
+
+<span class="nc bnc" id="L126" title="All 2 branches missed.">		if (0 == iOutputDimensionality) return null;</span>
+
+<span class="nc" id="L128">		double dblCoverBallVolume = java.lang.Math.pow (dblCover, outputMetricVectorSpace().pNorm());</span>
+
+<span class="nc bnc" id="L130" title="All 2 branches missed.">		for (int i = 0; i &lt; iOutputDimensionality; ++i)</span>
+<span class="nc" id="L131">			adblSampleCoveringNumber[i] = adblSampleMetricNorm[i] / dblCoverBallVolume;</span>
+
+<span class="nc" id="L133">		return adblSampleCoveringNumber;</span>
+	}
+
+	/**
+	 * Retrieve the Sample Supremum Covering Number Array
+	 * 
+	 * @param gvvi The Validated Vector Space Instance
+	 * @param dblCover The Cover
+	 * 
+	 * @return The Sample Supremum Covering Number Array
+	 */
+
+	public double[] sampleSupremumCoveringNumber (
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi,
+		final double dblCover)
+	{
+<span class="nc bnc" id="L149" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. &gt;= dblCover) return null;</span>
+
+<span class="nc" id="L151">		double[] adblSampleSupremumNorm = sampleSupremumNorm (gvvi);</span>
+
+<span class="nc bnc" id="L153" title="All 2 branches missed.">		if (null == adblSampleSupremumNorm) return null;</span>
+
+<span class="nc" id="L155">		int iOutputDimensionality = adblSampleSupremumNorm.length;</span>
+<span class="nc" id="L156">		double[] adblSampleSupremumCoveringNumber = new double[iOutputDimensionality];</span>
+
+<span class="nc bnc" id="L158" title="All 2 branches missed.">		if (0 == iOutputDimensionality) return null;</span>
+
+<span class="nc" id="L160">		double dblCoverBallVolume = java.lang.Math.pow (dblCover, outputMetricVectorSpace().pNorm());</span>
+
+<span class="nc bnc" id="L162" title="All 2 branches missed.">		for (int i = 0; i &lt; iOutputDimensionality; ++i)</span>
+<span class="nc" id="L163">			adblSampleSupremumCoveringNumber[i] = adblSampleSupremumNorm[i] / dblCoverBallVolume;</span>
+
+<span class="nc" id="L165">		return adblSampleSupremumCoveringNumber;</span>
+	}
+
+	/**
+	 * Retrieve the Population ESS (Essential Spectrum) Array
+	 * 
+	 * @return The Population ESS (Essential Spectrum) Array
+	 */
+
+	public abstract double[] populationESS();
+
+	/**
+	 * Retrieve the Population Metric Norm Array
+	 * 
+	 * @return The Population Metric Norm Array
+	 */
+
+	public abstract double[] populationMetricNorm();
+
+	/**
+	 * Retrieve the Population Supremum Norm Array
+	 * 
+	 * @return The Population Supremum Norm Array
+	 */
+
+	public double[] populationSupremumNorm()
+	{
+<span class="nc" id="L192">		return populationMetricNorm();</span>
+	}
+
+	/**
+	 * Retrieve the Population Covering Number Array
+	 * 
+	 * @param dblCover The Cover
+	 * 
+	 * @return The Population Covering Number Array
+	 */
+
+	public double[] populationCoveringNumber (
+		final double dblCover)
+	{
+<span class="nc bnc" id="L206" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. &gt;= dblCover) return null;</span>
+
+<span class="nc" id="L208">		double[] adblPopulationMetricNorm = populationMetricNorm();</span>
+
+<span class="nc bnc" id="L210" title="All 2 branches missed.">		if (null == adblPopulationMetricNorm) return null;</span>
+
+<span class="nc" id="L212">		int iOutputDimensionality = adblPopulationMetricNorm.length;</span>
+<span class="nc" id="L213">		double[] adblPopulationCoveringNumber = new double[iOutputDimensionality];</span>
+
+<span class="nc bnc" id="L215" title="All 2 branches missed.">		if (0 == iOutputDimensionality) return null;</span>
+
+<span class="nc" id="L217">		double dblCoverBallVolume = java.lang.Math.pow (dblCover, outputMetricVectorSpace().pNorm());</span>
+
+<span class="nc bnc" id="L219" title="All 2 branches missed.">		for (int i = 0; i &lt; iOutputDimensionality; ++i)</span>
+<span class="nc" id="L220">			adblPopulationCoveringNumber[i] = adblPopulationMetricNorm[i] / dblCoverBallVolume;</span>
+
+<span class="nc" id="L222">		return adblPopulationCoveringNumber;</span>
+	}
+
+	/**
+	 * Retrieve the Population Supremum Covering Number Array
+	 * 
+	 * @param dblCover The Cover
+	 * 
+	 * @return The Population Supremum Covering Number Array
+	 */
+
+	public double[] populationSupremumCoveringNumber (
+		final double dblCover)
+	{
+<span class="nc bnc" id="L236" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. &gt;= dblCover) return null;</span>
+
+<span class="nc" id="L238">		double[] adblPopulationSupremumNorm = populationSupremumNorm();</span>
+
+<span class="nc bnc" id="L240" title="All 2 branches missed.">		if (null == adblPopulationSupremumNorm) return null;</span>
+
+<span class="nc" id="L242">		int iOutputDimensionality = adblPopulationSupremumNorm.length;</span>
+<span class="nc" id="L243">		double[] adblPopulationSupremumCoveringNumber = new double[iOutputDimensionality];</span>
+
+<span class="nc bnc" id="L245" title="All 2 branches missed.">		if (0 == iOutputDimensionality) return null;</span>
+
+<span class="nc" id="L247">		double dblCoverBallVolume = java.lang.Math.pow (dblCover, outputMetricVectorSpace().pNorm());</span>
+
+<span class="nc bnc" id="L249" title="All 2 branches missed.">		for (int i = 0; i &lt; iOutputDimensionality; ++i)</span>
+<span class="nc" id="L250">			adblPopulationSupremumCoveringNumber[i] = adblPopulationSupremumNorm[i] / dblCoverBallVolume;</span>
+
+<span class="nc" id="L252">		return adblPopulationSupremumCoveringNumber;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>IBOR3MCubicKLKHyperbolic.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.forward</a> &gt; <span class="el_source">IBOR3MCubicKLKHyperbolic.java</span></div><h1>IBOR3MCubicKLKHyperbolic.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.forward;
+
+import org.drip.analytics.date.*;
+import org.drip.function.r1tor1.QuadraticRationalShapeControl;
+import org.drip.service.env.EnvManager;
+import org.drip.spline.basis.ExponentialTensionSetParams;
+import org.drip.spline.params.*;
+import org.drip.spline.stretch.MultiSegmentSequenceBuilder;
+import org.drip.state.discount.*;
+import org.drip.state.forward.ForwardCurve;
+import org.drip.state.identifier.ForwardLabel;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * This Sample illustrates the Construction and Usage of the IBOR 3M Forward Curve Using Cubic KLK
+ * 	Hyperbolic Tension B-Spline.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L70">public class IBOR3MCubicKLKHyperbolic {</span>
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+		/*
+		 * Initialize the Credit Analytics Library
+		 */
+
+<span class="nc" id="L79">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L81">		JulianDate dtValue = DateUtil.CreateFromYMD (</span>
+			2012,
+			DateUtil.DECEMBER,
+			11
+		);
+
+<span class="nc" id="L87">		String strTenor = &quot;3M&quot;;</span>
+<span class="nc" id="L88">		String strCurrency = &quot;USD&quot;;</span>
+
+<span class="nc" id="L90">		ForwardLabel fri = ForwardLabel.Create (</span>
+			strCurrency,
+			strTenor
+		);
+
+<span class="nc" id="L95">		MergedDiscountForwardCurve dcEONIA = OvernightIndexCurve.MakeDC (</span>
+			dtValue,
+			strCurrency
+		);
+
+<span class="nc" id="L100">		SegmentCustomBuilderControl scbcKLKHyperbolic = new SegmentCustomBuilderControl (</span>
+			MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
+			new ExponentialTensionSetParams (1.),
+<span class="nc" id="L103">			SegmentInelasticDesignControl.Create (</span>
+				2,
+				2
+			),
+			new ResponseScalingShapeControl (
+				true,
+				new QuadraticRationalShapeControl (0.)
+			),
+			null
+		);
+
+		/*
+		 * Construct the Array of Deposit Instruments and their Quotes from the given set of parameters
+		 */
+
+<span class="nc" id="L118">		double[] adblDepositQuote = new double[] {</span>
+			0.001865,
+			0.001969,
+			0.001951,
+			0.001874
+		};
+
+<span class="nc" id="L125">		String[] astrDepositTenor = new String[] {</span>
+			&quot;2W&quot;,
+			&quot;3W&quot;,
+			&quot;1M&quot;,
+			&quot;2M&quot;
+		};
+
+		/*
+		 * Construct the Array of FRAs and their Quotes from the given set of parameters
+		 */
+
+<span class="nc" id="L136">		double[] adblFRAQuote = new double[] {</span>
+			0.001790,
+			0.001775,
+			0.001274,
+			0.001222,
+			0.001269,
+			0.001565,
+			0.001961,
+			0.002556,
+			0.003101
+		};
+
+<span class="nc" id="L148">		String[] astrFRATenor = new String[] {</span>
+			 &quot;0D&quot;,
+			 &quot;1M&quot;,
+			 &quot;3M&quot;,
+			 &quot;6M&quot;,
+			 &quot;9M&quot;,
+			&quot;12M&quot;,
+			&quot;15M&quot;,
+			&quot;18M&quot;,
+			&quot;21M&quot;
+		};
+
+		/*
+		 * Construct the Array of Fix-Float Component and their Quotes from the given set of parameters
+		 */
+
+<span class="nc" id="L164">		double[] adblFixFloatQuote = new double[] {</span>
+			0.002850,	//  3Y
+			0.004370,	//  4Y
+			0.006230,	//  5Y
+			0.008170,	//  6Y
+			0.010000,	//  7Y
+			0.011710,	//  8Y
+			0.013240,	//  9Y
+			0.014590,	// 10Y
+			0.016920,	// 12Y
+			0.019330,	// 15Y
+			0.020990,	// 20Y
+			0.021560,	// 25Y
+			0.021860 	// 30Y
+		};
+
+<span class="nc" id="L180">		String[] astrFixFloatTenor = new String[] {</span>
+			 &quot;3Y&quot;,
+			 &quot;4Y&quot;,
+			 &quot;5Y&quot;,
+			 &quot;6Y&quot;,
+			 &quot;7Y&quot;,
+			 &quot;8Y&quot;,
+			 &quot;9Y&quot;,
+			&quot;10Y&quot;,
+			&quot;12Y&quot;,
+			&quot;15Y&quot;,
+			&quot;20Y&quot;,
+			&quot;25Y&quot;,
+			&quot;30Y&quot;
+		};
+
+		/*
+		 * Construct the Array of Terminal Synthetic Float-Float Components and their Quotes from the given set of parameters
+		 */
+
+<span class="nc" id="L200">		String[] astrSyntheticFloatFloatTenor = new String[] {</span>
+			&quot;35Y&quot;,
+			&quot;40Y&quot;,
+			&quot;50Y&quot;,
+			&quot;60Y&quot;
+		};
+
+<span class="nc" id="L207">		double[] adblSyntheticFloatFloatQuote = new double[] {</span>
+			0.00065,
+			0.00060,
+			0.00054,
+			0.00050
+		};
+
+<span class="nc" id="L214">		ForwardCurve fc6M = IBOR6MCubicPolyVanilla.Make6MForward (</span>
+			dtValue,
+			strCurrency,
+			&quot;6M&quot;,
+			true
+		);
+
+<span class="nc" id="L221">		ForwardCurve fc = IBORCurve.CustomIBORBuilderSample (</span>
+			dcEONIA,
+			fc6M,
+			fri,
+			scbcKLKHyperbolic,
+			astrDepositTenor,
+			adblDepositQuote,
+			&quot;ForwardRate&quot;,
+			astrFRATenor,
+			adblFRAQuote,
+			&quot;ParForwardRate&quot;,
+			astrFixFloatTenor,
+			adblFixFloatQuote,
+			&quot;SwapRate&quot;,
+			null,
+			null,
+			&quot;DerivedParBasisSpread&quot;,
+			astrSyntheticFloatFloatTenor,
+			adblSyntheticFloatFloatQuote,
+			&quot;DerivedParBasisSpread&quot;,
+			&quot;---- VANILLA CUBIC KLK HYPERBOLIC TENSION B-SPLINE FORWARD CURVE ---&quot;,
+			true
+		);
+
+<span class="nc" id="L245">		IBORCurve.ForwardJack (</span>
+			dtValue,
+			&quot;---- VANILLA CUBIC KLK HYPERBOLIC TENSION B-SPLINE FORWARD CURVE SENSITIVITY ---&quot;,
+			fc,
+			&quot;DerivedParBasisSpread&quot;
+		);
+<span class="nc" id="L251">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

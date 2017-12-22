@@ -73,7 +73,10 @@ public class DaJagannathan2005d {
 		final String[] astArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		String[] astrID = new String[] {
 			"CORPORATE BOND     ",
@@ -251,5 +254,7 @@ public class DaJagannathan2005d {
 			);
 
 		System.out.println ("\t||----------------------------------------||\n");
+
+		EnvManager.TerminateEnv();
 	}
 }

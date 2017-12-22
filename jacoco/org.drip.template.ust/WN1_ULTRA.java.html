@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WN1_ULTRA.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.template.ust</a> &gt; <span class="el_source">WN1_ULTRA.java</span></div><h1>WN1_ULTRA.java</h1><pre class="source lang-java linenums">
+package org.drip.template.ust;
+
+import org.drip.analytics.date.*;
+import org.drip.product.definition.Bond;
+import org.drip.product.govvie.TreasuryFutures;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.service.template.ExchangeInstrumentBuilder;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * WN1_ULTRA demonstrates the Details behind the Implementation and the Pricing of the ULTRA LONG BOND WN1
+ *  UST Futures Contract.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L66">public class WN1_ULTRA {</span>
+
+	private static final String DeliveryMonths (
+		final TreasuryFutures tsyFutures)
+	{
+<span class="nc" id="L71">		int[] aiDeliveryMonth = tsyFutures.deliveryMonths();</span>
+
+<span class="nc" id="L73">		String strDeliveryMonths = &quot;&quot;;</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">		int iNumDeliveryMonth = null == aiDeliveryMonth ? 0 : aiDeliveryMonth.length;</span>
+
+<span class="nc bnc" id="L76" title="All 2 branches missed.">		if (0 != iNumDeliveryMonth) {</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumDeliveryMonth; ++i) {</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">				if (0 == i)</span>
+<span class="nc" id="L79">					strDeliveryMonths += &quot;{&quot;;</span>
+				else
+<span class="nc" id="L81">					strDeliveryMonths += &quot;,&quot;;</span>
+
+<span class="nc" id="L83">				strDeliveryMonths += DateUtil.MonthChar (aiDeliveryMonth[i]);</span>
+			}
+
+<span class="nc" id="L86">			strDeliveryMonths += &quot;}&quot;;</span>
+		}
+
+<span class="nc" id="L89">		return strDeliveryMonths;</span>
+	}
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+<span class="nc" id="L96">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L98">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+			2015,
+			DateUtil.NOVEMBER,
+			18
+		);
+
+<span class="nc" id="L104">		TreasuryFutures wn1 = ExchangeInstrumentBuilder.TreasuryFutures (</span>
+			dtSpot,
+			&quot;UST&quot;,
+			new org.drip.analytics.date.JulianDate[] {
+<span class="nc" id="L108">				DateUtil.CreateFromYMD (2014, DateUtil.FEBRUARY, 15), // 912810QN</span>
+<span class="nc" id="L109">				DateUtil.CreateFromYMD (2014, DateUtil.MAY,      15), // 912810QQ</span>
+<span class="nc" id="L110">				DateUtil.CreateFromYMD (2014, DateUtil.AUGUST,   15), // 912810QS</span>
+<span class="nc" id="L111">				DateUtil.CreateFromYMD (2014, DateUtil.AUGUST,   15), // 912810RC</span>
+<span class="nc" id="L112">				DateUtil.CreateFromYMD (2014, DateUtil.NOVEMBER, 15), // 912810RD</span>
+<span class="nc" id="L113">				DateUtil.CreateFromYMD (2014, DateUtil.NOVEMBER, 15), // 912810QT</span>
+<span class="nc" id="L114">				DateUtil.CreateFromYMD (2014, DateUtil.FEBRUARY, 15), // 912810QU</span>
+<span class="nc" id="L115">				DateUtil.CreateFromYMD (2014, DateUtil.FEBRUARY, 15), // 912810RE</span>
+<span class="nc" id="L116">				DateUtil.CreateFromYMD (2014, DateUtil.FEBRUARY, 15), // 912810QZ</span>
+<span class="nc" id="L117">				DateUtil.CreateFromYMD (2014, DateUtil.MAY,      15), // 912810QW</span>
+<span class="nc" id="L118">				DateUtil.CreateFromYMD (2014, DateUtil.MAY,      15), // 912810RG</span>
+<span class="nc" id="L119">				DateUtil.CreateFromYMD (2014, DateUtil.AUGUST,   15), // 912810QX</span>
+<span class="nc" id="L120">				DateUtil.CreateFromYMD (2014, DateUtil.MAY,      15), // 912810RB</span>
+<span class="nc" id="L121">				DateUtil.CreateFromYMD (2014, DateUtil.NOVEMBER, 15), // 912810QY</span>
+<span class="nc" id="L122">				DateUtil.CreateFromYMD (2014, DateUtil.AUGUST,   15), // 912810RH</span>
+<span class="nc" id="L123">				DateUtil.CreateFromYMD (2014, DateUtil.NOVEMBER, 15), // 912810RJ</span>
+<span class="nc" id="L124">				DateUtil.CreateFromYMD (2014, DateUtil.MAY,      15), // 912810RM</span>
+<span class="nc" id="L125">				DateUtil.CreateFromYMD (2014, DateUtil.NOVEMBER, 15), // 912810RP</span>
+<span class="nc" id="L126">				DateUtil.CreateFromYMD (2014, DateUtil.AUGUST,   15), // 912810RN</span>
+<span class="nc" id="L127">				DateUtil.CreateFromYMD (2014, DateUtil.FEBRUARY, 15)  // 912810RK</span>
+			},
+			new org.drip.analytics.date.JulianDate[] {
+<span class="nc" id="L130">				DateUtil.CreateFromYMD (2041, DateUtil.FEBRUARY, 15), // 912810QN</span>
+<span class="nc" id="L131">				DateUtil.CreateFromYMD (2041, DateUtil.MAY,      15), // 912810QQ</span>
+<span class="nc" id="L132">				DateUtil.CreateFromYMD (2041, DateUtil.AUGUST,   15), // 912810QS</span>
+<span class="nc" id="L133">				DateUtil.CreateFromYMD (2043, DateUtil.AUGUST,   15), // 912810RC</span>
+<span class="nc" id="L134">				DateUtil.CreateFromYMD (2043, DateUtil.NOVEMBER, 15), // 912810RD</span>
+<span class="nc" id="L135">				DateUtil.CreateFromYMD (2041, DateUtil.NOVEMBER, 15), // 912810QT</span>
+<span class="nc" id="L136">				DateUtil.CreateFromYMD (2043, DateUtil.FEBRUARY, 15), // 912810QU</span>
+<span class="nc" id="L137">				DateUtil.CreateFromYMD (2044, DateUtil.FEBRUARY, 15), // 912810RE</span>
+<span class="nc" id="L138">				DateUtil.CreateFromYMD (2043, DateUtil.FEBRUARY, 15), // 912810QZ</span>
+<span class="nc" id="L139">				DateUtil.CreateFromYMD (2042, DateUtil.MAY,      15), // 912810QW</span>
+<span class="nc" id="L140">				DateUtil.CreateFromYMD (2044, DateUtil.MAY,      15), // 912810RG</span>
+<span class="nc" id="L141">				DateUtil.CreateFromYMD (2042, DateUtil.AUGUST,   15), // 912810QX</span>
+<span class="nc" id="L142">				DateUtil.CreateFromYMD (2043, DateUtil.MAY,      15), // 912810RB</span>
+<span class="nc" id="L143">				DateUtil.CreateFromYMD (2042, DateUtil.NOVEMBER, 15), // 912810QY</span>
+<span class="nc" id="L144">				DateUtil.CreateFromYMD (2044, DateUtil.AUGUST,   15), // 912810RH</span>
+<span class="nc" id="L145">				DateUtil.CreateFromYMD (2044, DateUtil.NOVEMBER, 15), // 912810RJ</span>
+<span class="nc" id="L146">				DateUtil.CreateFromYMD (2045, DateUtil.MAY,      15), // 912810RM</span>
+<span class="nc" id="L147">				DateUtil.CreateFromYMD (2045, DateUtil.NOVEMBER, 15), // 912810RP</span>
+<span class="nc" id="L148">				DateUtil.CreateFromYMD (2045, DateUtil.AUGUST,   15), // 912810RN</span>
+<span class="nc" id="L149">				DateUtil.CreateFromYMD (2045, DateUtil.FEBRUARY, 15)  // 912810RK</span>
+			},
+			new double[] {
+				0.04750, // 912810QN
+				0.04375, // 912810QQ
+				0.03750, // 912810QS
+				0.03625, // 912810RC
+				0.03750, // 912810RD
+				0.03125, // 912810QT
+				0.03125, // 912810QU
+				0.03625, // 912810RE
+				0.03125, // 912810QZ
+				0.03000, // 912810QW
+				0.03625, // 912810RG
+				0.02375, // 912810QX
+				0.02875, // 912810RB
+				0.02750, // 912810QY
+				0.03125, // 912810RH
+				0.03000, // 912810RJ
+				0.03000, // 912810RM
+				0.03000, // 912810RP
+				0.02875, // 912810RN
+				0.02500  // 912810RK
+			},
+			new double[] {
+				0.8392, // 912810QN
+				0.7900, // 912810QQ
+				0.7080, // 912810QS
+				0.6821, // 912810RC
+				0.6976, // 912810RD
+				0.6253, // 912810QT
+				0.6239, // 912810QU
+				0.6798, // 912810RE
+				0.6179, // 912810QZ
+				0.6059, // 912810QW
+				0.6448, // 912810RG
+				0.5714, // 912810QX
+				0.5831, // 912810RB
+				0.5697, // 912810QY
+				0.6097, // 912810RH
+				0.5913, // 912810RJ
+				0.5887, // 912810RM
+				0.5861, // 912810RP
+				0.5702, // 912810RN
+				0.5217, // 912810RK
+			},
+			&quot;TREASURY&quot;,
+			&quot;BOND&quot;,
+			&quot;ULTRA&quot;
+		);
+
+<span class="nc" id="L200">		double dblFuturesPrice = 156.687500;</span>
+
+<span class="nc" id="L202">		double[] adblCleanPrice = new double[] {</span>
+			1.3200000, // 912810QN
+			1.2540625, // 912810QQ
+			1.1412500, // 912810QS
+			1.1193750, // 912810RC
+			1.1450000, // 912810RD
+			1.0262500, // 912810QT
+			1.0256250, // 912810QU
+			1.1184375, // 912810RE
+			1.0181250, // 912810QZ
+			0.9990625, // 912810QW
+			1.0659375, // 912810RG
+			0.9481250, // 912810QX
+			0.9681250, // 912810RB
+			0.9459375, // 912810QY
+			1.0153125, // 912810RH
+			0.9896875, // 912810RJ
+			0.9890625, // 912810RM
+			0.9918750, // 912810RP
+			0.9656250, // 912810RN
+			0.8909375  // 912810RK
+		};
+
+<span class="nc" id="L225">		Bond bondCTD = wn1.cheapestToDeliverYield (</span>
+<span class="nc" id="L226">			dtSpot.julian(),</span>
+			adblCleanPrice
+<span class="nc" id="L228">		).bond();</span>
+
+<span class="nc" id="L230">		System.out.println (&quot;\n\t|---------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L232">		System.out.println (&quot;\t|      Futures Type      : &quot; + wn1.type() + &quot;                            ||&quot;);</span>
+
+<span class="nc" id="L234">		System.out.println (&quot;\t|      Deliverable Grade : &quot; + wn1.minimumMaturity() + &quot; -&gt; &quot; + wn1.maximumMaturity() + &quot;                     ||&quot;);</span>
+
+<span class="nc" id="L236">		System.out.println (&quot;\t|      Reference Coupon  : &quot; + FormatUtil.FormatDouble (wn1.referenceCoupon(), 1, 2, 100.) + &quot;%                         ||&quot;);</span>
+
+<span class="nc" id="L238">		System.out.println (&quot;\t|      Contract Size     : &quot; + FormatUtil.FormatDouble (wn1.notionalValue(), 1, 2, 1.) + &quot;                     ||&quot;);</span>
+
+<span class="nc" id="L240">		System.out.println (&quot;\t|      Tick Size         : &quot; + FormatUtil.FormatDouble (wn1.minimumPriceMovement(), 1, 6, 1.) + &quot;                      ||&quot;);</span>
+
+<span class="nc" id="L242">		System.out.println (&quot;\t|      Tick Value        : &quot; + FormatUtil.FormatDouble (wn1.tickValue(), 1, 2, 1.) + &quot;                       ||&quot;);</span>
+
+<span class="nc" id="L244">		System.out.println (&quot;\t|      Delivery Months   : &quot; + DeliveryMonths (wn1) + &quot; ||&quot;);</span>
+
+<span class="nc" id="L246">		System.out.println (&quot;\t|      Last Trading Lag  : &quot; + wn1.lastTradingDayLag() + &quot; Business Days Prior Expiry   ||&quot;);</span>
+
+<span class="nc" id="L248">		System.out.println (&quot;\t|      Futures Price     : &quot; + FormatUtil.FormatDouble (dblFuturesPrice, 2, 5, 1.) + &quot;                     ||&quot;);</span>
+
+<span class="nc" id="L250">		System.out.println (&quot;\t|      Contract Value    : &quot; + FormatUtil.FormatDouble (0.01 * wn1.notionalValue() * dblFuturesPrice, 1, 2, 1.) + &quot;                     ||&quot;);</span>
+
+<span class="nc" id="L252">		System.out.println (&quot;\t|---------------------------------------------------------||\n&quot;);</span>
+
+<span class="nc" id="L254">		System.out.println (&quot;\n\t|----------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L256">		System.out.println (&quot;\t|                                              ||&quot;);</span>
+
+<span class="nc bnc" id="L258" title="All 2 branches missed.">		for (int i = 0; i &lt; wn1.basket().length; ++i)</span>
+<span class="nc" id="L259">			System.out.println (&quot;\t|\t&quot; + wn1.basket()[i].name() + &quot; =&gt; &quot; + FormatUtil.FormatDouble (adblCleanPrice[i], 2, 5, 1.) + &quot;   ||&quot;);</span>
+
+<span class="nc" id="L261">		System.out.println (&quot;\t|                                              ||&quot;);</span>
+
+<span class="nc" id="L263">		System.out.println (&quot;\t|----------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L265">		System.out.println (&quot;\t| Cheapest to Deliver: &quot; + bondCTD.name() + &quot;  ||&quot;);</span>
+
+<span class="nc" id="L267">		System.out.println (&quot;\t|----------------------------------------------||&quot;);</span>
+<span class="nc" id="L268">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

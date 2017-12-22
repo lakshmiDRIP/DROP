@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BuiltInCDSPortfolioDefinitions.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.credit</a> &gt; <span class="el_source">BuiltInCDSPortfolioDefinitions.java</span></div><h1>BuiltInCDSPortfolioDefinitions.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.credit;
+
+/*
+ * Generic imports
+ */
+
+import java.util.*;
+
+import org.drip.analytics.date.*;
+import org.drip.analytics.support.CaseInsensitiveTreeMap;
+import org.drip.product.definition.*;
+import org.drip.service.env.*;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * Copyright (C) 2012 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * BuiltInCDSPortfolioDefinitions displays the Built-in CDS Portfolios. It shows the following:
+ *  
+ * 	- Construct the CDX.NA.IG 5Y Series 17 index by name and series.
+ * 	- Construct the on-the-run CDX.NA.IG 5Y Series index.
+ * 	- List all the built-in CDX's - their names and descriptions.
+ *  - Construct the on-the run CDX.EM 5Y corresponding to T - 1Y.
+ *  - Construct the on-the run ITRAXX.ENERGY 5Y corresponding to T - 7Y.
+ *  - Retrieve the full set of date/index series set for ITRAXX.ENERGY.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L79">public class BuiltInCDSPortfolioDefinitions {</span>
+
+	/*
+	 * Sample demonstrating the creation/usage of the CDX API
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final void BasketCDSAPISample()
+	{
+<span class="nc" id="L89">		JulianDate dtToday = DateUtil.CreateFromYMD (</span>
+			2013,
+			DateUtil.MAY,
+			10
+		);
+
+		/*
+		 * Construct the CDX.NA.IG 5Y Series 17 index by name and series
+		 */
+
+		/* BasketProduct bpCDX = CreditAnalytics.MakeCDX (
+			&quot;CDX.NA.IG&quot;,
+			17,
+			&quot;5Y&quot;
+		); */
+
+		/*
+		 * Construct the on-the-run CDX.NA.IG 5Y Series index
+		 */
+
+		/* BasketProduct bpCDXOTR = CreditAnalytics.MakeCDX (
+			&quot;CDX.NA.IG&quot;,
+			dtToday,
+			&quot;5Y&quot;
+		); */
+
+		/*
+		 * List of all the built-in CDX names
+		 */
+
+<span class="nc" id="L119">		Set&lt;String&gt; setstrCDXNames = StandardCDXManager.GetCDXNames();</span>
+
+		/*
+		 * Descriptions of all the built-in CDX names
+		 */
+
+<span class="nc" id="L125">		CaseInsensitiveTreeMap&lt;String&gt; mapCDXDescr = StandardCDXManager.GetCDXDescriptions();</span>
+
+		/*
+		 * Construct the on-the run CDX.EM 5Y corresponding to T - 1Y
+		 */
+
+<span class="nc" id="L131">		BasketProduct bpPresetOTR = StandardCDXManager.GetOnTheRun (</span>
+			&quot;CDX.EM&quot;,
+<span class="nc" id="L133">			dtToday.subtractTenor (&quot;1Y&quot;),</span>
+			&quot;5Y&quot;
+		);
+
+		/*
+		 * Construct the on-the run ITRAXX.ENERGY 5Y corresponding to T - 7Y
+		 */
+
+<span class="nc" id="L141">		BasketProduct bpPreLoadedOTR = StandardCDXManager.GetOnTheRun (</span>
+			&quot;ITRAXX.ENERGY&quot;,
+<span class="nc" id="L143">			dtToday.subtractTenor (&quot;7Y&quot;),</span>
+			&quot;5Y&quot;
+		);
+
+		/*
+		 * Retrieve the full set of date/index series set for ITRAXX.ENERGY
+		 */
+
+<span class="nc" id="L151">		Map&lt;JulianDate, Integer&gt; mapCDXSeries = StandardCDXManager.GetCDXSeriesMap (&quot;ITRAXX.ENERGY&quot;);</span>
+
+		// System.out.println (bpCDX.name() + &quot;: &quot; + bpCDX.effective() + &quot;=&gt;&quot; + bpCDX.maturity());
+
+		// System.out.println (bpCDXOTR.name() + &quot;: &quot; + bpCDXOTR.effective() + &quot;=&gt;&quot; + bpCDXOTR.maturity());
+
+<span class="nc" id="L157">		int i = 0;</span>
+
+<span class="nc bnc" id="L159" title="All 2 branches missed.">		for (String strCDX : setstrCDXNames)</span>
+<span class="nc" id="L160">			System.out.println (&quot;CDX[&quot; + i++ + &quot;]: &quot; + strCDX);</span>
+
+<span class="nc bnc" id="L162" title="All 2 branches missed.">		for (Map.Entry&lt;String, String&gt; meCDXDescr : mapCDXDescr.entrySet())</span>
+<span class="nc" id="L163">			System.out.println (&quot;[&quot; + meCDXDescr.getKey() + &quot;]: &quot; + meCDXDescr.getValue());</span>
+
+<span class="nc" id="L165">		System.out.println (bpPresetOTR.name() + &quot;: &quot; + bpPresetOTR.effective() + &quot;=&gt;&quot; + bpPresetOTR.maturity());</span>
+
+<span class="nc" id="L167">		System.out.println (bpPreLoadedOTR.name() + &quot;: &quot; + bpPreLoadedOTR.effective() + &quot;=&gt;&quot; + bpPreLoadedOTR.maturity());</span>
+
+<span class="nc bnc" id="L169" title="All 2 branches missed.">		for (Map.Entry&lt;JulianDate, Integer&gt; me : mapCDXSeries.entrySet())</span>
+<span class="nc" id="L170">			System.out.println (&quot;ITRAXX.ENERGY[&quot; + me.getValue() + &quot;]: &quot; + me.getKey());</span>
+<span class="nc" id="L171">	}</span>
+
+	public static final void main (
+		final String astrArgs[])
+		throws Exception
+	{
+		// String strConfig = &quot;c:\\Lakshmi\\BondAnal\\Config.xml&quot;;
+
+<span class="nc" id="L179">		String strConfig = &quot;&quot;;</span>
+
+<span class="nc" id="L181">		EnvManager.InitEnv (strConfig);</span>
+
+<span class="nc" id="L183">		BasketCDSAPISample();</span>
+<span class="nc" id="L184">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

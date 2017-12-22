@@ -132,7 +132,10 @@ public class FixedCouponKeyRateDuration {
 		final String[] args)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		int iSpotDate = DateUtil.CreateFromYMD (
 			2015,
@@ -347,5 +350,7 @@ public class FixedCouponKeyRateDuration {
 			false,
 			true
 		);
+
+		EnvManager.TerminateEnv();
 	}
 }

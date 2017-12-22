@@ -1,0 +1,906 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ExposureGroupPath.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.xva.netting</a> &gt; <span class="el_source">ExposureGroupPath.java</span></div><h1>ExposureGroupPath.java</h1><pre class="source lang-java linenums">
+package org.drip.xva.netting;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * ExposureGroupPath rolls up the Path Realizations of the Sequence in a Single Path Projection Run over
+ *  Multiple Collateral Groups onto a Single Exposure Group. The References are:
+ *  
+ *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
+ *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
+ *  
+ *  - Burgard, C., and M. Kjaer (2014): In the Balance, Risk, 24 (11) 72-75.
+ *  
+ *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk, Risk 20 (2) 86-90.
+ *  
+ *  - Li, B., and Y. Tang (2007): Quantitative Analysis, Derivatives Modeling, and Trading Strategies in the
+ *  	Presence of Counter-party Credit Risk for the Fixed Income Market, World Scientific Publishing,
+ *  	Singapore.
+ * 
+ *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
+ *  	21 (2) 97-102.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class ExposureGroupPath {
+<span class="fc" id="L72">	private org.drip.xva.universe.MarketPath _mp = null;</span>
+<span class="fc" id="L73">	private org.drip.xva.hypothecation.CollateralGroupPath[] _aHGP = null;</span>
+
+	/**
+	 * ExposureGroupPath Constructor
+	 * 
+	 * @param aHGP Array of the Collateral Group Trajectory Paths
+	 * @param mp The Market Path
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public ExposureGroupPath (
+		final org.drip.xva.hypothecation.CollateralGroupPath[] aHGP,
+		final org.drip.xva.universe.MarketPath mp)
+		throws java.lang.Exception
+<span class="fc" id="L88">	{</span>
+<span class="pc bpc" id="L89" title="2 of 4 branches missed.">		if (null == (_aHGP = aHGP) || null == (_mp = mp))</span>
+<span class="nc" id="L90">			throw new java.lang.Exception (&quot;ExposureGroupPath Constructor =&gt; Invalid Inputs&quot;);</span>
+
+<span class="fc" id="L92">		int iNumHypothecationGroup = _aHGP.length;</span>
+
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">		if (0 == iNumHypothecationGroup)</span>
+<span class="nc" id="L95">			throw new java.lang.Exception (&quot;ExposureGroupPath Constructor =&gt; Invalid Inputs&quot;);</span>
+
+<span class="fc bfc" id="L97" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumHypothecationGroup; ++i) {</span>
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">			if (null == _aHGP[i])</span>
+<span class="nc" id="L99">				throw new java.lang.Exception (&quot;ExposureGroupPath Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="fc" id="L101">	}</span>
+
+	/**
+	 * Retrieve the Array of the Collateral Hypothecation Group Trajectory Paths
+	 * 
+	 * @return Array of the Collateral Hypothecation Group Trajectory Paths
+	 */
+
+	public org.drip.xva.hypothecation.CollateralGroupPath[] hypothecationGroupPaths()
+	{
+<span class="nc" id="L111">		return _aHGP;</span>
+	}
+
+	/**
+	 * Retrieve the Market Path
+	 * 
+	 * @return The Market Path
+	 */
+
+	public org.drip.xva.universe.MarketPath marketPath()
+	{
+<span class="fc" id="L122">		return _mp;</span>
+	}
+
+	/**
+	 * Retrieve the Array of the Vertex Anchor Dates
+	 * 
+	 * @return The Array of the Vertex Anchor Dates
+	 */
+
+	public org.drip.analytics.date.JulianDate[] anchors()
+	{
+<span class="fc" id="L133">		return _aHGP[0].anchors();</span>
+	}
+
+	/**
+	 * Retrieve the Array of Collateralized Exposures
+	 * 
+	 * @return The Array of Collateralized Exposures
+	 */
+
+	public double[] collateralizedExposure()
+	{
+<span class="fc" id="L144">		int iNumVertex = anchors().length;</span>
+
+<span class="fc" id="L146">		int iNumCollateralGroup = _aHGP.length;</span>
+<span class="fc" id="L147">		double[] adblCollateralizedExposure = new double[iNumVertex];</span>
+
+<span class="fc bfc" id="L149" title="All 2 branches covered.">		for (int j = 0; j &lt; iNumVertex; ++j)</span>
+<span class="fc" id="L150">			adblCollateralizedExposure[j] = 0.;</span>
+
+<span class="fc bfc" id="L152" title="All 2 branches covered.">		for (int iCollateralGroupIndex = 0; iCollateralGroupIndex &lt; iNumCollateralGroup;</span>
+<span class="fc" id="L153">			++iCollateralGroupIndex) {</span>
+<span class="fc" id="L154">			double[] adblCollateralGroupCollateralizedExposure =</span>
+<span class="fc" id="L155">				_aHGP[iCollateralGroupIndex].collateralizedExposure();</span>
+
+<span class="fc bfc" id="L157" title="All 2 branches covered.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
+<span class="fc" id="L158">				adblCollateralizedExposure[iVertexIndex] +=</span>
+					adblCollateralGroupCollateralizedExposure[iVertexIndex];
+		}
+
+<span class="fc" id="L162">		return adblCollateralizedExposure;</span>
+	}
+
+	/**
+	 * Retrieve the Array of Collateralized Exposure PV
+	 * 
+	 * @return The Array of Collateralized Exposure PV
+	 */
+
+	public double[] collateralizedExposurePV()
+	{
+<span class="fc" id="L173">		int iNumVertex = anchors().length;</span>
+
+<span class="fc" id="L175">		int iNumCollateralGroup = _aHGP.length;</span>
+<span class="fc" id="L176">		double[] adblCollateralizedExposurePV = new double[iNumVertex];</span>
+
+<span class="fc bfc" id="L178" title="All 2 branches covered.">		for (int j = 0; j &lt; iNumVertex; ++j)</span>
+<span class="fc" id="L179">			adblCollateralizedExposurePV[j] = 0.;</span>
+
+<span class="fc bfc" id="L181" title="All 2 branches covered.">		for (int iCollateralGroupIndex = 0; iCollateralGroupIndex &lt; iNumCollateralGroup;</span>
+<span class="fc" id="L182">			++iCollateralGroupIndex) {</span>
+<span class="fc" id="L183">			double[] adblCollateralGroupCollateralizedExposure =</span>
+<span class="fc" id="L184">				_aHGP[iCollateralGroupIndex].collateralizedExposure();</span>
+
+<span class="fc" id="L186">			org.drip.xva.universe.MarketVertex[] aMV = _mp.vertexes();</span>
+
+<span class="fc bfc" id="L188" title="All 2 branches covered.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
+<span class="fc" id="L189">				adblCollateralizedExposurePV[iVertexIndex] +=</span>
+					adblCollateralGroupCollateralizedExposure[iVertexIndex] *
+<span class="fc" id="L191">						aMV[iVertexIndex].overnightIndexNumeraire().epochalForwardScale();</span>
+		}
+
+<span class="fc" id="L194">		return adblCollateralizedExposurePV;</span>
+	}
+
+	/**
+	 * Retrieve the Array of Collateralized Positive Exposures
+	 * 
+	 * @return The Array of Collateralized Positive Exposures
+	 */
+
+	public double[] collateralizedPositiveExposure()
+	{
+<span class="fc" id="L205">		int iNumVertex = anchors().length;</span>
+
+<span class="fc" id="L207">		int iNumCollateralGroup = _aHGP.length;</span>
+<span class="fc" id="L208">		double[] adblCollateralizedPositiveExposure = new double[iNumVertex];</span>
+
+<span class="fc bfc" id="L210" title="All 2 branches covered.">		for (int j = 0; j &lt; iNumVertex; ++j)</span>
+<span class="fc" id="L211">			adblCollateralizedPositiveExposure[j] = 0.;</span>
+
+<span class="fc bfc" id="L213" title="All 2 branches covered.">		for (int iCollateralGroupIndex = 0; iCollateralGroupIndex &lt; iNumCollateralGroup;</span>
+<span class="fc" id="L214">			++iCollateralGroupIndex) {</span>
+<span class="fc" id="L215">			double[] adblCollateralGroupCollateralizedExposure =</span>
+<span class="fc" id="L216">				_aHGP[iCollateralGroupIndex].collateralizedExposure();</span>
+
+<span class="fc bfc" id="L218" title="All 2 branches covered.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex) {</span>
+<span class="fc" id="L219">				double dblCollateralizedExposure = adblCollateralGroupCollateralizedExposure[iVertexIndex];</span>
+
+<span class="fc bfc" id="L221" title="All 2 branches covered.">				if (0. &lt; dblCollateralizedExposure)</span>
+<span class="fc" id="L222">					adblCollateralizedPositiveExposure[iVertexIndex] += dblCollateralizedExposure;</span>
+			}
+		}
+
+<span class="fc" id="L226">		return adblCollateralizedPositiveExposure;</span>
+	}
+
+	/**
+	 * Retrieve the Array of Collateralized Positive Exposure PV
+	 * 
+	 * @return The Array of Collateralized Positive Exposures PV
+	 */
+
+	public double[] collateralizedPositiveExposurePV()
+	{
+<span class="fc" id="L237">		int iNumVertex = anchors().length;</span>
+
+<span class="fc" id="L239">		int iNumCollateralGroup = _aHGP.length;</span>
+<span class="fc" id="L240">		double[] adblCollateralizedPositiveExposurePV = new double[iNumVertex];</span>
+
+<span class="fc bfc" id="L242" title="All 2 branches covered.">		for (int j = 0; j &lt; iNumVertex; ++j)</span>
+<span class="fc" id="L243">			adblCollateralizedPositiveExposurePV[j] = 0.;</span>
+
+<span class="fc bfc" id="L245" title="All 2 branches covered.">		for (int iCollateralGroupIndex = 0; iCollateralGroupIndex &lt; iNumCollateralGroup;</span>
+<span class="fc" id="L246">			++iCollateralGroupIndex) {</span>
+<span class="fc" id="L247">			double[] adblCollateralGroupCollateralizedExposure =</span>
+<span class="fc" id="L248">				_aHGP[iCollateralGroupIndex].collateralizedExposure();</span>
+
+<span class="fc" id="L250">			org.drip.xva.universe.MarketVertex[] aMV = _mp.vertexes();</span>
+
+<span class="fc bfc" id="L252" title="All 2 branches covered.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex) {</span>
+<span class="fc" id="L253">				double dblCollateralizedExposure = adblCollateralGroupCollateralizedExposure[iVertexIndex];</span>
+
+<span class="fc bfc" id="L255" title="All 2 branches covered.">				if (0. &lt; dblCollateralizedExposure)</span>
+<span class="fc" id="L256">					adblCollateralizedPositiveExposurePV[iVertexIndex] += dblCollateralizedExposure *</span>
+<span class="fc" id="L257">						aMV[iVertexIndex].overnightIndexNumeraire().epochalForwardScale();</span>
+			}
+		}
+
+<span class="fc" id="L261">		return adblCollateralizedPositiveExposurePV;</span>
+	}
+
+	/**
+	 * Retrieve the Array of Collateralized Negative Exposures
+	 * 
+	 * @return The Array of Collateralized Negative Exposures
+	 */
+
+	public double[] collateralizedNegativeExposure()
+	{
+<span class="fc" id="L272">		int iNumVertex = anchors().length;</span>
+
+<span class="fc" id="L274">		int iNumCollateralGroup = _aHGP.length;</span>
+<span class="fc" id="L275">		double[] adblCollateralizedNegativeExposure = new double[iNumVertex];</span>
+
+<span class="fc bfc" id="L277" title="All 2 branches covered.">		for (int j = 0; j &lt; iNumVertex; ++j)</span>
+<span class="fc" id="L278">			adblCollateralizedNegativeExposure[j] = 0.;</span>
+
+<span class="fc bfc" id="L280" title="All 2 branches covered.">		for (int iCollateralGroupIndex = 0; iCollateralGroupIndex &lt; iNumCollateralGroup;</span>
+<span class="fc" id="L281">			++iCollateralGroupIndex) {</span>
+<span class="fc" id="L282">			double[] adblCollateralGroupCollateralizedExposure =</span>
+<span class="fc" id="L283">				_aHGP[iCollateralGroupIndex].collateralizedExposure();</span>
+
+<span class="fc bfc" id="L285" title="All 2 branches covered.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex) {</span>
+<span class="fc" id="L286">				double dblCollateralizedExposure = adblCollateralGroupCollateralizedExposure[iVertexIndex];</span>
+
+<span class="fc bfc" id="L288" title="All 2 branches covered.">				if (0. &gt; dblCollateralizedExposure)</span>
+<span class="fc" id="L289">					adblCollateralizedNegativeExposure[iVertexIndex] += dblCollateralizedExposure;</span>
+			}
+		}
+
+<span class="fc" id="L293">		return adblCollateralizedNegativeExposure;</span>
+	}
+
+	/**
+	 * Retrieve the Array of Collateralized Negative Exposure PV
+	 * 
+	 * @return The Array of Collateralized Negative Exposure PV
+	 */
+
+	public double[] collateralizedNegativeExposurePV()
+	{
+<span class="fc" id="L304">		int iNumVertex = anchors().length;</span>
+
+<span class="fc" id="L306">		int iNumCollateralGroup = _aHGP.length;</span>
+<span class="fc" id="L307">		double[] adblCollateralizedNegativeExposurePV = new double[iNumVertex];</span>
+
+<span class="fc bfc" id="L309" title="All 2 branches covered.">		for (int j = 0; j &lt; iNumVertex; ++j)</span>
+<span class="fc" id="L310">			adblCollateralizedNegativeExposurePV[j] = 0.;</span>
+
+<span class="fc bfc" id="L312" title="All 2 branches covered.">		for (int iCollateralGroupIndex = 0; iCollateralGroupIndex &lt; iNumCollateralGroup;</span>
+<span class="fc" id="L313">			++iCollateralGroupIndex) {</span>
+<span class="fc" id="L314">			double[] adblCollateralGroupCollateralizedExposure =</span>
+<span class="fc" id="L315">				_aHGP[iCollateralGroupIndex].collateralizedExposure();</span>
+
+<span class="fc" id="L317">			org.drip.xva.universe.MarketVertex[] aMV = _mp.vertexes();</span>
+
+<span class="fc bfc" id="L319" title="All 2 branches covered.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex) {</span>
+<span class="fc" id="L320">				double dblCollateralizedExposure = adblCollateralGroupCollateralizedExposure[iVertexIndex];</span>
+
+<span class="fc bfc" id="L322" title="All 2 branches covered.">				if (0. &gt; dblCollateralizedExposure)</span>
+<span class="fc" id="L323">					adblCollateralizedNegativeExposurePV[iVertexIndex] += dblCollateralizedExposure *</span>
+<span class="fc" id="L324">						aMV[iVertexIndex].overnightIndexNumeraire().epochalForwardScale();</span>
+			}
+		}
+
+<span class="fc" id="L328">		return adblCollateralizedNegativeExposurePV;</span>
+	}
+
+	/**
+	 * Retrieve the Array of Uncollateralized Exposures
+	 * 
+	 * @return The Array of Uncollateralized Exposures
+	 */
+
+	public double[] uncollateralizedExposure()
+	{
+<span class="nc" id="L339">		int iNumVertex = anchors().length;</span>
+
+<span class="nc" id="L341">		int iNumCollateralGroup = _aHGP.length;</span>
+<span class="nc" id="L342">		double[] adblUncollateralizedExposure = new double[iNumVertex];</span>
+
+<span class="nc bnc" id="L344" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumVertex; ++j)</span>
+<span class="nc" id="L345">			adblUncollateralizedExposure[j] = 0.;</span>
+
+<span class="nc bnc" id="L347" title="All 2 branches missed.">		for (int iCollateralGroupIndex = 0; iCollateralGroupIndex &lt; iNumCollateralGroup;</span>
+<span class="nc" id="L348">			++iCollateralGroupIndex) {</span>
+<span class="nc" id="L349">			double[] adblCollateralGroupUncollateralizedExposure =</span>
+<span class="nc" id="L350">				_aHGP[iCollateralGroupIndex].uncollateralizedExposure();</span>
+
+<span class="nc bnc" id="L352" title="All 2 branches missed.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
+<span class="nc" id="L353">				adblUncollateralizedExposure[iVertexIndex] +=</span>
+					adblCollateralGroupUncollateralizedExposure[iVertexIndex];
+		}
+
+<span class="nc" id="L357">		return adblUncollateralizedExposure;</span>
+	}
+
+	/**
+	 * Retrieve the Array of Uncollateralized Exposure PV
+	 * 
+	 * @return The Array of Uncollateralized Exposure PV
+	 */
+
+	public double[] uncollateralizedExposurePV()
+	{
+<span class="nc" id="L368">		int iNumVertex = anchors().length;</span>
+
+<span class="nc" id="L370">		int iNumCollateralGroup = _aHGP.length;</span>
+<span class="nc" id="L371">		double[] adblUncollateralizedExposurePV = new double[iNumVertex];</span>
+
+<span class="nc bnc" id="L373" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumVertex; ++j)</span>
+<span class="nc" id="L374">			adblUncollateralizedExposurePV[j] = 0.;</span>
+
+<span class="nc bnc" id="L376" title="All 2 branches missed.">		for (int iCollateralGroupIndex = 0; iCollateralGroupIndex &lt; iNumCollateralGroup;</span>
+<span class="nc" id="L377">			++iCollateralGroupIndex) {</span>
+<span class="nc" id="L378">			double[] adblCollateralGroupUncollateralizedExposure =</span>
+<span class="nc" id="L379">				_aHGP[iCollateralGroupIndex].uncollateralizedExposure();</span>
+
+<span class="nc" id="L381">			org.drip.xva.universe.MarketVertex[] aMV = _mp.vertexes();</span>
+
+<span class="nc bnc" id="L383" title="All 2 branches missed.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
+<span class="nc" id="L384">				adblUncollateralizedExposurePV[iVertexIndex] +=</span>
+					adblCollateralGroupUncollateralizedExposure[iVertexIndex] *
+<span class="nc" id="L386">						aMV[iVertexIndex].overnightIndexNumeraire().epochalForwardScale();</span>
+		}
+
+<span class="nc" id="L389">		return adblUncollateralizedExposurePV;</span>
+	}
+
+	/**
+	 * Retrieve the Array of Uncollateralized Positive Exposures
+	 * 
+	 * @return The Array of Uncollateralized Positive Exposures
+	 */
+
+	public double[] uncollateralizedPositiveExposure()
+	{
+<span class="nc" id="L400">		int iNumVertex = anchors().length;</span>
+
+<span class="nc" id="L402">		int iNumCollateralGroup = _aHGP.length;</span>
+<span class="nc" id="L403">		double[] adblUncollateralizedPositiveExposure = new double[iNumVertex];</span>
+
+<span class="nc bnc" id="L405" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumVertex; ++j)</span>
+<span class="nc" id="L406">			adblUncollateralizedPositiveExposure[j] = 0.;</span>
+
+<span class="nc bnc" id="L408" title="All 2 branches missed.">		for (int iCollateralGroupIndex = 0; iCollateralGroupIndex &lt; iNumCollateralGroup;</span>
+<span class="nc" id="L409">			++iCollateralGroupIndex) {</span>
+<span class="nc" id="L410">			double[] adblUncollateralGroupCollateralizedExposure =</span>
+<span class="nc" id="L411">				_aHGP[iCollateralGroupIndex].uncollateralizedExposure();</span>
+
+<span class="nc bnc" id="L413" title="All 2 branches missed.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex) {</span>
+<span class="nc" id="L414">				double dblUncollateralizedExposure =</span>
+					adblUncollateralGroupCollateralizedExposure[iVertexIndex];
+
+<span class="nc bnc" id="L417" title="All 2 branches missed.">				if (0. &lt; dblUncollateralizedExposure)</span>
+<span class="nc" id="L418">					adblUncollateralizedPositiveExposure[iVertexIndex] += dblUncollateralizedExposure;</span>
+			}
+		}
+
+<span class="nc" id="L422">		return adblUncollateralizedPositiveExposure;</span>
+	}
+
+	/**
+	 * Retrieve the Array of Uncollateralized Positive Exposure PV
+	 * 
+	 * @return The Array of Uncollateralized Positive Exposure PV
+	 */
+
+	public double[] uncollateralizedPositiveExposurePV()
+	{
+<span class="nc" id="L433">		int iNumVertex = anchors().length;</span>
+
+<span class="nc" id="L435">		int iNumCollateralGroup = _aHGP.length;</span>
+<span class="nc" id="L436">		double[] adblUncollateralizedPositiveExposurePV = new double[iNumVertex];</span>
+
+<span class="nc bnc" id="L438" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumVertex; ++j)</span>
+<span class="nc" id="L439">			adblUncollateralizedPositiveExposurePV[j] = 0.;</span>
+
+<span class="nc bnc" id="L441" title="All 2 branches missed.">		for (int iCollateralGroupIndex = 0; iCollateralGroupIndex &lt; iNumCollateralGroup;</span>
+<span class="nc" id="L442">			++iCollateralGroupIndex) {</span>
+<span class="nc" id="L443">			double[] adblUncollateralGroupCollateralizedExposure =</span>
+<span class="nc" id="L444">				_aHGP[iCollateralGroupIndex].uncollateralizedExposure();</span>
+
+<span class="nc" id="L446">			org.drip.xva.universe.MarketVertex[] aMV = _mp.vertexes();</span>
+
+<span class="nc bnc" id="L448" title="All 2 branches missed.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex) {</span>
+<span class="nc" id="L449">				double dblUncollateralizedExposure =</span>
+					adblUncollateralGroupCollateralizedExposure[iVertexIndex];
+
+<span class="nc bnc" id="L452" title="All 2 branches missed.">				if (0. &lt; dblUncollateralizedExposure)</span>
+<span class="nc" id="L453">					adblUncollateralizedPositiveExposurePV[iVertexIndex] += dblUncollateralizedExposure *</span>
+<span class="nc" id="L454">						aMV[iVertexIndex].overnightIndexNumeraire().epochalForwardScale();</span>
+			}
+		}
+
+<span class="nc" id="L458">		return adblUncollateralizedPositiveExposurePV;</span>
+	}
+
+	/**
+	 * Retrieve the Array of Uncollateralized Negative Exposures
+	 * 
+	 * @return The Array of Uncollateralized Negative Exposures
+	 */
+
+	public double[] uncollateralizedNegativeExposure()
+	{
+<span class="nc" id="L469">		int iNumVertex = anchors().length;</span>
+
+<span class="nc" id="L471">		int iNumCollateralGroup = _aHGP.length;</span>
+<span class="nc" id="L472">		double[] adblUncollateralizedNegativeExposure = new double[iNumVertex];</span>
+
+<span class="nc bnc" id="L474" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumVertex; ++j)</span>
+<span class="nc" id="L475">			adblUncollateralizedNegativeExposure[j] = 0.;</span>
+
+<span class="nc bnc" id="L477" title="All 2 branches missed.">		for (int iCollateralGroupIndex = 0; iCollateralGroupIndex &lt; iNumCollateralGroup;</span>
+<span class="nc" id="L478">			++iCollateralGroupIndex) {</span>
+<span class="nc" id="L479">			double[] adblCollateralGroupUncollateralizedExposure =</span>
+<span class="nc" id="L480">				_aHGP[iCollateralGroupIndex].uncollateralizedExposure();</span>
+
+<span class="nc bnc" id="L482" title="All 2 branches missed.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex) {</span>
+<span class="nc" id="L483">				double dblUncollateralizedExposure =</span>
+					adblCollateralGroupUncollateralizedExposure[iVertexIndex];
+
+<span class="nc bnc" id="L486" title="All 2 branches missed.">				if (0. &gt; dblUncollateralizedExposure)</span>
+<span class="nc" id="L487">					adblUncollateralizedNegativeExposure[iVertexIndex] += dblUncollateralizedExposure;</span>
+			}
+		}
+
+<span class="nc" id="L491">		return adblUncollateralizedNegativeExposure;</span>
+	}
+
+	/**
+	 * Retrieve the Array of Uncollateralized Negative Exposure PV
+	 * 
+	 * @return The Array of Uncollateralized Negative Exposure PV
+	 */
+
+	public double[] uncollateralizedNegativeExposurePV()
+	{
+<span class="nc" id="L502">		int iNumVertex = anchors().length;</span>
+
+<span class="nc" id="L504">		int iNumCollateralGroup = _aHGP.length;</span>
+<span class="nc" id="L505">		double[] adblUncollateralizedNegativeExposurePV = new double[iNumVertex];</span>
+
+<span class="nc bnc" id="L507" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumVertex; ++j)</span>
+<span class="nc" id="L508">			adblUncollateralizedNegativeExposurePV[j] = 0.;</span>
+
+<span class="nc bnc" id="L510" title="All 2 branches missed.">		for (int iCollateralGroupIndex = 0; iCollateralGroupIndex &lt; iNumCollateralGroup;</span>
+<span class="nc" id="L511">			++iCollateralGroupIndex) {</span>
+<span class="nc" id="L512">			double[] adblUncollateralGroupCollateralizedExposure =</span>
+<span class="nc" id="L513">				_aHGP[iCollateralGroupIndex].uncollateralizedExposure();</span>
+
+<span class="nc" id="L515">			org.drip.xva.universe.MarketVertex[] aMV = _mp.vertexes();</span>
+
+<span class="nc bnc" id="L517" title="All 2 branches missed.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex) {</span>
+<span class="nc" id="L518">				double dblUncollateralizedExposure =</span>
+					adblUncollateralGroupCollateralizedExposure[iVertexIndex];
+
+<span class="nc bnc" id="L521" title="All 2 branches missed.">				if (0. &gt; dblUncollateralizedExposure)</span>
+<span class="nc" id="L522">					adblUncollateralizedNegativeExposurePV[iVertexIndex] += dblUncollateralizedExposure *</span>
+<span class="nc" id="L523">						aMV[iVertexIndex].overnightIndexNumeraire().epochalForwardScale();</span>
+			}
+		}
+
+<span class="nc" id="L527">		return adblUncollateralizedNegativeExposurePV;</span>
+	}
+
+	/**
+	 * Retrieve the Array of Collateral Balances
+	 * 
+	 * @return The Array of Collateral Balances
+	 */
+
+	public double[] collateralBalance()
+	{
+<span class="nc" id="L538">		int iNumVertex = anchors().length;</span>
+
+<span class="nc" id="L540">		int iNumCollateralGroup = _aHGP.length;</span>
+<span class="nc" id="L541">		double[] adblCollateralBalance = new double[iNumVertex];</span>
+
+<span class="nc bnc" id="L543" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumVertex; ++j)</span>
+<span class="nc" id="L544">			adblCollateralBalance[j] = 0.;</span>
+
+<span class="nc bnc" id="L546" title="All 2 branches missed.">		for (int iCollateralGroupIndex = 0; iCollateralGroupIndex &lt; iNumCollateralGroup;</span>
+<span class="nc" id="L547">			++iCollateralGroupIndex) {</span>
+<span class="nc" id="L548">			double[] adblCollateralGroupCollateralBalance = _aHGP[iCollateralGroupIndex].collateralBalance();</span>
+
+<span class="nc bnc" id="L550" title="All 2 branches missed.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
+<span class="nc" id="L551">				adblCollateralBalance[iVertexIndex] += adblCollateralGroupCollateralBalance[iVertexIndex];</span>
+		}
+
+<span class="nc" id="L554">		return adblCollateralBalance;</span>
+	}
+
+	/**
+	 * Compute Path Bilateral Collateral Value Adjustment
+	 * 
+	 * @return The Path Bilateral Collateral Value Adjustment
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double bilateralCollateralAdjustment()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L568">		org.drip.xva.universe.MarketVertex[] aMV = _mp.vertexes();</span>
+
+<span class="nc" id="L570">		double[] adblCollateralBalance = collateralBalance();</span>
+
+<span class="nc" id="L572">		double dblBilateralCollateralValueAdjustment = 0.;</span>
+<span class="nc" id="L573">		int iNumVertex = adblCollateralBalance.length;</span>
+
+<span class="nc bnc" id="L575" title="All 2 branches missed.">		for (int iVertexIndex = 1; iVertexIndex &lt; iNumVertex; ++iVertexIndex) {</span>
+<span class="nc" id="L576">			double dblPeriodIntegrandStart = adblCollateralBalance[iVertexIndex - 1] *</span>
+<span class="nc" id="L577">				aMV[iVertexIndex - 1].bank().survivalProbability() *</span>
+<span class="nc" id="L578">					aMV[iVertexIndex - 1].counterParty().survivalProbability() *</span>
+<span class="nc" id="L579">						aMV[iVertexIndex - 1].collateralSchemeSpread() *</span>
+<span class="nc" id="L580">							aMV[iVertexIndex - 1].overnightIndexNumeraire().epochalForwardScale();</span>
+
+<span class="nc" id="L582">			double dblPeriodIntegrandEnd = adblCollateralBalance[iVertexIndex] *</span>
+<span class="nc" id="L583">				aMV[iVertexIndex].bank().survivalProbability() *</span>
+<span class="nc" id="L584">					aMV[iVertexIndex].counterParty().survivalProbability() *</span>
+<span class="nc" id="L585">						aMV[iVertexIndex].collateralSchemeSpread() *</span>
+<span class="nc" id="L586">							aMV[iVertexIndex].overnightIndexNumeraire().epochalForwardScale();</span>
+
+<span class="nc" id="L588">			dblBilateralCollateralValueAdjustment -= 0.5 * (dblPeriodIntegrandStart + dblPeriodIntegrandEnd)</span>
+<span class="nc" id="L589">				* (aMV[iVertexIndex].anchor().julian() - aMV[iVertexIndex - 1].anchor().julian()) / 365.25;</span>
+		}
+
+<span class="nc" id="L592">		return dblBilateralCollateralValueAdjustment;</span>
+	}
+
+	/**
+	 * Compute Path Unilateral Collateral Value Adjustment
+	 * 
+	 * @return The Path Unilateral Collateral Value Adjustment
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double unilateralCollateralAdjustment()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L606">		org.drip.xva.universe.MarketVertex[] aMV = _mp.vertexes();</span>
+
+<span class="nc" id="L608">		double[] adblCollateralBalance = collateralBalance();</span>
+
+<span class="nc" id="L610">		double dblUnilateralCollateralValueAdjustment = 0.;</span>
+<span class="nc" id="L611">		int iNumVertex = adblCollateralBalance.length;</span>
+
+<span class="nc bnc" id="L613" title="All 2 branches missed.">		for (int iVertexIndex = 1; iVertexIndex &lt; iNumVertex; ++iVertexIndex) {</span>
+<span class="nc" id="L614">			double dblPeriodIntegrandStart = adblCollateralBalance[iVertexIndex - 1] *</span>
+<span class="nc" id="L615">				aMV[iVertexIndex - 1].counterParty().survivalProbability() *</span>
+<span class="nc" id="L616">					aMV[iVertexIndex - 1].collateralSchemeSpread() *</span>
+<span class="nc" id="L617">						aMV[iVertexIndex - 1].overnightIndexNumeraire().epochalForwardScale();</span>
+
+<span class="nc" id="L619">			double dblPeriodIntegrandEnd = adblCollateralBalance[iVertexIndex] *</span>
+<span class="nc" id="L620">				aMV[iVertexIndex].counterParty().survivalProbability() *</span>
+<span class="nc" id="L621">					aMV[iVertexIndex].collateralSchemeSpread() *</span>
+<span class="nc" id="L622">						aMV[iVertexIndex].overnightIndexNumeraire().epochalForwardScale();</span>
+
+<span class="nc" id="L624">			dblUnilateralCollateralValueAdjustment -= 0.5 * (dblPeriodIntegrandStart + dblPeriodIntegrandEnd)</span>
+<span class="nc" id="L625">				* (aMV[iVertexIndex].anchor().julian() - aMV[iVertexIndex - 1].anchor().julian()) / 365.25;</span>
+		}
+
+<span class="nc" id="L628">		return dblUnilateralCollateralValueAdjustment;</span>
+	}
+
+	/**
+	 * Compute Path Collateral Value Adjustment
+	 * 
+	 * @return The Path Collateral Value Adjustment
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double collateralAdjustment()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L642">		return bilateralCollateralAdjustment();</span>
+	}
+
+	/**
+	 * Compute Period-wise Path Unilateral Collateral Value Adjustment
+	 * 
+	 * @return The Period-wise Path Unilateral Collateral Value Adjustment
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double[] periodUnilateralCollateralValueAdjustment()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L656">		org.drip.xva.universe.MarketVertex[] aMV = _mp.vertexes();</span>
+
+<span class="nc" id="L658">		double[] adblCollateralBalance = collateralBalance();</span>
+
+<span class="nc" id="L660">		int iNumVertex = adblCollateralBalance.length;</span>
+<span class="nc" id="L661">		double[] adblUnilateralCollateralValueAdjustment = new double[iNumVertex - 1];</span>
+
+<span class="nc bnc" id="L663" title="All 2 branches missed.">		for (int iVertexIndex = 1; iVertexIndex &lt; iNumVertex; ++iVertexIndex) {</span>
+<span class="nc" id="L664">			double dblPeriodIntegrandStart = adblCollateralBalance[iVertexIndex - 1] *</span>
+<span class="nc" id="L665">				aMV[iVertexIndex - 1].counterParty().survivalProbability() *</span>
+<span class="nc" id="L666">					aMV[iVertexIndex - 1].collateralSchemeSpread() *</span>
+<span class="nc" id="L667">						aMV[iVertexIndex - 1].overnightIndexNumeraire().epochalForwardScale();</span>
+
+<span class="nc" id="L669">			double dblPeriodIntegrandEnd = adblCollateralBalance[iVertexIndex] *</span>
+<span class="nc" id="L670">				aMV[iVertexIndex].counterParty().survivalProbability() *</span>
+<span class="nc" id="L671">					aMV[iVertexIndex].collateralSchemeSpread() *</span>
+<span class="nc" id="L672">						aMV[iVertexIndex].overnightIndexNumeraire().epochalForwardScale();</span>
+
+<span class="nc" id="L674">			adblUnilateralCollateralValueAdjustment[iVertexIndex - 1] = -0.5 * (dblPeriodIntegrandStart +</span>
+<span class="nc" id="L675">				dblPeriodIntegrandEnd) * (aMV[iVertexIndex].anchor().julian() -</span>
+<span class="nc" id="L676">					aMV[iVertexIndex - 1].anchor().julian()) / 365.25;</span>
+		}
+
+<span class="nc" id="L679">		return adblUnilateralCollateralValueAdjustment;</span>
+	}
+
+	/**
+	 * Compute Period-wise Path Bilateral Collateral Value Adjustment
+	 * 
+	 * @return The Period-wise Path Bilateral Collateral Value Adjustment
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double[] periodBilateralCollateralValueAdjustment()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L693">		org.drip.xva.universe.MarketVertex[] aMV = _mp.vertexes();</span>
+
+<span class="nc" id="L695">		double[] adblCollateralBalance = collateralBalance();</span>
+
+<span class="nc" id="L697">		int iNumVertex = adblCollateralBalance.length;</span>
+<span class="nc" id="L698">		double[] adblBilateralCollateralValueAdjustment = new double[iNumVertex - 1];</span>
+
+<span class="nc bnc" id="L700" title="All 2 branches missed.">		for (int iVertexIndex = 1; iVertexIndex &lt; iNumVertex; ++iVertexIndex) {</span>
+<span class="nc" id="L701">			double dblPeriodIntegrandStart = adblCollateralBalance[iVertexIndex - 1] *</span>
+<span class="nc" id="L702">				aMV[iVertexIndex - 1].bank().survivalProbability() *</span>
+<span class="nc" id="L703">					aMV[iVertexIndex - 1].counterParty().survivalProbability() *</span>
+<span class="nc" id="L704">						aMV[iVertexIndex - 1].collateralSchemeSpread() *</span>
+<span class="nc" id="L705">							aMV[iVertexIndex - 1].overnightIndexNumeraire().epochalForwardScale();</span>
+
+<span class="nc" id="L707">			double dblPeriodIntegrandEnd = adblCollateralBalance[iVertexIndex] *</span>
+<span class="nc" id="L708">				aMV[iVertexIndex].bank().survivalProbability() *</span>
+<span class="nc" id="L709">					aMV[iVertexIndex].counterParty().survivalProbability() *</span>
+<span class="nc" id="L710">						aMV[iVertexIndex].collateralSchemeSpread() *</span>
+<span class="nc" id="L711">							aMV[iVertexIndex].overnightIndexNumeraire().epochalForwardScale();</span>
+
+<span class="nc" id="L713">			adblBilateralCollateralValueAdjustment[iVertexIndex - 1] = -0.5 * (dblPeriodIntegrandStart +</span>
+<span class="nc" id="L714">				dblPeriodIntegrandEnd) * (aMV[iVertexIndex].anchor().julian() -</span>
+<span class="nc" id="L715">					aMV[iVertexIndex - 1].anchor().julian()) / 365.25;</span>
+		}
+
+<span class="nc" id="L718">		return adblBilateralCollateralValueAdjustment;</span>
+	}
+
+	/**
+	 * Compute Period-wise Path Collateral Value Adjustment
+	 * 
+	 * @return The Period-wise Path Collateral Value Adjustment
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double[] periodCollateralValueAdjustment()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L732">		return periodBilateralCollateralValueAdjustment();</span>
+	}
+
+	/**
+	 * Retrieve the Array of Credit Exposures
+	 * 
+	 * @return The Array of Credit Exposures
+	 */
+
+	public double[] creditExposure()
+	{
+<span class="nc" id="L743">		int iNumVertex = anchors().length;</span>
+
+<span class="nc" id="L745">		int iNumCollateralGroup = _aHGP.length;</span>
+<span class="nc" id="L746">		double[] adblCreditExposure = new double[iNumVertex];</span>
+
+<span class="nc bnc" id="L748" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumVertex; ++j)</span>
+<span class="nc" id="L749">			adblCreditExposure[j] = 0.;</span>
+
+<span class="nc bnc" id="L751" title="All 2 branches missed.">		for (int iCollateralGroupIndex = 0; iCollateralGroupIndex &lt; iNumCollateralGroup;</span>
+<span class="nc" id="L752">			++iCollateralGroupIndex) {</span>
+<span class="nc" id="L753">			double[] adblCollateralGroupCreditExposure = _aHGP[iCollateralGroupIndex].creditExposure();</span>
+
+<span class="nc bnc" id="L755" title="All 2 branches missed.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
+<span class="nc" id="L756">				adblCreditExposure[iVertexIndex] += adblCollateralGroupCreditExposure[iVertexIndex];</span>
+		}
+
+<span class="nc" id="L759">		return adblCreditExposure;</span>
+	}
+
+	/**
+	 * Retrieve the Array of Credit Exposure PV
+	 * 
+	 * @return The Array of Credit Exposure PV
+	 */
+
+	public double[] creditExposurePV()
+	{
+<span class="fc" id="L770">		int iNumVertex = anchors().length;</span>
+
+<span class="fc" id="L772">		int iNumCollateralGroup = _aHGP.length;</span>
+<span class="fc" id="L773">		double[] adblCreditExposurePV = new double[iNumVertex];</span>
+
+<span class="fc" id="L775">		org.drip.xva.universe.MarketVertex[] aMV = _mp.vertexes();</span>
+
+<span class="fc bfc" id="L777" title="All 2 branches covered.">		for (int j = 0; j &lt; iNumVertex; ++j)</span>
+<span class="fc" id="L778">			adblCreditExposurePV[j] = 0.;</span>
+
+<span class="fc bfc" id="L780" title="All 2 branches covered.">		for (int iCollateralGroupIndex = 0; iCollateralGroupIndex &lt; iNumCollateralGroup;</span>
+<span class="fc" id="L781">			++iCollateralGroupIndex) {</span>
+<span class="fc" id="L782">			double[] adblCollateralGroupCreditExposure = _aHGP[iCollateralGroupIndex].creditExposure();</span>
+
+<span class="fc bfc" id="L784" title="All 2 branches covered.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
+<span class="fc" id="L785">				adblCreditExposurePV[iVertexIndex] += adblCollateralGroupCreditExposure[iVertexIndex] *</span>
+<span class="fc" id="L786">					aMV[iVertexIndex].overnightIndexNumeraire().epochalForwardScale();</span>
+		}
+
+<span class="fc" id="L789">		return adblCreditExposurePV;</span>
+	}
+
+	/**
+	 * Retrieve the Array of Debt Exposures
+	 * 
+	 * @return The Array of Debt Exposures
+	 */
+
+	public double[] debtExposure()
+	{
+<span class="nc" id="L800">		int iNumVertex = anchors().length;</span>
+
+<span class="nc" id="L802">		int iNumCollateralGroup = _aHGP.length;</span>
+<span class="nc" id="L803">		double[] adblDebtExposure = new double[iNumVertex];</span>
+
+<span class="nc bnc" id="L805" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumVertex; ++j)</span>
+<span class="nc" id="L806">			adblDebtExposure[j] = 0.;</span>
+
+<span class="nc bnc" id="L808" title="All 2 branches missed.">		for (int iCollateralGroupIndex = 0; iCollateralGroupIndex &lt; iNumCollateralGroup;</span>
+<span class="nc" id="L809">			++iCollateralGroupIndex) {</span>
+<span class="nc" id="L810">			double[] adblCollateralGroupDebtExposure = _aHGP[iCollateralGroupIndex].debtExposure();</span>
+
+<span class="nc bnc" id="L812" title="All 2 branches missed.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
+<span class="nc" id="L813">				adblDebtExposure[iVertexIndex] += adblCollateralGroupDebtExposure[iVertexIndex];</span>
+		}
+
+<span class="nc" id="L816">		return adblDebtExposure;</span>
+	}
+
+	/**
+	 * Retrieve the Array of Debt Exposure PV
+	 * 
+	 * @return The Array of Debt Exposure PV
+	 */
+
+	public double[] debtExposurePV()
+	{
+<span class="fc" id="L827">		int iNumVertex = anchors().length;</span>
+
+<span class="fc" id="L829">		int iNumCollateralGroup = _aHGP.length;</span>
+<span class="fc" id="L830">		double[] adblDebtExposurePV = new double[iNumVertex];</span>
+
+<span class="fc" id="L832">		org.drip.xva.universe.MarketVertex[] aMV = _mp.vertexes();</span>
+
+<span class="fc bfc" id="L834" title="All 2 branches covered.">		for (int j = 0; j &lt; iNumVertex; ++j)</span>
+<span class="fc" id="L835">			adblDebtExposurePV[j] = 0.;</span>
+
+<span class="fc bfc" id="L837" title="All 2 branches covered.">		for (int iCollateralGroupIndex = 0; iCollateralGroupIndex &lt; iNumCollateralGroup;</span>
+<span class="fc" id="L838">			++iCollateralGroupIndex) {</span>
+<span class="fc" id="L839">			double[] adblCollateralGroupDebtExposure = _aHGP[iCollateralGroupIndex].debtExposure();</span>
+
+<span class="fc bfc" id="L841" title="All 2 branches covered.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
+<span class="fc" id="L842">				adblDebtExposurePV[iVertexIndex] += adblCollateralGroupDebtExposure[iVertexIndex] *</span>
+<span class="fc" id="L843">					aMV[iVertexIndex].overnightIndexNumeraire().epochalForwardScale();</span>
+		}
+
+<span class="fc" id="L846">		return adblDebtExposurePV;</span>
+	}
+
+	/**
+	 * Retrieve the Array of Funding Exposures
+	 * 
+	 * @return The Array of Funding Exposures
+	 */
+
+	public double[] fundingExposure()
+	{
+<span class="nc" id="L857">		int iNumVertex = anchors().length;</span>
+
+<span class="nc" id="L859">		int iNumCollateralGroup = _aHGP.length;</span>
+<span class="nc" id="L860">		double[] adblFundingExposure = new double[iNumVertex];</span>
+
+<span class="nc bnc" id="L862" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumVertex; ++j)</span>
+<span class="nc" id="L863">			adblFundingExposure[j] = 0.;</span>
+
+<span class="nc bnc" id="L865" title="All 2 branches missed.">		for (int iCollateralGroupIndex = 0; iCollateralGroupIndex &lt; iNumCollateralGroup;</span>
+<span class="nc" id="L866">			++iCollateralGroupIndex) {</span>
+<span class="nc" id="L867">			double[] adblCollateralGroupFundingExposure = _aHGP[iCollateralGroupIndex].fundingExposure();</span>
+
+<span class="nc bnc" id="L869" title="All 2 branches missed.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
+<span class="nc" id="L870">				adblFundingExposure[iVertexIndex] += adblCollateralGroupFundingExposure[iVertexIndex];</span>
+		}
+
+<span class="nc" id="L873">		return adblFundingExposure;</span>
+	}
+
+	/**
+	 * Retrieve the Array of Funding Exposure PV
+	 * 
+	 * @return The Array of Funding Exposure PV
+	 */
+
+	public double[] fundingExposurePV()
+	{
+<span class="fc" id="L884">		int iNumVertex = anchors().length;</span>
+
+<span class="fc" id="L886">		int iNumCollateralGroup = _aHGP.length;</span>
+<span class="fc" id="L887">		double[] adblFundingExposurePV = new double[iNumVertex];</span>
+
+<span class="fc" id="L889">		org.drip.xva.universe.MarketVertex[] aMV = _mp.vertexes();</span>
+
+<span class="fc bfc" id="L891" title="All 2 branches covered.">		for (int j = 0; j &lt; iNumVertex; ++j)</span>
+<span class="fc" id="L892">			adblFundingExposurePV[j] = 0.;</span>
+
+<span class="fc bfc" id="L894" title="All 2 branches covered.">		for (int iCollateralGroupIndex = 0; iCollateralGroupIndex &lt; iNumCollateralGroup;</span>
+<span class="fc" id="L895">			++iCollateralGroupIndex) {</span>
+<span class="fc" id="L896">			double[] adblCollateralGroupFundingExposure = _aHGP[iCollateralGroupIndex].fundingExposure();</span>
+
+<span class="fc bfc" id="L898" title="All 2 branches covered.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
+<span class="fc" id="L899">				adblFundingExposurePV[iVertexIndex] += adblCollateralGroupFundingExposure[iVertexIndex] *</span>
+<span class="fc" id="L900">					aMV[iVertexIndex].overnightIndexNumeraire().epochalForwardScale();</span>
+		}
+
+<span class="fc" id="L903">		return adblFundingExposurePV;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

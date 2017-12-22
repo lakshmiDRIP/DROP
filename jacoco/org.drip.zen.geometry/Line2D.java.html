@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Line2D.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.zen.geometry</a> &gt; <span class="el_source">Line2D.java</span></div><h1>Line2D.java</h1><pre class="source lang-java linenums">
+package org.drip.zen.geometry;
+
+/*
+ * 1) Slope Intercept Form
+ * 2) Construction from slope and intercept
+ * 3) Construction from 2 Points
+ * 4) Construction From Slope and Point
+ * 5) Accessors
+ * 6) Y from X
+ * 7) X From Y
+ * 8) Parallel Line
+ * 9) Perpendicular Line
+ * 10) Intersection Between Lines
+ */
+
+public class Line2D {
+<span class="nc" id="L18">	private double _m = 0.;</span>
+<span class="nc" id="L19">	private double _b = 0.;</span>
+
+	public Line2D (double m, double b)
+<span class="nc" id="L22">	{</span>
+<span class="nc" id="L23">		_m = m;</span>
+<span class="nc" id="L24">		_b = b;</span>
+<span class="nc" id="L25">	}</span>
+
+	public Line2D (Point2D p1, Point2D p2)
+<span class="nc" id="L28">	{</span>
+<span class="nc" id="L29">		double x1 = p1.getX();</span>
+<span class="nc" id="L30">		double x2 = p2.getX();</span>
+<span class="nc" id="L31">		double y1 = p1.getY();</span>
+<span class="nc" id="L32">		double y2 = p2.getY();</span>
+
+<span class="nc" id="L34">		_m = (y2 - y1) / (x2 - x1);</span>
+
+<span class="nc" id="L36">		_b = y2 - _m * x2;</span>
+<span class="nc" id="L37">	}</span>
+
+	public Line2D (double m, Point2D p2)
+<span class="nc" id="L40">	{</span>
+<span class="nc" id="L41">		double x2 = p2.getX();</span>
+<span class="nc" id="L42">		double y2 = p2.getY();</span>
+
+<span class="nc" id="L44">		_m = m;</span>
+<span class="nc" id="L45">		_b = y2 - _m * x2;</span>
+<span class="nc" id="L46">	}</span>
+
+	public double slope()
+	{
+<span class="nc" id="L50">		return _m;</span>
+	}
+
+	public double yIntercept()
+	{
+<span class="nc" id="L55">		return _b;</span>
+	}
+
+	public void show()
+	{
+<span class="nc" id="L60">		System.out.println (&quot;Slope: &quot; + _m + &quot;; Intercept: &quot; + _b);</span>
+<span class="nc" id="L61">	}</span>
+
+	public double YFromX (double x)
+	{
+<span class="nc" id="L65">		double y = _m * x + _b;</span>
+<span class="nc" id="L66">		return y;</span>
+	}
+
+	public double XFromY (double y)
+	{
+<span class="nc" id="L71">		double x = (y - _b) / _m;</span>
+<span class="nc" id="L72">		return x;</span>
+	}
+
+	public Line2D parallelLineAtPoint (Point2D p)
+	{
+<span class="nc" id="L77">		Line2D parallelLine = new Line2D (_m, p);</span>
+
+<span class="nc" id="L79">		return parallelLine;</span>
+	}
+
+	public Line2D perpendicularLineAtPoint (Point2D p)
+	{
+<span class="nc" id="L84">		Line2D perpendicularLine = new Line2D (-1 / _m, p);</span>
+
+<span class="nc" id="L86">		return perpendicularLine;</span>
+	}
+
+	public Point2D intersection (Line2D lineOther)
+	{
+<span class="nc" id="L91">		double b1 = yIntercept();</span>
+<span class="nc" id="L92">		double b2 = lineOther.yIntercept();</span>
+<span class="nc" id="L93">		double m1 = slope();</span>
+<span class="nc" id="L94">		double m2 = lineOther.slope();</span>
+
+<span class="nc" id="L96">		double xIntersection = -1 * (b2 - b1) / (m2 - m1);</span>
+<span class="nc" id="L97">		double yIntersection = m1 * xIntersection + b1;</span>
+
+<span class="nc" id="L99">		Point2D pointIntersection = new Point2D (xIntersection, yIntersection);</span>
+
+<span class="nc" id="L101">		return pointIntersection;</span>
+	}
+
+	public static void main (String[] args)
+	{
+<span class="nc" id="L106">		double mySlope = 1;</span>
+<span class="nc" id="L107">		double myIntercept = 2;</span>
+
+<span class="nc" id="L109">		Line2D myFirstLine = new Line2D (mySlope, myIntercept);</span>
+
+<span class="nc" id="L111">		myFirstLine.show();</span>
+
+<span class="nc" id="L113">		Point2D point1 = new Point2D (1, 3);</span>
+
+<span class="nc" id="L115">		Point2D point2 = new Point2D (4, 6);</span>
+
+<span class="nc" id="L117">		Line2D mySecondLine = new Line2D (point1, point2);</span>
+
+<span class="nc" id="L119">		mySecondLine.show();</span>
+
+<span class="nc" id="L121">		Line2D myThirdLine = new Line2D (mySlope, point2);</span>
+
+<span class="nc" id="L123">		myThirdLine.show();</span>
+
+<span class="nc" id="L125">		double x1 = 1;</span>
+
+<span class="nc" id="L127">		double y1 = myThirdLine.YFromX (x1);</span>
+
+<span class="nc" id="L129">		System.out.println (&quot;Y From  = &quot; + x1 + &quot; is &quot; + y1);</span>
+
+<span class="nc" id="L131">		double y2 = 1;</span>
+
+<span class="nc" id="L133">		double x2 = myThirdLine.XFromY (y2);</span>
+
+<span class="nc" id="L135">		System.out.println (&quot;X From Y = &quot; + y2 + &quot; is &quot; + x2);</span>
+
+<span class="nc" id="L137">		Point2D linePoint = new Point2D (6, 12);</span>
+
+<span class="nc" id="L139">		Line2D parallelLine = myThirdLine.parallelLineAtPoint (linePoint);</span>
+
+<span class="nc" id="L141">		parallelLine.show();</span>
+
+<span class="nc" id="L143">		Line2D perpendicularLine = myThirdLine.parallelLineAtPoint (linePoint);</span>
+
+<span class="nc" id="L145">		perpendicularLine.show();</span>
+
+<span class="nc" id="L147">		Line2D firstLine = new Line2D (new Point2D (0, 0), new Point2D (1, 1));</span>
+
+<span class="nc" id="L149">		Line2D secondLine = new Line2D (new Point2D (1, 1), new Point2D (2, 0));</span>
+
+<span class="nc" id="L151">		Point2D pIntersect = firstLine.intersection (secondLine);</span>
+
+<span class="nc" id="L153">		pIntersect.printCoordinate();</span>
+<span class="nc" id="L154">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

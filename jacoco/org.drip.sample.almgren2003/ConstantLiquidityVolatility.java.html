@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ConstantLiquidityVolatility.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.almgren2003</a> &gt; <span class="el_source">ConstantLiquidityVolatility.java</span></div><h1>ConstantLiquidityVolatility.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.almgren2003;
+
+import org.drip.execution.dynamics.*;
+import org.drip.execution.impact.ParticipationRateLinear;
+import org.drip.execution.nonadaptive.ContinuousConstantTradingEnhanced;
+import org.drip.execution.optimum.EfficientTradingTrajectoryContinuous;
+import org.drip.execution.profiletime.UniformParticipationRateLinear;
+import org.drip.function.definition.R1ToR1;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * ConstantLiquidityVolatility demonstrates the Dependence of the Optimal Trading Trajectory as a Function of
+ *  Constant Trading Enhanced Volatilities. The References are:
+ * 
+ * 	- Almgren, R., and N. Chriss (1999): Value under Liquidation, Risk 12 (12).
+ * 
+ * 	- Almgren, R., and N. Chriss (2000): Optimal Execution of Portfolio Transactions, Journal of Risk 3 (2)
+ * 		5-39.
+ * 
+ * 	- Almgren, R. (2003): Optimal Execution with Nonlinear Impact Functions and Trading-Enhanced Risk,
+ * 		Applied Mathematical Finance 10 (1) 1-18.
+ * 
+ * 	- Almgren, R., and N. Chriss (2003): Bidding Principles, Risk 97-102.
+ * 
+ * 	- Bertsimas, D., and A. W. Lo (1998): Optimal Control of Execution Costs, Journal of Financial Markets,
+ * 		1, 1-50.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L80">public class ConstantLiquidityVolatility {</span>
+
+	private static final void AlphaRun (
+		final double dblAlpha,
+		final double dblT,
+		final int iNumInterval)
+		throws Exception
+	{
+<span class="nc" id="L88">		double dblEta = 5.e-06;</span>
+<span class="nc" id="L89">		double dblSigma = 1.;</span>
+<span class="nc" id="L90">		double dblLambda = 1.e-05;</span>
+<span class="nc" id="L91">		double dblX = 100000.;</span>
+
+<span class="nc" id="L93">		ArithmeticPriceEvolutionParameters apep = ArithmeticPriceEvolutionParametersBuilder.TradingEnhancedVolatility (</span>
+			dblSigma,
+<span class="nc" id="L95">			new UniformParticipationRateLinear (ParticipationRateLinear.SlopeOnly (dblEta)),</span>
+			new UniformParticipationRateLinear (
+				new ParticipationRateLinear (
+					dblAlpha,
+					0.
+				)
+			)
+		);
+
+<span class="nc" id="L104">		ContinuousConstantTradingEnhanced ccte = ContinuousConstantTradingEnhanced.Standard (</span>
+			dblX,
+			dblT,
+			apep,
+			dblLambda
+		);
+
+<span class="nc" id="L111">		EfficientTradingTrajectoryContinuous ettc = (EfficientTradingTrajectoryContinuous) ccte.generate();</span>
+
+<span class="nc" id="L113">		R1ToR1 r1ToR1Holdings = ettc.holdings();</span>
+
+<span class="nc" id="L115">		double[] adblHoldings = new double[iNumInterval];</span>
+<span class="nc" id="L116">		double[] adblExecutionTime = new double[iNumInterval];</span>
+
+<span class="nc bnc" id="L118" title="All 2 branches missed.">		for (int i = 1; i &lt;= iNumInterval; ++i) {</span>
+<span class="nc" id="L119">			adblExecutionTime[i - 1] = dblT * i / iNumInterval;</span>
+
+<span class="nc" id="L121">			adblHoldings[i - 1] = r1ToR1Holdings.evaluate (adblExecutionTime[i - 1]);</span>
+		}
+
+<span class="nc" id="L124">		String strDump = &quot;\t|&quot; + FormatUtil.FormatDouble (dblAlpha, 1, 1, 1.) + &quot; =&gt;&quot;;</span>
+
+<span class="nc bnc" id="L126" title="All 2 branches missed.">		for (int i = 0; i &lt; adblExecutionTime.length; ++i)</span>
+<span class="nc" id="L127">			strDump = strDump + FormatUtil.FormatDouble (adblHoldings[i] / dblX, 2, 1, 100.) + &quot;% &quot;;</span>
+
+<span class="nc" id="L129">		strDump = strDump + FormatUtil.FormatDouble (ettc.transactionCostExpectation(), 5, 0, 1.) + &quot; | &quot;;</span>
+
+<span class="nc" id="L131">		strDump = strDump + FormatUtil.FormatDouble (ettc.transactionCostVariance(), 5, 0, 1.e-06) + &quot; | &quot;;</span>
+
+<span class="nc" id="L133">		strDump = strDump + FormatUtil.FormatDouble (ettc.characteristicTime(), 1, 3, 1.) + &quot; ||&quot;;</span>
+
+<span class="nc" id="L135">		System.out.println (strDump);</span>
+<span class="nc" id="L136">	}</span>
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+<span class="nc" id="L142">		EnvManager.InitEnv (</span>
+			&quot;&quot;,
+			true
+		);
+
+<span class="nc" id="L147">		double dblT = 5.;</span>
+<span class="nc" id="L148">		int iNumInterval = 10;</span>
+
+<span class="nc" id="L150">		double[] adblAlpha = new double[] {</span>
+			0.0,
+			0.1,
+			0.2,
+			0.3,
+			0.4,
+			0.5,
+			0.6,
+			0.7,
+			0.8,
+			0.9,
+			1.0,
+			1.1,
+			1.2,
+			1.3,
+			1.4,
+			1.5,
+			1.6,
+			1.7,
+			1.8,
+			1.9,
+			2.0
+		};
+
+<span class="nc" id="L174">		System.out.println();</span>
+
+<span class="nc" id="L176">		System.out.println (&quot;\t|--------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L178">		System.out.println (&quot;\t|                   ALMGREN (2003) CONSTANT TEMPORARY IMPACT VOLATILITY - OFFSET DEPENDENCE                    ||&quot;);</span>
+
+<span class="nc" id="L180">		System.out.println (&quot;\t|--------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L182">		System.out.println (&quot;\t|      L -&gt; R:                                                                                                 ||&quot;);</span>
+
+<span class="nc" id="L184">		System.out.println (&quot;\t|              Alpha Level                                                                                     ||&quot;);</span>
+
+<span class="nc" id="L186">		System.out.println (&quot;\t|              Outstanding Trajectory (%)                                                                      ||&quot;);</span>
+
+<span class="nc" id="L188">		System.out.println (&quot;\t|              Transaction Cost Expectation                                                                    ||&quot;);</span>
+
+<span class="nc" id="L190">		System.out.println (&quot;\t|              Transaction Cost Variance (X 10^-06)                                                            ||&quot;);</span>
+
+<span class="nc" id="L192">		System.out.println (&quot;\t|              Characteristic Time (Days)                                                                      ||&quot;);</span>
+
+<span class="nc" id="L194">		System.out.println (&quot;\t|--------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L196">		String strTimeNode = &quot;\t|        &quot;;</span>
+
+<span class="nc bnc" id="L198" title="All 2 branches missed.">		for (int i = 0; i &lt;= iNumInterval; ++i)</span>
+<span class="nc" id="L199">			strTimeNode = strTimeNode + FormatUtil.FormatDouble (dblT * i / iNumInterval, 1, 2, 1.) + &quot;  &quot;;</span>
+
+<span class="nc" id="L201">		System.out.println (strTimeNode);</span>
+
+<span class="nc" id="L203">		System.out.println (&quot;\t|--------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L205" title="All 2 branches missed.">		for (double dblAlpha : adblAlpha)</span>
+<span class="nc" id="L206">			AlphaRun (</span>
+				dblAlpha,
+				dblT,
+				iNumInterval
+			);
+
+<span class="nc" id="L212">		System.out.println (&quot;\t|--------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L214">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L215">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

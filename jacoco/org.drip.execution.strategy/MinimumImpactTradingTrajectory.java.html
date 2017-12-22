@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MinimumImpactTradingTrajectory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.execution.strategy</a> &gt; <span class="el_source">MinimumImpactTradingTrajectory.java</span></div><h1>MinimumImpactTradingTrajectory.java</h1><pre class="source lang-java linenums">
+package org.drip.execution.strategy;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * MinimumImpactTradingTrajectory holds the Trajectory of a Trading Block that is to be executed uniformly
+ *  over Equal Intervals, the Idea being to minimize the Trading Impact. The References are:
+ * 
+ * 	- Almgren, R., and N. Chriss (1999): Value under Liquidation, Risk 12 (12).
+ * 
+ * 	- Almgren, R., and N. Chriss (2000): Optimal Execution of Portfolio Transactions, Journal of Risk 3 (2)
+ * 		5-39.
+ * 
+ * 	- Bertsimas, D., and A. W. Lo (1998): Optimal Control of Execution Costs, Journal of Financial Markets,
+ * 		1, 1-50.
+ *
+ * 	- Chan, L. K. C., and J. Lakonishak (1995): The Behavior of Stock Prices around Institutional Trades,
+ * 		Journal of Finance, 50, 1147-1174.
+ *
+ * 	- Keim, D. B., and A. Madhavan (1997): Transaction Costs and Investment Style: An Inter-exchange
+ * 		Analysis of Institutional Equity Trades, Journal of Financial Economics, 46, 265-292.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class MinimumImpactTradingTrajectory extends org.drip.execution.strategy.DiscreteTradingTrajectory {
+
+	/**
+	 * Create a MinimumImpactTradingTrajectory Instance from Equal Intervals
+	 * 
+	 * @param dblStartHoldings Trajectory Start Holdings
+	 * @param dblFinishHoldings Trajectory Finish Holdings
+	 * @param dblStartTime Trajectory Start Time
+	 * @param dblFinishTime Trajectory Finish Time
+	 * @param iNumInterval The Number of Fixed Intervals
+	 * 
+	 * @return The MinimumImpactTradingTrajectory Instance from Fixed Intervals
+	 */
+
+	public static final MinimumImpactTradingTrajectory Standard (
+		final double dblStartHoldings,
+		final double dblFinishHoldings,
+		final double dblStartTime,
+		final double dblFinishTime,
+		final int iNumInterval)
+	{
+<span class="nc bnc" id="L93" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblStartHoldings) ||</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblFinishHoldings) ||</span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (dblStartTime) ||</span>
+<span class="nc bnc" id="L96" title="All 6 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (dblFinishTime) || dblStartTime &gt;=</span>
+						dblFinishTime || 0 &gt;= iNumInterval)
+<span class="nc" id="L98">			return null;</span>
+
+<span class="nc" id="L100">		double dblTradeList = (dblFinishHoldings - dblStartHoldings) / iNumInterval;</span>
+<span class="nc" id="L101">		double dblTimeInterval = (dblFinishTime - dblStartTime) / iNumInterval;</span>
+<span class="nc" id="L102">		double[] adblExecutionTimeNode = new double[iNumInterval + 1];</span>
+<span class="nc" id="L103">		double[] adblHoldings = new double[iNumInterval + 1];</span>
+<span class="nc" id="L104">		adblExecutionTimeNode[iNumInterval] = dblFinishTime;</span>
+<span class="nc" id="L105">		double[] adblTradeList = new double[iNumInterval];</span>
+<span class="nc" id="L106">		adblHoldings[iNumInterval] = dblFinishHoldings;</span>
+<span class="nc" id="L107">		adblExecutionTimeNode[0] = dblStartTime;</span>
+<span class="nc" id="L108">		adblHoldings[0] = dblStartHoldings;</span>
+<span class="nc" id="L109">		adblTradeList[0] = dblTradeList;</span>
+
+<span class="nc bnc" id="L111" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumInterval; ++i) {</span>
+<span class="nc" id="L112">			adblTradeList[i] = dblTradeList;</span>
+<span class="nc" id="L113">			adblHoldings[i] = dblStartHoldings + i * dblTradeList;</span>
+<span class="nc" id="L114">			adblExecutionTimeNode[i] = dblStartTime + i * dblTimeInterval;</span>
+		}
+
+		try {
+<span class="nc" id="L118">			return new MinimumImpactTradingTrajectory (adblExecutionTimeNode, adblHoldings, adblTradeList);</span>
+<span class="nc" id="L119">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L120">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L123">		return null;</span>
+	}
+
+	protected MinimumImpactTradingTrajectory (
+		final double[] adblExecutionTimeNode,
+		final double[] adblHoldings,
+		final double[] adblTradeList)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L132">		super (adblExecutionTimeNode, adblHoldings, adblTradeList);</span>
+<span class="nc" id="L133">	}</span>
+
+	/**
+	 * Retrieve the Trade Size
+	 * 
+	 * @return The Trade Size
+	 */
+
+	public double tradeSize()
+	{
+<span class="nc" id="L143">		double[] adblHoldings = holdings();</span>
+
+<span class="nc" id="L145">		return adblHoldings[1] - adblHoldings[0];</span>
+	}
+
+	/**
+	 * Retrieve the Trade Time Interval
+	 * 
+	 * @return The Trade Time Interval
+	 */
+
+	public double tradeTimeInterval()
+	{
+<span class="nc" id="L156">		double[] adblExecutionTimeNode = executionTimeNode();</span>
+
+<span class="nc" id="L158">		return adblExecutionTimeNode[1] - adblExecutionTimeNode[0];</span>
+	}
+
+	/**
+	 * Retrieve the Trade Rate
+	 * 
+	 * @return The Trade Rate
+	 */
+
+	public double tradeRate()
+	{
+<span class="nc" id="L169">		double[] adblHoldings = holdings();</span>
+
+<span class="nc" id="L171">		double[] adblExecutionTimeNode = executionTimeNode();</span>
+
+<span class="nc" id="L173">		return (adblHoldings[1] - adblHoldings[0]) / (adblExecutionTimeNode[1] - adblExecutionTimeNode[0]);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

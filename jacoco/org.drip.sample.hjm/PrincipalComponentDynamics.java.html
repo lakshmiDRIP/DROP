@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PrincipalComponentDynamics.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.hjm</a> &gt; <span class="el_source">PrincipalComponentDynamics.java</span></div><h1>PrincipalComponentDynamics.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.hjm;
+
+import org.drip.analytics.date.*;
+import org.drip.analytics.definition.MarketSurface;
+import org.drip.dynamics.hjm.*;
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.r1tor1.FlatUnivariate;
+import org.drip.quant.common.FormatUtil;
+import org.drip.sequence.random.*;
+import org.drip.service.env.EnvManager;
+import org.drip.spline.basis.PolynomialFunctionSetParams;
+import org.drip.spline.params.*;
+import org.drip.spline.stretch.MultiSegmentSequenceBuilder;
+import org.drip.state.creator.ScenarioMarketSurfaceBuilder;
+import org.drip.state.identifier.*;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * PrincipalComponentDynamics demonstrates the Construction and Usage of the PCA-Based Multi-Factor Gaussian
+ *  Model Dynamics for the Evolution of the Instantaneous Forward Rate, the Price, and the Short Rate.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L73">public class PrincipalComponentDynamics {</span>
+
+	private static final MarketSurface FlatVolatilitySurface (
+		final JulianDate dtStart,
+		final String strCurrency,
+		final double dblFlatVol)
+		throws Exception
+	{
+<span class="nc" id="L81">		return ScenarioMarketSurfaceBuilder.CustomSplineWireSurface (</span>
+			&quot;VIEW_TARGET_VOLATILITY_SURFACE&quot;,
+			dtStart,
+			strCurrency,
+			new double[] {
+<span class="nc" id="L86">				dtStart.julian(),</span>
+<span class="nc" id="L87">				dtStart.addYears (2).julian(),</span>
+<span class="nc" id="L88">				dtStart.addYears (4).julian(),</span>
+<span class="nc" id="L89">				dtStart.addYears (6).julian(),</span>
+<span class="nc" id="L90">				dtStart.addYears (8).julian(),</span>
+<span class="nc" id="L91">				dtStart.addYears (10).julian()</span>
+			},
+			new double[] {
+<span class="nc" id="L94">				dtStart.julian(),</span>
+<span class="nc" id="L95">				dtStart.addYears (2).julian(),</span>
+<span class="nc" id="L96">				dtStart.addYears (4).julian(),</span>
+<span class="nc" id="L97">				dtStart.addYears (6).julian(),</span>
+<span class="nc" id="L98">				dtStart.addYears (8).julian(),</span>
+<span class="nc" id="L99">				dtStart.addYears (10).julian()</span>
+			},
+			new double[][] {
+				{dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol},
+				{dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol},
+				{dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol},
+				{dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol},
+				{dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol},
+				{dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol},
+			},
+			new SegmentCustomBuilderControl (
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+				new PolynomialFunctionSetParams (4),
+<span class="nc" id="L112">				SegmentInelasticDesignControl.Create (</span>
+					2,
+					2
+				),
+				null,
+				null
+			),
+			new SegmentCustomBuilderControl (
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+				new PolynomialFunctionSetParams (4),
+<span class="nc" id="L122">				SegmentInelasticDesignControl.Create (</span>
+					2,
+					2
+				),
+				null,
+				null
+			)
+		);
+	}
+
+	private static final MultiFactorStateEvolver HJMInstance (
+		final JulianDate dtStart,
+		final String strCurrency,
+		final MarketSurface mktSurfFlatVol1,
+		final MarketSurface mktSurfFlatVol2,
+		final MarketSurface mktSurfFlatVol3,
+		final R1ToR1 auForwardRate,
+		final int iNumFactor)
+		throws Exception
+	{
+<span class="nc" id="L142">		MultiFactorVolatility mfv = new MultiFactorVolatility (</span>
+			new MarketSurface[] {
+				mktSurfFlatVol1,
+				mktSurfFlatVol2,
+				mktSurfFlatVol3
+			},
+			new PrincipalFactorSequenceGenerator (
+				new UnivariateSequenceGenerator[] {
+					new BoxMullerGaussian (
+						0.,
+						1.
+					),
+					new BoxMullerGaussian (
+						0.,
+						1.
+					),
+					new BoxMullerGaussian (
+						0.,
+						1.
+					)
+				},
+				new double[][] {
+					{1.0, 0.1, 0.2},
+					{0.1, 1.0, 0.2},
+					{0.2, 0.1, 1.0}
+				},
+				iNumFactor
+			)
+		);
+
+<span class="nc" id="L172">		return new MultiFactorStateEvolver (</span>
+<span class="nc" id="L173">			FundingLabel.Standard (strCurrency),</span>
+<span class="nc" id="L174">			ForwardLabel.Create (</span>
+				strCurrency,
+				&quot;6M&quot;
+			),
+			mfv,
+			auForwardRate
+		);
+	}
+
+	private static final void Evolve (
+		final MultiFactorStateEvolver hjm,
+		final JulianDate dtStart,
+		final String strCurrency,
+		final String strViewTenor,
+		final String strTargetTenor,
+		final double dblStartingForwardRate,
+		final double dblStartingPrice)
+		throws Exception
+	{
+<span class="nc" id="L193">		int iViewDate = dtStart.addTenor (strViewTenor).julian();</span>
+
+<span class="nc" id="L195">		int iTargetDate = dtStart.addTenor (strTargetTenor).julian();</span>
+
+<span class="nc" id="L197">		int iDayStep = 2;</span>
+<span class="nc" id="L198">		JulianDate dtSpot = dtStart;</span>
+<span class="nc" id="L199">		double dblPrice = dblStartingPrice;</span>
+<span class="nc" id="L200">		double dblShortRate = dblStartingForwardRate;</span>
+<span class="nc" id="L201">		double dblLIBORForwardRate = dblStartingForwardRate;</span>
+<span class="nc" id="L202">		double dblInstantaneousForwardRate = dblStartingForwardRate;</span>
+<span class="nc" id="L203">		double dblContinuouslyCompoundedShortRate = dblStartingForwardRate;</span>
+<span class="nc" id="L204">		double dblShiftedLIBORForwardRate = dblStartingForwardRate + (365.25 / (iTargetDate - iViewDate));</span>
+
+<span class="nc" id="L206">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L208">		System.out.println (&quot;\t|                                                                                                                               ||&quot;);</span>
+
+<span class="nc" id="L210">		System.out.println (&quot;\t|    Multi-Factor PCA-Based Gaussian HJM Run                                                                                    ||&quot;);</span>
+
+<span class="nc" id="L212">		System.out.println (&quot;\t|    ---------------------------------------                                                                                    ||&quot;);</span>
+
+<span class="nc" id="L214">		System.out.println (&quot;\t|                                                                                                                               ||&quot;);</span>
+
+<span class="nc" id="L216">		System.out.println (&quot;\t|        Number of Prinicipal Components: &quot; + hjm.mfv().msg().numFactor() + &quot;                                                                                     ||&quot;);</span>
+
+<span class="nc" id="L218">		System.out.println (&quot;\t|                                                                                                                               ||&quot;);</span>
+
+<span class="nc" id="L220">		System.out.println (&quot;\t|        L-&gt;R:                                                                                                                  ||&quot;);</span>
+
+<span class="nc" id="L222">		System.out.println (&quot;\t|            Date                                                                                                               ||&quot;);</span>
+
+<span class="nc" id="L224">		System.out.println (&quot;\t|            Instantaneous Forward Rate (%)                                                                                     ||&quot;);</span>
+
+<span class="nc" id="L226">		System.out.println (&quot;\t|            Instantaneous Forward Rate - Change (%)                                                                            ||&quot;);</span>
+
+<span class="nc" id="L228">		System.out.println (&quot;\t|            LIBOR Forward Rate (%)                                                                                             ||&quot;);</span>
+
+<span class="nc" id="L230">		System.out.println (&quot;\t|            LIBOR Forward Rate - Change (%)                                                                                    ||&quot;);</span>
+
+<span class="nc" id="L232">		System.out.println (&quot;\t|            Shifted LIBOR Forward Rate (%)                                                                                     ||&quot;);</span>
+
+<span class="nc" id="L234">		System.out.println (&quot;\t|            Shifted LIBOR Forward Rate - Change (%)                                                                            ||&quot;);</span>
+
+<span class="nc" id="L236">		System.out.println (&quot;\t|            Short Rate (%)                                                                                                     ||&quot;);</span>
+
+<span class="nc" id="L238">		System.out.println (&quot;\t|            Short Rate - Change (%)                                                                                            ||&quot;);</span>
+
+<span class="nc" id="L240">		System.out.println (&quot;\t|            Continuously Compounded Short Rate (%)                                                                             ||&quot;);</span>
+
+<span class="nc" id="L242">		System.out.println (&quot;\t|            Continuously Compounded Short Rate - Change (%)                                                                    ||&quot;);</span>
+
+<span class="nc" id="L244">		System.out.println (&quot;\t|            Price                                                                                                              ||&quot;);</span>
+
+<span class="nc" id="L246">		System.out.println (&quot;\t|            Price - Change                                                                                                     ||&quot;);</span>
+
+<span class="nc" id="L248">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L250" title="All 2 branches missed.">		while (dtSpot.julian() &lt; iViewDate) {</span>
+<span class="nc" id="L251">			int iSpotDate = dtSpot.julian();</span>
+
+<span class="nc" id="L253">			double dblIFRIncrement = hjm.instantaneousForwardRateIncrement (</span>
+				iViewDate,
+				iTargetDate,
+				iDayStep
+			);
+
+<span class="nc" id="L259">			dblInstantaneousForwardRate += dblIFRIncrement;</span>
+
+<span class="nc" id="L261">			double dblLIBORForwardRateIncrement = hjm.liborForwardRateIncrement (</span>
+				iSpotDate,
+				iViewDate,
+				iTargetDate,
+				dblLIBORForwardRate,
+				iDayStep
+			);
+
+<span class="nc" id="L269">			dblLIBORForwardRate += dblLIBORForwardRateIncrement;</span>
+
+<span class="nc" id="L271">			double dblShiftedLIBORForwardRateIncrement = hjm.shiftedLIBORForwardIncrement (</span>
+				iSpotDate,
+				iViewDate,
+				iTargetDate,
+				dblShiftedLIBORForwardRate,
+				iDayStep
+			);
+
+<span class="nc" id="L279">			dblShiftedLIBORForwardRate += dblShiftedLIBORForwardRateIncrement;</span>
+
+<span class="nc" id="L281">			double dblShortRateIncrement = hjm.shortRateIncrement (</span>
+				iSpotDate,
+				iViewDate,
+				iDayStep
+			);
+
+<span class="nc" id="L287">			dblShortRate += dblShortRateIncrement;</span>
+
+<span class="nc" id="L289">			double dblProportionalPriceIncrement = hjm.proportionalPriceIncrement (</span>
+				iSpotDate,
+				iViewDate,
+				dblShortRate,
+				iDayStep
+			);
+
+<span class="nc" id="L296">			dblPrice *= (1. + dblProportionalPriceIncrement);</span>
+
+<span class="nc" id="L298">			double dblContinuouslyCompoundedShortRateIncrement = hjm.compoundedShortRateIncrement (</span>
+				iSpotDate,
+				iViewDate,
+				iTargetDate,
+				dblContinuouslyCompoundedShortRate,
+				dblShortRate,
+				iDayStep
+			);
+
+<span class="nc" id="L307">			dblContinuouslyCompoundedShortRate += dblContinuouslyCompoundedShortRateIncrement;</span>
+
+<span class="nc" id="L309">			System.out.println (&quot;\t| [&quot; + dtSpot + &quot;] = &quot; +</span>
+<span class="nc" id="L310">				FormatUtil.FormatDouble (dblInstantaneousForwardRate, 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="nc" id="L311">				FormatUtil.FormatDouble (dblIFRIncrement, 1, 2, 100.) + &quot;% || &quot; +</span>
+<span class="nc" id="L312">				FormatUtil.FormatDouble (dblLIBORForwardRate, 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="nc" id="L313">				FormatUtil.FormatDouble (dblLIBORForwardRateIncrement, 1, 2, 100.) + &quot;% || &quot; +</span>
+<span class="nc" id="L314">				FormatUtil.FormatDouble (dblShiftedLIBORForwardRate, 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L315">				FormatUtil.FormatDouble (dblShiftedLIBORForwardRateIncrement, 1, 2, 100.) + &quot;% || &quot; +</span>
+<span class="nc" id="L316">				FormatUtil.FormatDouble (dblShortRate, 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="nc" id="L317">				FormatUtil.FormatDouble (dblShortRateIncrement, 1, 2, 100.) + &quot;% || &quot; +</span>
+<span class="nc" id="L318">				FormatUtil.FormatDouble (dblContinuouslyCompoundedShortRate, 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="nc" id="L319">				FormatUtil.FormatDouble (dblContinuouslyCompoundedShortRateIncrement, 1, 2, 100.) + &quot;% || &quot; +</span>
+<span class="nc" id="L320">				FormatUtil.FormatDouble (dblPrice, 2, 2, 100.) + &quot; | &quot; +</span>
+<span class="nc" id="L321">				FormatUtil.FormatDouble (dblProportionalPriceIncrement, 1, 2, 100.) + &quot; || &quot;</span>
+			);
+
+<span class="nc" id="L324">			dtSpot = dtSpot.addBusDays (iDayStep, strCurrency);</span>
+<span class="nc" id="L325">		}</span>
+
+<span class="nc" id="L327">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L328">	}</span>
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+<span class="nc" id="L334">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L336">		String strCurrency = &quot;USD&quot;;</span>
+
+<span class="nc" id="L338">		JulianDate dtSpot = DateUtil.Today();</span>
+
+<span class="nc" id="L340">		double dblFlatVol1 = 0.01;</span>
+<span class="nc" id="L341">		double dblFlatVol2 = 0.02;</span>
+<span class="nc" id="L342">		double dblFlatVol3 = 0.03;</span>
+<span class="nc" id="L343">		double dblFlatForwardRate = 0.05;</span>
+<span class="nc" id="L344">		double dblStartingPrice = 0.9875;</span>
+
+<span class="nc" id="L346">		MarketSurface mktSurfFlatVol1 = FlatVolatilitySurface (</span>
+			dtSpot,
+			strCurrency,
+			dblFlatVol1
+		);
+
+<span class="nc" id="L352">		MarketSurface mktSurfFlatVol2 = FlatVolatilitySurface (</span>
+			dtSpot,
+			strCurrency,
+			dblFlatVol2
+		);
+
+<span class="nc" id="L358">		MarketSurface mktSurfFlatVol3 = FlatVolatilitySurface (</span>
+			dtSpot,
+			strCurrency,
+			dblFlatVol3
+		);
+
+<span class="nc" id="L364">		int[] aiNumFactor = new int[] {</span>
+			1, 2, 3
+		};
+
+<span class="nc bnc" id="L368" title="All 2 branches missed.">		for (int iNumFactor : aiNumFactor) {</span>
+<span class="nc" id="L369">			MultiFactorStateEvolver hjm = HJMInstance (</span>
+				dtSpot,
+				strCurrency,
+				mktSurfFlatVol1,
+				mktSurfFlatVol2,
+				mktSurfFlatVol3,
+				new FlatUnivariate (dblFlatForwardRate),
+				iNumFactor
+			);
+
+<span class="nc" id="L379">			Evolve (</span>
+				hjm,
+				dtSpot,
+				strCurrency,
+				&quot;3M&quot;,
+				&quot;6M&quot;,
+				dblFlatForwardRate,
+				dblStartingPrice
+			);
+		}
+<span class="nc" id="L389">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

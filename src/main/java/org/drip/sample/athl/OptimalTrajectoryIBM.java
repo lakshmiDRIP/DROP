@@ -83,7 +83,10 @@ public class OptimalTrajectoryIBM {
 		final String[] astrArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		String strAssetName = "IBM";
 		double dblAverageDailyVolume = 6561000.;
@@ -190,5 +193,7 @@ public class OptimalTrajectoryIBM {
 		);
 
 		System.out.println ("\t|----------------------------------------------------------------------||");
+
+		EnvManager.TerminateEnv();
 	}
 }

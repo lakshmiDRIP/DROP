@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BurgardKjaerOperator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.xva.pde</a> &gt; <span class="el_source">BurgardKjaerOperator.java</span></div><h1>BurgardKjaerOperator.java</h1><pre class="source lang-java linenums">
+package org.drip.xva.pde;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * BurgardKjaerOperator sets up the Parabolic Differential Equation PDE based on the Ito Evolution
+ * 	Differential for the Reference Underlier Asset, as laid out in Burgard and Kjaer (2014). The References
+ * 	are:
+ *  
+ *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
+ *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
+ *  
+ *  - Cesari, G., J. Aquilina, N. Charpillon, X. Filipovic, G. Lee, and L. Manda (2009): Modeling, Pricing,
+ *  	and Hedging Counter-party Credit Exposure - A Technical Guide, Springer Finance, New York.
+ *  
+ *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk, Risk 20 (2) 86-90.
+ *  
+ *  - Li, B., and Y. Tang (2007): Quantitative Analysis, Derivatives Modeling, and Trading Strategies in the
+ *  	Presence of Counter-party Credit Risk for the Fixed Income Market, World Scientific Publishing,
+ *  	Singapore.
+ * 
+ *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
+ *  	21 (2) 97-102.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class BurgardKjaerOperator {
+<span class="nc" id="L74">	private org.drip.xva.universe.TradeablesContainer _tc = null;</span>
+<span class="nc" id="L75">	private org.drip.xva.definition.PDEEvolutionControl _pdeec = null;</span>
+
+	/**
+	 * BurgardKjaerOperator Constructor
+	 * 
+	 * @param tc The Universe of Tradeable Assets
+	 * @param pdeec The XVA Control Settings
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public BurgardKjaerOperator (
+		final org.drip.xva.universe.TradeablesContainer tc,
+		final org.drip.xva.definition.PDEEvolutionControl pdeec)
+		throws java.lang.Exception
+<span class="nc" id="L90">	{</span>
+<span class="nc bnc" id="L91" title="All 4 branches missed.">		if (null == (_tc = tc) || null == (_pdeec = pdeec))</span>
+<span class="nc" id="L92">			throw new java.lang.Exception (&quot;BurgardKjaerOperator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L93">	}</span>
+
+	/**
+	 * Retrieve the Universe of Trade-able Assets
+	 * 
+	 * @return The Universe of Trade-able Assets
+	 */
+
+	public org.drip.xva.universe.TradeablesContainer universe()
+	{
+<span class="nc" id="L103">		return _tc;</span>
+	}
+
+	/**
+	 * Retrieve the XVA Control Settings
+	 * 
+	 * @return The XVA Control Settings
+	 */
+
+	public org.drip.xva.definition.PDEEvolutionControl pdeec()
+	{
+<span class="nc" id="L114">		return _pdeec;</span>
+	}
+
+	/**
+	 * Generate the Derivative Value Time Increment using the Burgard Kjaer Scheme
+	 * 
+	 * @param me The Market Edge
+	 * @param etvStart The Evolution Trajectory Vertex
+	 * @param dblCollateral The Off-setting Collateral
+	 * 
+	 * @return The Time Increment using the Burgard Kjaer Scheme
+	 */
+
+	public org.drip.xva.pde.BurgardKjaerEdgeRun edgeRun (
+		final org.drip.xva.universe.MarketEdge me,
+		final org.drip.xva.derivative.EvolutionTrajectoryVertex etvStart,
+		final double dblCollateral)
+	{
+<span class="nc bnc" id="L132" title="All 6 branches missed.">		if (null == me || null == etvStart || !org.drip.quant.common.NumberUtil.IsValid (dblCollateral))</span>
+<span class="nc" id="L133">			return null;</span>
+
+<span class="nc" id="L135">		org.drip.xva.universe.MarketVertex mvFinish = me.finish();</span>
+
+<span class="nc" id="L137">		org.drip.xva.universe.EntityMarketVertex emvBankFinish = mvFinish.bank();</span>
+
+<span class="nc" id="L139">		org.drip.xva.universe.EntityMarketVertex emvCounterPartyFinish = mvFinish.counterParty();</span>
+
+<span class="nc" id="L141">		org.drip.xva.derivative.AssetGreekVertex agvStart = etvStart.assetGreekVertex();</span>
+
+<span class="nc" id="L143">		double dblDerivativeXVAValueStart = agvStart.derivativeXVAValue();</span>
+
+<span class="nc" id="L145">		double dblGainOnBankDefault = etvStart.gainOnBankDefault();</span>
+
+<span class="nc" id="L147">		double dblAssetValue = mvFinish.assetNumeraire();</span>
+
+<span class="nc" id="L149">		double dblAssetBump = _pdeec.sensitivityShiftFactor() * dblAssetValue;</span>
+
+<span class="nc" id="L151">		double dblBankSeniorDefaultIntensity = emvBankFinish.hazardRate();</span>
+
+<span class="nc" id="L153">		double dblCounterPartyDefaultIntensity = emvCounterPartyFinish.hazardRate();</span>
+
+<span class="nc" id="L155">		double dblBankGainOnCounterPartyDefault = etvStart.gainOnCounterPartyDefault();</span>
+
+<span class="nc" id="L157">		double dblGainOnCounterPartyDefault = dblCounterPartyDefaultIntensity *</span>
+			dblBankGainOnCounterPartyDefault;
+
+		try {
+<span class="nc" id="L161">			double[] adblBumpedTheta = new org.drip.xva.pde.ParabolicDifferentialOperator</span>
+<span class="nc" id="L162">				(_tc.asset()).thetaUpDown (etvStart, dblAssetValue, dblAssetBump);</span>
+
+<span class="nc bnc" id="L164" title="All 4 branches missed.">			if (null == adblBumpedTheta || 3 != adblBumpedTheta.length) return null;</span>
+
+<span class="nc" id="L166">			return new org.drip.xva.pde.BurgardKjaerEdgeRun (</span>
+				dblAssetBump,
+				-1. * adblBumpedTheta[0],
+				-1. * adblBumpedTheta[1],
+				-1. * adblBumpedTheta[2],
+<span class="nc" id="L171">				mvFinish.collateralSchemeNumeraire().forward() * dblCollateral,</span>
+				(dblBankSeniorDefaultIntensity + dblCounterPartyDefaultIntensity) * dblDerivativeXVAValueStart,
+				-1. * dblBankSeniorDefaultIntensity * dblGainOnBankDefault,
+				-1. * dblGainOnCounterPartyDefault,
+				0.
+			);
+<span class="nc" id="L177">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L178">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L181">		return null;</span>
+	}
+
+	/**
+	 * Generate the Time Increment Run Attribution using the Burgard Kjaer Scheme
+	 * 
+	 * @param me The Market Edge
+	 * @param etvStart The Starting Evolution Trajectory Vertex
+	 * @param dblCollateral The Off-setting Collateral
+	 * 
+	 * @return The Time Increment Run Attribution using the Burgard Kjaer Scheme
+	 */
+
+	public org.drip.xva.pde.BurgardKjaerEdgeAttribution edgeRunAttribution (
+		final org.drip.xva.universe.MarketEdge me,
+		final org.drip.xva.derivative.EvolutionTrajectoryVertex etvStart,
+		final double dblCollateral)
+	{
+<span class="nc bnc" id="L199" title="All 4 branches missed.">		if (null == me || null == etvStart) return null;</span>
+
+<span class="nc" id="L201">		org.drip.xva.universe.MarketVertex mvFinish = me.finish();</span>
+
+<span class="nc" id="L203">		double dblDerivativeXVAValue = etvStart.assetGreekVertex().derivativeXVAValue();</span>
+
+<span class="nc" id="L205">		org.drip.xva.universe.EntityMarketVertex emvBankFinish = mvFinish.bank();</span>
+
+<span class="nc" id="L207">		org.drip.xva.universe.EntityMarketVertex emvCounterPartyFinish = mvFinish.counterParty();</span>
+
+<span class="nc" id="L209">		double dblCounterPartyRecovery = emvCounterPartyFinish.seniorRecoveryRate();</span>
+
+<span class="nc" id="L211">		double dblBankDefaultIntensity = emvBankFinish.hazardRate();</span>
+
+<span class="nc" id="L213">		double dblCounterPartyDefaultIntensity = emvCounterPartyFinish.hazardRate();</span>
+
+<span class="nc" id="L215">		double dblCloseOutMTM = org.drip.xva.definition.PDEEvolutionControl.CLOSEOUT_GREGORY_LI_TANG ==</span>
+<span class="nc bnc" id="L216" title="All 2 branches missed.">			_pdeec.closeOutScheme() ? dblDerivativeXVAValue : dblDerivativeXVAValue;</span>
+
+<span class="nc bnc" id="L218" title="All 2 branches missed.">		double dblBankExposure = dblCloseOutMTM &gt; 0. ? dblCloseOutMTM : emvBankFinish.seniorRecoveryRate() *</span>
+			dblCloseOutMTM;
+
+<span class="nc" id="L221">		double dblAssetValue = mvFinish.assetNumeraire();</span>
+
+<span class="nc" id="L223">		double dblAssetBump = _pdeec.sensitivityShiftFactor() * dblAssetValue;</span>
+
+<span class="nc bnc" id="L225" title="All 2 branches missed.">		double dblDerivativeXVACounterPartyDefaultGrowth = -1. * dblCounterPartyDefaultIntensity *</span>
+			(dblCloseOutMTM &lt; 0. ? dblCloseOutMTM : dblCounterPartyRecovery * dblCloseOutMTM);
+
+<span class="nc" id="L228">		double dblBankSeniorFundingSpread = emvBankFinish.seniorFundingSpread() / me.vertexIncrement();</span>
+
+		try {
+<span class="nc" id="L231">			double[] adblBumpedTheta = new org.drip.xva.pde.ParabolicDifferentialOperator</span>
+<span class="nc" id="L232">				(_tc.asset()).thetaUpDown (etvStart, dblAssetValue, dblAssetBump);</span>
+
+<span class="nc bnc" id="L234" title="All 4 branches missed.">			if (null == adblBumpedTheta || 3 != adblBumpedTheta.length) return null;</span>
+
+<span class="nc" id="L236">			return new org.drip.xva.pde.BurgardKjaerEdgeAttribution (</span>
+				dblAssetBump,
+				-1. * adblBumpedTheta[0],
+				-1. * adblBumpedTheta[1],
+				-1. * adblBumpedTheta[2],
+<span class="nc" id="L241">				mvFinish.collateralSchemeNumeraire().forward() * dblCollateral,</span>
+				(dblBankDefaultIntensity + dblCounterPartyDefaultIntensity) * dblDerivativeXVAValue,
+				dblBankSeniorFundingSpread * dblBankExposure,
+				-1. * dblBankDefaultIntensity * dblBankExposure,
+				dblDerivativeXVACounterPartyDefaultGrowth
+			);
+<span class="nc" id="L247">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L248">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L251">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

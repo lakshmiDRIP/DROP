@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FundingFuturesAPI.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.service.product</a> &gt; <span class="el_source">FundingFuturesAPI.java</span></div><h1>FundingFuturesAPI.java</h1><pre class="source lang-java linenums">
+package org.drip.service.product;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * FundingFuturesAPI contains the Functionality associated with the Horizon Analysis of the Funding Futures.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L57">public class FundingFuturesAPI {</span>
+
+	/**
+	 * Generate the Funding Futures Horizon Metrics
+	 * 
+	 * @param dtPrevious Previous Date
+	 * @param dtSpot Spot Date
+	 * @param dtExpiry Expiry Date
+	 * @param dblPreviousQuote Previous Funding Futures Rates
+	 * @param dblSpotQuote Spot Funding Futures Rates
+	 * @param strCurrency Funding Currency
+	 * 
+	 * @return The Funding Futures Horizon Metrics
+	 */
+
+	public static final org.drip.historical.attribution.PositionChangeComponents HorizonMetrics (
+		final org.drip.analytics.date.JulianDate dtPrevious,
+		final org.drip.analytics.date.JulianDate dtSpot,
+		final org.drip.analytics.date.JulianDate dtExpiry,
+		final double dblPreviousQuote,
+		final double dblSpotQuote,
+		final java.lang.String strCurrency)
+	{
+<span class="nc" id="L80">		org.drip.product.rates.SingleStreamComponent sscFutures =</span>
+<span class="nc" id="L81">			org.drip.service.template.ExchangeInstrumentBuilder.ForwardRateFutures (dtExpiry.addMonths (3),</span>
+				strCurrency);
+
+<span class="nc bnc" id="L84" title="All 2 branches missed.">		if (null == sscFutures) return null;</span>
+
+<span class="nc" id="L86">		org.drip.analytics.cashflow.ComposableUnitPeriod cup = sscFutures.couponPeriods().get</span>
+<span class="nc" id="L87">			(0).periods().get (0);</span>
+
+<span class="nc" id="L89">		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new</span>
+			org.drip.param.market.CurveSurfaceQuoteContainer();
+
+<span class="nc" id="L92">		if (!csqc.setFundingState</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">			(org.drip.state.creator.ScenarioDiscountCurveBuilder.DiscretelyCompoundedFlatRate (dtPrevious,</span>
+<span class="nc" id="L94">				strCurrency, dblPreviousQuote, cup.couponDC(), cup.freq())))</span>
+<span class="nc" id="L95">			return null;</span>
+
+<span class="nc" id="L97">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapPreviousMeasures = sscFutures.value</span>
+<span class="nc" id="L98">			(org.drip.param.valuation.ValuationParams.Spot (dtPrevious.julian()), null, csqc, null);</span>
+
+<span class="nc bnc" id="L100" title="All 4 branches missed.">		if (null == mapPreviousMeasures || !mapPreviousMeasures.containsKey (&quot;DV01&quot;) ||</span>
+<span class="nc bnc" id="L101" title="All 4 branches missed.">			!mapPreviousMeasures.containsKey (&quot;ForwardRate&quot;) || !mapPreviousMeasures.containsKey (&quot;PV&quot;))</span>
+<span class="nc" id="L102">			return null;</span>
+
+<span class="nc" id="L104">		double dblPreviousDV01 = 10000. * mapPreviousMeasures.get (&quot;DV01&quot;);</span>
+
+<span class="nc" id="L106">		double dblPreviousForwardRate = mapPreviousMeasures.get (&quot;ForwardRate&quot;);</span>
+
+<span class="nc" id="L108">		if (!csqc.setFundingState</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">			(org.drip.state.creator.ScenarioDiscountCurveBuilder.DiscretelyCompoundedFlatRate (dtSpot,</span>
+<span class="nc" id="L110">				strCurrency, dblSpotQuote, cup.couponDC(), cup.freq())))</span>
+<span class="nc" id="L111">			return null;</span>
+
+<span class="nc" id="L113">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapSpotMeasures = sscFutures.value</span>
+<span class="nc" id="L114">			(org.drip.param.valuation.ValuationParams.Spot (dtSpot.julian()), null, csqc, null);</span>
+
+<span class="nc bnc" id="L116" title="All 4 branches missed.">		if (null == mapSpotMeasures || !mapSpotMeasures.containsKey (&quot;DV01&quot;) || !mapSpotMeasures.containsKey</span>
+<span class="nc bnc" id="L117" title="All 4 branches missed.">			(&quot;ForwardRate&quot;) || !mapSpotMeasures.containsKey (&quot;PV&quot;))</span>
+<span class="nc" id="L118">			return null;</span>
+
+<span class="nc" id="L120">		double dblSpotDV01 = 10000. * mapSpotMeasures.get (&quot;DV01&quot;);</span>
+
+<span class="nc" id="L122">		double dblSpotForwardRate = mapSpotMeasures.get (&quot;ForwardRate&quot;);</span>
+
+		try {
+<span class="nc" id="L125">			org.drip.historical.attribution.PositionMarketSnap pmsPrevious = new</span>
+				org.drip.historical.attribution.PositionMarketSnap (dtPrevious, mapPreviousMeasures.get
+<span class="nc" id="L127">					(&quot;PV&quot;));</span>
+
+<span class="nc bnc" id="L129" title="All 2 branches missed.">			if (!pmsPrevious.addManifestMeasureSnap (&quot;ForwardRate&quot;, dblPreviousForwardRate, dblPreviousDV01,</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">				dblPreviousForwardRate) || !pmsPrevious.setR1 (&quot;DV01&quot;, dblPreviousDV01) || !pmsPrevious.setR1</span>
+<span class="nc bnc" id="L131" title="All 4 branches missed.">					(&quot;ForwardRate&quot;, dblPreviousForwardRate) || !pmsPrevious.setC1 (&quot;FloaterLabel&quot;,</span>
+<span class="nc" id="L132">						sscFutures.forwardLabel().get (&quot;DERIVED&quot;).fullyQualifiedName()))</span>
+<span class="nc" id="L133">				return null;</span>
+
+<span class="nc" id="L135">			org.drip.historical.attribution.PositionMarketSnap pmsSpot = new</span>
+<span class="nc" id="L136">				org.drip.historical.attribution.PositionMarketSnap (dtSpot, mapSpotMeasures.get (&quot;PV&quot;));</span>
+
+<span class="nc bnc" id="L138" title="All 2 branches missed.">			if (!pmsSpot.addManifestMeasureSnap (&quot;ForwardRate&quot;, dblSpotForwardRate, dblSpotDV01,</span>
+<span class="nc bnc" id="L139" title="All 4 branches missed.">				dblSpotForwardRate) || !pmsSpot.setR1 (&quot;DV01&quot;, dblSpotDV01) || !pmsSpot.setR1 (&quot;ForwardRate&quot;,</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">					dblSpotForwardRate) || !pmsSpot.setC1 (&quot;FloaterLabel&quot;, sscFutures.forwardLabel().get</span>
+<span class="nc" id="L141">						(&quot;DERIVED&quot;).fullyQualifiedName()))</span>
+<span class="nc" id="L142">				return null;</span>
+
+<span class="nc" id="L144">			return new org.drip.historical.attribution.PositionChangeComponents (false, pmsPrevious, pmsSpot,</span>
+				0., null);
+<span class="nc" id="L146">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L147">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L150">		return null;</span>
+	}
+
+	/**
+	 * Generate the Funding Futures Horizon Metrics
+	 * 
+	 * @param adt Array of Closing Dates
+	 * @param adtExpiry Array of Expiry Dates
+	 * @param adblFuturesQuote Array of Closing Futures Quotes
+	 * @param strCurrency Funding Currency
+	 * 
+	 * @return The Funding Futures Horizon Metrics
+	 */
+
+	public static final java.util.List&lt;org.drip.historical.attribution.PositionChangeComponents&gt;
+		HorizonChangeAttribution (
+			final org.drip.analytics.date.JulianDate[] adt,
+			final org.drip.analytics.date.JulianDate[] adtExpiry,
+			final double[] adblFuturesQuote,
+			final java.lang.String strCurrency)
+	{
+<span class="nc bnc" id="L171" title="All 6 branches missed.">		if (null == adt || null == adtExpiry || null == adblFuturesQuote) return null;</span>
+
+<span class="nc" id="L173">		int iNumClose = adt.length;</span>
+
+<span class="nc bnc" id="L175" title="All 6 branches missed.">		if (0 == iNumClose || iNumClose != adtExpiry.length || iNumClose != adblFuturesQuote.length)</span>
+<span class="nc" id="L176">			return null;</span>
+
+<span class="nc" id="L178">		java.util.List&lt;org.drip.historical.attribution.PositionChangeComponents&gt; lsPCC = new</span>
+			java.util.ArrayList&lt;org.drip.historical.attribution.PositionChangeComponents&gt;();
+
+<span class="nc bnc" id="L181" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumClose; ++i) {</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">			if (adtExpiry[i - 1].julian() != adtExpiry[i].julian()) continue;</span>
+
+<span class="nc" id="L184">			org.drip.historical.attribution.PositionChangeComponents pcc = HorizonMetrics (adt[i - 1],</span>
+				adt[i], adtExpiry[i], adblFuturesQuote[i - 1], adblFuturesQuote[i], strCurrency);
+
+<span class="nc bnc" id="L187" title="All 2 branches missed.">			if (null == pcc) continue;</span>
+
+<span class="nc" id="L189">			lsPCC.add (pcc);</span>
+		}
+
+<span class="nc" id="L192">		return lsPCC;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SurvivalRecoveryStateShifted.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.template.statebump</a> &gt; <span class="el_source">SurvivalRecoveryStateShifted.java</span></div><h1>SurvivalRecoveryStateShifted.java</h1><pre class="source lang-java linenums">
+package org.drip.template.statebump;
+
+import java.util.Map;
+
+import org.drip.analytics.date.*;
+import org.drip.param.market.CurveSurfaceQuoteContainer;
+import org.drip.param.valuation.ValuationParams;
+import org.drip.product.definition.Component;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.service.template.*;
+import org.drip.state.credit.CreditCurve;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * SurvivalRecoveryStateShifted demonstrates the Generation of the Tenor Bumped Credit Curves.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L70">public class SurvivalRecoveryStateShifted {</span>
+
+	private static final MergedDiscountForwardCurve OvernightCurve (
+		final JulianDate dtSpot,
+		final String strCurrency)
+		throws Exception
+	{
+<span class="nc" id="L77">		String[] astrDepositMaturityTenor = new String[] {</span>
+			&quot;1D&quot;,
+			&quot;2D&quot;,
+			&quot;3D&quot;
+		};
+
+<span class="nc" id="L83">		double[] adblDepositQuote = new double[] {</span>
+			0.0004,		// 1D
+			0.0004,		// 2D
+			0.0004		// 3D
+		};
+
+<span class="nc" id="L89">		String[] astrShortEndOISMaturityTenor = new String[] {</span>
+			&quot;1W&quot;,
+			&quot;2W&quot;,
+			&quot;3W&quot;,
+			&quot;1M&quot;
+		};
+
+<span class="nc" id="L96">		double[] adblShortEndOISQuote = new double[] {</span>
+			0.00070,    //   1W
+			0.00069,    //   2W
+			0.00078,    //   3W
+			0.00074     //   1M
+		};
+
+<span class="nc" id="L103">		String[] astrOISFuturesEffectiveTenor = new String[] {</span>
+			&quot;1M&quot;,
+			&quot;2M&quot;,
+			&quot;3M&quot;,
+			&quot;4M&quot;,
+			&quot;5M&quot;
+		};
+
+<span class="nc" id="L111">		String[] astrOISFuturesMaturityTenor = new String[] {</span>
+			&quot;1M&quot;,
+			&quot;1M&quot;,
+			&quot;1M&quot;,
+			&quot;1M&quot;,
+			&quot;1M&quot;
+		};
+
+<span class="nc" id="L119">		double[] adblOISFuturesQuote = new double[] {</span>
+			 0.00046,    //   1M x 1M
+			 0.00016,    //   2M x 1M
+			-0.00007,    //   3M x 1M
+			-0.00013,    //   4M x 1M
+			-0.00014     //   5M x 1M
+		};
+
+<span class="nc" id="L127">		String[] astrLongEndOISMaturityTenor = new String[] {</span>
+			&quot;15M&quot;,
+			&quot;18M&quot;,
+			&quot;21M&quot;,
+			&quot;02Y&quot;,
+			&quot;03Y&quot;,
+			&quot;04Y&quot;,
+			&quot;05Y&quot;,
+			&quot;06Y&quot;,
+			&quot;07Y&quot;,
+			&quot;08Y&quot;,
+			&quot;09Y&quot;,
+			&quot;10Y&quot;,
+			&quot;11Y&quot;,
+			&quot;12Y&quot;,
+			&quot;15Y&quot;,
+			&quot;20Y&quot;,
+			&quot;25Y&quot;,
+			&quot;30Y&quot;
+		};
+
+<span class="nc" id="L148">		double[] adblLongEndOISQuote = new double[] {</span>
+			0.00002,    //  15M
+			0.00008,    //  18M
+			0.00021,    //  21M
+			0.00036,    //   2Y
+			0.00127,    //   3Y
+			0.00274,    //   4Y
+			0.00456,    //   5Y
+			0.00647,    //   6Y
+			0.00827,    //   7Y
+			0.00996,    //   8Y
+			0.01147,    //   9Y
+			0.01280,    //  10Y
+			0.01404,    //  11Y
+			0.01516,    //  12Y
+			0.01764,    //  15Y
+			0.01939,    //  20Y
+			0.02003,    //  25Y
+			0.02038     //  30Y
+		};
+
+<span class="nc" id="L169">		return LatentMarketStateBuilder.SmoothOvernightCurve (</span>
+			dtSpot,
+			strCurrency,
+			astrDepositMaturityTenor,
+			adblDepositQuote,
+			&quot;Rate&quot;,
+			astrShortEndOISMaturityTenor,
+			adblShortEndOISQuote,
+			&quot;SwapRate&quot;,
+			astrOISFuturesEffectiveTenor,
+			astrOISFuturesMaturityTenor,
+			adblOISFuturesQuote,
+			&quot;SwapRate&quot;,
+			astrLongEndOISMaturityTenor,
+			adblLongEndOISQuote,
+			&quot;SwapRate&quot;
+		);
+	}
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+		/*
+		 * Initialize the Credit Analytics Library
+		 */
+
+<span class="nc" id="L196">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L198">		String strCurrency = &quot;EUR&quot;;</span>
+<span class="nc" id="L199">		double dblBump = 1.0;</span>
+<span class="nc" id="L200">		boolean bIsBumpProportional = false;</span>
+
+<span class="nc" id="L202">		JulianDate dtSpot = DateUtil.Today().addBusDays (</span>
+			2,
+			strCurrency
+		);
+
+<span class="nc" id="L207">		MergedDiscountForwardCurve dcOvernight = OvernightCurve (</span>
+			dtSpot,
+			strCurrency
+		);
+
+<span class="nc" id="L212">		String[] astrCDSMaturityTenor = new String[] {</span>
+			&quot;06M&quot;,
+			&quot;01Y&quot;,
+			&quot;02Y&quot;,
+			&quot;03Y&quot;,
+			&quot;04Y&quot;,
+			&quot;05Y&quot;,
+			&quot;07Y&quot;,
+			&quot;10Y&quot;
+		};
+
+<span class="nc" id="L223">		double[] adblCDSParSpread = new double[] {</span>
+			 60.,	//  6M
+			 68.,	//  1Y
+			 88.,	//  2Y
+			102.,	//  3Y
+			121.,	//  4Y
+			138.,	//  5Y
+			168.,	//  7Y
+			188.	// 10Y
+		};
+
+<span class="nc" id="L234">		Map&lt;String, CreditCurve&gt; mapBumpedCreditCurve = LatentMarketStateBuilder.BumpedCreditCurve (</span>
+			dtSpot,
+			&quot;QTX&quot;,
+			astrCDSMaturityTenor,
+			adblCDSParSpread,
+			adblCDSParSpread,
+			&quot;FairPremium&quot;,
+			dcOvernight,
+			dblBump,
+			bIsBumpProportional
+		);
+
+<span class="nc" id="L246">		Component[] aCDS = OTCInstrumentBuilder.CDS (</span>
+			dtSpot,
+			astrCDSMaturityTenor,
+			adblCDSParSpread,
+			strCurrency,
+			&quot;QTX&quot;
+		);
+
+<span class="nc" id="L254">		System.out.println (&quot;\n\t|----------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L256">		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());</span>
+
+<span class="nc bnc" id="L258" title="All 2 branches missed.">		for (Map.Entry&lt;String, CreditCurve&gt; meCredit : mapBumpedCreditCurve.entrySet()) {</span>
+<span class="nc" id="L259">			String strKey = meCredit.getKey();</span>
+
+<span class="nc bnc" id="L261" title="All 2 branches missed.">			if (!strKey.startsWith (&quot;cds&quot;)) continue;</span>
+
+<span class="nc" id="L263">			CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();</span>
+
+<span class="nc" id="L265">			csqc.setFundingState (dcOvernight);</span>
+
+<span class="nc" id="L267">			csqc.setCreditState (meCredit.getValue());</span>
+
+<span class="nc" id="L269">			System.out.print (&quot;\t|  [&quot; + meCredit.getKey() + &quot;] =&gt; &quot;);</span>
+
+<span class="nc bnc" id="L271" title="All 2 branches missed.">			for (Component comp : aCDS)</span>
+<span class="nc" id="L272">				System.out.print (FormatUtil.FormatDouble (comp.measureValue (</span>
+					valParams,
+					null,
+					csqc,
+					null,
+					&quot;FairPremium&quot;
+				), 1, 1, 1.) + &quot; |&quot;);
+
+<span class="nc" id="L280">			System.out.print (&quot;|\n&quot;);</span>
+<span class="nc" id="L281">		}</span>
+
+<span class="nc" id="L283">		System.out.println (&quot;\t|----------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L285">		System.out.println (&quot;\n\t|--------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L287">		CurveSurfaceQuoteContainer csqcBase = new CurveSurfaceQuoteContainer();</span>
+
+<span class="nc" id="L289">		csqcBase.setFundingState (dcOvernight);</span>
+
+<span class="nc" id="L291">		csqcBase.setCreditState (mapBumpedCreditCurve.get (&quot;Base&quot;));</span>
+
+<span class="nc" id="L293">		CurveSurfaceQuoteContainer csqcBump = new CurveSurfaceQuoteContainer();</span>
+
+<span class="nc" id="L295">		csqcBump.setFundingState (dcOvernight);</span>
+
+<span class="nc" id="L297">		csqcBump.setCreditState (mapBumpedCreditCurve.get (&quot;Bump&quot;));</span>
+
+<span class="nc bnc" id="L299" title="All 2 branches missed.">		for (Component comp : aCDS)</span>
+<span class="nc" id="L300">			System.out.println (</span>
+				&quot;\t| FAIR PREMIUM =&gt; &quot; +
+<span class="nc" id="L302">				comp.maturityDate() + &quot; |&quot; +</span>
+<span class="nc" id="L303">				FormatUtil.FormatDouble (comp.measureValue (</span>
+					valParams,
+					null,
+					csqcBase,
+					null,
+					&quot;FairPremium&quot;
+				), 3, 1, 1.) + &quot; |&quot; +
+<span class="nc" id="L310">				FormatUtil.FormatDouble (comp.measureValue (</span>
+					valParams,
+					null,
+					csqcBump,
+					null,
+					&quot;FairPremium&quot;
+				), 3, 1, 1.) + &quot; ||&quot;
+			);
+
+<span class="nc" id="L319">		System.out.println (&quot;\t|--------------------------------------------||&quot;);</span>
+<span class="nc" id="L320">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

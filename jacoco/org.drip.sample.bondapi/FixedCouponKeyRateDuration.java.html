@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FixedCouponKeyRateDuration.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.bondapi</a> &gt; <span class="el_source">FixedCouponKeyRateDuration.java</span></div><h1>FixedCouponKeyRateDuration.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.bondapi;
+
+import java.util.*;
+
+import org.drip.analytics.date.*;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.service.product.FixedBondAPI;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * FixedCouponKeyRateDuration demonstrates the Invocation and Examination of the Key Rate Duration
+ *  Computation for the Specified Treasury Futures.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L65">public class FixedCouponKeyRateDuration {</span>
+
+	private static void ComputeKeyRateDuration (
+		final java.lang.String strIssuerName,
+		final JulianDate dtBondEffective,
+		final JulianDate dtBondMaturity,
+		final double dblBondCoupon,
+		final int iBondCouponFrequency,
+		final java.lang.String strBondCouponDayCount,
+		final java.lang.String strBondCouponCurrency,
+		final int iSpotDate,
+		final java.lang.String strGovvieCode,
+		final int[] aiGovvieCurveTreasuryEffectiveDate,
+		final int[] aiGovvieCurveTreasuryMaturityDate,
+		final double[] adblGovvieCurveTreasuryCoupon,
+		final double[] adblGovvieCurveTreasuryYield,
+		final java.lang.String strGovvieCurveTreasuryMeasure,
+		final double dblBondMarketCleanPrice,
+		final boolean bHeader,
+		final boolean bTrailer)
+		throws Exception
+	{
+<span class="nc" id="L87">		Map&lt;String, Double&gt; mapKeyRateDuration = FixedBondAPI.KeyRateDuration (</span>
+			strIssuerName,
+<span class="nc" id="L89">			dtBondEffective.julian(),</span>
+<span class="nc" id="L90">			dtBondMaturity.julian(),</span>
+			dblBondCoupon,
+			iBondCouponFrequency,
+			strBondCouponDayCount,
+			strBondCouponCurrency,
+			iSpotDate,
+			strGovvieCode,
+			aiGovvieCurveTreasuryEffectiveDate,
+			aiGovvieCurveTreasuryMaturityDate,
+			adblGovvieCurveTreasuryCoupon,
+			adblGovvieCurveTreasuryYield,
+			strGovvieCurveTreasuryMeasure,
+			dblBondMarketCleanPrice
+		);
+
+<span class="nc bnc" id="L105" title="All 2 branches missed.">		if (bHeader) {</span>
+<span class="nc" id="L106">			System.out.println (&quot;\n\t|------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L108">			System.out.print (&quot;\t|          ISSUE         |&quot;);</span>
+
+<span class="nc" id="L110">			Set&lt;String&gt; setstrKey = mapKeyRateDuration.keySet();</span>
+
+<span class="nc bnc" id="L112" title="All 2 branches missed.">			for (String strKey : setstrKey)</span>
+<span class="nc" id="L113">				System.out.print (&quot; &quot; + strKey + &quot; |&quot;);</span>
+
+<span class="nc" id="L115">			System.out.println (&quot;|&quot;);</span>
+
+<span class="nc" id="L117">			System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+		}
+
+<span class="nc" id="L120">		System.out.print (&quot;\t|  &quot; + strIssuerName + FormatUtil.FormatDouble (dblBondCoupon, 1, 4, 100.) + &quot; &quot; + dtBondMaturity + &quot; |&quot;);</span>
+
+<span class="nc bnc" id="L122" title="All 2 branches missed.">		for (Map.Entry&lt;String, Double&gt; me : mapKeyRateDuration.entrySet())</span>
+<span class="nc" id="L123">			System.out.print (&quot;     &quot; + FormatUtil.FormatDouble (-1. * me.getValue(), 1, 5, 1.) + &quot;    |&quot;);</span>
+
+<span class="nc" id="L125">		System.out.println (&quot;|&quot;);</span>
+
+<span class="nc bnc" id="L127" title="All 2 branches missed.">		if (bTrailer)</span>
+<span class="nc" id="L128">			System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L129">	}</span>
+
+	public static final void main (
+		final String[] args)
+		throws Exception
+	{
+<span class="nc" id="L135">		EnvManager.InitEnv (</span>
+			&quot;&quot;,
+			true
+		);
+
+<span class="nc" id="L140">		int iSpotDate = DateUtil.CreateFromYMD (</span>
+			2015,
+			DateUtil.NOVEMBER,
+			18
+<span class="nc" id="L144">		).julian();</span>
+
+<span class="nc" id="L146">		int[] aiGovvieCurveTreasuryEffectiveDate = new int[] {</span>
+			iSpotDate,
+			iSpotDate,
+			iSpotDate,
+			iSpotDate,
+			iSpotDate,
+			iSpotDate,
+			iSpotDate
+		};
+
+<span class="nc" id="L156">		int[] aiGovvieCurveTreasuryMaturityDate = new int[] {</span>
+<span class="nc" id="L157">			new JulianDate (iSpotDate).addTenor (&quot;1Y&quot;).julian(),</span>
+<span class="nc" id="L158">			new JulianDate (iSpotDate).addTenor (&quot;2Y&quot;).julian(),</span>
+<span class="nc" id="L159">			new JulianDate (iSpotDate).addTenor (&quot;3Y&quot;).julian(),</span>
+<span class="nc" id="L160">			new JulianDate (iSpotDate).addTenor (&quot;5Y&quot;).julian(),</span>
+<span class="nc" id="L161">			new JulianDate (iSpotDate).addTenor (&quot;7Y&quot;).julian(),</span>
+<span class="nc" id="L162">			new JulianDate (iSpotDate).addTenor (&quot;10Y&quot;).julian(),</span>
+<span class="nc" id="L163">			new JulianDate (iSpotDate).addTenor (&quot;30Y&quot;).julian()</span>
+		};
+
+<span class="nc" id="L166">		double[] adblGovvieCurveTreasuryCoupon = new double[] {</span>
+			0.0100,
+			0.0100,
+			0.0125,
+			0.0150,
+			0.0200,
+			0.0225,
+			0.0300
+		};
+
+<span class="nc" id="L176">		double[] adblGovvieCurveTreasuryYield = new double[] {</span>
+			0.00692,
+			0.00945,
+			0.01257,
+			0.01678,
+			0.02025,
+			0.02235,
+			0.02972
+		};
+
+<span class="nc" id="L186">		String strGovvieCurveTreasuryMeasure = &quot;Yield&quot;;</span>
+
+<span class="nc" id="L188">		String strIssuerName = &quot;AEG&quot;;</span>
+<span class="nc" id="L189">		int iBondCouponFrequency = 2;</span>
+<span class="nc" id="L190">		String strBondCouponDayCount = &quot;30/360&quot;;</span>
+<span class="nc" id="L191">		String strBondCouponCurrency = &quot;USD&quot;;</span>
+<span class="nc" id="L192">		String strGovvieCode = &quot;UST&quot;;</span>
+
+<span class="nc" id="L194">		ComputeKeyRateDuration (</span>
+			strIssuerName,
+<span class="nc" id="L196">			DateUtil.CreateFromYMD (2007, 12, 20),</span>
+<span class="nc" id="L197">			DateUtil.CreateFromYMD (2018,  1, 15),</span>
+			0.06000,
+			iBondCouponFrequency,
+			strBondCouponDayCount,
+			strBondCouponCurrency,
+			iSpotDate,
+			strGovvieCode,
+			aiGovvieCurveTreasuryEffectiveDate,
+			aiGovvieCurveTreasuryMaturityDate,
+			adblGovvieCurveTreasuryCoupon,
+			adblGovvieCurveTreasuryYield,
+			strGovvieCurveTreasuryMeasure,
+			1.08529,
+			true,
+			false
+		);
+
+<span class="nc" id="L214">		ComputeKeyRateDuration (</span>
+			strIssuerName,
+<span class="nc" id="L216">			DateUtil.CreateFromYMD (1996,  7, 25),</span>
+<span class="nc" id="L217">			DateUtil.CreateFromYMD (2025,  7, 15),</span>
+			0.07750,
+			iBondCouponFrequency,
+			strBondCouponDayCount,
+			strBondCouponCurrency,
+			iSpotDate,
+			strGovvieCode,
+			aiGovvieCurveTreasuryEffectiveDate,
+			aiGovvieCurveTreasuryMaturityDate,
+			adblGovvieCurveTreasuryCoupon,
+			adblGovvieCurveTreasuryYield,
+			strGovvieCurveTreasuryMeasure,
+			1.27021,
+			false,
+			false
+		);
+
+<span class="nc" id="L234">		ComputeKeyRateDuration (</span>
+			strIssuerName,
+<span class="nc" id="L236">			DateUtil.CreateFromYMD (1996, 10, 29),</span>
+<span class="nc" id="L237">			DateUtil.CreateFromYMD (2026, 10, 15),</span>
+			0.07625,
+			iBondCouponFrequency,
+			strBondCouponDayCount,
+			strBondCouponCurrency,
+			iSpotDate,
+			strGovvieCode,
+			aiGovvieCurveTreasuryEffectiveDate,
+			aiGovvieCurveTreasuryMaturityDate,
+			adblGovvieCurveTreasuryCoupon,
+			adblGovvieCurveTreasuryYield,
+			strGovvieCurveTreasuryMeasure,
+			1.27274,
+			false,
+			false
+		);
+
+<span class="nc" id="L254">		ComputeKeyRateDuration (</span>
+			strIssuerName,
+<span class="nc" id="L256">			DateUtil.CreateFromYMD (2014, 12,  9),</span>
+<span class="nc" id="L257">			DateUtil.CreateFromYMD (2026, 12, 15),</span>
+			0.04125,
+			iBondCouponFrequency,
+			strBondCouponDayCount,
+			strBondCouponCurrency,
+			iSpotDate,
+			strGovvieCode,
+			aiGovvieCurveTreasuryEffectiveDate,
+			aiGovvieCurveTreasuryMaturityDate,
+			adblGovvieCurveTreasuryCoupon,
+			adblGovvieCurveTreasuryYield,
+			strGovvieCurveTreasuryMeasure,
+			1.01235,
+			false,
+			false
+		);
+
+<span class="nc" id="L274">		ComputeKeyRateDuration (</span>
+			strIssuerName,
+<span class="nc" id="L276">			DateUtil.CreateFromYMD (1997,  4, 29),</span>
+<span class="nc" id="L277">			DateUtil.CreateFromYMD (2027,  4, 29),</span>
+			0.08000,
+			iBondCouponFrequency,
+			strBondCouponDayCount,
+			strBondCouponCurrency,
+			iSpotDate,
+			strGovvieCode,
+			aiGovvieCurveTreasuryEffectiveDate,
+			aiGovvieCurveTreasuryMaturityDate,
+			adblGovvieCurveTreasuryCoupon,
+			adblGovvieCurveTreasuryYield,
+			strGovvieCurveTreasuryMeasure,
+			1.31527,
+			false,
+			false
+		);
+
+<span class="nc" id="L294">		ComputeKeyRateDuration (</span>
+			strIssuerName,
+<span class="nc" id="L296">			DateUtil.CreateFromYMD (2014,  9, 25),</span>
+<span class="nc" id="L297">			DateUtil.CreateFromYMD (2027, 10,  1),</span>
+			0.04250,
+			iBondCouponFrequency,
+			strBondCouponDayCount,
+			strBondCouponCurrency,
+			iSpotDate,
+			strGovvieCode,
+			aiGovvieCurveTreasuryEffectiveDate,
+			aiGovvieCurveTreasuryMaturityDate,
+			adblGovvieCurveTreasuryCoupon,
+			adblGovvieCurveTreasuryYield,
+			strGovvieCurveTreasuryMeasure,
+			1.02263,
+			false,
+			false
+		);
+
+<span class="nc" id="L314">		ComputeKeyRateDuration (</span>
+			strIssuerName,
+<span class="nc" id="L316">			DateUtil.CreateFromYMD (2008,  5, 22),</span>
+<span class="nc" id="L317">			DateUtil.CreateFromYMD (2038,  5, 15),</span>
+			0.06400,
+			iBondCouponFrequency,
+			strBondCouponDayCount,
+			strBondCouponCurrency,
+			iSpotDate,
+			strGovvieCode,
+			aiGovvieCurveTreasuryEffectiveDate,
+			aiGovvieCurveTreasuryMaturityDate,
+			adblGovvieCurveTreasuryCoupon,
+			adblGovvieCurveTreasuryYield,
+			strGovvieCurveTreasuryMeasure,
+			1.27570,
+			false,
+			false
+		);
+
+<span class="nc" id="L334">		ComputeKeyRateDuration (</span>
+			strIssuerName,
+<span class="nc" id="L336">			DateUtil.CreateFromYMD (2011,  7, 21),</span>
+<span class="nc" id="L337">			DateUtil.CreateFromYMD (2041,  7, 15),</span>
+			0.05600,
+			iBondCouponFrequency,
+			strBondCouponDayCount,
+			strBondCouponCurrency,
+			iSpotDate,
+			strGovvieCode,
+			aiGovvieCurveTreasuryEffectiveDate,
+			aiGovvieCurveTreasuryMaturityDate,
+			adblGovvieCurveTreasuryCoupon,
+			adblGovvieCurveTreasuryYield,
+			strGovvieCurveTreasuryMeasure,
+			1.17460,
+			false,
+			true
+		);
+
+<span class="nc" id="L354">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L355">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TreasuryFuturesConvention.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.market.exchange</a> &gt; <span class="el_source">TreasuryFuturesConvention.java</span></div><h1>TreasuryFuturesConvention.java</h1><pre class="source lang-java linenums">
+package org.drip.market.exchange;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * TreasuryFuturesConvention contains the Details for the Futures Basket of the Exchange-Traded Treasury
+ *  Futures Contracts.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class TreasuryFuturesConvention {
+<span class="fc" id="L60">	private java.lang.String _strName = &quot;&quot;;</span>
+<span class="fc" id="L61">	private java.lang.String _strCalendar = &quot;&quot;;</span>
+<span class="fc" id="L62">	private java.lang.String _strCurrency = &quot;&quot;;</span>
+<span class="fc" id="L63">	private java.lang.String[] _astrCode = null;</span>
+<span class="fc" id="L64">	private java.lang.String[] _astrExchange = null;</span>
+<span class="fc" id="L65">	private java.lang.String _strMaturityTenor = &quot;&quot;;</span>
+<span class="fc" id="L66">	private java.lang.String _strUnderlierType = &quot;&quot;;</span>
+<span class="fc" id="L67">	private java.lang.String _strUnderlierSubtype = &quot;&quot;;</span>
+<span class="fc" id="L68">	private double _dblBasketNotional = java.lang.Double.NaN;</span>
+<span class="fc" id="L69">	private double _dblMinimumPriceMovement = java.lang.Double.NaN;</span>
+<span class="fc" id="L70">	private org.drip.market.exchange.TreasuryFuturesSettle _bfs = null;</span>
+<span class="fc" id="L71">	private org.drip.analytics.eventday.DateInMonth _dimExpiry = null;</span>
+<span class="fc" id="L72">	private double _dblComponentNotionalMinimum = java.lang.Double.NaN;</span>
+<span class="fc" id="L73">	private org.drip.market.exchange.TreasuryFuturesEligibility _bfe = null;</span>
+
+	/**
+	 * TreasuryFuturesConvention Constructor
+	 * 
+	 * @param strName The Futures Name
+	 * @param astrCode The Array of the Futures Codes
+	 * @param strCurrency The Futures Currency
+	 * @param strCalendar The Futures Settle Calendar
+	 * @param strMaturityTenor The Maturity Tenor
+	 * @param dblBasketNotional Basket Notional
+	 * @param dblMinimumPriceMovement The Minimum Price Movement
+	 * @param dblComponentNotionalMinimum The Minimum Component Notional
+	 * @param astrExchange Exchange Array
+	 * @param strUnderlierType Underlier Type
+	 * @param strUnderlierSubtype Underlier Sub-Type
+	 * @param dimExpiry The Expiry Date-In-Month Setting
+	 * @param bfe Eligibility Settings
+	 * @param bfs Settlement Settings
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public TreasuryFuturesConvention (
+		final java.lang.String strName,
+		final java.lang.String[] astrCode,
+		final java.lang.String strCurrency,
+		final java.lang.String strCalendar,
+		final java.lang.String strMaturityTenor,
+		final double dblBasketNotional,
+		final double dblMinimumPriceMovement,
+		final double dblComponentNotionalMinimum,
+		final java.lang.String[] astrExchange,
+		final java.lang.String strUnderlierType,
+		final java.lang.String strUnderlierSubtype,
+		final org.drip.analytics.eventday.DateInMonth dimExpiry,
+		final org.drip.market.exchange.TreasuryFuturesEligibility bfe,
+		final org.drip.market.exchange.TreasuryFuturesSettle bfs)
+		throws java.lang.Exception
+<span class="fc" id="L112">	{</span>
+<span class="pc bpc" id="L113" title="5 of 10 branches missed.">		if (null == (_strName = strName) || _strName.isEmpty() || null == (_astrCode = astrCode) || 0 ==</span>
+<span class="pc bpc" id="L114" title="2 of 4 branches missed.">			_astrCode.length || null == (_strCurrency = strCurrency) || _strCurrency.isEmpty() || null ==</span>
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">				(_strMaturityTenor = strMaturityTenor) || _strMaturityTenor.isEmpty() ||</span>
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblBasketNotional = dblBasketNotional) ||</span>
+<span class="pc bpc" id="L117" title="1 of 2 branches missed.">						!org.drip.quant.common.NumberUtil.IsValid (_dblMinimumPriceMovement =</span>
+							dblMinimumPriceMovement) || !org.drip.quant.common.NumberUtil.IsValid
+<span class="pc bpc" id="L119" title="4 of 8 branches missed.">								(_dblComponentNotionalMinimum = dblComponentNotionalMinimum) || null ==</span>
+									(_astrExchange = astrExchange) || 0 == _astrExchange.length || null ==
+<span class="pc bpc" id="L121" title="2 of 4 branches missed.">										(_strUnderlierType = strUnderlierType) || _strUnderlierType.isEmpty()</span>
+											|| null == (_strUnderlierSubtype = strUnderlierSubtype) ||
+<span class="pc bpc" id="L123" title="4 of 8 branches missed.">												_strUnderlierSubtype.isEmpty() || null == (_dimExpiry =</span>
+													dimExpiry) || null == (_bfe = bfe) || null == (_bfs =
+														bfs))
+<span class="nc" id="L126">			throw new java.lang.Exception (&quot;TreasuryFuturesConvention ctr: Invalid Inputs&quot;);</span>
+
+<span class="fc" id="L128">		_strCalendar = strCalendar;</span>
+<span class="fc" id="L129">	}</span>
+
+	/**
+	 * Retrieve the Treasury Futures Name
+	 * 
+	 * @return The Treasury Futures Name
+	 */
+
+	public java.lang.String name()
+	{
+<span class="nc" id="L139">		return _strName;</span>
+	}
+
+	/**
+	 * Retrieve the Treasury Futures Settle Calendar
+	 * 
+	 * @return The Treasury Futures Settle Calendar
+	 */
+
+	public java.lang.String calendar()
+	{
+<span class="nc" id="L150">		return _strCalendar;</span>
+	}
+
+	/**
+	 * Retrieve the Treasury Futures Code Array
+	 * 
+	 * @return The Treasury Futures Code Array
+	 */
+
+	public java.lang.String[] codes()
+	{
+<span class="nc" id="L161">		return _astrCode;</span>
+	}
+
+	/**
+	 * Retrieve the Treasury Futures Currency
+	 * 
+	 * @return The Treasury Futures Currency
+	 */
+
+	public java.lang.String currency()
+	{
+<span class="nc" id="L172">		return _strCurrency;</span>
+	}
+
+	/**
+	 * Retrieve the Treasury Futures Maturity Tenor
+	 * 
+	 * @return The Treasury Futures Maturity Tenor
+	 */
+
+	public java.lang.String maturityTenor()
+	{
+<span class="nc" id="L183">		return _strMaturityTenor;</span>
+	}
+
+	/**
+	 * Retrieve the Treasury Futures Basket Notional
+	 * 
+	 * @return The Treasury Futures Basket Notional
+	 */
+
+	public double basketNotional()
+	{
+<span class="nc" id="L194">		return _dblBasketNotional;</span>
+	}
+
+	/**
+	 * Retrieve the Minimimum Price Movement - a.k.a Tick
+	 * 
+	 * @return The Minimum Price Movement
+	 */
+
+	public double minimumPriceMovement()
+	{
+<span class="nc" id="L205">		return _dblMinimumPriceMovement;</span>
+	}
+
+	/**
+	 * Retrieve the Minimum Treasury Futures Component Notional
+	 * 
+	 * @return The Minimum Treasury Futures Component Notional
+	 */
+
+	public double minimumComponentNotional()
+	{
+<span class="nc" id="L216">		return _dblComponentNotionalMinimum;</span>
+	}
+
+	/**
+	 * Retrieve the Bond Futures Exchanges Array
+	 * 
+	 * @return The Bond Futures Exchanges Array
+	 */
+
+	public java.lang.String[] exchanges()
+	{
+<span class="nc" id="L227">		return _astrExchange;</span>
+	}
+
+	/**
+	 * Retrieve the Treasury Futures Underlier Type
+	 * 
+	 * @return The Treasury Futures Underlier Type
+	 */
+
+	public java.lang.String underlierType()
+	{
+<span class="nc" id="L238">		return _strUnderlierType;</span>
+	}
+
+	/**
+	 * Retrieve the Treasury Futures Underlier Sub-type
+	 * 
+	 * @return The Treasury Futures Underlier Sub-type
+	 */
+
+	public java.lang.String underlierSubtype()
+	{
+<span class="nc" id="L249">		return _strUnderlierSubtype;</span>
+	}
+
+	/**
+	 * Retrieve the Date In Month Expiry Settings
+	 * 
+	 * @return The Date In Month Expiry Settings
+	 */
+
+	public org.drip.analytics.eventday.DateInMonth dimExpiry()
+	{
+<span class="nc" id="L260">		return _dimExpiry;</span>
+	}
+
+	/**
+	 * Retrieve the Treasury Futures Eligibility Settings
+	 * 
+	 * @return The Treasury Futures Eligibility Settings
+	 */
+
+	public org.drip.market.exchange.TreasuryFuturesEligibility eligibility()
+	{
+<span class="nc" id="L271">		return _bfe;</span>
+	}
+
+	/**
+	 * Retrieve the Treasury Futures Settle Settings
+	 * 
+	 * @return The Treasury Futures Settle Settings
+	 */
+
+	public org.drip.market.exchange.TreasuryFuturesSettle settle()
+	{
+<span class="nc" id="L282">		return _bfs;</span>
+	}
+
+	/**
+	 * Retrieve the TreasuryFuturesEventDates Instance corresponding to the Futures Expiry Year/Month
+	 * 
+	 * @param iYear Futures Year
+	 * @param iMonth Futures Month
+	 * 
+	 * @return The TreasuryFuturesEventDates Instance
+	 */
+
+	public org.drip.market.exchange.TreasuryFuturesEventDates eventDates (
+		final int iYear,
+		final int iMonth)
+	{
+<span class="fc" id="L298">		org.drip.analytics.date.JulianDate dtExpiry = _dimExpiry.instanceDay (iYear, iMonth, _strCalendar);</span>
+
+<span class="pc bpc" id="L300" title="1 of 2 branches missed.">		if (null == dtExpiry) return null;</span>
+
+		try {
+<span class="fc" id="L303">			return new org.drip.market.exchange.TreasuryFuturesEventDates (dtExpiry, dtExpiry.addBusDays</span>
+<span class="fc" id="L304">				(_bfs.expiryFirstDeliveryLag(), _strCalendar), dtExpiry.addBusDays</span>
+<span class="fc" id="L305">					(_bfs.expiryFinalDeliveryLag(), _strCalendar), dtExpiry.addBusDays</span>
+<span class="fc" id="L306">						(_bfs.expiryDeliveryNoticeLag(), _strCalendar), dtExpiry.addBusDays</span>
+<span class="fc" id="L307">							(_bfs.expiryFirstDeliveryLag(), _strCalendar));</span>
+<span class="nc" id="L308">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L309">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L312">		return null;</span>
+	}
+
+	/**
+	 * Compute the Reference Bond Price from the Quoted Futures Index Level
+	 * 
+	 * @param dblFuturesQuotedIndex The Quoted Futures Index Level
+	 * 
+	 * @return The Reference Price
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are invalid
+	 */
+
+	public double referencePrice (
+		final double dblFuturesQuotedIndex)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L329" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblFuturesQuotedIndex))</span>
+<span class="nc" id="L330">			throw new java.lang.Exception (&quot;TreasuryFuturesConvention::referencePrice =&gt; Invalid Inputs!&quot;);</span>
+
+<span class="nc" id="L332">		double dblPeriodReferenceYield = 0.5 * (1. - dblFuturesQuotedIndex);</span>
+
+<span class="nc" id="L334">		double dblCompoundedDF = java.lang.Math.pow (1. / (1. + dblPeriodReferenceYield),</span>
+<span class="nc" id="L335">			org.drip.analytics.support.Helper.TenorToMonths (_strMaturityTenor) / 6);</span>
+
+<span class="nc" id="L337">		return dblCompoundedDF + 0.5 * _bfs.currentReferenceYield() * (1. - dblCompoundedDF) /</span>
+			dblPeriodReferenceYield;
+	}
+
+	/**
+	 * Compute the Reference Bond Price from the Quoted Futures Index Level
+	 * 
+	 * @param dtValue The Valuation Date
+	 * @param bond The Bond Instance
+	 * @param dblFuturesQuotedIndex The Quoted Futures Index Level
+	 * 
+	 * @return The Reference Price
+	 * 
+	 * @throws java.lang.Exception Thrown if the Treasury Futures Price Generic cannot be computed
+	 */
+
+	public double referencePrice (
+		final org.drip.analytics.date.JulianDate dtValue,
+		final org.drip.product.definition.Bond bond,
+		final double dblFuturesQuotedIndex)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L359" title="All 4 branches missed.">		if (null == dtValue || null == bond) return referencePrice (dblFuturesQuotedIndex);</span>
+
+<span class="nc bnc" id="L361" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblFuturesQuotedIndex))</span>
+<span class="nc" id="L362">			throw new java.lang.Exception (&quot;AnalyticsHelper::referencePrice =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc" id="L364">		return bond.priceFromYield (new org.drip.param.valuation.ValuationParams (dtValue, dtValue, null),</span>
+			null, null, 1. - dblFuturesQuotedIndex);
+	}
+
+	/**
+	 * Indicate whether the given bond is eligible to be delivered
+	 * 
+	 * @param dtValue The Value Date
+	 * @param bond The Bond whose Eligibility is to be evaluated
+	 * @param dblOutstandingNotional The Outstanding Notional
+	 * @param strIssuer The Issuer
+	 * 
+	 * @return TRUE - The given bond is eligible to be delivered
+	 */
+
+	public boolean isEligible (
+		final org.drip.analytics.date.JulianDate dtValue,
+		final org.drip.product.definition.Bond bond,
+		final double dblOutstandingNotional,
+		final java.lang.String strIssuer)
+	{
+<span class="nc" id="L385">		return _bfe.isEligible (dtValue, bond, dblOutstandingNotional, strIssuer);</span>
+	}
+
+	@Override public java.lang.String toString()
+	{
+<span class="fc" id="L390">		java.lang.String strDump = &quot;Name: &quot; + _strName + &quot; | Currency: &quot; + _strCurrency + &quot; | Calendar: &quot; +</span>
+			_strCalendar + &quot; | Underlier Type: &quot; + _strUnderlierType + &quot; | Underlier Sub-type: &quot; +
+				_strUnderlierSubtype + &quot; | Maturity Tenor: &quot; + _strMaturityTenor + &quot; | Basket Notional: &quot; +
+					_dblBasketNotional + &quot; | Minimum Price Movement: &quot; + _dblMinimumPriceMovement +
+						&quot; | Component Notional Minimum: &quot; + _dblComponentNotionalMinimum;
+
+<span class="fc bfc" id="L396" title="All 2 branches covered.">		for (int i = 0; i &lt; _astrCode.length; ++i) {</span>
+<span class="fc bfc" id="L397" title="All 2 branches covered.">			if (0 == i)</span>
+<span class="fc" id="L398">				strDump += &quot; | CODES =&gt; {&quot;;</span>
+			else
+<span class="fc" id="L400">				strDump += &quot;, &quot;;</span>
+
+<span class="fc" id="L402">			strDump += _astrCode[i];</span>
+
+<span class="fc bfc" id="L404" title="All 2 branches covered.">			if (_astrExchange.length - 1 == i) strDump += &quot;}&quot;;</span>
+		}
+
+<span class="fc bfc" id="L407" title="All 2 branches covered.">		for (int i = 0; i &lt; _astrExchange.length; ++i) {</span>
+<span class="fc bfc" id="L408" title="All 2 branches covered.">			if (0 == i)</span>
+<span class="fc" id="L409">				strDump += &quot; | EXCHANGES =&gt; (&quot;;</span>
+			else
+<span class="fc" id="L411">				strDump += &quot;, &quot;;</span>
+
+<span class="fc" id="L413">			strDump += _astrExchange[i];</span>
+
+<span class="fc bfc" id="L415" title="All 2 branches covered.">			if (_astrExchange.length - 1 == i) strDump += &quot;) &quot;;</span>
+		}
+
+<span class="fc" id="L418">		return strDump + &quot;\n\t\t&quot; + _dimExpiry + &quot;\n\t\t&quot; + _bfe + &quot;\n\t\t&quot; + _bfs;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

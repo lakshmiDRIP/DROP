@@ -1,0 +1,806 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JPY3M6MUSD3M6M.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.dual</a> &gt; <span class="el_source">JPY3M6MUSD3M6M.java</span></div><h1>JPY3M6MUSD3M6M.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.dual;
+
+import org.drip.analytics.date.*;
+import org.drip.function.r1tor1.QuadraticRationalShapeControl;
+import org.drip.sample.forward.*;
+import org.drip.service.env.EnvManager;
+import org.drip.spline.basis.PolynomialFunctionSetParams;
+import org.drip.spline.params.*;
+import org.drip.spline.stretch.*;
+import org.drip.state.discount.*;
+import org.drip.state.forward.ForwardCurve;
+import org.drip.state.identifier.ForwardLabel;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * JPY3M6MUSD3M6M demonstrates the setup and construction of the USD 3M Forward Curve from JPY3M6MUSD3M6M
+ * 	CCBS, JPY 3M, JPY 6M, and USD 6M Quotes.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L71">public class JPY3M6MUSD3M6M {</span>
+	private static final double _dblFXJPYUSD = 0.009753;
+
+<span class="nc" id="L74">	private static final int[] s_aiUSDOISDepositMaturityDays = new int[] {</span>
+		1,
+		2,
+		3
+	};
+
+<span class="nc" id="L80">	private static final double[] s_adblUSDOISDepositQuote = new double[] {</span>
+		0.0004,	// 1D
+		0.0004,	// 2D
+		0.0004	// 3D
+	};
+
+<span class="nc" id="L86">	private static final String[] s_astrUSDShortEndOISMaturityTenor = new String[] {</span>
+		&quot;1W&quot;,
+		&quot;2W&quot;,
+		&quot;3W&quot;,
+		&quot;1M&quot;
+	};
+
+<span class="nc" id="L93">	private static final double[] s_adblUSDShortEndOISQuote = new double[] {</span>
+		0.00070,    //   1W
+		0.00069,    //   2W
+		0.00078,    //   3W
+		0.00074     //   1M
+	};
+
+<span class="nc" id="L100">	private static final String[] s_astrUSDOISFutureTenor = new String[] {</span>
+		&quot;1M&quot;,
+		&quot;1M&quot;,
+		&quot;1M&quot;,
+		&quot;1M&quot;,
+		&quot;1M&quot;
+	};
+
+<span class="nc" id="L108">	private static final String[] s_astrUSDOISFutureMaturityTenor = new String[] {</span>
+		&quot;1M&quot;,
+		&quot;2M&quot;,
+		&quot;3M&quot;,
+		&quot;4M&quot;,
+		&quot;5M&quot;
+	};
+
+<span class="nc" id="L116">	private static final double[] s_adblUSDOISFutureQuote = new double[] {</span>
+		 0.00046,    //   1M x 1M
+		 0.00016,    //   2M x 1M
+		-0.00007,    //   3M x 1M
+		-0.00013,    //   4M x 1M
+		-0.00014     //   5M x 1M
+	};
+
+<span class="nc" id="L124">	private static final String[] s_astrUSDLongEndOISMaturityTenor = new String[] {</span>
+		&quot;15M&quot;,
+		&quot;18M&quot;,
+		&quot;21M&quot;,
+		&quot;2Y&quot;,
+		&quot;3Y&quot;,
+		&quot;4Y&quot;,
+		&quot;5Y&quot;,
+		&quot;6Y&quot;,
+		&quot;7Y&quot;,
+		&quot;8Y&quot;,
+		&quot;9Y&quot;,
+		&quot;10Y&quot;,
+		&quot;11Y&quot;,
+		&quot;12Y&quot;,
+		&quot;15Y&quot;,
+		&quot;20Y&quot;,
+		&quot;25Y&quot;,
+		&quot;30Y&quot;
+	};
+
+<span class="nc" id="L145">	private static final double[] s_adblUSDLongEndOISQuote = new double[] {</span>
+		0.00002,    //  15M
+		0.00008,    //  18M
+		0.00021,    //  21M
+		0.00036,    //   2Y
+		0.00127,    //   3Y
+		0.00274,    //   4Y
+		0.00456,    //   5Y
+		0.00647,    //   6Y
+		0.00827,    //   7Y
+		0.00996,    //   8Y
+		0.01147,    //   9Y
+		0.01280,    //  10Y
+		0.01404,    //  11Y
+		0.01516,    //  12Y
+		0.01764,    //  15Y
+		0.01939,    //  20Y
+		0.02003,    //  25Y
+		0.02038     //  30Y
+	};
+
+<span class="nc" id="L166">	private static final int[] s_aiJPYOISDepositMaturityDays = new int[] {</span>
+		1,
+		2,
+		3
+	};
+
+<span class="nc" id="L172">	private static final double[] s_adblJPYOISDepositQuote = new double[] {</span>
+		0.0004,	// 1D
+		0.0004,	// 2D
+		0.0004	// 3D
+	};
+
+<span class="nc" id="L178">	private static final String[] s_astrJPYShortEndOISMaturityTenor = new String[] {</span>
+		&quot;1W&quot;,
+		&quot;2W&quot;,
+		&quot;3W&quot;,
+		&quot;1M&quot;
+	};
+
+<span class="nc" id="L185">	private static final double[] s_adblJPYShortEndOISQuote = new double[] {</span>
+		0.00070,    //   1W
+		0.00069,    //   2W
+		0.00078,    //   3W
+		0.00074     //   1M
+	};
+
+<span class="nc" id="L192">	private static final String[] s_astrJPYOISFutureTenor = new String[] {</span>
+		&quot;1M&quot;,
+		&quot;1M&quot;,
+		&quot;1M&quot;,
+		&quot;1M&quot;,
+		&quot;1M&quot;
+	};
+
+<span class="nc" id="L200">	private static final String[] s_astrJPYOISFutureMaturityTenor = new String[] {</span>
+		&quot;1M&quot;,
+		&quot;2M&quot;,
+		&quot;3M&quot;,
+		&quot;4M&quot;,
+		&quot;5M&quot;
+	};
+
+<span class="nc" id="L208">	private static final double[] s_adblJPYOISFutureQuote = new double[] {</span>
+		 0.00046,    //   1M x 1M
+		 0.00016,    //   2M x 1M
+		-0.00007,    //   3M x 1M
+		-0.00013,    //   4M x 1M
+		-0.00014     //   5M x 1M
+	};
+
+<span class="nc" id="L216">	private static final String[] s_astrJPYLongEndOISMaturityTenor = new String[] {</span>
+		&quot;15M&quot;,
+		&quot;18M&quot;,
+		&quot;21M&quot;,
+		&quot;2Y&quot;,
+		&quot;3Y&quot;,
+		&quot;4Y&quot;,
+		&quot;5Y&quot;,
+		&quot;6Y&quot;,
+		&quot;7Y&quot;,
+		&quot;8Y&quot;,
+		&quot;9Y&quot;,
+		&quot;10Y&quot;,
+		&quot;11Y&quot;,
+		&quot;12Y&quot;,
+		&quot;15Y&quot;,
+		&quot;20Y&quot;,
+		&quot;25Y&quot;,
+		&quot;30Y&quot;
+	};
+
+<span class="nc" id="L237">	private static final double[] s_adblJPYLongEndOISQuote = new double[] {</span>
+		0.00002,    //  15M
+		0.00008,    //  18M
+		0.00021,    //  21M
+		0.00036,    //   2Y
+		0.00127,    //   3Y
+		0.00274,    //   4Y
+		0.00456,    //   5Y
+		0.00647,    //   6Y
+		0.00827,    //   7Y
+		0.00996,    //   8Y
+		0.01147,    //   9Y
+		0.01280,    //  10Y
+		0.01404,    //  11Y
+		0.01516,    //  12Y
+		0.01764,    //  15Y
+		0.01939,    //  20Y
+		0.02003,    //  25Y
+		0.02038     //  30Y
+	};
+
+<span class="nc" id="L258">	private static final String[] s_astrUSD6MDepositTenor = new String[] {</span>
+		&quot;1D&quot;,
+		&quot;1W&quot;,
+		&quot;2W&quot;,
+		&quot;3W&quot;,
+		&quot;1M&quot;,
+		&quot;2M&quot;,
+		&quot;3M&quot;,
+		&quot;4M&quot;,
+		&quot;5M&quot;
+	};
+
+<span class="nc" id="L270">	private static final double[] s_adblUSD6MDepositQuote = new double[] {</span>
+		0.003565,	// 1D
+		0.003858,	// 1W
+		0.003840,	// 2W
+		0.003922,	// 3W
+		0.003869,	// 1M
+		0.003698,	// 2M
+		0.003527,	// 3M
+		0.003342,	// 4M
+		0.003225	// 5M
+	};
+
+<span class="nc" id="L282">	private static final String[] s_astrUSD6MFRATenor = new String[] {</span>
+		 &quot;0D&quot;,
+		 &quot;1M&quot;,
+		 &quot;2M&quot;,
+		 &quot;3M&quot;,
+		 &quot;4M&quot;,
+		 &quot;5M&quot;,
+		 &quot;6M&quot;,
+		 &quot;7M&quot;,
+		 &quot;8M&quot;,
+		 &quot;9M&quot;,
+		&quot;10M&quot;,
+		&quot;11M&quot;,
+		&quot;12M&quot;,
+		&quot;13M&quot;,
+		&quot;14M&quot;,
+		&quot;15M&quot;,
+		&quot;16M&quot;,
+		&quot;17M&quot;,
+		&quot;18M&quot;
+	};
+
+<span class="nc" id="L304">	private static final double[] s_adblUSD6MFRAQuote = new double[] {</span>
+		0.003120,	//  0D
+		0.002930,	//  1M
+		0.002720,	//  2M
+		0.002600,	//  3M
+		0.002560,	//  4M
+		0.002520,	//  5M
+		0.002480,	//  6M
+		0.002540,	//  7M
+		0.002610,	//  8M
+		0.002670,	//  9M
+		0.002790,	// 10M
+		0.002910,	// 11M
+		0.003030,	// 12M
+		0.003180,	// 13M
+		0.003350,	// 14M
+		0.003520,	// 15M
+		0.003710,	// 16M
+		0.003890,	// 17M
+		0.004090	// 18M
+	};
+
+<span class="nc" id="L326">	private static final String[] s_astrUSD6MFixFloatTenor = new String[] {</span>
+		 &quot;3Y&quot;,
+		 &quot;4Y&quot;,
+		 &quot;5Y&quot;,
+		 &quot;6Y&quot;,
+		 &quot;7Y&quot;,
+		 &quot;8Y&quot;,
+		 &quot;9Y&quot;,
+		&quot;10Y&quot;,
+		&quot;12Y&quot;,
+		&quot;15Y&quot;,
+		&quot;20Y&quot;,
+		&quot;25Y&quot;,
+		&quot;30Y&quot;,
+		&quot;35Y&quot;,
+		&quot;40Y&quot;,
+		&quot;50Y&quot;,
+		&quot;60Y&quot;
+	};
+
+<span class="nc" id="L346">	private static final double[] s_adblUSD6MFixFloatQuote = new double[] {</span>
+		0.004240,	//  3Y
+		0.005760,	//  4Y			
+		0.007620,	//  5Y
+		0.009540,	//  6Y
+		0.011350,	//  7Y
+		0.013030,	//  8Y
+		0.014520,	//  9Y
+		0.015840,	// 10Y
+		0.018090,	// 12Y
+		0.020370,	// 15Y
+		0.021870,	// 20Y
+		0.022340,	// 25Y
+		0.022560,	// 30Y
+		0.022950,	// 35Y
+		0.023480,	// 40Y
+		0.024210,	// 50Y
+		0.024630	// 60Y
+	};
+
+<span class="nc" id="L366">	private static final String[] s_astrUSD3MDepositTenor = new String[] {</span>
+		&quot;2W&quot;,
+		&quot;3W&quot;,
+		&quot;1M&quot;,
+		&quot;2M&quot;
+	};
+
+<span class="nc" id="L373">	private static final double[] s_adblUSD3MDepositQuote = new double[] {</span>
+		0.001865,
+		0.001969,
+		0.001951,
+		0.001874
+	};
+
+<span class="nc" id="L380">	private static final String[] s_astrUSD3MFRATenor = new String[] {</span>
+		 &quot;0D&quot;,
+		 &quot;1M&quot;,
+		 &quot;3M&quot;,
+		 &quot;6M&quot;,
+		 &quot;9M&quot;,
+		&quot;12M&quot;,
+		&quot;15M&quot;,
+		&quot;18M&quot;,
+		&quot;21M&quot;
+	};
+
+<span class="nc" id="L392">	private static final double[] s_adblUSD3MFRAQuote = new double[] {</span>
+		0.001790,
+		0.001775,
+		0.001274,
+		0.001222,
+		0.001269,
+		0.001565,
+		0.001961,
+		0.002556,
+		0.003101
+	};
+
+<span class="nc" id="L404">	private static final String[] s_astrUSD3MFixFloatTenor = new String[] {</span>
+		 &quot;3Y&quot;,
+		 &quot;4Y&quot;,
+		 &quot;5Y&quot;,
+		 &quot;6Y&quot;,
+		 &quot;7Y&quot;,
+		 &quot;8Y&quot;,
+		 &quot;9Y&quot;,
+		&quot;10Y&quot;,
+		&quot;12Y&quot;,
+		&quot;15Y&quot;,
+		&quot;20Y&quot;,
+		&quot;25Y&quot;,
+		&quot;30Y&quot;
+	};
+
+<span class="nc" id="L420">	private static final double[] s_adblUSD3MFixFloatQuote = new double[] {</span>
+		0.002850,	//  3Y
+		0.004370,	//  4Y
+		0.006230,	//  5Y
+		0.008170,	//  6Y
+		0.010000,	//  7Y
+		0.011710,	//  8Y
+		0.013240,	//  9Y
+		0.014590,	// 10Y
+		0.016920,	// 12Y
+		0.019330,	// 15Y
+		0.020990,	// 20Y
+		0.021560,	// 25Y
+		0.021860 	// 30Y
+	};
+
+<span class="nc" id="L436">	private static final String[] s_astrUSD3MSyntheticFloatFloatTenor = new String[] {</span>
+		&quot;35Y&quot;,
+		&quot;40Y&quot;,
+		&quot;50Y&quot;,
+		&quot;60Y&quot;
+	};
+
+<span class="nc" id="L443">	private static final double[] s_adblUSD3MSyntheticFloatFloatQuote = new double[] {</span>
+		0.00065,
+		0.00060,
+		0.00054,
+		0.00050
+	};
+
+<span class="nc" id="L450">	private static final String[] s_astrJPY6MDepositTenor = new String[] {</span>
+		&quot;1D&quot;,
+		&quot;1W&quot;,
+		&quot;2W&quot;,
+		&quot;3W&quot;,
+		&quot;1M&quot;,
+		&quot;2M&quot;,
+		&quot;3M&quot;,
+		&quot;4M&quot;,
+		&quot;5M&quot;
+	};
+
+<span class="nc" id="L462">	private static final double[] s_adblJPY6MDepositQuote = new double[] {</span>
+		0.003565,	// 1D
+		0.003858,	// 1W
+		0.003840,	// 2W
+		0.003922,	// 3W
+		0.003869,	// 1M
+		0.003698,	// 2M
+		0.003527,	// 3M
+		0.003342,	// 4M
+		0.003225	// 5M
+	};
+
+<span class="nc" id="L474">	private static final String[] s_astrJPY6MFRATenor = new String[] {</span>
+		 &quot;0D&quot;,
+		 &quot;1M&quot;,
+		 &quot;2M&quot;,
+		 &quot;3M&quot;,
+		 &quot;4M&quot;,
+		 &quot;5M&quot;,
+		 &quot;6M&quot;,
+		 &quot;7M&quot;,
+		 &quot;8M&quot;,
+		 &quot;9M&quot;,
+		&quot;10M&quot;,
+		&quot;11M&quot;,
+		&quot;12M&quot;,
+		&quot;13M&quot;,
+		&quot;14M&quot;,
+		&quot;15M&quot;,
+		&quot;16M&quot;,
+		&quot;17M&quot;,
+		&quot;18M&quot;
+	};
+
+<span class="nc" id="L496">	private static final double[] s_adblJPY6MFRAQuote = new double[] {</span>
+		0.003120,	//  0D
+		0.002930,	//  1M
+		0.002720,	//  2M
+		0.002600,	//  3M
+		0.002560,	//  4M
+		0.002520,	//  5M
+		0.002480,	//  6M
+		0.002540,	//  7M
+		0.002610,	//  8M
+		0.002670,	//  9M
+		0.002790,	// 10M
+		0.002910,	// 11M
+		0.003030,	// 12M
+		0.003180,	// 13M
+		0.003350,	// 14M
+		0.003520,	// 15M
+		0.003710,	// 16M
+		0.003890,	// 17M
+		0.004090	// 18M
+	};
+
+<span class="nc" id="L518">	private static final String[] s_astrJPY6MFixFloatTenor = new String[] {</span>
+		 &quot;3Y&quot;,
+		 &quot;4Y&quot;,
+		 &quot;5Y&quot;,
+		 &quot;6Y&quot;,
+		 &quot;7Y&quot;,
+		 &quot;8Y&quot;,
+		 &quot;9Y&quot;,
+		&quot;10Y&quot;,
+		&quot;12Y&quot;,
+		&quot;15Y&quot;,
+		&quot;20Y&quot;,
+		&quot;25Y&quot;,
+		&quot;30Y&quot;,
+		&quot;35Y&quot;,
+		&quot;40Y&quot;,
+		&quot;50Y&quot;,
+		&quot;60Y&quot;
+	};
+
+<span class="nc" id="L538">	private static final double[] s_adblJPY6MFixFloatQuote = new double[] {</span>
+		0.004240,	//  3Y
+		0.005760,	//  4Y			
+		0.007620,	//  5Y
+		0.009540,	//  6Y
+		0.011350,	//  7Y
+		0.013030,	//  8Y
+		0.014520,	//  9Y
+		0.015840,	// 10Y
+		0.018090,	// 12Y
+		0.020370,	// 15Y
+		0.021870,	// 20Y
+		0.022340,	// 25Y
+		0.022560,	// 30Y
+		0.022950,	// 35Y
+		0.023480,	// 40Y
+		0.024210,	// 50Y
+		0.024630	// 60Y
+	};
+
+<span class="nc" id="L558">	private static final String[] s_astrCCBSTenor = new String[] {</span>
+		&quot;1Y&quot;,
+		&quot;2Y&quot;,
+		&quot;3Y&quot;,
+		&quot;4Y&quot;,
+		&quot;5Y&quot;,
+		&quot;7Y&quot;,
+		&quot;10Y&quot;,
+		&quot;15Y&quot;,
+		&quot;20Y&quot;,
+		&quot;30Y&quot;
+	};
+
+<span class="nc" id="L571">	private static final double[] s_adblCCBSQuote = new double[] {</span>
+		-0.000350, //  1Y
+		-0.000350, //  2Y
+		-0.000325, //  3Y
+		-0.000325, //  4Y
+		-0.000350, //  5Y
+		-0.000400, //  7Y
+		-0.000600, // 10Y
+		-0.001200, // 15Y
+		-0.001675, // 20Y
+		-0.002475  // 30Y
+	};
+
+<span class="nc" id="L584">	private static final double[] s_adblIRSQuote = new double[] {</span>
+		0.00325, //  1Y
+		0.00325, //  2Y
+		0.00350, //  3Y
+		0.00350, //  4Y
+		0.00350, //  5Y
+		0.00400, //  7Y
+		0.00600, // 10Y
+		0.01200, // 15Y
+		0.01675, // 20Y
+		0.02475  // 30Y
+	};
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+		/*
+		 * Initialize the Credit Analytics Library
+		 */
+
+<span class="nc" id="L605">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L607">		JulianDate dtValue = DateUtil.CreateFromYMD (</span>
+			2012,
+			DateUtil.DECEMBER,
+			11
+		);
+
+<span class="nc" id="L613">		String strReferenceCurrency = &quot;USD&quot;;</span>
+<span class="nc" id="L614">		String strDerivedCurrency = &quot;JPY&quot;;</span>
+
+<span class="nc" id="L616">		SegmentCustomBuilderControl scbcCubic = new SegmentCustomBuilderControl (</span>
+			MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+			new PolynomialFunctionSetParams (4),
+<span class="nc" id="L619">			SegmentInelasticDesignControl.Create (</span>
+				2,
+				2
+			),
+			new ResponseScalingShapeControl (
+				true,
+				new QuadraticRationalShapeControl (0.)
+			),
+			null
+		);
+
+<span class="nc" id="L630">		MergedDiscountForwardCurve dcReference = OvernightIndexCurve.MakeDC (</span>
+			strReferenceCurrency,
+			dtValue,
+			s_aiUSDOISDepositMaturityDays,
+			s_adblUSDOISDepositQuote,
+			s_astrUSDShortEndOISMaturityTenor,
+			s_adblUSDShortEndOISQuote,
+			s_astrUSDOISFutureTenor,
+			s_astrUSDOISFutureMaturityTenor,
+			s_adblUSDOISFutureQuote,
+			s_astrUSDLongEndOISMaturityTenor,
+			s_adblUSDLongEndOISQuote,
+			scbcCubic,
+			null
+		);
+
+<span class="nc" id="L646">		ForwardCurve fc6MReference = IBORCurve.CustomIBORBuilderSample (</span>
+			dcReference,
+			null,
+<span class="nc" id="L649">			ForwardLabel.Create (</span>
+				strReferenceCurrency,
+				&quot;6M&quot;
+			),
+			scbcCubic,
+			s_astrUSD6MDepositTenor,
+			s_adblUSD6MDepositQuote,
+			&quot;ForwardRate&quot;,
+			s_astrUSD6MFRATenor,
+			s_adblUSD6MFRAQuote,
+			&quot;ParForwardRate&quot;,
+			s_astrUSD6MFixFloatTenor,
+			s_adblUSD6MFixFloatQuote,
+			&quot;SwapRate&quot;,
+			null,
+			null,
+			&quot;DerivedParBasisSpread&quot;,
+			null,
+			null,
+			&quot;DerivedParBasisSpread&quot;,
+			&quot;---- USD LIBOR 6M VANILLA CUBIC POLYNOMIAL FORWARD CURVE ---&quot;,
+			false
+		);
+
+<span class="nc" id="L673">		ForwardCurve fc3MReference = IBORCurve.CustomIBORBuilderSample (</span>
+			dcReference,
+			fc6MReference,
+<span class="nc" id="L676">			ForwardLabel.Create (</span>
+				strReferenceCurrency,
+				&quot;3M&quot;
+			),
+			scbcCubic,
+			s_astrUSD3MDepositTenor,
+			s_adblUSD3MDepositQuote,
+			&quot;ForwardRate&quot;,
+			s_astrUSD3MFRATenor,
+			s_adblUSD3MFRAQuote,
+			&quot;ParForwardRate&quot;,
+			s_astrUSD3MFixFloatTenor,
+			s_adblUSD3MFixFloatQuote,
+			&quot;SwapRate&quot;,
+			null,
+			null,
+			&quot;DerivedParBasisSpread&quot;,
+			s_astrUSD3MSyntheticFloatFloatTenor,
+			s_adblUSD3MSyntheticFloatFloatQuote,
+			&quot;DerivedParBasisSpread&quot;,
+			&quot;---- VANILLA CUBIC POLYNOMIAL FORWARD CURVE ---&quot;,
+			false
+		);
+
+<span class="nc" id="L700">		MergedDiscountForwardCurve dcDerived = OvernightIndexCurve.MakeDC (</span>
+			strDerivedCurrency,
+			dtValue,
+			s_aiJPYOISDepositMaturityDays,
+			s_adblJPYOISDepositQuote,
+			s_astrJPYShortEndOISMaturityTenor,
+			s_adblJPYShortEndOISQuote,
+			s_astrJPYOISFutureTenor,
+			s_astrJPYOISFutureMaturityTenor,
+			s_adblJPYOISFutureQuote,
+			s_astrJPYLongEndOISMaturityTenor,
+			s_adblJPYLongEndOISQuote,
+			scbcCubic,
+			null
+		);
+
+<span class="nc" id="L716">		ForwardCurve fc6MDerived = IBORCurve.CustomIBORBuilderSample (</span>
+			dcDerived,
+			null,
+<span class="nc" id="L719">			ForwardLabel.Create (</span>
+				strDerivedCurrency,
+				&quot;6M&quot;
+			),
+			scbcCubic,
+			s_astrJPY6MDepositTenor,
+			s_adblJPY6MDepositQuote,
+			&quot;ForwardRate&quot;,
+			s_astrJPY6MFRATenor,
+			s_adblJPY6MFRAQuote,
+			&quot;ParForwardRate&quot;,
+			s_astrJPY6MFixFloatTenor,
+			s_adblJPY6MFixFloatQuote,
+			&quot;SwapRate&quot;,
+			null,
+			null,
+			&quot;DerivedParBasisSpread&quot;,
+			null,
+			null,
+			&quot;DerivedParBasisSpread&quot;,
+			&quot;---- JPY LIBOR 6M VANILLA CUBIC POLYNOMIAL FORWARD CURVE ---&quot;,
+			false
+		);
+
+<span class="nc" id="L743">		CCBSForwardCurve.ForwardCurveReferenceComponentBasis (</span>
+			strReferenceCurrency,
+			strDerivedCurrency,
+			dtValue,
+			dcReference,
+			fc6MReference,
+			fc3MReference,
+			dcDerived,
+			fc6MDerived,
+			_dblFXJPYUSD,
+			scbcCubic,
+			s_astrCCBSTenor,
+			s_adblCCBSQuote,
+			true
+		);
+
+<span class="nc" id="L759">		CCBSForwardCurve.ForwardCurveReferenceComponentBasis (</span>
+			strReferenceCurrency,
+			strDerivedCurrency,
+			dtValue,
+			dcReference,
+			fc6MReference,
+			fc3MReference,
+			dcDerived,
+			fc6MDerived,
+			_dblFXJPYUSD,
+			scbcCubic,
+			s_astrCCBSTenor,
+			s_adblCCBSQuote,
+			false
+		);
+
+<span class="nc" id="L775">		CCBSDiscountCurve.MakeDiscountCurve (</span>
+			strReferenceCurrency,
+			strDerivedCurrency,
+			dtValue,
+			dcReference,
+			fc6MReference,
+			fc3MReference,
+			_dblFXJPYUSD,
+			scbcCubic,
+			s_astrCCBSTenor,
+			s_adblCCBSQuote,
+			s_adblIRSQuote,
+			true
+		);
+
+<span class="nc" id="L790">		CCBSDiscountCurve.MakeDiscountCurve (</span>
+			strReferenceCurrency,
+			strDerivedCurrency,
+			dtValue,
+			dcReference,
+			fc6MReference,
+			fc3MReference,
+			_dblFXJPYUSD,
+			scbcCubic,
+			s_astrCCBSTenor,
+			s_adblCCBSQuote,
+			s_adblIRSQuote,
+			false
+		);
+<span class="nc" id="L804">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

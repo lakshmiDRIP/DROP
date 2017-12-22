@@ -231,7 +231,10 @@ public class CDSO {
 		final String[] astrArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		JulianDate dtSpot = DateUtil.CreateFromYMD (
 			2016,
@@ -488,5 +491,7 @@ public class CDSO {
 		System.out.println ("\t| Theta                   : " + FormatUtil.FormatDouble (mapPayerOptionOutput.get ("Theta") / cdsForward.initialNotional() * dblNotional / 365.25, 1, 2, 1.));
 
 		System.out.println ("\t|-----------------------------------------------|\n");
+
+		EnvManager.TerminateEnv();
 	}
 }

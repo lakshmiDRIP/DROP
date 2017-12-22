@@ -254,7 +254,10 @@ public class SWPM {
 		final String[] astrArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		JulianDate dtValue = DateUtil.Today();
 
@@ -474,5 +477,7 @@ public class SWPM {
 				FormatUtil.FormatDouble (p.couponDCF() * 360, 0, 0, 1.) + FIELD_SEPARATOR +
 				FormatUtil.FormatDouble (dc.df (p.payDate()), 1, 4, 1.)
 			);
+
+		EnvManager.TerminateEnv();
 	}
 }

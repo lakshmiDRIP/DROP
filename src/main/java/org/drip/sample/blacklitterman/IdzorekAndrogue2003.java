@@ -70,7 +70,10 @@ public class IdzorekAndrogue2003 {
 		final String[] astArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		String[] astrAssetClass = new String[] {
 			"US Bonds            ",
@@ -198,5 +201,7 @@ public class IdzorekAndrogue2003 {
 			);
 
 		System.out.println ("\t||-------------------------------------------||\n");
+
+		EnvManager.TerminateEnv();
 	}
 }

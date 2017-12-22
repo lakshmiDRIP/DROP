@@ -78,7 +78,10 @@ public class Soontornkit2010 {
 		final String[] astArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		double dblTau = 0.3;
 		double dblRiskFreeRate = 0.03;
@@ -490,5 +493,7 @@ public class Soontornkit2010 {
 		}
 
 		System.out.println ("\t|------------------------||");
+
+		EnvManager.TerminateEnv();
 	}
 }

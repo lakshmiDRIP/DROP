@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BasisSplineRegressorSet.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.regression.spline</a> &gt; <span class="el_source">BasisSplineRegressorSet.java</span></div><h1>BasisSplineRegressorSet.java</h1><pre class="source lang-java linenums">
+package org.drip.regression.spline;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * Copyright (C) 2012 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * BasisSplineRegressorSet carries out regression testing for the following series of basis splines:
+ * - #1: Polynomial Basis Spline, n = 2 basis functions, and Ck = 0.
+ * - #2: Polynomial Basis Spline, n = 3 basis functions, and Ck = 1.
+ * - #3: Polynomial Basis Spline, n = 4 basis functions, and Ck = 1.
+ * - #4: Polynomial Basis Spline, n = 4 basis functions, and Ck = 2.
+ * - #5: Polynomial Basis Spline, n = 5 basis functions, and Ck = 1.
+ * - #6: Polynomial Basis Spline, n = 5 basis functions, and Ck = 2.
+ * - #7: Polynomial Basis Spline, n = 5 basis functions, and Ck = 3.
+ * - #8: Polynomial Basis Spline, n = 6 basis functions, and Ck = 1.
+ * - #9: Polynomial Basis Spline, n = 6 basis functions, and Ck = 2.
+ * - #10: Polynomial Basis Spline, n = 6 basis functions, and Ck = 3.
+ * - #11: Polynomial Basis Spline, n = 6 basis functions, and Ck = 4.
+ * - #12: Polynomial Basis Spline, n = 7 basis functions, and Ck = 1.
+ * - #13: Polynomial Basis Spline, n = 7 basis functions, and Ck = 2.
+ * - #14: Polynomial Basis Spline, n = 7 basis functions, and Ck = 3.
+ * - #15: Polynomial Basis Spline, n = 7 basis functions, and Ck = 4.
+ * - #16: Polynomial Basis Spline, n = 7 basis functions, and Ck = 5.
+ * - #17: Bernstein Polynomial Basis Spline, n = 4 basis functions, and Ck = 2.
+ * - #18: Exponential Tension Spline, n = 4 basis functions, Tension = 1., and Ck = 2.
+ * - #19: Hyperbolic Tension Spline, n = 4 basis functions, Tension = 1., and Ck = 2.
+ * - #20: Kaklis-Pandelis Tension Spline, n = 4 basis functions, KP = 2, and Ck = 2.
+ * - #21: C1 Hermite Local Spline, n = 4 basis functions, and Ck = 1.
+ * - #21: Hermite Local Spline with Local, Catmull-Rom, and Cardinal Knots, n = 4 basis functions, and Ck = 1.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class BasisSplineRegressorSet implements org.drip.regression.core.RegressorSet {
+<span class="fc" id="L84">	private java.lang.String _strRegressionScenario = &quot;PolynomialSplineRegressor&quot;;</span>
+
+<span class="fc" id="L86">	private java.util.List&lt;org.drip.regression.core.UnitRegressor&gt; _setRegressors = new</span>
+		java.util.ArrayList&lt;org.drip.regression.core.UnitRegressor&gt;();
+
+	/**
+	 * BasisSplineRegressorSet constructor - Creates the base spline parameter and initializes the
+	 *	regression objects
+	 */
+
+	public BasisSplineRegressorSet()
+<span class="fc" id="L95">	{</span>
+<span class="fc" id="L96">	}</span>
+
+	@Override public boolean setupRegressors()
+	{
+		try {
+<span class="fc" id="L101">			_setRegressors.add</span>
+<span class="fc" id="L102">				(org.drip.regression.spline.BasisSplineRegressor.CreatePolynomialSplineRegressor (&quot;N2Ck0&quot;,</span>
+					_strRegressionScenario, 2, 0));
+
+<span class="fc" id="L105">			_setRegressors.add</span>
+<span class="fc" id="L106">				(org.drip.regression.spline.BasisSplineRegressor.CreatePolynomialSplineRegressor (&quot;N3Ck0&quot;,</span>
+					_strRegressionScenario, 3, 0));
+
+<span class="fc" id="L109">			_setRegressors.add</span>
+<span class="fc" id="L110">				(org.drip.regression.spline.BasisSplineRegressor.CreatePolynomialSplineRegressor (&quot;N3Ck1&quot;,</span>
+					_strRegressionScenario, 3, 1));
+
+<span class="fc" id="L113">			_setRegressors.add</span>
+<span class="fc" id="L114">				(org.drip.regression.spline.BasisSplineRegressor.CreatePolynomialSplineRegressor (&quot;N4Ck0&quot;,</span>
+					_strRegressionScenario, 4, 0));
+
+<span class="fc" id="L117">			_setRegressors.add</span>
+<span class="fc" id="L118">				(org.drip.regression.spline.BasisSplineRegressor.CreatePolynomialSplineRegressor (&quot;N4Ck1&quot;,</span>
+					_strRegressionScenario, 4, 1));
+
+<span class="fc" id="L121">			_setRegressors.add</span>
+<span class="fc" id="L122">				(org.drip.regression.spline.BasisSplineRegressor.CreatePolynomialSplineRegressor (&quot;N4Ck2&quot;,</span>
+					_strRegressionScenario, 4, 2));
+
+<span class="fc" id="L125">			_setRegressors.add</span>
+<span class="fc" id="L126">				(org.drip.regression.spline.BasisSplineRegressor.CreatePolynomialSplineRegressor (&quot;N5Ck0&quot;,</span>
+					_strRegressionScenario, 5, 0));
+
+<span class="fc" id="L129">			_setRegressors.add</span>
+<span class="fc" id="L130">				(org.drip.regression.spline.BasisSplineRegressor.CreatePolynomialSplineRegressor (&quot;N5Ck1&quot;,</span>
+					_strRegressionScenario, 5, 1));
+
+<span class="fc" id="L133">			_setRegressors.add</span>
+<span class="fc" id="L134">				(org.drip.regression.spline.BasisSplineRegressor.CreatePolynomialSplineRegressor (&quot;N5Ck2&quot;,</span>
+					_strRegressionScenario, 5, 2));
+
+<span class="fc" id="L137">			_setRegressors.add</span>
+<span class="fc" id="L138">				(org.drip.regression.spline.BasisSplineRegressor.CreatePolynomialSplineRegressor (&quot;N5Ck3&quot;,</span>
+					_strRegressionScenario, 5, 3));
+
+<span class="fc" id="L141">			_setRegressors.add</span>
+<span class="fc" id="L142">				(org.drip.regression.spline.BasisSplineRegressor.CreatePolynomialSplineRegressor (&quot;N6Ck0&quot;,</span>
+					_strRegressionScenario, 6, 0));
+
+<span class="fc" id="L145">			_setRegressors.add</span>
+<span class="fc" id="L146">				(org.drip.regression.spline.BasisSplineRegressor.CreatePolynomialSplineRegressor (&quot;N6Ck1&quot;,</span>
+					_strRegressionScenario, 6, 1));
+
+<span class="fc" id="L149">			_setRegressors.add</span>
+<span class="fc" id="L150">				(org.drip.regression.spline.BasisSplineRegressor.CreatePolynomialSplineRegressor (&quot;N6Ck2&quot;,</span>
+					_strRegressionScenario, 6, 2));
+
+<span class="fc" id="L153">			_setRegressors.add</span>
+<span class="fc" id="L154">				(org.drip.regression.spline.BasisSplineRegressor.CreatePolynomialSplineRegressor (&quot;N6Ck3&quot;,</span>
+					_strRegressionScenario, 6, 3));
+
+<span class="fc" id="L157">			_setRegressors.add</span>
+<span class="fc" id="L158">				(org.drip.regression.spline.BasisSplineRegressor.CreatePolynomialSplineRegressor (&quot;N6Ck4&quot;,</span>
+					_strRegressionScenario, 6, 4));
+
+<span class="fc" id="L161">			_setRegressors.add</span>
+<span class="fc" id="L162">				(org.drip.regression.spline.BasisSplineRegressor.CreatePolynomialSplineRegressor (&quot;N7Ck0&quot;,</span>
+					_strRegressionScenario, 7, 0));
+
+<span class="fc" id="L165">			_setRegressors.add</span>
+<span class="fc" id="L166">				(org.drip.regression.spline.BasisSplineRegressor.CreatePolynomialSplineRegressor (&quot;N7Ck1&quot;,</span>
+					_strRegressionScenario, 7, 1));
+
+<span class="fc" id="L169">			_setRegressors.add</span>
+<span class="fc" id="L170">				(org.drip.regression.spline.BasisSplineRegressor.CreatePolynomialSplineRegressor (&quot;N7Ck2&quot;,</span>
+					_strRegressionScenario, 7, 2));
+
+<span class="fc" id="L173">			_setRegressors.add</span>
+<span class="fc" id="L174">				(org.drip.regression.spline.BasisSplineRegressor.CreatePolynomialSplineRegressor (&quot;N7Ck3&quot;,</span>
+					_strRegressionScenario, 7, 3));
+
+<span class="fc" id="L177">			_setRegressors.add</span>
+<span class="fc" id="L178">				(org.drip.regression.spline.BasisSplineRegressor.CreatePolynomialSplineRegressor (&quot;N7Ck4&quot;,</span>
+					_strRegressionScenario, 7, 4));
+
+<span class="fc" id="L181">			_setRegressors.add</span>
+<span class="fc" id="L182">				(org.drip.regression.spline.BasisSplineRegressor.CreatePolynomialSplineRegressor (&quot;N7Ck5&quot;,</span>
+					_strRegressionScenario, 7, 5));
+
+<span class="fc" id="L185">			_setRegressors.add</span>
+<span class="fc" id="L186">				(org.drip.regression.spline.BasisSplineRegressor.CreateExponentialTensionSplineRegressor</span>
+<span class="fc" id="L187">					(&quot;ExpTension&quot;, _strRegressionScenario, 1.));</span>
+
+<span class="fc" id="L189">			_setRegressors.add</span>
+<span class="fc" id="L190">				(org.drip.regression.spline.BasisSplineRegressor.CreateHyperbolicTensionSplineRegressor</span>
+<span class="fc" id="L191">					(&quot;HyperTension&quot;, _strRegressionScenario, 1.));</span>
+
+<span class="fc" id="L193">			_setRegressors.add</span>
+<span class="fc" id="L194">				(org.drip.regression.spline.BasisSplineRegressor.CreateKaklisPandelisSplineRegressor (&quot;KP&quot;,</span>
+					_strRegressionScenario, 2));
+
+<span class="fc" id="L197">			_setRegressors.add</span>
+<span class="fc" id="L198">				(org.drip.regression.spline.BasisSplineRegressor.CreateBernsteinPolynomialSplineRegressor</span>
+<span class="fc" id="L199">					(&quot;Bern_N4Ck2&quot;, _strRegressionScenario, 4, 2));</span>
+
+<span class="fc" id="L201">			_setRegressors.add</span>
+<span class="fc" id="L202">				(org.drip.regression.spline.HermiteBasisSplineRegressor.CreateHermiteSplineRegressor</span>
+<span class="fc" id="L203">					(&quot;Hermite_N4Ck1&quot;, _strRegressionScenario, 4, 1));</span>
+
+<span class="fc" id="L205">			_setRegressors.add (new org.drip.regression.spline.LocalControlBasisSplineRegressor</span>
+				(&quot;Hermite_Bessel_CatmullRom_Cardinal_N4Ck1&quot;, _strRegressionScenario,
+					org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
+						org.drip.spline.basis.PolynomialFunctionSetParams (4), 1));
+
+<span class="fc" id="L210">			_setRegressors.add (new org.drip.regression.spline.LagrangePolynomialStretchRegressor</span>
+				(&quot;Lagrange_Polynomial_Stretch&quot;, _strRegressionScenario));
+<span class="nc" id="L212">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L213">			e.printStackTrace();</span>
+
+<span class="nc" id="L215">			return false;</span>
+<span class="fc" id="L216">		}</span>
+
+<span class="fc" id="L218">		return true;</span>
+	}
+
+	@Override public java.util.List&lt;org.drip.regression.core.UnitRegressor&gt; getRegressorSet()
+	{
+<span class="fc" id="L223">		return _setRegressors;</span>
+	}
+
+	@Override public java.lang.String getSetName()
+	{
+<span class="fc" id="L228">		return _strRegressionScenario;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

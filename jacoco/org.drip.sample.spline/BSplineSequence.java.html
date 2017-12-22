@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BSplineSequence.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.spline</a> &gt; <span class="el_source">BSplineSequence.java</span></div><h1>BSplineSequence.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.spline;
+
+import org.drip.quant.common.FormatUtil;
+import org.drip.spline.bspline.*;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * BSplineSequence implements Samples for the Construction and the usage of various monic basis B Spline
+ * 	Sequences. It demonstrates the following:
+ * 	- Construction and Usage of segment Monic B Spline Sequence.
+ * 	- Construction and Usage of segment Multic B Spline Sequence.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L66">public class BSplineSequence {</span>
+
+	/*
+	 * This sample shows the computation of the response value, the normalized cumulative, and the ordered
+	 * 	derivative of the specified Segment Basis Function.
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final void ComputeResponseMetric (
+		final SegmentBasisFunction me,
+		final String strComment)
+		throws Exception
+	{
+<span class="nc" id="L80">		int iOrder = 1;</span>
+<span class="nc" id="L81">		double dblXIncrement = 0.25;</span>
+
+<span class="nc" id="L83">		double dblX = me.leading() - dblXIncrement;</span>
+
+<span class="nc" id="L85">		double dblXEnd = me.trailing() + dblXIncrement;</span>
+
+<span class="nc" id="L87">		System.out.println (&quot;\n\t---------------------------------------------------------------&quot;);</span>
+
+<span class="nc" id="L89">		System.out.println (&quot;\t-------------------------&quot; + strComment + &quot;---------------------------&quot;);</span>
+
+<span class="nc" id="L91">		System.out.println (&quot;\t---------------------------------------------------------------\n&quot;);</span>
+
+<span class="nc bnc" id="L93" title="All 2 branches missed.">		while (dblX &lt;= dblXEnd) {</span>
+<span class="nc" id="L94">			System.out.println (</span>
+<span class="nc" id="L95">				&quot;\t\tResponse[&quot; + FormatUtil.FormatDouble (dblX, 1, 3, 1.) + &quot;] : &quot; +</span>
+<span class="nc" id="L96">				FormatUtil.FormatDouble (me.evaluate (dblX), 1, 5, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L97">				FormatUtil.FormatDouble (me.normalizedCumulative (dblX), 1, 5, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L98">				FormatUtil.FormatDouble (me.derivative (dblX, iOrder), 1, 5, 1.)</span>
+			);
+
+<span class="nc" id="L101">			dblX += dblXIncrement;</span>
+		}
+<span class="nc" id="L103">	}</span>
+
+	/*
+	 * This sample demonstrates the construction and usage of the following monic/multic basis spline arrays:
+	 * 	- Hyperbolic Rational Linear Monic.
+	 * 	- Multic basis functions of 3rd degree (i.e., quadratic).
+	 * 	- Multic basis functions of 4th degree (i.e., cubic).
+	 * 	- Multic basis functions of 5th degree (i.e., quartic).
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final void BSplineSequenceSample()
+		throws Exception
+	{
+<span class="nc" id="L118">		double[] adblPredictorOrdinate = new double[] {</span>
+			1., 2., 3., 4., 5., 6.
+		};
+
+		/*
+		 * Construct the Array of Hyperbolic Rational Linear Monic Segment Basis Functions. 
+		 */
+
+<span class="nc" id="L126">		SegmentBasisFunction[] aMonic = SegmentBasisFunctionGenerator.MonicSequence (</span>
+			BasisHatPairGenerator.RAW_TENSION_HYPERBOLIC,
+			BasisHatShapeControl.SHAPE_CONTROL_RATIONAL_LINEAR,
+			adblPredictorOrdinate,
+			0,
+			1.
+		);
+
+		/*
+		 * Display the response value, the normalized cumulative, and the ordered derivative of the Monic
+		 * 	Segment Basis Function.
+		 */
+
+<span class="nc bnc" id="L139" title="All 2 branches missed.">		for (int i = 0; i &lt; aMonic.length; ++i)</span>
+<span class="nc" id="L140">			ComputeResponseMetric (</span>
+				aMonic[i],
+				&quot;   MONIC   &quot;
+			);
+
+		/*
+		 * Construct the array of multic basis functions of 3rd degree (i.e., quadratic).
+		 */
+
+<span class="nc" id="L149">		SegmentBasisFunction[] aQuadratic = SegmentBasisFunctionGenerator.MulticSequence (</span>
+			3,
+			aMonic
+		);
+
+		/*
+		 * Display the response value, the normalized cumulative, and the ordered derivative of the Quadratic
+		 * 	Multic Segment Basis Function.
+		 */
+
+<span class="nc bnc" id="L159" title="All 2 branches missed.">		for (int i = 0; i &lt; aQuadratic.length; ++i)</span>
+<span class="nc" id="L160">			ComputeResponseMetric (</span>
+				aQuadratic[i],
+				&quot; QUADRATIC &quot;
+			);
+
+		/*
+		 * Construct the array of multic basis functions of 4th degree (i.e., cubic).
+		 */
+
+<span class="nc" id="L169">		SegmentBasisFunction[] aCubic = SegmentBasisFunctionGenerator.MulticSequence (</span>
+			4,
+			aQuadratic
+		);
+
+		/*
+		 * Display the response value, the normalized cumulative, and the ordered derivative of the Cubic
+		 * 	Multic Segment Basis Function.
+		 */
+
+<span class="nc bnc" id="L179" title="All 2 branches missed.">		for (int i = 0; i &lt; aCubic.length; ++i)</span>
+<span class="nc" id="L180">			ComputeResponseMetric (</span>
+				aCubic[i],
+				&quot;   CUBIC   &quot;
+			);
+
+		/*
+		 * Construct the array of multic basis functions of 5th degree (i.e., quartic).
+		 */
+
+<span class="nc" id="L189">		SegmentBasisFunction[] aQuartic = SegmentBasisFunctionGenerator.MulticSequence (</span>
+			5,
+			aCubic
+		);
+
+		/*
+		 * Display the response value, the normalized cumulative, and the ordered derivative of the Quartic
+		 * 	Multic Segment Basis Function.
+		 */
+
+<span class="nc bnc" id="L199" title="All 2 branches missed.">		for (int i = 0; i &lt; aQuartic.length; ++i)</span>
+<span class="nc" id="L200">			ComputeResponseMetric (</span>
+				aQuartic[i],
+				&quot;  QUARTIC  &quot;
+			);
+<span class="nc" id="L204">	}</span>
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+<span class="nc" id="L210">		BSplineSequenceSample();</span>
+<span class="nc" id="L211">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

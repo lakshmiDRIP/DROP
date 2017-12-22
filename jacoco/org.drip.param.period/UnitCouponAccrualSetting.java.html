@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UnitCouponAccrualSetting.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.param.period</a> &gt; <span class="el_source">UnitCouponAccrualSetting.java</span></div><h1>UnitCouponAccrualSetting.java</h1><pre class="source lang-java linenums">
+package org.drip.param.period;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * UnitCouponAccrualSetting contains the cash flow periods' Coupon/Accrual details. Currently it holds the
+ *  frequency, the calendar, the coupon/accrual day counts and the EOM adjustment flags, and flag indicating
+ *  whether the coupon is computed from frequency.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class UnitCouponAccrualSetting {
+<span class="fc" id="L62">	private int _iFreq = -1;</span>
+<span class="fc" id="L63">	private int _iAccrualCompoundingRule = -1;</span>
+<span class="fc" id="L64">	private java.lang.String _strCalendar = &quot;&quot;;</span>
+<span class="fc" id="L65">	private java.lang.String _strCouponDC = &quot;&quot;;</span>
+<span class="fc" id="L66">	private java.lang.String _strAccrualDC = &quot;&quot;;</span>
+<span class="fc" id="L67">	private boolean _bCouponDCFOffOfFreq = false;</span>
+<span class="fc" id="L68">	private boolean _bCouponEOMAdjustment = false;</span>
+<span class="fc" id="L69">	private boolean _bAccrualEOMAdjustment = false;</span>
+
+	/**
+	 * UnitCouponAccrualSetting constructor
+	 * 
+	 * @param iFreq Frequency
+	 * @param strCouponDC Coupon Day Count
+	 * @param bCouponEOMAdjustment Coupon EOM Adjustment Flag
+	 * @param strAccrualDC Accrual Day Count
+	 * @param bAccrualEOMAdjustment Accrual EOM Adjustment Flag
+	 * @param strCalendar Calendar
+	 * @param bCouponDCFOffOfFreq Compute Full Coupon DCF from the Frequency
+	 * @param iAccrualCompoundingRule The Accrual Compounding Rule
+	 * 
+	 * @throws java.lang.Exception Thrown if Inputs are invalid
+	 */
+
+	public UnitCouponAccrualSetting (
+		final int iFreq,
+		final java.lang.String strCouponDC,
+		final boolean bCouponEOMAdjustment,
+		final java.lang.String strAccrualDC,
+		final boolean bAccrualEOMAdjustment,
+		final java.lang.String strCalendar,
+		final boolean bCouponDCFOffOfFreq,
+		final int iAccrualCompoundingRule)
+		throws java.lang.Exception
+<span class="fc" id="L96">	{</span>
+<span class="pc bpc" id="L97" title="4 of 8 branches missed.">		if (0 &gt;= (_iFreq = iFreq) || null == (_strCouponDC = strCouponDC) || _strCouponDC.isEmpty() || null</span>
+<span class="pc bpc" id="L98" title="2 of 4 branches missed.">			== (_strAccrualDC = strAccrualDC) || _strAccrualDC.isEmpty() || null == (_strCalendar =</span>
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">				strCalendar) || _strCalendar.isEmpty() ||</span>
+					!org.drip.analytics.support.CompositePeriodBuilder.ValidateCompoundingRule
+<span class="pc bpc" id="L101" title="1 of 2 branches missed.">						(_iAccrualCompoundingRule = iAccrualCompoundingRule))</span>
+<span class="nc" id="L102">			throw new java.lang.Exception (&quot;UnitCouponAccrualSetting ctr: Invalid Inputs&quot;);</span>
+
+<span class="fc" id="L104">		_bCouponDCFOffOfFreq = bCouponDCFOffOfFreq;</span>
+<span class="fc" id="L105">		_bCouponEOMAdjustment = bCouponEOMAdjustment;</span>
+<span class="fc" id="L106">		_bAccrualEOMAdjustment = bAccrualEOMAdjustment;</span>
+<span class="fc" id="L107">	}</span>
+
+	/**
+	 * Retrieve the Coupon Frequency
+	 * 
+	 * @return The Coupon Frequency
+	 */
+
+	public int freq()
+	{
+<span class="nc" id="L117">		return _iFreq;</span>
+	}
+
+	/**
+	 * Retrieve the Coupon Day Count
+	 * 
+	 * @return The Coupon Day Count
+	 */
+
+	public java.lang.String couponDC()
+	{
+<span class="fc" id="L128">		return _strCouponDC;</span>
+	}
+
+	/**
+	 * Retrieve the Coupon EOM Adjustment Flag
+	 * 
+	 * @return The Coupon EOM Adjustment Flag
+	 */
+
+	public boolean couponEOMAdjustment()
+	{
+<span class="fc" id="L139">		return _bCouponEOMAdjustment;</span>
+	}
+
+	/**
+	 * Retrieve the Accrual Day Count
+	 * 
+	 * @return The Accrual Day Count
+	 */
+
+	public java.lang.String accrualDC()
+	{
+<span class="fc" id="L150">		return _strAccrualDC;</span>
+	}
+
+	/**
+	 * Retrieve the Accrual EOM Adjustment Flag
+	 * 
+	 * @return The Accrual EOM Adjustment Flag
+	 */
+
+	public boolean accrualEOMAdjustment()
+	{
+<span class="fc" id="L161">		return _bAccrualEOMAdjustment;</span>
+	}
+
+	/**
+	 * Retrieve the Flag indicating whether Coupon DCF is computed off of the DCF Flag
+	 * 
+	 * @return TRUE - The Flag indicating whether Coupon DCF is computed off of the DCF Flag
+	 */
+
+	public boolean couponDCFOffOfFreq()
+	{
+<span class="fc" id="L172">		return _bCouponDCFOffOfFreq;</span>
+	}
+
+	/**
+	 * Retrieve the Calendar
+	 * 
+	 * @return The Calendar
+	 */
+
+	public java.lang.String calendar()
+	{
+<span class="fc" id="L183">		return _strCalendar;</span>
+	}
+
+	/**
+	 * Retrieve the Accrual Compounding Rule
+	 * 
+	 * @return The Accrual Compounding Rule
+	 */
+
+	public int accrualCompoundingRule()
+	{
+<span class="fc" id="L194">		return _iAccrualCompoundingRule;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

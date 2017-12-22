@@ -1,0 +1,1158 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BasketProduct.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.product.definition</a> &gt; <span class="el_source">BasketProduct.java</span></div><h1>BasketProduct.java</h1><pre class="source lang-java linenums">
+package org.drip.product.definition;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * Copyright (C) 2012 Lakshmi Krishnamurthy
+ * Copyright (C) 2011 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ *  BasketProduct abstract class extends MarketParamRef. It provides methods for getting the basket’s
+ *   components, notional, coupon, effective date, maturity date, coupon amount, and list of coupon periods.
+ *  
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="fc" id="L63">public abstract class BasketProduct implements org.drip.product.definition.BasketMarketParamRef {</span>
+	protected static final int MEASURE_AGGREGATION_TYPE_CUMULATIVE = 1;
+	protected static final int MEASURE_AGGREGATION_TYPE_WEIGHTED_CUMULATIVE = 2;
+	protected static final int MEASURE_AGGREGATION_TYPE_UNIT_ACCUMULATE = 4;
+	protected static final int MEASURE_AGGREGATION_TYPE_IGNORE = 4;
+
+	class ComponentCurve {
+<span class="nc" id="L70">		java.lang.String _strName = null;</span>
+<span class="nc" id="L71">		org.drip.state.credit.CreditCurve _cc = null;</span>
+
+		ComponentCurve (
+			final java.lang.String strName,
+			final org.drip.state.credit.CreditCurve cc)
+<span class="nc" id="L76">		{</span>
+<span class="nc" id="L77">			_cc = cc;</span>
+<span class="nc" id="L78">			_strName = strName;</span>
+<span class="nc" id="L79">		}</span>
+	}
+
+	class FlatDeltaGammaMeasureMap {
+<span class="nc" id="L83">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; _mapDelta = null;</span>
+<span class="nc" id="L84">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; _mapGamma = null;</span>
+
+		FlatDeltaGammaMeasureMap (
+			final org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapDelta,
+			final org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapGamma)
+<span class="nc" id="L89">		{</span>
+<span class="nc" id="L90">			_mapDelta = mapDelta;</span>
+<span class="nc" id="L91">			_mapGamma = mapGamma;</span>
+<span class="nc" id="L92">		}</span>
+	}
+
+	class TenorDeltaGammaMeasureMap {
+<span class="nc" id="L96">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;</span>
+			_mmDelta = null;
+<span class="nc" id="L98">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;</span>
+			_mmGamma = null;
+
+		TenorDeltaGammaMeasureMap (
+			final
+				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
+					mmDelta,
+			final
+				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
+					mmGamma)
+<span class="nc" id="L108">		{</span>
+<span class="nc" id="L109">			_mmDelta = mmDelta;</span>
+<span class="nc" id="L110">			_mmGamma = mmGamma;</span>
+<span class="nc" id="L111">		}</span>
+	}
+
+	class ComponentFactorTenorDeltaGammaMeasureMap {
+<span class="nc" id="L115">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;&gt;</span>
+			_mmmDelta = null;
+<span class="nc" id="L117">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;&gt;</span>
+			_mmmGamma = null;
+
+		ComponentFactorTenorDeltaGammaMeasureMap (
+			final
+				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;&gt;
+					mmmDelta,
+			final
+				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;&gt;
+					mmmGamma)
+<span class="nc" id="L127">		{</span>
+<span class="nc" id="L128">			_mmmDelta = mmmDelta;</span>
+<span class="nc" id="L129">			_mmmGamma = mmmGamma;</span>
+<span class="nc" id="L130">		}</span>
+	}
+
+	private FlatDeltaGammaMeasureMap accumulateDeltaGammaMeasures (
+		final org.drip.param.valuation.ValuationParams valParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqsUp,
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqsDown,
+		final org.drip.param.valuation.ValuationCustomizationParams vcp,
+		final org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapBaseMeasures)
+	{
+<span class="nc bnc" id="L141" title="All 2 branches missed.">		if (null == csqsUp) return null;</span>
+
+<span class="nc" id="L143">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapUpMeasures = value (valParams,</span>
+			pricerParams, csqsUp, vcp);
+
+<span class="nc bnc" id="L146" title="All 4 branches missed.">		if (null == mapUpMeasures || 0 == mapUpMeasures.size()) return null;</span>
+
+<span class="nc" id="L148">		java.util.Set&lt;java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt;&gt; mapUpMeasuresES =</span>
+<span class="nc" id="L149">			mapUpMeasures.entrySet();</span>
+
+<span class="nc bnc" id="L151" title="All 2 branches missed.">		if (null == mapUpMeasuresES) return null;</span>
+
+<span class="nc" id="L153">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapDeltaMeasures = new</span>
+			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
+
+<span class="nc bnc" id="L156" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; meUp : mapUpMeasuresES) {</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">			if (null == meUp) continue;</span>
+
+<span class="nc" id="L159">			java.lang.String strKey = meUp.getKey();</span>
+
+<span class="nc bnc" id="L161" title="All 4 branches missed.">			if (null == strKey || strKey.isEmpty()) continue;</span>
+
+<span class="nc" id="L163">			java.lang.Double dblBase = mapBaseMeasures.get (strKey);</span>
+
+<span class="nc" id="L165">			java.lang.Double dblUp = meUp.getValue();</span>
+
+<span class="nc bnc" id="L167" title="All 4 branches missed.">			mapDeltaMeasures.put (strKey, (null == dblUp ? 0. : dblUp) - (null == dblBase ? 0. : dblBase));</span>
+<span class="nc" id="L168">		}</span>
+
+<span class="nc bnc" id="L170" title="All 2 branches missed.">		if (null == csqsDown) return new FlatDeltaGammaMeasureMap (mapDeltaMeasures, null);</span>
+
+<span class="nc" id="L172">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapDownMeasures = value</span>
+<span class="nc" id="L173">			(valParams, pricerParams, csqsDown, vcp);</span>
+
+<span class="nc bnc" id="L175" title="All 4 branches missed.">		if (null == mapDownMeasures || 0 == mapDownMeasures.size())</span>
+<span class="nc" id="L176">			return new FlatDeltaGammaMeasureMap (mapDeltaMeasures, null);</span>
+
+<span class="nc" id="L178">		java.util.Set&lt;java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt;&gt; mapDownMeasuresES =</span>
+<span class="nc" id="L179">			mapDownMeasures.entrySet();</span>
+
+<span class="nc bnc" id="L181" title="All 2 branches missed.">		if (null == mapDownMeasuresES) return new FlatDeltaGammaMeasureMap (mapDeltaMeasures, null);</span>
+
+<span class="nc" id="L183">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapGammaMeasures = new</span>
+			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
+
+<span class="nc bnc" id="L186" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; meDown : mapDownMeasuresES) {</span>
+<span class="nc bnc" id="L187" title="All 2 branches missed.">			if (null == meDown) continue;</span>
+
+<span class="nc" id="L189">			java.lang.String strKey = meDown.getKey();</span>
+
+<span class="nc bnc" id="L191" title="All 4 branches missed.">			if (null == strKey || strKey.isEmpty()) continue;</span>
+
+<span class="nc" id="L193">			java.lang.Double dblBase = mapBaseMeasures.get (strKey);</span>
+
+<span class="nc" id="L195">			java.lang.Double dblUp = mapUpMeasures.get (strKey);</span>
+
+<span class="nc" id="L197">			java.lang.Double dblDown = meDown.getValue();</span>
+
+<span class="nc bnc" id="L199" title="All 6 branches missed.">			mapGammaMeasures.put (strKey, (null == dblUp ? 0. : dblUp) + (null == dblDown ? 0. : dblDown) -</span>
+<span class="nc" id="L200">				(null == dblBase ? 0. : 2. * dblBase));</span>
+<span class="nc" id="L201">		}</span>
+
+<span class="nc" id="L203">		return new FlatDeltaGammaMeasureMap (mapDeltaMeasures, mapGammaMeasures);</span>
+	}
+
+	private TenorDeltaGammaMeasureMap accumulateTenorDeltaGammaMeasures (
+		final org.drip.param.valuation.ValuationParams valParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
+		final org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;
+			mapTenorUpCSQS,
+		final org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;
+			mapTenorDownCSQS,
+		final org.drip.param.valuation.ValuationCustomizationParams vcp,
+		final org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapBaseMeasures,
+		final ComponentCurve compCurve)
+	{
+<span class="nc bnc" id="L217" title="All 4 branches missed.">		if (null == mapTenorUpCSQS || 0 == mapTenorUpCSQS.size()) return null;</span>
+
+		java.util.Set&lt;java.util.Map.Entry&lt;java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer&gt;&gt;
+<span class="nc" id="L220">			mapESTenorUpCSQS = mapTenorUpCSQS.entrySet();</span>
+
+<span class="nc bnc" id="L222" title="All 4 branches missed.">		if (null == mapESTenorUpCSQS || 0 == mapESTenorUpCSQS.size()) return null;</span>
+
+<span class="nc" id="L224">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;FlatDeltaGammaMeasureMap&gt; mapTenorDGMM = new</span>
+			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;FlatDeltaGammaMeasureMap&gt;();
+
+		for (java.util.Map.Entry&lt;java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer&gt; meTenorUpCSQS
+<span class="nc bnc" id="L228" title="All 2 branches missed.">			: mapESTenorUpCSQS) {</span>
+<span class="nc bnc" id="L229" title="All 2 branches missed.">			if (null == meTenorUpCSQS) continue;</span>
+
+<span class="nc" id="L231">			java.lang.String strTenorKey = meTenorUpCSQS.getKey();</span>
+
+<span class="nc bnc" id="L233" title="All 4 branches missed.">			if (null == strTenorKey || strTenorKey.isEmpty()) continue;</span>
+
+<span class="nc" id="L235">			org.drip.param.market.CurveSurfaceQuoteContainer csqsTenorUp = meTenorUpCSQS.getValue();</span>
+
+<span class="nc" id="L237">			org.drip.param.market.CurveSurfaceQuoteContainer csqsTenorDown = mapTenorDownCSQS.get (strTenorKey);</span>
+
+<span class="nc" id="L239">			org.drip.state.credit.CreditCurve ccVirginUp = null;</span>
+<span class="nc" id="L240">			org.drip.state.credit.CreditCurve ccVirginDown = null;</span>
+
+<span class="nc bnc" id="L242" title="All 8 branches missed.">			if (null != csqsTenorUp &amp;&amp; null != compCurve &amp;&amp; null != compCurve._cc &amp;&amp; null !=</span>
+<span class="nc bnc" id="L243" title="All 2 branches missed.">				compCurve._strName &amp;&amp; !compCurve._strName.isEmpty()) {</span>
+<span class="nc" id="L244">				ccVirginUp = csqsTenorUp.creditState (org.drip.state.identifier.CreditLabel.Standard</span>
+<span class="nc" id="L245">					(compCurve._strName));</span>
+
+<span class="nc" id="L247">				csqsTenorUp.setCreditState (compCurve._cc);</span>
+
+<span class="nc bnc" id="L249" title="All 2 branches missed.">				if (null != csqsTenorDown) {</span>
+<span class="nc" id="L250">					ccVirginDown = csqsTenorDown.creditState (org.drip.state.identifier.CreditLabel.Standard</span>
+<span class="nc" id="L251">						(compCurve._strName));</span>
+
+<span class="nc" id="L253">					csqsTenorDown.setCreditState (compCurve._cc);</span>
+				}
+			}
+
+<span class="nc" id="L257">			mapTenorDGMM.put (strTenorKey, accumulateDeltaGammaMeasures (valParams, pricerParams,</span>
+				csqsTenorUp, csqsTenorDown, vcp, mapBaseMeasures));
+
+<span class="nc bnc" id="L260" title="All 6 branches missed.">			if (null != csqsTenorUp &amp;&amp; null != compCurve &amp;&amp; null != compCurve._strName &amp;&amp;</span>
+<span class="nc bnc" id="L261" title="All 4 branches missed.">				!compCurve._strName.isEmpty() &amp;&amp; null != ccVirginUp)</span>
+<span class="nc" id="L262">				csqsTenorUp.setCreditState (ccVirginUp);</span>
+
+<span class="nc bnc" id="L264" title="All 6 branches missed.">			if (null != csqsTenorDown &amp;&amp; null != compCurve &amp;&amp; null != compCurve._strName &amp;&amp;</span>
+<span class="nc bnc" id="L265" title="All 4 branches missed.">				!compCurve._strName.isEmpty() &amp;&amp; null != ccVirginDown)</span>
+<span class="nc" id="L266">				csqsTenorDown.setCreditState (ccVirginDown);</span>
+<span class="nc" id="L267">		}</span>
+
+<span class="nc bnc" id="L269" title="All 2 branches missed.">		if (0 == mapTenorDGMM.size()) return null;</span>
+
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
+<span class="nc" id="L272">			mmDelta = new</span>
+				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;();
+
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
+<span class="nc" id="L276">			mmGamma = new</span>
+				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;();
+
+		for (java.util.Map.Entry&lt;java.lang.String, FlatDeltaGammaMeasureMap&gt; meTenorDGMM :
+<span class="nc bnc" id="L280" title="All 2 branches missed.">			mapTenorDGMM.entrySet()) {</span>
+<span class="nc bnc" id="L281" title="All 2 branches missed.">			if (null == meTenorDGMM) continue;</span>
+
+<span class="nc" id="L283">			FlatDeltaGammaMeasureMap dgmmTenorDelta = meTenorDGMM.getValue();</span>
+
+<span class="nc bnc" id="L285" title="All 2 branches missed.">			if (null != dgmmTenorDelta) {</span>
+<span class="nc" id="L286">				java.lang.String strKey = meTenorDGMM.getKey();</span>
+
+<span class="nc" id="L288">				mmDelta.put (strKey, dgmmTenorDelta._mapDelta);</span>
+
+<span class="nc" id="L290">				mmGamma.put (strKey, dgmmTenorDelta._mapGamma);</span>
+			}
+<span class="nc" id="L292">		}</span>
+
+<span class="nc" id="L294">		return new TenorDeltaGammaMeasureMap (mmDelta, mmGamma);</span>
+	}
+
+	private ComponentFactorTenorDeltaGammaMeasureMap accumulateComponentWiseTenorDeltaGammaMeasures (
+		final org.drip.param.valuation.ValuationParams valParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
+		final org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;
+			mapCSQS,
+		final org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;
+			mapTenorUpCSQS,
+		final org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;
+			mapTenorDownCSQS,
+		final org.drip.param.valuation.ValuationCustomizationParams vcp,
+		final org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapBaseMeasures)
+	{
+<span class="nc bnc" id="L309" title="All 4 branches missed.">		if (null == mapCSQS || 0 == mapCSQS.size()) return null;</span>
+
+		java.util.Set&lt;java.util.Map.Entry&lt;java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer&gt;&gt;
+<span class="nc" id="L312">			mapESCSQS = mapCSQS.entrySet();</span>
+
+<span class="nc bnc" id="L314" title="All 4 branches missed.">		if (null == mapESCSQS || 0 == mapESCSQS.size()) return null;</span>
+
+<span class="nc" id="L316">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;TenorDeltaGammaMeasureMap&gt; mapComponentTenorDGMM =</span>
+			new org.drip.analytics.support.CaseInsensitiveTreeMap&lt;TenorDeltaGammaMeasureMap&gt;();
+
+		for (java.util.Map.Entry&lt;java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer&gt; meCSQS :
+<span class="nc bnc" id="L320" title="All 2 branches missed.">			mapESCSQS) {</span>
+<span class="nc bnc" id="L321" title="All 2 branches missed.">			if (null == meCSQS) continue;</span>
+
+<span class="nc" id="L323">			java.lang.String strComponentName = meCSQS.getKey();</span>
+
+<span class="nc bnc" id="L325" title="All 4 branches missed.">			if (null == strComponentName || strComponentName.isEmpty()) continue;</span>
+
+<span class="nc" id="L327">			org.drip.param.market.CurveSurfaceQuoteContainer csqs = meCSQS.getValue();</span>
+
+<span class="nc bnc" id="L329" title="All 2 branches missed.">			if (null != csqs)</span>
+<span class="nc" id="L330">				mapComponentTenorDGMM.put (strComponentName, accumulateTenorDeltaGammaMeasures (valParams,</span>
+					pricerParams, mapTenorUpCSQS, mapTenorDownCSQS, vcp, mapBaseMeasures, new ComponentCurve
+<span class="nc" id="L332">						(strComponentName, csqs.creditState (org.drip.state.identifier.CreditLabel.Standard</span>
+<span class="nc" id="L333">							(strComponentName)))));</span>
+<span class="nc" id="L334">		}</span>
+
+<span class="nc bnc" id="L336" title="All 2 branches missed.">		if (0 == mapComponentTenorDGMM.size()) return null;</span>
+
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;&gt;
+<span class="nc" id="L339">			mmmCompRatesDelta = new</span>
+				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;&gt;();
+
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;&gt;
+<span class="nc" id="L343">			mmmCompRatesGamma = new</span>
+				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;&gt;();
+
+		for (java.util.Map.Entry&lt;java.lang.String, TenorDeltaGammaMeasureMap&gt; meCompTenorDGMM :
+<span class="nc bnc" id="L347" title="All 2 branches missed.">			mapComponentTenorDGMM.entrySet()) {</span>
+<span class="nc bnc" id="L348" title="All 2 branches missed.">			if (null == meCompTenorDGMM) continue;</span>
+
+<span class="nc" id="L350">			TenorDeltaGammaMeasureMap dgmmCompTenorDeltaGamma = meCompTenorDGMM.getValue();</span>
+
+<span class="nc bnc" id="L352" title="All 2 branches missed.">			if (null != dgmmCompTenorDeltaGamma) {</span>
+<span class="nc" id="L353">				java.lang.String strKey = meCompTenorDGMM.getKey();</span>
+
+<span class="nc" id="L355">				mmmCompRatesDelta.put (strKey, dgmmCompTenorDeltaGamma._mmDelta);</span>
+
+<span class="nc" id="L357">				mmmCompRatesGamma.put (strKey, dgmmCompTenorDeltaGamma._mmGamma);</span>
+			}
+<span class="nc" id="L359">		}</span>
+
+<span class="nc" id="L361">		return new ComponentFactorTenorDeltaGammaMeasureMap (mmmCompRatesDelta, mmmCompRatesGamma);</span>
+	}
+
+	protected double measureValue (
+		final java.lang.String strMeasure,
+		final org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapCalc)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L369" title="All 8 branches missed.">		if (null == strMeasure || strMeasure.isEmpty() || null == mapCalc || null == mapCalc.entrySet())</span>
+<span class="nc" id="L370">			throw new java.lang.Exception (&quot;BasketProduct::measureValue =&gt; Invalid Params&quot;);</span>
+
+<span class="nc bnc" id="L372" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; me : mapCalc.entrySet()) {</span>
+<span class="nc bnc" id="L373" title="All 6 branches missed.">			if (null != me &amp;&amp; null != me.getKey() &amp;&amp; me.getKey().equalsIgnoreCase (strMeasure))</span>
+<span class="nc" id="L374">				return me.getValue();</span>
+<span class="nc" id="L375">		}</span>
+
+<span class="nc" id="L377">		throw new java.lang.Exception (&quot;BasketProduct::getMeasure =&gt; &quot; + strMeasure +</span>
+			&quot; is an invalid measure!&quot;);
+	}
+
+	/**
+	 * Return the basket name
+	 * 
+	 * @return Name of the basket product
+	 */
+
+	public abstract java.lang.String name();
+
+	/**
+	 * Return the Components in the Basket
+	 * 
+	 * @return Components in the Basket
+	 */
+
+	public abstract org.drip.product.definition.Component[] components();
+
+	/**
+	 * Retrieve the Aggregation Type for the specified Measure
+	 * 
+	 * @param strMeasureName The Specified Measure Name
+	 * 
+	 * @return The Aggregation Type
+	 */
+
+	public abstract int measureAggregationType (
+		final java.lang.String strMeasureName);
+
+	/**
+	 * Retrieve the component Weights
+	 * 
+	 * @return Array Containing the Component Weights
+	 */
+
+	public double[] weights()
+	{
+<span class="fc" id="L416">		org.drip.product.definition.Component[] aComp = components();</span>
+
+<span class="fc" id="L418">		double dblTotalWeight = 0.;</span>
+<span class="fc" id="L419">		int iNumComp = aComp.length;</span>
+<span class="fc" id="L420">		double[] adblWeight = new double[iNumComp];</span>
+
+<span class="fc bfc" id="L422" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumComp; ++i) {</span>
+			try {
+<span class="fc" id="L424">				dblTotalWeight += (adblWeight[i] = aComp[i].initialNotional());</span>
+<span class="nc" id="L425">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L426">				e.printStackTrace();</span>
+
+<span class="nc" id="L428">				return null;</span>
+<span class="fc" id="L429">			}</span>
+		}
+
+<span class="pc bpc" id="L432" title="1 of 2 branches missed.">		if (0. == dblTotalWeight) return null;</span>
+
+<span class="fc bfc" id="L434" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumComp; ++i)</span>
+<span class="fc" id="L435">			adblWeight[i] /= dblTotalWeight;</span>
+
+<span class="fc" id="L437">		return adblWeight;</span>
+	}
+
+	@Override public java.lang.String[] couponCurrency()
+	{
+<span class="nc" id="L442">		org.drip.product.definition.Component[] aComp = components();</span>
+
+<span class="nc bnc" id="L444" title="All 2 branches missed.">		if (null == aComp) return null;</span>
+
+<span class="nc" id="L446">		int iNumComp = aComp.length;</span>
+
+<span class="nc bnc" id="L448" title="All 2 branches missed.">		if (0 == iNumComp) return null;</span>
+
+<span class="nc" id="L450">		java.util.Set&lt;java.lang.String&gt; setCouponCurrency = new java.util.HashSet&lt;java.lang.String&gt;();</span>
+
+<span class="nc bnc" id="L452" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i) {</span>
+<span class="nc bnc" id="L453" title="All 2 branches missed.">			if (null == aComp[i]) return null;</span>
+
+<span class="nc" id="L455">			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String&gt; mapComponentCouponCurrency =</span>
+<span class="nc" id="L456">				aComp[i].couponCurrency();</span>
+
+<span class="nc bnc" id="L458" title="All 4 branches missed.">			if (null != mapComponentCouponCurrency &amp;&amp; 0 != mapComponentCouponCurrency.size()) {</span>
+				for (java.util.Map.Entry&lt;java.lang.String, java.lang.String&gt; meCouponCurrency :
+<span class="nc bnc" id="L460" title="All 2 branches missed.">					mapComponentCouponCurrency.entrySet())</span>
+<span class="nc" id="L461">					setCouponCurrency.add (meCouponCurrency.getValue());</span>
+			}
+		}
+
+<span class="nc" id="L465">		int iNumCouponCurrency = setCouponCurrency.size();</span>
+
+<span class="nc bnc" id="L467" title="All 2 branches missed.">		if (0 == iNumCouponCurrency) return null;</span>
+
+<span class="nc" id="L469">		int i = 0;</span>
+<span class="nc" id="L470">		java.lang.String[] astrCouponCurrency = new java.lang.String[iNumCouponCurrency];</span>
+
+<span class="nc bnc" id="L472" title="All 2 branches missed.">		for (java.lang.String strCouponCurrency : astrCouponCurrency)</span>
+<span class="nc" id="L473">			astrCouponCurrency[i++] = strCouponCurrency;</span>
+
+<span class="nc" id="L475">		return astrCouponCurrency;</span>
+	}
+
+	@Override public java.lang.String[] payCurrency()
+	{
+<span class="nc" id="L480">		org.drip.product.definition.Component[] aComp = components();</span>
+
+<span class="nc bnc" id="L482" title="All 2 branches missed.">		if (null == aComp) return null;</span>
+
+<span class="nc" id="L484">		int iNumComp = aComp.length;</span>
+
+<span class="nc bnc" id="L486" title="All 2 branches missed.">		if (0 == iNumComp) return null;</span>
+
+<span class="nc" id="L488">		java.util.Set&lt;java.lang.String&gt; setPayCurrency = new java.util.HashSet&lt;java.lang.String&gt;();</span>
+
+<span class="nc bnc" id="L490" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i) {</span>
+<span class="nc bnc" id="L491" title="All 2 branches missed.">			if (null == aComp[i]) return null;</span>
+
+<span class="nc" id="L493">			setPayCurrency.add (aComp[i].payCurrency());</span>
+		}
+
+<span class="nc" id="L496">		int iNumPayCurrency = setPayCurrency.size();</span>
+
+<span class="nc bnc" id="L498" title="All 2 branches missed.">		if (0 == iNumPayCurrency) return null;</span>
+
+<span class="nc" id="L500">		int i = 0;</span>
+<span class="nc" id="L501">		java.lang.String[] astrPayCurrency = new java.lang.String[iNumPayCurrency];</span>
+
+<span class="nc bnc" id="L503" title="All 2 branches missed.">		for (java.lang.String strPayCurrency : astrPayCurrency)</span>
+<span class="nc" id="L504">			astrPayCurrency[i++] = strPayCurrency;</span>
+
+<span class="nc" id="L506">		return astrPayCurrency;</span>
+	}
+
+	@Override public java.lang.String[] principalCurrency()
+	{
+<span class="nc" id="L511">		org.drip.product.definition.Component[] aComp = components();</span>
+
+<span class="nc bnc" id="L513" title="All 2 branches missed.">		if (null == aComp) return null;</span>
+
+<span class="nc" id="L515">		int iNumComp = aComp.length;</span>
+
+<span class="nc bnc" id="L517" title="All 2 branches missed.">		if (0 == iNumComp) return null;</span>
+
+<span class="nc" id="L519">		java.util.Set&lt;java.lang.String&gt; setPrincipalCurrency = new java.util.HashSet&lt;java.lang.String&gt;();</span>
+
+<span class="nc bnc" id="L521" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i) {</span>
+<span class="nc bnc" id="L522" title="All 2 branches missed.">			if (null == aComp[i]) return null;</span>
+
+<span class="nc" id="L524">			setPrincipalCurrency.add (aComp[i].principalCurrency());</span>
+		}
+
+<span class="nc" id="L527">		int iNumPrincipalCurrency = setPrincipalCurrency.size();</span>
+
+<span class="nc bnc" id="L529" title="All 2 branches missed.">		if (0 == iNumPrincipalCurrency) return null;</span>
+
+<span class="nc" id="L531">		int i = 0;</span>
+<span class="nc" id="L532">		java.lang.String[] astrPrincipalCurrency = new java.lang.String[iNumPrincipalCurrency];</span>
+
+<span class="nc bnc" id="L534" title="All 2 branches missed.">		for (java.lang.String strPrincipalCurrency : astrPrincipalCurrency)</span>
+<span class="nc" id="L535">			astrPrincipalCurrency[i++] = strPrincipalCurrency;</span>
+
+<span class="nc" id="L537">		return astrPrincipalCurrency;</span>
+	}
+
+	@Override public org.drip.state.identifier.CreditLabel[] creditLabel()
+	{
+<span class="nc" id="L542">		org.drip.product.definition.Component[] aComp = components();</span>
+
+<span class="nc bnc" id="L544" title="All 2 branches missed.">		if (null == aComp) return null;</span>
+
+<span class="nc" id="L546">		int iNumComp = aComp.length;</span>
+
+<span class="nc bnc" id="L548" title="All 2 branches missed.">		if (0 == iNumComp) return null;</span>
+
+<span class="nc" id="L550">		java.util.Set&lt;org.drip.state.identifier.CreditLabel&gt; sLSLCredit = new</span>
+			java.util.HashSet&lt;org.drip.state.identifier.CreditLabel&gt;();
+
+<span class="nc bnc" id="L553" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i) {</span>
+<span class="nc bnc" id="L554" title="All 2 branches missed.">			if (null == aComp[i]) return null;</span>
+
+<span class="nc" id="L556">			org.drip.state.identifier.CreditLabel lslCredit = aComp[i].creditLabel();</span>
+
+<span class="nc bnc" id="L558" title="All 2 branches missed.">			if (null != lslCredit) sLSLCredit.add (lslCredit);</span>
+		}
+
+<span class="nc" id="L561">		int iNumCreditCurve = sLSLCredit.size();</span>
+
+<span class="nc bnc" id="L563" title="All 2 branches missed.">		if (0 == iNumCreditCurve) return null;</span>
+
+<span class="nc" id="L565">		int i = 0;</span>
+<span class="nc" id="L566">		org.drip.state.identifier.CreditLabel[] aLSLCredit = new</span>
+			org.drip.state.identifier.CreditLabel[iNumCreditCurve];
+
+<span class="nc bnc" id="L569" title="All 2 branches missed.">		for (org.drip.state.identifier.CreditLabel lslCredit : sLSLCredit)</span>
+<span class="nc" id="L570">			aLSLCredit[i++] = lslCredit;</span>
+
+<span class="nc" id="L572">		return aLSLCredit;</span>
+	}
+
+	@Override public org.drip.state.identifier.ForwardLabel[] forwardLabel()
+	{
+<span class="nc" id="L577">		org.drip.product.definition.Component[] aComp = components();</span>
+
+<span class="nc bnc" id="L579" title="All 2 branches missed.">		if (null == aComp) return null;</span>
+
+<span class="nc" id="L581">		int iNumComp = aComp.length;</span>
+
+<span class="nc bnc" id="L583" title="All 2 branches missed.">		if (0 == iNumComp) return null;</span>
+
+<span class="nc" id="L585">		java.util.Set&lt;org.drip.state.identifier.ForwardLabel&gt; setLSLForward = new</span>
+			java.util.HashSet&lt;org.drip.state.identifier.ForwardLabel&gt;();
+
+<span class="nc bnc" id="L588" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i) {</span>
+<span class="nc bnc" id="L589" title="All 2 branches missed.">			if (null == aComp[i]) return null;</span>
+
+			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.identifier.ForwardLabel&gt;
+<span class="nc" id="L592">				aLSLForward = aComp[i].forwardLabel();</span>
+
+<span class="nc bnc" id="L594" title="All 2 branches missed.">			if (null == aLSLForward) continue;</span>
+
+<span class="nc" id="L596">			int iNumForwardCurve = aLSLForward.size();</span>
+
+<span class="nc bnc" id="L598" title="All 2 branches missed.">			if (0 == iNumForwardCurve) continue;</span>
+
+<span class="nc bnc" id="L600" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumForwardCurve; ++j) {</span>
+<span class="nc" id="L601">				org.drip.state.identifier.ForwardLabel lslForward = aLSLForward.get (j);</span>
+
+<span class="nc bnc" id="L603" title="All 2 branches missed.">				if (null != lslForward) setLSLForward.add (lslForward);</span>
+			}
+		}
+
+<span class="nc" id="L607">		int iNumForward = setLSLForward.size();</span>
+
+<span class="nc bnc" id="L609" title="All 2 branches missed.">		if (0 == iNumForward) return null;</span>
+
+<span class="nc" id="L611">		int i = 0;</span>
+<span class="nc" id="L612">		org.drip.state.identifier.ForwardLabel[] aLSLForward = new</span>
+			org.drip.state.identifier.ForwardLabel[iNumForward];
+
+<span class="nc bnc" id="L615" title="All 2 branches missed.">		for (org.drip.state.identifier.ForwardLabel lslForward : setLSLForward)</span>
+<span class="nc" id="L616">			aLSLForward[i++] = lslForward;</span>
+
+<span class="nc" id="L618">		return aLSLForward;</span>
+	}
+
+	@Override public org.drip.state.identifier.FundingLabel[] fundingLabel()
+	{
+<span class="nc" id="L623">		org.drip.product.definition.Component[] aComp = components();</span>
+
+<span class="nc bnc" id="L625" title="All 2 branches missed.">		if (null == aComp) return null;</span>
+
+<span class="nc" id="L627">		int iNumComp = aComp.length;</span>
+
+<span class="nc bnc" id="L629" title="All 2 branches missed.">		if (0 == iNumComp) return null;</span>
+
+<span class="nc" id="L631">		java.util.Set&lt;org.drip.state.identifier.FundingLabel&gt; sLSLFunding = new</span>
+			java.util.HashSet&lt;org.drip.state.identifier.FundingLabel&gt;();
+
+<span class="nc bnc" id="L634" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i) {</span>
+<span class="nc bnc" id="L635" title="All 2 branches missed.">			if (null == aComp[i]) return null;</span>
+
+<span class="nc" id="L637">			org.drip.state.identifier.FundingLabel lslFunding = aComp[i].fundingLabel();</span>
+
+<span class="nc bnc" id="L639" title="All 2 branches missed.">			if (null == lslFunding) continue;</span>
+
+<span class="nc" id="L641">			sLSLFunding.add (lslFunding);</span>
+		}
+
+<span class="nc" id="L644">		int iNumFundingCurve = sLSLFunding.size();</span>
+
+<span class="nc bnc" id="L646" title="All 2 branches missed.">		if (0 == iNumFundingCurve) return null;</span>
+
+<span class="nc" id="L648">		int i = 0;</span>
+<span class="nc" id="L649">		org.drip.state.identifier.FundingLabel[] aLSLFunding = new</span>
+			org.drip.state.identifier.FundingLabel[iNumFundingCurve];
+
+<span class="nc bnc" id="L652" title="All 2 branches missed.">		for (org.drip.state.identifier.FundingLabel lslFunding : sLSLFunding)</span>
+<span class="nc" id="L653">			aLSLFunding[i++] = lslFunding;</span>
+
+<span class="nc" id="L655">		return aLSLFunding;</span>
+	}
+
+	@Override public org.drip.state.identifier.FXLabel[] fxLabel()
+	{
+<span class="nc" id="L660">		org.drip.product.definition.Component[] aComp = components();</span>
+
+<span class="nc bnc" id="L662" title="All 2 branches missed.">		if (null == aComp) return null;</span>
+
+<span class="nc" id="L664">		int iNumComp = aComp.length;</span>
+
+<span class="nc bnc" id="L666" title="All 2 branches missed.">		if (0 == iNumComp) return null;</span>
+
+<span class="nc" id="L668">		java.util.Set&lt;org.drip.state.identifier.FXLabel&gt; setLabel = new</span>
+			java.util.HashSet&lt;org.drip.state.identifier.FXLabel&gt;();
+
+<span class="nc bnc" id="L671" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i) {</span>
+<span class="nc bnc" id="L672" title="All 2 branches missed.">			if (null == aComp[i]) return null;</span>
+
+<span class="nc" id="L674">			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.identifier.FXLabel&gt; aLabel =</span>
+<span class="nc" id="L675">				aComp[i].fxLabel();</span>
+
+<span class="nc bnc" id="L677" title="All 2 branches missed.">			if (null == aLabel) continue;</span>
+
+<span class="nc" id="L679">			int iNumLabel = aLabel.size();</span>
+
+<span class="nc bnc" id="L681" title="All 2 branches missed.">			if (0 == iNumLabel) continue;</span>
+
+<span class="nc bnc" id="L683" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumLabel; ++j) {</span>
+<span class="nc" id="L684">				org.drip.state.identifier.FXLabel label = aLabel.get (j);</span>
+
+<span class="nc bnc" id="L686" title="All 2 branches missed.">				if (null != label) setLabel.add (label);</span>
+			}
+		}
+
+<span class="nc" id="L690">		int iNumLabel = setLabel.size();</span>
+
+<span class="nc bnc" id="L692" title="All 2 branches missed.">		if (0 == iNumLabel) return null;</span>
+
+<span class="nc" id="L694">		int i = 0;</span>
+<span class="nc" id="L695">		org.drip.state.identifier.FXLabel[] aLabel = new org.drip.state.identifier.FXLabel[iNumLabel];</span>
+
+<span class="nc bnc" id="L697" title="All 2 branches missed.">		for (org.drip.state.identifier.FXLabel label : setLabel)</span>
+<span class="nc" id="L698">			aLabel[i++] = label;</span>
+
+<span class="nc" id="L700">		return aLabel;</span>
+	}
+
+	/**
+	 * Return the initial notional of the basket product
+	 * 
+	 * @return Initial notional of the basket product
+	 * 
+	 * @throws java.lang.Exception Thrown if inputs are invalid
+	 */
+
+	public double initialNotional()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L714">		org.drip.product.definition.Component[] aComp = components();</span>
+
+<span class="nc" id="L716">		int iNumComp = aComp.length;</span>
+<span class="nc" id="L717">		double dblInitialNotional = 0.;</span>
+
+<span class="nc bnc" id="L719" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i)</span>
+<span class="nc" id="L720">			dblInitialNotional += aComp[i].initialNotional();</span>
+
+<span class="nc" id="L722">		return dblInitialNotional;</span>
+	}
+
+	/**
+	 * Retrieve the notional at the given date
+	 * 
+	 * @param iDate JulianDate
+	 * 
+	 * @return Notional
+	 * 
+	 * @throws java.lang.Exception Thrown if inputs are invalid
+	 */
+
+	public double notional (
+		final int iDate)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L739">		org.drip.product.definition.Component[] aComp = components();</span>
+
+<span class="nc" id="L741">		double dblNotional = 0.;</span>
+<span class="nc" id="L742">		int iNumComp = aComp.length;</span>
+
+<span class="nc bnc" id="L744" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i)</span>
+<span class="nc" id="L745">			dblNotional += aComp[i].notional (iDate);</span>
+
+<span class="nc" id="L747">		return dblNotional;</span>
+	}
+
+	/**
+	 * Retrieve the time-weighted notional between 2 given dates
+	 * 
+	 * @param iDate1 JulianDate first
+	 * @param iDate2 JulianDate second
+	 * 
+	 * @return Notional
+	 * 
+	 * @throws java.lang.Exception Thrown if inputs are invalid
+	 */
+
+	public double notional (
+		final int iDate1,
+		final int iDate2)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L766">		org.drip.product.definition.Component[] aComp = components();</span>
+
+<span class="nc" id="L768">		double dblNotional = 0.;</span>
+<span class="nc" id="L769">		int iNumComp = aComp.length;</span>
+
+<span class="nc bnc" id="L771" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i)</span>
+<span class="nc" id="L772">			dblNotional += aComp[i].notional (iDate1, iDate2);</span>
+
+<span class="nc" id="L774">		return dblNotional;</span>
+	}
+
+	/**
+	 * Retrieve the basket product's coupon amount at the given date
+	 * 
+	 * @param iDate JulianDate
+	 * @param csqs Market Parameters
+	 * 
+	 * @return Coupon Amount
+	 * 
+	 * @throws java.lang.Exception Thrown if coupon cannot be calculated
+	 */
+
+	public double coupon (
+		final int iDate,
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqs)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L793">		double dblNotional = notional (iDate);</span>
+
+<span class="nc bnc" id="L795" title="All 6 branches missed.">		if (null == csqs || 0. == dblNotional || !org.drip.quant.common.NumberUtil.IsValid (dblNotional))</span>
+<span class="nc" id="L796">			throw new java.lang.Exception (&quot;BasketProduct::coupon =&gt; Cannot extract basket notional&quot;);</span>
+
+<span class="nc" id="L798">		org.drip.product.definition.Component[] aComp = components();</span>
+
+<span class="nc" id="L800">		double dblCoupon = 0.;</span>
+<span class="nc" id="L801">		int iNumComp = aComp.length;</span>
+
+<span class="nc bnc" id="L803" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i)</span>
+<span class="nc" id="L804">			dblCoupon += aComp[i].couponMetrics (iDate, null, csqs).rate();</span>
+
+<span class="nc" id="L806">		return dblCoupon / dblNotional;</span>
+	}
+
+	/**
+	 * Returns the effective date of the basket product
+	 * 
+	 * @return Effective date of the basket product
+	 */
+
+	public org.drip.analytics.date.JulianDate effective()
+	{
+<span class="nc" id="L817">		org.drip.product.definition.Component[] aComp = components();</span>
+
+<span class="nc" id="L819">		int iNumComp = aComp.length;</span>
+
+<span class="nc" id="L821">		org.drip.analytics.date.JulianDate dtEffective = aComp[0].effectiveDate();</span>
+
+<span class="nc bnc" id="L823" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumComp; ++i) {</span>
+<span class="nc" id="L824">			org.drip.analytics.date.JulianDate dtCompEffective = aComp[i].effectiveDate();</span>
+
+<span class="nc bnc" id="L826" title="All 2 branches missed.">			if (dtCompEffective.julian() &lt; dtEffective.julian()) dtEffective = dtCompEffective;</span>
+		}
+
+<span class="nc" id="L829">		return dtEffective;</span>
+	}
+
+	/**
+	 * Return the maturity date of the basket product
+	 * 
+	 * @return Maturity date of the basket product
+	 */
+
+	public org.drip.analytics.date.JulianDate maturity()
+	{
+<span class="nc" id="L840">		org.drip.product.definition.Component[] aComp = components();</span>
+
+<span class="nc" id="L842">		int iNumComp = aComp.length;</span>
+
+<span class="nc" id="L844">		org.drip.analytics.date.JulianDate dtMaturity = aComp[0].maturityDate();</span>
+
+<span class="nc bnc" id="L846" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumComp; ++i) {</span>
+<span class="nc" id="L847">			org.drip.analytics.date.JulianDate dtCompMaturity = aComp[i].maturityDate();</span>
+
+<span class="nc bnc" id="L849" title="All 2 branches missed.">			if (dtCompMaturity.julian() &lt; dtMaturity.julian()) dtMaturity = dtCompMaturity;</span>
+		}
+
+<span class="nc" id="L852">		return dtMaturity;</span>
+	}
+
+	/**
+	 * Get the basket product's coupon periods
+	 * 
+	 * @return List of CouponPeriods
+	 */
+
+	public java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; couponPeriod()
+	{
+<span class="nc" id="L863">		java.util.Set&lt;org.drip.analytics.cashflow.CompositePeriod&gt; setPeriod =</span>
+<span class="nc" id="L864">			org.drip.analytics.support.Helper.AggregateComponentPeriods (components());</span>
+
+<span class="nc bnc" id="L866" title="All 4 branches missed.">		if (null == setPeriod || 0 == setPeriod.size()) return null;</span>
+
+<span class="nc" id="L868">		java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; lsCouponPeriod = new</span>
+			java.util.ArrayList&lt;org.drip.analytics.cashflow.CompositePeriod&gt;();
+
+<span class="nc bnc" id="L871" title="All 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod p : setPeriod) {</span>
+<span class="nc bnc" id="L872" title="All 2 branches missed.">			if (null != p) lsCouponPeriod.add (p);</span>
+<span class="nc" id="L873">		}</span>
+
+<span class="nc" id="L875">		return lsCouponPeriod;</span>
+	}
+
+	/**
+	 * Get the first coupon date
+	 * 
+	 * @return First Coupon Date
+	 */
+
+	public org.drip.analytics.date.JulianDate firstCouponDate()
+	{
+<span class="nc" id="L886">		org.drip.product.definition.Component[] aComp = components();</span>
+
+<span class="nc" id="L888">		int iNumComp = aComp.length;</span>
+
+<span class="nc" id="L890">		org.drip.analytics.date.JulianDate dtFirstCoupon = aComp[0].firstCouponDate();</span>
+
+<span class="nc bnc" id="L892" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumComp; ++i) {</span>
+<span class="nc bnc" id="L893" title="All 2 branches missed.">			if (dtFirstCoupon.julian() &gt; aComp[i].firstCouponDate().julian())</span>
+<span class="nc" id="L894">				dtFirstCoupon = aComp[i].firstCouponDate();</span>
+		}
+
+<span class="nc" id="L897">		return dtFirstCoupon;</span>
+	}
+
+	/**
+	 * Generate a full list of the basket product measures for the full input set of market parameters
+	 * 
+	 * @param valParams ValuationParams
+	 * @param pricerParams PricerParams
+	 * @param csqs Market Parameters
+	 * @param vcp Valuation Customization Parameters
+	 * 
+	 * @return Map of measure name and value
+	 */
+
+	public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; value (
+		final org.drip.param.valuation.ValuationParams valParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
+		final org.drip.param.valuation.ValuationCustomizationParams vcp)
+	{
+<span class="fc" id="L917">		long lStart = System.nanoTime();</span>
+
+<span class="fc" id="L919">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapBasketOP = new</span>
+			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
+
+<span class="fc" id="L922">		org.drip.product.definition.Component[] aComp = components();</span>
+
+<span class="fc" id="L924">		double[] adblWeight = weights();</span>
+
+<span class="fc" id="L926">		int iNumComp = aComp.length;</span>
+
+<span class="fc bfc" id="L928" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumComp; ++i) {</span>
+<span class="fc" id="L929">			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapCompOP = aComp[i].value</span>
+<span class="fc" id="L930">				(valParams, pricerParams, csqs, vcp);</span>
+
+<span class="pc bpc" id="L932" title="2 of 4 branches missed.">			if (null == mapCompOP || 0 == mapCompOP.size()) continue;</span>
+
+<span class="fc" id="L934">			java.util.Set&lt;java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt;&gt; mapCompOPES =</span>
+<span class="fc" id="L935">				mapCompOP.entrySet();</span>
+
+<span class="pc bpc" id="L937" title="1 of 2 branches missed.">			if (null == mapCompOPES) continue;</span>
+
+<span class="fc bfc" id="L939" title="All 2 branches covered.">			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; meCompOP : mapCompOPES) {</span>
+<span class="pc bpc" id="L940" title="1 of 2 branches missed.">				if (null == meCompOP) continue;</span>
+
+<span class="fc" id="L942">				java.lang.String strKey = meCompOP.getKey();</span>
+
+<span class="pc bpc" id="L944" title="2 of 4 branches missed.">				if (null == strKey || strKey.isEmpty()) continue;</span>
+
+<span class="fc" id="L946">				java.lang.Double dblCompValue = mapCompOP.get (strKey);</span>
+
+<span class="fc" id="L948">				java.lang.Double dblBasketValue = mapBasketOP.get (strKey);</span>
+
+<span class="fc bfc" id="L950" title="All 2 branches covered.">				if (MEASURE_AGGREGATION_TYPE_CUMULATIVE == measureAggregationType (strKey))</span>
+<span class="pc bpc" id="L951" title="1 of 4 branches missed.">					mapBasketOP.put (strKey, (null == dblCompValue ? 0. : dblCompValue) + (null ==</span>
+<span class="fc" id="L952">						dblBasketValue ? 0. : dblBasketValue));</span>
+<span class="pc bpc" id="L953" title="1 of 4 branches missed.">				else if (MEASURE_AGGREGATION_TYPE_WEIGHTED_CUMULATIVE == measureAggregationType (strKey) &amp;&amp;</span>
+					null != adblWeight)
+<span class="pc bpc" id="L955" title="1 of 4 branches missed.">					mapBasketOP.put (strKey, (null == dblCompValue ? 0. : adblWeight[i] * dblCompValue) +</span>
+<span class="fc" id="L956">						(null == dblBasketValue ? 0. : dblBasketValue));</span>
+<span class="pc bpc" id="L957" title="1 of 2 branches missed.">				else if (MEASURE_AGGREGATION_TYPE_UNIT_ACCUMULATE == measureAggregationType (strKey))</span>
+<span class="pc bpc" id="L958" title="1 of 2 branches missed.">					mapBasketOP.put (aComp[i].name() + &quot;[&quot; + strKey + &quot;]&quot;, (null == dblCompValue ? 0. :</span>
+<span class="fc" id="L959">						dblCompValue));</span>
+<span class="fc" id="L960">			}</span>
+		}
+
+<span class="fc" id="L963">		mapBasketOP.put (&quot;CalcTime&quot;, (System.nanoTime() - lStart) * 1.e-09);</span>
+
+<span class="fc" id="L965">		return mapBasketOP;</span>
+	}
+
+	/**
+	 * Calculate the value of the given basket product measure
+	 * 
+	 * @param valParams ValuationParams
+	 * @param pricerParams PricerParams
+	 * @param csqs Market Parameters
+	 * @param vcp Valuation Customization Parameters
+	 * @param strMeasure Measure String
+	 * 
+	 * @return Double measure value
+	 * 
+	 * @throws java.lang.Exception Thrown if the measure cannot be calculated
+	 */
+
+	public double measureValue (
+		final org.drip.param.valuation.ValuationParams valParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
+		final org.drip.param.valuation.ValuationCustomizationParams vcp,
+		final java.lang.String strMeasure)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L990">		return measureValue (strMeasure, value (valParams, pricerParams, csqs, vcp));</span>
+	}
+
+	/**
+	 * Generate a full list of the basket product measures for the set of scenario market parameters present
+	 * 	in the org.drip.param.definition.MarketParams
+	 * 
+	 * @param valParams ValuationParams
+	 * @param pricerParams PricerParams
+	 * @param mpc org.drip.param.definition.MarketParams
+	 * @param vcp Valuation Customization Parameters
+	 * 
+	 * @return BasketOutput object
+	 */
+
+	public org.drip.analytics.output.BasketMeasures measures (
+		final org.drip.param.valuation.ValuationParams valParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
+		final org.drip.param.definition.ScenarioMarketParams mpc,
+		final org.drip.param.valuation.ValuationCustomizationParams vcp)
+	{
+<span class="nc bnc" id="L1011" title="All 4 branches missed.">		if (null == valParams || null == mpc) return null;</span>
+
+<span class="nc" id="L1013">		long lStart = System.nanoTime();</span>
+
+<span class="nc" id="L1015">		org.drip.analytics.output.BasketMeasures bkop = new org.drip.analytics.output.BasketMeasures();</span>
+
+<span class="nc bnc" id="L1017" title="All 2 branches missed.">		if (!bkop.setBaseMeasures (value (valParams, pricerParams, mpc.scenarioMarketParams (this, &quot;Base&quot;),</span>
+			vcp)))
+<span class="nc" id="L1019">			return null;</span>
+
+<span class="nc" id="L1021">		FlatDeltaGammaMeasureMap dgmmCredit = accumulateDeltaGammaMeasures (valParams, pricerParams,</span>
+<span class="nc" id="L1022">			mpc.scenarioMarketParams (this, &quot;FlatCreditBumpUp&quot;), mpc.scenarioMarketParams (this, &quot;FlatCreditBumpDn&quot;),</span>
+<span class="nc" id="L1023">				vcp, bkop.baseMeasures());</span>
+
+<span class="nc bnc" id="L1025" title="All 4 branches missed.">		if (null != dgmmCredit &amp;&amp; !bkop.setFlatCreditDeltaMeasures (dgmmCredit._mapDelta))</span>
+<span class="nc" id="L1026">			bkop.setFlatCreditGammaMeasures (dgmmCredit._mapGamma);</span>
+
+<span class="nc" id="L1028">		FlatDeltaGammaMeasureMap dgmmRates = accumulateDeltaGammaMeasures (valParams, pricerParams,</span>
+<span class="nc" id="L1029">			mpc.scenarioMarketParams (this, &quot;FlatIRBumpUp&quot;), mpc.scenarioMarketParams (this, &quot;FlatIRBumpDn&quot;), vcp,</span>
+<span class="nc" id="L1030">				bkop.baseMeasures());</span>
+
+<span class="nc bnc" id="L1032" title="All 4 branches missed.">		if (null != dgmmRates &amp;&amp; bkop.setFlatIRDeltaMeasures (dgmmRates._mapDelta))</span>
+<span class="nc" id="L1033">			bkop.setFlatIRGammaMeasures (dgmmRates._mapGamma);</span>
+
+<span class="nc" id="L1035">		FlatDeltaGammaMeasureMap dgmmRecovery = accumulateDeltaGammaMeasures (valParams, pricerParams,</span>
+<span class="nc" id="L1036">			mpc.scenarioMarketParams (this, &quot;FlatRRBumpUp&quot;), mpc.scenarioMarketParams (this, &quot;FlatRRBumpDn&quot;), vcp,</span>
+<span class="nc" id="L1037">				bkop.baseMeasures());</span>
+
+<span class="nc bnc" id="L1039" title="All 4 branches missed.">		if (null != dgmmRecovery &amp;&amp; bkop.setFlatRRDeltaMeasures (dgmmRates._mapDelta))</span>
+<span class="nc" id="L1040">			bkop.setFlatRRGammaMeasures (dgmmRates._mapGamma);</span>
+
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;
+<span class="nc" id="L1043">			mapCSQSIRTenorUp = mpc.fundingFlatBump (this, true);</span>
+
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;
+<span class="nc" id="L1046">			mapCSQSIRTenorDown = mpc.fundingFlatBump (this, false);</span>
+
+<span class="nc" id="L1048">		TenorDeltaGammaMeasureMap mapDGMMRatesTenor = accumulateTenorDeltaGammaMeasures (valParams,</span>
+<span class="nc" id="L1049">			pricerParams, mapCSQSIRTenorUp, mapCSQSIRTenorDown, vcp, bkop.baseMeasures(), null);</span>
+
+<span class="nc bnc" id="L1051" title="All 2 branches missed.">		if (null != mapDGMMRatesTenor) {</span>
+<span class="nc" id="L1052">			bkop.setComponentIRDeltaMeasures (mapDGMMRatesTenor._mmDelta);</span>
+
+<span class="nc" id="L1054">			bkop.setComponentIRGammaMeasures (mapDGMMRatesTenor._mmGamma);</span>
+		}
+
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;
+<span class="nc" id="L1058">			mapCSQSCreditTenorUp = mpc.creditFlatBump (this, true);</span>
+
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;
+<span class="nc" id="L1061">			mapCSQSCreditTenorDown = mpc.creditFlatBump (this, false);</span>
+
+<span class="nc" id="L1063">		TenorDeltaGammaMeasureMap mapDGMMCreditComp = accumulateTenorDeltaGammaMeasures (valParams,</span>
+<span class="nc" id="L1064">			pricerParams, mapCSQSCreditTenorUp, mapCSQSCreditTenorDown, vcp, bkop.baseMeasures(), null);</span>
+
+<span class="nc bnc" id="L1066" title="All 2 branches missed.">		if (null != mapDGMMCreditComp) {</span>
+<span class="nc" id="L1067">			bkop.setComponentCreditDeltaMeasures (mapDGMMCreditComp._mmDelta);</span>
+
+<span class="nc" id="L1069">			bkop.setComponentCreditGammaMeasures (mapDGMMCreditComp._mmGamma);</span>
+		}
+
+<span class="nc" id="L1072">		TenorDeltaGammaMeasureMap mapDGMMRecoveryTenor = accumulateTenorDeltaGammaMeasures (valParams,</span>
+<span class="nc" id="L1073">			pricerParams, mpc.recoveryFlatBump (this, true), mpc.recoveryFlatBump (this, false), vcp,</span>
+<span class="nc" id="L1074">				bkop.baseMeasures(), null);</span>
+
+<span class="nc bnc" id="L1076" title="All 2 branches missed.">		if (null != mapDGMMRecoveryTenor) {</span>
+<span class="nc" id="L1077">			bkop.setComponentRRDeltaMeasures (mapDGMMRecoveryTenor._mmDelta);</span>
+
+<span class="nc" id="L1079">			bkop.setComponentRRGammaMeasures (mapDGMMRecoveryTenor._mmGamma);</span>
+		}
+
+<span class="nc" id="L1082">		ComponentFactorTenorDeltaGammaMeasureMap mapCompRatesTenorDGMM =</span>
+<span class="nc" id="L1083">			accumulateComponentWiseTenorDeltaGammaMeasures (valParams, pricerParams, mapCSQSCreditTenorUp,</span>
+<span class="nc" id="L1084">				mapCSQSIRTenorUp, mapCSQSIRTenorDown, vcp, bkop.baseMeasures());</span>
+
+<span class="nc bnc" id="L1086" title="All 2 branches missed.">		if (null != mapCompRatesTenorDGMM) {</span>
+<span class="nc" id="L1087">			bkop.setComponentTenorIRDeltaMeasures (mapCompRatesTenorDGMM._mmmDelta);</span>
+
+<span class="nc" id="L1089">			bkop.setComponentTenorIRGammaMeasures (mapCompRatesTenorDGMM._mmmGamma);</span>
+		}
+
+<span class="nc" id="L1092">		ComponentFactorTenorDeltaGammaMeasureMap mapCompCreditTenorDGMM =</span>
+<span class="nc" id="L1093">			accumulateComponentWiseTenorDeltaGammaMeasures (valParams, pricerParams, mapCSQSCreditTenorUp,</span>
+<span class="nc" id="L1094">				mapCSQSCreditTenorUp, mapCSQSCreditTenorDown, vcp, bkop.baseMeasures());</span>
+
+<span class="nc bnc" id="L1096" title="All 2 branches missed.">		if (null != mapCompCreditTenorDGMM) {</span>
+<span class="nc" id="L1097">			bkop.setComponentTenorCreditDeltaMeasures (mapCompCreditTenorDGMM._mmmDelta);</span>
+
+<span class="nc" id="L1099">			bkop.setComponentTenorCreditGammaMeasures (mapCompCreditTenorDGMM._mmmGamma);</span>
+		}
+
+<span class="nc" id="L1102">		bkop.setCalcTime ((System.nanoTime() - lStart) * 1.e-09);</span>
+
+<span class="nc" id="L1104">		return bkop;</span>
+	}
+
+	/**
+	 * Compute Basket's Custom Scenario Measures
+	 * 
+	 * @param valParams Valuation Parameters
+	 * @param pricerParams Pricer Parameters
+	 * @param mpc Market Parameters Container
+	 * @param strCustomScenName Custom Scenario Name
+	 * @param vcp Valuation Customization Parameters
+	 * @param mapBase Map of Base Measures
+	 * 
+	 * @return Basket's Custom Scenario Measures
+	 */
+
+	public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; customScenarioMeasures (
+		final org.drip.param.valuation.ValuationParams valParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
+		final org.drip.param.definition.ScenarioMarketParams mpc,
+		final java.lang.String strCustomScenName,
+		final org.drip.param.valuation.ValuationCustomizationParams vcp,
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapBase)
+	{
+<span class="nc bnc" id="L1128" title="All 4 branches missed.">		if (null == valParams || null == mpc) return null;</span>
+
+<span class="nc bnc" id="L1130" title="All 2 branches missed.">		if (null == mapBase) {</span>
+<span class="nc" id="L1131">			org.drip.param.market.CurveSurfaceQuoteContainer csqsBase = mpc.scenarioMarketParams (this, &quot;Base&quot;);</span>
+
+<span class="nc bnc" id="L1133" title="All 4 branches missed.">			if (null == csqsBase || null == (mapBase = value (valParams, pricerParams, csqsBase, vcp)))</span>
+<span class="nc" id="L1134">				return null;</span>
+		}
+
+<span class="nc" id="L1137">		org.drip.param.market.CurveSurfaceQuoteContainer csqsScen = mpc.scenarioMarketParams (this, strCustomScenName);</span>
+
+<span class="nc bnc" id="L1139" title="All 2 branches missed.">		if (null == csqsScen) return null;</span>
+
+<span class="nc" id="L1141">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapScenMeasures = value</span>
+<span class="nc" id="L1142">			(valParams, pricerParams, csqsScen, vcp);</span>
+
+<span class="nc bnc" id="L1144" title="All 4 branches missed.">		if (null == mapScenMeasures || null != mapScenMeasures.entrySet()) return null;</span>
+
+<span class="nc" id="L1146">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapOP = new</span>
+			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
+
+<span class="nc bnc" id="L1149" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; me : mapScenMeasures.entrySet()) {</span>
+<span class="nc bnc" id="L1150" title="All 4 branches missed.">			if (null == me || null == me.getKey()) continue;</span>
+
+<span class="nc" id="L1152">			mapOP.put (me.getKey(), me.getValue() - mapBase.get (me.getKey()));</span>
+<span class="nc" id="L1153">		}</span>
+
+<span class="nc" id="L1155">		return mapOP;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

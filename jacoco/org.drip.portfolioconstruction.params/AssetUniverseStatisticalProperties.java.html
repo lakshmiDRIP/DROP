@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AssetUniverseStatisticalProperties.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.portfolioconstruction.params</a> &gt; <span class="el_source">AssetUniverseStatisticalProperties.java</span></div><h1>AssetUniverseStatisticalProperties.java</h1><pre class="source lang-java linenums">
+package org.drip.portfolioconstruction.params;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * AssetUniverseStatisticalProperties holds the Statistical Properties of a Pool of Assets.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class AssetUniverseStatisticalProperties {
+<span class="fc" id="L58">	private double _dblRiskFreeRate = java.lang.Double.NaN;</span>
+
+<span class="fc" id="L60">	private</span>
+		org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.portfolioconstruction.params.AssetStatisticalProperties&gt;
+		_mapASP = new
+			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.portfolioconstruction.params.AssetStatisticalProperties&gt;();
+
+<span class="fc" id="L65">	private org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt; _mapCorrelation = new</span>
+		org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
+
+	/**
+	 * Construct an Instance of AUSP from the corresponding MultivariateMetrics Instance
+	 * 
+	 * @param mvm The MultivariateMetrics Instance
+	 * 
+	 * @return The AUSP Instance
+	 */
+
+	public static final AssetUniverseStatisticalProperties FromMultivariateMetrics (
+		final org.drip.measure.statistics.MultivariateMoments mvm)
+	{
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">		if (null == mvm) return null;</span>
+
+<span class="fc" id="L81">		java.util.Set&lt;java.lang.String&gt; setstrAsset = mvm.variateList();</span>
+
+<span class="pc bpc" id="L83" title="2 of 4 branches missed.">		if (null == setstrAsset|| 0 == setstrAsset.size()) return null;</span>
+
+		try {
+<span class="fc" id="L86">			AssetUniverseStatisticalProperties ausp = new AssetUniverseStatisticalProperties (0.);</span>
+
+<span class="fc bfc" id="L88" title="All 2 branches covered.">			for (java.lang.String strAsset : setstrAsset) {</span>
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">				if (!ausp.setASP (new org.drip.portfolioconstruction.params.AssetStatisticalProperties</span>
+<span class="fc" id="L90">					(strAsset, strAsset, mvm.mean (strAsset), mvm.variance (strAsset))))</span>
+<span class="nc" id="L91">					return null;</span>
+<span class="fc" id="L92">			}</span>
+
+<span class="fc bfc" id="L94" title="All 2 branches covered.">			for (java.lang.String strAsset1 : setstrAsset) {</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">				for (java.lang.String strAsset2 : setstrAsset) {</span>
+<span class="pc bpc" id="L96" title="1 of 2 branches missed.">					if (!ausp.setCorrelation (strAsset1, strAsset2, mvm.correlation (strAsset1, strAsset2)))</span>
+<span class="nc" id="L97">						return null;</span>
+<span class="fc" id="L98">				}</span>
+<span class="fc" id="L99">			}</span>
+
+<span class="fc" id="L101">			return ausp;</span>
+<span class="nc" id="L102">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L103">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L106">		return null;</span>
+	}
+
+	/**
+	 * AssetUniverseStatisticalProperties Constructor
+	 * 
+	 * @param dblRiskFreeRate The Risk Free Rate
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public AssetUniverseStatisticalProperties (
+		final double dblRiskFreeRate)
+		throws java.lang.Exception
+<span class="fc" id="L120">	{</span>
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblRiskFreeRate = dblRiskFreeRate))</span>
+<span class="nc" id="L122">			throw new java.lang.Exception</span>
+				(&quot;AssetUniverseStatisticalProperties Constructor =&gt; Invalid Inputs&quot;);
+<span class="fc" id="L124">	}</span>
+
+	/**
+	 * Set the ASP Instance
+	 * 
+	 * @param asp ASP Instance
+	 * 
+	 * @return TRUE - ASP Instance Successfully added
+	 */
+
+	public boolean setASP (
+		final org.drip.portfolioconstruction.params.AssetStatisticalProperties asp)
+	{
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">		if (null == asp) return false;</span>
+
+<span class="fc" id="L139">		_mapASP.put (asp.id(), asp);</span>
+
+<span class="fc" id="L141">		return true;</span>
+	}
+
+	/**
+	 * Set the Correlation Between the Specified Assets
+	 * 
+	 * @param strID1 Asset #1
+	 * @param strID2 Asset #2
+	 * @param dblCorrelation Cross-asset Correlation
+	 * 
+	 * @return Correlation Between the Specified Assets
+	 */
+
+	public boolean setCorrelation (
+		final java.lang.String strID1,
+		final java.lang.String strID2,
+		final double dblCorrelation)
+	{
+<span class="pc bpc" id="L159" title="4 of 8 branches missed.">		if (null == strID1 || strID1.isEmpty() || null == strID2 || strID2.isEmpty() ||</span>
+<span class="pc bpc" id="L160" title="3 of 6 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblCorrelation) || 1. &lt; dblCorrelation || -1. &gt;</span>
+				dblCorrelation)
+<span class="nc" id="L162">			return false;</span>
+
+<span class="fc" id="L164">		_mapCorrelation.put (strID1 + &quot;@#&quot; + strID2, dblCorrelation);</span>
+
+<span class="fc" id="L166">		_mapCorrelation.put (strID2 + &quot;@#&quot; + strID1, dblCorrelation);</span>
+
+<span class="fc" id="L168">		return true;</span>
+	}
+
+	/**
+	 * Retrieve the Risk Free Rate
+	 * 
+	 * @return The Risk Free Rate
+	 */
+
+	public double riskFreeRate()
+	{
+<span class="fc" id="L179">		return _dblRiskFreeRate;</span>
+	}
+
+	/**
+	 * Retrieve the ASP Instance corresponding to the specified ID
+	 * 
+	 * @param strID The ASP ID
+	 * 
+	 * @return The ASP Instance
+	 */
+
+	public org.drip.portfolioconstruction.params.AssetStatisticalProperties asp (
+		final java.lang.String strID)
+	{
+<span class="pc bpc" id="L193" title="3 of 6 branches missed.">		return null == strID || strID.isEmpty() || !_mapASP.containsKey (strID) ? null : _mapASP.get (strID);</span>
+	}
+
+	/**
+	 * Retrieve the Correlation between the Specified Assets
+	 * 
+	 * @param strID1 Asset #1
+	 * @param strID2 Asset #2
+	 * 
+	 * @return Correlation between the Specified Assets
+	 * 
+	 * @throws java.lang.Exception Thtrown if the Inputs are Invalid
+	 */
+
+	public double correlation (
+		final java.lang.String strID1,
+		final java.lang.String strID2)
+		throws java.lang.Exception
+	{
+<span class="pc bpc" id="L212" title="4 of 8 branches missed.">		if (null == strID1 || strID1.isEmpty() || null == strID2 || strID2.isEmpty())</span>
+<span class="nc" id="L213">			throw new java.lang.Exception</span>
+				(&quot;AssetUniverseStatisticalProperties::correlation =&gt; Invalid Inputs&quot;);
+
+<span class="fc bfc" id="L216" title="All 2 branches covered.">		if (strID1.equalsIgnoreCase (strID2)) return 1.;</span>
+
+<span class="fc" id="L218">		java.lang.String strCorrelationSlot = strID1 + &quot;@#&quot; + strID2;</span>
+
+<span class="pc bpc" id="L220" title="1 of 2 branches missed.">		if (!_mapCorrelation.containsKey (strCorrelationSlot))</span>
+<span class="nc" id="L221">			throw new java.lang.Exception</span>
+				(&quot;AssetUniverseStatisticalProperties::correlation =&gt; Invalid Inputs&quot;);
+
+<span class="fc" id="L224">		return _mapCorrelation.get (strCorrelationSlot);</span>
+	}
+
+	/**
+	 * Retrieve the Asset Expected Returns Array
+	 * 
+	 * @param astrAssetID Array of Asset IDs
+	 * 
+	 * @return The Asset Covariance Matrix
+	 */
+
+	public double[] expectedReturns (
+		final java.lang.String[] astrAssetID)
+	{
+<span class="nc bnc" id="L238" title="All 2 branches missed.">		if (null == astrAssetID) return null;</span>
+
+<span class="nc" id="L240">		int iNumAsset = astrAssetID.length;</span>
+<span class="nc" id="L241">		double[] adblExpectedReturns = new double[iNumAsset];</span>
+
+<span class="nc bnc" id="L243" title="All 2 branches missed.">		if (0 == iNumAsset) return null;</span>
+
+<span class="nc bnc" id="L245" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumAsset; ++i) {</span>
+<span class="nc" id="L246">			org.drip.portfolioconstruction.params.AssetStatisticalProperties asp = asp (astrAssetID[i]);</span>
+
+<span class="nc bnc" id="L248" title="All 2 branches missed.">			if (null == asp) return null;</span>
+
+<span class="nc" id="L250">			adblExpectedReturns[i] = asp.expectedReturn();</span>
+		}
+
+<span class="nc" id="L253">		return adblExpectedReturns;</span>
+	}
+
+	/**
+	 * Retrieve the Asset Covariance Matrix
+	 * 
+	 * @param astrID Array of Asset ID
+	 * 
+	 * @return The Asset Covariance Matrix
+	 */
+
+	public double[][] covariance (
+		final java.lang.String[] astrID)
+	{
+<span class="pc bpc" id="L267" title="1 of 2 branches missed.">		if (null == astrID) return null;</span>
+
+<span class="fc" id="L269">		int iNumAsset = astrID.length;</span>
+<span class="fc" id="L270">		double[][] aadblCovariance = new double[iNumAsset][iNumAsset];</span>
+
+<span class="pc bpc" id="L272" title="1 of 2 branches missed.">		if (0 == iNumAsset) return null;</span>
+
+<span class="fc bfc" id="L274" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumAsset; ++i) {</span>
+<span class="fc" id="L275">			org.drip.portfolioconstruction.params.AssetStatisticalProperties asp1 = asp (astrID[i]);</span>
+
+<span class="pc bpc" id="L277" title="1 of 2 branches missed.">			if (null == asp1) return null;</span>
+
+<span class="fc" id="L279">			double dblVarianceI = asp1.variance();</span>
+
+<span class="fc bfc" id="L281" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumAsset; ++j) {</span>
+<span class="fc" id="L282">				org.drip.portfolioconstruction.params.AssetStatisticalProperties asp2 = asp (astrID[j]);</span>
+
+<span class="pc bpc" id="L284" title="1 of 2 branches missed.">				if (null == asp2) return null;</span>
+
+				try {
+<span class="fc" id="L287">					aadblCovariance[i][j] = java.lang.Math.sqrt (dblVarianceI * asp2.variance()) *</span>
+<span class="fc" id="L288">						correlation (astrID[i], astrID[j]);</span>
+<span class="nc" id="L289">				} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L290">					e.printStackTrace();</span>
+
+<span class="nc" id="L292">					return null;</span>
+<span class="fc" id="L293">				}</span>
+			}
+		}
+
+<span class="fc" id="L297">		return aadblCovariance;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

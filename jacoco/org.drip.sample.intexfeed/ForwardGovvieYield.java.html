@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ForwardGovvieYield.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.intexfeed</a> &gt; <span class="el_source">ForwardGovvieYield.java</span></div><h1>ForwardGovvieYield.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.intexfeed;
+
+import org.drip.analytics.date.*;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.service.template.LatentMarketStateBuilder;
+import org.drip.state.govvie.GovvieCurve;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * ForwardGovvieYield generates the Forward Govvie Yields over Monthly Increments with Maturity up to 60Y for
+ *  different Govvie Tenors.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L63">public class ForwardGovvieYield {</span>
+
+	private static final GovvieCurve GovvieCurve (
+		final JulianDate dtSpot,
+		final String strCode)
+		throws Exception
+	{
+<span class="nc" id="L70">		return LatentMarketStateBuilder.GovvieCurve (</span>
+			strCode,
+			dtSpot,
+			new JulianDate[] {
+				dtSpot,
+				dtSpot,
+				dtSpot,
+				dtSpot,
+				dtSpot,
+				dtSpot,
+				dtSpot,
+				dtSpot
+			},
+			new JulianDate[] {
+<span class="nc" id="L84">				dtSpot.addTenor (&quot;1Y&quot;),</span>
+<span class="nc" id="L85">				dtSpot.addTenor (&quot;2Y&quot;),</span>
+<span class="nc" id="L86">				dtSpot.addTenor (&quot;3Y&quot;),</span>
+<span class="nc" id="L87">				dtSpot.addTenor (&quot;5Y&quot;),</span>
+<span class="nc" id="L88">				dtSpot.addTenor (&quot;7Y&quot;),</span>
+<span class="nc" id="L89">				dtSpot.addTenor (&quot;10Y&quot;),</span>
+<span class="nc" id="L90">				dtSpot.addTenor (&quot;20Y&quot;),</span>
+<span class="nc" id="L91">				dtSpot.addTenor (&quot;30Y&quot;)</span>
+			},
+			new double[] {
+				0.01219, //  1Y
+				0.01391, //  2Y
+				0.01590, //  3Y
+				0.01937, //  5Y
+				0.02200, //  7Y
+				0.02378, // 10Y
+				0.02677, // 20Y
+				0.02927  // 30Y
+			},
+			new double[] {
+				0.01219, //  1Y
+				0.01391, //  2Y
+				0.01590, //  3Y
+				0.01937, //  5Y
+				0.02200, //  7Y
+				0.02378, // 10Y
+				0.02677, // 20Y
+				0.02927  // 30Y
+			},
+			&quot;Yield&quot;,
+			LatentMarketStateBuilder.SHAPE_PRESERVING
+		);
+	}
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+		/*
+		 * Initialize the Credit Analytics Library
+		 */
+
+<span class="nc" id="L126">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L128">		int iNumMonth = 720;</span>
+<span class="nc" id="L129">		String strCode = &quot;UST&quot;;</span>
+<span class="nc" id="L130">		String[] astrGovvieTenor = new String[] {</span>
+			 &quot;1M&quot;,
+			 &quot;3M&quot;,
+			 &quot;6M&quot;,
+			 &quot;1Y&quot;,
+			 &quot;2Y&quot;,
+			 &quot;3Y&quot;,
+			 &quot;5Y&quot;,
+			 &quot;7Y&quot;,
+			&quot;10Y&quot;,
+			&quot;20Y&quot;,
+			&quot;30Y&quot;
+		};
+
+<span class="nc" id="L144">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+			2017,
+			DateUtil.OCTOBER,
+			5
+		);
+
+<span class="nc" id="L150">		GovvieCurve gc = GovvieCurve (</span>
+			dtSpot,
+			strCode
+		);
+
+<span class="nc" id="L155">		System.out.println (&quot;SpotDate,ForwardGap,ForwardTenor,ForwardStartDate,ForwardEndDate,ForwardYield&quot;);</span>
+
+<span class="nc bnc" id="L157" title="All 2 branches missed.">		for (int i = 0; i &lt;= iNumMonth; ++i) {</span>
+<span class="nc" id="L158">			JulianDate dtForward = dtSpot.addMonths (i);</span>
+
+<span class="nc bnc" id="L160" title="All 2 branches missed.">			for (int j = 0; j &lt; astrGovvieTenor.length; ++j) {</span>
+<span class="nc" id="L161">				JulianDate dtMaturity = dtForward.addTenor (astrGovvieTenor[j]);</span>
+
+<span class="nc" id="L163">				System.out.println (</span>
+					dtSpot + &quot;,&quot; +
+					j + &quot;,&quot; +
+					astrGovvieTenor[j] + &quot;,&quot; +
+					dtForward + &quot;,&quot; +
+					dtMaturity + &quot;,&quot; +
+<span class="nc" id="L169">					FormatUtil.FormatDouble (</span>
+<span class="nc" id="L170">						gc.forwardYield (</span>
+<span class="nc" id="L171">							dtForward.julian(),</span>
+<span class="nc" id="L172">							dtMaturity.julian()</span>
+						), 1, 8, 100.)
+					+ &quot;%&quot;
+				);
+			}
+		}
+<span class="nc" id="L178">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

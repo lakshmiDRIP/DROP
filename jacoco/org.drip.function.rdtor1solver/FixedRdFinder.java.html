@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FixedRdFinder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.function.rdtor1solver</a> &gt; <span class="el_source">FixedRdFinder.java</span></div><h1>FixedRdFinder.java</h1><pre class="source lang-java linenums">
+package org.drip.function.rdtor1solver;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * FixedRdFinder exports the Methods needed for the locating a Fixed R^d Point.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public abstract class FixedRdFinder {
+
+	/**
+	 * Flag Indicating whether the Verifier Increment Metrics are to be Traced
+	 */
+
+<span class="fc" id="L63">	public static boolean s_bVerifierIncrementBlog = false;</span>
+
+<span class="fc" id="L65">	private org.drip.function.rdtor1solver.ConvergenceControl _cc = null;</span>
+<span class="fc" id="L66">	private org.drip.function.definition.RdToR1 _rdToR1ObjectiveFunction = null;</span>
+<span class="fc" id="L67">	private org.drip.function.rdtor1descent.LineStepEvolutionControl _lsec = null;</span>
+
+	protected FixedRdFinder (
+		final org.drip.function.definition.RdToR1 rdToR1ObjectiveFunction,
+		final org.drip.function.rdtor1descent.LineStepEvolutionControl lsec,
+		final org.drip.function.rdtor1solver.ConvergenceControl cc)
+		throws java.lang.Exception
+<span class="fc" id="L74">	{</span>
+<span class="pc bpc" id="L75" title="2 of 4 branches missed.">		if (null == (_rdToR1ObjectiveFunction = rdToR1ObjectiveFunction) || null == (_cc = cc))</span>
+<span class="nc" id="L76">			throw new java.lang.Exception (&quot;FixedRdFinder Constructor =&gt; Invalid Inputs&quot;);</span>
+
+<span class="fc" id="L78">		_lsec = lsec;</span>
+<span class="fc" id="L79">	}</span>
+
+	/**
+	 * Retrieve the Objective Function
+	 * 
+	 * @return The Objective Function
+	 */
+
+	public org.drip.function.definition.RdToR1 objectiveFunction()
+	{
+<span class="fc" id="L89">		return _rdToR1ObjectiveFunction;</span>
+	}
+
+	/**
+	 * Retrieve the Line Step Evolution Control
+	 * 
+	 * @return The Line Step Evolution Control
+	 */
+
+	public org.drip.function.rdtor1descent.LineStepEvolutionControl lineStepEvolutionControl()
+	{
+<span class="nc" id="L100">		return _lsec;</span>
+	}
+
+	/**
+	 * Retrieve the Convergence Control Parameters
+	 * 
+	 * @return The Convergence Control Parameters
+	 */
+
+	public org.drip.function.rdtor1solver.ConvergenceControl control()
+	{
+<span class="fc" id="L111">		return _cc;</span>
+	}
+
+	/**
+	 * Solve for the Optimal Variate-Inequality Constraint Multiplier Tuple Using the Variate/Inequality
+	 *  Constraint Tuple Convergence
+	 *  
+	 * @param vicmStarting The Starting Variate/Inequality Constraint Tuple Set
+	 * 
+	 * @return The Optimal Variate-Inequality Constraint Multiplier Tuple
+	 */
+
+	public org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier convergeVariate (
+		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicmStarting)
+	{
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">		if (null == vicmStarting) return null;</span>
+
+<span class="fc" id="L128">		org.drip.function.definition.RdToR1 rdToR1ObjectiveFunction = objectiveFunction();</span>
+
+<span class="fc" id="L130">		boolean bFixedPointFound = false;</span>
+<span class="fc" id="L131">		org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicmCurrent = vicmStarting;</span>
+<span class="fc" id="L132">		org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicmPrevious = vicmStarting;</span>
+
+<span class="fc bfc" id="L134" title="All 2 branches covered.">		int iNumComparisonVariate = rdToR1ObjectiveFunction instanceof</span>
+			org.drip.function.rdtor1.LagrangianMultivariate ?
+				((org.drip.function.rdtor1.LagrangianMultivariate)
+<span class="fc" id="L137">					rdToR1ObjectiveFunction).objectiveFunctionDimension() :</span>
+<span class="fc" id="L138">						rdToR1ObjectiveFunction.dimension();</span>
+
+<span class="fc" id="L140">		org.drip.function.rdtor1solver.ConvergenceControl cc = control();</span>
+
+<span class="fc" id="L142">		double dblAbsoluteToleranceFallback = cc.absoluteTolerance();</span>
+
+<span class="fc" id="L144">		double dblRelativeTolerance = cc.relativeTolerance();</span>
+
+<span class="fc bfc" id="L146" title="All 2 branches covered.">		while (!bFixedPointFound) {</span>
+<span class="fc" id="L147">			org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicmIncrement = increment</span>
+<span class="fc" id="L148">				(vicmCurrent);</span>
+
+<span class="pc bpc" id="L150" title="2 of 4 branches missed.">			if (null == vicmIncrement || null == (vicmCurrent = next (vicmPrevious, vicmIncrement,</span>
+<span class="fc" id="L151">				incrementFraction (vicmCurrent, vicmIncrement))))</span>
+<span class="nc" id="L152">				return null;</span>
+
+			try {
+<span class="fc" id="L155">				bFixedPointFound =</span>
+					org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier.Compare
+<span class="fc" id="L157">						(vicmCurrent, vicmPrevious, dblRelativeTolerance, dblAbsoluteToleranceFallback,</span>
+							iNumComparisonVariate);
+<span class="nc" id="L159">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L160">				e.printStackTrace();</span>
+
+<span class="nc" id="L162">				return null;</span>
+<span class="fc" id="L163">			}</span>
+
+<span class="fc" id="L165">			vicmPrevious = vicmCurrent;</span>
+<span class="fc" id="L166">		}</span>
+
+<span class="fc" id="L168">		return vicmCurrent;</span>
+	}
+
+	/**
+	 * Solve for the Optimal Variate-Inequality Constraint Multiplier Tuple Using the Objective Function
+	 *  Convergence
+	 *  
+	 * @param vicmStarting The Starting Variate/Inequality Constraint Tuple Set
+	 * 
+	 * @return The Optimal Variate-Inequality Constraint Multiplier Tuple
+	 */
+
+	public org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier convergeObjectiveFunction (
+		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicmStarting)
+	{
+<span class="nc bnc" id="L183" title="All 2 branches missed.">		if (null == vicmStarting) return null;</span>
+
+<span class="nc" id="L185">		boolean bFixedPointFound = false;</span>
+<span class="nc" id="L186">		double dblObjectiveFunctionPrevious = java.lang.Double.NaN;</span>
+<span class="nc" id="L187">		org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicm = vicmStarting;</span>
+
+<span class="nc" id="L189">		org.drip.function.definition.RdToR1 rdToR1ObjectiveFunction = objectiveFunction();</span>
+
+		try {
+<span class="nc" id="L192">			dblObjectiveFunctionPrevious = rdToR1ObjectiveFunction.evaluate (vicm.variates());</span>
+<span class="nc" id="L193">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L194">			e.printStackTrace();</span>
+
+<span class="nc" id="L196">			return null;</span>
+<span class="nc" id="L197">		}</span>
+
+<span class="nc" id="L199">		org.drip.function.rdtor1solver.ConvergenceControl cc = control();</span>
+
+<span class="nc" id="L201">		double dblIPBCAbsoluteTolerance = cc.absoluteTolerance();</span>
+
+<span class="nc" id="L203">		double dblOFAbsoluteTolerance = java.lang.Math.abs (dblObjectiveFunctionPrevious *</span>
+<span class="nc" id="L204">			cc.relativeTolerance());</span>
+
+<span class="nc bnc" id="L206" title="All 2 branches missed.">		double dblAbsoluteTolerance = dblIPBCAbsoluteTolerance &lt; dblOFAbsoluteTolerance ?</span>
+			dblIPBCAbsoluteTolerance : dblOFAbsoluteTolerance;
+
+<span class="nc bnc" id="L209" title="All 2 branches missed.">		while (!bFixedPointFound) {</span>
+<span class="nc" id="L210">			org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicmIncrement = increment</span>
+<span class="nc" id="L211">				(vicm);</span>
+
+<span class="nc bnc" id="L213" title="All 4 branches missed.">			if (null == vicmIncrement || null == (vicm = next (vicm, vicmIncrement, incrementFraction (vicm,</span>
+				vicmIncrement))))
+<span class="nc" id="L215">				return null;</span>
+
+			try {
+<span class="nc" id="L218">				double dblObjectiveFunction = rdToR1ObjectiveFunction.evaluate (vicm.variates());</span>
+
+<span class="nc bnc" id="L220" title="All 2 branches missed.">				if (java.lang.Math.abs (dblObjectiveFunctionPrevious - dblObjectiveFunction) &lt;</span>
+					dblAbsoluteTolerance)
+<span class="nc" id="L222">					bFixedPointFound = true;</span>
+
+<span class="nc" id="L224">				dblObjectiveFunctionPrevious = dblObjectiveFunction;</span>
+<span class="nc" id="L225">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L226">				e.printStackTrace();</span>
+
+<span class="nc" id="L228">				return null;</span>
+<span class="nc" id="L229">			}</span>
+<span class="nc" id="L230">		}</span>
+
+<span class="nc" id="L232">		return vicm;</span>
+	}
+
+	/**
+	 * Find the Optimal Variate-Inequality Constraint Multiplier Tuple using the Iteration Parameters
+	 *  provided by the Convergence Control Instance
+	 *  
+	 * @param vicmStarting The Starting Variate-Inequality Constraint Multiplier Tuple
+	 * 
+	 * @return The Optimal Variate-Inequality Constraint Multiplier Tuple
+	 */
+
+	public org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier find (
+		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicmStarting)
+	{
+<span class="fc" id="L247">		int iConvergenceType = control().convergenceType();</span>
+
+<span class="pc bpc" id="L249" title="1 of 2 branches missed.">		if (org.drip.function.rdtor1solver.InteriorPointBarrierControl.OBJECTIVE_FUNCTION_SEQUENCE_CONVERGENCE</span>
+			== iConvergenceType)
+<span class="nc" id="L251">			return convergeObjectiveFunction (vicmStarting);</span>
+
+<span class="pc bpc" id="L253" title="1 of 2 branches missed.">		if (org.drip.function.rdtor1solver.InteriorPointBarrierControl.VARIATE_CONSTRAINT_SEQUENCE_CONVERGENCE</span>
+			== iConvergenceType)
+<span class="fc" id="L255">			return convergeVariate (vicmStarting);</span>
+
+<span class="nc" id="L257">		return null;</span>
+	}
+
+	/**
+	 * Retrieve the Incremental Step Length Fraction
+	 * 
+	 * @param vicm The VICM Base Instance
+	 * @param vicmFullIncrement The Full VICM Instance Increment
+	 * 
+	 * @return The VICM Incremental Step Length Fraction
+	 */
+
+	public double incrementFraction (
+		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicm,
+		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicmFullIncrement)
+	{
+<span class="pc bpc" id="L273" title="3 of 8 branches missed.">		if (null == _lsec || null == vicm || vicm.incremental() || null == vicmFullIncrement ||</span>
+<span class="pc bpc" id="L274" title="1 of 2 branches missed.">			!vicmFullIncrement.incremental())</span>
+<span class="fc" id="L275">			return 1.;</span>
+
+<span class="fc" id="L277">		org.drip.function.rdtor1descent.LineEvolutionVerifier lev = _lsec.lineEvolutionVerifier();</span>
+
+<span class="fc" id="L279">		org.drip.function.definition.SizedVector sv = vicmFullIncrement.variateIncrementVector();</span>
+
+<span class="fc" id="L281">		org.drip.function.definition.UnitVector uvDirection = sv.direction();</span>
+
+<span class="fc" id="L283">		double dblReductionFactor = _lsec.reductionFactor();</span>
+
+<span class="fc" id="L285">		int iReductionStep = _lsec.reductionSteps();</span>
+
+<span class="fc" id="L287">		double[] adblVariate = vicm.variates();</span>
+
+<span class="fc" id="L289">		double dblStepLength = 1.;</span>
+
+<span class="fc bfc" id="L291" title="All 2 branches covered.">		while (0 &lt;= --iReductionStep) {</span>
+<span class="fc" id="L292">			org.drip.function.rdtor1descent.LineEvolutionVerifierMetrics levm = lev.metrics (uvDirection,</span>
+				adblVariate, _rdToR1ObjectiveFunction, dblStepLength);
+
+<span class="pc bpc" id="L295" title="1 of 2 branches missed.">			if (null == levm) return 1.;</span>
+
+<span class="pc bpc" id="L297" title="1 of 2 branches missed.">			if (s_bVerifierIncrementBlog) System.out.println (levm);</span>
+
+<span class="fc bfc" id="L299" title="All 2 branches covered.">			if (levm.verify()) return dblStepLength;</span>
+
+<span class="fc" id="L301">			dblStepLength *= dblReductionFactor;</span>
+<span class="fc" id="L302">		}</span>
+
+<span class="fc" id="L304">		return 1.;</span>
+	}
+
+	/**
+	 * Produce the Incremental Variate-Constraint Multiplier
+	 * 
+	 * @param vcmtCurrent The Current Variate-Constraint Multiplier Tuple
+	 * 
+	 * @return The Incremental Variate-Constraint Multiplier
+	 */
+
+	abstract public org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier increment (
+		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vcmtCurrent);
+
+	/**
+	 * Iterate Over to the Next Variate-Constraint Multiplier Tuple
+	 * 
+	 * @param vcmtCurrent The Current Variate-Constraint Multiplier Tuple
+	 * @param vcmtIncrement The Incremental Variate-Constraint Multiplier Tuple
+	 * @param dblIncrementFraction The Incremental Fraction to be applied
+	 * 
+	 * @return The Next Variate-Constraint Multiplier Set
+	 */
+
+	abstract public org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier next (
+		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vcmtCurrent,
+		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vcmtIncrement,
+		final double dblIncrementFraction);
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -517,8 +517,13 @@ public class YAS {
 	{
 		// String strConfig = "c:\\Lakshmi\\BondAnal\\Config.xml";
 
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		BondPricerSample();
+
+		EnvManager.TerminateEnv();
 	}
 }

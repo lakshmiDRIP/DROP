@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MultiSegmentSequenceModifier.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.spline.stretch</a> &gt; <span class="el_source">MultiSegmentSequenceModifier.java</span></div><h1>MultiSegmentSequenceModifier.java</h1><pre class="source lang-java linenums">
+package org.drip.spline.stretch;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * MultiSegmentSequenceModifier exports Stretch modification/alteration methods to generate customized basis
+ *  splines, with customized segment behavior using the segment control. It exposes the following stretch
+ *  modification methods:
+ *  - Insert the specified Predictor Ordinate Knot into the specified Stretch, using the specified Response
+ *  	Value.
+ * 	- Append a Segment to the Right of the Specified Stretch using the Supplied Constraint.
+ * 	- Insert the Predictor Ordinate Knot into the specified Stretch.
+ * 	- Insert a Cardinal Knot into the specified Stretch at the specified Predictor Ordinate Location.
+ * 	- Insert a Catmull-Rom Knot into the specified Stretch at the specified Predictor Ordinate Location.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L68">public class MultiSegmentSequenceModifier {</span>
+
+	/**
+	 * Insert the specified Predictor Ordinate Knot into the specified Stretch, using the specified Response
+	 * 	Value
+	 * 
+	 * @param mssIn Input Stretch
+	 * @param dblPredictorOrdinate Predictor Ordinate Knot
+	 * @param dblResponseValue Response Value
+	 * @param bs The Calibration Boundary Condition
+	 * @param iCalibrationDetail The Calibration Detail
+	 * 
+	 * @return The Stretch with the Knot inserted
+	 */
+
+	public static final org.drip.spline.stretch.MultiSegmentSequence InsertKnot (
+		final org.drip.spline.stretch.MultiSegmentSequence mssIn,
+		final double dblPredictorOrdinate,
+		final double dblResponseValue,
+		final org.drip.spline.stretch.BoundarySettings bs,
+		final int iCalibrationDetail)
+	{
+<span class="pc bpc" id="L90" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate) ||</span>
+<span class="pc bpc" id="L91" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblResponseValue) || null == mssIn || mssIn.isKnot</span>
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">				(dblPredictorOrdinate))</span>
+<span class="nc" id="L93">			return null;</span>
+
+<span class="fc" id="L95">		org.drip.spline.segment.LatentStateResponseModel[] aCS = mssIn.segments();</span>
+
+<span class="fc" id="L97">		int iNewIndex = 0;</span>
+<span class="fc" id="L98">		int iNumSegmentIn = aCS.length;</span>
+<span class="fc" id="L99">		double[] adblResponseValue = new double[iNumSegmentIn + 2];</span>
+<span class="fc" id="L100">		double[] adblPredictorOrdinate = new double[iNumSegmentIn + 2];</span>
+<span class="fc" id="L101">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBCOut = new</span>
+			org.drip.spline.params.SegmentCustomBuilderControl[iNumSegmentIn + 1];
+
+<span class="fc" id="L104">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBCIn = mssIn.segmentBuilderControl();</span>
+
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">		if (dblPredictorOrdinate &lt; aCS[0].left()) {</span>
+<span class="nc" id="L107">			adblPredictorOrdinate[iNewIndex] = dblPredictorOrdinate;</span>
+<span class="nc" id="L108">			adblResponseValue[iNewIndex] = dblResponseValue;</span>
+<span class="nc" id="L109">			aSCBCOut[iNewIndex++] = aSCBCIn[0];</span>
+		}
+
+<span class="fc bfc" id="L112" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSegmentIn; ++i) {</span>
+<span class="fc" id="L113">			aSCBCOut[iNewIndex] = aSCBCIn[i];</span>
+
+<span class="fc" id="L115">			adblPredictorOrdinate[iNewIndex] = aCS[i].left();</span>
+
+			try {
+<span class="fc" id="L118">				adblResponseValue[iNewIndex++] = mssIn.responseValue (aCS[i].left());</span>
+<span class="nc" id="L119">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L120">				e.printStackTrace();</span>
+
+<span class="nc" id="L122">				return null;</span>
+<span class="fc" id="L123">			}</span>
+
+<span class="pc bpc" id="L125" title="1 of 4 branches missed.">			if (dblPredictorOrdinate &gt; aCS[i].left() &amp;&amp; dblPredictorOrdinate &lt; aCS[i].right()) {</span>
+<span class="fc" id="L126">				adblPredictorOrdinate[iNewIndex] = dblPredictorOrdinate;</span>
+<span class="fc" id="L127">				adblResponseValue[iNewIndex] = dblResponseValue;</span>
+<span class="fc" id="L128">				aSCBCOut[iNewIndex++] = aSCBCIn[i];</span>
+			}
+		}
+
+<span class="fc" id="L132">		adblPredictorOrdinate[iNewIndex] = aCS[iNumSegmentIn - 1].right();</span>
+
+		try {
+<span class="fc" id="L135">			adblResponseValue[iNewIndex++] = mssIn.responseValue (aCS[iNumSegmentIn - 1].right());</span>
+<span class="nc" id="L136">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L137">			e.printStackTrace();</span>
+
+<span class="nc" id="L139">			return null;</span>
+<span class="fc" id="L140">		}</span>
+
+<span class="fc bfc" id="L142" title="All 2 branches covered.">		if (dblPredictorOrdinate &gt; aCS[iNumSegmentIn - 1].right()) {</span>
+<span class="fc" id="L143">			adblResponseValue[iNewIndex] = dblResponseValue;</span>
+<span class="fc" id="L144">			adblPredictorOrdinate[iNewIndex] = dblPredictorOrdinate;</span>
+<span class="fc" id="L145">			aSCBCOut[aSCBCOut.length - 1] = aSCBCIn[aSCBCIn.length - 1];</span>
+		}
+
+<span class="fc" id="L148">		return org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator</span>
+<span class="fc" id="L149">			(mssIn.name(), adblPredictorOrdinate, adblResponseValue, aSCBCOut, null, bs, iCalibrationDetail);</span>
+	}
+
+	/**
+	 * Append a Segment to the Right of the Specified Stretch using the Supplied Constraint
+	 * 
+	 * @param mssIn Input Stretch
+	 * @param dblPredictorOrdinateAppendRight The Predictor Ordinate at the Right Edge of the Segment to be
+	 * 	appended
+	 * @param srvc The Segment Response Value Constraint
+	 * @param scbc Segment Builder Parameters
+	 * @param bs The Calibration Boundary Condition
+	 * @param iCalibrationDetail The Calibration Detail
+	 * 
+	 * @return The Stretch with the Segment Appended
+	 */
+
+	public static final org.drip.spline.stretch.MultiSegmentSequence AppendSegment (
+		final org.drip.spline.stretch.MultiSegmentSequence mssIn,
+		final double dblPredictorOrdinateAppendRight,
+		final org.drip.spline.params.SegmentResponseValueConstraint srvc,
+		final org.drip.spline.params.SegmentCustomBuilderControl scbc,
+		final org.drip.spline.stretch.BoundarySettings bs,
+		final int iCalibrationDetail)
+	{
+<span class="pc bpc" id="L174" title="3 of 6 branches missed.">		if (null == mssIn || null == srvc || null == scbc || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L175" title="1 of 2 branches missed.">			(dblPredictorOrdinateAppendRight))</span>
+<span class="nc" id="L176">			return null;</span>
+
+<span class="fc" id="L178">		double dblStretchPredictorOrdinateRight = mssIn.getRightPredictorOrdinateEdge();</span>
+
+<span class="fc" id="L180">		double[] adblConstraintOrdinate = srvc.predictorOrdinates();</span>
+
+<span class="fc bfc" id="L182" title="All 2 branches covered.">		for (int i = 0; i &lt; adblConstraintOrdinate.length; ++i) {</span>
+<span class="pc bpc" id="L183" title="1 of 2 branches missed.">			if (adblConstraintOrdinate[i] &lt;= dblStretchPredictorOrdinateRight) return null;</span>
+		}
+
+<span class="fc" id="L186">		org.drip.spline.segment.LatentStateResponseModel[] aCS = mssIn.segments();</span>
+
+<span class="fc" id="L188">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBCIn = mssIn.segmentBuilderControl();</span>
+
+<span class="fc" id="L190">		int iNumSegmentIn = aCS.length;</span>
+<span class="fc" id="L191">		double dblStretchResponseValueLeft = java.lang.Double.NaN;</span>
+<span class="fc" id="L192">		double[] adblPredictorOrdinateOut = new double[iNumSegmentIn + 2];</span>
+<span class="fc" id="L193">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBCOut = new</span>
+			org.drip.spline.params.SegmentCustomBuilderControl[iNumSegmentIn + 1];
+<span class="fc" id="L195">		org.drip.spline.params.SegmentResponseValueConstraint[] aSRVCOut = new</span>
+			org.drip.spline.params.SegmentResponseValueConstraint[iNumSegmentIn + 1];
+
+		try {
+<span class="fc" id="L199">			dblStretchResponseValueLeft = mssIn.responseValue (mssIn.getLeftPredictorOrdinateEdge());</span>
+<span class="nc" id="L200">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L201">			e.printStackTrace();</span>
+
+<span class="nc" id="L203">			return null;</span>
+<span class="fc" id="L204">		}</span>
+
+<span class="fc bfc" id="L206" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSegmentIn; ++i) {</span>
+<span class="fc" id="L207">			aSCBCOut[i] = aSCBCIn[i];</span>
+
+<span class="fc" id="L209">			adblPredictorOrdinateOut[i] = aCS[i].left();</span>
+
+<span class="fc" id="L211">			double dblPredictorOrdinateRight = aCS[i].right();</span>
+
+			try {
+<span class="fc" id="L214">				aSRVCOut[i] = new org.drip.spline.params.SegmentResponseValueConstraint (new double[]</span>
+					{dblPredictorOrdinateRight}, new double[] {1.}, mssIn.responseValue
+<span class="fc" id="L216">						(dblPredictorOrdinateRight));</span>
+<span class="nc" id="L217">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L218">				e.printStackTrace();</span>
+
+<span class="nc" id="L220">				return null;</span>
+<span class="fc" id="L221">			}</span>
+		}
+
+<span class="fc" id="L224">		aSRVCOut[iNumSegmentIn] = srvc;</span>
+<span class="fc" id="L225">		aSCBCOut[iNumSegmentIn] = scbc;</span>
+<span class="fc" id="L226">		adblPredictorOrdinateOut[iNumSegmentIn + 1] = dblPredictorOrdinateAppendRight;</span>
+
+<span class="fc" id="L228">		adblPredictorOrdinateOut[iNumSegmentIn] = aCS[iNumSegmentIn - 1].right();</span>
+
+<span class="fc" id="L230">		return org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator</span>
+<span class="fc" id="L231">			(mssIn.name(), adblPredictorOrdinateOut, dblStretchResponseValueLeft, aSRVCOut, aSCBCOut, null,</span>
+				bs, iCalibrationDetail);
+	}
+
+	/**
+	 * Insert the Predictor Ordinate Knot into the specified Stretch
+	 * 
+	 * @param mssIn Input Stretch
+	 * @param dblPredictorOrdinate Knot Predictor Ordinate
+	 * @param sprdLeftSegmentRightEdge Response Values for the Right Edge of the Left Segment
+	 * @param sprdRightSegmentLeftEdge Response Values for the Left Edge of the Right segment
+	 * 
+	 * @return The Stretch with the Predictor Ordinate Knot inserted
+	 */
+
+	public static final org.drip.spline.stretch.MultiSegmentSequence InsertKnot (
+		final org.drip.spline.stretch.MultiSegmentSequence mssIn,
+		final double dblPredictorOrdinate,
+		final org.drip.spline.params.SegmentPredictorResponseDerivative sprdLeftSegmentRightEdge,
+		final org.drip.spline.params.SegmentPredictorResponseDerivative sprdRightSegmentLeftEdge)
+	{
+<span class="pc bpc" id="L252" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate) || null == mssIn ||</span>
+<span class="pc bpc" id="L253" title="3 of 6 branches missed.">			mssIn.isKnot (dblPredictorOrdinate) || null == sprdLeftSegmentRightEdge || null ==</span>
+				sprdRightSegmentLeftEdge)
+<span class="nc" id="L255">			return null;</span>
+
+<span class="fc" id="L257">		org.drip.spline.segment.LatentStateResponseModel[] aCSIn = mssIn.segments();</span>
+
+<span class="fc" id="L259">		int iOutSegmentIndex = 1;</span>
+<span class="fc" id="L260">		int iNumSegmentIn = aCSIn.length;</span>
+<span class="fc" id="L261">		double[] adblPredictorOrdinateOut = new double[iNumSegmentIn + 2];</span>
+<span class="fc" id="L262">		org.drip.spline.params.SegmentPredictorResponseDerivative[] aSPRDOutLeft = new</span>
+			org.drip.spline.params.SegmentPredictorResponseDerivative[iNumSegmentIn + 1];
+<span class="fc" id="L264">		org.drip.spline.params.SegmentPredictorResponseDerivative[] aSPRDOutRight = new</span>
+			org.drip.spline.params.SegmentPredictorResponseDerivative[iNumSegmentIn + 1];
+<span class="fc" id="L266">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBCOut = new</span>
+			org.drip.spline.params.SegmentCustomBuilderControl[iNumSegmentIn + 1];
+
+<span class="pc bpc" id="L269" title="1 of 2 branches missed.">		if (dblPredictorOrdinate &lt; aCSIn[0].left() || dblPredictorOrdinate &gt;</span>
+<span class="pc bpc" id="L270" title="1 of 2 branches missed.">			aCSIn[iNumSegmentIn - 1].right())</span>
+<span class="nc" id="L271">			return null;</span>
+
+<span class="fc" id="L273">		adblPredictorOrdinateOut[0] = aCSIn[0].left();</span>
+
+<span class="fc" id="L275">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBCIn = mssIn.segmentBuilderControl();</span>
+
+<span class="fc bfc" id="L277" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSegmentIn; ++i) {</span>
+<span class="fc" id="L278">			aSCBCOut[iOutSegmentIndex - 1] = aSCBCIn[i];</span>
+
+<span class="fc" id="L280">			aSPRDOutLeft[iOutSegmentIndex - 1] = mssIn.calcSPRD (aCSIn[i].left());</span>
+
+<span class="fc bfc" id="L282" title="All 4 branches covered.">			if (dblPredictorOrdinate &gt; aCSIn[i].left() &amp;&amp; dblPredictorOrdinate &lt; aCSIn[i].right()) {</span>
+<span class="fc" id="L283">				aSPRDOutRight[iOutSegmentIndex - 1] = sprdLeftSegmentRightEdge;</span>
+<span class="fc" id="L284">				adblPredictorOrdinateOut[iOutSegmentIndex++] = dblPredictorOrdinate;</span>
+<span class="fc" id="L285">				aSCBCOut[iOutSegmentIndex - 1] = aSCBCIn[i];</span>
+<span class="fc" id="L286">				aSPRDOutLeft[iOutSegmentIndex - 1] = sprdRightSegmentLeftEdge;</span>
+			}
+
+<span class="fc" id="L289">			aSPRDOutRight[iOutSegmentIndex - 1] = mssIn.calcSPRD (aCSIn[i].right());</span>
+
+<span class="fc" id="L291">			adblPredictorOrdinateOut[iOutSegmentIndex++] = aCSIn[i].right();</span>
+		}
+
+<span class="fc" id="L294">		org.drip.spline.stretch.MultiSegmentSequence mssOut =</span>
+			org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateUncalibratedStretchEstimator
+<span class="fc" id="L296">				(mssIn.name(), adblPredictorOrdinateOut, aSCBCOut);</span>
+
+<span class="pc bpc" id="L298" title="1 of 2 branches missed.">		if (null == mssOut) return null;</span>
+
+<span class="pc bpc" id="L300" title="1 of 2 branches missed.">		return mssOut.setupHermite (aSPRDOutLeft, aSPRDOutRight, null, null,</span>
+			org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE) ? mssOut : null;
+	}
+
+	/**
+	 * Insert a Cardinal Knot into the specified Stretch at the specified Predictor Ordinate Location
+	 * 
+	 * @param mssIn Input Stretch
+	 * @param dblPredictorOrdinate Knot Predictor Ordinate
+	 * @param dblCardinalTension Cardinal Tension Parameter
+	 * 
+	 * @return The Stretch with the Knot inserted
+	 */
+
+	public static final org.drip.spline.stretch.MultiSegmentSequence InsertCardinalKnot (
+		final org.drip.spline.stretch.MultiSegmentSequence mssIn,
+		final double dblPredictorOrdinate,
+		final double dblCardinalTension)
+	{
+<span class="pc bpc" id="L319" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate) ||</span>
+<span class="pc bpc" id="L320" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblCardinalTension) || null == mssIn || mssIn.isKnot</span>
+<span class="pc bpc" id="L321" title="1 of 2 branches missed.">				(dblPredictorOrdinate))</span>
+<span class="nc" id="L322">			return null;</span>
+
+<span class="fc" id="L324">		org.drip.spline.segment.LatentStateResponseModel[] aCSIn = mssIn.segments();</span>
+
+<span class="fc" id="L326">		int iOutSegmentIndex = 0;</span>
+<span class="fc" id="L327">		int iNumSegmentIn = aCSIn.length;</span>
+
+<span class="pc bpc" id="L329" title="1 of 2 branches missed.">		if (dblPredictorOrdinate &lt; aCSIn[0].left() || dblPredictorOrdinate &gt;</span>
+<span class="pc bpc" id="L330" title="1 of 2 branches missed.">			aCSIn[iNumSegmentIn - 1].right())</span>
+<span class="nc" id="L331">			return null;</span>
+
+<span class="pc bpc" id="L333" title="1 of 2 branches missed.">		for (; iOutSegmentIndex &lt; iNumSegmentIn; ++iOutSegmentIndex) {</span>
+<span class="pc bpc" id="L334" title="1 of 2 branches missed.">			if (dblPredictorOrdinate &gt; aCSIn[iOutSegmentIndex].left() &amp;&amp; dblPredictorOrdinate &lt;</span>
+<span class="fc bfc" id="L335" title="All 2 branches covered.">				aCSIn[iOutSegmentIndex].right())</span>
+<span class="fc" id="L336">				break;</span>
+		}
+
+<span class="fc" id="L339">		org.drip.spline.params.SegmentPredictorResponseDerivative sprdCardinalOut =</span>
+			org.drip.spline.params.SegmentPredictorResponseDerivative.CardinalEdgeAggregate
+<span class="fc" id="L341">				(mssIn.calcSPRD (aCSIn[iOutSegmentIndex].left()), mssIn.calcSPRD</span>
+<span class="fc" id="L342">					(aCSIn[iOutSegmentIndex].right()), dblCardinalTension);</span>
+
+<span class="pc bpc" id="L344" title="1 of 2 branches missed.">		return null == sprdCardinalOut ? null : InsertKnot (mssIn, dblPredictorOrdinate, sprdCardinalOut,</span>
+			sprdCardinalOut);
+	}
+
+	/**
+	 * Insert a Catmull-Rom Knot into the specified Stretch at the specified Predictor Ordinate Location
+	 * 
+	 * @param mssIn Input Stretch
+	 * @param dblPredictorOrdinate Knot Predictor Ordinate
+	 * 
+	 * @return The Stretch with the Knot inserted
+	 */
+
+	public static final org.drip.spline.stretch.MultiSegmentSequence InsertCatmullRomKnot (
+		final org.drip.spline.stretch.MultiSegmentSequence mssIn,
+		final double dblPredictorOrdinate)
+	{
+<span class="fc" id="L361">		return InsertCardinalKnot (mssIn, dblPredictorOrdinate, 0.);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

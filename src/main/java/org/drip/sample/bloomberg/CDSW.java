@@ -276,7 +276,10 @@ public class CDSW {
 		final String[] astrArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		JulianDate dtCurve = DateUtil.Today();
 
@@ -515,5 +518,7 @@ public class CDSW {
 		System.out.println ("QS Price     : " + FormatUtil.FormatDouble (mapQSMeasures.get ("Price"), 1, 2, 1.));
 
 		System.out.println ("QS Repl Spd  : " + FormatUtil.FormatDouble (mapQSMeasures.get ("FairPremium"), 1, 4, 1.));
+
+		EnvManager.TerminateEnv();
 	}
 }

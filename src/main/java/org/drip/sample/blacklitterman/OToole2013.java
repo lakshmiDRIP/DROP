@@ -66,12 +66,14 @@ import org.drip.service.env.EnvManager;
 
 public class OToole2013 {
 
-
 	public static final void main (
 		final String[] astArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		String[] astrG7 = new String[] {
 			"Australia                ",
@@ -207,5 +209,7 @@ public class OToole2013 {
 			);
 
 		System.out.println ("\t||----------------------------------------------||\n");
+
+		EnvManager.TerminateEnv();
 	}
 }

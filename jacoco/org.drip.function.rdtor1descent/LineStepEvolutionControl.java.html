@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LineStepEvolutionControl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.function.rdtor1descent</a> &gt; <span class="el_source">LineStepEvolutionControl.java</span></div><h1>LineStepEvolutionControl.java</h1><pre class="source lang-java linenums">
+package org.drip.function.rdtor1descent;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * LineStepEvolutionControl contains the Parameters required to compute the Valid a Line Step. The References
+ *  are:
+ * 
+ * 	- Armijo, L. (1966): Minimization of Functions having Lipschitz-Continuous First Partial Derivatives,
+ * 		Pacific Journal of Mathematics 16 (1) 1-3.
+ * 
+ * 	- Wolfe, P. (1969): Convergence Conditions for Ascent Methods, SIAM Review 11 (2) 226-235.
+ * 
+ * 	- Wolfe, P. (1971): Convergence Conditions for Ascent Methods; II: Some Corrections, SIAM Review 13 (2)
+ * 		185-188.
+ * 
+ * 	- Nocedal, J., and S. Wright (1999): Numerical Optimization, Wiley.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class LineStepEvolutionControl {
+<span class="fc" id="L69">	private int _iNumReductionStep = -1;</span>
+<span class="fc" id="L70">	private double _dblReductionFactor = java.lang.Double.NaN;</span>
+<span class="fc" id="L71">	private org.drip.function.rdtor1descent.LineEvolutionVerifier _lev = null;</span>
+
+	/**
+	 * Retrieve the Nocedal-Wright-Armijo Verifier Based Standard LineStepEvolutionControl Instance
+	 * 
+	 * @param bMaximizerCheck TRUE - Perform a Check for the Function Maxima
+	 * 
+	 * @return The Nocedal-Wright-Armijo Verifier Based Standard LineStepEvolutionControl Instance
+	 */
+
+	public static final LineStepEvolutionControl NocedalWrightArmijo (
+		final boolean bMaximizerCheck)
+	{
+		try {
+<span class="nc" id="L85">			return new LineStepEvolutionControl</span>
+				(org.drip.function.rdtor1descent.ArmijoEvolutionVerifier.NocedalWrightStandard
+<span class="nc" id="L87">					(bMaximizerCheck), 0.75, 1);</span>
+<span class="nc" id="L88">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L89">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L92">		return null;</span>
+	}
+
+	/**
+	 * Retrieve the Nocedal-Wright-Weak Curvature Verifier Based Standard LineStepEvolutionControl Instance
+	 * 
+	 * @return The Nocedal-Wright-Weak Curvature Verifier Based Standard LineStepEvolutionControl Instance
+	 */
+
+	public static final LineStepEvolutionControl NocedalWrightWeakCurvature()
+	{
+		try {
+<span class="nc" id="L104">			return new LineStepEvolutionControl</span>
+<span class="nc" id="L105">				(org.drip.function.rdtor1descent.CurvatureEvolutionVerifier.NocedalWrightStandard (false),</span>
+					0.75, 1);
+<span class="nc" id="L107">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L108">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L111">		return null;</span>
+	}
+
+	/**
+	 * Retrieve the Nocedal-Wright-Strong Curvature Verifier Based Standard LineStepEvolutionControl Instance
+	 * 
+	 * @return The Nocedal-Wright-Strong Curvature Verifier Based Standard LineStepEvolutionControl Instance
+	 */
+
+	public static final LineStepEvolutionControl NocedalWrightStrongCurvature()
+	{
+		try {
+<span class="nc" id="L123">			return new LineStepEvolutionControl</span>
+<span class="nc" id="L124">				(org.drip.function.rdtor1descent.CurvatureEvolutionVerifier.NocedalWrightStandard (true),</span>
+					0.75, 1);
+<span class="nc" id="L126">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L127">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L130">		return null;</span>
+	}
+
+	/**
+	 * Retrieve the Nocedal-Wright-Weak Wolfe Verifier Based Standard LineStepEvolutionControl Instance
+	 * 
+	 * @param bMaximizerCheck TRUE - Perform a Check for the Function Maxima
+	 * 
+	 * @return The Nocedal-Wright-Weak Wolfe Verifier Based Standard LineStepEvolutionControl Instance
+	 */
+
+	public static final LineStepEvolutionControl NocedalWrightWeakWolfe (
+		final boolean bMaximizerCheck)
+	{
+		try {
+<span class="nc" id="L145">			return new LineStepEvolutionControl</span>
+				(org.drip.function.rdtor1descent.WolfeEvolutionVerifier.NocedalWrightStandard
+<span class="nc" id="L147">					(bMaximizerCheck, false), 0.75, 1);</span>
+<span class="nc" id="L148">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L149">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L152">		return null;</span>
+	}
+
+	/**
+	 * Retrieve the Nocedal-Wright-Strong Wolfe Verifier Based Standard LineStepEvolutionControl Instance
+	 * 
+	 * @param bMaximizerCheck TRUE - Perform a Check for the Function Maxima
+	 * 
+	 * @return The Nocedal-Wright-Strong Wolfe Verifier Based Standard LineStepEvolutionControl Instance
+	 */
+
+	public static final LineStepEvolutionControl NocedalWrightStrongWolfe (
+		final boolean bMaximizerCheck)
+	{
+		try {
+<span class="fc" id="L167">			return new LineStepEvolutionControl</span>
+				(org.drip.function.rdtor1descent.WolfeEvolutionVerifier.NocedalWrightStandard
+<span class="fc" id="L169">					(bMaximizerCheck, true), 0.75, 1);</span>
+<span class="nc" id="L170">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L171">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L174">		return null;</span>
+	}
+
+	/**
+	 * LineStepEvolutionControl Constructor
+	 * 
+	 * @param lev The Lie Evolution Verifier Instance
+	 * @param dblReductionFactor The Per-Step Reduction Factor
+	 * @param iNumReductionStep Number of Reduction Steps
+	 * 
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
+	 */
+
+	public LineStepEvolutionControl (
+		final org.drip.function.rdtor1descent.LineEvolutionVerifier lev,
+		final double dblReductionFactor,
+		final int iNumReductionStep)
+		throws java.lang.Exception
+<span class="fc" id="L192">	{</span>
+<span class="pc bpc" id="L193" title="4 of 8 branches missed.">		if (null == (_lev = lev) || !org.drip.quant.common.NumberUtil.IsValid (_dblReductionFactor =</span>
+			dblReductionFactor) || 1. &lt;= _dblReductionFactor || 0 &gt;= (_iNumReductionStep =
+				iNumReductionStep))
+<span class="nc" id="L196">			throw new java.lang.Exception (&quot;LineStepEvolutionControl Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L197">	}</span>
+
+	/**
+	 * Retrieve the Line Evolution Verifier Instance
+	 * 
+	 * @return The Line Evolution Verifier Instance
+	 */
+
+	public org.drip.function.rdtor1descent.LineEvolutionVerifier lineEvolutionVerifier()
+	{
+<span class="fc" id="L207">		return _lev;</span>
+	}
+
+	/**
+	 * Retrieve the Reduction Factor per Step
+	 * 
+	 * @return The Reduction Factor per Step
+	 */
+
+	public double reductionFactor()
+	{
+<span class="fc" id="L218">		return _dblReductionFactor;</span>
+	}
+
+	/**
+	 * Retrieve the Number of Reduction Steps
+	 * 
+	 * @return The Number of Reduction Steps
+	 */
+
+	public int reductionSteps()
+	{
+<span class="fc" id="L229">		return _iNumReductionStep;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

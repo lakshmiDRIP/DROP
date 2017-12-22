@@ -74,7 +74,10 @@ public class DaJagannathan2005e {
 		final String[] astArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		double dblTau = 0.0025;
 		double dblRiskAversion = 1.0;
@@ -346,5 +349,7 @@ public class DaJagannathan2005e {
 		}
 
 		System.out.println ("\t|------------------------||");
+
+		EnvManager.TerminateEnv();
 	}
 }

@@ -1,0 +1,490 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EulerTrajectoryEvolutionScheme.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.burgard2012</a> &gt; <span class="el_source">EulerTrajectoryEvolutionScheme.java</span></div><h1>EulerTrajectoryEvolutionScheme.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.burgard2012;
+
+import org.drip.analytics.date.*;
+import org.drip.measure.dynamics.*;
+import org.drip.measure.process.*;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.xva.definition.*;
+import org.drip.xva.derivative.*;
+import org.drip.xva.pde.*;
+import org.drip.xva.universe.*;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * EulerTrajectoryEvolutionScheme computes the Sequence of XVA Paths arising out of the Joint Evolution of
+ * 	Numeraires - the Continuous Asset, the Collateral, the Bank, and the Counter-Party Numeraires involved in
+ *  the Dynamic XVA Replication Portfolio of the Burgard and Kjaer (2011) Methodology. The References are:
+ *  
+ *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
+ *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
+ *  
+ *  - Cesari, G., J. Aquilina, N. Charpillon, X. Filipovic, G. Lee, and L. Manda (2009): Modeling, Pricing,
+ *  	and Hedging Counter-party Credit Exposure - A Technical Guide, Springer Finance, New York.
+ *  
+ *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk, Risk 20 (2) 86-90.
+ *  
+ *  - Li, B., and Y. Tang (2007): Quantitative Analysis, Derivatives Modeling, and Trading Strategies in the
+ *  	Presence of Counter-party Credit Risk for the Fixed Income Market, World Scientific Publishing,
+ *  	Singapore.
+ * 
+ *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
+ *  	21 (2) 97-102.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L83">public class EulerTrajectoryEvolutionScheme {</span>
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+<span class="nc" id="L89">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L91">		int iNumVertex = 24;</span>
+<span class="nc" id="L92">		int iSimulationDuration = 365;</span>
+
+<span class="nc" id="L94">		double[][] aadblCorrelationMatrix = new double[][] {</span>
+			{1.00, 0.00, 0.20, 0.15, 0.05, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #0 ASSET NUMERAIRE
+			{0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #1 OVERNIGHT POLICY INDEX NUMERAIRE
+			{0.20, 0.00, 1.00, 0.13, 0.25, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #2 COLLATERAL SCHEME NUMERAIRE
+			{0.15, 0.00, 0.13, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #3 BANK HAZARD RATE
+			{0.05, 0.00, 0.25, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #4 BANK SENIOR FUNDING NUMERAIRE
+			{0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #5 BANK SENIOR RECOVERY RATE
+			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00}, // #6 BANK SUBORDINATE FUNDING NUMERAIRE
+			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00}, // #7 BANK SUBORDINATE RECOVERY RATE
+			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00}, // #8 COUNTER PARTY HAZARD RATE
+			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00}, // #9 COUNTER PARTY FUNDING NUMERAIRE
+			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00}  // #10 COUNTER PARTY RECOVERY RATE
+		};
+
+<span class="nc" id="L108">		double dblAssetNumeraireDrift = 0.06;</span>
+<span class="nc" id="L109">		double dblAssetNumeraireVolatility = 0.10;</span>
+<span class="nc" id="L110">		double dblAssetNumeraireRepo = 0.03;</span>
+<span class="nc" id="L111">		double dblAssetNumeraireDividend = 0.02;</span>
+<span class="nc" id="L112">		double dblAssetNumeraireInitial = 1.;</span>
+
+<span class="nc" id="L114">		double dblOvernightIndexNumeraireDrift = 0.0025;</span>
+<span class="nc" id="L115">		double dblOvernightIndexNumeraireVolatility = 0.001;</span>
+<span class="nc" id="L116">		double dblOvernightIndexNumeraireRepo = 0.0;</span>
+
+<span class="nc" id="L118">		double dblCollateralSchemeNumeraireDrift = 0.01;</span>
+<span class="nc" id="L119">		double dblCollateralSchemeNumeraireVolatility = 0.002;</span>
+<span class="nc" id="L120">		double dblCollateralSchemeNumeraireRepo = 0.005;</span>
+
+<span class="nc" id="L122">		double dblBankSeniorFundingNumeraireDrift = 0.03;</span>
+<span class="nc" id="L123">		double dblBankSeniorFundingNumeraireVolatility = 0.002;</span>
+<span class="nc" id="L124">		double dblBankSeniorFundingNumeraireRepo = 0.028;</span>
+
+<span class="nc" id="L126">		double dblBankSubordinateFundingNumeraireDrift = 0.045;</span>
+<span class="nc" id="L127">		double dblBankSubordinateFundingNumeraireVolatility = 0.002;</span>
+<span class="nc" id="L128">		double dblBankSubordinateFundingNumeraireRepo = 0.028;</span>
+
+<span class="nc" id="L130">		double dblCounterPartyFundingNumeraireDrift = 0.03;</span>
+<span class="nc" id="L131">		double dblCounterPartyFundingNumeraireVolatility = 0.003;</span>
+<span class="nc" id="L132">		double dblCounterPartyFundingNumeraireRepo = 0.028;</span>
+
+<span class="nc" id="L134">		double dblBankHazardRateDrift = 0.00;</span>
+<span class="nc" id="L135">		double dblBankHazardRateVolatility = 0.005;</span>
+<span class="nc" id="L136">		double dblBankHazardRateInitial = 0.03;</span>
+
+<span class="nc" id="L138">		double dblBankSeniorRecoveryRateDrift = 0.0;</span>
+<span class="nc" id="L139">		double dblBankSeniorRecoveryRateVolatility = 0.0;</span>
+<span class="nc" id="L140">		double dblBankSeniorRecoveryRateInitial = 0.45;</span>
+
+<span class="nc" id="L142">		double dblBankSubordinateRecoveryRateDrift = 0.0;</span>
+<span class="nc" id="L143">		double dblBankSubordinateRecoveryRateVolatility = 0.0;</span>
+<span class="nc" id="L144">		double dblBankSubordinateRecoveryRateInitial = 0.25;</span>
+
+<span class="nc" id="L146">		double dblCounterPartyHazardRateDrift = 0.00;</span>
+<span class="nc" id="L147">		double dblCounterPartyHazardRateVolatility = 0.005;</span>
+<span class="nc" id="L148">		double dblCounterPartyHazardRateInitial = 0.05;</span>
+
+<span class="nc" id="L150">		double dblCounterPartyRecoveryRateDrift = 0.0;</span>
+<span class="nc" id="L151">		double dblCounterPartyRecoveryRateVolatility = 0.0;</span>
+<span class="nc" id="L152">		double dblCounterPartyRecoveryRateInitial = 0.30;</span>
+
+<span class="nc" id="L154">		double dblTerminalXVADerivativeValue = 1.;</span>
+
+<span class="nc" id="L156">		double dblSensitivityShiftFactor = 0.001;</span>
+
+<span class="nc" id="L158">		Tradeable tAsset = new Tradeable (</span>
+			new DiffusionEvolver (
+<span class="nc" id="L160">				DiffusionEvaluatorLogarithmic.Standard (</span>
+					dblAssetNumeraireDrift - dblAssetNumeraireDividend,
+					dblAssetNumeraireVolatility
+				)
+			),
+			dblAssetNumeraireRepo
+		);
+
+<span class="nc" id="L168">		Tradeable tOvernightIndex = new Tradeable (</span>
+			new DiffusionEvolver (
+<span class="nc" id="L170">				DiffusionEvaluatorLogarithmic.Standard (</span>
+					dblOvernightIndexNumeraireDrift,
+					dblOvernightIndexNumeraireVolatility
+				)
+			),
+			dblOvernightIndexNumeraireRepo
+		);
+
+<span class="nc" id="L178">		Tradeable tCollateralScheme = new Tradeable (</span>
+			new DiffusionEvolver (
+<span class="nc" id="L180">				DiffusionEvaluatorLogarithmic.Standard (</span>
+					dblCollateralSchemeNumeraireDrift,
+					dblCollateralSchemeNumeraireVolatility
+				)
+			),
+			dblCollateralSchemeNumeraireRepo
+		);
+
+<span class="nc" id="L188">		Tradeable tBankSeniorFunding = new Tradeable (</span>
+			new JumpDiffusionEvolver (
+<span class="nc" id="L190">				DiffusionEvaluatorLogarithmic.Standard (</span>
+					dblBankSeniorFundingNumeraireDrift,
+					dblBankSeniorFundingNumeraireVolatility
+				),
+<span class="nc" id="L194">				HazardJumpEvaluator.Standard (</span>
+					dblBankHazardRateInitial,
+					dblBankSeniorRecoveryRateInitial
+				)
+			),
+			dblBankSeniorFundingNumeraireRepo
+		);
+
+<span class="nc" id="L202">		Tradeable tBankSubordinateFunding = new Tradeable (</span>
+			new JumpDiffusionEvolver (
+<span class="nc" id="L204">				DiffusionEvaluatorLogarithmic.Standard (</span>
+					dblBankSubordinateFundingNumeraireDrift,
+					dblBankSubordinateFundingNumeraireVolatility
+				),
+<span class="nc" id="L208">				HazardJumpEvaluator.Standard (</span>
+					dblBankHazardRateInitial,
+					dblBankSubordinateRecoveryRateInitial
+				)
+			),
+			dblBankSubordinateFundingNumeraireRepo
+		);
+
+<span class="nc" id="L216">		Tradeable tCounterPartyFunding = new Tradeable (</span>
+			new JumpDiffusionEvolver (
+<span class="nc" id="L218">				DiffusionEvaluatorLogarithmic.Standard (</span>
+					dblCounterPartyFundingNumeraireDrift,
+					dblCounterPartyFundingNumeraireVolatility
+				),
+<span class="nc" id="L222">				HazardJumpEvaluator.Standard (</span>
+					dblCounterPartyHazardRateInitial,
+					dblCounterPartyRecoveryRateInitial
+				)
+			),
+			dblCounterPartyFundingNumeraireRepo
+		);
+
+<span class="nc" id="L230">		DiffusionEvolver deBankHazardRate = new DiffusionEvolver (</span>
+<span class="nc" id="L231">			DiffusionEvaluatorLogarithmic.Standard (</span>
+				dblBankHazardRateDrift,
+				dblBankHazardRateVolatility
+			)
+		);
+
+<span class="nc" id="L237">		DiffusionEvolver deBankSeniorRecoveryRate = new DiffusionEvolver (</span>
+<span class="nc" id="L238">			DiffusionEvaluatorLogarithmic.Standard (</span>
+				dblBankSeniorRecoveryRateDrift,
+				dblBankSeniorRecoveryRateVolatility
+			)
+		);
+
+<span class="nc" id="L244">		DiffusionEvolver deBankSubordinateRecoveryRate = new DiffusionEvolver (</span>
+<span class="nc" id="L245">			DiffusionEvaluatorLogarithmic.Standard (</span>
+				dblBankSubordinateRecoveryRateDrift,
+				dblBankSubordinateRecoveryRateVolatility
+			)
+		);
+
+<span class="nc" id="L251">		DiffusionEvolver deCounterPartyHazardRate = new DiffusionEvolver (</span>
+<span class="nc" id="L252">			DiffusionEvaluatorLogarithmic.Standard (</span>
+				dblCounterPartyHazardRateDrift,
+				dblCounterPartyHazardRateVolatility
+			)
+		);
+
+<span class="nc" id="L258">		DiffusionEvolver deCounterPartyRecoveryRate = new DiffusionEvolver (</span>
+<span class="nc" id="L259">			DiffusionEvaluatorLogarithmic.Standard (</span>
+				dblCounterPartyRecoveryRateDrift,
+				dblCounterPartyRecoveryRateVolatility
+			)
+		);
+
+<span class="nc" id="L265">		JulianDate dtSpot = DateUtil.Today();</span>
+
+<span class="nc" id="L267">		int iSpotDate = dtSpot.julian();</span>
+
+<span class="nc" id="L269">		int aiVertexDate[] = VertexDateBuilder.EqualWidth (</span>
+			iSpotDate,
+			iSpotDate + iSimulationDuration,
+			iNumVertex
+		);
+
+<span class="nc" id="L275">		TradeablesContainer tc = new TradeablesContainer (</span>
+			tAsset,
+			tOvernightIndex,
+			tCollateralScheme,
+			tBankSeniorFunding,
+			tBankSubordinateFunding,
+			tCounterPartyFunding
+		);
+
+<span class="nc" id="L284">		MarketVertexGenerator mvg = new MarketVertexGenerator (</span>
+			iSpotDate,
+			aiVertexDate,
+			aadblCorrelationMatrix,
+			tc,
+			deBankHazardRate,
+			deBankSeniorRecoveryRate,
+			deBankSubordinateRecoveryRate,
+			deCounterPartyHazardRate,
+			deCounterPartyRecoveryRate
+		);
+
+<span class="nc" id="L296">		MarketVertex mvInitial = new MarketVertex (</span>
+			dtSpot,
+			dblAssetNumeraireInitial,
+			dblOvernightIndexNumeraireDrift,
+			new NumeraireMarketVertex (
+				1.,
+				1.
+			),
+			dblCollateralSchemeNumeraireDrift,
+			new NumeraireMarketVertex (
+				1.,
+				1.
+			),
+			new EntityMarketVertex (
+				1.,
+				dblBankHazardRateInitial,
+				dblBankSeniorRecoveryRateInitial,
+				dblBankSeniorFundingNumeraireDrift,
+				new NumeraireMarketVertex (
+					1.,
+					1.
+				),
+				dblBankSubordinateRecoveryRateInitial,
+				dblBankSubordinateFundingNumeraireDrift,
+				new NumeraireMarketVertex (
+					1.,
+					1.
+				)
+			),
+			new EntityMarketVertex (
+				1.,
+				dblCounterPartyHazardRateInitial,
+				dblCounterPartyRecoveryRateInitial,
+				dblCounterPartyFundingNumeraireDrift,
+				new NumeraireMarketVertex (
+					1.,
+					1.
+				),
+				Double.NaN,
+				Double.NaN,
+				null
+			)
+		);
+
+<span class="nc" id="L340">		MarketVertex[] aMVBase = mvg.marketVertex (mvInitial);</span>
+
+<span class="nc" id="L342">		MarketVertex[] aMV = new MarketVertex[aMVBase.length];</span>
+<span class="nc" id="L343">		double dblDerivativeValue = dblTerminalXVADerivativeValue;</span>
+<span class="nc" id="L344">		double dblDerivativeXVAValue = dblTerminalXVADerivativeValue;</span>
+
+<span class="nc bnc" id="L346" title="All 2 branches missed.">		for (int i = 0; i &lt; aMV.length; ++i)</span>
+<span class="nc" id="L347">			aMV[i] = aMVBase[aMV.length - 1 - i];</span>
+
+<span class="nc" id="L349">		PDEEvolutionControl pdeec = new PDEEvolutionControl (</span>
+			PDEEvolutionControl.CLOSEOUT_GREGORY_LI_TANG,
+			dblSensitivityShiftFactor
+		);
+
+<span class="nc" id="L354">		CloseOutBilateral cob = new CloseOutBilateral (</span>
+			dblBankSeniorRecoveryRateInitial,
+			dblCounterPartyRecoveryRateInitial
+		);
+
+<span class="nc" id="L359">		TrajectoryEvolutionScheme tes = new TrajectoryEvolutionScheme (</span>
+			tc,
+			pdeec
+		);
+
+<span class="nc" id="L364">		BurgardKjaerOperator bko = new BurgardKjaerOperator (</span>
+			tc,
+			pdeec
+		);
+
+<span class="nc" id="L369">		AssetGreekVertex agvInitial = new AssetGreekVertex (</span>
+			dblDerivativeXVAValue,
+			-1.,
+			0.,
+			dblDerivativeValue
+		);
+
+<span class="nc" id="L376">		double dblGainOnBankDefaultInitial = -1. * (dblDerivativeXVAValue - cob.bankDefault (dblDerivativeXVAValue));</span>
+
+<span class="nc" id="L378">		double dblGainOnCounterPartyDefaultInitial = -1. * (dblDerivativeXVAValue -</span>
+<span class="nc" id="L379">			cob.counterPartyDefault (dblDerivativeXVAValue));</span>
+
+<span class="nc" id="L381">		ReplicationPortfolioVertex rpvInitial = ReplicationPortfolioVertex.Standard (</span>
+			1.,
+			dblGainOnBankDefaultInitial,
+			dblGainOnCounterPartyDefaultInitial,
+			0.
+		);
+
+<span class="nc" id="L388">		System.out.println();</span>
+
+<span class="nc" id="L390">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L392">		System.out.println (&quot;\t||                                            BILATERAL XVA EVOLVER - BURGARD &amp; KJAER (2011) REPLICATION PORTFOLIO EVOLUTION                                             ||&quot;);</span>
+
+<span class="nc" id="L394">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L396">		System.out.println (&quot;\t||    L -&gt; R:                                                                                                                                                            ||&quot;);</span>
+
+<span class="nc" id="L398">		System.out.println (&quot;\t||            - Time                                                                                                                                                     ||&quot;);</span>
+
+<span class="nc" id="L400">		System.out.println (&quot;\t||            - Derivative XVA Value                                                                                                                                     ||&quot;);</span>
+
+<span class="nc" id="L402">		System.out.println (&quot;\t||            - Asset Price Realization                                                                                                                                  ||&quot;);</span>
+
+<span class="nc" id="L404">		System.out.println (&quot;\t||            - Realization of the Zero Coupon Bank Bond Price                                                                                                           ||&quot;);</span>
+
+<span class="nc" id="L406">		System.out.println (&quot;\t||            - Realization of the Zero Coupon Counter Party Bond Price                                                                                                  ||&quot;);</span>
+
+<span class="nc" id="L408">		System.out.println (&quot;\t||            - Realization of the Zero Coupon Collateral Bond Price                                                                                                     ||&quot;);</span>
+
+<span class="nc" id="L410">		System.out.println (&quot;\t||            - Derivative XVA Asset Replication Units                                                                                                                   ||&quot;);</span>
+
+<span class="nc" id="L412">		System.out.println (&quot;\t||            - Derivative XVA Value Bank Bond Replication Units                                                                                                         ||&quot;);</span>
+
+<span class="nc" id="L414">		System.out.println (&quot;\t||            - Derivative XVA Value Counter Party Bond Replication Units                                                                                                ||&quot;);</span>
+
+<span class="nc" id="L416">		System.out.println (&quot;\t||            - Derivative XVA Value Cash Account Replication Units                                                                                                      ||&quot;);</span>
+
+<span class="nc" id="L418">		System.out.println (&quot;\t||            - Derivative Cash Account Accumulation Component                                                                                                           ||&quot;);</span>
+
+<span class="nc" id="L420">		System.out.println (&quot;\t||            - Asset Cash Account Accumulation Component                                                                                                                ||&quot;);</span>
+
+<span class="nc" id="L422">		System.out.println (&quot;\t||            - Bank Cash Account Accumulation Component                                                                                                                 ||&quot;);</span>
+
+<span class="nc" id="L424">		System.out.println (&quot;\t||            - Counter Party Cash Account Accumulation Component                                                                                                        ||&quot;);</span>
+
+<span class="nc" id="L426">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L428">		System.out.println (&quot;\t||&quot; +</span>
+<span class="nc" id="L429">			FormatUtil.FormatDouble (1., 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L430">			FormatUtil.FormatDouble (agvInitial.derivativeXVAValue(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L431">			FormatUtil.FormatDouble (aMVBase[aMV.length - 1].assetNumeraire(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L432">			FormatUtil.FormatDouble (aMVBase[aMV.length - 1].bank().seniorFundingNumeraire().forward(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L433">			FormatUtil.FormatDouble (aMVBase[aMV.length - 1].counterParty().seniorFundingNumeraire().forward(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L434">			FormatUtil.FormatDouble (aMVBase[aMV.length - 1].collateralSchemeNumeraire().forward(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L435">			FormatUtil.FormatDouble (rpvInitial.assetNumeraireUnits(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L436">			FormatUtil.FormatDouble (rpvInitial.bankSeniorNumeraireUnits(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L437">			FormatUtil.FormatDouble (rpvInitial.counterPartyNumeraireUnits(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L438">			FormatUtil.FormatDouble (rpvInitial.cashAccount(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L439">			FormatUtil.FormatDouble (0., 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L440">			FormatUtil.FormatDouble (0., 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L441">			FormatUtil.FormatDouble (0., 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L442">			FormatUtil.FormatDouble (0., 1, 6, 1.) + &quot; ||&quot;</span>
+		);
+
+<span class="nc" id="L445">		EvolutionTrajectoryVertex etv = new EvolutionTrajectoryVertex (</span>
+			1.,
+			rpvInitial,
+			agvInitial,
+			dblGainOnBankDefaultInitial,
+			dblGainOnCounterPartyDefaultInitial,
+			0.,
+			0.
+		);
+
+<span class="nc" id="L455">		EvolutionTrajectoryEdge[] aETE = tes.eulerWalk (</span>
+			aMV,
+			bko,
+			etv,
+			0.
+		);
+
+<span class="nc bnc" id="L462" title="All 2 branches missed.">		for (int i = iNumVertex - 1; i &gt;= 0; --i) {</span>
+<span class="nc" id="L463">			etv = aETE[i].vertexFinish();</span>
+
+<span class="nc" id="L465">			CashAccountEdge lca = aETE[i].cashAccountEdge();</span>
+
+<span class="nc" id="L467">			System.out.println (&quot;\t||&quot; +</span>
+<span class="nc" id="L468">				FormatUtil.FormatDouble (etv.time(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L469">				FormatUtil.FormatDouble (etv.assetGreekVertex().derivativeXVAValue(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L470">				FormatUtil.FormatDouble (aMVBase[i].assetNumeraire(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L471">				FormatUtil.FormatDouble (aMVBase[i].bank().seniorFundingNumeraire().forward(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L472">				FormatUtil.FormatDouble (aMVBase[i].counterParty().seniorFundingNumeraire().forward(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L473">				FormatUtil.FormatDouble (aMVBase[i].collateralSchemeNumeraire().forward(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L474">				FormatUtil.FormatDouble (etv.replicationPortfolioVertex().assetNumeraireUnits(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L475">				FormatUtil.FormatDouble (etv.replicationPortfolioVertex().bankSeniorNumeraireUnits(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L476">				FormatUtil.FormatDouble (etv.replicationPortfolioVertex().counterPartyNumeraireUnits(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L477">				FormatUtil.FormatDouble (etv.replicationPortfolioVertex().cashAccount(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L478">				FormatUtil.FormatDouble (lca.accumulation(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L479">				FormatUtil.FormatDouble (lca.assetAccumulation(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L480">				FormatUtil.FormatDouble (lca.bankAccumulation(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L481">				FormatUtil.FormatDouble (lca.counterPartyAccumulation(), 1, 6, 1.) + &quot; ||&quot;</span>
+			);
+		}
+
+<span class="nc" id="L485">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L487">		System.out.println();</span>
+<span class="nc" id="L488">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

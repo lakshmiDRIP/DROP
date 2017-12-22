@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OptimalTrajectoryTradeAnalysis.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.athl</a> &gt; <span class="el_source">OptimalTrajectoryTradeAnalysis.java</span></div><h1>OptimalTrajectoryTradeAnalysis.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.athl;
+
+import org.drip.execution.athl.DynamicsParameters;
+import org.drip.execution.dynamics.LinearPermanentExpectationParameters;
+import org.drip.execution.nonadaptive.ContinuousPowerImpact;
+import org.drip.execution.optimum.PowerImpactContinuous;
+import org.drip.execution.parameters.AssetFlowSettings;
+import org.drip.function.definition.R1ToR1;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * OptimalTrajectoryTradeAnalysis analyzes the Impact of Input Parameters on the Trade Scheduling using the
+ *  Equity Market Impact Functions determined empirically by Almgren, Thum, Hauptmann, and Li (2005), using
+ *  the Parameterization of Almgren (2003) for IBM. The References are:
+ * 
+ * 	- Almgren, R., and N. Chriss (1999): Value under Liquidation, Risk 12 (12).
+ * 
+ * 	- Almgren, R., and N. Chriss (2000): Optimal Execution of Portfolio Transactions, Journal of Risk 3 (2)
+ * 		5-39.
+ * 
+ * 	- Almgren, R. (2003): Optimal Execution with Nonlinear Impact Functions and Trading-Enhanced Risk,
+ * 		Applied Mathematical Finance 10 (1) 1-18.
+ *
+ * 	- Almgren, R., and N. Chriss (2003): Bidding Principles, Risk 97-102.
+ * 
+ * 	- Almgren, R., C. Thum, E. Hauptmann, and H. Li (2005): Equity Market Impact, Risk 18 (7) 57-62.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L80">public class OptimalTrajectoryTradeAnalysis {</span>
+
+	private static final void TradeSizeSensitivity (
+		final double dblADVRatio,
+		final double dblTradeSize,
+		final LinearPermanentExpectationParameters lpep)
+		throws Exception
+	{
+<span class="nc" id="L88">		double dblTradeTime = 0.5;</span>
+<span class="nc" id="L89">		int iNumInterval = 10;</span>
+
+<span class="nc" id="L91">		double dblRiskAversion = 1.e-02;</span>
+
+<span class="nc" id="L93">		ContinuousPowerImpact cpi = ContinuousPowerImpact.Standard (</span>
+			dblTradeSize,
+			dblTradeTime,
+			lpep,
+			dblRiskAversion
+		);
+
+<span class="nc" id="L100">		PowerImpactContinuous pic = (PowerImpactContinuous) cpi.generate();</span>
+
+<span class="nc" id="L102">		R1ToR1 r1ToR1Holdings = pic.holdings();</span>
+
+<span class="nc" id="L104">		double[] adblHoldings = new double[iNumInterval];</span>
+<span class="nc" id="L105">		double[] adblExecutionTime = new double[iNumInterval];</span>
+
+<span class="nc bnc" id="L107" title="All 2 branches missed.">		for (int i = 1; i &lt;= iNumInterval; ++i) {</span>
+<span class="nc" id="L108">			adblExecutionTime[i - 1] = dblTradeTime * i / iNumInterval;</span>
+
+<span class="nc" id="L110">			adblHoldings[i - 1] = r1ToR1Holdings.evaluate (adblExecutionTime[i - 1]);</span>
+		}
+
+<span class="nc" id="L113">		String strDump = &quot;&quot;;</span>
+
+<span class="nc bnc" id="L115" title="All 2 branches missed.">		for (int i = 0; i &lt; adblHoldings.length; ++i)</span>
+<span class="nc" id="L116">			strDump = strDump + FormatUtil.FormatDouble (adblHoldings[i] / dblTradeSize, 2, 2, 100.) + &quot;% | &quot;;</span>
+
+<span class="nc" id="L118">		System.out.println (</span>
+			&quot;\t| &quot; +
+<span class="nc" id="L120">			FormatUtil.FormatDouble (dblADVRatio, 2, 0, 100.) + &quot;% | &quot; + strDump +</span>
+<span class="nc" id="L121">			FormatUtil.FormatDouble (pic.characteristicTime(), 1, 3, 1.) + &quot; ||&quot;</span>
+		);
+<span class="nc" id="L123">	}</span>
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+<span class="nc" id="L129">		EnvManager.InitEnv (</span>
+			&quot;&quot;,
+			true
+		);
+
+<span class="nc" id="L134">		String strAssetName = &quot;IBM&quot;;</span>
+<span class="nc" id="L135">		double dblAverageDailyVolume = 6561000.;</span>
+<span class="nc" id="L136">		double dblSharesOutstanding = 1728000000.;</span>
+<span class="nc" id="L137">		double dblBaseDailyVolatility = 1.57;</span>
+
+<span class="nc" id="L139">		double[] adblADVRatio = new double[] {</span>
+			0.01,
+			0.02,
+			0.03,
+			0.04,
+			0.06,
+			0.08,
+			0.10,
+			0.15,
+			0.20,
+			0.25,
+			0.30
+		};
+
+<span class="nc" id="L153">		LinearPermanentExpectationParameters lpep = new DynamicsParameters (</span>
+			new AssetFlowSettings (
+				strAssetName,
+				dblAverageDailyVolume,
+				dblSharesOutstanding,
+				dblBaseDailyVolatility
+			)
+<span class="nc" id="L160">		).almgren2003();</span>
+
+<span class="nc" id="L162">		System.out.println();</span>
+
+<span class="nc" id="L164">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L166">		System.out.println (&quot;\t|                                        Trade Size Dependence on the Execution Schedule                                       ||&quot;);</span>
+
+<span class="nc" id="L168">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L170">		System.out.println (&quot;\t|                                                L -&gt; R :                                                                      ||&quot;);</span>
+
+<span class="nc" id="L172">		System.out.println (&quot;\t|                                                        Trade Size as a Fraction of ADV                                       ||&quot;);</span>
+
+<span class="nc" id="L174">		System.out.println (&quot;\t|                                                        Execution Time Nodes                                                  ||&quot;);</span>
+
+<span class="nc" id="L176">		System.out.println (&quot;\t|                                                        Characteristic Time                                                   ||&quot;);</span>
+
+<span class="nc" id="L178">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L180" title="All 2 branches missed.">		for (double dblADVRatio : adblADVRatio)</span>
+<span class="nc" id="L181">			TradeSizeSensitivity (</span>
+				dblADVRatio,
+				dblADVRatio * dblAverageDailyVolume,
+				lpep
+			);
+
+<span class="nc" id="L187">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L189">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L190">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

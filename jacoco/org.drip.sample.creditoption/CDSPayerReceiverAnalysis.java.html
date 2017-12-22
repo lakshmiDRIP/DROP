@@ -1,0 +1,566 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CDSPayerReceiverAnalysis.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.creditoption</a> &gt; <span class="el_source">CDSPayerReceiverAnalysis.java</span></div><h1>CDSPayerReceiverAnalysis.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.creditoption;
+
+import java.util.Map;
+
+import org.drip.analytics.date.*;
+import org.drip.market.otc.*;
+import org.drip.param.creator.MarketParamsBuilder;
+import org.drip.param.market.CurveSurfaceQuoteContainer;
+import org.drip.param.pricer.CreditPricerParams;
+import org.drip.param.valuation.ValuationParams;
+import org.drip.pricer.option.BlackScholesAlgorithm;
+import org.drip.product.creator.*;
+import org.drip.product.definition.*;
+import org.drip.product.option.CDSEuropeanOption;
+import org.drip.product.params.LastTradingDateSetting;
+import org.drip.product.rates.FixFloatComponent;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.state.creator.*;
+import org.drip.state.credit.CreditCurve;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+import org.drip.state.identifier.*;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * CDSPayerReceiverAnalysis carries out a Volatility Analysis of Payer/Receiver CDS European Option.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L78">public class CDSPayerReceiverAnalysis {</span>
+
+	private static final FixFloatComponent OTCFixFloat (
+		final JulianDate dtSpot,
+		final String strCurrency,
+		final String strMaturityTenor,
+		final double dblCoupon)
+	{
+<span class="nc" id="L86">		FixedFloatSwapConvention ffConv = IBORFixedFloatContainer.ConventionFromJurisdiction (</span>
+			strCurrency,
+			&quot;ALL&quot;,
+			strMaturityTenor,
+			&quot;MAIN&quot;
+		);
+
+<span class="nc" id="L93">		return ffConv.createFixFloatComponent (</span>
+			dtSpot,
+			strMaturityTenor,
+			dblCoupon,
+			0.,
+			1.
+		);
+	}
+
+	/*
+	 * Construct the Array of Deposit Instruments from the given set of parameters
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final CalibratableComponent[] DepositInstrumentsFromMaturityDays (
+		final JulianDate dtEffective,
+		final int[] aiDay,
+		final int iNumFutures,
+		final String strCurrency)
+		throws Exception
+	{
+<span class="nc" id="L115">		CalibratableComponent[] aCalibComp = new CalibratableComponent[aiDay.length + iNumFutures];</span>
+
+<span class="nc bnc" id="L117" title="All 2 branches missed.">		for (int i = 0; i &lt; aiDay.length; ++i)</span>
+<span class="nc" id="L118">			aCalibComp[i] = SingleStreamComponentBuilder.Deposit (</span>
+				dtEffective,
+<span class="nc" id="L120">				dtEffective.addBusDays (</span>
+					aiDay[i],
+					strCurrency
+				),
+<span class="nc" id="L124">				ForwardLabel.Create (</span>
+					strCurrency,
+					&quot;3M&quot;
+				)
+			);
+
+<span class="nc" id="L130">		CalibratableComponent[] aEDF = SingleStreamComponentBuilder.ForwardRateFuturesPack (</span>
+			dtEffective,
+			iNumFutures,
+			strCurrency
+		);
+
+<span class="nc bnc" id="L136" title="All 2 branches missed.">		for (int i = aiDay.length; i &lt; aiDay.length + iNumFutures; ++i)</span>
+<span class="nc" id="L137">			aCalibComp[i] = aEDF[i - aiDay.length];</span>
+
+<span class="nc" id="L139">		return aCalibComp;</span>
+	}
+
+	/*
+	 * Construct the Array of Swap Instruments from the given set of parameters
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final CalibratableComponent[] SwapInstrumentsFromMaturityTenor (
+		final JulianDate dtSpot,
+		final String strCurrency,
+		final String[] astrMaturityTenor,
+		final double[] adblCoupon)
+		throws Exception
+	{
+<span class="nc" id="L155">		FixFloatComponent[] aIRS = new FixFloatComponent[astrMaturityTenor.length];</span>
+
+<span class="nc bnc" id="L157" title="All 2 branches missed.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
+<span class="nc" id="L158">			aIRS[i] = OTCFixFloat (</span>
+				dtSpot,
+				strCurrency,
+				astrMaturityTenor[i],
+				adblCoupon[i]
+			);
+
+<span class="nc" id="L165">		return aIRS;</span>
+	}
+
+	/*
+	 * Construct the discount curve using the following steps:
+	 * 	- Construct the array of cash instruments and their quotes.
+	 * 	- Construct the array of swap instruments and their quotes.
+	 * 	- Construct a shape preserving and smoothing KLK Hyperbolic Spline from the cash/swap instruments.
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final MergedDiscountForwardCurve MakeDC (
+		final JulianDate dtSpot,
+		final String strCurrency)
+		throws Exception
+	{
+		/*
+		 * Construct the array of Deposit instruments and their quotes.
+		 */
+
+<span class="nc" id="L186">		CalibratableComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (</span>
+			dtSpot,
+			new int[] {
+				1, 2, 3, 7, 14, 21, 30, 60
+			},
+			0,
+			strCurrency
+		);
+
+<span class="nc" id="L195">		double[] adblDepositQuote = new double[] {</span>
+			0.01200, 0.01200, 0.01200, 0.01450, 0.01550, 0.01600, 0.01660, 0.01850
+		};
+
+<span class="nc" id="L199">		String[] astrDepositManifestMeasure = new String[] {</span>
+			&quot;ForwardRate&quot;,
+			&quot;ForwardRate&quot;,
+			&quot;ForwardRate&quot;,
+			&quot;ForwardRate&quot;,
+			&quot;ForwardRate&quot;,
+			&quot;ForwardRate&quot;,
+			&quot;ForwardRate&quot;,
+			&quot;ForwardRate&quot;
+		};
+
+		/*
+		 * Construct the array of Swap instruments and their quotes.
+		 */
+
+<span class="nc" id="L214">		double[] adblSwapQuote = new double[] {</span>
+			0.02604,    //  4Y
+			0.02808,    //  5Y
+			0.02983,    //  6Y
+			0.03136,    //  7Y
+			0.03268,    //  8Y
+			0.03383,    //  9Y
+			0.03488,    // 10Y
+			0.03583,    // 11Y
+			0.03668,    // 12Y
+			0.03833,    // 15Y
+			0.03854,    // 20Y
+			0.03672,    // 25Y
+			0.03510,    // 30Y
+			0.03266,    // 40Y
+			0.03145     // 50Y
+		};
+
+<span class="nc" id="L232">		String[] astrSwapManifestMeasure = new String[] {</span>
+			&quot;SwapRate&quot;,    //  4Y
+			&quot;SwapRate&quot;,    //  5Y
+			&quot;SwapRate&quot;,    //  6Y
+			&quot;SwapRate&quot;,    //  7Y
+			&quot;SwapRate&quot;,    //  8Y
+			&quot;SwapRate&quot;,    //  9Y
+			&quot;SwapRate&quot;,    // 10Y
+			&quot;SwapRate&quot;,    // 11Y
+			&quot;SwapRate&quot;,    // 12Y
+			&quot;SwapRate&quot;,    // 15Y
+			&quot;SwapRate&quot;,    // 20Y
+			&quot;SwapRate&quot;,    // 25Y
+			&quot;SwapRate&quot;,    // 30Y
+			&quot;SwapRate&quot;,    // 40Y
+			&quot;SwapRate&quot;     // 50Y
+		};
+
+<span class="nc" id="L250">		CalibratableComponent[] aSwapComp = SwapInstrumentsFromMaturityTenor (</span>
+			dtSpot,
+			strCurrency,
+			new java.lang.String[] {
+				&quot;4Y&quot;, &quot;5Y&quot;, &quot;6Y&quot;, &quot;7Y&quot;, &quot;8Y&quot;, &quot;9Y&quot;, &quot;10Y&quot;, &quot;11Y&quot;, &quot;12Y&quot;, &quot;15Y&quot;, &quot;20Y&quot;, &quot;25Y&quot;, &quot;30Y&quot;, &quot;40Y&quot;, &quot;50Y&quot;
+			},
+			adblSwapQuote
+		);
+
+		/*
+		 * Construct a shape preserving and smoothing KLK Hyperbolic Spline from the cash/swap instruments.
+		 */
+
+<span class="nc" id="L263">		return ScenarioDiscountCurveBuilder.CubicKLKHyperbolicDFRateShapePreserver (</span>
+			&quot;KLK_HYPERBOLIC_SHAPE_TEMPLATE&quot;,
+			new ValuationParams (
+				dtSpot,
+				dtSpot,
+				&quot;USD&quot;
+			),
+			aDepositComp,
+			adblDepositQuote,
+			astrDepositManifestMeasure,
+			aSwapComp,
+			adblSwapQuote,
+			astrSwapManifestMeasure,
+			false
+		);
+	}
+
+	/*
+	 * Sample API demonstrating the creation of the Credit Curve from the CDS instruments
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static CreditCurve MakeCC (
+		final JulianDate dtSpot,
+		final String strCreditCurve,
+		final MergedDiscountForwardCurve dcFunding)
+		throws Exception
+	{
+		/*
+		 * Populate the instruments, the calibration measures, and the calibration quotes
+		 */
+
+<span class="nc" id="L296">		double[] adblQuotes = new double[5];</span>
+<span class="nc" id="L297">		String[] astrCalibMeasure = new String[5];</span>
+<span class="nc" id="L298">		CreditDefaultSwap[] aCDS = new CreditDefaultSwap[5];</span>
+
+<span class="nc bnc" id="L300" title="All 2 branches missed.">		for (int i = 0; i &lt; 5; ++i) {</span>
+
+			/*
+			 * The Calibration CDS
+			 */
+
+<span class="nc" id="L306">			aCDS[i] = CDSBuilder.CreateSNAC (</span>
+				dtSpot,
+				(i + 1) + &quot;Y&quot;,
+				0.01,
+				strCreditCurve
+			);
+
+			/*
+			 * Calibration Quote
+			 */
+
+<span class="nc" id="L317">			adblQuotes[i] = 100.;</span>
+
+			/*
+			 * Calibration Measure
+			 */
+
+<span class="nc" id="L323">			astrCalibMeasure[i] = &quot;FairPremium&quot;;</span>
+		}
+
+		/*
+		 * Create the Credit Curve from the give CDS instruments
+		 */
+
+<span class="nc" id="L330">		CreditCurve cc = ScenarioCreditCurveBuilder.Custom (</span>
+			strCreditCurve,
+			dtSpot,
+			aCDS,
+			dcFunding,
+			adblQuotes,
+			astrCalibMeasure,
+			0.4,
+			false
+		);
+
+		/*
+		 * Valuation Parameters
+		 */
+
+<span class="nc" id="L345">		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());</span>
+
+		/*
+		 * Standard Credit Pricer Parameters (check javadoc for details)
+		 */
+
+<span class="nc" id="L351">		CreditPricerParams pricerParams = CreditPricerParams.Standard();</span>
+
+		/*
+		 * Re-calculate the input calibration measures for the input CDSes
+		 */
+
+<span class="nc" id="L357">		System.out.println (&quot;\n\t|------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L359" title="All 2 branches missed.">		for (int i = 0; i &lt; aCDS.length; ++i)</span>
+<span class="nc" id="L360">			System.out.println (</span>
+<span class="nc" id="L361">				&quot;\t| &quot; + aCDS[i].name() + &quot; =&quot; +</span>
+<span class="nc" id="L362">				FormatUtil.FormatDouble	(aCDS[i].measureValue (</span>
+<span class="nc" id="L363">					valParams, pricerParams, MarketParamsBuilder.Create (</span>
+						dcFunding,
+						null,
+						null,
+						cc,
+						null,
+						null,
+						null,
+						null
+					),
+					null,
+					astrCalibMeasure[i]
+				), 1, 1, 1.) + &quot; ||&quot;
+			);
+
+<span class="nc" id="L378">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+
+<span class="nc" id="L380">		return cc;</span>
+	}
+
+	/*
+	 * Sample API demonstrating the display of the CDS coupon and loss cash flow
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+<span class="nc" id="L393">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L395">		JulianDate dtSpot = DateUtil.Today();</span>
+
+<span class="nc" id="L397">		String strCurrency = &quot;USD&quot;;</span>
+<span class="nc" id="L398">		String strCreditCurve = &quot;DB&quot;;</span>
+<span class="nc" id="L399">		String strCDSForwardStartTenor = &quot;3M&quot;;</span>
+<span class="nc" id="L400">		String strCDSMaturityTenor = &quot;5Y&quot;;</span>
+<span class="nc" id="L401">		double dblCDSCoupon = 0.1;</span>
+<span class="nc" id="L402">		String strManifestMeasure = &quot;FairPremium&quot;;</span>
+
+<span class="nc" id="L404">		double[] adblFairPremiumVolatility = new double[] {</span>
+			0.10,
+			0.15,
+			0.20,
+			0.25,
+			0.30,
+			0.35,
+			0.40,
+			0.45,
+			0.50
+		};
+
+<span class="nc" id="L416">		MergedDiscountForwardCurve dcFunding = MakeDC (</span>
+			dtSpot,
+			strCurrency
+		);
+
+<span class="nc" id="L421">		CreditCurve cc = MakeCC (</span>
+			dtSpot,
+			strCreditCurve,
+			dcFunding
+		);
+
+<span class="nc" id="L427">		CurveSurfaceQuoteContainer csqc = MarketParamsBuilder.Credit (</span>
+			dcFunding,
+			cc
+		);
+
+<span class="nc" id="L432">		CreditDefaultSwap cdsForward = CDSBuilder.CreateSNAC (</span>
+<span class="nc" id="L433">			dtSpot.addTenor (strCDSForwardStartTenor),</span>
+			strCDSMaturityTenor,
+			dblCDSCoupon,
+			strCreditCurve
+		);
+
+<span class="nc" id="L439">		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());</span>
+
+<span class="nc" id="L441">		CreditPricerParams pricerParams = CreditPricerParams.Standard();</span>
+
+<span class="nc" id="L443">		Map&lt;String, Double&gt; mapCDSForwardOutput = cdsForward.value (</span>
+			valParams,
+			pricerParams,
+			csqc,
+			null
+		);
+
+<span class="nc" id="L450">		double dblStrike = 1.005 * mapCDSForwardOutput.get (strManifestMeasure);</span>
+
+<span class="nc" id="L452">		CDSEuropeanOption cdsOptionReceiver = new CDSEuropeanOption (</span>
+<span class="nc" id="L453">			cdsForward.name() + &quot;::RECEIVER_OPT&quot;,</span>
+			cdsForward,
+			strManifestMeasure,
+			true,
+			dblStrike,
+			new LastTradingDateSetting (
+				LastTradingDateSetting.MID_CURVE_OPTION_QUARTERLY,
+				&quot;&quot;,
+				Integer.MIN_VALUE
+			),
+			new BlackScholesAlgorithm(),
+			null
+		);
+
+<span class="nc" id="L467">		CDSEuropeanOption cdsOptionPayer = new CDSEuropeanOption (</span>
+<span class="nc" id="L468">			cdsForward.name() + &quot;::PAYER_OPT&quot;,</span>
+			cdsForward,
+			strManifestMeasure,
+			false,
+			dblStrike,
+			new LastTradingDateSetting (
+				LastTradingDateSetting.MID_CURVE_OPTION_QUARTERLY,
+				&quot;&quot;,
+				Integer.MIN_VALUE
+			),
+			new BlackScholesAlgorithm(),
+			null
+		);
+
+<span class="nc" id="L482">		System.out.println (&quot;\n\t||-------------------------------------------------------------------||----------------------------------------------------------|||&quot;);</span>
+
+<span class="nc" id="L484">		System.out.println (&quot;\t||                                                                                                                               |||&quot;);</span>
+
+<span class="nc" id="L486">		System.out.println (&quot;\t||                                              CDS Payer Receiver Option Analysis                                               |||&quot;);</span>
+
+<span class="nc" id="L488">		System.out.println (&quot;\t||                                              --- ----- -------- ------ --------                                               |||&quot;);</span>
+
+<span class="nc" id="L490">		System.out.println (&quot;\t||   L -&gt; R:                                                                                                                     |||&quot;);</span>
+
+<span class="nc" id="L492">		System.out.println (&quot;\t||          Forward CDS Fair Premium Log-normal Volatility                                                                       |||&quot;);</span>
+
+<span class="nc" id="L494">		System.out.println (&quot;\t||          Receiver ATM Fair Premium (bp)                                                                                       |||&quot;);</span>
+
+<span class="nc" id="L496">		System.out.println (&quot;\t||          Receiver Clean DV01                                                                                                  |||&quot;);</span>
+
+<span class="nc" id="L498">		System.out.println (&quot;\t||          Receiver Manifest Measure Intrinsic                                                                                  |||&quot;);</span>
+
+<span class="nc" id="L500">		System.out.println (&quot;\t||          Receiver Manifest Measure Intrinsic Value                                                                            |||&quot;);</span>
+
+<span class="nc" id="L502">		System.out.println (&quot;\t||          Receiver Moneyness Factor                                                                                            |||&quot;);</span>
+
+<span class="nc" id="L504">		System.out.println (&quot;\t||          Receiver Option Price                                                                                                |||&quot;);</span>
+
+<span class="nc" id="L506">		System.out.println (&quot;\t||          Payer ATM Fair Premium (bp)                                                                                          |||&quot;);</span>
+
+<span class="nc" id="L508">		System.out.println (&quot;\t||          Payer Clean DV01                                                                                                     |||&quot;);</span>
+
+<span class="nc" id="L510">		System.out.println (&quot;\t||          Payer Manifest Measure Intrinsic                                                                                     |||&quot;);</span>
+
+<span class="nc" id="L512">		System.out.println (&quot;\t||          Payer Manifest Measure Intrinsic Value                                                                               |||&quot;);</span>
+
+<span class="nc" id="L514">		System.out.println (&quot;\t||          Payer Moneyness Factor                                                                                               |||&quot;);</span>
+
+<span class="nc" id="L516">		System.out.println (&quot;\t||          Payer Option Price                                                                                                   |||&quot;);</span>
+
+<span class="nc" id="L518">		System.out.println (&quot;\t||                                                                                                                               |||&quot;);</span>
+
+<span class="nc" id="L520">		System.out.println (&quot;\t||-------------------------------------------------------------------||----------------------------------------------------------|||&quot;);</span>
+
+<span class="nc bnc" id="L522" title="All 2 branches missed.">		for (double dblFairPremiumVolatility : adblFairPremiumVolatility) {</span>
+<span class="nc" id="L523">			csqc.setCustomVolatility (</span>
+<span class="nc" id="L524">				ScenarioDeterministicVolatilityBuilder.FlatForward (</span>
+<span class="nc" id="L525">					dtSpot.julian(),</span>
+<span class="nc" id="L526">					VolatilityLabel.Standard (CustomLabel.Standard (cdsForward.name() + &quot;_&quot; + strManifestMeasure)),</span>
+<span class="nc" id="L527">					cdsForward.payCurrency(),</span>
+					dblFairPremiumVolatility
+				)
+			);
+
+<span class="nc" id="L532">			Map&lt;String, Double&gt; mapReceiverOptionOutput = cdsOptionReceiver.value (</span>
+				valParams,
+				null,
+				csqc,
+				null
+			);
+
+<span class="nc" id="L539">			Map&lt;String, Double&gt; mapPayerOptionOutput = cdsOptionPayer.value (</span>
+				valParams,
+				null,
+				csqc,
+				null
+			);
+
+<span class="nc" id="L546">			System.out.println (</span>
+<span class="nc" id="L547">				&quot;\t|| &quot; + FormatUtil.FormatDouble (dblFairPremiumVolatility, 2, 1, 100.) + &quot;% =&gt; &quot; +</span>
+<span class="nc" id="L548">				FormatUtil.FormatDouble (mapReceiverOptionOutput.get (&quot;ATMManifestMeasure&quot;), 3, 2, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L549">				FormatUtil.FormatDouble (mapReceiverOptionOutput.get (&quot;ManifestMeasurePriceTransformer&quot;), 1, 2, 100.) + &quot; | &quot; +</span>
+<span class="nc" id="L550">				FormatUtil.FormatDouble (mapReceiverOptionOutput.get (&quot;ManifestMeasureIntrinsic&quot;), 1, 4, 100.) + &quot; | &quot; +</span>
+<span class="nc" id="L551">				FormatUtil.FormatDouble (mapReceiverOptionOutput.get (&quot;ManifestMeasureIntrinsicValue&quot;), 1, 2, 100.) + &quot; | &quot; +</span>
+<span class="nc" id="L552">				FormatUtil.FormatDouble (mapReceiverOptionOutput.get (&quot;MoneynessFactor&quot;), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L553">				FormatUtil.FormatDouble (mapReceiverOptionOutput.get (&quot;Price&quot;), 1, 4, 1.) + &quot;  ||  &quot; +</span>
+<span class="nc" id="L554">				FormatUtil.FormatDouble (mapPayerOptionOutput.get (&quot;ATMManifestMeasure&quot;), 3, 2, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L555">				FormatUtil.FormatDouble (mapPayerOptionOutput.get (&quot;ManifestMeasurePriceTransformer&quot;), 1, 2, 100.) + &quot; | &quot; +</span>
+<span class="nc" id="L556">				FormatUtil.FormatDouble (mapPayerOptionOutput.get (&quot;ManifestMeasureIntrinsic&quot;), 1, 4, 100.) + &quot; | &quot; +</span>
+<span class="nc" id="L557">				FormatUtil.FormatDouble (mapPayerOptionOutput.get (&quot;ManifestMeasureIntrinsicValue&quot;), 1, 2, 100.) + &quot; | &quot; +</span>
+<span class="nc" id="L558">				FormatUtil.FormatDouble (mapPayerOptionOutput.get (&quot;MoneynessFactor&quot;), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L559">				FormatUtil.FormatDouble (mapPayerOptionOutput.get (&quot;Price&quot;), 1, 4, 1.) + &quot;  |||&quot;</span>
+			);
+		}
+
+<span class="nc" id="L563">		System.out.println (&quot;\t||-------------------------------------------------------------------||----------------------------------------------------------|||&quot;);</span>
+<span class="nc" id="L564">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

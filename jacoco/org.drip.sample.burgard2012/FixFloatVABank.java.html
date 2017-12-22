@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FixFloatVABank.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.burgard2012</a> &gt; <span class="el_source">FixFloatVABank.java</span></div><h1>FixFloatVABank.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.burgard2012;
+
+import org.drip.analytics.date.*;
+import org.drip.measure.discrete.SequenceGenerator;
+import org.drip.measure.dynamics.DiffusionEvaluatorLinear;
+import org.drip.measure.process.DiffusionEvolver;
+import org.drip.measure.realization.*;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.xva.cpty.*;
+import org.drip.xva.hypothecation.*;
+import org.drip.xva.strategy.*;
+import org.drip.xva.universe.*;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * FixFloatVABank illustrates the Fix-Float Swap Valuation Adjustment Metrics Dependence on the Bank Spread
+ *  using the Set of Netting Group Exposure Simulations. The References are:
+ *  
+ *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
+ *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
+ *  
+ *  - Burgard, C., and M. Kjaer (2014): In the Balance, Risk, 24 (11) 72-75.
+ *  
+ *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk, Risk 20 (2) 86-90.
+ *  
+ *  - Li, B., and Y. Tang (2007): Quantitative Analysis, Derivatives Modeling, and Trading Strategies in the
+ *  	Presence of Counter-party Credit Risk for the Fixed Income Market, World Scientific Publishing,
+ *  	Singapore.
+ * 
+ *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
+ *  	21 (2) 97-102.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L83">public class FixFloatVABank {</span>
+
+	private static final double[][] ATMSwapRateOffsetRealization (
+		final DiffusionEvolver deATMSwapRateOffset,
+		final double dblATMSwapRateOffsetInitial,
+		final double dblTime,
+		final double dblTimeWidth,
+		final int iNumStep,
+		final int iNumSimulation)
+		throws Exception
+	{
+<span class="nc" id="L94">		double[][] aablATMSwapRateOffset = new double[iNumSimulation][iNumStep + 1];</span>
+<span class="nc" id="L95">		double[] adblTimeWidth = new double[iNumStep];</span>
+
+<span class="nc bnc" id="L97" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumStep; ++i)</span>
+<span class="nc" id="L98">			adblTimeWidth[i] = dblTimeWidth;</span>
+
+<span class="nc bnc" id="L100" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSimulation; ++i) {</span>
+<span class="nc" id="L101">			JumpDiffusionEdge[] aJDE = deATMSwapRateOffset.incrementSequence (</span>
+				new JumpDiffusionVertex (
+					dblTime,
+					dblATMSwapRateOffsetInitial,
+					0.,
+					false
+				),
+<span class="nc" id="L108">				JumpDiffusionEdgeUnit.Diffusion (</span>
+					adblTimeWidth,
+<span class="nc" id="L110">					SequenceGenerator.Gaussian (iNumStep)</span>
+				),
+				dblTimeWidth
+			);
+
+<span class="nc" id="L115">			aablATMSwapRateOffset[i][0] = dblATMSwapRateOffsetInitial;</span>
+
+<span class="nc bnc" id="L117" title="All 2 branches missed.">			for (int j = 1; j &lt;= iNumStep; ++j)</span>
+<span class="nc" id="L118">				aablATMSwapRateOffset[i][j] = aJDE[j - 1].finish();</span>
+		}
+
+<span class="nc" id="L121">		return aablATMSwapRateOffset;</span>
+	}
+
+	public static final void VA (
+		final double dblBankHazardRate)
+		throws Exception
+	{
+<span class="nc" id="L128">		int iNumStep = 10;</span>
+<span class="nc" id="L129">		double dblTime = 5.;</span>
+<span class="nc" id="L130">		int iNumPath = 10000;</span>
+<span class="nc" id="L131">		double dblATMSwapRateOffsetDrift = 0.0;</span>
+<span class="nc" id="L132">		double dblATMSwapRateOffsetVolatility = 0.15;</span>
+<span class="nc" id="L133">		double dblATMSwapRateOffsetInitial = 0.;</span>
+<span class="nc" id="L134">		double dblCSADrift = 0.01;</span>
+<span class="nc" id="L135">		double dblBankRecoveryRate = 0.40;</span>
+<span class="nc" id="L136">		double dblCounterPartyHazardRate = 0.025;</span>
+<span class="nc" id="L137">		double dblCounterPartyRecoveryRate = 0.30;</span>
+
+<span class="nc" id="L139">		double dblTimeWidth = dblTime / iNumStep;</span>
+<span class="nc" id="L140">		MarketVertex[] aMV = new MarketVertex[iNumStep + 1];</span>
+<span class="nc" id="L141">		JulianDate[] adtVertex = new JulianDate[iNumStep + 1];</span>
+<span class="nc" id="L142">		MonoPathExposureAdjustment[] aMPEA = new MonoPathExposureAdjustment[iNumPath];</span>
+<span class="nc" id="L143">		double dblBankFundingSpread = dblBankHazardRate / (1. - dblBankRecoveryRate);</span>
+<span class="nc" id="L144">		double dblCounterPartyFundingSpread = dblCounterPartyHazardRate / (1. - dblCounterPartyRecoveryRate);</span>
+
+<span class="nc" id="L146">		JulianDate dtSpot = DateUtil.Today();</span>
+
+<span class="nc" id="L148">		double[][] aablATMSwapRateOffset = ATMSwapRateOffsetRealization (</span>
+			new DiffusionEvolver (
+<span class="nc" id="L150">				DiffusionEvaluatorLinear.Standard (</span>
+					dblATMSwapRateOffsetDrift,
+					dblATMSwapRateOffsetVolatility
+				)
+			),
+			dblATMSwapRateOffsetInitial,
+			dblTime,
+			dblTimeWidth,
+			iNumStep,
+			iNumPath
+		);
+
+<span class="nc bnc" id="L162" title="All 2 branches missed.">		for (int i = 0; i &lt;= iNumStep; ++i)</span>
+<span class="nc" id="L163">			aMV[i] = new MarketVertex (</span>
+<span class="nc" id="L164">				adtVertex[i] = dtSpot.addMonths (6 * i),</span>
+				Double.NaN,
+				0.,
+				new NumeraireMarketVertex (
+					1.,
+					1.
+				),
+				dblCSADrift,
+				new NumeraireMarketVertex (
+<span class="nc" id="L173">					Math.exp (-0.5 * dblCSADrift * iNumStep),</span>
+<span class="nc" id="L174">					Math.exp (-0.5 * dblCSADrift * (iNumStep - i))</span>
+				),
+				new EntityMarketVertex (
+<span class="nc" id="L177">					Math.exp (-0.5 * dblBankHazardRate * i),</span>
+					dblBankHazardRate,
+					dblBankRecoveryRate,
+					dblBankFundingSpread,
+					new NumeraireMarketVertex (
+<span class="nc" id="L182">						Math.exp (-0.5 * dblBankHazardRate * (1. - dblBankRecoveryRate) * iNumStep),</span>
+<span class="nc" id="L183">						Math.exp (-0.5 * dblBankHazardRate * (1. - dblBankRecoveryRate) * (iNumStep - i))</span>
+					),
+					Double.NaN,
+					Double.NaN,
+					null
+				),
+				new EntityMarketVertex (
+<span class="nc" id="L190">					Math.exp (-0.5 * dblCounterPartyHazardRate * i),</span>
+					dblCounterPartyHazardRate,
+					dblCounterPartyRecoveryRate,
+					dblCounterPartyFundingSpread,
+					new NumeraireMarketVertex (
+<span class="nc" id="L195">						Math.exp (-0.5 * dblCounterPartyHazardRate * (1. - dblCounterPartyRecoveryRate) * iNumStep),</span>
+<span class="nc" id="L196">						Math.exp (-0.5 * dblCounterPartyHazardRate * (1. - dblCounterPartyRecoveryRate) * (iNumStep - i))</span>
+					),
+					Double.NaN,
+					Double.NaN,
+					null
+				)
+			);
+
+<span class="nc" id="L204">		MarketPath mp = new MarketPath (aMV);</span>
+
+<span class="nc bnc" id="L206" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumPath; ++i) {</span>
+<span class="nc" id="L207">			AlbaneseAndersenVertex[] aHGVR = new AlbaneseAndersenVertex[iNumStep + 1];</span>
+
+<span class="nc bnc" id="L209" title="All 2 branches missed.">			for (int j = 0; j &lt;= iNumStep; ++j)</span>
+<span class="nc" id="L210">				aHGVR[j] = new AlbaneseAndersenVertex (</span>
+					adtVertex[j],
+					dblTimeWidth * (iNumStep - j) * aablATMSwapRateOffset[i][j],
+					0.,
+					0.
+				);
+
+<span class="nc" id="L217">			CollateralGroupPath[] aHGP = new CollateralGroupPath[] {new CollateralGroupPath (aHGVR)};</span>
+
+<span class="nc" id="L219">			aMPEA[i] = new MonoPathExposureAdjustment (</span>
+				new AlbaneseAndersenNettingGroupPath[] {
+					new AlbaneseAndersenNettingGroupPath (
+						aHGP,
+						mp
+					)
+				},
+				new AlbaneseAndersenFundingGroupPath[] {
+					new AlbaneseAndersenFundingGroupPath (
+						aHGP,
+						mp
+					)
+				}
+			);
+		}
+
+<span class="nc" id="L235">		ExposureAdjustmentAggregator eaa = new ExposureAdjustmentAggregator (aMPEA);</span>
+
+<span class="nc" id="L237">		System.out.println (&quot;\t|| &quot; +</span>
+<span class="nc" id="L238">			FormatUtil.FormatDouble (dblBankHazardRate, 3, 0, 10000.) + &quot; bp =&gt; &quot; +</span>
+<span class="nc" id="L239">			FormatUtil.FormatDouble (eaa.ucva().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="nc" id="L240">			FormatUtil.FormatDouble (eaa.ftdcva().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="nc" id="L241">			FormatUtil.FormatDouble (eaa.cva().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="nc" id="L242">			FormatUtil.FormatDouble (eaa.cvacl().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="nc" id="L243">			FormatUtil.FormatDouble (eaa.dva().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="nc" id="L244">			FormatUtil.FormatDouble (eaa.fva().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="nc" id="L245">			FormatUtil.FormatDouble (eaa.fda().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="nc" id="L246">			FormatUtil.FormatDouble (eaa.fca().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="nc" id="L247">			FormatUtil.FormatDouble (eaa.fba().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="nc" id="L248">			FormatUtil.FormatDouble (eaa.sfva().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="nc" id="L249">			FormatUtil.FormatDouble (eaa.total(), 1, 2, 100.) + &quot;% ||&quot;</span>
+		);
+<span class="nc" id="L251">	}</span>
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+<span class="nc" id="L257">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L259">		double[] adblBankHazardRate = new double[] {</span>
+			0.0025,
+			0.0050,
+			0.0075,
+			0.0100,
+			0.0125,
+			0.0150,
+			0.0175,
+			0.0200,
+			0.0225,
+			0.0250,
+			0.0275,
+			0.0300
+		};
+
+<span class="nc" id="L274">		System.out.println();</span>
+
+<span class="nc" id="L276">		System.out.println (&quot;\t||-------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L278">		System.out.println (&quot;\t||                                      VA DEPENDENCE ON BANK HAZARD RATE                                      ||&quot;);</span>
+
+<span class="nc" id="L280">		System.out.println (&quot;\t||-------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L282">		System.out.println (&quot;\t||  Hazard =&gt;  UCVA  | FTDCVA |   CVA  |  CVACL |   DVA  |   FVA  |   FDA  |   FCA  |   FBA  |  SFVA  |  Total ||&quot;);</span>
+
+<span class="nc" id="L284">		System.out.println (&quot;\t||-------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L286" title="All 2 branches missed.">		for (double dblBankHazardRate : adblBankHazardRate)</span>
+<span class="nc" id="L287">			VA (dblBankHazardRate);</span>
+
+<span class="nc" id="L289">		System.out.println (&quot;\t||-------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L291">		System.out.println();</span>
+<span class="nc" id="L292">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
