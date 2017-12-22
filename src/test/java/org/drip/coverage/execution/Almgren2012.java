@@ -1,5 +1,16 @@
 
-package org.drip.service.env;
+package org.drip.coverage.execution;
+
+import org.drip.sample.almgren2012.AdaptiveStaticInitialHoldings;
+import org.drip.sample.almgren2012.AdaptiveStaticInitialTradeRate;
+import org.drip.sample.almgren2012.AdaptiveZeroInitialHoldings;
+import org.drip.sample.almgren2012.AdaptiveZeroInitialTradeRate;
+import org.drip.sample.almgren2012.RollingHorizonOptimalHoldings;
+import org.drip.sample.almgren2012.RollingHorizonOptimalTradeRate;
+import org.drip.sample.almgren2012.StaticOptimalTrajectoryHoldings;
+import org.drip.sample.almgren2012.StaticOptimalTrajectoryTradeRate;
+
+import org.junit.Test;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -48,66 +59,29 @@ package org.drip.service.env;
  */
 
 /**
- * BuildManager maintains a Log of the Build Records.
- * 
+ * Almgren2012 holds the JUnit Code Coverage Tests for the Almgren2012 Execution Module.
+ *
  * @author Lakshmi Krishnamurthy
  */
 
-public class BuildManager
+public class Almgren2012
 {
-	private static org.drip.service.env.BuildRecord[] s_aBuildRecord = null;
-
-	/**
-	 * Initialize the Build Logs of the Build Manager
-	 * 
-	 * @return TRUE - The Build Manager Successfully Initialized
-	 */
-
-	public static final boolean Init()
+	@Test public void codeCoverageTest() throws Exception
 	{
-		if (null != s_aBuildRecord) return true;
+		AdaptiveStaticInitialHoldings.main (null);
 
-		try {
-			s_aBuildRecord = new org.drip.service.env.BuildRecord[] {
-				new org.drip.service.env.BuildRecord (
-					"3.23.0",
-					"1.8.0_112",
-					"Fri Dec 22 14:51:17 EST 2017"
-				),
-				new org.drip.service.env.BuildRecord (
-					"3.22.0",
-					"1.8.0_112",
-					"Mon Dec 18 17:32:03 EST 2017"
-				)
-			};
+		AdaptiveStaticInitialTradeRate.main (null);
 
-			return true;
-		} catch (java.lang.Exception e) {
-			e.printStackTrace();
-		}
+		AdaptiveZeroInitialHoldings.main (null);
 
-		return false;
-	}
+		AdaptiveZeroInitialTradeRate.main (null);
 
-	/**
-	 * Retrieve the Array of Build Records
-	 * 
-	 * @return Array of Build Records
-	 */
+		RollingHorizonOptimalHoldings.main (null);
 
-	public static final org.drip.service.env.BuildRecord[] buildRecords()
-	{
-		return s_aBuildRecord;
-	}
+		RollingHorizonOptimalTradeRate.main (null);
 
-	/**
-	 * Retrieve the Latest Build Record
-	 * 
-	 * @return Latest Build Record
-	 */
+		StaticOptimalTrajectoryHoldings.main (null);
 
-	public static final org.drip.service.env.BuildRecord latestBuildRecord()
-	{
-		return s_aBuildRecord[0];
+		StaticOptimalTrajectoryTradeRate.main (null);
 	}
 }
