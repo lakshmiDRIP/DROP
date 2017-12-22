@@ -139,7 +139,10 @@ public class ConstantLiquidityVolatility {
 		final String[] astrArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		double dblT = 5.;
 		int iNumInterval = 10;
@@ -207,5 +210,7 @@ public class ConstantLiquidityVolatility {
 			);
 
 		System.out.println ("\t|--------------------------------------------------------------------------------------------------------------||");
+
+		EnvManager.TerminateEnv();
 	}
 }

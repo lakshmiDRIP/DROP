@@ -205,7 +205,10 @@ public class PowerLawOptimalTrajectory {
 		final String[] astrArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		double[] adblLambda = new double[] {
 			1.e-04,
@@ -215,5 +218,7 @@ public class PowerLawOptimalTrajectory {
 
 		for (double dblLambda : adblLambda)
 			RiskAversionRun (dblLambda);
+
+		EnvManager.TerminateEnv();
 	}
 }

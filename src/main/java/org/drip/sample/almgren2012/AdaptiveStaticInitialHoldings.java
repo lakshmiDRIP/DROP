@@ -88,7 +88,10 @@ public class AdaptiveStaticInitialHoldings {
 		final String[] astrArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		double dblSize = 1.;
 		int iNumTimeNode = 51;
@@ -174,6 +177,6 @@ public class AdaptiveStaticInitialHoldings {
 
 		System.out.println ("\t||-----------------------------------------------------------------------------||");
 
-		System.out.println();
+		EnvManager.TerminateEnv();
 	}
 }

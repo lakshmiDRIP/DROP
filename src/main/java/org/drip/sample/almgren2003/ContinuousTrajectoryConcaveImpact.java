@@ -85,7 +85,10 @@ public class ContinuousTrajectoryConcaveImpact {
 		final String[] astrArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		double dblS0 = 50.;
 		double dblDailyVolume = 1000000.;
@@ -193,5 +196,7 @@ public class ContinuousTrajectoryConcaveImpact {
 			);
 
 		System.out.println ("\t|-------------------------------------------||");
+
+		EnvManager.TerminateEnv();
 	}
 }

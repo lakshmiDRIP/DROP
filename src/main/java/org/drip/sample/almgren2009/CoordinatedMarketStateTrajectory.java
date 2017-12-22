@@ -83,7 +83,10 @@ public class CoordinatedMarketStateTrajectory {
 		final String[] astrArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+				"",
+				true
+			);
 
 		double dblBurstiness = 1.;
 		double dblRelaxationTime = 1.;
@@ -175,6 +178,6 @@ public class CoordinatedMarketStateTrajectory {
 
 		System.out.println ("\t||------------------------------------------------------------------||");
 
-		System.out.println();
+		EnvManager.TerminateEnv();
 	}
 }

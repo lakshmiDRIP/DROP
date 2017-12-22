@@ -88,7 +88,11 @@ public class OptimalTrajectoryNoDrift {
 		final String[] astrArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
+
 
 		double dblS0 = 50.;
 		double dblX = 1000000.;
@@ -340,8 +344,10 @@ public class OptimalTrajectoryNoDrift {
 
 		System.out.println ("\t| Half Life   : " + FormatUtil.FormatDouble (acd.halfLife(), 1, 4, 1.) + " ||");
 
-		// System.out.println ("\t| Market Power: " + FormatUtil.FormatDouble (acd.marketPower(), 1, 4, 1.) + " ||");
+		System.out.println ("\t| Market Power: " + FormatUtil.FormatDouble (acd.marketPower(), 1, 4, 1.) + " ||");
 
 		System.out.println ("\t|-----------------------||");
+
+		EnvManager.TerminateEnv();
 	}
 }

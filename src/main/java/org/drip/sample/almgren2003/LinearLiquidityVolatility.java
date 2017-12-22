@@ -134,7 +134,10 @@ public class LinearLiquidityVolatility {
 		final String[] astrArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		double dblT = 5.;
 		int iNumInterval = 10;
@@ -203,5 +206,7 @@ public class LinearLiquidityVolatility {
 			);
 
 		System.out.println ("\t|------------------------------------------------------------------------------------------------------------------------||");
+
+		EnvManager.TerminateEnv();
 	}
 }

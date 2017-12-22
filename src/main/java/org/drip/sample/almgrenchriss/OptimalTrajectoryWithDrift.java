@@ -88,7 +88,10 @@ public class OptimalTrajectoryWithDrift {
 		final String[] astrArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		double dblS0 = 50.;
 		double dblX = 1000000.;
@@ -359,5 +362,7 @@ public class OptimalTrajectoryWithDrift {
 		System.out.println ("\t| Drift Gain Upper Bound : " + FormatUtil.FormatDouble (acdd.driftGainUpperBound(), 2, 1, 1.) + " ||");
 
 		System.out.println ("\t|---------------------------------||");
+
+		EnvManager.TerminateEnv();
 	}
 }

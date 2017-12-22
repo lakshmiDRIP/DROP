@@ -107,7 +107,10 @@ public class VanillaVarianceMinimizer {
 		final String[] astrArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		String strSeriesLocation = "C:\\DRIP\\CreditAnalytics\\Daemons\\Feeds\\MeanVarianceOptimizer\\FormattedSeries1.csv";
 
@@ -136,5 +139,7 @@ public class VanillaVarianceMinimizer {
 			ausp,
 			0.
 		);
+
+		EnvManager.TerminateEnv();
 	}
 }

@@ -86,7 +86,10 @@ public class ConstantTradingEnhancedVolatility {
 		final String[] astrArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		double dblEta = 5.e-06;
 		double dblAlpha = 1.;
@@ -167,5 +170,7 @@ public class ConstantTradingEnhancedVolatility {
 		);
 
 		System.out.println ("\t|--------------------------------------------------------------||");
+
+		EnvManager.TerminateEnv();
 	}
 }

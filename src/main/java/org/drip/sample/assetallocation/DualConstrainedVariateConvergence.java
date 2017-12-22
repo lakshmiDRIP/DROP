@@ -69,7 +69,10 @@ public class DualConstrainedVariateConvergence {
 		final String[] astrArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		VariateInequalityConstraintMultiplier.s_bPreBoundBlog = true;
 		VariateInequalityConstraintMultiplier.s_bPostBoundBlog = true;
@@ -220,5 +223,7 @@ public class DualConstrainedVariateConvergence {
 			pdp,
 			ausp
 		);
+
+		EnvManager.TerminateEnv();
 	}
 }

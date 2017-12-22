@@ -80,7 +80,10 @@ public class EnhancedEulerScheme {
 		final String[] astrArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		double dblA = 2.;
 		double dblB = 1.;
@@ -148,6 +151,6 @@ public class EnhancedEulerScheme {
 
 		System.out.println ("\t||----------------------------------------------------||");
 
-		System.out.println();
+		EnvManager.TerminateEnv();
 	}
 }

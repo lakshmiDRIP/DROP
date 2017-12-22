@@ -70,7 +70,10 @@ public class CMVReconciler2 {
 		final String[] astrArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		String[] astrAssetName = new String[] {
 			"TOK",
@@ -288,5 +291,7 @@ public class CMVReconciler2 {
 		);
 
 		System.out.println ("\t|------------------------------------------------||\n");
+
+		EnvManager.TerminateEnv();
 	}
 }

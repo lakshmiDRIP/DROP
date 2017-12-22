@@ -163,7 +163,10 @@ public class ConstantPaymentBond {
 		final String[] astrArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		double dblBeginPrincipalFactor = 1.;
 		double dblCouponRate = 0.1189;
@@ -352,5 +355,7 @@ public class ConstantPaymentBond {
 				),
 			1, 2, 100.)
 		);
+
+		EnvManager.TerminateEnv();
 	}
 }

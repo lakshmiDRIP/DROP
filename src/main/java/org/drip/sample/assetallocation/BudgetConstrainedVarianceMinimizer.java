@@ -71,7 +71,10 @@ public class BudgetConstrainedVarianceMinimizer {
 		final String[] astrArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		String strSeriesLocation = "C:\\DRIP\\CreditAnalytics\\Daemons\\Feeds\\MeanVarianceOptimizer\\FormattedSeries1.csv";
 
@@ -206,5 +209,7 @@ public class BudgetConstrainedVarianceMinimizer {
 		System.out.println ("\t| Portfolio Standard Deviation : " + FormatUtil.FormatDouble (pf.optimalMetrics().excessReturnsStandardDeviation(), 1, 4, 100.) + "% ||");
 
 		System.out.println ("\t|-----------------------------------------||\n");
+
+		EnvManager.TerminateEnv();
 	}
 }

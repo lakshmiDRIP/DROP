@@ -88,7 +88,10 @@ public class AdaptiveOptimalRollingHorizonTrajectory {
 		final String[] astrArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		double dblSize = 1.;
 		int iNumTimeNode = 41;
@@ -264,6 +267,6 @@ public class AdaptiveOptimalRollingHorizonTrajectory {
 
 		System.out.println ("\t||---------------------------------||");
 
-		System.out.println();
+		EnvManager.TerminateEnv();
 	}
 }

@@ -70,7 +70,10 @@ public class CMVReconciler4 {
 		final String[] astrArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		String[] astrAssetName = new String[] {
 			"TOK",
@@ -273,5 +276,7 @@ public class CMVReconciler4 {
 		System.out.println ("\t| Excel Portfolio Standard Deviation   : " + FormatUtil.FormatDouble (Math.sqrt (pfReconciler.variance (ausp)), 2, 2, 100.) + "% ||");
 
 		System.out.println ("\t|------------------------------------------------||\n");
+
+		EnvManager.TerminateEnv();
 	}
 }

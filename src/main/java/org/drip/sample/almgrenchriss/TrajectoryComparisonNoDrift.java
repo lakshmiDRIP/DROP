@@ -102,7 +102,10 @@ public class TrajectoryComparisonNoDrift {
 		final String[] astrArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		double dblS0 = 50.;
 		double dblX = 1000000.;
@@ -237,5 +240,7 @@ public class TrajectoryComparisonNoDrift {
 			);
 
 		System.out.println ("\t|--------------------------------------------------------------------------------||");
+
+		EnvManager.TerminateEnv();
 	}
 }
