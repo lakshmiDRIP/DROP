@@ -2,7 +2,7 @@
 
 **v3.23**  *22 December 2017*
 
-<center>![](https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true)</center>
+<img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100">
 
 DROP implements the model libraries and provides systems for fixed income valuation and adjustments, asset allocation and transaction cost analytics, and supporting libraries in numerical optimization and statistical learning.
 
