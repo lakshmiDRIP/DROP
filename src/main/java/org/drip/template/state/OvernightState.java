@@ -72,7 +72,11 @@ public class OvernightState {
 
 		String strCurrency = "EUR";
 
-		JulianDate dtSpot = DateUtil.Today();
+		JulianDate dtSpot = DateUtil.CreateFromYMD (
+			2017,
+			DateUtil.DECEMBER,
+			21
+		);
 
 		String[] astrDepositMaturityTenor = new String[] {
 			"1D",

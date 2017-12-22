@@ -197,7 +197,11 @@ public class ReferenceForwardState {
 		String strCurrency = "GBP";
 		String strForwardTenor = "6M";
 
-		JulianDate dtSpot = DateUtil.Today();
+		JulianDate dtSpot = DateUtil.CreateFromYMD (
+			2017,
+			DateUtil.DECEMBER,
+			21
+		);
 
 		MergedDiscountForwardCurve dcOvernight = OvernightCurve (
 			dtSpot,

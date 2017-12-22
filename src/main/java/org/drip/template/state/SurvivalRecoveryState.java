@@ -195,7 +195,11 @@ public class SurvivalRecoveryState {
 
 		String strCurrency = "EUR";
 
-		JulianDate dtSpot = DateUtil.Today();
+		JulianDate dtSpot = DateUtil.CreateFromYMD (
+			2017,
+			DateUtil.DECEMBER,
+			21
+		);
 
 		/* JulianDate dtSpot = DateUtil.Today().addBusDays (
 			2,

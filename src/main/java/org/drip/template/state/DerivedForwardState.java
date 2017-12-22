@@ -338,7 +338,11 @@ public class DerivedForwardState {
 		String strDerivedForwardTenor = "3M";
 		String strReferenceForwardTenor = "6M";
 
-		JulianDate dtSpot = DateUtil.Today();
+		JulianDate dtSpot = DateUtil.CreateFromYMD (
+			2017,
+			DateUtil.DECEMBER,
+			21
+		);
 
 		MergedDiscountForwardCurve dcOvernight = OvernightCurve (
 			dtSpot,
