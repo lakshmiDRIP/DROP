@@ -477,7 +477,10 @@ public class Nanchang {
 		final String[] astrArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		JulianDate dtSpot = DateUtil.CreateFromYMD (
 			2017,
@@ -586,6 +589,6 @@ public class Nanchang {
 			dblCleanPrice
 		);
 
-		System.out.println();
+		EnvManager.TerminateEnv();
 	}
 }

@@ -477,7 +477,10 @@ public class Huangshi {
 		final String[] astrArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		JulianDate dtSpot = DateUtil.CreateFromYMD (
 			2017,
@@ -588,6 +591,6 @@ public class Huangshi {
 			dblCleanPrice
 		);
 
-		System.out.println();
+		EnvManager.TerminateEnv();
 	}
 }

@@ -477,7 +477,10 @@ public class Hongzhou {
 		final String[] astrArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		JulianDate dtSpot = DateUtil.CreateFromYMD (
 			2017,
@@ -580,6 +583,6 @@ public class Hongzhou {
 			dblCleanPrice
 		);
 
-		System.out.println();
+		EnvManager.TerminateEnv();
 	}
 }

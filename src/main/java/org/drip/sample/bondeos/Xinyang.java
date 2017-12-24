@@ -477,7 +477,10 @@ public class Xinyang {
 		final String[] astrArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		JulianDate dtSpot = DateUtil.CreateFromYMD (
 			2017,
@@ -596,6 +599,6 @@ public class Xinyang {
 			dblCleanPrice
 		);
 
-		System.out.println();
+		EnvManager.TerminateEnv();
 	}
 }

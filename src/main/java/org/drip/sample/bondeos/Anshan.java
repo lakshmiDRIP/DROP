@@ -477,7 +477,10 @@ public class Anshan {
 		final String[] astrArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		JulianDate dtSpot = DateUtil.CreateFromYMD (
 			2017,
@@ -578,6 +581,6 @@ public class Anshan {
 			dblCleanPrice
 		);
 
-		System.out.println();
+		EnvManager.TerminateEnv();
 	}
 }
