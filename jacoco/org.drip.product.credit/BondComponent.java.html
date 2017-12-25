@@ -1756,16 +1756,16 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 	@Override public org.drip.analytics.date.JulianDate previousCouponDate (
 		final org.drip.analytics.date.JulianDate dt)
 	{
-<span class="nc bnc" id="L1759" title="All 4 branches missed.">		if (null == dt || dt.julian() &gt; maturityDate().julian()) return null;</span>
+<span class="pc bpc" id="L1759" title="2 of 4 branches missed.">		if (null == dt || dt.julian() &gt; maturityDate().julian()) return null;</span>
 
 		try {
-<span class="nc" id="L1762">			int iIndex = _stream.periodIndex (dt.julian());</span>
+<span class="fc" id="L1762">			int iIndex = _stream.periodIndex (dt.julian());</span>
 
-<span class="nc bnc" id="L1764" title="All 2 branches missed.">			if (0 == iIndex) return new org.drip.analytics.date.JulianDate (_stream.period (0).startDate());</span>
+<span class="pc bpc" id="L1764" title="1 of 2 branches missed.">			if (0 == iIndex) return new org.drip.analytics.date.JulianDate (_stream.period (0).startDate());</span>
 			
-<span class="nc" id="L1766">			org.drip.analytics.cashflow.CompositePeriod period = _stream.period (iIndex - 1);</span>
+<span class="fc" id="L1766">			org.drip.analytics.cashflow.CompositePeriod period = _stream.period (iIndex - 1);</span>
 
-<span class="nc bnc" id="L1768" title="All 2 branches missed.">			return null == period ? null : new org.drip.analytics.date.JulianDate (period.payDate());</span>
+<span class="pc bpc" id="L1768" title="1 of 2 branches missed.">			return null == period ? null : new org.drip.analytics.date.JulianDate (period.payDate());</span>
 <span class="nc" id="L1769">		} catch (java.lang.Exception e) {</span>
 			if (!s_bSuppressErrors) e.printStackTrace();
 		}
@@ -3257,7 +3257,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblPrice)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L3260">		return aswFromPrice (valParams, csqc, vcp, maturityDate().julian(), 1., dblPrice);</span>
+<span class="fc" id="L3260">		return aswFromPrice (valParams, csqc, vcp, maturityDate().julian(), 1., dblPrice);</span>
 	}
 
 	@Override public double aswFromPriceToOptimalExercise (
@@ -3806,8 +3806,8 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblPrice)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L3809">		return bondBasisFromYield (valParams, csqc, vcp, iWorkoutDate, dblWorkoutFactor, yieldFromPrice</span>
-<span class="nc" id="L3810">			(valParams, csqc, vcp, iWorkoutDate, dblWorkoutFactor, dblPrice));</span>
+<span class="fc" id="L3809">		return bondBasisFromYield (valParams, csqc, vcp, iWorkoutDate, dblWorkoutFactor, yieldFromPrice</span>
+<span class="fc" id="L3810">			(valParams, csqc, vcp, iWorkoutDate, dblWorkoutFactor, dblPrice));</span>
 	}
 
 	@Override public double bondBasisFromPrice (
@@ -3817,7 +3817,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblPrice)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L3820">		return bondBasisFromPrice (valParams, csqc, vcp, maturityDate().julian(), 1., dblPrice);</span>
+<span class="fc" id="L3820">		return bondBasisFromPrice (valParams, csqc, vcp, maturityDate().julian(), 1., dblPrice);</span>
 	}
 
 	@Override public double bondBasisFromPriceToOptimalExercise (
@@ -4423,7 +4423,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblPrice)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L4426">		return convexityFromPrice (valParams, csqc, vcp, maturityDate().julian(), 1., dblPrice);</span>
+<span class="fc" id="L4426">		return convexityFromPrice (valParams, csqc, vcp, maturityDate().julian(), 1., dblPrice);</span>
 	}
 
 	@Override public double convexityFromPriceToOptimalExercise (
@@ -7233,8 +7233,8 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblPrice)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L7236">		return gSpreadFromYield (valParams, csqc, vcp, iWorkoutDate, dblWorkoutFactor, yieldFromPrice</span>
-<span class="nc" id="L7237">			(valParams, csqc, vcp, iWorkoutDate, dblWorkoutFactor, dblPrice));</span>
+<span class="fc" id="L7236">		return gSpreadFromYield (valParams, csqc, vcp, iWorkoutDate, dblWorkoutFactor, yieldFromPrice</span>
+<span class="fc" id="L7237">			(valParams, csqc, vcp, iWorkoutDate, dblWorkoutFactor, dblPrice));</span>
 	}
 
 	@Override public double gSpreadFromPrice (
@@ -7244,7 +7244,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblPrice)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L7247">		return gSpreadFromPrice (valParams, csqc, vcp, maturityDate().julian(), 1., dblPrice);</span>
+<span class="fc" id="L7247">		return gSpreadFromPrice (valParams, csqc, vcp, maturityDate().julian(), 1., dblPrice);</span>
 	}
 
 	@Override public double gSpreadFromPriceToOptimalExercise (
@@ -7811,7 +7811,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblPrice)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L7814">		return iSpreadFromPrice (valParams, csqc, vcp, maturityDate().julian(), 1., dblPrice);</span>
+<span class="fc" id="L7814">		return iSpreadFromPrice (valParams, csqc, vcp, maturityDate().julian(), 1., dblPrice);</span>
 	}
 
 	@Override public double iSpreadFromPriceToOptimalExercise (
@@ -8997,7 +8997,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblPrice)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L9000">		return macaulayDurationFromPrice (valParams, csqc, vcp, maturityDate().julian(), 1., dblPrice);</span>
+<span class="fc" id="L9000">		return macaulayDurationFromPrice (valParams, csqc, vcp, maturityDate().julian(), 1., dblPrice);</span>
 	}
 
 	@Override public double macaulayDurationFromPriceToOptimalExercise (
@@ -9763,7 +9763,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblPrice)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L9766">		return modifiedDurationFromPrice (valParams, csqc, vcp, maturityDate().julian(), 1., dblPrice);</span>
+<span class="fc" id="L9766">		return modifiedDurationFromPrice (valParams, csqc, vcp, maturityDate().julian(), 1., dblPrice);</span>
 	}
 
 	@Override public double modifiedDurationFromPriceToOptimalExercise (
@@ -12623,7 +12623,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblPrice)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L12626">		return tsySpreadFromPrice (valParams, csqc, vcp, maturityDate().julian(), 1., dblPrice);</span>
+<span class="fc" id="L12626">		return tsySpreadFromPrice (valParams, csqc, vcp, maturityDate().julian(), 1., dblPrice);</span>
 	}
 
 	@Override public double tsySpreadFromPriceToOptimalExercise (
@@ -13754,8 +13754,8 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblPrice)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L13757">		return yield01FromYield (valParams, csqc, vcp, iWorkoutDate, dblWorkoutFactor, yieldFromPrice</span>
-<span class="nc" id="L13758">			(valParams, csqc, vcp, iWorkoutDate, dblWorkoutFactor, dblPrice));</span>
+<span class="fc" id="L13757">		return yield01FromYield (valParams, csqc, vcp, iWorkoutDate, dblWorkoutFactor, yieldFromPrice</span>
+<span class="fc" id="L13758">			(valParams, csqc, vcp, iWorkoutDate, dblWorkoutFactor, dblPrice));</span>
 	}
 
 	@Override public double yield01FromPrice (
@@ -13765,7 +13765,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblPrice)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L13768">		return yield01FromPrice (valParams, csqc, vcp, maturityDate().julian(), 1., dblPrice);</span>
+<span class="fc" id="L13768">		return yield01FromPrice (valParams, csqc, vcp, maturityDate().julian(), 1., dblPrice);</span>
 	}
 
 	@Override public double yield01FromPriceToOptimalExercise (
@@ -14895,7 +14895,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblPrice)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L14898">		return zSpreadFromPrice (valParams, csqc, vcp, maturityDate().julian(), 1., dblPrice);</span>
+<span class="fc" id="L14898">		return zSpreadFromPrice (valParams, csqc, vcp, maturityDate().julian(), 1., dblPrice);</span>
 	}
 
 	@Override public double zSpreadFromPriceToOptimalExercise (

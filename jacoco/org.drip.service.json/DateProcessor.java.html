@@ -67,27 +67,27 @@ package org.drip.service.json;
 	@SuppressWarnings (&quot;unchecked&quot;) static final org.drip.json.simple.JSONObject IsHoliday (
 		final org.drip.json.simple.JSONObject jsonParameter)
 	{
-<span class="nc" id="L70">		org.drip.analytics.date.JulianDate dt = org.drip.json.parser.Converter.DateEntry (jsonParameter,</span>
+<span class="fc" id="L70">		org.drip.analytics.date.JulianDate dt = org.drip.json.parser.Converter.DateEntry (jsonParameter,</span>
 			&quot;Date&quot;);
 
-<span class="nc bnc" id="L73" title="All 2 branches missed.">		if (null == dt) return null;</span>
+<span class="pc bpc" id="L73" title="1 of 2 branches missed.">		if (null == dt) return null;</span>
 
-<span class="nc" id="L75">		boolean bIsHoliday = false;</span>
+<span class="fc" id="L75">		boolean bIsHoliday = false;</span>
 
 		try {
-<span class="nc" id="L78">			bIsHoliday = org.drip.analytics.daycount.Convention.IsHoliday (dt.julian(),</span>
-<span class="nc" id="L79">				org.drip.json.parser.Converter.StringEntry (jsonParameter, &quot;Calendar&quot;));</span>
+<span class="fc" id="L78">			bIsHoliday = org.drip.analytics.daycount.Convention.IsHoliday (dt.julian(),</span>
+<span class="fc" id="L79">				org.drip.json.parser.Converter.StringEntry (jsonParameter, &quot;Calendar&quot;));</span>
 <span class="nc" id="L80">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L81">			e.printStackTrace();</span>
 
 <span class="nc" id="L83">			return null;</span>
-<span class="nc" id="L84">		}</span>
+<span class="fc" id="L84">		}</span>
 
-<span class="nc" id="L86">		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();</span>
+<span class="fc" id="L86">		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();</span>
 
-<span class="nc" id="L88">		jsonResponse.put (&quot;IsHoliday&quot;, bIsHoliday);</span>
+<span class="fc" id="L88">		jsonResponse.put (&quot;IsHoliday&quot;, bIsHoliday);</span>
 
-<span class="nc" id="L90">		return jsonResponse;</span>
+<span class="fc" id="L90">		return jsonResponse;</span>
 	}
 
 	/**
@@ -101,33 +101,33 @@ package org.drip.service.json;
 	@SuppressWarnings (&quot;unchecked&quot;) static final org.drip.json.simple.JSONObject AdjustBusinessDays (
 		final org.drip.json.simple.JSONObject jsonParameter)
 	{
-<span class="nc" id="L104">		org.drip.analytics.date.JulianDate dt = org.drip.json.parser.Converter.DateEntry (jsonParameter,</span>
+<span class="fc" id="L104">		org.drip.analytics.date.JulianDate dt = org.drip.json.parser.Converter.DateEntry (jsonParameter,</span>
 			&quot;Date&quot;);
 
-<span class="nc bnc" id="L107" title="All 2 branches missed.">		if (null == dt) return null;</span>
+<span class="pc bpc" id="L107" title="1 of 2 branches missed.">		if (null == dt) return null;</span>
 
-<span class="nc" id="L109">		java.lang.String strCalendar = org.drip.json.parser.Converter.StringEntry (jsonParameter,</span>
+<span class="fc" id="L109">		java.lang.String strCalendar = org.drip.json.parser.Converter.StringEntry (jsonParameter,</span>
 			&quot;Calendar&quot;);
 
-<span class="nc" id="L112">		int iDaysToAdjust = 0;</span>
+<span class="fc" id="L112">		int iDaysToAdjust = 0;</span>
 
 		try {
-<span class="nc" id="L115">			iDaysToAdjust = org.drip.json.parser.Converter.IntegerEntry (jsonParameter, &quot;DaysToAdjust&quot;);</span>
+<span class="fc" id="L115">			iDaysToAdjust = org.drip.json.parser.Converter.IntegerEntry (jsonParameter, &quot;DaysToAdjust&quot;);</span>
 <span class="nc" id="L116">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L117">			e.printStackTrace();</span>
 
 <span class="nc" id="L119">			return null;</span>
-<span class="nc" id="L120">		}</span>
+<span class="fc" id="L120">		}</span>
 
-<span class="nc" id="L122">		org.drip.analytics.date.JulianDate dtOut = dt.addBusDays (iDaysToAdjust, strCalendar);</span>
+<span class="fc" id="L122">		org.drip.analytics.date.JulianDate dtOut = dt.addBusDays (iDaysToAdjust, strCalendar);</span>
 
-<span class="nc bnc" id="L124" title="All 2 branches missed.">		if (null == dtOut) return null;</span>
+<span class="pc bpc" id="L124" title="1 of 2 branches missed.">		if (null == dtOut) return null;</span>
 
-<span class="nc" id="L126">		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();</span>
+<span class="fc" id="L126">		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();</span>
 
-<span class="nc" id="L128">		jsonResponse.put (&quot;DateOut&quot;, dtOut.toString());</span>
+<span class="fc" id="L128">		jsonResponse.put (&quot;DateOut&quot;, dtOut.toString());</span>
 
-<span class="nc" id="L130">		return jsonResponse;</span>
+<span class="fc" id="L130">		return jsonResponse;</span>
 	}
 
 	/**
@@ -141,30 +141,30 @@ package org.drip.service.json;
 	@SuppressWarnings (&quot;unchecked&quot;) static final org.drip.json.simple.JSONObject AddDays (
 		final org.drip.json.simple.JSONObject jsonParameter)
 	{
-<span class="nc" id="L144">		org.drip.analytics.date.JulianDate dt = org.drip.json.parser.Converter.DateEntry (jsonParameter,</span>
+<span class="fc" id="L144">		org.drip.analytics.date.JulianDate dt = org.drip.json.parser.Converter.DateEntry (jsonParameter,</span>
 			&quot;Date&quot;);
 
-<span class="nc bnc" id="L147" title="All 2 branches missed.">		if (null == dt) return null;</span>
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">		if (null == dt) return null;</span>
 
-<span class="nc" id="L149">		int iDaysToAdd = 0;</span>
+<span class="fc" id="L149">		int iDaysToAdd = 0;</span>
 
 		try {
-<span class="nc" id="L152">			iDaysToAdd = org.drip.json.parser.Converter.IntegerEntry (jsonParameter, &quot;DaysToAdd&quot;);</span>
+<span class="fc" id="L152">			iDaysToAdd = org.drip.json.parser.Converter.IntegerEntry (jsonParameter, &quot;DaysToAdd&quot;);</span>
 <span class="nc" id="L153">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L154">			e.printStackTrace();</span>
 
 <span class="nc" id="L156">			return null;</span>
-<span class="nc" id="L157">		}</span>
+<span class="fc" id="L157">		}</span>
 
-<span class="nc" id="L159">		org.drip.analytics.date.JulianDate dtOut = dt.addDays (iDaysToAdd);</span>
+<span class="fc" id="L159">		org.drip.analytics.date.JulianDate dtOut = dt.addDays (iDaysToAdd);</span>
 
-<span class="nc bnc" id="L161" title="All 2 branches missed.">		if (null == dtOut) return null;</span>
+<span class="pc bpc" id="L161" title="1 of 2 branches missed.">		if (null == dtOut) return null;</span>
 
-<span class="nc" id="L163">		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();</span>
+<span class="fc" id="L163">		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();</span>
 
-<span class="nc" id="L165">		jsonResponse.put (&quot;DateOut&quot;, dtOut.toString());</span>
+<span class="fc" id="L165">		jsonResponse.put (&quot;DateOut&quot;, dtOut.toString());</span>
 
-<span class="nc" id="L167">		return jsonResponse;</span>
+<span class="fc" id="L167">		return jsonResponse;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

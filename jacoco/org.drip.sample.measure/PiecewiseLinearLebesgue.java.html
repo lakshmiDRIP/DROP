@@ -70,38 +70,38 @@ import org.drip.service.env.EnvManager;
 		final double[] adblProb)
 		throws Exception
 	{
-<span class="nc" id="L73">		R1PiecewiseLinear rpll = R1PiecewiseLinear.Standard (</span>
+<span class="fc" id="L73">		R1PiecewiseLinear rpll = R1PiecewiseLinear.Standard (</span>
 			dblXMin,
 			dblXMax,
 			adblX,
 			adblProb
 		);
 
-<span class="nc" id="L80">		double[] adblQuintile = new double[] {</span>
+<span class="fc" id="L80">		double[] adblQuintile = new double[] {</span>
 			0.25,
 			0.50,
 			0.75
 		};
 
-<span class="nc" id="L86">		String strDump = &quot;\t|| &quot; + strMessage + &quot; | &quot;;</span>
+<span class="fc" id="L86">		String strDump = &quot;\t|| &quot; + strMessage + &quot; | &quot;;</span>
 
 		/* for (int i = 0; i &lt; adblX.length; ++i)
 			strDump +=
 				FormatUtil.FormatDouble (adblX[i], 3, 3, 1.) + &quot; =&gt;&quot; +
 				FormatUtil.FormatDouble (rpll.cumulative (adblX[i]), 1, 2, 1.) + &quot; | &quot;; */
 
-<span class="nc bnc" id="L93" title="All 2 branches missed.">		for (int i = 0; i &lt; adblQuintile.length; ++i)</span>
-<span class="nc" id="L94">			strDump += &quot; &quot; +</span>
-<span class="nc" id="L95">				FormatUtil.FormatDouble (rpll.invCumulative (adblQuintile[i]), 3, 3, 1.) + &quot; =&gt;&quot; +</span>
-<span class="nc" id="L96">				FormatUtil.FormatDouble (adblQuintile[i], 1, 2, 1.) + &quot;   | &quot;;</span>
+<span class="fc bfc" id="L93" title="All 2 branches covered.">		for (int i = 0; i &lt; adblQuintile.length; ++i)</span>
+<span class="fc" id="L94">			strDump += &quot; &quot; +</span>
+<span class="fc" id="L95">				FormatUtil.FormatDouble (rpll.invCumulative (adblQuintile[i]), 3, 3, 1.) + &quot; =&gt;&quot; +</span>
+<span class="fc" id="L96">				FormatUtil.FormatDouble (adblQuintile[i], 1, 2, 1.) + &quot;   | &quot;;</span>
 
-<span class="nc" id="L98">		double[] adblDensity = rpll.piecewiseDensities();</span>
+<span class="fc" id="L98">		double[] adblDensity = rpll.piecewiseDensities();</span>
 
-<span class="nc bnc" id="L100" title="All 2 branches missed.">		for (int i = 0; i &lt; adblDensity.length; ++i)</span>
-<span class="nc" id="L101">			strDump += FormatUtil.FormatDouble (adblDensity[i], 1, 9, 1.) + &quot;,&quot;;</span>
+<span class="fc bfc" id="L100" title="All 2 branches covered.">		for (int i = 0; i &lt; adblDensity.length; ++i)</span>
+<span class="fc" id="L101">			strDump += FormatUtil.FormatDouble (adblDensity[i], 1, 9, 1.) + &quot;,&quot;;</span>
 
-<span class="nc" id="L103">		System.out.println (strDump + &quot; ||&quot;);</span>
-<span class="nc" id="L104">	}</span>
+<span class="fc" id="L103">		System.out.println (strDump + &quot; ||&quot;);</span>
+<span class="fc" id="L104">	}</span>
 
 	private static final void DateRPLL (
 		final String strMessage,
@@ -111,49 +111,49 @@ import org.drip.service.env.EnvManager;
 		final double[] adblProb)
 		throws Exception
 	{
-<span class="nc" id="L114">		R1PiecewiseLinear rpll = R1PiecewiseLinear.Standard (</span>
+<span class="fc" id="L114">		R1PiecewiseLinear rpll = R1PiecewiseLinear.Standard (</span>
 			dblXMin,
 			dblXMax,
 			adblX,
 			adblProb
 		);
 
-<span class="nc" id="L121">		double[] adblQuintile = new double[] {</span>
+<span class="fc" id="L121">		double[] adblQuintile = new double[] {</span>
 			0.25,
 			0.50,
 			0.75
 		};
 
-<span class="nc" id="L127">		String strDump = &quot;\t|| &quot; + strMessage + &quot; | &quot;;</span>
+<span class="fc" id="L127">		String strDump = &quot;\t|| &quot; + strMessage + &quot; | &quot;;</span>
 
-<span class="nc bnc" id="L129" title="All 2 branches missed.">		for (int i = 0; i &lt; adblQuintile.length; ++i)</span>
-<span class="nc" id="L130">			strDump +=</span>
-<span class="nc" id="L131">				new JulianDate ((int) rpll.invCumulative (adblQuintile[i])) + &quot; =&gt;&quot; +</span>
-<span class="nc" id="L132">				FormatUtil.FormatDouble (adblQuintile[i], 1, 2, 1.) + &quot; | &quot;;</span>
+<span class="fc bfc" id="L129" title="All 2 branches covered.">		for (int i = 0; i &lt; adblQuintile.length; ++i)</span>
+<span class="fc" id="L130">			strDump +=</span>
+<span class="fc" id="L131">				new JulianDate ((int) rpll.invCumulative (adblQuintile[i])) + &quot; =&gt;&quot; +</span>
+<span class="fc" id="L132">				FormatUtil.FormatDouble (adblQuintile[i], 1, 2, 1.) + &quot; | &quot;;</span>
 
-<span class="nc" id="L134">		double[] adblDensity = rpll.piecewiseDensities();</span>
+<span class="fc" id="L134">		double[] adblDensity = rpll.piecewiseDensities();</span>
 
-<span class="nc bnc" id="L136" title="All 2 branches missed.">		for (int i = 0; i &lt; adblDensity.length; ++i)</span>
-<span class="nc" id="L137">			strDump += FormatUtil.FormatDouble (adblDensity[i], 1, 9, 1.) + &quot;,&quot;;</span>
+<span class="fc bfc" id="L136" title="All 2 branches covered.">		for (int i = 0; i &lt; adblDensity.length; ++i)</span>
+<span class="fc" id="L137">			strDump += FormatUtil.FormatDouble (adblDensity[i], 1, 9, 1.) + &quot;,&quot;;</span>
 
-<span class="nc" id="L139">		System.out.println (strDump + &quot; ||&quot;);</span>
-<span class="nc" id="L140">	}</span>
+<span class="fc" id="L139">		System.out.println (strDump + &quot; ||&quot;);</span>
+<span class="fc" id="L140">	}</span>
 
 	public static final void main (
 		final String[] args)
 		throws Exception
 	{
-<span class="nc" id="L146">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L146">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L148">		System.out.println();</span>
+<span class="fc" id="L148">		System.out.println();</span>
 
-<span class="nc" id="L150">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L150">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L152">		System.out.println (&quot;\t||             FIELD                |                       CUMULATIVE PROBABILITY                    |               PROBABILITY DENSITY NODES              ||&quot;);</span>
+<span class="fc" id="L152">		System.out.println (&quot;\t||             FIELD                |                       CUMULATIVE PROBABILITY                    |               PROBABILITY DENSITY NODES              ||&quot;);</span>
 
-<span class="nc" id="L154">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L154">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L156">		RPLL (</span>
+<span class="fc" id="L156">		RPLL (</span>
 			&quot;Age (Months In Balance)         &quot;,
 			0.,
 			60.,
@@ -161,19 +161,19 @@ import org.drip.service.env.EnvManager;
 			new double[] {0.25, 0.50, 0.75}
 		);
 
-<span class="nc" id="L164">		DateRPLL (</span>
+<span class="fc" id="L164">		DateRPLL (</span>
 			&quot;Vintage                         &quot;,
-<span class="nc" id="L166">			DateUtil.CreateFromDDMMMYYYY (&quot;01-FEB-2007&quot;).julian(),</span>
-<span class="nc" id="L167">			DateUtil.CreateFromDDMMMYYYY (&quot;01-FEB-2015&quot;).julian(),</span>
+<span class="fc" id="L166">			DateUtil.CreateFromDDMMMYYYY (&quot;01-FEB-2007&quot;).julian(),</span>
+<span class="fc" id="L167">			DateUtil.CreateFromDDMMMYYYY (&quot;01-FEB-2015&quot;).julian(),</span>
 			new double[] {
-<span class="nc" id="L169">				DateUtil.CreateFromDDMMMYYYY (&quot;01-APR-2012&quot;).julian(),</span>
-<span class="nc" id="L170">				DateUtil.CreateFromDDMMMYYYY (&quot;01-MAR-2013&quot;).julian(),</span>
-<span class="nc" id="L171">				DateUtil.CreateFromDDMMMYYYY (&quot;01-FEB-2014&quot;).julian()</span>
+<span class="fc" id="L169">				DateUtil.CreateFromDDMMMYYYY (&quot;01-APR-2012&quot;).julian(),</span>
+<span class="fc" id="L170">				DateUtil.CreateFromDDMMMYYYY (&quot;01-MAR-2013&quot;).julian(),</span>
+<span class="fc" id="L171">				DateUtil.CreateFromDDMMMYYYY (&quot;01-FEB-2014&quot;).julian()</span>
 			},
 			new double[] {0.25, 0.50, 0.75}
 		);
 
-<span class="nc" id="L176">		RPLL (</span>
+<span class="fc" id="L176">		RPLL (</span>
 			&quot;Original Principal ('000s)      &quot;,
 			0.5,
 			35.,
@@ -181,7 +181,7 @@ import org.drip.service.env.EnvManager;
 			new double[] {0.25, 0.50, 0.75}
 		);
 
-<span class="nc" id="L184">		RPLL (</span>
+<span class="fc" id="L184">		RPLL (</span>
 			&quot;Monthly Gross Income ('000s)    &quot;,
 			0.25,
 			725.549,
@@ -189,7 +189,7 @@ import org.drip.service.env.EnvManager;
 			new double[] {0.25, 0.50, 0.75}
 		);
 
-<span class="nc" id="L192">		RPLL (</span>
+<span class="fc" id="L192">		RPLL (</span>
 			&quot;Coupon (%)                      &quot;,
 			5.3,
 			29.,
@@ -197,7 +197,7 @@ import org.drip.service.env.EnvManager;
 			new double[] {0.25, 0.50, 0.75}
 		);
 
-<span class="nc" id="L200">		RPLL (</span>
+<span class="fc" id="L200">		RPLL (</span>
 			&quot;FICO At Origination             &quot;,
 			612.,
 			847.,
@@ -205,7 +205,7 @@ import org.drip.service.env.EnvManager;
 			new double[] {0.25, 0.50, 0.75}
 		);
 
-<span class="nc" id="L208">		RPLL (</span>
+<span class="fc" id="L208">		RPLL (</span>
 			&quot;DTI ex Mortgage (%)             &quot;,
 			0.,
 			30.,
@@ -213,7 +213,7 @@ import org.drip.service.env.EnvManager;
 			new double[] {0.25, 0.50, 0.75}
 		);
 
-<span class="nc" id="L216">		RPLL (</span>
+<span class="fc" id="L216">		RPLL (</span>
 			&quot;Total Borrower Accounts         &quot;,
 			1.,
 			162.,
@@ -221,7 +221,7 @@ import org.drip.service.env.EnvManager;
 			new double[] {0.25, 0.50, 0.75}
 		);
 
-<span class="nc" id="L224">		RPLL (</span>
+<span class="fc" id="L224">		RPLL (</span>
 			&quot;Revolving Utilization Rate (%)  &quot;,
 			0.,
 			892.,
@@ -229,7 +229,7 @@ import org.drip.service.env.EnvManager;
 			new double[] {0.25, 0.50, 0.75}
 		);
 
-<span class="nc" id="L232">		RPLL (</span>
+<span class="fc" id="L232">		RPLL (</span>
 			&quot;Inquiries in Last 6 Months      &quot;,
 			0.,
 			33.,
@@ -237,7 +237,7 @@ import org.drip.service.env.EnvManager;
 			new double[] {0.75}
 		);
 
-<span class="nc" id="L240">		RPLL (</span>
+<span class="fc" id="L240">		RPLL (</span>
 			&quot;Months Since Last Delinquency   &quot;,
 			0.,
 			188.,
@@ -245,7 +245,7 @@ import org.drip.service.env.EnvManager;
 			new double[] {0.25, 0.50, 0.75}
 		);
 
-<span class="nc" id="L248">		RPLL (</span>
+<span class="fc" id="L248">		RPLL (</span>
 			&quot;Months Since Last Public Record &quot;,
 			0.,
 			129.,
@@ -253,7 +253,7 @@ import org.drip.service.env.EnvManager;
 			new double[] {0.25, 0.50, 0.75}
 		);
 
-<span class="nc" id="L256">		RPLL (</span>
+<span class="fc" id="L256">		RPLL (</span>
 			&quot;Total Open Credit Lines         &quot;,
 			0.,
 			90.,
@@ -261,7 +261,7 @@ import org.drip.service.env.EnvManager;
 			new double[] {0.25, 0.50, 0.75}
 		);
 
-<span class="nc" id="L264">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
-<span class="nc" id="L265">	}</span>
+<span class="fc" id="L264">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L265">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

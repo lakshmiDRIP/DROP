@@ -516,43 +516,43 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 		final boolean bAsPrice)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L519" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblStrike) ||</span>
-<span class="nc bnc" id="L520" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblUnderlier) ||</span>
-<span class="nc bnc" id="L521" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (dblInitialVolatility) ||</span>
-<span class="nc bnc" id="L522" title="All 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (dblTimeToExpiry) ||</span>
-<span class="nc bnc" id="L523" title="All 2 branches missed.">						!org.drip.quant.common.NumberUtil.IsValid (dblRiskFreeRate))</span>
+<span class="pc bpc" id="L519" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblStrike) ||</span>
+<span class="pc bpc" id="L520" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblUnderlier) ||</span>
+<span class="pc bpc" id="L521" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (dblInitialVolatility) ||</span>
+<span class="pc bpc" id="L522" title="1 of 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (dblTimeToExpiry) ||</span>
+<span class="pc bpc" id="L523" title="1 of 2 branches missed.">						!org.drip.quant.common.NumberUtil.IsValid (dblRiskFreeRate))</span>
 <span class="nc" id="L524">			throw new java.lang.Exception (&quot;HestonStochasticVolatilityAlgorithm::payoff =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L526">		org.drip.quant.fourier.RotationCountPhaseTracker rcpt1 =</span>
+<span class="fc" id="L526">		org.drip.quant.fourier.RotationCountPhaseTracker rcpt1 =</span>
 			org.drip.quant.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_PHASE_TRACKER_ROTATION_COUNT ==
-<span class="nc bnc" id="L528" title="All 2 branches missed.">				_fphp.phaseTrackerType() ? new org.drip.quant.fourier.RotationCountPhaseTracker() : null;</span>
+<span class="pc bpc" id="L528" title="1 of 2 branches missed.">				_fphp.phaseTrackerType() ? new org.drip.quant.fourier.RotationCountPhaseTracker() : null;</span>
 
-<span class="nc" id="L530">		org.drip.quant.fourier.RotationCountPhaseTracker rcpt2 =</span>
+<span class="fc" id="L530">		org.drip.quant.fourier.RotationCountPhaseTracker rcpt2 =</span>
 			org.drip.quant.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_PHASE_TRACKER_ROTATION_COUNT ==
-<span class="nc bnc" id="L532" title="All 2 branches missed.">				_fphp.phaseTrackerType() ? new org.drip.quant.fourier.RotationCountPhaseTracker() : null;</span>
+<span class="pc bpc" id="L532" title="1 of 2 branches missed.">				_fphp.phaseTrackerType() ? new org.drip.quant.fourier.RotationCountPhaseTracker() : null;</span>
 
-<span class="nc" id="L534">		double dblA = _fphp.kappa() * _fphp.theta();</span>
+<span class="fc" id="L534">		double dblA = _fphp.kappa() * _fphp.theta();</span>
 
-<span class="nc" id="L536">		double dblB2 = _fphp.kappa() + _fphp.lambda();</span>
+<span class="fc" id="L536">		double dblB2 = _fphp.kappa() + _fphp.lambda();</span>
 
-<span class="nc" id="L538">		double dblB1 = dblB2 - _fphp.rho() * _fphp.sigma();</span>
+<span class="fc" id="L538">		double dblB1 = dblB2 - _fphp.rho() * _fphp.sigma();</span>
 
-<span class="nc" id="L540">		double dblDF = java.lang.Math.exp (-1. * dblRiskFreeRate * dblTimeToExpiry);</span>
+<span class="fc" id="L540">		double dblDF = java.lang.Math.exp (-1. * dblRiskFreeRate * dblTimeToExpiry);</span>
 
-<span class="nc" id="L542">		int i = 0;</span>
-<span class="nc" id="L543">		double dblU1 = 0.5;</span>
-<span class="nc" id="L544">		double dblU2 = -0.5;</span>
-<span class="nc" id="L545">		double dblCallProb1 = 0.;</span>
-<span class="nc" id="L546">		double dblCallProb2 = 0.;</span>
-<span class="nc" id="L547">		double dblPreviousPhase = 0.;</span>
-<span class="nc bnc" id="L548" title="All 2 branches missed.">		double dblSpot = bIsForward ? dblUnderlier * dblDF : dblUnderlier;</span>
+<span class="fc" id="L542">		int i = 0;</span>
+<span class="fc" id="L543">		double dblU1 = 0.5;</span>
+<span class="fc" id="L544">		double dblU2 = -0.5;</span>
+<span class="fc" id="L545">		double dblCallProb1 = 0.;</span>
+<span class="fc" id="L546">		double dblCallProb2 = 0.;</span>
+<span class="fc" id="L547">		double dblPreviousPhase = 0.;</span>
+<span class="fc bfc" id="L548" title="All 2 branches covered.">		double dblSpot = bIsForward ? dblUnderlier * dblDF : dblUnderlier;</span>
 
-<span class="nc bnc" id="L550" title="All 2 branches missed.">		for (double dblFreq = FOURIER_FREQ_INIT; dblFreq &lt;= FOURIER_FREQ_FINAL; dblFreq +=</span>
-<span class="nc" id="L551">			FOURIER_FREQ_INCREMENT, ++i) {</span>
-<span class="nc" id="L552">			PhaseCorrectedF pcf1 = payoffTransform (dblStrike, dblTimeToExpiry, dblRiskFreeRate, dblSpot,</span>
+<span class="fc bfc" id="L550" title="All 2 branches covered.">		for (double dblFreq = FOURIER_FREQ_INIT; dblFreq &lt;= FOURIER_FREQ_FINAL; dblFreq +=</span>
+<span class="fc" id="L551">			FOURIER_FREQ_INCREMENT, ++i) {</span>
+<span class="fc" id="L552">			PhaseCorrectedF pcf1 = payoffTransform (dblStrike, dblTimeToExpiry, dblRiskFreeRate, dblSpot,</span>
 				dblInitialVolatility, dblA, dblFreq, dblB1, dblU1, rcpt1);
 
-<span class="nc bnc" id="L555" title="All 2 branches missed.">			if (null != rcpt1) {</span>
+<span class="pc bpc" id="L555" title="1 of 2 branches missed.">			if (null != rcpt1) {</span>
 <span class="nc bnc" id="L556" title="All 2 branches missed.">				if (0 == i)</span>
 <span class="nc" id="L557">					dblPreviousPhase = rcpt1.getPreviousPhase();</span>
 <span class="nc bnc" id="L558" title="All 2 branches missed.">				else if (1 == i) {</span>
@@ -574,10 +574,10 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 				}
 			}
 
-<span class="nc" id="L577">			PhaseCorrectedF pcf2 = payoffTransform (dblStrike, dblTimeToExpiry, dblRiskFreeRate, dblSpot,</span>
+<span class="fc" id="L577">			PhaseCorrectedF pcf2 = payoffTransform (dblStrike, dblTimeToExpiry, dblRiskFreeRate, dblSpot,</span>
 				dblInitialVolatility, dblA, dblFreq, dblB2, dblU2, rcpt2);
 
-<span class="nc bnc" id="L580" title="All 2 branches missed.">			if (null != rcpt2) {</span>
+<span class="pc bpc" id="L580" title="1 of 2 branches missed.">			if (null != rcpt2) {</span>
 <span class="nc bnc" id="L581" title="All 2 branches missed.">				if (0 == i)</span>
 <span class="nc" id="L582">					dblPreviousPhase = rcpt2.getPreviousPhase();</span>
 <span class="nc bnc" id="L583" title="All 2 branches missed.">				else if (1 == i) {</span>
@@ -599,19 +599,19 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 				}
 			}
 
-<span class="nc" id="L602">			dblCallProb1 += pcf1._cnF.real() * FOURIER_FREQ_INCREMENT;</span>
+<span class="fc" id="L602">			dblCallProb1 += pcf1._cnF.real() * FOURIER_FREQ_INCREMENT;</span>
 
-<span class="nc" id="L604">			dblCallProb2 += pcf2._cnF.real() * FOURIER_FREQ_INCREMENT;</span>
+<span class="fc" id="L604">			dblCallProb2 += pcf2._cnF.real() * FOURIER_FREQ_INCREMENT;</span>
 		}
 
-<span class="nc" id="L607">		double dblForward = dblSpot / dblDF;</span>
-<span class="nc" id="L608">		double dblPIScaler = 1. / java.lang.Math.PI;</span>
-<span class="nc" id="L609">		double dblCallPayoff = dblForward * (0.5 + dblCallProb1 * dblPIScaler) - dblStrike * (0.5 +</span>
+<span class="fc" id="L607">		double dblForward = dblSpot / dblDF;</span>
+<span class="fc" id="L608">		double dblPIScaler = 1. / java.lang.Math.PI;</span>
+<span class="fc" id="L609">		double dblCallPayoff = dblForward * (0.5 + dblCallProb1 * dblPIScaler) - dblStrike * (0.5 +</span>
 			dblCallProb2 * dblPIScaler);
 
-<span class="nc bnc" id="L612" title="All 4 branches missed.">		if (!bAsPrice) return bIsPut ? dblCallPayoff + dblStrike - dblForward : dblCallPayoff;</span>
+<span class="pc bpc" id="L612" title="3 of 4 branches missed.">		if (!bAsPrice) return bIsPut ? dblCallPayoff + dblStrike - dblForward : dblCallPayoff;</span>
 
-<span class="nc bnc" id="L614" title="All 2 branches missed.">		return bIsPut ? dblDF * (dblCallPayoff + dblStrike - dblForward) : dblDF * dblCallPayoff;</span>
+<span class="fc bfc" id="L614" title="All 2 branches covered.">		return bIsPut ? dblDF * (dblCallPayoff + dblStrike - dblForward) : dblDF * dblCallPayoff;</span>
 	}
 
 	@Override public org.drip.pricer.option.Greeks greeks (
@@ -623,43 +623,43 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 		final boolean bIsForward,
 		final double dblInitialVolatility)
 	{
-<span class="nc bnc" id="L626" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblStrike) ||</span>
-<span class="nc bnc" id="L627" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblUnderlier) ||</span>
-<span class="nc bnc" id="L628" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (dblInitialVolatility) ||</span>
-<span class="nc bnc" id="L629" title="All 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (dblTimeToExpiry) ||</span>
-<span class="nc bnc" id="L630" title="All 2 branches missed.">						!org.drip.quant.common.NumberUtil.IsValid (dblRiskFreeRate))</span>
+<span class="pc bpc" id="L626" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblStrike) ||</span>
+<span class="pc bpc" id="L627" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblUnderlier) ||</span>
+<span class="pc bpc" id="L628" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (dblInitialVolatility) ||</span>
+<span class="pc bpc" id="L629" title="1 of 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (dblTimeToExpiry) ||</span>
+<span class="pc bpc" id="L630" title="1 of 2 branches missed.">						!org.drip.quant.common.NumberUtil.IsValid (dblRiskFreeRate))</span>
 <span class="nc" id="L631">			return null;</span>
 
-<span class="nc" id="L633">		org.drip.quant.fourier.RotationCountPhaseTracker rcpt1 =</span>
+<span class="fc" id="L633">		org.drip.quant.fourier.RotationCountPhaseTracker rcpt1 =</span>
 			org.drip.quant.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_PHASE_TRACKER_ROTATION_COUNT ==
-<span class="nc bnc" id="L635" title="All 2 branches missed.">				_fphp.phaseTrackerType() ? new org.drip.quant.fourier.RotationCountPhaseTracker() : null;</span>
+<span class="pc bpc" id="L635" title="1 of 2 branches missed.">				_fphp.phaseTrackerType() ? new org.drip.quant.fourier.RotationCountPhaseTracker() : null;</span>
 
-<span class="nc" id="L637">		org.drip.quant.fourier.RotationCountPhaseTracker rcpt2 =</span>
+<span class="fc" id="L637">		org.drip.quant.fourier.RotationCountPhaseTracker rcpt2 =</span>
 			org.drip.quant.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_PHASE_TRACKER_ROTATION_COUNT ==
-<span class="nc bnc" id="L639" title="All 2 branches missed.">				_fphp.phaseTrackerType() ? new org.drip.quant.fourier.RotationCountPhaseTracker() : null;</span>
+<span class="pc bpc" id="L639" title="1 of 2 branches missed.">				_fphp.phaseTrackerType() ? new org.drip.quant.fourier.RotationCountPhaseTracker() : null;</span>
 
-<span class="nc" id="L641">		double dblA = _fphp.kappa() * _fphp.theta();</span>
+<span class="fc" id="L641">		double dblA = _fphp.kappa() * _fphp.theta();</span>
 
-<span class="nc" id="L643">		double dblB2 = _fphp.kappa() + _fphp.lambda();</span>
+<span class="fc" id="L643">		double dblB2 = _fphp.kappa() + _fphp.lambda();</span>
 
-<span class="nc" id="L645">		double dblB1 = dblB2 - _fphp.rho() * _fphp.sigma();</span>
+<span class="fc" id="L645">		double dblB1 = dblB2 - _fphp.rho() * _fphp.sigma();</span>
 
-<span class="nc" id="L647">		double dblDF = java.lang.Math.exp (-1. * dblRiskFreeRate * dblTimeToExpiry);</span>
+<span class="fc" id="L647">		double dblDF = java.lang.Math.exp (-1. * dblRiskFreeRate * dblTimeToExpiry);</span>
 
-<span class="nc" id="L649">		int i = 0;</span>
-<span class="nc" id="L650">		double dblU1 = 0.5;</span>
-<span class="nc" id="L651">		double dblU2 = -0.5;</span>
-<span class="nc" id="L652">		double dblCallProb1 = 0.;</span>
-<span class="nc" id="L653">		double dblCallProb2 = 0.;</span>
-<span class="nc" id="L654">		double dblPreviousPhase = 0.;</span>
-<span class="nc bnc" id="L655" title="All 2 branches missed.">		double dblSpot = bIsForward ? dblUnderlier * dblDF : dblUnderlier;</span>
+<span class="fc" id="L649">		int i = 0;</span>
+<span class="fc" id="L650">		double dblU1 = 0.5;</span>
+<span class="fc" id="L651">		double dblU2 = -0.5;</span>
+<span class="fc" id="L652">		double dblCallProb1 = 0.;</span>
+<span class="fc" id="L653">		double dblCallProb2 = 0.;</span>
+<span class="fc" id="L654">		double dblPreviousPhase = 0.;</span>
+<span class="fc bfc" id="L655" title="All 2 branches covered.">		double dblSpot = bIsForward ? dblUnderlier * dblDF : dblUnderlier;</span>
 
-<span class="nc bnc" id="L657" title="All 2 branches missed.">		for (double dblFreq = FOURIER_FREQ_INIT; dblFreq &lt;= FOURIER_FREQ_FINAL; dblFreq +=</span>
-<span class="nc" id="L658">			FOURIER_FREQ_INCREMENT, ++i) {</span>
-<span class="nc" id="L659">			PhaseCorrectedF pcf1 = payoffTransform (dblStrike, dblTimeToExpiry, dblRiskFreeRate, dblSpot,</span>
+<span class="fc bfc" id="L657" title="All 2 branches covered.">		for (double dblFreq = FOURIER_FREQ_INIT; dblFreq &lt;= FOURIER_FREQ_FINAL; dblFreq +=</span>
+<span class="fc" id="L658">			FOURIER_FREQ_INCREMENT, ++i) {</span>
+<span class="fc" id="L659">			PhaseCorrectedF pcf1 = payoffTransform (dblStrike, dblTimeToExpiry, dblRiskFreeRate, dblSpot,</span>
 				dblInitialVolatility, dblA, dblFreq, dblB1, dblU1, rcpt1);
 
-<span class="nc bnc" id="L662" title="All 2 branches missed.">			if (null != rcpt1) {</span>
+<span class="pc bpc" id="L662" title="1 of 2 branches missed.">			if (null != rcpt1) {</span>
 <span class="nc bnc" id="L663" title="All 2 branches missed.">				if (0 == i)</span>
 <span class="nc" id="L664">					dblPreviousPhase = rcpt1.getPreviousPhase();</span>
 <span class="nc bnc" id="L665" title="All 2 branches missed.">				else if (1 == i) {</span>
@@ -678,10 +678,10 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 				}
 			}
 
-<span class="nc" id="L681">			PhaseCorrectedF pcf2 = payoffTransform (dblStrike, dblTimeToExpiry, dblRiskFreeRate, dblSpot,</span>
+<span class="fc" id="L681">			PhaseCorrectedF pcf2 = payoffTransform (dblStrike, dblTimeToExpiry, dblRiskFreeRate, dblSpot,</span>
 				dblInitialVolatility, dblA, dblFreq, dblB2, dblU2, rcpt2);
 
-<span class="nc bnc" id="L684" title="All 2 branches missed.">			if (null != rcpt2) {</span>
+<span class="pc bpc" id="L684" title="1 of 2 branches missed.">			if (null != rcpt2) {</span>
 <span class="nc bnc" id="L685" title="All 2 branches missed.">				if (0 == i)</span>
 <span class="nc" id="L686">					dblPreviousPhase = rcpt2.getPreviousPhase();</span>
 <span class="nc bnc" id="L687" title="All 2 branches missed.">				else if (1 == i) {</span>
@@ -700,22 +700,22 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 				}
 			}
 
-<span class="nc" id="L703">			dblCallProb1 += pcf1._cnF.real() * FOURIER_FREQ_INCREMENT;</span>
+<span class="fc" id="L703">			dblCallProb1 += pcf1._cnF.real() * FOURIER_FREQ_INCREMENT;</span>
 
-<span class="nc" id="L705">			dblCallProb2 += pcf2._cnF.real() * FOURIER_FREQ_INCREMENT;</span>
+<span class="fc" id="L705">			dblCallProb2 += pcf2._cnF.real() * FOURIER_FREQ_INCREMENT;</span>
 		}
 
-<span class="nc" id="L708">		double dblForward = dblSpot / dblDF;</span>
-<span class="nc" id="L709">		double dblPIScaler = 1. / java.lang.Math.PI;</span>
-<span class="nc" id="L710">		dblCallProb1 = 0.5 + dblCallProb1 * dblPIScaler;</span>
-<span class="nc" id="L711">		dblCallProb2 = 0.5 + dblCallProb2 * dblPIScaler;</span>
-<span class="nc" id="L712">		double dblATMCallPayoff = dblForward * (dblCallProb1 - dblCallProb2);</span>
-<span class="nc" id="L713">		double dblCallPrice = dblSpot * dblCallProb1 - dblStrike * dblDF * dblCallProb2;</span>
-<span class="nc" id="L714">		double dblExpectedCallPayoff = dblForward * dblCallProb1 - dblStrike * dblDF * dblCallProb2;</span>
+<span class="fc" id="L708">		double dblForward = dblSpot / dblDF;</span>
+<span class="fc" id="L709">		double dblPIScaler = 1. / java.lang.Math.PI;</span>
+<span class="fc" id="L710">		dblCallProb1 = 0.5 + dblCallProb1 * dblPIScaler;</span>
+<span class="fc" id="L711">		dblCallProb2 = 0.5 + dblCallProb2 * dblPIScaler;</span>
+<span class="fc" id="L712">		double dblATMCallPayoff = dblForward * (dblCallProb1 - dblCallProb2);</span>
+<span class="fc" id="L713">		double dblCallPrice = dblSpot * dblCallProb1 - dblStrike * dblDF * dblCallProb2;</span>
+<span class="fc" id="L714">		double dblExpectedCallPayoff = dblForward * dblCallProb1 - dblStrike * dblDF * dblCallProb2;</span>
 
 		try {
-<span class="nc bnc" id="L717" title="All 2 branches missed.">			if (!bIsPut)</span>
-<span class="nc" id="L718">				return new org.drip.pricer.option.Greeks (</span>
+<span class="fc bfc" id="L717" title="All 2 branches covered.">			if (!bIsPut)</span>
+<span class="fc" id="L718">				return new org.drip.pricer.option.Greeks (</span>
 					dblDF,
 					dblInitialVolatility,
 					dblExpectedCallPayoff,
@@ -737,9 +737,9 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 					java.lang.Double.NaN
 				);
 
-<span class="nc" id="L740">			double dblPutPriceFromParity = dblCallPrice + dblStrike * dblDF - dblSpot;</span>
+<span class="fc" id="L740">			double dblPutPriceFromParity = dblCallPrice + dblStrike * dblDF - dblSpot;</span>
 
-<span class="nc" id="L742">			return new org.drip.pricer.option.PutGreeks (</span>
+<span class="fc" id="L742">			return new org.drip.pricer.option.PutGreeks (</span>
 				dblDF,
 				dblInitialVolatility,
 				dblExpectedCallPayoff + dblStrike - dblSpot,

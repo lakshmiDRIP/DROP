@@ -123,11 +123,11 @@ public class BoundedPortfolioConstructionParameters extends
 		final java.lang.String strAssetID)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L126" title="All 2 branches missed.">		if (!_mapBounds.containsKey (strAssetID))</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">		if (!_mapBounds.containsKey (strAssetID))</span>
 <span class="nc" id="L127">			throw new java.lang.Exception</span>
 				(&quot;BoundedPortfolioConstructionParameters::lowerBound =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L130">		return _mapBounds.get (strAssetID).lower();</span>
+<span class="fc" id="L130">		return _mapBounds.get (strAssetID).lower();</span>
 	}
 
 	/**
@@ -144,11 +144,11 @@ public class BoundedPortfolioConstructionParameters extends
 		final java.lang.String strAssetID)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L147" title="All 2 branches missed.">		if (!_mapBounds.containsKey (strAssetID))</span>
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">		if (!_mapBounds.containsKey (strAssetID))</span>
 <span class="nc" id="L148">			throw new java.lang.Exception</span>
 				(&quot;BoundedPortfolioConstructionParameters::upperBound =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L151">		return _mapBounds.get (strAssetID).upper();</span>
+<span class="fc" id="L151">		return _mapBounds.get (strAssetID).upper();</span>
 	}
 
 	/**
@@ -246,7 +246,7 @@ public class BoundedPortfolioConstructionParameters extends
 
 <span class="fc" id="L247">		double dblCumulativeWeight = 0.;</span>
 <span class="fc" id="L248">		int iNumAsset = astrAssetID.length;</span>
-<span class="pc bpc" id="L249" title="1 of 2 branches missed.">		double[] adblStartingVariate = new double[iNumAsset + (bReturnsConstraintPresent ? 2 : 1)];</span>
+<span class="fc bfc" id="L249" title="All 2 branches covered.">		double[] adblStartingVariate = new double[iNumAsset + (bReturnsConstraintPresent ? 2 : 1)];</span>
 
 <span class="fc bfc" id="L251" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumAsset; ++i) {</span>
 <span class="fc" id="L252">			adblStartingVariate[i] = _mapBounds.get (astrAssetID[i]).lower();</span>
@@ -261,7 +261,7 @@ public class BoundedPortfolioConstructionParameters extends
 <span class="fc bfc" id="L261" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumAsset; ++i)</span>
 <span class="fc" id="L262">			adblStartingVariate[i] += dblWeightGap;</span>
 
-<span class="pc bpc" id="L264" title="1 of 2 branches missed.">		if (bReturnsConstraintPresent) adblStartingVariate[iNumAsset + 1] = 0.;</span>
+<span class="fc bfc" id="L264" title="All 2 branches covered.">		if (bReturnsConstraintPresent) adblStartingVariate[iNumAsset + 1] = 0.;</span>
 
 <span class="fc" id="L266">		adblStartingVariate[iNumAsset] = 0.;</span>
 <span class="fc" id="L267">		return adblStartingVariate;</span>

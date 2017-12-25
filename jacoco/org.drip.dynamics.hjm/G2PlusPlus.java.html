@@ -56,13 +56,13 @@ package org.drip.dynamics.hjm;
  */
 
 public class G2PlusPlus {
-<span class="nc" id="L59">	private double _dblA = java.lang.Double.NaN;</span>
-<span class="nc" id="L60">	private double _dblB = java.lang.Double.NaN;</span>
-<span class="nc" id="L61">	private double _dblEta = java.lang.Double.NaN;</span>
-<span class="nc" id="L62">	private double _dblRho = java.lang.Double.NaN;</span>
-<span class="nc" id="L63">	private double _dblSigma = java.lang.Double.NaN;</span>
-<span class="nc" id="L64">	private org.drip.function.definition.R1ToR1 _auIFRInitial = null;</span>
-<span class="nc" id="L65">	private org.drip.sequence.random.UnivariateSequenceGenerator[] _aRSG = null;</span>
+<span class="fc" id="L59">	private double _dblA = java.lang.Double.NaN;</span>
+<span class="fc" id="L60">	private double _dblB = java.lang.Double.NaN;</span>
+<span class="fc" id="L61">	private double _dblEta = java.lang.Double.NaN;</span>
+<span class="fc" id="L62">	private double _dblRho = java.lang.Double.NaN;</span>
+<span class="fc" id="L63">	private double _dblSigma = java.lang.Double.NaN;</span>
+<span class="fc" id="L64">	private org.drip.function.definition.R1ToR1 _auIFRInitial = null;</span>
+<span class="fc" id="L65">	private org.drip.sequence.random.UnivariateSequenceGenerator[] _aRSG = null;</span>
 
 	/**
 	 * G2PlusPlus Constructor
@@ -87,15 +87,15 @@ public class G2PlusPlus {
 		final double dblRho,
 		final org.drip.function.definition.R1ToR1 auIFRInitial)
 		throws java.lang.Exception
-<span class="nc" id="L90">	{</span>
-<span class="nc bnc" id="L91" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblSigma = dblSigma) ||</span>
-<span class="nc bnc" id="L92" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblA = dblA) ||</span>
-<span class="nc bnc" id="L93" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblEta = dblEta) ||</span>
-<span class="nc bnc" id="L94" title="All 6 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblB = dblB) || null == (_aRSG = aRSG) || 2</span>
-<span class="nc bnc" id="L95" title="All 4 branches missed.">						!= _aRSG.length || !org.drip.quant.common.NumberUtil.IsValid (_dblRho = dblRho) ||</span>
+<span class="fc" id="L90">	{</span>
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblSigma = dblSigma) ||</span>
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblA = dblA) ||</span>
+<span class="pc bpc" id="L93" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblEta = dblEta) ||</span>
+<span class="pc bpc" id="L94" title="3 of 6 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblB = dblB) || null == (_aRSG = aRSG) || 2</span>
+<span class="pc bpc" id="L95" title="2 of 4 branches missed.">						!= _aRSG.length || !org.drip.quant.common.NumberUtil.IsValid (_dblRho = dblRho) ||</span>
 							null == (_auIFRInitial = auIFRInitial))
 <span class="nc" id="L97">			throw new java.lang.Exception (&quot;G2PlusPlus ctr: Invalid Inputs&quot;);</span>
-<span class="nc" id="L98">	}</span>
+<span class="fc" id="L98">	}</span>
 
 	/**
 	 * Retrieve Sigma
@@ -190,15 +190,15 @@ public class G2PlusPlus {
 		final int iViewDate)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L193" title="All 2 branches missed.">		if (iSpotDate &gt; iViewDate) throw new java.lang.Exception (&quot;G2PlusPlus::phi =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L193" title="1 of 2 branches missed.">		if (iSpotDate &gt; iViewDate) throw new java.lang.Exception (&quot;G2PlusPlus::phi =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L195">		double dblSpotViewDCF = 1. * (iViewDate - iSpotDate) / 365.25;</span>
+<span class="fc" id="L195">		double dblSpotViewDCF = 1. * (iViewDate - iSpotDate) / 365.25;</span>
 
-<span class="nc" id="L197">		double dblFactor1Phi = _dblSigma / _dblA * (1. - java.lang.Math.exp (-1. * _dblA * dblSpotViewDCF));</span>
+<span class="fc" id="L197">		double dblFactor1Phi = _dblSigma / _dblA * (1. - java.lang.Math.exp (-1. * _dblA * dblSpotViewDCF));</span>
 
-<span class="nc" id="L199">		double dblFactor2Phi = _dblEta / _dblB * (1. - java.lang.Math.exp (-1. * _dblB * dblSpotViewDCF));</span>
+<span class="fc" id="L199">		double dblFactor2Phi = _dblEta / _dblB * (1. - java.lang.Math.exp (-1. * _dblB * dblSpotViewDCF));</span>
 
-<span class="nc" id="L201">		return _auIFRInitial.evaluate (iViewDate) + 0.5 * dblFactor1Phi * dblFactor1Phi + 0.5 * dblFactor2Phi</span>
+<span class="fc" id="L201">		return _auIFRInitial.evaluate (iViewDate) + 0.5 * dblFactor1Phi * dblFactor1Phi + 0.5 * dblFactor2Phi</span>
 			* dblFactor2Phi;
 	}
 
@@ -222,13 +222,13 @@ public class G2PlusPlus {
 		final int iSpotTimeIncrement)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L225" title="All 4 branches missed.">		if (iSpotDate &gt; iViewDate || !org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
+<span class="pc bpc" id="L225" title="2 of 4 branches missed.">		if (iSpotDate &gt; iViewDate || !org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
 <span class="nc" id="L226">			throw new java.lang.Exception (&quot;G2PlusPlus::deltaX =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L228">		double dblAnnualizedIncrement = 1. * iSpotTimeIncrement / 365.25;</span>
+<span class="fc" id="L228">		double dblAnnualizedIncrement = 1. * iSpotTimeIncrement / 365.25;</span>
 
-<span class="nc" id="L230">		return -1. * _dblA * dblX * dblAnnualizedIncrement + _dblSigma * java.lang.Math.sqrt</span>
-<span class="nc" id="L231">			(dblAnnualizedIncrement) * _aRSG[0].random();</span>
+<span class="fc" id="L230">		return -1. * _dblA * dblX * dblAnnualizedIncrement + _dblSigma * java.lang.Math.sqrt</span>
+<span class="fc" id="L231">			(dblAnnualizedIncrement) * _aRSG[0].random();</span>
 	}
 
 	/**
@@ -251,13 +251,13 @@ public class G2PlusPlus {
 		final int iSpotTimeIncrement)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L254" title="All 4 branches missed.">		if (iSpotDate &gt; iViewDate || !org.drip.quant.common.NumberUtil.IsValid (dblY))</span>
+<span class="pc bpc" id="L254" title="2 of 4 branches missed.">		if (iSpotDate &gt; iViewDate || !org.drip.quant.common.NumberUtil.IsValid (dblY))</span>
 <span class="nc" id="L255">			throw new java.lang.Exception (&quot;G2PlusPlus::deltaY =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L257">		double dblAnnualizedIncrement = 1. * iSpotTimeIncrement / 365.25;</span>
+<span class="fc" id="L257">		double dblAnnualizedIncrement = 1. * iSpotTimeIncrement / 365.25;</span>
 
-<span class="nc" id="L259">		return -1. * _dblB * dblY * dblAnnualizedIncrement + _dblEta * java.lang.Math.sqrt</span>
-<span class="nc" id="L260">			(dblAnnualizedIncrement) * _aRSG[1].random();</span>
+<span class="fc" id="L259">		return -1. * _dblB * dblY * dblAnnualizedIncrement + _dblEta * java.lang.Math.sqrt</span>
+<span class="fc" id="L260">			(dblAnnualizedIncrement) * _aRSG[1].random();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

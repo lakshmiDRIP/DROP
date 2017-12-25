@@ -67,9 +67,9 @@ package org.drip.state.curve;
  */
 
 public class ZeroRateDiscountCurve extends org.drip.state.discount.MergedDiscountForwardCurve {
-<span class="nc" id="L70">	private org.drip.spline.grid.Span _span = null;</span>
-<span class="nc" id="L71">	private double _dblRightFlatForwardRate = java.lang.Double.NaN;</span>
-<span class="nc" id="L72">	private org.drip.analytics.input.CurveConstructionInputSet _ccis = null;</span>
+<span class="fc" id="L70">	private org.drip.spline.grid.Span _span = null;</span>
+<span class="fc" id="L71">	private double _dblRightFlatForwardRate = java.lang.Double.NaN;</span>
+<span class="fc" id="L72">	private org.drip.analytics.input.CurveConstructionInputSet _ccis = null;</span>
 
 	private ZeroRateDiscountCurve shiftManifestMeasure (
 		final double[] adblShiftedManifestMeasure)
@@ -91,10 +91,10 @@ public class ZeroRateDiscountCurve extends org.drip.state.discount.MergedDiscoun
 		final org.drip.spline.grid.Span span)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L94">		super ((int) span.left(), strCurrency, null);</span>
+<span class="fc" id="L94">		super ((int) span.left(), strCurrency, null);</span>
 
-<span class="nc" id="L96">		_dblRightFlatForwardRate = (_span = span).calcResponseValue (_span.right());</span>
-<span class="nc" id="L97">	}</span>
+<span class="fc" id="L96">		_dblRightFlatForwardRate = (_span = span).calcResponseValue (_span.right());</span>
+<span class="fc" id="L97">	}</span>
 
 	@Override public double df (
 		final int iDate)
@@ -124,9 +124,9 @@ public class ZeroRateDiscountCurve extends org.drip.state.discount.MergedDiscoun
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L127" title="All 2 branches missed.">		if (iDate &lt;= _span.left()) return 1.;</span>
+<span class="pc bpc" id="L127" title="1 of 2 branches missed.">		if (iDate &lt;= _span.left()) return 1.;</span>
 
-<span class="nc bnc" id="L129" title="All 2 branches missed.">		return iDate &lt;= _span.right() ? _span.calcResponseValue (iDate) : _dblRightFlatForwardRate;</span>
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">		return iDate &lt;= _span.right() ? _span.calcResponseValue (iDate) : _dblRightFlatForwardRate;</span>
 	}
 
 	@Override public org.drip.state.forward.ForwardRateEstimator forwardRateEstimator (

@@ -89,25 +89,25 @@ public class BlackScholesAlgorithm extends org.drip.pricer.option.FokkerPlanckGe
 
 <span class="fc" id="L90">		double dblD1 = java.lang.Double.NaN;</span>
 <span class="fc" id="L91">		double dblD2 = java.lang.Double.NaN;</span>
-<span class="pc bpc" id="L92" title="1 of 2 branches missed.">		double dblForward = bIsForward ? dblUnderlier : dblUnderlier / dblDF;</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">		double dblForward = bIsForward ? dblUnderlier : dblUnderlier / dblDF;</span>
 
-<span class="pc bpc" id="L94" title="1 of 2 branches missed.">		if (0. != dblVolatility) {</span>
+<span class="fc bfc" id="L94" title="All 2 branches covered.">		if (0. != dblVolatility) {</span>
 <span class="fc" id="L95">			dblD1 = (java.lang.Math.log (dblForward / dblStrike) + dblTimeToExpiry * (dblRiskFreeRate + (0.5</span>
 				* dblVolatility * dblVolatility))) / dblD1D2Diff;
 
 <span class="fc" id="L98">			dblD2 = dblD1 - dblD1D2Diff;</span>
 		} else {
-<span class="nc bnc" id="L100" title="All 2 branches missed.">			dblD1 = dblForward &gt; dblStrike ? java.lang.Double.POSITIVE_INFINITY :</span>
+<span class="fc bfc" id="L100" title="All 2 branches covered.">			dblD1 = dblForward &gt; dblStrike ? java.lang.Double.POSITIVE_INFINITY :</span>
 				java.lang.Double.NEGATIVE_INFINITY;
-<span class="nc" id="L102">			dblD2 = dblD1;</span>
+<span class="fc" id="L102">			dblD2 = dblD1;</span>
 		}
 
 <span class="fc" id="L105">		double dblCallPayoff = dblForward * org.drip.measure.gaussian.NormalQuadrature.CDF (dblD1) - dblStrike *</span>
 <span class="fc" id="L106">			org.drip.measure.gaussian.NormalQuadrature.CDF (dblD2);</span>
 
-<span class="pc bpc" id="L108" title="2 of 4 branches missed.">		if (!bAsPrice) return bIsPut ? dblCallPayoff + dblStrike - dblForward : dblCallPayoff;</span>
+<span class="pc bpc" id="L108" title="1 of 4 branches missed.">		if (!bAsPrice) return bIsPut ? dblCallPayoff + dblStrike - dblForward : dblCallPayoff;</span>
 
-<span class="nc bnc" id="L110" title="All 2 branches missed.">		return bIsPut ? dblDF * (dblCallPayoff + dblStrike - dblForward) : dblDF * dblCallPayoff;</span>
+<span class="fc bfc" id="L110" title="All 2 branches covered.">		return bIsPut ? dblDF * (dblCallPayoff + dblStrike - dblForward) : dblDF * dblCallPayoff;</span>
 	}
 
 	@Override public org.drip.pricer.option.Greeks greeks (
@@ -145,7 +145,7 @@ public class BlackScholesAlgorithm extends org.drip.pricer.option.FokkerPlanckGe
 <span class="fc" id="L145">		double dblATMCallProb1 = java.lang.Double.NaN;</span>
 <span class="fc" id="L146">		double dblATMCallProb2 = java.lang.Double.NaN;</span>
 <span class="fc" id="L147">		double dblD1D2Diff = dblVolatility * dblTimeRoot;</span>
-<span class="pc bpc" id="L148" title="1 of 2 branches missed.">		double dblForward = bIsForward ? dblUnderlier : dblUnderlier / dblDF;</span>
+<span class="fc bfc" id="L148" title="All 2 branches covered.">		double dblForward = bIsForward ? dblUnderlier : dblUnderlier / dblDF;</span>
 
 <span class="fc" id="L150">		double dblATMD1 = dblTimeToExpiry * (dblRiskFreeRate + (0.5 * dblVolatility * dblVolatility)) /</span>
 			dblD1D2Diff;
@@ -193,7 +193,7 @@ public class BlackScholesAlgorithm extends org.drip.pricer.option.FokkerPlanckGe
 <span class="fc" id="L193">		double dblCallPrice = dblDF * dblExpectedCallPayoff;</span>
 
 		try {
-<span class="pc bpc" id="L196" title="1 of 2 branches missed.">			if (!bIsPut)</span>
+<span class="fc bfc" id="L196" title="All 2 branches covered.">			if (!bIsPut)</span>
 <span class="fc" id="L197">				return new org.drip.pricer.option.Greeks (</span>
 					dblDF,
 					dblVolatility,
@@ -216,11 +216,11 @@ public class BlackScholesAlgorithm extends org.drip.pricer.option.FokkerPlanckGe
 					dblUltima
 				);
 
-<span class="nc" id="L219">			double dblPutProb1 = org.drip.measure.gaussian.NormalQuadrature.CDF (-1. * dblD1);</span>
+<span class="fc" id="L219">			double dblPutProb1 = org.drip.measure.gaussian.NormalQuadrature.CDF (-1. * dblD1);</span>
 
-<span class="nc" id="L221">			double dblPutProb2 = org.drip.measure.gaussian.NormalQuadrature.CDF (-1. * dblD2);</span>
+<span class="fc" id="L221">			double dblPutProb2 = org.drip.measure.gaussian.NormalQuadrature.CDF (-1. * dblD2);</span>
 
-<span class="nc" id="L223">			return new org.drip.pricer.option.PutGreeks (</span>
+<span class="fc" id="L223">			return new org.drip.pricer.option.PutGreeks (</span>
 				dblDF,
 				dblVolatility,
 				dblExpectedCallPayoff + dblStrike - dblForward,

@@ -162,51 +162,51 @@ public class WireSurfaceStretch {
 	public org.drip.spline.grid.Span wireSpanYAnchor (
 		final double dblYAnchor)
 	{
-<span class="nc bnc" id="L165" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblYAnchor)) return null;</span>
+<span class="pc bpc" id="L165" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblYAnchor)) return null;</span>
 
-<span class="nc" id="L167">		int iSize = _mapWireSpan.size();</span>
+<span class="fc" id="L167">		int iSize = _mapWireSpan.size();</span>
 
-<span class="nc" id="L169">		int i = 0;</span>
-<span class="nc" id="L170">		double[] adblX = new double[iSize];</span>
-<span class="nc" id="L171">		double[] adblZ = new double[iSize];</span>
-<span class="nc" id="L172">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new</span>
+<span class="fc" id="L169">		int i = 0;</span>
+<span class="fc" id="L170">		double[] adblX = new double[iSize];</span>
+<span class="fc" id="L171">		double[] adblZ = new double[iSize];</span>
+<span class="fc" id="L172">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new</span>
 			org.drip.spline.params.SegmentCustomBuilderControl[iSize - 1];
 
-<span class="nc bnc" id="L175" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.Double, org.drip.spline.grid.Span&gt; me : _mapWireSpan.entrySet()) {</span>
-<span class="nc bnc" id="L176" title="All 2 branches missed.">			if (null == me) return null;</span>
+<span class="fc bfc" id="L175" title="All 2 branches covered.">		for (java.util.Map.Entry&lt;java.lang.Double, org.drip.spline.grid.Span&gt; me : _mapWireSpan.entrySet()) {</span>
+<span class="pc bpc" id="L176" title="1 of 2 branches missed.">			if (null == me) return null;</span>
 
-<span class="nc bnc" id="L178" title="All 2 branches missed.">			if (0 != i) aSCBC[i - 1] = _scbc;</span>
+<span class="fc bfc" id="L178" title="All 2 branches covered.">			if (0 != i) aSCBC[i - 1] = _scbc;</span>
 
-<span class="nc" id="L180">			adblX[i] = me.getKey();</span>
+<span class="fc" id="L180">			adblX[i] = me.getKey();</span>
 
-<span class="nc" id="L182">			org.drip.spline.grid.Span wireSpan = me.getValue();</span>
+<span class="fc" id="L182">			org.drip.spline.grid.Span wireSpan = me.getValue();</span>
 
-<span class="nc bnc" id="L184" title="All 2 branches missed.">			if (null == wireSpan) return null;</span>
+<span class="pc bpc" id="L184" title="1 of 2 branches missed.">			if (null == wireSpan) return null;</span>
 
 			try {
-<span class="nc" id="L187">				double dblLeftY = wireSpan.left();</span>
+<span class="fc" id="L187">				double dblLeftY = wireSpan.left();</span>
 
-<span class="nc" id="L189">				double dblRightY = wireSpan.right();</span>
+<span class="fc" id="L189">				double dblRightY = wireSpan.right();</span>
 
-<span class="nc bnc" id="L191" title="All 2 branches missed.">				if (dblYAnchor &lt;= dblLeftY)</span>
-<span class="nc" id="L192">					adblZ[i++] = wireSpan.calcResponseValue (dblLeftY);</span>
-<span class="nc bnc" id="L193" title="All 2 branches missed.">				else if (dblYAnchor &gt;= dblRightY)</span>
-<span class="nc" id="L194">					adblZ[i++] = wireSpan.calcResponseValue (dblRightY);</span>
+<span class="fc bfc" id="L191" title="All 2 branches covered.">				if (dblYAnchor &lt;= dblLeftY)</span>
+<span class="fc" id="L192">					adblZ[i++] = wireSpan.calcResponseValue (dblLeftY);</span>
+<span class="fc bfc" id="L193" title="All 2 branches covered.">				else if (dblYAnchor &gt;= dblRightY)</span>
+<span class="fc" id="L194">					adblZ[i++] = wireSpan.calcResponseValue (dblRightY);</span>
 				else
-<span class="nc" id="L196">					adblZ[i++] = wireSpan.calcResponseValue (dblYAnchor);</span>
+<span class="fc" id="L196">					adblZ[i++] = wireSpan.calcResponseValue (dblYAnchor);</span>
 <span class="nc" id="L197">			} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L198">				e.printStackTrace();</span>
 
 <span class="nc" id="L200">				return null;</span>
-<span class="nc" id="L201">			}</span>
-<span class="nc" id="L202">		}</span>
+<span class="fc" id="L201">			}</span>
+<span class="fc" id="L202">		}</span>
 
 		try {
-<span class="nc" id="L205">			return new org.drip.spline.grid.OverlappingStretchSpan</span>
+<span class="fc" id="L205">			return new org.drip.spline.grid.OverlappingStretchSpan</span>
 				(org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
-<span class="nc" id="L207">					(&quot;org.drip.spline.multidimensional.WireSurfaceStretch@&quot; +</span>
-<span class="nc" id="L208">						org.drip.quant.common.StringUtil.GUID(), adblX, adblZ, aSCBC, null,</span>
-<span class="nc" id="L209">							org.drip.spline.stretch.BoundarySettings.NaturalStandard(),</span>
+<span class="fc" id="L207">					(&quot;org.drip.spline.multidimensional.WireSurfaceStretch@&quot; +</span>
+<span class="fc" id="L208">						org.drip.quant.common.StringUtil.GUID(), adblX, adblZ, aSCBC, null,</span>
+<span class="fc" id="L209">							org.drip.spline.stretch.BoundarySettings.NaturalStandard(),</span>
 								org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE));
 <span class="nc" id="L211">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L212">			e.printStackTrace();</span>
@@ -226,46 +226,46 @@ public class WireSurfaceStretch {
 	public org.drip.spline.grid.Span wireSpanXAnchor (
 		final double dblXAnchor)
 	{
-<span class="nc bnc" id="L229" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblXAnchor)) return null;</span>
+<span class="pc bpc" id="L229" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblXAnchor)) return null;</span>
 
-<span class="nc" id="L231">		org.drip.spline.grid.Span spanPrev = null;</span>
-<span class="nc" id="L232">		org.drip.spline.grid.Span spanCurrent = null;</span>
-<span class="nc" id="L233">		double dblXAnchorPrev = java.lang.Double.NaN;</span>
-<span class="nc" id="L234">		double dblXAnchorCurrent = java.lang.Double.NaN;</span>
+<span class="fc" id="L231">		org.drip.spline.grid.Span spanPrev = null;</span>
+<span class="fc" id="L232">		org.drip.spline.grid.Span spanCurrent = null;</span>
+<span class="fc" id="L233">		double dblXAnchorPrev = java.lang.Double.NaN;</span>
+<span class="fc" id="L234">		double dblXAnchorCurrent = java.lang.Double.NaN;</span>
 
-<span class="nc bnc" id="L236" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.Double, org.drip.spline.grid.Span&gt; me : _mapWireSpan.entrySet()) {</span>
-<span class="nc bnc" id="L237" title="All 2 branches missed.">			if (null == me) return null;</span>
+<span class="fc bfc" id="L236" title="All 2 branches covered.">		for (java.util.Map.Entry&lt;java.lang.Double, org.drip.spline.grid.Span&gt; me : _mapWireSpan.entrySet()) {</span>
+<span class="pc bpc" id="L237" title="1 of 2 branches missed.">			if (null == me) return null;</span>
 
-<span class="nc" id="L239">			dblXAnchorCurrent = me.getKey();</span>
+<span class="fc" id="L239">			dblXAnchorCurrent = me.getKey();</span>
 
-<span class="nc" id="L241">			spanCurrent = me.getValue();</span>
+<span class="fc" id="L241">			spanCurrent = me.getValue();</span>
 
-<span class="nc bnc" id="L243" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblXAnchorPrev)) {</span>
-<span class="nc bnc" id="L244" title="All 2 branches missed.">				if (dblXAnchor &lt;= (dblXAnchorPrev = dblXAnchorCurrent)) return spanCurrent;</span>
+<span class="fc bfc" id="L243" title="All 2 branches covered.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblXAnchorPrev)) {</span>
+<span class="fc bfc" id="L244" title="All 2 branches covered.">				if (dblXAnchor &lt;= (dblXAnchorPrev = dblXAnchorCurrent)) return spanCurrent;</span>
 
-<span class="nc" id="L246">				spanPrev = spanCurrent;</span>
-<span class="nc" id="L247">				continue;</span>
+<span class="fc" id="L246">				spanPrev = spanCurrent;</span>
+<span class="fc" id="L247">				continue;</span>
 			}
 
-<span class="nc bnc" id="L250" title="All 4 branches missed.">			if (dblXAnchor &gt; dblXAnchorPrev &amp;&amp; dblXAnchor &lt;= dblXAnchorCurrent) {</span>
-<span class="nc" id="L251">				double dblLeftWeight = (dblXAnchorCurrent - dblXAnchor) / (dblXAnchorCurrent -</span>
+<span class="pc bpc" id="L250" title="1 of 4 branches missed.">			if (dblXAnchor &gt; dblXAnchorPrev &amp;&amp; dblXAnchor &lt;= dblXAnchorCurrent) {</span>
+<span class="fc" id="L251">				double dblLeftWeight = (dblXAnchorCurrent - dblXAnchor) / (dblXAnchorCurrent -</span>
 					dblXAnchorPrev);
 
-<span class="nc" id="L254">				java.util.List&lt;java.lang.Double&gt; lsWeight = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
+<span class="fc" id="L254">				java.util.List&lt;java.lang.Double&gt; lsWeight = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
 
-<span class="nc" id="L256">				java.util.List&lt;org.drip.spline.grid.Span&gt; lsSpan = new</span>
+<span class="fc" id="L256">				java.util.List&lt;org.drip.spline.grid.Span&gt; lsSpan = new</span>
 					java.util.ArrayList&lt;org.drip.spline.grid.Span&gt;();
 
-<span class="nc" id="L259">				lsSpan.add (spanPrev);</span>
+<span class="fc" id="L259">				lsSpan.add (spanPrev);</span>
 
-<span class="nc" id="L261">				lsSpan.add (spanCurrent);</span>
+<span class="fc" id="L261">				lsSpan.add (spanCurrent);</span>
 
-<span class="nc" id="L263">				lsWeight.add (dblLeftWeight);</span>
+<span class="fc" id="L263">				lsWeight.add (dblLeftWeight);</span>
 
-<span class="nc" id="L265">				lsWeight.add (1. - dblLeftWeight);</span>
+<span class="fc" id="L265">				lsWeight.add (1. - dblLeftWeight);</span>
 
 				try {
-<span class="nc" id="L268">					return new org.drip.spline.grid.AggregatedSpan (lsSpan, lsWeight);</span>
+<span class="fc" id="L268">					return new org.drip.spline.grid.AggregatedSpan (lsSpan, lsWeight);</span>
 <span class="nc" id="L269">				} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L270">					e.printStackTrace();</span>
 
@@ -273,11 +273,11 @@ public class WireSurfaceStretch {
 				}
 			}
 
-<span class="nc" id="L276">			spanPrev = spanCurrent;</span>
-<span class="nc" id="L277">			dblXAnchorPrev = dblXAnchorCurrent;</span>
-<span class="nc" id="L278">		}</span>
+<span class="fc" id="L276">			spanPrev = spanCurrent;</span>
+<span class="fc" id="L277">			dblXAnchorPrev = dblXAnchorCurrent;</span>
+<span class="fc" id="L278">		}</span>
 
-<span class="nc" id="L280">		return spanCurrent;</span>
+<span class="fc" id="L280">		return spanCurrent;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

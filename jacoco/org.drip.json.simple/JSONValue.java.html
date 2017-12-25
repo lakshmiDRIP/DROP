@@ -78,8 +78,8 @@ package org.drip.json.simple;
      */
     public static Object parse(java.io.Reader in){
             try{
-<span class="nc" id="L81">                    org.drip.json.parser.JSONParser parser=new org.drip.json.parser.JSONParser();</span>
-<span class="nc" id="L82">                    return parser.parse(in);</span>
+<span class="fc" id="L81">                    org.drip.json.parser.JSONParser parser=new org.drip.json.parser.JSONParser();</span>
+<span class="fc" id="L82">                    return parser.parse(in);</span>
             }
 <span class="nc" id="L84">            catch(Exception e){</span>
 <span class="nc" id="L85">                    return null;</span>
@@ -87,8 +87,8 @@ package org.drip.json.simple;
     }
     
     public static Object parse(String s){
-<span class="nc" id="L90">    	java.io.StringReader in=new java.io.StringReader(s);</span>
-<span class="nc" id="L91">            return parse(in);</span>
+<span class="fc" id="L90">    	java.io.StringReader in=new java.io.StringReader(s);</span>
+<span class="fc" id="L91">            return parse(in);</span>
     }
     
     /**
@@ -214,34 +214,34 @@ package org.drip.json.simple;
      */
 
     @SuppressWarnings (&quot;rawtypes&quot;) public static String toJSONString(Object value){
-<span class="nc bnc" id="L217" title="All 2 branches missed.">            if(value == null)</span>
+<span class="pc bpc" id="L217" title="1 of 2 branches missed.">            if(value == null)</span>
 <span class="nc" id="L218">                    return &quot;null&quot;;</span>
             
-<span class="nc bnc" id="L220" title="All 2 branches missed.">            if(value instanceof String)</span>
-<span class="nc" id="L221">                    return &quot;\&quot;&quot;+escape((String)value)+&quot;\&quot;&quot;;</span>
+<span class="fc bfc" id="L220" title="All 2 branches covered.">            if(value instanceof String)</span>
+<span class="fc" id="L221">                    return &quot;\&quot;&quot;+escape((String)value)+&quot;\&quot;&quot;;</span>
             
-<span class="nc bnc" id="L223" title="All 2 branches missed.">            if(value instanceof Double){</span>
-<span class="nc bnc" id="L224" title="All 4 branches missed.">                    if(((Double)value).isInfinite() || ((Double)value).isNaN())</span>
-<span class="nc" id="L225">                            return &quot;null&quot;;</span>
+<span class="fc bfc" id="L223" title="All 2 branches covered.">            if(value instanceof Double){</span>
+<span class="pc bpc" id="L224" title="1 of 4 branches missed.">                    if(((Double)value).isInfinite() || ((Double)value).isNaN())</span>
+<span class="fc" id="L225">                            return &quot;null&quot;;</span>
                     else
-<span class="nc" id="L227">                            return value.toString();</span>
+<span class="fc" id="L227">                            return value.toString();</span>
             }
             
-<span class="nc bnc" id="L230" title="All 2 branches missed.">            if(value instanceof Float){</span>
+<span class="pc bpc" id="L230" title="1 of 2 branches missed.">            if(value instanceof Float){</span>
 <span class="nc bnc" id="L231" title="All 4 branches missed.">                    if(((Float)value).isInfinite() || ((Float)value).isNaN())</span>
 <span class="nc" id="L232">                            return &quot;null&quot;;</span>
                     else
 <span class="nc" id="L234">                            return value.toString();</span>
             }               
             
-<span class="nc bnc" id="L237" title="All 2 branches missed.">            if(value instanceof Number)</span>
-<span class="nc" id="L238">                    return value.toString();</span>
+<span class="fc bfc" id="L237" title="All 2 branches covered.">            if(value instanceof Number)</span>
+<span class="fc" id="L238">                    return value.toString();</span>
             
-<span class="nc bnc" id="L240" title="All 2 branches missed.">            if(value instanceof Boolean)</span>
-<span class="nc" id="L241">                    return value.toString();</span>
+<span class="fc bfc" id="L240" title="All 2 branches covered.">            if(value instanceof Boolean)</span>
+<span class="fc" id="L241">                    return value.toString();</span>
             
-<span class="nc bnc" id="L243" title="All 2 branches missed.">            if((value instanceof JSONAware))</span>
-<span class="nc" id="L244">                    return ((JSONAware)value).toJSONString();</span>
+<span class="pc bpc" id="L243" title="1 of 2 branches missed.">            if((value instanceof JSONAware))</span>
+<span class="fc" id="L244">                    return ((JSONAware)value).toJSONString();</span>
             
 <span class="nc bnc" id="L246" title="All 2 branches missed.">            if(value instanceof java.util.Map)</span>
 <span class="nc" id="L247">                    return org.drip.json.simple.JSONObject.toJSONString((java.util.Map)value);</span>
@@ -260,11 +260,11 @@ package org.drip.json.simple;
      * @return The Escape String
      */
     public static String escape(String s){
-<span class="nc bnc" id="L263" title="All 2 branches missed.">            if(s==null)</span>
+<span class="pc bpc" id="L263" title="1 of 2 branches missed.">            if(s==null)</span>
 <span class="nc" id="L264">                    return null;</span>
-<span class="nc" id="L265">    StringBuffer sb = new StringBuffer();</span>
-<span class="nc" id="L266">    escape(s, sb);</span>
-<span class="nc" id="L267">    return sb.toString();</span>
+<span class="fc" id="L265">    StringBuffer sb = new StringBuffer();</span>
+<span class="fc" id="L266">    escape(s, sb);</span>
+<span class="fc" id="L267">    return sb.toString();</span>
 }
 
 /**
@@ -272,9 +272,9 @@ package org.drip.json.simple;
  * @param sb The StringBuffer
  */
 static void escape(String s, StringBuffer sb) {
-<span class="nc bnc" id="L275" title="All 2 branches missed.">            for(int i=0;i&lt;s.length();i++){</span>
-<span class="nc" id="L276">                    char ch=s.charAt(i);</span>
-<span class="nc bnc" id="L277" title="All 9 branches missed.">                    switch(ch){</span>
+<span class="fc bfc" id="L275" title="All 2 branches covered.">            for(int i=0;i&lt;s.length();i++){</span>
+<span class="fc" id="L276">                    char ch=s.charAt(i);</span>
+<span class="pc bpc" id="L277" title="7 of 9 branches missed.">                    switch(ch){</span>
                     case '&quot;':
 <span class="nc" id="L279">                            sb.append(&quot;\\\&quot;&quot;);</span>
 <span class="nc" id="L280">                            break;</span>
@@ -297,11 +297,11 @@ static void escape(String s, StringBuffer sb) {
 <span class="nc" id="L297">                            sb.append(&quot;\\t&quot;);</span>
 <span class="nc" id="L298">                            break;</span>
                     case '/':
-<span class="nc" id="L300">                            sb.append(&quot;\\/&quot;);</span>
-<span class="nc" id="L301">                            break;</span>
+<span class="fc" id="L300">                            sb.append(&quot;\\/&quot;);</span>
+<span class="fc" id="L301">                            break;</span>
                     default:
             //Reference: http://www.unicode.org/versions/Unicode5.1.0/
-<span class="nc bnc" id="L304" title="All 12 branches missed.">                            if((ch&gt;='\u0000' &amp;&amp; ch&lt;='\u001F') || (ch&gt;='\u007F' &amp;&amp; ch&lt;='\u009F') || (ch&gt;='\u2000' &amp;&amp; ch&lt;='\u20FF')){</span>
+<span class="pc bpc" id="L304" title="8 of 12 branches missed.">                            if((ch&gt;='\u0000' &amp;&amp; ch&lt;='\u001F') || (ch&gt;='\u007F' &amp;&amp; ch&lt;='\u009F') || (ch&gt;='\u2000' &amp;&amp; ch&lt;='\u20FF')){</span>
 <span class="nc" id="L305">                                    String ss=Integer.toHexString(ch);</span>
 <span class="nc" id="L306">                                    sb.append(&quot;\\u&quot;);</span>
 <span class="nc bnc" id="L307" title="All 2 branches missed.">                                    for(int k=0;k&lt;4-ss.length();k++){</span>
@@ -310,10 +310,10 @@ static void escape(String s, StringBuffer sb) {
 <span class="nc" id="L310">                                    sb.append(ss.toUpperCase());</span>
 <span class="nc" id="L311">                            }</span>
                             else{
-<span class="nc" id="L313">                                    sb.append(ch);</span>
+<span class="fc" id="L313">                                    sb.append(ch);</span>
                             }
                     }
             }//for
-<span class="nc" id="L317">    }</span>
+<span class="fc" id="L317">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

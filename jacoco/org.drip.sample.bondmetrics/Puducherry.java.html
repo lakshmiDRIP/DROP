@@ -78,23 +78,26 @@ import org.drip.service.scenario.*;
 		final String[] astArgs)
 		throws Exception
 	{
-<span class="nc" id="L81">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L81">		EnvManager.InitEnv (</span>
+			&quot;&quot;,
+			true
+		);
 
-<span class="nc" id="L83">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+<span class="nc" id="L86">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
 			2017,
 			DateUtil.JULY,
 			10
 		);
 
-<span class="nc" id="L89">		String[] astrDepositTenor = new String[] {</span>
+<span class="nc" id="L92">		String[] astrDepositTenor = new String[] {</span>
 			&quot;2D&quot;
 		};
 
-<span class="nc" id="L93">		double[] adblDepositQuote = new double[] {</span>
+<span class="nc" id="L96">		double[] adblDepositQuote = new double[] {</span>
 			0.0130411 // 2D
 		};
 
-<span class="nc" id="L97">		double[] adblFuturesQuote = new double[] {</span>
+<span class="nc" id="L100">		double[] adblFuturesQuote = new double[] {</span>
 			0.01345,	// 98.655
 			0.01470,	// 98.530
 			0.01575,	// 98.425
@@ -103,7 +106,7 @@ import org.drip.service.scenario.*;
 			0.01845     // 98.155
 		};
 
-<span class="nc" id="L106">		String[] astrFixFloatTenor = new String[] {</span>
+<span class="nc" id="L109">		String[] astrFixFloatTenor = new String[] {</span>
 			&quot;02Y&quot;,
 			&quot;03Y&quot;,
 			&quot;04Y&quot;,
@@ -123,7 +126,7 @@ import org.drip.service.scenario.*;
 			&quot;50Y&quot;
 		};
 
-<span class="nc" id="L126">		String[] astrGovvieTenor = new String[] {</span>
+<span class="nc" id="L129">		String[] astrGovvieTenor = new String[] {</span>
 			&quot;1Y&quot;,
 			&quot;2Y&quot;,
 			&quot;3Y&quot;,
@@ -134,7 +137,7 @@ import org.drip.service.scenario.*;
 			&quot;30Y&quot;
 		};
 
-<span class="nc" id="L137">		double[] adblFixFloatQuote = new double[] {</span>
+<span class="nc" id="L140">		double[] adblFixFloatQuote = new double[] {</span>
 			0.016410, //  2Y
 			0.017863, //  3Y
 			0.019030, //  4Y
@@ -154,7 +157,7 @@ import org.drip.service.scenario.*;
 			0.025560  // 50Y
 		};
 
-<span class="nc" id="L157">		double[] adblGovvieYield = new double[] {</span>
+<span class="nc" id="L160">		double[] adblGovvieYield = new double[] {</span>
 			0.01219, //  1Y
 			0.01391, //  2Y
 			0.01590, //  3Y
@@ -165,7 +168,7 @@ import org.drip.service.scenario.*;
 			0.02927  // 30Y
 		};
 
-<span class="nc" id="L168">		String[] astrCreditTenor = new String[] {</span>
+<span class="nc" id="L171">		String[] astrCreditTenor = new String[] {</span>
 			&quot;06M&quot;,
 			&quot;01Y&quot;,
 			&quot;02Y&quot;,
@@ -176,7 +179,7 @@ import org.drip.service.scenario.*;
 			&quot;10Y&quot;
 		};
 
-<span class="nc" id="L179">		double[] adblCreditQuote = new double[] {</span>
+<span class="nc" id="L182">		double[] adblCreditQuote = new double[] {</span>
 			 60.,	//  6M
 			 68.,	//  1Y
 			 88.,	//  2Y
@@ -187,34 +190,34 @@ import org.drip.service.scenario.*;
 			188.	// 10Y
 		};
 
-<span class="nc" id="L190">		double dblFX = 1.;</span>
-<span class="nc" id="L191">		int iSettleLag = 3;</span>
-<span class="nc" id="L192">		int iCouponFreq = 2;</span>
-<span class="nc" id="L193">		String strName = &quot;Puducherry&quot;;</span>
-<span class="nc" id="L194">		double dblCleanPrice = 0.4;</span>
-<span class="nc" id="L195">		double dblIssuePrice = 0.4;</span>
-<span class="nc" id="L196">		String strCurrency = &quot;USD&quot;;</span>
-<span class="nc" id="L197">		double dblSpreadBump = 20.;</span>
-<span class="nc" id="L198">		double dblCouponRate = 0.00000;</span>
-<span class="nc" id="L199">		double dblIssueAmount = 903433.6;</span>
-<span class="nc" id="L200">		String strTreasuryCode = &quot;UST&quot;;</span>
-<span class="nc" id="L201">		String strCouponDayCount = &quot;30/360&quot;;</span>
-<span class="nc" id="L202">		double dblSpreadDurationMultiplier = 5.;</span>
-<span class="nc" id="L203">		String strDateFactor = &quot;1/1/2050;903433.6;1/1/2051;843446.4;1/1/2052;787414.4;1/1/2053;735008.0;7/1/2053;170403.2&quot;;</span>
+<span class="nc" id="L193">		double dblFX = 1.;</span>
+<span class="nc" id="L194">		int iSettleLag = 3;</span>
+<span class="nc" id="L195">		int iCouponFreq = 2;</span>
+<span class="nc" id="L196">		String strName = &quot;Puducherry&quot;;</span>
+<span class="nc" id="L197">		double dblCleanPrice = 0.4;</span>
+<span class="nc" id="L198">		double dblIssuePrice = 0.4;</span>
+<span class="nc" id="L199">		String strCurrency = &quot;USD&quot;;</span>
+<span class="nc" id="L200">		double dblSpreadBump = 20.;</span>
+<span class="nc" id="L201">		double dblCouponRate = 0.00000;</span>
+<span class="nc" id="L202">		double dblIssueAmount = 903433.6;</span>
+<span class="nc" id="L203">		String strTreasuryCode = &quot;UST&quot;;</span>
+<span class="nc" id="L204">		String strCouponDayCount = &quot;30/360&quot;;</span>
+<span class="nc" id="L205">		double dblSpreadDurationMultiplier = 5.;</span>
+<span class="nc" id="L206">		String strDateFactor = &quot;1/1/2050;903433.6;1/1/2051;843446.4;1/1/2052;787414.4;1/1/2053;735008.0;7/1/2053;170403.2&quot;;</span>
 
-<span class="nc" id="L205">		JulianDate dtEffective = DateUtil.CreateFromYMD (</span>
+<span class="nc" id="L208">		JulianDate dtEffective = DateUtil.CreateFromYMD (</span>
 			2013,
 			12,
 			23
 		);
 
-<span class="nc" id="L211">		JulianDate dtMaturity = DateUtil.CreateFromYMD (</span>
+<span class="nc" id="L214">		JulianDate dtMaturity = DateUtil.CreateFromYMD (</span>
 			2053,
 			7,
 			1
 		);
 
-<span class="nc" id="L217">		BondComponent bond = BondBuilder.CreateSimpleFixed (</span>
+<span class="nc" id="L220">		BondComponent bond = BondBuilder.CreateSimpleFixed (</span>
 			strName,
 			strCurrency,
 			strName,
@@ -223,21 +226,21 @@ import org.drip.service.scenario.*;
 			strCouponDayCount,
 			dtEffective,
 			dtMaturity,
-<span class="nc" id="L226">			Array2D.FromDateFactorVertex (</span>
+<span class="nc" id="L229">			Array2D.FromDateFactorVertex (</span>
 				strDateFactor,
-<span class="nc" id="L228">				dtMaturity.julian(),</span>
+<span class="nc" id="L231">				dtMaturity.julian(),</span>
 				dblIssueAmount
 			),
 			null
 		);
 
-<span class="nc" id="L234">		SetEOS (</span>
+<span class="nc" id="L237">		SetEOS (</span>
 			bond,
 			null,
 			null
 		);
 
-<span class="nc" id="L240">		BondReplicator abr = BondReplicator.Standard (</span>
+<span class="nc" id="L243">		BondReplicator abr = BondReplicator.Standard (</span>
 			dblCleanPrice,
 			dblIssuePrice,
 			dblIssueAmount,
@@ -260,9 +263,11 @@ import org.drip.service.scenario.*;
 			bond
 		);
 
-<span class="nc" id="L263">		BondReplicationRun abrr = abr.generateRun();</span>
+<span class="nc" id="L266">		BondReplicationRun abrr = abr.generateRun();</span>
 
-<span class="nc" id="L265">		System.out.println (abrr.display());</span>
-<span class="nc" id="L266">	}</span>
+<span class="nc" id="L268">		System.out.println (abrr.display());</span>
+
+<span class="nc" id="L270">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L271">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

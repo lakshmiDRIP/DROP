@@ -56,9 +56,9 @@ package org.drip.sequence.random;
  */
 
 public class MultivariateSequenceGenerator {
-<span class="nc" id="L59">	private double[][] _aadblCholesky = null;</span>
-<span class="nc" id="L60">	private double[][] _aadblCorrelation = null;</span>
-<span class="nc" id="L61">	private org.drip.sequence.random.UnivariateSequenceGenerator[] _aUSG = null;</span>
+<span class="fc" id="L59">	private double[][] _aadblCholesky = null;</span>
+<span class="fc" id="L60">	private double[][] _aadblCorrelation = null;</span>
+<span class="fc" id="L61">	private org.drip.sequence.random.UnivariateSequenceGenerator[] _aUSG = null;</span>
 
 	/**
 	 * MultivariateSequenceGenerator Constructor
@@ -73,29 +73,29 @@ public class MultivariateSequenceGenerator {
 		final org.drip.sequence.random.UnivariateSequenceGenerator[] aUSG,
 		final double[][] aadblCorrelation)
 		throws java.lang.Exception
-<span class="nc" id="L76">	{</span>
-<span class="nc bnc" id="L77" title="All 4 branches missed.">		if (null == (_aUSG = aUSG) || null == (_aadblCorrelation = aadblCorrelation))</span>
+<span class="fc" id="L76">	{</span>
+<span class="pc bpc" id="L77" title="2 of 4 branches missed.">		if (null == (_aUSG = aUSG) || null == (_aadblCorrelation = aadblCorrelation))</span>
 <span class="nc" id="L78">			throw new java.lang.Exception (&quot;MultivariateSequenceGenerator ctr: Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L80">		_aadblCholesky = org.drip.quant.linearalgebra.Matrix.CholeskyBanachiewiczFactorization</span>
-<span class="nc" id="L81">			(aadblCorrelation);</span>
+<span class="fc" id="L80">		_aadblCholesky = org.drip.quant.linearalgebra.Matrix.CholeskyBanachiewiczFactorization</span>
+<span class="fc" id="L81">			(aadblCorrelation);</span>
 
-<span class="nc" id="L83">		int iNumVariate = aUSG.length;</span>
+<span class="fc" id="L83">		int iNumVariate = aUSG.length;</span>
 
-<span class="nc bnc" id="L85" title="All 8 branches missed.">		if (null == _aadblCholesky || null == _aadblCholesky[0] || iNumVariate != _aadblCholesky.length ||</span>
+<span class="pc bpc" id="L85" title="4 of 8 branches missed.">		if (null == _aadblCholesky || null == _aadblCholesky[0] || iNumVariate != _aadblCholesky.length ||</span>
 			iNumVariate != _aadblCholesky[0].length)
 <span class="nc" id="L87">			throw new java.lang.Exception (&quot;MultivariateSequenceGenerator ctr: Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L89" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVariate; ++i) {</span>
-<span class="nc bnc" id="L90" title="All 2 branches missed.">			if (null == _aUSG[i])</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i) {</span>
+<span class="pc bpc" id="L90" title="1 of 2 branches missed.">			if (null == _aUSG[i])</span>
 <span class="nc" id="L91">				throw new java.lang.Exception (&quot;MultivariateSequenceGenerator ctr: Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L93" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumVariate; ++j) {</span>
-<span class="nc bnc" id="L94" title="All 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (_aadblCorrelation[i][j]))</span>
+<span class="fc bfc" id="L93" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumVariate; ++j) {</span>
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (_aadblCorrelation[i][j]))</span>
 <span class="nc" id="L95">					throw new java.lang.Exception (&quot;MultivariateSequenceGenerator ctr: Invalid Inputs&quot;);</span>
 			}
 		}
-<span class="nc" id="L98">	}</span>
+<span class="fc" id="L98">	}</span>
 
 	/**
 	 * Retrieve the Array of Univariate Sequence Generators
@@ -149,21 +149,21 @@ public class MultivariateSequenceGenerator {
 
 	public double[] random()
 	{
-<span class="nc" id="L152">		int iNumVariate = _aUSG.length;</span>
-<span class="nc" id="L153">		double[] adblRandom = new double[iNumVariate];</span>
-<span class="nc" id="L154">		double[] adblUncorrelatedRandom = new double[iNumVariate];</span>
+<span class="fc" id="L152">		int iNumVariate = _aUSG.length;</span>
+<span class="fc" id="L153">		double[] adblRandom = new double[iNumVariate];</span>
+<span class="fc" id="L154">		double[] adblUncorrelatedRandom = new double[iNumVariate];</span>
 
-<span class="nc bnc" id="L156" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
-<span class="nc" id="L157">			adblUncorrelatedRandom[i] = _aUSG[i].random();</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
+<span class="fc" id="L157">			adblUncorrelatedRandom[i] = _aUSG[i].random();</span>
 
-<span class="nc bnc" id="L159" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVariate; ++i) {</span>
-<span class="nc" id="L160">			adblRandom[i] = 0.;</span>
+<span class="fc bfc" id="L159" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i) {</span>
+<span class="fc" id="L160">			adblRandom[i] = 0.;</span>
 
-<span class="nc bnc" id="L162" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumVariate; ++j)</span>
-<span class="nc" id="L163">				adblRandom[i] += _aadblCholesky[i][j] * adblUncorrelatedRandom[j];</span>
+<span class="fc bfc" id="L162" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumVariate; ++j)</span>
+<span class="fc" id="L163">				adblRandom[i] += _aadblCholesky[i][j] * adblUncorrelatedRandom[j];</span>
 		}
 
-<span class="nc" id="L166">		return adblRandom;</span>
+<span class="fc" id="L166">		return adblRandom;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

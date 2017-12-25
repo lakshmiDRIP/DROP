@@ -70,9 +70,9 @@ package org.drip.execution.bayesian;
  */
 
 public class ConditionalPriceDistribution extends org.drip.measure.gaussian.R1UnivariateNormal {
-<span class="nc" id="L73">	private double _dblTime = java.lang.Double.NaN;</span>
-<span class="nc" id="L74">	private double _dblPriceVolatility = java.lang.Double.NaN;</span>
-<span class="nc" id="L75">	private double _dblConditionalDrift = java.lang.Double.NaN;</span>
+<span class="fc" id="L73">	private double _dblTime = java.lang.Double.NaN;</span>
+<span class="fc" id="L74">	private double _dblPriceVolatility = java.lang.Double.NaN;</span>
+<span class="fc" id="L75">	private double _dblConditionalDrift = java.lang.Double.NaN;</span>
 
 	/**
 	 * ConditionalPriceDistribution Constructor
@@ -90,13 +90,13 @@ public class ConditionalPriceDistribution extends org.drip.measure.gaussian.R1Un
 		final double dblTime)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L93">		super (dblConditionalDrift * dblTime, dblPriceVolatility * java.lang.Math.sqrt (dblTime));</span>
+<span class="fc" id="L93">		super (dblConditionalDrift * dblTime, dblPriceVolatility * java.lang.Math.sqrt (dblTime));</span>
 
-<span class="nc bnc" id="L95" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblTime = dblTime) || 0. &gt;= _dblTime ||</span>
-<span class="nc bnc" id="L96" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblConditionalDrift = dblConditionalDrift) ||</span>
-<span class="nc bnc" id="L97" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblPriceVolatility = dblPriceVolatility))</span>
+<span class="pc bpc" id="L95" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblTime = dblTime) || 0. &gt;= _dblTime ||</span>
+<span class="pc bpc" id="L96" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblConditionalDrift = dblConditionalDrift) ||</span>
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblPriceVolatility = dblPriceVolatility))</span>
 <span class="nc" id="L98">			throw new java.lang.Exception (&quot;ConditionalPriceDistribution Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L99">	}</span>
+<span class="fc" id="L99">	}</span>
 
 	/**
 	 * Retrieve the Distribution Time Horizon
@@ -106,7 +106,7 @@ public class ConditionalPriceDistribution extends org.drip.measure.gaussian.R1Un
 
 	public double time()
 	{
-<span class="nc" id="L109">		return _dblTime;</span>
+<span class="fc" id="L109">		return _dblTime;</span>
 	}
 
 	/**
@@ -117,7 +117,7 @@ public class ConditionalPriceDistribution extends org.drip.measure.gaussian.R1Un
 
 	public double priceVolatility()
 	{
-<span class="nc" id="L120">		return _dblPriceVolatility;</span>
+<span class="fc" id="L120">		return _dblPriceVolatility;</span>
 	}
 
 	/**
@@ -142,8 +142,8 @@ public class ConditionalPriceDistribution extends org.drip.measure.gaussian.R1Un
 	public double priceVolatilitySwing()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L145">		return _dblPriceVolatility * org.drip.measure.gaussian.NormalQuadrature.InverseCDF</span>
-<span class="nc" id="L146">			(java.lang.Math.random()) * java.lang.Math.sqrt (_dblTime);</span>
+<span class="fc" id="L145">		return _dblPriceVolatility * org.drip.measure.gaussian.NormalQuadrature.InverseCDF</span>
+<span class="fc" id="L146">			(java.lang.Math.random()) * java.lang.Math.sqrt (_dblTime);</span>
 	}
 
 	/**

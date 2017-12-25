@@ -63,8 +63,8 @@ package org.drip.json.simple;
     
     
     public JSONObject() {
-<span class="nc" id="L66">            super();</span>
-<span class="nc" id="L67">    }</span>
+<span class="fc" id="L66">            super();</span>
+<span class="fc" id="L67">    }</span>
 
     /**
      * Allows creation of a JSONObject from a Map. After that, both the
@@ -129,46 +129,46 @@ package org.drip.json.simple;
      * @return JSON text, or &quot;null&quot; if map is null.
      */
     public static String toJSONString(java.util.Map map){
-<span class="nc bnc" id="L132" title="All 2 branches missed.">            if(map == null)</span>
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">            if(map == null)</span>
 <span class="nc" id="L133">                    return &quot;null&quot;;</span>
             
-<span class="nc" id="L135">    StringBuffer sb = new StringBuffer();</span>
-<span class="nc" id="L136">    boolean first = true;</span>
-<span class="nc" id="L137">    java.util.Iterator iter=map.entrySet().iterator();</span>
+<span class="fc" id="L135">    StringBuffer sb = new StringBuffer();</span>
+<span class="fc" id="L136">    boolean first = true;</span>
+<span class="fc" id="L137">    java.util.Iterator iter=map.entrySet().iterator();</span>
             
-<span class="nc" id="L139">    sb.append('{');</span>
-<span class="nc bnc" id="L140" title="All 2 branches missed.">            while(iter.hasNext()){</span>
-<span class="nc bnc" id="L141" title="All 2 branches missed.">        if(first)</span>
-<span class="nc" id="L142">            first = false;</span>
+<span class="fc" id="L139">    sb.append('{');</span>
+<span class="fc bfc" id="L140" title="All 2 branches covered.">            while(iter.hasNext()){</span>
+<span class="fc bfc" id="L141" title="All 2 branches covered.">        if(first)</span>
+<span class="fc" id="L142">            first = false;</span>
         else
-<span class="nc" id="L144">            sb.append(',');</span>
+<span class="fc" id="L144">            sb.append(',');</span>
         
-<span class="nc" id="L146">        java.util.Map.Entry entry=(java.util.Map.Entry)iter.next();</span>
-<span class="nc" id="L147">                    toJSONString(String.valueOf(entry.getKey()),entry.getValue(), sb);</span>
-<span class="nc" id="L148">            }</span>
-<span class="nc" id="L149">    sb.append('}');</span>
-<span class="nc" id="L150">            return sb.toString();</span>
+<span class="fc" id="L146">        java.util.Map.Entry entry=(java.util.Map.Entry)iter.next();</span>
+<span class="fc" id="L147">                    toJSONString(String.valueOf(entry.getKey()),entry.getValue(), sb);</span>
+<span class="fc" id="L148">            }</span>
+<span class="fc" id="L149">    sb.append('}');</span>
+<span class="fc" id="L150">            return sb.toString();</span>
     }
     
     public String toJSONString(){
-<span class="nc" id="L154">            return toJSONString(this);</span>
+<span class="fc" id="L154">            return toJSONString(this);</span>
     }
     
     private static String toJSONString(String key,Object value, StringBuffer sb){
-<span class="nc" id="L158">            sb.append('\&quot;');</span>
-<span class="nc bnc" id="L159" title="All 2 branches missed.">    if(key == null)</span>
+<span class="fc" id="L158">            sb.append('\&quot;');</span>
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">    if(key == null)</span>
 <span class="nc" id="L160">        sb.append(&quot;null&quot;);</span>
     else
-<span class="nc" id="L162">        JSONValue.escape(key, sb);</span>
-<span class="nc" id="L163">            sb.append('\&quot;').append(':');</span>
+<span class="fc" id="L162">        JSONValue.escape(key, sb);</span>
+<span class="fc" id="L163">            sb.append('\&quot;').append(':');</span>
             
-<span class="nc" id="L165">            sb.append(JSONValue.toJSONString(value));</span>
+<span class="fc" id="L165">            sb.append(JSONValue.toJSONString(value));</span>
             
-<span class="nc" id="L167">            return sb.toString();</span>
+<span class="fc" id="L167">            return sb.toString();</span>
     }
     
     public String toString(){
-<span class="nc" id="L171">            return toJSONString();</span>
+<span class="fc" id="L171">            return toJSONString();</span>
     }
 
     public static String toString(String key,Object value){

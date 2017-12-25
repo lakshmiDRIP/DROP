@@ -56,7 +56,7 @@ package org.drip.portfolioconstruction.alm;
  */
 
 public class ExpectedNonFinancialIncome {
-<span class="nc" id="L59">	private double _dblIncomeReplacementRate = java.lang.Double.NaN;</span>
+<span class="fc" id="L59">	private double _dblIncomeReplacementRate = java.lang.Double.NaN;</span>
 
 	/**
 	 * ExpectedNonFinancialIncome Constructor
@@ -69,10 +69,10 @@ public class ExpectedNonFinancialIncome {
 	public ExpectedNonFinancialIncome (
 		final double dblIncomeReplacementRate)
 		throws java.lang.Exception
-<span class="nc" id="L72">	{</span>
-<span class="nc bnc" id="L73" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblIncomeReplacementRate = dblIncomeReplacementRate))</span>
+<span class="fc" id="L72">	{</span>
+<span class="pc bpc" id="L73" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblIncomeReplacementRate = dblIncomeReplacementRate))</span>
 <span class="nc" id="L74">			throw new java.lang.Exception (&quot;ExpectedNonFinancialIncome Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L75">	}</span>
+<span class="fc" id="L75">	}</span>
 
 	/**
 	 * Retrieve the Retirement Age Income Replacement Rate
@@ -101,18 +101,18 @@ public class ExpectedNonFinancialIncome {
 		final org.drip.portfolioconstruction.alm.InvestorCliffSettings ics)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L104" title="All 2 branches missed.">		if (null == ics)</span>
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">		if (null == ics)</span>
 <span class="nc" id="L105">			throw new java.lang.Exception (&quot;ExpectedNonFinancialIncome::rate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L107">		int iAgePhase = ics.phase (dblAge);</span>
+<span class="fc" id="L107">		int iAgePhase = ics.phase (dblAge);</span>
 
-<span class="nc bnc" id="L109" title="All 2 branches missed.">		if (org.drip.portfolioconstruction.alm.InvestorCliffSettings.DATE_PHASE_BEFORE_RETIREMENT ==</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">		if (org.drip.portfolioconstruction.alm.InvestorCliffSettings.DATE_PHASE_BEFORE_RETIREMENT ==</span>
 			iAgePhase)
-<span class="nc" id="L111">			return 1.;</span>
+<span class="fc" id="L111">			return 1.;</span>
 
-<span class="nc bnc" id="L113" title="All 2 branches missed.">		if (org.drip.portfolioconstruction.alm.InvestorCliffSettings.DATE_PHASE_AFTER_RETIREMENT ==</span>
+<span class="pc bpc" id="L113" title="1 of 2 branches missed.">		if (org.drip.portfolioconstruction.alm.InvestorCliffSettings.DATE_PHASE_AFTER_RETIREMENT ==</span>
 			iAgePhase)
-<span class="nc" id="L115">			return _dblIncomeReplacementRate;</span>
+<span class="fc" id="L115">			return _dblIncomeReplacementRate;</span>
 
 <span class="nc" id="L117">		return 0.;</span>
 	}

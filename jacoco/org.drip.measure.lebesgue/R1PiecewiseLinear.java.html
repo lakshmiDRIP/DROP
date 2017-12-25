@@ -56,8 +56,8 @@ package org.drip.measure.lebesgue;
  */
 
 public class R1PiecewiseLinear extends org.drip.measure.lebesgue.R1Uniform {
-<span class="nc" id="L59">	private double[] _adblPiecewiseDensity = null;</span>
-<span class="nc" id="L60">	private double[] _adblPredictorOrdinate = null;</span>
+<span class="fc" id="L59">	private double[] _adblPiecewiseDensity = null;</span>
+<span class="fc" id="L60">	private double[] _adblPredictorOrdinate = null;</span>
 
 	/**
 	 * Calibrate an R1PiecewiseLinear Lebesgue Instance
@@ -76,44 +76,44 @@ public class R1PiecewiseLinear extends org.drip.measure.lebesgue.R1Uniform {
 		final double[] adblPredictorOrdinate,
 		final double[] adblCumulativeProbability)
 	{
-<span class="nc bnc" id="L79" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblLeftPredictorOrdinateEdge) ||</span>
-<span class="nc bnc" id="L80" title="All 8 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblRightPredictorOrdinateEdge) ||</span>
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblLeftPredictorOrdinateEdge) ||</span>
+<span class="pc bpc" id="L80" title="4 of 8 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblRightPredictorOrdinateEdge) ||</span>
 				dblLeftPredictorOrdinateEdge &gt;= dblRightPredictorOrdinateEdge || null ==
 					adblPredictorOrdinate || null == adblCumulativeProbability)
 <span class="nc" id="L83">			return null;</span>
 
-<span class="nc" id="L85">		int iNumPredictorOrdinate = adblPredictorOrdinate.length;</span>
-<span class="nc" id="L86">		double[] adblPiecewiseDensity = new double[iNumPredictorOrdinate + 1];</span>
+<span class="fc" id="L85">		int iNumPredictorOrdinate = adblPredictorOrdinate.length;</span>
+<span class="fc" id="L86">		double[] adblPiecewiseDensity = new double[iNumPredictorOrdinate + 1];</span>
 
-<span class="nc bnc" id="L88" title="All 4 branches missed.">		if (0 == iNumPredictorOrdinate || iNumPredictorOrdinate != adblCumulativeProbability.length)</span>
+<span class="pc bpc" id="L88" title="2 of 4 branches missed.">		if (0 == iNumPredictorOrdinate || iNumPredictorOrdinate != adblCumulativeProbability.length)</span>
 <span class="nc" id="L89">			return null;</span>
 
-<span class="nc bnc" id="L91" title="All 2 branches missed.">		for (int i = 0; i &lt;= iNumPredictorOrdinate; ++i) {</span>
-<span class="nc bnc" id="L92" title="All 2 branches missed.">			double dblLeftPredictorOrdinate = 0 == i ? dblLeftPredictorOrdinateEdge :</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">		for (int i = 0; i &lt;= iNumPredictorOrdinate; ++i) {</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">			double dblLeftPredictorOrdinate = 0 == i ? dblLeftPredictorOrdinateEdge :</span>
 				adblPredictorOrdinate[i - 1];
 
-<span class="nc bnc" id="L95" title="All 4 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblLeftPredictorOrdinate) ||</span>
+<span class="pc bpc" id="L95" title="2 of 4 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblLeftPredictorOrdinate) ||</span>
 				dblLeftPredictorOrdinate &lt; dblLeftPredictorOrdinateEdge)
 <span class="nc" id="L97">				return null;</span>
 
-<span class="nc bnc" id="L99" title="All 2 branches missed.">			double dblRightPredictorOrdinate = iNumPredictorOrdinate == i ? dblRightPredictorOrdinateEdge :</span>
+<span class="fc bfc" id="L99" title="All 2 branches covered.">			double dblRightPredictorOrdinate = iNumPredictorOrdinate == i ? dblRightPredictorOrdinateEdge :</span>
 				adblPredictorOrdinate[i];
 
-<span class="nc bnc" id="L102" title="All 6 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblRightPredictorOrdinate) ||</span>
+<span class="pc bpc" id="L102" title="3 of 6 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblRightPredictorOrdinate) ||</span>
 				dblRightPredictorOrdinate &lt;= dblLeftPredictorOrdinate || dblRightPredictorOrdinate &gt;
 					dblRightPredictorOrdinateEdge)
 <span class="nc" id="L105">				return null;</span>
 
-<span class="nc bnc" id="L107" title="All 2 branches missed.">			double dblLeftCumulativeProbability = 0 == i ? 0. : adblCumulativeProbability[i - 1];</span>
-<span class="nc bnc" id="L108" title="All 2 branches missed.">			double dblRightCumulativeProbability = iNumPredictorOrdinate == i ? 1. :</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">			double dblLeftCumulativeProbability = 0 == i ? 0. : adblCumulativeProbability[i - 1];</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">			double dblRightCumulativeProbability = iNumPredictorOrdinate == i ? 1. :</span>
 				adblCumulativeProbability[i];
-<span class="nc" id="L110">			adblPiecewiseDensity[i] = 2. * (dblRightCumulativeProbability - dblLeftCumulativeProbability) /</span>
+<span class="fc" id="L110">			adblPiecewiseDensity[i] = 2. * (dblRightCumulativeProbability - dblLeftCumulativeProbability) /</span>
 				(dblRightPredictorOrdinate * dblRightPredictorOrdinate - dblLeftPredictorOrdinate *
 					dblLeftPredictorOrdinate);
 		}
 
 		try {
-<span class="nc" id="L116">			return new R1PiecewiseLinear (dblLeftPredictorOrdinateEdge,</span>
+<span class="fc" id="L116">			return new R1PiecewiseLinear (dblLeftPredictorOrdinateEdge,</span>
 				dblRightPredictorOrdinateEdge, adblPredictorOrdinate,  adblPiecewiseDensity);
 <span class="nc" id="L118">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L119">			e.printStackTrace();</span>
@@ -140,17 +140,17 @@ public class R1PiecewiseLinear extends org.drip.measure.lebesgue.R1Uniform {
 		final double[] adblPiecewiseDensity)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L143">		super (dblLeftPredictorOrdinateEdge, dblRightPredictorOrdinateEdge);</span>
+<span class="fc" id="L143">		super (dblLeftPredictorOrdinateEdge, dblRightPredictorOrdinateEdge);</span>
 
-<span class="nc bnc" id="L145" title="All 4 branches missed.">		if (null == (_adblPredictorOrdinate = adblPredictorOrdinate) || null == (_adblPiecewiseDensity =</span>
+<span class="pc bpc" id="L145" title="2 of 4 branches missed.">		if (null == (_adblPredictorOrdinate = adblPredictorOrdinate) || null == (_adblPiecewiseDensity =</span>
 			adblPiecewiseDensity))
 <span class="nc" id="L147">			throw new java.lang.Exception (&quot;R1PiecewiseLinear Constructor: Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L149">		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;</span>
+<span class="fc" id="L149">		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;</span>
 
-<span class="nc bnc" id="L151" title="All 4 branches missed.">		if (0 == iNumPredictorOrdinate || iNumPredictorOrdinate + 1 != _adblPiecewiseDensity.length)</span>
+<span class="pc bpc" id="L151" title="2 of 4 branches missed.">		if (0 == iNumPredictorOrdinate || iNumPredictorOrdinate + 1 != _adblPiecewiseDensity.length)</span>
 <span class="nc" id="L152">			throw new java.lang.Exception (&quot;R1PiecewiseLinear Constructor: Invalid Inputs&quot;);</span>
-<span class="nc" id="L153">	}</span>
+<span class="fc" id="L153">	}</span>
 
 	/**
 	 * Retrieve the Array of Predictor Ordinates
@@ -171,43 +171,43 @@ public class R1PiecewiseLinear extends org.drip.measure.lebesgue.R1Uniform {
 
 	public double[] piecewiseDensities()
 	{
-<span class="nc" id="L174">		return _adblPiecewiseDensity;</span>
+<span class="fc" id="L174">		return _adblPiecewiseDensity;</span>
 	}
 
 	@Override public double cumulative (
 		final double dblX)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L181" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
+<span class="pc bpc" id="L181" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
 <span class="nc" id="L182">			throw new java.lang.Exception (&quot;R1PiecewiseLinear::cumulative =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L184">		double dblLeftEdge = leftEdge();</span>
+<span class="fc" id="L184">		double dblLeftEdge = leftEdge();</span>
 
-<span class="nc" id="L186">		double dblRightEdge = rightEdge();</span>
+<span class="fc" id="L186">		double dblRightEdge = rightEdge();</span>
 
-<span class="nc bnc" id="L188" title="All 2 branches missed.">		if (dblX &lt;= dblLeftEdge) return 0.;</span>
+<span class="fc bfc" id="L188" title="All 2 branches covered.">		if (dblX &lt;= dblLeftEdge) return 0.;</span>
 
-<span class="nc bnc" id="L190" title="All 2 branches missed.">		if (dblX &gt;= dblRightEdge) return 1.;</span>
+<span class="fc bfc" id="L190" title="All 2 branches covered.">		if (dblX &gt;= dblRightEdge) return 1.;</span>
 
-<span class="nc" id="L192">		int iSegmentIndex = 0;</span>
-<span class="nc" id="L193">		double dblSegmentLeft = dblLeftEdge;</span>
-<span class="nc" id="L194">		double dblCumulativeProbability = 0.;</span>
-<span class="nc" id="L195">		int iMaxSegmentIndex = _adblPiecewiseDensity.length - 1;</span>
+<span class="fc" id="L192">		int iSegmentIndex = 0;</span>
+<span class="fc" id="L193">		double dblSegmentLeft = dblLeftEdge;</span>
+<span class="fc" id="L194">		double dblCumulativeProbability = 0.;</span>
+<span class="fc" id="L195">		int iMaxSegmentIndex = _adblPiecewiseDensity.length - 1;</span>
 
-<span class="nc bnc" id="L197" title="All 2 branches missed.">		while (iSegmentIndex &lt; iMaxSegmentIndex) {</span>
-<span class="nc" id="L198">			double dblSegmentRight = _adblPredictorOrdinate[iSegmentIndex];</span>
+<span class="fc bfc" id="L197" title="All 2 branches covered.">		while (iSegmentIndex &lt; iMaxSegmentIndex) {</span>
+<span class="fc" id="L198">			double dblSegmentRight = _adblPredictorOrdinate[iSegmentIndex];</span>
 
-<span class="nc bnc" id="L200" title="All 4 branches missed.">			if (dblX &gt;= dblSegmentLeft &amp;&amp; dblX &lt;= dblSegmentRight)</span>
-<span class="nc" id="L201">				return dblCumulativeProbability + 0.5 * _adblPiecewiseDensity[iSegmentIndex] * (dblX * dblX -</span>
+<span class="pc bpc" id="L200" title="1 of 4 branches missed.">			if (dblX &gt;= dblSegmentLeft &amp;&amp; dblX &lt;= dblSegmentRight)</span>
+<span class="fc" id="L201">				return dblCumulativeProbability + 0.5 * _adblPiecewiseDensity[iSegmentIndex] * (dblX * dblX -</span>
 					dblSegmentLeft * dblSegmentLeft);
 
-<span class="nc" id="L204">			dblCumulativeProbability += 0.5 * _adblPiecewiseDensity[iSegmentIndex] * (dblSegmentRight *</span>
+<span class="fc" id="L204">			dblCumulativeProbability += 0.5 * _adblPiecewiseDensity[iSegmentIndex] * (dblSegmentRight *</span>
 				dblSegmentRight - dblSegmentLeft * dblSegmentLeft);
-<span class="nc" id="L206">			dblSegmentLeft = dblSegmentRight;</span>
-<span class="nc" id="L207">			++iSegmentIndex;</span>
-<span class="nc" id="L208">		}</span>
+<span class="fc" id="L206">			dblSegmentLeft = dblSegmentRight;</span>
+<span class="fc" id="L207">			++iSegmentIndex;</span>
+<span class="fc" id="L208">		}</span>
 
-<span class="nc" id="L210">		return dblCumulativeProbability + 0.5 * _adblPiecewiseDensity[iMaxSegmentIndex] * (dblX * dblX -</span>
+<span class="fc" id="L210">		return dblCumulativeProbability + 0.5 * _adblPiecewiseDensity[iMaxSegmentIndex] * (dblX * dblX -</span>
 			dblRightEdge * dblRightEdge);
 	}
 
@@ -215,27 +215,27 @@ public class R1PiecewiseLinear extends org.drip.measure.lebesgue.R1Uniform {
 		final double dblY)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L218" title="All 6 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblY) || dblY &lt; 0. || dblY &gt; 1.)</span>
+<span class="pc bpc" id="L218" title="3 of 6 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblY) || dblY &lt; 0. || dblY &gt; 1.)</span>
 <span class="nc" id="L219">			throw new java.lang.Exception (&quot;R1PiecewiseLinear::invCumulative =&gt; Invalid inputs&quot;);</span>
 
-<span class="nc" id="L221">		org.drip.function.definition.R1ToR1 r1ToR1CumulativeProbability = new</span>
-<span class="nc" id="L222">			org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="fc" id="L221">		org.drip.function.definition.R1ToR1 r1ToR1CumulativeProbability = new</span>
+<span class="fc" id="L222">			org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L227">				return cumulative (dblX);</span>
+<span class="fc" id="L227">				return cumulative (dblX);</span>
 			}
 		};
 
-<span class="nc" id="L231">		org.drip.function.r1tor1solver.FixedPointFinderOutput fpfo = new</span>
+<span class="fc" id="L231">		org.drip.function.r1tor1solver.FixedPointFinderOutput fpfo = new</span>
 			org.drip.function.r1tor1solver.FixedPointFinderBracketing (dblY, r1ToR1CumulativeProbability,
-<span class="nc" id="L233">				null, org.drip.function.r1tor1solver.VariateIteratorPrimitive.BISECTION, true).findRoot();</span>
+<span class="fc" id="L233">				null, org.drip.function.r1tor1solver.VariateIteratorPrimitive.BISECTION, true).findRoot();</span>
 
-<span class="nc bnc" id="L235" title="All 4 branches missed.">		if (null == fpfo || !fpfo.containsRoot())</span>
+<span class="pc bpc" id="L235" title="2 of 4 branches missed.">		if (null == fpfo || !fpfo.containsRoot())</span>
 <span class="nc" id="L236">			throw new java.lang.Exception (&quot;R1PiecewiseLinear::invCumulative =&gt; No roots&quot;);</span>
 
-<span class="nc" id="L238">		return fpfo.getRoot();</span>
+<span class="fc" id="L238">		return fpfo.getRoot();</span>
 	}
 
 	@Override public double density (

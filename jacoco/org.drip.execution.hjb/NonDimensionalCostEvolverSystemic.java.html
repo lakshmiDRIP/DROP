@@ -87,7 +87,7 @@ public class NonDimensionalCostEvolverSystemic extends org.drip.execution.hjb.No
 		final org.drip.measure.process.OrnsteinUhlenbeck ou)
 	{
 		try {
-<span class="nc" id="L90">			return new NonDimensionalCostEvolverSystemic (ou,</span>
+<span class="fc" id="L90">			return new NonDimensionalCostEvolverSystemic (ou,</span>
 				org.drip.execution.hjb.NonDimensionalCostEvolver.SINGULAR_URGENCY_THRESHOLD, true);
 <span class="nc" id="L92">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L93">			e.printStackTrace();</span>
@@ -103,18 +103,18 @@ public class NonDimensionalCostEvolverSystemic extends org.drip.execution.hjb.No
 		final double dblNonDimensionalRiskAversion)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L106">		double dblNonDimensionalCost = ndc.realization();</span>
+<span class="fc" id="L106">		double dblNonDimensionalCost = ndc.realization();</span>
 
-<span class="nc" id="L108">		double dblMarketState = ms.liquidity() + adblMarketStateTweak[0];</span>
+<span class="fc" id="L108">		double dblMarketState = ms.liquidity() + adblMarketStateTweak[0];</span>
 
-<span class="nc" id="L110">		double dblBurstiness = ornsteinUnlenbeckProcess().referenceBurstiness();</span>
+<span class="fc" id="L110">		double dblBurstiness = ornsteinUnlenbeckProcess().referenceBurstiness();</span>
 
-<span class="nc" id="L112">		org.drip.execution.hjb.NonDimensionalCostSystemic ndcs =</span>
+<span class="fc" id="L112">		org.drip.execution.hjb.NonDimensionalCostSystemic ndcs =</span>
 			(org.drip.execution.hjb.NonDimensionalCostSystemic) ndc;
 
-<span class="nc" id="L115">		return java.lang.Math.exp (-dblMarketState) * (dblNonDimensionalRiskAversion *</span>
+<span class="fc" id="L115">		return java.lang.Math.exp (-dblMarketState) * (dblNonDimensionalRiskAversion *</span>
 			dblNonDimensionalRiskAversion - dblNonDimensionalCost * dblNonDimensionalCost) + 0.5 *
-<span class="nc" id="L117">				dblBurstiness * dblBurstiness * ndcs.jacobian() - dblMarketState * ndcs.gradient();</span>
+<span class="fc" id="L117">				dblBurstiness * dblBurstiness * ndcs.jacobian() - dblMarketState * ndcs.gradient();</span>
 	}
 
 	/**
@@ -133,8 +133,8 @@ public class NonDimensionalCostEvolverSystemic extends org.drip.execution.hjb.No
 		final boolean bAsymptoticEnhancedEulerCorrection)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L136">		super (ou, dblAsymptoticEulerUrgencyThreshold, bAsymptoticEnhancedEulerCorrection);</span>
-<span class="nc" id="L137">	}</span>
+<span class="fc" id="L136">		super (ou, dblAsymptoticEulerUrgencyThreshold, bAsymptoticEnhancedEulerCorrection);</span>
+<span class="fc" id="L137">	}</span>
 
 	@Override public org.drip.execution.hjb.NonDimensionalCost evolve (
 		final org.drip.execution.hjb.NonDimensionalCost ndc,
@@ -143,19 +143,19 @@ public class NonDimensionalCostEvolverSystemic extends org.drip.execution.hjb.No
 		final double dblNonDimensionalTime,
 		final double dblNonDimensionalTimeIncrement)
 	{
-<span class="nc bnc" id="L146" title="All 6 branches missed.">		if (null == ndc || !(ndc instanceof org.drip.execution.hjb.NonDimensionalCostSystemic) || null</span>
-<span class="nc bnc" id="L147" title="All 2 branches missed.">			== ms || !org.drip.quant.common.NumberUtil.IsValid (dblNonDimensionalRiskAversion) ||</span>
-<span class="nc bnc" id="L148" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (dblNonDimensionalTime) ||</span>
-<span class="nc bnc" id="L149" title="All 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (dblNonDimensionalTimeIncrement))</span>
+<span class="pc bpc" id="L146" title="3 of 6 branches missed.">		if (null == ndc || !(ndc instanceof org.drip.execution.hjb.NonDimensionalCostSystemic) || null</span>
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">			== ms || !org.drip.quant.common.NumberUtil.IsValid (dblNonDimensionalRiskAversion) ||</span>
+<span class="pc bpc" id="L148" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (dblNonDimensionalTime) ||</span>
+<span class="pc bpc" id="L149" title="1 of 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (dblNonDimensionalTimeIncrement))</span>
 <span class="nc" id="L150">			return null;</span>
 
-<span class="nc" id="L152">		double dblMarketState = ms.liquidity();</span>
+<span class="fc" id="L152">		double dblMarketState = ms.liquidity();</span>
 
-<span class="nc" id="L154">		double dblMarketStateIncrement = 0.01 * dblMarketState;</span>
+<span class="fc" id="L154">		double dblMarketStateIncrement = 0.01 * dblMarketState;</span>
 
-<span class="nc" id="L156">		double dblMarketStateExponentiation = java.lang.Math.exp (dblMarketState);</span>
+<span class="fc" id="L156">		double dblMarketStateExponentiation = java.lang.Math.exp (dblMarketState);</span>
 
-<span class="nc bnc" id="L158" title="All 2 branches missed.">		if (asymptoticEulerUrgencyThreshold() * dblNonDimensionalTime &lt; 1.) {</span>
+<span class="pc bpc" id="L158" title="1 of 2 branches missed.">		if (asymptoticEulerUrgencyThreshold() * dblNonDimensionalTime &lt; 1.) {</span>
 <span class="nc bnc" id="L159" title="All 2 branches missed.">			if (!asymptoticEnhancedEulerCorrection())</span>
 <span class="nc" id="L160">				return org.drip.execution.hjb.NonDimensionalCostSystemic.LinearThreshold</span>
 <span class="nc" id="L161">					(dblMarketStateExponentiation, dblNonDimensionalTime);</span>
@@ -171,18 +171,18 @@ public class NonDimensionalCostEvolverSystemic extends org.drip.execution.hjb.No
 		}
 
 		try {
-<span class="nc" id="L174">			double dblCostIncrementMid = advance (ndc, ms, new double[] {0.}, dblNonDimensionalRiskAversion)</span>
+<span class="fc" id="L174">			double dblCostIncrementMid = advance (ndc, ms, new double[] {0.}, dblNonDimensionalRiskAversion)</span>
 				* dblNonDimensionalTimeIncrement;
 
-<span class="nc" id="L177">			double dblCostIncrementUp = advance (ndc, ms, new double[] {dblMarketStateIncrement},</span>
+<span class="fc" id="L177">			double dblCostIncrementUp = advance (ndc, ms, new double[] {dblMarketStateIncrement},</span>
 				dblNonDimensionalRiskAversion) * dblNonDimensionalTimeIncrement;
 
-<span class="nc" id="L180">			double dblCostIncrementDown = advance (ndc, ms, new double[] {-1. * dblMarketStateIncrement},</span>
+<span class="fc" id="L180">			double dblCostIncrementDown = advance (ndc, ms, new double[] {-1. * dblMarketStateIncrement},</span>
 				dblNonDimensionalRiskAversion) * dblNonDimensionalTimeIncrement;
 
-<span class="nc" id="L183">			double dblCost = ndc.realization() + dblCostIncrementMid;</span>
+<span class="fc" id="L183">			double dblCost = ndc.realization() + dblCostIncrementMid;</span>
 
-<span class="nc" id="L185">			return new org.drip.execution.hjb.NonDimensionalCostSystemic (dblCost, 0.5 *</span>
+<span class="fc" id="L185">			return new org.drip.execution.hjb.NonDimensionalCostSystemic (dblCost, 0.5 *</span>
 				(dblCostIncrementUp - dblCostIncrementDown) / dblMarketStateIncrement, (dblCostIncrementUp +
 					dblCostIncrementDown - 2. * dblCostIncrementMid) / (dblMarketStateIncrement *
 						dblMarketStateIncrement), dblCost / dblMarketStateExponentiation);

@@ -999,66 +999,66 @@ public abstract class MergedDiscountForwardCurve extends org.drip.state.discount
 	public java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; canonicalTruthness (
 		final java.lang.String strLatentStateQuantificationMetric)
 	{
-<span class="nc bnc" id="L1002" title="All 2 branches missed.">		if (null == strLatentStateQuantificationMetric ||</span>
+<span class="pc bpc" id="L1002" title="1 of 2 branches missed.">		if (null == strLatentStateQuantificationMetric ||</span>
 			(!org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_ZERO_RATE.equalsIgnoreCase
-<span class="nc bnc" id="L1004" title="All 2 branches missed.">				(strLatentStateQuantificationMetric) &amp;&amp; !</span>
+<span class="pc bpc" id="L1004" title="1 of 2 branches missed.">				(strLatentStateQuantificationMetric) &amp;&amp; !</span>
 					org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR.equalsIgnoreCase
 <span class="nc bnc" id="L1006" title="All 2 branches missed.">			(strLatentStateQuantificationMetric)))</span>
 <span class="nc" id="L1007">			return null;</span>
 
-<span class="nc" id="L1009">		org.drip.product.definition.CalibratableComponent[] aCC = calibComp();</span>
+<span class="fc" id="L1009">		org.drip.product.definition.CalibratableComponent[] aCC = calibComp();</span>
 
-<span class="nc bnc" id="L1011" title="All 2 branches missed.">		if (null == aCC) return null;</span>
+<span class="pc bpc" id="L1011" title="1 of 2 branches missed.">		if (null == aCC) return null;</span>
 
-<span class="nc" id="L1013">		int iNumComp = aCC.length;</span>
-<span class="nc" id="L1014">		boolean bFirstCashFlow = true;</span>
+<span class="fc" id="L1013">		int iNumComp = aCC.length;</span>
+<span class="fc" id="L1014">		boolean bFirstCashFlow = true;</span>
 
-<span class="nc bnc" id="L1016" title="All 2 branches missed.">		if (0 == iNumComp) return null;</span>
+<span class="pc bpc" id="L1016" title="1 of 2 branches missed.">		if (0 == iNumComp) return null;</span>
 
-<span class="nc" id="L1018">		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; mapCanonicalTruthness = new</span>
+<span class="fc" id="L1018">		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; mapCanonicalTruthness = new</span>
 			java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt;();
 
-<span class="nc" id="L1021">		if (org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR.equalsIgnoreCase</span>
-<span class="nc bnc" id="L1022" title="All 2 branches missed.">			(strLatentStateQuantificationMetric))</span>
+<span class="fc" id="L1021">		if (org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR.equalsIgnoreCase</span>
+<span class="pc bpc" id="L1022" title="1 of 2 branches missed.">			(strLatentStateQuantificationMetric))</span>
 <span class="nc" id="L1023">			mapCanonicalTruthness.put (_iEpochDate, 1.);</span>
 
-<span class="nc bnc" id="L1025" title="All 2 branches missed.">		for (org.drip.product.definition.CalibratableComponent cc : aCC) {</span>
-<span class="nc bnc" id="L1026" title="All 2 branches missed.">			if (null == cc) continue;</span>
+<span class="fc bfc" id="L1025" title="All 2 branches covered.">		for (org.drip.product.definition.CalibratableComponent cc : aCC) {</span>
+<span class="pc bpc" id="L1026" title="1 of 2 branches missed.">			if (null == cc) continue;</span>
 
-<span class="nc" id="L1028">			java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; lsCouponPeriod = cc.couponPeriods();</span>
+<span class="fc" id="L1028">			java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; lsCouponPeriod = cc.couponPeriods();</span>
 
-<span class="nc bnc" id="L1030" title="All 4 branches missed.">			if (null == lsCouponPeriod || 0 == lsCouponPeriod.size()) continue;</span>
+<span class="pc bpc" id="L1030" title="2 of 4 branches missed.">			if (null == lsCouponPeriod || 0 == lsCouponPeriod.size()) continue;</span>
 
-<span class="nc bnc" id="L1032" title="All 2 branches missed.">			for (org.drip.analytics.cashflow.CompositePeriod cpnPeriod : lsCouponPeriod) {</span>
-<span class="nc bnc" id="L1033" title="All 2 branches missed.">				if (null == cpnPeriod) continue;</span>
+<span class="fc bfc" id="L1032" title="All 2 branches covered.">			for (org.drip.analytics.cashflow.CompositePeriod cpnPeriod : lsCouponPeriod) {</span>
+<span class="pc bpc" id="L1033" title="1 of 2 branches missed.">				if (null == cpnPeriod) continue;</span>
 
-<span class="nc" id="L1035">				int iPeriodPayDate = cpnPeriod.payDate();</span>
+<span class="fc" id="L1035">				int iPeriodPayDate = cpnPeriod.payDate();</span>
 
-<span class="nc bnc" id="L1037" title="All 2 branches missed.">				if (iPeriodPayDate &gt;= _iEpochDate) {</span>
+<span class="pc bpc" id="L1037" title="1 of 2 branches missed.">				if (iPeriodPayDate &gt;= _iEpochDate) {</span>
 					try {
-<span class="nc" id="L1039">						if (org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR.equalsIgnoreCase</span>
-<span class="nc bnc" id="L1040" title="All 2 branches missed.">							(strLatentStateQuantificationMetric))</span>
+<span class="fc" id="L1039">						if (org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR.equalsIgnoreCase</span>
+<span class="pc bpc" id="L1040" title="1 of 2 branches missed.">							(strLatentStateQuantificationMetric))</span>
 <span class="nc" id="L1041">							mapCanonicalTruthness.put (iPeriodPayDate, df (iPeriodPayDate));</span>
-<span class="nc" id="L1042">						else if (org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_ZERO_RATE.equalsIgnoreCase</span>
-<span class="nc bnc" id="L1043" title="All 2 branches missed.">							(strLatentStateQuantificationMetric)) {</span>
-<span class="nc bnc" id="L1044" title="All 2 branches missed.">							if (bFirstCashFlow) {</span>
-<span class="nc" id="L1045">								bFirstCashFlow = false;</span>
+<span class="fc" id="L1042">						else if (org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_ZERO_RATE.equalsIgnoreCase</span>
+<span class="pc bpc" id="L1043" title="1 of 2 branches missed.">							(strLatentStateQuantificationMetric)) {</span>
+<span class="fc bfc" id="L1044" title="All 2 branches covered.">							if (bFirstCashFlow) {</span>
+<span class="fc" id="L1045">								bFirstCashFlow = false;</span>
 
-<span class="nc" id="L1047">								mapCanonicalTruthness.put (_iEpochDate, zero (iPeriodPayDate));</span>
+<span class="fc" id="L1047">								mapCanonicalTruthness.put (_iEpochDate, zero (iPeriodPayDate));</span>
 							}
 
-<span class="nc" id="L1050">							mapCanonicalTruthness.put (iPeriodPayDate, zero (iPeriodPayDate));</span>
+<span class="fc" id="L1050">							mapCanonicalTruthness.put (iPeriodPayDate, zero (iPeriodPayDate));</span>
 						}
 <span class="nc" id="L1052">					} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L1053">						e.printStackTrace();</span>
 
 <span class="nc" id="L1055">						return null;</span>
-<span class="nc" id="L1056">					}</span>
+<span class="fc" id="L1056">					}</span>
 				}
-<span class="nc" id="L1058">			}</span>
+<span class="fc" id="L1058">			}</span>
 		}
 
-<span class="nc" id="L1061">		return mapCanonicalTruthness;</span>
+<span class="fc" id="L1061">		return mapCanonicalTruthness;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

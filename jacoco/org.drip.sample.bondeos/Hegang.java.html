@@ -477,18 +477,21 @@ import org.drip.state.govvie.GovvieCurve;
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L480">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L480">		EnvManager.InitEnv (</span>
+			&quot;&quot;,
+			true
+		);
 
-<span class="nc" id="L482">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+<span class="nc" id="L485">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
 			2017,
 			DateUtil.MARCH,
 			10
 		);
 
-<span class="nc" id="L488">		String strCurrency = &quot;USD&quot;;</span>
-<span class="nc" id="L489">		String strTreasuryCode = &quot;UST&quot;;</span>
+<span class="nc" id="L491">		String strCurrency = &quot;USD&quot;;</span>
+<span class="nc" id="L492">		String strTreasuryCode = &quot;UST&quot;;</span>
 
-<span class="nc" id="L491">		double[] adblTreasuryCoupon = new double[] {</span>
+<span class="nc" id="L494">		double[] adblTreasuryCoupon = new double[] {</span>
 			0.0100,
 			0.0100,
 			0.0125,
@@ -499,7 +502,7 @@ import org.drip.state.govvie.GovvieCurve;
 			0.0300
 		};
 
-<span class="nc" id="L502">		double[] adblTreasuryYield = new double[] {</span>
+<span class="nc" id="L505">		double[] adblTreasuryYield = new double[] {</span>
 			0.0083,	//  1Y
 			0.0122, //  2Y
 			0.0149, //  3Y
@@ -510,54 +513,54 @@ import org.drip.state.govvie.GovvieCurve;
 			0.0308  // 30Y
 		};
 
-<span class="nc" id="L513">		JulianDate dtEffective = DateUtil.CreateFromYMD (2016,  8, 22);</span>
-<span class="nc" id="L514">		JulianDate dtMaturity  = DateUtil.CreateFromYMD (2036,  8, 22);</span>
-<span class="nc" id="L515">		double dblCoupon = 0.0270;</span>
-<span class="nc" id="L516">		double dblCleanPrice = 0.8885426;</span>
-<span class="nc" id="L517">		int iFreq = 2;</span>
-<span class="nc" id="L518">		String strCUSIP = &quot;Hegang&quot;;</span>
-<span class="nc" id="L519">		String strDayCount = &quot;30/360&quot;;</span>
-<span class="nc" id="L520">		int[] aiExerciseDate = new int[] {</span>
-<span class="nc" id="L521">			DateUtil.CreateFromYMD (2017,  8, 22).julian(),</span>
-<span class="nc" id="L522">			DateUtil.CreateFromYMD (2018,  2, 22).julian(),</span>
-<span class="nc" id="L523">			DateUtil.CreateFromYMD (2018,  8, 22).julian(),</span>
-<span class="nc" id="L524">			DateUtil.CreateFromYMD (2019,  2, 22).julian(),</span>
-<span class="nc" id="L525">			DateUtil.CreateFromYMD (2019,  8, 22).julian(),</span>
-<span class="nc" id="L526">			DateUtil.CreateFromYMD (2020,  2, 22).julian(),</span>
-<span class="nc" id="L527">			DateUtil.CreateFromYMD (2020,  8, 22).julian(),</span>
-<span class="nc" id="L528">			DateUtil.CreateFromYMD (2021,  2, 22).julian(),</span>
-<span class="nc" id="L529">			DateUtil.CreateFromYMD (2021,  8, 22).julian(),</span>
-<span class="nc" id="L530">			DateUtil.CreateFromYMD (2022,  2, 22).julian(),</span>
-<span class="nc" id="L531">			DateUtil.CreateFromYMD (2022,  8, 22).julian(),</span>
-<span class="nc" id="L532">			DateUtil.CreateFromYMD (2023,  2, 22).julian(),</span>
-<span class="nc" id="L533">			DateUtil.CreateFromYMD (2023,  8, 22).julian(),</span>
-<span class="nc" id="L534">			DateUtil.CreateFromYMD (2024,  2, 22).julian(),</span>
-<span class="nc" id="L535">			DateUtil.CreateFromYMD (2024,  8, 22).julian(),</span>
-<span class="nc" id="L536">			DateUtil.CreateFromYMD (2025,  2, 22).julian(),</span>
-<span class="nc" id="L537">			DateUtil.CreateFromYMD (2025,  8, 22).julian(),</span>
-<span class="nc" id="L538">			DateUtil.CreateFromYMD (2026,  2, 22).julian(),</span>
-<span class="nc" id="L539">			DateUtil.CreateFromYMD (2026,  8, 22).julian(),</span>
-<span class="nc" id="L540">			DateUtil.CreateFromYMD (2027,  2, 22).julian(),</span>
-<span class="nc" id="L541">			DateUtil.CreateFromYMD (2028,  8, 22).julian(),</span>
-<span class="nc" id="L542">			DateUtil.CreateFromYMD (2029,  2, 22).julian(),</span>
-<span class="nc" id="L543">			DateUtil.CreateFromYMD (2029,  8, 22).julian(),</span>
-<span class="nc" id="L544">			DateUtil.CreateFromYMD (2030,  2, 22).julian(),</span>
-<span class="nc" id="L545">			DateUtil.CreateFromYMD (2030,  8, 22).julian(),</span>
-<span class="nc" id="L546">			DateUtil.CreateFromYMD (2031,  2, 22).julian(),</span>
-<span class="nc" id="L547">			DateUtil.CreateFromYMD (2031,  8, 22).julian(),</span>
-<span class="nc" id="L548">			DateUtil.CreateFromYMD (2032,  2, 22).julian(),</span>
-<span class="nc" id="L549">			DateUtil.CreateFromYMD (2032,  8, 22).julian(),</span>
-<span class="nc" id="L550">			DateUtil.CreateFromYMD (2033,  2, 22).julian(),</span>
-<span class="nc" id="L551">			DateUtil.CreateFromYMD (2033,  8, 22).julian(),</span>
-<span class="nc" id="L552">			DateUtil.CreateFromYMD (2034,  2, 22).julian(),</span>
-<span class="nc" id="L553">			DateUtil.CreateFromYMD (2034,  8, 22).julian(),</span>
-<span class="nc" id="L554">			DateUtil.CreateFromYMD (2035,  2, 22).julian(),</span>
-<span class="nc" id="L555">			DateUtil.CreateFromYMD (2035,  8, 22).julian(),</span>
-<span class="nc" id="L556">			DateUtil.CreateFromYMD (2036,  2, 22).julian(),</span>
-<span class="nc" id="L557">			DateUtil.CreateFromYMD (2036,  8, 22).julian(),</span>
-<span class="nc" id="L558">			DateUtil.CreateFromYMD (2037,  2, 22).julian(),</span>
+<span class="nc" id="L516">		JulianDate dtEffective = DateUtil.CreateFromYMD (2016,  8, 22);</span>
+<span class="nc" id="L517">		JulianDate dtMaturity  = DateUtil.CreateFromYMD (2036,  8, 22);</span>
+<span class="nc" id="L518">		double dblCoupon = 0.0270;</span>
+<span class="nc" id="L519">		double dblCleanPrice = 0.8885426;</span>
+<span class="nc" id="L520">		int iFreq = 2;</span>
+<span class="nc" id="L521">		String strCUSIP = &quot;Hegang&quot;;</span>
+<span class="nc" id="L522">		String strDayCount = &quot;30/360&quot;;</span>
+<span class="nc" id="L523">		int[] aiExerciseDate = new int[] {</span>
+<span class="nc" id="L524">			DateUtil.CreateFromYMD (2017,  8, 22).julian(),</span>
+<span class="nc" id="L525">			DateUtil.CreateFromYMD (2018,  2, 22).julian(),</span>
+<span class="nc" id="L526">			DateUtil.CreateFromYMD (2018,  8, 22).julian(),</span>
+<span class="nc" id="L527">			DateUtil.CreateFromYMD (2019,  2, 22).julian(),</span>
+<span class="nc" id="L528">			DateUtil.CreateFromYMD (2019,  8, 22).julian(),</span>
+<span class="nc" id="L529">			DateUtil.CreateFromYMD (2020,  2, 22).julian(),</span>
+<span class="nc" id="L530">			DateUtil.CreateFromYMD (2020,  8, 22).julian(),</span>
+<span class="nc" id="L531">			DateUtil.CreateFromYMD (2021,  2, 22).julian(),</span>
+<span class="nc" id="L532">			DateUtil.CreateFromYMD (2021,  8, 22).julian(),</span>
+<span class="nc" id="L533">			DateUtil.CreateFromYMD (2022,  2, 22).julian(),</span>
+<span class="nc" id="L534">			DateUtil.CreateFromYMD (2022,  8, 22).julian(),</span>
+<span class="nc" id="L535">			DateUtil.CreateFromYMD (2023,  2, 22).julian(),</span>
+<span class="nc" id="L536">			DateUtil.CreateFromYMD (2023,  8, 22).julian(),</span>
+<span class="nc" id="L537">			DateUtil.CreateFromYMD (2024,  2, 22).julian(),</span>
+<span class="nc" id="L538">			DateUtil.CreateFromYMD (2024,  8, 22).julian(),</span>
+<span class="nc" id="L539">			DateUtil.CreateFromYMD (2025,  2, 22).julian(),</span>
+<span class="nc" id="L540">			DateUtil.CreateFromYMD (2025,  8, 22).julian(),</span>
+<span class="nc" id="L541">			DateUtil.CreateFromYMD (2026,  2, 22).julian(),</span>
+<span class="nc" id="L542">			DateUtil.CreateFromYMD (2026,  8, 22).julian(),</span>
+<span class="nc" id="L543">			DateUtil.CreateFromYMD (2027,  2, 22).julian(),</span>
+<span class="nc" id="L544">			DateUtil.CreateFromYMD (2028,  8, 22).julian(),</span>
+<span class="nc" id="L545">			DateUtil.CreateFromYMD (2029,  2, 22).julian(),</span>
+<span class="nc" id="L546">			DateUtil.CreateFromYMD (2029,  8, 22).julian(),</span>
+<span class="nc" id="L547">			DateUtil.CreateFromYMD (2030,  2, 22).julian(),</span>
+<span class="nc" id="L548">			DateUtil.CreateFromYMD (2030,  8, 22).julian(),</span>
+<span class="nc" id="L549">			DateUtil.CreateFromYMD (2031,  2, 22).julian(),</span>
+<span class="nc" id="L550">			DateUtil.CreateFromYMD (2031,  8, 22).julian(),</span>
+<span class="nc" id="L551">			DateUtil.CreateFromYMD (2032,  2, 22).julian(),</span>
+<span class="nc" id="L552">			DateUtil.CreateFromYMD (2032,  8, 22).julian(),</span>
+<span class="nc" id="L553">			DateUtil.CreateFromYMD (2033,  2, 22).julian(),</span>
+<span class="nc" id="L554">			DateUtil.CreateFromYMD (2033,  8, 22).julian(),</span>
+<span class="nc" id="L555">			DateUtil.CreateFromYMD (2034,  2, 22).julian(),</span>
+<span class="nc" id="L556">			DateUtil.CreateFromYMD (2034,  8, 22).julian(),</span>
+<span class="nc" id="L557">			DateUtil.CreateFromYMD (2035,  2, 22).julian(),</span>
+<span class="nc" id="L558">			DateUtil.CreateFromYMD (2035,  8, 22).julian(),</span>
+<span class="nc" id="L559">			DateUtil.CreateFromYMD (2036,  2, 22).julian(),</span>
+<span class="nc" id="L560">			DateUtil.CreateFromYMD (2036,  8, 22).julian(),</span>
+<span class="nc" id="L561">			DateUtil.CreateFromYMD (2037,  2, 22).julian(),</span>
 		};
-<span class="nc" id="L560">		double[] adblExercisePrice = new double[] {</span>
+<span class="nc" id="L563">		double[] adblExercisePrice = new double[] {</span>
 			1.,
 			1.,
 			1.,
@@ -598,7 +601,7 @@ import org.drip.state.govvie.GovvieCurve;
 			1.,
 		};
 
-<span class="nc" id="L601">		BondComponent bond = BondBuilder.CreateSimpleFixed (</span>
+<span class="nc" id="L604">		BondComponent bond = BondBuilder.CreateSimpleFixed (</span>
 			strCUSIP,
 			strCurrency,
 			&quot;&quot;,
@@ -611,7 +614,7 @@ import org.drip.state.govvie.GovvieCurve;
 			null
 		);
 
-<span class="nc" id="L614">		EmbeddedOptionSchedule eos = new EmbeddedOptionSchedule (</span>
+<span class="nc" id="L617">		EmbeddedOptionSchedule eos = new EmbeddedOptionSchedule (</span>
 			aiExerciseDate,
 			adblExercisePrice,
 			false,
@@ -622,18 +625,18 @@ import org.drip.state.govvie.GovvieCurve;
 			Double.NaN
 		);
 
-<span class="nc" id="L625">		bond.setEmbeddedCallSchedule (eos);</span>
+<span class="nc" id="L628">		bond.setEmbeddedCallSchedule (eos);</span>
 
-<span class="nc" id="L627">		RVMeasures (</span>
+<span class="nc" id="L630">		RVMeasures (</span>
 			bond,
 			dtSpot,
-<span class="nc" id="L630">			MarketParamsBuilder.Create (</span>
-<span class="nc" id="L631">				FundingCurve (</span>
+<span class="nc" id="L633">			MarketParamsBuilder.Create (</span>
+<span class="nc" id="L634">				FundingCurve (</span>
 					dtSpot,
 					strCurrency,
 					0.
 				),
-<span class="nc" id="L636">				GovvieCurve (</span>
+<span class="nc" id="L639">				GovvieCurve (</span>
 					dtSpot,
 					strTreasuryCode,
 					adblTreasuryCoupon,
@@ -648,7 +651,7 @@ import org.drip.state.govvie.GovvieCurve;
 			dblCleanPrice
 		);
 
-<span class="nc" id="L651">		System.out.println();</span>
-<span class="nc" id="L652">	}</span>
+<span class="nc" id="L654">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L655">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

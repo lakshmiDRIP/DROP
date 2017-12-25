@@ -66,9 +66,9 @@ import org.drip.service.json.KeyHoleSkeleton;
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L69">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L69">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L71">		String[] astrAssetName = new String[] {</span>
+<span class="fc" id="L71">		String[] astrAssetName = new String[] {</span>
 			&quot;TOK&quot;,
 			&quot;EWJ&quot;,
 			&quot;HYG&quot;,
@@ -78,7 +78,7 @@ import org.drip.service.json.KeyHoleSkeleton;
 			&quot;BWX&quot;
 		};
 
-<span class="nc" id="L81">		double[] adblAssetExpectedReturns = new double[] {</span>
+<span class="fc" id="L81">		double[] adblAssetExpectedReturns = new double[] {</span>
 			0.008355,
 			0.007207,
 			0.006279,
@@ -88,7 +88,7 @@ import org.drip.service.json.KeyHoleSkeleton;
 			0.001570
 		};
 
-<span class="nc" id="L91">		double[][] aadblAssetReturnsCovariance = new double[][] {</span>
+<span class="fc" id="L91">		double[][] aadblAssetReturnsCovariance = new double[][] {</span>
 			{0.002733, 0.002083, 0.001593, 0.000488, 0.001172, 0.002312, 0.000710},
 			{0.002083, 0.002768, 0.001302, 0.000457, 0.001105, 0.001647, 0.000563},
 			{0.001593, 0.001302, 0.001463, 0.000639, 0.001050, 0.001110, 0.000519},
@@ -98,7 +98,7 @@ import org.drip.service.json.KeyHoleSkeleton;
 			{0.000710, 0.000563, 0.000519, 0.000370, 0.000661, 0.000749, 0.000703}
 		};
 
-<span class="nc" id="L101">		double[] adblAssetLowerBound = new double[] {</span>
+<span class="fc" id="L101">		double[] adblAssetLowerBound = new double[] {</span>
 			0.05,
 			0.05,
 			0.05,
@@ -108,7 +108,7 @@ import org.drip.service.json.KeyHoleSkeleton;
 			0.03
 		};
 
-<span class="nc" id="L111">		double[] adblAssetUpperBound = new double[] {</span>
+<span class="fc" id="L111">		double[] adblAssetUpperBound = new double[] {</span>
 			0.40,
 			0.40,
 			0.30,
@@ -118,44 +118,44 @@ import org.drip.service.json.KeyHoleSkeleton;
 			0.50
 		};
 
-<span class="nc" id="L121">		double[][] aadblBound = new double[adblAssetExpectedReturns.length][2];</span>
+<span class="fc" id="L121">		double[][] aadblBound = new double[adblAssetExpectedReturns.length][2];</span>
 
-<span class="nc bnc" id="L123" title="All 2 branches missed.">		for (int i = 0; i &lt; adblAssetExpectedReturns.length; ++i) {</span>
-<span class="nc" id="L124">			aadblBound[i][0] = adblAssetLowerBound[i];</span>
-<span class="nc" id="L125">			aadblBound[i][1] = adblAssetUpperBound[i];</span>
+<span class="fc bfc" id="L123" title="All 2 branches covered.">		for (int i = 0; i &lt; adblAssetExpectedReturns.length; ++i) {</span>
+<span class="fc" id="L124">			aadblBound[i][0] = adblAssetLowerBound[i];</span>
+<span class="fc" id="L125">			aadblBound[i][1] = adblAssetUpperBound[i];</span>
 		}
 
-<span class="nc" id="L128">		double dblPortfolioDesignReturn = 0.005262;</span>
+<span class="fc" id="L128">		double dblPortfolioDesignReturn = 0.005262;</span>
 
-<span class="nc" id="L130">		JSONObject jsonParameters = new JSONObject();</span>
+<span class="fc" id="L130">		JSONObject jsonParameters = new JSONObject();</span>
 
-<span class="nc" id="L132">		jsonParameters.put (&quot;AssetSet&quot;, Converter.Array (astrAssetName));</span>
+<span class="fc" id="L132">		jsonParameters.put (&quot;AssetSet&quot;, Converter.Array (astrAssetName));</span>
 
-<span class="nc" id="L134">		jsonParameters.put (&quot;AssetReturnsMean&quot;, Converter.Array (adblAssetExpectedReturns));</span>
+<span class="fc" id="L134">		jsonParameters.put (&quot;AssetReturnsMean&quot;, Converter.Array (adblAssetExpectedReturns));</span>
 
-<span class="nc" id="L136">		jsonParameters.put (&quot;AssetReturnsCovariance&quot;, Converter.Array (aadblAssetReturnsCovariance));</span>
+<span class="fc" id="L136">		jsonParameters.put (&quot;AssetReturnsCovariance&quot;, Converter.Array (aadblAssetReturnsCovariance));</span>
 
-<span class="nc" id="L138">		jsonParameters.put (&quot;PortfolioDesignReturn&quot;, dblPortfolioDesignReturn);</span>
+<span class="fc" id="L138">		jsonParameters.put (&quot;PortfolioDesignReturn&quot;, dblPortfolioDesignReturn);</span>
 
-<span class="nc bnc" id="L140" title="All 2 branches missed.">		for (int i = 0; i &lt; adblAssetExpectedReturns.length; ++i) {</span>
-<span class="nc" id="L141">			jsonParameters.put (astrAssetName[i] + &quot;::LowerBound&quot;, aadblBound[i][0]);</span>
+<span class="fc bfc" id="L140" title="All 2 branches covered.">		for (int i = 0; i &lt; adblAssetExpectedReturns.length; ++i) {</span>
+<span class="fc" id="L141">			jsonParameters.put (astrAssetName[i] + &quot;::LowerBound&quot;, aadblBound[i][0]);</span>
 
-<span class="nc" id="L143">			jsonParameters.put (astrAssetName[i] + &quot;::UpperBound&quot;, aadblBound[i][1]);</span>
+<span class="fc" id="L143">			jsonParameters.put (astrAssetName[i] + &quot;::UpperBound&quot;, aadblBound[i][1]);</span>
 		}
 
-<span class="nc" id="L146">		JSONObject jsonRequest = new JSONObject();</span>
+<span class="fc" id="L146">		JSONObject jsonRequest = new JSONObject();</span>
 
-<span class="nc" id="L148">		jsonRequest.put (&quot;API&quot;, &quot;PORTFOLIOALLOCATION::RETURNSCONSTRAINEDMEANVARIANCE&quot;);</span>
+<span class="fc" id="L148">		jsonRequest.put (&quot;API&quot;, &quot;PORTFOLIOALLOCATION::RETURNSCONSTRAINEDMEANVARIANCE&quot;);</span>
 
-<span class="nc" id="L150">		jsonRequest.put (&quot;Parameters&quot;, jsonParameters);</span>
+<span class="fc" id="L150">		jsonRequest.put (&quot;Parameters&quot;, jsonParameters);</span>
 
-<span class="nc" id="L152">		System.out.println (&quot;\n\t|---------------- JSON REQUEST -----------------|\n&quot;);</span>
+<span class="fc" id="L152">		System.out.println (&quot;\n\t|---------------- JSON REQUEST -----------------|\n&quot;);</span>
 
-<span class="nc" id="L154">		System.out.println (jsonRequest.toJSONString());</span>
+<span class="fc" id="L154">		System.out.println (jsonRequest.toJSONString());</span>
 
-<span class="nc" id="L156">		System.out.println (&quot;\n\t|---------------- JSON RESPONSE ----------------|\n&quot;);</span>
+<span class="fc" id="L156">		System.out.println (&quot;\n\t|---------------- JSON RESPONSE ----------------|\n&quot;);</span>
 
-<span class="nc" id="L158">		System.out.println (KeyHoleSkeleton.Thunker (jsonRequest.toJSONString()));</span>
-<span class="nc" id="L159">	}</span>
+<span class="fc" id="L158">		System.out.println (KeyHoleSkeleton.Thunker (jsonRequest.toJSONString()));</span>
+<span class="fc" id="L159">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

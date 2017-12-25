@@ -56,8 +56,8 @@ package org.drip.quant.eigen;
  */
 
 public class QREigenComponentExtractor implements org.drip.quant.eigen.ComponentExtractor {
-<span class="nc" id="L59">	private int _iMaxIteration = -1;</span>
-<span class="nc" id="L60">	private double _dblTolerance = java.lang.Double.NaN;</span>
+<span class="fc" id="L59">	private int _iMaxIteration = -1;</span>
+<span class="fc" id="L60">	private double _dblTolerance = java.lang.Double.NaN;</span>
 
 	/**
 	 * QREigenComponentExtractor Constructor
@@ -72,11 +72,11 @@ public class QREigenComponentExtractor implements org.drip.quant.eigen.Component
 		final int iMaxIteration,
 		final double dblTolerance)
 		throws java.lang.Exception
-<span class="nc" id="L75">	{</span>
-<span class="nc bnc" id="L76" title="All 6 branches missed.">		if (0 &gt;= (_iMaxIteration = iMaxIteration) || !org.drip.quant.common.NumberUtil.IsValid (_dblTolerance</span>
+<span class="fc" id="L75">	{</span>
+<span class="pc bpc" id="L76" title="3 of 6 branches missed.">		if (0 &gt;= (_iMaxIteration = iMaxIteration) || !org.drip.quant.common.NumberUtil.IsValid (_dblTolerance</span>
 			= dblTolerance) || 0. == _dblTolerance)
 <span class="nc" id="L78">			throw new java.lang.Exception (&quot;QREigenComponentExtractor ctr: Invalid Inputs!&quot;);</span>
-<span class="nc" id="L79">	}</span>
+<span class="fc" id="L79">	}</span>
 
 	/**
 	 * Retrieve the Maximum Number of Iterations
@@ -103,51 +103,51 @@ public class QREigenComponentExtractor implements org.drip.quant.eigen.Component
 	@Override public org.drip.quant.eigen.EigenOutput eigenize (
 		final double[][] aadblA)
 	{
-<span class="nc" id="L106">		org.drip.quant.linearalgebra.QR qr = org.drip.quant.linearalgebra.Matrix.QRDecomposition (aadblA);</span>
+<span class="fc" id="L106">		org.drip.quant.linearalgebra.QR qr = org.drip.quant.linearalgebra.Matrix.QRDecomposition (aadblA);</span>
 
-<span class="nc bnc" id="L108" title="All 2 branches missed.">		if (null == qr) return null;</span>
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">		if (null == qr) return null;</span>
 
-<span class="nc" id="L110">		double[][] aadblQ = qr.q();</span>
+<span class="fc" id="L110">		double[][] aadblQ = qr.q();</span>
 
-<span class="nc" id="L112">		double[][] aadblQT = org.drip.quant.linearalgebra.Matrix.Transpose (aadblQ);</span>
+<span class="fc" id="L112">		double[][] aadblQT = org.drip.quant.linearalgebra.Matrix.Transpose (aadblQ);</span>
 
-<span class="nc bnc" id="L114" title="All 2 branches missed.">		if (null == aadblQT) return null;</span>
+<span class="pc bpc" id="L114" title="1 of 2 branches missed.">		if (null == aadblQT) return null;</span>
 
-<span class="nc" id="L116">		int iIter = 0;</span>
-<span class="nc" id="L117">		int iSize = aadblA.length;</span>
-<span class="nc" id="L118">		double[] adblEigenvalue = new double[iSize];</span>
-<span class="nc" id="L119">		double[][] aadblB = new double[iSize][iSize];</span>
-<span class="nc" id="L120">		double[][] aadblV = new double[iSize][iSize];</span>
+<span class="fc" id="L116">		int iIter = 0;</span>
+<span class="fc" id="L117">		int iSize = aadblA.length;</span>
+<span class="fc" id="L118">		double[] adblEigenvalue = new double[iSize];</span>
+<span class="fc" id="L119">		double[][] aadblB = new double[iSize][iSize];</span>
+<span class="fc" id="L120">		double[][] aadblV = new double[iSize][iSize];</span>
 
-<span class="nc bnc" id="L122" title="All 6 branches missed.">		if (0 == iSize || null == aadblQT[0] || iSize != aadblQT[0].length) return null;</span>
+<span class="pc bpc" id="L122" title="3 of 6 branches missed.">		if (0 == iSize || null == aadblQT[0] || iSize != aadblQT[0].length) return null;</span>
 
-<span class="nc bnc" id="L124" title="All 2 branches missed.">		for (int i = 0; i &lt; iSize; ++i) {</span>
-<span class="nc bnc" id="L125" title="All 2 branches missed.">			for (int j = 0; j &lt; iSize; ++j) {</span>
-<span class="nc" id="L126">				aadblB[i][j] = aadblQ[i][j];</span>
-<span class="nc" id="L127">				aadblV[i][j] = aadblA[i][j];</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="fc bfc" id="L125" title="All 2 branches covered.">			for (int j = 0; j &lt; iSize; ++j) {</span>
+<span class="fc" id="L126">				aadblB[i][j] = aadblQ[i][j];</span>
+<span class="fc" id="L127">				aadblV[i][j] = aadblA[i][j];</span>
 			}
 		}
 
-<span class="nc bnc" id="L131" title="All 2 branches missed.">		while (iIter++ &lt; _iMaxIteration &amp;&amp; org.drip.quant.linearalgebra.Matrix.NON_TRIANGULAR ==</span>
-<span class="nc bnc" id="L132" title="All 2 branches missed.">			org.drip.quant.linearalgebra.Matrix.TriangularType (aadblV, _dblTolerance)) {</span>
-<span class="nc bnc" id="L133" title="All 2 branches missed.">			if (null == (qr = org.drip.quant.linearalgebra.Matrix.QRDecomposition (aadblV =</span>
-<span class="nc" id="L134">				org.drip.quant.linearalgebra.Matrix.Product (aadblQT,</span>
-<span class="nc" id="L135">					org.drip.quant.linearalgebra.Matrix.Product (aadblV, aadblQ)))))</span>
+<span class="fc bfc" id="L131" title="All 2 branches covered.">		while (iIter++ &lt; _iMaxIteration &amp;&amp; org.drip.quant.linearalgebra.Matrix.NON_TRIANGULAR ==</span>
+<span class="fc bfc" id="L132" title="All 2 branches covered.">			org.drip.quant.linearalgebra.Matrix.TriangularType (aadblV, _dblTolerance)) {</span>
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">			if (null == (qr = org.drip.quant.linearalgebra.Matrix.QRDecomposition (aadblV =</span>
+<span class="fc" id="L134">				org.drip.quant.linearalgebra.Matrix.Product (aadblQT,</span>
+<span class="fc" id="L135">					org.drip.quant.linearalgebra.Matrix.Product (aadblV, aadblQ)))))</span>
 <span class="nc" id="L136">				return null;</span>
 
-<span class="nc" id="L138">			aadblQT = org.drip.quant.linearalgebra.Matrix.Transpose (aadblQ = qr.q());</span>
+<span class="fc" id="L138">			aadblQT = org.drip.quant.linearalgebra.Matrix.Transpose (aadblQ = qr.q());</span>
 
-<span class="nc" id="L140">			aadblB = org.drip.quant.linearalgebra.Matrix.Product (aadblB, aadblQ);</span>
+<span class="fc" id="L140">			aadblB = org.drip.quant.linearalgebra.Matrix.Product (aadblB, aadblQ);</span>
 		}
 
-<span class="nc bnc" id="L143" title="All 2 branches missed.">		if (iIter &gt;= _iMaxIteration) return null;</span>
+<span class="fc bfc" id="L143" title="All 2 branches covered.">		if (iIter &gt;= _iMaxIteration) return null;</span>
 
-<span class="nc bnc" id="L145" title="All 2 branches missed.">		for (int i = 0; i &lt; iSize; ++i)</span>
-<span class="nc" id="L146">			adblEigenvalue[i] = aadblV[i][i];</span>
+<span class="fc bfc" id="L145" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i)</span>
+<span class="fc" id="L146">			adblEigenvalue[i] = aadblV[i][i];</span>
 
 		try {
-<span class="nc" id="L149">			return new org.drip.quant.eigen.EigenOutput (org.drip.quant.linearalgebra.Matrix.Transpose</span>
-<span class="nc" id="L150">				(aadblB), adblEigenvalue);</span>
+<span class="fc" id="L149">			return new org.drip.quant.eigen.EigenOutput (org.drip.quant.linearalgebra.Matrix.Transpose</span>
+<span class="fc" id="L150">				(aadblB), adblEigenvalue);</span>
 <span class="nc" id="L151">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L152">			e.printStackTrace();</span>
 		}
@@ -166,40 +166,40 @@ public class QREigenComponentExtractor implements org.drip.quant.eigen.Component
 	public java.util.List&lt;java.lang.Integer&gt; orderedEigenList ( 
 		final org.drip.quant.eigen.EigenOutput eo)
 	{
-<span class="nc bnc" id="L169" title="All 2 branches missed.">		if (null == eo) return null;</span>
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">		if (null == eo) return null;</span>
 
-<span class="nc" id="L171">		double[] adblEigenvalue = eo.eigenvalue();</span>
+<span class="fc" id="L171">		double[] adblEigenvalue = eo.eigenvalue();</span>
 
-<span class="nc" id="L173">		int iSize = adblEigenvalue.length;</span>
+<span class="fc" id="L173">		int iSize = adblEigenvalue.length;</span>
 
-<span class="nc" id="L175">		java.util.List&lt;java.lang.Double&gt; lsEigenValue = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
+<span class="fc" id="L175">		java.util.List&lt;java.lang.Double&gt; lsEigenValue = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
 
-<span class="nc" id="L177">		java.util.List&lt;java.lang.Integer&gt; lsEigenOrder = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
+<span class="fc" id="L177">		java.util.List&lt;java.lang.Integer&gt; lsEigenOrder = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
 
-<span class="nc bnc" id="L179" title="All 2 branches missed.">		for (int i = 0; i &lt; iSize; ++i) {</span>
-<span class="nc" id="L180">			int iNumOrder = lsEigenOrder.size();</span>
+<span class="fc bfc" id="L179" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="fc" id="L180">			int iNumOrder = lsEigenOrder.size();</span>
 
-<span class="nc bnc" id="L182" title="All 2 branches missed.">			if (0 == iNumOrder) {</span>
-<span class="nc" id="L183">				lsEigenOrder.add (i);</span>
+<span class="fc bfc" id="L182" title="All 2 branches covered.">			if (0 == iNumOrder) {</span>
+<span class="fc" id="L183">				lsEigenOrder.add (i);</span>
 
-<span class="nc" id="L185">				lsEigenValue.add (adblEigenvalue[i]);</span>
+<span class="fc" id="L185">				lsEigenValue.add (adblEigenvalue[i]);</span>
 			} else {
-<span class="nc" id="L187">				int iInsertIndex = 0;</span>
+<span class="fc" id="L187">				int iInsertIndex = 0;</span>
 
-<span class="nc bnc" id="L189" title="All 2 branches missed.">				for (int j = 0; j &lt; iNumOrder; ++j) {</span>
-<span class="nc bnc" id="L190" title="All 2 branches missed.">					if (adblEigenvalue[i] &lt;= lsEigenValue.get (j)) {</span>
+<span class="fc bfc" id="L189" title="All 2 branches covered.">				for (int j = 0; j &lt; iNumOrder; ++j) {</span>
+<span class="pc bpc" id="L190" title="1 of 2 branches missed.">					if (adblEigenvalue[i] &lt;= lsEigenValue.get (j)) {</span>
 <span class="nc" id="L191">						iInsertIndex = j;</span>
 <span class="nc" id="L192">						break;</span>
 					}
 				}
 
-<span class="nc" id="L196">				lsEigenOrder.add (iInsertIndex, i);</span>
+<span class="fc" id="L196">				lsEigenOrder.add (iInsertIndex, i);</span>
 
-<span class="nc" id="L198">				lsEigenValue.add (iInsertIndex, adblEigenvalue[i]);</span>
+<span class="fc" id="L198">				lsEigenValue.add (iInsertIndex, adblEigenvalue[i]);</span>
 			}
 		}
 
-<span class="nc" id="L202">		return lsEigenOrder;</span>
+<span class="fc" id="L202">		return lsEigenOrder;</span>
 	}
 
 	/**
@@ -213,42 +213,42 @@ public class QREigenComponentExtractor implements org.drip.quant.eigen.Component
 	public org.drip.quant.eigen.EigenComponent[] orderedComponents (
 		final double[][] aadblA)
 	{
-<span class="nc" id="L216">		org.drip.quant.eigen.EigenOutput eo = eigenize (aadblA);</span>
+<span class="fc" id="L216">		org.drip.quant.eigen.EigenOutput eo = eigenize (aadblA);</span>
 
-<span class="nc" id="L218">		java.util.List&lt;java.lang.Integer&gt; lsEigenOrder = orderedEigenList (eo);</span>
+<span class="fc" id="L218">		java.util.List&lt;java.lang.Integer&gt; lsEigenOrder = orderedEigenList (eo);</span>
 
-<span class="nc bnc" id="L220" title="All 2 branches missed.">		if (null == lsEigenOrder) return null;</span>
+<span class="pc bpc" id="L220" title="1 of 2 branches missed.">		if (null == lsEigenOrder) return null;</span>
 
-<span class="nc" id="L222">		int iNumComponent = lsEigenOrder.size();</span>
+<span class="fc" id="L222">		int iNumComponent = lsEigenOrder.size();</span>
 
-<span class="nc" id="L224">		double[] adblEigenvalue = eo.eigenvalue();</span>
+<span class="fc" id="L224">		double[] adblEigenvalue = eo.eigenvalue();</span>
 
-<span class="nc" id="L226">		double[][] aadblEigenvector = eo.eigenvector();</span>
+<span class="fc" id="L226">		double[][] aadblEigenvector = eo.eigenvector();</span>
 
-<span class="nc" id="L228">		org.drip.quant.eigen.EigenComponent[] aEC = new org.drip.quant.eigen.EigenComponent[iNumComponent];</span>
+<span class="fc" id="L228">		org.drip.quant.eigen.EigenComponent[] aEC = new org.drip.quant.eigen.EigenComponent[iNumComponent];</span>
 
-<span class="nc bnc" id="L230" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComponent; ++i) {</span>
-<span class="nc" id="L231">			int iIndex = lsEigenOrder.get (i);</span>
+<span class="fc bfc" id="L230" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumComponent; ++i) {</span>
+<span class="fc" id="L231">			int iIndex = lsEigenOrder.get (i);</span>
 
 			try {
-<span class="nc" id="L234">				aEC[i] = new org.drip.quant.eigen.EigenComponent (aadblEigenvector[iIndex],</span>
+<span class="fc" id="L234">				aEC[i] = new org.drip.quant.eigen.EigenComponent (aadblEigenvector[iIndex],</span>
 					adblEigenvalue[iIndex]);
 <span class="nc" id="L236">			} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L237">				e.printStackTrace();</span>
 
 <span class="nc" id="L239">				return null;</span>
-<span class="nc" id="L240">			}</span>
+<span class="fc" id="L240">			}</span>
 		}
 
-<span class="nc" id="L243">		return aEC;</span>
+<span class="fc" id="L243">		return aEC;</span>
 	}
 
 	@Override public org.drip.quant.eigen.EigenComponent principalComponent (
 		final double[][] aadblA)
 	{
-<span class="nc" id="L249">		org.drip.quant.eigen.EigenComponent[] aEC = orderedComponents (aadblA);</span>
+<span class="fc" id="L249">		org.drip.quant.eigen.EigenComponent[] aEC = orderedComponents (aadblA);</span>
 
-<span class="nc bnc" id="L251" title="All 2 branches missed.">		return null == aEC ? null : aEC[0];</span>
+<span class="pc bpc" id="L251" title="1 of 2 branches missed.">		return null == aEC ? null : aEC[0];</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

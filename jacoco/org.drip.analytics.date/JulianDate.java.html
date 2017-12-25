@@ -336,21 +336,21 @@ public class JulianDate implements java.lang.Comparable&lt;JulianDate&gt; {
 		final int iNumRollMonths,
 		final java.lang.String strCalendar)
 	{
-<span class="nc" id="L339">		int iP = _iJulian + 68569;</span>
-<span class="nc" id="L340">		int iQ = 4 * iP / 146097;</span>
-<span class="nc" id="L341">		int iR = iP - (146097 * iQ + 3) / 4;</span>
-<span class="nc" id="L342">		int iS = 4000 * (iR + 1) / 1461001;</span>
-<span class="nc" id="L343">		int iT = iR - (1461 * iS / 4) + 31;</span>
-<span class="nc" id="L344">		int iU = 80 * iT / 2447;</span>
-<span class="nc" id="L345">		int iV = iU / 11;</span>
-<span class="nc" id="L346">		int iYear = 100 * (iQ - 49) + iS + iV;</span>
-<span class="nc" id="L347">		int iMonth = iU + 2 - 12 * iV;</span>
+<span class="fc" id="L339">		int iP = _iJulian + 68569;</span>
+<span class="fc" id="L340">		int iQ = 4 * iP / 146097;</span>
+<span class="fc" id="L341">		int iR = iP - (146097 * iQ + 3) / 4;</span>
+<span class="fc" id="L342">		int iS = 4000 * (iR + 1) / 1461001;</span>
+<span class="fc" id="L343">		int iT = iR - (1461 * iS / 4) + 31;</span>
+<span class="fc" id="L344">		int iU = 80 * iT / 2447;</span>
+<span class="fc" id="L345">		int iV = iU / 11;</span>
+<span class="fc" id="L346">		int iYear = 100 * (iQ - 49) + iS + iV;</span>
+<span class="fc" id="L347">		int iMonth = iU + 2 - 12 * iV;</span>
 
-<span class="nc bnc" id="L349" title="All 2 branches missed.">		while (0 != iMonth % iNumRollMonths) ++iMonth;</span>
+<span class="fc bfc" id="L349" title="All 2 branches covered.">		while (0 != iMonth % iNumRollMonths) ++iMonth;</span>
 
 		try {
-<span class="nc" id="L352">			return org.drip.analytics.date.DateUtil.CreateFromYMD (iYear, iMonth,</span>
-<span class="nc" id="L353">				org.drip.analytics.date.DateUtil.DaysInMonth (iMonth, iYear));</span>
+<span class="fc" id="L352">			return org.drip.analytics.date.DateUtil.CreateFromYMD (iYear, iMonth,</span>
+<span class="fc" id="L353">				org.drip.analytics.date.DateUtil.DaysInMonth (iMonth, iYear));</span>
 
 			/* return org.drip.analytics.date.DateUtil.CreateFromYMD (iYear, iMonth,
 				org.drip.analytics.date.DateUtil.DaysInMonth (iMonth, iYear)).subtractBusDays (8,

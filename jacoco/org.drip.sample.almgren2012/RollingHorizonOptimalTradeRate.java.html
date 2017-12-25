@@ -88,20 +88,20 @@ import org.drip.service.env.EnvManager;
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L91">		EnvManager.InitEnv (</span>
+<span class="fc" id="L91">		EnvManager.InitEnv (</span>
 			&quot;&quot;,
 			true
 		);
 
-<span class="nc" id="L96">		double dblSize = 1.;</span>
-<span class="nc" id="L97">		int iNumTimeNode = 51;</span>
-<span class="nc" id="L98">		double dblBurstiness = 1.;</span>
-<span class="nc" id="L99">		double dblExecutionTime = 10.;</span>
-<span class="nc" id="L100">		double dblRelaxationTime = 1.;</span>
-<span class="nc" id="L101">		double dblReferenceLiquidity = 1.;</span>
-<span class="nc" id="L102">		double dblReferenceVolatility = 1.;</span>
-<span class="nc" id="L103">		double dblInitialMarketState = -0.5;</span>
-<span class="nc" id="L104">		double[] adblRiskAversion = new double[] {</span>
+<span class="fc" id="L96">		double dblSize = 1.;</span>
+<span class="fc" id="L97">		int iNumTimeNode = 51;</span>
+<span class="fc" id="L98">		double dblBurstiness = 1.;</span>
+<span class="fc" id="L99">		double dblExecutionTime = 10.;</span>
+<span class="fc" id="L100">		double dblRelaxationTime = 1.;</span>
+<span class="fc" id="L101">		double dblReferenceLiquidity = 1.;</span>
+<span class="fc" id="L102">		double dblReferenceVolatility = 1.;</span>
+<span class="fc" id="L103">		double dblInitialMarketState = -0.5;</span>
+<span class="fc" id="L104">		double[] adblRiskAversion = new double[] {</span>
 			0.01,
 			0.04,
 			0.09,
@@ -111,73 +111,73 @@ import org.drip.service.env.EnvManager;
 			1.00
 		};
 
-<span class="nc" id="L114">		double dblNonDimensionalTimeInterval = dblExecutionTime / (iNumTimeNode - 1) / dblRelaxationTime;</span>
-<span class="nc" id="L115">		double[][] aadblAdjustedNonDimensionalTradeRate = new double[adblRiskAversion.length][];</span>
+<span class="fc" id="L114">		double dblNonDimensionalTimeInterval = dblExecutionTime / (iNumTimeNode - 1) / dblRelaxationTime;</span>
+<span class="fc" id="L115">		double[][] aadblAdjustedNonDimensionalTradeRate = new double[adblRiskAversion.length][];</span>
 
-<span class="nc" id="L117">		OrderSpecification os = new OrderSpecification (</span>
+<span class="fc" id="L117">		OrderSpecification os = new OrderSpecification (</span>
 			dblSize,
 			dblExecutionTime
 		);
 
-<span class="nc" id="L122">		CoordinatedVariation cv = new CoordinatedVariation (</span>
+<span class="fc" id="L122">		CoordinatedVariation cv = new CoordinatedVariation (</span>
 			dblReferenceVolatility,
 			dblReferenceLiquidity
 		);
 
-<span class="nc" id="L127">		DiffusionEvaluatorOrnsteinUhlenbeck oup1D = DiffusionEvaluatorOrnsteinUhlenbeck.ZeroMean (</span>
+<span class="fc" id="L127">		DiffusionEvaluatorOrnsteinUhlenbeck oup1D = DiffusionEvaluatorOrnsteinUhlenbeck.ZeroMean (</span>
 			dblBurstiness,
 			dblRelaxationTime
 		);
 
-<span class="nc" id="L132">		MarketState[] aMS = OrnsteinUhlenbeckSequence.Systemic (</span>
+<span class="fc" id="L132">		MarketState[] aMS = OrnsteinUhlenbeckSequence.Systemic (</span>
 			oup1D,
 			dblNonDimensionalTimeInterval * dblRelaxationTime,
 			dblInitialMarketState,
 			iNumTimeNode
-<span class="nc" id="L137">		).realizedMarketState();</span>
+<span class="fc" id="L137">		).realizedMarketState();</span>
 
-<span class="nc bnc" id="L139" title="All 2 branches missed.">		for (int i = 0; i &lt; adblRiskAversion.length; ++i)</span>
-<span class="nc" id="L140">			aadblAdjustedNonDimensionalTradeRate[i] = new CoordinatedVariationTrajectoryGenerator (</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">		for (int i = 0; i &lt; adblRiskAversion.length; ++i)</span>
+<span class="fc" id="L140">			aadblAdjustedNonDimensionalTradeRate[i] = new CoordinatedVariationTrajectoryGenerator (</span>
 				os,
 				cv,
 				new MeanVarianceObjectiveUtility (adblRiskAversion[i]),
-<span class="nc" id="L144">				NonDimensionalCostEvolverSystemic.Standard (oup1D),</span>
+<span class="fc" id="L144">				NonDimensionalCostEvolverSystemic.Standard (oup1D),</span>
 				CoordinatedVariationTrajectoryGenerator.TRADE_RATE_ZERO_INITIALIZATION
-<span class="nc" id="L146">			).rollingHorizon (aMS).nonDimensionalTradeRate();</span>
+<span class="fc" id="L146">			).rollingHorizon (aMS).nonDimensionalTradeRate();</span>
 
-<span class="nc" id="L148">		System.out.println();</span>
+<span class="fc" id="L148">		System.out.println();</span>
 
-<span class="nc" id="L150">		System.out.println (&quot;\t||-----------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L150">		System.out.println (&quot;\t||-----------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L152">		System.out.println (&quot;\t||                ROLLING HORIZON OPTIMAL TRAJECTORY TRADE RATE                ||&quot;);</span>
+<span class="fc" id="L152">		System.out.println (&quot;\t||                ROLLING HORIZON OPTIMAL TRAJECTORY TRADE RATE                ||&quot;);</span>
 
-<span class="nc" id="L154">		System.out.println (&quot;\t||-----------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L154">		System.out.println (&quot;\t||-----------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L156">		System.out.println (&quot;\t||     L -&gt; R:                                                                 ||&quot;);</span>
+<span class="fc" id="L156">		System.out.println (&quot;\t||     L -&gt; R:                                                                 ||&quot;);</span>
 
-<span class="nc" id="L158">		System.out.println (&quot;\t||             - Time                                                          ||&quot;);</span>
+<span class="fc" id="L158">		System.out.println (&quot;\t||             - Time                                                          ||&quot;);</span>
 
-<span class="nc bnc" id="L160" title="All 2 branches missed.">		for (int j = 0; j &lt; adblRiskAversion.length; ++j)</span>
-<span class="nc" id="L161">			System.out.println (</span>
+<span class="fc bfc" id="L160" title="All 2 branches covered.">		for (int j = 0; j &lt; adblRiskAversion.length; ++j)</span>
+<span class="fc" id="L161">			System.out.println (</span>
 				&quot;\t||             - Non Dimensional Risk Aversion =&gt;&quot; +
-<span class="nc" id="L163">				FormatUtil.FormatDouble (dblRelaxationTime * dblReferenceVolatility * Math.sqrt (adblRiskAversion[j] / dblReferenceLiquidity), 1, 2, 1.) +</span>
+<span class="fc" id="L163">				FormatUtil.FormatDouble (dblRelaxationTime * dblReferenceVolatility * Math.sqrt (adblRiskAversion[j] / dblReferenceLiquidity), 1, 2, 1.) +</span>
 				&quot;                         ||&quot;
 			);
 
-<span class="nc" id="L167">		System.out.println (&quot;\t||-----------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L167">		System.out.println (&quot;\t||-----------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L169" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumTimeNode - 1; ++i) {</span>
-<span class="nc" id="L170">			String strDump = &quot;\t|| &quot; + FormatUtil.FormatDouble (i * dblNonDimensionalTimeInterval * dblRelaxationTime, 1, 2, 1.);</span>
+<span class="fc bfc" id="L169" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTimeNode - 1; ++i) {</span>
+<span class="fc" id="L170">			String strDump = &quot;\t|| &quot; + FormatUtil.FormatDouble (i * dblNonDimensionalTimeInterval * dblRelaxationTime, 1, 2, 1.);</span>
 
-<span class="nc bnc" id="L172" title="All 2 branches missed.">			for (int j = 0; j &lt; adblRiskAversion.length; ++j)</span>
-<span class="nc" id="L173">				strDump = strDump + &quot; | &quot; + FormatUtil.FormatDouble (aadblAdjustedNonDimensionalTradeRate[j][i], 1, 4, 1.);</span>
+<span class="fc bfc" id="L172" title="All 2 branches covered.">			for (int j = 0; j &lt; adblRiskAversion.length; ++j)</span>
+<span class="fc" id="L173">				strDump = strDump + &quot; | &quot; + FormatUtil.FormatDouble (aadblAdjustedNonDimensionalTradeRate[j][i], 1, 4, 1.);</span>
 
-<span class="nc" id="L175">			System.out.println (strDump + &quot; ||&quot;);</span>
+<span class="fc" id="L175">			System.out.println (strDump + &quot; ||&quot;);</span>
 		}
 
-<span class="nc" id="L178">		System.out.println (&quot;\t||-----------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L178">		System.out.println (&quot;\t||-----------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L180">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L181">	}</span>
+<span class="fc" id="L180">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L181">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -71,13 +71,13 @@ package org.drip.service.template;
 		final org.drip.analytics.date.JulianDate dtSpot,
 		final java.lang.String strCurrency)
 	{
-<span class="nc bnc" id="L74" title="All 2 branches missed.">		if (null == dtSpot) return null;</span>
+<span class="pc bpc" id="L74" title="1 of 2 branches missed.">		if (null == dtSpot) return null;</span>
 
-<span class="nc" id="L76">		org.drip.product.rates.SingleStreamComponent[] aFutures =</span>
-<span class="nc" id="L77">			org.drip.product.creator.SingleStreamComponentBuilder.ForwardRateFuturesPack (dtSpot.addBusDays</span>
-<span class="nc" id="L78">				(0, strCurrency), 1, strCurrency);</span>
+<span class="fc" id="L76">		org.drip.product.rates.SingleStreamComponent[] aFutures =</span>
+<span class="fc" id="L77">			org.drip.product.creator.SingleStreamComponentBuilder.ForwardRateFuturesPack (dtSpot.addBusDays</span>
+<span class="fc" id="L78">				(0, strCurrency), 1, strCurrency);</span>
 
-<span class="nc bnc" id="L80" title="All 4 branches missed.">		return null == aFutures || 1 != aFutures.length ? null : aFutures[0];</span>
+<span class="pc bpc" id="L80" title="2 of 4 branches missed.">		return null == aFutures || 1 != aFutures.length ? null : aFutures[0];</span>
 	}
 
 	/**
@@ -128,56 +128,56 @@ package org.drip.service.template;
 		final java.lang.String strUnderlierSubtype,
 		final java.lang.String strMaturityTenor)
 	{
-<span class="nc bnc" id="L131" title="All 2 branches missed.">		if (null == dtSpot) return null;</span>
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">		if (null == dtSpot) return null;</span>
 
 		try {
-<span class="nc" id="L134">			org.drip.product.govvie.TreasuryFutures tsyFutures = new org.drip.product.govvie.TreasuryFutures</span>
-<span class="nc" id="L135">				(org.drip.service.template.TreasuryBuilder.FromCode (strCode, adtEffective, adtMaturity,</span>
+<span class="fc" id="L134">			org.drip.product.govvie.TreasuryFutures tsyFutures = new org.drip.product.govvie.TreasuryFutures</span>
+<span class="fc" id="L135">				(org.drip.service.template.TreasuryBuilder.FromCode (strCode, adtEffective, adtMaturity,</span>
 					adblCoupon), adblConversionFactor, null);
 
-<span class="nc" id="L138">			java.lang.String strCurrency = tsyFutures.basket()[0].currency();</span>
+<span class="fc" id="L138">			java.lang.String strCurrency = tsyFutures.basket()[0].currency();</span>
 
-<span class="nc bnc" id="L140" title="All 2 branches missed.">			if (!tsyFutures.setExpiry (dtSpot.addBusDays (0, strCurrency).nextBondFuturesIMM (3,</span>
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">			if (!tsyFutures.setExpiry (dtSpot.addBusDays (0, strCurrency).nextBondFuturesIMM (3,</span>
 				strCurrency)))
 <span class="nc" id="L142">				return null;</span>
 
-<span class="nc" id="L144">			tsyFutures.setType (strCode);</span>
+<span class="fc" id="L144">			tsyFutures.setType (strCode);</span>
 
-<span class="nc" id="L146">			org.drip.market.exchange.TreasuryFuturesConvention bfc =</span>
+<span class="fc" id="L146">			org.drip.market.exchange.TreasuryFuturesConvention bfc =</span>
 				org.drip.market.exchange.TreasuryFuturesConventionContainer.FromJurisdictionTypeMaturity
-<span class="nc" id="L148">					(strCurrency, strUnderlierType, strUnderlierSubtype, strMaturityTenor);</span>
+<span class="fc" id="L148">					(strCurrency, strUnderlierType, strUnderlierSubtype, strMaturityTenor);</span>
 
-<span class="nc bnc" id="L150" title="All 2 branches missed.">			if (null == bfc) return tsyFutures;</span>
+<span class="pc bpc" id="L150" title="1 of 2 branches missed.">			if (null == bfc) return tsyFutures;</span>
 
-<span class="nc" id="L152">			double dblBasketNotional = bfc.basketNotional();</span>
+<span class="fc" id="L152">			double dblBasketNotional = bfc.basketNotional();</span>
 
-<span class="nc" id="L154">			double dblMinimumPriceMovement = bfc.minimumPriceMovement();</span>
+<span class="fc" id="L154">			double dblMinimumPriceMovement = bfc.minimumPriceMovement();</span>
 
-<span class="nc" id="L156">			tsyFutures.setNotionalValue (dblBasketNotional);</span>
+<span class="fc" id="L156">			tsyFutures.setNotionalValue (dblBasketNotional);</span>
 
-<span class="nc" id="L158">			tsyFutures.setMinimumPriceMovement (dblMinimumPriceMovement);</span>
+<span class="fc" id="L158">			tsyFutures.setMinimumPriceMovement (dblMinimumPriceMovement);</span>
 
-<span class="nc" id="L160">			tsyFutures.setTickValue (dblBasketNotional * dblMinimumPriceMovement);</span>
+<span class="fc" id="L160">			tsyFutures.setTickValue (dblBasketNotional * dblMinimumPriceMovement);</span>
 
-<span class="nc" id="L162">			org.drip.market.exchange.TreasuryFuturesEligibility bfe = bfc.eligibility();</span>
+<span class="fc" id="L162">			org.drip.market.exchange.TreasuryFuturesEligibility bfe = bfc.eligibility();</span>
 
-<span class="nc bnc" id="L164" title="All 2 branches missed.">			if (null != bfe) {</span>
-<span class="nc" id="L165">				tsyFutures.setMaximumMaturity (bfe.maturityCeiling());</span>
+<span class="pc bpc" id="L164" title="1 of 2 branches missed.">			if (null != bfe) {</span>
+<span class="fc" id="L165">				tsyFutures.setMaximumMaturity (bfe.maturityCeiling());</span>
 
-<span class="nc" id="L167">				tsyFutures.setMinimumMaturity (bfe.maturityFloor());</span>
+<span class="fc" id="L167">				tsyFutures.setMinimumMaturity (bfe.maturityFloor());</span>
 			}
 
-<span class="nc" id="L170">			org.drip.market.exchange.TreasuryFuturesSettle bfs = bfc.settle();</span>
+<span class="fc" id="L170">			org.drip.market.exchange.TreasuryFuturesSettle bfs = bfc.settle();</span>
 
-<span class="nc bnc" id="L172" title="All 2 branches missed.">			if (null != bfs) {</span>
-<span class="nc" id="L173">				tsyFutures.setReferenceCoupon (bfs.currentReferenceYield());</span>
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">			if (null != bfs) {</span>
+<span class="fc" id="L173">				tsyFutures.setReferenceCoupon (bfs.currentReferenceYield());</span>
 
-<span class="nc" id="L175">				tsyFutures.setLastTradingDayLag (bfs.expiryLastTradingLag());</span>
+<span class="fc" id="L175">				tsyFutures.setLastTradingDayLag (bfs.expiryLastTradingLag());</span>
 
-<span class="nc" id="L177">				tsyFutures.setDeliveryMonths (bfs.deliveryMonths());</span>
+<span class="fc" id="L177">				tsyFutures.setDeliveryMonths (bfs.deliveryMonths());</span>
 			}
 
-<span class="nc" id="L180">			return tsyFutures;</span>
+<span class="fc" id="L180">			return tsyFutures;</span>
 <span class="nc" id="L181">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L182">			e.printStackTrace();</span>
 		}

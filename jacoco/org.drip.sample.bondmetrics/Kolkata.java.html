@@ -77,23 +77,26 @@ import org.drip.service.scenario.*;
 		final String[] astArgs)
 		throws Exception
 	{
-<span class="nc" id="L80">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L80">		EnvManager.InitEnv (</span>
+			&quot;&quot;,
+			true
+		);
 
-<span class="nc" id="L82">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+<span class="nc" id="L85">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
 			2017,
 			DateUtil.JULY,
 			10
 		);
 
-<span class="nc" id="L88">		String[] astrDepositTenor = new String[] {</span>
+<span class="nc" id="L91">		String[] astrDepositTenor = new String[] {</span>
 			&quot;2D&quot;
 		};
 
-<span class="nc" id="L92">		double[] adblDepositQuote = new double[] {</span>
+<span class="nc" id="L95">		double[] adblDepositQuote = new double[] {</span>
 			0.0130411 // 2D
 		};
 
-<span class="nc" id="L96">		double[] adblFuturesQuote = new double[] {</span>
+<span class="nc" id="L99">		double[] adblFuturesQuote = new double[] {</span>
 			0.01345,	// 98.655
 			0.01470,	// 98.530
 			0.01575,	// 98.425
@@ -102,7 +105,7 @@ import org.drip.service.scenario.*;
 			0.01845     // 98.155
 		};
 
-<span class="nc" id="L105">		String[] astrFixFloatTenor = new String[] {</span>
+<span class="nc" id="L108">		String[] astrFixFloatTenor = new String[] {</span>
 			&quot;02Y&quot;,
 			&quot;03Y&quot;,
 			&quot;04Y&quot;,
@@ -122,7 +125,7 @@ import org.drip.service.scenario.*;
 			&quot;50Y&quot;
 		};
 
-<span class="nc" id="L125">		String[] astrGovvieTenor = new String[] {</span>
+<span class="nc" id="L128">		String[] astrGovvieTenor = new String[] {</span>
 			&quot;1Y&quot;,
 			&quot;2Y&quot;,
 			&quot;3Y&quot;,
@@ -133,7 +136,7 @@ import org.drip.service.scenario.*;
 			&quot;30Y&quot;
 		};
 
-<span class="nc" id="L136">		double[] adblFixFloatQuote = new double[] {</span>
+<span class="nc" id="L139">		double[] adblFixFloatQuote = new double[] {</span>
 			0.016410, //  2Y
 			0.017863, //  3Y
 			0.019030, //  4Y
@@ -153,7 +156,7 @@ import org.drip.service.scenario.*;
 			0.025560  // 50Y
 		};
 
-<span class="nc" id="L156">		double[] adblGovvieYield = new double[] {</span>
+<span class="nc" id="L159">		double[] adblGovvieYield = new double[] {</span>
 			0.01219, //  1Y
 			0.01391, //  2Y
 			0.01590, //  3Y
@@ -164,7 +167,7 @@ import org.drip.service.scenario.*;
 			0.02927  // 30Y
 		};
 
-<span class="nc" id="L167">		String[] astrCreditTenor = new String[] {</span>
+<span class="nc" id="L170">		String[] astrCreditTenor = new String[] {</span>
 			&quot;06M&quot;,
 			&quot;01Y&quot;,
 			&quot;02Y&quot;,
@@ -175,7 +178,7 @@ import org.drip.service.scenario.*;
 			&quot;10Y&quot;
 		};
 
-<span class="nc" id="L178">		double[] adblCreditQuote = new double[] {</span>
+<span class="nc" id="L181">		double[] adblCreditQuote = new double[] {</span>
 			 60.,	//  6M
 			 68.,	//  1Y
 			 88.,	//  2Y
@@ -186,33 +189,33 @@ import org.drip.service.scenario.*;
 			188.	// 10Y
 		};
 
-<span class="nc" id="L189">		double dblFX = 1.;</span>
-<span class="nc" id="L190">		int iSettleLag = 3;</span>
-<span class="nc" id="L191">		int iCouponFreq = 4;</span>
-<span class="nc" id="L192">		String strName = &quot;Kolkata&quot;;</span>
-<span class="nc" id="L193">		double dblCleanPrice = 1.;</span>
-<span class="nc" id="L194">		double dblIssuePrice = 1.;</span>
-<span class="nc" id="L195">		String strCurrency = &quot;USD&quot;;</span>
-<span class="nc" id="L196">		double dblSpreadBump = 20.;</span>
-<span class="nc" id="L197">		double dblCouponRate = 0.05500;</span>
-<span class="nc" id="L198">		double dblIssueAmount = 1.21913313e8;</span>
-<span class="nc" id="L199">		String strTreasuryCode = &quot;UST&quot;;</span>
-<span class="nc" id="L200">		String strCouponDayCount = &quot;30/360&quot;;</span>
-<span class="nc" id="L201">		double dblSpreadDurationMultiplier = 5.;</span>
+<span class="nc" id="L192">		double dblFX = 1.;</span>
+<span class="nc" id="L193">		int iSettleLag = 3;</span>
+<span class="nc" id="L194">		int iCouponFreq = 4;</span>
+<span class="nc" id="L195">		String strName = &quot;Kolkata&quot;;</span>
+<span class="nc" id="L196">		double dblCleanPrice = 1.;</span>
+<span class="nc" id="L197">		double dblIssuePrice = 1.;</span>
+<span class="nc" id="L198">		String strCurrency = &quot;USD&quot;;</span>
+<span class="nc" id="L199">		double dblSpreadBump = 20.;</span>
+<span class="nc" id="L200">		double dblCouponRate = 0.05500;</span>
+<span class="nc" id="L201">		double dblIssueAmount = 1.21913313e8;</span>
+<span class="nc" id="L202">		String strTreasuryCode = &quot;UST&quot;;</span>
+<span class="nc" id="L203">		String strCouponDayCount = &quot;30/360&quot;;</span>
+<span class="nc" id="L204">		double dblSpreadDurationMultiplier = 5.;</span>
 
-<span class="nc" id="L203">		JulianDate dtEffective = DateUtil.CreateFromYMD (</span>
+<span class="nc" id="L206">		JulianDate dtEffective = DateUtil.CreateFromYMD (</span>
 			2014,
 			12,
 			8
 		);
 
-<span class="nc" id="L209">		JulianDate dtMaturity = DateUtil.CreateFromYMD (</span>
+<span class="nc" id="L212">		JulianDate dtMaturity = DateUtil.CreateFromYMD (</span>
 			2021,
 			12,
 			31
 		);
 
-<span class="nc" id="L215">		BondComponent bond = BondBuilder.CreateSimpleFixed (</span>
+<span class="nc" id="L218">		BondComponent bond = BondBuilder.CreateSimpleFixed (</span>
 			strName,
 			strCurrency,
 			strName,
@@ -225,13 +228,13 @@ import org.drip.service.scenario.*;
 			null
 		);
 
-<span class="nc" id="L228">		SetEOS (</span>
+<span class="nc" id="L231">		SetEOS (</span>
 			bond,
 			null,
 			null
 		);
 
-<span class="nc" id="L234">		BondReplicator abr = BondReplicator.Standard (</span>
+<span class="nc" id="L237">		BondReplicator abr = BondReplicator.Standard (</span>
 			dblCleanPrice,
 			dblIssuePrice,
 			dblIssueAmount,
@@ -254,9 +257,11 @@ import org.drip.service.scenario.*;
 			bond
 		);
 
-<span class="nc" id="L257">		BondReplicationRun abrr = abr.generateRun();</span>
+<span class="nc" id="L260">		BondReplicationRun abrr = abr.generateRun();</span>
 
-<span class="nc" id="L259">		System.out.println (abrr.display());</span>
-<span class="nc" id="L260">	}</span>
+<span class="nc" id="L262">		System.out.println (abrr.display());</span>
+
+<span class="nc" id="L264">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L265">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

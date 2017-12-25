@@ -67,77 +67,77 @@ package org.drip.service.json;
 	@SuppressWarnings (&quot;unchecked&quot;) static final org.drip.json.simple.JSONObject CurveMetrics (
 		final org.drip.json.simple.JSONObject jsonParameter)
 	{
-<span class="nc" id="L70">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding =</span>
-<span class="nc" id="L71">			org.drip.service.json.LatentStateProcessor.FundingCurve (jsonParameter);</span>
+<span class="fc" id="L70">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding =</span>
+<span class="fc" id="L71">			org.drip.service.json.LatentStateProcessor.FundingCurve (jsonParameter);</span>
 
-<span class="nc bnc" id="L73" title="All 2 branches missed.">		if (null == dcFunding) return null;</span>
+<span class="pc bpc" id="L73" title="1 of 2 branches missed.">		if (null == dcFunding) return null;</span>
 
-<span class="nc" id="L75">		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new</span>
+<span class="fc" id="L75">		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new</span>
 			org.drip.param.market.CurveSurfaceQuoteContainer();
 
-<span class="nc bnc" id="L78" title="All 2 branches missed.">		if (!csqc.setFundingState (dcFunding)) return null;</span>
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">		if (!csqc.setFundingState (dcFunding)) return null;</span>
 
-<span class="nc" id="L80">		org.drip.analytics.date.JulianDate dtSpot = dcFunding.epoch();</span>
+<span class="fc" id="L80">		org.drip.analytics.date.JulianDate dtSpot = dcFunding.epoch();</span>
 
-<span class="nc" id="L82">		org.drip.product.rates.SingleStreamComponent deposit =</span>
-<span class="nc" id="L83">			org.drip.service.template.OTCInstrumentBuilder.FundingDeposit (dtSpot, dcFunding.currency(),</span>
-<span class="nc" id="L84">				org.drip.json.parser.Converter.StringEntry (jsonParameter, &quot;DepositMaturity&quot;));</span>
+<span class="fc" id="L82">		org.drip.product.rates.SingleStreamComponent deposit =</span>
+<span class="fc" id="L83">			org.drip.service.template.OTCInstrumentBuilder.FundingDeposit (dtSpot, dcFunding.currency(),</span>
+<span class="fc" id="L84">				org.drip.json.parser.Converter.StringEntry (jsonParameter, &quot;DepositMaturity&quot;));</span>
 
-<span class="nc bnc" id="L86" title="All 2 branches missed.">		if (null == deposit) return null;</span>
+<span class="pc bpc" id="L86" title="1 of 2 branches missed.">		if (null == deposit) return null;</span>
 
-<span class="nc" id="L88">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapResult = deposit.value</span>
-<span class="nc" id="L89">			(org.drip.param.valuation.ValuationParams.Spot (dtSpot.julian()), null, csqc, null);</span>
+<span class="fc" id="L88">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapResult = deposit.value</span>
+<span class="fc" id="L89">			(org.drip.param.valuation.ValuationParams.Spot (dtSpot.julian()), null, csqc, null);</span>
 
-<span class="nc bnc" id="L91" title="All 2 branches missed.">		if (null == mapResult) return null;</span>
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">		if (null == mapResult) return null;</span>
 
-<span class="nc" id="L93">		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();</span>
+<span class="fc" id="L93">		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();</span>
 
-<span class="nc bnc" id="L95" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; me : mapResult.entrySet())</span>
-<span class="nc" id="L96">			jsonResponse.put (me.getKey(), me.getValue());</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; me : mapResult.entrySet())</span>
+<span class="fc" id="L96">			jsonResponse.put (me.getKey(), me.getValue());</span>
 
-<span class="nc" id="L98">		org.drip.json.simple.JSONArray jsonCashFlowArray = new org.drip.json.simple.JSONArray();</span>
+<span class="fc" id="L98">		org.drip.json.simple.JSONArray jsonCashFlowArray = new org.drip.json.simple.JSONArray();</span>
 
-<span class="nc bnc" id="L100" title="All 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod cp : deposit.couponPeriods()) {</span>
-<span class="nc" id="L101">			org.drip.json.simple.JSONObject jsonCashFlow = new org.drip.json.simple.JSONObject();</span>
+<span class="fc bfc" id="L100" title="All 2 branches covered.">		for (org.drip.analytics.cashflow.CompositePeriod cp : deposit.couponPeriods()) {</span>
+<span class="fc" id="L101">			org.drip.json.simple.JSONObject jsonCashFlow = new org.drip.json.simple.JSONObject();</span>
 
 			try {
-<span class="nc" id="L104">				jsonCashFlow.put (&quot;StartDate&quot;, new org.drip.analytics.date.JulianDate</span>
-<span class="nc" id="L105">					(cp.startDate()).toString());</span>
+<span class="fc" id="L104">				jsonCashFlow.put (&quot;StartDate&quot;, new org.drip.analytics.date.JulianDate</span>
+<span class="fc" id="L105">					(cp.startDate()).toString());</span>
 
-<span class="nc" id="L107">				jsonCashFlow.put (&quot;EndDate&quot;, new org.drip.analytics.date.JulianDate</span>
-<span class="nc" id="L108">					(cp.endDate()).toString());</span>
+<span class="fc" id="L107">				jsonCashFlow.put (&quot;EndDate&quot;, new org.drip.analytics.date.JulianDate</span>
+<span class="fc" id="L108">					(cp.endDate()).toString());</span>
 
-<span class="nc" id="L110">				jsonCashFlow.put (&quot;PayDate&quot;, new org.drip.analytics.date.JulianDate</span>
-<span class="nc" id="L111">					(cp.payDate()).toString());</span>
+<span class="fc" id="L110">				jsonCashFlow.put (&quot;PayDate&quot;, new org.drip.analytics.date.JulianDate</span>
+<span class="fc" id="L111">					(cp.payDate()).toString());</span>
 
-<span class="nc" id="L113">				jsonCashFlow.put (&quot;FixingDate&quot;, new org.drip.analytics.date.JulianDate</span>
-<span class="nc" id="L114">					(cp.fxFixingDate()).toString());</span>
+<span class="fc" id="L113">				jsonCashFlow.put (&quot;FixingDate&quot;, new org.drip.analytics.date.JulianDate</span>
+<span class="fc" id="L114">					(cp.fxFixingDate()).toString());</span>
 
-<span class="nc" id="L116">				jsonCashFlow.put (&quot;CouponDCF&quot;, cp.couponDCF());</span>
+<span class="fc" id="L116">				jsonCashFlow.put (&quot;CouponDCF&quot;, cp.couponDCF());</span>
 
-<span class="nc" id="L118">				jsonCashFlow.put (&quot;PayDiscountFactor&quot;, cp.df (csqc));</span>
+<span class="fc" id="L118">				jsonCashFlow.put (&quot;PayDiscountFactor&quot;, cp.df (csqc));</span>
 <span class="nc" id="L119">			} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L120">				e.printStackTrace();</span>
 
 <span class="nc" id="L122">				return null;</span>
-<span class="nc" id="L123">			}</span>
+<span class="fc" id="L123">			}</span>
 
-<span class="nc" id="L125">			jsonCashFlow.put (&quot;BaseNotional&quot;, cp.baseNotional());</span>
+<span class="fc" id="L125">			jsonCashFlow.put (&quot;BaseNotional&quot;, cp.baseNotional());</span>
 
-<span class="nc" id="L127">			jsonCashFlow.put (&quot;Tenor&quot;, cp.tenor());</span>
+<span class="fc" id="L127">			jsonCashFlow.put (&quot;Tenor&quot;, cp.tenor());</span>
 
-<span class="nc" id="L129">			jsonCashFlow.put (&quot;FundingLabel&quot;, cp.fundingLabel().fullyQualifiedName());</span>
+<span class="fc" id="L129">			jsonCashFlow.put (&quot;FundingLabel&quot;, cp.fundingLabel().fullyQualifiedName());</span>
 
-<span class="nc" id="L131">			jsonCashFlow.put (&quot;ForwardLabel&quot;, cp.forwardLabel().fullyQualifiedName());</span>
+<span class="fc" id="L131">			jsonCashFlow.put (&quot;ForwardLabel&quot;, cp.forwardLabel().fullyQualifiedName());</span>
 
-<span class="nc" id="L133">			jsonCashFlow.put (&quot;ReferenceRate&quot;, cp.couponMetrics (dtSpot.julian(), csqc).rate());</span>
+<span class="fc" id="L133">			jsonCashFlow.put (&quot;ReferenceRate&quot;, cp.couponMetrics (dtSpot.julian(), csqc).rate());</span>
 
-<span class="nc" id="L135">			jsonCashFlowArray.add (jsonCashFlow);</span>
-<span class="nc" id="L136">		}</span>
+<span class="fc" id="L135">			jsonCashFlowArray.add (jsonCashFlow);</span>
+<span class="fc" id="L136">		}</span>
 
-<span class="nc" id="L138">		jsonResponse.put (&quot;FloatingCashFlow&quot;, jsonCashFlowArray);</span>
+<span class="fc" id="L138">		jsonResponse.put (&quot;FloatingCashFlow&quot;, jsonCashFlowArray);</span>
 
-<span class="nc" id="L140">		return jsonResponse;</span>
+<span class="fc" id="L140">		return jsonResponse;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

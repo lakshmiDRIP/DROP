@@ -97,8 +97,8 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 
 <span class="pc bpc" id="L98" title="2 of 4 branches missed.">		if (null == cc || null == dcFunding) return null;</span>
 
-<span class="pc bpc" id="L100" title="1 of 2 branches missed.">		org.drip.param.pricer.CreditPricerParams pricerParams = null != pricerParamsIn ? pricerParamsIn :</span>
-<span class="pc" id="L101">			org.drip.param.pricer.CreditPricerParams.Standard();</span>
+<span class="fc bfc" id="L100" title="All 2 branches covered.">		org.drip.param.pricer.CreditPricerParams pricerParams = null != pricerParamsIn ? pricerParamsIn :</span>
+<span class="fc" id="L101">			org.drip.param.pricer.CreditPricerParams.Standard();</span>
 
 <span class="fc" id="L103">		long lStart = System.nanoTime();</span>
 
@@ -661,7 +661,7 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 
 	@Override public java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; couponPeriods()
 	{
-<span class="nc" id="L664">		return _lsCouponPeriod;</span>
+<span class="fc" id="L664">		return _lsCouponPeriod;</span>
 	}
 
 	@Override public org.drip.param.valuation.CashSettleParams cashSettleParams()
@@ -674,25 +674,25 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs)
 	{
-<span class="nc bnc" id="L677" title="All 4 branches missed.">		if (null == valParams || null == pricerParams) return null;</span>
+<span class="pc bpc" id="L677" title="2 of 4 branches missed.">		if (null == valParams || null == pricerParams) return null;</span>
 
-<span class="nc" id="L679">		java.util.List&lt;org.drip.analytics.cashflow.LossQuadratureMetrics&gt; sLP = new</span>
+<span class="fc" id="L679">		java.util.List&lt;org.drip.analytics.cashflow.LossQuadratureMetrics&gt; sLP = new</span>
 			java.util.ArrayList&lt;org.drip.analytics.cashflow.LossQuadratureMetrics&gt;();
 
-<span class="nc" id="L682">		int iValueDate = valParams.valueDate();</span>
+<span class="fc" id="L682">		int iValueDate = valParams.valueDate();</span>
 
-<span class="nc bnc" id="L684" title="All 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod period : _lsCouponPeriod) {</span>
-<span class="nc" id="L685">			int iPeriodEndDate = period.endDate();</span>
+<span class="fc bfc" id="L684" title="All 2 branches covered.">		for (org.drip.analytics.cashflow.CompositePeriod period : _lsCouponPeriod) {</span>
+<span class="fc" id="L685">			int iPeriodEndDate = period.endDate();</span>
 
-<span class="nc bnc" id="L687" title="All 4 branches missed.">			if (null == period || iPeriodEndDate &lt; iValueDate) continue;</span>
+<span class="pc bpc" id="L687" title="2 of 4 branches missed.">			if (null == period || iPeriodEndDate &lt; iValueDate) continue;</span>
 
-<span class="nc" id="L689">			java.util.List&lt;org.drip.analytics.cashflow.LossQuadratureMetrics&gt; sLPSub = period.lossMetrics</span>
-<span class="nc" id="L690">				(this, valParams, pricerParams, iPeriodEndDate, csqs);</span>
+<span class="fc" id="L689">			java.util.List&lt;org.drip.analytics.cashflow.LossQuadratureMetrics&gt; sLPSub = period.lossMetrics</span>
+<span class="fc" id="L690">				(this, valParams, pricerParams, iPeriodEndDate, csqs);</span>
 
-<span class="nc bnc" id="L692" title="All 2 branches missed.">			if (null != sLPSub) sLP.addAll (sLPSub);</span>
-<span class="nc" id="L693">		}</span>
+<span class="pc bpc" id="L692" title="1 of 2 branches missed.">			if (null != sLPSub) sLP.addAll (sLPSub);</span>
+<span class="fc" id="L693">		}</span>
 
-<span class="nc" id="L695">		return sLP;</span>
+<span class="fc" id="L695">		return sLP;</span>
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; value (
@@ -724,7 +724,7 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 
 <span class="fc" id="L725">		org.drip.param.definition.ProductQuote cq = csqs.productQuote (strName);</span>
 
-<span class="pc bpc" id="L727" title="3 of 8 branches missed.">		if ((null != pricerParams &amp;&amp; null != pricerParams.calibParams()) || null == mapFairMeasures || null</span>
+<span class="pc bpc" id="L727" title="2 of 8 branches missed.">		if ((null != pricerParams &amp;&amp; null != pricerParams.calibParams()) || null == mapFairMeasures || null</span>
 			== cq)
 <span class="fc" id="L729">			return mapFairMeasures;</span>
 

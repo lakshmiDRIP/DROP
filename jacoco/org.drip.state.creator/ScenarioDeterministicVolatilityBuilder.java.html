@@ -80,26 +80,26 @@ package org.drip.state.creator;
 		final double[] adblImpliedVolatility,
 		final org.drip.spline.params.SegmentCustomBuilderControl scbc)
 	{
-<span class="nc bnc" id="L83" title="All 12 branches missed.">		if (null == strName || strName.isEmpty() || null == dtStart || null == aiDate || null ==</span>
+<span class="pc bpc" id="L83" title="6 of 12 branches missed.">		if (null == strName || strName.isEmpty() || null == dtStart || null == aiDate || null ==</span>
 			adblImpliedVolatility || null == scbc)
 <span class="nc" id="L85">			return null;</span>
 
-<span class="nc" id="L87">		int iNumDate = aiDate.length;</span>
-<span class="nc" id="L88">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new</span>
+<span class="fc" id="L87">		int iNumDate = aiDate.length;</span>
+<span class="fc" id="L88">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new</span>
 			org.drip.spline.params.SegmentCustomBuilderControl[iNumDate - 1];
 
-<span class="nc bnc" id="L91" title="All 4 branches missed.">		if (0 == iNumDate || iNumDate != adblImpliedVolatility.length) return null;</span>
+<span class="pc bpc" id="L91" title="2 of 4 branches missed.">		if (0 == iNumDate || iNumDate != adblImpliedVolatility.length) return null;</span>
 
-<span class="nc bnc" id="L93" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumDate - 1; ++i)</span>
-<span class="nc" id="L94">			aSCBC[i] = scbc;</span>
+<span class="fc bfc" id="L93" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumDate - 1; ++i)</span>
+<span class="fc" id="L94">			aSCBC[i] = scbc;</span>
 
 		try {
-<span class="nc" id="L97">			return new org.drip.state.curve.BasisSplineDeterministicVolatility (dtStart.julian(),</span>
-<span class="nc" id="L98">				org.drip.state.identifier.CustomLabel.Standard (strName), strCurrency, new</span>
+<span class="fc" id="L97">			return new org.drip.state.curve.BasisSplineDeterministicVolatility (dtStart.julian(),</span>
+<span class="fc" id="L98">				org.drip.state.identifier.CustomLabel.Standard (strName), strCurrency, new</span>
 					org.drip.spline.grid.OverlappingStretchSpan
 						(org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
-<span class="nc" id="L101">							(strName, aiDate, adblImpliedVolatility, aSCBC, null,</span>
-<span class="nc" id="L102">								org.drip.spline.stretch.BoundarySettings.NaturalStandard(),</span>
+<span class="fc" id="L101">							(strName, aiDate, adblImpliedVolatility, aSCBC, null,</span>
+<span class="fc" id="L102">								org.drip.spline.stretch.BoundarySettings.NaturalStandard(),</span>
 									org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE)));
 <span class="nc" id="L104">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L105">			e.printStackTrace();</span>
@@ -127,22 +127,22 @@ package org.drip.state.creator;
 		final java.lang.String[] astrTenor,
 		final double[] adblImpliedVolatility)
 	{
-<span class="nc bnc" id="L130" title="All 4 branches missed.">		if (null == dtStart || null == astrTenor) return null;</span>
+<span class="pc bpc" id="L130" title="2 of 4 branches missed.">		if (null == dtStart || null == astrTenor) return null;</span>
 
-<span class="nc" id="L132">		int iNumTenor = astrTenor.length;</span>
-<span class="nc" id="L133">		int[] aiDate = new int[iNumTenor];</span>
+<span class="fc" id="L132">		int iNumTenor = astrTenor.length;</span>
+<span class="fc" id="L133">		int[] aiDate = new int[iNumTenor];</span>
 
-<span class="nc bnc" id="L135" title="All 2 branches missed.">		if (0 == iNumTenor) return null;</span>
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">		if (0 == iNumTenor) return null;</span>
 
-<span class="nc bnc" id="L137" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
-<span class="nc" id="L138">			aiDate[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
+<span class="fc bfc" id="L137" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
+<span class="fc" id="L138">			aiDate[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
 
 		try {
-<span class="nc" id="L141">			return CustomSplineTermStructure (strName, dtStart, strCurrency, aiDate, adblImpliedVolatility,</span>
+<span class="fc" id="L141">			return CustomSplineTermStructure (strName, dtStart, strCurrency, aiDate, adblImpliedVolatility,</span>
 				new org.drip.spline.params.SegmentCustomBuilderControl
 					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
 						org.drip.spline.basis.PolynomialFunctionSetParams (4),
-<span class="nc" id="L145">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
+<span class="fc" id="L145">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
 <span class="nc" id="L146">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L147">			e.printStackTrace();</span>
 		}
@@ -170,22 +170,22 @@ package org.drip.state.creator;
 		final java.lang.String[] astrTenor,
 		final double[] adblImpliedVolatility)
 	{
-<span class="nc bnc" id="L173" title="All 4 branches missed.">		if (null == dtStart || null == astrTenor) return null;</span>
+<span class="pc bpc" id="L173" title="2 of 4 branches missed.">		if (null == dtStart || null == astrTenor) return null;</span>
 
-<span class="nc" id="L175">		int iNumTenor = astrTenor.length;</span>
-<span class="nc" id="L176">		int[] aiDate = new int[iNumTenor];</span>
+<span class="fc" id="L175">		int iNumTenor = astrTenor.length;</span>
+<span class="fc" id="L176">		int[] aiDate = new int[iNumTenor];</span>
 
-<span class="nc bnc" id="L178" title="All 2 branches missed.">		if (0 == iNumTenor) return null;</span>
+<span class="pc bpc" id="L178" title="1 of 2 branches missed.">		if (0 == iNumTenor) return null;</span>
 
-<span class="nc bnc" id="L180" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
-<span class="nc" id="L181">			aiDate[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
+<span class="fc bfc" id="L180" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
+<span class="fc" id="L181">			aiDate[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
 
 		try {
-<span class="nc" id="L184">			return CustomSplineTermStructure (strName, dtStart, strCurrency, aiDate, adblImpliedVolatility,</span>
+<span class="fc" id="L184">			return CustomSplineTermStructure (strName, dtStart, strCurrency, aiDate, adblImpliedVolatility,</span>
 				new org.drip.spline.params.SegmentCustomBuilderControl
 					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
 						org.drip.spline.basis.PolynomialFunctionSetParams (5),
-<span class="nc" id="L188">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
+<span class="fc" id="L188">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
 <span class="nc" id="L189">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L190">			e.printStackTrace();</span>
 		}
@@ -214,22 +214,22 @@ package org.drip.state.creator;
 		final java.lang.String[] astrTenor,
 		final double[] adblImpliedVolatility)
 	{
-<span class="nc bnc" id="L217" title="All 4 branches missed.">		if (null == dtStart || null == astrTenor) return null;</span>
+<span class="pc bpc" id="L217" title="2 of 4 branches missed.">		if (null == dtStart || null == astrTenor) return null;</span>
 
-<span class="nc" id="L219">		int iNumTenor = astrTenor.length;</span>
-<span class="nc" id="L220">		int[] aiDate = new int[iNumTenor];</span>
+<span class="fc" id="L219">		int iNumTenor = astrTenor.length;</span>
+<span class="fc" id="L220">		int[] aiDate = new int[iNumTenor];</span>
 
-<span class="nc bnc" id="L222" title="All 2 branches missed.">		if (0 == iNumTenor) return null;</span>
+<span class="pc bpc" id="L222" title="1 of 2 branches missed.">		if (0 == iNumTenor) return null;</span>
 
-<span class="nc bnc" id="L224" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
-<span class="nc" id="L225">			aiDate[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
+<span class="fc bfc" id="L224" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
+<span class="fc" id="L225">			aiDate[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
 
 		try {
-<span class="nc" id="L228">			return CustomSplineTermStructure (strName, dtStart, strCurrency, aiDate, adblImpliedVolatility,</span>
+<span class="fc" id="L228">			return CustomSplineTermStructure (strName, dtStart, strCurrency, aiDate, adblImpliedVolatility,</span>
 				new org.drip.spline.params.SegmentCustomBuilderControl
 					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KAKLIS_PANDELIS, new
 						org.drip.spline.basis.KaklisPandelisSetParams (2),
-<span class="nc" id="L232">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
+<span class="fc" id="L232">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
 <span class="nc" id="L233">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L234">			e.printStackTrace();</span>
 		}
@@ -260,22 +260,22 @@ package org.drip.state.creator;
 		final double[] adblImpliedVolatility,
 		final double dblTension)
 	{
-<span class="nc bnc" id="L263" title="All 4 branches missed.">		if (null == dtStart || null == astrTenor) return null;</span>
+<span class="pc bpc" id="L263" title="2 of 4 branches missed.">		if (null == dtStart || null == astrTenor) return null;</span>
 
-<span class="nc" id="L265">		int iNumTenor = astrTenor.length;</span>
-<span class="nc" id="L266">		int[] aiDate = new int[iNumTenor];</span>
+<span class="fc" id="L265">		int iNumTenor = astrTenor.length;</span>
+<span class="fc" id="L266">		int[] aiDate = new int[iNumTenor];</span>
 
-<span class="nc bnc" id="L268" title="All 2 branches missed.">		if (0 == iNumTenor) return null;</span>
+<span class="pc bpc" id="L268" title="1 of 2 branches missed.">		if (0 == iNumTenor) return null;</span>
 
-<span class="nc bnc" id="L270" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
-<span class="nc" id="L271">			aiDate[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
+<span class="fc bfc" id="L270" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
+<span class="fc" id="L271">			aiDate[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
 
 		try {
-<span class="nc" id="L274">			return CustomSplineTermStructure (strName, dtStart, strCurrency, aiDate, adblImpliedVolatility,</span>
+<span class="fc" id="L274">			return CustomSplineTermStructure (strName, dtStart, strCurrency, aiDate, adblImpliedVolatility,</span>
 				new org.drip.spline.params.SegmentCustomBuilderControl
 					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
 						new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-<span class="nc" id="L278">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
+<span class="fc" id="L278">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
 <span class="nc" id="L279">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L280">			e.printStackTrace();</span>
 		}
@@ -306,22 +306,22 @@ package org.drip.state.creator;
 		final double[] adblImpliedVolatility,
 		final double dblTension)
 	{
-<span class="nc bnc" id="L309" title="All 4 branches missed.">		if (null == dtStart || null == astrTenor) return null;</span>
+<span class="pc bpc" id="L309" title="2 of 4 branches missed.">		if (null == dtStart || null == astrTenor) return null;</span>
 
-<span class="nc" id="L311">		int iNumTenor = astrTenor.length;</span>
-<span class="nc" id="L312">		int[] aiDate = new int[iNumTenor];</span>
+<span class="fc" id="L311">		int iNumTenor = astrTenor.length;</span>
+<span class="fc" id="L312">		int[] aiDate = new int[iNumTenor];</span>
 
-<span class="nc bnc" id="L314" title="All 2 branches missed.">		if (0 == iNumTenor) return null;</span>
+<span class="pc bpc" id="L314" title="1 of 2 branches missed.">		if (0 == iNumTenor) return null;</span>
 
-<span class="nc bnc" id="L316" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
-<span class="nc" id="L317">			aiDate[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
+<span class="fc bfc" id="L316" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
+<span class="fc" id="L317">			aiDate[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
 
 		try {
-<span class="nc" id="L320">			return CustomSplineTermStructure (strName, dtStart, strCurrency, aiDate, adblImpliedVolatility,</span>
+<span class="fc" id="L320">			return CustomSplineTermStructure (strName, dtStart, strCurrency, aiDate, adblImpliedVolatility,</span>
 				new org.drip.spline.params.SegmentCustomBuilderControl
 					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_LINEAR_TENSION,
 						new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-<span class="nc" id="L324">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
+<span class="fc" id="L324">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
 <span class="nc" id="L325">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L326">			e.printStackTrace();</span>
 		}
@@ -353,22 +353,22 @@ package org.drip.state.creator;
 			final double[] adblImpliedVolatility,
 			final double dblTension)
 	{
-<span class="nc bnc" id="L356" title="All 4 branches missed.">		if (null == dtStart || null == astrTenor) return null;</span>
+<span class="pc bpc" id="L356" title="2 of 4 branches missed.">		if (null == dtStart || null == astrTenor) return null;</span>
 
-<span class="nc" id="L358">		int iNumTenor = astrTenor.length;</span>
-<span class="nc" id="L359">		int[] aiDate = new int[iNumTenor];</span>
+<span class="fc" id="L358">		int iNumTenor = astrTenor.length;</span>
+<span class="fc" id="L359">		int[] aiDate = new int[iNumTenor];</span>
 
-<span class="nc bnc" id="L361" title="All 2 branches missed.">		if (0 == iNumTenor) return null;</span>
+<span class="pc bpc" id="L361" title="1 of 2 branches missed.">		if (0 == iNumTenor) return null;</span>
 
-<span class="nc bnc" id="L363" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
-<span class="nc" id="L364">			aiDate[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
+<span class="fc bfc" id="L363" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
+<span class="fc" id="L364">			aiDate[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
 
 		try {
-<span class="nc" id="L367">			return CustomSplineTermStructure (strName, dtStart, strCurrency, aiDate, adblImpliedVolatility,</span>
+<span class="fc" id="L367">			return CustomSplineTermStructure (strName, dtStart, strCurrency, aiDate, adblImpliedVolatility,</span>
 				new org.drip.spline.params.SegmentCustomBuilderControl
 					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_QUADRATIC_TENSION,
 				new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-<span class="nc" id="L371">					org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
+<span class="fc" id="L371">					org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
 <span class="nc" id="L372">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L373">			e.printStackTrace();</span>
 		}

@@ -58,36 +58,36 @@ package org.drip.analytics.definition;
  */
 
 public abstract class MarketSurface implements org.drip.analytics.definition.Curve {
-<span class="nc" id="L61">	protected java.lang.String _strCurrency = &quot;&quot;;</span>
-<span class="nc" id="L62">	protected int _iEpochDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="nc" id="L63">	protected org.drip.state.identifier.CustomLabel _label = null;</span>
+<span class="fc" id="L61">	protected java.lang.String _strCurrency = &quot;&quot;;</span>
+<span class="fc" id="L62">	protected int _iEpochDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L63">	protected org.drip.state.identifier.CustomLabel _label = null;</span>
 
 	protected MarketSurface (
 		final int iEpochDate,
 		final org.drip.state.identifier.CustomLabel label,
 		final java.lang.String strCurrency)
 		throws java.lang.Exception
-<span class="nc" id="L70">	{</span>
-<span class="nc bnc" id="L71" title="All 4 branches missed.">		if (null == (_strCurrency = strCurrency) || _strCurrency.isEmpty())</span>
+<span class="fc" id="L70">	{</span>
+<span class="pc bpc" id="L71" title="2 of 4 branches missed.">		if (null == (_strCurrency = strCurrency) || _strCurrency.isEmpty())</span>
 <span class="nc" id="L72">			throw new java.lang.Exception (&quot;MarketSurface ctr: Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L74">		_iEpochDate = iEpochDate;</span>
-<span class="nc" id="L75">	}</span>
+<span class="fc" id="L74">		_iEpochDate = iEpochDate;</span>
+<span class="fc" id="L75">	}</span>
 
 	@Override public org.drip.state.identifier.LatentStateLabel label()
 	{
-<span class="nc" id="L79">		return _label;</span>
+<span class="fc" id="L79">		return _label;</span>
 	}
 
 	@Override public java.lang.String currency()
 	{
-<span class="nc" id="L84">		return _strCurrency;</span>
+<span class="fc" id="L84">		return _strCurrency;</span>
 	}
 
 	@Override public org.drip.analytics.date.JulianDate epoch()
 	{
 		try {
-<span class="nc" id="L90">			return new org.drip.analytics.date.JulianDate (_iEpochDate);</span>
+<span class="fc" id="L90">			return new org.drip.analytics.date.JulianDate (_iEpochDate);</span>
 <span class="nc" id="L91">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L92">			e.printStackTrace();</span>
 		}
@@ -178,10 +178,10 @@ public abstract class MarketSurface implements org.drip.analytics.definition.Cur
 		final java.lang.String strTenor)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L181" title="All 4 branches missed.">		if (null == strTenor || strTenor.isEmpty())</span>
+<span class="pc bpc" id="L181" title="2 of 4 branches missed.">		if (null == strTenor || strTenor.isEmpty())</span>
 <span class="nc" id="L182">			throw new java.lang.Exception (&quot;MarketSurface::node =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L184">		return node (dblStrike, epoch().addTenor (strTenor).julian());</span>
+<span class="fc" id="L184">		return node (dblStrike, epoch().addTenor (strTenor).julian());</span>
 	}
 
 	/**
@@ -217,8 +217,8 @@ public abstract class MarketSurface implements org.drip.analytics.definition.Cur
 	public org.drip.analytics.definition.NodeStructure maturityAnchorTermStructure (
 		final java.lang.String strTenorAnchor)
 	{
-<span class="nc bnc" id="L220" title="All 4 branches missed.">		return null == strTenorAnchor || strTenorAnchor.isEmpty() ? null : yAnchorTermStructure</span>
-<span class="nc" id="L221">			(epoch().addTenor (strTenorAnchor).julian());</span>
+<span class="pc bpc" id="L220" title="2 of 4 branches missed.">		return null == strTenorAnchor || strTenorAnchor.isEmpty() ? null : yAnchorTermStructure</span>
+<span class="fc" id="L221">			(epoch().addTenor (strTenorAnchor).julian());</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

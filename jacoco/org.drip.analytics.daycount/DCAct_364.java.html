@@ -86,12 +86,12 @@ public class DCAct_364 implements org.drip.analytics.daycount.DCFCalculator {
 		final java.lang.String strCalendar)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L89">		DateEOMAdjustment dm = DateEOMAdjustment.MakeDEOMA (iStartDate, iEndDate, bApplyEOMAdj);</span>
+<span class="fc" id="L89">		DateEOMAdjustment dm = DateEOMAdjustment.MakeDEOMA (iStartDate, iEndDate, bApplyEOMAdj);</span>
 
-<span class="nc bnc" id="L91" title="All 2 branches missed.">		if (null == dm)</span>
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">		if (null == dm)</span>
 <span class="nc" id="L92">			throw new java.lang.Exception (&quot;DCAct_364::yearFraction =&gt; Cannot create DateEOMAdjustment!&quot;);</span>
 
-<span class="nc" id="L94">		return 1. * (iEndDate - iStartDate + dm.posterior() - dm.anterior()) / 364.;</span>
+<span class="fc" id="L94">		return 1. * (iEndDate - iStartDate + dm.posterior() - dm.anterior()) / 364.;</span>
 	}
 
 	@Override public int daysAccrued (
@@ -102,24 +102,24 @@ public class DCAct_364 implements org.drip.analytics.daycount.DCFCalculator {
 		final java.lang.String strCalendar)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L105">		DateEOMAdjustment dm = DateEOMAdjustment.MakeDEOMA (iStartDate, iEndDate, bApplyEOMAdj);</span>
+<span class="fc" id="L105">		DateEOMAdjustment dm = DateEOMAdjustment.MakeDEOMA (iStartDate, iEndDate, bApplyEOMAdj);</span>
 
-<span class="nc bnc" id="L107" title="All 2 branches missed.">		if (null == dm)</span>
+<span class="pc bpc" id="L107" title="1 of 2 branches missed.">		if (null == dm)</span>
 <span class="nc" id="L108">			throw new java.lang.Exception (&quot;DCAct_364::daysAccrued =&gt; Cannot create DateEOMAdjustment!&quot;);</span>
 
-<span class="nc" id="L110">		int iDaysAccrued = 0;</span>
+<span class="fc" id="L110">		int iDaysAccrued = 0;</span>
 
-<span class="nc" id="L112">		int iStartYear = org.drip.analytics.date.DateUtil.Year (iStartDate);</span>
+<span class="fc" id="L112">		int iStartYear = org.drip.analytics.date.DateUtil.Year (iStartDate);</span>
 
-<span class="nc" id="L114">		int iEndYear = org.drip.analytics.date.DateUtil.Year (iEndDate);</span>
+<span class="fc" id="L114">		int iEndYear = org.drip.analytics.date.DateUtil.Year (iEndDate);</span>
 
-<span class="nc bnc" id="L116" title="All 2 branches missed.">		if (iEndYear == iStartYear) iDaysAccrued -= 364;</span>
+<span class="fc bfc" id="L116" title="All 2 branches covered.">		if (iEndYear == iStartYear) iDaysAccrued -= 364;</span>
 
-<span class="nc bnc" id="L118" title="All 2 branches missed.">		for (int iYear = iStartYear + 1; iYear &lt; iEndYear; ++iYear)</span>
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">		for (int iYear = iStartYear + 1; iYear &lt; iEndYear; ++iYear)</span>
 <span class="nc" id="L119">			iDaysAccrued += 364;</span>
 
-<span class="nc" id="L121">		return iDaysAccrued + org.drip.analytics.date.DateUtil.DaysRemaining (iStartDate) - dm.anterior() +</span>
-<span class="nc" id="L122">			org.drip.analytics.date.DateUtil.DaysElapsed (iEndDate) + dm.posterior();</span>
+<span class="fc" id="L121">		return iDaysAccrued + org.drip.analytics.date.DateUtil.DaysRemaining (iStartDate) - dm.anterior() +</span>
+<span class="fc" id="L122">			org.drip.analytics.date.DateUtil.DaysElapsed (iEndDate) + dm.posterior();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

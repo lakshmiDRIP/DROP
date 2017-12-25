@@ -57,7 +57,7 @@ package org.drip.state.curve;
  */
 
 public class BasisSplineMarketSurface extends org.drip.analytics.definition.MarketSurface {
-<span class="nc" id="L60">	private org.drip.spline.multidimensional.WireSurfaceStretch _wss = null;</span>
+<span class="fc" id="L60">	private org.drip.spline.multidimensional.WireSurfaceStretch _wss = null;</span>
 
 	/**
 	 * BasisSplineMarketSurface Constructor
@@ -77,26 +77,26 @@ public class BasisSplineMarketSurface extends org.drip.analytics.definition.Mark
 		final org.drip.spline.multidimensional.WireSurfaceStretch wss)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L80">		super (iEpochDate, label, strCurrency);</span>
+<span class="fc" id="L80">		super (iEpochDate, label, strCurrency);</span>
 
-<span class="nc" id="L82">		_wss = wss;</span>
-<span class="nc" id="L83">	}</span>
+<span class="fc" id="L82">		_wss = wss;</span>
+<span class="fc" id="L83">	}</span>
 
 	@Override public double node (
 		final double dblStrike,
 		final double dblDate)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L90">		return _wss.responseValue (dblStrike, dblDate);</span>
+<span class="fc" id="L90">		return _wss.responseValue (dblStrike, dblDate);</span>
 	}
 
 	@Override public org.drip.analytics.definition.NodeStructure xAnchorTermStructure (
 		final double dblStrikeAnchor)
 	{
 		try {
-<span class="nc" id="L97">			return new BasisSplineTermStructure (epoch().julian(),</span>
-<span class="nc" id="L98">				org.drip.state.identifier.CustomLabel.Standard (label() + &quot;_&quot; + dblStrikeAnchor),</span>
-<span class="nc" id="L99">					currency(), _wss.wireSpanXAnchor (dblStrikeAnchor));</span>
+<span class="fc" id="L97">			return new BasisSplineTermStructure (epoch().julian(),</span>
+<span class="fc" id="L98">				org.drip.state.identifier.CustomLabel.Standard (label() + &quot;_&quot; + dblStrikeAnchor),</span>
+<span class="fc" id="L99">					currency(), _wss.wireSpanXAnchor (dblStrikeAnchor));</span>
 <span class="nc" id="L100">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L101">			e.printStackTrace();</span>
 		}
@@ -108,10 +108,10 @@ public class BasisSplineMarketSurface extends org.drip.analytics.definition.Mark
 		final double dblMaturityDateAnchor)
 	{
 		try {
-<span class="nc" id="L111">			return new BasisSplineTermStructure (epoch().julian(),</span>
-<span class="nc" id="L112">				org.drip.state.identifier.CustomLabel.Standard (label() + &quot;_&quot; + new</span>
-<span class="nc" id="L113">					org.drip.analytics.date.JulianDate ((int) dblMaturityDateAnchor)), currency(),</span>
-<span class="nc" id="L114">						_wss.wireSpanYAnchor (dblMaturityDateAnchor));</span>
+<span class="fc" id="L111">			return new BasisSplineTermStructure (epoch().julian(),</span>
+<span class="fc" id="L112">				org.drip.state.identifier.CustomLabel.Standard (label() + &quot;_&quot; + new</span>
+<span class="fc" id="L113">					org.drip.analytics.date.JulianDate ((int) dblMaturityDateAnchor)), currency(),</span>
+<span class="fc" id="L114">						_wss.wireSpanYAnchor (dblMaturityDateAnchor));</span>
 <span class="nc" id="L115">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L116">			e.printStackTrace();</span>
 		}

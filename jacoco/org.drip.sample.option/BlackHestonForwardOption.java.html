@@ -81,14 +81,14 @@ import org.drip.state.identifier.ForwardLabel;
 		final String strMaturityTenor,
 		final double dblCoupon)
 	{
-<span class="nc" id="L84">		FixedFloatSwapConvention ffConv = IBORFixedFloatContainer.ConventionFromJurisdiction (</span>
+<span class="fc" id="L84">		FixedFloatSwapConvention ffConv = IBORFixedFloatContainer.ConventionFromJurisdiction (</span>
 			strCurrency,
 			&quot;ALL&quot;,
 			strMaturityTenor,
 			&quot;MAIN&quot;
 		);
 
-<span class="nc" id="L91">		return ffConv.createFixFloatComponent (</span>
+<span class="fc" id="L91">		return ffConv.createFixFloatComponent (</span>
 			dtSpot,
 			strMaturityTenor,
 			dblCoupon,
@@ -110,31 +110,31 @@ import org.drip.state.identifier.ForwardLabel;
 		final String strCurrency)
 		throws Exception
 	{
-<span class="nc" id="L113">		CalibratableComponent[] aCalibComp = new CalibratableComponent[aiDay.length + iNumFutures];</span>
+<span class="fc" id="L113">		CalibratableComponent[] aCalibComp = new CalibratableComponent[aiDay.length + iNumFutures];</span>
 
-<span class="nc bnc" id="L115" title="All 2 branches missed.">		for (int i = 0; i &lt; aiDay.length; ++i)</span>
-<span class="nc" id="L116">			aCalibComp[i] = SingleStreamComponentBuilder.Deposit (</span>
+<span class="fc bfc" id="L115" title="All 2 branches covered.">		for (int i = 0; i &lt; aiDay.length; ++i)</span>
+<span class="fc" id="L116">			aCalibComp[i] = SingleStreamComponentBuilder.Deposit (</span>
 				dtEffective,
-<span class="nc" id="L118">				dtEffective.addBusDays (</span>
+<span class="fc" id="L118">				dtEffective.addBusDays (</span>
 					aiDay[i],
 					strCurrency
 				),
-<span class="nc" id="L122">				ForwardLabel.Create (</span>
+<span class="fc" id="L122">				ForwardLabel.Create (</span>
 					strCurrency,
 					&quot;3M&quot;
 				)
 			);
 
-<span class="nc" id="L128">		CalibratableComponent[] aEDF = SingleStreamComponentBuilder.ForwardRateFuturesPack (</span>
+<span class="fc" id="L128">		CalibratableComponent[] aEDF = SingleStreamComponentBuilder.ForwardRateFuturesPack (</span>
 			dtEffective,
 			iNumFutures,
 			strCurrency
 		);
 
-<span class="nc bnc" id="L134" title="All 2 branches missed.">		for (int i = aiDay.length; i &lt; aiDay.length + iNumFutures; ++i)</span>
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">		for (int i = aiDay.length; i &lt; aiDay.length + iNumFutures; ++i)</span>
 <span class="nc" id="L135">			aCalibComp[i] = aEDF[i - aiDay.length];</span>
 
-<span class="nc" id="L137">		return aCalibComp;</span>
+<span class="fc" id="L137">		return aCalibComp;</span>
 	}
 
 	/*
@@ -150,22 +150,22 @@ import org.drip.state.identifier.ForwardLabel;
 		final double[] adblCoupon)
 		throws Exception
 	{
-<span class="nc" id="L153">		FixFloatComponent[] aIRS = new FixFloatComponent[astrMaturityTenor.length];</span>
+<span class="fc" id="L153">		FixFloatComponent[] aIRS = new FixFloatComponent[astrMaturityTenor.length];</span>
 
-<span class="nc bnc" id="L155" title="All 2 branches missed.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i) {</span>
-<span class="nc" id="L156">			FixFloatComponent irs = OTCIRS (</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i) {</span>
+<span class="fc" id="L156">			FixFloatComponent irs = OTCIRS (</span>
 				dtSpot,
 				strCurrency,
 				astrMaturityTenor[i],
 				adblCoupon[i]
 			);
 
-<span class="nc" id="L163">			irs.setPrimaryCode (&quot;IRS.&quot; + astrMaturityTenor[i] + &quot;.&quot; + strCurrency);</span>
+<span class="fc" id="L163">			irs.setPrimaryCode (&quot;IRS.&quot; + astrMaturityTenor[i] + &quot;.&quot; + strCurrency);</span>
 
-<span class="nc" id="L165">			aIRS[i] = irs;</span>
+<span class="fc" id="L165">			aIRS[i] = irs;</span>
 		}
 
-<span class="nc" id="L168">		return aIRS;</span>
+<span class="fc" id="L168">		return aIRS;</span>
 	}
 
 	/*
@@ -186,7 +186,7 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Construct the array of Deposit instruments and their quotes.
 		 */
 
-<span class="nc" id="L189">		CalibratableComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (</span>
+<span class="fc" id="L189">		CalibratableComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (</span>
 			dtSpot,
 			new int[] {
 				1, 2, 3, 7, 14, 21, 30, 60
@@ -195,11 +195,11 @@ import org.drip.state.identifier.ForwardLabel;
 			strCurrency
 		);
 
-<span class="nc" id="L198">		double[] adblDepositQuote = new double[] {</span>
+<span class="fc" id="L198">		double[] adblDepositQuote = new double[] {</span>
 			0.01200, 0.01200, 0.01200, 0.01450, 0.01550, 0.01600, 0.01660, 0.01850
 		};
 
-<span class="nc" id="L202">		String[] astrDepositManifestMeasure = new String[] {</span>
+<span class="fc" id="L202">		String[] astrDepositManifestMeasure = new String[] {</span>
 			&quot;ForwardRate&quot;, &quot;ForwardRate&quot;, &quot;ForwardRate&quot;, &quot;ForwardRate&quot;, &quot;ForwardRate&quot;, &quot;ForwardRate&quot;, &quot;ForwardRate&quot;, &quot;ForwardRate&quot;
 		};
 
@@ -207,7 +207,7 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Construct the array of Swap instruments and their quotes.
 		 */
 
-<span class="nc" id="L210">		double[] adblSwapQuote = new double[] {</span>
+<span class="fc" id="L210">		double[] adblSwapQuote = new double[] {</span>
 			0.02604,    //  4Y
 			0.02808,    //  5Y
 			0.02983,    //  6Y
@@ -225,7 +225,7 @@ import org.drip.state.identifier.ForwardLabel;
 			0.03145     // 50Y
 		};
 
-<span class="nc" id="L228">		String[] astrSwapManifestMeasure = new String[] {</span>
+<span class="fc" id="L228">		String[] astrSwapManifestMeasure = new String[] {</span>
 			&quot;SwapRate&quot;,    //  4Y
 			&quot;SwapRate&quot;,    //  5Y
 			&quot;SwapRate&quot;,    //  6Y
@@ -243,7 +243,7 @@ import org.drip.state.identifier.ForwardLabel;
 			&quot;SwapRate&quot;     // 50Y
 		};
 
-<span class="nc" id="L246">		CalibratableComponent[] aSwapComp = SwapInstrumentsFromMaturityTenor (</span>
+<span class="fc" id="L246">		CalibratableComponent[] aSwapComp = SwapInstrumentsFromMaturityTenor (</span>
 			dtSpot,
 			strCurrency,
 			new java.lang.String[] {
@@ -256,7 +256,7 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Construct a shape preserving and smoothing KLK Hyperbolic Spline from the cash/swap instruments.
 		 */
 
-<span class="nc" id="L259">		return ScenarioDiscountCurveBuilder.CubicKLKHyperbolicDFRateShapePreserver (</span>
+<span class="fc" id="L259">		return ScenarioDiscountCurveBuilder.CubicKLKHyperbolicDFRateShapePreserver (</span>
 			&quot;KLK_HYPERBOLIC_SHAPE_TEMPLATE&quot;,
 			new ValuationParams (
 				dtSpot,
@@ -281,11 +281,11 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Initialize the Credit Analytics Library
 		 */
 
-<span class="nc" id="L284">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L284">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L286">		JulianDate dtToday = DateUtil.Today();</span>
+<span class="fc" id="L286">		JulianDate dtToday = DateUtil.Today();</span>
 
-<span class="nc" id="L288">		ValuationParams valParams = new ValuationParams (</span>
+<span class="fc" id="L288">		ValuationParams valParams = new ValuationParams (</span>
 			dtToday,
 			dtToday,
 			&quot;USD&quot;
@@ -295,30 +295,30 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Construct the Discount Curve using its instruments and quotes
 		 */
 
-<span class="nc" id="L298">		MergedDiscountForwardCurve dc = MakeDC (</span>
+<span class="fc" id="L298">		MergedDiscountForwardCurve dc = MakeDC (</span>
 			dtToday,
 			&quot;USD&quot;
 		);
 
-<span class="nc" id="L303">		JulianDate dtMaturity = dtToday.addTenor (&quot;6M&quot;);</span>
+<span class="fc" id="L303">		JulianDate dtMaturity = dtToday.addTenor (&quot;6M&quot;);</span>
 
-<span class="nc" id="L305">		double dblStrike = 1.;</span>
+<span class="fc" id="L305">		double dblStrike = 1.;</span>
 
-<span class="nc" id="L307">		EuropeanCallPut option = new EuropeanCallPut (</span>
+<span class="fc" id="L307">		EuropeanCallPut option = new EuropeanCallPut (</span>
 			dtMaturity,
 			dblStrike
 		);
 
-<span class="nc" id="L312">		double dblSpot = 1.;</span>
+<span class="fc" id="L312">		double dblSpot = 1.;</span>
 
-<span class="nc" id="L314">		double dblRho = 0.3;</span>
-<span class="nc" id="L315">		double dblKappa = 1.;</span>
-<span class="nc" id="L316">		double dblSigma = 0.5;</span>
-<span class="nc" id="L317">		double dblTheta = 0.2;</span>
-<span class="nc" id="L318">		double dblLambda = 0.;</span>
-<span class="nc" id="L319">		double dblSpotVolatility = 0.2;</span>
+<span class="fc" id="L314">		double dblRho = 0.3;</span>
+<span class="fc" id="L315">		double dblKappa = 1.;</span>
+<span class="fc" id="L316">		double dblSigma = 0.5;</span>
+<span class="fc" id="L317">		double dblTheta = 0.2;</span>
+<span class="fc" id="L318">		double dblLambda = 0.;</span>
+<span class="fc" id="L319">		double dblSpotVolatility = 0.2;</span>
 
-<span class="nc" id="L321">		HestonOptionPricerParams fphp = new HestonOptionPricerParams (</span>
+<span class="fc" id="L321">		HestonOptionPricerParams fphp = new HestonOptionPricerParams (</span>
 			HestonStochasticVolatilityAlgorithm.PAYOFF_TRANSFORM_SCHEME_HESTON_1993,
 			dblRho, 			// Rho
 			dblKappa,			// Kappa
@@ -328,18 +328,18 @@ import org.drip.state.identifier.ForwardLabel;
 			PhaseAdjuster.MULTI_VALUE_BRANCH_POWER_PHASE_TRACKER_KAHL_JACKEL // Indicates Apply Phase Tracking Adjustment for Log + Power
 		);
 
-<span class="nc" id="L331">		FokkerPlanckGenerator fpg = new HestonStochasticVolatilityAlgorithm (</span>
+<span class="fc" id="L331">		FokkerPlanckGenerator fpg = new HestonStochasticVolatilityAlgorithm (</span>
 			fphp				// FP Heston Parameters
 		);
 
-<span class="nc" id="L335">		System.out.println (&quot;---------------------------------------------------------&quot;);</span>
+<span class="fc" id="L335">		System.out.println (&quot;---------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L337">		System.out.println (&quot;\t\t HESTON 1993 SPOT OPTION PRICING&quot;);</span>
+<span class="fc" id="L337">		System.out.println (&quot;\t\t HESTON 1993 SPOT OPTION PRICING&quot;);</span>
 
-<span class="nc" id="L339">		System.out.println (&quot;---------------------------------------------------------&quot;);</span>
+<span class="fc" id="L339">		System.out.println (&quot;---------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L341">		System.out.println (</span>
-<span class="nc" id="L342">			option.value (</span>
+<span class="fc" id="L341">		System.out.println (</span>
+<span class="fc" id="L342">			option.value (</span>
 				valParams,
 				dblSpot,
 				false,
@@ -349,14 +349,14 @@ import org.drip.state.identifier.ForwardLabel;
 			)
 		);
 
-<span class="nc" id="L352">		System.out.println (&quot;---------------------------------------------------------&quot;);</span>
+<span class="fc" id="L352">		System.out.println (&quot;---------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L354">		System.out.println (&quot;\t\t HESTON 1993 FORWARD OPTION PRICING&quot;);</span>
+<span class="fc" id="L354">		System.out.println (&quot;\t\t HESTON 1993 FORWARD OPTION PRICING&quot;);</span>
 
-<span class="nc" id="L356">		System.out.println (&quot;---------------------------------------------------------&quot;);</span>
+<span class="fc" id="L356">		System.out.println (&quot;---------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L358">		System.out.println (</span>
-<span class="nc" id="L359">			option.value (</span>
+<span class="fc" id="L358">		System.out.println (</span>
+<span class="fc" id="L359">			option.value (</span>
 				valParams,
 				dblSpot,
 				true,
@@ -366,14 +366,14 @@ import org.drip.state.identifier.ForwardLabel;
 			)
 		);
 
-<span class="nc" id="L369">		System.out.println (&quot;---------------------------------------------------------&quot;);</span>
+<span class="fc" id="L369">		System.out.println (&quot;---------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L371">		System.out.println (&quot;\t\t BLACK SCHOLES SPOT OPTION PRICING&quot;);</span>
+<span class="fc" id="L371">		System.out.println (&quot;\t\t BLACK SCHOLES SPOT OPTION PRICING&quot;);</span>
 
-<span class="nc" id="L373">		System.out.println (&quot;---------------------------------------------------------&quot;);</span>
+<span class="fc" id="L373">		System.out.println (&quot;---------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L375">		System.out.println (</span>
-<span class="nc" id="L376">			option.value (</span>
+<span class="fc" id="L375">		System.out.println (</span>
+<span class="fc" id="L376">			option.value (</span>
 				valParams,
 				dblSpot,
 				false,
@@ -383,14 +383,14 @@ import org.drip.state.identifier.ForwardLabel;
 			)
 		);
 
-<span class="nc" id="L386">		System.out.println (&quot;---------------------------------------------------------&quot;);</span>
+<span class="fc" id="L386">		System.out.println (&quot;---------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L388">		System.out.println (&quot;\t\t BLACK '76 FORWARD OPTION PRICING&quot;);</span>
+<span class="fc" id="L388">		System.out.println (&quot;\t\t BLACK '76 FORWARD OPTION PRICING&quot;);</span>
 
-<span class="nc" id="L390">		System.out.println (&quot;---------------------------------------------------------&quot;);</span>
+<span class="fc" id="L390">		System.out.println (&quot;---------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L392">		System.out.println (</span>
-<span class="nc" id="L393">			option.value (</span>
+<span class="fc" id="L392">		System.out.println (</span>
+<span class="fc" id="L393">			option.value (</span>
 				valParams,
 				dblSpot,
 				true,
@@ -399,6 +399,6 @@ import org.drip.state.identifier.ForwardLabel;
 				new BlackScholesAlgorithm()
 			)
 		);
-<span class="nc" id="L402">	}</span>
+<span class="fc" id="L402">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -58,7 +58,7 @@ package org.drip.state.curve;
  */
 
 public class BasisSplineTermStructure extends org.drip.analytics.definition.NodeStructure {
-<span class="nc" id="L61">	private org.drip.spline.grid.Span _span = null;</span>
+<span class="fc" id="L61">	private org.drip.spline.grid.Span _span = null;</span>
 
 	/**
 	 * BasisSplineTermStructure Constructor
@@ -78,24 +78,24 @@ public class BasisSplineTermStructure extends org.drip.analytics.definition.Node
 		final org.drip.spline.grid.Span span)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L81">		super (iEpochDate, label, strCurrency);</span>
+<span class="fc" id="L81">		super (iEpochDate, label, strCurrency);</span>
 
-<span class="nc" id="L83">		_span = span;</span>
-<span class="nc" id="L84">	}</span>
+<span class="fc" id="L83">		_span = span;</span>
+<span class="fc" id="L84">	}</span>
 
 	@Override public double node (
 		final int iPredictorOrdinate)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L90">		double dblSpanLeft = _span.left();</span>
+<span class="fc" id="L90">		double dblSpanLeft = _span.left();</span>
 
-<span class="nc bnc" id="L92" title="All 2 branches missed.">		if (dblSpanLeft &gt;= iPredictorOrdinate) return _span.calcResponseValue (dblSpanLeft);</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">		if (dblSpanLeft &gt;= iPredictorOrdinate) return _span.calcResponseValue (dblSpanLeft);</span>
 
-<span class="nc" id="L94">		double dblSpanRight = _span.right();</span>
+<span class="fc" id="L94">		double dblSpanRight = _span.right();</span>
 
-<span class="nc bnc" id="L96" title="All 2 branches missed.">		if (dblSpanRight &lt;= iPredictorOrdinate) return _span.calcResponseValue (dblSpanRight);</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">		if (dblSpanRight &lt;= iPredictorOrdinate) return _span.calcResponseValue (dblSpanRight);</span>
 
-<span class="nc" id="L98">		return _span.calcResponseValue (iPredictorOrdinate);</span>
+<span class="fc" id="L98">		return _span.calcResponseValue (iPredictorOrdinate);</span>
 	}
 
 	@Override public double nodeDerivative (
@@ -103,20 +103,20 @@ public class BasisSplineTermStructure extends org.drip.analytics.definition.Node
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L106" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (iPredictorOrdinate))</span>
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (iPredictorOrdinate))</span>
 <span class="nc" id="L107">			throw new java.lang.Exception (&quot;BasisSplineTermStructure::nodeDerivative =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L109">		double dblSpanLeft = _span.left();</span>
+<span class="fc" id="L109">		double dblSpanLeft = _span.left();</span>
 
-<span class="nc bnc" id="L111" title="All 2 branches missed.">		if (dblSpanLeft &gt;= iPredictorOrdinate)</span>
-<span class="nc" id="L112">			return _span.calcResponseValueDerivative (dblSpanLeft, iOrder);</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">		if (dblSpanLeft &gt;= iPredictorOrdinate)</span>
+<span class="fc" id="L112">			return _span.calcResponseValueDerivative (dblSpanLeft, iOrder);</span>
 
-<span class="nc" id="L114">		double dblSpanRight = _span.right();</span>
+<span class="fc" id="L114">		double dblSpanRight = _span.right();</span>
 
-<span class="nc bnc" id="L116" title="All 2 branches missed.">		if (dblSpanRight &lt;= iPredictorOrdinate)</span>
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">		if (dblSpanRight &lt;= iPredictorOrdinate)</span>
 <span class="nc" id="L117">			return _span.calcResponseValueDerivative (dblSpanRight, iOrder);</span>
 
-<span class="nc" id="L119">		return _span.calcResponseValueDerivative (iPredictorOrdinate, iOrder);</span>
+<span class="fc" id="L119">		return _span.calcResponseValueDerivative (iPredictorOrdinate, iOrder);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -365,73 +365,73 @@ package org.drip.state.creator;
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParam)
 	{
-<span class="nc bnc" id="L368" title="All 2 branches missed.">		if (null == dcShapePreserver) return null;</span>
+<span class="pc bpc" id="L368" title="1 of 2 branches missed.">		if (null == dcShapePreserver) return null;</span>
 
-<span class="nc bnc" id="L370" title="All 2 branches missed.">		if (null == lccp) return dcShapePreserver;</span>
+<span class="pc bpc" id="L370" title="1 of 2 branches missed.">		if (null == lccp) return dcShapePreserver;</span>
 
-<span class="nc" id="L372">		java.lang.String strSmootheningQM = lccp.smootheningQuantificationMetric();</span>
+<span class="fc" id="L372">		java.lang.String strSmootheningQM = lccp.smootheningQuantificationMetric();</span>
 
-<span class="nc" id="L374">		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; mapQMTruth = dcShapePreserver.canonicalTruthness</span>
-<span class="nc" id="L375">			(strSmootheningQM);</span>
+<span class="fc" id="L374">		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; mapQMTruth = dcShapePreserver.canonicalTruthness</span>
+<span class="fc" id="L375">			(strSmootheningQM);</span>
 
-<span class="nc bnc" id="L377" title="All 2 branches missed.">		if (null == mapQMTruth) return null;</span>
+<span class="pc bpc" id="L377" title="1 of 2 branches missed.">		if (null == mapQMTruth) return null;</span>
 
-<span class="nc" id="L379">		int iTruthSize = mapQMTruth.size();</span>
+<span class="fc" id="L379">		int iTruthSize = mapQMTruth.size();</span>
 
-<span class="nc bnc" id="L381" title="All 2 branches missed.">		if (0 == iTruthSize) return null;</span>
+<span class="pc bpc" id="L381" title="1 of 2 branches missed.">		if (0 == iTruthSize) return null;</span>
 
-<span class="nc" id="L383">		java.util.Set&lt;java.util.Map.Entry&lt;java.lang.Integer, java.lang.Double&gt;&gt; esQMTruth =</span>
-<span class="nc" id="L384">			mapQMTruth.entrySet();</span>
+<span class="fc" id="L383">		java.util.Set&lt;java.util.Map.Entry&lt;java.lang.Integer, java.lang.Double&gt;&gt; esQMTruth =</span>
+<span class="fc" id="L384">			mapQMTruth.entrySet();</span>
 
-<span class="nc bnc" id="L386" title="All 4 branches missed.">		if (null == esQMTruth || 0 == esQMTruth.size()) return null;</span>
+<span class="pc bpc" id="L386" title="2 of 4 branches missed.">		if (null == esQMTruth || 0 == esQMTruth.size()) return null;</span>
 
-<span class="nc" id="L388">		java.lang.String strName = dcShapePreserver.label().fullyQualifiedName();</span>
+<span class="fc" id="L388">		java.lang.String strName = dcShapePreserver.label().fullyQualifiedName();</span>
 
-<span class="nc" id="L390">		int i = 0;</span>
-<span class="nc" id="L391">		int[] aiDate = new int[iTruthSize];</span>
-<span class="nc" id="L392">		double[] adblQM = new double[iTruthSize];</span>
-<span class="nc" id="L393">		org.drip.spline.params.SegmentCustomBuilderControl[] aPRBP = new</span>
+<span class="fc" id="L390">		int i = 0;</span>
+<span class="fc" id="L391">		int[] aiDate = new int[iTruthSize];</span>
+<span class="fc" id="L392">		double[] adblQM = new double[iTruthSize];</span>
+<span class="fc" id="L393">		org.drip.spline.params.SegmentCustomBuilderControl[] aPRBP = new</span>
 			org.drip.spline.params.SegmentCustomBuilderControl[iTruthSize - 1];
 
-<span class="nc bnc" id="L396" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.Integer, java.lang.Double&gt; meQMTruth : esQMTruth) {</span>
-<span class="nc bnc" id="L397" title="All 2 branches missed.">			if (null == meQMTruth) return null;</span>
+<span class="fc bfc" id="L396" title="All 2 branches covered.">		for (java.util.Map.Entry&lt;java.lang.Integer, java.lang.Double&gt; meQMTruth : esQMTruth) {</span>
+<span class="pc bpc" id="L397" title="1 of 2 branches missed.">			if (null == meQMTruth) return null;</span>
 
-<span class="nc bnc" id="L399" title="All 2 branches missed.">			if (0 != i) aPRBP[i - 1] = lccp.defaultSegmentBuilderControl();</span>
+<span class="fc bfc" id="L399" title="All 2 branches covered.">			if (0 != i) aPRBP[i - 1] = lccp.defaultSegmentBuilderControl();</span>
 
-<span class="nc" id="L401">			aiDate[i] = meQMTruth.getKey();</span>
+<span class="fc" id="L401">			aiDate[i] = meQMTruth.getKey();</span>
 
-<span class="nc" id="L403">			adblQM[i++] = meQMTruth.getValue();</span>
+<span class="fc" id="L403">			adblQM[i++] = meQMTruth.getValue();</span>
 
 			if (s_bBlog)
 				System.out.println (&quot;\t\t&quot; + new org.drip.analytics.date.JulianDate (meQMTruth.getKey()) +
 					&quot; = &quot; + meQMTruth.getValue());
-<span class="nc" id="L408">		}</span>
+<span class="fc" id="L408">		}</span>
 
 		try {
-<span class="nc" id="L411">			org.drip.spline.pchip.LocalMonotoneCkGenerator lcr =</span>
-<span class="nc" id="L412">				org.drip.spline.pchip.LocalMonotoneCkGenerator.Create (aiDate, adblQM,</span>
-<span class="nc" id="L413">					lccp.C1GeneratorScheme(), lccp.eliminateSpuriousExtrema(), lccp.applyMonotoneFilter());</span>
+<span class="fc" id="L411">			org.drip.spline.pchip.LocalMonotoneCkGenerator lcr =</span>
+<span class="fc" id="L412">				org.drip.spline.pchip.LocalMonotoneCkGenerator.Create (aiDate, adblQM,</span>
+<span class="fc" id="L413">					lccp.C1GeneratorScheme(), lccp.eliminateSpuriousExtrema(), lccp.applyMonotoneFilter());</span>
 
-<span class="nc bnc" id="L415" title="All 2 branches missed.">			if (null == lcr) return null;</span>
+<span class="pc bpc" id="L415" title="1 of 2 branches missed.">			if (null == lcr) return null;</span>
 
-<span class="nc" id="L417">			org.drip.spline.stretch.MultiSegmentSequence stretch =</span>
-<span class="nc" id="L418">				org.drip.spline.pchip.LocalControlStretchBuilder.CustomSlopeHermiteSpline (strName +</span>
-<span class="nc" id="L419">					&quot;_STRETCH&quot;, aiDate, adblQM, lcr.C1(), aPRBP, lccp.bestFitWeightedResponse(),</span>
-<span class="nc" id="L420">						lccp.calibrationDetail());</span>
+<span class="fc" id="L417">			org.drip.spline.stretch.MultiSegmentSequence stretch =</span>
+<span class="fc" id="L418">				org.drip.spline.pchip.LocalControlStretchBuilder.CustomSlopeHermiteSpline (strName +</span>
+<span class="fc" id="L419">					&quot;_STRETCH&quot;, aiDate, adblQM, lcr.C1(), aPRBP, lccp.bestFitWeightedResponse(),</span>
+<span class="fc" id="L420">						lccp.calibrationDetail());</span>
 
-<span class="nc" id="L422">			org.drip.state.discount.MergedDiscountForwardCurve dcMultiPass = null;</span>
+<span class="fc" id="L422">			org.drip.state.discount.MergedDiscountForwardCurve dcMultiPass = null;</span>
 
-<span class="nc" id="L424">			if (org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR.equalsIgnoreCase</span>
-<span class="nc bnc" id="L425" title="All 2 branches missed.">				(strSmootheningQM))</span>
+<span class="fc" id="L424">			if (org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR.equalsIgnoreCase</span>
+<span class="pc bpc" id="L425" title="1 of 2 branches missed.">				(strSmootheningQM))</span>
 <span class="nc" id="L426">				dcMultiPass = new org.drip.state.curve.DiscountFactorDiscountCurve (strName, new</span>
 					org.drip.spline.grid.OverlappingStretchSpan (stretch));
-<span class="nc" id="L428">			else if</span>
+<span class="fc" id="L428">			else if</span>
 				(org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_ZERO_RATE.equalsIgnoreCase
-<span class="nc bnc" id="L430" title="All 2 branches missed.">				(strSmootheningQM))</span>
-<span class="nc" id="L431">				dcMultiPass = new org.drip.state.curve.ZeroRateDiscountCurve (strName, new</span>
+<span class="pc bpc" id="L430" title="1 of 2 branches missed.">				(strSmootheningQM))</span>
+<span class="fc" id="L431">				dcMultiPass = new org.drip.state.curve.ZeroRateDiscountCurve (strName, new</span>
 					org.drip.spline.grid.OverlappingStretchSpan (stretch));
 
-<span class="nc" id="L434">			return dcMultiPass;</span>
+<span class="fc" id="L434">			return dcMultiPass;</span>
 <span class="nc" id="L435">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L436">			e.printStackTrace();</span>
 		}
@@ -610,16 +610,16 @@ package org.drip.state.creator;
 <span class="nc" id="L610">			return null;</span>
 <span class="fc" id="L611">		}</span>
 
-<span class="pc bpc" id="L613" title="1 of 2 branches missed.">		if (!bZeroSmooth) return dcShapePreserving;</span>
+<span class="fc bfc" id="L613" title="All 2 branches covered.">		if (!bZeroSmooth) return dcShapePreserving;</span>
 
 		try {
-<span class="nc" id="L616">			lccp = new org.drip.state.estimator.LocalControlCurveParams</span>
+<span class="fc" id="L616">			lccp = new org.drip.state.estimator.LocalControlCurveParams</span>
 				(org.drip.spline.pchip.LocalMonotoneCkGenerator.C1_HYMAN83,
 					org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_ZERO_RATE, new
 						org.drip.spline.params.SegmentCustomBuilderControl
 							(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
 								org.drip.spline.basis.PolynomialFunctionSetParams (4),
-<span class="nc" id="L622">									org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), new</span>
+<span class="fc" id="L622">									org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), new</span>
 										org.drip.spline.params.ResponseScalingShapeControl (true, new
 											org.drip.function.r1tor1.QuadraticRationalShapeControl (0.)),
 												null),
@@ -629,9 +629,9 @@ package org.drip.state.creator;
 <span class="nc" id="L629">			e.printStackTrace();</span>
 
 <span class="nc" id="L631">			return null;</span>
-<span class="nc" id="L632">		}</span>
+<span class="fc" id="L632">		}</span>
 
-<span class="nc" id="L634">		return SmoothingLocalControlBuild (dcShapePreserving, llsc, lccp, valParams, null, null, null);</span>
+<span class="fc" id="L634">		return SmoothingLocalControlBuild (dcShapePreserving, llsc, lccp, valParams, null, null, null);</span>
 	}
 
 	/**

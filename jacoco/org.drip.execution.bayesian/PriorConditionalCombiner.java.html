@@ -71,8 +71,8 @@ package org.drip.execution.bayesian;
  */
 
 public class PriorConditionalCombiner {
-<span class="nc" id="L74">	private org.drip.execution.bayesian.PriorDriftDistribution _pdd = null;</span>
-<span class="nc" id="L75">	private org.drip.execution.bayesian.ConditionalPriceDistribution _cpd = null;</span>
+<span class="fc" id="L74">	private org.drip.execution.bayesian.PriorDriftDistribution _pdd = null;</span>
+<span class="fc" id="L75">	private org.drip.execution.bayesian.ConditionalPriceDistribution _cpd = null;</span>
 
 	/**
 	 * PriorConditionalCombiner Constructor
@@ -87,10 +87,10 @@ public class PriorConditionalCombiner {
 		final org.drip.execution.bayesian.PriorDriftDistribution pdd,
 		final org.drip.execution.bayesian.ConditionalPriceDistribution cpd)
 		throws java.lang.Exception
-<span class="nc" id="L90">	{</span>
-<span class="nc bnc" id="L91" title="All 4 branches missed.">		if (null == (_pdd = pdd) || null == (_cpd = cpd))</span>
+<span class="fc" id="L90">	{</span>
+<span class="pc bpc" id="L91" title="2 of 4 branches missed.">		if (null == (_pdd = pdd) || null == (_cpd = cpd))</span>
 <span class="nc" id="L92">			throw new java.lang.Exception (&quot;PriorConditionalCombiner Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L93">	}</span>
+<span class="fc" id="L93">	}</span>
 
 	/**
 	 * Retrieve the Prior Drift Distribution Instance
@@ -100,7 +100,7 @@ public class PriorConditionalCombiner {
 
 	public org.drip.execution.bayesian.PriorDriftDistribution prior()
 	{
-<span class="nc" id="L103">		return _pdd;</span>
+<span class="fc" id="L103">		return _pdd;</span>
 	}
 
 	/**
@@ -111,7 +111,7 @@ public class PriorConditionalCombiner {
 
 	public org.drip.execution.bayesian.ConditionalPriceDistribution conditional()
 	{
-<span class="nc" id="L114">		return _cpd;</span>
+<span class="fc" id="L114">		return _cpd;</span>
 	}
 
 	/**
@@ -145,18 +145,18 @@ public class PriorConditionalCombiner {
 	public org.drip.measure.gaussian.R1UnivariateNormal posteriorDriftDistribution (
 		final double dblDeltaS)
 	{
-<span class="nc bnc" id="L148" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblDeltaS)) return null;</span>
+<span class="pc bpc" id="L148" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblDeltaS)) return null;</span>
 
-<span class="nc" id="L150">		double dblT = _cpd.time();</span>
+<span class="fc" id="L150">		double dblT = _cpd.time();</span>
 
-<span class="nc" id="L152">		double dblNuSquared = _pdd.variance();</span>
+<span class="fc" id="L152">		double dblNuSquared = _pdd.variance();</span>
 
-<span class="nc" id="L154">		double dblSigmaSquared = _cpd.variance() / dblT;</span>
+<span class="fc" id="L154">		double dblSigmaSquared = _cpd.variance() / dblT;</span>
 
-<span class="nc" id="L156">		double dblPrecisionSquared = 1. / (dblSigmaSquared + dblNuSquared * dblT);</span>
+<span class="fc" id="L156">		double dblPrecisionSquared = 1. / (dblSigmaSquared + dblNuSquared * dblT);</span>
 
 		try {
-<span class="nc" id="L159">			return new org.drip.measure.gaussian.R1UnivariateNormal ((_pdd.expectation() * dblSigmaSquared +</span>
+<span class="fc" id="L159">			return new org.drip.measure.gaussian.R1UnivariateNormal ((_pdd.expectation() * dblSigmaSquared +</span>
 				dblNuSquared * dblDeltaS) * dblPrecisionSquared, dblSigmaSquared * dblNuSquared *
 					dblPrecisionSquared);
 <span class="nc" id="L162">		} catch (java.lang.Exception e) {</span>

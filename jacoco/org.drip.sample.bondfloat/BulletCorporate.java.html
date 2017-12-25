@@ -523,23 +523,26 @@ import org.drip.state.govvie.GovvieCurve;
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L526">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L526">		EnvManager.InitEnv (</span>
+			&quot;&quot;,
+			true
+		);
 
-<span class="nc" id="L528">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+<span class="nc" id="L531">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
 			2017,
 			DateUtil.FEBRUARY,
 			2
 		);
 
-<span class="nc" id="L534">		String strCurrency = &quot;USD&quot;;</span>
-<span class="nc" id="L535">		String strTreasuryCode = &quot;UST&quot;;</span>
+<span class="nc" id="L537">		String strCurrency = &quot;USD&quot;;</span>
+<span class="nc" id="L538">		String strTreasuryCode = &quot;UST&quot;;</span>
 
-<span class="nc" id="L537">		MergedDiscountForwardCurve dcFunding = FundingCurve (</span>
+<span class="nc" id="L540">		MergedDiscountForwardCurve dcFunding = FundingCurve (</span>
 			dtSpot,
 			strCurrency
 		);
 
-<span class="nc" id="L542">		double[] adblTreasuryCoupon = new double[] {</span>
+<span class="nc" id="L545">		double[] adblTreasuryCoupon = new double[] {</span>
 			0.0100,
 			0.0100,
 			0.0125,
@@ -550,7 +553,7 @@ import org.drip.state.govvie.GovvieCurve;
 			0.0300
 		};
 
-<span class="nc" id="L553">		double[] adblTreasuryYield = new double[] {</span>
+<span class="nc" id="L556">		double[] adblTreasuryYield = new double[] {</span>
 			0.0083,	//  1Y
 			0.0122, //  2Y
 			0.0149, //  3Y
@@ -561,14 +564,14 @@ import org.drip.state.govvie.GovvieCurve;
 			0.0308  // 30Y
 		};
 
-<span class="nc" id="L564">		Map&lt;String, GovvieCurve&gt; mapGovvieCurve = GovvieCurve (</span>
+<span class="nc" id="L567">		Map&lt;String, GovvieCurve&gt; mapGovvieCurve = GovvieCurve (</span>
 			dtSpot,
 			strTreasuryCode,
 			adblTreasuryCoupon,
 			adblTreasuryYield
 		);
 
-<span class="nc" id="L571">		CurveSurfaceQuoteContainer csqc = MarketParamsBuilder.Create (</span>
+<span class="nc" id="L574">		CurveSurfaceQuoteContainer csqc = MarketParamsBuilder.Create (</span>
 			dcFunding,
 			null,
 			null,
@@ -578,9 +581,9 @@ import org.drip.state.govvie.GovvieCurve;
 			null
 		);
 
-<span class="nc" id="L581">		csqc.setGovvieState (mapGovvieCurve.get (&quot;BASE&quot;));</span>
+<span class="nc" id="L584">		csqc.setGovvieState (mapGovvieCurve.get (&quot;BASE&quot;));</span>
 
-<span class="nc" id="L583">		AccumulateBondMarketQuote (</span>
+<span class="nc" id="L586">		AccumulateBondMarketQuote (</span>
 			csqc,
 			new String[] {
 				&quot;01YON&quot;,
@@ -595,34 +598,34 @@ import org.drip.state.govvie.GovvieCurve;
 			adblTreasuryYield
 		);
 
-<span class="nc" id="L598">		double dblUSD3MLIBOR = dcFunding.libor (</span>
+<span class="nc" id="L601">		double dblUSD3MLIBOR = dcFunding.libor (</span>
 			dtSpot,
 			&quot;3M&quot;
 		);
 
-<span class="nc" id="L603">		Bond[] aAgencyBond = new Bond[] {</span>
-<span class="nc" id="L604">			Corporate (&quot;USD-3M&quot;, DateUtil.CreateFromYMD (2014,  3, 24), DateUtil.CreateFromYMD (2017,  3, 24), 0.0178706 - dblUSD3MLIBOR),</span>
-<span class="nc" id="L605">			Corporate (&quot;USD-3M&quot;, DateUtil.CreateFromYMD (2015,  8,  3), DateUtil.CreateFromYMD (2017,  8,  3), 0.0150904 - dblUSD3MLIBOR),</span>
-<span class="nc" id="L606">			Corporate (&quot;USD-3M&quot;, DateUtil.CreateFromYMD (2016,  6,  9), DateUtil.CreateFromYMD (2017, 12,  8), 0.0160083 - dblUSD3MLIBOR),</span>
-<span class="nc" id="L607">			Corporate (&quot;USD-3M&quot;, DateUtil.CreateFromYMD (2013,  4, 30), DateUtil.CreateFromYMD (2018,  4, 30), 0.0208733 - dblUSD3MLIBOR),</span>
-<span class="nc" id="L608">			Corporate (&quot;USD-3M&quot;, DateUtil.CreateFromYMD (2016, 10, 19), DateUtil.CreateFromYMD (2018, 10, 19), 0.0169483 - dblUSD3MLIBOR),</span>
-<span class="nc" id="L609">			Corporate (&quot;USD-3M&quot;, DateUtil.CreateFromYMD (2015, 12, 14), DateUtil.CreateFromYMD (2018, 12, 14), 0.0179872 - dblUSD3MLIBOR),</span>
-<span class="nc" id="L610">			Corporate (&quot;USD-3M&quot;, DateUtil.CreateFromYMD (2016,  1, 14), DateUtil.CreateFromYMD (2019,  1, 14), 0.0180317 - dblUSD3MLIBOR),</span>
-<span class="nc" id="L611">			Corporate (&quot;USD-3M&quot;, DateUtil.CreateFromYMD (2016,  1, 15), DateUtil.CreateFromYMD (2019,  1, 15), 0.0220317 - dblUSD3MLIBOR),</span>
-<span class="nc" id="L612">			Corporate (&quot;USD-3M&quot;, DateUtil.CreateFromYMD (2016,  1, 22), DateUtil.CreateFromYMD (2019,  1, 22), 0.0204122 - dblUSD3MLIBOR),</span>
-<span class="nc" id="L613">			Corporate (&quot;USD-3M&quot;, DateUtil.CreateFromYMD (2016,  1, 27), DateUtil.CreateFromYMD (2019,  2,  1), 0.0226094 - dblUSD3MLIBOR),</span>
-<span class="nc" id="L614">			Corporate (&quot;USD-3M&quot;, DateUtil.CreateFromYMD (2016,  2, 23), DateUtil.CreateFromYMD (2019,  2, 22), 0.0173983 - dblUSD3MLIBOR),</span>
-<span class="nc" id="L615">			Corporate (&quot;USD-3M&quot;, DateUtil.CreateFromYMD (2016,  3,  4), DateUtil.CreateFromYMD (2019,  3, 14), 0.0243872 - dblUSD3MLIBOR),</span>
-<span class="nc" id="L616">			Corporate (&quot;USD-3M&quot;, DateUtil.CreateFromYMD (2016,  3, 15), DateUtil.CreateFromYMD (2019,  3, 15), 0.0165344 - dblUSD3MLIBOR),</span>
-<span class="nc" id="L617">			Corporate (&quot;USD-3M&quot;, DateUtil.CreateFromYMD (2016,  5, 13), DateUtil.CreateFromYMD (2019,  5, 13), 0.0161206 - dblUSD3MLIBOR),</span>
-<span class="nc" id="L618">			Corporate (&quot;USD-3M&quot;, DateUtil.CreateFromYMD (2016,  6,  2), DateUtil.CreateFromYMD (2019,  5, 24), 0.0153011 - dblUSD3MLIBOR),</span>
-<span class="nc" id="L619">			Corporate (&quot;USD-3M&quot;, DateUtil.CreateFromYMD (2016,  6, 14), DateUtil.CreateFromYMD (2019,  6, 14), 0.0161872 - dblUSD3MLIBOR),</span>
-<span class="nc" id="L620">			Corporate (&quot;USD-3M&quot;, DateUtil.CreateFromYMD (2016,  9,  8), DateUtil.CreateFromYMD (2019,  9,  6), 0.0152639 - dblUSD3MLIBOR),</span>
-<span class="nc" id="L621">			Corporate (&quot;USD-3M&quot;, DateUtil.CreateFromYMD (2016,  9, 30), DateUtil.CreateFromYMD (2019,  9, 30), 0.0161817 - dblUSD3MLIBOR),</span>
-<span class="nc" id="L622">			Corporate (&quot;USD-3M&quot;, DateUtil.CreateFromYMD (2016, 10, 18), DateUtil.CreateFromYMD (2019, 10, 18), 0.0193372 - dblUSD3MLIBOR),</span>
+<span class="nc" id="L606">		Bond[] aAgencyBond = new Bond[] {</span>
+<span class="nc" id="L607">			Corporate (&quot;USD-3M&quot;, DateUtil.CreateFromYMD (2014,  3, 24), DateUtil.CreateFromYMD (2017,  3, 24), 0.0178706 - dblUSD3MLIBOR),</span>
+<span class="nc" id="L608">			Corporate (&quot;USD-3M&quot;, DateUtil.CreateFromYMD (2015,  8,  3), DateUtil.CreateFromYMD (2017,  8,  3), 0.0150904 - dblUSD3MLIBOR),</span>
+<span class="nc" id="L609">			Corporate (&quot;USD-3M&quot;, DateUtil.CreateFromYMD (2016,  6,  9), DateUtil.CreateFromYMD (2017, 12,  8), 0.0160083 - dblUSD3MLIBOR),</span>
+<span class="nc" id="L610">			Corporate (&quot;USD-3M&quot;, DateUtil.CreateFromYMD (2013,  4, 30), DateUtil.CreateFromYMD (2018,  4, 30), 0.0208733 - dblUSD3MLIBOR),</span>
+<span class="nc" id="L611">			Corporate (&quot;USD-3M&quot;, DateUtil.CreateFromYMD (2016, 10, 19), DateUtil.CreateFromYMD (2018, 10, 19), 0.0169483 - dblUSD3MLIBOR),</span>
+<span class="nc" id="L612">			Corporate (&quot;USD-3M&quot;, DateUtil.CreateFromYMD (2015, 12, 14), DateUtil.CreateFromYMD (2018, 12, 14), 0.0179872 - dblUSD3MLIBOR),</span>
+<span class="nc" id="L613">			Corporate (&quot;USD-3M&quot;, DateUtil.CreateFromYMD (2016,  1, 14), DateUtil.CreateFromYMD (2019,  1, 14), 0.0180317 - dblUSD3MLIBOR),</span>
+<span class="nc" id="L614">			Corporate (&quot;USD-3M&quot;, DateUtil.CreateFromYMD (2016,  1, 15), DateUtil.CreateFromYMD (2019,  1, 15), 0.0220317 - dblUSD3MLIBOR),</span>
+<span class="nc" id="L615">			Corporate (&quot;USD-3M&quot;, DateUtil.CreateFromYMD (2016,  1, 22), DateUtil.CreateFromYMD (2019,  1, 22), 0.0204122 - dblUSD3MLIBOR),</span>
+<span class="nc" id="L616">			Corporate (&quot;USD-3M&quot;, DateUtil.CreateFromYMD (2016,  1, 27), DateUtil.CreateFromYMD (2019,  2,  1), 0.0226094 - dblUSD3MLIBOR),</span>
+<span class="nc" id="L617">			Corporate (&quot;USD-3M&quot;, DateUtil.CreateFromYMD (2016,  2, 23), DateUtil.CreateFromYMD (2019,  2, 22), 0.0173983 - dblUSD3MLIBOR),</span>
+<span class="nc" id="L618">			Corporate (&quot;USD-3M&quot;, DateUtil.CreateFromYMD (2016,  3,  4), DateUtil.CreateFromYMD (2019,  3, 14), 0.0243872 - dblUSD3MLIBOR),</span>
+<span class="nc" id="L619">			Corporate (&quot;USD-3M&quot;, DateUtil.CreateFromYMD (2016,  3, 15), DateUtil.CreateFromYMD (2019,  3, 15), 0.0165344 - dblUSD3MLIBOR),</span>
+<span class="nc" id="L620">			Corporate (&quot;USD-3M&quot;, DateUtil.CreateFromYMD (2016,  5, 13), DateUtil.CreateFromYMD (2019,  5, 13), 0.0161206 - dblUSD3MLIBOR),</span>
+<span class="nc" id="L621">			Corporate (&quot;USD-3M&quot;, DateUtil.CreateFromYMD (2016,  6,  2), DateUtil.CreateFromYMD (2019,  5, 24), 0.0153011 - dblUSD3MLIBOR),</span>
+<span class="nc" id="L622">			Corporate (&quot;USD-3M&quot;, DateUtil.CreateFromYMD (2016,  6, 14), DateUtil.CreateFromYMD (2019,  6, 14), 0.0161872 - dblUSD3MLIBOR),</span>
+<span class="nc" id="L623">			Corporate (&quot;USD-3M&quot;, DateUtil.CreateFromYMD (2016,  9,  8), DateUtil.CreateFromYMD (2019,  9,  6), 0.0152639 - dblUSD3MLIBOR),</span>
+<span class="nc" id="L624">			Corporate (&quot;USD-3M&quot;, DateUtil.CreateFromYMD (2016,  9, 30), DateUtil.CreateFromYMD (2019,  9, 30), 0.0161817 - dblUSD3MLIBOR),</span>
+<span class="nc" id="L625">			Corporate (&quot;USD-3M&quot;, DateUtil.CreateFromYMD (2016, 10, 18), DateUtil.CreateFromYMD (2019, 10, 18), 0.0193372 - dblUSD3MLIBOR),</span>
 		};
 
-<span class="nc" id="L625">		double[] adblCleanPrice = new double[] {</span>
+<span class="nc" id="L628">		double[] adblCleanPrice = new double[] {</span>
 			1.0006750,	// (2017,  3, 24)
 			1.0027220,	// (2017,  8,  3)
 			1.0050000,	// (2017, 12,  8)
@@ -644,51 +647,51 @@ import org.drip.state.govvie.GovvieCurve;
 			1.0003480,	// (2019, 10, 18)
 		};
 
-<span class="nc" id="L647">		double[] adblOAS = RVMeasures (</span>
+<span class="nc" id="L650">		double[] adblOAS = RVMeasures (</span>
 			aAgencyBond,
 			dtSpot,
 			csqc,
 			adblCleanPrice
 		);
 
-<span class="nc" id="L654">		ValuationParams valParams = new ValuationParams (</span>
+<span class="nc" id="L657">		ValuationParams valParams = new ValuationParams (</span>
 			dtSpot,
-<span class="nc" id="L656">			dtSpot.addBusDays (</span>
+<span class="nc" id="L659">			dtSpot.addBusDays (</span>
 				3,
-<span class="nc" id="L658">				dcFunding.currency()</span>
+<span class="nc" id="L661">				dcFunding.currency()</span>
 			),
-<span class="nc" id="L660">			dcFunding.currency()</span>
+<span class="nc" id="L663">			dcFunding.currency()</span>
 		);
 
-<span class="nc" id="L663">		System.out.println();</span>
+<span class="nc" id="L666">		System.out.println();</span>
 
-<span class="nc" id="L665">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L668">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L667">		System.out.print (&quot;\t|             BOND           &quot;);</span>
+<span class="nc" id="L670">		System.out.print (&quot;\t|             BOND           &quot;);</span>
 
-<span class="nc bnc" id="L669" title="All 2 branches missed.">		for (Map.Entry&lt;String, GovvieCurve&gt; meGovvieCurve : mapGovvieCurve.entrySet()) {</span>
-<span class="nc bnc" id="L670" title="All 4 branches missed.">			if (&quot;BASE&quot;.equalsIgnoreCase (meGovvieCurve.getKey()) || &quot;BUMP&quot;.equalsIgnoreCase (meGovvieCurve.getKey()))</span>
-<span class="nc" id="L671">				continue;</span>
+<span class="nc bnc" id="L672" title="All 2 branches missed.">		for (Map.Entry&lt;String, GovvieCurve&gt; meGovvieCurve : mapGovvieCurve.entrySet()) {</span>
+<span class="nc bnc" id="L673" title="All 4 branches missed.">			if (&quot;BASE&quot;.equalsIgnoreCase (meGovvieCurve.getKey()) || &quot;BUMP&quot;.equalsIgnoreCase (meGovvieCurve.getKey()))</span>
+<span class="nc" id="L674">				continue;</span>
 
-<span class="nc" id="L673">			System.out.print (&quot; | &quot; + meGovvieCurve.getKey());</span>
-<span class="nc" id="L674">		}</span>
+<span class="nc" id="L676">			System.out.print (&quot; | &quot; + meGovvieCurve.getKey());</span>
+<span class="nc" id="L677">		}</span>
 
-<span class="nc" id="L676">		System.out.println (&quot; ||&quot;);</span>
+<span class="nc" id="L679">		System.out.println (&quot; ||&quot;);</span>
 
-<span class="nc" id="L678">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L681">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L680" title="All 2 branches missed.">		for (int i = 0; i &lt; adblOAS.length; ++i) {</span>
-<span class="nc" id="L681">			System.out.print (&quot;\t| &quot; + aAgencyBond[i].name());</span>
+<span class="nc bnc" id="L683" title="All 2 branches missed.">		for (int i = 0; i &lt; adblOAS.length; ++i) {</span>
+<span class="nc" id="L684">			System.out.print (&quot;\t| &quot; + aAgencyBond[i].name());</span>
 
-<span class="nc bnc" id="L683" title="All 2 branches missed.">			for (Map.Entry&lt;String, GovvieCurve&gt; meGovvieCurve : mapGovvieCurve.entrySet()) {</span>
-<span class="nc bnc" id="L684" title="All 4 branches missed.">				if (&quot;BASE&quot;.equalsIgnoreCase (meGovvieCurve.getKey()) || &quot;BUMP&quot;.equalsIgnoreCase (meGovvieCurve.getKey()))</span>
-<span class="nc" id="L685">					continue;</span>
+<span class="nc bnc" id="L686" title="All 2 branches missed.">			for (Map.Entry&lt;String, GovvieCurve&gt; meGovvieCurve : mapGovvieCurve.entrySet()) {</span>
+<span class="nc bnc" id="L687" title="All 4 branches missed.">				if (&quot;BASE&quot;.equalsIgnoreCase (meGovvieCurve.getKey()) || &quot;BUMP&quot;.equalsIgnoreCase (meGovvieCurve.getKey()))</span>
+<span class="nc" id="L688">					continue;</span>
 
-<span class="nc" id="L687">				csqc.setGovvieState (meGovvieCurve.getValue());</span>
+<span class="nc" id="L690">				csqc.setGovvieState (meGovvieCurve.getValue());</span>
 
-<span class="nc" id="L689">				System.out.print (&quot; |      &quot; +</span>
-<span class="nc" id="L690">					FormatUtil.FormatDouble (</span>
-<span class="nc" id="L691">						(adblCleanPrice[i] - aAgencyBond[i].priceFromOAS (</span>
+<span class="nc" id="L692">				System.out.print (&quot; |      &quot; +</span>
+<span class="nc" id="L693">					FormatUtil.FormatDouble (</span>
+<span class="nc" id="L694">						(adblCleanPrice[i] - aAgencyBond[i].priceFromOAS (</span>
 							valParams,
 							csqc,
 							null,
@@ -696,14 +699,14 @@ import org.drip.state.govvie.GovvieCurve;
 						)) / adblCleanPrice[i],
 					2, 2, 10000.) + &quot;     &quot;
 				);
-<span class="nc" id="L699">			}</span>
+<span class="nc" id="L702">			}</span>
 
-<span class="nc" id="L701">			System.out.println (&quot; ||&quot;);</span>
+<span class="nc" id="L704">			System.out.println (&quot; ||&quot;);</span>
 		}
 
-<span class="nc" id="L704">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L707">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L706">		System.out.println();</span>
-<span class="nc" id="L707">	}</span>
+<span class="nc" id="L709">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L710">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

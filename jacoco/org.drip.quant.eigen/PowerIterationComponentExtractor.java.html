@@ -56,9 +56,9 @@ package org.drip.quant.eigen;
  */
 
 public class PowerIterationComponentExtractor implements org.drip.quant.eigen.ComponentExtractor {
-<span class="nc" id="L59">	private int _iMaxIteration = -1;</span>
-<span class="nc" id="L60">	private boolean _bToleranceAbsolute = false;</span>
-<span class="nc" id="L61">	private double _dblTolerance = java.lang.Double.NaN;</span>
+<span class="fc" id="L59">	private int _iMaxIteration = -1;</span>
+<span class="fc" id="L60">	private boolean _bToleranceAbsolute = false;</span>
+<span class="fc" id="L61">	private double _dblTolerance = java.lang.Double.NaN;</span>
 
 	/**
 	 * PowerIterationComponentExtractor Constructor
@@ -75,13 +75,13 @@ public class PowerIterationComponentExtractor implements org.drip.quant.eigen.Co
 		final double dblTolerance,
 		final boolean bToleranceAbsolute)
 		throws java.lang.Exception
-<span class="nc" id="L78">	{</span>
-<span class="nc bnc" id="L79" title="All 6 branches missed.">		if (0 &gt;= (_iMaxIteration = iMaxIteration) || !org.drip.quant.common.NumberUtil.IsValid (_dblTolerance</span>
+<span class="fc" id="L78">	{</span>
+<span class="pc bpc" id="L79" title="3 of 6 branches missed.">		if (0 &gt;= (_iMaxIteration = iMaxIteration) || !org.drip.quant.common.NumberUtil.IsValid (_dblTolerance</span>
 			= dblTolerance) || 0. == _dblTolerance)
 <span class="nc" id="L81">			throw new java.lang.Exception (&quot;PowerIterationComponentExtractor ctr: Invalid Inputs!&quot;);</span>
 
-<span class="nc" id="L83">		_bToleranceAbsolute = bToleranceAbsolute;</span>
-<span class="nc" id="L84">	}</span>
+<span class="fc" id="L83">		_bToleranceAbsolute = bToleranceAbsolute;</span>
+<span class="fc" id="L84">	}</span>
 
 	/**
 	 * Retrieve the Maximum Number of Iterations
@@ -119,59 +119,59 @@ public class PowerIterationComponentExtractor implements org.drip.quant.eigen.Co
 	@Override public org.drip.quant.eigen.EigenComponent principalComponent (
 		final double[][] aadblA)
 	{
-<span class="nc bnc" id="L122" title="All 2 branches missed.">		if (null == aadblA) return null;</span>
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">		if (null == aadblA) return null;</span>
 
-<span class="nc" id="L124">		int iIter = 0;</span>
-<span class="nc" id="L125">		double dblEigenvalue = 0.;</span>
-<span class="nc" id="L126">		int iSize = aadblA.length;</span>
-<span class="nc" id="L127">		double[] adblEigenvector = new double[iSize];</span>
-<span class="nc" id="L128">		double[] adblUpdatedEigenvector = new double[iSize];</span>
+<span class="fc" id="L124">		int iIter = 0;</span>
+<span class="fc" id="L125">		double dblEigenvalue = 0.;</span>
+<span class="fc" id="L126">		int iSize = aadblA.length;</span>
+<span class="fc" id="L127">		double[] adblEigenvector = new double[iSize];</span>
+<span class="fc" id="L128">		double[] adblUpdatedEigenvector = new double[iSize];</span>
 
-<span class="nc bnc" id="L130" title="All 6 branches missed.">		if (0 == iSize || null == aadblA[0] || iSize != aadblA[0].length) return null;</span>
+<span class="pc bpc" id="L130" title="3 of 6 branches missed.">		if (0 == iSize || null == aadblA[0] || iSize != aadblA[0].length) return null;</span>
 
-<span class="nc bnc" id="L132" title="All 2 branches missed.">		for (int i = 0; i &lt; iSize; ++i) {</span>
-<span class="nc" id="L133">			adblEigenvector[i] = java.lang.Math.random();</span>
+<span class="fc bfc" id="L132" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="fc" id="L133">			adblEigenvector[i] = java.lang.Math.random();</span>
 
-<span class="nc" id="L135">			dblEigenvalue += adblEigenvector[i] * adblEigenvector[i];</span>
+<span class="fc" id="L135">			dblEigenvalue += adblEigenvector[i] * adblEigenvector[i];</span>
 		}
 
-<span class="nc" id="L138">		double dblEigenvalueOld = (dblEigenvalue = java.lang.Math.sqrt (dblEigenvalue));</span>
+<span class="fc" id="L138">		double dblEigenvalueOld = (dblEigenvalue = java.lang.Math.sqrt (dblEigenvalue));</span>
 
-<span class="nc bnc" id="L140" title="All 2 branches missed.">		for (int i = 0; i &lt; iSize; ++i)</span>
-<span class="nc" id="L141">			adblEigenvector[i] /= dblEigenvalue;</span>
+<span class="fc bfc" id="L140" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i)</span>
+<span class="fc" id="L141">			adblEigenvector[i] /= dblEigenvalue;</span>
 
-<span class="nc bnc" id="L143" title="All 2 branches missed.">		double dblAbsoluteTolerance = _bToleranceAbsolute ? _dblTolerance : dblEigenvalue * _dblTolerance;</span>
-<span class="nc bnc" id="L144" title="All 2 branches missed.">		dblAbsoluteTolerance = dblAbsoluteTolerance &gt; _dblTolerance ? dblAbsoluteTolerance : _dblTolerance;</span>
+<span class="pc bpc" id="L143" title="1 of 2 branches missed.">		double dblAbsoluteTolerance = _bToleranceAbsolute ? _dblTolerance : dblEigenvalue * _dblTolerance;</span>
+<span class="fc bfc" id="L144" title="All 2 branches covered.">		dblAbsoluteTolerance = dblAbsoluteTolerance &gt; _dblTolerance ? dblAbsoluteTolerance : _dblTolerance;</span>
 
-<span class="nc bnc" id="L146" title="All 2 branches missed.">		while (iIter &lt; _iMaxIteration) {</span>
-<span class="nc bnc" id="L147" title="All 2 branches missed.">			for (int i = 0; i &lt; iSize; ++i) {</span>
-<span class="nc" id="L148">				adblUpdatedEigenvector[i] = 0.;</span>
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">		while (iIter &lt; _iMaxIteration) {</span>
+<span class="fc bfc" id="L147" title="All 2 branches covered.">			for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="fc" id="L148">				adblUpdatedEigenvector[i] = 0.;</span>
 
-<span class="nc bnc" id="L150" title="All 2 branches missed.">				for (int j = 0; j &lt; iSize; ++j)</span>
-<span class="nc" id="L151">					adblUpdatedEigenvector[i] += aadblA[i][j] * adblEigenvector[j];</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">				for (int j = 0; j &lt; iSize; ++j)</span>
+<span class="fc" id="L151">					adblUpdatedEigenvector[i] += aadblA[i][j] * adblEigenvector[j];</span>
 			}
 
-<span class="nc" id="L154">			dblEigenvalue = 0.;</span>
+<span class="fc" id="L154">			dblEigenvalue = 0.;</span>
 
-<span class="nc bnc" id="L156" title="All 2 branches missed.">			for (int i = 0; i &lt; iSize; ++i)</span>
-<span class="nc" id="L157">				dblEigenvalue += adblUpdatedEigenvector[i] * adblUpdatedEigenvector[i];</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">			for (int i = 0; i &lt; iSize; ++i)</span>
+<span class="fc" id="L157">				dblEigenvalue += adblUpdatedEigenvector[i] * adblUpdatedEigenvector[i];</span>
 
-<span class="nc" id="L159">			dblEigenvalue = java.lang.Math.sqrt (dblEigenvalue);</span>
+<span class="fc" id="L159">			dblEigenvalue = java.lang.Math.sqrt (dblEigenvalue);</span>
 
-<span class="nc bnc" id="L161" title="All 2 branches missed.">			for (int i = 0; i &lt; iSize; ++i)</span>
-<span class="nc" id="L162">				adblUpdatedEigenvector[i] /= dblEigenvalue;</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">			for (int i = 0; i &lt; iSize; ++i)</span>
+<span class="fc" id="L162">				adblUpdatedEigenvector[i] /= dblEigenvalue;</span>
 
-<span class="nc bnc" id="L164" title="All 2 branches missed.">			if (dblAbsoluteTolerance &gt; java.lang.Math.abs (dblEigenvalue - dblEigenvalueOld)) break;</span>
+<span class="fc bfc" id="L164" title="All 2 branches covered.">			if (dblAbsoluteTolerance &gt; java.lang.Math.abs (dblEigenvalue - dblEigenvalueOld)) break;</span>
 
-<span class="nc" id="L166">			adblEigenvector = adblUpdatedEigenvector;</span>
-<span class="nc" id="L167">			dblEigenvalueOld = dblEigenvalue;</span>
-<span class="nc" id="L168">			++iIter;</span>
+<span class="fc" id="L166">			adblEigenvector = adblUpdatedEigenvector;</span>
+<span class="fc" id="L167">			dblEigenvalueOld = dblEigenvalue;</span>
+<span class="fc" id="L168">			++iIter;</span>
 		}
 
-<span class="nc bnc" id="L171" title="All 2 branches missed.">		if (iIter &gt;= _iMaxIteration) return null;</span>
+<span class="pc bpc" id="L171" title="1 of 2 branches missed.">		if (iIter &gt;= _iMaxIteration) return null;</span>
 
 		try {
-<span class="nc" id="L174">			return new org.drip.quant.eigen.EigenComponent (adblEigenvector, dblEigenvalue);</span>
+<span class="fc" id="L174">			return new org.drip.quant.eigen.EigenComponent (adblEigenvector, dblEigenvalue);</span>
 <span class="nc" id="L175">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L176">			e.printStackTrace();</span>
 		}

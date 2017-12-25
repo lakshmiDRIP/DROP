@@ -65,73 +65,73 @@ import org.drip.service.env.EnvManager;
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L68">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L68">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L70">		JulianDate dt1 = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L70">		JulianDate dt1 = DateUtil.CreateFromYMD (</span>
 			2015,
 			DateUtil.JULY,
 			1
 		);
 
-<span class="nc" id="L76">		JulianDate dt2 = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L76">		JulianDate dt2 = DateUtil.CreateFromYMD (</span>
 			2015,
 			DateUtil.AUGUST,
 			1
 		);
 
-<span class="nc" id="L82">		JulianDate dt3 = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L82">		JulianDate dt3 = DateUtil.CreateFromYMD (</span>
 			2015,
 			DateUtil.SEPTEMBER,
 			1
 		);
 
-<span class="nc" id="L88">		double dblV1 = 10.;</span>
-<span class="nc" id="L89">		double dblV2 = 15.;</span>
-<span class="nc" id="L90">		double dblV3 = 20.;</span>
+<span class="fc" id="L88">		double dblV1 = 10.;</span>
+<span class="fc" id="L89">		double dblV2 = 15.;</span>
+<span class="fc" id="L90">		double dblV3 = 20.;</span>
 
-<span class="nc" id="L92">		int iDaysStep = 2;</span>
+<span class="fc" id="L92">		int iDaysStep = 2;</span>
 
-<span class="nc" id="L94">		BrokenDateInterpolatorBrownian3P tpbb = new BrokenDateInterpolatorBrownian3P (</span>
-<span class="nc" id="L95">			dt1.julian(),</span>
-<span class="nc" id="L96">			dt2.julian(),</span>
-<span class="nc" id="L97">			dt3.julian(),</span>
+<span class="fc" id="L94">		BrokenDateInterpolatorBrownian3P tpbb = new BrokenDateInterpolatorBrownian3P (</span>
+<span class="fc" id="L95">			dt1.julian(),</span>
+<span class="fc" id="L96">			dt2.julian(),</span>
+<span class="fc" id="L97">			dt3.julian(),</span>
 			dblV1,
 			dblV2,
 			dblV3
 		);
 
-<span class="nc" id="L103">		System.out.println();</span>
+<span class="fc" id="L103">		System.out.println();</span>
 
-<span class="nc" id="L105">		System.out.println (&quot;\t||--------------------------||&quot;);</span>
+<span class="fc" id="L105">		System.out.println (&quot;\t||--------------------------||&quot;);</span>
 
-<span class="nc" id="L107">		System.out.println (&quot;\t||  BROWNIAN BRIDGE LINEAR  ||&quot;);</span>
+<span class="fc" id="L107">		System.out.println (&quot;\t||  BROWNIAN BRIDGE LINEAR  ||&quot;);</span>
 
-<span class="nc" id="L109">		System.out.println (&quot;\t||--------------------------||&quot;);</span>
+<span class="fc" id="L109">		System.out.println (&quot;\t||--------------------------||&quot;);</span>
 
-<span class="nc" id="L111">		System.out.println (</span>
+<span class="fc" id="L111">		System.out.println (</span>
 			&quot;\t|| [&quot; + dt1 + &quot;] =&gt; &quot; +
-<span class="nc" id="L113">			FormatUtil.FormatDouble (tpbb.interpolate (dt1.julian()), 2, 3, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L113">			FormatUtil.FormatDouble (tpbb.interpolate (dt1.julian()), 2, 3, 1.) + &quot; ||&quot;</span>
 		);
 
-<span class="nc" id="L116">		JulianDate dt = dt1.addDays (iDaysStep);</span>
+<span class="fc" id="L116">		JulianDate dt = dt1.addDays (iDaysStep);</span>
 
-<span class="nc bnc" id="L118" title="All 2 branches missed.">		while (dt.julian() &lt; dt3.julian()) {</span>
-<span class="nc" id="L119">			System.out.println (</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">		while (dt.julian() &lt; dt3.julian()) {</span>
+<span class="fc" id="L119">			System.out.println (</span>
 				&quot;\t|| [&quot; + dt + &quot;] =&gt; &quot; +
-<span class="nc" id="L121">				FormatUtil.FormatDouble (tpbb.interpolate (dt.julian()), 2, 3, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L121">				FormatUtil.FormatDouble (tpbb.interpolate (dt.julian()), 2, 3, 1.) + &quot; ||&quot;</span>
 			);
 
-<span class="nc" id="L124">			dt = dt.addDays (iDaysStep);</span>
+<span class="fc" id="L124">			dt = dt.addDays (iDaysStep);</span>
 		}
 
-<span class="nc" id="L127">		System.out.println (</span>
+<span class="fc" id="L127">		System.out.println (</span>
 			&quot;\t|| [&quot; + dt3 + &quot;] =&gt; &quot; +
-<span class="nc" id="L129">			FormatUtil.FormatDouble (tpbb.interpolate (dt3.julian()), 2, 3, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L129">			FormatUtil.FormatDouble (tpbb.interpolate (dt3.julian()), 2, 3, 1.) + &quot; ||&quot;</span>
 		);
 
-<span class="nc" id="L132">		System.out.println (&quot;\t||--------------------------||&quot;);</span>
+<span class="fc" id="L132">		System.out.println (&quot;\t||--------------------------||&quot;);</span>
 
-<span class="nc" id="L134">		System.out.println();</span>
-<span class="nc" id="L135">	}</span>
+<span class="fc" id="L134">		System.out.println();</span>
+<span class="fc" id="L135">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

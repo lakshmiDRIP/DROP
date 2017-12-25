@@ -212,7 +212,7 @@ public abstract class CompositePeriod {
 	public int fxFixingDate()
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L215" title="1 of 2 branches missed.">		if (null == _fxFixingSetting) return _iPayDate;</span>
+<span class="fc bfc" id="L215" title="All 2 branches covered.">		if (null == _fxFixingSetting) return _iPayDate;</span>
 
 <span class="fc" id="L217">		int iUnadjustedFixingDate = java.lang.Integer.MIN_VALUE;</span>
 
@@ -297,7 +297,7 @@ public abstract class CompositePeriod {
 
 	public java.lang.String tenor()
 	{
-<span class="nc bnc" id="L300" title="All 4 branches missed.">		if (null != _strTenor &amp;&amp; !_strTenor.isEmpty()) return _strTenor;</span>
+<span class="pc bpc" id="L300" title="2 of 4 branches missed.">		if (null != _strTenor &amp;&amp; !_strTenor.isEmpty()) return _strTenor;</span>
 
 <span class="nc" id="L302">		int iTenorInMonths = 12 / freq() ;</span>
 
@@ -359,17 +359,17 @@ public abstract class CompositePeriod {
 	{
 <span class="fc" id="L360">		org.drip.state.identifier.CreditLabel creditLabel = creditLabel();</span>
 
-<span class="pc bpc" id="L362" title="1 of 2 branches missed.">		if (null == creditLabel) return 1.;</span>
+<span class="fc bfc" id="L362" title="All 2 branches covered.">		if (null == creditLabel) return 1.;</span>
 
-<span class="nc bnc" id="L364" title="All 2 branches missed.">		if (null == csqc) throw new java.lang.Exception (&quot;CompositePeriod::survival =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L364" title="1 of 2 branches missed.">		if (null == csqc) throw new java.lang.Exception (&quot;CompositePeriod::survival =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L366">		org.drip.state.credit.CreditCurve cc = csqc.creditState (creditLabel);</span>
+<span class="fc" id="L366">		org.drip.state.credit.CreditCurve cc = csqc.creditState (creditLabel);</span>
 
-<span class="nc bnc" id="L368" title="All 2 branches missed.">		if (null == cc)</span>
+<span class="pc bpc" id="L368" title="1 of 2 branches missed.">		if (null == cc)</span>
 <span class="nc" id="L369">			throw new java.lang.Exception (&quot;CompositePeriod::survival =&gt; No Curve for &quot; +</span>
 <span class="nc" id="L370">				creditLabel.fullyQualifiedName());</span>
 
-<span class="nc" id="L372">		return cc.survival (_iPayDate);</span>
+<span class="fc" id="L372">		return cc.survival (_iPayDate);</span>
 	}
 
 	/**

@@ -56,9 +56,9 @@ package org.drip.measure.dynamics;
 
 public class DiffusionEvaluatorOrnsteinUhlenbeck extends org.drip.measure.dynamics.DiffusionEvaluator
 	implements org.drip.measure.process.OrnsteinUhlenbeck {
-<span class="nc" id="L59">	private double _dblBurstiness = java.lang.Double.NaN;</span>
-<span class="nc" id="L60">	private double _dblRelaxationTime = java.lang.Double.NaN;</span>
-<span class="nc" id="L61">	private double _dblMeanReversionLevel = java.lang.Double.NaN;</span>
+<span class="fc" id="L59">	private double _dblBurstiness = java.lang.Double.NaN;</span>
+<span class="fc" id="L60">	private double _dblRelaxationTime = java.lang.Double.NaN;</span>
+<span class="fc" id="L61">	private double _dblMeanReversionLevel = java.lang.Double.NaN;</span>
 
 	/**
 	 * Construct a Standard Instance of DiffusionEvaluatorOrnsteinUhlenbeck
@@ -75,31 +75,31 @@ public class DiffusionEvaluatorOrnsteinUhlenbeck extends org.drip.measure.dynami
 		final double dblBurstiness,
 		final double dblRelaxationTime)
 	{
-<span class="nc" id="L78">		org.drip.measure.dynamics.LocalEvaluator leDrift = new org.drip.measure.dynamics.LocalEvaluator() {</span>
+<span class="fc" id="L78">		org.drip.measure.dynamics.LocalEvaluator leDrift = new org.drip.measure.dynamics.LocalEvaluator() {</span>
 			@Override public double value (
 				final org.drip.measure.realization.JumpDiffusionVertex jdv)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L83" title="All 2 branches missed.">				if (null == jdv)</span>
+<span class="pc bpc" id="L83" title="1 of 2 branches missed.">				if (null == jdv)</span>
 <span class="nc" id="L84">					throw new java.lang.Exception</span>
 						(&quot;DiffusionEvaluatorOrnsteinUhlenbeck::DriftLDEV::value =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L87">				return -1. * jdv.value() / dblRelaxationTime;</span>
+<span class="fc" id="L87">				return -1. * jdv.value() / dblRelaxationTime;</span>
 			}
 		};
 
-<span class="nc" id="L91">		org.drip.measure.dynamics.LocalEvaluator leVolatility = new</span>
-<span class="nc" id="L92">			org.drip.measure.dynamics.LocalEvaluator() {</span>
+<span class="fc" id="L91">		org.drip.measure.dynamics.LocalEvaluator leVolatility = new</span>
+<span class="fc" id="L92">			org.drip.measure.dynamics.LocalEvaluator() {</span>
 			@Override public double value (
 				final org.drip.measure.realization.JumpDiffusionVertex jdv)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L97">				return dblBurstiness * java.lang.Math.sqrt (1. / dblRelaxationTime);</span>
+<span class="fc" id="L97">				return dblBurstiness * java.lang.Math.sqrt (1. / dblRelaxationTime);</span>
 			}
 		};
 
 		try {
-<span class="nc" id="L102">			return new DiffusionEvaluatorOrnsteinUhlenbeck (dblMeanReversionLevel, dblBurstiness,</span>
+<span class="fc" id="L102">			return new DiffusionEvaluatorOrnsteinUhlenbeck (dblMeanReversionLevel, dblBurstiness,</span>
 				dblRelaxationTime, leDrift, leVolatility);
 <span class="nc" id="L104">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L105">			e.printStackTrace();</span>
@@ -121,7 +121,7 @@ public class DiffusionEvaluatorOrnsteinUhlenbeck extends org.drip.measure.dynami
 		final double dblBurstiness,
 		final double dblRelaxationTime)
 	{
-<span class="nc" id="L124">		return Standard (0., dblBurstiness, dblRelaxationTime);</span>
+<span class="fc" id="L124">		return Standard (0., dblBurstiness, dblRelaxationTime);</span>
 	}
 
 	private DiffusionEvaluatorOrnsteinUhlenbeck (
@@ -132,15 +132,15 @@ public class DiffusionEvaluatorOrnsteinUhlenbeck extends org.drip.measure.dynami
 		final org.drip.measure.dynamics.LocalEvaluator leVolatility)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L135">		super (leDrift, leVolatility);</span>
+<span class="fc" id="L135">		super (leDrift, leVolatility);</span>
 
-<span class="nc bnc" id="L137" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblMeanReversionLevel = dblMeanReversionLevel) ||</span>
-<span class="nc bnc" id="L138" title="All 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblBurstiness = dblBurstiness) || 0. &gt;=</span>
-<span class="nc bnc" id="L139" title="All 4 branches missed.">				_dblBurstiness || !org.drip.quant.common.NumberUtil.IsValid (_dblRelaxationTime =</span>
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblMeanReversionLevel = dblMeanReversionLevel) ||</span>
+<span class="pc bpc" id="L138" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblBurstiness = dblBurstiness) || 0. &gt;=</span>
+<span class="pc bpc" id="L139" title="2 of 4 branches missed.">				_dblBurstiness || !org.drip.quant.common.NumberUtil.IsValid (_dblRelaxationTime =</span>
 					dblRelaxationTime) || 0. &gt;= _dblRelaxationTime)
 <span class="nc" id="L141">			throw new java.lang.Exception</span>
 				(&quot;DiffusionEvaluatorOrnsteinUhlenbeck Constructor =&gt; Invalid Inputs&quot;);
-<span class="nc" id="L143">	}</span>
+<span class="fc" id="L143">	}</span>
 
 	/**
 	 * Retrieve the Mean Reversion Level
@@ -161,7 +161,7 @@ public class DiffusionEvaluatorOrnsteinUhlenbeck extends org.drip.measure.dynami
 
 	public double burstiness()
 	{
-<span class="nc" id="L164">		return _dblBurstiness;</span>
+<span class="fc" id="L164">		return _dblBurstiness;</span>
 	}
 
 	/**
@@ -172,17 +172,17 @@ public class DiffusionEvaluatorOrnsteinUhlenbeck extends org.drip.measure.dynami
 
 	public double relaxationTime()
 	{
-<span class="nc" id="L175">		return _dblRelaxationTime;</span>
+<span class="fc" id="L175">		return _dblRelaxationTime;</span>
 	}
 
 	@Override public double referenceRelaxationTime()
 	{
-<span class="nc" id="L180">		return relaxationTime();</span>
+<span class="fc" id="L180">		return relaxationTime();</span>
 	}
 
 	@Override public double referenceBurstiness()
 	{
-<span class="nc" id="L185">		return burstiness();</span>
+<span class="fc" id="L185">		return burstiness();</span>
 	}
 
 	@Override public double referenceMeanReversionLevel()

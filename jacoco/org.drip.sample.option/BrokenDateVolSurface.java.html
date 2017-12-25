@@ -67,16 +67,16 @@ import org.drip.state.creator.ScenarioMarketSurfaceBuilder;
 		final String[] asrtArgs)
 		throws Exception
 	{
-<span class="nc" id="L70">		JulianDate dtStart = DateUtil.Today();</span>
+<span class="fc" id="L70">		JulianDate dtStart = DateUtil.Today();</span>
 
-<span class="nc" id="L72">		double[] adblStrikeATMFactor = new double[] {</span>
+<span class="fc" id="L72">		double[] adblStrikeATMFactor = new double[] {</span>
 			0.8, 0.9, 1.0, 1.1, 1.2
 		};
-<span class="nc" id="L75">		String[] astrMaturityTenor = new String[] {</span>
+<span class="fc" id="L75">		String[] astrMaturityTenor = new String[] {</span>
 			&quot;1Y&quot;, &quot;2Y&quot;, &quot;3Y&quot;, &quot;4Y&quot;, &quot;5Y&quot;
 		};
 
-<span class="nc" id="L79">		double[][] aadblImpliedVolatility = new double[][] {</span>
+<span class="fc" id="L79">		double[][] aadblImpliedVolatility = new double[][] {</span>
 			{0.44, 0.38, 0.33, 0.27, 0.25},
 			{0.41, 0.34, 0.30, 0.22, 0.27},
 			{0.36, 0.31, 0.28, 0.30, 0.37},
@@ -84,7 +84,7 @@ import org.drip.state.creator.ScenarioMarketSurfaceBuilder;
 			{0.43, 0.46, 0.48, 0.52, 0.57}
 		};
 
-<span class="nc" id="L87">		MarketSurface volSurface = ScenarioMarketSurfaceBuilder.CubicPolynomialWireSurface (</span>
+<span class="fc" id="L87">		MarketSurface volSurface = ScenarioMarketSurfaceBuilder.CubicPolynomialWireSurface (</span>
 			&quot;SAMPLE_VOL_SURFACE&quot;,
 			dtStart,
 			&quot;USD&quot;,
@@ -93,85 +93,85 @@ import org.drip.state.creator.ScenarioMarketSurfaceBuilder;
 			aadblImpliedVolatility
 		);
 
-<span class="nc" id="L96">		System.out.println (&quot;\n\t|------------------------------------------------------------|&quot;);</span>
+<span class="fc" id="L96">		System.out.println (&quot;\n\t|------------------------------------------------------------|&quot;);</span>
 
-<span class="nc" id="L98">		System.out.println (&quot;\t|----------------- INPUT  SURFACE  RECOVERY -----------------|&quot;);</span>
+<span class="fc" id="L98">		System.out.println (&quot;\t|----------------- INPUT  SURFACE  RECOVERY -----------------|&quot;);</span>
 
-<span class="nc" id="L100">		System.out.print (&quot;\t|------------------------------------------------------------|\n\t|  ATM/TTE  =&gt;&quot;);</span>
+<span class="fc" id="L100">		System.out.print (&quot;\t|------------------------------------------------------------|\n\t|  ATM/TTE  =&gt;&quot;);</span>
 
-<span class="nc bnc" id="L102" title="All 2 branches missed.">		for (String strMaturity : astrMaturityTenor)</span>
-<span class="nc" id="L103">			System.out.print (&quot;     &quot; + strMaturity + &quot;  &quot;);</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">		for (String strMaturity : astrMaturityTenor)</span>
+<span class="fc" id="L103">			System.out.print (&quot;     &quot; + strMaturity + &quot;  &quot;);</span>
 
-<span class="nc" id="L105">		System.out.println (&quot;  |\n\t|------------------------------------------------------------|&quot;);</span>
+<span class="fc" id="L105">		System.out.println (&quot;  |\n\t|------------------------------------------------------------|&quot;);</span>
 
-<span class="nc bnc" id="L107" title="All 2 branches missed.">		for (double dblStrike : adblStrikeATMFactor) {</span>
-<span class="nc" id="L108">			System.out.print (&quot;\t|  &quot; + FormatUtil.FormatDouble (dblStrike, 1, 2, 1.) + &quot;    =&gt;&quot;);</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">		for (double dblStrike : adblStrikeATMFactor) {</span>
+<span class="fc" id="L108">			System.out.print (&quot;\t|  &quot; + FormatUtil.FormatDouble (dblStrike, 1, 2, 1.) + &quot;    =&gt;&quot;);</span>
 
-<span class="nc bnc" id="L110" title="All 2 branches missed.">			for (String strMaturity : astrMaturityTenor)</span>
-<span class="nc" id="L111">				System.out.print (&quot;  &quot; + FormatUtil.FormatDouble (volSurface.node (dblStrike, strMaturity), 2, 2, 100.) + &quot;%&quot;);</span>
+<span class="fc bfc" id="L110" title="All 2 branches covered.">			for (String strMaturity : astrMaturityTenor)</span>
+<span class="fc" id="L111">				System.out.print (&quot;  &quot; + FormatUtil.FormatDouble (volSurface.node (dblStrike, strMaturity), 2, 2, 100.) + &quot;%&quot;);</span>
 
-<span class="nc" id="L113">			System.out.print (&quot;  |\n&quot;);</span>
+<span class="fc" id="L113">			System.out.print (&quot;  |\n&quot;);</span>
 		}
 
-<span class="nc" id="L116">		System.out.println (&quot;\t|------------------------------------------------------------|&quot;);</span>
+<span class="fc" id="L116">		System.out.println (&quot;\t|------------------------------------------------------------|&quot;);</span>
 
-<span class="nc" id="L118">		adblStrikeATMFactor = new double[] {</span>
+<span class="fc" id="L118">		adblStrikeATMFactor = new double[] {</span>
 			0.850, 0.925, 1.000, 1.075, 1.15
 		};
-<span class="nc" id="L121">		astrMaturityTenor = new String[] {</span>
+<span class="fc" id="L121">		astrMaturityTenor = new String[] {</span>
 			&quot;18M&quot;, &quot;27M&quot;, &quot;36M&quot;, &quot;45M&quot;, &quot;54M&quot;
 		};
 
-<span class="nc" id="L125">		System.out.println (&quot;\n\t|------------------------------------------------------------|&quot;);</span>
+<span class="fc" id="L125">		System.out.println (&quot;\n\t|------------------------------------------------------------|&quot;);</span>
 
-<span class="nc" id="L127">		System.out.println (&quot;\t|------------- INTERIM  SURFACE  RECALCULATION --------------|&quot;);</span>
+<span class="fc" id="L127">		System.out.println (&quot;\t|------------- INTERIM  SURFACE  RECALCULATION --------------|&quot;);</span>
 
-<span class="nc" id="L129">		System.out.print (&quot;\t|------------------------------------------------------------|\n\t|  ATM/TTE  =&gt;&quot;);</span>
+<span class="fc" id="L129">		System.out.print (&quot;\t|------------------------------------------------------------|\n\t|  ATM/TTE  =&gt;&quot;);</span>
 
-<span class="nc bnc" id="L131" title="All 2 branches missed.">		for (String strMaturity : astrMaturityTenor)</span>
-<span class="nc" id="L132">			System.out.print (&quot;    &quot; + strMaturity + &quot;  &quot;);</span>
+<span class="fc bfc" id="L131" title="All 2 branches covered.">		for (String strMaturity : astrMaturityTenor)</span>
+<span class="fc" id="L132">			System.out.print (&quot;    &quot; + strMaturity + &quot;  &quot;);</span>
 
-<span class="nc" id="L134">		System.out.println (&quot;  |\n\t|------------------------------------------------------------|&quot;);</span>
+<span class="fc" id="L134">		System.out.println (&quot;  |\n\t|------------------------------------------------------------|&quot;);</span>
 
-<span class="nc bnc" id="L136" title="All 2 branches missed.">		for (double dblStrike : adblStrikeATMFactor) {</span>
-<span class="nc" id="L137">			System.out.print (&quot;\t|  &quot; + FormatUtil.FormatDouble (dblStrike, 1, 2, 1.) + &quot;    =&gt;&quot;);</span>
+<span class="fc bfc" id="L136" title="All 2 branches covered.">		for (double dblStrike : adblStrikeATMFactor) {</span>
+<span class="fc" id="L137">			System.out.print (&quot;\t|  &quot; + FormatUtil.FormatDouble (dblStrike, 1, 2, 1.) + &quot;    =&gt;&quot;);</span>
 
-<span class="nc bnc" id="L139" title="All 2 branches missed.">			for (String strMaturity : astrMaturityTenor)</span>
-<span class="nc" id="L140">				System.out.print (&quot;  &quot; + FormatUtil.FormatDouble (volSurface.node (dblStrike, strMaturity), 2, 2, 100.) + &quot;%&quot;);</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">			for (String strMaturity : astrMaturityTenor)</span>
+<span class="fc" id="L140">				System.out.print (&quot;  &quot; + FormatUtil.FormatDouble (volSurface.node (dblStrike, strMaturity), 2, 2, 100.) + &quot;%&quot;);</span>
 
-<span class="nc" id="L142">			System.out.print (&quot;  |\n&quot;);</span>
+<span class="fc" id="L142">			System.out.print (&quot;  |\n&quot;);</span>
 		}
 
-<span class="nc" id="L145">		System.out.println (&quot;\t|------------------------------------------------------------|&quot;);</span>
+<span class="fc" id="L145">		System.out.println (&quot;\t|------------------------------------------------------------|&quot;);</span>
 
-<span class="nc" id="L147">		adblStrikeATMFactor = new double[] {</span>
+<span class="fc" id="L147">		adblStrikeATMFactor = new double[] {</span>
 			0.700, 0.850, 1.000, 1.150, 1.300
 		};
-<span class="nc" id="L150">		astrMaturityTenor = new String[] {</span>
+<span class="fc" id="L150">		astrMaturityTenor = new String[] {</span>
 			&quot;06M&quot;, &quot;21M&quot;, &quot;36M&quot;, &quot;51M&quot;, &quot;66M&quot;
 		};
 
-<span class="nc" id="L154">		System.out.println (&quot;\n\t|------------------------------------------------------------|&quot;);</span>
+<span class="fc" id="L154">		System.out.println (&quot;\n\t|------------------------------------------------------------|&quot;);</span>
 
-<span class="nc" id="L156">		System.out.println (&quot;\t|------------- INTERIM  SURFACE  RECALCULATION --------------|&quot;);</span>
+<span class="fc" id="L156">		System.out.println (&quot;\t|------------- INTERIM  SURFACE  RECALCULATION --------------|&quot;);</span>
 
-<span class="nc" id="L158">		System.out.print (&quot;\t|------------------------------------------------------------|\n\t|  ATM/TTE  =&gt;&quot;);</span>
+<span class="fc" id="L158">		System.out.print (&quot;\t|------------------------------------------------------------|\n\t|  ATM/TTE  =&gt;&quot;);</span>
 
-<span class="nc bnc" id="L160" title="All 2 branches missed.">		for (String strMaturity : astrMaturityTenor)</span>
-<span class="nc" id="L161">			System.out.print (&quot;    &quot; + strMaturity + &quot;  &quot;);</span>
+<span class="fc bfc" id="L160" title="All 2 branches covered.">		for (String strMaturity : astrMaturityTenor)</span>
+<span class="fc" id="L161">			System.out.print (&quot;    &quot; + strMaturity + &quot;  &quot;);</span>
 
-<span class="nc" id="L163">		System.out.println (&quot;  |\n\t|------------------------------------------------------------|&quot;);</span>
+<span class="fc" id="L163">		System.out.println (&quot;  |\n\t|------------------------------------------------------------|&quot;);</span>
 
-<span class="nc bnc" id="L165" title="All 2 branches missed.">		for (double dblStrike : adblStrikeATMFactor) {</span>
-<span class="nc" id="L166">			System.out.print (&quot;\t|  &quot; + FormatUtil.FormatDouble (dblStrike, 1, 2, 1.) + &quot;    =&gt;&quot;);</span>
+<span class="fc bfc" id="L165" title="All 2 branches covered.">		for (double dblStrike : adblStrikeATMFactor) {</span>
+<span class="fc" id="L166">			System.out.print (&quot;\t|  &quot; + FormatUtil.FormatDouble (dblStrike, 1, 2, 1.) + &quot;    =&gt;&quot;);</span>
 
-<span class="nc bnc" id="L168" title="All 2 branches missed.">			for (String strMaturity : astrMaturityTenor)</span>
-<span class="nc" id="L169">				System.out.print (&quot;  &quot; + FormatUtil.FormatDouble (volSurface.node (dblStrike, strMaturity), 2, 2, 100.) + &quot;%&quot;);</span>
+<span class="fc bfc" id="L168" title="All 2 branches covered.">			for (String strMaturity : astrMaturityTenor)</span>
+<span class="fc" id="L169">				System.out.print (&quot;  &quot; + FormatUtil.FormatDouble (volSurface.node (dblStrike, strMaturity), 2, 2, 100.) + &quot;%&quot;);</span>
 
-<span class="nc" id="L171">			System.out.print (&quot;  |\n&quot;);</span>
+<span class="fc" id="L171">			System.out.print (&quot;  |\n&quot;);</span>
 		}
 
-<span class="nc" id="L174">		System.out.println (&quot;\t|------------------------------------------------------------|&quot;);</span>
-<span class="nc" id="L175">	}</span>
+<span class="fc" id="L174">		System.out.println (&quot;\t|------------------------------------------------------------|&quot;);</span>
+<span class="fc" id="L175">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

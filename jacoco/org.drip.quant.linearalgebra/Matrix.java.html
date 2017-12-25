@@ -445,7 +445,7 @@ package org.drip.quant.linearalgebra;
 <span class="fc" id="L445">		int iSize = aadblRegularizedSource.length;</span>
 
 <span class="fc bfc" id="L447" title="All 2 branches covered.">		for (int iDiagonal = 0; iDiagonal &lt; iSize; ++iDiagonal) {</span>
-<span class="pc bpc" id="L448" title="1 of 2 branches missed.">			if (0. == aadblRegularizedSource[iDiagonal][iDiagonal]) return null;</span>
+<span class="fc bfc" id="L448" title="All 2 branches covered.">			if (0. == aadblRegularizedSource[iDiagonal][iDiagonal]) return null;</span>
 
 <span class="fc bfc" id="L450" title="All 2 branches covered.">			for (int iRow = 0; iRow &lt; iSize; ++iRow) {</span>
 <span class="fc bfc" id="L451" title="All 4 branches covered.">				if (iRow == iDiagonal || 0. == aadblRegularizedSource[iRow][iDiagonal]) continue;</span>
@@ -851,23 +851,23 @@ package org.drip.quant.linearalgebra;
 	public static final double[] Normalize (
 		final double[] adbl)
 	{
-<span class="nc bnc" id="L854" title="All 2 branches missed.">		if (null == adbl) return null;</span>
+<span class="pc bpc" id="L854" title="1 of 2 branches missed.">		if (null == adbl) return null;</span>
 
-<span class="nc" id="L856">		double dblNorm = 0.;</span>
-<span class="nc" id="L857">		int iSize = adbl.length;</span>
-<span class="nc" id="L858">		double[] adblNormalized = new double[iSize];</span>
+<span class="fc" id="L856">		double dblNorm = 0.;</span>
+<span class="fc" id="L857">		int iSize = adbl.length;</span>
+<span class="fc" id="L858">		double[] adblNormalized = new double[iSize];</span>
 
-<span class="nc bnc" id="L860" title="All 2 branches missed.">		if (0 == iSize) return null;</span>
+<span class="pc bpc" id="L860" title="1 of 2 branches missed.">		if (0 == iSize) return null;</span>
 
-<span class="nc bnc" id="L862" title="All 2 branches missed.">		for (int i = 0; i &lt; iSize; ++i)</span>
-<span class="nc" id="L863">			dblNorm += adbl[i] * adbl[i];</span>
+<span class="fc bfc" id="L862" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i)</span>
+<span class="fc" id="L863">			dblNorm += adbl[i] * adbl[i];</span>
 
-<span class="nc" id="L865">		dblNorm = java.lang.Math.sqrt (dblNorm);</span>
+<span class="fc" id="L865">		dblNorm = java.lang.Math.sqrt (dblNorm);</span>
 
-<span class="nc bnc" id="L867" title="All 2 branches missed.">		for (int i = 0; i &lt; iSize; ++i)</span>
-<span class="nc" id="L868">			adblNormalized[i] = adbl[i] / dblNorm;</span>
+<span class="fc bfc" id="L867" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i)</span>
+<span class="fc" id="L868">			adblNormalized[i] = adbl[i] / dblNorm;</span>
 
-<span class="nc" id="L870">		return adblNormalized;</span>
+<span class="fc" id="L870">		return adblNormalized;</span>
 	}
 
 	/**
@@ -881,35 +881,35 @@ package org.drip.quant.linearalgebra;
 	public static final double[][] GrahamSchmidtOrthogonalization (
 		final double[][] aadblV)
 	{
-<span class="nc bnc" id="L884" title="All 2 branches missed.">		if (null == aadblV) return null;</span>
+<span class="pc bpc" id="L884" title="1 of 2 branches missed.">		if (null == aadblV) return null;</span>
 
-<span class="nc" id="L886">		int iSize = aadblV.length;</span>
-<span class="nc" id="L887">		double[][] aadblU = new double[iSize][iSize];</span>
+<span class="fc" id="L886">		int iSize = aadblV.length;</span>
+<span class="fc" id="L887">		double[][] aadblU = new double[iSize][iSize];</span>
 
-<span class="nc bnc" id="L889" title="All 6 branches missed.">		if (0 == iSize || null == aadblV[0] || iSize != aadblV[0].length) return null;</span>
+<span class="pc bpc" id="L889" title="3 of 6 branches missed.">		if (0 == iSize || null == aadblV[0] || iSize != aadblV[0].length) return null;</span>
 
-<span class="nc bnc" id="L891" title="All 2 branches missed.">		for (int i = 0; i &lt; iSize; ++i) {</span>
-<span class="nc bnc" id="L892" title="All 2 branches missed.">			for (int j = 0; j &lt; iSize; ++j)</span>
-<span class="nc" id="L893">				aadblU[i][j] = aadblV[i][j];</span>
+<span class="fc bfc" id="L891" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="fc bfc" id="L892" title="All 2 branches covered.">			for (int j = 0; j &lt; iSize; ++j)</span>
+<span class="fc" id="L893">				aadblU[i][j] = aadblV[i][j];</span>
 
-<span class="nc bnc" id="L895" title="All 2 branches missed.">			for (int j = 0; j &lt; i; ++j) {</span>
-<span class="nc" id="L896">				double dblProjectionAmplitude = java.lang.Double.NaN;</span>
+<span class="fc bfc" id="L895" title="All 2 branches covered.">			for (int j = 0; j &lt; i; ++j) {</span>
+<span class="fc" id="L896">				double dblProjectionAmplitude = java.lang.Double.NaN;</span>
 
 				try {
-<span class="nc" id="L899">					dblProjectionAmplitude = DotProduct (aadblV[i], aadblU[j]) / DotProduct (aadblU[j],</span>
+<span class="fc" id="L899">					dblProjectionAmplitude = DotProduct (aadblV[i], aadblU[j]) / DotProduct (aadblU[j],</span>
 						aadblU[j]);
 <span class="nc" id="L901">				} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L902">					e.printStackTrace();</span>
 
 <span class="nc" id="L904">					return null;</span>
-<span class="nc" id="L905">				}</span>
+<span class="fc" id="L905">				}</span>
 
-<span class="nc bnc" id="L907" title="All 2 branches missed.">				for (int k = 0; k &lt; iSize; ++k)</span>
-<span class="nc" id="L908">					aadblU[i][k] -= dblProjectionAmplitude * aadblU[j][k];</span>
+<span class="fc bfc" id="L907" title="All 2 branches covered.">				for (int k = 0; k &lt; iSize; ++k)</span>
+<span class="fc" id="L908">					aadblU[i][k] -= dblProjectionAmplitude * aadblU[j][k];</span>
 			}
 		}
 
-<span class="nc" id="L912">		return aadblU;</span>
+<span class="fc" id="L912">		return aadblU;</span>
 	}
 
 	/**
@@ -923,18 +923,18 @@ package org.drip.quant.linearalgebra;
 	public static final double[][] GrahamSchmidtOrthonormalization (
 		final double[][] aadblV)
 	{
-<span class="nc" id="L926">		double[][] aadblVOrthogonal = GrahamSchmidtOrthogonalization (aadblV);</span>
+<span class="fc" id="L926">		double[][] aadblVOrthogonal = GrahamSchmidtOrthogonalization (aadblV);</span>
 
-<span class="nc bnc" id="L928" title="All 2 branches missed.">		if (null == aadblVOrthogonal) return null;</span>
+<span class="pc bpc" id="L928" title="1 of 2 branches missed.">		if (null == aadblVOrthogonal) return null;</span>
 
-<span class="nc" id="L930">		int iSize = aadblVOrthogonal.length;</span>
+<span class="fc" id="L930">		int iSize = aadblVOrthogonal.length;</span>
 
-<span class="nc" id="L932">		double[][] aadblVOrthonormal = new double[iSize][];</span>
+<span class="fc" id="L932">		double[][] aadblVOrthonormal = new double[iSize][];</span>
 
-<span class="nc bnc" id="L934" title="All 2 branches missed.">		for (int i = 0; i &lt; iSize; ++i)</span>
-<span class="nc" id="L935">			aadblVOrthonormal[i] = Normalize (aadblVOrthogonal[i]);</span>
+<span class="fc bfc" id="L934" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i)</span>
+<span class="fc" id="L935">			aadblVOrthonormal[i] = Normalize (aadblVOrthogonal[i]);</span>
 
-<span class="nc" id="L937">		return aadblVOrthonormal;</span>
+<span class="fc" id="L937">		return aadblVOrthonormal;</span>
 	}
 
 	/**
@@ -948,20 +948,20 @@ package org.drip.quant.linearalgebra;
 	public static final org.drip.quant.linearalgebra.QR QRDecomposition (
 		final double[][] aadblA)
 	{
-<span class="nc" id="L951">		double[][] aadblQ = GrahamSchmidtOrthonormalization (aadblA);</span>
+<span class="fc" id="L951">		double[][] aadblQ = GrahamSchmidtOrthonormalization (aadblA);</span>
 
-<span class="nc bnc" id="L953" title="All 2 branches missed.">		if (null == aadblQ) return null;</span>
+<span class="pc bpc" id="L953" title="1 of 2 branches missed.">		if (null == aadblQ) return null;</span>
 
-<span class="nc" id="L955">		int iSize = aadblQ.length;</span>
-<span class="nc" id="L956">		double[][] aadblR = new double[iSize][iSize];</span>
+<span class="fc" id="L955">		int iSize = aadblQ.length;</span>
+<span class="fc" id="L956">		double[][] aadblR = new double[iSize][iSize];</span>
 
 		try {
-<span class="nc bnc" id="L959" title="All 2 branches missed.">			for (int i = 0; i &lt; iSize; ++i) {</span>
-<span class="nc bnc" id="L960" title="All 2 branches missed.">				for (int j = 0; j &lt; iSize; ++j)</span>
-<span class="nc bnc" id="L961" title="All 2 branches missed.">					aadblR[i][j] = i &gt; j ? DotProduct (aadblQ[i], aadblA[j]) : 0.;</span>
+<span class="fc bfc" id="L959" title="All 2 branches covered.">			for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="fc bfc" id="L960" title="All 2 branches covered.">				for (int j = 0; j &lt; iSize; ++j)</span>
+<span class="fc bfc" id="L961" title="All 2 branches covered.">					aadblR[i][j] = i &gt; j ? DotProduct (aadblQ[i], aadblA[j]) : 0.;</span>
 			}
 
-<span class="nc" id="L964">			return new org.drip.quant.linearalgebra.QR (aadblQ, aadblR);</span>
+<span class="fc" id="L964">			return new org.drip.quant.linearalgebra.QR (aadblQ, aadblR);</span>
 <span class="nc" id="L965">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L966">			e.printStackTrace();</span>
 		}
@@ -982,32 +982,32 @@ package org.drip.quant.linearalgebra;
 		final double[][] aadblA,
 		final double dblFloor)
 	{
-<span class="nc bnc" id="L985" title="All 6 branches missed.">		if (null == aadblA || !org.drip.quant.common.NumberUtil.IsValid (dblFloor) || dblFloor &lt; 0.)</span>
+<span class="pc bpc" id="L985" title="3 of 6 branches missed.">		if (null == aadblA || !org.drip.quant.common.NumberUtil.IsValid (dblFloor) || dblFloor &lt; 0.)</span>
 <span class="nc" id="L986">			return NON_TRIANGULAR;</span>
 
-<span class="nc" id="L988">		int iSize = aadblA.length;</span>
-<span class="nc" id="L989">		boolean bLowerTriangular = true;</span>
-<span class="nc" id="L990">		boolean bUpperTriangular = true;</span>
+<span class="fc" id="L988">		int iSize = aadblA.length;</span>
+<span class="fc" id="L989">		boolean bLowerTriangular = true;</span>
+<span class="fc" id="L990">		boolean bUpperTriangular = true;</span>
 
-<span class="nc bnc" id="L992" title="All 6 branches missed.">		if (1 &gt;= iSize || null == aadblA[0] || iSize != aadblA[0].length) return NON_TRIANGULAR;</span>
+<span class="pc bpc" id="L992" title="3 of 6 branches missed.">		if (1 &gt;= iSize || null == aadblA[0] || iSize != aadblA[0].length) return NON_TRIANGULAR;</span>
 
-<span class="nc bnc" id="L994" title="All 2 branches missed.">		for (int i = 0; i &lt; iSize; ++i) {</span>
-<span class="nc bnc" id="L995" title="All 2 branches missed.">			for (int j = 0; j &lt; iSize; ++j) {</span>
-<span class="nc bnc" id="L996" title="All 2 branches missed.">				if (i &gt; j) {</span>
-<span class="nc bnc" id="L997" title="All 2 branches missed.">					if (java.lang.Math.abs (aadblA[i][j]) &gt; dblFloor) bLowerTriangular = false;</span>
-<span class="nc bnc" id="L998" title="All 2 branches missed.">				} else if (i &lt; j) {</span>
-<span class="nc bnc" id="L999" title="All 2 branches missed.">					if (java.lang.Math.abs (aadblA[i][j]) &gt; dblFloor) bUpperTriangular = false;</span>
+<span class="fc bfc" id="L994" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="fc bfc" id="L995" title="All 2 branches covered.">			for (int j = 0; j &lt; iSize; ++j) {</span>
+<span class="fc bfc" id="L996" title="All 2 branches covered.">				if (i &gt; j) {</span>
+<span class="fc bfc" id="L997" title="All 2 branches covered.">					if (java.lang.Math.abs (aadblA[i][j]) &gt; dblFloor) bLowerTriangular = false;</span>
+<span class="fc bfc" id="L998" title="All 2 branches covered.">				} else if (i &lt; j) {</span>
+<span class="fc bfc" id="L999" title="All 2 branches covered.">					if (java.lang.Math.abs (aadblA[i][j]) &gt; dblFloor) bUpperTriangular = false;</span>
 				}
 			}
 		}
 
-<span class="nc bnc" id="L1004" title="All 4 branches missed.">		if (bLowerTriangular &amp;&amp; bUpperTriangular) return LOWER_AND_UPPER_TRIANGULAR;</span>
+<span class="pc bpc" id="L1004" title="1 of 4 branches missed.">		if (bLowerTriangular &amp;&amp; bUpperTriangular) return LOWER_AND_UPPER_TRIANGULAR;</span>
 
-<span class="nc bnc" id="L1006" title="All 4 branches missed.">		if (bLowerTriangular &amp;&amp; !bUpperTriangular) return LOWER_TRIANGULAR;</span>
+<span class="pc bpc" id="L1006" title="3 of 4 branches missed.">		if (bLowerTriangular &amp;&amp; !bUpperTriangular) return LOWER_TRIANGULAR;</span>
 
-<span class="nc bnc" id="L1008" title="All 4 branches missed.">		if (!bLowerTriangular &amp;&amp; bUpperTriangular) return UPPER_TRIANGULAR;</span>
+<span class="pc bpc" id="L1008" title="1 of 4 branches missed.">		if (!bLowerTriangular &amp;&amp; bUpperTriangular) return UPPER_TRIANGULAR;</span>
 
-<span class="nc" id="L1010">		return NON_TRIANGULAR;</span>
+<span class="fc" id="L1010">		return NON_TRIANGULAR;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

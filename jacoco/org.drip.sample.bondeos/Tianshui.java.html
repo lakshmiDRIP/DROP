@@ -477,18 +477,21 @@ import org.drip.state.govvie.GovvieCurve;
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L480">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L480">		EnvManager.InitEnv (</span>
+			&quot;&quot;,
+			true
+		);
 
-<span class="nc" id="L482">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+<span class="nc" id="L485">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
 			2017,
 			DateUtil.MARCH,
 			10
 		);
 
-<span class="nc" id="L488">		String strCurrency = &quot;USD&quot;;</span>
-<span class="nc" id="L489">		String strTreasuryCode = &quot;UST&quot;;</span>
+<span class="nc" id="L491">		String strCurrency = &quot;USD&quot;;</span>
+<span class="nc" id="L492">		String strTreasuryCode = &quot;UST&quot;;</span>
 
-<span class="nc" id="L491">		double[] adblTreasuryCoupon = new double[] {</span>
+<span class="nc" id="L494">		double[] adblTreasuryCoupon = new double[] {</span>
 			0.0100,
 			0.0100,
 			0.0125,
@@ -499,7 +502,7 @@ import org.drip.state.govvie.GovvieCurve;
 			0.0300
 		};
 
-<span class="nc" id="L502">		double[] adblTreasuryYield = new double[] {</span>
+<span class="nc" id="L505">		double[] adblTreasuryYield = new double[] {</span>
 			0.0083,	//  1Y
 			0.0122, //  2Y
 			0.0149, //  3Y
@@ -510,27 +513,27 @@ import org.drip.state.govvie.GovvieCurve;
 			0.0308  // 30Y
 		};
 
-<span class="nc" id="L513">		JulianDate dtEffective = DateUtil.CreateFromYMD (2014,  9,  4);</span>
-<span class="nc" id="L514">		JulianDate dtMaturity  = DateUtil.CreateFromYMD (2028,  7,  1);</span>
-<span class="nc" id="L515">		double dblCoupon = 0.05000;</span>
-<span class="nc" id="L516">		double dblCleanPrice = 1.11497;</span>
-<span class="nc" id="L517">		int iFreq = 2;</span>
-<span class="nc" id="L518">		String strCUSIP = &quot;Tianshui&quot;;</span>
-<span class="nc" id="L519">		String strDayCount = &quot;30/360&quot;;</span>
-<span class="nc" id="L520">		int[] aiExerciseDate = new int[] {</span>
-<span class="nc" id="L521">			DateUtil.CreateFromYMD (2024,  7,  1).julian(),</span>
-<span class="nc" id="L522">			DateUtil.CreateFromYMD (2025,  7,  1).julian(),</span>
-<span class="nc" id="L523">			DateUtil.CreateFromYMD (2026,  7,  1).julian(),</span>
-<span class="nc" id="L524">			DateUtil.CreateFromYMD (2027,  7,  1).julian(),</span>
+<span class="nc" id="L516">		JulianDate dtEffective = DateUtil.CreateFromYMD (2014,  9,  4);</span>
+<span class="nc" id="L517">		JulianDate dtMaturity  = DateUtil.CreateFromYMD (2028,  7,  1);</span>
+<span class="nc" id="L518">		double dblCoupon = 0.05000;</span>
+<span class="nc" id="L519">		double dblCleanPrice = 1.11497;</span>
+<span class="nc" id="L520">		int iFreq = 2;</span>
+<span class="nc" id="L521">		String strCUSIP = &quot;Tianshui&quot;;</span>
+<span class="nc" id="L522">		String strDayCount = &quot;30/360&quot;;</span>
+<span class="nc" id="L523">		int[] aiExerciseDate = new int[] {</span>
+<span class="nc" id="L524">			DateUtil.CreateFromYMD (2024,  7,  1).julian(),</span>
+<span class="nc" id="L525">			DateUtil.CreateFromYMD (2025,  7,  1).julian(),</span>
+<span class="nc" id="L526">			DateUtil.CreateFromYMD (2026,  7,  1).julian(),</span>
+<span class="nc" id="L527">			DateUtil.CreateFromYMD (2027,  7,  1).julian(),</span>
 		};
-<span class="nc" id="L526">		double[] adblExercisePrice = new double[] {</span>
+<span class="nc" id="L529">		double[] adblExercisePrice = new double[] {</span>
 			1.,
 			1.,
 			1.,
 			1.,
 		};
 
-<span class="nc" id="L533">		BondComponent bond = BondBuilder.CreateSimpleFixed (</span>
+<span class="nc" id="L536">		BondComponent bond = BondBuilder.CreateSimpleFixed (</span>
 			strCUSIP,
 			strCurrency,
 			&quot;&quot;,
@@ -543,7 +546,7 @@ import org.drip.state.govvie.GovvieCurve;
 			null
 		);
 
-<span class="nc" id="L546">		EmbeddedOptionSchedule eos = new EmbeddedOptionSchedule (</span>
+<span class="nc" id="L549">		EmbeddedOptionSchedule eos = new EmbeddedOptionSchedule (</span>
 			aiExerciseDate,
 			adblExercisePrice,
 			false,
@@ -554,18 +557,18 @@ import org.drip.state.govvie.GovvieCurve;
 			Double.NaN
 		);
 
-<span class="nc" id="L557">		bond.setEmbeddedCallSchedule (eos);</span>
+<span class="nc" id="L560">		bond.setEmbeddedCallSchedule (eos);</span>
 
-<span class="nc" id="L559">		RVMeasures (</span>
+<span class="nc" id="L562">		RVMeasures (</span>
 			bond,
 			dtSpot,
-<span class="nc" id="L562">			MarketParamsBuilder.Create (</span>
-<span class="nc" id="L563">				FundingCurve (</span>
+<span class="nc" id="L565">			MarketParamsBuilder.Create (</span>
+<span class="nc" id="L566">				FundingCurve (</span>
 					dtSpot,
 					strCurrency,
 					0.
 				),
-<span class="nc" id="L568">				GovvieCurve (</span>
+<span class="nc" id="L571">				GovvieCurve (</span>
 					dtSpot,
 					strTreasuryCode,
 					adblTreasuryCoupon,
@@ -580,7 +583,7 @@ import org.drip.state.govvie.GovvieCurve;
 			dblCleanPrice
 		);
 
-<span class="nc" id="L583">		System.out.println();</span>
-<span class="nc" id="L584">	}</span>
+<span class="nc" id="L586">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L587">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

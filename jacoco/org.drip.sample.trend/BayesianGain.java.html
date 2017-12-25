@@ -82,74 +82,74 @@ import org.drip.service.env.EnvManager;
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L85">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L85">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L87">		int iN = 50;</span>
-<span class="nc" id="L88">		double dblT = 1.;</span>
-<span class="nc" id="L89">		double dblX0 = 1.;</span>
-<span class="nc" id="L90">		double dblNu = 1.;</span>
-<span class="nc" id="L91">		double dblEta = 0.07;</span>
-<span class="nc" id="L92">		double dblSigma = 1.5;</span>
-<span class="nc" id="L93">		double dblAlphaBar = 0.7;</span>
+<span class="fc" id="L87">		int iN = 50;</span>
+<span class="fc" id="L88">		double dblT = 1.;</span>
+<span class="fc" id="L89">		double dblX0 = 1.;</span>
+<span class="fc" id="L90">		double dblNu = 1.;</span>
+<span class="fc" id="L91">		double dblEta = 0.07;</span>
+<span class="fc" id="L92">		double dblSigma = 1.5;</span>
+<span class="fc" id="L93">		double dblAlphaBar = 0.7;</span>
 
-<span class="nc" id="L95">		double dblTime = 0.;</span>
-<span class="nc" id="L96">		double dblTimeWidth = dblT / iN;</span>
-<span class="nc" id="L97">		double dblXUnconstrained = dblX0;</span>
+<span class="fc" id="L95">		double dblTime = 0.;</span>
+<span class="fc" id="L96">		double dblTimeWidth = dblT / iN;</span>
+<span class="fc" id="L97">		double dblXUnconstrained = dblX0;</span>
 
-<span class="nc" id="L99">		ParticipationRateLinear prlTemporary = ParticipationRateLinear.SlopeOnly (dblEta);</span>
+<span class="fc" id="L99">		ParticipationRateLinear prlTemporary = ParticipationRateLinear.SlopeOnly (dblEta);</span>
 
-<span class="nc" id="L101">		PriorDriftDistribution pdd = new PriorDriftDistribution (</span>
+<span class="fc" id="L101">		PriorDriftDistribution pdd = new PriorDriftDistribution (</span>
 			dblAlphaBar,
 			dblNu
 		);
 
-<span class="nc" id="L106">		double[] adblAlpha = pdd.realizedDrift (iN);</span>
+<span class="fc" id="L106">		double[] adblAlpha = pdd.realizedDrift (iN);</span>
 
-<span class="nc" id="L108">		System.out.println();</span>
+<span class="fc" id="L108">		System.out.println();</span>
 
-<span class="nc" id="L110">		System.out.println (&quot;\t|-----------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L110">		System.out.println (&quot;\t|-----------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L112">		System.out.println (&quot;\t|  L -&gt; R                                                               ||&quot;);</span>
+<span class="fc" id="L112">		System.out.println (&quot;\t|  L -&gt; R                                                               ||&quot;);</span>
 
-<span class="nc" id="L114">		System.out.println (&quot;\t|-----------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L114">		System.out.println (&quot;\t|-----------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L116">		System.out.println (&quot;\t|    - Time                                                             ||&quot;);</span>
+<span class="fc" id="L116">		System.out.println (&quot;\t|    - Time                                                             ||&quot;);</span>
 
-<span class="nc" id="L118">		System.out.println (&quot;\t|    - Realized Drift                                                   ||&quot;);</span>
+<span class="fc" id="L118">		System.out.println (&quot;\t|    - Realized Drift                                                   ||&quot;);</span>
 
-<span class="nc" id="L120">		System.out.println (&quot;\t|    - Realized Price Change                                            ||&quot;);</span>
+<span class="fc" id="L120">		System.out.println (&quot;\t|    - Realized Price Change                                            ||&quot;);</span>
 
-<span class="nc" id="L122">		System.out.println (&quot;\t|    - Estimated Drift                                                  ||&quot;);</span>
+<span class="fc" id="L122">		System.out.println (&quot;\t|    - Estimated Drift                                                  ||&quot;);</span>
 
-<span class="nc" id="L124">		System.out.println (&quot;\t|    - Unconstrained Trade Rate                                         ||&quot;);</span>
+<span class="fc" id="L124">		System.out.println (&quot;\t|    - Unconstrained Trade Rate                                         ||&quot;);</span>
 
-<span class="nc" id="L126">		System.out.println (&quot;\t|    - Unconstrained Holdings                                           ||&quot;);</span>
+<span class="fc" id="L126">		System.out.println (&quot;\t|    - Unconstrained Holdings                                           ||&quot;);</span>
 
-<span class="nc" id="L128">		System.out.println (&quot;\t|    - Transaction Cost                                                 ||&quot;);</span>
+<span class="fc" id="L128">		System.out.println (&quot;\t|    - Transaction Cost                                                 ||&quot;);</span>
 
-<span class="nc" id="L130">		System.out.println (&quot;\t|    - Transaction Cost Gain                                            ||&quot;);</span>
+<span class="fc" id="L130">		System.out.println (&quot;\t|    - Transaction Cost Gain                                            ||&quot;);</span>
 
-<span class="nc" id="L132">		System.out.println (&quot;\t|-----------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L132">		System.out.println (&quot;\t|-----------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L134" title="All 2 branches missed.">		for (int i = 0; i &lt; iN - 1; ++i) {</span>
-<span class="nc" id="L135">			dblTime = dblTime + dblTimeWidth;</span>
+<span class="fc bfc" id="L134" title="All 2 branches covered.">		for (int i = 0; i &lt; iN - 1; ++i) {</span>
+<span class="fc" id="L135">			dblTime = dblTime + dblTimeWidth;</span>
 
-<span class="nc" id="L137">			ConditionalPriceDistribution cpd = new ConditionalPriceDistribution (</span>
+<span class="fc" id="L137">			ConditionalPriceDistribution cpd = new ConditionalPriceDistribution (</span>
 				adblAlpha[i],
 				dblSigma,
 				dblTime
 			);
 
-<span class="nc" id="L143">			double dblPriceSwing = cpd.priceVolatilitySwing();</span>
+<span class="fc" id="L143">			double dblPriceSwing = cpd.priceVolatilitySwing();</span>
 
-<span class="nc" id="L145">			double dblRealizedPriceChange = adblAlpha[i] * dblTimeWidth + dblPriceSwing;</span>
+<span class="fc" id="L145">			double dblRealizedPriceChange = adblAlpha[i] * dblTimeWidth + dblPriceSwing;</span>
 
-<span class="nc" id="L147">			PriorConditionalCombiner pcc = new PriorConditionalCombiner (</span>
+<span class="fc" id="L147">			PriorConditionalCombiner pcc = new PriorConditionalCombiner (</span>
 				pdd,
 				cpd
 			);
 
-<span class="nc" id="L152">			LinearTemporaryImpact lti = LinearTemporaryImpact.Unconstrained (</span>
+<span class="fc" id="L152">			LinearTemporaryImpact lti = LinearTemporaryImpact.Unconstrained (</span>
 				dblTime,
 				dblT,
 				dblXUnconstrained,
@@ -158,23 +158,23 @@ import org.drip.service.env.EnvManager;
 				prlTemporary
 			);
 
-<span class="nc" id="L161">			double dblUnconstrainedInstantaneousTradeRate = lti.instantaneousTradeRate();</span>
+<span class="fc" id="L161">			double dblUnconstrainedInstantaneousTradeRate = lti.instantaneousTradeRate();</span>
 
-<span class="nc" id="L163">			dblXUnconstrained = dblXUnconstrained - dblUnconstrainedInstantaneousTradeRate * dblTimeWidth;</span>
+<span class="fc" id="L163">			dblXUnconstrained = dblXUnconstrained - dblUnconstrainedInstantaneousTradeRate * dblTimeWidth;</span>
 
-<span class="nc" id="L165">			System.out.println (</span>
-<span class="nc" id="L166">				&quot;\t| &quot; + FormatUtil.FormatDouble (dblTime, 1, 2, 1.) + &quot; =&gt; &quot; +</span>
-<span class="nc" id="L167">				FormatUtil.FormatDouble (adblAlpha[i], 1, 3, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L168">				FormatUtil.FormatDouble (dblRealizedPriceChange, 1, 3, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L169">				FormatUtil.FormatDouble (lti.driftExpectationEstimate(), 1, 3, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L170">				FormatUtil.FormatDouble (dblUnconstrainedInstantaneousTradeRate, 1, 3, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L171">				FormatUtil.FormatDouble (dblXUnconstrained, 1, 3, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L172">				FormatUtil.FormatDouble (lti.staticTransactionCost(), 1, 3, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L173">				FormatUtil.FormatDouble (lti.transactionCostGain(), 1, 3, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L165">			System.out.println (</span>
+<span class="fc" id="L166">				&quot;\t| &quot; + FormatUtil.FormatDouble (dblTime, 1, 2, 1.) + &quot; =&gt; &quot; +</span>
+<span class="fc" id="L167">				FormatUtil.FormatDouble (adblAlpha[i], 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L168">				FormatUtil.FormatDouble (dblRealizedPriceChange, 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L169">				FormatUtil.FormatDouble (lti.driftExpectationEstimate(), 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L170">				FormatUtil.FormatDouble (dblUnconstrainedInstantaneousTradeRate, 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L171">				FormatUtil.FormatDouble (dblXUnconstrained, 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L172">				FormatUtil.FormatDouble (lti.staticTransactionCost(), 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L173">				FormatUtil.FormatDouble (lti.transactionCostGain(), 1, 3, 1.) + &quot; ||&quot;</span>
 			);
 		}
 
-<span class="nc" id="L177">		System.out.println (&quot;\t|-----------------------------------------------------------------------||&quot;);</span>
-<span class="nc" id="L178">	}</span>
+<span class="fc" id="L177">		System.out.println (&quot;\t|-----------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L178">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

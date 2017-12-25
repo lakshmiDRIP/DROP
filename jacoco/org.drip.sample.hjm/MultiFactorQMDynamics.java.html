@@ -80,25 +80,25 @@ import org.drip.state.identifier.*;
 		final double dblFlatVol)
 		throws Exception
 	{
-<span class="nc" id="L83">		return ScenarioMarketSurfaceBuilder.CustomSplineWireSurface (</span>
+<span class="fc" id="L83">		return ScenarioMarketSurfaceBuilder.CustomSplineWireSurface (</span>
 			&quot;VIEW_TARGET_VOLATILITY_SURFACE&quot;,
 			dtStart,
 			strCurrency,
 			new double[] {
-<span class="nc" id="L88">				dtStart.julian(),</span>
-<span class="nc" id="L89">				dtStart.addYears (2).julian(),</span>
-<span class="nc" id="L90">				dtStart.addYears (4).julian(),</span>
-<span class="nc" id="L91">				dtStart.addYears (6).julian(),</span>
-<span class="nc" id="L92">				dtStart.addYears (8).julian(),</span>
-<span class="nc" id="L93">				dtStart.addYears (10).julian()</span>
+<span class="fc" id="L88">				dtStart.julian(),</span>
+<span class="fc" id="L89">				dtStart.addYears (2).julian(),</span>
+<span class="fc" id="L90">				dtStart.addYears (4).julian(),</span>
+<span class="fc" id="L91">				dtStart.addYears (6).julian(),</span>
+<span class="fc" id="L92">				dtStart.addYears (8).julian(),</span>
+<span class="fc" id="L93">				dtStart.addYears (10).julian()</span>
 			},
 			new double[] {
-<span class="nc" id="L96">				dtStart.julian(),</span>
-<span class="nc" id="L97">				dtStart.addYears (2).julian(),</span>
-<span class="nc" id="L98">				dtStart.addYears (4).julian(),</span>
-<span class="nc" id="L99">				dtStart.addYears (6).julian(),</span>
-<span class="nc" id="L100">				dtStart.addYears (8).julian(),</span>
-<span class="nc" id="L101">				dtStart.addYears (10).julian()</span>
+<span class="fc" id="L96">				dtStart.julian(),</span>
+<span class="fc" id="L97">				dtStart.addYears (2).julian(),</span>
+<span class="fc" id="L98">				dtStart.addYears (4).julian(),</span>
+<span class="fc" id="L99">				dtStart.addYears (6).julian(),</span>
+<span class="fc" id="L100">				dtStart.addYears (8).julian(),</span>
+<span class="fc" id="L101">				dtStart.addYears (10).julian()</span>
 			},
 			new double[][] {
 				{dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol},
@@ -111,7 +111,7 @@ import org.drip.state.identifier.*;
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-<span class="nc" id="L114">				SegmentInelasticDesignControl.Create (</span>
+<span class="fc" id="L114">				SegmentInelasticDesignControl.Create (</span>
 					2,
 					2
 				),
@@ -121,7 +121,7 @@ import org.drip.state.identifier.*;
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-<span class="nc" id="L124">				SegmentInelasticDesignControl.Create (</span>
+<span class="fc" id="L124">				SegmentInelasticDesignControl.Create (</span>
 					2,
 					2
 				),
@@ -141,7 +141,7 @@ import org.drip.state.identifier.*;
 		final R1ToR1 auForwardRate)
 		throws Exception
 	{
-<span class="nc" id="L144">		MultiFactorVolatility mfv = new MultiFactorVolatility (</span>
+<span class="fc" id="L144">		MultiFactorVolatility mfv = new MultiFactorVolatility (</span>
 			new MarketSurface[] {
 				mktSurfFlatVol1,
 				mktSurfFlatVol2,
@@ -171,9 +171,9 @@ import org.drip.state.identifier.*;
 			)
 		);
 
-<span class="nc" id="L174">		return new MultiFactorStateEvolver (</span>
-<span class="nc" id="L175">			FundingLabel.Standard (strCurrency),</span>
-<span class="nc" id="L176">			ForwardLabel.Create (</span>
+<span class="fc" id="L174">		return new MultiFactorStateEvolver (</span>
+<span class="fc" id="L175">			FundingLabel.Standard (strCurrency),</span>
+<span class="fc" id="L176">			ForwardLabel.Create (</span>
 				strCurrency,
 				strTenor
 			),
@@ -191,20 +191,20 @@ import org.drip.state.identifier.*;
 		final double dblInitialPrice)
 		throws Exception
 	{
-<span class="nc" id="L194">		return ShortForwardRateUpdate.Create (</span>
-<span class="nc" id="L195">			FundingLabel.Standard (strCurrency),</span>
-<span class="nc" id="L196">			ForwardLabel.Create (</span>
+<span class="fc" id="L194">		return ShortForwardRateUpdate.Create (</span>
+<span class="fc" id="L195">			FundingLabel.Standard (strCurrency),</span>
+<span class="fc" id="L196">			ForwardLabel.Create (</span>
 				strCurrency,
 				strTenor
 			),
-<span class="nc" id="L200">			dtStart.julian(),</span>
-<span class="nc" id="L201">			dtStart.julian(),</span>
-<span class="nc" id="L202">			dtStart.addTenor (strViewTenor).julian(),</span>
+<span class="fc" id="L200">			dtStart.julian(),</span>
+<span class="fc" id="L201">			dtStart.julian(),</span>
+<span class="fc" id="L202">			dtStart.addTenor (strViewTenor).julian(),</span>
 			dblInitialForwardRate,
 			0.,
 			dblInitialForwardRate,
 			0.,
-<span class="nc" id="L207">			dblInitialForwardRate + (365.25 / Helper.TenorToDays (strTenor)),</span>
+<span class="fc" id="L207">			dblInitialForwardRate + (365.25 / Helper.TenorToDays (strTenor)),</span>
 			0.,
 			dblInitialForwardRate,
 			0.,
@@ -223,122 +223,122 @@ import org.drip.state.identifier.*;
 		final ShortForwardRateUpdate qmInitial)
 		throws Exception
 	{
-<span class="nc" id="L226">		int iViewDate = dtStart.addTenor (strViewTenor).julian();</span>
+<span class="fc" id="L226">		int iViewDate = dtStart.addTenor (strViewTenor).julian();</span>
 
-<span class="nc" id="L228">		int iDayStep = 2;</span>
-<span class="nc" id="L229">		ShortForwardRateUpdate qm = qmInitial;</span>
-<span class="nc" id="L230">		JulianDate dtSpot = dtStart;</span>
+<span class="fc" id="L228">		int iDayStep = 2;</span>
+<span class="fc" id="L229">		ShortForwardRateUpdate qm = qmInitial;</span>
+<span class="fc" id="L230">		JulianDate dtSpot = dtStart;</span>
 
-<span class="nc" id="L232">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L232">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L234">		System.out.println (&quot;\t|                                                                                                                               ||&quot;);</span>
+<span class="fc" id="L234">		System.out.println (&quot;\t|                                                                                                                               ||&quot;);</span>
 
-<span class="nc" id="L236">		System.out.println (&quot;\t|    3-Factor Gaussian HJM Quantification Metric Run                                                                            ||&quot;);</span>
+<span class="fc" id="L236">		System.out.println (&quot;\t|    3-Factor Gaussian HJM Quantification Metric Run                                                                            ||&quot;);</span>
 
-<span class="nc" id="L238">		System.out.println (&quot;\t|    -----------------------------------------------                                                                            ||&quot;);</span>
+<span class="fc" id="L238">		System.out.println (&quot;\t|    -----------------------------------------------                                                                            ||&quot;);</span>
 
-<span class="nc" id="L240">		System.out.println (&quot;\t|                                                                                                                               ||&quot;);</span>
+<span class="fc" id="L240">		System.out.println (&quot;\t|                                                                                                                               ||&quot;);</span>
 
-<span class="nc" id="L242">		System.out.println (&quot;\t|        L-&gt;R:                                                                                                                  ||&quot;);</span>
+<span class="fc" id="L242">		System.out.println (&quot;\t|        L-&gt;R:                                                                                                                  ||&quot;);</span>
 
-<span class="nc" id="L244">		System.out.println (&quot;\t|            Date                                                                                                               ||&quot;);</span>
+<span class="fc" id="L244">		System.out.println (&quot;\t|            Date                                                                                                               ||&quot;);</span>
 
-<span class="nc" id="L246">		System.out.println (&quot;\t|            Instantaneous Forward Rate (%)                                                                                     ||&quot;);</span>
+<span class="fc" id="L246">		System.out.println (&quot;\t|            Instantaneous Forward Rate (%)                                                                                     ||&quot;);</span>
 
-<span class="nc" id="L248">		System.out.println (&quot;\t|            Instantaneous Forward Rate - Change (%)                                                                            ||&quot;);</span>
+<span class="fc" id="L248">		System.out.println (&quot;\t|            Instantaneous Forward Rate - Change (%)                                                                            ||&quot;);</span>
 
-<span class="nc" id="L250">		System.out.println (&quot;\t|            LIBOR Forward Rate (%)                                                                                             ||&quot;);</span>
+<span class="fc" id="L250">		System.out.println (&quot;\t|            LIBOR Forward Rate (%)                                                                                             ||&quot;);</span>
 
-<span class="nc" id="L252">		System.out.println (&quot;\t|            LIBOR Forward Rate - Change (%)                                                                                    ||&quot;);</span>
+<span class="fc" id="L252">		System.out.println (&quot;\t|            LIBOR Forward Rate - Change (%)                                                                                    ||&quot;);</span>
 
-<span class="nc" id="L254">		System.out.println (&quot;\t|            Shifted LIBOR Forward Rate (%)                                                                                     ||&quot;);</span>
+<span class="fc" id="L254">		System.out.println (&quot;\t|            Shifted LIBOR Forward Rate (%)                                                                                     ||&quot;);</span>
 
-<span class="nc" id="L256">		System.out.println (&quot;\t|            Shifted LIBOR Forward Rate - Change (%)                                                                            ||&quot;);</span>
+<span class="fc" id="L256">		System.out.println (&quot;\t|            Shifted LIBOR Forward Rate - Change (%)                                                                            ||&quot;);</span>
 
-<span class="nc" id="L258">		System.out.println (&quot;\t|            Short Rate (%)                                                                                                     ||&quot;);</span>
+<span class="fc" id="L258">		System.out.println (&quot;\t|            Short Rate (%)                                                                                                     ||&quot;);</span>
 
-<span class="nc" id="L260">		System.out.println (&quot;\t|            Short Rate - Change (%)                                                                                            ||&quot;);</span>
+<span class="fc" id="L260">		System.out.println (&quot;\t|            Short Rate - Change (%)                                                                                            ||&quot;);</span>
 
-<span class="nc" id="L262">		System.out.println (&quot;\t|            Continuously Compounded Short Rate (%)                                                                             ||&quot;);</span>
+<span class="fc" id="L262">		System.out.println (&quot;\t|            Continuously Compounded Short Rate (%)                                                                             ||&quot;);</span>
 
-<span class="nc" id="L264">		System.out.println (&quot;\t|            Continuously Compounded Short Rate - Change (%)                                                                    ||&quot;);</span>
+<span class="fc" id="L264">		System.out.println (&quot;\t|            Continuously Compounded Short Rate - Change (%)                                                                    ||&quot;);</span>
 
-<span class="nc" id="L266">		System.out.println (&quot;\t|            Price                                                                                                              ||&quot;);</span>
+<span class="fc" id="L266">		System.out.println (&quot;\t|            Price                                                                                                              ||&quot;);</span>
 
-<span class="nc" id="L268">		System.out.println (&quot;\t|            Price - Change                                                                                                     ||&quot;);</span>
+<span class="fc" id="L268">		System.out.println (&quot;\t|            Price - Change                                                                                                     ||&quot;);</span>
 
-<span class="nc" id="L270">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L270">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L272" title="All 2 branches missed.">		while (dtSpot.julian() &lt; iViewDate) {</span>
-<span class="nc" id="L273">			int iSpotDate = dtSpot.julian();</span>
+<span class="fc bfc" id="L272" title="All 2 branches covered.">		while (dtSpot.julian() &lt; iViewDate) {</span>
+<span class="fc" id="L273">			int iSpotDate = dtSpot.julian();</span>
 
-<span class="nc" id="L275">			qm = (ShortForwardRateUpdate) hjm.evolve (</span>
+<span class="fc" id="L275">			qm = (ShortForwardRateUpdate) hjm.evolve (</span>
 				iSpotDate,
 				iViewDate,
 				iDayStep,
 				qm
 			);
 
-<span class="nc" id="L282">			System.out.println (&quot;\t| [&quot; + dtSpot + &quot;] = &quot; +</span>
-<span class="nc" id="L283">				FormatUtil.FormatDouble (qm.instantaneousForwardRate(), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L284">				FormatUtil.FormatDouble (qm.instantaneousForwardRateIncrement(), 1, 2, 100.) + &quot;% || &quot; +</span>
-<span class="nc" id="L285">				FormatUtil.FormatDouble (qm.liborForwardRate(), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L286">				FormatUtil.FormatDouble (qm.liborForwardRateIncrement(), 1, 2, 100.) + &quot;% || &quot; +</span>
-<span class="nc" id="L287">				FormatUtil.FormatDouble (qm.shiftedLIBORForwardRate(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L288">				FormatUtil.FormatDouble (qm.shiftedLIBORForwardRateIncrement(), 1, 2, 100.) + &quot;% || &quot; +</span>
-<span class="nc" id="L289">				FormatUtil.FormatDouble (qm.shortRate(), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L290">				FormatUtil.FormatDouble (qm.shortRateIncrement(), 1, 2, 100.) + &quot;% || &quot; +</span>
-<span class="nc" id="L291">				FormatUtil.FormatDouble (qm.compoundedShortRate(), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L292">				FormatUtil.FormatDouble (qm.compoundedShortRateIncrement(), 1, 2, 100.) + &quot;% || &quot; +</span>
-<span class="nc" id="L293">				FormatUtil.FormatDouble (qm.price(), 2, 2, 100.) + &quot; | &quot; +</span>
-<span class="nc" id="L294">				FormatUtil.FormatDouble (qm.priceIncrement(), 1, 2, 100.) + &quot; || &quot;</span>
+<span class="fc" id="L282">			System.out.println (&quot;\t| [&quot; + dtSpot + &quot;] = &quot; +</span>
+<span class="fc" id="L283">				FormatUtil.FormatDouble (qm.instantaneousForwardRate(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L284">				FormatUtil.FormatDouble (qm.instantaneousForwardRateIncrement(), 1, 2, 100.) + &quot;% || &quot; +</span>
+<span class="fc" id="L285">				FormatUtil.FormatDouble (qm.liborForwardRate(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L286">				FormatUtil.FormatDouble (qm.liborForwardRateIncrement(), 1, 2, 100.) + &quot;% || &quot; +</span>
+<span class="fc" id="L287">				FormatUtil.FormatDouble (qm.shiftedLIBORForwardRate(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L288">				FormatUtil.FormatDouble (qm.shiftedLIBORForwardRateIncrement(), 1, 2, 100.) + &quot;% || &quot; +</span>
+<span class="fc" id="L289">				FormatUtil.FormatDouble (qm.shortRate(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L290">				FormatUtil.FormatDouble (qm.shortRateIncrement(), 1, 2, 100.) + &quot;% || &quot; +</span>
+<span class="fc" id="L291">				FormatUtil.FormatDouble (qm.compoundedShortRate(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L292">				FormatUtil.FormatDouble (qm.compoundedShortRateIncrement(), 1, 2, 100.) + &quot;% || &quot; +</span>
+<span class="fc" id="L293">				FormatUtil.FormatDouble (qm.price(), 2, 2, 100.) + &quot; | &quot; +</span>
+<span class="fc" id="L294">				FormatUtil.FormatDouble (qm.priceIncrement(), 1, 2, 100.) + &quot; || &quot;</span>
 			);
 
-<span class="nc" id="L297">			dtSpot = dtSpot.addBusDays (</span>
+<span class="fc" id="L297">			dtSpot = dtSpot.addBusDays (</span>
 				iDayStep,
 				strCurrency
 			);
-<span class="nc" id="L301">		}</span>
+<span class="fc" id="L301">		}</span>
 
-<span class="nc" id="L303">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
-<span class="nc" id="L304">	}</span>
+<span class="fc" id="L303">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L304">	}</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L310">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L310">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L312">		String strCurrency = &quot;USD&quot;;</span>
-<span class="nc" id="L313">		double dblFlatVol1 = 0.007;</span>
-<span class="nc" id="L314">		double dblFlatVol2 = 0.009;</span>
-<span class="nc" id="L315">		double dblFlatVol3 = 0.004;</span>
-<span class="nc" id="L316">		double dblFlatForwardRate = 0.05;</span>
-<span class="nc" id="L317">		double dblInitialPrice = 0.9875;</span>
-<span class="nc" id="L318">		String strViewTenor = &quot;3M&quot;;</span>
-<span class="nc" id="L319">		String strTenor = &quot;6M&quot;;</span>
+<span class="fc" id="L312">		String strCurrency = &quot;USD&quot;;</span>
+<span class="fc" id="L313">		double dblFlatVol1 = 0.007;</span>
+<span class="fc" id="L314">		double dblFlatVol2 = 0.009;</span>
+<span class="fc" id="L315">		double dblFlatVol3 = 0.004;</span>
+<span class="fc" id="L316">		double dblFlatForwardRate = 0.05;</span>
+<span class="fc" id="L317">		double dblInitialPrice = 0.9875;</span>
+<span class="fc" id="L318">		String strViewTenor = &quot;3M&quot;;</span>
+<span class="fc" id="L319">		String strTenor = &quot;6M&quot;;</span>
 
-<span class="nc" id="L321">		JulianDate dtSpot = DateUtil.Today();</span>
+<span class="fc" id="L321">		JulianDate dtSpot = DateUtil.Today();</span>
 
-<span class="nc" id="L323">		MarketSurface mktSurfFlatVol1 = FlatVolatilitySurface (</span>
+<span class="fc" id="L323">		MarketSurface mktSurfFlatVol1 = FlatVolatilitySurface (</span>
 			dtSpot,
 			strCurrency,
 			dblFlatVol1
 		);
 
-<span class="nc" id="L329">		MarketSurface mktSurfFlatVol2 = FlatVolatilitySurface (</span>
+<span class="fc" id="L329">		MarketSurface mktSurfFlatVol2 = FlatVolatilitySurface (</span>
 			dtSpot,
 			strCurrency,
 			dblFlatVol2
 		);
 
-<span class="nc" id="L335">		MarketSurface mktSurfFlatVol3 = FlatVolatilitySurface (</span>
+<span class="fc" id="L335">		MarketSurface mktSurfFlatVol3 = FlatVolatilitySurface (</span>
 			dtSpot,
 			strCurrency,
 			dblFlatVol3
 		);
 
-<span class="nc" id="L341">		MultiFactorStateEvolver hjm = HJMInstance (</span>
+<span class="fc" id="L341">		MultiFactorStateEvolver hjm = HJMInstance (</span>
 			dtSpot,
 			strCurrency,
 			strTenor,
@@ -348,7 +348,7 @@ import org.drip.state.identifier.*;
 			new FlatUnivariate (dblFlatForwardRate)
 		);
 
-<span class="nc" id="L351">		ShortForwardRateUpdate qmInitial = InitQMSnap (</span>
+<span class="fc" id="L351">		ShortForwardRateUpdate qmInitial = InitQMSnap (</span>
 			dtSpot,
 			strCurrency,
 			strViewTenor,
@@ -357,13 +357,13 @@ import org.drip.state.identifier.*;
 			dblInitialPrice
 		);
 
-<span class="nc" id="L360">		QMEvolution (</span>
+<span class="fc" id="L360">		QMEvolution (</span>
 			hjm,
 			dtSpot,
 			strCurrency,
 			strViewTenor,
 			qmInitial
 		);
-<span class="nc" id="L367">	}</span>
+<span class="fc" id="L367">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

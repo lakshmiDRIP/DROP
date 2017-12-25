@@ -75,8 +75,8 @@ public class InvestorCliffSettings {
 
 	public static final int DATE_PHASE_AFTER_MORTALITY = 2;
 
-<span class="nc" id="L78">	private double _dblMaximumAge = java.lang.Double.NaN;</span>
-<span class="nc" id="L79">	private double _dblRetirementAge = java.lang.Double.NaN;</span>
+<span class="fc" id="L78">	private double _dblMaximumAge = java.lang.Double.NaN;</span>
+<span class="fc" id="L79">	private double _dblRetirementAge = java.lang.Double.NaN;</span>
 
 	/**
 	 * InvestorCliffSettings Constructor
@@ -91,12 +91,12 @@ public class InvestorCliffSettings {
 		final double dblRetirementAge,
 		final double dblMaximumAge)
 		throws java.lang.Exception
-<span class="nc" id="L94">	{</span>
-<span class="nc bnc" id="L95" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblRetirementAge = dblRetirementAge) ||</span>
-<span class="nc bnc" id="L96" title="All 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblMaximumAge = dblMaximumAge) || _dblRetirementAge</span>
+<span class="fc" id="L94">	{</span>
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblRetirementAge = dblRetirementAge) ||</span>
+<span class="pc bpc" id="L96" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblMaximumAge = dblMaximumAge) || _dblRetirementAge</span>
 				&gt;= _dblMaximumAge)
 <span class="nc" id="L98">			throw new java.lang.Exception (&quot;InvestorCliffSettings Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L99">	}</span>
+<span class="fc" id="L99">	}</span>
 
 	/**
 	 * Retrieve the Investor Retirement Age
@@ -134,14 +134,14 @@ public class InvestorCliffSettings {
 		final double dblAge)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L137" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblAge))</span>
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblAge))</span>
 <span class="nc" id="L138">			throw new java.lang.Exception (&quot;InvestorHorizon::phase =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L140" title="All 2 branches missed.">		if (dblAge &lt;= _dblRetirementAge) return DATE_PHASE_BEFORE_RETIREMENT;</span>
+<span class="fc bfc" id="L140" title="All 2 branches covered.">		if (dblAge &lt;= _dblRetirementAge) return DATE_PHASE_BEFORE_RETIREMENT;</span>
 
-<span class="nc bnc" id="L142" title="All 2 branches missed.">		if (dblAge &lt;= _dblMaximumAge) return DATE_PHASE_AFTER_RETIREMENT;</span>
+<span class="fc bfc" id="L142" title="All 2 branches covered.">		if (dblAge &lt;= _dblMaximumAge) return DATE_PHASE_AFTER_RETIREMENT;</span>
 
-<span class="nc" id="L144">		return DATE_PHASE_AFTER_MORTALITY;</span>
+<span class="fc" id="L144">		return DATE_PHASE_AFTER_MORTALITY;</span>
 	}
 
 	/**
@@ -158,7 +158,7 @@ public class InvestorCliffSettings {
 		final double dblAge)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L161" title="All 2 branches missed.">		return DATE_PHASE_BEFORE_RETIREMENT != phase (dblAge);</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">		return DATE_PHASE_BEFORE_RETIREMENT != phase (dblAge);</span>
 	}
 
 	/**
@@ -175,7 +175,7 @@ public class InvestorCliffSettings {
 		final double dblAge)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L178" title="All 2 branches missed.">		return DATE_PHASE_AFTER_MORTALITY != phase (dblAge);</span>
+<span class="fc bfc" id="L178" title="All 2 branches covered.">		return DATE_PHASE_AFTER_MORTALITY != phase (dblAge);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

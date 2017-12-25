@@ -69,10 +69,10 @@ import org.drip.state.creator.ScenarioMarketSurfaceBuilder;
 	private static final SegmentCustomBuilderControl scbc()
 		throws Exception
 	{
-<span class="nc" id="L72">		return new SegmentCustomBuilderControl (</span>
+<span class="fc" id="L72">		return new SegmentCustomBuilderControl (</span>
 			MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 			new PolynomialFunctionSetParams (4),
-<span class="nc" id="L75">			SegmentInelasticDesignControl.Create (</span>
+<span class="fc" id="L75">			SegmentInelasticDesignControl.Create (</span>
 				2,
 				2
 			),
@@ -87,55 +87,55 @@ import org.drip.state.creator.ScenarioMarketSurfaceBuilder;
 		final String[] astrMaturityTenor)
 		throws Exception
 	{
-<span class="nc" id="L90">		System.out.println (&quot;\n\t  &quot; + volSurface.label());</span>
+<span class="fc" id="L90">		System.out.println (&quot;\n\t  &quot; + volSurface.label());</span>
 
-<span class="nc" id="L92">		System.out.println (&quot;\t|------------------------------------------------------------|&quot;);</span>
+<span class="fc" id="L92">		System.out.println (&quot;\t|------------------------------------------------------------|&quot;);</span>
 
-<span class="nc" id="L94">		System.out.print (&quot;\t|------------------------------------------------------------|\n\t|  ATM/TTE  =&gt;&quot;);</span>
+<span class="fc" id="L94">		System.out.print (&quot;\t|------------------------------------------------------------|\n\t|  ATM/TTE  =&gt;&quot;);</span>
 
-<span class="nc" id="L96">		NodeStructure[] aTSMaturityAnchor = new NodeStructure[astrMaturityTenor.length];</span>
+<span class="fc" id="L96">		NodeStructure[] aTSMaturityAnchor = new NodeStructure[astrMaturityTenor.length];</span>
 
-<span class="nc bnc" id="L98" title="All 2 branches missed.">		for (int j = 0; j &lt; astrMaturityTenor.length; ++j) {</span>
-<span class="nc" id="L99">			aTSMaturityAnchor[j] = volSurface.maturityAnchorTermStructure (astrMaturityTenor[j]);</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">		for (int j = 0; j &lt; astrMaturityTenor.length; ++j) {</span>
+<span class="fc" id="L99">			aTSMaturityAnchor[j] = volSurface.maturityAnchorTermStructure (astrMaturityTenor[j]);</span>
 
-<span class="nc" id="L101">			System.out.print (&quot;    &quot; + astrMaturityTenor[j] + &quot;  &quot;);</span>
+<span class="fc" id="L101">			System.out.print (&quot;    &quot; + astrMaturityTenor[j] + &quot;  &quot;);</span>
 		}
 
-<span class="nc" id="L104">		System.out.println (&quot;  |\n\t|------------------------------------------------------------|&quot;);</span>
+<span class="fc" id="L104">		System.out.println (&quot;  |\n\t|------------------------------------------------------------|&quot;);</span>
 
-<span class="nc bnc" id="L106" title="All 2 branches missed.">		for (int i = 0; i &lt; adblStrikeATMFactor.length; ++i) {</span>
-<span class="nc" id="L107">			System.out.print (&quot;\t|  &quot; + FormatUtil.FormatDouble (adblStrikeATMFactor[i], 1, 2, 1.) + &quot;    =&gt;&quot;);</span>
+<span class="fc bfc" id="L106" title="All 2 branches covered.">		for (int i = 0; i &lt; adblStrikeATMFactor.length; ++i) {</span>
+<span class="fc" id="L107">			System.out.print (&quot;\t|  &quot; + FormatUtil.FormatDouble (adblStrikeATMFactor[i], 1, 2, 1.) + &quot;    =&gt;&quot;);</span>
 
-<span class="nc" id="L109">			NodeStructure tsStrikeAnchor = volSurface.xAnchorTermStructure (adblStrikeATMFactor[i]);</span>
+<span class="fc" id="L109">			NodeStructure tsStrikeAnchor = volSurface.xAnchorTermStructure (adblStrikeATMFactor[i]);</span>
 
-<span class="nc bnc" id="L111" title="All 2 branches missed.">			for (int j = 0; j &lt; astrMaturityTenor.length; ++j) {</span>
-<span class="nc" id="L112">				double dblLocalVol = Math.sqrt (2. * (tsStrikeAnchor.nodeDerivative (astrMaturityTenor[j], 1) +</span>
-<span class="nc" id="L113">					0.0 * adblStrikeATMFactor[i] * aTSMaturityAnchor[j].nodeDerivative ((int) adblStrikeATMFactor[i], 1)) /</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">			for (int j = 0; j &lt; astrMaturityTenor.length; ++j) {</span>
+<span class="fc" id="L112">				double dblLocalVol = Math.sqrt (2. * (tsStrikeAnchor.nodeDerivative (astrMaturityTenor[j], 1) +</span>
+<span class="fc" id="L113">					0.0 * adblStrikeATMFactor[i] * aTSMaturityAnchor[j].nodeDerivative ((int) adblStrikeATMFactor[i], 1)) /</span>
 						(adblStrikeATMFactor[i] * adblStrikeATMFactor[i] *
-<span class="nc" id="L115">							aTSMaturityAnchor[j].nodeDerivative ((int) adblStrikeATMFactor[i], 2)));</span>
+<span class="fc" id="L115">							aTSMaturityAnchor[j].nodeDerivative ((int) adblStrikeATMFactor[i], 2)));</span>
 
-<span class="nc" id="L117">				System.out.print (&quot;  &quot; + FormatUtil.FormatDouble (dblLocalVol, 2, 2, 100.) + &quot;%&quot;);</span>
+<span class="fc" id="L117">				System.out.print (&quot;  &quot; + FormatUtil.FormatDouble (dblLocalVol, 2, 2, 100.) + &quot;%&quot;);</span>
 			}
 
-<span class="nc" id="L120">			System.out.print (&quot;  |\n&quot;);</span>
+<span class="fc" id="L120">			System.out.print (&quot;  |\n&quot;);</span>
 		}
 
-<span class="nc" id="L123">		System.out.println (&quot;\t|------------------------------------------------------------|&quot;);</span>
-<span class="nc" id="L124">	}</span>
+<span class="fc" id="L123">		System.out.println (&quot;\t|------------------------------------------------------------|&quot;);</span>
+<span class="fc" id="L124">	}</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L130">		JulianDate dtStart = DateUtil.Today();</span>
+<span class="fc" id="L130">		JulianDate dtStart = DateUtil.Today();</span>
 
-<span class="nc" id="L132">		double[] adblStrikeATMFactorCalib = new double[] {</span>
+<span class="fc" id="L132">		double[] adblStrikeATMFactorCalib = new double[] {</span>
 			0.8, 0.9, 1.0, 1.1, 1.2
 		};
-<span class="nc" id="L135">		String[] astrMaturityTenorCalib = new String[] {</span>
+<span class="fc" id="L135">		String[] astrMaturityTenorCalib = new String[] {</span>
 			&quot;12M&quot;, &quot;24M&quot;, &quot;36M&quot;, &quot;48M&quot;, &quot;60M&quot;
 		};
-<span class="nc" id="L138">		double[][] aadblVol = new double[][] {</span>
+<span class="fc" id="L138">		double[][] aadblVol = new double[][] {</span>
 			{0.171, 0.169, 0.168, 0.168, 0.168},
 			{0.159, 0.161, 0.161, 0.162, 0.164},
 			{0.138, 0.145, 0.149, 0.152, 0.154},
@@ -143,46 +143,46 @@ import org.drip.state.creator.ScenarioMarketSurfaceBuilder;
 			{0.103, 0.119, 0.128, 0.135, 0.140}
 		};
 
-<span class="nc" id="L146">		MarketSurface priceSurfCubicPoly = ScenarioMarketSurfaceBuilder.CustomWireSurface (</span>
+<span class="fc" id="L146">		MarketSurface priceSurfCubicPoly = ScenarioMarketSurfaceBuilder.CustomWireSurface (</span>
 			&quot;HESTON1993_CUBICPOLY_CALLPRICE_SURFACE&quot;,
 			dtStart,
 			&quot;USD&quot;,
 			adblStrikeATMFactorCalib,
 			astrMaturityTenorCalib,
 			aadblVol,
-<span class="nc" id="L153">			scbc(),</span>
-<span class="nc" id="L154">			scbc()</span>
+<span class="fc" id="L153">			scbc(),</span>
+<span class="fc" id="L154">			scbc()</span>
 		);
 
-<span class="nc" id="L157">		double[] adblStrikeATMFactor = new double[] {</span>
+<span class="fc" id="L157">		double[] adblStrikeATMFactor = new double[] {</span>
 			0.850, 0.925, 1.000, 1.075, 1.150
 		};
-<span class="nc" id="L160">		String[] astrMaturityTenor = new String[] {</span>
+<span class="fc" id="L160">		String[] astrMaturityTenor = new String[] {</span>
 			&quot;18M&quot;, &quot;27M&quot;, &quot;36M&quot;, &quot;45M&quot;, &quot;54M&quot;
 		};
 
-<span class="nc" id="L164">		NodeStructure[] aTSMaturityAnchor = new NodeStructure[astrMaturityTenor.length];</span>
+<span class="fc" id="L164">		NodeStructure[] aTSMaturityAnchor = new NodeStructure[astrMaturityTenor.length];</span>
 
-<span class="nc bnc" id="L166" title="All 2 branches missed.">		for (int j = 0; j &lt; astrMaturityTenor.length; ++j)</span>
-<span class="nc" id="L167">			aTSMaturityAnchor[j] = priceSurfCubicPoly.maturityAnchorTermStructure (astrMaturityTenor[j]);</span>
+<span class="fc bfc" id="L166" title="All 2 branches covered.">		for (int j = 0; j &lt; astrMaturityTenor.length; ++j)</span>
+<span class="fc" id="L167">			aTSMaturityAnchor[j] = priceSurfCubicPoly.maturityAnchorTermStructure (astrMaturityTenor[j]);</span>
 
-<span class="nc bnc" id="L169" title="All 2 branches missed.">		for (int i = 0; i &lt; adblStrikeATMFactor.length; ++i) {</span>
-<span class="nc" id="L170">			NodeStructure tsStrikeAnchor = priceSurfCubicPoly.xAnchorTermStructure (adblStrikeATMFactor[i]);</span>
+<span class="fc bfc" id="L169" title="All 2 branches covered.">		for (int i = 0; i &lt; adblStrikeATMFactor.length; ++i) {</span>
+<span class="fc" id="L170">			NodeStructure tsStrikeAnchor = priceSurfCubicPoly.xAnchorTermStructure (adblStrikeATMFactor[i]);</span>
 
-<span class="nc bnc" id="L172" title="All 2 branches missed.">			for (int j = 0; j &lt; astrMaturityTenor.length; ++j) {</span>
-<span class="nc" id="L173">				System.out.println (Math.sqrt (2. * (tsStrikeAnchor.nodeDerivative (astrMaturityTenor[j], 1) +</span>
-<span class="nc" id="L174">					0.0 * adblStrikeATMFactor[i] * aTSMaturityAnchor[j].nodeDerivative ((int) adblStrikeATMFactor[i], 1)) /</span>
+<span class="fc bfc" id="L172" title="All 2 branches covered.">			for (int j = 0; j &lt; astrMaturityTenor.length; ++j) {</span>
+<span class="fc" id="L173">				System.out.println (Math.sqrt (2. * (tsStrikeAnchor.nodeDerivative (astrMaturityTenor[j], 1) +</span>
+<span class="fc" id="L174">					0.0 * adblStrikeATMFactor[i] * aTSMaturityAnchor[j].nodeDerivative ((int) adblStrikeATMFactor[i], 1)) /</span>
 						(adblStrikeATMFactor[i] * adblStrikeATMFactor[i] *
-<span class="nc" id="L176">							aTSMaturityAnchor[j].nodeDerivative ((int) adblStrikeATMFactor[i], 2))) + &quot; | &quot; +</span>
-<span class="nc" id="L177">								aTSMaturityAnchor[j].nodeDerivative ((int) adblStrikeATMFactor[i], 2));</span>
+<span class="fc" id="L176">							aTSMaturityAnchor[j].nodeDerivative ((int) adblStrikeATMFactor[i], 2))) + &quot; | &quot; +</span>
+<span class="fc" id="L177">								aTSMaturityAnchor[j].nodeDerivative ((int) adblStrikeATMFactor[i], 2));</span>
 			}
 		}
 
-<span class="nc" id="L181">		EvaluateLocalVolSurface (</span>
+<span class="fc" id="L181">		EvaluateLocalVolSurface (</span>
 			priceSurfCubicPoly,
 			adblStrikeATMFactor,
 			astrMaturityTenor
 		);
-<span class="nc" id="L186">	}</span>
+<span class="fc" id="L186">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

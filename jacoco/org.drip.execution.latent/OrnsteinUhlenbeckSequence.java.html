@@ -71,10 +71,10 @@ package org.drip.execution.latent;
  */
 
 public class OrnsteinUhlenbeckSequence {
-<span class="nc" id="L74">	private int _iCount = 0;</span>
-<span class="nc" id="L75">	private org.drip.execution.latent.MarketState[] _aMS = null;</span>
-<span class="nc" id="L76">	private double _dblGenerationInterval = java.lang.Double.NaN;</span>
-<span class="nc" id="L77">	private org.drip.measure.process.OrnsteinUhlenbeck _ou = null;</span>
+<span class="fc" id="L74">	private int _iCount = 0;</span>
+<span class="fc" id="L75">	private org.drip.execution.latent.MarketState[] _aMS = null;</span>
+<span class="fc" id="L76">	private double _dblGenerationInterval = java.lang.Double.NaN;</span>
+<span class="fc" id="L77">	private org.drip.measure.process.OrnsteinUhlenbeck _ou = null;</span>
 
 	/**
 	 * Construct a Standard Systemic Instance of OrnsteinUhlenbeckSequence
@@ -93,37 +93,37 @@ public class OrnsteinUhlenbeckSequence {
 		final double dblInitialMarketState,
 		final int iCount)
 	{
-<span class="nc bnc" id="L96" title="All 8 branches missed.">		if (null == deou || !org.drip.quant.common.NumberUtil.IsValid (dblGenerationInterval) || 0 &gt;=</span>
+<span class="pc bpc" id="L96" title="4 of 8 branches missed.">		if (null == deou || !org.drip.quant.common.NumberUtil.IsValid (dblGenerationInterval) || 0 &gt;=</span>
 			dblGenerationInterval || 1 &gt;= iCount)
 <span class="nc" id="L98">			return null;</span>
 
-<span class="nc" id="L100">		double dblTime = 0.;</span>
-<span class="nc" id="L101">		org.drip.execution.latent.MarketStateSystemic[] aMSS = new</span>
+<span class="fc" id="L100">		double dblTime = 0.;</span>
+<span class="fc" id="L101">		org.drip.execution.latent.MarketStateSystemic[] aMSS = new</span>
 			org.drip.execution.latent.MarketStateSystemic[iCount];
 
 		try {
-<span class="nc" id="L105">			aMSS[0] = new org.drip.execution.latent.MarketStateSystemic (dblInitialMarketState);</span>
+<span class="fc" id="L105">			aMSS[0] = new org.drip.execution.latent.MarketStateSystemic (dblInitialMarketState);</span>
 
-<span class="nc" id="L107">			org.drip.measure.process.DiffusionEvolver de = new org.drip.measure.process.DiffusionEvolver</span>
+<span class="fc" id="L107">			org.drip.measure.process.DiffusionEvolver de = new org.drip.measure.process.DiffusionEvolver</span>
 				(deou);
 
-<span class="nc bnc" id="L110" title="All 2 branches missed.">			for (int i = 0; i &lt; iCount - 1; ++i) {</span>
-<span class="nc" id="L111">				org.drip.measure.realization.JumpDiffusionEdge gi = de.weinerIncrement (new</span>
-<span class="nc" id="L112">					org.drip.measure.realization.JumpDiffusionVertex (dblTime, aMSS[i].common(), 0., false),</span>
+<span class="fc bfc" id="L110" title="All 2 branches covered.">			for (int i = 0; i &lt; iCount - 1; ++i) {</span>
+<span class="fc" id="L111">				org.drip.measure.realization.JumpDiffusionEdge gi = de.weinerIncrement (new</span>
+<span class="fc" id="L112">					org.drip.measure.realization.JumpDiffusionVertex (dblTime, aMSS[i].common(), 0., false),</span>
 						dblGenerationInterval);
 
-<span class="nc" id="L115">				aMSS[i + 1] = new org.drip.execution.latent.MarketStateSystemic (aMSS[i].common() +</span>
-<span class="nc" id="L116">					gi.deterministic() + gi.diffusionStochastic());</span>
+<span class="fc" id="L115">				aMSS[i + 1] = new org.drip.execution.latent.MarketStateSystemic (aMSS[i].common() +</span>
+<span class="fc" id="L116">					gi.deterministic() + gi.diffusionStochastic());</span>
 
-<span class="nc" id="L118">				dblTime += dblGenerationInterval;</span>
+<span class="fc" id="L118">				dblTime += dblGenerationInterval;</span>
 			}
 <span class="nc" id="L120">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L121">			e.printStackTrace();</span>
 
 <span class="nc" id="L123">			return null;</span>
-<span class="nc" id="L124">		}</span>
+<span class="fc" id="L124">		}</span>
 
-<span class="nc" id="L126">		return new OrnsteinUhlenbeckSequence (deou, aMSS, dblGenerationInterval);</span>
+<span class="fc" id="L126">		return new OrnsteinUhlenbeckSequence (deou, aMSS, dblGenerationInterval);</span>
 	}
 
 	/**
@@ -179,12 +179,12 @@ public class OrnsteinUhlenbeckSequence {
 		final org.drip.measure.process.OrnsteinUhlenbeck ou,
 		final org.drip.execution.latent.MarketState[] aMS,
 		final double dblGenerationInterval)
-<span class="nc" id="L182">	{</span>
-<span class="nc" id="L183">		_ou = ou;</span>
-<span class="nc" id="L184">		_aMS = aMS;</span>
-<span class="nc" id="L185">		_iCount = aMS.length;</span>
-<span class="nc" id="L186">		_dblGenerationInterval = dblGenerationInterval;</span>
-<span class="nc" id="L187">	}</span>
+<span class="fc" id="L182">	{</span>
+<span class="fc" id="L183">		_ou = ou;</span>
+<span class="fc" id="L184">		_aMS = aMS;</span>
+<span class="fc" id="L185">		_iCount = aMS.length;</span>
+<span class="fc" id="L186">		_dblGenerationInterval = dblGenerationInterval;</span>
+<span class="fc" id="L187">	}</span>
 
 	/**
 	 * Retrieve the Total Count of States realized
@@ -216,7 +216,7 @@ public class OrnsteinUhlenbeckSequence {
 
 	public org.drip.execution.latent.MarketState[] realizedMarketState()
 	{
-<span class="nc" id="L219">		return _aMS;</span>
+<span class="fc" id="L219">		return _aMS;</span>
 	}
 
 	/**

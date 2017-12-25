@@ -115,51 +115,51 @@ package org.drip.portfolioconstruction.allocator;
 		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties ausp,
 		final int iFrontierSampleUnits)
 	{
-<span class="nc bnc" id="L118" title="All 2 branches missed.">		if (0 &gt;= iFrontierSampleUnits) return null;</span>
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">		if (0 &gt;= iFrontierSampleUnits) return null;</span>
 
-<span class="nc" id="L120">		org.drip.portfolioconstruction.allocator.OptimizationOutput opGlobalMinimumVariance =</span>
-<span class="nc" id="L121">			globalMinimumVarianceAllocate (pcp, ausp);</span>
+<span class="fc" id="L120">		org.drip.portfolioconstruction.allocator.OptimizationOutput opGlobalMinimumVariance =</span>
+<span class="fc" id="L121">			globalMinimumVarianceAllocate (pcp, ausp);</span>
 
-<span class="nc bnc" id="L123" title="All 2 branches missed.">		if (null == opGlobalMinimumVariance) return null;</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">		if (null == opGlobalMinimumVariance) return null;</span>
 
-<span class="nc" id="L125">		org.drip.portfolioconstruction.allocator.OptimizationOutput opLongOnlyMaximumReturns =</span>
-<span class="nc" id="L126">			longOnlyMaximumReturnsAllocate (pcp, ausp);</span>
+<span class="fc" id="L125">		org.drip.portfolioconstruction.allocator.OptimizationOutput opLongOnlyMaximumReturns =</span>
+<span class="fc" id="L126">			longOnlyMaximumReturnsAllocate (pcp, ausp);</span>
 
-<span class="nc bnc" id="L128" title="All 2 branches missed.">		if (null == opLongOnlyMaximumReturns) return null;</span>
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">		if (null == opLongOnlyMaximumReturns) return null;</span>
 
-<span class="nc" id="L130">		double dblReturnsGlobalMinimumVariance =</span>
-<span class="nc" id="L131">			opGlobalMinimumVariance.optimalMetrics().excessReturnsMean();</span>
+<span class="fc" id="L130">		double dblReturnsGlobalMinimumVariance =</span>
+<span class="fc" id="L131">			opGlobalMinimumVariance.optimalMetrics().excessReturnsMean();</span>
 
-<span class="nc" id="L133">		double dblReturnsLongOnlyMaximumReturns =</span>
-<span class="nc" id="L134">			opLongOnlyMaximumReturns.optimalMetrics().excessReturnsMean();</span>
+<span class="fc" id="L133">		double dblReturnsLongOnlyMaximumReturns =</span>
+<span class="fc" id="L134">			opLongOnlyMaximumReturns.optimalMetrics().excessReturnsMean();</span>
 
-<span class="nc" id="L136">		double dblReturnsConstraintGridWidth = (dblReturnsLongOnlyMaximumReturns -</span>
+<span class="fc" id="L136">		double dblReturnsConstraintGridWidth = (dblReturnsLongOnlyMaximumReturns -</span>
 			dblReturnsGlobalMinimumVariance) / iFrontierSampleUnits;
-<span class="nc" id="L138">		double dblReturnsConstraint = dblReturnsGlobalMinimumVariance + dblReturnsConstraintGridWidth;</span>
-<span class="nc" id="L139">		org.drip.portfolioconstruction.mpt.MarkovitzBullet mb = null;</span>
+<span class="fc" id="L138">		double dblReturnsConstraint = dblReturnsGlobalMinimumVariance + dblReturnsConstraintGridWidth;</span>
+<span class="fc" id="L139">		org.drip.portfolioconstruction.mpt.MarkovitzBullet mb = null;</span>
 
 		try {
-<span class="nc" id="L142">			mb = new org.drip.portfolioconstruction.mpt.MarkovitzBullet (opGlobalMinimumVariance,</span>
+<span class="fc" id="L142">			mb = new org.drip.portfolioconstruction.mpt.MarkovitzBullet (opGlobalMinimumVariance,</span>
 				opLongOnlyMaximumReturns);
 <span class="nc" id="L144">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L145">			e.printStackTrace();</span>
 
 <span class="nc" id="L147">			return null;</span>
-<span class="nc" id="L148">		}</span>
+<span class="fc" id="L148">		}</span>
 
-<span class="nc bnc" id="L150" title="All 2 branches missed.">		while (dblReturnsConstraint &lt;= dblReturnsLongOnlyMaximumReturns) {</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">		while (dblReturnsConstraint &lt;= dblReturnsLongOnlyMaximumReturns) {</span>
 			try {
-<span class="nc" id="L152">				mb.addOptimalPortfolio (allocate (constrainedPCP (pcp, dblReturnsConstraint), ausp));</span>
+<span class="fc" id="L152">				mb.addOptimalPortfolio (allocate (constrainedPCP (pcp, dblReturnsConstraint), ausp));</span>
 <span class="nc" id="L153">			} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L154">				e.printStackTrace();</span>
 
 <span class="nc" id="L156">				return null;</span>
-<span class="nc" id="L157">			}</span>
+<span class="fc" id="L157">			}</span>
 
-<span class="nc" id="L159">			dblReturnsConstraint += dblReturnsConstraintGridWidth;</span>
+<span class="fc" id="L159">			dblReturnsConstraint += dblReturnsConstraintGridWidth;</span>
 		}
 
-<span class="nc" id="L162">		return mb;</span>
+<span class="fc" id="L162">		return mb;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

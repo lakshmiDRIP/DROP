@@ -84,23 +84,26 @@ import org.drip.state.identifier.ForwardLabel;
 		final String[] astArgs)
 		throws Exception
 	{
-<span class="nc" id="L87">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L87">		EnvManager.InitEnv (</span>
+			&quot;&quot;,
+			true
+		);
 
-<span class="nc" id="L89">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+<span class="nc" id="L92">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
 			2017,
 			DateUtil.SEPTEMBER,
 			21
 		);
 
-<span class="nc" id="L95">		String[] astrDepositTenor = new String[] {</span>
+<span class="nc" id="L98">		String[] astrDepositTenor = new String[] {</span>
 			&quot;2D&quot;
 		};
 
-<span class="nc" id="L99">		double[] adblDepositQuote = new double[] {</span>
+<span class="nc" id="L102">		double[] adblDepositQuote = new double[] {</span>
 			0.012 // 2D
 		};
 
-<span class="nc" id="L103">		double[] adblFuturesQuote = new double[] {</span>
+<span class="nc" id="L106">		double[] adblFuturesQuote = new double[] {</span>
 			0.01495,
 			0.0159,
 			0.01675,
@@ -109,7 +112,7 @@ import org.drip.state.identifier.ForwardLabel;
 			0.01875
 		};
 
-<span class="nc" id="L112">		String[] astrFixFloatTenor = new String[] {</span>
+<span class="nc" id="L115">		String[] astrFixFloatTenor = new String[] {</span>
 			&quot;02Y&quot;,
 			&quot;03Y&quot;,
 			&quot;04Y&quot;,
@@ -129,7 +132,7 @@ import org.drip.state.identifier.ForwardLabel;
 			&quot;50Y&quot;
 		};
 
-<span class="nc" id="L132">		String[] astrGovvieTenor = new String[] {</span>
+<span class="nc" id="L135">		String[] astrGovvieTenor = new String[] {</span>
 			&quot;1M&quot;,
 			&quot;3M&quot;,
 			&quot;6M&quot;,
@@ -144,7 +147,7 @@ import org.drip.state.identifier.ForwardLabel;
 			&quot;30Y&quot;
 		};
 
-<span class="nc" id="L147">		double[] adblFixFloatQuote = new double[] {</span>
+<span class="nc" id="L150">		double[] adblFixFloatQuote = new double[] {</span>
 			0.017013,
 			0.018047,
 			0.018867,
@@ -164,7 +167,7 @@ import org.drip.state.identifier.ForwardLabel;
 			0.024462
 		};
 
-<span class="nc" id="L167">		double[] adblGovvieYield = new double[] {</span>
+<span class="nc" id="L170">		double[] adblGovvieYield = new double[] {</span>
 			0.0099,
 			0.0104,
 			0.0119,
@@ -179,7 +182,7 @@ import org.drip.state.identifier.ForwardLabel;
 			0.028
 		};
 
-<span class="nc" id="L182">		String[] astrCreditTenor = new String[] {</span>
+<span class="nc" id="L185">		String[] astrCreditTenor = new String[] {</span>
 			&quot;06M&quot;,
 			&quot;01Y&quot;,
 			&quot;02Y&quot;,
@@ -190,7 +193,7 @@ import org.drip.state.identifier.ForwardLabel;
 			&quot;10Y&quot;
 		};
 
-<span class="nc" id="L193">		double[] adblCreditQuote = new double[] {</span>
+<span class="nc" id="L196">		double[] adblCreditQuote = new double[] {</span>
 			 60.,	//  6M
 			 68.,	//  1Y
 			 88.,	//  2Y
@@ -201,31 +204,31 @@ import org.drip.state.identifier.ForwardLabel;
 			188.	// 10Y
 		};
 
-<span class="nc" id="L204">		double dblFX = 1;</span>
-<span class="nc" id="L205">		int iSettleLag = 3;</span>
-<span class="nc" id="L206">		double dblSpread = 0.01;</span>
-<span class="nc" id="L207">		String strCurrency = &quot;USD&quot;;</span>
-<span class="nc" id="L208">		double dblCleanPrice = 0.91734;</span>
-<span class="nc" id="L209">		double dblIssuePrice = 1.0;</span>
-<span class="nc" id="L210">		double dblSpreadBump = 20.;</span>
-<span class="nc" id="L211">		String strTreasuryCode = &quot;UST&quot;;</span>
-<span class="nc" id="L212">		double dblIssueAmount = 7.50e8;</span>
-<span class="nc" id="L213">		double dblSpreadDurationMultiplier = 5.;</span>
-<span class="nc" id="L214">		double dblResetRate = 0.0232 - dblSpread;</span>
+<span class="nc" id="L207">		double dblFX = 1;</span>
+<span class="nc" id="L208">		int iSettleLag = 3;</span>
+<span class="nc" id="L209">		double dblSpread = 0.01;</span>
+<span class="nc" id="L210">		String strCurrency = &quot;USD&quot;;</span>
+<span class="nc" id="L211">		double dblCleanPrice = 0.91734;</span>
+<span class="nc" id="L212">		double dblIssuePrice = 1.0;</span>
+<span class="nc" id="L213">		double dblSpreadBump = 20.;</span>
+<span class="nc" id="L214">		String strTreasuryCode = &quot;UST&quot;;</span>
+<span class="nc" id="L215">		double dblIssueAmount = 7.50e8;</span>
+<span class="nc" id="L216">		double dblSpreadDurationMultiplier = 5.;</span>
+<span class="nc" id="L217">		double dblResetRate = 0.0232 - dblSpread;</span>
 
-<span class="nc" id="L216">		JulianDate dtEffective = DateUtil.CreateFromYMD (</span>
+<span class="nc" id="L219">		JulianDate dtEffective = DateUtil.CreateFromYMD (</span>
 			2007,
 			4,
 			30
 		);
 
-<span class="nc" id="L222">		JulianDate dtMaturity = DateUtil.CreateFromYMD (</span>
+<span class="nc" id="L225">		JulianDate dtMaturity = DateUtil.CreateFromYMD (</span>
 			2047,
 			6,
 			15
 		);
 
-<span class="nc" id="L228">		BondComponent bond = BondBuilder.CreateSimpleFloater (</span>
+<span class="nc" id="L231">		BondComponent bond = BondBuilder.CreateSimpleFloater (</span>
 			&quot;Muzaffarpur&quot;,
 			&quot;USD&quot;,
 			&quot;USD-3M&quot;,
@@ -239,13 +242,13 @@ import org.drip.state.identifier.ForwardLabel;
 			null
 		);
 
-<span class="nc" id="L242">		SetEOS (</span>
+<span class="nc" id="L245">		SetEOS (</span>
 			bond,
-<span class="nc" id="L244">			EmbeddedOptionSchedule.FromAmerican (</span>
-<span class="nc" id="L245">				dtSpot.julian(),</span>
+<span class="nc" id="L247">			EmbeddedOptionSchedule.FromAmerican (</span>
+<span class="nc" id="L248">				dtSpot.julian(),</span>
 				new int[] {
-<span class="nc" id="L247">					DateUtil.CreateFromYMD (2012, 06, 15).julian(),</span>
-<span class="nc" id="L248">					DateUtil.CreateFromYMD (2047, 06, 15).julian(),</span>
+<span class="nc" id="L250">					DateUtil.CreateFromYMD (2012, 06, 15).julian(),</span>
+<span class="nc" id="L251">					DateUtil.CreateFromYMD (2047, 06, 15).julian(),</span>
 				},
 				new double[] {
 					1.00000,
@@ -262,12 +265,12 @@ import org.drip.state.identifier.ForwardLabel;
 			null
 		);
 
-<span class="nc" id="L265">		CompositeFloatingPeriod cfp = (CompositeFloatingPeriod) bond.stream().containingPeriod (dtSpot.julian());</span>
+<span class="nc" id="L268">		CompositeFloatingPeriod cfp = (CompositeFloatingPeriod) bond.stream().containingPeriod (dtSpot.julian());</span>
 
-<span class="nc" id="L267">		int iResetDate = ((org.drip.analytics.cashflow.ComposableUnitFloatingPeriod) (cfp.periods().get</span>
-<span class="nc" id="L268">			(0))).referenceIndexPeriod().fixingDate();</span>
+<span class="nc" id="L270">		int iResetDate = ((org.drip.analytics.cashflow.ComposableUnitFloatingPeriod) (cfp.periods().get</span>
+<span class="nc" id="L271">			(0))).referenceIndexPeriod().fixingDate();</span>
 
-<span class="nc" id="L270">		MergedDiscountForwardCurve mdfc = LatentMarketStateBuilder.SmoothFundingCurve (</span>
+<span class="nc" id="L273">		MergedDiscountForwardCurve mdfc = LatentMarketStateBuilder.SmoothFundingCurve (</span>
 			dtSpot,
 			strCurrency,
 			astrDepositTenor,
@@ -280,7 +283,7 @@ import org.drip.state.identifier.ForwardLabel;
 			&quot;SwapRate&quot;
 		);
 
-<span class="nc" id="L283">		BondReplicator abr = BondReplicator.Standard (</span>
+<span class="nc" id="L286">		BondReplicator abr = BondReplicator.Standard (</span>
 			dblCleanPrice,
 			dblIssuePrice,
 			dblIssueAmount,
@@ -303,121 +306,123 @@ import org.drip.state.identifier.ForwardLabel;
 			bond
 		);
 
-<span class="nc" id="L306">		BondReplicationRun abrr = abr.generateRun();</span>
+<span class="nc" id="L309">		BondReplicationRun abrr = abr.generateRun();</span>
 
-<span class="nc" id="L308">		System.out.println (abrr.display());</span>
+<span class="nc" id="L311">		System.out.println (abrr.display());</span>
 
-<span class="nc" id="L310">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L313">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L312">		System.out.println();</span>
+<span class="nc" id="L315">		System.out.println();</span>
 
-<span class="nc" id="L314">		CurveSurfaceQuoteContainer csqc = abr.creditBaseCSQC();</span>
+<span class="nc" id="L317">		CurveSurfaceQuoteContainer csqc = abr.creditBaseCSQC();</span>
 
-<span class="nc" id="L316">		ForwardLabel fl = bond.floaterSetting().fri();</span>
+<span class="nc" id="L319">		ForwardLabel fl = bond.floaterSetting().fri();</span>
 
-<span class="nc" id="L318">		csqc.setFixing (iResetDate, fl, dblResetRate);</span>
+<span class="nc" id="L321">		csqc.setFixing (iResetDate, fl, dblResetRate);</span>
 
-<span class="nc" id="L320">		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());</span>
+<span class="nc" id="L323">		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());</span>
 
-<span class="nc" id="L322">		double dblYield = bond.yieldFromPrice (</span>
-<span class="nc" id="L323">			ValuationParams.Spot (dtSpot.julian()),</span>
+<span class="nc" id="L325">		double dblYield = bond.yieldFromPrice (</span>
+<span class="nc" id="L326">			ValuationParams.Spot (dtSpot.julian()),</span>
 			csqc,
 			null,
 			dblCleanPrice
 		);
 
-<span class="nc" id="L329">		System.out.println (&quot;Price In  : &quot; + dblCleanPrice);</span>
+<span class="nc" id="L332">		System.out.println (&quot;Price In  : &quot; + dblCleanPrice);</span>
 
-<span class="nc" id="L331">		System.out.println (&quot;Yield Out : &quot; + dblYield);</span>
+<span class="nc" id="L334">		System.out.println (&quot;Yield Out : &quot; + dblYield);</span>
 
-<span class="nc" id="L333">		System.out.println (&quot;Price Out : &quot; +</span>
-<span class="nc" id="L334">			bond.priceFromYield (</span>
-<span class="nc" id="L335">				ValuationParams.Spot (dtSpot.julian()),</span>
+<span class="nc" id="L336">		System.out.println (&quot;Price Out : &quot; +</span>
+<span class="nc" id="L337">			bond.priceFromYield (</span>
+<span class="nc" id="L338">				ValuationParams.Spot (dtSpot.julian()),</span>
 				csqc,
 				null,
 				dblYield
 			)
 		);
 
-<span class="nc" id="L342">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L345">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L344">		System.out.println (&quot;\t||                                            PERIOD LABELS AND CURVE FACTORS                                           ||&quot;);</span>
+<span class="nc" id="L347">		System.out.println (&quot;\t||                                            PERIOD LABELS AND CURVE FACTORS                                           ||&quot;);</span>
 
-<span class="nc" id="L346">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L349">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L348">		System.out.println (&quot;\t||   L -&gt; R:                                                                                                            ||&quot;);</span>
+<span class="nc" id="L351">		System.out.println (&quot;\t||   L -&gt; R:                                                                                                            ||&quot;);</span>
 
-<span class="nc" id="L350">		System.out.println (&quot;\t||           - Period Start Date                                                                                        ||&quot;);</span>
+<span class="nc" id="L353">		System.out.println (&quot;\t||           - Period Start Date                                                                                        ||&quot;);</span>
 
-<span class="nc" id="L352">		System.out.println (&quot;\t||           - Period End Date                                                                                          ||&quot;);</span>
+<span class="nc" id="L355">		System.out.println (&quot;\t||           - Period End Date                                                                                          ||&quot;);</span>
 
-<span class="nc" id="L354">		System.out.println (&quot;\t||           - Period Credit Label                                                                                      ||&quot;);</span>
+<span class="nc" id="L357">		System.out.println (&quot;\t||           - Period Credit Label                                                                                      ||&quot;);</span>
 
-<span class="nc" id="L356">		System.out.println (&quot;\t||           - Period Funding Label                                                                                     ||&quot;);</span>
+<span class="nc" id="L359">		System.out.println (&quot;\t||           - Period Funding Label                                                                                     ||&quot;);</span>
 
-<span class="nc" id="L358">		System.out.println (&quot;\t||           - Period Coupon Rate (%)                                                                                   ||&quot;);</span>
+<span class="nc" id="L361">		System.out.println (&quot;\t||           - Period Coupon Rate (%)                                                                                   ||&quot;);</span>
 
-<span class="nc" id="L360">		System.out.println (&quot;\t||           - Period Coupon Year Fraction                                                                              ||&quot;);</span>
+<span class="nc" id="L363">		System.out.println (&quot;\t||           - Period Coupon Year Fraction                                                                              ||&quot;);</span>
 
-<span class="nc" id="L362">		System.out.println (&quot;\t||           - Period Coupon Amount                                                                                     ||&quot;);</span>
+<span class="nc" id="L365">		System.out.println (&quot;\t||           - Period Coupon Amount                                                                                     ||&quot;);</span>
 
-<span class="nc" id="L364">		System.out.println (&quot;\t||           - Period Principal Amount                                                                                  ||&quot;);</span>
+<span class="nc" id="L367">		System.out.println (&quot;\t||           - Period Principal Amount                                                                                  ||&quot;);</span>
 
-<span class="nc" id="L366">		System.out.println (&quot;\t||           - Period Discount Factor                                                                                   ||&quot;);</span>
+<span class="nc" id="L369">		System.out.println (&quot;\t||           - Period Discount Factor                                                                                   ||&quot;);</span>
 
-<span class="nc" id="L368">		System.out.println (&quot;\t||           - Period Survival Probability                                                                              ||&quot;);</span>
+<span class="nc" id="L371">		System.out.println (&quot;\t||           - Period Survival Probability                                                                              ||&quot;);</span>
 
-<span class="nc" id="L370">		System.out.println (&quot;\t||           - Period Recovery                                                                                          ||&quot;);</span>
+<span class="nc" id="L373">		System.out.println (&quot;\t||           - Period Recovery                                                                                          ||&quot;);</span>
 
-<span class="nc" id="L372">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L375">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L374" title="All 2 branches missed.">		for (CompositePeriod p : bond.couponPeriods()) {</span>
-<span class="nc" id="L375">			int iEndDate = p.endDate();</span>
+<span class="nc bnc" id="L377" title="All 2 branches missed.">		for (CompositePeriod p : bond.couponPeriods()) {</span>
+<span class="nc" id="L378">			int iEndDate = p.endDate();</span>
 
-<span class="nc" id="L377">			int iPayDate = p.payDate();</span>
+<span class="nc" id="L380">			int iPayDate = p.payDate();</span>
 
-<span class="nc" id="L379">			int iStartDate = p.startDate();</span>
+<span class="nc" id="L382">			int iStartDate = p.startDate();</span>
 
-<span class="nc" id="L381">			double dblCouponRate = bond.couponMetrics (</span>
+<span class="nc" id="L384">			double dblCouponRate = bond.couponMetrics (</span>
 				iPayDate,
 				valParams,
 				csqc
-<span class="nc" id="L385">			).rate();</span>
+<span class="nc" id="L388">			).rate();</span>
 
-<span class="nc" id="L387">			double dblCouponDCF = p.couponDCF();</span>
+<span class="nc" id="L390">			double dblCouponDCF = p.couponDCF();</span>
 
-<span class="nc" id="L389">			System.out.println (&quot;\t|| &quot; +</span>
-<span class="nc" id="L390">				DateUtil.YYYYMMDD (iStartDate) + &quot; =&gt; &quot; +</span>
-<span class="nc" id="L391">				DateUtil.YYYYMMDD (iEndDate) + &quot; | ? | &quot; +</span>
-<span class="nc" id="L392">				p.fundingLabel().fullyQualifiedName() + &quot; | &quot; +</span>
-<span class="nc" id="L393">				p.forwardLabel().fullyQualifiedName() + &quot; | &quot; +</span>
-<span class="nc" id="L394">				FormatUtil.FormatDouble (dblCouponRate, 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L395">				FormatUtil.FormatDouble (dblCouponDCF, 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L396">				FormatUtil.FormatDouble (dblCouponRate * dblCouponDCF * p.notional (iEndDate) * p.couponFactor (iEndDate), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L397">				FormatUtil.FormatDouble (p.notional (iStartDate) - p.notional (iEndDate), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L398">				FormatUtil.FormatDouble (p.df (csqc), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L399">				FormatUtil.FormatDouble (p.survival (csqc), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L400">				FormatUtil.FormatDouble (p.recovery (csqc), 2, 0, 100.) + &quot;% ||&quot;</span>
+<span class="nc" id="L392">			System.out.println (&quot;\t|| &quot; +</span>
+<span class="nc" id="L393">				DateUtil.YYYYMMDD (iStartDate) + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L394">				DateUtil.YYYYMMDD (iEndDate) + &quot; | ? | &quot; +</span>
+<span class="nc" id="L395">				p.fundingLabel().fullyQualifiedName() + &quot; | &quot; +</span>
+<span class="nc" id="L396">				p.forwardLabel().fullyQualifiedName() + &quot; | &quot; +</span>
+<span class="nc" id="L397">				FormatUtil.FormatDouble (dblCouponRate, 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="nc" id="L398">				FormatUtil.FormatDouble (dblCouponDCF, 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L399">				FormatUtil.FormatDouble (dblCouponRate * dblCouponDCF * p.notional (iEndDate) * p.couponFactor (iEndDate), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L400">				FormatUtil.FormatDouble (p.notional (iStartDate) - p.notional (iEndDate), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L401">				FormatUtil.FormatDouble (p.df (csqc), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L402">				FormatUtil.FormatDouble (p.survival (csqc), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L403">				FormatUtil.FormatDouble (p.recovery (csqc), 2, 0, 100.) + &quot;% ||&quot;</span>
 			);
-<span class="nc" id="L402">		}</span>
+<span class="nc" id="L405">		}</span>
 
-<span class="nc" id="L404">		System.out.println (&quot;\t|| &quot; +</span>
-<span class="nc" id="L405">			DateUtil.YYYYMMDD (dtEffective.julian()) + &quot; =&gt; &quot; +</span>
-<span class="nc" id="L406">			DateUtil.YYYYMMDD (dtMaturity.julian()) + &quot; | ? | &quot; +</span>
-<span class="nc" id="L407">			bond.fundingLabel().fullyQualifiedName() + &quot; | &quot; +</span>
-<span class="nc" id="L408">			bond.forwardLabel().get (bond.name()).fullyQualifiedName() + &quot; | &quot; +</span>
-<span class="nc" id="L409">			FormatUtil.FormatDouble (0., 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L410">			FormatUtil.FormatDouble (0., 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L411">			FormatUtil.FormatDouble (0., 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L412">			FormatUtil.FormatDouble (bond.notional (dtMaturity.julian()), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L413">			FormatUtil.FormatDouble (mdfc.df (dtMaturity), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L414">			FormatUtil.FormatDouble (1., 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L415">			FormatUtil.FormatDouble (1., 2, 0, 100.) + &quot;% ||&quot;</span>
+<span class="nc" id="L407">		System.out.println (&quot;\t|| &quot; +</span>
+<span class="nc" id="L408">			DateUtil.YYYYMMDD (dtEffective.julian()) + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L409">			DateUtil.YYYYMMDD (dtMaturity.julian()) + &quot; | ? | &quot; +</span>
+<span class="nc" id="L410">			bond.fundingLabel().fullyQualifiedName() + &quot; | &quot; +</span>
+<span class="nc" id="L411">			bond.forwardLabel().get (bond.name()).fullyQualifiedName() + &quot; | &quot; +</span>
+<span class="nc" id="L412">			FormatUtil.FormatDouble (0., 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="nc" id="L413">			FormatUtil.FormatDouble (0., 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L414">			FormatUtil.FormatDouble (0., 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L415">			FormatUtil.FormatDouble (bond.notional (dtMaturity.julian()), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L416">			FormatUtil.FormatDouble (mdfc.df (dtMaturity), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L417">			FormatUtil.FormatDouble (1., 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L418">			FormatUtil.FormatDouble (1., 2, 0, 100.) + &quot;% ||&quot;</span>
 		);
 
-<span class="nc" id="L418">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L421">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L420">		System.out.println();</span>
-<span class="nc" id="L421">	}</span>
+<span class="nc" id="L423">		System.out.println();</span>
+
+<span class="nc" id="L425">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L426">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

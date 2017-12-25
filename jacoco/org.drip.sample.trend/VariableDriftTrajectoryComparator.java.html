@@ -82,123 +82,123 @@ import org.drip.service.env.EnvManager;
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L85">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L85">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L87">		int iN = 50;</span>
-<span class="nc" id="L88">		double dblT = 1.;</span>
-<span class="nc" id="L89">		double dblX0 = 1.;</span>
-<span class="nc" id="L90">		double dblNu = 1.;</span>
-<span class="nc" id="L91">		double dblEta = 0.07;</span>
-<span class="nc" id="L92">		double dblSigma = 1.5;</span>
-<span class="nc" id="L93">		double dblAlphaBarLow = 0.0;</span>
-<span class="nc" id="L94">		double dblAlphaBarMid = 0.7;</span>
-<span class="nc" id="L95">		double dblAlphaBarHigh = 1.5;</span>
+<span class="fc" id="L87">		int iN = 50;</span>
+<span class="fc" id="L88">		double dblT = 1.;</span>
+<span class="fc" id="L89">		double dblX0 = 1.;</span>
+<span class="fc" id="L90">		double dblNu = 1.;</span>
+<span class="fc" id="L91">		double dblEta = 0.07;</span>
+<span class="fc" id="L92">		double dblSigma = 1.5;</span>
+<span class="fc" id="L93">		double dblAlphaBarLow = 0.0;</span>
+<span class="fc" id="L94">		double dblAlphaBarMid = 0.7;</span>
+<span class="fc" id="L95">		double dblAlphaBarHigh = 1.5;</span>
 
-<span class="nc" id="L97">		double dblTime = 0.;</span>
-<span class="nc" id="L98">		double dblTimeWidth = dblT / iN;</span>
-<span class="nc" id="L99">		double dblXUnconstrained = dblX0;</span>
-<span class="nc" id="L100">		double dblXConstrainedLow = dblX0;</span>
-<span class="nc" id="L101">		double dblXConstrainedMid = dblX0;</span>
-<span class="nc" id="L102">		double dblXConstrainedHigh = dblX0;</span>
+<span class="fc" id="L97">		double dblTime = 0.;</span>
+<span class="fc" id="L98">		double dblTimeWidth = dblT / iN;</span>
+<span class="fc" id="L99">		double dblXUnconstrained = dblX0;</span>
+<span class="fc" id="L100">		double dblXConstrainedLow = dblX0;</span>
+<span class="fc" id="L101">		double dblXConstrainedMid = dblX0;</span>
+<span class="fc" id="L102">		double dblXConstrainedHigh = dblX0;</span>
 
-<span class="nc" id="L104">		ParticipationRateLinear prlTemporary = ParticipationRateLinear.SlopeOnly (dblEta);</span>
+<span class="fc" id="L104">		ParticipationRateLinear prlTemporary = ParticipationRateLinear.SlopeOnly (dblEta);</span>
 
-<span class="nc" id="L106">		PriorDriftDistribution pddLow = new PriorDriftDistribution (</span>
+<span class="fc" id="L106">		PriorDriftDistribution pddLow = new PriorDriftDistribution (</span>
 			dblAlphaBarLow,
 			dblNu
 		);
 
-<span class="nc" id="L111">		PriorDriftDistribution pddMid = new PriorDriftDistribution (</span>
+<span class="fc" id="L111">		PriorDriftDistribution pddMid = new PriorDriftDistribution (</span>
 			dblAlphaBarMid,
 			dblNu
 		);
 
-<span class="nc" id="L116">		PriorDriftDistribution pddHigh = new PriorDriftDistribution (</span>
+<span class="fc" id="L116">		PriorDriftDistribution pddHigh = new PriorDriftDistribution (</span>
 			dblAlphaBarHigh,
 			dblNu
 		);
 
-<span class="nc" id="L121">		double[] adblAlphaLow = pddLow.realizedDrift (iN);</span>
+<span class="fc" id="L121">		double[] adblAlphaLow = pddLow.realizedDrift (iN);</span>
 
-<span class="nc" id="L123">		double[] adblAlphaMid = pddMid.realizedDrift (iN);</span>
+<span class="fc" id="L123">		double[] adblAlphaMid = pddMid.realizedDrift (iN);</span>
 
-<span class="nc" id="L125">		double[] adblAlphaHigh = pddHigh.realizedDrift (iN);</span>
+<span class="fc" id="L125">		double[] adblAlphaHigh = pddHigh.realizedDrift (iN);</span>
 
-<span class="nc" id="L127">		System.out.println();</span>
+<span class="fc" id="L127">		System.out.println();</span>
 
-<span class="nc" id="L129">		System.out.println (&quot;\t|--------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L129">		System.out.println (&quot;\t|--------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L131">		System.out.println (&quot;\t|  L -&gt; R                                                                        ||&quot;);</span>
+<span class="fc" id="L131">		System.out.println (&quot;\t|  L -&gt; R                                                                        ||&quot;);</span>
 
-<span class="nc" id="L133">		System.out.println (&quot;\t|--------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L133">		System.out.println (&quot;\t|--------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L135">		System.out.println (&quot;\t|    - Time                                                                      ||&quot;);</span>
+<span class="fc" id="L135">		System.out.println (&quot;\t|    - Time                                                                      ||&quot;);</span>
 
-<span class="nc" id="L137">		System.out.println (&quot;\t|    - Constrained Trade Rate Low Drift                                          ||&quot;);</span>
+<span class="fc" id="L137">		System.out.println (&quot;\t|    - Constrained Trade Rate Low Drift                                          ||&quot;);</span>
 
-<span class="nc" id="L139">		System.out.println (&quot;\t|    - Constrained Trade Rate Mid Drift                                          ||&quot;);</span>
+<span class="fc" id="L139">		System.out.println (&quot;\t|    - Constrained Trade Rate Mid Drift                                          ||&quot;);</span>
 
-<span class="nc" id="L141">		System.out.println (&quot;\t|    - Constrained Trade Rate High Drift                                         ||&quot;);</span>
+<span class="fc" id="L141">		System.out.println (&quot;\t|    - Constrained Trade Rate High Drift                                         ||&quot;);</span>
 
-<span class="nc" id="L143">		System.out.println (&quot;\t|    - Unconstrained Trade Rate                                                  ||&quot;);</span>
+<span class="fc" id="L143">		System.out.println (&quot;\t|    - Unconstrained Trade Rate                                                  ||&quot;);</span>
 
-<span class="nc" id="L145">		System.out.println (&quot;\t|    - Constrained Holdings Low Drift                                            ||&quot;);</span>
+<span class="fc" id="L145">		System.out.println (&quot;\t|    - Constrained Holdings Low Drift                                            ||&quot;);</span>
 
-<span class="nc" id="L147">		System.out.println (&quot;\t|    - Constrained Holdings Mid Drift                                            ||&quot;);</span>
+<span class="fc" id="L147">		System.out.println (&quot;\t|    - Constrained Holdings Mid Drift                                            ||&quot;);</span>
 
-<span class="nc" id="L149">		System.out.println (&quot;\t|    - Constrained Holdings High Drift                                           ||&quot;);</span>
+<span class="fc" id="L149">		System.out.println (&quot;\t|    - Constrained Holdings High Drift                                           ||&quot;);</span>
 
-<span class="nc" id="L151">		System.out.println (&quot;\t|    - Unconstrained Holdings                                                    ||&quot;);</span>
+<span class="fc" id="L151">		System.out.println (&quot;\t|    - Unconstrained Holdings                                                    ||&quot;);</span>
 
-<span class="nc" id="L153">		System.out.println (&quot;\t|--------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L153">		System.out.println (&quot;\t|--------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L155" title="All 2 branches missed.">		for (int i = 0; i &lt; iN - 1; ++i) {</span>
-<span class="nc" id="L156">			dblTime = dblTime + dblTimeWidth;</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">		for (int i = 0; i &lt; iN - 1; ++i) {</span>
+<span class="fc" id="L156">			dblTime = dblTime + dblTimeWidth;</span>
 
-<span class="nc" id="L158">			ConditionalPriceDistribution cpdLow = new ConditionalPriceDistribution (</span>
+<span class="fc" id="L158">			ConditionalPriceDistribution cpdLow = new ConditionalPriceDistribution (</span>
 				adblAlphaLow[i],
 				dblSigma,
 				dblTime
 			);
 
-<span class="nc" id="L164">			ConditionalPriceDistribution cpdMid = new ConditionalPriceDistribution (</span>
+<span class="fc" id="L164">			ConditionalPriceDistribution cpdMid = new ConditionalPriceDistribution (</span>
 				adblAlphaMid[i],
 				dblSigma,
 				dblTime
 			);
 
-<span class="nc" id="L170">			ConditionalPriceDistribution cpdHigh = new ConditionalPriceDistribution (</span>
+<span class="fc" id="L170">			ConditionalPriceDistribution cpdHigh = new ConditionalPriceDistribution (</span>
 				adblAlphaHigh[i],
 				dblSigma,
 				dblTime
 			);
 
-<span class="nc" id="L176">			double dblPriceSwingLow = cpdLow.priceVolatilitySwing();</span>
+<span class="fc" id="L176">			double dblPriceSwingLow = cpdLow.priceVolatilitySwing();</span>
 
-<span class="nc" id="L178">			double dblPriceSwingMid = cpdMid.priceVolatilitySwing();</span>
+<span class="fc" id="L178">			double dblPriceSwingMid = cpdMid.priceVolatilitySwing();</span>
 
-<span class="nc" id="L180">			double dblPriceSwingHigh = cpdHigh.priceVolatilitySwing();</span>
+<span class="fc" id="L180">			double dblPriceSwingHigh = cpdHigh.priceVolatilitySwing();</span>
 
-<span class="nc" id="L182">			double dblRealizedPriceChangeLow = adblAlphaLow[i] * dblTimeWidth + dblPriceSwingLow;</span>
-<span class="nc" id="L183">			double dblRealizedPriceChangeMid = adblAlphaMid[i] * dblTimeWidth + dblPriceSwingMid;</span>
-<span class="nc" id="L184">			double dblRealizedPriceChangeHigh = adblAlphaHigh[i] * dblTimeWidth + dblPriceSwingHigh;</span>
+<span class="fc" id="L182">			double dblRealizedPriceChangeLow = adblAlphaLow[i] * dblTimeWidth + dblPriceSwingLow;</span>
+<span class="fc" id="L183">			double dblRealizedPriceChangeMid = adblAlphaMid[i] * dblTimeWidth + dblPriceSwingMid;</span>
+<span class="fc" id="L184">			double dblRealizedPriceChangeHigh = adblAlphaHigh[i] * dblTimeWidth + dblPriceSwingHigh;</span>
 
-<span class="nc" id="L186">			PriorConditionalCombiner pccLow = new PriorConditionalCombiner (</span>
+<span class="fc" id="L186">			PriorConditionalCombiner pccLow = new PriorConditionalCombiner (</span>
 				pddLow,
 				cpdLow
 			);
 
-<span class="nc" id="L191">			PriorConditionalCombiner pccMid = new PriorConditionalCombiner (</span>
+<span class="fc" id="L191">			PriorConditionalCombiner pccMid = new PriorConditionalCombiner (</span>
 				pddMid,
 				cpdMid
 			);
 
-<span class="nc" id="L196">			PriorConditionalCombiner pccHigh = new PriorConditionalCombiner (</span>
+<span class="fc" id="L196">			PriorConditionalCombiner pccHigh = new PriorConditionalCombiner (</span>
 				pddHigh,
 				cpdHigh
 			);
 
-<span class="nc" id="L201">			ConstrainedLinearTemporaryImpact cltiLow = ConstrainedLinearTemporaryImpact.Standard (</span>
+<span class="fc" id="L201">			ConstrainedLinearTemporaryImpact cltiLow = ConstrainedLinearTemporaryImpact.Standard (</span>
 				0.,
 				dblT,
 				dblXConstrainedLow,
@@ -207,7 +207,7 @@ import org.drip.service.env.EnvManager;
 				prlTemporary
 			);
 
-<span class="nc" id="L210">			ConstrainedLinearTemporaryImpact cltiMid = ConstrainedLinearTemporaryImpact.Standard (</span>
+<span class="fc" id="L210">			ConstrainedLinearTemporaryImpact cltiMid = ConstrainedLinearTemporaryImpact.Standard (</span>
 				0.,
 				dblT,
 				dblXConstrainedMid,
@@ -216,7 +216,7 @@ import org.drip.service.env.EnvManager;
 				prlTemporary
 			);
 
-<span class="nc" id="L219">			ConstrainedLinearTemporaryImpact cltiHigh = ConstrainedLinearTemporaryImpact.Standard (</span>
+<span class="fc" id="L219">			ConstrainedLinearTemporaryImpact cltiHigh = ConstrainedLinearTemporaryImpact.Standard (</span>
 				0.,
 				dblT,
 				dblXConstrainedHigh,
@@ -225,25 +225,25 @@ import org.drip.service.env.EnvManager;
 				prlTemporary
 			);
 
-<span class="nc" id="L228">			double dblConstrainedInstantaneousTradeRateLow = cltiLow.instantaneousTradeRate();</span>
+<span class="fc" id="L228">			double dblConstrainedInstantaneousTradeRateLow = cltiLow.instantaneousTradeRate();</span>
 
-<span class="nc" id="L230">			dblXConstrainedLow = dblXConstrainedLow - dblConstrainedInstantaneousTradeRateLow * dblTimeWidth;</span>
+<span class="fc" id="L230">			dblXConstrainedLow = dblXConstrainedLow - dblConstrainedInstantaneousTradeRateLow * dblTimeWidth;</span>
 
-<span class="nc bnc" id="L232" title="All 2 branches missed.">			if (0 &gt; dblXConstrainedLow) dblXConstrainedLow = 0.;</span>
+<span class="pc bpc" id="L232" title="1 of 2 branches missed.">			if (0 &gt; dblXConstrainedLow) dblXConstrainedLow = 0.;</span>
 
-<span class="nc" id="L234">			double dblConstrainedInstantaneousTradeRateMid = cltiMid.instantaneousTradeRate();</span>
+<span class="fc" id="L234">			double dblConstrainedInstantaneousTradeRateMid = cltiMid.instantaneousTradeRate();</span>
 
-<span class="nc" id="L236">			dblXConstrainedMid = dblXConstrainedMid - dblConstrainedInstantaneousTradeRateMid * dblTimeWidth;</span>
+<span class="fc" id="L236">			dblXConstrainedMid = dblXConstrainedMid - dblConstrainedInstantaneousTradeRateMid * dblTimeWidth;</span>
 
-<span class="nc bnc" id="L238" title="All 2 branches missed.">			if (0 &gt; dblXConstrainedMid) dblXConstrainedMid = 0.;</span>
+<span class="fc bfc" id="L238" title="All 2 branches covered.">			if (0 &gt; dblXConstrainedMid) dblXConstrainedMid = 0.;</span>
 
-<span class="nc" id="L240">			double dblConstrainedInstantaneousTradeRateHigh = cltiHigh.instantaneousTradeRate();</span>
+<span class="fc" id="L240">			double dblConstrainedInstantaneousTradeRateHigh = cltiHigh.instantaneousTradeRate();</span>
 
-<span class="nc" id="L242">			dblXConstrainedHigh = dblXConstrainedHigh - dblConstrainedInstantaneousTradeRateHigh * dblTimeWidth;</span>
+<span class="fc" id="L242">			dblXConstrainedHigh = dblXConstrainedHigh - dblConstrainedInstantaneousTradeRateHigh * dblTimeWidth;</span>
 
-<span class="nc bnc" id="L244" title="All 2 branches missed.">			if (0 &gt; dblXConstrainedHigh) dblXConstrainedHigh = 0.;</span>
+<span class="fc bfc" id="L244" title="All 2 branches covered.">			if (0 &gt; dblXConstrainedHigh) dblXConstrainedHigh = 0.;</span>
 
-<span class="nc" id="L246">			LinearTemporaryImpact lti = LinearTemporaryImpact.Unconstrained (</span>
+<span class="fc" id="L246">			LinearTemporaryImpact lti = LinearTemporaryImpact.Unconstrained (</span>
 				dblTime,
 				dblT,
 				dblXUnconstrained,
@@ -252,24 +252,24 @@ import org.drip.service.env.EnvManager;
 				prlTemporary
 			);
 
-<span class="nc" id="L255">			double dblUnconstrainedInstantaneousTradeRate = lti.instantaneousTradeRate();</span>
+<span class="fc" id="L255">			double dblUnconstrainedInstantaneousTradeRate = lti.instantaneousTradeRate();</span>
 
-<span class="nc" id="L257">			dblXUnconstrained = dblXUnconstrained - dblUnconstrainedInstantaneousTradeRate * dblTimeWidth;</span>
+<span class="fc" id="L257">			dblXUnconstrained = dblXUnconstrained - dblUnconstrainedInstantaneousTradeRate * dblTimeWidth;</span>
 
-<span class="nc" id="L259">			System.out.println (</span>
-<span class="nc" id="L260">				&quot;\t| &quot; + FormatUtil.FormatDouble (dblTime, 1, 2, 1.) + &quot; =&gt; &quot; +</span>
-<span class="nc" id="L261">				FormatUtil.FormatDouble (dblConstrainedInstantaneousTradeRateLow, 1, 3, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L262">				FormatUtil.FormatDouble (dblConstrainedInstantaneousTradeRateMid, 1, 3, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L263">				FormatUtil.FormatDouble (dblConstrainedInstantaneousTradeRateHigh, 1, 3, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L264">				FormatUtil.FormatDouble (dblUnconstrainedInstantaneousTradeRate, 1, 3, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L265">				FormatUtil.FormatDouble (dblXConstrainedLow, 1, 3, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L266">				FormatUtil.FormatDouble (dblXConstrainedMid, 1, 3, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L267">				FormatUtil.FormatDouble (dblXConstrainedHigh, 1, 3, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L268">				FormatUtil.FormatDouble (dblXUnconstrained, 1, 3, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L259">			System.out.println (</span>
+<span class="fc" id="L260">				&quot;\t| &quot; + FormatUtil.FormatDouble (dblTime, 1, 2, 1.) + &quot; =&gt; &quot; +</span>
+<span class="fc" id="L261">				FormatUtil.FormatDouble (dblConstrainedInstantaneousTradeRateLow, 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L262">				FormatUtil.FormatDouble (dblConstrainedInstantaneousTradeRateMid, 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L263">				FormatUtil.FormatDouble (dblConstrainedInstantaneousTradeRateHigh, 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L264">				FormatUtil.FormatDouble (dblUnconstrainedInstantaneousTradeRate, 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L265">				FormatUtil.FormatDouble (dblXConstrainedLow, 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L266">				FormatUtil.FormatDouble (dblXConstrainedMid, 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L267">				FormatUtil.FormatDouble (dblXConstrainedHigh, 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L268">				FormatUtil.FormatDouble (dblXUnconstrained, 1, 3, 1.) + &quot; ||&quot;</span>
 			);
 		}
 
-<span class="nc" id="L272">		System.out.println (&quot;\t|--------------------------------------------------------------------------------||&quot;);</span>
-<span class="nc" id="L273">	}</span>
+<span class="fc" id="L272">		System.out.println (&quot;\t|--------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L273">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

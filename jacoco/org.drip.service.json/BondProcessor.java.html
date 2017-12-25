@@ -66,79 +66,79 @@ package org.drip.service.json;
 	@SuppressWarnings (&quot;unchecked&quot;) static final org.drip.json.simple.JSONObject SecularMetrics (
 		final org.drip.json.simple.JSONObject jsonParameter)
 	{
-<span class="nc" id="L69">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding =</span>
-<span class="nc" id="L70">			org.drip.service.json.LatentStateProcessor.FundingCurve (jsonParameter);</span>
+<span class="fc" id="L69">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding =</span>
+<span class="fc" id="L70">			org.drip.service.json.LatentStateProcessor.FundingCurve (jsonParameter);</span>
 
-<span class="nc bnc" id="L72" title="All 2 branches missed.">		if (null == dcFunding) return null;</span>
+<span class="pc bpc" id="L72" title="1 of 2 branches missed.">		if (null == dcFunding) return null;</span>
 
-<span class="nc" id="L74">		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new</span>
+<span class="fc" id="L74">		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new</span>
 			org.drip.param.market.CurveSurfaceQuoteContainer();
 
-<span class="nc bnc" id="L77" title="All 2 branches missed.">		if (!csqc.setFundingState (dcFunding)) return null;</span>
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">		if (!csqc.setFundingState (dcFunding)) return null;</span>
 
-<span class="nc" id="L79">		double dblCleanPrice = java.lang.Double.NaN;</span>
-<span class="nc" id="L80">		org.drip.product.credit.BondComponent bond = null;</span>
+<span class="fc" id="L79">		double dblCleanPrice = java.lang.Double.NaN;</span>
+<span class="fc" id="L80">		org.drip.product.credit.BondComponent bond = null;</span>
 
 		try {
-<span class="nc" id="L83">			if (null == (bond = org.drip.product.creator.BondBuilder.CreateSimpleFixed</span>
-<span class="nc bnc" id="L84" title="All 2 branches missed.">				(org.drip.json.parser.Converter.StringEntry (jsonParameter, &quot;BondName&quot;),</span>
-<span class="nc" id="L85">					dcFunding.currency(), &quot;&quot;, org.drip.json.parser.Converter.DoubleEntry (jsonParameter,</span>
-<span class="nc" id="L86">						&quot;BondCoupon&quot;), org.drip.json.parser.Converter.IntegerEntry (jsonParameter,</span>
-<span class="nc" id="L87">							&quot;BondFrequency&quot;), org.drip.json.parser.Converter.StringEntry (jsonParameter,</span>
-<span class="nc" id="L88">								&quot;BondDayCount&quot;), org.drip.json.parser.Converter.DateEntry (jsonParameter,</span>
+<span class="fc" id="L83">			if (null == (bond = org.drip.product.creator.BondBuilder.CreateSimpleFixed</span>
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">				(org.drip.json.parser.Converter.StringEntry (jsonParameter, &quot;BondName&quot;),</span>
+<span class="fc" id="L85">					dcFunding.currency(), &quot;&quot;, org.drip.json.parser.Converter.DoubleEntry (jsonParameter,</span>
+<span class="fc" id="L86">						&quot;BondCoupon&quot;), org.drip.json.parser.Converter.IntegerEntry (jsonParameter,</span>
+<span class="fc" id="L87">							&quot;BondFrequency&quot;), org.drip.json.parser.Converter.StringEntry (jsonParameter,</span>
+<span class="fc" id="L88">								&quot;BondDayCount&quot;), org.drip.json.parser.Converter.DateEntry (jsonParameter,</span>
 									&quot;BondEffectiveDate&quot;), org.drip.json.parser.Converter.DateEntry
-<span class="nc" id="L90">										(jsonParameter, &quot;BondMaturityDate&quot;), null, null)))</span>
+<span class="fc" id="L90">										(jsonParameter, &quot;BondMaturityDate&quot;), null, null)))</span>
 <span class="nc" id="L91">				return null;</span>
 
-<span class="nc" id="L93">			dblCleanPrice = org.drip.json.parser.Converter.DoubleEntry (jsonParameter, &quot;BondCleanPrice&quot;);</span>
+<span class="fc" id="L93">			dblCleanPrice = org.drip.json.parser.Converter.DoubleEntry (jsonParameter, &quot;BondCleanPrice&quot;);</span>
 <span class="nc" id="L94">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L95">			e.printStackTrace();</span>
 
 <span class="nc" id="L97">			return null;</span>
-<span class="nc" id="L98">		}</span>
+<span class="fc" id="L98">		}</span>
 
-<span class="nc" id="L100">		org.drip.param.valuation.ValuationParams valParams = org.drip.param.valuation.ValuationParams.Spot</span>
-<span class="nc" id="L101">			(dcFunding.epoch().julian());</span>
+<span class="fc" id="L100">		org.drip.param.valuation.ValuationParams valParams = org.drip.param.valuation.ValuationParams.Spot</span>
+<span class="fc" id="L101">			(dcFunding.epoch().julian());</span>
 
-<span class="nc" id="L103">		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();</span>
+<span class="fc" id="L103">		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();</span>
 
-<span class="nc" id="L105">		jsonResponse.put (&quot;BondName&quot;, bond.name());</span>
+<span class="fc" id="L105">		jsonResponse.put (&quot;BondName&quot;, bond.name());</span>
 
-<span class="nc" id="L107">		jsonResponse.put (&quot;BondEffectiveDate&quot;, bond.effectiveDate().toString());</span>
+<span class="fc" id="L107">		jsonResponse.put (&quot;BondEffectiveDate&quot;, bond.effectiveDate().toString());</span>
 
-<span class="nc" id="L109">		jsonResponse.put (&quot;BondMaturityDate&quot;, bond.maturityDate().toString());</span>
+<span class="fc" id="L109">		jsonResponse.put (&quot;BondMaturityDate&quot;, bond.maturityDate().toString());</span>
 
-<span class="nc" id="L111">		jsonResponse.put (&quot;BondFirstCouponDate&quot;, bond.firstCouponDate().toString());</span>
+<span class="fc" id="L111">		jsonResponse.put (&quot;BondFirstCouponDate&quot;, bond.firstCouponDate().toString());</span>
 
-<span class="nc" id="L113">		jsonResponse.put (&quot;BondCleanPrice&quot;, dblCleanPrice);</span>
+<span class="fc" id="L113">		jsonResponse.put (&quot;BondCleanPrice&quot;, dblCleanPrice);</span>
 
 		try {
-<span class="nc" id="L116">			double dblYield01 = bond.yield01FromPrice (valParams, csqc, null, dblCleanPrice);</span>
+<span class="fc" id="L116">			double dblYield01 = bond.yield01FromPrice (valParams, csqc, null, dblCleanPrice);</span>
 
-<span class="nc" id="L118">			jsonResponse.put (&quot;BondYield&quot;, bond.yieldFromPrice (valParams, csqc, null, dblCleanPrice));</span>
+<span class="fc" id="L118">			jsonResponse.put (&quot;BondYield&quot;, bond.yieldFromPrice (valParams, csqc, null, dblCleanPrice));</span>
 
-<span class="nc" id="L120">			jsonResponse.put (&quot;BondMacaulayDuration&quot;, bond.macaulayDurationFromPrice (valParams, csqc, null,</span>
+<span class="fc" id="L120">			jsonResponse.put (&quot;BondMacaulayDuration&quot;, bond.macaulayDurationFromPrice (valParams, csqc, null,</span>
 				dblCleanPrice));
 
-<span class="nc" id="L123">			jsonResponse.put (&quot;BondModifiedDuration&quot;, 10000. * bond.modifiedDurationFromPrice (valParams,</span>
+<span class="fc" id="L123">			jsonResponse.put (&quot;BondModifiedDuration&quot;, 10000. * bond.modifiedDurationFromPrice (valParams,</span>
 				csqc, null, dblCleanPrice));
 
-<span class="nc" id="L126">			jsonResponse.put (&quot;BondYield01&quot;, 10000. * dblYield01);</span>
+<span class="fc" id="L126">			jsonResponse.put (&quot;BondYield01&quot;, 10000. * dblYield01);</span>
 
-<span class="nc" id="L128">			jsonResponse.put (&quot;BondDV01&quot;, 10000. * dblYield01);</span>
+<span class="fc" id="L128">			jsonResponse.put (&quot;BondDV01&quot;, 10000. * dblYield01);</span>
 
-<span class="nc" id="L130">			jsonResponse.put (&quot;BondConvexity&quot;, 1000000. * bond.convexityFromPrice (valParams, csqc, null,</span>
+<span class="fc" id="L130">			jsonResponse.put (&quot;BondConvexity&quot;, 1000000. * bond.convexityFromPrice (valParams, csqc, null,</span>
 				dblCleanPrice));
 
-<span class="nc" id="L133">			jsonResponse.put (&quot;BondBasis&quot;, 10000. * bond.bondBasisFromPrice (valParams, csqc, null,</span>
+<span class="fc" id="L133">			jsonResponse.put (&quot;BondBasis&quot;, 10000. * bond.bondBasisFromPrice (valParams, csqc, null,</span>
 				dblCleanPrice));
 <span class="nc" id="L135">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L136">			e.printStackTrace();</span>
 
 <span class="nc" id="L138">			return null;</span>
-<span class="nc" id="L139">		}</span>
+<span class="fc" id="L139">		}</span>
 
-<span class="nc" id="L141">		return jsonResponse;</span>
+<span class="fc" id="L141">		return jsonResponse;</span>
 	}
 
 	/**
@@ -152,99 +152,99 @@ package org.drip.service.json;
 	@SuppressWarnings (&quot;unchecked&quot;) static final org.drip.json.simple.JSONObject CurveMetrics (
 		final org.drip.json.simple.JSONObject jsonParameter)
 	{
-<span class="nc" id="L155">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding =</span>
-<span class="nc" id="L156">			org.drip.service.json.LatentStateProcessor.FundingCurve (jsonParameter);</span>
+<span class="fc" id="L155">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding =</span>
+<span class="fc" id="L156">			org.drip.service.json.LatentStateProcessor.FundingCurve (jsonParameter);</span>
 
-<span class="nc bnc" id="L158" title="All 2 branches missed.">		if (null == dcFunding) return null;</span>
+<span class="pc bpc" id="L158" title="1 of 2 branches missed.">		if (null == dcFunding) return null;</span>
 
-<span class="nc" id="L160">		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new</span>
+<span class="fc" id="L160">		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new</span>
 			org.drip.param.market.CurveSurfaceQuoteContainer();
 
-<span class="nc bnc" id="L163" title="All 2 branches missed.">		if (!csqc.setFundingState (dcFunding) || !csqc.setGovvieState</span>
-<span class="nc bnc" id="L164" title="All 2 branches missed.">			(org.drip.service.json.LatentStateProcessor.TreasuryCurve (jsonParameter)))</span>
+<span class="pc bpc" id="L163" title="1 of 2 branches missed.">		if (!csqc.setFundingState (dcFunding) || !csqc.setGovvieState</span>
+<span class="pc bpc" id="L164" title="1 of 2 branches missed.">			(org.drip.service.json.LatentStateProcessor.TreasuryCurve (jsonParameter)))</span>
 <span class="nc" id="L165">			return null;</span>
 
-<span class="nc" id="L167">		double dblCleanPrice = java.lang.Double.NaN;</span>
-<span class="nc" id="L168">		org.drip.product.credit.BondComponent bond = null;</span>
+<span class="fc" id="L167">		double dblCleanPrice = java.lang.Double.NaN;</span>
+<span class="fc" id="L168">		org.drip.product.credit.BondComponent bond = null;</span>
 
-<span class="nc" id="L170">		org.drip.analytics.date.JulianDate dtMaturity = org.drip.json.parser.Converter.DateEntry</span>
-<span class="nc" id="L171">			(jsonParameter, &quot;BondMaturityDate&quot;);</span>
+<span class="fc" id="L170">		org.drip.analytics.date.JulianDate dtMaturity = org.drip.json.parser.Converter.DateEntry</span>
+<span class="fc" id="L171">			(jsonParameter, &quot;BondMaturityDate&quot;);</span>
 
 		try {
-<span class="nc" id="L174">			if (null == (bond = org.drip.product.creator.BondBuilder.CreateSimpleFixed</span>
-<span class="nc bnc" id="L175" title="All 2 branches missed.">				(org.drip.json.parser.Converter.StringEntry (jsonParameter, &quot;BondName&quot;),</span>
-<span class="nc" id="L176">					dcFunding.currency(), &quot;&quot;, org.drip.json.parser.Converter.DoubleEntry (jsonParameter,</span>
-<span class="nc" id="L177">						&quot;BondCoupon&quot;), org.drip.json.parser.Converter.IntegerEntry (jsonParameter,</span>
-<span class="nc" id="L178">							&quot;BondFrequency&quot;), org.drip.json.parser.Converter.StringEntry (jsonParameter,</span>
-<span class="nc" id="L179">								&quot;BondDayCount&quot;), org.drip.json.parser.Converter.DateEntry (jsonParameter,</span>
+<span class="fc" id="L174">			if (null == (bond = org.drip.product.creator.BondBuilder.CreateSimpleFixed</span>
+<span class="pc bpc" id="L175" title="1 of 2 branches missed.">				(org.drip.json.parser.Converter.StringEntry (jsonParameter, &quot;BondName&quot;),</span>
+<span class="fc" id="L176">					dcFunding.currency(), &quot;&quot;, org.drip.json.parser.Converter.DoubleEntry (jsonParameter,</span>
+<span class="fc" id="L177">						&quot;BondCoupon&quot;), org.drip.json.parser.Converter.IntegerEntry (jsonParameter,</span>
+<span class="fc" id="L178">							&quot;BondFrequency&quot;), org.drip.json.parser.Converter.StringEntry (jsonParameter,</span>
+<span class="fc" id="L179">								&quot;BondDayCount&quot;), org.drip.json.parser.Converter.DateEntry (jsonParameter,</span>
 									&quot;BondEffectiveDate&quot;), dtMaturity, null, null)))
 <span class="nc" id="L181">				return null;</span>
 
-<span class="nc" id="L183">			dblCleanPrice = org.drip.json.parser.Converter.DoubleEntry (jsonParameter, &quot;BondCleanPrice&quot;);</span>
+<span class="fc" id="L183">			dblCleanPrice = org.drip.json.parser.Converter.DoubleEntry (jsonParameter, &quot;BondCleanPrice&quot;);</span>
 <span class="nc" id="L184">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L185">			e.printStackTrace();</span>
 
 <span class="nc" id="L187">			return null;</span>
-<span class="nc" id="L188">		}</span>
+<span class="fc" id="L188">		}</span>
 
-<span class="nc" id="L190">		int iSpotDate = dcFunding.epoch().julian();</span>
+<span class="fc" id="L190">		int iSpotDate = dcFunding.epoch().julian();</span>
 
-<span class="nc" id="L192">		org.drip.param.valuation.ValuationParams valParams = org.drip.param.valuation.ValuationParams.Spot</span>
-<span class="nc" id="L193">			(iSpotDate);</span>
+<span class="fc" id="L192">		org.drip.param.valuation.ValuationParams valParams = org.drip.param.valuation.ValuationParams.Spot</span>
+<span class="fc" id="L193">			(iSpotDate);</span>
 
-<span class="nc" id="L195">		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();</span>
+<span class="fc" id="L195">		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();</span>
 
-<span class="nc" id="L197">		jsonResponse.put (&quot;BondName&quot;, bond.name());</span>
+<span class="fc" id="L197">		jsonResponse.put (&quot;BondName&quot;, bond.name());</span>
 
-<span class="nc" id="L199">		jsonResponse.put (&quot;BondEffectiveDate&quot;, bond.effectiveDate().toString());</span>
+<span class="fc" id="L199">		jsonResponse.put (&quot;BondEffectiveDate&quot;, bond.effectiveDate().toString());</span>
 
-<span class="nc" id="L201">		jsonResponse.put (&quot;BondMaturityDate&quot;, dtMaturity.toString());</span>
+<span class="fc" id="L201">		jsonResponse.put (&quot;BondMaturityDate&quot;, dtMaturity.toString());</span>
 
-<span class="nc" id="L203">		jsonResponse.put (&quot;BondFirstCouponDate&quot;, bond.firstCouponDate().toString());</span>
+<span class="fc" id="L203">		jsonResponse.put (&quot;BondFirstCouponDate&quot;, bond.firstCouponDate().toString());</span>
 
-<span class="nc" id="L205">		jsonResponse.put (&quot;BondCleanPrice&quot;, dblCleanPrice);</span>
+<span class="fc" id="L205">		jsonResponse.put (&quot;BondCleanPrice&quot;, dblCleanPrice);</span>
 
 		try {
-<span class="nc" id="L208">			jsonResponse.put (&quot;BondASW&quot;, bond.aswFromPrice (valParams, csqc, null, dblCleanPrice));</span>
+<span class="fc" id="L208">			jsonResponse.put (&quot;BondASW&quot;, bond.aswFromPrice (valParams, csqc, null, dblCleanPrice));</span>
 <span class="nc" id="L209">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L210">			e.printStackTrace();</span>
-<span class="nc" id="L211">		}</span>
+<span class="fc" id="L211">		}</span>
 
 		try {
-<span class="nc" id="L214">			jsonResponse.put (&quot;BondGSpread&quot;, bond.gSpreadFromPrice (valParams, csqc, null, dblCleanPrice));</span>
+<span class="fc" id="L214">			jsonResponse.put (&quot;BondGSpread&quot;, bond.gSpreadFromPrice (valParams, csqc, null, dblCleanPrice));</span>
 <span class="nc" id="L215">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L216">			e.printStackTrace();</span>
-<span class="nc" id="L217">		}</span>
+<span class="fc" id="L217">		}</span>
 
 		try {
-<span class="nc" id="L220">			jsonResponse.put (&quot;BondISpread&quot;, bond.iSpreadFromPrice (valParams, csqc, null, dblCleanPrice));</span>
+<span class="fc" id="L220">			jsonResponse.put (&quot;BondISpread&quot;, bond.iSpreadFromPrice (valParams, csqc, null, dblCleanPrice));</span>
 <span class="nc" id="L221">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L222">			e.printStackTrace();</span>
-<span class="nc" id="L223">		}</span>
+<span class="fc" id="L223">		}</span>
 
 		try {
-<span class="nc" id="L226">			jsonResponse.put (&quot;BondOAS&quot;, bond.oasFromPrice (valParams, csqc, null, dblCleanPrice));</span>
+<span class="fc" id="L226">			jsonResponse.put (&quot;BondOAS&quot;, bond.oasFromPrice (valParams, csqc, null, dblCleanPrice));</span>
 <span class="nc" id="L227">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L228">			e.printStackTrace();</span>
-<span class="nc" id="L229">		}</span>
+<span class="fc" id="L229">		}</span>
 
 		try {
-<span class="nc" id="L232">			jsonResponse.put (&quot;BondTreasurySpread&quot;, bond.tsySpreadFromPrice (valParams, csqc, null,</span>
+<span class="fc" id="L232">			jsonResponse.put (&quot;BondTreasurySpread&quot;, bond.tsySpreadFromPrice (valParams, csqc, null,</span>
 				dblCleanPrice));
 <span class="nc" id="L234">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L235">			e.printStackTrace();</span>
-<span class="nc" id="L236">		}</span>
+<span class="fc" id="L236">		}</span>
 
-<span class="nc" id="L238">		jsonResponse.put (&quot;BondTreasuryBenchmark&quot;, org.drip.analytics.support.Helper.BaseTsyBmk</span>
-<span class="nc" id="L239">			(iSpotDate, dtMaturity.julian()));</span>
+<span class="fc" id="L238">		jsonResponse.put (&quot;BondTreasuryBenchmark&quot;, org.drip.analytics.support.Helper.BaseTsyBmk</span>
+<span class="fc" id="L239">			(iSpotDate, dtMaturity.julian()));</span>
 
 		try {
-<span class="nc" id="L242">			jsonResponse.put (&quot;BondZSpread&quot;, bond.zSpreadFromPrice (valParams, csqc, null, dblCleanPrice));</span>
+<span class="fc" id="L242">			jsonResponse.put (&quot;BondZSpread&quot;, bond.zSpreadFromPrice (valParams, csqc, null, dblCleanPrice));</span>
 <span class="nc" id="L243">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L244">			e.printStackTrace();</span>
-<span class="nc" id="L245">		}</span>
+<span class="fc" id="L245">		}</span>
 
-<span class="nc" id="L247">		return jsonResponse;</span>
+<span class="fc" id="L247">		return jsonResponse;</span>
 	}
 
 	/**
@@ -258,96 +258,96 @@ package org.drip.service.json;
 	@SuppressWarnings (&quot;unchecked&quot;) static final org.drip.json.simple.JSONObject CashFlows (
 		final org.drip.json.simple.JSONObject jsonParameter)
 	{
-<span class="nc" id="L261">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding =</span>
-<span class="nc" id="L262">			org.drip.service.json.LatentStateProcessor.FundingCurve (jsonParameter);</span>
+<span class="fc" id="L261">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding =</span>
+<span class="fc" id="L262">			org.drip.service.json.LatentStateProcessor.FundingCurve (jsonParameter);</span>
 
-<span class="nc bnc" id="L264" title="All 2 branches missed.">		if (null == dcFunding) return null;</span>
+<span class="pc bpc" id="L264" title="1 of 2 branches missed.">		if (null == dcFunding) return null;</span>
 
-<span class="nc" id="L266">		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new</span>
+<span class="fc" id="L266">		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new</span>
 			org.drip.param.market.CurveSurfaceQuoteContainer();
 
-<span class="nc bnc" id="L269" title="All 2 branches missed.">		if (!csqc.setFundingState (dcFunding)) return null;</span>
+<span class="pc bpc" id="L269" title="1 of 2 branches missed.">		if (!csqc.setFundingState (dcFunding)) return null;</span>
 
-<span class="nc" id="L271">		org.drip.state.credit.CreditCurve cc = org.drip.service.json.LatentStateProcessor.CreditCurve</span>
-<span class="nc" id="L272">			(jsonParameter, dcFunding);</span>
+<span class="fc" id="L271">		org.drip.state.credit.CreditCurve cc = org.drip.service.json.LatentStateProcessor.CreditCurve</span>
+<span class="fc" id="L272">			(jsonParameter, dcFunding);</span>
 
-<span class="nc" id="L274">		csqc.setCreditState (cc);</span>
+<span class="fc" id="L274">		csqc.setCreditState (cc);</span>
 
-<span class="nc" id="L276">		double dblValueNotional = 1.;</span>
-<span class="nc" id="L277">		org.drip.product.credit.BondComponent bond = null;</span>
+<span class="fc" id="L276">		double dblValueNotional = 1.;</span>
+<span class="fc" id="L277">		org.drip.product.credit.BondComponent bond = null;</span>
 
-<span class="nc" id="L279">		org.drip.analytics.date.JulianDate dtMaturity = org.drip.json.parser.Converter.DateEntry</span>
-<span class="nc" id="L280">			(jsonParameter, &quot;BondMaturityDate&quot;);</span>
+<span class="fc" id="L279">		org.drip.analytics.date.JulianDate dtMaturity = org.drip.json.parser.Converter.DateEntry</span>
+<span class="fc" id="L280">			(jsonParameter, &quot;BondMaturityDate&quot;);</span>
 
 		try {
-<span class="nc" id="L283">			if (null == (bond = org.drip.product.creator.BondBuilder.CreateSimpleFixed</span>
-<span class="nc bnc" id="L284" title="All 2 branches missed.">				(org.drip.json.parser.Converter.StringEntry (jsonParameter, &quot;BondName&quot;),</span>
-<span class="nc" id="L285">					dcFunding.currency(), &quot;&quot;, org.drip.json.parser.Converter.DoubleEntry (jsonParameter,</span>
-<span class="nc" id="L286">						&quot;BondCoupon&quot;), org.drip.json.parser.Converter.IntegerEntry (jsonParameter,</span>
-<span class="nc" id="L287">							&quot;BondFrequency&quot;), org.drip.json.parser.Converter.StringEntry (jsonParameter,</span>
-<span class="nc" id="L288">								&quot;BondDayCount&quot;), org.drip.json.parser.Converter.DateEntry (jsonParameter,</span>
+<span class="fc" id="L283">			if (null == (bond = org.drip.product.creator.BondBuilder.CreateSimpleFixed</span>
+<span class="pc bpc" id="L284" title="1 of 2 branches missed.">				(org.drip.json.parser.Converter.StringEntry (jsonParameter, &quot;BondName&quot;),</span>
+<span class="fc" id="L285">					dcFunding.currency(), &quot;&quot;, org.drip.json.parser.Converter.DoubleEntry (jsonParameter,</span>
+<span class="fc" id="L286">						&quot;BondCoupon&quot;), org.drip.json.parser.Converter.IntegerEntry (jsonParameter,</span>
+<span class="fc" id="L287">							&quot;BondFrequency&quot;), org.drip.json.parser.Converter.StringEntry (jsonParameter,</span>
+<span class="fc" id="L288">								&quot;BondDayCount&quot;), org.drip.json.parser.Converter.DateEntry (jsonParameter,</span>
 									&quot;BondEffectiveDate&quot;), dtMaturity, null, null)))
 <span class="nc" id="L290">				return null;</span>
 
-<span class="nc" id="L292">			dblValueNotional = org.drip.json.parser.Converter.DoubleEntry (jsonParameter,</span>
+<span class="fc" id="L292">			dblValueNotional = org.drip.json.parser.Converter.DoubleEntry (jsonParameter,</span>
 				&quot;BondValueNotional&quot;);
 <span class="nc" id="L294">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L295">			e.printStackTrace();</span>
 
 <span class="nc" id="L297">			return null;</span>
-<span class="nc" id="L298">		}</span>
+<span class="fc" id="L298">		}</span>
 
-<span class="nc" id="L300">		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();</span>
+<span class="fc" id="L300">		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();</span>
 
-<span class="nc" id="L302">		jsonResponse.put (&quot;BondName&quot;, bond.name());</span>
+<span class="fc" id="L302">		jsonResponse.put (&quot;BondName&quot;, bond.name());</span>
 
-<span class="nc" id="L304">		java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; lsCP = bond.couponPeriods();</span>
+<span class="fc" id="L304">		java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; lsCP = bond.couponPeriods();</span>
 
-<span class="nc bnc" id="L306" title="All 4 branches missed.">		if (null == lsCP || 0 == lsCP.size()) return null;</span>
+<span class="pc bpc" id="L306" title="2 of 4 branches missed.">		if (null == lsCP || 0 == lsCP.size()) return null;</span>
 
-<span class="nc" id="L308">		org.drip.json.simple.JSONArray jsonCashFlowArray = new org.drip.json.simple.JSONArray();</span>
+<span class="fc" id="L308">		org.drip.json.simple.JSONArray jsonCashFlowArray = new org.drip.json.simple.JSONArray();</span>
 
-<span class="nc bnc" id="L310" title="All 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod cp : lsCP) {</span>
-<span class="nc bnc" id="L311" title="All 2 branches missed.">			if (null == cp) return null;</span>
+<span class="fc bfc" id="L310" title="All 2 branches covered.">		for (org.drip.analytics.cashflow.CompositePeriod cp : lsCP) {</span>
+<span class="pc bpc" id="L311" title="1 of 2 branches missed.">			if (null == cp) return null;</span>
 
-<span class="nc" id="L313">			org.drip.json.simple.JSONObject jsonCashFlow = new org.drip.json.simple.JSONObject();</span>
+<span class="fc" id="L313">			org.drip.json.simple.JSONObject jsonCashFlow = new org.drip.json.simple.JSONObject();</span>
 
-<span class="nc" id="L315">			jsonCashFlow.put (&quot;StartDate&quot;, new org.drip.analytics.date.JulianDate</span>
-<span class="nc" id="L316">				(cp.startDate()).toString());</span>
+<span class="fc" id="L315">			jsonCashFlow.put (&quot;StartDate&quot;, new org.drip.analytics.date.JulianDate</span>
+<span class="fc" id="L316">				(cp.startDate()).toString());</span>
 
-<span class="nc" id="L318">			jsonCashFlow.put (&quot;EndDate&quot;, new org.drip.analytics.date.JulianDate (cp.endDate()).toString());</span>
+<span class="fc" id="L318">			jsonCashFlow.put (&quot;EndDate&quot;, new org.drip.analytics.date.JulianDate (cp.endDate()).toString());</span>
 
-<span class="nc" id="L320">			jsonCashFlow.put (&quot;PayDate&quot;, new org.drip.analytics.date.JulianDate (cp.payDate()).toString());</span>
+<span class="fc" id="L320">			jsonCashFlow.put (&quot;PayDate&quot;, new org.drip.analytics.date.JulianDate (cp.payDate()).toString());</span>
 
 			try {
-<span class="nc" id="L323">				double dblCouponRate = cp.periods().get (0).baseRate (csqc);</span>
+<span class="fc" id="L323">				double dblCouponRate = cp.periods().get (0).baseRate (csqc);</span>
 
-<span class="nc" id="L325">				jsonCashFlow.put (&quot;FixingDate&quot;, new org.drip.analytics.date.JulianDate</span>
-<span class="nc" id="L326">					(cp.fxFixingDate()).toString());</span>
+<span class="fc" id="L325">				jsonCashFlow.put (&quot;FixingDate&quot;, new org.drip.analytics.date.JulianDate</span>
+<span class="fc" id="L326">					(cp.fxFixingDate()).toString());</span>
 
-<span class="nc" id="L328">				jsonCashFlow.put (&quot;CouponDCF&quot;, cp.couponDCF());</span>
+<span class="fc" id="L328">				jsonCashFlow.put (&quot;CouponDCF&quot;, cp.couponDCF());</span>
 
-<span class="nc" id="L330">				jsonCashFlow.put (&quot;CouponRate&quot;, dblCouponRate);</span>
+<span class="fc" id="L330">				jsonCashFlow.put (&quot;CouponRate&quot;, dblCouponRate);</span>
 
-<span class="nc bnc" id="L332" title="All 2 branches missed.">				if (null != cc) jsonCashFlow.put (&quot;SurvivalFactor&quot;, cc.survival (cp.payDate()));</span>
+<span class="pc bpc" id="L332" title="1 of 2 branches missed.">				if (null != cc) jsonCashFlow.put (&quot;SurvivalFactor&quot;, cc.survival (cp.payDate()));</span>
 
-<span class="nc" id="L334">				jsonCashFlow.put (&quot;PayDiscountFactor&quot;, cp.df (csqc));</span>
+<span class="fc" id="L334">				jsonCashFlow.put (&quot;PayDiscountFactor&quot;, cp.df (csqc));</span>
 
-<span class="nc" id="L336">				jsonCashFlow.put (&quot;CouponAmount&quot;, dblCouponRate * dblValueNotional);</span>
+<span class="fc" id="L336">				jsonCashFlow.put (&quot;CouponAmount&quot;, dblCouponRate * dblValueNotional);</span>
 <span class="nc" id="L337">			} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L338">				e.printStackTrace();</span>
 
 <span class="nc" id="L340">				return null;</span>
-<span class="nc" id="L341">			}</span>
+<span class="fc" id="L341">			}</span>
 
-<span class="nc" id="L343">			jsonCashFlow.put (&quot;BaseNotional&quot;, cp.baseNotional() * dblValueNotional);</span>
+<span class="fc" id="L343">			jsonCashFlow.put (&quot;BaseNotional&quot;, cp.baseNotional() * dblValueNotional);</span>
 
-<span class="nc" id="L345">			jsonCashFlowArray.add (jsonCashFlow);</span>
-<span class="nc" id="L346">		}</span>
+<span class="fc" id="L345">			jsonCashFlowArray.add (jsonCashFlow);</span>
+<span class="fc" id="L346">		}</span>
 
-<span class="nc" id="L348">		jsonResponse.put (&quot;CashFlow&quot;, jsonCashFlowArray);</span>
+<span class="fc" id="L348">		jsonResponse.put (&quot;CashFlow&quot;, jsonCashFlowArray);</span>
 
-<span class="nc" id="L350">		return jsonResponse;</span>
+<span class="fc" id="L350">		return jsonResponse;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

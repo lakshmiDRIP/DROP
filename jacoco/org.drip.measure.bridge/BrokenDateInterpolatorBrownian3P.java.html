@@ -55,13 +55,13 @@ package org.drip.measure.bridge;
  */
 
 public class BrokenDateInterpolatorBrownian3P implements org.drip.measure.bridge.BrokenDateInterpolator {
-<span class="nc" id="L58">	private double _dblT1 = java.lang.Double.NaN;</span>
-<span class="nc" id="L59">	private double _dblT2 = java.lang.Double.NaN;</span>
-<span class="nc" id="L60">	private double _dblT3 = java.lang.Double.NaN;</span>
-<span class="nc" id="L61">	private double _dblV1 = java.lang.Double.NaN;</span>
-<span class="nc" id="L62">	private double _dblV2 = java.lang.Double.NaN;</span>
-<span class="nc" id="L63">	private double _dblV3 = java.lang.Double.NaN;</span>
-<span class="nc" id="L64">	private double _dblBrownianBridgeFactor = java.lang.Double.NaN;</span>
+<span class="fc" id="L58">	private double _dblT1 = java.lang.Double.NaN;</span>
+<span class="fc" id="L59">	private double _dblT2 = java.lang.Double.NaN;</span>
+<span class="fc" id="L60">	private double _dblT3 = java.lang.Double.NaN;</span>
+<span class="fc" id="L61">	private double _dblV1 = java.lang.Double.NaN;</span>
+<span class="fc" id="L62">	private double _dblV2 = java.lang.Double.NaN;</span>
+<span class="fc" id="L63">	private double _dblV3 = java.lang.Double.NaN;</span>
+<span class="fc" id="L64">	private double _dblBrownianBridgeFactor = java.lang.Double.NaN;</span>
 
 	/**
 	 * BrokenDateInterpolatorBrownian3P Constructor
@@ -84,23 +84,23 @@ public class BrokenDateInterpolatorBrownian3P implements org.drip.measure.bridge
 		final double dblV2,
 		final double dblV3)
 		throws java.lang.Exception
-<span class="nc" id="L87">	{</span>
-<span class="nc bnc" id="L88" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblT1 = dblT1) ||</span>
-<span class="nc bnc" id="L89" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblT2 = dblT2) ||</span>
-<span class="nc bnc" id="L90" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblT3 = dblT3) ||</span>
-<span class="nc bnc" id="L91" title="All 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblV1 = dblV1) ||</span>
-<span class="nc bnc" id="L92" title="All 2 branches missed.">						!org.drip.quant.common.NumberUtil.IsValid (_dblV2 = dblV2) ||</span>
-<span class="nc bnc" id="L93" title="All 6 branches missed.">							!org.drip.quant.common.NumberUtil.IsValid (_dblV3 = dblV3) || _dblT1 &gt;= _dblT2 ||</span>
+<span class="fc" id="L87">	{</span>
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblT1 = dblT1) ||</span>
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblT2 = dblT2) ||</span>
+<span class="pc bpc" id="L90" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblT3 = dblT3) ||</span>
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblV1 = dblV1) ||</span>
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">						!org.drip.quant.common.NumberUtil.IsValid (_dblV2 = dblV2) ||</span>
+<span class="pc bpc" id="L93" title="3 of 6 branches missed.">							!org.drip.quant.common.NumberUtil.IsValid (_dblV3 = dblV3) || _dblT1 &gt;= _dblT2 ||</span>
 								_dblT2 &gt;= _dblT3)
 <span class="nc" id="L95">			throw new java.lang.Exception (&quot;BrokenDateInterpolatorBrownian3P Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L97">		double dblT3MinusT1 = _dblT3 - _dblT1;</span>
-<span class="nc" id="L98">		double dblT3MinusT2 = _dblT3 - _dblT2;</span>
-<span class="nc" id="L99">		double dblT2MinusT1 = _dblT2 - _dblT1;</span>
+<span class="fc" id="L97">		double dblT3MinusT1 = _dblT3 - _dblT1;</span>
+<span class="fc" id="L98">		double dblT3MinusT2 = _dblT3 - _dblT2;</span>
+<span class="fc" id="L99">		double dblT2MinusT1 = _dblT2 - _dblT1;</span>
 
-<span class="nc" id="L101">		_dblBrownianBridgeFactor = java.lang.Math.sqrt (dblT3MinusT1 / (dblT3MinusT2 * dblT2MinusT1)) *</span>
+<span class="fc" id="L101">		_dblBrownianBridgeFactor = java.lang.Math.sqrt (dblT3MinusT1 / (dblT3MinusT2 * dblT2MinusT1)) *</span>
 			(_dblV2 - (dblT3MinusT2 * _dblV1 / dblT3MinusT1) - (dblT2MinusT1 * _dblV3 / dblT3MinusT1));
-<span class="nc" id="L103">	}</span>
+<span class="fc" id="L103">	}</span>
 
 	/**
 	 * Retrieve T1
@@ -183,16 +183,16 @@ public class BrokenDateInterpolatorBrownian3P implements org.drip.measure.bridge
 		final double dblT)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L186" title="All 6 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblT) || dblT &lt; _dblT1 || dblT &gt; _dblT3)</span>
+<span class="pc bpc" id="L186" title="3 of 6 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblT) || dblT &lt; _dblT1 || dblT &gt; _dblT3)</span>
 <span class="nc" id="L187">			throw new java.lang.Exception</span>
 				(&quot;BrokenDateInterpolatorBrownian3P::interpolate =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L190">		double dblT3MinusT1 = _dblT3 - _dblT1;</span>
-<span class="nc" id="L191">		double dblT3MinusT = _dblT3 - dblT;</span>
-<span class="nc" id="L192">		double dblTMinusT1 = dblT - _dblT1;</span>
+<span class="fc" id="L190">		double dblT3MinusT1 = _dblT3 - _dblT1;</span>
+<span class="fc" id="L191">		double dblT3MinusT = _dblT3 - dblT;</span>
+<span class="fc" id="L192">		double dblTMinusT1 = dblT - _dblT1;</span>
 
-<span class="nc" id="L194">		return (dblT3MinusT * _dblV1 / dblT3MinusT1) + (dblTMinusT1 * _dblV3 / dblT3MinusT1) +</span>
-<span class="nc" id="L195">			_dblBrownianBridgeFactor * java.lang.Math.sqrt (dblT3MinusT * dblTMinusT1 / dblT3MinusT1);</span>
+<span class="fc" id="L194">		return (dblT3MinusT * _dblV1 / dblT3MinusT1) + (dblTMinusT1 * _dblV3 / dblT3MinusT1) +</span>
+<span class="fc" id="L195">			_dblBrownianBridgeFactor * java.lang.Math.sqrt (dblT3MinusT * dblTMinusT1 / dblT3MinusT1);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -83,23 +83,23 @@ package org.drip.quant.linearalgebra;
 		final int iInnerRow,
 		final int iOuter)
 	{
-<span class="nc" id="L86">		double dblInnerScaler = aadblA[iInnerRow][iOuter];</span>
+<span class="fc" id="L86">		double dblInnerScaler = aadblA[iInnerRow][iOuter];</span>
 
-<span class="nc bnc" id="L88" title="All 2 branches missed.">		if (0. != dblInnerScaler) return true;</span>
+<span class="fc bfc" id="L88" title="All 2 branches covered.">		if (0. != dblInnerScaler) return true;</span>
 
-<span class="nc" id="L90">		int iSize = aadblA.length;</span>
-<span class="nc" id="L91">		int iProxyRow = iSize - 1;</span>
+<span class="fc" id="L90">		int iSize = aadblA.length;</span>
+<span class="fc" id="L91">		int iProxyRow = iSize - 1;</span>
 
-<span class="nc bnc" id="L93" title="All 4 branches missed.">		while (0. == aadblA[iProxyRow][iOuter] &amp;&amp; iProxyRow &gt;= 0) --iProxyRow;</span>
+<span class="pc bpc" id="L93" title="1 of 4 branches missed.">		while (0. == aadblA[iProxyRow][iOuter] &amp;&amp; iProxyRow &gt;= 0) --iProxyRow;</span>
 
-<span class="nc bnc" id="L95" title="All 2 branches missed.">		if (iProxyRow &lt; 0) return false;</span>
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">		if (iProxyRow &lt; 0) return false;</span>
 
-<span class="nc" id="L97">		adblSolution[iInnerRow] += adblSolution[iProxyRow];</span>
+<span class="fc" id="L97">		adblSolution[iInnerRow] += adblSolution[iProxyRow];</span>
 
-<span class="nc bnc" id="L99" title="All 2 branches missed.">		for (int i = 0; i &lt; iSize; ++i)</span>
-<span class="nc" id="L100">			aadblA[iInnerRow][i] += aadblA[iProxyRow][i];</span>
+<span class="fc bfc" id="L99" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i)</span>
+<span class="fc" id="L100">			aadblA[iInnerRow][i] += aadblA[iProxyRow][i];</span>
 
-<span class="nc bnc" id="L102" title="All 2 branches missed.">		return 0. != aadblA[iInnerRow][iOuter];</span>
+<span class="pc bpc" id="L102" title="1 of 2 branches missed.">		return 0. != aadblA[iInnerRow][iOuter];</span>
 	}
 
 	/**
@@ -150,22 +150,22 @@ package org.drip.quant.linearalgebra;
 		final double[][] aadblA,
 		final double[] adblB)
 	{
-<span class="nc bnc" id="L153" title="All 4 branches missed.">		if (null == aadblA || null == adblB) return null;</span>
+<span class="pc bpc" id="L153" title="2 of 4 branches missed.">		if (null == aadblA || null == adblB) return null;</span>
 
-<span class="nc" id="L155">		int iSize = aadblA.length;</span>
-<span class="nc" id="L156">		double[] adblSolution = new double[iSize];</span>
+<span class="fc" id="L155">		int iSize = aadblA.length;</span>
+<span class="fc" id="L156">		double[] adblSolution = new double[iSize];</span>
 
-<span class="nc bnc" id="L158" title="All 8 branches missed.">		if (0 == iSize || null == aadblA[0] || iSize != aadblA[0].length || iSize != adblB.length)</span>
+<span class="pc bpc" id="L158" title="4 of 8 branches missed.">		if (0 == iSize || null == aadblA[0] || iSize != aadblA[0].length || iSize != adblB.length)</span>
 <span class="nc" id="L159">			return null;</span>
 
-<span class="nc bnc" id="L161" title="All 2 branches missed.">		for (int i = 0; i &lt; iSize; ++i)</span>
-<span class="nc" id="L162">			adblSolution[i] = adblB[i];</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i)</span>
+<span class="fc" id="L162">			adblSolution[i] = adblB[i];</span>
 
-<span class="nc bnc" id="L164" title="All 2 branches missed.">		for (int iDiagonal = 0; iDiagonal &lt; iSize; ++iDiagonal) {</span>
-<span class="nc bnc" id="L165" title="All 2 branches missed.">			if (!RegulariseRow (aadblA, adblSolution, iDiagonal, iDiagonal)) return null;</span>
+<span class="fc bfc" id="L164" title="All 2 branches covered.">		for (int iDiagonal = 0; iDiagonal &lt; iSize; ++iDiagonal) {</span>
+<span class="pc bpc" id="L165" title="1 of 2 branches missed.">			if (!RegulariseRow (aadblA, adblSolution, iDiagonal, iDiagonal)) return null;</span>
 		}
 
-<span class="nc" id="L168">		return adblSolution;</span>
+<span class="fc" id="L168">		return adblSolution;</span>
 	}
 
 	/**
@@ -192,7 +192,7 @@ package org.drip.quant.linearalgebra;
 
 <span class="fc" id="L193">		double[][] aadblInv = org.drip.quant.linearalgebra.Matrix.InvertUsingGaussianElimination (aadblAIn);</span>
 
-<span class="pc bpc" id="L195" title="1 of 2 branches missed.">		if (null == aadblInv) return null;</span>
+<span class="fc bfc" id="L195" title="All 2 branches covered.">		if (null == aadblInv) return null;</span>
 
 <span class="fc" id="L197">		double[] adblProduct = org.drip.quant.linearalgebra.Matrix.Product (aadblInv, adblB);</span>
 
@@ -223,51 +223,51 @@ package org.drip.quant.linearalgebra;
 		final double[][] aadblAIn,
 		final double[] adblB)
 	{
-<span class="nc bnc" id="L226" title="All 4 branches missed.">		if (null == aadblAIn || null == adblB) return null;</span>
+<span class="pc bpc" id="L226" title="2 of 4 branches missed.">		if (null == aadblAIn || null == adblB) return null;</span>
 
-<span class="nc" id="L228">		int iSize = aadblAIn.length;</span>
-<span class="nc" id="L229">		double[][] aadblA = new double[iSize][iSize];</span>
+<span class="fc" id="L228">		int iSize = aadblAIn.length;</span>
+<span class="fc" id="L229">		double[][] aadblA = new double[iSize][iSize];</span>
 
-<span class="nc bnc" id="L231" title="All 6 branches missed.">		if (0 == iSize || null == aadblAIn[0] || iSize != aadblAIn[0].length) return null;</span>
+<span class="pc bpc" id="L231" title="3 of 6 branches missed.">		if (0 == iSize || null == aadblAIn[0] || iSize != aadblAIn[0].length) return null;</span>
 
-<span class="nc bnc" id="L233" title="All 2 branches missed.">		if (adblB.length != iSize) return null;</span>
+<span class="pc bpc" id="L233" title="1 of 2 branches missed.">		if (adblB.length != iSize) return null;</span>
 
-<span class="nc bnc" id="L235" title="All 2 branches missed.">		for (int i = 0; i &lt; iSize; ++i) {</span>
-<span class="nc bnc" id="L236" title="All 2 branches missed.">			for (int j = 0; j &lt; iSize; ++j)</span>
-<span class="nc" id="L237">				aadblA[i][j] = aadblAIn[i][j];</span>
+<span class="fc bfc" id="L235" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="fc bfc" id="L236" title="All 2 branches covered.">			for (int j = 0; j &lt; iSize; ++j)</span>
+<span class="fc" id="L237">				aadblA[i][j] = aadblAIn[i][j];</span>
 		}
 
-<span class="nc" id="L240">		double[] adblSolution = Pivot (aadblA, adblB);</span>
+<span class="fc" id="L240">		double[] adblSolution = Pivot (aadblA, adblB);</span>
 
-<span class="nc bnc" id="L242" title="All 4 branches missed.">		if (null == adblSolution || adblSolution.length != iSize) return null;</span>
+<span class="pc bpc" id="L242" title="2 of 4 branches missed.">		if (null == adblSolution || adblSolution.length != iSize) return null;</span>
 
-<span class="nc bnc" id="L244" title="All 2 branches missed.">		for (int iEliminationDiagonalPivot = iSize - 1; iEliminationDiagonalPivot &gt;= 0;</span>
-<span class="nc" id="L245">			--iEliminationDiagonalPivot) {</span>
-<span class="nc bnc" id="L246" title="All 2 branches missed.">			for (int iRow = 0; iRow &lt; iSize; ++iRow) {</span>
-<span class="nc bnc" id="L247" title="All 2 branches missed.">				if (iRow == iEliminationDiagonalPivot) continue;</span>
+<span class="fc bfc" id="L244" title="All 2 branches covered.">		for (int iEliminationDiagonalPivot = iSize - 1; iEliminationDiagonalPivot &gt;= 0;</span>
+<span class="fc" id="L245">			--iEliminationDiagonalPivot) {</span>
+<span class="fc bfc" id="L246" title="All 2 branches covered.">			for (int iRow = 0; iRow &lt; iSize; ++iRow) {</span>
+<span class="fc bfc" id="L247" title="All 2 branches covered.">				if (iRow == iEliminationDiagonalPivot) continue;</span>
 
-<span class="nc bnc" id="L249" title="All 2 branches missed.">				if (0. == aadblA[iRow][iEliminationDiagonalPivot]) continue;</span>
+<span class="fc bfc" id="L249" title="All 2 branches covered.">				if (0. == aadblA[iRow][iEliminationDiagonalPivot]) continue;</span>
 
-<span class="nc" id="L251">				double dblEliminationRatio = aadblA[iEliminationDiagonalPivot][iEliminationDiagonalPivot] /</span>
+<span class="fc" id="L251">				double dblEliminationRatio = aadblA[iEliminationDiagonalPivot][iEliminationDiagonalPivot] /</span>
 					aadblA[iRow][iEliminationDiagonalPivot];
-<span class="nc" id="L253">				adblSolution[iRow] = adblSolution[iRow] * dblEliminationRatio -</span>
+<span class="fc" id="L253">				adblSolution[iRow] = adblSolution[iRow] * dblEliminationRatio -</span>
 					adblSolution[iEliminationDiagonalPivot];
 
-<span class="nc bnc" id="L256" title="All 2 branches missed.">				for (int iCol = 0; iCol &lt; iSize; ++iCol)</span>
-<span class="nc" id="L257">					aadblA[iRow][iCol] = aadblA[iRow][iCol] * dblEliminationRatio -</span>
+<span class="fc bfc" id="L256" title="All 2 branches covered.">				for (int iCol = 0; iCol &lt; iSize; ++iCol)</span>
+<span class="fc" id="L257">					aadblA[iRow][iCol] = aadblA[iRow][iCol] * dblEliminationRatio -</span>
 						aadblA[iEliminationDiagonalPivot][iCol];
 			}
 		}
 
-<span class="nc bnc" id="L262" title="All 2 branches missed.">		for (int i = iSize - 1; i &gt;= 0; --i) {</span>
-<span class="nc bnc" id="L263" title="All 2 branches missed.">			for (int j = iSize - 1; j &gt; i; --j)</span>
-<span class="nc" id="L264">				adblSolution[i] -= adblSolution[j] * aadblA[i][j];</span>
+<span class="fc bfc" id="L262" title="All 2 branches covered.">		for (int i = iSize - 1; i &gt;= 0; --i) {</span>
+<span class="fc bfc" id="L263" title="All 2 branches covered.">			for (int j = iSize - 1; j &gt; i; --j)</span>
+<span class="fc" id="L264">				adblSolution[i] -= adblSolution[j] * aadblA[i][j];</span>
 
-<span class="nc" id="L266">			adblSolution[i] /= aadblA[i][i];</span>
+<span class="fc" id="L266">			adblSolution[i] /= aadblA[i][i];</span>
 		}
 
 		try {
-<span class="nc" id="L270">			return new LinearizationOutput (adblSolution, aadblA, &quot;GaussianElimination&quot;);</span>
+<span class="fc" id="L270">			return new LinearizationOutput (adblSolution, aadblA, &quot;GaussianElimination&quot;);</span>
 <span class="nc" id="L271">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L272">			e.printStackTrace();</span>
 		}

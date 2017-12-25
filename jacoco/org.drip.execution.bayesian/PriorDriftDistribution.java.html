@@ -85,8 +85,8 @@ public class PriorDriftDistribution extends org.drip.measure.gaussian.R1Univaria
 		final double dblConfidence)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L88">		super (dblExpectation, dblConfidence);</span>
-<span class="nc" id="L89">	}</span>
+<span class="fc" id="L88">		super (dblExpectation, dblConfidence);</span>
+<span class="fc" id="L89">	}</span>
 
 	/**
 	 * Retrieve the Expectation of the Prior Drift Distribution
@@ -96,7 +96,7 @@ public class PriorDriftDistribution extends org.drip.measure.gaussian.R1Univaria
 
 	public double expectation()
 	{
-<span class="nc" id="L99">		return mean();</span>
+<span class="fc" id="L99">		return mean();</span>
 	}
 
 	/**
@@ -107,7 +107,7 @@ public class PriorDriftDistribution extends org.drip.measure.gaussian.R1Univaria
 
 	public double confidence()
 	{
-<span class="nc" id="L110">		return java.lang.Math.sqrt (variance());</span>
+<span class="fc" id="L110">		return java.lang.Math.sqrt (variance());</span>
 	}
 
 	/**
@@ -121,26 +121,26 @@ public class PriorDriftDistribution extends org.drip.measure.gaussian.R1Univaria
 	public double[] realizedDrift (
 		final int iNumRealization)
 	{
-<span class="nc bnc" id="L124" title="All 2 branches missed.">		if (0 &gt;= iNumRealization) return null;</span>
+<span class="pc bpc" id="L124" title="1 of 2 branches missed.">		if (0 &gt;= iNumRealization) return null;</span>
 
-<span class="nc" id="L126">		double[] adblRealizedDrift = new double[iNumRealization];</span>
+<span class="fc" id="L126">		double[] adblRealizedDrift = new double[iNumRealization];</span>
 
-<span class="nc" id="L128">		double dblConfidence = confidence();</span>
+<span class="fc" id="L128">		double dblConfidence = confidence();</span>
 
-<span class="nc" id="L130">		double dblExpectation = mean();</span>
+<span class="fc" id="L130">		double dblExpectation = mean();</span>
 
-<span class="nc bnc" id="L132" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumRealization; ++i) {</span>
+<span class="fc bfc" id="L132" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumRealization; ++i) {</span>
 			try {
-<span class="nc" id="L134">				adblRealizedDrift[i] = dblExpectation + dblConfidence *</span>
-<span class="nc" id="L135">					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (java.lang.Math.random());</span>
+<span class="fc" id="L134">				adblRealizedDrift[i] = dblExpectation + dblConfidence *</span>
+<span class="fc" id="L135">					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (java.lang.Math.random());</span>
 <span class="nc" id="L136">			} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L137">				e.printStackTrace();</span>
 
 <span class="nc" id="L139">				return null;</span>
-<span class="nc" id="L140">			}</span>
+<span class="fc" id="L140">			}</span>
 		}
 
-<span class="nc" id="L143">		return adblRealizedDrift;</span>
+<span class="fc" id="L143">		return adblRealizedDrift;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
