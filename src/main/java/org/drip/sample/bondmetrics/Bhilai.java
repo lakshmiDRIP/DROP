@@ -77,7 +77,10 @@ public class Bhilai {
 		final String[] astArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		JulianDate dtSpot = DateUtil.CreateFromYMD (
 			2017,
@@ -276,5 +279,7 @@ public class Bhilai {
 		BondReplicationRun abrr = abr.generateRun();
 
 		System.out.println (abrr.display());
+
+		EnvManager.TerminateEnv();
 	}
 }

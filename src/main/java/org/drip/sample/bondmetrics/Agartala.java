@@ -74,7 +74,10 @@ public class Agartala {
 		final String[] astArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		JulianDate dtSpot = DateUtil.CreateFromYMD (
 			2017,
@@ -328,6 +331,6 @@ public class Agartala {
 
 		System.out.println ("\t||--------------------------------------------------------------------------------------------------------------------||");
 
-		System.out.println();
+		EnvManager.TerminateEnv();
 	}
 }

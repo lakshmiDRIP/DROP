@@ -424,7 +424,10 @@ public class Reconciler_Call {
 		final String[] astrArgs)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			"",
+			true
+		);
 
 		JulianDate dtSpot = DateUtil.CreateFromYMD (
 			2017,
@@ -1520,6 +1523,6 @@ public class Reconciler_Call {
 
 		System.out.println ("\t||------------------------------------------------||");
 
-		System.out.println();
+		EnvManager.TerminateEnv();
 	}
 }
