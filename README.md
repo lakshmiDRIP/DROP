@@ -8,15 +8,15 @@ DROP implements the model libraries and provides systems for fixed income valuat
 
 DROP is composed of four main libraries:
 
-* [Asset Allocation] (https://lakshmidrip.github.io/DROP/AssetAllocationModule.html)
-* [Fixed Income Analytics] (https://lakshmidrip.github.io/DROP/FixedIncomeModule.html)
-* [Numerical Optimization] (https://lakshmidrip.github.io/DROP/NumericalOptimizerModule.html)
-* [Statistical Learning] (https://lakshmidrip.github.io/DROP/StatisticalLearningModule.html)
+* [Asset Allocation](https://lakshmidrip.github.io/DROP/AssetAllocationModule.html)
+* [Fixed Income Analytics](https://lakshmidrip.github.io/DROP/FixedIncomeModule.html)
+* [Numerical Optimization](https://lakshmidrip.github.io/DROP/NumericalOptimizerModule.html)
+* [Statistical Learning](https://lakshmidrip.github.io/DROP/StatisticalLearningModule.html)
 
 ## Pointers
 
 [![Travis](https://travis-ci.org/lakshmiDRIP/DROP.svg)](https://travis-ci.org/lakshmiDRIP/DROP)    [![CircleCI](https://img.shields.io/circleci/project/github/lakshmiDRIP/DROP.svg)](https://circleci.com/gh/lakshmiDRIP/workflows/DROP)    [![CircleCI](https://circleci.com/gh/lakshmiDRIP/DROP.svg?style=svg)](https://circleci.com/gh/lakshmiDRIP/DROP)    [![Build status](https://ci.appveyor.com/api/projects/status/m5p8sfeth4cewr4v?svg=true)](https://ci.appveyor.com/project/lakshmiDRIP/drop)    
-[![Git](https://img.shields.io/github/release/lakshmiDRIP/DROP.svg)](https://github.com/release/lakshmiDRIP/DROP)    
+[![Git](https://img.shields.io/github/release/lakshmiDRIP/DROP.svg)](https://github.com/lakshmiDRIP/DROP/releases)    
 [![Dependency Status](https://www.versioneye.com/user/projects/5a2e15d50fb24f6ad613a09f/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/5a2e15d50fb24f6ad613a09f)    [![Waffle.io - Columns and their card count](https://badge.waffle.io/lakshmiDRIP/DROP.svg?columns=all)](https://waffle.io/lakshmiDRIP/DROP)    
 [![Stack Overflow](http://img.shields.io/:stack%20overflow-drip-brightgreen.svg)](http://stackoverflow.com/questions/tagged/drip)    [![Git](http://dmlc.github.io/img/apache2.svg)](./LICENSE)    
 [![Join the chat at https://gitter.im/lakshmiDRIPDROP](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/lakshmiDRIPDROP?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)    
@@ -43,7 +43,12 @@ DROP is composed of four main libraries:
  * Dated Release Notes in the ReleaseNotes Folder
  * External Reference Publications in the corresponding folder
  * User guide is a work in progress!
- * [Credits] (https://lakshmidrip.github.io/DROP/credits.html)
+
+## Misc
+
+ * [JUnit](https://lakshmidrip.github.io/DROP/junit/index.html)
+ * [Jacoco Coverage](https://lakshmidrip.github.io/DROP/jacoco/index.html)
+ * [Jacoco Session](https://lakshmidrip.github.io/DROP/jacoco/jacoco-sessions.html)
 
 ## Contact
 
