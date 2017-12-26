@@ -91,31 +91,31 @@ package org.drip.product.creator;
 			final java.lang.String strCurrency,
 			final org.drip.state.identifier.CreditLabel creditLabel)
 	{
-<span class="nc bnc" id="L94" title="All 2 branches missed.">		boolean bCouponEOMAdj = null == strCouponDC ? false : strCouponDC.toUpperCase().contains (&quot;EOM&quot;);</span>
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">		boolean bCouponEOMAdj = null == strCouponDC ? false : strCouponDC.toUpperCase().contains (&quot;EOM&quot;);</span>
 
-<span class="nc bnc" id="L96" title="All 2 branches missed.">		int iCouponDCIndex = null == strCouponDC ? -1 : strCouponDC.indexOf (&quot; NON&quot;);</span>
+<span class="pc bpc" id="L96" title="1 of 2 branches missed.">		int iCouponDCIndex = null == strCouponDC ? -1 : strCouponDC.indexOf (&quot; NON&quot;);</span>
 
-<span class="nc bnc" id="L98" title="All 2 branches missed.">		java.lang.String strCouponDCAdj = -1 != iCouponDCIndex ? strCouponDC.substring (0, iCouponDCIndex) :</span>
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">		java.lang.String strCouponDCAdj = -1 != iCouponDCIndex ? strCouponDC.substring (0, iCouponDCIndex) :</span>
 			strCouponDC;
 
-<span class="nc bnc" id="L101" title="All 2 branches missed.">		boolean bAccrualEOMAdj = null == strAccrualDC ? false : strAccrualDC.toUpperCase().contains (&quot;EOM&quot;);</span>
+<span class="pc bpc" id="L101" title="1 of 2 branches missed.">		boolean bAccrualEOMAdj = null == strAccrualDC ? false : strAccrualDC.toUpperCase().contains (&quot;EOM&quot;);</span>
 
-<span class="nc bnc" id="L103" title="All 2 branches missed.">		int iAccrualDCIndex = null == strAccrualDC ? -1 : strAccrualDC.indexOf (&quot; NON&quot;);</span>
+<span class="pc bpc" id="L103" title="1 of 2 branches missed.">		int iAccrualDCIndex = null == strAccrualDC ? -1 : strAccrualDC.indexOf (&quot; NON&quot;);</span>
 
-<span class="nc bnc" id="L105" title="All 2 branches missed.">		java.lang.String strAccrualDCAdj = -1 != iAccrualDCIndex ? strAccrualDC.substring (0,</span>
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">		java.lang.String strAccrualDCAdj = -1 != iAccrualDCIndex ? strAccrualDC.substring (0,</span>
 			iAccrualDCIndex) : strAccrualDC;
 
-<span class="nc" id="L108">		org.drip.analytics.date.JulianDate dtFirstCoupon = new org.drip.analytics.date.JulianDate</span>
+<span class="fc" id="L108">		org.drip.analytics.date.JulianDate dtFirstCoupon = new org.drip.analytics.date.JulianDate</span>
 			(iFirstCouponDate);
 
-<span class="nc" id="L111">		org.drip.analytics.date.JulianDate dtPenultimateCoupon = new org.drip.analytics.date.JulianDate</span>
+<span class="fc" id="L111">		org.drip.analytics.date.JulianDate dtPenultimateCoupon = new org.drip.analytics.date.JulianDate</span>
 			(iPenultimateCouponDate);
 
-<span class="nc" id="L114">		java.lang.String strTenor = (12 / iFreq) + &quot;M&quot;;</span>
+<span class="fc" id="L114">		java.lang.String strTenor = (12 / iFreq) + &quot;M&quot;;</span>
 
 		try {
-<span class="nc" id="L117">			java.util.List&lt;java.lang.Integer&gt; lsStreamEdgeDate =</span>
-<span class="nc" id="L118">				org.drip.analytics.support.CompositePeriodBuilder.BackwardEdgeDates (</span>
+<span class="fc" id="L117">			java.util.List&lt;java.lang.Integer&gt; lsStreamEdgeDate =</span>
+<span class="fc" id="L118">				org.drip.analytics.support.CompositePeriodBuilder.BackwardEdgeDates (</span>
 					dtFirstCoupon,
 					dtPenultimateCoupon,
 					strTenor,
@@ -123,14 +123,14 @@ package org.drip.product.creator;
 					org.drip.analytics.support.CompositePeriodBuilder.LONG_STUB
 				);
 
-<span class="nc bnc" id="L126" title="All 2 branches missed.">			if (null == lsStreamEdgeDate) return null;</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">			if (null == lsStreamEdgeDate) return null;</span>
 
-<span class="nc" id="L128">			lsStreamEdgeDate.add (0, iStreamStartDate);</span>
+<span class="fc" id="L128">			lsStreamEdgeDate.add (0, iStreamStartDate);</span>
 
-<span class="nc bnc" id="L130" title="All 2 branches missed.">			lsStreamEdgeDate.add (null == dapStreamEnd ? iStreamEndDate : dapStreamEnd.roll</span>
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">			lsStreamEdgeDate.add (null == dapStreamEnd ? iStreamEndDate : dapStreamEnd.roll</span>
 <span class="nc" id="L131">				(iStreamEndDate));</span>
 
-<span class="nc" id="L133">			return org.drip.analytics.support.CompositePeriodBuilder.FixedCompositeUnit (</span>
+<span class="fc" id="L133">			return org.drip.analytics.support.CompositePeriodBuilder.FixedCompositeUnit (</span>
 				lsStreamEdgeDate,
 				new org.drip.param.period.CompositePeriodSetting (
 					iFreq,
@@ -201,19 +201,19 @@ package org.drip.product.creator;
 			final org.drip.state.identifier.ForwardLabel forwardLabel,
 			final org.drip.state.identifier.CreditLabel creditLabel)
 	{
-<span class="nc bnc" id="L204" title="All 2 branches missed.">		if (null == forwardLabel) return null;</span>
+<span class="pc bpc" id="L204" title="1 of 2 branches missed.">		if (null == forwardLabel) return null;</span>
 
-<span class="nc" id="L206">		org.drip.analytics.date.JulianDate dtFirstCoupon = new org.drip.analytics.date.JulianDate</span>
+<span class="fc" id="L206">		org.drip.analytics.date.JulianDate dtFirstCoupon = new org.drip.analytics.date.JulianDate</span>
 			(iFirstCouponDate);
 
-<span class="nc" id="L209">		org.drip.analytics.date.JulianDate dtPenultimateCoupon = new org.drip.analytics.date.JulianDate</span>
+<span class="fc" id="L209">		org.drip.analytics.date.JulianDate dtPenultimateCoupon = new org.drip.analytics.date.JulianDate</span>
 			(iPenultimateCouponDate);
 
-<span class="nc" id="L212">		java.lang.String strTenor = (12 / iFreq) + &quot;M&quot;;</span>
+<span class="fc" id="L212">		java.lang.String strTenor = (12 / iFreq) + &quot;M&quot;;</span>
 
 		try {
-<span class="nc" id="L215">			java.util.List&lt;java.lang.Integer&gt; lsStreamEdgeDate = </span>
-<span class="nc" id="L216">				org.drip.analytics.support.CompositePeriodBuilder.BackwardEdgeDates (</span>
+<span class="fc" id="L215">			java.util.List&lt;java.lang.Integer&gt; lsStreamEdgeDate = </span>
+<span class="fc" id="L216">				org.drip.analytics.support.CompositePeriodBuilder.BackwardEdgeDates (</span>
 					dtFirstCoupon,
 					dtPenultimateCoupon,
 					strTenor,
@@ -221,19 +221,19 @@ package org.drip.product.creator;
 					org.drip.analytics.support.CompositePeriodBuilder.LONG_STUB
 				);
 
-<span class="nc bnc" id="L224" title="All 2 branches missed.">			if (null == lsStreamEdgeDate) return null;</span>
+<span class="pc bpc" id="L224" title="1 of 2 branches missed.">			if (null == lsStreamEdgeDate) return null;</span>
 
-<span class="nc" id="L226">			lsStreamEdgeDate.add (0, iStreamStartDate);</span>
+<span class="fc" id="L226">			lsStreamEdgeDate.add (0, iStreamStartDate);</span>
 
-<span class="nc bnc" id="L228" title="All 2 branches missed.">			lsStreamEdgeDate.add (null == dapStreamEnd ? iStreamEndDate : dapStreamEnd.roll</span>
+<span class="pc bpc" id="L228" title="1 of 2 branches missed.">			lsStreamEdgeDate.add (null == dapStreamEnd ? iStreamEndDate : dapStreamEnd.roll</span>
 <span class="nc" id="L229">				(iStreamEndDate));</span>
 
-<span class="nc" id="L231">			return org.drip.analytics.support.CompositePeriodBuilder.FloatingCompositeUnit (</span>
+<span class="fc" id="L231">			return org.drip.analytics.support.CompositePeriodBuilder.FloatingCompositeUnit (</span>
 				lsStreamEdgeDate,
 				new org.drip.param.period.CompositePeriodSetting (
 					iFreq,
 					strTenor,
-<span class="nc" id="L236">					forwardLabel.currency(),</span>
+<span class="fc" id="L236">					forwardLabel.currency(),</span>
 					dapPay,
 					1.,
 					null,
@@ -303,10 +303,10 @@ package org.drip.product.creator;
 			final org.drip.state.identifier.ForwardLabel forwardLabel,
 			final org.drip.state.identifier.CreditLabel creditLabel)
 	{
-<span class="nc bnc" id="L306" title="All 2 branches missed.">		if (null == forwardLabel) return null;</span>
+<span class="pc bpc" id="L306" title="1 of 2 branches missed.">		if (null == forwardLabel) return null;</span>
 
-<span class="nc" id="L308">		java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; lsMixedPeriod =</span>
-<span class="nc" id="L309">			FirstPenultimateDateFixedStream (</span>
+<span class="fc" id="L308">		java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; lsMixedPeriod =</span>
+<span class="fc" id="L309">			FirstPenultimateDateFixedStream (</span>
 				iStreamStartDate,
 				iFixedStreamEndDate,
 				iFixedFirstCouponDate,
@@ -318,14 +318,14 @@ package org.drip.product.creator;
 				dapPay,
 				dapStreamEnd,
 				dapAccrualEnd,
-<span class="nc" id="L321">				forwardLabel.currency(),</span>
+<span class="fc" id="L321">				forwardLabel.currency(),</span>
 				creditLabel
 			);
 
-<span class="nc bnc" id="L325" title="All 2 branches missed.">		if (null == lsMixedPeriod) return null;</span>
+<span class="pc bpc" id="L325" title="1 of 2 branches missed.">		if (null == lsMixedPeriod) return null;</span>
 
-<span class="nc" id="L327">		java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; lsFloatPeriod =</span>
-<span class="nc" id="L328">			FirstPenultimateDateFloatStream (</span>
+<span class="fc" id="L327">		java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; lsFloatPeriod =</span>
+<span class="fc" id="L328">			FirstPenultimateDateFloatStream (</span>
 				iFixedStreamEndDate,
 				iFloatStreamEndDate,
 				iFloatFirstCouponDate,
@@ -339,11 +339,11 @@ package org.drip.product.creator;
 				creditLabel
 			);
 
-<span class="nc bnc" id="L342" title="All 2 branches missed.">		if (null == lsFloatPeriod) return null;</span>
+<span class="pc bpc" id="L342" title="1 of 2 branches missed.">		if (null == lsFloatPeriod) return null;</span>
 
-<span class="nc" id="L344">		lsMixedPeriod.addAll (lsFloatPeriod);</span>
+<span class="fc" id="L344">		lsMixedPeriod.addAll (lsFloatPeriod);</span>
 
-<span class="nc" id="L346">		return lsMixedPeriod;</span>
+<span class="fc" id="L346">		return lsMixedPeriod;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

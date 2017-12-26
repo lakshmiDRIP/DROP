@@ -60,8 +60,8 @@ public abstract class MultivariateRandom extends org.drip.function.definition.Rd
 
 	protected MultivariateRandom()
 	{
-<span class="nc" id="L63">		super (null);</span>
-<span class="nc" id="L64">	}</span>
+<span class="fc" id="L63">		super (null);</span>
+<span class="fc" id="L64">	}</span>
 
 	/**
 	 * Compute the Target Variate Function Metrics conditional on the specified Input Non-Target Variate
@@ -79,35 +79,35 @@ public abstract class MultivariateRandom extends org.drip.function.definition.Rd
 		final int iTargetVariateIndex,
 		final double[] adblTargetVariateGhostSample)
 	{
-<span class="nc bnc" id="L82" title="All 4 branches missed.">		if (!org.drip.function.definition.RdToR1.ValidateInput (adblNonTargetVariate) ||</span>
+<span class="pc bpc" id="L82" title="2 of 4 branches missed.">		if (!org.drip.function.definition.RdToR1.ValidateInput (adblNonTargetVariate) ||</span>
 			null == adblTargetVariateGhostSample)
 <span class="nc" id="L84">			return null;</span>
 
-<span class="nc" id="L86">		int iNumNonTargetVariate = adblNonTargetVariate.length;</span>
-<span class="nc" id="L87">		int iNumTargetVariateSample = adblTargetVariateGhostSample.length;</span>
+<span class="fc" id="L86">		int iNumNonTargetVariate = adblNonTargetVariate.length;</span>
+<span class="fc" id="L87">		int iNumTargetVariateSample = adblTargetVariateGhostSample.length;</span>
 
-<span class="nc bnc" id="L89" title="All 6 branches missed.">		if (0 &gt; iTargetVariateIndex || iTargetVariateIndex &gt; iNumNonTargetVariate || 0 ==</span>
+<span class="pc bpc" id="L89" title="3 of 6 branches missed.">		if (0 &gt; iTargetVariateIndex || iTargetVariateIndex &gt; iNumNonTargetVariate || 0 ==</span>
 			iNumTargetVariateSample)
 <span class="nc" id="L91">			return null;</span>
 
-<span class="nc" id="L93">		double[] adblFunctionArgs = new double[iNumNonTargetVariate + 1];</span>
-<span class="nc" id="L94">		double[] adblFunctionSequence = new double[iNumTargetVariateSample];</span>
+<span class="fc" id="L93">		double[] adblFunctionArgs = new double[iNumNonTargetVariate + 1];</span>
+<span class="fc" id="L94">		double[] adblFunctionSequence = new double[iNumTargetVariateSample];</span>
 
-<span class="nc bnc" id="L96" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumNonTargetVariate; ++i) {</span>
-<span class="nc bnc" id="L97" title="All 2 branches missed.">			if (i &lt; iTargetVariateIndex)</span>
-<span class="nc" id="L98">				adblFunctionArgs[i] = adblNonTargetVariate[i];</span>
-<span class="nc bnc" id="L99" title="All 2 branches missed.">			else if (i &gt;= iTargetVariateIndex)</span>
-<span class="nc" id="L100">				adblFunctionArgs[i + 1] = adblNonTargetVariate[i];</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumNonTargetVariate; ++i) {</span>
+<span class="fc bfc" id="L97" title="All 2 branches covered.">			if (i &lt; iTargetVariateIndex)</span>
+<span class="fc" id="L98">				adblFunctionArgs[i] = adblNonTargetVariate[i];</span>
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">			else if (i &gt;= iTargetVariateIndex)</span>
+<span class="fc" id="L100">				adblFunctionArgs[i + 1] = adblNonTargetVariate[i];</span>
 		}
 
 		try {
-<span class="nc bnc" id="L104" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumTargetVariateSample; ++i) {</span>
-<span class="nc" id="L105">				adblFunctionArgs[iTargetVariateIndex] = adblTargetVariateGhostSample[i];</span>
+<span class="fc bfc" id="L104" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumTargetVariateSample; ++i) {</span>
+<span class="fc" id="L105">				adblFunctionArgs[iTargetVariateIndex] = adblTargetVariateGhostSample[i];</span>
 
-<span class="nc" id="L107">				adblFunctionSequence[i] = evaluate (adblFunctionArgs);</span>
+<span class="fc" id="L107">				adblFunctionSequence[i] = evaluate (adblFunctionArgs);</span>
 			}
 
-<span class="nc" id="L110">			return new org.drip.sequence.metrics.SingleSequenceAgnosticMetrics (adblFunctionSequence, null);</span>
+<span class="fc" id="L110">			return new org.drip.sequence.metrics.SingleSequenceAgnosticMetrics (adblFunctionSequence, null);</span>
 <span class="nc" id="L111">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L112">			e.printStackTrace();</span>
 		}
@@ -133,20 +133,20 @@ public abstract class MultivariateRandom extends org.drip.function.definition.Rd
 		final int iTargetVariateIndex,
 		final double[] adblTargetVariateGhostSample)
 	{
-<span class="nc bnc" id="L136" title="All 6 branches missed.">		if (null == aSSAM || null == aiNonTargetVariateSequenceIndex || 0 &gt; iTargetVariateIndex) return null;</span>
+<span class="pc bpc" id="L136" title="3 of 6 branches missed.">		if (null == aSSAM || null == aiNonTargetVariateSequenceIndex || 0 &gt; iTargetVariateIndex) return null;</span>
 
-<span class="nc" id="L138">		int iNumNonTargetVariate = aSSAM.length - 1;</span>
-<span class="nc" id="L139">		double[] adblNonTargetVariate = new double[iNumNonTargetVariate];</span>
+<span class="fc" id="L138">		int iNumNonTargetVariate = aSSAM.length - 1;</span>
+<span class="fc" id="L139">		double[] adblNonTargetVariate = new double[iNumNonTargetVariate];</span>
 
-<span class="nc bnc" id="L141" title="All 6 branches missed.">		if (0 &gt;= iNumNonTargetVariate || iNumNonTargetVariate != aiNonTargetVariateSequenceIndex.length ||</span>
+<span class="pc bpc" id="L141" title="3 of 6 branches missed.">		if (0 &gt;= iNumNonTargetVariate || iNumNonTargetVariate != aiNonTargetVariateSequenceIndex.length ||</span>
 			iTargetVariateIndex &gt; iNumNonTargetVariate)
 <span class="nc" id="L143">			return null;</span>
 
-<span class="nc bnc" id="L145" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumNonTargetVariate; ++i)</span>
-<span class="nc bnc" id="L146" title="All 2 branches missed.">			adblNonTargetVariate[i] = aSSAM[i &lt; iTargetVariateIndex ? i : i +</span>
-<span class="nc" id="L147">				1].sequence()[aiNonTargetVariateSequenceIndex[i]];</span>
+<span class="fc bfc" id="L145" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumNonTargetVariate; ++i)</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">			adblNonTargetVariate[i] = aSSAM[i &lt; iTargetVariateIndex ? i : i +</span>
+<span class="fc" id="L147">				1].sequence()[aiNonTargetVariateSequenceIndex[i]];</span>
 
-<span class="nc" id="L149">		return ghostTargetVariateMetrics (adblNonTargetVariate, iTargetVariateIndex,</span>
+<span class="fc" id="L149">		return ghostTargetVariateMetrics (adblNonTargetVariate, iTargetVariateIndex,</span>
 			adblTargetVariateGhostSample);
 	}
 
@@ -166,39 +166,39 @@ public abstract class MultivariateRandom extends org.drip.function.definition.Rd
 		final int iTargetVariateIndex,
 		final double[] adblTargetVariateGhostSample)
 	{
-<span class="nc bnc" id="L169" title="All 4 branches missed.">		if (null == aSSAM || 0 &gt; iTargetVariateIndex) return null;</span>
+<span class="pc bpc" id="L169" title="2 of 4 branches missed.">		if (null == aSSAM || 0 &gt; iTargetVariateIndex) return null;</span>
 
-<span class="nc" id="L171">		int iTargetVariateVarianceIndex = 0;</span>
-<span class="nc" id="L172">		int iNumNonTargetVariate = aSSAM.length - 1;</span>
+<span class="fc" id="L171">		int iTargetVariateVarianceIndex = 0;</span>
+<span class="fc" id="L172">		int iNumNonTargetVariate = aSSAM.length - 1;</span>
 
-<span class="nc bnc" id="L174" title="All 2 branches missed.">		if (0 &gt;= iNumNonTargetVariate) return null;</span>
+<span class="pc bpc" id="L174" title="1 of 2 branches missed.">		if (0 &gt;= iNumNonTargetVariate) return null;</span>
 
-<span class="nc" id="L176">		org.drip.spaces.iterator.SequenceIndexIterator sii =</span>
-<span class="nc" id="L177">			org.drip.spaces.iterator.SequenceIndexIterator.Standard (iNumNonTargetVariate,</span>
-<span class="nc" id="L178">				aSSAM[0].sequence().length);</span>
+<span class="fc" id="L176">		org.drip.spaces.iterator.SequenceIndexIterator sii =</span>
+<span class="fc" id="L177">			org.drip.spaces.iterator.SequenceIndexIterator.Standard (iNumNonTargetVariate,</span>
+<span class="fc" id="L178">				aSSAM[0].sequence().length);</span>
 
-<span class="nc bnc" id="L180" title="All 2 branches missed.">		if (null == sii) return null;</span>
+<span class="pc bpc" id="L180" title="1 of 2 branches missed.">		if (null == sii) return null;</span>
 
-<span class="nc" id="L182">		double[] adblTargetVariateVariance = new double[sii.size()];</span>
+<span class="fc" id="L182">		double[] adblTargetVariateVariance = new double[sii.size()];</span>
 
-<span class="nc" id="L184">		int[] aiNonTargetVariateSequenceIndex = sii.first();</span>
+<span class="fc" id="L184">		int[] aiNonTargetVariateSequenceIndex = sii.first();</span>
 
-<span class="nc bnc" id="L186" title="All 4 branches missed.">		while (null != aiNonTargetVariateSequenceIndex &amp;&amp; aiNonTargetVariateSequenceIndex.length ==</span>
+<span class="pc bpc" id="L186" title="1 of 4 branches missed.">		while (null != aiNonTargetVariateSequenceIndex &amp;&amp; aiNonTargetVariateSequenceIndex.length ==</span>
 			iNumNonTargetVariate) {
-<span class="nc" id="L188">			org.drip.sequence.metrics.SingleSequenceAgnosticMetrics ssamGhostConditional =</span>
-<span class="nc" id="L189">				ghostTargetVariateMetrics (aSSAM, aiNonTargetVariateSequenceIndex, iTargetVariateIndex,</span>
+<span class="fc" id="L188">			org.drip.sequence.metrics.SingleSequenceAgnosticMetrics ssamGhostConditional =</span>
+<span class="fc" id="L189">				ghostTargetVariateMetrics (aSSAM, aiNonTargetVariateSequenceIndex, iTargetVariateIndex,</span>
 					adblTargetVariateGhostSample);
 
-<span class="nc bnc" id="L192" title="All 2 branches missed.">			if (null == ssamGhostConditional) return null;</span>
+<span class="pc bpc" id="L192" title="1 of 2 branches missed.">			if (null == ssamGhostConditional) return null;</span>
 
-<span class="nc" id="L194">			adblTargetVariateVariance[iTargetVariateVarianceIndex++] =</span>
-<span class="nc" id="L195">				ssamGhostConditional.empiricalVariance();</span>
+<span class="fc" id="L194">			adblTargetVariateVariance[iTargetVariateVarianceIndex++] =</span>
+<span class="fc" id="L195">				ssamGhostConditional.empiricalVariance();</span>
 
-<span class="nc" id="L197">			aiNonTargetVariateSequenceIndex = sii.next();</span>
-<span class="nc" id="L198">		}</span>
+<span class="fc" id="L197">			aiNonTargetVariateSequenceIndex = sii.next();</span>
+<span class="fc" id="L198">		}</span>
 
 		try {
-<span class="nc" id="L201">			return new org.drip.sequence.metrics.SingleSequenceAgnosticMetrics (adblTargetVariateVariance,</span>
+<span class="fc" id="L201">			return new org.drip.sequence.metrics.SingleSequenceAgnosticMetrics (adblTargetVariateVariance,</span>
 				null);
 <span class="nc" id="L203">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L204">			e.printStackTrace();</span>
@@ -223,8 +223,8 @@ public abstract class MultivariateRandom extends org.drip.function.definition.Rd
 		final int iTargetVariateIndex,
 		final org.drip.sequence.metrics.SingleSequenceAgnosticMetrics ssamTarget)
 	{
-<span class="nc bnc" id="L226" title="All 2 branches missed.">		return null == ssamTarget ? null : ghostTargetVariateMetrics (adblNonTargetVariate,</span>
-<span class="nc" id="L227">			iTargetVariateIndex, ssamTarget.sequence());</span>
+<span class="pc bpc" id="L226" title="1 of 2 branches missed.">		return null == ssamTarget ? null : ghostTargetVariateMetrics (adblNonTargetVariate,</span>
+<span class="fc" id="L227">			iTargetVariateIndex, ssamTarget.sequence());</span>
 	}
 
 	/**
@@ -243,20 +243,20 @@ public abstract class MultivariateRandom extends org.drip.function.definition.Rd
 		final int[] aiNonTargetVariateSequenceIndex,
 		final int iTargetVariateIndex)
 	{
-<span class="nc bnc" id="L246" title="All 6 branches missed.">		if (null == aSSAM || null == aiNonTargetVariateSequenceIndex || 0 &gt; iTargetVariateIndex) return null;</span>
+<span class="pc bpc" id="L246" title="3 of 6 branches missed.">		if (null == aSSAM || null == aiNonTargetVariateSequenceIndex || 0 &gt; iTargetVariateIndex) return null;</span>
 
-<span class="nc" id="L248">		int iNumNonTargetVariate = aSSAM.length - 1;</span>
-<span class="nc" id="L249">		double[] adblNonTargetVariate = new double[iNumNonTargetVariate];</span>
+<span class="fc" id="L248">		int iNumNonTargetVariate = aSSAM.length - 1;</span>
+<span class="fc" id="L249">		double[] adblNonTargetVariate = new double[iNumNonTargetVariate];</span>
 
-<span class="nc bnc" id="L251" title="All 6 branches missed.">		if (0 &gt;= iNumNonTargetVariate || iNumNonTargetVariate != aiNonTargetVariateSequenceIndex.length ||</span>
+<span class="pc bpc" id="L251" title="3 of 6 branches missed.">		if (0 &gt;= iNumNonTargetVariate || iNumNonTargetVariate != aiNonTargetVariateSequenceIndex.length ||</span>
 			iTargetVariateIndex &gt; iNumNonTargetVariate)
 <span class="nc" id="L253">			return null;</span>
 
-<span class="nc bnc" id="L255" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumNonTargetVariate; ++i)</span>
-<span class="nc bnc" id="L256" title="All 2 branches missed.">			adblNonTargetVariate[i] = aSSAM[i &lt; iTargetVariateIndex ? i : i +</span>
-<span class="nc" id="L257">				1].sequence()[aiNonTargetVariateSequenceIndex[i]];</span>
+<span class="fc bfc" id="L255" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumNonTargetVariate; ++i)</span>
+<span class="fc bfc" id="L256" title="All 2 branches covered.">			adblNonTargetVariate[i] = aSSAM[i &lt; iTargetVariateIndex ? i : i +</span>
+<span class="fc" id="L257">				1].sequence()[aiNonTargetVariateSequenceIndex[i]];</span>
 
-<span class="nc" id="L259">		return conditionalTargetVariateMetrics (adblNonTargetVariate, iTargetVariateIndex,</span>
+<span class="fc" id="L259">		return conditionalTargetVariateMetrics (adblNonTargetVariate, iTargetVariateIndex,</span>
 			aSSAM[iTargetVariateIndex]);
 	}
 
@@ -273,38 +273,38 @@ public abstract class MultivariateRandom extends org.drip.function.definition.Rd
 		final org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAM,
 		final int iTargetVariateIndex)
 	{
-<span class="nc bnc" id="L276" title="All 4 branches missed.">		if (null == aSSAM || 0 &gt; iTargetVariateIndex) return null;</span>
+<span class="pc bpc" id="L276" title="2 of 4 branches missed.">		if (null == aSSAM || 0 &gt; iTargetVariateIndex) return null;</span>
 
-<span class="nc" id="L278">		int iTargetVariateVarianceIndex = 0;</span>
-<span class="nc" id="L279">		int iNumNonTargetVariate = aSSAM.length - 1;</span>
+<span class="fc" id="L278">		int iTargetVariateVarianceIndex = 0;</span>
+<span class="fc" id="L279">		int iNumNonTargetVariate = aSSAM.length - 1;</span>
 
-<span class="nc bnc" id="L281" title="All 2 branches missed.">		if (0 &gt;= iNumNonTargetVariate) return null;</span>
+<span class="pc bpc" id="L281" title="1 of 2 branches missed.">		if (0 &gt;= iNumNonTargetVariate) return null;</span>
 
-<span class="nc" id="L283">		org.drip.spaces.iterator.SequenceIndexIterator sii =</span>
-<span class="nc" id="L284">			org.drip.spaces.iterator.SequenceIndexIterator.Standard (iNumNonTargetVariate,</span>
-<span class="nc" id="L285">				aSSAM[0].sequence().length);</span>
+<span class="fc" id="L283">		org.drip.spaces.iterator.SequenceIndexIterator sii =</span>
+<span class="fc" id="L284">			org.drip.spaces.iterator.SequenceIndexIterator.Standard (iNumNonTargetVariate,</span>
+<span class="fc" id="L285">				aSSAM[0].sequence().length);</span>
 
-<span class="nc bnc" id="L287" title="All 2 branches missed.">		if (null == sii) return null;</span>
+<span class="pc bpc" id="L287" title="1 of 2 branches missed.">		if (null == sii) return null;</span>
 
-<span class="nc" id="L289">		double[] adblTargetVariateVariance = new double[sii.size()];</span>
+<span class="fc" id="L289">		double[] adblTargetVariateVariance = new double[sii.size()];</span>
 
-<span class="nc" id="L291">		int[] aiNonTargetVariateSequenceIndex = sii.first();</span>
+<span class="fc" id="L291">		int[] aiNonTargetVariateSequenceIndex = sii.first();</span>
 
-<span class="nc bnc" id="L293" title="All 4 branches missed.">		while (null != aiNonTargetVariateSequenceIndex &amp;&amp; aiNonTargetVariateSequenceIndex.length ==</span>
+<span class="pc bpc" id="L293" title="1 of 4 branches missed.">		while (null != aiNonTargetVariateSequenceIndex &amp;&amp; aiNonTargetVariateSequenceIndex.length ==</span>
 			iNumNonTargetVariate) {
-<span class="nc" id="L295">			org.drip.sequence.metrics.SingleSequenceAgnosticMetrics ssamConditional =</span>
-<span class="nc" id="L296">				conditionalTargetVariateMetrics (aSSAM, aiNonTargetVariateSequenceIndex,</span>
+<span class="fc" id="L295">			org.drip.sequence.metrics.SingleSequenceAgnosticMetrics ssamConditional =</span>
+<span class="fc" id="L296">				conditionalTargetVariateMetrics (aSSAM, aiNonTargetVariateSequenceIndex,</span>
 					iTargetVariateIndex);
 
-<span class="nc bnc" id="L299" title="All 2 branches missed.">			if (null == ssamConditional) return null;</span>
+<span class="pc bpc" id="L299" title="1 of 2 branches missed.">			if (null == ssamConditional) return null;</span>
 
-<span class="nc" id="L301">			adblTargetVariateVariance[iTargetVariateVarianceIndex++] = ssamConditional.empiricalVariance();</span>
+<span class="fc" id="L301">			adblTargetVariateVariance[iTargetVariateVarianceIndex++] = ssamConditional.empiricalVariance();</span>
 
-<span class="nc" id="L303">			aiNonTargetVariateSequenceIndex = sii.next();</span>
-<span class="nc" id="L304">		}</span>
+<span class="fc" id="L303">			aiNonTargetVariateSequenceIndex = sii.next();</span>
+<span class="fc" id="L304">		}</span>
 
 		try {
-<span class="nc" id="L307">			return new org.drip.sequence.metrics.SingleSequenceAgnosticMetrics (adblTargetVariateVariance,</span>
+<span class="fc" id="L307">			return new org.drip.sequence.metrics.SingleSequenceAgnosticMetrics (adblTargetVariateVariance,</span>
 				null);
 <span class="nc" id="L309">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L310">			e.printStackTrace();</span>

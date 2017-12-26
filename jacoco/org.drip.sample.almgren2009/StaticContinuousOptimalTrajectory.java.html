@@ -88,37 +88,37 @@ import org.drip.service.env.EnvManager;
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L91">		EnvManager.InitEnv (</span>
+<span class="fc" id="L91">		EnvManager.InitEnv (</span>
 			&quot;&quot;,
 			true
 		);
 
-<span class="nc" id="L96">		double dblS0 = 50.;</span>
-<span class="nc" id="L97">		double dblX = 1000000.;</span>
-<span class="nc" id="L98">		double dblT = 5.;</span>
-<span class="nc" id="L99">		double dblAnnualVolatility = 0.30;</span>
-<span class="nc" id="L100">		double dblAnnualReturns = 0.10;</span>
-<span class="nc" id="L101">		double dblBidAsk = 0.125;</span>
-<span class="nc" id="L102">		double dblDailyVolume = 5.e06;</span>
-<span class="nc" id="L103">		double dblDailyVolumePermanentImpact = 0.1;</span>
-<span class="nc" id="L104">		double dblDailyVolumeTemporaryImpact = 0.01;</span>
-<span class="nc" id="L105">		double dblLambdaU = 1.e-06;</span>
+<span class="fc" id="L96">		double dblS0 = 50.;</span>
+<span class="fc" id="L97">		double dblX = 1000000.;</span>
+<span class="fc" id="L98">		double dblT = 5.;</span>
+<span class="fc" id="L99">		double dblAnnualVolatility = 0.30;</span>
+<span class="fc" id="L100">		double dblAnnualReturns = 0.10;</span>
+<span class="fc" id="L101">		double dblBidAsk = 0.125;</span>
+<span class="fc" id="L102">		double dblDailyVolume = 5.e06;</span>
+<span class="fc" id="L103">		double dblDailyVolumePermanentImpact = 0.1;</span>
+<span class="fc" id="L104">		double dblDailyVolumeTemporaryImpact = 0.01;</span>
+<span class="fc" id="L105">		double dblLambdaU = 1.e-06;</span>
 
-<span class="nc" id="L107">		int iN = 20;</span>
+<span class="fc" id="L107">		int iN = 20;</span>
 
-<span class="nc" id="L109">		double dblTime = 0.;</span>
-<span class="nc" id="L110">		double dblTimeWidth = dblT / iN;</span>
+<span class="fc" id="L109">		double dblTime = 0.;</span>
+<span class="fc" id="L110">		double dblTimeWidth = dblT / iN;</span>
 
-<span class="nc" id="L112">		ArithmeticPriceDynamicsSettings apds = ArithmeticPriceDynamicsSettings.FromAnnualReturnsSettings (</span>
+<span class="fc" id="L112">		ArithmeticPriceDynamicsSettings apds = ArithmeticPriceDynamicsSettings.FromAnnualReturnsSettings (</span>
 			dblAnnualReturns,
 			dblAnnualVolatility,
 			0.,
 			dblS0
 		);
 
-<span class="nc" id="L119">		double dblSigma = apds.epochVolatility();</span>
+<span class="fc" id="L119">		double dblSigma = apds.epochVolatility();</span>
 
-<span class="nc" id="L121">		PriceMarketImpactLinear pmil = new PriceMarketImpactLinear (</span>
+<span class="fc" id="L121">		PriceMarketImpactLinear pmil = new PriceMarketImpactLinear (</span>
 			new AssetTransactionSettings (
 				dblS0,
 				dblDailyVolume,
@@ -128,11 +128,11 @@ import org.drip.service.env.EnvManager;
 			dblDailyVolumeTemporaryImpact
 		);
 
-<span class="nc" id="L131">		ParticipationRateLinear prlPermanent = (ParticipationRateLinear) pmil.permanentTransactionFunction();</span>
+<span class="fc" id="L131">		ParticipationRateLinear prlPermanent = (ParticipationRateLinear) pmil.permanentTransactionFunction();</span>
 
-<span class="nc" id="L133">		ParticipationRateLinear prlTemporary = (ParticipationRateLinear) pmil.temporaryTransactionFunction();</span>
+<span class="fc" id="L133">		ParticipationRateLinear prlTemporary = (ParticipationRateLinear) pmil.temporaryTransactionFunction();</span>
 
-<span class="nc" id="L135">		LinearPermanentExpectationParameters lpep = ArithmeticPriceEvolutionParametersBuilder.LinearExpectation (</span>
+<span class="fc" id="L135">		LinearPermanentExpectationParameters lpep = ArithmeticPriceEvolutionParametersBuilder.LinearExpectation (</span>
 			new ArithmeticPriceDynamicsSettings (
 				0.,
 				new FlatUnivariate (dblSigma),
@@ -142,61 +142,61 @@ import org.drip.service.env.EnvManager;
 			new UniformParticipationRateLinear (prlTemporary)
 		);
 
-<span class="nc" id="L145">		ContinuousAlmgrenChriss cac = ContinuousAlmgrenChriss.Standard (</span>
+<span class="fc" id="L145">		ContinuousAlmgrenChriss cac = ContinuousAlmgrenChriss.Standard (</span>
 			dblX,
 			dblT,
 			lpep,
 			dblLambdaU
 		);
 
-<span class="nc" id="L152">		EfficientTradingTrajectoryContinuous ettc = (EfficientTradingTrajectoryContinuous) cac.generate();</span>
+<span class="fc" id="L152">		EfficientTradingTrajectoryContinuous ettc = (EfficientTradingTrajectoryContinuous) cac.generate();</span>
 
-<span class="nc" id="L154">		R1ToR1 r1ToR1Holdings = ettc.holdings();</span>
+<span class="fc" id="L154">		R1ToR1 r1ToR1Holdings = ettc.holdings();</span>
 
-<span class="nc" id="L156">		R1ToR1 r1ToR1TradeRate = ettc.tradeRate();</span>
+<span class="fc" id="L156">		R1ToR1 r1ToR1TradeRate = ettc.tradeRate();</span>
 
-<span class="nc" id="L158">		R1ToR1 r1ToR1TransactionCostVariance = ettc.transactionCostVarianceFunction();</span>
+<span class="fc" id="L158">		R1ToR1 r1ToR1TransactionCostVariance = ettc.transactionCostVarianceFunction();</span>
 
-<span class="nc" id="L160">		R1ToR1 r1ToR1TransactionCostExpectation = ettc.transactionCostExpectationFunction();</span>
+<span class="fc" id="L160">		R1ToR1 r1ToR1TransactionCostExpectation = ettc.transactionCostExpectationFunction();</span>
 
-<span class="nc" id="L162">		System.out.println ();</span>
+<span class="fc" id="L162">		System.out.println ();</span>
 
-<span class="nc" id="L164">		System.out.println (&quot;\t|-------------------------------------------||&quot;);</span>
+<span class="fc" id="L164">		System.out.println (&quot;\t|-------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L166">		System.out.println (&quot;\t|    STATIC CONTINUOUS OPTIMAL TRAJECTORY   ||&quot;);</span>
+<span class="fc" id="L166">		System.out.println (&quot;\t|    STATIC CONTINUOUS OPTIMAL TRAJECTORY   ||&quot;);</span>
 
-<span class="nc" id="L168">		System.out.println (&quot;\t|-------------------------------------------||&quot;);</span>
+<span class="fc" id="L168">		System.out.println (&quot;\t|-------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L170">		System.out.println (&quot;\t|    L -&gt; R:                                ||&quot;);</span>
+<span class="fc" id="L170">		System.out.println (&quot;\t|    L -&gt; R:                                ||&quot;);</span>
 
-<span class="nc" id="L172">		System.out.println (&quot;\t|            - Time                         ||&quot;);</span>
+<span class="fc" id="L172">		System.out.println (&quot;\t|            - Time                         ||&quot;);</span>
 
-<span class="nc" id="L174">		System.out.println (&quot;\t|            - Holdings                     ||&quot;);</span>
+<span class="fc" id="L174">		System.out.println (&quot;\t|            - Holdings                     ||&quot;);</span>
 
-<span class="nc" id="L176">		System.out.println (&quot;\t|            - Trade Rate                   ||&quot;);</span>
+<span class="fc" id="L176">		System.out.println (&quot;\t|            - Trade Rate                   ||&quot;);</span>
 
-<span class="nc" id="L178">		System.out.println (&quot;\t|            - Transaction Cost Expectation ||&quot;);</span>
+<span class="fc" id="L178">		System.out.println (&quot;\t|            - Transaction Cost Expectation ||&quot;);</span>
 
-<span class="nc" id="L180">		System.out.println (&quot;\t|            - Transaction Cost Volatility  ||&quot;);</span>
+<span class="fc" id="L180">		System.out.println (&quot;\t|            - Transaction Cost Volatility  ||&quot;);</span>
 
-<span class="nc" id="L182">		System.out.println (&quot;\t|-------------------------------------------||&quot;);</span>
+<span class="fc" id="L182">		System.out.println (&quot;\t|-------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L184" title="All 2 branches missed.">		for (int i = 1; i &lt;= iN; ++i) {</span>
-<span class="nc" id="L185">			dblTime = dblTime + dblTimeWidth;</span>
+<span class="fc bfc" id="L184" title="All 2 branches covered.">		for (int i = 1; i &lt;= iN; ++i) {</span>
+<span class="fc" id="L185">			dblTime = dblTime + dblTimeWidth;</span>
 
-<span class="nc" id="L187">			System.out.println (</span>
+<span class="fc" id="L187">			System.out.println (</span>
 				&quot;\t|&quot; +
-<span class="nc" id="L189">				FormatUtil.FormatDouble (dblTime, 1, 2, 1.) + &quot; =&gt; &quot; +</span>
-<span class="nc" id="L190">				FormatUtil.FormatDouble (r1ToR1Holdings.evaluate (dblTime) / dblX, 1, 3, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L191">				FormatUtil.FormatDouble (r1ToR1TradeRate.evaluate (dblTime) * dblTimeWidth / dblX, 1, 3, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L192">				FormatUtil.FormatDouble (r1ToR1TransactionCostExpectation.evaluate (dblTime) / dblX, 1, 3, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L193">				FormatUtil.FormatDouble (Math.sqrt (r1ToR1TransactionCostVariance.evaluate (dblTime)) / dblX, 1, 3, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L189">				FormatUtil.FormatDouble (dblTime, 1, 2, 1.) + &quot; =&gt; &quot; +</span>
+<span class="fc" id="L190">				FormatUtil.FormatDouble (r1ToR1Holdings.evaluate (dblTime) / dblX, 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L191">				FormatUtil.FormatDouble (r1ToR1TradeRate.evaluate (dblTime) * dblTimeWidth / dblX, 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L192">				FormatUtil.FormatDouble (r1ToR1TransactionCostExpectation.evaluate (dblTime) / dblX, 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L193">				FormatUtil.FormatDouble (Math.sqrt (r1ToR1TransactionCostVariance.evaluate (dblTime)) / dblX, 1, 3, 1.) + &quot; ||&quot;</span>
 			);
 		}
 
-<span class="nc" id="L197">		System.out.println (&quot;\t|-------------------------------------------||&quot;);</span>
+<span class="fc" id="L197">		System.out.println (&quot;\t|-------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L199">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L200">	}</span>
+<span class="fc" id="L199">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L200">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

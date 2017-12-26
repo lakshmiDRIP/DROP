@@ -59,8 +59,8 @@ package org.drip.spline.bspline;
  */
 
 public class TensionProcessedBasisHat extends org.drip.spline.bspline.TensionBasisHat {
-<span class="nc" id="L62">	private int _iDerivOrder = -1;</span>
-<span class="nc" id="L63">	private org.drip.spline.bspline.TensionBasisHat _tbhRaw = null;</span>
+<span class="fc" id="L62">	private int _iDerivOrder = -1;</span>
+<span class="fc" id="L63">	private org.drip.spline.bspline.TensionBasisHat _tbhRaw = null;</span>
 
 	/**
 	 * TensionProcessedBasisHat constructor
@@ -76,17 +76,17 @@ public class TensionProcessedBasisHat extends org.drip.spline.bspline.TensionBas
 		final int iDerivOrder)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L79">		super (tbhRaw.left(), tbhRaw.right(), tbhRaw.tension());</span>
+<span class="fc" id="L79">		super (tbhRaw.left(), tbhRaw.right(), tbhRaw.tension());</span>
 
-<span class="nc bnc" id="L81" title="All 4 branches missed.">		if (null == (_tbhRaw = tbhRaw) || 0 &gt;= (_iDerivOrder = iDerivOrder))</span>
+<span class="pc bpc" id="L81" title="2 of 4 branches missed.">		if (null == (_tbhRaw = tbhRaw) || 0 &gt;= (_iDerivOrder = iDerivOrder))</span>
 <span class="nc" id="L82">			throw new java.lang.Exception (&quot;TensionProcessedBasisHat ctr: Invalid Input&quot;);</span>
-<span class="nc" id="L83">	}</span>
+<span class="fc" id="L83">	}</span>
 
 	@Override public double evaluate (
 		final double dblPredictorOrdinate)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L89" title="All 2 branches missed.">		return in (dblPredictorOrdinate) ? _tbhRaw.derivative (dblPredictorOrdinate, _iDerivOrder) : 0.;</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">		return in (dblPredictorOrdinate) ? _tbhRaw.derivative (dblPredictorOrdinate, _iDerivOrder) : 0.;</span>
 	}
 
 	@Override public double derivative (
@@ -94,12 +94,12 @@ public class TensionProcessedBasisHat extends org.drip.spline.bspline.TensionBas
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L97" title="All 2 branches missed.">		if (0 &gt; iOrder)</span>
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">		if (0 &gt; iOrder)</span>
 <span class="nc" id="L98">			throw new java.lang.Exception (&quot;TensionProcessedBasisHat::derivative =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L100" title="All 2 branches missed.">		if (!in (dblPredictorOrdinate)) return 0.;</span>
+<span class="fc bfc" id="L100" title="All 2 branches covered.">		if (!in (dblPredictorOrdinate)) return 0.;</span>
 
-<span class="nc" id="L102">		return _tbhRaw.derivative (dblPredictorOrdinate, iOrder + _iDerivOrder);</span>
+<span class="fc" id="L102">		return _tbhRaw.derivative (dblPredictorOrdinate, iOrder + _iDerivOrder);</span>
 	}
 
 	@Override public double integrate (
@@ -107,19 +107,19 @@ public class TensionProcessedBasisHat extends org.drip.spline.bspline.TensionBas
 		final double dblEnd)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L110" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L111" title="All 2 branches missed.">			(dblEnd))</span>
+<span class="pc bpc" id="L110" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">			(dblEnd))</span>
 <span class="nc" id="L112">			throw new java.lang.Exception (&quot;TensionProcessedBasisHat::integrate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L114">		double dblBoundedBegin = org.drip.quant.common.NumberUtil.Bound (dblBegin, left(), right());</span>
+<span class="fc" id="L114">		double dblBoundedBegin = org.drip.quant.common.NumberUtil.Bound (dblBegin, left(), right());</span>
 
-<span class="nc" id="L116">		double dblBoundedEnd = org.drip.quant.common.NumberUtil.Bound (dblEnd, left(), right());</span>
+<span class="fc" id="L116">		double dblBoundedEnd = org.drip.quant.common.NumberUtil.Bound (dblEnd, left(), right());</span>
 
-<span class="nc bnc" id="L118" title="All 2 branches missed.">		if (dblBoundedBegin &gt;= dblBoundedEnd) return 0.;</span>
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">		if (dblBoundedBegin &gt;= dblBoundedEnd) return 0.;</span>
 
-<span class="nc bnc" id="L120" title="All 2 branches missed.">		if (1 == _iDerivOrder) return _tbhRaw.evaluate (dblBoundedEnd) - _tbhRaw.evaluate (dblBoundedBegin);</span>
+<span class="pc bpc" id="L120" title="1 of 2 branches missed.">		if (1 == _iDerivOrder) return _tbhRaw.evaluate (dblBoundedEnd) - _tbhRaw.evaluate (dblBoundedBegin);</span>
 
-<span class="nc" id="L122">		return _tbhRaw.derivative (dblBoundedEnd, _iDerivOrder - 1) - _tbhRaw.derivative (dblBoundedBegin,</span>
+<span class="fc" id="L122">		return _tbhRaw.derivative (dblBoundedEnd, _iDerivOrder - 1) - _tbhRaw.derivative (dblBoundedBegin,</span>
 			_iDerivOrder - 1);
 	}
 

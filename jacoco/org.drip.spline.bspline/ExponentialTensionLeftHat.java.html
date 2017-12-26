@@ -77,16 +77,16 @@ public class ExponentialTensionLeftHat extends org.drip.spline.bspline.TensionBa
 		final double dblTension)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L80">		super (dblLeftPredictorOrdinate, dblRightPredictorOrdinate, dblTension);</span>
-<span class="nc" id="L81">	}</span>
+<span class="fc" id="L80">		super (dblLeftPredictorOrdinate, dblRightPredictorOrdinate, dblTension);</span>
+<span class="fc" id="L81">	}</span>
 
 	@Override public double evaluate (
 		final double dblPredictorOrdinate)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L87" title="All 2 branches missed.">		if (!in (dblPredictorOrdinate)) return 0.;</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">		if (!in (dblPredictorOrdinate)) return 0.;</span>
 
-<span class="nc" id="L89">		return java.lang.Math.sinh (tension() * (dblPredictorOrdinate - left())) * normalizer();</span>
+<span class="fc" id="L89">		return java.lang.Math.sinh (tension() * (dblPredictorOrdinate - left())) * normalizer();</span>
 	}
 
 	@Override public double derivative (
@@ -94,14 +94,14 @@ public class ExponentialTensionLeftHat extends org.drip.spline.bspline.TensionBa
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L97" title="All 2 branches missed.">		if (0 &gt; iOrder)</span>
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">		if (0 &gt; iOrder)</span>
 <span class="nc" id="L98">			throw new java.lang.Exception (&quot;ExponentialTensionLeftHat::derivative =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L100" title="All 2 branches missed.">		if (!in (dblPredictorOrdinate)) return 0.;</span>
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">		if (!in (dblPredictorOrdinate)) return 0.;</span>
 
-<span class="nc bnc" id="L102" title="All 2 branches missed.">		return java.lang.Math.pow (tension(), iOrder) * (0 == iOrder % 2 ? java.lang.Math.sinh (tension() *</span>
-<span class="nc" id="L103">			(dblPredictorOrdinate - left())) : java.lang.Math.cosh (tension() * (dblPredictorOrdinate -</span>
-<span class="nc" id="L104">				left()))) / normalizer();</span>
+<span class="pc bpc" id="L102" title="1 of 2 branches missed.">		return java.lang.Math.pow (tension(), iOrder) * (0 == iOrder % 2 ? java.lang.Math.sinh (tension() *</span>
+<span class="pc" id="L103">			(dblPredictorOrdinate - left())) : java.lang.Math.cosh (tension() * (dblPredictorOrdinate -</span>
+<span class="fc" id="L104">				left()))) / normalizer();</span>
 	}
 
 	@Override public double integrate (
@@ -109,26 +109,26 @@ public class ExponentialTensionLeftHat extends org.drip.spline.bspline.TensionBa
 		final double dblEnd)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L112" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L113" title="All 2 branches missed.">			(dblEnd))</span>
+<span class="pc bpc" id="L112" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L113" title="1 of 2 branches missed.">			(dblEnd))</span>
 <span class="nc" id="L114">			throw new java.lang.Exception (&quot;ExponentialTensionLeftHat::integrate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L116">		double dblBoundedBegin = org.drip.quant.common.NumberUtil.Bound (dblBegin, left(), right());</span>
+<span class="fc" id="L116">		double dblBoundedBegin = org.drip.quant.common.NumberUtil.Bound (dblBegin, left(), right());</span>
 
-<span class="nc" id="L118">		double dblBoundedEnd = org.drip.quant.common.NumberUtil.Bound (dblEnd, left(), right());</span>
+<span class="fc" id="L118">		double dblBoundedEnd = org.drip.quant.common.NumberUtil.Bound (dblEnd, left(), right());</span>
 
-<span class="nc bnc" id="L120" title="All 2 branches missed.">		if (dblBoundedBegin &gt;= dblBoundedEnd) return 0.;</span>
+<span class="pc bpc" id="L120" title="1 of 2 branches missed.">		if (dblBoundedBegin &gt;= dblBoundedEnd) return 0.;</span>
 
-<span class="nc bnc" id="L122" title="All 2 branches missed.">		if (0. == tension()) return dblBoundedEnd - dblBoundedBegin;</span>
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">		if (0. == tension()) return dblBoundedEnd - dblBoundedBegin;</span>
 
-<span class="nc" id="L124">		return (java.lang.Math.cosh (tension() * (dblBoundedEnd - left())) - java.lang.Math.cosh (tension() *</span>
-<span class="nc" id="L125">			(dblBoundedBegin - left()))) * normalizer() / tension();</span>
+<span class="fc" id="L124">		return (java.lang.Math.cosh (tension() * (dblBoundedEnd - left())) - java.lang.Math.cosh (tension() *</span>
+<span class="fc" id="L125">			(dblBoundedBegin - left()))) * normalizer() / tension();</span>
 	}
 
 	@Override public double normalizer()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L131">		return (java.lang.Math.cosh (tension() * (right() - left())) - 1.) / tension();</span>
+<span class="fc" id="L131">		return (java.lang.Math.cosh (tension() * (right() - left())) - 1.) / tension();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -345,20 +345,20 @@ package org.drip.spline.basis;
 	public static final org.drip.spline.basis.FunctionSet BSplineBasisSet (
 		final org.drip.spline.basis.BSplineSequenceParams bssp)
 	{
-<span class="nc bnc" id="L348" title="All 2 branches missed.">		if (null == bssp) return null;</span>
+<span class="pc bpc" id="L348" title="1 of 2 branches missed.">		if (null == bssp) return null;</span>
 
-<span class="nc" id="L350">		org.drip.spline.bspline.SegmentBasisFunction[] aSBF =</span>
-<span class="nc" id="L351">			org.drip.spline.bspline.SegmentBasisFunctionGenerator.MonicSequence (bssp.hat(),</span>
-<span class="nc" id="L352">				bssp.shapeControl(), bssp.predictorOrdinates(), bssp.procBasisDerivOrder(), bssp.tension());</span>
+<span class="fc" id="L350">		org.drip.spline.bspline.SegmentBasisFunction[] aSBF =</span>
+<span class="fc" id="L351">			org.drip.spline.bspline.SegmentBasisFunctionGenerator.MonicSequence (bssp.hat(),</span>
+<span class="fc" id="L352">				bssp.shapeControl(), bssp.predictorOrdinates(), bssp.procBasisDerivOrder(), bssp.tension());</span>
 
-<span class="nc bnc" id="L354" title="All 4 branches missed.">		if (null == aSBF || bssp.numBasis() &gt;= aSBF.length) return null;</span>
+<span class="pc bpc" id="L354" title="2 of 4 branches missed.">		if (null == aSBF || bssp.numBasis() &gt;= aSBF.length) return null;</span>
 
-<span class="nc" id="L356">		int iBSplineOrder = bssp.bSplineOrder();</span>
+<span class="fc" id="L356">		int iBSplineOrder = bssp.bSplineOrder();</span>
 
 		try {
-<span class="nc bnc" id="L359" title="All 2 branches missed.">			return new org.drip.spline.bspline.SegmentBasisFunctionSet (bssp.numBasis(), bssp.tension(), 2 ==</span>
+<span class="pc bpc" id="L359" title="1 of 2 branches missed.">			return new org.drip.spline.bspline.SegmentBasisFunctionSet (bssp.numBasis(), bssp.tension(), 2 ==</span>
 				iBSplineOrder ? aSBF : org.drip.spline.bspline.SegmentBasisFunctionGenerator.MulticSequence
-<span class="nc" id="L361">					(iBSplineOrder, aSBF));</span>
+<span class="fc" id="L361">					(iBSplineOrder, aSBF));</span>
 <span class="nc" id="L362">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L363">			e.printStackTrace();</span>
 		}

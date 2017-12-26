@@ -80,15 +80,15 @@ import org.drip.state.sequence.*;
 		final double dblBump)
 		throws Exception
 	{
-<span class="nc" id="L83">		String[] astrDepositMaturityTenor = new String[] {</span>
+<span class="fc" id="L83">		String[] astrDepositMaturityTenor = new String[] {</span>
 			&quot;2D&quot;
 		};
 
-<span class="nc" id="L87">		double[] adblDepositQuote = new double[] {</span>
+<span class="fc" id="L87">		double[] adblDepositQuote = new double[] {</span>
 			0.0111956 + dblBump // 2D
 		};
 
-<span class="nc" id="L91">		double[] adblFuturesQuote = new double[] {</span>
+<span class="fc" id="L91">		double[] adblFuturesQuote = new double[] {</span>
 			0.011375 + dblBump,	// 98.8625
 			0.013350 + dblBump,	// 98.6650
 			0.014800 + dblBump,	// 98.5200
@@ -97,7 +97,7 @@ import org.drip.state.sequence.*;
 			0.019300 + dblBump	// 98.0700
 		};
 
-<span class="nc" id="L100">		String[] astrFixFloatMaturityTenor = new String[] {</span>
+<span class="fc" id="L100">		String[] astrFixFloatMaturityTenor = new String[] {</span>
 			&quot;02Y&quot;,
 			&quot;03Y&quot;,
 			&quot;04Y&quot;,
@@ -117,7 +117,7 @@ import org.drip.state.sequence.*;
 			&quot;50Y&quot;
 		};
 
-<span class="nc" id="L120">		double[] adblFixFloatQuote = new double[] {</span>
+<span class="fc" id="L120">		double[] adblFixFloatQuote = new double[] {</span>
 			0.017029 + dblBump, //  2Y
 			0.019354 + dblBump, //  3Y
 			0.021044 + dblBump, //  4Y
@@ -137,7 +137,7 @@ import org.drip.state.sequence.*;
 			0.027655 + dblBump  // 50Y
 		};
 
-<span class="nc" id="L140">		return LatentMarketStateBuilder.SmoothFundingCurve (</span>
+<span class="fc" id="L140">		return LatentMarketStateBuilder.SmoothFundingCurve (</span>
 			dtSpot,
 			strCurrency,
 			astrDepositMaturityTenor,
@@ -157,10 +157,10 @@ import org.drip.state.sequence.*;
 		final int iNumVertex)
 		throws Exception
 	{
-<span class="nc" id="L160">		double dblVolatility = 0.10;</span>
-<span class="nc" id="L161">		String strTreasuryCode = &quot;UST&quot;;</span>
+<span class="fc" id="L160">		double dblVolatility = 0.10;</span>
+<span class="fc" id="L161">		String strTreasuryCode = &quot;UST&quot;;</span>
 
-<span class="nc" id="L163">		String[] astrTenor = new String[] {</span>
+<span class="fc" id="L163">		String[] astrTenor = new String[] {</span>
 			&quot;01Y&quot;,
 			&quot;02Y&quot;,
 			&quot;03Y&quot;,
@@ -171,7 +171,7 @@ import org.drip.state.sequence.*;
 			&quot;30Y&quot;
 		};
 
-<span class="nc" id="L174">		double[] adblTreasuryCoupon = new double[] {</span>
+<span class="fc" id="L174">		double[] adblTreasuryCoupon = new double[] {</span>
 			0.0100,
 			0.0100,
 			0.0125,
@@ -182,7 +182,7 @@ import org.drip.state.sequence.*;
 			0.0300
 		};
 
-<span class="nc" id="L185">		double[] adblTreasuryYield = new double[] {</span>
+<span class="fc" id="L185">		double[] adblTreasuryYield = new double[] {</span>
 			0.0083,	//  1Y
 			0.0122, //  2Y
 			0.0149, //  3Y
@@ -193,15 +193,15 @@ import org.drip.state.sequence.*;
 			0.0308  // 30Y
 		};
 
-<span class="nc" id="L196">		int iNumDimension = astrTenor.length;</span>
-<span class="nc" id="L197">		double[][] aadblCorrelation = new double[iNumDimension][iNumDimension];</span>
+<span class="fc" id="L196">		int iNumDimension = astrTenor.length;</span>
+<span class="fc" id="L197">		double[][] aadblCorrelation = new double[iNumDimension][iNumDimension];</span>
 
-<span class="nc bnc" id="L199" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumDimension; ++i) {</span>
-<span class="nc bnc" id="L200" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumDimension; ++j)</span>
-<span class="nc bnc" id="L201" title="All 2 branches missed.">				aadblCorrelation[i][j] = i == j ? 1. : 0.;</span>
+<span class="fc bfc" id="L199" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumDimension; ++i) {</span>
+<span class="fc bfc" id="L200" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumDimension; ++j)</span>
+<span class="fc bfc" id="L201" title="All 2 branches covered.">				aadblCorrelation[i][j] = i == j ? 1. : 0.;</span>
 		}
 
-<span class="nc" id="L204">		GovvieBuilderSettings gbs = new GovvieBuilderSettings (</span>
+<span class="fc" id="L204">		GovvieBuilderSettings gbs = new GovvieBuilderSettings (</span>
 			dtSpot,
 			strTreasuryCode,
 			astrTenor,
@@ -209,7 +209,7 @@ import org.drip.state.sequence.*;
 			adblTreasuryYield
 		);
 
-<span class="nc" id="L212">		return PathVertexGovvie.Standard (</span>
+<span class="fc" id="L212">		return PathVertexGovvie.Standard (</span>
 			gbs,
 			new CorrelatedPathVertexDimension (
 				new RandomNumberGenerator(),
@@ -220,7 +220,7 @@ import org.drip.state.sequence.*;
 				null
 			),
 			new DiffusionEvolver (
-<span class="nc" id="L223">				DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="fc" id="L223">				DiffusionEvaluatorLogarithmic.Standard (</span>
 					0.,
 					dblVolatility
 				)
@@ -232,24 +232,24 @@ import org.drip.state.sequence.*;
 		final EmbeddedOptionSchedule eos)
 		throws Exception
 	{
-<span class="nc" id="L235">		JulianDate dtEffective = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L235">		JulianDate dtEffective = DateUtil.CreateFromYMD (</span>
 			2009,
 			12,
 			3
 		);
 
-<span class="nc" id="L241">		JulianDate dtMaturity  = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L241">		JulianDate dtMaturity  = DateUtil.CreateFromYMD (</span>
 			2039,
 			12,
 			1
 		);
 
-<span class="nc" id="L247">		double dblCoupon = 0.06558;</span>
-<span class="nc" id="L248">		int iFreq = 2;</span>
-<span class="nc" id="L249">		String strCUSIP = &quot;033177XV3&quot;;</span>
-<span class="nc" id="L250">		String strDayCount = &quot;30/360&quot;;</span>
+<span class="fc" id="L247">		double dblCoupon = 0.06558;</span>
+<span class="fc" id="L248">		int iFreq = 2;</span>
+<span class="fc" id="L249">		String strCUSIP = &quot;033177XV3&quot;;</span>
+<span class="fc" id="L250">		String strDayCount = &quot;30/360&quot;;</span>
 
-<span class="nc" id="L252">		BondComponent bond = BondBuilder.CreateSimpleFixed (</span>
+<span class="fc" id="L252">		BondComponent bond = BondBuilder.CreateSimpleFixed (</span>
 			strCUSIP,
 			&quot;USD&quot;,
 			&quot;&quot;,
@@ -262,48 +262,48 @@ import org.drip.state.sequence.*;
 			null
 		);
 
-<span class="nc" id="L265">		bond.setEmbeddedCallSchedule (eos);</span>
+<span class="fc" id="L265">		bond.setEmbeddedCallSchedule (eos);</span>
 
-<span class="nc" id="L267">		return bond;</span>
+<span class="fc" id="L267">		return bond;</span>
 	}
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L274">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L274">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L276">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L276">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
 			2017,
 			DateUtil.MARCH,
 			24
 		);
 
-<span class="nc" id="L282">		int iNumPath = 50;</span>
-<span class="nc" id="L283">		double dblCleanPrice = 1.08641;</span>
-<span class="nc" id="L284">		int[] aiExerciseDate = new int[] {</span>
-<span class="nc" id="L285">			DateUtil.CreateFromYMD (2019, 12,  1).julian(),</span>
-<span class="nc" id="L286">			DateUtil.CreateFromYMD (2020, 12,  1).julian(),</span>
-<span class="nc" id="L287">			DateUtil.CreateFromYMD (2021, 12,  1).julian(),</span>
-<span class="nc" id="L288">			DateUtil.CreateFromYMD (2022, 12,  1).julian(),</span>
-<span class="nc" id="L289">			DateUtil.CreateFromYMD (2023, 12,  1).julian(),</span>
-<span class="nc" id="L290">			DateUtil.CreateFromYMD (2024, 12,  1).julian(),</span>
-<span class="nc" id="L291">			DateUtil.CreateFromYMD (2025, 12,  1).julian(),</span>
-<span class="nc" id="L292">			DateUtil.CreateFromYMD (2026, 12,  1).julian(),</span>
-<span class="nc" id="L293">			DateUtil.CreateFromYMD (2027, 12,  1).julian(),</span>
-<span class="nc" id="L294">			DateUtil.CreateFromYMD (2028, 12,  1).julian(),</span>
-<span class="nc" id="L295">			DateUtil.CreateFromYMD (2029, 12,  1).julian(),</span>
-<span class="nc" id="L296">			DateUtil.CreateFromYMD (2030, 12,  1).julian(),</span>
-<span class="nc" id="L297">			DateUtil.CreateFromYMD (2031, 12,  1).julian(),</span>
-<span class="nc" id="L298">			DateUtil.CreateFromYMD (2032, 12,  1).julian(),</span>
-<span class="nc" id="L299">			DateUtil.CreateFromYMD (2033, 12,  1).julian(),</span>
-<span class="nc" id="L300">			DateUtil.CreateFromYMD (2034, 12,  1).julian(),</span>
-<span class="nc" id="L301">			DateUtil.CreateFromYMD (2035, 12,  1).julian(),</span>
-<span class="nc" id="L302">			DateUtil.CreateFromYMD (2036, 12,  1).julian(),</span>
-<span class="nc" id="L303">			DateUtil.CreateFromYMD (2037, 12,  1).julian(),</span>
-<span class="nc" id="L304">			DateUtil.CreateFromYMD (2038, 12,  1).julian(),</span>
+<span class="fc" id="L282">		int iNumPath = 50;</span>
+<span class="fc" id="L283">		double dblCleanPrice = 1.08641;</span>
+<span class="fc" id="L284">		int[] aiExerciseDate = new int[] {</span>
+<span class="fc" id="L285">			DateUtil.CreateFromYMD (2019, 12,  1).julian(),</span>
+<span class="fc" id="L286">			DateUtil.CreateFromYMD (2020, 12,  1).julian(),</span>
+<span class="fc" id="L287">			DateUtil.CreateFromYMD (2021, 12,  1).julian(),</span>
+<span class="fc" id="L288">			DateUtil.CreateFromYMD (2022, 12,  1).julian(),</span>
+<span class="fc" id="L289">			DateUtil.CreateFromYMD (2023, 12,  1).julian(),</span>
+<span class="fc" id="L290">			DateUtil.CreateFromYMD (2024, 12,  1).julian(),</span>
+<span class="fc" id="L291">			DateUtil.CreateFromYMD (2025, 12,  1).julian(),</span>
+<span class="fc" id="L292">			DateUtil.CreateFromYMD (2026, 12,  1).julian(),</span>
+<span class="fc" id="L293">			DateUtil.CreateFromYMD (2027, 12,  1).julian(),</span>
+<span class="fc" id="L294">			DateUtil.CreateFromYMD (2028, 12,  1).julian(),</span>
+<span class="fc" id="L295">			DateUtil.CreateFromYMD (2029, 12,  1).julian(),</span>
+<span class="fc" id="L296">			DateUtil.CreateFromYMD (2030, 12,  1).julian(),</span>
+<span class="fc" id="L297">			DateUtil.CreateFromYMD (2031, 12,  1).julian(),</span>
+<span class="fc" id="L298">			DateUtil.CreateFromYMD (2032, 12,  1).julian(),</span>
+<span class="fc" id="L299">			DateUtil.CreateFromYMD (2033, 12,  1).julian(),</span>
+<span class="fc" id="L300">			DateUtil.CreateFromYMD (2034, 12,  1).julian(),</span>
+<span class="fc" id="L301">			DateUtil.CreateFromYMD (2035, 12,  1).julian(),</span>
+<span class="fc" id="L302">			DateUtil.CreateFromYMD (2036, 12,  1).julian(),</span>
+<span class="fc" id="L303">			DateUtil.CreateFromYMD (2037, 12,  1).julian(),</span>
+<span class="fc" id="L304">			DateUtil.CreateFromYMD (2038, 12,  1).julian(),</span>
 		};
-<span class="nc" id="L306">		double[] adblExercisePrice = new double[] {</span>
+<span class="fc" id="L306">		double[] adblExercisePrice = new double[] {</span>
 			1.,
 			1.,
 			1.,
@@ -326,11 +326,11 @@ import org.drip.state.sequence.*;
 			1.,
 		};
 
-<span class="nc" id="L329">		int iNumVertex = aiExerciseDate.length;</span>
-<span class="nc" id="L330">		double[][] aadblForwardPrice = new double[iNumPath][iNumVertex];</span>
-<span class="nc" id="L331">		ValuationParams[] aValParamsEvent = new ValuationParams[iNumVertex];</span>
+<span class="fc" id="L329">		int iNumVertex = aiExerciseDate.length;</span>
+<span class="fc" id="L330">		double[][] aadblForwardPrice = new double[iNumPath][iNumVertex];</span>
+<span class="fc" id="L331">		ValuationParams[] aValParamsEvent = new ValuationParams[iNumVertex];</span>
 
-<span class="nc" id="L333">		BondComponent bond = Callable (</span>
+<span class="fc" id="L333">		BondComponent bond = Callable (</span>
 			new EmbeddedOptionSchedule (
 				aiExerciseDate,
 				adblExercisePrice,
@@ -343,23 +343,23 @@ import org.drip.state.sequence.*;
 			)
 		);
 
-<span class="nc" id="L346">		PathVertexGovvie mcrg = ScenarioGovvieCurves (</span>
+<span class="fc" id="L346">		PathVertexGovvie mcrg = ScenarioGovvieCurves (</span>
 			dtSpot,
 			iNumPath,
 			iNumVertex
 		);
 
-<span class="nc" id="L352">		GovvieCurve[][] aaGCPathEvent = mcrg.pathVertex (aiExerciseDate);</span>
+<span class="fc" id="L352">		GovvieCurve[][] aaGCPathEvent = mcrg.pathVertex (aiExerciseDate);</span>
 
-<span class="nc" id="L354">		MergedDiscountForwardCurve mdfc = FundingCurve (</span>
+<span class="fc" id="L354">		MergedDiscountForwardCurve mdfc = FundingCurve (</span>
 			dtSpot,
 			&quot;USD&quot;,
 			0.
 		);
 
-<span class="nc" id="L360">		CurveSurfaceQuoteContainer csqcBase = MarketParamsBuilder.Create (</span>
+<span class="fc" id="L360">		CurveSurfaceQuoteContainer csqcBase = MarketParamsBuilder.Create (</span>
 			mdfc,
-<span class="nc" id="L362">			mcrg.govvieBuilderSettings().groundState(),</span>
+<span class="fc" id="L362">			mcrg.govvieBuilderSettings().groundState(),</span>
 			null,
 			null,
 			null,
@@ -367,31 +367,31 @@ import org.drip.state.sequence.*;
 			null
 		);
 
-<span class="nc" id="L370">		ValuationParams valParamsSpot = ValuationParams.Spot (dtSpot.julian());</span>
+<span class="fc" id="L370">		ValuationParams valParamsSpot = ValuationParams.Spot (dtSpot.julian());</span>
 
-<span class="nc" id="L372">		double dblOASSpot = bond.oasFromPrice (</span>
+<span class="fc" id="L372">		double dblOASSpot = bond.oasFromPrice (</span>
 			valParamsSpot,
 			csqcBase,
 			null,
 			dblCleanPrice
 		);
 
-<span class="nc bnc" id="L379" title="All 2 branches missed.">		for (int iVertex = 0; iVertex &lt; iNumVertex; ++iVertex)</span>
-<span class="nc" id="L380">			aValParamsEvent[iVertex] = ValuationParams.Spot (aiExerciseDate[iVertex]);</span>
+<span class="fc bfc" id="L379" title="All 2 branches covered.">		for (int iVertex = 0; iVertex &lt; iNumVertex; ++iVertex)</span>
+<span class="fc" id="L380">			aValParamsEvent[iVertex] = ValuationParams.Spot (aiExerciseDate[iVertex]);</span>
 
-<span class="nc" id="L382">		System.out.println();</span>
+<span class="fc" id="L382">		System.out.println();</span>
 
-<span class="nc" id="L384">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L384">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L386">		System.out.println (&quot;\t||                                                                                FORWARD BOND PRICE                                                                                 ||&quot;);</span>
+<span class="fc" id="L386">		System.out.println (&quot;\t||                                                                                FORWARD BOND PRICE                                                                                 ||&quot;);</span>
 
-<span class="nc" id="L388">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L388">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L390" title="All 2 branches missed.">		for (int iPath = 0; iPath &lt; iNumPath; ++iPath) {</span>
-<span class="nc" id="L391">			String strDump = &quot;\t||&quot;;</span>
+<span class="fc bfc" id="L390" title="All 2 branches covered.">		for (int iPath = 0; iPath &lt; iNumPath; ++iPath) {</span>
+<span class="fc" id="L391">			String strDump = &quot;\t||&quot;;</span>
 
-<span class="nc bnc" id="L393" title="All 2 branches missed.">			for (int iVertex = 0; iVertex &lt; iNumVertex; ++iVertex) {</span>
-<span class="nc" id="L394">				CurveSurfaceQuoteContainer csqcEvent = MarketParamsBuilder.Create (</span>
+<span class="fc bfc" id="L393" title="All 2 branches covered.">			for (int iVertex = 0; iVertex &lt; iNumVertex; ++iVertex) {</span>
+<span class="fc" id="L394">				CurveSurfaceQuoteContainer csqcEvent = MarketParamsBuilder.Create (</span>
 					mdfc,
 					aaGCPathEvent[iPath][iVertex],
 					null,
@@ -401,8 +401,8 @@ import org.drip.state.sequence.*;
 					null
 				);
 
-<span class="nc" id="L404">				strDump = strDump + FormatUtil.FormatDouble (</span>
-<span class="nc" id="L405">					aadblForwardPrice[iPath][iVertex] = bond.priceFromOAS (</span>
+<span class="fc" id="L404">				strDump = strDump + FormatUtil.FormatDouble (</span>
+<span class="fc" id="L405">					aadblForwardPrice[iPath][iVertex] = bond.priceFromOAS (</span>
 						aValParamsEvent[iVertex],
 						csqcEvent,
 						null,
@@ -410,12 +410,12 @@ import org.drip.state.sequence.*;
 					), 3, 2, 100) + &quot; |&quot;;
 			}
 
-<span class="nc" id="L413">			System.out.println (strDump + &quot;|&quot;);</span>
+<span class="fc" id="L413">			System.out.println (strDump + &quot;|&quot;);</span>
 		}
 
-<span class="nc" id="L416">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L416">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L418">		System.out.println();</span>
-<span class="nc" id="L419">	}</span>
+<span class="fc" id="L418">		System.out.println();</span>
+<span class="fc" id="L419">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -70,8 +70,8 @@ package org.drip.execution.optimum;
  */
 
 public class TradingEnhancedDiscrete extends org.drip.execution.optimum.EfficientTradingTrajectoryDiscrete {
-<span class="nc" id="L73">	private double _dblCharacteristicSize = java.lang.Double.NaN;</span>
-<span class="nc" id="L74">	private double _dblCharacteristicTime = java.lang.Double.NaN;</span>
+<span class="fc" id="L73">	private double _dblCharacteristicSize = java.lang.Double.NaN;</span>
+<span class="fc" id="L74">	private double _dblCharacteristicTime = java.lang.Double.NaN;</span>
 
 	/**
 	 * Construct a Standard TradingEnhancedDiscrete Instance
@@ -90,18 +90,18 @@ public class TradingEnhancedDiscrete extends org.drip.execution.optimum.Efficien
 		final double dblCharacteristicTime,
 		final double dblCharacteristicSize)
 	{
-<span class="nc bnc" id="L93" title="All 4 branches missed.">		if (null == dtt || null == apep) return null;</span>
+<span class="pc bpc" id="L93" title="2 of 4 branches missed.">		if (null == dtt || null == apep) return null;</span>
 
 		try {
-<span class="nc" id="L96">			org.drip.measure.gaussian.R1UnivariateNormal r1un = (new</span>
+<span class="fc" id="L96">			org.drip.measure.gaussian.R1UnivariateNormal r1un = (new</span>
 				org.drip.execution.capture.TrajectoryShortfallEstimator (dtt)).totalCostDistributionSynopsis
-<span class="nc" id="L98">					(apep);</span>
+<span class="fc" id="L98">					(apep);</span>
 
-<span class="nc bnc" id="L100" title="All 2 branches missed.">			return null == r1un ? null : new TradingEnhancedDiscrete (dtt.executionTimeNode(),</span>
-<span class="nc" id="L101">				dtt.holdings(), dtt.tradeList(), r1un.mean(), r1un.variance(), dblCharacteristicTime,</span>
-<span class="nc" id="L102">					dblCharacteristicSize, apep.temporaryExpectation().epochImpactFunction().evaluate</span>
-<span class="nc" id="L103">						(dtt.instantTradeRate()) / (apep.arithmeticPriceDynamicsSettings().epochVolatility()</span>
-<span class="nc" id="L104">							* java.lang.Math.sqrt (dtt.executionTime())));</span>
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">			return null == r1un ? null : new TradingEnhancedDiscrete (dtt.executionTimeNode(),</span>
+<span class="fc" id="L101">				dtt.holdings(), dtt.tradeList(), r1un.mean(), r1un.variance(), dblCharacteristicTime,</span>
+<span class="fc" id="L102">					dblCharacteristicSize, apep.temporaryExpectation().epochImpactFunction().evaluate</span>
+<span class="fc" id="L103">						(dtt.instantTradeRate()) / (apep.arithmeticPriceDynamicsSettings().epochVolatility()</span>
+<span class="fc" id="L104">							* java.lang.Math.sqrt (dtt.executionTime())));</span>
 <span class="nc" id="L105">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L106">			e.printStackTrace();</span>
 		}
@@ -135,13 +135,13 @@ public class TradingEnhancedDiscrete extends org.drip.execution.optimum.Efficien
 		final double dblMarketPower)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L138">		super (adblExecutionTimeNode, adblHoldings, adblTradeList, dblTransactionCostExpectation,</span>
+<span class="fc" id="L138">		super (adblExecutionTimeNode, adblHoldings, adblTradeList, dblTransactionCostExpectation,</span>
 			dblTransactionCostVariance, dblMarketPower);
 
-<span class="nc bnc" id="L141" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblCharacteristicTime = dblCharacteristicTime) ||</span>
-<span class="nc bnc" id="L142" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblCharacteristicSize = dblCharacteristicSize))</span>
+<span class="pc bpc" id="L141" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblCharacteristicTime = dblCharacteristicTime) ||</span>
+<span class="pc bpc" id="L142" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblCharacteristicSize = dblCharacteristicSize))</span>
 <span class="nc" id="L143">			throw new java.lang.Exception (&quot;TradingEnhancedDiscrete Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L144">	}</span>
+<span class="fc" id="L144">	}</span>
 
 	/**
 	 * Retrieve the Optimal Trajectory Characteristic Size
@@ -151,7 +151,7 @@ public class TradingEnhancedDiscrete extends org.drip.execution.optimum.Efficien
 
 	public double characteristicSize()
 	{
-<span class="nc" id="L154">		return _dblCharacteristicSize;</span>
+<span class="fc" id="L154">		return _dblCharacteristicSize;</span>
 	}
 
 	/**
@@ -162,7 +162,7 @@ public class TradingEnhancedDiscrete extends org.drip.execution.optimum.Efficien
 
 	public double characteristicTime()
 	{
-<span class="nc" id="L165">		return _dblCharacteristicTime;</span>
+<span class="fc" id="L165">		return _dblCharacteristicTime;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

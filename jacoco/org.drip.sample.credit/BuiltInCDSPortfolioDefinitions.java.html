@@ -86,7 +86,7 @@ import org.drip.service.env.*;
 
 	private static final void BasketCDSAPISample()
 	{
-<span class="nc" id="L89">		JulianDate dtToday = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L89">		JulianDate dtToday = DateUtil.CreateFromYMD (</span>
 			2013,
 			DateUtil.MAY,
 			10
@@ -116,21 +116,21 @@ import org.drip.service.env.*;
 		 * List of all the built-in CDX names
 		 */
 
-<span class="nc" id="L119">		Set&lt;String&gt; setstrCDXNames = StandardCDXManager.GetCDXNames();</span>
+<span class="fc" id="L119">		Set&lt;String&gt; setstrCDXNames = StandardCDXManager.GetCDXNames();</span>
 
 		/*
 		 * Descriptions of all the built-in CDX names
 		 */
 
-<span class="nc" id="L125">		CaseInsensitiveTreeMap&lt;String&gt; mapCDXDescr = StandardCDXManager.GetCDXDescriptions();</span>
+<span class="fc" id="L125">		CaseInsensitiveTreeMap&lt;String&gt; mapCDXDescr = StandardCDXManager.GetCDXDescriptions();</span>
 
 		/*
 		 * Construct the on-the run CDX.EM 5Y corresponding to T - 1Y
 		 */
 
-<span class="nc" id="L131">		BasketProduct bpPresetOTR = StandardCDXManager.GetOnTheRun (</span>
+<span class="fc" id="L131">		BasketProduct bpPresetOTR = StandardCDXManager.GetOnTheRun (</span>
 			&quot;CDX.EM&quot;,
-<span class="nc" id="L133">			dtToday.subtractTenor (&quot;1Y&quot;),</span>
+<span class="fc" id="L133">			dtToday.subtractTenor (&quot;1Y&quot;),</span>
 			&quot;5Y&quot;
 		);
 
@@ -138,9 +138,9 @@ import org.drip.service.env.*;
 		 * Construct the on-the run ITRAXX.ENERGY 5Y corresponding to T - 7Y
 		 */
 
-<span class="nc" id="L141">		BasketProduct bpPreLoadedOTR = StandardCDXManager.GetOnTheRun (</span>
+<span class="fc" id="L141">		BasketProduct bpPreLoadedOTR = StandardCDXManager.GetOnTheRun (</span>
 			&quot;ITRAXX.ENERGY&quot;,
-<span class="nc" id="L143">			dtToday.subtractTenor (&quot;7Y&quot;),</span>
+<span class="fc" id="L143">			dtToday.subtractTenor (&quot;7Y&quot;),</span>
 			&quot;5Y&quot;
 		);
 
@@ -148,27 +148,27 @@ import org.drip.service.env.*;
 		 * Retrieve the full set of date/index series set for ITRAXX.ENERGY
 		 */
 
-<span class="nc" id="L151">		Map&lt;JulianDate, Integer&gt; mapCDXSeries = StandardCDXManager.GetCDXSeriesMap (&quot;ITRAXX.ENERGY&quot;);</span>
+<span class="fc" id="L151">		Map&lt;JulianDate, Integer&gt; mapCDXSeries = StandardCDXManager.GetCDXSeriesMap (&quot;ITRAXX.ENERGY&quot;);</span>
 
 		// System.out.println (bpCDX.name() + &quot;: &quot; + bpCDX.effective() + &quot;=&gt;&quot; + bpCDX.maturity());
 
 		// System.out.println (bpCDXOTR.name() + &quot;: &quot; + bpCDXOTR.effective() + &quot;=&gt;&quot; + bpCDXOTR.maturity());
 
-<span class="nc" id="L157">		int i = 0;</span>
+<span class="fc" id="L157">		int i = 0;</span>
 
-<span class="nc bnc" id="L159" title="All 2 branches missed.">		for (String strCDX : setstrCDXNames)</span>
-<span class="nc" id="L160">			System.out.println (&quot;CDX[&quot; + i++ + &quot;]: &quot; + strCDX);</span>
+<span class="fc bfc" id="L159" title="All 2 branches covered.">		for (String strCDX : setstrCDXNames)</span>
+<span class="fc" id="L160">			System.out.println (&quot;CDX[&quot; + i++ + &quot;]: &quot; + strCDX);</span>
 
-<span class="nc bnc" id="L162" title="All 2 branches missed.">		for (Map.Entry&lt;String, String&gt; meCDXDescr : mapCDXDescr.entrySet())</span>
-<span class="nc" id="L163">			System.out.println (&quot;[&quot; + meCDXDescr.getKey() + &quot;]: &quot; + meCDXDescr.getValue());</span>
+<span class="fc bfc" id="L162" title="All 2 branches covered.">		for (Map.Entry&lt;String, String&gt; meCDXDescr : mapCDXDescr.entrySet())</span>
+<span class="fc" id="L163">			System.out.println (&quot;[&quot; + meCDXDescr.getKey() + &quot;]: &quot; + meCDXDescr.getValue());</span>
 
-<span class="nc" id="L165">		System.out.println (bpPresetOTR.name() + &quot;: &quot; + bpPresetOTR.effective() + &quot;=&gt;&quot; + bpPresetOTR.maturity());</span>
+<span class="fc" id="L165">		System.out.println (bpPresetOTR.name() + &quot;: &quot; + bpPresetOTR.effective() + &quot;=&gt;&quot; + bpPresetOTR.maturity());</span>
 
-<span class="nc" id="L167">		System.out.println (bpPreLoadedOTR.name() + &quot;: &quot; + bpPreLoadedOTR.effective() + &quot;=&gt;&quot; + bpPreLoadedOTR.maturity());</span>
+<span class="fc" id="L167">		System.out.println (bpPreLoadedOTR.name() + &quot;: &quot; + bpPreLoadedOTR.effective() + &quot;=&gt;&quot; + bpPreLoadedOTR.maturity());</span>
 
-<span class="nc bnc" id="L169" title="All 2 branches missed.">		for (Map.Entry&lt;JulianDate, Integer&gt; me : mapCDXSeries.entrySet())</span>
-<span class="nc" id="L170">			System.out.println (&quot;ITRAXX.ENERGY[&quot; + me.getValue() + &quot;]: &quot; + me.getKey());</span>
-<span class="nc" id="L171">	}</span>
+<span class="fc bfc" id="L169" title="All 2 branches covered.">		for (Map.Entry&lt;JulianDate, Integer&gt; me : mapCDXSeries.entrySet())</span>
+<span class="fc" id="L170">			System.out.println (&quot;ITRAXX.ENERGY[&quot; + me.getValue() + &quot;]: &quot; + me.getKey());</span>
+<span class="fc" id="L171">	}</span>
 
 	public static final void main (
 		final String astrArgs[])
@@ -176,11 +176,11 @@ import org.drip.service.env.*;
 	{
 		// String strConfig = &quot;c:\\Lakshmi\\BondAnal\\Config.xml&quot;;
 
-<span class="nc" id="L179">		String strConfig = &quot;&quot;;</span>
+<span class="fc" id="L179">		String strConfig = &quot;&quot;;</span>
 
-<span class="nc" id="L181">		EnvManager.InitEnv (strConfig);</span>
+<span class="fc" id="L181">		EnvManager.InitEnv (strConfig);</span>
 
-<span class="nc" id="L183">		BasketCDSAPISample();</span>
-<span class="nc" id="L184">	}</span>
+<span class="fc" id="L183">		BasketCDSAPISample();</span>
+<span class="fc" id="L184">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

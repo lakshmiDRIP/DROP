@@ -68,63 +68,63 @@ import org.drip.service.template.ExchangeInstrumentBuilder;
 	private static final String DeliveryMonths (
 		final TreasuryFutures tsyFutures)
 	{
-<span class="fc" id="L71">		int[] aiDeliveryMonth = tsyFutures.deliveryMonths();</span>
+<span class="nc" id="L71">		int[] aiDeliveryMonth = tsyFutures.deliveryMonths();</span>
 
-<span class="fc" id="L73">		String strDeliveryMonths = &quot;&quot;;</span>
-<span class="pc bpc" id="L74" title="1 of 2 branches missed.">		int iNumDeliveryMonth = null == aiDeliveryMonth ? 0 : aiDeliveryMonth.length;</span>
+<span class="nc" id="L73">		String strDeliveryMonths = &quot;&quot;;</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">		int iNumDeliveryMonth = null == aiDeliveryMonth ? 0 : aiDeliveryMonth.length;</span>
 
-<span class="pc bpc" id="L76" title="1 of 2 branches missed.">		if (0 != iNumDeliveryMonth) {</span>
-<span class="fc bfc" id="L77" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumDeliveryMonth; ++i) {</span>
-<span class="fc bfc" id="L78" title="All 2 branches covered.">				if (0 == i)</span>
-<span class="fc" id="L79">					strDeliveryMonths += &quot;{&quot;;</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">		if (0 != iNumDeliveryMonth) {</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumDeliveryMonth; ++i) {</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">				if (0 == i)</span>
+<span class="nc" id="L79">					strDeliveryMonths += &quot;{&quot;;</span>
 				else
-<span class="fc" id="L81">					strDeliveryMonths += &quot;,&quot;;</span>
+<span class="nc" id="L81">					strDeliveryMonths += &quot;,&quot;;</span>
 
-<span class="fc" id="L83">				strDeliveryMonths += DateUtil.MonthChar (aiDeliveryMonth[i]);</span>
+<span class="nc" id="L83">				strDeliveryMonths += DateUtil.MonthChar (aiDeliveryMonth[i]);</span>
 			}
 
-<span class="fc" id="L86">			strDeliveryMonths += &quot;}&quot;;</span>
+<span class="nc" id="L86">			strDeliveryMonths += &quot;}&quot;;</span>
 		}
 
-<span class="fc" id="L89">		return strDeliveryMonths;</span>
+<span class="nc" id="L89">		return strDeliveryMonths;</span>
 	}
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="fc" id="L96">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L96">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L98">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+<span class="nc" id="L98">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
 			2015,
 			DateUtil.NOVEMBER,
 			18
 		);
 
-<span class="fc" id="L104">		TreasuryFutures fv1 = ExchangeInstrumentBuilder.TreasuryFutures (</span>
+<span class="nc" id="L104">		TreasuryFutures fv1 = ExchangeInstrumentBuilder.TreasuryFutures (</span>
 			dtSpot,
 			&quot;UST&quot;,
 			new org.drip.analytics.date.JulianDate[] {
-<span class="fc" id="L108">				DateUtil.CreateFromYMD (2014, DateUtil.FEBRUARY,  28), // 912828J5</span>
-<span class="fc" id="L109">				DateUtil.CreateFromYMD (2014, DateUtil.MARCH,     31), // 912828J8</span>
-<span class="fc" id="L110">				DateUtil.CreateFromYMD (2014, DateUtil.APRIL,     30), // 912828K5</span>
-<span class="fc" id="L111">				DateUtil.CreateFromYMD (2014, DateUtil.MAY,       31), // 912828XE</span>
-<span class="fc" id="L112">				DateUtil.CreateFromYMD (2014, DateUtil.JUNE,      30), // 912828XH</span>
-<span class="fc" id="L113">				DateUtil.CreateFromYMD (2014, DateUtil.JULY,      31), // 912828XM</span>
-<span class="fc" id="L114">				DateUtil.CreateFromYMD (2014, DateUtil.AUGUST,    31), // 912828L3</span>
-<span class="fc" id="L115">				DateUtil.CreateFromYMD (2014, DateUtil.SEPTEMBER, 30), // 912828L6</span>
-<span class="fc" id="L116">				DateUtil.CreateFromYMD (2014, DateUtil.OCTOBER,   31)  // 912828L9</span>
+<span class="nc" id="L108">				DateUtil.CreateFromYMD (2014, DateUtil.FEBRUARY,  28), // 912828J5</span>
+<span class="nc" id="L109">				DateUtil.CreateFromYMD (2014, DateUtil.MARCH,     31), // 912828J8</span>
+<span class="nc" id="L110">				DateUtil.CreateFromYMD (2014, DateUtil.APRIL,     30), // 912828K5</span>
+<span class="nc" id="L111">				DateUtil.CreateFromYMD (2014, DateUtil.MAY,       31), // 912828XE</span>
+<span class="nc" id="L112">				DateUtil.CreateFromYMD (2014, DateUtil.JUNE,      30), // 912828XH</span>
+<span class="nc" id="L113">				DateUtil.CreateFromYMD (2014, DateUtil.JULY,      31), // 912828XM</span>
+<span class="nc" id="L114">				DateUtil.CreateFromYMD (2014, DateUtil.AUGUST,    31), // 912828L3</span>
+<span class="nc" id="L115">				DateUtil.CreateFromYMD (2014, DateUtil.SEPTEMBER, 30), // 912828L6</span>
+<span class="nc" id="L116">				DateUtil.CreateFromYMD (2014, DateUtil.OCTOBER,   31)  // 912828L9</span>
 			},
 			new org.drip.analytics.date.JulianDate[] {
-<span class="fc" id="L119">				DateUtil.CreateFromYMD (2020, DateUtil.FEBRUARY,  28), // 912828J5</span>
-<span class="fc" id="L120">				DateUtil.CreateFromYMD (2020, DateUtil.MARCH,     31), // 912828J8</span>
-<span class="fc" id="L121">				DateUtil.CreateFromYMD (2020, DateUtil.APRIL,     30), // 912828K5</span>
-<span class="fc" id="L122">				DateUtil.CreateFromYMD (2020, DateUtil.MAY,       31), // 912828XE</span>
-<span class="fc" id="L123">				DateUtil.CreateFromYMD (2020, DateUtil.JUNE,      30), // 912828XH</span>
-<span class="fc" id="L124">				DateUtil.CreateFromYMD (2020, DateUtil.JULY,      31), // 912828XM</span>
-<span class="fc" id="L125">				DateUtil.CreateFromYMD (2020, DateUtil.AUGUST,    31), // 912828L3</span>
-<span class="fc" id="L126">				DateUtil.CreateFromYMD (2020, DateUtil.SEPTEMBER, 30), // 912828L6</span>
-<span class="fc" id="L127">				DateUtil.CreateFromYMD (2020, DateUtil.OCTOBER,   31)  // 912828L9</span>
+<span class="nc" id="L119">				DateUtil.CreateFromYMD (2020, DateUtil.FEBRUARY,  28), // 912828J5</span>
+<span class="nc" id="L120">				DateUtil.CreateFromYMD (2020, DateUtil.MARCH,     31), // 912828J8</span>
+<span class="nc" id="L121">				DateUtil.CreateFromYMD (2020, DateUtil.APRIL,     30), // 912828K5</span>
+<span class="nc" id="L122">				DateUtil.CreateFromYMD (2020, DateUtil.MAY,       31), // 912828XE</span>
+<span class="nc" id="L123">				DateUtil.CreateFromYMD (2020, DateUtil.JUNE,      30), // 912828XH</span>
+<span class="nc" id="L124">				DateUtil.CreateFromYMD (2020, DateUtil.JULY,      31), // 912828XM</span>
+<span class="nc" id="L125">				DateUtil.CreateFromYMD (2020, DateUtil.AUGUST,    31), // 912828L3</span>
+<span class="nc" id="L126">				DateUtil.CreateFromYMD (2020, DateUtil.SEPTEMBER, 30), // 912828L6</span>
+<span class="nc" id="L127">				DateUtil.CreateFromYMD (2020, DateUtil.OCTOBER,   31)  // 912828L9</span>
 			},
 			new double[] {
 				0.01375, // 912828J5
@@ -153,9 +153,9 @@ import org.drip.service.template.ExchangeInstrumentBuilder;
 			&quot;5Y&quot;
 		);
 
-<span class="fc" id="L156">		double dblFuturesPrice = 119.00000;</span>
+<span class="nc" id="L156">		double dblFuturesPrice = 119.00000;</span>
 
-<span class="fc" id="L158">		double[] adblCleanPrice = new double[] {</span>
+<span class="nc" id="L158">		double[] adblCleanPrice = new double[] {</span>
 			 0.99909375, // 912828J5
 			 0.99900000, // 912828J8
 			 0.99890625, // 912828K5
@@ -167,49 +167,49 @@ import org.drip.service.template.ExchangeInstrumentBuilder;
 			 0.99853125  // 912828L9
 		};
 
-<span class="fc" id="L170">		Bond bondCTD = fv1.cheapestToDeliverYield (</span>
-<span class="fc" id="L171">			dtSpot.julian(),</span>
+<span class="nc" id="L170">		Bond bondCTD = fv1.cheapestToDeliverYield (</span>
+<span class="nc" id="L171">			dtSpot.julian(),</span>
 			adblCleanPrice
-<span class="fc" id="L173">		).bond();</span>
+<span class="nc" id="L173">		).bond();</span>
 
-<span class="fc" id="L175">		System.out.println (&quot;\n\t|---------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L175">		System.out.println (&quot;\n\t|---------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L177">		System.out.println (&quot;\t|      Futures Type      : &quot; + fv1.type() + &quot;                            ||&quot;);</span>
+<span class="nc" id="L177">		System.out.println (&quot;\t|      Futures Type      : &quot; + fv1.type() + &quot;                            ||&quot;);</span>
 
-<span class="fc" id="L179">		System.out.println (&quot;\t|      Deliverable Grade : &quot; + fv1.minimumMaturity() + &quot; -&gt; &quot; + fv1.maximumMaturity() + &quot;                     ||&quot;);</span>
+<span class="nc" id="L179">		System.out.println (&quot;\t|      Deliverable Grade : &quot; + fv1.minimumMaturity() + &quot; -&gt; &quot; + fv1.maximumMaturity() + &quot;                     ||&quot;);</span>
 
-<span class="fc" id="L181">		System.out.println (&quot;\t|      Reference Coupon  : &quot; + FormatUtil.FormatDouble (fv1.referenceCoupon(), 1, 2, 100.) + &quot;%                         ||&quot;);</span>
+<span class="nc" id="L181">		System.out.println (&quot;\t|      Reference Coupon  : &quot; + FormatUtil.FormatDouble (fv1.referenceCoupon(), 1, 2, 100.) + &quot;%                         ||&quot;);</span>
 
-<span class="fc" id="L183">		System.out.println (&quot;\t|      Contract Size     : &quot; + FormatUtil.FormatDouble (fv1.notionalValue(), 1, 2, 1.) + &quot;                     ||&quot;);</span>
+<span class="nc" id="L183">		System.out.println (&quot;\t|      Contract Size     : &quot; + FormatUtil.FormatDouble (fv1.notionalValue(), 1, 2, 1.) + &quot;                     ||&quot;);</span>
 
-<span class="fc" id="L185">		System.out.println (&quot;\t|      Tick Size         : &quot; + FormatUtil.FormatDouble (fv1.minimumPriceMovement(), 1, 6, 1.) + &quot;                      ||&quot;);</span>
+<span class="nc" id="L185">		System.out.println (&quot;\t|      Tick Size         : &quot; + FormatUtil.FormatDouble (fv1.minimumPriceMovement(), 1, 6, 1.) + &quot;                      ||&quot;);</span>
 
-<span class="fc" id="L187">		System.out.println (&quot;\t|      Tick Value        : &quot; + FormatUtil.FormatDouble (fv1.tickValue(), 1, 2, 1.) + &quot;                       ||&quot;);</span>
+<span class="nc" id="L187">		System.out.println (&quot;\t|      Tick Value        : &quot; + FormatUtil.FormatDouble (fv1.tickValue(), 1, 2, 1.) + &quot;                       ||&quot;);</span>
 
-<span class="fc" id="L189">		System.out.println (&quot;\t|      Delivery Months   : &quot; + DeliveryMonths (fv1) + &quot; ||&quot;);</span>
+<span class="nc" id="L189">		System.out.println (&quot;\t|      Delivery Months   : &quot; + DeliveryMonths (fv1) + &quot; ||&quot;);</span>
 
-<span class="fc" id="L191">		System.out.println (&quot;\t|      Last Trading Lag  : &quot; + fv1.lastTradingDayLag() + &quot; Business Days Prior Expiry   ||&quot;);</span>
+<span class="nc" id="L191">		System.out.println (&quot;\t|      Last Trading Lag  : &quot; + fv1.lastTradingDayLag() + &quot; Business Days Prior Expiry   ||&quot;);</span>
 
-<span class="fc" id="L193">		System.out.println (&quot;\t|      Futures Price     : &quot; + FormatUtil.FormatDouble (dblFuturesPrice, 2, 5, 1.) + &quot;                     ||&quot;);</span>
+<span class="nc" id="L193">		System.out.println (&quot;\t|      Futures Price     : &quot; + FormatUtil.FormatDouble (dblFuturesPrice, 2, 5, 1.) + &quot;                     ||&quot;);</span>
 
-<span class="fc" id="L195">		System.out.println (&quot;\t|      Contract Value    : &quot; + FormatUtil.FormatDouble (0.01 * fv1.notionalValue() * dblFuturesPrice, 1, 2, 1.) + &quot;                     ||&quot;);</span>
+<span class="nc" id="L195">		System.out.println (&quot;\t|      Contract Value    : &quot; + FormatUtil.FormatDouble (0.01 * fv1.notionalValue() * dblFuturesPrice, 1, 2, 1.) + &quot;                     ||&quot;);</span>
 
-<span class="fc" id="L197">		System.out.println (&quot;\t|---------------------------------------------------------||\n&quot;);</span>
+<span class="nc" id="L197">		System.out.println (&quot;\t|---------------------------------------------------------||\n&quot;);</span>
 
-<span class="fc" id="L199">		System.out.println (&quot;\n\t|---------------------------------------------||&quot;);</span>
+<span class="nc" id="L199">		System.out.println (&quot;\n\t|---------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L201">		System.out.println (&quot;\t|                                             ||&quot;);</span>
+<span class="nc" id="L201">		System.out.println (&quot;\t|                                             ||&quot;);</span>
 
-<span class="fc bfc" id="L203" title="All 2 branches covered.">		for (int i = 0; i &lt; fv1.basket().length; ++i)</span>
-<span class="fc" id="L204">			System.out.println (&quot;\t|\t&quot; + fv1.basket()[i].name() + &quot; =&gt; &quot; + FormatUtil.FormatDouble (adblCleanPrice[i], 2, 5, 1.) + &quot;   ||&quot;);</span>
+<span class="nc bnc" id="L203" title="All 2 branches missed.">		for (int i = 0; i &lt; fv1.basket().length; ++i)</span>
+<span class="nc" id="L204">			System.out.println (&quot;\t|\t&quot; + fv1.basket()[i].name() + &quot; =&gt; &quot; + FormatUtil.FormatDouble (adblCleanPrice[i], 2, 5, 1.) + &quot;   ||&quot;);</span>
 
-<span class="fc" id="L206">		System.out.println (&quot;\t|                                             ||&quot;);</span>
+<span class="nc" id="L206">		System.out.println (&quot;\t|                                             ||&quot;);</span>
 
-<span class="fc" id="L208">		System.out.println (&quot;\t|---------------------------------------------||&quot;);</span>
+<span class="nc" id="L208">		System.out.println (&quot;\t|---------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L210">		System.out.println (&quot;\t| Cheapest to Deliver: &quot; + bondCTD.name() + &quot; ||&quot;);</span>
+<span class="nc" id="L210">		System.out.println (&quot;\t| Cheapest to Deliver: &quot; + bondCTD.name() + &quot; ||&quot;);</span>
 
-<span class="fc" id="L212">		System.out.println (&quot;\t|---------------------------------------------||&quot;);</span>
-<span class="fc" id="L213">	}</span>
+<span class="nc" id="L212">		System.out.println (&quot;\t|---------------------------------------------||&quot;);</span>
+<span class="nc" id="L213">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

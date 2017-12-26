@@ -68,9 +68,9 @@ import org.drip.service.env.EnvManager;
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L71">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L71">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L73">		String[] astrEntityName = new String[] {</span>
+<span class="fc" id="L73">		String[] astrEntityName = new String[] {</span>
 			&quot;IBM&quot;,
 			&quot;ATT&quot;,
 			&quot;ALU&quot;,
@@ -80,7 +80,7 @@ import org.drip.service.env.EnvManager;
 			&quot;VER&quot;
 		};
 
-<span class="nc" id="L83">		double[][] aadblCovarianceMatrix = new double[][] {</span>
+<span class="fc" id="L83">		double[][] aadblCovarianceMatrix = new double[][] {</span>
 			{1.00, 0.76, 0.80, 0.38, 0.60, 0.61, 0.51},
 			{0.76, 1.00, 0.65, 0.35, 0.56, 0.43, 0.40},
 			{0.80, 0.65, 1.00, 0.68, 0.74, 0.40, 0.51},
@@ -90,43 +90,43 @@ import org.drip.service.env.EnvManager;
 			{0.51, 0.40, 0.51, 0.57, 0.67, 0.39, 1.00}
 		};
 
-<span class="nc" id="L93">		System.out.println (&quot;\n\n\t|------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L93">		System.out.println (&quot;\n\n\t|------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L95">		String strHeader = &quot;\t|     |&quot;;</span>
+<span class="fc" id="L95">		String strHeader = &quot;\t|     |&quot;;</span>
 
-<span class="nc bnc" id="L97" title="All 2 branches missed.">		for (int i = 0; i &lt; astrEntityName.length; ++i)</span>
-<span class="nc" id="L98">			strHeader += &quot; &quot; + astrEntityName[i] + &quot;  |&quot;;</span>
+<span class="fc bfc" id="L97" title="All 2 branches covered.">		for (int i = 0; i &lt; astrEntityName.length; ++i)</span>
+<span class="fc" id="L98">			strHeader += &quot; &quot; + astrEntityName[i] + &quot;  |&quot;;</span>
 
-<span class="nc" id="L100">		System.out.println (strHeader + &quot;|&quot;);</span>
+<span class="fc" id="L100">		System.out.println (strHeader + &quot;|&quot;);</span>
 
-<span class="nc" id="L102">		System.out.println (&quot;\t|------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L102">		System.out.println (&quot;\t|------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L104" title="All 2 branches missed.">		for (int i = 0; i &lt; astrEntityName.length; ++i) {</span>
-<span class="nc" id="L105">			String strDump = &quot;\t| &quot; + astrEntityName[i] + &quot; &quot;;</span>
+<span class="fc bfc" id="L104" title="All 2 branches covered.">		for (int i = 0; i &lt; astrEntityName.length; ++i) {</span>
+<span class="fc" id="L105">			String strDump = &quot;\t| &quot; + astrEntityName[i] + &quot; &quot;;</span>
 
-<span class="nc bnc" id="L107" title="All 2 branches missed.">			for (int j = 0; j &lt; astrEntityName.length; ++j)</span>
-<span class="nc" id="L108">				strDump += &quot;|&quot; + FormatUtil.FormatDouble (aadblCovarianceMatrix[i][j], 1, 2, 1.) + &quot; &quot;;</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">			for (int j = 0; j &lt; astrEntityName.length; ++j)</span>
+<span class="fc" id="L108">				strDump += &quot;|&quot; + FormatUtil.FormatDouble (aadblCovarianceMatrix[i][j], 1, 2, 1.) + &quot; &quot;;</span>
 
-<span class="nc" id="L110">			System.out.println (strDump + &quot;||&quot;);</span>
+<span class="fc" id="L110">			System.out.println (strDump + &quot;||&quot;);</span>
 		}
 
-<span class="nc" id="L113">		System.out.println (&quot;\t|------------------------------------------------------||\n\n&quot;);</span>
+<span class="fc" id="L113">		System.out.println (&quot;\t|------------------------------------------------------||\n\n&quot;);</span>
 
-<span class="nc" id="L115">		double dblEqualityConstraintConstant = -1.;</span>
-<span class="nc" id="L116">		int iNumEntity = aadblCovarianceMatrix.length;</span>
+<span class="fc" id="L115">		double dblEqualityConstraintConstant = -1.;</span>
+<span class="fc" id="L116">		int iNumEntity = aadblCovarianceMatrix.length;</span>
 
-<span class="nc" id="L118">		InteriorPointBarrierControl ipbc = InteriorPointBarrierControl.Standard();</span>
+<span class="fc" id="L118">		InteriorPointBarrierControl ipbc = InteriorPointBarrierControl.Standard();</span>
 
-<span class="nc" id="L120">		RdToR1[] aRdToR1EqualityConstraint = new RdToR1[] {</span>
+<span class="fc" id="L120">		RdToR1[] aRdToR1EqualityConstraint = new RdToR1[] {</span>
 			new AffineMultivariate (
-<span class="nc" id="L122">				ObjectiveConstraintVariateSet.Unitary (iNumEntity),</span>
+<span class="fc" id="L122">				ObjectiveConstraintVariateSet.Unitary (iNumEntity),</span>
 				dblEqualityConstraintConstant
 			)
 		};
 
-<span class="nc" id="L127">		int iNumEqualityConstraint = aRdToR1EqualityConstraint.length;</span>
+<span class="fc" id="L127">		int iNumEqualityConstraint = aRdToR1EqualityConstraint.length;</span>
 
-<span class="nc" id="L129">		RdToR1[] aRdToR1InequalityConstraint = new RdToR1[] {</span>
+<span class="fc" id="L129">		RdToR1[] aRdToR1InequalityConstraint = new RdToR1[] {</span>
 			new AffineBoundMultivariate (false, 0, iNumEntity + iNumEqualityConstraint, 0.05),
 			new AffineBoundMultivariate (true, 0, iNumEntity + iNumEqualityConstraint, 0.65),
 			new AffineBoundMultivariate (false, 1, iNumEntity + iNumEqualityConstraint, 0.05),
@@ -143,43 +143,43 @@ import org.drip.service.env.EnvManager;
 			new AffineBoundMultivariate (true, 6, iNumEntity + iNumEqualityConstraint, 0.65)
 		};
 
-<span class="nc" id="L146">		LagrangianMultivariate ceec = new LagrangianMultivariate (</span>
+<span class="fc" id="L146">		LagrangianMultivariate ceec = new LagrangianMultivariate (</span>
 			new CovarianceEllipsoidMultivariate (aadblCovarianceMatrix),
 			aRdToR1EqualityConstraint
 		);
 
-<span class="nc" id="L151">		BarrierFixedPointFinder ifpm = new BarrierFixedPointFinder (</span>
+<span class="fc" id="L151">		BarrierFixedPointFinder ifpm = new BarrierFixedPointFinder (</span>
 			ceec,
 			aRdToR1InequalityConstraint,
 			ipbc,
-<span class="nc" id="L155">			LineStepEvolutionControl.NocedalWrightStrongWolfe (false)</span>
+<span class="fc" id="L155">			LineStepEvolutionControl.NocedalWrightStrongWolfe (false)</span>
 		);
 
-<span class="nc" id="L158">		VariateInequalityConstraintMultiplier vcmt = ifpm.solve (</span>
-<span class="nc" id="L159">			ObjectiveConstraintVariateSet.Uniform (</span>
+<span class="fc" id="L158">		VariateInequalityConstraintMultiplier vcmt = ifpm.solve (</span>
+<span class="fc" id="L159">			ObjectiveConstraintVariateSet.Uniform (</span>
 				iNumEntity,
 				iNumEqualityConstraint
 			)
 		);
 
-<span class="nc" id="L165">		double[] adblOptimalVariate = vcmt.variates();</span>
+<span class="fc" id="L165">		double[] adblOptimalVariate = vcmt.variates();</span>
 
-<span class="nc" id="L167">		System.out.println (&quot;\t|----------------------||&quot;);</span>
+<span class="fc" id="L167">		System.out.println (&quot;\t|----------------------||&quot;);</span>
 
-<span class="nc" id="L169">		System.out.println (&quot;\t|   OPTIMAL ENTITIES   ||&quot;);</span>
+<span class="fc" id="L169">		System.out.println (&quot;\t|   OPTIMAL ENTITIES   ||&quot;);</span>
 
-<span class="nc" id="L171">		System.out.println (&quot;\t|----------------------||&quot;);</span>
+<span class="fc" id="L171">		System.out.println (&quot;\t|----------------------||&quot;);</span>
 
-<span class="nc bnc" id="L173" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumEntity; ++i)</span>
-<span class="nc" id="L174">			System.out.println (&quot;\t|   &quot; + astrEntityName[i] + &quot;   =&gt;  &quot; + FormatUtil.FormatDouble (adblOptimalVariate[i], 2, 2, 100.) + &quot;%  ||&quot;);</span>
+<span class="fc bfc" id="L173" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumEntity; ++i)</span>
+<span class="fc" id="L174">			System.out.println (&quot;\t|   &quot; + astrEntityName[i] + &quot;   =&gt;  &quot; + FormatUtil.FormatDouble (adblOptimalVariate[i], 2, 2, 100.) + &quot;%  ||&quot;);</span>
 
-<span class="nc" id="L176">		System.out.println (&quot;\t|----------------------||\n&quot;);</span>
+<span class="fc" id="L176">		System.out.println (&quot;\t|----------------------||\n&quot;);</span>
 
-<span class="nc" id="L178">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
+<span class="fc" id="L178">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
 
-<span class="nc" id="L180">		System.out.println (&quot;\t| OPTIMAL VARIANCE =&gt; &quot; + FormatUtil.FormatDouble (ceec.evaluate (adblOptimalVariate), 1, 5, 1.) + &quot; ||&quot;);</span>
+<span class="fc" id="L180">		System.out.println (&quot;\t| OPTIMAL VARIANCE =&gt; &quot; + FormatUtil.FormatDouble (ceec.evaluate (adblOptimalVariate), 1, 5, 1.) + &quot; ||&quot;);</span>
 
-<span class="nc" id="L182">		System.out.println (&quot;\t|------------------------------||\n&quot;);</span>
-<span class="nc" id="L183">	}</span>
+<span class="fc" id="L182">		System.out.println (&quot;\t|------------------------------||\n&quot;);</span>
+<span class="fc" id="L183">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

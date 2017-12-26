@@ -88,25 +88,25 @@ import org.drip.state.identifier.*;
 		final double dblFlatVol)
 		throws Exception
 	{
-<span class="nc" id="L91">		return ScenarioMarketSurfaceBuilder.CustomSplineWireSurface (</span>
+<span class="fc" id="L91">		return ScenarioMarketSurfaceBuilder.CustomSplineWireSurface (</span>
 			&quot;VIEW_TARGET_VOLATILITY_SURFACE&quot;,
 			dtStart,
 			strCurrency,
 			new double[] {
-<span class="nc" id="L96">				dtStart.julian(),</span>
-<span class="nc" id="L97">				dtStart.addYears (2).julian(),</span>
-<span class="nc" id="L98">				dtStart.addYears (4).julian(),</span>
-<span class="nc" id="L99">				dtStart.addYears (6).julian(),</span>
-<span class="nc" id="L100">				dtStart.addYears (8).julian(),</span>
-<span class="nc" id="L101">				dtStart.addYears (10).julian()</span>
+<span class="fc" id="L96">				dtStart.julian(),</span>
+<span class="fc" id="L97">				dtStart.addYears (2).julian(),</span>
+<span class="fc" id="L98">				dtStart.addYears (4).julian(),</span>
+<span class="fc" id="L99">				dtStart.addYears (6).julian(),</span>
+<span class="fc" id="L100">				dtStart.addYears (8).julian(),</span>
+<span class="fc" id="L101">				dtStart.addYears (10).julian()</span>
 			},
 			new double[] {
-<span class="nc" id="L104">				dtStart.julian(),</span>
-<span class="nc" id="L105">				dtStart.addYears (2).julian(),</span>
-<span class="nc" id="L106">				dtStart.addYears (4).julian(),</span>
-<span class="nc" id="L107">				dtStart.addYears (6).julian(),</span>
-<span class="nc" id="L108">				dtStart.addYears (8).julian(),</span>
-<span class="nc" id="L109">				dtStart.addYears (10).julian()</span>
+<span class="fc" id="L104">				dtStart.julian(),</span>
+<span class="fc" id="L105">				dtStart.addYears (2).julian(),</span>
+<span class="fc" id="L106">				dtStart.addYears (4).julian(),</span>
+<span class="fc" id="L107">				dtStart.addYears (6).julian(),</span>
+<span class="fc" id="L108">				dtStart.addYears (8).julian(),</span>
+<span class="fc" id="L109">				dtStart.addYears (10).julian()</span>
 			},
 			new double[][] {
 				{dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol},
@@ -119,7 +119,7 @@ import org.drip.state.identifier.*;
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-<span class="nc" id="L122">				SegmentInelasticDesignControl.Create (</span>
+<span class="fc" id="L122">				SegmentInelasticDesignControl.Create (</span>
 					2,
 					2
 				),
@@ -129,7 +129,7 @@ import org.drip.state.identifier.*;
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-<span class="nc" id="L132">				SegmentInelasticDesignControl.Create (</span>
+<span class="fc" id="L132">				SegmentInelasticDesignControl.Create (</span>
 					2,
 					2
 				),
@@ -147,12 +147,12 @@ import org.drip.state.identifier.*;
 		final int iNumFactor)
 		throws Exception
 	{
-<span class="nc" id="L150">		UnivariateSequenceGenerator[] aUSG = new UnivariateSequenceGenerator[aMS.length];</span>
+<span class="fc" id="L150">		UnivariateSequenceGenerator[] aUSG = new UnivariateSequenceGenerator[aMS.length];</span>
 
-<span class="nc bnc" id="L152" title="All 2 branches missed.">		for (int i = 0; i &lt; aUSG.length; ++i)</span>
-<span class="nc" id="L153">			aUSG[i] = new BoxMullerGaussian (0., 1.);</span>
+<span class="fc bfc" id="L152" title="All 2 branches covered.">		for (int i = 0; i &lt; aUSG.length; ++i)</span>
+<span class="fc" id="L153">			aUSG[i] = new BoxMullerGaussian (0., 1.);</span>
 
-<span class="nc" id="L155">		return new LognormalLIBORVolatility (</span>
+<span class="fc" id="L155">		return new LognormalLIBORVolatility (</span>
 			iSpotDate,
 			forwardLabel,
 			aMS,
@@ -168,123 +168,123 @@ import org.drip.state.identifier.*;
 		final BGMPointUpdate bgmRunSnap)
 		throws Exception
 	{
-<span class="nc" id="L171">		System.out.println (</span>
-<span class="nc" id="L172">			&quot;\t| [&quot; + new JulianDate (bgmRunSnap.evolutionStartDate()) +</span>
-<span class="nc" id="L173">			&quot; -&gt; &quot; + new JulianDate (bgmRunSnap.evolutionFinishDate()) +</span>
-<span class="nc" id="L174">			&quot;]  =&gt; &quot; + FormatUtil.FormatDouble (bgmRunSnap.libor(), 1, 2, 100.) +</span>
-<span class="nc" id="L175">			&quot;% | &quot; + FormatUtil.FormatDouble (bgmRunSnap.liborIncrement(), 2, 0, 10000.) +</span>
-<span class="nc" id="L176">			&quot; | &quot; + FormatUtil.FormatDouble (bgmRunSnap.instantaneousEffectiveForwardRate(), 1, 2, 100.) +</span>
-<span class="nc" id="L177">			&quot;% | &quot; + FormatUtil.FormatDouble (bgmRunSnap.instantaneousNominalForwardRate(), 1, 2, 100.) +</span>
+<span class="fc" id="L171">		System.out.println (</span>
+<span class="fc" id="L172">			&quot;\t| [&quot; + new JulianDate (bgmRunSnap.evolutionStartDate()) +</span>
+<span class="fc" id="L173">			&quot; -&gt; &quot; + new JulianDate (bgmRunSnap.evolutionFinishDate()) +</span>
+<span class="fc" id="L174">			&quot;]  =&gt; &quot; + FormatUtil.FormatDouble (bgmRunSnap.libor(), 1, 2, 100.) +</span>
+<span class="fc" id="L175">			&quot;% | &quot; + FormatUtil.FormatDouble (bgmRunSnap.liborIncrement(), 2, 0, 10000.) +</span>
+<span class="fc" id="L176">			&quot; | &quot; + FormatUtil.FormatDouble (bgmRunSnap.instantaneousEffectiveForwardRate(), 1, 2, 100.) +</span>
+<span class="fc" id="L177">			&quot;% | &quot; + FormatUtil.FormatDouble (bgmRunSnap.instantaneousNominalForwardRate(), 1, 2, 100.) +</span>
 			&quot;% | &quot;
 		);
-<span class="nc" id="L180">	}</span>
+<span class="fc" id="L180">	}</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L186">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L186">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L188">		String strTenor = &quot;3M&quot;;</span>
-<span class="nc" id="L189">		String strCurrency = &quot;USD&quot;;</span>
-<span class="nc" id="L190">		double dblFlatVol1 = 0.35;</span>
-<span class="nc" id="L191">		double dblFlatVol2 = 0.42;</span>
-<span class="nc" id="L192">		double dblFlatVol3 = 0.27;</span>
-<span class="nc" id="L193">		double dblZeroRate = 0.02;</span>
-<span class="nc" id="L194">		double dblFlatForwardRate = 0.02;</span>
-<span class="nc" id="L195">		int iNumRun = 20;</span>
+<span class="fc" id="L188">		String strTenor = &quot;3M&quot;;</span>
+<span class="fc" id="L189">		String strCurrency = &quot;USD&quot;;</span>
+<span class="fc" id="L190">		double dblFlatVol1 = 0.35;</span>
+<span class="fc" id="L191">		double dblFlatVol2 = 0.42;</span>
+<span class="fc" id="L192">		double dblFlatVol3 = 0.27;</span>
+<span class="fc" id="L193">		double dblZeroRate = 0.02;</span>
+<span class="fc" id="L194">		double dblFlatForwardRate = 0.02;</span>
+<span class="fc" id="L195">		int iNumRun = 20;</span>
 
-<span class="nc" id="L197">		int[] aiNumFactor = {</span>
+<span class="fc" id="L197">		int[] aiNumFactor = {</span>
 			1, 2, 3
 		};
 
-<span class="nc" id="L201">		double[][] aadblCorrelation = new double[][] {</span>
+<span class="fc" id="L201">		double[][] aadblCorrelation = new double[][] {</span>
 			{1.0, 0.1, 0.2},
 			{0.1, 1.0, 0.2},
 			{0.2, 0.1, 1.0}
 		};
 
-<span class="nc" id="L207">		ForwardLabel forwardLabel = ForwardLabel.Create (</span>
+<span class="fc" id="L207">		ForwardLabel forwardLabel = ForwardLabel.Create (</span>
 			strCurrency,
 			strTenor
 		);
 
-<span class="nc" id="L212">		FundingLabel fundingLabel = FundingLabel.Standard (</span>
+<span class="fc" id="L212">		FundingLabel fundingLabel = FundingLabel.Standard (</span>
 			strCurrency
 		);
 
-<span class="nc" id="L216">		JulianDate dtSpot = org.drip.analytics.date.DateUtil.Today();</span>
+<span class="fc" id="L216">		JulianDate dtSpot = org.drip.analytics.date.DateUtil.Today();</span>
 
-<span class="nc" id="L218">		MarketSurface[] aMS = new MarketSurface[] {</span>
-<span class="nc" id="L219">			FlatVolatilitySurface (</span>
+<span class="fc" id="L218">		MarketSurface[] aMS = new MarketSurface[] {</span>
+<span class="fc" id="L219">			FlatVolatilitySurface (</span>
 				dtSpot,
 				strCurrency,
 				dblFlatVol1
 			),
-<span class="nc" id="L224">			FlatVolatilitySurface (</span>
+<span class="fc" id="L224">			FlatVolatilitySurface (</span>
 				dtSpot,
 				strCurrency,
 				dblFlatVol2
 			),
-<span class="nc" id="L229">			FlatVolatilitySurface (</span>
+<span class="fc" id="L229">			FlatVolatilitySurface (</span>
 				dtSpot,
 				strCurrency,
 				dblFlatVol3
 			)
 		};
 
-<span class="nc" id="L236">		ForwardCurve fc = ScenarioForwardCurveBuilder.FlatForwardForwardCurve (</span>
+<span class="fc" id="L236">		ForwardCurve fc = ScenarioForwardCurveBuilder.FlatForwardForwardCurve (</span>
 			dtSpot,
 			forwardLabel,
 			dblFlatForwardRate
 		);
 
-<span class="nc" id="L242">		MergedDiscountForwardCurve dc = ScenarioDiscountCurveBuilder.ExponentiallyCompoundedFlatRate (</span>
+<span class="fc" id="L242">		MergedDiscountForwardCurve dc = ScenarioDiscountCurveBuilder.ExponentiallyCompoundedFlatRate (</span>
 			dtSpot,
 			strCurrency,
 			dblZeroRate
 		);
 
-<span class="nc" id="L248">		int iSpotDate = dtSpot.julian();</span>
+<span class="fc" id="L248">		int iSpotDate = dtSpot.julian();</span>
 
-<span class="nc" id="L250">		int iViewDate = dtSpot.addTenor (&quot;1Y&quot;).julian();</span>
+<span class="fc" id="L250">		int iViewDate = dtSpot.addTenor (&quot;1Y&quot;).julian();</span>
 
-<span class="nc" id="L252">		int iViewTimeIncrement = 1;</span>
+<span class="fc" id="L252">		int iViewTimeIncrement = 1;</span>
 
-<span class="nc bnc" id="L254" title="All 2 branches missed.">		for (int iNumFactor : aiNumFactor) {</span>
-<span class="nc" id="L255">			System.out.println (&quot;\n\n\t|----------------------------------------------------------------------------------------------------------|&quot;);</span>
+<span class="fc bfc" id="L254" title="All 2 branches covered.">		for (int iNumFactor : aiNumFactor) {</span>
+<span class="fc" id="L255">			System.out.println (&quot;\n\n\t|----------------------------------------------------------------------------------------------------------|&quot;);</span>
 
-<span class="nc" id="L257">			System.out.println (&quot;\t|                                                                                                          |&quot;);</span>
+<span class="fc" id="L257">			System.out.println (&quot;\t|                                                                                                          |&quot;);</span>
 
-<span class="nc" id="L259">			System.out.println (&quot;\t|                             LOG-NORMAL LIBOR EVOLVER                                                     |&quot;);</span>
+<span class="fc" id="L259">			System.out.println (&quot;\t|                             LOG-NORMAL LIBOR EVOLVER                                                     |&quot;);</span>
 
-<span class="nc" id="L261">			System.out.println (&quot;\t|                             ---------- ----- -------                                                     |&quot;);</span>
+<span class="fc" id="L261">			System.out.println (&quot;\t|                             ---------- ----- -------                                                     |&quot;);</span>
 
-<span class="nc" id="L263">			System.out.println (&quot;\t|                                                                                                          |&quot;);</span>
+<span class="fc" id="L263">			System.out.println (&quot;\t|                                                                                                          |&quot;);</span>
 
-<span class="nc" id="L265">			System.out.println (&quot;\t|       Num Factors: &quot; + iNumFactor + &quot;                                                                                     |&quot;);</span>
+<span class="fc" id="L265">			System.out.println (&quot;\t|       Num Factors: &quot; + iNumFactor + &quot;                                                                                     |&quot;);</span>
 
-<span class="nc" id="L267">			System.out.println (&quot;\t|       Start Date                                                                                         |&quot;);</span>
+<span class="fc" id="L267">			System.out.println (&quot;\t|       Start Date                                                                                         |&quot;);</span>
 
-<span class="nc" id="L269">			System.out.println (&quot;\t|       End Date                                                                                           |&quot;);</span>
+<span class="fc" id="L269">			System.out.println (&quot;\t|       End Date                                                                                           |&quot;);</span>
 
-<span class="nc" id="L271">			System.out.println (&quot;\t|       Adjacent Step LIBOR (%)                                                                            |&quot;);</span>
+<span class="fc" id="L271">			System.out.println (&quot;\t|       Adjacent Step LIBOR (%)                                                                            |&quot;);</span>
 
-<span class="nc" id="L273">			System.out.println (&quot;\t|       Adjacent Step LIBOR Increment (bp)                                                                 |&quot;);</span>
+<span class="fc" id="L273">			System.out.println (&quot;\t|       Adjacent Step LIBOR Increment (bp)                                                                 |&quot;);</span>
 
-<span class="nc" id="L275">			System.out.println (&quot;\t|       Adjacent Step Effective Annual Forward Rate (%)                                                    |&quot;);</span>
+<span class="fc" id="L275">			System.out.println (&quot;\t|       Adjacent Step Effective Annual Forward Rate (%)                                                    |&quot;);</span>
 
-<span class="nc" id="L277">			System.out.println (&quot;\t|       Adjacent Step Nominal Annual Forward Rate (%)                                                      |&quot;);</span>
+<span class="fc" id="L277">			System.out.println (&quot;\t|       Adjacent Step Nominal Annual Forward Rate (%)                                                      |&quot;);</span>
 
-<span class="nc" id="L279">			System.out.println (&quot;\t|                                                                                                          |&quot;);</span>
+<span class="fc" id="L279">			System.out.println (&quot;\t|                                                                                                          |&quot;);</span>
 
-<span class="nc" id="L281">			System.out.println (&quot;\t|----------------------------------------------------------------------------------------------------------|&quot;);</span>
+<span class="fc" id="L281">			System.out.println (&quot;\t|----------------------------------------------------------------------------------------------------------|&quot;);</span>
 
-<span class="nc" id="L283">			LognormalLIBORPointEvolver lle = new LognormalLIBORPointEvolver (</span>
+<span class="fc" id="L283">			LognormalLIBORPointEvolver lle = new LognormalLIBORPointEvolver (</span>
 				fundingLabel,
 				forwardLabel,
-<span class="nc" id="L286">				LLVInstance (</span>
-<span class="nc" id="L287">					dtSpot.julian(),</span>
+<span class="fc" id="L286">				LLVInstance (</span>
+<span class="fc" id="L287">					dtSpot.julian(),</span>
 					forwardLabel,
 					aMS,
 					aadblCorrelation,
@@ -294,9 +294,9 @@ import org.drip.state.identifier.*;
 				dc
 			);
 
-<span class="nc bnc" id="L297" title="All 2 branches missed.">			for (int iRun = 0; iRun &lt; iNumRun; ++iRun)</span>
-<span class="nc" id="L298">				DisplayRunSnap (</span>
-<span class="nc" id="L299">					lle.evolve (</span>
+<span class="fc bfc" id="L297" title="All 2 branches covered.">			for (int iRun = 0; iRun &lt; iNumRun; ++iRun)</span>
+<span class="fc" id="L298">				DisplayRunSnap (</span>
+<span class="fc" id="L299">					lle.evolve (</span>
 						iSpotDate,
 						iViewDate,
 						iViewTimeIncrement,
@@ -304,8 +304,8 @@ import org.drip.state.identifier.*;
 					)
 				);
 
-<span class="nc" id="L307">			System.out.println (&quot;\t|----------------------------------------------------------------------------------------------------------|&quot;);</span>
+<span class="fc" id="L307">			System.out.println (&quot;\t|----------------------------------------------------------------------------------------------------------|&quot;);</span>
 		}
-<span class="nc" id="L309">	}</span>
+<span class="fc" id="L309">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

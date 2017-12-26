@@ -57,10 +57,10 @@ package org.drip.sequence.custom;
  */
 
 public class KernelDensityEstimationL1 extends org.drip.sequence.functional.BoundedMultivariateRandom {
-<span class="nc" id="L60">	private int _iSampleSize = -1;</span>
-<span class="nc" id="L61">	private double _dblSmoothingParameter = java.lang.Double.NaN;</span>
-<span class="nc" id="L62">	private org.drip.function.definition.R1ToR1 _auKernel = null;</span>
-<span class="nc" id="L63">	private org.drip.function.definition.R1ToR1 _auResponse = null;</span>
+<span class="fc" id="L60">	private int _iSampleSize = -1;</span>
+<span class="fc" id="L61">	private double _dblSmoothingParameter = java.lang.Double.NaN;</span>
+<span class="fc" id="L62">	private org.drip.function.definition.R1ToR1 _auKernel = null;</span>
+<span class="fc" id="L63">	private org.drip.function.definition.R1ToR1 _auResponse = null;</span>
 
 	/**
 	 * KernelDensityEstimationL1 Constructor
@@ -79,12 +79,12 @@ public class KernelDensityEstimationL1 extends org.drip.sequence.functional.Boun
 		final int iSampleSize,
 		final org.drip.function.definition.R1ToR1 auResponse)
 		throws java.lang.Exception
-<span class="nc" id="L82">	{</span>
-<span class="nc bnc" id="L83" title="All 2 branches missed.">		if (null == (_auKernel = auKernel) || !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L84" title="All 6 branches missed.">			(_dblSmoothingParameter = dblSmoothingParameter) || 0 &gt;= (_iSampleSize = iSampleSize) || null ==</span>
+<span class="fc" id="L82">	{</span>
+<span class="pc bpc" id="L83" title="1 of 2 branches missed.">		if (null == (_auKernel = auKernel) || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L84" title="3 of 6 branches missed.">			(_dblSmoothingParameter = dblSmoothingParameter) || 0 &gt;= (_iSampleSize = iSampleSize) || null ==</span>
 				(_auResponse = auResponse))
 <span class="nc" id="L86">			throw new java.lang.Exception (&quot;KernelDensityEstimationL1 Constructor =&gt; Invalid Inputs!&quot;);</span>
-<span class="nc" id="L87">	}</span>
+<span class="fc" id="L87">	}</span>
 
 	/**
 	 * Retrieve the Kernel Function
@@ -139,19 +139,19 @@ public class KernelDensityEstimationL1 extends org.drip.sequence.functional.Boun
 		final double[] adblVariate)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L142">		double dblMinVariate = org.drip.quant.common.NumberUtil.Minimum (adblVariate);</span>
+<span class="fc" id="L142">		double dblMinVariate = org.drip.quant.common.NumberUtil.Minimum (adblVariate);</span>
 
-<span class="nc" id="L144">		double dblMaxVariate = org.drip.quant.common.NumberUtil.Maximum (adblVariate);</span>
+<span class="fc" id="L144">		double dblMaxVariate = org.drip.quant.common.NumberUtil.Maximum (adblVariate);</span>
 
-<span class="nc" id="L146">		double dblKernelIntegral = 0.;</span>
-<span class="nc" id="L147">		int iNumVariate = adblVariate.length;</span>
+<span class="fc" id="L146">		double dblKernelIntegral = 0.;</span>
+<span class="fc" id="L147">		int iNumVariate = adblVariate.length;</span>
 
-<span class="nc bnc" id="L149" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
-<span class="nc" id="L150">			dblKernelIntegral += _auKernel.integrate ((dblMinVariate - adblVariate[i]) /</span>
+<span class="fc bfc" id="L149" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
+<span class="fc" id="L150">			dblKernelIntegral += _auKernel.integrate ((dblMinVariate - adblVariate[i]) /</span>
 				_dblSmoothingParameter, (dblMaxVariate - adblVariate[i]) / _dblSmoothingParameter);
 
-<span class="nc" id="L153">		return dblKernelIntegral / (_iSampleSize * _dblSmoothingParameter) - _auResponse.integrate</span>
-<span class="nc" id="L154">			(dblMinVariate, dblMaxVariate);</span>
+<span class="fc" id="L153">		return dblKernelIntegral / (_iSampleSize * _dblSmoothingParameter) - _auResponse.integrate</span>
+<span class="fc" id="L154">			(dblMinVariate, dblMaxVariate);</span>
 	}
 
 	@Override public double targetVariateVarianceBound (

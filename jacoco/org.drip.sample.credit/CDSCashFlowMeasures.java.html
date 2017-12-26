@@ -95,40 +95,40 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 	private static final void CreditCurveAPISample()
 		throws Exception
 	{
-<span class="nc" id="L98">		JulianDate dtStart = DateUtil.Today();</span>
+<span class="fc" id="L98">		JulianDate dtStart = DateUtil.Today();</span>
 
-<span class="nc" id="L100">		JulianDate dt10Y = dtStart.addYears (10);</span>
+<span class="fc" id="L100">		JulianDate dt10Y = dtStart.addYears (10);</span>
 
 		/*
 		 * Create Credit Curve from flat Hazard Rate
 		 */
 
-<span class="nc" id="L106">		CreditCurve ccFlatHazard = ScenarioCreditCurveBuilder.FlatHazard (</span>
-<span class="nc" id="L107">			dtStart.julian(),</span>
+<span class="fc" id="L106">		CreditCurve ccFlatHazard = ScenarioCreditCurveBuilder.FlatHazard (</span>
+<span class="fc" id="L107">			dtStart.julian(),</span>
 			&quot;CC&quot;,
 			&quot;USD&quot;,
 			0.02,
 			0.4
 		);
 
-<span class="nc" id="L114">		System.out.println (&quot;CCFromFlatHazard[&quot; + dt10Y.toString() + &quot;]; Survival=&quot; +</span>
-<span class="nc" id="L115">			ccFlatHazard.survival (&quot;10Y&quot;) + &quot;; Hazard=&quot; + ccFlatHazard.hazard (&quot;10Y&quot;));</span>
+<span class="fc" id="L114">		System.out.println (&quot;CCFromFlatHazard[&quot; + dt10Y.toString() + &quot;]; Survival=&quot; +</span>
+<span class="fc" id="L115">			ccFlatHazard.survival (&quot;10Y&quot;) + &quot;; Hazard=&quot; + ccFlatHazard.hazard (&quot;10Y&quot;));</span>
 
-<span class="nc" id="L117">		int[] aiDate = new int[5];</span>
-<span class="nc" id="L118">		double[] adblSurvival = new double[5];</span>
+<span class="fc" id="L117">		int[] aiDate = new int[5];</span>
+<span class="fc" id="L118">		double[] adblSurvival = new double[5];</span>
 
-<span class="nc bnc" id="L120" title="All 2 branches missed.">		for (int i = 0; i &lt; 5; ++i) {</span>
-<span class="nc" id="L121">			aiDate[i] = dtStart.addYears (2 * i + 2).julian();</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">		for (int i = 0; i &lt; 5; ++i) {</span>
+<span class="fc" id="L121">			aiDate[i] = dtStart.addYears (2 * i + 2).julian();</span>
 
-<span class="nc" id="L123">			adblSurvival[i] = 1. - 0.1 * (i + 1);</span>
+<span class="fc" id="L123">			adblSurvival[i] = 1. - 0.1 * (i + 1);</span>
 		}
 
 		/*
 		 * Create Credit Curve from an array of dates and their corresponding survival probabilities
 		 */
 
-<span class="nc" id="L130">		CreditCurve ccFromSurvival = ScenarioCreditCurveBuilder.Survival (</span>
-<span class="nc" id="L131">			dtStart.julian(),</span>
+<span class="fc" id="L130">		CreditCurve ccFromSurvival = ScenarioCreditCurveBuilder.Survival (</span>
+<span class="fc" id="L131">			dtStart.julian(),</span>
 			&quot;CC&quot;,
 			&quot;USD&quot;,
 			aiDate,
@@ -136,9 +136,9 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			0.4
 		);
 
-<span class="nc" id="L139">		System.out.println (&quot;CCFromSurvival[&quot; + dt10Y.toString() + &quot;]; Survival=&quot; +</span>
-<span class="nc" id="L140">			ccFromSurvival.survival (&quot;10Y&quot;) + &quot;; Hazard=&quot; + ccFromSurvival.hazard (&quot;10Y&quot;));</span>
-<span class="nc" id="L141">	}</span>
+<span class="fc" id="L139">		System.out.println (&quot;CCFromSurvival[&quot; + dt10Y.toString() + &quot;]; Survival=&quot; +</span>
+<span class="fc" id="L140">			ccFromSurvival.survival (&quot;10Y&quot;) + &quot;; Hazard=&quot; + ccFromSurvival.hazard (&quot;10Y&quot;));</span>
+<span class="fc" id="L141">	}</span>
 
 	/*
 	 * Sample API demonstrating the creation of the Credit Curve from the CDS instruments
@@ -149,22 +149,22 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 	private static void CreateCreditCurveFromCDSInstruments()
 		throws Exception
 	{
-<span class="nc" id="L152">		JulianDate dtStart = DateUtil.Today();</span>
+<span class="fc" id="L152">		JulianDate dtStart = DateUtil.Today();</span>
 
 		/*
 		 * Populate the instruments, the calibration measures, and the calibration quotes
 		 */
 
-<span class="nc" id="L158">		double[] adblQuotes = new double[5];</span>
-<span class="nc" id="L159">		String[] astrCalibMeasure = new String[5];</span>
-<span class="nc" id="L160">		CreditDefaultSwap[] aCDS = new CreditDefaultSwap[5];</span>
+<span class="fc" id="L158">		double[] adblQuotes = new double[5];</span>
+<span class="fc" id="L159">		String[] astrCalibMeasure = new String[5];</span>
+<span class="fc" id="L160">		CreditDefaultSwap[] aCDS = new CreditDefaultSwap[5];</span>
 
-<span class="nc bnc" id="L162" title="All 2 branches missed.">		for (int i = 0; i &lt; 5; ++i) {</span>
+<span class="fc bfc" id="L162" title="All 2 branches covered.">		for (int i = 0; i &lt; 5; ++i) {</span>
 			/*
 			 * The Calibration CDS
 			 */
 
-<span class="nc" id="L167">			aCDS[i] = CDSBuilder.CreateSNAC (</span>
+<span class="fc" id="L167">			aCDS[i] = CDSBuilder.CreateSNAC (</span>
 				dtStart,
 				(i + 1) + &quot;Y&quot;,
 				0.01,
@@ -175,20 +175,20 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			 * Calibration Quote
 			 */
 
-<span class="nc" id="L178">			adblQuotes[i] = 100.;</span>
+<span class="fc" id="L178">			adblQuotes[i] = 100.;</span>
 
 			/*
 			 * Calibration Measure
 			 */
 
-<span class="nc" id="L184">			astrCalibMeasure[i] = &quot;FairPremium&quot;;</span>
+<span class="fc" id="L184">			astrCalibMeasure[i] = &quot;FairPremium&quot;;</span>
 		}
 
 		/*
 		 * Flat Discount Curve
 		 */
 
-<span class="nc" id="L191">		MergedDiscountForwardCurve dc = ScenarioDiscountCurveBuilder.ExponentiallyCompoundedFlatRate (</span>
+<span class="fc" id="L191">		MergedDiscountForwardCurve dc = ScenarioDiscountCurveBuilder.ExponentiallyCompoundedFlatRate (</span>
 			dtStart,
 			&quot;USD&quot;,
 			0.05
@@ -198,7 +198,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 		 * Create the Credit Curve from the give CDS instruments
 		 */
 
-<span class="nc" id="L201">		CreditCurve cc = ScenarioCreditCurveBuilder.Custom (</span>
+<span class="fc" id="L201">		CreditCurve cc = ScenarioCreditCurveBuilder.Custom (</span>
 			&quot;CORP&quot;,
 			dtStart,
 			aCDS,
@@ -213,7 +213,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 		 * Valuation Parameters
 		 */
 
-<span class="nc" id="L216">		ValuationParams valParams = ValuationParams.Spot (</span>
+<span class="fc" id="L216">		ValuationParams valParams = ValuationParams.Spot (</span>
 			dtStart,
 			0,
 			&quot;&quot;,
@@ -224,17 +224,17 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 		 * Standard Credit Pricer Parameters (check javadoc for details)
 		 */
 
-<span class="nc" id="L227">		CreditPricerParams pricerParams = CreditPricerParams.Standard();</span>
+<span class="fc" id="L227">		CreditPricerParams pricerParams = CreditPricerParams.Standard();</span>
 
 		/*
 		 * Re-calculate the input calibration measures for the input CDSes
 		 */
 
-<span class="nc bnc" id="L233" title="All 2 branches missed.">		for (int i = 0; i &lt; aCDS.length; ++i)</span>
-<span class="nc" id="L234">			System.out.println (</span>
+<span class="fc bfc" id="L233" title="All 2 branches covered.">		for (int i = 0; i &lt; aCDS.length; ++i)</span>
+<span class="fc" id="L234">			System.out.println (</span>
 				&quot;\t&quot; + astrCalibMeasure[i] + &quot;[&quot; + i + &quot;] = &quot; +
-<span class="nc" id="L236">				aCDS[i].measureValue (</span>
-<span class="nc" id="L237">					valParams, pricerParams, MarketParamsBuilder.Create (</span>
+<span class="fc" id="L236">				aCDS[i].measureValue (</span>
+<span class="fc" id="L237">					valParams, pricerParams, MarketParamsBuilder.Create (</span>
 						dc,
 						null,
 						null,
@@ -248,7 +248,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 					astrCalibMeasure[i]
 				)
 			);
-<span class="nc" id="L251">	}</span>
+<span class="fc" id="L251">	}</span>
 
 	/*
 	 * Sample API demonstrating the display of the CDS coupon and loss cash flow
@@ -259,13 +259,13 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 	private static final void CDSAPISample()
 		throws Exception
 	{
-<span class="nc" id="L262">		JulianDate dtStart = DateUtil.Today();</span>
+<span class="fc" id="L262">		JulianDate dtStart = DateUtil.Today();</span>
 
 		/*
 		 * Flat Discount Curve
 		 */
 
-<span class="nc" id="L268">		MergedDiscountForwardCurve dc = ScenarioDiscountCurveBuilder.ExponentiallyCompoundedFlatRate (</span>
+<span class="fc" id="L268">		MergedDiscountForwardCurve dc = ScenarioDiscountCurveBuilder.ExponentiallyCompoundedFlatRate (</span>
 			dtStart,
 			&quot;USD&quot;,
 			0.05
@@ -275,8 +275,8 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 		 * Flat Credit Curve
 		 */
 
-<span class="nc" id="L278">		CreditCurve cc = ScenarioCreditCurveBuilder.FlatHazard (</span>
-<span class="nc" id="L279">			dtStart.julian(),</span>
+<span class="fc" id="L278">		CreditCurve cc = ScenarioCreditCurveBuilder.FlatHazard (</span>
+<span class="fc" id="L279">			dtStart.julian(),</span>
 			&quot;CC&quot;,
 			&quot;USD&quot;,
 			0.02,
@@ -287,7 +287,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 		 * Component Market Parameters built from the Discount and the Credit Curves
 		 */
 
-<span class="nc" id="L290">		CurveSurfaceQuoteContainer mktParams = MarketParamsBuilder.Credit (</span>
+<span class="fc" id="L290">		CurveSurfaceQuoteContainer mktParams = MarketParamsBuilder.Credit (</span>
 			dc,
 			cc
 		);
@@ -296,7 +296,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 		 * Create an SNAC CDS
 		 */
 
-<span class="nc" id="L299">		CreditDefaultSwap cds = CDSBuilder.CreateSNAC (</span>
+<span class="fc" id="L299">		CreditDefaultSwap cds = CDSBuilder.CreateSNAC (</span>
 			dtStart,
 			&quot;5Y&quot;,
 			0.1,
@@ -307,7 +307,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 		 * Valuation Parameters
 		 */
 
-<span class="nc" id="L310">		ValuationParams valParams = ValuationParams.Spot (</span>
+<span class="fc" id="L310">		ValuationParams valParams = ValuationParams.Spot (</span>
 			dtStart,
 			0,
 			&quot;&quot;,
@@ -318,27 +318,27 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 		 * Standard Credit Pricer Parameters (check javadoc for details)
 		 */
 
-<span class="nc" id="L321">		CreditPricerParams pricerParams = CreditPricerParams.Standard();</span>
+<span class="fc" id="L321">		CreditPricerParams pricerParams = CreditPricerParams.Standard();</span>
 
-<span class="nc" id="L323">		System.out.println (&quot;Loss Start     Loss End  Notl    Rec    EffDF    StartSurv  EndSurv&quot;);</span>
+<span class="fc" id="L323">		System.out.println (&quot;Loss Start     Loss End  Notl    Rec    EffDF    StartSurv  EndSurv&quot;);</span>
 
-<span class="nc" id="L325">		System.out.println (&quot;----------     --------  ----    ---    -----    ---------  -------&quot;);</span>
+<span class="fc" id="L325">		System.out.println (&quot;----------     --------  ----    ---    -----    ---------  -------&quot;);</span>
 
 		/*
 		 * CDS Loss Cash Flow
 		 */
 
-<span class="nc bnc" id="L331" title="All 2 branches missed.">		for (LossQuadratureMetrics dp : cds.lossFlow (valParams, pricerParams, mktParams))</span>
-<span class="nc" id="L332">			System.out.println (</span>
-<span class="nc" id="L333">				DateUtil.YYYYMMDD (dp.startDate()) + FIELD_SEPARATOR +</span>
-<span class="nc" id="L334">				DateUtil.YYYYMMDD (dp.endDate()) + FIELD_SEPARATOR +</span>
-<span class="nc" id="L335">				FormatUtil.FormatDouble (dp.effectiveNotional(), 1, 0, 1.) + FIELD_SEPARATOR +</span>
-<span class="nc" id="L336">				FormatUtil.FormatDouble (dp.effectiveRecovery(), 1, 2, 1.) + FIELD_SEPARATOR +</span>
-<span class="nc" id="L337">				FormatUtil.FormatDouble (dp.effectiveDF(), 1, 4, 1.)  + FIELD_SEPARATOR +</span>
-<span class="nc" id="L338">				FormatUtil.FormatDouble (dp.startSurvival(), 1, 4, 1.) + FIELD_SEPARATOR +</span>
-<span class="nc" id="L339">				FormatUtil.FormatDouble (dp.endSurvival(), 1, 4, 1.)</span>
+<span class="fc bfc" id="L331" title="All 2 branches covered.">		for (LossQuadratureMetrics dp : cds.lossFlow (valParams, pricerParams, mktParams))</span>
+<span class="fc" id="L332">			System.out.println (</span>
+<span class="fc" id="L333">				DateUtil.YYYYMMDD (dp.startDate()) + FIELD_SEPARATOR +</span>
+<span class="fc" id="L334">				DateUtil.YYYYMMDD (dp.endDate()) + FIELD_SEPARATOR +</span>
+<span class="fc" id="L335">				FormatUtil.FormatDouble (dp.effectiveNotional(), 1, 0, 1.) + FIELD_SEPARATOR +</span>
+<span class="fc" id="L336">				FormatUtil.FormatDouble (dp.effectiveRecovery(), 1, 2, 1.) + FIELD_SEPARATOR +</span>
+<span class="fc" id="L337">				FormatUtil.FormatDouble (dp.effectiveDF(), 1, 4, 1.)  + FIELD_SEPARATOR +</span>
+<span class="fc" id="L338">				FormatUtil.FormatDouble (dp.startSurvival(), 1, 4, 1.) + FIELD_SEPARATOR +</span>
+<span class="fc" id="L339">				FormatUtil.FormatDouble (dp.endSurvival(), 1, 4, 1.)</span>
 			);
-<span class="nc" id="L341">	}</span>
+<span class="fc" id="L341">	}</span>
 
 	public static final void main (
 		final String astrArgs[])
@@ -346,13 +346,13 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 	{
 		// String strConfig = &quot;c:\\Lakshmi\\BondAnal\\Config.xml&quot;;
 
-<span class="nc" id="L349">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L349">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L351">		CreditCurveAPISample();</span>
+<span class="fc" id="L351">		CreditCurveAPISample();</span>
 
-<span class="nc" id="L353">		CreateCreditCurveFromCDSInstruments();</span>
+<span class="fc" id="L353">		CreateCreditCurveFromCDSInstruments();</span>
 
-<span class="nc" id="L355">		CDSAPISample();</span>
-<span class="nc" id="L356">	}</span>
+<span class="fc" id="L355">		CDSAPISample();</span>
+<span class="fc" id="L356">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

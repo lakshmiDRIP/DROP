@@ -62,23 +62,23 @@ package org.drip.sequence.custom;
 		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; mapBin,
 		final double dblVariate)
 	{
-<span class="nc bnc" id="L65" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.Integer, java.lang.Double&gt; meBin : mapBin.entrySet()) {</span>
-<span class="nc" id="L66">			double dblBinCapacity = meBin.getValue();</span>
+<span class="fc bfc" id="L65" title="All 2 branches covered.">		for (java.util.Map.Entry&lt;java.lang.Integer, java.lang.Double&gt; meBin : mapBin.entrySet()) {</span>
+<span class="fc" id="L66">			double dblBinCapacity = meBin.getValue();</span>
 
-<span class="nc bnc" id="L68" title="All 2 branches missed.">			if (dblBinCapacity &gt; dblVariate) {</span>
-<span class="nc" id="L69">				meBin.setValue (dblBinCapacity - dblVariate);</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">			if (dblBinCapacity &gt; dblVariate) {</span>
+<span class="fc" id="L69">				meBin.setValue (dblBinCapacity - dblVariate);</span>
 
-<span class="nc" id="L71">				return true;</span>
+<span class="fc" id="L71">				return true;</span>
 			}
-<span class="nc" id="L73">		}</span>
+<span class="fc" id="L73">		}</span>
 
-<span class="nc" id="L75">		return false;</span>
+<span class="fc" id="L75">		return false;</span>
 	}
 
 	public static final org.drip.sequence.functional.BoundedMultivariateRandom MinimumNumberOfBins()
 	{
-<span class="nc" id="L80">		org.drip.sequence.functional.BoundedMultivariateRandom funcMinBins = new</span>
-<span class="nc" id="L81">			org.drip.sequence.functional.BoundedMultivariateRandom() {</span>
+<span class="fc" id="L80">		org.drip.sequence.functional.BoundedMultivariateRandom funcMinBins = new</span>
+<span class="fc" id="L81">			org.drip.sequence.functional.BoundedMultivariateRandom() {</span>
 			@Override public int dimension()
 			{
 <span class="nc" id="L84">				return org.drip.function.definition.RdToR1.DIMENSION_NOT_FIXED;</span>
@@ -88,29 +88,29 @@ package org.drip.sequence.custom;
 				final double[] adblVariate)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L91">				java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; mapBin = new</span>
+<span class="fc" id="L91">				java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; mapBin = new</span>
 					java.util.HashMap&lt;java.lang.Integer, java.lang.Double&gt;();
 
-<span class="nc" id="L94">				int iLastEntry = -1;</span>
-<span class="nc" id="L95">				int iNumVariate = adblVariate.length;</span>
+<span class="fc" id="L94">				int iLastEntry = -1;</span>
+<span class="fc" id="L95">				int iNumVariate = adblVariate.length;</span>
 
-<span class="nc bnc" id="L97" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumVariate; ++i) {</span>
-<span class="nc bnc" id="L98" title="All 4 branches missed.">					if (0 == i || !UpdateBin (mapBin, adblVariate[i]))</span>
-<span class="nc" id="L99">						mapBin.put (++iLastEntry, 1. - adblVariate[i]);</span>
+<span class="fc bfc" id="L97" title="All 2 branches covered.">				for (int i = 0; i &lt; iNumVariate; ++i) {</span>
+<span class="fc bfc" id="L98" title="All 4 branches covered.">					if (0 == i || !UpdateBin (mapBin, adblVariate[i]))</span>
+<span class="fc" id="L99">						mapBin.put (++iLastEntry, 1. - adblVariate[i]);</span>
 				}
 
-<span class="nc" id="L102">				return mapBin.size();</span>
+<span class="fc" id="L102">				return mapBin.size();</span>
 			}
 
 			@Override public double targetVariateVarianceBound (
 				final int iTargetVariateIndex)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L109">				return 1.;</span>
+<span class="fc" id="L109">				return 1.;</span>
 			}
 		};
 
-<span class="nc" id="L113">		return funcMinBins;</span>
+<span class="fc" id="L113">		return funcMinBins;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

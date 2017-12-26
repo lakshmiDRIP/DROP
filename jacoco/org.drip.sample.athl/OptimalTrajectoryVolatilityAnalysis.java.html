@@ -87,67 +87,67 @@ import org.drip.service.env.EnvManager;
 		final double dblTradeSize)
 		throws Exception
 	{
-<span class="nc" id="L90">		double dblTradeTime = 0.5;</span>
-<span class="nc" id="L91">		int iNumInterval = 10;</span>
+<span class="fc" id="L90">		double dblTradeTime = 0.5;</span>
+<span class="fc" id="L91">		int iNumInterval = 10;</span>
 
-<span class="nc" id="L93">		double dblRiskAversion = 1.e-02;</span>
+<span class="fc" id="L93">		double dblRiskAversion = 1.e-02;</span>
 
-<span class="nc" id="L95">		LinearPermanentExpectationParameters lpep = new DynamicsParameters (</span>
+<span class="fc" id="L95">		LinearPermanentExpectationParameters lpep = new DynamicsParameters (</span>
 			new AssetFlowSettings (
 				strAssetName,
 				dblAverageDailyVolume,
 				dblSharesOutstanding,
 				dblDailyVolatility
 			)
-<span class="nc" id="L102">		).almgren2003();</span>
+<span class="fc" id="L102">		).almgren2003();</span>
 
-<span class="nc" id="L104">		ContinuousPowerImpact cpi = ContinuousPowerImpact.Standard (</span>
+<span class="fc" id="L104">		ContinuousPowerImpact cpi = ContinuousPowerImpact.Standard (</span>
 			dblTradeSize,
 			dblTradeTime,
 			lpep,
 			dblRiskAversion
 		);
 
-<span class="nc" id="L111">		PowerImpactContinuous pic = (PowerImpactContinuous) cpi.generate();</span>
+<span class="fc" id="L111">		PowerImpactContinuous pic = (PowerImpactContinuous) cpi.generate();</span>
 
-<span class="nc" id="L113">		R1ToR1 r1ToR1Holdings = pic.holdings();</span>
+<span class="fc" id="L113">		R1ToR1 r1ToR1Holdings = pic.holdings();</span>
 
-<span class="nc" id="L115">		double[] adblHoldings = new double[iNumInterval];</span>
-<span class="nc" id="L116">		double[] adblExecutionTime = new double[iNumInterval];</span>
+<span class="fc" id="L115">		double[] adblHoldings = new double[iNumInterval];</span>
+<span class="fc" id="L116">		double[] adblExecutionTime = new double[iNumInterval];</span>
 
-<span class="nc bnc" id="L118" title="All 2 branches missed.">		for (int i = 1; i &lt;= iNumInterval; ++i) {</span>
-<span class="nc" id="L119">			adblExecutionTime[i - 1] = dblTradeTime * i / iNumInterval;</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">		for (int i = 1; i &lt;= iNumInterval; ++i) {</span>
+<span class="fc" id="L119">			adblExecutionTime[i - 1] = dblTradeTime * i / iNumInterval;</span>
 
-<span class="nc" id="L121">			adblHoldings[i - 1] = r1ToR1Holdings.evaluate (adblExecutionTime[i - 1]);</span>
+<span class="fc" id="L121">			adblHoldings[i - 1] = r1ToR1Holdings.evaluate (adblExecutionTime[i - 1]);</span>
 		}
 
-<span class="nc" id="L124">		String strDump = &quot;&quot;;</span>
+<span class="fc" id="L124">		String strDump = &quot;&quot;;</span>
 
-<span class="nc bnc" id="L126" title="All 2 branches missed.">		for (int i = 0; i &lt; adblHoldings.length; ++i)</span>
-<span class="nc" id="L127">			strDump = strDump + FormatUtil.FormatDouble (adblHoldings[i] / dblTradeSize, 2, 2, 100.) + &quot;% | &quot;;</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">		for (int i = 0; i &lt; adblHoldings.length; ++i)</span>
+<span class="fc" id="L127">			strDump = strDump + FormatUtil.FormatDouble (adblHoldings[i] / dblTradeSize, 2, 2, 100.) + &quot;% | &quot;;</span>
 
-<span class="nc" id="L129">		System.out.println (</span>
+<span class="fc" id="L129">		System.out.println (</span>
 			&quot;\t| &quot; +
-<span class="nc" id="L131">			FormatUtil.FormatDouble (dblDailyVolatility, 1, 2, 1.) + &quot;% | &quot; + strDump +</span>
-<span class="nc" id="L132">			FormatUtil.FormatDouble (pic.characteristicTime(), 1, 3, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L131">			FormatUtil.FormatDouble (dblDailyVolatility, 1, 2, 1.) + &quot;% | &quot; + strDump +</span>
+<span class="fc" id="L132">			FormatUtil.FormatDouble (pic.characteristicTime(), 1, 3, 1.) + &quot; ||&quot;</span>
 		);
-<span class="nc" id="L134">	}</span>
+<span class="fc" id="L134">	}</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L140">		EnvManager.InitEnv (</span>
+<span class="fc" id="L140">		EnvManager.InitEnv (</span>
 			&quot;&quot;,
 			true
 		);
 
-<span class="nc" id="L145">		String strAssetName = &quot;IBM&quot;;</span>
-<span class="nc" id="L146">		double dblAverageDailyVolume = 6561000.;</span>
-<span class="nc" id="L147">		double dblSharesOutstanding = 1728000000.;</span>
-<span class="nc" id="L148">		double dblTradeSize = 656100.;</span>
+<span class="fc" id="L145">		String strAssetName = &quot;IBM&quot;;</span>
+<span class="fc" id="L146">		double dblAverageDailyVolume = 6561000.;</span>
+<span class="fc" id="L147">		double dblSharesOutstanding = 1728000000.;</span>
+<span class="fc" id="L148">		double dblTradeSize = 656100.;</span>
 
-<span class="nc" id="L150">		double[] adblDailyVolatility = new double[] {</span>
+<span class="fc" id="L150">		double[] adblDailyVolatility = new double[] {</span>
 			0.75,
 			1.00,
 			1.25,
@@ -160,26 +160,26 @@ import org.drip.service.env.EnvManager;
 			3.00
 		};
 
-<span class="nc" id="L163">		System.out.println();</span>
+<span class="fc" id="L163">		System.out.println();</span>
 
-<span class="nc" id="L165">		System.out.println (&quot;\t|--------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L165">		System.out.println (&quot;\t|--------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L167">		System.out.println (&quot;\t|                                         Trade Size Dependence on the Execution Schedule                                        ||&quot;);</span>
+<span class="fc" id="L167">		System.out.println (&quot;\t|                                         Trade Size Dependence on the Execution Schedule                                        ||&quot;);</span>
 
-<span class="nc" id="L169">		System.out.println (&quot;\t|--------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L169">		System.out.println (&quot;\t|--------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L171">		System.out.println (&quot;\t|                                                L -&gt; R :                                                                        ||&quot;);</span>
+<span class="fc" id="L171">		System.out.println (&quot;\t|                                                L -&gt; R :                                                                        ||&quot;);</span>
 
-<span class="nc" id="L173">		System.out.println (&quot;\t|                                                        Daily Volatility                                                        ||&quot;);</span>
+<span class="fc" id="L173">		System.out.println (&quot;\t|                                                        Daily Volatility                                                        ||&quot;);</span>
 
-<span class="nc" id="L175">		System.out.println (&quot;\t|                                                        Execution Time Nodes                                                    ||&quot;);</span>
+<span class="fc" id="L175">		System.out.println (&quot;\t|                                                        Execution Time Nodes                                                    ||&quot;);</span>
 
-<span class="nc" id="L177">		System.out.println (&quot;\t|                                                        Characteristic Time                                                     ||&quot;);</span>
+<span class="fc" id="L177">		System.out.println (&quot;\t|                                                        Characteristic Time                                                     ||&quot;);</span>
 
-<span class="nc" id="L179">		System.out.println (&quot;\t|--------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L179">		System.out.println (&quot;\t|--------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L181" title="All 2 branches missed.">		for (double dblDailyVolatility : adblDailyVolatility)</span>
-<span class="nc" id="L182">			VolatilitySensitivity (</span>
+<span class="fc bfc" id="L181" title="All 2 branches covered.">		for (double dblDailyVolatility : adblDailyVolatility)</span>
+<span class="fc" id="L182">			VolatilitySensitivity (</span>
 				strAssetName,
 				dblAverageDailyVolume,
 				dblDailyVolatility,
@@ -187,9 +187,9 @@ import org.drip.service.env.EnvManager;
 				dblTradeSize
 			);
 
-<span class="nc" id="L190">		System.out.println (&quot;\t|--------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L190">		System.out.println (&quot;\t|--------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L192">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L193">	}</span>
+<span class="fc" id="L192">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L193">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

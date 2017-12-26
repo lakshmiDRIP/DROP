@@ -117,7 +117,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 	private int terminationAdjust (
 		final int iDate)
 	{
-<span class="fc bfc" id="L120" title="All 2 branches covered.">		org.drip.analytics.daycount.DateAdjustParams dap = null == _terminationSetting ? null :</span>
+<span class="pc bpc" id="L120" title="1 of 2 branches missed.">		org.drip.analytics.daycount.DateAdjustParams dap = null == _terminationSetting ? null :</span>
 <span class="fc" id="L121">			_terminationSetting.dap();</span>
 
 		try {
@@ -151,7 +151,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 <span class="fc" id="L151">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.param.definition.ProductQuote&gt; pqMap =</span>
 <span class="fc" id="L152">			csqc.quoteMap();</span>
 
-<span class="pc bpc" id="L154" title="3 of 6 branches missed.">		if (null != pqMap &amp;&amp; null != strTsyBmk &amp;&amp; !strTsyBmk.isEmpty())</span>
+<span class="pc bpc" id="L154" title="2 of 6 branches missed.">		if (null != pqMap &amp;&amp; null != strTsyBmk &amp;&amp; !strTsyBmk.isEmpty())</span>
 <span class="fc" id="L155">			pqTsyBmkYield = pqMap.get (strTsyBmk);</span>
 
 <span class="fc bfc" id="L157" title="All 2 branches covered.">		if (null != pqTsyBmkYield) {</span>
@@ -171,50 +171,50 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final double dblPrice)
 	{
-<span class="nc bnc" id="L174" title="All 8 branches missed.">		if (null == valParams || null == csqs || !org.drip.quant.common.NumberUtil.IsValid (dblPrice) || null</span>
+<span class="pc bpc" id="L174" title="4 of 8 branches missed.">		if (null == valParams || null == csqs || !org.drip.quant.common.NumberUtil.IsValid (dblPrice) || null</span>
 			== _eosCall)
 <span class="nc" id="L176">			return null;</span>
 
-<span class="nc" id="L178">		int iValDate = valParams.valueDate();</span>
+<span class="fc" id="L178">		int iValDate = valParams.valueDate();</span>
 
-<span class="nc" id="L180">		int[] aiEOSDate = _eosCall.dates();</span>
+<span class="fc" id="L180">		int[] aiEOSDate = _eosCall.dates();</span>
 
-<span class="nc" id="L182">		int iMaturityDate = maturityDate().julian();</span>
+<span class="fc" id="L182">		int iMaturityDate = maturityDate().julian();</span>
 
-<span class="nc" id="L184">		double[] adblEOSFactor = _eosCall.factors();</span>
+<span class="fc" id="L184">		double[] adblEOSFactor = _eosCall.factors();</span>
 
-<span class="nc" id="L186">		int iNoticePeriod = _eosCall.exerciseNoticePeriod();</span>
+<span class="fc" id="L186">		int iNoticePeriod = _eosCall.exerciseNoticePeriod();</span>
 
-<span class="nc" id="L188">		int iExercise = -1;</span>
-<span class="nc" id="L189">		double dblExerciseYield = java.lang.Double.NaN;</span>
-<span class="nc bnc" id="L190" title="All 2 branches missed.">		int iNumEOSDate = null == aiEOSDate ? 0 : aiEOSDate.length;</span>
+<span class="fc" id="L188">		int iExercise = -1;</span>
+<span class="fc" id="L189">		double dblExerciseYield = java.lang.Double.NaN;</span>
+<span class="pc bpc" id="L190" title="1 of 2 branches missed.">		int iNumEOSDate = null == aiEOSDate ? 0 : aiEOSDate.length;</span>
 
 		try {
-<span class="nc" id="L193">			dblExerciseYield = yieldFromPrice (valParams, csqs, vcp, iMaturityDate, 1., dblPrice);</span>
+<span class="fc" id="L193">			dblExerciseYield = yieldFromPrice (valParams, csqs, vcp, iMaturityDate, 1., dblPrice);</span>
 <span class="nc" id="L194">		} catch (java.lang.Exception e) {</span>
 			if (!s_bSuppressErrors) e.printStackTrace();
 
 <span class="nc" id="L197">			return null;</span>
-<span class="nc" id="L198">		}</span>
+<span class="fc" id="L198">		}</span>
 
-<span class="nc bnc" id="L200" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumEOSDate; ++i) {</span>
-<span class="nc bnc" id="L201" title="All 4 branches missed.">			if (iValDate &gt; aiEOSDate[i] || aiEOSDate[i] - iValDate &lt; iNoticePeriod) continue;</span>
+<span class="fc bfc" id="L200" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumEOSDate; ++i) {</span>
+<span class="fc bfc" id="L201" title="All 4 branches covered.">			if (iValDate &gt; aiEOSDate[i] || aiEOSDate[i] - iValDate &lt; iNoticePeriod) continue;</span>
 
 			try {
-<span class="nc" id="L204">				double dblYield = yieldFromPrice (valParams, csqs, vcp, aiEOSDate[i], adblEOSFactor[i],</span>
+<span class="fc" id="L204">				double dblYield = yieldFromPrice (valParams, csqs, vcp, aiEOSDate[i], adblEOSFactor[i],</span>
 					dblPrice);
 
-<span class="nc bnc" id="L207" title="All 2 branches missed.">				if (dblYield &lt; dblExerciseYield) {</span>
-<span class="nc" id="L208">					iExercise = i;</span>
-<span class="nc" id="L209">					dblExerciseYield = dblYield;</span>
+<span class="fc bfc" id="L207" title="All 2 branches covered.">				if (dblYield &lt; dblExerciseYield) {</span>
+<span class="fc" id="L208">					iExercise = i;</span>
+<span class="fc" id="L209">					dblExerciseYield = dblYield;</span>
 				}
 <span class="nc" id="L211">			} catch (java.lang.Exception e) {</span>
 				if (!s_bSuppressErrors) e.printStackTrace();
-<span class="nc" id="L213">			}</span>
+<span class="fc" id="L213">			}</span>
 		}
 
 		try {
-<span class="nc bnc" id="L217" title="All 2 branches missed.">			return -1 == iExercise ? new org.drip.param.valuation.WorkoutInfo (iMaturityDate,</span>
+<span class="fc bfc" id="L217" title="All 2 branches covered.">			return -1 == iExercise ? new org.drip.param.valuation.WorkoutInfo (iMaturityDate,</span>
 				dblExerciseYield, 1., org.drip.param.valuation.WorkoutInfo.WO_TYPE_MATURITY) : new
 					org.drip.param.valuation.WorkoutInfo (aiEOSDate[iExercise], dblExerciseYield,
 						adblEOSFactor[iExercise], org.drip.param.valuation.WorkoutInfo.WO_TYPE_CALL);
@@ -328,16 +328,16 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 <span class="fc bfc" id="L328" title="All 2 branches covered.">		org.drip.param.valuation.ValuationCustomizationParams vcpQuote = null == _quoteConvention ? null :</span>
 <span class="fc" id="L329">			_quoteConvention.valuationCustomizationParams();</span>
 
-<span class="pc bpc" id="L331" title="1 of 2 branches missed.">		if (null != vcp) {</span>
-<span class="nc" id="L332">			strDC = vcp.yieldDayCount();</span>
+<span class="fc bfc" id="L331" title="All 2 branches covered.">		if (null != vcp) {</span>
+<span class="fc" id="L332">			strDC = vcp.yieldDayCount();</span>
 
-<span class="nc" id="L334">			iFrequency = vcp.yieldFreq();</span>
+<span class="fc" id="L334">			iFrequency = vcp.yieldFreq();</span>
 
-<span class="nc" id="L336">			strCalendar = vcp.yieldCalendar();</span>
+<span class="fc" id="L336">			strCalendar = vcp.yieldCalendar();</span>
 
-<span class="nc" id="L338">			bApplyCpnEOMAdj = vcp.applyYieldEOMAdj();</span>
+<span class="fc" id="L338">			bApplyCpnEOMAdj = vcp.applyYieldEOMAdj();</span>
 
-<span class="nc" id="L340">			bApplyFlatForwardRate = vcp.applyFlatForwardRate();</span>
+<span class="fc" id="L340">			bApplyFlatForwardRate = vcp.applyFlatForwardRate();</span>
 <span class="pc bpc" id="L341" title="1 of 2 branches missed.">		} else if (null != vcpQuote) {</span>
 <span class="nc" id="L342">			strDC = vcpQuote.yieldDayCount();</span>
 
@@ -352,7 +352,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 <span class="fc" id="L353">		int iPeriodAmortizationMode = _notionalSetting.periodAmortizationMode();</span>
 
-<span class="pc bpc" id="L355" title="1 of 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod period : couponPeriods()) {</span>
+<span class="fc bfc" id="L355" title="All 2 branches covered.">		for (org.drip.analytics.cashflow.CompositePeriod period : couponPeriods()) {</span>
 <span class="fc" id="L356">			int iPeriodPayDate = period.payDate();</span>
 
 <span class="fc bfc" id="L358" title="All 2 branches covered.">			if (iPeriodPayDate &lt; iValueDate) continue;</span>
@@ -380,9 +380,9 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 <span class="nc" id="L380">				throw new java.lang.Exception (&quot;BondComponent::priceFromYield =&gt; No PCM for &quot; + new</span>
 <span class="nc" id="L381">					org.drip.analytics.date.JulianDate (iValueDate) + &quot; | &quot; + effectiveDate());</span>
 
-<span class="pc bpc" id="L383" title="1 of 2 branches missed.">			if (null != vcp) {</span>
-<span class="nc bnc" id="L384" title="All 2 branches missed.">				if (null == (aap = vcp.yieldAAP()))</span>
-<span class="nc" id="L385">					aap = new org.drip.analytics.daycount.ActActDCParams (vcp.yieldFreq(), iPeriodEndDate -</span>
+<span class="fc bfc" id="L383" title="All 2 branches covered.">			if (null != vcp) {</span>
+<span class="pc bpc" id="L384" title="1 of 2 branches missed.">				if (null == (aap = vcp.yieldAAP()))</span>
+<span class="fc" id="L385">					aap = new org.drip.analytics.daycount.ActActDCParams (vcp.yieldFreq(), iPeriodEndDate -</span>
 						iPeriodStartDate);
 <span class="pc bpc" id="L387" title="1 of 2 branches missed.">			} else if (null != vcpQuote) {</span>
 <span class="nc bnc" id="L388" title="All 2 branches missed.">				if (null == (aap = vcpQuote.yieldAAP()))</span>
@@ -414,7 +414,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 <span class="fc bfc" id="L414" title="All 2 branches covered.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblFlatForwardRate))</span>
 <span class="fc" id="L415">				dblFlatForwardRate = cpcm.rate();</span>
 
-<span class="pc bpc" id="L417" title="1 of 2 branches missed.">			dblCumulativePeriodPV += (period.accrualDCF (iPeriodEndDate) * (bApplyFlatForwardRate ?</span>
+<span class="fc bfc" id="L417" title="All 2 branches covered.">			dblCumulativePeriodPV += (period.accrualDCF (iPeriodEndDate) * (bApplyFlatForwardRate ?</span>
 <span class="pc bpc" id="L418" title="1 of 2 branches missed.">				dblFlatForwardRate : cpcm.rate() + (bApplyCouponExtension ?</span>
 <span class="pc" id="L419">					_couponSetting.couponRateExtension() : 0.)) * couponFactor (iPeriodEndDate) *</span>
 						dblCouponNotional + dblPeriodStartNotional - dblPeriodEndNotional) * dblYieldAnnuity;
@@ -456,9 +456,9 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 <span class="fc" id="L457">		org.drip.param.valuation.WorkoutInfo wi = calibParams.workout();</span>
 
-<span class="pc bpc" id="L459" title="1 of 2 branches missed.">		double dblExerciseFactor = null == wi ? 1. : wi.factor();</span>
+<span class="fc bfc" id="L459" title="All 2 branches covered.">		double dblExerciseFactor = null == wi ? 1. : wi.factor();</span>
 
-<span class="pc bpc" id="L461" title="1 of 2 branches missed.">		int iExerciseDate = null == wi ? maturityDate().julian() : wi.date();</span>
+<span class="fc bfc" id="L461" title="All 2 branches covered.">		int iExerciseDate = null == wi ? maturityDate().julian() : wi.date();</span>
 
 <span class="fc" id="L463">		org.drip.state.credit.CreditCurve cc = csqc.creditState (creditLabel());</span>
 
@@ -589,16 +589,16 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 <span class="fc" id="L589">		int iMaturityDate = maturityDate().julian();</span>
 
 		try {
-<span class="pc bpc" id="L592" title="2 of 4 branches missed.">			if (null == _eosCall &amp;&amp; null == _eosPut)</span>
+<span class="pc bpc" id="L592" title="1 of 4 branches missed.">			if (null == _eosCall &amp;&amp; null == _eosPut)</span>
 <span class="fc" id="L593">				return new org.drip.param.valuation.WorkoutInfo (iMaturityDate, yieldFromPrice (valParams,</span>
 					csqc, vcp, iMaturityDate, 1., dblPrice), 1.,
 						org.drip.param.valuation.WorkoutInfo.WO_TYPE_MATURITY);
 
-<span class="nc bnc" id="L597" title="All 4 branches missed.">			if (null == _eosCall &amp;&amp; null != _eosPut)</span>
+<span class="pc bpc" id="L597" title="3 of 4 branches missed.">			if (null == _eosCall &amp;&amp; null != _eosPut)</span>
 <span class="nc" id="L598">				return exercisePutYieldFromPrice (valParams, csqc, vcp, dblPrice);</span>
 
-<span class="nc bnc" id="L600" title="All 4 branches missed.">			if (null != _eosCall &amp;&amp; null == _eosPut)</span>
-<span class="nc" id="L601">				return exerciseCallYieldFromPrice (valParams, csqc, vcp, dblPrice);</span>
+<span class="pc bpc" id="L600" title="2 of 4 branches missed.">			if (null != _eosCall &amp;&amp; null == _eosPut)</span>
+<span class="fc" id="L601">				return exerciseCallYieldFromPrice (valParams, csqc, vcp, dblPrice);</span>
 
 <span class="nc" id="L603">			org.drip.param.valuation.WorkoutInfo wiPut = exercisePutYieldFromPrice (valParams, csqc, vcp,</span>
 				dblPrice);
@@ -638,7 +638,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 <span class="pc bpc" id="L638" title="1 of 2 branches missed.">			org.drip.state.identifier.ForwardLabel forwardLabel = null == _floaterSetting ? null :</span>
 <span class="fc" id="L639">				_floaterSetting.fri();</span>
 
-<span class="pc bpc" id="L641" title="1 of 2 branches missed.">			if (!csqc.available (iFixingDate, forwardLabel)) {</span>
+<span class="fc bfc" id="L641" title="All 2 branches covered.">			if (!csqc.available (iFixingDate, forwardLabel)) {</span>
 <span class="fc" id="L642">				org.drip.state.forward.ForwardRateEstimator fc = null;</span>
 
 <span class="fc" id="L644">				int iPayDate = cup.payDate();</span>
@@ -649,13 +649,13 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 <span class="nc bnc" id="L649" title="All 2 branches missed.">					!forwardLabel.match (fc.index()))</span>
 <span class="fc" id="L650">					fc = dc.forwardRateEstimator (iPayDate, forwardLabel);</span>
 
-<span class="pc bpc" id="L652" title="1 of 2 branches missed.">				if (null != fc) return fc.forward (iPayDate);</span>
+<span class="fc bfc" id="L652" title="All 2 branches covered.">				if (null != fc) return fc.forward (iPayDate);</span>
 
 <span class="pc bpc" id="L654" title="2 of 4 branches missed.">				return iStartDate &lt; iValueDate &amp;&amp; 0 != iFreq ? dc.libor (iValueDate, (12 / iFreq) + &quot;M&quot;) :</span>
 <span class="nc" id="L655">					dc.libor (iStartDate, cup.endDate());</span>
 			}
 
-<span class="nc" id="L658">			return csqc.fixing (iFixingDate, forwardLabel);</span>
+<span class="fc" id="L658">			return csqc.fixing (iFixingDate, forwardLabel);</span>
 		}
 
 <span class="nc bnc" id="L661" title="All 2 branches missed.">		return dc.libor (iValueDate, 0 != iFreq ? iValueDate + 365 / iFreq : iValueDate +</span>
@@ -679,14 +679,14 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 <span class="fc bfc" id="L680" title="All 2 branches covered.">		if (null == dcFunding) return null;</span>
 
-<span class="fc bfc" id="L682" title="All 2 branches covered.">		int iLossPayLag = null == _creditSetting ? 0 : _creditSetting.lossPayLag();</span>
+<span class="pc bpc" id="L682" title="1 of 2 branches missed.">		int iLossPayLag = null == _creditSetting ? 0 : _creditSetting.lossPayLag();</span>
 
-<span class="fc bfc" id="L684" title="All 2 branches covered.">		double dblProductRecovery = null == _creditSetting ? java.lang.Double.NaN :</span>
+<span class="pc bpc" id="L684" title="1 of 2 branches missed.">		double dblProductRecovery = null == _creditSetting ? java.lang.Double.NaN :</span>
 <span class="fc" id="L685">			_creditSetting.recovery();</span>
 
-<span class="fc bfc" id="L687" title="All 2 branches covered.">		boolean bUseCurveRecovery = null == _creditSetting ? false : _creditSetting.useCurveRecovery();</span>
+<span class="pc bpc" id="L687" title="1 of 2 branches missed.">		boolean bUseCurveRecovery = null == _creditSetting ? false : _creditSetting.useCurveRecovery();</span>
 
-<span class="fc bfc" id="L689" title="All 2 branches covered.">		boolean bAccrualOnDefault = null == _creditSetting ? false : _creditSetting.accrualOnDefault();</span>
+<span class="pc bpc" id="L689" title="1 of 2 branches missed.">		boolean bAccrualOnDefault = null == _creditSetting ? false : _creditSetting.accrualOnDefault();</span>
 
 <span class="fc" id="L691">		org.drip.state.credit.CreditCurve cc = csqc.creditState (creditLabel());</span>
 
@@ -709,7 +709,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 <span class="fc" id="L709">		double dblFlatForwardCoupon = java.lang.Double.NaN;</span>
 <span class="fc" id="L710">		double dblCreditRisklessParPV = java.lang.Double.NaN;</span>
 
-<span class="fc bfc" id="L712" title="All 2 branches covered.">		org.drip.param.valuation.ValuationCustomizationParams vcp = null == _quoteConvention ? null :</span>
+<span class="pc bpc" id="L712" title="1 of 2 branches missed.">		org.drip.param.valuation.ValuationCustomizationParams vcp = null == _quoteConvention ? null :</span>
 <span class="fc" id="L713">			_quoteConvention.valuationCustomizationParams();</span>
 
 <span class="pc bpc" id="L715" title="1 of 2 branches missed.">		boolean bApplyFlatForwardRate = null == vcp ? false : vcp.applyFlatForwardRate();</span>
@@ -763,7 +763,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 <span class="fc" id="L763">				double dblPeriodCreditRiskyDirtyDV01 = dblPeriodCreditRisklessDirtyDV01;</span>
 <span class="fc" id="L764">				double dblPeriodCreditRiskyPrincipalPV = dblPeriodCreditRiskessPrincipalPV;</span>
 
-<span class="pc bpc" id="L766" title="3 of 4 branches missed.">				if (null != cc &amp;&amp; null != pricerParams) {</span>
+<span class="pc bpc" id="L766" title="1 of 4 branches missed.">				if (null != cc &amp;&amp; null != pricerParams) {</span>
 <span class="nc bnc" id="L767" title="All 2 branches missed.">					double dblSurvProb = cc.survival (pricerParams.survivalToPayDate() ? iPeriodPayDate :</span>
 						iPeriodEndDate);
 
@@ -827,8 +827,8 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 <span class="fc" id="L827">		int iCashPayDate = java.lang.Integer.MIN_VALUE;</span>
 
 		try {
-<span class="fc bfc" id="L830" title="All 2 branches covered.">			iCashPayDate = null != _quoteConvention ? _quoteConvention.settleDate (valParams) :</span>
-<span class="fc" id="L831">				valParams.cashPayDate();</span>
+<span class="pc bpc" id="L830" title="1 of 2 branches missed.">			iCashPayDate = null != _quoteConvention ? _quoteConvention.settleDate (valParams) :</span>
+<span class="pc" id="L831">				valParams.cashPayDate();</span>
 <span class="nc" id="L832">		} catch (java.lang.Exception e) {</span>
 			if (!s_bSuppressErrors) e.printStackTrace();
 
@@ -843,7 +843,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 <span class="fc" id="L843">			dblCreditRisklessParPV = dcFunding.df (iMaturityDate) * notional (iMaturityDate) *</span>
 				dblWorkoutFactor;
 
-<span class="pc bpc" id="L846" title="3 of 4 branches missed.">			if (null != cc &amp;&amp; null != pricerParams)</span>
+<span class="pc bpc" id="L846" title="1 of 4 branches missed.">			if (null != cc &amp;&amp; null != pricerParams)</span>
 <span class="nc" id="L847">				dblCreditRiskyParPV = dblCreditRisklessParPV * cc.survival (iMaturityDate);</span>
 
 <span class="fc" id="L849">			org.drip.analytics.output.BondCouponMeasures bcmCreditRisklessDirty = new</span>
@@ -857,7 +857,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 <span class="fc" id="L857">			double dblLossOnInstantaneousDefault = java.lang.Double.NaN;</span>
 <span class="fc" id="L858">			org.drip.analytics.output.BondCouponMeasures bcmCreditRiskyDirty = null;</span>
 
-<span class="pc bpc" id="L860" title="3 of 4 branches missed.">			if (null != cc &amp;&amp; null != pricerParams) {</span>
+<span class="pc bpc" id="L860" title="1 of 4 branches missed.">			if (null != cc &amp;&amp; null != pricerParams) {</span>
 <span class="nc" id="L861">				double dblInitialNotional = notional (iValueDate);</span>
 
 <span class="nc" id="L863">				double dblInitialRecovery = cc.recovery (iValueDate);</span>
@@ -1014,7 +1014,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 <span class="pc bpc" id="L1014" title="2 of 4 branches missed.">		double dblScalingNotional = null != _notionalSetting &amp;&amp; _notionalSetting.priceOffOfOriginalNotional()</span>
 <span class="fc" id="L1015">			? 1. : notional (iValueDate);</span>
 
-<span class="fc bfc" id="L1017" title="All 2 branches covered.">		org.drip.param.valuation.ValuationCustomizationParams vcp = null == _quoteConvention ? null :</span>
+<span class="pc bpc" id="L1017" title="1 of 2 branches missed.">		org.drip.param.valuation.ValuationCustomizationParams vcp = null == _quoteConvention ? null :</span>
 <span class="fc" id="L1018">			_quoteConvention.valuationCustomizationParams();</span>
 
 <span class="pc bpc" id="L1020" title="1 of 2 branches missed.">		boolean bApplyFlatForward = null == vcp ? false : vcp.applyFlatForwardRate();</span>
@@ -1064,8 +1064,8 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 <span class="fc" id="L1065">			int iPeriodAmortizationMode = _notionalSetting.periodAmortizationMode();</span>
 
-<span class="pc bpc" id="L1067" title="1 of 2 branches missed.">			if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_START == iPeriodAmortizationMode)</span>
-<span class="nc" id="L1068">				dblCouponNotional = dblPeriodStartNotional;</span>
+<span class="fc bfc" id="L1067" title="All 2 branches covered.">			if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_START == iPeriodAmortizationMode)</span>
+<span class="fc" id="L1068">				dblCouponNotional = dblPeriodStartNotional;</span>
 <span class="pc bpc" id="L1069" title="1 of 2 branches missed.">			else if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END == iPeriodAmortizationMode)</span>
 <span class="fc" id="L1070">				dblCouponNotional = dblPeriodEndNotional;</span>
 <span class="nc bnc" id="L1071" title="All 2 branches missed.">			else if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_EFFECTIVE ==</span>
@@ -1084,8 +1084,8 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 <span class="fc" id="L1084">		}</span>
 
 		try {
-<span class="fc bfc" id="L1087" title="All 2 branches covered.">			iCashPayDate = null != _quoteConvention ? _quoteConvention.settleDate (valParams) :</span>
-<span class="fc" id="L1088">				valParams.cashPayDate();</span>
+<span class="pc bpc" id="L1087" title="1 of 2 branches missed.">			iCashPayDate = null != _quoteConvention ? _quoteConvention.settleDate (valParams) :</span>
+<span class="pc" id="L1088">				valParams.cashPayDate();</span>
 <span class="nc" id="L1089">		} catch (java.lang.Exception e) {</span>
 			if (!s_bSuppressErrors) e.printStackTrace();
 
@@ -1220,7 +1220,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 	@Override public org.drip.product.params.FloaterSetting floaterSetting()
 	{
-<span class="nc" id="L1223">		return _floaterSetting;</span>
+<span class="fc" id="L1223">		return _floaterSetting;</span>
 	}
 
 	@Override public boolean setMarketConvention (
@@ -1264,7 +1264,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 	@Override public org.drip.product.params.BondStream stream()
 	{
-<span class="nc" id="L1267">		return _stream;</span>
+<span class="fc" id="L1267">		return _stream;</span>
 	}
 
 	@Override public boolean setNotionalSetting (
@@ -1429,7 +1429,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 	@Override public org.drip.state.identifier.CreditLabel creditLabel()
 	{
-<span class="fc bfc" id="L1432" title="All 2 branches covered.">		if (null == _creditSetting) return null;</span>
+<span class="pc bpc" id="L1432" title="1 of 2 branches missed.">		if (null == _creditSetting) return null;</span>
 
 <span class="fc" id="L1434">		java.lang.String strCreditCurveName = _creditSetting.creditCurveName();</span>
 
@@ -1488,7 +1488,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 	@Override public org.drip.analytics.date.JulianDate maturityPayDate()
 	{
-<span class="nc" id="L1491">		return new org.drip.analytics.date.JulianDate (terminationAdjust (maturityDate().julian()));</span>
+<span class="fc" id="L1491">		return new org.drip.analytics.date.JulianDate (terminationAdjust (maturityDate().julian()));</span>
 	}
 
 	@Override public org.drip.analytics.date.JulianDate firstCouponDate()
@@ -1585,7 +1585,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 	@Override public double floatSpread()
 	{
-<span class="nc bnc" id="L1588" title="All 2 branches missed.">		return null == _floaterSetting ? java.lang.Double.NaN : _floaterSetting.spread();</span>
+<span class="pc bpc" id="L1588" title="1 of 2 branches missed.">		return null == _floaterSetting ? java.lang.Double.NaN : _floaterSetting.spread();</span>
 	}
 
 	@Override public java.lang.String ticker()
@@ -1611,12 +1611,12 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 	@Override public boolean callable()
 	{
-<span class="nc bnc" id="L1614" title="All 2 branches missed.">		return null != _eosCall;</span>
+<span class="fc bfc" id="L1614" title="All 2 branches covered.">		return null != _eosCall;</span>
 	}
 
 	@Override public boolean putable()
 	{
-<span class="nc bnc" id="L1619" title="All 2 branches missed.">		return null != _eosPut;</span>
+<span class="pc bpc" id="L1619" title="1 of 2 branches missed.">		return null != _eosPut;</span>
 	}
 
 	@Override public boolean sinkable()
@@ -1662,7 +1662,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 	@Override public org.drip.product.params.EmbeddedOptionSchedule putSchedule()
 	{
-<span class="nc" id="L1665">		return _eosPut;</span>
+<span class="fc" id="L1665">		return _eosPut;</span>
 	}
 
 	@Override public java.lang.String couponType()
@@ -1982,89 +1982,89 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblWorkoutFactor)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L1985" title="All 4 branches missed.">		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblWorkoutFactor))</span>
+<span class="pc bpc" id="L1985" title="2 of 4 branches missed.">		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblWorkoutFactor))</span>
 <span class="nc" id="L1986">			throw new java.lang.Exception (&quot;BondComponent::weightedAverageMaturityDate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L1988">		int iValueDate = valParams.valueDate();</span>
+<span class="fc" id="L1988">		int iValueDate = valParams.valueDate();</span>
 
-<span class="nc bnc" id="L1990" title="All 2 branches missed.">		if (iValueDate &gt;= iWorkoutDate)</span>
+<span class="pc bpc" id="L1990" title="1 of 2 branches missed.">		if (iValueDate &gt;= iWorkoutDate)</span>
 <span class="nc" id="L1991">			throw new java.lang.Exception (&quot;BondComponent::weightedAverageMaturityDate =&gt; Val date &quot; +</span>
 <span class="nc" id="L1992">				org.drip.analytics.date.DateUtil.YYYYMMDD (iValueDate) + &quot; greater than Work-out &quot; +</span>
 <span class="nc" id="L1993">					org.drip.analytics.date.DateUtil.YYYYMMDD (iWorkoutDate));</span>
 
-<span class="nc" id="L1995">		int iPeriodEndDate = 0;</span>
-<span class="nc" id="L1996">		double dblTotalCashflow = 0.;</span>
-<span class="nc" id="L1997">		boolean bTerminateCouponFlow = false;</span>
-<span class="nc" id="L1998">		double dblTimeWeightedTotalCashflow = 0.;</span>
-<span class="nc" id="L1999">		double dblFlatForwardRate = java.lang.Double.NaN;</span>
+<span class="fc" id="L1995">		int iPeriodEndDate = 0;</span>
+<span class="fc" id="L1996">		double dblTotalCashflow = 0.;</span>
+<span class="fc" id="L1997">		boolean bTerminateCouponFlow = false;</span>
+<span class="fc" id="L1998">		double dblTimeWeightedTotalCashflow = 0.;</span>
+<span class="fc" id="L1999">		double dblFlatForwardRate = java.lang.Double.NaN;</span>
 
-<span class="nc bnc" id="L2001" title="All 2 branches missed.">		org.drip.param.valuation.ValuationCustomizationParams vcp = null == _quoteConvention ? null :</span>
-<span class="nc" id="L2002">			_quoteConvention.valuationCustomizationParams();</span>
+<span class="pc bpc" id="L2001" title="1 of 2 branches missed.">		org.drip.param.valuation.ValuationCustomizationParams vcp = null == _quoteConvention ? null :</span>
+<span class="fc" id="L2002">			_quoteConvention.valuationCustomizationParams();</span>
 
-<span class="nc bnc" id="L2004" title="All 2 branches missed.">		boolean bApplyFlatForward = null == vcp ? false : vcp.applyFlatForwardRate();</span>
+<span class="pc bpc" id="L2004" title="1 of 2 branches missed.">		boolean bApplyFlatForward = null == vcp ? false : vcp.applyFlatForwardRate();</span>
 
-<span class="nc bnc" id="L2006" title="All 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod period : couponPeriods()) {</span>
-<span class="nc" id="L2007">			int iPeriodPayDate = period.payDate();</span>
+<span class="pc bpc" id="L2006" title="1 of 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod period : couponPeriods()) {</span>
+<span class="fc" id="L2007">			int iPeriodPayDate = period.payDate();</span>
 
-<span class="nc bnc" id="L2009" title="All 2 branches missed.">			if (iPeriodPayDate &lt; iValueDate) continue;</span>
+<span class="fc bfc" id="L2009" title="All 2 branches covered.">			if (iPeriodPayDate &lt; iValueDate) continue;</span>
 
-<span class="nc" id="L2011">			int iNotionalEndDate = period.endDate();</span>
+<span class="fc" id="L2011">			int iNotionalEndDate = period.endDate();</span>
 
-<span class="nc" id="L2013">			int iPeriodStartDate = period.startDate();</span>
+<span class="fc" id="L2013">			int iPeriodStartDate = period.startDate();</span>
 
-<span class="nc" id="L2015">			int iAccrualEndDate = iNotionalEndDate;</span>
-<span class="nc bnc" id="L2016" title="All 2 branches missed.">			int iAccrualStartDate = iPeriodStartDate &gt; iValueDate ? iPeriodStartDate : iValueDate;</span>
+<span class="fc" id="L2015">			int iAccrualEndDate = iNotionalEndDate;</span>
+<span class="fc bfc" id="L2016" title="All 2 branches covered.">			int iAccrualStartDate = iPeriodStartDate &gt; iValueDate ? iPeriodStartDate : iValueDate;</span>
 
-<span class="nc bnc" id="L2018" title="All 2 branches missed.">			if (iAccrualEndDate &gt;= iWorkoutDate) {</span>
-<span class="nc" id="L2019">				bTerminateCouponFlow = true;</span>
-<span class="nc" id="L2020">				iAccrualEndDate = iWorkoutDate;</span>
-<span class="nc" id="L2021">				iNotionalEndDate = iWorkoutDate;</span>
+<span class="fc bfc" id="L2018" title="All 2 branches covered.">			if (iAccrualEndDate &gt;= iWorkoutDate) {</span>
+<span class="fc" id="L2019">				bTerminateCouponFlow = true;</span>
+<span class="fc" id="L2020">				iAccrualEndDate = iWorkoutDate;</span>
+<span class="fc" id="L2021">				iNotionalEndDate = iWorkoutDate;</span>
 			}
 
-<span class="nc" id="L2024">			org.drip.analytics.output.CompositePeriodCouponMetrics cpcm = couponMetrics (iAccrualEndDate,</span>
+<span class="fc" id="L2024">			org.drip.analytics.output.CompositePeriodCouponMetrics cpcm = couponMetrics (iAccrualEndDate,</span>
 				valParams, csqc);
 
-<span class="nc bnc" id="L2027" title="All 2 branches missed.">			if (null == cpcm)</span>
+<span class="pc bpc" id="L2027" title="1 of 2 branches missed.">			if (null == cpcm)</span>
 <span class="nc" id="L2028">				throw new java.lang.Exception (&quot;BondComponent::weightedAverageMaturityDate =&gt; No CPCM&quot;);</span>
 
-<span class="nc" id="L2030">			double dblPeriodStartNotional = notional (iPeriodStartDate);</span>
+<span class="fc" id="L2030">			double dblPeriodStartNotional = notional (iPeriodStartDate);</span>
 
-<span class="nc" id="L2032">			double dblPeriodEndNotional = notional (iNotionalEndDate);</span>
+<span class="fc" id="L2032">			double dblPeriodEndNotional = notional (iNotionalEndDate);</span>
 
-<span class="nc" id="L2034">			double dblCouponNotional = dblPeriodStartNotional;</span>
+<span class="fc" id="L2034">			double dblCouponNotional = dblPeriodStartNotional;</span>
 
-<span class="nc" id="L2036">			int iPeriodAmortizationMode = _notionalSetting.periodAmortizationMode();</span>
+<span class="fc" id="L2036">			int iPeriodAmortizationMode = _notionalSetting.periodAmortizationMode();</span>
 
-<span class="nc bnc" id="L2038" title="All 2 branches missed.">			if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_START == iPeriodAmortizationMode)</span>
-<span class="nc" id="L2039">				dblCouponNotional = dblPeriodStartNotional;</span>
-<span class="nc bnc" id="L2040" title="All 2 branches missed.">			else if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END == iPeriodAmortizationMode)</span>
-<span class="nc" id="L2041">				dblCouponNotional = dblPeriodEndNotional;</span>
+<span class="fc bfc" id="L2038" title="All 2 branches covered.">			if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_START == iPeriodAmortizationMode)</span>
+<span class="fc" id="L2039">				dblCouponNotional = dblPeriodStartNotional;</span>
+<span class="pc bpc" id="L2040" title="1 of 2 branches missed.">			else if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END == iPeriodAmortizationMode)</span>
+<span class="fc" id="L2041">				dblCouponNotional = dblPeriodEndNotional;</span>
 <span class="nc bnc" id="L2042" title="All 2 branches missed.">			else if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_EFFECTIVE ==</span>
 				iPeriodAmortizationMode)
 <span class="nc" id="L2044">				dblCouponNotional = notional (iPeriodStartDate, iNotionalEndDate);</span>
 
-<span class="nc" id="L2046">			double dblPeriodTimeWidth = period.accrualDCF (iAccrualEndDate) - period.accrualDCF</span>
-<span class="nc" id="L2047">				(iAccrualStartDate);</span>
+<span class="fc" id="L2046">			double dblPeriodTimeWidth = period.accrualDCF (iAccrualEndDate) - period.accrualDCF</span>
+<span class="fc" id="L2047">				(iAccrualStartDate);</span>
 
-<span class="nc bnc" id="L2049" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblFlatForwardRate))</span>
-<span class="nc" id="L2050">				dblFlatForwardRate = cpcm.rate();</span>
+<span class="fc bfc" id="L2049" title="All 2 branches covered.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblFlatForwardRate))</span>
+<span class="fc" id="L2050">				dblFlatForwardRate = cpcm.rate();</span>
 
-<span class="nc bnc" id="L2052" title="All 2 branches missed.">			double dblPeriodCashflow = dblPeriodTimeWidth * (bApplyFlatForward ? dblFlatForwardRate :</span>
-<span class="nc" id="L2053">				cpcm.rate()) * couponFactor (iPeriodEndDate) * dblCouponNotional + dblPeriodStartNotional -</span>
+<span class="pc bpc" id="L2052" title="1 of 2 branches missed.">			double dblPeriodCashflow = dblPeriodTimeWidth * (bApplyFlatForward ? dblFlatForwardRate :</span>
+<span class="fc" id="L2053">				cpcm.rate()) * couponFactor (iPeriodEndDate) * dblCouponNotional + dblPeriodStartNotional -</span>
 					dblPeriodEndNotional;
 
-<span class="nc" id="L2056">			dblTotalCashflow += dblPeriodCashflow;</span>
-<span class="nc" id="L2057">			iPeriodEndDate += (iAccrualEndDate - iAccrualStartDate);</span>
-<span class="nc" id="L2058">			dblTimeWeightedTotalCashflow += iPeriodEndDate * dblPeriodCashflow;</span>
+<span class="fc" id="L2056">			dblTotalCashflow += dblPeriodCashflow;</span>
+<span class="fc" id="L2057">			iPeriodEndDate += (iAccrualEndDate - iAccrualStartDate);</span>
+<span class="fc" id="L2058">			dblTimeWeightedTotalCashflow += iPeriodEndDate * dblPeriodCashflow;</span>
 
-<span class="nc bnc" id="L2060" title="All 2 branches missed.">			if (bTerminateCouponFlow) break;</span>
-<span class="nc" id="L2061">		}</span>
+<span class="fc bfc" id="L2060" title="All 2 branches covered.">			if (bTerminateCouponFlow) break;</span>
+<span class="fc" id="L2061">		}</span>
 
-<span class="nc" id="L2063">		double dblTerminalCashflow = dblWorkoutFactor * notional (iWorkoutDate);</span>
+<span class="fc" id="L2063">		double dblTerminalCashflow = dblWorkoutFactor * notional (iWorkoutDate);</span>
 
-<span class="nc" id="L2065">		dblTotalCashflow += dblTerminalCashflow;</span>
-<span class="nc" id="L2066">		dblTimeWeightedTotalCashflow += iPeriodEndDate * dblTerminalCashflow;</span>
-<span class="nc" id="L2067">		return (int) (dblTimeWeightedTotalCashflow / dblTotalCashflow);</span>
+<span class="fc" id="L2065">		dblTotalCashflow += dblTerminalCashflow;</span>
+<span class="fc" id="L2066">		dblTimeWeightedTotalCashflow += iPeriodEndDate * dblTerminalCashflow;</span>
+<span class="fc" id="L2067">		return (int) (dblTimeWeightedTotalCashflow / dblTotalCashflow);</span>
 	}
 
 	@Override public int weightedAverageMaturityDate (
@@ -2082,89 +2082,89 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblWorkoutFactor)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L2085" title="All 4 branches missed.">		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblWorkoutFactor))</span>
+<span class="pc bpc" id="L2085" title="2 of 4 branches missed.">		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblWorkoutFactor))</span>
 <span class="nc" id="L2086">			throw new java.lang.Exception (&quot;BondComponent::weightedAverageLife =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L2088">		int iValueDate = valParams.valueDate();</span>
+<span class="fc" id="L2088">		int iValueDate = valParams.valueDate();</span>
 
-<span class="nc bnc" id="L2090" title="All 2 branches missed.">		if (iValueDate &gt;= iWorkoutDate)</span>
+<span class="pc bpc" id="L2090" title="1 of 2 branches missed.">		if (iValueDate &gt;= iWorkoutDate)</span>
 <span class="nc" id="L2091">			throw new java.lang.Exception (&quot;BondComponent::weightedAverageLife =&gt; Val date &quot; +</span>
 <span class="nc" id="L2092">				org.drip.analytics.date.DateUtil.YYYYMMDD (iValueDate) + &quot; greater than Work-out &quot; +</span>
 <span class="nc" id="L2093">					org.drip.analytics.date.DateUtil.YYYYMMDD (iWorkoutDate));</span>
 
-<span class="nc" id="L2095">		double dblTotalCashflow = 0.;</span>
-<span class="nc" id="L2096">		double dblPeriodEndTime = 0.;</span>
-<span class="nc" id="L2097">		boolean bTerminateCouponFlow = false;</span>
-<span class="nc" id="L2098">		double dblTimeWeightedTotalCashflow = 0.;</span>
-<span class="nc" id="L2099">		double dblFlatForwardRate = java.lang.Double.NaN;</span>
+<span class="fc" id="L2095">		double dblTotalCashflow = 0.;</span>
+<span class="fc" id="L2096">		double dblPeriodEndTime = 0.;</span>
+<span class="fc" id="L2097">		boolean bTerminateCouponFlow = false;</span>
+<span class="fc" id="L2098">		double dblTimeWeightedTotalCashflow = 0.;</span>
+<span class="fc" id="L2099">		double dblFlatForwardRate = java.lang.Double.NaN;</span>
 
-<span class="nc bnc" id="L2101" title="All 2 branches missed.">		org.drip.param.valuation.ValuationCustomizationParams vcp = null == _quoteConvention ? null :</span>
-<span class="nc" id="L2102">			_quoteConvention.valuationCustomizationParams();</span>
+<span class="pc bpc" id="L2101" title="1 of 2 branches missed.">		org.drip.param.valuation.ValuationCustomizationParams vcp = null == _quoteConvention ? null :</span>
+<span class="fc" id="L2102">			_quoteConvention.valuationCustomizationParams();</span>
 
-<span class="nc bnc" id="L2104" title="All 2 branches missed.">		boolean bApplyFlatForward = null == vcp ? false : vcp.applyFlatForwardRate();</span>
+<span class="pc bpc" id="L2104" title="1 of 2 branches missed.">		boolean bApplyFlatForward = null == vcp ? false : vcp.applyFlatForwardRate();</span>
 
-<span class="nc bnc" id="L2106" title="All 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod period : couponPeriods()) {</span>
-<span class="nc" id="L2107">			int iPeriodPayDate = period.payDate();</span>
+<span class="pc bpc" id="L2106" title="1 of 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod period : couponPeriods()) {</span>
+<span class="fc" id="L2107">			int iPeriodPayDate = period.payDate();</span>
 
-<span class="nc bnc" id="L2109" title="All 2 branches missed.">			if (iPeriodPayDate &lt; iValueDate) continue;</span>
+<span class="fc bfc" id="L2109" title="All 2 branches covered.">			if (iPeriodPayDate &lt; iValueDate) continue;</span>
 
-<span class="nc" id="L2111">			int iNotionalEndDate = period.endDate();</span>
+<span class="fc" id="L2111">			int iNotionalEndDate = period.endDate();</span>
 
-<span class="nc" id="L2113">			int iPeriodStartDate = period.startDate();</span>
+<span class="fc" id="L2113">			int iPeriodStartDate = period.startDate();</span>
 
-<span class="nc" id="L2115">			int iAccrualEndDate = iNotionalEndDate;</span>
-<span class="nc bnc" id="L2116" title="All 2 branches missed.">			int iAccrualStartDate = iPeriodStartDate &gt; iValueDate ? iPeriodStartDate : iValueDate;</span>
+<span class="fc" id="L2115">			int iAccrualEndDate = iNotionalEndDate;</span>
+<span class="fc bfc" id="L2116" title="All 2 branches covered.">			int iAccrualStartDate = iPeriodStartDate &gt; iValueDate ? iPeriodStartDate : iValueDate;</span>
 
-<span class="nc bnc" id="L2118" title="All 2 branches missed.">			if (iAccrualEndDate &gt;= iWorkoutDate) {</span>
-<span class="nc" id="L2119">				bTerminateCouponFlow = true;</span>
-<span class="nc" id="L2120">				iAccrualEndDate = iWorkoutDate;</span>
-<span class="nc" id="L2121">				iNotionalEndDate = iWorkoutDate;</span>
+<span class="fc bfc" id="L2118" title="All 2 branches covered.">			if (iAccrualEndDate &gt;= iWorkoutDate) {</span>
+<span class="fc" id="L2119">				bTerminateCouponFlow = true;</span>
+<span class="fc" id="L2120">				iAccrualEndDate = iWorkoutDate;</span>
+<span class="fc" id="L2121">				iNotionalEndDate = iWorkoutDate;</span>
 			}
 
-<span class="nc" id="L2124">			org.drip.analytics.output.CompositePeriodCouponMetrics cpcm = couponMetrics (iAccrualEndDate,</span>
+<span class="fc" id="L2124">			org.drip.analytics.output.CompositePeriodCouponMetrics cpcm = couponMetrics (iAccrualEndDate,</span>
 				valParams, csqc);
 
-<span class="nc bnc" id="L2127" title="All 2 branches missed.">			if (null == cpcm)</span>
+<span class="pc bpc" id="L2127" title="1 of 2 branches missed.">			if (null == cpcm)</span>
 <span class="nc" id="L2128">				throw new java.lang.Exception (&quot;BondComponent::weightedAverageLife =&gt; No CPCM&quot;);</span>
 
-<span class="nc" id="L2130">			double dblPeriodStartNotional = notional (iPeriodStartDate);</span>
+<span class="fc" id="L2130">			double dblPeriodStartNotional = notional (iPeriodStartDate);</span>
 
-<span class="nc" id="L2132">			double dblPeriodEndNotional = notional (iNotionalEndDate);</span>
+<span class="fc" id="L2132">			double dblPeriodEndNotional = notional (iNotionalEndDate);</span>
 
-<span class="nc" id="L2134">			double dblCouponNotional = dblPeriodStartNotional;</span>
+<span class="fc" id="L2134">			double dblCouponNotional = dblPeriodStartNotional;</span>
 
-<span class="nc" id="L2136">			int iPeriodAmortizationMode = _notionalSetting.periodAmortizationMode();</span>
+<span class="fc" id="L2136">			int iPeriodAmortizationMode = _notionalSetting.periodAmortizationMode();</span>
 
-<span class="nc bnc" id="L2138" title="All 2 branches missed.">			if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_START == iPeriodAmortizationMode)</span>
-<span class="nc" id="L2139">				dblCouponNotional = dblPeriodStartNotional;</span>
-<span class="nc bnc" id="L2140" title="All 2 branches missed.">			else if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END == iPeriodAmortizationMode)</span>
-<span class="nc" id="L2141">				dblCouponNotional = dblPeriodEndNotional;</span>
+<span class="fc bfc" id="L2138" title="All 2 branches covered.">			if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_START == iPeriodAmortizationMode)</span>
+<span class="fc" id="L2139">				dblCouponNotional = dblPeriodStartNotional;</span>
+<span class="pc bpc" id="L2140" title="1 of 2 branches missed.">			else if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END == iPeriodAmortizationMode)</span>
+<span class="fc" id="L2141">				dblCouponNotional = dblPeriodEndNotional;</span>
 <span class="nc bnc" id="L2142" title="All 2 branches missed.">			else if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_EFFECTIVE ==</span>
 				iPeriodAmortizationMode)
 <span class="nc" id="L2144">				dblCouponNotional = notional (iPeriodStartDate, iNotionalEndDate);</span>
 
-<span class="nc" id="L2146">			double dblPeriodTimeWidth = period.accrualDCF (iAccrualEndDate) - period.accrualDCF</span>
-<span class="nc" id="L2147">				(iAccrualStartDate);</span>
+<span class="fc" id="L2146">			double dblPeriodTimeWidth = period.accrualDCF (iAccrualEndDate) - period.accrualDCF</span>
+<span class="fc" id="L2147">				(iAccrualStartDate);</span>
 
-<span class="nc bnc" id="L2149" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblFlatForwardRate))</span>
-<span class="nc" id="L2150">				dblFlatForwardRate = cpcm.rate();</span>
+<span class="fc bfc" id="L2149" title="All 2 branches covered.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblFlatForwardRate))</span>
+<span class="fc" id="L2150">				dblFlatForwardRate = cpcm.rate();</span>
 
-<span class="nc bnc" id="L2152" title="All 2 branches missed.">			double dblPeriodCashflow = dblPeriodTimeWidth * (bApplyFlatForward ? dblFlatForwardRate :</span>
-<span class="nc" id="L2153">				cpcm.rate()) * couponFactor (iNotionalEndDate) * dblCouponNotional + dblPeriodStartNotional -</span>
+<span class="pc bpc" id="L2152" title="1 of 2 branches missed.">			double dblPeriodCashflow = dblPeriodTimeWidth * (bApplyFlatForward ? dblFlatForwardRate :</span>
+<span class="fc" id="L2153">				cpcm.rate()) * couponFactor (iNotionalEndDate) * dblCouponNotional + dblPeriodStartNotional -</span>
 					dblPeriodEndNotional;
 
-<span class="nc" id="L2156">			dblTotalCashflow += dblPeriodCashflow;</span>
-<span class="nc" id="L2157">			dblPeriodEndTime += dblPeriodTimeWidth;</span>
-<span class="nc" id="L2158">			dblTimeWeightedTotalCashflow += dblPeriodEndTime * dblPeriodCashflow;</span>
+<span class="fc" id="L2156">			dblTotalCashflow += dblPeriodCashflow;</span>
+<span class="fc" id="L2157">			dblPeriodEndTime += dblPeriodTimeWidth;</span>
+<span class="fc" id="L2158">			dblTimeWeightedTotalCashflow += dblPeriodEndTime * dblPeriodCashflow;</span>
 
-<span class="nc bnc" id="L2160" title="All 2 branches missed.">			if (bTerminateCouponFlow) break;</span>
-<span class="nc" id="L2161">		}</span>
+<span class="fc bfc" id="L2160" title="All 2 branches covered.">			if (bTerminateCouponFlow) break;</span>
+<span class="fc" id="L2161">		}</span>
 
-<span class="nc" id="L2163">		double dblTerminalCashflow = dblWorkoutFactor * notional (iWorkoutDate);</span>
+<span class="fc" id="L2163">		double dblTerminalCashflow = dblWorkoutFactor * notional (iWorkoutDate);</span>
 
-<span class="nc" id="L2165">		dblTotalCashflow += dblTerminalCashflow;</span>
-<span class="nc" id="L2166">		dblTimeWeightedTotalCashflow += dblPeriodEndTime * dblTerminalCashflow;</span>
-<span class="nc" id="L2167">		return dblTimeWeightedTotalCashflow / dblTotalCashflow;</span>
+<span class="fc" id="L2165">		dblTotalCashflow += dblTerminalCashflow;</span>
+<span class="fc" id="L2166">		dblTimeWeightedTotalCashflow += dblPeriodEndTime * dblTerminalCashflow;</span>
+<span class="fc" id="L2167">		return dblTimeWeightedTotalCashflow / dblTotalCashflow;</span>
 	}
 
 	@Override public double weightedAverageLife (
@@ -2172,7 +2172,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqc)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L2175">		return weightedAverageLife (valParams, csqc, maturityDate().julian(), 1.);</span>
+<span class="fc" id="L2175">		return weightedAverageLife (valParams, csqc, maturityDate().julian(), 1.);</span>
 	}
 
 	@Override public double weightedAverageLifePrincipalOnly (
@@ -2182,60 +2182,60 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblWorkoutFactor)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L2185" title="All 4 branches missed.">		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblWorkoutFactor))</span>
+<span class="pc bpc" id="L2185" title="2 of 4 branches missed.">		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblWorkoutFactor))</span>
 <span class="nc" id="L2186">			throw new java.lang.Exception</span>
 				(&quot;BondComponent::weightedAverageLifePrincipalOnly =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L2189">		int iValueDate = valParams.valueDate();</span>
+<span class="fc" id="L2189">		int iValueDate = valParams.valueDate();</span>
 
-<span class="nc bnc" id="L2191" title="All 2 branches missed.">		if (iValueDate &gt;= iWorkoutDate)</span>
+<span class="pc bpc" id="L2191" title="1 of 2 branches missed.">		if (iValueDate &gt;= iWorkoutDate)</span>
 <span class="nc" id="L2192">			throw new java.lang.Exception (&quot;BondComponent::weightedAverageLifePrincipalOnly =&gt; Val date &quot; +</span>
 <span class="nc" id="L2193">				org.drip.analytics.date.DateUtil.YYYYMMDD (iValueDate) + &quot; greater than Work-out &quot; +</span>
 <span class="nc" id="L2194">					org.drip.analytics.date.DateUtil.YYYYMMDD (iWorkoutDate));</span>
 
-<span class="nc" id="L2196">		double dblTotalCashflow = 0.;</span>
-<span class="nc" id="L2197">		double dblPeriodEndTime = 0.;</span>
-<span class="nc" id="L2198">		boolean bTerminateCouponFlow = false;</span>
-<span class="nc" id="L2199">		double dblTimeWeightedTotalCashflow = 0.;</span>
+<span class="fc" id="L2196">		double dblTotalCashflow = 0.;</span>
+<span class="fc" id="L2197">		double dblPeriodEndTime = 0.;</span>
+<span class="fc" id="L2198">		boolean bTerminateCouponFlow = false;</span>
+<span class="fc" id="L2199">		double dblTimeWeightedTotalCashflow = 0.;</span>
 
-<span class="nc bnc" id="L2201" title="All 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod period : couponPeriods()) {</span>
-<span class="nc" id="L2202">			int iPeriodPayDate = period.payDate();</span>
+<span class="pc bpc" id="L2201" title="1 of 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod period : couponPeriods()) {</span>
+<span class="fc" id="L2202">			int iPeriodPayDate = period.payDate();</span>
 
-<span class="nc bnc" id="L2204" title="All 2 branches missed.">			if (iPeriodPayDate &lt; iValueDate) continue;</span>
+<span class="fc bfc" id="L2204" title="All 2 branches covered.">			if (iPeriodPayDate &lt; iValueDate) continue;</span>
 
-<span class="nc" id="L2206">			int iNotionalEndDate = period.endDate();</span>
+<span class="fc" id="L2206">			int iNotionalEndDate = period.endDate();</span>
 
-<span class="nc" id="L2208">			int iPeriodStartDate = period.startDate();</span>
+<span class="fc" id="L2208">			int iPeriodStartDate = period.startDate();</span>
 
-<span class="nc" id="L2210">			int iAccrualEndDate = iNotionalEndDate;</span>
-<span class="nc bnc" id="L2211" title="All 2 branches missed.">			int iAccrualStartDate = iPeriodStartDate &gt; iValueDate ? iPeriodStartDate : iValueDate;</span>
+<span class="fc" id="L2210">			int iAccrualEndDate = iNotionalEndDate;</span>
+<span class="fc bfc" id="L2211" title="All 2 branches covered.">			int iAccrualStartDate = iPeriodStartDate &gt; iValueDate ? iPeriodStartDate : iValueDate;</span>
 
-<span class="nc bnc" id="L2213" title="All 2 branches missed.">			if (iAccrualEndDate &gt;= iWorkoutDate) {</span>
-<span class="nc" id="L2214">				bTerminateCouponFlow = true;</span>
-<span class="nc" id="L2215">				iAccrualEndDate = iWorkoutDate;</span>
-<span class="nc" id="L2216">				iNotionalEndDate = iWorkoutDate;</span>
+<span class="fc bfc" id="L2213" title="All 2 branches covered.">			if (iAccrualEndDate &gt;= iWorkoutDate) {</span>
+<span class="fc" id="L2214">				bTerminateCouponFlow = true;</span>
+<span class="fc" id="L2215">				iAccrualEndDate = iWorkoutDate;</span>
+<span class="fc" id="L2216">				iNotionalEndDate = iWorkoutDate;</span>
 			}
 
-<span class="nc" id="L2219">			double dblPeriodStartNotional = notional (iPeriodStartDate);</span>
+<span class="fc" id="L2219">			double dblPeriodStartNotional = notional (iPeriodStartDate);</span>
 
-<span class="nc" id="L2221">			double dblPeriodEndNotional = notional (iNotionalEndDate);</span>
+<span class="fc" id="L2221">			double dblPeriodEndNotional = notional (iNotionalEndDate);</span>
 
-<span class="nc" id="L2223">			double dblPeriodTimeWidth = period.accrualDCF (iAccrualEndDate) - period.accrualDCF</span>
-<span class="nc" id="L2224">				(iAccrualStartDate);</span>
+<span class="fc" id="L2223">			double dblPeriodTimeWidth = period.accrualDCF (iAccrualEndDate) - period.accrualDCF</span>
+<span class="fc" id="L2224">				(iAccrualStartDate);</span>
 
-<span class="nc" id="L2226">			double dblPeriodCashflow = dblPeriodStartNotional - dblPeriodEndNotional;</span>
-<span class="nc" id="L2227">			dblTimeWeightedTotalCashflow += dblPeriodEndTime * dblPeriodCashflow;</span>
-<span class="nc" id="L2228">			dblTotalCashflow += dblPeriodCashflow;</span>
-<span class="nc" id="L2229">			dblPeriodEndTime += dblPeriodTimeWidth;</span>
+<span class="fc" id="L2226">			double dblPeriodCashflow = dblPeriodStartNotional - dblPeriodEndNotional;</span>
+<span class="fc" id="L2227">			dblTimeWeightedTotalCashflow += dblPeriodEndTime * dblPeriodCashflow;</span>
+<span class="fc" id="L2228">			dblTotalCashflow += dblPeriodCashflow;</span>
+<span class="fc" id="L2229">			dblPeriodEndTime += dblPeriodTimeWidth;</span>
 
-<span class="nc bnc" id="L2231" title="All 2 branches missed.">			if (bTerminateCouponFlow) break;</span>
-<span class="nc" id="L2232">		}</span>
+<span class="fc bfc" id="L2231" title="All 2 branches covered.">			if (bTerminateCouponFlow) break;</span>
+<span class="fc" id="L2232">		}</span>
 
-<span class="nc" id="L2234">		double dblTerminalCashflow = dblWorkoutFactor * notional (iWorkoutDate);</span>
+<span class="fc" id="L2234">		double dblTerminalCashflow = dblWorkoutFactor * notional (iWorkoutDate);</span>
 
-<span class="nc" id="L2236">		dblTotalCashflow += dblTerminalCashflow;</span>
-<span class="nc" id="L2237">		dblTimeWeightedTotalCashflow += dblPeriodEndTime * dblTerminalCashflow;</span>
-<span class="nc" id="L2238">		return dblTimeWeightedTotalCashflow / dblTotalCashflow;</span>
+<span class="fc" id="L2236">		dblTotalCashflow += dblTerminalCashflow;</span>
+<span class="fc" id="L2237">		dblTimeWeightedTotalCashflow += dblPeriodEndTime * dblTerminalCashflow;</span>
+<span class="fc" id="L2238">		return dblTimeWeightedTotalCashflow / dblTotalCashflow;</span>
 	}
 
 	@Override public double weightedAverageLifePrincipalOnly (
@@ -2253,84 +2253,84 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblWorkoutFactor)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L2256" title="All 4 branches missed.">		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblWorkoutFactor))</span>
+<span class="pc bpc" id="L2256" title="2 of 4 branches missed.">		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblWorkoutFactor))</span>
 <span class="nc" id="L2257">			throw new java.lang.Exception (&quot;BondComponent::weightedAverageLifeCouponOnly =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L2259">		int iValueDate = valParams.valueDate();</span>
+<span class="fc" id="L2259">		int iValueDate = valParams.valueDate();</span>
 
-<span class="nc bnc" id="L2261" title="All 2 branches missed.">		if (iValueDate &gt;= iWorkoutDate)</span>
+<span class="pc bpc" id="L2261" title="1 of 2 branches missed.">		if (iValueDate &gt;= iWorkoutDate)</span>
 <span class="nc" id="L2262">			throw new java.lang.Exception (&quot;BondComponent::weightedAverageLifeCouponOnly =&gt; Val date &quot; +</span>
 <span class="nc" id="L2263">				org.drip.analytics.date.DateUtil.YYYYMMDD (iValueDate) + &quot; greater than Work-out &quot; +</span>
 <span class="nc" id="L2264">					org.drip.analytics.date.DateUtil.YYYYMMDD (iWorkoutDate));</span>
 
-<span class="nc" id="L2266">		double dblTotalCashflow = 0.;</span>
-<span class="nc" id="L2267">		double dblPeriodEndTime = 0.;</span>
-<span class="nc" id="L2268">		boolean bTerminateCouponFlow = false;</span>
-<span class="nc" id="L2269">		double dblTimeWeightedTotalCashflow = 0.;</span>
-<span class="nc" id="L2270">		double dblFlatForwardRate = java.lang.Double.NaN;</span>
+<span class="fc" id="L2266">		double dblTotalCashflow = 0.;</span>
+<span class="fc" id="L2267">		double dblPeriodEndTime = 0.;</span>
+<span class="fc" id="L2268">		boolean bTerminateCouponFlow = false;</span>
+<span class="fc" id="L2269">		double dblTimeWeightedTotalCashflow = 0.;</span>
+<span class="fc" id="L2270">		double dblFlatForwardRate = java.lang.Double.NaN;</span>
 
-<span class="nc bnc" id="L2272" title="All 2 branches missed.">		org.drip.param.valuation.ValuationCustomizationParams vcp = null == _quoteConvention ? null :</span>
-<span class="nc" id="L2273">			_quoteConvention.valuationCustomizationParams();</span>
+<span class="pc bpc" id="L2272" title="1 of 2 branches missed.">		org.drip.param.valuation.ValuationCustomizationParams vcp = null == _quoteConvention ? null :</span>
+<span class="fc" id="L2273">			_quoteConvention.valuationCustomizationParams();</span>
 
-<span class="nc bnc" id="L2275" title="All 2 branches missed.">		boolean bApplyFlatForward = null == vcp ? false : vcp.applyFlatForwardRate();</span>
+<span class="pc bpc" id="L2275" title="1 of 2 branches missed.">		boolean bApplyFlatForward = null == vcp ? false : vcp.applyFlatForwardRate();</span>
 
-<span class="nc bnc" id="L2277" title="All 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod period : couponPeriods()) {</span>
-<span class="nc" id="L2278">			int iPeriodPayDate = period.payDate();</span>
+<span class="pc bpc" id="L2277" title="1 of 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod period : couponPeriods()) {</span>
+<span class="fc" id="L2278">			int iPeriodPayDate = period.payDate();</span>
 
-<span class="nc bnc" id="L2280" title="All 2 branches missed.">			if (iPeriodPayDate &lt; iValueDate) continue;</span>
+<span class="fc bfc" id="L2280" title="All 2 branches covered.">			if (iPeriodPayDate &lt; iValueDate) continue;</span>
 
-<span class="nc" id="L2282">			int iNotionalEndDate = period.endDate();</span>
+<span class="fc" id="L2282">			int iNotionalEndDate = period.endDate();</span>
 
-<span class="nc" id="L2284">			int iPeriodStartDate = period.startDate();</span>
+<span class="fc" id="L2284">			int iPeriodStartDate = period.startDate();</span>
 
-<span class="nc" id="L2286">			int iAccrualEndDate = iNotionalEndDate;</span>
-<span class="nc bnc" id="L2287" title="All 2 branches missed.">			int iAccrualStartDate = iPeriodStartDate &gt; iValueDate ? iPeriodStartDate : iValueDate;</span>
+<span class="fc" id="L2286">			int iAccrualEndDate = iNotionalEndDate;</span>
+<span class="fc bfc" id="L2287" title="All 2 branches covered.">			int iAccrualStartDate = iPeriodStartDate &gt; iValueDate ? iPeriodStartDate : iValueDate;</span>
 
-<span class="nc bnc" id="L2289" title="All 2 branches missed.">			if (iAccrualEndDate &gt;= iWorkoutDate) {</span>
-<span class="nc" id="L2290">				bTerminateCouponFlow = true;</span>
-<span class="nc" id="L2291">				iAccrualEndDate = iWorkoutDate;</span>
-<span class="nc" id="L2292">				iNotionalEndDate = iWorkoutDate;</span>
+<span class="fc bfc" id="L2289" title="All 2 branches covered.">			if (iAccrualEndDate &gt;= iWorkoutDate) {</span>
+<span class="fc" id="L2290">				bTerminateCouponFlow = true;</span>
+<span class="fc" id="L2291">				iAccrualEndDate = iWorkoutDate;</span>
+<span class="fc" id="L2292">				iNotionalEndDate = iWorkoutDate;</span>
 			}
 
-<span class="nc" id="L2295">			org.drip.analytics.output.CompositePeriodCouponMetrics cpcm = couponMetrics (iAccrualEndDate,</span>
+<span class="fc" id="L2295">			org.drip.analytics.output.CompositePeriodCouponMetrics cpcm = couponMetrics (iAccrualEndDate,</span>
 				valParams, csqc);
 
-<span class="nc bnc" id="L2298" title="All 2 branches missed.">			if (null == cpcm)</span>
+<span class="pc bpc" id="L2298" title="1 of 2 branches missed.">			if (null == cpcm)</span>
 <span class="nc" id="L2299">				throw new java.lang.Exception (&quot;BondComponent::weightedAverageLifeCouponOnly =&gt; No CPCM&quot;);</span>
 
-<span class="nc" id="L2301">			double dblPeriodStartNotional = notional (iPeriodStartDate);</span>
+<span class="fc" id="L2301">			double dblPeriodStartNotional = notional (iPeriodStartDate);</span>
 
-<span class="nc" id="L2303">			double dblPeriodEndNotional = notional (iNotionalEndDate);</span>
+<span class="fc" id="L2303">			double dblPeriodEndNotional = notional (iNotionalEndDate);</span>
 
-<span class="nc" id="L2305">			double dblCouponNotional = dblPeriodStartNotional;</span>
+<span class="fc" id="L2305">			double dblCouponNotional = dblPeriodStartNotional;</span>
 
-<span class="nc" id="L2307">			int iPeriodAmortizationMode = _notionalSetting.periodAmortizationMode();</span>
+<span class="fc" id="L2307">			int iPeriodAmortizationMode = _notionalSetting.periodAmortizationMode();</span>
 
-<span class="nc bnc" id="L2309" title="All 2 branches missed.">			if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_START == iPeriodAmortizationMode)</span>
-<span class="nc" id="L2310">				dblCouponNotional = dblPeriodStartNotional;</span>
-<span class="nc bnc" id="L2311" title="All 2 branches missed.">			else if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END == iPeriodAmortizationMode)</span>
-<span class="nc" id="L2312">				dblCouponNotional = dblPeriodEndNotional;</span>
+<span class="fc bfc" id="L2309" title="All 2 branches covered.">			if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_START == iPeriodAmortizationMode)</span>
+<span class="fc" id="L2310">				dblCouponNotional = dblPeriodStartNotional;</span>
+<span class="pc bpc" id="L2311" title="1 of 2 branches missed.">			else if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END == iPeriodAmortizationMode)</span>
+<span class="fc" id="L2312">				dblCouponNotional = dblPeriodEndNotional;</span>
 <span class="nc bnc" id="L2313" title="All 2 branches missed.">			else if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_EFFECTIVE ==</span>
 				iPeriodAmortizationMode)
 <span class="nc" id="L2315">				dblCouponNotional = notional (iPeriodStartDate, iNotionalEndDate);</span>
 
-<span class="nc" id="L2317">			double dblPeriodTimeWidth = period.accrualDCF (iAccrualEndDate) - period.accrualDCF</span>
-<span class="nc" id="L2318">				(iAccrualStartDate);</span>
+<span class="fc" id="L2317">			double dblPeriodTimeWidth = period.accrualDCF (iAccrualEndDate) - period.accrualDCF</span>
+<span class="fc" id="L2318">				(iAccrualStartDate);</span>
 
-<span class="nc bnc" id="L2320" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblFlatForwardRate))</span>
-<span class="nc" id="L2321">				dblFlatForwardRate = cpcm.rate();</span>
+<span class="fc bfc" id="L2320" title="All 2 branches covered.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblFlatForwardRate))</span>
+<span class="fc" id="L2321">				dblFlatForwardRate = cpcm.rate();</span>
 
-<span class="nc bnc" id="L2323" title="All 2 branches missed.">			double dblPeriodCashflow = dblPeriodTimeWidth * (bApplyFlatForward ? dblFlatForwardRate :</span>
-<span class="nc" id="L2324">				cpcm.rate()) * couponFactor (iNotionalEndDate) * dblCouponNotional;</span>
+<span class="pc bpc" id="L2323" title="1 of 2 branches missed.">			double dblPeriodCashflow = dblPeriodTimeWidth * (bApplyFlatForward ? dblFlatForwardRate :</span>
+<span class="fc" id="L2324">				cpcm.rate()) * couponFactor (iNotionalEndDate) * dblCouponNotional;</span>
 
-<span class="nc" id="L2326">			dblTotalCashflow += dblPeriodCashflow;</span>
-<span class="nc" id="L2327">			dblPeriodEndTime += dblPeriodTimeWidth;</span>
-<span class="nc" id="L2328">			dblTimeWeightedTotalCashflow += dblPeriodEndTime * dblPeriodCashflow;</span>
+<span class="fc" id="L2326">			dblTotalCashflow += dblPeriodCashflow;</span>
+<span class="fc" id="L2327">			dblPeriodEndTime += dblPeriodTimeWidth;</span>
+<span class="fc" id="L2328">			dblTimeWeightedTotalCashflow += dblPeriodEndTime * dblPeriodCashflow;</span>
 
-<span class="nc bnc" id="L2330" title="All 2 branches missed.">			if (bTerminateCouponFlow) break;</span>
-<span class="nc" id="L2331">		}</span>
+<span class="fc bfc" id="L2330" title="All 2 branches covered.">			if (bTerminateCouponFlow) break;</span>
+<span class="fc" id="L2331">		}</span>
 
-<span class="nc" id="L2333">		return dblTimeWeightedTotalCashflow / dblTotalCashflow;</span>
+<span class="fc" id="L2333">		return dblTimeWeightedTotalCashflow / dblTotalCashflow;</span>
 	}
 
 	@Override public double weightedAverageLifeCouponOnly (
@@ -2348,91 +2348,91 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblWorkoutFactor)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L2351" title="All 4 branches missed.">		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblWorkoutFactor))</span>
+<span class="pc bpc" id="L2351" title="2 of 4 branches missed.">		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblWorkoutFactor))</span>
 <span class="nc" id="L2352">			throw new java.lang.Exception (&quot;BondComponent::weightedAverageLifeLossOnly =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L2354">		int iValueDate = valParams.valueDate();</span>
+<span class="fc" id="L2354">		int iValueDate = valParams.valueDate();</span>
 
-<span class="nc" id="L2356">		org.drip.state.credit.CreditCurve cc = csqc.creditState (creditLabel());</span>
+<span class="fc" id="L2356">		org.drip.state.credit.CreditCurve cc = csqc.creditState (creditLabel());</span>
 
-<span class="nc bnc" id="L2358" title="All 4 branches missed.">		if (iValueDate &gt;= iWorkoutDate || null == cc)</span>
+<span class="pc bpc" id="L2358" title="2 of 4 branches missed.">		if (iValueDate &gt;= iWorkoutDate || null == cc)</span>
 <span class="nc" id="L2359">			throw new java.lang.Exception (&quot;BondComponent::weightedAverageLifeLossOnly =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L2361">		double dblPeriodEndTime = 0.;</span>
-<span class="nc" id="L2362">		double dblTotalLossCashflow = 0.;</span>
-<span class="nc" id="L2363">		boolean bTerminateCouponFlow = false;</span>
-<span class="nc" id="L2364">		double dblTimeWeightedTotalLossCashflow = 0.;</span>
-<span class="nc" id="L2365">		double dblFlatForwardRate = java.lang.Double.NaN;</span>
+<span class="fc" id="L2361">		double dblPeriodEndTime = 0.;</span>
+<span class="fc" id="L2362">		double dblTotalLossCashflow = 0.;</span>
+<span class="fc" id="L2363">		boolean bTerminateCouponFlow = false;</span>
+<span class="fc" id="L2364">		double dblTimeWeightedTotalLossCashflow = 0.;</span>
+<span class="fc" id="L2365">		double dblFlatForwardRate = java.lang.Double.NaN;</span>
 
-<span class="nc bnc" id="L2367" title="All 2 branches missed.">		org.drip.param.valuation.ValuationCustomizationParams vcp = null == _quoteConvention ? null :</span>
-<span class="nc" id="L2368">			_quoteConvention.valuationCustomizationParams();</span>
+<span class="pc bpc" id="L2367" title="1 of 2 branches missed.">		org.drip.param.valuation.ValuationCustomizationParams vcp = null == _quoteConvention ? null :</span>
+<span class="fc" id="L2368">			_quoteConvention.valuationCustomizationParams();</span>
 
-<span class="nc bnc" id="L2370" title="All 2 branches missed.">		boolean bApplyFlatForward = null == vcp ? false : vcp.applyFlatForwardRate();</span>
+<span class="pc bpc" id="L2370" title="1 of 2 branches missed.">		boolean bApplyFlatForward = null == vcp ? false : vcp.applyFlatForwardRate();</span>
 
-<span class="nc bnc" id="L2372" title="All 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod period : couponPeriods()) {</span>
-<span class="nc" id="L2373">			int iPeriodPayDate = period.payDate();</span>
+<span class="pc bpc" id="L2372" title="1 of 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod period : couponPeriods()) {</span>
+<span class="fc" id="L2373">			int iPeriodPayDate = period.payDate();</span>
 
-<span class="nc bnc" id="L2375" title="All 2 branches missed.">			if (iPeriodPayDate &lt; iValueDate) continue;</span>
+<span class="fc bfc" id="L2375" title="All 2 branches covered.">			if (iPeriodPayDate &lt; iValueDate) continue;</span>
 
-<span class="nc" id="L2377">			int iNotionalEndDate = period.endDate();</span>
+<span class="fc" id="L2377">			int iNotionalEndDate = period.endDate();</span>
 
-<span class="nc" id="L2379">			int iPeriodStartDate = period.startDate();</span>
+<span class="fc" id="L2379">			int iPeriodStartDate = period.startDate();</span>
 
-<span class="nc" id="L2381">			int iAccrualEndDate = iNotionalEndDate;</span>
-<span class="nc bnc" id="L2382" title="All 2 branches missed.">			int iAccrualStartDate = iPeriodStartDate &gt; iValueDate ? iPeriodStartDate : iValueDate;</span>
+<span class="fc" id="L2381">			int iAccrualEndDate = iNotionalEndDate;</span>
+<span class="fc bfc" id="L2382" title="All 2 branches covered.">			int iAccrualStartDate = iPeriodStartDate &gt; iValueDate ? iPeriodStartDate : iValueDate;</span>
 
-<span class="nc bnc" id="L2384" title="All 2 branches missed.">			if (iAccrualEndDate &gt;= iWorkoutDate) {</span>
-<span class="nc" id="L2385">				bTerminateCouponFlow = true;</span>
-<span class="nc" id="L2386">				iAccrualEndDate = iWorkoutDate;</span>
-<span class="nc" id="L2387">				iNotionalEndDate = iWorkoutDate;</span>
+<span class="fc bfc" id="L2384" title="All 2 branches covered.">			if (iAccrualEndDate &gt;= iWorkoutDate) {</span>
+<span class="fc" id="L2385">				bTerminateCouponFlow = true;</span>
+<span class="fc" id="L2386">				iAccrualEndDate = iWorkoutDate;</span>
+<span class="fc" id="L2387">				iNotionalEndDate = iWorkoutDate;</span>
 			}
 
-<span class="nc" id="L2390">			org.drip.analytics.output.CompositePeriodCouponMetrics cpcm = couponMetrics (iAccrualEndDate,</span>
+<span class="fc" id="L2390">			org.drip.analytics.output.CompositePeriodCouponMetrics cpcm = couponMetrics (iAccrualEndDate,</span>
 				valParams, csqc);
 
-<span class="nc bnc" id="L2393" title="All 2 branches missed.">			if (null == cpcm)</span>
+<span class="pc bpc" id="L2393" title="1 of 2 branches missed.">			if (null == cpcm)</span>
 <span class="nc" id="L2394">				throw new java.lang.Exception (&quot;BondComponent::weightedAverageLifeLossOnly =&gt; No CPCM&quot;);</span>
 
-<span class="nc" id="L2396">			double dblPeriodStartNotional = notional (iPeriodStartDate);</span>
+<span class="fc" id="L2396">			double dblPeriodStartNotional = notional (iPeriodStartDate);</span>
 
-<span class="nc" id="L2398">			double dblPeriodEndNotional = notional (iNotionalEndDate);</span>
+<span class="fc" id="L2398">			double dblPeriodEndNotional = notional (iNotionalEndDate);</span>
 
-<span class="nc" id="L2400">			double dblCouponNotional = dblPeriodStartNotional;</span>
+<span class="fc" id="L2400">			double dblCouponNotional = dblPeriodStartNotional;</span>
 
-<span class="nc" id="L2402">			int iPeriodAmortizationMode = _notionalSetting.periodAmortizationMode();</span>
+<span class="fc" id="L2402">			int iPeriodAmortizationMode = _notionalSetting.periodAmortizationMode();</span>
 
-<span class="nc bnc" id="L2404" title="All 2 branches missed.">			if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_START == iPeriodAmortizationMode)</span>
-<span class="nc" id="L2405">				dblCouponNotional = dblPeriodStartNotional;</span>
-<span class="nc bnc" id="L2406" title="All 2 branches missed.">			else if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END == iPeriodAmortizationMode)</span>
-<span class="nc" id="L2407">				dblCouponNotional = dblPeriodEndNotional;</span>
+<span class="fc bfc" id="L2404" title="All 2 branches covered.">			if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_START == iPeriodAmortizationMode)</span>
+<span class="fc" id="L2405">				dblCouponNotional = dblPeriodStartNotional;</span>
+<span class="pc bpc" id="L2406" title="1 of 2 branches missed.">			else if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END == iPeriodAmortizationMode)</span>
+<span class="fc" id="L2407">				dblCouponNotional = dblPeriodEndNotional;</span>
 <span class="nc bnc" id="L2408" title="All 2 branches missed.">			else if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_EFFECTIVE ==</span>
 				iPeriodAmortizationMode)
 <span class="nc" id="L2410">				dblCouponNotional = notional (iPeriodStartDate, iNotionalEndDate);</span>
 
-<span class="nc" id="L2412">			double dblPeriodTimeWidth = period.accrualDCF (iAccrualEndDate) - period.accrualDCF</span>
-<span class="nc" id="L2413">				(iAccrualStartDate);</span>
+<span class="fc" id="L2412">			double dblPeriodTimeWidth = period.accrualDCF (iAccrualEndDate) - period.accrualDCF</span>
+<span class="fc" id="L2413">				(iAccrualStartDate);</span>
 
-<span class="nc bnc" id="L2415" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblFlatForwardRate))</span>
-<span class="nc" id="L2416">				dblFlatForwardRate = cpcm.rate();</span>
+<span class="fc bfc" id="L2415" title="All 2 branches covered.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblFlatForwardRate))</span>
+<span class="fc" id="L2416">				dblFlatForwardRate = cpcm.rate();</span>
 
-<span class="nc bnc" id="L2418" title="All 2 branches missed.">			double dblPeriodLossCashflow = (dblPeriodTimeWidth * (bApplyFlatForward ? dblFlatForwardRate :</span>
-<span class="nc" id="L2419">				cpcm.rate()) * couponFactor (iNotionalEndDate) * dblCouponNotional + dblPeriodStartNotional -</span>
-<span class="nc" id="L2420">					dblPeriodEndNotional) * cc.survival (iPeriodPayDate) * (1. - cc.effectiveRecovery</span>
-<span class="nc" id="L2421">						(iPeriodStartDate, period.endDate()));</span>
+<span class="pc bpc" id="L2418" title="1 of 2 branches missed.">			double dblPeriodLossCashflow = (dblPeriodTimeWidth * (bApplyFlatForward ? dblFlatForwardRate :</span>
+<span class="fc" id="L2419">				cpcm.rate()) * couponFactor (iNotionalEndDate) * dblCouponNotional + dblPeriodStartNotional -</span>
+<span class="fc" id="L2420">					dblPeriodEndNotional) * cc.survival (iPeriodPayDate) * (1. - cc.effectiveRecovery</span>
+<span class="fc" id="L2421">						(iPeriodStartDate, period.endDate()));</span>
 
-<span class="nc" id="L2423">			dblPeriodEndTime += dblPeriodTimeWidth;</span>
-<span class="nc" id="L2424">			dblTotalLossCashflow += dblPeriodLossCashflow;</span>
-<span class="nc" id="L2425">			dblTimeWeightedTotalLossCashflow += dblPeriodEndTime * dblPeriodLossCashflow;</span>
+<span class="fc" id="L2423">			dblPeriodEndTime += dblPeriodTimeWidth;</span>
+<span class="fc" id="L2424">			dblTotalLossCashflow += dblPeriodLossCashflow;</span>
+<span class="fc" id="L2425">			dblTimeWeightedTotalLossCashflow += dblPeriodEndTime * dblPeriodLossCashflow;</span>
 
-<span class="nc bnc" id="L2427" title="All 2 branches missed.">			if (bTerminateCouponFlow) break;</span>
-<span class="nc" id="L2428">		}</span>
+<span class="fc bfc" id="L2427" title="All 2 branches covered.">			if (bTerminateCouponFlow) break;</span>
+<span class="fc" id="L2428">		}</span>
 
-<span class="nc" id="L2430">		double dblTerminalLossCashflow = dblWorkoutFactor * notional (iWorkoutDate) * cc.survival</span>
-<span class="nc" id="L2431">			(iWorkoutDate) * (1. - cc.recovery (iWorkoutDate));</span>
+<span class="fc" id="L2430">		double dblTerminalLossCashflow = dblWorkoutFactor * notional (iWorkoutDate) * cc.survival</span>
+<span class="fc" id="L2431">			(iWorkoutDate) * (1. - cc.recovery (iWorkoutDate));</span>
 
-<span class="nc" id="L2433">		dblTotalLossCashflow += dblTerminalLossCashflow;</span>
-<span class="nc" id="L2434">		dblTimeWeightedTotalLossCashflow += dblPeriodEndTime * dblTerminalLossCashflow;</span>
-<span class="nc" id="L2435">		return dblTimeWeightedTotalLossCashflow / dblTotalLossCashflow;</span>
+<span class="fc" id="L2433">		dblTotalLossCashflow += dblTerminalLossCashflow;</span>
+<span class="fc" id="L2434">		dblTimeWeightedTotalLossCashflow += dblPeriodEndTime * dblTerminalLossCashflow;</span>
+<span class="fc" id="L2435">		return dblTimeWeightedTotalLossCashflow / dblTotalLossCashflow;</span>
 	}
 
 	@Override public double weightedAverageLifeLossOnly (
@@ -2450,95 +2450,95 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblWorkoutFactor)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L2453" title="All 4 branches missed.">		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblWorkoutFactor))</span>
+<span class="pc bpc" id="L2453" title="2 of 4 branches missed.">		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblWorkoutFactor))</span>
 <span class="nc" id="L2454">			throw new java.lang.Exception (&quot;BondComponent::weightedAverageLifeCredit =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L2456">		int iValueDate = valParams.valueDate();</span>
+<span class="fc" id="L2456">		int iValueDate = valParams.valueDate();</span>
 
-<span class="nc" id="L2458">		org.drip.state.credit.CreditCurve cc = csqc.creditState (creditLabel());</span>
+<span class="fc" id="L2458">		org.drip.state.credit.CreditCurve cc = csqc.creditState (creditLabel());</span>
 
-<span class="nc bnc" id="L2460" title="All 4 branches missed.">		if (iValueDate &gt;= iWorkoutDate || null == cc)</span>
+<span class="pc bpc" id="L2460" title="2 of 4 branches missed.">		if (iValueDate &gt;= iWorkoutDate || null == cc)</span>
 <span class="nc" id="L2461">			throw new java.lang.Exception (&quot;BondComponent::weightedAverageLifeCredit =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L2463">		double dblPeriodEndTime = 0.;</span>
-<span class="nc" id="L2464">		double dblTotalLossCashflow = 0.;</span>
-<span class="nc" id="L2465">		boolean bTerminateCouponFlow = false;</span>
-<span class="nc" id="L2466">		double dblTimeWeightedTotalLossCashflow = 0.;</span>
-<span class="nc" id="L2467">		double dblFlatForwardRate = java.lang.Double.NaN;</span>
+<span class="fc" id="L2463">		double dblPeriodEndTime = 0.;</span>
+<span class="fc" id="L2464">		double dblTotalLossCashflow = 0.;</span>
+<span class="fc" id="L2465">		boolean bTerminateCouponFlow = false;</span>
+<span class="fc" id="L2466">		double dblTimeWeightedTotalLossCashflow = 0.;</span>
+<span class="fc" id="L2467">		double dblFlatForwardRate = java.lang.Double.NaN;</span>
 
-<span class="nc bnc" id="L2469" title="All 2 branches missed.">		org.drip.param.valuation.ValuationCustomizationParams vcp = null == _quoteConvention ? null :</span>
-<span class="nc" id="L2470">			_quoteConvention.valuationCustomizationParams();</span>
+<span class="pc bpc" id="L2469" title="1 of 2 branches missed.">		org.drip.param.valuation.ValuationCustomizationParams vcp = null == _quoteConvention ? null :</span>
+<span class="fc" id="L2470">			_quoteConvention.valuationCustomizationParams();</span>
 
-<span class="nc bnc" id="L2472" title="All 2 branches missed.">		boolean bApplyFlatForward = null == vcp ? false : vcp.applyFlatForwardRate();</span>
+<span class="pc bpc" id="L2472" title="1 of 2 branches missed.">		boolean bApplyFlatForward = null == vcp ? false : vcp.applyFlatForwardRate();</span>
 
-<span class="nc bnc" id="L2474" title="All 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod period : couponPeriods()) {</span>
-<span class="nc" id="L2475">			int iPeriodPayDate = period.payDate();</span>
+<span class="pc bpc" id="L2474" title="1 of 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod period : couponPeriods()) {</span>
+<span class="fc" id="L2475">			int iPeriodPayDate = period.payDate();</span>
 
-<span class="nc bnc" id="L2477" title="All 2 branches missed.">			if (iPeriodPayDate &lt; iValueDate) continue;</span>
+<span class="fc bfc" id="L2477" title="All 2 branches covered.">			if (iPeriodPayDate &lt; iValueDate) continue;</span>
 
-<span class="nc" id="L2479">			int iNotionalEndDate = period.endDate();</span>
+<span class="fc" id="L2479">			int iNotionalEndDate = period.endDate();</span>
 
-<span class="nc" id="L2481">			int iPeriodStartDate = period.startDate();</span>
+<span class="fc" id="L2481">			int iPeriodStartDate = period.startDate();</span>
 
-<span class="nc" id="L2483">			int iAccrualEndDate = iNotionalEndDate;</span>
-<span class="nc bnc" id="L2484" title="All 2 branches missed.">			int iAccrualStartDate = iPeriodStartDate &gt; iValueDate ? iPeriodStartDate : iValueDate;</span>
+<span class="fc" id="L2483">			int iAccrualEndDate = iNotionalEndDate;</span>
+<span class="fc bfc" id="L2484" title="All 2 branches covered.">			int iAccrualStartDate = iPeriodStartDate &gt; iValueDate ? iPeriodStartDate : iValueDate;</span>
 
-<span class="nc bnc" id="L2486" title="All 2 branches missed.">			if (iAccrualEndDate &gt;= iWorkoutDate) {</span>
-<span class="nc" id="L2487">				bTerminateCouponFlow = true;</span>
-<span class="nc" id="L2488">				iAccrualEndDate = iWorkoutDate;</span>
-<span class="nc" id="L2489">				iNotionalEndDate = iWorkoutDate;</span>
+<span class="fc bfc" id="L2486" title="All 2 branches covered.">			if (iAccrualEndDate &gt;= iWorkoutDate) {</span>
+<span class="fc" id="L2487">				bTerminateCouponFlow = true;</span>
+<span class="fc" id="L2488">				iAccrualEndDate = iWorkoutDate;</span>
+<span class="fc" id="L2489">				iNotionalEndDate = iWorkoutDate;</span>
 			}
 
-<span class="nc" id="L2492">			org.drip.analytics.output.CompositePeriodCouponMetrics cpcm = couponMetrics (iAccrualEndDate,</span>
+<span class="fc" id="L2492">			org.drip.analytics.output.CompositePeriodCouponMetrics cpcm = couponMetrics (iAccrualEndDate,</span>
 				valParams, csqc);
 
-<span class="nc bnc" id="L2495" title="All 2 branches missed.">			if (null == cpcm)</span>
+<span class="pc bpc" id="L2495" title="1 of 2 branches missed.">			if (null == cpcm)</span>
 <span class="nc" id="L2496">				throw new java.lang.Exception (&quot;BondComponent::weightedAverageLifeCredit =&gt; No CPCM&quot;);</span>
 
-<span class="nc" id="L2498">			double dblPeriodStartNotional = notional (iPeriodStartDate);</span>
+<span class="fc" id="L2498">			double dblPeriodStartNotional = notional (iPeriodStartDate);</span>
 
-<span class="nc" id="L2500">			double dblPeriodEndNotional = notional (iNotionalEndDate);</span>
+<span class="fc" id="L2500">			double dblPeriodEndNotional = notional (iNotionalEndDate);</span>
 
-<span class="nc" id="L2502">			double dblCouponNotional = dblPeriodStartNotional;</span>
+<span class="fc" id="L2502">			double dblCouponNotional = dblPeriodStartNotional;</span>
 
-<span class="nc" id="L2504">			int iPeriodAmortizationMode = _notionalSetting.periodAmortizationMode();</span>
+<span class="fc" id="L2504">			int iPeriodAmortizationMode = _notionalSetting.periodAmortizationMode();</span>
 
-<span class="nc bnc" id="L2506" title="All 2 branches missed.">			if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_START == iPeriodAmortizationMode)</span>
-<span class="nc" id="L2507">				dblCouponNotional = dblPeriodStartNotional;</span>
-<span class="nc bnc" id="L2508" title="All 2 branches missed.">			else if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END == iPeriodAmortizationMode)</span>
-<span class="nc" id="L2509">				dblCouponNotional = dblPeriodEndNotional;</span>
+<span class="fc bfc" id="L2506" title="All 2 branches covered.">			if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_START == iPeriodAmortizationMode)</span>
+<span class="fc" id="L2507">				dblCouponNotional = dblPeriodStartNotional;</span>
+<span class="pc bpc" id="L2508" title="1 of 2 branches missed.">			else if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END == iPeriodAmortizationMode)</span>
+<span class="fc" id="L2509">				dblCouponNotional = dblPeriodEndNotional;</span>
 <span class="nc bnc" id="L2510" title="All 2 branches missed.">			else if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_EFFECTIVE ==</span>
 				iPeriodAmortizationMode)
 <span class="nc" id="L2512">				dblCouponNotional = notional (iPeriodStartDate, iNotionalEndDate);</span>
 
-<span class="nc" id="L2514">			double dblPeriodTimeWidth = period.accrualDCF (iAccrualEndDate) - period.accrualDCF</span>
-<span class="nc" id="L2515">				(iAccrualStartDate);</span>
+<span class="fc" id="L2514">			double dblPeriodTimeWidth = period.accrualDCF (iAccrualEndDate) - period.accrualDCF</span>
+<span class="fc" id="L2515">				(iAccrualStartDate);</span>
 
-<span class="nc bnc" id="L2517" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblFlatForwardRate))</span>
-<span class="nc" id="L2518">				dblFlatForwardRate = cpcm.rate();</span>
+<span class="fc bfc" id="L2517" title="All 2 branches covered.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblFlatForwardRate))</span>
+<span class="fc" id="L2518">				dblFlatForwardRate = cpcm.rate();</span>
 
-<span class="nc" id="L2520">			double dblPeriodSurvival = cc.survival (iPeriodPayDate);</span>
+<span class="fc" id="L2520">			double dblPeriodSurvival = cc.survival (iPeriodPayDate);</span>
 
-<span class="nc bnc" id="L2522" title="All 2 branches missed.">			double dblPeriodLossCashflow = (dblPeriodTimeWidth * (bApplyFlatForward ? dblFlatForwardRate :</span>
-<span class="nc" id="L2523">				cpcm.rate()) * couponFactor (iNotionalEndDate) * dblCouponNotional + dblPeriodStartNotional -</span>
+<span class="pc bpc" id="L2522" title="1 of 2 branches missed.">			double dblPeriodLossCashflow = (dblPeriodTimeWidth * (bApplyFlatForward ? dblFlatForwardRate :</span>
+<span class="fc" id="L2523">				cpcm.rate()) * couponFactor (iNotionalEndDate) * dblCouponNotional + dblPeriodStartNotional -</span>
 					dblPeriodEndNotional) * (dblPeriodSurvival * (1. - cc.effectiveRecovery
-<span class="nc" id="L2525">						(iPeriodStartDate, iNotionalEndDate)) + 1. - dblPeriodSurvival);</span>
+<span class="fc" id="L2525">						(iPeriodStartDate, iNotionalEndDate)) + 1. - dblPeriodSurvival);</span>
 
-<span class="nc" id="L2527">			dblPeriodEndTime += dblPeriodTimeWidth;</span>
-<span class="nc" id="L2528">			dblTotalLossCashflow += dblPeriodLossCashflow;</span>
-<span class="nc" id="L2529">			dblTimeWeightedTotalLossCashflow += dblPeriodEndTime * dblPeriodLossCashflow;</span>
+<span class="fc" id="L2527">			dblPeriodEndTime += dblPeriodTimeWidth;</span>
+<span class="fc" id="L2528">			dblTotalLossCashflow += dblPeriodLossCashflow;</span>
+<span class="fc" id="L2529">			dblTimeWeightedTotalLossCashflow += dblPeriodEndTime * dblPeriodLossCashflow;</span>
 
-<span class="nc bnc" id="L2531" title="All 2 branches missed.">			if (bTerminateCouponFlow) break;</span>
-<span class="nc" id="L2532">		}</span>
+<span class="fc bfc" id="L2531" title="All 2 branches covered.">			if (bTerminateCouponFlow) break;</span>
+<span class="fc" id="L2532">		}</span>
 
-<span class="nc" id="L2534">		double dblTerminalSurvival = cc.survival (iWorkoutDate);</span>
+<span class="fc" id="L2534">		double dblTerminalSurvival = cc.survival (iWorkoutDate);</span>
 
-<span class="nc" id="L2536">		double dblTerminalLossCashflow = dblWorkoutFactor * notional (iWorkoutDate) * (dblTerminalSurvival *</span>
-<span class="nc" id="L2537">			(1. - cc.recovery (iWorkoutDate)) + 1. - dblTerminalSurvival);</span>
+<span class="fc" id="L2536">		double dblTerminalLossCashflow = dblWorkoutFactor * notional (iWorkoutDate) * (dblTerminalSurvival *</span>
+<span class="fc" id="L2537">			(1. - cc.recovery (iWorkoutDate)) + 1. - dblTerminalSurvival);</span>
 
-<span class="nc" id="L2539">		dblTotalLossCashflow += dblTerminalLossCashflow;</span>
-<span class="nc" id="L2540">		dblTimeWeightedTotalLossCashflow += dblPeriodEndTime * dblTerminalLossCashflow;</span>
-<span class="nc" id="L2541">		return dblTimeWeightedTotalLossCashflow / dblTotalLossCashflow;</span>
+<span class="fc" id="L2539">		dblTotalLossCashflow += dblTerminalLossCashflow;</span>
+<span class="fc" id="L2540">		dblTimeWeightedTotalLossCashflow += dblPeriodEndTime * dblTerminalLossCashflow;</span>
+<span class="fc" id="L2541">		return dblTimeWeightedTotalLossCashflow / dblTotalLossCashflow;</span>
 	}
 
 	@Override public double weightedAverageLifeCredit (
@@ -2564,9 +2564,9 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 <span class="fc" id="L2565">		int iValueDate = valParams.valueDate();</span>
 
-<span class="pc bpc" id="L2567" title="2 of 4 branches missed.">		if (iValueDate &gt;= iWorkoutDate || null == csqc || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L2567" title="1 of 4 branches missed.">		if (iValueDate &gt;= iWorkoutDate || null == csqc || !org.drip.quant.common.NumberUtil.IsValid</span>
 <span class="pc bpc" id="L2568" title="2 of 4 branches missed.">			(dblWorkoutFactor) || !org.drip.quant.common.NumberUtil.IsValid (dblBump))</span>
-<span class="nc" id="L2569">			throw new java.lang.Exception (&quot;BondComponent::priceFromZeroCurve =&gt; Invalid Inputs &quot; + dblBump);</span>
+<span class="fc" id="L2569">			throw new java.lang.Exception (&quot;BondComponent::priceFromZeroCurve =&gt; Invalid Inputs &quot; + dblBump);</span>
 
 <span class="fc" id="L2571">		double dblPV = 0.;</span>
 <span class="fc" id="L2572">		boolean bTerminateCouponFlow = false;</span>
@@ -2581,7 +2581,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 <span class="pc bpc" id="L2581" title="1 of 2 branches missed.">		if (null != vcp)</span>
 <span class="nc" id="L2582">			bApplyFlatForwardRate = vcp.applyFlatForwardRate();</span>
 		else {
-<span class="fc bfc" id="L2584" title="All 2 branches covered.">			org.drip.param.valuation.ValuationCustomizationParams vcpQuote = null == _quoteConvention ? null</span>
+<span class="pc bpc" id="L2584" title="1 of 2 branches missed.">			org.drip.param.valuation.ValuationCustomizationParams vcpQuote = null == _quoteConvention ? null</span>
 <span class="fc" id="L2585">				: _quoteConvention.valuationCustomizationParams();</span>
 
 <span class="pc bpc" id="L2587" title="1 of 2 branches missed.">			if (null != vcpQuote) bApplyFlatForwardRate = vcpQuote.applyFlatForwardRate();</span>
@@ -2594,8 +2594,8 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 <span class="fc" id="L2594">			throw new java.lang.Exception (&quot;BondComponent::priceFromZeroCurve =&gt; Invalid Discount Curve&quot;);</span>
 
 		try {
-<span class="fc bfc" id="L2597" title="All 2 branches covered.">			iCashPayDate = null != _quoteConvention ? _quoteConvention.settleDate (valParams) :</span>
-<span class="fc" id="L2598">				valParams.cashPayDate();</span>
+<span class="pc bpc" id="L2597" title="1 of 2 branches missed.">			iCashPayDate = null != _quoteConvention ? _quoteConvention.settleDate (valParams) :</span>
+<span class="pc" id="L2598">				valParams.cashPayDate();</span>
 <span class="nc" id="L2599">		} catch (java.lang.Exception e) {</span>
 			if (!s_bSuppressErrors) e.printStackTrace();
 
@@ -2606,7 +2606,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 		try {
 <span class="fc" id="L2608">			zc = org.drip.state.curve.DerivedZeroRate.FromBaseCurve (freq(), couponDC(), currency(),</span>
-<span class="pc bpc" id="L2609" title="1 of 4 branches missed.">				_stream.couponEOMAdjustment(), lsCompositePeriod, terminationAdjust (iWorkoutDate),</span>
+<span class="pc bpc" id="L2609" title="2 of 4 branches missed.">				_stream.couponEOMAdjustment(), lsCompositePeriod, terminationAdjust (iWorkoutDate),</span>
 					iValueDate, iCashPayDate, dcBase, dblBump, null == vcp ? (null == _quoteConvention ? null
 <span class="pc" id="L2611">						: _quoteConvention.valuationCustomizationParams()) : vcp, new</span>
 							org.drip.spline.params.SegmentCustomBuilderControl
@@ -2708,8 +2708,8 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		throws java.lang.Exception
 	{
 <span class="pc bpc" id="L2710" title="3 of 6 branches missed.">		if (null == valParams || null == csqc || !org.drip.quant.common.NumberUtil.IsValid (dblWorkoutFactor)</span>
-<span class="pc bpc" id="L2711" title="1 of 4 branches missed.">			|| !org.drip.quant.common.NumberUtil.IsValid (dblCreditBasis) || null == _creditSetting)</span>
-<span class="fc" id="L2712">			throw new java.lang.Exception (&quot;BondComponent::priceFromCreditCurve =&gt; Invalid inputs&quot;);</span>
+<span class="pc bpc" id="L2711" title="2 of 4 branches missed.">			|| !org.drip.quant.common.NumberUtil.IsValid (dblCreditBasis) || null == _creditSetting)</span>
+<span class="nc" id="L2712">			throw new java.lang.Exception (&quot;BondComponent::priceFromCreditCurve =&gt; Invalid inputs&quot;);</span>
 
 <span class="fc" id="L2714">		org.drip.state.credit.CreditCurve ccIn = csqc.creditState (creditLabel());</span>
 
@@ -2762,7 +2762,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 <span class="fc" id="L2762">		int iPeriodAmortizationMode = _notionalSetting.periodAmortizationMode();</span>
 
 <span class="fc bfc" id="L2764" title="All 2 branches covered.">		for (org.drip.analytics.cashflow.CompositePeriod period : couponPeriods()) {</span>
-<span class="pc bpc" id="L2765" title="1 of 2 branches missed.">			if (bTerminateCashFlow) continue;</span>
+<span class="fc bfc" id="L2765" title="All 2 branches covered.">			if (bTerminateCashFlow) continue;</span>
 
 <span class="fc" id="L2767">			int iPeriodPayDate = period.payDate();</span>
 
@@ -5544,7 +5544,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblPrice)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L5547">		return discountMarginFromPrice (valParams, csqc, vcp, maturityDate().julian(), 1., dblPrice);</span>
+<span class="fc" id="L5547">		return discountMarginFromPrice (valParams, csqc, vcp, maturityDate().julian(), 1., dblPrice);</span>
 	}
 
 	@Override public double discountMarginFromPriceToOptimalExercise (
@@ -5626,7 +5626,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 <span class="pc bpc" id="L5626" title="1 of 2 branches missed.">		if (null == cp)</span>
 <span class="nc" id="L5627">			throw new java.lang.Exception (&quot;BondComponent::discountMarginFromYield =&gt; Invalid inputs&quot;);</span>
 
-<span class="pc bpc" id="L5629" title="2 of 6 branches missed.">		return null == _floaterSetting || !(cp instanceof</span>
+<span class="pc bpc" id="L5629" title="1 of 6 branches missed.">		return null == _floaterSetting || !(cp instanceof</span>
 <span class="fc" id="L5630">			org.drip.analytics.cashflow.CompositeFloatingPeriod) ? dblYield - dcFunding.libor (iValueDate,</span>
 <span class="fc" id="L5631">				((int) (12. / (0 == iFreq ? 2 : iFreq))) + &quot;M&quot;) : dblYield - indexRate (iValueDate, csqc,</span>
 					(org.drip.analytics.cashflow.CompositeFloatingPeriod) cp);
@@ -8367,8 +8367,8 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblPrice)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L8370">		return jSpreadFromYield (valParams, csqc, vcp, iWorkoutDate, dblWorkoutFactor, yieldFromPrice</span>
-<span class="nc" id="L8371">			(valParams, csqc, vcp, iWorkoutDate, dblWorkoutFactor, dblPrice));</span>
+<span class="fc" id="L8370">		return jSpreadFromYield (valParams, csqc, vcp, iWorkoutDate, dblWorkoutFactor, yieldFromPrice</span>
+<span class="fc" id="L8371">			(valParams, csqc, vcp, iWorkoutDate, dblWorkoutFactor, dblPrice));</span>
 	}
 
 	@Override public double jSpreadFromPrice (
@@ -8443,14 +8443,14 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblYield)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L8446" title="All 4 branches missed.">		if (null == csqc || !org.drip.quant.common.NumberUtil.IsValid (dblYield))</span>
+<span class="pc bpc" id="L8446" title="2 of 4 branches missed.">		if (null == csqc || !org.drip.quant.common.NumberUtil.IsValid (dblYield))</span>
 <span class="nc" id="L8447">			throw new java.lang.Exception (&quot;BondComponent::jSpreadFromYield =&gt; Invalid inputs&quot;);</span>
 
-<span class="nc" id="L8449">		org.drip.state.govvie.GovvieCurve gc = csqc.govvieState (govvieLabel());</span>
+<span class="fc" id="L8449">		org.drip.state.govvie.GovvieCurve gc = csqc.govvieState (govvieLabel());</span>
 
-<span class="nc bnc" id="L8451" title="All 2 branches missed.">		if (null == gc) throw new java.lang.Exception (&quot;BondComponent::jSpreadFromYield =&gt; Invalid inputs&quot;);</span>
+<span class="pc bpc" id="L8451" title="1 of 2 branches missed.">		if (null == gc) throw new java.lang.Exception (&quot;BondComponent::jSpreadFromYield =&gt; Invalid inputs&quot;);</span>
 
-<span class="nc" id="L8453">		return dblYield - gc.yield (weightedAverageMaturityDate (valParams, csqc, iWorkoutDate,</span>
+<span class="fc" id="L8453">		return dblYield - gc.yield (weightedAverageMaturityDate (valParams, csqc, iWorkoutDate,</span>
 			dblWorkoutFactor));
 	}
 
@@ -9093,7 +9093,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 <span class="pc bpc" id="L9094" title="2 of 4 branches missed.">		if (null == strCalendar || strCalendar.isEmpty()) strCalendar = redemptionCurrency();</span>
 
-<span class="fc bfc" id="L9096" title="All 2 branches covered.">		org.drip.param.valuation.ValuationCustomizationParams vcpQuote = null == _quoteConvention ? null :</span>
+<span class="pc bpc" id="L9096" title="1 of 2 branches missed.">		org.drip.param.valuation.ValuationCustomizationParams vcpQuote = null == _quoteConvention ? null :</span>
 <span class="fc" id="L9097">			_quoteConvention.valuationCustomizationParams();</span>
 
 <span class="pc bpc" id="L9099" title="1 of 2 branches missed.">		if (null != vcp) {</span>
@@ -9173,8 +9173,8 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 <span class="fc" id="L9174">			double dblCouponNotional = dblPeriodStartNotional;</span>
 
-<span class="pc bpc" id="L9176" title="1 of 2 branches missed.">			if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_START == iAmortizationMode)</span>
-<span class="nc" id="L9177">				dblCouponNotional = notional (iPeriodStartDate);</span>
+<span class="fc bfc" id="L9176" title="All 2 branches covered.">			if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_START == iAmortizationMode)</span>
+<span class="fc" id="L9177">				dblCouponNotional = notional (iPeriodStartDate);</span>
 <span class="pc bpc" id="L9178" title="1 of 2 branches missed.">			else if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END == iAmortizationMode)</span>
 <span class="fc" id="L9179">				dblCouponNotional = dblPeriodEndNotional;</span>
 <span class="nc bnc" id="L9180" title="All 2 branches missed.">			else if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_EFFECTIVE == iAmortizationMode)</span>
@@ -10319,8 +10319,8 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblPrice)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L10322">		return nSpreadFromYield (valParams, csqc, vcp, iWorkoutDate, dblWorkoutFactor, yieldFromPrice</span>
-<span class="nc" id="L10323">			(valParams, csqc, vcp, iWorkoutDate, dblWorkoutFactor, dblPrice));</span>
+<span class="fc" id="L10322">		return nSpreadFromYield (valParams, csqc, vcp, iWorkoutDate, dblWorkoutFactor, yieldFromPrice</span>
+<span class="fc" id="L10323">			(valParams, csqc, vcp, iWorkoutDate, dblWorkoutFactor, dblPrice));</span>
 	}
 
 	@Override public double nSpreadFromPrice (
@@ -10395,15 +10395,15 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblYield)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L10398" title="All 4 branches missed.">		if (null == csqc || !org.drip.quant.common.NumberUtil.IsValid (dblYield))</span>
+<span class="pc bpc" id="L10398" title="2 of 4 branches missed.">		if (null == csqc || !org.drip.quant.common.NumberUtil.IsValid (dblYield))</span>
 <span class="nc" id="L10399">			throw new java.lang.Exception (&quot;BondComponent::nSpreadFromYield =&gt; Invalid inputs&quot;);</span>
 
-<span class="nc" id="L10401">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqc.fundingState (fundingLabel());</span>
+<span class="fc" id="L10401">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqc.fundingState (fundingLabel());</span>
 
-<span class="nc bnc" id="L10403" title="All 2 branches missed.">		if (null == dcFunding)</span>
+<span class="pc bpc" id="L10403" title="1 of 2 branches missed.">		if (null == dcFunding)</span>
 <span class="nc" id="L10404">			throw new java.lang.Exception (&quot;BondComponent::nSpreadFromYield =&gt; Invalid inputs&quot;);</span>
 
-<span class="nc" id="L10406">		return dblYield - dcFunding.proxyManifestMeasure (&quot;SwapRate&quot;, iWorkoutDate);</span>
+<span class="fc" id="L10406">		return dblYield - dcFunding.proxyManifestMeasure (&quot;SwapRate&quot;, iWorkoutDate);</span>
 	}
 
 	@Override public double nSpreadFromYield (
@@ -10959,8 +10959,8 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblYield)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L10962">		return oasFromPrice (valParams, csqc, vcp, iWorkoutDate, dblWorkoutFactor, priceFromYield</span>
-<span class="nc" id="L10963">			(valParams, csqc, vcp, iWorkoutDate, dblWorkoutFactor, dblYield));</span>
+<span class="fc" id="L10962">		return oasFromPrice (valParams, csqc, vcp, iWorkoutDate, dblWorkoutFactor, priceFromYield</span>
+<span class="fc" id="L10963">			(valParams, csqc, vcp, iWorkoutDate, dblWorkoutFactor, dblYield));</span>
 	}
 
 	@Override public double oasFromYield (
@@ -11683,8 +11683,8 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblBondBasis)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L11686">		return priceFromYield (valParams, csqc, vcp, iWorkoutDate, dblWorkoutFactor, yieldFromBondBasis</span>
-<span class="nc" id="L11687">			(valParams, csqc, vcp, iWorkoutDate, dblWorkoutFactor, dblBondBasis));</span>
+<span class="fc" id="L11686">		return priceFromYield (valParams, csqc, vcp, iWorkoutDate, dblWorkoutFactor, yieldFromBondBasis</span>
+<span class="fc" id="L11687">			(valParams, csqc, vcp, iWorkoutDate, dblWorkoutFactor, dblBondBasis));</span>
 	}
 
 	@Override public double priceFromBondBasis (
@@ -11694,7 +11694,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblBondBasis)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L11697">		return priceFromBondBasis (valParams, csqc, vcp, maturityDate().julian(), 1., dblBondBasis);</span>
+<span class="fc" id="L11697">		return priceFromBondBasis (valParams, csqc, vcp, maturityDate().julian(), 1., dblBondBasis);</span>
 	}
 
 	@Override public double priceFromBondBasisToOptimalExercise (
@@ -12165,7 +12165,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblZSpread)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L12168">		return priceFromZeroCurve (valParams, csqc, vcp, ZERO_OFF_OF_RATES_INSTRUMENTS_DISCOUNT_CURVE,</span>
+<span class="fc" id="L12168">		return priceFromZeroCurve (valParams, csqc, vcp, ZERO_OFF_OF_RATES_INSTRUMENTS_DISCOUNT_CURVE,</span>
 			iWorkoutDate, dblWorkoutFactor, dblZSpread);
 	}
 
@@ -12893,9 +12893,9 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 <span class="pc bpc" id="L12893" title="1 of 2 branches missed.">		if (null == cp)</span>
 <span class="nc" id="L12894">			throw new java.lang.Exception (&quot;BondComponent::yieldFromDiscountMargin =&gt; Invalid inputs&quot;);</span>
 
-<span class="pc bpc" id="L12896" title="4 of 6 branches missed.">		return null == _floaterSetting || !(cp instanceof</span>
+<span class="pc bpc" id="L12896" title="2 of 6 branches missed.">		return null == _floaterSetting || !(cp instanceof</span>
 			org.drip.analytics.cashflow.CompositeFloatingPeriod) ? dblDiscountMargin + dcFunding.libor
-<span class="pc" id="L12898">				(iValueDate, ((int) (12. / (0 == iFreq ? 2 : iFreq))) + &quot;M&quot;) : dblDiscountMargin + indexRate</span>
+<span class="fc" id="L12898">				(iValueDate, ((int) (12. / (0 == iFreq ? 2 : iFreq))) + &quot;M&quot;) : dblDiscountMargin + indexRate</span>
 <span class="fc" id="L12899">					(iValueDate, csqc, (org.drip.analytics.cashflow.CompositeFloatingPeriod) currentPeriod</span>
 <span class="fc" id="L12900">						(iValueDate));</span>
 	}
@@ -14960,8 +14960,8 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblYield)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L14963">		return zSpreadFromPrice (valParams, csqc, vcp, iWorkoutDate, dblWorkoutFactor, priceFromYield</span>
-<span class="nc" id="L14964">			(valParams, csqc, vcp, iWorkoutDate, dblWorkoutFactor, dblYield));</span>
+<span class="fc" id="L14963">		return zSpreadFromPrice (valParams, csqc, vcp, iWorkoutDate, dblWorkoutFactor, priceFromYield</span>
+<span class="fc" id="L14964">			(valParams, csqc, vcp, iWorkoutDate, dblWorkoutFactor, dblYield));</span>
 	}
 
 	@Override public double zSpreadFromYield (
@@ -15131,11 +15131,11 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 <span class="fc" id="L15131">		}</span>
 
 		try {
-<span class="nc" id="L15134">			dblCreditBasis = creditBasisFromPrice (valParams, csqs, vcp, iWorkoutDate, dblWorkoutFactor,</span>
+<span class="fc" id="L15134">			dblCreditBasis = creditBasisFromPrice (valParams, csqs, vcp, iWorkoutDate, dblWorkoutFactor,</span>
 				dblPrice);
 <span class="fc" id="L15136">		} catch (java.lang.Exception e) {</span>
 			if (!s_bSuppressErrors) e.printStackTrace();
-<span class="nc" id="L15138">		}</span>
+<span class="fc" id="L15138">		}</span>
 
 		try {
 			// dblPECS = pecsFromPrice (valParams, csqs, vcp, iWorkoutDate, dblWorkoutFactor, dblPrice);
@@ -16489,10 +16489,10 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 <span class="fc" id="L16489">					aadblForwardPrice[iPath][iVertex] = priceFromOAS (aValParamsEvent[iVertex],</span>
 <span class="fc" id="L16490">						org.drip.param.creator.MarketParamsBuilder.Create (mdfcFunding,</span>
 							aaGCPathEvent[iPath][iVertex], null, null, null, null, null), null, dblOAS);
-<span class="nc" id="L16492">				} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L16493">					e.printStackTrace();</span>
+<span class="fc" id="L16492">				} catch (java.lang.Exception e) {</span>
+<span class="fc" id="L16493">					e.printStackTrace();</span>
 
-<span class="nc" id="L16495">					return null;</span>
+<span class="fc" id="L16495">					return null;</span>
 <span class="fc" id="L16496">				}</span>
 			}
 		}
@@ -16583,11 +16583,11 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final org.drip.measure.process.DiffusionEvolver deGovvieForward,
 		final int iNumPath)
 	{
-<span class="nc bnc" id="L16586" title="All 6 branches missed.">		if (null == valParams || null == csqc || null == gbs) return null;</span>
+<span class="pc bpc" id="L16586" title="3 of 6 branches missed.">		if (null == valParams || null == csqc || null == gbs) return null;</span>
 
-<span class="nc" id="L16588">		org.drip.product.params.EmbeddedOptionSchedule eosPut = putSchedule();</span>
+<span class="fc" id="L16588">		org.drip.product.params.EmbeddedOptionSchedule eosPut = putSchedule();</span>
 
-<span class="nc bnc" id="L16590" title="All 2 branches missed.">		if (null == eosPut) return null;</span>
+<span class="pc bpc" id="L16590" title="1 of 2 branches missed.">		if (null == eosPut) return null;</span>
 
 <span class="nc" id="L16592">		int iNumDimension = gbs.dimension();</span>
 

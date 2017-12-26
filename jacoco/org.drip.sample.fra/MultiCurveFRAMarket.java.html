@@ -81,43 +81,43 @@ import org.drip.state.identifier.*;
 		 * Initialize the Credit Analytics Library
 		 */
 
-<span class="nc" id="L84">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L84">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L86">		String strTenor = &quot;6M&quot;;</span>
-<span class="nc" id="L87">		String strCurrency = &quot;JPY&quot;;</span>
-<span class="nc" id="L88">		double dblEURIBOR6MVol = 0.37;</span>
-<span class="nc" id="L89">		double dblEONIAVol = 0.37;</span>
-<span class="nc" id="L90">		double dblEONIAEURIBOR6MCorrelation = 0.8;</span>
+<span class="fc" id="L86">		String strTenor = &quot;6M&quot;;</span>
+<span class="fc" id="L87">		String strCurrency = &quot;JPY&quot;;</span>
+<span class="fc" id="L88">		double dblEURIBOR6MVol = 0.37;</span>
+<span class="fc" id="L89">		double dblEONIAVol = 0.37;</span>
+<span class="fc" id="L90">		double dblEONIAEURIBOR6MCorrelation = 0.8;</span>
 
-<span class="nc" id="L92">		JulianDate dtToday = DateUtil.Today();</span>
+<span class="fc" id="L92">		JulianDate dtToday = DateUtil.Today();</span>
 
-<span class="nc" id="L94">		MergedDiscountForwardCurve dcEONIA = OvernightIndexCurve.MakeDC (</span>
+<span class="fc" id="L94">		MergedDiscountForwardCurve dcEONIA = OvernightIndexCurve.MakeDC (</span>
 			dtToday,
 			strCurrency
 		);
 
-<span class="nc" id="L99">		ForwardCurve fcEURIBOR6M = IBOR6MQuarticPolyVanilla.Make6MForward (</span>
+<span class="fc" id="L99">		ForwardCurve fcEURIBOR6M = IBOR6MQuarticPolyVanilla.Make6MForward (</span>
 			dtToday,
 			strCurrency,
 			strTenor
 		);
 
-<span class="nc" id="L105">		ForwardLabel fri = ForwardLabel.Create (</span>
+<span class="fc" id="L105">		ForwardLabel fri = ForwardLabel.Create (</span>
 			strCurrency,
 			strTenor
 		);
 
-<span class="nc" id="L110">		FundingLabel fundingLabel = FundingLabel.Standard (strCurrency);</span>
+<span class="fc" id="L110">		FundingLabel fundingLabel = FundingLabel.Standard (strCurrency);</span>
 
-<span class="nc" id="L112">		JulianDate dtForwardStart = dtToday.addTenor (strTenor);</span>
+<span class="fc" id="L112">		JulianDate dtForwardStart = dtToday.addTenor (strTenor);</span>
 
-<span class="nc" id="L114">		FRAMarketComponent fra = SingleStreamComponentBuilder.FRAMarket (</span>
+<span class="fc" id="L114">		FRAMarketComponent fra = SingleStreamComponentBuilder.FRAMarket (</span>
 			dtForwardStart,
 			fri,
 			0.006
 		);
 
-<span class="nc" id="L120">		CurveSurfaceQuoteContainer mktParams = MarketParamsBuilder.Create (</span>
+<span class="fc" id="L120">		CurveSurfaceQuoteContainer mktParams = MarketParamsBuilder.Create (</span>
 			dcEONIA,
 			fcEURIBOR6M,
 			null,
@@ -128,45 +128,45 @@ import org.drip.state.identifier.*;
 			null
 		);
 
-<span class="nc" id="L131">		ValuationParams valParams = new ValuationParams (</span>
+<span class="fc" id="L131">		ValuationParams valParams = new ValuationParams (</span>
 			dtToday,
 			dtToday,
 			strCurrency
 		);
 
-<span class="nc" id="L137">		mktParams.setForwardVolatility (</span>
-<span class="nc" id="L138">			ScenarioDeterministicVolatilityBuilder.FlatForward (</span>
-<span class="nc" id="L139">				dtToday.julian(),</span>
-<span class="nc" id="L140">				VolatilityLabel.Standard (fri),</span>
-<span class="nc" id="L141">				fri.currency(),</span>
+<span class="fc" id="L137">		mktParams.setForwardVolatility (</span>
+<span class="fc" id="L138">			ScenarioDeterministicVolatilityBuilder.FlatForward (</span>
+<span class="fc" id="L139">				dtToday.julian(),</span>
+<span class="fc" id="L140">				VolatilityLabel.Standard (fri),</span>
+<span class="fc" id="L141">				fri.currency(),</span>
 				dblEURIBOR6MVol
 			)
 		);
 
-<span class="nc" id="L146">		mktParams.setFundingVolatility (</span>
-<span class="nc" id="L147">			ScenarioDeterministicVolatilityBuilder.FlatForward (</span>
-<span class="nc" id="L148">				dtToday.julian(),</span>
-<span class="nc" id="L149">				VolatilityLabel.Standard (fundingLabel),</span>
-<span class="nc" id="L150">				fri.currency(),</span>
+<span class="fc" id="L146">		mktParams.setFundingVolatility (</span>
+<span class="fc" id="L147">			ScenarioDeterministicVolatilityBuilder.FlatForward (</span>
+<span class="fc" id="L148">				dtToday.julian(),</span>
+<span class="fc" id="L149">				VolatilityLabel.Standard (fundingLabel),</span>
+<span class="fc" id="L150">				fri.currency(),</span>
 				dblEONIAVol
 			)
 		);
 
-<span class="nc" id="L155">		mktParams.setForwardFundingCorrelation (</span>
+<span class="fc" id="L155">		mktParams.setForwardFundingCorrelation (</span>
 			fri,
 			fundingLabel,
 			new FlatUnivariate (dblEONIAEURIBOR6MCorrelation)
 		);
 
-<span class="nc" id="L161">		Map&lt;String, Double&gt; mapFRAOutput = fra.value (</span>
+<span class="fc" id="L161">		Map&lt;String, Double&gt; mapFRAOutput = fra.value (</span>
 			valParams,
 			null,
 			mktParams,
 			null
 		);
 
-<span class="nc bnc" id="L168" title="All 2 branches missed.">		for (Map.Entry&lt;String, Double&gt; me : mapFRAOutput.entrySet())</span>
-<span class="nc" id="L169">			System.out.println (&quot;\t&quot; + me.getKey() + &quot; =&gt; &quot; + me.getValue());</span>
-<span class="nc" id="L170">	}</span>
+<span class="fc bfc" id="L168" title="All 2 branches covered.">		for (Map.Entry&lt;String, Double&gt; me : mapFRAOutput.entrySet())</span>
+<span class="fc" id="L169">			System.out.println (&quot;\t&quot; + me.getKey() + &quot; =&gt; &quot; + me.getValue());</span>
+<span class="fc" id="L170">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -55,9 +55,9 @@ package org.drip.state.sequence;
  */
 
 public class PathRd {
-<span class="nc" id="L58">	private double[] _adblMean = null;</span>
-<span class="nc" id="L59">	private boolean _bLogNormal = false;</span>
-<span class="nc" id="L60">	private double _dblVolatility = java.lang.Double.NaN;</span>
+<span class="fc" id="L58">	private double[] _adblMean = null;</span>
+<span class="fc" id="L59">	private boolean _bLogNormal = false;</span>
+<span class="fc" id="L60">	private double _dblVolatility = java.lang.Double.NaN;</span>
 
 	/**
 	 * PathRd Constructor
@@ -74,14 +74,14 @@ public class PathRd {
 		final double dblVolatility,
 		final boolean bLogNormal)
 		throws java.lang.Exception
-<span class="nc" id="L77">	{</span>
-<span class="nc bnc" id="L78" title="All 6 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_adblMean = adblMean) || null == _adblMean || 0 ==</span>
-<span class="nc bnc" id="L79" title="All 4 branches missed.">			_adblMean.length || !org.drip.quant.common.NumberUtil.IsValid (_dblVolatility = dblVolatility) ||</span>
+<span class="fc" id="L77">	{</span>
+<span class="pc bpc" id="L78" title="3 of 6 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_adblMean = adblMean) || null == _adblMean || 0 ==</span>
+<span class="pc bpc" id="L79" title="2 of 4 branches missed.">			_adblMean.length || !org.drip.quant.common.NumberUtil.IsValid (_dblVolatility = dblVolatility) ||</span>
 				0. &gt;= _dblVolatility)
 <span class="nc" id="L81">			throw new java.lang.Exception (&quot;PathRd Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L83">		_bLogNormal = bLogNormal;</span>
-<span class="nc" id="L84">	}</span>
+<span class="fc" id="L83">		_bLogNormal = bLogNormal;</span>
+<span class="fc" id="L84">	}</span>
 
 	/**
 	 * Indicate if the Random Numbers are Gaussian/LogNormal
@@ -138,25 +138,25 @@ public class PathRd {
 	public double[][] sequence (
 		final int iNumPath)
 	{
-<span class="nc bnc" id="L141" title="All 2 branches missed.">		if (0 &gt;= iNumPath) return null;</span>
+<span class="pc bpc" id="L141" title="1 of 2 branches missed.">		if (0 &gt;= iNumPath) return null;</span>
 
-<span class="nc" id="L143">		int iNumDimension = _adblMean.length;</span>
-<span class="nc" id="L144">		double[][] aadblSequence = new double[iNumPath][iNumDimension];</span>
+<span class="fc" id="L143">		int iNumDimension = _adblMean.length;</span>
+<span class="fc" id="L144">		double[][] aadblSequence = new double[iNumPath][iNumDimension];</span>
 
-<span class="nc bnc" id="L146" title="All 2 branches missed.">		for (int iPath = 0; iPath &lt; iNumPath; ++iPath) {</span>
-<span class="nc" id="L147">			double[] adblRandom = org.drip.measure.discrete.SequenceGenerator.Gaussian (iNumDimension);</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">		for (int iPath = 0; iPath &lt; iNumPath; ++iPath) {</span>
+<span class="fc" id="L147">			double[] adblRandom = org.drip.measure.discrete.SequenceGenerator.Gaussian (iNumDimension);</span>
 
-<span class="nc bnc" id="L149" title="All 4 branches missed.">			if (null == adblRandom || iNumDimension != adblRandom.length) return null;</span>
+<span class="pc bpc" id="L149" title="2 of 4 branches missed.">			if (null == adblRandom || iNumDimension != adblRandom.length) return null;</span>
 
-<span class="nc bnc" id="L151" title="All 2 branches missed.">			for (int iDimension = 0; iDimension &lt; iNumDimension; ++iDimension) {</span>
-<span class="nc" id="L152">				double dblWander = _dblVolatility * adblRandom[iDimension];</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">			for (int iDimension = 0; iDimension &lt; iNumDimension; ++iDimension) {</span>
+<span class="fc" id="L152">				double dblWander = _dblVolatility * adblRandom[iDimension];</span>
 
-<span class="nc bnc" id="L154" title="All 2 branches missed.">				aadblSequence[iPath][iDimension] = _bLogNormal ? _adblMean[iDimension] * java.lang.Math.exp</span>
-<span class="nc" id="L155">					(dblWander) : _adblMean[iDimension] + dblWander;</span>
+<span class="pc bpc" id="L154" title="1 of 2 branches missed.">				aadblSequence[iPath][iDimension] = _bLogNormal ? _adblMean[iDimension] * java.lang.Math.exp</span>
+<span class="pc" id="L155">					(dblWander) : _adblMean[iDimension] + dblWander;</span>
 			}
 		}
 
-<span class="nc" id="L159">		return aadblSequence;</span>
+<span class="fc" id="L159">		return aadblSequence;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

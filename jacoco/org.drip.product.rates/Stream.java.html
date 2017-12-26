@@ -68,14 +68,14 @@ public class Stream {
 
 <span class="fc" id="L69">		int iLeftStartDate = cpLeft.startDate();</span>
 
-<span class="pc bpc" id="L71" title="1 of 2 branches missed.">		if (iDate &lt;= iLeftStartDate)</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">		if (iDate &lt;= iLeftStartDate)</span>
 <span class="fc" id="L72">			return cpLeft.notional (iLeftStartDate) * cpLeft.couponFactor (iLeftStartDate) * cpLeft.fx</span>
 <span class="fc" id="L73">				(csqs);</span>
 
-<span class="nc bnc" id="L75" title="All 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod cp : _lsPeriod) {</span>
-<span class="nc bnc" id="L76" title="All 2 branches missed.">			if (cp.contains (iDate))</span>
-<span class="nc" id="L77">				return cp.notional (iDate) * cp.couponFactor (iDate) * cp.fx (csqs);</span>
-<span class="nc" id="L78">		}</span>
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod cp : _lsPeriod) {</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">			if (cp.contains (iDate))</span>
+<span class="fc" id="L77">				return cp.notional (iDate) * cp.couponFactor (iDate) * cp.fx (csqs);</span>
+<span class="fc" id="L78">		}</span>
 
 <span class="nc" id="L80">		org.drip.analytics.cashflow.CompositePeriod cpRight = _lsPeriod.get (_lsPeriod.size() - 1);</span>
 
@@ -439,11 +439,11 @@ public class Stream {
 		final org.drip.param.valuation.ValuationParams valParams,
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs)
 	{
-<span class="nc bnc" id="L442" title="All 2 branches missed.">		if (null == valParams) return null;</span>
+<span class="pc bpc" id="L442" title="1 of 2 branches missed.">		if (null == valParams) return null;</span>
 
-<span class="nc" id="L444">		org.drip.analytics.cashflow.CompositePeriod cp = containingPeriod (iAccrualEndDate);</span>
+<span class="fc" id="L444">		org.drip.analytics.cashflow.CompositePeriod cp = containingPeriod (iAccrualEndDate);</span>
 
-<span class="nc bnc" id="L446" title="All 2 branches missed.">		return null == cp ? null : cp.couponMetrics (valParams.valueDate(), csqs);</span>
+<span class="pc bpc" id="L446" title="1 of 2 branches missed.">		return null == cp ? null : cp.couponMetrics (valParams.valueDate(), csqs);</span>
 	}
 
 	/**
@@ -551,19 +551,19 @@ public class Stream {
 <span class="nc" id="L551">				return null;</span>
 <span class="fc" id="L552">			}</span>
 
-<span class="pc bpc" id="L554" title="1 of 2 branches missed.">			if (iPeriodPayDate &lt; iValueDate) {</span>
-<span class="nc" id="L555">				org.drip.analytics.output.CompositePeriodCouponMetrics cpcm = period.couponMetrics</span>
-<span class="nc" id="L556">					(iPeriodEndDate, csqs);</span>
+<span class="fc bfc" id="L554" title="All 2 branches covered.">			if (iPeriodPayDate &lt; iValueDate) {</span>
+<span class="fc" id="L555">				org.drip.analytics.output.CompositePeriodCouponMetrics cpcm = period.couponMetrics</span>
+<span class="fc" id="L556">					(iPeriodEndDate, csqs);</span>
 
-<span class="nc bnc" id="L558" title="All 2 branches missed.">				if (null == cpcm) return null;</span>
+<span class="pc bpc" id="L558" title="1 of 2 branches missed.">				if (null == cpcm) return null;</span>
 
-<span class="nc" id="L560">				double dblPeriodDCF = cpcm.dcf();</span>
+<span class="fc" id="L560">				double dblPeriodDCF = cpcm.dcf();</span>
 
-<span class="nc" id="L562">				dblCumulativeCouponDCF += dblPeriodDCF;</span>
+<span class="fc" id="L562">				dblCumulativeCouponDCF += dblPeriodDCF;</span>
 
-<span class="nc" id="L564">				dblCumulativeCouponAmount += dblPeriodNotional * dblPeriodFX * cpcm.rate() * dblPeriodDCF;</span>
+<span class="fc" id="L564">				dblCumulativeCouponAmount += dblPeriodNotional * dblPeriodFX * cpcm.rate() * dblPeriodDCF;</span>
 
-<span class="nc" id="L566">				continue;</span>
+<span class="fc" id="L566">				continue;</span>
 			}
 
 <span class="fc" id="L569">			org.drip.analytics.output.CompositePeriodCouponMetrics cpcm = period.couponMetrics (iValueDate,</span>
@@ -579,17 +579,17 @@ public class Stream {
 				csqs);
 
 			try {
-<span class="pc bpc" id="L582" title="1 of 2 branches missed.">				if (null != cpam) {</span>
-<span class="nc" id="L583">					dblAccrualCoupon = cpam.rate();</span>
+<span class="fc bfc" id="L582" title="All 2 branches covered.">				if (null != cpam) {</span>
+<span class="fc" id="L583">					dblAccrualCoupon = cpam.rate();</span>
 
-<span class="nc" id="L585">					iResetDate = cpam.resetDate();</span>
+<span class="fc" id="L585">					iResetDate = cpam.resetDate();</span>
 
-<span class="nc" id="L587">					double dblPeriodAccrualDCF = cpam.dcf();</span>
+<span class="fc" id="L587">					double dblPeriodAccrualDCF = cpam.dcf();</span>
 
-<span class="nc" id="L589">					dblCumulativeCouponDCF += dblPeriodAccrualDCF;</span>
-<span class="nc" id="L590">					dblAccrued01 = 0.0001 * dblPeriodAccrualDCF * dblPeriodNotional * dblPeriodFX;</span>
+<span class="fc" id="L589">					dblCumulativeCouponDCF += dblPeriodAccrualDCF;</span>
+<span class="fc" id="L590">					dblAccrued01 = 0.0001 * dblPeriodAccrualDCF * dblPeriodNotional * dblPeriodFX;</span>
 
-<span class="nc" id="L592">					dblCumulativeCouponAmount += dblPeriodNotional * dblPeriodFX * dblAccrualCoupon *</span>
+<span class="fc" id="L592">					dblCumulativeCouponAmount += dblPeriodNotional * dblPeriodFX * dblAccrualCoupon *</span>
 						dblPeriodAccrualDCF;
 				}
 
@@ -681,7 +681,7 @@ public class Stream {
 <span class="fc" id="L681">		dblForwardFXConvexityAdjustedDirtyDV01 /= dblCashPayDF;</span>
 <span class="fc" id="L682">		dblFundingFXConvexityAdjustedDirtyPV /= dblCashPayDF;</span>
 <span class="fc" id="L683">		dblFundingFXConvexityAdjustedDirtyDV01 /= dblCashPayDF;</span>
-<span class="pc bpc" id="L684" title="1 of 2 branches missed.">		double dblAccrued = 0. == dblAccrued01 ? 0. : dblAccrued01 * 10000. * dblAccrualCoupon;</span>
+<span class="fc bfc" id="L684" title="All 2 branches covered.">		double dblAccrued = 0. == dblAccrued01 ? 0. : dblAccrued01 * 10000. * dblAccrualCoupon;</span>
 <span class="fc" id="L685">		double dblUnadjustedCleanPV = dblUnadjustedDirtyPV - dblAccrued;</span>
 <span class="fc" id="L686">		double dblUnadjustedCleanDV01 = dblUnadjustedDirtyDV01 - dblAccrued01;</span>
 <span class="fc" id="L687">		double dblUnadjustedFairPremium = 0.0001 * dblUnadjustedCleanPV / dblUnadjustedCleanDV01;</span>

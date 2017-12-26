@@ -86,9 +86,9 @@ import org.drip.state.identifier.*;
 		final String strMaturityTenor,
 		final double dblBasis)
 	{
-<span class="nc" id="L89">		FloatFloatSwapConvention ffConv = IBORFloatFloatContainer.ConventionFromJurisdiction (strCurrency);</span>
+<span class="fc" id="L89">		FloatFloatSwapConvention ffConv = IBORFloatFloatContainer.ConventionFromJurisdiction (strCurrency);</span>
 
-<span class="nc" id="L91">		return ffConv.createFloatFloatComponent (</span>
+<span class="fc" id="L91">		return ffConv.createFloatFloatComponent (</span>
 			dtSpot,
 			strDerivedTenor,
 			strMaturityTenor,
@@ -110,10 +110,10 @@ import org.drip.state.identifier.*;
 		final int iTenorInMonths)
 		throws Exception
 	{
-<span class="nc" id="L113">		FloatFloatComponent[] aFFC = new FloatFloatComponent[astrMaturityTenor.length];</span>
+<span class="fc" id="L113">		FloatFloatComponent[] aFFC = new FloatFloatComponent[astrMaturityTenor.length];</span>
 
-<span class="nc bnc" id="L115" title="All 2 branches missed.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
-<span class="nc" id="L116">			aFFC[i] = OTCFloatFloat (</span>
+<span class="fc bfc" id="L115" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
+<span class="fc" id="L116">			aFFC[i] = OTCFloatFloat (</span>
 				dtSpot,
 				strCurrency,
 				iTenorInMonths + &quot;M&quot;,
@@ -121,7 +121,7 @@ import org.drip.state.identifier.*;
 				0.
 			);
 
-<span class="nc" id="L124">		return aFFC;</span>
+<span class="fc" id="L124">		return aFFC;</span>
 	}
 
 	private static final ForwardCurve MakeFC (
@@ -137,16 +137,16 @@ import org.drip.state.identifier.*;
 		 * Construct the 6M-xM float-float basis swap.
 		 */
 
-<span class="nc" id="L140">		FloatFloatComponent[] aFFC = MakexM6MBasisSwap (</span>
+<span class="fc" id="L140">		FloatFloatComponent[] aFFC = MakexM6MBasisSwap (</span>
 			dtSpot,
 			strCurrency,
 			astrxM6MFwdTenor,
 			iTenorInMonths
 		);
 
-<span class="nc" id="L147">		String strBasisTenor = iTenorInMonths + &quot;M&quot;;</span>
+<span class="fc" id="L147">		String strBasisTenor = iTenorInMonths + &quot;M&quot;;</span>
 
-<span class="nc" id="L149">		ValuationParams valParams = new ValuationParams (</span>
+<span class="fc" id="L149">		ValuationParams valParams = new ValuationParams (</span>
 			dtSpot,
 			dtSpot,
 			strCurrency
@@ -156,16 +156,16 @@ import org.drip.state.identifier.*;
 		 * Calculate the starting forward rate off of the discount curve.
 		 */
 
-<span class="nc" id="L159">		double dblStartingFwd = dc.forward (</span>
-<span class="nc" id="L160">			dtSpot.julian(),</span>
-<span class="nc" id="L161">			dtSpot.addTenor (strBasisTenor).julian()</span>
+<span class="fc" id="L159">		double dblStartingFwd = dc.forward (</span>
+<span class="fc" id="L160">			dtSpot.julian(),</span>
+<span class="fc" id="L161">			dtSpot.addTenor (strBasisTenor).julian()</span>
 		);
 
 		/*
 		 * Set the discount curve based component market parameters.
 		 */
 
-<span class="nc" id="L168">		CurveSurfaceQuoteContainer mktParams = MarketParamsBuilder.Create (</span>
+<span class="fc" id="L168">		CurveSurfaceQuoteContainer mktParams = MarketParamsBuilder.Create (</span>
 			dc,
 			null,
 			null,
@@ -179,9 +179,9 @@ import org.drip.state.identifier.*;
 		 * Construct the shape preserving forward curve off of Quartic Polynomial Basis Spline.
 		 */
 
-<span class="nc" id="L182">		return ScenarioForwardCurveBuilder.ShapePreservingForwardCurve (</span>
+<span class="fc" id="L182">		return ScenarioForwardCurveBuilder.ShapePreservingForwardCurve (</span>
 			&quot;QUARTIC_FWD&quot; + strBasisTenor,
-<span class="nc" id="L184">			ForwardLabel.Create (</span>
+<span class="fc" id="L184">			ForwardLabel.Create (</span>
 				strCurrency,
 				strBasisTenor
 			),
@@ -204,13 +204,13 @@ import org.drip.state.identifier.*;
 		final MergedDiscountForwardCurve dc)
 		throws Exception
 	{
-<span class="nc" id="L207">		Map&lt;String, ForwardCurve&gt; mapFC = new HashMap&lt;String, ForwardCurve&gt;();</span>
+<span class="fc" id="L207">		Map&lt;String, ForwardCurve&gt; mapFC = new HashMap&lt;String, ForwardCurve&gt;();</span>
 
 		/*
 		 * Build and run the sampling for the 1M-6M Tenor Basis Swap from its instruments and quotes.
 		 */
 
-<span class="nc" id="L213">		ForwardCurve fc1M = MakeFC (</span>
+<span class="fc" id="L213">		ForwardCurve fc1M = MakeFC (</span>
 			dt,
 			strCurrency,
 			dc,
@@ -238,7 +238,7 @@ import org.drip.state.identifier.*;
 				}
 			);
 
-<span class="nc" id="L241">		mapFC.put (</span>
+<span class="fc" id="L241">		mapFC.put (</span>
 			&quot;1M&quot;,
 			fc1M
 		);
@@ -247,7 +247,7 @@ import org.drip.state.identifier.*;
 		 * Build and run the sampling for the 3M-6M Tenor Basis Swap from its instruments and quotes.
 		 */
 
-<span class="nc" id="L250">		ForwardCurve fc3M = MakeFC (</span>
+<span class="fc" id="L250">		ForwardCurve fc3M = MakeFC (</span>
 			dt,
 			strCurrency,
 			dc,
@@ -275,7 +275,7 @@ import org.drip.state.identifier.*;
 				}
 			);
 
-<span class="nc" id="L278">		mapFC.put (</span>
+<span class="fc" id="L278">		mapFC.put (</span>
 			&quot;3M&quot;,
 			fc3M
 		);
@@ -284,7 +284,7 @@ import org.drip.state.identifier.*;
 		 * Build and run the sampling for the 12M-6M Tenor Basis Swap from its instruments and quotes.
 		 */
 
-<span class="nc" id="L287">		ForwardCurve fc12M = MakeFC (</span>
+<span class="fc" id="L287">		ForwardCurve fc12M = MakeFC (</span>
 			dt,
 			strCurrency,
 			dc,
@@ -315,12 +315,12 @@ import org.drip.state.identifier.*;
 				}
 			);
 
-<span class="nc" id="L318">		mapFC.put (</span>
+<span class="fc" id="L318">		mapFC.put (</span>
 			&quot;12M&quot;,
 			fc12M
 		);
 
-<span class="nc" id="L323">		return mapFC;</span>
+<span class="fc" id="L323">		return mapFC;</span>
 	}
 
 	private static final void SetVolCorrelation (
@@ -332,32 +332,32 @@ import org.drip.state.identifier.*;
 		final double dblForwardFundingCorr)
 		throws Exception
 	{
-<span class="nc" id="L335">		FundingLabel fundingLabel = FundingLabel.Standard (fri.currency());</span>
+<span class="fc" id="L335">		FundingLabel fundingLabel = FundingLabel.Standard (fri.currency());</span>
 
-<span class="nc" id="L337">		mktParams.setForwardVolatility (</span>
-<span class="nc" id="L338">			ScenarioDeterministicVolatilityBuilder.FlatForward (</span>
+<span class="fc" id="L337">		mktParams.setForwardVolatility (</span>
+<span class="fc" id="L338">			ScenarioDeterministicVolatilityBuilder.FlatForward (</span>
 				iValueDate,
-<span class="nc" id="L340">				VolatilityLabel.Standard (fri),</span>
-<span class="nc" id="L341">				fri.currency(),</span>
+<span class="fc" id="L340">				VolatilityLabel.Standard (fri),</span>
+<span class="fc" id="L341">				fri.currency(),</span>
 				dblForwardVol
 			)
 		);
 
-<span class="nc" id="L346">		mktParams.setFundingVolatility (</span>
-<span class="nc" id="L347">			ScenarioDeterministicVolatilityBuilder.FlatForward (</span>
+<span class="fc" id="L346">		mktParams.setFundingVolatility (</span>
+<span class="fc" id="L347">			ScenarioDeterministicVolatilityBuilder.FlatForward (</span>
 				iValueDate,
-<span class="nc" id="L349">				VolatilityLabel.Standard (fundingLabel),</span>
-<span class="nc" id="L350">				fri.currency(),</span>
+<span class="fc" id="L349">				VolatilityLabel.Standard (fundingLabel),</span>
+<span class="fc" id="L350">				fri.currency(),</span>
 				dblFundingVol
 			)
 		);
 
-<span class="nc" id="L355">		mktParams.setForwardFundingCorrelation (</span>
+<span class="fc" id="L355">		mktParams.setForwardFundingCorrelation (</span>
 			fri,
 			fundingLabel,
 			new FlatUnivariate (dblForwardFundingCorr)
 		);
-<span class="nc" id="L360">	}</span>
+<span class="fc" id="L360">	}</span>
 
 	private static final void FuturesOptionMetrics (
 		final String strCurrency,
@@ -367,37 +367,37 @@ import org.drip.state.identifier.*;
 		final String strExchange)
 		throws Exception
 	{
-<span class="nc" id="L370">		MergedDiscountForwardCurve dcOIS = OvernightIndexCurve.MakeDC (</span>
+<span class="fc" id="L370">		MergedDiscountForwardCurve dcOIS = OvernightIndexCurve.MakeDC (</span>
 			dtSpot,
 			strCurrency
 		);
 
-<span class="nc" id="L375">		ForwardLabel forwardLabel = ForwardLabel.Create (</span>
+<span class="fc" id="L375">		ForwardLabel forwardLabel = ForwardLabel.Create (</span>
 			strCurrency,
 			strTenor
 		);
 
-<span class="nc" id="L380">		Map&lt;String, ForwardCurve&gt; mapFC = MakeFC (</span>
+<span class="fc" id="L380">		Map&lt;String, ForwardCurve&gt; mapFC = MakeFC (</span>
 			dtSpot,
 			strCurrency,
 			dcOIS
 		);
 
-<span class="nc" id="L386">		ForwardCurve fc = mapFC.get (strTenor);</span>
+<span class="fc" id="L386">		ForwardCurve fc = mapFC.get (strTenor);</span>
 
-<span class="nc" id="L388">		JulianDate dtEffective = dtSpot.addTenor (&quot;3M&quot;);</span>
+<span class="fc" id="L388">		JulianDate dtEffective = dtSpot.addTenor (&quot;3M&quot;);</span>
 
-<span class="nc" id="L390">		FRAStandardCapFloorlet liborFuturesOption = SingleStreamOptionBuilder.ExchangeTradedFuturesOption (</span>
+<span class="fc" id="L390">		FRAStandardCapFloorlet liborFuturesOption = SingleStreamOptionBuilder.ExchangeTradedFuturesOption (</span>
 			dtEffective,
 			forwardLabel,
-<span class="nc" id="L393">			fc.forward (dtEffective.addTenor (fc.tenor())),</span>
+<span class="fc" id="L393">			fc.forward (dtEffective.addTenor (fc.tenor())),</span>
 			&quot;ParForward&quot;,
 			false,
 			strOptionType,
 			strExchange
 		);
 
-<span class="nc" id="L400">		CurveSurfaceQuoteContainer mktParams = MarketParamsBuilder.Create (</span>
+<span class="fc" id="L400">		CurveSurfaceQuoteContainer mktParams = MarketParamsBuilder.Create (</span>
 			dcOIS,
 			fc,
 			null,
@@ -408,12 +408,12 @@ import org.drip.state.identifier.*;
 			null
 		);
 
-<span class="nc" id="L411">		double dblForwardVol = 0.50;</span>
-<span class="nc" id="L412">		double dblFundingVol = 0.50;</span>
-<span class="nc" id="L413">		double dblForwardFundingCorr = 0.50;</span>
+<span class="fc" id="L411">		double dblForwardVol = 0.50;</span>
+<span class="fc" id="L412">		double dblFundingVol = 0.50;</span>
+<span class="fc" id="L413">		double dblForwardFundingCorr = 0.50;</span>
 
-<span class="nc" id="L415">		SetVolCorrelation (</span>
-<span class="nc" id="L416">			dtSpot.julian(),</span>
+<span class="fc" id="L415">		SetVolCorrelation (</span>
+<span class="fc" id="L416">			dtSpot.julian(),</span>
 			mktParams,
 			forwardLabel,
 			dblForwardVol,
@@ -421,25 +421,25 @@ import org.drip.state.identifier.*;
 			dblForwardFundingCorr
 		);
 
-<span class="nc" id="L424">		ValuationParams valParams = new ValuationParams (</span>
+<span class="fc" id="L424">		ValuationParams valParams = new ValuationParams (</span>
 			dtSpot,
 			dtSpot,
 			strCurrency
 		);
 
-<span class="nc" id="L430">		Map&lt;String, Double&gt; mapOutput = liborFuturesOption.value (</span>
+<span class="fc" id="L430">		Map&lt;String, Double&gt; mapOutput = liborFuturesOption.value (</span>
 			valParams,
 			null,
 			mktParams,
 			null
 		);
 
-<span class="nc" id="L437">		System.out.println (&quot;\t\t&quot; + strExchange + &quot; | &quot; +</span>
-<span class="nc" id="L438">			FormatUtil.FormatDouble (mapOutput.get (&quot;ATMFRA&quot;), 1, 4, 100.) + &quot; % | &quot; +</span>
-<span class="nc" id="L439">			FormatUtil.FormatDouble (mapOutput.get (&quot;Upfront&quot;), 1, 1, 10000.) + &quot; bp | &quot; +</span>
-<span class="nc" id="L440">			forwardLabel.fullyQualifiedName()</span>
+<span class="fc" id="L437">		System.out.println (&quot;\t\t&quot; + strExchange + &quot; | &quot; +</span>
+<span class="fc" id="L438">			FormatUtil.FormatDouble (mapOutput.get (&quot;ATMFRA&quot;), 1, 4, 100.) + &quot; % | &quot; +</span>
+<span class="fc" id="L439">			FormatUtil.FormatDouble (mapOutput.get (&quot;Upfront&quot;), 1, 1, 10000.) + &quot; bp | &quot; +</span>
+<span class="fc" id="L440">			forwardLabel.fullyQualifiedName()</span>
 		);
-<span class="nc" id="L442">	}</span>
+<span class="fc" id="L442">	}</span>
 
 	public static final void main (
 		final String[] astrArgs)
@@ -449,21 +449,21 @@ import org.drip.state.identifier.*;
 		 * Initialize the Credit Analytics Library
 		 */
 
-<span class="nc" id="L452">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L452">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L454">		JulianDate dtToday = DateUtil.Today();</span>
+<span class="fc" id="L454">		JulianDate dtToday = DateUtil.Today();</span>
 
-<span class="nc" id="L456">		System.out.println (&quot;\tOutput Order - L -&gt; R:&quot;);</span>
+<span class="fc" id="L456">		System.out.println (&quot;\tOutput Order - L -&gt; R:&quot;);</span>
 
-<span class="nc" id="L458">		System.out.println (&quot;\t\tExchange\n\t\tATM Par FRA Level (%)\n\t\tOption Upfront (bp)\n\t\tFRA Label&quot;);</span>
+<span class="fc" id="L458">		System.out.println (&quot;\t\tExchange\n\t\tATM Par FRA Level (%)\n\t\tOption Upfront (bp)\n\t\tFRA Label&quot;);</span>
 
-<span class="nc" id="L460">		System.out.println (&quot;\n\t-----------------------------------------------------&quot;);</span>
+<span class="fc" id="L460">		System.out.println (&quot;\n\t-----------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L462">		System.out.println (&quot;\t--------------- MARGIN TYPE OPTION ------------------&quot;);</span>
+<span class="fc" id="L462">		System.out.println (&quot;\t--------------- MARGIN TYPE OPTION ------------------&quot;);</span>
 
-<span class="nc" id="L464">		System.out.println (&quot;\t-----------------------------------------------------&quot;);</span>
+<span class="fc" id="L464">		System.out.println (&quot;\t-----------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L466">		FuturesOptionMetrics (</span>
+<span class="fc" id="L466">		FuturesOptionMetrics (</span>
 			&quot;CHF&quot;,
 			&quot;3M&quot;,
 			dtToday,
@@ -471,7 +471,7 @@ import org.drip.state.identifier.*;
 			&quot;LIFFE&quot;
 		);
 
-<span class="nc" id="L474">		FuturesOptionMetrics (</span>
+<span class="fc" id="L474">		FuturesOptionMetrics (</span>
 			&quot;GBP&quot;,
 			&quot;3M&quot;,
 			dtToday,
@@ -487,7 +487,7 @@ import org.drip.state.identifier.*;
 			&quot;LIFFE&quot;
 		); */
 
-<span class="nc" id="L490">		FuturesOptionMetrics (</span>
+<span class="fc" id="L490">		FuturesOptionMetrics (</span>
 			&quot;USD&quot;,
 			&quot;3M&quot;,
 			dtToday,
@@ -495,13 +495,13 @@ import org.drip.state.identifier.*;
 			&quot;LIFFE&quot;
 		);
 
-<span class="nc" id="L498">		System.out.println (&quot;\t-----------------------------------------------------&quot;);</span>
+<span class="fc" id="L498">		System.out.println (&quot;\t-----------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L500">		System.out.println (&quot;\t-------------- PREMIUM TYPE OPTION ------------------&quot;);</span>
+<span class="fc" id="L500">		System.out.println (&quot;\t-------------- PREMIUM TYPE OPTION ------------------&quot;);</span>
 
-<span class="nc" id="L502">		System.out.println (&quot;\t-----------------------------------------------------&quot;);</span>
+<span class="fc" id="L502">		System.out.println (&quot;\t-----------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L504">		FuturesOptionMetrics (</span>
+<span class="fc" id="L504">		FuturesOptionMetrics (</span>
 			&quot;JPY&quot;,
 			&quot;3M&quot;,
 			dtToday,
@@ -509,7 +509,7 @@ import org.drip.state.identifier.*;
 			&quot;SGX&quot;
 		);
 
-<span class="nc" id="L512">		FuturesOptionMetrics (</span>
+<span class="fc" id="L512">		FuturesOptionMetrics (</span>
 			&quot;USD&quot;,
 			&quot;1M&quot;,
 			dtToday,
@@ -517,7 +517,7 @@ import org.drip.state.identifier.*;
 			&quot;CME&quot;
 		);
 
-<span class="nc" id="L520">		FuturesOptionMetrics (</span>
+<span class="fc" id="L520">		FuturesOptionMetrics (</span>
 			&quot;USD&quot;,
 			&quot;3M&quot;,
 			dtToday,
@@ -525,7 +525,7 @@ import org.drip.state.identifier.*;
 			&quot;CME&quot;
 		);
 
-<span class="nc" id="L528">		FuturesOptionMetrics (</span>
+<span class="fc" id="L528">		FuturesOptionMetrics (</span>
 			&quot;USD&quot;,
 			&quot;3M&quot;,
 			dtToday,
@@ -533,9 +533,9 @@ import org.drip.state.identifier.*;
 			&quot;SGX&quot;
 		);
 
-<span class="nc" id="L536">		System.out.println (&quot;\t-----------------------------------------------------&quot;);</span>
+<span class="fc" id="L536">		System.out.println (&quot;\t-----------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L538">		System.out.println (&quot;\t-----------------------------------------------------&quot;);</span>
-<span class="nc" id="L539">	}</span>
+<span class="fc" id="L538">		System.out.println (&quot;\t-----------------------------------------------------&quot;);</span>
+<span class="fc" id="L539">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

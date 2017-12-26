@@ -67,16 +67,16 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="fc" id="L70">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L70">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L72">		String strCurrency = &quot;USD&quot;;</span>
+<span class="nc" id="L72">		String strCurrency = &quot;USD&quot;;</span>
 
-<span class="fc" id="L74">		JulianDate dtSpot = DateUtil.Today().addBusDays (</span>
+<span class="nc" id="L74">		JulianDate dtSpot = DateUtil.Today().addBusDays (</span>
 			0,
 			strCurrency
 		);
 
-<span class="fc" id="L79">		String[] astrDepositMaturityTenor = new String[] {</span>
+<span class="nc" id="L79">		String[] astrDepositMaturityTenor = new String[] {</span>
 			&quot;01D&quot;,
 			&quot;04D&quot;,
 			&quot;07D&quot;,
@@ -85,7 +85,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			&quot;60D&quot;
 		};
 
-<span class="fc" id="L88">		double[] adblDepositQuote = new double[] {</span>
+<span class="nc" id="L88">		double[] adblDepositQuote = new double[] {</span>
 			0.0013,		//  1D
 			0.0017,		//  2D
 			0.0017,		//  7D
@@ -94,7 +94,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			0.0023		// 60D
 		};
 
-<span class="fc" id="L97">		double[] adblFuturesQuote = new double[] {</span>
+<span class="nc" id="L97">		double[] adblFuturesQuote = new double[] {</span>
 			0.0027,
 			0.0032,
 			0.0041,
@@ -105,7 +105,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			0.0160
 		};
 
-<span class="fc" id="L108">		String[] astrFixFloatMaturityTenor = new String[] {</span>
+<span class="nc" id="L108">		String[] astrFixFloatMaturityTenor = new String[] {</span>
 			&quot;04Y&quot;,
 			&quot;05Y&quot;,
 			&quot;06Y&quot;,
@@ -123,7 +123,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			&quot;50Y&quot;
 		};
 
-<span class="fc" id="L126">		double[] adblFixFloatQuote = new double[] {</span>
+<span class="nc" id="L126">		double[] adblFixFloatQuote = new double[] {</span>
 			0.0166,		//   4Y
 			0.0206,		//   5Y
 			0.0241,		//   6Y
@@ -141,7 +141,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			0.0409		//  50Y
 		};
 
-<span class="fc" id="L144">		MergedDiscountForwardCurve dcFunding = LatentMarketStateBuilder.SmoothFundingCurve (</span>
+<span class="nc" id="L144">		MergedDiscountForwardCurve dcFunding = LatentMarketStateBuilder.SmoothFundingCurve (</span>
 			dtSpot,
 			strCurrency,
 			astrDepositMaturityTenor,
@@ -154,48 +154,48 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			&quot;SwapRate&quot;
 		);
 
-<span class="fc" id="L157">		String strLatentStateLabel = dcFunding.label().fullyQualifiedName();</span>
+<span class="nc" id="L157">		String strLatentStateLabel = dcFunding.label().fullyQualifiedName();</span>
 
-<span class="fc" id="L159">		System.out.println (&quot;\n\n\t||---------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L159">		System.out.println (&quot;\n\n\t||---------------------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L161" title="All 2 branches covered.">		for (int i = 0; i &lt; adblDepositQuote.length; ++i)</span>
-<span class="fc" id="L162">			System.out.println (</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">		for (int i = 0; i &lt; adblDepositQuote.length; ++i)</span>
+<span class="nc" id="L162">			System.out.println (</span>
 				&quot;\t||  &quot; + strLatentStateLabel +
 				&quot; |  DEPOSIT  | &quot; + astrDepositMaturityTenor[i] + &quot;  | &quot; +
-<span class="fc" id="L165">				FormatUtil.FormatDouble (adblDepositQuote[i], 1, 4, 1.) +</span>
+<span class="nc" id="L165">				FormatUtil.FormatDouble (adblDepositQuote[i], 1, 4, 1.) +</span>
 				&quot; | Forward Rate | &quot; +
-<span class="fc" id="L167">				FormatUtil.FormatDouble (dcFunding.df (astrDepositMaturityTenor[i]), 1, 6, 1.) +</span>
+<span class="nc" id="L167">				FormatUtil.FormatDouble (dcFunding.df (astrDepositMaturityTenor[i]), 1, 6, 1.) +</span>
 				&quot;  ||&quot;
 			);
 
-<span class="fc" id="L171">		System.out.println (&quot;\t||---------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L171">		System.out.println (&quot;\t||---------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L173">		System.out.println (&quot;\n\n\t||--------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L173">		System.out.println (&quot;\n\n\t||--------------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L175" title="All 2 branches covered.">		for (int i = 0; i &lt; adblFuturesQuote.length; ++i)</span>
-<span class="fc" id="L176">			System.out.println (</span>
+<span class="nc bnc" id="L175" title="All 2 branches missed.">		for (int i = 0; i &lt; adblFuturesQuote.length; ++i)</span>
+<span class="nc" id="L176">			System.out.println (</span>
 				&quot;\t||  &quot; + strLatentStateLabel + &quot; |  FUTURES  | &quot; +
-<span class="fc" id="L178">				FormatUtil.FormatDouble (adblFuturesQuote[i], 1, 4, 1.) +</span>
+<span class="nc" id="L178">				FormatUtil.FormatDouble (adblFuturesQuote[i], 1, 4, 1.) +</span>
 				&quot; | Forward Rate | &quot; +
-<span class="fc" id="L180">				FormatUtil.FormatDouble (dcFunding.df ((3 + 3 * i) + &quot;M&quot;), 1, 6, 1.) +</span>
+<span class="nc" id="L180">				FormatUtil.FormatDouble (dcFunding.df ((3 + 3 * i) + &quot;M&quot;), 1, 6, 1.) +</span>
 				&quot;  ||&quot;
 			);
 
-<span class="fc" id="L184">		System.out.println (&quot;\t||--------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L184">		System.out.println (&quot;\t||--------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L186">		System.out.println (&quot;\n\n\t||--------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L186">		System.out.println (&quot;\n\n\t||--------------------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L188" title="All 2 branches covered.">		for (int i = 0; i &lt; adblFixFloatQuote.length; ++i)</span>
-<span class="fc" id="L189">			System.out.println (</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">		for (int i = 0; i &lt; adblFixFloatQuote.length; ++i)</span>
+<span class="nc" id="L189">			System.out.println (</span>
 				&quot;\t||  &quot; + strLatentStateLabel +
 				&quot; |  FIX FLOAT  | &quot; + astrFixFloatMaturityTenor[i] + &quot;  | &quot; +
-<span class="fc" id="L192">				FormatUtil.FormatDouble (adblFixFloatQuote[i], 1, 4, 1.) +</span>
+<span class="nc" id="L192">				FormatUtil.FormatDouble (adblFixFloatQuote[i], 1, 4, 1.) +</span>
 				&quot; | Swap Rate | &quot; +
-<span class="fc" id="L194">				FormatUtil.FormatDouble (dcFunding.df (astrFixFloatMaturityTenor[i]), 1, 6, 1.) +</span>
+<span class="nc" id="L194">				FormatUtil.FormatDouble (dcFunding.df (astrFixFloatMaturityTenor[i]), 1, 6, 1.) +</span>
 				&quot;  ||&quot;
 			);
 
-<span class="fc" id="L198">		System.out.println (&quot;\t||--------------------------------------------------------------||\n&quot;);</span>
-<span class="fc" id="L199">	}</span>
+<span class="nc" id="L198">		System.out.println (&quot;\t||--------------------------------------------------------------||\n&quot;);</span>
+<span class="nc" id="L199">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

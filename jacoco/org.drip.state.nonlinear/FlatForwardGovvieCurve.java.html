@@ -105,7 +105,7 @@ public class FlatForwardGovvieCurve extends org.drip.state.govvie.ExplicitBootGo
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L108" title="1 of 2 branches missed.">		if (iDate &lt;= _iEpochDate) return 1.;</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">		if (iDate &lt;= _iEpochDate) return 1.;</span>
 
 <span class="fc" id="L110">		int i = 0;</span>
 <span class="fc" id="L111">		double dblDF = 1.;</span>
@@ -119,14 +119,14 @@ public class FlatForwardGovvieCurve extends org.drip.state.govvie.ExplicitBootGo
 <span class="fc" id="L119">		org.drip.analytics.daycount.ActActDCParams aap =</span>
 <span class="fc" id="L120">			org.drip.analytics.daycount.ActActDCParams.FromFrequency (iFreq);</span>
 
-<span class="pc bpc" id="L122" title="1 of 4 branches missed.">		while (i &lt; iNumDate &amp;&amp; (int) iDate &gt;= (int) _aiDate[i]) {</span>
+<span class="fc bfc" id="L122" title="All 4 branches covered.">		while (i &lt; iNumDate &amp;&amp; (int) iDate &gt;= (int) _aiDate[i]) {</span>
 <span class="fc" id="L123">			dblDF *= java.lang.Math.pow (1. + (_adblForwardYield[i] / iFreq), -1. * yearFract (iStartDate,</span>
 				_aiDate[i], aap, strDayCount) * iFreq);
 
 <span class="fc" id="L126">			iStartDate = _aiDate[i++];</span>
 		}
 
-<span class="pc bpc" id="L129" title="1 of 2 branches missed.">		if (i &gt;= iNumDate) i = iNumDate - 1;</span>
+<span class="fc bfc" id="L129" title="All 2 branches covered.">		if (i &gt;= iNumDate) i = iNumDate - 1;</span>
 
 <span class="fc" id="L131">		return org.drip.analytics.support.Helper.DF2Yield (iFreq, dblDF * java.lang.Math.pow (1. +</span>
 <span class="fc" id="L132">			(_adblForwardYield[i] / iFreq), -1. * yearFract (iStartDate, iDate, aap, strDayCount) * iFreq),</span>

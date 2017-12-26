@@ -127,7 +127,7 @@ public class JulianDate implements java.lang.Comparable&lt;JulianDate&gt; {
 		final int iDays)
 	{
 		try {
-<span class="fc" id="L130">			return new JulianDate (_iJulian - iDays);</span>
+<span class="nc" id="L130">			return new JulianDate (_iJulian - iDays);</span>
 <span class="nc" id="L131">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L132">			e.printStackTrace();</span>
 		}
@@ -195,8 +195,8 @@ public class JulianDate implements java.lang.Comparable&lt;JulianDate&gt; {
 <span class="fc" id="L195">					--iDateAdjusted;</span>
 			}
 
-<span class="fc bfc" id="L198" title="All 2 branches covered.">			while (org.drip.analytics.daycount.Convention.IsHoliday (iDateAdjusted, strCalendarSet))</span>
-<span class="fc" id="L199">				--iDateAdjusted;</span>
+<span class="pc bpc" id="L198" title="1 of 2 branches missed.">			while (org.drip.analytics.daycount.Convention.IsHoliday (iDateAdjusted, strCalendarSet))</span>
+<span class="nc" id="L199">				--iDateAdjusted;</span>
 
 <span class="fc" id="L201">			return new JulianDate (iDateAdjusted);</span>
 <span class="nc" id="L202">		} catch (java.lang.Exception e) {</span>
@@ -385,7 +385,7 @@ public class JulianDate implements java.lang.Comparable&lt;JulianDate&gt; {
 <span class="fc" id="L385">		int iDate = iT - (2447 * iU / 80);</span>
 
 <span class="fc bfc" id="L387" title="All 2 branches covered.">		if (20 &lt;= iDate) {</span>
-<span class="pc bpc" id="L388" title="1 of 2 branches missed.">			if (12 &lt; ++iMonth) {</span>
+<span class="fc bfc" id="L388" title="All 2 branches covered.">			if (12 &lt; ++iMonth) {</span>
 <span class="fc" id="L389">				++iYear;</span>
 <span class="fc" id="L390">				iMonth -= 12;</span>
 			}
@@ -415,7 +415,7 @@ public class JulianDate implements java.lang.Comparable&lt;JulianDate&gt; {
 	{
 <span class="pc bpc" id="L416" title="2 of 4 branches missed.">		if (null == strTenorIn || strTenorIn.isEmpty()) return null;</span>
 
-<span class="pc bpc" id="L418" title="1 of 2 branches missed.">		java.lang.String strTenor = &quot;ON&quot;.equalsIgnoreCase (strTenorIn) ? &quot;1D&quot; : strTenorIn;</span>
+<span class="fc bfc" id="L418" title="All 2 branches covered.">		java.lang.String strTenor = &quot;ON&quot;.equalsIgnoreCase (strTenorIn) ? &quot;1D&quot; : strTenorIn;</span>
 
 <span class="fc" id="L420">		int iNumChar = strTenor.length();</span>
 
@@ -528,12 +528,12 @@ public class JulianDate implements java.lang.Comparable&lt;JulianDate&gt; {
 		final java.lang.String strTenor,
 		final java.lang.String strCalendarSet)
 	{
-<span class="nc" id="L531">		JulianDate dtNew = subtractTenor (strTenor);</span>
+<span class="fc" id="L531">		JulianDate dtNew = subtractTenor (strTenor);</span>
 
-<span class="nc bnc" id="L533" title="All 2 branches missed.">		if (null == dtNew) return null;</span>
+<span class="pc bpc" id="L533" title="1 of 2 branches missed.">		if (null == dtNew) return null;</span>
 
 		try {
-<span class="nc" id="L536">			return new JulianDate (org.drip.analytics.daycount.Convention.RollDate (dtNew.julian(),</span>
+<span class="fc" id="L536">			return new JulianDate (org.drip.analytics.daycount.Convention.RollDate (dtNew.julian(),</span>
 				org.drip.analytics.daycount.Convention.DATE_ROLL_FOLLOWING, strCalendarSet, 1));
 <span class="nc" id="L538">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L539">			e.printStackTrace();</span>
@@ -570,9 +570,9 @@ public class JulianDate implements java.lang.Comparable&lt;JulianDate&gt; {
 	public java.lang.String toOracleDate()
 	{
 		try {
-<span class="nc" id="L573">			return DateUtil.Date (_iJulian) + &quot;-&quot; + org.drip.analytics.date.DateUtil.MonthTrigram</span>
-<span class="nc" id="L574">				(org.drip.analytics.date.DateUtil.Month (_iJulian)) + &quot;-&quot; +</span>
-<span class="nc" id="L575">					org.drip.analytics.date.DateUtil.Year (_iJulian);</span>
+<span class="fc" id="L573">			return DateUtil.Date (_iJulian) + &quot;-&quot; + org.drip.analytics.date.DateUtil.MonthTrigram</span>
+<span class="fc" id="L574">				(org.drip.analytics.date.DateUtil.Month (_iJulian)) + &quot;-&quot; +</span>
+<span class="fc" id="L575">					org.drip.analytics.date.DateUtil.Year (_iJulian);</span>
 <span class="nc" id="L576">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L577">			e.printStackTrace();</span>
 		}
@@ -615,9 +615,9 @@ public class JulianDate implements java.lang.Comparable&lt;JulianDate&gt; {
 
 	@Override public int hashCode()
 	{
-<span class="nc" id="L618">		long lBits = java.lang.Double.doubleToLongBits (_iJulian);</span>
+<span class="fc" id="L618">		long lBits = java.lang.Double.doubleToLongBits (_iJulian);</span>
 
-<span class="nc" id="L620">		return (int) (lBits ^ (lBits &gt;&gt;&gt; 32));</span>
+<span class="fc" id="L620">		return (int) (lBits ^ (lBits &gt;&gt;&gt; 32));</span>
 	}
 
 	@Override public java.lang.String toString()

@@ -86,192 +86,192 @@ import org.drip.service.env.EnvManager;
 		final String strHeader)
 		throws Exception
 	{
-<span class="nc" id="L89">		double[][] aadblGaussianJoint = SequenceGenerator.GaussianJoint (</span>
+<span class="fc" id="L89">		double[][] aadblGaussianJoint = SequenceGenerator.GaussianJoint (</span>
 			iCount,
 			aadblCorrelation
 		);
 
-<span class="nc" id="L94">		System.out.println();</span>
+<span class="fc" id="L94">		System.out.println();</span>
 
-<span class="nc" id="L96">		System.out.println (&quot;\t||----------------------------------------------------||&quot;);</span>
+<span class="fc" id="L96">		System.out.println (&quot;\t||----------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L98">		System.out.println (strHeader);</span>
+<span class="fc" id="L98">		System.out.println (strHeader);</span>
 
-<span class="nc" id="L100">		System.out.println (&quot;\t||----------------------------------------------------||&quot;);</span>
+<span class="fc" id="L100">		System.out.println (&quot;\t||----------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L102" title="All 2 branches missed.">		for (int i = 0; i &lt; iCount; ++i) {</span>
-<span class="nc" id="L103">			String strDump = &quot;\t||&quot; + FormatUtil.FormatDouble (i, 2, 0, 1.) + &quot; |&quot;;</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">		for (int i = 0; i &lt; iCount; ++i) {</span>
+<span class="fc" id="L103">			String strDump = &quot;\t||&quot; + FormatUtil.FormatDouble (i, 2, 0, 1.) + &quot; |&quot;;</span>
 
-<span class="nc bnc" id="L105" title="All 2 branches missed.">			for (int j = 0; j &lt; aadblCorrelation.length; ++j)</span>
-<span class="nc" id="L106">				strDump = strDump + &quot; &quot; + FormatUtil.FormatDouble (aadblGaussianJoint[i][j], 1, 6, 1.) + &quot; |&quot;;</span>
+<span class="fc bfc" id="L105" title="All 2 branches covered.">			for (int j = 0; j &lt; aadblCorrelation.length; ++j)</span>
+<span class="fc" id="L106">				strDump = strDump + &quot; &quot; + FormatUtil.FormatDouble (aadblGaussianJoint[i][j], 1, 6, 1.) + &quot; |&quot;;</span>
 
-<span class="nc" id="L108">			System.out.println (strDump + &quot;|&quot;);</span>
+<span class="fc" id="L108">			System.out.println (strDump + &quot;|&quot;);</span>
 		}
 
-<span class="nc" id="L111">		System.out.println (&quot;\t||----------------------------------------------------||&quot;);</span>
+<span class="fc" id="L111">		System.out.println (&quot;\t||----------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L113">		System.out.println();</span>
+<span class="fc" id="L113">		System.out.println();</span>
 
-<span class="nc" id="L115">		return Matrix.Transpose (aadblGaussianJoint);</span>
+<span class="fc" id="L115">		return Matrix.Transpose (aadblGaussianJoint);</span>
 	}
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L122">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L122">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L124">		double dblTimeWidth = 1. / 24.;</span>
-<span class="nc" id="L125">		double dblTime = 1.;</span>
-<span class="nc" id="L126">		double[][] aadblCorrelation = new double[][] {</span>
+<span class="fc" id="L124">		double dblTimeWidth = 1. / 24.;</span>
+<span class="fc" id="L125">		double dblTime = 1.;</span>
+<span class="fc" id="L126">		double[][] aadblCorrelation = new double[][] {</span>
 			{1.00, 0.20, 0.15, 0.05}, // #0 ASSET
 			{0.20, 1.00, 0.13, 0.25}, // #1 COLLATERAL
 			{0.15, 0.13, 1.00, 0.00}, // #2 BANK
 			{0.05, 0.25, 0.00, 1.00}  // #3 COUNTER PARTY
 		};
-<span class="nc" id="L132">		double dblAssetDrift = 0.06;</span>
-<span class="nc" id="L133">		double dblAssetVolatility = 0.15;</span>
-<span class="nc" id="L134">		double dblTerminalBankNumeraire = 1.;</span>
-<span class="nc" id="L135">		double dblTerminalAssetNumeraire = 1.;</span>
-<span class="nc" id="L136">		double dblTerminalCollateralNumeraire = 1.;</span>
+<span class="fc" id="L132">		double dblAssetDrift = 0.06;</span>
+<span class="fc" id="L133">		double dblAssetVolatility = 0.15;</span>
+<span class="fc" id="L134">		double dblTerminalBankNumeraire = 1.;</span>
+<span class="fc" id="L135">		double dblTerminalAssetNumeraire = 1.;</span>
+<span class="fc" id="L136">		double dblTerminalCollateralNumeraire = 1.;</span>
 
-<span class="nc" id="L138">		int iNumTimeStep = (int) (dblTime / dblTimeWidth);</span>
-<span class="nc" id="L139">		double[] adblTimeWidth = new double[iNumTimeStep];</span>
+<span class="fc" id="L138">		int iNumTimeStep = (int) (dblTime / dblTimeWidth);</span>
+<span class="fc" id="L139">		double[] adblTimeWidth = new double[iNumTimeStep];</span>
 
-<span class="nc bnc" id="L141" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumTimeStep; ++i)</span>
-<span class="nc" id="L142">			adblTimeWidth[i] = dblTimeWidth;</span>
+<span class="fc bfc" id="L141" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTimeStep; ++i)</span>
+<span class="fc" id="L142">			adblTimeWidth[i] = dblTimeWidth;</span>
 
-<span class="nc" id="L144">		DiffusionEvolver meAsset = new DiffusionEvolver (</span>
-<span class="nc" id="L145">			DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="fc" id="L144">		DiffusionEvolver meAsset = new DiffusionEvolver (</span>
+<span class="fc" id="L145">			DiffusionEvaluatorLogarithmic.Standard (</span>
 				dblAssetDrift,
 				dblAssetVolatility
 			)
 		);
 
-<span class="nc" id="L151">		double[][] aadblNumeraireTimeSeries = NumeraireSequence (</span>
+<span class="fc" id="L151">		double[][] aadblNumeraireTimeSeries = NumeraireSequence (</span>
 			iNumTimeStep,
 			aadblCorrelation,
 			&quot;\t|| ASSET, COLLATERAL, BANK, COUNTER PARTY REALIZATION ||&quot;
 		);
 
-<span class="nc" id="L157">		JumpDiffusionEdge[] aR1AssetLR = meAsset.incrementSequence (</span>
+<span class="fc" id="L157">		JumpDiffusionEdge[] aR1AssetLR = meAsset.incrementSequence (</span>
 			new JumpDiffusionVertex (
 				dblTime,
 				dblTerminalAssetNumeraire,
 				0.,
 				false
 			),
-<span class="nc" id="L164">			JumpDiffusionEdgeUnit.Diffusion (</span>
+<span class="fc" id="L164">			JumpDiffusionEdgeUnit.Diffusion (</span>
 				adblTimeWidth,
 				aadblNumeraireTimeSeries[0]
 			),
 			-1. * dblTimeWidth
 		);
 
-<span class="nc" id="L171">		JumpDiffusionEdge[] aR1CollateralLR = meAsset.incrementSequence (</span>
+<span class="fc" id="L171">		JumpDiffusionEdge[] aR1CollateralLR = meAsset.incrementSequence (</span>
 			new JumpDiffusionVertex (
 				dblTime,
 				dblTerminalCollateralNumeraire,
 				0.,
 				false
 			),
-<span class="nc" id="L178">			JumpDiffusionEdgeUnit.Diffusion (</span>
+<span class="fc" id="L178">			JumpDiffusionEdgeUnit.Diffusion (</span>
 				adblTimeWidth,
 				aadblNumeraireTimeSeries[1]
 			),
 			-1. * dblTimeWidth
 		);
 
-<span class="nc" id="L185">		JumpDiffusionEdge[] aR1BankLR = meAsset.incrementSequence (</span>
+<span class="fc" id="L185">		JumpDiffusionEdge[] aR1BankLR = meAsset.incrementSequence (</span>
 			new JumpDiffusionVertex (
 				dblTime,
 				dblTerminalBankNumeraire,
 				0.,
 				false
 			),
-<span class="nc" id="L192">			JumpDiffusionEdgeUnit.Diffusion (</span>
+<span class="fc" id="L192">			JumpDiffusionEdgeUnit.Diffusion (</span>
 				adblTimeWidth,
 				aadblNumeraireTimeSeries[2]
 			),
 			-1. * dblTimeWidth
 		);
 
-<span class="nc" id="L199">		JumpDiffusionEdge[] aR1CounterPartyLR = meAsset.incrementSequence (</span>
+<span class="fc" id="L199">		JumpDiffusionEdge[] aR1CounterPartyLR = meAsset.incrementSequence (</span>
 			new JumpDiffusionVertex (
 				dblTime,
 				dblTerminalBankNumeraire,
 				0.,
 				false
 			),
-<span class="nc" id="L206">			JumpDiffusionEdgeUnit.Diffusion (</span>
+<span class="fc" id="L206">			JumpDiffusionEdgeUnit.Diffusion (</span>
 				adblTimeWidth,
 				aadblNumeraireTimeSeries[3]
 			),
 			-1. * dblTimeWidth
 		);
 
-<span class="nc" id="L213">		System.out.println();</span>
+<span class="fc" id="L213">		System.out.println();</span>
 
-<span class="nc" id="L215">		System.out.println(&quot;\t||----------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L215">		System.out.println(&quot;\t||----------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L217">		System.out.println(&quot;\t||                  BURGARD &amp; KJAER (2011) CORRELATED JOINT ASSET/COLLATERAL/BANK/COUNTER-PARTY NUMERAIRE EVOLUTION                 ||&quot;);</span>
+<span class="fc" id="L217">		System.out.println(&quot;\t||                  BURGARD &amp; KJAER (2011) CORRELATED JOINT ASSET/COLLATERAL/BANK/COUNTER-PARTY NUMERAIRE EVOLUTION                 ||&quot;);</span>
 
-<span class="nc" id="L219">		System.out.println(&quot;\t||----------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L219">		System.out.println(&quot;\t||----------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L221">		System.out.println(&quot;\t||    L -&gt; R:                                                                                                                       ||&quot;);</span>
+<span class="fc" id="L221">		System.out.println(&quot;\t||    L -&gt; R:                                                                                                                       ||&quot;);</span>
 
-<span class="nc" id="L223">		System.out.println(&quot;\t||          - Time                                                                                                                  ||&quot;);</span>
+<span class="fc" id="L223">		System.out.println(&quot;\t||          - Time                                                                                                                  ||&quot;);</span>
 
-<span class="nc" id="L225">		System.out.println(&quot;\t||          - Asset Numeraire Finish Value                                                                                          ||&quot;);</span>
+<span class="fc" id="L225">		System.out.println(&quot;\t||          - Asset Numeraire Finish Value                                                                                          ||&quot;);</span>
 
-<span class="nc" id="L227">		System.out.println(&quot;\t||          - Asset Numeraire Start Value                                                                                           ||&quot;);</span>
+<span class="fc" id="L227">		System.out.println(&quot;\t||          - Asset Numeraire Start Value                                                                                           ||&quot;);</span>
 
-<span class="nc" id="L229">		System.out.println(&quot;\t||          - Asset Numeraire Continuous Wander Realization                                                                         ||&quot;);</span>
+<span class="fc" id="L229">		System.out.println(&quot;\t||          - Asset Numeraire Continuous Wander Realization                                                                         ||&quot;);</span>
 
-<span class="nc" id="L231">		System.out.println(&quot;\t||          - Collateral Numeraire Finish Value                                                                                     ||&quot;);</span>
+<span class="fc" id="L231">		System.out.println(&quot;\t||          - Collateral Numeraire Finish Value                                                                                     ||&quot;);</span>
 
-<span class="nc" id="L233">		System.out.println(&quot;\t||          - Collateral Numeraire Start Value                                                                                      ||&quot;);</span>
+<span class="fc" id="L233">		System.out.println(&quot;\t||          - Collateral Numeraire Start Value                                                                                      ||&quot;);</span>
 
-<span class="nc" id="L235">		System.out.println(&quot;\t||          - Collateral Numeraire Continuous Wander Realization                                                                    ||&quot;);</span>
+<span class="fc" id="L235">		System.out.println(&quot;\t||          - Collateral Numeraire Continuous Wander Realization                                                                    ||&quot;);</span>
 
-<span class="nc" id="L237">		System.out.println(&quot;\t||          - Bank Numeraire Finish Value                                                                                           ||&quot;);</span>
+<span class="fc" id="L237">		System.out.println(&quot;\t||          - Bank Numeraire Finish Value                                                                                           ||&quot;);</span>
 
-<span class="nc" id="L239">		System.out.println(&quot;\t||          - Bank Numeraire Start Value                                                                                            ||&quot;);</span>
+<span class="fc" id="L239">		System.out.println(&quot;\t||          - Bank Numeraire Start Value                                                                                            ||&quot;);</span>
 
-<span class="nc" id="L241">		System.out.println(&quot;\t||          - Bank Numeraire Continuous Wander Realization                                                                          ||&quot;);</span>
+<span class="fc" id="L241">		System.out.println(&quot;\t||          - Bank Numeraire Continuous Wander Realization                                                                          ||&quot;);</span>
 
-<span class="nc" id="L243">		System.out.println(&quot;\t||          - Counter-Party Numeraire Finish Value                                                                                  ||&quot;);</span>
+<span class="fc" id="L243">		System.out.println(&quot;\t||          - Counter-Party Numeraire Finish Value                                                                                  ||&quot;);</span>
 
-<span class="nc" id="L245">		System.out.println(&quot;\t||          - Counter-Party Numeraire Start Value                                                                                   ||&quot;);</span>
+<span class="fc" id="L245">		System.out.println(&quot;\t||          - Counter-Party Numeraire Start Value                                                                                   ||&quot;);</span>
 
-<span class="nc" id="L247">		System.out.println(&quot;\t||          - Counter-Party Numeraire Continuous Wander Realization                                                                 ||&quot;);</span>
+<span class="fc" id="L247">		System.out.println(&quot;\t||          - Counter-Party Numeraire Continuous Wander Realization                                                                 ||&quot;);</span>
 
-<span class="nc" id="L249">		System.out.println(&quot;\t||----------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L249">		System.out.println(&quot;\t||----------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L251" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumTimeStep; ++i) {</span>
-<span class="nc" id="L252">			dblTime = dblTime - dblTimeWidth;</span>
+<span class="fc bfc" id="L251" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTimeStep; ++i) {</span>
+<span class="fc" id="L252">			dblTime = dblTime - dblTimeWidth;</span>
 
-<span class="nc" id="L254">			System.out.println (</span>
+<span class="fc" id="L254">			System.out.println (</span>
 				&quot;\t|| &quot; +
-<span class="nc" id="L256">				FormatUtil.FormatDouble (dblTime, 1, 4, 1.) + &quot; =&gt; &quot; +</span>
-<span class="nc" id="L257">				FormatUtil.FormatDouble (aR1AssetLR[i].start(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L258">				FormatUtil.FormatDouble (aR1AssetLR[i].finish(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L259">				FormatUtil.FormatDouble (aR1AssetLR[i].diffusionWander(), 1, 4, 1.) + &quot; ||&quot; +</span>
-<span class="nc" id="L260">				FormatUtil.FormatDouble (aR1CollateralLR[i].start(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L261">				FormatUtil.FormatDouble (aR1CollateralLR[i].finish(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L262">				FormatUtil.FormatDouble (aR1CollateralLR[i].diffusionWander(), 1, 4, 1.) + &quot; ||&quot; +</span>
-<span class="nc" id="L263">				FormatUtil.FormatDouble (aR1BankLR[i].start(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L264">				FormatUtil.FormatDouble (aR1BankLR[i].finish(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L265">				FormatUtil.FormatDouble (aR1BankLR[i].diffusionWander(), 1, 4, 1.) + &quot; ||&quot; +</span>
-<span class="nc" id="L266">				FormatUtil.FormatDouble (aR1CounterPartyLR[i].start(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L267">				FormatUtil.FormatDouble (aR1CounterPartyLR[i].finish(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L268">				FormatUtil.FormatDouble (aR1CounterPartyLR[i].diffusionWander(), 1, 4, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L256">				FormatUtil.FormatDouble (dblTime, 1, 4, 1.) + &quot; =&gt; &quot; +</span>
+<span class="fc" id="L257">				FormatUtil.FormatDouble (aR1AssetLR[i].start(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L258">				FormatUtil.FormatDouble (aR1AssetLR[i].finish(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L259">				FormatUtil.FormatDouble (aR1AssetLR[i].diffusionWander(), 1, 4, 1.) + &quot; ||&quot; +</span>
+<span class="fc" id="L260">				FormatUtil.FormatDouble (aR1CollateralLR[i].start(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L261">				FormatUtil.FormatDouble (aR1CollateralLR[i].finish(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L262">				FormatUtil.FormatDouble (aR1CollateralLR[i].diffusionWander(), 1, 4, 1.) + &quot; ||&quot; +</span>
+<span class="fc" id="L263">				FormatUtil.FormatDouble (aR1BankLR[i].start(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L264">				FormatUtil.FormatDouble (aR1BankLR[i].finish(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L265">				FormatUtil.FormatDouble (aR1BankLR[i].diffusionWander(), 1, 4, 1.) + &quot; ||&quot; +</span>
+<span class="fc" id="L266">				FormatUtil.FormatDouble (aR1CounterPartyLR[i].start(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L267">				FormatUtil.FormatDouble (aR1CounterPartyLR[i].finish(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L268">				FormatUtil.FormatDouble (aR1CounterPartyLR[i].diffusionWander(), 1, 4, 1.) + &quot; ||&quot;</span>
 			);
 		}
 
-<span class="nc" id="L272">		System.out.println(&quot;\t||----------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L272">		System.out.println(&quot;\t||----------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L274">		System.out.println();</span>
-<span class="nc" id="L275">	}</span>
+<span class="fc" id="L274">		System.out.println();</span>
+<span class="fc" id="L275">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

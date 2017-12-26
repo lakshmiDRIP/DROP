@@ -84,14 +84,14 @@ import org.drip.service.env.EnvManager;
 		final int iNumInterval)
 		throws Exception
 	{
-<span class="nc" id="L87">		double dblEta = 5.e-06;</span>
-<span class="nc" id="L88">		double dblSigma = 1.;</span>
-<span class="nc" id="L89">		double dblLambda = 1.e-05;</span>
-<span class="nc" id="L90">		double dblX = 100000.;</span>
+<span class="fc" id="L87">		double dblEta = 5.e-06;</span>
+<span class="fc" id="L88">		double dblSigma = 1.;</span>
+<span class="fc" id="L89">		double dblLambda = 1.e-05;</span>
+<span class="fc" id="L90">		double dblX = 100000.;</span>
 
-<span class="nc" id="L92">		ArithmeticPriceEvolutionParameters apep = ArithmeticPriceEvolutionParametersBuilder.TradingEnhancedVolatility (</span>
+<span class="fc" id="L92">		ArithmeticPriceEvolutionParameters apep = ArithmeticPriceEvolutionParametersBuilder.TradingEnhancedVolatility (</span>
 			dblSigma,
-<span class="nc" id="L94">			new UniformParticipationRateLinear (ParticipationRateLinear.SlopeOnly (dblEta)),</span>
+<span class="fc" id="L94">			new UniformParticipationRateLinear (ParticipationRateLinear.SlopeOnly (dblEta)),</span>
 			new UniformParticipationRateLinear (
 				new ParticipationRateLinear (
 					0.,
@@ -100,7 +100,7 @@ import org.drip.service.env.EnvManager;
 			)
 		);
 
-<span class="nc" id="L103">		DiscreteLinearTradingEnhanced dlte = DiscreteLinearTradingEnhanced.Standard (</span>
+<span class="fc" id="L103">		DiscreteLinearTradingEnhanced dlte = DiscreteLinearTradingEnhanced.Standard (</span>
 			dblX,
 			dblT,
 			iNumInterval,
@@ -108,41 +108,41 @@ import org.drip.service.env.EnvManager;
 			dblLambda
 		);
 
-<span class="nc" id="L111">		TradingEnhancedDiscrete ted = (TradingEnhancedDiscrete) dlte.generate();</span>
+<span class="fc" id="L111">		TradingEnhancedDiscrete ted = (TradingEnhancedDiscrete) dlte.generate();</span>
 
-<span class="nc" id="L113">		double[] adblExecutionTimeNode = ted.executionTimeNode();</span>
+<span class="fc" id="L113">		double[] adblExecutionTimeNode = ted.executionTimeNode();</span>
 
-<span class="nc" id="L115">		double[] adblHoldings = ted.holdings();</span>
+<span class="fc" id="L115">		double[] adblHoldings = ted.holdings();</span>
 
-<span class="nc" id="L117">		String strDump = &quot;\t|&quot; + FormatUtil.FormatDouble (dblBeta, 1, 1, 1.e+06) + &quot; =&gt;&quot;;</span>
+<span class="fc" id="L117">		String strDump = &quot;\t|&quot; + FormatUtil.FormatDouble (dblBeta, 1, 1, 1.e+06) + &quot; =&gt;&quot;;</span>
 
-<span class="nc bnc" id="L119" title="All 2 branches missed.">		for (int i = 0; i &lt; adblExecutionTimeNode.length; ++i)</span>
-<span class="nc" id="L120">			strDump = strDump + FormatUtil.FormatDouble (adblHoldings[i] / dblX, 2, 1, 100.) + &quot;% &quot;;</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">		for (int i = 0; i &lt; adblExecutionTimeNode.length; ++i)</span>
+<span class="fc" id="L120">			strDump = strDump + FormatUtil.FormatDouble (adblHoldings[i] / dblX, 2, 1, 100.) + &quot;% &quot;;</span>
 
-<span class="nc" id="L122">		strDump = strDump + FormatUtil.FormatDouble (ted.transactionCostExpectation(), 5, 0, 1.) + &quot; | &quot;;</span>
+<span class="fc" id="L122">		strDump = strDump + FormatUtil.FormatDouble (ted.transactionCostExpectation(), 5, 0, 1.) + &quot; | &quot;;</span>
 
-<span class="nc" id="L124">		strDump = strDump + FormatUtil.FormatDouble (ted.transactionCostVariance(), 5, 0, 1.e-06) + &quot; | &quot;;</span>
+<span class="fc" id="L124">		strDump = strDump + FormatUtil.FormatDouble (ted.transactionCostVariance(), 5, 0, 1.e-06) + &quot; | &quot;;</span>
 
-<span class="nc" id="L126">		strDump = strDump + FormatUtil.FormatDouble (ted.characteristicTime(), 1, 3, 1.) + &quot; | &quot;;</span>
+<span class="fc" id="L126">		strDump = strDump + FormatUtil.FormatDouble (ted.characteristicTime(), 1, 3, 1.) + &quot; | &quot;;</span>
 
-<span class="nc" id="L128">		strDump = strDump + FormatUtil.FormatDouble (ted.characteristicSize(), 6, 0, 1.) + &quot; ||&quot;;</span>
+<span class="fc" id="L128">		strDump = strDump + FormatUtil.FormatDouble (ted.characteristicSize(), 6, 0, 1.) + &quot; ||&quot;;</span>
 
-<span class="nc" id="L130">		System.out.println (strDump);</span>
-<span class="nc" id="L131">	}</span>
+<span class="fc" id="L130">		System.out.println (strDump);</span>
+<span class="fc" id="L131">	}</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L137">		EnvManager.InitEnv (</span>
+<span class="fc" id="L137">		EnvManager.InitEnv (</span>
 			&quot;&quot;,
 			true
 		);
 
-<span class="nc" id="L142">		double dblT = 5.;</span>
-<span class="nc" id="L143">		int iNumInterval = 10;</span>
+<span class="fc" id="L142">		double dblT = 5.;</span>
+<span class="fc" id="L143">		int iNumInterval = 10;</span>
 
-<span class="nc" id="L145">		double[] adblBeta = new double[] {</span>
+<span class="fc" id="L145">		double[] adblBeta = new double[] {</span>
 			0.1,
 			0.2,
 			0.3,
@@ -165,49 +165,49 @@ import org.drip.service.env.EnvManager;
 			2.0
 		};
 
-<span class="nc" id="L168">		System.out.println();</span>
+<span class="fc" id="L168">		System.out.println();</span>
 
-<span class="nc" id="L170">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L170">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L172">		System.out.println (&quot;\t|                        ALMGREN (2003) LINEAR TEMPORARY IMPACT VOLATILITY - OFFSET DEPENDENCE                           ||&quot;);</span>
+<span class="fc" id="L172">		System.out.println (&quot;\t|                        ALMGREN (2003) LINEAR TEMPORARY IMPACT VOLATILITY - OFFSET DEPENDENCE                           ||&quot;);</span>
 
-<span class="nc" id="L174">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L174">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L176">		System.out.println (&quot;\t|      L -&gt; R:                                                                                                           ||&quot;);</span>
+<span class="fc" id="L176">		System.out.println (&quot;\t|      L -&gt; R:                                                                                                           ||&quot;);</span>
 
-<span class="nc" id="L178">		System.out.println (&quot;\t|              Beta Level (X 10^06)                                                                                      ||&quot;);</span>
+<span class="fc" id="L178">		System.out.println (&quot;\t|              Beta Level (X 10^06)                                                                                      ||&quot;);</span>
 
-<span class="nc" id="L180">		System.out.println (&quot;\t|              Outstanding Trajectory (%)                                                                                ||&quot;);</span>
+<span class="fc" id="L180">		System.out.println (&quot;\t|              Outstanding Trajectory (%)                                                                                ||&quot;);</span>
 
-<span class="nc" id="L182">		System.out.println (&quot;\t|              Transaction Cost Expectation                                                                              ||&quot;);</span>
+<span class="fc" id="L182">		System.out.println (&quot;\t|              Transaction Cost Expectation                                                                              ||&quot;);</span>
 
-<span class="nc" id="L184">		System.out.println (&quot;\t|              Transaction Cost Variance (X 10^-06)                                                                      ||&quot;);</span>
+<span class="fc" id="L184">		System.out.println (&quot;\t|              Transaction Cost Variance (X 10^-06)                                                                      ||&quot;);</span>
 
-<span class="nc" id="L186">		System.out.println (&quot;\t|              Characteristic Time (Days)                                                                                ||&quot;);</span>
+<span class="fc" id="L186">		System.out.println (&quot;\t|              Characteristic Time (Days)                                                                                ||&quot;);</span>
 
-<span class="nc" id="L188">		System.out.println (&quot;\t|              Characteristic Size                                                                                       ||&quot;);</span>
+<span class="fc" id="L188">		System.out.println (&quot;\t|              Characteristic Size                                                                                       ||&quot;);</span>
 
-<span class="nc" id="L190">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L190">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L192">		String strTimeNode = &quot;\t|        &quot;;</span>
+<span class="fc" id="L192">		String strTimeNode = &quot;\t|        &quot;;</span>
 
-<span class="nc bnc" id="L194" title="All 2 branches missed.">		for (int i = 0; i &lt;= iNumInterval; ++i)</span>
-<span class="nc" id="L195">			strTimeNode = strTimeNode + FormatUtil.FormatDouble (dblT * i / iNumInterval, 1, 2, 1.) + &quot;  &quot;;</span>
+<span class="fc bfc" id="L194" title="All 2 branches covered.">		for (int i = 0; i &lt;= iNumInterval; ++i)</span>
+<span class="fc" id="L195">			strTimeNode = strTimeNode + FormatUtil.FormatDouble (dblT * i / iNumInterval, 1, 2, 1.) + &quot;  &quot;;</span>
 
-<span class="nc" id="L197">		System.out.println (strTimeNode);</span>
+<span class="fc" id="L197">		System.out.println (strTimeNode);</span>
 
-<span class="nc" id="L199">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L199">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L201" title="All 2 branches missed.">		for (double dblBeta : adblBeta)</span>
-<span class="nc" id="L202">			BetaRun (</span>
+<span class="fc bfc" id="L201" title="All 2 branches covered.">		for (double dblBeta : adblBeta)</span>
+<span class="fc" id="L202">			BetaRun (</span>
 				dblBeta * 1.e-06,
 				dblT,
 				iNumInterval
 			);
 
-<span class="nc" id="L208">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L208">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L210">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L211">	}</span>
+<span class="fc" id="L210">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L211">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

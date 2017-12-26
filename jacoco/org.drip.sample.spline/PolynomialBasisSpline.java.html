@@ -89,14 +89,14 @@ import org.drip.spline.segment.*;
 		final ResponseScalingShapeControl rssc)
 		throws Exception
 	{
-<span class="nc" id="L92">		System.out.println (&quot; ------------------------------ \n     POLYNOMIAL n = &quot; + iNumBasis +</span>
+<span class="fc" id="L92">		System.out.println (&quot; ------------------------------ \n     POLYNOMIAL n = &quot; + iNumBasis +</span>
 			&quot;; Ck = &quot; + iCk + &quot;\n ------------------------------ \n&quot;);
 
 		/*
 		 * Construct the segment inelastic parameter that is C2 (iCk = 2 sets it to C2), without constraint
 		 */
 
-<span class="nc" id="L99">		SegmentInelasticDesignControl sdic = SegmentInelasticDesignControl.Create (</span>
+<span class="fc" id="L99">		SegmentInelasticDesignControl sdic = SegmentInelasticDesignControl.Create (</span>
 			iCk,
 			iRoughnessPenaltyDerivativeOrder
 		);
@@ -105,15 +105,15 @@ import org.drip.spline.segment.*;
 		 * Create the basis parameter set from the number of basis functions, and construct the basis
 		 */
 
-<span class="nc" id="L108">		PolynomialFunctionSetParams pfsp = new PolynomialFunctionSetParams (iNumBasis);</span>
+<span class="fc" id="L108">		PolynomialFunctionSetParams pfsp = new PolynomialFunctionSetParams (iNumBasis);</span>
 
-<span class="nc" id="L110">		FunctionSet fs = FunctionSetBuilder.PolynomialBasisSet (pfsp);</span>
+<span class="fc" id="L110">		FunctionSet fs = FunctionSetBuilder.PolynomialBasisSet (pfsp);</span>
 
 		/*
 		 * Construct the left and the right segments
 		 */
 
-<span class="nc" id="L116">		LatentStateResponseModel ecs1 = LatentStateResponseModel.Create (</span>
+<span class="fc" id="L116">		LatentStateResponseModel ecs1 = LatentStateResponseModel.Create (</span>
 			1.0,
 			1.5,
 			fs,
@@ -121,7 +121,7 @@ import org.drip.spline.segment.*;
 			sdic
 		);
 
-<span class="nc" id="L124">		LatentStateResponseModel ecs2 = LatentStateResponseModel.Create (</span>
+<span class="fc" id="L124">		LatentStateResponseModel ecs2 = LatentStateResponseModel.Create (</span>
 			1.5,
 			2.0,
 			fs,
@@ -133,30 +133,30 @@ import org.drip.spline.segment.*;
 		 * Calibrate the left segment using the node values, and compute the segment Jacobian, monotonicity, and curvature penalty
 		 */
 
-<span class="nc" id="L136">		WengertJacobian wj1 = ecs1.jackDCoeffDEdgeParams (</span>
+<span class="fc" id="L136">		WengertJacobian wj1 = ecs1.jackDCoeffDEdgeParams (</span>
 			25.,
 			0.,
 			20.25,
 			null
 		);
 
-<span class="nc" id="L143">		System.out.println (&quot;\tY[&quot; + 1.0 + &quot;]: &quot; + ecs1.responseValue (1.));</span>
+<span class="fc" id="L143">		System.out.println (&quot;\tY[&quot; + 1.0 + &quot;]: &quot; + ecs1.responseValue (1.));</span>
 
-<span class="nc" id="L145">		System.out.println (&quot;\tY[&quot; + 1.5 + &quot;]: &quot; + ecs1.responseValue (1.5));</span>
+<span class="fc" id="L145">		System.out.println (&quot;\tY[&quot; + 1.5 + &quot;]: &quot; + ecs1.responseValue (1.5));</span>
 
-<span class="nc" id="L147">		System.out.println (&quot;Segment 1 Jacobian: &quot; + wj1.displayString());</span>
+<span class="fc" id="L147">		System.out.println (&quot;Segment 1 Jacobian: &quot; + wj1.displayString());</span>
 
-<span class="nc" id="L149">		System.out.println (&quot;Segment 1 Head: &quot; + ecs1.jackDCoeffDEdgeInputs().displayString());</span>
+<span class="fc" id="L149">		System.out.println (&quot;Segment 1 Head: &quot; + ecs1.jackDCoeffDEdgeInputs().displayString());</span>
 
-<span class="nc" id="L151">		System.out.println (&quot;Segment 1 Monotone Type: &quot; + ecs1.monotoneType());</span>
+<span class="fc" id="L151">		System.out.println (&quot;Segment 1 Monotone Type: &quot; + ecs1.monotoneType());</span>
 
-<span class="nc" id="L153">		System.out.println (&quot;Segment 1 DPE: &quot; + ecs1.curvatureDPE());</span>
+<span class="fc" id="L153">		System.out.println (&quot;Segment 1 DPE: &quot; + ecs1.curvatureDPE());</span>
 
 		/*
 		 * Calibrate the right segment using the node values, and compute the segment Jacobian, monotonicity, and curvature penalty
 		 */
 
-<span class="nc" id="L159">		WengertJacobian wj2 = ecs2.jackDCoeffDEdgeParams (</span>
+<span class="fc" id="L159">		WengertJacobian wj2 = ecs2.jackDCoeffDEdgeParams (</span>
 			ecs1,
 			&quot;Default&quot;,
 			16.,
@@ -165,23 +165,23 @@ import org.drip.spline.segment.*;
 			null
 		);
 
-<span class="nc" id="L168">		System.out.println (&quot;\tY[&quot; + 1.5 + &quot;]: &quot; + ecs2.responseValue (1.5));</span>
+<span class="fc" id="L168">		System.out.println (&quot;\tY[&quot; + 1.5 + &quot;]: &quot; + ecs2.responseValue (1.5));</span>
 
-<span class="nc" id="L170">		System.out.println (&quot;\tY[&quot; + 2. + &quot;]: &quot; + ecs2.responseValue (2.));</span>
+<span class="fc" id="L170">		System.out.println (&quot;\tY[&quot; + 2. + &quot;]: &quot; + ecs2.responseValue (2.));</span>
 
-<span class="nc" id="L172">		System.out.println (&quot;Segment 2 Jacobian: &quot; + wj2.displayString());</span>
+<span class="fc" id="L172">		System.out.println (&quot;Segment 2 Jacobian: &quot; + wj2.displayString());</span>
 
-<span class="nc" id="L174">		System.out.println (&quot;Segment 2 Regular Jacobian: &quot; + ecs2.jackDCoeffDEdgeInputs().displayString());</span>
+<span class="fc" id="L174">		System.out.println (&quot;Segment 2 Regular Jacobian: &quot; + ecs2.jackDCoeffDEdgeInputs().displayString());</span>
 
-<span class="nc" id="L176">		System.out.println (&quot;Segment 2 Monotone Type: &quot; + ecs2.monotoneType());</span>
+<span class="fc" id="L176">		System.out.println (&quot;Segment 2 Monotone Type: &quot; + ecs2.monotoneType());</span>
 
-<span class="nc" id="L178">		System.out.println (&quot;Segment 2 DPE: &quot; + ecs2.curvatureDPE());</span>
+<span class="fc" id="L178">		System.out.println (&quot;Segment 2 DPE: &quot; + ecs2.curvatureDPE());</span>
 
 		/*
 		 * Re-calibrate Segment #2 with a new Response Value
 		 */
 
-<span class="nc" id="L184">		ecs2.calibrate (</span>
+<span class="fc" id="L184">		ecs2.calibrate (</span>
 			ecs1,
 			14.,
 			null
@@ -191,14 +191,14 @@ import org.drip.spline.segment.*;
 		 * Estimate the segment value at the given variate, and compute the corresponding Jacobian, and curvature penalty
 		 */
 
-<span class="nc" id="L194">		double dblX = 2.0;</span>
+<span class="fc" id="L194">		double dblX = 2.0;</span>
 
-<span class="nc" id="L196">		System.out.println (&quot;\t\tValue[&quot; + dblX + &quot;]: &quot; + ecs2.responseValue (dblX));</span>
+<span class="fc" id="L196">		System.out.println (&quot;\t\tValue[&quot; + dblX + &quot;]: &quot; + ecs2.responseValue (dblX));</span>
 
-<span class="nc" id="L198">		System.out.println (&quot;\t\tValue Jacobian[&quot; + dblX + &quot;]: &quot; + ecs2.jackDResponseDEdgeInput (dblX, 1).displayString());</span>
+<span class="fc" id="L198">		System.out.println (&quot;\t\tValue Jacobian[&quot; + dblX + &quot;]: &quot; + ecs2.jackDResponseDEdgeInput (dblX, 1).displayString());</span>
 
-<span class="nc" id="L200">		System.out.println (&quot;\t\tSegment 2 DPE: &quot; + ecs2.curvatureDPE());</span>
-<span class="nc" id="L201">	}</span>
+<span class="fc" id="L200">		System.out.println (&quot;\t\tSegment 2 DPE: &quot; + ecs2.curvatureDPE());</span>
+<span class="fc" id="L201">	}</span>
 
 	/*
 	 * This sample demonstrates the following specifically for the Ck Hermite Splines, which are calibrated
@@ -219,14 +219,14 @@ import org.drip.spline.segment.*;
 		final ResponseScalingShapeControl rssc)
 		throws Exception
 	{
-<span class="nc" id="L222">		System.out.println (&quot; ------------------------------ \n     HERMITE POLYNOMIAL n = &quot; + iNumBasis +</span>
+<span class="fc" id="L222">		System.out.println (&quot; ------------------------------ \n     HERMITE POLYNOMIAL n = &quot; + iNumBasis +</span>
 			&quot;; Ck = &quot; + iCk + &quot;\n ------------------------------ \n&quot;);
 
 		/*
 		 * Construct the segment inelastic parameter that is C2 (iCk = 2 sets it to C2), without constraint
 		 */
 
-<span class="nc" id="L229">		SegmentInelasticDesignControl sdic = SegmentInelasticDesignControl.Create (</span>
+<span class="fc" id="L229">		SegmentInelasticDesignControl sdic = SegmentInelasticDesignControl.Create (</span>
 			iCk,
 			iRoughnessPenaltyDerivativeOrder
 		);
@@ -235,15 +235,15 @@ import org.drip.spline.segment.*;
 		 * Create the basis parameter set from the number of basis functions, and construct the basis
 		 */
 
-<span class="nc" id="L238">		PolynomialFunctionSetParams pfsp = new PolynomialFunctionSetParams (iNumBasis);</span>
+<span class="fc" id="L238">		PolynomialFunctionSetParams pfsp = new PolynomialFunctionSetParams (iNumBasis);</span>
 
-<span class="nc" id="L240">		FunctionSet fs = FunctionSetBuilder.PolynomialBasisSet (pfsp);</span>
+<span class="fc" id="L240">		FunctionSet fs = FunctionSetBuilder.PolynomialBasisSet (pfsp);</span>
 
 		/*
 		 * Construct the left and the right segments
 		 */
 
-<span class="nc" id="L246">		LatentStateResponseModel ecs1 = LatentStateResponseModel.Create (</span>
+<span class="fc" id="L246">		LatentStateResponseModel ecs1 = LatentStateResponseModel.Create (</span>
 			0.0,
 			1.0,
 			fs,
@@ -251,7 +251,7 @@ import org.drip.spline.segment.*;
 			sdic
 		);
 
-<span class="nc" id="L254">		LatentStateResponseModel ecs2 = LatentStateResponseModel.Create (</span>
+<span class="fc" id="L254">		LatentStateResponseModel ecs2 = LatentStateResponseModel.Create (</span>
 			1.0,
 			2.0,
 			fs,
@@ -263,7 +263,7 @@ import org.drip.spline.segment.*;
 		 * Calibrate the left segment using the node values, and compute the segment Jacobian, monotonicity, and curvature penalty
 		 */
 
-<span class="nc" id="L266">		ecs1.calibrateState (</span>
+<span class="fc" id="L266">		ecs1.calibrateState (</span>
 			new SegmentStateCalibrationInputs (
 				new double[] {0., 1.}, // Segment Calibration Nodes
 				new double[] {1., 4.}, // Segment Calibration Values
@@ -274,21 +274,21 @@ import org.drip.spline.segment.*;
 			)
 		);
 
-<span class="nc" id="L277">		System.out.println (&quot;\tY[&quot; + 0.0 + &quot;]: &quot; + ecs1.responseValue (0.0));</span>
+<span class="fc" id="L277">		System.out.println (&quot;\tY[&quot; + 0.0 + &quot;]: &quot; + ecs1.responseValue (0.0));</span>
 
-<span class="nc" id="L279">		System.out.println (&quot;\tY[&quot; + 1.0 + &quot;]: &quot; + ecs1.responseValue (1.0));</span>
+<span class="fc" id="L279">		System.out.println (&quot;\tY[&quot; + 1.0 + &quot;]: &quot; + ecs1.responseValue (1.0));</span>
 
-<span class="nc" id="L281">		System.out.println (&quot;Segment 1 Head: &quot; + ecs1.jackDCoeffDEdgeInputs().displayString());</span>
+<span class="fc" id="L281">		System.out.println (&quot;Segment 1 Head: &quot; + ecs1.jackDCoeffDEdgeInputs().displayString());</span>
 
-<span class="nc" id="L283">		System.out.println (&quot;Segment 1 Monotone Type: &quot; + ecs1.monotoneType());</span>
+<span class="fc" id="L283">		System.out.println (&quot;Segment 1 Monotone Type: &quot; + ecs1.monotoneType());</span>
 
-<span class="nc" id="L285">		System.out.println (&quot;Segment 1 DPE: &quot; + ecs1.curvatureDPE());</span>
+<span class="fc" id="L285">		System.out.println (&quot;Segment 1 DPE: &quot; + ecs1.curvatureDPE());</span>
 
 		/*
 		 * Calibrate the right segment using the node values, and compute the segment Jacobian, monotonicity, and curvature penalty
 		 */
 
-<span class="nc" id="L291">		ecs2.calibrateState (</span>
+<span class="fc" id="L291">		ecs2.calibrateState (</span>
 			new SegmentStateCalibrationInputs (
 				new double[] {1., 2.}, // Segment Calibration Nodes
 				new double[] {4., 15.}, // Segment Calibration Values
@@ -299,21 +299,21 @@ import org.drip.spline.segment.*;
 			)
 		);
 
-<span class="nc" id="L302">		System.out.println (&quot;\tY[&quot; + 1.0 + &quot;]: &quot; + ecs2.responseValue (1.0));</span>
+<span class="fc" id="L302">		System.out.println (&quot;\tY[&quot; + 1.0 + &quot;]: &quot; + ecs2.responseValue (1.0));</span>
 
-<span class="nc" id="L304">		System.out.println (&quot;\tY[&quot; + 2.0 + &quot;]: &quot; + ecs2.responseValue (2.0));</span>
+<span class="fc" id="L304">		System.out.println (&quot;\tY[&quot; + 2.0 + &quot;]: &quot; + ecs2.responseValue (2.0));</span>
 
-<span class="nc" id="L306">		System.out.println (&quot;Segment 2 Regular Jacobian: &quot; + ecs2.jackDCoeffDEdgeInputs().displayString());</span>
+<span class="fc" id="L306">		System.out.println (&quot;Segment 2 Regular Jacobian: &quot; + ecs2.jackDCoeffDEdgeInputs().displayString());</span>
 
-<span class="nc" id="L308">		System.out.println (&quot;Segment 2 Monotone Type: &quot; + ecs2.monotoneType());</span>
+<span class="fc" id="L308">		System.out.println (&quot;Segment 2 Monotone Type: &quot; + ecs2.monotoneType());</span>
 
-<span class="nc" id="L310">		System.out.println (&quot;Segment 2 DPE: &quot; + ecs2.curvatureDPE());</span>
+<span class="fc" id="L310">		System.out.println (&quot;Segment 2 DPE: &quot; + ecs2.curvatureDPE());</span>
 
 		/*
 		 * Re-calibrate Segment #2 with a new Response Value
 		 */
 
-<span class="nc" id="L316">		ecs2.calibrate (</span>
+<span class="fc" id="L316">		ecs2.calibrate (</span>
 			ecs1,
 			14.,
 			null
@@ -323,14 +323,14 @@ import org.drip.spline.segment.*;
 		 * Estimate the segment value at the given variate, and compute the corresponding Jacobian, monotonicity, and curvature penalty
 		 */
 
-<span class="nc" id="L326">		double dblX = 2.0;</span>
+<span class="fc" id="L326">		double dblX = 2.0;</span>
 
-<span class="nc" id="L328">		System.out.println (&quot;\t\tValue[&quot; + dblX + &quot;]: &quot; + ecs2.responseValue (dblX));</span>
+<span class="fc" id="L328">		System.out.println (&quot;\t\tValue[&quot; + dblX + &quot;]: &quot; + ecs2.responseValue (dblX));</span>
 
-<span class="nc" id="L330">		System.out.println (&quot;\t\tValue Jacobian[&quot; + dblX + &quot;]: &quot; + ecs2.jackDResponseDEdgeInput (dblX, 1).displayString());</span>
+<span class="fc" id="L330">		System.out.println (&quot;\t\tValue Jacobian[&quot; + dblX + &quot;]: &quot; + ecs2.jackDResponseDEdgeInput (dblX, 1).displayString());</span>
 
-<span class="nc" id="L332">		System.out.println (&quot;\t\tSegment 2 DPE: &quot; + ecs2.curvatureDPE());</span>
-<span class="nc" id="L333">	}</span>
+<span class="fc" id="L332">		System.out.println (&quot;\t\tSegment 2 DPE: &quot; + ecs2.curvatureDPE());</span>
+<span class="fc" id="L333">	}</span>
 
 	/*
 	 * This sample illustrates the construction and usage for polynomial basis splines. It shows the
@@ -350,9 +350,9 @@ import org.drip.spline.segment.*;
 		 * Construct a rational shape controller with the shape controller tension of 1.
 		 */
 
-<span class="nc" id="L353">		double dblShapeControllerTension = 1.;</span>
+<span class="fc" id="L353">		double dblShapeControllerTension = 1.;</span>
 
-<span class="nc" id="L355">		ResponseScalingShapeControl rssc = new ResponseScalingShapeControl (</span>
+<span class="fc" id="L355">		ResponseScalingShapeControl rssc = new ResponseScalingShapeControl (</span>
 			true,
 			new QuadraticRationalShapeControl (dblShapeControllerTension)
 		);
@@ -361,68 +361,68 @@ import org.drip.spline.segment.*;
 		 * Set to 2nd order Roughness Penalty Derivative Order.
 		 */
 
-<span class="nc" id="L364">		int iRoughnessPenaltyDerivativeOrder = 2;</span>
+<span class="fc" id="L364">		int iRoughnessPenaltyDerivativeOrder = 2;</span>
 
 		/*
 		 * Test the polynomial spline across different polynomial degrees and Ck's
 		 */
 
-<span class="nc" id="L370">		TestPolynomialSpline (2, 0, iRoughnessPenaltyDerivativeOrder, rssc);</span>
+<span class="fc" id="L370">		TestPolynomialSpline (2, 0, iRoughnessPenaltyDerivativeOrder, rssc);</span>
 
-<span class="nc" id="L372">		TestPolynomialSpline (3, 0, iRoughnessPenaltyDerivativeOrder, rssc);</span>
+<span class="fc" id="L372">		TestPolynomialSpline (3, 0, iRoughnessPenaltyDerivativeOrder, rssc);</span>
 
-<span class="nc" id="L374">		TestPolynomialSpline (3, 1, iRoughnessPenaltyDerivativeOrder, rssc);</span>
+<span class="fc" id="L374">		TestPolynomialSpline (3, 1, iRoughnessPenaltyDerivativeOrder, rssc);</span>
 
-<span class="nc" id="L376">		TestPolynomialSpline (4, 0, iRoughnessPenaltyDerivativeOrder, rssc);</span>
+<span class="fc" id="L376">		TestPolynomialSpline (4, 0, iRoughnessPenaltyDerivativeOrder, rssc);</span>
 
-<span class="nc" id="L378">		TestPolynomialSpline (4, 1, iRoughnessPenaltyDerivativeOrder, rssc);</span>
+<span class="fc" id="L378">		TestPolynomialSpline (4, 1, iRoughnessPenaltyDerivativeOrder, rssc);</span>
 
-<span class="nc" id="L380">		TestPolynomialSpline (4, 2, iRoughnessPenaltyDerivativeOrder, rssc);</span>
+<span class="fc" id="L380">		TestPolynomialSpline (4, 2, iRoughnessPenaltyDerivativeOrder, rssc);</span>
 
-<span class="nc" id="L382">		TestPolynomialSpline (5, 0, iRoughnessPenaltyDerivativeOrder, rssc);</span>
+<span class="fc" id="L382">		TestPolynomialSpline (5, 0, iRoughnessPenaltyDerivativeOrder, rssc);</span>
 
-<span class="nc" id="L384">		TestPolynomialSpline (5, 1, iRoughnessPenaltyDerivativeOrder, rssc);</span>
+<span class="fc" id="L384">		TestPolynomialSpline (5, 1, iRoughnessPenaltyDerivativeOrder, rssc);</span>
 
-<span class="nc" id="L386">		TestPolynomialSpline (5, 2, iRoughnessPenaltyDerivativeOrder, rssc);</span>
+<span class="fc" id="L386">		TestPolynomialSpline (5, 2, iRoughnessPenaltyDerivativeOrder, rssc);</span>
 
-<span class="nc" id="L388">		TestPolynomialSpline (5, 3, iRoughnessPenaltyDerivativeOrder, rssc);</span>
+<span class="fc" id="L388">		TestPolynomialSpline (5, 3, iRoughnessPenaltyDerivativeOrder, rssc);</span>
 
-<span class="nc" id="L390">		TestPolynomialSpline (6, 0, iRoughnessPenaltyDerivativeOrder, rssc);</span>
+<span class="fc" id="L390">		TestPolynomialSpline (6, 0, iRoughnessPenaltyDerivativeOrder, rssc);</span>
 
-<span class="nc" id="L392">		TestPolynomialSpline (6, 1, iRoughnessPenaltyDerivativeOrder, rssc);</span>
+<span class="fc" id="L392">		TestPolynomialSpline (6, 1, iRoughnessPenaltyDerivativeOrder, rssc);</span>
 
-<span class="nc" id="L394">		TestPolynomialSpline (6, 2, iRoughnessPenaltyDerivativeOrder, rssc);</span>
+<span class="fc" id="L394">		TestPolynomialSpline (6, 2, iRoughnessPenaltyDerivativeOrder, rssc);</span>
 
-<span class="nc" id="L396">		TestPolynomialSpline (6, 3, iRoughnessPenaltyDerivativeOrder, rssc);</span>
+<span class="fc" id="L396">		TestPolynomialSpline (6, 3, iRoughnessPenaltyDerivativeOrder, rssc);</span>
 
-<span class="nc" id="L398">		TestPolynomialSpline (6, 4, iRoughnessPenaltyDerivativeOrder, rssc);</span>
+<span class="fc" id="L398">		TestPolynomialSpline (6, 4, iRoughnessPenaltyDerivativeOrder, rssc);</span>
 
-<span class="nc" id="L400">		TestPolynomialSpline (7, 0, iRoughnessPenaltyDerivativeOrder, rssc);</span>
+<span class="fc" id="L400">		TestPolynomialSpline (7, 0, iRoughnessPenaltyDerivativeOrder, rssc);</span>
 
-<span class="nc" id="L402">		TestPolynomialSpline (7, 1, iRoughnessPenaltyDerivativeOrder, rssc);</span>
+<span class="fc" id="L402">		TestPolynomialSpline (7, 1, iRoughnessPenaltyDerivativeOrder, rssc);</span>
 
-<span class="nc" id="L404">		TestPolynomialSpline (7, 2, iRoughnessPenaltyDerivativeOrder, rssc);</span>
+<span class="fc" id="L404">		TestPolynomialSpline (7, 2, iRoughnessPenaltyDerivativeOrder, rssc);</span>
 
-<span class="nc" id="L406">		TestPolynomialSpline (7, 3, iRoughnessPenaltyDerivativeOrder, rssc);</span>
+<span class="fc" id="L406">		TestPolynomialSpline (7, 3, iRoughnessPenaltyDerivativeOrder, rssc);</span>
 
-<span class="nc" id="L408">		TestPolynomialSpline (7, 4, iRoughnessPenaltyDerivativeOrder, rssc);</span>
+<span class="fc" id="L408">		TestPolynomialSpline (7, 4, iRoughnessPenaltyDerivativeOrder, rssc);</span>
 
-<span class="nc" id="L410">		TestPolynomialSpline (7, 5, iRoughnessPenaltyDerivativeOrder, rssc);</span>
+<span class="fc" id="L410">		TestPolynomialSpline (7, 5, iRoughnessPenaltyDerivativeOrder, rssc);</span>
 
 		/*
 		 * Test the C1 Hermite spline
 		 */
 
-<span class="nc" id="L416">		System.out.println (&quot; -------------------- \n Ck HERMITE \n -------------------- \n&quot;);</span>
+<span class="fc" id="L416">		System.out.println (&quot; -------------------- \n Ck HERMITE \n -------------------- \n&quot;);</span>
 
-<span class="nc" id="L418">		TestC1HermiteSpline (4, 1, iRoughnessPenaltyDerivativeOrder, rssc);</span>
-<span class="nc" id="L419">	}</span>
+<span class="fc" id="L418">		TestC1HermiteSpline (4, 1, iRoughnessPenaltyDerivativeOrder, rssc);</span>
+<span class="fc" id="L419">	}</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L425">		PolynomialBasisSplineSample();</span>
-<span class="nc" id="L426">	}</span>
+<span class="fc" id="L425">		PolynomialBasisSplineSample();</span>
+<span class="fc" id="L426">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

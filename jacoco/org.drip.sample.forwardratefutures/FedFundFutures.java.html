@@ -79,26 +79,26 @@ import org.drip.state.identifier.OvernightLabel;
 		 * Initialize the Credit Analytics Library
 		 */
 
-<span class="nc" id="L82">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L82">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L84">		String strCurrency = &quot;USD&quot;;</span>
+<span class="fc" id="L84">		String strCurrency = &quot;USD&quot;;</span>
 
-<span class="nc" id="L86">		JulianDate dtToday = DateUtil.Today();</span>
+<span class="fc" id="L86">		JulianDate dtToday = DateUtil.Today();</span>
 
-<span class="nc" id="L88">		MergedDiscountForwardCurve dcOIS = OvernightIndexCurve.MakeDC (</span>
+<span class="fc" id="L88">		MergedDiscountForwardCurve dcOIS = OvernightIndexCurve.MakeDC (</span>
 			dtToday,
 			strCurrency
 		);
 
-<span class="nc" id="L93">		SingleStreamComponent fedFundFutures = SingleStreamComponentBuilder.Deposit (</span>
+<span class="fc" id="L93">		SingleStreamComponent fedFundFutures = SingleStreamComponentBuilder.Deposit (</span>
 			dtToday,
-<span class="nc" id="L95">			dtToday.addTenor (&quot;1M&quot;),</span>
-<span class="nc" id="L96">			OvernightLabel.Create (</span>
+<span class="fc" id="L95">			dtToday.addTenor (&quot;1M&quot;),</span>
+<span class="fc" id="L96">			OvernightLabel.Create (</span>
 				strCurrency
 			)
 		);
 
-<span class="nc" id="L101">		CurveSurfaceQuoteContainer mktParams = MarketParamsBuilder.Create (</span>
+<span class="fc" id="L101">		CurveSurfaceQuoteContainer mktParams = MarketParamsBuilder.Create (</span>
 			dcOIS,
 			null,
 			null,
@@ -109,21 +109,21 @@ import org.drip.state.identifier.OvernightLabel;
 			null
 		);
 
-<span class="nc" id="L112">		ValuationParams valParams = new ValuationParams (</span>
+<span class="fc" id="L112">		ValuationParams valParams = new ValuationParams (</span>
 			dtToday,
 			dtToday,
 			strCurrency
 		);
 
-<span class="nc" id="L118">		Map&lt;String, Double&gt; mapFedFundFuturesOutput = fedFundFutures.value (</span>
+<span class="fc" id="L118">		Map&lt;String, Double&gt; mapFedFundFuturesOutput = fedFundFutures.value (</span>
 			valParams,
 			null,
 			mktParams,
 			null
 		);
 
-<span class="nc bnc" id="L125" title="All 2 branches missed.">		for (Map.Entry&lt;String, Double&gt; me : mapFedFundFuturesOutput.entrySet())</span>
-<span class="nc" id="L126">			System.out.println (&quot;\t&quot; + me.getKey() + &quot; =&gt; &quot; + me.getValue());</span>
-<span class="nc" id="L127">	}</span>
+<span class="fc bfc" id="L125" title="All 2 branches covered.">		for (Map.Entry&lt;String, Double&gt; me : mapFedFundFuturesOutput.entrySet())</span>
+<span class="fc" id="L126">			System.out.println (&quot;\t&quot; + me.getKey() + &quot; =&gt; &quot; + me.getValue());</span>
+<span class="fc" id="L127">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

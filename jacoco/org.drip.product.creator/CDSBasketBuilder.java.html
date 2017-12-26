@@ -86,28 +86,28 @@ package org.drip.product.creator;
 		final double[] adblWeight,
 		final java.lang.String strName)
 	{
-<span class="nc bnc" id="L89" title="All 8 branches missed.">		if (null == dtEffective || null == dtMaturity || !org.drip.quant.common.NumberUtil.IsValid (dblCoupon)</span>
-<span class="nc bnc" id="L90" title="All 16 branches missed.">			|| null == strIR || strIR.isEmpty() || null == strName || strName.isEmpty() || null == astrCC ||</span>
+<span class="pc bpc" id="L89" title="4 of 8 branches missed.">		if (null == dtEffective || null == dtMaturity || !org.drip.quant.common.NumberUtil.IsValid (dblCoupon)</span>
+<span class="pc bpc" id="L90" title="8 of 16 branches missed.">			|| null == strIR || strIR.isEmpty() || null == strName || strName.isEmpty() || null == astrCC ||</span>
 				0 == astrCC.length || null == adblWeight || 0 == adblWeight.length || adblWeight.length !=
 					astrCC.length)
 <span class="nc" id="L93">			return null;</span>
 
-<span class="nc" id="L95">		org.drip.product.definition.CreditDefaultSwap aCDS[] = new</span>
+<span class="fc" id="L95">		org.drip.product.definition.CreditDefaultSwap aCDS[] = new</span>
 			org.drip.product.definition.CreditDefaultSwap[astrCC.length];
 
-<span class="nc bnc" id="L98" title="All 2 branches missed.">		for (int i = 0; i &lt; astrCC.length; ++i) {</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">		for (int i = 0; i &lt; astrCC.length; ++i) {</span>
 			try {
-<span class="nc" id="L100">				aCDS[i] = org.drip.product.creator.CDSBuilder.CreateCDS (dtEffective, dtMaturity, dblCoupon,</span>
+<span class="fc" id="L100">				aCDS[i] = org.drip.product.creator.CDSBuilder.CreateCDS (dtEffective, dtMaturity, dblCoupon,</span>
 					strIR, 0.40, astrCC[i], strIR, true);
 <span class="nc" id="L102">			} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L103">				e.printStackTrace();</span>
 
 <span class="nc" id="L105">				return null;</span>
-<span class="nc" id="L106">			}</span>
+<span class="fc" id="L106">			}</span>
 		}
 
 		try {
-<span class="nc" id="L110">			return new org.drip.product.credit.CDSBasket (aCDS, adblWeight, strName);</span>
+<span class="fc" id="L110">			return new org.drip.product.credit.CDSBasket (aCDS, adblWeight, strName);</span>
 <span class="nc" id="L111">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L112">			e.printStackTrace();</span>
 		}
@@ -136,32 +136,32 @@ package org.drip.product.creator;
 		final java.lang.String[] astrCC,
 		final java.lang.String strName)
 	{
-<span class="nc bnc" id="L139" title="All 8 branches missed.">		if (null == dtEffective || null == dtMaturity || !org.drip.quant.common.NumberUtil.IsValid (dblCoupon)</span>
-<span class="nc bnc" id="L140" title="All 10 branches missed.">			|| null == strIR || strIR.isEmpty() || null == strName || strName.isEmpty() || null == astrCC ||</span>
+<span class="pc bpc" id="L139" title="4 of 8 branches missed.">		if (null == dtEffective || null == dtMaturity || !org.drip.quant.common.NumberUtil.IsValid (dblCoupon)</span>
+<span class="pc bpc" id="L140" title="5 of 10 branches missed.">			|| null == strIR || strIR.isEmpty() || null == strName || strName.isEmpty() || null == astrCC ||</span>
 				0 == astrCC.length)
 <span class="nc" id="L142">			return null;</span>
 
-<span class="nc" id="L144">		org.drip.product.definition.CreditDefaultSwap aCDS[] = new</span>
+<span class="fc" id="L144">		org.drip.product.definition.CreditDefaultSwap aCDS[] = new</span>
 			org.drip.product.definition.CreditDefaultSwap[astrCC.length];
 
-<span class="nc bnc" id="L147" title="All 2 branches missed.">		for (int i = 0; i &lt; astrCC.length; ++i) {</span>
+<span class="fc bfc" id="L147" title="All 2 branches covered.">		for (int i = 0; i &lt; astrCC.length; ++i) {</span>
 			try {
-<span class="nc" id="L149">				aCDS[i] = org.drip.product.creator.CDSBuilder.CreateCDS (dtEffective, dtMaturity, dblCoupon,</span>
+<span class="fc" id="L149">				aCDS[i] = org.drip.product.creator.CDSBuilder.CreateCDS (dtEffective, dtMaturity, dblCoupon,</span>
 					strIR, 0.40, astrCC[i], strIR, true);
 <span class="nc" id="L151">			} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L152">				e.printStackTrace();</span>
 
 <span class="nc" id="L154">				return null;</span>
-<span class="nc" id="L155">			}</span>
+<span class="fc" id="L155">			}</span>
 		}
 
 		try {
-<span class="nc" id="L159">			double adblWeight[] = new double[aCDS.length];</span>
+<span class="fc" id="L159">			double adblWeight[] = new double[aCDS.length];</span>
 
-<span class="nc bnc" id="L161" title="All 2 branches missed.">			for (int i = 0; i &lt; aCDS.length; ++i)</span>
-<span class="nc" id="L162">				adblWeight[i] = 1.;</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">			for (int i = 0; i &lt; aCDS.length; ++i)</span>
+<span class="fc" id="L162">				adblWeight[i] = 1.;</span>
 
-<span class="nc" id="L164">			return new org.drip.product.credit.CDSBasket (aCDS, adblWeight, strName);</span>
+<span class="fc" id="L164">			return new org.drip.product.credit.CDSBasket (aCDS, adblWeight, strName);</span>
 <span class="nc" id="L165">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L166">			e.printStackTrace();</span>
 		}

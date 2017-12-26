@@ -186,33 +186,33 @@ package org.drip.quant.common;
 		final java.lang.String strPhrase,
 		final java.lang.String strDelim)
 	{
-<span class="nc bnc" id="L189" title="All 8 branches missed.">		if (null == strPhrase || strPhrase.isEmpty() || null == strDelim || strDelim.isEmpty()) return null;</span>
+<span class="pc bpc" id="L189" title="4 of 8 branches missed.">		if (null == strPhrase || strPhrase.isEmpty() || null == strDelim || strDelim.isEmpty()) return null;</span>
 
-<span class="nc" id="L191">		java.util.List&lt;java.lang.Integer&gt; lsDelimIndex = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
+<span class="fc" id="L191">		java.util.List&lt;java.lang.Integer&gt; lsDelimIndex = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
 
-<span class="nc" id="L193">		int iDelimIndex = -1;</span>
+<span class="fc" id="L193">		int iDelimIndex = -1;</span>
 
-<span class="nc bnc" id="L195" title="All 2 branches missed.">		while (-1 != (iDelimIndex = strPhrase.indexOf (strDelim, iDelimIndex + 1)))</span>
-<span class="nc" id="L196">			lsDelimIndex.add (iDelimIndex);</span>
+<span class="fc bfc" id="L195" title="All 2 branches covered.">		while (-1 != (iDelimIndex = strPhrase.indexOf (strDelim, iDelimIndex + 1)))</span>
+<span class="fc" id="L196">			lsDelimIndex.add (iDelimIndex);</span>
 
-<span class="nc" id="L198">		int iNumField = lsDelimIndex.size();</span>
+<span class="fc" id="L198">		int iNumField = lsDelimIndex.size();</span>
 
-<span class="nc bnc" id="L200" title="All 2 branches missed.">		if (0 == iNumField) return null;</span>
+<span class="pc bpc" id="L200" title="1 of 2 branches missed.">		if (0 == iNumField) return null;</span>
 
-<span class="nc" id="L202">		int iBeginIndex = 0;</span>
-<span class="nc" id="L203">		java.lang.String[] astr = new java.lang.String[iNumField + 1];</span>
+<span class="fc" id="L202">		int iBeginIndex = 0;</span>
+<span class="fc" id="L203">		java.lang.String[] astr = new java.lang.String[iNumField + 1];</span>
 
-<span class="nc bnc" id="L205" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumField; ++i) {</span>
-<span class="nc" id="L206">			int iFinishIndex = lsDelimIndex.get (i);</span>
+<span class="fc bfc" id="L205" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumField; ++i) {</span>
+<span class="fc" id="L206">			int iFinishIndex = lsDelimIndex.get (i);</span>
 
-<span class="nc bnc" id="L208" title="All 2 branches missed.">			astr[i] = iBeginIndex &gt;= iFinishIndex ? &quot;&quot; : strPhrase.substring (iBeginIndex, iFinishIndex);</span>
+<span class="pc bpc" id="L208" title="1 of 2 branches missed.">			astr[i] = iBeginIndex &gt;= iFinishIndex ? &quot;&quot; : strPhrase.substring (iBeginIndex, iFinishIndex);</span>
 
-<span class="nc" id="L210">			iBeginIndex = lsDelimIndex.get (i) + 1;</span>
+<span class="fc" id="L210">			iBeginIndex = lsDelimIndex.get (i) + 1;</span>
 		}
 
-<span class="nc" id="L213">		astr[iNumField] = strPhrase.substring (iBeginIndex);</span>
+<span class="fc" id="L213">		astr[iNumField] = strPhrase.substring (iBeginIndex);</span>
 
-<span class="nc" id="L215">		return astr;</span>
+<span class="fc" id="L215">		return astr;</span>
 	}
 
 	/**

@@ -169,13 +169,13 @@ public class OverlappingStretchSpan implements org.drip.spline.grid.Span {
 		final org.drip.state.identifier.LatentStateLabel lsl)
 	{
 		try {
-<span class="nc bnc" id="L172" title="All 2 branches missed.">			for (org.drip.spline.stretch.MultiSegmentSequence mss : _lsMSS) {</span>
-<span class="nc bnc" id="L173" title="All 2 branches missed.">				if (mss.in (dblPredictorOrdinate)) {</span>
-<span class="nc" id="L174">					org.drip.state.representation.MergeSubStretchManager msm = mss.msm();</span>
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">			for (org.drip.spline.stretch.MultiSegmentSequence mss : _lsMSS) {</span>
+<span class="fc bfc" id="L173" title="All 2 branches covered.">				if (mss.in (dblPredictorOrdinate)) {</span>
+<span class="fc" id="L174">					org.drip.state.representation.MergeSubStretchManager msm = mss.msm();</span>
 
-<span class="nc bnc" id="L176" title="All 2 branches missed.">					return null == msm ? false : msm.partOfMergeState (dblPredictorOrdinate, lsl);</span>
+<span class="pc bpc" id="L176" title="1 of 2 branches missed.">					return null == msm ? false : msm.partOfMergeState (dblPredictorOrdinate, lsl);</span>
 				}
-<span class="nc" id="L178">			}</span>
+<span class="fc" id="L178">			}</span>
 <span class="nc" id="L179">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L180">			e.printStackTrace();</span>
 <span class="nc" id="L181">		}</span>
@@ -188,36 +188,36 @@ public class OverlappingStretchSpan implements org.drip.spline.grid.Span {
 		final double dblPredictorOrdinate,
 		final int iOrder)
 	{
-<span class="nc bnc" id="L191" title="All 2 branches missed.">		if (0 == _lsMSS.size()) return null;</span>
+<span class="pc bpc" id="L191" title="1 of 2 branches missed.">		if (0 == _lsMSS.size()) return null;</span>
 
-<span class="nc" id="L193">		java.util.List&lt;org.drip.quant.calculus.WengertJacobian&gt; lsWJ = new</span>
+<span class="fc" id="L193">		java.util.List&lt;org.drip.quant.calculus.WengertJacobian&gt; lsWJ = new</span>
 			java.util.ArrayList&lt;org.drip.quant.calculus.WengertJacobian&gt;();
 
-<span class="nc" id="L196">		boolean bPredictorOrdinateCovered = false;</span>
+<span class="fc" id="L196">		boolean bPredictorOrdinateCovered = false;</span>
 
-<span class="nc bnc" id="L198" title="All 2 branches missed.">		for (org.drip.spline.stretch.MultiSegmentSequence mss : _lsMSS) {</span>
-<span class="nc bnc" id="L199" title="All 2 branches missed.">			if (null == mss) continue;</span>
+<span class="fc bfc" id="L198" title="All 2 branches covered.">		for (org.drip.spline.stretch.MultiSegmentSequence mss : _lsMSS) {</span>
+<span class="pc bpc" id="L199" title="1 of 2 branches missed.">			if (null == mss) continue;</span>
 
 			try {
-<span class="nc" id="L202">				org.drip.quant.calculus.WengertJacobian wj = null;</span>
+<span class="fc" id="L202">				org.drip.quant.calculus.WengertJacobian wj = null;</span>
 
-<span class="nc bnc" id="L204" title="All 4 branches missed.">				if (!bPredictorOrdinateCovered &amp;&amp; mss.in (dblPredictorOrdinate)) {</span>
-<span class="nc" id="L205">					wj = mss.jackDResponseDManifestMeasure (strManifestMeasure, dblPredictorOrdinate,</span>
+<span class="fc bfc" id="L204" title="All 4 branches covered.">				if (!bPredictorOrdinateCovered &amp;&amp; mss.in (dblPredictorOrdinate)) {</span>
+<span class="fc" id="L205">					wj = mss.jackDResponseDManifestMeasure (strManifestMeasure, dblPredictorOrdinate,</span>
 						iOrder);
 
-<span class="nc" id="L208">					bPredictorOrdinateCovered = true;</span>
+<span class="fc" id="L208">					bPredictorOrdinateCovered = true;</span>
 				} else
-<span class="nc" id="L210">					wj = new org.drip.quant.calculus.WengertJacobian (1, mss.segments().length);</span>
+<span class="fc" id="L210">					wj = new org.drip.quant.calculus.WengertJacobian (1, mss.segments().length);</span>
 
-<span class="nc bnc" id="L212" title="All 2 branches missed.">				if (null != wj) lsWJ.add (wj);</span>
+<span class="fc bfc" id="L212" title="All 2 branches covered.">				if (null != wj) lsWJ.add (wj);</span>
 <span class="nc" id="L213">			} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L214">				e.printStackTrace();</span>
 
 <span class="nc" id="L216">				return null;</span>
-<span class="nc" id="L217">			}</span>
-<span class="nc" id="L218">		}</span>
+<span class="fc" id="L217">			}</span>
+<span class="fc" id="L218">		}</span>
 
-<span class="nc" id="L220">		return org.drip.quant.common.CollectionUtil.AppendWengert (lsWJ);</span>
+<span class="fc" id="L220">		return org.drip.quant.common.CollectionUtil.AppendWengert (lsWJ);</span>
 	}
 
 	@Override public boolean in (

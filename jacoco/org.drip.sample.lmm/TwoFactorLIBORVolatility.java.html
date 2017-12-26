@@ -92,14 +92,14 @@ import org.drip.state.identifier.ForwardLabel;
 		final String strMaturityTenor,
 		final double dblCoupon)
 	{
-<span class="nc" id="L95">		FixedFloatSwapConvention ffConv = IBORFixedFloatContainer.ConventionFromJurisdiction (</span>
+<span class="fc" id="L95">		FixedFloatSwapConvention ffConv = IBORFixedFloatContainer.ConventionFromJurisdiction (</span>
 			strCurrency,
 			&quot;ALL&quot;,
 			strMaturityTenor,
 			&quot;MAIN&quot;
 		);
 
-<span class="nc" id="L102">		return ffConv.createFixFloatComponent (</span>
+<span class="fc" id="L102">		return ffConv.createFixFloatComponent (</span>
 			dtSpot,
 			strMaturityTenor,
 			dblCoupon,
@@ -115,31 +115,31 @@ import org.drip.state.identifier.ForwardLabel;
 		final String strCurrency)
 		throws Exception
 	{
-<span class="nc" id="L118">		CalibratableComponent[] aCalibComp = new CalibratableComponent[aiDay.length + iNumFuture];</span>
+<span class="fc" id="L118">		CalibratableComponent[] aCalibComp = new CalibratableComponent[aiDay.length + iNumFuture];</span>
 
-<span class="nc bnc" id="L120" title="All 2 branches missed.">		for (int i = 0; i &lt; aiDay.length; ++i)</span>
-<span class="nc" id="L121">			aCalibComp[i] = SingleStreamComponentBuilder.Deposit (</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">		for (int i = 0; i &lt; aiDay.length; ++i)</span>
+<span class="fc" id="L121">			aCalibComp[i] = SingleStreamComponentBuilder.Deposit (</span>
 				dtEffective,
-<span class="nc" id="L123">				dtEffective.addBusDays (</span>
+<span class="fc" id="L123">				dtEffective.addBusDays (</span>
 					aiDay[i],
 					strCurrency
 				),
-<span class="nc" id="L127">				ForwardLabel.Create (</span>
+<span class="fc" id="L127">				ForwardLabel.Create (</span>
 					strCurrency,
 					&quot;3M&quot;
 				)
 			);
 
-<span class="nc" id="L133">		CalibratableComponent[] aEDF = SingleStreamComponentBuilder.ForwardRateFuturesPack (</span>
+<span class="fc" id="L133">		CalibratableComponent[] aEDF = SingleStreamComponentBuilder.ForwardRateFuturesPack (</span>
 			dtEffective,
 			iNumFuture,
 			strCurrency
 		);
 
-<span class="nc bnc" id="L139" title="All 2 branches missed.">		for (int i = aiDay.length; i &lt; aiDay.length + iNumFuture; ++i)</span>
+<span class="pc bpc" id="L139" title="1 of 2 branches missed.">		for (int i = aiDay.length; i &lt; aiDay.length + iNumFuture; ++i)</span>
 <span class="nc" id="L140">			aCalibComp[i] = aEDF[i - aiDay.length];</span>
 
-<span class="nc" id="L142">		return aCalibComp;</span>
+<span class="fc" id="L142">		return aCalibComp;</span>
 	}
 
 	private static final FixFloatComponent[] SwapInstrumentsFromMaturityTenor (
@@ -149,17 +149,17 @@ import org.drip.state.identifier.ForwardLabel;
 		final double[] adblCoupon)
 		throws Exception
 	{
-<span class="nc" id="L152">		FixFloatComponent[] aIRS = new FixFloatComponent[astrMaturityTenor.length];</span>
+<span class="fc" id="L152">		FixFloatComponent[] aIRS = new FixFloatComponent[astrMaturityTenor.length];</span>
 
-<span class="nc bnc" id="L154" title="All 2 branches missed.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
-<span class="nc" id="L155">			aIRS[i] = OTCFixFloat (</span>
+<span class="fc bfc" id="L154" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
+<span class="fc" id="L155">			aIRS[i] = OTCFixFloat (</span>
 				dtSpot,
 				strCurrency,
 				astrMaturityTenor[i],
 				adblCoupon[i]
 			);
 
-<span class="nc" id="L162">		return aIRS;</span>
+<span class="fc" id="L162">		return aIRS;</span>
 	}
 
 	private static final MergedDiscountForwardCurve MakeDC (
@@ -171,7 +171,7 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Construct the array of Deposit instruments and their quotes.
 		 */
 
-<span class="nc" id="L174">		CalibratableComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (</span>
+<span class="fc" id="L174">		CalibratableComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (</span>
 			dtSpot,
 			new int[] {
 				30,
@@ -184,7 +184,7 @@ import org.drip.state.identifier.ForwardLabel;
 			strCurrency
 		);
 
-<span class="nc" id="L187">		double[] adblDepositQuote = new double[] {</span>
+<span class="fc" id="L187">		double[] adblDepositQuote = new double[] {</span>
 			0.0668750,	//  30D
 			0.0675000,	//  60D
 			0.0678125,	//  91D
@@ -192,7 +192,7 @@ import org.drip.state.identifier.ForwardLabel;
 			0.0750000	// 273D
 		};
 
-<span class="nc" id="L195">		String[] astrDepositManifestMeasure = new String[] {</span>
+<span class="fc" id="L195">		String[] astrDepositManifestMeasure = new String[] {</span>
 			&quot;ForwardRate&quot;, //  30D
 			&quot;ForwardRate&quot;, //  60D
 			&quot;ForwardRate&quot;, //  91D
@@ -204,7 +204,7 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Construct the array of Swap instruments and their quotes.
 		 */
 
-<span class="nc" id="L207">		double[] adblSwapQuote = new double[] {</span>
+<span class="fc" id="L207">		double[] adblSwapQuote = new double[] {</span>
 			0.08265,    //  2Y
 			0.08550,    //  3Y
 			0.08655,    //  4Y
@@ -213,7 +213,7 @@ import org.drip.state.identifier.ForwardLabel;
 			0.08920     // 10Y
 		};
 
-<span class="nc" id="L216">		String[] astrSwapManifestMeasure = new String[] {</span>
+<span class="fc" id="L216">		String[] astrSwapManifestMeasure = new String[] {</span>
 			&quot;SwapRate&quot;,    //  2Y
 			&quot;SwapRate&quot;,    //  3Y
 			&quot;SwapRate&quot;,    //  4Y
@@ -222,7 +222,7 @@ import org.drip.state.identifier.ForwardLabel;
 			&quot;SwapRate&quot;     // 10Y
 		};
 
-<span class="nc" id="L225">		CalibratableComponent[] aSwapComp = SwapInstrumentsFromMaturityTenor (</span>
+<span class="fc" id="L225">		CalibratableComponent[] aSwapComp = SwapInstrumentsFromMaturityTenor (</span>
 			dtSpot,
 			strCurrency,
 			new java.lang.String[] {
@@ -240,7 +240,7 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Construct a shape preserving and smoothing KLK Hyperbolic Spline from the cash/swap instruments.
 		 */
 
-<span class="nc" id="L243">		return ScenarioDiscountCurveBuilder.CubicKLKHyperbolicDFRateShapePreserver (</span>
+<span class="fc" id="L243">		return ScenarioDiscountCurveBuilder.CubicKLKHyperbolicDFRateShapePreserver (</span>
 			&quot;KLK_HYPERBOLIC_SHAPE_TEMPLATE&quot;,
 			new ValuationParams (
 				dtSpot,
@@ -265,22 +265,22 @@ import org.drip.state.identifier.ForwardLabel;
 		final double[] adblTermStructureLoading)
 		throws Exception
 	{
-<span class="nc" id="L268">		int iNumNode = astrMaturityTenor.length + 1;</span>
-<span class="nc" id="L269">		double[] adblDate = new double[iNumNode];</span>
-<span class="nc" id="L270">		double[][] aadblVolatility = new double[iNumNode][iNumNode];</span>
+<span class="fc" id="L268">		int iNumNode = astrMaturityTenor.length + 1;</span>
+<span class="fc" id="L269">		double[] adblDate = new double[iNumNode];</span>
+<span class="fc" id="L270">		double[][] aadblVolatility = new double[iNumNode][iNumNode];</span>
 
-<span class="nc bnc" id="L272" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumNode; ++i)</span>
-<span class="nc bnc" id="L273" title="All 2 branches missed.">			adblDate[i] = 0 == i ? adblDate[i] = dtStart.julian() : dtStart.addTenor (astrMaturityTenor[i - 1]).julian();</span>
+<span class="fc bfc" id="L272" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumNode; ++i)</span>
+<span class="fc bfc" id="L273" title="All 2 branches covered.">			adblDate[i] = 0 == i ? adblDate[i] = dtStart.julian() : dtStart.addTenor (astrMaturityTenor[i - 1]).julian();</span>
 
-<span class="nc bnc" id="L275" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumNode; ++i) {</span>
-<span class="nc bnc" id="L276" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumNode; ++j)</span>
-<span class="nc bnc" id="L277" title="All 4 branches missed.">				aadblVolatility[i][j] =</span>
+<span class="fc bfc" id="L275" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumNode; ++i) {</span>
+<span class="fc bfc" id="L276" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumNode; ++j)</span>
+<span class="fc bfc" id="L277" title="All 4 branches covered.">				aadblVolatility[i][j] =</span>
 					0 == i || 0 == j ?
 					adblFactorFlatVolatility[0] :
 					adblTermStructureLoading[i - 1] * adblFactorFlatVolatility[j - 1];
 		}
 
-<span class="nc" id="L283">		return ScenarioMarketSurfaceBuilder.CustomSplineWireSurface (</span>
+<span class="fc" id="L283">		return ScenarioMarketSurfaceBuilder.CustomSplineWireSurface (</span>
 			&quot;VIEW_TARGET_VOLATILITY_SURFACE&quot;,
 			dtStart,
 			strCurrency,
@@ -290,7 +290,7 @@ import org.drip.state.identifier.ForwardLabel;
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (2),
-<span class="nc" id="L293">				SegmentInelasticDesignControl.Create (</span>
+<span class="fc" id="L293">				SegmentInelasticDesignControl.Create (</span>
 					0,
 					2
 				),
@@ -300,7 +300,7 @@ import org.drip.state.identifier.ForwardLabel;
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-<span class="nc" id="L303">				SegmentInelasticDesignControl.Create (</span>
+<span class="fc" id="L303">				SegmentInelasticDesignControl.Create (</span>
 					2,
 					2
 				),
@@ -314,42 +314,42 @@ import org.drip.state.identifier.ForwardLabel;
 		final String strTenor,
 		final double[] adblVol)
 	{
-<span class="nc" id="L317">		String strDump = &quot;\t | &quot; + strTenor + &quot; =&gt;  &quot;;</span>
+<span class="fc" id="L317">		String strDump = &quot;\t | &quot; + strTenor + &quot; =&gt;  &quot;;</span>
 
-<span class="nc bnc" id="L319" title="All 2 branches missed.">		for (int i = 0; i &lt; adblVol.length; ++i)</span>
-<span class="nc" id="L320">			strDump += FormatUtil.FormatDouble (adblVol[i], 1, 2, 100.) + &quot;% | &quot;;</span>
+<span class="fc bfc" id="L319" title="All 2 branches covered.">		for (int i = 0; i &lt; adblVol.length; ++i)</span>
+<span class="fc" id="L320">			strDump += FormatUtil.FormatDouble (adblVol[i], 1, 2, 100.) + &quot;% | &quot;;</span>
 
-<span class="nc" id="L322">		System.out.println (strDump);</span>
-<span class="nc" id="L323">	}</span>
+<span class="fc" id="L322">		System.out.println (strDump);</span>
+<span class="fc" id="L323">	}</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L329">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L329">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L331">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L331">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
 			1995,
 			DateUtil.FEBRUARY,
 			3
 		);
 
-<span class="nc" id="L337">		String strFRATenor = &quot;3M&quot;;</span>
-<span class="nc" id="L338">		String strCurrency = &quot;GBP&quot;;</span>
+<span class="fc" id="L337">		String strFRATenor = &quot;3M&quot;;</span>
+<span class="fc" id="L338">		String strCurrency = &quot;GBP&quot;;</span>
 
-<span class="nc" id="L340">		ForwardLabel forwardLabel = ForwardLabel.Create (</span>
+<span class="fc" id="L340">		ForwardLabel forwardLabel = ForwardLabel.Create (</span>
 			strCurrency,
 			strFRATenor
 		);
 
-<span class="nc" id="L345">		MergedDiscountForwardCurve dc = MakeDC (</span>
+<span class="fc" id="L345">		MergedDiscountForwardCurve dc = MakeDC (</span>
 			dtSpot,
 			strCurrency
 		);
 
-<span class="nc" id="L350">		ForwardCurve fcNative = dc.nativeForwardCurve (strFRATenor);</span>
+<span class="fc" id="L350">		ForwardCurve fcNative = dc.nativeForwardCurve (strFRATenor);</span>
 
-<span class="nc" id="L352">		String[] astrMaturityTenor = new String[] {</span>
+<span class="fc" id="L352">		String[] astrMaturityTenor = new String[] {</span>
 			 &quot;3M&quot;,
 			 &quot;6M&quot;,
 			&quot;12M&quot;,
@@ -364,7 +364,7 @@ import org.drip.state.identifier.ForwardLabel;
 			&quot;11Y&quot;
 		};
 
-<span class="nc" id="L367">		double[] adblFlatTermStructure = new double[] {</span>
+<span class="fc" id="L367">		double[] adblFlatTermStructure = new double[] {</span>
 			1.00000000, //  &quot;3M&quot;,
 			1.00000000, //  &quot;6M&quot;,
 			0.99168448, // &quot;12M&quot;,
@@ -379,7 +379,7 @@ import org.drip.state.identifier.ForwardLabel;
 			0.81425256  // &quot;11Y&quot;
 		};
 
-<span class="nc" id="L382">		double[] adblFlatVolFactor1 = new double[] {</span>
+<span class="fc" id="L382">		double[] adblFlatVolFactor1 = new double[] {</span>
 			0.09481393, //  &quot;3M&quot;,
 			0.08498925, //  &quot;6M&quot;,
 			0.22939966, // &quot;12M&quot;,
@@ -394,7 +394,7 @@ import org.drip.state.identifier.ForwardLabel;
 			0.15206796  // &quot;11Y&quot;
 		};
 
-<span class="nc" id="L397">		double[] adblFlatVolFactor2 = new double[] {</span>
+<span class="fc" id="L397">		double[] adblFlatVolFactor2 = new double[] {</span>
 			 0.12146092, //  &quot;3M&quot;,
 			 0.05117321, //  &quot;6M&quot;,
 			 0.09100802, // &quot;12M&quot;,
@@ -409,7 +409,7 @@ import org.drip.state.identifier.ForwardLabel;
 			-0.16626765  // &quot;11Y&quot;
 		};
 
-<span class="nc" id="L412">		MarketSurface mktSurf1 = FactorFlatVolatilitySurface (</span>
+<span class="fc" id="L412">		MarketSurface mktSurf1 = FactorFlatVolatilitySurface (</span>
 			dtSpot,
 			strCurrency,
 			astrMaturityTenor,
@@ -417,7 +417,7 @@ import org.drip.state.identifier.ForwardLabel;
 			adblFlatTermStructure
 		);
 
-<span class="nc" id="L420">		MarketSurface mktSurf2 = FactorFlatVolatilitySurface (</span>
+<span class="fc" id="L420">		MarketSurface mktSurf2 = FactorFlatVolatilitySurface (</span>
 			dtSpot,
 			strCurrency,
 			astrMaturityTenor,
@@ -425,8 +425,8 @@ import org.drip.state.identifier.ForwardLabel;
 			adblFlatTermStructure
 		);
 
-<span class="nc" id="L428">		LognormalLIBORVolatility llv = new LognormalLIBORVolatility (</span>
-<span class="nc" id="L429">			dtSpot.julian(),</span>
+<span class="fc" id="L428">		LognormalLIBORVolatility llv = new LognormalLIBORVolatility (</span>
+<span class="fc" id="L429">			dtSpot.julian(),</span>
 			forwardLabel,
 			new MarketSurface[] {
 				mktSurf1,
@@ -451,26 +451,26 @@ import org.drip.state.identifier.ForwardLabel;
 			)
 		);
 
-<span class="nc" id="L454">		String[] astrForwardTenor = {</span>
+<span class="fc" id="L454">		String[] astrForwardTenor = {</span>
 			&quot;1Y&quot;, &quot;2Y&quot;, &quot;3Y&quot;, &quot;4Y&quot;, &quot;5Y&quot;, &quot;6Y&quot;, &quot;7Y&quot;, &quot;8Y&quot;
 		};
 
-<span class="nc" id="L458">		System.out.println (&quot;\n\t |------------------------------|&quot;);</span>
+<span class="fc" id="L458">		System.out.println (&quot;\n\t |------------------------------|&quot;);</span>
 
-<span class="nc" id="L460">		System.out.println (&quot;\t |  CONTINUOUS FORWARD RATE VOL |&quot;);</span>
+<span class="fc" id="L460">		System.out.println (&quot;\t |  CONTINUOUS FORWARD RATE VOL |&quot;);</span>
 
-<span class="nc" id="L462">		System.out.println (&quot;\t |------------------------------|&quot;);</span>
+<span class="fc" id="L462">		System.out.println (&quot;\t |------------------------------|&quot;);</span>
 
-<span class="nc bnc" id="L464" title="All 2 branches missed.">		for (String strForwardTenor : astrForwardTenor)</span>
-<span class="nc" id="L465">			DisplayVolArray (</span>
+<span class="fc bfc" id="L464" title="All 2 branches covered.">		for (String strForwardTenor : astrForwardTenor)</span>
+<span class="fc" id="L465">			DisplayVolArray (</span>
 				strForwardTenor,
-<span class="nc" id="L467">				llv.continuousForwardVolatility (</span>
-<span class="nc" id="L468">					dtSpot.addTenor (strForwardTenor).julian(),</span>
+<span class="fc" id="L467">				llv.continuousForwardVolatility (</span>
+<span class="fc" id="L468">					dtSpot.addTenor (strForwardTenor).julian(),</span>
 					fcNative
 				)
 			);
 
-<span class="nc" id="L473">		System.out.println (&quot;\t |------------------------------|&quot;);</span>
-<span class="nc" id="L474">	}</span>
+<span class="fc" id="L473">		System.out.println (&quot;\t |------------------------------|&quot;);</span>
+<span class="fc" id="L474">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

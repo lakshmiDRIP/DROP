@@ -59,8 +59,8 @@ package org.drip.sequence.custom;
 
 public class GlivenkoCantelliFunctionSupremum extends org.drip.sequence.functional.MultivariateRandom
 	implements org.drip.sequence.functional.SeparableMultivariateRandom {
-<span class="nc" id="L62">	private double[] _adblWeight = null;</span>
-<span class="nc" id="L63">	private org.drip.sequence.functional.FunctionSupremumUnivariateRandom _fsur = null;</span>
+<span class="fc" id="L62">	private double[] _adblWeight = null;</span>
+<span class="fc" id="L63">	private org.drip.sequence.functional.FunctionSupremumUnivariateRandom _fsur = null;</span>
 
 	/**
 	 * Construct an Instance of GlivenkoCantelliFunctionSupremum from the Sample
@@ -76,8 +76,8 @@ public class GlivenkoCantelliFunctionSupremum extends org.drip.sequence.function
 		final int iNumSample)
 	{
 		try {
-<span class="nc" id="L79">			return new GlivenkoCantelliFunctionSupremum (fsur,</span>
-<span class="nc" id="L80">				org.drip.analytics.support.Helper.NormalizedEqualWeightedArray (iNumSample));</span>
+<span class="fc" id="L79">			return new GlivenkoCantelliFunctionSupremum (fsur,</span>
+<span class="fc" id="L80">				org.drip.analytics.support.Helper.NormalizedEqualWeightedArray (iNumSample));</span>
 <span class="nc" id="L81">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L82">			e.printStackTrace();</span>
 		}
@@ -98,10 +98,10 @@ public class GlivenkoCantelliFunctionSupremum extends org.drip.sequence.function
 		final org.drip.sequence.functional.FunctionSupremumUnivariateRandom fsur,
 		final double[] adblWeight)
 		throws java.lang.Exception
-<span class="nc" id="L101">	{</span>
-<span class="nc bnc" id="L102" title="All 6 branches missed.">		if (null == (_adblWeight = adblWeight) || 0 == _adblWeight.length || null == (_fsur = fsur))</span>
+<span class="fc" id="L101">	{</span>
+<span class="pc bpc" id="L102" title="3 of 6 branches missed.">		if (null == (_adblWeight = adblWeight) || 0 == _adblWeight.length || null == (_fsur = fsur))</span>
 <span class="nc" id="L103">			throw new java.lang.Exception (&quot;GlivenkoCantelliFunctionSupremum ctr: Invalid Inputs&quot;);</span>
-<span class="nc" id="L104">	}</span>
+<span class="fc" id="L104">	}</span>
 
 	/**
 	 * Retrieve the Supremum Univariate Random Function
@@ -134,16 +134,16 @@ public class GlivenkoCantelliFunctionSupremum extends org.drip.sequence.function
 		final double[] adblVariate)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L137">		double dblValue = 0.;</span>
-<span class="nc" id="L138">		int iNumVariate = adblVariate.length;</span>
+<span class="fc" id="L137">		double dblValue = 0.;</span>
+<span class="fc" id="L138">		int iNumVariate = adblVariate.length;</span>
 
-<span class="nc bnc" id="L140" title="All 2 branches missed.">		if (_adblWeight.length &lt; iNumVariate)</span>
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">		if (_adblWeight.length &lt; iNumVariate)</span>
 <span class="nc" id="L141">			throw new java.lang.Exception (&quot;GlivenkoCantelliFunctionSupremum::evaluate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L143" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
-<span class="nc" id="L144">			dblValue += _adblWeight[i] * _fsur.evaluate (adblVariate[i]);</span>
+<span class="fc bfc" id="L143" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
+<span class="fc" id="L144">			dblValue += _adblWeight[i] * _fsur.evaluate (adblVariate[i]);</span>
 
-<span class="nc" id="L146">		return dblValue;</span>
+<span class="fc" id="L146">		return dblValue;</span>
 	}
 
 	@Override public double targetVariateVariance (

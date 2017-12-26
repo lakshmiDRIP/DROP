@@ -87,18 +87,18 @@ public class DiscreteTradingTrajectory implements org.drip.execution.strategy.Tr
 		final double[] adblExecutionTimeNode,
 		final double[] adblHoldings)
 	{
-<span class="nc bnc" id="L90" title="All 2 branches missed.">		if (null == adblHoldings) return null;</span>
+<span class="pc bpc" id="L90" title="1 of 2 branches missed.">		if (null == adblHoldings) return null;</span>
 
-<span class="nc" id="L92">		int iNumExecutionTime = adblHoldings.length;</span>
-<span class="nc bnc" id="L93" title="All 2 branches missed.">		double[] adblTradeList = 1 &gt;= iNumExecutionTime ? null : new double[iNumExecutionTime - 1];</span>
+<span class="fc" id="L92">		int iNumExecutionTime = adblHoldings.length;</span>
+<span class="pc bpc" id="L93" title="1 of 2 branches missed.">		double[] adblTradeList = 1 &gt;= iNumExecutionTime ? null : new double[iNumExecutionTime - 1];</span>
 
-<span class="nc bnc" id="L95" title="All 2 branches missed.">		if (1 &gt;= iNumExecutionTime) return null;</span>
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">		if (1 &gt;= iNumExecutionTime) return null;</span>
 
-<span class="nc bnc" id="L97" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumExecutionTime - 1; ++i)</span>
-<span class="nc" id="L98">			adblTradeList[i] = adblHoldings[i + 1] - adblHoldings[i];</span>
+<span class="fc bfc" id="L97" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumExecutionTime - 1; ++i)</span>
+<span class="fc" id="L98">			adblTradeList[i] = adblHoldings[i + 1] - adblHoldings[i];</span>
 
 		try {
-<span class="nc" id="L101">			return new DiscreteTradingTrajectory (adblExecutionTimeNode, adblHoldings, adblTradeList);</span>
+<span class="fc" id="L101">			return new DiscreteTradingTrajectory (adblExecutionTimeNode, adblHoldings, adblTradeList);</span>
 <span class="nc" id="L102">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L103">			e.printStackTrace();</span>
 		}
@@ -121,22 +121,22 @@ public class DiscreteTradingTrajectory implements org.drip.execution.strategy.Tr
 		final double dblStartHoldings,
 		final double dblFinishHoldings)
 	{
-<span class="nc bnc" id="L124" title="All 2 branches missed.">		if (null == adblExecutionTimeNode || !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L125" title="All 4 branches missed.">			(adblExecutionTimeNode) || !org.drip.quant.common.NumberUtil.IsValid (dblStartHoldings) ||</span>
-<span class="nc bnc" id="L126" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (dblFinishHoldings))</span>
+<span class="pc bpc" id="L124" title="1 of 2 branches missed.">		if (null == adblExecutionTimeNode || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L125" title="2 of 4 branches missed.">			(adblExecutionTimeNode) || !org.drip.quant.common.NumberUtil.IsValid (dblStartHoldings) ||</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (dblFinishHoldings))</span>
 <span class="nc" id="L127">			return null;</span>
 
-<span class="nc" id="L129">		int iNumNode = adblExecutionTimeNode.length;</span>
-<span class="nc bnc" id="L130" title="All 2 branches missed.">		double[] adblHoldings = 1 &gt;= iNumNode ? null : new double[iNumNode];</span>
-<span class="nc" id="L131">		double dblHoldingsChangeRate = (dblFinishHoldings - dblStartHoldings) /</span>
+<span class="fc" id="L129">		int iNumNode = adblExecutionTimeNode.length;</span>
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">		double[] adblHoldings = 1 &gt;= iNumNode ? null : new double[iNumNode];</span>
+<span class="fc" id="L131">		double dblHoldingsChangeRate = (dblFinishHoldings - dblStartHoldings) /</span>
 			(adblExecutionTimeNode[iNumNode - 1] - adblExecutionTimeNode[0]);
 
-<span class="nc bnc" id="L134" title="All 2 branches missed.">		if (1 &gt;= iNumNode) return null;</span>
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">		if (1 &gt;= iNumNode) return null;</span>
 
-<span class="nc bnc" id="L136" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumNode; ++i)</span>
-<span class="nc" id="L137">			adblHoldings[i] = dblStartHoldings + dblHoldingsChangeRate * i;</span>
+<span class="fc bfc" id="L136" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumNode; ++i)</span>
+<span class="fc" id="L137">			adblHoldings[i] = dblStartHoldings + dblHoldingsChangeRate * i;</span>
 
-<span class="nc" id="L139">		return DiscreteTradingTrajectory.Standard (adblExecutionTimeNode, adblHoldings);</span>
+<span class="fc" id="L139">		return DiscreteTradingTrajectory.Standard (adblExecutionTimeNode, adblHoldings);</span>
 	}
 
 	/**
@@ -177,22 +177,22 @@ public class DiscreteTradingTrajectory implements org.drip.execution.strategy.Tr
 
 	@Override public double tradeSize()
 	{
-<span class="nc" id="L180">		return _adblHoldings[0];</span>
+<span class="fc" id="L180">		return _adblHoldings[0];</span>
 	}
 
 	@Override public double executedBlockSize()
 	{
-<span class="nc" id="L185">		return _adblHoldings[_adblHoldings.length - 1] - _adblHoldings[0];</span>
+<span class="fc" id="L185">		return _adblHoldings[_adblHoldings.length - 1] - _adblHoldings[0];</span>
 	}
 
 	@Override public double executionTime()
 	{
-<span class="nc" id="L190">		return _adblExecutionTimeNode[_adblExecutionTimeNode.length - 1] - _adblExecutionTimeNode[0];</span>
+<span class="fc" id="L190">		return _adblExecutionTimeNode[_adblExecutionTimeNode.length - 1] - _adblExecutionTimeNode[0];</span>
 	}
 
 	@Override public double instantTradeRate()
 	{
-<span class="nc" id="L195">		return executedBlockSize() / executionTime();</span>
+<span class="fc" id="L195">		return executedBlockSize() / executionTime();</span>
 	}
 
 	/**
@@ -247,13 +247,13 @@ public class DiscreteTradingTrajectory implements org.drip.execution.strategy.Tr
 
 	public double[] innerHoldings()
 	{
-<span class="nc" id="L250">		int iNumInnerHoldings = _adblHoldings.length - 2;</span>
-<span class="nc" id="L251">		double[] adblInnerHoldings = new double[iNumInnerHoldings];</span>
+<span class="fc" id="L250">		int iNumInnerHoldings = _adblHoldings.length - 2;</span>
+<span class="fc" id="L251">		double[] adblInnerHoldings = new double[iNumInnerHoldings];</span>
 
-<span class="nc bnc" id="L253" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInnerHoldings; ++i)</span>
-<span class="nc" id="L254">			adblInnerHoldings[i] = _adblHoldings[i + 1];</span>
+<span class="fc bfc" id="L253" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumInnerHoldings; ++i)</span>
+<span class="fc" id="L254">			adblInnerHoldings[i] = _adblHoldings[i + 1];</span>
 
-<span class="nc" id="L256">		return adblInnerHoldings;</span>
+<span class="fc" id="L256">		return adblInnerHoldings;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -109,14 +109,14 @@ public class DCAct_Act implements org.drip.analytics.daycount.DCFCalculator {
 		else
 <span class="fc" id="L110">			iNumNonLeapDays += org.drip.analytics.date.DateUtil.DaysElapsed (iEndDate);</span>
 
-<span class="pc bpc" id="L112" title="1 of 2 branches missed.">		for (int iYear = iYearStart + 1; iYear &lt; iYearEnd; ++iYear) {</span>
-<span class="nc" id="L113">			int iYearJan1 = org.drip.analytics.date.DateUtil.ToJulian (iYear,</span>
+<span class="fc bfc" id="L112" title="All 2 branches covered.">		for (int iYear = iYearStart + 1; iYear &lt; iYearEnd; ++iYear) {</span>
+<span class="fc" id="L113">			int iYearJan1 = org.drip.analytics.date.DateUtil.ToJulian (iYear,</span>
 				org.drip.analytics.date.DateUtil.JANUARY, 1);
 
-<span class="nc bnc" id="L116" title="All 2 branches missed.">			if (org.drip.analytics.date.DateUtil.IsLeapYear (iYearJan1))</span>
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">			if (org.drip.analytics.date.DateUtil.IsLeapYear (iYearJan1))</span>
 <span class="nc" id="L117">				iNumLeapDays += 366;</span>
 			else
-<span class="nc" id="L119">				iNumNonLeapDays += 365;</span>
+<span class="fc" id="L119">				iNumNonLeapDays += 365;</span>
 		}
 
 <span class="fc" id="L122">		return dblDCF + (((double) (iNumLeapDays)) / 366.) + (((double) (iNumNonLeapDays)) / 365.);</span>
@@ -130,36 +130,36 @@ public class DCAct_Act implements org.drip.analytics.daycount.DCFCalculator {
 		final java.lang.String strCalendar)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L133">		int iNumLeapDays = 0;</span>
-<span class="nc" id="L134">		int iNumNonLeapDays = 0;</span>
+<span class="fc" id="L133">		int iNumLeapDays = 0;</span>
+<span class="fc" id="L134">		int iNumNonLeapDays = 0;</span>
 
-<span class="nc" id="L136">		int iYearStart = org.drip.analytics.date.DateUtil.Year (iStartDate);</span>
+<span class="fc" id="L136">		int iYearStart = org.drip.analytics.date.DateUtil.Year (iStartDate);</span>
 
-<span class="nc" id="L138">		int iYearEnd = org.drip.analytics.date.DateUtil.Year (iEndDate);</span>
+<span class="fc" id="L138">		int iYearEnd = org.drip.analytics.date.DateUtil.Year (iEndDate);</span>
 
-<span class="nc bnc" id="L140" title="All 2 branches missed.">		if (iYearStart == iYearEnd) return iEndDate - iStartDate;</span>
+<span class="fc bfc" id="L140" title="All 2 branches covered.">		if (iYearStart == iYearEnd) return iEndDate - iStartDate;</span>
 
-<span class="nc bnc" id="L142" title="All 2 branches missed.">		if (org.drip.analytics.date.DateUtil.IsLeapYear (iStartDate))</span>
+<span class="pc bpc" id="L142" title="1 of 2 branches missed.">		if (org.drip.analytics.date.DateUtil.IsLeapYear (iStartDate))</span>
 <span class="nc" id="L143">			iNumLeapDays += org.drip.analytics.date.DateUtil.DaysRemaining (iStartDate);</span>
 		else
-<span class="nc" id="L145">			iNumNonLeapDays += org.drip.analytics.date.DateUtil.DaysRemaining (iStartDate);</span>
+<span class="fc" id="L145">			iNumNonLeapDays += org.drip.analytics.date.DateUtil.DaysRemaining (iStartDate);</span>
 
-<span class="nc bnc" id="L147" title="All 2 branches missed.">		if (org.drip.analytics.date.DateUtil.IsLeapYear (iEndDate))</span>
-<span class="nc" id="L148">			iNumLeapDays += org.drip.analytics.date.DateUtil.DaysElapsed (iEndDate);</span>
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">		if (org.drip.analytics.date.DateUtil.IsLeapYear (iEndDate))</span>
+<span class="fc" id="L148">			iNumLeapDays += org.drip.analytics.date.DateUtil.DaysElapsed (iEndDate);</span>
 		else
 <span class="nc" id="L150">			iNumNonLeapDays += org.drip.analytics.date.DateUtil.DaysElapsed (iEndDate);</span>
 
-<span class="nc bnc" id="L152" title="All 2 branches missed.">		for (int iYear = iYearStart + 1; iYear &lt; iYearEnd; ++iYear) {</span>
-<span class="nc" id="L153">			int iYearJan1 = org.drip.analytics.date.DateUtil.ToJulian (iYear,</span>
+<span class="fc bfc" id="L152" title="All 2 branches covered.">		for (int iYear = iYearStart + 1; iYear &lt; iYearEnd; ++iYear) {</span>
+<span class="fc" id="L153">			int iYearJan1 = org.drip.analytics.date.DateUtil.ToJulian (iYear,</span>
 				org.drip.analytics.date.DateUtil.JANUARY, 1);
 
-<span class="nc bnc" id="L156" title="All 2 branches missed.">			if (org.drip.analytics.date.DateUtil.IsLeapYear (iYearJan1))</span>
+<span class="pc bpc" id="L156" title="1 of 2 branches missed.">			if (org.drip.analytics.date.DateUtil.IsLeapYear (iYearJan1))</span>
 <span class="nc" id="L157">				iNumLeapDays += 366;</span>
 			else
-<span class="nc" id="L159">				iNumNonLeapDays += 365;</span>
+<span class="fc" id="L159">				iNumNonLeapDays += 365;</span>
 		}
 
-<span class="nc" id="L162">		return iNumLeapDays + iNumNonLeapDays;</span>
+<span class="fc" id="L162">		return iNumLeapDays + iNumNonLeapDays;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

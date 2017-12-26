@@ -85,129 +85,129 @@ import org.drip.xva.set.*;
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="fc" id="L88">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L88">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L90">		int iNumStep = 40;</span>
-<span class="fc" id="L91">		double dblTime = 10.;</span>
-<span class="fc" id="L92">		double dblPortfolioDrift = 0.0;</span>
-<span class="fc" id="L93">		double dblPortfolioVolatility = 0.15;</span>
-<span class="fc" id="L94">		double dblPortfolioValueStart = 0.;</span>
-<span class="fc" id="L95">		double dblBankThreshold = -0.1;</span>
-<span class="fc" id="L96">		double dblCounterPartyThreshold = 0.1;</span>
+<span class="nc" id="L90">		int iNumStep = 40;</span>
+<span class="nc" id="L91">		double dblTime = 10.;</span>
+<span class="nc" id="L92">		double dblPortfolioDrift = 0.0;</span>
+<span class="nc" id="L93">		double dblPortfolioVolatility = 0.15;</span>
+<span class="nc" id="L94">		double dblPortfolioValueStart = 0.;</span>
+<span class="nc" id="L95">		double dblBankThreshold = -0.1;</span>
+<span class="nc" id="L96">		double dblCounterPartyThreshold = 0.1;</span>
 
-<span class="fc" id="L98">		JulianDate dtSpot = DateUtil.Today();</span>
+<span class="nc" id="L98">		JulianDate dtSpot = DateUtil.Today();</span>
 
-<span class="fc" id="L100">		JulianDate dtStart = dtSpot;</span>
-<span class="fc" id="L101">		double dblTimeWidth = dblTime / iNumStep;</span>
-<span class="fc" id="L102">		double[] adblTimeWidth = new double[iNumStep];</span>
+<span class="nc" id="L100">		JulianDate dtStart = dtSpot;</span>
+<span class="nc" id="L101">		double dblTimeWidth = dblTime / iNumStep;</span>
+<span class="nc" id="L102">		double[] adblTimeWidth = new double[iNumStep];</span>
 
-<span class="fc bfc" id="L104" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumStep; ++i)</span>
-<span class="fc" id="L105">			adblTimeWidth[i] = dblTimeWidth;</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumStep; ++i)</span>
+<span class="nc" id="L105">			adblTimeWidth[i] = dblTimeWidth;</span>
 
-<span class="fc" id="L107">		CollateralGroupSpecification cgs = CollateralGroupSpecification.FixedThreshold (</span>
+<span class="nc" id="L107">		CollateralGroupSpecification cgs = CollateralGroupSpecification.FixedThreshold (</span>
 			&quot;FIXEDTHRESHOLD&quot;,
 			dblCounterPartyThreshold,
 			dblBankThreshold
 		);
 
-<span class="fc" id="L113">		CounterPartyGroupSpecification cpgs = CounterPartyGroupSpecification.Standard (&quot;CPGROUP&quot;);</span>
+<span class="nc" id="L113">		CounterPartyGroupSpecification cpgs = CounterPartyGroupSpecification.Standard (&quot;CPGROUP&quot;);</span>
 
-<span class="fc" id="L115">		DiffusionEvolver dePortfolio = new DiffusionEvolver (</span>
-<span class="fc" id="L116">			DiffusionEvaluatorLinear.Standard (</span>
+<span class="nc" id="L115">		DiffusionEvolver dePortfolio = new DiffusionEvolver (</span>
+<span class="nc" id="L116">			DiffusionEvaluatorLinear.Standard (</span>
 				dblPortfolioDrift,
 				dblPortfolioVolatility
 			)
 		);
 
-<span class="fc" id="L122">		JumpDiffusionEdge[] aJDESwapRate = dePortfolio.incrementSequence (</span>
+<span class="nc" id="L122">		JumpDiffusionEdge[] aJDESwapRate = dePortfolio.incrementSequence (</span>
 			new JumpDiffusionVertex (
 				dblTime,
 				dblPortfolioValueStart,
 				0.,
 				false
 			),
-<span class="fc" id="L129">			JumpDiffusionEdgeUnit.Diffusion (</span>
+<span class="nc" id="L129">			JumpDiffusionEdgeUnit.Diffusion (</span>
 				adblTimeWidth,
-<span class="fc" id="L131">				SequenceGenerator.Gaussian (iNumStep)</span>
+<span class="nc" id="L131">				SequenceGenerator.Gaussian (iNumStep)</span>
 			),
 			dblTimeWidth
 		);
 
-<span class="fc" id="L136">		System.out.println();</span>
+<span class="nc" id="L136">		System.out.println();</span>
 
-<span class="fc" id="L138">		System.out.println (&quot;\t||--------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L138">		System.out.println (&quot;\t||--------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L140">		System.out.println (&quot;\t||                                       COLLATERAL AMOUNT ESTIMATION OUTPUT METRICS                                        ||&quot;);</span>
+<span class="nc" id="L140">		System.out.println (&quot;\t||                                       COLLATERAL AMOUNT ESTIMATION OUTPUT METRICS                                        ||&quot;);</span>
 
-<span class="fc" id="L142">		System.out.println (&quot;\t||--------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L142">		System.out.println (&quot;\t||--------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L144">		System.out.println (&quot;\t||    L -&gt; R:                                                                                                               ||&quot;);</span>
+<span class="nc" id="L144">		System.out.println (&quot;\t||    L -&gt; R:                                                                                                               ||&quot;);</span>
 
-<span class="fc" id="L146">		System.out.println (&quot;\t||            - Forward Date                                                                                                ||&quot;);</span>
+<span class="nc" id="L146">		System.out.println (&quot;\t||            - Forward Date                                                                                                ||&quot;);</span>
 
-<span class="fc" id="L148">		System.out.println (&quot;\t||            - Forward Value                                                                                               ||&quot;);</span>
+<span class="nc" id="L148">		System.out.println (&quot;\t||            - Forward Value                                                                                               ||&quot;);</span>
 
-<span class="fc" id="L150">		System.out.println (&quot;\t||            - Bank Margin Date                                                                                            ||&quot;);</span>
+<span class="nc" id="L150">		System.out.println (&quot;\t||            - Bank Margin Date                                                                                            ||&quot;);</span>
 
-<span class="fc" id="L152">		System.out.println (&quot;\t||            - Counter Party Margin Date                                                                                   ||&quot;);</span>
+<span class="nc" id="L152">		System.out.println (&quot;\t||            - Counter Party Margin Date                                                                                   ||&quot;);</span>
 
-<span class="fc" id="L154">		System.out.println (&quot;\t||            - Bank Window Margin Value                                                                                    ||&quot;);</span>
+<span class="nc" id="L154">		System.out.println (&quot;\t||            - Bank Window Margin Value                                                                                    ||&quot;);</span>
 
-<span class="fc" id="L156">		System.out.println (&quot;\t||            - Counter Party Window Margin Value                                                                           ||&quot;);</span>
+<span class="nc" id="L156">		System.out.println (&quot;\t||            - Counter Party Window Margin Value                                                                           ||&quot;);</span>
 
-<span class="fc" id="L158">		System.out.println (&quot;\t||            - Bank Collateral Threshold                                                                                   ||&quot;);</span>
+<span class="nc" id="L158">		System.out.println (&quot;\t||            - Bank Collateral Threshold                                                                                   ||&quot;);</span>
 
-<span class="fc" id="L160">		System.out.println (&quot;\t||            - Counter Party Collateral Threshold                                                                          ||&quot;);</span>
+<span class="nc" id="L160">		System.out.println (&quot;\t||            - Counter Party Collateral Threshold                                                                          ||&quot;);</span>
 
-<span class="fc" id="L162">		System.out.println (&quot;\t||            - Bank Posting Requirement                                                                                    ||&quot;);</span>
+<span class="nc" id="L162">		System.out.println (&quot;\t||            - Bank Posting Requirement                                                                                    ||&quot;);</span>
 
-<span class="fc" id="L164">		System.out.println (&quot;\t||            - Counter Party Posting Requirement                                                                           ||&quot;);</span>
+<span class="nc" id="L164">		System.out.println (&quot;\t||            - Counter Party Posting Requirement                                                                           ||&quot;);</span>
 
-<span class="fc" id="L166">		System.out.println (&quot;\t||            - Gross Posting Requirement                                                                                   ||&quot;);</span>
+<span class="nc" id="L166">		System.out.println (&quot;\t||            - Gross Posting Requirement                                                                                   ||&quot;);</span>
 
-<span class="fc" id="L168">		System.out.println (&quot;\t||--------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L168">		System.out.println (&quot;\t||--------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L170" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumStep; ++i) {</span>
-<span class="fc" id="L171">			JulianDate dtEnd = dtStart.addMonths (3);</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumStep; ++i) {</span>
+<span class="nc" id="L171">			JulianDate dtEnd = dtStart.addMonths (3);</span>
 
-<span class="fc" id="L173">			double dblPortfolioValueFinish = dblTimeWidth * (iNumStep - i) * aJDESwapRate[i].finish();</span>
+<span class="nc" id="L173">			double dblPortfolioValueFinish = dblTimeWidth * (iNumStep - i) * aJDESwapRate[i].finish();</span>
 
-<span class="fc" id="L175">			CollateralAmountEstimator hae = new CollateralAmountEstimator (</span>
+<span class="nc" id="L175">			CollateralAmountEstimator hae = new CollateralAmountEstimator (</span>
 				cgs,
 				cpgs,
 				new BrokenDateInterpolatorLinearT (
-<span class="fc" id="L179">					dtStart.julian(),</span>
-<span class="fc" id="L180">					dtEnd.julian(),</span>
+<span class="nc" id="L179">					dtStart.julian(),</span>
+<span class="nc" id="L180">					dtEnd.julian(),</span>
 					dblPortfolioValueStart,
 					dblPortfolioValueFinish
 				),
 				Double.NaN
 			);
 
-<span class="fc" id="L187">			CollateralAmountEstimatorOutput haeo = hae.output (dtEnd);</span>
+<span class="nc" id="L187">			CollateralAmountEstimatorOutput haeo = hae.output (dtEnd);</span>
 
-<span class="fc" id="L189">			System.out.println (</span>
+<span class="nc" id="L189">			System.out.println (</span>
 				&quot;\t|| &quot; +
 				dtEnd + &quot; =&gt; &quot; +
-<span class="fc" id="L192">				FormatUtil.FormatDouble (dblPortfolioValueFinish, 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L193">				haeo.bankMarginDate() + &quot; | &quot; +</span>
-<span class="fc" id="L194">				haeo.counterPartyMarginDate() + &quot; | &quot; +</span>
-<span class="fc" id="L195">				FormatUtil.FormatDouble (haeo.bankWindowMarginValue(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L196">				FormatUtil.FormatDouble (haeo.counterPartyWindowMarginValue(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L197">				FormatUtil.FormatDouble (haeo.bankCollateralThreshold(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L198">				FormatUtil.FormatDouble (haeo.counterPartyCollateralThreshold(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L199">				FormatUtil.FormatDouble (haeo.bankPostingRequirement(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L200">				FormatUtil.FormatDouble (haeo.counterPartyPostingRequirement(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L201">				FormatUtil.FormatDouble (haeo.postingRequirement(), 1, 4, 1.) + &quot; ||&quot;</span>
+<span class="nc" id="L192">				FormatUtil.FormatDouble (dblPortfolioValueFinish, 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L193">				haeo.bankMarginDate() + &quot; | &quot; +</span>
+<span class="nc" id="L194">				haeo.counterPartyMarginDate() + &quot; | &quot; +</span>
+<span class="nc" id="L195">				FormatUtil.FormatDouble (haeo.bankWindowMarginValue(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L196">				FormatUtil.FormatDouble (haeo.counterPartyWindowMarginValue(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L197">				FormatUtil.FormatDouble (haeo.bankCollateralThreshold(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L198">				FormatUtil.FormatDouble (haeo.counterPartyCollateralThreshold(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L199">				FormatUtil.FormatDouble (haeo.bankPostingRequirement(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L200">				FormatUtil.FormatDouble (haeo.counterPartyPostingRequirement(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L201">				FormatUtil.FormatDouble (haeo.postingRequirement(), 1, 4, 1.) + &quot; ||&quot;</span>
 			);
 
-<span class="fc" id="L204">			dtStart = dtEnd;</span>
-<span class="fc" id="L205">			dblPortfolioValueStart = dblPortfolioValueFinish;</span>
+<span class="nc" id="L204">			dtStart = dtEnd;</span>
+<span class="nc" id="L205">			dblPortfolioValueStart = dblPortfolioValueFinish;</span>
 		}
 
-<span class="fc" id="L208">		System.out.println (&quot;\t||--------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L208">		System.out.println (&quot;\t||--------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L210">		System.out.println();</span>
-<span class="fc" id="L211">	}</span>
+<span class="nc" id="L210">		System.out.println();</span>
+<span class="nc" id="L211">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

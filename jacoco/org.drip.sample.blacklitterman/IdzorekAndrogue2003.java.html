@@ -70,12 +70,12 @@ import org.drip.service.env.EnvManager;
 		final String[] astArgs)
 		throws Exception
 	{
-<span class="nc" id="L73">		EnvManager.InitEnv (</span>
+<span class="fc" id="L73">		EnvManager.InitEnv (</span>
 			&quot;&quot;,
 			true
 		);
 
-<span class="nc" id="L78">		String[] astrAssetClass = new String[] {</span>
+<span class="fc" id="L78">		String[] astrAssetClass = new String[] {</span>
 			&quot;US Bonds            &quot;,
 			&quot;Global Bonds xUSD   &quot;,
 			&quot;World Equity xUS    &quot;,
@@ -86,7 +86,7 @@ import org.drip.service.env.EnvManager;
 			&quot;US Small Cap Value  &quot;
 		};
 
-<span class="nc" id="L89">		double[] adblMarketCapitalizationEstimate = new double[] {</span>
+<span class="fc" id="L89">		double[] adblMarketCapitalizationEstimate = new double[] {</span>
 			 8360741000000.,
 			11583275710000.,
 			 9212460000000.,
@@ -97,9 +97,9 @@ import org.drip.service.env.EnvManager;
 			  459897061500.
 		};
 
-<span class="nc" id="L100">		double dblDelta = 3.37;</span>
+<span class="fc" id="L100">		double dblDelta = 3.37;</span>
 
-<span class="nc" id="L102">		double[][] aadblAssetExcessReturnsCorrelation = new double[][] {</span>
+<span class="fc" id="L102">		double[][] aadblAssetExcessReturnsCorrelation = new double[][] {</span>
 			{ 0.0014,  0.0015, -0.0008, -0.0017, -0.0010, -0.0007, -0.0015, -0.0006},
 			{ 0.0015,  0.0076,  0.0026, -0.0006, -0.0013, -0.0003, -0.0002,  0.0005},
 			{-0.0008,  0.0026,  0.0251,  0.0292,  0.0208,  0.0147,  0.0248,  0.0134},
@@ -110,7 +110,7 @@ import org.drip.service.env.EnvManager;
 			{-0.0006,  0.0005,  0.0134,  0.0268,  0.0260,  0.0215,  0.0411,  0.0276}
 		};
 
-<span class="nc" id="L113">		double[] adblMarketCapitalizationWeightReconciler = new double[] {</span>
+<span class="fc" id="L113">		double[] adblMarketCapitalizationWeightReconciler = new double[] {</span>
 			0.2016,
 			0.2793,
 			0.2221,
@@ -121,7 +121,7 @@ import org.drip.service.env.EnvManager;
 			0.0111
 		};
 
-<span class="nc" id="L124">		double[] adblImpliedReturnsReconciler = new double[] {</span>
+<span class="fc" id="L124">		double[] adblImpliedReturnsReconciler = new double[] {</span>
 			0.0008,
 			0.0094,
 			0.0395,
@@ -132,77 +132,77 @@ import org.drip.service.env.EnvManager;
 			0.0349
 		};
 
-<span class="nc" id="L135">		double dblTotalMarketCapitalization = 0.;</span>
-<span class="nc" id="L136">		double[] adblMarketCapitalizationWeight = new double[adblMarketCapitalizationEstimate.length];</span>
+<span class="fc" id="L135">		double dblTotalMarketCapitalization = 0.;</span>
+<span class="fc" id="L136">		double[] adblMarketCapitalizationWeight = new double[adblMarketCapitalizationEstimate.length];</span>
 
-<span class="nc bnc" id="L138" title="All 2 branches missed.">		for (int i = 0; i &lt; adblMarketCapitalizationEstimate.length; ++i)</span>
-<span class="nc" id="L139">			dblTotalMarketCapitalization += adblMarketCapitalizationEstimate[i];</span>
+<span class="fc bfc" id="L138" title="All 2 branches covered.">		for (int i = 0; i &lt; adblMarketCapitalizationEstimate.length; ++i)</span>
+<span class="fc" id="L139">			dblTotalMarketCapitalization += adblMarketCapitalizationEstimate[i];</span>
 
-<span class="nc bnc" id="L141" title="All 2 branches missed.">		for (int i = 0; i &lt; adblMarketCapitalizationEstimate.length; ++i)</span>
-<span class="nc" id="L142">			adblMarketCapitalizationWeight[i] = adblMarketCapitalizationEstimate[i] / dblTotalMarketCapitalization;</span>
+<span class="fc bfc" id="L141" title="All 2 branches covered.">		for (int i = 0; i &lt; adblMarketCapitalizationEstimate.length; ++i)</span>
+<span class="fc" id="L142">			adblMarketCapitalizationWeight[i] = adblMarketCapitalizationEstimate[i] / dblTotalMarketCapitalization;</span>
 
-<span class="nc" id="L144">		double[] adblImpliedReturns = Matrix.Product (</span>
+<span class="fc" id="L144">		double[] adblImpliedReturns = Matrix.Product (</span>
 			aadblAssetExcessReturnsCorrelation,
 			adblMarketCapitalizationWeight
 		);
 
-<span class="nc" id="L149">		System.out.println (&quot;\n\t|------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L149">		System.out.println (&quot;\n\t|------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L151">		System.out.println (&quot;\t|                                          CO-VARIANCE MATRIX                                          ||&quot;);</span>
+<span class="fc" id="L151">		System.out.println (&quot;\t|                                          CO-VARIANCE MATRIX                                          ||&quot;);</span>
 
-<span class="nc" id="L153">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L153">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L155" title="All 2 branches missed.">		for (int i = 0; i &lt; astrAssetClass.length; ++i) {</span>
-<span class="nc" id="L156">			String strDump = &quot;\t| &quot; + astrAssetClass[i] + &quot; &quot;;</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">		for (int i = 0; i &lt; astrAssetClass.length; ++i) {</span>
+<span class="fc" id="L156">			String strDump = &quot;\t| &quot; + astrAssetClass[i] + &quot; &quot;;</span>
 
-<span class="nc bnc" id="L158" title="All 2 branches missed.">			for (int j = 0; j &lt; astrAssetClass.length; ++j)</span>
-<span class="nc" id="L159">				strDump += &quot;| &quot; + FormatUtil.FormatDouble (aadblAssetExcessReturnsCorrelation[i][j], 1, 4, 1.) + &quot; &quot;;</span>
+<span class="fc bfc" id="L158" title="All 2 branches covered.">			for (int j = 0; j &lt; astrAssetClass.length; ++j)</span>
+<span class="fc" id="L159">				strDump += &quot;| &quot; + FormatUtil.FormatDouble (aadblAssetExcessReturnsCorrelation[i][j], 1, 4, 1.) + &quot; &quot;;</span>
 
-<span class="nc" id="L161">			System.out.println (strDump + &quot;||&quot;);</span>
+<span class="fc" id="L161">			System.out.println (strDump + &quot;||&quot;);</span>
 		}
 
-<span class="nc" id="L164">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L164">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L166">		System.out.println (&quot;\n\t||-------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L166">		System.out.println (&quot;\n\t||-------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L168">		System.out.println (&quot;\t||         MARKET CAPITALIZATION AND EQUILIBRIUM WEIGHTS       ||&quot;);</span>
+<span class="fc" id="L168">		System.out.println (&quot;\t||         MARKET CAPITALIZATION AND EQUILIBRIUM WEIGHTS       ||&quot;);</span>
 
-<span class="nc" id="L170">		System.out.println (&quot;\t||-------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L170">		System.out.println (&quot;\t||-------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L172">		System.out.println (&quot;\t||     ASSET CLASS      =&gt;  CAPITALIZATION |  OUTPUT |  PAPER  ||&quot;);</span>
+<span class="fc" id="L172">		System.out.println (&quot;\t||     ASSET CLASS      =&gt;  CAPITALIZATION |  OUTPUT |  PAPER  ||&quot;);</span>
 
-<span class="nc" id="L174">		System.out.println (&quot;\t||-------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L174">		System.out.println (&quot;\t||-------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L176" title="All 2 branches missed.">		for (int i = 0; i &lt; adblMarketCapitalizationEstimate.length; ++i)</span>
-<span class="nc" id="L177">			System.out.println (</span>
+<span class="fc bfc" id="L176" title="All 2 branches covered.">		for (int i = 0; i &lt; adblMarketCapitalizationEstimate.length; ++i)</span>
+<span class="fc" id="L177">			System.out.println (</span>
 				&quot;\t|| &quot; + astrAssetClass[i] + &quot; =&gt; &quot; +
-<span class="nc" id="L179">				FormatUtil.FormatDouble (adblMarketCapitalizationEstimate[i], 14, 0, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L180">				FormatUtil.FormatDouble (adblMarketCapitalizationWeight[i], 2, 2, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L181">				FormatUtil.FormatDouble (adblMarketCapitalizationWeightReconciler[i], 2, 2, 100.) + &quot;% ||&quot;</span>
+<span class="fc" id="L179">				FormatUtil.FormatDouble (adblMarketCapitalizationEstimate[i], 14, 0, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L180">				FormatUtil.FormatDouble (adblMarketCapitalizationWeight[i], 2, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L181">				FormatUtil.FormatDouble (adblMarketCapitalizationWeightReconciler[i], 2, 2, 100.) + &quot;% ||&quot;</span>
 			);
 
-<span class="nc" id="L184">		System.out.println (&quot;\t||-------------------------------------------------------------||\n&quot;);</span>
+<span class="fc" id="L184">		System.out.println (&quot;\t||-------------------------------------------------------------||\n&quot;);</span>
 
-<span class="nc" id="L186">		System.out.println (&quot;\t||-------------------------------------------||&quot;);</span>
+<span class="fc" id="L186">		System.out.println (&quot;\t||-------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L188">		System.out.println (&quot;\t||         RISK PREMIUM IMPLIED RETURNS      ||&quot;);</span>
+<span class="fc" id="L188">		System.out.println (&quot;\t||         RISK PREMIUM IMPLIED RETURNS      ||&quot;);</span>
 
-<span class="nc" id="L190">		System.out.println (&quot;\t||-------------------------------------------||&quot;);</span>
+<span class="fc" id="L190">		System.out.println (&quot;\t||-------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L192">		System.out.println (&quot;\t||     ASSET CLASS      =&gt;  OUTPUT |  PAPER  ||&quot;);</span>
+<span class="fc" id="L192">		System.out.println (&quot;\t||     ASSET CLASS      =&gt;  OUTPUT |  PAPER  ||&quot;);</span>
 
-<span class="nc" id="L194">		System.out.println (&quot;\t||-------------------------------------------||&quot;);</span>
+<span class="fc" id="L194">		System.out.println (&quot;\t||-------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L196" title="All 2 branches missed.">		for (int i = 0; i &lt; adblImpliedReturns.length; ++i)</span>
-<span class="nc" id="L197">			System.out.println (</span>
+<span class="fc bfc" id="L196" title="All 2 branches covered.">		for (int i = 0; i &lt; adblImpliedReturns.length; ++i)</span>
+<span class="fc" id="L197">			System.out.println (</span>
 				&quot;\t|| &quot; + astrAssetClass[i] + &quot; =&gt; &quot; +
-<span class="nc" id="L199">				FormatUtil.FormatDouble (dblDelta * adblImpliedReturns[i], 2, 2, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L200">				FormatUtil.FormatDouble (adblImpliedReturnsReconciler[i], 2, 2, 100.) + &quot;% ||&quot;</span>
+<span class="fc" id="L199">				FormatUtil.FormatDouble (dblDelta * adblImpliedReturns[i], 2, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L200">				FormatUtil.FormatDouble (adblImpliedReturnsReconciler[i], 2, 2, 100.) + &quot;% ||&quot;</span>
 			);
 
-<span class="nc" id="L203">		System.out.println (&quot;\t||-------------------------------------------||\n&quot;);</span>
+<span class="fc" id="L203">		System.out.println (&quot;\t||-------------------------------------------||\n&quot;);</span>
 
-<span class="nc" id="L205">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L206">	}</span>
+<span class="fc" id="L205">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L206">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

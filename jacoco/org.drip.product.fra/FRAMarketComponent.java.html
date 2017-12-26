@@ -77,8 +77,8 @@ public class FRAMarketComponent extends org.drip.product.fra.FRAStandardComponen
 		final org.drip.param.valuation.CashSettleParams csp)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L80">		super (strName, stream, dblStrike, csp);</span>
-<span class="nc" id="L81">	}</span>
+<span class="fc" id="L80">		super (strName, stream, dblStrike, csp);</span>
+<span class="fc" id="L81">	}</span>
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; value (
 		final org.drip.param.valuation.ValuationParams valParams,
@@ -86,88 +86,88 @@ public class FRAMarketComponent extends org.drip.product.fra.FRAStandardComponen
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
-<span class="nc bnc" id="L89" title="All 4 branches missed.">		if (null == valParams || null == csqs) return null;</span>
+<span class="pc bpc" id="L89" title="2 of 4 branches missed.">		if (null == valParams || null == csqs) return null;</span>
 
-<span class="nc" id="L91">		long lStart = System.nanoTime();</span>
+<span class="fc" id="L91">		long lStart = System.nanoTime();</span>
 
-<span class="nc" id="L93">		int iValueDate = valParams.valueDate();</span>
+<span class="fc" id="L93">		int iValueDate = valParams.valueDate();</span>
 
-<span class="nc" id="L95">		int iEffectiveDate = effectiveDate().julian();</span>
+<span class="fc" id="L95">		int iEffectiveDate = effectiveDate().julian();</span>
 
-<span class="nc bnc" id="L97" title="All 2 branches missed.">		if (iValueDate &gt; iEffectiveDate) return null;</span>
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">		if (iValueDate &gt; iEffectiveDate) return null;</span>
 
-<span class="nc" id="L99">		org.drip.state.identifier.FundingLabel fundingLabel = org.drip.state.identifier.FundingLabel.Standard</span>
-<span class="nc" id="L100">			(payCurrency());</span>
+<span class="fc" id="L99">		org.drip.state.identifier.FundingLabel fundingLabel = org.drip.state.identifier.FundingLabel.Standard</span>
+<span class="fc" id="L100">			(payCurrency());</span>
 
-<span class="nc" id="L102">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqs.fundingState (fundingLabel);</span>
+<span class="fc" id="L102">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqs.fundingState (fundingLabel);</span>
 
-<span class="nc bnc" id="L104" title="All 2 branches missed.">		if (null == dcFunding) return null;</span>
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">		if (null == dcFunding) return null;</span>
 
-<span class="nc" id="L106">		org.drip.analytics.date.JulianDate dtMaturity = maturityDate();</span>
+<span class="fc" id="L106">		org.drip.analytics.date.JulianDate dtMaturity = maturityDate();</span>
 
-<span class="nc" id="L108">		int iMaturityDate = dtMaturity.julian();</span>
+<span class="fc" id="L108">		int iMaturityDate = dtMaturity.julian();</span>
 
-<span class="nc" id="L110">		org.drip.state.identifier.ForwardLabel forwardLabel = forwardLabel().get (&quot;DERIVED&quot;);</span>
+<span class="fc" id="L110">		org.drip.state.identifier.ForwardLabel forwardLabel = forwardLabel().get (&quot;DERIVED&quot;);</span>
 
-<span class="nc" id="L112">		org.drip.state.forward.ForwardRateEstimator fc = csqs.forwardState (forwardLabel);</span>
+<span class="fc" id="L112">		org.drip.state.forward.ForwardRateEstimator fc = csqs.forwardState (forwardLabel);</span>
 
-<span class="nc bnc" id="L114" title="All 4 branches missed.">		if (null == fc || !forwardLabel.match (fc.index())) return null;</span>
+<span class="pc bpc" id="L114" title="2 of 4 branches missed.">		if (null == fc || !forwardLabel.match (fc.index())) return null;</span>
 
-<span class="nc" id="L116">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapResult = super.value</span>
-<span class="nc" id="L117">			(valParams, pricerParams, csqs, vcp);</span>
+<span class="fc" id="L116">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapResult = super.value</span>
+<span class="fc" id="L117">			(valParams, pricerParams, csqs, vcp);</span>
 
-<span class="nc bnc" id="L119" title="All 4 branches missed.">		if (null == mapResult || 0 == mapResult.size()) return null;</span>
+<span class="pc bpc" id="L119" title="2 of 4 branches missed.">		if (null == mapResult || 0 == mapResult.size()) return null;</span>
 
 		try {
-<span class="nc bnc" id="L122" title="All 2 branches missed.">			double dblParStandardFRA = csqs.available (dtMaturity, forwardLabel) ? csqs.fixing (dtMaturity,</span>
-<span class="nc" id="L123">				forwardLabel) : fc.forward (iMaturityDate);</span>
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">			double dblParStandardFRA = csqs.available (dtMaturity, forwardLabel) ? csqs.fixing (dtMaturity,</span>
+<span class="fc" id="L123">				forwardLabel) : fc.forward (iMaturityDate);</span>
 
-<span class="nc" id="L125">			double dblForwardDCF = org.drip.analytics.daycount.Convention.YearFraction (iMaturityDate, new</span>
-<span class="nc" id="L126">				org.drip.analytics.date.JulianDate (iMaturityDate).addTenor (forwardLabel.tenor()).julian(),</span>
-<span class="nc" id="L127">					stream().couponDC(), false, null, stream().calendar());</span>
+<span class="fc" id="L125">			double dblForwardDCF = org.drip.analytics.daycount.Convention.YearFraction (iMaturityDate, new</span>
+<span class="fc" id="L126">				org.drip.analytics.date.JulianDate (iMaturityDate).addTenor (forwardLabel.tenor()).julian(),</span>
+<span class="fc" id="L127">					stream().couponDC(), false, null, stream().calendar());</span>
 
-<span class="nc" id="L129">			double dblParDCForward = dcFunding.libor (iEffectiveDate, iMaturityDate);</span>
+<span class="fc" id="L129">			double dblParDCForward = dcFunding.libor (iEffectiveDate, iMaturityDate);</span>
 
-<span class="nc" id="L131">			double dblShiftedLogNormalScaler = dblForwardDCF * dblParStandardFRA;</span>
-<span class="nc" id="L132">			dblShiftedLogNormalScaler = dblShiftedLogNormalScaler / (1. + dblShiftedLogNormalScaler);</span>
+<span class="fc" id="L131">			double dblShiftedLogNormalScaler = dblForwardDCF * dblParStandardFRA;</span>
+<span class="fc" id="L132">			dblShiftedLogNormalScaler = dblShiftedLogNormalScaler / (1. + dblShiftedLogNormalScaler);</span>
 
-<span class="nc" id="L134">			double dblForwardPrice = dblForwardDCF * (dblParStandardFRA - strike()) / (1. + dblForwardDCF *</span>
+<span class="fc" id="L134">			double dblForwardPrice = dblForwardDCF * (dblParStandardFRA - strike()) / (1. + dblForwardDCF *</span>
 				dblParStandardFRA);
 
-<span class="nc" id="L137">			double dblShiftedLogNormalConvexityAdjustmentExponent =</span>
+<span class="fc" id="L137">			double dblShiftedLogNormalConvexityAdjustmentExponent =</span>
 				org.drip.analytics.support.OptionHelper.IntegratedFRACrossVolConvexityExponent
-<span class="nc" id="L139">					(csqs.forwardVolatility (forwardLabel), csqs.fundingVolatility (fundingLabel),</span>
-<span class="nc" id="L140">						csqs.forwardFundingCorrelation (forwardLabel, fundingLabel),</span>
+<span class="fc" id="L139">					(csqs.forwardVolatility (forwardLabel), csqs.fundingVolatility (fundingLabel),</span>
+<span class="fc" id="L140">						csqs.forwardFundingCorrelation (forwardLabel, fundingLabel),</span>
 							dblShiftedLogNormalScaler, dblShiftedLogNormalScaler, iValueDate,
 								iEffectiveDate);
 
-<span class="nc" id="L144">			double dblShiftedLogNormalParMarketFRA = ((dblForwardDCF * dblParStandardFRA + 1.) *</span>
-<span class="nc" id="L145">				java.lang.Math.exp (dblShiftedLogNormalConvexityAdjustmentExponent) - 1.) / dblForwardDCF;</span>
+<span class="fc" id="L144">			double dblShiftedLogNormalParMarketFRA = ((dblForwardDCF * dblParStandardFRA + 1.) *</span>
+<span class="fc" id="L145">				java.lang.Math.exp (dblShiftedLogNormalConvexityAdjustmentExponent) - 1.) / dblForwardDCF;</span>
 
-<span class="nc" id="L147">			mapResult.put (&quot;discountcurveparforward&quot;, dblParDCForward);</span>
+<span class="fc" id="L147">			mapResult.put (&quot;discountcurveparforward&quot;, dblParDCForward);</span>
 
-<span class="nc" id="L149">			mapResult.put (&quot;forwardprice&quot;, dblForwardPrice);</span>
+<span class="fc" id="L149">			mapResult.put (&quot;forwardprice&quot;, dblForwardPrice);</span>
 
-<span class="nc" id="L151">			mapResult.put (&quot;parstandardfra&quot;, dblParStandardFRA);</span>
+<span class="fc" id="L151">			mapResult.put (&quot;parstandardfra&quot;, dblParStandardFRA);</span>
 
-<span class="nc" id="L153">			mapResult.put (&quot;parstandardfradc&quot;, dblParDCForward);</span>
+<span class="fc" id="L153">			mapResult.put (&quot;parstandardfradc&quot;, dblParDCForward);</span>
 
-<span class="nc" id="L155">			mapResult.put (&quot;shiftedlognormalconvexityadjustment&quot;,</span>
-<span class="nc" id="L156">				dblShiftedLogNormalConvexityAdjustmentExponent);</span>
+<span class="fc" id="L155">			mapResult.put (&quot;shiftedlognormalconvexityadjustment&quot;,</span>
+<span class="fc" id="L156">				dblShiftedLogNormalConvexityAdjustmentExponent);</span>
 
-<span class="nc" id="L158">			mapResult.put (&quot;shiftedlognormalconvexitycorrection&quot;, dblShiftedLogNormalParMarketFRA -</span>
+<span class="fc" id="L158">			mapResult.put (&quot;shiftedlognormalconvexitycorrection&quot;, dblShiftedLogNormalParMarketFRA -</span>
 				dblParStandardFRA);
 
-<span class="nc" id="L161">			mapResult.put (&quot;shiftedlognormalparmarketfra&quot;, dblShiftedLogNormalParMarketFRA);</span>
+<span class="fc" id="L161">			mapResult.put (&quot;shiftedlognormalparmarketfra&quot;, dblShiftedLogNormalParMarketFRA);</span>
 <span class="nc" id="L162">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L163">			e.printStackTrace();</span>
 
 <span class="nc" id="L165">			return null;</span>
-<span class="nc" id="L166">		}</span>
+<span class="fc" id="L166">		}</span>
 
-<span class="nc" id="L168">		mapResult.put (&quot;calctime&quot;, (System.nanoTime() - lStart) * 1.e-09);</span>
+<span class="fc" id="L168">		mapResult.put (&quot;calctime&quot;, (System.nanoTime() - lStart) * 1.e-09);</span>
 
-<span class="nc" id="L170">		return mapResult;</span>
+<span class="fc" id="L170">		return mapResult;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

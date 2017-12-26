@@ -193,42 +193,42 @@ public class EmbeddedOptionSchedule {
 		final java.lang.String strFloatIndex,
 		final double dblFixToFloatSpread)
 	{
-<span class="nc bnc" id="L196" title="All 12 branches missed.">		if (null == aiDate || aiDate.length == 0 || null == adblFactor || adblFactor.length == 0 ||</span>
+<span class="pc bpc" id="L196" title="6 of 12 branches missed.">		if (null == aiDate || aiDate.length == 0 || null == adblFactor || adblFactor.length == 0 ||</span>
 			aiDate.length != adblFactor.length || 0 &gt;= iCallDiscretization)
 <span class="nc" id="L198">			return null;</span>
 
-<span class="nc" id="L200">		int iCallDate = aiDate[0];</span>
+<span class="fc" id="L200">		int iCallDate = aiDate[0];</span>
 
-<span class="nc" id="L202">		java.util.ArrayList&lt;java.lang.Integer&gt; liCallDates = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
+<span class="fc" id="L202">		java.util.ArrayList&lt;java.lang.Integer&gt; liCallDates = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
 
-<span class="nc" id="L204">		java.util.ArrayList&lt;java.lang.Double&gt; ldblCallFactors = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
+<span class="fc" id="L204">		java.util.ArrayList&lt;java.lang.Double&gt; ldblCallFactors = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
 
-<span class="nc bnc" id="L206" title="All 2 branches missed.">		for (int i = 1; i &lt; aiDate.length; ++i) {</span>
-<span class="nc bnc" id="L207" title="All 2 branches missed.">			while (iCallDate &lt;= aiDate[i]) {</span>
-<span class="nc" id="L208">				liCallDates.add (iCallDate);</span>
+<span class="fc bfc" id="L206" title="All 2 branches covered.">		for (int i = 1; i &lt; aiDate.length; ++i) {</span>
+<span class="fc bfc" id="L207" title="All 2 branches covered.">			while (iCallDate &lt;= aiDate[i]) {</span>
+<span class="fc" id="L208">				liCallDates.add (iCallDate);</span>
 
-<span class="nc" id="L210">				ldblCallFactors.add (adblFactor[i - 1]);</span>
+<span class="fc" id="L210">				ldblCallFactors.add (adblFactor[i - 1]);</span>
 
-<span class="nc" id="L212">				iCallDate += iCallDiscretization;</span>
+<span class="fc" id="L212">				iCallDate += iCallDiscretization;</span>
 			}
 		}
 
-<span class="nc" id="L216">		int[] aiEOSDate = new int[liCallDates.size()];</span>
+<span class="fc" id="L216">		int[] aiEOSDate = new int[liCallDates.size()];</span>
 
-<span class="nc" id="L218">		int i = 0;</span>
+<span class="fc" id="L218">		int i = 0;</span>
 
-<span class="nc bnc" id="L220" title="All 2 branches missed.">		for (int iEOSDate : liCallDates)</span>
-<span class="nc" id="L221">			aiEOSDate[i++] = iEOSDate;</span>
+<span class="fc bfc" id="L220" title="All 2 branches covered.">		for (int iEOSDate : liCallDates)</span>
+<span class="fc" id="L221">			aiEOSDate[i++] = iEOSDate;</span>
 
-<span class="nc" id="L223">		double[] adblEOSFactor = new double[ldblCallFactors.size()];</span>
+<span class="fc" id="L223">		double[] adblEOSFactor = new double[ldblCallFactors.size()];</span>
 
-<span class="nc" id="L225">		i = 0;</span>
+<span class="fc" id="L225">		i = 0;</span>
 
-<span class="nc bnc" id="L227" title="All 2 branches missed.">		for (double dblCallFactor : ldblCallFactors)</span>
-<span class="nc" id="L228">			adblEOSFactor[i++] = dblCallFactor;</span>
+<span class="fc bfc" id="L227" title="All 2 branches covered.">		for (double dblCallFactor : ldblCallFactors)</span>
+<span class="fc" id="L228">			adblEOSFactor[i++] = dblCallFactor;</span>
 
 		try {
-<span class="nc" id="L231">			return new EmbeddedOptionSchedule (aiEOSDate, adblEOSFactor, bIsPut, iNoticePeriod,</span>
+<span class="fc" id="L231">			return new EmbeddedOptionSchedule (aiEOSDate, adblEOSFactor, bIsPut, iNoticePeriod,</span>
 				bFixToFloatOnExercise, dblFixToFloatExerciseDate, strFloatIndex, dblFixToFloatSpread);
 <span class="nc" id="L233">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L234">			e.printStackTrace();</span>
@@ -328,7 +328,7 @@ public class EmbeddedOptionSchedule {
 
 	public int[] dates()
 	{
-<span class="nc" id="L331">		return _aiDate;</span>
+<span class="fc" id="L331">		return _aiDate;</span>
 	}
 
 	/**
@@ -339,7 +339,7 @@ public class EmbeddedOptionSchedule {
 
 	public double[] factors()
 	{
-<span class="nc" id="L342">		return _adblFactor;</span>
+<span class="fc" id="L342">		return _adblFactor;</span>
 	}
 
 	/**
@@ -364,7 +364,7 @@ public class EmbeddedOptionSchedule {
 
 	public int exerciseNoticePeriod()
 	{
-<span class="nc" id="L367">		return _iNoticePeriod;</span>
+<span class="fc" id="L367">		return _iNoticePeriod;</span>
 	}
 
 	/**
@@ -395,7 +395,7 @@ public class EmbeddedOptionSchedule {
 <span class="fc" id="L395">		int iExerciseCutOff = iSpotDate + _iNoticePeriod;</span>
 
 <span class="fc bfc" id="L397" title="All 2 branches covered.">		for (int i = 0; i &lt; iExerciseSize; ++i) {</span>
-<span class="pc bpc" id="L398" title="1 of 2 branches missed.">			if (_aiDate[i] &gt;= iExerciseCutOff) lsDate.add (_aiDate[i]);</span>
+<span class="fc bfc" id="L398" title="All 2 branches covered.">			if (_aiDate[i] &gt;= iExerciseCutOff) lsDate.add (_aiDate[i]);</span>
 		}
 
 <span class="fc" id="L401">		int iSize = lsDate.size();</span>
@@ -427,7 +427,7 @@ public class EmbeddedOptionSchedule {
 <span class="fc" id="L427">		int iExerciseCutOff = iSpotDate + _iNoticePeriod;</span>
 
 <span class="fc bfc" id="L429" title="All 2 branches covered.">		for (int i = 0; i &lt; iExerciseSize; ++i) {</span>
-<span class="pc bpc" id="L430" title="1 of 2 branches missed.">			if (_aiDate[i] &gt;= iExerciseCutOff) lsFactor.add (_adblFactor[i]);</span>
+<span class="fc bfc" id="L430" title="All 2 branches covered.">			if (_aiDate[i] &gt;= iExerciseCutOff) lsFactor.add (_adblFactor[i]);</span>
 		}
 
 <span class="fc" id="L433">		int iSize = lsFactor.size();</span>
@@ -456,10 +456,10 @@ public class EmbeddedOptionSchedule {
 		final int iSpotDate)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L459">		int iExerciseSize = _aiDate.length;</span>
+<span class="fc" id="L459">		int iExerciseSize = _aiDate.length;</span>
 
-<span class="nc bnc" id="L461" title="All 2 branches missed.">		for (int i = 0; i &lt; iExerciseSize; ++i) {</span>
-<span class="nc bnc" id="L462" title="All 2 branches missed.">			if (_aiDate[i] - _iNoticePeriod &gt;= iSpotDate) return _aiDate[i];</span>
+<span class="pc bpc" id="L461" title="1 of 2 branches missed.">		for (int i = 0; i &lt; iExerciseSize; ++i) {</span>
+<span class="fc bfc" id="L462" title="All 2 branches covered.">			if (_aiDate[i] - _iNoticePeriod &gt;= iSpotDate) return _aiDate[i];</span>
 		}
 
 <span class="nc" id="L465">		throw new java.lang.Exception (&quot;EmbeddedOptionSchedule::nextDate =&gt; Invalid Inputs&quot;);</span>
@@ -479,10 +479,10 @@ public class EmbeddedOptionSchedule {
 		final int iSpotDate)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L482">		int iExerciseSize = _aiDate.length;</span>
+<span class="fc" id="L482">		int iExerciseSize = _aiDate.length;</span>
 
-<span class="nc bnc" id="L484" title="All 2 branches missed.">		for (int i = 0; i &lt; iExerciseSize; ++i) {</span>
-<span class="nc bnc" id="L485" title="All 2 branches missed.">			if (_aiDate[i] - _iNoticePeriod &gt;= iSpotDate) return _adblFactor[i];</span>
+<span class="pc bpc" id="L484" title="1 of 2 branches missed.">		for (int i = 0; i &lt; iExerciseSize; ++i) {</span>
+<span class="fc bfc" id="L485" title="All 2 branches covered.">			if (_aiDate[i] - _iNoticePeriod &gt;= iSpotDate) return _adblFactor[i];</span>
 		}
 
 <span class="nc" id="L488">		throw new java.lang.Exception (&quot;EmbeddedOptionSchedule::nextFactor =&gt; Invalid Inputs&quot;);</span>

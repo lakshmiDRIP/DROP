@@ -77,120 +77,120 @@ import org.drip.service.env.EnvManager;
 		final double dblCleanPrice)
 		throws Exception
 	{
-<span class="nc" id="L80">		double dblAccrued = bond.accrued (</span>
-<span class="nc" id="L81">			dtSettle.julian(),</span>
+<span class="fc" id="L80">		double dblAccrued = bond.accrued (</span>
+<span class="fc" id="L81">			dtSettle.julian(),</span>
 			null
 		);
 
-<span class="nc" id="L85">		ValuationParams valParams = ValuationParams.Spot (dtSettle.julian());</span>
+<span class="fc" id="L85">		ValuationParams valParams = ValuationParams.Spot (dtSettle.julian());</span>
 
-<span class="nc" id="L87">		double dblYield = bond.yieldFromPrice (</span>
+<span class="fc" id="L87">		double dblYield = bond.yieldFromPrice (</span>
 			valParams,
 			mktParams,
 			null,
 			dblCleanPrice
 		);
 
-<span class="nc" id="L94">		double dblModifiedDuration = bond.modifiedDurationFromPrice (</span>
+<span class="fc" id="L94">		double dblModifiedDuration = bond.modifiedDurationFromPrice (</span>
 			valParams,
 			mktParams,
 			null,
 			dblCleanPrice
 		);
 
-<span class="nc" id="L101">		double dblRisk = bond.yield01FromPrice (</span>
+<span class="fc" id="L101">		double dblRisk = bond.yield01FromPrice (</span>
 			valParams,
 			mktParams,
 			null,
 			dblCleanPrice
 		);
 
-<span class="nc" id="L108">		double dblConvexity = bond.convexityFromPrice (</span>
+<span class="fc" id="L108">		double dblConvexity = bond.convexityFromPrice (</span>
 			valParams,
 			mktParams,
 			null,
 			dblCleanPrice
 		);
 
-<span class="nc" id="L115">		JulianDate dtPreviousCouponDate = bond.previousCouponDate (dtSettle);</span>
+<span class="fc" id="L115">		JulianDate dtPreviousCouponDate = bond.previousCouponDate (dtSettle);</span>
 
-<span class="nc" id="L117">		double dblCurrentPrincipal = bond.notional (dtPreviousCouponDate.julian()) * dblInitialNotional;</span>
+<span class="fc" id="L117">		double dblCurrentPrincipal = bond.notional (dtPreviousCouponDate.julian()) * dblInitialNotional;</span>
 
-<span class="nc" id="L119">		double dblAccruedAmount = dblAccrued * dblInitialNotional;</span>
+<span class="fc" id="L119">		double dblAccruedAmount = dblAccrued * dblInitialNotional;</span>
 
-<span class="nc" id="L121">		System.out.println (&quot;\t-------------------------------------&quot;);</span>
+<span class="fc" id="L121">		System.out.println (&quot;\t-------------------------------------&quot;);</span>
 
-<span class="nc" id="L123">		System.out.println (&quot;\tAnalytics Metrics for &quot; + bond.name());</span>
+<span class="fc" id="L123">		System.out.println (&quot;\tAnalytics Metrics for &quot; + bond.name());</span>
 
-<span class="nc" id="L125">		System.out.println (&quot;\t-------------------------------------&quot;);</span>
+<span class="fc" id="L125">		System.out.println (&quot;\t-------------------------------------&quot;);</span>
 
-<span class="nc" id="L127">		System.out.println (&quot;\tPrice             : &quot; + FormatUtil.FormatDouble (dblCleanPrice, 1, 4, 100.));</span>
+<span class="fc" id="L127">		System.out.println (&quot;\tPrice             : &quot; + FormatUtil.FormatDouble (dblCleanPrice, 1, 4, 100.));</span>
 
-<span class="nc" id="L129">		System.out.println (&quot;\tYield             : &quot; + FormatUtil.FormatDouble (dblYield, 1, 2, 100.) + &quot;%&quot;);</span>
+<span class="fc" id="L129">		System.out.println (&quot;\tYield             : &quot; + FormatUtil.FormatDouble (dblYield, 1, 2, 100.) + &quot;%&quot;);</span>
 
-<span class="nc" id="L131">		System.out.println (&quot;\tSettle            :  &quot; + dtSettle);</span>
+<span class="fc" id="L131">		System.out.println (&quot;\tSettle            :  &quot; + dtSettle);</span>
 
-<span class="nc" id="L133">		System.out.println();</span>
+<span class="fc" id="L133">		System.out.println();</span>
 
-<span class="nc" id="L135">		System.out.println (&quot;\tModified Duration : &quot; + FormatUtil.FormatDouble (dblModifiedDuration, 1, 4, 10000.));</span>
+<span class="fc" id="L135">		System.out.println (&quot;\tModified Duration : &quot; + FormatUtil.FormatDouble (dblModifiedDuration, 1, 4, 10000.));</span>
 
-<span class="nc" id="L137">		System.out.println (&quot;\tRisk              : &quot; + FormatUtil.FormatDouble (dblRisk, 1, 4, 10000.));</span>
+<span class="fc" id="L137">		System.out.println (&quot;\tRisk              : &quot; + FormatUtil.FormatDouble (dblRisk, 1, 4, 10000.));</span>
 
-<span class="nc" id="L139">		System.out.println (&quot;\tConvexity         : &quot; + FormatUtil.FormatDouble (dblConvexity * dblInitialNotional, 1, 4, 1.));</span>
+<span class="fc" id="L139">		System.out.println (&quot;\tConvexity         : &quot; + FormatUtil.FormatDouble (dblConvexity * dblInitialNotional, 1, 4, 1.));</span>
 
-<span class="nc" id="L141">		System.out.println (&quot;\tDV01              : &quot; + FormatUtil.FormatDouble (dblRisk * dblInitialNotional, 1, 2, 1.));</span>
+<span class="fc" id="L141">		System.out.println (&quot;\tDV01              : &quot; + FormatUtil.FormatDouble (dblRisk * dblInitialNotional, 1, 2, 1.));</span>
 
-<span class="nc" id="L143">		System.out.println();</span>
+<span class="fc" id="L143">		System.out.println();</span>
 
-<span class="nc" id="L145">		System.out.println (&quot;\tPrevious Coupon Date : &quot; + dtPreviousCouponDate);</span>
+<span class="fc" id="L145">		System.out.println (&quot;\tPrevious Coupon Date : &quot; + dtPreviousCouponDate);</span>
 
-<span class="nc" id="L147">		System.out.println (&quot;\tFace                 : &quot; + FormatUtil.FormatDouble (dblInitialNotional, 1, 2, 1.));</span>
+<span class="fc" id="L147">		System.out.println (&quot;\tFace                 : &quot; + FormatUtil.FormatDouble (dblInitialNotional, 1, 2, 1.));</span>
 
-<span class="nc" id="L149">		System.out.println (&quot;\tNotional             : &quot; + FormatUtil.FormatDouble (dblInitialNotional, 1, 2, 1.));</span>
+<span class="fc" id="L149">		System.out.println (&quot;\tNotional             : &quot; + FormatUtil.FormatDouble (dblInitialNotional, 1, 2, 1.));</span>
 
-<span class="nc" id="L151">		System.out.println (&quot;\tCurrent Principal    : &quot; + FormatUtil.FormatDouble (dblCurrentPrincipal, 1, 2, 1.));</span>
+<span class="fc" id="L151">		System.out.println (&quot;\tCurrent Principal    : &quot; + FormatUtil.FormatDouble (dblCurrentPrincipal, 1, 2, 1.));</span>
 
-<span class="nc" id="L153">		System.out.println (&quot;\tAccrued              : &quot; + FormatUtil.FormatDouble (dblAccruedAmount, 1, 6, 1.));</span>
+<span class="fc" id="L153">		System.out.println (&quot;\tAccrued              : &quot; + FormatUtil.FormatDouble (dblAccruedAmount, 1, 6, 1.));</span>
 
-<span class="nc" id="L155">		System.out.println (&quot;\tTotal                : &quot; + FormatUtil.FormatDouble (dblCleanPrice * dblCurrentPrincipal + dblAccruedAmount, 1, 2, 1.));</span>
+<span class="fc" id="L155">		System.out.println (&quot;\tTotal                : &quot; + FormatUtil.FormatDouble (dblCleanPrice * dblCurrentPrincipal + dblAccruedAmount, 1, 2, 1.));</span>
 
-<span class="nc" id="L157">		System.out.println (&quot;\tNPV                  : &quot; + FormatUtil.FormatDouble (dblCleanPrice * dblCurrentPrincipal + dblAccruedAmount, 1, 2, 1.));</span>
+<span class="fc" id="L157">		System.out.println (&quot;\tNPV                  : &quot; + FormatUtil.FormatDouble (dblCleanPrice * dblCurrentPrincipal + dblAccruedAmount, 1, 2, 1.));</span>
 
-<span class="nc" id="L159">		System.out.println (&quot;\tAccrual Days         : &quot; + FormatUtil.FormatDouble (dtSettle.julian() - dtPreviousCouponDate.julian(), 1, 0, 1.));</span>
-<span class="nc" id="L160">	}</span>
+<span class="fc" id="L159">		System.out.println (&quot;\tAccrual Days         : &quot; + FormatUtil.FormatDouble (dtSettle.julian() - dtPreviousCouponDate.julian(), 1, 0, 1.));</span>
+<span class="fc" id="L160">	}</span>
 
 	public static void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L166">		EnvManager.InitEnv (</span>
+<span class="fc" id="L166">		EnvManager.InitEnv (</span>
 			&quot;&quot;,
 			true
 		);
 
-<span class="nc" id="L171">		double dblBeginPrincipalFactor = 1.;</span>
-<span class="nc" id="L172">		double dblCouponRate = 0.1189;</span>
-<span class="nc" id="L173">		double dblServiceFeeRate = 0.00;</span>
-<span class="nc" id="L174">		double dblBondNotional = 147544.28;</span>
-<span class="nc" id="L175">		String strDayCount = &quot;Act/365&quot;;</span>
-<span class="nc" id="L176">		String strCurrency = &quot;USD&quot;;</span>
-<span class="nc" id="L177">		int iNumPayment = 48;</span>
-<span class="nc" id="L178">		int iPayFrequency = 12;</span>
-<span class="nc" id="L179">		double dblConstantPaymentAmount = 3941.98;</span>
+<span class="fc" id="L171">		double dblBeginPrincipalFactor = 1.;</span>
+<span class="fc" id="L172">		double dblCouponRate = 0.1189;</span>
+<span class="fc" id="L173">		double dblServiceFeeRate = 0.00;</span>
+<span class="fc" id="L174">		double dblBondNotional = 147544.28;</span>
+<span class="fc" id="L175">		String strDayCount = &quot;Act/365&quot;;</span>
+<span class="fc" id="L176">		String strCurrency = &quot;USD&quot;;</span>
+<span class="fc" id="L177">		int iNumPayment = 48;</span>
+<span class="fc" id="L178">		int iPayFrequency = 12;</span>
+<span class="fc" id="L179">		double dblConstantPaymentAmount = 3941.98;</span>
 
-<span class="nc" id="L181">		double dblFixedPaymentAmount = ConstantPaymentBondBuilder.ConstantUniformPaymentAmount (</span>
+<span class="fc" id="L181">		double dblFixedPaymentAmount = ConstantPaymentBondBuilder.ConstantUniformPaymentAmount (</span>
 			dblBondNotional,
 			dblCouponRate,
 			iNumPayment / iPayFrequency
 		);
 
-<span class="nc" id="L187">		JulianDate dtEffective = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L187">		JulianDate dtEffective = DateUtil.CreateFromYMD (</span>
 			2015,
 			DateUtil.OCTOBER,
 			22
 		);
 
-<span class="nc" id="L193">		Bond bond = ConstantPaymentBondBuilder.Standard (</span>
+<span class="fc" id="L193">		Bond bond = ConstantPaymentBondBuilder.Standard (</span>
 			&quot;FPMA 11.89 2019&quot;,
 			dtEffective,
 			strCurrency,
@@ -203,64 +203,64 @@ import org.drip.service.env.EnvManager;
 			dblBondNotional
 		);
 
-<span class="nc" id="L206">		System.out.println (&quot;\n\n\t|------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L206">		System.out.println (&quot;\n\n\t|------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L208">		System.out.println (&quot;\t|                                         FIXED CASH-FLOW MORTGAGE BOND ANALYTICS                                                                            ||&quot;);</span>
+<span class="fc" id="L208">		System.out.println (&quot;\t|                                         FIXED CASH-FLOW MORTGAGE BOND ANALYTICS                                                                            ||&quot;);</span>
 
-<span class="nc" id="L210">		System.out.println (&quot;\t|                                         ----- --------- -------- ---- ---------                                                                            ||&quot;);</span>
+<span class="fc" id="L210">		System.out.println (&quot;\t|                                         ----- --------- -------- ---- ---------                                                                            ||&quot;);</span>
 
-<span class="nc" id="L212">		System.out.println (&quot;\t|    L -&gt; R:                                                                                                                                                 ||&quot;);</span>
+<span class="fc" id="L212">		System.out.println (&quot;\t|    L -&gt; R:                                                                                                                                                 ||&quot;);</span>
 
-<span class="nc" id="L214">		System.out.println (&quot;\t|            - Start Date                                                                                                                                    ||&quot;);</span>
+<span class="fc" id="L214">		System.out.println (&quot;\t|            - Start Date                                                                                                                                    ||&quot;);</span>
 
-<span class="nc" id="L216">		System.out.println (&quot;\t|            - End Date                                                                                                                                      ||&quot;);</span>
+<span class="fc" id="L216">		System.out.println (&quot;\t|            - End Date                                                                                                                                      ||&quot;);</span>
 
-<span class="nc" id="L218">		System.out.println (&quot;\t|            - Pay Date                                                                                                                                      ||&quot;);</span>
+<span class="fc" id="L218">		System.out.println (&quot;\t|            - Pay Date                                                                                                                                      ||&quot;);</span>
 
-<span class="nc" id="L220">		System.out.println (&quot;\t|            - Discount Factor                                                                                                                               ||&quot;);</span>
+<span class="fc" id="L220">		System.out.println (&quot;\t|            - Discount Factor                                                                                                                               ||&quot;);</span>
 
-<span class="nc" id="L222">		System.out.println (&quot;\t|            - Survival Factor                                                                                                                               ||&quot;);</span>
+<span class="fc" id="L222">		System.out.println (&quot;\t|            - Survival Factor                                                                                                                               ||&quot;);</span>
 
-<span class="nc" id="L224">		System.out.println (&quot;\t|            - Principal Factor                                                                                                                              ||&quot;);</span>
+<span class="fc" id="L224">		System.out.println (&quot;\t|            - Principal Factor                                                                                                                              ||&quot;);</span>
 
-<span class="nc" id="L226">		System.out.println (&quot;\t|            - Accrual Days                                                                                                                                  ||&quot;);</span>
+<span class="fc" id="L226">		System.out.println (&quot;\t|            - Accrual Days                                                                                                                                  ||&quot;);</span>
 
-<span class="nc" id="L228">		System.out.println (&quot;\t|            - Accrual Fraction                                                                                                                              ||&quot;);</span>
+<span class="fc" id="L228">		System.out.println (&quot;\t|            - Accrual Fraction                                                                                                                              ||&quot;);</span>
 
-<span class="nc" id="L230">		System.out.println (&quot;\t|            - Coupon Rate (%)                                                                                                                               ||&quot;);</span>
+<span class="fc" id="L230">		System.out.println (&quot;\t|            - Coupon Rate (%)                                                                                                                               ||&quot;);</span>
 
-<span class="nc" id="L232">		System.out.println (&quot;\t|            - Coupon Amount                                                                                                                                 ||&quot;);</span>
+<span class="fc" id="L232">		System.out.println (&quot;\t|            - Coupon Amount                                                                                                                                 ||&quot;);</span>
 
-<span class="nc" id="L234">		System.out.println (&quot;\t|            - Fee Rate (%)                                                                                                                                  ||&quot;);</span>
+<span class="fc" id="L234">		System.out.println (&quot;\t|            - Fee Rate (%)                                                                                                                                  ||&quot;);</span>
 
-<span class="nc" id="L236">		System.out.println (&quot;\t|            - Fee Amount                                                                                                                                    ||&quot;);</span>
+<span class="fc" id="L236">		System.out.println (&quot;\t|            - Fee Amount                                                                                                                                    ||&quot;);</span>
 
-<span class="nc" id="L238">		System.out.println (&quot;\t|            - Principal Amount                                                                                                                              ||&quot;);</span>
+<span class="fc" id="L238">		System.out.println (&quot;\t|            - Principal Amount                                                                                                                              ||&quot;);</span>
 
-<span class="nc" id="L240">		System.out.println (&quot;\t|            - Total Amount                                                                                                                                  ||&quot;);</span>
+<span class="fc" id="L240">		System.out.println (&quot;\t|            - Total Amount                                                                                                                                  ||&quot;);</span>
 
-<span class="nc" id="L242">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L242">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L244" title="All 2 branches missed.">		for (CompositePeriod p : bond.couponPeriods()) {</span>
-<span class="nc" id="L245">			double dblPeriodCouponRate = p.couponMetrics (</span>
-<span class="nc" id="L246">				dtEffective.julian(),</span>
+<span class="fc bfc" id="L244" title="All 2 branches covered.">		for (CompositePeriod p : bond.couponPeriods()) {</span>
+<span class="fc" id="L245">			double dblPeriodCouponRate = p.couponMetrics (</span>
+<span class="fc" id="L246">				dtEffective.julian(),</span>
 				null
-<span class="nc" id="L248">			).rate();</span>
+<span class="fc" id="L248">			).rate();</span>
 
-<span class="nc" id="L250">			double dblCouponDCF = p.couponDCF();</span>
+<span class="fc" id="L250">			double dblCouponDCF = p.couponDCF();</span>
 
-<span class="nc" id="L252">			double dblEndPrincipalFactor = bond.notional (p.endDate());</span>
+<span class="fc" id="L252">			double dblEndPrincipalFactor = bond.notional (p.endDate());</span>
 
-<span class="nc" id="L254">			double dblPrincipalAmount = (dblBeginPrincipalFactor - dblEndPrincipalFactor) * dblBondNotional;</span>
+<span class="fc" id="L254">			double dblPrincipalAmount = (dblBeginPrincipalFactor - dblEndPrincipalFactor) * dblBondNotional;</span>
 
-<span class="nc" id="L256">			double dblCouponAmount = dblBeginPrincipalFactor * dblPeriodCouponRate * dblCouponDCF * dblBondNotional;</span>
+<span class="fc" id="L256">			double dblCouponAmount = dblBeginPrincipalFactor * dblPeriodCouponRate * dblCouponDCF * dblBondNotional;</span>
 
-<span class="nc" id="L258">			double dblYieldDF = Helper.Yield2DF (</span>
+<span class="fc" id="L258">			double dblYieldDF = Helper.Yield2DF (</span>
 				iPayFrequency,
 				dblCouponRate,
-<span class="nc" id="L261">				Convention.YearFraction (</span>
-<span class="nc" id="L262">					dtEffective.julian(),</span>
-<span class="nc" id="L263">					p.endDate(),</span>
+<span class="fc" id="L261">				Convention.YearFraction (</span>
+<span class="fc" id="L262">					dtEffective.julian(),</span>
+<span class="fc" id="L263">					p.endDate(),</span>
 					&quot;30/360&quot;,
 					false,
 					null,
@@ -268,39 +268,39 @@ import org.drip.service.env.EnvManager;
 				)
 			);
 
-<span class="nc" id="L271">			System.out.println (&quot;\t| [&quot; +</span>
-<span class="nc" id="L272">				DateUtil.YYYYMMDD (p.startDate()) + &quot; -&gt; &quot; +</span>
-<span class="nc" id="L273">				DateUtil.YYYYMMDD (p.endDate()) + &quot;] =&gt; &quot; +</span>
-<span class="nc" id="L274">				DateUtil.YYYYMMDD (p.payDate()) + &quot; | &quot; +</span>
-<span class="nc" id="L275">				FormatUtil.FormatDouble (dblYieldDF, 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L276">				FormatUtil.FormatDouble (1., 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L277">				FormatUtil.FormatDouble (dblBeginPrincipalFactor, 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L278">				FormatUtil.FormatDouble (dblCouponDCF * 365, 1, 0, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L279">				FormatUtil.FormatDouble (dblCouponDCF, 1, 10, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L280">				FormatUtil.FormatDouble (dblPeriodCouponRate, 2, 2, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L281">				FormatUtil.FormatDouble (dblCouponAmount, 2, 2, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L282">				FormatUtil.FormatDouble (dblServiceFeeRate, 2, 2, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L283">				FormatUtil.FormatDouble (dblCouponAmount * dblServiceFeeRate / dblPeriodCouponRate, 2, 2, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L284">				FormatUtil.FormatDouble (dblPrincipalAmount, 3, 2, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L285">				FormatUtil.FormatDouble (dblPrincipalAmount + dblCouponAmount, 3, 2, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L271">			System.out.println (&quot;\t| [&quot; +</span>
+<span class="fc" id="L272">				DateUtil.YYYYMMDD (p.startDate()) + &quot; -&gt; &quot; +</span>
+<span class="fc" id="L273">				DateUtil.YYYYMMDD (p.endDate()) + &quot;] =&gt; &quot; +</span>
+<span class="fc" id="L274">				DateUtil.YYYYMMDD (p.payDate()) + &quot; | &quot; +</span>
+<span class="fc" id="L275">				FormatUtil.FormatDouble (dblYieldDF, 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L276">				FormatUtil.FormatDouble (1., 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L277">				FormatUtil.FormatDouble (dblBeginPrincipalFactor, 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L278">				FormatUtil.FormatDouble (dblCouponDCF * 365, 1, 0, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L279">				FormatUtil.FormatDouble (dblCouponDCF, 1, 10, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L280">				FormatUtil.FormatDouble (dblPeriodCouponRate, 2, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L281">				FormatUtil.FormatDouble (dblCouponAmount, 2, 2, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L282">				FormatUtil.FormatDouble (dblServiceFeeRate, 2, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L283">				FormatUtil.FormatDouble (dblCouponAmount * dblServiceFeeRate / dblPeriodCouponRate, 2, 2, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L284">				FormatUtil.FormatDouble (dblPrincipalAmount, 3, 2, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L285">				FormatUtil.FormatDouble (dblPrincipalAmount + dblCouponAmount, 3, 2, 1.) + &quot; ||&quot;</span>
 			);
 
-<span class="nc" id="L288">			dblBeginPrincipalFactor = dblEndPrincipalFactor;</span>
-<span class="nc" id="L289">		}</span>
+<span class="fc" id="L288">			dblBeginPrincipalFactor = dblEndPrincipalFactor;</span>
+<span class="fc" id="L289">		}</span>
 
-<span class="nc" id="L291">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------------------------------------------||\n&quot;);</span>
+<span class="fc" id="L291">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------------------------------------------||\n&quot;);</span>
 
-<span class="nc" id="L293">		JulianDate dtSettle = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L293">		JulianDate dtSettle = DateUtil.CreateFromYMD (</span>
 			2015,
 			DateUtil.DECEMBER,
 			1
 		);
 
-<span class="nc" id="L299">		double dblCleanPrice = 1.00; // PAR</span>
+<span class="fc" id="L299">		double dblCleanPrice = 1.00; // PAR</span>
 
-<span class="nc" id="L301">		CurveSurfaceQuoteContainer mktParams = new CurveSurfaceQuoteContainer();</span>
+<span class="fc" id="L301">		CurveSurfaceQuoteContainer mktParams = new CurveSurfaceQuoteContainer();</span>
 
-<span class="nc" id="L303">		BondMetrics (</span>
+<span class="fc" id="L303">		BondMetrics (</span>
 			bond,
 			dblBondNotional,
 			dtSettle,
@@ -308,7 +308,7 @@ import org.drip.service.env.EnvManager;
 			dblCleanPrice
 		);
 
-<span class="nc" id="L311">		Bond bondFeeAdjusted = ConstantPaymentBondBuilder.Standard (</span>
+<span class="fc" id="L311">		Bond bondFeeAdjusted = ConstantPaymentBondBuilder.Standard (</span>
 			&quot;FPMA  9.24 2016&quot;,
 			dtEffective,
 			strCurrency,
@@ -321,22 +321,22 @@ import org.drip.service.env.EnvManager;
 			dblBondNotional
 		);
 
-<span class="nc" id="L324">		ValuationParams valParams = ValuationParams.Spot (dtSettle.julian());</span>
+<span class="fc" id="L324">		ValuationParams valParams = ValuationParams.Spot (dtSettle.julian());</span>
 
-<span class="nc" id="L326">		double dblYieldFeeAdjusted = bondFeeAdjusted.yieldFromPrice (</span>
+<span class="fc" id="L326">		double dblYieldFeeAdjusted = bondFeeAdjusted.yieldFromPrice (</span>
 			valParams,
 			mktParams,
 			null,
 			dblCleanPrice
 		);
 
-<span class="nc" id="L333">		System.out.println (&quot;\tFee Adjusted Yield   : &quot; + FormatUtil.FormatDouble (dblYieldFeeAdjusted, 1, 2, 100.) + &quot;%&quot;);</span>
+<span class="fc" id="L333">		System.out.println (&quot;\tFee Adjusted Yield   : &quot; + FormatUtil.FormatDouble (dblYieldFeeAdjusted, 1, 2, 100.) + &quot;%&quot;);</span>
 
-<span class="nc" id="L335">		System.out.println (&quot;\n\tUniform Constant Mortgage Amount       =&gt; &quot; + FormatUtil.FormatDouble (dblFixedPaymentAmount, 1, 2, 1.));</span>
+<span class="fc" id="L335">		System.out.println (&quot;\n\tUniform Constant Mortgage Amount       =&gt; &quot; + FormatUtil.FormatDouble (dblFixedPaymentAmount, 1, 2, 1.));</span>
 
-<span class="nc" id="L337">		System.out.println (</span>
-<span class="nc" id="L338">			&quot;\tFee Unadjusted Price From Coupon Yield =&gt; &quot; + FormatUtil.FormatDouble (</span>
-<span class="nc" id="L339">				bond.priceFromYield (</span>
+<span class="fc" id="L337">		System.out.println (</span>
+<span class="fc" id="L338">			&quot;\tFee Unadjusted Price From Coupon Yield =&gt; &quot; + FormatUtil.FormatDouble (</span>
+<span class="fc" id="L339">				bond.priceFromYield (</span>
 					valParams,
 					mktParams,
 					null,
@@ -345,9 +345,9 @@ import org.drip.service.env.EnvManager;
 			1, 2, 100.)
 		);
 
-<span class="nc" id="L348">		System.out.println (</span>
-<span class="nc" id="L349">			&quot;\tFee Adjusted Price From Coupon Yield   =&gt; &quot; + FormatUtil.FormatDouble (</span>
-<span class="nc" id="L350">				bondFeeAdjusted.priceFromYield (</span>
+<span class="fc" id="L348">		System.out.println (</span>
+<span class="fc" id="L349">			&quot;\tFee Adjusted Price From Coupon Yield   =&gt; &quot; + FormatUtil.FormatDouble (</span>
+<span class="fc" id="L350">				bondFeeAdjusted.priceFromYield (</span>
 					valParams,
 					mktParams,
 					null,
@@ -356,7 +356,7 @@ import org.drip.service.env.EnvManager;
 			1, 2, 100.)
 		);
 
-<span class="nc" id="L359">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L360">	}</span>
+<span class="fc" id="L359">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L360">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

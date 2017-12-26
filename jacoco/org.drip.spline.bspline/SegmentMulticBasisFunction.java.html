@@ -60,8 +60,8 @@ package org.drip.spline.bspline;
  */
 
 public class SegmentMulticBasisFunction extends org.drip.spline.bspline.SegmentBasisFunction {
-<span class="nc" id="L63">	private org.drip.spline.bspline.SegmentBasisFunction _oeLeft = null;</span>
-<span class="nc" id="L64">	private org.drip.spline.bspline.SegmentBasisFunction _oeRight = null;</span>
+<span class="fc" id="L63">	private org.drip.spline.bspline.SegmentBasisFunction _oeLeft = null;</span>
+<span class="fc" id="L64">	private org.drip.spline.bspline.SegmentBasisFunction _oeRight = null;</span>
 
 	/**
 	 * SegmentMulticBasisFunction constructor
@@ -77,23 +77,23 @@ public class SegmentMulticBasisFunction extends org.drip.spline.bspline.SegmentB
 		final org.drip.spline.bspline.SegmentBasisFunction oeRight)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L80">		super (oeLeft.bSplineOrder() + 1, oeLeft.leading(), oeRight.leading(), oeRight.trailing());</span>
+<span class="fc" id="L80">		super (oeLeft.bSplineOrder() + 1, oeLeft.leading(), oeRight.leading(), oeRight.trailing());</span>
 
-<span class="nc bnc" id="L82" title="All 2 branches missed.">		if ((_oeLeft = oeLeft).bSplineOrder() != (_oeRight = oeRight).bSplineOrder())</span>
+<span class="pc bpc" id="L82" title="1 of 2 branches missed.">		if ((_oeLeft = oeLeft).bSplineOrder() != (_oeRight = oeRight).bSplineOrder())</span>
 <span class="nc" id="L83">			throw new java.lang.Exception (&quot;SegmentMulticBasisFunction ctr: Invalid Inputs&quot;);</span>
-<span class="nc" id="L84">	}</span>
+<span class="fc" id="L84">	}</span>
 
 	@Override public double evaluate (
 		final double dblPredictorOrdinate)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L90" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate))</span>
+<span class="pc bpc" id="L90" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate))</span>
 <span class="nc" id="L91">			throw new java.lang.Exception (&quot;SegmentMulticBasisFunction::evaluate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L93" title="All 4 branches missed.">		if (dblPredictorOrdinate &lt; leading() || dblPredictorOrdinate &gt; trailing()) return 0.;</span>
+<span class="fc bfc" id="L93" title="All 4 branches covered.">		if (dblPredictorOrdinate &lt; leading() || dblPredictorOrdinate &gt; trailing()) return 0.;</span>
 
-<span class="nc" id="L95">		return _oeLeft.normalizedCumulative (dblPredictorOrdinate) - _oeRight.normalizedCumulative</span>
-<span class="nc" id="L96">			(dblPredictorOrdinate);</span>
+<span class="fc" id="L95">		return _oeLeft.normalizedCumulative (dblPredictorOrdinate) - _oeRight.normalizedCumulative</span>
+<span class="fc" id="L96">			(dblPredictorOrdinate);</span>
 	}
 
 	@Override public double integrate (
@@ -101,28 +101,28 @@ public class SegmentMulticBasisFunction extends org.drip.spline.bspline.SegmentB
 		final double dblEnd)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L104">		return org.drip.quant.calculus.R1ToR1Integrator.Simpson (this, dblBegin, dblEnd);</span>
+<span class="fc" id="L104">		return org.drip.quant.calculus.R1ToR1Integrator.Simpson (this, dblBegin, dblEnd);</span>
 	}
 
 	@Override public double normalizer()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L110">		return integrate (leading(), trailing());</span>
+<span class="fc" id="L110">		return integrate (leading(), trailing());</span>
 	}
 
 	@Override public double normalizedCumulative (
 		final double dblPredictorOrdinate)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L117" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate))</span>
+<span class="pc bpc" id="L117" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate))</span>
 <span class="nc" id="L118">			throw new java.lang.Exception</span>
 				(&quot;SegmentMulticBasisFunction::normalizedCumulative =&gt; Invalid Inputs&quot;);
 
-<span class="nc bnc" id="L121" title="All 2 branches missed.">		if (dblPredictorOrdinate &lt; leading()) return 0.;</span>
+<span class="fc bfc" id="L121" title="All 2 branches covered.">		if (dblPredictorOrdinate &lt; leading()) return 0.;</span>
 
-<span class="nc bnc" id="L123" title="All 2 branches missed.">		if (dblPredictorOrdinate &gt; trailing()) return 1.;</span>
+<span class="fc bfc" id="L123" title="All 2 branches covered.">		if (dblPredictorOrdinate &gt; trailing()) return 1.;</span>
 
-<span class="nc" id="L125">		return integrate (leading(), dblPredictorOrdinate) / normalizer();</span>
+<span class="fc" id="L125">		return integrate (leading(), dblPredictorOrdinate) / normalizer();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

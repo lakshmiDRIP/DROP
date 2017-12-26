@@ -77,30 +77,30 @@ import org.drip.spline.bspline.*;
 		final String strComment)
 		throws Exception
 	{
-<span class="nc" id="L80">		int iOrder = 1;</span>
-<span class="nc" id="L81">		double dblXIncrement = 0.25;</span>
+<span class="fc" id="L80">		int iOrder = 1;</span>
+<span class="fc" id="L81">		double dblXIncrement = 0.25;</span>
 
-<span class="nc" id="L83">		double dblX = me.leading() - dblXIncrement;</span>
+<span class="fc" id="L83">		double dblX = me.leading() - dblXIncrement;</span>
 
-<span class="nc" id="L85">		double dblXEnd = me.trailing() + dblXIncrement;</span>
+<span class="fc" id="L85">		double dblXEnd = me.trailing() + dblXIncrement;</span>
 
-<span class="nc" id="L87">		System.out.println (&quot;\n\t---------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L87">		System.out.println (&quot;\n\t---------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L89">		System.out.println (&quot;\t-------------------------&quot; + strComment + &quot;---------------------------&quot;);</span>
+<span class="fc" id="L89">		System.out.println (&quot;\t-------------------------&quot; + strComment + &quot;---------------------------&quot;);</span>
 
-<span class="nc" id="L91">		System.out.println (&quot;\t---------------------------------------------------------------\n&quot;);</span>
+<span class="fc" id="L91">		System.out.println (&quot;\t---------------------------------------------------------------\n&quot;);</span>
 
-<span class="nc bnc" id="L93" title="All 2 branches missed.">		while (dblX &lt;= dblXEnd) {</span>
-<span class="nc" id="L94">			System.out.println (</span>
-<span class="nc" id="L95">				&quot;\t\tResponse[&quot; + FormatUtil.FormatDouble (dblX, 1, 3, 1.) + &quot;] : &quot; +</span>
-<span class="nc" id="L96">				FormatUtil.FormatDouble (me.evaluate (dblX), 1, 5, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L97">				FormatUtil.FormatDouble (me.normalizedCumulative (dblX), 1, 5, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L98">				FormatUtil.FormatDouble (me.derivative (dblX, iOrder), 1, 5, 1.)</span>
+<span class="fc bfc" id="L93" title="All 2 branches covered.">		while (dblX &lt;= dblXEnd) {</span>
+<span class="fc" id="L94">			System.out.println (</span>
+<span class="fc" id="L95">				&quot;\t\tResponse[&quot; + FormatUtil.FormatDouble (dblX, 1, 3, 1.) + &quot;] : &quot; +</span>
+<span class="fc" id="L96">				FormatUtil.FormatDouble (me.evaluate (dblX), 1, 5, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L97">				FormatUtil.FormatDouble (me.normalizedCumulative (dblX), 1, 5, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L98">				FormatUtil.FormatDouble (me.derivative (dblX, iOrder), 1, 5, 1.)</span>
 			);
 
-<span class="nc" id="L101">			dblX += dblXIncrement;</span>
+<span class="fc" id="L101">			dblX += dblXIncrement;</span>
 		}
-<span class="nc" id="L103">	}</span>
+<span class="fc" id="L103">	}</span>
 
 	/*
 	 * This sample demonstrates the construction and usage of the following monic/multic basis spline arrays:
@@ -115,7 +115,7 @@ import org.drip.spline.bspline.*;
 	private static final void BSplineSequenceSample()
 		throws Exception
 	{
-<span class="nc" id="L118">		double[] adblPredictorOrdinate = new double[] {</span>
+<span class="fc" id="L118">		double[] adblPredictorOrdinate = new double[] {</span>
 			1., 2., 3., 4., 5., 6.
 		};
 
@@ -123,7 +123,7 @@ import org.drip.spline.bspline.*;
 		 * Construct the Array of Hyperbolic Rational Linear Monic Segment Basis Functions. 
 		 */
 
-<span class="nc" id="L126">		SegmentBasisFunction[] aMonic = SegmentBasisFunctionGenerator.MonicSequence (</span>
+<span class="fc" id="L126">		SegmentBasisFunction[] aMonic = SegmentBasisFunctionGenerator.MonicSequence (</span>
 			BasisHatPairGenerator.RAW_TENSION_HYPERBOLIC,
 			BasisHatShapeControl.SHAPE_CONTROL_RATIONAL_LINEAR,
 			adblPredictorOrdinate,
@@ -136,8 +136,8 @@ import org.drip.spline.bspline.*;
 		 * 	Segment Basis Function.
 		 */
 
-<span class="nc bnc" id="L139" title="All 2 branches missed.">		for (int i = 0; i &lt; aMonic.length; ++i)</span>
-<span class="nc" id="L140">			ComputeResponseMetric (</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">		for (int i = 0; i &lt; aMonic.length; ++i)</span>
+<span class="fc" id="L140">			ComputeResponseMetric (</span>
 				aMonic[i],
 				&quot;   MONIC   &quot;
 			);
@@ -146,7 +146,7 @@ import org.drip.spline.bspline.*;
 		 * Construct the array of multic basis functions of 3rd degree (i.e., quadratic).
 		 */
 
-<span class="nc" id="L149">		SegmentBasisFunction[] aQuadratic = SegmentBasisFunctionGenerator.MulticSequence (</span>
+<span class="fc" id="L149">		SegmentBasisFunction[] aQuadratic = SegmentBasisFunctionGenerator.MulticSequence (</span>
 			3,
 			aMonic
 		);
@@ -156,8 +156,8 @@ import org.drip.spline.bspline.*;
 		 * 	Multic Segment Basis Function.
 		 */
 
-<span class="nc bnc" id="L159" title="All 2 branches missed.">		for (int i = 0; i &lt; aQuadratic.length; ++i)</span>
-<span class="nc" id="L160">			ComputeResponseMetric (</span>
+<span class="fc bfc" id="L159" title="All 2 branches covered.">		for (int i = 0; i &lt; aQuadratic.length; ++i)</span>
+<span class="fc" id="L160">			ComputeResponseMetric (</span>
 				aQuadratic[i],
 				&quot; QUADRATIC &quot;
 			);
@@ -166,7 +166,7 @@ import org.drip.spline.bspline.*;
 		 * Construct the array of multic basis functions of 4th degree (i.e., cubic).
 		 */
 
-<span class="nc" id="L169">		SegmentBasisFunction[] aCubic = SegmentBasisFunctionGenerator.MulticSequence (</span>
+<span class="fc" id="L169">		SegmentBasisFunction[] aCubic = SegmentBasisFunctionGenerator.MulticSequence (</span>
 			4,
 			aQuadratic
 		);
@@ -176,8 +176,8 @@ import org.drip.spline.bspline.*;
 		 * 	Multic Segment Basis Function.
 		 */
 
-<span class="nc bnc" id="L179" title="All 2 branches missed.">		for (int i = 0; i &lt; aCubic.length; ++i)</span>
-<span class="nc" id="L180">			ComputeResponseMetric (</span>
+<span class="fc bfc" id="L179" title="All 2 branches covered.">		for (int i = 0; i &lt; aCubic.length; ++i)</span>
+<span class="fc" id="L180">			ComputeResponseMetric (</span>
 				aCubic[i],
 				&quot;   CUBIC   &quot;
 			);
@@ -186,7 +186,7 @@ import org.drip.spline.bspline.*;
 		 * Construct the array of multic basis functions of 5th degree (i.e., quartic).
 		 */
 
-<span class="nc" id="L189">		SegmentBasisFunction[] aQuartic = SegmentBasisFunctionGenerator.MulticSequence (</span>
+<span class="fc" id="L189">		SegmentBasisFunction[] aQuartic = SegmentBasisFunctionGenerator.MulticSequence (</span>
 			5,
 			aCubic
 		);
@@ -196,18 +196,18 @@ import org.drip.spline.bspline.*;
 		 * 	Multic Segment Basis Function.
 		 */
 
-<span class="nc bnc" id="L199" title="All 2 branches missed.">		for (int i = 0; i &lt; aQuartic.length; ++i)</span>
-<span class="nc" id="L200">			ComputeResponseMetric (</span>
+<span class="fc bfc" id="L199" title="All 2 branches covered.">		for (int i = 0; i &lt; aQuartic.length; ++i)</span>
+<span class="fc" id="L200">			ComputeResponseMetric (</span>
 				aQuartic[i],
 				&quot;  QUARTIC  &quot;
 			);
-<span class="nc" id="L204">	}</span>
+<span class="fc" id="L204">	}</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L210">		BSplineSequenceSample();</span>
-<span class="nc" id="L211">	}</span>
+<span class="fc" id="L210">		BSplineSequenceSample();</span>
+<span class="fc" id="L211">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

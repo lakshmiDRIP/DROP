@@ -141,41 +141,41 @@ public class Array2D {
 		final int iMaturityDate,
 		final double dblInitialAmount)
 	{
-<span class="nc bnc" id="L144" title="All 4 branches missed.">		if (null == strDateFactorVertex || strDateFactorVertex.isEmpty() ||</span>
-<span class="nc bnc" id="L145" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblInitialAmount))</span>
+<span class="pc bpc" id="L144" title="2 of 4 branches missed.">		if (null == strDateFactorVertex || strDateFactorVertex.isEmpty() ||</span>
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblInitialAmount))</span>
 <span class="nc" id="L146">			return null;</span>
 
-<span class="nc" id="L148">		java.lang.String[] astrDateFactorVertex = org.drip.quant.common.StringUtil.Split</span>
-<span class="nc" id="L149">			(strDateFactorVertex, &quot;;&quot;);</span>
+<span class="fc" id="L148">		java.lang.String[] astrDateFactorVertex = org.drip.quant.common.StringUtil.Split</span>
+<span class="fc" id="L149">			(strDateFactorVertex, &quot;;&quot;);</span>
 
-<span class="nc bnc" id="L151" title="All 2 branches missed.">		if (null == astrDateFactorVertex) return null;</span>
+<span class="pc bpc" id="L151" title="1 of 2 branches missed.">		if (null == astrDateFactorVertex) return null;</span>
 
-<span class="nc" id="L153">		int iNumDateFactorPair = astrDateFactorVertex.length;</span>
-<span class="nc" id="L154">		int iNumVertex = iNumDateFactorPair / 2 + 1;</span>
-<span class="nc" id="L155">		double[] adblVertexDate = new double[iNumVertex];</span>
-<span class="nc" id="L156">		double[] adblVertexFactor = new double[iNumVertex];</span>
-<span class="nc" id="L157">		adblVertexFactor[0] = 1.;</span>
+<span class="fc" id="L153">		int iNumDateFactorPair = astrDateFactorVertex.length;</span>
+<span class="fc" id="L154">		int iNumVertex = iNumDateFactorPair / 2 + 1;</span>
+<span class="fc" id="L155">		double[] adblVertexDate = new double[iNumVertex];</span>
+<span class="fc" id="L156">		double[] adblVertexFactor = new double[iNumVertex];</span>
+<span class="fc" id="L157">		adblVertexFactor[0] = 1.;</span>
 
-<span class="nc bnc" id="L159" title="All 4 branches missed.">		if (0 == iNumDateFactorPair || 1 == iNumDateFactorPair % 2) return null;</span>
+<span class="pc bpc" id="L159" title="2 of 4 branches missed.">		if (0 == iNumDateFactorPair || 1 == iNumDateFactorPair % 2) return null;</span>
 
-<span class="nc bnc" id="L161" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVertex - 1; ++i) {</span>
-<span class="nc" id="L162">			org.drip.analytics.date.JulianDate dt = org.drip.analytics.date.DateUtil.FromMDY</span>
-<span class="nc" id="L163">				(astrDateFactorVertex[2 * i], &quot;/&quot;);</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVertex - 1; ++i) {</span>
+<span class="fc" id="L162">			org.drip.analytics.date.JulianDate dt = org.drip.analytics.date.DateUtil.FromMDY</span>
+<span class="fc" id="L163">				(astrDateFactorVertex[2 * i], &quot;/&quot;);</span>
 
-<span class="nc" id="L165">			java.lang.String strFactor = astrDateFactorVertex[2 * i + 1];</span>
+<span class="fc" id="L165">			java.lang.String strFactor = astrDateFactorVertex[2 * i + 1];</span>
 
-<span class="nc bnc" id="L167" title="All 6 branches missed.">			if (null == dt || null == strFactor || strFactor.isEmpty()) return null;</span>
+<span class="pc bpc" id="L167" title="3 of 6 branches missed.">			if (null == dt || null == strFactor || strFactor.isEmpty()) return null;</span>
 
-<span class="nc" id="L169">			adblVertexDate[i] = dt.julian();</span>
+<span class="fc" id="L169">			adblVertexDate[i] = dt.julian();</span>
 
-<span class="nc bnc" id="L171" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (adblVertexFactor[i + 1] =</span>
-<span class="nc" id="L172">				java.lang.Double.parseDouble (strFactor.trim()) / dblInitialAmount))</span>
+<span class="pc bpc" id="L171" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (adblVertexFactor[i + 1] =</span>
+<span class="fc" id="L172">				java.lang.Double.parseDouble (strFactor.trim()) / dblInitialAmount))</span>
 <span class="nc" id="L173">				return null;</span>
 		}
 
-<span class="nc" id="L176">		adblVertexDate[iNumVertex - 1] = iMaturityDate;</span>
+<span class="fc" id="L176">		adblVertexDate[iNumVertex - 1] = iMaturityDate;</span>
 
-<span class="nc" id="L178">		return FromArray (adblVertexDate, adblVertexFactor);</span>
+<span class="fc" id="L178">		return FromArray (adblVertexDate, adblVertexFactor);</span>
 	}
 
 	/**
@@ -192,39 +192,39 @@ public class Array2D {
 		final java.lang.String strDateFactorVertex,
 		final int iMaturityDate)
 	{
-<span class="nc bnc" id="L195" title="All 4 branches missed.">		if (null == strDateFactorVertex || strDateFactorVertex.isEmpty()) return null;</span>
+<span class="pc bpc" id="L195" title="2 of 4 branches missed.">		if (null == strDateFactorVertex || strDateFactorVertex.isEmpty()) return null;</span>
 
-<span class="nc" id="L197">		java.lang.String[] astrDateFactorVertex = org.drip.quant.common.StringUtil.Split</span>
-<span class="nc" id="L198">			(strDateFactorVertex, &quot;;&quot;);</span>
+<span class="fc" id="L197">		java.lang.String[] astrDateFactorVertex = org.drip.quant.common.StringUtil.Split</span>
+<span class="fc" id="L198">			(strDateFactorVertex, &quot;;&quot;);</span>
 
-<span class="nc bnc" id="L200" title="All 2 branches missed.">		if (null == astrDateFactorVertex) return null;</span>
+<span class="pc bpc" id="L200" title="1 of 2 branches missed.">		if (null == astrDateFactorVertex) return null;</span>
 
-<span class="nc" id="L202">		int iNumDateFactorPair = astrDateFactorVertex.length;</span>
-<span class="nc" id="L203">		int iNumVertex = iNumDateFactorPair / 2 + 1;</span>
-<span class="nc" id="L204">		double[] adblVertexDate = new double[iNumVertex];</span>
-<span class="nc" id="L205">		double[] adblVertexFactor = new double[iNumVertex];</span>
-<span class="nc" id="L206">		adblVertexFactor[0] = 1.;</span>
+<span class="fc" id="L202">		int iNumDateFactorPair = astrDateFactorVertex.length;</span>
+<span class="fc" id="L203">		int iNumVertex = iNumDateFactorPair / 2 + 1;</span>
+<span class="fc" id="L204">		double[] adblVertexDate = new double[iNumVertex];</span>
+<span class="fc" id="L205">		double[] adblVertexFactor = new double[iNumVertex];</span>
+<span class="fc" id="L206">		adblVertexFactor[0] = 1.;</span>
 
-<span class="nc bnc" id="L208" title="All 4 branches missed.">		if (0 == iNumDateFactorPair || 1 == iNumDateFactorPair % 2) return null;</span>
+<span class="pc bpc" id="L208" title="2 of 4 branches missed.">		if (0 == iNumDateFactorPair || 1 == iNumDateFactorPair % 2) return null;</span>
 
-<span class="nc bnc" id="L210" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVertex - 1; ++i) {</span>
-<span class="nc" id="L211">			org.drip.analytics.date.JulianDate dt = org.drip.analytics.date.DateUtil.FromMDY</span>
-<span class="nc" id="L212">				(astrDateFactorVertex[2 * i], &quot;/&quot;);</span>
+<span class="fc bfc" id="L210" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVertex - 1; ++i) {</span>
+<span class="fc" id="L211">			org.drip.analytics.date.JulianDate dt = org.drip.analytics.date.DateUtil.FromMDY</span>
+<span class="fc" id="L212">				(astrDateFactorVertex[2 * i], &quot;/&quot;);</span>
 
-<span class="nc" id="L214">			java.lang.String strFactor = astrDateFactorVertex[2 * i + 1];</span>
+<span class="fc" id="L214">			java.lang.String strFactor = astrDateFactorVertex[2 * i + 1];</span>
 
-<span class="nc bnc" id="L216" title="All 6 branches missed.">			if (null == dt || null == strFactor || strFactor.isEmpty()) return null;</span>
+<span class="pc bpc" id="L216" title="3 of 6 branches missed.">			if (null == dt || null == strFactor || strFactor.isEmpty()) return null;</span>
 
-<span class="nc" id="L218">			adblVertexDate[i] = dt.julian();</span>
+<span class="fc" id="L218">			adblVertexDate[i] = dt.julian();</span>
 
-<span class="nc bnc" id="L220" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (adblVertexFactor[i + 1] =</span>
-<span class="nc" id="L221">				java.lang.Double.parseDouble (strFactor.trim())))</span>
+<span class="pc bpc" id="L220" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (adblVertexFactor[i + 1] =</span>
+<span class="fc" id="L221">				java.lang.Double.parseDouble (strFactor.trim())))</span>
 <span class="nc" id="L222">				return null;</span>
 		}
 
-<span class="nc" id="L225">		adblVertexDate[iNumVertex - 1] = iMaturityDate;</span>
+<span class="fc" id="L225">		adblVertexDate[iNumVertex - 1] = iMaturityDate;</span>
 
-<span class="nc" id="L227">		return FromArray (adblVertexDate, adblVertexFactor);</span>
+<span class="fc" id="L227">		return FromArray (adblVertexDate, adblVertexFactor);</span>
 	}
 
 	/**

@@ -84,86 +84,86 @@ import org.drip.service.env.EnvManager;
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L87">		EnvManager.InitEnv (</span>
+<span class="fc" id="L87">		EnvManager.InitEnv (</span>
 			&quot;&quot;,
 			true
 		);
 
-<span class="nc" id="L92">		double dblTime = 0.;</span>
-<span class="nc" id="L93">		double dblBurstiness = 1.;</span>
-<span class="nc" id="L94">		double dblDimensionlessRiskAversion = 0.1;</span>
-<span class="nc" id="L95">		double dblRelaxationTime = 1.;</span>
-<span class="nc" id="L96">		double dblSimulationTime = 10.;</span>
-<span class="nc" id="L97">		double dblTimeInterval = 0.25;</span>
-<span class="nc" id="L98">		double dblInitialMarketState = -0.5;</span>
+<span class="fc" id="L92">		double dblTime = 0.;</span>
+<span class="fc" id="L93">		double dblBurstiness = 1.;</span>
+<span class="fc" id="L94">		double dblDimensionlessRiskAversion = 0.1;</span>
+<span class="fc" id="L95">		double dblRelaxationTime = 1.;</span>
+<span class="fc" id="L96">		double dblSimulationTime = 10.;</span>
+<span class="fc" id="L97">		double dblTimeInterval = 0.25;</span>
+<span class="fc" id="L98">		double dblInitialMarketState = -0.5;</span>
 
-<span class="nc" id="L100">		double dblNonDimensionalHoldings = 1.;</span>
-<span class="nc" id="L101">		int iNumTimeNode = (int) (dblSimulationTime / dblTimeInterval);</span>
-<span class="nc" id="L102">		MarketStateSystemic[] aMSS = new MarketStateSystemic[iNumTimeNode + 1];</span>
+<span class="fc" id="L100">		double dblNonDimensionalHoldings = 1.;</span>
+<span class="fc" id="L101">		int iNumTimeNode = (int) (dblSimulationTime / dblTimeInterval);</span>
+<span class="fc" id="L102">		MarketStateSystemic[] aMSS = new MarketStateSystemic[iNumTimeNode + 1];</span>
 
-<span class="nc" id="L104">		aMSS[0] = new MarketStateSystemic (dblInitialMarketState);</span>
+<span class="fc" id="L104">		aMSS[0] = new MarketStateSystemic (dblInitialMarketState);</span>
 
-<span class="nc" id="L106">		DiffusionEvaluatorOrnsteinUhlenbeck deou = DiffusionEvaluatorOrnsteinUhlenbeck.ZeroMean (</span>
+<span class="fc" id="L106">		DiffusionEvaluatorOrnsteinUhlenbeck deou = DiffusionEvaluatorOrnsteinUhlenbeck.ZeroMean (</span>
 			dblBurstiness,
 			dblRelaxationTime
 		);
 
-<span class="nc" id="L111">		DiffusionEvolver oup1D = new DiffusionEvolver (deou);</span>
+<span class="fc" id="L111">		DiffusionEvolver oup1D = new DiffusionEvolver (deou);</span>
 
-<span class="nc bnc" id="L113" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumTimeNode; ++i) {</span>
-<span class="nc" id="L114">			JumpDiffusionEdge gi = oup1D.weinerIncrement (</span>
+<span class="fc bfc" id="L113" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTimeNode; ++i) {</span>
+<span class="fc" id="L114">			JumpDiffusionEdge gi = oup1D.weinerIncrement (</span>
 				new JumpDiffusionVertex (
 					dblTime,
-<span class="nc" id="L117">					aMSS[i].common(),</span>
+<span class="fc" id="L117">					aMSS[i].common(),</span>
 					0.,
 					false
 				),
 				dblTimeInterval
 			);
 
-<span class="nc" id="L124">			dblTime += dblTimeInterval;</span>
+<span class="fc" id="L124">			dblTime += dblTimeInterval;</span>
 
-<span class="nc" id="L126">			aMSS[i + 1] = new MarketStateSystemic (aMSS[i].common() + gi.deterministic() + gi.diffusionStochastic());</span>
+<span class="fc" id="L126">			aMSS[i + 1] = new MarketStateSystemic (aMSS[i].common() + gi.deterministic() + gi.diffusionStochastic());</span>
 		}
 
-<span class="nc" id="L129">		NonDimensionalCostEvolverSystemic ndces = NonDimensionalCostEvolverSystemic.Standard (deou);</span>
+<span class="fc" id="L129">		NonDimensionalCostEvolverSystemic ndces = NonDimensionalCostEvolverSystemic.Standard (deou);</span>
 
-<span class="nc" id="L131">		NonDimensionalCostSystemic ndcs = NonDimensionalCostSystemic.Zero();</span>
+<span class="fc" id="L131">		NonDimensionalCostSystemic ndcs = NonDimensionalCostSystemic.Zero();</span>
 
-<span class="nc" id="L133">		System.out.println();</span>
+<span class="fc" id="L133">		System.out.println();</span>
 
-<span class="nc" id="L135">		System.out.println (&quot;\t||-------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L135">		System.out.println (&quot;\t||-------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L137">		System.out.println (&quot;\t||      L -&gt; R:                                                      ||&quot;);</span>
+<span class="fc" id="L137">		System.out.println (&quot;\t||      L -&gt; R:                                                      ||&quot;);</span>
 
-<span class="nc" id="L139">		System.out.println (&quot;\t||              - Non Dimensional Time                               ||&quot;);</span>
+<span class="fc" id="L139">		System.out.println (&quot;\t||              - Non Dimensional Time                               ||&quot;);</span>
 
-<span class="nc" id="L141">		System.out.println (&quot;\t||              - Realized Market State                              ||&quot;);</span>
+<span class="fc" id="L141">		System.out.println (&quot;\t||              - Realized Market State                              ||&quot;);</span>
 
-<span class="nc" id="L143">		System.out.println (&quot;\t||              - Non Dimensional Cost                               ||&quot;);</span>
+<span class="fc" id="L143">		System.out.println (&quot;\t||              - Non Dimensional Cost                               ||&quot;);</span>
 
-<span class="nc" id="L145">		System.out.println (&quot;\t||              - Non Dimensional Cost Gradient                      ||&quot;);</span>
+<span class="fc" id="L145">		System.out.println (&quot;\t||              - Non Dimensional Cost Gradient                      ||&quot;);</span>
 
-<span class="nc" id="L147">		System.out.println (&quot;\t||              - Non Dimensional Cost Jacobian                      ||&quot;);</span>
+<span class="fc" id="L147">		System.out.println (&quot;\t||              - Non Dimensional Cost Jacobian                      ||&quot;);</span>
 
-<span class="nc" id="L149">		System.out.println (&quot;\t||              - Non Dimensional Cost Trade Velocity                ||&quot;);</span>
+<span class="fc" id="L149">		System.out.println (&quot;\t||              - Non Dimensional Cost Trade Velocity                ||&quot;);</span>
 
-<span class="nc" id="L151">		System.out.println (&quot;\t||              - Non Dimensional Outstanding Holdings               ||&quot;);</span>
+<span class="fc" id="L151">		System.out.println (&quot;\t||              - Non Dimensional Outstanding Holdings               ||&quot;);</span>
 
-<span class="nc" id="L153">		System.out.println (&quot;\t||-------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L153">		System.out.println (&quot;\t||-------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L155">		System.out.println (&quot;\t||&quot; + </span>
-<span class="nc" id="L156">			FormatUtil.FormatDouble (0., 1, 2, 1.) + &quot; =&gt; &quot; +</span>
-<span class="nc" id="L157">			FormatUtil.FormatDouble (aMSS[0].common(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L158">			FormatUtil.FormatDouble (ndcs.realization(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L159">			FormatUtil.FormatDouble (ndcs.gradient(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L160">			FormatUtil.FormatDouble (ndcs.jacobian(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L161">			FormatUtil.FormatDouble (ndcs.nonDimensionalTradeRate(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L162">			FormatUtil.FormatDouble (dblNonDimensionalHoldings, 1, 4, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L155">		System.out.println (&quot;\t||&quot; + </span>
+<span class="fc" id="L156">			FormatUtil.FormatDouble (0., 1, 2, 1.) + &quot; =&gt; &quot; +</span>
+<span class="fc" id="L157">			FormatUtil.FormatDouble (aMSS[0].common(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L158">			FormatUtil.FormatDouble (ndcs.realization(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L159">			FormatUtil.FormatDouble (ndcs.gradient(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L160">			FormatUtil.FormatDouble (ndcs.jacobian(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L161">			FormatUtil.FormatDouble (ndcs.nonDimensionalTradeRate(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L162">			FormatUtil.FormatDouble (dblNonDimensionalHoldings, 1, 4, 1.) + &quot; ||&quot;</span>
 		);
 
-<span class="nc bnc" id="L165" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumTimeNode; ++i) {</span>
-<span class="nc" id="L166">			ndcs = (NonDimensionalCostSystemic) ndces.evolve (</span>
+<span class="fc bfc" id="L165" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumTimeNode; ++i) {</span>
+<span class="fc" id="L166">			ndcs = (NonDimensionalCostSystemic) ndces.evolve (</span>
 				ndcs,
 				aMSS[i],
 				dblDimensionlessRiskAversion,
@@ -171,24 +171,24 @@ import org.drip.service.env.EnvManager;
 				dblTimeInterval
 			);
 
-<span class="nc" id="L174">			double dblNonDimensionalTradeRate = dblNonDimensionalHoldings * ndcs.nonDimensionalTradeRate();</span>
+<span class="fc" id="L174">			double dblNonDimensionalTradeRate = dblNonDimensionalHoldings * ndcs.nonDimensionalTradeRate();</span>
 
-<span class="nc" id="L176">			dblNonDimensionalHoldings = dblNonDimensionalHoldings - dblNonDimensionalTradeRate * dblTimeInterval;</span>
+<span class="fc" id="L176">			dblNonDimensionalHoldings = dblNonDimensionalHoldings - dblNonDimensionalTradeRate * dblTimeInterval;</span>
 
-<span class="nc" id="L178">			System.out.println (&quot;\t||&quot; + </span>
-<span class="nc" id="L179">				FormatUtil.FormatDouble (dblTimeInterval * i, 1, 2, 1.) + &quot; =&gt; &quot; +</span>
-<span class="nc" id="L180">				FormatUtil.FormatDouble (aMSS[i].common(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L181">				FormatUtil.FormatDouble (ndcs.realization(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L182">				FormatUtil.FormatDouble (ndcs.gradient(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L183">				FormatUtil.FormatDouble (ndcs.jacobian(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L184">				FormatUtil.FormatDouble (dblNonDimensionalTradeRate, 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L185">				FormatUtil.FormatDouble (dblNonDimensionalHoldings, 1, 4, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L178">			System.out.println (&quot;\t||&quot; + </span>
+<span class="fc" id="L179">				FormatUtil.FormatDouble (dblTimeInterval * i, 1, 2, 1.) + &quot; =&gt; &quot; +</span>
+<span class="fc" id="L180">				FormatUtil.FormatDouble (aMSS[i].common(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L181">				FormatUtil.FormatDouble (ndcs.realization(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L182">				FormatUtil.FormatDouble (ndcs.gradient(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L183">				FormatUtil.FormatDouble (ndcs.jacobian(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L184">				FormatUtil.FormatDouble (dblNonDimensionalTradeRate, 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L185">				FormatUtil.FormatDouble (dblNonDimensionalHoldings, 1, 4, 1.) + &quot; ||&quot;</span>
 			);
 		}
 
-<span class="nc" id="L189">		System.out.println (&quot;\t||-------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L189">		System.out.println (&quot;\t||-------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L191">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L192">	}</span>
+<span class="fc" id="L191">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L192">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

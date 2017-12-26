@@ -57,9 +57,9 @@ package org.drip.dynamics.lmm;
  */
 
 public class BGMCurveUpdate extends org.drip.dynamics.evolution.LSQMCurveUpdate {
-<span class="nc" id="L60">	private org.drip.state.identifier.ForwardLabel _lslForward = null;</span>
-<span class="nc" id="L61">	private org.drip.state.identifier.FundingLabel _lslFunding = null;</span>
-<span class="nc" id="L62">	private org.drip.dynamics.lmm.LognormalLIBORVolatility _llv = null;</span>
+<span class="fc" id="L60">	private org.drip.state.identifier.ForwardLabel _lslForward = null;</span>
+<span class="fc" id="L61">	private org.drip.state.identifier.FundingLabel _lslFunding = null;</span>
+<span class="fc" id="L62">	private org.drip.dynamics.lmm.LognormalLIBORVolatility _llv = null;</span>
 
 	/**
 	 * Construct an Instance of BGMCurveUpdate
@@ -96,49 +96,49 @@ public class BGMCurveUpdate extends org.drip.dynamics.evolution.LSQMCurveUpdate 
 		final org.drip.spline.grid.Span spanInstantaneousNominalForward,
 		final org.drip.dynamics.lmm.LognormalLIBORVolatility llv)
 	{
-<span class="nc" id="L99">		org.drip.dynamics.evolution.LSQMCurveSnapshot snapshot = new</span>
+<span class="fc" id="L99">		org.drip.dynamics.evolution.LSQMCurveSnapshot snapshot = new</span>
 			org.drip.dynamics.evolution.LSQMCurveSnapshot();
 
-<span class="nc bnc" id="L102" title="All 2 branches missed.">		if (!snapshot.setQMCurve (org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_LIBOR_RATE, fc))</span>
+<span class="pc bpc" id="L102" title="1 of 2 branches missed.">		if (!snapshot.setQMCurve (org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_LIBOR_RATE, fc))</span>
 <span class="nc" id="L103">			return null;</span>
 
-<span class="nc" id="L105">		if (!snapshot.setQMCurve</span>
-<span class="nc bnc" id="L106" title="All 2 branches missed.">			(org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR, dc))</span>
+<span class="fc" id="L105">		if (!snapshot.setQMCurve</span>
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">			(org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR, dc))</span>
 <span class="nc" id="L107">			return null;</span>
 
-<span class="nc" id="L109">		org.drip.dynamics.evolution.LSQMCurveIncrement increment = new</span>
+<span class="fc" id="L109">		org.drip.dynamics.evolution.LSQMCurveIncrement increment = new</span>
 			org.drip.dynamics.evolution.LSQMCurveIncrement();
 
-<span class="nc bnc" id="L112" title="All 4 branches missed.">		if (null != spanLIBORIncrement &amp;&amp; !increment.setQMSpan (lslForward,</span>
+<span class="pc bpc" id="L112" title="1 of 4 branches missed.">		if (null != spanLIBORIncrement &amp;&amp; !increment.setQMSpan (lslForward,</span>
 			org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_LIBOR_RATE, spanLIBORIncrement))
 <span class="nc" id="L114">			return null;</span>
 
-<span class="nc bnc" id="L116" title="All 4 branches missed.">		if (null != spanContinuousForwardRateIncrement &amp;&amp; !increment.setQMSpan (lslForward,</span>
+<span class="pc bpc" id="L116" title="1 of 4 branches missed.">		if (null != spanContinuousForwardRateIncrement &amp;&amp; !increment.setQMSpan (lslForward,</span>
 			org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_CONTINUOUSLY_COMPOUNDED_FORWARD_RATE,
 				spanContinuousForwardRateIncrement))
 <span class="nc" id="L119">			return null;</span>
 
-<span class="nc bnc" id="L121" title="All 4 branches missed.">		if (null != spanDiscountFactorIncrement &amp;&amp; !increment.setQMSpan (lslFunding,</span>
+<span class="pc bpc" id="L121" title="1 of 4 branches missed.">		if (null != spanDiscountFactorIncrement &amp;&amp; !increment.setQMSpan (lslFunding,</span>
 			org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR,
 				spanDiscountFactorIncrement))
 <span class="nc" id="L124">			return null;</span>
 
-<span class="nc bnc" id="L126" title="All 4 branches missed.">		if (null != spanSpotRateIncrement &amp;&amp; !increment.setQMSpan (lslFunding,</span>
+<span class="pc bpc" id="L126" title="1 of 4 branches missed.">		if (null != spanSpotRateIncrement &amp;&amp; !increment.setQMSpan (lslFunding,</span>
 			org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_ZERO_RATE, spanSpotRateIncrement))
 <span class="nc" id="L128">			return null;</span>
 
-<span class="nc bnc" id="L130" title="All 4 branches missed.">		if (null != spanInstantaneousEffectiveForward &amp;&amp; !increment.setQMSpan (lslForward,</span>
+<span class="pc bpc" id="L130" title="1 of 4 branches missed.">		if (null != spanInstantaneousEffectiveForward &amp;&amp; !increment.setQMSpan (lslForward,</span>
 			org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_INSTANTANEOUS_EFFECTIVE_FORWARD_RATE,
 				spanInstantaneousEffectiveForward))
 <span class="nc" id="L133">			return null;</span>
 
-<span class="nc bnc" id="L135" title="All 4 branches missed.">		if (null != spanInstantaneousNominalForward &amp;&amp; !increment.setQMSpan (lslForward,</span>
+<span class="pc bpc" id="L135" title="1 of 4 branches missed.">		if (null != spanInstantaneousNominalForward &amp;&amp; !increment.setQMSpan (lslForward,</span>
 			org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_INSTANTANEOUS_NOMINAL_FORWARD_RATE,
 				spanInstantaneousNominalForward))
 <span class="nc" id="L138">			return null;</span>
 
 		try {
-<span class="nc" id="L141">			return new BGMCurveUpdate (lslFunding, lslForward, iInitialDate, iFinalDate, snapshot, increment,</span>
+<span class="fc" id="L141">			return new BGMCurveUpdate (lslFunding, lslForward, iInitialDate, iFinalDate, snapshot, increment,</span>
 				llv);
 <span class="nc" id="L143">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L144">			e.printStackTrace();</span>
@@ -157,11 +157,11 @@ public class BGMCurveUpdate extends org.drip.dynamics.evolution.LSQMCurveUpdate 
 		final org.drip.dynamics.lmm.LognormalLIBORVolatility llv)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L160">		super (iInitialDate, iFinalDate, snapshot, increment);</span>
+<span class="fc" id="L160">		super (iInitialDate, iFinalDate, snapshot, increment);</span>
 
-<span class="nc bnc" id="L162" title="All 6 branches missed.">		if (null == (_lslFunding = lslFunding) || null == (_lslForward = lslForward) || null == (_llv = llv))</span>
+<span class="pc bpc" id="L162" title="3 of 6 branches missed.">		if (null == (_lslFunding = lslFunding) || null == (_lslForward = lslForward) || null == (_llv = llv))</span>
 <span class="nc" id="L163">			throw new java.lang.Exception (&quot;BGMCurveUpdate ctr: Invalid Inputs&quot;);</span>
-<span class="nc" id="L164">	}</span>
+<span class="fc" id="L164">	}</span>
 
 	/**
 	 * Retrieve the LIBOR Forward Curve
@@ -171,7 +171,7 @@ public class BGMCurveUpdate extends org.drip.dynamics.evolution.LSQMCurveUpdate 
 
 	public org.drip.state.forward.ForwardCurve forwardCurve()
 	{
-<span class="nc" id="L174">		return (org.drip.state.forward.ForwardCurve) snapshot().qm (_lslForward,</span>
+<span class="fc" id="L174">		return (org.drip.state.forward.ForwardCurve) snapshot().qm (_lslForward,</span>
 			org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_LIBOR_RATE);
 	}
 
@@ -183,7 +183,7 @@ public class BGMCurveUpdate extends org.drip.dynamics.evolution.LSQMCurveUpdate 
 
 	public org.drip.spline.grid.Span forwardCurveIncrement()
 	{
-<span class="nc" id="L186">		return increment().span (_lslForward,</span>
+<span class="fc" id="L186">		return increment().span (_lslForward,</span>
 			org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_LIBOR_RATE);
 	}
 
@@ -195,7 +195,7 @@ public class BGMCurveUpdate extends org.drip.dynamics.evolution.LSQMCurveUpdate 
 
 	public org.drip.spline.grid.Span continuousForwardRateIncrement()
 	{
-<span class="nc" id="L198">		return increment().span (_lslForward,</span>
+<span class="fc" id="L198">		return increment().span (_lslForward,</span>
 			org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_CONTINUOUSLY_COMPOUNDED_FORWARD_RATE);
 	}
 
@@ -207,7 +207,7 @@ public class BGMCurveUpdate extends org.drip.dynamics.evolution.LSQMCurveUpdate 
 
 	public org.drip.spline.grid.Span instantaneousEffectiveForwardRate()
 	{
-<span class="nc" id="L210">		return increment().span (_lslForward,</span>
+<span class="fc" id="L210">		return increment().span (_lslForward,</span>
 			org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_INSTANTANEOUS_EFFECTIVE_FORWARD_RATE);
 	}
 
@@ -219,7 +219,7 @@ public class BGMCurveUpdate extends org.drip.dynamics.evolution.LSQMCurveUpdate 
 
 	public org.drip.spline.grid.Span instantaneousNominalForwardRate()
 	{
-<span class="nc" id="L222">		return increment().span (_lslForward,</span>
+<span class="fc" id="L222">		return increment().span (_lslForward,</span>
 			org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_INSTANTANEOUS_NOMINAL_FORWARD_RATE);
 	}
 
@@ -231,7 +231,7 @@ public class BGMCurveUpdate extends org.drip.dynamics.evolution.LSQMCurveUpdate 
 
 	public org.drip.state.discount.MergedDiscountForwardCurve discountCurve()
 	{
-<span class="nc" id="L234">		return (org.drip.state.discount.MergedDiscountForwardCurve) snapshot().qm (_lslFunding,</span>
+<span class="fc" id="L234">		return (org.drip.state.discount.MergedDiscountForwardCurve) snapshot().qm (_lslFunding,</span>
 			org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR);
 	}
 
@@ -243,7 +243,7 @@ public class BGMCurveUpdate extends org.drip.dynamics.evolution.LSQMCurveUpdate 
 
 	public org.drip.spline.grid.Span discountCurveIncrement()
 	{
-<span class="nc" id="L246">		return increment().span (_lslFunding,</span>
+<span class="fc" id="L246">		return increment().span (_lslFunding,</span>
 			org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR);
 	}
 
@@ -255,7 +255,7 @@ public class BGMCurveUpdate extends org.drip.dynamics.evolution.LSQMCurveUpdate 
 
 	public org.drip.spline.grid.Span spotRateIncrement()
 	{
-<span class="nc" id="L258">		return increment().span (_lslFunding,</span>
+<span class="fc" id="L258">		return increment().span (_lslFunding,</span>
 			org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_ZERO_RATE);
 	}
 
@@ -267,7 +267,7 @@ public class BGMCurveUpdate extends org.drip.dynamics.evolution.LSQMCurveUpdate 
 
 	public org.drip.dynamics.lmm.LognormalLIBORVolatility lognormalLIBORVolatility()
 	{
-<span class="nc" id="L270">		return _llv;</span>
+<span class="fc" id="L270">		return _llv;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

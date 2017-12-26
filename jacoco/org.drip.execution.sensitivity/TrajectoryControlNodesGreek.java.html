@@ -70,7 +70,7 @@ package org.drip.execution.sensitivity;
  */
 
 public class TrajectoryControlNodesGreek extends org.drip.execution.sensitivity.ControlNodesGreek {
-<span class="nc" id="L73">	private java.util.List&lt;org.drip.execution.sensitivity.ControlNodesGreek&gt; _lsCNGSlice = null;</span>
+<span class="fc" id="L73">	private java.util.List&lt;org.drip.execution.sensitivity.ControlNodesGreek&gt; _lsCNGSlice = null;</span>
 
 	/**
 	 * TrajectoryControlNodesGreek Constructor
@@ -90,11 +90,11 @@ public class TrajectoryControlNodesGreek extends org.drip.execution.sensitivity.
 		final java.util.List&lt;org.drip.execution.sensitivity.ControlNodesGreek&gt; lsCNGSlice)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L93">		super (dblValue, adblJacobian, aadblHessian);</span>
+<span class="fc" id="L93">		super (dblValue, adblJacobian, aadblHessian);</span>
 
-<span class="nc bnc" id="L95" title="All 4 branches missed.">		if (null == (_lsCNGSlice = lsCNGSlice) || 0 == _lsCNGSlice.size())</span>
+<span class="pc bpc" id="L95" title="2 of 4 branches missed.">		if (null == (_lsCNGSlice = lsCNGSlice) || 0 == _lsCNGSlice.size())</span>
 <span class="nc" id="L96">			throw new java.lang.Exception (&quot;TrajectoryControlNodesGreek Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L97">	}</span>
+<span class="fc" id="L97">	}</span>
 
 	/**
 	 * Retrieve the List of the Slice Control Nodes Greek
@@ -115,17 +115,17 @@ public class TrajectoryControlNodesGreek extends org.drip.execution.sensitivity.
 
 	public double[] innerJacobian()
 	{
-<span class="nc" id="L118">		double[] adblJacobian = jacobian();</span>
+<span class="fc" id="L118">		double[] adblJacobian = jacobian();</span>
 
-<span class="nc" id="L120">		int iNumInnerNode = adblJacobian.length - 2;</span>
-<span class="nc bnc" id="L121" title="All 2 branches missed.">		double[] adblInnerJacobian = 0 &gt;= iNumInnerNode ? null : new double[iNumInnerNode];</span>
+<span class="fc" id="L120">		int iNumInnerNode = adblJacobian.length - 2;</span>
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">		double[] adblInnerJacobian = 0 &gt;= iNumInnerNode ? null : new double[iNumInnerNode];</span>
 
-<span class="nc bnc" id="L123" title="All 2 branches missed.">		if (null == adblInnerJacobian) return null;</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">		if (null == adblInnerJacobian) return null;</span>
 
-<span class="nc bnc" id="L125" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInnerNode; ++i)</span>
-<span class="nc" id="L126">			adblInnerJacobian[i] = adblJacobian[i + 1];</span>
+<span class="fc bfc" id="L125" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumInnerNode; ++i)</span>
+<span class="fc" id="L126">			adblInnerJacobian[i] = adblJacobian[i + 1];</span>
 
-<span class="nc" id="L128">		return adblInnerJacobian;</span>
+<span class="fc" id="L128">		return adblInnerJacobian;</span>
 	}
 
 	/**
@@ -136,19 +136,19 @@ public class TrajectoryControlNodesGreek extends org.drip.execution.sensitivity.
 
 	public double[][] innerHessian()
 	{
-<span class="nc" id="L139">		double[][] aadblHessian = hessian();</span>
+<span class="fc" id="L139">		double[][] aadblHessian = hessian();</span>
 
-<span class="nc" id="L141">		int iNumInnerNode = aadblHessian.length - 2;</span>
-<span class="nc bnc" id="L142" title="All 2 branches missed.">		double[][] aadblInnerHessian = 0 &gt;= iNumInnerNode ? null : new double[iNumInnerNode][iNumInnerNode];</span>
+<span class="fc" id="L141">		int iNumInnerNode = aadblHessian.length - 2;</span>
+<span class="pc bpc" id="L142" title="1 of 2 branches missed.">		double[][] aadblInnerHessian = 0 &gt;= iNumInnerNode ? null : new double[iNumInnerNode][iNumInnerNode];</span>
 
-<span class="nc bnc" id="L144" title="All 2 branches missed.">		if (null == aadblInnerHessian) return null;</span>
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">		if (null == aadblInnerHessian) return null;</span>
 
-<span class="nc bnc" id="L146" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInnerNode; ++i) {</span>
-<span class="nc bnc" id="L147" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumInnerNode; ++j)</span>
-<span class="nc" id="L148">				aadblInnerHessian[i][j] = aadblHessian[i + 1][j + 1];</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumInnerNode; ++i) {</span>
+<span class="fc bfc" id="L147" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumInnerNode; ++j)</span>
+<span class="fc" id="L148">				aadblInnerHessian[i][j] = aadblHessian[i + 1][j + 1];</span>
 		}
 
-<span class="nc" id="L151">		return aadblInnerHessian;</span>
+<span class="fc" id="L151">		return aadblInnerHessian;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

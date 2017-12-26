@@ -69,7 +69,7 @@ package org.drip.execution.athl;
  */
 
 public class TemporaryImpact extends org.drip.execution.impact.TransactionFunctionPower {
-<span class="nc" id="L72">	private org.drip.execution.parameters.AssetFlowSettings _afp = null;</span>
+<span class="fc" id="L72">	private org.drip.execution.parameters.AssetFlowSettings _afp = null;</span>
 
 	/**
 	 * TemporaryImpact Constructor
@@ -82,10 +82,10 @@ public class TemporaryImpact extends org.drip.execution.impact.TransactionFuncti
 	public TemporaryImpact (
 		final org.drip.execution.parameters.AssetFlowSettings afp)
 		throws java.lang.Exception
-<span class="nc" id="L85">	{</span>
-<span class="nc bnc" id="L86" title="All 2 branches missed.">		if (null == (_afp = afp))</span>
+<span class="fc" id="L85">	{</span>
+<span class="pc bpc" id="L86" title="1 of 2 branches missed.">		if (null == (_afp = afp))</span>
 <span class="nc" id="L87">			throw new java.lang.Exception (&quot;TemporaryImpact Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L88">	}</span>
+<span class="fc" id="L88">	}</span>
 
 	/**
 	 * Retrieve the Asset Flow Parameters
@@ -95,48 +95,48 @@ public class TemporaryImpact extends org.drip.execution.impact.TransactionFuncti
 
 	public org.drip.execution.parameters.AssetFlowSettings assetFlowParameters()
 	{
-<span class="nc" id="L98">		return _afp;</span>
+<span class="fc" id="L98">		return _afp;</span>
 	}
 
 	@Override public double regularize (
 		final double dblTradeInterval)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L105" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblTradeInterval) || 0 &gt;= dblTradeInterval)</span>
+<span class="pc bpc" id="L105" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblTradeInterval) || 0 &gt;= dblTradeInterval)</span>
 <span class="nc" id="L106">			throw new java.lang.Exception (&quot;TemporaryImpact::regularize =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L108">		return 1. / (_afp.averageDailyVolume() * dblTradeInterval);</span>
+<span class="fc" id="L108">		return 1. / (_afp.averageDailyVolume() * dblTradeInterval);</span>
 	}
 
 	@Override public double modulate (
 		final double dblTradeInterval)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L115">		return _afp.dailyVolatility();</span>
+<span class="fc" id="L115">		return _afp.dailyVolatility();</span>
 	}
 
 	@Override public double constant()
 	{
-<span class="nc" id="L120">		return org.drip.execution.athl.CalibrationEmpirics.TEMPORARY_IMPACT_COEFFICIENT;</span>
+<span class="fc" id="L120">		return org.drip.execution.athl.CalibrationEmpirics.TEMPORARY_IMPACT_COEFFICIENT;</span>
 	}
 
 	@Override public double exponent()
 	{
-<span class="nc" id="L125">		return org.drip.execution.athl.CalibrationEmpirics.TEMPORARY_IMPACT_EXPONENT;</span>
+<span class="fc" id="L125">		return org.drip.execution.athl.CalibrationEmpirics.TEMPORARY_IMPACT_EXPONENT;</span>
 	}
 
 	@Override public double evaluate (
 		final double dblNormalizedX)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L132" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblNormalizedX))</span>
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblNormalizedX))</span>
 <span class="nc" id="L133">			throw new java.lang.Exception (&quot;TemporaryImpact::evaluate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L135">		double dblBeta = org.drip.execution.athl.CalibrationEmpirics.TEMPORARY_IMPACT_EXPONENT;</span>
-<span class="nc" id="L136">		double dblEta = org.drip.execution.athl.CalibrationEmpirics.TEMPORARY_IMPACT_COEFFICIENT;</span>
+<span class="fc" id="L135">		double dblBeta = org.drip.execution.athl.CalibrationEmpirics.TEMPORARY_IMPACT_EXPONENT;</span>
+<span class="fc" id="L136">		double dblEta = org.drip.execution.athl.CalibrationEmpirics.TEMPORARY_IMPACT_COEFFICIENT;</span>
 
-<span class="nc bnc" id="L138" title="All 2 branches missed.">		return dblEta * (dblNormalizedX &lt; 0. ? -1. : 1.) * java.lang.Math.pow (java.lang.Math.abs</span>
-<span class="nc" id="L139">			(dblNormalizedX), dblBeta);</span>
+<span class="pc bpc" id="L138" title="1 of 2 branches missed.">		return dblEta * (dblNormalizedX &lt; 0. ? -1. : 1.) * java.lang.Math.pow (java.lang.Math.abs</span>
+<span class="fc" id="L139">			(dblNormalizedX), dblBeta);</span>
 	}
 
 	@Override public double derivative  (

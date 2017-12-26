@@ -67,15 +67,15 @@ import org.drip.service.env.EnvManager;
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L70">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L70">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L72">		int iNumPath = 1;</span>
-<span class="nc" id="L73">		int iNumVertex = 50000;</span>
-<span class="nc" id="L74">		boolean bDebias = true;</span>
-<span class="nc" id="L75">		boolean bMeanCenter = false;</span>
-<span class="nc" id="L76">		boolean bApplyAntithetic = false;</span>
+<span class="fc" id="L72">		int iNumPath = 1;</span>
+<span class="fc" id="L73">		int iNumVertex = 50000;</span>
+<span class="fc" id="L74">		boolean bDebias = true;</span>
+<span class="fc" id="L75">		boolean bMeanCenter = false;</span>
+<span class="fc" id="L76">		boolean bApplyAntithetic = false;</span>
 
-<span class="nc" id="L78">		double[][] aadblCorrelationInput = new double[][] {</span>
+<span class="fc" id="L78">		double[][] aadblCorrelationInput = new double[][] {</span>
 			{1.000, 0.161, 0.245, 0.352, 0.259, 0.166, 0.003, 0.038, 0.114},	// USD_LIBOR_3M
 			{0.161, 1.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000},	// EUR_LIBOR_3M
 			{0.245, 0.000, 1.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000},	// JPY_LIBOR_3M
@@ -87,7 +87,7 @@ import org.drip.service.env.EnvManager;
 			{0.114, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 1.000},	// GBPUSD
 		};
 
-<span class="nc" id="L90">		CorrelatedPathVertexDimension cpvd = new CorrelatedPathVertexDimension (</span>
+<span class="fc" id="L90">		CorrelatedPathVertexDimension cpvd = new CorrelatedPathVertexDimension (</span>
 			new RandomNumberGenerator(),
 			aadblCorrelationInput,
 			iNumVertex,
@@ -99,110 +99,110 @@ import org.drip.service.env.EnvManager;
 			)
 		);
 
-<span class="nc" id="L102">		VertexRd vertexRd = cpvd.multiPathVertexRd()[0];</span>
+<span class="fc" id="L102">		VertexRd vertexRd = cpvd.multiPathVertexRd()[0];</span>
 
-<span class="nc" id="L104">		MultivariateDiscrete mds = new MultivariateDiscrete (vertexRd.flatform());</span>
+<span class="fc" id="L104">		MultivariateDiscrete mds = new MultivariateDiscrete (vertexRd.flatform());</span>
 
-<span class="nc" id="L106">		double[] adblMeanOutput = mds.mean();</span>
+<span class="fc" id="L106">		double[] adblMeanOutput = mds.mean();</span>
 
-<span class="nc" id="L108">		double[] adblErrorOutput = mds.error();</span>
+<span class="fc" id="L108">		double[] adblErrorOutput = mds.error();</span>
 
-<span class="nc" id="L110">		double[] adblVarianceOutput = mds.variance();</span>
+<span class="fc" id="L110">		double[] adblVarianceOutput = mds.variance();</span>
 
-<span class="nc" id="L112">		double[][] aadblCovarianceOutput = mds.covariance();</span>
+<span class="fc" id="L112">		double[][] aadblCovarianceOutput = mds.covariance();</span>
 
-<span class="nc" id="L114">		double[][] aadblCorrelationOutput = mds.correlation();</span>
+<span class="fc" id="L114">		double[][] aadblCorrelationOutput = mds.correlation();</span>
 
-<span class="nc" id="L116">		double[] adblStandardDeviationOutput = mds.standardDeviation();</span>
+<span class="fc" id="L116">		double[] adblStandardDeviationOutput = mds.standardDeviation();</span>
 
-<span class="nc" id="L118">		System.out.println();</span>
+<span class="fc" id="L118">		System.out.println();</span>
 
-<span class="nc" id="L120">		System.out.println (&quot;\t||-------------------------------------------||&quot;);</span>
+<span class="fc" id="L120">		System.out.println (&quot;\t||-------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L122">		System.out.println (&quot;\t||                R^1 METRICS                ||&quot;);</span>
+<span class="fc" id="L122">		System.out.println (&quot;\t||                R^1 METRICS                ||&quot;);</span>
 
-<span class="nc" id="L124">		System.out.println (&quot;\t||-------------------------------------------||&quot;);</span>
+<span class="fc" id="L124">		System.out.println (&quot;\t||-------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L126">		System.out.println (&quot;\t||    L -&gt; R:                                ||&quot;);</span>
+<span class="fc" id="L126">		System.out.println (&quot;\t||    L -&gt; R:                                ||&quot;);</span>
 
-<span class="nc" id="L128">		System.out.println (&quot;\t||            - Mean                         ||&quot;);</span>
+<span class="fc" id="L128">		System.out.println (&quot;\t||            - Mean                         ||&quot;);</span>
 
-<span class="nc" id="L130">		System.out.println (&quot;\t||            - Error                        ||&quot;);</span>
+<span class="fc" id="L130">		System.out.println (&quot;\t||            - Error                        ||&quot;);</span>
 
-<span class="nc" id="L132">		System.out.println (&quot;\t||            - Variance                     ||&quot;);</span>
+<span class="fc" id="L132">		System.out.println (&quot;\t||            - Variance                     ||&quot;);</span>
 
-<span class="nc" id="L134">		System.out.println (&quot;\t||            - Standard Deviation           ||&quot;);</span>
+<span class="fc" id="L134">		System.out.println (&quot;\t||            - Standard Deviation           ||&quot;);</span>
 
-<span class="nc" id="L136">		System.out.println (&quot;\t||-------------------------------------------||&quot;);</span>
+<span class="fc" id="L136">		System.out.println (&quot;\t||-------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L138" title="All 2 branches missed.">		for (int i = 0; i &lt; adblMeanOutput.length; ++i)</span>
-<span class="nc" id="L139">			System.out.println (&quot;\t|| &quot; +</span>
-<span class="nc" id="L140">				FormatUtil.FormatDouble (adblMeanOutput[i], 1, 5, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L141">				FormatUtil.FormatDouble (adblErrorOutput[i], 1, 5, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L142">				FormatUtil.FormatDouble (adblVarianceOutput[i], 1, 5, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L143">				FormatUtil.FormatDouble (adblStandardDeviationOutput[i], 1, 5, 1.) + &quot; ||&quot;</span>
+<span class="fc bfc" id="L138" title="All 2 branches covered.">		for (int i = 0; i &lt; adblMeanOutput.length; ++i)</span>
+<span class="fc" id="L139">			System.out.println (&quot;\t|| &quot; +</span>
+<span class="fc" id="L140">				FormatUtil.FormatDouble (adblMeanOutput[i], 1, 5, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L141">				FormatUtil.FormatDouble (adblErrorOutput[i], 1, 5, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L142">				FormatUtil.FormatDouble (adblVarianceOutput[i], 1, 5, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L143">				FormatUtil.FormatDouble (adblStandardDeviationOutput[i], 1, 5, 1.) + &quot; ||&quot;</span>
 			);
 
-<span class="nc" id="L146">		System.out.println (&quot;\t||-------------------------------------------||&quot;);</span>
+<span class="fc" id="L146">		System.out.println (&quot;\t||-------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L148">		System.out.println();</span>
+<span class="fc" id="L148">		System.out.println();</span>
 
-<span class="nc" id="L150">		System.out.println (&quot;\t||------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L150">		System.out.println (&quot;\t||------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L152">		System.out.println (&quot;\t||                                     INPUT CORRELATION                                    ||&quot;);</span>
+<span class="fc" id="L152">		System.out.println (&quot;\t||                                     INPUT CORRELATION                                    ||&quot;);</span>
 
-<span class="nc" id="L154">		System.out.println (&quot;\t||------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L154">		System.out.println (&quot;\t||------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L156" title="All 2 branches missed.">		for (int i = 0; i &lt; adblMeanOutput.length; ++i) {</span>
-<span class="nc" id="L157">			String strDump = &quot;\t|| &quot;;</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">		for (int i = 0; i &lt; adblMeanOutput.length; ++i) {</span>
+<span class="fc" id="L157">			String strDump = &quot;\t|| &quot;;</span>
 
-<span class="nc bnc" id="L159" title="All 2 branches missed.">			for (int j = 0; j &lt; adblMeanOutput.length; ++j)</span>
-<span class="nc" id="L160">				strDump = strDump + FormatUtil.FormatDouble (aadblCorrelationInput[i][j], 1, 5, 1.) + &quot; |&quot;;</span>
+<span class="fc bfc" id="L159" title="All 2 branches covered.">			for (int j = 0; j &lt; adblMeanOutput.length; ++j)</span>
+<span class="fc" id="L160">				strDump = strDump + FormatUtil.FormatDouble (aadblCorrelationInput[i][j], 1, 5, 1.) + &quot; |&quot;;</span>
 
-<span class="nc" id="L162">			System.out.println (strDump + &quot;|&quot;);</span>
+<span class="fc" id="L162">			System.out.println (strDump + &quot;|&quot;);</span>
 		}
 
-<span class="nc" id="L165">		System.out.println (&quot;\t||------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L165">		System.out.println (&quot;\t||------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L167">		System.out.println();</span>
+<span class="fc" id="L167">		System.out.println();</span>
 
-<span class="nc" id="L169">		System.out.println (&quot;\t||------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L169">		System.out.println (&quot;\t||------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L171">		System.out.println (&quot;\t||                                    OUTPUT CORRELATION                                    ||&quot;);</span>
+<span class="fc" id="L171">		System.out.println (&quot;\t||                                    OUTPUT CORRELATION                                    ||&quot;);</span>
 
-<span class="nc" id="L173">		System.out.println (&quot;\t||------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L173">		System.out.println (&quot;\t||------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L175" title="All 2 branches missed.">		for (int i = 0; i &lt; adblMeanOutput.length; ++i) {</span>
-<span class="nc" id="L176">			String strDump = &quot;\t|| &quot;;</span>
+<span class="fc bfc" id="L175" title="All 2 branches covered.">		for (int i = 0; i &lt; adblMeanOutput.length; ++i) {</span>
+<span class="fc" id="L176">			String strDump = &quot;\t|| &quot;;</span>
 
-<span class="nc bnc" id="L178" title="All 2 branches missed.">			for (int j = 0; j &lt; adblMeanOutput.length; ++j)</span>
-<span class="nc" id="L179">				strDump = strDump + FormatUtil.FormatDouble (aadblCorrelationOutput[i][j], 1, 5, 1.) + &quot; |&quot;;</span>
+<span class="fc bfc" id="L178" title="All 2 branches covered.">			for (int j = 0; j &lt; adblMeanOutput.length; ++j)</span>
+<span class="fc" id="L179">				strDump = strDump + FormatUtil.FormatDouble (aadblCorrelationOutput[i][j], 1, 5, 1.) + &quot; |&quot;;</span>
 
-<span class="nc" id="L181">			System.out.println (strDump + &quot;|&quot;);</span>
+<span class="fc" id="L181">			System.out.println (strDump + &quot;|&quot;);</span>
 		}
 
-<span class="nc" id="L184">		System.out.println (&quot;\t||------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L184">		System.out.println (&quot;\t||------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L186">		System.out.println();</span>
+<span class="fc" id="L186">		System.out.println();</span>
 
-<span class="nc" id="L188">		System.out.println (&quot;\t||------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L188">		System.out.println (&quot;\t||------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L190">		System.out.println (&quot;\t||                                    OUTPUT COVARIANCE                                     ||&quot;);</span>
+<span class="fc" id="L190">		System.out.println (&quot;\t||                                    OUTPUT COVARIANCE                                     ||&quot;);</span>
 
-<span class="nc" id="L192">		System.out.println (&quot;\t||------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L192">		System.out.println (&quot;\t||------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L194" title="All 2 branches missed.">		for (int i = 0; i &lt; adblMeanOutput.length; ++i) {</span>
-<span class="nc" id="L195">			String strDump = &quot;\t|| &quot;;</span>
+<span class="fc bfc" id="L194" title="All 2 branches covered.">		for (int i = 0; i &lt; adblMeanOutput.length; ++i) {</span>
+<span class="fc" id="L195">			String strDump = &quot;\t|| &quot;;</span>
 
-<span class="nc bnc" id="L197" title="All 2 branches missed.">			for (int j = 0; j &lt; adblMeanOutput.length; ++j)</span>
-<span class="nc" id="L198">				strDump = strDump + FormatUtil.FormatDouble (aadblCovarianceOutput[i][j], 1, 5, 1.) + &quot; |&quot;;</span>
+<span class="fc bfc" id="L197" title="All 2 branches covered.">			for (int j = 0; j &lt; adblMeanOutput.length; ++j)</span>
+<span class="fc" id="L198">				strDump = strDump + FormatUtil.FormatDouble (aadblCovarianceOutput[i][j], 1, 5, 1.) + &quot; |&quot;;</span>
 
-<span class="nc" id="L200">			System.out.println (strDump + &quot;|&quot;);</span>
+<span class="fc" id="L200">			System.out.println (strDump + &quot;|&quot;);</span>
 		}
 
-<span class="nc" id="L203">		System.out.println (&quot;\t||------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L203">		System.out.println (&quot;\t||------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L205">		System.out.println();</span>
-<span class="nc" id="L206">	}</span>
+<span class="fc" id="L205">		System.out.println();</span>
+<span class="fc" id="L206">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

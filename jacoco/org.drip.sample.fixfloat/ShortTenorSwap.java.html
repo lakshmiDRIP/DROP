@@ -92,13 +92,13 @@ import org.drip.state.inference.*;
 		final int iRefPeriodType)
 		throws Exception
 	{
-<span class="nc" id="L95">		SingleStreamComponent[] aDeposit = new SingleStreamComponent[aiDay.length];</span>
+<span class="fc" id="L95">		SingleStreamComponent[] aDeposit = new SingleStreamComponent[aiDay.length];</span>
 
-<span class="nc" id="L97">		ComposableFloatingUnitSetting cfus = new ComposableFloatingUnitSetting (</span>
+<span class="fc" id="L97">		ComposableFloatingUnitSetting cfus = new ComposableFloatingUnitSetting (</span>
 			&quot;3M&quot;,
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE,
 			null,
-<span class="nc" id="L101">			ForwardLabel.Create (</span>
+<span class="fc" id="L101">			ForwardLabel.Create (</span>
 				strCurrency,
 				&quot;3M&quot;
 			),
@@ -106,7 +106,7 @@ import org.drip.state.inference.*;
 			0.
 		);
 
-<span class="nc" id="L109">		CompositePeriodSetting cps = new CompositePeriodSetting (</span>
+<span class="fc" id="L109">		CompositePeriodSetting cps = new CompositePeriodSetting (</span>
 			4,
 			&quot;3M&quot;,
 			strCurrency,
@@ -118,20 +118,20 @@ import org.drip.state.inference.*;
 			null
 		);
 
-<span class="nc" id="L121">		CashSettleParams csp = new CashSettleParams (</span>
+<span class="fc" id="L121">		CashSettleParams csp = new CashSettleParams (</span>
 			0,
 			strCurrency,
 			0
 		);
 
-<span class="nc bnc" id="L127" title="All 2 branches missed.">		for (int i = 0; i &lt; aiDay.length; ++i) {</span>
-<span class="nc" id="L128">			aDeposit[i] = new SingleStreamComponent (</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">		for (int i = 0; i &lt; aiDay.length; ++i) {</span>
+<span class="fc" id="L128">			aDeposit[i] = new SingleStreamComponent (</span>
 				&quot;DEPOSIT_&quot; + aiDay[i],
 				new Stream (
-<span class="nc" id="L131">					CompositePeriodBuilder.FloatingCompositeUnit (</span>
-<span class="nc" id="L132">						CompositePeriodBuilder.EdgePair (</span>
+<span class="fc" id="L131">					CompositePeriodBuilder.FloatingCompositeUnit (</span>
+<span class="fc" id="L132">						CompositePeriodBuilder.EdgePair (</span>
 							dtEffective,
-<span class="nc" id="L134">							dtEffective.addBusDays (</span>
+<span class="fc" id="L134">							dtEffective.addBusDays (</span>
 								aiDay[i],
 								strCurrency
 							)
@@ -143,10 +143,10 @@ import org.drip.state.inference.*;
 				csp
 			);
 
-<span class="nc" id="L146">			aDeposit[i].setPrimaryCode (aiDay[i] + &quot;D&quot;);</span>
+<span class="fc" id="L146">			aDeposit[i].setPrimaryCode (aiDay[i] + &quot;D&quot;);</span>
 		}
 
-<span class="nc" id="L149">		return aDeposit;</span>
+<span class="fc" id="L149">		return aDeposit;</span>
 	}
 
 	/*
@@ -164,10 +164,10 @@ import org.drip.state.inference.*;
 		final String strCompositeTenor)
 		throws Exception
 	{
-<span class="nc" id="L167">		FixFloatComponent[] aIRS = new FixFloatComponent[astrMaturityTenor.length];</span>
+<span class="fc" id="L167">		FixFloatComponent[] aIRS = new FixFloatComponent[astrMaturityTenor.length];</span>
 
-<span class="nc" id="L169">		UnitCouponAccrualSetting ucasFixed = new UnitCouponAccrualSetting (</span>
-<span class="nc" id="L170">			Helper.TenorToFreq (strCompositeTenor),</span>
+<span class="fc" id="L169">		UnitCouponAccrualSetting ucasFixed = new UnitCouponAccrualSetting (</span>
+<span class="fc" id="L170">			Helper.TenorToFreq (strCompositeTenor),</span>
 			&quot;Act/360&quot;,
 			false,
 			&quot;Act/360&quot;,
@@ -177,11 +177,11 @@ import org.drip.state.inference.*;
 			CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC
 		);
 
-<span class="nc" id="L180">		ComposableFloatingUnitSetting cfusFloating = new ComposableFloatingUnitSetting (</span>
+<span class="fc" id="L180">		ComposableFloatingUnitSetting cfusFloating = new ComposableFloatingUnitSetting (</span>
 			strCompositeTenor,
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 			null,
-<span class="nc" id="L184">			ForwardLabel.Create (</span>
+<span class="fc" id="L184">			ForwardLabel.Create (</span>
 				strCurrency,
 				strFloatingTenor
 			),
@@ -189,7 +189,7 @@ import org.drip.state.inference.*;
 			0.
 		);
 
-<span class="nc" id="L192">		ComposableFixedUnitSetting cfusFixed = new ComposableFixedUnitSetting (</span>
+<span class="fc" id="L192">		ComposableFixedUnitSetting cfusFixed = new ComposableFixedUnitSetting (</span>
 			strCompositeTenor,
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 			null,
@@ -198,8 +198,8 @@ import org.drip.state.inference.*;
 			strCurrency
 		);
 
-<span class="nc" id="L201">		CompositePeriodSetting cpsFloating = new CompositePeriodSetting (</span>
-<span class="nc" id="L202">			Helper.TenorToFreq (strCompositeTenor),</span>
+<span class="fc" id="L201">		CompositePeriodSetting cpsFloating = new CompositePeriodSetting (</span>
+<span class="fc" id="L202">			Helper.TenorToFreq (strCompositeTenor),</span>
 			strCompositeTenor,
 			strCurrency,
 			null,
@@ -210,8 +210,8 @@ import org.drip.state.inference.*;
 			null
 		);
 
-<span class="nc" id="L213">		CompositePeriodSetting cpsFixed = new CompositePeriodSetting (</span>
-<span class="nc" id="L214">			Helper.TenorToFreq (strCompositeTenor),</span>
+<span class="fc" id="L213">		CompositePeriodSetting cpsFixed = new CompositePeriodSetting (</span>
+<span class="fc" id="L214">			Helper.TenorToFreq (strCompositeTenor),</span>
 			strCompositeTenor,
 			strCurrency,
 			null,
@@ -222,37 +222,37 @@ import org.drip.state.inference.*;
 			null
 		);
 
-<span class="nc" id="L225">		CashSettleParams csp = new CashSettleParams (</span>
+<span class="fc" id="L225">		CashSettleParams csp = new CashSettleParams (</span>
 			0,
 			strCurrency,
 			0
 		);
 
-<span class="nc bnc" id="L231" title="All 2 branches missed.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i) {</span>
-<span class="nc" id="L232">			List&lt;Integer&gt; lsFixedStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
+<span class="fc bfc" id="L231" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i) {</span>
+<span class="fc" id="L232">			List&lt;Integer&gt; lsFixedStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
 				dtEffective,
 				strCompositeTenor,
 				astrMaturityTenor[i],
 				null
 			);
 
-<span class="nc" id="L239">			List&lt;Integer&gt; lsFloatingStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
+<span class="fc" id="L239">			List&lt;Integer&gt; lsFloatingStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
 				dtEffective,
 				strCompositeTenor,
 				astrMaturityTenor[i],
 				null
 			);
 
-<span class="nc" id="L246">			Stream floatingStream = new Stream (</span>
-<span class="nc" id="L247">				CompositePeriodBuilder.FloatingCompositeUnit (</span>
+<span class="fc" id="L246">			Stream floatingStream = new Stream (</span>
+<span class="fc" id="L247">				CompositePeriodBuilder.FloatingCompositeUnit (</span>
 					lsFloatingStreamEdgeDate,
 					cpsFloating,
 					cfusFloating
 				)
 			);
 
-<span class="nc" id="L254">			Stream fixedStream = new Stream (</span>
-<span class="nc" id="L255">				CompositePeriodBuilder.FixedCompositeUnit (</span>
+<span class="fc" id="L254">			Stream fixedStream = new Stream (</span>
+<span class="fc" id="L255">				CompositePeriodBuilder.FixedCompositeUnit (</span>
 					lsFixedStreamEdgeDate,
 					cpsFixed,
 					ucasFixed,
@@ -260,18 +260,18 @@ import org.drip.state.inference.*;
 				)
 			);
 
-<span class="nc" id="L263">			FixFloatComponent irs = new FixFloatComponent (</span>
+<span class="fc" id="L263">			FixFloatComponent irs = new FixFloatComponent (</span>
 				fixedStream,
 				floatingStream,
 				csp
 			);
 
-<span class="nc" id="L269">			irs.setPrimaryCode (&quot;IRS.&quot; + astrMaturityTenor[i] + &quot;.&quot; + strCurrency);</span>
+<span class="fc" id="L269">			irs.setPrimaryCode (&quot;IRS.&quot; + astrMaturityTenor[i] + &quot;.&quot; + strCurrency);</span>
 
-<span class="nc" id="L271">			aIRS[i] = irs;</span>
+<span class="fc" id="L271">			aIRS[i] = irs;</span>
 		}
 
-<span class="nc" id="L274">		return aIRS;</span>
+<span class="fc" id="L274">		return aIRS;</span>
 	}
 
 	/*
@@ -301,7 +301,7 @@ import org.drip.state.inference.*;
 		 * Construct the Array of Deposit Instruments and their Quotes from the given set of parameters
 		 */
 
-<span class="nc" id="L304">		SingleStreamComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (</span>
+<span class="fc" id="L304">		SingleStreamComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (</span>
 			dtSpot,
 			strCurrency,
 			new int[] {
@@ -310,7 +310,7 @@ import org.drip.state.inference.*;
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE
 		);
 
-<span class="nc" id="L313">		double[] adblDepositQuote = new double[] {</span>
+<span class="fc" id="L313">		double[] adblDepositQuote = new double[] {</span>
 			0.0013, 0.0017, 0.0017, 0.0018, 0.0020, 0.0023
 		};
 
@@ -318,7 +318,7 @@ import org.drip.state.inference.*;
 		 * Construct the Deposit Instrument Set Stretch Builder
 		 */
 
-<span class="nc" id="L321">		LatentStateStretchSpec depositStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
+<span class="fc" id="L321">		LatentStateStretchSpec depositStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
 			&quot;DEPOSIT&quot;,
 			aDepositComp,
 			&quot;ForwardRate&quot;,
@@ -329,13 +329,13 @@ import org.drip.state.inference.*;
 		 * Construct the Array of EDF Instruments and their Quotes from the given set of parameters
 		 */
 
-<span class="nc" id="L332">		SingleStreamComponent[] aEDFComp = SingleStreamComponentBuilder.ForwardRateFuturesPack (</span>
+<span class="fc" id="L332">		SingleStreamComponent[] aEDFComp = SingleStreamComponentBuilder.ForwardRateFuturesPack (</span>
 			dtSpot,
 			8,
 			strCurrency
 		);
 
-<span class="nc" id="L338">		double[] adblEDFQuote = new double[] {</span>
+<span class="fc" id="L338">		double[] adblEDFQuote = new double[] {</span>
 			0.0027, 0.0032, 0.0041, 0.0054, 0.0077, 0.0104, 0.0134, 0.0160
 		};
 
@@ -343,7 +343,7 @@ import org.drip.state.inference.*;
 		 * Construct the EDF Instrument Set Stretch Builder
 		 */
 
-<span class="nc" id="L346">		LatentStateStretchSpec edfStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
+<span class="fc" id="L346">		LatentStateStretchSpec edfStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
 			&quot;EDF&quot;,
 			aEDFComp,
 			&quot;ForwardRate&quot;,
@@ -354,7 +354,7 @@ import org.drip.state.inference.*;
 		 * Construct the Array of Swap Instruments and their Quotes from the given set of parameters
 		 */
 
-<span class="nc" id="L357">		FixFloatComponent[] aSwapInAdvance = SwapInstrumentsFromMaturityTenor (</span>
+<span class="fc" id="L357">		FixFloatComponent[] aSwapInAdvance = SwapInstrumentsFromMaturityTenor (</span>
 			dtSpot,
 			strCurrency,
 			new java.lang.String[] {
@@ -365,7 +365,7 @@ import org.drip.state.inference.*;
 			&quot;6M&quot;
 		);
 
-<span class="nc" id="L368">		FixFloatComponent[] aSwapInAdvanceShortTenor = SwapInstrumentsFromMaturityTenor (</span>
+<span class="fc" id="L368">		FixFloatComponent[] aSwapInAdvanceShortTenor = SwapInstrumentsFromMaturityTenor (</span>
 			dtSpot,
 			strCurrency,
 			new java.lang.String[] {
@@ -376,7 +376,7 @@ import org.drip.state.inference.*;
 			&quot;3M&quot;
 		);
 
-<span class="nc" id="L379">		FixFloatComponent[] aSwapInArrearsShortTenor = SwapInstrumentsFromMaturityTenor (</span>
+<span class="fc" id="L379">		FixFloatComponent[] aSwapInArrearsShortTenor = SwapInstrumentsFromMaturityTenor (</span>
 			dtSpot,
 			strCurrency,
 			new java.lang.String[] {
@@ -387,7 +387,7 @@ import org.drip.state.inference.*;
 			&quot;3M&quot;
 		);
 
-<span class="nc" id="L390">		double[] adblSwapQuote = new double[] {</span>
+<span class="fc" id="L390">		double[] adblSwapQuote = new double[] {</span>
 			0.0166, 0.0206, 0.0241, 0.0269, 0.0292, 0.0311, 0.0326, 0.0340, 0.0351, 0.0375, 0.0393, 0.0402, 0.0407, 0.0409, 0.0409
 		};
 
@@ -395,14 +395,14 @@ import org.drip.state.inference.*;
 		 * Construct the Swap Instrument Set Stretch Builder
 		 */
 
-<span class="nc" id="L398">		LatentStateStretchSpec swapStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
+<span class="fc" id="L398">		LatentStateStretchSpec swapStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
 			&quot;SWAP&quot;,
 			aSwapInAdvance,
 			&quot;SwapRate&quot;,
 			adblSwapQuote
 		);
 
-<span class="nc" id="L405">		LatentStateStretchSpec[] aStretchSpec = new LatentStateStretchSpec[] {</span>
+<span class="fc" id="L405">		LatentStateStretchSpec[] aStretchSpec = new LatentStateStretchSpec[] {</span>
 			depositStretch,
 			edfStretch,
 			swapStretch
@@ -416,11 +416,11 @@ import org.drip.state.inference.*;
 		 * 	- Natural Boundary Setting
 		 */
 
-<span class="nc" id="L419">		LinearLatentStateCalibrator lcc = new LinearLatentStateCalibrator (</span>
+<span class="fc" id="L419">		LinearLatentStateCalibrator lcc = new LinearLatentStateCalibrator (</span>
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-<span class="nc" id="L423">				SegmentInelasticDesignControl.Create (</span>
+<span class="fc" id="L423">				SegmentInelasticDesignControl.Create (</span>
 					2,
 					2
 				),
@@ -430,13 +430,13 @@ import org.drip.state.inference.*;
 				),
 				null
 			),
-<span class="nc" id="L433">			BoundarySettings.NaturalStandard(),</span>
+<span class="fc" id="L433">			BoundarySettings.NaturalStandard(),</span>
 			MultiSegmentSequence.CALIBRATE,
 			null,
 			null
 		);
 
-<span class="nc" id="L439">		ValuationParams valParams = new ValuationParams (</span>
+<span class="fc" id="L439">		ValuationParams valParams = new ValuationParams (</span>
 			dtSpot,
 			dtSpot,
 			strCurrency
@@ -447,7 +447,7 @@ import org.drip.state.inference.*;
 		 *  of Deposit, Futures, and Swap Stretches.
 		 */
 
-<span class="nc" id="L450">		MergedDiscountForwardCurve dc = ScenarioDiscountCurveBuilder.ShapePreservingDFBuild (</span>
+<span class="fc" id="L450">		MergedDiscountForwardCurve dc = ScenarioDiscountCurveBuilder.ShapePreservingDFBuild (</span>
 			strCurrency,
 			lcc,
 			aStretchSpec,
@@ -458,7 +458,7 @@ import org.drip.state.inference.*;
 			1.
 		);
 
-<span class="nc" id="L461">		CurveSurfaceQuoteContainer csqs = MarketParamsBuilder.Create (</span>
+<span class="fc" id="L461">		CurveSurfaceQuoteContainer csqs = MarketParamsBuilder.Create (</span>
 			dc,
 			null,
 			null,
@@ -473,34 +473,34 @@ import org.drip.state.inference.*;
 		 * 	construction methodologies.
 		 */
 
-<span class="nc" id="L476">		System.out.println (&quot;\n\t-------------------------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L476">		System.out.println (&quot;\n\t-------------------------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L478">		System.out.println (&quot;\t            IN-ADVANCE/IN-ARREARS SHORT TENOR SWAP METRIC COMPARISON&quot;);</span>
+<span class="fc" id="L478">		System.out.println (&quot;\t            IN-ADVANCE/IN-ARREARS SHORT TENOR SWAP METRIC COMPARISON&quot;);</span>
 
-<span class="nc" id="L480">		System.out.println (&quot;\t-------------------------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L480">		System.out.println (&quot;\t-------------------------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L482">		System.out.println (&quot;\t\tL -&gt; R:&quot;);</span>
+<span class="fc" id="L482">		System.out.println (&quot;\t\tL -&gt; R:&quot;);</span>
 
-<span class="nc" id="L484">		System.out.println (&quot;\t\t\t - Swap Maturity&quot;);</span>
+<span class="fc" id="L484">		System.out.println (&quot;\t\t\t - Swap Maturity&quot;);</span>
 
-<span class="nc" id="L486">		System.out.println (&quot;\t\t\t - In Advance Calibration Quote&quot;);</span>
+<span class="fc" id="L486">		System.out.println (&quot;\t\t\t - In Advance Calibration Quote&quot;);</span>
 
-<span class="nc" id="L488">		System.out.println (&quot;\t\t\t - In Advance Fair Premium&quot;);</span>
+<span class="fc" id="L488">		System.out.println (&quot;\t\t\t - In Advance Fair Premium&quot;);</span>
 
-<span class="nc" id="L490">		System.out.println (&quot;\t\t\t - In Advance Swap Rate&quot;);</span>
+<span class="fc" id="L490">		System.out.println (&quot;\t\t\t - In Advance Swap Rate&quot;);</span>
 
-<span class="nc" id="L492">		System.out.println (&quot;\t\t\t - In Advance Short Tenor Swap Rate&quot;);</span>
+<span class="fc" id="L492">		System.out.println (&quot;\t\t\t - In Advance Short Tenor Swap Rate&quot;);</span>
 
-<span class="nc" id="L494">		System.out.println (&quot;\t\t\t - In Arrears Short Tenor Swap Rate&quot;);</span>
+<span class="fc" id="L494">		System.out.println (&quot;\t\t\t - In Arrears Short Tenor Swap Rate&quot;);</span>
 
-<span class="nc" id="L496">		System.out.println (&quot;\t\t\t - In Advance Short Tenor Swap Rate Shift&quot;);</span>
+<span class="fc" id="L496">		System.out.println (&quot;\t\t\t - In Advance Short Tenor Swap Rate Shift&quot;);</span>
 
-<span class="nc" id="L498">		System.out.println (&quot;\t\t\t - In Arrears Short Tenor Swap Rate Shift&quot;);</span>
+<span class="fc" id="L498">		System.out.println (&quot;\t\t\t - In Arrears Short Tenor Swap Rate Shift&quot;);</span>
 
-<span class="nc" id="L500">		System.out.println (&quot;\t-------------------------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L500">		System.out.println (&quot;\t-------------------------------------------------------------------------------&quot;);</span>
 
-<span class="nc bnc" id="L502" title="All 2 branches missed.">		for (int i = 0; i &lt; aSwapInAdvance.length; ++i) {</span>
-<span class="nc" id="L503">			double dblInAdvanceShortTenorFairPremium = aSwapInAdvanceShortTenor[i].measureValue (</span>
+<span class="fc bfc" id="L502" title="All 2 branches covered.">		for (int i = 0; i &lt; aSwapInAdvance.length; ++i) {</span>
+<span class="fc" id="L503">			double dblInAdvanceShortTenorFairPremium = aSwapInAdvanceShortTenor[i].measureValue (</span>
 				valParams,
 				null,
 				csqs,
@@ -508,7 +508,7 @@ import org.drip.state.inference.*;
 				&quot;FairPremium&quot;
 			);
 
-<span class="nc" id="L511">			double dblInArrearsShortTenorFairPremium = aSwapInArrearsShortTenor[i].measureValue (</span>
+<span class="fc" id="L511">			double dblInArrearsShortTenorFairPremium = aSwapInArrearsShortTenor[i].measureValue (</span>
 				valParams,
 				null,
 				csqs,
@@ -516,41 +516,41 @@ import org.drip.state.inference.*;
 				&quot;FairPremium&quot;
 			);
 
-<span class="nc" id="L519">			System.out.println (&quot;\t[&quot; + aSwapInAdvance[i].maturityDate() + &quot;] = &quot; +</span>
-<span class="nc" id="L520">				FormatUtil.FormatDouble (aSwapInAdvance[i].measureValue (valParams, null, csqs, null, &quot;CalibSwapRate&quot;), 1, 4, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L521">				FormatUtil.FormatDouble (adblSwapQuote[i], 1, 4, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L522">				FormatUtil.FormatDouble (aSwapInAdvance[i].measureValue (valParams, null, csqs, null, &quot;FairPremium&quot;), 1, 4, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L523">				FormatUtil.FormatDouble (dblInAdvanceShortTenorFairPremium, 1, 4, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L524">				FormatUtil.FormatDouble (dblInArrearsShortTenorFairPremium, 1, 4, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L525">				FormatUtil.FormatDouble (dblInAdvanceShortTenorFairPremium - adblSwapQuote[i], 1, 0, 10000.) + &quot; | &quot; +</span>
-<span class="nc" id="L526">				FormatUtil.FormatDouble (dblInArrearsShortTenorFairPremium - adblSwapQuote[i], 1, 0, 10000.)</span>
+<span class="fc" id="L519">			System.out.println (&quot;\t[&quot; + aSwapInAdvance[i].maturityDate() + &quot;] = &quot; +</span>
+<span class="fc" id="L520">				FormatUtil.FormatDouble (aSwapInAdvance[i].measureValue (valParams, null, csqs, null, &quot;CalibSwapRate&quot;), 1, 4, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L521">				FormatUtil.FormatDouble (adblSwapQuote[i], 1, 4, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L522">				FormatUtil.FormatDouble (aSwapInAdvance[i].measureValue (valParams, null, csqs, null, &quot;FairPremium&quot;), 1, 4, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L523">				FormatUtil.FormatDouble (dblInAdvanceShortTenorFairPremium, 1, 4, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L524">				FormatUtil.FormatDouble (dblInArrearsShortTenorFairPremium, 1, 4, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L525">				FormatUtil.FormatDouble (dblInAdvanceShortTenorFairPremium - adblSwapQuote[i], 1, 0, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L526">				FormatUtil.FormatDouble (dblInArrearsShortTenorFairPremium - adblSwapQuote[i], 1, 0, 10000.)</span>
 			);
 		}
 
-<span class="nc" id="L530">		System.out.println (&quot;\n\t-------------------------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L530">		System.out.println (&quot;\n\t-------------------------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L532">		System.out.println (&quot;\t            IN-ADVANCE/IN-ARREARS SHORT TENOR SWAP DV01 COMPARISON&quot;);</span>
+<span class="fc" id="L532">		System.out.println (&quot;\t            IN-ADVANCE/IN-ARREARS SHORT TENOR SWAP DV01 COMPARISON&quot;);</span>
 
-<span class="nc" id="L534">		System.out.println (&quot;\t-------------------------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L534">		System.out.println (&quot;\t-------------------------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L536">		System.out.println (&quot;\t\tL -&gt; R:&quot;);</span>
+<span class="fc" id="L536">		System.out.println (&quot;\t\tL -&gt; R:&quot;);</span>
 
-<span class="nc" id="L538">		System.out.println (&quot;\t\t\t - Swap Maturity&quot;);</span>
+<span class="fc" id="L538">		System.out.println (&quot;\t\t\t - Swap Maturity&quot;);</span>
 
-<span class="nc" id="L540">		System.out.println (&quot;\t\t\t - In Advance Swap DV01&quot;);</span>
+<span class="fc" id="L540">		System.out.println (&quot;\t\t\t - In Advance Swap DV01&quot;);</span>
 
-<span class="nc" id="L542">		System.out.println (&quot;\t\t\t - In Advance Short Tenor Swap DV01&quot;);</span>
+<span class="fc" id="L542">		System.out.println (&quot;\t\t\t - In Advance Short Tenor Swap DV01&quot;);</span>
 
-<span class="nc" id="L544">		System.out.println (&quot;\t\t\t - In Arrears Short Tenor Swap DV01&quot;);</span>
+<span class="fc" id="L544">		System.out.println (&quot;\t\t\t - In Arrears Short Tenor Swap DV01&quot;);</span>
 
-<span class="nc" id="L546">		System.out.println (&quot;\t\t\t - In Advance Short Tenor Swap DV01 Shift&quot;);</span>
+<span class="fc" id="L546">		System.out.println (&quot;\t\t\t - In Advance Short Tenor Swap DV01 Shift&quot;);</span>
 
-<span class="nc" id="L548">		System.out.println (&quot;\t\t\t - In Arrears Short Tenor Swap DV01 Shift&quot;);</span>
+<span class="fc" id="L548">		System.out.println (&quot;\t\t\t - In Arrears Short Tenor Swap DV01 Shift&quot;);</span>
 
-<span class="nc" id="L550">		System.out.println (&quot;\t-------------------------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L550">		System.out.println (&quot;\t-------------------------------------------------------------------------------&quot;);</span>
 
-<span class="nc bnc" id="L552" title="All 2 branches missed.">		for (int i = 0; i &lt; aSwapInAdvance.length; ++i) {</span>
-<span class="nc" id="L553">			double dblInAdvanceDV01 = aSwapInAdvance[i].measureValue (</span>
+<span class="fc bfc" id="L552" title="All 2 branches covered.">		for (int i = 0; i &lt; aSwapInAdvance.length; ++i) {</span>
+<span class="fc" id="L553">			double dblInAdvanceDV01 = aSwapInAdvance[i].measureValue (</span>
 				valParams,
 				null,
 				csqs,
@@ -558,7 +558,7 @@ import org.drip.state.inference.*;
 				&quot;FixedDV01&quot;
 			);
 
-<span class="nc" id="L561">			double dblInAdvanceShortTenorDV01 = aSwapInAdvanceShortTenor[i].measureValue (</span>
+<span class="fc" id="L561">			double dblInAdvanceShortTenorDV01 = aSwapInAdvanceShortTenor[i].measureValue (</span>
 				valParams,
 				null,
 				csqs,
@@ -566,7 +566,7 @@ import org.drip.state.inference.*;
 				&quot;FixedDV01&quot;
 			);
 
-<span class="nc" id="L569">			double dblInArrearsShortTenorDV01 = aSwapInAdvanceShortTenor[i].measureValue (</span>
+<span class="fc" id="L569">			double dblInArrearsShortTenorDV01 = aSwapInAdvanceShortTenor[i].measureValue (</span>
 				valParams,
 				null,
 				csqs,
@@ -574,17 +574,17 @@ import org.drip.state.inference.*;
 				&quot;FixedDV01&quot;
 			);
 
-<span class="nc" id="L577">			System.out.println (&quot;\t[&quot; + aSwapInAdvance[i].maturityDate() + &quot;] = &quot; +</span>
-<span class="nc" id="L578">				FormatUtil.FormatDouble (dblInAdvanceDV01, 2, 1, 10000.) + &quot; | &quot; +</span>
-<span class="nc" id="L579">				FormatUtil.FormatDouble (dblInAdvanceShortTenorDV01, 2, 1, 10000.) + &quot; | &quot; +</span>
-<span class="nc" id="L580">				FormatUtil.FormatDouble (dblInArrearsShortTenorDV01, 2, 1, 10000.) + &quot; | &quot; +</span>
-<span class="nc" id="L581">				FormatUtil.FormatDouble (dblInAdvanceShortTenorDV01 - dblInAdvanceDV01, 1, 2, 10000.) + &quot; | &quot; +</span>
-<span class="nc" id="L582">				FormatUtil.FormatDouble (dblInArrearsShortTenorDV01 - dblInAdvanceDV01, 1, 2, 10000.)</span>
+<span class="fc" id="L577">			System.out.println (&quot;\t[&quot; + aSwapInAdvance[i].maturityDate() + &quot;] = &quot; +</span>
+<span class="fc" id="L578">				FormatUtil.FormatDouble (dblInAdvanceDV01, 2, 1, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L579">				FormatUtil.FormatDouble (dblInAdvanceShortTenorDV01, 2, 1, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L580">				FormatUtil.FormatDouble (dblInArrearsShortTenorDV01, 2, 1, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L581">				FormatUtil.FormatDouble (dblInAdvanceShortTenorDV01 - dblInAdvanceDV01, 1, 2, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L582">				FormatUtil.FormatDouble (dblInArrearsShortTenorDV01 - dblInAdvanceDV01, 1, 2, 10000.)</span>
 			);
 		}
 
-<span class="nc" id="L586">		System.out.println (&quot;\t-------------------------------------------------------------------------------&quot;);</span>
-<span class="nc" id="L587">	}</span>
+<span class="fc" id="L586">		System.out.println (&quot;\t-------------------------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L587">	}</span>
 
 	public static final void main (
 		final String[] astrArgs)
@@ -594,16 +594,16 @@ import org.drip.state.inference.*;
 		 * Initialize the Credit Analytics Library
 		 */
 
-<span class="nc" id="L597">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L597">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L599">		JulianDate dtToday = DateUtil.Today().addTenor (&quot;0D&quot;);</span>
+<span class="fc" id="L599">		JulianDate dtToday = DateUtil.Today().addTenor (&quot;0D&quot;);</span>
 
-<span class="nc" id="L601">		String strCurrency = &quot;USD&quot;;</span>
+<span class="fc" id="L601">		String strCurrency = &quot;USD&quot;;</span>
 
-<span class="nc" id="L603">		CustomDiscountCurveBuilderSample (</span>
+<span class="fc" id="L603">		CustomDiscountCurveBuilderSample (</span>
 			dtToday,
 			strCurrency
 		);
-<span class="nc" id="L607">	}</span>
+<span class="fc" id="L607">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

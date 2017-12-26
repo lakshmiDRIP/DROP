@@ -249,7 +249,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 		final java.lang.String strManifestMeasure)
 	{
 <span class="pc bpc" id="L251" title="2 of 4 branches missed.">		return null == strManifestMeasure || strManifestMeasure.isEmpty() || !_mapLSMS.containsKey</span>
-<span class="pc bpc" id="L252" title="1 of 2 branches missed.">			(strManifestMeasure) ? null : _mapLSMS.get (strManifestMeasure);</span>
+<span class="fc bfc" id="L252" title="All 2 branches covered.">			(strManifestMeasure) ? null : _mapLSMS.get (strManifestMeasure);</span>
 	}
 
 	private double[] CkDBasisCoeffDPreceedingManifestMeasure (
@@ -443,7 +443,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 			org.drip.quant.linearalgebra.LinearSystemSolver.SolveUsingMatrixInversion
 <span class="fc" id="L444">				(aadblResponseBasisCoeffConstraint, adblPredictorResponseConstraintValue);</span>
 
-<span class="pc bpc" id="L446" title="1 of 2 branches missed.">		if (null == lo) return false;</span>
+<span class="fc bfc" id="L446" title="All 2 branches covered.">		if (null == lo) return false;</span>
 
 <span class="fc" id="L448">		double[] adblCalibResponseBasisCoeff = lo.getTransformedRHS();</span>
 
@@ -854,7 +854,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 
 <span class="fc" id="L855">		int iCk = _sidc.Ck();</span>
 
-<span class="pc bpc" id="L857" title="1 of 2 branches missed.">		if (0 != iCk) {</span>
+<span class="fc bfc" id="L857" title="All 2 branches covered.">		if (0 != iCk) {</span>
 <span class="fc" id="L858">			adblManifestJacobianDerivAtLeftOrdinate = new double[iCk];</span>
 
 <span class="fc bfc" id="L860" title="All 2 branches covered.">			for (int i = 0; i &lt; iCk; ++i)</span>
@@ -1230,31 +1230,31 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L1233" title="All 2 branches missed.">		if (0 == iOrder)</span>
+<span class="pc bpc" id="L1233" title="1 of 2 branches missed.">		if (0 == iOrder)</span>
 <span class="nc" id="L1234">			throw new java.lang.Exception</span>
 				(&quot;LatentStateResponseModel::calcDResponseDPreceedingManifest =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L1237">		org.drip.spline.segment.LatentStateManifestSensitivity lsms = manifestSensitivity</span>
-<span class="nc" id="L1238">			(strManifestMeasure);</span>
+<span class="fc" id="L1237">		org.drip.spline.segment.LatentStateManifestSensitivity lsms = manifestSensitivity</span>
+<span class="fc" id="L1238">			(strManifestMeasure);</span>
 
-<span class="nc bnc" id="L1240" title="All 2 branches missed.">		if (null == lsms)</span>
+<span class="pc bpc" id="L1240" title="1 of 2 branches missed.">		if (null == lsms)</span>
 <span class="nc" id="L1241">			throw new java.lang.Exception</span>
 				(&quot;LatentStateResponseModel::calcDResponseDPreceedingManifest =&gt; Cannot locate state Manifest sensitivity&quot;);
 
-<span class="nc" id="L1244">		org.drip.spline.params.PreceedingManifestSensitivityControl pqsc = lsms.getPMSC();</span>
+<span class="fc" id="L1244">		org.drip.spline.params.PreceedingManifestSensitivityControl pqsc = lsms.getPMSC();</span>
 
-<span class="nc" id="L1246">		double dblDResponseDPreceedingManifest = lsms.getDResponseDPreceedingManifest();</span>
+<span class="fc" id="L1246">		double dblDResponseDPreceedingManifest = lsms.getDResponseDPreceedingManifest();</span>
 
-<span class="nc bnc" id="L1248" title="All 2 branches missed.">		if (!pqsc.impactFade())</span>
+<span class="pc bpc" id="L1248" title="1 of 2 branches missed.">		if (!pqsc.impactFade())</span>
 <span class="nc bnc" id="L1249" title="All 2 branches missed.">			return org.drip.quant.common.NumberUtil.IsValid (dblDResponseDPreceedingManifest) ?</span>
 				dblDResponseDPreceedingManifest : 0.;
 
-<span class="nc" id="L1252">		org.drip.spline.segment.BasisEvaluator be = pqsc.basisEvaluator();</span>
+<span class="fc" id="L1252">		org.drip.spline.segment.BasisEvaluator be = pqsc.basisEvaluator();</span>
 
-<span class="nc" id="L1254">		double[] adblDBasisCoeffDPreceedingManifest = lsms.getDBasisCoeffDPreceedingManifest();</span>
+<span class="fc" id="L1254">		double[] adblDBasisCoeffDPreceedingManifest = lsms.getDBasisCoeffDPreceedingManifest();</span>
 
-<span class="nc bnc" id="L1256" title="All 4 branches missed.">		return null == adblDBasisCoeffDPreceedingManifest ? 0. : (null == be ? _be : be).responseValue</span>
-<span class="nc" id="L1257">			(adblDBasisCoeffDPreceedingManifest, dblPredictorOrdinate);</span>
+<span class="pc bpc" id="L1256" title="2 of 4 branches missed.">		return null == adblDBasisCoeffDPreceedingManifest ? 0. : (null == be ? _be : be).responseValue</span>
+<span class="fc" id="L1257">			(adblDBasisCoeffDPreceedingManifest, dblPredictorOrdinate);</span>
 	}
 
 	/**
@@ -1271,14 +1271,14 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 		final java.lang.String strManifestMeasure)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L1274">		org.drip.spline.segment.LatentStateManifestSensitivity lsms = manifestSensitivity</span>
-<span class="nc" id="L1275">			(strManifestMeasure);</span>
+<span class="fc" id="L1274">		org.drip.spline.segment.LatentStateManifestSensitivity lsms = manifestSensitivity</span>
+<span class="fc" id="L1275">			(strManifestMeasure);</span>
 
-<span class="nc bnc" id="L1277" title="All 2 branches missed.">		if (null == lsms)</span>
-<span class="nc" id="L1278">			throw new java.lang.Exception</span>
+<span class="fc bfc" id="L1277" title="All 2 branches covered.">		if (null == lsms)</span>
+<span class="fc" id="L1278">			throw new java.lang.Exception</span>
 				(&quot;LatentStateResponseModel::impactFade =&gt; Cannot locate state Manifest sensitivity&quot;);
 
-<span class="nc" id="L1281">		return lsms.getPMSC().impactFade();</span>
+<span class="fc" id="L1281">		return lsms.getPMSC().impactFade();</span>
 	}
 
 	/**

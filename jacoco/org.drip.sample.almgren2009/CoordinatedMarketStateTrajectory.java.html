@@ -83,60 +83,60 @@ import org.drip.service.env.EnvManager;
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L86">		EnvManager.InitEnv (</span>
+<span class="fc" id="L86">		EnvManager.InitEnv (</span>
 				&quot;&quot;,
 				true
 			);
 
-<span class="nc" id="L91">		double dblBurstiness = 1.;</span>
-<span class="nc" id="L92">		double dblRelaxationTime = 1.;</span>
-<span class="nc" id="L93">		double dblSimulationTime = 9.75;</span>
-<span class="nc" id="L94">		int iNumSimulation = 39;</span>
-<span class="nc" id="L95">		double dblReferenceLiquidity = 1.0;</span>
-<span class="nc" id="L96">		double dblReferenceVolatility = 1.0;</span>
-<span class="nc" id="L97">		double dblInitialMarketState = -0.5;</span>
+<span class="fc" id="L91">		double dblBurstiness = 1.;</span>
+<span class="fc" id="L92">		double dblRelaxationTime = 1.;</span>
+<span class="fc" id="L93">		double dblSimulationTime = 9.75;</span>
+<span class="fc" id="L94">		int iNumSimulation = 39;</span>
+<span class="fc" id="L95">		double dblReferenceLiquidity = 1.0;</span>
+<span class="fc" id="L96">		double dblReferenceVolatility = 1.0;</span>
+<span class="fc" id="L97">		double dblInitialMarketState = -0.5;</span>
 
-<span class="nc" id="L99">		double dblTime = 0.;</span>
-<span class="nc" id="L100">		double dblMarketState = dblInitialMarketState;</span>
-<span class="nc" id="L101">		double dblTimeInterval = dblSimulationTime / iNumSimulation;</span>
+<span class="fc" id="L99">		double dblTime = 0.;</span>
+<span class="fc" id="L100">		double dblMarketState = dblInitialMarketState;</span>
+<span class="fc" id="L101">		double dblTimeInterval = dblSimulationTime / iNumSimulation;</span>
 
-<span class="nc" id="L103">		DiffusionEvaluatorOrnsteinUhlenbeck oup1D = DiffusionEvaluatorOrnsteinUhlenbeck.ZeroMean (</span>
+<span class="fc" id="L103">		DiffusionEvaluatorOrnsteinUhlenbeck oup1D = DiffusionEvaluatorOrnsteinUhlenbeck.ZeroMean (</span>
 			dblBurstiness,
 			dblRelaxationTime
 		);
 
-<span class="nc" id="L108">		DiffusionEvolver de = new DiffusionEvolver (oup1D);</span>
+<span class="fc" id="L108">		DiffusionEvolver de = new DiffusionEvolver (oup1D);</span>
 
-<span class="nc" id="L110">		CoordinatedMarketState cms = new CoordinatedMarketState (</span>
+<span class="fc" id="L110">		CoordinatedMarketState cms = new CoordinatedMarketState (</span>
 			new CoordinatedVariation (
 				dblReferenceVolatility,
 				dblReferenceLiquidity
 			)
 		);
 
-<span class="nc" id="L117">		double dblLiquidity = cms.liquidity (dblMarketState);</span>
+<span class="fc" id="L117">		double dblLiquidity = cms.liquidity (dblMarketState);</span>
 
-<span class="nc" id="L119">		System.out.println();</span>
+<span class="fc" id="L119">		System.out.println();</span>
 
-<span class="nc" id="L121">		System.out.println (&quot;\t||------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L121">		System.out.println (&quot;\t||------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L123">		System.out.println (&quot;\t||    L -&gt; R:                                                       ||&quot;);</span>
+<span class="fc" id="L123">		System.out.println (&quot;\t||    L -&gt; R:                                                       ||&quot;);</span>
 
-<span class="nc" id="L125">		System.out.println (&quot;\t||            - Realized Market State                               ||&quot;);</span>
+<span class="fc" id="L125">		System.out.println (&quot;\t||            - Realized Market State                               ||&quot;);</span>
 
-<span class="nc" id="L127">		System.out.println (&quot;\t||            - Realized Volatility                                 ||&quot;);</span>
+<span class="fc" id="L127">		System.out.println (&quot;\t||            - Realized Volatility                                 ||&quot;);</span>
 
-<span class="nc" id="L129">		System.out.println (&quot;\t||            - Realized Liquidity                                  ||&quot;);</span>
+<span class="fc" id="L129">		System.out.println (&quot;\t||            - Realized Liquidity                                  ||&quot;);</span>
 
-<span class="nc" id="L131">		System.out.println (&quot;\t||            - Liquidity/Volatility Status                         ||&quot;);</span>
+<span class="fc" id="L131">		System.out.println (&quot;\t||            - Liquidity/Volatility Status                         ||&quot;);</span>
 
-<span class="nc" id="L133">		System.out.println (&quot;\t||------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L133">		System.out.println (&quot;\t||------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L135">		System.out.println (&quot;\t|| [&quot; + </span>
-<span class="nc" id="L136">			FormatUtil.FormatDouble (0., 1, 2, 1.) + &quot;] =&gt; &quot; +</span>
-<span class="nc" id="L137">			FormatUtil.FormatDouble (dblMarketState, 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L138">			FormatUtil.FormatDouble (cms.volatility (dblMarketState), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc bnc" id="L139" title="All 2 branches missed.">			FormatUtil.FormatDouble (cms.liquidity (dblMarketState), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L135">		System.out.println (&quot;\t|| [&quot; + </span>
+<span class="fc" id="L136">			FormatUtil.FormatDouble (0., 1, 2, 1.) + &quot;] =&gt; &quot; +</span>
+<span class="fc" id="L137">			FormatUtil.FormatDouble (dblMarketState, 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L138">			FormatUtil.FormatDouble (cms.volatility (dblMarketState), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="pc bpc" id="L139" title="1 of 2 branches missed.">			FormatUtil.FormatDouble (cms.liquidity (dblMarketState), 1, 4, 1.) + &quot; | &quot; +</span>
 			(
 				dblLiquidity &lt; dblReferenceLiquidity ?
 				&quot;  LIQUID,     VOLATILE &quot; :
@@ -145,8 +145,8 @@ import org.drip.service.env.EnvManager;
 			&quot; ||&quot;
 		);
 
-<span class="nc bnc" id="L148" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSimulation; ++i) {</span>
-<span class="nc" id="L149">			JumpDiffusionEdge gi = de.weinerIncrement (</span>
+<span class="fc bfc" id="L148" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSimulation; ++i) {</span>
+<span class="fc" id="L149">			JumpDiffusionEdge gi = de.weinerIncrement (</span>
 				new JumpDiffusionVertex (
 					dblTime,
 					dblMarketState,
@@ -156,17 +156,17 @@ import org.drip.service.env.EnvManager;
 				dblTimeInterval
 			);
 
-<span class="nc" id="L159">			dblTime += dblTimeInterval;</span>
+<span class="fc" id="L159">			dblTime += dblTimeInterval;</span>
 
-<span class="nc" id="L161">			dblMarketState += gi.deterministic() + gi.diffusionStochastic();</span>
+<span class="fc" id="L161">			dblMarketState += gi.deterministic() + gi.diffusionStochastic();</span>
 
-<span class="nc" id="L163">			dblLiquidity = cms.liquidity (dblMarketState);</span>
+<span class="fc" id="L163">			dblLiquidity = cms.liquidity (dblMarketState);</span>
 
-<span class="nc" id="L165">			System.out.println (&quot;\t|| [&quot; + </span>
-<span class="nc" id="L166">				FormatUtil.FormatDouble (dblTimeInterval * (i + 1), 1, 2, 1.) + &quot;] =&gt; &quot; +</span>
-<span class="nc" id="L167">				FormatUtil.FormatDouble (dblMarketState, 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L168">				FormatUtil.FormatDouble (cms.volatility (dblMarketState), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc bnc" id="L169" title="All 2 branches missed.">				FormatUtil.FormatDouble (dblLiquidity, 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L165">			System.out.println (&quot;\t|| [&quot; + </span>
+<span class="fc" id="L166">				FormatUtil.FormatDouble (dblTimeInterval * (i + 1), 1, 2, 1.) + &quot;] =&gt; &quot; +</span>
+<span class="fc" id="L167">				FormatUtil.FormatDouble (dblMarketState, 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L168">				FormatUtil.FormatDouble (cms.volatility (dblMarketState), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc bfc" id="L169" title="All 2 branches covered.">				FormatUtil.FormatDouble (dblLiquidity, 1, 4, 1.) + &quot; | &quot; +</span>
 				(
 					dblLiquidity &lt; dblReferenceLiquidity ?
 					&quot;  LIQUID,     VOLATILE &quot; :
@@ -176,9 +176,9 @@ import org.drip.service.env.EnvManager;
 			);
 		}
 
-<span class="nc" id="L179">		System.out.println (&quot;\t||------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L179">		System.out.println (&quot;\t||------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L181">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L182">	}</span>
+<span class="fc" id="L181">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L182">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

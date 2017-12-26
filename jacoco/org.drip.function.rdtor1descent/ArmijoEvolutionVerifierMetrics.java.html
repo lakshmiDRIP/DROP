@@ -61,10 +61,10 @@ package org.drip.function.rdtor1descent;
 
 public class ArmijoEvolutionVerifierMetrics extends
 	org.drip.function.rdtor1descent.LineEvolutionVerifierMetrics {
-<span class="nc" id="L64">	private boolean _bMaximizerCheck = false;</span>
-<span class="nc" id="L65">	private double _dblArmijoParameter = java.lang.Double.NaN;</span>
-<span class="nc" id="L66">	private double _dblNextVariateFunctionValue = java.lang.Double.NaN;</span>
-<span class="nc" id="L67">	private double _dblCurrentVariateFunctionValue = java.lang.Double.NaN;</span>
+<span class="fc" id="L64">	private boolean _bMaximizerCheck = false;</span>
+<span class="fc" id="L65">	private double _dblArmijoParameter = java.lang.Double.NaN;</span>
+<span class="fc" id="L66">	private double _dblNextVariateFunctionValue = java.lang.Double.NaN;</span>
+<span class="fc" id="L67">	private double _dblCurrentVariateFunctionValue = java.lang.Double.NaN;</span>
 
 	/**
 	 * ArmijoEvolutionVerifierMetrics Constructor
@@ -92,16 +92,16 @@ public class ArmijoEvolutionVerifierMetrics extends
 		final double[] adblCurrentVariateFunctionJacobian)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L95">		super (uvTargetDirection, adblCurrentVariate, dblStepLength, adblCurrentVariateFunctionJacobian);</span>
+<span class="fc" id="L95">		super (uvTargetDirection, adblCurrentVariate, dblStepLength, adblCurrentVariateFunctionJacobian);</span>
 
-<span class="nc bnc" id="L97" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblArmijoParameter = dblArmijoParameter) ||</span>
-<span class="nc bnc" id="L98" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblCurrentVariateFunctionValue =</span>
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblArmijoParameter = dblArmijoParameter) ||</span>
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblCurrentVariateFunctionValue =</span>
 				dblCurrentVariateFunctionValue) || !org.drip.quant.common.NumberUtil.IsValid
-<span class="nc bnc" id="L100" title="All 2 branches missed.">					(_dblNextVariateFunctionValue = dblNextVariateFunctionValue))</span>
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">					(_dblNextVariateFunctionValue = dblNextVariateFunctionValue))</span>
 <span class="nc" id="L101">			throw new java.lang.Exception (&quot;ArmijoEvolutionVerifierMetrics Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L103">		_bMaximizerCheck = bMaximizerCheck;</span>
-<span class="nc" id="L104">	}</span>
+<span class="fc" id="L103">		_bMaximizerCheck = bMaximizerCheck;</span>
+<span class="fc" id="L104">	}</span>
 
 	/**
 	 * Retrieve the Armijo Parameter
@@ -156,11 +156,11 @@ public class ArmijoEvolutionVerifierMetrics extends
 	public boolean verify()
 	{
 		try {
-<span class="nc" id="L159">			double dblGradientUpdatedFunctionValue = _dblCurrentVariateFunctionValue + _dblArmijoParameter *</span>
-<span class="nc" id="L160">				stepLength() * org.drip.quant.linearalgebra.Matrix.DotProduct (targetDirection().component(),</span>
-<span class="nc" id="L161">					currentVariateFunctionJacobian());</span>
+<span class="fc" id="L159">			double dblGradientUpdatedFunctionValue = _dblCurrentVariateFunctionValue + _dblArmijoParameter *</span>
+<span class="fc" id="L160">				stepLength() * org.drip.quant.linearalgebra.Matrix.DotProduct (targetDirection().component(),</span>
+<span class="fc" id="L161">					currentVariateFunctionJacobian());</span>
 
-<span class="nc bnc" id="L163" title="All 6 branches missed.">			return _bMaximizerCheck ? _dblNextVariateFunctionValue &gt;= dblGradientUpdatedFunctionValue :</span>
+<span class="pc bpc" id="L163" title="3 of 6 branches missed.">			return _bMaximizerCheck ? _dblNextVariateFunctionValue &gt;= dblGradientUpdatedFunctionValue :</span>
 				_dblNextVariateFunctionValue &lt;= dblGradientUpdatedFunctionValue;
 <span class="nc" id="L165">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L166">			e.printStackTrace();</span>

@@ -71,15 +71,15 @@ import org.drip.service.env.EnvManager;
 		final int iNumSample)
 		throws Exception
 	{
-<span class="nc" id="L74">		SingleSequenceAgnosticMetrics[] aSSAM = new SingleSequenceAgnosticMetrics[iNumSample];</span>
+<span class="fc" id="L74">		SingleSequenceAgnosticMetrics[] aSSAM = new SingleSequenceAgnosticMetrics[iNumSample];</span>
 
-<span class="nc bnc" id="L76" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSample; ++i)</span>
-<span class="nc" id="L77">			aSSAM[i] = rsg.sequence (</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSample; ++i)</span>
+<span class="fc" id="L77">			aSSAM[i] = rsg.sequence (</span>
 				iNumSample,
 				null
 			);
 
-<span class="nc" id="L82">		return aSSAM;</span>
+<span class="fc" id="L82">		return aSSAM;</span>
 	}
 
 	private static final GlivenkoCantelliUniformDeviation BinarySumFunction (
@@ -87,17 +87,17 @@ import org.drip.service.env.EnvManager;
 		final int iNumVariate)
 		throws Exception
 	{
-<span class="nc" id="L90">		double[] adblWeight = new double[iNumVariate];</span>
+<span class="fc" id="L90">		double[] adblWeight = new double[iNumVariate];</span>
 
-<span class="nc bnc" id="L92" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
-<span class="nc" id="L93">			adblWeight[i] = 1. / iNumVariate;</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
+<span class="fc" id="L93">			adblWeight[i] = 1. / iNumVariate;</span>
 
-<span class="nc" id="L95">		return new GlivenkoCantelliUniformDeviation (</span>
+<span class="fc" id="L95">		return new GlivenkoCantelliUniformDeviation (</span>
 			new BinaryIdempotentUnivariateRandom (
 				0.,
 				null,
 				1.,
-<span class="nc" id="L100">				binarySequenceGenerator.positiveProbability()</span>
+<span class="fc" id="L100">				binarySequenceGenerator.positiveProbability()</span>
 			),
 			adblWeight
 		);
@@ -109,29 +109,29 @@ import org.drip.service.env.EnvManager;
 		final int iNumSet)
 		throws Exception
 	{
-<span class="nc" id="L112">		String strDump = &quot;\t| &quot; + FormatUtil.FormatDouble (iNumSample, 2, 0, 1.) + &quot; =&gt; &quot;;</span>
+<span class="fc" id="L112">		String strDump = &quot;\t| &quot; + FormatUtil.FormatDouble (iNumSample, 2, 0, 1.) + &quot; =&gt; &quot;;</span>
 
-<span class="nc bnc" id="L114" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumSet; ++j) {</span>
-<span class="nc" id="L115">			SingleSequenceAgnosticMetrics[] aSSAM = IIDDraw (</span>
+<span class="fc bfc" id="L114" title="All 2 branches covered.">		for (int j = 0; j &lt; iNumSet; ++j) {</span>
+<span class="fc" id="L115">			SingleSequenceAgnosticMetrics[] aSSAM = IIDDraw (</span>
 				binarySequenceGenerator,
 				iNumSample
 			);
 
-<span class="nc" id="L120">			EfronSteinMetrics esam = new EfronSteinMetrics (</span>
-<span class="nc" id="L121">				BinarySumFunction (</span>
+<span class="fc" id="L120">			EfronSteinMetrics esam = new EfronSteinMetrics (</span>
+<span class="fc" id="L121">				BinarySumFunction (</span>
 					binarySequenceGenerator,
 					iNumSample
 				),
 				aSSAM
 			);
 
-<span class="nc bnc" id="L128" title="All 2 branches missed.">			if (0 != j) strDump += &quot; |&quot;;</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">			if (0 != j) strDump += &quot; |&quot;;</span>
 
-<span class="nc" id="L130">			strDump += FormatUtil.FormatDouble (esam.martingaleVarianceUpperBound(), 1, 3, 1.);</span>
+<span class="fc" id="L130">			strDump += FormatUtil.FormatDouble (esam.martingaleVarianceUpperBound(), 1, 3, 1.);</span>
 		}
 
-<span class="nc" id="L133">		System.out.println (strDump + &quot; |&quot;);</span>
-<span class="nc" id="L134">	}</span>
+<span class="fc" id="L133">		System.out.println (strDump + &quot; |&quot;);</span>
+<span class="fc" id="L134">	}</span>
 
 	private static final void GhostVariateVarianceRun (
 		final Binary binarySequenceGenerator,
@@ -139,34 +139,34 @@ import org.drip.service.env.EnvManager;
 		final int iNumSet)
 		throws Exception
 	{
-<span class="nc" id="L142">		String strDump = &quot;\t| &quot; + FormatUtil.FormatDouble (iNumSample, 2, 0, 1.) + &quot; =&gt; &quot;;</span>
+<span class="fc" id="L142">		String strDump = &quot;\t| &quot; + FormatUtil.FormatDouble (iNumSample, 2, 0, 1.) + &quot; =&gt; &quot;;</span>
 
-<span class="nc bnc" id="L144" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumSet; ++j) {</span>
-<span class="nc" id="L145">			SingleSequenceAgnosticMetrics[] aSSAM = IIDDraw (</span>
+<span class="fc bfc" id="L144" title="All 2 branches covered.">		for (int j = 0; j &lt; iNumSet; ++j) {</span>
+<span class="fc" id="L145">			SingleSequenceAgnosticMetrics[] aSSAM = IIDDraw (</span>
 				binarySequenceGenerator,
 				iNumSample
 			);
 
-<span class="nc" id="L150">			EfronSteinMetrics esam = new EfronSteinMetrics (</span>
-<span class="nc" id="L151">				BinarySumFunction (</span>
+<span class="fc" id="L150">			EfronSteinMetrics esam = new EfronSteinMetrics (</span>
+<span class="fc" id="L151">				BinarySumFunction (</span>
 					binarySequenceGenerator,
 					iNumSample
 				),
 				aSSAM
 			);
 
-<span class="nc" id="L158">			SingleSequenceAgnosticMetrics[] aSSAMGhost = IIDDraw (</span>
+<span class="fc" id="L158">			SingleSequenceAgnosticMetrics[] aSSAMGhost = IIDDraw (</span>
 				binarySequenceGenerator,
 				iNumSample
 			);
 
-<span class="nc bnc" id="L163" title="All 2 branches missed.">			if (0 != j) strDump += &quot; |&quot;;</span>
+<span class="fc bfc" id="L163" title="All 2 branches covered.">			if (0 != j) strDump += &quot; |&quot;;</span>
 
-<span class="nc" id="L165">			strDump += FormatUtil.FormatDouble (esam.ghostVarianceUpperBound (aSSAMGhost), 1, 3, 1.);</span>
+<span class="fc" id="L165">			strDump += FormatUtil.FormatDouble (esam.ghostVarianceUpperBound (aSSAMGhost), 1, 3, 1.);</span>
 		}
 
-<span class="nc" id="L168">		System.out.println (strDump + &quot; |&quot;);</span>
-<span class="nc" id="L169">	}</span>
+<span class="fc" id="L168">		System.out.println (strDump + &quot; |&quot;);</span>
+<span class="fc" id="L169">	}</span>
 
 	private static final void EfronSteinSteeleRun (
 		final Binary binarySequenceGenerator,
@@ -174,34 +174,34 @@ import org.drip.service.env.EnvManager;
 		final int iNumSet)
 		throws Exception
 	{
-<span class="nc" id="L177">		String strDump = &quot;\t| &quot; + FormatUtil.FormatDouble (iNumSample, 2, 0, 1.) + &quot; =&gt; &quot;;</span>
+<span class="fc" id="L177">		String strDump = &quot;\t| &quot; + FormatUtil.FormatDouble (iNumSample, 2, 0, 1.) + &quot; =&gt; &quot;;</span>
 
-<span class="nc bnc" id="L179" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumSet; ++j) {</span>
-<span class="nc" id="L180">			SingleSequenceAgnosticMetrics[] aSSAM = IIDDraw (</span>
+<span class="fc bfc" id="L179" title="All 2 branches covered.">		for (int j = 0; j &lt; iNumSet; ++j) {</span>
+<span class="fc" id="L180">			SingleSequenceAgnosticMetrics[] aSSAM = IIDDraw (</span>
 				binarySequenceGenerator,
 				iNumSample
 			);
 
-<span class="nc" id="L185">			EfronSteinMetrics esam = new EfronSteinMetrics (</span>
-<span class="nc" id="L186">				BinarySumFunction (</span>
+<span class="fc" id="L185">			EfronSteinMetrics esam = new EfronSteinMetrics (</span>
+<span class="fc" id="L186">				BinarySumFunction (</span>
 					binarySequenceGenerator,
 					iNumSample
 				),
 				aSSAM
 			);
 
-<span class="nc" id="L193">			SingleSequenceAgnosticMetrics[] aSSAMGhost = IIDDraw (</span>
+<span class="fc" id="L193">			SingleSequenceAgnosticMetrics[] aSSAMGhost = IIDDraw (</span>
 				binarySequenceGenerator,
 				iNumSample
 			);
 
-<span class="nc bnc" id="L198" title="All 2 branches missed.">			if (0 != j) strDump += &quot; |&quot;;</span>
+<span class="fc bfc" id="L198" title="All 2 branches covered.">			if (0 != j) strDump += &quot; |&quot;;</span>
 
-<span class="nc" id="L200">			strDump += FormatUtil.FormatDouble (esam.efronSteinSteeleBound (aSSAMGhost), 1, 3, 1.);</span>
+<span class="fc" id="L200">			strDump += FormatUtil.FormatDouble (esam.efronSteinSteeleBound (aSSAMGhost), 1, 3, 1.);</span>
 		}
 
-<span class="nc" id="L203">		System.out.println (strDump + &quot; |&quot;);</span>
-<span class="nc" id="L204">	}</span>
+<span class="fc" id="L203">		System.out.println (strDump + &quot; |&quot;);</span>
+<span class="fc" id="L204">	}</span>
 
 	private static final void PivotDifferencesRun (
 		final Binary binarySequenceGenerator,
@@ -209,31 +209,31 @@ import org.drip.service.env.EnvManager;
 		final int iNumSet)
 		throws Exception
 	{
-<span class="nc" id="L212">		String strDump = &quot;\t| &quot; + FormatUtil.FormatDouble (iNumSample, 2, 0, 1.) + &quot; =&gt; &quot;;</span>
+<span class="fc" id="L212">		String strDump = &quot;\t| &quot; + FormatUtil.FormatDouble (iNumSample, 2, 0, 1.) + &quot; =&gt; &quot;;</span>
 
-<span class="nc bnc" id="L214" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumSet; ++j) {</span>
-<span class="nc" id="L215">			MultivariateRandom func = BinarySumFunction (</span>
+<span class="fc bfc" id="L214" title="All 2 branches covered.">		for (int j = 0; j &lt; iNumSet; ++j) {</span>
+<span class="fc" id="L215">			MultivariateRandom func = BinarySumFunction (</span>
 				binarySequenceGenerator,
 				iNumSample
 			);
 
-<span class="nc" id="L220">			SingleSequenceAgnosticMetrics[] aSSAM = IIDDraw (</span>
+<span class="fc" id="L220">			SingleSequenceAgnosticMetrics[] aSSAM = IIDDraw (</span>
 				binarySequenceGenerator,
 				iNumSample
 			);
 
-<span class="nc" id="L225">			EfronSteinMetrics esam = new EfronSteinMetrics (</span>
+<span class="fc" id="L225">			EfronSteinMetrics esam = new EfronSteinMetrics (</span>
 				func,
 				aSSAM
 			);
 
-<span class="nc bnc" id="L230" title="All 2 branches missed.">			if (0 != j) strDump += &quot; |&quot;;</span>
+<span class="fc bfc" id="L230" title="All 2 branches covered.">			if (0 != j) strDump += &quot; |&quot;;</span>
 
-<span class="nc" id="L232">			strDump += FormatUtil.FormatDouble (esam.pivotVarianceUpperBound (new FlatMultivariateRandom (0.)), 1, 3, 1.);</span>
+<span class="fc" id="L232">			strDump += FormatUtil.FormatDouble (esam.pivotVarianceUpperBound (new FlatMultivariateRandom (0.)), 1, 3, 1.);</span>
 		}
 
-<span class="nc" id="L235">		System.out.println (strDump + &quot; |&quot;);</span>
-<span class="nc" id="L236">	}</span>
+<span class="fc" id="L235">		System.out.println (strDump + &quot; |&quot;);</span>
+<span class="fc" id="L236">	}</span>
 
 	private static final void BoundedDifferencesRun (
 		final Binary binarySequenceGenerator,
@@ -241,122 +241,122 @@ import org.drip.service.env.EnvManager;
 		final int iNumSet)
 		throws Exception
 	{
-<span class="nc" id="L244">		String strDump = &quot;\t| &quot; + FormatUtil.FormatDouble (iNumSample, 2, 0, 1.) + &quot; =&gt; &quot;;</span>
+<span class="fc" id="L244">		String strDump = &quot;\t| &quot; + FormatUtil.FormatDouble (iNumSample, 2, 0, 1.) + &quot; =&gt; &quot;;</span>
 
-<span class="nc bnc" id="L246" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumSet; ++j) {</span>
-<span class="nc" id="L247">			SingleSequenceAgnosticMetrics[] aSSAM = IIDDraw (</span>
+<span class="fc bfc" id="L246" title="All 2 branches covered.">		for (int j = 0; j &lt; iNumSet; ++j) {</span>
+<span class="fc" id="L247">			SingleSequenceAgnosticMetrics[] aSSAM = IIDDraw (</span>
 				binarySequenceGenerator,
 				iNumSample
 			);
 
-<span class="nc" id="L252">			EfronSteinMetrics esam = new EfronSteinMetrics (</span>
-<span class="nc" id="L253">				BinarySumFunction (</span>
+<span class="fc" id="L252">			EfronSteinMetrics esam = new EfronSteinMetrics (</span>
+<span class="fc" id="L253">				BinarySumFunction (</span>
 					binarySequenceGenerator,
 					iNumSample
 				),
 				aSSAM
 			);
 
-<span class="nc bnc" id="L260" title="All 2 branches missed.">			if (0 != j) strDump += &quot; |&quot;;</span>
+<span class="fc bfc" id="L260" title="All 2 branches covered.">			if (0 != j) strDump += &quot; |&quot;;</span>
 
-<span class="nc" id="L262">			strDump += FormatUtil.FormatDouble (esam.boundedVarianceUpperBound(), 1, 3, 1.);</span>
+<span class="fc" id="L262">			strDump += FormatUtil.FormatDouble (esam.boundedVarianceUpperBound(), 1, 3, 1.);</span>
 		}
 
-<span class="nc" id="L265">		System.out.println (strDump + &quot; |&quot;);</span>
-<span class="nc" id="L266">	}</span>
+<span class="fc" id="L265">		System.out.println (strDump + &quot; |&quot;);</span>
+<span class="fc" id="L266">	}</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L272">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L272">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L274">		int iNumSet = 5;</span>
+<span class="fc" id="L274">		int iNumSet = 5;</span>
 
-<span class="nc" id="L276">		int[] aiSampleSize = new int[] {</span>
+<span class="fc" id="L276">		int[] aiSampleSize = new int[] {</span>
 			3, 10, 25, 50
 		};
 
-<span class="nc" id="L280">		Binary bin = new Binary (0.7);</span>
+<span class="fc" id="L280">		Binary bin = new Binary (0.7);</span>
 
-<span class="nc" id="L282">		System.out.println (&quot;\n\t|-----------------------------------------------|&quot;);</span>
+<span class="fc" id="L282">		System.out.println (&quot;\n\t|-----------------------------------------------|&quot;);</span>
 
-<span class="nc" id="L284">		System.out.println (&quot;\t|  Martingale Differences Variance Upper Bound  |&quot;);</span>
+<span class="fc" id="L284">		System.out.println (&quot;\t|  Martingale Differences Variance Upper Bound  |&quot;);</span>
 
-<span class="nc" id="L286">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
+<span class="fc" id="L286">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
 
-<span class="nc bnc" id="L288" title="All 2 branches missed.">		for (int iSampleSize : aiSampleSize)</span>
-<span class="nc" id="L289">			MartingaleDifferencesRun (</span>
+<span class="fc bfc" id="L288" title="All 2 branches covered.">		for (int iSampleSize : aiSampleSize)</span>
+<span class="fc" id="L289">			MartingaleDifferencesRun (</span>
 				bin,
 				iSampleSize,
 				iNumSet
 			);
 
-<span class="nc" id="L295">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
+<span class="fc" id="L295">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
 
-<span class="nc" id="L297">		System.out.println (&quot;\n\t|-----------------------------------------------|&quot;);</span>
+<span class="fc" id="L297">		System.out.println (&quot;\n\t|-----------------------------------------------|&quot;);</span>
 
-<span class="nc" id="L299">		System.out.println (&quot;\t|   Symmetrized Variate Variance Upper Bound    |&quot;);</span>
+<span class="fc" id="L299">		System.out.println (&quot;\t|   Symmetrized Variate Variance Upper Bound    |&quot;);</span>
 
-<span class="nc" id="L301">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
+<span class="fc" id="L301">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
 
-<span class="nc bnc" id="L303" title="All 2 branches missed.">		for (int iSampleSize : aiSampleSize)</span>
-<span class="nc" id="L304">			GhostVariateVarianceRun (</span>
+<span class="fc bfc" id="L303" title="All 2 branches covered.">		for (int iSampleSize : aiSampleSize)</span>
+<span class="fc" id="L304">			GhostVariateVarianceRun (</span>
 				bin,
 				iSampleSize,
 				iNumSet
 			);
 
-<span class="nc" id="L310">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
+<span class="fc" id="L310">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
 
-<span class="nc" id="L312">		aiSampleSize = new int[] {</span>
+<span class="fc" id="L312">		aiSampleSize = new int[] {</span>
 			3, 10, 25, 50, 75, 99
 		};
 
-<span class="nc" id="L316">		System.out.println (&quot;\n\t|-----------------------------------------------|&quot;);</span>
+<span class="fc" id="L316">		System.out.println (&quot;\n\t|-----------------------------------------------|&quot;);</span>
 
-<span class="nc" id="L318">		System.out.println (&quot;\t|    Efron-Stein-Steele Variance Upper Bound    |&quot;);</span>
+<span class="fc" id="L318">		System.out.println (&quot;\t|    Efron-Stein-Steele Variance Upper Bound    |&quot;);</span>
 
-<span class="nc" id="L320">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
+<span class="fc" id="L320">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
 
-<span class="nc bnc" id="L322" title="All 2 branches missed.">		for (int iSampleSize : aiSampleSize)</span>
-<span class="nc" id="L323">			EfronSteinSteeleRun (</span>
+<span class="fc bfc" id="L322" title="All 2 branches covered.">		for (int iSampleSize : aiSampleSize)</span>
+<span class="fc" id="L323">			EfronSteinSteeleRun (</span>
 				bin,
 				iSampleSize,
 				iNumSet
 			);
 
-<span class="nc" id="L329">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
+<span class="fc" id="L329">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
 
-<span class="nc" id="L331">		System.out.println (&quot;\n\t|-----------------------------------------------|&quot;);</span>
+<span class="fc" id="L331">		System.out.println (&quot;\n\t|-----------------------------------------------|&quot;);</span>
 
-<span class="nc" id="L333">		System.out.println (&quot;\t|    Pivoted Differences Variance Upper Bound   |&quot;);</span>
+<span class="fc" id="L333">		System.out.println (&quot;\t|    Pivoted Differences Variance Upper Bound   |&quot;);</span>
 
-<span class="nc" id="L335">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
+<span class="fc" id="L335">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
 
-<span class="nc bnc" id="L337" title="All 2 branches missed.">		for (int iSampleSize : aiSampleSize)</span>
-<span class="nc" id="L338">			PivotDifferencesRun (</span>
+<span class="fc bfc" id="L337" title="All 2 branches covered.">		for (int iSampleSize : aiSampleSize)</span>
+<span class="fc" id="L338">			PivotDifferencesRun (</span>
 				bin,
 				iSampleSize,
 				iNumSet
 			);
 
-<span class="nc" id="L344">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
+<span class="fc" id="L344">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
 
-<span class="nc" id="L346">		System.out.println (&quot;\n\t|-----------------------------------------------|&quot;);</span>
+<span class="fc" id="L346">		System.out.println (&quot;\n\t|-----------------------------------------------|&quot;);</span>
 
-<span class="nc" id="L348">		System.out.println (&quot;\t|   Bounded Differences Variance Upper Bound    |&quot;);</span>
+<span class="fc" id="L348">		System.out.println (&quot;\t|   Bounded Differences Variance Upper Bound    |&quot;);</span>
 
-<span class="nc" id="L350">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
+<span class="fc" id="L350">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
 
-<span class="nc bnc" id="L352" title="All 2 branches missed.">		for (int iSampleSize : aiSampleSize)</span>
-<span class="nc" id="L353">			BoundedDifferencesRun (</span>
+<span class="fc bfc" id="L352" title="All 2 branches covered.">		for (int iSampleSize : aiSampleSize)</span>
+<span class="fc" id="L353">			BoundedDifferencesRun (</span>
 				bin,
 				iSampleSize,
 				iNumSet
 			);
 
-<span class="nc" id="L359">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
-<span class="nc" id="L360">	}</span>
+<span class="fc" id="L359">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
+<span class="fc" id="L360">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

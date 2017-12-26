@@ -81,45 +81,45 @@ import org.drip.service.env.EnvManager;
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L84">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L84">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L86">		double dblTimeWidth = 1. / 24.;</span>
-<span class="nc" id="L87">		double dblTime = 0.;</span>
-<span class="nc" id="L88">		double dblAssetDrift = 0.06;</span>
-<span class="nc" id="L89">		double dblAssetVolatility = 0.15;</span>
-<span class="nc" id="L90">		double dblAssetHazard = 0.05;</span>
-<span class="nc" id="L91">		double dblAssetDefaultMagnitude = 0.6;</span>
-<span class="nc" id="L92">		double dblTerminalAssetNumeraire = 1.;</span>
+<span class="fc" id="L86">		double dblTimeWidth = 1. / 24.;</span>
+<span class="fc" id="L87">		double dblTime = 0.;</span>
+<span class="fc" id="L88">		double dblAssetDrift = 0.06;</span>
+<span class="fc" id="L89">		double dblAssetVolatility = 0.15;</span>
+<span class="fc" id="L90">		double dblAssetHazard = 0.05;</span>
+<span class="fc" id="L91">		double dblAssetDefaultMagnitude = 0.6;</span>
+<span class="fc" id="L92">		double dblTerminalAssetNumeraire = 1.;</span>
 
-<span class="nc" id="L94">		int iNumTimeStep = (int) (1. / dblTimeWidth);</span>
-<span class="nc" id="L95">		double[] adblTimeWidth = new double[iNumTimeStep];</span>
+<span class="fc" id="L94">		int iNumTimeStep = (int) (1. / dblTimeWidth);</span>
+<span class="fc" id="L95">		double[] adblTimeWidth = new double[iNumTimeStep];</span>
 
-<span class="nc bnc" id="L97" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumTimeStep; ++i)</span>
-<span class="nc" id="L98">			adblTimeWidth[i] = dblTimeWidth;</span>
+<span class="fc bfc" id="L97" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTimeStep; ++i)</span>
+<span class="fc" id="L98">			adblTimeWidth[i] = dblTimeWidth;</span>
 
-<span class="nc" id="L100">		JumpDiffusionEvolver meAsset = new JumpDiffusionEvolver (</span>
-<span class="nc" id="L101">			DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="fc" id="L100">		JumpDiffusionEvolver meAsset = new JumpDiffusionEvolver (</span>
+<span class="fc" id="L101">			DiffusionEvaluatorLogarithmic.Standard (</span>
 				dblAssetDrift,
 				dblAssetVolatility
 			),
-<span class="nc" id="L105">			HazardJumpEvaluator.Standard (</span>
+<span class="fc" id="L105">			HazardJumpEvaluator.Standard (</span>
 				dblAssetHazard,
 				dblAssetDefaultMagnitude
 			)
 		);
 
-<span class="nc" id="L111">		double[] adblAssetNumeraireTimeSeries = SequenceGenerator.Gaussian (iNumTimeStep);</span>
+<span class="fc" id="L111">		double[] adblAssetNumeraireTimeSeries = SequenceGenerator.Gaussian (iNumTimeStep);</span>
 
-<span class="nc" id="L113">		double[] adblDefaultIndicatorTimeSeries = SequenceGenerator.Uniform (iNumTimeStep);</span>
+<span class="fc" id="L113">		double[] adblDefaultIndicatorTimeSeries = SequenceGenerator.Uniform (iNumTimeStep);</span>
 
-<span class="nc" id="L115">		JumpDiffusionEdge[] aR1AssetLR = meAsset.incrementSequence (</span>
+<span class="fc" id="L115">		JumpDiffusionEdge[] aR1AssetLR = meAsset.incrementSequence (</span>
 			new JumpDiffusionVertex (
 				0.,
 				dblTerminalAssetNumeraire,
 				0.,
 				false
 			),
-<span class="nc" id="L122">			JumpDiffusionEdgeUnit.JumpDiffusion (</span>
+<span class="fc" id="L122">			JumpDiffusionEdgeUnit.JumpDiffusion (</span>
 				adblTimeWidth,
 				adblAssetNumeraireTimeSeries,
 				adblDefaultIndicatorTimeSeries
@@ -127,22 +127,22 @@ import org.drip.service.env.EnvManager;
 			dblTimeWidth
 		);
 
-<span class="nc" id="L130">		System.out.println();</span>
+<span class="fc" id="L130">		System.out.println();</span>
 
-<span class="nc bnc" id="L132" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumTimeStep; ++i) {</span>
-<span class="nc" id="L133">			dblTime = dblTime + dblTimeWidth;</span>
+<span class="fc bfc" id="L132" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTimeStep; ++i) {</span>
+<span class="fc" id="L133">			dblTime = dblTime + dblTimeWidth;</span>
 
-<span class="nc" id="L135">			System.out.println (</span>
+<span class="fc" id="L135">			System.out.println (</span>
 				&quot;\t|| &quot; +
-<span class="nc" id="L137">				FormatUtil.FormatDouble (dblTime, 1, 6, 1.) + &quot; =&gt; &quot; +</span>
-<span class="nc" id="L138">				FormatUtil.FormatDouble (aR1AssetLR[i].start(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L139">				FormatUtil.FormatDouble (aR1AssetLR[i].finish(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L140">				FormatUtil.FormatDouble (aR1AssetLR[i].diffusionWander(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L141">				aR1AssetLR[i].stochasticJumpEdge().jumpOccurred() + &quot; ||&quot;</span>
+<span class="fc" id="L137">				FormatUtil.FormatDouble (dblTime, 1, 6, 1.) + &quot; =&gt; &quot; +</span>
+<span class="fc" id="L138">				FormatUtil.FormatDouble (aR1AssetLR[i].start(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L139">				FormatUtil.FormatDouble (aR1AssetLR[i].finish(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L140">				FormatUtil.FormatDouble (aR1AssetLR[i].diffusionWander(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L141">				aR1AssetLR[i].stochasticJumpEdge().jumpOccurred() + &quot; ||&quot;</span>
 			);
 		}
 
-<span class="nc" id="L145">		System.out.println();</span>
-<span class="nc" id="L146">	}</span>
+<span class="fc" id="L145">		System.out.println();</span>
+<span class="fc" id="L146">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

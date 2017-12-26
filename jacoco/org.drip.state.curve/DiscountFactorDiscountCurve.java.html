@@ -115,7 +115,7 @@ public class DiscountFactorDiscountCurve extends org.drip.state.discount.MergedD
 	{
 <span class="fc" id="L116">		int iEpochDate = epoch().julian();</span>
 
-<span class="pc bpc" id="L118" title="2 of 4 branches missed.">		if (iDate1 &lt; iEpochDate || iDate2 &lt; iEpochDate) return 0.;</span>
+<span class="pc bpc" id="L118" title="1 of 4 branches missed.">		if (iDate1 &lt; iEpochDate || iDate2 &lt; iEpochDate) return 0.;</span>
 
 <span class="fc" id="L120">		return 365.25 / (iDate2 - iDate1) * java.lang.Math.log (df (iDate1) / df (iDate2));</span>
 	}
@@ -135,9 +135,9 @@ public class DiscountFactorDiscountCurve extends org.drip.state.discount.MergedD
 		final int iDate,
 		final org.drip.state.identifier.ForwardLabel fri)
 	{
-<span class="nc bnc" id="L138" title="All 4 branches missed.">		if (null == _span || !_span.isMergeState (iDate, fri)) return null;</span>
+<span class="pc bpc" id="L138" title="2 of 4 branches missed.">		if (null == _span || !_span.isMergeState (iDate, fri)) return null;</span>
 
-<span class="nc" id="L140">		return new org.drip.state.forward.ForwardRateEstimator() {</span>
+<span class="fc" id="L140">		return new org.drip.state.forward.ForwardRateEstimator() {</span>
 			@Override public org.drip.state.identifier.ForwardLabel index()
 			{
 <span class="nc" id="L143">				return fri;</span>
@@ -152,20 +152,20 @@ public class DiscountFactorDiscountCurve extends org.drip.state.discount.MergedD
 				final org.drip.analytics.date.JulianDate dt)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L155" title="All 2 branches missed.">				if (null == dt)</span>
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">				if (null == dt)</span>
 <span class="nc" id="L156">					throw new java.lang.Exception</span>
 						(&quot;DiscountFactorDiscountCurve::ForwardEstimator::forward =&gt; Invalid Inputs!&quot;);
 
-<span class="nc" id="L159">				java.lang.String strTenor = fri.tenor();</span>
+<span class="fc" id="L159">				java.lang.String strTenor = fri.tenor();</span>
 
-<span class="nc" id="L161">				return libor (dt.subtractTenor (strTenor).julian(), strTenor);</span>
+<span class="fc" id="L161">				return libor (dt.subtractTenor (strTenor).julian(), strTenor);</span>
 			}
 
 			@Override public double forward (
 				final int iDate)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L168">				return forward (new org.drip.analytics.date.JulianDate (iDate));</span>
+<span class="fc" id="L168">				return forward (new org.drip.analytics.date.JulianDate (iDate));</span>
 			}
 
 			@Override public double forward (
@@ -268,7 +268,7 @@ public class DiscountFactorDiscountCurve extends org.drip.state.discount.MergedD
 		final int iDate,
 		final java.lang.String strManifestMeasure)
 	{
-<span class="nc bnc" id="L271" title="All 2 branches missed.">		return null == _span ? null : _span.jackDResponseDManifestMeasure (strManifestMeasure, iDate, 1);</span>
+<span class="pc bpc" id="L271" title="1 of 2 branches missed.">		return null == _span ? null : _span.jackDResponseDManifestMeasure (strManifestMeasure, iDate, 1);</span>
 	}
 
 	@Override public org.drip.product.definition.CalibratableComponent[] calibComp()

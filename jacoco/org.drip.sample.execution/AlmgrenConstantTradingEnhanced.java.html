@@ -88,18 +88,18 @@ import org.drip.service.env.EnvManager;
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L91">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L91">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L93">		double dblEta = 5.e-06;</span>
-<span class="nc" id="L94">		double dblAlpha = 1.;</span>
-<span class="nc" id="L95">		double dblSigma = 1.;</span>
-<span class="nc" id="L96">		double dblLambda = 1.e-05;</span>
+<span class="fc" id="L93">		double dblEta = 5.e-06;</span>
+<span class="fc" id="L94">		double dblAlpha = 1.;</span>
+<span class="fc" id="L95">		double dblSigma = 1.;</span>
+<span class="fc" id="L96">		double dblLambda = 1.e-05;</span>
 
-<span class="nc" id="L98">		double dblX = 100000.;</span>
-<span class="nc" id="L99">		double dblT = 5.;</span>
-<span class="nc" id="L100">		int iNumInterval = 500;</span>
+<span class="fc" id="L98">		double dblX = 100000.;</span>
+<span class="fc" id="L99">		double dblT = 5.;</span>
+<span class="fc" id="L100">		int iNumInterval = 500;</span>
 
-<span class="nc" id="L102">		DiscreteTradingTrajectoryControl dttc = DiscreteTradingTrajectoryControl.FixedInterval (</span>
+<span class="fc" id="L102">		DiscreteTradingTrajectoryControl dttc = DiscreteTradingTrajectoryControl.FixedInterval (</span>
 			new OrderSpecification (
 				dblX,
 				dblT
@@ -107,9 +107,9 @@ import org.drip.service.env.EnvManager;
 			iNumInterval
 		);
 
-<span class="nc" id="L110">		ArithmeticPriceEvolutionParameters apep = ArithmeticPriceEvolutionParametersBuilder.TradingEnhancedVolatility (</span>
+<span class="fc" id="L110">		ArithmeticPriceEvolutionParameters apep = ArithmeticPriceEvolutionParametersBuilder.TradingEnhancedVolatility (</span>
 			dblSigma,
-<span class="nc" id="L112">			new UniformParticipationRateLinear (ParticipationRateLinear.SlopeOnly (dblEta)),</span>
+<span class="fc" id="L112">			new UniformParticipationRateLinear (ParticipationRateLinear.SlopeOnly (dblEta)),</span>
 			new UniformParticipationRateLinear (
 				new ParticipationRateLinear (
 					dblAlpha,
@@ -118,91 +118,91 @@ import org.drip.service.env.EnvManager;
 			)
 		);
 
-<span class="nc" id="L121">		EfficientTradingTrajectoryDiscrete ettd = (EfficientTradingTrajectoryDiscrete) new StaticOptimalSchemeDiscrete (</span>
+<span class="fc" id="L121">		EfficientTradingTrajectoryDiscrete ettd = (EfficientTradingTrajectoryDiscrete) new StaticOptimalSchemeDiscrete (</span>
 			dttc,
 			apep,
 			new MeanVarianceObjectiveUtility (dblLambda)
-<span class="nc" id="L125">		).generate();</span>
+<span class="fc" id="L125">		).generate();</span>
 
-<span class="nc" id="L127">		double[] adblExecutionTimeNode = ettd.executionTimeNode();</span>
+<span class="fc" id="L127">		double[] adblExecutionTimeNode = ettd.executionTimeNode();</span>
 
-<span class="nc" id="L129">		double[] adblTradeList = ettd.tradeList();</span>
+<span class="fc" id="L129">		double[] adblTradeList = ettd.tradeList();</span>
 
-<span class="nc" id="L131">		double[] adblHoldings = ettd.holdings();</span>
+<span class="fc" id="L131">		double[] adblHoldings = ettd.holdings();</span>
 
-<span class="nc" id="L133">		ContinuousConstantTradingEnhanced ccte = ContinuousConstantTradingEnhanced.Standard (</span>
+<span class="fc" id="L133">		ContinuousConstantTradingEnhanced ccte = ContinuousConstantTradingEnhanced.Standard (</span>
 			dblX,
 			dblT,
 			apep,
 			dblLambda
 		);
 
-<span class="nc" id="L140">		EfficientTradingTrajectoryContinuous ettc = (EfficientTradingTrajectoryContinuous) ccte.generate();</span>
+<span class="fc" id="L140">		EfficientTradingTrajectoryContinuous ettc = (EfficientTradingTrajectoryContinuous) ccte.generate();</span>
 
-<span class="nc" id="L142">		R1ToR1 r1ToR1Holdings = ettc.holdings();</span>
+<span class="fc" id="L142">		R1ToR1 r1ToR1Holdings = ettc.holdings();</span>
 
-<span class="nc" id="L144">		double[] adblHoldingsCF = new double[adblExecutionTimeNode.length];</span>
+<span class="fc" id="L144">		double[] adblHoldingsCF = new double[adblExecutionTimeNode.length];</span>
 
-<span class="nc bnc" id="L146" title="All 2 branches missed.">		for (int i = 0; i &lt; adblExecutionTimeNode.length; ++i)</span>
-<span class="nc" id="L147">			adblHoldingsCF[i] = r1ToR1Holdings.evaluate (adblExecutionTimeNode[i]);</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">		for (int i = 0; i &lt; adblExecutionTimeNode.length; ++i)</span>
+<span class="fc" id="L147">			adblHoldingsCF[i] = r1ToR1Holdings.evaluate (adblExecutionTimeNode[i]);</span>
 
-<span class="nc" id="L149">		TrajectoryShortfallEstimator tse = new TrajectoryShortfallEstimator (ettd);</span>
+<span class="fc" id="L149">		TrajectoryShortfallEstimator tse = new TrajectoryShortfallEstimator (ettd);</span>
 
-<span class="nc" id="L151">		R1UnivariateNormal r1un = tse.totalCostDistributionSynopsis (apep);</span>
+<span class="fc" id="L151">		R1UnivariateNormal r1un = tse.totalCostDistributionSynopsis (apep);</span>
 
-<span class="nc" id="L153">		System.out.println (&quot;\n\t|------------------------------------------------||&quot;);</span>
+<span class="fc" id="L153">		System.out.println (&quot;\n\t|------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L155">		System.out.println (&quot;\t| NUMERICAL - CLOSED FORM CONTINUOUS TRAJECTORY  ||&quot;);</span>
+<span class="fc" id="L155">		System.out.println (&quot;\t| NUMERICAL - CLOSED FORM CONTINUOUS TRAJECTORY  ||&quot;);</span>
 
-<span class="nc" id="L157">		System.out.println (&quot;\t|------------------------------------------------||&quot;);</span>
+<span class="fc" id="L157">		System.out.println (&quot;\t|------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L159">		System.out.println (&quot;\t|    L -&gt; R:                                     ||&quot;);</span>
+<span class="fc" id="L159">		System.out.println (&quot;\t|    L -&gt; R:                                     ||&quot;);</span>
 
-<span class="nc" id="L161">		System.out.println (&quot;\t|          - Execution Time Node                 ||&quot;);</span>
+<span class="fc" id="L161">		System.out.println (&quot;\t|          - Execution Time Node                 ||&quot;);</span>
 
-<span class="nc" id="L163">		System.out.println (&quot;\t|          - Holdings (Numerical)                ||&quot;);</span>
+<span class="fc" id="L163">		System.out.println (&quot;\t|          - Holdings (Numerical)                ||&quot;);</span>
 
-<span class="nc" id="L165">		System.out.println (&quot;\t|          - Holdings (Continuous Closed Form)   ||&quot;);</span>
+<span class="fc" id="L165">		System.out.println (&quot;\t|          - Holdings (Continuous Closed Form)   ||&quot;);</span>
 
-<span class="nc" id="L167">		System.out.println (&quot;\t|          - Trade List (Numerical)              ||&quot;);</span>
+<span class="fc" id="L167">		System.out.println (&quot;\t|          - Trade List (Numerical)              ||&quot;);</span>
 
-<span class="nc" id="L169">		System.out.println (&quot;\t|          - Trade List (Continuous Closed Form) ||&quot;);</span>
+<span class="fc" id="L169">		System.out.println (&quot;\t|          - Trade List (Continuous Closed Form) ||&quot;);</span>
 
-<span class="nc" id="L171">		System.out.println (&quot;\t|------------------------------------------------||&quot;);</span>
+<span class="fc" id="L171">		System.out.println (&quot;\t|------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L173" title="All 2 branches missed.">		for (int i = 1; i &lt; adblExecutionTimeNode.length; ++i) {</span>
-<span class="nc" id="L174">			System.out.println (&quot;\t| &quot; +</span>
-<span class="nc" id="L175">				FormatUtil.FormatDouble (adblExecutionTimeNode[i], 1, 2, 1.) + &quot; =&gt; &quot; +</span>
-<span class="nc" id="L176">				FormatUtil.FormatDouble (adblHoldings[i] / dblX, 2, 2, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L177">				FormatUtil.FormatDouble (adblHoldingsCF[i] / dblX, 2, 2, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L178">				FormatUtil.FormatDouble (adblTradeList[i - 1] / dblX, 2, 2, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L179">				FormatUtil.FormatDouble ((adblHoldingsCF[i] - adblHoldingsCF[i - 1]) / dblX, 2, 2, 100.) + &quot;% ||&quot;</span>
+<span class="fc bfc" id="L173" title="All 2 branches covered.">		for (int i = 1; i &lt; adblExecutionTimeNode.length; ++i) {</span>
+<span class="fc" id="L174">			System.out.println (&quot;\t| &quot; +</span>
+<span class="fc" id="L175">				FormatUtil.FormatDouble (adblExecutionTimeNode[i], 1, 2, 1.) + &quot; =&gt; &quot; +</span>
+<span class="fc" id="L176">				FormatUtil.FormatDouble (adblHoldings[i] / dblX, 2, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L177">				FormatUtil.FormatDouble (adblHoldingsCF[i] / dblX, 2, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L178">				FormatUtil.FormatDouble (adblTradeList[i - 1] / dblX, 2, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L179">				FormatUtil.FormatDouble ((adblHoldingsCF[i] - adblHoldingsCF[i - 1]) / dblX, 2, 2, 100.) + &quot;% ||&quot;</span>
 			);
 		}
 
-<span class="nc" id="L183">		System.out.println (&quot;\t|------------------------------------------------||&quot;);</span>
+<span class="fc" id="L183">		System.out.println (&quot;\t|------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L185">		System.out.println (&quot;\n\t|--------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L185">		System.out.println (&quot;\n\t|--------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L187">		System.out.println (&quot;\t|  TRANSACTION COST RECONCILIATION: EXPLICIT vs. NUMERICAL vs. CLOSED FORM ||&quot;);</span>
+<span class="fc" id="L187">		System.out.println (&quot;\t|  TRANSACTION COST RECONCILIATION: EXPLICIT vs. NUMERICAL vs. CLOSED FORM ||&quot;);</span>
 
-<span class="nc" id="L189">		System.out.println (&quot;\t|--------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L189">		System.out.println (&quot;\t|--------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L191">		System.out.println (</span>
+<span class="fc" id="L191">		System.out.println (</span>
 			&quot;\t| Transaction Cost Expectation         : &quot; +
-<span class="nc" id="L193">			FormatUtil.FormatDouble (r1un.mean(), 6, 1, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L194">			FormatUtil.FormatDouble (ettd.transactionCostExpectation(), 6, 1, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L195">			FormatUtil.FormatDouble (ettc.transactionCostExpectation(), 6, 1, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L193">			FormatUtil.FormatDouble (r1un.mean(), 6, 1, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L194">			FormatUtil.FormatDouble (ettd.transactionCostExpectation(), 6, 1, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L195">			FormatUtil.FormatDouble (ettc.transactionCostExpectation(), 6, 1, 1.) + &quot; ||&quot;</span>
 		);
 
-<span class="nc" id="L198">		System.out.println (</span>
+<span class="fc" id="L198">		System.out.println (</span>
 			&quot;\t| Transaction Cost Variance (X 10^-06) : &quot; +
-<span class="nc" id="L200">			FormatUtil.FormatDouble (r1un.variance(), 6, 1, 1.e-06) + &quot; | &quot; +</span>
-<span class="nc" id="L201">			FormatUtil.FormatDouble (ettd.transactionCostVariance(), 6, 1, 1.e-06) + &quot; | &quot; +</span>
-<span class="nc" id="L202">			FormatUtil.FormatDouble (ettc.transactionCostVariance(), 6, 1, 1.e-06) + &quot; ||&quot;</span>
+<span class="fc" id="L200">			FormatUtil.FormatDouble (r1un.variance(), 6, 1, 1.e-06) + &quot; | &quot; +</span>
+<span class="fc" id="L201">			FormatUtil.FormatDouble (ettd.transactionCostVariance(), 6, 1, 1.e-06) + &quot; | &quot; +</span>
+<span class="fc" id="L202">			FormatUtil.FormatDouble (ettc.transactionCostVariance(), 6, 1, 1.e-06) + &quot; ||&quot;</span>
 		);
 
-<span class="nc" id="L205">		System.out.println (&quot;\t|--------------------------------------------------------------------------||&quot;);</span>
-<span class="nc" id="L206">	}</span>
+<span class="fc" id="L205">		System.out.println (&quot;\t|--------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L206">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

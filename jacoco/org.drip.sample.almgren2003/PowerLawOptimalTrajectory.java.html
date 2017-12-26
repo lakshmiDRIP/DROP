@@ -85,17 +85,17 @@ import org.drip.service.env.EnvManager;
 		final double dblLambda)
 		throws Exception
 	{
-<span class="nc" id="L88">		double dblGamma = 0.;</span>
-<span class="nc" id="L89">		double dblHRef = 0.50;</span>
-<span class="nc" id="L90">		double dblVRef = 100000.;</span>
-<span class="nc" id="L91">		double dblDrift = 0.;</span>
-<span class="nc" id="L92">		double dblVolatility = 1.;</span>
-<span class="nc" id="L93">		double dblSerialCorrelation = 0.;</span>
-<span class="nc" id="L94">		double dblX = 100000.;</span>
-<span class="nc" id="L95">		double dblFinishTime = 10.;</span>
-<span class="nc" id="L96">		int iNumInterval = 10;</span>
+<span class="fc" id="L88">		double dblGamma = 0.;</span>
+<span class="fc" id="L89">		double dblHRef = 0.50;</span>
+<span class="fc" id="L90">		double dblVRef = 100000.;</span>
+<span class="fc" id="L91">		double dblDrift = 0.;</span>
+<span class="fc" id="L92">		double dblVolatility = 1.;</span>
+<span class="fc" id="L93">		double dblSerialCorrelation = 0.;</span>
+<span class="fc" id="L94">		double dblX = 100000.;</span>
+<span class="fc" id="L95">		double dblFinishTime = 10.;</span>
+<span class="fc" id="L96">		int iNumInterval = 10;</span>
 
-<span class="nc" id="L98">		double[] adblK = new double[] {</span>
+<span class="fc" id="L98">		double[] adblK = new double[] {</span>
 			0.25,
 			0.50,
 			0.75,
@@ -110,46 +110,46 @@ import org.drip.service.env.EnvManager;
 			3.00
 		};
 
-<span class="nc" id="L113">		System.out.println (&quot;\n\t|------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L113">		System.out.println (&quot;\n\t|------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L115">		System.out.println (&quot;\t|\tPOWER LAW OPTIMAL TRAJECTORY; RISK TOLERANCE (thousands) =&gt; &quot; + FormatUtil.FormatDouble (1. / dblLambda, 1, 0, 1.e-03));</span>
+<span class="fc" id="L115">		System.out.println (&quot;\t|\tPOWER LAW OPTIMAL TRAJECTORY; RISK TOLERANCE (thousands) =&gt; &quot; + FormatUtil.FormatDouble (1. / dblLambda, 1, 0, 1.e-03));</span>
 
-<span class="nc" id="L117">		System.out.println (&quot;\t|&quot;);</span>
+<span class="fc" id="L117">		System.out.println (&quot;\t|&quot;);</span>
 
-<span class="nc" id="L119">		System.out.println (&quot;\t|\t\tL -&gt; R:&quot;);</span>
+<span class="fc" id="L119">		System.out.println (&quot;\t|\t\tL -&gt; R:&quot;);</span>
 
-<span class="nc" id="L121">		System.out.println (&quot;\t|\t\t\tTime Node Trajectory Realization (Percent)&quot;);</span>
+<span class="fc" id="L121">		System.out.println (&quot;\t|\t\t\tTime Node Trajectory Realization (Percent)&quot;);</span>
 
-<span class="nc" id="L123">		System.out.println (&quot;\t|\t\t\tCharacteristic Time (Days)&quot;);</span>
+<span class="fc" id="L123">		System.out.println (&quot;\t|\t\t\tCharacteristic Time (Days)&quot;);</span>
 
-<span class="nc" id="L125">		System.out.println (&quot;\t|\t\t\tMaximum Execution Time (Days)&quot;);</span>
+<span class="fc" id="L125">		System.out.println (&quot;\t|\t\t\tMaximum Execution Time (Days)&quot;);</span>
 
-<span class="nc" id="L127">		System.out.println (&quot;\t|\t\t\tTransaction Cost Expectation (Thousands)&quot;);</span>
+<span class="fc" id="L127">		System.out.println (&quot;\t|\t\t\tTransaction Cost Expectation (Thousands)&quot;);</span>
 
-<span class="nc" id="L129">		System.out.println (&quot;\t|\t\t\tTransaction Cost Variance (Thousands)&quot;);</span>
+<span class="fc" id="L129">		System.out.println (&quot;\t|\t\t\tTransaction Cost Variance (Thousands)&quot;);</span>
 
-<span class="nc" id="L131">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L131">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L133">		ArithmeticPriceDynamicsSettings apds = new ArithmeticPriceDynamicsSettings (</span>
+<span class="fc" id="L133">		ArithmeticPriceDynamicsSettings apds = new ArithmeticPriceDynamicsSettings (</span>
 			dblDrift,
 			new FlatUnivariate (dblVolatility),
 			dblSerialCorrelation
 		);
 
-<span class="nc" id="L139">		ParticipationRateLinear prlPermanent = new ParticipationRateLinear (</span>
+<span class="fc" id="L139">		ParticipationRateLinear prlPermanent = new ParticipationRateLinear (</span>
 			0.,
 			dblGamma
 		);
 
-<span class="nc" id="L144">		double[] adblExecutionTime = new double[iNumInterval];</span>
+<span class="fc" id="L144">		double[] adblExecutionTime = new double[iNumInterval];</span>
 
-<span class="nc bnc" id="L146" title="All 2 branches missed.">		for (int i = 1; i &lt;= iNumInterval; ++i)</span>
-<span class="nc" id="L147">			adblExecutionTime[i - 1] = ((double) i) / ((double) iNumInterval);</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">		for (int i = 1; i &lt;= iNumInterval; ++i)</span>
+<span class="fc" id="L147">			adblExecutionTime[i - 1] = ((double) i) / ((double) iNumInterval);</span>
 
-<span class="nc bnc" id="L149" title="All 2 branches missed.">		for (int i = 0; i &lt; adblK.length; ++i) {</span>
-<span class="nc" id="L150">			double dblEta = dblHRef / java.lang.Math.pow (dblVRef, adblK[i]);</span>
+<span class="fc bfc" id="L149" title="All 2 branches covered.">		for (int i = 0; i &lt; adblK.length; ++i) {</span>
+<span class="fc" id="L150">			double dblEta = dblHRef / java.lang.Math.pow (dblVRef, adblK[i]);</span>
 
-<span class="nc" id="L152">			LinearPermanentExpectationParameters lpep = ArithmeticPriceEvolutionParametersBuilder.Almgren2003 (</span>
+<span class="fc" id="L152">			LinearPermanentExpectationParameters lpep = ArithmeticPriceEvolutionParametersBuilder.Almgren2003 (</span>
 				apds,
 				new UniformParticipationRateLinear (prlPermanent),
 				new UniformParticipationRate (
@@ -160,66 +160,66 @@ import org.drip.service.env.EnvManager;
 				)
 			);
 
-<span class="nc" id="L163">			ContinuousPowerImpact cpi = ContinuousPowerImpact.Standard (</span>
+<span class="fc" id="L163">			ContinuousPowerImpact cpi = ContinuousPowerImpact.Standard (</span>
 				dblX,
 				dblFinishTime,
 				lpep,
 				dblLambda
 			);
 
-<span class="nc" id="L170">			PowerImpactContinuous pic = (PowerImpactContinuous) cpi.generate();</span>
+<span class="fc" id="L170">			PowerImpactContinuous pic = (PowerImpactContinuous) cpi.generate();</span>
 
-<span class="nc bnc" id="L172" title="All 2 branches missed.">			if (0 == i) {</span>
-<span class="nc" id="L173">				String strExecutionTime = &quot;\t|          |  &quot;;</span>
+<span class="fc bfc" id="L172" title="All 2 branches covered.">			if (0 == i) {</span>
+<span class="fc" id="L173">				String strExecutionTime = &quot;\t|          |  &quot;;</span>
 
-<span class="nc bnc" id="L175" title="All 2 branches missed.">				for (int j = 0; j &lt; adblExecutionTime.length; ++j)</span>
-<span class="nc" id="L176">					strExecutionTime = strExecutionTime + &quot;   &quot; + FormatUtil.FormatDouble (adblExecutionTime[j], 1, 2, 1.);</span>
+<span class="fc bfc" id="L175" title="All 2 branches covered.">				for (int j = 0; j &lt; adblExecutionTime.length; ++j)</span>
+<span class="fc" id="L176">					strExecutionTime = strExecutionTime + &quot;   &quot; + FormatUtil.FormatDouble (adblExecutionTime[j], 1, 2, 1.);</span>
 
-<span class="nc" id="L178">				System.out.println (strExecutionTime);</span>
+<span class="fc" id="L178">				System.out.println (strExecutionTime);</span>
 
-<span class="nc" id="L180">				System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L180">				System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 			}
 
-<span class="nc" id="L183">			R1ToR1 r1ToR1Holdings = pic.holdings();</span>
+<span class="fc" id="L183">			R1ToR1 r1ToR1Holdings = pic.holdings();</span>
 
-<span class="nc" id="L185">			String strHoldings = &quot;\t| k =&quot; + FormatUtil.FormatDouble (adblK[i], 1, 2, 1.) + &quot; | &quot;;</span>
+<span class="fc" id="L185">			String strHoldings = &quot;\t| k =&quot; + FormatUtil.FormatDouble (adblK[i], 1, 2, 1.) + &quot; | &quot;;</span>
 
-<span class="nc bnc" id="L187" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumInterval; ++j)</span>
-<span class="nc" id="L188">				strHoldings = strHoldings + &quot;  &quot; + FormatUtil.FormatDouble (r1ToR1Holdings.evaluate (adblExecutionTime[j]) / dblX, 2, 2, 100.);</span>
+<span class="fc bfc" id="L187" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumInterval; ++j)</span>
+<span class="fc" id="L188">				strHoldings = strHoldings + &quot;  &quot; + FormatUtil.FormatDouble (r1ToR1Holdings.evaluate (adblExecutionTime[j]) / dblX, 2, 2, 100.);</span>
 
-<span class="nc" id="L190">			double dblExecutionTimeUpperBound = pic.executionTimeUpperBound();</span>
+<span class="fc" id="L190">			double dblExecutionTimeUpperBound = pic.executionTimeUpperBound();</span>
 
-<span class="nc" id="L192">			System.out.println (</span>
+<span class="fc" id="L192">			System.out.println (</span>
 				strHoldings + &quot; | &quot; +
-<span class="nc" id="L194">				FormatUtil.FormatDouble (pic.characteristicTime(), 2, 1, 1.) + &quot; | &quot; +</span>
-<span class="nc bnc" id="L195" title="All 2 branches missed.">				FormatUtil.FormatDouble (Double.isNaN (dblExecutionTimeUpperBound) ? 0. : dblExecutionTimeUpperBound, 2, 1, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L196">				FormatUtil.FormatDouble (pic.transactionCostExpectation(), 3, 0, 1.e-03) + &quot; | &quot; +</span>
-<span class="nc" id="L197">				FormatUtil.FormatDouble (Math.sqrt (pic.transactionCostVariance()), 3, 0, 1.e-03) + &quot; ||&quot;</span>
+<span class="fc" id="L194">				FormatUtil.FormatDouble (pic.characteristicTime(), 2, 1, 1.) + &quot; | &quot; +</span>
+<span class="fc bfc" id="L195" title="All 2 branches covered.">				FormatUtil.FormatDouble (Double.isNaN (dblExecutionTimeUpperBound) ? 0. : dblExecutionTimeUpperBound, 2, 1, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L196">				FormatUtil.FormatDouble (pic.transactionCostExpectation(), 3, 0, 1.e-03) + &quot; | &quot; +</span>
+<span class="fc" id="L197">				FormatUtil.FormatDouble (Math.sqrt (pic.transactionCostVariance()), 3, 0, 1.e-03) + &quot; ||&quot;</span>
 			);
 		}
 
-<span class="nc" id="L201">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
-<span class="nc" id="L202">	}</span>
+<span class="fc" id="L201">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L202">	}</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L208">		EnvManager.InitEnv (</span>
+<span class="fc" id="L208">		EnvManager.InitEnv (</span>
 			&quot;&quot;,
 			true
 		);
 
-<span class="nc" id="L213">		double[] adblLambda = new double[] {</span>
+<span class="fc" id="L213">		double[] adblLambda = new double[] {</span>
 			1.e-04,
 			5.e-06,
 			5.e-07
 		};
 
-<span class="nc bnc" id="L219" title="All 2 branches missed.">		for (double dblLambda : adblLambda)</span>
-<span class="nc" id="L220">			RiskAversionRun (dblLambda);</span>
+<span class="fc bfc" id="L219" title="All 2 branches covered.">		for (double dblLambda : adblLambda)</span>
+<span class="fc" id="L220">			RiskAversionRun (dblLambda);</span>
 
-<span class="nc" id="L222">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L223">	}</span>
+<span class="fc" id="L222">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L223">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

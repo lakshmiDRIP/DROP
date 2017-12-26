@@ -73,12 +73,12 @@ import org.drip.service.env.EnvManager;
 		final String[] astArgs)
 		throws Exception
 	{
-<span class="nc" id="L76">		EnvManager.InitEnv (</span>
+<span class="fc" id="L76">		EnvManager.InitEnv (</span>
 			&quot;&quot;,
 			true
 		);
 
-<span class="nc" id="L81">		String[] astrID = new String[] {</span>
+<span class="fc" id="L81">		String[] astrID = new String[] {</span>
 			&quot;CORPORATE BOND     &quot;,
 			&quot;LONG TERM GOVVIE   &quot;,
 			&quot;MEDIUM TERM GOVVIE &quot;,
@@ -89,7 +89,7 @@ import org.drip.service.env.EnvManager;
 			&quot;STRONG SELL EQUITY &quot;
 		};
 
-<span class="nc" id="L92">		double[][] aadblHistoricalCovariance = new double[][] {</span>
+<span class="fc" id="L92">		double[][] aadblHistoricalCovariance = new double[][] {</span>
 			{0.0050, 0.0047, 0.0024, 0.0036, 0.0023, 0.0031, 0.0032, 0.0030},
 			{0.0047, 0.0062, 0.0030, 0.0033, 0.0016, 0.0024, 0.0026, 0.0020},
 			{0.0024, 0.0030, 0.0020, 0.0015, 0.0006, 0.0009, 0.0012, 0.0008},
@@ -100,7 +100,7 @@ import org.drip.service.env.EnvManager;
 			{0.0030, 0.0020, 0.0008, 0.0414, 0.0371, 0.0364, 0.0384, 0.0498}
 		};
 
-<span class="nc" id="L103">		double[] adblHistoricalReturn = new double[] {</span>
+<span class="fc" id="L103">		double[] adblHistoricalReturn = new double[] {</span>
 			0.0595,
 			0.0553,
 			0.0545,
@@ -111,7 +111,7 @@ import org.drip.service.env.EnvManager;
 			0.1220
 		};
 
-<span class="nc" id="L114">		double[] adblHistoricalOptimalWeight = new double[] {</span>
+<span class="fc" id="L114">		double[] adblHistoricalOptimalWeight = new double[] {</span>
 			 0.2154,
 			-0.5434,
 			 1.1976,
@@ -122,7 +122,7 @@ import org.drip.service.env.EnvManager;
 			-0.0149
 		};
 
-<span class="nc" id="L125">		double[] adblMarketWeight = new double[] {</span>
+<span class="fc" id="L125">		double[] adblMarketWeight = new double[] {</span>
 			0.1667,
 			0.0833,
 			0.0833,
@@ -133,7 +133,7 @@ import org.drip.service.env.EnvManager;
 			0.1622
 		};
 
-<span class="nc" id="L136">		double[] adblMarketImpliedReturnReconciler = new double[] {</span>
+<span class="fc" id="L136">		double[] adblMarketImpliedReturnReconciler = new double[] {</span>
 			0.0335,
 			0.0332,
 			0.0315,
@@ -144,20 +144,20 @@ import org.drip.service.env.EnvManager;
 			0.0585
 		};
 
-<span class="nc" id="L147">		double dblRiskFreeRate = 0.03;</span>
-<span class="nc" id="L148">		double[] adblAdjustedHistoricalReturn = new double[adblHistoricalReturn.length];</span>
+<span class="fc" id="L147">		double dblRiskFreeRate = 0.03;</span>
+<span class="fc" id="L148">		double[] adblAdjustedHistoricalReturn = new double[adblHistoricalReturn.length];</span>
 
-<span class="nc bnc" id="L150" title="All 2 branches missed.">		for (int i = 0; i &lt; adblHistoricalReturn.length; ++i)</span>
-<span class="nc" id="L151">			adblAdjustedHistoricalReturn[i] = adblHistoricalReturn[i] - dblRiskFreeRate;</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">		for (int i = 0; i &lt; adblHistoricalReturn.length; ++i)</span>
+<span class="fc" id="L151">			adblAdjustedHistoricalReturn[i] = adblHistoricalReturn[i] - dblRiskFreeRate;</span>
 
-<span class="nc" id="L153">		OptimizationOutput op = new QuadraticMeanVarianceOptimizer().allocate (</span>
+<span class="fc" id="L153">		OptimizationOutput op = new QuadraticMeanVarianceOptimizer().allocate (</span>
 			new PortfolioConstructionParameters (
 				astrID,
-<span class="nc" id="L156">				CustomRiskUtilitySettings.RiskTolerant (0.078),</span>
-<span class="nc" id="L157">				PortfolioEqualityConstraintSettings.FullyInvested()</span>
+<span class="fc" id="L156">				CustomRiskUtilitySettings.RiskTolerant (0.078),</span>
+<span class="fc" id="L157">				PortfolioEqualityConstraintSettings.FullyInvested()</span>
 			),
-<span class="nc" id="L159">			AssetUniverseStatisticalProperties.FromMultivariateMetrics (</span>
-<span class="nc" id="L160">				MultivariateMoments.Standard (</span>
+<span class="fc" id="L159">			AssetUniverseStatisticalProperties.FromMultivariateMetrics (</span>
+<span class="fc" id="L160">				MultivariateMoments.Standard (</span>
 					astrID,
 					adblAdjustedHistoricalReturn,
 					aadblHistoricalCovariance
@@ -165,97 +165,97 @@ import org.drip.service.env.EnvManager;
 			)
 		);
 
-<span class="nc" id="L168">		AssetComponent[] aAC = op.optimalPortfolio().assets();</span>
+<span class="fc" id="L168">		AssetComponent[] aAC = op.optimalPortfolio().assets();</span>
 
-<span class="nc" id="L170">		double[] adblMarketImpliedReturn = Matrix.Product (</span>
+<span class="fc" id="L170">		double[] adblMarketImpliedReturn = Matrix.Product (</span>
 			aadblHistoricalCovariance,
 			adblMarketWeight
 		);
 
-<span class="nc" id="L175">		System.out.println (&quot;\n\t|---------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L175">		System.out.println (&quot;\n\t|---------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L177">		System.out.println (&quot;\t|                                HISTORICAL COVARIANCE MATRIX                                 ||&quot;);</span>
+<span class="fc" id="L177">		System.out.println (&quot;\t|                                HISTORICAL COVARIANCE MATRIX                                 ||&quot;);</span>
 
-<span class="nc" id="L179">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L179">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L181" title="All 2 branches missed.">		for (int i = 0; i &lt; astrID.length; ++i) {</span>
-<span class="nc" id="L182">			String strDump = &quot;\t| &quot; + astrID[i] + &quot; &quot;;</span>
+<span class="fc bfc" id="L181" title="All 2 branches covered.">		for (int i = 0; i &lt; astrID.length; ++i) {</span>
+<span class="fc" id="L182">			String strDump = &quot;\t| &quot; + astrID[i] + &quot; &quot;;</span>
 
-<span class="nc bnc" id="L184" title="All 2 branches missed.">			for (int j = 0; j &lt; astrID.length; ++j)</span>
-<span class="nc" id="L185">				strDump += &quot;|&quot; + FormatUtil.FormatDouble (aadblHistoricalCovariance[i][j], 1, 4, 1.) + &quot; &quot;;</span>
+<span class="fc bfc" id="L184" title="All 2 branches covered.">			for (int j = 0; j &lt; astrID.length; ++j)</span>
+<span class="fc" id="L185">				strDump += &quot;|&quot; + FormatUtil.FormatDouble (aadblHistoricalCovariance[i][j], 1, 4, 1.) + &quot; &quot;;</span>
 
-<span class="nc" id="L187">			System.out.println (strDump + &quot;||&quot;);</span>
+<span class="fc" id="L187">			System.out.println (strDump + &quot;||&quot;);</span>
 		}
 
-<span class="nc" id="L190">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------||\n&quot;);</span>
+<span class="fc" id="L190">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------||\n&quot;);</span>
 
-<span class="nc" id="L192">		System.out.println (&quot;\t||---------------------------------||&quot;);</span>
+<span class="fc" id="L192">		System.out.println (&quot;\t||---------------------------------||&quot;);</span>
 
-<span class="nc" id="L194">		System.out.println (&quot;\t||         MARKET WEIGHT           ||&quot;);</span>
+<span class="fc" id="L194">		System.out.println (&quot;\t||         MARKET WEIGHT           ||&quot;);</span>
 
-<span class="nc" id="L196">		System.out.println (&quot;\t||---------------------------------||&quot;);</span>
+<span class="fc" id="L196">		System.out.println (&quot;\t||---------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L198" title="All 2 branches missed.">		for (int i = 0; i &lt; adblMarketWeight.length; ++i)</span>
-<span class="nc" id="L199">			System.out.println (</span>
+<span class="fc bfc" id="L198" title="All 2 branches covered.">		for (int i = 0; i &lt; adblMarketWeight.length; ++i)</span>
+<span class="fc" id="L199">			System.out.println (</span>
 				&quot;\t||  &quot; + astrID[i] + &quot; =&gt; &quot; +
-<span class="nc" id="L201">				FormatUtil.FormatDouble (adblMarketWeight[i], 2, 2, 100.) + &quot;% ||&quot;</span>
+<span class="fc" id="L201">				FormatUtil.FormatDouble (adblMarketWeight[i], 2, 2, 100.) + &quot;% ||&quot;</span>
 			);
 
-<span class="nc" id="L204">		System.out.println (&quot;\t||---------------------------------||\n&quot;);</span>
+<span class="fc" id="L204">		System.out.println (&quot;\t||---------------------------------||\n&quot;);</span>
 
-<span class="nc" id="L206">		System.out.println (&quot;\t||---------------------------------||&quot;);</span>
+<span class="fc" id="L206">		System.out.println (&quot;\t||---------------------------------||&quot;);</span>
 
-<span class="nc" id="L208">		System.out.println (&quot;\t||       HISTORICAL RETURNS        ||&quot;);</span>
+<span class="fc" id="L208">		System.out.println (&quot;\t||       HISTORICAL RETURNS        ||&quot;);</span>
 
-<span class="nc" id="L210">		System.out.println (&quot;\t||---------------------------------||&quot;);</span>
+<span class="fc" id="L210">		System.out.println (&quot;\t||---------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L212" title="All 2 branches missed.">		for (int i = 0; i &lt; adblHistoricalReturn.length; ++i)</span>
-<span class="nc" id="L213">			System.out.println (</span>
+<span class="fc bfc" id="L212" title="All 2 branches covered.">		for (int i = 0; i &lt; adblHistoricalReturn.length; ++i)</span>
+<span class="fc" id="L213">			System.out.println (</span>
 				&quot;\t||  &quot; + astrID[i] + &quot; =&gt; &quot; +
-<span class="nc" id="L215">				FormatUtil.FormatDouble (adblHistoricalReturn[i], 2, 2, 100.) + &quot;% ||&quot;</span>
+<span class="fc" id="L215">				FormatUtil.FormatDouble (adblHistoricalReturn[i], 2, 2, 100.) + &quot;% ||&quot;</span>
 			);
 
-<span class="nc" id="L218">		System.out.println (&quot;\t||---------------------------------||&quot;);</span>
+<span class="fc" id="L218">		System.out.println (&quot;\t||---------------------------------||&quot;);</span>
 
-<span class="nc" id="L220">		System.out.println (&quot;\n\t||---------------------------------------------||&quot;);</span>
+<span class="fc" id="L220">		System.out.println (&quot;\n\t||---------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L222">		System.out.println (&quot;\t||      HISTORICAL PARAM OPTIMAL WEIGHTS       ||&quot;);</span>
+<span class="fc" id="L222">		System.out.println (&quot;\t||      HISTORICAL PARAM OPTIMAL WEIGHTS       ||&quot;);</span>
 
-<span class="nc" id="L224">		System.out.println (&quot;\t||---------------------------------------------||&quot;);</span>
+<span class="fc" id="L224">		System.out.println (&quot;\t||---------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L226">		System.out.println (&quot;\t||         ASSET        =&gt;   CALC   |   PAPER  ||&quot;);</span>
+<span class="fc" id="L226">		System.out.println (&quot;\t||         ASSET        =&gt;   CALC   |   PAPER  ||&quot;);</span>
 
-<span class="nc" id="L228">		System.out.println (&quot;\t||---------------------------------------------||&quot;);</span>
+<span class="fc" id="L228">		System.out.println (&quot;\t||---------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L230" title="All 2 branches missed.">		for (int i = 0; i &lt; aAC.length; ++i)</span>
-<span class="nc" id="L231">			System.out.println (</span>
+<span class="fc bfc" id="L230" title="All 2 branches covered.">		for (int i = 0; i &lt; aAC.length; ++i)</span>
+<span class="fc" id="L231">			System.out.println (</span>
 				&quot;\t||  &quot; + astrID[i] + &quot; =&gt; &quot; +
-<span class="nc" id="L233">				FormatUtil.FormatDouble (adblHistoricalOptimalWeight[i], 3, 2, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L234">				FormatUtil.FormatDouble (aAC[i].amount(), 3, 2, 100.) + &quot;% ||&quot;</span>
+<span class="fc" id="L233">				FormatUtil.FormatDouble (adblHistoricalOptimalWeight[i], 3, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L234">				FormatUtil.FormatDouble (aAC[i].amount(), 3, 2, 100.) + &quot;% ||&quot;</span>
 			);
 
-<span class="nc" id="L237">		System.out.println (&quot;\t||---------------------------------------------||&quot;);</span>
+<span class="fc" id="L237">		System.out.println (&quot;\t||---------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L239">		System.out.println (&quot;\n\t||----------------------------------------||&quot;);</span>
+<span class="fc" id="L239">		System.out.println (&quot;\n\t||----------------------------------------||&quot;);</span>
 
-<span class="nc" id="L241">		System.out.println (&quot;\t||         MARKET IMPLIED RETURNS         ||&quot;);</span>
+<span class="fc" id="L241">		System.out.println (&quot;\t||         MARKET IMPLIED RETURNS         ||&quot;);</span>
 
-<span class="nc" id="L243">		System.out.println (&quot;\t||----------------------------------------||&quot;);</span>
+<span class="fc" id="L243">		System.out.println (&quot;\t||----------------------------------------||&quot;);</span>
 
-<span class="nc" id="L245">		System.out.println (&quot;\t||         ASSET        =&gt;  CALC  | PAPER ||&quot;);</span>
+<span class="fc" id="L245">		System.out.println (&quot;\t||         ASSET        =&gt;  CALC  | PAPER ||&quot;);</span>
 
-<span class="nc" id="L247">		System.out.println (&quot;\t||----------------------------------------||&quot;);</span>
+<span class="fc" id="L247">		System.out.println (&quot;\t||----------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L249" title="All 2 branches missed.">		for (int i = 0; i &lt; aAC.length; ++i)</span>
-<span class="nc" id="L250">			System.out.println (</span>
+<span class="fc bfc" id="L249" title="All 2 branches covered.">		for (int i = 0; i &lt; aAC.length; ++i)</span>
+<span class="fc" id="L250">			System.out.println (</span>
 				&quot;\t||  &quot; + astrID[i] + &quot; =&gt; &quot; +
-<span class="nc" id="L252">				FormatUtil.FormatDouble (adblMarketImpliedReturn[i] + dblRiskFreeRate, 1, 2, 100.) + &quot;% |&quot; +</span>
-<span class="nc" id="L253">				FormatUtil.FormatDouble (adblMarketImpliedReturnReconciler[i], 1, 2, 100.) + &quot;% ||&quot;</span>
+<span class="fc" id="L252">				FormatUtil.FormatDouble (adblMarketImpliedReturn[i] + dblRiskFreeRate, 1, 2, 100.) + &quot;% |&quot; +</span>
+<span class="fc" id="L253">				FormatUtil.FormatDouble (adblMarketImpliedReturnReconciler[i], 1, 2, 100.) + &quot;% ||&quot;</span>
 			);
 
-<span class="nc" id="L256">		System.out.println (&quot;\t||----------------------------------------||\n&quot;);</span>
+<span class="fc" id="L256">		System.out.println (&quot;\t||----------------------------------------||\n&quot;);</span>
 
-<span class="nc" id="L258">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L259">	}</span>
+<span class="fc" id="L258">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L259">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

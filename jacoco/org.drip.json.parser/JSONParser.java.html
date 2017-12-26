@@ -104,7 +104,7 @@ public void reset(){
      * @return The position of the beginning of the current token.
      */
     public int getPosition(){
-<span class="nc" id="L107">            return lexer.getPosition();</span>
+<span class="fc" id="L107">            return lexer.getPosition();</span>
     }
     
     public Object parse(String s) throws ParseException{
@@ -123,9 +123,9 @@ public void reset(){
      */
 
     public Object parse(String s, ContainerFactory containerFactory) throws ParseException{
-<span class="nc" id="L126">    	java.io.StringReader in=new java.io.StringReader(s);</span>
+<span class="fc" id="L126">    	java.io.StringReader in=new java.io.StringReader(s);</span>
             try{
-<span class="nc" id="L128">                    return parse(in, containerFactory);</span>
+<span class="fc" id="L128">                    return parse(in, containerFactory);</span>
             }
 <span class="nc" id="L130">            catch(java.io.IOException ie){</span>
                     /*
@@ -166,7 +166,7 @@ public void reset(){
 <span class="fc" id="L166">                            nextToken();</span>
 <span class="pc bpc" id="L167" title="2 of 7 branches missed.">                            switch(status){</span>
                             case S_INIT:
-<span class="pc bpc" id="L169" title="3 of 4 branches missed.">                                    switch(token.type){</span>
+<span class="pc bpc" id="L169" title="2 of 4 branches missed.">                                    switch(token.type){</span>
                                     case Yytoken.TYPE_VALUE:
 <span class="nc" id="L171">                                            status=S_IN_FINISHED_VALUE;</span>
 <span class="nc" id="L172">                                            statusStack.addFirst(new Integer(status));</span>
@@ -178,10 +178,10 @@ public void reset(){
 <span class="fc" id="L178">                                            valueStack.addFirst(createObjectContainer(containerFactory));</span>
 <span class="fc" id="L179">                                            break;</span>
                                     case Yytoken.TYPE_LEFT_SQUARE:
-<span class="nc" id="L181">                                            status=S_IN_ARRAY;</span>
-<span class="nc" id="L182">                                            statusStack.addFirst(new Integer(status));</span>
-<span class="nc" id="L183">                                            valueStack.addFirst(createArrayContainer(containerFactory));</span>
-<span class="nc" id="L184">                                            break;</span>
+<span class="fc" id="L181">                                            status=S_IN_ARRAY;</span>
+<span class="fc" id="L182">                                            statusStack.addFirst(new Integer(status));</span>
+<span class="fc" id="L183">                                            valueStack.addFirst(createArrayContainer(containerFactory));</span>
+<span class="fc" id="L184">                                            break;</span>
                                     default:
 <span class="nc" id="L186">                                            status=S_IN_ERROR;</span>
                                     }//inner switch
@@ -194,7 +194,7 @@ public void reset(){
 <span class="nc" id="L194">                                            throw new ParseException(getPosition(), ParseException.ERROR_UNEXPECTED_TOKEN, token);</span>
                                     
                             case S_IN_OBJECT:
-<span class="pc bpc" id="L197" title="1 of 4 branches missed.">                                    switch(token.type){</span>
+<span class="fc bfc" id="L197" title="All 4 branches covered.">                                    switch(token.type){</span>
                                     case Yytoken.TYPE_COMMA:
 <span class="fc" id="L199">                                            break;</span>
                                     case Yytoken.TYPE_VALUE:
@@ -219,13 +219,13 @@ public void reset(){
                                             }
 <span class="fc" id="L220">                                            break;</span>
                                     default:
-<span class="nc" id="L222">                                            status=S_IN_ERROR;</span>
-<span class="nc" id="L223">                                            break;</span>
+<span class="fc" id="L222">                                            status=S_IN_ERROR;</span>
+<span class="fc" id="L223">                                            break;</span>
                                     }//inner switch
                                     break;
                                     
                             case S_PASSED_PAIR_KEY:
-<span class="pc bpc" id="L228" title="1 of 5 branches missed.">                                    switch(token.type){</span>
+<span class="fc bfc" id="L228" title="All 5 branches covered.">                                    switch(token.type){</span>
                                     case Yytoken.TYPE_COLON:
 <span class="fc" id="L230">                                            break;</span>
                                     case Yytoken.TYPE_VALUE:
@@ -256,12 +256,12 @@ public void reset(){
 <span class="fc" id="L256">                                            valueStack.addFirst(newObject);</span>
 <span class="fc" id="L257">                                            break;</span>
                                     default:
-<span class="nc" id="L259">                                            status=S_IN_ERROR;</span>
+<span class="fc" id="L259">                                            status=S_IN_ERROR;</span>
                                     }
-<span class="nc" id="L261">                                    break;</span>
+<span class="fc" id="L261">                                    break;</span>
                                     
                             case S_IN_ARRAY:
-<span class="pc bpc" id="L264" title="2 of 6 branches missed.">                                    switch(token.type){</span>
+<span class="fc bfc" id="L264" title="All 6 branches covered.">                                    switch(token.type){</span>
                                     case Yytoken.TYPE_COMMA:
 <span class="fc" id="L266">                                            break;</span>
                                     case Yytoken.TYPE_VALUE:
@@ -269,23 +269,23 @@ public void reset(){
 <span class="fc" id="L269">                                            val.add(token.value);</span>
 <span class="fc" id="L270">                                            break;</span>
                                     case Yytoken.TYPE_RIGHT_SQUARE:
-<span class="pc bpc" id="L272" title="1 of 2 branches missed.">                                            if(valueStack.size()&gt;1){</span>
+<span class="fc bfc" id="L272" title="All 2 branches covered.">                                            if(valueStack.size()&gt;1){</span>
 <span class="fc" id="L273">                                                    statusStack.removeFirst();</span>
 <span class="fc" id="L274">                                                    valueStack.removeFirst();</span>
 <span class="fc" id="L275">                                                    status=peekStatus(statusStack);</span>
                                             }
                                             else{
-<span class="nc" id="L278">                                                    status=S_IN_FINISHED_VALUE;</span>
+<span class="fc" id="L278">                                                    status=S_IN_FINISHED_VALUE;</span>
                                             }
-<span class="nc" id="L280">                                            break;</span>
+<span class="fc" id="L280">                                            break;</span>
                                     case Yytoken.TYPE_LEFT_BRACE:
-<span class="nc" id="L282">                                            val=(java.util.List)valueStack.getFirst();</span>
-<span class="nc" id="L283">                                            java.util.Map newObject=createObjectContainer(containerFactory);</span>
-<span class="nc" id="L284">                                            val.add(newObject);</span>
-<span class="nc" id="L285">                                            status=S_IN_OBJECT;</span>
-<span class="nc" id="L286">                                            statusStack.addFirst(new Integer(status));</span>
-<span class="nc" id="L287">                                            valueStack.addFirst(newObject);</span>
-<span class="nc" id="L288">                                            break;</span>
+<span class="fc" id="L282">                                            val=(java.util.List)valueStack.getFirst();</span>
+<span class="fc" id="L283">                                            java.util.Map newObject=createObjectContainer(containerFactory);</span>
+<span class="fc" id="L284">                                            val.add(newObject);</span>
+<span class="fc" id="L285">                                            status=S_IN_OBJECT;</span>
+<span class="fc" id="L286">                                            statusStack.addFirst(new Integer(status));</span>
+<span class="fc" id="L287">                                            valueStack.addFirst(newObject);</span>
+<span class="fc" id="L288">                                            break;</span>
                                     case Yytoken.TYPE_LEFT_SQUARE:
 <span class="fc" id="L290">                                            val=(java.util.List)valueStack.getFirst();</span>
 <span class="fc" id="L291">                                            java.util.List newArray=createArrayContainer(containerFactory);</span>
@@ -295,14 +295,14 @@ public void reset(){
 <span class="fc" id="L295">                                            valueStack.addFirst(newArray);</span>
 <span class="fc" id="L296">                                            break;</span>
                                     default:
-<span class="nc" id="L298">                                            status=S_IN_ERROR;</span>
+<span class="fc" id="L298">                                            status=S_IN_ERROR;</span>
                                     }//inner switch
-<span class="nc" id="L300">                                    break;</span>
+<span class="fc" id="L300">                                    break;</span>
                             case S_IN_ERROR:
 <span class="nc" id="L302">                                    throw new ParseException(getPosition(), ParseException.ERROR_UNEXPECTED_TOKEN, token);</span>
                             }//switch
-<span class="pc bpc" id="L304" title="1 of 2 branches missed.">                            if(status==S_IN_ERROR){</span>
-<span class="nc" id="L305">                                    throw new ParseException(getPosition(), ParseException.ERROR_UNEXPECTED_TOKEN, token);</span>
+<span class="fc bfc" id="L304" title="All 2 branches covered.">                            if(status==S_IN_ERROR){</span>
+<span class="fc" id="L305">                                    throw new ParseException(getPosition(), ParseException.ERROR_UNEXPECTED_TOKEN, token);</span>
                             }
 <span class="pc bpc" id="L307" title="1 of 2 branches missed.">                    }while(token.type!=Yytoken.TYPE_EOF);</span>
             }
@@ -320,41 +320,41 @@ public void reset(){
 <span class="fc" id="L320">    }</span>
     
     @SuppressWarnings (&quot;rawtypes&quot;) private java.util.Map createObjectContainer(ContainerFactory containerFactory){
-<span class="pc bpc" id="L323" title="1 of 2 branches missed.">            if(containerFactory == null)</span>
+<span class="fc bfc" id="L323" title="All 2 branches covered.">            if(containerFactory == null)</span>
 <span class="fc" id="L324">                    return new org.drip.json.simple.JSONObject();</span>
-<span class="nc" id="L325">            java.util.Map m = containerFactory.createObjectContainer();</span>
+<span class="fc" id="L325">            java.util.Map m = containerFactory.createObjectContainer();</span>
             
-<span class="nc bnc" id="L327" title="All 2 branches missed.">            if(m == null)</span>
+<span class="pc bpc" id="L327" title="1 of 2 branches missed.">            if(m == null)</span>
 <span class="nc" id="L328">                    return new org.drip.json.simple.JSONObject();</span>
-<span class="nc" id="L329">            return m;</span>
+<span class="fc" id="L329">            return m;</span>
     }
     
     @SuppressWarnings (&quot;rawtypes&quot;) private java.util.List createArrayContainer(ContainerFactory containerFactory){
-<span class="pc bpc" id="L333" title="1 of 2 branches missed.">            if(containerFactory == null)</span>
+<span class="fc bfc" id="L333" title="All 2 branches covered.">            if(containerFactory == null)</span>
 <span class="fc" id="L334">                    return new org.drip.json.simple.JSONArray();</span>
-<span class="nc" id="L335">            java.util.List l = containerFactory.creatArrayContainer();</span>
+<span class="fc" id="L335">            java.util.List l = containerFactory.creatArrayContainer();</span>
             
-<span class="nc bnc" id="L337" title="All 2 branches missed.">            if(l == null)</span>
+<span class="pc bpc" id="L337" title="1 of 2 branches missed.">            if(l == null)</span>
 <span class="nc" id="L338">                    return new org.drip.json.simple.JSONArray();</span>
-<span class="nc" id="L339">            return l;</span>
+<span class="fc" id="L339">            return l;</span>
     }
     
     public void parse(String s, ContentHandler contentHandler) throws ParseException{
-<span class="nc" id="L343">            parse(s, contentHandler, false);</span>
-<span class="nc" id="L344">    }</span>
+<span class="fc" id="L343">            parse(s, contentHandler, false);</span>
+<span class="fc" id="L344">    }</span>
     
     public void parse(String s, ContentHandler contentHandler, boolean isResume) throws ParseException{
-<span class="nc" id="L347">    	java.io.StringReader in=new java.io.StringReader(s);</span>
+<span class="fc" id="L347">    	java.io.StringReader in=new java.io.StringReader(s);</span>
             try{
-<span class="nc" id="L349">                    parse(in, contentHandler, isResume);</span>
+<span class="fc" id="L349">                    parse(in, contentHandler, isResume);</span>
             }
 <span class="nc" id="L351">            catch(java.io.IOException ie){</span>
                     /*
                      * Actually it will never happen.
                      */
 <span class="nc" id="L355">                    throw new ParseException(-1, ParseException.ERROR_UNEXPECTED_EXCEPTION, ie);</span>
-<span class="nc" id="L356">            }</span>
-<span class="nc" id="L357">    }</span>
+<span class="fc" id="L356">            }</span>
+<span class="fc" id="L357">    }</span>
     
     public void parse(java.io.Reader in, ContentHandler contentHandler) throws java.io.IOException, ParseException{
 <span class="nc" id="L360">            parse(in, contentHandler, false);</span>
@@ -376,27 +376,27 @@ public void reset(){
 	 * @throws ParseException Thrown if the Inputs are Invalid
      */
     @SuppressWarnings ({&quot;rawtypes&quot;, &quot;unchecked&quot;}) public void parse(java.io.Reader in, ContentHandler contentHandler, boolean isResume) throws java.io.IOException, ParseException{
-<span class="nc bnc" id="L379" title="All 2 branches missed.">            if(!isResume){</span>
-<span class="nc" id="L380">                    reset(in);</span>
-<span class="nc" id="L381">                    handlerStatusStack = new java.util.LinkedList();</span>
+<span class="fc bfc" id="L379" title="All 2 branches covered.">            if(!isResume){</span>
+<span class="fc" id="L380">                    reset(in);</span>
+<span class="fc" id="L381">                    handlerStatusStack = new java.util.LinkedList();</span>
             }
             else{
-<span class="nc bnc" id="L384" title="All 2 branches missed.">                    if(handlerStatusStack == null){</span>
-<span class="nc" id="L385">                            isResume = false;</span>
-<span class="nc" id="L386">                            reset(in);</span>
-<span class="nc" id="L387">                            handlerStatusStack = new java.util.LinkedList();</span>
+<span class="fc bfc" id="L384" title="All 2 branches covered.">                    if(handlerStatusStack == null){</span>
+<span class="fc" id="L385">                            isResume = false;</span>
+<span class="fc" id="L386">                            reset(in);</span>
+<span class="fc" id="L387">                            handlerStatusStack = new java.util.LinkedList();</span>
                     }
             }
             
-<span class="nc" id="L391">            java.util.LinkedList statusStack = handlerStatusStack;    </span>
+<span class="fc" id="L391">            java.util.LinkedList statusStack = handlerStatusStack;    </span>
             
             try{
                     do{
-<span class="nc bnc" id="L395" title="All 9 branches missed.">                            switch(status){</span>
+<span class="pc bpc" id="L395" title="3 of 9 branches missed.">                            switch(status){</span>
                             case S_INIT:
-<span class="nc" id="L397">                                    contentHandler.startJSON();</span>
-<span class="nc" id="L398">                                    nextToken();</span>
-<span class="nc bnc" id="L399" title="All 4 branches missed.">                                    switch(token.type){</span>
+<span class="fc" id="L397">                                    contentHandler.startJSON();</span>
+<span class="fc" id="L398">                                    nextToken();</span>
+<span class="pc bpc" id="L399" title="3 of 4 branches missed.">                                    switch(token.type){</span>
                                     case Yytoken.TYPE_VALUE:
 <span class="nc" id="L401">                                            status=S_IN_FINISHED_VALUE;</span>
 <span class="nc" id="L402">                                            statusStack.addFirst(new Integer(status));</span>
@@ -404,9 +404,9 @@ public void reset(){
 <span class="nc" id="L404">                                                    return;</span>
                                             break;
                                     case Yytoken.TYPE_LEFT_BRACE:
-<span class="nc" id="L407">                                            status=S_IN_OBJECT;</span>
-<span class="nc" id="L408">                                            statusStack.addFirst(new Integer(status));</span>
-<span class="nc bnc" id="L409" title="All 2 branches missed.">                                            if(!contentHandler.startObject())</span>
+<span class="fc" id="L407">                                            status=S_IN_OBJECT;</span>
+<span class="fc" id="L408">                                            statusStack.addFirst(new Integer(status));</span>
+<span class="pc bpc" id="L409" title="1 of 2 branches missed.">                                            if(!contentHandler.startObject())</span>
 <span class="nc" id="L410">                                                    return;</span>
                                             break;
                                     case Yytoken.TYPE_LEFT_SQUARE:
@@ -421,11 +421,11 @@ public void reset(){
 <span class="nc" id="L421">                                    break;</span>
                                     
                             case S_IN_FINISHED_VALUE:
-<span class="nc" id="L424">                                    nextToken();</span>
-<span class="nc bnc" id="L425" title="All 2 branches missed.">                                    if(token.type==Yytoken.TYPE_EOF){</span>
-<span class="nc" id="L426">                                            contentHandler.endJSON();</span>
-<span class="nc" id="L427">                                            status = S_END;</span>
-<span class="nc" id="L428">                                            return;</span>
+<span class="fc" id="L424">                                    nextToken();</span>
+<span class="pc bpc" id="L425" title="1 of 2 branches missed.">                                    if(token.type==Yytoken.TYPE_EOF){</span>
+<span class="fc" id="L426">                                            contentHandler.endJSON();</span>
+<span class="fc" id="L427">                                            status = S_END;</span>
+<span class="fc" id="L428">                                            return;</span>
                                     }
                                     else{
 <span class="nc" id="L431">                                            status = S_IN_ERROR;</span>
@@ -433,31 +433,31 @@ public void reset(){
                                     }
                     
                             case S_IN_OBJECT:
-<span class="nc" id="L436">                                    nextToken();</span>
-<span class="nc bnc" id="L437" title="All 4 branches missed.">                                    switch(token.type){</span>
+<span class="fc" id="L436">                                    nextToken();</span>
+<span class="pc bpc" id="L437" title="1 of 4 branches missed.">                                    switch(token.type){</span>
                                     case Yytoken.TYPE_COMMA:
-<span class="nc" id="L439">                                            break;</span>
+<span class="fc" id="L439">                                            break;</span>
                                     case Yytoken.TYPE_VALUE:
-<span class="nc bnc" id="L441" title="All 2 branches missed.">                                            if(token.value instanceof String){</span>
-<span class="nc" id="L442">                                                    String key=(String)token.value;</span>
-<span class="nc" id="L443">                                                    status=S_PASSED_PAIR_KEY;</span>
-<span class="nc" id="L444">                                                    statusStack.addFirst(new Integer(status));</span>
-<span class="nc bnc" id="L445" title="All 2 branches missed.">                                                    if(!contentHandler.startObjectEntry(key))</span>
+<span class="pc bpc" id="L441" title="1 of 2 branches missed.">                                            if(token.value instanceof String){</span>
+<span class="fc" id="L442">                                                    String key=(String)token.value;</span>
+<span class="fc" id="L443">                                                    status=S_PASSED_PAIR_KEY;</span>
+<span class="fc" id="L444">                                                    statusStack.addFirst(new Integer(status));</span>
+<span class="pc bpc" id="L445" title="1 of 2 branches missed.">                                                    if(!contentHandler.startObjectEntry(key))</span>
 <span class="nc" id="L446">                                                            return;</span>
-<span class="nc" id="L447">                                            }</span>
+<span class="fc" id="L447">                                            }</span>
                                             else{
 <span class="nc" id="L449">                                                    status=S_IN_ERROR;</span>
                                             }
 <span class="nc" id="L451">                                            break;</span>
                                     case Yytoken.TYPE_RIGHT_BRACE:
-<span class="nc bnc" id="L453" title="All 2 branches missed.">                                            if(statusStack.size()&gt;1){</span>
-<span class="nc" id="L454">                                                    statusStack.removeFirst();</span>
-<span class="nc" id="L455">                                                    status=peekStatus(statusStack);</span>
+<span class="fc bfc" id="L453" title="All 2 branches covered.">                                            if(statusStack.size()&gt;1){</span>
+<span class="fc" id="L454">                                                    statusStack.removeFirst();</span>
+<span class="fc" id="L455">                                                    status=peekStatus(statusStack);</span>
                                             }
                                             else{
-<span class="nc" id="L458">                                                    status=S_IN_FINISHED_VALUE;</span>
+<span class="fc" id="L458">                                                    status=S_IN_FINISHED_VALUE;</span>
                                             }
-<span class="nc bnc" id="L460" title="All 2 branches missed.">                                            if(!contentHandler.endObject())</span>
+<span class="pc bpc" id="L460" title="1 of 2 branches missed.">                                            if(!contentHandler.endObject())</span>
 <span class="nc" id="L461">                                                    return;</span>
                                             break;
                                     default:
@@ -467,32 +467,32 @@ public void reset(){
                                     break;
                                     
                             case S_PASSED_PAIR_KEY:
-<span class="nc" id="L470">                                    nextToken();</span>
-<span class="nc bnc" id="L471" title="All 5 branches missed.">                                    switch(token.type){</span>
+<span class="fc" id="L470">                                    nextToken();</span>
+<span class="pc bpc" id="L471" title="1 of 5 branches missed.">                                    switch(token.type){</span>
                                     case Yytoken.TYPE_COLON:
-<span class="nc" id="L473">                                            break;</span>
+<span class="fc" id="L473">                                            break;</span>
                                     case Yytoken.TYPE_VALUE:
-<span class="nc" id="L475">                                            statusStack.removeFirst();</span>
-<span class="nc" id="L476">                                            status=peekStatus(statusStack);</span>
-<span class="nc bnc" id="L477" title="All 2 branches missed.">                                            if(!contentHandler.primitive(token.value))</span>
-<span class="nc" id="L478">                                                    return;</span>
-<span class="nc bnc" id="L479" title="All 2 branches missed.">                                            if(!contentHandler.endObjectEntry())</span>
+<span class="fc" id="L475">                                            statusStack.removeFirst();</span>
+<span class="fc" id="L476">                                            status=peekStatus(statusStack);</span>
+<span class="fc bfc" id="L477" title="All 2 branches covered.">                                            if(!contentHandler.primitive(token.value))</span>
+<span class="fc" id="L478">                                                    return;</span>
+<span class="pc bpc" id="L479" title="1 of 2 branches missed.">                                            if(!contentHandler.endObjectEntry())</span>
 <span class="nc" id="L480">                                                    return;</span>
                                             break;
                                     case Yytoken.TYPE_LEFT_SQUARE:
-<span class="nc" id="L483">                                            statusStack.removeFirst();</span>
-<span class="nc" id="L484">                                            statusStack.addFirst(new Integer(S_IN_PAIR_VALUE));</span>
-<span class="nc" id="L485">                                            status=S_IN_ARRAY;</span>
-<span class="nc" id="L486">                                            statusStack.addFirst(new Integer(status));</span>
-<span class="nc bnc" id="L487" title="All 2 branches missed.">                                            if(!contentHandler.startArray())</span>
+<span class="fc" id="L483">                                            statusStack.removeFirst();</span>
+<span class="fc" id="L484">                                            statusStack.addFirst(new Integer(S_IN_PAIR_VALUE));</span>
+<span class="fc" id="L485">                                            status=S_IN_ARRAY;</span>
+<span class="fc" id="L486">                                            statusStack.addFirst(new Integer(status));</span>
+<span class="pc bpc" id="L487" title="1 of 2 branches missed.">                                            if(!contentHandler.startArray())</span>
 <span class="nc" id="L488">                                                    return;</span>
                                             break;
                                     case Yytoken.TYPE_LEFT_BRACE:
-<span class="nc" id="L491">                                            statusStack.removeFirst();</span>
-<span class="nc" id="L492">                                            statusStack.addFirst(new Integer(S_IN_PAIR_VALUE));</span>
-<span class="nc" id="L493">                                            status=S_IN_OBJECT;</span>
-<span class="nc" id="L494">                                            statusStack.addFirst(new Integer(status));</span>
-<span class="nc bnc" id="L495" title="All 2 branches missed.">                                            if(!contentHandler.startObject())</span>
+<span class="fc" id="L491">                                            statusStack.removeFirst();</span>
+<span class="fc" id="L492">                                            statusStack.addFirst(new Integer(S_IN_PAIR_VALUE));</span>
+<span class="fc" id="L493">                                            status=S_IN_OBJECT;</span>
+<span class="fc" id="L494">                                            statusStack.addFirst(new Integer(status));</span>
+<span class="pc bpc" id="L495" title="1 of 2 branches missed.">                                            if(!contentHandler.startObject())</span>
 <span class="nc" id="L496">                                                    return;</span>
                                             break;
                                     default:
@@ -505,36 +505,36 @@ public void reset(){
                                      * S_IN_PAIR_VALUE is just a marker to indicate the end of an object entry, it doesn't proccess any token,
                                      * therefore delay consuming token until next round.
                                      */
-<span class="nc" id="L508">                                    statusStack.removeFirst();</span>
-<span class="nc" id="L509">                                    status = peekStatus(statusStack);</span>
-<span class="nc bnc" id="L510" title="All 2 branches missed.">                                    if(!contentHandler.endObjectEntry())</span>
+<span class="fc" id="L508">                                    statusStack.removeFirst();</span>
+<span class="fc" id="L509">                                    status = peekStatus(statusStack);</span>
+<span class="pc bpc" id="L510" title="1 of 2 branches missed.">                                    if(!contentHandler.endObjectEntry())</span>
 <span class="nc" id="L511">                                            return;</span>
                                     break;
                                     
                             case S_IN_ARRAY:
-<span class="nc" id="L515">                                    nextToken();</span>
-<span class="nc bnc" id="L516" title="All 6 branches missed.">                                    switch(token.type){</span>
+<span class="fc" id="L515">                                    nextToken();</span>
+<span class="pc bpc" id="L516" title="2 of 6 branches missed.">                                    switch(token.type){</span>
                                     case Yytoken.TYPE_COMMA:
-<span class="nc" id="L518">                                            break;</span>
+<span class="fc" id="L518">                                            break;</span>
                                     case Yytoken.TYPE_VALUE:
-<span class="nc bnc" id="L520" title="All 2 branches missed.">                                            if(!contentHandler.primitive(token.value))</span>
+<span class="pc bpc" id="L520" title="1 of 2 branches missed.">                                            if(!contentHandler.primitive(token.value))</span>
 <span class="nc" id="L521">                                                    return;</span>
                                             break;
                                     case Yytoken.TYPE_RIGHT_SQUARE:
-<span class="nc bnc" id="L524" title="All 2 branches missed.">                                            if(statusStack.size()&gt;1){</span>
-<span class="nc" id="L525">                                                    statusStack.removeFirst();</span>
-<span class="nc" id="L526">                                                    status=peekStatus(statusStack);</span>
+<span class="pc bpc" id="L524" title="1 of 2 branches missed.">                                            if(statusStack.size()&gt;1){</span>
+<span class="fc" id="L525">                                                    statusStack.removeFirst();</span>
+<span class="fc" id="L526">                                                    status=peekStatus(statusStack);</span>
                                             }
                                             else{
 <span class="nc" id="L529">                                                    status=S_IN_FINISHED_VALUE;</span>
                                             }
-<span class="nc bnc" id="L531" title="All 2 branches missed.">                                            if(!contentHandler.endArray())</span>
-<span class="nc" id="L532">                                                    return;</span>
+<span class="fc bfc" id="L531" title="All 2 branches covered.">                                            if(!contentHandler.endArray())</span>
+<span class="fc" id="L532">                                                    return;</span>
                                             break;
                                     case Yytoken.TYPE_LEFT_BRACE:
-<span class="nc" id="L535">                                            status=S_IN_OBJECT;</span>
-<span class="nc" id="L536">                                            statusStack.addFirst(new Integer(status));</span>
-<span class="nc bnc" id="L537" title="All 2 branches missed.">                                            if(!contentHandler.startObject())</span>
+<span class="fc" id="L535">                                            status=S_IN_OBJECT;</span>
+<span class="fc" id="L536">                                            statusStack.addFirst(new Integer(status));</span>
+<span class="pc bpc" id="L537" title="1 of 2 branches missed.">                                            if(!contentHandler.startObject())</span>
 <span class="nc" id="L538">                                                    return;</span>
                                             break;
                                     case Yytoken.TYPE_LEFT_SQUARE:
@@ -554,10 +554,10 @@ public void reset(){
                             case S_IN_ERROR:
 <span class="nc" id="L555">                                    throw new ParseException(getPosition(), ParseException.ERROR_UNEXPECTED_TOKEN, token);</span>
                             }//switch
-<span class="nc bnc" id="L557" title="All 2 branches missed.">                            if(status==S_IN_ERROR){</span>
+<span class="pc bpc" id="L557" title="1 of 2 branches missed.">                            if(status==S_IN_ERROR){</span>
 <span class="nc" id="L558">                                    throw new ParseException(getPosition(), ParseException.ERROR_UNEXPECTED_TOKEN, token);</span>
                             }
-<span class="nc bnc" id="L560" title="All 2 branches missed.">                    }while(token.type!=Yytoken.TYPE_EOF);</span>
+<span class="pc bpc" id="L560" title="1 of 2 branches missed.">                    }while(token.type!=Yytoken.TYPE_EOF);</span>
             }
 <span class="nc" id="L562">            catch(java.io.IOException ie){</span>
 <span class="nc" id="L563">                    status = S_IN_ERROR;</span>

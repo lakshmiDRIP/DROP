@@ -180,56 +180,56 @@ public abstract class FixedRdFinder {
 	public org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier convergeObjectiveFunction (
 		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicmStarting)
 	{
-<span class="nc bnc" id="L183" title="All 2 branches missed.">		if (null == vicmStarting) return null;</span>
+<span class="pc bpc" id="L183" title="1 of 2 branches missed.">		if (null == vicmStarting) return null;</span>
 
-<span class="nc" id="L185">		boolean bFixedPointFound = false;</span>
-<span class="nc" id="L186">		double dblObjectiveFunctionPrevious = java.lang.Double.NaN;</span>
-<span class="nc" id="L187">		org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicm = vicmStarting;</span>
+<span class="fc" id="L185">		boolean bFixedPointFound = false;</span>
+<span class="fc" id="L186">		double dblObjectiveFunctionPrevious = java.lang.Double.NaN;</span>
+<span class="fc" id="L187">		org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicm = vicmStarting;</span>
 
-<span class="nc" id="L189">		org.drip.function.definition.RdToR1 rdToR1ObjectiveFunction = objectiveFunction();</span>
+<span class="fc" id="L189">		org.drip.function.definition.RdToR1 rdToR1ObjectiveFunction = objectiveFunction();</span>
 
 		try {
-<span class="nc" id="L192">			dblObjectiveFunctionPrevious = rdToR1ObjectiveFunction.evaluate (vicm.variates());</span>
+<span class="fc" id="L192">			dblObjectiveFunctionPrevious = rdToR1ObjectiveFunction.evaluate (vicm.variates());</span>
 <span class="nc" id="L193">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L194">			e.printStackTrace();</span>
 
 <span class="nc" id="L196">			return null;</span>
-<span class="nc" id="L197">		}</span>
+<span class="fc" id="L197">		}</span>
 
-<span class="nc" id="L199">		org.drip.function.rdtor1solver.ConvergenceControl cc = control();</span>
+<span class="fc" id="L199">		org.drip.function.rdtor1solver.ConvergenceControl cc = control();</span>
 
-<span class="nc" id="L201">		double dblIPBCAbsoluteTolerance = cc.absoluteTolerance();</span>
+<span class="fc" id="L201">		double dblIPBCAbsoluteTolerance = cc.absoluteTolerance();</span>
 
-<span class="nc" id="L203">		double dblOFAbsoluteTolerance = java.lang.Math.abs (dblObjectiveFunctionPrevious *</span>
-<span class="nc" id="L204">			cc.relativeTolerance());</span>
+<span class="fc" id="L203">		double dblOFAbsoluteTolerance = java.lang.Math.abs (dblObjectiveFunctionPrevious *</span>
+<span class="fc" id="L204">			cc.relativeTolerance());</span>
 
-<span class="nc bnc" id="L206" title="All 2 branches missed.">		double dblAbsoluteTolerance = dblIPBCAbsoluteTolerance &lt; dblOFAbsoluteTolerance ?</span>
+<span class="pc bpc" id="L206" title="1 of 2 branches missed.">		double dblAbsoluteTolerance = dblIPBCAbsoluteTolerance &lt; dblOFAbsoluteTolerance ?</span>
 			dblIPBCAbsoluteTolerance : dblOFAbsoluteTolerance;
 
-<span class="nc bnc" id="L209" title="All 2 branches missed.">		while (!bFixedPointFound) {</span>
-<span class="nc" id="L210">			org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicmIncrement = increment</span>
-<span class="nc" id="L211">				(vicm);</span>
+<span class="fc bfc" id="L209" title="All 2 branches covered.">		while (!bFixedPointFound) {</span>
+<span class="fc" id="L210">			org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicmIncrement = increment</span>
+<span class="fc" id="L211">				(vicm);</span>
 
-<span class="nc bnc" id="L213" title="All 4 branches missed.">			if (null == vicmIncrement || null == (vicm = next (vicm, vicmIncrement, incrementFraction (vicm,</span>
+<span class="pc bpc" id="L213" title="2 of 4 branches missed.">			if (null == vicmIncrement || null == (vicm = next (vicm, vicmIncrement, incrementFraction (vicm,</span>
 				vicmIncrement))))
 <span class="nc" id="L215">				return null;</span>
 
 			try {
-<span class="nc" id="L218">				double dblObjectiveFunction = rdToR1ObjectiveFunction.evaluate (vicm.variates());</span>
+<span class="fc" id="L218">				double dblObjectiveFunction = rdToR1ObjectiveFunction.evaluate (vicm.variates());</span>
 
-<span class="nc bnc" id="L220" title="All 2 branches missed.">				if (java.lang.Math.abs (dblObjectiveFunctionPrevious - dblObjectiveFunction) &lt;</span>
+<span class="fc bfc" id="L220" title="All 2 branches covered.">				if (java.lang.Math.abs (dblObjectiveFunctionPrevious - dblObjectiveFunction) &lt;</span>
 					dblAbsoluteTolerance)
-<span class="nc" id="L222">					bFixedPointFound = true;</span>
+<span class="fc" id="L222">					bFixedPointFound = true;</span>
 
-<span class="nc" id="L224">				dblObjectiveFunctionPrevious = dblObjectiveFunction;</span>
+<span class="fc" id="L224">				dblObjectiveFunctionPrevious = dblObjectiveFunction;</span>
 <span class="nc" id="L225">			} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L226">				e.printStackTrace();</span>
 
 <span class="nc" id="L228">				return null;</span>
-<span class="nc" id="L229">			}</span>
-<span class="nc" id="L230">		}</span>
+<span class="fc" id="L229">			}</span>
+<span class="fc" id="L230">		}</span>
 
-<span class="nc" id="L232">		return vicm;</span>
+<span class="fc" id="L232">		return vicm;</span>
 	}
 
 	/**
@@ -246,9 +246,9 @@ public abstract class FixedRdFinder {
 	{
 <span class="fc" id="L247">		int iConvergenceType = control().convergenceType();</span>
 
-<span class="pc bpc" id="L249" title="1 of 2 branches missed.">		if (org.drip.function.rdtor1solver.InteriorPointBarrierControl.OBJECTIVE_FUNCTION_SEQUENCE_CONVERGENCE</span>
+<span class="fc bfc" id="L249" title="All 2 branches covered.">		if (org.drip.function.rdtor1solver.InteriorPointBarrierControl.OBJECTIVE_FUNCTION_SEQUENCE_CONVERGENCE</span>
 			== iConvergenceType)
-<span class="nc" id="L251">			return convergeObjectiveFunction (vicmStarting);</span>
+<span class="fc" id="L251">			return convergeObjectiveFunction (vicmStarting);</span>
 
 <span class="pc bpc" id="L253" title="1 of 2 branches missed.">		if (org.drip.function.rdtor1solver.InteriorPointBarrierControl.VARIATE_CONSTRAINT_SEQUENCE_CONVERGENCE</span>
 			== iConvergenceType)
@@ -294,7 +294,7 @@ public abstract class FixedRdFinder {
 
 <span class="pc bpc" id="L295" title="1 of 2 branches missed.">			if (null == levm) return 1.;</span>
 
-<span class="pc bpc" id="L297" title="1 of 2 branches missed.">			if (s_bVerifierIncrementBlog) System.out.println (levm);</span>
+<span class="fc bfc" id="L297" title="All 2 branches covered.">			if (s_bVerifierIncrementBlog) System.out.println (levm);</span>
 
 <span class="fc bfc" id="L299" title="All 2 branches covered.">			if (levm.verify()) return dblStepLength;</span>
 

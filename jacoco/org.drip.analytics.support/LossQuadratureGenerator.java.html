@@ -246,48 +246,48 @@ package org.drip.analytics.support;
 			final int iWorkoutDate,
 			final org.drip.param.market.CurveSurfaceQuoteContainer csqs)
 	{
-<span class="nc bnc" id="L249" title="All 8 branches missed.">		if (null == comp || null == valParams || null == period || null == csqs) return null;</span>
+<span class="pc bpc" id="L249" title="4 of 8 branches missed.">		if (null == comp || null == valParams || null == period || null == csqs) return null;</span>
 
-<span class="nc" id="L251">		org.drip.state.discount.MergedDiscountForwardCurve dc = csqs.fundingState</span>
-<span class="nc" id="L252">			(org.drip.state.identifier.FundingLabel.Standard (comp.payCurrency()));</span>
+<span class="fc" id="L251">		org.drip.state.discount.MergedDiscountForwardCurve dc = csqs.fundingState</span>
+<span class="fc" id="L252">			(org.drip.state.identifier.FundingLabel.Standard (comp.payCurrency()));</span>
 
-<span class="nc bnc" id="L254" title="All 2 branches missed.">		if (null == dc) return null;</span>
+<span class="pc bpc" id="L254" title="1 of 2 branches missed.">		if (null == dc) return null;</span>
 
-<span class="nc" id="L256">		org.drip.state.credit.CreditCurve cc = csqs.creditState (comp.creditLabel());</span>
+<span class="fc" id="L256">		org.drip.state.credit.CreditCurve cc = csqs.creditState (comp.creditLabel());</span>
 
-<span class="nc bnc" id="L258" title="All 2 branches missed.">		if (null == cc) return null;</span>
+<span class="pc bpc" id="L258" title="1 of 2 branches missed.">		if (null == cc) return null;</span>
 
-<span class="nc" id="L260">		int iPeriodStartDate = period.startDate();</span>
+<span class="fc" id="L260">		int iPeriodStartDate = period.startDate();</span>
 
-<span class="nc bnc" id="L262" title="All 2 branches missed.">		if (iPeriodStartDate &gt; iWorkoutDate) return null;</span>
+<span class="pc bpc" id="L262" title="1 of 2 branches missed.">		if (iPeriodStartDate &gt; iWorkoutDate) return null;</span>
 
-<span class="nc" id="L264">		int iPeriodEndDate = period.endDate();</span>
+<span class="fc" id="L264">		int iPeriodEndDate = period.endDate();</span>
 
-<span class="nc" id="L266">		int iValueDate = valParams.valueDate();</span>
+<span class="fc" id="L266">		int iValueDate = valParams.valueDate();</span>
 
-<span class="nc bnc" id="L268" title="All 2 branches missed.">		iPeriodStartDate = iPeriodStartDate &lt; iValueDate ? iValueDate : iPeriodStartDate;</span>
-<span class="nc bnc" id="L269" title="All 2 branches missed.">		iPeriodEndDate = iPeriodEndDate &lt; iWorkoutDate ? iPeriodEndDate : iWorkoutDate;</span>
+<span class="fc bfc" id="L268" title="All 2 branches covered.">		iPeriodStartDate = iPeriodStartDate &lt; iValueDate ? iValueDate : iPeriodStartDate;</span>
+<span class="pc bpc" id="L269" title="1 of 2 branches missed.">		iPeriodEndDate = iPeriodEndDate &lt; iWorkoutDate ? iPeriodEndDate : iWorkoutDate;</span>
 
-<span class="nc" id="L271">		int iLossPayLag = comp.creditValuationParams().lossPayLag();</span>
+<span class="fc" id="L271">		int iLossPayLag = comp.creditValuationParams().lossPayLag();</span>
 
-<span class="nc" id="L273">		java.util.List&lt;org.drip.analytics.cashflow.LossQuadratureMetrics&gt; sLP = new</span>
+<span class="fc" id="L273">		java.util.List&lt;org.drip.analytics.cashflow.LossQuadratureMetrics&gt; sLP = new</span>
 			java.util.ArrayList&lt;org.drip.analytics.cashflow.LossQuadratureMetrics&gt;();
 
 		try {
-<span class="nc" id="L277">			org.drip.analytics.cashflow.LossQuadratureMetrics lp =</span>
-<span class="nc" id="L278">				org.drip.analytics.cashflow.LossQuadratureMetrics.MakeDefaultPeriod (iPeriodStartDate,</span>
-<span class="nc" id="L279">					iPeriodEndDate, period.accrualDCF ((iPeriodStartDate + iPeriodEndDate) / 2),</span>
-<span class="nc" id="L280">						comp.notional (iPeriodStartDate, iPeriodEndDate), comp.recovery (iPeriodStartDate,</span>
+<span class="fc" id="L277">			org.drip.analytics.cashflow.LossQuadratureMetrics lp =</span>
+<span class="fc" id="L278">				org.drip.analytics.cashflow.LossQuadratureMetrics.MakeDefaultPeriod (iPeriodStartDate,</span>
+<span class="fc" id="L279">					iPeriodEndDate, period.accrualDCF ((iPeriodStartDate + iPeriodEndDate) / 2),</span>
+<span class="fc" id="L280">						comp.notional (iPeriodStartDate, iPeriodEndDate), comp.recovery (iPeriodStartDate,</span>
 							iPeriodEndDate, cc), dc, cc, iLossPayLag);
 
-<span class="nc bnc" id="L283" title="All 2 branches missed.">			if (null != lp) sLP.add (lp);</span>
+<span class="pc bpc" id="L283" title="1 of 2 branches missed.">			if (null != lp) sLP.add (lp);</span>
 <span class="nc" id="L284">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L285">			e.printStackTrace();</span>
 
 <span class="nc" id="L287">			return null;</span>
-<span class="nc" id="L288">		}</span>
+<span class="fc" id="L288">		}</span>
 
-<span class="nc" id="L290">		return sLP;</span>
+<span class="fc" id="L290">		return sLP;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -65,8 +65,8 @@ package org.drip.dynamics.lmm;
  */
 
 public class LognormalLIBORVolatility extends org.drip.dynamics.hjm.MultiFactorVolatility {
-<span class="nc" id="L68">	private int _iSpotDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="nc" id="L69">	private org.drip.state.identifier.ForwardLabel _lslForward = null;</span>
+<span class="fc" id="L68">	private int _iSpotDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L69">	private org.drip.state.identifier.ForwardLabel _lslForward = null;</span>
 
 	/**
 	 * LognormalLIBORVolatility Constructor
@@ -86,13 +86,13 @@ public class LognormalLIBORVolatility extends org.drip.dynamics.hjm.MultiFactorV
 		final org.drip.sequence.random.PrincipalFactorSequenceGenerator pfsg)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L89">		super (aMSVolatility, pfsg);</span>
+<span class="fc" id="L89">		super (aMSVolatility, pfsg);</span>
 
-<span class="nc bnc" id="L91" title="All 2 branches missed.">		if (null == (_lslForward = lslForward))</span>
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">		if (null == (_lslForward = lslForward))</span>
 <span class="nc" id="L92">			throw new java.lang.Exception (&quot;LognormalLIBORVolatility ctr: Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L94">		_iSpotDate = iSpotDate;</span>
-<span class="nc" id="L95">	}</span>
+<span class="fc" id="L94">		_iSpotDate = iSpotDate;</span>
+<span class="fc" id="L95">	}</span>
 
 	/**
 	 * Retrieve the Spot Date
@@ -169,53 +169,53 @@ public class LognormalLIBORVolatility extends org.drip.dynamics.hjm.MultiFactorV
 		final int iTargetDate,
 		final org.drip.state.forward.ForwardCurve fc)
 	{
-<span class="nc bnc" id="L172" title="All 4 branches missed.">		if (iTargetDate &lt;= _iSpotDate || null == fc) return null;</span>
+<span class="pc bpc" id="L172" title="2 of 4 branches missed.">		if (iTargetDate &lt;= _iSpotDate || null == fc) return null;</span>
 
-<span class="nc" id="L174">		org.drip.sequence.random.PrincipalFactorSequenceGenerator pfsg = msg();</span>
+<span class="fc" id="L174">		org.drip.sequence.random.PrincipalFactorSequenceGenerator pfsg = msg();</span>
 
-<span class="nc" id="L176">		int iNumFactor = pfsg.numFactor();</span>
+<span class="fc" id="L176">		int iNumFactor = pfsg.numFactor();</span>
 
-<span class="nc" id="L178">		boolean bLoop = true;</span>
-<span class="nc" id="L179">		int iEndDate = _iSpotDate;</span>
-<span class="nc" id="L180">		double dblTenorDCF = java.lang.Double.NaN;</span>
-<span class="nc" id="L181">		double[] adblContinuousForwardVolatility = new double[iNumFactor];</span>
+<span class="fc" id="L178">		boolean bLoop = true;</span>
+<span class="fc" id="L179">		int iEndDate = _iSpotDate;</span>
+<span class="fc" id="L180">		double dblTenorDCF = java.lang.Double.NaN;</span>
+<span class="fc" id="L181">		double[] adblContinuousForwardVolatility = new double[iNumFactor];</span>
 
-<span class="nc" id="L183">		java.lang.String strTenor = _lslForward.tenor();</span>
+<span class="fc" id="L183">		java.lang.String strTenor = _lslForward.tenor();</span>
 
 		try {
-<span class="nc" id="L186">			dblTenorDCF = org.drip.analytics.support.Helper.TenorToYearFraction (strTenor);</span>
+<span class="fc" id="L186">			dblTenorDCF = org.drip.analytics.support.Helper.TenorToYearFraction (strTenor);</span>
 <span class="nc" id="L187">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L188">			e.printStackTrace();</span>
 
 <span class="nc" id="L190">			return null;</span>
-<span class="nc" id="L191">		}</span>
+<span class="fc" id="L191">		}</span>
 
-<span class="nc bnc" id="L193" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumFactor; ++i)</span>
-<span class="nc" id="L194">			adblContinuousForwardVolatility[i] = 0.;</span>
+<span class="fc bfc" id="L193" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFactor; ++i)</span>
+<span class="fc" id="L194">			adblContinuousForwardVolatility[i] = 0.;</span>
 
-<span class="nc" id="L196">		double[] adblFactorPointVolatility = factorPointVolatility (_iSpotDate, iEndDate);</span>
+<span class="fc" id="L196">		double[] adblFactorPointVolatility = factorPointVolatility (_iSpotDate, iEndDate);</span>
 
-<span class="nc bnc" id="L198" title="All 2 branches missed.">		while (bLoop) {</span>
+<span class="fc bfc" id="L198" title="All 2 branches covered.">		while (bLoop) {</span>
 			try {
-<span class="nc" id="L200">				if ((iEndDate = new org.drip.analytics.date.JulianDate (iEndDate).addTenor</span>
-<span class="nc bnc" id="L201" title="All 2 branches missed.">					(strTenor).julian()) &gt; iTargetDate)</span>
-<span class="nc" id="L202">					bLoop = false;</span>
+<span class="fc" id="L200">				if ((iEndDate = new org.drip.analytics.date.JulianDate (iEndDate).addTenor</span>
+<span class="fc bfc" id="L201" title="All 2 branches covered.">					(strTenor).julian()) &gt; iTargetDate)</span>
+<span class="fc" id="L202">					bLoop = false;</span>
 
-<span class="nc" id="L204">				double dblLIBORTenorDCF = fc.forward (iEndDate) * dblTenorDCF;</span>
+<span class="fc" id="L204">				double dblLIBORTenorDCF = fc.forward (iEndDate) * dblTenorDCF;</span>
 
-<span class="nc" id="L206">				double dblLIBORLognormalVolatilityScaler = dblLIBORTenorDCF / (1. + dblLIBORTenorDCF);</span>
+<span class="fc" id="L206">				double dblLIBORLognormalVolatilityScaler = dblLIBORTenorDCF / (1. + dblLIBORTenorDCF);</span>
 
-<span class="nc bnc" id="L208" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumFactor; ++i)</span>
-<span class="nc" id="L209">					adblContinuousForwardVolatility[i] += dblLIBORLognormalVolatilityScaler *</span>
+<span class="fc bfc" id="L208" title="All 2 branches covered.">				for (int i = 0; i &lt; iNumFactor; ++i)</span>
+<span class="fc" id="L209">					adblContinuousForwardVolatility[i] += dblLIBORLognormalVolatilityScaler *</span>
 						adblFactorPointVolatility[i];
 <span class="nc" id="L211">			} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L212">				e.printStackTrace();</span>
 
 <span class="nc" id="L214">				return null;</span>
-<span class="nc" id="L215">			}</span>
+<span class="fc" id="L215">			}</span>
 		}
 
-<span class="nc" id="L218">		return adblContinuousForwardVolatility;</span>
+<span class="fc" id="L218">		return adblContinuousForwardVolatility;</span>
 	}
 
 	/**
@@ -231,53 +231,53 @@ public class LognormalLIBORVolatility extends org.drip.dynamics.hjm.MultiFactorV
 		final int iTargetDate,
 		final org.drip.state.discount.MergedDiscountForwardCurve dc)
 	{
-<span class="nc bnc" id="L234" title="All 4 branches missed.">		if (iTargetDate &lt;= _iSpotDate || null == dc) return null;</span>
+<span class="pc bpc" id="L234" title="2 of 4 branches missed.">		if (iTargetDate &lt;= _iSpotDate || null == dc) return null;</span>
 
-<span class="nc" id="L236">		org.drip.sequence.random.PrincipalFactorSequenceGenerator pfsg = msg();</span>
+<span class="fc" id="L236">		org.drip.sequence.random.PrincipalFactorSequenceGenerator pfsg = msg();</span>
 
-<span class="nc" id="L238">		int iNumFactor = pfsg.numFactor();</span>
+<span class="fc" id="L238">		int iNumFactor = pfsg.numFactor();</span>
 
-<span class="nc" id="L240">		boolean bLoop = true;</span>
-<span class="nc" id="L241">		int iStartDate = _iSpotDate;</span>
-<span class="nc" id="L242">		double dblTenorDCF = java.lang.Double.NaN;</span>
-<span class="nc" id="L243">		double[] adblContinuousForwardVolatility = new double[iNumFactor];</span>
+<span class="fc" id="L240">		boolean bLoop = true;</span>
+<span class="fc" id="L241">		int iStartDate = _iSpotDate;</span>
+<span class="fc" id="L242">		double dblTenorDCF = java.lang.Double.NaN;</span>
+<span class="fc" id="L243">		double[] adblContinuousForwardVolatility = new double[iNumFactor];</span>
 
-<span class="nc" id="L245">		java.lang.String strTenor = _lslForward.tenor();</span>
+<span class="fc" id="L245">		java.lang.String strTenor = _lslForward.tenor();</span>
 
 		try {
-<span class="nc" id="L248">			dblTenorDCF = org.drip.analytics.support.Helper.TenorToYearFraction (strTenor);</span>
+<span class="fc" id="L248">			dblTenorDCF = org.drip.analytics.support.Helper.TenorToYearFraction (strTenor);</span>
 <span class="nc" id="L249">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L250">			e.printStackTrace();</span>
 
 <span class="nc" id="L252">			return null;</span>
-<span class="nc" id="L253">		}</span>
+<span class="fc" id="L253">		}</span>
 
-<span class="nc bnc" id="L255" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumFactor; ++i)</span>
-<span class="nc" id="L256">			adblContinuousForwardVolatility[i] = 0.;</span>
+<span class="fc bfc" id="L255" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFactor; ++i)</span>
+<span class="fc" id="L256">			adblContinuousForwardVolatility[i] = 0.;</span>
 
-<span class="nc" id="L258">		double[] adblFactorPointVolatility = factorPointVolatility (_iSpotDate, iStartDate);</span>
+<span class="fc" id="L258">		double[] adblFactorPointVolatility = factorPointVolatility (_iSpotDate, iStartDate);</span>
 
-<span class="nc bnc" id="L260" title="All 2 branches missed.">		while (bLoop) {</span>
+<span class="fc bfc" id="L260" title="All 2 branches covered.">		while (bLoop) {</span>
 			try {
-<span class="nc" id="L262">				double dblLIBORTenorDCF = dc.libor (iStartDate, strTenor) * dblTenorDCF;</span>
+<span class="fc" id="L262">				double dblLIBORTenorDCF = dc.libor (iStartDate, strTenor) * dblTenorDCF;</span>
 
-<span class="nc" id="L264">				double dblLIBORLognormalVolatilityScaler = dblLIBORTenorDCF / (1. + dblLIBORTenorDCF);</span>
+<span class="fc" id="L264">				double dblLIBORLognormalVolatilityScaler = dblLIBORTenorDCF / (1. + dblLIBORTenorDCF);</span>
 
-<span class="nc bnc" id="L266" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumFactor; ++i)</span>
-<span class="nc" id="L267">					adblContinuousForwardVolatility[i] += dblLIBORLognormalVolatilityScaler *</span>
+<span class="fc bfc" id="L266" title="All 2 branches covered.">				for (int i = 0; i &lt; iNumFactor; ++i)</span>
+<span class="fc" id="L267">					adblContinuousForwardVolatility[i] += dblLIBORLognormalVolatilityScaler *</span>
 						adblFactorPointVolatility[i];
 
-<span class="nc" id="L270">				if ((iStartDate = new org.drip.analytics.date.JulianDate (iStartDate).addTenor</span>
-<span class="nc bnc" id="L271" title="All 2 branches missed.">					(strTenor).julian()) &gt; iTargetDate)</span>
-<span class="nc" id="L272">					bLoop = false;</span>
+<span class="fc" id="L270">				if ((iStartDate = new org.drip.analytics.date.JulianDate (iStartDate).addTenor</span>
+<span class="fc bfc" id="L271" title="All 2 branches covered.">					(strTenor).julian()) &gt; iTargetDate)</span>
+<span class="fc" id="L272">					bLoop = false;</span>
 <span class="nc" id="L273">			} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L274">				e.printStackTrace();</span>
 
 <span class="nc" id="L276">				return null;</span>
-<span class="nc" id="L277">			}</span>
+<span class="fc" id="L277">			}</span>
 		}
 
-<span class="nc" id="L280">		return adblContinuousForwardVolatility;</span>
+<span class="fc" id="L280">		return adblContinuousForwardVolatility;</span>
 	}
 
 	/**

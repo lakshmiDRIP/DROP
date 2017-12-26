@@ -90,26 +90,26 @@ public class EfficientTradingTrajectoryDiscrete extends org.drip.execution.strat
 		final double[] adblHoldings,
 		final org.drip.execution.dynamics.ArithmeticPriceEvolutionParameters apep)
 	{
-<span class="nc bnc" id="L93" title="All 2 branches missed.">		if (null == apep) return null;</span>
+<span class="pc bpc" id="L93" title="1 of 2 branches missed.">		if (null == apep) return null;</span>
 
-<span class="nc" id="L95">		org.drip.execution.strategy.DiscreteTradingTrajectory dtt =</span>
-<span class="nc" id="L96">			org.drip.execution.strategy.DiscreteTradingTrajectory.Standard (adblExecutionTimeNode,</span>
+<span class="fc" id="L95">		org.drip.execution.strategy.DiscreteTradingTrajectory dtt =</span>
+<span class="fc" id="L96">			org.drip.execution.strategy.DiscreteTradingTrajectory.Standard (adblExecutionTimeNode,</span>
 				adblHoldings);
 
-<span class="nc bnc" id="L99" title="All 2 branches missed.">		if (null == dtt) return null;</span>
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">		if (null == dtt) return null;</span>
 
-<span class="nc" id="L101">		double dblExecutionTime = dtt.executionTime();</span>
+<span class="fc" id="L101">		double dblExecutionTime = dtt.executionTime();</span>
 
 		try {
-<span class="nc" id="L104">			org.drip.measure.gaussian.R1UnivariateNormal r1un = (new</span>
+<span class="fc" id="L104">			org.drip.measure.gaussian.R1UnivariateNormal r1un = (new</span>
 				org.drip.execution.capture.TrajectoryShortfallEstimator (dtt)).totalCostDistributionSynopsis
-<span class="nc" id="L106">					(apep);</span>
+<span class="fc" id="L106">					(apep);</span>
 
-<span class="nc bnc" id="L108" title="All 2 branches missed.">			return null == r1un ? null : new EfficientTradingTrajectoryDiscrete (adblExecutionTimeNode,</span>
-<span class="nc" id="L109">				adblHoldings, dtt.tradeList(), r1un.mean(), r1un.variance(),</span>
-<span class="nc" id="L110">					apep.temporaryExpectation().epochImpactFunction().evaluate (dtt.tradeSize(),</span>
-<span class="nc" id="L111">						dblExecutionTime) / (apep.arithmeticPriceDynamicsSettings().epochVolatility() *</span>
-<span class="nc" id="L112">							java.lang.Math.sqrt (dblExecutionTime)));</span>
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">			return null == r1un ? null : new EfficientTradingTrajectoryDiscrete (adblExecutionTimeNode,</span>
+<span class="fc" id="L109">				adblHoldings, dtt.tradeList(), r1un.mean(), r1un.variance(),</span>
+<span class="fc" id="L110">					apep.temporaryExpectation().epochImpactFunction().evaluate (dtt.tradeSize(),</span>
+<span class="fc" id="L111">						dblExecutionTime) / (apep.arithmeticPriceDynamicsSettings().epochVolatility() *</span>
+<span class="fc" id="L112">							java.lang.Math.sqrt (dblExecutionTime)));</span>
 <span class="nc" id="L113">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L114">			e.printStackTrace();</span>
 		}

@@ -66,35 +66,35 @@ import org.drip.service.env.EnvManager;
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L69">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L69">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L71">		double[][] aadblCovarianceMatrix = new double[][] {</span>
+<span class="fc" id="L71">		double[][] aadblCovarianceMatrix = new double[][] {</span>
 			{0.09, 0.12},
 			{0.12, 0.04}
 		};
 
-<span class="nc" id="L76">		double[] adblEqualityConstraint = new double[] {</span>
+<span class="fc" id="L76">		double[] adblEqualityConstraint = new double[] {</span>
 			1.,
 			1.
 		};
 
-<span class="nc" id="L81">		double dblEqualityConstraintConstant = -1.;</span>
+<span class="fc" id="L81">		double dblEqualityConstraintConstant = -1.;</span>
 
-<span class="nc" id="L83">		AffineMultivariate lmConstraintRdToR1 = new AffineMultivariate (</span>
+<span class="fc" id="L83">		AffineMultivariate lmConstraintRdToR1 = new AffineMultivariate (</span>
 			adblEqualityConstraint,
 			dblEqualityConstraintConstant
 		);
 
-<span class="nc" id="L88">		CovarianceEllipsoidMultivariate ceObjectiveRdToR1 = new CovarianceEllipsoidMultivariate (aadblCovarianceMatrix);</span>
+<span class="fc" id="L88">		CovarianceEllipsoidMultivariate ceObjectiveRdToR1 = new CovarianceEllipsoidMultivariate (aadblCovarianceMatrix);</span>
 
-<span class="nc" id="L90">		LagrangianMultivariate ceec = new LagrangianMultivariate (</span>
+<span class="fc" id="L90">		LagrangianMultivariate ceec = new LagrangianMultivariate (</span>
 			ceObjectiveRdToR1,
 			new RdToR1[] {
 				lmConstraintRdToR1
 			}
 		);
 
-<span class="nc" id="L97">		double[][] aadblVariate = {</span>
+<span class="fc" id="L97">		double[][] aadblVariate = {</span>
 			{0.0, 1.0, 1.0},
 			{0.1, 0.9, 1.0},
 			{0.2, 0.8, 1.0},
@@ -108,45 +108,45 @@ import org.drip.service.env.EnvManager;
 			{1.0, 0.0, 1.0},
 		};
 
-<span class="nc" id="L111">		System.out.println (&quot;\n\n\t|------------------------||&quot;);</span>
+<span class="fc" id="L111">		System.out.println (&quot;\n\n\t|------------------------||&quot;);</span>
 
-<span class="nc" id="L113">		System.out.println (&quot;\t|       POINT VALUE      ||&quot;);</span>
+<span class="fc" id="L113">		System.out.println (&quot;\t|       POINT VALUE      ||&quot;);</span>
 
-<span class="nc" id="L115">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+<span class="fc" id="L115">		System.out.println (&quot;\t|------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L117" title="All 2 branches missed.">		for (double[] adblVariate : aadblVariate)</span>
-<span class="nc" id="L118">			System.out.println (</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">		for (double[] adblVariate : aadblVariate)</span>
+<span class="fc" id="L118">			System.out.println (</span>
 				&quot;\t|  [&quot; + adblVariate[0] +
 				&quot; | &quot; + adblVariate[1] +
-<span class="nc" id="L121">				&quot;] = &quot; + FormatUtil.FormatDouble (ceec.evaluate (adblVariate), 1, 4, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L121">				&quot;] = &quot; + FormatUtil.FormatDouble (ceec.evaluate (adblVariate), 1, 4, 1.) + &quot; ||&quot;</span>
 			);
 
-<span class="nc" id="L124">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+<span class="fc" id="L124">		System.out.println (&quot;\t|------------------------||&quot;);</span>
 
-<span class="nc" id="L126">		System.out.println (&quot;\n\n\t|-------------------------------------------||&quot;);</span>
+<span class="fc" id="L126">		System.out.println (&quot;\n\n\t|-------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L128">		System.out.println (&quot;\t|                 JACOBIAN                  ||&quot;);</span>
+<span class="fc" id="L128">		System.out.println (&quot;\t|                 JACOBIAN                  ||&quot;);</span>
 
-<span class="nc" id="L130">		System.out.println (&quot;\t|-------------------------------------------||&quot;);</span>
+<span class="fc" id="L130">		System.out.println (&quot;\t|-------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L132" title="All 2 branches missed.">		for (double[] adblVariate : aadblVariate) {</span>
-<span class="nc" id="L133">			String strJacobian = &quot;&quot;;</span>
+<span class="fc bfc" id="L132" title="All 2 branches covered.">		for (double[] adblVariate : aadblVariate) {</span>
+<span class="fc" id="L133">			String strJacobian = &quot;&quot;;</span>
 
-<span class="nc" id="L135">			double[] adblJacobian = ceec.jacobian (adblVariate);</span>
+<span class="fc" id="L135">			double[] adblJacobian = ceec.jacobian (adblVariate);</span>
 
-<span class="nc bnc" id="L137" title="All 2 branches missed.">			for (double dblJacobian : adblJacobian)</span>
-<span class="nc" id="L138">				strJacobian += FormatUtil.FormatDouble (dblJacobian, 1, 4, 1.) + &quot;,&quot;;</span>
+<span class="fc bfc" id="L137" title="All 2 branches covered.">			for (double dblJacobian : adblJacobian)</span>
+<span class="fc" id="L138">				strJacobian += FormatUtil.FormatDouble (dblJacobian, 1, 4, 1.) + &quot;,&quot;;</span>
 
-<span class="nc" id="L140">			System.out.println (</span>
+<span class="fc" id="L140">			System.out.println (</span>
 				&quot;\t|  [&quot; + adblVariate[0] +
 				&quot; | &quot; + adblVariate[1] +
 				&quot;] = {&quot; + strJacobian + &quot;} ||&quot;
 			);
 		}
 
-<span class="nc" id="L147">		System.out.println (&quot;\t|-------------------------------------------||&quot;);</span>
+<span class="fc" id="L147">		System.out.println (&quot;\t|-------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L149">		double[][] aadblHessian = ceec.hessian (</span>
+<span class="fc" id="L149">		double[][] aadblHessian = ceec.hessian (</span>
 			new double[] {
 				0.20,
 				0.80,
@@ -154,22 +154,22 @@ import org.drip.service.env.EnvManager;
 			}
 		);
 
-<span class="nc" id="L157">		System.out.println (&quot;\n\n\t|----------------------------||&quot;);</span>
+<span class="fc" id="L157">		System.out.println (&quot;\n\n\t|----------------------------||&quot;);</span>
 
-<span class="nc" id="L159">		System.out.println (&quot;\t|          HESSIAN           ||&quot;);</span>
+<span class="fc" id="L159">		System.out.println (&quot;\t|          HESSIAN           ||&quot;);</span>
 
-<span class="nc" id="L161">		System.out.println (&quot;\t|----------------------------||&quot;);</span>
+<span class="fc" id="L161">		System.out.println (&quot;\t|----------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L163" title="All 2 branches missed.">		for (double[] adblHessian : aadblHessian) {</span>
-<span class="nc" id="L164">			String strHessian = &quot;&quot;;</span>
+<span class="fc bfc" id="L163" title="All 2 branches covered.">		for (double[] adblHessian : aadblHessian) {</span>
+<span class="fc" id="L164">			String strHessian = &quot;&quot;;</span>
 
-<span class="nc bnc" id="L166" title="All 2 branches missed.">			for (double dblHessian : adblHessian)</span>
-<span class="nc" id="L167">				strHessian += FormatUtil.FormatDouble (dblHessian, 1, 4, 1.) + &quot;,&quot;;</span>
+<span class="fc bfc" id="L166" title="All 2 branches covered.">			for (double dblHessian : adblHessian)</span>
+<span class="fc" id="L167">				strHessian += FormatUtil.FormatDouble (dblHessian, 1, 4, 1.) + &quot;,&quot;;</span>
 
-<span class="nc" id="L169">			System.out.println (&quot;\t| [&quot; + strHessian + &quot;] ||&quot;);</span>
+<span class="fc" id="L169">			System.out.println (&quot;\t| [&quot; + strHessian + &quot;] ||&quot;);</span>
 		}
 
-<span class="nc" id="L172">		System.out.println (&quot;\t|----------------------------||&quot;);</span>
-<span class="nc" id="L173">	}</span>
+<span class="fc" id="L172">		System.out.println (&quot;\t|----------------------------||&quot;);</span>
+<span class="fc" id="L173">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

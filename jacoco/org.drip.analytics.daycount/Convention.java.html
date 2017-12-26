@@ -579,12 +579,12 @@ package org.drip.analytics.daycount;
 
 	public static final java.lang.String AvailableDC()
 	{
-<span class="nc" id="L582">		java.lang.StringBuffer sbDCSet = new java.lang.StringBuffer();</span>
+<span class="fc" id="L582">		java.lang.StringBuffer sbDCSet = new java.lang.StringBuffer();</span>
 
-<span class="nc bnc" id="L584" title="All 2 branches missed.">		for (java.lang.String strDC : s_mapDCCalc.keySet())</span>
-<span class="nc" id="L585">			sbDCSet.append (strDC + &quot; | &quot;);</span>
+<span class="fc bfc" id="L584" title="All 2 branches covered.">		for (java.lang.String strDC : s_mapDCCalc.keySet())</span>
+<span class="fc" id="L585">			sbDCSet.append (strDC + &quot; | &quot;);</span>
 
-<span class="nc" id="L587">		return sbDCSet.toString();</span>
+<span class="fc" id="L587">		return sbDCSet.toString();</span>
 	}
 
 	/**
@@ -613,8 +613,8 @@ package org.drip.analytics.daycount;
 		throws java.lang.Exception
 	{
 <span class="pc bpc" id="L615" title="2 of 4 branches missed.">		if (&quot;BUS252&quot;.equalsIgnoreCase (strDayCount) || &quot;BUS DAYS252&quot;.equalsIgnoreCase (strDayCount) ||</span>
-<span class="pc bpc" id="L616" title="1 of 2 branches missed.">			&quot;BUS/252&quot;.equalsIgnoreCase (strDayCount))</span>
-<span class="nc" id="L617">			return BusinessDays (iStartDate, iEndDate, strCalendar) / 252.;</span>
+<span class="fc bfc" id="L616" title="All 2 branches covered.">			&quot;BUS/252&quot;.equalsIgnoreCase (strDayCount))</span>
+<span class="fc" id="L617">			return BusinessDays (iStartDate, iEndDate, strCalendar) / 252.;</span>
 
 <span class="fc" id="L619">		org.drip.analytics.daycount.DCFCalculator dcfCalc = s_mapDCCalc.get (strDayCount);</span>
 
@@ -686,8 +686,8 @@ package org.drip.analytics.daycount;
 	{
 <span class="pc bpc" id="L687" title="1 of 2 branches missed.">		if (0 &gt; iNumDaysToRoll) throw new java.lang.Exception (&quot;Convention::RollDate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="pc bpc" id="L689" title="3 of 6 branches missed.">		if (null == strCalendarSet || strCalendarSet.isEmpty() || DATE_ROLL_ACTUAL == iRollMode)</span>
-<span class="nc" id="L690">			return iDate + iNumDaysToRoll;</span>
+<span class="pc bpc" id="L689" title="2 of 6 branches missed.">		if (null == strCalendarSet || strCalendarSet.isEmpty() || DATE_ROLL_ACTUAL == iRollMode)</span>
+<span class="fc" id="L690">			return iDate + iNumDaysToRoll;</span>
 
 <span class="fc" id="L692">		int iRolledDate = iDate;</span>
 
@@ -702,11 +702,11 @@ package org.drip.analytics.daycount;
 			}
 		} else {
 <span class="fc bfc" id="L704" title="All 2 branches covered.">			while (0 != iNumDaysToRoll) {</span>
-<span class="pc bpc" id="L705" title="2 of 6 branches missed.">				if (DATE_ROLL_FOLLOWING == iRollMode || DATE_ROLL_MODIFIED_FOLLOWING == iRollMode ||</span>
+<span class="fc bfc" id="L705" title="All 6 branches covered.">				if (DATE_ROLL_FOLLOWING == iRollMode || DATE_ROLL_MODIFIED_FOLLOWING == iRollMode ||</span>
 					DATE_ROLL_MODIFIED_FOLLOWING_BIMONTHLY == iRollMode) {
 <span class="fc bfc" id="L707" title="All 2 branches covered.">					while (IsHoliday (iRolledDate, strCalendarSet))</span>
 <span class="fc" id="L708">						++iRolledDate;</span>
-<span class="pc bpc" id="L709" title="3 of 4 branches missed.">				} else if (DATE_ROLL_PREVIOUS == iRollMode || DATE_ROLL_MODIFIED_PREVIOUS == iRollMode) {</span>
+<span class="pc bpc" id="L709" title="1 of 4 branches missed.">				} else if (DATE_ROLL_PREVIOUS == iRollMode || DATE_ROLL_MODIFIED_PREVIOUS == iRollMode) {</span>
 <span class="fc bfc" id="L710" title="All 2 branches covered.">					while (IsHoliday (iRolledDate, strCalendarSet))</span>
 <span class="fc" id="L711">						--iRolledDate;</span>
 				}
@@ -715,28 +715,28 @@ package org.drip.analytics.daycount;
 			}
 		}
 
-<span class="pc bpc" id="L718" title="1 of 2 branches missed.">		if (DATE_ROLL_MODIFIED_FOLLOWING == iRollMode) {</span>
-<span class="nc" id="L719">			if (org.drip.analytics.date.DateUtil.Month (iDate) != org.drip.analytics.date.DateUtil.Month</span>
-<span class="nc bnc" id="L720" title="All 2 branches missed.">				(iRolledDate)) {</span>
+<span class="fc bfc" id="L718" title="All 2 branches covered.">		if (DATE_ROLL_MODIFIED_FOLLOWING == iRollMode) {</span>
+<span class="fc" id="L719">			if (org.drip.analytics.date.DateUtil.Month (iDate) != org.drip.analytics.date.DateUtil.Month</span>
+<span class="pc bpc" id="L720" title="1 of 2 branches missed.">				(iRolledDate)) {</span>
 <span class="nc bnc" id="L721" title="All 2 branches missed.">				while (IsHoliday (iRolledDate, strCalendarSet))</span>
 <span class="nc" id="L722">					--iRolledDate;</span>
 			}
 		}
 
-<span class="pc bpc" id="L726" title="1 of 2 branches missed.">		if (DATE_ROLL_MODIFIED_FOLLOWING_BIMONTHLY == iRollMode) {</span>
-<span class="nc" id="L727">			int iOriginalDay = org.drip.analytics.date.DateUtil.Date (iDate);</span>
+<span class="fc bfc" id="L726" title="All 2 branches covered.">		if (DATE_ROLL_MODIFIED_FOLLOWING_BIMONTHLY == iRollMode) {</span>
+<span class="fc" id="L727">			int iOriginalDay = org.drip.analytics.date.DateUtil.Date (iDate);</span>
 
-<span class="nc" id="L729">			int iRolledDay = org.drip.analytics.date.DateUtil.Date (iRolledDate);</span>
+<span class="fc" id="L729">			int iRolledDay = org.drip.analytics.date.DateUtil.Date (iRolledDate);</span>
 
-<span class="nc bnc" id="L731" title="All 8 branches missed.">			if ((15 &lt; iOriginalDay &amp;&amp; 15 &gt; iRolledDay) || (15 &gt; iOriginalDay &amp;&amp; 15 &lt; iRolledDay)) {</span>
+<span class="pc bpc" id="L731" title="5 of 8 branches missed.">			if ((15 &lt; iOriginalDay &amp;&amp; 15 &gt; iRolledDay) || (15 &gt; iOriginalDay &amp;&amp; 15 &lt; iRolledDay)) {</span>
 <span class="nc bnc" id="L732" title="All 2 branches missed.">				while (IsHoliday (iRolledDate, strCalendarSet))</span>
 <span class="nc" id="L733">					--iRolledDate;</span>
 			}
 		}
 
-<span class="pc bpc" id="L737" title="1 of 2 branches missed.">		if (DATE_ROLL_MODIFIED_PREVIOUS == iRollMode) {</span>
-<span class="nc" id="L738">			if (org.drip.analytics.date.DateUtil.Month (iDate) != org.drip.analytics.date.DateUtil.Month</span>
-<span class="nc bnc" id="L739" title="All 2 branches missed.">				(iRolledDate)) {</span>
+<span class="fc bfc" id="L737" title="All 2 branches covered.">		if (DATE_ROLL_MODIFIED_PREVIOUS == iRollMode) {</span>
+<span class="fc" id="L738">			if (org.drip.analytics.date.DateUtil.Month (iDate) != org.drip.analytics.date.DateUtil.Month</span>
+<span class="pc bpc" id="L739" title="1 of 2 branches missed.">				(iRolledDate)) {</span>
 <span class="nc bnc" id="L740" title="All 2 branches missed.">				while (IsHoliday (iRolledDate, strCalendarSet))</span>
 <span class="nc" id="L741">					++iRolledDate;</span>
 			}
@@ -798,21 +798,21 @@ package org.drip.analytics.daycount;
 		final java.lang.String strCalendar)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L801" title="All 2 branches missed.">		if (iStartDate &gt; iEndDate)</span>
+<span class="pc bpc" id="L801" title="1 of 2 branches missed.">		if (iStartDate &gt; iEndDate)</span>
 <span class="nc" id="L802">			throw new java.lang.Exception (&quot;Convention::BusinessDays =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L804" title="All 2 branches missed.">		if (iStartDate == iEndDate) return 0;</span>
+<span class="fc bfc" id="L804" title="All 2 branches covered.">		if (iStartDate == iEndDate) return 0;</span>
 
-<span class="nc" id="L806">		int iNumBusDays = 0;</span>
-<span class="nc" id="L807">		int iDate = iStartDate + 1;</span>
+<span class="fc" id="L806">		int iNumBusDays = 0;</span>
+<span class="fc" id="L807">		int iDate = iStartDate + 1;</span>
 
-<span class="nc bnc" id="L809" title="All 2 branches missed.">		while (iDate &lt;= iEndDate) {</span>
-<span class="nc bnc" id="L810" title="All 2 branches missed.">			if (!IsHoliday (iDate, strCalendar)) ++iNumBusDays;</span>
+<span class="fc bfc" id="L809" title="All 2 branches covered.">		while (iDate &lt;= iEndDate) {</span>
+<span class="fc bfc" id="L810" title="All 2 branches covered.">			if (!IsHoliday (iDate, strCalendar)) ++iNumBusDays;</span>
 
-<span class="nc" id="L812">			++iDate;</span>
+<span class="fc" id="L812">			++iDate;</span>
 		}
 
-<span class="nc" id="L815">		return iNumBusDays;</span>
+<span class="fc" id="L815">		return iNumBusDays;</span>
 	}
 
 	/**
@@ -830,27 +830,27 @@ package org.drip.analytics.daycount;
 		final int iEndDate,
 		final java.lang.String strCalendar)
 	{
-<span class="nc" id="L833">		java.util.List&lt;java.lang.Integer&gt; lsHolidays = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
+<span class="fc" id="L833">		java.util.List&lt;java.lang.Integer&gt; lsHolidays = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
 
-<span class="nc" id="L835">		int iLastDate = iEndDate;</span>
-<span class="nc" id="L836">		int iFirstDate = iStartDate;</span>
+<span class="fc" id="L835">		int iLastDate = iEndDate;</span>
+<span class="fc" id="L836">		int iFirstDate = iStartDate;</span>
 
-<span class="nc bnc" id="L838" title="All 2 branches missed.">		if (iFirstDate &gt; iLastDate) {</span>
+<span class="pc bpc" id="L838" title="1 of 2 branches missed.">		if (iFirstDate &gt; iLastDate) {</span>
 <span class="nc" id="L839">			iLastDate = iStartDate;</span>
 <span class="nc" id="L840">			iFirstDate = iEndDate;</span>
 		}
 
-<span class="nc bnc" id="L843" title="All 2 branches missed.">		while (iFirstDate != iLastDate) {</span>
+<span class="fc bfc" id="L843" title="All 2 branches covered.">		while (iFirstDate != iLastDate) {</span>
 			try {
-<span class="nc bnc" id="L845" title="All 2 branches missed.">				if (IsHoliday (iFirstDate, strCalendar)) lsHolidays.add (iFirstDate);</span>
+<span class="fc bfc" id="L845" title="All 2 branches covered.">				if (IsHoliday (iFirstDate, strCalendar)) lsHolidays.add (iFirstDate);</span>
 
-<span class="nc" id="L847">				++iFirstDate;</span>
+<span class="fc" id="L847">				++iFirstDate;</span>
 <span class="nc" id="L848">			} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L849">				e.printStackTrace();</span>
-<span class="nc" id="L850">			}</span>
+<span class="pc" id="L850">			}</span>
 		}
 
-<span class="nc" id="L853">		return lsHolidays;</span>
+<span class="fc" id="L853">		return lsHolidays;</span>
 	}
 
 	/**

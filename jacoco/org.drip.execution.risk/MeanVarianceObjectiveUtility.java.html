@@ -104,34 +104,34 @@ public class MeanVarianceObjectiveUtility implements org.drip.execution.risk.Obj
 		final org.drip.execution.sensitivity.TrajectoryControlNodesGreek tcngExpectation,
 		final org.drip.execution.sensitivity.TrajectoryControlNodesGreek tcngVariance)
 	{
-<span class="nc bnc" id="L107" title="All 4 branches missed.">		if (null == tcngExpectation || null == tcngVariance) return null;</span>
+<span class="pc bpc" id="L107" title="2 of 4 branches missed.">		if (null == tcngExpectation || null == tcngVariance) return null;</span>
 
-<span class="nc" id="L109">		double[] adblVarianceJacobian = tcngVariance.innerJacobian();</span>
+<span class="fc" id="L109">		double[] adblVarianceJacobian = tcngVariance.innerJacobian();</span>
 
-<span class="nc bnc" id="L111" title="All 2 branches missed.">		if (null == adblVarianceJacobian) return null;</span>
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">		if (null == adblVarianceJacobian) return null;</span>
 
-<span class="nc" id="L113">		double[][] aadblVarianceHessian = tcngVariance.innerHessian();</span>
+<span class="fc" id="L113">		double[][] aadblVarianceHessian = tcngVariance.innerHessian();</span>
 
-<span class="nc" id="L115">		double[] adblExpectationJacobian = tcngExpectation.innerJacobian();</span>
+<span class="fc" id="L115">		double[] adblExpectationJacobian = tcngExpectation.innerJacobian();</span>
 
-<span class="nc" id="L117">		double[][] aadblExpectationHessian = tcngExpectation.innerHessian();</span>
+<span class="fc" id="L117">		double[][] aadblExpectationHessian = tcngExpectation.innerHessian();</span>
 
-<span class="nc" id="L119">		int iNumControlNode = adblVarianceJacobian.length;</span>
-<span class="nc" id="L120">		double[] adblObjectiveJacobian = new double[iNumControlNode];</span>
-<span class="nc" id="L121">		double[][] aadblObjectiveHessian = new double[iNumControlNode][iNumControlNode];</span>
+<span class="fc" id="L119">		int iNumControlNode = adblVarianceJacobian.length;</span>
+<span class="fc" id="L120">		double[] adblObjectiveJacobian = new double[iNumControlNode];</span>
+<span class="fc" id="L121">		double[][] aadblObjectiveHessian = new double[iNumControlNode][iNumControlNode];</span>
 
-<span class="nc bnc" id="L123" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumControlNode; ++i) {</span>
-<span class="nc" id="L124">			adblObjectiveJacobian[i] = adblExpectationJacobian[i] + _dblRiskAversion *</span>
+<span class="fc bfc" id="L123" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumControlNode; ++i) {</span>
+<span class="fc" id="L124">			adblObjectiveJacobian[i] = adblExpectationJacobian[i] + _dblRiskAversion *</span>
 				adblVarianceJacobian[i];
 
-<span class="nc bnc" id="L127" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumControlNode; ++j)</span>
-<span class="nc" id="L128">				aadblObjectiveHessian[i][j] = aadblExpectationHessian[i][j] + _dblRiskAversion *</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumControlNode; ++j)</span>
+<span class="fc" id="L128">				aadblObjectiveHessian[i][j] = aadblExpectationHessian[i][j] + _dblRiskAversion *</span>
 					aadblVarianceHessian[i][j];
 		}
 
 		try {
-<span class="nc" id="L133">			return new org.drip.execution.sensitivity.ControlNodesGreek (tcngExpectation.value() +</span>
-<span class="nc" id="L134">				_dblRiskAversion * tcngVariance.value(), adblObjectiveJacobian, aadblObjectiveHessian);</span>
+<span class="fc" id="L133">			return new org.drip.execution.sensitivity.ControlNodesGreek (tcngExpectation.value() +</span>
+<span class="fc" id="L134">				_dblRiskAversion * tcngVariance.value(), adblObjectiveJacobian, aadblObjectiveHessian);</span>
 <span class="nc" id="L135">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L136">			e.printStackTrace();</span>
 		}

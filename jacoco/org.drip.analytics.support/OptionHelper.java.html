@@ -85,11 +85,11 @@ package org.drip.analytics.support;
 	}
 
 	static class CrossVolatilityConvexityExponent extends org.drip.function.definition.R1ToR1 {
-<span class="nc" id="L88">		org.drip.state.volatility.VolatilityCurve _vcForward = null;</span>
-<span class="nc" id="L89">		org.drip.state.volatility.VolatilityCurve _vcFunding = null;</span>
-<span class="nc" id="L90">		double _dblForwardShiftedLogNormalScaler = java.lang.Double.NaN;</span>
-<span class="nc" id="L91">		double _dblFundingShiftedLogNormalScaler = java.lang.Double.NaN;</span>
-<span class="nc" id="L92">		org.drip.function.definition.R1ToR1 _r1r1ForwardFundingCorrelation = null;</span>
+<span class="fc" id="L88">		org.drip.state.volatility.VolatilityCurve _vcForward = null;</span>
+<span class="fc" id="L89">		org.drip.state.volatility.VolatilityCurve _vcFunding = null;</span>
+<span class="fc" id="L90">		double _dblForwardShiftedLogNormalScaler = java.lang.Double.NaN;</span>
+<span class="fc" id="L91">		double _dblFundingShiftedLogNormalScaler = java.lang.Double.NaN;</span>
+<span class="fc" id="L92">		org.drip.function.definition.R1ToR1 _r1r1ForwardFundingCorrelation = null;</span>
 
 		CrossVolatilityConvexityExponent (
 			final org.drip.state.volatility.VolatilityCurve vcForward,
@@ -98,28 +98,28 @@ package org.drip.analytics.support;
 			final double dblFundingShiftedLogNormalScaler,
 			final org.drip.function.definition.R1ToR1 r1r1ForwardFundingCorrelation)
 		{
-<span class="nc" id="L101">			super (null);</span>
+<span class="fc" id="L101">			super (null);</span>
 
-<span class="nc" id="L103">			_vcForward = vcForward;</span>
-<span class="nc" id="L104">			_vcFunding = vcFunding;</span>
-<span class="nc" id="L105">			_r1r1ForwardFundingCorrelation = r1r1ForwardFundingCorrelation;</span>
-<span class="nc" id="L106">			_dblForwardShiftedLogNormalScaler = dblForwardShiftedLogNormalScaler;</span>
-<span class="nc" id="L107">			_dblFundingShiftedLogNormalScaler = dblFundingShiftedLogNormalScaler;</span>
-<span class="nc" id="L108">		}</span>
+<span class="fc" id="L103">			_vcForward = vcForward;</span>
+<span class="fc" id="L104">			_vcFunding = vcFunding;</span>
+<span class="fc" id="L105">			_r1r1ForwardFundingCorrelation = r1r1ForwardFundingCorrelation;</span>
+<span class="fc" id="L106">			_dblForwardShiftedLogNormalScaler = dblForwardShiftedLogNormalScaler;</span>
+<span class="fc" id="L107">			_dblFundingShiftedLogNormalScaler = dblFundingShiftedLogNormalScaler;</span>
+<span class="fc" id="L108">		}</span>
 
 		@Override public double evaluate (
 			final double dblVariate)
 			throws java.lang.Exception
 		{
-<span class="nc" id="L114">			double dblForwardShiftedLogNormalScaler = java.lang.Double.isNaN</span>
-<span class="nc bnc" id="L115" title="All 2 branches missed.">				(_dblForwardShiftedLogNormalScaler) ? 1. : _dblForwardShiftedLogNormalScaler;</span>
-<span class="nc" id="L116">			double dblFundingShiftedLogNormalScaler = java.lang.Double.isNaN</span>
-<span class="nc bnc" id="L117" title="All 2 branches missed.">				(_dblFundingShiftedLogNormalScaler) ? 1. : _dblFundingShiftedLogNormalScaler;</span>
+<span class="fc" id="L114">			double dblForwardShiftedLogNormalScaler = java.lang.Double.isNaN</span>
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">				(_dblForwardShiftedLogNormalScaler) ? 1. : _dblForwardShiftedLogNormalScaler;</span>
+<span class="fc" id="L116">			double dblFundingShiftedLogNormalScaler = java.lang.Double.isNaN</span>
+<span class="pc bpc" id="L117" title="1 of 2 branches missed.">				(_dblFundingShiftedLogNormalScaler) ? 1. : _dblFundingShiftedLogNormalScaler;</span>
 
-<span class="nc" id="L119">			return _r1r1ForwardFundingCorrelation.evaluate (dblVariate) * _vcFunding.impliedVol ((int)</span>
-<span class="nc" id="L120">				dblVariate) * _vcFunding.impliedVol ((int) dblVariate) * dblFundingShiftedLogNormalScaler *</span>
-<span class="nc" id="L121">					dblForwardShiftedLogNormalScaler - _vcForward.impliedVol ((int) dblVariate) *</span>
-<span class="nc" id="L122">						_vcForward.impliedVol ((int) dblVariate) * dblForwardShiftedLogNormalScaler *</span>
+<span class="fc" id="L119">			return _r1r1ForwardFundingCorrelation.evaluate (dblVariate) * _vcFunding.impliedVol ((int)</span>
+<span class="fc" id="L120">				dblVariate) * _vcFunding.impliedVol ((int) dblVariate) * dblFundingShiftedLogNormalScaler *</span>
+<span class="fc" id="L121">					dblForwardShiftedLogNormalScaler - _vcForward.impliedVol ((int) dblVariate) *</span>
+<span class="fc" id="L122">						_vcForward.impliedVol ((int) dblVariate) * dblForwardShiftedLogNormalScaler *</span>
 							dblForwardShiftedLogNormalScaler;
 		}
 	}
@@ -226,7 +226,7 @@ package org.drip.analytics.support;
 <span class="pc bpc" id="L226" title="1 of 2 branches missed.">		if (iEndDate &lt; iStartDate)</span>
 <span class="nc" id="L227">			throw new java.lang.Exception (&quot;OptionHelper::IntegratedCrossVolQuanto =&gt; Invalid Inputs&quot;);</span>
 
-<span class="pc bpc" id="L229" title="1 of 6 branches missed.">		return null == vc1 || null == vc2 || null == r1r1Correlation ? 0. : new CrossVolatilityQuantoProduct</span>
+<span class="fc bfc" id="L229" title="All 6 branches covered.">		return null == vc1 || null == vc2 || null == r1r1Correlation ? 0. : new CrossVolatilityQuantoProduct</span>
 <span class="fc" id="L230">			(vc1, vc2, r1r1Correlation).integrate (iStartDate, iEndDate) / 365.25;</span>
 	}
 
@@ -258,13 +258,13 @@ package org.drip.analytics.support;
 		final int iEndDate)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L261" title="All 2 branches missed.">		if (iEndDate &lt; iStartDate)</span>
+<span class="pc bpc" id="L261" title="1 of 2 branches missed.">		if (iEndDate &lt; iStartDate)</span>
 <span class="nc" id="L262">			throw new java.lang.Exception</span>
 				(&quot;OptionHelper::IntegratedFRACrossVolConvexityExponent =&gt; Invalid Inputs&quot;);
 
-<span class="nc bnc" id="L265" title="All 6 branches missed.">		return null == vcFunding || null == vcForward || null == r1r1ForwardFundingCorrelation ? 0. : new</span>
+<span class="pc bpc" id="L265" title="3 of 6 branches missed.">		return null == vcFunding || null == vcForward || null == r1r1ForwardFundingCorrelation ? 0. : new</span>
 			CrossVolatilityConvexityExponent (vcForward, dblForwardShiftedLogNormalScaler, vcFunding,
-<span class="nc" id="L267">				dblFundingShiftedLogNormalScaler, r1r1ForwardFundingCorrelation).integrate (iStartDate,</span>
+<span class="fc" id="L267">				dblFundingShiftedLogNormalScaler, r1r1ForwardFundingCorrelation).integrate (iStartDate,</span>
 					iEndDate) / 365.25;
 	}
 

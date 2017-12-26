@@ -83,27 +83,27 @@ package org.drip.service.product;
 		final double[] adblOvernightCurveOISQuote,
 		final boolean bFund)
 	{
-<span class="nc" id="L86">		org.drip.service.env.EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L86">		org.drip.service.env.EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L88">		org.drip.analytics.date.JulianDate dtSpot = new org.drip.analytics.date.JulianDate (iSpotDate);</span>
+<span class="fc" id="L88">		org.drip.analytics.date.JulianDate dtSpot = new org.drip.analytics.date.JulianDate (iSpotDate);</span>
 
-<span class="nc" id="L90">		org.drip.state.discount.MergedDiscountForwardCurve dcOvernight =</span>
-<span class="nc" id="L91">			org.drip.service.template.LatentMarketStateBuilder.SmoothOvernightCurve (dtSpot, strOISCurrency,</span>
+<span class="fc" id="L90">		org.drip.state.discount.MergedDiscountForwardCurve dcOvernight =</span>
+<span class="fc" id="L91">			org.drip.service.template.LatentMarketStateBuilder.SmoothOvernightCurve (dtSpot, strOISCurrency,</span>
 				astrOvernightCurveDepositTenor, adblOvernightCurveDepositQuote, &quot;Rate&quot;,
 					astrOvernightCurveOISTenor, adblOvernightCurveOISQuote, &quot;SwapRate&quot;, null, null, null,
 						&quot;SwapRate&quot;, null, null, &quot;SwapRate&quot;);
 
-<span class="nc bnc" id="L96" title="All 2 branches missed.">		if (null == dcOvernight) return null;</span>
+<span class="pc bpc" id="L96" title="1 of 2 branches missed.">		if (null == dcOvernight) return null;</span>
 
-<span class="nc" id="L98">		org.drip.product.rates.FixFloatComponent oisFixFloat =</span>
-<span class="nc" id="L99">			org.drip.service.template.OTCInstrumentBuilder.OISFixFloat (dtSpot, strOISCurrency, strOISTenor,</span>
+<span class="fc" id="L98">		org.drip.product.rates.FixFloatComponent oisFixFloat =</span>
+<span class="fc" id="L99">			org.drip.service.template.OTCInstrumentBuilder.OISFixFloat (dtSpot, strOISCurrency, strOISTenor,</span>
 				dblOISCoupon, bFund);
 
-<span class="nc" id="L102">		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new</span>
+<span class="fc" id="L102">		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new</span>
 			org.drip.param.market.CurveSurfaceQuoteContainer();
 
-<span class="nc bnc" id="L105" title="All 2 branches missed.">		return csqc.setFundingState (dcOvernight) ? oisFixFloat.value</span>
-<span class="nc" id="L106">			(org.drip.param.valuation.ValuationParams.Spot (iSpotDate), null, csqc, null) : null;</span>
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">		return csqc.setFundingState (dcOvernight) ? oisFixFloat.value</span>
+<span class="pc" id="L106">			(org.drip.param.valuation.ValuationParams.Spot (iSpotDate), null, csqc, null) : null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

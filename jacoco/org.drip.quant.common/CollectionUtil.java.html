@@ -539,42 +539,42 @@ package org.drip.quant.common;
 	public static final org.drip.quant.calculus.WengertJacobian AppendWengert (
 		final java.util.List&lt;org.drip.quant.calculus.WengertJacobian&gt; lsWJ)
 	{
-<span class="nc bnc" id="L542" title="All 4 branches missed.">		if (null == lsWJ || 0 == lsWJ.size()) return null;</span>
+<span class="pc bpc" id="L542" title="2 of 4 branches missed.">		if (null == lsWJ || 0 == lsWJ.size()) return null;</span>
 
-<span class="nc" id="L544">		int iNumQuote = 0;</span>
-<span class="nc" id="L545">		int iQuoteCursor = 0;</span>
-<span class="nc" id="L546">		org.drip.quant.calculus.WengertJacobian wjCombined = null;</span>
+<span class="fc" id="L544">		int iNumQuote = 0;</span>
+<span class="fc" id="L545">		int iQuoteCursor = 0;</span>
+<span class="fc" id="L546">		org.drip.quant.calculus.WengertJacobian wjCombined = null;</span>
 
-<span class="nc bnc" id="L548" title="All 2 branches missed.">		for (org.drip.quant.calculus.WengertJacobian wj : lsWJ)</span>
-<span class="nc bnc" id="L549" title="All 2 branches missed.">			if (null != wj) iNumQuote += wj.numParameters();</span>
+<span class="fc bfc" id="L548" title="All 2 branches covered.">		for (org.drip.quant.calculus.WengertJacobian wj : lsWJ)</span>
+<span class="pc bpc" id="L549" title="1 of 2 branches missed.">			if (null != wj) iNumQuote += wj.numParameters();</span>
 
 		try {
-<span class="nc" id="L552">			wjCombined = new org.drip.quant.calculus.WengertJacobian (1, iNumQuote);</span>
+<span class="fc" id="L552">			wjCombined = new org.drip.quant.calculus.WengertJacobian (1, iNumQuote);</span>
 <span class="nc" id="L553">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L554">			e.printStackTrace();</span>
 
 <span class="nc" id="L556">			return null;</span>
-<span class="nc" id="L557">		}</span>
+<span class="fc" id="L557">		}</span>
 
-<span class="nc bnc" id="L559" title="All 2 branches missed.">		for (org.drip.quant.calculus.WengertJacobian wj : lsWJ) {</span>
-<span class="nc bnc" id="L560" title="All 2 branches missed.">			if (null == wj) continue;</span>
+<span class="fc bfc" id="L559" title="All 2 branches covered.">		for (org.drip.quant.calculus.WengertJacobian wj : lsWJ) {</span>
+<span class="pc bpc" id="L560" title="1 of 2 branches missed.">			if (null == wj) continue;</span>
 
-<span class="nc" id="L562">			int iNumParams = wj.numParameters();</span>
+<span class="fc" id="L562">			int iNumParams = wj.numParameters();</span>
 
-<span class="nc bnc" id="L564" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumParams; ++i) {</span>
+<span class="fc bfc" id="L564" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumParams; ++i) {</span>
 				try {
-<span class="nc bnc" id="L566" title="All 2 branches missed.">					if (!wjCombined.accumulatePartialFirstDerivative (0, iQuoteCursor++, wj.firstDerivative</span>
-<span class="nc" id="L567">						(0, i)))</span>
+<span class="pc bpc" id="L566" title="1 of 2 branches missed.">					if (!wjCombined.accumulatePartialFirstDerivative (0, iQuoteCursor++, wj.firstDerivative</span>
+<span class="fc" id="L567">						(0, i)))</span>
 <span class="nc" id="L568">						return null;</span>
 <span class="nc" id="L569">				} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L570">					e.printStackTrace();</span>
 
 <span class="nc" id="L572">					return null;</span>
-<span class="nc" id="L573">				}</span>
+<span class="fc" id="L573">				}</span>
 			}
-<span class="nc" id="L575">		}</span>
+<span class="fc" id="L575">		}</span>
 
-<span class="nc" id="L577">		return wjCombined;</span>
+<span class="fc" id="L577">		return wjCombined;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

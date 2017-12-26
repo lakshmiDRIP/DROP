@@ -70,8 +70,8 @@ package org.drip.execution.athl;
  */
 
 public class PermanentImpactNoArbitrage extends org.drip.execution.impact.ParticipationRateLinear {
-<span class="nc" id="L73">	private double _dblLiquidityFactor = java.lang.Double.NaN;</span>
-<span class="nc" id="L74">	private org.drip.execution.parameters.AssetFlowSettings _afp = null;</span>
+<span class="fc" id="L73">	private double _dblLiquidityFactor = java.lang.Double.NaN;</span>
+<span class="fc" id="L74">	private org.drip.execution.parameters.AssetFlowSettings _afp = null;</span>
 
 	/**
 	 * PermanentImpactNoArbitrage Constructor
@@ -85,16 +85,16 @@ public class PermanentImpactNoArbitrage extends org.drip.execution.impact.Partic
 		final org.drip.execution.parameters.AssetFlowSettings afp)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L88">		super (0., org.drip.execution.athl.CalibrationEmpirics.PERMANENT_IMPACT_COEFFICIENT *</span>
-<span class="nc" id="L89">			java.lang.Math.pow (afp.inverseTurnover(),</span>
+<span class="fc" id="L88">		super (0., org.drip.execution.athl.CalibrationEmpirics.PERMANENT_IMPACT_COEFFICIENT *</span>
+<span class="fc" id="L89">			java.lang.Math.pow (afp.inverseTurnover(),</span>
 				org.drip.execution.athl.CalibrationEmpirics.PERMANENT_IMPACT_INVERSE_TURNOVER_EXPONENT));
 
-<span class="nc bnc" id="L92" title="All 2 branches missed.">		if (null == (_afp = afp))</span>
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">		if (null == (_afp = afp))</span>
 <span class="nc" id="L93">			throw new java.lang.Exception (&quot;PermanentImpactNoArbitrage Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L95">		_dblLiquidityFactor = java.lang.Math.pow (afp.inverseTurnover(),</span>
+<span class="fc" id="L95">		_dblLiquidityFactor = java.lang.Math.pow (afp.inverseTurnover(),</span>
 			org.drip.execution.athl.CalibrationEmpirics.PERMANENT_IMPACT_INVERSE_TURNOVER_EXPONENT);
-<span class="nc" id="L97">	}</span>
+<span class="fc" id="L97">	}</span>
 
 	/**
 	 * Retrieve the Liquidity Factor
@@ -122,25 +122,25 @@ public class PermanentImpactNoArbitrage extends org.drip.execution.impact.Partic
 		final double dblTradeInterval)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L125" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblTradeInterval) || 0 &gt;= dblTradeInterval)</span>
+<span class="pc bpc" id="L125" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblTradeInterval) || 0 &gt;= dblTradeInterval)</span>
 <span class="nc" id="L126">			throw new java.lang.Exception (&quot;PermanentImpactNoArbitrage::regularize =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L128">		return 1. / (_afp.averageDailyVolume() * dblTradeInterval);</span>
+<span class="fc" id="L128">		return 1. / (_afp.averageDailyVolume() * dblTradeInterval);</span>
 	}
 
 	@Override public double modulate (
 		final double dblTradeInterval)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L135" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblTradeInterval) || 0 &gt;= dblTradeInterval)</span>
+<span class="pc bpc" id="L135" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblTradeInterval) || 0 &gt;= dblTradeInterval)</span>
 <span class="nc" id="L136">			throw new java.lang.Exception (&quot;PermanentImpactNoArbitrage::modulate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L138">		return dblTradeInterval * _afp.dailyVolatility();</span>
+<span class="fc" id="L138">		return dblTradeInterval * _afp.dailyVolatility();</span>
 	}
 
 	@Override public double slope()
 	{
-<span class="nc" id="L143">		return org.drip.execution.athl.CalibrationEmpirics.PERMANENT_IMPACT_COEFFICIENT *</span>
+<span class="fc" id="L143">		return org.drip.execution.athl.CalibrationEmpirics.PERMANENT_IMPACT_COEFFICIENT *</span>
 			_dblLiquidityFactor;
 	}
 
@@ -153,10 +153,10 @@ public class PermanentImpactNoArbitrage extends org.drip.execution.impact.Partic
 		final double dblNormalizedX)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L156" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblNormalizedX))</span>
+<span class="pc bpc" id="L156" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblNormalizedX))</span>
 <span class="nc" id="L157">			throw new java.lang.Exception (&quot;PermanentImpactNoArbitrage::evaluate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L159">		return 0.5 * org.drip.execution.athl.CalibrationEmpirics.PERMANENT_IMPACT_COEFFICIENT *</span>
+<span class="fc" id="L159">		return 0.5 * org.drip.execution.athl.CalibrationEmpirics.PERMANENT_IMPACT_COEFFICIENT *</span>
 			dblNormalizedX * _dblLiquidityFactor;
 	}
 

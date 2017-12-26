@@ -87,37 +87,37 @@ import org.drip.service.env.EnvManager;
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L90">		EnvManager.InitEnv (</span>
+<span class="fc" id="L90">		EnvManager.InitEnv (</span>
 			&quot;&quot;,
 			true
 		);
 
-<span class="nc" id="L95">		double dblS0 = 50.;</span>
-<span class="nc" id="L96">		double dblX = 1000000.;</span>
-<span class="nc" id="L97">		double dblT = 5.;</span>
-<span class="nc" id="L98">		double dblAnnualVolatility = 1.00;</span>
-<span class="nc" id="L99">		double dblAnnualReturns = 0.10;</span>
-<span class="nc" id="L100">		double dblBidAsk = 0.125;</span>
-<span class="nc" id="L101">		double dblDailyVolume = 5.e06;</span>
-<span class="nc" id="L102">		double dblDailyVolumePermanentImpact = 0.1;</span>
-<span class="nc" id="L103">		double dblDailyVolumeTemporaryImpact = 0.01;</span>
-<span class="nc" id="L104">		double dblLambdaU = 1.5e-06;</span>
+<span class="fc" id="L95">		double dblS0 = 50.;</span>
+<span class="fc" id="L96">		double dblX = 1000000.;</span>
+<span class="fc" id="L97">		double dblT = 5.;</span>
+<span class="fc" id="L98">		double dblAnnualVolatility = 1.00;</span>
+<span class="fc" id="L99">		double dblAnnualReturns = 0.10;</span>
+<span class="fc" id="L100">		double dblBidAsk = 0.125;</span>
+<span class="fc" id="L101">		double dblDailyVolume = 5.e06;</span>
+<span class="fc" id="L102">		double dblDailyVolumePermanentImpact = 0.1;</span>
+<span class="fc" id="L103">		double dblDailyVolumeTemporaryImpact = 0.01;</span>
+<span class="fc" id="L104">		double dblLambdaU = 1.5e-06;</span>
 
-<span class="nc" id="L106">		int iN = 20;</span>
+<span class="fc" id="L106">		int iN = 20;</span>
 
-<span class="nc" id="L108">		double dblTime = 0.;</span>
-<span class="nc" id="L109">		double dblTimeWidth = dblT / iN;</span>
+<span class="fc" id="L108">		double dblTime = 0.;</span>
+<span class="fc" id="L109">		double dblTimeWidth = dblT / iN;</span>
 
-<span class="nc" id="L111">		ArithmeticPriceDynamicsSettings apds = ArithmeticPriceDynamicsSettings.FromAnnualReturnsSettings (</span>
+<span class="fc" id="L111">		ArithmeticPriceDynamicsSettings apds = ArithmeticPriceDynamicsSettings.FromAnnualReturnsSettings (</span>
 			dblAnnualReturns,
 			dblAnnualVolatility,
 			0.,
 			dblS0
 		);
 
-<span class="nc" id="L118">		double dblSigma = apds.epochVolatility();</span>
+<span class="fc" id="L118">		double dblSigma = apds.epochVolatility();</span>
 
-<span class="nc" id="L120">		PriceMarketImpactLinear pmil = new PriceMarketImpactLinear (</span>
+<span class="fc" id="L120">		PriceMarketImpactLinear pmil = new PriceMarketImpactLinear (</span>
 			new AssetTransactionSettings (
 				dblS0,
 				dblDailyVolume,
@@ -127,11 +127,11 @@ import org.drip.service.env.EnvManager;
 			dblDailyVolumeTemporaryImpact
 		);
 
-<span class="nc" id="L130">		ParticipationRateLinear prlPermanent = (ParticipationRateLinear) pmil.permanentTransactionFunction();</span>
+<span class="fc" id="L130">		ParticipationRateLinear prlPermanent = (ParticipationRateLinear) pmil.permanentTransactionFunction();</span>
 
-<span class="nc" id="L132">		ParticipationRateLinear prlTemporary = (ParticipationRateLinear) pmil.temporaryTransactionFunction();</span>
+<span class="fc" id="L132">		ParticipationRateLinear prlTemporary = (ParticipationRateLinear) pmil.temporaryTransactionFunction();</span>
 
-<span class="nc" id="L134">		LinearPermanentExpectationParameters lpep = ArithmeticPriceEvolutionParametersBuilder.LinearExpectation (</span>
+<span class="fc" id="L134">		LinearPermanentExpectationParameters lpep = ArithmeticPriceEvolutionParametersBuilder.LinearExpectation (</span>
 			new ArithmeticPriceDynamicsSettings (
 				0.,
 				new FlatUnivariate (dblSigma),
@@ -141,80 +141,80 @@ import org.drip.service.env.EnvManager;
 			new UniformParticipationRateLinear (prlTemporary)
 		);
 
-<span class="nc" id="L144">		ContinuousAlmgrenChriss cac = ContinuousAlmgrenChriss.Standard (</span>
+<span class="fc" id="L144">		ContinuousAlmgrenChriss cac = ContinuousAlmgrenChriss.Standard (</span>
 			dblX,
 			dblT,
 			lpep,
 			dblLambdaU
 		);
 
-<span class="nc" id="L151">		EfficientTradingTrajectoryContinuous ettcA2012S = (EfficientTradingTrajectoryContinuous) cac.generate();</span>
+<span class="fc" id="L151">		EfficientTradingTrajectoryContinuous ettcA2012S = (EfficientTradingTrajectoryContinuous) cac.generate();</span>
 
-<span class="nc" id="L153">		R1ToR1 r1ToR1HoldingsA2012S = ettcA2012S.holdings();</span>
+<span class="fc" id="L153">		R1ToR1 r1ToR1HoldingsA2012S = ettcA2012S.holdings();</span>
 
-<span class="nc" id="L155">		R1ToR1 r1ToR1TradeRateA2012S = ettcA2012S.tradeRate();</span>
+<span class="fc" id="L155">		R1ToR1 r1ToR1TradeRateA2012S = ettcA2012S.tradeRate();</span>
 
-<span class="nc" id="L157">		R1ToR1 r1ToR1TransactionCostA2012S = ettcA2012S.transactionCostExpectationFunction();</span>
+<span class="fc" id="L157">		R1ToR1 r1ToR1TransactionCostA2012S = ettcA2012S.transactionCostExpectationFunction();</span>
 
-<span class="nc" id="L159">		ContinuousHighUrgencyAsymptote huas = ContinuousHighUrgencyAsymptote.Standard (</span>
+<span class="fc" id="L159">		ContinuousHighUrgencyAsymptote huas = ContinuousHighUrgencyAsymptote.Standard (</span>
 			dblX,
 			dblT,
 			lpep,
 			dblLambdaU
 		);
 
-<span class="nc" id="L166">		EfficientTradingTrajectoryContinuous ettcHUAS = (EfficientTradingTrajectoryContinuous) huas.generate();</span>
+<span class="fc" id="L166">		EfficientTradingTrajectoryContinuous ettcHUAS = (EfficientTradingTrajectoryContinuous) huas.generate();</span>
 
-<span class="nc" id="L168">		R1ToR1 r1ToR1HoldingsHUAS = ettcHUAS.holdings();</span>
+<span class="fc" id="L168">		R1ToR1 r1ToR1HoldingsHUAS = ettcHUAS.holdings();</span>
 
-<span class="nc" id="L170">		R1ToR1 r1ToR1TradeRateHUAS = ettcHUAS.tradeRate();</span>
+<span class="fc" id="L170">		R1ToR1 r1ToR1TradeRateHUAS = ettcHUAS.tradeRate();</span>
 
-<span class="nc" id="L172">		R1ToR1 r1ToR1TransactionCostHUAS = ettcHUAS.transactionCostExpectationFunction();</span>
+<span class="fc" id="L172">		R1ToR1 r1ToR1TransactionCostHUAS = ettcHUAS.transactionCostExpectationFunction();</span>
 
-<span class="nc" id="L174">		System.out.println ();</span>
+<span class="fc" id="L174">		System.out.println ();</span>
 
-<span class="nc" id="L176">		System.out.println (&quot;\t|-------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L176">		System.out.println (&quot;\t|-------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L178">		System.out.println (&quot;\t|  HIGH URGENCY vs. ALMGREN 2012 STATIC TRAJECTORY COMPARISON ||&quot;);</span>
+<span class="fc" id="L178">		System.out.println (&quot;\t|  HIGH URGENCY vs. ALMGREN 2012 STATIC TRAJECTORY COMPARISON ||&quot;);</span>
 
-<span class="nc" id="L180">		System.out.println (&quot;\t|-------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L180">		System.out.println (&quot;\t|-------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L182">		System.out.println (&quot;\t|    L -&gt; R:                                                  ||&quot;);</span>
+<span class="fc" id="L182">		System.out.println (&quot;\t|    L -&gt; R:                                                  ||&quot;);</span>
 
-<span class="nc" id="L184">		System.out.println (&quot;\t|            - Time                                           ||&quot;);</span>
+<span class="fc" id="L184">		System.out.println (&quot;\t|            - Time                                           ||&quot;);</span>
 
-<span class="nc" id="L186">		System.out.println (&quot;\t|            - Almgren 2012 Holdings                          ||&quot;);</span>
+<span class="fc" id="L186">		System.out.println (&quot;\t|            - Almgren 2012 Holdings                          ||&quot;);</span>
 
-<span class="nc" id="L188">		System.out.println (&quot;\t|            - Almgren 2012 Trade Rate                        ||&quot;);</span>
+<span class="fc" id="L188">		System.out.println (&quot;\t|            - Almgren 2012 Trade Rate                        ||&quot;);</span>
 
-<span class="nc" id="L190">		System.out.println (&quot;\t|            - Almgren 2012 Transaction Cost                  ||&quot;);</span>
+<span class="fc" id="L190">		System.out.println (&quot;\t|            - Almgren 2012 Transaction Cost                  ||&quot;);</span>
 
-<span class="nc" id="L192">		System.out.println (&quot;\t|            - High Urgency Asymptote Holdings                ||&quot;);</span>
+<span class="fc" id="L192">		System.out.println (&quot;\t|            - High Urgency Asymptote Holdings                ||&quot;);</span>
 
-<span class="nc" id="L194">		System.out.println (&quot;\t|            - High Urgency Asymptote Trade Rate              ||&quot;);</span>
+<span class="fc" id="L194">		System.out.println (&quot;\t|            - High Urgency Asymptote Trade Rate              ||&quot;);</span>
 
-<span class="nc" id="L196">		System.out.println (&quot;\t|            - High Urgency Asymptote Transaction Cost        ||&quot;);</span>
+<span class="fc" id="L196">		System.out.println (&quot;\t|            - High Urgency Asymptote Transaction Cost        ||&quot;);</span>
 
-<span class="nc" id="L198">		System.out.println (&quot;\t|-------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L198">		System.out.println (&quot;\t|-------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L200" title="All 2 branches missed.">		for (int i = 1; i &lt;= iN; ++i) {</span>
-<span class="nc" id="L201">			dblTime = dblTime + dblTimeWidth;</span>
+<span class="fc bfc" id="L200" title="All 2 branches covered.">		for (int i = 1; i &lt;= iN; ++i) {</span>
+<span class="fc" id="L201">			dblTime = dblTime + dblTimeWidth;</span>
 
-<span class="nc" id="L203">			System.out.println (</span>
+<span class="fc" id="L203">			System.out.println (</span>
 				&quot;\t|&quot; +
-<span class="nc" id="L205">				FormatUtil.FormatDouble (dblTime, 1, 2, 1.) + &quot; =&gt; &quot; +</span>
-<span class="nc" id="L206">				FormatUtil.FormatDouble (r1ToR1HoldingsA2012S.evaluate (dblTime) / dblX, 1, 3, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L207">				FormatUtil.FormatDouble (r1ToR1TradeRateA2012S.evaluate (dblTime) * dblTimeWidth / dblX, 1, 3, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L208">				FormatUtil.FormatDouble (r1ToR1TransactionCostA2012S.evaluate (dblTime) / dblX, 1, 3, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L209">				FormatUtil.FormatDouble (r1ToR1HoldingsHUAS.evaluate (dblTime) / dblX, 1, 3, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L210">				FormatUtil.FormatDouble (r1ToR1TradeRateHUAS.evaluate (dblTime) * dblTimeWidth / dblX, 1, 3, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L211">				FormatUtil.FormatDouble (r1ToR1TransactionCostHUAS.evaluate (dblTime) / dblX, 1, 3, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L205">				FormatUtil.FormatDouble (dblTime, 1, 2, 1.) + &quot; =&gt; &quot; +</span>
+<span class="fc" id="L206">				FormatUtil.FormatDouble (r1ToR1HoldingsA2012S.evaluate (dblTime) / dblX, 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L207">				FormatUtil.FormatDouble (r1ToR1TradeRateA2012S.evaluate (dblTime) * dblTimeWidth / dblX, 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L208">				FormatUtil.FormatDouble (r1ToR1TransactionCostA2012S.evaluate (dblTime) / dblX, 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L209">				FormatUtil.FormatDouble (r1ToR1HoldingsHUAS.evaluate (dblTime) / dblX, 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L210">				FormatUtil.FormatDouble (r1ToR1TradeRateHUAS.evaluate (dblTime) * dblTimeWidth / dblX, 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L211">				FormatUtil.FormatDouble (r1ToR1TransactionCostHUAS.evaluate (dblTime) / dblX, 1, 3, 1.) + &quot; ||&quot;</span>
 			);
 		}
 
-<span class="nc" id="L215">		System.out.println (&quot;\t|-------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L215">		System.out.println (&quot;\t|-------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L217">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L218">	}</span>
+<span class="fc" id="L217">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L218">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

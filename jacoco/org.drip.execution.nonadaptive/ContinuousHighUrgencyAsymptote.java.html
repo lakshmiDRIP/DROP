@@ -92,7 +92,7 @@ public class ContinuousHighUrgencyAsymptote extends
 		final double dblRiskAversion)
 	{
 		try {
-<span class="nc" id="L95">			return new ContinuousHighUrgencyAsymptote (new org.drip.execution.strategy.OrderSpecification</span>
+<span class="fc" id="L95">			return new ContinuousHighUrgencyAsymptote (new org.drip.execution.strategy.OrderSpecification</span>
 				(dblStartHoldings, dblFinishTime), lpep, new
 					org.drip.execution.risk.MeanVarianceObjectiveUtility (dblRiskAversion));
 <span class="nc" id="L98">		} catch (java.lang.Exception e) {</span>
@@ -108,89 +108,89 @@ public class ContinuousHighUrgencyAsymptote extends
 		final org.drip.execution.risk.MeanVarianceObjectiveUtility mvou)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L111">		super (os, lpep, mvou);</span>
-<span class="nc" id="L112">	}</span>
+<span class="fc" id="L111">		super (os, lpep, mvou);</span>
+<span class="fc" id="L112">	}</span>
 
 	@Override public org.drip.execution.optimum.EfficientTradingTrajectory generate()
 	{
-<span class="nc" id="L116">		org.drip.execution.dynamics.LinearPermanentExpectationParameters lpep =</span>
-<span class="nc" id="L117">			(org.drip.execution.dynamics.LinearPermanentExpectationParameters) priceEvolutionParameters();</span>
+<span class="fc" id="L116">		org.drip.execution.dynamics.LinearPermanentExpectationParameters lpep =</span>
+<span class="fc" id="L117">			(org.drip.execution.dynamics.LinearPermanentExpectationParameters) priceEvolutionParameters();</span>
 
-<span class="nc" id="L119">		org.drip.execution.impact.TransactionFunction tfTemporaryExpectation =</span>
-<span class="nc" id="L120">			lpep.temporaryExpectation().epochImpactFunction();</span>
+<span class="fc" id="L119">		org.drip.execution.impact.TransactionFunction tfTemporaryExpectation =</span>
+<span class="fc" id="L120">			lpep.temporaryExpectation().epochImpactFunction();</span>
 
-<span class="nc bnc" id="L122" title="All 2 branches missed.">		if (!(tfTemporaryExpectation instanceof org.drip.execution.impact.TransactionFunctionLinear))</span>
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">		if (!(tfTemporaryExpectation instanceof org.drip.execution.impact.TransactionFunctionLinear))</span>
 <span class="nc" id="L123">			return null;</span>
 
-<span class="nc" id="L125">		double dblEpochVolatility = java.lang.Double.NaN;</span>
-<span class="nc" id="L126">		org.drip.execution.impact.TransactionFunctionLinear tflTemporaryExpectation =</span>
+<span class="fc" id="L125">		double dblEpochVolatility = java.lang.Double.NaN;</span>
+<span class="fc" id="L126">		org.drip.execution.impact.TransactionFunctionLinear tflTemporaryExpectation =</span>
 			(org.drip.execution.impact.TransactionFunctionLinear) tfTemporaryExpectation;
 
 		try {
-<span class="nc" id="L130">			dblEpochVolatility = lpep.arithmeticPriceDynamicsSettings().epochVolatility();</span>
+<span class="fc" id="L130">			dblEpochVolatility = lpep.arithmeticPriceDynamicsSettings().epochVolatility();</span>
 <span class="nc" id="L131">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L132">			e.printStackTrace();</span>
 
 <span class="nc" id="L134">			return null;</span>
-<span class="nc" id="L135">		}</span>
+<span class="fc" id="L135">		}</span>
 
-<span class="nc" id="L137">		final double dblSigma = dblEpochVolatility;</span>
+<span class="fc" id="L137">		final double dblSigma = dblEpochVolatility;</span>
 
-<span class="nc" id="L139">		final double dblEta = tflTemporaryExpectation.slope();</span>
+<span class="fc" id="L139">		final double dblEta = tflTemporaryExpectation.slope();</span>
 
-<span class="nc" id="L141">		final double dblLambda = ((org.drip.execution.risk.MeanVarianceObjectiveUtility)</span>
-<span class="nc" id="L142">			objectiveUtility()).riskAversion();</span>
+<span class="fc" id="L141">		final double dblLambda = ((org.drip.execution.risk.MeanVarianceObjectiveUtility)</span>
+<span class="fc" id="L142">			objectiveUtility()).riskAversion();</span>
 
-<span class="nc" id="L144">		final double dblKappa = java.lang.Math.sqrt (dblLambda * dblSigma * dblSigma / dblEta);</span>
+<span class="fc" id="L144">		final double dblKappa = java.lang.Math.sqrt (dblLambda * dblSigma * dblSigma / dblEta);</span>
 
-<span class="nc" id="L146">		org.drip.execution.strategy.OrderSpecification os = orderSpecification();</span>
+<span class="fc" id="L146">		org.drip.execution.strategy.OrderSpecification os = orderSpecification();</span>
 
-<span class="nc" id="L148">		final double dblT = os.maxExecutionTime();</span>
+<span class="fc" id="L148">		final double dblT = os.maxExecutionTime();</span>
 
-<span class="nc" id="L150">		final double dblX = os.size();</span>
+<span class="fc" id="L150">		final double dblX = os.size();</span>
 
-<span class="nc" id="L152">		final org.drip.function.definition.R1ToR1 r1ToR1Holdings = new org.drip.function.definition.R1ToR1</span>
-<span class="nc" id="L153">			(null) {</span>
+<span class="fc" id="L152">		final org.drip.function.definition.R1ToR1 r1ToR1Holdings = new org.drip.function.definition.R1ToR1</span>
+<span class="fc" id="L153">			(null) {</span>
 			@Override public double evaluate (
 				final double dblTime)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L158" title="All 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblTime))</span>
+<span class="pc bpc" id="L158" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblTime))</span>
 <span class="nc" id="L159">					throw new java.lang.Exception</span>
 						(&quot;ContinuousHighUrgencyAsymptote::Holdings::evaluate =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L162">				return dblX * java.lang.Math.exp (-1. * dblKappa * dblTime);</span>
+<span class="fc" id="L162">				return dblX * java.lang.Math.exp (-1. * dblKappa * dblTime);</span>
 			}
 		};
 
-<span class="nc" id="L166">		org.drip.function.definition.R1ToR1 r1ToR1TradeRate = new org.drip.function.definition.R1ToR1 (null)</span>
-<span class="nc" id="L167">		{</span>
+<span class="fc" id="L166">		org.drip.function.definition.R1ToR1 r1ToR1TradeRate = new org.drip.function.definition.R1ToR1 (null)</span>
+<span class="fc" id="L167">		{</span>
 			@Override public double evaluate (
 				final double dblTime)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L172" title="All 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblTime))</span>
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblTime))</span>
 <span class="nc" id="L173">					throw new java.lang.Exception</span>
 						(&quot;ContinuousHighUrgencyAsymptote::TradeRate::evaluate =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L176">				return dblKappa * r1ToR1Holdings.evaluate (dblTime);</span>
+<span class="fc" id="L176">				return dblKappa * r1ToR1Holdings.evaluate (dblTime);</span>
 			}
 		};
 
-<span class="nc" id="L180">		org.drip.function.definition.R1ToR1 r1ToR1TransactionCostExpectation = new</span>
-<span class="nc" id="L181">			org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="fc" id="L180">		org.drip.function.definition.R1ToR1 r1ToR1TransactionCostExpectation = new</span>
+<span class="fc" id="L181">			org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblTime)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L186">				double dblHoldings = r1ToR1Holdings.evaluate (dblTime);</span>
+<span class="fc" id="L186">				double dblHoldings = r1ToR1Holdings.evaluate (dblTime);</span>
 
-<span class="nc" id="L188">				return dblEta * dblKappa * dblHoldings * dblHoldings;</span>
+<span class="fc" id="L188">				return dblEta * dblKappa * dblHoldings * dblHoldings;</span>
 			}
 		};
 
-<span class="nc" id="L192">		final org.drip.function.definition.R1ToR1 r1ToR1TransactionCostVarianceRate = new</span>
-<span class="nc" id="L193">			org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="fc" id="L192">		final org.drip.function.definition.R1ToR1 r1ToR1TransactionCostVarianceRate = new</span>
+<span class="fc" id="L193">			org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblTime)
 				throws java.lang.Exception
@@ -201,8 +201,8 @@ public class ContinuousHighUrgencyAsymptote extends
 			}
 		};
 
-<span class="nc" id="L204">		org.drip.function.definition.R1ToR1 r1ToR1TransactionCostVariance = new</span>
-<span class="nc" id="L205">			org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="fc" id="L204">		org.drip.function.definition.R1ToR1 r1ToR1TransactionCostVariance = new</span>
+<span class="fc" id="L205">			org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblTime)
 				throws java.lang.Exception
@@ -212,10 +212,10 @@ public class ContinuousHighUrgencyAsymptote extends
 		};
 
 		try {
-<span class="nc" id="L215">			return new org.drip.execution.optimum.EfficientTradingTrajectoryContinuous (dblT, dblEta *</span>
-<span class="nc" id="L216">				dblKappa * dblX * dblX / java.lang.Math.tanh (dblKappa * dblT),</span>
-<span class="nc" id="L217">					r1ToR1TransactionCostExpectation.evaluate (0.), 1. / dblKappa, dblEta * dblX / (dblT *</span>
-<span class="nc" id="L218">						dblEpochVolatility * java.lang.Math.sqrt (dblT)), r1ToR1Holdings, r1ToR1TradeRate,</span>
+<span class="fc" id="L215">			return new org.drip.execution.optimum.EfficientTradingTrajectoryContinuous (dblT, dblEta *</span>
+<span class="fc" id="L216">				dblKappa * dblX * dblX / java.lang.Math.tanh (dblKappa * dblT),</span>
+<span class="fc" id="L217">					r1ToR1TransactionCostExpectation.evaluate (0.), 1. / dblKappa, dblEta * dblX / (dblT *</span>
+<span class="fc" id="L218">						dblEpochVolatility * java.lang.Math.sqrt (dblT)), r1ToR1Holdings, r1ToR1TradeRate,</span>
 							r1ToR1TransactionCostExpectation, r1ToR1TransactionCostVariance);
 <span class="nc" id="L220">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L221">			e.printStackTrace();</span>

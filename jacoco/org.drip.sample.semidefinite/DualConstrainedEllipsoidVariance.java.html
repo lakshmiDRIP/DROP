@@ -68,9 +68,9 @@ import org.drip.service.env.EnvManager;
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L71">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L71">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L73">		String[] astrEntityName = new String[] {</span>
+<span class="fc" id="L73">		String[] astrEntityName = new String[] {</span>
 			&quot;IBM&quot;,
 			&quot;ATT&quot;,
 			&quot;ALU&quot;,
@@ -80,7 +80,7 @@ import org.drip.service.env.EnvManager;
 			&quot;VER&quot;
 		};
 
-<span class="nc" id="L83">		double[] adblEntityReturn = new double[] {</span>
+<span class="fc" id="L83">		double[] adblEntityReturn = new double[] {</span>
 			0.0264,
 			0.0332,
 			0.0400,
@@ -90,9 +90,9 @@ import org.drip.service.env.EnvManager;
 			0.0672
 		};
 
-<span class="nc" id="L93">		double dblEntityDesignReturn = 0.0468;</span>
+<span class="fc" id="L93">		double dblEntityDesignReturn = 0.0468;</span>
 
-<span class="nc" id="L95">		double[][] aadblEntityCovariance = new double[][] {</span>
+<span class="fc" id="L95">		double[][] aadblEntityCovariance = new double[][] {</span>
 			{1.00, 0.76, 0.80, 0.38, 0.60, 0.61, 0.51},
 			{0.76, 1.00, 0.65, 0.35, 0.56, 0.43, 0.40},
 			{0.80, 0.65, 1.00, 0.68, 0.74, 0.40, 0.51},
@@ -102,36 +102,36 @@ import org.drip.service.env.EnvManager;
 			{0.51, 0.40, 0.51, 0.57, 0.67, 0.39, 1.00}
 		};
 
-<span class="nc" id="L105">		System.out.println (&quot;\n\n\t|------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L105">		System.out.println (&quot;\n\n\t|------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L107">		String strHeader = &quot;\t|     |&quot;;</span>
+<span class="fc" id="L107">		String strHeader = &quot;\t|     |&quot;;</span>
 
-<span class="nc bnc" id="L109" title="All 2 branches missed.">		for (int i = 0; i &lt; astrEntityName.length; ++i)</span>
-<span class="nc" id="L110">			strHeader += &quot; &quot; + astrEntityName[i] + &quot;  |&quot;;</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">		for (int i = 0; i &lt; astrEntityName.length; ++i)</span>
+<span class="fc" id="L110">			strHeader += &quot; &quot; + astrEntityName[i] + &quot;  |&quot;;</span>
 
-<span class="nc" id="L112">		System.out.println (strHeader + &quot;|&quot;);</span>
+<span class="fc" id="L112">		System.out.println (strHeader + &quot;|&quot;);</span>
 
-<span class="nc" id="L114">		System.out.println (&quot;\t|------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L114">		System.out.println (&quot;\t|------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L116" title="All 2 branches missed.">		for (int i = 0; i &lt; astrEntityName.length; ++i) {</span>
-<span class="nc" id="L117">			String strDump = &quot;\t| &quot; + astrEntityName[i] + &quot; &quot;;</span>
+<span class="fc bfc" id="L116" title="All 2 branches covered.">		for (int i = 0; i &lt; astrEntityName.length; ++i) {</span>
+<span class="fc" id="L117">			String strDump = &quot;\t| &quot; + astrEntityName[i] + &quot; &quot;;</span>
 
-<span class="nc bnc" id="L119" title="All 2 branches missed.">			for (int j = 0; j &lt; astrEntityName.length; ++j)</span>
-<span class="nc" id="L120">				strDump += &quot;|&quot; + FormatUtil.FormatDouble (aadblEntityCovariance[i][j], 1, 2, 1.) + &quot; &quot;;</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">			for (int j = 0; j &lt; astrEntityName.length; ++j)</span>
+<span class="fc" id="L120">				strDump += &quot;|&quot; + FormatUtil.FormatDouble (aadblEntityCovariance[i][j], 1, 2, 1.) + &quot; &quot;;</span>
 
-<span class="nc" id="L122">			System.out.println (strDump + &quot;||&quot;);</span>
+<span class="fc" id="L122">			System.out.println (strDump + &quot;||&quot;);</span>
 		}
 
-<span class="nc" id="L125">		System.out.println (&quot;\t|------------------------------------------------------||\n\n&quot;);</span>
+<span class="fc" id="L125">		System.out.println (&quot;\t|------------------------------------------------------||\n\n&quot;);</span>
 
-<span class="nc" id="L127">		double dblEqualityConstraintConstant = -1.;</span>
-<span class="nc" id="L128">		int iNumEntity = aadblEntityCovariance.length;</span>
+<span class="fc" id="L127">		double dblEqualityConstraintConstant = -1.;</span>
+<span class="fc" id="L128">		int iNumEntity = aadblEntityCovariance.length;</span>
 
-<span class="nc" id="L130">		InteriorPointBarrierControl ipbc = InteriorPointBarrierControl.Standard();</span>
+<span class="fc" id="L130">		InteriorPointBarrierControl ipbc = InteriorPointBarrierControl.Standard();</span>
 
-<span class="nc" id="L132">		RdToR1[] aRdToR1EqualityConstraint = new RdToR1[] {</span>
+<span class="fc" id="L132">		RdToR1[] aRdToR1EqualityConstraint = new RdToR1[] {</span>
 			new AffineMultivariate (
-<span class="nc" id="L134">				ObjectiveConstraintVariateSet.Unitary (iNumEntity),</span>
+<span class="fc" id="L134">				ObjectiveConstraintVariateSet.Unitary (iNumEntity),</span>
 				dblEqualityConstraintConstant
 			),
 			new AffineMultivariate (
@@ -140,9 +140,9 @@ import org.drip.service.env.EnvManager;
 			)
 		};
 
-<span class="nc" id="L143">		int iNumEqualityConstraint = aRdToR1EqualityConstraint.length;</span>
+<span class="fc" id="L143">		int iNumEqualityConstraint = aRdToR1EqualityConstraint.length;</span>
 
-<span class="nc" id="L145">		RdToR1[] aRdToR1InequalityConstraint = new RdToR1[] {</span>
+<span class="fc" id="L145">		RdToR1[] aRdToR1InequalityConstraint = new RdToR1[] {</span>
 			new AffineBoundMultivariate (false, 0, iNumEntity + iNumEqualityConstraint, 0.05),
 			new AffineBoundMultivariate (true, 0, iNumEntity + iNumEqualityConstraint, 0.65),
 			new AffineBoundMultivariate (false, 1, iNumEntity + iNumEqualityConstraint, 0.05),
@@ -159,52 +159,52 @@ import org.drip.service.env.EnvManager;
 			new AffineBoundMultivariate (true, 6, iNumEntity + iNumEqualityConstraint, 0.65)
 		};
 
-<span class="nc" id="L162">		LagrangianMultivariate ceec = new LagrangianMultivariate (</span>
+<span class="fc" id="L162">		LagrangianMultivariate ceec = new LagrangianMultivariate (</span>
 			new CovarianceEllipsoidMultivariate (aadblEntityCovariance),
 			aRdToR1EqualityConstraint
 		);
 
-<span class="nc" id="L167">		BarrierFixedPointFinder ifpm = new BarrierFixedPointFinder (</span>
+<span class="fc" id="L167">		BarrierFixedPointFinder ifpm = new BarrierFixedPointFinder (</span>
 			ceec,
 			aRdToR1InequalityConstraint,
 			ipbc,
-<span class="nc" id="L171">			LineStepEvolutionControl.NocedalWrightStrongWolfe (false)</span>
+<span class="fc" id="L171">			LineStepEvolutionControl.NocedalWrightStrongWolfe (false)</span>
 		);
 
-<span class="nc" id="L174">		VariateInequalityConstraintMultiplier vcmt = ifpm.solve (</span>
-<span class="nc" id="L175">			ObjectiveConstraintVariateSet.Uniform (</span>
+<span class="fc" id="L174">		VariateInequalityConstraintMultiplier vcmt = ifpm.solve (</span>
+<span class="fc" id="L175">			ObjectiveConstraintVariateSet.Uniform (</span>
 				iNumEntity,
-<span class="nc" id="L177">				ceec.constraintFunctionDimension()</span>
+<span class="fc" id="L177">				ceec.constraintFunctionDimension()</span>
 			)
 		);
 
-<span class="nc" id="L181">		double[] adblOptimalVariate = vcmt.variates();</span>
+<span class="fc" id="L181">		double[] adblOptimalVariate = vcmt.variates();</span>
 
-<span class="nc" id="L183">		System.out.println (&quot;\t|----------------------||&quot;);</span>
+<span class="fc" id="L183">		System.out.println (&quot;\t|----------------------||&quot;);</span>
 
-<span class="nc" id="L185">		System.out.println (&quot;\t|   OPTIMAL ENTITIES   ||&quot;);</span>
+<span class="fc" id="L185">		System.out.println (&quot;\t|   OPTIMAL ENTITIES   ||&quot;);</span>
 
-<span class="nc" id="L187">		System.out.println (&quot;\t|----------------------||&quot;);</span>
+<span class="fc" id="L187">		System.out.println (&quot;\t|----------------------||&quot;);</span>
 
-<span class="nc" id="L189">		double dblExpectedReturn = 0.;</span>
+<span class="fc" id="L189">		double dblExpectedReturn = 0.;</span>
 
-<span class="nc bnc" id="L191" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumEntity; ++i) {</span>
-<span class="nc" id="L192">			System.out.println (&quot;\t|   &quot; + astrEntityName[i] + &quot;   =&gt;  &quot; + FormatUtil.FormatDouble (adblOptimalVariate[i], 2, 2, 100.) + &quot;%  ||&quot;);</span>
+<span class="fc bfc" id="L191" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumEntity; ++i) {</span>
+<span class="fc" id="L192">			System.out.println (&quot;\t|   &quot; + astrEntityName[i] + &quot;   =&gt;  &quot; + FormatUtil.FormatDouble (adblOptimalVariate[i], 2, 2, 100.) + &quot;%  ||&quot;);</span>
 
-<span class="nc" id="L194">			dblExpectedReturn += adblOptimalVariate[i] * adblEntityReturn[i];</span>
+<span class="fc" id="L194">			dblExpectedReturn += adblOptimalVariate[i] * adblEntityReturn[i];</span>
 		}
 
-<span class="nc" id="L197">		System.out.println (&quot;\t|----------------------||\n&quot;);</span>
+<span class="fc" id="L197">		System.out.println (&quot;\t|----------------------||\n&quot;);</span>
 
-<span class="nc" id="L199">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
+<span class="fc" id="L199">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
 
-<span class="nc" id="L201">		System.out.println (&quot;\t| DESIGN RETURN    =&gt; &quot; + FormatUtil.FormatDouble (dblEntityDesignReturn, 1, 5, 1.) + &quot; ||&quot;);</span>
+<span class="fc" id="L201">		System.out.println (&quot;\t| DESIGN RETURN    =&gt; &quot; + FormatUtil.FormatDouble (dblEntityDesignReturn, 1, 5, 1.) + &quot; ||&quot;);</span>
 
-<span class="nc" id="L203">		System.out.println (&quot;\t| EXPECTED RETURN  =&gt; &quot; + FormatUtil.FormatDouble (dblExpectedReturn, 1, 5, 1.) + &quot; ||&quot;);</span>
+<span class="fc" id="L203">		System.out.println (&quot;\t| EXPECTED RETURN  =&gt; &quot; + FormatUtil.FormatDouble (dblExpectedReturn, 1, 5, 1.) + &quot; ||&quot;);</span>
 
-<span class="nc" id="L205">		System.out.println (&quot;\t| OPTIMAL VARIANCE =&gt; &quot; + FormatUtil.FormatDouble (ceec.evaluate (adblOptimalVariate), 1, 5, 1.) + &quot; ||&quot;);</span>
+<span class="fc" id="L205">		System.out.println (&quot;\t| OPTIMAL VARIANCE =&gt; &quot; + FormatUtil.FormatDouble (ceec.evaluate (adblOptimalVariate), 1, 5, 1.) + &quot; ||&quot;);</span>
 
-<span class="nc" id="L207">		System.out.println (&quot;\t|------------------------------||\n&quot;);</span>
-<span class="nc" id="L208">	}</span>
+<span class="fc" id="L207">		System.out.println (&quot;\t|------------------------------||\n&quot;);</span>
+<span class="fc" id="L208">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

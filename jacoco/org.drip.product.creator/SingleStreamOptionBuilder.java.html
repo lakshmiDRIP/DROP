@@ -121,26 +121,26 @@ package org.drip.product.creator;
 		final java.lang.String strTradingMode,
 		final java.lang.String strExchange)
 	{
-<span class="nc bnc" id="L124" title="All 2 branches missed.">		if (null == forwardLabel) return null;</span>
+<span class="pc bpc" id="L124" title="1 of 2 branches missed.">		if (null == forwardLabel) return null;</span>
 
-<span class="nc" id="L126">		org.drip.market.exchange.FuturesOptions fo =</span>
-<span class="nc" id="L127">			org.drip.market.exchange.FuturesOptionsContainer.ExchangeInfo (forwardLabel.fullyQualifiedName(),</span>
+<span class="fc" id="L126">		org.drip.market.exchange.FuturesOptions fo =</span>
+<span class="fc" id="L127">			org.drip.market.exchange.FuturesOptionsContainer.ExchangeInfo (forwardLabel.fullyQualifiedName(),</span>
 				strTradingMode);
 
-<span class="nc bnc" id="L130" title="All 2 branches missed.">		if (null == fo) return null;</span>
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">		if (null == fo) return null;</span>
 
-<span class="nc" id="L132">		java.util.Set&lt;java.lang.String&gt; setExchanges = fo.exchanges();</span>
+<span class="fc" id="L132">		java.util.Set&lt;java.lang.String&gt; setExchanges = fo.exchanges();</span>
 
-<span class="nc bnc" id="L134" title="All 4 branches missed.">		if (null == setExchanges || !setExchanges.contains (strExchange)) return null;</span>
+<span class="pc bpc" id="L134" title="2 of 4 branches missed.">		if (null == setExchanges || !setExchanges.contains (strExchange)) return null;</span>
 
-<span class="nc" id="L136">		org.drip.product.fra.FRAStandardComponent fraStandard =</span>
-<span class="nc" id="L137">			org.drip.product.creator.SingleStreamComponentBuilder.ForwardRateFutures (dtEffective,</span>
+<span class="fc" id="L136">		org.drip.product.fra.FRAStandardComponent fraStandard =</span>
+<span class="fc" id="L137">			org.drip.product.creator.SingleStreamComponentBuilder.ForwardRateFutures (dtEffective,</span>
 				forwardLabel);
 
 		try {
-<span class="nc bnc" id="L141" title="All 2 branches missed.">			return null == fraStandard ? null : new org.drip.product.fra.FRAStandardCapFloorlet</span>
-<span class="nc" id="L142">				(fraStandard.name() + &quot;::OPT&quot;, fraStandard, strManifestMeasure, bIsCaplet, dblStrike, 1.,</span>
-<span class="nc" id="L143">					fo.ltdsArray (strExchange)[0], new org.drip.pricer.option.BlackScholesAlgorithm(), null);</span>
+<span class="pc bpc" id="L141" title="1 of 2 branches missed.">			return null == fraStandard ? null : new org.drip.product.fra.FRAStandardCapFloorlet</span>
+<span class="fc" id="L142">				(fraStandard.name() + &quot;::OPT&quot;, fraStandard, strManifestMeasure, bIsCaplet, dblStrike, 1.,</span>
+<span class="fc" id="L143">					fo.ltdsArray (strExchange)[0], new org.drip.pricer.option.BlackScholesAlgorithm(), null);</span>
 <span class="nc" id="L144">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L145">			e.printStackTrace();</span>
 		}

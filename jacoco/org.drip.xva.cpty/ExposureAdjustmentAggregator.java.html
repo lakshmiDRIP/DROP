@@ -69,7 +69,7 @@ package org.drip.xva.cpty;
  */
 
 public class ExposureAdjustmentAggregator {
-<span class="fc" id="L72">	private org.drip.xva.cpty.PathExposureAdjustment[] _aPEA = null;</span>
+<span class="nc" id="L72">	private org.drip.xva.cpty.PathExposureAdjustment[] _aPEA = null;</span>
 
 	/**
 	 * ExposureAdjustmentAggregator Constructor
@@ -82,10 +82,10 @@ public class ExposureAdjustmentAggregator {
 	public ExposureAdjustmentAggregator (
 		final org.drip.xva.cpty.PathExposureAdjustment[] aPEA)
 		throws java.lang.Exception
-<span class="fc" id="L85">	{</span>
-<span class="pc bpc" id="L86" title="2 of 4 branches missed.">		if (null == (_aPEA = aPEA) || 0 == _aPEA.length)</span>
+<span class="nc" id="L85">	{</span>
+<span class="nc bnc" id="L86" title="All 4 branches missed.">		if (null == (_aPEA = aPEA) || 0 == _aPEA.length)</span>
 <span class="nc" id="L87">			throw new java.lang.Exception (&quot;ExposureAdjustmentAggregator Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L88">	}</span>
+<span class="nc" id="L88">	}</span>
 
 	/**
 	 * Retrieve the Array of Counter Party Group Path Exposures
@@ -106,7 +106,7 @@ public class ExposureAdjustmentAggregator {
 
 	public org.drip.analytics.date.JulianDate[] anchors()
 	{
-<span class="fc" id="L109">		return _aPEA[0].anchors();</span>
+<span class="nc" id="L109">		return _aPEA[0].anchors();</span>
 	}
 
 	/**
@@ -117,25 +117,25 @@ public class ExposureAdjustmentAggregator {
 
 	public double[] collateralizedExposure()
 	{
-<span class="fc" id="L120">		int iNumVertex = anchors().length;</span>
+<span class="nc" id="L120">		int iNumVertex = anchors().length;</span>
 
-<span class="fc" id="L122">		int iNumPath = _aPEA.length;</span>
-<span class="fc" id="L123">		double[] adblCollateralizedExposure = new double[iNumVertex];</span>
+<span class="nc" id="L122">		int iNumPath = _aPEA.length;</span>
+<span class="nc" id="L123">		double[] adblCollateralizedExposure = new double[iNumVertex];</span>
 
-<span class="fc bfc" id="L125" title="All 2 branches covered.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="fc" id="L126">			adblCollateralizedExposure[iVertexIndex] = 0.;</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
+<span class="nc" id="L126">			adblCollateralizedExposure[iVertexIndex] = 0.;</span>
 
-<span class="fc bfc" id="L128" title="All 2 branches covered.">		for (int iPathIndex = 0; iPathIndex &lt; iNumPath; ++iPathIndex) {</span>
-<span class="fc" id="L129">			double[] adblPathCollateralizedExposure = _aPEA[iPathIndex].collateralizedExposure();</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">		for (int iPathIndex = 0; iPathIndex &lt; iNumPath; ++iPathIndex) {</span>
+<span class="nc" id="L129">			double[] adblPathCollateralizedExposure = _aPEA[iPathIndex].collateralizedExposure();</span>
 
-<span class="fc bfc" id="L131" title="All 2 branches covered.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="fc" id="L132">				adblCollateralizedExposure[iVertexIndex] += adblPathCollateralizedExposure[iVertexIndex];</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
+<span class="nc" id="L132">				adblCollateralizedExposure[iVertexIndex] += adblPathCollateralizedExposure[iVertexIndex];</span>
 		}
 
-<span class="fc bfc" id="L135" title="All 2 branches covered.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="fc" id="L136">			adblCollateralizedExposure[iVertexIndex] /= iNumPath;</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
+<span class="nc" id="L136">			adblCollateralizedExposure[iVertexIndex] /= iNumPath;</span>
 
-<span class="fc" id="L138">		return adblCollateralizedExposure;</span>
+<span class="nc" id="L138">		return adblCollateralizedExposure;</span>
 	}
 
 	/**
@@ -146,25 +146,25 @@ public class ExposureAdjustmentAggregator {
 
 	public double[] collateralizedExposurePV()
 	{
-<span class="fc" id="L149">		int iNumVertex = anchors().length;</span>
+<span class="nc" id="L149">		int iNumVertex = anchors().length;</span>
 
-<span class="fc" id="L151">		int iNumPath = _aPEA.length;</span>
-<span class="fc" id="L152">		double[] adblCollateralizedExposurePV = new double[iNumVertex];</span>
+<span class="nc" id="L151">		int iNumPath = _aPEA.length;</span>
+<span class="nc" id="L152">		double[] adblCollateralizedExposurePV = new double[iNumVertex];</span>
 
-<span class="fc bfc" id="L154" title="All 2 branches covered.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="fc" id="L155">			adblCollateralizedExposurePV[iVertexIndex] = 0.;</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
+<span class="nc" id="L155">			adblCollateralizedExposurePV[iVertexIndex] = 0.;</span>
 
-<span class="fc bfc" id="L157" title="All 2 branches covered.">		for (int iPathIndex = 0; iPathIndex &lt; iNumPath; ++iPathIndex) {</span>
-<span class="fc" id="L158">			double[] adblPathCollateralizedExposurePV = _aPEA[iPathIndex].collateralizedExposurePV();</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">		for (int iPathIndex = 0; iPathIndex &lt; iNumPath; ++iPathIndex) {</span>
+<span class="nc" id="L158">			double[] adblPathCollateralizedExposurePV = _aPEA[iPathIndex].collateralizedExposurePV();</span>
 
-<span class="fc bfc" id="L160" title="All 2 branches covered.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="fc" id="L161">				adblCollateralizedExposurePV[iVertexIndex] += adblPathCollateralizedExposurePV[iVertexIndex];</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
+<span class="nc" id="L161">				adblCollateralizedExposurePV[iVertexIndex] += adblPathCollateralizedExposurePV[iVertexIndex];</span>
 		}
 
-<span class="fc bfc" id="L164" title="All 2 branches covered.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="fc" id="L165">			adblCollateralizedExposurePV[iVertexIndex] /= iNumPath;</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
+<span class="nc" id="L165">			adblCollateralizedExposurePV[iVertexIndex] /= iNumPath;</span>
 
-<span class="fc" id="L167">		return adblCollateralizedExposurePV;</span>
+<span class="nc" id="L167">		return adblCollateralizedExposurePV;</span>
 	}
 
 	/**
@@ -234,27 +234,27 @@ public class ExposureAdjustmentAggregator {
 
 	public double[] collateralizedPositiveExposure()
 	{
-<span class="fc" id="L237">		int iNumVertex = anchors().length;</span>
+<span class="nc" id="L237">		int iNumVertex = anchors().length;</span>
 
-<span class="fc" id="L239">		int iNumPath = _aPEA.length;</span>
-<span class="fc" id="L240">		double[] adblCollateralizedPositiveExposure = new double[iNumVertex];</span>
+<span class="nc" id="L239">		int iNumPath = _aPEA.length;</span>
+<span class="nc" id="L240">		double[] adblCollateralizedPositiveExposure = new double[iNumVertex];</span>
 
-<span class="fc bfc" id="L242" title="All 2 branches covered.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="fc" id="L243">			adblCollateralizedPositiveExposure[iVertexIndex] = 0.;</span>
+<span class="nc bnc" id="L242" title="All 2 branches missed.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
+<span class="nc" id="L243">			adblCollateralizedPositiveExposure[iVertexIndex] = 0.;</span>
 
-<span class="fc bfc" id="L245" title="All 2 branches covered.">		for (int iPathIndex = 0; iPathIndex &lt; iNumPath; ++iPathIndex) {</span>
-<span class="fc" id="L246">			double[] adblPathCollateralizedPositiveExposure =</span>
-<span class="fc" id="L247">				_aPEA[iPathIndex].collateralizedPositiveExposure();</span>
+<span class="nc bnc" id="L245" title="All 2 branches missed.">		for (int iPathIndex = 0; iPathIndex &lt; iNumPath; ++iPathIndex) {</span>
+<span class="nc" id="L246">			double[] adblPathCollateralizedPositiveExposure =</span>
+<span class="nc" id="L247">				_aPEA[iPathIndex].collateralizedPositiveExposure();</span>
 
-<span class="fc bfc" id="L249" title="All 2 branches covered.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="fc" id="L250">				adblCollateralizedPositiveExposure[iVertexIndex] +=</span>
+<span class="nc bnc" id="L249" title="All 2 branches missed.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
+<span class="nc" id="L250">				adblCollateralizedPositiveExposure[iVertexIndex] +=</span>
 					adblPathCollateralizedPositiveExposure[iVertexIndex];
 		}
 
-<span class="fc bfc" id="L254" title="All 2 branches covered.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="fc" id="L255">			adblCollateralizedPositiveExposure[iVertexIndex] /= iNumPath;</span>
+<span class="nc bnc" id="L254" title="All 2 branches missed.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
+<span class="nc" id="L255">			adblCollateralizedPositiveExposure[iVertexIndex] /= iNumPath;</span>
 
-<span class="fc" id="L257">		return adblCollateralizedPositiveExposure;</span>
+<span class="nc" id="L257">		return adblCollateralizedPositiveExposure;</span>
 	}
 
 	/**
@@ -265,27 +265,27 @@ public class ExposureAdjustmentAggregator {
 
 	public double[] collateralizedPositiveExposurePV()
 	{
-<span class="fc" id="L268">		int iNumVertex = anchors().length;</span>
+<span class="nc" id="L268">		int iNumVertex = anchors().length;</span>
 
-<span class="fc" id="L270">		int iNumPath = _aPEA.length;</span>
-<span class="fc" id="L271">		double[] adblCollateralizedPositiveExposurePV = new double[iNumVertex];</span>
+<span class="nc" id="L270">		int iNumPath = _aPEA.length;</span>
+<span class="nc" id="L271">		double[] adblCollateralizedPositiveExposurePV = new double[iNumVertex];</span>
 
-<span class="fc bfc" id="L273" title="All 2 branches covered.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="fc" id="L274">			adblCollateralizedPositiveExposurePV[iVertexIndex] = 0.;</span>
+<span class="nc bnc" id="L273" title="All 2 branches missed.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
+<span class="nc" id="L274">			adblCollateralizedPositiveExposurePV[iVertexIndex] = 0.;</span>
 
-<span class="fc bfc" id="L276" title="All 2 branches covered.">		for (int iPathIndex = 0; iPathIndex &lt; iNumPath; ++iPathIndex) {</span>
-<span class="fc" id="L277">			double[] adblPathCollateralizedPositiveExposurePV =</span>
-<span class="fc" id="L278">				_aPEA[iPathIndex].collateralizedPositiveExposurePV();</span>
+<span class="nc bnc" id="L276" title="All 2 branches missed.">		for (int iPathIndex = 0; iPathIndex &lt; iNumPath; ++iPathIndex) {</span>
+<span class="nc" id="L277">			double[] adblPathCollateralizedPositiveExposurePV =</span>
+<span class="nc" id="L278">				_aPEA[iPathIndex].collateralizedPositiveExposurePV();</span>
 
-<span class="fc bfc" id="L280" title="All 2 branches covered.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="fc" id="L281">				adblCollateralizedPositiveExposurePV[iVertexIndex] +=</span>
+<span class="nc bnc" id="L280" title="All 2 branches missed.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
+<span class="nc" id="L281">				adblCollateralizedPositiveExposurePV[iVertexIndex] +=</span>
 					adblPathCollateralizedPositiveExposurePV[iVertexIndex];
 		}
 
-<span class="fc bfc" id="L285" title="All 2 branches covered.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="fc" id="L286">			adblCollateralizedPositiveExposurePV[iVertexIndex] /= iNumPath;</span>
+<span class="nc bnc" id="L285" title="All 2 branches missed.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
+<span class="nc" id="L286">			adblCollateralizedPositiveExposurePV[iVertexIndex] /= iNumPath;</span>
 
-<span class="fc" id="L288">		return adblCollateralizedPositiveExposurePV;</span>
+<span class="nc" id="L288">		return adblCollateralizedPositiveExposurePV;</span>
 	}
 
 	/**
@@ -358,27 +358,27 @@ public class ExposureAdjustmentAggregator {
 
 	public double[] collateralizedNegativeExposure()
 	{
-<span class="fc" id="L361">		int iNumVertex = anchors().length;</span>
+<span class="nc" id="L361">		int iNumVertex = anchors().length;</span>
 
-<span class="fc" id="L363">		int iNumPath = _aPEA.length;</span>
-<span class="fc" id="L364">		double[] adblCollateralizedNegativeExposure = new double[iNumVertex];</span>
+<span class="nc" id="L363">		int iNumPath = _aPEA.length;</span>
+<span class="nc" id="L364">		double[] adblCollateralizedNegativeExposure = new double[iNumVertex];</span>
 
-<span class="fc bfc" id="L366" title="All 2 branches covered.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="fc" id="L367">			adblCollateralizedNegativeExposure[iVertexIndex] = 0.;</span>
+<span class="nc bnc" id="L366" title="All 2 branches missed.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
+<span class="nc" id="L367">			adblCollateralizedNegativeExposure[iVertexIndex] = 0.;</span>
 
-<span class="fc bfc" id="L369" title="All 2 branches covered.">		for (int iPathIndex = 0; iPathIndex &lt; iNumPath; ++iPathIndex) {</span>
-<span class="fc" id="L370">			double[] adblPathCollateralizedNegativeExposure =</span>
-<span class="fc" id="L371">				_aPEA[iPathIndex].collateralizedNegativeExposure();</span>
+<span class="nc bnc" id="L369" title="All 2 branches missed.">		for (int iPathIndex = 0; iPathIndex &lt; iNumPath; ++iPathIndex) {</span>
+<span class="nc" id="L370">			double[] adblPathCollateralizedNegativeExposure =</span>
+<span class="nc" id="L371">				_aPEA[iPathIndex].collateralizedNegativeExposure();</span>
 
-<span class="fc bfc" id="L373" title="All 2 branches covered.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="fc" id="L374">				adblCollateralizedNegativeExposure[iVertexIndex] +=</span>
+<span class="nc bnc" id="L373" title="All 2 branches missed.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
+<span class="nc" id="L374">				adblCollateralizedNegativeExposure[iVertexIndex] +=</span>
 					adblPathCollateralizedNegativeExposure[iVertexIndex];
 		}
 
-<span class="fc bfc" id="L378" title="All 2 branches covered.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="fc" id="L379">			adblCollateralizedNegativeExposure[iVertexIndex] /= iNumPath;</span>
+<span class="nc bnc" id="L378" title="All 2 branches missed.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
+<span class="nc" id="L379">			adblCollateralizedNegativeExposure[iVertexIndex] /= iNumPath;</span>
 
-<span class="fc" id="L381">		return adblCollateralizedNegativeExposure;</span>
+<span class="nc" id="L381">		return adblCollateralizedNegativeExposure;</span>
 	}
 
 	/**
@@ -389,27 +389,27 @@ public class ExposureAdjustmentAggregator {
 
 	public double[] collateralizedNegativeExposurePV()
 	{
-<span class="fc" id="L392">		int iNumVertex = anchors().length;</span>
+<span class="nc" id="L392">		int iNumVertex = anchors().length;</span>
 
-<span class="fc" id="L394">		int iNumPath = _aPEA.length;</span>
-<span class="fc" id="L395">		double[] adblCollateralizedNegativeExposurePV = new double[iNumVertex];</span>
+<span class="nc" id="L394">		int iNumPath = _aPEA.length;</span>
+<span class="nc" id="L395">		double[] adblCollateralizedNegativeExposurePV = new double[iNumVertex];</span>
 
-<span class="fc bfc" id="L397" title="All 2 branches covered.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="fc" id="L398">			adblCollateralizedNegativeExposurePV[iVertexIndex] = 0.;</span>
+<span class="nc bnc" id="L397" title="All 2 branches missed.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
+<span class="nc" id="L398">			adblCollateralizedNegativeExposurePV[iVertexIndex] = 0.;</span>
 
-<span class="fc bfc" id="L400" title="All 2 branches covered.">		for (int iPathIndex = 0; iPathIndex &lt; iNumPath; ++iPathIndex) {</span>
-<span class="fc" id="L401">			double[] adblPathCollateralizedNegativeExposurePV =</span>
-<span class="fc" id="L402">				_aPEA[iPathIndex].collateralizedNegativeExposurePV();</span>
+<span class="nc bnc" id="L400" title="All 2 branches missed.">		for (int iPathIndex = 0; iPathIndex &lt; iNumPath; ++iPathIndex) {</span>
+<span class="nc" id="L401">			double[] adblPathCollateralizedNegativeExposurePV =</span>
+<span class="nc" id="L402">				_aPEA[iPathIndex].collateralizedNegativeExposurePV();</span>
 
-<span class="fc bfc" id="L404" title="All 2 branches covered.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="fc" id="L405">				adblCollateralizedNegativeExposurePV[iVertexIndex] +=</span>
+<span class="nc bnc" id="L404" title="All 2 branches missed.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
+<span class="nc" id="L405">				adblCollateralizedNegativeExposurePV[iVertexIndex] +=</span>
 					adblPathCollateralizedNegativeExposurePV[iVertexIndex];
 		}
 
-<span class="fc bfc" id="L409" title="All 2 branches covered.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="fc" id="L410">			adblCollateralizedNegativeExposurePV[iVertexIndex] /= iNumPath;</span>
+<span class="nc bnc" id="L409" title="All 2 branches missed.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
+<span class="nc" id="L410">			adblCollateralizedNegativeExposurePV[iVertexIndex] /= iNumPath;</span>
 
-<span class="fc" id="L412">		return adblCollateralizedNegativeExposurePV;</span>
+<span class="nc" id="L412">		return adblCollateralizedNegativeExposurePV;</span>
 	}
 
 	/**
@@ -725,19 +725,19 @@ public class ExposureAdjustmentAggregator {
 
 	public org.drip.xva.basel.ValueAdjustment ucva()
 	{
-<span class="fc" id="L728">		double dblUCVA = 0.;</span>
-<span class="fc" id="L729">		int iNumPath = _aPEA.length;</span>
+<span class="nc" id="L728">		double dblUCVA = 0.;</span>
+<span class="nc" id="L729">		int iNumPath = _aPEA.length;</span>
 
 		try {
-<span class="fc bfc" id="L732" title="All 2 branches covered.">			for (int iPathIndex = 0; iPathIndex &lt; iNumPath; ++iPathIndex)</span>
-<span class="fc" id="L733">				dblUCVA += _aPEA[iPathIndex].unilateralCreditAdjustment();</span>
+<span class="nc bnc" id="L732" title="All 2 branches missed.">			for (int iPathIndex = 0; iPathIndex &lt; iNumPath; ++iPathIndex)</span>
+<span class="nc" id="L733">				dblUCVA += _aPEA[iPathIndex].unilateralCreditAdjustment();</span>
 <span class="nc" id="L734">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L735">			e.printStackTrace();</span>
 
 <span class="nc" id="L737">			return null;</span>
-<span class="fc" id="L738">		}</span>
+<span class="nc" id="L738">		}</span>
 
-<span class="fc" id="L740">		return org.drip.xva.basel.ValueAdjustment.UCVA (dblUCVA / iNumPath);</span>
+<span class="nc" id="L740">		return org.drip.xva.basel.ValueAdjustment.UCVA (dblUCVA / iNumPath);</span>
 	}
 
 	/**
@@ -748,19 +748,19 @@ public class ExposureAdjustmentAggregator {
 
 	public org.drip.xva.basel.ValueAdjustment ftdcva()
 	{
-<span class="fc" id="L751">		double dblFTDCVA = 0.;</span>
-<span class="fc" id="L752">		int iNumPath = _aPEA.length;</span>
+<span class="nc" id="L751">		double dblFTDCVA = 0.;</span>
+<span class="nc" id="L752">		int iNumPath = _aPEA.length;</span>
 
 		try {
-<span class="fc bfc" id="L755" title="All 2 branches covered.">			for (int iPathIndex = 0; iPathIndex &lt; iNumPath; ++iPathIndex)</span>
-<span class="fc" id="L756">				dblFTDCVA += _aPEA[iPathIndex].bilateralCreditAdjustment();</span>
+<span class="nc bnc" id="L755" title="All 2 branches missed.">			for (int iPathIndex = 0; iPathIndex &lt; iNumPath; ++iPathIndex)</span>
+<span class="nc" id="L756">				dblFTDCVA += _aPEA[iPathIndex].bilateralCreditAdjustment();</span>
 <span class="nc" id="L757">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L758">			e.printStackTrace();</span>
 
 <span class="nc" id="L760">			return null;</span>
-<span class="fc" id="L761">		}</span>
+<span class="nc" id="L761">		}</span>
 
-<span class="fc" id="L763">		return org.drip.xva.basel.ValueAdjustment.FTDCVA (dblFTDCVA / iNumPath);</span>
+<span class="nc" id="L763">		return org.drip.xva.basel.ValueAdjustment.FTDCVA (dblFTDCVA / iNumPath);</span>
 	}
 
 	/**
@@ -771,7 +771,7 @@ public class ExposureAdjustmentAggregator {
 
 	public org.drip.xva.basel.ValueAdjustment cva()
 	{
-<span class="fc" id="L774">		return ftdcva();</span>
+<span class="nc" id="L774">		return ftdcva();</span>
 	}
 
 	/**
@@ -782,19 +782,19 @@ public class ExposureAdjustmentAggregator {
 
 	public org.drip.xva.basel.ValueAdjustment cvacl()
 	{
-<span class="fc" id="L785">		double dblCVACL = 0.;</span>
-<span class="fc" id="L786">		int iNumPath = _aPEA.length;</span>
+<span class="nc" id="L785">		double dblCVACL = 0.;</span>
+<span class="nc" id="L786">		int iNumPath = _aPEA.length;</span>
 
 		try {
-<span class="fc bfc" id="L789" title="All 2 branches covered.">			for (int iPathIndex = 0; iPathIndex &lt; iNumPath; ++iPathIndex)</span>
-<span class="fc" id="L790">				dblCVACL += _aPEA[iPathIndex].contraLiabilityCreditAdjustment();</span>
+<span class="nc bnc" id="L789" title="All 2 branches missed.">			for (int iPathIndex = 0; iPathIndex &lt; iNumPath; ++iPathIndex)</span>
+<span class="nc" id="L790">				dblCVACL += _aPEA[iPathIndex].contraLiabilityCreditAdjustment();</span>
 <span class="nc" id="L791">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L792">			e.printStackTrace();</span>
 
 <span class="nc" id="L794">			return null;</span>
-<span class="fc" id="L795">		}</span>
+<span class="nc" id="L795">		}</span>
 
-<span class="fc" id="L797">		return org.drip.xva.basel.ValueAdjustment.CVACL (dblCVACL / iNumPath);</span>
+<span class="nc" id="L797">		return org.drip.xva.basel.ValueAdjustment.CVACL (dblCVACL / iNumPath);</span>
 	}
 
 	/**
@@ -805,13 +805,13 @@ public class ExposureAdjustmentAggregator {
 
 	public org.drip.xva.basel.ValueAdjustment dva()
 	{
-<span class="fc" id="L808">		double dblDVA = 0.;</span>
-<span class="fc" id="L809">		int iNumPath = _aPEA.length;</span>
+<span class="nc" id="L808">		double dblDVA = 0.;</span>
+<span class="nc" id="L809">		int iNumPath = _aPEA.length;</span>
 
-<span class="fc bfc" id="L811" title="All 2 branches covered.">		for (int iPathIndex = 0; iPathIndex &lt; iNumPath; ++iPathIndex)</span>
-<span class="fc" id="L812">			dblDVA += _aPEA[iPathIndex].debtAdjustment();</span>
+<span class="nc bnc" id="L811" title="All 2 branches missed.">		for (int iPathIndex = 0; iPathIndex &lt; iNumPath; ++iPathIndex)</span>
+<span class="nc" id="L812">			dblDVA += _aPEA[iPathIndex].debtAdjustment();</span>
 
-<span class="fc" id="L814">		return org.drip.xva.basel.ValueAdjustment.DVA (dblDVA / iNumPath);</span>
+<span class="nc" id="L814">		return org.drip.xva.basel.ValueAdjustment.DVA (dblDVA / iNumPath);</span>
 	}
 
 	/**
@@ -822,19 +822,19 @@ public class ExposureAdjustmentAggregator {
 
 	public org.drip.xva.basel.ValueAdjustment fva()
 	{
-<span class="fc" id="L825">		double dblFVA = 0.;</span>
-<span class="fc" id="L826">		int iNumPath = _aPEA.length;</span>
+<span class="nc" id="L825">		double dblFVA = 0.;</span>
+<span class="nc" id="L826">		int iNumPath = _aPEA.length;</span>
 
 		try {
-<span class="fc bfc" id="L829" title="All 2 branches covered.">			for (int iPathIndex = 0; iPathIndex &lt; iNumPath; ++iPathIndex)</span>
-<span class="fc" id="L830">				dblFVA += _aPEA[iPathIndex].fundingValueAdjustment();</span>
+<span class="nc bnc" id="L829" title="All 2 branches missed.">			for (int iPathIndex = 0; iPathIndex &lt; iNumPath; ++iPathIndex)</span>
+<span class="nc" id="L830">				dblFVA += _aPEA[iPathIndex].fundingValueAdjustment();</span>
 <span class="nc" id="L831">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L832">			e.printStackTrace();</span>
 
 <span class="nc" id="L834">			return null;</span>
-<span class="fc" id="L835">		}</span>
+<span class="nc" id="L835">		}</span>
 
-<span class="fc" id="L837">		return org.drip.xva.basel.ValueAdjustment.FVA (dblFVA / iNumPath);</span>
+<span class="nc" id="L837">		return org.drip.xva.basel.ValueAdjustment.FVA (dblFVA / iNumPath);</span>
 	}
 
 	/**
@@ -845,19 +845,19 @@ public class ExposureAdjustmentAggregator {
 
 	public org.drip.xva.basel.ValueAdjustment fda()
 	{
-<span class="fc" id="L848">		double dblFDA = 0.;</span>
-<span class="fc" id="L849">		int iNumPath = _aPEA.length;</span>
+<span class="nc" id="L848">		double dblFDA = 0.;</span>
+<span class="nc" id="L849">		int iNumPath = _aPEA.length;</span>
 
 		try {
-<span class="fc bfc" id="L852" title="All 2 branches covered.">			for (int iPathIndex = 0; iPathIndex &lt; iNumPath; ++iPathIndex)</span>
-<span class="fc" id="L853">				dblFDA += _aPEA[iPathIndex].fundingDebtAdjustment();</span>
+<span class="nc bnc" id="L852" title="All 2 branches missed.">			for (int iPathIndex = 0; iPathIndex &lt; iNumPath; ++iPathIndex)</span>
+<span class="nc" id="L853">				dblFDA += _aPEA[iPathIndex].fundingDebtAdjustment();</span>
 <span class="nc" id="L854">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L855">			e.printStackTrace();</span>
 
 <span class="nc" id="L857">			return null;</span>
-<span class="fc" id="L858">		}</span>
+<span class="nc" id="L858">		}</span>
 
-<span class="fc" id="L860">		return org.drip.xva.basel.ValueAdjustment.FDA (dblFDA / iNumPath);</span>
+<span class="nc" id="L860">		return org.drip.xva.basel.ValueAdjustment.FDA (dblFDA / iNumPath);</span>
 	}
 
 	/**
@@ -868,13 +868,13 @@ public class ExposureAdjustmentAggregator {
 
 	public org.drip.xva.basel.ValueAdjustment fca()
 	{
-<span class="fc" id="L871">		double dblFCA = 0.;</span>
-<span class="fc" id="L872">		int iNumPath = _aPEA.length;</span>
+<span class="nc" id="L871">		double dblFCA = 0.;</span>
+<span class="nc" id="L872">		int iNumPath = _aPEA.length;</span>
 
-<span class="fc bfc" id="L874" title="All 2 branches covered.">		for (int iPathIndex = 0; iPathIndex &lt; iNumPath; ++iPathIndex)</span>
-<span class="fc" id="L875">			dblFCA += _aPEA[iPathIndex].fundingCostAdjustment();</span>
+<span class="nc bnc" id="L874" title="All 2 branches missed.">		for (int iPathIndex = 0; iPathIndex &lt; iNumPath; ++iPathIndex)</span>
+<span class="nc" id="L875">			dblFCA += _aPEA[iPathIndex].fundingCostAdjustment();</span>
 
-<span class="fc" id="L877">		return org.drip.xva.basel.ValueAdjustment.HYBRID (dblFCA / iNumPath);</span>
+<span class="nc" id="L877">		return org.drip.xva.basel.ValueAdjustment.HYBRID (dblFCA / iNumPath);</span>
 	}
 
 	/**
@@ -885,13 +885,13 @@ public class ExposureAdjustmentAggregator {
 
 	public org.drip.xva.basel.ValueAdjustment fba()
 	{
-<span class="fc" id="L888">		double dblFBA = 0.;</span>
-<span class="fc" id="L889">		int iNumPath = _aPEA.length;</span>
+<span class="nc" id="L888">		double dblFBA = 0.;</span>
+<span class="nc" id="L889">		int iNumPath = _aPEA.length;</span>
 
-<span class="fc bfc" id="L891" title="All 2 branches covered.">		for (int iPathIndex = 0; iPathIndex &lt; iNumPath; ++iPathIndex)</span>
-<span class="fc" id="L892">			dblFBA += _aPEA[iPathIndex].fundingBenefitAdjustment();</span>
+<span class="nc bnc" id="L891" title="All 2 branches missed.">		for (int iPathIndex = 0; iPathIndex &lt; iNumPath; ++iPathIndex)</span>
+<span class="nc" id="L892">			dblFBA += _aPEA[iPathIndex].fundingBenefitAdjustment();</span>
 
-<span class="fc" id="L894">		return org.drip.xva.basel.ValueAdjustment.HYBRID (dblFBA / iNumPath);</span>
+<span class="nc" id="L894">		return org.drip.xva.basel.ValueAdjustment.HYBRID (dblFBA / iNumPath);</span>
 	}
 
 	/**
@@ -902,13 +902,13 @@ public class ExposureAdjustmentAggregator {
 
 	public org.drip.xva.basel.ValueAdjustment sfva()
 	{
-<span class="fc" id="L905">		double dblSFVA = 0.;</span>
-<span class="fc" id="L906">		int iNumPath = _aPEA.length;</span>
+<span class="nc" id="L905">		double dblSFVA = 0.;</span>
+<span class="nc" id="L906">		int iNumPath = _aPEA.length;</span>
 
-<span class="fc bfc" id="L908" title="All 2 branches covered.">		for (int iPathIndex = 0; iPathIndex &lt; iNumPath; ++iPathIndex)</span>
-<span class="fc" id="L909">			dblSFVA += _aPEA[iPathIndex].symmetricFundingValueAdjustment();</span>
+<span class="nc bnc" id="L908" title="All 2 branches missed.">		for (int iPathIndex = 0; iPathIndex &lt; iNumPath; ++iPathIndex)</span>
+<span class="nc" id="L909">			dblSFVA += _aPEA[iPathIndex].symmetricFundingValueAdjustment();</span>
 
-<span class="fc" id="L911">		return org.drip.xva.basel.ValueAdjustment.HYBRID (dblSFVA / iNumPath);</span>
+<span class="nc" id="L911">		return org.drip.xva.basel.ValueAdjustment.HYBRID (dblSFVA / iNumPath);</span>
 	}
 
 	/**
@@ -930,171 +930,171 @@ public class ExposureAdjustmentAggregator {
 
 	public org.drip.xva.cpty.ExposureAdjustmentDigest digest()
 	{
-<span class="fc" id="L933">		int iNumVertex = anchors().length;</span>
+<span class="nc" id="L933">		int iNumVertex = anchors().length;</span>
 
-<span class="fc" id="L935">		int iNumPath = _aPEA.length;</span>
-<span class="fc" id="L936">		double[] adblCVA = new double[iNumPath];</span>
-<span class="fc" id="L937">		double[] adblDVA = new double[iNumPath];</span>
-<span class="fc" id="L938">		double[] adblFBA = new double[iNumPath];</span>
-<span class="fc" id="L939">		double[] adblFCA = new double[iNumPath];</span>
-<span class="fc" id="L940">		double[] adblFDA = new double[iNumPath];</span>
-<span class="fc" id="L941">		double[] adblFVA = new double[iNumPath];</span>
-<span class="fc" id="L942">		double[] adblUCVA = new double[iNumPath];</span>
-<span class="fc" id="L943">		double[] adblSFVA = new double[iNumPath];</span>
-<span class="fc" id="L944">		double[] adblCVACL = new double[iNumPath];</span>
-<span class="fc" id="L945">		double[] adblFTDCVA = new double[iNumPath];</span>
-<span class="fc" id="L946">		double[] adblUCOLVA = new double[iNumPath];</span>
-<span class="fc" id="L947">		double[] adblTotalVA = new double[iNumPath];</span>
-<span class="fc" id="L948">		double[] adblFTDCOLVA = new double[iNumPath];</span>
-<span class="fc" id="L949">		double[][] aadblDebtExposure = new double[iNumVertex][iNumPath];</span>
-<span class="fc" id="L950">		double[][] aadblCreditExposure = new double[iNumVertex][iNumPath];</span>
-<span class="fc" id="L951">		double[][] aadblDebtExposurePV = new double[iNumVertex][iNumPath];</span>
-<span class="fc" id="L952">		double[][] aadblFundingExposure = new double[iNumVertex][iNumPath];</span>
-<span class="fc" id="L953">		double[][] aadblCreditExposurePV = new double[iNumVertex][iNumPath];</span>
-<span class="fc" id="L954">		double[][] aadblFundingExposurePV = new double[iNumVertex][iNumPath];</span>
-<span class="fc" id="L955">		double[][] aadblCollateralizedExposure = new double[iNumVertex][iNumPath];</span>
-<span class="fc" id="L956">		double[][] aadblUncollateralizedExposure = new double[iNumVertex][iNumPath];</span>
-<span class="fc" id="L957">		double[][] aadblCollateralizedExposurePV = new double[iNumVertex][iNumPath];</span>
-<span class="fc" id="L958">		double[][] aadblUncollateralizedExposurePV = new double[iNumVertex][iNumPath];</span>
-<span class="fc" id="L959">		double[][] aadblCollateralizedPositiveExposure = new double[iNumVertex][iNumPath];</span>
-<span class="fc" id="L960">		double[][] aadblCollateralizedNegativeExposure = new double[iNumVertex][iNumPath];</span>
-<span class="fc" id="L961">		double[][] aadblUncollateralizedPositiveExposure = new double[iNumVertex][iNumPath];</span>
-<span class="fc" id="L962">		double[][] aadblUncollateralizedNegativeExposure = new double[iNumVertex][iNumPath];</span>
-<span class="fc" id="L963">		double[][] aadblCollateralizedPositiveExposurePV = new double[iNumVertex][iNumPath];</span>
-<span class="fc" id="L964">		double[][] aadblCollateralizedNegativeExposurePV = new double[iNumVertex][iNumPath];</span>
-<span class="fc" id="L965">		double[][] aadblUncollateralizedPositiveExposurePV = new double[iNumVertex][iNumPath];</span>
-<span class="fc" id="L966">		double[][] aadblUncollateralizedNegativeExposurePV = new double[iNumVertex][iNumPath];</span>
+<span class="nc" id="L935">		int iNumPath = _aPEA.length;</span>
+<span class="nc" id="L936">		double[] adblCVA = new double[iNumPath];</span>
+<span class="nc" id="L937">		double[] adblDVA = new double[iNumPath];</span>
+<span class="nc" id="L938">		double[] adblFBA = new double[iNumPath];</span>
+<span class="nc" id="L939">		double[] adblFCA = new double[iNumPath];</span>
+<span class="nc" id="L940">		double[] adblFDA = new double[iNumPath];</span>
+<span class="nc" id="L941">		double[] adblFVA = new double[iNumPath];</span>
+<span class="nc" id="L942">		double[] adblUCVA = new double[iNumPath];</span>
+<span class="nc" id="L943">		double[] adblSFVA = new double[iNumPath];</span>
+<span class="nc" id="L944">		double[] adblCVACL = new double[iNumPath];</span>
+<span class="nc" id="L945">		double[] adblFTDCVA = new double[iNumPath];</span>
+<span class="nc" id="L946">		double[] adblUCOLVA = new double[iNumPath];</span>
+<span class="nc" id="L947">		double[] adblTotalVA = new double[iNumPath];</span>
+<span class="nc" id="L948">		double[] adblFTDCOLVA = new double[iNumPath];</span>
+<span class="nc" id="L949">		double[][] aadblDebtExposure = new double[iNumVertex][iNumPath];</span>
+<span class="nc" id="L950">		double[][] aadblCreditExposure = new double[iNumVertex][iNumPath];</span>
+<span class="nc" id="L951">		double[][] aadblDebtExposurePV = new double[iNumVertex][iNumPath];</span>
+<span class="nc" id="L952">		double[][] aadblFundingExposure = new double[iNumVertex][iNumPath];</span>
+<span class="nc" id="L953">		double[][] aadblCreditExposurePV = new double[iNumVertex][iNumPath];</span>
+<span class="nc" id="L954">		double[][] aadblFundingExposurePV = new double[iNumVertex][iNumPath];</span>
+<span class="nc" id="L955">		double[][] aadblCollateralizedExposure = new double[iNumVertex][iNumPath];</span>
+<span class="nc" id="L956">		double[][] aadblUncollateralizedExposure = new double[iNumVertex][iNumPath];</span>
+<span class="nc" id="L957">		double[][] aadblCollateralizedExposurePV = new double[iNumVertex][iNumPath];</span>
+<span class="nc" id="L958">		double[][] aadblUncollateralizedExposurePV = new double[iNumVertex][iNumPath];</span>
+<span class="nc" id="L959">		double[][] aadblCollateralizedPositiveExposure = new double[iNumVertex][iNumPath];</span>
+<span class="nc" id="L960">		double[][] aadblCollateralizedNegativeExposure = new double[iNumVertex][iNumPath];</span>
+<span class="nc" id="L961">		double[][] aadblUncollateralizedPositiveExposure = new double[iNumVertex][iNumPath];</span>
+<span class="nc" id="L962">		double[][] aadblUncollateralizedNegativeExposure = new double[iNumVertex][iNumPath];</span>
+<span class="nc" id="L963">		double[][] aadblCollateralizedPositiveExposurePV = new double[iNumVertex][iNumPath];</span>
+<span class="nc" id="L964">		double[][] aadblCollateralizedNegativeExposurePV = new double[iNumVertex][iNumPath];</span>
+<span class="nc" id="L965">		double[][] aadblUncollateralizedPositiveExposurePV = new double[iNumVertex][iNumPath];</span>
+<span class="nc" id="L966">		double[][] aadblUncollateralizedNegativeExposurePV = new double[iNumVertex][iNumPath];</span>
 
-<span class="fc bfc" id="L968" title="All 2 branches covered.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex) {</span>
-<span class="fc bfc" id="L969" title="All 2 branches covered.">			for (int iPathIndex = 0; iPathIndex &lt; iNumPath; ++iPathIndex) {</span>
-<span class="fc" id="L970">				aadblCollateralizedExposure[iVertexIndex][iPathIndex] = 0.;</span>
-<span class="fc" id="L971">				aadblUncollateralizedExposure[iVertexIndex][iPathIndex] = 0.;</span>
-<span class="fc" id="L972">				aadblCollateralizedExposurePV[iVertexIndex][iPathIndex] = 0.;</span>
-<span class="fc" id="L973">				aadblUncollateralizedExposurePV[iVertexIndex][iPathIndex] = 0.;</span>
-<span class="fc" id="L974">				aadblCollateralizedPositiveExposure[iVertexIndex][iPathIndex] = 0.;</span>
-<span class="fc" id="L975">				aadblCollateralizedNegativeExposure[iVertexIndex][iPathIndex] = 0.;</span>
-<span class="fc" id="L976">				aadblUncollateralizedPositiveExposure[iVertexIndex][iPathIndex] = 0.;</span>
-<span class="fc" id="L977">				aadblUncollateralizedNegativeExposure[iVertexIndex][iPathIndex] = 0.;</span>
-<span class="fc" id="L978">				aadblCollateralizedPositiveExposurePV[iVertexIndex][iPathIndex] = 0.;</span>
-<span class="fc" id="L979">				aadblCollateralizedNegativeExposurePV[iVertexIndex][iPathIndex] = 0.;</span>
-<span class="fc" id="L980">				aadblUncollateralizedPositiveExposurePV[iVertexIndex][iPathIndex] = 0.;</span>
-<span class="fc" id="L981">				aadblUncollateralizedNegativeExposurePV[iVertexIndex][iPathIndex] = 0.;</span>
+<span class="nc bnc" id="L968" title="All 2 branches missed.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex) {</span>
+<span class="nc bnc" id="L969" title="All 2 branches missed.">			for (int iPathIndex = 0; iPathIndex &lt; iNumPath; ++iPathIndex) {</span>
+<span class="nc" id="L970">				aadblCollateralizedExposure[iVertexIndex][iPathIndex] = 0.;</span>
+<span class="nc" id="L971">				aadblUncollateralizedExposure[iVertexIndex][iPathIndex] = 0.;</span>
+<span class="nc" id="L972">				aadblCollateralizedExposurePV[iVertexIndex][iPathIndex] = 0.;</span>
+<span class="nc" id="L973">				aadblUncollateralizedExposurePV[iVertexIndex][iPathIndex] = 0.;</span>
+<span class="nc" id="L974">				aadblCollateralizedPositiveExposure[iVertexIndex][iPathIndex] = 0.;</span>
+<span class="nc" id="L975">				aadblCollateralizedNegativeExposure[iVertexIndex][iPathIndex] = 0.;</span>
+<span class="nc" id="L976">				aadblUncollateralizedPositiveExposure[iVertexIndex][iPathIndex] = 0.;</span>
+<span class="nc" id="L977">				aadblUncollateralizedNegativeExposure[iVertexIndex][iPathIndex] = 0.;</span>
+<span class="nc" id="L978">				aadblCollateralizedPositiveExposurePV[iVertexIndex][iPathIndex] = 0.;</span>
+<span class="nc" id="L979">				aadblCollateralizedNegativeExposurePV[iVertexIndex][iPathIndex] = 0.;</span>
+<span class="nc" id="L980">				aadblUncollateralizedPositiveExposurePV[iVertexIndex][iPathIndex] = 0.;</span>
+<span class="nc" id="L981">				aadblUncollateralizedNegativeExposurePV[iVertexIndex][iPathIndex] = 0.;</span>
 			}
 		}
 
-<span class="fc bfc" id="L985" title="All 2 branches covered.">		for (int iPathIndex = 0; iPathIndex &lt; iNumPath; ++iPathIndex) {</span>
-<span class="fc" id="L986">			double[] adblPathCollateralizedExposure = _aPEA[iPathIndex].collateralizedExposure();</span>
+<span class="nc bnc" id="L985" title="All 2 branches missed.">		for (int iPathIndex = 0; iPathIndex &lt; iNumPath; ++iPathIndex) {</span>
+<span class="nc" id="L986">			double[] adblPathCollateralizedExposure = _aPEA[iPathIndex].collateralizedExposure();</span>
 
-<span class="fc" id="L988">			double[] adblPathCollateralizedExposurePV = _aPEA[iPathIndex].collateralizedExposurePV();</span>
+<span class="nc" id="L988">			double[] adblPathCollateralizedExposurePV = _aPEA[iPathIndex].collateralizedExposurePV();</span>
 
-<span class="fc" id="L990">			double[] adblPathCollateralizedPositiveExposure =</span>
-<span class="fc" id="L991">				_aPEA[iPathIndex].collateralizedPositiveExposure();</span>
+<span class="nc" id="L990">			double[] adblPathCollateralizedPositiveExposure =</span>
+<span class="nc" id="L991">				_aPEA[iPathIndex].collateralizedPositiveExposure();</span>
 
-<span class="fc" id="L993">			double[] adblPathCollateralizedPositiveExposurePV =</span>
-<span class="fc" id="L994">				_aPEA[iPathIndex].collateralizedPositiveExposurePV();</span>
+<span class="nc" id="L993">			double[] adblPathCollateralizedPositiveExposurePV =</span>
+<span class="nc" id="L994">				_aPEA[iPathIndex].collateralizedPositiveExposurePV();</span>
 
-<span class="fc" id="L996">			double[] adblPathCollateralizedNegativeExposure =</span>
-<span class="fc" id="L997">				_aPEA[iPathIndex].collateralizedNegativeExposure();</span>
+<span class="nc" id="L996">			double[] adblPathCollateralizedNegativeExposure =</span>
+<span class="nc" id="L997">				_aPEA[iPathIndex].collateralizedNegativeExposure();</span>
 
-<span class="fc" id="L999">			double[] adblPathCollateralizedNegativeExposurePV =</span>
-<span class="fc" id="L1000">				_aPEA[iPathIndex].collateralizedNegativeExposurePV();</span>
+<span class="nc" id="L999">			double[] adblPathCollateralizedNegativeExposurePV =</span>
+<span class="nc" id="L1000">				_aPEA[iPathIndex].collateralizedNegativeExposurePV();</span>
 
-<span class="fc" id="L1002">			double[] adblPathUncollateralizedExposure = _aPEA[iPathIndex].uncollateralizedExposure();</span>
+<span class="nc" id="L1002">			double[] adblPathUncollateralizedExposure = _aPEA[iPathIndex].uncollateralizedExposure();</span>
 
-<span class="fc" id="L1004">			double[] adblPathUncollateralizedExposurePV = _aPEA[iPathIndex].uncollateralizedExposurePV();</span>
+<span class="nc" id="L1004">			double[] adblPathUncollateralizedExposurePV = _aPEA[iPathIndex].uncollateralizedExposurePV();</span>
 
-<span class="fc" id="L1006">			double[] adblPathUncollateralizedPositiveExposure =</span>
-<span class="fc" id="L1007">				_aPEA[iPathIndex].uncollateralizedPositiveExposure();</span>
+<span class="nc" id="L1006">			double[] adblPathUncollateralizedPositiveExposure =</span>
+<span class="nc" id="L1007">				_aPEA[iPathIndex].uncollateralizedPositiveExposure();</span>
 
-<span class="fc" id="L1009">			double[] adblPathUncollateralizedPositiveExposurePV =</span>
-<span class="fc" id="L1010">				_aPEA[iPathIndex].uncollateralizedPositiveExposurePV();</span>
+<span class="nc" id="L1009">			double[] adblPathUncollateralizedPositiveExposurePV =</span>
+<span class="nc" id="L1010">				_aPEA[iPathIndex].uncollateralizedPositiveExposurePV();</span>
 
-<span class="fc" id="L1012">			double[] adblPathUncollateralizedNegativeExposure =</span>
-<span class="fc" id="L1013">				_aPEA[iPathIndex].uncollateralizedNegativeExposure();</span>
+<span class="nc" id="L1012">			double[] adblPathUncollateralizedNegativeExposure =</span>
+<span class="nc" id="L1013">				_aPEA[iPathIndex].uncollateralizedNegativeExposure();</span>
 
-<span class="fc" id="L1015">			double[] adblPathUncollateralizedNegativeExposurePV =</span>
-<span class="fc" id="L1016">				_aPEA[iPathIndex].uncollateralizedNegativeExposurePV();</span>
+<span class="nc" id="L1015">			double[] adblPathUncollateralizedNegativeExposurePV =</span>
+<span class="nc" id="L1016">				_aPEA[iPathIndex].uncollateralizedNegativeExposurePV();</span>
 
-<span class="fc" id="L1018">			double[] adblPathCreditExposure = _aPEA[iPathIndex].creditExposure();</span>
+<span class="nc" id="L1018">			double[] adblPathCreditExposure = _aPEA[iPathIndex].creditExposure();</span>
 
-<span class="fc" id="L1020">			double[] adblPathCreditExposurePV = _aPEA[iPathIndex].creditExposurePV();</span>
+<span class="nc" id="L1020">			double[] adblPathCreditExposurePV = _aPEA[iPathIndex].creditExposurePV();</span>
 
-<span class="fc" id="L1022">			double[] adblPathDebtExposure = _aPEA[iPathIndex].debtExposure();</span>
+<span class="nc" id="L1022">			double[] adblPathDebtExposure = _aPEA[iPathIndex].debtExposure();</span>
 
-<span class="fc" id="L1024">			double[] adblPathDebtExposurePV = _aPEA[iPathIndex].debtExposurePV();</span>
+<span class="nc" id="L1024">			double[] adblPathDebtExposurePV = _aPEA[iPathIndex].debtExposurePV();</span>
 
-<span class="fc" id="L1026">			double[] adblPathFundingExposure = _aPEA[iPathIndex].fundingExposure();</span>
+<span class="nc" id="L1026">			double[] adblPathFundingExposure = _aPEA[iPathIndex].fundingExposure();</span>
 
-<span class="fc" id="L1028">			double[] adblPathFundingExposurePV = _aPEA[iPathIndex].fundingExposurePV();</span>
+<span class="nc" id="L1028">			double[] adblPathFundingExposurePV = _aPEA[iPathIndex].fundingExposurePV();</span>
 
 			try {
-<span class="fc" id="L1031">				adblCVA[iPathIndex] = _aPEA[iPathIndex].creditAdjustment();</span>
+<span class="nc" id="L1031">				adblCVA[iPathIndex] = _aPEA[iPathIndex].creditAdjustment();</span>
 
-<span class="fc" id="L1033">				adblDVA[iPathIndex] = _aPEA[iPathIndex].debtAdjustment();</span>
+<span class="nc" id="L1033">				adblDVA[iPathIndex] = _aPEA[iPathIndex].debtAdjustment();</span>
 
-<span class="fc" id="L1035">				adblFCA[iPathIndex] = _aPEA[iPathIndex].fundingCostAdjustment();</span>
+<span class="nc" id="L1035">				adblFCA[iPathIndex] = _aPEA[iPathIndex].fundingCostAdjustment();</span>
 
-<span class="fc" id="L1037">				adblFDA[iPathIndex] = _aPEA[iPathIndex].fundingDebtAdjustment();</span>
+<span class="nc" id="L1037">				adblFDA[iPathIndex] = _aPEA[iPathIndex].fundingDebtAdjustment();</span>
 
-<span class="fc" id="L1039">				adblFVA[iPathIndex] = _aPEA[iPathIndex].fundingValueAdjustment();</span>
+<span class="nc" id="L1039">				adblFVA[iPathIndex] = _aPEA[iPathIndex].fundingValueAdjustment();</span>
 
-<span class="fc" id="L1041">				adblFBA[iPathIndex] = _aPEA[iPathIndex].fundingBenefitAdjustment();</span>
+<span class="nc" id="L1041">				adblFBA[iPathIndex] = _aPEA[iPathIndex].fundingBenefitAdjustment();</span>
 
-<span class="fc" id="L1043">				adblUCVA[iPathIndex] = _aPEA[iPathIndex].unilateralCreditAdjustment();</span>
+<span class="nc" id="L1043">				adblUCVA[iPathIndex] = _aPEA[iPathIndex].unilateralCreditAdjustment();</span>
 
-<span class="fc" id="L1045">				adblSFVA[iPathIndex] = _aPEA[iPathIndex].symmetricFundingValueAdjustment();</span>
+<span class="nc" id="L1045">				adblSFVA[iPathIndex] = _aPEA[iPathIndex].symmetricFundingValueAdjustment();</span>
 
-<span class="fc" id="L1047">				adblCVACL[iPathIndex] = _aPEA[iPathIndex].contraLiabilityCreditAdjustment();</span>
+<span class="nc" id="L1047">				adblCVACL[iPathIndex] = _aPEA[iPathIndex].contraLiabilityCreditAdjustment();</span>
 
-<span class="fc" id="L1049">				adblFTDCVA[iPathIndex] = _aPEA[iPathIndex].bilateralCreditAdjustment();</span>
+<span class="nc" id="L1049">				adblFTDCVA[iPathIndex] = _aPEA[iPathIndex].bilateralCreditAdjustment();</span>
 
-<span class="fc" id="L1051">				adblUCOLVA[iPathIndex] = _aPEA[iPathIndex].unilateralCollateralAdjustment();</span>
+<span class="nc" id="L1051">				adblUCOLVA[iPathIndex] = _aPEA[iPathIndex].unilateralCollateralAdjustment();</span>
 
-<span class="fc" id="L1053">				adblFTDCOLVA[iPathIndex] = _aPEA[iPathIndex].bilateralCollateralAdjustment();</span>
+<span class="nc" id="L1053">				adblFTDCOLVA[iPathIndex] = _aPEA[iPathIndex].bilateralCollateralAdjustment();</span>
 
-<span class="fc" id="L1055">				adblTotalVA[iPathIndex] = _aPEA[iPathIndex].totalAdjustment();</span>
+<span class="nc" id="L1055">				adblTotalVA[iPathIndex] = _aPEA[iPathIndex].totalAdjustment();</span>
 <span class="nc" id="L1056">			} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L1057">				e.printStackTrace();</span>
 
 <span class="nc" id="L1059">				return null;</span>
-<span class="fc" id="L1060">			}</span>
+<span class="nc" id="L1060">			}</span>
 
-<span class="fc bfc" id="L1062" title="All 2 branches covered.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex) {</span>
-<span class="fc" id="L1063">				aadblCollateralizedExposure[iVertexIndex][iPathIndex] =</span>
+<span class="nc bnc" id="L1062" title="All 2 branches missed.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex) {</span>
+<span class="nc" id="L1063">				aadblCollateralizedExposure[iVertexIndex][iPathIndex] =</span>
 					adblPathCollateralizedExposure[iVertexIndex];
-<span class="fc" id="L1065">				aadblCollateralizedExposurePV[iVertexIndex][iPathIndex] =</span>
+<span class="nc" id="L1065">				aadblCollateralizedExposurePV[iVertexIndex][iPathIndex] =</span>
 					adblPathCollateralizedExposurePV[iVertexIndex];
-<span class="fc" id="L1067">				aadblCollateralizedPositiveExposure[iVertexIndex][iPathIndex] =</span>
+<span class="nc" id="L1067">				aadblCollateralizedPositiveExposure[iVertexIndex][iPathIndex] =</span>
 					adblPathCollateralizedPositiveExposure[iVertexIndex];
-<span class="fc" id="L1069">				aadblCollateralizedPositiveExposurePV[iVertexIndex][iPathIndex] =</span>
+<span class="nc" id="L1069">				aadblCollateralizedPositiveExposurePV[iVertexIndex][iPathIndex] =</span>
 					adblPathCollateralizedPositiveExposurePV[iVertexIndex];
-<span class="fc" id="L1071">				aadblCollateralizedNegativeExposure[iVertexIndex][iPathIndex] =</span>
+<span class="nc" id="L1071">				aadblCollateralizedNegativeExposure[iVertexIndex][iPathIndex] =</span>
 					adblPathCollateralizedNegativeExposure[iVertexIndex];
-<span class="fc" id="L1073">				aadblCollateralizedNegativeExposurePV[iVertexIndex][iPathIndex] =</span>
+<span class="nc" id="L1073">				aadblCollateralizedNegativeExposurePV[iVertexIndex][iPathIndex] =</span>
 					adblPathCollateralizedNegativeExposurePV[iVertexIndex];
-<span class="fc" id="L1075">				aadblUncollateralizedExposure[iVertexIndex][iPathIndex] =</span>
+<span class="nc" id="L1075">				aadblUncollateralizedExposure[iVertexIndex][iPathIndex] =</span>
 					adblPathUncollateralizedExposure[iVertexIndex];
-<span class="fc" id="L1077">				aadblUncollateralizedExposurePV[iVertexIndex][iPathIndex] =</span>
+<span class="nc" id="L1077">				aadblUncollateralizedExposurePV[iVertexIndex][iPathIndex] =</span>
 					adblPathUncollateralizedExposurePV[iVertexIndex];
-<span class="fc" id="L1079">				aadblUncollateralizedPositiveExposure[iVertexIndex][iPathIndex] =</span>
+<span class="nc" id="L1079">				aadblUncollateralizedPositiveExposure[iVertexIndex][iPathIndex] =</span>
 					adblPathUncollateralizedPositiveExposure[iVertexIndex];
-<span class="fc" id="L1081">				aadblUncollateralizedPositiveExposurePV[iVertexIndex][iPathIndex] =</span>
+<span class="nc" id="L1081">				aadblUncollateralizedPositiveExposurePV[iVertexIndex][iPathIndex] =</span>
 					adblPathUncollateralizedPositiveExposurePV[iVertexIndex];
-<span class="fc" id="L1083">				aadblUncollateralizedNegativeExposure[iVertexIndex][iPathIndex] =</span>
+<span class="nc" id="L1083">				aadblUncollateralizedNegativeExposure[iVertexIndex][iPathIndex] =</span>
 					adblPathUncollateralizedNegativeExposure[iVertexIndex];
-<span class="fc" id="L1085">				aadblUncollateralizedNegativeExposurePV[iVertexIndex][iPathIndex] =</span>
+<span class="nc" id="L1085">				aadblUncollateralizedNegativeExposurePV[iVertexIndex][iPathIndex] =</span>
 					adblPathUncollateralizedNegativeExposurePV[iVertexIndex];
-<span class="fc" id="L1087">				aadblCreditExposure[iVertexIndex][iPathIndex] = adblPathCreditExposure[iVertexIndex];</span>
-<span class="fc" id="L1088">				aadblCreditExposurePV[iVertexIndex][iPathIndex] = adblPathCreditExposurePV[iVertexIndex];</span>
-<span class="fc" id="L1089">				aadblDebtExposure[iVertexIndex][iPathIndex] = adblPathDebtExposure[iVertexIndex];</span>
-<span class="fc" id="L1090">				aadblDebtExposurePV[iVertexIndex][iPathIndex] = adblPathDebtExposurePV[iVertexIndex];</span>
-<span class="fc" id="L1091">				aadblFundingExposure[iVertexIndex][iPathIndex] = adblPathFundingExposure[iVertexIndex];</span>
-<span class="fc" id="L1092">				aadblFundingExposurePV[iVertexIndex][iPathIndex] = adblPathFundingExposurePV[iVertexIndex];</span>
+<span class="nc" id="L1087">				aadblCreditExposure[iVertexIndex][iPathIndex] = adblPathCreditExposure[iVertexIndex];</span>
+<span class="nc" id="L1088">				aadblCreditExposurePV[iVertexIndex][iPathIndex] = adblPathCreditExposurePV[iVertexIndex];</span>
+<span class="nc" id="L1089">				aadblDebtExposure[iVertexIndex][iPathIndex] = adblPathDebtExposure[iVertexIndex];</span>
+<span class="nc" id="L1090">				aadblDebtExposurePV[iVertexIndex][iPathIndex] = adblPathDebtExposurePV[iVertexIndex];</span>
+<span class="nc" id="L1091">				aadblFundingExposure[iVertexIndex][iPathIndex] = adblPathFundingExposure[iVertexIndex];</span>
+<span class="nc" id="L1092">				aadblFundingExposurePV[iVertexIndex][iPathIndex] = adblPathFundingExposurePV[iVertexIndex];</span>
 			}
 		}
 
 		try {
-<span class="fc" id="L1097">			return new org.drip.xva.cpty.ExposureAdjustmentDigest (</span>
+<span class="nc" id="L1097">			return new org.drip.xva.cpty.ExposureAdjustmentDigest (</span>
 				adblUCOLVA,
 				adblFTDCOLVA,
 				adblUCVA,

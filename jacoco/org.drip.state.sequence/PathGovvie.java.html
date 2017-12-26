@@ -55,7 +55,7 @@ package org.drip.state.sequence;
  */
 
 public class PathGovvie extends org.drip.state.sequence.PathRd {
-<span class="nc" id="L58">	private org.drip.state.sequence.GovvieBuilderSettings _gbs = null;</span>
+<span class="fc" id="L58">	private org.drip.state.sequence.GovvieBuilderSettings _gbs = null;</span>
 
 	/**
 	 * PathGovvie Constructor
@@ -73,10 +73,10 @@ public class PathGovvie extends org.drip.state.sequence.PathRd {
 		final boolean bLogNormal)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L76">		super (gbs.groundForwardYield(), dblVolatility, bLogNormal);</span>
+<span class="fc" id="L76">		super (gbs.groundForwardYield(), dblVolatility, bLogNormal);</span>
 
-<span class="nc bnc" id="L78" title="All 2 branches missed.">		if (null == (_gbs = gbs)) throw new java.lang.Exception (&quot;PathGovvie Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L79">	}</span>
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">		if (null == (_gbs = gbs)) throw new java.lang.Exception (&quot;PathGovvie Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L79">	}</span>
 
 	/**
 	 * Generate the Govvie Builder Settings Instance
@@ -86,7 +86,7 @@ public class PathGovvie extends org.drip.state.sequence.PathRd {
 
 	public org.drip.state.sequence.GovvieBuilderSettings govvieBuilderSettings()
 	{
-<span class="nc" id="L89">		return _gbs;</span>
+<span class="fc" id="L89">		return _gbs;</span>
 	}
 
 	/**
@@ -100,46 +100,46 @@ public class PathGovvie extends org.drip.state.sequence.PathRd {
 	public org.drip.state.govvie.GovvieCurve[] curveSequence (
 		final int iNumPath)
 	{
-<span class="nc" id="L103">		java.lang.String strCurrency = _gbs.groundState().currency();</span>
+<span class="fc" id="L103">		java.lang.String strCurrency = _gbs.groundState().currency();</span>
 
-<span class="nc" id="L105">		org.drip.analytics.date.JulianDate dtSpot = _gbs.spot();</span>
+<span class="fc" id="L105">		org.drip.analytics.date.JulianDate dtSpot = _gbs.spot();</span>
 
-<span class="nc" id="L107">		double[][] aadblPathSequence = sequence (iNumPath);</span>
+<span class="fc" id="L107">		double[][] aadblPathSequence = sequence (iNumPath);</span>
 
-<span class="nc" id="L109">		java.lang.String strTreasuryCode = _gbs.code();</span>
+<span class="fc" id="L109">		java.lang.String strTreasuryCode = _gbs.code();</span>
 
-<span class="nc" id="L111">		java.lang.String[] astrTenor = _gbs.tenors();</span>
+<span class="fc" id="L111">		java.lang.String[] astrTenor = _gbs.tenors();</span>
 
-<span class="nc bnc" id="L113" title="All 2 branches missed.">		if (null == aadblPathSequence) return null;</span>
+<span class="pc bpc" id="L113" title="1 of 2 branches missed.">		if (null == aadblPathSequence) return null;</span>
 
-<span class="nc" id="L115">		int iEpochDate = dtSpot.julian();</span>
+<span class="fc" id="L115">		int iEpochDate = dtSpot.julian();</span>
 
-<span class="nc" id="L117">		int iNumTenor = astrTenor.length;</span>
-<span class="nc" id="L118">		int[] aiDate = new int[iNumTenor];</span>
-<span class="nc" id="L119">		org.drip.state.nonlinear.FlatForwardGovvieCurve[] aFFGC = new</span>
+<span class="fc" id="L117">		int iNumTenor = astrTenor.length;</span>
+<span class="fc" id="L118">		int[] aiDate = new int[iNumTenor];</span>
+<span class="fc" id="L119">		org.drip.state.nonlinear.FlatForwardGovvieCurve[] aFFGC = new</span>
 			org.drip.state.nonlinear.FlatForwardGovvieCurve[iNumPath];
 
-<span class="nc bnc" id="L122" title="All 2 branches missed.">		for (int iTenor = 0; iTenor &lt; iNumTenor; ++iTenor) {</span>
-<span class="nc" id="L123">			org.drip.analytics.date.JulianDate dtTenor = dtSpot.addTenor (astrTenor[iTenor]);</span>
+<span class="fc bfc" id="L122" title="All 2 branches covered.">		for (int iTenor = 0; iTenor &lt; iNumTenor; ++iTenor) {</span>
+<span class="fc" id="L123">			org.drip.analytics.date.JulianDate dtTenor = dtSpot.addTenor (astrTenor[iTenor]);</span>
 
-<span class="nc bnc" id="L125" title="All 2 branches missed.">			if (null == dtTenor) return null;</span>
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">			if (null == dtTenor) return null;</span>
 
-<span class="nc" id="L127">			aiDate[iTenor] = dtTenor.julian();</span>
+<span class="fc" id="L127">			aiDate[iTenor] = dtTenor.julian();</span>
 		}
 
-<span class="nc bnc" id="L130" title="All 2 branches missed.">		for (int iPath = 0; iPath &lt; iNumPath; ++iPath) {</span>
+<span class="fc bfc" id="L130" title="All 2 branches covered.">		for (int iPath = 0; iPath &lt; iNumPath; ++iPath) {</span>
 			try {
-<span class="nc bnc" id="L132" title="All 2 branches missed.">				if (null == (aFFGC[iPath] = new org.drip.state.nonlinear.FlatForwardGovvieCurve (iEpochDate,</span>
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">				if (null == (aFFGC[iPath] = new org.drip.state.nonlinear.FlatForwardGovvieCurve (iEpochDate,</span>
 					strTreasuryCode, strCurrency, aiDate, aadblPathSequence[iPath])))
 <span class="nc" id="L134">					return null;</span>
 <span class="nc" id="L135">			} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L136">				e.printStackTrace();</span>
 
 <span class="nc" id="L138">				return null;</span>
-<span class="nc" id="L139">			}</span>
+<span class="fc" id="L139">			}</span>
 		}
 
-<span class="nc" id="L142">		return aFFGC;</span>
+<span class="fc" id="L142">		return aFFGC;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

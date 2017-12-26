@@ -91,11 +91,11 @@ import org.drip.state.inference.*;
 		final String strMaturityTenor,
 		final double dblCoupon)
 	{
-<span class="nc" id="L94">		FixedFloatSwapConvention ffConv = OvernightFixedFloatContainer.FundConventionFromJurisdiction (</span>
+<span class="fc" id="L94">		FixedFloatSwapConvention ffConv = OvernightFixedFloatContainer.FundConventionFromJurisdiction (</span>
 			strCurrency
 		);
 
-<span class="nc" id="L98">		return ffConv.createFixFloatComponent (</span>
+<span class="fc" id="L98">		return ffConv.createFixFloatComponent (</span>
 			dtSpot,
 			strMaturityTenor,
 			dblCoupon,
@@ -116,21 +116,21 @@ import org.drip.state.inference.*;
 		final int[] aiDay)
 		throws Exception
 	{
-<span class="nc" id="L119">		SingleStreamComponent[] aDeposit = new SingleStreamComponent[aiDay.length];</span>
+<span class="fc" id="L119">		SingleStreamComponent[] aDeposit = new SingleStreamComponent[aiDay.length];</span>
 
-<span class="nc bnc" id="L121" title="All 2 branches missed.">		for (int i = 0; i &lt; aiDay.length; ++i)</span>
-<span class="nc" id="L122">			aDeposit[i] = SingleStreamComponentBuilder.Deposit (</span>
+<span class="fc bfc" id="L121" title="All 2 branches covered.">		for (int i = 0; i &lt; aiDay.length; ++i)</span>
+<span class="fc" id="L122">			aDeposit[i] = SingleStreamComponentBuilder.Deposit (</span>
 				dtEffective,
-<span class="nc" id="L124">				dtEffective.addBusDays (</span>
+<span class="fc" id="L124">				dtEffective.addBusDays (</span>
 					aiDay[i],
 					strCurrency
 				),
-<span class="nc" id="L128">				OvernightLabel.Create (</span>
+<span class="fc" id="L128">				OvernightLabel.Create (</span>
 					strCurrency
 				)
 			);
 
-<span class="nc" id="L133">		return aDeposit;</span>
+<span class="fc" id="L133">		return aDeposit;</span>
 	}
 
 	/*
@@ -146,17 +146,17 @@ import org.drip.state.inference.*;
 		final double[] adblCoupon)
 		throws Exception
 	{
-<span class="nc" id="L149">		FixFloatComponent[] aOIS = new FixFloatComponent[astrMaturityTenor.length];</span>
+<span class="fc" id="L149">		FixFloatComponent[] aOIS = new FixFloatComponent[astrMaturityTenor.length];</span>
 
-<span class="nc bnc" id="L151" title="All 2 branches missed.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
-<span class="nc" id="L152">			aOIS[i] = OTCOISFixFloat (</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
+<span class="fc" id="L152">			aOIS[i] = OTCOISFixFloat (</span>
 				dtSpot,
 				strCurrency,
 				astrMaturityTenor[i],
 				adblCoupon[i]
 			);
 
-<span class="nc" id="L159">		return aOIS;</span>
+<span class="fc" id="L159">		return aOIS;</span>
 	}
 
 	private static final MergedDiscountForwardCurve CustomOISCurveBuilderSample (
@@ -168,7 +168,7 @@ import org.drip.state.inference.*;
 		 * Construct the Array of Deposit Instruments and their Quotes from the given set of parameters
 		 */
 
-<span class="nc" id="L171">		SingleStreamComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (</span>
+<span class="fc" id="L171">		SingleStreamComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (</span>
 			dtSpot,
 			strCurrency,
 			new int[] {
@@ -176,7 +176,7 @@ import org.drip.state.inference.*;
 			}
 		);
 
-<span class="nc" id="L179">		double[] adblDepositQuote = new double[] {</span>
+<span class="fc" id="L179">		double[] adblDepositQuote = new double[] {</span>
 			0.01200, 0.01200, 0.01200, 0.01450, 0.01550, 0.01600, 0.01660, 0.01850, // Cash
 		};
 
@@ -184,7 +184,7 @@ import org.drip.state.inference.*;
 		 * Construct the Deposit Instrument Set Stretch Builder
 		 */
 
-<span class="nc" id="L187">		LatentStateStretchSpec depositStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
+<span class="fc" id="L187">		LatentStateStretchSpec depositStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
 			&quot;DEPOSIT&quot;,
 			aDepositComp,
 			&quot;ForwardRate&quot;,
@@ -195,13 +195,13 @@ import org.drip.state.inference.*;
 		 * Construct the Array of EDF Instruments and their Quotes from the given set of parameters
 		 */
 
-<span class="nc" id="L198">		SingleStreamComponent[] aEDFComp = SingleStreamComponentBuilder.ForwardRateFuturesPack (</span>
+<span class="fc" id="L198">		SingleStreamComponent[] aEDFComp = SingleStreamComponentBuilder.ForwardRateFuturesPack (</span>
 			dtSpot,
 			4,
 			strCurrency
 		);
 
-<span class="nc" id="L204">		double[] adblEDFQuote = new double[] {</span>
+<span class="fc" id="L204">		double[] adblEDFQuote = new double[] {</span>
 			0.01612, 0.01580, 0.01589, 0.01598
 		};
 
@@ -209,7 +209,7 @@ import org.drip.state.inference.*;
 		 * Construct the Cash Instrument Set Stretch Builder
 		 */
 
-<span class="nc" id="L212">		LatentStateStretchSpec edfStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
+<span class="fc" id="L212">		LatentStateStretchSpec edfStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
 			&quot;EDF&quot;,
 			aEDFComp,
 			&quot;ForwardRate&quot;,
@@ -220,7 +220,7 @@ import org.drip.state.inference.*;
 		 * Construct the Array of OIS Instruments and their Quotes from the given set of parameters
 		 */
 
-<span class="nc" id="L223">		double[] adblOISQuote = new double[] {</span>
+<span class="fc" id="L223">		double[] adblOISQuote = new double[] {</span>
 			0.02604,    //  4Y
 			0.02808,    //  5Y
 			0.02983,    //  6Y
@@ -230,7 +230,7 @@ import org.drip.state.inference.*;
 			0.03488     // 10Y
 		};
 
-<span class="nc" id="L233">		CalibratableComponent[] aOISComp = OISFromMaturityTenor (</span>
+<span class="fc" id="L233">		CalibratableComponent[] aOISComp = OISFromMaturityTenor (</span>
 			dtSpot,
 			strCurrency,
 			new java.lang.String[] {
@@ -243,14 +243,14 @@ import org.drip.state.inference.*;
 		 * Construct the OIS Instrument Set Stretch Builder
 		 */
 
-<span class="nc" id="L246">		LatentStateStretchSpec oisStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
+<span class="fc" id="L246">		LatentStateStretchSpec oisStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
 			&quot;SWAP&quot;,
 			aOISComp,
 			&quot;SwapRate&quot;,
 			adblOISQuote
 		);
 
-<span class="nc" id="L253">		LatentStateStretchSpec[] aStretchSpec = new LatentStateStretchSpec[] {</span>
+<span class="fc" id="L253">		LatentStateStretchSpec[] aStretchSpec = new LatentStateStretchSpec[] {</span>
 			depositStretch,
 			edfStretch,
 			oisStretch
@@ -264,11 +264,11 @@ import org.drip.state.inference.*;
 		 * 	- Natural Boundary Setting
 		 */
 
-<span class="nc" id="L267">		LinearLatentStateCalibrator lcc = new LinearLatentStateCalibrator (</span>
+<span class="fc" id="L267">		LinearLatentStateCalibrator lcc = new LinearLatentStateCalibrator (</span>
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-<span class="nc" id="L271">				SegmentInelasticDesignControl.Create (</span>
+<span class="fc" id="L271">				SegmentInelasticDesignControl.Create (</span>
 					2,
 					2
 				),
@@ -278,7 +278,7 @@ import org.drip.state.inference.*;
 				),
 				null
 			),
-<span class="nc" id="L281">			BoundarySettings.NaturalStandard(),</span>
+<span class="fc" id="L281">			BoundarySettings.NaturalStandard(),</span>
 			MultiSegmentSequence.CALIBRATE,
 			null,
 			null
@@ -289,7 +289,7 @@ import org.drip.state.inference.*;
 		 *  of Cash and Swap Stretches.
 		 */
 
-<span class="nc" id="L292">		return ScenarioDiscountCurveBuilder.ShapePreservingDFBuild (</span>
+<span class="fc" id="L292">		return ScenarioDiscountCurveBuilder.ShapePreservingDFBuild (</span>
 			strCurrency,
 			lcc,
 			aStretchSpec,
@@ -314,75 +314,75 @@ import org.drip.state.inference.*;
 		final double dblNotional)
 		throws Exception
 	{
-<span class="nc" id="L317">		LatentStateFixingsContainer lsfc = new LatentStateFixingsContainer();</span>
+<span class="fc" id="L317">		LatentStateFixingsContainer lsfc = new LatentStateFixingsContainer();</span>
 
-<span class="nc" id="L319">		double dblAccount = 1.;</span>
+<span class="fc" id="L319">		double dblAccount = 1.;</span>
 
-<span class="nc" id="L321">		int iPrevDate = dtStart.julian();</span>
+<span class="fc" id="L321">		int iPrevDate = dtStart.julian();</span>
 
-<span class="nc" id="L323">		JulianDate dt = dtStart.addDays (1);</span>
+<span class="fc" id="L323">		JulianDate dt = dtStart.addDays (1);</span>
 
-<span class="nc bnc" id="L325" title="All 2 branches missed.">		while (dt.julian() &lt;= dtEnd.julian()) {</span>
-<span class="nc" id="L326">			lsfc.add (</span>
+<span class="fc bfc" id="L325" title="All 2 branches covered.">		while (dt.julian() &lt;= dtEnd.julian()) {</span>
+<span class="fc" id="L326">			lsfc.add (</span>
 				dt,
 				fri,
 				dblFlatFixing
 			);
 
-<span class="nc bnc" id="L332" title="All 2 branches missed.">			if (dt.julian() &lt;= dtValue.julian()) {</span>
-<span class="nc" id="L333">				double dblAccrualFraction = Convention.YearFraction (</span>
+<span class="fc bfc" id="L332" title="All 2 branches covered.">			if (dt.julian() &lt;= dtValue.julian()) {</span>
+<span class="fc" id="L333">				double dblAccrualFraction = Convention.YearFraction (</span>
 					iPrevDate,
-<span class="nc" id="L335">					dt.julian(),</span>
+<span class="fc" id="L335">					dt.julian(),</span>
 					&quot;Act/360&quot;,
 					false,
 					null,
 					&quot;USD&quot;
 				);
 
-<span class="nc" id="L342">				dblAccount *= (1. + dblFlatFixing * dblAccrualFraction);</span>
+<span class="fc" id="L342">				dblAccount *= (1. + dblFlatFixing * dblAccrualFraction);</span>
 			}
 
-<span class="nc" id="L345">			iPrevDate = dt.julian();</span>
+<span class="fc" id="L345">			iPrevDate = dt.julian();</span>
 
-<span class="nc" id="L347">			dt = dt.addBusDays (</span>
+<span class="fc" id="L347">			dt = dt.addBusDays (</span>
 				1,
 				&quot;USD&quot;
 			);
 		}
 
-<span class="nc" id="L353">		System.out.println (&quot;\tManual Calc Float Accrued (Geometric Compounding): &quot; + (dblAccount - 1.) * dblNotional);</span>
+<span class="fc" id="L353">		System.out.println (&quot;\tManual Calc Float Accrued (Geometric Compounding): &quot; + (dblAccount - 1.) * dblNotional);</span>
 
-<span class="nc" id="L355">		System.out.println (&quot;\tManual Calc Float Accrued (Arithmetic Compounding): &quot; +</span>
-<span class="nc" id="L356">			((dtValue.julian() - dtStart.julian()) * dblNotional * dblFlatFixing / 360.));</span>
+<span class="fc" id="L355">		System.out.println (&quot;\tManual Calc Float Accrued (Arithmetic Compounding): &quot; +</span>
+<span class="fc" id="L356">			((dtValue.julian() - dtStart.julian()) * dblNotional * dblFlatFixing / 360.));</span>
 
-<span class="nc" id="L358">		return lsfc;</span>
+<span class="fc" id="L358">		return lsfc;</span>
 	}
 
 	public static final Map&lt;String, Double&gt; CompoundingRun (
 		final ForwardLabel fri)
 		throws Exception
 	{
-<span class="nc" id="L365">		double dblOISVol = 0.3;</span>
-<span class="nc" id="L366">		double dblUSDFundingVol = 0.3;</span>
-<span class="nc" id="L367">		double dblUSDFundingUSDOISCorrelation = 0.3;</span>
+<span class="fc" id="L365">		double dblOISVol = 0.3;</span>
+<span class="fc" id="L366">		double dblUSDFundingVol = 0.3;</span>
+<span class="fc" id="L367">		double dblUSDFundingUSDOISCorrelation = 0.3;</span>
 
-<span class="nc" id="L369">		String strCurrency = fri.currency();</span>
+<span class="fc" id="L369">		String strCurrency = fri.currency();</span>
 
-<span class="nc" id="L371">		JulianDate dtToday = org.drip.analytics.date.DateUtil.Today().addTenorAndAdjust (</span>
+<span class="fc" id="L371">		JulianDate dtToday = org.drip.analytics.date.DateUtil.Today().addTenorAndAdjust (</span>
 			&quot;0D&quot;,
 			strCurrency
 		);
 
-<span class="nc" id="L376">		MergedDiscountForwardCurve dc = CustomOISCurveBuilderSample (</span>
+<span class="fc" id="L376">		MergedDiscountForwardCurve dc = CustomOISCurveBuilderSample (</span>
 			dtToday,
 			strCurrency
 		);
 
-<span class="nc" id="L381">		JulianDate dtCustomOISStart = dtToday.subtractTenor (&quot;2M&quot;);</span>
+<span class="fc" id="L381">		JulianDate dtCustomOISStart = dtToday.subtractTenor (&quot;2M&quot;);</span>
 
-<span class="nc" id="L383">		JulianDate dtCustomOISMaturity = dtToday.addTenor (&quot;4M&quot;);</span>
+<span class="fc" id="L383">		JulianDate dtCustomOISMaturity = dtToday.addTenor (&quot;4M&quot;);</span>
 
-<span class="nc" id="L385">		CompositePeriodSetting cpsFloating = new CompositePeriodSetting (</span>
+<span class="fc" id="L385">		CompositePeriodSetting cpsFloating = new CompositePeriodSetting (</span>
 			360,
 			&quot;ON&quot;,
 			strCurrency,
@@ -394,7 +394,7 @@ import org.drip.state.inference.*;
 			null
 		);
 
-<span class="nc" id="L397">		ComposableFloatingUnitSetting cfusFloating = new ComposableFloatingUnitSetting (</span>
+<span class="fc" id="L397">		ComposableFloatingUnitSetting cfusFloating = new ComposableFloatingUnitSetting (</span>
 			&quot;ON&quot;,
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_OVERNIGHT,
 			null,
@@ -403,31 +403,31 @@ import org.drip.state.inference.*;
 			0.
 		);
 
-<span class="nc" id="L406">		List&lt;Integer&gt; lsFloatingStreamEdgeDate = CompositePeriodBuilder.OvernightEdgeDates (</span>
+<span class="fc" id="L406">		List&lt;Integer&gt; lsFloatingStreamEdgeDate = CompositePeriodBuilder.OvernightEdgeDates (</span>
 			dtCustomOISStart,
-<span class="nc" id="L408">			dtCustomOISStart.addTenorAndAdjust (</span>
+<span class="fc" id="L408">			dtCustomOISStart.addTenorAndAdjust (</span>
 				&quot;6M&quot;,
 				strCurrency
 			),
 			strCurrency
 		);
 
-<span class="nc" id="L415">		Stream floatStream = new Stream (</span>
-<span class="nc" id="L416">			CompositePeriodBuilder.FloatingCompositeUnit (</span>
+<span class="fc" id="L415">		Stream floatStream = new Stream (</span>
+<span class="fc" id="L416">			CompositePeriodBuilder.FloatingCompositeUnit (</span>
 				lsFloatingStreamEdgeDate,
 				cpsFloating,
 				cfusFloating
 			)
 		);
 
-<span class="nc" id="L423">		CurveSurfaceQuoteContainer mktParams = MarketParamsBuilder.Create (</span>
+<span class="fc" id="L423">		CurveSurfaceQuoteContainer mktParams = MarketParamsBuilder.Create (</span>
 			dc,
 			null,
 			null,
 			null,
 			null,
 			null,
-<span class="nc" id="L430">			SetFlatOvernightFixings (</span>
+<span class="fc" id="L430">			SetFlatOvernightFixings (</span>
 				dtCustomOISStart,
 				dtCustomOISMaturity,
 				dtToday,
@@ -437,39 +437,39 @@ import org.drip.state.inference.*;
 			)
 		);
 
-<span class="nc" id="L440">		ValuationParams valParams = new ValuationParams (</span>
+<span class="fc" id="L440">		ValuationParams valParams = new ValuationParams (</span>
 			dtToday,
 			dtToday,
 			strCurrency
 		);
 
-<span class="nc" id="L446">		FundingLabel fundingLabelUSD = FundingLabel.Standard (&quot;USD&quot;);</span>
+<span class="fc" id="L446">		FundingLabel fundingLabelUSD = FundingLabel.Standard (&quot;USD&quot;);</span>
 
-<span class="nc" id="L448">		mktParams.setForwardVolatility (</span>
-<span class="nc" id="L449">			ScenarioDeterministicVolatilityBuilder.FlatForward (</span>
-<span class="nc" id="L450">				dtToday.julian(),</span>
-<span class="nc" id="L451">				VolatilityLabel.Standard (fri),</span>
-<span class="nc" id="L452">				fri.currency(),</span>
+<span class="fc" id="L448">		mktParams.setForwardVolatility (</span>
+<span class="fc" id="L449">			ScenarioDeterministicVolatilityBuilder.FlatForward (</span>
+<span class="fc" id="L450">				dtToday.julian(),</span>
+<span class="fc" id="L451">				VolatilityLabel.Standard (fri),</span>
+<span class="fc" id="L452">				fri.currency(),</span>
 				dblOISVol
 			)
 		);
 
-<span class="nc" id="L457">		mktParams.setFundingVolatility (</span>
-<span class="nc" id="L458">			ScenarioDeterministicVolatilityBuilder.FlatForward (</span>
-<span class="nc" id="L459">				dtToday.julian(),</span>
-<span class="nc" id="L460">				VolatilityLabel.Standard (fundingLabelUSD),</span>
+<span class="fc" id="L457">		mktParams.setFundingVolatility (</span>
+<span class="fc" id="L458">			ScenarioDeterministicVolatilityBuilder.FlatForward (</span>
+<span class="fc" id="L459">				dtToday.julian(),</span>
+<span class="fc" id="L460">				VolatilityLabel.Standard (fundingLabelUSD),</span>
 				&quot;USD&quot;,
 				dblUSDFundingVol
 			)
 		);
 
-<span class="nc" id="L466">		mktParams.setForwardFundingCorrelation (</span>
+<span class="fc" id="L466">		mktParams.setForwardFundingCorrelation (</span>
 			fri,
 			fundingLabelUSD,
 			new FlatUnivariate (dblUSDFundingUSDOISCorrelation)
 		);
 
-<span class="nc" id="L472">		return floatStream.value (</span>
+<span class="fc" id="L472">		return floatStream.value (</span>
 			valParams,
 			null,
 			mktParams,
@@ -485,18 +485,18 @@ import org.drip.state.inference.*;
 		 * Initialize the Credit Analytics Library
 		 */
 
-<span class="nc" id="L488">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L488">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L490">		String strCurrency = &quot;USD&quot;;</span>
+<span class="fc" id="L490">		String strCurrency = &quot;USD&quot;;</span>
 
-<span class="nc" id="L492">		Map&lt;String, Double&gt; mapArithmeticOutput = CompoundingRun (</span>
-<span class="nc" id="L493">			OvernightLabel.Create (</span>
+<span class="fc" id="L492">		Map&lt;String, Double&gt; mapArithmeticOutput = CompoundingRun (</span>
+<span class="fc" id="L493">			OvernightLabel.Create (</span>
 				strCurrency
 			)
 		);
 
-<span class="nc" id="L498">		Map&lt;String, Double&gt; mapGeometricOutput = CompoundingRun (</span>
-<span class="nc" id="L499">			ForwardLabel.Create (</span>
+<span class="fc" id="L498">		Map&lt;String, Double&gt; mapGeometricOutput = CompoundingRun (</span>
+<span class="fc" id="L499">			ForwardLabel.Create (</span>
 				new OvernightIndex (
 					strCurrency + &quot;OIS&quot;,
 					&quot;OIS&quot;,
@@ -511,20 +511,20 @@ import org.drip.state.inference.*;
 			)
 		);
 
-<span class="nc" id="L514">		System.out.println (&quot;\n\t-----------------------------------&quot;);</span>
+<span class="fc" id="L514">		System.out.println (&quot;\n\t-----------------------------------&quot;);</span>
 
-<span class="nc" id="L516">		System.out.println (&quot;\t  GEOMETRIC |  ARITHMETIC | CHECK&quot;);</span>
+<span class="fc" id="L516">		System.out.println (&quot;\t  GEOMETRIC |  ARITHMETIC | CHECK&quot;);</span>
 
-<span class="nc" id="L518">		System.out.println (&quot;\t-----------------------------------\n&quot;);</span>
+<span class="fc" id="L518">		System.out.println (&quot;\t-----------------------------------\n&quot;);</span>
 
-<span class="nc bnc" id="L520" title="All 2 branches missed.">		for (Map.Entry&lt;String, Double&gt; meGeometric : mapGeometricOutput.entrySet()) {</span>
-<span class="nc" id="L521">			String strKey = meGeometric.getKey();</span>
+<span class="fc bfc" id="L520" title="All 2 branches covered.">		for (Map.Entry&lt;String, Double&gt; meGeometric : mapGeometricOutput.entrySet()) {</span>
+<span class="fc" id="L521">			String strKey = meGeometric.getKey();</span>
 
-<span class="nc" id="L523">			double dblGeometricMeasure = meGeometric.getValue();</span>
+<span class="fc" id="L523">			double dblGeometricMeasure = meGeometric.getValue();</span>
 
-<span class="nc" id="L525">			double dblArithmeticMeasure = mapArithmeticOutput.get (strKey);</span>
+<span class="fc" id="L525">			double dblArithmeticMeasure = mapArithmeticOutput.get (strKey);</span>
 
-<span class="nc bnc" id="L527" title="All 2 branches missed.">			String strMatch = NumberUtil.WithinTolerance (</span>
+<span class="fc bfc" id="L527" title="All 2 branches covered.">			String strMatch = NumberUtil.WithinTolerance (</span>
 				dblGeometricMeasure,
 				dblArithmeticMeasure,
 				1.e-08,
@@ -533,12 +533,12 @@ import org.drip.state.inference.*;
 			&quot;MATCH &quot; :
 			&quot;DIFFER&quot;;
 
-<span class="nc" id="L536">			System.out.println (&quot;\t&quot; +</span>
-<span class="nc" id="L537">				FormatUtil.FormatDouble (dblGeometricMeasure, 1, 8, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L538">				FormatUtil.FormatDouble (dblArithmeticMeasure, 1, 8, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L536">			System.out.println (&quot;\t&quot; +</span>
+<span class="fc" id="L537">				FormatUtil.FormatDouble (dblGeometricMeasure, 1, 8, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L538">				FormatUtil.FormatDouble (dblArithmeticMeasure, 1, 8, 1.) + &quot; | &quot; +</span>
 				strMatch + &quot; &lt;= &quot; + strKey
 			);
-<span class="nc" id="L541">		}</span>
-<span class="nc" id="L542">	}</span>
+<span class="fc" id="L541">		}</span>
+<span class="fc" id="L542">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

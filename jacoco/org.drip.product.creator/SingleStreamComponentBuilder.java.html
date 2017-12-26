@@ -242,7 +242,7 @@ package org.drip.product.creator;
 
 <span class="fc" id="L243">		org.drip.analytics.date.JulianDate dtMaturity = dtEffective.addTenor (strTenor);</span>
 		
-<span class="pc bpc" id="L245" title="1 of 2 branches missed.">		java.lang.String strCode = (0 == dblStrike ? &quot;FUTURES::&quot; : &quot;FRA::&quot;) +</span>
+<span class="fc bfc" id="L245" title="All 2 branches covered.">		java.lang.String strCode = (0 == dblStrike ? &quot;FUTURES::&quot; : &quot;FRA::&quot;) +</span>
 <span class="fc" id="L246">			forwardLabel.fullyQualifiedName() + &quot;::{&quot; + dtEffective + &quot;-&gt;&quot; + dtMaturity + &quot;}&quot;;</span>
 
 		try {
@@ -292,25 +292,25 @@ package org.drip.product.creator;
 		final org.drip.state.identifier.ForwardLabel forwardLabel,
 		final double dblStrike)
 	{
-<span class="nc bnc" id="L295" title="All 4 branches missed.">		if (null == dtForwardStart || null == forwardLabel) return null;</span>
+<span class="pc bpc" id="L295" title="2 of 4 branches missed.">		if (null == dtForwardStart || null == forwardLabel) return null;</span>
 
-<span class="nc" id="L297">		org.drip.analytics.date.JulianDate dtEffective = dtForwardStart;</span>
+<span class="fc" id="L297">		org.drip.analytics.date.JulianDate dtEffective = dtForwardStart;</span>
 
-<span class="nc" id="L299">		java.lang.String strTenor = forwardLabel.tenor();</span>
+<span class="fc" id="L299">		java.lang.String strTenor = forwardLabel.tenor();</span>
 
-<span class="nc" id="L301">		java.lang.String strCurrency = forwardLabel.currency();</span>
+<span class="fc" id="L301">		java.lang.String strCurrency = forwardLabel.currency();</span>
 
-<span class="nc" id="L303">		boolean bIsON = &quot;ON&quot;.equalsIgnoreCase (strTenor);</span>
+<span class="fc" id="L303">		boolean bIsON = &quot;ON&quot;.equalsIgnoreCase (strTenor);</span>
 
-<span class="nc" id="L305">		org.drip.analytics.date.JulianDate dtMaturity = dtEffective.addTenor (strTenor);</span>
+<span class="fc" id="L305">		org.drip.analytics.date.JulianDate dtMaturity = dtEffective.addTenor (strTenor);</span>
 		
-<span class="nc" id="L307">		java.lang.String strCode = &quot;FUTURES::&quot; + forwardLabel.fullyQualifiedName() + &quot;::{&quot; + dtEffective +</span>
+<span class="fc" id="L307">		java.lang.String strCode = &quot;FUTURES::&quot; + forwardLabel.fullyQualifiedName() + &quot;::{&quot; + dtEffective +</span>
 			&quot;-&gt;&quot; + dtMaturity + &quot;}&quot;;
 
 		try {
-<span class="nc" id="L311">			int iFreq = org.drip.analytics.support.Helper.TenorToFreq (strTenor);</span>
+<span class="fc" id="L311">			int iFreq = org.drip.analytics.support.Helper.TenorToFreq (strTenor);</span>
 
-<span class="nc bnc" id="L313" title="All 2 branches missed.">			org.drip.param.period.ComposableFloatingUnitSetting cfus = new</span>
+<span class="pc bpc" id="L313" title="1 of 2 branches missed.">			org.drip.param.period.ComposableFloatingUnitSetting cfus = new</span>
 				org.drip.param.period.ComposableFloatingUnitSetting (strTenor, bIsON ?
 					org.drip.analytics.support.CompositePeriodBuilder.EDGE_DATE_SEQUENCE_OVERNIGHT :
 						org.drip.analytics.support.CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE, null,
@@ -318,20 +318,20 @@ package org.drip.product.creator;
 								org.drip.analytics.support.CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 				0.);
 
-<span class="nc" id="L321">			org.drip.param.period.CompositePeriodSetting cps = new</span>
+<span class="fc" id="L321">			org.drip.param.period.CompositePeriodSetting cps = new</span>
 				org.drip.param.period.CompositePeriodSetting (iFreq, strTenor, strCurrency, null, 1., null,
 					null, null, null);
 
-<span class="nc" id="L325">			org.drip.product.fra.FRAMarketComponent sscDeposit = new org.drip.product.fra.FRAMarketComponent</span>
+<span class="fc" id="L325">			org.drip.product.fra.FRAMarketComponent sscDeposit = new org.drip.product.fra.FRAMarketComponent</span>
 				(strCode, new org.drip.product.rates.Stream
 					(org.drip.analytics.support.CompositePeriodBuilder.FloatingCompositeUnit
-<span class="nc" id="L328">						(org.drip.analytics.support.CompositePeriodBuilder.EdgePair (dtEffective,</span>
+<span class="fc" id="L328">						(org.drip.analytics.support.CompositePeriodBuilder.EdgePair (dtEffective,</span>
 							dtMaturity), cps, cfus)), dblStrike, new
 								org.drip.param.valuation.CashSettleParams (0, strCurrency, 0));
 
-<span class="nc" id="L332">			sscDeposit.setPrimaryCode (strCode);</span>
+<span class="fc" id="L332">			sscDeposit.setPrimaryCode (strCode);</span>
 
-<span class="nc" id="L334">			return sscDeposit;</span>
+<span class="fc" id="L334">			return sscDeposit;</span>
 <span class="nc" id="L335">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L336">			e.printStackTrace();</span>
 		}
@@ -352,7 +352,7 @@ package org.drip.product.creator;
 		final org.drip.analytics.date.JulianDate dtSpot,
 		final org.drip.state.identifier.ForwardLabel fri)
 	{
-<span class="nc" id="L355">		return FRAStandard (dtSpot, fri, 0.);</span>
+<span class="fc" id="L355">		return FRAStandard (dtSpot, fri, 0.);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

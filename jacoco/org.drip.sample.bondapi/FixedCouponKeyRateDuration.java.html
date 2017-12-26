@@ -84,10 +84,10 @@ import org.drip.service.product.FixedBondAPI;
 		final boolean bTrailer)
 		throws Exception
 	{
-<span class="nc" id="L87">		Map&lt;String, Double&gt; mapKeyRateDuration = FixedBondAPI.KeyRateDuration (</span>
+<span class="fc" id="L87">		Map&lt;String, Double&gt; mapKeyRateDuration = FixedBondAPI.KeyRateDuration (</span>
 			strIssuerName,
-<span class="nc" id="L89">			dtBondEffective.julian(),</span>
-<span class="nc" id="L90">			dtBondMaturity.julian(),</span>
+<span class="fc" id="L89">			dtBondEffective.julian(),</span>
+<span class="fc" id="L90">			dtBondMaturity.julian(),</span>
 			dblBondCoupon,
 			iBondCouponFrequency,
 			strBondCouponDayCount,
@@ -102,48 +102,48 @@ import org.drip.service.product.FixedBondAPI;
 			dblBondMarketCleanPrice
 		);
 
-<span class="nc bnc" id="L105" title="All 2 branches missed.">		if (bHeader) {</span>
-<span class="nc" id="L106">			System.out.println (&quot;\n\t|------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc bfc" id="L105" title="All 2 branches covered.">		if (bHeader) {</span>
+<span class="fc" id="L106">			System.out.println (&quot;\n\t|------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L108">			System.out.print (&quot;\t|          ISSUE         |&quot;);</span>
+<span class="fc" id="L108">			System.out.print (&quot;\t|          ISSUE         |&quot;);</span>
 
-<span class="nc" id="L110">			Set&lt;String&gt; setstrKey = mapKeyRateDuration.keySet();</span>
+<span class="fc" id="L110">			Set&lt;String&gt; setstrKey = mapKeyRateDuration.keySet();</span>
 
-<span class="nc bnc" id="L112" title="All 2 branches missed.">			for (String strKey : setstrKey)</span>
-<span class="nc" id="L113">				System.out.print (&quot; &quot; + strKey + &quot; |&quot;);</span>
+<span class="fc bfc" id="L112" title="All 2 branches covered.">			for (String strKey : setstrKey)</span>
+<span class="fc" id="L113">				System.out.print (&quot; &quot; + strKey + &quot; |&quot;);</span>
 
-<span class="nc" id="L115">			System.out.println (&quot;|&quot;);</span>
+<span class="fc" id="L115">			System.out.println (&quot;|&quot;);</span>
 
-<span class="nc" id="L117">			System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L117">			System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 		}
 
-<span class="nc" id="L120">		System.out.print (&quot;\t|  &quot; + strIssuerName + FormatUtil.FormatDouble (dblBondCoupon, 1, 4, 100.) + &quot; &quot; + dtBondMaturity + &quot; |&quot;);</span>
+<span class="fc" id="L120">		System.out.print (&quot;\t|  &quot; + strIssuerName + FormatUtil.FormatDouble (dblBondCoupon, 1, 4, 100.) + &quot; &quot; + dtBondMaturity + &quot; |&quot;);</span>
 
-<span class="nc bnc" id="L122" title="All 2 branches missed.">		for (Map.Entry&lt;String, Double&gt; me : mapKeyRateDuration.entrySet())</span>
-<span class="nc" id="L123">			System.out.print (&quot;     &quot; + FormatUtil.FormatDouble (-1. * me.getValue(), 1, 5, 1.) + &quot;    |&quot;);</span>
+<span class="fc bfc" id="L122" title="All 2 branches covered.">		for (Map.Entry&lt;String, Double&gt; me : mapKeyRateDuration.entrySet())</span>
+<span class="fc" id="L123">			System.out.print (&quot;     &quot; + FormatUtil.FormatDouble (-1. * me.getValue(), 1, 5, 1.) + &quot;    |&quot;);</span>
 
-<span class="nc" id="L125">		System.out.println (&quot;|&quot;);</span>
+<span class="fc" id="L125">		System.out.println (&quot;|&quot;);</span>
 
-<span class="nc bnc" id="L127" title="All 2 branches missed.">		if (bTrailer)</span>
-<span class="nc" id="L128">			System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
-<span class="nc" id="L129">	}</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">		if (bTrailer)</span>
+<span class="fc" id="L128">			System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L129">	}</span>
 
 	public static final void main (
 		final String[] args)
 		throws Exception
 	{
-<span class="nc" id="L135">		EnvManager.InitEnv (</span>
+<span class="fc" id="L135">		EnvManager.InitEnv (</span>
 			&quot;&quot;,
 			true
 		);
 
-<span class="nc" id="L140">		int iSpotDate = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L140">		int iSpotDate = DateUtil.CreateFromYMD (</span>
 			2015,
 			DateUtil.NOVEMBER,
 			18
-<span class="nc" id="L144">		).julian();</span>
+<span class="fc" id="L144">		).julian();</span>
 
-<span class="nc" id="L146">		int[] aiGovvieCurveTreasuryEffectiveDate = new int[] {</span>
+<span class="fc" id="L146">		int[] aiGovvieCurveTreasuryEffectiveDate = new int[] {</span>
 			iSpotDate,
 			iSpotDate,
 			iSpotDate,
@@ -153,17 +153,17 @@ import org.drip.service.product.FixedBondAPI;
 			iSpotDate
 		};
 
-<span class="nc" id="L156">		int[] aiGovvieCurveTreasuryMaturityDate = new int[] {</span>
-<span class="nc" id="L157">			new JulianDate (iSpotDate).addTenor (&quot;1Y&quot;).julian(),</span>
-<span class="nc" id="L158">			new JulianDate (iSpotDate).addTenor (&quot;2Y&quot;).julian(),</span>
-<span class="nc" id="L159">			new JulianDate (iSpotDate).addTenor (&quot;3Y&quot;).julian(),</span>
-<span class="nc" id="L160">			new JulianDate (iSpotDate).addTenor (&quot;5Y&quot;).julian(),</span>
-<span class="nc" id="L161">			new JulianDate (iSpotDate).addTenor (&quot;7Y&quot;).julian(),</span>
-<span class="nc" id="L162">			new JulianDate (iSpotDate).addTenor (&quot;10Y&quot;).julian(),</span>
-<span class="nc" id="L163">			new JulianDate (iSpotDate).addTenor (&quot;30Y&quot;).julian()</span>
+<span class="fc" id="L156">		int[] aiGovvieCurveTreasuryMaturityDate = new int[] {</span>
+<span class="fc" id="L157">			new JulianDate (iSpotDate).addTenor (&quot;1Y&quot;).julian(),</span>
+<span class="fc" id="L158">			new JulianDate (iSpotDate).addTenor (&quot;2Y&quot;).julian(),</span>
+<span class="fc" id="L159">			new JulianDate (iSpotDate).addTenor (&quot;3Y&quot;).julian(),</span>
+<span class="fc" id="L160">			new JulianDate (iSpotDate).addTenor (&quot;5Y&quot;).julian(),</span>
+<span class="fc" id="L161">			new JulianDate (iSpotDate).addTenor (&quot;7Y&quot;).julian(),</span>
+<span class="fc" id="L162">			new JulianDate (iSpotDate).addTenor (&quot;10Y&quot;).julian(),</span>
+<span class="fc" id="L163">			new JulianDate (iSpotDate).addTenor (&quot;30Y&quot;).julian()</span>
 		};
 
-<span class="nc" id="L166">		double[] adblGovvieCurveTreasuryCoupon = new double[] {</span>
+<span class="fc" id="L166">		double[] adblGovvieCurveTreasuryCoupon = new double[] {</span>
 			0.0100,
 			0.0100,
 			0.0125,
@@ -173,7 +173,7 @@ import org.drip.service.product.FixedBondAPI;
 			0.0300
 		};
 
-<span class="nc" id="L176">		double[] adblGovvieCurveTreasuryYield = new double[] {</span>
+<span class="fc" id="L176">		double[] adblGovvieCurveTreasuryYield = new double[] {</span>
 			0.00692,
 			0.00945,
 			0.01257,
@@ -183,18 +183,18 @@ import org.drip.service.product.FixedBondAPI;
 			0.02972
 		};
 
-<span class="nc" id="L186">		String strGovvieCurveTreasuryMeasure = &quot;Yield&quot;;</span>
+<span class="fc" id="L186">		String strGovvieCurveTreasuryMeasure = &quot;Yield&quot;;</span>
 
-<span class="nc" id="L188">		String strIssuerName = &quot;AEG&quot;;</span>
-<span class="nc" id="L189">		int iBondCouponFrequency = 2;</span>
-<span class="nc" id="L190">		String strBondCouponDayCount = &quot;30/360&quot;;</span>
-<span class="nc" id="L191">		String strBondCouponCurrency = &quot;USD&quot;;</span>
-<span class="nc" id="L192">		String strGovvieCode = &quot;UST&quot;;</span>
+<span class="fc" id="L188">		String strIssuerName = &quot;AEG&quot;;</span>
+<span class="fc" id="L189">		int iBondCouponFrequency = 2;</span>
+<span class="fc" id="L190">		String strBondCouponDayCount = &quot;30/360&quot;;</span>
+<span class="fc" id="L191">		String strBondCouponCurrency = &quot;USD&quot;;</span>
+<span class="fc" id="L192">		String strGovvieCode = &quot;UST&quot;;</span>
 
-<span class="nc" id="L194">		ComputeKeyRateDuration (</span>
+<span class="fc" id="L194">		ComputeKeyRateDuration (</span>
 			strIssuerName,
-<span class="nc" id="L196">			DateUtil.CreateFromYMD (2007, 12, 20),</span>
-<span class="nc" id="L197">			DateUtil.CreateFromYMD (2018,  1, 15),</span>
+<span class="fc" id="L196">			DateUtil.CreateFromYMD (2007, 12, 20),</span>
+<span class="fc" id="L197">			DateUtil.CreateFromYMD (2018,  1, 15),</span>
 			0.06000,
 			iBondCouponFrequency,
 			strBondCouponDayCount,
@@ -211,10 +211,10 @@ import org.drip.service.product.FixedBondAPI;
 			false
 		);
 
-<span class="nc" id="L214">		ComputeKeyRateDuration (</span>
+<span class="fc" id="L214">		ComputeKeyRateDuration (</span>
 			strIssuerName,
-<span class="nc" id="L216">			DateUtil.CreateFromYMD (1996,  7, 25),</span>
-<span class="nc" id="L217">			DateUtil.CreateFromYMD (2025,  7, 15),</span>
+<span class="fc" id="L216">			DateUtil.CreateFromYMD (1996,  7, 25),</span>
+<span class="fc" id="L217">			DateUtil.CreateFromYMD (2025,  7, 15),</span>
 			0.07750,
 			iBondCouponFrequency,
 			strBondCouponDayCount,
@@ -231,10 +231,10 @@ import org.drip.service.product.FixedBondAPI;
 			false
 		);
 
-<span class="nc" id="L234">		ComputeKeyRateDuration (</span>
+<span class="fc" id="L234">		ComputeKeyRateDuration (</span>
 			strIssuerName,
-<span class="nc" id="L236">			DateUtil.CreateFromYMD (1996, 10, 29),</span>
-<span class="nc" id="L237">			DateUtil.CreateFromYMD (2026, 10, 15),</span>
+<span class="fc" id="L236">			DateUtil.CreateFromYMD (1996, 10, 29),</span>
+<span class="fc" id="L237">			DateUtil.CreateFromYMD (2026, 10, 15),</span>
 			0.07625,
 			iBondCouponFrequency,
 			strBondCouponDayCount,
@@ -251,10 +251,10 @@ import org.drip.service.product.FixedBondAPI;
 			false
 		);
 
-<span class="nc" id="L254">		ComputeKeyRateDuration (</span>
+<span class="fc" id="L254">		ComputeKeyRateDuration (</span>
 			strIssuerName,
-<span class="nc" id="L256">			DateUtil.CreateFromYMD (2014, 12,  9),</span>
-<span class="nc" id="L257">			DateUtil.CreateFromYMD (2026, 12, 15),</span>
+<span class="fc" id="L256">			DateUtil.CreateFromYMD (2014, 12,  9),</span>
+<span class="fc" id="L257">			DateUtil.CreateFromYMD (2026, 12, 15),</span>
 			0.04125,
 			iBondCouponFrequency,
 			strBondCouponDayCount,
@@ -271,10 +271,10 @@ import org.drip.service.product.FixedBondAPI;
 			false
 		);
 
-<span class="nc" id="L274">		ComputeKeyRateDuration (</span>
+<span class="fc" id="L274">		ComputeKeyRateDuration (</span>
 			strIssuerName,
-<span class="nc" id="L276">			DateUtil.CreateFromYMD (1997,  4, 29),</span>
-<span class="nc" id="L277">			DateUtil.CreateFromYMD (2027,  4, 29),</span>
+<span class="fc" id="L276">			DateUtil.CreateFromYMD (1997,  4, 29),</span>
+<span class="fc" id="L277">			DateUtil.CreateFromYMD (2027,  4, 29),</span>
 			0.08000,
 			iBondCouponFrequency,
 			strBondCouponDayCount,
@@ -291,10 +291,10 @@ import org.drip.service.product.FixedBondAPI;
 			false
 		);
 
-<span class="nc" id="L294">		ComputeKeyRateDuration (</span>
+<span class="fc" id="L294">		ComputeKeyRateDuration (</span>
 			strIssuerName,
-<span class="nc" id="L296">			DateUtil.CreateFromYMD (2014,  9, 25),</span>
-<span class="nc" id="L297">			DateUtil.CreateFromYMD (2027, 10,  1),</span>
+<span class="fc" id="L296">			DateUtil.CreateFromYMD (2014,  9, 25),</span>
+<span class="fc" id="L297">			DateUtil.CreateFromYMD (2027, 10,  1),</span>
 			0.04250,
 			iBondCouponFrequency,
 			strBondCouponDayCount,
@@ -311,10 +311,10 @@ import org.drip.service.product.FixedBondAPI;
 			false
 		);
 
-<span class="nc" id="L314">		ComputeKeyRateDuration (</span>
+<span class="fc" id="L314">		ComputeKeyRateDuration (</span>
 			strIssuerName,
-<span class="nc" id="L316">			DateUtil.CreateFromYMD (2008,  5, 22),</span>
-<span class="nc" id="L317">			DateUtil.CreateFromYMD (2038,  5, 15),</span>
+<span class="fc" id="L316">			DateUtil.CreateFromYMD (2008,  5, 22),</span>
+<span class="fc" id="L317">			DateUtil.CreateFromYMD (2038,  5, 15),</span>
 			0.06400,
 			iBondCouponFrequency,
 			strBondCouponDayCount,
@@ -331,10 +331,10 @@ import org.drip.service.product.FixedBondAPI;
 			false
 		);
 
-<span class="nc" id="L334">		ComputeKeyRateDuration (</span>
+<span class="fc" id="L334">		ComputeKeyRateDuration (</span>
 			strIssuerName,
-<span class="nc" id="L336">			DateUtil.CreateFromYMD (2011,  7, 21),</span>
-<span class="nc" id="L337">			DateUtil.CreateFromYMD (2041,  7, 15),</span>
+<span class="fc" id="L336">			DateUtil.CreateFromYMD (2011,  7, 21),</span>
+<span class="fc" id="L337">			DateUtil.CreateFromYMD (2041,  7, 15),</span>
 			0.05600,
 			iBondCouponFrequency,
 			strBondCouponDayCount,
@@ -351,7 +351,7 @@ import org.drip.service.product.FixedBondAPI;
 			true
 		);
 
-<span class="nc" id="L354">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L355">	}</span>
+<span class="fc" id="L354">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L355">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

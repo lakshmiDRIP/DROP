@@ -78,38 +78,38 @@ import org.drip.state.inference.*;
 		final String[] astrMaturityTenor)
 		throws Exception
 	{
-<span class="nc" id="L81">		FXForwardComponent[] aFXForward = new FXForwardComponent[astrMaturityTenor.length];</span>
+<span class="fc" id="L81">		FXForwardComponent[] aFXForward = new FXForwardComponent[astrMaturityTenor.length];</span>
 
-<span class="nc bnc" id="L83" title="All 2 branches missed.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
-<span class="nc" id="L84">			aFXForward[i] = new FXForwardComponent (</span>
-<span class="nc" id="L85">				cp.code() + &quot;::FXFWD::&quot; + astrMaturityTenor[i],</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
+<span class="fc" id="L84">			aFXForward[i] = new FXForwardComponent (</span>
+<span class="fc" id="L85">				cp.code() + &quot;::FXFWD::&quot; + astrMaturityTenor[i],</span>
 				cp,
-<span class="nc" id="L87">				dtSpot.julian(),</span>
-<span class="nc" id="L88">				dtSpot.addTenor (astrMaturityTenor[i]).julian(),</span>
+<span class="fc" id="L87">				dtSpot.julian(),</span>
+<span class="fc" id="L88">				dtSpot.addTenor (astrMaturityTenor[i]).julian(),</span>
 				1.,
 				null
 			);
 
-<span class="nc" id="L93">		return aFXForward;</span>
+<span class="fc" id="L93">		return aFXForward;</span>
 	}
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L100">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L100">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L102">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L102">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
 			2017,
 			DateUtil.AUGUST,
 			25
 		);
 
-<span class="nc" id="L108">		CurrencyPair cp = CurrencyPair.FromCode (&quot;USD/EUR&quot;);</span>
+<span class="fc" id="L108">		CurrencyPair cp = CurrencyPair.FromCode (&quot;USD/EUR&quot;);</span>
 
-<span class="nc" id="L110">		double dblSpot = 1.0993;</span>
+<span class="fc" id="L110">		double dblSpot = 1.0993;</span>
 
-<span class="nc" id="L112">		String[] astrMaturityTenor = new String[] {</span>
+<span class="fc" id="L112">		String[] astrMaturityTenor = new String[] {</span>
 			&quot;1W&quot;,
 			&quot;1M&quot;,
 			&quot;3M&quot;,
@@ -119,13 +119,13 @@ import org.drip.state.inference.*;
 			&quot;3Y&quot;
 		};
 
-<span class="nc" id="L122">		FXForwardComponent[] aFXForward = FXForwardCalibComponent (</span>
+<span class="fc" id="L122">		FXForwardComponent[] aFXForward = FXForwardCalibComponent (</span>
 			cp,
 			dtSpot,
 			astrMaturityTenor
 		);
 
-<span class="nc" id="L128">		double[] adblFXForward = new double[] {</span>
+<span class="fc" id="L128">		double[] adblFXForward = new double[] {</span>
 			1.1000, //	&quot;1W&quot;,
 			1.1012,	// 	&quot;1M&quot;,
 			1.1039,	// 	&quot;3M&quot;,
@@ -135,22 +135,22 @@ import org.drip.state.inference.*;
 			1.1865,	// 	&quot;3Y&quot;
 		};
 
-<span class="nc" id="L138">		LatentStateStretchSpec fxForwardStretch = LatentStateStretchBuilder.FXStretchSpec (</span>
+<span class="fc" id="L138">		LatentStateStretchSpec fxForwardStretch = LatentStateStretchBuilder.FXStretchSpec (</span>
 			&quot;FXFORWARD&quot;,
 			aFXForward,
 			&quot;Outright&quot;,
 			adblFXForward
 		);
 
-<span class="nc" id="L145">		LatentStateStretchSpec[] aStretchSpec = new LatentStateStretchSpec[] {</span>
+<span class="fc" id="L145">		LatentStateStretchSpec[] aStretchSpec = new LatentStateStretchSpec[] {</span>
 			fxForwardStretch
 		};
 
-<span class="nc" id="L149">		LinearLatentStateCalibrator llsc = new LinearLatentStateCalibrator (</span>
+<span class="fc" id="L149">		LinearLatentStateCalibrator llsc = new LinearLatentStateCalibrator (</span>
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-<span class="nc" id="L153">				SegmentInelasticDesignControl.Create (</span>
+<span class="fc" id="L153">				SegmentInelasticDesignControl.Create (</span>
 					2,
 					2
 				),
@@ -160,19 +160,19 @@ import org.drip.state.inference.*;
 				),
 				null
 			),
-<span class="nc" id="L163">			BoundarySettings.NaturalStandard(),</span>
+<span class="fc" id="L163">			BoundarySettings.NaturalStandard(),</span>
 			MultiSegmentSequence.CALIBRATE,
 			null,
 			null
 		);
 
-<span class="nc" id="L169">		ValuationParams valParams = new ValuationParams (</span>
+<span class="fc" id="L169">		ValuationParams valParams = new ValuationParams (</span>
 			dtSpot,
 			dtSpot,
-<span class="nc" id="L172">			cp.denomCcy()</span>
+<span class="fc" id="L172">			cp.denomCcy()</span>
 		);
 
-<span class="nc" id="L175">		FXCurve fxCurve = ScenarioFXCurveBuilder.ShapePreservingFXCurve (</span>
+<span class="fc" id="L175">		FXCurve fxCurve = ScenarioFXCurveBuilder.ShapePreservingFXCurve (</span>
 			llsc,
 			aStretchSpec,
 			cp,
@@ -183,34 +183,34 @@ import org.drip.state.inference.*;
 			dblSpot
 		);
 
-<span class="nc" id="L186">		CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();</span>
+<span class="fc" id="L186">		CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();</span>
 
-<span class="nc" id="L188">		csqc.setFXState (fxCurve);</span>
+<span class="fc" id="L188">		csqc.setFXState (fxCurve);</span>
 
-<span class="nc" id="L190">		JulianDate dtMaturity = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L190">		JulianDate dtMaturity = DateUtil.CreateFromYMD (</span>
 			2028,
 			DateUtil.NOVEMBER,
 			27
 		);
 
-<span class="nc" id="L196">		FXForwardComponent fxfc = new FXForwardComponent (</span>
-<span class="nc" id="L197">			cp.code() + &quot;::FXFWD::&quot; + dtMaturity,</span>
+<span class="fc" id="L196">		FXForwardComponent fxfc = new FXForwardComponent (</span>
+<span class="fc" id="L197">			cp.code() + &quot;::FXFWD::&quot; + dtMaturity,</span>
 			cp,
-<span class="nc" id="L199">			dtSpot.julian(),</span>
-<span class="nc" id="L200">			dtMaturity.julian(),</span>
+<span class="fc" id="L199">			dtSpot.julian(),</span>
+<span class="fc" id="L200">			dtMaturity.julian(),</span>
 			1.,
 			null
 		);
 
-<span class="nc" id="L205">		Map&lt;String, Double&gt; mapOutput = fxfc.value (</span>
+<span class="fc" id="L205">		Map&lt;String, Double&gt; mapOutput = fxfc.value (</span>
 			valParams,
 			null,
 			csqc,
 			null
 		);
 
-<span class="nc bnc" id="L212" title="All 2 branches missed.">		for (Map.Entry&lt;String, Double&gt; me : mapOutput.entrySet())</span>
-<span class="nc" id="L213">			System.out.println (&quot;\t[&quot; + me.getKey() + &quot;] =&gt; &quot; + me.getValue());</span>
-<span class="nc" id="L214">	}</span>
+<span class="fc bfc" id="L212" title="All 2 branches covered.">		for (Map.Entry&lt;String, Double&gt; me : mapOutput.entrySet())</span>
+<span class="fc" id="L213">			System.out.println (&quot;\t[&quot; + me.getKey() + &quot;] =&gt; &quot; + me.getValue());</span>
+<span class="fc" id="L214">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -56,10 +56,10 @@ package org.drip.spaces.iterator;
  */
 
 public class SequenceIndexIterator {
-<span class="nc" id="L59">	private int[] _aiMax = null;</span>
-<span class="nc" id="L60">	private int _iIndexCursor = -1;</span>
-<span class="nc" id="L61">	private boolean _bCycle = false;</span>
-<span class="nc" id="L62">	private int _iSequenceCursor = -1;</span>
+<span class="fc" id="L59">	private int[] _aiMax = null;</span>
+<span class="fc" id="L60">	private int _iIndexCursor = -1;</span>
+<span class="fc" id="L61">	private boolean _bCycle = false;</span>
+<span class="fc" id="L62">	private int _iSequenceCursor = -1;</span>
 
 	/**
 	 * Create a Standard Sequence/Index Iterator
@@ -74,15 +74,15 @@ public class SequenceIndexIterator {
 		final int iNumSequence,
 		final int iNumIndex)
 	{
-<span class="nc bnc" id="L77" title="All 4 branches missed.">		if (0 &gt;= iNumSequence || 0 &gt;= iNumIndex) return null;</span>
+<span class="pc bpc" id="L77" title="2 of 4 branches missed.">		if (0 &gt;= iNumSequence || 0 &gt;= iNumIndex) return null;</span>
 
-<span class="nc" id="L79">		int[] aiMax = new int[iNumSequence];</span>
+<span class="fc" id="L79">		int[] aiMax = new int[iNumSequence];</span>
 
-<span class="nc bnc" id="L81" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSequence; ++i)</span>
-<span class="nc" id="L82">			aiMax[i] = iNumIndex - 1;</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSequence; ++i)</span>
+<span class="fc" id="L82">			aiMax[i] = iNumIndex - 1;</span>
 
 		try {
-<span class="nc" id="L85">			return new SequenceIndexIterator (aiMax, false);</span>
+<span class="fc" id="L85">			return new SequenceIndexIterator (aiMax, false);</span>
 <span class="nc" id="L86">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L87">			e.printStackTrace();</span>
 		}
@@ -92,19 +92,19 @@ public class SequenceIndexIterator {
 
 	private int[] setFromCursor()
 	{
-<span class="nc" id="L95">		int iNumSequence = _aiMax.length;</span>
-<span class="nc" id="L96">		int[] aiCurrent = new int[iNumSequence];</span>
+<span class="fc" id="L95">		int iNumSequence = _aiMax.length;</span>
+<span class="fc" id="L96">		int[] aiCurrent = new int[iNumSequence];</span>
 
-<span class="nc bnc" id="L98" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSequence; ++i) {</span>
-<span class="nc bnc" id="L99" title="All 2 branches missed.">			if (i &lt; _iSequenceCursor)</span>
-<span class="nc" id="L100">				aiCurrent[i] = _aiMax[i];</span>
-<span class="nc bnc" id="L101" title="All 2 branches missed.">			else if (i &gt; _iSequenceCursor)</span>
-<span class="nc" id="L102">				aiCurrent[i] = 0;</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSequence; ++i) {</span>
+<span class="fc bfc" id="L99" title="All 2 branches covered.">			if (i &lt; _iSequenceCursor)</span>
+<span class="fc" id="L100">				aiCurrent[i] = _aiMax[i];</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">			else if (i &gt; _iSequenceCursor)</span>
+<span class="fc" id="L102">				aiCurrent[i] = 0;</span>
 			else
-<span class="nc" id="L104">				aiCurrent[i] = _iIndexCursor;</span>
+<span class="fc" id="L104">				aiCurrent[i] = _iIndexCursor;</span>
 		}
 
-<span class="nc" id="L107">		return aiCurrent;</span>
+<span class="fc" id="L107">		return aiCurrent;</span>
 	}
 
 	/**
@@ -120,21 +120,21 @@ public class SequenceIndexIterator {
 		final int[] aiMax,
 		final boolean bCycle)
 		throws java.lang.Exception
-<span class="nc" id="L123">	{</span>
-<span class="nc bnc" id="L124" title="All 2 branches missed.">		if (null == (_aiMax = aiMax))</span>
+<span class="fc" id="L123">	{</span>
+<span class="pc bpc" id="L124" title="1 of 2 branches missed.">		if (null == (_aiMax = aiMax))</span>
 <span class="nc" id="L125">			throw new java.lang.Exception (&quot;SequenceIndexIterator ctr =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L127">		_bCycle = bCycle;</span>
-<span class="nc" id="L128">		_iIndexCursor = 0;</span>
-<span class="nc" id="L129">		_iSequenceCursor = 0;</span>
-<span class="nc" id="L130">		int iNumSequence = _aiMax.length;</span>
+<span class="fc" id="L127">		_bCycle = bCycle;</span>
+<span class="fc" id="L128">		_iIndexCursor = 0;</span>
+<span class="fc" id="L129">		_iSequenceCursor = 0;</span>
+<span class="fc" id="L130">		int iNumSequence = _aiMax.length;</span>
 
-<span class="nc bnc" id="L132" title="All 2 branches missed.">		if (0 == iNumSequence) throw new java.lang.Exception (&quot;SequenceIndexIterator ctr =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">		if (0 == iNumSequence) throw new java.lang.Exception (&quot;SequenceIndexIterator ctr =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L134" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSequence; ++i) {</span>
-<span class="nc bnc" id="L135" title="All 2 branches missed.">			if (0 &gt; _aiMax[i]) throw new java.lang.Exception (&quot;SequenceIndexIterator ctr =&gt; Invalid Inputs&quot;);</span>
+<span class="fc bfc" id="L134" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSequence; ++i) {</span>
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">			if (0 &gt; _aiMax[i]) throw new java.lang.Exception (&quot;SequenceIndexIterator ctr =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L137">	}</span>
+<span class="fc" id="L137">	}</span>
 
 	/**
 	 * Retrieve the First Cursor
@@ -144,10 +144,10 @@ public class SequenceIndexIterator {
 
 	public int[] first()
 	{
-<span class="nc" id="L147">		_iIndexCursor = 0;</span>
-<span class="nc" id="L148">		_iSequenceCursor = 0;</span>
+<span class="fc" id="L147">		_iIndexCursor = 0;</span>
+<span class="fc" id="L148">		_iSequenceCursor = 0;</span>
 
-<span class="nc" id="L150">		return setFromCursor();</span>
+<span class="fc" id="L150">		return setFromCursor();</span>
 	}
 
 	/**
@@ -158,13 +158,13 @@ public class SequenceIndexIterator {
 
 	public int[] next()
 	{
-<span class="nc bnc" id="L161" title="All 2 branches missed.">		if (++_iIndexCursor &lt;= _aiMax[_iSequenceCursor]) return setFromCursor();</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">		if (++_iIndexCursor &lt;= _aiMax[_iSequenceCursor]) return setFromCursor();</span>
 
-<span class="nc" id="L163">		_iIndexCursor = 0;</span>
+<span class="fc" id="L163">		_iIndexCursor = 0;</span>
 
-<span class="nc bnc" id="L165" title="All 2 branches missed.">		if (++_iSequenceCursor &lt; _aiMax.length) return setFromCursor();</span>
+<span class="fc bfc" id="L165" title="All 2 branches covered.">		if (++_iSequenceCursor &lt; _aiMax.length) return setFromCursor();</span>
 
-<span class="nc bnc" id="L167" title="All 2 branches missed.">		return _bCycle ? first() : null;</span>
+<span class="pc bpc" id="L167" title="1 of 2 branches missed.">		return _bCycle ? first() : null;</span>
 	}
 
 	/**
@@ -175,13 +175,13 @@ public class SequenceIndexIterator {
 
 	public int size()
 	{
-<span class="nc" id="L178">		int iSize = 0;</span>
-<span class="nc" id="L179">		int iNumSequence = _aiMax.length;</span>
+<span class="fc" id="L178">		int iSize = 0;</span>
+<span class="fc" id="L179">		int iNumSequence = _aiMax.length;</span>
 
-<span class="nc bnc" id="L181" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSequence; ++i)</span>
-<span class="nc" id="L182">			iSize += _aiMax[i] + 1;</span>
+<span class="fc bfc" id="L181" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSequence; ++i)</span>
+<span class="fc" id="L182">			iSize += _aiMax[i] + 1;</span>
 
-<span class="nc" id="L184">		return iSize;</span>
+<span class="fc" id="L184">		return iSize;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

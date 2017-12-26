@@ -97,7 +97,7 @@ import org.drip.quant.common.FormatUtil;
 		 *  tension.
 		 */
 
-<span class="nc" id="L100">		CubicRationalLeftRaw crlr = new CubicRationalLeftRaw (</span>
+<span class="fc" id="L100">		CubicRationalLeftRaw crlr = new CubicRationalLeftRaw (</span>
 			1.,
 			2.,
 			strShapeController,
@@ -109,7 +109,7 @@ import org.drip.quant.common.FormatUtil;
 		 * 	tension.
 		 */
 
-<span class="nc" id="L112">		CubicRationalRightRaw crrr = new CubicRationalRightRaw (</span>
+<span class="fc" id="L112">		CubicRationalRightRaw crrr = new CubicRationalRightRaw (</span>
 			2.,
 			3.,
 			strShapeController,
@@ -121,7 +121,7 @@ import org.drip.quant.common.FormatUtil;
 		 * 	Tension Basis.
 		 */
 
-<span class="nc" id="L124">		TensionProcessedBasisHat tpbhLeft = new TensionProcessedBasisHat (</span>
+<span class="fc" id="L124">		TensionProcessedBasisHat tpbhLeft = new TensionProcessedBasisHat (</span>
 			crlr,
 			2
 		);
@@ -131,7 +131,7 @@ import org.drip.quant.common.FormatUtil;
 		 * 	Tension Basis.
 		 */
 
-<span class="nc" id="L134">		TensionProcessedBasisHat tpbhRight = new TensionProcessedBasisHat (</span>
+<span class="fc" id="L134">		TensionProcessedBasisHat tpbhRight = new TensionProcessedBasisHat (</span>
 			crrr,
 			2
 		);
@@ -140,7 +140,7 @@ import org.drip.quant.common.FormatUtil;
 		 * Construct the Segment Monic Basis Function using the left and the right processed hat functions.
 		 */
 
-<span class="nc" id="L143">		SegmentMonicBasisFunction smbf = new SegmentMonicBasisFunction (</span>
+<span class="fc" id="L143">		SegmentMonicBasisFunction smbf = new SegmentMonicBasisFunction (</span>
 			tpbhLeft,
 			tpbhRight
 		);
@@ -150,27 +150,27 @@ import org.drip.quant.common.FormatUtil;
 		 *  corresponding processed tension hat basis functions.
 		 */
 
-<span class="nc" id="L153">		double dblX = crlr.left();</span>
+<span class="fc" id="L153">		double dblX = crlr.left();</span>
 
-<span class="nc bnc" id="L155" title="All 2 branches missed.">		while (dblX &lt;= crrr.right()) {</span>
-<span class="nc" id="L156">			System.out.println (&quot;\tDeriv[&quot; + dblX + &quot;] =&gt; &quot; +</span>
-<span class="nc" id="L157">				FormatUtil.FormatDouble (smbf.derivative (dblX, 1), 1, 5, 1.));</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">		while (dblX &lt;= crrr.right()) {</span>
+<span class="fc" id="L156">			System.out.println (&quot;\tDeriv[&quot; + dblX + &quot;] =&gt; &quot; +</span>
+<span class="fc" id="L157">				FormatUtil.FormatDouble (smbf.derivative (dblX, 1), 1, 5, 1.));</span>
 
-<span class="nc" id="L159">			System.out.println (&quot;\t\tCubic Rational Left Deriv[&quot; + dblX + &quot;]  =&gt; &quot; +</span>
-<span class="nc" id="L160">				FormatUtil.FormatDouble (crlr.derivative (dblX, 3), 1, 5, 1.));</span>
+<span class="fc" id="L159">			System.out.println (&quot;\t\tCubic Rational Left Deriv[&quot; + dblX + &quot;]  =&gt; &quot; +</span>
+<span class="fc" id="L160">				FormatUtil.FormatDouble (crlr.derivative (dblX, 3), 1, 5, 1.));</span>
 
-<span class="nc" id="L162">			System.out.println (&quot;\t\tCubic Rational Right Deriv[&quot; + dblX + &quot;] =&gt; &quot; +</span>
-<span class="nc" id="L163">				FormatUtil.FormatDouble (crrr.derivative (dblX, 3), 1, 5, 1.));</span>
+<span class="fc" id="L162">			System.out.println (&quot;\t\tCubic Rational Right Deriv[&quot; + dblX + &quot;] =&gt; &quot; +</span>
+<span class="fc" id="L163">				FormatUtil.FormatDouble (crrr.derivative (dblX, 3), 1, 5, 1.));</span>
 
-<span class="nc" id="L165">			System.out.println (&quot;\t\tTPBH Left Deriv[&quot; + dblX + &quot;]  =&gt; &quot; +</span>
-<span class="nc" id="L166">				FormatUtil.FormatDouble (tpbhLeft.derivative (dblX, 1), 1, 5, 1.));</span>
+<span class="fc" id="L165">			System.out.println (&quot;\t\tTPBH Left Deriv[&quot; + dblX + &quot;]  =&gt; &quot; +</span>
+<span class="fc" id="L166">				FormatUtil.FormatDouble (tpbhLeft.derivative (dblX, 1), 1, 5, 1.));</span>
 
-<span class="nc" id="L168">			System.out.println (&quot;\t\tTPBH Right Deriv[&quot; + dblX + &quot;] =&gt; &quot; +</span>
-<span class="nc" id="L169">				FormatUtil.FormatDouble (tpbhRight.derivative (dblX, 1), 1, 5, 1.));</span>
+<span class="fc" id="L168">			System.out.println (&quot;\t\tTPBH Right Deriv[&quot; + dblX + &quot;] =&gt; &quot; +</span>
+<span class="fc" id="L169">				FormatUtil.FormatDouble (tpbhRight.derivative (dblX, 1), 1, 5, 1.));</span>
 
-<span class="nc" id="L171">			dblX += 0.5;</span>
+<span class="fc" id="L171">			dblX += 0.5;</span>
 		}
-<span class="nc" id="L173">	}</span>
+<span class="fc" id="L173">	}</span>
 
 	/*
 	 * Sample illustrating the construction and usage of different monic basis hat shape controllers. This
@@ -190,13 +190,13 @@ import org.drip.quant.common.FormatUtil;
 		 * Test Rational Linear Shape Control with 0.0 Tension Parameter (i.e., no shape control)
 		 */
 
-<span class="nc" id="L193">		System.out.println (&quot;\n-------------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L193">		System.out.println (&quot;\n-------------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L195">		System.out.println (&quot;----------------- NO SHAPE CONTROL --------------------------------&quot;);</span>
+<span class="fc" id="L195">		System.out.println (&quot;----------------- NO SHAPE CONTROL --------------------------------&quot;);</span>
 
-<span class="nc" id="L197">		System.out.println (&quot;-------------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L197">		System.out.println (&quot;-------------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L199">		ShapeControllerTest (</span>
+<span class="fc" id="L199">		ShapeControllerTest (</span>
 			BasisHatShapeControl.SHAPE_CONTROL_RATIONAL_LINEAR,
 			0.
 		);
@@ -205,13 +205,13 @@ import org.drip.quant.common.FormatUtil;
 		 * Test Rational Linear Shape Control with 1.0 Tension Parameter
 		 */
 
-<span class="nc" id="L208">		System.out.println (&quot;\n-------------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L208">		System.out.println (&quot;\n-------------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L210">		System.out.println (&quot;----------------- LINEAR SHAPE CONTROL; Tension 1.0 ---------------&quot;);</span>
+<span class="fc" id="L210">		System.out.println (&quot;----------------- LINEAR SHAPE CONTROL; Tension 1.0 ---------------&quot;);</span>
 
-<span class="nc" id="L212">		System.out.println (&quot;-------------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L212">		System.out.println (&quot;-------------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L214">		ShapeControllerTest (</span>
+<span class="fc" id="L214">		ShapeControllerTest (</span>
 			BasisHatShapeControl.SHAPE_CONTROL_RATIONAL_LINEAR,
 			1.
 		);
@@ -220,13 +220,13 @@ import org.drip.quant.common.FormatUtil;
 		 * Test Rational Quadratic Shape Control with 1.0 Tension Parameter
 		 */
 
-<span class="nc" id="L223">		System.out.println (&quot;\n-------------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L223">		System.out.println (&quot;\n-------------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L225">		System.out.println (&quot;-------------- QUADRATIC SHAPE CONTROL; Tension 1.0 ---------------&quot;);</span>
+<span class="fc" id="L225">		System.out.println (&quot;-------------- QUADRATIC SHAPE CONTROL; Tension 1.0 ---------------&quot;);</span>
 
-<span class="nc" id="L227">		System.out.println (&quot;-------------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L227">		System.out.println (&quot;-------------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L229">		ShapeControllerTest (</span>
+<span class="fc" id="L229">		ShapeControllerTest (</span>
 			BasisHatShapeControl.SHAPE_CONTROL_RATIONAL_QUADRATIC,
 			1.
 		);
@@ -235,23 +235,23 @@ import org.drip.quant.common.FormatUtil;
 		 * Test Exponential Shape Control with 1.0 Tension Parameter
 		 */
 
-<span class="nc" id="L238">		System.out.println (&quot;\n-------------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L238">		System.out.println (&quot;\n-------------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L240">		System.out.println (&quot;-------------- EXPONENTIAL SHAPE CONTROL; Tension 1.0 ---------------&quot;);</span>
+<span class="fc" id="L240">		System.out.println (&quot;-------------- EXPONENTIAL SHAPE CONTROL; Tension 1.0 ---------------&quot;);</span>
 
-<span class="nc" id="L242">		System.out.println (&quot;-------------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L242">		System.out.println (&quot;-------------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L244">		ShapeControllerTest (</span>
+<span class="fc" id="L244">		ShapeControllerTest (</span>
 			BasisHatShapeControl.SHAPE_CONTROL_RATIONAL_EXPONENTIAL,
 			1.
 		);
-<span class="nc" id="L248">	}</span>
+<span class="fc" id="L248">	}</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L254">		BasisMonicHatComparisonSample();</span>
-<span class="nc" id="L255">	}</span>
+<span class="fc" id="L254">		BasisMonicHatComparisonSample();</span>
+<span class="fc" id="L255">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

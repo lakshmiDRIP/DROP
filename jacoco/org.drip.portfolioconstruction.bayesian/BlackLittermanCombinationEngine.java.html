@@ -359,74 +359,74 @@ public class BlackLittermanCombinationEngine {
 
 	public org.drip.portfolioconstruction.bayesian.ProjectionExposure projectionExposureAttribution()
 	{
-<span class="nc" id="L362">		org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd =</span>
-<span class="nc" id="L363">			scopingProjectionDistribution();</span>
+<span class="fc" id="L362">		org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd =</span>
+<span class="fc" id="L363">			scopingProjectionDistribution();</span>
 
-<span class="nc bnc" id="L365" title="All 2 branches missed.">		if (null == spvd) return null;</span>
+<span class="pc bpc" id="L365" title="1 of 2 branches missed.">		if (null == spvd) return null;</span>
 
-<span class="nc" id="L367">		double[] adblIntraViewComponent =</span>
-<span class="nc" id="L368">			org.drip.measure.bayesian.TheilMixedEstimationModel.ProjectionPrecisionMeanProduct (spvd,</span>
+<span class="fc" id="L367">		double[] adblIntraViewComponent =</span>
+<span class="fc" id="L368">			org.drip.measure.bayesian.TheilMixedEstimationModel.ProjectionPrecisionMeanProduct (spvd,</span>
 				&quot;VIEW&quot;);
 
-<span class="nc bnc" id="L371" title="All 2 branches missed.">		if (null == adblIntraViewComponent) return null;</span>
+<span class="pc bpc" id="L371" title="1 of 2 branches missed.">		if (null == adblIntraViewComponent) return null;</span>
 
-<span class="nc" id="L373">		double dblTau = _pcs.tau();</span>
+<span class="fc" id="L373">		double dblTau = _pcs.tau();</span>
 
-<span class="nc" id="L375">		double dblRiskAversion = _frooUnadjusted.riskAversion();</span>
+<span class="fc" id="L375">		double dblRiskAversion = _frooUnadjusted.riskAversion();</span>
 
-<span class="nc" id="L377">		double[][] aadblProjectionSpaceLoading = _ps.assetSpaceLoading();</span>
+<span class="fc" id="L377">		double[][] aadblProjectionSpaceLoading = _ps.assetSpaceLoading();</span>
 
-<span class="nc" id="L379">		double[][] aadblAssetExcessReturnsCovariance = _frooUnadjusted.assetExcessReturnsCovariance();</span>
+<span class="fc" id="L379">		double[][] aadblAssetExcessReturnsCovariance = _frooUnadjusted.assetExcessReturnsCovariance();</span>
 
-<span class="nc" id="L381">		int iNumView = adblIntraViewComponent.length;</span>
-<span class="nc" id="L382">		double dblProjectionConfidenceScaler = 1. / dblTau;</span>
-<span class="nc" id="L383">		double dblAssetConfidenceScaler = 1. / (1. + dblTau);</span>
-<span class="nc" id="L384">		int iNumAsset = aadblAssetExcessReturnsCovariance.length;</span>
-<span class="nc" id="L385">		double[][] aadblCompositeConfidenceCovariance = new double[iNumView][iNumView];</span>
+<span class="fc" id="L381">		int iNumView = adblIntraViewComponent.length;</span>
+<span class="fc" id="L382">		double dblProjectionConfidenceScaler = 1. / dblTau;</span>
+<span class="fc" id="L383">		double dblAssetConfidenceScaler = 1. / (1. + dblTau);</span>
+<span class="fc" id="L384">		int iNumAsset = aadblAssetExcessReturnsCovariance.length;</span>
+<span class="fc" id="L385">		double[][] aadblCompositeConfidenceCovariance = new double[iNumView][iNumView];</span>
 
-<span class="nc bnc" id="L387" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumView; ++i)</span>
-<span class="nc" id="L388">			adblIntraViewComponent[i] = adblIntraViewComponent[i] * dblTau / dblRiskAversion;</span>
+<span class="fc bfc" id="L387" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumView; ++i)</span>
+<span class="fc" id="L388">			adblIntraViewComponent[i] = adblIntraViewComponent[i] * dblTau / dblRiskAversion;</span>
 
-<span class="nc" id="L390">		double[][] aadblProjectionSpaceAssetCovariance = org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="nc" id="L391">			(org.drip.quant.linearalgebra.Matrix.Product (aadblProjectionSpaceLoading,</span>
+<span class="fc" id="L390">		double[][] aadblProjectionSpaceAssetCovariance = org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="fc" id="L391">			(org.drip.quant.linearalgebra.Matrix.Product (aadblProjectionSpaceLoading,</span>
 				aadblAssetExcessReturnsCovariance), org.drip.quant.linearalgebra.Matrix.Transpose
-<span class="nc" id="L393">					(aadblProjectionSpaceLoading));</span>
+<span class="fc" id="L393">					(aadblProjectionSpaceLoading));</span>
 
-<span class="nc bnc" id="L395" title="All 2 branches missed.">		if (null == aadblProjectionSpaceAssetCovariance) return null;</span>
+<span class="pc bpc" id="L395" title="1 of 2 branches missed.">		if (null == aadblProjectionSpaceAssetCovariance) return null;</span>
 
-<span class="nc" id="L397">		double[][] aadblProjectionCovariance =</span>
-<span class="nc" id="L398">			_ps.excessReturnsDistribution().covariance().covarianceMatrix();</span>
+<span class="fc" id="L397">		double[][] aadblProjectionCovariance =</span>
+<span class="fc" id="L398">			_ps.excessReturnsDistribution().covariance().covarianceMatrix();</span>
 
-<span class="nc bnc" id="L400" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumView; ++i) {</span>
-<span class="nc bnc" id="L401" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumView; ++j)</span>
-<span class="nc" id="L402">				aadblCompositeConfidenceCovariance[i][j] = aadblProjectionCovariance[i][j] *</span>
+<span class="fc bfc" id="L400" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumView; ++i) {</span>
+<span class="fc bfc" id="L401" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumView; ++j)</span>
+<span class="fc" id="L402">				aadblCompositeConfidenceCovariance[i][j] = aadblProjectionCovariance[i][j] *</span>
 					dblProjectionConfidenceScaler + aadblProjectionSpaceAssetCovariance[i][j] *
 						dblAssetConfidenceScaler;
 		}
 
-<span class="nc" id="L407">		double[][] aadblCompositePrecisionProjectionScoping = org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="nc" id="L408">			(org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="nc" id="L409">				(org.drip.quant.linearalgebra.Matrix.InvertUsingGaussianElimination</span>
-<span class="nc" id="L410">					(aadblCompositeConfidenceCovariance), aadblProjectionSpaceLoading),</span>
+<span class="fc" id="L407">		double[][] aadblCompositePrecisionProjectionScoping = org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="fc" id="L408">			(org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="fc" id="L409">				(org.drip.quant.linearalgebra.Matrix.InvertUsingGaussianElimination</span>
+<span class="fc" id="L410">					(aadblCompositeConfidenceCovariance), aadblProjectionSpaceLoading),</span>
 						aadblAssetExcessReturnsCovariance);
 
-<span class="nc bnc" id="L413" title="All 2 branches missed.">		if (null == aadblCompositePrecisionProjectionScoping) return null;</span>
+<span class="pc bpc" id="L413" title="1 of 2 branches missed.">		if (null == aadblCompositePrecisionProjectionScoping) return null;</span>
 
-<span class="nc bnc" id="L415" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumView; ++i) {</span>
-<span class="nc bnc" id="L416" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumAsset; ++j)</span>
-<span class="nc" id="L417">				aadblCompositePrecisionProjectionScoping[i][j] = -1. * dblAssetConfidenceScaler *</span>
+<span class="fc bfc" id="L415" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumView; ++i) {</span>
+<span class="fc bfc" id="L416" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumAsset; ++j)</span>
+<span class="fc" id="L417">				aadblCompositePrecisionProjectionScoping[i][j] = -1. * dblAssetConfidenceScaler *</span>
 					aadblCompositePrecisionProjectionScoping[i][j];
 		}
 
 		try {
-<span class="nc" id="L422">			return new org.drip.portfolioconstruction.bayesian.ProjectionExposure (adblIntraViewComponent,</span>
-<span class="nc" id="L423">				org.drip.quant.linearalgebra.Matrix.Product (aadblCompositePrecisionProjectionScoping,</span>
-<span class="nc" id="L424">					_frooUnadjusted.optimalPortfolio().weights()),</span>
+<span class="fc" id="L422">			return new org.drip.portfolioconstruction.bayesian.ProjectionExposure (adblIntraViewComponent,</span>
+<span class="fc" id="L423">				org.drip.quant.linearalgebra.Matrix.Product (aadblCompositePrecisionProjectionScoping,</span>
+<span class="fc" id="L424">					_frooUnadjusted.optimalPortfolio().weights()),</span>
 						org.drip.quant.linearalgebra.Matrix.Product
-<span class="nc" id="L426">							(org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="nc" id="L427">								(aadblCompositePrecisionProjectionScoping,</span>
+<span class="fc" id="L426">							(org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="fc" id="L427">								(aadblCompositePrecisionProjectionScoping,</span>
 									org.drip.quant.linearalgebra.Matrix.Transpose
-<span class="nc" id="L429">										(aadblProjectionSpaceLoading)), adblIntraViewComponent),</span>
+<span class="fc" id="L429">										(aadblProjectionSpaceLoading)), adblIntraViewComponent),</span>
 											aadblCompositeConfidenceCovariance);
 <span class="nc" id="L431">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L432">			e.printStackTrace();</span>

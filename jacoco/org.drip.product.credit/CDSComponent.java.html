@@ -355,13 +355,13 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 	private org.drip.analytics.cashflow.CompositePeriod calcCurrentPeriod (
 		final int iDate)
 	{
-<span class="nc" id="L358">		org.drip.analytics.cashflow.CompositePeriod cpFirst = _lsCouponPeriod.get (0);</span>
+<span class="fc" id="L358">		org.drip.analytics.cashflow.CompositePeriod cpFirst = _lsCouponPeriod.get (0);</span>
 
-<span class="nc bnc" id="L360" title="All 2 branches missed.">		if (iDate &lt;= cpFirst.startDate()) return cpFirst;</span>
+<span class="pc bpc" id="L360" title="1 of 2 branches missed.">		if (iDate &lt;= cpFirst.startDate()) return cpFirst;</span>
 
-<span class="nc bnc" id="L362" title="All 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod period : _lsCouponPeriod) {</span>
+<span class="pc bpc" id="L362" title="1 of 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod period : _lsCouponPeriod) {</span>
 			try {
-<span class="nc bnc" id="L364" title="All 2 branches missed.">				if (period.contains (iDate)) return period;</span>
+<span class="pc bpc" id="L364" title="1 of 2 branches missed.">				if (period.contains (iDate)) return period;</span>
 <span class="nc" id="L365">			} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L366">				e.printStackTrace();</span>
 
@@ -508,7 +508,7 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 
 	@Override public double initialNotional()
 	{
-<span class="nc" id="L511">		return _dblNotional;</span>
+<span class="fc" id="L511">		return _dblNotional;</span>
 	}
 
 	@Override public double notional (
@@ -565,9 +565,9 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs)
 	{
 		try {
-<span class="nc" id="L568">			org.drip.analytics.cashflow.CompositePeriod period = calcCurrentPeriod (iAccrualEndDate);</span>
+<span class="fc" id="L568">			org.drip.analytics.cashflow.CompositePeriod period = calcCurrentPeriod (iAccrualEndDate);</span>
 
-<span class="nc bnc" id="L570" title="All 2 branches missed.">			return null == period ? null : period.couponMetrics (iAccrualEndDate, csqs);</span>
+<span class="pc bpc" id="L570" title="1 of 2 branches missed.">			return null == period ? null : period.couponMetrics (iAccrualEndDate, csqs);</span>
 <span class="nc" id="L571">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L572">			e.printStackTrace();</span>
 		}
@@ -577,7 +577,7 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 
 	@Override public int freq()
 	{
-<span class="nc" id="L580">		return couponPeriods().get (0).freq();</span>
+<span class="fc" id="L580">		return couponPeriods().get (0).freq();</span>
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; calibMeasures (
@@ -629,7 +629,7 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 	@Override public org.drip.analytics.date.JulianDate effectiveDate()
 	{
 		try {
-<span class="nc" id="L632">			return new org.drip.analytics.date.JulianDate (_iEffectiveDate);</span>
+<span class="fc" id="L632">			return new org.drip.analytics.date.JulianDate (_iEffectiveDate);</span>
 <span class="nc" id="L633">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L634">			e.printStackTrace();</span>
 		}
@@ -997,92 +997,92 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 			final double dblFixCoupon,
 			final double dblQuotedSpread)
 	{
-<span class="nc bnc" id="L1000" title="All 4 branches missed.">		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblFixCoupon) ||</span>
-<span class="nc bnc" id="L1001" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblQuotedSpread))</span>
+<span class="pc bpc" id="L1000" title="2 of 4 branches missed.">		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblFixCoupon) ||</span>
+<span class="pc bpc" id="L1001" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblQuotedSpread))</span>
 <span class="nc" id="L1002">			return null;</span>
 
-<span class="nc" id="L1004">		org.drip.product.definition.CalibratableComponent[] aComp = new</span>
+<span class="fc" id="L1004">		org.drip.product.definition.CalibratableComponent[] aComp = new</span>
 			org.drip.product.definition.CalibratableComponent[] {this};
-<span class="nc" id="L1006">		org.drip.state.credit.CreditCurve cc = null;</span>
-<span class="nc" id="L1007">		double[] adblRestorableCDSCoupon = new double[1];</span>
-<span class="nc" id="L1008">		adblRestorableCDSCoupon[0] = _dblCoupon;</span>
-<span class="nc" id="L1009">		_dblCoupon = dblFixCoupon;</span>
+<span class="fc" id="L1006">		org.drip.state.credit.CreditCurve cc = null;</span>
+<span class="fc" id="L1007">		double[] adblRestorableCDSCoupon = new double[1];</span>
+<span class="fc" id="L1008">		adblRestorableCDSCoupon[0] = _dblCoupon;</span>
+<span class="fc" id="L1009">		_dblCoupon = dblFixCoupon;</span>
 
-<span class="nc bnc" id="L1011" title="All 2 branches missed.">		if (null != csqs) {</span>
-<span class="nc" id="L1012">			org.drip.product.definition.CalibratableComponent[] aMktComp = null;</span>
+<span class="pc bpc" id="L1011" title="1 of 2 branches missed.">		if (null != csqs) {</span>
+<span class="fc" id="L1012">			org.drip.product.definition.CalibratableComponent[] aMktComp = null;</span>
 
-<span class="nc" id="L1014">			cc = csqs.creditState (creditLabel());</span>
+<span class="fc" id="L1014">			cc = csqs.creditState (creditLabel());</span>
 
-<span class="nc bnc" id="L1016" title="All 4 branches missed.">			if (null != cc &amp;&amp; null != (aMktComp = cc.calibComp())) {</span>
-<span class="nc" id="L1017">				int iNumComp = aMktComp.length;</span>
+<span class="pc bpc" id="L1016" title="2 of 4 branches missed.">			if (null != cc &amp;&amp; null != (aMktComp = cc.calibComp())) {</span>
+<span class="fc" id="L1017">				int iNumComp = aMktComp.length;</span>
 
-<span class="nc bnc" id="L1019" title="All 2 branches missed.">				if (0 != iNumComp) {</span>
-<span class="nc" id="L1020">					aComp = aMktComp;</span>
-<span class="nc" id="L1021">					adblRestorableCDSCoupon = new double[iNumComp];</span>
+<span class="pc bpc" id="L1019" title="1 of 2 branches missed.">				if (0 != iNumComp) {</span>
+<span class="fc" id="L1020">					aComp = aMktComp;</span>
+<span class="fc" id="L1021">					adblRestorableCDSCoupon = new double[iNumComp];</span>
 
-<span class="nc bnc" id="L1023" title="All 2 branches missed.">					for (int i = 0; i &lt; iNumComp; ++i) {</span>
-<span class="nc bnc" id="L1024" title="All 4 branches missed.">						if (null != aComp[i] &amp;&amp; aComp[i] instanceof</span>
+<span class="fc bfc" id="L1023" title="All 2 branches covered.">					for (int i = 0; i &lt; iNumComp; ++i) {</span>
+<span class="pc bpc" id="L1024" title="2 of 4 branches missed.">						if (null != aComp[i] &amp;&amp; aComp[i] instanceof</span>
 							org.drip.product.definition.CreditDefaultSwap) {
 							try {
-<span class="nc" id="L1027">								org.drip.analytics.output.CompositePeriodCouponMetrics cpcm = couponMetrics</span>
-<span class="nc" id="L1028">									(valParams.valueDate(), valParams, csqs);</span>
+<span class="fc" id="L1027">								org.drip.analytics.output.CompositePeriodCouponMetrics cpcm = couponMetrics</span>
+<span class="fc" id="L1028">									(valParams.valueDate(), valParams, csqs);</span>
 
-<span class="nc bnc" id="L1030" title="All 2 branches missed.">								if (null == cpcm) return null;</span>
+<span class="pc bpc" id="L1030" title="1 of 2 branches missed.">								if (null == cpcm) return null;</span>
 
-<span class="nc" id="L1032">								adblRestorableCDSCoupon[i] = cpcm.rate();</span>
+<span class="fc" id="L1032">								adblRestorableCDSCoupon[i] = cpcm.rate();</span>
 
-<span class="nc" id="L1034">								((org.drip.product.definition.CreditDefaultSwap) aComp[i]).resetCoupon</span>
-<span class="nc" id="L1035">									(dblFixCoupon);</span>
+<span class="fc" id="L1034">								((org.drip.product.definition.CreditDefaultSwap) aComp[i]).resetCoupon</span>
+<span class="fc" id="L1035">									(dblFixCoupon);</span>
 <span class="nc" id="L1036">							} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L1037">								e.printStackTrace();</span>
 
 <span class="nc" id="L1039">								return null;</span>
-<span class="nc" id="L1040">							}</span>
+<span class="fc" id="L1040">							}</span>
 						}
 					}
 				}
 			}
 		}
 
-<span class="nc" id="L1047">		int iNumCalibComp = aComp.length;</span>
-<span class="nc" id="L1048">		double[] adblQS = new double[iNumCalibComp];</span>
-<span class="nc" id="L1049">		org.drip.state.credit.CreditCurve ccQS = null;</span>
-<span class="nc" id="L1050">		java.lang.String[] astrCalibMeasure = new java.lang.String[iNumCalibComp];</span>
+<span class="fc" id="L1047">		int iNumCalibComp = aComp.length;</span>
+<span class="fc" id="L1048">		double[] adblQS = new double[iNumCalibComp];</span>
+<span class="fc" id="L1049">		org.drip.state.credit.CreditCurve ccQS = null;</span>
+<span class="fc" id="L1050">		java.lang.String[] astrCalibMeasure = new java.lang.String[iNumCalibComp];</span>
 
-<span class="nc bnc" id="L1052" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumCalibComp; ++i) {</span>
-<span class="nc" id="L1053">			adblQS[i] = dblQuotedSpread;</span>
-<span class="nc" id="L1054">			astrCalibMeasure[i] = &quot;FairPremium&quot;;</span>
+<span class="fc bfc" id="L1052" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumCalibComp; ++i) {</span>
+<span class="fc" id="L1053">			adblQS[i] = dblQuotedSpread;</span>
+<span class="fc" id="L1054">			astrCalibMeasure[i] = &quot;FairPremium&quot;;</span>
 		}
 
-<span class="nc" id="L1057">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqs.fundingState (fundingLabel());</span>
+<span class="fc" id="L1057">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqs.fundingState (fundingLabel());</span>
 
 		try {
-<span class="nc" id="L1060">			if (null == (ccQS = org.drip.state.creator.ScenarioCreditCurveBuilder.Custom</span>
-<span class="nc bnc" id="L1061" title="All 2 branches missed.">				(creditLabel().fullyQualifiedName(), new org.drip.analytics.date.JulianDate</span>
-<span class="nc bnc" id="L1062" title="All 2 branches missed.">					(valParams.valueDate()), aComp, dcFunding, adblQS, astrCalibMeasure, null != cc ?</span>
-<span class="nc" id="L1063">						cc.recovery (valParams.valueDate()) : 0.4, false)))</span>
+<span class="fc" id="L1060">			if (null == (ccQS = org.drip.state.creator.ScenarioCreditCurveBuilder.Custom</span>
+<span class="pc bpc" id="L1061" title="1 of 2 branches missed.">				(creditLabel().fullyQualifiedName(), new org.drip.analytics.date.JulianDate</span>
+<span class="pc bpc" id="L1062" title="1 of 2 branches missed.">					(valParams.valueDate()), aComp, dcFunding, adblQS, astrCalibMeasure, null != cc ?</span>
+<span class="pc" id="L1063">						cc.recovery (valParams.valueDate()) : 0.4, false)))</span>
 <span class="nc" id="L1064">				return null;</span>
 <span class="nc" id="L1065">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L1066">			e.printStackTrace();</span>
 
 <span class="nc" id="L1068">			return null;</span>
-<span class="nc" id="L1069">		}</span>
+<span class="fc" id="L1069">		}</span>
 
-<span class="nc" id="L1071">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapPV = value (valParams,</span>
-<span class="nc" id="L1072">			pricerParams, org.drip.param.creator.MarketParamsBuilder.Credit (dcFunding, ccQS), vcp);</span>
+<span class="fc" id="L1071">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapPV = value (valParams,</span>
+<span class="fc" id="L1072">			pricerParams, org.drip.param.creator.MarketParamsBuilder.Credit (dcFunding, ccQS), vcp);</span>
 
-<span class="nc bnc" id="L1074" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumCalibComp; ++i) {</span>
+<span class="fc bfc" id="L1074" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumCalibComp; ++i) {</span>
 			try {
-<span class="nc" id="L1076">				((org.drip.product.definition.CreditDefaultSwap) aComp[i]).resetCoupon</span>
-<span class="nc" id="L1077">					(adblRestorableCDSCoupon[i]);</span>
+<span class="fc" id="L1076">				((org.drip.product.definition.CreditDefaultSwap) aComp[i]).resetCoupon</span>
+<span class="fc" id="L1077">					(adblRestorableCDSCoupon[i]);</span>
 <span class="nc" id="L1078">			} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L1079">				e.printStackTrace();</span>
 
 <span class="nc" id="L1081">				return null;</span>
-<span class="nc" id="L1082">			}</span>
+<span class="fc" id="L1082">			}</span>
 		}
 
-<span class="nc" id="L1085">		return mapPV;</span>
+<span class="fc" id="L1085">		return mapPV;</span>
 	}
 
 	@Override public org.drip.quant.calculus.WengertJacobian jackDDirtyPVDManifestMeasure (
@@ -1307,12 +1307,12 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 		final double dblCoupon)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L1310">		double dblOldCoupon = _dblCoupon;</span>
+<span class="fc" id="L1310">		double dblOldCoupon = _dblCoupon;</span>
 
-<span class="nc bnc" id="L1312" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblCoupon = dblCoupon))</span>
+<span class="pc bpc" id="L1312" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblCoupon = dblCoupon))</span>
 <span class="nc" id="L1313">			throw new java.lang.Exception (&quot;CDSComponent::resetCoupon =&gt; Bad coupon Input!&quot;);</span>
 
-<span class="nc" id="L1315">		return dblOldCoupon;</span>
+<span class="fc" id="L1315">		return dblOldCoupon;</span>
 	}
 
 	/**

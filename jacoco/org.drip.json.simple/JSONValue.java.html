@@ -136,27 +136,27 @@ package org.drip.json.simple;
  * @throws java.io.IOException Thrown if the Inputs are Invalid
  */
     @SuppressWarnings (&quot;rawtypes&quot;) public static void writeJSONString(Object value, java.io.Writer out) throws java.io.IOException {
-<span class="nc bnc" id="L139" title="All 2 branches missed.">            if(value == null){</span>
-<span class="nc" id="L140">                    out.write(&quot;null&quot;);</span>
-<span class="nc" id="L141">                    return;</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">            if(value == null){</span>
+<span class="fc" id="L140">                    out.write(&quot;null&quot;);</span>
+<span class="fc" id="L141">                    return;</span>
             }
             
-<span class="nc bnc" id="L144" title="All 2 branches missed.">            if(value instanceof String){            </span>
-<span class="nc" id="L145">        out.write('\&quot;');</span>
-<span class="nc" id="L146">                    out.write(escape((String)value));</span>
-<span class="nc" id="L147">        out.write('\&quot;');</span>
-<span class="nc" id="L148">                    return;</span>
+<span class="fc bfc" id="L144" title="All 2 branches covered.">            if(value instanceof String){            </span>
+<span class="fc" id="L145">        out.write('\&quot;');</span>
+<span class="fc" id="L146">                    out.write(escape((String)value));</span>
+<span class="fc" id="L147">        out.write('\&quot;');</span>
+<span class="fc" id="L148">                    return;</span>
             }
             
-<span class="nc bnc" id="L151" title="All 2 branches missed.">            if(value instanceof Double){</span>
-<span class="nc bnc" id="L152" title="All 4 branches missed.">                    if(((Double)value).isInfinite() || ((Double)value).isNaN())</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">            if(value instanceof Double){</span>
+<span class="pc bpc" id="L152" title="2 of 4 branches missed.">                    if(((Double)value).isInfinite() || ((Double)value).isNaN())</span>
 <span class="nc" id="L153">                            out.write(&quot;null&quot;);</span>
                     else
-<span class="nc" id="L155">                            out.write(value.toString());</span>
-<span class="nc" id="L156">                    return;</span>
+<span class="fc" id="L155">                            out.write(value.toString());</span>
+<span class="fc" id="L156">                    return;</span>
             }
             
-<span class="nc bnc" id="L159" title="All 2 branches missed.">            if(value instanceof Float){</span>
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">            if(value instanceof Float){</span>
 <span class="nc bnc" id="L160" title="All 4 branches missed.">                    if(((Float)value).isInfinite() || ((Float)value).isNaN())</span>
 <span class="nc" id="L161">                            out.write(&quot;null&quot;);</span>
                     else
@@ -164,34 +164,34 @@ package org.drip.json.simple;
 <span class="nc" id="L164">                    return;</span>
             }               
             
-<span class="nc bnc" id="L167" title="All 2 branches missed.">            if(value instanceof Number){</span>
+<span class="pc bpc" id="L167" title="1 of 2 branches missed.">            if(value instanceof Number){</span>
 <span class="nc" id="L168">                    out.write(value.toString());</span>
 <span class="nc" id="L169">                    return;</span>
             }
             
-<span class="nc bnc" id="L172" title="All 2 branches missed.">            if(value instanceof Boolean){</span>
-<span class="nc" id="L173">                    out.write(value.toString());</span>
-<span class="nc" id="L174">                    return;</span>
+<span class="fc bfc" id="L172" title="All 2 branches covered.">            if(value instanceof Boolean){</span>
+<span class="fc" id="L173">                    out.write(value.toString());</span>
+<span class="fc" id="L174">                    return;</span>
             }
             
-<span class="nc bnc" id="L177" title="All 2 branches missed.">            if((value instanceof JSONStreamAware)){</span>
+<span class="pc bpc" id="L177" title="1 of 2 branches missed.">            if((value instanceof JSONStreamAware)){</span>
 <span class="nc" id="L178">                    ((JSONStreamAware)value).writeJSONString(out);</span>
 <span class="nc" id="L179">                    return;</span>
             }
             
-<span class="nc bnc" id="L182" title="All 2 branches missed.">            if((value instanceof JSONAware)){</span>
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">            if((value instanceof JSONAware)){</span>
 <span class="nc" id="L183">                    out.write(((JSONAware)value).toJSONString());</span>
 <span class="nc" id="L184">                    return;</span>
             }
             
-<span class="nc bnc" id="L187" title="All 2 branches missed.">            if(value instanceof java.util.Map){</span>
-<span class="nc" id="L188">            	org.drip.json.simple.JSONObject.writeJSONString((java.util.Map)value, out);</span>
-<span class="nc" id="L189">                    return;</span>
+<span class="fc bfc" id="L187" title="All 2 branches covered.">            if(value instanceof java.util.Map){</span>
+<span class="fc" id="L188">            	org.drip.json.simple.JSONObject.writeJSONString((java.util.Map)value, out);</span>
+<span class="fc" id="L189">                    return;</span>
             }
             
-<span class="nc bnc" id="L192" title="All 2 branches missed.">            if(value instanceof java.util.List){</span>
-<span class="nc" id="L193">                    JSONArray.writeJSONString((java.util.List)value, out);</span>
-<span class="nc" id="L194">        return;</span>
+<span class="pc bpc" id="L192" title="1 of 2 branches missed.">            if(value instanceof java.util.List){</span>
+<span class="fc" id="L193">                    JSONArray.writeJSONString((java.util.List)value, out);</span>
+<span class="fc" id="L194">        return;</span>
             }
             
 <span class="nc" id="L197">            out.write(value.toString());</span>
@@ -240,14 +240,14 @@ package org.drip.json.simple;
 <span class="fc bfc" id="L240" title="All 2 branches covered.">            if(value instanceof Boolean)</span>
 <span class="fc" id="L241">                    return value.toString();</span>
             
-<span class="pc bpc" id="L243" title="1 of 2 branches missed.">            if((value instanceof JSONAware))</span>
+<span class="fc bfc" id="L243" title="All 2 branches covered.">            if((value instanceof JSONAware))</span>
 <span class="fc" id="L244">                    return ((JSONAware)value).toJSONString();</span>
             
-<span class="nc bnc" id="L246" title="All 2 branches missed.">            if(value instanceof java.util.Map)</span>
-<span class="nc" id="L247">                    return org.drip.json.simple.JSONObject.toJSONString((java.util.Map)value);</span>
+<span class="fc bfc" id="L246" title="All 2 branches covered.">            if(value instanceof java.util.Map)</span>
+<span class="fc" id="L247">                    return org.drip.json.simple.JSONObject.toJSONString((java.util.Map)value);</span>
             
-<span class="nc bnc" id="L249" title="All 2 branches missed.">            if(value instanceof java.util.List)</span>
-<span class="nc" id="L250">                    return org.drip.json.simple.JSONArray.toJSONString((java.util.List)value);</span>
+<span class="pc bpc" id="L249" title="1 of 2 branches missed.">            if(value instanceof java.util.List)</span>
+<span class="fc" id="L250">                    return org.drip.json.simple.JSONArray.toJSONString((java.util.List)value);</span>
             
 <span class="nc" id="L252">            return value.toString();</span>
     }
@@ -301,14 +301,14 @@ static void escape(String s, StringBuffer sb) {
 <span class="fc" id="L301">                            break;</span>
                     default:
             //Reference: http://www.unicode.org/versions/Unicode5.1.0/
-<span class="pc bpc" id="L304" title="8 of 12 branches missed.">                            if((ch&gt;='\u0000' &amp;&amp; ch&lt;='\u001F') || (ch&gt;='\u007F' &amp;&amp; ch&lt;='\u009F') || (ch&gt;='\u2000' &amp;&amp; ch&lt;='\u20FF')){</span>
-<span class="nc" id="L305">                                    String ss=Integer.toHexString(ch);</span>
-<span class="nc" id="L306">                                    sb.append(&quot;\\u&quot;);</span>
-<span class="nc bnc" id="L307" title="All 2 branches missed.">                                    for(int k=0;k&lt;4-ss.length();k++){</span>
-<span class="nc" id="L308">                                            sb.append('0');</span>
+<span class="pc bpc" id="L304" title="7 of 12 branches missed.">                            if((ch&gt;='\u0000' &amp;&amp; ch&lt;='\u001F') || (ch&gt;='\u007F' &amp;&amp; ch&lt;='\u009F') || (ch&gt;='\u2000' &amp;&amp; ch&lt;='\u20FF')){</span>
+<span class="fc" id="L305">                                    String ss=Integer.toHexString(ch);</span>
+<span class="fc" id="L306">                                    sb.append(&quot;\\u&quot;);</span>
+<span class="fc bfc" id="L307" title="All 2 branches covered.">                                    for(int k=0;k&lt;4-ss.length();k++){</span>
+<span class="fc" id="L308">                                            sb.append('0');</span>
                                     }
-<span class="nc" id="L310">                                    sb.append(ss.toUpperCase());</span>
-<span class="nc" id="L311">                            }</span>
+<span class="fc" id="L310">                                    sb.append(ss.toUpperCase());</span>
+<span class="fc" id="L311">                            }</span>
                             else{
 <span class="fc" id="L313">                                    sb.append(ch);</span>
                             }

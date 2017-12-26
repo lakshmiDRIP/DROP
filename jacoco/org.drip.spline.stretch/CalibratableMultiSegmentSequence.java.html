@@ -482,15 +482,15 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 		final double dblPredictorOrdinate,
 		final int iOrder)
 	{
-<span class="nc" id="L485">		int iPriorImpactFadeIndex = 0;</span>
-<span class="nc" id="L486">		int iNumSegment = _aLSRM.length;</span>
+<span class="fc" id="L485">		int iPriorImpactFadeIndex = 0;</span>
+<span class="fc" id="L486">		int iNumSegment = _aLSRM.length;</span>
 
 		try {
-<span class="nc" id="L489">			int iIndex = containingIndex (dblPredictorOrdinate, true, true);</span>
+<span class="fc" id="L489">			int iIndex = containingIndex (dblPredictorOrdinate, true, true);</span>
 
-<span class="nc" id="L491">			boolean bContainingSegmentImpactFade = _aLSRM[iIndex].impactFade (strManifestMeasure);</span>
+<span class="fc" id="L491">			boolean bContainingSegmentImpactFade = _aLSRM[iIndex].impactFade (strManifestMeasure);</span>
 
-<span class="nc bnc" id="L493" title="All 4 branches missed.">			if (!bContainingSegmentImpactFade &amp;&amp; 0 != iIndex) {</span>
+<span class="pc bpc" id="L493" title="3 of 4 branches missed.">			if (!bContainingSegmentImpactFade &amp;&amp; 0 != iIndex) {</span>
 <span class="nc bnc" id="L494" title="All 2 branches missed.">				for (int i = iIndex - 1; i &gt;= 0; --i) {</span>
 <span class="nc bnc" id="L495" title="All 2 branches missed.">					if (_aLSRM[i].impactFade (strManifestMeasure)) {</span>
 <span class="nc" id="L496">						iPriorImpactFadeIndex = i;</span>
@@ -499,33 +499,33 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 				}
 			}
 
-<span class="nc" id="L502">			org.drip.quant.calculus.WengertJacobian wjDResponseDManifestMeasure = new</span>
+<span class="fc" id="L502">			org.drip.quant.calculus.WengertJacobian wjDResponseDManifestMeasure = new</span>
 				org.drip.quant.calculus.WengertJacobian (1, iNumSegment);
 
-<span class="nc bnc" id="L505" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumSegment; ++i) {</span>
-<span class="nc" id="L506">				double dblDResponseDManifestMeasurei = 0.;</span>
+<span class="fc bfc" id="L505" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumSegment; ++i) {</span>
+<span class="fc" id="L506">				double dblDResponseDManifestMeasurei = 0.;</span>
 
-<span class="nc bnc" id="L508" title="All 2 branches missed.">				if (i == iIndex)</span>
-<span class="nc" id="L509">					dblDResponseDManifestMeasurei = _aLSRM[i].calcDResponseDManifest (strManifestMeasure,</span>
+<span class="fc bfc" id="L508" title="All 2 branches covered.">				if (i == iIndex)</span>
+<span class="fc" id="L509">					dblDResponseDManifestMeasurei = _aLSRM[i].calcDResponseDManifest (strManifestMeasure,</span>
 						dblPredictorOrdinate, iOrder);
-<span class="nc bnc" id="L511" title="All 2 branches missed.">				else if (i == iIndex - 1)</span>
-<span class="nc" id="L512">					dblDResponseDManifestMeasurei = _aLSRM[i + 1].calcDResponseDPreceedingManifest</span>
-<span class="nc" id="L513">						(strManifestMeasure, dblPredictorOrdinate, iOrder);</span>
-<span class="nc bnc" id="L514" title="All 6 branches missed.">				else if (!bContainingSegmentImpactFade &amp;&amp; i &gt;= iPriorImpactFadeIndex &amp;&amp; i &lt; iIndex - 1)</span>
+<span class="fc bfc" id="L511" title="All 2 branches covered.">				else if (i == iIndex - 1)</span>
+<span class="fc" id="L512">					dblDResponseDManifestMeasurei = _aLSRM[i + 1].calcDResponseDPreceedingManifest</span>
+<span class="fc" id="L513">						(strManifestMeasure, dblPredictorOrdinate, iOrder);</span>
+<span class="pc bpc" id="L514" title="5 of 6 branches missed.">				else if (!bContainingSegmentImpactFade &amp;&amp; i &gt;= iPriorImpactFadeIndex &amp;&amp; i &lt; iIndex - 1)</span>
 <span class="nc" id="L515">					dblDResponseDManifestMeasurei = _aLSRM[i].calcDResponseDManifest (strManifestMeasure,</span>
 <span class="nc" id="L516">						_aLSRM[i].right(), iOrder);</span>
 
-<span class="nc bnc" id="L518" title="All 2 branches missed.">				if (!wjDResponseDManifestMeasure.accumulatePartialFirstDerivative (0, i,</span>
+<span class="pc bpc" id="L518" title="1 of 2 branches missed.">				if (!wjDResponseDManifestMeasure.accumulatePartialFirstDerivative (0, i,</span>
 					dblDResponseDManifestMeasurei))
 <span class="nc" id="L520">					return null;</span>
 			}
 
-<span class="nc" id="L523">			return wjDResponseDManifestMeasure;</span>
-<span class="nc" id="L524">		} catch (java.lang.Exception e) {</span>
+<span class="fc" id="L523">			return wjDResponseDManifestMeasure;</span>
+<span class="fc" id="L524">		} catch (java.lang.Exception e) {</span>
 			// e.printStackTrace();
 		}
 
-<span class="nc" id="L528">		return null;</span>
+<span class="fc" id="L528">		return null;</span>
 	}
 
 	@Override public org.drip.spline.segment.Monotonocity monotoneType (

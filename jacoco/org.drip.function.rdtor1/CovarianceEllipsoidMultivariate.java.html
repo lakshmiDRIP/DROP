@@ -56,7 +56,7 @@ package org.drip.function.rdtor1;
  */
 
 public class CovarianceEllipsoidMultivariate extends org.drip.function.definition.RdToR1 {
-<span class="nc" id="L59">	private double[][] _aadblCovarianceMatrix = null;</span>
+<span class="fc" id="L59">	private double[][] _aadblCovarianceMatrix = null;</span>
 
 	/**
 	 * CovarianceEllipsoidMultivariate Constructor
@@ -70,23 +70,23 @@ public class CovarianceEllipsoidMultivariate extends org.drip.function.definitio
 		final double[][] aadblCovarianceMatrix)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L73">		super (null);</span>
+<span class="fc" id="L73">		super (null);</span>
 
-<span class="nc bnc" id="L75" title="All 2 branches missed.">		if (null == (_aadblCovarianceMatrix = aadblCovarianceMatrix))</span>
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">		if (null == (_aadblCovarianceMatrix = aadblCovarianceMatrix))</span>
 <span class="nc" id="L76">			throw new java.lang.Exception (&quot;CovarianceEllipsoidMultivariate Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L78">		int iSize = _aadblCovarianceMatrix.length;</span>
+<span class="fc" id="L78">		int iSize = _aadblCovarianceMatrix.length;</span>
 
-<span class="nc bnc" id="L80" title="All 2 branches missed.">		if (0 == iSize)</span>
+<span class="pc bpc" id="L80" title="1 of 2 branches missed.">		if (0 == iSize)</span>
 <span class="nc" id="L81">			throw new java.lang.Exception (&quot;CovarianceEllipsoidMultivariate Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L83" title="All 2 branches missed.">		for (int i = 0; i &lt; iSize; ++i) {</span>
-<span class="nc bnc" id="L84" title="All 4 branches missed.">			if (null == _aadblCovarianceMatrix[i] || iSize != _aadblCovarianceMatrix[i].length ||</span>
-<span class="nc bnc" id="L85" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_aadblCovarianceMatrix[i]))</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="pc bpc" id="L84" title="2 of 4 branches missed.">			if (null == _aadblCovarianceMatrix[i] || iSize != _aadblCovarianceMatrix[i].length ||</span>
+<span class="pc bpc" id="L85" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_aadblCovarianceMatrix[i]))</span>
 <span class="nc" id="L86">				throw new java.lang.Exception</span>
 					(&quot;CovarianceEllipsoidMultivariate Constructor =&gt; Invalid Inputs&quot;);
 		}
-<span class="nc" id="L89">	}</span>
+<span class="fc" id="L89">	}</span>
 
 	/**
 	 * Retrieve the Input Variate Dimension
@@ -96,7 +96,7 @@ public class CovarianceEllipsoidMultivariate extends org.drip.function.definitio
 
 	public int dimension()
 	{
-<span class="nc" id="L99">		return _aadblCovarianceMatrix.length;</span>
+<span class="fc" id="L99">		return _aadblCovarianceMatrix.length;</span>
 	}
 
 	/**
@@ -114,56 +114,56 @@ public class CovarianceEllipsoidMultivariate extends org.drip.function.definitio
 		final double[] adblVariate)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L117" title="All 4 branches missed.">		if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate))</span>
+<span class="pc bpc" id="L117" title="2 of 4 branches missed.">		if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate))</span>
 <span class="nc" id="L118">			throw new java.lang.Exception (&quot;CovarianceEllipsoidMultivariate::evaluate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L120">		double dblCovariance = 0.;</span>
-<span class="nc" id="L121">		int iDimension = adblVariate.length;</span>
+<span class="fc" id="L120">		double dblCovariance = 0.;</span>
+<span class="fc" id="L121">		int iDimension = adblVariate.length;</span>
 
-<span class="nc bnc" id="L123" title="All 2 branches missed.">		if (iDimension != dimension())</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">		if (iDimension != dimension())</span>
 <span class="nc" id="L124">			throw new java.lang.Exception (&quot;CovarianceEllipsoidMultivariate::evaluate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L126" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i) {</span>
-<span class="nc bnc" id="L127" title="All 2 branches missed.">			for (int j = 0; j &lt; iDimension; ++j)</span>
-<span class="nc" id="L128">				dblCovariance += adblVariate[i] * _aadblCovarianceMatrix[i][j] * adblVariate[j];</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">		for (int i = 0; i &lt; iDimension; ++i) {</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">			for (int j = 0; j &lt; iDimension; ++j)</span>
+<span class="fc" id="L128">				dblCovariance += adblVariate[i] * _aadblCovarianceMatrix[i][j] * adblVariate[j];</span>
 		}
 
-<span class="nc" id="L131">		return dblCovariance;</span>
+<span class="fc" id="L131">		return dblCovariance;</span>
 	}
 
 	@Override public double[] jacobian (
 		final double[] adblVariate)
 	{
-<span class="nc bnc" id="L137" title="All 4 branches missed.">		if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate)) return null;</span>
+<span class="pc bpc" id="L137" title="2 of 4 branches missed.">		if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate)) return null;</span>
 
-<span class="nc" id="L139">		int iDimension = adblVariate.length;</span>
-<span class="nc" id="L140">		double[] adblJacobian = new double[iDimension];</span>
+<span class="fc" id="L139">		int iDimension = adblVariate.length;</span>
+<span class="fc" id="L140">		double[] adblJacobian = new double[iDimension];</span>
 
-<span class="nc bnc" id="L142" title="All 2 branches missed.">		if (iDimension != dimension()) return null;</span>
+<span class="pc bpc" id="L142" title="1 of 2 branches missed.">		if (iDimension != dimension()) return null;</span>
 
-<span class="nc bnc" id="L144" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i) {</span>
-<span class="nc" id="L145">			adblJacobian[i] = 0.;</span>
+<span class="fc bfc" id="L144" title="All 2 branches covered.">		for (int i = 0; i &lt; iDimension; ++i) {</span>
+<span class="fc" id="L145">			adblJacobian[i] = 0.;</span>
 
-<span class="nc bnc" id="L147" title="All 2 branches missed.">			for (int j = 0; j &lt; iDimension; ++j)</span>
-<span class="nc" id="L148">				adblJacobian[i] += 2. * _aadblCovarianceMatrix[i][j] * adblVariate[j];</span>
+<span class="fc bfc" id="L147" title="All 2 branches covered.">			for (int j = 0; j &lt; iDimension; ++j)</span>
+<span class="fc" id="L148">				adblJacobian[i] += 2. * _aadblCovarianceMatrix[i][j] * adblVariate[j];</span>
 		}
 
-<span class="nc" id="L151">		return adblJacobian;</span>
+<span class="fc" id="L151">		return adblJacobian;</span>
 	}
 
 	@Override public double[][] hessian (
 		final double[] adblVariate)
 	{
-<span class="nc" id="L157">		int iDimension = dimension();</span>
+<span class="fc" id="L157">		int iDimension = dimension();</span>
 
-<span class="nc" id="L159">		double[][] aadblHessian = new double[iDimension][iDimension];</span>
+<span class="fc" id="L159">		double[][] aadblHessian = new double[iDimension][iDimension];</span>
 
-<span class="nc bnc" id="L161" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i) {</span>
-<span class="nc bnc" id="L162" title="All 2 branches missed.">			for (int j = 0; j &lt; iDimension; ++j)</span>
-<span class="nc" id="L163">				aadblHessian[i][j] += 2. * _aadblCovarianceMatrix[i][j];</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">		for (int i = 0; i &lt; iDimension; ++i) {</span>
+<span class="fc bfc" id="L162" title="All 2 branches covered.">			for (int j = 0; j &lt; iDimension; ++j)</span>
+<span class="fc" id="L163">				aadblHessian[i][j] += 2. * _aadblCovarianceMatrix[i][j];</span>
 		}
 
-<span class="nc" id="L166">		return aadblHessian;</span>
+<span class="fc" id="L166">		return aadblHessian;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

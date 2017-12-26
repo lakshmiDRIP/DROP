@@ -79,9 +79,9 @@ package org.drip.analytics.daycount;
 		final int iEndDate,
 		final boolean bApplyEOMAdj)
 	{
-<span class="nc" id="L82">		DateEOMAdjustment dm = new DateEOMAdjustment();</span>
+<span class="fc" id="L82">		DateEOMAdjustment dm = new DateEOMAdjustment();</span>
 
-<span class="nc bnc" id="L84" title="All 2 branches missed.">		if (!bApplyEOMAdj) return dm;</span>
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">		if (!bApplyEOMAdj) return dm;</span>
 
 <span class="nc bnc" id="L86" title="All 2 branches missed.">		if (iEndDate &gt; iStartDate) return null;</span>
 
@@ -135,21 +135,21 @@ package org.drip.analytics.daycount;
 <span class="fc bfc" id="L135" title="All 2 branches covered.">		if (!bApplyEOMAdj) return dm;</span>
 
 		try {
-<span class="pc bpc" id="L138" title="1 of 2 branches missed.">			if (31 == org.drip.analytics.date.DateUtil.Date (iStartDate)) dm._iD1Adj -= 1;</span>
+<span class="fc bfc" id="L138" title="All 2 branches covered.">			if (31 == org.drip.analytics.date.DateUtil.Date (iStartDate)) dm._iD1Adj -= 1;</span>
 
-<span class="pc bpc" id="L140" title="1 of 2 branches missed.">			if (!org.drip.analytics.date.DateUtil.IsLeapYear (iStartDate)) {</span>
+<span class="fc bfc" id="L140" title="All 2 branches covered.">			if (!org.drip.analytics.date.DateUtil.IsLeapYear (iStartDate)) {</span>
 <span class="fc" id="L141">				if (org.drip.analytics.date.DateUtil.FEBRUARY == org.drip.analytics.date.DateUtil.Month</span>
-<span class="pc bpc" id="L142" title="3 of 4 branches missed.">					(iStartDate) &amp;&amp; 28 == org.drip.analytics.date.DateUtil.Date (iStartDate))</span>
+<span class="pc bpc" id="L142" title="1 of 4 branches missed.">					(iStartDate) &amp;&amp; 28 == org.drip.analytics.date.DateUtil.Date (iStartDate))</span>
 <span class="nc" id="L143">					dm._iD1Adj += 2;</span>
 			} else {
-<span class="nc" id="L145">				if (org.drip.analytics.date.DateUtil.FEBRUARY == org.drip.analytics.date.DateUtil.Month</span>
-<span class="nc bnc" id="L146" title="All 4 branches missed.">					(iStartDate) &amp;&amp; 29 == org.drip.analytics.date.DateUtil.Date (iStartDate))</span>
+<span class="fc" id="L145">				if (org.drip.analytics.date.DateUtil.FEBRUARY == org.drip.analytics.date.DateUtil.Month</span>
+<span class="pc bpc" id="L146" title="3 of 4 branches missed.">					(iStartDate) &amp;&amp; 29 == org.drip.analytics.date.DateUtil.Date (iStartDate))</span>
 <span class="nc" id="L147">					dm._iD1Adj += 1;</span>
 			}
 
-<span class="pc bpc" id="L150" title="1 of 2 branches missed.">			if (31 == org.drip.analytics.date.DateUtil.Date (iEndDate) &amp;&amp; (30 ==</span>
-<span class="nc bnc" id="L151" title="All 2 branches missed.">				org.drip.analytics.date.DateUtil.Date (iStartDate) || 31 ==</span>
-<span class="nc bnc" id="L152" title="All 2 branches missed.">					org.drip.analytics.date.DateUtil.Date (iStartDate)))</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">			if (31 == org.drip.analytics.date.DateUtil.Date (iEndDate) &amp;&amp; (30 ==</span>
+<span class="pc bpc" id="L151" title="1 of 2 branches missed.">				org.drip.analytics.date.DateUtil.Date (iStartDate) || 31 ==</span>
+<span class="pc bpc" id="L152" title="1 of 2 branches missed.">					org.drip.analytics.date.DateUtil.Date (iStartDate)))</span>
 <span class="nc" id="L153">				dm._iD2Adj -= 1;</span>
 
 <span class="fc" id="L155">			return dm;</span>
@@ -213,18 +213,18 @@ package org.drip.analytics.daycount;
 		final int iEndDate,
 		final boolean bApplyEOMAdj)
 	{
-<span class="nc" id="L216">		DateEOMAdjustment dm = new DateEOMAdjustment();</span>
+<span class="fc" id="L216">		DateEOMAdjustment dm = new DateEOMAdjustment();</span>
 
-<span class="nc bnc" id="L218" title="All 2 branches missed.">		if (!bApplyEOMAdj) return dm;</span>
+<span class="fc bfc" id="L218" title="All 2 branches covered.">		if (!bApplyEOMAdj) return dm;</span>
 
 		try {
-<span class="nc bnc" id="L221" title="All 2 branches missed.">			if (bApplyEOMAdj) {</span>
-<span class="nc bnc" id="L222" title="All 2 branches missed.">				if (31 == org.drip.analytics.date.DateUtil.Date (iStartDate)) dm._iD1Adj = -1;</span>
+<span class="pc bpc" id="L221" title="1 of 2 branches missed.">			if (bApplyEOMAdj) {</span>
+<span class="pc bpc" id="L222" title="1 of 2 branches missed.">				if (31 == org.drip.analytics.date.DateUtil.Date (iStartDate)) dm._iD1Adj = -1;</span>
 
-<span class="nc bnc" id="L224" title="All 2 branches missed.">				if (31 == org.drip.analytics.date.DateUtil.Date (iEndDate)) dm._iD2Adj = -1;</span>
+<span class="pc bpc" id="L224" title="1 of 2 branches missed.">				if (31 == org.drip.analytics.date.DateUtil.Date (iEndDate)) dm._iD2Adj = -1;</span>
 			}
 
-<span class="nc" id="L227">			return dm;</span>
+<span class="fc" id="L227">			return dm;</span>
 <span class="nc" id="L228">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L229">			e.printStackTrace();</span>
 		}
@@ -247,20 +247,20 @@ package org.drip.analytics.daycount;
 		final int iEndDate,
 		final boolean bApplyEOMAdj)
 	{
-<span class="nc" id="L250">		DateEOMAdjustment dm = new DateEOMAdjustment();</span>
+<span class="fc" id="L250">		DateEOMAdjustment dm = new DateEOMAdjustment();</span>
 
-<span class="nc bnc" id="L252" title="All 2 branches missed.">		if (!bApplyEOMAdj) return dm;</span>
+<span class="fc bfc" id="L252" title="All 2 branches covered.">		if (!bApplyEOMAdj) return dm;</span>
 
 		try {
-<span class="nc bnc" id="L255" title="All 2 branches missed.">			if (bApplyEOMAdj) {</span>
-<span class="nc bnc" id="L256" title="All 2 branches missed.">				if (org.drip.analytics.date.DateUtil.IsEOM (iStartDate))</span>
+<span class="pc bpc" id="L255" title="1 of 2 branches missed.">			if (bApplyEOMAdj) {</span>
+<span class="pc bpc" id="L256" title="1 of 2 branches missed.">				if (org.drip.analytics.date.DateUtil.IsEOM (iStartDate))</span>
 <span class="nc" id="L257">					dm._iD1Adj = 30 - org.drip.analytics.date.DateUtil.Date (iStartDate);</span>
 
-<span class="nc bnc" id="L259" title="All 2 branches missed.">				if (org.drip.analytics.date.DateUtil.IsEOM (iEndDate))</span>
-<span class="nc" id="L260">					dm._iD2Adj = 30 - org.drip.analytics.date.DateUtil.Date (iEndDate);</span>
+<span class="fc bfc" id="L259" title="All 2 branches covered.">				if (org.drip.analytics.date.DateUtil.IsEOM (iEndDate))</span>
+<span class="fc" id="L260">					dm._iD2Adj = 30 - org.drip.analytics.date.DateUtil.Date (iEndDate);</span>
 			}
 
-<span class="nc" id="L263">			return dm;</span>
+<span class="fc" id="L263">			return dm;</span>
 <span class="nc" id="L264">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L265">			e.printStackTrace();</span>
 		}
@@ -283,9 +283,9 @@ package org.drip.analytics.daycount;
 		final int iEndDate,
 		final boolean bApplyEOMAdj)
 	{
-<span class="nc" id="L286">		DateEOMAdjustment dm = new DateEOMAdjustment();</span>
+<span class="fc" id="L286">		DateEOMAdjustment dm = new DateEOMAdjustment();</span>
 
-<span class="nc bnc" id="L288" title="All 2 branches missed.">		if (!bApplyEOMAdj) return dm;</span>
+<span class="pc bpc" id="L288" title="1 of 2 branches missed.">		if (!bApplyEOMAdj) return dm;</span>
 
 		try {
 <span class="nc bnc" id="L291" title="All 2 branches missed.">			if (bApplyEOMAdj) {</span>

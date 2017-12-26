@@ -71,7 +71,7 @@ public class R1UnivariateNormal extends org.drip.measure.continuous.R1 {
 	public static final org.drip.measure.gaussian.R1UnivariateNormal Standard()
 	{
 		try {
-<span class="nc" id="L74">			return new R1UnivariateNormal (0., 1.);</span>
+<span class="fc" id="L74">			return new R1UnivariateNormal (0., 1.);</span>
 <span class="nc" id="L75">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L76">			e.printStackTrace();</span>
 		}
@@ -122,10 +122,10 @@ public class R1UnivariateNormal extends org.drip.measure.continuous.R1 {
 		final double dblY)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L125" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblY) || 0. == _dblSigma)</span>
+<span class="pc bpc" id="L125" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblY) || 0. == _dblSigma)</span>
 <span class="nc" id="L126">			throw new java.lang.Exception (&quot;R1UnivariateNormal::invCumulative =&gt; Cannot calculate&quot;);</span>
 
-<span class="nc" id="L128">	    return org.drip.measure.gaussian.NormalQuadrature.InverseCDF (dblY) * _dblSigma + _dblMean;</span>
+<span class="fc" id="L128">	    return org.drip.measure.gaussian.NormalQuadrature.InverseCDF (dblY) * _dblSigma + _dblMean;</span>
 	}
 
 	@Override public double density (
@@ -210,11 +210,11 @@ public class R1UnivariateNormal extends org.drip.measure.continuous.R1 {
 		final double dblConfidence)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L213" title="All 6 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblConfidence) || 0. &gt;= dblConfidence || 1. &lt;=</span>
+<span class="pc bpc" id="L213" title="3 of 6 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblConfidence) || 0. &gt;= dblConfidence || 1. &lt;=</span>
 			dblConfidence)
 <span class="nc" id="L215">			throw new java.lang.Exception (&quot;R1UnivariateNormal::confidenceInterval =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L217">		return invCumulative (0.5 * (1. + dblConfidence));</span>
+<span class="fc" id="L217">		return invCumulative (0.5 * (1. + dblConfidence));</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

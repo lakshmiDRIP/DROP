@@ -572,8 +572,8 @@ package org.drip.service.env;
 		final org.drip.analytics.date.JulianDate dtFirstCoupon,
 		final java.lang.String strCDXName)
 	{
-<span class="nc" id="L575">		return org.drip.product.creator.CDSBasketBuilder.MakeCDX (dtFirstCoupon.subtractTenor (&quot;3M&quot;),</span>
-<span class="nc" id="L576">			dtFirstCoupon.addTenor (strTenor), 0.05, &quot;USD&quot;, new java.lang.String[] {&quot;ARG&quot;, &quot;VEN&quot;, &quot;BRA&quot;,</span>
+<span class="fc" id="L575">		return org.drip.product.creator.CDSBasketBuilder.MakeCDX (dtFirstCoupon.subtractTenor (&quot;3M&quot;),</span>
+<span class="fc" id="L576">			dtFirstCoupon.addTenor (strTenor), 0.05, &quot;USD&quot;, new java.lang.String[] {&quot;ARG&quot;, &quot;VEN&quot;, &quot;BRA&quot;,</span>
 				&quot;MAL&quot;, &quot;COL&quot;, &quot;HUN&quot;, &quot;IND&quot;, &quot;PAN&quot;, &quot;PER&quot;, &quot;SAF&quot;, &quot;PHI&quot;, &quot;TUR&quot;, &quot;RUS&quot;, &quot;UKR&quot;, &quot;MEX&quot;}, new
 					double[] {0.06, 0.08, 0.13, 0.04, 0.08, 0.03, 0.05, 0.03, 0.05, 0.03, 0.06, 0.11, 0.13,
 						0.03, 0.09}, strCDXName);
@@ -584,37 +584,37 @@ package org.drip.service.env;
 		final int iSeries,
 		final java.lang.String strTenor)
 	{
-<span class="nc bnc" id="L587" title="All 8 branches missed.">		if (null == strIndex || strIndex.isEmpty() || null == strTenor || strTenor.isEmpty()) return null;</span>
+<span class="pc bpc" id="L587" title="4 of 8 branches missed.">		if (null == strIndex || strIndex.isEmpty() || null == strTenor || strTenor.isEmpty()) return null;</span>
 
-<span class="nc" id="L589">		org.drip.product.params.CDXIdentifier cdxID = null;</span>
+<span class="fc" id="L589">		org.drip.product.params.CDXIdentifier cdxID = null;</span>
 
 		try {
-<span class="nc" id="L592">			cdxID = new org.drip.product.params.CDXIdentifier (iSeries, 1, strIndex, strTenor);</span>
+<span class="fc" id="L592">			cdxID = new org.drip.product.params.CDXIdentifier (iSeries, 1, strIndex, strTenor);</span>
 <span class="nc" id="L593">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L594">			e.printStackTrace();</span>
-<span class="nc" id="L595">		}</span>
+<span class="fc" id="L595">		}</span>
 
-<span class="nc bnc" id="L597" title="All 2 branches missed.">		if (null == cdxID) return null;</span>
+<span class="pc bpc" id="L597" title="1 of 2 branches missed.">		if (null == cdxID) return null;</span>
 
-<span class="nc" id="L599">		java.lang.String strCDXCode = cdxID.getCode();</span>
+<span class="fc" id="L599">		java.lang.String strCDXCode = cdxID.getCode();</span>
 
-<span class="nc bnc" id="L601" title="All 4 branches missed.">		if (null == strCDXCode || strCDXCode.isEmpty()) return null;</span>
+<span class="pc bpc" id="L601" title="2 of 4 branches missed.">		if (null == strCDXCode || strCDXCode.isEmpty()) return null;</span>
 
-<span class="nc" id="L603">		org.drip.product.definition.BasketProduct cdx = _mapStandardCDX.get (strCDXCode);</span>
+<span class="fc" id="L603">		org.drip.product.definition.BasketProduct cdx = _mapStandardCDX.get (strCDXCode);</span>
 
-<span class="nc bnc" id="L605" title="All 2 branches missed.">		if (null != cdx) return cdx;</span>
+<span class="pc bpc" id="L605" title="1 of 2 branches missed.">		if (null != cdx) return cdx;</span>
 
-<span class="nc" id="L607">		java.util.Map&lt;java.lang.Integer, org.drip.analytics.date.JulianDate&gt; mapSeriesFirstCoupon =</span>
-<span class="nc" id="L608">			_mmIndexSeriesFirstCoupon.get (strIndex);</span>
+<span class="fc" id="L607">		java.util.Map&lt;java.lang.Integer, org.drip.analytics.date.JulianDate&gt; mapSeriesFirstCoupon =</span>
+<span class="fc" id="L608">			_mmIndexSeriesFirstCoupon.get (strIndex);</span>
 
-<span class="nc bnc" id="L610" title="All 2 branches missed.">		if (null == mapSeriesFirstCoupon) return null;</span>
+<span class="pc bpc" id="L610" title="1 of 2 branches missed.">		if (null == mapSeriesFirstCoupon) return null;</span>
 
-<span class="nc" id="L612">		org.drip.analytics.date.JulianDate dtFirstCoupon = mapSeriesFirstCoupon.get (iSeries);</span>
+<span class="fc" id="L612">		org.drip.analytics.date.JulianDate dtFirstCoupon = mapSeriesFirstCoupon.get (iSeries);</span>
 
-<span class="nc bnc" id="L614" title="All 2 branches missed.">		if (null == dtFirstCoupon) return null;</span>
+<span class="pc bpc" id="L614" title="1 of 2 branches missed.">		if (null == dtFirstCoupon) return null;</span>
 
-<span class="nc bnc" id="L616" title="All 2 branches missed.">		if (&quot;CDX.EM&quot;.equalsIgnoreCase (strIndex))</span>
-<span class="nc" id="L617">			cdx = ConstructCDXEM (strTenor, dtFirstCoupon, strCDXCode);</span>
+<span class="pc bpc" id="L616" title="1 of 2 branches missed.">		if (&quot;CDX.EM&quot;.equalsIgnoreCase (strIndex))</span>
+<span class="fc" id="L617">			cdx = ConstructCDXEM (strTenor, dtFirstCoupon, strCDXCode);</span>
 		else {
 <span class="nc" id="L619">			org.drip.product.params.StandardCDXParams cdxParams = _mapStandardCDXParams.get (strIndex);</span>
 
@@ -623,9 +623,9 @@ package org.drip.service.env;
 					cdxParams._iNumComponents, strCDXCode);
 		}
 
-<span class="nc" id="L626">		_mapStandardCDX.put (strCDXCode, cdx);</span>
+<span class="fc" id="L626">		_mapStandardCDX.put (strCDXCode, cdx);</span>
 
-<span class="nc" id="L628">		return cdx;</span>
+<span class="fc" id="L628">		return cdx;</span>
 	}
 
 	private static final org.drip.product.definition.BasketProduct MakePreLoadedStandardCDX (
@@ -633,34 +633,34 @@ package org.drip.service.env;
 		final int iSeries,
 		final java.lang.String strTenor)
 	{
-<span class="nc bnc" id="L636" title="All 8 branches missed.">		if (null == strIndex || strIndex.isEmpty() || null == strTenor || strTenor.isEmpty()) return null;</span>
+<span class="pc bpc" id="L636" title="4 of 8 branches missed.">		if (null == strIndex || strIndex.isEmpty() || null == strTenor || strTenor.isEmpty()) return null;</span>
 
-<span class="nc" id="L638">		org.drip.product.params.CDXIdentifier cdxID = null;</span>
+<span class="fc" id="L638">		org.drip.product.params.CDXIdentifier cdxID = null;</span>
 
 		try {
-<span class="nc" id="L641">			cdxID = new org.drip.product.params.CDXIdentifier (iSeries, 1, strIndex, strTenor);</span>
+<span class="fc" id="L641">			cdxID = new org.drip.product.params.CDXIdentifier (iSeries, 1, strIndex, strTenor);</span>
 <span class="nc" id="L642">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L643">			e.printStackTrace();</span>
-<span class="nc" id="L644">		}</span>
+<span class="fc" id="L644">		}</span>
 
-<span class="nc bnc" id="L646" title="All 2 branches missed.">		if (null == cdxID) return null;</span>
+<span class="pc bpc" id="L646" title="1 of 2 branches missed.">		if (null == cdxID) return null;</span>
 
-<span class="nc" id="L648">		java.lang.String strCDXCode = cdxID.getCode();</span>
+<span class="fc" id="L648">		java.lang.String strCDXCode = cdxID.getCode();</span>
 
-<span class="nc bnc" id="L650" title="All 4 branches missed.">		if (null == strCDXCode || strCDXCode.isEmpty()) return null;</span>
+<span class="pc bpc" id="L650" title="2 of 4 branches missed.">		if (null == strCDXCode || strCDXCode.isEmpty()) return null;</span>
 
-<span class="nc" id="L652">		org.drip.product.params.CDXRefDataParams cdxrdb =</span>
-<span class="nc" id="L653">			org.drip.product.creator.CDXRefDataHolder._mapCDXRefData.get (strCDXCode);</span>
+<span class="fc" id="L652">		org.drip.product.params.CDXRefDataParams cdxrdb =</span>
+<span class="fc" id="L653">			org.drip.product.creator.CDXRefDataHolder._mapCDXRefData.get (strCDXCode);</span>
 
-<span class="nc bnc" id="L655" title="All 2 branches missed.">		if (null == cdxrdb) return null;</span>
+<span class="pc bpc" id="L655" title="1 of 2 branches missed.">		if (null == cdxrdb) return null;</span>
 
-<span class="nc" id="L657">		java.lang.String[] astrCC = new java.lang.String[cdxrdb._iOriginalComponentCount];</span>
+<span class="fc" id="L657">		java.lang.String[] astrCC = new java.lang.String[cdxrdb._iOriginalComponentCount];</span>
 
-<span class="nc bnc" id="L659" title="All 2 branches missed.">		for (int i = 0; i &lt; cdxrdb._iOriginalComponentCount; ++i)</span>
-<span class="nc" id="L660">			astrCC[i] = &quot;CC&quot; + (i + 1);</span>
+<span class="fc bfc" id="L659" title="All 2 branches covered.">		for (int i = 0; i &lt; cdxrdb._iOriginalComponentCount; ++i)</span>
+<span class="fc" id="L660">			astrCC[i] = &quot;CC&quot; + (i + 1);</span>
 
-<span class="nc" id="L662">		return org.drip.product.creator.CDSBasketBuilder.MakeCDX (cdxrdb._dtMaturity.subtractTenor</span>
-<span class="nc" id="L663">			(cdxrdb._iIndexLifeSpan + &quot;Y&quot;), cdxrdb._dtMaturity, cdxrdb._dblCoupon, cdxrdb._strCurrency,</span>
+<span class="fc" id="L662">		return org.drip.product.creator.CDSBasketBuilder.MakeCDX (cdxrdb._dtMaturity.subtractTenor</span>
+<span class="fc" id="L663">			(cdxrdb._iIndexLifeSpan + &quot;Y&quot;), cdxrdb._dtMaturity, cdxrdb._dblCoupon, cdxrdb._strCurrency,</span>
 				astrCC, cdxrdb._strIndexClass + &quot;.&quot; + cdxrdb._strIndexGroupName + &quot;.&quot; +
 					cdxrdb._iIndexLifeSpan + &quot;Y.&quot; + cdxrdb._iIndexSeries + &quot;.&quot; + cdxrdb._iIndexVersion);
 	}
@@ -670,22 +670,22 @@ package org.drip.service.env;
 		final org.drip.analytics.date.JulianDate dt,
 		final java.lang.String strTenor)
 	{
-<span class="nc bnc" id="L673" title="All 10 branches missed.">		if (null == dt || null == strIndex || strIndex.isEmpty() || null == strTenor || strTenor.isEmpty())</span>
+<span class="pc bpc" id="L673" title="5 of 10 branches missed.">		if (null == dt || null == strIndex || strIndex.isEmpty() || null == strTenor || strTenor.isEmpty())</span>
 <span class="nc" id="L674">			return null;</span>
 
-<span class="nc" id="L676">		java.util.Map&lt;org.drip.analytics.date.JulianDate, java.lang.Integer&gt; mapFirstCouponSeries =</span>
-<span class="nc" id="L677">			_mmIndexFirstCouponSeries.get (strIndex);</span>
+<span class="fc" id="L676">		java.util.Map&lt;org.drip.analytics.date.JulianDate, java.lang.Integer&gt; mapFirstCouponSeries =</span>
+<span class="fc" id="L677">			_mmIndexFirstCouponSeries.get (strIndex);</span>
 
-<span class="nc" id="L679">		org.drip.analytics.date.JulianDate dtFirstCoupon = dt.nextCreditIMM (3);</span>
+<span class="fc" id="L679">		org.drip.analytics.date.JulianDate dtFirstCoupon = dt.nextCreditIMM (3);</span>
 
-<span class="nc bnc" id="L681" title="All 4 branches missed.">		if (null == dtFirstCoupon || null == mapFirstCouponSeries) return null;</span>
+<span class="pc bpc" id="L681" title="1 of 4 branches missed.">		if (null == dtFirstCoupon || null == mapFirstCouponSeries) return null;</span>
 
-<span class="nc bnc" id="L683" title="All 2 branches missed.">		if (null == mapFirstCouponSeries.get (dtFirstCoupon))</span>
+<span class="pc bpc" id="L683" title="1 of 2 branches missed.">		if (null == mapFirstCouponSeries.get (dtFirstCoupon))</span>
 <span class="nc" id="L684">			dtFirstCoupon = dtFirstCoupon.nextCreditIMM (3);</span>
 
-<span class="nc bnc" id="L686" title="All 4 branches missed.">		if (null == dtFirstCoupon || null == mapFirstCouponSeries.get (dtFirstCoupon)) return null;</span>
+<span class="pc bpc" id="L686" title="2 of 4 branches missed.">		if (null == dtFirstCoupon || null == mapFirstCouponSeries.get (dtFirstCoupon)) return null;</span>
 
-<span class="nc" id="L688">		return MakePresetStandardCDX (strIndex, mapFirstCouponSeries.get (dtFirstCoupon), strTenor);</span>
+<span class="fc" id="L688">		return MakePresetStandardCDX (strIndex, mapFirstCouponSeries.get (dtFirstCoupon), strTenor);</span>
 	}
 
 	private static final org.drip.product.definition.BasketProduct GetPreLoadedOnTheRun (
@@ -693,22 +693,22 @@ package org.drip.service.env;
 		final org.drip.analytics.date.JulianDate dt,
 		final java.lang.String strTenor)
 	{
-<span class="nc bnc" id="L696" title="All 10 branches missed.">		if (null == dt || null == strIndex || strIndex.isEmpty() || null == strTenor || strTenor.isEmpty())</span>
+<span class="pc bpc" id="L696" title="5 of 10 branches missed.">		if (null == dt || null == strIndex || strIndex.isEmpty() || null == strTenor || strTenor.isEmpty())</span>
 <span class="nc" id="L697">			return null;</span>
 
-<span class="nc" id="L699">		java.util.Map&lt;org.drip.analytics.date.JulianDate, java.lang.Integer&gt; mapFirstCouponSeries =</span>
-<span class="nc" id="L700">			org.drip.product.creator.CDXRefDataHolder._mmCDXRDBFirstCouponSeries.get (strIndex);</span>
+<span class="fc" id="L699">		java.util.Map&lt;org.drip.analytics.date.JulianDate, java.lang.Integer&gt; mapFirstCouponSeries =</span>
+<span class="fc" id="L700">			org.drip.product.creator.CDXRefDataHolder._mmCDXRDBFirstCouponSeries.get (strIndex);</span>
 
-<span class="nc" id="L702">		org.drip.analytics.date.JulianDate dtFirstCoupon = dt.nextCreditIMM (3);</span>
+<span class="fc" id="L702">		org.drip.analytics.date.JulianDate dtFirstCoupon = dt.nextCreditIMM (3);</span>
 
-<span class="nc bnc" id="L704" title="All 4 branches missed.">		if (null == dtFirstCoupon || null == mapFirstCouponSeries) return null;</span>
+<span class="pc bpc" id="L704" title="2 of 4 branches missed.">		if (null == dtFirstCoupon || null == mapFirstCouponSeries) return null;</span>
 
-<span class="nc bnc" id="L706" title="All 2 branches missed.">		if (null == mapFirstCouponSeries.get (dtFirstCoupon))</span>
+<span class="pc bpc" id="L706" title="1 of 2 branches missed.">		if (null == mapFirstCouponSeries.get (dtFirstCoupon))</span>
 <span class="nc" id="L707">			dtFirstCoupon = dtFirstCoupon.nextCreditIMM (3);</span>
 
-<span class="nc bnc" id="L709" title="All 4 branches missed.">		if (null == dtFirstCoupon || null == mapFirstCouponSeries.get (dtFirstCoupon)) return null;</span>
+<span class="pc bpc" id="L709" title="2 of 4 branches missed.">		if (null == dtFirstCoupon || null == mapFirstCouponSeries.get (dtFirstCoupon)) return null;</span>
 
-<span class="nc" id="L711">		return MakePreLoadedStandardCDX (strIndex, mapFirstCouponSeries.get (dtFirstCoupon), strTenor);</span>
+<span class="fc" id="L711">		return MakePreLoadedStandardCDX (strIndex, mapFirstCouponSeries.get (dtFirstCoupon), strTenor);</span>
 	}
 
 	private static final boolean DumpIndexDetails (
@@ -804,11 +804,11 @@ package org.drip.service.env;
 		final org.drip.analytics.date.JulianDate dt,
 		final java.lang.String strTenor)
 	{
-<span class="nc" id="L807">		org.drip.product.definition.BasketProduct bpCDX = GetPresetOnTheRun (strIndex, dt, strTenor);</span>
+<span class="fc" id="L807">		org.drip.product.definition.BasketProduct bpCDX = GetPresetOnTheRun (strIndex, dt, strTenor);</span>
 
-<span class="nc bnc" id="L809" title="All 2 branches missed.">		if (null != bpCDX) return bpCDX;</span>
+<span class="fc bfc" id="L809" title="All 2 branches covered.">		if (null != bpCDX) return bpCDX;</span>
 
-<span class="nc" id="L811">		return GetPreLoadedOnTheRun (strIndex, dt, strTenor);</span>
+<span class="fc" id="L811">		return GetPreLoadedOnTheRun (strIndex, dt, strTenor);</span>
 	}
 
 	/**
@@ -819,7 +819,7 @@ package org.drip.service.env;
 
 	public static final java.util.Set&lt;java.lang.String&gt; GetPresetIndexNames()
 	{
-<span class="nc" id="L822">		return _mmIndexFirstCouponSeries.keySet();</span>
+<span class="fc" id="L822">		return _mmIndexFirstCouponSeries.keySet();</span>
 	}
 
 	/**
@@ -830,7 +830,7 @@ package org.drip.service.env;
 
 	public static final java.util.Set&lt;java.lang.String&gt; GetPreLoadedIndexNames()
 	{
-<span class="nc" id="L833">		return org.drip.product.creator.CDXRefDataHolder._mmCDXRDBFirstCouponSeries.keySet();</span>
+<span class="fc" id="L833">		return org.drip.product.creator.CDXRefDataHolder._mmCDXRDBFirstCouponSeries.keySet();</span>
 	}
 
 	/**
@@ -841,13 +841,13 @@ package org.drip.service.env;
 
 	public static final java.util.Set&lt;java.lang.String&gt; GetCDXNames()
 	{
-<span class="nc" id="L844">		java.util.Set&lt;java.lang.String&gt; setstrIndex = new java.util.HashSet&lt;java.lang.String&gt;();</span>
+<span class="fc" id="L844">		java.util.Set&lt;java.lang.String&gt; setstrIndex = new java.util.HashSet&lt;java.lang.String&gt;();</span>
 
-<span class="nc" id="L846">		setstrIndex.addAll (GetPreLoadedIndexNames());</span>
+<span class="fc" id="L846">		setstrIndex.addAll (GetPreLoadedIndexNames());</span>
 
-<span class="nc" id="L848">		setstrIndex.addAll (GetPresetIndexNames());</span>
+<span class="fc" id="L848">		setstrIndex.addAll (GetPresetIndexNames());</span>
 
-<span class="nc" id="L850">		return setstrIndex;</span>
+<span class="fc" id="L850">		return setstrIndex;</span>
 	}
 
 	/**
@@ -862,9 +862,9 @@ package org.drip.service.env;
 		GetPresetCDXSeriesMap (
 			final java.lang.String strCDXName)
 	{
-<span class="nc bnc" id="L865" title="All 4 branches missed.">		if (null == strCDXName || strCDXName.isEmpty()) return null;</span>
+<span class="pc bpc" id="L865" title="2 of 4 branches missed.">		if (null == strCDXName || strCDXName.isEmpty()) return null;</span>
 
-<span class="nc" id="L867">		return _mmIndexFirstCouponSeries.get (strCDXName);</span>
+<span class="fc" id="L867">		return _mmIndexFirstCouponSeries.get (strCDXName);</span>
 	}
 
 	/**
@@ -879,9 +879,9 @@ package org.drip.service.env;
 		GetPreLoadedCDXSeriesMap (
 			final java.lang.String strCDXName)
 	{
-<span class="nc bnc" id="L882" title="All 4 branches missed.">		if (null == strCDXName || strCDXName.isEmpty()) return null;</span>
+<span class="pc bpc" id="L882" title="2 of 4 branches missed.">		if (null == strCDXName || strCDXName.isEmpty()) return null;</span>
 
-<span class="nc" id="L884">		return org.drip.product.creator.CDXRefDataHolder._mmCDXRDBFirstCouponSeries.get (strCDXName);</span>
+<span class="fc" id="L884">		return org.drip.product.creator.CDXRefDataHolder._mmCDXRDBFirstCouponSeries.get (strCDXName);</span>
 	}
 
 	/**
@@ -895,23 +895,23 @@ package org.drip.service.env;
 	public static final java.util.Map&lt;org.drip.analytics.date.JulianDate, java.lang.Integer&gt; GetCDXSeriesMap(
 		final java.lang.String strCDXName)
 	{
-<span class="nc bnc" id="L898" title="All 4 branches missed.">		if (null == strCDXName || strCDXName.isEmpty()) return null;</span>
+<span class="pc bpc" id="L898" title="2 of 4 branches missed.">		if (null == strCDXName || strCDXName.isEmpty()) return null;</span>
 
-<span class="nc" id="L900">		java.util.Map&lt;org.drip.analytics.date.JulianDate, java.lang.Integer&gt; mapFirstCouponSeries = new</span>
+<span class="fc" id="L900">		java.util.Map&lt;org.drip.analytics.date.JulianDate, java.lang.Integer&gt; mapFirstCouponSeries = new</span>
 			java.util.HashMap&lt;org.drip.analytics.date.JulianDate, java.lang.Integer&gt;();
 
-<span class="nc" id="L903">		java.util.Map&lt;org.drip.analytics.date.JulianDate, java.lang.Integer&gt; mapPresetFirstCouponSeries =</span>
-<span class="nc" id="L904">			GetPresetCDXSeriesMap (strCDXName);</span>
+<span class="fc" id="L903">		java.util.Map&lt;org.drip.analytics.date.JulianDate, java.lang.Integer&gt; mapPresetFirstCouponSeries =</span>
+<span class="fc" id="L904">			GetPresetCDXSeriesMap (strCDXName);</span>
 
-<span class="nc bnc" id="L906" title="All 2 branches missed.">		if (null != mapPresetFirstCouponSeries) mapFirstCouponSeries.putAll (mapPresetFirstCouponSeries);</span>
+<span class="pc bpc" id="L906" title="1 of 2 branches missed.">		if (null != mapPresetFirstCouponSeries) mapFirstCouponSeries.putAll (mapPresetFirstCouponSeries);</span>
 
-<span class="nc" id="L908">		java.util.Map&lt;org.drip.analytics.date.JulianDate, java.lang.Integer&gt; mapPreLoadedFirstCouponSeries =</span>
-<span class="nc" id="L909">			GetPreLoadedCDXSeriesMap (strCDXName);</span>
+<span class="fc" id="L908">		java.util.Map&lt;org.drip.analytics.date.JulianDate, java.lang.Integer&gt; mapPreLoadedFirstCouponSeries =</span>
+<span class="fc" id="L909">			GetPreLoadedCDXSeriesMap (strCDXName);</span>
 
-<span class="nc bnc" id="L911" title="All 2 branches missed.">		if (null != mapPreLoadedFirstCouponSeries)</span>
-<span class="nc" id="L912">			mapFirstCouponSeries.putAll (mapPreLoadedFirstCouponSeries);</span>
+<span class="pc bpc" id="L911" title="1 of 2 branches missed.">		if (null != mapPreLoadedFirstCouponSeries)</span>
+<span class="fc" id="L912">			mapFirstCouponSeries.putAll (mapPreLoadedFirstCouponSeries);</span>
 
-<span class="nc" id="L914">		return mapFirstCouponSeries;</span>
+<span class="fc" id="L914">		return mapFirstCouponSeries;</span>
 	}
 
 	/**
@@ -923,14 +923,14 @@ package org.drip.service.env;
 	public static final org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String&gt;
 		GetPresetCDXDescriptions()
 	{
-<span class="nc" id="L926">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String&gt; mapCDXDescr = new</span>
+<span class="fc" id="L926">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String&gt; mapCDXDescr = new</span>
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String&gt;();
 
 		for (java.util.Map.Entry&lt;java.lang.String, org.drip.product.params.StandardCDXParams&gt; meCDXRefData :
-<span class="nc bnc" id="L930" title="All 2 branches missed.">			_mapStandardCDXParams.entrySet())</span>
-<span class="nc" id="L931">			mapCDXDescr.put (meCDXRefData.getKey(), meCDXRefData.getKey());</span>
+<span class="fc bfc" id="L930" title="All 2 branches covered.">			_mapStandardCDXParams.entrySet())</span>
+<span class="fc" id="L931">			mapCDXDescr.put (meCDXRefData.getKey(), meCDXRefData.getKey());</span>
 
-<span class="nc" id="L933">		return mapCDXDescr;</span>
+<span class="fc" id="L933">		return mapCDXDescr;</span>
 	}
 
 	/**
@@ -942,14 +942,14 @@ package org.drip.service.env;
 	public static final org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String&gt;
 		GetPreLoadedCDXDescriptions()
 	{
-<span class="nc" id="L945">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String&gt; mapCDXDescr = new</span>
+<span class="fc" id="L945">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String&gt; mapCDXDescr = new</span>
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String&gt;();
 
 		for (java.util.Map.Entry&lt;java.lang.String, org.drip.product.params.CDXRefDataParams&gt; meCDXRefData :
-<span class="nc bnc" id="L949" title="All 2 branches missed.">			org.drip.product.creator.CDXRefDataHolder._mapCDXRefData.entrySet())</span>
-<span class="nc" id="L950">			mapCDXDescr.put (meCDXRefData.getKey(), meCDXRefData.getValue()._strIndexName);</span>
+<span class="fc bfc" id="L949" title="All 2 branches covered.">			org.drip.product.creator.CDXRefDataHolder._mapCDXRefData.entrySet())</span>
+<span class="fc" id="L950">			mapCDXDescr.put (meCDXRefData.getKey(), meCDXRefData.getValue()._strIndexName);</span>
 
-<span class="nc" id="L952">		return mapCDXDescr;</span>
+<span class="fc" id="L952">		return mapCDXDescr;</span>
 	}
 
 	/**
@@ -961,14 +961,14 @@ package org.drip.service.env;
 	public static final org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String&gt;
 		GetCDXDescriptions()
 	{
-<span class="nc" id="L964">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String&gt; mapCDXDescr = new</span>
+<span class="fc" id="L964">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String&gt; mapCDXDescr = new</span>
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String&gt;();
 
-<span class="nc" id="L967">		mapCDXDescr.putAll (GetPreLoadedCDXDescriptions());</span>
+<span class="fc" id="L967">		mapCDXDescr.putAll (GetPreLoadedCDXDescriptions());</span>
 
-<span class="nc" id="L969">		mapCDXDescr.putAll (GetPresetCDXDescriptions());</span>
+<span class="fc" id="L969">		mapCDXDescr.putAll (GetPresetCDXDescriptions());</span>
 
-<span class="nc" id="L971">		return mapCDXDescr;</span>
+<span class="fc" id="L971">		return mapCDXDescr;</span>
 	}
 
 	public static final void main (

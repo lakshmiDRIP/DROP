@@ -85,14 +85,14 @@ import org.drip.service.env.EnvManager;
 		final int iNumInterval)
 		throws Exception
 	{
-<span class="nc" id="L88">		double dblEta = 5.e-06;</span>
-<span class="nc" id="L89">		double dblSigma = 1.;</span>
-<span class="nc" id="L90">		double dblLambda = 1.e-05;</span>
-<span class="nc" id="L91">		double dblX = 100000.;</span>
+<span class="fc" id="L88">		double dblEta = 5.e-06;</span>
+<span class="fc" id="L89">		double dblSigma = 1.;</span>
+<span class="fc" id="L90">		double dblLambda = 1.e-05;</span>
+<span class="fc" id="L91">		double dblX = 100000.;</span>
 
-<span class="nc" id="L93">		ArithmeticPriceEvolutionParameters apep = ArithmeticPriceEvolutionParametersBuilder.TradingEnhancedVolatility (</span>
+<span class="fc" id="L93">		ArithmeticPriceEvolutionParameters apep = ArithmeticPriceEvolutionParametersBuilder.TradingEnhancedVolatility (</span>
 			dblSigma,
-<span class="nc" id="L95">			new UniformParticipationRateLinear (ParticipationRateLinear.SlopeOnly (dblEta)),</span>
+<span class="fc" id="L95">			new UniformParticipationRateLinear (ParticipationRateLinear.SlopeOnly (dblEta)),</span>
 			new UniformParticipationRateLinear (
 				new ParticipationRateLinear (
 					dblAlpha,
@@ -101,53 +101,53 @@ import org.drip.service.env.EnvManager;
 			)
 		);
 
-<span class="nc" id="L104">		ContinuousConstantTradingEnhanced ccte = ContinuousConstantTradingEnhanced.Standard (</span>
+<span class="fc" id="L104">		ContinuousConstantTradingEnhanced ccte = ContinuousConstantTradingEnhanced.Standard (</span>
 			dblX,
 			dblT,
 			apep,
 			dblLambda
 		);
 
-<span class="nc" id="L111">		EfficientTradingTrajectoryContinuous ettc = (EfficientTradingTrajectoryContinuous) ccte.generate();</span>
+<span class="fc" id="L111">		EfficientTradingTrajectoryContinuous ettc = (EfficientTradingTrajectoryContinuous) ccte.generate();</span>
 
-<span class="nc" id="L113">		R1ToR1 r1ToR1Holdings = ettc.holdings();</span>
+<span class="fc" id="L113">		R1ToR1 r1ToR1Holdings = ettc.holdings();</span>
 
-<span class="nc" id="L115">		double[] adblHoldings = new double[iNumInterval];</span>
-<span class="nc" id="L116">		double[] adblExecutionTime = new double[iNumInterval];</span>
+<span class="fc" id="L115">		double[] adblHoldings = new double[iNumInterval];</span>
+<span class="fc" id="L116">		double[] adblExecutionTime = new double[iNumInterval];</span>
 
-<span class="nc bnc" id="L118" title="All 2 branches missed.">		for (int i = 1; i &lt;= iNumInterval; ++i) {</span>
-<span class="nc" id="L119">			adblExecutionTime[i - 1] = dblT * i / iNumInterval;</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">		for (int i = 1; i &lt;= iNumInterval; ++i) {</span>
+<span class="fc" id="L119">			adblExecutionTime[i - 1] = dblT * i / iNumInterval;</span>
 
-<span class="nc" id="L121">			adblHoldings[i - 1] = r1ToR1Holdings.evaluate (adblExecutionTime[i - 1]);</span>
+<span class="fc" id="L121">			adblHoldings[i - 1] = r1ToR1Holdings.evaluate (adblExecutionTime[i - 1]);</span>
 		}
 
-<span class="nc" id="L124">		String strDump = &quot;\t|&quot; + FormatUtil.FormatDouble (dblAlpha, 1, 1, 1.) + &quot; =&gt;&quot;;</span>
+<span class="fc" id="L124">		String strDump = &quot;\t|&quot; + FormatUtil.FormatDouble (dblAlpha, 1, 1, 1.) + &quot; =&gt;&quot;;</span>
 
-<span class="nc bnc" id="L126" title="All 2 branches missed.">		for (int i = 0; i &lt; adblExecutionTime.length; ++i)</span>
-<span class="nc" id="L127">			strDump = strDump + FormatUtil.FormatDouble (adblHoldings[i] / dblX, 2, 1, 100.) + &quot;% &quot;;</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">		for (int i = 0; i &lt; adblExecutionTime.length; ++i)</span>
+<span class="fc" id="L127">			strDump = strDump + FormatUtil.FormatDouble (adblHoldings[i] / dblX, 2, 1, 100.) + &quot;% &quot;;</span>
 
-<span class="nc" id="L129">		strDump = strDump + FormatUtil.FormatDouble (ettc.transactionCostExpectation(), 5, 0, 1.) + &quot; | &quot;;</span>
+<span class="fc" id="L129">		strDump = strDump + FormatUtil.FormatDouble (ettc.transactionCostExpectation(), 5, 0, 1.) + &quot; | &quot;;</span>
 
-<span class="nc" id="L131">		strDump = strDump + FormatUtil.FormatDouble (ettc.transactionCostVariance(), 5, 0, 1.e-06) + &quot; | &quot;;</span>
+<span class="fc" id="L131">		strDump = strDump + FormatUtil.FormatDouble (ettc.transactionCostVariance(), 5, 0, 1.e-06) + &quot; | &quot;;</span>
 
-<span class="nc" id="L133">		strDump = strDump + FormatUtil.FormatDouble (ettc.characteristicTime(), 1, 3, 1.) + &quot; ||&quot;;</span>
+<span class="fc" id="L133">		strDump = strDump + FormatUtil.FormatDouble (ettc.characteristicTime(), 1, 3, 1.) + &quot; ||&quot;;</span>
 
-<span class="nc" id="L135">		System.out.println (strDump);</span>
-<span class="nc" id="L136">	}</span>
+<span class="fc" id="L135">		System.out.println (strDump);</span>
+<span class="fc" id="L136">	}</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L142">		EnvManager.InitEnv (</span>
+<span class="fc" id="L142">		EnvManager.InitEnv (</span>
 			&quot;&quot;,
 			true
 		);
 
-<span class="nc" id="L147">		double dblT = 5.;</span>
-<span class="nc" id="L148">		int iNumInterval = 10;</span>
+<span class="fc" id="L147">		double dblT = 5.;</span>
+<span class="fc" id="L148">		int iNumInterval = 10;</span>
 
-<span class="nc" id="L150">		double[] adblAlpha = new double[] {</span>
+<span class="fc" id="L150">		double[] adblAlpha = new double[] {</span>
 			0.0,
 			0.1,
 			0.2,
@@ -171,47 +171,47 @@ import org.drip.service.env.EnvManager;
 			2.0
 		};
 
-<span class="nc" id="L174">		System.out.println();</span>
+<span class="fc" id="L174">		System.out.println();</span>
 
-<span class="nc" id="L176">		System.out.println (&quot;\t|--------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L176">		System.out.println (&quot;\t|--------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L178">		System.out.println (&quot;\t|                   ALMGREN (2003) CONSTANT TEMPORARY IMPACT VOLATILITY - OFFSET DEPENDENCE                    ||&quot;);</span>
+<span class="fc" id="L178">		System.out.println (&quot;\t|                   ALMGREN (2003) CONSTANT TEMPORARY IMPACT VOLATILITY - OFFSET DEPENDENCE                    ||&quot;);</span>
 
-<span class="nc" id="L180">		System.out.println (&quot;\t|--------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L180">		System.out.println (&quot;\t|--------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L182">		System.out.println (&quot;\t|      L -&gt; R:                                                                                                 ||&quot;);</span>
+<span class="fc" id="L182">		System.out.println (&quot;\t|      L -&gt; R:                                                                                                 ||&quot;);</span>
 
-<span class="nc" id="L184">		System.out.println (&quot;\t|              Alpha Level                                                                                     ||&quot;);</span>
+<span class="fc" id="L184">		System.out.println (&quot;\t|              Alpha Level                                                                                     ||&quot;);</span>
 
-<span class="nc" id="L186">		System.out.println (&quot;\t|              Outstanding Trajectory (%)                                                                      ||&quot;);</span>
+<span class="fc" id="L186">		System.out.println (&quot;\t|              Outstanding Trajectory (%)                                                                      ||&quot;);</span>
 
-<span class="nc" id="L188">		System.out.println (&quot;\t|              Transaction Cost Expectation                                                                    ||&quot;);</span>
+<span class="fc" id="L188">		System.out.println (&quot;\t|              Transaction Cost Expectation                                                                    ||&quot;);</span>
 
-<span class="nc" id="L190">		System.out.println (&quot;\t|              Transaction Cost Variance (X 10^-06)                                                            ||&quot;);</span>
+<span class="fc" id="L190">		System.out.println (&quot;\t|              Transaction Cost Variance (X 10^-06)                                                            ||&quot;);</span>
 
-<span class="nc" id="L192">		System.out.println (&quot;\t|              Characteristic Time (Days)                                                                      ||&quot;);</span>
+<span class="fc" id="L192">		System.out.println (&quot;\t|              Characteristic Time (Days)                                                                      ||&quot;);</span>
 
-<span class="nc" id="L194">		System.out.println (&quot;\t|--------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L194">		System.out.println (&quot;\t|--------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L196">		String strTimeNode = &quot;\t|        &quot;;</span>
+<span class="fc" id="L196">		String strTimeNode = &quot;\t|        &quot;;</span>
 
-<span class="nc bnc" id="L198" title="All 2 branches missed.">		for (int i = 0; i &lt;= iNumInterval; ++i)</span>
-<span class="nc" id="L199">			strTimeNode = strTimeNode + FormatUtil.FormatDouble (dblT * i / iNumInterval, 1, 2, 1.) + &quot;  &quot;;</span>
+<span class="fc bfc" id="L198" title="All 2 branches covered.">		for (int i = 0; i &lt;= iNumInterval; ++i)</span>
+<span class="fc" id="L199">			strTimeNode = strTimeNode + FormatUtil.FormatDouble (dblT * i / iNumInterval, 1, 2, 1.) + &quot;  &quot;;</span>
 
-<span class="nc" id="L201">		System.out.println (strTimeNode);</span>
+<span class="fc" id="L201">		System.out.println (strTimeNode);</span>
 
-<span class="nc" id="L203">		System.out.println (&quot;\t|--------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L203">		System.out.println (&quot;\t|--------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L205" title="All 2 branches missed.">		for (double dblAlpha : adblAlpha)</span>
-<span class="nc" id="L206">			AlphaRun (</span>
+<span class="fc bfc" id="L205" title="All 2 branches covered.">		for (double dblAlpha : adblAlpha)</span>
+<span class="fc" id="L206">			AlphaRun (</span>
 				dblAlpha,
 				dblT,
 				iNumInterval
 			);
 
-<span class="nc" id="L212">		System.out.println (&quot;\t|--------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L212">		System.out.println (&quot;\t|--------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L214">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L215">	}</span>
+<span class="fc" id="L214">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L215">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

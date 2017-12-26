@@ -221,34 +221,34 @@ public class MultiFactorVolatility {
 		final int iXDate,
 		final int iYDate)
 	{
-<span class="nc" id="L224">		int iNumFactor = _pfsg.numFactor();</span>
+<span class="fc" id="L224">		int iNumFactor = _pfsg.numFactor();</span>
 
-<span class="nc" id="L226">		double[][] aadblFactor = _pfsg.factors();</span>
+<span class="fc" id="L226">		double[][] aadblFactor = _pfsg.factors();</span>
 
-<span class="nc" id="L228">		int iNumVariate = aadblFactor[0].length;</span>
-<span class="nc" id="L229">		double[] adblVariateVolatility = new double[iNumVariate];</span>
-<span class="nc" id="L230">		double[] adblFactorPointVolatility = new double[iNumFactor];</span>
+<span class="fc" id="L228">		int iNumVariate = aadblFactor[0].length;</span>
+<span class="fc" id="L229">		double[] adblVariateVolatility = new double[iNumVariate];</span>
+<span class="fc" id="L230">		double[] adblFactorPointVolatility = new double[iNumFactor];</span>
 
-<span class="nc bnc" id="L232" title="All 2 branches missed.">		for (int iVariateIndex = 0; iVariateIndex &lt; iNumVariate; ++iVariateIndex) {</span>
+<span class="fc bfc" id="L232" title="All 2 branches covered.">		for (int iVariateIndex = 0; iVariateIndex &lt; iNumVariate; ++iVariateIndex) {</span>
 			try {
-<span class="nc" id="L234">				adblVariateVolatility[iVariateIndex] = _aMSVolatility[iVariateIndex].node (iXDate, iYDate);</span>
+<span class="fc" id="L234">				adblVariateVolatility[iVariateIndex] = _aMSVolatility[iVariateIndex].node (iXDate, iYDate);</span>
 <span class="nc" id="L235">			} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L236">				e.printStackTrace();</span>
 
 <span class="nc" id="L238">				return null;</span>
-<span class="nc" id="L239">			}</span>
+<span class="fc" id="L239">			}</span>
 		}
 
-<span class="nc bnc" id="L242" title="All 2 branches missed.">		for (int iFactorIndex = 0; iFactorIndex &lt; iNumFactor; ++iFactorIndex) {</span>
-<span class="nc" id="L243">			adblFactorPointVolatility[iFactorIndex] = 0.;</span>
-<span class="nc" id="L244">			double[] adblFactor = aadblFactor[iFactorIndex];</span>
+<span class="fc bfc" id="L242" title="All 2 branches covered.">		for (int iFactorIndex = 0; iFactorIndex &lt; iNumFactor; ++iFactorIndex) {</span>
+<span class="fc" id="L243">			adblFactorPointVolatility[iFactorIndex] = 0.;</span>
+<span class="fc" id="L244">			double[] adblFactor = aadblFactor[iFactorIndex];</span>
 
-<span class="nc bnc" id="L246" title="All 2 branches missed.">			for (int iVariateIndex = 0; iVariateIndex &lt; iNumVariate; ++iVariateIndex)</span>
-<span class="nc" id="L247">				adblFactorPointVolatility[iFactorIndex] += adblFactor[iVariateIndex] *</span>
+<span class="fc bfc" id="L246" title="All 2 branches covered.">			for (int iVariateIndex = 0; iVariateIndex &lt; iNumVariate; ++iVariateIndex)</span>
+<span class="fc" id="L247">				adblFactorPointVolatility[iFactorIndex] += adblFactor[iVariateIndex] *</span>
 					adblVariateVolatility[iVariateIndex];
 		}
 
-<span class="nc" id="L251">		return adblFactorPointVolatility;</span>
+<span class="fc" id="L251">		return adblFactorPointVolatility;</span>
 	}
 
 	/**

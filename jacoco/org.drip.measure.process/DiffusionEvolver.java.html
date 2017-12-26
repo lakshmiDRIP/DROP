@@ -81,7 +81,7 @@ public class DiffusionEvolver {
 
 	public org.drip.measure.dynamics.DiffusionEvaluator evaluator()
 	{
-<span class="nc" id="L84">		return _de;</span>
+<span class="fc" id="L84">		return _de;</span>
 	}
 
 	/**
@@ -133,18 +133,18 @@ public class DiffusionEvolver {
 		final org.drip.measure.realization.JumpDiffusionEdgeUnit jdeu,
 		final double dblTimeIncrement)
 	{
-<span class="pc bpc" id="L136" title="3 of 6 branches missed.">		if (null == jdv || null == jdeu || !org.drip.quant.common.NumberUtil.IsValid (dblTimeIncrement))</span>
+<span class="nc bnc" id="L136" title="All 6 branches missed.">		if (null == jdv || null == jdeu || !org.drip.quant.common.NumberUtil.IsValid (dblTimeIncrement))</span>
 <span class="nc" id="L137">			return null;</span>
 
-<span class="fc" id="L139">		double dblPreviousValue = jdv.value();</span>
+<span class="nc" id="L139">		double dblPreviousValue = jdv.value();</span>
 
 		try {
-<span class="fc" id="L142">			org.drip.measure.dynamics.LocalEvaluator leVolatility = _de.volatility();</span>
+<span class="nc" id="L142">			org.drip.measure.dynamics.LocalEvaluator leVolatility = _de.volatility();</span>
 
-<span class="fc" id="L144">			return org.drip.measure.realization.JumpDiffusionEdge.Standard (dblPreviousValue, -1. *</span>
-<span class="pc bpc" id="L145" title="1 of 2 branches missed.">				_de.drift().value (jdv) * dblTimeIncrement, null == leVolatility ? 0. : -1. *</span>
-<span class="fc" id="L146">					leVolatility.value (jdv) * jdeu.diffusion() * java.lang.Math.sqrt (java.lang.Math.abs</span>
-<span class="fc" id="L147">						(dblTimeIncrement)), null, jdeu);</span>
+<span class="nc" id="L144">			return org.drip.measure.realization.JumpDiffusionEdge.Standard (dblPreviousValue, -1. *</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">				_de.drift().value (jdv) * dblTimeIncrement, null == leVolatility ? 0. : -1. *</span>
+<span class="nc" id="L146">					leVolatility.value (jdv) * jdeu.diffusion() * java.lang.Math.sqrt (java.lang.Math.abs</span>
+<span class="nc" id="L147">						(dblTimeIncrement)), null, jdeu);</span>
 <span class="nc" id="L148">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L149">			e.printStackTrace();</span>
 		}
@@ -185,15 +185,15 @@ public class DiffusionEvolver {
 
 <span class="fc" id="L186">				org.drip.measure.realization.StochasticEdgeJump sej = aJDE[i].stochasticJumpEdge();</span>
 
-<span class="pc bpc" id="L188" title="1 of 2 branches missed.">				if (null != sej) {</span>
-<span class="nc" id="L189">					bJumpOccurred = sej.jumpOccurred();</span>
+<span class="fc bfc" id="L188" title="All 2 branches covered.">				if (null != sej) {</span>
+<span class="fc" id="L189">					bJumpOccurred = sej.jumpOccurred();</span>
 
-<span class="nc" id="L191">					dblHazardIntegral = sej.hazardIntegral();</span>
+<span class="fc" id="L191">					dblHazardIntegral = sej.hazardIntegral();</span>
 				}
 
 <span class="fc" id="L194">				jdvIter = new org.drip.measure.realization.JumpDiffusionVertex (jdvIter.time() +</span>
-<span class="pc bpc" id="L195" title="1 of 2 branches missed.">					dblTimeIncrement, aJDE[i].finish(), jdvIter.cumulativeHazardIntegral() +</span>
-<span class="pc bpc" id="L196" title="1 of 2 branches missed.">						dblHazardIntegral, bJumpOccurred || jdvIter.jumpOccurred());</span>
+<span class="fc bfc" id="L195" title="All 2 branches covered.">					dblTimeIncrement, aJDE[i].finish(), jdvIter.cumulativeHazardIntegral() +</span>
+<span class="fc bfc" id="L196" title="All 2 branches covered.">						dblHazardIntegral, bJumpOccurred || jdvIter.jumpOccurred());</span>
 <span class="nc" id="L197">			} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L198">				e.printStackTrace();</span>
 
@@ -219,43 +219,43 @@ public class DiffusionEvolver {
 		final org.drip.measure.realization.JumpDiffusionEdgeUnit[] aJDEU,
 		final double dblTimeIncrement)
 	{
-<span class="nc bnc" id="L222" title="All 2 branches missed.">		if (null == aJDEU) return null;</span>
+<span class="pc bpc" id="L222" title="1 of 2 branches missed.">		if (null == aJDEU) return null;</span>
 
-<span class="nc" id="L224">		int iNumVertex = aJDEU.length + 1;</span>
-<span class="nc" id="L225">		org.drip.measure.realization.JumpDiffusionVertex jdvPrev = jdv;</span>
-<span class="nc" id="L226">		org.drip.measure.realization.JumpDiffusionVertex[] aJDV = new</span>
+<span class="fc" id="L224">		int iNumVertex = aJDEU.length + 1;</span>
+<span class="fc" id="L225">		org.drip.measure.realization.JumpDiffusionVertex jdvPrev = jdv;</span>
+<span class="fc" id="L226">		org.drip.measure.realization.JumpDiffusionVertex[] aJDV = new</span>
 			org.drip.measure.realization.JumpDiffusionVertex[iNumVertex];
-<span class="nc" id="L228">		aJDV[0] = jdv;</span>
+<span class="fc" id="L228">		aJDV[0] = jdv;</span>
 
-<span class="nc bnc" id="L230" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVertex - 1; ++i) {</span>
-<span class="nc" id="L231">			org.drip.measure.realization.JumpDiffusionEdge jde = increment (jdvPrev, aJDEU[i],</span>
+<span class="fc bfc" id="L230" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVertex - 1; ++i) {</span>
+<span class="fc" id="L231">			org.drip.measure.realization.JumpDiffusionEdge jde = increment (jdvPrev, aJDEU[i],</span>
 				dblTimeIncrement);
 
-<span class="nc bnc" id="L234" title="All 2 branches missed.">			if (null == jde) return null;</span>
+<span class="pc bpc" id="L234" title="1 of 2 branches missed.">			if (null == jde) return null;</span>
 
 			try {
-<span class="nc" id="L237">				org.drip.measure.realization.StochasticEdgeJump sej = jde.stochasticJumpEdge();</span>
+<span class="fc" id="L237">				org.drip.measure.realization.StochasticEdgeJump sej = jde.stochasticJumpEdge();</span>
 
-<span class="nc" id="L239">				boolean bJumpOccurred = false;</span>
-<span class="nc" id="L240">				double dblHazardIntegral = 0.;</span>
+<span class="fc" id="L239">				boolean bJumpOccurred = false;</span>
+<span class="fc" id="L240">				double dblHazardIntegral = 0.;</span>
 
-<span class="nc bnc" id="L242" title="All 2 branches missed.">				if (null != sej) {</span>
+<span class="pc bpc" id="L242" title="1 of 2 branches missed.">				if (null != sej) {</span>
 <span class="nc" id="L243">					bJumpOccurred = sej.jumpOccurred();</span>
 
 <span class="nc" id="L245">					dblHazardIntegral = sej.hazardIntegral();</span>
 				}
 
-<span class="nc" id="L248">				jdvPrev = aJDV[i + 1] = new org.drip.measure.realization.JumpDiffusionVertex (jdvPrev.time()</span>
-<span class="nc bnc" id="L249" title="All 2 branches missed.">					+ dblTimeIncrement, jde.finish(), jdvPrev.cumulativeHazardIntegral() + dblHazardIntegral,</span>
-<span class="nc bnc" id="L250" title="All 2 branches missed.">						bJumpOccurred || jdvPrev.jumpOccurred());</span>
+<span class="fc" id="L248">				jdvPrev = aJDV[i + 1] = new org.drip.measure.realization.JumpDiffusionVertex (jdvPrev.time()</span>
+<span class="pc bpc" id="L249" title="1 of 2 branches missed.">					+ dblTimeIncrement, jde.finish(), jdvPrev.cumulativeHazardIntegral() + dblHazardIntegral,</span>
+<span class="pc bpc" id="L250" title="1 of 2 branches missed.">						bJumpOccurred || jdvPrev.jumpOccurred());</span>
 <span class="nc" id="L251">			} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L252">				e.printStackTrace();</span>
 
 <span class="nc" id="L254">				return null;</span>
-<span class="nc" id="L255">			}</span>
+<span class="fc" id="L255">			}</span>
 		}
 
-<span class="nc" id="L258">		return aJDV;</span>
+<span class="fc" id="L258">		return aJDV;</span>
 	}
 
 	/**
@@ -329,45 +329,45 @@ public class DiffusionEvolver {
 		final org.drip.measure.realization.JumpDiffusionEdgeUnit[] aJDEU,
 		final double[] adblTimeIncrement)
 	{
-<span class="pc bpc" id="L332" title="2 of 4 branches missed.">		if (null == aJDEU || null == adblTimeIncrement) return null;</span>
+<span class="nc bnc" id="L332" title="All 4 branches missed.">		if (null == aJDEU || null == adblTimeIncrement) return null;</span>
 
-<span class="fc" id="L334">		int iNumVertex = aJDEU.length + 1;</span>
-<span class="fc" id="L335">		org.drip.measure.realization.JumpDiffusionVertex jdvPrev = jdv;</span>
-<span class="fc" id="L336">		org.drip.measure.realization.JumpDiffusionVertex[] aJDV = new</span>
+<span class="nc" id="L334">		int iNumVertex = aJDEU.length + 1;</span>
+<span class="nc" id="L335">		org.drip.measure.realization.JumpDiffusionVertex jdvPrev = jdv;</span>
+<span class="nc" id="L336">		org.drip.measure.realization.JumpDiffusionVertex[] aJDV = new</span>
 			org.drip.measure.realization.JumpDiffusionVertex[iNumVertex];
-<span class="fc" id="L338">		aJDV[iNumVertex - 1] = jdv;</span>
+<span class="nc" id="L338">		aJDV[iNumVertex - 1] = jdv;</span>
 
-<span class="pc bpc" id="L340" title="1 of 2 branches missed.">		if (iNumVertex != adblTimeIncrement.length + 1) return null;</span>
+<span class="nc bnc" id="L340" title="All 2 branches missed.">		if (iNumVertex != adblTimeIncrement.length + 1) return null;</span>
 
-<span class="fc bfc" id="L342" title="All 2 branches covered.">		for (int i = iNumVertex - 2; i &gt;= 0; --i) {</span>
-<span class="fc" id="L343">			org.drip.measure.realization.JumpDiffusionEdge jde = incrementReverse (jdvPrev, aJDEU[i],</span>
+<span class="nc bnc" id="L342" title="All 2 branches missed.">		for (int i = iNumVertex - 2; i &gt;= 0; --i) {</span>
+<span class="nc" id="L343">			org.drip.measure.realization.JumpDiffusionEdge jde = incrementReverse (jdvPrev, aJDEU[i],</span>
 				adblTimeIncrement[i]);
 
-<span class="pc bpc" id="L346" title="1 of 2 branches missed.">			if (null == jde) return null;</span>
+<span class="nc bnc" id="L346" title="All 2 branches missed.">			if (null == jde) return null;</span>
 
 			try {
-<span class="fc" id="L349">				org.drip.measure.realization.StochasticEdgeJump sej = jde.stochasticJumpEdge();</span>
+<span class="nc" id="L349">				org.drip.measure.realization.StochasticEdgeJump sej = jde.stochasticJumpEdge();</span>
 
-<span class="fc" id="L351">				boolean bJumpOccurred = false;</span>
-<span class="fc" id="L352">				double dblHazardIntegral = 0.;</span>
+<span class="nc" id="L351">				boolean bJumpOccurred = false;</span>
+<span class="nc" id="L352">				double dblHazardIntegral = 0.;</span>
 
-<span class="pc bpc" id="L354" title="1 of 2 branches missed.">				if (null != sej) {</span>
+<span class="nc bnc" id="L354" title="All 2 branches missed.">				if (null != sej) {</span>
 <span class="nc" id="L355">					bJumpOccurred = sej.jumpOccurred();</span>
 
 <span class="nc" id="L357">					dblHazardIntegral = sej.hazardIntegral();</span>
 				}
 
-<span class="fc" id="L360">				jdvPrev = aJDV[i] = new org.drip.measure.realization.JumpDiffusionVertex (jdvPrev.time() -</span>
-<span class="pc bpc" id="L361" title="1 of 2 branches missed.">					adblTimeIncrement[i], jde.finish(), jdvPrev.cumulativeHazardIntegral() +</span>
-<span class="pc bpc" id="L362" title="1 of 2 branches missed.">						dblHazardIntegral, bJumpOccurred || jdvPrev.jumpOccurred());</span>
+<span class="nc" id="L360">				jdvPrev = aJDV[i] = new org.drip.measure.realization.JumpDiffusionVertex (jdvPrev.time() -</span>
+<span class="nc bnc" id="L361" title="All 2 branches missed.">					adblTimeIncrement[i], jde.finish(), jdvPrev.cumulativeHazardIntegral() +</span>
+<span class="nc bnc" id="L362" title="All 2 branches missed.">						dblHazardIntegral, bJumpOccurred || jdvPrev.jumpOccurred());</span>
 <span class="nc" id="L363">			} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L364">				e.printStackTrace();</span>
 
 <span class="nc" id="L366">				return null;</span>
-<span class="fc" id="L367">			}</span>
+<span class="nc" id="L367">			}</span>
 		}
 
-<span class="fc" id="L370">		return aJDV;</span>
+<span class="nc" id="L370">		return aJDV;</span>
 	}
 
 	/**

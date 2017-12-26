@@ -79,7 +79,7 @@ import org.drip.state.identifier.*;
 		final String strCurrency,
 		final double dblBump)
 	{
-<span class="nc" id="L82">		return LatentMarketStateBuilder.SmoothFundingCurve (</span>
+<span class="fc" id="L82">		return LatentMarketStateBuilder.SmoothFundingCurve (</span>
 			dtSpot,
 			strCurrency,
 			new String[] {
@@ -155,7 +155,7 @@ import org.drip.state.identifier.*;
 		final boolean bDisplay)
 		throws Exception
 	{
-<span class="nc" id="L158">		String[] astrCDSMaturityTenor = new String[] {</span>
+<span class="fc" id="L158">		String[] astrCDSMaturityTenor = new String[] {</span>
 			&quot;06M&quot;,
 			&quot;01Y&quot;,
 			&quot;02Y&quot;,
@@ -166,7 +166,7 @@ import org.drip.state.identifier.*;
 			&quot;10Y&quot;
 		};
 
-<span class="nc" id="L169">		double[] adblCDSParSpread = new double[] {</span>
+<span class="fc" id="L169">		double[] adblCDSParSpread = new double[] {</span>
 			100. + dblBump,	//  6M
 			100. + dblBump,	//  1Y
 			100. + dblBump,	//  2Y
@@ -177,7 +177,7 @@ import org.drip.state.identifier.*;
 			100. + dblBump	// 10Y
 		};
 
-<span class="nc" id="L180">		CreditCurve cc = LatentMarketStateBuilder.CreditCurve (</span>
+<span class="fc" id="L180">		CreditCurve cc = LatentMarketStateBuilder.CreditCurve (</span>
 			dtSpot,
 			strCreditCurve,
 			astrCDSMaturityTenor,
@@ -187,33 +187,33 @@ import org.drip.state.identifier.*;
 			dcFunding
 		);
 
-<span class="nc bnc" id="L190" title="All 2 branches missed.">		if (!bDisplay) return cc;</span>
+<span class="fc bfc" id="L190" title="All 2 branches covered.">		if (!bDisplay) return cc;</span>
 
-<span class="nc" id="L192">		CreditPricerParams pricerParams = CreditPricerParams.Standard();</span>
+<span class="fc" id="L192">		CreditPricerParams pricerParams = CreditPricerParams.Standard();</span>
 
-<span class="nc" id="L194">		CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();</span>
+<span class="fc" id="L194">		CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();</span>
 
-<span class="nc" id="L196">		csqc.setFundingState (dcFunding);</span>
+<span class="fc" id="L196">		csqc.setFundingState (dcFunding);</span>
 
-<span class="nc" id="L198">		csqc.setCreditState (cc);</span>
+<span class="fc" id="L198">		csqc.setCreditState (cc);</span>
 
-<span class="nc" id="L200">		System.out.println (&quot;\n\t|---------------||&quot;);</span>
+<span class="fc" id="L200">		System.out.println (&quot;\n\t|---------------||&quot;);</span>
 
-<span class="nc" id="L202">		System.out.println (&quot;\t| CREDIT SPREAD ||&quot;);</span>
+<span class="fc" id="L202">		System.out.println (&quot;\t| CREDIT SPREAD ||&quot;);</span>
 
-<span class="nc" id="L204">		System.out.println (&quot;\t|---------------||&quot;);</span>
+<span class="fc" id="L204">		System.out.println (&quot;\t|---------------||&quot;);</span>
 
-<span class="nc bnc" id="L206" title="All 2 branches missed.">		for (int i = 0; i &lt; adblCDSParSpread.length; ++i)</span>
-<span class="nc" id="L207">			System.out.println (</span>
+<span class="fc bfc" id="L206" title="All 2 branches covered.">		for (int i = 0; i &lt; adblCDSParSpread.length; ++i)</span>
+<span class="fc" id="L207">			System.out.println (</span>
 				&quot;\t| &quot; + astrCDSMaturityTenor[i] + &quot; |&quot; +
-<span class="nc" id="L209">				FormatUtil.FormatDouble (</span>
-<span class="nc" id="L210">					CDSBuilder.CreateSNAC (</span>
+<span class="fc" id="L209">				FormatUtil.FormatDouble (</span>
+<span class="fc" id="L210">					CDSBuilder.CreateSNAC (</span>
 						dtSpot,
 						astrCDSMaturityTenor[i],
 						0.1,
 						strCreditCurve
-<span class="nc" id="L215">					).measureValue (</span>
-<span class="nc" id="L216">						ValuationParams.Spot (dtSpot.julian()),</span>
+<span class="fc" id="L215">					).measureValue (</span>
+<span class="fc" id="L216">						ValuationParams.Spot (dtSpot.julian()),</span>
 						pricerParams,
 						csqc,
 						null,
@@ -222,49 +222,49 @@ import org.drip.state.identifier.*;
 				3, 3, 1.) + &quot; ||&quot;
 			);
 
-<span class="nc" id="L225">		System.out.println (&quot;\t|---------------||&quot;);</span>
+<span class="fc" id="L225">		System.out.println (&quot;\t|---------------||&quot;);</span>
 
-<span class="nc" id="L227">		return cc;</span>
+<span class="fc" id="L227">		return cc;</span>
 	}
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L234">		EnvManager.InitEnv (</span>
+<span class="fc" id="L234">		EnvManager.InitEnv (</span>
 			&quot;&quot;,
 			true
 		);
 
-<span class="nc" id="L239">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L239">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
 			2016,
 			DateUtil.FEBRUARY,
 			2
 		);
 
-<span class="nc" id="L245">		JulianDate dtCashPay = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L245">		JulianDate dtCashPay = DateUtil.CreateFromYMD (</span>
 			2016,
 			DateUtil.FEBRUARY,
 			5
 		);
 
-<span class="nc" id="L251">		String strCurrency = &quot;USD&quot;;</span>
-<span class="nc" id="L252">		String strCreditCurve = &quot;DB&quot;;</span>
-<span class="nc" id="L253">		String strCDSForwardTenor = &quot;5Y&quot;;</span>
-<span class="nc" id="L254">		double dblCDSForwardCoupon = 0.1;</span>
-<span class="nc" id="L255">		double dblFairPremiumVolatility = 0.3;</span>
-<span class="nc" id="L256">		String strManifestMeasure = &quot;FairPremium&quot;;</span>
-<span class="nc" id="L257">		double dblNotional = 10000000.;</span>
-<span class="nc" id="L258">		double dblCreditBump = 10.;</span>
-<span class="nc" id="L259">		double dblFundingBump = .0001;</span>
+<span class="fc" id="L251">		String strCurrency = &quot;USD&quot;;</span>
+<span class="fc" id="L252">		String strCreditCurve = &quot;DB&quot;;</span>
+<span class="fc" id="L253">		String strCDSForwardTenor = &quot;5Y&quot;;</span>
+<span class="fc" id="L254">		double dblCDSForwardCoupon = 0.1;</span>
+<span class="fc" id="L255">		double dblFairPremiumVolatility = 0.3;</span>
+<span class="fc" id="L256">		String strManifestMeasure = &quot;FairPremium&quot;;</span>
+<span class="fc" id="L257">		double dblNotional = 10000000.;</span>
+<span class="fc" id="L258">		double dblCreditBump = 10.;</span>
+<span class="fc" id="L259">		double dblFundingBump = .0001;</span>
 
-<span class="nc" id="L261">		MergedDiscountForwardCurve dcFunding = MarketFundingCurve (</span>
+<span class="fc" id="L261">		MergedDiscountForwardCurve dcFunding = MarketFundingCurve (</span>
 			dtSpot,
 			strCurrency,
 			0.
 		);
 
-<span class="nc" id="L267">		CreditCurve cc = MarketCreditCurve (</span>
+<span class="fc" id="L267">		CreditCurve cc = MarketCreditCurve (</span>
 			dtSpot,
 			strCreditCurve,
 			strManifestMeasure,
@@ -273,71 +273,71 @@ import org.drip.state.identifier.*;
 			true
 		);
 
-<span class="nc" id="L276">		CreditPricerParams pricerParams = CreditPricerParams.Standard();</span>
+<span class="fc" id="L276">		CreditPricerParams pricerParams = CreditPricerParams.Standard();</span>
 
-<span class="nc" id="L278">		CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();</span>
+<span class="fc" id="L278">		CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();</span>
 
-<span class="nc" id="L280">		csqc.setFundingState (dcFunding);</span>
+<span class="fc" id="L280">		csqc.setFundingState (dcFunding);</span>
 
-<span class="nc" id="L282">		csqc.setCreditState (cc);</span>
+<span class="fc" id="L282">		csqc.setCreditState (cc);</span>
 
-<span class="nc" id="L284">		JulianDate dtEffective = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L284">		JulianDate dtEffective = DateUtil.CreateFromYMD (</span>
 			2016,
 			DateUtil.MARCH,
 			20
 		);
 
-<span class="nc" id="L290">		CreditDefaultSwap cdsForward = CDSBuilder.CreateSNAC (</span>
+<span class="fc" id="L290">		CreditDefaultSwap cdsForward = CDSBuilder.CreateSNAC (</span>
 			dtEffective,
 			strCDSForwardTenor,
 			dblCDSForwardCoupon,
 			strCreditCurve
 		);
 
-<span class="nc" id="L297">		System.out.println (&quot;\n\t|-------------------------------------|&quot;);</span>
+<span class="fc" id="L297">		System.out.println (&quot;\n\t|-------------------------------------|&quot;);</span>
 
-<span class="nc" id="L299">		System.out.println (&quot;\t|        UNDERLYING CDS FORWARD       |&quot;);</span>
+<span class="fc" id="L299">		System.out.println (&quot;\t|        UNDERLYING CDS FORWARD       |&quot;);</span>
 
-<span class="nc" id="L301">		System.out.println (&quot;\t|-------------------------------------|&quot;);</span>
+<span class="fc" id="L301">		System.out.println (&quot;\t|-------------------------------------|&quot;);</span>
 
-<span class="nc" id="L303">		System.out.println (&quot;\t|  Effective Date    : &quot; + cdsForward.effectiveDate());</span>
+<span class="fc" id="L303">		System.out.println (&quot;\t|  Effective Date    : &quot; + cdsForward.effectiveDate());</span>
 
-<span class="nc" id="L305">		System.out.println (&quot;\t|  Maturity Date     : &quot; + cdsForward.maturityDate());</span>
+<span class="fc" id="L305">		System.out.println (&quot;\t|  Maturity Date     : &quot; + cdsForward.maturityDate());</span>
 
-<span class="nc" id="L307">		System.out.println (&quot;\t|  Notional          : &quot; + FormatUtil.FormatDouble (dblNotional, 1, 0, 1.));</span>
+<span class="fc" id="L307">		System.out.println (&quot;\t|  Notional          : &quot; + FormatUtil.FormatDouble (dblNotional, 1, 0, 1.));</span>
 
-<span class="nc" id="L309">		System.out.println (&quot;\t|  Payment Frequency : &quot; + cdsForward.freq());</span>
+<span class="fc" id="L309">		System.out.println (&quot;\t|  Payment Frequency : &quot; + cdsForward.freq());</span>
 
-<span class="nc" id="L311">		System.out.println (&quot;\t|  Currency          : &quot; + cdsForward.payCurrency());</span>
+<span class="fc" id="L311">		System.out.println (&quot;\t|  Currency          : &quot; + cdsForward.payCurrency());</span>
 
-<span class="nc" id="L313">		System.out.println (&quot;\t|-------------------------------------|\n&quot;);</span>
+<span class="fc" id="L313">		System.out.println (&quot;\t|-------------------------------------|\n&quot;);</span>
 
-<span class="nc" id="L315">		csqc.setCustomVolatility (</span>
-<span class="nc" id="L316">			ScenarioDeterministicVolatilityBuilder.FlatForward (</span>
-<span class="nc" id="L317">				dtSpot.julian(),</span>
-<span class="nc" id="L318">				VolatilityLabel.Standard (CustomLabel.Standard (cdsForward.name() + &quot;_&quot; + strManifestMeasure)),</span>
+<span class="fc" id="L315">		csqc.setCustomVolatility (</span>
+<span class="fc" id="L316">			ScenarioDeterministicVolatilityBuilder.FlatForward (</span>
+<span class="fc" id="L317">				dtSpot.julian(),</span>
+<span class="fc" id="L318">				VolatilityLabel.Standard (CustomLabel.Standard (cdsForward.name() + &quot;_&quot; + strManifestMeasure)),</span>
 				strCurrency,
 				dblFairPremiumVolatility
 			)
 		);
 
-<span class="nc" id="L324">		ValuationParams valParams = new ValuationParams (</span>
+<span class="fc" id="L324">		ValuationParams valParams = new ValuationParams (</span>
 			dtSpot,
 			dtCashPay,
 			strCurrency
 		);
 
-<span class="nc" id="L330">		Map&lt;String, Double&gt; mapCDSForwardOutput = cdsForward.value (</span>
+<span class="fc" id="L330">		Map&lt;String, Double&gt; mapCDSForwardOutput = cdsForward.value (</span>
 			valParams,
 			pricerParams,
 			csqc,
 			null
 		);
 
-<span class="nc" id="L337">		double dblStrike = mapCDSForwardOutput.get (strManifestMeasure);</span>
+<span class="fc" id="L337">		double dblStrike = mapCDSForwardOutput.get (strManifestMeasure);</span>
 
-<span class="nc" id="L339">		CDSEuropeanOption cdsOptionPayer = new CDSEuropeanOption (</span>
-<span class="nc" id="L340">			cdsForward.name() + &quot;::PAYER_OPT&quot;,</span>
+<span class="fc" id="L339">		CDSEuropeanOption cdsOptionPayer = new CDSEuropeanOption (</span>
+<span class="fc" id="L340">			cdsForward.name() + &quot;::PAYER_OPT&quot;,</span>
 			cdsForward,
 			strManifestMeasure,
 			false,
@@ -347,38 +347,38 @@ import org.drip.state.identifier.*;
 			null
 		);
 
-<span class="nc" id="L350">		System.out.println (&quot;\n\t|-------------------------------------|&quot;);</span>
+<span class="fc" id="L350">		System.out.println (&quot;\n\t|-------------------------------------|&quot;);</span>
 
-<span class="nc" id="L352">		System.out.println (&quot;\t|          OPTION PARAMETERS          |&quot;);</span>
+<span class="fc" id="L352">		System.out.println (&quot;\t|          OPTION PARAMETERS          |&quot;);</span>
 
-<span class="nc" id="L354">		System.out.println (&quot;\t|-------------------------------------|&quot;);</span>
+<span class="fc" id="L354">		System.out.println (&quot;\t|-------------------------------------|&quot;);</span>
 
-<span class="nc" id="L356">		System.out.println (&quot;\t| Payer Swaption?  &quot; + true);</span>
+<span class="fc" id="L356">		System.out.println (&quot;\t| Payer Swaption?  &quot; + true);</span>
 
-<span class="nc" id="L358">		System.out.println (&quot;\t| Exercise Type  : &quot; + &quot;European&quot;);</span>
+<span class="fc" id="L358">		System.out.println (&quot;\t| Exercise Type  : &quot; + &quot;European&quot;);</span>
 
-<span class="nc" id="L360">		System.out.println (&quot;\t| Knock Out?       &quot; + true);</span>
+<span class="fc" id="L360">		System.out.println (&quot;\t| Knock Out?       &quot; + true);</span>
 
-<span class="nc" id="L362">		System.out.println (&quot;\t| Strike         : &quot; + FormatUtil.FormatDouble (dblStrike, 1, 0, 1.));</span>
+<span class="fc" id="L362">		System.out.println (&quot;\t| Strike         : &quot; + FormatUtil.FormatDouble (dblStrike, 1, 0, 1.));</span>
 
-<span class="nc" id="L364">		System.out.println (&quot;\t| Start Date     : &quot; + dtSpot);</span>
+<span class="fc" id="L364">		System.out.println (&quot;\t| Start Date     : &quot; + dtSpot);</span>
 
-<span class="nc" id="L366">		System.out.println (&quot;\t| Cash Pay Date  : &quot; + dtCashPay);</span>
+<span class="fc" id="L366">		System.out.println (&quot;\t| Cash Pay Date  : &quot; + dtCashPay);</span>
 
-<span class="nc" id="L368">		System.out.println (&quot;\t| Exercise Date  : &quot; + cdsOptionPayer.exerciseDate());</span>
+<span class="fc" id="L368">		System.out.println (&quot;\t| Exercise Date  : &quot; + cdsOptionPayer.exerciseDate());</span>
 
-<span class="nc" id="L370">		System.out.println (&quot;\t|-------------------------------------|\n&quot;);</span>
+<span class="fc" id="L370">		System.out.println (&quot;\t|-------------------------------------|\n&quot;);</span>
 
-<span class="nc" id="L372">		Map&lt;String, Double&gt; mapPayerOptionOutput = cdsOptionPayer.value (</span>
+<span class="fc" id="L372">		Map&lt;String, Double&gt; mapPayerOptionOutput = cdsOptionPayer.value (</span>
 			valParams,
 			null,
 			csqc,
 			null
 		);
 
-<span class="nc" id="L379">		double dblOptionPriceBase = mapPayerOptionOutput.get (&quot;Price&quot;) / cdsForward.initialNotional();</span>
+<span class="fc" id="L379">		double dblOptionPriceBase = mapPayerOptionOutput.get (&quot;Price&quot;) / cdsForward.initialNotional();</span>
 
-<span class="nc" id="L381">		CreditCurve ccBumpUp = MarketCreditCurve (</span>
+<span class="fc" id="L381">		CreditCurve ccBumpUp = MarketCreditCurve (</span>
 			dtSpot,
 			strCreditCurve,
 			strManifestMeasure,
@@ -387,7 +387,7 @@ import org.drip.state.identifier.*;
 			false
 		);
 
-<span class="nc" id="L390">		CreditCurve ccBumpDown = MarketCreditCurve (</span>
+<span class="fc" id="L390">		CreditCurve ccBumpDown = MarketCreditCurve (</span>
 			dtSpot,
 			strCreditCurve,
 			strManifestMeasure,
@@ -396,103 +396,103 @@ import org.drip.state.identifier.*;
 			false
 		);
 
-<span class="nc" id="L399">		csqc.setCreditState (ccBumpUp);</span>
+<span class="fc" id="L399">		csqc.setCreditState (ccBumpUp);</span>
 
-<span class="nc" id="L401">		Map&lt;String, Double&gt; mapPayerOptionOutputCreditBumpUp = cdsOptionPayer.value (</span>
+<span class="fc" id="L401">		Map&lt;String, Double&gt; mapPayerOptionOutputCreditBumpUp = cdsOptionPayer.value (</span>
 			valParams,
 			null,
 			csqc,
 			null
 		);
 
-<span class="nc" id="L408">		double dblOptionPriceCreditBumpUp = mapPayerOptionOutputCreditBumpUp.get (&quot;Price&quot;) / cdsForward.initialNotional();</span>
+<span class="fc" id="L408">		double dblOptionPriceCreditBumpUp = mapPayerOptionOutputCreditBumpUp.get (&quot;Price&quot;) / cdsForward.initialNotional();</span>
 
-<span class="nc" id="L410">		csqc.setCreditState (ccBumpDown);</span>
+<span class="fc" id="L410">		csqc.setCreditState (ccBumpDown);</span>
 
-<span class="nc" id="L412">		Map&lt;String, Double&gt; mapPayerOptionOutputCreditBumpDown = cdsOptionPayer.value (</span>
+<span class="fc" id="L412">		Map&lt;String, Double&gt; mapPayerOptionOutputCreditBumpDown = cdsOptionPayer.value (</span>
 			valParams,
 			null,
 			csqc,
 			null
 		);
 
-<span class="nc" id="L419">		double dblOptionPriceCreditBumpDown = mapPayerOptionOutputCreditBumpDown.get (&quot;Price&quot;) / cdsForward.initialNotional();</span>
+<span class="fc" id="L419">		double dblOptionPriceCreditBumpDown = mapPayerOptionOutputCreditBumpDown.get (&quot;Price&quot;) / cdsForward.initialNotional();</span>
 
-<span class="nc" id="L421">		MergedDiscountForwardCurve dcFundingBumpUp = MarketFundingCurve (</span>
+<span class="fc" id="L421">		MergedDiscountForwardCurve dcFundingBumpUp = MarketFundingCurve (</span>
 			dtSpot,
 			strCurrency,
 			dblFundingBump
 		);
 
-<span class="nc" id="L427">		csqc.setFundingState (dcFundingBumpUp);</span>
+<span class="fc" id="L427">		csqc.setFundingState (dcFundingBumpUp);</span>
 
-<span class="nc" id="L429">		csqc.setCreditState (cc);</span>
+<span class="fc" id="L429">		csqc.setCreditState (cc);</span>
 
-<span class="nc" id="L431">		Map&lt;String, Double&gt; mapPayerOptionOutputFundingBumpUp = cdsOptionPayer.value (</span>
+<span class="fc" id="L431">		Map&lt;String, Double&gt; mapPayerOptionOutputFundingBumpUp = cdsOptionPayer.value (</span>
 			valParams,
 			null,
 			csqc,
 			null
 		);
 
-<span class="nc" id="L438">		double dblOptionPriceFundingBumpUp = mapPayerOptionOutputFundingBumpUp.get (&quot;Price&quot;) / cdsForward.initialNotional();</span>
+<span class="fc" id="L438">		double dblOptionPriceFundingBumpUp = mapPayerOptionOutputFundingBumpUp.get (&quot;Price&quot;) / cdsForward.initialNotional();</span>
 
-<span class="nc" id="L440">		MergedDiscountForwardCurve dcFundingBumpDown = MarketFundingCurve (</span>
+<span class="fc" id="L440">		MergedDiscountForwardCurve dcFundingBumpDown = MarketFundingCurve (</span>
 			dtSpot,
 			strCurrency,
 			-dblFundingBump
 		);
 
-<span class="nc" id="L446">		csqc.setFundingState (dcFundingBumpDown);</span>
+<span class="fc" id="L446">		csqc.setFundingState (dcFundingBumpDown);</span>
 
-<span class="nc" id="L448">		Map&lt;String, Double&gt; mapPayerOptionOutputFundingBumpDown = cdsOptionPayer.value (</span>
+<span class="fc" id="L448">		Map&lt;String, Double&gt; mapPayerOptionOutputFundingBumpDown = cdsOptionPayer.value (</span>
 			valParams,
 			null,
 			csqc,
 			null
 		);
 
-<span class="nc" id="L455">		double dblOptionPriceFundingBumpDown = mapPayerOptionOutputFundingBumpDown.get (&quot;Price&quot;) / cdsForward.initialNotional();</span>
+<span class="fc" id="L455">		double dblOptionPriceFundingBumpDown = mapPayerOptionOutputFundingBumpDown.get (&quot;Price&quot;) / cdsForward.initialNotional();</span>
 
-<span class="nc" id="L457">		System.out.println (&quot;\n\t|-----------------------------------------------|&quot;);</span>
+<span class="fc" id="L457">		System.out.println (&quot;\n\t|-----------------------------------------------|&quot;);</span>
 
-<span class="nc" id="L459">		System.out.println (&quot;\t|           OPTION INPUTS AND PRICING           |&quot;);</span>
+<span class="fc" id="L459">		System.out.println (&quot;\t|           OPTION INPUTS AND PRICING           |&quot;);</span>
 
-<span class="nc" id="L461">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
+<span class="fc" id="L461">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
 
-<span class="nc" id="L463">		System.out.println (&quot;\t| Valuation Date          : &quot; + dtSpot);</span>
+<span class="fc" id="L463">		System.out.println (&quot;\t| Valuation Date          : &quot; + dtSpot);</span>
 
-<span class="nc" id="L465">		System.out.println (&quot;\t| Fair Premium Volatility : &quot; + FormatUtil.FormatDouble (dblFairPremiumVolatility, 1, 3, 100.) + &quot;%&quot;);</span>
+<span class="fc" id="L465">		System.out.println (&quot;\t| Fair Premium Volatility : &quot; + FormatUtil.FormatDouble (dblFairPremiumVolatility, 1, 3, 100.) + &quot;%&quot;);</span>
 
-<span class="nc" id="L467">		System.out.println (&quot;\t| Option Premium          : &quot; + FormatUtil.FormatDouble (dblOptionPriceBase, 1, 5, 100.) + &quot;%&quot;);</span>
+<span class="fc" id="L467">		System.out.println (&quot;\t| Option Premium          : &quot; + FormatUtil.FormatDouble (dblOptionPriceBase, 1, 5, 100.) + &quot;%&quot;);</span>
 
-<span class="nc" id="L469">		System.out.println (&quot;\t| Option MTM              : &quot; + FormatUtil.FormatDouble (dblOptionPriceBase * dblNotional, 1, 2, 1.));</span>
+<span class="fc" id="L469">		System.out.println (&quot;\t| Option MTM              : &quot; + FormatUtil.FormatDouble (dblOptionPriceBase * dblNotional, 1, 2, 1.));</span>
 
-<span class="nc" id="L471">		System.out.println (&quot;\t| Credit Spread Delta 01  : &quot; + FormatUtil.FormatDouble (0.5 * (dblOptionPriceCreditBumpUp - dblOptionPriceCreditBumpDown) * dblNotional / dblCreditBump, 1, 2, 1.));</span>
+<span class="fc" id="L471">		System.out.println (&quot;\t| Credit Spread Delta 01  : &quot; + FormatUtil.FormatDouble (0.5 * (dblOptionPriceCreditBumpUp - dblOptionPriceCreditBumpDown) * dblNotional / dblCreditBump, 1, 2, 1.));</span>
 
-<span class="nc" id="L473">		System.out.println (&quot;\t| Credit Spread Gamma 01  : &quot; + FormatUtil.FormatDouble (0.5 * (dblOptionPriceCreditBumpUp + dblOptionPriceCreditBumpDown - 2. * dblOptionPriceBase) * dblNotional / (dblCreditBump * dblCreditBump), 1, 2, 1.));</span>
+<span class="fc" id="L473">		System.out.println (&quot;\t| Credit Spread Gamma 01  : &quot; + FormatUtil.FormatDouble (0.5 * (dblOptionPriceCreditBumpUp + dblOptionPriceCreditBumpDown - 2. * dblOptionPriceBase) * dblNotional / (dblCreditBump * dblCreditBump), 1, 2, 1.));</span>
 
-<span class="nc" id="L475">		System.out.println (&quot;\t| Funding Spread Delta 01 : &quot; + FormatUtil.FormatDouble (0.5 * (dblOptionPriceFundingBumpUp - dblOptionPriceFundingBumpDown) * dblNotional / (10000. * dblFundingBump), 1, 2, 1.));</span>
+<span class="fc" id="L475">		System.out.println (&quot;\t| Funding Spread Delta 01 : &quot; + FormatUtil.FormatDouble (0.5 * (dblOptionPriceFundingBumpUp - dblOptionPriceFundingBumpDown) * dblNotional / (10000. * dblFundingBump), 1, 2, 1.));</span>
 
-<span class="nc" id="L477">		System.out.println (&quot;\t| Funding Spread Gamma 01 : &quot; + FormatUtil.FormatDouble (0.5 * (dblOptionPriceFundingBumpUp + dblOptionPriceFundingBumpDown - 2. * dblOptionPriceBase) * dblNotional / (10000. * 10000. * dblFundingBump * dblFundingBump), 1, 2, 1.));</span>
+<span class="fc" id="L477">		System.out.println (&quot;\t| Funding Spread Gamma 01 : &quot; + FormatUtil.FormatDouble (0.5 * (dblOptionPriceFundingBumpUp + dblOptionPriceFundingBumpDown - 2. * dblOptionPriceBase) * dblNotional / (10000. * 10000. * dblFundingBump * dblFundingBump), 1, 2, 1.));</span>
 
-<span class="nc" id="L479">		System.out.println (&quot;\t| ATM Forward             : &quot; + FormatUtil.FormatDouble (mapPayerOptionOutput.get (&quot;ATMManifestMeasure&quot;), 1, 0, 1.));</span>
+<span class="fc" id="L479">		System.out.println (&quot;\t| ATM Forward             : &quot; + FormatUtil.FormatDouble (mapPayerOptionOutput.get (&quot;ATMManifestMeasure&quot;), 1, 0, 1.));</span>
 
-<span class="nc" id="L481">		System.out.println (&quot;\t| FPG Delta               : &quot; + FormatUtil.FormatDouble (mapPayerOptionOutput.get (&quot;FPGDelta&quot;), 1, 4, 1.));</span>
+<span class="fc" id="L481">		System.out.println (&quot;\t| FPG Delta               : &quot; + FormatUtil.FormatDouble (mapPayerOptionOutput.get (&quot;FPGDelta&quot;), 1, 4, 1.));</span>
 
-<span class="nc" id="L483">		System.out.println (&quot;\t| FPG Gamma               : &quot; + FormatUtil.FormatDouble (mapPayerOptionOutput.get (&quot;FPGGamma&quot;), 1, 4, 1.));</span>
+<span class="fc" id="L483">		System.out.println (&quot;\t| FPG Gamma               : &quot; + FormatUtil.FormatDouble (mapPayerOptionOutput.get (&quot;FPGGamma&quot;), 1, 4, 1.));</span>
 
-<span class="nc" id="L485">		System.out.println (&quot;\t| FPG Vega                : &quot; + FormatUtil.FormatDouble (mapPayerOptionOutput.get (&quot;FPGVega&quot;), 1, 2, 1.));</span>
+<span class="fc" id="L485">		System.out.println (&quot;\t| FPG Vega                : &quot; + FormatUtil.FormatDouble (mapPayerOptionOutput.get (&quot;FPGVega&quot;), 1, 2, 1.));</span>
 
-<span class="nc" id="L487">		System.out.println (&quot;\t| FPG Theta               : &quot; + FormatUtil.FormatDouble (mapPayerOptionOutput.get (&quot;FPGTheta&quot;), 1, 2, 1.));</span>
+<span class="fc" id="L487">		System.out.println (&quot;\t| FPG Theta               : &quot; + FormatUtil.FormatDouble (mapPayerOptionOutput.get (&quot;FPGTheta&quot;), 1, 2, 1.));</span>
 
-<span class="nc" id="L489">		System.out.println (&quot;\t| Vega (1%)               : &quot; + FormatUtil.FormatDouble (mapPayerOptionOutput.get (&quot;Vega&quot;) / cdsForward.initialNotional() * dblNotional * 0.01, 1, 2, 1.));</span>
+<span class="fc" id="L489">		System.out.println (&quot;\t| Vega (1%)               : &quot; + FormatUtil.FormatDouble (mapPayerOptionOutput.get (&quot;Vega&quot;) / cdsForward.initialNotional() * dblNotional * 0.01, 1, 2, 1.));</span>
 
-<span class="nc" id="L491">		System.out.println (&quot;\t| Theta                   : &quot; + FormatUtil.FormatDouble (mapPayerOptionOutput.get (&quot;Theta&quot;) / cdsForward.initialNotional() * dblNotional / 365.25, 1, 2, 1.));</span>
+<span class="fc" id="L491">		System.out.println (&quot;\t| Theta                   : &quot; + FormatUtil.FormatDouble (mapPayerOptionOutput.get (&quot;Theta&quot;) / cdsForward.initialNotional() * dblNotional / 365.25, 1, 2, 1.));</span>
 
-<span class="nc" id="L493">		System.out.println (&quot;\t|-----------------------------------------------|\n&quot;);</span>
+<span class="fc" id="L493">		System.out.println (&quot;\t|-----------------------------------------------|\n&quot;);</span>
 
-<span class="nc" id="L495">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L496">	}</span>
+<span class="fc" id="L495">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L496">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

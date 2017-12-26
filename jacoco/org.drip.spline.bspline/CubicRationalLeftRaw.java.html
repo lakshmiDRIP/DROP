@@ -60,7 +60,7 @@ package org.drip.spline.bspline;
  */
 
 public class CubicRationalLeftRaw extends org.drip.spline.bspline.TensionBasisHat {
-<span class="nc" id="L63">	private org.drip.spline.bspline.LeftHatShapeControl _lhsc = null;</span>
+<span class="fc" id="L63">	private org.drip.spline.bspline.LeftHatShapeControl _lhsc = null;</span>
 
 	/**
 	 * CubicRationalLeftRaw constructor
@@ -80,22 +80,22 @@ public class CubicRationalLeftRaw extends org.drip.spline.bspline.TensionBasisHa
 		final double dblTension)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L83">		super (dblLeftPredictorOrdinate, dblRightPredictorOrdinate, dblTension);</span>
+<span class="fc" id="L83">		super (dblLeftPredictorOrdinate, dblRightPredictorOrdinate, dblTension);</span>
 
-<span class="nc" id="L85">		_lhsc = new org.drip.spline.bspline.LeftHatShapeControl (dblLeftPredictorOrdinate,</span>
+<span class="fc" id="L85">		_lhsc = new org.drip.spline.bspline.LeftHatShapeControl (dblLeftPredictorOrdinate,</span>
 			dblRightPredictorOrdinate, strShapeControlType, dblTension);
-<span class="nc" id="L87">	}</span>
+<span class="fc" id="L87">	}</span>
 
 	@Override public double evaluate (
 		final double dblPredictorOrdinate)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L93" title="All 2 branches missed.">		if (!in (dblPredictorOrdinate)) return 0.;</span>
+<span class="fc bfc" id="L93" title="All 2 branches covered.">		if (!in (dblPredictorOrdinate)) return 0.;</span>
 
-<span class="nc" id="L95">		double dblCubicValue = (dblPredictorOrdinate - left()) * (dblPredictorOrdinate - left()) *</span>
-<span class="nc" id="L96">			(dblPredictorOrdinate - left());</span>
+<span class="fc" id="L95">		double dblCubicValue = (dblPredictorOrdinate - left()) * (dblPredictorOrdinate - left()) *</span>
+<span class="fc" id="L96">			(dblPredictorOrdinate - left());</span>
 
-<span class="nc bnc" id="L98" title="All 2 branches missed.">		return 0. == tension() ? dblCubicValue / 6. : dblCubicValue * _lhsc.evaluate (dblPredictorOrdinate);</span>
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">		return 0. == tension() ? dblCubicValue / 6. : dblCubicValue * _lhsc.evaluate (dblPredictorOrdinate);</span>
 	}
 
 	@Override public double derivative (
@@ -103,20 +103,20 @@ public class CubicRationalLeftRaw extends org.drip.spline.bspline.TensionBasisHa
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L106" title="All 2 branches missed.">		if (0 &gt;= iOrder)</span>
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">		if (0 &gt;= iOrder)</span>
 <span class="nc" id="L107">			throw new java.lang.Exception (&quot;CubicRationalLeftRaw::derivative =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L109" title="All 2 branches missed.">		if (!in (dblPredictorOrdinate)) return 0.;</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">		if (!in (dblPredictorOrdinate)) return 0.;</span>
 
-<span class="nc bnc" id="L111" title="All 2 branches missed.">		if (0. != tension()) return super.derivative (dblPredictorOrdinate, iOrder);</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">		if (0. != tension()) return super.derivative (dblPredictorOrdinate, iOrder);</span>
 
-<span class="nc" id="L113">		double dblGap = dblPredictorOrdinate - left();</span>
+<span class="fc" id="L113">		double dblGap = dblPredictorOrdinate - left();</span>
 
-<span class="nc bnc" id="L115" title="All 2 branches missed.">		if (1 == iOrder) return 0.5 * dblGap * dblGap;</span>
+<span class="fc bfc" id="L115" title="All 2 branches covered.">		if (1 == iOrder) return 0.5 * dblGap * dblGap;</span>
 
-<span class="nc bnc" id="L117" title="All 2 branches missed.">		if (2 == iOrder) return dblGap;</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">		if (2 == iOrder) return dblGap;</span>
 
-<span class="nc bnc" id="L119" title="All 2 branches missed.">		return 3 == iOrder ? 1. : 0.;</span>
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">		return 3 == iOrder ? 1. : 0.;</span>
 	}
 
 	@Override public double integrate (

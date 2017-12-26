@@ -78,15 +78,15 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 		final double dblBump)
 		throws Exception
 	{
-<span class="nc" id="L81">		String[] astrDepositMaturityTenor = new String[] {</span>
+<span class="fc" id="L81">		String[] astrDepositMaturityTenor = new String[] {</span>
 			&quot;2D&quot;
 		};
 
-<span class="nc" id="L85">		double[] adblDepositQuote = new double[] {</span>
+<span class="fc" id="L85">		double[] adblDepositQuote = new double[] {</span>
 			0.013161 + dblBump // 2D
 		};
 
-<span class="nc" id="L89">		double[] adblFuturesQuote = new double[] {</span>
+<span class="fc" id="L89">		double[] adblFuturesQuote = new double[] {</span>
 			0.013225 + dblBump,	// 98.6775
 			0.014250 + dblBump,	// 98.5750
 			0.014750 + dblBump,	// 98.5250
@@ -95,7 +95,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			0.016500 + dblBump   // 98.3500
 		};
 
-<span class="nc" id="L98">		String[] astrFixFloatMaturityTenor = new String[] {</span>
+<span class="fc" id="L98">		String[] astrFixFloatMaturityTenor = new String[] {</span>
 			&quot;02Y&quot;,
 			&quot;03Y&quot;,
 			&quot;04Y&quot;,
@@ -115,7 +115,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			&quot;50Y&quot;
 		};
 
-<span class="nc" id="L118">		double[] adblFixFloatQuote = new double[] {</span>
+<span class="fc" id="L118">		double[] adblFixFloatQuote = new double[] {</span>
 			0.015540 + dblBump, //  2Y
 			0.016423 + dblBump, //  3Y
 			0.017209 + dblBump, //  4Y
@@ -135,7 +135,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			0.023968 + dblBump  // 50Y
 		};
 
-<span class="nc" id="L138">		return LatentMarketStateBuilder.SmoothFundingCurve (</span>
+<span class="fc" id="L138">		return LatentMarketStateBuilder.SmoothFundingCurve (</span>
 			dtSpot,
 			strCurrency,
 			astrDepositMaturityTenor,
@@ -156,7 +156,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 		final double dblBump)
 		throws Exception
 	{
-<span class="nc" id="L159">		return LatentMarketStateBuilder.CreditCurve (</span>
+<span class="fc" id="L159">		return LatentMarketStateBuilder.CreditCurve (</span>
 			dtSpot,
 			strCreditCurve,
 			new String[] {
@@ -204,91 +204,91 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L207">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L207">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L209">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L209">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
 			2017,
 			DateUtil.SEPTEMBER,
 			17
 		);
 
-<span class="nc" id="L215">		JulianDate dtIssue = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L215">		JulianDate dtIssue = DateUtil.CreateFromYMD (</span>
 			2017,
 			DateUtil.JUNE,
 			20
 		);
 
-<span class="nc" id="L221">		String strCDXTenor = &quot;5Y&quot;;</span>
-<span class="nc" id="L222">		String strCurrency = &quot;USD&quot;;</span>
-<span class="nc" id="L223">		String strCDXName = &quot;CDXNAHY&quot;;</span>
-<span class="nc" id="L224">		double dblCDXFixedCoupon = 0.05;</span>
+<span class="fc" id="L221">		String strCDXTenor = &quot;5Y&quot;;</span>
+<span class="fc" id="L222">		String strCurrency = &quot;USD&quot;;</span>
+<span class="fc" id="L223">		String strCDXName = &quot;CDXNAHY&quot;;</span>
+<span class="fc" id="L224">		double dblCDXFixedCoupon = 0.05;</span>
 
-<span class="nc" id="L226">		CreditDefaultSwap cdx = CDSBuilder.CreateSNAC (</span>
+<span class="fc" id="L226">		CreditDefaultSwap cdx = CDSBuilder.CreateSNAC (</span>
 			dtIssue,
 			strCDXTenor,
 			dblCDXFixedCoupon,
 			strCDXName
 		);
 
-<span class="nc" id="L233">		MergedDiscountForwardCurve mdfc = FundingCurve (</span>
+<span class="fc" id="L233">		MergedDiscountForwardCurve mdfc = FundingCurve (</span>
 			dtSpot,
 			strCurrency,
 			0.
 		);
 
-<span class="nc" id="L239">		CreditCurve cc = CreditCurve (</span>
+<span class="fc" id="L239">		CreditCurve cc = CreditCurve (</span>
 			dtSpot,
 			strCDXName,
 			mdfc,
 			0.
 		);
 
-<span class="nc" id="L246">		CurveSurfaceQuoteContainer csqc = MarketParamsBuilder.Credit (</span>
+<span class="fc" id="L246">		CurveSurfaceQuoteContainer csqc = MarketParamsBuilder.Credit (</span>
 			mdfc,
 			cc
 		);
 
-<span class="nc" id="L251">		ValuationParams valParams = new ValuationParams (</span>
+<span class="fc" id="L251">		ValuationParams valParams = new ValuationParams (</span>
 			dtSpot,
 			dtSpot,
 			strCurrency
 		);
 
-<span class="nc" id="L257">		CreditPricerParams pricerParams = CreditPricerParams.Standard();</span>
+<span class="fc" id="L257">		CreditPricerParams pricerParams = CreditPricerParams.Standard();</span>
 
-<span class="nc" id="L259">		CaseInsensitiveTreeMap&lt;Double&gt; mapOutput = cdx.value (</span>
+<span class="fc" id="L259">		CaseInsensitiveTreeMap&lt;Double&gt; mapOutput = cdx.value (</span>
 			valParams,
 			pricerParams,
 			csqc,
 			null
 		);
 
-<span class="nc" id="L266">		System.out.println (&quot;&quot;);</span>
+<span class="fc" id="L266">		System.out.println (&quot;&quot;);</span>
 
-<span class="nc" id="L268">		System.out.println (&quot;\t |-----------------------------------------------|&quot;);</span>
+<span class="fc" id="L268">		System.out.println (&quot;\t |-----------------------------------------------|&quot;);</span>
 
-<span class="nc bnc" id="L270" title="All 2 branches missed.">		for (Map.Entry&lt;String, Double&gt; me : mapOutput.entrySet())</span>
-<span class="nc" id="L271">			System.out.println (&quot;\t | &quot; + me.getKey() + &quot; =&gt; &quot; + me.getValue());</span>
+<span class="fc bfc" id="L270" title="All 2 branches covered.">		for (Map.Entry&lt;String, Double&gt; me : mapOutput.entrySet())</span>
+<span class="fc" id="L271">			System.out.println (&quot;\t | &quot; + me.getKey() + &quot; =&gt; &quot; + me.getValue());</span>
 
-<span class="nc" id="L273">		System.out.println (&quot;\t |-----------------------------------------------|&quot;);</span>
+<span class="fc" id="L273">		System.out.println (&quot;\t |-----------------------------------------------|&quot;);</span>
 
-<span class="nc" id="L275">		System.out.println (&quot;&quot;);</span>
+<span class="fc" id="L275">		System.out.println (&quot;&quot;);</span>
 
-<span class="nc" id="L277">		System.out.println (&quot;\t |---------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L277">		System.out.println (&quot;\t |---------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L279" title="All 2 branches missed.">		for (CompositePeriod p : cdx.couponPeriods())</span>
-<span class="nc" id="L280">			System.out.println (</span>
+<span class="fc bfc" id="L279" title="All 2 branches covered.">		for (CompositePeriod p : cdx.couponPeriods())</span>
+<span class="fc" id="L280">			System.out.println (</span>
 				&quot;\t | &quot; +
-<span class="nc" id="L282">				DateUtil.YYYYMMDD (p.startDate()) + &quot; | &quot; +</span>
-<span class="nc" id="L283">				DateUtil.YYYYMMDD (p.endDate()) + &quot; | &quot; +</span>
-<span class="nc" id="L284">				DateUtil.YYYYMMDD (p.payDate()) + &quot; | &quot; +</span>
-<span class="nc" id="L285">				FormatUtil.FormatDouble (p.couponDCF(), 1, 3, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L286">				FormatUtil.FormatDouble (p.couponDCF(), 1, 2, 0.01 * 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L287">				FormatUtil.FormatDouble (mdfc.df (p.payDate()), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L288">				FormatUtil.FormatDouble (cc.survival (p.payDate()), 1, 4, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L282">				DateUtil.YYYYMMDD (p.startDate()) + &quot; | &quot; +</span>
+<span class="fc" id="L283">				DateUtil.YYYYMMDD (p.endDate()) + &quot; | &quot; +</span>
+<span class="fc" id="L284">				DateUtil.YYYYMMDD (p.payDate()) + &quot; | &quot; +</span>
+<span class="fc" id="L285">				FormatUtil.FormatDouble (p.couponDCF(), 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L286">				FormatUtil.FormatDouble (p.couponDCF(), 1, 2, 0.01 * 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L287">				FormatUtil.FormatDouble (mdfc.df (p.payDate()), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L288">				FormatUtil.FormatDouble (cc.survival (p.payDate()), 1, 4, 1.) + &quot; ||&quot;</span>
 			);
 
-<span class="nc" id="L291">		System.out.println (&quot;\t |---------------------------------------------------------------------------||&quot;);</span>
-<span class="nc" id="L292">	}</span>
+<span class="fc" id="L291">		System.out.println (&quot;\t |---------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L292">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

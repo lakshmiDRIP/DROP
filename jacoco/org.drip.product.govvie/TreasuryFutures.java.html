@@ -66,24 +66,24 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 	public static final int FORWARD_PRICE_ZSPREAD = 2;
 	public static final int FORWARD_PRICE_CREDIT_BASIS = 3;
 
-<span class="fc" id="L69">	private double[] _adblConversionFactor = null;</span>
-<span class="fc" id="L70">	private org.drip.product.definition.Bond[] _aBond = null;</span>
-<span class="fc" id="L71">	private org.drip.analytics.date.JulianDate _dtExpiry = null;</span>
-<span class="fc" id="L72">	private org.drip.param.valuation.CashSettleParams _csp = null;</span>
+<span class="nc" id="L69">	private double[] _adblConversionFactor = null;</span>
+<span class="nc" id="L70">	private org.drip.product.definition.Bond[] _aBond = null;</span>
+<span class="nc" id="L71">	private org.drip.analytics.date.JulianDate _dtExpiry = null;</span>
+<span class="nc" id="L72">	private org.drip.param.valuation.CashSettleParams _csp = null;</span>
 
 	/*
 	 * Bond Futures Contract Details
 	 */
 
-<span class="fc" id="L78">	private int[] _aiDeliveryMonth = null;</span>
-<span class="fc" id="L79">	private java.lang.String _strType = &quot;&quot;;</span>
-<span class="fc" id="L80">	private double _dblTickValue = java.lang.Double.NaN;</span>
-<span class="fc" id="L81">	private double _dblNotionalValue = java.lang.Double.NaN;</span>
-<span class="fc" id="L82">	private double _dblReferenceCoupon = java.lang.Double.NaN;</span>
-<span class="fc" id="L83">	private int _iLastTradingDayLag = java.lang.Integer.MIN_VALUE;</span>
-<span class="fc" id="L84">	private double _dblMinimumPriceMovement = java.lang.Double.NaN;</span>
-<span class="fc" id="L85">	private java.lang.String _strDeliverableGradeMaximumMaturity = &quot;&quot;;</span>
-<span class="fc" id="L86">	private java.lang.String _strDeliverableGradeMinimumMaturity = &quot;&quot;;</span>
+<span class="nc" id="L78">	private int[] _aiDeliveryMonth = null;</span>
+<span class="nc" id="L79">	private java.lang.String _strType = &quot;&quot;;</span>
+<span class="nc" id="L80">	private double _dblTickValue = java.lang.Double.NaN;</span>
+<span class="nc" id="L81">	private double _dblNotionalValue = java.lang.Double.NaN;</span>
+<span class="nc" id="L82">	private double _dblReferenceCoupon = java.lang.Double.NaN;</span>
+<span class="nc" id="L83">	private int _iLastTradingDayLag = java.lang.Integer.MIN_VALUE;</span>
+<span class="nc" id="L84">	private double _dblMinimumPriceMovement = java.lang.Double.NaN;</span>
+<span class="nc" id="L85">	private java.lang.String _strDeliverableGradeMaximumMaturity = &quot;&quot;;</span>
+<span class="nc" id="L86">	private java.lang.String _strDeliverableGradeMinimumMaturity = &quot;&quot;;</span>
 
 	/**
 	 * BondFutures Constructor
@@ -100,21 +100,21 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 		final double[] adblConversionFactor,
 		final org.drip.param.valuation.CashSettleParams csp)
 		throws java.lang.Exception
-<span class="fc" id="L103">	{</span>
-<span class="pc bpc" id="L104" title="2 of 4 branches missed.">		if (null == (_aBond = aBond) || null == (_adblConversionFactor = adblConversionFactor))</span>
+<span class="nc" id="L103">	{</span>
+<span class="nc bnc" id="L104" title="All 4 branches missed.">		if (null == (_aBond = aBond) || null == (_adblConversionFactor = adblConversionFactor))</span>
 <span class="nc" id="L105">			throw new java.lang.Exception (&quot;BondFutures ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L107">		_csp = csp;</span>
-<span class="fc" id="L108">		int iNumBond = _aBond.length;</span>
+<span class="nc" id="L107">		_csp = csp;</span>
+<span class="nc" id="L108">		int iNumBond = _aBond.length;</span>
 
-<span class="pc bpc" id="L110" title="2 of 4 branches missed.">		if (0 == iNumBond || iNumBond != _adblConversionFactor.length)</span>
+<span class="nc bnc" id="L110" title="All 4 branches missed.">		if (0 == iNumBond || iNumBond != _adblConversionFactor.length)</span>
 <span class="nc" id="L111">			throw new java.lang.Exception (&quot;BondFutures ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L113" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumBond; ++i) {</span>
-<span class="pc bpc" id="L114" title="2 of 4 branches missed.">			if (null == _aBond[i] || !org.drip.quant.common.NumberUtil.IsValid (_adblConversionFactor[i]))</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumBond; ++i) {</span>
+<span class="nc bnc" id="L114" title="All 4 branches missed.">			if (null == _aBond[i] || !org.drip.quant.common.NumberUtil.IsValid (_adblConversionFactor[i]))</span>
 <span class="nc" id="L115">				throw new java.lang.Exception (&quot;BondFutures ctr: Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L117">	}</span>
+<span class="nc" id="L117">	}</span>
 
 	/**
 	 * Set the Futures Type
@@ -127,7 +127,7 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 	public boolean setType (
 		final java.lang.String strType)
 	{
-<span class="pc bpc" id="L130" title="2 of 4 branches missed.">		return null == (_strType = strType) || _strType.isEmpty() ? false : true;</span>
+<span class="nc bnc" id="L130" title="All 4 branches missed.">		return null == (_strType = strType) || _strType.isEmpty() ? false : true;</span>
 	}
 
 	/**
@@ -138,7 +138,7 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 
 	public java.lang.String type()
 	{
-<span class="fc" id="L141">		return _strType;</span>
+<span class="nc" id="L141">		return _strType;</span>
 	}
 
 	/**
@@ -152,7 +152,7 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 	public boolean setNotionalValue (
 		final double dblNotionalValue)
 	{
-<span class="fc" id="L155">		return org.drip.quant.common.NumberUtil.IsValid (_dblNotionalValue = dblNotionalValue);</span>
+<span class="nc" id="L155">		return org.drip.quant.common.NumberUtil.IsValid (_dblNotionalValue = dblNotionalValue);</span>
 	}
 
 	/**
@@ -163,7 +163,7 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 
 	public double notionalValue()
 	{
-<span class="fc" id="L166">		return _dblNotionalValue;</span>
+<span class="nc" id="L166">		return _dblNotionalValue;</span>
 	}
 
 	/**
@@ -177,7 +177,7 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 	public boolean setReferenceCoupon (
 		final double dblReferenceCoupon)
 	{
-<span class="fc" id="L180">		return org.drip.quant.common.NumberUtil.IsValid (_dblReferenceCoupon = dblReferenceCoupon);</span>
+<span class="nc" id="L180">		return org.drip.quant.common.NumberUtil.IsValid (_dblReferenceCoupon = dblReferenceCoupon);</span>
 	}
 
 	/**
@@ -188,7 +188,7 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 
 	public double referenceCoupon()
 	{
-<span class="fc" id="L191">		return _dblReferenceCoupon;</span>
+<span class="nc" id="L191">		return _dblReferenceCoupon;</span>
 	}
 
 	/**
@@ -202,8 +202,8 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 	public boolean setMinimumMaturity (
 		final java.lang.String strDeliverableGradeMinimumMaturity)
 	{
-<span class="pc bpc" id="L205" title="1 of 2 branches missed.">		return null == (_strDeliverableGradeMinimumMaturity = strDeliverableGradeMinimumMaturity) ||</span>
-<span class="pc bpc" id="L206" title="1 of 2 branches missed.">			_strDeliverableGradeMinimumMaturity.isEmpty() ? false : true;</span>
+<span class="nc bnc" id="L205" title="All 2 branches missed.">		return null == (_strDeliverableGradeMinimumMaturity = strDeliverableGradeMinimumMaturity) ||</span>
+<span class="nc bnc" id="L206" title="All 2 branches missed.">			_strDeliverableGradeMinimumMaturity.isEmpty() ? false : true;</span>
 	}
 
 	/**
@@ -214,7 +214,7 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 
 	public java.lang.String minimumMaturity()
 	{
-<span class="fc" id="L217">		return _strDeliverableGradeMinimumMaturity;</span>
+<span class="nc" id="L217">		return _strDeliverableGradeMinimumMaturity;</span>
 	}
 
 	/**
@@ -228,8 +228,8 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 	public boolean setMaximumMaturity (
 		final java.lang.String strDeliverableGradeMaximumMaturity)
 	{
-<span class="pc bpc" id="L231" title="1 of 2 branches missed.">		return null == (_strDeliverableGradeMaximumMaturity = strDeliverableGradeMaximumMaturity) ||</span>
-<span class="pc bpc" id="L232" title="1 of 2 branches missed.">			_strDeliverableGradeMaximumMaturity.isEmpty() ? false : true;</span>
+<span class="nc bnc" id="L231" title="All 2 branches missed.">		return null == (_strDeliverableGradeMaximumMaturity = strDeliverableGradeMaximumMaturity) ||</span>
+<span class="nc bnc" id="L232" title="All 2 branches missed.">			_strDeliverableGradeMaximumMaturity.isEmpty() ? false : true;</span>
 	}
 
 	/**
@@ -240,7 +240,7 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 
 	public java.lang.String maximumMaturity()
 	{
-<span class="fc" id="L243">		return _strDeliverableGradeMaximumMaturity;</span>
+<span class="nc" id="L243">		return _strDeliverableGradeMaximumMaturity;</span>
 	}
 
 	/**
@@ -254,7 +254,7 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 	public boolean setDeliveryMonths (
 		final int[] aiDeliveryMonth)
 	{
-<span class="pc bpc" id="L257" title="2 of 4 branches missed.">		return null == (_aiDeliveryMonth = aiDeliveryMonth) || 0 == _aiDeliveryMonth.length ? false : true;</span>
+<span class="nc bnc" id="L257" title="All 4 branches missed.">		return null == (_aiDeliveryMonth = aiDeliveryMonth) || 0 == _aiDeliveryMonth.length ? false : true;</span>
 	}
 
 	/**
@@ -265,7 +265,7 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 
 	public int[] deliveryMonths()
 	{
-<span class="fc" id="L268">		return _aiDeliveryMonth;</span>
+<span class="nc" id="L268">		return _aiDeliveryMonth;</span>
 	}
 
 	/**
@@ -279,7 +279,7 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 	public boolean setLastTradingDayLag (
 		final int iLastTradingDayLag)
 	{
-<span class="pc bpc" id="L282" title="1 of 2 branches missed.">		return 0 &gt; (_iLastTradingDayLag = iLastTradingDayLag) ? false : true;</span>
+<span class="nc bnc" id="L282" title="All 2 branches missed.">		return 0 &gt; (_iLastTradingDayLag = iLastTradingDayLag) ? false : true;</span>
 	}
 
 	/**
@@ -290,7 +290,7 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 
 	public int lastTradingDayLag()
 	{
-<span class="fc" id="L293">		return _iLastTradingDayLag;</span>
+<span class="nc" id="L293">		return _iLastTradingDayLag;</span>
 	}
 
 	/**
@@ -304,7 +304,7 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 	public boolean setMinimumPriceMovement (
 		final double dblMinimumPriceMovement)
 	{
-<span class="fc" id="L307">		return org.drip.quant.common.NumberUtil.IsValid (_dblMinimumPriceMovement = dblMinimumPriceMovement);</span>
+<span class="nc" id="L307">		return org.drip.quant.common.NumberUtil.IsValid (_dblMinimumPriceMovement = dblMinimumPriceMovement);</span>
 	}
 
 	/**
@@ -315,7 +315,7 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 
 	public double minimumPriceMovement()
 	{
-<span class="fc" id="L318">		return _dblMinimumPriceMovement;</span>
+<span class="nc" id="L318">		return _dblMinimumPriceMovement;</span>
 	}
 
 	/**
@@ -329,7 +329,7 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 	public boolean setTickValue (
 		final double dblTickValue)
 	{
-<span class="fc" id="L332">		return org.drip.quant.common.NumberUtil.IsValid (_dblTickValue = dblTickValue);</span>
+<span class="nc" id="L332">		return org.drip.quant.common.NumberUtil.IsValid (_dblTickValue = dblTickValue);</span>
 	}
 
 	/**
@@ -340,7 +340,7 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 
 	public double tickValue()
 	{
-<span class="fc" id="L343">		return _dblTickValue;</span>
+<span class="nc" id="L343">		return _dblTickValue;</span>
 	}
 
 	/**
@@ -351,7 +351,7 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 
 	public org.drip.product.definition.Bond[] basket()
 	{
-<span class="fc" id="L354">		return _aBond;</span>
+<span class="nc" id="L354">		return _aBond;</span>
 	}
 
 	/**
@@ -376,10 +376,10 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 	public boolean setExpiry (
 		final org.drip.analytics.date.JulianDate dtExpiry)
 	{
-<span class="pc bpc" id="L379" title="1 of 2 branches missed.">		if (null == dtExpiry) return false;</span>
+<span class="nc bnc" id="L379" title="All 2 branches missed.">		if (null == dtExpiry) return false;</span>
 
-<span class="fc" id="L381">		_dtExpiry = dtExpiry;</span>
-<span class="fc" id="L382">		return true;</span>
+<span class="nc" id="L381">		_dtExpiry = dtExpiry;</span>
+<span class="nc" id="L382">		return true;</span>
 	}
 
 	/**
@@ -412,44 +412,44 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 		final double[] adblCleanPrice,
 		final int iForwardPriceMethod)
 	{
-<span class="pc bpc" id="L415" title="1 of 2 branches missed.">		if (null == adblCleanPrice) return null;</span>
+<span class="nc bnc" id="L415" title="All 2 branches missed.">		if (null == adblCleanPrice) return null;</span>
 
-<span class="fc" id="L417">		int iStartIndex = 0;</span>
-<span class="fc" id="L418">		int iBasketSize = adblCleanPrice.length;</span>
+<span class="nc" id="L417">		int iStartIndex = 0;</span>
+<span class="nc" id="L418">		int iBasketSize = adblCleanPrice.length;</span>
 
-<span class="pc bpc" id="L420" title="1 of 2 branches missed.">		if (iBasketSize != _aBond.length) return null;</span>
+<span class="nc bnc" id="L420" title="All 2 branches missed.">		if (iBasketSize != _aBond.length) return null;</span>
 
-<span class="pc bpc" id="L422" title="1 of 2 branches missed.">		for (int i = 0; i &lt; iBasketSize; ++i) {</span>
-<span class="pc bpc" id="L423" title="1 of 2 branches missed.">			if (org.drip.quant.common.NumberUtil.IsValid (adblCleanPrice[i])) {</span>
-<span class="fc" id="L424">				iStartIndex = i;</span>
-<span class="fc" id="L425">				break;</span>
+<span class="nc bnc" id="L422" title="All 2 branches missed.">		for (int i = 0; i &lt; iBasketSize; ++i) {</span>
+<span class="nc bnc" id="L423" title="All 2 branches missed.">			if (org.drip.quant.common.NumberUtil.IsValid (adblCleanPrice[i])) {</span>
+<span class="nc" id="L424">				iStartIndex = i;</span>
+<span class="nc" id="L425">				break;</span>
 			}
 		}
 
-<span class="pc bpc" id="L429" title="1 of 2 branches missed.">		if (iBasketSize &lt;= iStartIndex) return null;</span>
+<span class="nc bnc" id="L429" title="All 2 branches missed.">		if (iBasketSize &lt;= iStartIndex) return null;</span>
 
-<span class="fc" id="L431">		int iCTDIndex = iStartIndex;</span>
-<span class="fc" id="L432">		double dblMinimumScaledPrice = adblCleanPrice[iStartIndex] / _adblConversionFactor[iStartIndex];</span>
+<span class="nc" id="L431">		int iCTDIndex = iStartIndex;</span>
+<span class="nc" id="L432">		double dblMinimumScaledPrice = adblCleanPrice[iStartIndex] / _adblConversionFactor[iStartIndex];</span>
 
-<span class="fc" id="L434">		int iExpiryDate = _dtExpiry.julian();</span>
+<span class="nc" id="L434">		int iExpiryDate = _dtExpiry.julian();</span>
 
-<span class="pc bpc" id="L436" title="1 of 2 branches missed.">		if (iExpiryDate &lt;= iValueDate) return null;</span>
+<span class="nc bnc" id="L436" title="All 2 branches missed.">		if (iExpiryDate &lt;= iValueDate) return null;</span>
 
-<span class="fc" id="L438">		org.drip.param.valuation.ValuationParams valParamsSpot =</span>
-<span class="fc" id="L439">			org.drip.param.valuation.ValuationParams.Spot (iValueDate);</span>
+<span class="nc" id="L438">		org.drip.param.valuation.ValuationParams valParamsSpot =</span>
+<span class="nc" id="L439">			org.drip.param.valuation.ValuationParams.Spot (iValueDate);</span>
 
-<span class="fc" id="L441">		org.drip.param.valuation.ValuationParams valParamsExpiry =</span>
-<span class="fc" id="L442">			org.drip.param.valuation.ValuationParams.Spot (iExpiryDate);</span>
+<span class="nc" id="L441">		org.drip.param.valuation.ValuationParams valParamsExpiry =</span>
+<span class="nc" id="L442">			org.drip.param.valuation.ValuationParams.Spot (iExpiryDate);</span>
 
-<span class="fc bfc" id="L444" title="All 2 branches covered.">		for (int i = iStartIndex; i &lt; iBasketSize; ++i) {</span>
-<span class="pc bpc" id="L445" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (adblCleanPrice[i])) continue;</span>
+<span class="nc bnc" id="L444" title="All 2 branches missed.">		for (int i = iStartIndex; i &lt; iBasketSize; ++i) {</span>
+<span class="nc bnc" id="L445" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (adblCleanPrice[i])) continue;</span>
 
-<span class="fc" id="L447">			double dblForwardPrice = java.lang.Double.NaN;</span>
+<span class="nc" id="L447">			double dblForwardPrice = java.lang.Double.NaN;</span>
 
 			try {
-<span class="pc bpc" id="L450" title="1 of 2 branches missed.">				if (FORWARD_PRICE_YIELD == iForwardPriceMethod)</span>
-<span class="fc" id="L451">					dblForwardPrice = org.drip.analytics.support.FuturesHelper.ForwardBondYieldPrice</span>
-<span class="fc" id="L452">						(_aBond[i], valParamsSpot, valParamsExpiry, csqc, vcp, adblCleanPrice[i]);</span>
+<span class="nc bnc" id="L450" title="All 2 branches missed.">				if (FORWARD_PRICE_YIELD == iForwardPriceMethod)</span>
+<span class="nc" id="L451">					dblForwardPrice = org.drip.analytics.support.FuturesHelper.ForwardBondYieldPrice</span>
+<span class="nc" id="L452">						(_aBond[i], valParamsSpot, valParamsExpiry, csqc, vcp, adblCleanPrice[i]);</span>
 <span class="nc bnc" id="L453" title="All 2 branches missed.">				else if (FORWARD_PRICE_OAS == iForwardPriceMethod)</span>
 <span class="nc" id="L454">					dblForwardPrice = org.drip.analytics.support.FuturesHelper.ForwardBondOASPrice</span>
 <span class="nc" id="L455">						(_aBond[i], valParamsSpot, valParamsExpiry, csqc, vcp, adblCleanPrice[i]);</span>
@@ -465,18 +465,18 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 <span class="nc" id="L465">				e.printStackTrace();</span>
 
 <span class="nc" id="L467">				return null;</span>
-<span class="fc" id="L468">			}</span>
+<span class="nc" id="L468">			}</span>
 
-<span class="fc" id="L470">			double dblScaledPrice = dblForwardPrice / _adblConversionFactor[i];</span>
+<span class="nc" id="L470">			double dblScaledPrice = dblForwardPrice / _adblConversionFactor[i];</span>
 
-<span class="fc bfc" id="L472" title="All 2 branches covered.">			if (dblScaledPrice &lt; dblMinimumScaledPrice) {</span>
-<span class="fc" id="L473">				iCTDIndex = i;</span>
-<span class="fc" id="L474">				dblMinimumScaledPrice = dblScaledPrice;</span>
+<span class="nc bnc" id="L472" title="All 2 branches missed.">			if (dblScaledPrice &lt; dblMinimumScaledPrice) {</span>
+<span class="nc" id="L473">				iCTDIndex = i;</span>
+<span class="nc" id="L474">				dblMinimumScaledPrice = dblScaledPrice;</span>
 			}
 		}
 
 		try {
-<span class="fc" id="L479">			return new org.drip.product.params.CTDEntry (_aBond[iCTDIndex], _adblConversionFactor[iCTDIndex],</span>
+<span class="nc" id="L479">			return new org.drip.product.params.CTDEntry (_aBond[iCTDIndex], _adblConversionFactor[iCTDIndex],</span>
 				dblMinimumScaledPrice * _adblConversionFactor[iCTDIndex]);
 <span class="nc" id="L481">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L482">			e.printStackTrace();</span>
@@ -498,7 +498,7 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 		final int iValueDate,
 		final double[] adblCleanPrice)
 	{
-<span class="fc" id="L501">		return cheapestToDeliver (iValueDate, null, null, adblCleanPrice, FORWARD_PRICE_YIELD);</span>
+<span class="nc" id="L501">		return cheapestToDeliver (iValueDate, null, null, adblCleanPrice, FORWARD_PRICE_YIELD);</span>
 	}
 
 	/**
@@ -557,9 +557,9 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 
 	@Override public java.lang.String name()
 	{
-<span class="pc bpc" id="L560" title="3 of 6 branches missed.">		return (null == _strType || _strType.isEmpty() ? _aBond[0].currency() : _strType) +</span>
-<span class="pc bpc" id="L561" title="1 of 2 branches missed.">			(null == _strDeliverableGradeMaximumMaturity || _strDeliverableGradeMaximumMaturity.isEmpty() ?</span>
-<span class="pc" id="L562">				_aBond[0].tenor() : _strDeliverableGradeMaximumMaturity);</span>
+<span class="nc bnc" id="L560" title="All 6 branches missed.">		return (null == _strType || _strType.isEmpty() ? _aBond[0].currency() : _strType) +</span>
+<span class="nc bnc" id="L561" title="All 2 branches missed.">			(null == _strDeliverableGradeMaximumMaturity || _strDeliverableGradeMaximumMaturity.isEmpty() ?</span>
+<span class="nc" id="L562">				_aBond[0].tenor() : _strDeliverableGradeMaximumMaturity);</span>
 	}
 
 	@Override public org.drip.param.valuation.CashSettleParams cashSettleParams()
@@ -662,12 +662,12 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 
 	@Override public org.drip.state.identifier.FundingLabel fundingLabel()
 	{
-<span class="fc" id="L665">		return _aBond[0].fundingLabel();</span>
+<span class="nc" id="L665">		return _aBond[0].fundingLabel();</span>
 	}
 
 	@Override public org.drip.state.identifier.GovvieLabel govvieLabel()
 	{
-<span class="fc" id="L670">		return _aBond[0].govvieLabel();</span>
+<span class="nc" id="L670">		return _aBond[0].govvieLabel();</span>
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.identifier.FXLabel&gt;
@@ -695,112 +695,112 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqc,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
-<span class="fc" id="L698">		int iNumBond = _aBond.length;</span>
-<span class="fc" id="L699">		double dblCTDRepoRate = java.lang.Double.NaN;</span>
-<span class="fc" id="L700">		double[] adblCleanPrice = new double[iNumBond];</span>
-<span class="fc" id="L701">		double dblCTDTreasuryYield = java.lang.Double.NaN;</span>
+<span class="nc" id="L698">		int iNumBond = _aBond.length;</span>
+<span class="nc" id="L699">		double dblCTDRepoRate = java.lang.Double.NaN;</span>
+<span class="nc" id="L700">		double[] adblCleanPrice = new double[iNumBond];</span>
+<span class="nc" id="L701">		double dblCTDTreasuryYield = java.lang.Double.NaN;</span>
 
-<span class="fc" id="L703">		int iValueDate = valParams.valueDate();</span>
+<span class="nc" id="L703">		int iValueDate = valParams.valueDate();</span>
 
-<span class="fc bfc" id="L705" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumBond; ++i) {</span>
-<span class="fc" id="L706">			org.drip.param.definition.ProductQuote pqBond = csqc.productQuote (_aBond[i].name());</span>
+<span class="nc bnc" id="L705" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumBond; ++i) {</span>
+<span class="nc" id="L706">			org.drip.param.definition.ProductQuote pqBond = csqc.productQuote (_aBond[i].name());</span>
 
-<span class="pc bpc" id="L708" title="2 of 4 branches missed.">			if (null == pqBond || !pqBond.containsQuote (&quot;Price&quot;) ||</span>
-<span class="pc bpc" id="L709" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (adblCleanPrice[i] = pqBond.quote (&quot;Price&quot;).value</span>
-<span class="fc" id="L710">					(&quot;mid&quot;)))</span>
+<span class="nc bnc" id="L708" title="All 4 branches missed.">			if (null == pqBond || !pqBond.containsQuote (&quot;Price&quot;) ||</span>
+<span class="nc bnc" id="L709" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (adblCleanPrice[i] = pqBond.quote (&quot;Price&quot;).value</span>
+<span class="nc" id="L710">					(&quot;mid&quot;)))</span>
 <span class="nc" id="L711">				return null;</span>
 		}
 
-<span class="fc" id="L714">		org.drip.product.params.CTDEntry ctdEntry = cheapestToDeliverYield (iValueDate, adblCleanPrice);</span>
+<span class="nc" id="L714">		org.drip.product.params.CTDEntry ctdEntry = cheapestToDeliverYield (iValueDate, adblCleanPrice);</span>
 
-<span class="pc bpc" id="L716" title="2 of 4 branches missed.">		if (null == ctdEntry || null == csqc) return null;</span>
+<span class="nc bnc" id="L716" title="All 4 branches missed.">		if (null == ctdEntry || null == csqc) return null;</span>
 
-<span class="fc" id="L718">		org.drip.product.definition.Bond bondCTD = ctdEntry.bond();</span>
+<span class="nc" id="L718">		org.drip.product.definition.Bond bondCTD = ctdEntry.bond();</span>
 
-<span class="fc" id="L720">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapBondFuturesMeasure =</span>
-<span class="fc" id="L721">			bondCTD.value (valParams, pricerParams, csqc, vcp);</span>
+<span class="nc" id="L720">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapBondFuturesMeasure =</span>
+<span class="nc" id="L721">			bondCTD.value (valParams, pricerParams, csqc, vcp);</span>
 
-<span class="pc bpc" id="L723" title="1 of 2 branches missed.">		if (null == mapBondFuturesMeasure || null == (mapBondFuturesMeasure =</span>
-<span class="pc bpc" id="L724" title="1 of 2 branches missed.">			org.drip.quant.common.CollectionUtil.PrefixKeys (bondCTD.value (valParams, pricerParams, csqc,</span>
+<span class="nc bnc" id="L723" title="All 2 branches missed.">		if (null == mapBondFuturesMeasure || null == (mapBondFuturesMeasure =</span>
+<span class="nc bnc" id="L724" title="All 2 branches missed.">			org.drip.quant.common.CollectionUtil.PrefixKeys (bondCTD.value (valParams, pricerParams, csqc,</span>
 				vcp), &quot;CTD::&quot;)))
 <span class="nc" id="L726">			return null;</span>
 
-<span class="fc" id="L728">		double dblCTDForwardPrice = ctdEntry.forwardPrice();</span>
+<span class="nc" id="L728">		double dblCTDForwardPrice = ctdEntry.forwardPrice();</span>
 
-<span class="fc" id="L730">		double dblCTDConversionFactor = ctdEntry.conversionFactor();</span>
+<span class="nc" id="L730">		double dblCTDConversionFactor = ctdEntry.conversionFactor();</span>
 
-<span class="fc" id="L732">		mapBondFuturesMeasure.put (&quot;CTDConversionFactor&quot;, dblCTDConversionFactor);</span>
+<span class="nc" id="L732">		mapBondFuturesMeasure.put (&quot;CTDConversionFactor&quot;, dblCTDConversionFactor);</span>
 
-<span class="fc" id="L734">		mapBondFuturesMeasure.put (&quot;CTDForwardPrice&quot;, dblCTDForwardPrice);</span>
+<span class="nc" id="L734">		mapBondFuturesMeasure.put (&quot;CTDForwardPrice&quot;, dblCTDForwardPrice);</span>
 
-<span class="fc" id="L736">		org.drip.state.repo.RepoCurve repoState = csqc.repoState</span>
-<span class="fc" id="L737">			(org.drip.state.identifier.RepoLabel.Standard (bondCTD.name()));</span>
+<span class="nc" id="L736">		org.drip.state.repo.RepoCurve repoState = csqc.repoState</span>
+<span class="nc" id="L737">			(org.drip.state.identifier.RepoLabel.Standard (bondCTD.name()));</span>
 
-<span class="fc" id="L739">		org.drip.state.govvie.GovvieCurve gc = csqc.govvieState (govvieLabel());</span>
+<span class="nc" id="L739">		org.drip.state.govvie.GovvieCurve gc = csqc.govvieState (govvieLabel());</span>
 
-<span class="fc" id="L741">		int iExpiryDate = _dtExpiry.julian();</span>
+<span class="nc" id="L741">		int iExpiryDate = _dtExpiry.julian();</span>
 
 		try {
-<span class="pc bpc" id="L744" title="1 of 2 branches missed.">			if (null != repoState)</span>
-<span class="fc" id="L745">				mapBondFuturesMeasure.put (&quot;CTDRepoRate&quot;, dblCTDRepoRate = repoState.repo (iExpiryDate));</span>
+<span class="nc bnc" id="L744" title="All 2 branches missed.">			if (null != repoState)</span>
+<span class="nc" id="L745">				mapBondFuturesMeasure.put (&quot;CTDRepoRate&quot;, dblCTDRepoRate = repoState.repo (iExpiryDate));</span>
 
-<span class="pc bpc" id="L747" title="1 of 2 branches missed.">			if (null != gc)</span>
-<span class="fc" id="L748">				mapBondFuturesMeasure.put (&quot;CTDTreasuryYield&quot;, dblCTDTreasuryYield = gc.yield (iExpiryDate));</span>
+<span class="nc bnc" id="L747" title="All 2 branches missed.">			if (null != gc)</span>
+<span class="nc" id="L748">				mapBondFuturesMeasure.put (&quot;CTDTreasuryYield&quot;, dblCTDTreasuryYield = gc.yield (iExpiryDate));</span>
 <span class="nc" id="L749">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L750">			e.printStackTrace();</span>
 
 <span class="nc" id="L752">			return null;</span>
-<span class="fc" id="L753">		}</span>
+<span class="nc" id="L753">		}</span>
 
-<span class="fc" id="L755">		double dblCTDSpotPrice = csqc.productQuote (bondCTD.name()).quote (&quot;Price&quot;).value (&quot;mid&quot;);</span>
+<span class="nc" id="L755">		double dblCTDSpotPrice = csqc.productQuote (bondCTD.name()).quote (&quot;Price&quot;).value (&quot;mid&quot;);</span>
 
-<span class="fc" id="L757">		mapBondFuturesMeasure.put (&quot;CTDSpotPrice&quot;, dblCTDSpotPrice);</span>
+<span class="nc" id="L757">		mapBondFuturesMeasure.put (&quot;CTDSpotPrice&quot;, dblCTDSpotPrice);</span>
 
-<span class="pc bpc" id="L759" title="1 of 2 branches missed.">		if (org.drip.quant.common.NumberUtil.IsValid (dblCTDRepoRate) &amp;&amp;</span>
-<span class="pc bpc" id="L760" title="1 of 2 branches missed.">			org.drip.quant.common.NumberUtil.IsValid (dblCTDTreasuryYield))</span>
-<span class="fc" id="L761">			mapBondFuturesMeasure.put (&quot;CostOfCarry&quot;, dblCTDRepoRate - dblCTDTreasuryYield);</span>
+<span class="nc bnc" id="L759" title="All 2 branches missed.">		if (org.drip.quant.common.NumberUtil.IsValid (dblCTDRepoRate) &amp;&amp;</span>
+<span class="nc bnc" id="L760" title="All 2 branches missed.">			org.drip.quant.common.NumberUtil.IsValid (dblCTDTreasuryYield))</span>
+<span class="nc" id="L761">			mapBondFuturesMeasure.put (&quot;CostOfCarry&quot;, dblCTDRepoRate - dblCTDTreasuryYield);</span>
 
-<span class="fc" id="L763">		org.drip.param.definition.ProductQuote pqFutures = csqc.productQuote (name());</span>
+<span class="nc" id="L763">		org.drip.param.definition.ProductQuote pqFutures = csqc.productQuote (name());</span>
 
-<span class="pc bpc" id="L765" title="2 of 4 branches missed.">		if (null != pqFutures &amp;&amp; pqFutures.containsQuote (&quot;Price&quot;)) {</span>
-<span class="fc" id="L766">			double dblFuturesQuote = pqFutures.quote (&quot;Price&quot;).value (&quot;mid&quot;);</span>
+<span class="nc bnc" id="L765" title="All 4 branches missed.">		if (null != pqFutures &amp;&amp; pqFutures.containsQuote (&quot;Price&quot;)) {</span>
+<span class="nc" id="L766">			double dblFuturesQuote = pqFutures.quote (&quot;Price&quot;).value (&quot;mid&quot;);</span>
 
-<span class="pc bpc" id="L768" title="1 of 2 branches missed.">			if (org.drip.quant.common.NumberUtil.IsValid (dblFuturesQuote)) {</span>
-<span class="pc bpc" id="L769" title="1 of 2 branches missed.">				if (iExpiryDate &gt; iValueDate) {</span>
-<span class="fc" id="L770">					double dblImpliedRepoRate = 365.25 * (((dblFuturesQuote - dblCTDSpotPrice) /</span>
+<span class="nc bnc" id="L768" title="All 2 branches missed.">			if (org.drip.quant.common.NumberUtil.IsValid (dblFuturesQuote)) {</span>
+<span class="nc bnc" id="L769" title="All 2 branches missed.">				if (iExpiryDate &gt; iValueDate) {</span>
+<span class="nc" id="L770">					double dblImpliedRepoRate = 365.25 * (((dblFuturesQuote - dblCTDSpotPrice) /</span>
 						dblCTDSpotPrice) - 1.) / (iExpiryDate - iValueDate);
 
-<span class="fc" id="L773">					mapBondFuturesMeasure.put (&quot;ImpliedRepo&quot;, dblImpliedRepoRate);</span>
+<span class="nc" id="L773">					mapBondFuturesMeasure.put (&quot;ImpliedRepo&quot;, dblImpliedRepoRate);</span>
 
-<span class="fc" id="L775">					mapBondFuturesMeasure.put (&quot;ImpliedRepoRate&quot;, dblImpliedRepoRate);</span>
+<span class="nc" id="L775">					mapBondFuturesMeasure.put (&quot;ImpliedRepoRate&quot;, dblImpliedRepoRate);</span>
 
-<span class="pc bpc" id="L777" title="1 of 2 branches missed.">					if (org.drip.quant.common.NumberUtil.IsValid (dblCTDRepoRate))</span>
-<span class="fc" id="L778">						mapBondFuturesMeasure.put (&quot;NetBasis&quot;, dblImpliedRepoRate - dblCTDRepoRate);</span>
+<span class="nc bnc" id="L777" title="All 2 branches missed.">					if (org.drip.quant.common.NumberUtil.IsValid (dblCTDRepoRate))</span>
+<span class="nc" id="L778">						mapBondFuturesMeasure.put (&quot;NetBasis&quot;, dblImpliedRepoRate - dblCTDRepoRate);</span>
 				}
 
-<span class="fc" id="L781">				double dblSettlementAmount = dblFuturesQuote * dblCTDConversionFactor - dblCTDForwardPrice;</span>
+<span class="nc" id="L781">				double dblSettlementAmount = dblFuturesQuote * dblCTDConversionFactor - dblCTDForwardPrice;</span>
 
-<span class="fc" id="L783">				mapBondFuturesMeasure.put (&quot;PV&quot;, dblSettlementAmount);</span>
+<span class="nc" id="L783">				mapBondFuturesMeasure.put (&quot;PV&quot;, dblSettlementAmount);</span>
 
-<span class="fc" id="L785">				mapBondFuturesMeasure.put (&quot;SettlementAmount&quot;, dblSettlementAmount);</span>
+<span class="nc" id="L785">				mapBondFuturesMeasure.put (&quot;SettlementAmount&quot;, dblSettlementAmount);</span>
 
-<span class="fc" id="L787">				mapBondFuturesMeasure.put (&quot;SettlePV&quot;, dblSettlementAmount);</span>
+<span class="nc" id="L787">				mapBondFuturesMeasure.put (&quot;SettlePV&quot;, dblSettlementAmount);</span>
 
-<span class="fc" id="L789">				org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqc.fundingState</span>
-<span class="fc" id="L790">					(fundingLabel());</span>
+<span class="nc" id="L789">				org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqc.fundingState</span>
+<span class="nc" id="L790">					(fundingLabel());</span>
 
-<span class="pc bpc" id="L792" title="1 of 2 branches missed.">				if (null != dcFunding) {</span>
+<span class="nc bnc" id="L792" title="All 2 branches missed.">				if (null != dcFunding) {</span>
 					try {
-<span class="fc" id="L794">						mapBondFuturesMeasure.put (&quot;SpotPV&quot;, dblSettlementAmount * dcFunding.df</span>
-<span class="fc" id="L795">							(iExpiryDate));</span>
+<span class="nc" id="L794">						mapBondFuturesMeasure.put (&quot;SpotPV&quot;, dblSettlementAmount * dcFunding.df</span>
+<span class="nc" id="L795">							(iExpiryDate));</span>
 <span class="nc" id="L796">					} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L797">						e.printStackTrace();</span>
-<span class="fc" id="L798">					}</span>
+<span class="nc" id="L798">					}</span>
 				}
 			}
 		}
 
-<span class="fc" id="L803">		return mapBondFuturesMeasure;</span>
+<span class="nc" id="L803">		return mapBondFuturesMeasure;</span>
 	}
 
 	@Override public java.util.Set&lt;java.lang.String&gt; measureNames()

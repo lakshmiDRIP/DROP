@@ -87,14 +87,14 @@ public class BlackNormalAlgorithm extends org.drip.pricer.option.FokkerPlanckGen
 
 <span class="fc" id="L88">		double dblDF = java.lang.Math.exp (-1. * dblRiskFreeRate * dblTimeToExpiry);</span>
 
-<span class="pc bpc" id="L90" title="1 of 2 branches missed.">		double dblForward = bIsForward ? dblUnderlier : dblUnderlier / dblDF;</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">		double dblForward = bIsForward ? dblUnderlier : dblUnderlier / dblDF;</span>
 <span class="fc" id="L91">		double dblD = (dblForward - dblStrike) / dblD1D2Diff;</span>
 
 <span class="fc" id="L93">		double dblCallPayoff = dblForward * dblD1D2Diff * java.lang.Math.exp (-0.5 * dblD * dblD) /</span>
 <span class="fc" id="L94">			java.lang.Math.sqrt (2. * java.lang.Math.PI) / dblForward - dblStrike * -1. * dblD1D2Diff * dblD</span>
 <span class="fc" id="L95">				* org.drip.measure.gaussian.NormalQuadrature.CDF (dblD) / dblStrike;</span>
 
-<span class="pc bpc" id="L97" title="3 of 4 branches missed.">		if (!bAsPrice) return bIsPut ? dblCallPayoff + dblStrike - dblForward : dblCallPayoff;</span>
+<span class="pc bpc" id="L97" title="1 of 4 branches missed.">		if (!bAsPrice) return bIsPut ? dblCallPayoff + dblStrike - dblForward : dblCallPayoff;</span>
 
 <span class="fc bfc" id="L99" title="All 2 branches covered.">		return bIsPut ? dblDF * (dblCallPayoff + dblStrike - dblForward) : dblDF * dblCallPayoff;</span>
 	}
@@ -119,7 +119,7 @@ public class BlackNormalAlgorithm extends org.drip.pricer.option.FokkerPlanckGen
 
 <span class="fc" id="L120">		double dblDF = java.lang.Math.exp (-1. * dblRiskFreeRate * dblTimeToExpiry);</span>
 
-<span class="pc bpc" id="L122" title="1 of 2 branches missed.">		double dblForward = bIsForward ? dblUnderlier : dblUnderlier / dblDF;</span>
+<span class="fc bfc" id="L122" title="All 2 branches covered.">		double dblForward = bIsForward ? dblUnderlier : dblUnderlier / dblDF;</span>
 <span class="fc" id="L123">		double dblD = (dblForward - dblStrike) / dblD1D2Diff;</span>
 
 <span class="fc" id="L125">		double dblN = java.lang.Math.exp (-0.5 * dblD * dblD) / java.lang.Math.sqrt (2. * java.lang.Math.PI);</span>

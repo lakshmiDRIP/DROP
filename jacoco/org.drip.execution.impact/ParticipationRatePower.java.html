@@ -105,28 +105,28 @@ public class ParticipationRatePower extends org.drip.execution.impact.Transactio
 		final double dblTradeInterval)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L108" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblTradeInterval) || 0 &gt;= dblTradeInterval)</span>
+<span class="pc bpc" id="L108" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblTradeInterval) || 0 &gt;= dblTradeInterval)</span>
 <span class="nc" id="L109">			throw new java.lang.Exception (&quot;ParticipationRatePower::regularize =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L111">		return 1. / dblTradeInterval;</span>
+<span class="fc" id="L111">		return 1. / dblTradeInterval;</span>
 	}
 
 	@Override public double modulate (
 		final double dblTradeInterval)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L118">		return 1.;</span>
+<span class="fc" id="L118">		return 1.;</span>
 	}
 
 	@Override public double evaluate  (
 		final double dblTradeRate)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L125" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblTradeRate))</span>
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblTradeRate))</span>
 <span class="nc" id="L126">			throw new java.lang.Exception (&quot;ParticipationRatePower::evaluate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L128" title="All 2 branches missed.">		return (dblTradeRate &lt; 0. ? -1. : 1.) * _dblConstant * java.lang.Math.pow (java.lang.Math.abs</span>
-<span class="nc" id="L129">			(dblTradeRate), _dblExponent);</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">		return (dblTradeRate &lt; 0. ? -1. : 1.) * _dblConstant * java.lang.Math.pow (java.lang.Math.abs</span>
+<span class="fc" id="L129">			(dblTradeRate), _dblExponent);</span>
 	}
 
 	@Override public double derivative (
@@ -134,16 +134,16 @@ public class ParticipationRatePower extends org.drip.execution.impact.Transactio
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L137" title="All 4 branches missed.">		if (0 &gt;= iOrder || !org.drip.quant.common.NumberUtil.IsValid (dblTradeRate))</span>
+<span class="pc bpc" id="L137" title="2 of 4 branches missed.">		if (0 &gt;= iOrder || !org.drip.quant.common.NumberUtil.IsValid (dblTradeRate))</span>
 <span class="nc" id="L138">			throw new java.lang.Exception (&quot;ParticipationRatePower::derivative =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L140">		double dblCoefficient = 1.;</span>
+<span class="fc" id="L140">		double dblCoefficient = 1.;</span>
 
-<span class="nc bnc" id="L142" title="All 2 branches missed.">		for (int i = 0; i &lt; iOrder; ++i)</span>
-<span class="nc" id="L143">			dblCoefficient = dblCoefficient * (_dblExponent - i);</span>
+<span class="fc bfc" id="L142" title="All 2 branches covered.">		for (int i = 0; i &lt; iOrder; ++i)</span>
+<span class="fc" id="L143">			dblCoefficient = dblCoefficient * (_dblExponent - i);</span>
 
-<span class="nc bnc" id="L145" title="All 2 branches missed.">		return (dblTradeRate &lt; 0. ? -1. : 1.) * dblCoefficient * _dblConstant * java.lang.Math.pow</span>
-<span class="nc" id="L146">			(java.lang.Math.abs (dblTradeRate), _dblExponent - iOrder);</span>
+<span class="fc bfc" id="L145" title="All 2 branches covered.">		return (dblTradeRate &lt; 0. ? -1. : 1.) * dblCoefficient * _dblConstant * java.lang.Math.pow</span>
+<span class="fc" id="L146">			(java.lang.Math.abs (dblTradeRate), _dblExponent - iOrder);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

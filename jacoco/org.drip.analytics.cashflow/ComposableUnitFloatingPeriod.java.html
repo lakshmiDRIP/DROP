@@ -66,40 +66,40 @@ public class ComposableUnitFloatingPeriod extends org.drip.analytics.cashflow.Co
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqc,
 		final org.drip.market.definition.OvernightIndex oi)
 	{
-<span class="nc" id="L69">		int iSkipBackDay = 0;</span>
-<span class="nc" id="L70">		org.drip.analytics.date.JulianDate dtFixing = null;</span>
+<span class="fc" id="L69">		int iSkipBackDay = 0;</span>
+<span class="fc" id="L70">		org.drip.analytics.date.JulianDate dtFixing = null;</span>
 
-<span class="nc" id="L72">		org.drip.state.identifier.ForwardLabel forwardLabel = _rip.forwardLabel();</span>
+<span class="fc" id="L72">		org.drip.state.identifier.ForwardLabel forwardLabel = _rip.forwardLabel();</span>
 
-<span class="nc" id="L74">		org.drip.market.definition.FloaterIndex floaterIndex = forwardLabel.floaterIndex();</span>
+<span class="fc" id="L74">		org.drip.market.definition.FloaterIndex floaterIndex = forwardLabel.floaterIndex();</span>
 
-<span class="nc" id="L76">		int iLookBackProjectionWindow = oi.publicationLag();</span>
+<span class="fc" id="L76">		int iLookBackProjectionWindow = oi.publicationLag();</span>
 
 		try {
-<span class="nc" id="L79">			dtFixing = new org.drip.analytics.date.JulianDate (_rip.fixingDate());</span>
+<span class="fc" id="L79">			dtFixing = new org.drip.analytics.date.JulianDate (_rip.fixingDate());</span>
 
-<span class="nc bnc" id="L81" title="All 2 branches missed.">			while (iSkipBackDay &lt;= iLookBackProjectionWindow) {</span>
-<span class="nc" id="L82">				if (</span>
-<span class="nc bnc" id="L83" title="All 2 branches missed.">					csqc.available (</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">			while (iSkipBackDay &lt;= iLookBackProjectionWindow) {</span>
+<span class="fc" id="L82">				if (</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">					csqc.available (</span>
 						dtFixing,
 						forwardLabel
 					)
 				)
-<span class="nc" id="L88">				return dtFixing;</span>
+<span class="fc" id="L88">				return dtFixing;</span>
 
-<span class="nc bnc" id="L90" title="All 2 branches missed.">				if (null == (dtFixing = dtFixing.subtractBusDays (</span>
+<span class="pc bpc" id="L90" title="1 of 2 branches missed.">				if (null == (dtFixing = dtFixing.subtractBusDays (</span>
 					1,
-<span class="nc" id="L92">					floaterIndex.calendar()</span>
+<span class="fc" id="L92">					floaterIndex.calendar()</span>
 				)))
 <span class="nc" id="L94">					return null;</span>
 
-<span class="nc" id="L96">				iSkipBackDay += 1;</span>
+<span class="fc" id="L96">				iSkipBackDay += 1;</span>
 			}
 <span class="nc" id="L98">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L99">			e.printStackTrace();</span>
-<span class="nc" id="L100">		}</span>
+<span class="fc" id="L100">		}</span>
 
-<span class="nc" id="L102">		return null;</span>
+<span class="fc" id="L102">		return null;</span>
 	}
 
 	/**
@@ -155,27 +155,27 @@ public class ComposableUnitFloatingPeriod extends org.drip.analytics.cashflow.Co
 
 <span class="fc" id="L156">		org.drip.market.definition.FloaterIndex floaterIndex = forwardLabel.floaterIndex();</span>
 
-<span class="pc bpc" id="L158" title="1 of 2 branches missed.">		if (!(floaterIndex instanceof org.drip.market.definition.OvernightIndex)) {</span>
+<span class="fc bfc" id="L158" title="All 2 branches covered.">		if (!(floaterIndex instanceof org.drip.market.definition.OvernightIndex)) {</span>
 <span class="fc" id="L159">			int iFixingDate = _rip.fixingDate();</span>
 
 <span class="fc" id="L161">			if (</span>
-<span class="pc bpc" id="L162" title="1 of 2 branches missed.">				csqc.available (</span>
+<span class="fc bfc" id="L162" title="All 2 branches covered.">				csqc.available (</span>
 					iFixingDate,
 					forwardLabel
 				)
 			)
-<span class="nc" id="L167">				return csqc.fixing (</span>
+<span class="fc" id="L167">				return csqc.fixing (</span>
 					iFixingDate,
 					forwardLabel
 				);
 <span class="fc" id="L171">		} else {</span>
-<span class="nc" id="L172">			org.drip.analytics.date.JulianDate dtValidFixing = lookBackProjectionDate (</span>
+<span class="fc" id="L172">			org.drip.analytics.date.JulianDate dtValidFixing = lookBackProjectionDate (</span>
 				csqc,
 				(org.drip.market.definition.OvernightIndex) floaterIndex
 			);
 
-<span class="nc bnc" id="L177" title="All 2 branches missed.">			if (null != dtValidFixing)</span>
-<span class="nc" id="L178">				return csqc.fixing (</span>
+<span class="fc bfc" id="L177" title="All 2 branches covered.">			if (null != dtValidFixing)</span>
+<span class="fc" id="L178">				return csqc.fixing (</span>
 					dtValidFixing,
 					forwardLabel
 				);
