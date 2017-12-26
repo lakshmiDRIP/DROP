@@ -6,12 +6,12 @@
 
 DROP implements the model libraries and provides systems for fixed income valuation and adjustments, asset allocation and transaction cost analytics, and supporting libraries in numerical optimization and statistical learning.
 
-DROP is composed of four main libraries:
+DROP is composed of four main modules.
 
- * [***Asset Allocation***](https://lakshmidrip.github.io/DROP/AssetAllocationModule.html)
- * [***Fixed Income Analytics***](https://lakshmidrip.github.io/DROP/FixedIncomeModule.html)
- * [***Numerical Optimization***](https://lakshmidrip.github.io/DROP/NumericalOptimizerModule.html)
- * [***Statistical Learning***](https://lakshmidrip.github.io/DROP/StatisticalLearningModule.html)
+ * [***Asset Allocation Module***](https://lakshmidrip.github.io/DROP/AssetAllocationModule.html)   =>   [Asset Allocation Library](https://lakshmidrip.github.io/DROP/AssetAllocationLibrary.html)    |   [Transaction Cost Library](https://lakshmidrip.github.io/DROP/TransactionCostLibrary.html)
+ * [***Fixed Income Analytics Module***](https://lakshmidrip.github.io/DROP/FixedIncomeModule.html)   =>   [Fixed income Library](https://lakshmidrip.github.io/DROP/FixedIncomeLibrary.html)    |   [Asset Backed Library](https://lakshmidrip.github.io/DROP/Asset BackedLibrary.html)    |   [XVA Analytics Library](https://lakshmidrip.github.io/DROP/XVALibrary.html)
+ * [***Numerical Optimization Module***](https://lakshmidrip.github.io/DROP/NumericalOptimizerModule.html)
+ * [***Statistical Learning Module***](https://lakshmidrip.github.io/DROP/StatisticalLearningModule.html)
 
 ## Pointers
 
