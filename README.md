@@ -29,23 +29,15 @@ DROP is composed of four main libraries:
 
 ## Samples
 
- * The Java sample suite is also available as part of the development load.
- * The Excel samples are present on their own folder.
- * Test data is present in the Daemons folder.
+  [Java Samples](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample) | [Excel Samples](https://github.com/lakshmiDRIP/DROP/tree/master/Excel) | [Test Data](https://github.com/lakshmiDRIP/DROP/tree/master/Daemons)
 
 ## Documentation
 
- * The API Javadoc is available as part of the main development load.
- * DROP Technical Specifications are in their corresponding folders
- * Dated Release Notes in the ReleaseNotes Folder
- * External Reference Publications in the corresponding folder
- * User guide is a work in progress!
+ [Javadoc API](https://lakshmidrip.github.io/DROP/Javadoc/index.html) | [DROP Specifications](https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal) | [Reference Specifications](https://github.com/lakshmiDRIP/DROP/tree/master/Docs/External) | [Release Notes](https://github.com/lakshmiDRIP/DROP/tree/master/ReleaseNotes) | User guide is a work in progress!
 
 ## Misc
 
- * [JUnit](https://lakshmidrip.github.io/DROP/junit/index.html)
- * [Jacoco Coverage](https://lakshmidrip.github.io/DROP/jacoco/index.html)
- * [Jacoco Session](https://lakshmidrip.github.io/DROP/jacoco/jacoco-sessions.html)
+  [JUnit](https://lakshmidrip.github.io/DROP/junit/index.html) | [Jacoco Coverage](https://lakshmidrip.github.io/DROP/jacoco/index.html) | [Jacoco Session](https://lakshmidrip.github.io/DROP/jacoco/jacoco-sessions.html)
 
 ## Contact
 
