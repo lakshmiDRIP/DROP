@@ -8,8 +8,8 @@ DROP implements the model libraries and provides systems for fixed income valuat
 
 DROP is composed of four main modules.
 
- * [***Asset Allocation Module***](https://lakshmidrip.github.io/DROP/AssetAllocationModule.html)   =>   [Asset Allocation Library](https://lakshmidrip.github.io/DROP/AssetAllocationLibrary.html)    |   [Transaction Cost Library](https://lakshmidrip.github.io/DROP/TransactionCostLibrary.html)
- * [***Fixed Income Analytics Module***](https://lakshmidrip.github.io/DROP/FixedIncomeModule.html)   =>   [Fixed Income Library](https://lakshmidrip.github.io/DROP/FixedIncomeLibrary.html)    |   [Asset Backed Library](https://lakshmidrip.github.io/DROP/AssetBackedLibrary.html)    |   [XVA Analytics Library](https://lakshmidrip.github.io/DROP/XVALibrary.html)
+ * [***Asset Allocation Module***](https://lakshmidrip.github.io/DROP/AssetAllocationModule.html)   =>   [Asset Allocation Library](https://lakshmidrip.github.io/DROP/AssetAllocationLibrary.html)    |   [Transaction Cost Analytics Library](https://lakshmidrip.github.io/DROP/TransactionCostLibrary.html)
+ * [***Fixed Income Analytics Module***](https://lakshmidrip.github.io/DROP/FixedIncomeModule.html)   =>   [Fixed Income Analytics Library](https://lakshmidrip.github.io/DROP/FixedIncomeLibrary.html)    |   [Asset Backed Analytics Library](https://lakshmidrip.github.io/DROP/AssetBackedLibrary.html)    |   [XVA Analytics Library](https://lakshmidrip.github.io/DROP/XVALibrary.html)
  * [***Numerical Optimization Module***](https://lakshmidrip.github.io/DROP/NumericalOptimizerModule.html)
  * [***Statistical Learning Module***](https://lakshmidrip.github.io/DROP/StatisticalLearningModule.html)
 
