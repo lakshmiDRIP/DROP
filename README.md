@@ -40,7 +40,7 @@ DROP is composed of four main modules.
 
 ## Misc
 
-  [**JUnit**](https://lakshmidrip.github.io/DROP/junit/index.html)   |   [**Jacoco Coverage**](https://lakshmidrip.github.io/DROP/jacoco/index.html)   |   [**Jacoco Session**](https://lakshmidrip.github.io/DROP/jacoco/jacoco-sessions.html)
+  [**JUnit**](https://lakshmidrip.github.io/DROP/junit/index.html)   |   [**Jacoco Coverage**](https://lakshmidrip.github.io/DROP/jacoco/index.html)   |   [**Jacoco Session**](https://lakshmidrip.github.io/DROP/jacoco/jacoco-sessions.html)   |   [**Credits**](https://lakshmidrip.github.io/DROP/credits.html)
 
 ## Contact
 
