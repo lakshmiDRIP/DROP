@@ -157,7 +157,7 @@ public class Patiala {
 			19
 		);
 
-		BondComponent bond = BondBuilder.CreateSimpleFloater (
+		BondComponent bond = BondBuilder.CreateSimpleFloaterFP (
 			strName,
 			"USD",
 			"USD-3M",

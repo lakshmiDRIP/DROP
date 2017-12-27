@@ -76,13 +76,13 @@ public class SurvivalRecoveryStateShifted {
 	{
 		String[] astrDepositMaturityTenor = new String[] {
 			"1D",
-			"2D",
+			// "2D",
 			"3D"
 		};
 
 		double[] adblDepositQuote = new double[] {
 			0.0004,		// 1D
-			0.0004,		// 2D
+			// 0.0004,		// 2D
 			0.0004		// 3D
 		};
 
@@ -199,9 +199,10 @@ public class SurvivalRecoveryStateShifted {
 		double dblBump = 1.0;
 		boolean bIsBumpProportional = false;
 
-		JulianDate dtSpot = DateUtil.Today().addBusDays (
-			2,
-			strCurrency
+		JulianDate dtSpot = DateUtil.CreateFromYMD (
+			2017,
+			DateUtil.DECEMBER,
+			21
 		);
 
 		MergedDiscountForwardCurve dcOvernight = OvernightCurve (

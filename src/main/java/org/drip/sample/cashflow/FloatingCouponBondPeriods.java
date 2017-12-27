@@ -234,7 +234,7 @@ public class FloatingCouponBondPeriods {
 		String strDayCount = "Act/360";
 		String strCreditCurve = "CC";
 
-		BondComponent bond = BondBuilder.CreateSimpleFloater (
+		BondComponent bond = BondBuilder.CreateSimpleFloaterFP (
 			strCUSIP,
 			"USD",
 			"USD-3M",
@@ -336,7 +336,7 @@ public class FloatingCouponBondPeriods {
 
 			ComposableUnitFloatingPeriod cufp = (ComposableUnitFloatingPeriod) cfp.periods().get(0);
 
-			ReferenceIndexPeriod rip = cufp.referenceIndexPeriod();
+			ReferenceIndexPeriodForward rip = (ReferenceIndexPeriodForward) cufp.referenceIndexPeriod();
 
 			System.out.println ("\t|| " +
 				DateUtil.YYYYMMDD (p.startDate()) + " => " +

@@ -222,7 +222,7 @@ public class Rajahmundry {
 			15
 		);
 
-		BondComponent bond = BondBuilder.CreateSimpleFixed (
+		BondComponent bond = BondBuilder.CreateSimpleFixedFP (
 			strName,
 			strCurrency,
 			strName,

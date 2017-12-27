@@ -64,6 +64,11 @@ public class LatentStateFixingsContainer {
 				org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>>();
 
 	private java.util.Map<org.drip.analytics.date.JulianDate,
+		org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>> _mmOTCFixFloatFixing = new
+			java.util.TreeMap<org.drip.analytics.date.JulianDate,
+				org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>>();
+
+	private java.util.Map<org.drip.analytics.date.JulianDate,
 		org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>> _mmFXFixing = new
 			java.util.TreeMap<org.drip.analytics.date.JulianDate,
 				org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>>();
@@ -92,6 +97,19 @@ public class LatentStateFixingsContainer {
 		final double dblFixing)
 	{
 		if (null == dt || null == lsl || !org.drip.quant.common.NumberUtil.IsValid (dblFixing)) return false;
+
+		if (lsl instanceof org.drip.state.identifier.OTCFixFloatLabel) {
+			if (!_mmOTCFixFloatFixing.containsKey (dt))
+				_mmOTCFixFloatFixing.put (dt, new
+					org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>());
+
+			org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> mapOTCFixFloatFixing =
+				_mmOTCFixFloatFixing.get (dt);
+
+			mapOTCFixFloatFixing.put (lsl.fullyQualifiedName(), dblFixing);
+
+			return true;
+		}
 
 		if (lsl instanceof org.drip.state.identifier.ForwardLabel) {
 			if (!_mmForwardFixing.containsKey (dt))
@@ -155,6 +173,14 @@ public class LatentStateFixingsContainer {
 	{
 		if (null == dt || null == lsl) return false;
 
+		if (lsl instanceof org.drip.state.identifier.OTCFixFloatLabel) {
+			if (!_mmOTCFixFloatFixing.containsKey (dt)) return true;
+
+			_mmOTCFixFloatFixing.get (dt).remove (lsl.fullyQualifiedName());
+
+			return true;
+		}
+
 		if (lsl instanceof org.drip.state.identifier.ForwardLabel) {
 			if (!_mmForwardFixing.containsKey (dt)) return true;
 
@@ -209,6 +235,23 @@ public class LatentStateFixingsContainer {
 		if (null == dt || null == lsl)
 			throw new java.lang.Exception
 				("LatentStateFixingsContainer::fixing => Cannot locate Latent State Fixing for the Date");
+
+		if (lsl instanceof org.drip.state.identifier.OTCFixFloatLabel) {
+			if (!_mmOTCFixFloatFixing.containsKey (dt))
+				throw new java.lang.Exception
+					("LatentStateFixingsContainer::fixing => Cannot locate OTC Fix/Float Fixing for the Date");
+
+			org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> mapOTCFixFloatFixing =
+				_mmOTCFixFloatFixing.get (dt);
+
+			java.lang.String strLabel = lsl.fullyQualifiedName();
+
+			if (!mapOTCFixFloatFixing.containsKey (strLabel))
+				throw new java.lang.Exception
+					("LatentStateFixingsContainer::fixing => Cannot locate the OTC Fix/Float Label Entry for the Date!");
+
+			return mapOTCFixFloatFixing.get (strLabel);
+		}
 
 		if (lsl instanceof org.drip.state.identifier.ForwardLabel) {
 			if (!_mmForwardFixing.containsKey (dt))
@@ -281,6 +324,12 @@ public class LatentStateFixingsContainer {
 		final org.drip.state.identifier.LatentStateLabel lsl)
 	{
 		if (null == dt || null == lsl) return false;
+
+		if (lsl instanceof org.drip.state.identifier.OTCFixFloatLabel) {
+			if (!_mmOTCFixFloatFixing.containsKey (dt)) return false;
+
+			return _mmOTCFixFloatFixing.get (dt).containsKey (lsl.fullyQualifiedName());
+		}
 
 		if (lsl instanceof org.drip.state.identifier.ForwardLabel) {
 			if (!_mmForwardFixing.containsKey (dt)) return false;

@@ -69,7 +69,8 @@ public class ComposableUnitFloatingPeriod extends org.drip.analytics.cashflow.Co
 		int iSkipBackDay = 0;
 		org.drip.analytics.date.JulianDate dtFixing = null;
 
-		org.drip.state.identifier.ForwardLabel forwardLabel = _rip.forwardLabel();
+		org.drip.state.identifier.ForwardLabel forwardLabel =
+			((org.drip.analytics.cashflow.ReferenceIndexPeriodForward) _rip).forwardLabel();
 
 		org.drip.market.definition.FloaterIndex floaterIndex = forwardLabel.floaterIndex();
 
@@ -102,56 +103,12 @@ public class ComposableUnitFloatingPeriod extends org.drip.analytics.cashflow.Co
 		return null;
 	}
 
-	/**
-	 * The ComposableUnitFloatingPeriod Constructor
-	 * 
-	 * @param iStartDate Accrual Start Date
-	 * @param iEndDate Accrual End Date
-	 * @param strTenor The Composable Period Tenor
-	 * @param rip The Reference Index Period
-	 * @param dblSpread The Floater Spread
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public ComposableUnitFloatingPeriod (
-		final int iStartDate,
-		final int iEndDate,
-		final java.lang.String strTenor,
-		final org.drip.analytics.cashflow.ReferenceIndexPeriod rip,
-		final double dblSpread)
-		throws java.lang.Exception
-	{
-		super (
-			iStartDate,
-			iEndDate,
-			strTenor,
-			rip.forwardLabel().ucas()
-		);
-
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblSpread = dblSpread))
-			throw new java.lang.Exception ("ComposableUnitFloatingPeriod Constructor => Invalid Inputs");
-
-		_rip = rip;
-	}
-
-	/**
-	 * Retrieve the Reference Rate for the Floating Period
-	 * 
-	 * @param csqc The Market Curve and Surface
-	 * 
-	 * @return The Reference Rate for the Floating Period
-	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
-	 */
-
-	@Override public double baseRate (
+	private double baseForwardRate (
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqc)
 		throws java.lang.Exception
 	{
-		if (null == csqc) return java.lang.Double.NaN;
-
-		org.drip.state.identifier.ForwardLabel forwardLabel = _rip.forwardLabel();
+		org.drip.state.identifier.ForwardLabel forwardLabel =
+			((org.drip.analytics.cashflow.ReferenceIndexPeriodForward) _rip).forwardLabel();
 
 		org.drip.market.definition.FloaterIndex floaterIndex = forwardLabel.floaterIndex();
 
@@ -212,6 +169,62 @@ public class ComposableUnitFloatingPeriod extends org.drip.analytics.cashflow.Co
 		);
 	}
 
+	/**
+	 * The ComposableUnitFloatingPeriod Constructor
+	 * 
+	 * @param iStartDate Accrual Start Date
+	 * @param iEndDate Accrual End Date
+	 * @param strTenor The Composable Period Tenor
+	 * @param rip The Reference Index Period
+	 * @param dblSpread The Floater Spread
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public ComposableUnitFloatingPeriod (
+		final int iStartDate,
+		final int iEndDate,
+		final java.lang.String strTenor,
+		final org.drip.analytics.cashflow.ReferenceIndexPeriodForward rip,
+		final double dblSpread)
+		throws java.lang.Exception
+	{
+		super (
+			iStartDate,
+			iEndDate,
+			strTenor,
+			rip.forwardLabel().ucas()
+		);
+
+		if (!org.drip.quant.common.NumberUtil.IsValid (_dblSpread = dblSpread))
+			throw new java.lang.Exception ("ComposableUnitFloatingPeriod Constructor => Invalid Inputs");
+
+		_rip = rip;
+	}
+
+	/**
+	 * Retrieve the Reference Rate for the Floating Period
+	 * 
+	 * @param csqc The Market Curve and Surface
+	 * 
+	 * @return The Reference Rate for the Floating Period
+	 * 
+	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 */
+
+	@Override public double baseRate (
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqc)
+		throws java.lang.Exception
+	{
+		if (null == csqc) return java.lang.Double.NaN;
+
+		if (_rip instanceof org.drip.analytics.cashflow.ReferenceIndexPeriodForward)
+			return baseForwardRate (csqc);
+
+		throw new java.lang.Exception
+			("ComposableUnitFloatingPeriod::baseRate => Unknown Reference Period Index");
+	}
+
 	@Override public double basis()
 	{
 		return _dblSpread;
@@ -219,7 +232,7 @@ public class ComposableUnitFloatingPeriod extends org.drip.analytics.cashflow.Co
 
 	@Override public java.lang.String couponCurrency()
 	{
-		return _rip.forwardLabel().currency();
+		return ((org.drip.analytics.cashflow.ReferenceIndexPeriodForward) _rip).forwardLabel().currency();
 	}
 
 	/**

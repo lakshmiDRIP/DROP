@@ -222,7 +222,7 @@ public class Bokaro {
 			30
 		);
 
-		BondComponent bond = BondBuilder.CreateSimpleFixed (
+		BondComponent bond = BondBuilder.CreateSimpleFixedFP (
 			strName,
 			strCurrency,
 			strName,

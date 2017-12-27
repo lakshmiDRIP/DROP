@@ -171,7 +171,7 @@ public class Bhagalpur {
 			1
 		);
 
-		BondComponent bond = BondBuilder.CreateSimpleFloater (
+		BondComponent bond = BondBuilder.CreateSimpleFloaterFP (
 			"Bhagalpur",
 			strCurrency,
 			strCurrency + "-3M",

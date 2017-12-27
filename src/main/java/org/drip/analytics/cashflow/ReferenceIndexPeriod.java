@@ -8,9 +8,6 @@ package org.drip.analytics.cashflow;
 /*!
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
- * Copyright (C) 2016 Lakshmi Krishnamurthy
- * Copyright (C) 2015 Lakshmi Krishnamurthy
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
  *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
  *  	libraries targeting analysts and developers
@@ -52,56 +49,32 @@ package org.drip.analytics.cashflow;
 
 /**
  * ReferenceIndexPeriod contains the Cash Flow Period Details. Currently it holds the Start Date, the End
- * 	Date, the Fixing Date, and the Reference Floating Index if any.
+ *  Date, the Fixing Date, and the Reference Latent State Label.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ReferenceIndexPeriod {
+public abstract class ReferenceIndexPeriod
+{
 	private double _dblDCF = java.lang.Double.NaN;
 	private int _iEndDate = java.lang.Integer.MIN_VALUE;
 	private int _iStartDate = java.lang.Integer.MIN_VALUE;
 	private int _iFixingDate = java.lang.Integer.MIN_VALUE;
-	private org.drip.state.identifier.ForwardLabel _forwardLabel = null;
+	private org.drip.state.identifier.LatentStateLabel _latentStateLabel = null;
 
-	/**
-	 * The ReferenceIndexPeriod Constructor
-	 * 
-	 * @param iStartDate Reference Period Start Date
-	 * @param iEndDate Reference Period End Date
-	 * @param forwardLabel Period Forward Label
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public ReferenceIndexPeriod (
+	protected ReferenceIndexPeriod (
 		final int iStartDate,
 		final int iEndDate,
-		final org.drip.state.identifier.ForwardLabel forwardLabel)
+		final int iFixingDate,
+		final double dblDCF,
+		final org.drip.state.identifier.LatentStateLabel latentStateLabel)
 		throws java.lang.Exception
 	{
-		if (
-			(_iEndDate = iEndDate) <= (_iStartDate = iStartDate) ||
-			null == (_forwardLabel = forwardLabel)
-		)
+		if ((_iEndDate = iEndDate) <= (_iStartDate = iStartDate) ||
+			(_iFixingDate = iFixingDate) > _iStartDate ||
+			!org.drip.quant.common.NumberUtil.IsValid (_dblDCF = dblDCF) ||
+			null == (_latentStateLabel = latentStateLabel))
 			throw new java.lang.Exception ("ReferenceIndexPeriod ctr: Invalid Inputs");
-
-		org.drip.analytics.daycount.DateAdjustParams dapFixing =
-			_forwardLabel.floaterIndex().spotLagDAPBackward();
-
-		_iFixingDate = null == dapFixing ? iStartDate : dapFixing.roll (iStartDate);
-
-		org.drip.param.period.UnitCouponAccrualSetting ucas = _forwardLabel.ucas();
-
-		_dblDCF = ucas.couponDCFOffOfFreq() ? 1. / ucas.freq() :
-			org.drip.analytics.daycount.Convention.YearFraction (
-				_iStartDate,
-				_iEndDate,
-				ucas.couponDC(),
-				ucas.couponEOMAdjustment(),
-				null,
-				ucas.calendar()
-			);
 	}
 
 	/**
@@ -138,14 +111,14 @@ public class ReferenceIndexPeriod {
 	}
 
 	/**
-	 * Retrieve the Forward Label
+	 * Retrieve the Latent State Label
 	 * 
-	 * @return The Forward Label
+	 * @return The Latent State Label
 	 */
 
-	public org.drip.state.identifier.ForwardLabel forwardLabel()
+	public org.drip.state.identifier.LatentStateLabel latentStateLabel()
 	{
-		return _forwardLabel;
+		return _latentStateLabel;
 	}
 
 	/**

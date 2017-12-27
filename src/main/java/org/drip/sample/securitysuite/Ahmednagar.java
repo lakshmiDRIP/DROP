@@ -222,7 +222,7 @@ public class Ahmednagar {
 			28
 		);
 
-		BondComponent bond = BondBuilder.FixedToFloat (
+		BondComponent bond = BondBuilder.FixedFToFloatP (
 			strName,
 			strName,
 			dtEffective.julian(),

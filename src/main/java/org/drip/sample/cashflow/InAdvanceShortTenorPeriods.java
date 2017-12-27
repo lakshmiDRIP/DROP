@@ -465,7 +465,7 @@ public class InAdvanceShortTenorPeriods {
 
 			ComposableUnitFloatingPeriod cufp = (ComposableUnitFloatingPeriod) cfp.periods().get(0);
 
-			ReferenceIndexPeriod rip = cufp.referenceIndexPeriod();
+			ReferenceIndexPeriodForward rip = (ReferenceIndexPeriodForward) cufp.referenceIndexPeriod();
 
 			System.out.println ("\t|| " +
 				DateUtil.YYYYMMDD (p.startDate()) + " => " +

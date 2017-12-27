@@ -84,7 +84,11 @@ public class ForwardVolatilityStateShifted {
 		double dblBump = 0.0000001;
 		boolean bIsBumpProportional = false;
 
-		JulianDate dtSpot = DateUtil.Today();
+		JulianDate dtSpot = DateUtil.CreateFromYMD (
+			2017,
+			DateUtil.DECEMBER,
+			21
+		);
 
 		ForwardLabel forwardLabel = ForwardLabel.Create (
 			strCurrency,
@@ -156,8 +160,8 @@ public class ForwardVolatilityStateShifted {
 			0.0234, //  "3Y",
 			0.0343, //  "4Y",
 			0.0491, //  "5Y",
-			0.0768, //  "7Y"
-			0.1125  // "10Y"
+			0.0968, //  "7Y"
+			0.1625  // "10Y"
 		};
 
 		ForwardCurve fc = dcFunding.nativeForwardCurve (strFRATenor);

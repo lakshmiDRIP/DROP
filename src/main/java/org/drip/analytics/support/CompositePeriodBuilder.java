@@ -529,7 +529,7 @@ public class CompositePeriodBuilder {
 	 * @return The Reference Period
 	 */
 
-	public static final org.drip.analytics.cashflow.ReferenceIndexPeriod MakeReferencePeriod (
+	public static final org.drip.analytics.cashflow.ReferenceIndexPeriodForward MakeReferencePeriod (
 		final org.drip.analytics.date.JulianDate dtStart,
 		final org.drip.analytics.date.JulianDate dtEnd,
 		final org.drip.state.identifier.ForwardLabel forwardLabel,
@@ -539,20 +539,13 @@ public class CompositePeriodBuilder {
 
 		java.lang.String strForwardTenor = forwardLabel.tenor();
 
-		int iReferencePeriodStartDate = REFERENCE_PERIOD_IN_ARREARS == iReferencePeriodArrearsType ?
-			dtStart.addTenor (strForwardTenor).julian() : dtStart.julian();
-
-		int iReferencePeriodEndDate = REFERENCE_PERIOD_IN_ARREARS == iReferencePeriodArrearsType ?
-			dtEnd.addTenor (strForwardTenor).julian() : dtEnd.julian();
-
-		try {
-			return new org.drip.analytics.cashflow.ReferenceIndexPeriod (iReferencePeriodStartDate,
-				iReferencePeriodEndDate, forwardLabel);
-		} catch (java.lang.Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
+		return org.drip.analytics.cashflow.ReferenceIndexPeriodForward.Standard (
+			REFERENCE_PERIOD_IN_ARREARS == iReferencePeriodArrearsType ? dtStart.addTenor
+				(strForwardTenor).julian() : dtStart.julian(),
+			REFERENCE_PERIOD_IN_ARREARS == iReferencePeriodArrearsType ? dtEnd.addTenor
+				(strForwardTenor).julian() : dtEnd.julian(),
+			forwardLabel
+		);
 	}
 
 	/**
@@ -653,7 +646,7 @@ public class CompositePeriodBuilder {
 	 * @return The Reference Period
 	 */
 
-	public static final org.drip.analytics.cashflow.ReferenceIndexPeriod MakeReferencePeriod (
+	public static final org.drip.analytics.cashflow.ReferenceIndexPeriodForward MakeReferencePeriod (
 		final int iStartDate,
 		final int iEndDate,
 		final org.drip.state.identifier.ForwardLabel forwardLabel,

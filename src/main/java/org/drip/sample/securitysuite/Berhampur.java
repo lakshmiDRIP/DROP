@@ -234,7 +234,7 @@ public class Berhampur {
 			28
 		);
 
-		BondComponent bond = BondBuilder.FixedToFloat (
+		BondComponent bond = BondBuilder.FixedFPToFloatFP (
 			strName,
 			strName,
 			dtEffective.julian(),

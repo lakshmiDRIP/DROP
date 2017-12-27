@@ -580,8 +580,11 @@ public abstract class CompositePeriod {
 
 		if (cp instanceof org.drip.analytics.cashflow.ComposableUnitFixedPeriod) return null;
 
-		return ((org.drip.analytics.cashflow.ComposableUnitFloatingPeriod)
-			cp).referenceIndexPeriod().forwardLabel();
+		org.drip.analytics.cashflow.ReferenceIndexPeriod rip =
+			((org.drip.analytics.cashflow.ComposableUnitFloatingPeriod) cp).referenceIndexPeriod();
+
+		return rip instanceof org.drip.analytics.cashflow.ReferenceIndexPeriodForward ?
+			((org.drip.analytics.cashflow.ReferenceIndexPeriodForward) rip).forwardLabel() : null;
 	}
 
 	/**

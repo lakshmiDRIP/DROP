@@ -159,7 +159,7 @@ public class Agartala {
 			24
 		);
 
-		BondComponent bond = BondBuilder.CreateSimpleFloater (
+		BondComponent bond = BondBuilder.CreateSimpleFloaterFP (
 			"Agartala",
 			strCurrency,
 			strCurrency + "-3M",

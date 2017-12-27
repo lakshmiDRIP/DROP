@@ -234,7 +234,7 @@ public class FixedCouponBondPeriods {
 		String strDayCount = "30/360";
 		String strCreditCurve = "CC";
 
-		BondComponent bond = BondBuilder.CreateSimpleFixed (
+		BondComponent bond = BondBuilder.CreateSimpleFixedFP (
 			strCUSIP,
 			strCurrency,
 			strCreditCurve,
