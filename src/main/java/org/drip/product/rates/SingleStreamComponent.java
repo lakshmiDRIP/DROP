@@ -122,7 +122,7 @@ public class SingleStreamComponent extends org.drip.product.definition.Calibrata
 
 	@Override public
 		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.ForwardLabel>
-			forwardLabel()
+		forwardLabel()
 	{
 		org.drip.state.identifier.ForwardLabel forwardLabel = _stream.forwardLabel();
 

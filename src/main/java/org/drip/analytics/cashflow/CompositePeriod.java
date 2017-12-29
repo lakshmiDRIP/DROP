@@ -569,22 +569,18 @@ public abstract class CompositePeriod {
 	}
 
 	/**
-	 * Return the Forward Label
+	 * Return the Floater Label
 	 * 
-	 * @return The Forward Label
+	 * @return The Floater Label
 	 */
 
-	public org.drip.state.identifier.ForwardLabel forwardLabel()
+	public org.drip.state.identifier.FloaterLabel floaterLabel()
 	{
 		org.drip.analytics.cashflow.ComposableUnitPeriod cp = _lsCUP.get (0);
 
-		if (cp instanceof org.drip.analytics.cashflow.ComposableUnitFixedPeriod) return null;
-
-		org.drip.analytics.cashflow.ReferenceIndexPeriod rip =
-			((org.drip.analytics.cashflow.ComposableUnitFloatingPeriod) cp).referenceIndexPeriod();
-
-		return rip instanceof org.drip.analytics.cashflow.ReferenceIndexPeriodForward ?
-			((org.drip.analytics.cashflow.ReferenceIndexPeriodForward) rip).forwardLabel() : null;
+		return cp instanceof org.drip.analytics.cashflow.ComposableUnitFixedPeriod ? null :
+			((org.drip.analytics.cashflow.ComposableUnitFloatingPeriod)
+				cp).referenceIndexPeriod().floaterLabel();
 	}
 
 	/**
@@ -640,7 +636,11 @@ public abstract class CompositePeriod {
 
 		org.drip.state.identifier.CreditLabel creditLabel = creditLabel();
 
-		org.drip.state.identifier.ForwardLabel forwardLabel = forwardLabel();
+		org.drip.state.identifier.FloaterLabel floaterLabel = floaterLabel();
+
+		org.drip.state.identifier.ForwardLabel forwardLabel = floaterLabel instanceof
+			org.drip.state.identifier.ForwardLabel ? (org.drip.state.identifier.ForwardLabel) floaterLabel :
+				null;
 
 		org.drip.state.identifier.FundingLabel fundingLabel = fundingLabel();
 
@@ -805,7 +805,11 @@ public abstract class CompositePeriod {
 
 		org.drip.state.identifier.CreditLabel creditLabel = creditLabel();
 
-		org.drip.state.identifier.ForwardLabel forwardLabel = forwardLabel();
+		org.drip.state.identifier.FloaterLabel floaterLabel = floaterLabel();
+
+		org.drip.state.identifier.ForwardLabel forwardLabel = floaterLabel instanceof
+			org.drip.state.identifier.ForwardLabel ? (org.drip.state.identifier.ForwardLabel) floaterLabel :
+				null;
 
 		org.drip.state.identifier.FundingLabel fundingLabel = fundingLabel();
 
@@ -1430,7 +1434,11 @@ public abstract class CompositePeriod {
 		org.drip.state.estimator.PredictorResponseWeightConstraint prwc = new
 			org.drip.state.estimator.PredictorResponseWeightConstraint();
 
-		org.drip.state.identifier.ForwardLabel forwardLabel = forwardLabel();
+		org.drip.state.identifier.FloaterLabel floaterLabel = floaterLabel();
+
+		org.drip.state.identifier.ForwardLabel forwardLabel = floaterLabel instanceof
+			org.drip.state.identifier.ForwardLabel ? (org.drip.state.identifier.ForwardLabel) floaterLabel :
+				null;
 
 		if (null == forwardLabel) {
 			for (org.drip.analytics.output.UnitPeriodMetrics upm : cpm.unitMetrics()) {
@@ -1645,7 +1653,11 @@ public abstract class CompositePeriod {
 	{
 		if (null == pqs) return null;
 
-		org.drip.state.identifier.ForwardLabel forwardLabel = forwardLabel();
+		org.drip.state.identifier.FloaterLabel floaterLabel = floaterLabel();
+
+		org.drip.state.identifier.ForwardLabel forwardLabel = floaterLabel instanceof
+			org.drip.state.identifier.ForwardLabel ? (org.drip.state.identifier.ForwardLabel) floaterLabel :
+				null;
 
 		if (null == forwardLabel || !fundingLabel().match (pqs.fundingLabel()))
 			return fundingPRWC (
@@ -1878,7 +1890,11 @@ public abstract class CompositePeriod {
 
 		if (null == volLabel) return null;
 
-		org.drip.state.identifier.ForwardLabel forwardLabel = forwardLabel();
+		org.drip.state.identifier.FloaterLabel floaterLabel = floaterLabel();
+
+		org.drip.state.identifier.ForwardLabel forwardLabel = floaterLabel instanceof
+			org.drip.state.identifier.ForwardLabel ? (org.drip.state.identifier.ForwardLabel) floaterLabel :
+				null;
 
 		if (null == forwardLabel || !forwardLabel.match (volLabel.underlyingLatentState())) return null;
 

@@ -417,7 +417,7 @@ public class FixFloatInAdvancePeriods {
 				DateUtil.YYYYMMDD (iStartDate) + " => " +
 				DateUtil.YYYYMMDD (iEndDate) + " | " +
 				p.fundingLabel().fullyQualifiedName() + " | " +
-				p.forwardLabel().fullyQualifiedName() + " | " +
+				p.floaterLabel().fullyQualifiedName() + " | " +
 				FormatUtil.FormatDouble (dblCouponRate, 1, 2, 100.) + "% | " +
 				FormatUtil.FormatDouble (dblCouponDCF, 1, 4, 1.) + " | " +
 				FormatUtil.FormatDouble (dblCouponRate * dblCouponDCF * p.notional (iEndDate) * p.couponFactor (iEndDate), 1, 4, 1.) + " | " +

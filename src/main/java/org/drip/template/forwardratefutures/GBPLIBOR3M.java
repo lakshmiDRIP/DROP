@@ -162,7 +162,7 @@ public class GBPLIBOR3M {
 				FormatUtil.FormatDouble (cp.couponDCF(), 1, 4, 1.) + " | " +
 				cp.tenor() + " | " +
 				cp.fundingLabel().fullyQualifiedName() + " | " +
-				cp.forwardLabel().fullyQualifiedName() + " | " +
+				cp.floaterLabel().fullyQualifiedName() + " | " +
 				FormatUtil.FormatDouble (cp.df (csqc), 1, 4, 1.) + " | " +
 				FormatUtil.FormatDouble (cp.couponMetrics (dtSpot.julian(), csqc).rate(), 1, 2, 100.) + "% ||"
 			);

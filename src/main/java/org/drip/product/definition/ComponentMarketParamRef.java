@@ -103,9 +103,9 @@ public interface ComponentMarketParamRef {
 	public abstract org.drip.state.identifier.CreditLabel creditLabel();
 
 	/**
-	 * Get the Map of Forward Curve Latent State Labels
+	 * Get the Map of Forward Latent State Labels
 	 * 
-	 * @return The Map of the Forward Curve Latent State Labels
+	 * @return The Map of the Forward Latent State Labels
 	 */
 
 	public abstract org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.ForwardLabel>

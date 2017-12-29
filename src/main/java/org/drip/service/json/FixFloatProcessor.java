@@ -177,7 +177,8 @@ public class FixFloatProcessor {
 
 			jsonCashFlow.put ("FundingLabel", cp.fundingLabel().fullyQualifiedName());
 
-			jsonCashFlow.put ("ForwardLabel", cp.forwardLabel().fullyQualifiedName());
+			jsonCashFlow.put ("ForwardLabel", ((org.drip.state.identifier.ForwardLabel)
+				cp.floaterLabel()).fullyQualifiedName());
 
 			jsonCashFlow.put ("ReferenceRate", cp.couponMetrics (dtSpot.julian(), csqc).rate());
 

@@ -196,7 +196,10 @@ public class Stream {
 
 	public org.drip.state.identifier.ForwardLabel forwardLabel()
 	{
-		return _lsPeriod.get (0).forwardLabel();
+		org.drip.state.identifier.FloaterLabel floaterLabel = _lsPeriod.get (0).floaterLabel();
+
+		return floaterLabel instanceof org.drip.state.identifier.ForwardLabel ?
+			(org.drip.state.identifier.ForwardLabel) floaterLabel : null;
 	}
 
 	/**

@@ -48,59 +48,110 @@ package org.drip.state.identifier;
  */
 
 /**
- * OTCFixFloatLabel contains the Index Parameters referencing a Payment on an OTC Fix/Float IRS Par Rate
- *  Index.
+ * FloaterLabel is an Abstract Class that underpins the Latent State Labels that use a Single Floater Index.
  *  
  * @author Lakshmi Krishnamurthy
  */
 
-public class OTCFixFloatLabel extends org.drip.state.identifier.FloaterLabel
+public abstract class FloaterLabel implements org.drip.state.identifier.LatentStateLabel
 {
-	private java.lang.String _strFixFloatTenor = "";
+	private java.lang.String _strTenor = "";
+	private org.drip.market.definition.FloaterIndex _floaterIndex = null;
 
-	/**
-	 * OTCFixFloatLabel Constructor
-	 * 
-	 * @param floaterIndex Floater Index
-	 * @param strForwardTenor Forward Tenor
-	 * @param strFixFloatTenor Fix Float Tenor
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public OTCFixFloatLabel (
+	protected FloaterLabel (
 		final org.drip.market.definition.FloaterIndex floaterIndex,
-		final java.lang.String strForwardTenor,
-		final java.lang.String strFixFloatTenor)
+		final java.lang.String strTenor)
 		throws java.lang.Exception
 	{
-		super (floaterIndex, strForwardTenor);
-
-		if (null == (_strFixFloatTenor = strFixFloatTenor) || _strFixFloatTenor.isEmpty())
-			throw new java.lang.Exception ("OTCFixFloatLabel Constructor => Invalid Inputs");
+		if (null == (_floaterIndex = floaterIndex) || null == (_strTenor = strTenor) || _strTenor.isEmpty())
+			throw new java.lang.Exception ("FloaterLabel ctr: Invalid Inputs");
 	}
 
 	/**
-	 * Retrieve the Fix Float Tenor
+	 * Retrieve the Currency
 	 * 
-	 * @return The Fix Float Tenor
+	 * @return The Currency
 	 */
 
-	public java.lang.String fixFloatTenor()
+	public java.lang.String currency()
 	{
-		return _strFixFloatTenor;
+		return _floaterIndex.currency();
+	}
+
+	/**
+	 * Retrieve the Family
+	 * 
+	 * @return The Family
+	 */
+
+	public java.lang.String family()
+	{
+		return _floaterIndex.family();
+	}
+
+	/**
+	 * Retrieve the Tenor
+	 * 
+	 * @return The Tenor
+	 */
+
+	public java.lang.String tenor()
+	{
+		return _strTenor;
+	}
+
+	/**
+	 * Indicate if the Index is an Overnight Index
+	 * 
+	 * @return TRUE - Overnight Index
+	 */
+
+	public boolean overnight()
+	{
+		return "ON".equalsIgnoreCase (_strTenor) || "1D".equalsIgnoreCase (_strTenor);
+	}
+
+	/**
+	 * Retrieve the Floater Index
+	 * 
+	 * @return The Floater Index
+	 */
+
+	public org.drip.market.definition.FloaterIndex floaterIndex()
+	{
+		return _floaterIndex;
+	}
+
+	/**
+	 * Retrieve a Unit Coupon Accrual Setting
+	 * 
+	 * @return Unit Coupon Accrual Setting
+	 */
+
+	public org.drip.param.period.UnitCouponAccrualSetting ucas()
+	{
+		java.lang.String strDayCount = _floaterIndex.dayCount();
+
+		try {
+			return new org.drip.param.period.UnitCouponAccrualSetting (overnight() ? 360 :
+				org.drip.analytics.support.Helper.TenorToFreq (_strTenor), strDayCount, false, strDayCount,
+					false, _floaterIndex.currency(), false, _floaterIndex.accrualCompoundingRule());
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	@Override public java.lang.String fullyQualifiedName()
 	{
-		return fullyQualifiedName() + "::" + _strFixFloatTenor;
+		return _floaterIndex.currency() + "-" + _floaterIndex.family() + "-" + _strTenor;
 	}
 
 	@Override public boolean match (
 		final org.drip.state.identifier.LatentStateLabel lslOther)
 	{
-		if (!(lslOther instanceof org.drip.state.identifier.OTCFixFloatLabel)) return false;
-
-		return super.match (lslOther);
+		return null == lslOther || !(lslOther instanceof org.drip.state.identifier.ForwardLabel) ? false :
+			fullyQualifiedName().equalsIgnoreCase (lslOther.fullyQualifiedName());
 	}
 }

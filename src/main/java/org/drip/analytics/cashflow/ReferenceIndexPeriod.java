@@ -54,26 +54,38 @@ package org.drip.analytics.cashflow;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class ReferenceIndexPeriod
+public class ReferenceIndexPeriod
 {
 	private double _dblDCF = java.lang.Double.NaN;
 	private int _iEndDate = java.lang.Integer.MIN_VALUE;
 	private int _iStartDate = java.lang.Integer.MIN_VALUE;
 	private int _iFixingDate = java.lang.Integer.MIN_VALUE;
-	private org.drip.state.identifier.LatentStateLabel _latentStateLabel = null;
+	private org.drip.state.identifier.FloaterLabel _floaterLabel = null;
 
-	protected ReferenceIndexPeriod (
+	/**
+	 * The ReferenceIndexPeriod Constructor
+	 * 
+	 * @param iStartDate Reference Period Start Date
+	 * @param iEndDate Reference Period End Date
+	 * @param iFixingDate Reference Period Fixing Date
+	 * @param dblDCF Reference Period Day Count Fraction
+	 * @param floaterLabel Period Floater Label
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public ReferenceIndexPeriod (
 		final int iStartDate,
 		final int iEndDate,
 		final int iFixingDate,
 		final double dblDCF,
-		final org.drip.state.identifier.LatentStateLabel latentStateLabel)
+		final org.drip.state.identifier.FloaterLabel floaterLabel)
 		throws java.lang.Exception
 	{
 		if ((_iEndDate = iEndDate) <= (_iStartDate = iStartDate) ||
 			(_iFixingDate = iFixingDate) > _iStartDate ||
 			!org.drip.quant.common.NumberUtil.IsValid (_dblDCF = dblDCF) ||
-			null == (_latentStateLabel = latentStateLabel))
+			null == (_floaterLabel = floaterLabel))
 			throw new java.lang.Exception ("ReferenceIndexPeriod ctr: Invalid Inputs");
 	}
 
@@ -111,14 +123,14 @@ public abstract class ReferenceIndexPeriod
 	}
 
 	/**
-	 * Retrieve the Latent State Label
+	 * Retrieve the Floater Label
 	 * 
-	 * @return The Latent State Label
+	 * @return The Floater Label
 	 */
 
-	public org.drip.state.identifier.LatentStateLabel latentStateLabel()
+	public org.drip.state.identifier.FloaterLabel floaterLabel()
 	{
-		return _latentStateLabel;
+		return _floaterLabel;
 	}
 
 	/**

@@ -518,34 +518,54 @@ public class CompositePeriodBuilder {
 	}
 
 	/**
-	 * Construct a Reference Period using the Start/End Dates, Fixing DAP, Forward Label, and the Reference
-	 * 	Period Arrears Type
+	 * Construct a Reference Period using the Start/End Dates, the Floater Label, and the Reference Period
+	 *  Arrears Type
 	 * 
 	 * @param dtStart Start Date
 	 * @param dtEnd End Date
-	 * @param forwardLabel Forward Label
+	 * @param floaterLabel Floater Label
 	 * @param iReferencePeriodArrearsType Reference Period Arrears Type
 	 * 
 	 * @return The Reference Period
 	 */
 
-	public static final org.drip.analytics.cashflow.ReferenceIndexPeriodForward MakeReferencePeriod (
+	public static final org.drip.analytics.cashflow.ReferenceIndexPeriod ReferencePeriod (
 		final org.drip.analytics.date.JulianDate dtStart,
 		final org.drip.analytics.date.JulianDate dtEnd,
-		final org.drip.state.identifier.ForwardLabel forwardLabel,
+		final org.drip.state.identifier.FloaterLabel floaterLabel,
 		final int iReferencePeriodArrearsType)
 	{
-		if (null == dtStart || null == dtEnd || null == forwardLabel) return null;
+		if (null == dtStart || null == dtEnd || null == floaterLabel) return null;
 
-		java.lang.String strForwardTenor = forwardLabel.tenor();
+		java.lang.String strForwardTenor = floaterLabel.tenor();
 
-		return org.drip.analytics.cashflow.ReferenceIndexPeriodForward.Standard (
-			REFERENCE_PERIOD_IN_ARREARS == iReferencePeriodArrearsType ? dtStart.addTenor
-				(strForwardTenor).julian() : dtStart.julian(),
-			REFERENCE_PERIOD_IN_ARREARS == iReferencePeriodArrearsType ? dtEnd.addTenor
-				(strForwardTenor).julian() : dtEnd.julian(),
-			forwardLabel
-		);
+		if (floaterLabel instanceof org.drip.state.identifier.ForwardLabel) {
+			org.drip.state.identifier.ForwardLabel forwardLabel =
+				(org.drip.state.identifier.ForwardLabel) floaterLabel;
+
+			return org.drip.analytics.cashflow.ReferenceIndexPeriodForward.Standard (
+				REFERENCE_PERIOD_IN_ARREARS == iReferencePeriodArrearsType ? dtStart.addTenor
+					(strForwardTenor).julian() : dtStart.julian(),
+				REFERENCE_PERIOD_IN_ARREARS == iReferencePeriodArrearsType ? dtEnd.addTenor
+					(strForwardTenor).julian() : dtEnd.julian(),
+				forwardLabel
+			);
+		}
+
+		if (floaterLabel instanceof org.drip.state.identifier.OTCFixFloatLabel) {
+			org.drip.state.identifier.OTCFixFloatLabel otcFixFloatLabel =
+				(org.drip.state.identifier.OTCFixFloatLabel) floaterLabel;
+
+			return org.drip.analytics.cashflow.ReferenceIndexPeriodOTCFixFloat.Standard (
+				REFERENCE_PERIOD_IN_ARREARS == iReferencePeriodArrearsType ? dtStart.addTenor
+					(strForwardTenor).julian() : dtStart.julian(),
+				REFERENCE_PERIOD_IN_ARREARS == iReferencePeriodArrearsType ? dtEnd.addTenor
+					(strForwardTenor).julian() : dtEnd.julian(),
+				otcFixFloatLabel
+			);
+		}
+
+		return null;
 	}
 
 	/**
@@ -635,25 +655,29 @@ public class CompositePeriodBuilder {
 	}
 
 	/**
-	 * Construct a Reference Period using the Start/End Dates, Fixing DAP, Forward Label, and the Reference
-	 * 	Period Arrears Type
+	 * Construct a Reference Index Period using the Start/End Dates, the Floater Label, and the Reference
+	 *  Period Arrears Type
 	 * 
 	 * @param iStartDate Start Date
 	 * @param iEndDate End Date
-	 * @param forwardLabel Forward Label
+	 * @param floaterLabel Floater Label
 	 * @param iReferencePeriodArrearsType Reference Period Arrears Type
 	 * 
 	 * @return The Reference Period
 	 */
 
-	public static final org.drip.analytics.cashflow.ReferenceIndexPeriodForward MakeReferencePeriod (
+	public static final org.drip.analytics.cashflow.ReferenceIndexPeriod ReferencePeriod (
 		final int iStartDate,
 		final int iEndDate,
-		final org.drip.state.identifier.ForwardLabel forwardLabel,
+		final org.drip.state.identifier.FloaterLabel floaterLabel,
 		final int iReferencePeriodArrearsType)
 	{
-		return MakeReferencePeriod (new org.drip.analytics.date.JulianDate (iStartDate), new
-			org.drip.analytics.date.JulianDate (iEndDate), forwardLabel, iReferencePeriodArrearsType);
+		return ReferencePeriod (
+			new org.drip.analytics.date.JulianDate (iStartDate),
+			new org.drip.analytics.date.JulianDate (iEndDate),
+			floaterLabel,
+			iReferencePeriodArrearsType
+		);
 	}
 
 	/**
@@ -760,9 +784,9 @@ public class CompositePeriodBuilder {
 	{
 		if (null == cfus) return null;
 
-		org.drip.state.identifier.ForwardLabel forwardLabel = cfus.forwardLabel();
+		org.drip.state.identifier.FloaterLabel floaterLabel = cfus.floaterLabel();
 
-		java.lang.String strCalendar = forwardLabel.floaterIndex().calendar();
+		java.lang.String strCalendar = floaterLabel.floaterIndex().calendar();
 
 		java.util.List<java.lang.Integer> lsUnitEdgeDate = UnitDateEdges (iUnitPeriodStartDate,
 			iUnitPeriodEndDate, strCalendar, cfus);
@@ -780,7 +804,7 @@ public class CompositePeriodBuilder {
 
 		java.lang.String strUnitTenor = cfus.tenor();
 
-		java.lang.String strForwardTenor = forwardLabel.tenor();
+		java.lang.String strForwardTenor = floaterLabel.tenor();
 
 		int iReferencePeriodArrearsType = cfus.referencePeriodArrearsType();
 
@@ -798,9 +822,20 @@ public class CompositePeriodBuilder {
 					strCalendar).julian();
 
 			try {
-				lsCUP.add (new org.drip.analytics.cashflow.ComposableUnitFloatingPeriod (iUnitStartDate,
-					iUnitEndDate, strUnitTenor, MakeReferencePeriod (iReferencePeriodStartDate,
-						iReferencePeriodEndDate, forwardLabel, iReferencePeriodArrearsType), dblSpread));
+				lsCUP.add (
+					new org.drip.analytics.cashflow.ComposableUnitFloatingPeriod (
+						iUnitStartDate,
+						iUnitEndDate,
+						strUnitTenor,
+						ReferencePeriod (
+							iReferencePeriodStartDate,
+							iReferencePeriodEndDate,
+							floaterLabel,
+							iReferencePeriodArrearsType
+						),
+						dblSpread
+					)
+				);
 			} catch (java.lang.Exception e) {
 				e.printStackTrace();
 
@@ -812,7 +847,7 @@ public class CompositePeriodBuilder {
 	}
 
 	/**
-	 * Construct the List of Composite Fixed Periods from the corresponding composable Fixed Period Units
+	 * Construct the List of Composite Fixed Periods from the corresponding Composable Fixed Period Units
 	 * 
 	 * @param lsCompositeEdgeDate The Composite Period Edge Dates
 	 * @param cps Composite Period Setting Instance
@@ -852,7 +887,8 @@ public class CompositePeriodBuilder {
 	}
 
 	/**
-	 * Construct the List of Composite Floating Period from the corresponding composable Floating Period Units
+	 * Construct the List of Composite Floating Period from the corresponding Composable Floating Period
+	 *  Units
 	 * 
 	 * @param lsCompositeEdgeDate The Composite Period Edge Dates
 	 * @param cps Composite Period Setting Instance

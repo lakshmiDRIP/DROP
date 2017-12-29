@@ -136,6 +136,6 @@ public class ReferenceIndexPeriodForward extends org.drip.analytics.cashflow.Ref
 
 	public org.drip.state.identifier.ForwardLabel forwardLabel()
 	{
-		return (org.drip.state.identifier.ForwardLabel) latentStateLabel();
+		return (org.drip.state.identifier.ForwardLabel) floaterLabel();
 	}
 }

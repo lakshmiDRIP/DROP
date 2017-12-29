@@ -73,12 +73,10 @@ public class ReferenceIndexPeriodOTCFixFloat extends org.drip.analytics.cashflow
 	{
 		if (null == otcFixFloatLabel) return null;
 
-		org.drip.state.identifier.ForwardLabel forwardLabel = otcFixFloatLabel.forwardLabel();
-
 		org.drip.analytics.daycount.DateAdjustParams dapFixing =
-			forwardLabel.floaterIndex().spotLagDAPBackward();
+			otcFixFloatLabel.floaterIndex().spotLagDAPBackward();
 
-		org.drip.param.period.UnitCouponAccrualSetting ucas = forwardLabel.ucas();
+		org.drip.param.period.UnitCouponAccrualSetting ucas = otcFixFloatLabel.ucas();
 
 		try {
 			return new ReferenceIndexPeriodOTCFixFloat (
@@ -134,17 +132,6 @@ public class ReferenceIndexPeriodOTCFixFloat extends org.drip.analytics.cashflow
 
 	public org.drip.state.identifier.OTCFixFloatLabel otcFixFloatLabel()
 	{
-		return (org.drip.state.identifier.OTCFixFloatLabel) latentStateLabel();
-	}
-
-	/**
-	 * Retrieve the Forward Label
-	 * 
-	 * @return The Forward Label
-	 */
-
-	public org.drip.state.identifier.ForwardLabel forwardLabel()
-	{
-		return otcFixFloatLabel().forwardLabel();
+		return (org.drip.state.identifier.OTCFixFloatLabel) floaterLabel();
 	}
 }

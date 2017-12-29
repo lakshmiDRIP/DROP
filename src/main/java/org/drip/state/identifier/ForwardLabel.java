@@ -60,9 +60,7 @@ package org.drip.state.identifier;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ForwardLabel implements org.drip.state.identifier.LatentStateLabel {
-	private java.lang.String _strTenor = "";
-	private org.drip.market.definition.FloaterIndex _floaterIndex = null;
+public class ForwardLabel extends org.drip.state.identifier.FloaterLabel {
 
 	/**
 	 * Construct a ForwardLabel from the corresponding Fully Qualified Name
@@ -141,95 +139,6 @@ public class ForwardLabel implements org.drip.state.identifier.LatentStateLabel 
 		final java.lang.String strTenor)
 		throws java.lang.Exception
 	{
-		if (null == (_floaterIndex = floaterIndex) || null == (_strTenor = strTenor) || _strTenor.isEmpty())
-			throw new java.lang.Exception ("ForwardLabel ctr: Invalid Inputs");
-	}
-
-	/**
-	 * Retrieve the Currency
-	 * 
-	 * @return The Currency
-	 */
-
-	public java.lang.String currency()
-	{
-		return _floaterIndex.currency();
-	}
-
-	/**
-	 * Retrieve the Family
-	 * 
-	 * @return The Family
-	 */
-
-	public java.lang.String family()
-	{
-		return _floaterIndex.family();
-	}
-
-	/**
-	 * Retrieve the Tenor
-	 * 
-	 * @return The Tenor
-	 */
-
-	public java.lang.String tenor()
-	{
-		return _strTenor;
-	}
-
-	/**
-	 * Indicate if the Index is an Overnight Index
-	 * 
-	 * @return TRUE - Overnight Index
-	 */
-
-	public boolean overnight()
-	{
-		return "ON".equalsIgnoreCase (_strTenor) || "1D".equalsIgnoreCase (_strTenor);
-	}
-
-	/**
-	 * Retrieve the Floater Index
-	 * 
-	 * @return The Floater Index
-	 */
-
-	public org.drip.market.definition.FloaterIndex floaterIndex()
-	{
-		return _floaterIndex;
-	}
-
-	/**
-	 * Retrieve a Unit Coupon Accrual Setting
-	 * 
-	 * @return Unit Coupon Accrual Setting
-	 */
-
-	public org.drip.param.period.UnitCouponAccrualSetting ucas()
-	{
-		java.lang.String strDayCount = _floaterIndex.dayCount();
-
-		try {
-			return new org.drip.param.period.UnitCouponAccrualSetting (overnight() ? 360 :
-				org.drip.analytics.support.Helper.TenorToFreq (_strTenor), strDayCount, false, strDayCount,
-					false, _floaterIndex.currency(), false, _floaterIndex.accrualCompoundingRule());
-		} catch (java.lang.Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	@Override public java.lang.String fullyQualifiedName()
-	{
-		return _floaterIndex.currency() + "-" + _floaterIndex.family() + "-" + _strTenor;
-	}
-
-	@Override public boolean match (
-		final org.drip.state.identifier.LatentStateLabel lslOther)
-	{
-		return null == lslOther || !(lslOther instanceof org.drip.state.identifier.ForwardLabel) ? false :
-			fullyQualifiedName().equalsIgnoreCase (lslOther.fullyQualifiedName());
+		super (floaterIndex, strTenor);
 	}
 }

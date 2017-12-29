@@ -56,10 +56,11 @@ package org.drip.param.period;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ComposableFloatingUnitSetting extends org.drip.param.period.ComposableUnitBuilderSetting {
+public class ComposableFloatingUnitSetting extends org.drip.param.period.ComposableUnitBuilderSetting
+{
 	private int _iReferencePeriodArrearsType = -1;
 	private double _dblSpread = java.lang.Double.NaN;
-	private org.drip.state.identifier.ForwardLabel _forwardLabel = null;
+	private org.drip.state.identifier.FloaterLabel _floaterLabel = null;
 
 	/**
 	 * ComposableFloatingUnitSetting constructor
@@ -67,7 +68,7 @@ public class ComposableFloatingUnitSetting extends org.drip.param.period.Composa
 	 * @param strTenor Unit Tenor
 	 * @param iEdgeDateSequenceScheme Edge Date Generation Scheme
 	 * @param dapEdge Date Adjust Parameter Settings for the Edge Dates
-	 * @param forwardLabel Forward Label
+	 * @param floaterLabel Floater Label
 	 * @param iReferencePeriodArrearsType Reference Period Arrears Type
 	 * @param dblSpread Floater Spread
 	 * 
@@ -78,29 +79,29 @@ public class ComposableFloatingUnitSetting extends org.drip.param.period.Composa
 		final java.lang.String strTenor,
 		final int iEdgeDateSequenceScheme,
 		final org.drip.analytics.daycount.DateAdjustParams dapEdge,
-		final org.drip.state.identifier.ForwardLabel forwardLabel,
+		final org.drip.state.identifier.FloaterLabel floaterLabel,
 		final int iReferencePeriodArrearsType,
 		final double dblSpread)
 		throws java.lang.Exception
 	{
 		super (strTenor, iEdgeDateSequenceScheme, dapEdge);
 
-		if (null == (_forwardLabel = forwardLabel) || !org.drip.quant.common.NumberUtil.IsValid (_dblSpread =
-			dblSpread))
+		if (null == (_floaterLabel = floaterLabel) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_dblSpread = dblSpread))
 			throw new java.lang.Exception ("ComposableFloatingUnitSetting ctr: Invalid Inputs");
 
 		_iReferencePeriodArrearsType = iReferencePeriodArrearsType;
 	}
 
 	/**
-	 * Retrieve the Forward Label
+	 * Retrieve the Floater Label
 	 * 
-	 * @return The Forward Label
+	 * @return The Floater Label
 	 */
 
-	public org.drip.state.identifier.ForwardLabel forwardLabel()
+	public org.drip.state.identifier.FloaterLabel floaterLabel()
 	{
-		return _forwardLabel;
+		return _floaterLabel;
 	}
 
 	/**
