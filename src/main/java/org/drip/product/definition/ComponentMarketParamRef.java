@@ -112,6 +112,16 @@ public interface ComponentMarketParamRef {
 		forwardLabel();
 
 	/**
+	 * Get the Map of OTC Fix Float Latent State Labels
+	 * 
+	 * @return The Map of the OTC Fix Float Latent State Labels
+	 */
+
+	public abstract
+		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.OTCFixFloatLabel>
+		otcFixFloatLabel();
+
+	/**
 	 * Get the Funding Curve Latent State Label
 	 * 
 	 * @return Funding Curve Latent State Label

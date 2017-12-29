@@ -189,17 +189,42 @@ public class Stream {
 	}
 
 	/**
-	 * Retrieve the Forward Label
+	 * Retrieve the Floater Label
+	 * 
+	 * @return The Floater Label
+	 */
+
+	public org.drip.state.identifier.FloaterLabel floaterLabel()
+	{
+		return _lsPeriod.get (0).floaterLabel();
+	}
+
+	/**
+	 * Retrieve the Forward Label, if Present
 	 * 
 	 * @return The Forward Label
 	 */
 
 	public org.drip.state.identifier.ForwardLabel forwardLabel()
 	{
-		org.drip.state.identifier.FloaterLabel floaterLabel = _lsPeriod.get (0).floaterLabel();
+		org.drip.state.identifier.FloaterLabel floaterLabel = floaterLabel();
 
-		return floaterLabel instanceof org.drip.state.identifier.ForwardLabel ?
+		return null != floaterLabel && floaterLabel instanceof org.drip.state.identifier.ForwardLabel ?
 			(org.drip.state.identifier.ForwardLabel) floaterLabel : null;
+	}
+
+	/**
+	 * Retrieve the OTC Fix Float Label, if Present
+	 * 
+	 * @return The OTC Fix Float Label
+	 */
+
+	public org.drip.state.identifier.OTCFixFloatLabel otcFixFloatLabel()
+	{
+		org.drip.state.identifier.FloaterLabel floaterLabel = floaterLabel();
+
+		return null != floaterLabel && floaterLabel instanceof org.drip.state.identifier.OTCFixFloatLabel ?
+			(org.drip.state.identifier.OTCFixFloatLabel) floaterLabel : null;
 	}
 
 	/**
@@ -417,12 +442,12 @@ public class Stream {
 
 	public java.lang.String name()
 	{
-		org.drip.state.identifier.ForwardLabel forwardLabel = forwardLabel();
+		org.drip.state.identifier.FloaterLabel floaterLabel = floaterLabel();
 
 		java.lang.String strTrailer = "::{" + effective() + "->" + maturity() + "}";
 
-		if (null != forwardLabel)
-			return "FLOATSTREAM::" + payCurrency() + "::" + forwardLabel.fullyQualifiedName() + strTrailer;
+		if (null != floaterLabel)
+			return "FLOATSTREAM::" + payCurrency() + "::" + floaterLabel.fullyQualifiedName() + strTrailer;
 
 		return "FIXEDSTREAM::" + payCurrency() + "/" + couponCurrency() + "::" + (12 / freq()) + strTrailer;
 	}
@@ -461,7 +486,7 @@ public class Stream {
 		final org.drip.state.representation.LatentStateSpecification[] aLSS)
 	{
 		try {
-			return null == forwardLabel() ? new org.drip.product.calib.FixedStreamQuoteSet (aLSS) : new
+			return null == floaterLabel() ? new org.drip.product.calib.FixedStreamQuoteSet (aLSS) : new
 				org.drip.product.calib.FloatingStreamQuoteSet (aLSS);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
@@ -1477,7 +1502,11 @@ public class Stream {
 	{
 		if (null == valParams || null == pqs) return null;
 
-		org.drip.state.identifier.ForwardLabel forwardLabel = forwardLabel();
+		org.drip.state.identifier.FloaterLabel floaterLabel = floaterLabel();
+
+		org.drip.state.identifier.ForwardLabel forwardLabel = null != floaterLabel && floaterLabel instanceof
+			org.drip.state.identifier.ForwardLabel ? (org.drip.state.identifier.ForwardLabel) floaterLabel :
+				null;
 
 		if ((null != forwardLabel && !(pqs instanceof org.drip.product.calib.FloatingStreamQuoteSet)) ||
 			(null == forwardLabel && !(pqs instanceof org.drip.product.calib.FixedStreamQuoteSet)))

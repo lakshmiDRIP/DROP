@@ -65,7 +65,8 @@ package org.drip.product.credit;
  */
 
 public class BondComponent extends org.drip.product.definition.Bond implements
-	org.drip.product.definition.BondProduct {
+	org.drip.product.definition.BondProduct
+{
 	private static final boolean s_bSuppressErrors = true;
 	private static final boolean s_bYieldDFOffofCouponAccrualDCF = true;
 
@@ -635,8 +636,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 			int iFixingDate = ((org.drip.analytics.cashflow.ComposableUnitFloatingPeriod)
 				cupFirst).referenceIndexPeriod().fixingDate();
 
-			org.drip.state.identifier.ForwardLabel forwardLabel = null == _floaterSetting ? null :
-				_floaterSetting.fri();
+			org.drip.state.identifier.ForwardLabel forwardLabel = _stream.forwardLabel();
 
 			if (!csqc.available (iFixingDate, forwardLabel)) {
 				org.drip.state.forward.ForwardRateEstimator fc = null;
@@ -1443,13 +1443,42 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 	{
 		if (null == _floaterSetting) return null;
 
+		org.drip.state.identifier.FloaterLabel floaterLabel = _floaterSetting.fri();
+
+		if (!(floaterLabel instanceof org.drip.state.identifier.ForwardLabel)) return null;
+
 		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.ForwardLabel>
 			mapForwardLabel = new
 				org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.ForwardLabel>();
 
-		mapForwardLabel.put (name(), _floaterSetting.fri());
+		mapForwardLabel.put (
+			name(),
+			(org.drip.state.identifier.ForwardLabel) floaterLabel
+		);
 
 		return mapForwardLabel;
+	}
+
+	@Override public
+		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.OTCFixFloatLabel>
+			otcFixFloatLabel()
+	{
+		if (null == _floaterSetting) return null;
+
+		org.drip.state.identifier.FloaterLabel floaterLabel = _floaterSetting.fri();
+
+		if (!(floaterLabel instanceof org.drip.state.identifier.OTCFixFloatLabel)) return null;
+
+		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.OTCFixFloatLabel>
+			mapOTCFixFloatLabel = new
+				org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.OTCFixFloatLabel>();
+
+		mapOTCFixFloatLabel.put (
+			name(),
+			(org.drip.state.identifier.OTCFixFloatLabel) floaterLabel
+		);
+
+		return mapOTCFixFloatLabel;
 	}
 
 	@Override public org.drip.state.identifier.FundingLabel fundingLabel()

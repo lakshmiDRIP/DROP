@@ -95,6 +95,28 @@ public class SingleStreamComponent extends org.drip.product.definition.Calibrata
 		return _stream;
 	}
 
+	/**
+	 * Retrieve the Forward Label
+	 * 
+	 * @return The Forward Label
+	 */
+
+	public org.drip.state.identifier.ForwardLabel forwardLable()
+	{
+		return _stream.forwardLabel();
+	}
+
+	/**
+	 * Retrieve the OTC Fix Float Label
+	 * 
+	 * @return The OTC Fix Float Label
+	 */
+
+	public org.drip.state.identifier.OTCFixFloatLabel otcFixFloatLable()
+	{
+		return _stream.otcFixFloatLabel();
+	}
+
 	@Override public java.lang.String name()
 	{
 		return _strName;
@@ -128,12 +150,36 @@ public class SingleStreamComponent extends org.drip.product.definition.Calibrata
 
 		if (null == forwardLabel) return null;
 
-		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.ForwardLabel> mapFRI =
-			new org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.ForwardLabel> ();
+		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.ForwardLabel>
+			mapForwardLabel = new
+				org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.ForwardLabel>();
 
-		mapFRI.put ("DERIVED", forwardLabel);
+		mapForwardLabel.put (
+			"DERIVED",
+			forwardLabel
+		);
 
-		return mapFRI;
+		return mapForwardLabel;
+	}
+
+	@Override public
+		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.OTCFixFloatLabel>
+		otcFixFloatLabel()
+	{
+		org.drip.state.identifier.OTCFixFloatLabel otcFixFloatLabel = _stream.otcFixFloatLabel();
+
+		if (null == otcFixFloatLabel) return null;
+
+		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.OTCFixFloatLabel>
+			mapOTCFixFloatLabel = new
+				org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.OTCFixFloatLabel>();
+
+		mapOTCFixFloatLabel.put (
+			"DERIVED",
+			otcFixFloatLabel
+		);
+
+		return mapOTCFixFloatLabel;
 	}
 
 	@Override public org.drip.state.identifier.FundingLabel fundingLabel()

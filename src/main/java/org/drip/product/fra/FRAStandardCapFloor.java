@@ -56,7 +56,8 @@ package org.drip.product.fra;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FRAStandardCapFloor extends org.drip.product.option.OptionComponent {
+public class FRAStandardCapFloor extends org.drip.product.option.OptionComponent
+{
 	private boolean _bIsCap = false;
 	private double _dblStrike = java.lang.Double.NaN;
 	private org.drip.product.rates.Stream _stream = null;

@@ -57,8 +57,8 @@ package org.drip.product.rates;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class DualStreamComponent extends
-	org.drip.product.definition.CalibratableComponent {
+public abstract class DualStreamComponent extends org.drip.product.definition.CalibratableComponent
+{
 
 	/**
 	 * Retrieve the Reference Stream

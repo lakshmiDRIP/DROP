@@ -562,7 +562,7 @@ public class BondBuilder {
 				java.lang.Double.NaN
 			),
 			new org.drip.product.params.FloaterSetting (
-				strRateIndex,
+				org.drip.state.identifier.ForwardLabel.Standard (strRateIndex),
 				"",
 				dblSpread,
 				java.lang.Double.NaN
@@ -695,7 +695,7 @@ public class BondBuilder {
 				java.lang.Double.NaN
 			),
 			new org.drip.product.params.FloaterSetting (
-				strRateIndex,
+				org.drip.state.identifier.ForwardLabel.Standard (strRateIndex),
 				"",
 				dblSpread,
 				java.lang.Double.NaN
@@ -1285,7 +1285,7 @@ public class BondBuilder {
 					java.lang.Double.NaN
 				),
 				new org.drip.product.params.FloaterSetting (
-					strFloatIndex,
+					org.drip.state.identifier.ForwardLabel.Standard (strFloatIndex),
 					"",
 					dblFloatSpread,
 					java.lang.Double.NaN

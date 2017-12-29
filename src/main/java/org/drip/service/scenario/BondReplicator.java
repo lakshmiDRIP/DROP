@@ -323,7 +323,7 @@ public class BondReplicator {
 			null, null, null, null)))
 			throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
 
-		org.drip.state.identifier.ForwardLabel fl = _bond.isFloater() ? _bond.floaterSetting().fri() : null;
+		org.drip.state.identifier.FloaterLabel fl = _bond.isFloater() ? _bond.floaterSetting().fri() : null;
 
 		if ((_bond.isFloater() && java.lang.Integer.MIN_VALUE != _iResetDate) && !_csqcFundingBase.setFixing
 			(_iResetDate, fl, _dblResetRate))

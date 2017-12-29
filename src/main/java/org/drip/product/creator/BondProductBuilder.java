@@ -1502,8 +1502,12 @@ public class BondProductBuilder {
 	{
 		if (!_bIsFloater) return null;
 
-		org.drip.product.params.FloaterSetting fltParams = new org.drip.product.params.FloaterSetting
-			(_strRateIndex, _strFloatCouponConvention, _dblFloatSpread, _dblCurrentCoupon);
+		org.drip.product.params.FloaterSetting fltParams = new org.drip.product.params.FloaterSetting (
+			org.drip.state.identifier.ForwardLabel.Standard (_strRateIndex),
+			_strFloatCouponConvention,
+			_dblFloatSpread,
+			_dblCurrentCoupon
+		);
 
 		return fltParams.validate() ? fltParams : null;
 	}

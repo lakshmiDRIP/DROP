@@ -209,6 +209,24 @@ public class RatesBasket extends org.drip.product.definition.CalibratableCompone
 		return mapForwardLabel;
 	}
 
+	@Override public
+		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.OTCFixFloatLabel>
+			otcFixFloatLabel()
+	{
+		int iNumFloatStream = null == _aCompFloatStream ? 0 : _aCompFloatStream.length;
+
+		if (0 == iNumFloatStream) return null;
+
+		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.OTCFixFloatLabel>
+			mapOTCFixFloatLabel = new
+				org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.OTCFixFloatLabel>();
+
+		for (int i = 0; i < iNumFloatStream; ++i)
+			mapOTCFixFloatLabel.put ("FLOAT" + i, _aCompFloatStream[i].otcFixFloatLabel());
+
+		return mapOTCFixFloatLabel;
+	}
+
 	@Override public org.drip.state.identifier.FundingLabel fundingLabel()
 	{
 		return org.drip.state.identifier.FundingLabel.Standard (payCurrency());

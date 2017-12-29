@@ -660,6 +660,20 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 		return 0 == mapForwardLabel.size() ? null : mapForwardLabel;
 	}
 
+	@Override public
+		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.OTCFixFloatLabel>
+			otcFixFloatLabel()
+	{
+		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.OTCFixFloatLabel>
+			mapOTCFixFloatLabel = new
+				org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.OTCFixFloatLabel>();
+
+		for (org.drip.product.definition.Bond bond : _aBond)
+			mapOTCFixFloatLabel.putAll (bond.otcFixFloatLabel());
+
+		return 0 == mapOTCFixFloatLabel.size() ? null : mapOTCFixFloatLabel;
+	}
+
 	@Override public org.drip.state.identifier.FundingLabel fundingLabel()
 	{
 		return _aBond[0].fundingLabel();

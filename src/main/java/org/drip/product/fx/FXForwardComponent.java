@@ -57,7 +57,8 @@ package org.drip.product.fx;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FXForwardComponent extends org.drip.product.definition.CalibratableComponent {
+public class FXForwardComponent extends org.drip.product.definition.CalibratableComponent
+{
 
 	/**
 	 * @author Lakshmi Krishnamurthy
@@ -400,6 +401,13 @@ public class FXForwardComponent extends org.drip.product.definition.Calibratable
 	@Override public
 		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.ForwardLabel>
 			forwardLabel()
+	{
+		return null;
+	}
+
+	@Override public
+		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.OTCFixFloatLabel>
+			otcFixFloatLabel()
 	{
 		return null;
 	}

@@ -12,7 +12,7 @@ import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.service.template.LatentMarketStateBuilder;
 import org.drip.state.discount.MergedDiscountForwardCurve;
-import org.drip.state.identifier.ForwardLabel;
+import org.drip.state.identifier.FloaterLabel;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -217,7 +217,7 @@ public class Patiala {
 			null
 		);
 
-		ForwardLabel fl = bond.floaterSetting().fri();
+		FloaterLabel fl = bond.floaterSetting().fri();
 
 		csqc.setFixing (iResetDate, fl, dblResetRate);
 

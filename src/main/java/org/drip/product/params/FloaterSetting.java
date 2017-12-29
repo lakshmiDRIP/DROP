@@ -64,47 +64,46 @@ package org.drip.product.params;
 public class FloaterSetting implements org.drip.product.params.Validatable {
 	private java.lang.String _strDayCount = "";
 	private double _dblSpread = java.lang.Double.NaN;
-	private org.drip.state.identifier.ForwardLabel _fri = null;
 	private double _dblCurrentFullCoupon = java.lang.Double.NaN;
+	private org.drip.state.identifier.FloaterLabel _floaterLabel = null;
 
 	/**
-	 * Construct the FloaterSetting from rate index, floating day count, float spread, and current Full
-	 * 	coupon
+	 * Construct the FloaterSetting from the Floater Label, the Day Count, the Spread, and the Current Full
+	 * 	CSoupon
 	 * 
-	 * @param strRateIndex Fully Qualified Floating Rate Index
+	 * @param floaterLabel Floater Label
 	 * @param strDayCount Floating Day Count
 	 * @param dblSpread Floating Spread
 	 * @param dblCurrentFullCoupon Current Full Coupon
 	 */
 
 	public FloaterSetting (
-		final java.lang.String strRateIndex,
+		final org.drip.state.identifier.FloaterLabel floaterLabel,
 		final java.lang.String strDayCount,
 		final double dblSpread,
 		final double dblCurrentFullCoupon)
 	{
 		_dblSpread = dblSpread;
 		_strDayCount = strDayCount;
+		_floaterLabel = floaterLabel;
 		_dblCurrentFullCoupon = dblCurrentFullCoupon;
-
-		_fri = org.drip.state.identifier.ForwardLabel.Standard (strRateIndex);
 	}
 
 	@Override public boolean validate()
 	{
 		return (org.drip.quant.common.NumberUtil.IsValid (_dblSpread) ||
-			org.drip.quant.common.NumberUtil.IsValid (_dblCurrentFullCoupon)) && null != _fri;
+			org.drip.quant.common.NumberUtil.IsValid (_dblCurrentFullCoupon)) && null != _floaterLabel;
 	}
 
 	/**
-	 * Retrieve the Floating Rate Index
+	 * Retrieve the Floater Label
 	 * 
-	 * @return Tyhe Floating Rate Index
+	 * @return The Floater Label
 	 */
 
-	public org.drip.state.identifier.ForwardLabel fri()
+	public org.drip.state.identifier.FloaterLabel fri()
 	{
-		return _fri;
+		return _floaterLabel;
 	}
 
 	/**

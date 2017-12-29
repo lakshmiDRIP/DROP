@@ -603,6 +603,13 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 		return null;
 	}
 
+	@Override public
+		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.OTCFixFloatLabel>
+			otcFixFloatLabel()
+	{
+		return null;
+	}
+
 	@Override public org.drip.state.identifier.FundingLabel fundingLabel()
 	{
 		return org.drip.state.identifier.FundingLabel.Standard (_strCouponCurrency);

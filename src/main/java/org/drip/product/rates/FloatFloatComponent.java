@@ -178,14 +178,28 @@ public class FloatFloatComponent extends org.drip.product.rates.DualStreamCompon
 		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.ForwardLabel>
 			forwardLabel()
 	{
-		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.ForwardLabel> mapFRI =
-			new org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.ForwardLabel>();
+		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.ForwardLabel>
+			mapForwardLabel = new
+				org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.ForwardLabel>();
 
-		mapFRI.put ("REFERENCE", _floatReference.forwardLabel());
+		mapForwardLabel.put (
+			"REFERENCE",
+			_floatReference.forwardLabel()
+		);
 
-		mapFRI.put ("DERIVED", _floatDerived.forwardLabel());
+		mapForwardLabel.put (
+			"DERIVED",
+			_floatDerived.forwardLabel()
+		);
 
-		return mapFRI;
+		return mapForwardLabel;
+	}
+
+	@Override public
+		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.OTCFixFloatLabel>
+			otcFixFloatLabel()
+	{
+		return null;
 	}
 
 	@Override public org.drip.state.identifier.FundingLabel fundingLabel()

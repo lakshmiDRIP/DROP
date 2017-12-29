@@ -63,7 +63,8 @@ package org.drip.product.option;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class OptionComponent extends org.drip.product.definition.CalibratableComponent {
+public abstract class OptionComponent extends org.drip.product.definition.CalibratableComponent
+{
 	private java.lang.String _strCode = "";
 	private java.lang.String _strName = "";
 	private double _dblStrike = java.lang.Double.NaN;
@@ -238,6 +239,13 @@ public abstract class OptionComponent extends org.drip.product.definition.Calibr
 			forwardLabel()
 	{
 		return _comp.forwardLabel();
+	}
+
+	@Override public
+		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.OTCFixFloatLabel>
+			otcFixFloatLabel()
+	{
+		return _comp.otcFixFloatLabel();
 	}
 
 	@Override public org.drip.state.identifier.FundingLabel fundingLabel()
