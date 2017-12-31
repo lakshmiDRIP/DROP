@@ -95,28 +95,6 @@ public class SingleStreamComponent extends org.drip.product.definition.Calibrata
 		return _stream;
 	}
 
-	/**
-	 * Retrieve the Forward Label
-	 * 
-	 * @return The Forward Label
-	 */
-
-	public org.drip.state.identifier.ForwardLabel forwardLable()
-	{
-		return _stream.forwardLabel();
-	}
-
-	/**
-	 * Retrieve the OTC Fix Float Label
-	 * 
-	 * @return The OTC Fix Float Label
-	 */
-
-	public org.drip.state.identifier.OTCFixFloatLabel otcFixFloatLable()
-	{
-		return _stream.otcFixFloatLabel();
-	}
-
 	@Override public java.lang.String name()
 	{
 		return _strName;

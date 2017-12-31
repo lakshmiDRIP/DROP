@@ -537,32 +537,23 @@ public class CompositePeriodBuilder {
 	{
 		if (null == dtStart || null == dtEnd || null == floaterLabel) return null;
 
-		java.lang.String strForwardTenor = floaterLabel.tenor();
+		java.lang.String strForwardTenor = "";
 
-		if (floaterLabel instanceof org.drip.state.identifier.ForwardLabel) {
-			org.drip.state.identifier.ForwardLabel forwardLabel =
-				(org.drip.state.identifier.ForwardLabel) floaterLabel;
+		if (floaterLabel instanceof org.drip.state.identifier.ForwardLabel)
+			strForwardTenor = floaterLabel.tenor();
+		else if (floaterLabel instanceof org.drip.state.identifier.OTCFixFloatLabel)
+			strForwardTenor = ((org.drip.state.identifier.OTCFixFloatLabel) floaterLabel).fixFloatTenor();
 
-			return org.drip.analytics.cashflow.ReferenceIndexPeriodForward.Standard (
+		try {
+			return org.drip.analytics.cashflow.ReferenceIndexPeriod.Standard (
 				REFERENCE_PERIOD_IN_ARREARS == iReferencePeriodArrearsType ? dtStart.addTenor
 					(strForwardTenor).julian() : dtStart.julian(),
 				REFERENCE_PERIOD_IN_ARREARS == iReferencePeriodArrearsType ? dtEnd.addTenor
 					(strForwardTenor).julian() : dtEnd.julian(),
-				forwardLabel
+				floaterLabel
 			);
-		}
-
-		if (floaterLabel instanceof org.drip.state.identifier.OTCFixFloatLabel) {
-			org.drip.state.identifier.OTCFixFloatLabel otcFixFloatLabel =
-				(org.drip.state.identifier.OTCFixFloatLabel) floaterLabel;
-
-			return org.drip.analytics.cashflow.ReferenceIndexPeriodOTCFixFloat.Standard (
-				REFERENCE_PERIOD_IN_ARREARS == iReferencePeriodArrearsType ? dtStart.addTenor
-					(strForwardTenor).julian() : dtStart.julian(),
-				REFERENCE_PERIOD_IN_ARREARS == iReferencePeriodArrearsType ? dtEnd.addTenor
-					(strForwardTenor).julian() : dtEnd.julian(),
-				otcFixFloatLabel
-			);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
 		}
 
 		return null;

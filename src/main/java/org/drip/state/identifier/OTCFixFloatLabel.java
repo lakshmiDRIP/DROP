@@ -59,6 +59,45 @@ public class OTCFixFloatLabel extends org.drip.state.identifier.FloaterLabel
 	private java.lang.String _strFixFloatTenor = "";
 
 	/**
+	 * Construct a OTCFixFloatLabel from the corresponding Fully Qualified Name
+	 * 
+	 * @param strFullyQualifiedName The Fully Qualified Name
+	 * 
+	 * @return OTCFixFloatLabel Instance
+	 */
+
+	public static final OTCFixFloatLabel Standard (
+		final java.lang.String strFullyQualifiedName)
+	{
+		if (null == strFullyQualifiedName || strFullyQualifiedName.isEmpty()) return null;
+
+		java.lang.String[] astr = strFullyQualifiedName.split ("-");
+
+		if (null == astr || 3 != astr.length) return null;
+
+		java.lang.String strTenor = astr[1];
+		java.lang.String strCurrency = astr[0];
+		java.lang.String strFixFloatTenor = astr[2];
+
+		org.drip.market.definition.FloaterIndex floaterIndex = "ON".equalsIgnoreCase (strTenor) ||
+			"1D".equalsIgnoreCase (strTenor) ?
+				org.drip.market.definition.OvernightIndexContainer.IndexFromJurisdiction (strCurrency) :
+					org.drip.market.definition.IBORIndexContainer.IndexFromJurisdiction (strCurrency);
+
+		try {
+			return new OTCFixFloatLabel (
+				floaterIndex,
+				strTenor,
+				strFixFloatTenor
+			);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * OTCFixFloatLabel Constructor
 	 * 
 	 * @param floaterIndex Floater Index
@@ -93,7 +132,7 @@ public class OTCFixFloatLabel extends org.drip.state.identifier.FloaterLabel
 
 	@Override public java.lang.String fullyQualifiedName()
 	{
-		return fullyQualifiedName() + "::" + _strFixFloatTenor;
+		return super.fullyQualifiedName() + "::" + _strFixFloatTenor;
 	}
 
 	@Override public boolean match (

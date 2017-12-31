@@ -460,7 +460,7 @@ public class FixFloatInArrearsPeriods {
 
 			ComposableUnitFloatingPeriod cufp = (ComposableUnitFloatingPeriod) cfp.periods().get(0);
 
-			ReferenceIndexPeriodForward rip = (ReferenceIndexPeriodForward) cufp.referenceIndexPeriod();
+			ReferenceIndexPeriod rip = cufp.referenceIndexPeriod();
 
 			System.out.println ("\t|| " +
 				DateUtil.YYYYMMDD (p.startDate()) + " => " +

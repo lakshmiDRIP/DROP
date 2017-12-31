@@ -66,13 +66,14 @@ import org.drip.state.govvie.GovvieCurve;
  */
 
 /**
- * BulletCorporate demonstrates Non-EOS Floating Coupon Corporate Bond Pricing and Relative Value Measure
- *  Generation Functionality.
+ * BulletLIBORCorporate demonstrates Non-EOS Floating Coupon Corporate Bond Pricing and Relative Value
+ *  Measure Generation Functionality.
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class BulletCorporate {
+public class BulletLIBORCorporate
+{
 
 	private static final MergedDiscountForwardCurve FundingCurve (
 		final JulianDate dtSpot,

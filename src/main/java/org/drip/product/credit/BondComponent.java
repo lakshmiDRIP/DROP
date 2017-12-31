@@ -633,29 +633,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 			if (!(cupFirst instanceof org.drip.analytics.cashflow.ComposableUnitFloatingPeriod))
 				throw new java.lang.Exception ("BondComponent::indexRate => Not a floater");
 
-			int iFixingDate = ((org.drip.analytics.cashflow.ComposableUnitFloatingPeriod)
-				cupFirst).referenceIndexPeriod().fixingDate();
-
-			org.drip.state.identifier.ForwardLabel forwardLabel = _stream.forwardLabel();
-
-			if (!csqc.available (iFixingDate, forwardLabel)) {
-				org.drip.state.forward.ForwardRateEstimator fc = null;
-
-				int iPayDate = cup.payDate();
-
-				int iStartDate = cup.startDate();
-
-				if (null == forwardLabel || null == (fc = csqc.forwardState (forwardLabel)) ||
-					!forwardLabel.match (fc.index()))
-					fc = dc.forwardRateEstimator (iPayDate, forwardLabel);
-
-				if (null != fc) return fc.forward (iPayDate);
-
-				return iStartDate < iValueDate && 0 != iFreq ? dc.libor (iValueDate, (12 / iFreq) + "M") :
-					dc.libor (iStartDate, cup.endDate());
-			}
-
-			return csqc.fixing (iFixingDate, forwardLabel);
+			return ((org.drip.analytics.cashflow.ComposableUnitFloatingPeriod) cupFirst).baseRate (csqc);
 		}
 
 		return dc.libor (iValueDate, 0 != iFreq ? iValueDate + 365 / iFreq : iValueDate +

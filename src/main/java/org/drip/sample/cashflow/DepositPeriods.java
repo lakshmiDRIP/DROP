@@ -1,10 +1,7 @@
 
 package org.drip.sample.cashflow;
 
-import org.drip.analytics.cashflow.ComposableUnitFloatingPeriod;
-import org.drip.analytics.cashflow.CompositeFloatingPeriod;
-import org.drip.analytics.cashflow.CompositePeriod;
-import org.drip.analytics.cashflow.ReferenceIndexPeriodForward;
+import org.drip.analytics.cashflow.*;
 import org.drip.analytics.date.*;
 import org.drip.analytics.output.ConvexityAdjustment;
 import org.drip.param.creator.MarketParamsBuilder;
@@ -236,7 +233,7 @@ public class DepositPeriods {
 
 			ComposableUnitFloatingPeriod cufp = (ComposableUnitFloatingPeriod) cfp.periods().get(0);
 
-			ReferenceIndexPeriodForward rip = (ReferenceIndexPeriodForward) cufp.referenceIndexPeriod();
+			ReferenceIndexPeriod rip = cufp.referenceIndexPeriod();
 
 			System.out.println ("\t|| " +
 				DateUtil.YYYYMMDD (p.startDate()) + " => " +

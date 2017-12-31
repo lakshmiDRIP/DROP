@@ -325,9 +325,17 @@ public class BondReplicator {
 
 		org.drip.state.identifier.FloaterLabel fl = _bond.isFloater() ? _bond.floaterSetting().fri() : null;
 
-		if ((_bond.isFloater() && java.lang.Integer.MIN_VALUE != _iResetDate) && !_csqcFundingBase.setFixing
-			(_iResetDate, fl, _dblResetRate))
-			throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
+		if (_bond.isFloater() && java.lang.Integer.MIN_VALUE != _iResetDate) {
+			if (fl instanceof org.drip.state.identifier.ForwardLabel) {
+				if (!_csqcFundingBase.setFixing (_iResetDate, (org.drip.state.identifier.ForwardLabel) fl,
+					_dblResetRate))
+					throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
+			} else if (fl instanceof org.drip.state.identifier.OTCFixFloatLabel) {
+			if (!_csqcFundingBase.setFixing (_iResetDate, (org.drip.state.identifier.OTCFixFloatLabel) fl,
+				_dblResetRate))
+				throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
+			}
+		}
 
 		if (null == (_csqcFunding01Up = org.drip.param.creator.MarketParamsBuilder.Create
 			(org.drip.service.template.LatentMarketStateBuilder.ShapePreservingFundingCurve (_dtSpot,
@@ -339,9 +347,17 @@ public class BondReplicator {
 									0.0001 * _dblTenorBump), "SwapRate"), gc, null, null, null, null, null)))
 			throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
 
-		if ((_bond.isFloater() && java.lang.Integer.MIN_VALUE != _iResetDate) && !_csqcFunding01Up.setFixing
-			(_iResetDate, fl, _dblResetRate + 0.0001 * _dblTenorBump))
-			throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
+		if (_bond.isFloater() && java.lang.Integer.MIN_VALUE != _iResetDate) {
+			if (fl instanceof org.drip.state.identifier.ForwardLabel) {
+				if (!_csqcFunding01Up.setFixing (_iResetDate, (org.drip.state.identifier.ForwardLabel) fl,
+					_dblResetRate + 0.0001 * _dblTenorBump))
+					throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
+			} else if (fl instanceof org.drip.state.identifier.OTCFixFloatLabel) {
+			if (!_csqcFunding01Up.setFixing (_iResetDate, (org.drip.state.identifier.OTCFixFloatLabel) fl,
+				_dblResetRate + 0.0001 * _dblTenorBump))
+				throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
+			}
+		}
 
 		if (null == (_csqcFundingEuroDollar = org.drip.param.creator.MarketParamsBuilder.Create
 			(org.drip.service.template.LatentMarketStateBuilder.ShapePreservingFundingCurve (_dtSpot,
@@ -349,9 +365,17 @@ public class BondReplicator {
 					"ForwardRate", null, null, "SwapRate"), gc, null, null, null, null, null)))
 			throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
 
-		if ((_bond.isFloater() && java.lang.Integer.MIN_VALUE != _iResetDate) &&
-			!_csqcFundingEuroDollar.setFixing (_iResetDate, fl, _dblResetRate))
-			throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
+		if (_bond.isFloater() && java.lang.Integer.MIN_VALUE != _iResetDate) {
+			if (fl instanceof org.drip.state.identifier.ForwardLabel) {
+				if (!_csqcFundingEuroDollar.setFixing (_iResetDate, (org.drip.state.identifier.ForwardLabel) fl,
+					_dblResetRate))
+					throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
+			} else if (fl instanceof org.drip.state.identifier.OTCFixFloatLabel) {
+			if (!_csqcFundingEuroDollar.setFixing (_iResetDate, (org.drip.state.identifier.OTCFixFloatLabel) fl,
+				_dblResetRate))
+				throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
+			}
+		}
 
 		java.util.Map<java.lang.String, org.drip.state.discount.MergedDiscountForwardCurve>
 			mapTenorForwardFundingUp =

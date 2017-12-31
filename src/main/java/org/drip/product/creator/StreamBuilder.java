@@ -181,7 +181,7 @@ public class StreamBuilder {
 	 * @param dapPay Pay Date Adjustment Parameter
 	 * @param dapStreamEnd Stream End Date Adjustment Parameter
 	 * @param dapAccrualEnd Accrual End Date Adjustment Parameter
-	 * @param forwardLabel Forward Label
+	 * @param floaterLabel Floater Label
 	 * @param creditLabel Credit Label
 	 * 
 	 * @return The Float Stream
@@ -198,10 +198,10 @@ public class StreamBuilder {
 			final org.drip.analytics.daycount.DateAdjustParams dapPay,
 			final org.drip.analytics.daycount.DateAdjustParams dapStreamEnd,
 			final org.drip.analytics.daycount.DateAdjustParams dapAccrualEnd,
-			final org.drip.state.identifier.ForwardLabel forwardLabel,
+			final org.drip.state.identifier.FloaterLabel floaterLabel,
 			final org.drip.state.identifier.CreditLabel creditLabel)
 	{
-		if (null == forwardLabel) return null;
+		if (null == floaterLabel) return null;
 
 		org.drip.analytics.date.JulianDate dtFirstCoupon = new org.drip.analytics.date.JulianDate
 			(iFirstCouponDate);
@@ -233,7 +233,7 @@ public class StreamBuilder {
 				new org.drip.param.period.CompositePeriodSetting (
 					iFreq,
 					strTenor,
-					forwardLabel.currency(),
+					floaterLabel.currency(),
 					dapPay,
 					1.,
 					null,
@@ -245,7 +245,7 @@ public class StreamBuilder {
 					strTenor,
 					org.drip.analytics.support.CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE,
 					null,
-					forwardLabel,
+					floaterLabel,
 					org.drip.analytics.support.CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 					dblSpread
 				)

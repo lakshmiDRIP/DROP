@@ -63,6 +63,51 @@ public class ReferenceIndexPeriod
 	private org.drip.state.identifier.FloaterLabel _floaterLabel = null;
 
 	/**
+	 * Standard Instance of ReferenceIndexPeriod
+	 * 
+	 * @param iStartDate Reference Period Start Date
+	 * @param iEndDate Reference Period End Date
+	 * @param floaterLabel Period Forward Label
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final ReferenceIndexPeriod Standard (
+		final int iStartDate,
+		final int iEndDate,
+		final org.drip.state.identifier.FloaterLabel floaterLabel)
+	{
+		if (null == floaterLabel) return null;
+
+		org.drip.analytics.daycount.DateAdjustParams dapFixing =
+			floaterLabel.floaterIndex().spotLagDAPBackward();
+
+		org.drip.param.period.UnitCouponAccrualSetting ucas = floaterLabel.ucas();
+
+		try {
+			return new ReferenceIndexPeriod (
+				iStartDate,
+				iEndDate,
+				null == dapFixing ? iStartDate : dapFixing.roll (iStartDate),
+				ucas.couponDCFOffOfFreq() ? 1. / ucas.freq() :
+					org.drip.analytics.daycount.Convention.YearFraction (
+						iStartDate,
+						iEndDate,
+						ucas.couponDC(),
+						ucas.couponEOMAdjustment(),
+						null,
+						ucas.calendar()
+					),
+				floaterLabel
+			);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * The ReferenceIndexPeriod Constructor
 	 * 
 	 * @param iStartDate Reference Period Start Date

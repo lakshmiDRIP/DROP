@@ -64,13 +64,11 @@ public class ComposableUnitFloatingPeriod extends org.drip.analytics.cashflow.Co
 
 	private org.drip.analytics.date.JulianDate lookBackProjectionDate (
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqc,
+		final org.drip.state.identifier.ForwardLabel forwardLabel,
 		final org.drip.market.definition.OvernightIndex oi)
 	{
 		int iSkipBackDay = 0;
 		org.drip.analytics.date.JulianDate dtFixing = null;
-
-		org.drip.state.identifier.ForwardLabel forwardLabel =
-			((org.drip.analytics.cashflow.ReferenceIndexPeriodForward) _rip).forwardLabel();
 
 		org.drip.market.definition.FloaterIndex floaterIndex = forwardLabel.floaterIndex();
 
@@ -104,12 +102,10 @@ public class ComposableUnitFloatingPeriod extends org.drip.analytics.cashflow.Co
 	}
 
 	private double baseForwardRate (
-		final org.drip.param.market.CurveSurfaceQuoteContainer csqc)
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqc,
+		final org.drip.state.identifier.ForwardLabel forwardLabel)
 		throws java.lang.Exception
 	{
-		org.drip.state.identifier.ForwardLabel forwardLabel =
-			((org.drip.analytics.cashflow.ReferenceIndexPeriodForward) _rip).forwardLabel();
-
 		org.drip.market.definition.FloaterIndex floaterIndex = forwardLabel.floaterIndex();
 
 		if (!(floaterIndex instanceof org.drip.market.definition.OvernightIndex)) {
@@ -128,6 +124,7 @@ public class ComposableUnitFloatingPeriod extends org.drip.analytics.cashflow.Co
 		} else {
 			org.drip.analytics.date.JulianDate dtValidFixing = lookBackProjectionDate (
 				csqc,
+				forwardLabel,
 				(org.drip.market.definition.OvernightIndex) floaterIndex
 			);
 
@@ -170,12 +167,10 @@ public class ComposableUnitFloatingPeriod extends org.drip.analytics.cashflow.Co
 	}
 
 	private double baseOTCFixFloatRate (
-		final org.drip.param.market.CurveSurfaceQuoteContainer csqc)
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqc,
+		final org.drip.state.identifier.OTCFixFloatLabel otcFixFloatLabel)
 		throws java.lang.Exception
 	{
-		org.drip.state.identifier.OTCFixFloatLabel otcFixFloatLabel =
-			((org.drip.analytics.cashflow.ReferenceIndexPeriodOTCFixFloat) _rip).otcFixFloatLabel();
-
 		int iFixingDate = _rip.fixingDate();
 
 		if (csqc.available (
@@ -187,20 +182,64 @@ public class ComposableUnitFloatingPeriod extends org.drip.analytics.cashflow.Co
 				otcFixFloatLabel
 			);
 
-		java.lang.String strForwardCurrency = otcFixFloatLabel.currency();
+		java.lang.String strCurrency = otcFixFloatLabel.currency();
+
+		java.lang.String strOTCFixFloatMaturity = otcFixFloatLabel.fixFloatTenor();
 
 		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqc.fundingState
-			(org.drip.state.identifier.FundingLabel.Standard (strForwardCurrency));
+			(org.drip.state.identifier.FundingLabel.Standard (strCurrency));
 
 		if (null == dcFunding)
 			throw new java.lang.Exception
 				("ComposableUnitFloatingPeriod::baseOTCFixFloatRate => Cannot locate Funding Curve " +
-					strForwardCurrency);
+					strCurrency);
 
-		return dcFunding.estimateManifestMeasure (
-			"SwapRate",
-			_rip.endDate()
+		org.drip.market.otc.FixedFloatSwapConvention ffsc =
+			org.drip.market.otc.IBORFixedFloatContainer.ConventionFromJurisdiction (
+				strCurrency,
+				"ALL",
+				strOTCFixFloatMaturity,
+				"MAIN"
+			);
+
+		if (null == ffsc)
+			throw new java.lang.Exception
+				("ComposableUnitFloatingPeriod::baseOTCFixFloatRate => Cannot locate Fix Float Convention!");
+
+		int iReferencePeriodStartDate = _rip.startDate();
+
+		org.drip.product.rates.FixFloatComponent ffc = ffsc.createFixFloatComponent (
+			new org.drip.analytics.date.JulianDate (iReferencePeriodStartDate),
+			strOTCFixFloatMaturity,
+			0.,
+			0.,
+			1.
 		);
+
+		if (null == ffc)
+			throw new java.lang.Exception
+				("ComposableUnitFloatingPeriod::baseOTCFixFloatRate => Cannot create Fix Float Component!");
+
+		java.util.Map<java.lang.String, java.lang.Double> mapFFCOutput = ffc.value (
+			org.drip.param.valuation.ValuationParams.Spot (iReferencePeriodStartDate),
+			null,
+			org.drip.param.creator.MarketParamsBuilder.Create (
+				dcFunding,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null
+			),
+			null
+		);
+
+		if (null == mapFFCOutput || !mapFFCOutput.containsKey ("SwapRate"))
+			throw new java.lang.Exception
+				("ComposableUnitFloatingPeriod::baseOTCFixFloatRate => Cannot calculate Swap Rate!");
+
+		return mapFFCOutput.get ("SwapRate");
 	}
 
 	/**
@@ -252,11 +291,19 @@ public class ComposableUnitFloatingPeriod extends org.drip.analytics.cashflow.Co
 	{
 		if (null == csqc) return java.lang.Double.NaN;
 
-		if (_rip instanceof org.drip.analytics.cashflow.ReferenceIndexPeriodForward)
-			return baseForwardRate (csqc);
+		org.drip.state.identifier.FloaterLabel floaterLabel = _rip.floaterLabel();
 
-		if (_rip instanceof org.drip.analytics.cashflow.ReferenceIndexPeriodOTCFixFloat)
-			return baseOTCFixFloatRate (csqc);
+		if (floaterLabel instanceof org.drip.state.identifier.ForwardLabel)
+			return baseForwardRate (
+				csqc,
+				(org.drip.state.identifier.ForwardLabel) _rip.floaterLabel()
+			);
+
+		if (floaterLabel instanceof org.drip.state.identifier.OTCFixFloatLabel)
+			return baseOTCFixFloatRate (
+				csqc,
+				(org.drip.state.identifier.OTCFixFloatLabel) _rip.floaterLabel()
+			);
 
 		throw new java.lang.Exception
 			("ComposableUnitFloatingPeriod::baseRate => Unknown Reference Period Index");

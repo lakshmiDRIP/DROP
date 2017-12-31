@@ -1685,4 +1685,401 @@ public class BondBuilder {
 			dapAccrualStart
 		);
 	}
+
+	/**
+	 * Create a Simple OTF Fix Float Floating Rate Bond
+	 * 
+	 * @param strName Bond Name
+	 * @param strCurrency Bond Currency
+	 * @param strRateIndex Floating Rate Index
+	 * @param strCreditCurveName Credit Curve Name
+	 * @param dblSpread Bond Floater Spread
+	 * @param iFreq Coupon Frequency
+	 * @param strDayCount Coupon Day Count Convention
+	 * @param dtEffective Effective date
+	 * @param dtMaturity Maturity Date
+	 * @param fsPrincipalOutstanding Outstanding Principal Schedule
+	 * @param fsCoupon Coupon Schedule
+	 * 
+	 * @return The Bond object
+	 */
+
+	public static final org.drip.product.credit.BondComponent CreateSimpleOTCIRSFloater (
+		final java.lang.String strName,
+		final java.lang.String strCurrency,
+		final java.lang.String strRateIndex,
+		final java.lang.String strCreditCurveName,
+		final double dblSpread,
+		final int iFreq,
+		final java.lang.String strDayCount,
+		final org.drip.analytics.date.JulianDate dtEffective,
+		final org.drip.analytics.date.JulianDate dtMaturity,
+		final org.drip.quant.common.Array2D fsPrincipalOutstanding,
+		final org.drip.quant.common.Array2D fsCoupon)
+	{
+		if (null == strName || strName.isEmpty() || null == strCurrency || strCurrency.isEmpty() || null ==
+			dtEffective || null == dtMaturity || !org.drip.quant.common.NumberUtil.IsValid (dblSpread))
+			return null;
+
+		return CreateBondFromParams (
+			null,
+			new org.drip.product.params.IdentifierSet (
+				strName,
+				strName,
+				strName,
+				strCurrency
+			),
+			new org.drip.product.params.CouponSetting (
+				fsCoupon,
+				"",
+				dblSpread,
+				java.lang.Double.NaN,
+				java.lang.Double.NaN
+			),
+			new org.drip.product.params.FloaterSetting (
+				org.drip.state.identifier.OTCFixFloatLabel.Standard (strRateIndex),
+				"",
+				dblSpread,
+				java.lang.Double.NaN
+			),
+			new org.drip.product.params.QuoteConvention (
+				null,
+				"",
+				dtEffective.julian(),
+				100.,
+				0,
+				strCurrency,
+				org.drip.analytics.daycount.Convention.DATE_ROLL_ACTUAL
+			),
+			new org.drip.product.params.CreditSetting (
+				30,
+				java.lang.Double.NaN,
+				true,
+				strCreditCurveName,
+				true
+			),
+			new org.drip.product.params.TerminationSetting (
+				false,
+				false,
+				false,
+				null
+			),
+			org.drip.product.params.BondStream.Create (
+				dtMaturity.julian(),
+				dtEffective.julian(),
+				java.lang.Integer.MIN_VALUE,
+				java.lang.Integer.MIN_VALUE,
+				dtEffective.julian(),
+				iFreq,
+				dblSpread,
+				strDayCount,
+				strDayCount,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				"",
+				false,
+				strCurrency,
+				strCurrency,
+				org.drip.state.identifier.OTCFixFloatLabel.Standard (strRateIndex),
+				null == strCreditCurveName || strCreditCurveName.isEmpty() ? null :
+					org.drip.state.identifier.CreditLabel.Standard (strCreditCurveName)),
+			new org.drip.product.params.NotionalSetting (
+				100.,
+				strCurrency,
+				fsPrincipalOutstanding,
+				org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END,
+				false
+			)
+		);
+	}
+
+	/**
+	 * Create a OTC Fix Float Index Floating Rate Bond from the First and Penultimate Coupon Dates, and the
+	 *  other Parameters
+	 * 
+	 * @param strName Bond Name
+	 * @param strCurrency Bond Currency
+	 * @param strRateIndex Floating Rate Index
+	 * @param strCreditCurveName Credit Curve Name
+	 * @param dblSpread Bond Floater Spread
+	 * @param iFreq Coupon Frequency
+	 * @param strDayCount Coupon Day Count Convention
+	 * @param dtEffective Effective date
+	 * @param dtMaturity Maturity Date
+	 * @param iFirstCouponDate First Coupon Date
+	 * @param iPenultimateCouponDate Penultimate Coupon Date
+	 * @param dapPay Pay Date Adjustment Parameters
+	 * @param dapReset Reset Date Adjustment Parameters
+	 * @param dapMaturity Maturity Date Adjustment Parameters
+	 * @param dapEffective Effective Date Adjustment Parameters
+	 * @param dapPeriodEnd Period End Date Adjustment Parameters
+	 * @param dapAccrualEnd Accrual Date Adjustment Parameters
+	 * @param dapPeriodStart Period Start Date Adjustment Parameters
+	 * @param dapAccrualStart Accrual Start  Date Adjustment Parameters
+	 * @param fsPrincipalOutstanding Outstanding Principal Schedule
+	 * @param fsCoupon Coupon Schedule
+	 * 
+	 * @return The Floating Rate Bond Instance
+	 */
+
+	public static final org.drip.product.credit.BondComponent CreateSimpleOTCIRSFloaterFP (
+		final java.lang.String strName,
+		final java.lang.String strCurrency,
+		final java.lang.String strRateIndex,
+		final java.lang.String strCreditCurveName,
+		final double dblSpread,
+		final int iFreq,
+		final java.lang.String strDayCount,
+		final org.drip.analytics.date.JulianDate dtEffective,
+		final org.drip.analytics.date.JulianDate dtMaturity,
+		final int iFirstCouponDate,
+		final int iPenultimateCouponDate,
+		final org.drip.analytics.daycount.DateAdjustParams dapPay,
+		final org.drip.analytics.daycount.DateAdjustParams dapReset,
+		final org.drip.analytics.daycount.DateAdjustParams dapMaturity,
+		final org.drip.analytics.daycount.DateAdjustParams dapEffective,
+		final org.drip.analytics.daycount.DateAdjustParams dapPeriodEnd,
+		final org.drip.analytics.daycount.DateAdjustParams dapAccrualEnd,
+		final org.drip.analytics.daycount.DateAdjustParams dapPeriodStart,
+		final org.drip.analytics.daycount.DateAdjustParams dapAccrualStart,
+		final org.drip.quant.common.Array2D fsPrincipalOutstanding,
+		final org.drip.quant.common.Array2D fsCoupon)
+	{
+		if (null == strName || strName.isEmpty() || null == strCurrency || strCurrency.isEmpty() || null ==
+			dtEffective || null == dtMaturity || !org.drip.quant.common.NumberUtil.IsValid (dblSpread))
+			return null;
+
+		return CreateBondFromParams (
+			null,
+			new org.drip.product.params.IdentifierSet (
+				strName,
+				strName,
+				strName,
+				strCurrency
+			),
+			new org.drip.product.params.CouponSetting (
+				fsCoupon,
+				"",
+				dblSpread,
+				java.lang.Double.NaN,
+				java.lang.Double.NaN
+			),
+			new org.drip.product.params.FloaterSetting (
+				org.drip.state.identifier.OTCFixFloatLabel.Standard (strRateIndex),
+				"",
+				dblSpread,
+				java.lang.Double.NaN
+			),
+			new org.drip.product.params.QuoteConvention (
+				null,
+				"",
+				dtEffective.julian(),
+				100.,
+				0,
+				strCurrency,
+				org.drip.analytics.daycount.Convention.DATE_ROLL_ACTUAL
+			),
+			new org.drip.product.params.CreditSetting (
+				30,
+				java.lang.Double.NaN,
+				true,
+				strCreditCurveName,
+				true
+			),
+			new org.drip.product.params.TerminationSetting (
+				false,
+				false,
+				false,
+				dapMaturity
+			),
+			org.drip.product.params.BondStream.FromFirstPenultimateCouponDate (
+				dtMaturity.julian(),
+				dtEffective.julian(),
+				dtMaturity.julian(),
+				iFirstCouponDate,
+				iPenultimateCouponDate,
+				iFreq,
+				dblSpread,
+				strDayCount,
+				strDayCount,
+				dapPay,
+				dapReset,
+				dapMaturity,
+				dapEffective,
+				dapPeriodEnd,
+				dapAccrualEnd,
+				dapPeriodStart,
+				dapAccrualStart,
+				"",
+				false,
+				strCurrency,
+				strCurrency,
+				org.drip.state.identifier.OTCFixFloatLabel.Standard (strRateIndex),
+				null == strCreditCurveName || strCreditCurveName.isEmpty() ? null :
+					org.drip.state.identifier.CreditLabel.Standard (strCreditCurveName)),
+			new org.drip.product.params.NotionalSetting (
+				100.,
+				strCurrency,
+				fsPrincipalOutstanding,
+				org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END,
+				false
+			)
+		);
+	}
+
+	/**
+	 * Create a OTC Fix Float Index Floating Rate Bond from the First and Penultimate Coupon Dates, and the
+	 *  other Parameters
+	 * 
+	 * @param strName Bond Name
+	 * @param strCurrency Bond Currency
+	 * @param strRateIndex Floating Rate Index
+	 * @param strCreditCurveName Credit Curve Name
+	 * @param dblSpread Bond Floater Spread
+	 * @param iFreq Coupon Frequency
+	 * @param strDayCount Coupon Day Count Convention
+	 * @param dtEffective Effective date
+	 * @param dtMaturity Maturity Date
+	 * @param iFirstCouponDate First Coupon Date
+	 * @param dapPay Pay Date Adjustment Parameters
+	 * @param dapReset Reset Date Adjustment Parameters
+	 * @param dapMaturity Maturity Date Adjustment Parameters
+	 * @param dapEffective Effective Date Adjustment Parameters
+	 * @param dapPeriodEnd Period End Date Adjustment Parameters
+	 * @param dapAccrualEnd Accrual Date Adjustment Parameters
+	 * @param dapPeriodStart Period Start Date Adjustment Parameters
+	 * @param dapAccrualStart Accrual Start  Date Adjustment Parameters
+	 * @param fsPrincipalOutstanding Outstanding Principal Schedule
+	 * @param fsCoupon Coupon Schedule
+	 * 
+	 * @return The Floating Rate Bond Instance
+	 */
+
+	public static final org.drip.product.credit.BondComponent CreateSimpleOTCIRSFloaterF (
+		final java.lang.String strName,
+		final java.lang.String strCurrency,
+		final java.lang.String strRateIndex,
+		final java.lang.String strCreditCurveName,
+		final double dblSpread,
+		final int iFreq,
+		final java.lang.String strDayCount,
+		final org.drip.analytics.date.JulianDate dtEffective,
+		final org.drip.analytics.date.JulianDate dtMaturity,
+		final int iFirstCouponDate,
+		final org.drip.analytics.daycount.DateAdjustParams dapPay,
+		final org.drip.analytics.daycount.DateAdjustParams dapReset,
+		final org.drip.analytics.daycount.DateAdjustParams dapMaturity,
+		final org.drip.analytics.daycount.DateAdjustParams dapEffective,
+		final org.drip.analytics.daycount.DateAdjustParams dapPeriodEnd,
+		final org.drip.analytics.daycount.DateAdjustParams dapAccrualEnd,
+		final org.drip.analytics.daycount.DateAdjustParams dapPeriodStart,
+		final org.drip.analytics.daycount.DateAdjustParams dapAccrualStart,
+		final org.drip.quant.common.Array2D fsPrincipalOutstanding,
+		final org.drip.quant.common.Array2D fsCoupon)
+	{
+		return CreateSimpleFloaterFP (
+			strName,
+			strCurrency,
+			strRateIndex,
+			strCreditCurveName,
+			dblSpread,
+			iFreq,
+			strDayCount,
+			dtEffective,
+			dtMaturity,
+			iFirstCouponDate,
+			dtMaturity.subtractTenor ((12 / iFreq) + "M").julian(),
+			dapPay,
+			dapReset,
+			dapMaturity,
+			dapEffective,
+			dapPeriodEnd,
+			dapAccrualEnd,
+			dapPeriodStart,
+			dapAccrualStart,
+			fsPrincipalOutstanding,
+			fsCoupon
+		);
+	}
+
+	/**
+	 * Create a OTC Fix-Float Index Floating Rate Bond from the First and Penultimate Coupon Dates, and the
+	 *  other Parameters
+	 * 
+	 * @param strName Bond Name
+	 * @param strCurrency Bond Currency
+	 * @param strRateIndex Floating Rate Index
+	 * @param strCreditCurveName Credit Curve Name
+	 * @param dblSpread Bond Floater Spread
+	 * @param iFreq Coupon Frequency
+	 * @param strDayCount Coupon Day Count Convention
+	 * @param dtEffective Effective date
+	 * @param dtMaturity Maturity Date
+	 * @param iPenultimateCouponDate Penultimate Coupon Date
+	 * @param dapPay Pay Date Adjustment Parameters
+	 * @param dapReset Reset Date Adjustment Parameters
+	 * @param dapMaturity Maturity Date Adjustment Parameters
+	 * @param dapEffective Effective Date Adjustment Parameters
+	 * @param dapPeriodEnd Period End Date Adjustment Parameters
+	 * @param dapAccrualEnd Accrual Date Adjustment Parameters
+	 * @param dapPeriodStart Period Start Date Adjustment Parameters
+	 * @param dapAccrualStart Accrual Start  Date Adjustment Parameters
+	 * @param fsPrincipalOutstanding Outstanding Principal Schedule
+	 * @param fsCoupon Coupon Schedule
+	 * 
+	 * @return The Floating Rate Bond Instance
+	 */
+
+	public static final org.drip.product.credit.BondComponent CreateSimpleOTCIRSFloaterP (
+		final java.lang.String strName,
+		final java.lang.String strCurrency,
+		final java.lang.String strRateIndex,
+		final java.lang.String strCreditCurveName,
+		final double dblSpread,
+		final int iFreq,
+		final java.lang.String strDayCount,
+		final org.drip.analytics.date.JulianDate dtEffective,
+		final org.drip.analytics.date.JulianDate dtMaturity,
+		final int iPenultimateCouponDate,
+		final org.drip.analytics.daycount.DateAdjustParams dapPay,
+		final org.drip.analytics.daycount.DateAdjustParams dapReset,
+		final org.drip.analytics.daycount.DateAdjustParams dapMaturity,
+		final org.drip.analytics.daycount.DateAdjustParams dapEffective,
+		final org.drip.analytics.daycount.DateAdjustParams dapPeriodEnd,
+		final org.drip.analytics.daycount.DateAdjustParams dapAccrualEnd,
+		final org.drip.analytics.daycount.DateAdjustParams dapPeriodStart,
+		final org.drip.analytics.daycount.DateAdjustParams dapAccrualStart,
+		final org.drip.quant.common.Array2D fsPrincipalOutstanding,
+		final org.drip.quant.common.Array2D fsCoupon)
+	{
+		return CreateSimpleFloaterFP (
+			strName,
+			strCurrency,
+			strRateIndex,
+			strCreditCurveName,
+			dblSpread,
+			iFreq,
+			strDayCount,
+			dtEffective,
+			dtMaturity,
+			dtEffective.addTenor ((12 / iFreq) + "M").julian(),
+			iPenultimateCouponDate,
+			dapPay,
+			dapReset,
+			dapMaturity,
+			dapEffective,
+			dapPeriodEnd,
+			dapAccrualEnd,
+			dapPeriodStart,
+			dapAccrualStart,
+			fsPrincipalOutstanding,
+			fsCoupon
+		);
+	}
 }

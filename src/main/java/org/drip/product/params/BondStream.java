@@ -90,7 +90,7 @@ public class BondStream extends org.drip.product.rates.Stream {
 	 * @param bPeriodsFromForward Generate Periods forward (True) or Backward (False)
 	 * @param strCalendar Optional Holiday Calendar for Accrual Calculations
 	 * @param strCurrency Coupon Currency
-	 * @param forwardLabel The Forward Label
+	 * @param floaterLabel The Floater Label
 	 * @param creditLabel The Credit Label
 	 * 
 	 * @return The BondStream Instance
@@ -118,10 +118,10 @@ public class BondStream extends org.drip.product.rates.Stream {
 		final boolean bPeriodsFromForward,
 		final java.lang.String strCalendar,
 		final java.lang.String strCurrency,
-		final org.drip.state.identifier.ForwardLabel forwardLabel,
+		final org.drip.state.identifier.FloaterLabel floaterLabel,
 		final org.drip.state.identifier.CreditLabel creditLabel)
 	{
-		java.util.List<org.drip.analytics.cashflow.CompositePeriod> lsCouponPeriod = null == forwardLabel ?
+		java.util.List<org.drip.analytics.cashflow.CompositePeriod> lsCouponPeriod = null == floaterLabel ?
 			org.drip.product.creator.StreamBuilder.FirstPenultimateDateFixedStream (
 				iEffectiveDate,
 				iMaturityDate,
@@ -146,7 +146,7 @@ public class BondStream extends org.drip.product.rates.Stream {
 				dapPay,
 				dapMaturity,
 				dapAccrualEnd,
-				forwardLabel,
+				floaterLabel,
 				creditLabel
 			);
 
@@ -187,7 +187,7 @@ public class BondStream extends org.drip.product.rates.Stream {
 	 * @param bPeriodsFromForward Generate Periods forward (True) or Backward (False)
 	 * @param strCalendar Optional Holiday Calendar for accrual calculations
 	 * @param strCurrency Coupon Currency
-	 * @param forwardLabel The Forward Label
+	 * @param floaterLabel The Floater Label
 	 * @param creditLabel The Credit Label
 	 * 
 	 * @return The BondStream Instance
@@ -215,7 +215,7 @@ public class BondStream extends org.drip.product.rates.Stream {
 		final boolean bPeriodsFromForward,
 		final java.lang.String strCalendar,
 		final java.lang.String strCurrency,
-		final org.drip.state.identifier.ForwardLabel forwardLabel,
+		final org.drip.state.identifier.FloaterLabel floaterLabel,
 		final org.drip.state.identifier.CreditLabel creditLabel)
 	{
 		boolean bCouponEOMAdj = null == strCouponDC ? false : strCouponDC.toUpperCase().contains ("EOM");
@@ -258,7 +258,7 @@ public class BondStream extends org.drip.product.rates.Stream {
 							dtMaturity, strTenor, dapAccrualEnd,
 								org.drip.analytics.support.CompositePeriodBuilder.LONG_STUB);
 
-			if (null == forwardLabel) {
+			if (null == floaterLabel) {
 				org.drip.param.period.ComposableFixedUnitSetting cfus = new
 					org.drip.param.period.ComposableFixedUnitSetting (strTenor,
 						org.drip.analytics.support.CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE, null,
@@ -270,7 +270,7 @@ public class BondStream extends org.drip.product.rates.Stream {
 				org.drip.param.period.ComposableFloatingUnitSetting cfus = new
 					org.drip.param.period.ComposableFloatingUnitSetting (strTenor,
 						org.drip.analytics.support.CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE, null,
-							forwardLabel,
+							floaterLabel,
 								org.drip.analytics.support.CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 					dblCoupon);
 
