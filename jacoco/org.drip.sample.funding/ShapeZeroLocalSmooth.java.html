@@ -159,14 +159,14 @@ import org.drip.state.inference.*;
 		final String strMaturityTenor,
 		final double dblCoupon)
 	{
-<span class="nc" id="L162">		FixedFloatSwapConvention ffConv = IBORFixedFloatContainer.ConventionFromJurisdiction (</span>
+<span class="fc" id="L162">		FixedFloatSwapConvention ffConv = IBORFixedFloatContainer.ConventionFromJurisdiction (</span>
 			strCurrency,
 			&quot;ALL&quot;,
 			strMaturityTenor,
 			&quot;MAIN&quot;
 		);
 
-<span class="nc" id="L169">		return ffConv.createFixFloatComponent (</span>
+<span class="fc" id="L169">		return ffConv.createFixFloatComponent (</span>
 			dtSpot,
 			strMaturityTenor,
 			dblCoupon,
@@ -187,22 +187,22 @@ import org.drip.state.inference.*;
 		final int[] aiDay)
 		throws Exception
 	{
-<span class="nc" id="L190">		SingleStreamComponent[] aDeposit = new SingleStreamComponent[aiDay.length];</span>
+<span class="fc" id="L190">		SingleStreamComponent[] aDeposit = new SingleStreamComponent[aiDay.length];</span>
 
-<span class="nc bnc" id="L192" title="All 2 branches missed.">		for (int i = 0; i &lt; aiDay.length; ++i)</span>
-<span class="nc" id="L193">			aDeposit[i] = SingleStreamComponentBuilder.Deposit (</span>
+<span class="fc bfc" id="L192" title="All 2 branches covered.">		for (int i = 0; i &lt; aiDay.length; ++i)</span>
+<span class="fc" id="L193">			aDeposit[i] = SingleStreamComponentBuilder.Deposit (</span>
 				dtEffective,
-<span class="nc" id="L195">				dtEffective.addBusDays (</span>
+<span class="fc" id="L195">				dtEffective.addBusDays (</span>
 					aiDay[i],
 					strCurrency
 				),
-<span class="nc" id="L199">				ForwardLabel.Create (</span>
+<span class="fc" id="L199">				ForwardLabel.Create (</span>
 					&quot;USD&quot;,
 					&quot;3M&quot;
 				)
 			);
 
-<span class="nc" id="L205">		return aDeposit;</span>
+<span class="fc" id="L205">		return aDeposit;</span>
 	}
 
 	/*
@@ -217,17 +217,17 @@ import org.drip.state.inference.*;
 		final String[] astrMaturityTenor)
 		throws Exception
 	{
-<span class="nc" id="L220">		FixFloatComponent[] aIRS = new FixFloatComponent[astrMaturityTenor.length];</span>
+<span class="fc" id="L220">		FixFloatComponent[] aIRS = new FixFloatComponent[astrMaturityTenor.length];</span>
 
-<span class="nc bnc" id="L222" title="All 2 branches missed.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
-<span class="nc" id="L223">			aIRS[i] = OTCIRS (</span>
+<span class="fc bfc" id="L222" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
+<span class="fc" id="L223">			aIRS[i] = OTCIRS (</span>
 				dtSpot,
 				strCurrency,
 				astrMaturityTenor[i],
 				0.
 			);
 
-<span class="nc" id="L230">		return aIRS;</span>
+<span class="fc" id="L230">		return aIRS;</span>
 	}
 
 	/*
@@ -319,7 +319,7 @@ import org.drip.state.inference.*;
 		 * Construct the Array of Deposit Instruments and their Quotes from the given set of parameters
 		 */
 
-<span class="nc" id="L322">		SingleStreamComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (</span>
+<span class="fc" id="L322">		SingleStreamComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (</span>
 			dtSpot,
 			strCurrency,
 			new int[] {
@@ -327,7 +327,7 @@ import org.drip.state.inference.*;
 			}
 		);
 
-<span class="nc" id="L330">		double[] adblDepositQuote = new double[] {</span>
+<span class="fc" id="L330">		double[] adblDepositQuote = new double[] {</span>
 			0.0013, 0.0017, 0.0017, 0.0018, 0.0020, 0.0023
 		};
 
@@ -335,7 +335,7 @@ import org.drip.state.inference.*;
 		 * Construct the Deposit Instrument Set Stretch Builder
 		 */
 
-<span class="nc" id="L338">		LatentStateStretchSpec depositStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
+<span class="fc" id="L338">		LatentStateStretchSpec depositStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
 			&quot;DEPOSIT&quot;,
 			aDepositComp,
 			&quot;ForwardRate&quot;,
@@ -346,13 +346,13 @@ import org.drip.state.inference.*;
 		 * Construct the Array of EDF Instruments and their Quotes from the given set of parameters
 		 */
 
-<span class="nc" id="L349">		SingleStreamComponent[] aEDFComp = SingleStreamComponentBuilder.ForwardRateFuturesPack (</span>
+<span class="fc" id="L349">		SingleStreamComponent[] aEDFComp = SingleStreamComponentBuilder.ForwardRateFuturesPack (</span>
 			dtSpot,
 			8,
 			strCurrency
 		);
 
-<span class="nc" id="L355">		double[] adblEDFQuote = new double[] {</span>
+<span class="fc" id="L355">		double[] adblEDFQuote = new double[] {</span>
 			0.0027, 0.0032, 0.0041, 0.0054, 0.0077, 0.0104, 0.0134, 0.0160
 		};
 
@@ -360,7 +360,7 @@ import org.drip.state.inference.*;
 		 * Construct the EDF Instrument Set Stretch Builder
 		 */
 
-<span class="nc" id="L363">		LatentStateStretchSpec edfStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
+<span class="fc" id="L363">		LatentStateStretchSpec edfStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
 			&quot;EDF&quot;,
 			aEDFComp,
 			&quot;ForwardRate&quot;,
@@ -371,7 +371,7 @@ import org.drip.state.inference.*;
 		 * Construct the Array of Swap Instruments and their Quotes from the given set of parameters
 		 */
 
-<span class="nc" id="L374">		FixFloatComponent[] aSwapComp = SwapInstrumentsFromMaturityTenor (</span>
+<span class="fc" id="L374">		FixFloatComponent[] aSwapComp = SwapInstrumentsFromMaturityTenor (</span>
 			dtSpot,
 			strCurrency,
 			new java.lang.String[] {
@@ -379,7 +379,7 @@ import org.drip.state.inference.*;
 			}
 		);
 
-<span class="nc" id="L382">		double[] adblSwapQuote = new double[] {</span>
+<span class="fc" id="L382">		double[] adblSwapQuote = new double[] {</span>
 			0.0166, 0.0206, 0.0241, 0.0269, 0.0292, 0.0311, 0.0326, 0.0340, 0.0351, 0.0375, 0.0393, 0.0402, 0.0407, 0.0409, 0.0409
 		};
 
@@ -387,14 +387,14 @@ import org.drip.state.inference.*;
 		 * Construct the Swap Instrument Set Stretch Builder
 		 */
 
-<span class="nc" id="L390">		LatentStateStretchSpec swapStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
+<span class="fc" id="L390">		LatentStateStretchSpec swapStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
 			&quot;SWAP&quot;,
 			aSwapComp,
 			&quot;SwapRate&quot;,
 			adblSwapQuote
 		);
 
-<span class="nc" id="L397">		LatentStateStretchSpec[] aStretchSpec = new LatentStateStretchSpec[] {</span>
+<span class="fc" id="L397">		LatentStateStretchSpec[] aStretchSpec = new LatentStateStretchSpec[] {</span>
 			depositStretch,
 			edfStretch,
 			swapStretch
@@ -408,11 +408,11 @@ import org.drip.state.inference.*;
 		 * 	- Natural Boundary Setting
 		 */
 
-<span class="nc" id="L411">		LinearLatentStateCalibrator lcc = new LinearLatentStateCalibrator (</span>
+<span class="fc" id="L411">		LinearLatentStateCalibrator lcc = new LinearLatentStateCalibrator (</span>
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-<span class="nc" id="L415">				SegmentInelasticDesignControl.Create (</span>
+<span class="fc" id="L415">				SegmentInelasticDesignControl.Create (</span>
 					2,
 					2
 				),
@@ -422,13 +422,13 @@ import org.drip.state.inference.*;
 				),
 				null
 			),
-<span class="nc" id="L425">			BoundarySettings.NaturalStandard(),</span>
+<span class="fc" id="L425">			BoundarySettings.NaturalStandard(),</span>
 			MultiSegmentSequence.CALIBRATE,
 			null,
 			null
 		);
 
-<span class="nc" id="L431">		ValuationParams valParams = new ValuationParams (</span>
+<span class="fc" id="L431">		ValuationParams valParams = new ValuationParams (</span>
 			dtSpot,
 			dtSpot,
 			strCurrency
@@ -439,7 +439,7 @@ import org.drip.state.inference.*;
 		 *  of Deposit, Futures, and Swap Stretches.
 		 */
 
-<span class="nc" id="L442">		MergedDiscountForwardCurve dcShapePreserving = ScenarioDiscountCurveBuilder.ShapePreservingDFBuild (</span>
+<span class="fc" id="L442">		MergedDiscountForwardCurve dcShapePreserving = ScenarioDiscountCurveBuilder.ShapePreservingDFBuild (</span>
 			strCurrency,
 			lcc,
 			aStretchSpec,
@@ -460,13 +460,13 @@ import org.drip.state.inference.*;
 		 * 	- Natural Boundary Setting
 		 */
 
-<span class="nc" id="L463">		LocalControlCurveParams lccpAkima = new LocalControlCurveParams (</span>
+<span class="fc" id="L463">		LocalControlCurveParams lccpAkima = new LocalControlCurveParams (</span>
 			LocalMonotoneCkGenerator.C1_AKIMA,
 			LatentStateStatic.DISCOUNT_QM_ZERO_RATE,
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-<span class="nc" id="L469">				SegmentInelasticDesignControl.Create (</span>
+<span class="fc" id="L469">				SegmentInelasticDesignControl.Create (</span>
 					2,
 					2
 				),
@@ -494,13 +494,13 @@ import org.drip.state.inference.*;
 		 * 	- Natural Boundary Setting
 		 */
 
-<span class="nc" id="L497">		LocalControlCurveParams lccpHarmonic = new LocalControlCurveParams (</span>
+<span class="fc" id="L497">		LocalControlCurveParams lccpHarmonic = new LocalControlCurveParams (</span>
 			LocalMonotoneCkGenerator.C1_HARMONIC,
 			LatentStateStatic.DISCOUNT_QM_ZERO_RATE,
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-<span class="nc" id="L503">				SegmentInelasticDesignControl.Create (</span>
+<span class="fc" id="L503">				SegmentInelasticDesignControl.Create (</span>
 					2,
 					2
 				),
@@ -528,13 +528,13 @@ import org.drip.state.inference.*;
 		 * 	- Natural Boundary Setting
 		 */
 
-<span class="nc" id="L531">		LocalControlCurveParams lccpHyman83 = new LocalControlCurveParams (</span>
+<span class="fc" id="L531">		LocalControlCurveParams lccpHyman83 = new LocalControlCurveParams (</span>
 			LocalMonotoneCkGenerator.C1_HYMAN83,
 			LatentStateStatic.DISCOUNT_QM_ZERO_RATE,
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-<span class="nc" id="L537">				SegmentInelasticDesignControl.Create (</span>
+<span class="fc" id="L537">				SegmentInelasticDesignControl.Create (</span>
 					2,
 					2
 				),
@@ -562,13 +562,13 @@ import org.drip.state.inference.*;
 		 * 	- Natural Boundary Setting
 		 */
 
-<span class="nc" id="L565">		LocalControlCurveParams lccpHyman89 = new LocalControlCurveParams (</span>
+<span class="fc" id="L565">		LocalControlCurveParams lccpHyman89 = new LocalControlCurveParams (</span>
 			LocalMonotoneCkGenerator.C1_HYMAN89,
 			LatentStateStatic.DISCOUNT_QM_ZERO_RATE,
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-<span class="nc" id="L571">				SegmentInelasticDesignControl.Create (</span>
+<span class="fc" id="L571">				SegmentInelasticDesignControl.Create (</span>
 					2,
 					2
 				),
@@ -596,13 +596,13 @@ import org.drip.state.inference.*;
 		 * 	- Natural Boundary Setting
 		 */
 
-<span class="nc" id="L599">		LocalControlCurveParams lccpHuynhLeFloch = new LocalControlCurveParams (</span>
+<span class="fc" id="L599">		LocalControlCurveParams lccpHuynhLeFloch = new LocalControlCurveParams (</span>
 			LocalMonotoneCkGenerator.C1_HUYNH_LE_FLOCH,
 			LatentStateStatic.DISCOUNT_QM_ZERO_RATE,
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-<span class="nc" id="L605">				SegmentInelasticDesignControl.Create (</span>
+<span class="fc" id="L605">				SegmentInelasticDesignControl.Create (</span>
 					2,
 					2
 				),
@@ -629,13 +629,13 @@ import org.drip.state.inference.*;
 		 * 	- Natural Boundary Setting
 		 */
 
-<span class="nc" id="L632">		LocalControlCurveParams lccpKruger = new LocalControlCurveParams (</span>
+<span class="fc" id="L632">		LocalControlCurveParams lccpKruger = new LocalControlCurveParams (</span>
 			LocalMonotoneCkGenerator.C1_KRUGER,
 			LatentStateStatic.DISCOUNT_QM_ZERO_RATE,
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-<span class="nc" id="L638">				SegmentInelasticDesignControl.Create (</span>
+<span class="fc" id="L638">				SegmentInelasticDesignControl.Create (</span>
 					2,
 					2
 				),
@@ -658,7 +658,7 @@ import org.drip.state.inference.*;
 		 * 	preserving discount curve.
 		 */
 
-<span class="nc" id="L661">		MergedDiscountForwardCurve dcLocalAkima = ScenarioDiscountCurveBuilder.SmoothingLocalControlBuild (</span>
+<span class="fc" id="L661">		MergedDiscountForwardCurve dcLocalAkima = ScenarioDiscountCurveBuilder.SmoothingLocalControlBuild (</span>
 			dcShapePreserving,
 			lcc,
 			lccpAkima,
@@ -674,7 +674,7 @@ import org.drip.state.inference.*;
 		 * 	preserving discount curve.
 		 */
 
-<span class="nc" id="L677">		MergedDiscountForwardCurve dcLocalHarmonic = ScenarioDiscountCurveBuilder.SmoothingLocalControlBuild (</span>
+<span class="fc" id="L677">		MergedDiscountForwardCurve dcLocalHarmonic = ScenarioDiscountCurveBuilder.SmoothingLocalControlBuild (</span>
 			dcShapePreserving,
 			lcc,
 			lccpHarmonic,
@@ -690,7 +690,7 @@ import org.drip.state.inference.*;
 		 * 	preserving discount curve.
 		 */
 
-<span class="nc" id="L693">		MergedDiscountForwardCurve dcLocalHyman83 = ScenarioDiscountCurveBuilder.SmoothingLocalControlBuild (</span>
+<span class="fc" id="L693">		MergedDiscountForwardCurve dcLocalHyman83 = ScenarioDiscountCurveBuilder.SmoothingLocalControlBuild (</span>
 			dcShapePreserving,
 			lcc,
 			lccpHyman83,
@@ -706,7 +706,7 @@ import org.drip.state.inference.*;
 		 * 	preserving discount curve.
 		 */
 
-<span class="nc" id="L709">		MergedDiscountForwardCurve dcLocalHyman89 = ScenarioDiscountCurveBuilder.SmoothingLocalControlBuild (</span>
+<span class="fc" id="L709">		MergedDiscountForwardCurve dcLocalHyman89 = ScenarioDiscountCurveBuilder.SmoothingLocalControlBuild (</span>
 			dcShapePreserving,
 			lcc,
 			lccpHyman89,
@@ -722,7 +722,7 @@ import org.drip.state.inference.*;
 		 * 	and the shape preserving discount curve.
 		 */
 
-<span class="nc" id="L725">		MergedDiscountForwardCurve dcLocalHuynhLeFloch = ScenarioDiscountCurveBuilder.SmoothingLocalControlBuild (</span>
+<span class="fc" id="L725">		MergedDiscountForwardCurve dcLocalHuynhLeFloch = ScenarioDiscountCurveBuilder.SmoothingLocalControlBuild (</span>
 			dcShapePreserving,
 			lcc,
 			lccpHuynhLeFloch,
@@ -738,7 +738,7 @@ import org.drip.state.inference.*;
 		 * 	preserving discount curve.
 		 */
 
-<span class="nc" id="L741">		MergedDiscountForwardCurve dcLocalKruger = ScenarioDiscountCurveBuilder.SmoothingLocalControlBuild (</span>
+<span class="fc" id="L741">		MergedDiscountForwardCurve dcLocalKruger = ScenarioDiscountCurveBuilder.SmoothingLocalControlBuild (</span>
 			dcShapePreserving,
 			lcc,
 			lccpKruger,
@@ -753,79 +753,79 @@ import org.drip.state.inference.*;
 		 * 	construction methodologies.
 		 */
 
-<span class="nc" id="L756">		System.out.println (&quot;\n\t-------------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L756">		System.out.println (&quot;\n\t-------------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L758">		System.out.println (&quot;\t--------------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L758">		System.out.println (&quot;\t--------------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L760">		System.out.println (&quot;\t                                                DEPOSIT INSTRUMENTS CALIBRATION RECOVERY&quot;);</span>
+<span class="fc" id="L760">		System.out.println (&quot;\t                                                DEPOSIT INSTRUMENTS CALIBRATION RECOVERY&quot;);</span>
 
-<span class="nc" id="L762">		System.out.println (&quot;\t--------------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L762">		System.out.println (&quot;\t--------------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L764">		System.out.println (&quot;\t        SHAPE PRESERVING   |  LOCAL AKIMA  | LOCAL HARMONIC | LOCAL HYMAN83 | LOCAL HYMAN89 | LOCAL HUYNHLF | LOCAL KRUGER  |  INPUT QUOTE  &quot;);</span>
+<span class="fc" id="L764">		System.out.println (&quot;\t        SHAPE PRESERVING   |  LOCAL AKIMA  | LOCAL HARMONIC | LOCAL HYMAN83 | LOCAL HYMAN89 | LOCAL HUYNHLF | LOCAL KRUGER  |  INPUT QUOTE  &quot;);</span>
 
-<span class="nc" id="L766">		System.out.println (&quot;\t--------------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L766">		System.out.println (&quot;\t--------------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L768">		System.out.println (&quot;\t--------------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L768">		System.out.println (&quot;\t--------------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
 
-<span class="nc bnc" id="L770" title="All 2 branches missed.">		for (int i = 0; i &lt; aDepositComp.length; ++i)</span>
-<span class="nc" id="L771">			System.out.println (&quot;\t[&quot; + aDepositComp[i].maturityDate() + &quot;] = &quot; +</span>
-<span class="nc" id="L772">				FormatUtil.FormatDouble (</span>
-<span class="nc" id="L773">					aDepositComp[i].measureValue (</span>
+<span class="fc bfc" id="L770" title="All 2 branches covered.">		for (int i = 0; i &lt; aDepositComp.length; ++i)</span>
+<span class="fc" id="L771">			System.out.println (&quot;\t[&quot; + aDepositComp[i].maturityDate() + &quot;] = &quot; +</span>
+<span class="fc" id="L772">				FormatUtil.FormatDouble (</span>
+<span class="fc" id="L773">					aDepositComp[i].measureValue (</span>
 						valParams,
 						null,
-<span class="nc" id="L776">						MarketParamsBuilder.Create (dcShapePreserving, null, null, null, null, null, null),</span>
+<span class="fc" id="L776">						MarketParamsBuilder.Create (dcShapePreserving, null, null, null, null, null, null),</span>
 						null,
 						&quot;Rate&quot;),
 					1, 6, 1.) + &quot;   |   &quot; +
-<span class="nc" id="L780">				FormatUtil.FormatDouble (</span>
-<span class="nc" id="L781">					aDepositComp[i].measureValue (</span>
+<span class="fc" id="L780">				FormatUtil.FormatDouble (</span>
+<span class="fc" id="L781">					aDepositComp[i].measureValue (</span>
 						valParams,
 						null,
-<span class="nc" id="L784">						MarketParamsBuilder.Create (dcLocalAkima, null, null, null, null, null, null),</span>
+<span class="fc" id="L784">						MarketParamsBuilder.Create (dcLocalAkima, null, null, null, null, null, null),</span>
 						null,
 						&quot;Rate&quot;),
 					1, 6, 1.) + &quot;   |   &quot; +
-<span class="nc" id="L788">				FormatUtil.FormatDouble (</span>
-<span class="nc" id="L789">					aDepositComp[i].measureValue (</span>
+<span class="fc" id="L788">				FormatUtil.FormatDouble (</span>
+<span class="fc" id="L789">					aDepositComp[i].measureValue (</span>
 						valParams,
 						null,
-<span class="nc" id="L792">						MarketParamsBuilder.Create (dcLocalHarmonic, null, null, null, null, null, null),</span>
+<span class="fc" id="L792">						MarketParamsBuilder.Create (dcLocalHarmonic, null, null, null, null, null, null),</span>
 						null,
 						&quot;Rate&quot;),
 					1, 6, 1.) + &quot;    |   &quot; +
-<span class="nc" id="L796">				FormatUtil.FormatDouble (</span>
-<span class="nc" id="L797">					aDepositComp[i].measureValue (</span>
+<span class="fc" id="L796">				FormatUtil.FormatDouble (</span>
+<span class="fc" id="L797">					aDepositComp[i].measureValue (</span>
 						valParams,
 						null,
-<span class="nc" id="L800">						MarketParamsBuilder.Create (dcLocalHyman83, null, null, null, null, null, null),</span>
+<span class="fc" id="L800">						MarketParamsBuilder.Create (dcLocalHyman83, null, null, null, null, null, null),</span>
 						null,
 						&quot;Rate&quot;),
 					1, 6, 1.) + &quot;   |   &quot; +
-<span class="nc" id="L804">				FormatUtil.FormatDouble (</span>
-<span class="nc" id="L805">					aDepositComp[i].measureValue (</span>
+<span class="fc" id="L804">				FormatUtil.FormatDouble (</span>
+<span class="fc" id="L805">					aDepositComp[i].measureValue (</span>
 						valParams,
 						null,
-<span class="nc" id="L808">						MarketParamsBuilder.Create (dcLocalHyman89, null, null, null, null, null, null),</span>
+<span class="fc" id="L808">						MarketParamsBuilder.Create (dcLocalHyman89, null, null, null, null, null, null),</span>
 						null,
 						&quot;Rate&quot;),
 					1, 6, 1.) + &quot;   |   &quot; +
-<span class="nc" id="L812">				FormatUtil.FormatDouble (</span>
-<span class="nc" id="L813">					aDepositComp[i].measureValue (</span>
+<span class="fc" id="L812">				FormatUtil.FormatDouble (</span>
+<span class="fc" id="L813">					aDepositComp[i].measureValue (</span>
 						valParams,
 						null,
-<span class="nc" id="L816">						MarketParamsBuilder.Create (dcLocalHuynhLeFloch, null, null, null, null, null, null),</span>
+<span class="fc" id="L816">						MarketParamsBuilder.Create (dcLocalHuynhLeFloch, null, null, null, null, null, null),</span>
 						null,
 						&quot;Rate&quot;),
 					1, 6, 1.) + &quot;   |   &quot; +
-<span class="nc" id="L820">				FormatUtil.FormatDouble (</span>
-<span class="nc" id="L821">					aDepositComp[i].measureValue (</span>
+<span class="fc" id="L820">				FormatUtil.FormatDouble (</span>
+<span class="fc" id="L821">					aDepositComp[i].measureValue (</span>
 						valParams,
 						null,
-<span class="nc" id="L824">						MarketParamsBuilder.Create (dcLocalKruger, null, null, null, null, null, null),</span>
+<span class="fc" id="L824">						MarketParamsBuilder.Create (dcLocalKruger, null, null, null, null, null, null),</span>
 						null,
 						&quot;Rate&quot;),
 					1, 6, 1.) + &quot;   |   &quot; +
-<span class="nc" id="L828">				FormatUtil.FormatDouble (adblDepositQuote[i], 1, 6, 1.)</span>
+<span class="fc" id="L828">				FormatUtil.FormatDouble (adblDepositQuote[i], 1, 6, 1.)</span>
 			);
 
 		/*
@@ -833,79 +833,79 @@ import org.drip.state.inference.*;
 		 * 	construction methodologies.
 		 */
 
-<span class="nc" id="L836">		System.out.println (&quot;\n\t--------------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L836">		System.out.println (&quot;\n\t--------------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L838">		System.out.println (&quot;\t--------------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L838">		System.out.println (&quot;\t--------------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L840">		System.out.println (&quot;\t                                                 SWAP INSTRUMENTS CALIBRATION RECOVERY&quot;);</span>
+<span class="fc" id="L840">		System.out.println (&quot;\t                                                 SWAP INSTRUMENTS CALIBRATION RECOVERY&quot;);</span>
 
-<span class="nc" id="L842">		System.out.println (&quot;\t--------------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L842">		System.out.println (&quot;\t--------------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L844">		System.out.println (&quot;\t        SHAPE PRESERVING   |  LOCAL AKIMA  | LOCAL HARMONIC | LOCAL HYMAN83 | LOCAL HYMAN89 | LOCAL HUYNHLF | LOCAL KRUGER  |  INPUT QUOTE  &quot;);</span>
+<span class="fc" id="L844">		System.out.println (&quot;\t        SHAPE PRESERVING   |  LOCAL AKIMA  | LOCAL HARMONIC | LOCAL HYMAN83 | LOCAL HYMAN89 | LOCAL HUYNHLF | LOCAL KRUGER  |  INPUT QUOTE  &quot;);</span>
 
-<span class="nc" id="L846">		System.out.println (&quot;\t--------------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L846">		System.out.println (&quot;\t--------------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L848">		System.out.println (&quot;\t--------------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L848">		System.out.println (&quot;\t--------------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
 
-<span class="nc bnc" id="L850" title="All 2 branches missed.">		for (int i = 0; i &lt; aSwapComp.length; ++i)</span>
-<span class="nc" id="L851">			System.out.println (&quot;\t[&quot; + aSwapComp[i].maturityDate() + &quot;] = &quot; +</span>
-<span class="nc" id="L852">				FormatUtil.FormatDouble (</span>
-<span class="nc" id="L853">					aSwapComp[i].measureValue (</span>
+<span class="fc bfc" id="L850" title="All 2 branches covered.">		for (int i = 0; i &lt; aSwapComp.length; ++i)</span>
+<span class="fc" id="L851">			System.out.println (&quot;\t[&quot; + aSwapComp[i].maturityDate() + &quot;] = &quot; +</span>
+<span class="fc" id="L852">				FormatUtil.FormatDouble (</span>
+<span class="fc" id="L853">					aSwapComp[i].measureValue (</span>
 						valParams,
 						null,
-<span class="nc" id="L856">						MarketParamsBuilder.Create (dcShapePreserving, null, null, null, null, null, null),</span>
+<span class="fc" id="L856">						MarketParamsBuilder.Create (dcShapePreserving, null, null, null, null, null, null),</span>
 						null,
 						&quot;CalibSwapRate&quot;),
 					1, 6, 1.) + &quot;   |   &quot; +
-<span class="nc" id="L860">				FormatUtil.FormatDouble (</span>
-<span class="nc" id="L861">					aSwapComp[i].measureValue (</span>
+<span class="fc" id="L860">				FormatUtil.FormatDouble (</span>
+<span class="fc" id="L861">					aSwapComp[i].measureValue (</span>
 						valParams,
 						null,
-<span class="nc" id="L864">						MarketParamsBuilder.Create (dcLocalAkima, null, null, null, null, null, null),</span>
+<span class="fc" id="L864">						MarketParamsBuilder.Create (dcLocalAkima, null, null, null, null, null, null),</span>
 						null,
 						&quot;CalibSwapRate&quot;),
 					1, 6, 1.) + &quot;   |   &quot; +
-<span class="nc" id="L868">				FormatUtil.FormatDouble (</span>
-<span class="nc" id="L869">					aSwapComp[i].measureValue (</span>
+<span class="fc" id="L868">				FormatUtil.FormatDouble (</span>
+<span class="fc" id="L869">					aSwapComp[i].measureValue (</span>
 						valParams,
 						null,
-<span class="nc" id="L872">						MarketParamsBuilder.Create (dcLocalHarmonic, null, null, null, null, null, null),</span>
+<span class="fc" id="L872">						MarketParamsBuilder.Create (dcLocalHarmonic, null, null, null, null, null, null),</span>
 						null,
 						&quot;CalibSwapRate&quot;),
 					1, 6, 1.) + &quot;    |   &quot; +
-<span class="nc" id="L876">				FormatUtil.FormatDouble (</span>
-<span class="nc" id="L877">					aSwapComp[i].measureValue (</span>
+<span class="fc" id="L876">				FormatUtil.FormatDouble (</span>
+<span class="fc" id="L877">					aSwapComp[i].measureValue (</span>
 						valParams,
 						null,
-<span class="nc" id="L880">						MarketParamsBuilder.Create (dcLocalHyman83, null, null, null, null, null, null),</span>
+<span class="fc" id="L880">						MarketParamsBuilder.Create (dcLocalHyman83, null, null, null, null, null, null),</span>
 						null,
 						&quot;CalibSwapRate&quot;),
 					1, 6, 1.) + &quot;   |   &quot; +
-<span class="nc" id="L884">				FormatUtil.FormatDouble (</span>
-<span class="nc" id="L885">					aSwapComp[i].measureValue (</span>
+<span class="fc" id="L884">				FormatUtil.FormatDouble (</span>
+<span class="fc" id="L885">					aSwapComp[i].measureValue (</span>
 						valParams,
 						null,
-<span class="nc" id="L888">						MarketParamsBuilder.Create (dcLocalHyman89, null, null, null, null, null, null),</span>
+<span class="fc" id="L888">						MarketParamsBuilder.Create (dcLocalHyman89, null, null, null, null, null, null),</span>
 						null,
 						&quot;CalibSwapRate&quot;),
 					1, 6, 1.) + &quot;   |   &quot; +
-<span class="nc" id="L892">				FormatUtil.FormatDouble (</span>
-<span class="nc" id="L893">					aSwapComp[i].measureValue (</span>
+<span class="fc" id="L892">				FormatUtil.FormatDouble (</span>
+<span class="fc" id="L893">					aSwapComp[i].measureValue (</span>
 						valParams,
 						null,
-<span class="nc" id="L896">						MarketParamsBuilder.Create (dcLocalHuynhLeFloch, null, null, null, null, null, null),</span>
+<span class="fc" id="L896">						MarketParamsBuilder.Create (dcLocalHuynhLeFloch, null, null, null, null, null, null),</span>
 						null,
 						&quot;CalibSwapRate&quot;),
 					1, 6, 1.) + &quot;   |   &quot; +
-<span class="nc" id="L900">				FormatUtil.FormatDouble (</span>
-<span class="nc" id="L901">					aSwapComp[i].measureValue (</span>
+<span class="fc" id="L900">				FormatUtil.FormatDouble (</span>
+<span class="fc" id="L901">					aSwapComp[i].measureValue (</span>
 						valParams,
 						null,
-<span class="nc" id="L904">						MarketParamsBuilder.Create (dcLocalKruger, null, null, null, null, null, null),</span>
+<span class="fc" id="L904">						MarketParamsBuilder.Create (dcLocalKruger, null, null, null, null, null, null),</span>
 						null,
 						&quot;CalibSwapRate&quot;),
 					1, 6, 1.) + &quot;   |   &quot; +
-<span class="nc" id="L908">				FormatUtil.FormatDouble (adblSwapQuote[i], 1, 6, 1.)</span>
+<span class="fc" id="L908">				FormatUtil.FormatDouble (adblSwapQuote[i], 1, 6, 1.)</span>
 			);
 
 		/*
@@ -913,7 +913,7 @@ import org.drip.state.inference.*;
 		 * 	construction methodologies for a sequence of bespoke swap instruments.
 		 */
 
-<span class="nc" id="L916">		CalibratableComponent[] aCC = SwapInstrumentsFromMaturityTenor (</span>
+<span class="fc" id="L916">		CalibratableComponent[] aCC = SwapInstrumentsFromMaturityTenor (</span>
 			dtSpot,
 			strCurrency,
 			new java.lang.String[] {
@@ -921,80 +921,80 @@ import org.drip.state.inference.*;
 			}
 		);
 
-<span class="nc" id="L924">		System.out.println (&quot;\n\t--------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L924">		System.out.println (&quot;\n\t--------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L926">		System.out.println (&quot;\t--------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L926">		System.out.println (&quot;\t--------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L928">		System.out.println (&quot;\t                                                BESPOKE SWAPS PAR RATE&quot;);</span>
+<span class="fc" id="L928">		System.out.println (&quot;\t                                                BESPOKE SWAPS PAR RATE&quot;);</span>
 
-<span class="nc" id="L930">		System.out.println (&quot;\t--------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L930">		System.out.println (&quot;\t--------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L932">		System.out.println (&quot;\t        SHAPE PRESERVING   |  LOCAL AKIMA  | LOCAL HARMONIC | LOCAL HYMAN83  | LOCAL HYMAN89  | LOCAL HUYNHLF  | LOCAL KRUGER &quot;);</span>
+<span class="fc" id="L932">		System.out.println (&quot;\t        SHAPE PRESERVING   |  LOCAL AKIMA  | LOCAL HARMONIC | LOCAL HYMAN83  | LOCAL HYMAN89  | LOCAL HUYNHLF  | LOCAL KRUGER &quot;);</span>
 
-<span class="nc" id="L934">		System.out.println (&quot;\t--------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L934">		System.out.println (&quot;\t--------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L936">		System.out.println (&quot;\t--------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L936">		System.out.println (&quot;\t--------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
 
-<span class="nc bnc" id="L938" title="All 2 branches missed.">		for (int i = 0; i &lt; aCC.length; ++i)</span>
-<span class="nc" id="L939">			System.out.println (&quot;\t[&quot; + aCC[i].maturityDate() + &quot;] = &quot; +</span>
-<span class="nc" id="L940">				FormatUtil.FormatDouble (</span>
-<span class="nc" id="L941">					aCC[i].measureValue (</span>
+<span class="fc bfc" id="L938" title="All 2 branches covered.">		for (int i = 0; i &lt; aCC.length; ++i)</span>
+<span class="fc" id="L939">			System.out.println (&quot;\t[&quot; + aCC[i].maturityDate() + &quot;] = &quot; +</span>
+<span class="fc" id="L940">				FormatUtil.FormatDouble (</span>
+<span class="fc" id="L941">					aCC[i].measureValue (</span>
 						valParams,
 						null,
-<span class="nc" id="L944">					MarketParamsBuilder.Create (dcShapePreserving, null, null, null, null, null, null),</span>
+<span class="fc" id="L944">					MarketParamsBuilder.Create (dcShapePreserving, null, null, null, null, null, null),</span>
 					null,
 					&quot;CalibSwapRate&quot;),
 				1, 6, 1.) + &quot;   |   &quot; +
-<span class="nc" id="L948">				FormatUtil.FormatDouble (</span>
-<span class="nc" id="L949">					aCC[i].measureValue (</span>
+<span class="fc" id="L948">				FormatUtil.FormatDouble (</span>
+<span class="fc" id="L949">					aCC[i].measureValue (</span>
 						valParams,
 						null,
-<span class="nc" id="L952">					MarketParamsBuilder.Create (dcLocalAkima, null, null, null, null, null, null),</span>
+<span class="fc" id="L952">					MarketParamsBuilder.Create (dcLocalAkima, null, null, null, null, null, null),</span>
 					null,
 					&quot;CalibSwapRate&quot;),
 				1, 6, 1.) + &quot;   |   &quot; +
-<span class="nc" id="L956">				FormatUtil.FormatDouble (</span>
-<span class="nc" id="L957">					aCC[i].measureValue (</span>
+<span class="fc" id="L956">				FormatUtil.FormatDouble (</span>
+<span class="fc" id="L957">					aCC[i].measureValue (</span>
 						valParams,
 						null,
-<span class="nc" id="L960">					MarketParamsBuilder.Create (dcLocalHarmonic, null, null, null, null, null, null),</span>
+<span class="fc" id="L960">					MarketParamsBuilder.Create (dcLocalHarmonic, null, null, null, null, null, null),</span>
 					null,
 					&quot;CalibSwapRate&quot;),
 				1, 6, 1.) + &quot;    |   &quot; +
-<span class="nc" id="L964">				FormatUtil.FormatDouble (</span>
-<span class="nc" id="L965">					aCC[i].measureValue (</span>
+<span class="fc" id="L964">				FormatUtil.FormatDouble (</span>
+<span class="fc" id="L965">					aCC[i].measureValue (</span>
 						valParams,
 						null,
-<span class="nc" id="L968">					MarketParamsBuilder.Create (dcLocalHyman83, null, null, null, null, null, null),</span>
+<span class="fc" id="L968">					MarketParamsBuilder.Create (dcLocalHyman83, null, null, null, null, null, null),</span>
 					null,
 					&quot;CalibSwapRate&quot;),
 					1, 6, 1.) + &quot;    |   &quot; +
-<span class="nc" id="L972">				FormatUtil.FormatDouble (</span>
-<span class="nc" id="L973">					aCC[i].measureValue (</span>
+<span class="fc" id="L972">				FormatUtil.FormatDouble (</span>
+<span class="fc" id="L973">					aCC[i].measureValue (</span>
 						valParams,
 						null,
-<span class="nc" id="L976">					MarketParamsBuilder.Create (dcLocalHyman89, null, null, null, null, null, null),</span>
+<span class="fc" id="L976">					MarketParamsBuilder.Create (dcLocalHyman89, null, null, null, null, null, null),</span>
 					null,
 					&quot;CalibSwapRate&quot;),
 					1, 6, 1.) + &quot;    |   &quot; +
-<span class="nc" id="L980">				FormatUtil.FormatDouble (</span>
-<span class="nc" id="L981">					aCC[i].measureValue (</span>
+<span class="fc" id="L980">				FormatUtil.FormatDouble (</span>
+<span class="fc" id="L981">					aCC[i].measureValue (</span>
 						valParams,
 						null,
-<span class="nc" id="L984">					MarketParamsBuilder.Create (dcLocalHuynhLeFloch, null, null, null, null, null, null),</span>
+<span class="fc" id="L984">					MarketParamsBuilder.Create (dcLocalHuynhLeFloch, null, null, null, null, null, null),</span>
 					null,
 					&quot;CalibSwapRate&quot;),
 					1, 6, 1.) + &quot;    |   &quot; +
-<span class="nc" id="L988">				FormatUtil.FormatDouble (</span>
-<span class="nc" id="L989">					aCC[i].measureValue (</span>
+<span class="fc" id="L988">				FormatUtil.FormatDouble (</span>
+<span class="fc" id="L989">					aCC[i].measureValue (</span>
 						valParams,
 						null,
-<span class="nc" id="L992">					MarketParamsBuilder.Create (dcLocalKruger, null, null, null, null, null, null),</span>
+<span class="fc" id="L992">					MarketParamsBuilder.Create (dcLocalKruger, null, null, null, null, null, null),</span>
 					null,
 					&quot;CalibSwapRate&quot;),
 				1, 6, 1.)
 			);
-<span class="nc" id="L997">	}</span>
+<span class="fc" id="L997">	}</span>
 
 	public static final void main (
 		final String[] astrArgs)
@@ -1004,16 +1004,16 @@ import org.drip.state.inference.*;
 		 * Initialize the Credit Analytics Library
 		 */
 
-<span class="nc" id="L1007">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L1007">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L1009">		JulianDate dtToday = DateUtil.Today().addTenor (&quot;0D&quot;);</span>
+<span class="fc" id="L1009">		JulianDate dtToday = DateUtil.Today().addTenor (&quot;0D&quot;);</span>
 
-<span class="nc" id="L1011">		String strCurrency = &quot;USD&quot;;</span>
+<span class="fc" id="L1011">		String strCurrency = &quot;USD&quot;;</span>
 
-<span class="nc" id="L1013">		ShapeDFZeroLocalSmoothSample (</span>
+<span class="fc" id="L1013">		ShapeDFZeroLocalSmoothSample (</span>
 			dtToday,
 			strCurrency
 		);
-<span class="nc" id="L1017">	}</span>
+<span class="fc" id="L1017">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

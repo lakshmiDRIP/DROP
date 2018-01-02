@@ -69,9 +69,9 @@ public class BasisSplineFXForward extends org.drip.state.fx.FXCurve {
 		final boolean bBasisOnDenom)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L72">		return new org.drip.product.fx.FXForwardComponent (&quot;FXFWD_&quot; +</span>
-<span class="nc" id="L73">			org.drip.quant.common.StringUtil.GUID(), currencyPair(), epoch().julian(), iNodeDate, 1.,</span>
-<span class="nc" id="L74">				null).discountCurveBasis (valParam, dcNum, dcDenom, _dblFXSpot, fx (iNodeDate),</span>
+<span class="fc" id="L72">		return new org.drip.product.fx.FXForwardComponent (&quot;FXFWD_&quot; +</span>
+<span class="fc" id="L73">			org.drip.quant.common.StringUtil.GUID(), currencyPair(), epoch().julian(), iNodeDate, 1.,</span>
+<span class="fc" id="L74">				null).discountCurveBasis (valParam, dcNum, dcDenom, _dblFXSpot, fx (iNodeDate),</span>
 					bBasisOnDenom);
 	}
 
@@ -129,24 +129,24 @@ public class BasisSplineFXForward extends org.drip.state.fx.FXCurve {
 		final org.drip.state.discount.MergedDiscountForwardCurve dcDenom,
 		final boolean bBasisOnDenom)
 	{
-<span class="nc bnc" id="L132" title="All 2 branches missed.">		if (null == aiDateNode) return null;</span>
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">		if (null == aiDateNode) return null;</span>
 
-<span class="nc" id="L134">		int iNumBasis = aiDateNode.length;</span>
-<span class="nc" id="L135">		double[] adblBasis = new double[iNumBasis];</span>
+<span class="fc" id="L134">		int iNumBasis = aiDateNode.length;</span>
+<span class="fc" id="L135">		double[] adblBasis = new double[iNumBasis];</span>
 
-<span class="nc bnc" id="L137" title="All 2 branches missed.">		if (0 == iNumBasis) return null;</span>
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">		if (0 == iNumBasis) return null;</span>
 
-<span class="nc bnc" id="L139" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumBasis; ++i) {</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumBasis; ++i) {</span>
 			try {
-<span class="nc" id="L141">				adblBasis[i] = nodeBasis (aiDateNode[i], valParams, dcNum, dcDenom, bBasisOnDenom);</span>
+<span class="fc" id="L141">				adblBasis[i] = nodeBasis (aiDateNode[i], valParams, dcNum, dcDenom, bBasisOnDenom);</span>
 <span class="nc" id="L142">			} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L143">				e.printStackTrace();</span>
 
 <span class="nc" id="L145">				return null;</span>
-<span class="nc" id="L146">			}</span>
+<span class="fc" id="L146">			}</span>
 		}
 
-<span class="nc" id="L149">		return adblBasis;</span>
+<span class="fc" id="L149">		return adblBasis;</span>
 	}
 
 	@Override public double[] bootstrapBasis (
@@ -156,28 +156,28 @@ public class BasisSplineFXForward extends org.drip.state.fx.FXCurve {
 		final org.drip.state.discount.MergedDiscountForwardCurve dcDenom,
 		final boolean bBasisOnDenom)
 	{
-<span class="nc bnc" id="L159" title="All 2 branches missed.">		if (null == aiDateNode) return null;</span>
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">		if (null == aiDateNode) return null;</span>
 
-<span class="nc" id="L161">		int iNumBasis = aiDateNode.length;</span>
-<span class="nc" id="L162">		double[] adblBasis = new double[iNumBasis];</span>
-<span class="nc bnc" id="L163" title="All 2 branches missed.">		org.drip.state.discount.MergedDiscountForwardCurve dcBasis = bBasisOnDenom ? dcDenom : dcNum;</span>
+<span class="fc" id="L161">		int iNumBasis = aiDateNode.length;</span>
+<span class="fc" id="L162">		double[] adblBasis = new double[iNumBasis];</span>
+<span class="fc bfc" id="L163" title="All 2 branches covered.">		org.drip.state.discount.MergedDiscountForwardCurve dcBasis = bBasisOnDenom ? dcDenom : dcNum;</span>
 
-<span class="nc bnc" id="L165" title="All 4 branches missed.">		if (0 == iNumBasis || null == dcBasis) return null;</span>
+<span class="pc bpc" id="L165" title="2 of 4 branches missed.">		if (0 == iNumBasis || null == dcBasis) return null;</span>
 
-<span class="nc bnc" id="L167" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumBasis; ++i) {</span>
+<span class="fc bfc" id="L167" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumBasis; ++i) {</span>
 			try {
-<span class="nc bnc" id="L169" title="All 2 branches missed.">				if (bBasisOnDenom)</span>
-<span class="nc" id="L170">					adblBasis[i] = nodeBasis (aiDateNode[i], valParams, dcNum, dcBasis, true);</span>
+<span class="fc bfc" id="L169" title="All 2 branches covered.">				if (bBasisOnDenom)</span>
+<span class="fc" id="L170">					adblBasis[i] = nodeBasis (aiDateNode[i], valParams, dcNum, dcBasis, true);</span>
 				else
-<span class="nc" id="L172">					adblBasis[i] = nodeBasis (aiDateNode[i], valParams, dcBasis, dcDenom, false);</span>
+<span class="fc" id="L172">					adblBasis[i] = nodeBasis (aiDateNode[i], valParams, dcBasis, dcDenom, false);</span>
 <span class="nc" id="L173">			} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L174">				e.printStackTrace();</span>
 
 <span class="nc" id="L176">				return null;</span>
-<span class="nc" id="L177">			}</span>
+<span class="fc" id="L177">			}</span>
 		}
 
-<span class="nc" id="L180">		return adblBasis;</span>
+<span class="fc" id="L180">		return adblBasis;</span>
 	}
 
 	@Override public double[] impliedNodeRates (

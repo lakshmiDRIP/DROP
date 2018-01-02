@@ -72,15 +72,15 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L75">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L75">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L77">		String strCurrency = &quot;USD&quot;;</span>
-<span class="nc" id="L78">		double dblBump = 0.0001;</span>
-<span class="nc" id="L79">		boolean bIsBumpProportional = false;</span>
+<span class="fc" id="L77">		String strCurrency = &quot;USD&quot;;</span>
+<span class="fc" id="L78">		double dblBump = 0.0001;</span>
+<span class="fc" id="L79">		boolean bIsBumpProportional = false;</span>
 
-<span class="nc" id="L81">		JulianDate dtSpot = DateUtil.Today();</span>
+<span class="fc" id="L81">		JulianDate dtSpot = DateUtil.Today();</span>
 
-<span class="nc" id="L83">		String[] astrDepositMaturityTenor = new String[] {</span>
+<span class="fc" id="L83">		String[] astrDepositMaturityTenor = new String[] {</span>
 			&quot;01D&quot;,
 			&quot;02D&quot;,
 			&quot;07D&quot;,
@@ -89,7 +89,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			&quot;60D&quot;
 		};
 
-<span class="nc" id="L92">		double[] adblDepositQuote = new double[] {</span>
+<span class="fc" id="L92">		double[] adblDepositQuote = new double[] {</span>
 			0.0013,		//  1D
 			0.0017,		//  2D
 			0.0017,		//  7D
@@ -98,7 +98,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			0.0023		// 60D
 		};
 
-<span class="nc" id="L101">		double[] adblFuturesQuote = new double[] {</span>
+<span class="fc" id="L101">		double[] adblFuturesQuote = new double[] {</span>
 			0.0027,
 			0.0032,
 			0.0041,
@@ -109,7 +109,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			0.0160
 		};
 
-<span class="nc" id="L112">		String[] astrFixFloatMaturityTenor = new String[] {</span>
+<span class="fc" id="L112">		String[] astrFixFloatMaturityTenor = new String[] {</span>
 			&quot;04Y&quot;,
 			&quot;05Y&quot;,
 			&quot;06Y&quot;,
@@ -127,7 +127,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			&quot;50Y&quot;
 		};
 
-<span class="nc" id="L130">		double[] adblFixFloatQuote = new double[] {</span>
+<span class="fc" id="L130">		double[] adblFixFloatQuote = new double[] {</span>
 			0.0166,		//   4Y
 			0.0206,		//   5Y
 			0.0241,		//   6Y
@@ -145,7 +145,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			0.0409		//  50Y
 		};
 
-<span class="nc" id="L148">		Map&lt;String, MergedDiscountForwardCurve&gt; mapFundingCurve = LatentMarketStateBuilder.BumpedFundingCurve (</span>
+<span class="fc" id="L148">		Map&lt;String, MergedDiscountForwardCurve&gt; mapFundingCurve = LatentMarketStateBuilder.BumpedFundingCurve (</span>
 			dtSpot,
 			strCurrency,
 			astrDepositMaturityTenor,
@@ -161,19 +161,19 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			bIsBumpProportional
 		);
 
-<span class="nc" id="L164">		Component[] aDepositComp = OTCInstrumentBuilder.FundingDeposit (</span>
+<span class="fc" id="L164">		Component[] aDepositComp = OTCInstrumentBuilder.FundingDeposit (</span>
 			dtSpot,
 			strCurrency,
 			astrDepositMaturityTenor
 		);
 
-<span class="nc" id="L170">		Component[] aFuturesComp = ExchangeInstrumentBuilder.ForwardRateFuturesPack (</span>
+<span class="fc" id="L170">		Component[] aFuturesComp = ExchangeInstrumentBuilder.ForwardRateFuturesPack (</span>
 			dtSpot,
 			adblFuturesQuote.length,
 			strCurrency
 		);
 
-<span class="nc" id="L176">		Component[] aFixFloatComp = OTCInstrumentBuilder.FixFloatStandard (</span>
+<span class="fc" id="L176">		Component[] aFixFloatComp = OTCInstrumentBuilder.FixFloatStandard (</span>
 			dtSpot,
 			strCurrency,
 			&quot;ALL&quot;,
@@ -182,24 +182,24 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			0.
 		);
 
-<span class="nc" id="L185">		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());</span>
+<span class="fc" id="L185">		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());</span>
 
-<span class="nc" id="L187">		System.out.println (&quot;\n\t|-------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L187">		System.out.println (&quot;\n\t|-------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L189" title="All 2 branches missed.">		for (Map.Entry&lt;String, MergedDiscountForwardCurve&gt; meFunding : mapFundingCurve.entrySet()) {</span>
-<span class="nc" id="L190">			String strKey = meFunding.getKey();</span>
+<span class="fc bfc" id="L189" title="All 2 branches covered.">		for (Map.Entry&lt;String, MergedDiscountForwardCurve&gt; meFunding : mapFundingCurve.entrySet()) {</span>
+<span class="fc" id="L190">			String strKey = meFunding.getKey();</span>
 
-<span class="nc bnc" id="L192" title="All 2 branches missed.">			if (!strKey.startsWith (&quot;deposit&quot;)) continue;</span>
+<span class="fc bfc" id="L192" title="All 2 branches covered.">			if (!strKey.startsWith (&quot;deposit&quot;)) continue;</span>
 
-<span class="nc" id="L194">			CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();</span>
+<span class="fc" id="L194">			CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();</span>
 
-<span class="nc" id="L196">			csqc.setFundingState (meFunding.getValue());</span>
+<span class="fc" id="L196">			csqc.setFundingState (meFunding.getValue());</span>
 
-<span class="nc" id="L198">			System.out.print (&quot;\t|  [&quot; + meFunding.getKey() + &quot;] =&gt; &quot;);</span>
+<span class="fc" id="L198">			System.out.print (&quot;\t|  [&quot; + meFunding.getKey() + &quot;] =&gt; &quot;);</span>
 
-<span class="nc bnc" id="L200" title="All 2 branches missed.">			for (Component comp : aDepositComp)</span>
-<span class="nc" id="L201">				System.out.print (FormatUtil.FormatDouble (</span>
-<span class="nc" id="L202">					comp.measureValue (</span>
+<span class="fc bfc" id="L200" title="All 2 branches covered.">			for (Component comp : aDepositComp)</span>
+<span class="fc" id="L201">				System.out.print (FormatUtil.FormatDouble (</span>
+<span class="fc" id="L202">					comp.measureValue (</span>
 						valParams,
 						null,
 						csqc,
@@ -207,27 +207,27 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 						&quot;ForwardRate&quot;
 					), 1, 4, 1.) + &quot; |&quot;);
 
-<span class="nc" id="L210">			System.out.print (&quot;|\n&quot;);</span>
-<span class="nc" id="L211">		}</span>
+<span class="fc" id="L210">			System.out.print (&quot;|\n&quot;);</span>
+<span class="fc" id="L211">		}</span>
 
-<span class="nc" id="L213">		System.out.println (&quot;\t|-------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L213">		System.out.println (&quot;\t|-------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L215">		System.out.println (&quot;\n\t|-----------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L215">		System.out.println (&quot;\n\t|-----------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L217" title="All 2 branches missed.">		for (Map.Entry&lt;String, MergedDiscountForwardCurve&gt; meFunding : mapFundingCurve.entrySet()) {</span>
-<span class="nc" id="L218">			String strKey = meFunding.getKey();</span>
+<span class="fc bfc" id="L217" title="All 2 branches covered.">		for (Map.Entry&lt;String, MergedDiscountForwardCurve&gt; meFunding : mapFundingCurve.entrySet()) {</span>
+<span class="fc" id="L218">			String strKey = meFunding.getKey();</span>
 
-<span class="nc bnc" id="L220" title="All 2 branches missed.">			if (!strKey.startsWith (&quot;futures&quot;)) continue;</span>
+<span class="fc bfc" id="L220" title="All 2 branches covered.">			if (!strKey.startsWith (&quot;futures&quot;)) continue;</span>
 
-<span class="nc" id="L222">			CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();</span>
+<span class="fc" id="L222">			CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();</span>
 
-<span class="nc" id="L224">			csqc.setFundingState (meFunding.getValue());</span>
+<span class="fc" id="L224">			csqc.setFundingState (meFunding.getValue());</span>
 
-<span class="nc" id="L226">			System.out.print (&quot;\t|  [&quot; + meFunding.getKey() + &quot;] =&gt; &quot;);</span>
+<span class="fc" id="L226">			System.out.print (&quot;\t|  [&quot; + meFunding.getKey() + &quot;] =&gt; &quot;);</span>
 
-<span class="nc bnc" id="L228" title="All 2 branches missed.">			for (Component comp : aFuturesComp)</span>
-<span class="nc" id="L229">				System.out.print (FormatUtil.FormatDouble (</span>
-<span class="nc" id="L230">					comp.measureValue (</span>
+<span class="fc bfc" id="L228" title="All 2 branches covered.">			for (Component comp : aFuturesComp)</span>
+<span class="fc" id="L229">				System.out.print (FormatUtil.FormatDouble (</span>
+<span class="fc" id="L230">					comp.measureValue (</span>
 						valParams,
 						null,
 						csqc,
@@ -235,27 +235,27 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 						&quot;ForwardRate&quot;
 					), 1, 4, 1.) + &quot; |&quot;);
 
-<span class="nc" id="L238">			System.out.print (&quot;|\n&quot;);</span>
-<span class="nc" id="L239">		}</span>
+<span class="fc" id="L238">			System.out.print (&quot;|\n&quot;);</span>
+<span class="fc" id="L239">		}</span>
 
-<span class="nc" id="L241">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L241">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L243">		System.out.println (&quot;\n\t|--------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L243">		System.out.println (&quot;\n\t|--------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L245" title="All 2 branches missed.">		for (Map.Entry&lt;String, MergedDiscountForwardCurve&gt; meFunding : mapFundingCurve.entrySet()) {</span>
-<span class="nc" id="L246">			String strKey = meFunding.getKey();</span>
+<span class="fc bfc" id="L245" title="All 2 branches covered.">		for (Map.Entry&lt;String, MergedDiscountForwardCurve&gt; meFunding : mapFundingCurve.entrySet()) {</span>
+<span class="fc" id="L246">			String strKey = meFunding.getKey();</span>
 
-<span class="nc bnc" id="L248" title="All 2 branches missed.">			if (!strKey.startsWith (&quot;fixfloat&quot;)) continue;</span>
+<span class="fc bfc" id="L248" title="All 2 branches covered.">			if (!strKey.startsWith (&quot;fixfloat&quot;)) continue;</span>
 
-<span class="nc" id="L250">			CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();</span>
+<span class="fc" id="L250">			CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();</span>
 
-<span class="nc" id="L252">			csqc.setFundingState (meFunding.getValue());</span>
+<span class="fc" id="L252">			csqc.setFundingState (meFunding.getValue());</span>
 
-<span class="nc" id="L254">			System.out.print (&quot;\t|  [&quot; + meFunding.getKey() + &quot;] =&gt; &quot;);</span>
+<span class="fc" id="L254">			System.out.print (&quot;\t|  [&quot; + meFunding.getKey() + &quot;] =&gt; &quot;);</span>
 
-<span class="nc bnc" id="L256" title="All 2 branches missed.">			for (Component comp : aFixFloatComp)</span>
-<span class="nc" id="L257">				System.out.print (FormatUtil.FormatDouble (</span>
-<span class="nc" id="L258">					comp.measureValue (</span>
+<span class="fc bfc" id="L256" title="All 2 branches covered.">			for (Component comp : aFixFloatComp)</span>
+<span class="fc" id="L257">				System.out.print (FormatUtil.FormatDouble (</span>
+<span class="fc" id="L258">					comp.measureValue (</span>
 						valParams,
 						null,
 						csqc,
@@ -263,33 +263,33 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 						&quot;SwapRate&quot;
 					), 1, 4, 1.) + &quot; |&quot;);
 
-<span class="nc" id="L266">			System.out.print (&quot;|\n&quot;);</span>
-<span class="nc" id="L267">		}</span>
+<span class="fc" id="L266">			System.out.print (&quot;|\n&quot;);</span>
+<span class="fc" id="L267">		}</span>
 
-<span class="nc" id="L269">		System.out.println (&quot;\t|--------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L269">		System.out.println (&quot;\t|--------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L271">		System.out.println (&quot;\n\t|-----------------------------------------------------||&quot;);</span>
+<span class="fc" id="L271">		System.out.println (&quot;\n\t|-----------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L273">		CurveSurfaceQuoteContainer csqcBase = new CurveSurfaceQuoteContainer();</span>
+<span class="fc" id="L273">		CurveSurfaceQuoteContainer csqcBase = new CurveSurfaceQuoteContainer();</span>
 
-<span class="nc" id="L275">		csqcBase.setFundingState (mapFundingCurve.get (&quot;Base&quot;));</span>
+<span class="fc" id="L275">		csqcBase.setFundingState (mapFundingCurve.get (&quot;Base&quot;));</span>
 
-<span class="nc" id="L277">		CurveSurfaceQuoteContainer csqcBump = new CurveSurfaceQuoteContainer();</span>
+<span class="fc" id="L277">		CurveSurfaceQuoteContainer csqcBump = new CurveSurfaceQuoteContainer();</span>
 
-<span class="nc" id="L279">		csqcBump.setFundingState (mapFundingCurve.get (&quot;Bump&quot;));</span>
+<span class="fc" id="L279">		csqcBump.setFundingState (mapFundingCurve.get (&quot;Bump&quot;));</span>
 
-<span class="nc bnc" id="L281" title="All 2 branches missed.">		for (Component comp : aDepositComp)</span>
-<span class="nc" id="L282">			System.out.println (</span>
+<span class="fc bfc" id="L281" title="All 2 branches covered.">		for (Component comp : aDepositComp)</span>
+<span class="fc" id="L282">			System.out.println (</span>
 				&quot;\t| FORWARD RATE  =&gt; &quot; +
-<span class="nc" id="L284">				comp.maturityDate() + &quot; | &quot; +</span>
-<span class="nc" id="L285">				FormatUtil.FormatDouble (comp.measureValue (</span>
+<span class="fc" id="L284">				comp.maturityDate() + &quot; | &quot; +</span>
+<span class="fc" id="L285">				FormatUtil.FormatDouble (comp.measureValue (</span>
 					valParams,
 					null,
 					csqcBase,
 					null,
 					&quot;ForwardRate&quot;
 				), 1, 6, 1.) + &quot; | &quot; +
-<span class="nc" id="L292">				FormatUtil.FormatDouble (comp.measureValue (</span>
+<span class="fc" id="L292">				FormatUtil.FormatDouble (comp.measureValue (</span>
 					valParams,
 					null,
 					csqcBump,
@@ -298,18 +298,18 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 				), 1, 6, 1.) + &quot; ||&quot;
 			);
 
-<span class="nc bnc" id="L301" title="All 2 branches missed.">		for (Component comp : aFuturesComp)</span>
-<span class="nc" id="L302">			System.out.println (</span>
+<span class="fc bfc" id="L301" title="All 2 branches covered.">		for (Component comp : aFuturesComp)</span>
+<span class="fc" id="L302">			System.out.println (</span>
 				&quot;\t| FORWARD RATE  =&gt; &quot; +
-<span class="nc" id="L304">				comp.maturityDate() + &quot; | &quot; +</span>
-<span class="nc" id="L305">				FormatUtil.FormatDouble (comp.measureValue (</span>
+<span class="fc" id="L304">				comp.maturityDate() + &quot; | &quot; +</span>
+<span class="fc" id="L305">				FormatUtil.FormatDouble (comp.measureValue (</span>
 					valParams,
 					null,
 					csqcBase,
 					null,
 					&quot;ForwardRate&quot;
 				), 1, 6, 1.) + &quot; | &quot; +
-<span class="nc" id="L312">				FormatUtil.FormatDouble (comp.measureValue (</span>
+<span class="fc" id="L312">				FormatUtil.FormatDouble (comp.measureValue (</span>
 					valParams,
 					null,
 					csqcBump,
@@ -318,18 +318,18 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 				), 1, 6, 1.) + &quot; ||&quot;
 			);
 
-<span class="nc bnc" id="L321" title="All 2 branches missed.">		for (Component comp : aFixFloatComp)</span>
-<span class="nc" id="L322">			System.out.println (</span>
+<span class="fc bfc" id="L321" title="All 2 branches covered.">		for (Component comp : aFixFloatComp)</span>
+<span class="fc" id="L322">			System.out.println (</span>
 				&quot;\t|  SWAP   RATE  =&gt; &quot; +
-<span class="nc" id="L324">				comp.maturityDate() + &quot; | &quot; +</span>
-<span class="nc" id="L325">				FormatUtil.FormatDouble (comp.measureValue (</span>
+<span class="fc" id="L324">				comp.maturityDate() + &quot; | &quot; +</span>
+<span class="fc" id="L325">				FormatUtil.FormatDouble (comp.measureValue (</span>
 					valParams,
 					null,
 					csqcBase,
 					null,
 					&quot;SwapRate&quot;
 				), 1, 6, 1.) + &quot; | &quot; +
-<span class="nc" id="L332">				FormatUtil.FormatDouble (comp.measureValue (</span>
+<span class="fc" id="L332">				FormatUtil.FormatDouble (comp.measureValue (</span>
 					valParams,
 					null,
 					csqcBump,
@@ -338,7 +338,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 				), 1, 6, 1.) + &quot; ||&quot;
 			);
 
-<span class="nc" id="L341">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
-<span class="nc" id="L342">	}</span>
+<span class="fc" id="L341">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
+<span class="fc" id="L342">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

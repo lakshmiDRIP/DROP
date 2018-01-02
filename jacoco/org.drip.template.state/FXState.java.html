@@ -69,23 +69,23 @@ import org.drip.state.fx.FXCurve;
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L72">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L72">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L74">		CurrencyPair cp = new CurrencyPair (</span>
+<span class="fc" id="L74">		CurrencyPair cp = new CurrencyPair (</span>
 			&quot;EUR&quot;,
 			&quot;USD&quot;,
 			&quot;USD&quot;,
 			10000.
 		);
 
-<span class="nc" id="L81">		JulianDate dtSpot = DateUtil.Today().addBusDays (</span>
+<span class="fc" id="L81">		JulianDate dtSpot = DateUtil.Today().addBusDays (</span>
 			0,
-<span class="nc" id="L83">			cp.denomCcy()</span>
+<span class="fc" id="L83">			cp.denomCcy()</span>
 		);
 
-<span class="nc" id="L86">		double dblFXSpot = 1.1013;</span>
+<span class="fc" id="L86">		double dblFXSpot = 1.1013;</span>
 
-<span class="nc" id="L88">		String[] astrMaturityTenor = new String[] {</span>
+<span class="fc" id="L88">		String[] astrMaturityTenor = new String[] {</span>
 			&quot;1D&quot;,
 			&quot;2D&quot;,
 			&quot;3D&quot;,
@@ -99,7 +99,7 @@ import org.drip.state.fx.FXCurve;
 			&quot;9M&quot;
 		};
 
-<span class="nc" id="L102">		double[] adblFXForward = new double[] {</span>
+<span class="fc" id="L102">		double[] adblFXForward = new double[] {</span>
 			1.1011,		// &quot;1D&quot;
 			1.1007,		// &quot;2D&quot;
 			1.0999,		// &quot;3D&quot;
@@ -113,7 +113,7 @@ import org.drip.state.fx.FXCurve;
 			1.1011		// &quot;9M&quot;
 		};
 
-<span class="nc" id="L116">		FXCurve fxfc = LatentMarketStateBuilder.SmoothFXCurve (</span>
+<span class="fc" id="L116">		FXCurve fxfc = LatentMarketStateBuilder.SmoothFXCurve (</span>
 			dtSpot,
 			cp,
 			astrMaturityTenor,
@@ -122,20 +122,20 @@ import org.drip.state.fx.FXCurve;
 			dblFXSpot
 		);
 
-<span class="nc" id="L125">		String strLatentStateLabel = fxfc.label().fullyQualifiedName();</span>
+<span class="fc" id="L125">		String strLatentStateLabel = fxfc.label().fullyQualifiedName();</span>
 
-<span class="nc" id="L127">		System.out.println (&quot;\n\n\t||--------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L127">		System.out.println (&quot;\n\n\t||--------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L129" title="All 2 branches missed.">		for (int i = 0; i &lt; adblFXForward.length; ++i)</span>
-<span class="nc" id="L130">			System.out.println (</span>
+<span class="fc bfc" id="L129" title="All 2 branches covered.">		for (int i = 0; i &lt; adblFXForward.length; ++i)</span>
+<span class="fc" id="L130">			System.out.println (</span>
 				&quot;\t||  &quot; + strLatentStateLabel + &quot; |  FX FORWARD  | &quot; +
-<span class="nc" id="L132">				astrMaturityTenor[i] + &quot; | &quot; + FormatUtil.FormatDouble (adblFXForward[i], 1, 4, 1.) +</span>
+<span class="fc" id="L132">				astrMaturityTenor[i] + &quot; | &quot; + FormatUtil.FormatDouble (adblFXForward[i], 1, 4, 1.) +</span>
 				&quot; | Outright | &quot; +
-<span class="nc" id="L134">				FormatUtil.FormatDouble (fxfc.fx (astrMaturityTenor[i]), 1, 4, 1.) +</span>
+<span class="fc" id="L134">				FormatUtil.FormatDouble (fxfc.fx (astrMaturityTenor[i]), 1, 4, 1.) +</span>
 				&quot;  ||&quot;
 			);
 
-<span class="nc" id="L138">		System.out.println (&quot;\t||--------------------------------------------------------------||\n&quot;);</span>
-<span class="nc" id="L139">	}</span>
+<span class="fc" id="L138">		System.out.println (&quot;\t||--------------------------------------------------------------||\n&quot;);</span>
+<span class="fc" id="L139">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

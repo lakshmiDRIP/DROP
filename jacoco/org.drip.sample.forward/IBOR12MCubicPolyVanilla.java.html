@@ -76,31 +76,31 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Initialize the Credit Analytics Library
 		 */
 
-<span class="nc" id="L79">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L79">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L81">		JulianDate dtValue = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L81">		JulianDate dtValue = DateUtil.CreateFromYMD (</span>
 			2012,
 			DateUtil.DECEMBER,
 			11
 		);
 
-<span class="nc" id="L87">		String strTenor = &quot;12M&quot;;</span>
-<span class="nc" id="L88">		String strCurrency = &quot;USD&quot;;</span>
+<span class="fc" id="L87">		String strTenor = &quot;12M&quot;;</span>
+<span class="fc" id="L88">		String strCurrency = &quot;USD&quot;;</span>
 
-<span class="nc" id="L90">		ForwardLabel fri = ForwardLabel.Create (</span>
+<span class="fc" id="L90">		ForwardLabel fri = ForwardLabel.Create (</span>
 			strCurrency,
 			strTenor
 		);
 
-<span class="nc" id="L95">		MergedDiscountForwardCurve dcEONIA = OvernightIndexCurve.MakeDC (</span>
+<span class="fc" id="L95">		MergedDiscountForwardCurve dcEONIA = OvernightIndexCurve.MakeDC (</span>
 			dtValue,
 			strCurrency
 		);
 
-<span class="nc" id="L100">		SegmentCustomBuilderControl scbcCubic = new SegmentCustomBuilderControl (</span>
+<span class="fc" id="L100">		SegmentCustomBuilderControl scbcCubic = new SegmentCustomBuilderControl (</span>
 			MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 			new PolynomialFunctionSetParams (4),
-<span class="nc" id="L103">			SegmentInelasticDesignControl.Create (</span>
+<span class="fc" id="L103">			SegmentInelasticDesignControl.Create (</span>
 				2,
 				2
 			),
@@ -115,7 +115,7 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Construct the Array of Deposit Instruments and their Quotes from the given set of parameters
 		 */
 
-<span class="nc" id="L118">		double[] adblDepositQuote = new double[] {</span>
+<span class="fc" id="L118">		double[] adblDepositQuote = new double[] {</span>
 			0.006537,
 			0.006187,
 			0.005772,
@@ -123,7 +123,7 @@ import org.drip.state.identifier.ForwardLabel;
 			0.005400
 		};
 
-<span class="nc" id="L126">		String[] astrDepositTenor = new String[] {</span>
+<span class="fc" id="L126">		String[] astrDepositTenor = new String[] {</span>
 			 &quot;1M&quot;,
 			 &quot;3M&quot;,
 			 &quot;6M&quot;,
@@ -135,7 +135,7 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Construct the Array of Fix-Float Component and their Quotes from the given set of parameters
 		 */
 
-<span class="nc" id="L138">		double[] adblFRAQuote = new double[] {</span>
+<span class="fc" id="L138">		double[] adblFRAQuote = new double[] {</span>
 			0.004974,
 			0.004783,
 			0.004822,
@@ -144,7 +144,7 @@ import org.drip.state.identifier.ForwardLabel;
 			0.006025
 		};
 
-<span class="nc" id="L147">		String[] astrFRATenor = new String[] {</span>
+<span class="fc" id="L147">		String[] astrFRATenor = new String[] {</span>
 			 &quot;3M&quot;,
 			 &quot;6M&quot;,
 			 &quot;9M&quot;,
@@ -157,7 +157,7 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Construct the Array of Float-Float Component and their Quotes from the given set of parameters
 		 */
 
-<span class="nc" id="L160">		double[] adblFloatFloatQuote = new double[] {</span>
+<span class="fc" id="L160">		double[] adblFloatFloatQuote = new double[] {</span>
 			-0.002070,	//  3Y
 			-0.001640,	//  4Y
 			-0.001510,	//  5Y
@@ -174,7 +174,7 @@ import org.drip.state.identifier.ForwardLabel;
 			-0.000660	// 30Y
 		};
 
-<span class="nc" id="L177">		String[] astrFloatFloatTenor = new String[] {</span>
+<span class="fc" id="L177">		String[] astrFloatFloatTenor = new String[] {</span>
 			  &quot;3Y&quot;,
 			  &quot;4Y&quot;,
 			  &quot;5Y&quot;,
@@ -195,28 +195,28 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Construct the Array of Terminal Synthetic Float-Float Components and their Quotes from the given set of parameters
 		 */
 
-<span class="nc" id="L198">		String[] astrSyntheticFloatFloatTenor = new String[] {</span>
+<span class="fc" id="L198">		String[] astrSyntheticFloatFloatTenor = new String[] {</span>
 			&quot;35Y&quot;,
 			&quot;40Y&quot;,
 			&quot;50Y&quot;,
 			&quot;60Y&quot;
 		};
 
-<span class="nc" id="L205">		double[] adblSyntheticFloatFloatQuote = new double[] {</span>
+<span class="fc" id="L205">		double[] adblSyntheticFloatFloatQuote = new double[] {</span>
 			-0.000660,
 			-0.000660,
 			-0.000660,
 			-0.000660
 		};
 
-<span class="nc" id="L212">		ForwardCurve fc6M = IBOR6MCubicPolyVanilla.Make6MForward (</span>
+<span class="fc" id="L212">		ForwardCurve fc6M = IBOR6MCubicPolyVanilla.Make6MForward (</span>
 			dtValue,
 			strCurrency,
 			&quot;6M&quot;,
 			true
 		);
 
-<span class="nc" id="L219">		ForwardCurve fc12M = IBORCurve.CustomIBORBuilderSample (</span>
+<span class="fc" id="L219">		ForwardCurve fc12M = IBORCurve.CustomIBORBuilderSample (</span>
 			dcEONIA,
 			fc6M,
 			fri,
@@ -240,12 +240,12 @@ import org.drip.state.identifier.ForwardLabel;
 			true
 		);
 
-<span class="nc" id="L243">		IBORCurve.ForwardJack (</span>
+<span class="fc" id="L243">		IBORCurve.ForwardJack (</span>
 			dtValue,
 			&quot;---- VANILLA CUBIC POLYNOMIAL FORWARD CURVE SENSITIVITY ---&quot;,
 			fc12M,
 			&quot;DerivedParBasisSpread&quot;
 		);
-<span class="nc" id="L249">	}</span>
+<span class="fc" id="L249">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

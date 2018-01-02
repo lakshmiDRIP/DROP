@@ -111,14 +111,14 @@ import org.drip.state.identifier.ForwardLabel;
 		final String strMaturityTenor,
 		final double dblCoupon)
 	{
-<span class="nc" id="L114">		FixedFloatSwapConvention ffConv = IBORFixedFloatContainer.ConventionFromJurisdiction (</span>
+<span class="fc" id="L114">		FixedFloatSwapConvention ffConv = IBORFixedFloatContainer.ConventionFromJurisdiction (</span>
 			strCurrency,
 			&quot;ALL&quot;,
 			strMaturityTenor,
 			&quot;MAIN&quot;
 		);
 
-<span class="nc" id="L121">		return ffConv.createFixFloatComponent (</span>
+<span class="fc" id="L121">		return ffConv.createFixFloatComponent (</span>
 			dtSpot,
 			strMaturityTenor,
 			dblCoupon,
@@ -134,9 +134,9 @@ import org.drip.state.identifier.ForwardLabel;
 		final String strMaturityTenor,
 		final double dblBasis)
 	{
-<span class="nc" id="L137">		FloatFloatSwapConvention ffConv = IBORFloatFloatContainer.ConventionFromJurisdiction (strCurrency);</span>
+<span class="fc" id="L137">		FloatFloatSwapConvention ffConv = IBORFloatFloatContainer.ConventionFromJurisdiction (strCurrency);</span>
 
-<span class="nc" id="L139">		return ffConv.createFloatFloatComponent (</span>
+<span class="fc" id="L139">		return ffConv.createFloatFloatComponent (</span>
 			dtSpot,
 			strDerivedTenor,
 			strMaturityTenor,
@@ -158,9 +158,9 @@ import org.drip.state.identifier.ForwardLabel;
 		final String strCurrency)
 		throws Exception
 	{
-<span class="nc" id="L161">		CalibratableComponent[] aCalibComp = new CalibratableComponent[aiDay.length + iNumFutures];</span>
+<span class="fc" id="L161">		CalibratableComponent[] aCalibComp = new CalibratableComponent[aiDay.length + iNumFutures];</span>
 
-<span class="nc bnc" id="L163" title="All 2 branches missed.">		for (int i = 0; i &lt; aiDay.length; ++i)</span>
+<span class="pc bpc" id="L163" title="1 of 2 branches missed.">		for (int i = 0; i &lt; aiDay.length; ++i)</span>
 <span class="nc" id="L164">			aCalibComp[i] = SingleStreamComponentBuilder.Deposit (</span>
 				dtEffective,
 <span class="nc" id="L166">				dtEffective.addBusDays (</span>
@@ -173,16 +173,16 @@ import org.drip.state.identifier.ForwardLabel;
 				)
 			);
 
-<span class="nc" id="L176">		CalibratableComponent[] aEDF = SingleStreamComponentBuilder.ForwardRateFuturesPack (</span>
+<span class="fc" id="L176">		CalibratableComponent[] aEDF = SingleStreamComponentBuilder.ForwardRateFuturesPack (</span>
 			dtEffective,
 			iNumFutures,
 			strCurrency
 		);
 
-<span class="nc bnc" id="L182" title="All 2 branches missed.">		for (int i = aiDay.length; i &lt; aiDay.length + iNumFutures; ++i)</span>
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">		for (int i = aiDay.length; i &lt; aiDay.length + iNumFutures; ++i)</span>
 <span class="nc" id="L183">			aCalibComp[i] = aEDF[i - aiDay.length];</span>
 
-<span class="nc" id="L185">		return aCalibComp;</span>
+<span class="fc" id="L185">		return aCalibComp;</span>
 	}
 
 	/*
@@ -198,17 +198,17 @@ import org.drip.state.identifier.ForwardLabel;
 		final double[] adblCoupon)
 		throws Exception
 	{
-<span class="nc" id="L201">		FixFloatComponent[] aIRS = new FixFloatComponent[astrMaturityTenor.length];</span>
+<span class="fc" id="L201">		FixFloatComponent[] aIRS = new FixFloatComponent[astrMaturityTenor.length];</span>
 
-<span class="nc bnc" id="L203" title="All 2 branches missed.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
-<span class="nc" id="L204">			aIRS[i] = OTCFixFloat (</span>
+<span class="fc bfc" id="L203" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
+<span class="fc" id="L204">			aIRS[i] = OTCFixFloat (</span>
 				dtSpot,
 				strCurrency,
 				astrMaturityTenor[i],
 				adblCoupon[i]
 			);
 
-<span class="nc" id="L211">		return aIRS;</span>
+<span class="fc" id="L211">		return aIRS;</span>
 	}
 
 	/*
@@ -230,20 +230,20 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Construct the array of Deposit instruments and their quotes.
 		 */
 
-<span class="nc" id="L233">		CalibratableComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (</span>
+<span class="fc" id="L233">		CalibratableComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (</span>
 			dtSpot,
 			new int[] {},
 			0,
 			strCurrency
 		);
 
-<span class="nc" id="L240">		double[] adblDepositQuote = new double[] {}; // Futures</span>
+<span class="fc" id="L240">		double[] adblDepositQuote = new double[] {}; // Futures</span>
 
 		/*
 		 * Construct the array of Swap instruments and their quotes.
 		 */
 
-<span class="nc" id="L246">		double[] adblSwapQuote = new double[] {</span>
+<span class="fc" id="L246">		double[] adblSwapQuote = new double[] {</span>
 			0.0009875 + dblBump,   //  9M
 			0.00122 + dblBump,     //  1Y
 			0.00223 + dblBump,     // 18M
@@ -254,7 +254,7 @@ import org.drip.state.identifier.ForwardLabel;
 			0.02597 + dblBump      // 10Y
 		};
 
-<span class="nc" id="L257">		String[] astrSwapManifestMeasure = new String[] {</span>
+<span class="fc" id="L257">		String[] astrSwapManifestMeasure = new String[] {</span>
 			&quot;SwapRate&quot;,		//  9M
 			&quot;SwapRate&quot;,     //  1Y
 			&quot;SwapRate&quot;,     // 18M
@@ -265,7 +265,7 @@ import org.drip.state.identifier.ForwardLabel;
 			&quot;SwapRate&quot;      // 10Y
 		};
 
-<span class="nc" id="L268">		CalibratableComponent[] aSwapComp = SwapInstrumentsFromMaturityTenor (</span>
+<span class="fc" id="L268">		CalibratableComponent[] aSwapComp = SwapInstrumentsFromMaturityTenor (</span>
 			dtSpot,
 			strCurrency,
 			new java.lang.String[] {
@@ -280,7 +280,7 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Construct a shape preserving and smoothing KLK Hyperbolic Spline from the cash/swap instruments.
 		 */
 
-<span class="nc" id="L283">		return ScenarioDiscountCurveBuilder.CubicKLKHyperbolicDFRateShapePreserver (</span>
+<span class="fc" id="L283">		return ScenarioDiscountCurveBuilder.CubicKLKHyperbolicDFRateShapePreserver (</span>
 			&quot;KLK_HYPERBOLIC_SHAPE_TEMPLATE&quot;,
 			new ValuationParams (
 				dtSpot,
@@ -310,10 +310,10 @@ import org.drip.state.identifier.ForwardLabel;
 		final int iTenorInMonths)
 		throws Exception
 	{
-<span class="nc" id="L313">		FloatFloatComponent[] aFFC = new FloatFloatComponent[astrMaturityTenor.length];</span>
+<span class="fc" id="L313">		FloatFloatComponent[] aFFC = new FloatFloatComponent[astrMaturityTenor.length];</span>
 
-<span class="nc bnc" id="L315" title="All 2 branches missed.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
-<span class="nc" id="L316">			aFFC[i] = OTCFloatFloat (</span>
+<span class="fc bfc" id="L315" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
+<span class="fc" id="L316">			aFFC[i] = OTCFloatFloat (</span>
 				dtSpot,
 				strCurrency,
 				iTenorInMonths + &quot;M&quot;,
@@ -321,7 +321,7 @@ import org.drip.state.identifier.ForwardLabel;
 				0.
 			);
 
-<span class="nc" id="L324">		return aFFC;</span>
+<span class="fc" id="L324">		return aFFC;</span>
 	}
 
 	private static final void ForwardJack (
@@ -329,28 +329,28 @@ import org.drip.state.identifier.ForwardLabel;
 		final Map&lt;String, ForwardCurve&gt; mapForward,
 		final String strStartDateTenor)
 	{
-<span class="nc bnc" id="L332" title="All 2 branches missed.">		for (Map.Entry&lt;String, ForwardCurve&gt; me : mapForward.entrySet())</span>
-<span class="nc" id="L333">			System.out.println (me.getKey() + &quot; | &quot; + strStartDateTenor + &quot;: &quot; +</span>
-<span class="nc" id="L334">				me.getValue().jackDForwardDManifestMeasure (</span>
+<span class="fc bfc" id="L332" title="All 2 branches covered.">		for (Map.Entry&lt;String, ForwardCurve&gt; me : mapForward.entrySet())</span>
+<span class="fc" id="L333">			System.out.println (me.getKey() + &quot; | &quot; + strStartDateTenor + &quot;: &quot; +</span>
+<span class="fc" id="L334">				me.getValue().jackDForwardDManifestMeasure (</span>
 					&quot;PV&quot;,
-<span class="nc" id="L336">					dt.addTenor (strStartDateTenor)).displayString()</span>
+<span class="fc" id="L336">					dt.addTenor (strStartDateTenor)).displayString()</span>
 				);
-<span class="nc" id="L338">	}</span>
+<span class="fc" id="L338">	}</span>
 
 	private static final void ForwardJack (
 		final JulianDate dt,
 		final Map&lt;String, ForwardCurve&gt; mapForward)
 	{
-<span class="nc" id="L344">		ForwardJack (dt, mapForward, &quot;1Y&quot;);</span>
+<span class="fc" id="L344">		ForwardJack (dt, mapForward, &quot;1Y&quot;);</span>
 
-<span class="nc" id="L346">		ForwardJack (dt, mapForward, &quot;2Y&quot;);</span>
+<span class="fc" id="L346">		ForwardJack (dt, mapForward, &quot;2Y&quot;);</span>
 
-<span class="nc" id="L348">		ForwardJack (dt, mapForward, &quot;3Y&quot;);</span>
+<span class="fc" id="L348">		ForwardJack (dt, mapForward, &quot;3Y&quot;);</span>
 
-<span class="nc" id="L350">		ForwardJack (dt, mapForward, &quot;5Y&quot;);</span>
+<span class="fc" id="L350">		ForwardJack (dt, mapForward, &quot;5Y&quot;);</span>
 
-<span class="nc" id="L352">		ForwardJack (dt, mapForward, &quot;7Y&quot;);</span>
-<span class="nc" id="L353">	}</span>
+<span class="fc" id="L352">		ForwardJack (dt, mapForward, &quot;7Y&quot;);</span>
+<span class="fc" id="L353">	}</span>
 
 	/*
 	 * This sample illustrates the creation and usage of the xM-6M Tenor Basis Swap. It shows the following:
@@ -382,30 +382,30 @@ import org.drip.state.identifier.ForwardLabel;
 		final double[] adblxM6MBasisSwapQuote)
 		throws Exception
 	{
-<span class="nc" id="L385">		System.out.println (&quot;------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L385">		System.out.println (&quot;------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L387">		System.out.println (&quot; SPL =&gt;              n=4               |         |         |&quot;);</span>
+<span class="fc" id="L387">		System.out.println (&quot; SPL =&gt;              n=4               |         |         |&quot;);</span>
 
-<span class="nc" id="L389">		System.out.println (&quot;---------------------------------------|  LOG DF |  LIBOR  |&quot;);</span>
+<span class="fc" id="L389">		System.out.println (&quot;---------------------------------------|  LOG DF |  LIBOR  |&quot;);</span>
 
-<span class="nc" id="L391">		System.out.println (&quot; MSR =&gt;  RECALC  |  REFEREN |  DERIVED |         |         |&quot;);</span>
+<span class="fc" id="L391">		System.out.println (&quot; MSR =&gt;  RECALC  |  REFEREN |  DERIVED |         |         |&quot;);</span>
 
-<span class="nc" id="L393">		System.out.println (&quot;------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L393">		System.out.println (&quot;------------------------------------------------------------&quot;);</span>
 
 		/*
 		 * Construct the 6M-xM float-float basis swap.
 		 */
 
-<span class="nc" id="L399">		FloatFloatComponent[] aFFC = MakexM6MBasisSwap (</span>
+<span class="fc" id="L399">		FloatFloatComponent[] aFFC = MakexM6MBasisSwap (</span>
 			dtSpot,
 			strCurrency,
 			astrxM6MFwdTenor,
 			iTenorInMonths
 		);
 
-<span class="nc" id="L406">		String strBasisTenor = iTenorInMonths + &quot;M&quot;;</span>
+<span class="fc" id="L406">		String strBasisTenor = iTenorInMonths + &quot;M&quot;;</span>
 
-<span class="nc" id="L408">		ValuationParams valParams = new ValuationParams (</span>
+<span class="fc" id="L408">		ValuationParams valParams = new ValuationParams (</span>
 			dtSpot,
 			dtSpot,
 			strCurrency
@@ -415,16 +415,16 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Calculate the starting forward rate off of the discount curve.
 		 */
 
-<span class="nc" id="L418">		double dblStartingFwd = dc.forward (</span>
-<span class="nc" id="L419">			dtSpot.julian(),</span>
-<span class="nc" id="L420">			dtSpot.addTenor (strBasisTenor).julian()</span>
+<span class="fc" id="L418">		double dblStartingFwd = dc.forward (</span>
+<span class="fc" id="L419">			dtSpot.julian(),</span>
+<span class="fc" id="L420">			dtSpot.addTenor (strBasisTenor).julian()</span>
 		);
 
 		/*
 		 * Set the discount curve based component market parameters.
 		 */
 
-<span class="nc" id="L427">		CurveSurfaceQuoteContainer mktParams = MarketParamsBuilder.Create (</span>
+<span class="fc" id="L427">		CurveSurfaceQuoteContainer mktParams = MarketParamsBuilder.Create (</span>
 			dc,
 			null,
 			null,
@@ -434,15 +434,15 @@ import org.drip.state.identifier.ForwardLabel;
 			null
 		);
 
-<span class="nc" id="L437">		Map&lt;String, ForwardCurve&gt; mapForward = new HashMap&lt;String, ForwardCurve&gt;();</span>
+<span class="fc" id="L437">		Map&lt;String, ForwardCurve&gt; mapForward = new HashMap&lt;String, ForwardCurve&gt;();</span>
 
 		/*
 		 * Construct the shape preserving forward curve off of Quartic Polynomial Basis Spline.
 		 */
 
-<span class="nc" id="L443">		ForwardCurve fcxMQuartic = ScenarioForwardCurveBuilder.ShapePreservingForwardCurve (</span>
+<span class="fc" id="L443">		ForwardCurve fcxMQuartic = ScenarioForwardCurveBuilder.ShapePreservingForwardCurve (</span>
 			&quot;QUARTIC_FWD&quot; + strBasisTenor,
-<span class="nc" id="L445">			ForwardLabel.Create (</span>
+<span class="fc" id="L445">			ForwardLabel.Create (</span>
 				strCurrency,
 				strBasisTenor
 			),
@@ -458,7 +458,7 @@ import org.drip.state.identifier.ForwardLabel;
 			dblStartingFwd
 		);
 
-<span class="nc" id="L461">		mapForward.put (</span>
+<span class="fc" id="L461">		mapForward.put (</span>
 			&quot; QUARTIC_FWD&quot; + strBasisTenor,
 			fcxMQuartic
 		);
@@ -467,7 +467,7 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Set the discount curve + quartic polynomial forward curve based component market parameters.
 		 */
 
-<span class="nc" id="L470">		CurveSurfaceQuoteContainer mktParamsQuarticFwd = MarketParamsBuilder.Create (</span>
+<span class="fc" id="L470">		CurveSurfaceQuoteContainer mktParamsQuarticFwd = MarketParamsBuilder.Create (</span>
 			dc,
 			fcxMQuartic,
 			null,
@@ -478,8 +478,8 @@ import org.drip.state.identifier.ForwardLabel;
 			null
 		);
 
-<span class="nc" id="L481">		int i = 0;</span>
-<span class="nc" id="L482">		int iFreq = 12 / iTenorInMonths;</span>
+<span class="fc" id="L481">		int i = 0;</span>
+<span class="fc" id="L482">		int iFreq = 12 / iTenorInMonths;</span>
 
 		/*
 		 * Compute the following forward curve metrics for each of cubic polynomial forward, quartic
@@ -491,30 +491,30 @@ import org.drip.state.identifier.ForwardLabel;
 		 * 	c) Input Basis Swap Quote.
 		 */
 
-<span class="nc bnc" id="L494" title="All 2 branches missed.">		for (String strMaturityTenor : astrxM6MFwdTenor) {</span>
-<span class="nc" id="L495">			int iFwdEndDate = dtSpot.addTenor (strMaturityTenor).julian();</span>
+<span class="fc bfc" id="L494" title="All 2 branches covered.">		for (String strMaturityTenor : astrxM6MFwdTenor) {</span>
+<span class="fc" id="L495">			int iFwdEndDate = dtSpot.addTenor (strMaturityTenor).julian();</span>
 
-<span class="nc" id="L497">			int iFwdStartDate = dtSpot.addTenor (strMaturityTenor).subtractTenor (strBasisTenor).julian();</span>
+<span class="fc" id="L497">			int iFwdStartDate = dtSpot.addTenor (strMaturityTenor).subtractTenor (strBasisTenor).julian();</span>
 
-<span class="nc" id="L499">			FloatFloatComponent ffc = aFFC[i++];</span>
+<span class="fc" id="L499">			FloatFloatComponent ffc = aFFC[i++];</span>
 
-<span class="nc" id="L501">			CaseInsensitiveTreeMap&lt;Double&gt; mapQuarticValue = ffc.value (</span>
+<span class="fc" id="L501">			CaseInsensitiveTreeMap&lt;Double&gt; mapQuarticValue = ffc.value (</span>
 				valParams,
 				null,
 				mktParamsQuarticFwd,
 				null
 			);
 
-<span class="nc" id="L508">			System.out.println (&quot; &quot; + strMaturityTenor + &quot; =&gt;  &quot; +</span>
-<span class="nc" id="L509">				FormatUtil.FormatDouble (fcxMQuartic.forward (strMaturityTenor), 2, 2, 100.) + &quot;  |  &quot; +</span>
-<span class="nc" id="L510">				FormatUtil.FormatDouble (mapQuarticValue.get (&quot;ReferenceParBasisSpread&quot;), 2, 2, 1.) + &quot;  |  &quot; +</span>
-<span class="nc" id="L511">				FormatUtil.FormatDouble (mapQuarticValue.get (&quot;DerivedParBasisSpread&quot;), 2, 2, 1.) + &quot;  |  &quot; +</span>
-<span class="nc" id="L512">				FormatUtil.FormatDouble (iFreq * java.lang.Math.log (dc.df (iFwdStartDate) / dc.df (iFwdEndDate)), 1, 2, 100.) + &quot;  |  &quot; +</span>
-<span class="nc" id="L513">				FormatUtil.FormatDouble (dc.libor (iFwdStartDate, iFwdEndDate), 1, 2, 100.) + &quot;  |  &quot;</span>
+<span class="fc" id="L508">			System.out.println (&quot; &quot; + strMaturityTenor + &quot; =&gt;  &quot; +</span>
+<span class="fc" id="L509">				FormatUtil.FormatDouble (fcxMQuartic.forward (strMaturityTenor), 2, 2, 100.) + &quot;  |  &quot; +</span>
+<span class="fc" id="L510">				FormatUtil.FormatDouble (mapQuarticValue.get (&quot;ReferenceParBasisSpread&quot;), 2, 2, 1.) + &quot;  |  &quot; +</span>
+<span class="fc" id="L511">				FormatUtil.FormatDouble (mapQuarticValue.get (&quot;DerivedParBasisSpread&quot;), 2, 2, 1.) + &quot;  |  &quot; +</span>
+<span class="fc" id="L512">				FormatUtil.FormatDouble (iFreq * java.lang.Math.log (dc.df (iFwdStartDate) / dc.df (iFwdEndDate)), 1, 2, 100.) + &quot;  |  &quot; +</span>
+<span class="fc" id="L513">				FormatUtil.FormatDouble (dc.libor (iFwdStartDate, iFwdEndDate), 1, 2, 100.) + &quot;  |  &quot;</span>
 			);
 		}
 
-<span class="nc" id="L517">		return mapForward;</span>
+<span class="fc" id="L517">		return mapForward;</span>
 	}
 
 	/*
@@ -536,31 +536,31 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Initialize the Credit Analytics Library
 		 */
 
-<span class="nc" id="L539">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L539">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L541">		String strCurrency = &quot;AUD&quot;;</span>
+<span class="fc" id="L541">		String strCurrency = &quot;AUD&quot;;</span>
 
-<span class="nc" id="L543">		JulianDate dtToday = DateUtil.Today().addTenor (&quot;0D&quot;);</span>
+<span class="fc" id="L543">		JulianDate dtToday = DateUtil.Today().addTenor (&quot;0D&quot;);</span>
 
 		/*
 		 * Construct the Discount Curve using its instruments and quotes
 		 */
 
-<span class="nc" id="L549">		MergedDiscountForwardCurve dc = MakeDC (</span>
+<span class="fc" id="L549">		MergedDiscountForwardCurve dc = MakeDC (</span>
 			dtToday,
 			strCurrency,
 			0.
 		);
 
-<span class="nc" id="L555">		System.out.println (&quot;\n------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L555">		System.out.println (&quot;\n------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L557">		System.out.println (&quot;-------------------    1M-6M Basis Swap    -----------------&quot;);</span>
+<span class="fc" id="L557">		System.out.println (&quot;-------------------    1M-6M Basis Swap    -----------------&quot;);</span>
 
 		/*
 		 * Build and run the sampling for the 1M-6M Tenor Basis Swap from its instruments and quotes.
 		 */
 
-<span class="nc" id="L563">		Map&lt;String, ForwardCurve&gt; mapForward1M6M = xM6MBasisSample (</span>
+<span class="fc" id="L563">		Map&lt;String, ForwardCurve&gt; mapForward1M6M = xM6MBasisSample (</span>
 			dtToday,
 			strCurrency,
 			dc,
@@ -592,11 +592,11 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Build and run the sampling for the 3M-6M Tenor Basis Swap from its instruments and quotes.
 		 */
 
-<span class="nc" id="L595">		System.out.println (&quot;\n------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L595">		System.out.println (&quot;\n------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L597">		System.out.println (&quot;-------------------    3M-6M Basis Swap    -----------------&quot;);</span>
+<span class="fc" id="L597">		System.out.println (&quot;-------------------    3M-6M Basis Swap    -----------------&quot;);</span>
 
-<span class="nc" id="L599">		Map&lt;String, ForwardCurve&gt; mapForward3M6M = xM6MBasisSample (</span>
+<span class="fc" id="L599">		Map&lt;String, ForwardCurve&gt; mapForward3M6M = xM6MBasisSample (</span>
 			dtToday,
 			strCurrency,
 			dc,
@@ -628,11 +628,11 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Build and run the sampling for the 12M-6M Tenor Basis Swap from its instruments and quotes.
 		 */
 
-<span class="nc" id="L631">		System.out.println (&quot;\n------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L631">		System.out.println (&quot;\n------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L633">		System.out.println (&quot;-------------------   12M-6M Basis Swap    -----------------&quot;);</span>
+<span class="fc" id="L633">		System.out.println (&quot;-------------------   12M-6M Basis Swap    -----------------&quot;);</span>
 
-<span class="nc" id="L635">		Map&lt;String, ForwardCurve&gt; mapForward12M6M = xM6MBasisSample (</span>
+<span class="fc" id="L635">		Map&lt;String, ForwardCurve&gt; mapForward12M6M = xM6MBasisSample (</span>
 			dtToday,
 			strCurrency,
 			dc,
@@ -662,45 +662,45 @@ import org.drip.state.identifier.ForwardLabel;
 			}
 		);
 
-<span class="nc" id="L665">		System.out.println (&quot;\n--------------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L665">		System.out.println (&quot;\n--------------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L667">		System.out.println (&quot;------------------------------------------------------- 1M-6M Micro Jack -------------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L667">		System.out.println (&quot;------------------------------------------------------- 1M-6M Micro Jack -------------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L669">		System.out.println (&quot;--------------------------------------------------------------------------------------------------------------------------------------------\n&quot;);</span>
+<span class="fc" id="L669">		System.out.println (&quot;--------------------------------------------------------------------------------------------------------------------------------------------\n&quot;);</span>
 
-<span class="nc" id="L671">		ForwardJack (</span>
+<span class="fc" id="L671">		ForwardJack (</span>
 			dtToday,
 			mapForward1M6M
 		);
 
-<span class="nc" id="L676">		System.out.println (&quot;\n--------------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L676">		System.out.println (&quot;\n--------------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L678">		System.out.println (&quot;------------------------------------------------------- 3M-6M Micro Jack -------------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L678">		System.out.println (&quot;------------------------------------------------------- 3M-6M Micro Jack -------------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L680">		System.out.println (&quot;--------------------------------------------------------------------------------------------------------------------------------------------\n&quot;);</span>
+<span class="fc" id="L680">		System.out.println (&quot;--------------------------------------------------------------------------------------------------------------------------------------------\n&quot;);</span>
 
-<span class="nc" id="L682">		ForwardJack (</span>
+<span class="fc" id="L682">		ForwardJack (</span>
 			dtToday,
 			mapForward3M6M
 		);
 
-<span class="nc" id="L687">		System.out.println (&quot;\n--------------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L687">		System.out.println (&quot;\n--------------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L689">		System.out.println (&quot;------------------------------------------------------ 12M-6M Micro Jack -------------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L689">		System.out.println (&quot;------------------------------------------------------ 12M-6M Micro Jack -------------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L691">		System.out.println (&quot;--------------------------------------------------------------------------------------------------------------------------------------------\n&quot;);</span>
+<span class="fc" id="L691">		System.out.println (&quot;--------------------------------------------------------------------------------------------------------------------------------------------\n&quot;);</span>
 
-<span class="nc" id="L693">		ForwardJack (</span>
+<span class="fc" id="L693">		ForwardJack (</span>
 			dtToday,
 			mapForward12M6M
 		);
-<span class="nc" id="L697">	}</span>
+<span class="fc" id="L697">	}</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L703">		CustomForwardCurveBuilderSample();</span>
-<span class="nc" id="L704">	}</span>
+<span class="fc" id="L703">		CustomForwardCurveBuilderSample();</span>
+<span class="fc" id="L704">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

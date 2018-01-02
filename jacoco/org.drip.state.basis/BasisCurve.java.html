@@ -72,10 +72,10 @@ public abstract class BasisCurve implements org.drip.state.basis.BasisEstimator,
 	public static final java.lang.String QUANTIFICATION_METRIC_FORWARD_RATE =
 		&quot;QUANTIFICATION_METRIC_FORWARD_RATE&quot;;
 
-<span class="nc" id="L75">	private boolean _bBasisOnReference = false;</span>
-<span class="nc" id="L76">	private int _iEpochDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="nc" id="L77">	private org.drip.state.identifier.ForwardLabel _friDerived = null;</span>
-<span class="nc" id="L78">	private org.drip.state.identifier.ForwardLabel _friReference = null;</span>
+<span class="fc" id="L75">	private boolean _bBasisOnReference = false;</span>
+<span class="fc" id="L76">	private int _iEpochDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L77">	private org.drip.state.identifier.ForwardLabel _friDerived = null;</span>
+<span class="fc" id="L78">	private org.drip.state.identifier.ForwardLabel _friReference = null;</span>
 
 	protected BasisCurve (
 		final int iEpochDate,
@@ -83,13 +83,13 @@ public abstract class BasisCurve implements org.drip.state.basis.BasisEstimator,
 		final org.drip.state.identifier.ForwardLabel friDerived,
 		final boolean bBasisOnReference)
 		throws java.lang.Exception
-<span class="nc" id="L86">	{</span>
-<span class="nc bnc" id="L87" title="All 4 branches missed.">		if (null == (_friDerived = friDerived) || null == (_friReference = friReference))</span>
+<span class="fc" id="L86">	{</span>
+<span class="pc bpc" id="L87" title="2 of 4 branches missed.">		if (null == (_friDerived = friDerived) || null == (_friReference = friReference))</span>
 <span class="nc" id="L88">			throw new java.lang.Exception (&quot;BasisCurve ctr: Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L90">		_iEpochDate = iEpochDate;</span>
-<span class="nc" id="L91">		_bBasisOnReference = bBasisOnReference;</span>
-<span class="nc" id="L92">	}</span>
+<span class="fc" id="L90">		_iEpochDate = iEpochDate;</span>
+<span class="fc" id="L91">		_bBasisOnReference = bBasisOnReference;</span>
+<span class="fc" id="L92">	}</span>
 
 	@Override public org.drip.state.identifier.LatentStateLabel label()
 	{
@@ -106,7 +106,7 @@ public abstract class BasisCurve implements org.drip.state.basis.BasisEstimator,
 	@Override public org.drip.analytics.date.JulianDate epoch()
 	{
 		try {
-<span class="nc" id="L109">			return new org.drip.analytics.date.JulianDate (_iEpochDate);</span>
+<span class="fc" id="L109">			return new org.drip.analytics.date.JulianDate (_iEpochDate);</span>
 <span class="nc" id="L110">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L111">			e.printStackTrace();</span>
 		}
@@ -128,19 +128,19 @@ public abstract class BasisCurve implements org.drip.state.basis.BasisEstimator,
 		final org.drip.analytics.date.JulianDate dt)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L131" title="All 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;BasisCurve::basis got null for date&quot;);</span>
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;BasisCurve::basis got null for date&quot;);</span>
 
-<span class="nc" id="L133">		return basis (dt.julian());</span>
+<span class="fc" id="L133">		return basis (dt.julian());</span>
 	}
 
 	@Override public double basis (
 		final java.lang.String strTenor)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L140" title="All 4 branches missed.">		if (null == strTenor || strTenor.isEmpty())</span>
+<span class="pc bpc" id="L140" title="2 of 4 branches missed.">		if (null == strTenor || strTenor.isEmpty())</span>
 <span class="nc" id="L141">			throw new java.lang.Exception (&quot;BasisCurve::basis got bad tenor&quot;);</span>
 
-<span class="nc" id="L143">		return basis (epoch().addTenor (strTenor));</span>
+<span class="fc" id="L143">		return basis (epoch().addTenor (strTenor));</span>
 	}
 
 	@Override public boolean setCCIS (

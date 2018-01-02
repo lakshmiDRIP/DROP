@@ -261,7 +261,7 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 		final int iDate,
 		final org.drip.state.identifier.ForwardLabel fri)
 	{
-<span class="fc" id="L264">		return null;</span>
+<span class="nc" id="L264">		return null;</span>
 	}
 
 	@Override public java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; canonicalTruthness (
@@ -318,16 +318,16 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 	@Override public FlatForwardDiscountCurve parallelShiftQuantificationMetric (
 		final double dblShift)
 	{
-<span class="nc bnc" id="L321" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblShift)) return null;</span>
+<span class="pc bpc" id="L321" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblShift)) return null;</span>
 
-<span class="nc" id="L323">		int iNumDate = _adblForwardRate.length;</span>
-<span class="nc" id="L324">		double[] adblForwardRate = new double[iNumDate];</span>
+<span class="fc" id="L323">		int iNumDate = _adblForwardRate.length;</span>
+<span class="fc" id="L324">		double[] adblForwardRate = new double[iNumDate];</span>
 
-<span class="nc bnc" id="L326" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumDate; ++i)</span>
-<span class="nc" id="L327">			adblForwardRate[i] = _adblForwardRate[i] + dblShift;</span>
+<span class="fc bfc" id="L326" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumDate; ++i)</span>
+<span class="fc" id="L327">			adblForwardRate[i] = _adblForwardRate[i] + dblShift;</span>
 
 		try {
-<span class="nc" id="L330">			return new FlatForwardDiscountCurve (new org.drip.analytics.date.JulianDate (_iEpochDate),</span>
+<span class="fc" id="L330">			return new FlatForwardDiscountCurve (new org.drip.analytics.date.JulianDate (_iEpochDate),</span>
 				_strCurrency, _aiDate, adblForwardRate, _bDiscreteCompounding, _strCompoundingDayCount,
 					_iCompoundingFreq);
 <span class="nc" id="L333">		} catch (java.lang.Exception e) {</span>
@@ -402,10 +402,10 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 <span class="nc" id="L402">			return null;</span>
 <span class="fc" id="L403">		}</span>
 
-<span class="pc bpc" id="L405" title="1 of 2 branches missed.">		if (iDate &lt;= _iEpochDate) {</span>
-<span class="nc bnc" id="L406" title="All 2 branches missed.">			if (!wj.setWengert (0, 0.)) return null;</span>
+<span class="fc bfc" id="L405" title="All 2 branches covered.">		if (iDate &lt;= _iEpochDate) {</span>
+<span class="pc bpc" id="L406" title="1 of 2 branches missed.">			if (!wj.setWengert (0, 0.)) return null;</span>
 
-<span class="nc" id="L408">			return wj;</span>
+<span class="fc" id="L408">			return wj;</span>
 		}
 
 		try {

@@ -77,13 +77,13 @@ import org.drip.xva.csa.FundingBasisEvolver;
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L80">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L80">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L82">		double dblUnderlyingVolatility = 0.3;</span>
-<span class="nc" id="L83">		double dblFundingSpreadVolatility = 0.015;</span>
-<span class="nc" id="L84">		double dblFundingSpreadMeanReversionRate = 0.05;</span>
+<span class="fc" id="L82">		double dblUnderlyingVolatility = 0.3;</span>
+<span class="fc" id="L83">		double dblFundingSpreadVolatility = 0.015;</span>
+<span class="fc" id="L84">		double dblFundingSpreadMeanReversionRate = 0.05;</span>
 
-<span class="nc" id="L86">		double[] adblCorrelation = new double[] {</span>
+<span class="fc" id="L86">		double[] adblCorrelation = new double[] {</span>
 			-0.30,
 			-0.20,
 			-0.10,
@@ -91,7 +91,7 @@ import org.drip.xva.csa.FundingBasisEvolver;
 			 0.10
 		};
 
-<span class="nc" id="L94">		int[] aiTenor = new int[] {</span>
+<span class="fc" id="L94">		int[] aiTenor = new int[] {</span>
 			 1,
 			 2,
 			 3,
@@ -104,7 +104,7 @@ import org.drip.xva.csa.FundingBasisEvolver;
 			10
 		};
 
-<span class="nc" id="L107">		double[][] aadblRelativeDifferenceReconciler = new double[][] {</span>
+<span class="fc" id="L107">		double[][] aadblRelativeDifferenceReconciler = new double[][] {</span>
 			{ 0.0007,  0.0004,  0.0002,  0.0000, -0.0002},
 			{ 0.0026,  0.0017,  0.0009,  0.0000, -0.0009},
 			{ 0.0058,  0.0039,  0.0019,  0.0000, -0.0019},
@@ -117,81 +117,81 @@ import org.drip.xva.csa.FundingBasisEvolver;
 			{ 0.0592,  0.0391,  0.0194,  0.0000, -0.0190}
 		};
 
-<span class="nc" id="L120">		DiffusionEvaluatorLogarithmic delUnderlying = DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="fc" id="L120">		DiffusionEvaluatorLogarithmic delUnderlying = DiffusionEvaluatorLogarithmic.Standard (</span>
 			0.,
 			dblUnderlyingVolatility
 		);
 
-<span class="nc" id="L125">		DiffusionEvaluatorMeanReversion demrFundingSpread = DiffusionEvaluatorMeanReversion.Standard (</span>
+<span class="fc" id="L125">		DiffusionEvaluatorMeanReversion demrFundingSpread = DiffusionEvaluatorMeanReversion.Standard (</span>
 			dblFundingSpreadMeanReversionRate,
 			0.,
 			dblFundingSpreadVolatility
 		);
 
-<span class="nc" id="L131">		System.out.println();</span>
+<span class="fc" id="L131">		System.out.println();</span>
 
-<span class="nc" id="L133">		System.out.println (&quot;\t||-----------------------------------------------------||&quot;);</span>
+<span class="fc" id="L133">		System.out.println (&quot;\t||-----------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L135">		System.out.println (&quot;\t||         DRIP CSA vs Non CSA Forward Prices          ||&quot;);</span>
+<span class="fc" id="L135">		System.out.println (&quot;\t||         DRIP CSA vs Non CSA Forward Prices          ||&quot;);</span>
 
-<span class="nc" id="L137">		System.out.println (&quot;\t||-----------------------------------------------------||&quot;);</span>
+<span class="fc" id="L137">		System.out.println (&quot;\t||-----------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L139">		String strHeader = &quot;\t|| CORR =&gt; &quot;;</span>
+<span class="fc" id="L139">		String strHeader = &quot;\t|| CORR =&gt; &quot;;</span>
 
-<span class="nc bnc" id="L141" title="All 2 branches missed.">		for (double dblCorrelation : adblCorrelation)</span>
-<span class="nc" id="L142">			strHeader = strHeader + &quot;  &quot; + FormatUtil.FormatDouble (dblCorrelation, 2, 0, 100.) + &quot;%  |&quot;;</span>
+<span class="fc bfc" id="L141" title="All 2 branches covered.">		for (double dblCorrelation : adblCorrelation)</span>
+<span class="fc" id="L142">			strHeader = strHeader + &quot;  &quot; + FormatUtil.FormatDouble (dblCorrelation, 2, 0, 100.) + &quot;%  |&quot;;</span>
 
-<span class="nc" id="L144">		System.out.println (strHeader + &quot;|&quot;);</span>
+<span class="fc" id="L144">		System.out.println (strHeader + &quot;|&quot;);</span>
 
-<span class="nc" id="L146">		System.out.println (&quot;\t||-----------------------------------------------------||&quot;);</span>
+<span class="fc" id="L146">		System.out.println (&quot;\t||-----------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L148" title="All 2 branches missed.">		for (int iTenor : aiTenor) {</span>
-<span class="nc" id="L149">			String strDump = &quot;\t|| &quot; + FormatUtil.FormatDouble (iTenor, 2, 0, 1.) + &quot;Y =&gt; &quot;;</span>
+<span class="fc bfc" id="L148" title="All 2 branches covered.">		for (int iTenor : aiTenor) {</span>
+<span class="fc" id="L149">			String strDump = &quot;\t|| &quot; + FormatUtil.FormatDouble (iTenor, 2, 0, 1.) + &quot;Y =&gt; &quot;;</span>
 
-<span class="nc bnc" id="L151" title="All 2 branches missed.">			for (double dblCorrelation : adblCorrelation) {</span>
-<span class="nc" id="L152">				FundingBasisEvolver fbe = new FundingBasisEvolver (</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">			for (double dblCorrelation : adblCorrelation) {</span>
+<span class="fc" id="L152">				FundingBasisEvolver fbe = new FundingBasisEvolver (</span>
 					delUnderlying,
 					demrFundingSpread,
 					dblCorrelation
 				);
 
-<span class="nc" id="L158">				strDump = strDump + &quot; &quot; + FormatUtil.FormatDouble (fbe.CSANoCSARatio (iTenor + &quot;Y&quot;) - 1., 1, 2, 100.) + &quot;% |&quot;;</span>
+<span class="fc" id="L158">				strDump = strDump + &quot; &quot; + FormatUtil.FormatDouble (fbe.CSANoCSARatio (iTenor + &quot;Y&quot;) - 1., 1, 2, 100.) + &quot;% |&quot;;</span>
 			}
 
-<span class="nc" id="L161">			System.out.println (strDump + &quot;|&quot;);</span>
+<span class="fc" id="L161">			System.out.println (strDump + &quot;|&quot;);</span>
 		}
 
-<span class="nc" id="L164">		System.out.println (&quot;\t||-----------------------------------------------------||&quot;);</span>
+<span class="fc" id="L164">		System.out.println (&quot;\t||-----------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L166">		System.out.println();</span>
+<span class="fc" id="L166">		System.out.println();</span>
 
-<span class="nc" id="L168">		System.out.println (&quot;\t||-----------------------------------------------------||&quot;);</span>
+<span class="fc" id="L168">		System.out.println (&quot;\t||-----------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L170">		System.out.println (&quot;\t||     Piterbarg 2010 CSA vs Non CSA Forward Prices    ||&quot;);</span>
+<span class="fc" id="L170">		System.out.println (&quot;\t||     Piterbarg 2010 CSA vs Non CSA Forward Prices    ||&quot;);</span>
 
-<span class="nc" id="L172">		System.out.println (&quot;\t||-----------------------------------------------------||&quot;);</span>
+<span class="fc" id="L172">		System.out.println (&quot;\t||-----------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L174">		strHeader = &quot;\t|| CORR =&gt; &quot;;</span>
+<span class="fc" id="L174">		strHeader = &quot;\t|| CORR =&gt; &quot;;</span>
 
-<span class="nc bnc" id="L176" title="All 2 branches missed.">		for (double dblCorrelation : adblCorrelation)</span>
-<span class="nc" id="L177">			strHeader = strHeader + &quot;  &quot; + FormatUtil.FormatDouble (dblCorrelation, 2, 0, 100.) + &quot;%  |&quot;;</span>
+<span class="fc bfc" id="L176" title="All 2 branches covered.">		for (double dblCorrelation : adblCorrelation)</span>
+<span class="fc" id="L177">			strHeader = strHeader + &quot;  &quot; + FormatUtil.FormatDouble (dblCorrelation, 2, 0, 100.) + &quot;%  |&quot;;</span>
 
-<span class="nc" id="L179">		System.out.println (strHeader + &quot;|&quot;);</span>
+<span class="fc" id="L179">		System.out.println (strHeader + &quot;|&quot;);</span>
 
-<span class="nc" id="L181">		System.out.println (&quot;\t||-----------------------------------------------------||&quot;);</span>
+<span class="fc" id="L181">		System.out.println (&quot;\t||-----------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L183" title="All 2 branches missed.">		for (int i = 0; i &lt; aiTenor.length; ++i) {</span>
-<span class="nc" id="L184">			String strDump = &quot;\t|| &quot; + FormatUtil.FormatDouble (aiTenor[i], 2, 0, 1.) + &quot;Y =&gt; &quot;;</span>
+<span class="fc bfc" id="L183" title="All 2 branches covered.">		for (int i = 0; i &lt; aiTenor.length; ++i) {</span>
+<span class="fc" id="L184">			String strDump = &quot;\t|| &quot; + FormatUtil.FormatDouble (aiTenor[i], 2, 0, 1.) + &quot;Y =&gt; &quot;;</span>
 
-<span class="nc bnc" id="L186" title="All 2 branches missed.">			for (int j = 0; j &lt; adblCorrelation.length; ++j)</span>
-<span class="nc" id="L187">				strDump = strDump + &quot; &quot; + FormatUtil.FormatDouble (aadblRelativeDifferenceReconciler[i][j], 1, 2, 100.) + &quot;% |&quot;;</span>
+<span class="fc bfc" id="L186" title="All 2 branches covered.">			for (int j = 0; j &lt; adblCorrelation.length; ++j)</span>
+<span class="fc" id="L187">				strDump = strDump + &quot; &quot; + FormatUtil.FormatDouble (aadblRelativeDifferenceReconciler[i][j], 1, 2, 100.) + &quot;% |&quot;;</span>
 
-<span class="nc" id="L189">			System.out.println (strDump + &quot;|&quot;);</span>
+<span class="fc" id="L189">			System.out.println (strDump + &quot;|&quot;);</span>
 		}
 
-<span class="nc" id="L192">		System.out.println (&quot;\t||-----------------------------------------------------||&quot;);</span>
+<span class="fc" id="L192">		System.out.println (&quot;\t||-----------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L194">		System.out.println();</span>
-<span class="nc" id="L195">	}</span>
+<span class="fc" id="L194">		System.out.println();</span>
+<span class="fc" id="L195">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

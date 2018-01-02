@@ -85,11 +85,11 @@ import org.drip.state.inference.*;
 		final String strMaturityTenor,
 		final double dblCoupon)
 	{
-<span class="nc" id="L88">		FixedFloatSwapConvention ffConv = OvernightFixedFloatContainer.FundConventionFromJurisdiction (</span>
+<span class="fc" id="L88">		FixedFloatSwapConvention ffConv = OvernightFixedFloatContainer.FundConventionFromJurisdiction (</span>
 			strCurrency
 		);
 
-<span class="nc" id="L92">		return ffConv.createFixFloatComponent (</span>
+<span class="fc" id="L92">		return ffConv.createFixFloatComponent (</span>
 			dtSpot,
 			strMaturityTenor,
 			dblCoupon,
@@ -110,21 +110,21 @@ import org.drip.state.inference.*;
 		final int[] aiDay)
 		throws Exception
 	{
-<span class="nc" id="L113">		SingleStreamComponent[] aDeposit = new SingleStreamComponent[aiDay.length];</span>
+<span class="fc" id="L113">		SingleStreamComponent[] aDeposit = new SingleStreamComponent[aiDay.length];</span>
 
-<span class="nc bnc" id="L115" title="All 2 branches missed.">		for (int i = 0; i &lt; aiDay.length; ++i)</span>
-<span class="nc" id="L116">			aDeposit[i] = SingleStreamComponentBuilder.Deposit (</span>
+<span class="fc bfc" id="L115" title="All 2 branches covered.">		for (int i = 0; i &lt; aiDay.length; ++i)</span>
+<span class="fc" id="L116">			aDeposit[i] = SingleStreamComponentBuilder.Deposit (</span>
 				dtEffective,
-<span class="nc" id="L118">				dtEffective.addBusDays (</span>
+<span class="fc" id="L118">				dtEffective.addBusDays (</span>
 					aiDay[i],
 					strCurrency
 				),
-<span class="nc" id="L122">				OvernightLabel.Create (</span>
+<span class="fc" id="L122">				OvernightLabel.Create (</span>
 					strCurrency
 				)
 			);
 
-<span class="nc" id="L127">		return aDeposit;</span>
+<span class="fc" id="L127">		return aDeposit;</span>
 	}
 
 	/*
@@ -140,17 +140,17 @@ import org.drip.state.inference.*;
 		final double[] adblCoupon)
 		throws Exception
 	{
-<span class="nc" id="L143">		FixFloatComponent[] aOIS = new FixFloatComponent[astrMaturityTenor.length];</span>
+<span class="fc" id="L143">		FixFloatComponent[] aOIS = new FixFloatComponent[astrMaturityTenor.length];</span>
 
-<span class="nc bnc" id="L145" title="All 2 branches missed.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
-<span class="nc" id="L146">			aOIS[i] = OTCOISFixFloat (</span>
+<span class="fc bfc" id="L145" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
+<span class="fc" id="L146">			aOIS[i] = OTCOISFixFloat (</span>
 				dtSpot,
 				strCurrency,
 				astrMaturityTenor[i],
 				adblCoupon[i]
 			);
 
-<span class="nc" id="L153">		return aOIS;</span>
+<span class="fc" id="L153">		return aOIS;</span>
 	}
 
 	/*
@@ -167,17 +167,17 @@ import org.drip.state.inference.*;
 		final double[] adblCoupon)
 		throws Exception
 	{
-<span class="nc" id="L170">		FixFloatComponent[] aOISFutures = new FixFloatComponent[astrMaturityTenor.length];</span>
+<span class="fc" id="L170">		FixFloatComponent[] aOISFutures = new FixFloatComponent[astrMaturityTenor.length];</span>
 
-<span class="nc bnc" id="L172" title="All 2 branches missed.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
-<span class="nc" id="L173">			aOISFutures[i] = OTCOISFixFloat (</span>
-<span class="nc" id="L174">				dtSpot.addTenor (astrStartTenor[i]),</span>
+<span class="fc bfc" id="L172" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
+<span class="fc" id="L173">			aOISFutures[i] = OTCOISFixFloat (</span>
+<span class="fc" id="L174">				dtSpot.addTenor (astrStartTenor[i]),</span>
 				strCurrency,
 				astrMaturityTenor[i],
 				adblCoupon[i]
 			);
 
-<span class="nc" id="L180">		return aOISFutures;</span>
+<span class="fc" id="L180">		return aOISFutures;</span>
 	}
 
 	/*
@@ -217,17 +217,17 @@ import org.drip.state.inference.*;
 		final String strCurrency)
 		throws Exception
 	{
-<span class="nc" id="L220">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L220">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L222">		System.out.println (&quot;\t&quot; + strHeaderComment);</span>
+<span class="fc" id="L222">		System.out.println (&quot;\t&quot; + strHeaderComment);</span>
 
 		/*
 		 * Setup the linear curve calibrator
 		 */
 
-<span class="nc" id="L228">		LinearLatentStateCalibrator lcc = new LinearLatentStateCalibrator (</span>
+<span class="fc" id="L228">		LinearLatentStateCalibrator lcc = new LinearLatentStateCalibrator (</span>
 			prbp,
-<span class="nc" id="L230">			BoundarySettings.NaturalStandard(),</span>
+<span class="fc" id="L230">			BoundarySettings.NaturalStandard(),</span>
 			MultiSegmentSequence.CALIBRATE,
 			null,
 			null
@@ -237,7 +237,7 @@ import org.drip.state.inference.*;
 		 * Construct the Array of Deposit Instruments and their Quotes from the given set of parameters
 		 */
 
-<span class="nc" id="L240">		SingleStreamComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (</span>
+<span class="fc" id="L240">		SingleStreamComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (</span>
 			dtSpot,
 			strCurrency,
 			new int[] {
@@ -245,7 +245,7 @@ import org.drip.state.inference.*;
 			}
 		);
 
-<span class="nc" id="L248">		double[] adblDepositQuote = new double[] {</span>
+<span class="fc" id="L248">		double[] adblDepositQuote = new double[] {</span>
 			0.0004, 0.0004, 0.0004		 // Deposit
 		};
 
@@ -253,7 +253,7 @@ import org.drip.state.inference.*;
 		 * Construct the Deposit Instrument Set Stretch Builder
 		 */
 
-<span class="nc" id="L256">		LatentStateStretchSpec depositStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
+<span class="fc" id="L256">		LatentStateStretchSpec depositStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
 			&quot;   DEPOSIT   &quot;,
 			aDepositComp,
 			&quot;ForwardRate&quot;,
@@ -264,14 +264,14 @@ import org.drip.state.inference.*;
 		 * Construct the Array of Short End OIS Instruments and their Quotes from the given set of parameters
 		 */
 
-<span class="nc" id="L267">		double[] adblShortEndOISQuote = new double[] {</span>
+<span class="fc" id="L267">		double[] adblShortEndOISQuote = new double[] {</span>
 			0.00070,    //   1W
 			0.00069,    //   2W
 			0.00078,    //   3W
 			0.00074     //   1M
 		};
 
-<span class="nc" id="L274">		CalibratableComponent[] aShortEndOISComp = OISFromMaturityTenor (</span>
+<span class="fc" id="L274">		CalibratableComponent[] aShortEndOISComp = OISFromMaturityTenor (</span>
 			dtSpot,
 			strCurrency,
 			new java.lang.String[] {
@@ -284,7 +284,7 @@ import org.drip.state.inference.*;
 		 * Construct the Short End OIS Instrument Set Stretch Builder
 		 */
 
-<span class="nc" id="L287">		LatentStateStretchSpec oisShortEndStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
+<span class="fc" id="L287">		LatentStateStretchSpec oisShortEndStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
 			&quot;SHORT END OIS&quot;,
 			aShortEndOISComp,
 			&quot;SwapRate&quot;,
@@ -295,7 +295,7 @@ import org.drip.state.inference.*;
 		 * Construct the Array of OIS Futures Instruments and their Quotes from the given set of parameters
 		 */
 
-<span class="nc" id="L298">		double[] adblOISFutureQuote = new double[] {</span>
+<span class="fc" id="L298">		double[] adblOISFutureQuote = new double[] {</span>
 			 0.00046,    //   1M x 1M
 			 0.00016,    //   2M x 1M
 			-0.00007,    //   3M x 1M
@@ -303,7 +303,7 @@ import org.drip.state.inference.*;
 			-0.00014     //   5M x 1M
 		};
 
-<span class="nc" id="L306">		CalibratableComponent[] aOISFutureComp = OISFuturesFromMaturityTenor (</span>
+<span class="fc" id="L306">		CalibratableComponent[] aOISFutureComp = OISFuturesFromMaturityTenor (</span>
 			dtSpot,
 			strCurrency,
 			new java.lang.String[] {
@@ -319,7 +319,7 @@ import org.drip.state.inference.*;
 		 * Construct the OIS Future Instrument Set Stretch Builder
 		 */
 
-<span class="nc" id="L322">		LatentStateStretchSpec oisFutureStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
+<span class="fc" id="L322">		LatentStateStretchSpec oisFutureStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
 			&quot; OIS FUTURE  &quot;,
 			aOISFutureComp,
 			&quot;SwapRate&quot;,
@@ -330,7 +330,7 @@ import org.drip.state.inference.*;
 		 * Construct the Array of Long End OIS Instruments and their Quotes from the given set of parameters
 		 */
 
-<span class="nc" id="L333">		double[] adblLongEndOISQuote = new double[] {</span>
+<span class="fc" id="L333">		double[] adblLongEndOISQuote = new double[] {</span>
 			0.00002,    //  15M
 			0.00008,    //  18M
 			0.00021,    //  21M
@@ -351,7 +351,7 @@ import org.drip.state.inference.*;
 			0.02038     //  30Y
 		};
 
-<span class="nc" id="L354">		CalibratableComponent[] aLongEndOISComp = OISFromMaturityTenor (</span>
+<span class="fc" id="L354">		CalibratableComponent[] aLongEndOISComp = OISFromMaturityTenor (</span>
 			dtSpot,
 			strCurrency,
 			new java.lang.String[] {
@@ -364,14 +364,14 @@ import org.drip.state.inference.*;
 		 * Construct the Long End OIS Instrument Set Stretch Builder
 		 */
 
-<span class="nc" id="L367">		LatentStateStretchSpec oisLongEndStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
+<span class="fc" id="L367">		LatentStateStretchSpec oisLongEndStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
 			&quot;LONG END OIS &quot;,
 			aLongEndOISComp,
 			&quot;SwapRate&quot;,
 			adblLongEndOISQuote
 		);
 
-<span class="nc" id="L374">		LatentStateStretchSpec[] aStretchSpec = new LatentStateStretchSpec[] {</span>
+<span class="fc" id="L374">		LatentStateStretchSpec[] aStretchSpec = new LatentStateStretchSpec[] {</span>
 			depositStretch,
 			oisShortEndStretch,
 			oisFutureStretch,
@@ -383,7 +383,7 @@ import org.drip.state.inference.*;
 		 *  of Deposit and Swap Stretches.
 		 */
 
-<span class="nc" id="L386">		ValuationParams valParams = new ValuationParams (</span>
+<span class="fc" id="L386">		ValuationParams valParams = new ValuationParams (</span>
 			dtSpot,
 			dtSpot,
 			strCurrency
@@ -393,7 +393,7 @@ import org.drip.state.inference.*;
 		 * Calibrate over the instrument set to generate a new overlapping latent state span instance
 		 */
 
-<span class="nc" id="L396">		org.drip.spline.grid.OverlappingStretchSpan ors = lcc.calibrateSpan (</span>
+<span class="fc" id="L396">		org.drip.spline.grid.OverlappingStretchSpan ors = lcc.calibrateSpan (</span>
 			aStretchSpec,
 			1.,
 			valParams,
@@ -406,32 +406,32 @@ import org.drip.state.inference.*;
 		 * Retrieve the &quot;Deposit&quot; stretch from the span
 		 */
 
-<span class="nc" id="L409">		MultiSegmentSequence mssDeposit = ors.getStretch (&quot;   DEPOSIT   &quot;);</span>
+<span class="fc" id="L409">		MultiSegmentSequence mssDeposit = ors.getStretch (&quot;   DEPOSIT   &quot;);</span>
 
 		/*
 		 * Retrieve the OIS Short End stretch from the span
 		 */
 
-<span class="nc" id="L415">		MultiSegmentSequence mssOISShortEnd = ors.getStretch (&quot;SHORT END OIS&quot;);</span>
+<span class="fc" id="L415">		MultiSegmentSequence mssOISShortEnd = ors.getStretch (&quot;SHORT END OIS&quot;);</span>
 
 		/*
 		 * Retrieve the OIS Future stretch from the span
 		 */
 
-<span class="nc" id="L421">		MultiSegmentSequence mssOISFuture = ors.getStretch (&quot; OIS FUTURE  &quot;);</span>
+<span class="fc" id="L421">		MultiSegmentSequence mssOISFuture = ors.getStretch (&quot; OIS FUTURE  &quot;);</span>
 
 		/*
 		 * Retrieve the OIS Long End stretch from the span
 		 */
 
-<span class="nc" id="L427">		MultiSegmentSequence mssOISLongEnd = ors.getStretch (&quot;LONG END OIS &quot;);</span>
+<span class="fc" id="L427">		MultiSegmentSequence mssOISLongEnd = ors.getStretch (&quot;LONG END OIS &quot;);</span>
 
 		/*
 		 * Create a discount curve instance by converting the overlapping stretch to an exclusive
 		 * 	non-overlapping stretch.
 		 */
 
-<span class="nc" id="L434">		MergedDiscountForwardCurve dfdc = new DiscountFactorDiscountCurve (</span>
+<span class="fc" id="L434">		MergedDiscountForwardCurve dfdc = new DiscountFactorDiscountCurve (</span>
 			strCurrency,
 			ors
 		);
@@ -441,27 +441,27 @@ import org.drip.state.inference.*;
 		 * non-overlapping span, and the &quot;Deposit&quot; stretch across the range of tenor predictor ordinates.
 		 */
 
-<span class="nc" id="L444">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L444">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L446">		System.out.println (&quot;\t     DEPOSITS DF           DFDC       STRETCH        LOCAL&quot;);</span>
+<span class="fc" id="L446">		System.out.println (&quot;\t     DEPOSITS DF           DFDC       STRETCH        LOCAL&quot;);</span>
 
-<span class="nc" id="L448">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L448">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L450">		int iDepositWidth = (int) (0.25 * (mssDeposit.getRightPredictorOrdinateEdge() - mssDeposit.getLeftPredictorOrdinateEdge()));</span>
+<span class="fc" id="L450">		int iDepositWidth = (int) (0.25 * (mssDeposit.getRightPredictorOrdinateEdge() - mssDeposit.getLeftPredictorOrdinateEdge()));</span>
 
-<span class="nc bnc" id="L452" title="All 2 branches missed.">		if (0 == iDepositWidth) iDepositWidth = 1;</span>
+<span class="pc bpc" id="L452" title="1 of 2 branches missed.">		if (0 == iDepositWidth) iDepositWidth = 1;</span>
 
-<span class="nc bnc" id="L454" title="All 2 branches missed.">		for (int iX = (int) mssDeposit.getLeftPredictorOrdinateEdge(); iX &lt;= (int) mssDeposit.getRightPredictorOrdinateEdge();</span>
-<span class="nc" id="L455">			iX += iDepositWidth) {</span>
+<span class="fc bfc" id="L454" title="All 2 branches covered.">		for (int iX = (int) mssDeposit.getLeftPredictorOrdinateEdge(); iX &lt;= (int) mssDeposit.getRightPredictorOrdinateEdge();</span>
+<span class="fc" id="L455">			iX += iDepositWidth) {</span>
 			try {
-<span class="nc" id="L457">				System.out.println (&quot;\tDEPOSIT [&quot; + new JulianDate (iX) + &quot;] = &quot; +</span>
-<span class="nc" id="L458">					FormatUtil.FormatDouble (dfdc.df (iX), 1, 8, 1.) + &quot; || &quot; +</span>
-<span class="nc" id="L459">						ors.getContainingStretch (iX).name() + &quot; || &quot; +</span>
-<span class="nc" id="L460">							FormatUtil.FormatDouble (mssDeposit.responseValue (iX), 1, 8, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L461">								mssDeposit.monotoneType (iX));</span>
+<span class="fc" id="L457">				System.out.println (&quot;\tDEPOSIT [&quot; + new JulianDate (iX) + &quot;] = &quot; +</span>
+<span class="fc" id="L458">					FormatUtil.FormatDouble (dfdc.df (iX), 1, 8, 1.) + &quot; || &quot; +</span>
+<span class="fc" id="L459">						ors.getContainingStretch (iX).name() + &quot; || &quot; +</span>
+<span class="fc" id="L460">							FormatUtil.FormatDouble (mssDeposit.responseValue (iX), 1, 8, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L461">								mssDeposit.monotoneType (iX));</span>
 <span class="nc" id="L462">			} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L463">				e.printStackTrace();</span>
-<span class="nc" id="L464">			}</span>
+<span class="fc" id="L464">			}</span>
 		}
 
 		/*
@@ -469,21 +469,21 @@ import org.drip.state.inference.*;
 		 * non-overlapping span, and the OIS SHORT END stretch across the range of tenor predictor ordinates.
 		 */
 
-<span class="nc" id="L472">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L472">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L474">		System.out.println (&quot;\tSHORT END OIS DF        DFDC       STRETCH        LOCAL&quot;);</span>
+<span class="fc" id="L474">		System.out.println (&quot;\tSHORT END OIS DF        DFDC       STRETCH        LOCAL&quot;);</span>
 
-<span class="nc" id="L476">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L476">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L478">		double dblShortOISWidth = 0.2 * (mssOISShortEnd.getRightPredictorOrdinateEdge() - mssOISShortEnd.getLeftPredictorOrdinateEdge());</span>
+<span class="fc" id="L478">		double dblShortOISWidth = 0.2 * (mssOISShortEnd.getRightPredictorOrdinateEdge() - mssOISShortEnd.getLeftPredictorOrdinateEdge());</span>
 
-<span class="nc bnc" id="L480" title="All 2 branches missed.">		for (int iX = (int) mssOISShortEnd.getLeftPredictorOrdinateEdge(); iX &lt;= (int) mssOISShortEnd.getRightPredictorOrdinateEdge();</span>
-<span class="nc" id="L481">			iX += dblShortOISWidth) {</span>
-<span class="nc" id="L482">				System.out.println (&quot;\tOIS [&quot; + new JulianDate (iX) + &quot;] = &quot; +</span>
-<span class="nc" id="L483">					FormatUtil.FormatDouble (dfdc.df (iX), 1, 8, 1.) + &quot; || &quot; +</span>
-<span class="nc" id="L484">						ors.getContainingStretch (iX).name() + &quot; || &quot; +</span>
-<span class="nc" id="L485">							FormatUtil.FormatDouble (mssOISShortEnd.responseValue (iX), 1, 8, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L486">								mssOISShortEnd.monotoneType (iX));</span>
+<span class="fc bfc" id="L480" title="All 2 branches covered.">		for (int iX = (int) mssOISShortEnd.getLeftPredictorOrdinateEdge(); iX &lt;= (int) mssOISShortEnd.getRightPredictorOrdinateEdge();</span>
+<span class="fc" id="L481">			iX += dblShortOISWidth) {</span>
+<span class="fc" id="L482">				System.out.println (&quot;\tOIS [&quot; + new JulianDate (iX) + &quot;] = &quot; +</span>
+<span class="fc" id="L483">					FormatUtil.FormatDouble (dfdc.df (iX), 1, 8, 1.) + &quot; || &quot; +</span>
+<span class="fc" id="L484">						ors.getContainingStretch (iX).name() + &quot; || &quot; +</span>
+<span class="fc" id="L485">							FormatUtil.FormatDouble (mssOISShortEnd.responseValue (iX), 1, 8, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L486">								mssOISShortEnd.monotoneType (iX));</span>
 		}
 
 		/*
@@ -491,21 +491,21 @@ import org.drip.state.inference.*;
 		 * non-overlapping span, and the OIS FUTURE stretch across the range of tenor predictor ordinates.
 		 */
 
-<span class="nc" id="L494">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L494">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L496">		System.out.println (&quot;\t OIS FUTURE DF          DFDC       STRETCH        LOCAL&quot;);</span>
+<span class="fc" id="L496">		System.out.println (&quot;\t OIS FUTURE DF          DFDC       STRETCH        LOCAL&quot;);</span>
 
-<span class="nc" id="L498">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L498">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L500">		int iOISFutureWidth = (int) (0.2 * (mssOISFuture.getRightPredictorOrdinateEdge() - mssOISFuture.getLeftPredictorOrdinateEdge()));</span>
+<span class="fc" id="L500">		int iOISFutureWidth = (int) (0.2 * (mssOISFuture.getRightPredictorOrdinateEdge() - mssOISFuture.getLeftPredictorOrdinateEdge()));</span>
 
-<span class="nc bnc" id="L502" title="All 2 branches missed.">		for (int iX = (int) mssOISFuture.getLeftPredictorOrdinateEdge(); iX &lt;= (int) mssOISFuture.getRightPredictorOrdinateEdge();</span>
-<span class="nc" id="L503">			iX += iOISFutureWidth) {</span>
-<span class="nc" id="L504">				System.out.println (&quot;\tOIS [&quot; + new JulianDate (iX) + &quot;] = &quot; +</span>
-<span class="nc" id="L505">					FormatUtil.FormatDouble (dfdc.df (iX), 1, 8, 1.) + &quot; || &quot; +</span>
-<span class="nc" id="L506">						ors.getContainingStretch (iX).name() + &quot; || &quot; +</span>
-<span class="nc" id="L507">							FormatUtil.FormatDouble (mssOISFuture.responseValue (iX), 1, 8, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L508">								mssOISFuture.monotoneType (iX));</span>
+<span class="fc bfc" id="L502" title="All 2 branches covered.">		for (int iX = (int) mssOISFuture.getLeftPredictorOrdinateEdge(); iX &lt;= (int) mssOISFuture.getRightPredictorOrdinateEdge();</span>
+<span class="fc" id="L503">			iX += iOISFutureWidth) {</span>
+<span class="fc" id="L504">				System.out.println (&quot;\tOIS [&quot; + new JulianDate (iX) + &quot;] = &quot; +</span>
+<span class="fc" id="L505">					FormatUtil.FormatDouble (dfdc.df (iX), 1, 8, 1.) + &quot; || &quot; +</span>
+<span class="fc" id="L506">						ors.getContainingStretch (iX).name() + &quot; || &quot; +</span>
+<span class="fc" id="L507">							FormatUtil.FormatDouble (mssOISFuture.responseValue (iX), 1, 8, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L508">								mssOISFuture.monotoneType (iX));</span>
 		}
 
 		/*
@@ -513,113 +513,113 @@ import org.drip.state.inference.*;
 		 * non-overlapping span, and the OIS LONG END stretch across the range of tenor predictor ordinates.
 		 */
 
-<span class="nc" id="L516">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L516">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L518">		System.out.println (&quot;\tLONG END OIS DF         DFDC      STRETCH         LOCAL&quot;);</span>
+<span class="fc" id="L518">		System.out.println (&quot;\tLONG END OIS DF         DFDC      STRETCH         LOCAL&quot;);</span>
 
-<span class="nc" id="L520">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L520">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc bnc" id="L522" title="All 2 branches missed.">		for (int iX = (int) mssOISFuture.getLeftPredictorOrdinateEdge(); iX &lt;= (int) mssOISFuture.getRightPredictorOrdinateEdge();</span>
-<span class="nc" id="L523">			iX += iOISFutureWidth) {</span>
-<span class="nc" id="L524">				System.out.println (&quot;\tOIS [&quot; + new JulianDate (iX) + &quot;] = &quot; +</span>
-<span class="nc" id="L525">					FormatUtil.FormatDouble (dfdc.df (iX), 1, 8, 1.) + &quot; || &quot; +</span>
-<span class="nc" id="L526">						ors.getContainingStretch (iX).name() + &quot; || &quot; +</span>
-<span class="nc" id="L527">							FormatUtil.FormatDouble (mssOISFuture.responseValue (iX), 1, 8, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L528">								mssOISFuture.monotoneType (iX));</span>
+<span class="fc bfc" id="L522" title="All 2 branches covered.">		for (int iX = (int) mssOISFuture.getLeftPredictorOrdinateEdge(); iX &lt;= (int) mssOISFuture.getRightPredictorOrdinateEdge();</span>
+<span class="fc" id="L523">			iX += iOISFutureWidth) {</span>
+<span class="fc" id="L524">				System.out.println (&quot;\tOIS [&quot; + new JulianDate (iX) + &quot;] = &quot; +</span>
+<span class="fc" id="L525">					FormatUtil.FormatDouble (dfdc.df (iX), 1, 8, 1.) + &quot; || &quot; +</span>
+<span class="fc" id="L526">						ors.getContainingStretch (iX).name() + &quot; || &quot; +</span>
+<span class="fc" id="L527">							FormatUtil.FormatDouble (mssOISFuture.responseValue (iX), 1, 8, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L528">								mssOISFuture.monotoneType (iX));</span>
 		}
 
-<span class="nc" id="L531">		int iLongOISWidth = ((int) mssOISLongEnd.getRightPredictorOrdinateEdge() - (int) mssOISLongEnd.getLeftPredictorOrdinateEdge()) / 10;</span>
+<span class="fc" id="L531">		int iLongOISWidth = ((int) mssOISLongEnd.getRightPredictorOrdinateEdge() - (int) mssOISLongEnd.getLeftPredictorOrdinateEdge()) / 10;</span>
 
-<span class="nc bnc" id="L533" title="All 2 branches missed.">		for (int iX = (int) mssOISLongEnd.getLeftPredictorOrdinateEdge() + iLongOISWidth; iX &lt;= (int) mssOISLongEnd.getRightPredictorOrdinateEdge();</span>
-<span class="nc" id="L534">			iX += iLongOISWidth) {</span>
-<span class="nc" id="L535">				System.out.println (&quot;\tOIS [&quot; + new JulianDate (iX) + &quot;] = &quot; +</span>
-<span class="nc" id="L536">					FormatUtil.FormatDouble (dfdc.df (iX), 1, 8, 1.) + &quot; || &quot; +</span>
-<span class="nc" id="L537">						ors.getContainingStretch (iX).name() + &quot; || &quot; +</span>
-<span class="nc" id="L538">							FormatUtil.FormatDouble (mssOISLongEnd.responseValue (iX), 1, 8, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L539">								mssOISLongEnd.monotoneType (iX));</span>
+<span class="fc bfc" id="L533" title="All 2 branches covered.">		for (int iX = (int) mssOISLongEnd.getLeftPredictorOrdinateEdge() + iLongOISWidth; iX &lt;= (int) mssOISLongEnd.getRightPredictorOrdinateEdge();</span>
+<span class="fc" id="L534">			iX += iLongOISWidth) {</span>
+<span class="fc" id="L535">				System.out.println (&quot;\tOIS [&quot; + new JulianDate (iX) + &quot;] = &quot; +</span>
+<span class="fc" id="L536">					FormatUtil.FormatDouble (dfdc.df (iX), 1, 8, 1.) + &quot; || &quot; +</span>
+<span class="fc" id="L537">						ors.getContainingStretch (iX).name() + &quot; || &quot; +</span>
+<span class="fc" id="L538">							FormatUtil.FormatDouble (mssOISLongEnd.responseValue (iX), 1, 8, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L539">								mssOISLongEnd.monotoneType (iX));</span>
 		}
 
-<span class="nc" id="L542">		System.out.println (&quot;\tOIS [&quot; + dtSpot.addTenor (&quot;60Y&quot;) + &quot;] = &quot; +</span>
-<span class="nc" id="L543">			FormatUtil.FormatDouble (dfdc.df (dtSpot.addTenor (&quot;60Y&quot;)), 1, 8, 1.));</span>
+<span class="fc" id="L542">		System.out.println (&quot;\tOIS [&quot; + dtSpot.addTenor (&quot;60Y&quot;) + &quot;] = &quot; +</span>
+<span class="fc" id="L543">			FormatUtil.FormatDouble (dfdc.df (dtSpot.addTenor (&quot;60Y&quot;)), 1, 8, 1.));</span>
 
 		/*
 		 * Cross-Recovery of the Deposit Calibration Instrument &quot;Rate&quot; metric across the different curve
 		 * 	construction methodologies.
 		 */
 
-<span class="nc" id="L550">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L550">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L552">		System.out.println (&quot;\t     DEPOSIT INSTRUMENTS CALIBRATION RECOVERY&quot;);</span>
+<span class="fc" id="L552">		System.out.println (&quot;\t     DEPOSIT INSTRUMENTS CALIBRATION RECOVERY&quot;);</span>
 
-<span class="nc" id="L554">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L554">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc bnc" id="L556" title="All 2 branches missed.">		for (int i = 0; i &lt; aDepositComp.length; ++i)</span>
-<span class="nc" id="L557">			System.out.println (&quot;\t[&quot; + aDepositComp[i].maturityDate() + &quot;] = &quot; +</span>
-<span class="nc" id="L558">				FormatUtil.FormatDouble (aDepositComp[i].measureValue (valParams, null,</span>
-<span class="nc" id="L559">					MarketParamsBuilder.Create (dfdc, null, null, null, null, null, null),</span>
-<span class="nc" id="L560">						null, &quot;Rate&quot;), 1, 6, 1.) + &quot; | &quot; + FormatUtil.FormatDouble (adblDepositQuote[i], 1, 6, 1.));</span>
+<span class="fc bfc" id="L556" title="All 2 branches covered.">		for (int i = 0; i &lt; aDepositComp.length; ++i)</span>
+<span class="fc" id="L557">			System.out.println (&quot;\t[&quot; + aDepositComp[i].maturityDate() + &quot;] = &quot; +</span>
+<span class="fc" id="L558">				FormatUtil.FormatDouble (aDepositComp[i].measureValue (valParams, null,</span>
+<span class="fc" id="L559">					MarketParamsBuilder.Create (dfdc, null, null, null, null, null, null),</span>
+<span class="fc" id="L560">						null, &quot;Rate&quot;), 1, 6, 1.) + &quot; | &quot; + FormatUtil.FormatDouble (adblDepositQuote[i], 1, 6, 1.));</span>
 
 		/*
 		 * Cross-Recovery of the OIS Short End Calibration Instrument &quot;Rate&quot; metric across the different curve
 		 * 	construction methodologies.
 		 */
 
-<span class="nc" id="L567">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L567">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L569">		System.out.println (&quot;\t      OIS SHORT END INSTRUMENTS CALIBRATION RECOVERY&quot;);</span>
+<span class="fc" id="L569">		System.out.println (&quot;\t      OIS SHORT END INSTRUMENTS CALIBRATION RECOVERY&quot;);</span>
 
-<span class="nc" id="L571">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L571">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc bnc" id="L573" title="All 2 branches missed.">		for (int i = 0; i &lt; aShortEndOISComp.length; ++i)</span>
-<span class="nc" id="L574">			System.out.println (&quot;\t[&quot; + aShortEndOISComp[i].maturityDate() + &quot;] = &quot; +</span>
-<span class="nc" id="L575">				FormatUtil.FormatDouble (aShortEndOISComp[i].measureValue (valParams, null,</span>
-<span class="nc" id="L576">					MarketParamsBuilder.Create (dfdc, null, null, null, null, null, null),</span>
-<span class="nc" id="L577">						null, &quot;SwapRate&quot;), 1, 6, 1.) + &quot; | &quot; + FormatUtil.FormatDouble (adblShortEndOISQuote[i], 1, 6, 1.));</span>
+<span class="fc bfc" id="L573" title="All 2 branches covered.">		for (int i = 0; i &lt; aShortEndOISComp.length; ++i)</span>
+<span class="fc" id="L574">			System.out.println (&quot;\t[&quot; + aShortEndOISComp[i].maturityDate() + &quot;] = &quot; +</span>
+<span class="fc" id="L575">				FormatUtil.FormatDouble (aShortEndOISComp[i].measureValue (valParams, null,</span>
+<span class="fc" id="L576">					MarketParamsBuilder.Create (dfdc, null, null, null, null, null, null),</span>
+<span class="fc" id="L577">						null, &quot;SwapRate&quot;), 1, 6, 1.) + &quot; | &quot; + FormatUtil.FormatDouble (adblShortEndOISQuote[i], 1, 6, 1.));</span>
 
 		/*
 		 * Cross-Recovery of the OIS Future Calibration Instrument &quot;Rate&quot; metric across the different curve
 		 * 	construction methodologies.
 		 */
 
-<span class="nc" id="L584">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L584">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L586">		System.out.println (&quot;\t      OIS FUTURES INSTRUMENTS CALIBRATION RECOVERY&quot;);</span>
+<span class="fc" id="L586">		System.out.println (&quot;\t      OIS FUTURES INSTRUMENTS CALIBRATION RECOVERY&quot;);</span>
 
-<span class="nc" id="L588">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L588">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc bnc" id="L590" title="All 2 branches missed.">		for (int i = 0; i &lt; aOISFutureComp.length; ++i)</span>
-<span class="nc" id="L591">			System.out.println (&quot;\t[&quot; + aOISFutureComp[i].maturityDate() + &quot;] = &quot; +</span>
-<span class="nc" id="L592">				FormatUtil.FormatDouble (aOISFutureComp[i].measureValue (valParams, null,</span>
-<span class="nc" id="L593">					MarketParamsBuilder.Create (dfdc, null, null, null, null, null, null),</span>
-<span class="nc" id="L594">						null, &quot;SwapRate&quot;), 1, 6, 1.) + &quot; | &quot; + FormatUtil.FormatDouble (adblOISFutureQuote[i], 1, 6, 1.));</span>
+<span class="fc bfc" id="L590" title="All 2 branches covered.">		for (int i = 0; i &lt; aOISFutureComp.length; ++i)</span>
+<span class="fc" id="L591">			System.out.println (&quot;\t[&quot; + aOISFutureComp[i].maturityDate() + &quot;] = &quot; +</span>
+<span class="fc" id="L592">				FormatUtil.FormatDouble (aOISFutureComp[i].measureValue (valParams, null,</span>
+<span class="fc" id="L593">					MarketParamsBuilder.Create (dfdc, null, null, null, null, null, null),</span>
+<span class="fc" id="L594">						null, &quot;SwapRate&quot;), 1, 6, 1.) + &quot; | &quot; + FormatUtil.FormatDouble (adblOISFutureQuote[i], 1, 6, 1.));</span>
 
 		/*
 		 * Cross-Recovery of the OIS Long End Calibration Instrument &quot;Rate&quot; metric across the different curve
 		 * 	construction methodologies.
 		 */
 
-<span class="nc" id="L601">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L601">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L603">		System.out.println (&quot;\t      OIS LONG END INSTRUMENTS CALIBRATION RECOVERY&quot;);</span>
+<span class="fc" id="L603">		System.out.println (&quot;\t      OIS LONG END INSTRUMENTS CALIBRATION RECOVERY&quot;);</span>
 
-<span class="nc" id="L605">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L605">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc bnc" id="L607" title="All 2 branches missed.">		for (int i = 0; i &lt; aLongEndOISComp.length; ++i)</span>
-<span class="nc" id="L608">			System.out.println (&quot;\t[&quot; + aLongEndOISComp[i].maturityDate() + &quot;] = &quot; +</span>
-<span class="nc" id="L609">				FormatUtil.FormatDouble (aLongEndOISComp[i].measureValue (valParams, null,</span>
-<span class="nc" id="L610">					MarketParamsBuilder.Create (dfdc, null, null, null, null, null, null),</span>
-<span class="nc" id="L611">						null, &quot;CalibSwapRate&quot;), 1, 6, 1.) + &quot; | &quot; + FormatUtil.FormatDouble (adblLongEndOISQuote[i], 1, 6, 1.));</span>
+<span class="fc bfc" id="L607" title="All 2 branches covered.">		for (int i = 0; i &lt; aLongEndOISComp.length; ++i)</span>
+<span class="fc" id="L608">			System.out.println (&quot;\t[&quot; + aLongEndOISComp[i].maturityDate() + &quot;] = &quot; +</span>
+<span class="fc" id="L609">				FormatUtil.FormatDouble (aLongEndOISComp[i].measureValue (valParams, null,</span>
+<span class="fc" id="L610">					MarketParamsBuilder.Create (dfdc, null, null, null, null, null, null),</span>
+<span class="fc" id="L611">						null, &quot;CalibSwapRate&quot;), 1, 6, 1.) + &quot; | &quot; + FormatUtil.FormatDouble (adblLongEndOISQuote[i], 1, 6, 1.));</span>
 
 		/*
 		 * Create a turn list instance and add new turn instances
 		 */
 
-<span class="nc" id="L617">		TurnListDiscountFactor tldc = new TurnListDiscountFactor();</span>
+<span class="fc" id="L617">		TurnListDiscountFactor tldc = new TurnListDiscountFactor();</span>
 
-<span class="nc" id="L619">		tldc.addTurn (</span>
+<span class="fc" id="L619">		tldc.addTurn (</span>
 			new Turn (
-<span class="nc" id="L621">				dtSpot.addTenor (&quot;5Y&quot;).julian(),</span>
-<span class="nc" id="L622">				dtSpot.addTenor (&quot;40Y&quot;).julian(),</span>
+<span class="fc" id="L621">				dtSpot.addTenor (&quot;5Y&quot;).julian(),</span>
+<span class="fc" id="L622">				dtSpot.addTenor (&quot;40Y&quot;).julian(),</span>
 				0.001
 			)
 		);
@@ -628,25 +628,25 @@ import org.drip.state.inference.*;
 		 * Update the discount curve with the turn list.
 		 */
 
-<span class="nc" id="L631">		dfdc.setTurns (tldc);</span>
+<span class="fc" id="L631">		dfdc.setTurns (tldc);</span>
 
 		/*
 		 * Compare the discount factor implied the discount curve with and without applying the turns
 		 * 	adjustment.
 		 */
 
-<span class="nc" id="L638">		System.out.println (&quot;\n\t-------------------------------&quot;);</span>
+<span class="fc" id="L638">		System.out.println (&quot;\n\t-------------------------------&quot;);</span>
 
-<span class="nc" id="L640">		System.out.println (&quot;\t  TURNS ADJ DF         DFDC&quot;);</span>
+<span class="fc" id="L640">		System.out.println (&quot;\t  TURNS ADJ DF         DFDC&quot;);</span>
 
-<span class="nc" id="L642">		System.out.println (&quot;\t-------------------------------&quot;);</span>
+<span class="fc" id="L642">		System.out.println (&quot;\t-------------------------------&quot;);</span>
 
-<span class="nc bnc" id="L644" title="All 2 branches missed.">		for (int iX = (int) mssOISShortEnd.getLeftPredictorOrdinateEdge(); iX &lt;= (int) mssOISLongEnd.getRightPredictorOrdinateEdge();</span>
-<span class="nc" id="L645">			iX += 0.05 * (mssOISLongEnd.getRightPredictorOrdinateEdge() - mssOISShortEnd.getLeftPredictorOrdinateEdge())) {</span>
-<span class="nc" id="L646">				System.out.println (&quot;\tOIS [&quot; + new JulianDate (iX) + &quot;] = &quot; +</span>
-<span class="nc" id="L647">					FormatUtil.FormatDouble (dfdc.df (iX), 1, 8, 1.));</span>
+<span class="fc bfc" id="L644" title="All 2 branches covered.">		for (int iX = (int) mssOISShortEnd.getLeftPredictorOrdinateEdge(); iX &lt;= (int) mssOISLongEnd.getRightPredictorOrdinateEdge();</span>
+<span class="fc" id="L645">			iX += 0.05 * (mssOISLongEnd.getRightPredictorOrdinateEdge() - mssOISShortEnd.getLeftPredictorOrdinateEdge())) {</span>
+<span class="fc" id="L646">				System.out.println (&quot;\tOIS [&quot; + new JulianDate (iX) + &quot;] = &quot; +</span>
+<span class="fc" id="L647">					FormatUtil.FormatDouble (dfdc.df (iX), 1, 8, 1.));</span>
 		}
-<span class="nc" id="L649">	}</span>
+<span class="fc" id="L649">	}</span>
 
 	public static final void main (
 		final String[] astrArgs)
@@ -656,7 +656,7 @@ import org.drip.state.inference.*;
 		 * Initialize the Credit Analytics Library
 		 */
 
-<span class="nc" id="L659">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L659">		EnvManager.InitEnv (&quot;&quot;);</span>
 
 		/*
 		 * Construct the segment Custom builder using the following parameters:
@@ -665,10 +665,10 @@ import org.drip.state.inference.*;
 		 * 	- Quadratic Rational Shape Controller
 		 */
 
-<span class="nc" id="L668">		SegmentCustomBuilderControl prbpPolynomial = new SegmentCustomBuilderControl (</span>
+<span class="fc" id="L668">		SegmentCustomBuilderControl prbpPolynomial = new SegmentCustomBuilderControl (</span>
 			MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 			new PolynomialFunctionSetParams (4),
-<span class="nc" id="L671">			SegmentInelasticDesignControl.Create (</span>
+<span class="fc" id="L671">			SegmentInelasticDesignControl.Create (</span>
 				2,
 				2
 			),
@@ -679,20 +679,20 @@ import org.drip.state.inference.*;
 			null
 		);
 
-<span class="nc" id="L682">		String strCurrency = &quot;EUR&quot;;</span>
+<span class="fc" id="L682">		String strCurrency = &quot;EUR&quot;;</span>
 
-<span class="nc" id="L684">		JulianDate dtToday = DateUtil.Today().addTenor (&quot;0D&quot;);</span>
+<span class="fc" id="L684">		JulianDate dtToday = DateUtil.Today().addTenor (&quot;0D&quot;);</span>
 
 		/*
 		 * Runs the full spline linear discount curve builder sample using the overnight index discount curve.
 		 */
 
-<span class="nc" id="L690">		SplineLinearOISDiscountCurve (</span>
+<span class="fc" id="L690">		SplineLinearOISDiscountCurve (</span>
 			dtToday,
 			prbpPolynomial,
 			&quot;---- DISCOUNT CURVE WITH OVERNIGHT INDEX ---&quot;,
 			strCurrency
 		);
-<span class="nc" id="L696">	}</span>
+<span class="fc" id="L696">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

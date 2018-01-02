@@ -89,49 +89,49 @@ package org.drip.state.boot;
 		final org.drip.param.market.LatentStateFixingsContainer lsfc,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
-<span class="nc bnc" id="L92" title="All 10 branches missed.">		if (null == valParams || null == aFRACapFloor || null == adblCalibQuote || null == astrCalibMeasure</span>
+<span class="pc bpc" id="L92" title="5 of 10 branches missed.">		if (null == valParams || null == aFRACapFloor || null == adblCalibQuote || null == astrCalibMeasure</span>
 			|| null == dc)
 <span class="nc" id="L94">			return null;</span>
 
-<span class="nc" id="L96">		int iNumComp = aFRACapFloor.length;</span>
-<span class="nc" id="L97">		int aiPillarDate[] = new int[iNumComp];</span>
-<span class="nc" id="L98">		double adblVolatility[] = new double[iNumComp];</span>
-<span class="nc" id="L99">		org.drip.state.volatility.ExplicitBootVolatilityCurve ebvc = null;</span>
+<span class="fc" id="L96">		int iNumComp = aFRACapFloor.length;</span>
+<span class="fc" id="L97">		int aiPillarDate[] = new int[iNumComp];</span>
+<span class="fc" id="L98">		double adblVolatility[] = new double[iNumComp];</span>
+<span class="fc" id="L99">		org.drip.state.volatility.ExplicitBootVolatilityCurve ebvc = null;</span>
 
-<span class="nc bnc" id="L101" title="All 6 branches missed.">		if (0 == iNumComp || adblCalibQuote.length != iNumComp || astrCalibMeasure.length != iNumComp)</span>
+<span class="pc bpc" id="L101" title="3 of 6 branches missed.">		if (0 == iNumComp || adblCalibQuote.length != iNumComp || astrCalibMeasure.length != iNumComp)</span>
 <span class="nc" id="L102">			return null;</span>
 
-<span class="nc bnc" id="L104" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i) {</span>
-<span class="nc bnc" id="L105" title="All 2 branches missed.">			if (null == aFRACapFloor[i]) return null;</span>
+<span class="fc bfc" id="L104" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumComp; ++i) {</span>
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">			if (null == aFRACapFloor[i]) return null;</span>
 
-<span class="nc" id="L107">			adblVolatility[i] = 0.001;</span>
+<span class="fc" id="L107">			adblVolatility[i] = 0.001;</span>
 
-<span class="nc" id="L109">			aiPillarDate[i] = aFRACapFloor[i].stream().maturity().julian();</span>
+<span class="fc" id="L109">			aiPillarDate[i] = aFRACapFloor[i].stream().maturity().julian();</span>
 		}
 
 		try {
-<span class="nc" id="L113">			ebvc = new org.drip.state.nonlinear.FlatForwardVolatilityCurve (dc.epoch().julian(),</span>
-<span class="nc" id="L114">				org.drip.state.identifier.VolatilityLabel.Standard (lslUnderlying), dc.currency(),</span>
+<span class="fc" id="L113">			ebvc = new org.drip.state.nonlinear.FlatForwardVolatilityCurve (dc.epoch().julian(),</span>
+<span class="fc" id="L114">				org.drip.state.identifier.VolatilityLabel.Standard (lslUnderlying), dc.currency(),</span>
 					aiPillarDate, adblVolatility);
 <span class="nc" id="L116">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L117">			e.printStackTrace();</span>
 
 <span class="nc" id="L119">			return null;</span>
-<span class="nc" id="L120">		}</span>
+<span class="fc" id="L120">		}</span>
 
-<span class="nc bnc" id="L122" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i) {</span>
+<span class="fc bfc" id="L122" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumComp; ++i) {</span>
 			try {
-<span class="nc" id="L124">				org.drip.state.nonlinear.NonlinearCurveBuilder.VolatilityCurveNode (valParams,</span>
+<span class="fc" id="L124">				org.drip.state.nonlinear.NonlinearCurveBuilder.VolatilityCurveNode (valParams,</span>
 					aFRACapFloor[i], adblCalibQuote[i], astrCalibMeasure[i], bFlat, i, ebvc, dc, fc, lsfc,
 						vcp);
 <span class="nc" id="L127">			} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L128">				e.printStackTrace();</span>
 
 <span class="nc" id="L130">				return null;</span>
-<span class="nc" id="L131">			}</span>
+<span class="fc" id="L131">			}</span>
 		}
 
-<span class="nc" id="L134">		return ebvc;</span>
+<span class="fc" id="L134">		return ebvc;</span>
 	}
 
 	/**

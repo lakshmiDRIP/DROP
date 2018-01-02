@@ -95,48 +95,48 @@ import org.drip.spline.stretch.*;
 		 * 	predictor ordinates pre-positivity enforcement.
 		 */
 
-<span class="nc" id="L98">		double dblTimeBegin = 0.;</span>
-<span class="nc" id="L99">		double dblTimeFinish = 30.;</span>
-<span class="nc" id="L100">		double dblTimeDelta = 3.00;</span>
-<span class="nc" id="L101">		double dblTime = dblTimeBegin;</span>
+<span class="fc" id="L98">		double dblTimeBegin = 0.;</span>
+<span class="fc" id="L99">		double dblTimeFinish = 30.;</span>
+<span class="fc" id="L100">		double dblTimeDelta = 3.00;</span>
+<span class="fc" id="L101">		double dblTime = dblTimeBegin;</span>
 
-<span class="nc bnc" id="L103" title="All 2 branches missed.">		while (dblTime &lt;= dblTimeFinish) {</span>
-<span class="nc" id="L104">			System.out.println (&quot;\t\tResponse[&quot; +</span>
-<span class="nc" id="L105">				FormatUtil.FormatDouble (dblTime, 2, 2, 1.) + &quot;]: &quot; +</span>
-<span class="nc" id="L106">				FormatUtil.FormatDouble (mchw.evaluate (dblTime), 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L107">				FormatUtil.FormatDouble (mss.responseValue (dblTime), 1, 6, 1.)</span>
+<span class="fc bfc" id="L103" title="All 2 branches covered.">		while (dblTime &lt;= dblTimeFinish) {</span>
+<span class="fc" id="L104">			System.out.println (&quot;\t\tResponse[&quot; +</span>
+<span class="fc" id="L105">				FormatUtil.FormatDouble (dblTime, 2, 2, 1.) + &quot;]: &quot; +</span>
+<span class="fc" id="L106">				FormatUtil.FormatDouble (mchw.evaluate (dblTime), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L107">				FormatUtil.FormatDouble (mss.responseValue (dblTime), 1, 6, 1.)</span>
 			);
 
-<span class="nc" id="L110">			dblTime += dblTimeDelta;</span>
+<span class="fc" id="L110">			dblTime += dblTimeDelta;</span>
 		}
 
 		/*
 		 * Verify if the monotone convex positivity enforcement succeeded
 		 */
 
-<span class="nc" id="L117">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L117">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L119">		System.out.println (&quot;\t\tPositivity enforced? &quot; + mchw.enforcePositivity());</span>
+<span class="fc" id="L119">		System.out.println (&quot;\t\tPositivity enforced? &quot; + mchw.enforcePositivity());</span>
 
-<span class="nc" id="L121">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L121">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L123">		dblTime = dblTimeBegin;</span>
+<span class="fc" id="L123">		dblTime = dblTimeBegin;</span>
 
 		/*
 		 * Compare the stretch response values with that of the Monotone Convex across the range of the
 		 * 	predictor ordinates post-positivity enforcement.
 		 */
 
-<span class="nc bnc" id="L130" title="All 2 branches missed.">		while (dblTime &lt;= dblTimeFinish) {</span>
-<span class="nc" id="L131">			System.out.println (&quot;\t\tPositivity Enforced Response[&quot; +</span>
-<span class="nc" id="L132">				FormatUtil.FormatDouble (dblTime, 2, 2, 1.) + &quot;]: &quot; +</span>
-<span class="nc" id="L133">				FormatUtil.FormatDouble (mchw.evaluate (dblTime), 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L134">				FormatUtil.FormatDouble (mss.responseValue (dblTime), 1, 6, 1.)</span>
+<span class="fc bfc" id="L130" title="All 2 branches covered.">		while (dblTime &lt;= dblTimeFinish) {</span>
+<span class="fc" id="L131">			System.out.println (&quot;\t\tPositivity Enforced Response[&quot; +</span>
+<span class="fc" id="L132">				FormatUtil.FormatDouble (dblTime, 2, 2, 1.) + &quot;]: &quot; +</span>
+<span class="fc" id="L133">				FormatUtil.FormatDouble (mchw.evaluate (dblTime), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L134">				FormatUtil.FormatDouble (mss.responseValue (dblTime), 1, 6, 1.)</span>
 			);
 
-<span class="nc" id="L137">			dblTime += dblTimeDelta;</span>
+<span class="fc" id="L137">			dblTime += dblTimeDelta;</span>
 		}
-<span class="nc" id="L139">	}</span>
+<span class="fc" id="L139">	}</span>
 
 	/*
 	 * This sample demonstrates the construction and usage of the Monotone Hagan West Functionality. It shows
@@ -163,10 +163,10 @@ import org.drip.spline.stretch.*;
 		 * Set up the Predictor ordinates and the response values.
 		 */
 
-<span class="nc" id="L166">		double[] adblTime = new double[] {</span>
+<span class="fc" id="L166">		double[] adblTime = new double[] {</span>
 			0., 0.10, 1.0, 4.0, 9.0, 20.0, 30.0
 		};
-<span class="nc" id="L169">		double[] adblForwardRate = new double[] {</span>
+<span class="fc" id="L169">		double[] adblForwardRate = new double[] {</span>
 			1.008, 1.073, 1.221, 1.878, 2.226, 2.460
 		};
 
@@ -174,21 +174,21 @@ import org.drip.spline.stretch.*;
 		 * Construct the rational linear shape control with the specified tension.
 		 */
 
-<span class="nc" id="L177">		double dblShapeControllerTension = 1.;</span>
+<span class="fc" id="L177">		double dblShapeControllerTension = 1.;</span>
 
-<span class="nc" id="L179">		ResponseScalingShapeControl rssc = new ResponseScalingShapeControl (</span>
+<span class="fc" id="L179">		ResponseScalingShapeControl rssc = new ResponseScalingShapeControl (</span>
 			false,
 			new LinearRationalShapeControl (dblShapeControllerTension)
 		);
 
-<span class="nc" id="L184">		int iK = 2;</span>
-<span class="nc" id="L185">		int iCurvaturePenaltyDerivativeOrder = 2;</span>
+<span class="fc" id="L184">		int iK = 2;</span>
+<span class="fc" id="L185">		int iCurvaturePenaltyDerivativeOrder = 2;</span>
 
 		/*
 		 * Create the Segment Inelastic design using the Ck and Curvature Penalty Derivatives.
 		 */
 
-<span class="nc" id="L191">		SegmentInelasticDesignControl sdic = SegmentInelasticDesignControl.Create (</span>
+<span class="fc" id="L191">		SegmentInelasticDesignControl sdic = SegmentInelasticDesignControl.Create (</span>
 			iK,
 			iCurvaturePenaltyDerivativeOrder
 		);
@@ -198,9 +198,9 @@ import org.drip.spline.stretch.*;
 		 * 	Type, the tension, the segment inelastic design control, and the shape controller.
 		 */
 
-<span class="nc" id="L201">		double dblKLKTension = 1.;</span>
+<span class="fc" id="L201">		double dblKLKTension = 1.;</span>
 
-<span class="nc" id="L203">		SegmentCustomBuilderControl scbc = new SegmentCustomBuilderControl (</span>
+<span class="fc" id="L203">		SegmentCustomBuilderControl scbc = new SegmentCustomBuilderControl (</span>
 			MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
 			new ExponentialTensionSetParams (dblKLKTension),
 			sdic,
@@ -208,17 +208,17 @@ import org.drip.spline.stretch.*;
 			null
 		);
 
-<span class="nc" id="L211">		SegmentCustomBuilderControl[] aSCBC = new SegmentCustomBuilderControl[adblForwardRate.length];</span>
+<span class="fc" id="L211">		SegmentCustomBuilderControl[] aSCBC = new SegmentCustomBuilderControl[adblForwardRate.length];</span>
 
-<span class="nc bnc" id="L213" title="All 2 branches missed.">		for (int i = 0; i &lt; adblForwardRate.length; ++i)</span>
-<span class="nc" id="L214">			aSCBC[i] = scbc;</span>
+<span class="fc bfc" id="L213" title="All 2 branches covered.">		for (int i = 0; i &lt; adblForwardRate.length; ++i)</span>
+<span class="fc" id="L214">			aSCBC[i] = scbc;</span>
 
 		/*
 		 * Setup the monotone convex stretch using the above settings, and with no linear inference, no
 		 * 	spurious extrema, or no monotone filtering applied.
 		 */
 
-<span class="nc" id="L221">		MultiSegmentSequence mssLinear = LocalControlStretchBuilder.CreateMonotoneConvexStretch (</span>
+<span class="fc" id="L221">		MultiSegmentSequence mssLinear = LocalControlStretchBuilder.CreateMonotoneConvexStretch (</span>
 			&quot;MSS_LINEAR&quot;,
 			adblTime,
 			adblForwardRate,
@@ -235,7 +235,7 @@ import org.drip.spline.stretch.*;
 		 * 	spurious extrema, or no monotone filtering applied.
 		 */
 
-<span class="nc" id="L238">		MultiSegmentSequence mssHarmonic = LocalControlStretchBuilder.CreateMonotoneConvexStretch (</span>
+<span class="fc" id="L238">		MultiSegmentSequence mssHarmonic = LocalControlStretchBuilder.CreateMonotoneConvexStretch (</span>
 			&quot;MSS_HARMONIC&quot;,
 			adblTime,
 			adblForwardRate,
@@ -251,18 +251,18 @@ import org.drip.spline.stretch.*;
 		 * Compute and display the monotone convex output with the linear forward state.
 		 */
 
-<span class="nc" id="L254">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L254">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L256">		System.out.println (&quot;\t     MONOTONE CONVEX HAGAN WEST WITH LINEAR FORWARD STATE&quot;);</span>
+<span class="fc" id="L256">		System.out.println (&quot;\t     MONOTONE CONVEX HAGAN WEST WITH LINEAR FORWARD STATE&quot;);</span>
 
-<span class="nc" id="L258">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L258">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
 		/*
 		 * Compute and display the monotone convex output with the harmonic forward state.
 		 */
 
-<span class="nc" id="L264">		DisplayOP (</span>
-<span class="nc" id="L265">			MonotoneConvexHaganWest.Create (</span>
+<span class="fc" id="L264">		DisplayOP (</span>
+<span class="fc" id="L265">			MonotoneConvexHaganWest.Create (</span>
 				adblTime,
 				adblForwardRate,
 				false
@@ -271,14 +271,14 @@ import org.drip.spline.stretch.*;
 			adblTime
 		);
 
-<span class="nc" id="L274">		System.out.println (&quot;\n\n\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L274">		System.out.println (&quot;\n\n\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L276">		System.out.println (&quot;\t     MONOTONE CONVEX HAGAN WEST WITH HARMONIC FORWARD STATE&quot;);</span>
+<span class="fc" id="L276">		System.out.println (&quot;\t     MONOTONE CONVEX HAGAN WEST WITH HARMONIC FORWARD STATE&quot;);</span>
 
-<span class="nc" id="L278">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L278">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L280">		DisplayOP (</span>
-<span class="nc" id="L281">			MonotoneConvexHaganWest.Create (</span>
+<span class="fc" id="L280">		DisplayOP (</span>
+<span class="fc" id="L281">			MonotoneConvexHaganWest.Create (</span>
 				adblTime,
 				adblForwardRate,
 				true
@@ -286,13 +286,13 @@ import org.drip.spline.stretch.*;
 			mssHarmonic,
 			adblTime
 		);
-<span class="nc" id="L289">	}</span>
+<span class="fc" id="L289">	}</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L295">		MonotoneHaganWestInterpolatorSample();</span>
-<span class="nc" id="L296">	}</span>
+<span class="fc" id="L295">		MonotoneHaganWestInterpolatorSample();</span>
+<span class="fc" id="L296">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

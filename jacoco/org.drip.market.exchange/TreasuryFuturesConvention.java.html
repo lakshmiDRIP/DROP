@@ -191,7 +191,7 @@ public class TreasuryFuturesConvention {
 
 	public double basketNotional()
 	{
-<span class="nc" id="L194">		return _dblBasketNotional;</span>
+<span class="fc" id="L194">		return _dblBasketNotional;</span>
 	}
 
 	/**
@@ -202,7 +202,7 @@ public class TreasuryFuturesConvention {
 
 	public double minimumPriceMovement()
 	{
-<span class="nc" id="L205">		return _dblMinimumPriceMovement;</span>
+<span class="fc" id="L205">		return _dblMinimumPriceMovement;</span>
 	}
 
 	/**
@@ -268,7 +268,7 @@ public class TreasuryFuturesConvention {
 
 	public org.drip.market.exchange.TreasuryFuturesEligibility eligibility()
 	{
-<span class="nc" id="L271">		return _bfe;</span>
+<span class="fc" id="L271">		return _bfe;</span>
 	}
 
 	/**
@@ -279,7 +279,7 @@ public class TreasuryFuturesConvention {
 
 	public org.drip.market.exchange.TreasuryFuturesSettle settle()
 	{
-<span class="nc" id="L282">		return _bfs;</span>
+<span class="fc" id="L282">		return _bfs;</span>
 	}
 
 	/**
@@ -295,16 +295,16 @@ public class TreasuryFuturesConvention {
 		final int iYear,
 		final int iMonth)
 	{
-<span class="nc" id="L298">		org.drip.analytics.date.JulianDate dtExpiry = _dimExpiry.instanceDay (iYear, iMonth, _strCalendar);</span>
+<span class="fc" id="L298">		org.drip.analytics.date.JulianDate dtExpiry = _dimExpiry.instanceDay (iYear, iMonth, _strCalendar);</span>
 
-<span class="nc bnc" id="L300" title="All 2 branches missed.">		if (null == dtExpiry) return null;</span>
+<span class="pc bpc" id="L300" title="1 of 2 branches missed.">		if (null == dtExpiry) return null;</span>
 
 		try {
-<span class="nc" id="L303">			return new org.drip.market.exchange.TreasuryFuturesEventDates (dtExpiry, dtExpiry.addBusDays</span>
-<span class="nc" id="L304">				(_bfs.expiryFirstDeliveryLag(), _strCalendar), dtExpiry.addBusDays</span>
-<span class="nc" id="L305">					(_bfs.expiryFinalDeliveryLag(), _strCalendar), dtExpiry.addBusDays</span>
-<span class="nc" id="L306">						(_bfs.expiryDeliveryNoticeLag(), _strCalendar), dtExpiry.addBusDays</span>
-<span class="nc" id="L307">							(_bfs.expiryFirstDeliveryLag(), _strCalendar));</span>
+<span class="fc" id="L303">			return new org.drip.market.exchange.TreasuryFuturesEventDates (dtExpiry, dtExpiry.addBusDays</span>
+<span class="fc" id="L304">				(_bfs.expiryFirstDeliveryLag(), _strCalendar), dtExpiry.addBusDays</span>
+<span class="fc" id="L305">					(_bfs.expiryFinalDeliveryLag(), _strCalendar), dtExpiry.addBusDays</span>
+<span class="fc" id="L306">						(_bfs.expiryDeliveryNoticeLag(), _strCalendar), dtExpiry.addBusDays</span>
+<span class="fc" id="L307">							(_bfs.expiryFirstDeliveryLag(), _strCalendar));</span>
 <span class="nc" id="L308">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L309">			e.printStackTrace();</span>
 		}
@@ -387,35 +387,35 @@ public class TreasuryFuturesConvention {
 
 	@Override public java.lang.String toString()
 	{
-<span class="nc" id="L390">		java.lang.String strDump = &quot;Name: &quot; + _strName + &quot; | Currency: &quot; + _strCurrency + &quot; | Calendar: &quot; +</span>
+<span class="fc" id="L390">		java.lang.String strDump = &quot;Name: &quot; + _strName + &quot; | Currency: &quot; + _strCurrency + &quot; | Calendar: &quot; +</span>
 			_strCalendar + &quot; | Underlier Type: &quot; + _strUnderlierType + &quot; | Underlier Sub-type: &quot; +
 				_strUnderlierSubtype + &quot; | Maturity Tenor: &quot; + _strMaturityTenor + &quot; | Basket Notional: &quot; +
 					_dblBasketNotional + &quot; | Minimum Price Movement: &quot; + _dblMinimumPriceMovement +
 						&quot; | Component Notional Minimum: &quot; + _dblComponentNotionalMinimum;
 
-<span class="nc bnc" id="L396" title="All 2 branches missed.">		for (int i = 0; i &lt; _astrCode.length; ++i) {</span>
-<span class="nc bnc" id="L397" title="All 2 branches missed.">			if (0 == i)</span>
-<span class="nc" id="L398">				strDump += &quot; | CODES =&gt; {&quot;;</span>
+<span class="fc bfc" id="L396" title="All 2 branches covered.">		for (int i = 0; i &lt; _astrCode.length; ++i) {</span>
+<span class="fc bfc" id="L397" title="All 2 branches covered.">			if (0 == i)</span>
+<span class="fc" id="L398">				strDump += &quot; | CODES =&gt; {&quot;;</span>
 			else
-<span class="nc" id="L400">				strDump += &quot;, &quot;;</span>
+<span class="fc" id="L400">				strDump += &quot;, &quot;;</span>
 
-<span class="nc" id="L402">			strDump += _astrCode[i];</span>
+<span class="fc" id="L402">			strDump += _astrCode[i];</span>
 
-<span class="nc bnc" id="L404" title="All 2 branches missed.">			if (_astrExchange.length - 1 == i) strDump += &quot;}&quot;;</span>
+<span class="fc bfc" id="L404" title="All 2 branches covered.">			if (_astrExchange.length - 1 == i) strDump += &quot;}&quot;;</span>
 		}
 
-<span class="nc bnc" id="L407" title="All 2 branches missed.">		for (int i = 0; i &lt; _astrExchange.length; ++i) {</span>
-<span class="nc bnc" id="L408" title="All 2 branches missed.">			if (0 == i)</span>
-<span class="nc" id="L409">				strDump += &quot; | EXCHANGES =&gt; (&quot;;</span>
+<span class="fc bfc" id="L407" title="All 2 branches covered.">		for (int i = 0; i &lt; _astrExchange.length; ++i) {</span>
+<span class="fc bfc" id="L408" title="All 2 branches covered.">			if (0 == i)</span>
+<span class="fc" id="L409">				strDump += &quot; | EXCHANGES =&gt; (&quot;;</span>
 			else
-<span class="nc" id="L411">				strDump += &quot;, &quot;;</span>
+<span class="fc" id="L411">				strDump += &quot;, &quot;;</span>
 
-<span class="nc" id="L413">			strDump += _astrExchange[i];</span>
+<span class="fc" id="L413">			strDump += _astrExchange[i];</span>
 
-<span class="nc bnc" id="L415" title="All 2 branches missed.">			if (_astrExchange.length - 1 == i) strDump += &quot;) &quot;;</span>
+<span class="fc bfc" id="L415" title="All 2 branches covered.">			if (_astrExchange.length - 1 == i) strDump += &quot;) &quot;;</span>
 		}
 
-<span class="nc" id="L418">		return strDump + &quot;\n\t\t&quot; + _dimExpiry + &quot;\n\t\t&quot; + _bfe + &quot;\n\t\t&quot; + _bfs;</span>
+<span class="fc" id="L418">		return strDump + &quot;\n\t\t&quot; + _dimExpiry + &quot;\n\t\t&quot; + _bfe + &quot;\n\t\t&quot; + _bfs;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

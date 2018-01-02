@@ -85,53 +85,53 @@ import org.drip.state.volatility.VolatilityCurve;
 		 * Initialize the Credit Analytics Library
 		 */
 
-<span class="nc" id="L88">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L88">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L90">		JulianDate dtToday = DateUtil.Today();</span>
+<span class="fc" id="L90">		JulianDate dtToday = DateUtil.Today();</span>
 
-<span class="nc" id="L92">		String strDomesticCurrency = &quot;USD&quot;;</span>
-<span class="nc" id="L93">		String strForeignCurrency = &quot;EUR&quot;;</span>
-<span class="nc" id="L94">		String strMaturity = &quot;1Y&quot;;</span>
-<span class="nc" id="L95">		double dblFXFwdStrike = 1.016;</span>
-<span class="nc" id="L96">		double dblForeignCollateralRate = 0.02;</span>
-<span class="nc" id="L97">		double dblCollateralizedFXRate = 1.010;</span>
-<span class="nc" id="L98">		double dblForeignRatesVolatility = 0.30;</span>
-<span class="nc" id="L99">		double dblFXVolatility = 0.10;</span>
-<span class="nc" id="L100">		double dblFXForeignRatesCorrelation = 0.20;</span>
+<span class="fc" id="L92">		String strDomesticCurrency = &quot;USD&quot;;</span>
+<span class="fc" id="L93">		String strForeignCurrency = &quot;EUR&quot;;</span>
+<span class="fc" id="L94">		String strMaturity = &quot;1Y&quot;;</span>
+<span class="fc" id="L95">		double dblFXFwdStrike = 1.016;</span>
+<span class="fc" id="L96">		double dblForeignCollateralRate = 0.02;</span>
+<span class="fc" id="L97">		double dblCollateralizedFXRate = 1.010;</span>
+<span class="fc" id="L98">		double dblForeignRatesVolatility = 0.30;</span>
+<span class="fc" id="L99">		double dblFXVolatility = 0.10;</span>
+<span class="fc" id="L100">		double dblFXForeignRatesCorrelation = 0.20;</span>
 
-<span class="nc" id="L102">		CurrencyPair cp = CurrencyPair.FromCode (strForeignCurrency + &quot;/&quot; + strDomesticCurrency);</span>
+<span class="fc" id="L102">		CurrencyPair cp = CurrencyPair.FromCode (strForeignCurrency + &quot;/&quot; + strDomesticCurrency);</span>
 
-<span class="nc" id="L104">		MergedDiscountForwardCurve dcCcyForeignCollatForeign = ScenarioDiscountCurveBuilder.ExponentiallyCompoundedFlatRate (</span>
+<span class="fc" id="L104">		MergedDiscountForwardCurve dcCcyForeignCollatForeign = ScenarioDiscountCurveBuilder.ExponentiallyCompoundedFlatRate (</span>
 			dtToday,
 			strForeignCurrency,
 			dblForeignCollateralRate
 		);
 
-<span class="nc" id="L110">		FXCurve fxCurve = new FlatForwardFXCurve (</span>
-<span class="nc" id="L111">			dtToday.julian(),</span>
+<span class="fc" id="L110">		FXCurve fxCurve = new FlatForwardFXCurve (</span>
+<span class="fc" id="L111">			dtToday.julian(),</span>
 			cp,
 			dblCollateralizedFXRate,
-<span class="nc" id="L114">			new int[] {dtToday.julian()},</span>
+<span class="fc" id="L114">			new int[] {dtToday.julian()},</span>
 			new double[] {dblCollateralizedFXRate}
 		);
 
-<span class="nc" id="L118">		VolatilityCurve vcForeignFunding = new FlatForwardVolatilityCurve (</span>
-<span class="nc" id="L119">			dtToday.julian(),</span>
-<span class="nc" id="L120">			VolatilityLabel.Standard (CollateralLabel.Standard (strForeignCurrency)),</span>
+<span class="fc" id="L118">		VolatilityCurve vcForeignFunding = new FlatForwardVolatilityCurve (</span>
+<span class="fc" id="L119">			dtToday.julian(),</span>
+<span class="fc" id="L120">			VolatilityLabel.Standard (CollateralLabel.Standard (strForeignCurrency)),</span>
 			strDomesticCurrency,
-<span class="nc" id="L122">			new int[] {dtToday.julian()},</span>
+<span class="fc" id="L122">			new int[] {dtToday.julian()},</span>
 			new double[] {dblForeignRatesVolatility}
 		);
 
-<span class="nc" id="L126">		VolatilityCurve vcFX = new FlatForwardVolatilityCurve (</span>
-<span class="nc" id="L127">			dtToday.julian(),</span>
-<span class="nc" id="L128">			VolatilityLabel.Standard (FXLabel.Standard (cp)),</span>
+<span class="fc" id="L126">		VolatilityCurve vcFX = new FlatForwardVolatilityCurve (</span>
+<span class="fc" id="L127">			dtToday.julian(),</span>
+<span class="fc" id="L128">			VolatilityLabel.Standard (FXLabel.Standard (cp)),</span>
 			strDomesticCurrency,
-<span class="nc" id="L130">			new int[] {dtToday.julian()},</span>
+<span class="fc" id="L130">			new int[] {dtToday.julian()},</span>
 			new double[] {dblFXVolatility}
 		);
 
-<span class="nc" id="L134">		MergedDiscountForwardCurve dcCcyDomesticCollatForeign = new ForeignCollateralizedDiscountCurve (</span>
+<span class="fc" id="L134">		MergedDiscountForwardCurve dcCcyDomesticCollatForeign = new ForeignCollateralizedDiscountCurve (</span>
 			strDomesticCurrency,
 			dcCcyForeignCollatForeign,
 			fxCurve,
@@ -140,7 +140,7 @@ import org.drip.state.volatility.VolatilityCurve;
 			new FlatUnivariate (dblFXForeignRatesCorrelation)
 		);
 
-<span class="nc" id="L143">		CurveSurfaceQuoteContainer mktParams = MarketParamsBuilder.Create (</span>
+<span class="fc" id="L143">		CurveSurfaceQuoteContainer mktParams = MarketParamsBuilder.Create (</span>
 			null,
 			null,
 			null,
@@ -150,21 +150,21 @@ import org.drip.state.volatility.VolatilityCurve;
 			null
 		);
 
-<span class="nc" id="L153">		mktParams.setPayCurrencyCollateralCurrencyCurve (</span>
+<span class="fc" id="L153">		mktParams.setPayCurrencyCollateralCurrencyCurve (</span>
 			strDomesticCurrency,
 			strForeignCurrency,
 			dcCcyDomesticCollatForeign
 		);
 
-<span class="nc" id="L159">		mktParams.setPayCurrencyCollateralCurrencyCurve (</span>
+<span class="fc" id="L159">		mktParams.setPayCurrencyCollateralCurrencyCurve (</span>
 			strForeignCurrency,
 			strForeignCurrency,
 			dcCcyForeignCollatForeign
 		);
 
-<span class="nc" id="L165">		mktParams.setFXState (</span>
-<span class="nc" id="L166">			ScenarioFXCurveBuilder.CubicPolynomialCurve (</span>
-<span class="nc" id="L167">				&quot;FX::&quot; + cp.code(),</span>
+<span class="fc" id="L165">		mktParams.setFXState (</span>
+<span class="fc" id="L166">			ScenarioFXCurveBuilder.CubicPolynomialCurve (</span>
+<span class="fc" id="L167">				&quot;FX::&quot; + cp.code(),</span>
 				dtToday,
 				cp,
 				new String[] {&quot;10Y&quot;},
@@ -173,13 +173,13 @@ import org.drip.state.volatility.VolatilityCurve;
 			)
 		);
 
-<span class="nc" id="L176">		ForeignCollateralizedDomesticForward fcff = new ForeignCollateralizedDomesticForward (</span>
+<span class="fc" id="L176">		ForeignCollateralizedDomesticForward fcff = new ForeignCollateralizedDomesticForward (</span>
 			cp,
 			dblFXFwdStrike,
-<span class="nc" id="L179">			dtToday.addTenor (strMaturity)</span>
+<span class="fc" id="L179">			dtToday.addTenor (strMaturity)</span>
 		);
 
-<span class="nc" id="L182">		CaseInsensitiveTreeMap&lt;Double&gt; mapFCFF = fcff.value (</span>
+<span class="fc" id="L182">		CaseInsensitiveTreeMap&lt;Double&gt; mapFCFF = fcff.value (</span>
 			new ValuationParams (
 				dtToday,
 				dtToday,
@@ -190,8 +190,8 @@ import org.drip.state.volatility.VolatilityCurve;
 			null
 		);
 
-<span class="nc bnc" id="L193" title="All 2 branches missed.">		for (Map.Entry&lt;String, Double&gt; me : mapFCFF.entrySet())</span>
-<span class="nc" id="L194">			System.out.println (&quot;\t&quot; + me.getKey() + &quot; =&gt; &quot; + me.getValue());</span>
-<span class="nc" id="L195">	}</span>
+<span class="fc bfc" id="L193" title="All 2 branches covered.">		for (Map.Entry&lt;String, Double&gt; me : mapFCFF.entrySet())</span>
+<span class="fc" id="L194">			System.out.println (&quot;\t&quot; + me.getKey() + &quot; =&gt; &quot; + me.getValue());</span>
+<span class="fc" id="L195">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

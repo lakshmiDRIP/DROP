@@ -83,37 +83,37 @@ public class OTCAccountingModusFCAFBA extends org.drip.xva.basel.OTCAccountingMo
 		final org.drip.xva.cpty.ExposureAdjustmentAggregator eaa)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L86">		super (eaa);</span>
-<span class="nc" id="L87">	}</span>
+<span class="fc" id="L86">		super (eaa);</span>
+<span class="fc" id="L87">	}</span>
 
 	@Override public double contraAssetAdjustment()
 	{
-<span class="nc" id="L91">		org.drip.xva.cpty.ExposureAdjustmentAggregator eaa = aggregator();</span>
+<span class="fc" id="L91">		org.drip.xva.cpty.ExposureAdjustmentAggregator eaa = aggregator();</span>
 
-<span class="nc" id="L93">		return eaa.ucva().amount() + eaa.fva().amount();</span>
+<span class="fc" id="L93">		return eaa.ucva().amount() + eaa.fva().amount();</span>
 	}
 
 	@Override public double contraLiabilityAdjustment()
 	{
-<span class="nc" id="L98">		org.drip.xva.cpty.ExposureAdjustmentAggregator eaa = aggregator();</span>
+<span class="fc" id="L98">		org.drip.xva.cpty.ExposureAdjustmentAggregator eaa = aggregator();</span>
 
-<span class="nc" id="L100">		return eaa.cvacl().amount() + eaa.fba().amount();</span>
+<span class="fc" id="L100">		return eaa.cvacl().amount() + eaa.fba().amount();</span>
 	}
 
 	@Override public org.drip.xva.basel.OTCAccountingPolicy feePolicy (
 		final org.drip.xva.cpty.ExposureAdjustmentAggregator eaaNext)
 	{
-<span class="nc bnc" id="L106" title="All 2 branches missed.">		if (null == eaaNext) return null;</span>
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">		if (null == eaaNext) return null;</span>
 
-<span class="nc" id="L108">		org.drip.xva.cpty.ExposureAdjustmentAggregator eaa = aggregator();</span>
+<span class="fc" id="L108">		org.drip.xva.cpty.ExposureAdjustmentAggregator eaa = aggregator();</span>
 
-<span class="nc" id="L110">		double dblContraLiabilityChange = eaaNext.fba().amount() - eaa.fba().amount();</span>
+<span class="fc" id="L110">		double dblContraLiabilityChange = eaaNext.fba().amount() - eaa.fba().amount();</span>
 
-<span class="nc" id="L112">		double dblCollateralVAChange = eaaNext.colva().amount() - eaa.colva().amount();</span>
+<span class="fc" id="L112">		double dblCollateralVAChange = eaaNext.colva().amount() - eaa.colva().amount();</span>
 
 		try {
-<span class="nc" id="L115">			return new org.drip.xva.basel.OTCAccountingPolicy (eaaNext.ucva().amount() +</span>
-<span class="nc" id="L116">				eaaNext.sfva().amount() - eaa.ucva().amount() - eaa.sfva().amount() + dblCollateralVAChange,</span>
+<span class="fc" id="L115">			return new org.drip.xva.basel.OTCAccountingPolicy (eaaNext.ucva().amount() +</span>
+<span class="fc" id="L116">				eaaNext.sfva().amount() - eaa.ucva().amount() - eaa.sfva().amount() + dblCollateralVAChange,</span>
 					dblCollateralVAChange - dblContraLiabilityChange, dblContraLiabilityChange, 0.);
 <span class="nc" id="L118">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L119">			e.printStackTrace();</span>

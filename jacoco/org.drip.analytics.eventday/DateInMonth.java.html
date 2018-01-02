@@ -198,13 +198,13 @@ public class DateInMonth {
 		final java.lang.String strCalendar)
 	{
 		try {
-<span class="nc bnc" id="L201" title="All 2 branches missed.">			if (INSTANCE_GENERATOR_RULE_EDGE_LAG == _iInstanceGeneratorRule) {</span>
-<span class="nc bnc" id="L202" title="All 2 branches missed.">				if (_bFromBack) {</span>
-<span class="nc" id="L203">					org.drip.analytics.date.JulianDate dtBase =</span>
-<span class="nc" id="L204">						org.drip.analytics.date.DateUtil.CreateFromYMD (iYear, iMonth,</span>
-<span class="nc" id="L205">							org.drip.analytics.date.DateUtil.DaysInMonth (iMonth, iYear));</span>
+<span class="fc bfc" id="L201" title="All 2 branches covered.">			if (INSTANCE_GENERATOR_RULE_EDGE_LAG == _iInstanceGeneratorRule) {</span>
+<span class="pc bpc" id="L202" title="1 of 2 branches missed.">				if (_bFromBack) {</span>
+<span class="fc" id="L203">					org.drip.analytics.date.JulianDate dtBase =</span>
+<span class="fc" id="L204">						org.drip.analytics.date.DateUtil.CreateFromYMD (iYear, iMonth,</span>
+<span class="fc" id="L205">							org.drip.analytics.date.DateUtil.DaysInMonth (iMonth, iYear));</span>
 
-<span class="nc bnc" id="L207" title="All 2 branches missed.">					return null == dtBase ? null : dtBase.subtractBusDays (_iLag, strCalendar);</span>
+<span class="pc bpc" id="L207" title="1 of 2 branches missed.">					return null == dtBase ? null : dtBase.subtractBusDays (_iLag, strCalendar);</span>
 				}
 
 <span class="nc" id="L210">				org.drip.analytics.date.JulianDate dtBase = org.drip.analytics.date.DateUtil.CreateFromYMD</span>
@@ -213,8 +213,8 @@ public class DateInMonth {
 <span class="nc bnc" id="L213" title="All 2 branches missed.">				return null == dtBase ? null : dtBase.addBusDays (_iLag, strCalendar);</span>
 			}
 
-<span class="nc bnc" id="L216" title="All 2 branches missed.">			if (INSTANCE_GENERATOR_RULE_WEEK_DAY == _iInstanceGeneratorRule) {</span>
-<span class="nc bnc" id="L217" title="All 2 branches missed.">				if (_bFromBack) {</span>
+<span class="fc bfc" id="L216" title="All 2 branches covered.">			if (INSTANCE_GENERATOR_RULE_WEEK_DAY == _iInstanceGeneratorRule) {</span>
+<span class="pc bpc" id="L217" title="1 of 2 branches missed.">				if (_bFromBack) {</span>
 <span class="nc" id="L218">					org.drip.analytics.date.JulianDate dtEOM = org.drip.analytics.date.DateUtil.CreateFromYMD</span>
 <span class="nc" id="L219">						(iYear, iMonth, org.drip.analytics.date.DateUtil.DaysInMonth (iMonth, iYear));</span>
 
@@ -229,36 +229,36 @@ public class DateInMonth {
 <span class="nc bnc" id="L229" title="All 2 branches missed.">					return null == dtUnadjusted ? null : dtUnadjusted.subtractBusDays (0, strCalendar);</span>
 				}
 
-<span class="nc" id="L232">				org.drip.analytics.date.JulianDate dtSOM = org.drip.analytics.date.DateUtil.CreateFromYMD</span>
-<span class="nc" id="L233">					(iYear, iMonth, 1);</span>
+<span class="fc" id="L232">				org.drip.analytics.date.JulianDate dtSOM = org.drip.analytics.date.DateUtil.CreateFromYMD</span>
+<span class="fc" id="L233">					(iYear, iMonth, 1);</span>
 
-<span class="nc bnc" id="L235" title="All 2 branches missed.">				if (null == dtSOM) return null;</span>
+<span class="pc bpc" id="L235" title="1 of 2 branches missed.">				if (null == dtSOM) return null;</span>
 
-<span class="nc" id="L237">				while (_iDayOfWeek != org.drip.analytics.date.DateUtil.Day</span>
-<span class="nc bnc" id="L238" title="All 2 branches missed.">					(org.drip.analytics.date.DateUtil.JavaDateFromJulianDate (dtSOM)))</span>
-<span class="nc" id="L239">					dtSOM = dtSOM.addDays (1);</span>
+<span class="fc" id="L237">				while (_iDayOfWeek != org.drip.analytics.date.DateUtil.Day</span>
+<span class="fc bfc" id="L238" title="All 2 branches covered.">					(org.drip.analytics.date.DateUtil.JavaDateFromJulianDate (dtSOM)))</span>
+<span class="fc" id="L239">					dtSOM = dtSOM.addDays (1);</span>
 
-<span class="nc" id="L241">				org.drip.analytics.date.JulianDate dtUnadjusted = dtSOM.addDays (_iWeekInMonth * 7);</span>
+<span class="fc" id="L241">				org.drip.analytics.date.JulianDate dtUnadjusted = dtSOM.addDays (_iWeekInMonth * 7);</span>
 
-<span class="nc bnc" id="L243" title="All 2 branches missed.">				return null == dtUnadjusted ? null : dtUnadjusted.addBusDays (0, strCalendar);</span>
+<span class="pc bpc" id="L243" title="1 of 2 branches missed.">				return null == dtUnadjusted ? null : dtUnadjusted.addBusDays (0, strCalendar);</span>
 			}
 <span class="nc" id="L245">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L246">			e.printStackTrace();</span>
 
 <span class="nc" id="L248">			return null;</span>
-<span class="nc" id="L249">		}</span>
+<span class="fc" id="L249">		}</span>
 
-<span class="nc" id="L251">		org.drip.analytics.date.JulianDate dtBase = org.drip.analytics.date.DateUtil.CreateFromYMD (iYear,</span>
+<span class="fc" id="L251">		org.drip.analytics.date.JulianDate dtBase = org.drip.analytics.date.DateUtil.CreateFromYMD (iYear,</span>
 			iMonth, _iSpecificDayInMonth);
 
-<span class="nc bnc" id="L254" title="All 2 branches missed.">		if (null == dtBase) return null;</span>
+<span class="pc bpc" id="L254" title="1 of 2 branches missed.">		if (null == dtBase) return null;</span>
 
-<span class="nc bnc" id="L256" title="All 2 branches missed.">		return _bFromBack ? dtBase.subtractBusDays (0, strCalendar) : dtBase.addBusDays (0, strCalendar);</span>
+<span class="fc bfc" id="L256" title="All 2 branches covered.">		return _bFromBack ? dtBase.subtractBusDays (0, strCalendar) : dtBase.addBusDays (0, strCalendar);</span>
 	}
 
 	@Override public java.lang.String toString()
 	{
-<span class="nc" id="L261">		return &quot;[DateInMonth =&gt; Instance Generator Rule: &quot; + _iInstanceGeneratorRule + &quot; | From Back Flag: &quot;</span>
+<span class="fc" id="L261">		return &quot;[DateInMonth =&gt; Instance Generator Rule: &quot; + _iInstanceGeneratorRule + &quot; | From Back Flag: &quot;</span>
 			+ _bFromBack + &quot; | Day Of Week: &quot; + _iDayOfWeek + &quot; | Week In Month: &quot; + _iWeekInMonth +
 				&quot; | Specific Day In Month: &quot; + _iSpecificDayInMonth + &quot; | Lag: &quot; + _iLag + &quot;]&quot;;
 	}

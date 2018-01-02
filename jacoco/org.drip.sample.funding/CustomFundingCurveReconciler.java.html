@@ -116,13 +116,13 @@ import org.drip.state.inference.*;
 		final int[] aiDay)
 		throws Exception
 	{
-<span class="nc" id="L119">		SingleStreamComponent[] aDeposit = new SingleStreamComponent[aiDay.length];</span>
+<span class="fc" id="L119">		SingleStreamComponent[] aDeposit = new SingleStreamComponent[aiDay.length];</span>
 
-<span class="nc" id="L121">		ComposableFloatingUnitSetting cfus = new ComposableFloatingUnitSetting (</span>
+<span class="fc" id="L121">		ComposableFloatingUnitSetting cfus = new ComposableFloatingUnitSetting (</span>
 			&quot;3M&quot;,
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE,
 			null,
-<span class="nc" id="L125">			ForwardLabel.Create (</span>
+<span class="fc" id="L125">			ForwardLabel.Create (</span>
 				strCurrency,
 				&quot;3M&quot;
 			),
@@ -130,7 +130,7 @@ import org.drip.state.inference.*;
 			0.
 		);
 
-<span class="nc" id="L133">		CompositePeriodSetting cps = new CompositePeriodSetting (</span>
+<span class="fc" id="L133">		CompositePeriodSetting cps = new CompositePeriodSetting (</span>
 			4,
 			&quot;3M&quot;,
 			strCurrency,
@@ -142,20 +142,20 @@ import org.drip.state.inference.*;
 			null
 		);
 
-<span class="nc" id="L145">		CashSettleParams csp = new CashSettleParams (</span>
+<span class="fc" id="L145">		CashSettleParams csp = new CashSettleParams (</span>
 			0,
 			strCurrency,
 			0
 		);
 
-<span class="nc bnc" id="L151" title="All 2 branches missed.">		for (int i = 0; i &lt; aiDay.length; ++i) {</span>
-<span class="nc" id="L152">			aDeposit[i] = new SingleStreamComponent (</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">		for (int i = 0; i &lt; aiDay.length; ++i) {</span>
+<span class="fc" id="L152">			aDeposit[i] = new SingleStreamComponent (</span>
 				&quot;DEPOSIT_&quot; + aiDay[i],
 				new Stream (
-<span class="nc" id="L155">					CompositePeriodBuilder.FloatingCompositeUnit (</span>
-<span class="nc" id="L156">						CompositePeriodBuilder.EdgePair (</span>
+<span class="fc" id="L155">					CompositePeriodBuilder.FloatingCompositeUnit (</span>
+<span class="fc" id="L156">						CompositePeriodBuilder.EdgePair (</span>
 							dtEffective,
-<span class="nc" id="L158">							dtEffective.addBusDays (</span>
+<span class="fc" id="L158">							dtEffective.addBusDays (</span>
 								aiDay[i],
 								strCurrency
 							)
@@ -167,10 +167,10 @@ import org.drip.state.inference.*;
 				csp
 			);
 
-<span class="nc" id="L170">			aDeposit[i].setPrimaryCode (aiDay[i] + &quot;D&quot;);</span>
+<span class="fc" id="L170">			aDeposit[i].setPrimaryCode (aiDay[i] + &quot;D&quot;);</span>
 		}
 
-<span class="nc" id="L173">		return aDeposit;</span>
+<span class="fc" id="L173">		return aDeposit;</span>
 	}
 
 	/*
@@ -185,9 +185,9 @@ import org.drip.state.inference.*;
 		final String[] astrMaturityTenor)
 		throws Exception
 	{
-<span class="nc" id="L188">		FixFloatComponent[] aIRS = new FixFloatComponent[astrMaturityTenor.length];</span>
+<span class="fc" id="L188">		FixFloatComponent[] aIRS = new FixFloatComponent[astrMaturityTenor.length];</span>
 
-<span class="nc" id="L190">		UnitCouponAccrualSetting ucasFixed = new UnitCouponAccrualSetting (</span>
+<span class="fc" id="L190">		UnitCouponAccrualSetting ucasFixed = new UnitCouponAccrualSetting (</span>
 			2,
 			&quot;Act/360&quot;,
 			false,
@@ -198,11 +198,11 @@ import org.drip.state.inference.*;
 			CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC
 		);
 
-<span class="nc" id="L201">		ComposableFloatingUnitSetting cfusFloating = new ComposableFloatingUnitSetting (</span>
+<span class="fc" id="L201">		ComposableFloatingUnitSetting cfusFloating = new ComposableFloatingUnitSetting (</span>
 			&quot;6M&quot;,
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 			null,
-<span class="nc" id="L205">			ForwardLabel.Create (</span>
+<span class="fc" id="L205">			ForwardLabel.Create (</span>
 				strCurrency,
 				&quot;6M&quot;
 			),
@@ -210,7 +210,7 @@ import org.drip.state.inference.*;
 			0.
 		);
 
-<span class="nc" id="L213">		ComposableFixedUnitSetting cfusFixed = new ComposableFixedUnitSetting (</span>
+<span class="fc" id="L213">		ComposableFixedUnitSetting cfusFixed = new ComposableFixedUnitSetting (</span>
 			&quot;6M&quot;,
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 			null,
@@ -219,7 +219,7 @@ import org.drip.state.inference.*;
 			strCurrency
 		);
 
-<span class="nc" id="L222">		CompositePeriodSetting cpsFloating = new CompositePeriodSetting (</span>
+<span class="fc" id="L222">		CompositePeriodSetting cpsFloating = new CompositePeriodSetting (</span>
 			2,
 			&quot;6M&quot;,
 			strCurrency,
@@ -231,7 +231,7 @@ import org.drip.state.inference.*;
 			null
 		);
 
-<span class="nc" id="L234">		CompositePeriodSetting cpsFixed = new CompositePeriodSetting (</span>
+<span class="fc" id="L234">		CompositePeriodSetting cpsFixed = new CompositePeriodSetting (</span>
 			2,
 			&quot;6M&quot;,
 			strCurrency,
@@ -243,37 +243,37 @@ import org.drip.state.inference.*;
 			null
 		);
 
-<span class="nc" id="L246">		CashSettleParams csp = new CashSettleParams (</span>
+<span class="fc" id="L246">		CashSettleParams csp = new CashSettleParams (</span>
 			0,
 			strCurrency,
 			0
 		);
 
-<span class="nc bnc" id="L252" title="All 2 branches missed.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i) {</span>
-<span class="nc" id="L253">			List&lt;Integer&gt; lsFixedStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
+<span class="fc bfc" id="L252" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i) {</span>
+<span class="fc" id="L253">			List&lt;Integer&gt; lsFixedStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
 				dtEffective,
 				&quot;6M&quot;,
 				astrMaturityTenor[i],
 				null
 			);
 
-<span class="nc" id="L260">			List&lt;Integer&gt; lsFloatingStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
+<span class="fc" id="L260">			List&lt;Integer&gt; lsFloatingStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
 				dtEffective,
 				&quot;6M&quot;,
 				astrMaturityTenor[i],
 				null
 			);
 
-<span class="nc" id="L267">			Stream floatingStream = new Stream (</span>
-<span class="nc" id="L268">				CompositePeriodBuilder.FloatingCompositeUnit (</span>
+<span class="fc" id="L267">			Stream floatingStream = new Stream (</span>
+<span class="fc" id="L268">				CompositePeriodBuilder.FloatingCompositeUnit (</span>
 					lsFloatingStreamEdgeDate,
 					cpsFloating,
 					cfusFloating
 				)
 			);
 
-<span class="nc" id="L275">			Stream fixedStream = new Stream (</span>
-<span class="nc" id="L276">				CompositePeriodBuilder.FixedCompositeUnit (</span>
+<span class="fc" id="L275">			Stream fixedStream = new Stream (</span>
+<span class="fc" id="L276">				CompositePeriodBuilder.FixedCompositeUnit (</span>
 					lsFixedStreamEdgeDate,
 					cpsFixed,
 					ucasFixed,
@@ -281,18 +281,18 @@ import org.drip.state.inference.*;
 				)
 			);
 
-<span class="nc" id="L284">			FixFloatComponent irs = new FixFloatComponent (</span>
+<span class="fc" id="L284">			FixFloatComponent irs = new FixFloatComponent (</span>
 				fixedStream,
 				floatingStream,
 				csp
 			);
 
-<span class="nc" id="L290">			irs.setPrimaryCode (&quot;IRS.&quot; + astrMaturityTenor[i] + &quot;.&quot; + strCurrency);</span>
+<span class="fc" id="L290">			irs.setPrimaryCode (&quot;IRS.&quot; + astrMaturityTenor[i] + &quot;.&quot; + strCurrency);</span>
 
-<span class="nc" id="L292">			aIRS[i] = irs;</span>
+<span class="fc" id="L292">			aIRS[i] = irs;</span>
 		}
 
-<span class="nc" id="L295">		return aIRS;</span>
+<span class="fc" id="L295">		return aIRS;</span>
 	}
 
 	/*
@@ -335,7 +335,7 @@ import org.drip.state.inference.*;
 		 * Construct the Array of Deposit Instruments and their Quotes from the given set of parameters
 		 */
 
-<span class="nc" id="L338">		SingleStreamComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (</span>
+<span class="fc" id="L338">		SingleStreamComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (</span>
 			dtSpot,
 			strCurrency,
 			new int[] {
@@ -343,7 +343,7 @@ import org.drip.state.inference.*;
 			}
 		);
 
-<span class="nc" id="L346">		double[] adblDepositQuote = new double[] {</span>
+<span class="fc" id="L346">		double[] adblDepositQuote = new double[] {</span>
 			0.0013, 0.0017, 0.0017, 0.0018, 0.0020, 0.0023
 		};
 
@@ -351,7 +351,7 @@ import org.drip.state.inference.*;
 		 * Construct the Deposit Instrument Set Stretch Builder
 		 */
 
-<span class="nc" id="L354">		LatentStateStretchSpec depositStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
+<span class="fc" id="L354">		LatentStateStretchSpec depositStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
 			&quot;DEPOSIT&quot;,
 			aDepositComp,
 			&quot;ForwardRate&quot;,
@@ -362,13 +362,13 @@ import org.drip.state.inference.*;
 		 * Construct the Array of EDF Instruments and their Quotes from the given set of parameters
 		 */
 
-<span class="nc" id="L365">		SingleStreamComponent[] aEDFComp = SingleStreamComponentBuilder.ForwardRateFuturesPack (</span>
+<span class="fc" id="L365">		SingleStreamComponent[] aEDFComp = SingleStreamComponentBuilder.ForwardRateFuturesPack (</span>
 			dtSpot,
 			8,
 			strCurrency
 		);
 
-<span class="nc" id="L371">		double[] adblEDFQuote = new double[] {</span>
+<span class="fc" id="L371">		double[] adblEDFQuote = new double[] {</span>
 			0.0027, 0.0032, 0.0041, 0.0054, 0.0077, 0.0104, 0.0134, 0.0160
 		};
 
@@ -376,7 +376,7 @@ import org.drip.state.inference.*;
 		 * Construct the EDF Instrument Set Stretch Builder
 		 */
 
-<span class="nc" id="L379">		LatentStateStretchSpec edfStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
+<span class="fc" id="L379">		LatentStateStretchSpec edfStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
 			&quot;EDF&quot;,
 			aEDFComp,
 			&quot;ForwardRate&quot;,
@@ -387,7 +387,7 @@ import org.drip.state.inference.*;
 		 * Construct the Array of Swap Instruments and their Quotes from the given set of parameters
 		 */
 
-<span class="nc" id="L390">		FixFloatComponent[] aSwapComp = SwapInstrumentsFromMaturityTenor (</span>
+<span class="fc" id="L390">		FixFloatComponent[] aSwapComp = SwapInstrumentsFromMaturityTenor (</span>
 			dtSpot,
 			strCurrency,
 			new java.lang.String[] {
@@ -395,7 +395,7 @@ import org.drip.state.inference.*;
 			}
 		);
 
-<span class="nc" id="L398">		double[] adblSwapQuote = new double[] {</span>
+<span class="fc" id="L398">		double[] adblSwapQuote = new double[] {</span>
 			0.0166, 0.0206, 0.0241, 0.0269, 0.0292, 0.0311, 0.0326, 0.0340, 0.0351, 0.0375, 0.0393, 0.0402, 0.0407, 0.0409, 0.0409
 		};
 
@@ -403,14 +403,14 @@ import org.drip.state.inference.*;
 		 * Construct the Swap Instrument Set Stretch Builder
 		 */
 
-<span class="nc" id="L406">		LatentStateStretchSpec swapStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
+<span class="fc" id="L406">		LatentStateStretchSpec swapStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
 			&quot;SWAP&quot;,
 			aSwapComp,
 			&quot;SwapRate&quot;,
 			adblSwapQuote
 		);
 
-<span class="nc" id="L413">		LatentStateStretchSpec[] aStretchSpec = new LatentStateStretchSpec[] {depositStretch, edfStretch, swapStretch};</span>
+<span class="fc" id="L413">		LatentStateStretchSpec[] aStretchSpec = new LatentStateStretchSpec[] {depositStretch, edfStretch, swapStretch};</span>
 
 		/*
 		 * Set up the Linear Curve Calibrator using the following parameters:
@@ -420,15 +420,15 @@ import org.drip.state.inference.*;
 		 * 	- Natural Boundary Setting
 		 */
 
-<span class="nc" id="L423">		LinearLatentStateCalibrator lcc = new LinearLatentStateCalibrator (</span>
+<span class="fc" id="L423">		LinearLatentStateCalibrator lcc = new LinearLatentStateCalibrator (</span>
 			scbc,
-<span class="nc" id="L425">			BoundarySettings.NaturalStandard(),</span>
+<span class="fc" id="L425">			BoundarySettings.NaturalStandard(),</span>
 			MultiSegmentSequence.CALIBRATE,
 			null,
 			null
 		);
 
-<span class="nc" id="L431">		ValuationParams valParams = new ValuationParams (</span>
+<span class="fc" id="L431">		ValuationParams valParams = new ValuationParams (</span>
 			dtSpot,
 			dtSpot,
 			strCurrency
@@ -438,7 +438,7 @@ import org.drip.state.inference.*;
 		 * Calibrate over the instrument set to generate a new overlapping latent state span instance
 		 */
 
-<span class="nc" id="L441">		org.drip.spline.grid.OverlappingStretchSpan ors = lcc.calibrateSpan (</span>
+<span class="fc" id="L441">		org.drip.spline.grid.OverlappingStretchSpan ors = lcc.calibrateSpan (</span>
 			aStretchSpec,
 			1.,
 			valParams,
@@ -451,20 +451,20 @@ import org.drip.state.inference.*;
 		 * Retrieve the &quot;Deposit&quot; stretch from the span
 		 */
 
-<span class="nc" id="L454">		MultiSegmentSequence mssDeposit = ors.getStretch (&quot;DEPOSIT&quot;);</span>
+<span class="fc" id="L454">		MultiSegmentSequence mssDeposit = ors.getStretch (&quot;DEPOSIT&quot;);</span>
 
 		/*
 		 * Retrieve the &quot;swap&quot; stretch from the span
 		 */
 
-<span class="nc" id="L460">		MultiSegmentSequence mssSwap = ors.getStretch (&quot;SWAP&quot;);</span>
+<span class="fc" id="L460">		MultiSegmentSequence mssSwap = ors.getStretch (&quot;SWAP&quot;);</span>
 
 		/*
 		 * Create a discount curve instance by converting the overlapping stretch to an exclusive
 		 * 	non-overlapping stretch.
 		 */
 
-<span class="nc" id="L467">		MergedDiscountForwardCurve dfdc = new DiscountFactorDiscountCurve (</span>
+<span class="fc" id="L467">		MergedDiscountForwardCurve dfdc = new DiscountFactorDiscountCurve (</span>
 			strCurrency,
 			ors
 		);
@@ -474,23 +474,23 @@ import org.drip.state.inference.*;
 		 * non-overlapping span, and the Deposit stretch across the range of tenor predictor ordinates.
 		 */
 
-<span class="nc" id="L477">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L477">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L479">		System.out.println (&quot;\t     DEPOSIT DF            DFDC     STRETCH           LOCAL&quot;);</span>
+<span class="fc" id="L479">		System.out.println (&quot;\t     DEPOSIT DF            DFDC     STRETCH           LOCAL&quot;);</span>
 
-<span class="nc" id="L481">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L481">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc bnc" id="L483" title="All 2 branches missed.">		for (int iX = (int) mssDeposit.getLeftPredictorOrdinateEdge(); iX &lt;= (int) mssDeposit.getRightPredictorOrdinateEdge();</span>
-<span class="nc" id="L484">			iX += 0.1 * (mssDeposit.getRightPredictorOrdinateEdge() - mssDeposit.getLeftPredictorOrdinateEdge())) {</span>
+<span class="fc bfc" id="L483" title="All 2 branches covered.">		for (int iX = (int) mssDeposit.getLeftPredictorOrdinateEdge(); iX &lt;= (int) mssDeposit.getRightPredictorOrdinateEdge();</span>
+<span class="fc" id="L484">			iX += 0.1 * (mssDeposit.getRightPredictorOrdinateEdge() - mssDeposit.getLeftPredictorOrdinateEdge())) {</span>
 			try {
-<span class="nc" id="L486">				System.out.println (&quot;\tDeposit [&quot; + new JulianDate (iX) + &quot;] = &quot; +</span>
-<span class="nc" id="L487">					FormatUtil.FormatDouble (dfdc.df (iX), 1, 8, 1.) + &quot; || &quot; +</span>
-<span class="nc" id="L488">						ors.getContainingStretch (iX).name() + &quot; || &quot; +</span>
-<span class="nc" id="L489">							FormatUtil.FormatDouble (mssDeposit.responseValue (iX), 1, 8, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L490">								mssDeposit.monotoneType (iX));</span>
+<span class="fc" id="L486">				System.out.println (&quot;\tDeposit [&quot; + new JulianDate (iX) + &quot;] = &quot; +</span>
+<span class="fc" id="L487">					FormatUtil.FormatDouble (dfdc.df (iX), 1, 8, 1.) + &quot; || &quot; +</span>
+<span class="fc" id="L488">						ors.getContainingStretch (iX).name() + &quot; || &quot; +</span>
+<span class="fc" id="L489">							FormatUtil.FormatDouble (mssDeposit.responseValue (iX), 1, 8, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L490">								mssDeposit.monotoneType (iX));</span>
 <span class="nc" id="L491">			} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L492">				e.printStackTrace();</span>
-<span class="nc" id="L493">			}</span>
+<span class="fc" id="L493">			}</span>
 		}
 
 		/*
@@ -498,68 +498,68 @@ import org.drip.state.inference.*;
 		 * non-overlapping span, and the &quot;swap&quot; stretch across the range of tenor predictor ordinates.
 		 */
 
-<span class="nc" id="L501">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L501">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L503">		System.out.println (&quot;\t     SWAP DF            DFDC     STRETCH            LOCAL&quot;);</span>
+<span class="fc" id="L503">		System.out.println (&quot;\t     SWAP DF            DFDC     STRETCH            LOCAL&quot;);</span>
 
-<span class="nc" id="L505">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L505">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc bnc" id="L507" title="All 2 branches missed.">		for (int iX = (int) mssSwap.getLeftPredictorOrdinateEdge(); iX &lt;= (int) mssSwap.getRightPredictorOrdinateEdge();</span>
-<span class="nc" id="L508">				iX += 0.05 * (mssSwap.getRightPredictorOrdinateEdge() - mssSwap.getLeftPredictorOrdinateEdge())) {</span>
-<span class="nc" id="L509">				System.out.println (&quot;\tSwap [&quot; + new JulianDate (iX) + &quot;] = &quot; +</span>
-<span class="nc" id="L510">					FormatUtil.FormatDouble (dfdc.df (iX), 1, 8, 1.) + &quot; || &quot; +</span>
-<span class="nc" id="L511">						ors.getContainingStretch (iX).name() + &quot; || &quot; +</span>
-<span class="nc" id="L512">							FormatUtil.FormatDouble (mssSwap.responseValue (iX), 1, 8, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L513">								mssSwap.monotoneType (iX));</span>
+<span class="fc bfc" id="L507" title="All 2 branches covered.">		for (int iX = (int) mssSwap.getLeftPredictorOrdinateEdge(); iX &lt;= (int) mssSwap.getRightPredictorOrdinateEdge();</span>
+<span class="fc" id="L508">				iX += 0.05 * (mssSwap.getRightPredictorOrdinateEdge() - mssSwap.getLeftPredictorOrdinateEdge())) {</span>
+<span class="fc" id="L509">				System.out.println (&quot;\tSwap [&quot; + new JulianDate (iX) + &quot;] = &quot; +</span>
+<span class="fc" id="L510">					FormatUtil.FormatDouble (dfdc.df (iX), 1, 8, 1.) + &quot; || &quot; +</span>
+<span class="fc" id="L511">						ors.getContainingStretch (iX).name() + &quot; || &quot; +</span>
+<span class="fc" id="L512">							FormatUtil.FormatDouble (mssSwap.responseValue (iX), 1, 8, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L513">								mssSwap.monotoneType (iX));</span>
 		}
 
-<span class="nc" id="L516">		System.out.println (&quot;\tSwap [&quot; + dtSpot.addTenor (&quot;60Y&quot;) + &quot;] = &quot; +</span>
-<span class="nc" id="L517">			FormatUtil.FormatDouble (dfdc.df (dtSpot.addTenor (&quot;60Y&quot;)), 1, 8, 1.));</span>
+<span class="fc" id="L516">		System.out.println (&quot;\tSwap [&quot; + dtSpot.addTenor (&quot;60Y&quot;) + &quot;] = &quot; +</span>
+<span class="fc" id="L517">			FormatUtil.FormatDouble (dfdc.df (dtSpot.addTenor (&quot;60Y&quot;)), 1, 8, 1.));</span>
 
 		/*
 		 * Cross-Recovery of the Deposit Calibration Instrument &quot;Rate&quot; metric across the different curve
 		 * 	construction methodologies.
 		 */
 
-<span class="nc" id="L524">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L524">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L526">		System.out.println (&quot;\t     DEPOSIT INSTRUMENTS CALIBRATION RECOVERY&quot;);</span>
+<span class="fc" id="L526">		System.out.println (&quot;\t     DEPOSIT INSTRUMENTS CALIBRATION RECOVERY&quot;);</span>
 
-<span class="nc" id="L528">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L528">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc bnc" id="L530" title="All 2 branches missed.">		for (int i = 0; i &lt; aDepositComp.length; ++i)</span>
-<span class="nc" id="L531">			System.out.println (&quot;\t[&quot; + aDepositComp[i].maturityDate() + &quot;] = &quot; +</span>
-<span class="nc" id="L532">				FormatUtil.FormatDouble (aDepositComp[i].measureValue (valParams, null,</span>
-<span class="nc" id="L533">					MarketParamsBuilder.Create (dfdc, null, null, null, null, null, null),</span>
-<span class="nc" id="L534">						null, &quot;Rate&quot;), 1, 6, 1.) + &quot; | &quot; + FormatUtil.FormatDouble (adblDepositQuote[i], 1, 6, 1.));</span>
+<span class="fc bfc" id="L530" title="All 2 branches covered.">		for (int i = 0; i &lt; aDepositComp.length; ++i)</span>
+<span class="fc" id="L531">			System.out.println (&quot;\t[&quot; + aDepositComp[i].maturityDate() + &quot;] = &quot; +</span>
+<span class="fc" id="L532">				FormatUtil.FormatDouble (aDepositComp[i].measureValue (valParams, null,</span>
+<span class="fc" id="L533">					MarketParamsBuilder.Create (dfdc, null, null, null, null, null, null),</span>
+<span class="fc" id="L534">						null, &quot;Rate&quot;), 1, 6, 1.) + &quot; | &quot; + FormatUtil.FormatDouble (adblDepositQuote[i], 1, 6, 1.));</span>
 
 		/*
 		 * Cross-Recovery of the Swap Calibration Instrument &quot;Rate&quot; metric across the different curve
 		 * 	construction methodologies.
 		 */
 
-<span class="nc" id="L541">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L541">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L543">		System.out.println (&quot;\t     SWAP INSTRUMENTS CALIBRATION RECOVERY&quot;);</span>
+<span class="fc" id="L543">		System.out.println (&quot;\t     SWAP INSTRUMENTS CALIBRATION RECOVERY&quot;);</span>
 
-<span class="nc" id="L545">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L545">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc bnc" id="L547" title="All 2 branches missed.">		for (int i = 0; i &lt; aSwapComp.length; ++i)</span>
-<span class="nc" id="L548">			System.out.println (&quot;\t[&quot; + aSwapComp[i].maturityDate() + &quot;] = &quot; +</span>
-<span class="nc" id="L549">				FormatUtil.FormatDouble (aSwapComp[i].measureValue (valParams, null,</span>
-<span class="nc" id="L550">					MarketParamsBuilder.Create (dfdc, null, null, null, null, null, null),</span>
-<span class="nc" id="L551">						null, &quot;CalibSwapRate&quot;), 1, 6, 1.) + &quot; | &quot; + FormatUtil.FormatDouble (adblSwapQuote[i], 1, 6, 1.));</span>
+<span class="fc bfc" id="L547" title="All 2 branches covered.">		for (int i = 0; i &lt; aSwapComp.length; ++i)</span>
+<span class="fc" id="L548">			System.out.println (&quot;\t[&quot; + aSwapComp[i].maturityDate() + &quot;] = &quot; +</span>
+<span class="fc" id="L549">				FormatUtil.FormatDouble (aSwapComp[i].measureValue (valParams, null,</span>
+<span class="fc" id="L550">					MarketParamsBuilder.Create (dfdc, null, null, null, null, null, null),</span>
+<span class="fc" id="L551">						null, &quot;CalibSwapRate&quot;), 1, 6, 1.) + &quot; | &quot; + FormatUtil.FormatDouble (adblSwapQuote[i], 1, 6, 1.));</span>
 
 		/*
 		 * Create a turn list instance and add new turn instances
 		 */
 
-<span class="nc" id="L557">		TurnListDiscountFactor tldc = new TurnListDiscountFactor();</span>
+<span class="fc" id="L557">		TurnListDiscountFactor tldc = new TurnListDiscountFactor();</span>
 
-<span class="nc" id="L559">		tldc.addTurn (</span>
+<span class="fc" id="L559">		tldc.addTurn (</span>
 			new Turn (
-<span class="nc" id="L561">				dtSpot.addTenor (&quot;5Y&quot;).julian(),</span>
-<span class="nc" id="L562">				dtSpot.addTenor (&quot;40Y&quot;).julian(),</span>
+<span class="fc" id="L561">				dtSpot.addTenor (&quot;5Y&quot;).julian(),</span>
+<span class="fc" id="L562">				dtSpot.addTenor (&quot;40Y&quot;).julian(),</span>
 				0.001
 			)
 		);
@@ -568,27 +568,27 @@ import org.drip.state.inference.*;
 		 * Update the discount curve with the turn list.
 		 */
 
-<span class="nc" id="L571">		dfdc.setTurns (tldc);</span>
+<span class="fc" id="L571">		dfdc.setTurns (tldc);</span>
 
 		/*
 		 * Compare the discount factor implied the discount curve with and without applying the turns
 		 * 	adjustment.
 		 */
 
-<span class="nc" id="L578">		System.out.println (&quot;\n\t-------------------------------&quot;);</span>
+<span class="fc" id="L578">		System.out.println (&quot;\n\t-------------------------------&quot;);</span>
 
-<span class="nc" id="L580">		System.out.println (&quot;\t     SWAP DF            DFDC&quot;);</span>
+<span class="fc" id="L580">		System.out.println (&quot;\t     SWAP DF            DFDC&quot;);</span>
 
-<span class="nc" id="L582">		System.out.println (&quot;\t-------------------------------&quot;);</span>
+<span class="fc" id="L582">		System.out.println (&quot;\t-------------------------------&quot;);</span>
 
-<span class="nc bnc" id="L584" title="All 2 branches missed.">		for (int iX = (int) mssSwap.getLeftPredictorOrdinateEdge(); iX &lt;= (int) mssSwap.getRightPredictorOrdinateEdge();</span>
-<span class="nc" id="L585">				iX += 0.05 * (mssSwap.getRightPredictorOrdinateEdge() - mssSwap.getLeftPredictorOrdinateEdge())) {</span>
-<span class="nc" id="L586">				System.out.println (&quot;\tSwap [&quot; + new JulianDate (iX) + &quot;] = &quot; +</span>
-<span class="nc" id="L587">					FormatUtil.FormatDouble (dfdc.df (iX), 1, 8, 1.));</span>
+<span class="fc bfc" id="L584" title="All 2 branches covered.">		for (int iX = (int) mssSwap.getLeftPredictorOrdinateEdge(); iX &lt;= (int) mssSwap.getRightPredictorOrdinateEdge();</span>
+<span class="fc" id="L585">				iX += 0.05 * (mssSwap.getRightPredictorOrdinateEdge() - mssSwap.getLeftPredictorOrdinateEdge())) {</span>
+<span class="fc" id="L586">				System.out.println (&quot;\tSwap [&quot; + new JulianDate (iX) + &quot;] = &quot; +</span>
+<span class="fc" id="L587">					FormatUtil.FormatDouble (dfdc.df (iX), 1, 8, 1.));</span>
 		}
 
-<span class="nc" id="L590">		System.out.println (&quot;\t-------------------------------&quot;);</span>
-<span class="nc" id="L591">	}</span>
+<span class="fc" id="L590">		System.out.println (&quot;\t-------------------------------&quot;);</span>
+<span class="fc" id="L591">	}</span>
 
 	public static final void main (
 		final String[] astrArgs)
@@ -598,7 +598,7 @@ import org.drip.state.inference.*;
 		 * Initialize the Credit Analytics Library
 		 */
 
-<span class="nc" id="L601">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L601">		EnvManager.InitEnv (&quot;&quot;);</span>
 
 		/*
 		 * Construct the segment Custom builder using the following parameters:
@@ -607,10 +607,10 @@ import org.drip.state.inference.*;
 		 * 	- Quadratic Rational Shape Controller
 		 */
 
-<span class="nc" id="L610">		SegmentCustomBuilderControl prbpPolynomial = new SegmentCustomBuilderControl (</span>
+<span class="fc" id="L610">		SegmentCustomBuilderControl prbpPolynomial = new SegmentCustomBuilderControl (</span>
 			MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 			new PolynomialFunctionSetParams (4),
-<span class="nc" id="L613">			SegmentInelasticDesignControl.Create (</span>
+<span class="fc" id="L613">			SegmentInelasticDesignControl.Create (</span>
 				2,
 				2
 			),
@@ -625,11 +625,11 @@ import org.drip.state.inference.*;
 		 * Run the full spline linear discount curve builder sample.
 		 */
 
-<span class="nc" id="L628">		SplineLinearDiscountCurve (</span>
-<span class="nc" id="L629">			DateUtil.Today(),</span>
+<span class="fc" id="L628">		SplineLinearDiscountCurve (</span>
+<span class="fc" id="L629">			DateUtil.Today(),</span>
 			&quot;USD&quot;,
 			prbpPolynomial
 		);
-<span class="nc" id="L633">	}</span>
+<span class="fc" id="L633">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

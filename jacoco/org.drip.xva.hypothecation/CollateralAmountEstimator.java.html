@@ -69,10 +69,10 @@ package org.drip.xva.hypothecation;
  */
 
 public class CollateralAmountEstimator {
-<span class="nc" id="L72">	private double _dblCurrentBalance = java.lang.Double.NaN;</span>
-<span class="nc" id="L73">	private org.drip.xva.set.CollateralGroupSpecification _cgs = null;</span>
-<span class="nc" id="L74">	private org.drip.measure.bridge.BrokenDateInterpolator _bdi = null;</span>
-<span class="nc" id="L75">	private org.drip.xva.set.CounterPartyGroupSpecification _cpgs = null;</span>
+<span class="fc" id="L72">	private double _dblCurrentBalance = java.lang.Double.NaN;</span>
+<span class="fc" id="L73">	private org.drip.xva.set.CollateralGroupSpecification _cgs = null;</span>
+<span class="fc" id="L74">	private org.drip.measure.bridge.BrokenDateInterpolator _bdi = null;</span>
+<span class="fc" id="L75">	private org.drip.xva.set.CounterPartyGroupSpecification _cpgs = null;</span>
 
 	/**
 	 * CollateralAmountEstimator Constructor
@@ -91,12 +91,12 @@ public class CollateralAmountEstimator {
 		final org.drip.measure.bridge.BrokenDateInterpolator bdi,
 		final double dblCurrentBalance)
 		throws java.lang.Exception
-<span class="nc" id="L94">	{</span>
-<span class="nc bnc" id="L95" title="All 6 branches missed.">		if (null == (_cgs = cgs) || null == (_cpgs = cpgs) || null == (_bdi = bdi))</span>
+<span class="fc" id="L94">	{</span>
+<span class="pc bpc" id="L95" title="3 of 6 branches missed.">		if (null == (_cgs = cgs) || null == (_cpgs = cpgs) || null == (_bdi = bdi))</span>
 <span class="nc" id="L96">			throw new java.lang.Exception (&quot;CollateralAmountEstimator Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L98">		_dblCurrentBalance = dblCurrentBalance;</span>
-<span class="nc" id="L99">	}</span>
+<span class="fc" id="L98">		_dblCurrentBalance = dblCurrentBalance;</span>
+<span class="fc" id="L99">	}</span>
 
 	/**
 	 * Retrieve the Collateral Group Specification
@@ -156,17 +156,17 @@ public class CollateralAmountEstimator {
 		final org.drip.analytics.date.JulianDate dtValue)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L159" title="All 2 branches missed.">		if (null == dtValue)</span>
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">		if (null == dtValue)</span>
 <span class="nc" id="L160">			throw new java.lang.Exception</span>
 				(&quot;CollateralAmountEstimator::bankWindowMarginValue =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L163">		org.drip.analytics.date.JulianDate dtMargin = dtValue.subtractDays (_cpgs.bankDefaultWindow());</span>
+<span class="fc" id="L163">		org.drip.analytics.date.JulianDate dtMargin = dtValue.subtractDays (_cpgs.bankDefaultWindow());</span>
 
-<span class="nc bnc" id="L165" title="All 2 branches missed.">		if (null == dtMargin)</span>
+<span class="pc bpc" id="L165" title="1 of 2 branches missed.">		if (null == dtMargin)</span>
 <span class="nc" id="L166">			throw new java.lang.Exception</span>
 				(&quot;CollateralAmountEstimator::bankWindowMarginValue =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L169">		return _bdi.interpolate (dtMargin.julian());</span>
+<span class="fc" id="L169">		return _bdi.interpolate (dtMargin.julian());</span>
 	}
 
 	/**
@@ -183,9 +183,9 @@ public class CollateralAmountEstimator {
 		final org.drip.analytics.date.JulianDate dtValue)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L186">		org.drip.function.definition.R1ToR1 r1ToR1BankThreshold = _cgs.bankThreshold();</span>
+<span class="fc" id="L186">		org.drip.function.definition.R1ToR1 r1ToR1BankThreshold = _cgs.bankThreshold();</span>
 
-<span class="nc bnc" id="L188" title="All 2 branches missed.">		return null == r1ToR1BankThreshold ? 0. : r1ToR1BankThreshold.evaluate (dtValue.julian());</span>
+<span class="pc bpc" id="L188" title="1 of 2 branches missed.">		return null == r1ToR1BankThreshold ? 0. : r1ToR1BankThreshold.evaluate (dtValue.julian());</span>
 	}
 
 	/**
@@ -202,9 +202,9 @@ public class CollateralAmountEstimator {
 		final org.drip.analytics.date.JulianDate dtValue)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L205">		double dblBankPostingRequirement = bankWindowMarginValue (dtValue) - bankThreshold (dtValue);</span>
+<span class="fc" id="L205">		double dblBankPostingRequirement = bankWindowMarginValue (dtValue) - bankThreshold (dtValue);</span>
 
-<span class="nc bnc" id="L207" title="All 2 branches missed.">		return 0. &lt; dblBankPostingRequirement ? 0. : dblBankPostingRequirement;</span>
+<span class="fc bfc" id="L207" title="All 2 branches covered.">		return 0. &lt; dblBankPostingRequirement ? 0. : dblBankPostingRequirement;</span>
 	}
 
 	/**
@@ -221,18 +221,18 @@ public class CollateralAmountEstimator {
 		final org.drip.analytics.date.JulianDate dtValue)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L224" title="All 2 branches missed.">		if (null == dtValue)</span>
+<span class="pc bpc" id="L224" title="1 of 2 branches missed.">		if (null == dtValue)</span>
 <span class="nc" id="L225">			throw new java.lang.Exception</span>
 				(&quot;CollateralAmountEstimator::counterPartyWindowMarginValue =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L228">		org.drip.analytics.date.JulianDate dtMargin = dtValue.subtractDays</span>
-<span class="nc" id="L229">			(_cpgs.counterPartyDefaultWindow());</span>
+<span class="fc" id="L228">		org.drip.analytics.date.JulianDate dtMargin = dtValue.subtractDays</span>
+<span class="fc" id="L229">			(_cpgs.counterPartyDefaultWindow());</span>
 
-<span class="nc bnc" id="L231" title="All 2 branches missed.">		if (null == dtMargin)</span>
+<span class="pc bpc" id="L231" title="1 of 2 branches missed.">		if (null == dtMargin)</span>
 <span class="nc" id="L232">			throw new java.lang.Exception</span>
 				(&quot;CollateralAmountEstimator::counterPartyWindowMarginValue =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L235">		return _bdi.interpolate (dtMargin.julian());</span>
+<span class="fc" id="L235">		return _bdi.interpolate (dtMargin.julian());</span>
 	}
 
 	/**
@@ -249,10 +249,10 @@ public class CollateralAmountEstimator {
 		final org.drip.analytics.date.JulianDate dtValue)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L252">		org.drip.function.definition.R1ToR1[] aR1ToR1CounterPartyThreshold = _cgs.counterPartyThreshold();</span>
+<span class="fc" id="L252">		org.drip.function.definition.R1ToR1[] aR1ToR1CounterPartyThreshold = _cgs.counterPartyThreshold();</span>
 
-<span class="nc bnc" id="L254" title="All 4 branches missed.">		return null == aR1ToR1CounterPartyThreshold || null == aR1ToR1CounterPartyThreshold[0] ? 0. :</span>
-<span class="nc" id="L255">			aR1ToR1CounterPartyThreshold[0].evaluate (dtValue.julian());</span>
+<span class="pc bpc" id="L254" title="2 of 4 branches missed.">		return null == aR1ToR1CounterPartyThreshold || null == aR1ToR1CounterPartyThreshold[0] ? 0. :</span>
+<span class="fc" id="L255">			aR1ToR1CounterPartyThreshold[0].evaluate (dtValue.julian());</span>
 	}
 
 	/**
@@ -269,10 +269,10 @@ public class CollateralAmountEstimator {
 		final org.drip.analytics.date.JulianDate dtValue)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L272">		double dblCounterPartyPostingRequirement = counterPartyWindowMarginValue (dtValue) -</span>
-<span class="nc" id="L273">			counterPartyThreshold (dtValue);</span>
+<span class="fc" id="L272">		double dblCounterPartyPostingRequirement = counterPartyWindowMarginValue (dtValue) -</span>
+<span class="fc" id="L273">			counterPartyThreshold (dtValue);</span>
 
-<span class="nc bnc" id="L275" title="All 2 branches missed.">		return 0. &gt; dblCounterPartyPostingRequirement ? 0. : dblCounterPartyPostingRequirement;</span>
+<span class="fc bfc" id="L275" title="All 2 branches covered.">		return 0. &gt; dblCounterPartyPostingRequirement ? 0. : dblCounterPartyPostingRequirement;</span>
 	}
 
 	/**
@@ -289,8 +289,8 @@ public class CollateralAmountEstimator {
 		final org.drip.analytics.date.JulianDate dtValue)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L292" title="All 2 branches missed.">		return org.drip.quant.common.NumberUtil.IsValid (_dblCurrentBalance) ? _dblCurrentBalance :</span>
-<span class="nc" id="L293">			bankPostingRequirement (dtValue) + counterPartyPostingRequirement (dtValue);</span>
+<span class="pc bpc" id="L292" title="1 of 2 branches missed.">		return org.drip.quant.common.NumberUtil.IsValid (_dblCurrentBalance) ? _dblCurrentBalance :</span>
+<span class="fc" id="L293">			bankPostingRequirement (dtValue) + counterPartyPostingRequirement (dtValue);</span>
 	}
 
 	/**
@@ -304,41 +304,41 @@ public class CollateralAmountEstimator {
 	public org.drip.xva.hypothecation.CollateralAmountEstimatorOutput output (
 		final org.drip.analytics.date.JulianDate dtValue)
 	{
-<span class="nc bnc" id="L307" title="All 2 branches missed.">		if (null == dtValue) return null;</span>
+<span class="pc bpc" id="L307" title="1 of 2 branches missed.">		if (null == dtValue) return null;</span>
 
-<span class="nc" id="L309">		org.drip.analytics.date.JulianDate dtBankMargin = dtValue.subtractDays (_cpgs.bankDefaultWindow());</span>
+<span class="fc" id="L309">		org.drip.analytics.date.JulianDate dtBankMargin = dtValue.subtractDays (_cpgs.bankDefaultWindow());</span>
 
-<span class="nc" id="L311">		org.drip.analytics.date.JulianDate dtCounterPartyMargin = dtValue.subtractDays</span>
-<span class="nc" id="L312">			(_cpgs.counterPartyDefaultWindow());</span>
+<span class="fc" id="L311">		org.drip.analytics.date.JulianDate dtCounterPartyMargin = dtValue.subtractDays</span>
+<span class="fc" id="L312">			(_cpgs.counterPartyDefaultWindow());</span>
 
-<span class="nc bnc" id="L314" title="All 4 branches missed.">		if (null == dtBankMargin || null == dtCounterPartyMargin) return null;</span>
+<span class="pc bpc" id="L314" title="2 of 4 branches missed.">		if (null == dtBankMargin || null == dtCounterPartyMargin) return null;</span>
 
-<span class="nc" id="L316">		org.drip.function.definition.R1ToR1[] aR1ToR1CounterPartyThreshold = _cgs.counterPartyThreshold();</span>
+<span class="fc" id="L316">		org.drip.function.definition.R1ToR1[] aR1ToR1CounterPartyThreshold = _cgs.counterPartyThreshold();</span>
 
-<span class="nc" id="L318">		org.drip.function.definition.R1ToR1 r1ToR1BankThreshold = _cgs.bankThreshold();</span>
+<span class="fc" id="L318">		org.drip.function.definition.R1ToR1 r1ToR1BankThreshold = _cgs.bankThreshold();</span>
 
-<span class="nc" id="L320">		double dblValueDate = dtValue.julian();</span>
+<span class="fc" id="L320">		double dblValueDate = dtValue.julian();</span>
 
 		try {
-<span class="nc" id="L323">			double dblBankWindowMarginValue = _bdi.interpolate (dtBankMargin.julian());</span>
+<span class="fc" id="L323">			double dblBankWindowMarginValue = _bdi.interpolate (dtBankMargin.julian());</span>
 
-<span class="nc" id="L325">			double dblCounterPartyWindowMarginValue = _bdi.interpolate (dtCounterPartyMargin.julian());</span>
+<span class="fc" id="L325">			double dblCounterPartyWindowMarginValue = _bdi.interpolate (dtCounterPartyMargin.julian());</span>
 
-<span class="nc bnc" id="L327" title="All 2 branches missed.">			double dblBankThresholdValue = null == r1ToR1BankThreshold ? 0. : r1ToR1BankThreshold.evaluate</span>
-<span class="nc" id="L328">				(dblValueDate);</span>
+<span class="pc bpc" id="L327" title="1 of 2 branches missed.">			double dblBankThresholdValue = null == r1ToR1BankThreshold ? 0. : r1ToR1BankThreshold.evaluate</span>
+<span class="fc" id="L328">				(dblValueDate);</span>
 
-<span class="nc bnc" id="L330" title="All 4 branches missed.">			double dblCounterPartyThresholdValue = null == aR1ToR1CounterPartyThreshold || null ==</span>
+<span class="pc bpc" id="L330" title="2 of 4 branches missed.">			double dblCounterPartyThresholdValue = null == aR1ToR1CounterPartyThreshold || null ==</span>
 				aR1ToR1CounterPartyThreshold[0] ? 0. : aR1ToR1CounterPartyThreshold[0].evaluate
-<span class="nc" id="L332">					(dblValueDate);</span>
+<span class="fc" id="L332">					(dblValueDate);</span>
 
-<span class="nc" id="L334">			double dblBankPostingRequirement = dblBankWindowMarginValue - dblBankThresholdValue;</span>
-<span class="nc bnc" id="L335" title="All 2 branches missed.">			dblBankPostingRequirement = 0. &lt; dblBankPostingRequirement ? 0. : dblBankPostingRequirement;</span>
-<span class="nc" id="L336">			double dblCounterPartyPostingRequirement = dblCounterPartyWindowMarginValue -</span>
+<span class="fc" id="L334">			double dblBankPostingRequirement = dblBankWindowMarginValue - dblBankThresholdValue;</span>
+<span class="fc bfc" id="L335" title="All 2 branches covered.">			dblBankPostingRequirement = 0. &lt; dblBankPostingRequirement ? 0. : dblBankPostingRequirement;</span>
+<span class="fc" id="L336">			double dblCounterPartyPostingRequirement = dblCounterPartyWindowMarginValue -</span>
 				dblCounterPartyThresholdValue;
-<span class="nc bnc" id="L338" title="All 2 branches missed.">			dblCounterPartyPostingRequirement = 0. &gt; dblCounterPartyPostingRequirement ? 0. :</span>
+<span class="fc bfc" id="L338" title="All 2 branches covered.">			dblCounterPartyPostingRequirement = 0. &gt; dblCounterPartyPostingRequirement ? 0. :</span>
 				dblCounterPartyPostingRequirement;
 
-<span class="nc" id="L341">			return new org.drip.xva.hypothecation.CollateralAmountEstimatorOutput (</span>
+<span class="fc" id="L341">			return new org.drip.xva.hypothecation.CollateralAmountEstimatorOutput (</span>
 				dtBankMargin,
 				dtCounterPartyMargin,
 				dblBankWindowMarginValue,
@@ -347,7 +347,7 @@ public class CollateralAmountEstimator {
 				dblCounterPartyWindowMarginValue,
 				dblCounterPartyThresholdValue,
 				dblCounterPartyPostingRequirement,
-<span class="nc bnc" id="L350" title="All 2 branches missed.">				org.drip.quant.common.NumberUtil.IsValid (_dblCurrentBalance) ? _dblCurrentBalance :</span>
+<span class="pc bpc" id="L350" title="1 of 2 branches missed.">				org.drip.quant.common.NumberUtil.IsValid (_dblCurrentBalance) ? _dblCurrentBalance :</span>
 					dblBankPostingRequirement + dblCounterPartyPostingRequirement);
 <span class="nc" id="L352">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L353">			e.printStackTrace();</span>

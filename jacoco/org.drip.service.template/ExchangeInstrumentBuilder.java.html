@@ -128,56 +128,56 @@ package org.drip.service.template;
 		final java.lang.String strUnderlierSubtype,
 		final java.lang.String strMaturityTenor)
 	{
-<span class="nc bnc" id="L131" title="All 2 branches missed.">		if (null == dtSpot) return null;</span>
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">		if (null == dtSpot) return null;</span>
 
 		try {
-<span class="nc" id="L134">			org.drip.product.govvie.TreasuryFutures tsyFutures = new org.drip.product.govvie.TreasuryFutures</span>
-<span class="nc" id="L135">				(org.drip.service.template.TreasuryBuilder.FromCode (strCode, adtEffective, adtMaturity,</span>
+<span class="fc" id="L134">			org.drip.product.govvie.TreasuryFutures tsyFutures = new org.drip.product.govvie.TreasuryFutures</span>
+<span class="fc" id="L135">				(org.drip.service.template.TreasuryBuilder.FromCode (strCode, adtEffective, adtMaturity,</span>
 					adblCoupon), adblConversionFactor, null);
 
-<span class="nc" id="L138">			java.lang.String strCurrency = tsyFutures.basket()[0].currency();</span>
+<span class="fc" id="L138">			java.lang.String strCurrency = tsyFutures.basket()[0].currency();</span>
 
-<span class="nc bnc" id="L140" title="All 2 branches missed.">			if (!tsyFutures.setExpiry (dtSpot.addBusDays (0, strCurrency).nextBondFuturesIMM (3,</span>
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">			if (!tsyFutures.setExpiry (dtSpot.addBusDays (0, strCurrency).nextBondFuturesIMM (3,</span>
 				strCurrency)))
 <span class="nc" id="L142">				return null;</span>
 
-<span class="nc" id="L144">			tsyFutures.setType (strCode);</span>
+<span class="fc" id="L144">			tsyFutures.setType (strCode);</span>
 
-<span class="nc" id="L146">			org.drip.market.exchange.TreasuryFuturesConvention bfc =</span>
+<span class="fc" id="L146">			org.drip.market.exchange.TreasuryFuturesConvention bfc =</span>
 				org.drip.market.exchange.TreasuryFuturesConventionContainer.FromJurisdictionTypeMaturity
-<span class="nc" id="L148">					(strCurrency, strUnderlierType, strUnderlierSubtype, strMaturityTenor);</span>
+<span class="fc" id="L148">					(strCurrency, strUnderlierType, strUnderlierSubtype, strMaturityTenor);</span>
 
-<span class="nc bnc" id="L150" title="All 2 branches missed.">			if (null == bfc) return tsyFutures;</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">			if (null == bfc) return tsyFutures;</span>
 
-<span class="nc" id="L152">			double dblBasketNotional = bfc.basketNotional();</span>
+<span class="fc" id="L152">			double dblBasketNotional = bfc.basketNotional();</span>
 
-<span class="nc" id="L154">			double dblMinimumPriceMovement = bfc.minimumPriceMovement();</span>
+<span class="fc" id="L154">			double dblMinimumPriceMovement = bfc.minimumPriceMovement();</span>
 
-<span class="nc" id="L156">			tsyFutures.setNotionalValue (dblBasketNotional);</span>
+<span class="fc" id="L156">			tsyFutures.setNotionalValue (dblBasketNotional);</span>
 
-<span class="nc" id="L158">			tsyFutures.setMinimumPriceMovement (dblMinimumPriceMovement);</span>
+<span class="fc" id="L158">			tsyFutures.setMinimumPriceMovement (dblMinimumPriceMovement);</span>
 
-<span class="nc" id="L160">			tsyFutures.setTickValue (dblBasketNotional * dblMinimumPriceMovement);</span>
+<span class="fc" id="L160">			tsyFutures.setTickValue (dblBasketNotional * dblMinimumPriceMovement);</span>
 
-<span class="nc" id="L162">			org.drip.market.exchange.TreasuryFuturesEligibility bfe = bfc.eligibility();</span>
+<span class="fc" id="L162">			org.drip.market.exchange.TreasuryFuturesEligibility bfe = bfc.eligibility();</span>
 
-<span class="nc bnc" id="L164" title="All 2 branches missed.">			if (null != bfe) {</span>
-<span class="nc" id="L165">				tsyFutures.setMaximumMaturity (bfe.maturityCeiling());</span>
+<span class="pc bpc" id="L164" title="1 of 2 branches missed.">			if (null != bfe) {</span>
+<span class="fc" id="L165">				tsyFutures.setMaximumMaturity (bfe.maturityCeiling());</span>
 
-<span class="nc" id="L167">				tsyFutures.setMinimumMaturity (bfe.maturityFloor());</span>
+<span class="fc" id="L167">				tsyFutures.setMinimumMaturity (bfe.maturityFloor());</span>
 			}
 
-<span class="nc" id="L170">			org.drip.market.exchange.TreasuryFuturesSettle bfs = bfc.settle();</span>
+<span class="fc" id="L170">			org.drip.market.exchange.TreasuryFuturesSettle bfs = bfc.settle();</span>
 
-<span class="nc bnc" id="L172" title="All 2 branches missed.">			if (null != bfs) {</span>
-<span class="nc" id="L173">				tsyFutures.setReferenceCoupon (bfs.currentReferenceYield());</span>
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">			if (null != bfs) {</span>
+<span class="fc" id="L173">				tsyFutures.setReferenceCoupon (bfs.currentReferenceYield());</span>
 
-<span class="nc" id="L175">				tsyFutures.setLastTradingDayLag (bfs.expiryLastTradingLag());</span>
+<span class="fc" id="L175">				tsyFutures.setLastTradingDayLag (bfs.expiryLastTradingLag());</span>
 
-<span class="nc" id="L177">				tsyFutures.setDeliveryMonths (bfs.deliveryMonths());</span>
+<span class="fc" id="L177">				tsyFutures.setDeliveryMonths (bfs.deliveryMonths());</span>
 			}
 
-<span class="nc" id="L180">			return tsyFutures;</span>
+<span class="fc" id="L180">			return tsyFutures;</span>
 <span class="nc" id="L181">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L182">			e.printStackTrace();</span>
 		}
@@ -210,38 +210,38 @@ package org.drip.service.template;
 		final java.lang.String strFuturesComponentUnderlierSubtype,
 		final java.lang.String strFuturesReferenceMaturityTenor)
 	{
-<span class="nc bnc" id="L213" title="All 6 branches missed.">		if (null == dtSpot || null == aiFuturesComponentTreasuryMaturityDate || null ==</span>
+<span class="pc bpc" id="L213" title="3 of 6 branches missed.">		if (null == dtSpot || null == aiFuturesComponentTreasuryMaturityDate || null ==</span>
 			aiFuturesComponentTreasuryEffectiveDate)
 <span class="nc" id="L215">			return null;</span>
 
-<span class="nc" id="L217">		int iNumFuturesComponentMaturity = aiFuturesComponentTreasuryMaturityDate.length;</span>
-<span class="nc" id="L218">		int iNumFuturesComponentEffective = aiFuturesComponentTreasuryEffectiveDate.length;</span>
-<span class="nc" id="L219">		org.drip.analytics.date.JulianDate[] adtFuturesComponentTreasuryMaturity = null;</span>
-<span class="nc" id="L220">		org.drip.analytics.date.JulianDate[] adtFuturesComponentTreasuryEffective = null;</span>
+<span class="fc" id="L217">		int iNumFuturesComponentMaturity = aiFuturesComponentTreasuryMaturityDate.length;</span>
+<span class="fc" id="L218">		int iNumFuturesComponentEffective = aiFuturesComponentTreasuryEffectiveDate.length;</span>
+<span class="fc" id="L219">		org.drip.analytics.date.JulianDate[] adtFuturesComponentTreasuryMaturity = null;</span>
+<span class="fc" id="L220">		org.drip.analytics.date.JulianDate[] adtFuturesComponentTreasuryEffective = null;</span>
 
-<span class="nc bnc" id="L222" title="All 2 branches missed.">		if (0 != iNumFuturesComponentMaturity)</span>
-<span class="nc" id="L223">			adtFuturesComponentTreasuryMaturity = new</span>
+<span class="pc bpc" id="L222" title="1 of 2 branches missed.">		if (0 != iNumFuturesComponentMaturity)</span>
+<span class="fc" id="L223">			adtFuturesComponentTreasuryMaturity = new</span>
 				org.drip.analytics.date.JulianDate[iNumFuturesComponentMaturity];
 
-<span class="nc bnc" id="L226" title="All 2 branches missed.">		if (0 != iNumFuturesComponentEffective)</span>
-<span class="nc" id="L227">			adtFuturesComponentTreasuryEffective = new</span>
+<span class="pc bpc" id="L226" title="1 of 2 branches missed.">		if (0 != iNumFuturesComponentEffective)</span>
+<span class="fc" id="L227">			adtFuturesComponentTreasuryEffective = new</span>
 				org.drip.analytics.date.JulianDate[iNumFuturesComponentEffective];
 
 		try {
-<span class="nc bnc" id="L231" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumFuturesComponentMaturity; ++i)</span>
-<span class="nc" id="L232">				adtFuturesComponentTreasuryMaturity[i] = new org.drip.analytics.date.JulianDate</span>
+<span class="fc bfc" id="L231" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumFuturesComponentMaturity; ++i)</span>
+<span class="fc" id="L232">				adtFuturesComponentTreasuryMaturity[i] = new org.drip.analytics.date.JulianDate</span>
 					(aiFuturesComponentTreasuryMaturityDate[i]);
 
-<span class="nc bnc" id="L235" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumFuturesComponentEffective; ++i)</span>
-<span class="nc" id="L236">				adtFuturesComponentTreasuryEffective[i] = new org.drip.analytics.date.JulianDate</span>
+<span class="fc bfc" id="L235" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumFuturesComponentEffective; ++i)</span>
+<span class="fc" id="L236">				adtFuturesComponentTreasuryEffective[i] = new org.drip.analytics.date.JulianDate</span>
 					(aiFuturesComponentTreasuryEffectiveDate[i]);
 <span class="nc" id="L238">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L239">			e.printStackTrace();</span>
 
 <span class="nc" id="L241">			return null;</span>
-<span class="nc" id="L242">		}</span>
+<span class="fc" id="L242">		}</span>
 
-<span class="nc" id="L244">		return TreasuryFutures (dtSpot, strFuturesCode, adtFuturesComponentTreasuryEffective,</span>
+<span class="fc" id="L244">		return TreasuryFutures (dtSpot, strFuturesCode, adtFuturesComponentTreasuryEffective,</span>
 			adtFuturesComponentTreasuryMaturity, adblFuturesComponentTreasuryCoupon,
 				adblFuturesComponentConversionFactor, &quot;TREASURY&quot;, strFuturesComponentUnderlierSubtype,
 					strFuturesReferenceMaturityTenor);
@@ -268,14 +268,14 @@ package org.drip.service.template;
 		final double[] adblFuturesComponentTreasuryCoupon,
 		final double[] adblFuturesComponentConversionFactor)
 	{
-<span class="nc" id="L271">		org.drip.market.exchange.TreasuryFuturesContract tfc =</span>
+<span class="fc" id="L271">		org.drip.market.exchange.TreasuryFuturesContract tfc =</span>
 			org.drip.market.exchange.TreasuryFuturesContractContainer.TreasuryFuturesContract
-<span class="nc" id="L273">				(strFuturesCode);</span>
+<span class="fc" id="L273">				(strFuturesCode);</span>
 
-<span class="nc bnc" id="L275" title="All 2 branches missed.">		return null == tfc ? null : TreasuryFutures (dtSpot, tfc.code(),</span>
+<span class="pc bpc" id="L275" title="1 of 2 branches missed.">		return null == tfc ? null : TreasuryFutures (dtSpot, tfc.code(),</span>
 			aiFuturesComponentTreasuryEffectiveDate, aiFuturesComponentTreasuryMaturityDate,
-<span class="nc" id="L277">				adblFuturesComponentTreasuryCoupon, adblFuturesComponentConversionFactor, tfc.type(),</span>
-<span class="nc" id="L278">					tfc.tenor());</span>
+<span class="fc" id="L277">				adblFuturesComponentTreasuryCoupon, adblFuturesComponentConversionFactor, tfc.type(),</span>
+<span class="fc" id="L278">					tfc.tenor());</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

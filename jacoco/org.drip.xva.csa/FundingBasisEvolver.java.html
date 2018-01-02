@@ -68,9 +68,9 @@ package org.drip.xva.csa;
  */
 
 public class FundingBasisEvolver {
-<span class="nc" id="L71">	private double _dblCorrelation = java.lang.Double.NaN;</span>
-<span class="nc" id="L72">	private org.drip.measure.dynamics.DiffusionEvaluatorLogarithmic _delUnderlying = null;</span>
-<span class="nc" id="L73">	private org.drip.measure.dynamics.DiffusionEvaluatorMeanReversion _demrFundingSpread = null;</span>
+<span class="fc" id="L71">	private double _dblCorrelation = java.lang.Double.NaN;</span>
+<span class="fc" id="L72">	private org.drip.measure.dynamics.DiffusionEvaluatorLogarithmic _delUnderlying = null;</span>
+<span class="fc" id="L73">	private org.drip.measure.dynamics.DiffusionEvaluatorMeanReversion _demrFundingSpread = null;</span>
 
 	/**
 	 * FundingBasisEvolver Constructor
@@ -87,12 +87,12 @@ public class FundingBasisEvolver {
 		final org.drip.measure.dynamics.DiffusionEvaluatorMeanReversion demrFundingSpread,
 		final double dblCorrelation)
 		throws java.lang.Exception
-<span class="nc" id="L90">	{</span>
-<span class="nc bnc" id="L91" title="All 4 branches missed.">		if (null == (_delUnderlying = delUnderlying) || null == (_demrFundingSpread = demrFundingSpread) ||</span>
-<span class="nc bnc" id="L92" title="All 6 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblCorrelation = dblCorrelation) || 1. &lt;</span>
+<span class="fc" id="L90">	{</span>
+<span class="pc bpc" id="L91" title="2 of 4 branches missed.">		if (null == (_delUnderlying = delUnderlying) || null == (_demrFundingSpread = demrFundingSpread) ||</span>
+<span class="pc bpc" id="L92" title="3 of 6 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblCorrelation = dblCorrelation) || 1. &lt;</span>
 				_dblCorrelation || -1. &gt; _dblCorrelation)
 <span class="nc" id="L94">			throw new java.lang.Exception (&quot;FundingBasisEvolver Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L95">	}</span>
+<span class="fc" id="L95">	}</span>
 
 	/**
 	 * Retrieve the Underlying Diffusion Evaluator
@@ -293,22 +293,22 @@ public class FundingBasisEvolver {
 		final java.lang.String strTenor)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L296">		double dblUnderlyingVolatility = _delUnderlying.volatilityValue();</span>
+<span class="fc" id="L296">		double dblUnderlyingVolatility = _delUnderlying.volatilityValue();</span>
 
-<span class="nc" id="L298">		double dblMeanReversionSpeed = _demrFundingSpread.meanReversionRate();</span>
+<span class="fc" id="L298">		double dblMeanReversionSpeed = _demrFundingSpread.meanReversionRate();</span>
 
-<span class="nc" id="L300">		double dblFundingSpreadVolatility = _demrFundingSpread.volatilityValue();</span>
+<span class="fc" id="L300">		double dblFundingSpreadVolatility = _demrFundingSpread.volatilityValue();</span>
 
-<span class="nc" id="L302">		double dblMaturity = org.drip.analytics.support.Helper.TenorToYearFraction (strTenor);</span>
+<span class="fc" id="L302">		double dblMaturity = org.drip.analytics.support.Helper.TenorToYearFraction (strTenor);</span>
 
-<span class="nc bnc" id="L304" title="All 2 branches missed.">		if (0. == dblMeanReversionSpeed)</span>
+<span class="pc bpc" id="L304" title="1 of 2 branches missed.">		if (0. == dblMeanReversionSpeed)</span>
 <span class="nc" id="L305">			return java.lang.Math.exp (-0.5 * _dblCorrelation * dblUnderlyingVolatility *</span>
 				dblFundingSpreadVolatility * dblMaturity * dblMaturity);
 
-<span class="nc" id="L308">		double dblB = (1. - java.lang.Math.exp (-1. * dblMeanReversionSpeed * dblMaturity)) /</span>
+<span class="fc" id="L308">		double dblB = (1. - java.lang.Math.exp (-1. * dblMeanReversionSpeed * dblMaturity)) /</span>
 			dblMeanReversionSpeed;
 
-<span class="nc" id="L311">		return java.lang.Math.exp (-1. * _dblCorrelation * dblUnderlyingVolatility *</span>
+<span class="fc" id="L311">		return java.lang.Math.exp (-1. * _dblCorrelation * dblUnderlyingVolatility *</span>
 			dblFundingSpreadVolatility * (dblMaturity - dblB) / dblMeanReversionSpeed);
 	}
 }

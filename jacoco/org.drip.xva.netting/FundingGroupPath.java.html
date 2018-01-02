@@ -76,8 +76,8 @@ public abstract class FundingGroupPath extends org.drip.xva.netting.ExposureGrou
 		final org.drip.xva.universe.MarketPath mp)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L79">		super (aHGP, mp);</span>
-<span class="nc" id="L80">	}</span>
+<span class="fc" id="L79">		super (aHGP, mp);</span>
+<span class="fc" id="L80">	}</span>
 
 	/**
 	 * Compute Path Unilateral Funding Value Adjustment
@@ -87,27 +87,27 @@ public abstract class FundingGroupPath extends org.drip.xva.netting.ExposureGrou
 
 	public double unilateralFundingValueAdjustment()
 	{
-<span class="nc" id="L90">		double[] adblFundingExposurePV = fundingExposurePV();</span>
+<span class="fc" id="L90">		double[] adblFundingExposurePV = fundingExposurePV();</span>
 
-<span class="nc" id="L92">		org.drip.xva.universe.MarketVertex[] aMV = marketPath().vertexes();</span>
+<span class="fc" id="L92">		org.drip.xva.universe.MarketVertex[] aMV = marketPath().vertexes();</span>
 
-<span class="nc" id="L94">		int iNumVertex = adblFundingExposurePV.length;</span>
-<span class="nc" id="L95">		double dblUnilateralFundingCostAdjustment = 0.;</span>
+<span class="fc" id="L94">		int iNumVertex = adblFundingExposurePV.length;</span>
+<span class="fc" id="L95">		double dblUnilateralFundingCostAdjustment = 0.;</span>
 
-<span class="nc bnc" id="L97" title="All 2 branches missed.">		for (int iVertexIndex = 1; iVertexIndex &lt; iNumVertex; ++iVertexIndex) {</span>
-<span class="nc" id="L98">			double dblPeriodIntegrandStart = adblFundingExposurePV[iVertexIndex - 1] *</span>
-<span class="nc" id="L99">				aMV[iVertexIndex - 1].bank().survivalProbability() *</span>
-<span class="nc" id="L100">					aMV[iVertexIndex - 1].bank().seniorFundingSpread();</span>
+<span class="fc bfc" id="L97" title="All 2 branches covered.">		for (int iVertexIndex = 1; iVertexIndex &lt; iNumVertex; ++iVertexIndex) {</span>
+<span class="fc" id="L98">			double dblPeriodIntegrandStart = adblFundingExposurePV[iVertexIndex - 1] *</span>
+<span class="fc" id="L99">				aMV[iVertexIndex - 1].bank().survivalProbability() *</span>
+<span class="fc" id="L100">					aMV[iVertexIndex - 1].bank().seniorFundingSpread();</span>
 
-<span class="nc" id="L102">			double dblPeriodIntegrandEnd = adblFundingExposurePV[iVertexIndex] *</span>
-<span class="nc" id="L103">				aMV[iVertexIndex].bank().survivalProbability() *</span>
-<span class="nc" id="L104">					aMV[iVertexIndex].bank().seniorFundingSpread();</span>
+<span class="fc" id="L102">			double dblPeriodIntegrandEnd = adblFundingExposurePV[iVertexIndex] *</span>
+<span class="fc" id="L103">				aMV[iVertexIndex].bank().survivalProbability() *</span>
+<span class="fc" id="L104">					aMV[iVertexIndex].bank().seniorFundingSpread();</span>
 
-<span class="nc" id="L106">			dblUnilateralFundingCostAdjustment -= 0.5 * (dblPeriodIntegrandStart + dblPeriodIntegrandEnd) *</span>
-<span class="nc" id="L107">				(aMV[iVertexIndex].anchor().julian() - aMV[iVertexIndex - 1].anchor().julian()) / 365.25;</span>
+<span class="fc" id="L106">			dblUnilateralFundingCostAdjustment -= 0.5 * (dblPeriodIntegrandStart + dblPeriodIntegrandEnd) *</span>
+<span class="fc" id="L107">				(aMV[iVertexIndex].anchor().julian() - aMV[iVertexIndex - 1].anchor().julian()) / 365.25;</span>
 		}
 
-<span class="nc" id="L110">		return dblUnilateralFundingCostAdjustment;</span>
+<span class="fc" id="L110">		return dblUnilateralFundingCostAdjustment;</span>
 	}
 
 	/**
@@ -121,29 +121,29 @@ public abstract class FundingGroupPath extends org.drip.xva.netting.ExposureGrou
 	public double bilateralFundingValueAdjustment()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L124">		org.drip.xva.universe.MarketVertex[] aMV = marketPath().vertexes();</span>
+<span class="fc" id="L124">		org.drip.xva.universe.MarketVertex[] aMV = marketPath().vertexes();</span>
 
-<span class="nc" id="L126">		double[] adblFundingExposurePV = fundingExposurePV();</span>
+<span class="fc" id="L126">		double[] adblFundingExposurePV = fundingExposurePV();</span>
 
-<span class="nc" id="L128">		double dblBilateralFundingValueAdjustment = 0.;</span>
-<span class="nc" id="L129">		int iNumVertex = adblFundingExposurePV.length;</span>
+<span class="fc" id="L128">		double dblBilateralFundingValueAdjustment = 0.;</span>
+<span class="fc" id="L129">		int iNumVertex = adblFundingExposurePV.length;</span>
 
-<span class="nc bnc" id="L131" title="All 2 branches missed.">		for (int iVertexIndex = 1; iVertexIndex &lt; iNumVertex; ++iVertexIndex) {</span>
-<span class="nc" id="L132">			double dblPeriodIntegrandStart = adblFundingExposurePV[iVertexIndex - 1] *</span>
-<span class="nc" id="L133">				aMV[iVertexIndex - 1].bank().survivalProbability() *</span>
-<span class="nc" id="L134">					aMV[iVertexIndex - 1].bank().seniorFundingSpread() *</span>
-<span class="nc" id="L135">						aMV[iVertexIndex - 1].counterParty().survivalProbability();</span>
+<span class="fc bfc" id="L131" title="All 2 branches covered.">		for (int iVertexIndex = 1; iVertexIndex &lt; iNumVertex; ++iVertexIndex) {</span>
+<span class="fc" id="L132">			double dblPeriodIntegrandStart = adblFundingExposurePV[iVertexIndex - 1] *</span>
+<span class="fc" id="L133">				aMV[iVertexIndex - 1].bank().survivalProbability() *</span>
+<span class="fc" id="L134">					aMV[iVertexIndex - 1].bank().seniorFundingSpread() *</span>
+<span class="fc" id="L135">						aMV[iVertexIndex - 1].counterParty().survivalProbability();</span>
 
-<span class="nc" id="L137">			double dblPeriodIntegrandEnd = adblFundingExposurePV[iVertexIndex] *</span>
-<span class="nc" id="L138">				aMV[iVertexIndex].bank().survivalProbability() *</span>
-<span class="nc" id="L139">					aMV[iVertexIndex].bank().seniorFundingSpread() *</span>
-<span class="nc" id="L140">						aMV[iVertexIndex].counterParty().survivalProbability();</span>
+<span class="fc" id="L137">			double dblPeriodIntegrandEnd = adblFundingExposurePV[iVertexIndex] *</span>
+<span class="fc" id="L138">				aMV[iVertexIndex].bank().survivalProbability() *</span>
+<span class="fc" id="L139">					aMV[iVertexIndex].bank().seniorFundingSpread() *</span>
+<span class="fc" id="L140">						aMV[iVertexIndex].counterParty().survivalProbability();</span>
 
-<span class="nc" id="L142">			dblBilateralFundingValueAdjustment -= 0.5 * (dblPeriodIntegrandStart + dblPeriodIntegrandEnd) *</span>
-<span class="nc" id="L143">				(aMV[iVertexIndex].anchor().julian() - aMV[iVertexIndex - 1].anchor().julian()) / 365.25;</span>
+<span class="fc" id="L142">			dblBilateralFundingValueAdjustment -= 0.5 * (dblPeriodIntegrandStart + dblPeriodIntegrandEnd) *</span>
+<span class="fc" id="L143">				(aMV[iVertexIndex].anchor().julian() - aMV[iVertexIndex - 1].anchor().julian()) / 365.25;</span>
 		}
 
-<span class="nc" id="L146">		return dblBilateralFundingValueAdjustment;</span>
+<span class="fc" id="L146">		return dblBilateralFundingValueAdjustment;</span>
 	}
 
 	/**
@@ -154,27 +154,27 @@ public abstract class FundingGroupPath extends org.drip.xva.netting.ExposureGrou
 
 	public double unilateralFundingDebtAdjustment()
 	{
-<span class="nc" id="L157">		org.drip.xva.universe.MarketVertex[] aMV = marketPath().vertexes();</span>
+<span class="fc" id="L157">		org.drip.xva.universe.MarketVertex[] aMV = marketPath().vertexes();</span>
 
-<span class="nc" id="L159">		double[] adblDebtExposurePV = debtExposurePV();</span>
+<span class="fc" id="L159">		double[] adblDebtExposurePV = debtExposurePV();</span>
 
-<span class="nc" id="L161">		double dblUnilateralFundingDebtAdjustment = 0.;</span>
-<span class="nc" id="L162">		int iNumVertex = adblDebtExposurePV.length;</span>
+<span class="fc" id="L161">		double dblUnilateralFundingDebtAdjustment = 0.;</span>
+<span class="fc" id="L162">		int iNumVertex = adblDebtExposurePV.length;</span>
 
-<span class="nc bnc" id="L164" title="All 2 branches missed.">		for (int iVertexIndex = 1; iVertexIndex &lt; iNumVertex; ++iVertexIndex) {</span>
-<span class="nc" id="L165">			double dblPeriodIntegrandStart = adblDebtExposurePV[iVertexIndex - 1] *</span>
-<span class="nc" id="L166">				aMV[iVertexIndex - 1].bank().survivalProbability() *</span>
-<span class="nc" id="L167">					aMV[iVertexIndex - 1].bank().seniorFundingSpread();</span>
+<span class="fc bfc" id="L164" title="All 2 branches covered.">		for (int iVertexIndex = 1; iVertexIndex &lt; iNumVertex; ++iVertexIndex) {</span>
+<span class="fc" id="L165">			double dblPeriodIntegrandStart = adblDebtExposurePV[iVertexIndex - 1] *</span>
+<span class="fc" id="L166">				aMV[iVertexIndex - 1].bank().survivalProbability() *</span>
+<span class="fc" id="L167">					aMV[iVertexIndex - 1].bank().seniorFundingSpread();</span>
 
-<span class="nc" id="L169">			double dblPeriodIntegrandEnd = adblDebtExposurePV[iVertexIndex] *</span>
-<span class="nc" id="L170">				aMV[iVertexIndex].bank().survivalProbability() *</span>
-<span class="nc" id="L171">					aMV[iVertexIndex].bank().seniorFundingSpread();</span>
+<span class="fc" id="L169">			double dblPeriodIntegrandEnd = adblDebtExposurePV[iVertexIndex] *</span>
+<span class="fc" id="L170">				aMV[iVertexIndex].bank().survivalProbability() *</span>
+<span class="fc" id="L171">					aMV[iVertexIndex].bank().seniorFundingSpread();</span>
 
-<span class="nc" id="L173">			dblUnilateralFundingDebtAdjustment -= 0.5 * (dblPeriodIntegrandStart + dblPeriodIntegrandEnd) *</span>
-<span class="nc" id="L174">				(aMV[iVertexIndex].anchor().julian() - aMV[iVertexIndex - 1].anchor().julian()) / 365.25;</span>
+<span class="fc" id="L173">			dblUnilateralFundingDebtAdjustment -= 0.5 * (dblPeriodIntegrandStart + dblPeriodIntegrandEnd) *</span>
+<span class="fc" id="L174">				(aMV[iVertexIndex].anchor().julian() - aMV[iVertexIndex - 1].anchor().julian()) / 365.25;</span>
 		}
 
-<span class="nc" id="L177">		return dblUnilateralFundingDebtAdjustment;</span>
+<span class="fc" id="L177">		return dblUnilateralFundingDebtAdjustment;</span>
 	}
 
 	/**
@@ -188,31 +188,31 @@ public abstract class FundingGroupPath extends org.drip.xva.netting.ExposureGrou
 	public double bilateralFundingDebtAdjustment()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L191">		org.drip.xva.universe.MarketVertex[] aMV = marketPath().vertexes();</span>
+<span class="fc" id="L191">		org.drip.xva.universe.MarketVertex[] aMV = marketPath().vertexes();</span>
 
-<span class="nc" id="L193">		double[] adblDebtExposurePV = debtExposurePV();</span>
+<span class="fc" id="L193">		double[] adblDebtExposurePV = debtExposurePV();</span>
 
-<span class="nc" id="L195">		double dblBilateralFundingDebtAdjustment = 0.;</span>
-<span class="nc" id="L196">		int iNumVertex = adblDebtExposurePV.length;</span>
+<span class="fc" id="L195">		double dblBilateralFundingDebtAdjustment = 0.;</span>
+<span class="fc" id="L196">		int iNumVertex = adblDebtExposurePV.length;</span>
 
-<span class="nc bnc" id="L198" title="All 2 branches missed.">		for (int iVertexIndex = 1; iVertexIndex &lt; iNumVertex; ++iVertexIndex) {</span>
-<span class="nc" id="L199">			double dblPeriodIntegrandStart = adblDebtExposurePV[iVertexIndex - 1] *</span>
-<span class="nc" id="L200">				aMV[iVertexIndex - 1].bank().survivalProbability() * (1. -</span>
-<span class="nc" id="L201">					aMV[iVertexIndex - 1].bank().seniorRecoveryRate()) *</span>
-<span class="nc" id="L202">						aMV[iVertexIndex - 1].bank().hazardRate() *</span>
-<span class="nc" id="L203">							aMV[iVertexIndex - 1].counterParty().survivalProbability();</span>
+<span class="fc bfc" id="L198" title="All 2 branches covered.">		for (int iVertexIndex = 1; iVertexIndex &lt; iNumVertex; ++iVertexIndex) {</span>
+<span class="fc" id="L199">			double dblPeriodIntegrandStart = adblDebtExposurePV[iVertexIndex - 1] *</span>
+<span class="fc" id="L200">				aMV[iVertexIndex - 1].bank().survivalProbability() * (1. -</span>
+<span class="fc" id="L201">					aMV[iVertexIndex - 1].bank().seniorRecoveryRate()) *</span>
+<span class="fc" id="L202">						aMV[iVertexIndex - 1].bank().hazardRate() *</span>
+<span class="fc" id="L203">							aMV[iVertexIndex - 1].counterParty().survivalProbability();</span>
 
-<span class="nc" id="L205">			double dblPeriodIntegrandEnd = adblDebtExposurePV[iVertexIndex] *</span>
-<span class="nc" id="L206">				aMV[iVertexIndex].bank().survivalProbability() * (1. -</span>
-<span class="nc" id="L207">					aMV[iVertexIndex].bank().seniorRecoveryRate()) *</span>
-<span class="nc" id="L208">						aMV[iVertexIndex].bank().hazardRate() *</span>
-<span class="nc" id="L209">							aMV[iVertexIndex].counterParty().survivalProbability();</span>
+<span class="fc" id="L205">			double dblPeriodIntegrandEnd = adblDebtExposurePV[iVertexIndex] *</span>
+<span class="fc" id="L206">				aMV[iVertexIndex].bank().survivalProbability() * (1. -</span>
+<span class="fc" id="L207">					aMV[iVertexIndex].bank().seniorRecoveryRate()) *</span>
+<span class="fc" id="L208">						aMV[iVertexIndex].bank().hazardRate() *</span>
+<span class="fc" id="L209">							aMV[iVertexIndex].counterParty().survivalProbability();</span>
 
-<span class="nc" id="L211">			dblBilateralFundingDebtAdjustment += 0.5 * (dblPeriodIntegrandStart + dblPeriodIntegrandEnd) *</span>
-<span class="nc" id="L212">				(aMV[iVertexIndex].anchor().julian() - aMV[iVertexIndex - 1].anchor().julian()) / 365.25;</span>
+<span class="fc" id="L211">			dblBilateralFundingDebtAdjustment += 0.5 * (dblPeriodIntegrandStart + dblPeriodIntegrandEnd) *</span>
+<span class="fc" id="L212">				(aMV[iVertexIndex].anchor().julian() - aMV[iVertexIndex - 1].anchor().julian()) / 365.25;</span>
 		}
 
-<span class="nc" id="L215">		return dblBilateralFundingDebtAdjustment;</span>
+<span class="fc" id="L215">		return dblBilateralFundingDebtAdjustment;</span>
 	}
 
 	/**
@@ -223,27 +223,27 @@ public abstract class FundingGroupPath extends org.drip.xva.netting.ExposureGrou
 
 	public double symmetricFundingValueAdjustment()
 	{
-<span class="nc" id="L226">		double[] adblCollateralizedExposurePV = collateralizedExposurePV();</span>
+<span class="fc" id="L226">		double[] adblCollateralizedExposurePV = collateralizedExposurePV();</span>
 
-<span class="nc" id="L228">		org.drip.xva.universe.MarketVertex[] aMV = marketPath().vertexes();</span>
+<span class="fc" id="L228">		org.drip.xva.universe.MarketVertex[] aMV = marketPath().vertexes();</span>
 
-<span class="nc" id="L230">		int iNumVertex = adblCollateralizedExposurePV.length;</span>
-<span class="nc" id="L231">		double dblSymmetricFundingValueAdjustment = 0.;</span>
+<span class="fc" id="L230">		int iNumVertex = adblCollateralizedExposurePV.length;</span>
+<span class="fc" id="L231">		double dblSymmetricFundingValueAdjustment = 0.;</span>
 
-<span class="nc bnc" id="L233" title="All 2 branches missed.">		for (int iVertexIndex = 1; iVertexIndex &lt; iNumVertex; ++iVertexIndex) {</span>
-<span class="nc" id="L234">			double dblPeriodIntegrandStart = adblCollateralizedExposurePV[iVertexIndex - 1] *</span>
-<span class="nc" id="L235">				aMV[iVertexIndex - 1].bank().survivalProbability() *</span>
-<span class="nc" id="L236">					aMV[iVertexIndex - 1].bank().seniorFundingSpread();</span>
+<span class="fc bfc" id="L233" title="All 2 branches covered.">		for (int iVertexIndex = 1; iVertexIndex &lt; iNumVertex; ++iVertexIndex) {</span>
+<span class="fc" id="L234">			double dblPeriodIntegrandStart = adblCollateralizedExposurePV[iVertexIndex - 1] *</span>
+<span class="fc" id="L235">				aMV[iVertexIndex - 1].bank().survivalProbability() *</span>
+<span class="fc" id="L236">					aMV[iVertexIndex - 1].bank().seniorFundingSpread();</span>
 
-<span class="nc" id="L238">			double dblPeriodIntegrandEnd = adblCollateralizedExposurePV[iVertexIndex] *</span>
-<span class="nc" id="L239">				aMV[iVertexIndex].bank().survivalProbability() *</span>
-<span class="nc" id="L240">					aMV[iVertexIndex].bank().seniorFundingSpread();</span>
+<span class="fc" id="L238">			double dblPeriodIntegrandEnd = adblCollateralizedExposurePV[iVertexIndex] *</span>
+<span class="fc" id="L239">				aMV[iVertexIndex].bank().survivalProbability() *</span>
+<span class="fc" id="L240">					aMV[iVertexIndex].bank().seniorFundingSpread();</span>
 
-<span class="nc" id="L242">			dblSymmetricFundingValueAdjustment -= 0.5 * (dblPeriodIntegrandStart + dblPeriodIntegrandEnd) *</span>
-<span class="nc" id="L243">				(aMV[iVertexIndex].anchor().julian() - aMV[iVertexIndex - 1].anchor().julian()) / 365.25;</span>
+<span class="fc" id="L242">			dblSymmetricFundingValueAdjustment -= 0.5 * (dblPeriodIntegrandStart + dblPeriodIntegrandEnd) *</span>
+<span class="fc" id="L243">				(aMV[iVertexIndex].anchor().julian() - aMV[iVertexIndex - 1].anchor().julian()) / 365.25;</span>
 		}
 
-<span class="nc" id="L246">		return dblSymmetricFundingValueAdjustment;</span>
+<span class="fc" id="L246">		return dblSymmetricFundingValueAdjustment;</span>
 	}
 
 	/**
@@ -254,29 +254,29 @@ public abstract class FundingGroupPath extends org.drip.xva.netting.ExposureGrou
 
 	public double[] periodUnilateralFundingValueAdjustment()
 	{
-<span class="nc" id="L257">		double[] adblFundingExposurePV = fundingExposurePV();</span>
+<span class="fc" id="L257">		double[] adblFundingExposurePV = fundingExposurePV();</span>
 
-<span class="nc" id="L259">		org.drip.xva.universe.MarketVertex[] aMV = marketPath().vertexes();</span>
+<span class="fc" id="L259">		org.drip.xva.universe.MarketVertex[] aMV = marketPath().vertexes();</span>
 
-<span class="nc" id="L261">		int iNumVertex = adblFundingExposurePV.length;</span>
-<span class="nc" id="L262">		double[] adblUnilateralFundingValueAdjustment = new double[iNumVertex - 1];</span>
+<span class="fc" id="L261">		int iNumVertex = adblFundingExposurePV.length;</span>
+<span class="fc" id="L262">		double[] adblUnilateralFundingValueAdjustment = new double[iNumVertex - 1];</span>
 
-<span class="nc bnc" id="L264" title="All 2 branches missed.">		for (int iVertexIndex = 1; iVertexIndex &lt; iNumVertex; ++iVertexIndex) {</span>
-<span class="nc" id="L265">			double dblPeriodIntegrandStart = adblFundingExposurePV[iVertexIndex - 1] *</span>
-<span class="nc" id="L266">				aMV[iVertexIndex - 1].bank().survivalProbability() * (1. -</span>
-<span class="nc" id="L267">					aMV[iVertexIndex - 1].bank().seniorRecoveryRate()) *</span>
-<span class="nc" id="L268">						aMV[iVertexIndex - 1].bank().hazardRate();</span>
+<span class="fc bfc" id="L264" title="All 2 branches covered.">		for (int iVertexIndex = 1; iVertexIndex &lt; iNumVertex; ++iVertexIndex) {</span>
+<span class="fc" id="L265">			double dblPeriodIntegrandStart = adblFundingExposurePV[iVertexIndex - 1] *</span>
+<span class="fc" id="L266">				aMV[iVertexIndex - 1].bank().survivalProbability() * (1. -</span>
+<span class="fc" id="L267">					aMV[iVertexIndex - 1].bank().seniorRecoveryRate()) *</span>
+<span class="fc" id="L268">						aMV[iVertexIndex - 1].bank().hazardRate();</span>
 
-<span class="nc" id="L270">			double dblPeriodIntegrandEnd = adblFundingExposurePV[iVertexIndex] *</span>
-<span class="nc" id="L271">				aMV[iVertexIndex].bank().survivalProbability() * (1. -</span>
-<span class="nc" id="L272">					aMV[iVertexIndex].bank().seniorRecoveryRate()) * aMV[iVertexIndex].bank().hazardRate();</span>
+<span class="fc" id="L270">			double dblPeriodIntegrandEnd = adblFundingExposurePV[iVertexIndex] *</span>
+<span class="fc" id="L271">				aMV[iVertexIndex].bank().survivalProbability() * (1. -</span>
+<span class="fc" id="L272">					aMV[iVertexIndex].bank().seniorRecoveryRate()) * aMV[iVertexIndex].bank().hazardRate();</span>
 
-<span class="nc" id="L274">			adblUnilateralFundingValueAdjustment[iVertexIndex - 1] = 0.5 * (dblPeriodIntegrandStart +</span>
-<span class="nc" id="L275">				dblPeriodIntegrandEnd) * (aMV[iVertexIndex].anchor().julian() -</span>
-<span class="nc" id="L276">					aMV[iVertexIndex - 1].anchor().julian()) / 365.25;</span>
+<span class="fc" id="L274">			adblUnilateralFundingValueAdjustment[iVertexIndex - 1] = 0.5 * (dblPeriodIntegrandStart +</span>
+<span class="fc" id="L275">				dblPeriodIntegrandEnd) * (aMV[iVertexIndex].anchor().julian() -</span>
+<span class="fc" id="L276">					aMV[iVertexIndex - 1].anchor().julian()) / 365.25;</span>
 		}
 
-<span class="nc" id="L279">		return adblUnilateralFundingValueAdjustment;</span>
+<span class="fc" id="L279">		return adblUnilateralFundingValueAdjustment;</span>
 	}
 
 	/**
@@ -290,31 +290,31 @@ public abstract class FundingGroupPath extends org.drip.xva.netting.ExposureGrou
 	public double[] periodBilateralFundingValueAdjustment()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L293">		double[] adblFundingExposurePV = fundingExposurePV();</span>
+<span class="fc" id="L293">		double[] adblFundingExposurePV = fundingExposurePV();</span>
 
-<span class="nc" id="L295">		org.drip.xva.universe.MarketVertex[] aMV = marketPath().vertexes();</span>
+<span class="fc" id="L295">		org.drip.xva.universe.MarketVertex[] aMV = marketPath().vertexes();</span>
 
-<span class="nc" id="L297">		int iNumVertex = adblFundingExposurePV.length;</span>
-<span class="nc" id="L298">		double[] adblBilateralFundingValueAdjustment = new double[iNumVertex - 1];</span>
+<span class="fc" id="L297">		int iNumVertex = adblFundingExposurePV.length;</span>
+<span class="fc" id="L298">		double[] adblBilateralFundingValueAdjustment = new double[iNumVertex - 1];</span>
 
-<span class="nc bnc" id="L300" title="All 2 branches missed.">		for (int iVertexIndex = 1; iVertexIndex &lt; iNumVertex; ++iVertexIndex) {</span>
-<span class="nc" id="L301">			double dblPeriodIntegrandStart = adblFundingExposurePV[iVertexIndex - 1] *</span>
-<span class="nc" id="L302">				aMV[iVertexIndex - 1].bank().survivalProbability() * (1. -</span>
-<span class="nc" id="L303">					aMV[iVertexIndex - 1].bank().seniorRecoveryRate()) *</span>
-<span class="nc" id="L304">						aMV[iVertexIndex - 1].bank().hazardRate() *</span>
-<span class="nc" id="L305">							aMV[iVertexIndex - 1].counterParty().survivalProbability();</span>
+<span class="fc bfc" id="L300" title="All 2 branches covered.">		for (int iVertexIndex = 1; iVertexIndex &lt; iNumVertex; ++iVertexIndex) {</span>
+<span class="fc" id="L301">			double dblPeriodIntegrandStart = adblFundingExposurePV[iVertexIndex - 1] *</span>
+<span class="fc" id="L302">				aMV[iVertexIndex - 1].bank().survivalProbability() * (1. -</span>
+<span class="fc" id="L303">					aMV[iVertexIndex - 1].bank().seniorRecoveryRate()) *</span>
+<span class="fc" id="L304">						aMV[iVertexIndex - 1].bank().hazardRate() *</span>
+<span class="fc" id="L305">							aMV[iVertexIndex - 1].counterParty().survivalProbability();</span>
 
-<span class="nc" id="L307">			double dblPeriodIntegrandEnd = adblFundingExposurePV[iVertexIndex] *</span>
-<span class="nc" id="L308">				aMV[iVertexIndex].bank().survivalProbability() * (1. -</span>
-<span class="nc" id="L309">					aMV[iVertexIndex].bank().seniorRecoveryRate()) * aMV[iVertexIndex].bank().hazardRate() *</span>
-<span class="nc" id="L310">						aMV[iVertexIndex].counterParty().survivalProbability();</span>
+<span class="fc" id="L307">			double dblPeriodIntegrandEnd = adblFundingExposurePV[iVertexIndex] *</span>
+<span class="fc" id="L308">				aMV[iVertexIndex].bank().survivalProbability() * (1. -</span>
+<span class="fc" id="L309">					aMV[iVertexIndex].bank().seniorRecoveryRate()) * aMV[iVertexIndex].bank().hazardRate() *</span>
+<span class="fc" id="L310">						aMV[iVertexIndex].counterParty().survivalProbability();</span>
 
-<span class="nc" id="L312">			adblBilateralFundingValueAdjustment[iVertexIndex - 1] = 0.5 * (dblPeriodIntegrandStart +</span>
-<span class="nc" id="L313">				dblPeriodIntegrandEnd) * (aMV[iVertexIndex].anchor().julian() -</span>
-<span class="nc" id="L314">					aMV[iVertexIndex - 1].anchor().julian()) / 365.25;</span>
+<span class="fc" id="L312">			adblBilateralFundingValueAdjustment[iVertexIndex - 1] = 0.5 * (dblPeriodIntegrandStart +</span>
+<span class="fc" id="L313">				dblPeriodIntegrandEnd) * (aMV[iVertexIndex].anchor().julian() -</span>
+<span class="fc" id="L314">					aMV[iVertexIndex - 1].anchor().julian()) / 365.25;</span>
 		}
 
-<span class="nc" id="L317">		return adblBilateralFundingValueAdjustment;</span>
+<span class="fc" id="L317">		return adblBilateralFundingValueAdjustment;</span>
 	}
 
 	/**
@@ -325,28 +325,28 @@ public abstract class FundingGroupPath extends org.drip.xva.netting.ExposureGrou
 
 	public double[] periodUnilateralFundingDebtAdjustment()
 	{
-<span class="nc" id="L328">		double[] adblDebtExposurePV = debtExposurePV();</span>
+<span class="fc" id="L328">		double[] adblDebtExposurePV = debtExposurePV();</span>
 
-<span class="nc" id="L330">		org.drip.xva.universe.MarketVertex[] aMV = marketPath().vertexes();</span>
+<span class="fc" id="L330">		org.drip.xva.universe.MarketVertex[] aMV = marketPath().vertexes();</span>
 
-<span class="nc" id="L332">		int iNumVertex = adblDebtExposurePV.length;</span>
-<span class="nc" id="L333">		double[] adblUnilateralFundingDebtAdjustment = new double[iNumVertex - 1];</span>
+<span class="fc" id="L332">		int iNumVertex = adblDebtExposurePV.length;</span>
+<span class="fc" id="L333">		double[] adblUnilateralFundingDebtAdjustment = new double[iNumVertex - 1];</span>
 
-<span class="nc bnc" id="L335" title="All 2 branches missed.">		for (int iVertexIndex = 1; iVertexIndex &lt; iNumVertex; ++iVertexIndex) {</span>
-<span class="nc" id="L336">			double dblPeriodIntegrandStart = adblDebtExposurePV[iVertexIndex - 1] *</span>
-<span class="nc" id="L337">				aMV[iVertexIndex - 1].bank().survivalProbability() *</span>
-<span class="nc" id="L338">					aMV[iVertexIndex - 1].bank().seniorFundingSpread();</span>
+<span class="fc bfc" id="L335" title="All 2 branches covered.">		for (int iVertexIndex = 1; iVertexIndex &lt; iNumVertex; ++iVertexIndex) {</span>
+<span class="fc" id="L336">			double dblPeriodIntegrandStart = adblDebtExposurePV[iVertexIndex - 1] *</span>
+<span class="fc" id="L337">				aMV[iVertexIndex - 1].bank().survivalProbability() *</span>
+<span class="fc" id="L338">					aMV[iVertexIndex - 1].bank().seniorFundingSpread();</span>
 
-<span class="nc" id="L340">			double dblPeriodIntegrandEnd = adblDebtExposurePV[iVertexIndex] *</span>
-<span class="nc" id="L341">				aMV[iVertexIndex].bank().survivalProbability() *</span>
-<span class="nc" id="L342">					aMV[iVertexIndex].bank().seniorFundingSpread();</span>
+<span class="fc" id="L340">			double dblPeriodIntegrandEnd = adblDebtExposurePV[iVertexIndex] *</span>
+<span class="fc" id="L341">				aMV[iVertexIndex].bank().survivalProbability() *</span>
+<span class="fc" id="L342">					aMV[iVertexIndex].bank().seniorFundingSpread();</span>
 
-<span class="nc" id="L344">			adblUnilateralFundingDebtAdjustment[iVertexIndex - 1] = -0.5 * (dblPeriodIntegrandStart +</span>
-<span class="nc" id="L345">				dblPeriodIntegrandEnd) * (aMV[iVertexIndex].anchor().julian() -</span>
-<span class="nc" id="L346">					aMV[iVertexIndex - 1].anchor().julian()) / 365.25;</span>
+<span class="fc" id="L344">			adblUnilateralFundingDebtAdjustment[iVertexIndex - 1] = -0.5 * (dblPeriodIntegrandStart +</span>
+<span class="fc" id="L345">				dblPeriodIntegrandEnd) * (aMV[iVertexIndex].anchor().julian() -</span>
+<span class="fc" id="L346">					aMV[iVertexIndex - 1].anchor().julian()) / 365.25;</span>
 		}
 
-<span class="nc" id="L349">		return adblUnilateralFundingDebtAdjustment;</span>
+<span class="fc" id="L349">		return adblUnilateralFundingDebtAdjustment;</span>
 	}
 
 	/**
@@ -360,31 +360,31 @@ public abstract class FundingGroupPath extends org.drip.xva.netting.ExposureGrou
 	public double[] periodBilateralFundingDebtAdjustment()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L363">		double[] adblDebtExposurePV = debtExposurePV();</span>
+<span class="fc" id="L363">		double[] adblDebtExposurePV = debtExposurePV();</span>
 
-<span class="nc" id="L365">		org.drip.xva.universe.MarketVertex[] aMV = marketPath().vertexes();</span>
+<span class="fc" id="L365">		org.drip.xva.universe.MarketVertex[] aMV = marketPath().vertexes();</span>
 
-<span class="nc" id="L367">		int iNumVertex = adblDebtExposurePV.length;</span>
-<span class="nc" id="L368">		double[] adblBilateralFundingDebtAdjustment = new double[iNumVertex - 1];</span>
+<span class="fc" id="L367">		int iNumVertex = adblDebtExposurePV.length;</span>
+<span class="fc" id="L368">		double[] adblBilateralFundingDebtAdjustment = new double[iNumVertex - 1];</span>
 
-<span class="nc bnc" id="L370" title="All 2 branches missed.">		for (int iVertexIndex = 1; iVertexIndex &lt; iNumVertex; ++iVertexIndex) {</span>
-<span class="nc" id="L371">			double dblPeriodIntegrandStart = adblDebtExposurePV[iVertexIndex - 1] *</span>
-<span class="nc" id="L372">				aMV[iVertexIndex - 1].bank().survivalProbability() * (1. -</span>
-<span class="nc" id="L373">					aMV[iVertexIndex - 1].bank().seniorRecoveryRate()) *</span>
-<span class="nc" id="L374">						aMV[iVertexIndex - 1].bank().hazardRate() *</span>
-<span class="nc" id="L375">							aMV[iVertexIndex - 1].counterParty().survivalProbability();</span>
+<span class="fc bfc" id="L370" title="All 2 branches covered.">		for (int iVertexIndex = 1; iVertexIndex &lt; iNumVertex; ++iVertexIndex) {</span>
+<span class="fc" id="L371">			double dblPeriodIntegrandStart = adblDebtExposurePV[iVertexIndex - 1] *</span>
+<span class="fc" id="L372">				aMV[iVertexIndex - 1].bank().survivalProbability() * (1. -</span>
+<span class="fc" id="L373">					aMV[iVertexIndex - 1].bank().seniorRecoveryRate()) *</span>
+<span class="fc" id="L374">						aMV[iVertexIndex - 1].bank().hazardRate() *</span>
+<span class="fc" id="L375">							aMV[iVertexIndex - 1].counterParty().survivalProbability();</span>
 
-<span class="nc" id="L377">			double dblPeriodIntegrandEnd = adblDebtExposurePV[iVertexIndex] *</span>
-<span class="nc" id="L378">				aMV[iVertexIndex].bank().survivalProbability() * (1. -</span>
-<span class="nc" id="L379">					aMV[iVertexIndex].bank().seniorRecoveryRate()) * aMV[iVertexIndex].bank().hazardRate() *</span>
-<span class="nc" id="L380">						aMV[iVertexIndex].counterParty().survivalProbability();</span>
+<span class="fc" id="L377">			double dblPeriodIntegrandEnd = adblDebtExposurePV[iVertexIndex] *</span>
+<span class="fc" id="L378">				aMV[iVertexIndex].bank().survivalProbability() * (1. -</span>
+<span class="fc" id="L379">					aMV[iVertexIndex].bank().seniorRecoveryRate()) * aMV[iVertexIndex].bank().hazardRate() *</span>
+<span class="fc" id="L380">						aMV[iVertexIndex].counterParty().survivalProbability();</span>
 
-<span class="nc" id="L382">			adblBilateralFundingDebtAdjustment[iVertexIndex - 1] = 0.5 * (dblPeriodIntegrandStart +</span>
-<span class="nc" id="L383">				dblPeriodIntegrandEnd) * (aMV[iVertexIndex].anchor().julian() -</span>
-<span class="nc" id="L384">					aMV[iVertexIndex - 1].anchor().julian()) / 365.25;</span>
+<span class="fc" id="L382">			adblBilateralFundingDebtAdjustment[iVertexIndex - 1] = 0.5 * (dblPeriodIntegrandStart +</span>
+<span class="fc" id="L383">				dblPeriodIntegrandEnd) * (aMV[iVertexIndex].anchor().julian() -</span>
+<span class="fc" id="L384">					aMV[iVertexIndex - 1].anchor().julian()) / 365.25;</span>
 		}
 
-<span class="nc" id="L387">		return adblBilateralFundingDebtAdjustment;</span>
+<span class="fc" id="L387">		return adblBilateralFundingDebtAdjustment;</span>
 	}
 
 	/**
@@ -395,28 +395,28 @@ public abstract class FundingGroupPath extends org.drip.xva.netting.ExposureGrou
 
 	public double[] periodSymmetricFundingValueAdjustment()
 	{
-<span class="nc" id="L398">		double[] adblCollateralizedExposurePV = collateralizedExposurePV();</span>
+<span class="fc" id="L398">		double[] adblCollateralizedExposurePV = collateralizedExposurePV();</span>
 
-<span class="nc" id="L400">		org.drip.xva.universe.MarketVertex[] aMV = marketPath().vertexes();</span>
+<span class="fc" id="L400">		org.drip.xva.universe.MarketVertex[] aMV = marketPath().vertexes();</span>
 
-<span class="nc" id="L402">		int iNumVertex = adblCollateralizedExposurePV.length;</span>
-<span class="nc" id="L403">		double[] adblSymmetricFundingValueAdjustment = new double[iNumVertex - 1];</span>
+<span class="fc" id="L402">		int iNumVertex = adblCollateralizedExposurePV.length;</span>
+<span class="fc" id="L403">		double[] adblSymmetricFundingValueAdjustment = new double[iNumVertex - 1];</span>
 
-<span class="nc bnc" id="L405" title="All 2 branches missed.">		for (int iVertexIndex = 1; iVertexIndex &lt; iNumVertex; ++iVertexIndex) {</span>
-<span class="nc" id="L406">			double dblPeriodIntegrandStart = adblCollateralizedExposurePV[iVertexIndex - 1] *</span>
-<span class="nc" id="L407">				aMV[iVertexIndex - 1].bank().survivalProbability() *</span>
-<span class="nc" id="L408">					aMV[iVertexIndex - 1].bank().seniorFundingSpread();</span>
+<span class="fc bfc" id="L405" title="All 2 branches covered.">		for (int iVertexIndex = 1; iVertexIndex &lt; iNumVertex; ++iVertexIndex) {</span>
+<span class="fc" id="L406">			double dblPeriodIntegrandStart = adblCollateralizedExposurePV[iVertexIndex - 1] *</span>
+<span class="fc" id="L407">				aMV[iVertexIndex - 1].bank().survivalProbability() *</span>
+<span class="fc" id="L408">					aMV[iVertexIndex - 1].bank().seniorFundingSpread();</span>
 
-<span class="nc" id="L410">			double dblPeriodIntegrandEnd = adblCollateralizedExposurePV[iVertexIndex] *</span>
-<span class="nc" id="L411">				aMV[iVertexIndex].bank().survivalProbability() *</span>
-<span class="nc" id="L412">					aMV[iVertexIndex].bank().seniorFundingSpread();</span>
+<span class="fc" id="L410">			double dblPeriodIntegrandEnd = adblCollateralizedExposurePV[iVertexIndex] *</span>
+<span class="fc" id="L411">				aMV[iVertexIndex].bank().survivalProbability() *</span>
+<span class="fc" id="L412">					aMV[iVertexIndex].bank().seniorFundingSpread();</span>
 
-<span class="nc" id="L414">			adblSymmetricFundingValueAdjustment[iVertexIndex - 1] = 0.5 * (dblPeriodIntegrandStart +</span>
-<span class="nc" id="L415">				dblPeriodIntegrandEnd) * (aMV[iVertexIndex].anchor().julian() -</span>
-<span class="nc" id="L416">					aMV[iVertexIndex - 1].anchor().julian()) / 365.25;</span>
+<span class="fc" id="L414">			adblSymmetricFundingValueAdjustment[iVertexIndex - 1] = 0.5 * (dblPeriodIntegrandStart +</span>
+<span class="fc" id="L415">				dblPeriodIntegrandEnd) * (aMV[iVertexIndex].anchor().julian() -</span>
+<span class="fc" id="L416">					aMV[iVertexIndex - 1].anchor().julian()) / 365.25;</span>
 		}
 
-<span class="nc" id="L419">		return adblSymmetricFundingValueAdjustment;</span>
+<span class="fc" id="L419">		return adblSymmetricFundingValueAdjustment;</span>
 	}
 
 	/**

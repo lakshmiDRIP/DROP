@@ -1502,10 +1502,14 @@ public class BondProductBuilder {
 	{
 <span class="nc bnc" id="L1503" title="All 2 branches missed.">		if (!_bIsFloater) return null;</span>
 
-<span class="nc" id="L1505">		org.drip.product.params.FloaterSetting fltParams = new org.drip.product.params.FloaterSetting</span>
-			(_strRateIndex, _strFloatCouponConvention, _dblFloatSpread, _dblCurrentCoupon);
+<span class="nc" id="L1505">		org.drip.product.params.FloaterSetting fltParams = new org.drip.product.params.FloaterSetting (</span>
+<span class="nc" id="L1506">			org.drip.state.identifier.ForwardLabel.Standard (_strRateIndex),</span>
+			_strFloatCouponConvention,
+			_dblFloatSpread,
+			_dblCurrentCoupon
+		);
 
-<span class="nc bnc" id="L1508" title="All 2 branches missed.">		return fltParams.validate() ? fltParams : null;</span>
+<span class="nc bnc" id="L1512" title="All 2 branches missed.">		return fltParams.validate() ? fltParams : null;</span>
 	}
 
 	/**
@@ -1516,11 +1520,11 @@ public class BondProductBuilder {
 
 	public org.drip.product.params.QuoteConvention getMarketConvention()
 	{
-<span class="nc" id="L1519">		org.drip.product.params.QuoteConvention mktConv = new org.drip.product.params.QuoteConvention (null,</span>
-<span class="nc" id="L1520">			_strCalculationType, _dtFirstSettle.julian(), _dblRedemptionValue, 0, &quot;&quot;,</span>
+<span class="nc" id="L1523">		org.drip.product.params.QuoteConvention mktConv = new org.drip.product.params.QuoteConvention (null,</span>
+<span class="nc" id="L1524">			_strCalculationType, _dtFirstSettle.julian(), _dblRedemptionValue, 0, &quot;&quot;,</span>
 				org.drip.analytics.daycount.Convention.DATE_ROLL_ACTUAL);
 
-<span class="nc bnc" id="L1523" title="All 2 branches missed.">		return mktConv.validate() ? mktConv : null;</span>
+<span class="nc bnc" id="L1527" title="All 2 branches missed.">		return mktConv.validate() ? mktConv : null;</span>
 	}
 
 	/**
@@ -1531,10 +1535,10 @@ public class BondProductBuilder {
 
 	public org.drip.product.params.CreditSetting getCRValuationParams()
 	{
-<span class="nc" id="L1534">		org.drip.product.params.CreditSetting crValParams = new org.drip.product.params.CreditSetting (30,</span>
+<span class="nc" id="L1538">		org.drip.product.params.CreditSetting crValParams = new org.drip.product.params.CreditSetting (30,</span>
 			java.lang.Double.NaN, true, &quot;&quot;, true);
 
-<span class="nc bnc" id="L1537" title="All 2 branches missed.">		return crValParams.validate() ? crValParams : null;</span>
+<span class="nc bnc" id="L1541" title="All 2 branches missed.">		return crValParams.validate() ? crValParams : null;</span>
 	}
 
 	/**
@@ -1545,10 +1549,10 @@ public class BondProductBuilder {
 
 	public org.drip.product.params.TerminationSetting getCFTEParams()
 	{
-<span class="nc" id="L1548">		org.drip.product.params.TerminationSetting cfteParams = new</span>
+<span class="nc" id="L1552">		org.drip.product.params.TerminationSetting cfteParams = new</span>
 			org.drip.product.params.TerminationSetting (_bIsPerpetual, _bIsDefaulted, _bHasBeenCalled, null);
 
-<span class="nc bnc" id="L1551" title="All 2 branches missed.">		return cfteParams.validate() ? cfteParams : null;</span>
+<span class="nc bnc" id="L1555" title="All 2 branches missed.">		return cfteParams.validate() ? cfteParams : null;</span>
 	}
 
 	/**
@@ -1559,11 +1563,11 @@ public class BondProductBuilder {
 
 	public org.drip.product.params.NotionalSetting getNotionalParams()
 	{
-<span class="nc" id="L1562">		org.drip.product.params.NotionalSetting notlParams = new org.drip.product.params.NotionalSetting</span>
+<span class="nc" id="L1566">		org.drip.product.params.NotionalSetting notlParams = new org.drip.product.params.NotionalSetting</span>
 			(100., _strRedemptionCurrency, null,
 				org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_START, false);
 
-<span class="nc bnc" id="L1566" title="All 2 branches missed.">		return notlParams.validate() ? notlParams : null;</span>
+<span class="nc bnc" id="L1570" title="All 2 branches missed.">		return notlParams.validate() ? notlParams : null;</span>
 	}
 
 	/**
@@ -1574,16 +1578,16 @@ public class BondProductBuilder {
 
 	public org.drip.product.params.BondStream getPeriodGenParams()
 	{
-<span class="nc" id="L1577">		return org.drip.product.params.BondStream.Create (_dtMaturity.julian(),</span>
-<span class="nc bnc" id="L1578" title="All 2 branches missed.">			_dtInterestAccrualStart.julian(), null == _dtFinalMaturity ? java.lang.Integer.MIN_VALUE :</span>
-<span class="nc bnc" id="L1579" title="All 2 branches missed.">				_dtFinalMaturity.julian(), null == _dtFirstCoupon ? java.lang.Integer.MIN_VALUE :</span>
-<span class="nc" id="L1580">					_dtFirstCoupon.julian(), _dtInterestAccrualStart.julian(), _iCouponFreq,</span>
+<span class="nc" id="L1581">		return org.drip.product.params.BondStream.Create (_dtMaturity.julian(),</span>
+<span class="nc bnc" id="L1582" title="All 2 branches missed.">			_dtInterestAccrualStart.julian(), null == _dtFinalMaturity ? java.lang.Integer.MIN_VALUE :</span>
+<span class="nc bnc" id="L1583" title="All 2 branches missed.">				_dtFinalMaturity.julian(), null == _dtFirstCoupon ? java.lang.Integer.MIN_VALUE :</span>
+<span class="nc" id="L1584">					_dtFirstCoupon.julian(), _dtInterestAccrualStart.julian(), _iCouponFreq,</span>
 						_dblCurrentCoupon, _strDayCountCode, _strDayCountCode, null, null, null, null, null,
 							null, null, null, _strMaturityType, false, _strCouponCurrency,
-<span class="nc bnc" id="L1583" title="All 2 branches missed.">								_strCouponCurrency, !org.drip.quant.common.StringUtil.IsEmpty (_strRateIndex)</span>
-<span class="nc" id="L1584">									? org.drip.state.identifier.ForwardLabel.Standard (_strRateIndex) : null,</span>
-<span class="nc bnc" id="L1585" title="All 2 branches missed.">										!org.drip.quant.common.StringUtil.IsEmpty (_strIssuerSPN) ?</span>
-<span class="nc" id="L1586">											org.drip.state.identifier.CreditLabel.Standard (_strIssuerSPN) :</span>
+<span class="nc bnc" id="L1587" title="All 2 branches missed.">								_strCouponCurrency, !org.drip.quant.common.StringUtil.IsEmpty (_strRateIndex)</span>
+<span class="nc" id="L1588">									? org.drip.state.identifier.ForwardLabel.Standard (_strRateIndex) : null,</span>
+<span class="nc bnc" id="L1589" title="All 2 branches missed.">										!org.drip.quant.common.StringUtil.IsEmpty (_strIssuerSPN) ?</span>
+<span class="nc" id="L1590">											org.drip.state.identifier.CreditLabel.Standard (_strIssuerSPN) :</span>
 												null);
 	}
 
@@ -1595,12 +1599,12 @@ public class BondProductBuilder {
 
 	public java.lang.String makeSQLDelete()
 	{
-<span class="nc" id="L1598">		java.lang.StringBuilder sb = new java.lang.StringBuilder();</span>
+<span class="nc" id="L1602">		java.lang.StringBuilder sb = new java.lang.StringBuilder();</span>
 
-<span class="nc" id="L1600">		sb.append (&quot;delete from BondValData where ISIN = '&quot;).append (_strISIN).append</span>
-<span class="nc" id="L1601">			(&quot;' or CUSIP = '&quot;).append (_strCUSIP).append (&quot;'&quot;);</span>
+<span class="nc" id="L1604">		sb.append (&quot;delete from BondValData where ISIN = '&quot;).append (_strISIN).append</span>
+<span class="nc" id="L1605">			(&quot;' or CUSIP = '&quot;).append (_strCUSIP).append (&quot;'&quot;);</span>
 
-<span class="nc" id="L1603">		return sb.toString();</span>
+<span class="nc" id="L1607">		return sb.toString();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

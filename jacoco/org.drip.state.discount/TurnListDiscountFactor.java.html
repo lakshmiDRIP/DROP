@@ -60,15 +60,15 @@ package org.drip.state.discount;
  */
 
 public class TurnListDiscountFactor {
-<span class="nc" id="L63">	private java.util.List&lt;org.drip.analytics.definition.Turn&gt; _lsTurn = null;</span>
+<span class="fc" id="L63">	private java.util.List&lt;org.drip.analytics.definition.Turn&gt; _lsTurn = null;</span>
 
 	/**
 	 * Empty TurnListDiscountFactor constructor
 	 */
 
 	public TurnListDiscountFactor()
-<span class="nc" id="L70">	{</span>
-<span class="nc" id="L71">	}</span>
+<span class="fc" id="L70">	{</span>
+<span class="fc" id="L71">	}</span>
 
 	/**
 	 * Add a Turn Instance to the Discount Curve
@@ -81,13 +81,13 @@ public class TurnListDiscountFactor {
 	public boolean addTurn (
 		final org.drip.analytics.definition.Turn turn)
 	{
-<span class="nc bnc" id="L84" title="All 2 branches missed.">		if (null == turn) return false;</span>
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">		if (null == turn) return false;</span>
 
-<span class="nc bnc" id="L86" title="All 2 branches missed.">		if (null == _lsTurn) _lsTurn = new java.util.ArrayList&lt;org.drip.analytics.definition.Turn&gt;();</span>
+<span class="pc bpc" id="L86" title="1 of 2 branches missed.">		if (null == _lsTurn) _lsTurn = new java.util.ArrayList&lt;org.drip.analytics.definition.Turn&gt;();</span>
 
-<span class="nc" id="L88">		_lsTurn.add (turn);</span>
+<span class="fc" id="L88">		_lsTurn.add (turn);</span>
 
-<span class="nc" id="L90">		return true;</span>
+<span class="fc" id="L90">		return true;</span>
 	}
 
 	/**
@@ -106,24 +106,24 @@ public class TurnListDiscountFactor {
 		final int iFinishDate)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L109" title="All 4 branches missed.">		if (null == _lsTurn || 0 == _lsTurn.size()) return 1.;</span>
+<span class="pc bpc" id="L109" title="2 of 4 branches missed.">		if (null == _lsTurn || 0 == _lsTurn.size()) return 1.;</span>
 
-<span class="nc bnc" id="L111" title="All 2 branches missed.">		if (iStartDate &gt;= iFinishDate) return 1.;</span>
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">		if (iStartDate &gt;= iFinishDate) return 1.;</span>
 
-<span class="nc" id="L113">		double dblTurnAdjust = 1.;</span>
+<span class="fc" id="L113">		double dblTurnAdjust = 1.;</span>
 
-<span class="nc bnc" id="L115" title="All 2 branches missed.">		for (org.drip.analytics.definition.Turn turn : _lsTurn) {</span>
-<span class="nc bnc" id="L116" title="All 6 branches missed.">			if (null == turn || iStartDate &gt;= turn.finishDate() || iFinishDate &lt;= turn.startDate()) continue;</span>
+<span class="fc bfc" id="L115" title="All 2 branches covered.">		for (org.drip.analytics.definition.Turn turn : _lsTurn) {</span>
+<span class="pc bpc" id="L116" title="2 of 6 branches missed.">			if (null == turn || iStartDate &gt;= turn.finishDate() || iFinishDate &lt;= turn.startDate()) continue;</span>
 
-<span class="nc bnc" id="L118" title="All 2 branches missed.">			int iEffectiveStart = turn.startDate() &gt; iStartDate ? turn.startDate() : iStartDate;</span>
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">			int iEffectiveStart = turn.startDate() &gt; iStartDate ? turn.startDate() : iStartDate;</span>
 
-<span class="nc bnc" id="L120" title="All 2 branches missed.">			int iEffectiveFinish = turn.finishDate() &lt; iFinishDate ? turn.finishDate() : iFinishDate;</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">			int iEffectiveFinish = turn.finishDate() &lt; iFinishDate ? turn.finishDate() : iFinishDate;</span>
 
-<span class="nc" id="L122">			dblTurnAdjust *= java.lang.Math.exp (turn.spread() * (iEffectiveStart - iEffectiveFinish) /</span>
+<span class="fc" id="L122">			dblTurnAdjust *= java.lang.Math.exp (turn.spread() * (iEffectiveStart - iEffectiveFinish) /</span>
 				365.25);
-<span class="nc" id="L124">		}</span>
+<span class="fc" id="L124">		}</span>
 
-<span class="nc" id="L126">		return dblTurnAdjust;</span>
+<span class="fc" id="L126">		return dblTurnAdjust;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

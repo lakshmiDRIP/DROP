@@ -115,23 +115,23 @@ public abstract class GovvieCurve extends org.drip.state.discount.DiscountCurve 
 		final int iDate2)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L118" title="All 2 branches missed.">		if (iDate1 &gt;= iDate2) throw new java.lang.Exception (&quot;GovvieCurve::forwardYield =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">		if (iDate1 &gt;= iDate2) throw new java.lang.Exception (&quot;GovvieCurve::forwardYield =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L120">		org.drip.analytics.daycount.ActActDCParams aadp =</span>
-<span class="nc" id="L121">			org.drip.analytics.daycount.ActActDCParams.FromFrequency (_iFreq);</span>
+<span class="fc" id="L120">		org.drip.analytics.daycount.ActActDCParams aadp =</span>
+<span class="fc" id="L121">			org.drip.analytics.daycount.ActActDCParams.FromFrequency (_iFreq);</span>
 
-<span class="nc" id="L123">		double dblYearFraction = org.drip.analytics.daycount.Convention.YearFraction (iDate1, iDate2,</span>
+<span class="fc" id="L123">		double dblYearFraction = org.drip.analytics.daycount.Convention.YearFraction (iDate1, iDate2,</span>
 			_strDayCount, false, aadp, _strCurrency);
 
-<span class="nc" id="L126">		double dblDF1 = org.drip.analytics.support.Helper.Yield2DF  (_iFreq, yield (iDate1),</span>
-<span class="nc" id="L127">			org.drip.analytics.daycount.Convention.YearFraction (_iEpochDate, iDate1, _strDayCount, false,</span>
+<span class="fc" id="L126">		double dblDF1 = org.drip.analytics.support.Helper.Yield2DF  (_iFreq, yield (iDate1),</span>
+<span class="fc" id="L127">			org.drip.analytics.daycount.Convention.YearFraction (_iEpochDate, iDate1, _strDayCount, false,</span>
 				aadp, _strCurrency));
 
-<span class="nc" id="L130">		double dblDF2 = org.drip.analytics.support.Helper.Yield2DF  (_iFreq, yield (iDate2),</span>
-<span class="nc" id="L131">			org.drip.analytics.daycount.Convention.YearFraction (_iEpochDate, iDate2, _strDayCount, false,</span>
+<span class="fc" id="L130">		double dblDF2 = org.drip.analytics.support.Helper.Yield2DF  (_iFreq, yield (iDate2),</span>
+<span class="fc" id="L131">			org.drip.analytics.daycount.Convention.YearFraction (_iEpochDate, iDate2, _strDayCount, false,</span>
 				aadp, _strCurrency));
 
-<span class="nc" id="L134">		return org.drip.analytics.support.Helper.DF2Yield (</span>
+<span class="fc" id="L134">		return org.drip.analytics.support.Helper.DF2Yield (</span>
 			_iFreq,
 			dblDF2 / dblDF1,
 			dblYearFraction
@@ -151,9 +151,9 @@ public abstract class GovvieCurve extends org.drip.state.discount.DiscountCurve 
 		final org.drip.analytics.date.JulianDate dt)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L154" title="All 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;GovvieCurve::df =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L154" title="1 of 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;GovvieCurve::df =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L156">		return df (dt.julian());</span>
+<span class="fc" id="L156">		return df (dt.julian());</span>
 	}
 
 	@Override public double df (

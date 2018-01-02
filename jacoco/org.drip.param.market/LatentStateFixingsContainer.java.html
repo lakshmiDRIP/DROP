@@ -64,6 +64,11 @@ public class LatentStateFixingsContainer {
 				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;();
 
 <span class="fc" id="L66">	private java.util.Map&lt;org.drip.analytics.date.JulianDate,</span>
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt; _mmOTCFixFloatFixing = new
+			java.util.TreeMap&lt;org.drip.analytics.date.JulianDate,
+				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;();
+
+<span class="fc" id="L71">	private java.util.Map&lt;org.drip.analytics.date.JulianDate,</span>
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt; _mmFXFixing = new
 			java.util.TreeMap&lt;org.drip.analytics.date.JulianDate,
 				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;();
@@ -73,8 +78,8 @@ public class LatentStateFixingsContainer {
 	 */
 
 	public LatentStateFixingsContainer()
-<span class="fc" id="L76">	{</span>
-<span class="fc" id="L77">	}</span>
+<span class="fc" id="L81">	{</span>
+<span class="fc" id="L82">	}</span>
 
 	/**
 	 * Add the Fixing corresponding to the Date/Label Pair
@@ -91,35 +96,48 @@ public class LatentStateFixingsContainer {
 		final org.drip.state.identifier.LatentStateLabel lsl,
 		final double dblFixing)
 	{
-<span class="pc bpc" id="L94" title="2 of 6 branches missed.">		if (null == dt || null == lsl || !org.drip.quant.common.NumberUtil.IsValid (dblFixing)) return false;</span>
+<span class="pc bpc" id="L99" title="2 of 6 branches missed.">		if (null == dt || null == lsl || !org.drip.quant.common.NumberUtil.IsValid (dblFixing)) return false;</span>
 
-<span class="fc bfc" id="L96" title="All 2 branches covered.">		if (lsl instanceof org.drip.state.identifier.ForwardLabel) {</span>
-<span class="fc bfc" id="L97" title="All 2 branches covered.">			if (!_mmForwardFixing.containsKey (dt))</span>
-<span class="fc" id="L98">				_mmForwardFixing.put (dt, new</span>
+<span class="pc bpc" id="L101" title="1 of 2 branches missed.">		if (lsl instanceof org.drip.state.identifier.OTCFixFloatLabel) {</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">			if (!_mmOTCFixFloatFixing.containsKey (dt))</span>
+<span class="nc" id="L103">				_mmOTCFixFloatFixing.put (dt, new</span>
 					org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;());
 
-<span class="fc" id="L101">			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapForwardFixing =</span>
-<span class="fc" id="L102">				_mmForwardFixing.get (dt);</span>
+<span class="nc" id="L106">			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapOTCFixFloatFixing =</span>
+<span class="nc" id="L107">				_mmOTCFixFloatFixing.get (dt);</span>
 
-<span class="fc" id="L104">			mapForwardFixing.put (lsl.fullyQualifiedName(), dblFixing);</span>
+<span class="nc" id="L109">			mapOTCFixFloatFixing.put (lsl.fullyQualifiedName(), dblFixing);</span>
 
-<span class="fc" id="L106">			return true;</span>
+<span class="nc" id="L111">			return true;</span>
 		}
 
-<span class="pc bpc" id="L109" title="1 of 2 branches missed.">		if (lsl instanceof org.drip.state.identifier.FXLabel) {</span>
-<span class="pc bpc" id="L110" title="1 of 2 branches missed.">			if (!_mmFXFixing.containsKey (dt))</span>
-<span class="fc" id="L111">				_mmFXFixing.put (dt, new</span>
+<span class="fc bfc" id="L114" title="All 2 branches covered.">		if (lsl instanceof org.drip.state.identifier.ForwardLabel) {</span>
+<span class="fc bfc" id="L115" title="All 2 branches covered.">			if (!_mmForwardFixing.containsKey (dt))</span>
+<span class="fc" id="L116">				_mmForwardFixing.put (dt, new</span>
 					org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;());
 
-<span class="fc" id="L114">			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapFXFixing = _mmFXFixing.get</span>
-<span class="fc" id="L115">				(dt);</span>
+<span class="fc" id="L119">			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapForwardFixing =</span>
+<span class="fc" id="L120">				_mmForwardFixing.get (dt);</span>
 
-<span class="fc" id="L117">			mapFXFixing.put (lsl.fullyQualifiedName(), dblFixing);</span>
+<span class="fc" id="L122">			mapForwardFixing.put (lsl.fullyQualifiedName(), dblFixing);</span>
 
-<span class="fc" id="L119">			return true;</span>
+<span class="fc" id="L124">			return true;</span>
 		}
 
-<span class="nc" id="L122">		return false;</span>
+<span class="pc bpc" id="L127" title="1 of 2 branches missed.">		if (lsl instanceof org.drip.state.identifier.FXLabel) {</span>
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">			if (!_mmFXFixing.containsKey (dt))</span>
+<span class="fc" id="L129">				_mmFXFixing.put (dt, new</span>
+					org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;());
+
+<span class="fc" id="L132">			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapFXFixing = _mmFXFixing.get</span>
+<span class="fc" id="L133">				(dt);</span>
+
+<span class="fc" id="L135">			mapFXFixing.put (lsl.fullyQualifiedName(), dblFixing);</span>
+
+<span class="fc" id="L137">			return true;</span>
+		}
+
+<span class="nc" id="L140">		return false;</span>
 	}
 
 	/**
@@ -137,7 +155,7 @@ public class LatentStateFixingsContainer {
 		final org.drip.state.identifier.LatentStateLabel lsl,
 		final double dblFixing)
 	{
-<span class="fc" id="L140">		return add (new org.drip.analytics.date.JulianDate (iDate), lsl, dblFixing);</span>
+<span class="fc" id="L158">		return add (new org.drip.analytics.date.JulianDate (iDate), lsl, dblFixing);</span>
 	}
 
 	/**
@@ -153,25 +171,33 @@ public class LatentStateFixingsContainer {
 		final org.drip.analytics.date.JulianDate dt,
 		final org.drip.state.identifier.LatentStateLabel lsl)
 	{
-<span class="nc bnc" id="L156" title="All 4 branches missed.">		if (null == dt || null == lsl) return false;</span>
+<span class="nc bnc" id="L174" title="All 4 branches missed.">		if (null == dt || null == lsl) return false;</span>
 
-<span class="nc bnc" id="L158" title="All 2 branches missed.">		if (lsl instanceof org.drip.state.identifier.ForwardLabel) {</span>
-<span class="nc bnc" id="L159" title="All 2 branches missed.">			if (!_mmForwardFixing.containsKey (dt)) return true;</span>
+<span class="nc bnc" id="L176" title="All 2 branches missed.">		if (lsl instanceof org.drip.state.identifier.OTCFixFloatLabel) {</span>
+<span class="nc bnc" id="L177" title="All 2 branches missed.">			if (!_mmOTCFixFloatFixing.containsKey (dt)) return true;</span>
 
-<span class="nc" id="L161">			_mmForwardFixing.get (dt).remove (lsl.fullyQualifiedName());</span>
+<span class="nc" id="L179">			_mmOTCFixFloatFixing.get (dt).remove (lsl.fullyQualifiedName());</span>
 
-<span class="nc" id="L163">			return true;</span>
+<span class="nc" id="L181">			return true;</span>
 		}
 
-<span class="nc bnc" id="L166" title="All 2 branches missed.">		if (lsl instanceof org.drip.state.identifier.FXLabel) {</span>
-<span class="nc bnc" id="L167" title="All 2 branches missed.">			if (!_mmFXFixing.containsKey (dt)) return true;</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">		if (lsl instanceof org.drip.state.identifier.ForwardLabel) {</span>
+<span class="nc bnc" id="L185" title="All 2 branches missed.">			if (!_mmForwardFixing.containsKey (dt)) return true;</span>
 
-<span class="nc" id="L169">			_mmFXFixing.get (dt).remove (lsl.fullyQualifiedName());</span>
+<span class="nc" id="L187">			_mmForwardFixing.get (dt).remove (lsl.fullyQualifiedName());</span>
 
-<span class="nc" id="L171">			return true;</span>
+<span class="nc" id="L189">			return true;</span>
 		}
 
-<span class="nc" id="L174">		return false;</span>
+<span class="nc bnc" id="L192" title="All 2 branches missed.">		if (lsl instanceof org.drip.state.identifier.FXLabel) {</span>
+<span class="nc bnc" id="L193" title="All 2 branches missed.">			if (!_mmFXFixing.containsKey (dt)) return true;</span>
+
+<span class="nc" id="L195">			_mmFXFixing.get (dt).remove (lsl.fullyQualifiedName());</span>
+
+<span class="nc" id="L197">			return true;</span>
+		}
+
+<span class="nc" id="L200">		return false;</span>
 	}
 
 	/**
@@ -187,7 +213,7 @@ public class LatentStateFixingsContainer {
 		final int iDate,
 		final org.drip.state.identifier.LatentStateLabel lsl)
 	{
-<span class="nc" id="L190">		return remove (new org.drip.analytics.date.JulianDate (iDate), lsl);</span>
+<span class="nc" id="L216">		return remove (new org.drip.analytics.date.JulianDate (iDate), lsl);</span>
 	}
 
 	/**
@@ -206,45 +232,62 @@ public class LatentStateFixingsContainer {
 		final org.drip.state.identifier.LatentStateLabel lsl)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L209" title="2 of 4 branches missed.">		if (null == dt || null == lsl)</span>
-<span class="nc" id="L210">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L235" title="2 of 4 branches missed.">		if (null == dt || null == lsl)</span>
+<span class="nc" id="L236">			throw new java.lang.Exception</span>
 				(&quot;LatentStateFixingsContainer::fixing =&gt; Cannot locate Latent State Fixing for the Date&quot;);
 
-<span class="fc bfc" id="L213" title="All 2 branches covered.">		if (lsl instanceof org.drip.state.identifier.ForwardLabel) {</span>
-<span class="pc bpc" id="L214" title="1 of 2 branches missed.">			if (!_mmForwardFixing.containsKey (dt))</span>
-<span class="nc" id="L215">				throw new java.lang.Exception</span>
+<span class="pc bpc" id="L239" title="1 of 2 branches missed.">		if (lsl instanceof org.drip.state.identifier.OTCFixFloatLabel) {</span>
+<span class="nc bnc" id="L240" title="All 2 branches missed.">			if (!_mmOTCFixFloatFixing.containsKey (dt))</span>
+<span class="nc" id="L241">				throw new java.lang.Exception</span>
+					(&quot;LatentStateFixingsContainer::fixing =&gt; Cannot locate OTC Fix/Float Fixing for the Date&quot;);
+
+<span class="nc" id="L244">			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapOTCFixFloatFixing =</span>
+<span class="nc" id="L245">				_mmOTCFixFloatFixing.get (dt);</span>
+
+<span class="nc" id="L247">			java.lang.String strLabel = lsl.fullyQualifiedName();</span>
+
+<span class="nc bnc" id="L249" title="All 2 branches missed.">			if (!mapOTCFixFloatFixing.containsKey (strLabel))</span>
+<span class="nc" id="L250">				throw new java.lang.Exception</span>
+					(&quot;LatentStateFixingsContainer::fixing =&gt; Cannot locate the OTC Fix/Float Label Entry for the Date!&quot;);
+
+<span class="nc" id="L253">			return mapOTCFixFloatFixing.get (strLabel);</span>
+		}
+
+<span class="fc bfc" id="L256" title="All 2 branches covered.">		if (lsl instanceof org.drip.state.identifier.ForwardLabel) {</span>
+<span class="pc bpc" id="L257" title="1 of 2 branches missed.">			if (!_mmForwardFixing.containsKey (dt))</span>
+<span class="nc" id="L258">				throw new java.lang.Exception</span>
 					(&quot;LatentStateFixingsContainer::fixing =&gt; Cannot locate Forward Fixing for the Date&quot;);
 
-<span class="fc" id="L218">			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapForwardFixing =</span>
-<span class="fc" id="L219">				_mmForwardFixing.get (dt);</span>
+<span class="fc" id="L261">			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapForwardFixing =</span>
+<span class="fc" id="L262">				_mmForwardFixing.get (dt);</span>
 
-<span class="fc" id="L221">			java.lang.String strLabel = lsl.fullyQualifiedName();</span>
+<span class="fc" id="L264">			java.lang.String strLabel = lsl.fullyQualifiedName();</span>
 
-<span class="pc bpc" id="L223" title="1 of 2 branches missed.">			if (!mapForwardFixing.containsKey (strLabel))</span>
-<span class="nc" id="L224">				throw new java.lang.Exception</span>
+<span class="pc bpc" id="L266" title="1 of 2 branches missed.">			if (!mapForwardFixing.containsKey (strLabel))</span>
+<span class="nc" id="L267">				throw new java.lang.Exception</span>
 					(&quot;LatentStateFixingsContainer::fixing =&gt; Cannot locate the Forward Label Entry for the Date!&quot;);
 
-<span class="fc" id="L227">			return mapForwardFixing.get (strLabel);</span>
+<span class="fc" id="L270">			return mapForwardFixing.get (strLabel);</span>
 		}
 
-<span class="pc bpc" id="L230" title="1 of 2 branches missed.">		if (lsl instanceof org.drip.state.identifier.FXLabel) {</span>
-<span class="pc bpc" id="L231" title="1 of 2 branches missed.">			if (!_mmFXFixing.containsKey (dt))</span>
-<span class="nc" id="L232">				throw new java.lang.Exception</span>
+<span class="pc bpc" id="L273" title="1 of 2 branches missed.">		if (lsl instanceof org.drip.state.identifier.FXLabel) {</span>
+<span class="pc bpc" id="L274" title="1 of 2 branches missed.">			if (!_mmFXFixing.containsKey (dt))</span>
+<span class="nc" id="L275">				throw new java.lang.Exception</span>
 					(&quot;LatentStateFixingsContainer::fixing =&gt; Cannot locate FX Fixing for the Date&quot;);
 
-<span class="fc" id="L235">			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapFXFixing = _mmFXFixing.get</span>
-<span class="fc" id="L236">				(dt);</span>
+<span class="fc" id="L278">			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapFXFixing = _mmFXFixing.get</span>
+<span class="fc" id="L279">				(dt);</span>
 
-<span class="fc" id="L238">			java.lang.String strLabel = lsl.fullyQualifiedName();</span>
+<span class="fc" id="L281">			java.lang.String strLabel = lsl.fullyQualifiedName();</span>
 
-<span class="pc bpc" id="L240" title="1 of 2 branches missed.">			if (!mapFXFixing.containsKey (strLabel))</span>
-<span class="nc" id="L241">				throw new java.lang.Exception</span>
+<span class="pc bpc" id="L283" title="1 of 2 branches missed.">			if (!mapFXFixing.containsKey (strLabel))</span>
+<span class="nc" id="L284">				throw new java.lang.Exception</span>
 					(&quot;LatentStateFixingsContainer::fixing =&gt; Cannot locate the FX Label Entry for the Date!&quot;);
 
-<span class="fc" id="L244">			return mapFXFixing.get (strLabel);</span>
+<span class="fc" id="L287">			return mapFXFixing.get (strLabel);</span>
 		}
 
-<span class="nc" id="L247">		throw new java.lang.Exception</span>
+<span class="nc" id="L290">		throw new java.lang.Exception</span>
 			(&quot;LatentStateFixingsContainer::fixing =&gt; No Fixings available for the Latent State&quot;);
 	}
 
@@ -264,7 +307,7 @@ public class LatentStateFixingsContainer {
 		final org.drip.state.identifier.LatentStateLabel lsl)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L267">		return fixing (new org.drip.analytics.date.JulianDate (iDate), lsl);</span>
+<span class="fc" id="L310">		return fixing (new org.drip.analytics.date.JulianDate (iDate), lsl);</span>
 	}
 
 	/**
@@ -280,21 +323,27 @@ public class LatentStateFixingsContainer {
 		final org.drip.analytics.date.JulianDate dt,
 		final org.drip.state.identifier.LatentStateLabel lsl)
 	{
-<span class="pc bpc" id="L283" title="2 of 4 branches missed.">		if (null == dt || null == lsl) return false;</span>
+<span class="pc bpc" id="L326" title="2 of 4 branches missed.">		if (null == dt || null == lsl) return false;</span>
 
-<span class="pc bpc" id="L285" title="1 of 2 branches missed.">		if (lsl instanceof org.drip.state.identifier.ForwardLabel) {</span>
-<span class="fc bfc" id="L286" title="All 2 branches covered.">			if (!_mmForwardFixing.containsKey (dt)) return false;</span>
+<span class="pc bpc" id="L328" title="1 of 2 branches missed.">		if (lsl instanceof org.drip.state.identifier.OTCFixFloatLabel) {</span>
+<span class="nc bnc" id="L329" title="All 2 branches missed.">			if (!_mmOTCFixFloatFixing.containsKey (dt)) return false;</span>
 
-<span class="fc" id="L288">			return _mmForwardFixing.get (dt).containsKey (lsl.fullyQualifiedName());</span>
+<span class="nc" id="L331">			return _mmOTCFixFloatFixing.get (dt).containsKey (lsl.fullyQualifiedName());</span>
 		}
 
-<span class="nc bnc" id="L291" title="All 2 branches missed.">		if (lsl instanceof org.drip.state.identifier.FXLabel) {</span>
-<span class="nc bnc" id="L292" title="All 2 branches missed.">			if (!_mmFXFixing.containsKey (dt)) return false;</span>
+<span class="pc bpc" id="L334" title="1 of 2 branches missed.">		if (lsl instanceof org.drip.state.identifier.ForwardLabel) {</span>
+<span class="fc bfc" id="L335" title="All 2 branches covered.">			if (!_mmForwardFixing.containsKey (dt)) return false;</span>
 
-<span class="nc" id="L294">			return _mmFXFixing.get (dt).containsKey (lsl.fullyQualifiedName());</span>
+<span class="fc" id="L337">			return _mmForwardFixing.get (dt).containsKey (lsl.fullyQualifiedName());</span>
 		}
 
-<span class="nc" id="L297">		return false;</span>
+<span class="nc bnc" id="L340" title="All 2 branches missed.">		if (lsl instanceof org.drip.state.identifier.FXLabel) {</span>
+<span class="nc bnc" id="L341" title="All 2 branches missed.">			if (!_mmFXFixing.containsKey (dt)) return false;</span>
+
+<span class="nc" id="L343">			return _mmFXFixing.get (dt).containsKey (lsl.fullyQualifiedName());</span>
+		}
+
+<span class="nc" id="L346">		return false;</span>
 	}
 
 	/**
@@ -310,7 +359,7 @@ public class LatentStateFixingsContainer {
 		final int iDate,
 		final org.drip.state.identifier.LatentStateLabel lsl)
 	{
-<span class="fc" id="L313">		return available (new org.drip.analytics.date.JulianDate (iDate), lsl);</span>
+<span class="fc" id="L362">		return available (new org.drip.analytics.date.JulianDate (iDate), lsl);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

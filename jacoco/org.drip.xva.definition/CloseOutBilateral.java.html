@@ -68,8 +68,8 @@ package org.drip.xva.definition;
  */
 
 public class CloseOutBilateral extends org.drip.xva.definition.CloseOutGeneral {
-<span class="nc" id="L71">	private double _dblCounterPartyRecovery = java.lang.Double.NaN;;</span>
-<span class="nc" id="L72">	private double _dblBankSeniorFundingRecovery = java.lang.Double.NaN;</span>
+<span class="fc" id="L71">	private double _dblCounterPartyRecovery = java.lang.Double.NaN;;</span>
+<span class="fc" id="L72">	private double _dblBankSeniorFundingRecovery = java.lang.Double.NaN;</span>
 
 	/**
 	 * CloseOutBilateral Constructor
@@ -84,12 +84,12 @@ public class CloseOutBilateral extends org.drip.xva.definition.CloseOutGeneral {
 		final double dblBankSeniorFundingRecovery,
 		final double dblCounterPartyRecovery)
 		throws java.lang.Exception
-<span class="nc" id="L87">	{</span>
-<span class="nc bnc" id="L88" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblBankSeniorFundingRecovery =</span>
+<span class="fc" id="L87">	{</span>
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblBankSeniorFundingRecovery =</span>
 			dblBankSeniorFundingRecovery) || !org.drip.quant.common.NumberUtil.IsValid
-<span class="nc bnc" id="L90" title="All 2 branches missed.">				(_dblCounterPartyRecovery = dblCounterPartyRecovery))</span>
+<span class="pc bpc" id="L90" title="1 of 2 branches missed.">				(_dblCounterPartyRecovery = dblCounterPartyRecovery))</span>
 <span class="nc" id="L91">			throw new java.lang.Exception (&quot;CloseOutBilateral Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L92">	}</span>
+<span class="fc" id="L92">	}</span>
 
 	/**
 	 * Retrieve the Bank Senior Funding Recovery Rate
@@ -118,13 +118,13 @@ public class CloseOutBilateral extends org.drip.xva.definition.CloseOutGeneral {
 		final double dblCollateralAmount)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L121" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblUncollateralizedExposure) ||</span>
-<span class="nc bnc" id="L122" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblCollateralAmount))</span>
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblUncollateralizedExposure) ||</span>
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblCollateralAmount))</span>
 <span class="nc" id="L123">			throw new java.lang.Exception (&quot;CloseOutBilateral::bankDefault =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L125">		double dblCollateralizedExposure = dblUncollateralizedExposure - dblCollateralAmount;</span>
+<span class="fc" id="L125">		double dblCollateralizedExposure = dblUncollateralizedExposure - dblCollateralAmount;</span>
 
-<span class="nc bnc" id="L127" title="All 4 branches missed.">		return (dblCollateralizedExposure &gt; 0. ? dblCollateralizedExposure : 0.) +</span>
+<span class="pc bpc" id="L127" title="1 of 4 branches missed.">		return (dblCollateralizedExposure &gt; 0. ? dblCollateralizedExposure : 0.) +</span>
 			_dblBankSeniorFundingRecovery * (dblCollateralizedExposure &lt; 0. ? dblCollateralizedExposure : 0.)
 				+ dblCollateralAmount;
 	}
@@ -134,14 +134,14 @@ public class CloseOutBilateral extends org.drip.xva.definition.CloseOutGeneral {
 		final double dblCollateralAmount)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L137" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblUncollateralizedExposure) ||</span>
-<span class="nc bnc" id="L138" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblCollateralAmount))</span>
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblUncollateralizedExposure) ||</span>
+<span class="pc bpc" id="L138" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblCollateralAmount))</span>
 <span class="nc" id="L139">			throw new java.lang.Exception (&quot;CloseOutBilateral::counterPartyDefault =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L141">		double dblCounterPartyGroupCollateralizedExposure = dblUncollateralizedExposure -</span>
+<span class="fc" id="L141">		double dblCounterPartyGroupCollateralizedExposure = dblUncollateralizedExposure -</span>
 			dblCollateralAmount;
 
-<span class="nc bnc" id="L144" title="All 4 branches missed.">		return _dblCounterPartyRecovery * (dblCounterPartyGroupCollateralizedExposure &gt; 0. ?</span>
+<span class="pc bpc" id="L144" title="1 of 4 branches missed.">		return _dblCounterPartyRecovery * (dblCounterPartyGroupCollateralizedExposure &gt; 0. ?</span>
 			dblCounterPartyGroupCollateralizedExposure : 0.) + (dblCounterPartyGroupCollateralizedExposure &lt;
 				0. ? dblCounterPartyGroupCollateralizedExposure : 0.) + dblCollateralAmount;
 	}

@@ -94,17 +94,17 @@ public class OverlappingStretchSpan implements org.drip.spline.grid.Span {
 	@Override public org.drip.spline.stretch.MultiSegmentSequence getContainingStretch (
 		final double dblPredictorOrdinate)
 	{
-<span class="nc bnc" id="L97" title="All 4 branches missed.">		if (null == _lsMSS || 0 == _lsMSS.size()) return null;</span>
+<span class="pc bpc" id="L97" title="2 of 4 branches missed.">		if (null == _lsMSS || 0 == _lsMSS.size()) return null;</span>
 
-<span class="nc bnc" id="L99" title="All 2 branches missed.">		for (org.drip.spline.stretch.MultiSegmentSequence mss : _lsMSS) {</span>
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">		for (org.drip.spline.stretch.MultiSegmentSequence mss : _lsMSS) {</span>
 			try {
-<span class="nc bnc" id="L101" title="All 2 branches missed.">				if (mss.in (dblPredictorOrdinate)) return mss;</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">				if (mss.in (dblPredictorOrdinate)) return mss;</span>
 <span class="nc" id="L102">			} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L103">				e.printStackTrace();</span>
 
 <span class="nc" id="L105">				return null;</span>
-<span class="nc" id="L106">			}</span>
-<span class="nc" id="L107">		}</span>
+<span class="fc" id="L106">			}</span>
+<span class="fc" id="L107">		}</span>
 
 <span class="nc" id="L109">		return null;</span>
 	}
@@ -112,11 +112,11 @@ public class OverlappingStretchSpan implements org.drip.spline.grid.Span {
 	@Override public org.drip.spline.stretch.MultiSegmentSequence getStretch (
 		final java.lang.String strName)
 	{
-<span class="nc bnc" id="L115" title="All 2 branches missed.">		if (null == strName) return null;</span>
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">		if (null == strName) return null;</span>
 
-<span class="nc bnc" id="L117" title="All 2 branches missed.">		for (org.drip.spline.stretch.MultiSegmentSequence mss : _lsMSS) {</span>
-<span class="nc bnc" id="L118" title="All 2 branches missed.">			if (strName.equalsIgnoreCase (mss.name())) return mss;</span>
-<span class="nc" id="L119">		}</span>
+<span class="pc bpc" id="L117" title="1 of 2 branches missed.">		for (org.drip.spline.stretch.MultiSegmentSequence mss : _lsMSS) {</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">			if (strName.equalsIgnoreCase (mss.name())) return mss;</span>
+<span class="fc" id="L119">		}</span>
 
 <span class="nc" id="L121">		return null;</span>
 	}
@@ -169,13 +169,13 @@ public class OverlappingStretchSpan implements org.drip.spline.grid.Span {
 		final org.drip.state.identifier.LatentStateLabel lsl)
 	{
 		try {
-<span class="pc bpc" id="L172" title="1 of 2 branches missed.">			for (org.drip.spline.stretch.MultiSegmentSequence mss : _lsMSS) {</span>
-<span class="fc bfc" id="L173" title="All 2 branches covered.">				if (mss.in (dblPredictorOrdinate)) {</span>
-<span class="fc" id="L174">					org.drip.state.representation.MergeSubStretchManager msm = mss.msm();</span>
+<span class="nc bnc" id="L172" title="All 2 branches missed.">			for (org.drip.spline.stretch.MultiSegmentSequence mss : _lsMSS) {</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">				if (mss.in (dblPredictorOrdinate)) {</span>
+<span class="nc" id="L174">					org.drip.state.representation.MergeSubStretchManager msm = mss.msm();</span>
 
-<span class="pc bpc" id="L176" title="1 of 2 branches missed.">					return null == msm ? false : msm.partOfMergeState (dblPredictorOrdinate, lsl);</span>
+<span class="nc bnc" id="L176" title="All 2 branches missed.">					return null == msm ? false : msm.partOfMergeState (dblPredictorOrdinate, lsl);</span>
 				}
-<span class="fc" id="L178">			}</span>
+<span class="nc" id="L178">			}</span>
 <span class="nc" id="L179">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L180">			e.printStackTrace();</span>
 <span class="nc" id="L181">		}</span>

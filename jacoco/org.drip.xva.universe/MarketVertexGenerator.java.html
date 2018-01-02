@@ -136,16 +136,16 @@ public class MarketVertexGenerator {
 
 	public static final int COUNTER_PARTY_RECOVERY_RATE = 10;
 
-<span class="nc" id="L139">	private int _iSpotDate = -1;</span>
-<span class="nc" id="L140">	private int[] _aiEventDate = null;</span>
-<span class="nc" id="L141">	private double[] _adblTimeWidth = null;</span>
-<span class="nc" id="L142">	private double[][] _aadblCorrelationMatrix = null;</span>
-<span class="nc" id="L143">	private org.drip.xva.universe.TradeablesContainer _tc = null;</span>
-<span class="nc" id="L144">	private org.drip.measure.process.DiffusionEvolver _deBankHazardRate = null;</span>
-<span class="nc" id="L145">	private org.drip.measure.process.DiffusionEvolver _deBankSeniorRecoveryRate = null;</span>
-<span class="nc" id="L146">	private org.drip.measure.process.DiffusionEvolver _deBankSubordinateRecoveryRate = null;</span>
-<span class="nc" id="L147">	private org.drip.measure.process.DiffusionEvolver _deCounterPartyHazardRate = null;</span>
-<span class="nc" id="L148">	private org.drip.measure.process.DiffusionEvolver _deCounterPartyRecoveryRate = null;</span>
+<span class="fc" id="L139">	private int _iSpotDate = -1;</span>
+<span class="fc" id="L140">	private int[] _aiEventDate = null;</span>
+<span class="fc" id="L141">	private double[] _adblTimeWidth = null;</span>
+<span class="fc" id="L142">	private double[][] _aadblCorrelationMatrix = null;</span>
+<span class="fc" id="L143">	private org.drip.xva.universe.TradeablesContainer _tc = null;</span>
+<span class="fc" id="L144">	private org.drip.measure.process.DiffusionEvolver _deBankHazardRate = null;</span>
+<span class="fc" id="L145">	private org.drip.measure.process.DiffusionEvolver _deBankSeniorRecoveryRate = null;</span>
+<span class="fc" id="L146">	private org.drip.measure.process.DiffusionEvolver _deBankSubordinateRecoveryRate = null;</span>
+<span class="fc" id="L147">	private org.drip.measure.process.DiffusionEvolver _deCounterPartyHazardRate = null;</span>
+<span class="fc" id="L148">	private org.drip.measure.process.DiffusionEvolver _deCounterPartyRecoveryRate = null;</span>
 
 	/**
 	 * MarketVertexGenerator Constructor
@@ -174,8 +174,8 @@ public class MarketVertexGenerator {
 		final org.drip.measure.process.DiffusionEvolver deCounterPartyHazardRate,
 		final org.drip.measure.process.DiffusionEvolver deCounterPartyRecoveryRate)
 		throws java.lang.Exception
-<span class="nc" id="L177">	{</span>
-<span class="nc bnc" id="L178" title="All 16 branches missed.">		if (0 &gt;= (_iSpotDate = iSpotDate) ||</span>
+<span class="fc" id="L177">	{</span>
+<span class="pc bpc" id="L178" title="8 of 16 branches missed.">		if (0 &gt;= (_iSpotDate = iSpotDate) ||</span>
 			null == (_aiEventDate = aiEventDate) ||
 			null == (_aadblCorrelationMatrix = aadblCorrelationMatrix) ||
 			null == (_tc = tc) ||
@@ -185,28 +185,28 @@ public class MarketVertexGenerator {
 			null == (_deCounterPartyRecoveryRate = deCounterPartyRecoveryRate))
 <span class="nc" id="L186">			throw new java.lang.Exception (&quot;MarketVertexGenerator Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L188">		int iNumEventVertex = _aiEventDate.length;</span>
-<span class="nc" id="L189">		int iNumDimension = _aadblCorrelationMatrix.length;</span>
-<span class="nc" id="L190">		_deBankSubordinateRecoveryRate = deBankSubordinateRecoveryRate;</span>
-<span class="nc bnc" id="L191" title="All 2 branches missed.">		_adblTimeWidth = 0 == iNumEventVertex ? null : new double[iNumEventVertex];</span>
+<span class="fc" id="L188">		int iNumEventVertex = _aiEventDate.length;</span>
+<span class="fc" id="L189">		int iNumDimension = _aadblCorrelationMatrix.length;</span>
+<span class="fc" id="L190">		_deBankSubordinateRecoveryRate = deBankSubordinateRecoveryRate;</span>
+<span class="pc bpc" id="L191" title="1 of 2 branches missed.">		_adblTimeWidth = 0 == iNumEventVertex ? null : new double[iNumEventVertex];</span>
 
-<span class="nc bnc" id="L193" title="All 6 branches missed.">		if (0 == iNumEventVertex || 11 != iNumDimension || 0. &gt;= (_adblTimeWidth[0] = ((double)</span>
+<span class="pc bpc" id="L193" title="3 of 6 branches missed.">		if (0 == iNumEventVertex || 11 != iNumDimension || 0. &gt;= (_adblTimeWidth[0] = ((double)</span>
 			(_aiEventDate[0] - _iSpotDate)) / 365.25))
 <span class="nc" id="L195">			throw new java.lang.Exception (&quot;MarketVertexGenerator Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L197" title="All 2 branches missed.">		for (int iEventVertex = 1; iEventVertex &lt; iNumEventVertex; ++iEventVertex) {</span>
-<span class="nc bnc" id="L198" title="All 2 branches missed.">			if (0. &gt;= (_adblTimeWidth[iEventVertex] = ((double) (_aiEventDate[iEventVertex] -</span>
+<span class="fc bfc" id="L197" title="All 2 branches covered.">		for (int iEventVertex = 1; iEventVertex &lt; iNumEventVertex; ++iEventVertex) {</span>
+<span class="pc bpc" id="L198" title="1 of 2 branches missed.">			if (0. &gt;= (_adblTimeWidth[iEventVertex] = ((double) (_aiEventDate[iEventVertex] -</span>
 				_aiEventDate[iEventVertex - 1])) / 365.25))
 <span class="nc" id="L200">				throw new java.lang.Exception (&quot;MarketVertexGenerator Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc bnc" id="L203" title="All 2 branches missed.">		for (int iDimension = 0; iDimension &lt; iNumDimension; ++iDimension) {</span>
-<span class="nc bnc" id="L204" title="All 4 branches missed.">			if (null == _aadblCorrelationMatrix[iDimension] || 11 !=</span>
+<span class="fc bfc" id="L203" title="All 2 branches covered.">		for (int iDimension = 0; iDimension &lt; iNumDimension; ++iDimension) {</span>
+<span class="pc bpc" id="L204" title="2 of 4 branches missed.">			if (null == _aadblCorrelationMatrix[iDimension] || 11 !=</span>
 				_aadblCorrelationMatrix[iDimension].length || !org.drip.quant.common.NumberUtil.IsValid
-<span class="nc bnc" id="L206" title="All 2 branches missed.">					(_aadblCorrelationMatrix[iDimension]))</span>
+<span class="pc bpc" id="L206" title="1 of 2 branches missed.">					(_aadblCorrelationMatrix[iDimension]))</span>
 <span class="nc" id="L207">				throw new java.lang.Exception (&quot;MarketVertexGenerator Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L209">	}</span>
+<span class="fc" id="L209">	}</span>
 
 	/**
 	 * Retrieve the Spot Date
@@ -318,184 +318,184 @@ public class MarketVertexGenerator {
 	public org.drip.xva.universe.MarketVertex[] marketVertex (
 		final org.drip.xva.universe.MarketVertex mvInitial)
 	{
-<span class="nc bnc" id="L321" title="All 2 branches missed.">		if (null == mvInitial) return null;</span>
+<span class="pc bpc" id="L321" title="1 of 2 branches missed.">		if (null == mvInitial) return null;</span>
 
-<span class="nc" id="L323">		org.drip.xva.universe.Tradeable tAsset = _tc.asset();</span>
+<span class="fc" id="L323">		org.drip.xva.universe.Tradeable tAsset = _tc.asset();</span>
 
-<span class="nc" id="L325">		org.drip.xva.universe.Tradeable tBankSubordinateFunding = _tc.bankSubordinateFunding();</span>
+<span class="fc" id="L325">		org.drip.xva.universe.Tradeable tBankSubordinateFunding = _tc.bankSubordinateFunding();</span>
 
-<span class="nc" id="L327">		int iNumEventVertex = _aiEventDate.length;</span>
-<span class="nc bnc" id="L328" title="All 2 branches missed.">		boolean bAssetEvolutionOn = null != tAsset;</span>
-<span class="nc" id="L329">		double dblBankSurvivalProbabilityExponent = 0.;</span>
-<span class="nc" id="L330">		double dblCounterPartySurvivalProbabilityExponent = 0.;</span>
-<span class="nc" id="L331">		org.drip.measure.realization.JumpDiffusionVertex[] aJDVAssetNumeraire = null;</span>
-<span class="nc" id="L332">		org.drip.measure.realization.JumpDiffusionVertex[] aJDVBankHazardRate = null;</span>
-<span class="nc" id="L333">		org.drip.measure.realization.JumpDiffusionVertex[] aJDVBankSeniorRecoveryRate = null;</span>
-<span class="nc" id="L334">		org.drip.measure.realization.JumpDiffusionVertex[] aJDVCounterPartyHazardRate = null;</span>
-<span class="nc" id="L335">		org.drip.measure.realization.JumpDiffusionVertex[] aJDVOvernightIndexNumeraire = null;</span>
-<span class="nc" id="L336">		org.drip.measure.realization.JumpDiffusionVertex[] aJDVCounterPartyRecoveryRate = null;</span>
-<span class="nc" id="L337">		org.drip.measure.realization.JumpDiffusionVertex[] aJDVCollateralSchemeNumeraire = null;</span>
-<span class="nc" id="L338">		org.drip.measure.realization.JumpDiffusionVertex[] aJDVBankSeniorFundingNumeraire = null;</span>
-<span class="nc" id="L339">		org.drip.measure.realization.JumpDiffusionVertex[] aJDVBankSubordinateRecoveryRate = null;</span>
-<span class="nc" id="L340">		org.drip.measure.realization.JumpDiffusionVertex[] aJDVCounterPartyFundingNumeraire = null;</span>
-<span class="nc" id="L341">		org.drip.measure.realization.JumpDiffusionVertex[] aJDVBankSubordinateFundingNumeraire = null;</span>
-<span class="nc" id="L342">		org.drip.xva.universe.MarketVertex[] aMV = new</span>
+<span class="fc" id="L327">		int iNumEventVertex = _aiEventDate.length;</span>
+<span class="pc bpc" id="L328" title="1 of 2 branches missed.">		boolean bAssetEvolutionOn = null != tAsset;</span>
+<span class="fc" id="L329">		double dblBankSurvivalProbabilityExponent = 0.;</span>
+<span class="fc" id="L330">		double dblCounterPartySurvivalProbabilityExponent = 0.;</span>
+<span class="fc" id="L331">		org.drip.measure.realization.JumpDiffusionVertex[] aJDVAssetNumeraire = null;</span>
+<span class="fc" id="L332">		org.drip.measure.realization.JumpDiffusionVertex[] aJDVBankHazardRate = null;</span>
+<span class="fc" id="L333">		org.drip.measure.realization.JumpDiffusionVertex[] aJDVBankSeniorRecoveryRate = null;</span>
+<span class="fc" id="L334">		org.drip.measure.realization.JumpDiffusionVertex[] aJDVCounterPartyHazardRate = null;</span>
+<span class="fc" id="L335">		org.drip.measure.realization.JumpDiffusionVertex[] aJDVOvernightIndexNumeraire = null;</span>
+<span class="fc" id="L336">		org.drip.measure.realization.JumpDiffusionVertex[] aJDVCounterPartyRecoveryRate = null;</span>
+<span class="fc" id="L337">		org.drip.measure.realization.JumpDiffusionVertex[] aJDVCollateralSchemeNumeraire = null;</span>
+<span class="fc" id="L338">		org.drip.measure.realization.JumpDiffusionVertex[] aJDVBankSeniorFundingNumeraire = null;</span>
+<span class="fc" id="L339">		org.drip.measure.realization.JumpDiffusionVertex[] aJDVBankSubordinateRecoveryRate = null;</span>
+<span class="fc" id="L340">		org.drip.measure.realization.JumpDiffusionVertex[] aJDVCounterPartyFundingNumeraire = null;</span>
+<span class="fc" id="L341">		org.drip.measure.realization.JumpDiffusionVertex[] aJDVBankSubordinateFundingNumeraire = null;</span>
+<span class="fc" id="L342">		org.drip.xva.universe.MarketVertex[] aMV = new</span>
 			org.drip.xva.universe.MarketVertex[iNumEventVertex + 1];
-<span class="nc" id="L344">		int iTerminalDate = _aiEventDate[iNumEventVertex - 1];</span>
+<span class="fc" id="L344">		int iTerminalDate = _aiEventDate[iNumEventVertex - 1];</span>
 
-<span class="nc" id="L346">		double[][] aadblUnitEvolverSequence = org.drip.quant.linearalgebra.Matrix.Transpose</span>
-<span class="nc" id="L347">			(org.drip.measure.discrete.SequenceGenerator.GaussianJoint (iNumEventVertex,</span>
+<span class="fc" id="L346">		double[][] aadblUnitEvolverSequence = org.drip.quant.linearalgebra.Matrix.Transpose</span>
+<span class="fc" id="L347">			(org.drip.measure.discrete.SequenceGenerator.GaussianJoint (iNumEventVertex,</span>
 				_aadblCorrelationMatrix));
 
-<span class="nc bnc" id="L350" title="All 2 branches missed.">		if (null == aadblUnitEvolverSequence) return null;</span>
+<span class="pc bpc" id="L350" title="1 of 2 branches missed.">		if (null == aadblUnitEvolverSequence) return null;</span>
 
-<span class="nc" id="L352">		org.drip.xva.universe.EntityMarketVertex emvBankInitial = mvInitial.bank();</span>
+<span class="fc" id="L352">		org.drip.xva.universe.EntityMarketVertex emvBankInitial = mvInitial.bank();</span>
 
-<span class="nc" id="L354">		org.drip.xva.universe.EntityMarketVertex emvCounterPartyInitial = mvInitial.bank();</span>
+<span class="fc" id="L354">		org.drip.xva.universe.EntityMarketVertex emvCounterPartyInitial = mvInitial.bank();</span>
 
-<span class="nc" id="L356">		double dblBankSubordinateRecoveryRateStart = emvBankInitial.subordinateRecoveryRate();</span>
+<span class="fc" id="L356">		double dblBankSubordinateRecoveryRateStart = emvBankInitial.subordinateRecoveryRate();</span>
 
-<span class="nc" id="L358">		org.drip.xva.universe.NumeraireMarketVertex nmvSubordinateFunding =</span>
-<span class="nc" id="L359">			emvBankInitial.subordinateFundingNumeraire();</span>
+<span class="fc" id="L358">		org.drip.xva.universe.NumeraireMarketVertex nmvSubordinateFunding =</span>
+<span class="fc" id="L359">			emvBankInitial.subordinateFundingNumeraire();</span>
 
-<span class="nc bnc" id="L361" title="All 2 branches missed.">		double dblBankSubordinateFundingNumeraireTerminal = null == nmvSubordinateFunding ?</span>
-<span class="nc" id="L362">			java.lang.Double.NaN : nmvSubordinateFunding.forward();</span>
+<span class="pc bpc" id="L361" title="1 of 2 branches missed.">		double dblBankSubordinateFundingNumeraireTerminal = null == nmvSubordinateFunding ?</span>
+<span class="fc" id="L362">			java.lang.Double.NaN : nmvSubordinateFunding.forward();</span>
 
-<span class="nc bnc" id="L364" title="All 2 branches missed.">		boolean bSingleBankBond = null == tBankSubordinateFunding ||</span>
-<span class="nc bnc" id="L365" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblBankSubordinateFundingNumeraireTerminal) ||</span>
-<span class="nc bnc" id="L366" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (dblBankSubordinateRecoveryRateStart);</span>
+<span class="pc bpc" id="L364" title="1 of 2 branches missed.">		boolean bSingleBankBond = null == tBankSubordinateFunding ||</span>
+<span class="pc bpc" id="L365" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblBankSubordinateFundingNumeraireTerminal) ||</span>
+<span class="pc bpc" id="L366" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (dblBankSubordinateRecoveryRateStart);</span>
 
 		try {
-<span class="nc bnc" id="L369" title="All 2 branches missed.">			aJDVAssetNumeraire = !bAssetEvolutionOn ? null : tAsset.numeraireEvolver().vertexSequence (new</span>
-<span class="nc" id="L370">				org.drip.measure.realization.JumpDiffusionVertex (_iSpotDate, mvInitial.assetNumeraire(), 0.,</span>
-<span class="nc" id="L371">					false), org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (_adblTimeWidth,</span>
+<span class="pc bpc" id="L369" title="1 of 2 branches missed.">			aJDVAssetNumeraire = !bAssetEvolutionOn ? null : tAsset.numeraireEvolver().vertexSequence (new</span>
+<span class="fc" id="L370">				org.drip.measure.realization.JumpDiffusionVertex (_iSpotDate, mvInitial.assetNumeraire(), 0.,</span>
+<span class="fc" id="L371">					false), org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (_adblTimeWidth,</span>
 						aadblUnitEvolverSequence[ASSET]), _adblTimeWidth);
 
-<span class="nc" id="L374">			aJDVOvernightIndexNumeraire = _tc.overnightIndex().numeraireEvolver().vertexSequenceReverse (new</span>
+<span class="fc" id="L374">			aJDVOvernightIndexNumeraire = _tc.overnightIndex().numeraireEvolver().vertexSequenceReverse (new</span>
 				org.drip.measure.realization.JumpDiffusionVertex (iTerminalDate,
-<span class="nc" id="L376">					mvInitial.overnightIndexNumeraire().forward(), 0., false),</span>
-<span class="nc" id="L377">						org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (_adblTimeWidth,</span>
+<span class="fc" id="L376">					mvInitial.overnightIndexNumeraire().forward(), 0., false),</span>
+<span class="fc" id="L377">						org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (_adblTimeWidth,</span>
 							aadblUnitEvolverSequence[OVERNIGHT_INDEX]), _adblTimeWidth);
 
-<span class="nc" id="L380">			aJDVCollateralSchemeNumeraire = _tc.collateralScheme().numeraireEvolver().vertexSequenceReverse</span>
-<span class="nc" id="L381">				(new org.drip.measure.realization.JumpDiffusionVertex (iTerminalDate,</span>
-<span class="nc" id="L382">					mvInitial.collateralSchemeNumeraire().forward(), 0., false),</span>
-<span class="nc" id="L383">						org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (_adblTimeWidth,</span>
+<span class="fc" id="L380">			aJDVCollateralSchemeNumeraire = _tc.collateralScheme().numeraireEvolver().vertexSequenceReverse</span>
+<span class="fc" id="L381">				(new org.drip.measure.realization.JumpDiffusionVertex (iTerminalDate,</span>
+<span class="fc" id="L382">					mvInitial.collateralSchemeNumeraire().forward(), 0., false),</span>
+<span class="fc" id="L383">						org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (_adblTimeWidth,</span>
 							aadblUnitEvolverSequence[COLLATERAL_SCHEME]), _adblTimeWidth);
 
-<span class="nc" id="L386">			aJDVBankHazardRate = _deBankHazardRate.vertexSequence (new</span>
-<span class="nc" id="L387">				org.drip.measure.realization.JumpDiffusionVertex (_iSpotDate, emvBankInitial.hazardRate(),</span>
-<span class="nc" id="L388">					0., false), org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (_adblTimeWidth,</span>
+<span class="fc" id="L386">			aJDVBankHazardRate = _deBankHazardRate.vertexSequence (new</span>
+<span class="fc" id="L387">				org.drip.measure.realization.JumpDiffusionVertex (_iSpotDate, emvBankInitial.hazardRate(),</span>
+<span class="fc" id="L388">					0., false), org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (_adblTimeWidth,</span>
 						aadblUnitEvolverSequence[BANK_HAZARD_RATE]), _adblTimeWidth);
 
-<span class="nc" id="L391">			aJDVBankSeniorFundingNumeraire =</span>
-<span class="nc" id="L392">				_tc.bankSubordinateFunding().numeraireEvolver().vertexSequenceReverse (new</span>
+<span class="fc" id="L391">			aJDVBankSeniorFundingNumeraire =</span>
+<span class="fc" id="L392">				_tc.bankSubordinateFunding().numeraireEvolver().vertexSequenceReverse (new</span>
 					org.drip.measure.realization.JumpDiffusionVertex (iTerminalDate,
-<span class="nc" id="L394">						emvBankInitial.seniorFundingNumeraire().forward(), 0., false),</span>
-<span class="nc" id="L395">							org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (_adblTimeWidth,</span>
+<span class="fc" id="L394">						emvBankInitial.seniorFundingNumeraire().forward(), 0., false),</span>
+<span class="fc" id="L395">							org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (_adblTimeWidth,</span>
 								aadblUnitEvolverSequence[BANK_SENIOR_FUNDING]), _adblTimeWidth);
 
-<span class="nc" id="L398">			aJDVBankSeniorRecoveryRate = _deBankSeniorRecoveryRate.vertexSequence (new</span>
+<span class="fc" id="L398">			aJDVBankSeniorRecoveryRate = _deBankSeniorRecoveryRate.vertexSequence (new</span>
 				org.drip.measure.realization.JumpDiffusionVertex (_iSpotDate,
-<span class="nc" id="L400">					emvBankInitial.seniorRecoveryRate(), 0., false),</span>
-<span class="nc" id="L401">						org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (_adblTimeWidth,</span>
+<span class="fc" id="L400">					emvBankInitial.seniorRecoveryRate(), 0., false),</span>
+<span class="fc" id="L401">						org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (_adblTimeWidth,</span>
 							aadblUnitEvolverSequence[BANK_SENIOR_RECOVERY_RATE]), _adblTimeWidth);
 
-<span class="nc bnc" id="L404" title="All 2 branches missed.">			aJDVBankSubordinateFundingNumeraire = bSingleBankBond ? null :</span>
-<span class="nc" id="L405">				tBankSubordinateFunding.numeraireEvolver().vertexSequenceReverse (new</span>
+<span class="pc bpc" id="L404" title="1 of 2 branches missed.">			aJDVBankSubordinateFundingNumeraire = bSingleBankBond ? null :</span>
+<span class="fc" id="L405">				tBankSubordinateFunding.numeraireEvolver().vertexSequenceReverse (new</span>
 					org.drip.measure.realization.JumpDiffusionVertex (iTerminalDate,
 						dblBankSubordinateFundingNumeraireTerminal, 0., false),
-<span class="nc" id="L408">							org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (_adblTimeWidth,</span>
+<span class="fc" id="L408">							org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (_adblTimeWidth,</span>
 								aadblUnitEvolverSequence[BANK_SUBORDINATE_FUNDING]), _adblTimeWidth);
 
-<span class="nc bnc" id="L411" title="All 2 branches missed.">			aJDVBankSubordinateRecoveryRate = bSingleBankBond ? null :</span>
-<span class="nc" id="L412">				_deBankSubordinateRecoveryRate.vertexSequence (new</span>
+<span class="pc bpc" id="L411" title="1 of 2 branches missed.">			aJDVBankSubordinateRecoveryRate = bSingleBankBond ? null :</span>
+<span class="fc" id="L412">				_deBankSubordinateRecoveryRate.vertexSequence (new</span>
 					org.drip.measure.realization.JumpDiffusionVertex (_iSpotDate,
 						dblBankSubordinateRecoveryRateStart, 0., false),
-<span class="nc" id="L415">							org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (_adblTimeWidth,</span>
+<span class="fc" id="L415">							org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (_adblTimeWidth,</span>
 								aadblUnitEvolverSequence[BANK_SUBORDINATE_RECOVERY_RATE]), _adblTimeWidth);
 
-<span class="nc" id="L418">			aJDVCounterPartyHazardRate = _deCounterPartyHazardRate.vertexSequence (new</span>
+<span class="fc" id="L418">			aJDVCounterPartyHazardRate = _deCounterPartyHazardRate.vertexSequence (new</span>
 				org.drip.measure.realization.JumpDiffusionVertex (_iSpotDate,
-<span class="nc" id="L420">					emvCounterPartyInitial.hazardRate(), 0., false),</span>
-<span class="nc" id="L421">						org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (_adblTimeWidth,</span>
+<span class="fc" id="L420">					emvCounterPartyInitial.hazardRate(), 0., false),</span>
+<span class="fc" id="L421">						org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (_adblTimeWidth,</span>
 							aadblUnitEvolverSequence[COUNTER_PARTY_HAZARD_RATE]), _adblTimeWidth);
 
-<span class="nc" id="L424">			aJDVCounterPartyFundingNumeraire =</span>
-<span class="nc" id="L425">				_tc.counterPartyFunding().numeraireEvolver().vertexSequenceReverse (new</span>
+<span class="fc" id="L424">			aJDVCounterPartyFundingNumeraire =</span>
+<span class="fc" id="L425">				_tc.counterPartyFunding().numeraireEvolver().vertexSequenceReverse (new</span>
 					org.drip.measure.realization.JumpDiffusionVertex (iTerminalDate,
-<span class="nc" id="L427">						emvCounterPartyInitial.seniorFundingNumeraire().forward(), 0., false),</span>
-<span class="nc" id="L428">							org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (_adblTimeWidth,</span>
+<span class="fc" id="L427">						emvCounterPartyInitial.seniorFundingNumeraire().forward(), 0., false),</span>
+<span class="fc" id="L428">							org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (_adblTimeWidth,</span>
 								aadblUnitEvolverSequence[COUNTER_PARTY_FUNDING]), _adblTimeWidth);
 
-<span class="nc" id="L431">			aJDVCounterPartyRecoveryRate = _deCounterPartyRecoveryRate.vertexSequence (new</span>
+<span class="fc" id="L431">			aJDVCounterPartyRecoveryRate = _deCounterPartyRecoveryRate.vertexSequence (new</span>
 				org.drip.measure.realization.JumpDiffusionVertex (_iSpotDate,
-<span class="nc" id="L433">					emvCounterPartyInitial.seniorRecoveryRate(), 0., false),</span>
-<span class="nc" id="L434">						org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (_adblTimeWidth,</span>
+<span class="fc" id="L433">					emvCounterPartyInitial.seniorRecoveryRate(), 0., false),</span>
+<span class="fc" id="L434">						org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (_adblTimeWidth,</span>
 							aadblUnitEvolverSequence[COUNTER_PARTY_RECOVERY_RATE]), _adblTimeWidth);
 <span class="nc" id="L436">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L437">			e.printStackTrace();</span>
 
 <span class="nc" id="L439">			return null;</span>
-<span class="nc" id="L440">		}</span>
+<span class="fc" id="L440">		}</span>
 
-<span class="nc" id="L442">		double dblOvernightIndexNumeraireStart = aJDVOvernightIndexNumeraire[0].value();</span>
+<span class="fc" id="L442">		double dblOvernightIndexNumeraireStart = aJDVOvernightIndexNumeraire[0].value();</span>
 
-<span class="nc" id="L444">		double dblCollateralSchemeNumeraireStart = aJDVCollateralSchemeNumeraire[0].value();</span>
+<span class="fc" id="L444">		double dblCollateralSchemeNumeraireStart = aJDVCollateralSchemeNumeraire[0].value();</span>
 
-<span class="nc" id="L446">		double dblBankSeniorFundingNumeraireStart = aJDVBankSeniorFundingNumeraire[0].value();</span>
+<span class="fc" id="L446">		double dblBankSeniorFundingNumeraireStart = aJDVBankSeniorFundingNumeraire[0].value();</span>
 
-<span class="nc bnc" id="L448" title="All 2 branches missed.">		double dblBankSubordinateFundingNumeraireStart = bSingleBankBond ? java.lang.Double.NaN :</span>
-<span class="nc" id="L449">			aJDVBankSubordinateFundingNumeraire[0].value();</span>
+<span class="pc bpc" id="L448" title="1 of 2 branches missed.">		double dblBankSubordinateFundingNumeraireStart = bSingleBankBond ? java.lang.Double.NaN :</span>
+<span class="fc" id="L449">			aJDVBankSubordinateFundingNumeraire[0].value();</span>
 
-<span class="nc" id="L451">		double dblCounterPartyFundingNumeraireStart = aJDVCounterPartyFundingNumeraire[0].value();</span>
+<span class="fc" id="L451">		double dblCounterPartyFundingNumeraireStart = aJDVCounterPartyFundingNumeraire[0].value();</span>
 
-<span class="nc" id="L453">		double dblOvernightIndexNumeraireInitial = dblOvernightIndexNumeraireStart;</span>
-<span class="nc" id="L454">		double dblCollateralSchemeNumeraireInitial = dblCollateralSchemeNumeraireStart;</span>
-<span class="nc" id="L455">		double dblBankSeniorFundingNumeraireInitial = dblBankSeniorFundingNumeraireStart;</span>
-<span class="nc" id="L456">		double dblCounterPartyFundingNumeraireInitial = dblCounterPartyFundingNumeraireStart;</span>
-<span class="nc" id="L457">		double dblBankSubordinateFundingNumeraireInitial = dblBankSubordinateFundingNumeraireStart;</span>
+<span class="fc" id="L453">		double dblOvernightIndexNumeraireInitial = dblOvernightIndexNumeraireStart;</span>
+<span class="fc" id="L454">		double dblCollateralSchemeNumeraireInitial = dblCollateralSchemeNumeraireStart;</span>
+<span class="fc" id="L455">		double dblBankSeniorFundingNumeraireInitial = dblBankSeniorFundingNumeraireStart;</span>
+<span class="fc" id="L456">		double dblCounterPartyFundingNumeraireInitial = dblCounterPartyFundingNumeraireStart;</span>
+<span class="fc" id="L457">		double dblBankSubordinateFundingNumeraireInitial = dblBankSubordinateFundingNumeraireStart;</span>
 
-<span class="nc bnc" id="L459" title="All 2 branches missed.">		for (int iEventVertex = 1; iEventVertex &lt;= iNumEventVertex; ++iEventVertex) {</span>
-<span class="nc" id="L460">			double dblBankHazardRate = aJDVBankHazardRate[iEventVertex].value();</span>
+<span class="fc bfc" id="L459" title="All 2 branches covered.">		for (int iEventVertex = 1; iEventVertex &lt;= iNumEventVertex; ++iEventVertex) {</span>
+<span class="fc" id="L460">			double dblBankHazardRate = aJDVBankHazardRate[iEventVertex].value();</span>
 
-<span class="nc" id="L462">			double dblCounterPartyHazardRate = aJDVCounterPartyHazardRate[iEventVertex].value();</span>
+<span class="fc" id="L462">			double dblCounterPartyHazardRate = aJDVCounterPartyHazardRate[iEventVertex].value();</span>
 
-<span class="nc" id="L464">			double dblOvernightIndexNumeraireFinish = aJDVOvernightIndexNumeraire[iEventVertex].value();</span>
+<span class="fc" id="L464">			double dblOvernightIndexNumeraireFinish = aJDVOvernightIndexNumeraire[iEventVertex].value();</span>
 
-<span class="nc" id="L466">			double dblCollateralSchemeNumeraireFinish =  aJDVCollateralSchemeNumeraire[iEventVertex].value();</span>
+<span class="fc" id="L466">			double dblCollateralSchemeNumeraireFinish =  aJDVCollateralSchemeNumeraire[iEventVertex].value();</span>
 
-<span class="nc" id="L468">			double dblBankSeniorFundingNumeraireFinish =</span>
-<span class="nc" id="L469">				aJDVBankSeniorFundingNumeraire[iEventVertex].value();</span>
+<span class="fc" id="L468">			double dblBankSeniorFundingNumeraireFinish =</span>
+<span class="fc" id="L469">				aJDVBankSeniorFundingNumeraire[iEventVertex].value();</span>
 
-<span class="nc bnc" id="L471" title="All 2 branches missed.">			double dblBankSubordinateFundingNumeraireFinish = bSingleBankBond ? java.lang.Double.NaN :</span>
-<span class="nc" id="L472">				aJDVBankSubordinateFundingNumeraire[iEventVertex].value();</span>
+<span class="pc bpc" id="L471" title="1 of 2 branches missed.">			double dblBankSubordinateFundingNumeraireFinish = bSingleBankBond ? java.lang.Double.NaN :</span>
+<span class="fc" id="L472">				aJDVBankSubordinateFundingNumeraire[iEventVertex].value();</span>
 
-<span class="nc" id="L474">			double dblCounterPartyFundingNumeraireFinish =</span>
-<span class="nc" id="L475">				aJDVCounterPartyFundingNumeraire[iEventVertex].value();</span>
+<span class="fc" id="L474">			double dblCounterPartyFundingNumeraireFinish =</span>
+<span class="fc" id="L475">				aJDVCounterPartyFundingNumeraire[iEventVertex].value();</span>
 
-<span class="nc" id="L477">			double dblTimeWidth = _adblTimeWidth[iEventVertex - 1];</span>
-<span class="nc" id="L478">			dblCounterPartySurvivalProbabilityExponent += dblCounterPartyHazardRate * dblTimeWidth;</span>
-<span class="nc" id="L479">			dblBankSurvivalProbabilityExponent += dblBankHazardRate * dblTimeWidth;</span>
-<span class="nc" id="L480">			double dblTimeWidthReciprocal = 1. / dblTimeWidth;</span>
+<span class="fc" id="L477">			double dblTimeWidth = _adblTimeWidth[iEventVertex - 1];</span>
+<span class="fc" id="L478">			dblCounterPartySurvivalProbabilityExponent += dblCounterPartyHazardRate * dblTimeWidth;</span>
+<span class="fc" id="L479">			dblBankSurvivalProbabilityExponent += dblBankHazardRate * dblTimeWidth;</span>
+<span class="fc" id="L480">			double dblTimeWidthReciprocal = 1. / dblTimeWidth;</span>
 
-<span class="nc" id="L482">			double dblOvernightIndexRate = dblTimeWidthReciprocal * java.lang.Math.log</span>
-<span class="nc" id="L483">				(dblOvernightIndexNumeraireFinish / dblOvernightIndexNumeraireStart);</span>
+<span class="fc" id="L482">			double dblOvernightIndexRate = dblTimeWidthReciprocal * java.lang.Math.log</span>
+<span class="fc" id="L483">				(dblOvernightIndexNumeraireFinish / dblOvernightIndexNumeraireStart);</span>
 
 			try {
-<span class="nc" id="L486">				org.drip.xva.universe.EntityMarketVertex emvBank = new org.drip.xva.universe.EntityMarketVertex (</span>
-<span class="nc" id="L487">					java.lang.Math.exp (-1. * dblBankSurvivalProbabilityExponent),</span>
+<span class="fc" id="L486">				org.drip.xva.universe.EntityMarketVertex emvBank = new org.drip.xva.universe.EntityMarketVertex (</span>
+<span class="fc" id="L487">					java.lang.Math.exp (-1. * dblBankSurvivalProbabilityExponent),</span>
 					dblBankHazardRate,
-<span class="nc" id="L489">					aJDVBankSeniorRecoveryRate[iEventVertex].value(),</span>
-<span class="nc bnc" id="L490" title="All 2 branches missed.">					dblTimeWidthReciprocal * java.lang.Math.log (dblBankSeniorFundingNumeraireFinish /</span>
+<span class="fc" id="L489">					aJDVBankSeniorRecoveryRate[iEventVertex].value(),</span>
+<span class="pc bpc" id="L490" title="1 of 2 branches missed.">					dblTimeWidthReciprocal * java.lang.Math.log (dblBankSeniorFundingNumeraireFinish /</span>
 						dblBankSeniorFundingNumeraireStart) - dblOvernightIndexRate,
 					new org.drip.xva.universe.NumeraireMarketVertex (
 						dblBankSeniorFundingNumeraireInitial,
 						dblBankSeniorFundingNumeraireFinish
 					),
-<span class="nc bnc" id="L496" title="All 2 branches missed.">					bSingleBankBond ? java.lang.Double.NaN : aJDVBankSubordinateRecoveryRate[iEventVertex].value(),</span>
+<span class="pc bpc" id="L496" title="1 of 2 branches missed.">					bSingleBankBond ? java.lang.Double.NaN : aJDVBankSubordinateRecoveryRate[iEventVertex].value(),</span>
 					bSingleBankBond ? java.lang.Double.NaN : dblTimeWidthReciprocal * java.lang.Math.log
-<span class="nc bnc" id="L498" title="All 2 branches missed.">						(dblBankSubordinateFundingNumeraireFinish / dblBankSubordinateFundingNumeraireStart)</span>
+<span class="pc bpc" id="L498" title="1 of 2 branches missed.">						(dblBankSubordinateFundingNumeraireFinish / dblBankSubordinateFundingNumeraireStart)</span>
 						- dblOvernightIndexRate,
 					bSingleBankBond ? null : new org.drip.xva.universe.NumeraireMarketVertex (
 						dblBankSubordinateFundingNumeraireInitial,
@@ -503,11 +503,11 @@ public class MarketVertexGenerator {
 					)
 				);
 
-<span class="nc" id="L506">				org.drip.xva.universe.EntityMarketVertex emvCounterParty = new org.drip.xva.universe.EntityMarketVertex (</span>
-<span class="nc" id="L507">					java.lang.Math.exp (-1. * dblCounterPartySurvivalProbabilityExponent),</span>
+<span class="fc" id="L506">				org.drip.xva.universe.EntityMarketVertex emvCounterParty = new org.drip.xva.universe.EntityMarketVertex (</span>
+<span class="fc" id="L507">					java.lang.Math.exp (-1. * dblCounterPartySurvivalProbabilityExponent),</span>
 					dblCounterPartyHazardRate,
-<span class="nc" id="L509">					aJDVCounterPartyRecoveryRate[iEventVertex].value(),</span>
-<span class="nc" id="L510">					dblTimeWidthReciprocal * java.lang.Math.log (dblCounterPartyFundingNumeraireFinish /</span>
+<span class="fc" id="L509">					aJDVCounterPartyRecoveryRate[iEventVertex].value(),</span>
+<span class="fc" id="L510">					dblTimeWidthReciprocal * java.lang.Math.log (dblCounterPartyFundingNumeraireFinish /</span>
 						dblCounterPartyFundingNumeraireStart) - dblOvernightIndexRate,
 					new org.drip.xva.universe.NumeraireMarketVertex (
 						dblCounterPartyFundingNumeraireInitial,
@@ -518,15 +518,15 @@ public class MarketVertexGenerator {
 					null
 				);
 
-<span class="nc bnc" id="L521" title="All 2 branches missed.">				aMV[iEventVertex] = new org.drip.xva.universe.MarketVertex (</span>
+<span class="pc bpc" id="L521" title="1 of 2 branches missed.">				aMV[iEventVertex] = new org.drip.xva.universe.MarketVertex (</span>
 					new org.drip.analytics.date.JulianDate (_aiEventDate[iEventVertex - 1]),
-<span class="nc" id="L523">					bAssetEvolutionOn ? aJDVAssetNumeraire[iEventVertex].value() : java.lang.Double.NaN,</span>
+<span class="pc" id="L523">					bAssetEvolutionOn ? aJDVAssetNumeraire[iEventVertex].value() : java.lang.Double.NaN,</span>
 					dblOvernightIndexRate,
 					new org.drip.xva.universe.NumeraireMarketVertex (
 						dblOvernightIndexNumeraireInitial,
 						dblOvernightIndexNumeraireFinish
 					),
-<span class="nc" id="L529">					dblTimeWidthReciprocal * java.lang.Math.log (dblCollateralSchemeNumeraireFinish /</span>
+<span class="fc" id="L529">					dblTimeWidthReciprocal * java.lang.Math.log (dblCollateralSchemeNumeraireFinish /</span>
 						dblCollateralSchemeNumeraireStart) - dblOvernightIndexRate,
 					new org.drip.xva.universe.NumeraireMarketVertex (
 						dblCollateralSchemeNumeraireInitial,
@@ -539,50 +539,50 @@ public class MarketVertexGenerator {
 <span class="nc" id="L539">				e.printStackTrace();</span>
 
 <span class="nc" id="L541">				return null;</span>
-<span class="nc" id="L542">			}</span>
+<span class="fc" id="L542">			}</span>
 
-<span class="nc" id="L544">			dblOvernightIndexNumeraireStart = dblOvernightIndexNumeraireFinish;</span>
-<span class="nc" id="L545">			dblCollateralSchemeNumeraireStart = dblCollateralSchemeNumeraireFinish;</span>
-<span class="nc" id="L546">			dblBankSeniorFundingNumeraireStart = dblBankSeniorFundingNumeraireFinish;</span>
-<span class="nc" id="L547">			dblCounterPartyFundingNumeraireStart = dblCounterPartyFundingNumeraireFinish;</span>
-<span class="nc" id="L548">			dblBankSubordinateFundingNumeraireStart = dblBankSubordinateFundingNumeraireFinish;</span>
+<span class="fc" id="L544">			dblOvernightIndexNumeraireStart = dblOvernightIndexNumeraireFinish;</span>
+<span class="fc" id="L545">			dblCollateralSchemeNumeraireStart = dblCollateralSchemeNumeraireFinish;</span>
+<span class="fc" id="L546">			dblBankSeniorFundingNumeraireStart = dblBankSeniorFundingNumeraireFinish;</span>
+<span class="fc" id="L547">			dblCounterPartyFundingNumeraireStart = dblCounterPartyFundingNumeraireFinish;</span>
+<span class="fc" id="L548">			dblBankSubordinateFundingNumeraireStart = dblBankSubordinateFundingNumeraireFinish;</span>
 		}
 
 		try {
-<span class="nc" id="L552">			aMV[0] = new org.drip.xva.universe.MarketVertex (</span>
-<span class="nc" id="L553">				mvInitial.anchor(),</span>
-<span class="nc" id="L554">				mvInitial.assetNumeraire(),</span>
-<span class="nc" id="L555">				mvInitial.overnightIndexRate(),</span>
+<span class="fc" id="L552">			aMV[0] = new org.drip.xva.universe.MarketVertex (</span>
+<span class="fc" id="L553">				mvInitial.anchor(),</span>
+<span class="fc" id="L554">				mvInitial.assetNumeraire(),</span>
+<span class="fc" id="L555">				mvInitial.overnightIndexRate(),</span>
 				new org.drip.xva.universe.NumeraireMarketVertex (
 					dblOvernightIndexNumeraireInitial,
 					dblOvernightIndexNumeraireInitial
 				),
-<span class="nc" id="L560">				aMV[1].collateralSchemeRate(),</span>
+<span class="fc" id="L560">				aMV[1].collateralSchemeRate(),</span>
 				new org.drip.xva.universe.NumeraireMarketVertex (
 					dblCollateralSchemeNumeraireInitial,
 					dblCollateralSchemeNumeraireInitial
 				),
 				new org.drip.xva.universe.EntityMarketVertex (
-<span class="nc" id="L566">					emvBankInitial.survivalProbability(),</span>
-<span class="nc" id="L567">					emvBankInitial.hazardRate(),</span>
-<span class="nc" id="L568">					emvBankInitial.seniorRecoveryRate(),</span>
-<span class="nc" id="L569">					aMV[1].bank().seniorFundingSpread(),</span>
+<span class="fc" id="L566">					emvBankInitial.survivalProbability(),</span>
+<span class="fc" id="L567">					emvBankInitial.hazardRate(),</span>
+<span class="fc" id="L568">					emvBankInitial.seniorRecoveryRate(),</span>
+<span class="fc" id="L569">					aMV[1].bank().seniorFundingSpread(),</span>
 					new org.drip.xva.universe.NumeraireMarketVertex (
 						dblBankSeniorFundingNumeraireInitial,
 						dblBankSeniorFundingNumeraireInitial
 					),
-<span class="nc" id="L574">					emvBankInitial.subordinateRecoveryRate(),</span>
-<span class="nc bnc" id="L575" title="All 2 branches missed.">					aMV[1].bank().subordinateFundingSpread(),</span>
+<span class="fc" id="L574">					emvBankInitial.subordinateRecoveryRate(),</span>
+<span class="pc bpc" id="L575" title="1 of 2 branches missed.">					aMV[1].bank().subordinateFundingSpread(),</span>
 					bSingleBankBond ? null : new org.drip.xva.universe.NumeraireMarketVertex (
 						dblBankSubordinateFundingNumeraireInitial,
 						dblBankSubordinateFundingNumeraireInitial
 					)
 				),
 				new org.drip.xva.universe.EntityMarketVertex (
-<span class="nc" id="L582">					emvCounterPartyInitial.survivalProbability(),</span>
-<span class="nc" id="L583">					emvCounterPartyInitial.hazardRate(),</span>
-<span class="nc" id="L584">					emvCounterPartyInitial.seniorRecoveryRate(),</span>
-<span class="nc" id="L585">					aMV[1].counterParty().seniorFundingSpread(),</span>
+<span class="fc" id="L582">					emvCounterPartyInitial.survivalProbability(),</span>
+<span class="fc" id="L583">					emvCounterPartyInitial.hazardRate(),</span>
+<span class="fc" id="L584">					emvCounterPartyInitial.seniorRecoveryRate(),</span>
+<span class="fc" id="L585">					aMV[1].counterParty().seniorFundingSpread(),</span>
 					new org.drip.xva.universe.NumeraireMarketVertex (
 						dblCounterPartyFundingNumeraireInitial,
 						dblCounterPartyFundingNumeraireInitial
@@ -596,9 +596,9 @@ public class MarketVertexGenerator {
 <span class="nc" id="L596">			e.printStackTrace();</span>
 
 <span class="nc" id="L598">			return null;</span>
-<span class="nc" id="L599">		}</span>
+<span class="fc" id="L599">		}</span>
 
-<span class="nc" id="L601">		return aMV;</span>
+<span class="fc" id="L601">		return aMV;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

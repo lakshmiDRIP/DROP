@@ -70,23 +70,23 @@ import org.drip.state.volatility.VolatilityCurve;
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L73">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L73">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L75">		String strFRATenor = &quot;3M&quot;;</span>
-<span class="nc" id="L76">		String strCurrency = &quot;GBP&quot;;</span>
+<span class="fc" id="L75">		String strFRATenor = &quot;3M&quot;;</span>
+<span class="fc" id="L76">		String strCurrency = &quot;GBP&quot;;</span>
 
-<span class="nc" id="L78">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L78">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
 			2017,
 			DateUtil.DECEMBER,
 			19
 		);
 
-<span class="nc" id="L84">		ForwardLabel forwardLabel = ForwardLabel.Create (</span>
+<span class="fc" id="L84">		ForwardLabel forwardLabel = ForwardLabel.Create (</span>
 			strCurrency,
 			strFRATenor
 		);
 
-<span class="nc" id="L89">		MergedDiscountForwardCurve dcFunding = LatentMarketStateBuilder.SmoothFundingCurve (</span>
+<span class="fc" id="L89">		MergedDiscountForwardCurve dcFunding = LatentMarketStateBuilder.SmoothFundingCurve (</span>
 			dtSpot,
 			strCurrency,
 			new String[] {
@@ -125,7 +125,7 @@ import org.drip.state.volatility.VolatilityCurve;
 			&quot;SwapRate&quot;
 		);
 
-<span class="nc" id="L128">		String[] astrMaturityTenor = new String[] {</span>
+<span class="fc" id="L128">		String[] astrMaturityTenor = new String[] {</span>
 			&quot;01Y&quot;,
 			&quot;02Y&quot;,
 			&quot;03Y&quot;,
@@ -135,7 +135,7 @@ import org.drip.state.volatility.VolatilityCurve;
 			&quot;10Y&quot;
 		};
 
-<span class="nc" id="L138">		double[] adblStrike = new double[] {</span>
+<span class="fc" id="L138">		double[] adblStrike = new double[] {</span>
 			0.0788, //  &quot;1Y&quot;,
 			0.0839, // 	&quot;2Y&quot;,
 			0.0864, //  &quot;3Y&quot;,
@@ -145,7 +145,7 @@ import org.drip.state.volatility.VolatilityCurve;
 			0.0889  // &quot;10Y&quot;
 		};
 
-<span class="nc" id="L148">		double[] adblPrice = new double[] {</span>
+<span class="fc" id="L148">		double[] adblPrice = new double[] {</span>
 			0.0017, //  &quot;1Y&quot;,
 			0.0132, // 	&quot;2Y&quot;,
 			0.0234, //  &quot;3Y&quot;,
@@ -155,7 +155,7 @@ import org.drip.state.volatility.VolatilityCurve;
 			0.1175  // &quot;10Y&quot;
 		};
 
-<span class="nc" id="L158">		VolatilityCurve vcForward = LatentMarketStateBuilder.ForwardRateVolatilityCurve (</span>
+<span class="fc" id="L158">		VolatilityCurve vcForward = LatentMarketStateBuilder.ForwardRateVolatilityCurve (</span>
 			dtSpot,
 			forwardLabel,
 			true,
@@ -164,23 +164,23 @@ import org.drip.state.volatility.VolatilityCurve;
 			adblPrice,
 			&quot;Price&quot;,
 			dcFunding,
-<span class="nc" id="L167">			dcFunding.nativeForwardCurve (strFRATenor)</span>
+<span class="fc" id="L167">			dcFunding.nativeForwardCurve (strFRATenor)</span>
 		);
 
-<span class="nc" id="L170">		String strLatentStateLabel = vcForward.label().fullyQualifiedName();</span>
+<span class="fc" id="L170">		String strLatentStateLabel = vcForward.label().fullyQualifiedName();</span>
 
-<span class="nc" id="L172">		System.out.println (&quot;\n\n\t||-----------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L172">		System.out.println (&quot;\n\n\t||-----------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L174" title="All 2 branches missed.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
-<span class="nc" id="L175">			System.out.println (</span>
+<span class="fc bfc" id="L174" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
+<span class="fc" id="L175">			System.out.println (</span>
 				&quot;\t||  &quot; + strLatentStateLabel + &quot; |  CAP PRICE  | &quot; +
-<span class="nc" id="L177">				astrMaturityTenor[i] + &quot; | &quot; + FormatUtil.FormatDouble (adblPrice[i], 1, 4, 1.) +</span>
+<span class="fc" id="L177">				astrMaturityTenor[i] + &quot; | &quot; + FormatUtil.FormatDouble (adblPrice[i], 1, 4, 1.) +</span>
 				&quot; | Forward Implied Vol | &quot; +
-<span class="nc" id="L179">				FormatUtil.FormatDouble (vcForward.impliedVol (astrMaturityTenor[i]), 2, 2, 100.) +</span>
+<span class="fc" id="L179">				FormatUtil.FormatDouble (vcForward.impliedVol (astrMaturityTenor[i]), 2, 2, 100.) +</span>
 				&quot;% ||&quot;
 			);
 
-<span class="nc" id="L183">		System.out.println (&quot;\t||-----------------------------------------------------------------------------||\n&quot;);</span>
-<span class="nc" id="L184">	}</span>
+<span class="fc" id="L183">		System.out.println (&quot;\t||-----------------------------------------------------------------------------||\n&quot;);</span>
+<span class="fc" id="L184">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

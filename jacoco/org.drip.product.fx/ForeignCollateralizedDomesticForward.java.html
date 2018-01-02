@@ -58,10 +58,10 @@ package org.drip.product.fx;
  */
 
 public class ForeignCollateralizedDomesticForward {
-<span class="nc" id="L61">	private java.lang.String _strCode = &quot;&quot;;</span>
-<span class="nc" id="L62">	private org.drip.product.params.CurrencyPair _cp = null;</span>
-<span class="nc" id="L63">	private int _iMaturityDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="nc" id="L64">	private double _dblForexForwardStrike = java.lang.Double.NaN;</span>
+<span class="fc" id="L61">	private java.lang.String _strCode = &quot;&quot;;</span>
+<span class="fc" id="L62">	private org.drip.product.params.CurrencyPair _cp = null;</span>
+<span class="fc" id="L63">	private int _iMaturityDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L64">	private double _dblForexForwardStrike = java.lang.Double.NaN;</span>
 
 	/**
 	 * Create an ForeignCollateralizedDomesticForward from the currency pair, the strike, and the maturity
@@ -79,13 +79,13 @@ public class ForeignCollateralizedDomesticForward {
 		final double dblForexForwardStrike,
 		final org.drip.analytics.date.JulianDate dtMaturity)
 		throws java.lang.Exception
-<span class="nc" id="L82">	{</span>
-<span class="nc bnc" id="L83" title="All 6 branches missed.">		if (null == (_cp = cp) || !org.drip.quant.common.NumberUtil.IsValid (_dblForexForwardStrike =</span>
+<span class="fc" id="L82">	{</span>
+<span class="pc bpc" id="L83" title="3 of 6 branches missed.">		if (null == (_cp = cp) || !org.drip.quant.common.NumberUtil.IsValid (_dblForexForwardStrike =</span>
 			dblForexForwardStrike) || null == dtMaturity)
 <span class="nc" id="L85">			throw new java.lang.Exception (&quot;ForeignCollateralizedDomesticForward ctr: Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L87">		_iMaturityDate = dtMaturity.julian();</span>
-<span class="nc" id="L88">	}</span>
+<span class="fc" id="L87">		_iMaturityDate = dtMaturity.julian();</span>
+<span class="fc" id="L88">	}</span>
 
 	public java.lang.String getPrimaryCode()
 	{
@@ -137,64 +137,64 @@ public class ForeignCollateralizedDomesticForward {
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams)
 	{
-<span class="nc bnc" id="L140" title="All 4 branches missed.">		if (null == valParams || null == csqs) return null;</span>
+<span class="pc bpc" id="L140" title="2 of 4 branches missed.">		if (null == valParams || null == csqs) return null;</span>
 
-<span class="nc" id="L142">		long lStart = System.nanoTime();</span>
+<span class="fc" id="L142">		long lStart = System.nanoTime();</span>
 
-<span class="nc" id="L144">		int iValueDate = valParams.valueDate();</span>
+<span class="fc" id="L144">		int iValueDate = valParams.valueDate();</span>
 
-<span class="nc bnc" id="L146" title="All 2 branches missed.">		if (iValueDate &gt; _iMaturityDate) return null;</span>
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">		if (iValueDate &gt; _iMaturityDate) return null;</span>
 
-<span class="nc" id="L148">		org.drip.state.fx.FXCurve fxfc = csqs.fxState (org.drip.state.identifier.FXLabel.Standard (_cp));</span>
+<span class="fc" id="L148">		org.drip.state.fx.FXCurve fxfc = csqs.fxState (org.drip.state.identifier.FXLabel.Standard (_cp));</span>
 
-<span class="nc bnc" id="L150" title="All 2 branches missed.">		if (null == fxfc) return null;</span>
+<span class="pc bpc" id="L150" title="1 of 2 branches missed.">		if (null == fxfc) return null;</span>
 
-<span class="nc" id="L152">		java.lang.String strForeignCurrency = _cp.numCcy();</span>
+<span class="fc" id="L152">		java.lang.String strForeignCurrency = _cp.numCcy();</span>
 
-<span class="nc" id="L154">		org.drip.state.discount.MergedDiscountForwardCurve dcForeignCollateral =</span>
-<span class="nc" id="L155">			csqs.payCurrencyCollateralCurrencyCurve (strForeignCurrency, strForeignCurrency);</span>
+<span class="fc" id="L154">		org.drip.state.discount.MergedDiscountForwardCurve dcForeignCollateral =</span>
+<span class="fc" id="L155">			csqs.payCurrencyCollateralCurrencyCurve (strForeignCurrency, strForeignCurrency);</span>
 
-<span class="nc bnc" id="L157" title="All 2 branches missed.">		if (null == dcForeignCollateral) return null;</span>
+<span class="pc bpc" id="L157" title="1 of 2 branches missed.">		if (null == dcForeignCollateral) return null;</span>
 
-<span class="nc" id="L159">		org.drip.state.discount.MergedDiscountForwardCurve dcDomesticCurrencyForeignCollateral =</span>
-<span class="nc" id="L160">			csqs.payCurrencyCollateralCurrencyCurve (_cp.denomCcy(), strForeignCurrency);</span>
+<span class="fc" id="L159">		org.drip.state.discount.MergedDiscountForwardCurve dcDomesticCurrencyForeignCollateral =</span>
+<span class="fc" id="L160">			csqs.payCurrencyCollateralCurrencyCurve (_cp.denomCcy(), strForeignCurrency);</span>
 
-<span class="nc bnc" id="L162" title="All 2 branches missed.">		if (null == dcDomesticCurrencyForeignCollateral) return null;</span>
+<span class="pc bpc" id="L162" title="1 of 2 branches missed.">		if (null == dcDomesticCurrencyForeignCollateral) return null;</span>
 
-<span class="nc" id="L164">		double dblPrice = java.lang.Double.NaN;</span>
-<span class="nc" id="L165">		double dblSpotFX = java.lang.Double.NaN;</span>
-<span class="nc" id="L166">		double dblParForward = java.lang.Double.NaN;</span>
-<span class="nc" id="L167">		double dblForeignCollateralDF = java.lang.Double.NaN;</span>
-<span class="nc" id="L168">		double dblDomesticCurrencyForeignCollateralDF = java.lang.Double.NaN;</span>
+<span class="fc" id="L164">		double dblPrice = java.lang.Double.NaN;</span>
+<span class="fc" id="L165">		double dblSpotFX = java.lang.Double.NaN;</span>
+<span class="fc" id="L166">		double dblParForward = java.lang.Double.NaN;</span>
+<span class="fc" id="L167">		double dblForeignCollateralDF = java.lang.Double.NaN;</span>
+<span class="fc" id="L168">		double dblDomesticCurrencyForeignCollateralDF = java.lang.Double.NaN;</span>
 
 		try {
-<span class="nc" id="L171">			dblPrice = (dblSpotFX = fxfc.fx (iValueDate)) * (dblForeignCollateralDF =</span>
-<span class="nc" id="L172">				dcForeignCollateral.df (_iMaturityDate)) - ((dblDomesticCurrencyForeignCollateralDF =</span>
-<span class="nc" id="L173">					dcDomesticCurrencyForeignCollateral.df (_iMaturityDate)) * _dblForexForwardStrike);</span>
+<span class="fc" id="L171">			dblPrice = (dblSpotFX = fxfc.fx (iValueDate)) * (dblForeignCollateralDF =</span>
+<span class="fc" id="L172">				dcForeignCollateral.df (_iMaturityDate)) - ((dblDomesticCurrencyForeignCollateralDF =</span>
+<span class="fc" id="L173">					dcDomesticCurrencyForeignCollateral.df (_iMaturityDate)) * _dblForexForwardStrike);</span>
 
-<span class="nc" id="L175">			dblParForward = dblSpotFX * dblForeignCollateralDF / dblDomesticCurrencyForeignCollateralDF;</span>
+<span class="fc" id="L175">			dblParForward = dblSpotFX * dblForeignCollateralDF / dblDomesticCurrencyForeignCollateralDF;</span>
 <span class="nc" id="L176">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L177">			e.printStackTrace();</span>
 
 <span class="nc" id="L179">			return null;</span>
-<span class="nc" id="L180">		}</span>
+<span class="fc" id="L180">		}</span>
 
-<span class="nc" id="L182">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapResult = new</span>
+<span class="fc" id="L182">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapResult = new</span>
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
 
-<span class="nc" id="L185">		mapResult.put (&quot;CalcTime&quot;, (System.nanoTime() - lStart) * 1.e-09);</span>
+<span class="fc" id="L185">		mapResult.put (&quot;CalcTime&quot;, (System.nanoTime() - lStart) * 1.e-09);</span>
 
-<span class="nc" id="L187">		mapResult.put (&quot;DomesticCurrencyForeignCollateralDF&quot;, dblDomesticCurrencyForeignCollateralDF);</span>
+<span class="fc" id="L187">		mapResult.put (&quot;DomesticCurrencyForeignCollateralDF&quot;, dblDomesticCurrencyForeignCollateralDF);</span>
 
-<span class="nc" id="L189">		mapResult.put (&quot;ForeignCollateralDF&quot;, dblForeignCollateralDF);</span>
+<span class="fc" id="L189">		mapResult.put (&quot;ForeignCollateralDF&quot;, dblForeignCollateralDF);</span>
 
-<span class="nc" id="L191">		mapResult.put (&quot;ParForward&quot;, dblParForward);</span>
+<span class="fc" id="L191">		mapResult.put (&quot;ParForward&quot;, dblParForward);</span>
 
-<span class="nc" id="L193">		mapResult.put (&quot;Price&quot;, dblPrice);</span>
+<span class="fc" id="L193">		mapResult.put (&quot;Price&quot;, dblPrice);</span>
 
-<span class="nc" id="L195">		mapResult.put (&quot;SpotFX&quot;, dblSpotFX);</span>
+<span class="fc" id="L195">		mapResult.put (&quot;SpotFX&quot;, dblSpotFX);</span>
 
-<span class="nc" id="L197">		return mapResult;</span>
+<span class="fc" id="L197">		return mapResult;</span>
 	}
 
 	public java.util.Set&lt;java.lang.String&gt; getMeasureNames()

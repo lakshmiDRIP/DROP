@@ -72,34 +72,34 @@ import org.drip.state.govvie.GovvieCurve;
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L75">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L75">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L77">		JulianDate dtSpot = DateUtil.Today().addBusDays (</span>
+<span class="fc" id="L77">		JulianDate dtSpot = DateUtil.Today().addBusDays (</span>
 			0,
 			&quot;USD&quot;
 		);
 
-<span class="nc" id="L82">		String strCode = &quot;UST&quot;;</span>
-<span class="nc" id="L83">		double dblBump = 0.0001;</span>
-<span class="nc" id="L84">		boolean bIsBumpProportional = false;</span>
+<span class="fc" id="L82">		String strCode = &quot;UST&quot;;</span>
+<span class="fc" id="L83">		double dblBump = 0.0001;</span>
+<span class="fc" id="L84">		boolean bIsBumpProportional = false;</span>
 
-<span class="nc" id="L86">		JulianDate[] adtEffective = new JulianDate[] {</span>
-<span class="nc" id="L87">			DateUtil.CreateFromYMD (2010, DateUtil.SEPTEMBER, 21),</span>
-<span class="nc" id="L88">			DateUtil.CreateFromYMD (2009, DateUtil.JULY, 14),</span>
-<span class="nc" id="L89">			DateUtil.CreateFromYMD (2011, DateUtil.MARCH, 8),</span>
-<span class="nc" id="L90">			DateUtil.CreateFromYMD (2010, DateUtil.AUGUST, 25),</span>
-<span class="nc" id="L91">			DateUtil.CreateFromYMD (2010, DateUtil.DECEMBER, 3)</span>
+<span class="fc" id="L86">		JulianDate[] adtEffective = new JulianDate[] {</span>
+<span class="fc" id="L87">			DateUtil.CreateFromYMD (2010, DateUtil.SEPTEMBER, 21),</span>
+<span class="fc" id="L88">			DateUtil.CreateFromYMD (2009, DateUtil.JULY, 14),</span>
+<span class="fc" id="L89">			DateUtil.CreateFromYMD (2011, DateUtil.MARCH, 8),</span>
+<span class="fc" id="L90">			DateUtil.CreateFromYMD (2010, DateUtil.AUGUST, 25),</span>
+<span class="fc" id="L91">			DateUtil.CreateFromYMD (2010, DateUtil.DECEMBER, 3)</span>
 		};
 
-<span class="nc" id="L94">		JulianDate[] adtMaturity = new JulianDate[] {</span>
-<span class="nc" id="L95">			dtSpot.addTenor (&quot;2Y&quot;),</span>
-<span class="nc" id="L96">			dtSpot.addTenor (&quot;4Y&quot;),</span>
-<span class="nc" id="L97">			dtSpot.addTenor (&quot;5Y&quot;),</span>
-<span class="nc" id="L98">			dtSpot.addTenor (&quot;7Y&quot;),</span>
-<span class="nc" id="L99">			dtSpot.addTenor (&quot;10Y&quot;)</span>
+<span class="fc" id="L94">		JulianDate[] adtMaturity = new JulianDate[] {</span>
+<span class="fc" id="L95">			dtSpot.addTenor (&quot;2Y&quot;),</span>
+<span class="fc" id="L96">			dtSpot.addTenor (&quot;4Y&quot;),</span>
+<span class="fc" id="L97">			dtSpot.addTenor (&quot;5Y&quot;),</span>
+<span class="fc" id="L98">			dtSpot.addTenor (&quot;7Y&quot;),</span>
+<span class="fc" id="L99">			dtSpot.addTenor (&quot;10Y&quot;)</span>
 		};
 
-<span class="nc" id="L102">		double[] adblCoupon = new double[] {</span>
+<span class="fc" id="L102">		double[] adblCoupon = new double[] {</span>
 			0.0200,
 			0.0250,
 			0.0300,
@@ -107,7 +107,7 @@ import org.drip.state.govvie.GovvieCurve;
 			0.0375
 		};
 
-<span class="nc" id="L110">		double[] adblYield = new double[] {</span>
+<span class="fc" id="L110">		double[] adblYield = new double[] {</span>
 			0.0200,
 			0.0250,
 			0.0300,
@@ -115,7 +115,7 @@ import org.drip.state.govvie.GovvieCurve;
 			0.0375
 		};
 
-<span class="nc" id="L118">		Map&lt;String, GovvieCurve&gt; mapBumpedGovvieCurve = LatentMarketStateBuilder.BumpedGovvieCurve (</span>
+<span class="fc" id="L118">		Map&lt;String, GovvieCurve&gt; mapBumpedGovvieCurve = LatentMarketStateBuilder.BumpedGovvieCurve (</span>
 			strCode,
 			dtSpot,
 			adtEffective,
@@ -128,86 +128,86 @@ import org.drip.state.govvie.GovvieCurve;
 			bIsBumpProportional
 		);
 
-<span class="nc" id="L131">		TreasuryComponent[] aTreasury = TreasuryBuilder.FromCode (</span>
+<span class="fc" id="L131">		TreasuryComponent[] aTreasury = TreasuryBuilder.FromCode (</span>
 			strCode,
 			adtEffective,
 			adtMaturity,
 			adblCoupon
 		);
 
-<span class="nc" id="L138">		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());</span>
+<span class="fc" id="L138">		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());</span>
 
-<span class="nc" id="L140">		System.out.println (&quot;\n\t|-------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L140">		System.out.println (&quot;\n\t|-------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L142" title="All 2 branches missed.">		for (Map.Entry&lt;String, GovvieCurve&gt; meGovvie : mapBumpedGovvieCurve.entrySet()) {</span>
-<span class="nc" id="L143">			String strKey = meGovvie.getKey();</span>
+<span class="fc bfc" id="L142" title="All 2 branches covered.">		for (Map.Entry&lt;String, GovvieCurve&gt; meGovvie : mapBumpedGovvieCurve.entrySet()) {</span>
+<span class="fc" id="L143">			String strKey = meGovvie.getKey();</span>
 
-<span class="nc bnc" id="L145" title="All 2 branches missed.">			if (!strKey.startsWith (&quot;tsy&quot;)) continue;</span>
+<span class="fc bfc" id="L145" title="All 2 branches covered.">			if (!strKey.startsWith (&quot;tsy&quot;)) continue;</span>
 
-<span class="nc" id="L147">			System.out.print (&quot;\t|  [&quot; + meGovvie.getKey() + &quot;] =&gt; &quot;);</span>
+<span class="fc" id="L147">			System.out.print (&quot;\t|  [&quot; + meGovvie.getKey() + &quot;] =&gt; &quot;);</span>
 
-<span class="nc" id="L149">			GovvieCurve gc = meGovvie.getValue();</span>
+<span class="fc" id="L149">			GovvieCurve gc = meGovvie.getValue();</span>
 
-<span class="nc bnc" id="L151" title="All 2 branches missed.">			for (BondComponent treasury : aTreasury)</span>
-<span class="nc" id="L152">				System.out.print (FormatUtil.FormatDouble (treasury.yieldFromPrice (</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">			for (BondComponent treasury : aTreasury)</span>
+<span class="fc" id="L152">				System.out.print (FormatUtil.FormatDouble (treasury.yieldFromPrice (</span>
 					valParams,
 					null,
 					null,
-<span class="nc" id="L156">					treasury.maturityDate().julian(),</span>
+<span class="fc" id="L156">					treasury.maturityDate().julian(),</span>
 					1.,
-<span class="nc" id="L158">					treasury.priceFromYield (</span>
+<span class="fc" id="L158">					treasury.priceFromYield (</span>
 						valParams,
 						null,
 						null,
-<span class="nc" id="L162">						gc.yield (treasury.maturityDate().julian())</span>
+<span class="fc" id="L162">						gc.yield (treasury.maturityDate().julian())</span>
 					)
 				), 1, 4, 1.) + &quot; |&quot;
 			);
 
-<span class="nc" id="L167">			System.out.print (&quot;|\n&quot;);</span>
-<span class="nc" id="L168">		}</span>
+<span class="fc" id="L167">			System.out.print (&quot;|\n&quot;);</span>
+<span class="fc" id="L168">		}</span>
 
-<span class="nc" id="L170">		System.out.println (&quot;\t|-------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L170">		System.out.println (&quot;\t|-------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L172">		System.out.println (&quot;\n\t|-------------------------------------||&quot;);</span>
+<span class="fc" id="L172">		System.out.println (&quot;\n\t|-------------------------------------||&quot;);</span>
 
-<span class="nc" id="L174">		GovvieCurve gcBase = mapBumpedGovvieCurve.get (&quot;Base&quot;);</span>
+<span class="fc" id="L174">		GovvieCurve gcBase = mapBumpedGovvieCurve.get (&quot;Base&quot;);</span>
 
-<span class="nc" id="L176">		GovvieCurve gcBump = mapBumpedGovvieCurve.get (&quot;Bump&quot;);</span>
+<span class="fc" id="L176">		GovvieCurve gcBump = mapBumpedGovvieCurve.get (&quot;Bump&quot;);</span>
 
-<span class="nc bnc" id="L178" title="All 2 branches missed.">		for (TreasuryComponent treasury : aTreasury)</span>
-<span class="nc" id="L179">			System.out.println (</span>
+<span class="fc bfc" id="L178" title="All 2 branches covered.">		for (TreasuryComponent treasury : aTreasury)</span>
+<span class="fc" id="L179">			System.out.println (</span>
 				&quot;\t| YIELD =&gt; &quot; +
-<span class="nc" id="L181">				treasury.maturityDate() + &quot; |&quot; +</span>
-<span class="nc" id="L182">				FormatUtil.FormatDouble (treasury.yieldFromPrice (</span>
+<span class="fc" id="L181">				treasury.maturityDate() + &quot; |&quot; +</span>
+<span class="fc" id="L182">				FormatUtil.FormatDouble (treasury.yieldFromPrice (</span>
 					valParams,
 					null,
 					null,
-<span class="nc" id="L186">					treasury.maturityDate().julian(),</span>
+<span class="fc" id="L186">					treasury.maturityDate().julian(),</span>
 					1.,
-<span class="nc" id="L188">					treasury.priceFromYield (</span>
+<span class="fc" id="L188">					treasury.priceFromYield (</span>
 						valParams,
 						null,
 						null,
-<span class="nc" id="L192">						gcBase.yield (treasury.maturityDate().julian())</span>
+<span class="fc" id="L192">						gcBase.yield (treasury.maturityDate().julian())</span>
 					)
 				), 1, 2, 100.) + &quot;% |&quot; +
-<span class="nc" id="L195">				FormatUtil.FormatDouble (treasury.yieldFromPrice (</span>
+<span class="fc" id="L195">				FormatUtil.FormatDouble (treasury.yieldFromPrice (</span>
 					valParams,
 					null,
 					null,
-<span class="nc" id="L199">					treasury.maturityDate().julian(),</span>
+<span class="fc" id="L199">					treasury.maturityDate().julian(),</span>
 					1.,
-<span class="nc" id="L201">					treasury.priceFromYield (</span>
+<span class="fc" id="L201">					treasury.priceFromYield (</span>
 						valParams,
 						null,
 						null,
-<span class="nc" id="L205">						gcBump.yield (treasury.maturityDate().julian())</span>
+<span class="fc" id="L205">						gcBump.yield (treasury.maturityDate().julian())</span>
 					)
 				), 1, 2, 100.) + &quot;% ||&quot;
 			);
 
-<span class="nc" id="L210">		System.out.println (&quot;\t|-------------------------------------||&quot;);</span>
-<span class="nc" id="L211">	}</span>
+<span class="fc" id="L210">		System.out.println (&quot;\t|-------------------------------------||&quot;);</span>
+<span class="fc" id="L211">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

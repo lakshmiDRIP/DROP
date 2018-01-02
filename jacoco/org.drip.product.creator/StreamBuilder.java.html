@@ -181,7 +181,7 @@ package org.drip.product.creator;
 	 * @param dapPay Pay Date Adjustment Parameter
 	 * @param dapStreamEnd Stream End Date Adjustment Parameter
 	 * @param dapAccrualEnd Accrual End Date Adjustment Parameter
-	 * @param forwardLabel Forward Label
+	 * @param floaterLabel Floater Label
 	 * @param creditLabel Credit Label
 	 * 
 	 * @return The Float Stream
@@ -198,10 +198,10 @@ package org.drip.product.creator;
 			final org.drip.analytics.daycount.DateAdjustParams dapPay,
 			final org.drip.analytics.daycount.DateAdjustParams dapStreamEnd,
 			final org.drip.analytics.daycount.DateAdjustParams dapAccrualEnd,
-			final org.drip.state.identifier.ForwardLabel forwardLabel,
+			final org.drip.state.identifier.FloaterLabel floaterLabel,
 			final org.drip.state.identifier.CreditLabel creditLabel)
 	{
-<span class="pc bpc" id="L204" title="1 of 2 branches missed.">		if (null == forwardLabel) return null;</span>
+<span class="pc bpc" id="L204" title="1 of 2 branches missed.">		if (null == floaterLabel) return null;</span>
 
 <span class="fc" id="L206">		org.drip.analytics.date.JulianDate dtFirstCoupon = new org.drip.analytics.date.JulianDate</span>
 			(iFirstCouponDate);
@@ -233,7 +233,7 @@ package org.drip.product.creator;
 				new org.drip.param.period.CompositePeriodSetting (
 					iFreq,
 					strTenor,
-<span class="fc" id="L236">					forwardLabel.currency(),</span>
+<span class="fc" id="L236">					floaterLabel.currency(),</span>
 					dapPay,
 					1.,
 					null,
@@ -245,7 +245,7 @@ package org.drip.product.creator;
 					strTenor,
 					org.drip.analytics.support.CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE,
 					null,
-					forwardLabel,
+					floaterLabel,
 					org.drip.analytics.support.CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 					dblSpread
 				)

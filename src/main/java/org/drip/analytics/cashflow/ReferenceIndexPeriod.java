@@ -69,7 +69,7 @@ public class ReferenceIndexPeriod
 	 * @param iEndDate Reference Period End Date
 	 * @param floaterLabel Period Forward Label
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @return The ReferenceIndexPeriod Instance
 	 */
 
 	public static final ReferenceIndexPeriod Standard (

@@ -63,15 +63,16 @@ package org.drip.product.option;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class OptionComponent extends org.drip.product.definition.CalibratableComponent {
-<span class="fc" id="L67">	private java.lang.String _strCode = &quot;&quot;;</span>
-<span class="fc" id="L68">	private java.lang.String _strName = &quot;&quot;;</span>
-<span class="fc" id="L69">	private double _dblStrike = java.lang.Double.NaN;</span>
-<span class="fc" id="L70">	private java.lang.String _strManifestMeasure = &quot;&quot;;</span>
-<span class="fc" id="L71">	private double _dblNotional = java.lang.Double.NaN;</span>
-<span class="fc" id="L72">	private org.drip.product.definition.Component _comp = null;</span>
-<span class="fc" id="L73">	private org.drip.param.valuation.CashSettleParams _csp = null;</span>
-<span class="fc" id="L74">	private org.drip.product.params.LastTradingDateSetting _ltds = null;</span>
+public abstract class OptionComponent extends org.drip.product.definition.CalibratableComponent
+{
+<span class="fc" id="L68">	private java.lang.String _strCode = &quot;&quot;;</span>
+<span class="fc" id="L69">	private java.lang.String _strName = &quot;&quot;;</span>
+<span class="fc" id="L70">	private double _dblStrike = java.lang.Double.NaN;</span>
+<span class="fc" id="L71">	private java.lang.String _strManifestMeasure = &quot;&quot;;</span>
+<span class="fc" id="L72">	private double _dblNotional = java.lang.Double.NaN;</span>
+<span class="fc" id="L73">	private org.drip.product.definition.Component _comp = null;</span>
+<span class="fc" id="L74">	private org.drip.param.valuation.CashSettleParams _csp = null;</span>
+<span class="fc" id="L75">	private org.drip.product.params.LastTradingDateSetting _ltds = null;</span>
 
 	protected OptionComponent (
 		final java.lang.String strName,
@@ -82,16 +83,16 @@ public abstract class OptionComponent extends org.drip.product.definition.Calibr
 		final org.drip.product.params.LastTradingDateSetting ltds,
 		final org.drip.param.valuation.CashSettleParams csp)
 		throws java.lang.Exception
-<span class="fc" id="L85">	{</span>
-<span class="pc bpc" id="L86" title="4 of 8 branches missed.">		if (null == (_strName = strName) || _strName.isEmpty() || null == (_comp = comp) || null ==</span>
-<span class="pc bpc" id="L87" title="1 of 2 branches missed.">			(_strManifestMeasure = strManifestMeasure) || _strManifestMeasure.isEmpty() ||</span>
-<span class="pc bpc" id="L88" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblStrike = dblStrike) ||</span>
-<span class="pc bpc" id="L89" title="1 of 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblNotional = dblNotional))</span>
-<span class="nc" id="L90">			throw new java.lang.Exception (&quot;OptionComponent ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L86">	{</span>
+<span class="pc bpc" id="L87" title="4 of 8 branches missed.">		if (null == (_strName = strName) || _strName.isEmpty() || null == (_comp = comp) || null ==</span>
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">			(_strManifestMeasure = strManifestMeasure) || _strManifestMeasure.isEmpty() ||</span>
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblStrike = dblStrike) ||</span>
+<span class="pc bpc" id="L90" title="1 of 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblNotional = dblNotional))</span>
+<span class="nc" id="L91">			throw new java.lang.Exception (&quot;OptionComponent ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L92">		_csp = csp;</span>
-<span class="fc" id="L93">		_ltds = ltds;</span>
-<span class="fc" id="L94">	}</span>
+<span class="fc" id="L93">		_csp = csp;</span>
+<span class="fc" id="L94">		_ltds = ltds;</span>
+<span class="fc" id="L95">	}</span>
 
 	/**
 	 * Retrieve the Underlying Component
@@ -101,7 +102,7 @@ public abstract class OptionComponent extends org.drip.product.definition.Calibr
 
 	public org.drip.product.definition.Component underlying()
 	{
-<span class="nc" id="L104">		return _comp;</span>
+<span class="nc" id="L105">		return _comp;</span>
 	}
 
 	/**
@@ -112,7 +113,7 @@ public abstract class OptionComponent extends org.drip.product.definition.Calibr
 
 	public java.lang.String manifestMeasure()
 	{
-<span class="fc" id="L115">		return _strManifestMeasure;</span>
+<span class="fc" id="L116">		return _strManifestMeasure;</span>
 	}
 
 	/**
@@ -123,7 +124,7 @@ public abstract class OptionComponent extends org.drip.product.definition.Calibr
 
 	public double strike()
 	{
-<span class="fc" id="L126">		return _dblStrike;</span>
+<span class="fc" id="L127">		return _dblStrike;</span>
 	}
 
 	/**
@@ -134,7 +135,7 @@ public abstract class OptionComponent extends org.drip.product.definition.Calibr
 
 	public double notional()
 	{
-<span class="fc" id="L137">		return _dblNotional;</span>
+<span class="fc" id="L138">		return _dblNotional;</span>
 	}
 
 	/**
@@ -145,7 +146,7 @@ public abstract class OptionComponent extends org.drip.product.definition.Calibr
 
 	public org.drip.analytics.date.JulianDate exerciseDate()
 	{
-<span class="fc" id="L148">		return _comp.effectiveDate();</span>
+<span class="fc" id="L149">		return _comp.effectiveDate();</span>
 	}
 
 	/**
@@ -156,104 +157,111 @@ public abstract class OptionComponent extends org.drip.product.definition.Calibr
 
 	public org.drip.product.params.LastTradingDateSetting lastTradingDateSetting()
 	{
-<span class="fc" id="L159">		return _ltds;</span>
+<span class="fc" id="L160">		return _ltds;</span>
 	}
 
 	@Override public void setPrimaryCode (
 		final java.lang.String strCode)
 	{
-<span class="nc" id="L165">		_strCode = strCode;</span>
-<span class="nc" id="L166">	}</span>
+<span class="nc" id="L166">		_strCode = strCode;</span>
+<span class="nc" id="L167">	}</span>
 
 	@Override public java.lang.String primaryCode()
 	{
-<span class="nc" id="L170">		return _strCode;</span>
+<span class="nc" id="L171">		return _strCode;</span>
 	}
 
 	@Override public java.lang.String name()
 	{
-<span class="nc" id="L175">		return _strName;</span>
+<span class="nc" id="L176">		return _strName;</span>
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String&gt; couponCurrency()
 	{
-<span class="nc" id="L180">		return _comp.couponCurrency();</span>
+<span class="nc" id="L181">		return _comp.couponCurrency();</span>
 	}
 
 	@Override public java.lang.String payCurrency()
 	{
-<span class="nc" id="L185">		return _comp.payCurrency();</span>
+<span class="nc" id="L186">		return _comp.payCurrency();</span>
 	}
 
 	@Override public java.lang.String principalCurrency()
 	{
-<span class="nc" id="L190">		return _comp.payCurrency();</span>
+<span class="nc" id="L191">		return _comp.payCurrency();</span>
 	}
 
 	@Override public org.drip.analytics.date.JulianDate effectiveDate()
 	{
-<span class="nc" id="L195">		return null;</span>
+<span class="nc" id="L196">		return null;</span>
 	}
 
 	@Override public org.drip.analytics.date.JulianDate maturityDate()
 	{
-<span class="fc" id="L200">		return exerciseDate();</span>
+<span class="fc" id="L201">		return exerciseDate();</span>
 	}
 
 	@Override public org.drip.analytics.date.JulianDate firstCouponDate()
 	{
-<span class="nc" id="L205">		return _comp.effectiveDate();</span>
+<span class="nc" id="L206">		return _comp.effectiveDate();</span>
 	}
 
 	@Override public double initialNotional()
 	{
-<span class="nc" id="L210">		return _dblNotional;</span>
+<span class="nc" id="L211">		return _dblNotional;</span>
 	}
 
 	@Override public double notional (
 		final int dblDate1)
 	{
-<span class="nc" id="L216">		return _dblNotional;</span>
+<span class="nc" id="L217">		return _dblNotional;</span>
 	}
 
 	@Override public double notional (
 		final int dblDate1,
 		final int dblDate2)
 	{
-<span class="nc" id="L223">		return _dblNotional;</span>
+<span class="nc" id="L224">		return _dblNotional;</span>
 	}
 
 	@Override public int freq()
 	{
-<span class="nc" id="L228">		return _comp.freq();</span>
+<span class="nc" id="L229">		return _comp.freq();</span>
 	}
 
 	@Override public org.drip.state.identifier.CreditLabel creditLabel()
 	{
-<span class="nc" id="L233">		return _comp.creditLabel();</span>
+<span class="nc" id="L234">		return _comp.creditLabel();</span>
 	}
 
 	@Override public
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.identifier.ForwardLabel&gt;
 			forwardLabel()
 	{
-<span class="nc" id="L240">		return _comp.forwardLabel();</span>
+<span class="fc" id="L241">		return _comp.forwardLabel();</span>
+	}
+
+	@Override public
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.identifier.OTCFixFloatLabel&gt;
+			otcFixFloatLabel()
+	{
+<span class="nc" id="L248">		return _comp.otcFixFloatLabel();</span>
 	}
 
 	@Override public org.drip.state.identifier.FundingLabel fundingLabel()
 	{
-<span class="nc" id="L245">		return _comp.fundingLabel();</span>
+<span class="nc" id="L253">		return _comp.fundingLabel();</span>
 	}
 
 	@Override public org.drip.state.identifier.GovvieLabel govvieLabel()
 	{
-<span class="nc" id="L250">		return _comp.govvieLabel();</span>
+<span class="nc" id="L258">		return _comp.govvieLabel();</span>
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.identifier.FXLabel&gt;
 		fxLabel()
 	{
-<span class="nc" id="L256">		return _comp.fxLabel();</span>
+<span class="nc" id="L264">		return _comp.fxLabel();</span>
 	}
 
 	@Override public
@@ -261,20 +269,20 @@ public abstract class OptionComponent extends org.drip.product.definition.Calibr
 			volatilityLabel()
 	{
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.identifier.ForwardLabel&gt;
-<span class="nc" id="L264">			mapForwardLabel = forwardLabel();</span>
+<span class="nc" id="L272">			mapForwardLabel = forwardLabel();</span>
 
-<span class="nc bnc" id="L266" title="All 4 branches missed.">		if (null == mapForwardLabel || 0 == mapForwardLabel.size()) return null;</span>
+<span class="nc bnc" id="L274" title="All 4 branches missed.">		if (null == mapForwardLabel || 0 == mapForwardLabel.size()) return null;</span>
 
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.identifier.VolatilityLabel&gt;
-<span class="nc" id="L269">			mapVolatilityLabel = new</span>
+<span class="nc" id="L277">			mapVolatilityLabel = new</span>
 				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.identifier.VolatilityLabel&gt;();
 
 		for (java.util.Map.Entry&lt;java.lang.String, org.drip.state.identifier.ForwardLabel&gt; forwardLabelEntry
-<span class="nc bnc" id="L273" title="All 2 branches missed.">			: mapForwardLabel.entrySet())</span>
-<span class="nc" id="L274">			mapVolatilityLabel.put (forwardLabelEntry.getKey(),</span>
-<span class="nc" id="L275">				org.drip.state.identifier.VolatilityLabel.Standard (forwardLabelEntry.getValue()));</span>
+<span class="nc bnc" id="L281" title="All 2 branches missed.">			: mapForwardLabel.entrySet())</span>
+<span class="nc" id="L282">			mapVolatilityLabel.put (forwardLabelEntry.getKey(),</span>
+<span class="nc" id="L283">				org.drip.state.identifier.VolatilityLabel.Standard (forwardLabelEntry.getValue()));</span>
 
-<span class="nc" id="L277">		return mapVolatilityLabel;</span>
+<span class="nc" id="L285">		return mapVolatilityLabel;</span>
 	}
 
 	@Override public org.drip.analytics.output.CompositePeriodCouponMetrics couponMetrics (
@@ -282,29 +290,29 @@ public abstract class OptionComponent extends org.drip.product.definition.Calibr
 		final org.drip.param.valuation.ValuationParams valParams,
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs)
 	{
-<span class="nc" id="L285">		return null;</span>
+<span class="nc" id="L293">		return null;</span>
 	}
 
 	@Override public java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; couponPeriods()
 	{
-<span class="nc" id="L290">		return null;</span>
+<span class="nc" id="L298">		return null;</span>
 	}
 
 	@Override public org.drip.param.valuation.CashSettleParams cashSettleParams()
 	{
-<span class="fc" id="L295">		return _csp;</span>
+<span class="fc" id="L303">		return _csp;</span>
 	}
 
 	@Override public org.drip.product.calib.ProductQuoteSet calibQuoteSet (
 		final org.drip.state.representation.LatentStateSpecification[] aLSS)
 	{
 		try {
-<span class="nc" id="L302">			return new org.drip.product.calib.VolatilityProductQuoteSet (aLSS);</span>
-<span class="nc" id="L303">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L304">			e.printStackTrace();</span>
+<span class="nc" id="L310">			return new org.drip.product.calib.VolatilityProductQuoteSet (aLSS);</span>
+<span class="nc" id="L311">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L312">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L307">		return null;</span>
+<span class="nc" id="L315">		return null;</span>
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; calibMeasures (
@@ -313,7 +321,7 @@ public abstract class OptionComponent extends org.drip.product.definition.Calibr
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
-<span class="nc" id="L316">		return null;</span>
+<span class="nc" id="L324">		return null;</span>
 	}
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint forwardPRWC (
@@ -323,7 +331,7 @@ public abstract class OptionComponent extends org.drip.product.definition.Calibr
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="nc" id="L326">		return null;</span>
+<span class="nc" id="L334">		return null;</span>
 	}
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint fundingPRWC (
@@ -333,7 +341,7 @@ public abstract class OptionComponent extends org.drip.product.definition.Calibr
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="nc" id="L336">		return null;</span>
+<span class="nc" id="L344">		return null;</span>
 	}
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint fundingForwardPRWC (
@@ -343,7 +351,7 @@ public abstract class OptionComponent extends org.drip.product.definition.Calibr
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="nc" id="L346">		return null;</span>
+<span class="nc" id="L354">		return null;</span>
 	}
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint fxPRWC (
@@ -353,7 +361,7 @@ public abstract class OptionComponent extends org.drip.product.definition.Calibr
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="nc" id="L356">		return null;</span>
+<span class="nc" id="L364">		return null;</span>
 	}
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint govviePRWC (
@@ -363,7 +371,7 @@ public abstract class OptionComponent extends org.drip.product.definition.Calibr
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="nc" id="L366">		return null;</span>
+<span class="nc" id="L374">		return null;</span>
 	}
 
 	@Override public org.drip.quant.calculus.WengertJacobian jackDDirtyPVDManifestMeasure (
@@ -372,7 +380,7 @@ public abstract class OptionComponent extends org.drip.product.definition.Calibr
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
-<span class="nc" id="L375">		return null;</span>
+<span class="nc" id="L383">		return null;</span>
 	}
 
 	@Override public org.drip.quant.calculus.WengertJacobian manifestMeasureDFMicroJack (
@@ -382,7 +390,7 @@ public abstract class OptionComponent extends org.drip.product.definition.Calibr
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
-<span class="nc" id="L385">		return null;</span>
+<span class="nc" id="L393">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

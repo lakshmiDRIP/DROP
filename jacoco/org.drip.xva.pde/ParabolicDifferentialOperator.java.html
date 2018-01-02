@@ -71,7 +71,7 @@ package org.drip.xva.pde;
  */
 
 public class ParabolicDifferentialOperator {
-<span class="nc" id="L74">	private org.drip.xva.universe.Tradeable _t = null;</span>
+<span class="fc" id="L74">	private org.drip.xva.universe.Tradeable _t = null;</span>
 
 	/**
 	 * ParabolicDifferentialOperator Constructor
@@ -84,10 +84,10 @@ public class ParabolicDifferentialOperator {
 	public ParabolicDifferentialOperator (
 		final org.drip.xva.universe.Tradeable t)
 		throws java.lang.Exception
-<span class="nc" id="L87">	{</span>
-<span class="nc bnc" id="L88" title="All 2 branches missed.">		if (null == (_t = t))</span>
+<span class="fc" id="L87">	{</span>
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">		if (null == (_t = t))</span>
 <span class="nc" id="L89">			throw new java.lang.Exception (&quot;ParabolicDifferentialOperator Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L90">	}</span>
+<span class="fc" id="L90">	}</span>
 
 	/**
 	 * Retrieve the Reference Trade-able Asset
@@ -145,31 +145,31 @@ public class ParabolicDifferentialOperator {
 		final double dblAssetNumeraireVertex,
 		final double dblShift)
 	{
-<span class="nc bnc" id="L148" title="All 4 branches missed.">		if (null == etv || !org.drip.quant.common.NumberUtil.IsValid (dblAssetNumeraireVertex) ||</span>
-<span class="nc bnc" id="L149" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblShift))</span>
+<span class="pc bpc" id="L148" title="2 of 4 branches missed.">		if (null == etv || !org.drip.quant.common.NumberUtil.IsValid (dblAssetNumeraireVertex) ||</span>
+<span class="pc bpc" id="L149" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblShift))</span>
 <span class="nc" id="L150">			return null;</span>
 
-<span class="nc" id="L152">		org.drip.xva.derivative.AssetGreekVertex agv = etv.assetGreekVertex();</span>
+<span class="fc" id="L152">		org.drip.xva.derivative.AssetGreekVertex agv = etv.assetGreekVertex();</span>
 
-<span class="nc" id="L154">		double dblAssetNumeraireVertexDown = dblAssetNumeraireVertex - dblShift;</span>
-<span class="nc" id="L155">		double dblAssetNumeraireVertexUp = dblAssetNumeraireVertex + dblShift;</span>
-<span class="nc" id="L156">		double dblVolatility = java.lang.Double.NaN;</span>
+<span class="fc" id="L154">		double dblAssetNumeraireVertexDown = dblAssetNumeraireVertex - dblShift;</span>
+<span class="fc" id="L155">		double dblAssetNumeraireVertexUp = dblAssetNumeraireVertex + dblShift;</span>
+<span class="fc" id="L156">		double dblVolatility = java.lang.Double.NaN;</span>
 
 		try {
-<span class="nc" id="L159">			dblVolatility = _t.numeraireEvolver().evaluator().volatility().value (new</span>
-<span class="nc" id="L160">				org.drip.measure.realization.JumpDiffusionVertex (etv.time(), dblAssetNumeraireVertex, 0.,</span>
+<span class="fc" id="L159">			dblVolatility = _t.numeraireEvolver().evaluator().volatility().value (new</span>
+<span class="fc" id="L160">				org.drip.measure.realization.JumpDiffusionVertex (etv.time(), dblAssetNumeraireVertex, 0.,</span>
 					false));
 <span class="nc" id="L162">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L163">			e.printStackTrace();</span>
 
 <span class="nc" id="L165">			return null;</span>
-<span class="nc" id="L166">		}</span>
+<span class="fc" id="L166">		}</span>
 
-<span class="nc" id="L168">		double dblGammaCoefficient = 0.5 * dblVolatility * dblVolatility * agv.derivativeXVAValueGamma();</span>
+<span class="fc" id="L168">		double dblGammaCoefficient = 0.5 * dblVolatility * dblVolatility * agv.derivativeXVAValueGamma();</span>
 
-<span class="nc" id="L170">		double dblDeltaCoefficient = -1. * _t.cashAccumulationRate() * agv.derivativeXVAValueDelta();</span>
+<span class="fc" id="L170">		double dblDeltaCoefficient = -1. * _t.cashAccumulationRate() * agv.derivativeXVAValueDelta();</span>
 
-<span class="nc" id="L172">		return new double[] {dblGammaCoefficient * dblAssetNumeraireVertexDown * dblAssetNumeraireVertexDown</span>
+<span class="fc" id="L172">		return new double[] {dblGammaCoefficient * dblAssetNumeraireVertexDown * dblAssetNumeraireVertexDown</span>
 			+ dblDeltaCoefficient * dblAssetNumeraireVertexDown, dblGammaCoefficient *
 				dblAssetNumeraireVertex * dblAssetNumeraireVertex + dblDeltaCoefficient *
 					dblAssetNumeraireVertex, dblGammaCoefficient * dblAssetNumeraireVertexUp *

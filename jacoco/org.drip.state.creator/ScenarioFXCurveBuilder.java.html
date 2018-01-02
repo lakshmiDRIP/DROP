@@ -130,56 +130,56 @@ package org.drip.state.creator;
 		final double dblEpochResponse,
 		final org.drip.spline.params.SegmentCustomBuilderControl scbc)
 	{
-<span class="nc bnc" id="L133" title="All 10 branches missed.">		if (null == strName || strName.isEmpty() || null == valParams || null == scbc || null ==</span>
-<span class="nc bnc" id="L134" title="All 2 branches missed.">			strManifestMeasure || strManifestMeasure.isEmpty())</span>
+<span class="pc bpc" id="L133" title="5 of 10 branches missed.">		if (null == strName || strName.isEmpty() || null == valParams || null == scbc || null ==</span>
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">			strManifestMeasure || strManifestMeasure.isEmpty())</span>
 <span class="nc" id="L135">			return null;</span>
 
-<span class="nc bnc" id="L137" title="All 2 branches missed.">		int iNumQuote = null == adblQuote ? 0 : adblQuote.length;</span>
-<span class="nc bnc" id="L138" title="All 2 branches missed.">		int iNumComp = null == aCalibComp ? 0 : aCalibComp.length;</span>
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">		int iNumQuote = null == adblQuote ? 0 : adblQuote.length;</span>
+<span class="pc bpc" id="L138" title="1 of 2 branches missed.">		int iNumComp = null == aCalibComp ? 0 : aCalibComp.length;</span>
 
-<span class="nc bnc" id="L140" title="All 4 branches missed.">		if (0 == iNumComp || iNumComp != iNumQuote) return null;</span>
+<span class="pc bpc" id="L140" title="2 of 4 branches missed.">		if (0 == iNumComp || iNumComp != iNumQuote) return null;</span>
 
 		try {
-<span class="nc" id="L143">			org.drip.state.identifier.FXLabel fxLabel = null;</span>
+<span class="fc" id="L143">			org.drip.state.identifier.FXLabel fxLabel = null;</span>
 
-<span class="nc bnc" id="L145" title="All 2 branches missed.">			if (aCalibComp[0] instanceof org.drip.product.rates.DualStreamComponent)</span>
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">			if (aCalibComp[0] instanceof org.drip.product.rates.DualStreamComponent)</span>
 <span class="nc" id="L146">				fxLabel = ((org.drip.product.rates.DualStreamComponent)</span>
 <span class="nc" id="L147">					aCalibComp[0]).derivedStream().fxLabel();</span>
 			else {
 				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.identifier.FXLabel&gt;
-<span class="nc" id="L150">					mapFXLabel = aCalibComp[0].fxLabel();</span>
+<span class="fc" id="L150">					mapFXLabel = aCalibComp[0].fxLabel();</span>
 
-<span class="nc bnc" id="L152" title="All 4 branches missed.">				if (null != mapFXLabel &amp;&amp; 0 != mapFXLabel.size()) fxLabel = mapFXLabel.get (&quot;DERIVED&quot;);</span>
+<span class="pc bpc" id="L152" title="2 of 4 branches missed.">				if (null != mapFXLabel &amp;&amp; 0 != mapFXLabel.size()) fxLabel = mapFXLabel.get (&quot;DERIVED&quot;);</span>
 			}
 
-<span class="nc" id="L155">			org.drip.state.representation.LatentStateSpecification[] aLSS = new</span>
+<span class="fc" id="L155">			org.drip.state.representation.LatentStateSpecification[] aLSS = new</span>
 				org.drip.state.representation.LatentStateSpecification[] {new
 					org.drip.state.representation.LatentStateSpecification
 						(org.drip.analytics.definition.LatentStateStatic.LATENT_STATE_FX,
 							org.drip.analytics.definition.LatentStateStatic.FX_QM_FORWARD_OUTRIGHT,
 								fxLabel)};
 
-<span class="nc" id="L162">			org.drip.state.inference.LatentStateSegmentSpec[] aSegmentSpec = new</span>
+<span class="fc" id="L162">			org.drip.state.inference.LatentStateSegmentSpec[] aSegmentSpec = new</span>
 				org.drip.state.inference.LatentStateSegmentSpec[iNumComp];
 
-<span class="nc bnc" id="L165" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumComp; ++i) {</span>
-<span class="nc" id="L166">				org.drip.product.calib.ProductQuoteSet pqs = aCalibComp[i].calibQuoteSet (aLSS);</span>
+<span class="fc bfc" id="L165" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumComp; ++i) {</span>
+<span class="fc" id="L166">				org.drip.product.calib.ProductQuoteSet pqs = aCalibComp[i].calibQuoteSet (aLSS);</span>
 
-<span class="nc bnc" id="L168" title="All 4 branches missed.">				if (null == pqs || !pqs.set (strManifestMeasure, adblQuote[i])) return null;</span>
+<span class="pc bpc" id="L168" title="2 of 4 branches missed.">				if (null == pqs || !pqs.set (strManifestMeasure, adblQuote[i])) return null;</span>
 
-<span class="nc" id="L170">				aSegmentSpec[i] = new org.drip.state.inference.LatentStateSegmentSpec (aCalibComp[i], pqs);</span>
+<span class="fc" id="L170">				aSegmentSpec[i] = new org.drip.state.inference.LatentStateSegmentSpec (aCalibComp[i], pqs);</span>
 			}
 
-<span class="nc" id="L173">			org.drip.state.inference.LatentStateStretchSpec[] aStretchSpec = new</span>
+<span class="fc" id="L173">			org.drip.state.inference.LatentStateStretchSpec[] aStretchSpec = new</span>
 				org.drip.state.inference.LatentStateStretchSpec[] {new
 					org.drip.state.inference.LatentStateStretchSpec (strName, aSegmentSpec)};
 
-<span class="nc" id="L177">			org.drip.state.inference.LinearLatentStateCalibrator llsc = new</span>
+<span class="fc" id="L177">			org.drip.state.inference.LinearLatentStateCalibrator llsc = new</span>
 				org.drip.state.inference.LinearLatentStateCalibrator (scbc,
-<span class="nc" id="L179">					org.drip.spline.stretch.BoundarySettings.FinancialStandard(),</span>
+<span class="fc" id="L179">					org.drip.spline.stretch.BoundarySettings.FinancialStandard(),</span>
 						org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE, null, null);
 
-<span class="nc" id="L182">			return ShapePreservingFXCurve (llsc, aStretchSpec, cp, valParams, pricerParams, csqs, vcp,</span>
+<span class="fc" id="L182">			return ShapePreservingFXCurve (llsc, aStretchSpec, cp, valParams, pricerParams, csqs, vcp,</span>
 				dblEpochResponse);
 <span class="nc" id="L184">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L185">			e.printStackTrace();</span>

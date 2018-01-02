@@ -82,12 +82,12 @@ import org.drip.xva.universe.*;
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L85">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L85">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L87">		int iNumVertex = 24;</span>
-<span class="nc" id="L88">		int iSimulationDuration = 365;</span>
+<span class="fc" id="L87">		int iNumVertex = 24;</span>
+<span class="fc" id="L88">		int iSimulationDuration = 365;</span>
 
-<span class="nc" id="L90">		double[][] aadblCorrelationMatrix = new double[][] {</span>
+<span class="fc" id="L90">		double[][] aadblCorrelationMatrix = new double[][] {</span>
 			{1.00, 0.00, 0.20, 0.15, 0.05, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #0 ASSET NUMERAIRE
 			{0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #1 OVERNIGHT POLICY INDEX NUMERAIRE
 			{0.20, 0.00, 1.00, 0.13, 0.25, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #2 COLLATERAL SCHEME NUMERAIRE
@@ -101,55 +101,55 @@ import org.drip.xva.universe.*;
 			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00}  // #10 COUNTER PARTY RECOVERY RATE
 		};
 
-<span class="nc" id="L104">		double dblAssetNumeraireDrift = 0.06;</span>
-<span class="nc" id="L105">		double dblAssetNumeraireVolatility = 0.10;</span>
-<span class="nc" id="L106">		double dblAssetNumeraireRepo = 0.03;</span>
-<span class="nc" id="L107">		double dblAssetNumeraireDividend = 0.02;</span>
-<span class="nc" id="L108">		double dblAssetNumeraireInitial = 1.;</span>
+<span class="fc" id="L104">		double dblAssetNumeraireDrift = 0.06;</span>
+<span class="fc" id="L105">		double dblAssetNumeraireVolatility = 0.10;</span>
+<span class="fc" id="L106">		double dblAssetNumeraireRepo = 0.03;</span>
+<span class="fc" id="L107">		double dblAssetNumeraireDividend = 0.02;</span>
+<span class="fc" id="L108">		double dblAssetNumeraireInitial = 1.;</span>
 
-<span class="nc" id="L110">		double dblOvernightIndexNumeraireDrift = 0.0025;</span>
-<span class="nc" id="L111">		double dblOvernightIndexNumeraireVolatility = 0.001;</span>
-<span class="nc" id="L112">		double dblOvernightIndexNumeraireRepo = 0.0;</span>
+<span class="fc" id="L110">		double dblOvernightIndexNumeraireDrift = 0.0025;</span>
+<span class="fc" id="L111">		double dblOvernightIndexNumeraireVolatility = 0.001;</span>
+<span class="fc" id="L112">		double dblOvernightIndexNumeraireRepo = 0.0;</span>
 
-<span class="nc" id="L114">		double dblCollateralSchemeNumeraireDrift = 0.01;</span>
-<span class="nc" id="L115">		double dblCollateralSchemeNumeraireVolatility = 0.002;</span>
-<span class="nc" id="L116">		double dblCollateralSchemeNumeraireRepo = 0.005;</span>
+<span class="fc" id="L114">		double dblCollateralSchemeNumeraireDrift = 0.01;</span>
+<span class="fc" id="L115">		double dblCollateralSchemeNumeraireVolatility = 0.002;</span>
+<span class="fc" id="L116">		double dblCollateralSchemeNumeraireRepo = 0.005;</span>
 
-<span class="nc" id="L118">		double dblBankSeniorFundingNumeraireDrift = 0.03;</span>
-<span class="nc" id="L119">		double dblBankSeniorFundingNumeraireVolatility = 0.002;</span>
-<span class="nc" id="L120">		double dblBankSeniorFundingNumeraireRepo = 0.028;</span>
+<span class="fc" id="L118">		double dblBankSeniorFundingNumeraireDrift = 0.03;</span>
+<span class="fc" id="L119">		double dblBankSeniorFundingNumeraireVolatility = 0.002;</span>
+<span class="fc" id="L120">		double dblBankSeniorFundingNumeraireRepo = 0.028;</span>
 
-<span class="nc" id="L122">		double dblBankSubordinateFundingNumeraireDrift = 0.045;</span>
-<span class="nc" id="L123">		double dblBankSubordinateFundingNumeraireVolatility = 0.002;</span>
-<span class="nc" id="L124">		double dblBankSubordinateFundingNumeraireRepo = 0.028;</span>
+<span class="fc" id="L122">		double dblBankSubordinateFundingNumeraireDrift = 0.045;</span>
+<span class="fc" id="L123">		double dblBankSubordinateFundingNumeraireVolatility = 0.002;</span>
+<span class="fc" id="L124">		double dblBankSubordinateFundingNumeraireRepo = 0.028;</span>
 
-<span class="nc" id="L126">		double dblCounterPartyFundingNumeraireDrift = 0.03;</span>
-<span class="nc" id="L127">		double dblCounterPartyFundingNumeraireVolatility = 0.003;</span>
-<span class="nc" id="L128">		double dblCounterPartyFundingNumeraireRepo = 0.028;</span>
+<span class="fc" id="L126">		double dblCounterPartyFundingNumeraireDrift = 0.03;</span>
+<span class="fc" id="L127">		double dblCounterPartyFundingNumeraireVolatility = 0.003;</span>
+<span class="fc" id="L128">		double dblCounterPartyFundingNumeraireRepo = 0.028;</span>
 
-<span class="nc" id="L130">		double dblBankHazardRateDrift = 0.00;</span>
-<span class="nc" id="L131">		double dblBankHazardRateVolatility = 0.005;</span>
-<span class="nc" id="L132">		double dblBankHazardRateInitial = 0.03;</span>
+<span class="fc" id="L130">		double dblBankHazardRateDrift = 0.00;</span>
+<span class="fc" id="L131">		double dblBankHazardRateVolatility = 0.005;</span>
+<span class="fc" id="L132">		double dblBankHazardRateInitial = 0.03;</span>
 
-<span class="nc" id="L134">		double dblBankSeniorRecoveryRateDrift = 0.0;</span>
-<span class="nc" id="L135">		double dblBankSeniorRecoveryRateVolatility = 0.0;</span>
-<span class="nc" id="L136">		double dblBankSeniorRecoveryRateInitial = 0.45;</span>
+<span class="fc" id="L134">		double dblBankSeniorRecoveryRateDrift = 0.0;</span>
+<span class="fc" id="L135">		double dblBankSeniorRecoveryRateVolatility = 0.0;</span>
+<span class="fc" id="L136">		double dblBankSeniorRecoveryRateInitial = 0.45;</span>
 
-<span class="nc" id="L138">		double dblBankSubordinateRecoveryRateDrift = 0.0;</span>
-<span class="nc" id="L139">		double dblBankSubordinateRecoveryRateVolatility = 0.0;</span>
-<span class="nc" id="L140">		double dblBankSubordinateRecoveryRateInitial = 0.25;</span>
+<span class="fc" id="L138">		double dblBankSubordinateRecoveryRateDrift = 0.0;</span>
+<span class="fc" id="L139">		double dblBankSubordinateRecoveryRateVolatility = 0.0;</span>
+<span class="fc" id="L140">		double dblBankSubordinateRecoveryRateInitial = 0.25;</span>
 
-<span class="nc" id="L142">		double dblCounterPartyHazardRateDrift = 0.00;</span>
-<span class="nc" id="L143">		double dblCounterPartyHazardRateVolatility = 0.005;</span>
-<span class="nc" id="L144">		double dblCounterPartyHazardRateInitial = 0.05;</span>
+<span class="fc" id="L142">		double dblCounterPartyHazardRateDrift = 0.00;</span>
+<span class="fc" id="L143">		double dblCounterPartyHazardRateVolatility = 0.005;</span>
+<span class="fc" id="L144">		double dblCounterPartyHazardRateInitial = 0.05;</span>
 
-<span class="nc" id="L146">		double dblCounterPartyRecoveryRateDrift = 0.0;</span>
-<span class="nc" id="L147">		double dblCounterPartyRecoveryRateVolatility = 0.0;</span>
-<span class="nc" id="L148">		double dblCounterPartyRecoveryRateInitial = 0.30;</span>
+<span class="fc" id="L146">		double dblCounterPartyRecoveryRateDrift = 0.0;</span>
+<span class="fc" id="L147">		double dblCounterPartyRecoveryRateVolatility = 0.0;</span>
+<span class="fc" id="L148">		double dblCounterPartyRecoveryRateInitial = 0.30;</span>
 
-<span class="nc" id="L150">		Tradeable tAsset = new Tradeable (</span>
+<span class="fc" id="L150">		Tradeable tAsset = new Tradeable (</span>
 			new DiffusionEvolver (
-<span class="nc" id="L152">				DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="fc" id="L152">				DiffusionEvaluatorLogarithmic.Standard (</span>
 					dblAssetNumeraireDrift - dblAssetNumeraireDividend,
 					dblAssetNumeraireVolatility
 				)
@@ -157,9 +157,9 @@ import org.drip.xva.universe.*;
 			dblAssetNumeraireRepo
 		);
 
-<span class="nc" id="L160">		Tradeable tOvernightIndex = new Tradeable (</span>
+<span class="fc" id="L160">		Tradeable tOvernightIndex = new Tradeable (</span>
 			new DiffusionEvolver (
-<span class="nc" id="L162">				DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="fc" id="L162">				DiffusionEvaluatorLogarithmic.Standard (</span>
 					dblOvernightIndexNumeraireDrift,
 					dblOvernightIndexNumeraireVolatility
 				)
@@ -167,9 +167,9 @@ import org.drip.xva.universe.*;
 			dblOvernightIndexNumeraireRepo
 		);
 
-<span class="nc" id="L170">		Tradeable tCollateralScheme = new Tradeable (</span>
+<span class="fc" id="L170">		Tradeable tCollateralScheme = new Tradeable (</span>
 			new DiffusionEvolver (
-<span class="nc" id="L172">				DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="fc" id="L172">				DiffusionEvaluatorLogarithmic.Standard (</span>
 					dblCollateralSchemeNumeraireDrift,
 					dblCollateralSchemeNumeraireVolatility
 				)
@@ -177,13 +177,13 @@ import org.drip.xva.universe.*;
 			dblCollateralSchemeNumeraireRepo
 		);
 
-<span class="nc" id="L180">		Tradeable tBankSeniorFunding = new Tradeable (</span>
+<span class="fc" id="L180">		Tradeable tBankSeniorFunding = new Tradeable (</span>
 			new JumpDiffusionEvolver (
-<span class="nc" id="L182">				DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="fc" id="L182">				DiffusionEvaluatorLogarithmic.Standard (</span>
 					dblBankSeniorFundingNumeraireDrift,
 					dblBankSeniorFundingNumeraireVolatility
 				),
-<span class="nc" id="L186">				HazardJumpEvaluator.Standard (</span>
+<span class="fc" id="L186">				HazardJumpEvaluator.Standard (</span>
 					dblBankHazardRateInitial,
 					dblBankSeniorRecoveryRateInitial
 				)
@@ -191,13 +191,13 @@ import org.drip.xva.universe.*;
 			dblBankSeniorFundingNumeraireRepo
 		);
 
-<span class="nc" id="L194">		Tradeable tBankSubordinateFunding = new Tradeable (</span>
+<span class="fc" id="L194">		Tradeable tBankSubordinateFunding = new Tradeable (</span>
 			new JumpDiffusionEvolver (
-<span class="nc" id="L196">				DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="fc" id="L196">				DiffusionEvaluatorLogarithmic.Standard (</span>
 					dblBankSubordinateFundingNumeraireDrift,
 					dblBankSubordinateFundingNumeraireVolatility
 				),
-<span class="nc" id="L200">				HazardJumpEvaluator.Standard (</span>
+<span class="fc" id="L200">				HazardJumpEvaluator.Standard (</span>
 					dblBankHazardRateInitial,
 					dblBankSubordinateRecoveryRateInitial
 				)
@@ -205,13 +205,13 @@ import org.drip.xva.universe.*;
 			dblBankSubordinateFundingNumeraireRepo
 		);
 
-<span class="nc" id="L208">		Tradeable tCounterPartyFunding = new Tradeable (</span>
+<span class="fc" id="L208">		Tradeable tCounterPartyFunding = new Tradeable (</span>
 			new JumpDiffusionEvolver (
-<span class="nc" id="L210">				DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="fc" id="L210">				DiffusionEvaluatorLogarithmic.Standard (</span>
 					dblCounterPartyFundingNumeraireDrift,
 					dblCounterPartyFundingNumeraireVolatility
 				),
-<span class="nc" id="L214">				HazardJumpEvaluator.Standard (</span>
+<span class="fc" id="L214">				HazardJumpEvaluator.Standard (</span>
 					dblCounterPartyHazardRateInitial,
 					dblCounterPartyRecoveryRateInitial
 				)
@@ -219,52 +219,52 @@ import org.drip.xva.universe.*;
 			dblCounterPartyFundingNumeraireRepo
 		);
 
-<span class="nc" id="L222">		DiffusionEvolver deBankHazardRate = new DiffusionEvolver (</span>
-<span class="nc" id="L223">			DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="fc" id="L222">		DiffusionEvolver deBankHazardRate = new DiffusionEvolver (</span>
+<span class="fc" id="L223">			DiffusionEvaluatorLogarithmic.Standard (</span>
 				dblBankHazardRateDrift,
 				dblBankHazardRateVolatility
 			)
 		);
 
-<span class="nc" id="L229">		DiffusionEvolver deBankSeniorRecoveryRate = new DiffusionEvolver (</span>
-<span class="nc" id="L230">			DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="fc" id="L229">		DiffusionEvolver deBankSeniorRecoveryRate = new DiffusionEvolver (</span>
+<span class="fc" id="L230">			DiffusionEvaluatorLogarithmic.Standard (</span>
 				dblBankSeniorRecoveryRateDrift,
 				dblBankSeniorRecoveryRateVolatility
 			)
 		);
 
-<span class="nc" id="L236">		DiffusionEvolver deBankSubordinateRecoveryRate = new DiffusionEvolver (</span>
-<span class="nc" id="L237">			DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="fc" id="L236">		DiffusionEvolver deBankSubordinateRecoveryRate = new DiffusionEvolver (</span>
+<span class="fc" id="L237">			DiffusionEvaluatorLogarithmic.Standard (</span>
 				dblBankSubordinateRecoveryRateDrift,
 				dblBankSubordinateRecoveryRateVolatility
 			)
 		);
 
-<span class="nc" id="L243">		DiffusionEvolver deCounterPartyHazardRate = new DiffusionEvolver (</span>
-<span class="nc" id="L244">			DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="fc" id="L243">		DiffusionEvolver deCounterPartyHazardRate = new DiffusionEvolver (</span>
+<span class="fc" id="L244">			DiffusionEvaluatorLogarithmic.Standard (</span>
 				dblCounterPartyHazardRateDrift,
 				dblCounterPartyHazardRateVolatility
 			)
 		);
 
-<span class="nc" id="L250">		DiffusionEvolver deCounterPartyRecoveryRate = new DiffusionEvolver (</span>
-<span class="nc" id="L251">			DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="fc" id="L250">		DiffusionEvolver deCounterPartyRecoveryRate = new DiffusionEvolver (</span>
+<span class="fc" id="L251">			DiffusionEvaluatorLogarithmic.Standard (</span>
 				dblCounterPartyRecoveryRateDrift,
 				dblCounterPartyRecoveryRateVolatility
 			)
 		);
 
-<span class="nc" id="L257">		JulianDate dtSpot = DateUtil.Today();</span>
+<span class="fc" id="L257">		JulianDate dtSpot = DateUtil.Today();</span>
 
-<span class="nc" id="L259">		int iSpotDate = dtSpot.julian();</span>
+<span class="fc" id="L259">		int iSpotDate = dtSpot.julian();</span>
 
-<span class="nc" id="L261">		int aiVertexDate[] = VertexDateBuilder.EqualWidth (</span>
+<span class="fc" id="L261">		int aiVertexDate[] = VertexDateBuilder.EqualWidth (</span>
 			iSpotDate,
 			iSpotDate + iSimulationDuration,
 			iNumVertex
 		);
 
-<span class="nc" id="L267">		MarketVertexGenerator mvg = new MarketVertexGenerator (</span>
+<span class="fc" id="L267">		MarketVertexGenerator mvg = new MarketVertexGenerator (</span>
 			iSpotDate,
 			aiVertexDate,
 			aadblCorrelationMatrix,
@@ -283,7 +283,7 @@ import org.drip.xva.universe.*;
 			deCounterPartyRecoveryRate
 		);
 
-<span class="nc" id="L286">		MarketVertex mvInitial = new MarketVertex (</span>
+<span class="fc" id="L286">		MarketVertex mvInitial = new MarketVertex (</span>
 			dtSpot,
 			dblAssetNumeraireInitial,
 			dblOvernightIndexNumeraireDrift,
@@ -327,130 +327,130 @@ import org.drip.xva.universe.*;
 			)
 		);
 
-<span class="nc" id="L330">		MarketVertex[] aMV = mvg.marketVertex (mvInitial);</span>
+<span class="fc" id="L330">		MarketVertex[] aMV = mvg.marketVertex (mvInitial);</span>
 
-<span class="nc" id="L332">		System.out.println();</span>
+<span class="fc" id="L332">		System.out.println();</span>
 
-<span class="nc" id="L334">		System.out.println (&quot;\t||--------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L334">		System.out.println (&quot;\t||--------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L336">		System.out.println (&quot;\t||          ASSET, OVERNIGHT INDEX, AND COLLATERAL NUMERAIRE          ||&quot;);</span>
+<span class="fc" id="L336">		System.out.println (&quot;\t||          ASSET, OVERNIGHT INDEX, AND COLLATERAL NUMERAIRE          ||&quot;);</span>
 
-<span class="nc" id="L338">		System.out.println (&quot;\t||--------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L338">		System.out.println (&quot;\t||--------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L340">		System.out.println (&quot;\t||    L -&gt; R:                                                         ||&quot;);</span>
+<span class="fc" id="L340">		System.out.println (&quot;\t||    L -&gt; R:                                                         ||&quot;);</span>
 
-<span class="nc" id="L342">		System.out.println (&quot;\t||            - Date                                                  ||&quot;);</span>
+<span class="fc" id="L342">		System.out.println (&quot;\t||            - Date                                                  ||&quot;);</span>
 
-<span class="nc" id="L344">		System.out.println (&quot;\t||            - Overnight Index Rate                                  ||&quot;);</span>
+<span class="fc" id="L344">		System.out.println (&quot;\t||            - Overnight Index Rate                                  ||&quot;);</span>
 
-<span class="nc" id="L346">		System.out.println (&quot;\t||            - Overnight Index Numeraire                             ||&quot;);</span>
+<span class="fc" id="L346">		System.out.println (&quot;\t||            - Overnight Index Numeraire                             ||&quot;);</span>
 
-<span class="nc" id="L348">		System.out.println (&quot;\t||            - Collateral Scheme Rate                                ||&quot;);</span>
+<span class="fc" id="L348">		System.out.println (&quot;\t||            - Collateral Scheme Rate                                ||&quot;);</span>
 
-<span class="nc" id="L350">		System.out.println (&quot;\t||            - Collateral Scheme Numeraire                           ||&quot;);</span>
+<span class="fc" id="L350">		System.out.println (&quot;\t||            - Collateral Scheme Numeraire                           ||&quot;);</span>
 
-<span class="nc" id="L352">		System.out.println (&quot;\t||--------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L352">		System.out.println (&quot;\t||--------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L354" title="All 2 branches missed.">		for (int i = 0; i &lt; aMV.length; ++i)</span>
-<span class="nc" id="L355">			System.out.println (</span>
-<span class="nc" id="L356">				&quot;\t|| &quot; + aMV[i].anchor() + &quot; =&gt; &quot; +</span>
-<span class="nc" id="L357">				FormatUtil.FormatDouble (aMV[i].assetNumeraire(), 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L358">				FormatUtil.FormatDouble (aMV[i].overnightIndexRate(), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L359">				FormatUtil.FormatDouble (aMV[i].overnightIndexNumeraire().forward(), 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L360">				FormatUtil.FormatDouble (aMV[i].collateralSchemeRate(), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L361">				FormatUtil.FormatDouble (aMV[i].collateralSchemeNumeraire().forward(), 1, 6, 1.) + &quot; ||&quot;</span>
+<span class="fc bfc" id="L354" title="All 2 branches covered.">		for (int i = 0; i &lt; aMV.length; ++i)</span>
+<span class="fc" id="L355">			System.out.println (</span>
+<span class="fc" id="L356">				&quot;\t|| &quot; + aMV[i].anchor() + &quot; =&gt; &quot; +</span>
+<span class="fc" id="L357">				FormatUtil.FormatDouble (aMV[i].assetNumeraire(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L358">				FormatUtil.FormatDouble (aMV[i].overnightIndexRate(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L359">				FormatUtil.FormatDouble (aMV[i].overnightIndexNumeraire().forward(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L360">				FormatUtil.FormatDouble (aMV[i].collateralSchemeRate(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L361">				FormatUtil.FormatDouble (aMV[i].collateralSchemeNumeraire().forward(), 1, 6, 1.) + &quot; ||&quot;</span>
 			);
 
-<span class="nc" id="L364">		System.out.println (&quot;\t||--------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L364">		System.out.println (&quot;\t||--------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L366">		System.out.println();</span>
+<span class="fc" id="L366">		System.out.println();</span>
 
-<span class="nc" id="L368">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L368">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L370">		System.out.println (&quot;\t||             BANK REALIZATION VERTEX =&gt; SURVIVAL, SENIOR/SUBORDINATE NODE METRICS             ||&quot;);</span>
+<span class="fc" id="L370">		System.out.println (&quot;\t||             BANK REALIZATION VERTEX =&gt; SURVIVAL, SENIOR/SUBORDINATE NODE METRICS             ||&quot;);</span>
 
-<span class="nc" id="L372">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L372">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L374">		System.out.println (&quot;\t||    L -&gt; R:                                                                                   ||&quot;);</span>
+<span class="fc" id="L374">		System.out.println (&quot;\t||    L -&gt; R:                                                                                   ||&quot;);</span>
 
-<span class="nc" id="L376">		System.out.println (&quot;\t||            - Date                                                                            ||&quot;);</span>
+<span class="fc" id="L376">		System.out.println (&quot;\t||            - Date                                                                            ||&quot;);</span>
 
-<span class="nc" id="L378">		System.out.println (&quot;\t||            - Hazard Rate                                                                     ||&quot;);</span>
+<span class="fc" id="L378">		System.out.println (&quot;\t||            - Hazard Rate                                                                     ||&quot;);</span>
 
-<span class="nc" id="L380">		System.out.println (&quot;\t||            - Survival Probability                                                            ||&quot;);</span>
+<span class="fc" id="L380">		System.out.println (&quot;\t||            - Survival Probability                                                            ||&quot;);</span>
 
-<span class="nc" id="L382">		System.out.println (&quot;\t||            - Senior Recovery Rate                                                            ||&quot;);</span>
+<span class="fc" id="L382">		System.out.println (&quot;\t||            - Senior Recovery Rate                                                            ||&quot;);</span>
 
-<span class="nc" id="L384">		System.out.println (&quot;\t||            - Senior Funding Spread                                                           ||&quot;);</span>
+<span class="fc" id="L384">		System.out.println (&quot;\t||            - Senior Funding Spread                                                           ||&quot;);</span>
 
-<span class="nc" id="L386">		System.out.println (&quot;\t||            - Senior Funding Numeraire                                                        ||&quot;);</span>
+<span class="fc" id="L386">		System.out.println (&quot;\t||            - Senior Funding Numeraire                                                        ||&quot;);</span>
 
-<span class="nc" id="L388">		System.out.println (&quot;\t||            - Subordinate Recovery Rate                                                       ||&quot;);</span>
+<span class="fc" id="L388">		System.out.println (&quot;\t||            - Subordinate Recovery Rate                                                       ||&quot;);</span>
 
-<span class="nc" id="L390">		System.out.println (&quot;\t||            - Subordinate Funding Spread                                                      ||&quot;);</span>
+<span class="fc" id="L390">		System.out.println (&quot;\t||            - Subordinate Funding Spread                                                      ||&quot;);</span>
 
-<span class="nc" id="L392">		System.out.println (&quot;\t||            - Subordinate Funding Numeraire                                                   ||&quot;);</span>
+<span class="fc" id="L392">		System.out.println (&quot;\t||            - Subordinate Funding Numeraire                                                   ||&quot;);</span>
 
-<span class="nc" id="L394">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L394">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L396" title="All 2 branches missed.">		for (int i = 0; i &lt; aMV.length; ++i) {</span>
-<span class="nc" id="L397">			EntityMarketVertex emvBank = aMV[i].bank();</span>
+<span class="fc bfc" id="L396" title="All 2 branches covered.">		for (int i = 0; i &lt; aMV.length; ++i) {</span>
+<span class="fc" id="L397">			EntityMarketVertex emvBank = aMV[i].bank();</span>
 
-<span class="nc" id="L399">			System.out.println (</span>
-<span class="nc" id="L400">				&quot;\t|| &quot; + aMV[i].anchor() + &quot; =&gt; &quot; +</span>
-<span class="nc" id="L401">				FormatUtil.FormatDouble (emvBank.hazardRate(), 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L402">				FormatUtil.FormatDouble (emvBank.survivalProbability(), 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L403">				FormatUtil.FormatDouble (emvBank.seniorRecoveryRate(), 1, 0, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L404">				FormatUtil.FormatDouble (emvBank.seniorFundingSpread(), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L405">				FormatUtil.FormatDouble (emvBank.seniorFundingNumeraire().forward(), 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L406">				FormatUtil.FormatDouble (emvBank.subordinateRecoveryRate(), 1, 0, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L407">				FormatUtil.FormatDouble (emvBank.subordinateFundingSpread(), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L408">				FormatUtil.FormatDouble (emvBank.subordinateFundingNumeraire().forward(), 1, 6, 1.) + &quot; ||&quot;</span>
-			);
-		}
-
-<span class="nc" id="L412">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------||&quot;);</span>
-
-<span class="nc" id="L414">		System.out.println();</span>
-
-<span class="nc" id="L416">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------||&quot;);</span>
-
-<span class="nc" id="L418">		System.out.println (&quot;\t||         COUNTER PARTY REALIZATION VERTEX =&gt; SURVIVAL, SENIOR/SUBORDINATE NODE METRICS        ||&quot;);</span>
-
-<span class="nc" id="L420">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------||&quot;);</span>
-
-<span class="nc" id="L422">		System.out.println (&quot;\t||    L -&gt; R:                                                                                   ||&quot;);</span>
-
-<span class="nc" id="L424">		System.out.println (&quot;\t||            - Date                                                                            ||&quot;);</span>
-
-<span class="nc" id="L426">		System.out.println (&quot;\t||            - Hazard Rate                                                                     ||&quot;);</span>
-
-<span class="nc" id="L428">		System.out.println (&quot;\t||            - Survival Probability                                                            ||&quot;);</span>
-
-<span class="nc" id="L430">		System.out.println (&quot;\t||            - Senior Recovery Rate                                                            ||&quot;);</span>
-
-<span class="nc" id="L432">		System.out.println (&quot;\t||            - Senior Funding Spread                                                           ||&quot;);</span>
-
-<span class="nc" id="L434">		System.out.println (&quot;\t||            - Senior Funding Numeraire                                                        ||&quot;);</span>
-
-<span class="nc" id="L436">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------||&quot;);</span>
-
-<span class="nc bnc" id="L438" title="All 2 branches missed.">		for (int i = 0; i &lt; aMV.length; ++i) {</span>
-<span class="nc" id="L439">			EntityMarketVertex emvCounterParty = aMV[i].counterParty();</span>
-
-<span class="nc" id="L441">			System.out.println (</span>
-<span class="nc" id="L442">				&quot;\t|| &quot; + aMV[i].anchor() + &quot; =&gt; &quot; +</span>
-<span class="nc" id="L443">				FormatUtil.FormatDouble (emvCounterParty.hazardRate(), 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L444">				FormatUtil.FormatDouble (emvCounterParty.survivalProbability(), 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L445">				FormatUtil.FormatDouble (emvCounterParty.seniorRecoveryRate(), 1, 0, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L446">				FormatUtil.FormatDouble (emvCounterParty.seniorFundingSpread(), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L447">				FormatUtil.FormatDouble (emvCounterParty.seniorFundingNumeraire().forward(), 1, 6, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L399">			System.out.println (</span>
+<span class="fc" id="L400">				&quot;\t|| &quot; + aMV[i].anchor() + &quot; =&gt; &quot; +</span>
+<span class="fc" id="L401">				FormatUtil.FormatDouble (emvBank.hazardRate(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L402">				FormatUtil.FormatDouble (emvBank.survivalProbability(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L403">				FormatUtil.FormatDouble (emvBank.seniorRecoveryRate(), 1, 0, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L404">				FormatUtil.FormatDouble (emvBank.seniorFundingSpread(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L405">				FormatUtil.FormatDouble (emvBank.seniorFundingNumeraire().forward(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L406">				FormatUtil.FormatDouble (emvBank.subordinateRecoveryRate(), 1, 0, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L407">				FormatUtil.FormatDouble (emvBank.subordinateFundingSpread(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L408">				FormatUtil.FormatDouble (emvBank.subordinateFundingNumeraire().forward(), 1, 6, 1.) + &quot; ||&quot;</span>
 			);
 		}
 
-<span class="nc" id="L451">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L412">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L453">		System.out.println();</span>
-<span class="nc" id="L454">	}</span>
+<span class="fc" id="L414">		System.out.println();</span>
+
+<span class="fc" id="L416">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L418">		System.out.println (&quot;\t||         COUNTER PARTY REALIZATION VERTEX =&gt; SURVIVAL, SENIOR/SUBORDINATE NODE METRICS        ||&quot;);</span>
+
+<span class="fc" id="L420">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L422">		System.out.println (&quot;\t||    L -&gt; R:                                                                                   ||&quot;);</span>
+
+<span class="fc" id="L424">		System.out.println (&quot;\t||            - Date                                                                            ||&quot;);</span>
+
+<span class="fc" id="L426">		System.out.println (&quot;\t||            - Hazard Rate                                                                     ||&quot;);</span>
+
+<span class="fc" id="L428">		System.out.println (&quot;\t||            - Survival Probability                                                            ||&quot;);</span>
+
+<span class="fc" id="L430">		System.out.println (&quot;\t||            - Senior Recovery Rate                                                            ||&quot;);</span>
+
+<span class="fc" id="L432">		System.out.println (&quot;\t||            - Senior Funding Spread                                                           ||&quot;);</span>
+
+<span class="fc" id="L434">		System.out.println (&quot;\t||            - Senior Funding Numeraire                                                        ||&quot;);</span>
+
+<span class="fc" id="L436">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc bfc" id="L438" title="All 2 branches covered.">		for (int i = 0; i &lt; aMV.length; ++i) {</span>
+<span class="fc" id="L439">			EntityMarketVertex emvCounterParty = aMV[i].counterParty();</span>
+
+<span class="fc" id="L441">			System.out.println (</span>
+<span class="fc" id="L442">				&quot;\t|| &quot; + aMV[i].anchor() + &quot; =&gt; &quot; +</span>
+<span class="fc" id="L443">				FormatUtil.FormatDouble (emvCounterParty.hazardRate(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L444">				FormatUtil.FormatDouble (emvCounterParty.survivalProbability(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L445">				FormatUtil.FormatDouble (emvCounterParty.seniorRecoveryRate(), 1, 0, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L446">				FormatUtil.FormatDouble (emvCounterParty.seniorFundingSpread(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L447">				FormatUtil.FormatDouble (emvCounterParty.seniorFundingNumeraire().forward(), 1, 6, 1.) + &quot; ||&quot;</span>
+			);
+		}
+
+<span class="fc" id="L451">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L453">		System.out.println();</span>
+<span class="fc" id="L454">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

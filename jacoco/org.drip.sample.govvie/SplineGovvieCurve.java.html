@@ -68,24 +68,24 @@ import org.drip.state.govvie.GovvieCurve;
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L71">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L71">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L73">		JulianDate dtSpot = DateUtil.Today();</span>
+<span class="fc" id="L73">		JulianDate dtSpot = DateUtil.Today();</span>
 
-<span class="nc" id="L75">		String strTreasuryCode = &quot;UST&quot;;</span>
-<span class="nc" id="L76">		String strCurrency = &quot;USD&quot;;</span>
+<span class="fc" id="L75">		String strTreasuryCode = &quot;UST&quot;;</span>
+<span class="fc" id="L76">		String strCurrency = &quot;USD&quot;;</span>
 
-<span class="nc" id="L78">		int[] aiMaturityDate = {</span>
-<span class="nc" id="L79">			dtSpot.addTenor (&quot;01Y&quot;).julian(),</span>
-<span class="nc" id="L80">			dtSpot.addTenor (&quot;02Y&quot;).julian(),</span>
-<span class="nc" id="L81">			dtSpot.addTenor (&quot;03Y&quot;).julian(),</span>
-<span class="nc" id="L82">			dtSpot.addTenor (&quot;05Y&quot;).julian(),</span>
-<span class="nc" id="L83">			dtSpot.addTenor (&quot;07Y&quot;).julian(),</span>
-<span class="nc" id="L84">			dtSpot.addTenor (&quot;10Y&quot;).julian(),</span>
-<span class="nc" id="L85">			dtSpot.addTenor (&quot;30Y&quot;).julian()</span>
+<span class="fc" id="L78">		int[] aiMaturityDate = {</span>
+<span class="fc" id="L79">			dtSpot.addTenor (&quot;01Y&quot;).julian(),</span>
+<span class="fc" id="L80">			dtSpot.addTenor (&quot;02Y&quot;).julian(),</span>
+<span class="fc" id="L81">			dtSpot.addTenor (&quot;03Y&quot;).julian(),</span>
+<span class="fc" id="L82">			dtSpot.addTenor (&quot;05Y&quot;).julian(),</span>
+<span class="fc" id="L83">			dtSpot.addTenor (&quot;07Y&quot;).julian(),</span>
+<span class="fc" id="L84">			dtSpot.addTenor (&quot;10Y&quot;).julian(),</span>
+<span class="fc" id="L85">			dtSpot.addTenor (&quot;30Y&quot;).julian()</span>
 		};
 
-<span class="nc" id="L88">		double[] adblYield = {</span>
+<span class="fc" id="L88">		double[] adblYield = {</span>
 			0.0113, // &quot;01Y&quot;,
 			0.0121, // &quot;02Y&quot;,
 			0.0127, // &quot;03Y&quot;,
@@ -95,7 +95,7 @@ import org.drip.state.govvie.GovvieCurve;
 			0.0198  // &quot;30Y&quot;
 		};
 
-<span class="nc" id="L98">		GovvieCurve gc = ScenarioGovvieCurveBuilder.CubicPolynomialCurve (</span>
+<span class="fc" id="L98">		GovvieCurve gc = ScenarioGovvieCurveBuilder.CubicPolynomialCurve (</span>
 			strTreasuryCode,
 			dtSpot,
 			strTreasuryCode,
@@ -104,7 +104,7 @@ import org.drip.state.govvie.GovvieCurve;
 			adblYield
 		);
 
-<span class="nc" id="L107">		JulianDate[] adtEffective = new JulianDate[] {</span>
+<span class="fc" id="L107">		JulianDate[] adtEffective = new JulianDate[] {</span>
 			dtSpot,
 			dtSpot,
 			dtSpot,
@@ -114,42 +114,42 @@ import org.drip.state.govvie.GovvieCurve;
 			dtSpot
 		};
 
-<span class="nc" id="L117">		JulianDate[] adtMaturity = new JulianDate[] {</span>
-<span class="nc" id="L118">			dtSpot.addTenor (&quot;1Y&quot;),</span>
-<span class="nc" id="L119">			dtSpot.addTenor (&quot;2Y&quot;),</span>
-<span class="nc" id="L120">			dtSpot.addTenor (&quot;3Y&quot;),</span>
-<span class="nc" id="L121">			dtSpot.addTenor (&quot;5Y&quot;),</span>
-<span class="nc" id="L122">			dtSpot.addTenor (&quot;7Y&quot;),</span>
-<span class="nc" id="L123">			dtSpot.addTenor (&quot;10Y&quot;),</span>
-<span class="nc" id="L124">			dtSpot.addTenor (&quot;30Y&quot;)</span>
+<span class="fc" id="L117">		JulianDate[] adtMaturity = new JulianDate[] {</span>
+<span class="fc" id="L118">			dtSpot.addTenor (&quot;1Y&quot;),</span>
+<span class="fc" id="L119">			dtSpot.addTenor (&quot;2Y&quot;),</span>
+<span class="fc" id="L120">			dtSpot.addTenor (&quot;3Y&quot;),</span>
+<span class="fc" id="L121">			dtSpot.addTenor (&quot;5Y&quot;),</span>
+<span class="fc" id="L122">			dtSpot.addTenor (&quot;7Y&quot;),</span>
+<span class="fc" id="L123">			dtSpot.addTenor (&quot;10Y&quot;),</span>
+<span class="fc" id="L124">			dtSpot.addTenor (&quot;30Y&quot;)</span>
 		};
 
-<span class="nc" id="L127">		BondComponent[] aTreasury = TreasuryBuilder.FromCode (</span>
+<span class="fc" id="L127">		BondComponent[] aTreasury = TreasuryBuilder.FromCode (</span>
 			strTreasuryCode,
 			adtEffective,
 			adtMaturity,
 			adblYield
 		);
 
-<span class="nc" id="L134">		GovvieCurve gcCalib = ScenarioGovvieCurveBuilder.CubicPolyShapePreserver (</span>
+<span class="fc" id="L134">		GovvieCurve gcCalib = ScenarioGovvieCurveBuilder.CubicPolyShapePreserver (</span>
 			strTreasuryCode,
 			strTreasuryCode,
 			strCurrency,
-<span class="nc" id="L138">			dtSpot.julian(),</span>
+<span class="fc" id="L138">			dtSpot.julian(),</span>
 			aTreasury,
 			adblYield,
 			&quot;Yield&quot;
 		);
 
-<span class="nc" id="L144">		System.out.println();</span>
+<span class="fc" id="L144">		System.out.println();</span>
 
-<span class="nc bnc" id="L146" title="All 2 branches missed.">		for (int i = 0; i &lt; adblYield.length; ++i)</span>
-<span class="nc" id="L147">			System.out.println (</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">		for (int i = 0; i &lt; adblYield.length; ++i)</span>
+<span class="fc" id="L147">			System.out.println (</span>
 				&quot;\t[&quot; + new JulianDate (aiMaturityDate[i]) + &quot;] =&gt; &quot; +
-<span class="nc" id="L149">				FormatUtil.FormatDouble (adblYield[i], 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L150">				FormatUtil.FormatDouble (gc.yield (aiMaturityDate[i]), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L151">				FormatUtil.FormatDouble (gcCalib.yield (aiMaturityDate[i]), 1, 2, 100.) + &quot;% || &quot;</span>
+<span class="fc" id="L149">				FormatUtil.FormatDouble (adblYield[i], 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L150">				FormatUtil.FormatDouble (gc.yield (aiMaturityDate[i]), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L151">				FormatUtil.FormatDouble (gcCalib.yield (aiMaturityDate[i]), 1, 2, 100.) + &quot;% || &quot;</span>
 			);
-<span class="nc" id="L153">	}</span>
+<span class="fc" id="L153">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

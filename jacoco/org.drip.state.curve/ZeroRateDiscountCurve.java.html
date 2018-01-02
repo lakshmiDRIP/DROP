@@ -113,11 +113,11 @@ public class ZeroRateDiscountCurve extends org.drip.state.discount.MergedDiscoun
 		final int iDate2)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L116">		int iStartDate = epoch().julian();</span>
+<span class="fc" id="L116">		int iStartDate = epoch().julian();</span>
 
-<span class="nc bnc" id="L118" title="All 4 branches missed.">		if (iDate1 &lt; iStartDate || iDate2 &lt; iStartDate) return 0.;</span>
+<span class="pc bpc" id="L118" title="2 of 4 branches missed.">		if (iDate1 &lt; iStartDate || iDate2 &lt; iStartDate) return 0.;</span>
 
-<span class="nc" id="L120">		return 365.25 / (iDate2 - iDate1) * java.lang.Math.log (df (iDate1) / df (iDate2));</span>
+<span class="fc" id="L120">		return 365.25 / (iDate2 - iDate1) * java.lang.Math.log (df (iDate1) / df (iDate2));</span>
 	}
 
 	@Override public double zero (
@@ -126,7 +126,7 @@ public class ZeroRateDiscountCurve extends org.drip.state.discount.MergedDiscoun
 	{
 <span class="pc bpc" id="L127" title="1 of 2 branches missed.">		if (iDate &lt;= _span.left()) return 1.;</span>
 
-<span class="pc bpc" id="L129" title="1 of 2 branches missed.">		return iDate &lt;= _span.right() ? _span.calcResponseValue (iDate) : _dblRightFlatForwardRate;</span>
+<span class="fc bfc" id="L129" title="All 2 branches covered.">		return iDate &lt;= _span.right() ? _span.calcResponseValue (iDate) : _dblRightFlatForwardRate;</span>
 	}
 
 	@Override public org.drip.state.forward.ForwardRateEstimator forwardRateEstimator (

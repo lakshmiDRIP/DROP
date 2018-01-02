@@ -59,9 +59,9 @@ package org.drip.state.curve;
  */
 
 public class DeterministicCollateralChoiceDiscountCurve extends org.drip.state.discount.MergedDiscountForwardCurve {
-<span class="nc" id="L62">	private int _iDiscreteCollateralizationIncrement = -1;</span>
-<span class="nc" id="L63">	private org.drip.state.discount.MergedDiscountForwardCurve _dcDomesticCollateralized = null;</span>
-<span class="nc" id="L64">	private org.drip.state.curve.ForeignCollateralizedDiscountCurve[] _aFCDC = null;</span>
+<span class="fc" id="L62">	private int _iDiscreteCollateralizationIncrement = -1;</span>
+<span class="fc" id="L63">	private org.drip.state.discount.MergedDiscountForwardCurve _dcDomesticCollateralized = null;</span>
+<span class="fc" id="L64">	private org.drip.state.curve.ForeignCollateralizedDiscountCurve[] _aFCDC = null;</span>
 
 	/**
 	 * DeterministicCollateralChoiceDiscountCurve constructor
@@ -79,64 +79,64 @@ public class DeterministicCollateralChoiceDiscountCurve extends org.drip.state.d
 		final int iDiscreteCollateralizationIncrement)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L82">		super (dcDomesticCollateralized.epoch().julian(), dcDomesticCollateralized.currency(), null);</span>
+<span class="fc" id="L82">		super (dcDomesticCollateralized.epoch().julian(), dcDomesticCollateralized.currency(), null);</span>
 
-<span class="nc bnc" id="L84" title="All 2 branches missed.">		if (0 &gt;= (_iDiscreteCollateralizationIncrement = iDiscreteCollateralizationIncrement))</span>
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">		if (0 &gt;= (_iDiscreteCollateralizationIncrement = iDiscreteCollateralizationIncrement))</span>
 <span class="nc" id="L85">			throw new java.lang.Exception</span>
 				(&quot;DeterministicCollateralChoiceDiscountCurve ctr: Invalid Collateralization Increment!&quot;);
 
-<span class="nc" id="L88">		_aFCDC = aFCDC;</span>
-<span class="nc" id="L89">		_dcDomesticCollateralized = dcDomesticCollateralized;</span>
-<span class="nc" id="L90">	}</span>
+<span class="fc" id="L88">		_aFCDC = aFCDC;</span>
+<span class="fc" id="L89">		_dcDomesticCollateralized = dcDomesticCollateralized;</span>
+<span class="fc" id="L90">	}</span>
 
 	@Override public double df (
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L96" title="All 2 branches missed.">		if (null == _aFCDC) return _dcDomesticCollateralized.df (iDate);</span>
+<span class="pc bpc" id="L96" title="1 of 2 branches missed.">		if (null == _aFCDC) return _dcDomesticCollateralized.df (iDate);</span>
 
-<span class="nc" id="L98">		int iNumCollateralizer = _aFCDC.length;</span>
+<span class="fc" id="L98">		int iNumCollateralizer = _aFCDC.length;</span>
 
-<span class="nc bnc" id="L100" title="All 2 branches missed.">		if (0 == iNumCollateralizer) return _dcDomesticCollateralized.df (iDate);</span>
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">		if (0 == iNumCollateralizer) return _dcDomesticCollateralized.df (iDate);</span>
 
-<span class="nc bnc" id="L102" title="All 2 branches missed.">		if (iDate &lt;= _iEpochDate) return 1.;</span>
+<span class="pc bpc" id="L102" title="1 of 2 branches missed.">		if (iDate &lt;= _iEpochDate) return 1.;</span>
 
-<span class="nc" id="L104">		double dblDF = 1.;</span>
-<span class="nc" id="L105">		int iWorkoutDate = _iEpochDate;</span>
+<span class="fc" id="L104">		double dblDF = 1.;</span>
+<span class="fc" id="L105">		int iWorkoutDate = _iEpochDate;</span>
 
-<span class="nc bnc" id="L107" title="All 2 branches missed.">		while (java.lang.Math.abs (iDate - iWorkoutDate) &gt; _iDiscreteCollateralizationIncrement) {</span>
-<span class="nc" id="L108">			int iWorkoutEndDate = iWorkoutDate + _iDiscreteCollateralizationIncrement;</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">		while (java.lang.Math.abs (iDate - iWorkoutDate) &gt; _iDiscreteCollateralizationIncrement) {</span>
+<span class="fc" id="L108">			int iWorkoutEndDate = iWorkoutDate + _iDiscreteCollateralizationIncrement;</span>
 
-<span class="nc" id="L110">			double dblDFIncrement = _dcDomesticCollateralized.df (iWorkoutEndDate) /</span>
-<span class="nc" id="L111">				_dcDomesticCollateralized.df (iWorkoutDate);</span>
+<span class="fc" id="L110">			double dblDFIncrement = _dcDomesticCollateralized.df (iWorkoutEndDate) /</span>
+<span class="fc" id="L111">				_dcDomesticCollateralized.df (iWorkoutDate);</span>
 
-<span class="nc bnc" id="L113" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumCollateralizer; ++i) {</span>
-<span class="nc" id="L114">				double dblCollateralizerDFIncrement = _aFCDC[i].df (iWorkoutEndDate) / _aFCDC[i].df</span>
-<span class="nc" id="L115">					(iWorkoutDate);</span>
+<span class="fc bfc" id="L113" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumCollateralizer; ++i) {</span>
+<span class="fc" id="L114">				double dblCollateralizerDFIncrement = _aFCDC[i].df (iWorkoutEndDate) / _aFCDC[i].df</span>
+<span class="fc" id="L115">					(iWorkoutDate);</span>
 
-<span class="nc bnc" id="L117" title="All 2 branches missed.">				if (dblCollateralizerDFIncrement &lt; dblDFIncrement)</span>
+<span class="pc bpc" id="L117" title="1 of 2 branches missed.">				if (dblCollateralizerDFIncrement &lt; dblDFIncrement)</span>
 <span class="nc" id="L118">					dblDFIncrement = dblCollateralizerDFIncrement;</span>
 			}
 
-<span class="nc" id="L121">			dblDF *= dblDFIncrement;</span>
-<span class="nc" id="L122">			iWorkoutDate = iWorkoutEndDate;</span>
-<span class="nc" id="L123">		}</span>
+<span class="fc" id="L121">			dblDF *= dblDFIncrement;</span>
+<span class="fc" id="L122">			iWorkoutDate = iWorkoutEndDate;</span>
+<span class="fc" id="L123">		}</span>
 
-<span class="nc bnc" id="L125" title="All 2 branches missed.">		if (iDate &gt; iWorkoutDate) {</span>
-<span class="nc" id="L126">			double dblDFIncrement = _dcDomesticCollateralized.df (iDate) / _dcDomesticCollateralized.df</span>
-<span class="nc" id="L127">				(iWorkoutDate);</span>
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">		if (iDate &gt; iWorkoutDate) {</span>
+<span class="fc" id="L126">			double dblDFIncrement = _dcDomesticCollateralized.df (iDate) / _dcDomesticCollateralized.df</span>
+<span class="fc" id="L127">				(iWorkoutDate);</span>
 
-<span class="nc bnc" id="L129" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumCollateralizer; ++i) {</span>
-<span class="nc" id="L130">				double dblCollateralizerDFIncrement = _aFCDC[i].df (iDate) / _aFCDC[i].df (iWorkoutDate);</span>
+<span class="fc bfc" id="L129" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumCollateralizer; ++i) {</span>
+<span class="fc" id="L130">				double dblCollateralizerDFIncrement = _aFCDC[i].df (iDate) / _aFCDC[i].df (iWorkoutDate);</span>
 
-<span class="nc bnc" id="L132" title="All 2 branches missed.">				if (dblCollateralizerDFIncrement &lt; dblDFIncrement)</span>
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">				if (dblCollateralizerDFIncrement &lt; dblDFIncrement)</span>
 <span class="nc" id="L133">					dblDFIncrement = dblCollateralizerDFIncrement;</span>
 			}
 
-<span class="nc" id="L136">			dblDF *= dblDFIncrement;</span>
+<span class="fc" id="L136">			dblDF *= dblDFIncrement;</span>
 		}
 
-<span class="nc" id="L139">		return dblDF;</span>
+<span class="fc" id="L139">		return dblDF;</span>
 	}
 
 	@Override public double forward (

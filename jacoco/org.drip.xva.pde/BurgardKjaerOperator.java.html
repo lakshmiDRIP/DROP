@@ -71,8 +71,8 @@ package org.drip.xva.pde;
  */
 
 public class BurgardKjaerOperator {
-<span class="nc" id="L74">	private org.drip.xva.universe.TradeablesContainer _tc = null;</span>
-<span class="nc" id="L75">	private org.drip.xva.definition.PDEEvolutionControl _pdeec = null;</span>
+<span class="fc" id="L74">	private org.drip.xva.universe.TradeablesContainer _tc = null;</span>
+<span class="fc" id="L75">	private org.drip.xva.definition.PDEEvolutionControl _pdeec = null;</span>
 
 	/**
 	 * BurgardKjaerOperator Constructor
@@ -87,10 +87,10 @@ public class BurgardKjaerOperator {
 		final org.drip.xva.universe.TradeablesContainer tc,
 		final org.drip.xva.definition.PDEEvolutionControl pdeec)
 		throws java.lang.Exception
-<span class="nc" id="L90">	{</span>
-<span class="nc bnc" id="L91" title="All 4 branches missed.">		if (null == (_tc = tc) || null == (_pdeec = pdeec))</span>
+<span class="fc" id="L90">	{</span>
+<span class="pc bpc" id="L91" title="2 of 4 branches missed.">		if (null == (_tc = tc) || null == (_pdeec = pdeec))</span>
 <span class="nc" id="L92">			throw new java.lang.Exception (&quot;BurgardKjaerOperator Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L93">	}</span>
+<span class="fc" id="L93">	}</span>
 
 	/**
 	 * Retrieve the Universe of Trade-able Assets
@@ -129,46 +129,46 @@ public class BurgardKjaerOperator {
 		final org.drip.xva.derivative.EvolutionTrajectoryVertex etvStart,
 		final double dblCollateral)
 	{
-<span class="nc bnc" id="L132" title="All 6 branches missed.">		if (null == me || null == etvStart || !org.drip.quant.common.NumberUtil.IsValid (dblCollateral))</span>
+<span class="pc bpc" id="L132" title="3 of 6 branches missed.">		if (null == me || null == etvStart || !org.drip.quant.common.NumberUtil.IsValid (dblCollateral))</span>
 <span class="nc" id="L133">			return null;</span>
 
-<span class="nc" id="L135">		org.drip.xva.universe.MarketVertex mvFinish = me.finish();</span>
+<span class="fc" id="L135">		org.drip.xva.universe.MarketVertex mvFinish = me.finish();</span>
 
-<span class="nc" id="L137">		org.drip.xva.universe.EntityMarketVertex emvBankFinish = mvFinish.bank();</span>
+<span class="fc" id="L137">		org.drip.xva.universe.EntityMarketVertex emvBankFinish = mvFinish.bank();</span>
 
-<span class="nc" id="L139">		org.drip.xva.universe.EntityMarketVertex emvCounterPartyFinish = mvFinish.counterParty();</span>
+<span class="fc" id="L139">		org.drip.xva.universe.EntityMarketVertex emvCounterPartyFinish = mvFinish.counterParty();</span>
 
-<span class="nc" id="L141">		org.drip.xva.derivative.AssetGreekVertex agvStart = etvStart.assetGreekVertex();</span>
+<span class="fc" id="L141">		org.drip.xva.derivative.AssetGreekVertex agvStart = etvStart.assetGreekVertex();</span>
 
-<span class="nc" id="L143">		double dblDerivativeXVAValueStart = agvStart.derivativeXVAValue();</span>
+<span class="fc" id="L143">		double dblDerivativeXVAValueStart = agvStart.derivativeXVAValue();</span>
 
-<span class="nc" id="L145">		double dblGainOnBankDefault = etvStart.gainOnBankDefault();</span>
+<span class="fc" id="L145">		double dblGainOnBankDefault = etvStart.gainOnBankDefault();</span>
 
-<span class="nc" id="L147">		double dblAssetValue = mvFinish.assetNumeraire();</span>
+<span class="fc" id="L147">		double dblAssetValue = mvFinish.assetNumeraire();</span>
 
-<span class="nc" id="L149">		double dblAssetBump = _pdeec.sensitivityShiftFactor() * dblAssetValue;</span>
+<span class="fc" id="L149">		double dblAssetBump = _pdeec.sensitivityShiftFactor() * dblAssetValue;</span>
 
-<span class="nc" id="L151">		double dblBankSeniorDefaultIntensity = emvBankFinish.hazardRate();</span>
+<span class="fc" id="L151">		double dblBankSeniorDefaultIntensity = emvBankFinish.hazardRate();</span>
 
-<span class="nc" id="L153">		double dblCounterPartyDefaultIntensity = emvCounterPartyFinish.hazardRate();</span>
+<span class="fc" id="L153">		double dblCounterPartyDefaultIntensity = emvCounterPartyFinish.hazardRate();</span>
 
-<span class="nc" id="L155">		double dblBankGainOnCounterPartyDefault = etvStart.gainOnCounterPartyDefault();</span>
+<span class="fc" id="L155">		double dblBankGainOnCounterPartyDefault = etvStart.gainOnCounterPartyDefault();</span>
 
-<span class="nc" id="L157">		double dblGainOnCounterPartyDefault = dblCounterPartyDefaultIntensity *</span>
+<span class="fc" id="L157">		double dblGainOnCounterPartyDefault = dblCounterPartyDefaultIntensity *</span>
 			dblBankGainOnCounterPartyDefault;
 
 		try {
-<span class="nc" id="L161">			double[] adblBumpedTheta = new org.drip.xva.pde.ParabolicDifferentialOperator</span>
-<span class="nc" id="L162">				(_tc.asset()).thetaUpDown (etvStart, dblAssetValue, dblAssetBump);</span>
+<span class="fc" id="L161">			double[] adblBumpedTheta = new org.drip.xva.pde.ParabolicDifferentialOperator</span>
+<span class="fc" id="L162">				(_tc.asset()).thetaUpDown (etvStart, dblAssetValue, dblAssetBump);</span>
 
-<span class="nc bnc" id="L164" title="All 4 branches missed.">			if (null == adblBumpedTheta || 3 != adblBumpedTheta.length) return null;</span>
+<span class="pc bpc" id="L164" title="2 of 4 branches missed.">			if (null == adblBumpedTheta || 3 != adblBumpedTheta.length) return null;</span>
 
-<span class="nc" id="L166">			return new org.drip.xva.pde.BurgardKjaerEdgeRun (</span>
+<span class="fc" id="L166">			return new org.drip.xva.pde.BurgardKjaerEdgeRun (</span>
 				dblAssetBump,
 				-1. * adblBumpedTheta[0],
 				-1. * adblBumpedTheta[1],
 				-1. * adblBumpedTheta[2],
-<span class="nc" id="L171">				mvFinish.collateralSchemeNumeraire().forward() * dblCollateral,</span>
+<span class="fc" id="L171">				mvFinish.collateralSchemeNumeraire().forward() * dblCollateral,</span>
 				(dblBankSeniorDefaultIntensity + dblCounterPartyDefaultIntensity) * dblDerivativeXVAValueStart,
 				-1. * dblBankSeniorDefaultIntensity * dblGainOnBankDefault,
 				-1. * dblGainOnCounterPartyDefault,
@@ -196,49 +196,49 @@ public class BurgardKjaerOperator {
 		final org.drip.xva.derivative.EvolutionTrajectoryVertex etvStart,
 		final double dblCollateral)
 	{
-<span class="nc bnc" id="L199" title="All 4 branches missed.">		if (null == me || null == etvStart) return null;</span>
+<span class="pc bpc" id="L199" title="2 of 4 branches missed.">		if (null == me || null == etvStart) return null;</span>
 
-<span class="nc" id="L201">		org.drip.xva.universe.MarketVertex mvFinish = me.finish();</span>
+<span class="fc" id="L201">		org.drip.xva.universe.MarketVertex mvFinish = me.finish();</span>
 
-<span class="nc" id="L203">		double dblDerivativeXVAValue = etvStart.assetGreekVertex().derivativeXVAValue();</span>
+<span class="fc" id="L203">		double dblDerivativeXVAValue = etvStart.assetGreekVertex().derivativeXVAValue();</span>
 
-<span class="nc" id="L205">		org.drip.xva.universe.EntityMarketVertex emvBankFinish = mvFinish.bank();</span>
+<span class="fc" id="L205">		org.drip.xva.universe.EntityMarketVertex emvBankFinish = mvFinish.bank();</span>
 
-<span class="nc" id="L207">		org.drip.xva.universe.EntityMarketVertex emvCounterPartyFinish = mvFinish.counterParty();</span>
+<span class="fc" id="L207">		org.drip.xva.universe.EntityMarketVertex emvCounterPartyFinish = mvFinish.counterParty();</span>
 
-<span class="nc" id="L209">		double dblCounterPartyRecovery = emvCounterPartyFinish.seniorRecoveryRate();</span>
+<span class="fc" id="L209">		double dblCounterPartyRecovery = emvCounterPartyFinish.seniorRecoveryRate();</span>
 
-<span class="nc" id="L211">		double dblBankDefaultIntensity = emvBankFinish.hazardRate();</span>
+<span class="fc" id="L211">		double dblBankDefaultIntensity = emvBankFinish.hazardRate();</span>
 
-<span class="nc" id="L213">		double dblCounterPartyDefaultIntensity = emvCounterPartyFinish.hazardRate();</span>
+<span class="fc" id="L213">		double dblCounterPartyDefaultIntensity = emvCounterPartyFinish.hazardRate();</span>
 
-<span class="nc" id="L215">		double dblCloseOutMTM = org.drip.xva.definition.PDEEvolutionControl.CLOSEOUT_GREGORY_LI_TANG ==</span>
-<span class="nc bnc" id="L216" title="All 2 branches missed.">			_pdeec.closeOutScheme() ? dblDerivativeXVAValue : dblDerivativeXVAValue;</span>
+<span class="fc" id="L215">		double dblCloseOutMTM = org.drip.xva.definition.PDEEvolutionControl.CLOSEOUT_GREGORY_LI_TANG ==</span>
+<span class="pc bpc" id="L216" title="1 of 2 branches missed.">			_pdeec.closeOutScheme() ? dblDerivativeXVAValue : dblDerivativeXVAValue;</span>
 
-<span class="nc bnc" id="L218" title="All 2 branches missed.">		double dblBankExposure = dblCloseOutMTM &gt; 0. ? dblCloseOutMTM : emvBankFinish.seniorRecoveryRate() *</span>
+<span class="pc bpc" id="L218" title="1 of 2 branches missed.">		double dblBankExposure = dblCloseOutMTM &gt; 0. ? dblCloseOutMTM : emvBankFinish.seniorRecoveryRate() *</span>
 			dblCloseOutMTM;
 
-<span class="nc" id="L221">		double dblAssetValue = mvFinish.assetNumeraire();</span>
+<span class="fc" id="L221">		double dblAssetValue = mvFinish.assetNumeraire();</span>
 
-<span class="nc" id="L223">		double dblAssetBump = _pdeec.sensitivityShiftFactor() * dblAssetValue;</span>
+<span class="fc" id="L223">		double dblAssetBump = _pdeec.sensitivityShiftFactor() * dblAssetValue;</span>
 
-<span class="nc bnc" id="L225" title="All 2 branches missed.">		double dblDerivativeXVACounterPartyDefaultGrowth = -1. * dblCounterPartyDefaultIntensity *</span>
+<span class="pc bpc" id="L225" title="1 of 2 branches missed.">		double dblDerivativeXVACounterPartyDefaultGrowth = -1. * dblCounterPartyDefaultIntensity *</span>
 			(dblCloseOutMTM &lt; 0. ? dblCloseOutMTM : dblCounterPartyRecovery * dblCloseOutMTM);
 
-<span class="nc" id="L228">		double dblBankSeniorFundingSpread = emvBankFinish.seniorFundingSpread() / me.vertexIncrement();</span>
+<span class="fc" id="L228">		double dblBankSeniorFundingSpread = emvBankFinish.seniorFundingSpread() / me.vertexIncrement();</span>
 
 		try {
-<span class="nc" id="L231">			double[] adblBumpedTheta = new org.drip.xva.pde.ParabolicDifferentialOperator</span>
-<span class="nc" id="L232">				(_tc.asset()).thetaUpDown (etvStart, dblAssetValue, dblAssetBump);</span>
+<span class="fc" id="L231">			double[] adblBumpedTheta = new org.drip.xva.pde.ParabolicDifferentialOperator</span>
+<span class="fc" id="L232">				(_tc.asset()).thetaUpDown (etvStart, dblAssetValue, dblAssetBump);</span>
 
-<span class="nc bnc" id="L234" title="All 4 branches missed.">			if (null == adblBumpedTheta || 3 != adblBumpedTheta.length) return null;</span>
+<span class="pc bpc" id="L234" title="2 of 4 branches missed.">			if (null == adblBumpedTheta || 3 != adblBumpedTheta.length) return null;</span>
 
-<span class="nc" id="L236">			return new org.drip.xva.pde.BurgardKjaerEdgeAttribution (</span>
+<span class="fc" id="L236">			return new org.drip.xva.pde.BurgardKjaerEdgeAttribution (</span>
 				dblAssetBump,
 				-1. * adblBumpedTheta[0],
 				-1. * adblBumpedTheta[1],
 				-1. * adblBumpedTheta[2],
-<span class="nc" id="L241">				mvFinish.collateralSchemeNumeraire().forward() * dblCollateral,</span>
+<span class="fc" id="L241">				mvFinish.collateralSchemeNumeraire().forward() * dblCollateral,</span>
 				(dblBankDefaultIntensity + dblCounterPartyDefaultIntensity) * dblDerivativeXVAValue,
 				dblBankSeniorFundingSpread * dblBankExposure,
 				-1. * dblBankDefaultIntensity * dblBankExposure,

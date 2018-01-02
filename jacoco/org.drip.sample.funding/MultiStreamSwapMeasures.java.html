@@ -85,14 +85,14 @@ import org.drip.state.identifier.*;
 		final String strMaturityTenor,
 		final double dblCoupon)
 	{
-<span class="nc" id="L88">		FixedFloatSwapConvention ffConv = IBORFixedFloatContainer.ConventionFromJurisdiction (</span>
+<span class="fc" id="L88">		FixedFloatSwapConvention ffConv = IBORFixedFloatContainer.ConventionFromJurisdiction (</span>
 			strCurrency,
 			&quot;ALL&quot;,
 			strMaturityTenor,
 			&quot;MAIN&quot;
 		);
 
-<span class="nc" id="L95">		return ffConv.createFixFloatComponent (</span>
+<span class="fc" id="L95">		return ffConv.createFixFloatComponent (</span>
 			dtSpot,
 			strMaturityTenor,
 			dblCoupon,
@@ -117,20 +117,20 @@ import org.drip.state.identifier.*;
 		final String strCurrency)
 		throws Exception
 	{
-<span class="nc" id="L120">		int iNumDCInstruments = astrDepositTenor.length + adblIRSRate.length;</span>
-<span class="nc" id="L121">		int aiDate[] = new int[iNumDCInstruments];</span>
-<span class="nc" id="L122">		double adblRate[] = new double[iNumDCInstruments];</span>
-<span class="nc" id="L123">		String astrCalibMeasure[] = new String[iNumDCInstruments];</span>
-<span class="nc" id="L124">		double adblCompCalibValue[] = new double[iNumDCInstruments];</span>
-<span class="nc" id="L125">		CalibratableComponent aCompCalib[] = new CalibratableComponent[iNumDCInstruments];</span>
+<span class="fc" id="L120">		int iNumDCInstruments = astrDepositTenor.length + adblIRSRate.length;</span>
+<span class="fc" id="L121">		int aiDate[] = new int[iNumDCInstruments];</span>
+<span class="fc" id="L122">		double adblRate[] = new double[iNumDCInstruments];</span>
+<span class="fc" id="L123">		String astrCalibMeasure[] = new String[iNumDCInstruments];</span>
+<span class="fc" id="L124">		double adblCompCalibValue[] = new double[iNumDCInstruments];</span>
+<span class="fc" id="L125">		CalibratableComponent aCompCalib[] = new CalibratableComponent[iNumDCInstruments];</span>
 
 		// Deposit Calibration
 
-<span class="nc" id="L129">		ComposableFloatingUnitSetting cfusDeposit = new ComposableFloatingUnitSetting (</span>
+<span class="fc" id="L129">		ComposableFloatingUnitSetting cfusDeposit = new ComposableFloatingUnitSetting (</span>
 			&quot;3M&quot;,
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE,
 			null,
-<span class="nc" id="L133">			ForwardLabel.Create (</span>
+<span class="fc" id="L133">			ForwardLabel.Create (</span>
 				strCurrency,
 				&quot;3M&quot;
 			),
@@ -138,7 +138,7 @@ import org.drip.state.identifier.*;
 			0.
 		);
 
-<span class="nc" id="L141">		CompositePeriodSetting cpsDeposit = new CompositePeriodSetting (</span>
+<span class="fc" id="L141">		CompositePeriodSetting cpsDeposit = new CompositePeriodSetting (</span>
 			4,
 			&quot;3M&quot;,
 			strCurrency,
@@ -150,24 +150,24 @@ import org.drip.state.identifier.*;
 			null
 		);
 
-<span class="nc" id="L153">		CashSettleParams csp = new CashSettleParams (</span>
+<span class="fc" id="L153">		CashSettleParams csp = new CashSettleParams (</span>
 			0,
 			strCurrency,
 			0
 		);
 
-<span class="nc bnc" id="L159" title="All 2 branches missed.">		for (int i = 0; i &lt; astrDepositTenor.length; ++i) {</span>
-<span class="nc" id="L160">			astrCalibMeasure[i] = &quot;Rate&quot;;</span>
-<span class="nc" id="L161">			adblRate[i] = java.lang.Double.NaN;</span>
-<span class="nc" id="L162">			adblCompCalibValue[i] = adblDepositRate[i] + dblBump;</span>
+<span class="fc bfc" id="L159" title="All 2 branches covered.">		for (int i = 0; i &lt; astrDepositTenor.length; ++i) {</span>
+<span class="fc" id="L160">			astrCalibMeasure[i] = &quot;Rate&quot;;</span>
+<span class="fc" id="L161">			adblRate[i] = java.lang.Double.NaN;</span>
+<span class="fc" id="L162">			adblCompCalibValue[i] = adblDepositRate[i] + dblBump;</span>
 
-<span class="nc" id="L164">			aCompCalib[i] = new SingleStreamComponent (</span>
+<span class="fc" id="L164">			aCompCalib[i] = new SingleStreamComponent (</span>
 				&quot;DEPOSIT_&quot; + astrDepositTenor[i],
 				new Stream (
-<span class="nc" id="L167">					CompositePeriodBuilder.FloatingCompositeUnit (</span>
-<span class="nc" id="L168">						CompositePeriodBuilder.EdgePair (</span>
+<span class="fc" id="L167">					CompositePeriodBuilder.FloatingCompositeUnit (</span>
+<span class="fc" id="L168">						CompositePeriodBuilder.EdgePair (</span>
 							dtStart,
-<span class="nc" id="L170">							new JulianDate (aiDate[i] = dtStart.addTenor (astrDepositTenor[i]).julian())</span>
+<span class="fc" id="L170">							new JulianDate (aiDate[i] = dtStart.addTenor (astrDepositTenor[i]).julian())</span>
 						),
 						cpsDeposit,
 						cfusDeposit
@@ -176,33 +176,33 @@ import org.drip.state.identifier.*;
 				csp
 			);
 
-<span class="nc" id="L179">			aCompCalib[i].setPrimaryCode (astrDepositTenor[i]);</span>
+<span class="fc" id="L179">			aCompCalib[i].setPrimaryCode (astrDepositTenor[i]);</span>
 		}
 
 		// IRS Calibration
 
-<span class="nc bnc" id="L184" title="All 2 branches missed.">		for (int i = 0; i &lt; astrIRSTenor.length; ++i) {</span>
-<span class="nc" id="L185">			astrCalibMeasure[i + astrDepositTenor.length] = &quot;Rate&quot;;</span>
-<span class="nc" id="L186">			adblRate[i + astrDepositTenor.length] = java.lang.Double.NaN;</span>
-<span class="nc" id="L187">			adblCompCalibValue[i + astrDepositTenor.length] = adblIRSRate[i] + dblBump;</span>
+<span class="fc bfc" id="L184" title="All 2 branches covered.">		for (int i = 0; i &lt; astrIRSTenor.length; ++i) {</span>
+<span class="fc" id="L185">			astrCalibMeasure[i + astrDepositTenor.length] = &quot;Rate&quot;;</span>
+<span class="fc" id="L186">			adblRate[i + astrDepositTenor.length] = java.lang.Double.NaN;</span>
+<span class="fc" id="L187">			adblCompCalibValue[i + astrDepositTenor.length] = adblIRSRate[i] + dblBump;</span>
 
-<span class="nc" id="L189">			FixFloatComponent irs = OTCIRS (</span>
+<span class="fc" id="L189">			FixFloatComponent irs = OTCIRS (</span>
 				dtStart,
 				strCurrency,
 				astrIRSTenor[i],
 				adblIRSRate[i] + dblBump
 			);
 
-<span class="nc" id="L196">			irs.setPrimaryCode (&quot;IRS.&quot; + astrIRSTenor[i] + &quot;.&quot; + strCurrency);</span>
+<span class="fc" id="L196">			irs.setPrimaryCode (&quot;IRS.&quot; + astrIRSTenor[i] + &quot;.&quot; + strCurrency);</span>
 
-<span class="nc" id="L198">			aCompCalib[i + astrDepositTenor.length] = irs;</span>
+<span class="fc" id="L198">			aCompCalib[i + astrDepositTenor.length] = irs;</span>
 		}
 
 		/*
 		 * Build the IR curve from the components, their calibration measures, and their calibration quotes.
 		 */
 
-<span class="nc" id="L205">		return ScenarioDiscountCurveBuilder.NonlinearBuild (</span>
+<span class="fc" id="L205">		return ScenarioDiscountCurveBuilder.NonlinearBuild (</span>
 			dtStart,
 			strCurrency,
 			aCompCalib,
@@ -226,9 +226,9 @@ import org.drip.state.identifier.*;
 		 * Create a sequence of Fixed Streams
 		 */
 
-<span class="nc" id="L229">		Stream[] aFixedStream = new Stream[3];</span>
+<span class="fc" id="L229">		Stream[] aFixedStream = new Stream[3];</span>
 
-<span class="nc" id="L231">		UnitCouponAccrualSetting ucasFixed = new UnitCouponAccrualSetting (</span>
+<span class="fc" id="L231">		UnitCouponAccrualSetting ucasFixed = new UnitCouponAccrualSetting (</span>
 			2,
 			&quot;Act/360&quot;,
 			false,
@@ -239,7 +239,7 @@ import org.drip.state.identifier.*;
 			CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC
 		);
 
-<span class="nc" id="L242">		ComposableFixedUnitSetting cfusFixed3Y = new ComposableFixedUnitSetting (</span>
+<span class="fc" id="L242">		ComposableFixedUnitSetting cfusFixed3Y = new ComposableFixedUnitSetting (</span>
 			&quot;6M&quot;,
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 			null,
@@ -248,7 +248,7 @@ import org.drip.state.identifier.*;
 			&quot;USD&quot;
 		);
 
-<span class="nc" id="L251">		ComposableFixedUnitSetting cfusFixed5Y = new ComposableFixedUnitSetting (</span>
+<span class="fc" id="L251">		ComposableFixedUnitSetting cfusFixed5Y = new ComposableFixedUnitSetting (</span>
 			&quot;6M&quot;,
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 			null,
@@ -257,7 +257,7 @@ import org.drip.state.identifier.*;
 			&quot;USD&quot;
 		);
 
-<span class="nc" id="L260">		ComposableFixedUnitSetting cfusFixed7Y = new ComposableFixedUnitSetting (</span>
+<span class="fc" id="L260">		ComposableFixedUnitSetting cfusFixed7Y = new ComposableFixedUnitSetting (</span>
 			&quot;6M&quot;,
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 			null,
@@ -266,7 +266,7 @@ import org.drip.state.identifier.*;
 			&quot;USD&quot;
 		);
 
-<span class="nc" id="L269">		CompositePeriodSetting cpsFixed = new CompositePeriodSetting (</span>
+<span class="fc" id="L269">		CompositePeriodSetting cpsFixed = new CompositePeriodSetting (</span>
 			2,
 			&quot;6M&quot;,
 			&quot;USD&quot;,
@@ -278,9 +278,9 @@ import org.drip.state.identifier.*;
 			null
 		);
 
-<span class="nc" id="L281">		aFixedStream[0] = new Stream (</span>
-<span class="nc" id="L282">			CompositePeriodBuilder.FixedCompositeUnit (</span>
-<span class="nc" id="L283">				CompositePeriodBuilder.RegularEdgeDates (</span>
+<span class="fc" id="L281">		aFixedStream[0] = new Stream (</span>
+<span class="fc" id="L282">			CompositePeriodBuilder.FixedCompositeUnit (</span>
+<span class="fc" id="L283">				CompositePeriodBuilder.RegularEdgeDates (</span>
 					dtEffective,
 					&quot;6M&quot;,
 					&quot;3Y&quot;,
@@ -292,9 +292,9 @@ import org.drip.state.identifier.*;
 			)
 		);
 
-<span class="nc" id="L295">		aFixedStream[1] = new Stream (</span>
-<span class="nc" id="L296">			CompositePeriodBuilder.FixedCompositeUnit (</span>
-<span class="nc" id="L297">				CompositePeriodBuilder.RegularEdgeDates (</span>
+<span class="fc" id="L295">		aFixedStream[1] = new Stream (</span>
+<span class="fc" id="L296">			CompositePeriodBuilder.FixedCompositeUnit (</span>
+<span class="fc" id="L297">				CompositePeriodBuilder.RegularEdgeDates (</span>
 					dtEffective,
 					&quot;6M&quot;,
 					&quot;5Y&quot;,
@@ -306,9 +306,9 @@ import org.drip.state.identifier.*;
 			)
 		);
 
-<span class="nc" id="L309">		aFixedStream[2] = new Stream (</span>
-<span class="nc" id="L310">			CompositePeriodBuilder.FixedCompositeUnit (</span>
-<span class="nc" id="L311">				CompositePeriodBuilder.RegularEdgeDates (</span>
+<span class="fc" id="L309">		aFixedStream[2] = new Stream (</span>
+<span class="fc" id="L310">			CompositePeriodBuilder.FixedCompositeUnit (</span>
+<span class="fc" id="L311">				CompositePeriodBuilder.RegularEdgeDates (</span>
 					dtEffective,
 					&quot;6M&quot;,
 					&quot;7Y&quot;,
@@ -324,13 +324,13 @@ import org.drip.state.identifier.*;
 		 * Create a sequence of Float Streams
 		 */
 
-<span class="nc" id="L327">		Stream[] aFloatStream = new Stream[3];</span>
+<span class="fc" id="L327">		Stream[] aFloatStream = new Stream[3];</span>
 
-<span class="nc" id="L329">		ComposableFloatingUnitSetting cfusFloat3Y = new ComposableFloatingUnitSetting (</span>
+<span class="fc" id="L329">		ComposableFloatingUnitSetting cfusFloat3Y = new ComposableFloatingUnitSetting (</span>
 			&quot;3M&quot;,
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE,
 			null,
-<span class="nc" id="L333">			ForwardLabel.Create (</span>
+<span class="fc" id="L333">			ForwardLabel.Create (</span>
 				&quot;USD&quot;,
 				&quot;3M&quot;
 			),
@@ -338,11 +338,11 @@ import org.drip.state.identifier.*;
 			0.03
 		);
 
-<span class="nc" id="L341">		ComposableFloatingUnitSetting cfusFloat5Y = new ComposableFloatingUnitSetting (</span>
+<span class="fc" id="L341">		ComposableFloatingUnitSetting cfusFloat5Y = new ComposableFloatingUnitSetting (</span>
 			&quot;3M&quot;,
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE,
 			null,
-<span class="nc" id="L345">			ForwardLabel.Create (</span>
+<span class="fc" id="L345">			ForwardLabel.Create (</span>
 				&quot;USD&quot;,
 				&quot;3M&quot;
 			),
@@ -350,11 +350,11 @@ import org.drip.state.identifier.*;
 			0.05
 		);
 
-<span class="nc" id="L353">		ComposableFloatingUnitSetting cfusFloat7Y = new ComposableFloatingUnitSetting (</span>
+<span class="fc" id="L353">		ComposableFloatingUnitSetting cfusFloat7Y = new ComposableFloatingUnitSetting (</span>
 			&quot;3M&quot;,
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE,
 			null,
-<span class="nc" id="L357">			ForwardLabel.Create (</span>
+<span class="fc" id="L357">			ForwardLabel.Create (</span>
 				&quot;USD&quot;,
 				&quot;3M&quot;
 			),
@@ -362,7 +362,7 @@ import org.drip.state.identifier.*;
 			0.07
 		);
 
-<span class="nc" id="L365">		CompositePeriodSetting cpsFloat = new CompositePeriodSetting (</span>
+<span class="fc" id="L365">		CompositePeriodSetting cpsFloat = new CompositePeriodSetting (</span>
 			4,
 			&quot;3M&quot;,
 			&quot;USD&quot;,
@@ -374,9 +374,9 @@ import org.drip.state.identifier.*;
 			null
 		);
 
-<span class="nc" id="L377">		aFloatStream[0] = new Stream (</span>
-<span class="nc" id="L378">			CompositePeriodBuilder.FloatingCompositeUnit (</span>
-<span class="nc" id="L379">				CompositePeriodBuilder.RegularEdgeDates (</span>
+<span class="fc" id="L377">		aFloatStream[0] = new Stream (</span>
+<span class="fc" id="L378">			CompositePeriodBuilder.FloatingCompositeUnit (</span>
+<span class="fc" id="L379">				CompositePeriodBuilder.RegularEdgeDates (</span>
 					dtEffective,
 					&quot;6M&quot;,
 					&quot;3Y&quot;,
@@ -387,9 +387,9 @@ import org.drip.state.identifier.*;
 			)
 		);
 
-<span class="nc" id="L390">		aFloatStream[1] = new Stream (</span>
-<span class="nc" id="L391">			CompositePeriodBuilder.FloatingCompositeUnit (</span>
-<span class="nc" id="L392">				CompositePeriodBuilder.RegularEdgeDates (</span>
+<span class="fc" id="L390">		aFloatStream[1] = new Stream (</span>
+<span class="fc" id="L391">			CompositePeriodBuilder.FloatingCompositeUnit (</span>
+<span class="fc" id="L392">				CompositePeriodBuilder.RegularEdgeDates (</span>
 					dtEffective,
 					&quot;6M&quot;,
 					&quot;5Y&quot;,
@@ -400,9 +400,9 @@ import org.drip.state.identifier.*;
 			)
 		);
 
-<span class="nc" id="L403">		aFloatStream[2] = new Stream (</span>
-<span class="nc" id="L404">			CompositePeriodBuilder.FloatingCompositeUnit (</span>
-<span class="nc" id="L405">				CompositePeriodBuilder.RegularEdgeDates (</span>
+<span class="fc" id="L403">		aFloatStream[2] = new Stream (</span>
+<span class="fc" id="L404">			CompositePeriodBuilder.FloatingCompositeUnit (</span>
+<span class="fc" id="L405">				CompositePeriodBuilder.RegularEdgeDates (</span>
 					dtEffective,
 					&quot;6M&quot;,
 					&quot;7Y&quot;,
@@ -417,7 +417,7 @@ import org.drip.state.identifier.*;
 		 * Create a Rates Basket instance containing the fixed and floating streams
 		 */
 
-<span class="nc" id="L420">		return new RatesBasket (</span>
+<span class="fc" id="L420">		return new RatesBasket (</span>
 			&quot;RATESBASKET&quot;,
 			aFixedStream,
 			aFloatStream
@@ -433,20 +433,20 @@ import org.drip.state.identifier.*;
 	private static final void MultiLegSwapSample()
 		throws Exception
 	{
-<span class="nc" id="L436">		JulianDate dtValue = DateUtil.Today();</span>
+<span class="fc" id="L436">		JulianDate dtValue = DateUtil.Today();</span>
 
 		/*
 		 * Create the Discount Curve from the rates instruments
 		 */
 
-<span class="nc" id="L442">		String[] astrCashTenor = new String[] {&quot;3M&quot;};</span>
-<span class="nc" id="L443">		double[] adblCashRate = new double[] {0.00276};</span>
-<span class="nc" id="L444">		String[] astrIRSTenor = new String[] {   &quot;1Y&quot;,    &quot;2Y&quot;,    &quot;3Y&quot;,    &quot;4Y&quot;,    &quot;5Y&quot;,    &quot;6Y&quot;,    &quot;7Y&quot;,</span>
+<span class="fc" id="L442">		String[] astrCashTenor = new String[] {&quot;3M&quot;};</span>
+<span class="fc" id="L443">		double[] adblCashRate = new double[] {0.00276};</span>
+<span class="fc" id="L444">		String[] astrIRSTenor = new String[] {   &quot;1Y&quot;,    &quot;2Y&quot;,    &quot;3Y&quot;,    &quot;4Y&quot;,    &quot;5Y&quot;,    &quot;6Y&quot;,    &quot;7Y&quot;,</span>
 		   &quot;8Y&quot;,    &quot;9Y&quot;,   &quot;10Y&quot;,   &quot;11Y&quot;,   &quot;12Y&quot;,   &quot;15Y&quot;,   &quot;20Y&quot;,   &quot;25Y&quot;,   &quot;30Y&quot;,   &quot;40Y&quot;,   &quot;50Y&quot;};
-<span class="nc" id="L446">		double[] adblIRSRate = new double[]  {0.00367, 0.00533, 0.00843, 0.01238, 0.01609, 0.01926, 0.02191,</span>
+<span class="fc" id="L446">		double[] adblIRSRate = new double[]  {0.00367, 0.00533, 0.00843, 0.01238, 0.01609, 0.01926, 0.02191,</span>
 			0.02406, 0.02588, 0.02741, 0.02870, 0.02982, 0.03208, 0.03372, 0.03445, 0.03484, 0.03501, 0.03484};
 
-<span class="nc" id="L449">		MergedDiscountForwardCurve dc = BuildRatesCurveFromInstruments (</span>
+<span class="fc" id="L449">		MergedDiscountForwardCurve dc = BuildRatesCurveFromInstruments (</span>
 			dtValue,
 			astrCashTenor,
 			adblCashRate,
@@ -460,24 +460,24 @@ import org.drip.state.identifier.*;
 		 * Set up the valuation and the market parameters
 		 */
 
-<span class="nc" id="L463">		ValuationParams valParams = ValuationParams.Spot (</span>
+<span class="fc" id="L463">		ValuationParams valParams = ValuationParams.Spot (</span>
 			dtValue,
 			0,
 			&quot;&quot;,
 			Convention.DATE_ROLL_ACTUAL
 		);
 
-<span class="nc" id="L470">		double dblUSDABCFXRate = 1.;</span>
+<span class="fc" id="L470">		double dblUSDABCFXRate = 1.;</span>
 
-<span class="nc" id="L472">		CurveSurfaceQuoteContainer mktParams = new CurveSurfaceQuoteContainer();</span>
+<span class="fc" id="L472">		CurveSurfaceQuoteContainer mktParams = new CurveSurfaceQuoteContainer();</span>
 
-<span class="nc" id="L474">		mktParams.setFundingState (dc);</span>
+<span class="fc" id="L474">		mktParams.setFundingState (dc);</span>
 
-<span class="nc" id="L476">		CurrencyPair cp = CurrencyPair.FromCode (&quot;USD/ABC&quot;);</span>
+<span class="fc" id="L476">		CurrencyPair cp = CurrencyPair.FromCode (&quot;USD/ABC&quot;);</span>
 
-<span class="nc" id="L478">		mktParams.setFXState (</span>
-<span class="nc" id="L479">			ScenarioFXCurveBuilder.CubicPolynomialCurve (</span>
-<span class="nc" id="L480">				&quot;FX::&quot; + cp.code(),</span>
+<span class="fc" id="L478">		mktParams.setFXState (</span>
+<span class="fc" id="L479">			ScenarioFXCurveBuilder.CubicPolynomialCurve (</span>
+<span class="fc" id="L480">				&quot;FX::&quot; + cp.code(),</span>
 				dtValue,
 				cp,
 				new String[] {&quot;10Y&quot;},
@@ -490,21 +490,21 @@ import org.drip.state.identifier.*;
 		 * Create the Rates Basket from the streams
 		 */
 
-<span class="nc" id="L493">		RatesBasket rb = MakeRatesBasket (dtValue);</span>
+<span class="fc" id="L493">		RatesBasket rb = MakeRatesBasket (dtValue);</span>
 
 		/*
 		 * Value the Rates Basket
 		 */
 
-<span class="nc" id="L499">		CaseInsensitiveTreeMap&lt;Double&gt; mapRBResults = rb.value (</span>
+<span class="fc" id="L499">		CaseInsensitiveTreeMap&lt;Double&gt; mapRBResults = rb.value (</span>
 			valParams,
 			null,
 			mktParams,
 			null
 		);
 
-<span class="nc" id="L506">		System.out.println (mapRBResults);</span>
-<span class="nc" id="L507">	}</span>
+<span class="fc" id="L506">		System.out.println (mapRBResults);</span>
+<span class="fc" id="L507">	}</span>
 
 	public static final void main (
 		final String[] astrArgs)
@@ -512,11 +512,11 @@ import org.drip.state.identifier.*;
 	{
 		// String strConfig = &quot;c:\\Lakshmi\\BondAnal\\Config.xml&quot;;
 
-<span class="nc" id="L515">		String strConfig = &quot;&quot;;</span>
+<span class="fc" id="L515">		String strConfig = &quot;&quot;;</span>
 
-<span class="nc" id="L517">		EnvManager.InitEnv (strConfig);</span>
+<span class="fc" id="L517">		EnvManager.InitEnv (strConfig);</span>
 
-<span class="nc" id="L519">		MultiLegSwapSample();</span>
-<span class="nc" id="L520">	}</span>
+<span class="fc" id="L519">		MultiLegSwapSample();</span>
+<span class="fc" id="L520">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

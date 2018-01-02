@@ -74,25 +74,25 @@ import org.drip.state.fx.FXCurve;
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L77">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L77">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L79">		CurrencyPair cp = new CurrencyPair (</span>
+<span class="fc" id="L79">		CurrencyPair cp = new CurrencyPair (</span>
 			&quot;EUR&quot;,
 			&quot;USD&quot;,
 			&quot;USD&quot;,
 			10000.
 		);
 
-<span class="nc" id="L86">		JulianDate dtSpot = DateUtil.Today().addBusDays (</span>
+<span class="fc" id="L86">		JulianDate dtSpot = DateUtil.Today().addBusDays (</span>
 			0,
-<span class="nc" id="L88">			cp.denomCcy()</span>
+<span class="fc" id="L88">			cp.denomCcy()</span>
 		);
 
-<span class="nc" id="L91">		double dblFXSpot = 1.1013;</span>
-<span class="nc" id="L92">		double dblBump = 0.0001;</span>
-<span class="nc" id="L93">		boolean bIsBumpProportional = false;</span>
+<span class="fc" id="L91">		double dblFXSpot = 1.1013;</span>
+<span class="fc" id="L92">		double dblBump = 0.0001;</span>
+<span class="fc" id="L93">		boolean bIsBumpProportional = false;</span>
 
-<span class="nc" id="L95">		String[] astrMaturityTenor = new String[] {</span>
+<span class="fc" id="L95">		String[] astrMaturityTenor = new String[] {</span>
 			&quot;1D&quot;,
 			&quot;2D&quot;,
 			&quot;3D&quot;,
@@ -106,7 +106,7 @@ import org.drip.state.fx.FXCurve;
 			&quot;9M&quot;
 		};
 
-<span class="nc" id="L109">		double[] adblFXForward = new double[] {</span>
+<span class="fc" id="L109">		double[] adblFXForward = new double[] {</span>
 			1.1011,		// &quot;1D&quot;
 			1.1007,		// &quot;2D&quot;
 			1.0999,		// &quot;3D&quot;
@@ -120,7 +120,7 @@ import org.drip.state.fx.FXCurve;
 			1.1011		// &quot;9M&quot;
 		};
 
-<span class="nc" id="L123">		Map&lt;String, FXCurve&gt; mapBumpedFXCurve = LatentMarketStateBuilder.BumpedFXCurve (</span>
+<span class="fc" id="L123">		Map&lt;String, FXCurve&gt; mapBumpedFXCurve = LatentMarketStateBuilder.BumpedFXCurve (</span>
 			dtSpot,
 			cp,
 			astrMaturityTenor,
@@ -132,30 +132,30 @@ import org.drip.state.fx.FXCurve;
 			bIsBumpProportional
 		);
 
-<span class="nc" id="L135">		FXForwardComponent[] aFXFC = OTCInstrumentBuilder.FXForward (</span>
+<span class="fc" id="L135">		FXForwardComponent[] aFXFC = OTCInstrumentBuilder.FXForward (</span>
 			dtSpot,
 			cp,
 			astrMaturityTenor
 		);
 
-<span class="nc" id="L141">		System.out.println (&quot;\n\t|-------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L141">		System.out.println (&quot;\n\t|-------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L143">		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());</span>
+<span class="fc" id="L143">		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());</span>
 
-<span class="nc bnc" id="L145" title="All 2 branches missed.">		for (Map.Entry&lt;String, FXCurve&gt; meFX : mapBumpedFXCurve.entrySet()) {</span>
-<span class="nc" id="L146">			String strKey = meFX.getKey();</span>
+<span class="fc bfc" id="L145" title="All 2 branches covered.">		for (Map.Entry&lt;String, FXCurve&gt; meFX : mapBumpedFXCurve.entrySet()) {</span>
+<span class="fc" id="L146">			String strKey = meFX.getKey();</span>
 
-<span class="nc bnc" id="L148" title="All 2 branches missed.">			if (!strKey.startsWith (&quot;fxfwd&quot;)) continue;</span>
+<span class="fc bfc" id="L148" title="All 2 branches covered.">			if (!strKey.startsWith (&quot;fxfwd&quot;)) continue;</span>
 
-<span class="nc" id="L150">			CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();</span>
+<span class="fc" id="L150">			CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();</span>
 
-<span class="nc" id="L152">			csqc.setFXState (meFX.getValue());</span>
+<span class="fc" id="L152">			csqc.setFXState (meFX.getValue());</span>
 
-<span class="nc" id="L154">			System.out.print (&quot;\t|  [&quot; + meFX.getKey() + &quot;] =&gt; &quot;);</span>
+<span class="fc" id="L154">			System.out.print (&quot;\t|  [&quot; + meFX.getKey() + &quot;] =&gt; &quot;);</span>
 
-<span class="nc bnc" id="L156" title="All 2 branches missed.">			for (Component comp : aFXFC)</span>
-<span class="nc" id="L157">				System.out.print (FormatUtil.FormatDouble (</span>
-<span class="nc" id="L158">					comp.measureValue (</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">			for (Component comp : aFXFC)</span>
+<span class="fc" id="L157">				System.out.print (FormatUtil.FormatDouble (</span>
+<span class="fc" id="L158">					comp.measureValue (</span>
 						valParams,
 						null,
 						csqc,
@@ -163,33 +163,33 @@ import org.drip.state.fx.FXCurve;
 						&quot;Outright&quot;
 					), 1, 4, 1.) + &quot; |&quot;);
 
-<span class="nc" id="L166">			System.out.print (&quot;|\n&quot;);</span>
-<span class="nc" id="L167">		}</span>
+<span class="fc" id="L166">			System.out.print (&quot;|\n&quot;);</span>
+<span class="fc" id="L167">		}</span>
 
-<span class="nc" id="L169">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L169">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L171">		System.out.println (&quot;\n\t|---------------------------------------------||&quot;);</span>
+<span class="fc" id="L171">		System.out.println (&quot;\n\t|---------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L173">		CurveSurfaceQuoteContainer csqcBase = new CurveSurfaceQuoteContainer();</span>
+<span class="fc" id="L173">		CurveSurfaceQuoteContainer csqcBase = new CurveSurfaceQuoteContainer();</span>
 
-<span class="nc" id="L175">		csqcBase.setFXState (mapBumpedFXCurve.get (&quot;Base&quot;));</span>
+<span class="fc" id="L175">		csqcBase.setFXState (mapBumpedFXCurve.get (&quot;Base&quot;));</span>
 
-<span class="nc" id="L177">		CurveSurfaceQuoteContainer csqcBump = new CurveSurfaceQuoteContainer();</span>
+<span class="fc" id="L177">		CurveSurfaceQuoteContainer csqcBump = new CurveSurfaceQuoteContainer();</span>
 
-<span class="nc" id="L179">		csqcBump.setFXState (mapBumpedFXCurve.get (&quot;Bump&quot;));</span>
+<span class="fc" id="L179">		csqcBump.setFXState (mapBumpedFXCurve.get (&quot;Bump&quot;));</span>
 
-<span class="nc bnc" id="L181" title="All 2 branches missed.">		for (Component comp : aFXFC)</span>
-<span class="nc" id="L182">			System.out.println (</span>
+<span class="fc bfc" id="L181" title="All 2 branches covered.">		for (Component comp : aFXFC)</span>
+<span class="fc" id="L182">			System.out.println (</span>
 				&quot;\t| OUTRIGHT  =&gt; &quot; +
-<span class="nc" id="L184">				comp.maturityDate() + &quot; | &quot; +</span>
-<span class="nc" id="L185">				FormatUtil.FormatDouble (comp.measureValue (</span>
+<span class="fc" id="L184">				comp.maturityDate() + &quot; | &quot; +</span>
+<span class="fc" id="L185">				FormatUtil.FormatDouble (comp.measureValue (</span>
 					valParams,
 					null,
 					csqcBase,
 					null,
 					&quot;Outright&quot;
 				), 1, 4, 1.) + &quot; | &quot; +
-<span class="nc" id="L192">				FormatUtil.FormatDouble (comp.measureValue (</span>
+<span class="fc" id="L192">				FormatUtil.FormatDouble (comp.measureValue (</span>
 					valParams,
 					null,
 					csqcBump,
@@ -198,7 +198,7 @@ import org.drip.state.fx.FXCurve;
 				), 1, 4, 1.) + &quot; ||&quot;
 			);
 
-<span class="nc" id="L201">		System.out.println (&quot;\t|---------------------------------------------||&quot;);</span>
-<span class="nc" id="L202">	}</span>
+<span class="fc" id="L201">		System.out.println (&quot;\t|---------------------------------------------||&quot;);</span>
+<span class="fc" id="L202">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

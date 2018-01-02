@@ -60,9 +60,7 @@ package org.drip.state.identifier;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ForwardLabel implements org.drip.state.identifier.LatentStateLabel {
-<span class="fc" id="L64">	private java.lang.String _strTenor = &quot;&quot;;</span>
-<span class="fc" id="L65">	private org.drip.market.definition.FloaterIndex _floaterIndex = null;</span>
+public class ForwardLabel extends org.drip.state.identifier.FloaterLabel {
 
 	/**
 	 * Construct a ForwardLabel from the corresponding Fully Qualified Name
@@ -75,27 +73,27 @@ public class ForwardLabel implements org.drip.state.identifier.LatentStateLabel 
 	public static final ForwardLabel Standard (
 		final java.lang.String strFullyQualifiedName)
 	{
-<span class="pc bpc" id="L78" title="2 of 4 branches missed.">		if (null == strFullyQualifiedName || strFullyQualifiedName.isEmpty()) return null;</span>
+<span class="pc bpc" id="L76" title="2 of 4 branches missed.">		if (null == strFullyQualifiedName || strFullyQualifiedName.isEmpty()) return null;</span>
 
-<span class="fc" id="L80">		java.lang.String[] astr = strFullyQualifiedName.split (&quot;-&quot;);</span>
+<span class="fc" id="L78">		java.lang.String[] astr = strFullyQualifiedName.split (&quot;-&quot;);</span>
 
-<span class="pc bpc" id="L82" title="2 of 4 branches missed.">		if (null == astr || 2 != astr.length) return null;</span>
+<span class="pc bpc" id="L80" title="2 of 4 branches missed.">		if (null == astr || 2 != astr.length) return null;</span>
 
-<span class="fc" id="L84">		java.lang.String strTenor = astr[1];</span>
-<span class="fc" id="L85">		java.lang.String strCurrency = astr[0];</span>
+<span class="fc" id="L82">		java.lang.String strTenor = astr[1];</span>
+<span class="fc" id="L83">		java.lang.String strCurrency = astr[0];</span>
 
-<span class="pc bpc" id="L87" title="1 of 2 branches missed.">		org.drip.market.definition.FloaterIndex floaterIndex = &quot;ON&quot;.equalsIgnoreCase (strTenor) ||</span>
-<span class="pc bpc" id="L88" title="1 of 2 branches missed.">			&quot;1D&quot;.equalsIgnoreCase (strTenor) ?</span>
-<span class="pc" id="L89">				org.drip.market.definition.OvernightIndexContainer.IndexFromJurisdiction (strCurrency) :</span>
-<span class="fc" id="L90">					org.drip.market.definition.IBORIndexContainer.IndexFromJurisdiction (strCurrency);</span>
+<span class="pc bpc" id="L85" title="1 of 2 branches missed.">		org.drip.market.definition.FloaterIndex floaterIndex = &quot;ON&quot;.equalsIgnoreCase (strTenor) ||</span>
+<span class="pc bpc" id="L86" title="1 of 2 branches missed.">			&quot;1D&quot;.equalsIgnoreCase (strTenor) ?</span>
+<span class="pc" id="L87">				org.drip.market.definition.OvernightIndexContainer.IndexFromJurisdiction (strCurrency) :</span>
+<span class="fc" id="L88">					org.drip.market.definition.IBORIndexContainer.IndexFromJurisdiction (strCurrency);</span>
 
 		try {
-<span class="fc" id="L93">			return new ForwardLabel (floaterIndex, strTenor);</span>
-<span class="nc" id="L94">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L95">			e.printStackTrace();</span>
+<span class="fc" id="L91">			return new ForwardLabel (floaterIndex, strTenor);</span>
+<span class="nc" id="L92">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L93">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L98">		return null;</span>
+<span class="nc" id="L96">		return null;</span>
 	}
 
 	/**
@@ -112,12 +110,12 @@ public class ForwardLabel implements org.drip.state.identifier.LatentStateLabel 
 		final java.lang.String strTenor)
 	{
 		try {
-<span class="fc" id="L115">			return new ForwardLabel (floaterIndex, strTenor);</span>
-<span class="nc" id="L116">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L117">			e.printStackTrace();</span>
+<span class="fc" id="L113">			return new ForwardLabel (floaterIndex, strTenor);</span>
+<span class="nc" id="L114">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L115">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L120">		return null;</span>
+<span class="nc" id="L118">		return null;</span>
 	}
 
 	/**
@@ -133,104 +131,15 @@ public class ForwardLabel implements org.drip.state.identifier.LatentStateLabel 
 		final java.lang.String strCurrency,
 		final java.lang.String strTenor)
 	{
-<span class="fc" id="L136">		return Standard (strCurrency + &quot;-&quot; + strTenor);</span>
+<span class="fc" id="L134">		return Standard (strCurrency + &quot;-&quot; + strTenor);</span>
 	}
 
 	protected ForwardLabel (
 		final org.drip.market.definition.FloaterIndex floaterIndex,
 		final java.lang.String strTenor)
 		throws java.lang.Exception
-<span class="fc" id="L143">	{</span>
-<span class="pc bpc" id="L144" title="3 of 6 branches missed.">		if (null == (_floaterIndex = floaterIndex) || null == (_strTenor = strTenor) || _strTenor.isEmpty())</span>
-<span class="nc" id="L145">			throw new java.lang.Exception (&quot;ForwardLabel ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L146">	}</span>
-
-	/**
-	 * Retrieve the Currency
-	 * 
-	 * @return The Currency
-	 */
-
-	public java.lang.String currency()
 	{
-<span class="fc" id="L156">		return _floaterIndex.currency();</span>
-	}
-
-	/**
-	 * Retrieve the Family
-	 * 
-	 * @return The Family
-	 */
-
-	public java.lang.String family()
-	{
-<span class="nc" id="L167">		return _floaterIndex.family();</span>
-	}
-
-	/**
-	 * Retrieve the Tenor
-	 * 
-	 * @return The Tenor
-	 */
-
-	public java.lang.String tenor()
-	{
-<span class="fc" id="L178">		return _strTenor;</span>
-	}
-
-	/**
-	 * Indicate if the Index is an Overnight Index
-	 * 
-	 * @return TRUE - Overnight Index
-	 */
-
-	public boolean overnight()
-	{
-<span class="pc bpc" id="L189" title="1 of 4 branches missed.">		return &quot;ON&quot;.equalsIgnoreCase (_strTenor) || &quot;1D&quot;.equalsIgnoreCase (_strTenor);</span>
-	}
-
-	/**
-	 * Retrieve the Floater Index
-	 * 
-	 * @return The Floater Index
-	 */
-
-	public org.drip.market.definition.FloaterIndex floaterIndex()
-	{
-<span class="fc" id="L200">		return _floaterIndex;</span>
-	}
-
-	/**
-	 * Retrieve a Unit Coupon Accrual Setting
-	 * 
-	 * @return Unit Coupon Accrual Setting
-	 */
-
-	public org.drip.param.period.UnitCouponAccrualSetting ucas()
-	{
-<span class="fc" id="L211">		java.lang.String strDayCount = _floaterIndex.dayCount();</span>
-
-		try {
-<span class="fc bfc" id="L214" title="All 2 branches covered.">			return new org.drip.param.period.UnitCouponAccrualSetting (overnight() ? 360 :</span>
-<span class="fc" id="L215">				org.drip.analytics.support.Helper.TenorToFreq (_strTenor), strDayCount, false, strDayCount,</span>
-<span class="fc" id="L216">					false, _floaterIndex.currency(), false, _floaterIndex.accrualCompoundingRule());</span>
-<span class="nc" id="L217">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L218">			e.printStackTrace();</span>
-		}
-
-<span class="nc" id="L221">		return null;</span>
-	}
-
-	@Override public java.lang.String fullyQualifiedName()
-	{
-<span class="fc" id="L226">		return _floaterIndex.currency() + &quot;-&quot; + _floaterIndex.family() + &quot;-&quot; + _strTenor;</span>
-	}
-
-	@Override public boolean match (
-		final org.drip.state.identifier.LatentStateLabel lslOther)
-	{
-<span class="pc bpc" id="L232" title="2 of 4 branches missed.">		return null == lslOther || !(lslOther instanceof org.drip.state.identifier.ForwardLabel) ? false :</span>
-<span class="fc" id="L233">			fullyQualifiedName().equalsIgnoreCase (lslOther.fullyQualifiedName());</span>
-	}
+<span class="fc" id="L142">		super (floaterIndex, strTenor);</span>
+<span class="fc" id="L143">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

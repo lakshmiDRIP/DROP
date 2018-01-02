@@ -109,102 +109,102 @@ package org.drip.service.product;
 		final java.lang.String strGovvieCurveTreasuryMeasure,
 		final double[] adblFuturesComponentTreasuryPrice)
 	{
-<span class="nc" id="L112">		org.drip.analytics.date.JulianDate dtSpot = null;</span>
-<span class="nc" id="L113">		org.drip.analytics.date.JulianDate[] adtGovvieCurveTreasuryMaturity = null;</span>
-<span class="nc" id="L114">		org.drip.analytics.date.JulianDate[] adtGovvieCurveTreasuryEffective = null;</span>
-<span class="nc bnc" id="L115" title="All 2 branches missed.">		int iNumGovvieCurveMaturity = null == aiGovvieCurveTreasuryMaturityDate ? 0 :</span>
+<span class="fc" id="L112">		org.drip.analytics.date.JulianDate dtSpot = null;</span>
+<span class="fc" id="L113">		org.drip.analytics.date.JulianDate[] adtGovvieCurveTreasuryMaturity = null;</span>
+<span class="fc" id="L114">		org.drip.analytics.date.JulianDate[] adtGovvieCurveTreasuryEffective = null;</span>
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">		int iNumGovvieCurveMaturity = null == aiGovvieCurveTreasuryMaturityDate ? 0 :</span>
 			aiGovvieCurveTreasuryMaturityDate.length;
-<span class="nc bnc" id="L117" title="All 2 branches missed.">		int iNumGovvieCurveEffective = null == aiGovvieCurveTreasuryEffectiveDate ? 0 :</span>
+<span class="pc bpc" id="L117" title="1 of 2 branches missed.">		int iNumGovvieCurveEffective = null == aiGovvieCurveTreasuryEffectiveDate ? 0 :</span>
 			aiGovvieCurveTreasuryEffectiveDate.length;
-<span class="nc" id="L119">		java.lang.String[] astrTreasuryBenchmarkCode = new java.lang.String[] {&quot;01YON&quot;, &quot;02YON&quot;, &quot;03YON&quot;,</span>
+<span class="fc" id="L119">		java.lang.String[] astrTreasuryBenchmarkCode = new java.lang.String[] {&quot;01YON&quot;, &quot;02YON&quot;, &quot;03YON&quot;,</span>
 			&quot;05YON&quot;, &quot;07YON&quot;, &quot;10YON&quot;, &quot;30YON&quot;};
-<span class="nc" id="L121">		int iNumTreasuryBenchmark = astrTreasuryBenchmarkCode.length;</span>
+<span class="fc" id="L121">		int iNumTreasuryBenchmark = astrTreasuryBenchmarkCode.length;</span>
 
-<span class="nc bnc" id="L123" title="All 2 branches missed.">		if (null == adblFuturesComponentTreasuryPrice) return null;</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">		if (null == adblFuturesComponentTreasuryPrice) return null;</span>
 
-<span class="nc bnc" id="L125" title="All 2 branches missed.">		if (0 != iNumGovvieCurveMaturity)</span>
-<span class="nc" id="L126">			adtGovvieCurveTreasuryMaturity = new org.drip.analytics.date.JulianDate[iNumGovvieCurveMaturity];</span>
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">		if (0 != iNumGovvieCurveMaturity)</span>
+<span class="fc" id="L126">			adtGovvieCurveTreasuryMaturity = new org.drip.analytics.date.JulianDate[iNumGovvieCurveMaturity];</span>
 
-<span class="nc bnc" id="L128" title="All 2 branches missed.">		if (0 != iNumGovvieCurveEffective)</span>
-<span class="nc" id="L129">			adtGovvieCurveTreasuryEffective = new</span>
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">		if (0 != iNumGovvieCurveEffective)</span>
+<span class="fc" id="L129">			adtGovvieCurveTreasuryEffective = new</span>
 				org.drip.analytics.date.JulianDate[iNumGovvieCurveEffective];
 
-<span class="nc" id="L132">		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new</span>
+<span class="fc" id="L132">		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new</span>
 			org.drip.param.market.CurveSurfaceQuoteContainer();
 
 		try {
-<span class="nc" id="L136">			dtSpot = new org.drip.analytics.date.JulianDate (iSpotDate);</span>
+<span class="fc" id="L136">			dtSpot = new org.drip.analytics.date.JulianDate (iSpotDate);</span>
 
-<span class="nc bnc" id="L138" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumGovvieCurveMaturity; ++i)</span>
-<span class="nc" id="L139">				adtGovvieCurveTreasuryMaturity[i] = new org.drip.analytics.date.JulianDate</span>
+<span class="fc bfc" id="L138" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumGovvieCurveMaturity; ++i)</span>
+<span class="fc" id="L139">				adtGovvieCurveTreasuryMaturity[i] = new org.drip.analytics.date.JulianDate</span>
 					(aiGovvieCurveTreasuryMaturityDate[i]);
 
-<span class="nc bnc" id="L142" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumGovvieCurveEffective; ++i)</span>
-<span class="nc" id="L143">				adtGovvieCurveTreasuryEffective[i] = new org.drip.analytics.date.JulianDate</span>
+<span class="fc bfc" id="L142" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumGovvieCurveEffective; ++i)</span>
+<span class="fc" id="L143">				adtGovvieCurveTreasuryEffective[i] = new org.drip.analytics.date.JulianDate</span>
 					(aiGovvieCurveTreasuryEffectiveDate[i]);
 
-<span class="nc bnc" id="L146" title="All 4 branches missed.">			if (null != adblGovvieCurveTreasuryYield &amp;&amp; adblGovvieCurveTreasuryYield.length ==</span>
+<span class="pc bpc" id="L146" title="2 of 4 branches missed.">			if (null != adblGovvieCurveTreasuryYield &amp;&amp; adblGovvieCurveTreasuryYield.length ==</span>
 				iNumTreasuryBenchmark) {
-<span class="nc bnc" id="L148" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumTreasuryBenchmark; ++i) {</span>
-<span class="nc" id="L149">					org.drip.param.quote.ProductMultiMeasure pmm = new</span>
+<span class="fc bfc" id="L148" title="All 2 branches covered.">				for (int i = 0; i &lt; iNumTreasuryBenchmark; ++i) {</span>
+<span class="fc" id="L149">					org.drip.param.quote.ProductMultiMeasure pmm = new</span>
 						org.drip.param.quote.ProductMultiMeasure();
 
-<span class="nc" id="L152">					pmm.addQuote (&quot;Yield&quot;, new org.drip.param.quote.MultiSided (&quot;mid&quot;,</span>
+<span class="fc" id="L152">					pmm.addQuote (&quot;Yield&quot;, new org.drip.param.quote.MultiSided (&quot;mid&quot;,</span>
 						adblGovvieCurveTreasuryYield[i]), true);
 
-<span class="nc bnc" id="L155" title="All 2 branches missed.">					if (!csqc.setProductQuote (astrTreasuryBenchmarkCode[i], pmm)) return null;</span>
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">					if (!csqc.setProductQuote (astrTreasuryBenchmarkCode[i], pmm)) return null;</span>
 				}
 			}
 <span class="nc" id="L158">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L159">			e.printStackTrace();</span>
 
 <span class="nc" id="L161">			return null;</span>
-<span class="nc" id="L162">		}</span>
+<span class="fc" id="L162">		}</span>
 
-<span class="nc" id="L164">		org.drip.product.govvie.TreasuryFutures tsyFut =</span>
-<span class="nc" id="L165">			org.drip.service.template.ExchangeInstrumentBuilder.TreasuryFutures (dtSpot, strFuturesCode,</span>
+<span class="fc" id="L164">		org.drip.product.govvie.TreasuryFutures tsyFut =</span>
+<span class="fc" id="L165">			org.drip.service.template.ExchangeInstrumentBuilder.TreasuryFutures (dtSpot, strFuturesCode,</span>
 				aiFuturesComponentTreasuryEffectiveDate, aiFuturesComponentTreasuryMaturityDate,
 					adblFuturesComponentTreasuryCoupon, adblFuturesComponentConversionFactor);
 
-<span class="nc bnc" id="L169" title="All 2 branches missed.">		if (null == tsyFut) return null;</span>
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">		if (null == tsyFut) return null;</span>
 
-<span class="nc" id="L171">		org.drip.product.definition.Bond[] aBond = tsyFut.basket();</span>
+<span class="fc" id="L171">		org.drip.product.definition.Bond[] aBond = tsyFut.basket();</span>
 
-<span class="nc" id="L173">		int iNumFuturesComponent = adblFuturesComponentTreasuryPrice.length;</span>
+<span class="fc" id="L173">		int iNumFuturesComponent = adblFuturesComponentTreasuryPrice.length;</span>
 
-<span class="nc bnc" id="L175" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumFuturesComponent; ++i) {</span>
-<span class="nc" id="L176">			org.drip.param.quote.ProductMultiMeasure pmm = new org.drip.param.quote.ProductMultiMeasure();</span>
+<span class="fc bfc" id="L175" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFuturesComponent; ++i) {</span>
+<span class="fc" id="L176">			org.drip.param.quote.ProductMultiMeasure pmm = new org.drip.param.quote.ProductMultiMeasure();</span>
 
 			try {
-<span class="nc" id="L179">				pmm.addQuote (&quot;Price&quot;, new org.drip.param.quote.MultiSided (&quot;mid&quot;,</span>
+<span class="fc" id="L179">				pmm.addQuote (&quot;Price&quot;, new org.drip.param.quote.MultiSided (&quot;mid&quot;,</span>
 					adblFuturesComponentTreasuryPrice[i]), true);
 <span class="nc" id="L181">			} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L182">				e.printStackTrace();</span>
 
 <span class="nc" id="L184">				return null;</span>
-<span class="nc" id="L185">			}</span>
+<span class="fc" id="L185">			}</span>
 
-<span class="nc" id="L187">			csqc.setProductQuote (aBond[i].name(), pmm);</span>
+<span class="fc" id="L187">			csqc.setProductQuote (aBond[i].name(), pmm);</span>
 		}
 
-<span class="nc" id="L190">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding =</span>
-<span class="nc" id="L191">			org.drip.service.template.LatentMarketStateBuilder.SmoothFundingCurve (dtSpot,</span>
-<span class="nc" id="L192">				aBond[0].currency(), astrFundingCurveDepositTenor, adblFundingCurveDepositQuote,</span>
+<span class="fc" id="L190">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding =</span>
+<span class="fc" id="L191">			org.drip.service.template.LatentMarketStateBuilder.SmoothFundingCurve (dtSpot,</span>
+<span class="fc" id="L192">				aBond[0].currency(), astrFundingCurveDepositTenor, adblFundingCurveDepositQuote,</span>
 					strFundingCurveDepositMeasure, adblFundingCurveFuturesQuote,
 						strFundingCurveFuturesMeasure, astrFundingCurveFixFloatTenor,
 							adblFundingCurveFixFloatQuote, strFundingFixFloatMeasure);
 
-<span class="nc" id="L197">		csqc.setFundingState (dcFunding);</span>
+<span class="fc" id="L197">		csqc.setFundingState (dcFunding);</span>
 
-<span class="nc" id="L199">		org.drip.state.govvie.GovvieCurve gc =</span>
-<span class="nc" id="L200">			org.drip.service.template.LatentMarketStateBuilder.ShapePreservingGovvieCurve (tsyFut.type(),</span>
+<span class="fc" id="L199">		org.drip.state.govvie.GovvieCurve gc =</span>
+<span class="fc" id="L200">			org.drip.service.template.LatentMarketStateBuilder.ShapePreservingGovvieCurve (tsyFut.type(),</span>
 				dtSpot, adtGovvieCurveTreasuryEffective, adtGovvieCurveTreasuryMaturity,
 					adblGovvieCurveTreasuryCoupon, adblGovvieCurveTreasuryYield,
 						strGovvieCurveTreasuryMeasure);
 
-<span class="nc" id="L205">		csqc.setGovvieState (gc);</span>
+<span class="fc" id="L205">		csqc.setGovvieState (gc);</span>
 
-<span class="nc" id="L207">		return tsyFut.value (org.drip.param.valuation.ValuationParams.Spot (dtSpot.julian()), null, csqc,</span>
+<span class="fc" id="L207">		return tsyFut.value (org.drip.param.valuation.ValuationParams.Spot (dtSpot.julian()), null, csqc,</span>
 			null);
 	}
 
@@ -243,159 +243,159 @@ package org.drip.service.product;
 		final java.lang.String strGovvieCurveTreasuryMeasure,
 		final double[] adblFuturesComponentTreasuryPrice)
 	{
-<span class="nc" id="L246">		double dblBaselineCTDOAS = java.lang.Double.NaN;</span>
-<span class="nc" id="L247">		org.drip.analytics.date.JulianDate dtSpot = null;</span>
-<span class="nc" id="L248">		org.drip.analytics.date.JulianDate[] adtGovvieCurveTreasuryMaturity = null;</span>
-<span class="nc" id="L249">		org.drip.analytics.date.JulianDate[] adtGovvieCurveTreasuryEffective = null;</span>
-<span class="nc bnc" id="L250" title="All 2 branches missed.">		int iNumGovvieCurveMaturity = null == aiGovvieCurveTreasuryMaturityDate ? 0 :</span>
+<span class="fc" id="L246">		double dblBaselineCTDOAS = java.lang.Double.NaN;</span>
+<span class="fc" id="L247">		org.drip.analytics.date.JulianDate dtSpot = null;</span>
+<span class="fc" id="L248">		org.drip.analytics.date.JulianDate[] adtGovvieCurveTreasuryMaturity = null;</span>
+<span class="fc" id="L249">		org.drip.analytics.date.JulianDate[] adtGovvieCurveTreasuryEffective = null;</span>
+<span class="pc bpc" id="L250" title="1 of 2 branches missed.">		int iNumGovvieCurveMaturity = null == aiGovvieCurveTreasuryMaturityDate ? 0 :</span>
 			aiGovvieCurveTreasuryMaturityDate.length;
-<span class="nc bnc" id="L252" title="All 2 branches missed.">		int iNumGovvieCurveEffective = null == aiGovvieCurveTreasuryEffectiveDate ? 0 :</span>
+<span class="pc bpc" id="L252" title="1 of 2 branches missed.">		int iNumGovvieCurveEffective = null == aiGovvieCurveTreasuryEffectiveDate ? 0 :</span>
 			aiGovvieCurveTreasuryEffectiveDate.length;
-<span class="nc" id="L254">		java.lang.String[] astrTreasuryBenchmarkCode = new java.lang.String[] {&quot;01YON&quot;, &quot;02YON&quot;, &quot;03YON&quot;,</span>
+<span class="fc" id="L254">		java.lang.String[] astrTreasuryBenchmarkCode = new java.lang.String[] {&quot;01YON&quot;, &quot;02YON&quot;, &quot;03YON&quot;,</span>
 			&quot;05YON&quot;, &quot;07YON&quot;, &quot;10YON&quot;, &quot;30YON&quot;};
-<span class="nc" id="L256">		int iNumTreasuryBenchmark = astrTreasuryBenchmarkCode.length;</span>
-<span class="nc bnc" id="L257" title="All 2 branches missed.">		int iNumFuturesComponent = null == adblFuturesComponentTreasuryPrice ? 0 :</span>
+<span class="fc" id="L256">		int iNumTreasuryBenchmark = astrTreasuryBenchmarkCode.length;</span>
+<span class="pc bpc" id="L257" title="1 of 2 branches missed.">		int iNumFuturesComponent = null == adblFuturesComponentTreasuryPrice ? 0 :</span>
 			adblFuturesComponentTreasuryPrice.length;
 
-<span class="nc bnc" id="L260" title="All 2 branches missed.">		if (0 == iNumFuturesComponent) return null;</span>
+<span class="pc bpc" id="L260" title="1 of 2 branches missed.">		if (0 == iNumFuturesComponent) return null;</span>
 
-<span class="nc bnc" id="L262" title="All 2 branches missed.">		if (0 != iNumGovvieCurveMaturity)</span>
-<span class="nc" id="L263">			adtGovvieCurveTreasuryMaturity = new org.drip.analytics.date.JulianDate[iNumGovvieCurveMaturity];</span>
+<span class="pc bpc" id="L262" title="1 of 2 branches missed.">		if (0 != iNumGovvieCurveMaturity)</span>
+<span class="fc" id="L263">			adtGovvieCurveTreasuryMaturity = new org.drip.analytics.date.JulianDate[iNumGovvieCurveMaturity];</span>
 
-<span class="nc bnc" id="L265" title="All 2 branches missed.">		if (0 != iNumGovvieCurveEffective)</span>
-<span class="nc" id="L266">			adtGovvieCurveTreasuryEffective = new</span>
+<span class="pc bpc" id="L265" title="1 of 2 branches missed.">		if (0 != iNumGovvieCurveEffective)</span>
+<span class="fc" id="L266">			adtGovvieCurveTreasuryEffective = new</span>
 				org.drip.analytics.date.JulianDate[iNumGovvieCurveEffective];
 
-<span class="nc" id="L269">		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new</span>
+<span class="fc" id="L269">		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new</span>
 			org.drip.param.market.CurveSurfaceQuoteContainer();
 
 		try {
-<span class="nc" id="L273">			dtSpot = new org.drip.analytics.date.JulianDate (iSpotDate);</span>
+<span class="fc" id="L273">			dtSpot = new org.drip.analytics.date.JulianDate (iSpotDate);</span>
 
-<span class="nc bnc" id="L275" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumGovvieCurveMaturity; ++i)</span>
-<span class="nc" id="L276">				adtGovvieCurveTreasuryMaturity[i] = new org.drip.analytics.date.JulianDate</span>
+<span class="fc bfc" id="L275" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumGovvieCurveMaturity; ++i)</span>
+<span class="fc" id="L276">				adtGovvieCurveTreasuryMaturity[i] = new org.drip.analytics.date.JulianDate</span>
 					(aiGovvieCurveTreasuryMaturityDate[i]);
 
-<span class="nc bnc" id="L279" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumGovvieCurveEffective; ++i)</span>
-<span class="nc" id="L280">				adtGovvieCurveTreasuryEffective[i] = new org.drip.analytics.date.JulianDate</span>
+<span class="fc bfc" id="L279" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumGovvieCurveEffective; ++i)</span>
+<span class="fc" id="L280">				adtGovvieCurveTreasuryEffective[i] = new org.drip.analytics.date.JulianDate</span>
 					(aiGovvieCurveTreasuryEffectiveDate[i]);
 
-<span class="nc bnc" id="L283" title="All 4 branches missed.">			if (null != adblGovvieCurveTreasuryYield &amp;&amp; adblGovvieCurveTreasuryYield.length ==</span>
+<span class="pc bpc" id="L283" title="2 of 4 branches missed.">			if (null != adblGovvieCurveTreasuryYield &amp;&amp; adblGovvieCurveTreasuryYield.length ==</span>
 				iNumTreasuryBenchmark) {
-<span class="nc bnc" id="L285" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumTreasuryBenchmark; ++i) {</span>
-<span class="nc" id="L286">					org.drip.param.quote.ProductMultiMeasure pmm = new</span>
+<span class="fc bfc" id="L285" title="All 2 branches covered.">				for (int i = 0; i &lt; iNumTreasuryBenchmark; ++i) {</span>
+<span class="fc" id="L286">					org.drip.param.quote.ProductMultiMeasure pmm = new</span>
 						org.drip.param.quote.ProductMultiMeasure();
 
-<span class="nc" id="L289">					pmm.addQuote (&quot;Yield&quot;, new org.drip.param.quote.MultiSided (&quot;mid&quot;,</span>
+<span class="fc" id="L289">					pmm.addQuote (&quot;Yield&quot;, new org.drip.param.quote.MultiSided (&quot;mid&quot;,</span>
 						adblGovvieCurveTreasuryYield[i]), true);
 
-<span class="nc bnc" id="L292" title="All 2 branches missed.">					if (!csqc.setProductQuote (astrTreasuryBenchmarkCode[i], pmm)) return null;</span>
+<span class="pc bpc" id="L292" title="1 of 2 branches missed.">					if (!csqc.setProductQuote (astrTreasuryBenchmarkCode[i], pmm)) return null;</span>
 				}
 			}
 <span class="nc" id="L295">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L296">			e.printStackTrace();</span>
 
 <span class="nc" id="L298">			return null;</span>
-<span class="nc" id="L299">		}</span>
+<span class="fc" id="L299">		}</span>
 
-<span class="nc" id="L301">		org.drip.product.govvie.TreasuryFutures tsyFut =</span>
-<span class="nc" id="L302">			org.drip.service.template.ExchangeInstrumentBuilder.TreasuryFutures (dtSpot, strFuturesCode,</span>
+<span class="fc" id="L301">		org.drip.product.govvie.TreasuryFutures tsyFut =</span>
+<span class="fc" id="L302">			org.drip.service.template.ExchangeInstrumentBuilder.TreasuryFutures (dtSpot, strFuturesCode,</span>
 				aiFuturesComponentTreasuryEffectiveDate, aiFuturesComponentTreasuryMaturityDate,
 					adblFuturesComponentTreasuryCoupon, adblFuturesComponentConversionFactor);
 
-<span class="nc bnc" id="L306" title="All 2 branches missed.">		if (null == tsyFut) return null;</span>
+<span class="pc bpc" id="L306" title="1 of 2 branches missed.">		if (null == tsyFut) return null;</span>
 
-<span class="nc" id="L308">		org.drip.product.definition.Bond[] aBond = tsyFut.basket();</span>
+<span class="fc" id="L308">		org.drip.product.definition.Bond[] aBond = tsyFut.basket();</span>
 
-<span class="nc bnc" id="L310" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumFuturesComponent; ++i) {</span>
-<span class="nc" id="L311">			org.drip.param.quote.ProductMultiMeasure pmm = new org.drip.param.quote.ProductMultiMeasure();</span>
+<span class="fc bfc" id="L310" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFuturesComponent; ++i) {</span>
+<span class="fc" id="L311">			org.drip.param.quote.ProductMultiMeasure pmm = new org.drip.param.quote.ProductMultiMeasure();</span>
 
 			try {
-<span class="nc" id="L314">				pmm.addQuote (&quot;Price&quot;, new org.drip.param.quote.MultiSided (&quot;mid&quot;,</span>
+<span class="fc" id="L314">				pmm.addQuote (&quot;Price&quot;, new org.drip.param.quote.MultiSided (&quot;mid&quot;,</span>
 					adblFuturesComponentTreasuryPrice[i]), true);
 <span class="nc" id="L316">			} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L317">				e.printStackTrace();</span>
 
 <span class="nc" id="L319">				return null;</span>
-<span class="nc" id="L320">			}</span>
+<span class="fc" id="L320">			}</span>
 
-<span class="nc bnc" id="L322" title="All 2 branches missed.">			if (!csqc.setProductQuote (aBond[i].name(), pmm)) return null;</span>
+<span class="pc bpc" id="L322" title="1 of 2 branches missed.">			if (!csqc.setProductQuote (aBond[i].name(), pmm)) return null;</span>
 		}
 
-<span class="nc" id="L325">		java.lang.String strTreasuryType = tsyFut.type();</span>
+<span class="fc" id="L325">		java.lang.String strTreasuryType = tsyFut.type();</span>
 
-<span class="nc" id="L327">		if (!csqc.setGovvieState</span>
-<span class="nc bnc" id="L328" title="All 2 branches missed.">			(org.drip.service.template.LatentMarketStateBuilder.ShapePreservingGovvieCurve (strTreasuryType,</span>
+<span class="fc" id="L327">		if (!csqc.setGovvieState</span>
+<span class="pc bpc" id="L328" title="1 of 2 branches missed.">			(org.drip.service.template.LatentMarketStateBuilder.ShapePreservingGovvieCurve (strTreasuryType,</span>
 				dtSpot, adtGovvieCurveTreasuryEffective, adtGovvieCurveTreasuryMaturity,
 					adblGovvieCurveTreasuryCoupon, adblGovvieCurveTreasuryYield,
 						strGovvieCurveTreasuryMeasure)))
 <span class="nc" id="L332">			return null;</span>
 
-<span class="nc" id="L334">		org.drip.product.params.CTDEntry ctdEntry = tsyFut.cheapestToDeliverYield (iSpotDate,</span>
+<span class="fc" id="L334">		org.drip.product.params.CTDEntry ctdEntry = tsyFut.cheapestToDeliverYield (iSpotDate,</span>
 			adblFuturesComponentTreasuryPrice);
 
-<span class="nc bnc" id="L337" title="All 2 branches missed.">		if (null == ctdEntry) return null;</span>
+<span class="pc bpc" id="L337" title="1 of 2 branches missed.">		if (null == ctdEntry) return null;</span>
 
-<span class="nc" id="L339">		org.drip.product.definition.Bond bondCTD = ctdEntry.bond();</span>
+<span class="fc" id="L339">		org.drip.product.definition.Bond bondCTD = ctdEntry.bond();</span>
 
-<span class="nc bnc" id="L341" title="All 2 branches missed.">		if (null == bondCTD) return null;</span>
+<span class="pc bpc" id="L341" title="1 of 2 branches missed.">		if (null == bondCTD) return null;</span>
 
-<span class="nc" id="L343">		double dblCTDExpiryPrice = ctdEntry.forwardPrice();</span>
+<span class="fc" id="L343">		double dblCTDExpiryPrice = ctdEntry.forwardPrice();</span>
 
-<span class="nc" id="L345">		org.drip.param.valuation.ValuationParams valParamsExpiry =</span>
-<span class="nc" id="L346">			org.drip.param.valuation.ValuationParams.Spot (tsyFut.expiry().julian());</span>
+<span class="fc" id="L345">		org.drip.param.valuation.ValuationParams valParamsExpiry =</span>
+<span class="fc" id="L346">			org.drip.param.valuation.ValuationParams.Spot (tsyFut.expiry().julian());</span>
 
 		try {
-<span class="nc bnc" id="L349" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblBaselineCTDOAS = bondCTD.oasFromPrice</span>
-<span class="nc" id="L350">				(valParamsExpiry, csqc, null, dblCTDExpiryPrice)))</span>
+<span class="pc bpc" id="L349" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblBaselineCTDOAS = bondCTD.oasFromPrice</span>
+<span class="fc" id="L350">				(valParamsExpiry, csqc, null, dblCTDExpiryPrice)))</span>
 <span class="nc" id="L351">				return null;</span>
 <span class="nc" id="L352">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L353">			e.printStackTrace();</span>
 
 <span class="nc" id="L355">			return null;</span>
-<span class="nc" id="L356">		}</span>
+<span class="fc" id="L356">		}</span>
 
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.govvie.GovvieCurve&gt;
-<span class="nc" id="L359">			mapTenorGovvieCurve = org.drip.service.template.LatentMarketStateBuilder.BumpedGovvieCurve</span>
-<span class="nc" id="L360">				(strTreasuryType, dtSpot, adtGovvieCurveTreasuryEffective, adtGovvieCurveTreasuryMaturity,</span>
+<span class="fc" id="L359">			mapTenorGovvieCurve = org.drip.service.template.LatentMarketStateBuilder.BumpedGovvieCurve</span>
+<span class="fc" id="L360">				(strTreasuryType, dtSpot, adtGovvieCurveTreasuryEffective, adtGovvieCurveTreasuryMaturity,</span>
 					adblGovvieCurveTreasuryCoupon, adblGovvieCurveTreasuryYield,
 						strGovvieCurveTreasuryMeasure,
 							org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING, 0.0001,
 								false);
 
-<span class="nc bnc" id="L366" title="All 4 branches missed.">		if (null == mapTenorGovvieCurve || iNumTreasuryBenchmark &gt; mapTenorGovvieCurve.size()) return null;</span>
+<span class="pc bpc" id="L366" title="2 of 4 branches missed.">		if (null == mapTenorGovvieCurve || iNumTreasuryBenchmark &gt; mapTenorGovvieCurve.size()) return null;</span>
 
-<span class="nc" id="L368">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapKeyRateDuration = new</span>
+<span class="fc" id="L368">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapKeyRateDuration = new</span>
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
 
 		for (java.util.Map.Entry&lt;java.lang.String, org.drip.state.govvie.GovvieCurve&gt; me :
-<span class="nc bnc" id="L372" title="All 2 branches missed.">			mapTenorGovvieCurve.entrySet()) {</span>
-<span class="nc" id="L373">			java.lang.String strKey = me.getKey();</span>
+<span class="fc bfc" id="L372" title="All 2 branches covered.">			mapTenorGovvieCurve.entrySet()) {</span>
+<span class="fc" id="L373">			java.lang.String strKey = me.getKey();</span>
 
-<span class="nc bnc" id="L375" title="All 2 branches missed.">			if (!strKey.contains (&quot;tsy&quot;)) continue;</span>
+<span class="fc bfc" id="L375" title="All 2 branches covered.">			if (!strKey.contains (&quot;tsy&quot;)) continue;</span>
 
-<span class="nc bnc" id="L377" title="All 2 branches missed.">			if (!csqc.setGovvieState (me.getValue())) return null;</span>
+<span class="pc bpc" id="L377" title="1 of 2 branches missed.">			if (!csqc.setGovvieState (me.getValue())) return null;</span>
 
-<span class="nc" id="L379">			org.drip.product.params.CTDEntry tenorCTDEntry = tsyFut.cheapestToDeliverYield (iSpotDate,</span>
+<span class="fc" id="L379">			org.drip.product.params.CTDEntry tenorCTDEntry = tsyFut.cheapestToDeliverYield (iSpotDate,</span>
 				adblFuturesComponentTreasuryPrice);
 
-<span class="nc bnc" id="L382" title="All 2 branches missed.">			if (null == tenorCTDEntry) return null;</span>
+<span class="pc bpc" id="L382" title="1 of 2 branches missed.">			if (null == tenorCTDEntry) return null;</span>
 
-<span class="nc" id="L384">			org.drip.product.definition.Bond tenorBondCTD = tenorCTDEntry.bond();</span>
+<span class="fc" id="L384">			org.drip.product.definition.Bond tenorBondCTD = tenorCTDEntry.bond();</span>
 
-<span class="nc bnc" id="L386" title="All 2 branches missed.">			if (null == tenorBondCTD) return null;</span>
+<span class="pc bpc" id="L386" title="1 of 2 branches missed.">			if (null == tenorBondCTD) return null;</span>
 
 			try {
-<span class="nc" id="L389">				mapKeyRateDuration.put (strKey, 10000. * (tenorBondCTD.priceFromOAS (valParamsExpiry, csqc,</span>
+<span class="fc" id="L389">				mapKeyRateDuration.put (strKey, 10000. * (tenorBondCTD.priceFromOAS (valParamsExpiry, csqc,</span>
 					null, dblBaselineCTDOAS) - dblCTDExpiryPrice) / dblCTDExpiryPrice);
 <span class="nc" id="L391">			} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L392">				e.printStackTrace();</span>
 
 <span class="nc" id="L394">				return null;</span>
-<span class="nc" id="L395">			}</span>
-<span class="nc" id="L396">		}</span>
+<span class="fc" id="L395">			}</span>
+<span class="fc" id="L396">		}</span>
 
-<span class="nc" id="L398">		return mapKeyRateDuration;</span>
+<span class="fc" id="L398">		return mapKeyRateDuration;</span>
 	}
 
 	/**

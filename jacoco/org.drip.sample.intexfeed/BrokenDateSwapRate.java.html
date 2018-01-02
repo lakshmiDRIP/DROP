@@ -74,14 +74,14 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 		final String strMaturityTenor,
 		final double dblCoupon)
 	{
-<span class="nc" id="L77">		FixedFloatSwapConvention ffsc = IBORFixedFloatContainer.ConventionFromJurisdiction (</span>
+<span class="fc" id="L77">		FixedFloatSwapConvention ffsc = IBORFixedFloatContainer.ConventionFromJurisdiction (</span>
 			strCurrency,
 			&quot;NYC&quot;,
 			strMaturityTenor,
 			&quot;MAIN&quot;
 		);
 
-<span class="nc" id="L84">		return ffsc.createFixFloatComponent (</span>
+<span class="fc" id="L84">		return ffsc.createFixFloatComponent (</span>
 			dtSpot,
 			strMaturityTenor,
 			dblCoupon,
@@ -95,15 +95,15 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 		final String strCurrency)
 		throws Exception
 	{
-<span class="nc" id="L98">		String[] astrDepositMaturityTenor = new String[] {</span>
+<span class="fc" id="L98">		String[] astrDepositMaturityTenor = new String[] {</span>
 			&quot;2D&quot;
 		};
 
-<span class="nc" id="L102">		double[] adblDepositQuote = new double[] {</span>
+<span class="fc" id="L102">		double[] adblDepositQuote = new double[] {</span>
 			0.0130411 // 2D
 		};
 
-<span class="nc" id="L106">		double[] adblFuturesQuote = new double[] {</span>
+<span class="fc" id="L106">		double[] adblFuturesQuote = new double[] {</span>
 			0.01345,	// 98.655
 			0.01470,	// 98.530
 			0.01575,	// 98.425
@@ -112,7 +112,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			0.01845   	// 98.155
 		};
 
-<span class="nc" id="L115">		String[] astrFixFloatMaturityTenor = new String[] {</span>
+<span class="fc" id="L115">		String[] astrFixFloatMaturityTenor = new String[] {</span>
 			&quot;02Y&quot;,
 			&quot;03Y&quot;,
 			&quot;04Y&quot;,
@@ -132,7 +132,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			&quot;50Y&quot;
 		};
 
-<span class="nc" id="L135">		double[] adblFixFloatQuote = new double[] {</span>
+<span class="fc" id="L135">		double[] adblFixFloatQuote = new double[] {</span>
 			0.016410, //  2Y
 			0.017863, //  3Y
 			0.019030, //  4Y
@@ -152,7 +152,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			0.025560  // 50Y
 		};
 
-<span class="nc" id="L155">		return LatentMarketStateBuilder.SmoothFundingCurve (</span>
+<span class="fc" id="L155">		return LatentMarketStateBuilder.SmoothFundingCurve (</span>
 			dtSpot,
 			strCurrency,
 			astrDepositMaturityTenor,
@@ -170,25 +170,25 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L173">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L173">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L175">		int iNumMonth = 720;</span>
-<span class="nc" id="L176">		String strCurrency = &quot;USD&quot;;</span>
+<span class="fc" id="L175">		int iNumMonth = 720;</span>
+<span class="fc" id="L176">		String strCurrency = &quot;USD&quot;;</span>
 
-<span class="nc" id="L178">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L178">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
 			2017,
 			DateUtil.OCTOBER,
 			5
 		);
 
-<span class="nc" id="L184">		MergedDiscountForwardCurve mdfc = FundingCurve (</span>
+<span class="fc" id="L184">		MergedDiscountForwardCurve mdfc = FundingCurve (</span>
 			dtSpot,
 			strCurrency
 		);
 
-<span class="nc" id="L189">		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());</span>
+<span class="fc" id="L189">		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());</span>
 
-<span class="nc" id="L191">		CurveSurfaceQuoteContainer csqc = MarketParamsBuilder.Create (</span>
+<span class="fc" id="L191">		CurveSurfaceQuoteContainer csqc = MarketParamsBuilder.Create (</span>
 			mdfc,
 			null,
 			null,
@@ -198,37 +198,37 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			null
 		);
 
-<span class="nc" id="L201">		System.out.println (&quot;SpotDate,MaturityTenor,MaturityDate,SwapRate,CleanFixedDV01&quot;);</span>
+<span class="fc" id="L201">		System.out.println (&quot;SpotDate,MaturityTenor,MaturityDate,SwapRate,CleanFixedDV01&quot;);</span>
 
-<span class="nc bnc" id="L203" title="All 2 branches missed.">		for (int i = 1; i &lt;= iNumMonth; ++i) {</span>
-<span class="nc" id="L204">			String strMaturityTenor = i + &quot;M&quot;;</span>
+<span class="fc bfc" id="L203" title="All 2 branches covered.">		for (int i = 1; i &lt;= iNumMonth; ++i) {</span>
+<span class="fc" id="L204">			String strMaturityTenor = i + &quot;M&quot;;</span>
 
-<span class="nc" id="L206">			FixFloatComponent ffc = OTCIRS (</span>
+<span class="fc" id="L206">			FixFloatComponent ffc = OTCIRS (</span>
 				dtSpot,
 				strCurrency,
 				strMaturityTenor,
 				0.
 			);
 
-<span class="nc" id="L213">			Map&lt;String, Double&gt; mapOutput = ffc.value (</span>
+<span class="fc" id="L213">			Map&lt;String, Double&gt; mapOutput = ffc.value (</span>
 				valParams,
 				null,
 				csqc,
 				null
 			);
 
-<span class="nc" id="L220">			double dblSwapRate = mapOutput.get (&quot;SwapRate&quot;);</span>
+<span class="fc" id="L220">			double dblSwapRate = mapOutput.get (&quot;SwapRate&quot;);</span>
 
-<span class="nc" id="L222">			double dblSwapDV01 = mapOutput.get (&quot;CleanFixedDV01&quot;);</span>
+<span class="fc" id="L222">			double dblSwapDV01 = mapOutput.get (&quot;CleanFixedDV01&quot;);</span>
 
-<span class="nc" id="L224">			System.out.println (</span>
+<span class="fc" id="L224">			System.out.println (</span>
 				dtSpot + &quot;,&quot; +
 				strMaturityTenor + &quot;,&quot; +
-<span class="nc" id="L227">				ffc.maturityDate() + &quot;,&quot; +</span>
-<span class="nc" id="L228">				FormatUtil.FormatDouble (dblSwapRate, 1, 8, 100.) + &quot;%&quot; + &quot;,&quot; +</span>
-<span class="nc" id="L229">				FormatUtil.FormatDouble (dblSwapDV01, 1, 8, 10000.)</span>
+<span class="fc" id="L227">				ffc.maturityDate() + &quot;,&quot; +</span>
+<span class="fc" id="L228">				FormatUtil.FormatDouble (dblSwapRate, 1, 8, 100.) + &quot;%&quot; + &quot;,&quot; +</span>
+<span class="fc" id="L229">				FormatUtil.FormatDouble (dblSwapDV01, 1, 8, 10000.)</span>
 			);
 		}
-<span class="nc" id="L232">	}</span>
+<span class="fc" id="L232">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

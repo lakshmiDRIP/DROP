@@ -71,15 +71,15 @@ import org.drip.state.identifier.ForwardLabel;
 		final String strCurrency)
 		throws Exception
 	{
-<span class="nc" id="L74">		String[] astrDepositMaturityTenor = new String[] {</span>
+<span class="fc" id="L74">		String[] astrDepositMaturityTenor = new String[] {</span>
 			&quot;2D&quot;
 		};
 
-<span class="nc" id="L78">		double[] adblDepositQuote = new double[] {</span>
+<span class="fc" id="L78">		double[] adblDepositQuote = new double[] {</span>
 			0.0130411 // 2D
 		};
 
-<span class="nc" id="L82">		double[] adblFuturesQuote = new double[] {</span>
+<span class="fc" id="L82">		double[] adblFuturesQuote = new double[] {</span>
 			0.01345,	// 98.655
 			0.01470,	// 98.530
 			0.01575,	// 98.425
@@ -88,7 +88,7 @@ import org.drip.state.identifier.ForwardLabel;
 			0.01845   	// 98.155
 		};
 
-<span class="nc" id="L91">		String[] astrFixFloatMaturityTenor = new String[] {</span>
+<span class="fc" id="L91">		String[] astrFixFloatMaturityTenor = new String[] {</span>
 			&quot;02Y&quot;,
 			&quot;03Y&quot;,
 			&quot;04Y&quot;,
@@ -108,7 +108,7 @@ import org.drip.state.identifier.ForwardLabel;
 			&quot;50Y&quot;
 		};
 
-<span class="nc" id="L111">		double[] adblFixFloatQuote = new double[] {</span>
+<span class="fc" id="L111">		double[] adblFixFloatQuote = new double[] {</span>
 			0.016410, //  2Y
 			0.017863, //  3Y
 			0.019030, //  4Y
@@ -128,7 +128,7 @@ import org.drip.state.identifier.ForwardLabel;
 			0.025560  // 50Y
 		};
 
-<span class="nc" id="L131">		return LatentMarketStateBuilder.SmoothFundingCurve (</span>
+<span class="fc" id="L131">		return LatentMarketStateBuilder.SmoothFundingCurve (</span>
 			dtSpot,
 			strCurrency,
 			astrDepositMaturityTenor,
@@ -146,17 +146,17 @@ import org.drip.state.identifier.ForwardLabel;
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L149">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L149">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L151">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L151">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
 			2017,
 			DateUtil.OCTOBER,
 			5
 		);
 
-<span class="nc" id="L157">		int iNumMonth = 720;</span>
-<span class="nc" id="L158">		String strCurrency = &quot;USD&quot;;</span>
-<span class="nc" id="L159">		String[] astrForwardTenor = new String[] {</span>
+<span class="fc" id="L157">		int iNumMonth = 720;</span>
+<span class="fc" id="L158">		String strCurrency = &quot;USD&quot;;</span>
+<span class="fc" id="L159">		String[] astrForwardTenor = new String[] {</span>
 			 &quot;1M&quot;,
 			 &quot;2M&quot;,
 			 &quot;3M&quot;,
@@ -164,38 +164,38 @@ import org.drip.state.identifier.ForwardLabel;
 			&quot;12M&quot;
 		};
 
-<span class="nc" id="L167">		FixedFloatSwapConvention ffsc = IBORFixedFloatContainer.ConventionFromJurisdiction (strCurrency);</span>
+<span class="fc" id="L167">		FixedFloatSwapConvention ffsc = IBORFixedFloatContainer.ConventionFromJurisdiction (strCurrency);</span>
 
-<span class="nc" id="L169">		ForwardLabel forwardLabel = ffsc.floatStreamConvention().floaterIndex();</span>
+<span class="fc" id="L169">		ForwardLabel forwardLabel = ffsc.floatStreamConvention().floaterIndex();</span>
 
-<span class="nc" id="L171">		String strLIBORDayCount = forwardLabel.floaterIndex().dayCount();</span>
+<span class="fc" id="L171">		String strLIBORDayCount = forwardLabel.floaterIndex().dayCount();</span>
 
-<span class="nc" id="L173">		int iLIBORFreq = Helper.TenorToFreq (forwardLabel.tenor());</span>
+<span class="fc" id="L173">		int iLIBORFreq = Helper.TenorToFreq (forwardLabel.tenor());</span>
 
-<span class="nc" id="L175">		MergedDiscountForwardCurve mdfc = FundingCurve (</span>
+<span class="fc" id="L175">		MergedDiscountForwardCurve mdfc = FundingCurve (</span>
 			dtSpot,
 			strCurrency
 		);
 
-<span class="nc" id="L180">		System.out.println</span>
-<span class="nc" id="L181">			(&quot;SpotDate,ViewDate,ForwardTenor,ViewDiscountFactor,ViewForwardDiscountFactor, ForwardRate&quot;);</span>
+<span class="fc" id="L180">		System.out.println</span>
+<span class="fc" id="L181">			(&quot;SpotDate,ViewDate,ForwardTenor,ViewDiscountFactor,ViewForwardDiscountFactor, ForwardRate&quot;);</span>
 
-<span class="nc bnc" id="L183" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumMonth; ++i) {</span>
-<span class="nc bnc" id="L184" title="All 2 branches missed.">			JulianDate dtView = 0 == i ? dtSpot : dtSpot.addMonths (i);</span>
+<span class="fc bfc" id="L183" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumMonth; ++i) {</span>
+<span class="fc bfc" id="L184" title="All 2 branches covered.">			JulianDate dtView = 0 == i ? dtSpot : dtSpot.addMonths (i);</span>
 
-<span class="nc" id="L186">			double dblDFView = mdfc.df (dtView);</span>
+<span class="fc" id="L186">			double dblDFView = mdfc.df (dtView);</span>
 
-<span class="nc bnc" id="L188" title="All 2 branches missed.">			for (int j = 0; j &lt; astrForwardTenor.length; ++j) {</span>
-<span class="nc" id="L189">				JulianDate dtForward = dtView.addTenor (astrForwardTenor[j]);</span>
+<span class="fc bfc" id="L188" title="All 2 branches covered.">			for (int j = 0; j &lt; astrForwardTenor.length; ++j) {</span>
+<span class="fc" id="L189">				JulianDate dtForward = dtView.addTenor (astrForwardTenor[j]);</span>
 
-<span class="nc" id="L191">				double dblDFForward = mdfc.df (dtForward);</span>
+<span class="fc" id="L191">				double dblDFForward = mdfc.df (dtForward);</span>
 
-<span class="nc" id="L193">				double dblForwardRate = Helper.DF2Yield (</span>
+<span class="fc" id="L193">				double dblForwardRate = Helper.DF2Yield (</span>
 					iLIBORFreq,
 					dblDFForward / dblDFView,
-<span class="nc" id="L196">					Convention.YearFraction (</span>
-<span class="nc" id="L197">						dtView.julian(),</span>
-<span class="nc" id="L198">						dtForward.julian(),</span>
+<span class="fc" id="L196">					Convention.YearFraction (</span>
+<span class="fc" id="L197">						dtView.julian(),</span>
+<span class="fc" id="L198">						dtForward.julian(),</span>
 						strLIBORDayCount,
 						false,
 						null,
@@ -203,16 +203,16 @@ import org.drip.state.identifier.ForwardLabel;
 					)
 				);
 
-<span class="nc" id="L206">				System.out.println (</span>
+<span class="fc" id="L206">				System.out.println (</span>
 					dtSpot + &quot;,&quot; +
 					dtView + &quot;,&quot; +
 					astrForwardTenor[j] + &quot;,&quot; +
-<span class="nc" id="L210">					FormatUtil.FormatDouble (dblDFView, 1, 8, 1.) + &quot;,&quot; +</span>
-<span class="nc" id="L211">					FormatUtil.FormatDouble (dblDFForward, 1, 8, 1.) + &quot;,&quot; +</span>
-<span class="nc" id="L212">					FormatUtil.FormatDouble (dblForwardRate, 1, 8, 100.) + &quot;%&quot;</span>
+<span class="fc" id="L210">					FormatUtil.FormatDouble (dblDFView, 1, 8, 1.) + &quot;,&quot; +</span>
+<span class="fc" id="L211">					FormatUtil.FormatDouble (dblDFForward, 1, 8, 1.) + &quot;,&quot; +</span>
+<span class="fc" id="L212">					FormatUtil.FormatDouble (dblForwardRate, 1, 8, 100.) + &quot;%&quot;</span>
 				);
 			}
 		}
-<span class="nc" id="L216">	}</span>
+<span class="fc" id="L216">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

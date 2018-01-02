@@ -56,10 +56,11 @@ package org.drip.param.period;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ComposableFloatingUnitSetting extends org.drip.param.period.ComposableUnitBuilderSetting {
-<span class="fc" id="L60">	private int _iReferencePeriodArrearsType = -1;</span>
-<span class="fc" id="L61">	private double _dblSpread = java.lang.Double.NaN;</span>
-<span class="fc" id="L62">	private org.drip.state.identifier.ForwardLabel _forwardLabel = null;</span>
+public class ComposableFloatingUnitSetting extends org.drip.param.period.ComposableUnitBuilderSetting
+{
+<span class="fc" id="L61">	private int _iReferencePeriodArrearsType = -1;</span>
+<span class="fc" id="L62">	private double _dblSpread = java.lang.Double.NaN;</span>
+<span class="fc" id="L63">	private org.drip.state.identifier.FloaterLabel _floaterLabel = null;</span>
 
 	/**
 	 * ComposableFloatingUnitSetting constructor
@@ -67,7 +68,7 @@ public class ComposableFloatingUnitSetting extends org.drip.param.period.Composa
 	 * @param strTenor Unit Tenor
 	 * @param iEdgeDateSequenceScheme Edge Date Generation Scheme
 	 * @param dapEdge Date Adjust Parameter Settings for the Edge Dates
-	 * @param forwardLabel Forward Label
+	 * @param floaterLabel Floater Label
 	 * @param iReferencePeriodArrearsType Reference Period Arrears Type
 	 * @param dblSpread Floater Spread
 	 * 
@@ -78,29 +79,29 @@ public class ComposableFloatingUnitSetting extends org.drip.param.period.Composa
 		final java.lang.String strTenor,
 		final int iEdgeDateSequenceScheme,
 		final org.drip.analytics.daycount.DateAdjustParams dapEdge,
-		final org.drip.state.identifier.ForwardLabel forwardLabel,
+		final org.drip.state.identifier.FloaterLabel floaterLabel,
 		final int iReferencePeriodArrearsType,
 		final double dblSpread)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L86">		super (strTenor, iEdgeDateSequenceScheme, dapEdge);</span>
+<span class="fc" id="L87">		super (strTenor, iEdgeDateSequenceScheme, dapEdge);</span>
 
-<span class="pc bpc" id="L88" title="2 of 4 branches missed.">		if (null == (_forwardLabel = forwardLabel) || !org.drip.quant.common.NumberUtil.IsValid (_dblSpread =</span>
-			dblSpread))
-<span class="nc" id="L90">			throw new java.lang.Exception (&quot;ComposableFloatingUnitSetting ctr: Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">		if (null == (_floaterLabel = floaterLabel) ||</span>
+<span class="pc bpc" id="L90" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblSpread = dblSpread))</span>
+<span class="nc" id="L91">			throw new java.lang.Exception (&quot;ComposableFloatingUnitSetting ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L92">		_iReferencePeriodArrearsType = iReferencePeriodArrearsType;</span>
-<span class="fc" id="L93">	}</span>
+<span class="fc" id="L93">		_iReferencePeriodArrearsType = iReferencePeriodArrearsType;</span>
+<span class="fc" id="L94">	}</span>
 
 	/**
-	 * Retrieve the Forward Label
+	 * Retrieve the Floater Label
 	 * 
-	 * @return The Forward Label
+	 * @return The Floater Label
 	 */
 
-	public org.drip.state.identifier.ForwardLabel forwardLabel()
+	public org.drip.state.identifier.FloaterLabel floaterLabel()
 	{
-<span class="fc" id="L103">		return _forwardLabel;</span>
+<span class="fc" id="L104">		return _floaterLabel;</span>
 	}
 
 	/**
@@ -111,7 +112,7 @@ public class ComposableFloatingUnitSetting extends org.drip.param.period.Composa
 
 	public int referencePeriodArrearsType()
 	{
-<span class="fc" id="L114">		return _iReferencePeriodArrearsType;</span>
+<span class="fc" id="L115">		return _iReferencePeriodArrearsType;</span>
 	}
 
 	/**
@@ -122,7 +123,7 @@ public class ComposableFloatingUnitSetting extends org.drip.param.period.Composa
 
 	public double spread()
 	{
-<span class="fc" id="L125">		return _dblSpread;</span>
+<span class="fc" id="L126">		return _dblSpread;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
