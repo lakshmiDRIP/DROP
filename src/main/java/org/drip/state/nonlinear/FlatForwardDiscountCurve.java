@@ -76,7 +76,7 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 	private boolean _bDiscreteCompounding = false;
 	private java.lang.String _strCompoundingDayCount = "";
 
-	private double yearFract (
+	protected double yearFract (
 		final int iStartDate,
 		final int iEndDate)
 		throws java.lang.Exception
@@ -163,7 +163,10 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 		final int iCompoundingFreq)
 		throws java.lang.Exception
 	{
-		super (dtStart.julian(), strCurrency);
+		super (
+			dtStart.julian(),
+			strCurrency
+		);
 
 		if (null == aiDate || null == adblForwardRate)
 			throw new java.lang.Exception ("FlatForwardDiscountCurve ctr: Invalid inputs");
@@ -198,6 +201,61 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 		_iCompoundingFreq = dc._iCompoundingFreq;
 		_bDiscreteCompounding = dc._bDiscreteCompounding;
 		_strCompoundingDayCount = dc._strCompoundingDayCount;
+	}
+
+	/**
+	 * Retrieve the Forward Node Dates
+	 * 
+	 * @return The Forward Node Dates
+	 */
+
+	public int[] dates()
+	{
+		return _aiDate;
+	}
+
+	/**
+	 * Retrieve the Forward Node Values
+	 * 
+	 * @return The Forward Node Values
+	 */
+
+	public double[] nodeValues()
+	{
+		return _adblForwardRate;
+	}
+
+	/**
+	 * Retrieve the Discrete Compounding Flag
+	 * 
+	 * @return TRUE - Discrete Compounding
+	 */
+
+	public boolean discreteCompounding()
+	{
+		return _bDiscreteCompounding;
+	}
+
+	/**
+	 * Retrieve the Compounding Frequency
+	 * 
+	 * @return The Compounding Frequency
+	 */
+
+	public int compoundingFrequency()
+	{
+		return _iCompoundingFreq;
+	}
+
+	/**
+	 * Retrieve the Compounding Day Count
+	 * 
+	 * @return The Compounding Day Count
+	 */
+
+	public java.lang.String compoundingDayCount()
+	{
+		return _strCompoundingDayCount;
 	}
 
 	@Override public double df (
@@ -464,16 +522,5 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 			_adblForwardRate[i] = dblValue;
 
 		return true;
-	}
-
-	/**
-	 * Retrieve the Forward Node Values
-	 * 
-	 * @return The Forward Node Values
-	 */
-
-	public double[] nodeValues()
-	{
-		return _adblForwardRate;
 	}
 }
