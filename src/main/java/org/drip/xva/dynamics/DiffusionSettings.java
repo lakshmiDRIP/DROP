@@ -69,11 +69,70 @@ package org.drip.xva.dynamics;
 public class DiffusionSettings
 {
 	private double[][] _aadblCorrelation = null;
-	private org.drip.measure.process.DiffusionEvolver _dePortfolio = null;
 	private org.drip.measure.process.DiffusionEvolver _deCSANumeraire = null;
 	private org.drip.measure.process.DiffusionEvolver _deBankHazardRate = null;
 	private org.drip.measure.process.DiffusionEvolver _deBankRecoveryRate = null;
+	private org.drip.measure.process.DiffusionEvolver _deBankFundingSpread = null;
 	private org.drip.measure.process.DiffusionEvolver _deOvernightNumeraire = null;
+	private org.drip.measure.process.DiffusionEvolver _dePortfolioNumeraire = null;
+	private org.drip.measure.process.DiffusionEvolver _deCounterPartyHazardRate = null;
+	private org.drip.measure.process.DiffusionEvolver _deCounterPartyRecoveryRate = null;
+	private org.drip.measure.process.DiffusionEvolver _deCounterPartyFundingSpread = null;
+
+	/**
+	 * DiffusionSettings Constructor
+	 * 
+	 * @param dePortfolio Portfolio Numeraire Diffusion Evolver
+	 * @param deOvernightNumeraire Overnight Numeraire Diffusion Evolver
+	 * @param deCSANumeraire CSA Numeraire Diffusion Evolver
+	 * @param deBankHazardRate Bank Hazard Rate Diffusion Evolver
+	 * @param deBankRecoveryRate Bank Recovery Rate Diffusion Evolver
+	 * @param deBankFundingSpread Bank Funding Spread Diffusion Evolver
+	 * @param deCounterPartyHazardRate Counter Party Hazard Rate Diffusion Evolver
+	 * @param deCounterPartyRecoveryRate Counter Party Recovery Rate Diffusion Evolver
+	 * @param deCounterPartyFundingSpread Counter Party Funding Spread Diffusion Evolver
+	 * @param aadblCorrelation Latent State Correlation Matrix
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public DiffusionSettings (
+		final org.drip.measure.process.DiffusionEvolver dePortfolioNumeraire,
+		final org.drip.measure.process.DiffusionEvolver deOvernightNumeraire,
+		final org.drip.measure.process.DiffusionEvolver deCSANumeraire,
+		final org.drip.measure.process.DiffusionEvolver deBankHazardRate,
+		final org.drip.measure.process.DiffusionEvolver deBankRecoveryRate,
+		final org.drip.measure.process.DiffusionEvolver deBankFundingSpread,
+		final org.drip.measure.process.DiffusionEvolver deCounterPartyHazardRate,
+		final org.drip.measure.process.DiffusionEvolver deCounterPartyRecoveryRate,
+		final org.drip.measure.process.DiffusionEvolver deCounterPartyFundingSpread,
+		final double[][] aadblCorrelation)
+		throws java.lang.Exception
+	{
+		if (null == (_dePortfolioNumeraire = dePortfolioNumeraire) ||
+			null == (_deOvernightNumeraire = deOvernightNumeraire) ||
+			null == (_deCSANumeraire = deCSANumeraire) ||
+			null == (_deBankHazardRate = deBankHazardRate) ||
+			null == (_deBankRecoveryRate = deBankRecoveryRate) ||
+			null == (_deBankFundingSpread = deBankFundingSpread) ||
+			null == (_deCounterPartyHazardRate = deCounterPartyHazardRate) ||
+			null == (_deCounterPartyRecoveryRate = deCounterPartyRecoveryRate) ||
+			null == (_deCounterPartyFundingSpread = deCounterPartyFundingSpread) ||
+			null == (_aadblCorrelation = aadblCorrelation))
+			throw new java.lang.Exception ("DiffusionSettings Constructor => Invalid Inputs");
+
+		int iNumEvolver = _aadblCorrelation.length;
+
+		if (9 != iNumEvolver)
+			throw new java.lang.Exception ("DiffusionSettings Constructor => Invalid Inputs");
+
+		for (int i = 0; i < iNumEvolver; ++i)
+		{
+			if (null == _aadblCorrelation[i] || iNumEvolver != _aadblCorrelation[i].length ||
+				!org.drip.quant.common.NumberUtil.IsValid (_aadblCorrelation[i]))
+				throw new java.lang.Exception ("DiffusionSettings Constructor => Invalid Inputs");
+		}
+	}
 
 	/**
 	 * Retrieve the Correlation Matrix
@@ -87,14 +146,14 @@ public class DiffusionSettings
 	}
 
 	/**
-	 * Retrieve the Portfolio Diffusion Evolver
+	 * Retrieve the Portfolio Numeraire Diffusion Evolver
 	 * 
-	 * @return The Portfolio Diffusion Evolver
+	 * @return The Portfolio Numeraire Diffusion Evolver
 	 */
 
-	public org.drip.measure.process.DiffusionEvolver portfolioEvolver()
+	public org.drip.measure.process.DiffusionEvolver portfolioNumeraireEvolver()
 	{
-		return _dePortfolio;
+		return _dePortfolioNumeraire;
 	}
 
 	/**
@@ -139,5 +198,60 @@ public class DiffusionSettings
 	public org.drip.measure.process.DiffusionEvolver bankRecoveryRateEvolver()
 	{
 		return _deBankRecoveryRate;
+	}
+
+	/**
+	 * Retrieve the Bank Funding Spread Diffusion Evolver
+	 * 
+	 * @return The Bank Funding Spread Diffusion Evolver
+	 */
+
+	public org.drip.measure.process.DiffusionEvolver bankFundingSpreadEvolver()
+	{
+		return _deBankFundingSpread;
+	}
+
+	/**
+	 * Retrieve the Counter Party Hazard Rate Diffusion Evolver
+	 * 
+	 * @return The Counter Party Hazard Rate Diffusion Evolver
+	 */
+
+	public org.drip.measure.process.DiffusionEvolver counterPartyHazardRateEvolver()
+	{
+		return _deCounterPartyHazardRate;
+	}
+
+	/**
+	 * Retrieve the Counter Party Recovery Rate Diffusion Evolver
+	 * 
+	 * @return The Counter Party Recovery Rate Diffusion Evolver
+	 */
+
+	public org.drip.measure.process.DiffusionEvolver counterPartyRecoveryRateEvolver()
+	{
+		return _deCounterPartyRecoveryRate;
+	}
+
+	/**
+	 * Retrieve the Counter Party Funding Spread Diffusion Evolver
+	 * 
+	 * @return The Counter Party Funding Spread Diffusion Evolver
+	 */
+
+	public org.drip.measure.process.DiffusionEvolver counterPartyFundingSpreadEvolver()
+	{
+		return _deCounterPartyFundingSpread;
+	}
+
+	/**
+	 * Retrieve the Count of the Latent States Evolved
+	 * 
+	 * @return Count of the Latent States Evolved
+	 */
+
+	public int latentStateCount()
+	{
+		return 9;
 	}
 }

@@ -68,19 +68,30 @@ package org.drip.xva.dynamics;
 
 public class EvolutionControl
 {
-	private int _iNumStep = -1;
+	private int _iNumTimeSteps = -1;
 	private double _dblHorizonTime = java.lang.Double.NaN;
 	private org.drip.analytics.date.JulianDate _dtSpot = null;
 
 	/**
-	 * Retrieve the Count of the Number of Steps
+	 * Retrieve the Spot Date
 	 * 
-	 * @return Count of the Number of Steps
+	 * @return The Spot Date
 	 */
 
-	public int numSteps()
+	public org.drip.analytics.date.JulianDate spotDate()
 	{
-		return _iNumStep;
+		return _dtSpot;
+	}
+
+	/**
+	 * Retrieve the Count of the Number of Time Steps
+	 * 
+	 * @return Count of the Number of Time Steps
+	 */
+
+	public int numTimeSteps()
+	{
+		return _iNumTimeSteps;
 	}
 
 	/**
@@ -95,13 +106,13 @@ public class EvolutionControl
 	}
 
 	/**
-	 * Retrieve the Spot Date
+	 * Retrieve the Time Width
 	 * 
-	 * @return The Spot Date
+	 * @return The Time Width
 	 */
 
-	public org.drip.analytics.date.JulianDate spotDate()
+	public double timeWidth()
 	{
-		return _dtSpot;
+		return _dblHorizonTime / _iNumTimeSteps;
 	}
 }
