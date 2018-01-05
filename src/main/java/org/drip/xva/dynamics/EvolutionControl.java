@@ -73,6 +73,28 @@ public class EvolutionControl
 	private org.drip.analytics.date.JulianDate _dtSpot = null;
 
 	/**
+	 * EvolutionControl Constructor
+	 * 
+	 * @param dtSpot Spot Date
+	 * @param dblTimeHorizon Time Horizon
+	 * @param iNumTimeSteps Steps in the Time Discretization
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public EvolutionControl (
+		final org.drip.analytics.date.JulianDate dtSpot,
+		final double dblTimeHorizon,
+		final int iNumTimeSteps)
+		throws java.lang.Exception
+	{
+		if (null == (_dtSpot = dtSpot) ||
+			!org.drip.quant.common.NumberUtil.IsValid(_dblHorizonTime = dblTimeHorizon) ||
+			0 >= (_iNumTimeSteps = iNumTimeSteps))
+			throw new java.lang.Exception ("EvolutionControl Constructor => Invalid Inputs");
+	}
+
+	/**
 	 * Retrieve the Spot Date
 	 * 
 	 * @return The Spot Date

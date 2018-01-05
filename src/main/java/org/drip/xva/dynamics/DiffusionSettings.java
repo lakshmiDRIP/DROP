@@ -71,10 +71,10 @@ public class DiffusionSettings
 	private double[][] _aadblCorrelation = null;
 	private org.drip.measure.process.DiffusionEvolver _deCSANumeraire = null;
 	private org.drip.measure.process.DiffusionEvolver _deBankHazardRate = null;
+	private org.drip.measure.process.DiffusionEvolver _dePortfolioValue = null;
 	private org.drip.measure.process.DiffusionEvolver _deBankRecoveryRate = null;
 	private org.drip.measure.process.DiffusionEvolver _deBankFundingSpread = null;
 	private org.drip.measure.process.DiffusionEvolver _deOvernightNumeraire = null;
-	private org.drip.measure.process.DiffusionEvolver _dePortfolioNumeraire = null;
 	private org.drip.measure.process.DiffusionEvolver _deCounterPartyHazardRate = null;
 	private org.drip.measure.process.DiffusionEvolver _deCounterPartyRecoveryRate = null;
 	private org.drip.measure.process.DiffusionEvolver _deCounterPartyFundingSpread = null;
@@ -82,7 +82,7 @@ public class DiffusionSettings
 	/**
 	 * DiffusionSettings Constructor
 	 * 
-	 * @param dePortfolio Portfolio Numeraire Diffusion Evolver
+	 * @param dePortfolioValue Portfolio Value Diffusion Evolver
 	 * @param deOvernightNumeraire Overnight Numeraire Diffusion Evolver
 	 * @param deCSANumeraire CSA Numeraire Diffusion Evolver
 	 * @param deBankHazardRate Bank Hazard Rate Diffusion Evolver
@@ -97,7 +97,7 @@ public class DiffusionSettings
 	 */
 
 	public DiffusionSettings (
-		final org.drip.measure.process.DiffusionEvolver dePortfolioNumeraire,
+		final org.drip.measure.process.DiffusionEvolver dePortfolioValue,
 		final org.drip.measure.process.DiffusionEvolver deOvernightNumeraire,
 		final org.drip.measure.process.DiffusionEvolver deCSANumeraire,
 		final org.drip.measure.process.DiffusionEvolver deBankHazardRate,
@@ -109,7 +109,7 @@ public class DiffusionSettings
 		final double[][] aadblCorrelation)
 		throws java.lang.Exception
 	{
-		if (null == (_dePortfolioNumeraire = dePortfolioNumeraire) ||
+		if (null == (_dePortfolioValue = dePortfolioValue) ||
 			null == (_deOvernightNumeraire = deOvernightNumeraire) ||
 			null == (_deCSANumeraire = deCSANumeraire) ||
 			null == (_deBankHazardRate = deBankHazardRate) ||
@@ -146,14 +146,14 @@ public class DiffusionSettings
 	}
 
 	/**
-	 * Retrieve the Portfolio Numeraire Diffusion Evolver
+	 * Retrieve the Portfolio Value Diffusion Evolver
 	 * 
-	 * @return The Portfolio Numeraire Diffusion Evolver
+	 * @return The Portfolio Value Diffusion Evolver
 	 */
 
-	public org.drip.measure.process.DiffusionEvolver portfolioNumeraireEvolver()
+	public org.drip.measure.process.DiffusionEvolver portfolioValueEvolver()
 	{
-		return _dePortfolioNumeraire;
+		return _dePortfolioValue;
 	}
 
 	/**
