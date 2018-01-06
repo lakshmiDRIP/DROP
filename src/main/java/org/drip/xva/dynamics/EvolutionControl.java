@@ -89,7 +89,7 @@ public class EvolutionControl
 		throws java.lang.Exception
 	{
 		if (null == (_dtSpot = dtSpot) ||
-			!org.drip.quant.common.NumberUtil.IsValid(_dblHorizonTime = dblTimeHorizon) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_dblHorizonTime = dblTimeHorizon) ||
 			0 >= (_iNumTimeSteps = iNumTimeSteps))
 			throw new java.lang.Exception ("EvolutionControl Constructor => Invalid Inputs");
 	}
@@ -128,13 +128,20 @@ public class EvolutionControl
 	}
 
 	/**
-	 * Retrieve the Time Width
+	 * Retrieve the Time Node Array
 	 * 
-	 * @return The Time Width
+	 * @return The Time Node Array
 	 */
 
-	public double timeWidth()
+	public double[] timeNodes()
 	{
-		return _dblHorizonTime / _iNumTimeSteps;
+		double[] adblNodeTime = new double[_iNumTimeSteps + 1];
+		double dblTimeWidth = _dblHorizonTime / _iNumTimeSteps;
+		adblNodeTime[0] = 0.;
+
+		for (int i = 1; i <= _iNumTimeSteps; ++i)
+			adblNodeTime[i] = dblTimeWidth * i;
+
+		return adblNodeTime;
 	}
 }

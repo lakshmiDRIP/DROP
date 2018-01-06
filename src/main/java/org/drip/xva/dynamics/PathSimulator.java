@@ -80,14 +80,14 @@ public class PathSimulator
 	{
 		int iNumTimeStep = _evolutionControl.numTimeSteps();
 
-		double dblTimeWidth = _evolutionControl.timeWidth();
+		double[] adblNodeTime = _evolutionControl.timeNodes();
 
 		double[] adblValue = new double[iNumTimeStep + 1];
 		double[] adblTimeWidth = new double[iNumTimeStep];
 		org.drip.measure.realization.JumpDiffusionVertex[] aJumpDiffusionVertex = null;
 
 		for (int i = 0; i < iNumTimeStep; ++i)
-			adblTimeWidth[i] = dblTimeWidth;
+			adblTimeWidth[i] = adblNodeTime[i + 1] - adblNodeTime[i];
 
 		try {
 			aJumpDiffusionVertex = deValue.vertexSequenceReverse (
@@ -121,6 +121,10 @@ public class PathSimulator
 		final double[][] aadblRandom)
 	{
 		int iNumTimeStep = _evolutionControl.numTimeSteps();
+
+		double[] adblNodeTime = _evolutionControl.timeNodes();
+
+		double dblHorizonTime = _evolutionControl.horizonTime();
 
 		org.drip.xva.universe.MarketVertex[] marketVertexArray = new
 			org.drip.xva.universe.MarketVertex[iNumTimeStep + 1];
@@ -229,43 +233,44 @@ public class PathSimulator
 			{
 				marketVertexArray[j] = new org.drip.xva.universe.MarketVertex (
 					dateVertexArray[j],
-					java.lang.Double.NaN,
-					0 == j ? 0. : 2. * java.lang.Math.log (adblOvernightNumeraire[0] /
-						adblOvernightNumeraire[j]) / j,
+					adblPortfolioValue[j],
+					0 == adblNodeTime[j] ? 0. : java.lang.Math.log
+						(adblOvernightNumeraire[0] / adblOvernightNumeraire[j]) / adblNodeTime[j],
 					new org.drip.xva.universe.NumeraireMarketVertex (
 						adblOvernightNumeraire[0],
 						adblOvernightNumeraire[j]
 					),
-					0 == j ? 0. : 2. * java.lang.Math.log (adblCSANumeraire[0] / adblCSANumeraire[j]) / j,
+					0 == adblNodeTime[j] ? 0. : java.lang.Math.log
+						(adblCSANumeraire[0] / adblCSANumeraire[j]) / adblNodeTime[j],
 					new org.drip.xva.universe.NumeraireMarketVertex (
 						adblCSANumeraire[0],
 						adblCSANumeraire[j]
 					),
 					new org.drip.xva.universe.EntityMarketVertex (
-						java.lang.Math.exp (-0.5 * adblBankHazardRate[j] * j),
+						java.lang.Math.exp (-1. * adblBankHazardRate[j] * adblNodeTime[j]),
 						adblBankHazardRate[j],
 						adblBankRecoveryRate[j],
 						adblBankFundingSpread[j],
 						new org.drip.xva.universe.NumeraireMarketVertex (
-							java.lang.Math.exp (-0.5 * adblBankHazardRate[j] * (1. - adblBankRecoveryRate[j])
-								* iNumTimeStep),
-							java.lang.Math.exp (-0.5 * adblBankHazardRate[j] * (1. - adblBankRecoveryRate[j])
-								* (iNumTimeStep - j))
+							java.lang.Math.exp (-1. * adblBankHazardRate[0] * (1. - adblBankRecoveryRate[0])
+								* dblHorizonTime),
+							java.lang.Math.exp (-1. * adblBankHazardRate[j] * (1. - adblBankRecoveryRate[j])
+								* (dblHorizonTime - adblNodeTime[j]))
 						),
 						java.lang.Double.NaN,
 						java.lang.Double.NaN,
 						null
 					),
 					new org.drip.xva.universe.EntityMarketVertex (
-						java.lang.Math.exp (-0.5 * adblCounterPartyHazardRate[j] * j),
+						java.lang.Math.exp (-1. * adblCounterPartyHazardRate[j] * adblNodeTime[j]),
 						adblCounterPartyHazardRate[j],
 						adblCounterPartyRecoveryRate[j],
 						adblCounterPartyFundingSpread[j],
 						new org.drip.xva.universe.NumeraireMarketVertex (
-							java.lang.Math.exp (-0.5 * adblCounterPartyHazardRate[j] *
-								(1. - adblCounterPartyRecoveryRate[j]) * iNumTimeStep),
-							java.lang.Math.exp (-0.5 * adblCounterPartyHazardRate[j] *
-								(1. - adblCounterPartyRecoveryRate[j]) * (iNumTimeStep - j))
+							java.lang.Math.exp (-1. * adblCounterPartyHazardRate[0] *
+								(1. - adblCounterPartyRecoveryRate[0]) * dblHorizonTime),
+							java.lang.Math.exp (-1. * adblCounterPartyHazardRate[j] *
+								(1. - adblCounterPartyRecoveryRate[j]) * (dblHorizonTime - adblNodeTime[j]))
 						),
 						java.lang.Double.NaN,
 						java.lang.Double.NaN,
@@ -393,6 +398,31 @@ public class PathSimulator
 	}
 
 	/**
+	 * PathSimulator Constructor
+	 * 
+	 * @param iCount Path Count
+	 * @param groupSettings Group Settings
+	 * @param diffusionSettings Diffusion Settings
+	 * @param evolutionControl Evolution Control
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public PathSimulator (
+		final int iCount,
+		final org.drip.xva.dynamics.GroupSettings groupSettings,
+		final org.drip.xva.dynamics.DiffusionSettings diffusionSettings,
+		final org.drip.xva.dynamics.EvolutionControl evolutionControl)
+		throws java.lang.Exception
+	{
+		if (0 >= (_iCount = iCount) ||
+			null == (_groupSettings = groupSettings) ||
+			null == (_diffusionSettings = diffusionSettings) ||
+			null == (_evolutionControl = evolutionControl))
+			throw new java.lang.Exception ("PathSimulator Constructor => Invalid Inputs");
+	}
+
+	/**
 	 * Retrieve the Path Count
 	 * 
 	 * @return The Path Count
@@ -430,10 +460,10 @@ public class PathSimulator
 	 * 
 	 * @param initialStateEntityRealization The Starting State Entity Realization
 	 * 
-	 * @return The Exposure Adjustment Digest - Simulation Result
+	 * @return The Exposure Adjustment Aggregator - Simulation Result
 	 */
 
-	public org.drip.xva.cpty.ExposureAdjustmentDigest simulate (
+	public org.drip.xva.cpty.ExposureAdjustmentAggregator simulate (
 		final org.drip.xva.dynamics.StateEntityRealization initialStateEntityRealization)
 	{
 		int iNumTimeStep = _evolutionControl.numTimeSteps();
@@ -472,7 +502,7 @@ public class PathSimulator
 
 		try
 		{
-			return new org.drip.xva.cpty.ExposureAdjustmentAggregator (pathExposureAdjustmentArray).digest();
+			return new org.drip.xva.cpty.ExposureAdjustmentAggregator (pathExposureAdjustmentArray);
 		}
 		catch (java.lang.Exception e)
 		{
