@@ -188,7 +188,7 @@ public class ExposureGroupPath {
 <span class="fc bfc" id="L188" title="All 2 branches covered.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
 <span class="fc" id="L189">				adblCollateralizedExposurePV[iVertexIndex] +=</span>
 					adblCollateralGroupCollateralizedExposure[iVertexIndex] *
-<span class="fc" id="L191">						aMV[iVertexIndex].overnightIndexNumeraire().epochalForwardScale();</span>
+<span class="fc" id="L191">						aMV[iVertexIndex].overnightNumeraire().epochalNodalScale();</span>
 		}
 
 <span class="fc" id="L194">		return adblCollateralizedExposurePV;</span>
@@ -254,7 +254,7 @@ public class ExposureGroupPath {
 
 <span class="fc bfc" id="L255" title="All 2 branches covered.">				if (0. &lt; dblCollateralizedExposure)</span>
 <span class="fc" id="L256">					adblCollateralizedPositiveExposurePV[iVertexIndex] += dblCollateralizedExposure *</span>
-<span class="fc" id="L257">						aMV[iVertexIndex].overnightIndexNumeraire().epochalForwardScale();</span>
+<span class="fc" id="L257">						aMV[iVertexIndex].overnightNumeraire().epochalNodalScale();</span>
 			}
 		}
 
@@ -321,7 +321,7 @@ public class ExposureGroupPath {
 
 <span class="fc bfc" id="L322" title="All 2 branches covered.">				if (0. &gt; dblCollateralizedExposure)</span>
 <span class="fc" id="L323">					adblCollateralizedNegativeExposurePV[iVertexIndex] += dblCollateralizedExposure *</span>
-<span class="fc" id="L324">						aMV[iVertexIndex].overnightIndexNumeraire().epochalForwardScale();</span>
+<span class="fc" id="L324">						aMV[iVertexIndex].overnightNumeraire().epochalNodalScale();</span>
 			}
 		}
 
@@ -383,7 +383,7 @@ public class ExposureGroupPath {
 <span class="fc bfc" id="L383" title="All 2 branches covered.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
 <span class="fc" id="L384">				adblUncollateralizedExposurePV[iVertexIndex] +=</span>
 					adblCollateralGroupUncollateralizedExposure[iVertexIndex] *
-<span class="fc" id="L386">						aMV[iVertexIndex].overnightIndexNumeraire().epochalForwardScale();</span>
+<span class="fc" id="L386">						aMV[iVertexIndex].overnightNumeraire().epochalNodalScale();</span>
 		}
 
 <span class="fc" id="L389">		return adblUncollateralizedExposurePV;</span>
@@ -451,7 +451,7 @@ public class ExposureGroupPath {
 
 <span class="fc bfc" id="L452" title="All 2 branches covered.">				if (0. &lt; dblUncollateralizedExposure)</span>
 <span class="fc" id="L453">					adblUncollateralizedPositiveExposurePV[iVertexIndex] += dblUncollateralizedExposure *</span>
-<span class="fc" id="L454">						aMV[iVertexIndex].overnightIndexNumeraire().epochalForwardScale();</span>
+<span class="fc" id="L454">						aMV[iVertexIndex].overnightNumeraire().epochalNodalScale();</span>
 			}
 		}
 
@@ -520,7 +520,7 @@ public class ExposureGroupPath {
 
 <span class="fc bfc" id="L521" title="All 2 branches covered.">				if (0. &gt; dblUncollateralizedExposure)</span>
 <span class="fc" id="L522">					adblUncollateralizedNegativeExposurePV[iVertexIndex] += dblUncollateralizedExposure *</span>
-<span class="fc" id="L523">						aMV[iVertexIndex].overnightIndexNumeraire().epochalForwardScale();</span>
+<span class="fc" id="L523">						aMV[iVertexIndex].overnightNumeraire().epochalNodalScale();</span>
 			}
 		}
 
@@ -576,14 +576,14 @@ public class ExposureGroupPath {
 <span class="fc" id="L576">			double dblPeriodIntegrandStart = adblCollateralBalance[iVertexIndex - 1] *</span>
 <span class="fc" id="L577">				aMV[iVertexIndex - 1].bank().survivalProbability() *</span>
 <span class="fc" id="L578">					aMV[iVertexIndex - 1].counterParty().survivalProbability() *</span>
-<span class="fc" id="L579">						aMV[iVertexIndex - 1].collateralSchemeSpread() *</span>
-<span class="fc" id="L580">							aMV[iVertexIndex - 1].overnightIndexNumeraire().epochalForwardScale();</span>
+<span class="fc" id="L579">						aMV[iVertexIndex - 1].csaSpread() *</span>
+<span class="fc" id="L580">							aMV[iVertexIndex - 1].overnightNumeraire().epochalNodalScale();</span>
 
 <span class="fc" id="L582">			double dblPeriodIntegrandEnd = adblCollateralBalance[iVertexIndex] *</span>
 <span class="fc" id="L583">				aMV[iVertexIndex].bank().survivalProbability() *</span>
 <span class="fc" id="L584">					aMV[iVertexIndex].counterParty().survivalProbability() *</span>
-<span class="fc" id="L585">						aMV[iVertexIndex].collateralSchemeSpread() *</span>
-<span class="fc" id="L586">							aMV[iVertexIndex].overnightIndexNumeraire().epochalForwardScale();</span>
+<span class="fc" id="L585">						aMV[iVertexIndex].csaSpread() *</span>
+<span class="fc" id="L586">							aMV[iVertexIndex].overnightNumeraire().epochalNodalScale();</span>
 
 <span class="fc" id="L588">			dblBilateralCollateralValueAdjustment -= 0.5 * (dblPeriodIntegrandStart + dblPeriodIntegrandEnd)</span>
 <span class="fc" id="L589">				* (aMV[iVertexIndex].anchor().julian() - aMV[iVertexIndex - 1].anchor().julian()) / 365.25;</span>
@@ -613,13 +613,13 @@ public class ExposureGroupPath {
 <span class="fc bfc" id="L613" title="All 2 branches covered.">		for (int iVertexIndex = 1; iVertexIndex &lt; iNumVertex; ++iVertexIndex) {</span>
 <span class="fc" id="L614">			double dblPeriodIntegrandStart = adblCollateralBalance[iVertexIndex - 1] *</span>
 <span class="fc" id="L615">				aMV[iVertexIndex - 1].counterParty().survivalProbability() *</span>
-<span class="fc" id="L616">					aMV[iVertexIndex - 1].collateralSchemeSpread() *</span>
-<span class="fc" id="L617">						aMV[iVertexIndex - 1].overnightIndexNumeraire().epochalForwardScale();</span>
+<span class="fc" id="L616">					aMV[iVertexIndex - 1].csaSpread() *</span>
+<span class="fc" id="L617">						aMV[iVertexIndex - 1].overnightNumeraire().epochalNodalScale();</span>
 
 <span class="fc" id="L619">			double dblPeriodIntegrandEnd = adblCollateralBalance[iVertexIndex] *</span>
 <span class="fc" id="L620">				aMV[iVertexIndex].counterParty().survivalProbability() *</span>
-<span class="fc" id="L621">					aMV[iVertexIndex].collateralSchemeSpread() *</span>
-<span class="fc" id="L622">						aMV[iVertexIndex].overnightIndexNumeraire().epochalForwardScale();</span>
+<span class="fc" id="L621">					aMV[iVertexIndex].csaSpread() *</span>
+<span class="fc" id="L622">						aMV[iVertexIndex].overnightNumeraire().epochalNodalScale();</span>
 
 <span class="fc" id="L624">			dblUnilateralCollateralValueAdjustment -= 0.5 * (dblPeriodIntegrandStart + dblPeriodIntegrandEnd)</span>
 <span class="fc" id="L625">				* (aMV[iVertexIndex].anchor().julian() - aMV[iVertexIndex - 1].anchor().julian()) / 365.25;</span>
@@ -663,13 +663,13 @@ public class ExposureGroupPath {
 <span class="nc bnc" id="L663" title="All 2 branches missed.">		for (int iVertexIndex = 1; iVertexIndex &lt; iNumVertex; ++iVertexIndex) {</span>
 <span class="nc" id="L664">			double dblPeriodIntegrandStart = adblCollateralBalance[iVertexIndex - 1] *</span>
 <span class="nc" id="L665">				aMV[iVertexIndex - 1].counterParty().survivalProbability() *</span>
-<span class="nc" id="L666">					aMV[iVertexIndex - 1].collateralSchemeSpread() *</span>
-<span class="nc" id="L667">						aMV[iVertexIndex - 1].overnightIndexNumeraire().epochalForwardScale();</span>
+<span class="nc" id="L666">					aMV[iVertexIndex - 1].csaSpread() *</span>
+<span class="nc" id="L667">						aMV[iVertexIndex - 1].overnightNumeraire().epochalNodalScale();</span>
 
 <span class="nc" id="L669">			double dblPeriodIntegrandEnd = adblCollateralBalance[iVertexIndex] *</span>
 <span class="nc" id="L670">				aMV[iVertexIndex].counterParty().survivalProbability() *</span>
-<span class="nc" id="L671">					aMV[iVertexIndex].collateralSchemeSpread() *</span>
-<span class="nc" id="L672">						aMV[iVertexIndex].overnightIndexNumeraire().epochalForwardScale();</span>
+<span class="nc" id="L671">					aMV[iVertexIndex].csaSpread() *</span>
+<span class="nc" id="L672">						aMV[iVertexIndex].overnightNumeraire().epochalNodalScale();</span>
 
 <span class="nc" id="L674">			adblUnilateralCollateralValueAdjustment[iVertexIndex - 1] = -0.5 * (dblPeriodIntegrandStart +</span>
 <span class="nc" id="L675">				dblPeriodIntegrandEnd) * (aMV[iVertexIndex].anchor().julian() -</span>
@@ -701,14 +701,14 @@ public class ExposureGroupPath {
 <span class="nc" id="L701">			double dblPeriodIntegrandStart = adblCollateralBalance[iVertexIndex - 1] *</span>
 <span class="nc" id="L702">				aMV[iVertexIndex - 1].bank().survivalProbability() *</span>
 <span class="nc" id="L703">					aMV[iVertexIndex - 1].counterParty().survivalProbability() *</span>
-<span class="nc" id="L704">						aMV[iVertexIndex - 1].collateralSchemeSpread() *</span>
-<span class="nc" id="L705">							aMV[iVertexIndex - 1].overnightIndexNumeraire().epochalForwardScale();</span>
+<span class="nc" id="L704">						aMV[iVertexIndex - 1].csaSpread() *</span>
+<span class="nc" id="L705">							aMV[iVertexIndex - 1].overnightNumeraire().epochalNodalScale();</span>
 
 <span class="nc" id="L707">			double dblPeriodIntegrandEnd = adblCollateralBalance[iVertexIndex] *</span>
 <span class="nc" id="L708">				aMV[iVertexIndex].bank().survivalProbability() *</span>
 <span class="nc" id="L709">					aMV[iVertexIndex].counterParty().survivalProbability() *</span>
-<span class="nc" id="L710">						aMV[iVertexIndex].collateralSchemeSpread() *</span>
-<span class="nc" id="L711">							aMV[iVertexIndex].overnightIndexNumeraire().epochalForwardScale();</span>
+<span class="nc" id="L710">						aMV[iVertexIndex].csaSpread() *</span>
+<span class="nc" id="L711">							aMV[iVertexIndex].overnightNumeraire().epochalNodalScale();</span>
 
 <span class="nc" id="L713">			adblBilateralCollateralValueAdjustment[iVertexIndex - 1] = -0.5 * (dblPeriodIntegrandStart +</span>
 <span class="nc" id="L714">				dblPeriodIntegrandEnd) * (aMV[iVertexIndex].anchor().julian() -</span>
@@ -783,7 +783,7 @@ public class ExposureGroupPath {
 
 <span class="fc bfc" id="L784" title="All 2 branches covered.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
 <span class="fc" id="L785">				adblCreditExposurePV[iVertexIndex] += adblCollateralGroupCreditExposure[iVertexIndex] *</span>
-<span class="fc" id="L786">					aMV[iVertexIndex].overnightIndexNumeraire().epochalForwardScale();</span>
+<span class="fc" id="L786">					aMV[iVertexIndex].overnightNumeraire().epochalNodalScale();</span>
 		}
 
 <span class="fc" id="L789">		return adblCreditExposurePV;</span>
@@ -840,7 +840,7 @@ public class ExposureGroupPath {
 
 <span class="fc bfc" id="L841" title="All 2 branches covered.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
 <span class="fc" id="L842">				adblDebtExposurePV[iVertexIndex] += adblCollateralGroupDebtExposure[iVertexIndex] *</span>
-<span class="fc" id="L843">					aMV[iVertexIndex].overnightIndexNumeraire().epochalForwardScale();</span>
+<span class="fc" id="L843">					aMV[iVertexIndex].overnightNumeraire().epochalNodalScale();</span>
 		}
 
 <span class="fc" id="L846">		return adblDebtExposurePV;</span>
@@ -897,7 +897,7 @@ public class ExposureGroupPath {
 
 <span class="fc bfc" id="L898" title="All 2 branches covered.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
 <span class="fc" id="L899">				adblFundingExposurePV[iVertexIndex] += adblCollateralGroupFundingExposure[iVertexIndex] *</span>
-<span class="fc" id="L900">					aMV[iVertexIndex].overnightIndexNumeraire().epochalForwardScale();</span>
+<span class="fc" id="L900">					aMV[iVertexIndex].overnightNumeraire().epochalNodalScale();</span>
 		}
 
 <span class="fc" id="L903">		return adblFundingExposurePV;</span>

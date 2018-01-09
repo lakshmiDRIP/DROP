@@ -103,8 +103,8 @@ public class BurgardKjaerVertexBuilder {
 
 		org.drip.xva.universe.EntityMarketVertex emvBank = mv.bank();
 
-		org.drip.xva.universe.NumeraireMarketVertex nmvBankSubordinate =
-			emvBank.subordinateFundingNumeraire();
+		org.drip.xva.universe.LatentStateMarketVertex nmvBankSubordinate =
+			emvBank.subordinateFundingLatentState();
 
 		if (null == nmvBankSubordinate) return null;
 
@@ -122,7 +122,7 @@ public class BurgardKjaerVertexBuilder {
 			(dblCounterPartySurvival - 1.) * cgvea.credit() +
 			dblCounterPartySurvival * dblIncrementalBankSurvival * cgvea.debt() +
 			dblCounterPartySurvival * dblIncrementalBankSurvival * dblFundingExposure -
-			dblBankSurvival * dblCounterPartySurvival * mv.collateralSchemeSpread() * cgvea.collateralBalance();
+			dblBankSurvival * dblCounterPartySurvival * mv.csaSpread() * cgvea.collateralBalance();
 
 		try {
 			return new org.drip.xva.hypothecation.BurgardKjaerVertex (
@@ -133,9 +133,9 @@ public class BurgardKjaerVertexBuilder {
 				cgvco,
 				new org.drip.xva.derivative.ReplicationPortfolioVertexBank (
 					(dblFundingExposure + dblBankSubordinateRecovery * dblAdjustedExposure - dblBankDefaultCloseOut) /
-						(dblBankSeniorRecovery - dblBankSubordinateRecovery) / emvBank.seniorFundingNumeraire().forward(),
+						(dblBankSeniorRecovery - dblBankSubordinateRecovery) / emvBank.seniorFundingLatentState().nodal(),
 					(dblFundingExposure + dblBankSeniorRecovery * dblAdjustedExposure - dblBankDefaultCloseOut) /
-						(dblBankSubordinateRecovery - dblBankSeniorRecovery) / nmvBankSubordinate.forward()
+						(dblBankSubordinateRecovery - dblBankSeniorRecovery) / nmvBankSubordinate.nodal()
 				)
 			);
 		} catch (java.lang.Exception e) {
@@ -176,8 +176,8 @@ public class BurgardKjaerVertexBuilder {
 
 		org.drip.xva.universe.EntityMarketVertex emvBankFinish = mvFinish.bank();
 
-		org.drip.xva.universe.NumeraireMarketVertex nmvBankSubordinateFinish =
-			emvBankFinish.subordinateFundingNumeraire();
+		org.drip.xva.universe.LatentStateMarketVertex nmvBankSubordinateFinish =
+			emvBankFinish.subordinateFundingLatentState();
 
 		if (null == nmvBankSubordinateFinish) return null;
 
@@ -195,7 +195,7 @@ public class BurgardKjaerVertexBuilder {
 			(dblCounterPartySurvivalFinish - mvStart.counterParty().survivalProbability()) * cgvea.credit() +
 			dblCounterPartySurvivalFinish * dblIncrementalBankSurvival * cgvea.debt() +
 			dblCounterPartySurvivalFinish * dblIncrementalBankSurvival * dblFundingExposure -
-			dblBankSurvivalFinish * dblCounterPartySurvivalFinish * mvFinish.collateralSchemeSpread() * cgvea.collateralBalance();
+			dblBankSurvivalFinish * dblCounterPartySurvivalFinish * mvFinish.csaSpread() * cgvea.collateralBalance();
 
 		try {
 			return new org.drip.xva.hypothecation.BurgardKjaerVertex (
@@ -207,9 +207,9 @@ public class BurgardKjaerVertexBuilder {
 				new org.drip.xva.derivative.ReplicationPortfolioVertexBank (
 					(dblFundingExposure + dblBankSubordinateRecoveryFinish * dblAdjustedExposure - dblBankDefaultCloseOut) /
 						(dblBankSeniorRecoveryFinish - dblBankSubordinateRecoveryFinish) /
-							emvBankFinish.seniorFundingNumeraire().forward(),
+							emvBankFinish.seniorFundingLatentState().nodal(),
 					(dblFundingExposure + dblBankSeniorRecoveryFinish * dblAdjustedExposure - dblBankDefaultCloseOut) /
-						(dblBankSubordinateRecoveryFinish - dblBankSeniorRecoveryFinish) / nmvBankSubordinateFinish.forward()
+						(dblBankSubordinateRecoveryFinish - dblBankSeniorRecoveryFinish) / nmvBankSubordinateFinish.nodal()
 				)
 			);
 		} catch (java.lang.Exception e) {

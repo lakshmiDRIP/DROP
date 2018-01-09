@@ -144,7 +144,7 @@ public class BurgardKjaerOperator {
 
 		double dblGainOnBankDefault = etvStart.gainOnBankDefault();
 
-		double dblAssetValue = mvFinish.assetNumeraire();
+		double dblAssetValue = mvFinish.portfolioValue();
 
 		double dblAssetBump = _pdeec.sensitivityShiftFactor() * dblAssetValue;
 
@@ -168,7 +168,7 @@ public class BurgardKjaerOperator {
 				-1. * adblBumpedTheta[0],
 				-1. * adblBumpedTheta[1],
 				-1. * adblBumpedTheta[2],
-				mvFinish.collateralSchemeNumeraire().forward() * dblCollateral,
+				mvFinish.csaNumeraire().nodal() * dblCollateral,
 				(dblBankSeniorDefaultIntensity + dblCounterPartyDefaultIntensity) * dblDerivativeXVAValueStart,
 				-1. * dblBankSeniorDefaultIntensity * dblGainOnBankDefault,
 				-1. * dblGainOnCounterPartyDefault,
@@ -218,7 +218,7 @@ public class BurgardKjaerOperator {
 		double dblBankExposure = dblCloseOutMTM > 0. ? dblCloseOutMTM : emvBankFinish.seniorRecoveryRate() *
 			dblCloseOutMTM;
 
-		double dblAssetValue = mvFinish.assetNumeraire();
+		double dblAssetValue = mvFinish.portfolioValue();
 
 		double dblAssetBump = _pdeec.sensitivityShiftFactor() * dblAssetValue;
 
@@ -238,7 +238,7 @@ public class BurgardKjaerOperator {
 				-1. * adblBumpedTheta[0],
 				-1. * adblBumpedTheta[1],
 				-1. * adblBumpedTheta[2],
-				mvFinish.collateralSchemeNumeraire().forward() * dblCollateral,
+				mvFinish.csaNumeraire().nodal() * dblCollateral,
 				(dblBankDefaultIntensity + dblCounterPartyDefaultIntensity) * dblDerivativeXVAValue,
 				dblBankSeniorFundingSpread * dblBankExposure,
 				-1. * dblBankDefaultIntensity * dblBankExposure,

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NumeraireMarketVertex.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.xva.universe</a> &gt; <span class="el_source">NumeraireMarketVertex.java</span></div><h1>NumeraireMarketVertex.java</h1><pre class="source lang-java linenums">
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LatentStateMarketVertex.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.xva.universe</a> &gt; <span class="el_source">LatentStateMarketVertex.java</span></div><h1>LatentStateMarketVertex.java</h1><pre class="source lang-java linenums">
 package org.drip.xva.universe;
 
 /*
@@ -48,7 +48,7 @@ package org.drip.xva.universe;
  */
 
 /**
- * NumeraireMarketVertex holds the Epochal and the Forward Numeraire Realizations at a Market Trajectory
+ * LatentStateMarketVertex holds the Epochal and the Nodal Latent State Realizations at a Market Trajectory
  *  Vertex needed for computing the Valuation Adjustment. The References are:
  *  
  *  - Burgard, C., and M. Kjaer (2013): Funding Strategies, Funding Costs, Risk, 24 (12) 82-87.
@@ -66,60 +66,61 @@ package org.drip.xva.universe;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NumeraireMarketVertex {
-<span class="fc" id="L70">	private double _dblEpochal = java.lang.Double.NaN;</span>
-<span class="fc" id="L71">	private double _dblForward = java.lang.Double.NaN;</span>
+public class LatentStateMarketVertex
+{
+<span class="fc" id="L71">	private double _dblNodal = java.lang.Double.NaN;</span>
+<span class="fc" id="L72">	private double _dblEpochal = java.lang.Double.NaN;</span>
 
 	/**
-	 * NumeraireMarketVertex Constructor
+	 * LatentStateMarketVertex Constructor
 	 * 
-	 * @param dblEpochal The Epochal Numeraire Realization
-	 * @param dblForward The Forward Numeraire Realization
+	 * @param dblEpochal The Epochal Latent State Realization
+	 * @param dblNodal The Nodal Latent State Realization
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public NumeraireMarketVertex (
+	public LatentStateMarketVertex (
 		final double dblEpochal,
-		final double dblForward)
+		final double dblNodal)
 		throws java.lang.Exception
-<span class="fc" id="L86">	{</span>
-<span class="pc bpc" id="L87" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblEpochal = dblEpochal) ||</span>
-<span class="pc bpc" id="L88" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblForward = dblForward))</span>
-<span class="nc" id="L89">			throw new java.lang.Exception (&quot;NumeraireMarketVertex Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L90">	}</span>
+<span class="fc" id="L87">	{</span>
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblEpochal = dblEpochal) ||</span>
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblNodal = dblNodal))</span>
+<span class="nc" id="L90">			throw new java.lang.Exception (&quot;LatentStateMarketVertex Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L91">	}</span>
 
 	/**
-	 * Retrieve the Epochal Numeraire Realization
+	 * Retrieve the Epochal Latent State Realization
 	 * 
-	 * @return The Epochal Numeraire Realization
+	 * @return The Epochal Latent State Realization
 	 */
 
 	public double epochal()
 	{
-<span class="nc" id="L100">		return _dblEpochal;</span>
+<span class="nc" id="L101">		return _dblEpochal;</span>
 	}
 
 	/**
-	 * Retrieve the Forward Numeraire Realization
+	 * Retrieve the Nodal Latent State Realization
 	 * 
-	 * @return The Forward Numeraire Realization
+	 * @return The Nodal Latent State Realization
 	 */
 
-	public double forward()
+	public double nodal()
 	{
-<span class="fc" id="L111">		return _dblForward;</span>
+<span class="fc" id="L112">		return _dblNodal;</span>
 	}
 
 	/**
-	 * Retrieve the Epochal/Forward Numeraire Scale
+	 * Retrieve the Epochal/Nodal Latent State Scale
 	 * 
-	 * @return The Epochal/Forward Numeraire Scale
+	 * @return The Epochal/Nodal Latent State Scale
 	 */
 
-	public double epochalForwardScale()
+	public double epochalNodalScale()
 	{
-<span class="fc" id="L122">		return _dblEpochal / _dblForward;</span>
+<span class="fc" id="L123">		return _dblEpochal / _dblNodal;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

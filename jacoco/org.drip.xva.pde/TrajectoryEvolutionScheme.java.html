@@ -148,25 +148,25 @@ public class TrajectoryEvolutionScheme {
 
 <span class="fc" id="L149">		org.drip.xva.universe.EntityMarketVertex emvCounterPartyFinish = mvFinish.counterParty();</span>
 
-<span class="fc" id="L151">		double dblAssetNumeraireFinish = mvFinish.assetNumeraire();</span>
+<span class="fc" id="L151">		double dblAssetNumeraireFinish = mvFinish.portfolioValue();</span>
 
-<span class="fc" id="L153">		double dblBankSeniorFundingNumeraireFinish = emvBankFinish.seniorFundingNumeraire().forward();</span>
+<span class="fc" id="L153">		double dblBankSeniorFundingNumeraireFinish = emvBankFinish.seniorFundingLatentState().nodal();</span>
 
-<span class="fc" id="L155">		double dblCounterPartyNumeraireFinish = emvCounterPartyFinish.seniorFundingNumeraire().forward();</span>
+<span class="fc" id="L155">		double dblCounterPartyNumeraireFinish = emvCounterPartyFinish.seniorFundingLatentState().nodal();</span>
 
 <span class="fc" id="L157">		double dblBankSubordinateFundingNumeraireStart = java.lang.Double.NaN;</span>
 <span class="fc" id="L158">		double dblBankSubordinateFundingNumeraireFinish = java.lang.Double.NaN;</span>
 
-<span class="fc" id="L160">		org.drip.xva.universe.NumeraireMarketVertex nmvBankSubordinateFundingStart =</span>
-<span class="fc" id="L161">			emvBankStart.seniorFundingNumeraire();</span>
+<span class="fc" id="L160">		org.drip.xva.universe.LatentStateMarketVertex nmvBankSubordinateFundingStart =</span>
+<span class="fc" id="L161">			emvBankStart.seniorFundingLatentState();</span>
 
-<span class="fc" id="L163">		org.drip.xva.universe.NumeraireMarketVertex nmvBankSubordinateFundingFinish =</span>
-<span class="fc" id="L164">			emvBankFinish.seniorFundingNumeraire();</span>
+<span class="fc" id="L163">		org.drip.xva.universe.LatentStateMarketVertex nmvBankSubordinateFundingFinish =</span>
+<span class="fc" id="L164">			emvBankFinish.seniorFundingLatentState();</span>
 
 <span class="pc bpc" id="L166" title="2 of 4 branches missed.">		if (null != nmvBankSubordinateFundingStart &amp;&amp; null != nmvBankSubordinateFundingFinish) {</span>
-<span class="fc" id="L167">			dblBankSubordinateFundingNumeraireStart = nmvBankSubordinateFundingStart.forward();</span>
+<span class="fc" id="L167">			dblBankSubordinateFundingNumeraireStart = nmvBankSubordinateFundingStart.nodal();</span>
 
-<span class="fc" id="L169">			dblBankSubordinateFundingNumeraireFinish = nmvBankSubordinateFundingFinish.forward();</span>
+<span class="fc" id="L169">			dblBankSubordinateFundingNumeraireFinish = nmvBankSubordinateFundingFinish.nodal();</span>
 		}
 
 <span class="fc" id="L172">		double dblTimeIncrement = me.vertexIncrement() / 365.25;</span>
@@ -181,7 +181,7 @@ public class TrajectoryEvolutionScheme {
 				dblTimeIncrement;
 
 <span class="fc" id="L183">		double dblCounterPartyPositionValueChange = dblCounterPartyNumeraireUnitsStart *</span>
-<span class="fc" id="L184">			(dblCounterPartyNumeraireFinish - mvStart.counterParty().seniorFundingNumeraire().forward());</span>
+<span class="fc" id="L184">			(dblCounterPartyNumeraireFinish - mvStart.counterParty().seniorFundingLatentState().nodal());</span>
 
 <span class="fc" id="L186">		double dblCashAccountBalance = -1. * etvStart.assetGreekVertex().derivativeXVAValue() -</span>
 			dblBankSeniorNumeraireUnitsStart * dblBankSeniorFundingNumeraireFinish;
@@ -199,8 +199,8 @@ public class TrajectoryEvolutionScheme {
 				dblTimeIncrement;
 
 <span class="fc" id="L201">		double dblDerivativeXVAValueChange = -1. * (dblAssetNumeraireUnitsStart * (dblAssetNumeraireFinish -</span>
-<span class="fc" id="L202">			mvStart.assetNumeraire()) + dblBankSeniorNumeraireUnitsStart *</span>
-<span class="fc" id="L203">				(dblBankSeniorFundingNumeraireFinish - emvBankStart.seniorFundingNumeraire().forward()) +</span>
+<span class="fc" id="L202">			mvStart.portfolioValue()) + dblBankSeniorNumeraireUnitsStart *</span>
+<span class="fc" id="L203">				(dblBankSeniorFundingNumeraireFinish - emvBankStart.seniorFundingLatentState().nodal()) +</span>
 					dblCounterPartyPositionValueChange + (dblAssetCashChange +
 						dblCounterPartyCashAccumulation + dblBankCashAccumulation) * dblTimeIncrement);
 
@@ -292,7 +292,7 @@ public class TrajectoryEvolutionScheme {
 			dblCounterPartyGainOnBankDefault);
 
 <span class="fc" id="L294">		double dblCounterPartyNumeraireUnitsFinish = dblGainOnCounterPartyDefaultFinish /</span>
-<span class="fc" id="L295">			emvCounterPartyFinish.seniorFundingNumeraire().forward();</span>
+<span class="fc" id="L295">			emvCounterPartyFinish.seniorFundingLatentState().nodal();</span>
 
 <span class="fc" id="L297">		org.drip.xva.derivative.CashAccountRebalancer car = rebalanceCash (etvStart, me);</span>
 
@@ -300,13 +300,13 @@ public class TrajectoryEvolutionScheme {
 
 <span class="fc" id="L301">		org.drip.xva.derivative.CashAccountEdge cae = car.cashAccount();</span>
 
-<span class="fc" id="L303">		double dblBankSeniorFundingNumeraire = emvBankFinish.seniorFundingNumeraire().forward();</span>
+<span class="fc" id="L303">		double dblBankSeniorFundingNumeraire = emvBankFinish.seniorFundingLatentState().nodal();</span>
 
-<span class="fc" id="L305">		org.drip.xva.universe.NumeraireMarketVertex nmvBankSubordinateFunding =</span>
-<span class="fc" id="L306">			emvBankFinish.subordinateFundingNumeraire();</span>
+<span class="fc" id="L305">		org.drip.xva.universe.LatentStateMarketVertex nmvBankSubordinateFunding =</span>
+<span class="fc" id="L306">			emvBankFinish.seniorFundingLatentState();</span>
 
 <span class="pc bpc" id="L308" title="1 of 2 branches missed.">		if (null != nmvBankSubordinateFunding)</span>
-<span class="fc" id="L309">			dblBankSubordinateFundingNumeraire = nmvBankSubordinateFunding.forward();</span>
+<span class="fc" id="L309">			dblBankSubordinateFundingNumeraire = nmvBankSubordinateFunding.nodal();</span>
 
 <span class="fc" id="L311">		org.drip.xva.universe.Tradeable tCollateralScheme = _tc.collateralScheme();</span>
 
@@ -333,7 +333,7 @@ public class TrajectoryEvolutionScheme {
 <span class="fc" id="L333">						tCollateralScheme.numeraireEvolver().evaluator().drift().value (</span>
 							new org.drip.measure.realization.JumpDiffusionVertex (
 								dblTimeStart - 0.5 * dblTimeIncrement,
-<span class="fc" id="L336">								me.start().collateralSchemeNumeraire().forward(),</span>
+<span class="fc" id="L336">								me.start().csaNumeraire().nodal(),</span>
 								0.,
 								false
 							)

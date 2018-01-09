@@ -68,25 +68,26 @@ package org.drip.xva.universe;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MarketVertex {
-<span class="fc" id="L72">	public double _dblAssetNumeraire = java.lang.Double.NaN;</span>
-<span class="fc" id="L73">	private org.drip.analytics.date.JulianDate _dtAnchor = null;</span>
-<span class="fc" id="L74">	private double _dblOvernightIndexRate = java.lang.Double.NaN;</span>
-<span class="fc" id="L75">	private org.drip.xva.universe.EntityMarketVertex _emvBank = null;</span>
-<span class="fc" id="L76">	private double _dblCollateralSchemeSpread = java.lang.Double.NaN;</span>
-<span class="fc" id="L77">	private org.drip.xva.universe.EntityMarketVertex _emvCounterParty = null;</span>
-<span class="fc" id="L78">	private org.drip.xva.universe.NumeraireMarketVertex _nmvOvernightIndex = null;</span>
-<span class="fc" id="L79">	private org.drip.xva.universe.NumeraireMarketVertex _nmvCollateralScheme = null;</span>
+public class MarketVertex
+{
+<span class="fc" id="L73">	private double _dblCSASpread = java.lang.Double.NaN;</span>
+<span class="fc" id="L74">	public double _dblPortfolioValue = java.lang.Double.NaN;</span>
+<span class="fc" id="L75">	private double _dblOvernightRate = java.lang.Double.NaN;</span>
+<span class="fc" id="L76">	private org.drip.analytics.date.JulianDate _dtAnchor = null;</span>
+<span class="fc" id="L77">	private org.drip.xva.universe.EntityMarketVertex _emvBank = null;</span>
+<span class="fc" id="L78">	private org.drip.xva.universe.EntityMarketVertex _emvCounterParty = null;</span>
+<span class="fc" id="L79">	private org.drip.xva.universe.LatentStateMarketVertex _lsmvCSANumeraire = null;</span>
+<span class="fc" id="L80">	private org.drip.xva.universe.LatentStateMarketVertex _lsmvOvernightNumeraire = null;</span>
 
 	/**
 	 * MarketVertex Constructor
 	 * 
 	 * @param dtAnchor The Vertex Date Anchor
-	 * @param dblAssetNumeraire The Asset Numeraire Realization
-	 * @param dblOvernightIndexRate The Realized Overnight Index Rate
-	 * @param nmvOvernightIndex The Realized Overnight Index Numeraire
-	 * @param dblCollateralSchemeSpread The Realized Collateral Scheme Spread
-	 * @param nmvCollateralScheme The Realized Collateral Scheme Numeraire
+	 * @param dblPortfolioValue The Realized Portfolio Value
+	 * @param dblOvernightRate The Realized Overnight Rate
+	 * @param lsmvOvernightNumeraire The Realized Overnight Numeraire
+	 * @param dblCSASpread The Realized CSA Spread
+	 * @param lsmvCSANumeraire The Realized CSA Numeraire
 	 * @param emvBank Bank Entity Market Vertex Instance
 	 * @param emvCounterParty Counter Party Market Vertex Instance
 	 * 
@@ -95,24 +96,26 @@ public class MarketVertex {
 
 	public MarketVertex (
 		final org.drip.analytics.date.JulianDate dtAnchor,
-		final double dblAssetNumeraire,
-		final double dblOvernightIndexRate,
-		final org.drip.xva.universe.NumeraireMarketVertex nmvOvernightIndex,
-		final double dblCollateralSchemeSpread,
-		final org.drip.xva.universe.NumeraireMarketVertex nmvCollateralScheme,
+		final double dblPortfolioValue,
+		final double dblOvernightRate,
+		final org.drip.xva.universe.LatentStateMarketVertex lsmvOvernightNumeraire,
+		final double dblCSASpread,
+		final org.drip.xva.universe.LatentStateMarketVertex lsmvCSANumeraire,
 		final org.drip.xva.universe.EntityMarketVertex emvBank,
 		final org.drip.xva.universe.EntityMarketVertex emvCounterParty)
 		throws java.lang.Exception
-<span class="fc" id="L106">	{</span>
-<span class="pc bpc" id="L107" title="1 of 2 branches missed.">		if (null == (_dtAnchor = dtAnchor) || !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="pc bpc" id="L108" title="2 of 4 branches missed.">			(_dblOvernightIndexRate = dblOvernightIndexRate) || null == (_nmvOvernightIndex =</span>
-<span class="pc bpc" id="L109" title="4 of 8 branches missed.">				nmvOvernightIndex) || !org.drip.quant.common.NumberUtil.IsValid (_dblCollateralSchemeSpread =</span>
-					dblCollateralSchemeSpread) || null == (_nmvCollateralScheme = nmvCollateralScheme) ||
-						null == (_emvBank = emvBank) || null == (_emvCounterParty = emvCounterParty))
-<span class="nc" id="L112">			throw new java.lang.Exception (&quot;MarketVertex Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L107">	{</span>
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">		if (null == (_dtAnchor = dtAnchor) ||</span>
+<span class="pc bpc" id="L109" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblOvernightRate = dblOvernightRate) ||</span>
+			null == (_lsmvOvernightNumeraire = lsmvOvernightNumeraire) ||
+<span class="pc bpc" id="L111" title="4 of 8 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblCSASpread = dblCSASpread) ||</span>
+			null == (_lsmvCSANumeraire = lsmvCSANumeraire) ||
+			null == (_emvBank = emvBank) ||
+			null == (_emvCounterParty = emvCounterParty))
+<span class="nc" id="L115">			throw new java.lang.Exception (&quot;MarketVertex Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L114">		_dblAssetNumeraire = dblAssetNumeraire;</span>
-<span class="fc" id="L115">	}</span>
+<span class="fc" id="L117">		_dblPortfolioValue = dblPortfolioValue;</span>
+<span class="fc" id="L118">	}</span>
 
 	/**
 	 * Retrieve the Date Anchor
@@ -122,18 +125,18 @@ public class MarketVertex {
 
 	public org.drip.analytics.date.JulianDate anchor()
 	{
-<span class="fc" id="L125">		return _dtAnchor;</span>
+<span class="fc" id="L128">		return _dtAnchor;</span>
 	}
 
 	/**
-	 * Retrieve the Asset Numeraire
+	 * Retrieve the Realized Portfolio Value
 	 * 
-	 * @return The Asset Numeraire
+	 * @return The Portfolio Value
 	 */
 
-	public double assetNumeraire()
+	public double portfolioValue()
 	{
-<span class="fc" id="L136">		return _dblAssetNumeraire;</span>
+<span class="fc" id="L139">		return _dblPortfolioValue;</span>
 	}
 
 	/**
@@ -142,9 +145,9 @@ public class MarketVertex {
 	 * @return The Realized Overnight Index Rate
 	 */
 
-	public double overnightIndexRate()
+	public double overnightRate()
 	{
-<span class="fc" id="L147">		return _dblOvernightIndexRate;</span>
+<span class="fc" id="L150">		return _dblOvernightRate;</span>
 	}
 
 	/**
@@ -153,42 +156,42 @@ public class MarketVertex {
 	 * @return The Realized Overnight Index Numeraire
 	 */
 
-	public org.drip.xva.universe.NumeraireMarketVertex overnightIndexNumeraire()
+	public org.drip.xva.universe.LatentStateMarketVertex overnightNumeraire()
 	{
-<span class="fc" id="L158">		return _nmvOvernightIndex;</span>
+<span class="fc" id="L161">		return _lsmvOvernightNumeraire;</span>
 	}
 
 	/**
-	 * Retrieve the Realized Spread over the Overnight Policy Rate corresponding to the Collateral Scheme
+	 * Retrieve the Realized Spread over the Overnight Policy Rate corresponding to the CSA Scheme
 	 * 
-	 * @return The Realized Spread over the Overnight Policy Rate corresponding to the Collateral Scheme
+	 * @return The Realized Spread over the Overnight Policy Rate corresponding to the CSA Scheme
 	 */
 
-	public double collateralSchemeSpread()
+	public double csaSpread()
 	{
-<span class="fc" id="L169">		return _dblCollateralSchemeSpread;</span>
+<span class="fc" id="L172">		return _dblCSASpread;</span>
 	}
 
 	/**
-	 * Retrieve the Realized Collateral Scheme Numeraire
+	 * Retrieve the Realized CSA Scheme Numeraire
 	 * 
-	 * @return The Realized Collateral Scheme Numeraire
+	 * @return The Realized CSA Scheme Numeraire
 	 */
 
-	public org.drip.xva.universe.NumeraireMarketVertex collateralSchemeNumeraire()
+	public org.drip.xva.universe.LatentStateMarketVertex csaNumeraire()
 	{
-<span class="fc" id="L180">		return _nmvCollateralScheme;</span>
+<span class="fc" id="L183">		return _lsmvCSANumeraire;</span>
 	}
 
 	/**
-	 * Retrieve the Realized Collateral Scheme Rate
+	 * Retrieve the Realized CSA Scheme Rate
 	 * 
-	 * @return The Realized Collateral Scheme Rate
+	 * @return The Realized CSA Scheme Rate
 	 */
 
-	public double collateralSchemeRate()
+	public double csaRate()
 	{
-<span class="fc" id="L191">		return _dblOvernightIndexRate + _dblCollateralSchemeSpread;</span>
+<span class="fc" id="L194">		return _dblOvernightRate + _dblCSASpread;</span>
 	}
 
 	/**
@@ -199,7 +202,7 @@ public class MarketVertex {
 
 	public org.drip.xva.universe.EntityMarketVertex bank()
 	{
-<span class="fc" id="L202">		return _emvBank;</span>
+<span class="fc" id="L205">		return _emvBank;</span>
 	}
 
 	/**
@@ -210,7 +213,7 @@ public class MarketVertex {
 
 	public org.drip.xva.universe.EntityMarketVertex counterParty()
 	{
-<span class="fc" id="L213">		return _emvCounterParty;</span>
+<span class="fc" id="L216">		return _emvCounterParty;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

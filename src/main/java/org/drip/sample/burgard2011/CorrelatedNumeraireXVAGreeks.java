@@ -105,7 +105,7 @@ public class CorrelatedNumeraireXVAGreeks {
 
 		TradeablesContainer tcm = tes.universe();
 
-		double dblCollateralSchemeNumeraire = mvStart.collateralSchemeNumeraire().forward();
+		double dblCollateralSchemeNumeraire = mvStart.csaNumeraire().nodal();
 
 		BurgardKjaerEdgeRun bker = bko.edgeRun (
 			new MarketEdge (
@@ -170,9 +170,9 @@ public class CorrelatedNumeraireXVAGreeks {
 
 		double dblCashAccountAccumulationFinish = cae.accumulation();
 
-		double dblBankSeniorFundingNumeraireFinish = mvFinish.bank().seniorFundingNumeraire().forward();
+		double dblBankSeniorFundingNumeraireFinish = mvFinish.bank().seniorFundingLatentState().nodal();
 
-		double dblCounterPartyFundingNumeraireFinish = mvFinish.counterParty().seniorFundingNumeraire().forward();
+		double dblCounterPartyFundingNumeraireFinish = mvFinish.counterParty().seniorFundingLatentState().nodal();
 
 		ReplicationPortfolioVertex rpvFinish = ReplicationPortfolioVertex.Standard (
 			-1. * dblDerivativeXVAValueDeltaFinish,
@@ -421,12 +421,12 @@ public class CorrelatedNumeraireXVAGreeks {
 			dtSpot,
 			dblAssetNumeraireInitial,
 			dblOvernightIndexNumeraireDrift,
-			new NumeraireMarketVertex (
+			new LatentStateMarketVertex (
 				1.,
 				1.
 			),
 			dblCollateralSchemeNumeraireDrift,
-			new NumeraireMarketVertex (
+			new LatentStateMarketVertex (
 				1.,
 				1.
 			),
@@ -435,13 +435,13 @@ public class CorrelatedNumeraireXVAGreeks {
 				dblBankHazardRateInitial,
 				dblBankSeniorRecoveryRateInitial,
 				dblBankSeniorFundingNumeraireDrift,
-				new NumeraireMarketVertex (
+				new LatentStateMarketVertex (
 					1.,
 					1.
 				),
 				dblBankSubordinateRecoveryRateInitial,
 				dblBankSubordinateFundingNumeraireDrift,
-				new NumeraireMarketVertex (
+				new LatentStateMarketVertex (
 					1.,
 					1.
 				)
@@ -451,7 +451,7 @@ public class CorrelatedNumeraireXVAGreeks {
 				dblCounterPartyHazardRateInitial,
 				dblCounterPartyRecoveryRateInitial,
 				dblCounterPartyFundingNumeraireDrift,
-				new NumeraireMarketVertex (
+				new LatentStateMarketVertex (
 					1.,
 					1.
 				),

@@ -209,13 +209,13 @@ public class ReplicationPortfolioVertex {
 
 		org.drip.xva.universe.EntityMarketVertex emvBank = mv.bank();
 
-		double dblValue = -1. * emvBank.seniorFundingNumeraire().forward() * _dblBankSeniorNumeraireUnits;
+		double dblValue = -1. * emvBank.seniorFundingLatentState().nodal() * _dblBankSeniorNumeraireUnits;
 
-		org.drip.xva.universe.NumeraireMarketVertex nmvBankSubordinateFunding =
-			emvBank.subordinateFundingNumeraire();
+		org.drip.xva.universe.LatentStateMarketVertex nmvBankSubordinateFunding =
+			emvBank.subordinateFundingLatentState();
 
 		if (null != nmvBankSubordinateFunding)
-			dblValue -= nmvBankSubordinateFunding.forward() * _dblBankSubordinateNumeraireUnits;
+			dblValue -= nmvBankSubordinateFunding.nodal() * _dblBankSubordinateNumeraireUnits;
 
 		return dblValue;
 	}
@@ -240,14 +240,14 @@ public class ReplicationPortfolioVertex {
 
 		org.drip.xva.universe.EntityMarketVertex emvBank = mv.bank();
 
-		double dblValue = emvBank.seniorFundingNumeraire().forward() * _dblBankSeniorNumeraireUnits *
+		double dblValue = emvBank.seniorFundingLatentState().nodal() * _dblBankSeniorNumeraireUnits *
 			emvBank.seniorRecoveryRate();
 
-		org.drip.xva.universe.NumeraireMarketVertex nmvBankSubordinateFunding =
-			emvBank.subordinateFundingNumeraire();
+		org.drip.xva.universe.LatentStateMarketVertex nmvBankSubordinateFunding =
+			emvBank.subordinateFundingLatentState();
 
 		if (null != nmvBankSubordinateFunding)
-			dblValue -= nmvBankSubordinateFunding.forward() * _dblBankSubordinateNumeraireUnits *
+			dblValue -= nmvBankSubordinateFunding.nodal() * _dblBankSubordinateNumeraireUnits *
 				emvBank.subordinateRecoveryRate();
 
 		return dblValue;

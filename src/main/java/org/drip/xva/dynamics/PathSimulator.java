@@ -124,8 +124,6 @@ public class PathSimulator
 
 		double[] adblNodeTime = _evolutionControl.timeNodes();
 
-		double dblHorizonTime = _evolutionControl.horizonTime();
-
 		org.drip.xva.universe.MarketVertex[] marketVertexArray = new
 			org.drip.xva.universe.MarketVertex[iNumTimeStep + 1];
 
@@ -231,50 +229,36 @@ public class PathSimulator
 		{
 			for (int j = 0; j <= iNumTimeStep; ++j)
 			{
+				double dblOvernightHorizonNumeraire = adblOvernightNumeraire[0] / adblOvernightNumeraire[j];
+
 				marketVertexArray[j] = new org.drip.xva.universe.MarketVertex (
 					dateVertexArray[j],
 					adblPortfolioValue[j],
-					0 == adblNodeTime[j] ? 0. : java.lang.Math.log
-						(adblOvernightNumeraire[0] / adblOvernightNumeraire[j]) / adblNodeTime[j],
-					new org.drip.xva.universe.NumeraireMarketVertex (
+					0 == adblNodeTime[j] ? 0. : -1. * java.lang.Math.log (dblOvernightHorizonNumeraire) /
+						adblNodeTime[j],
+					new org.drip.xva.universe.LatentStateMarketVertex (
 						adblOvernightNumeraire[0],
 						adblOvernightNumeraire[j]
 					),
 					0 == adblNodeTime[j] ? 0. : java.lang.Math.log
-						(adblCSANumeraire[0] / adblCSANumeraire[j]) / adblNodeTime[j],
-					new org.drip.xva.universe.NumeraireMarketVertex (
+						(adblCSANumeraire[j] / adblCSANumeraire[0]) / adblNodeTime[j],
+					new org.drip.xva.universe.LatentStateMarketVertex (
 						adblCSANumeraire[0],
 						adblCSANumeraire[j]
 					),
-					new org.drip.xva.universe.EntityMarketVertex (
-						java.lang.Math.exp (-1. * adblBankHazardRate[j] * adblNodeTime[j]),
+					org.drip.xva.universe.EntityMarketVertex.Senior (
+						adblNodeTime[j],
 						adblBankHazardRate[j],
 						adblBankRecoveryRate[j],
 						adblBankFundingSpread[j],
-						new org.drip.xva.universe.NumeraireMarketVertex (
-							java.lang.Math.exp (-1. * adblBankHazardRate[0] * (1. - adblBankRecoveryRate[0])
-								* dblHorizonTime),
-							java.lang.Math.exp (-1. * adblBankHazardRate[j] * (1. - adblBankRecoveryRate[j])
-								* (dblHorizonTime - adblNodeTime[j]))
-						),
-						java.lang.Double.NaN,
-						java.lang.Double.NaN,
-						null
+						0 == j ? null : marketVertexArray[j - 1].bank()
 					),
-					new org.drip.xva.universe.EntityMarketVertex (
-						java.lang.Math.exp (-1. * adblCounterPartyHazardRate[j] * adblNodeTime[j]),
+					org.drip.xva.universe.EntityMarketVertex.Senior (
+						adblNodeTime[j],
 						adblCounterPartyHazardRate[j],
 						adblCounterPartyRecoveryRate[j],
 						adblCounterPartyFundingSpread[j],
-						new org.drip.xva.universe.NumeraireMarketVertex (
-							java.lang.Math.exp (-1. * adblCounterPartyHazardRate[0] *
-								(1. - adblCounterPartyRecoveryRate[0]) * dblHorizonTime),
-							java.lang.Math.exp (-1. * adblCounterPartyHazardRate[j] *
-								(1. - adblCounterPartyRecoveryRate[j]) * (dblHorizonTime - adblNodeTime[j]))
-						),
-						java.lang.Double.NaN,
-						java.lang.Double.NaN,
-						null
+						0 == j ? null : marketVertexArray[j - 1].counterParty()
 					)
 				);
 			}
@@ -312,20 +296,19 @@ public class PathSimulator
 			{
 				collateralGroupVertexArray[j] = new org.drip.xva.hypothecation.AlbaneseAndersenVertex (
 					dateVertexArray[j],
-					marketVertexes[j].assetNumeraire(),
+					marketVertexes[j].portfolioValue(),
 					0.,
-					0 == j ? 0. :
-						new org.drip.xva.hypothecation.CollateralAmountEstimator (
-							collateralGroupSpecification,
-							counterPartyGroupSpecification,
-							new org.drip.measure.bridge.BrokenDateInterpolatorLinearT (
-								dateVertexArray[j - 1].julian(),
-								dateVertexArray[j].julian(),
-								marketVertexes[j - 1].assetNumeraire(),
-								marketVertexes[j].assetNumeraire()
-							),
-							java.lang.Double.NaN
-						).postingRequirement (dateVertexArray[j])
+					0 == j ? 0. : new org.drip.xva.hypothecation.CollateralAmountEstimator (
+						collateralGroupSpecification,
+						counterPartyGroupSpecification,
+						new org.drip.measure.bridge.BrokenDateInterpolatorLinearT (
+							dateVertexArray[j - 1].julian(),
+							dateVertexArray[j].julian(),
+							marketVertexes[j - 1].portfolioValue(),
+							marketVertexes[j].portfolioValue()
+						),
+						java.lang.Double.NaN
+					).postingRequirement (dateVertexArray[j])
 				);
 			}
 			catch (java.lang.Exception e)

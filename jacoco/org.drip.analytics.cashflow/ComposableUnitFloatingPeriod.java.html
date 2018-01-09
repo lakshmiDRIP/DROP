@@ -171,44 +171,44 @@ public class ComposableUnitFloatingPeriod extends org.drip.analytics.cashflow.Co
 		final org.drip.state.identifier.OTCFixFloatLabel otcFixFloatLabel)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L174">		int iFixingDate = _rip.fixingDate();</span>
+<span class="fc" id="L174">		int iFixingDate = _rip.fixingDate();</span>
 
-<span class="nc bnc" id="L176" title="All 2 branches missed.">		if (csqc.available (</span>
+<span class="fc bfc" id="L176" title="All 2 branches covered.">		if (csqc.available (</span>
 			iFixingDate,
 			otcFixFloatLabel
 		))
-<span class="nc" id="L180">			return csqc.fixing (</span>
+<span class="fc" id="L180">			return csqc.fixing (</span>
 				iFixingDate,
 				otcFixFloatLabel
 			);
 
-<span class="nc" id="L185">		java.lang.String strCurrency = otcFixFloatLabel.currency();</span>
+<span class="fc" id="L185">		java.lang.String strCurrency = otcFixFloatLabel.currency();</span>
 
-<span class="nc" id="L187">		java.lang.String strOTCFixFloatMaturity = otcFixFloatLabel.fixFloatTenor();</span>
+<span class="fc" id="L187">		java.lang.String strOTCFixFloatMaturity = otcFixFloatLabel.fixFloatTenor();</span>
 
-<span class="nc" id="L189">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqc.fundingState</span>
-<span class="nc" id="L190">			(org.drip.state.identifier.FundingLabel.Standard (strCurrency));</span>
+<span class="fc" id="L189">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqc.fundingState</span>
+<span class="fc" id="L190">			(org.drip.state.identifier.FundingLabel.Standard (strCurrency));</span>
 
-<span class="nc bnc" id="L192" title="All 2 branches missed.">		if (null == dcFunding)</span>
+<span class="pc bpc" id="L192" title="1 of 2 branches missed.">		if (null == dcFunding)</span>
 <span class="nc" id="L193">			throw new java.lang.Exception</span>
 				(&quot;ComposableUnitFloatingPeriod::baseOTCFixFloatRate =&gt; Cannot locate Funding Curve &quot; +
 					strCurrency);
 
-<span class="nc" id="L197">		org.drip.market.otc.FixedFloatSwapConvention ffsc =</span>
-<span class="nc" id="L198">			org.drip.market.otc.IBORFixedFloatContainer.ConventionFromJurisdiction (</span>
+<span class="fc" id="L197">		org.drip.market.otc.FixedFloatSwapConvention ffsc =</span>
+<span class="fc" id="L198">			org.drip.market.otc.IBORFixedFloatContainer.ConventionFromJurisdiction (</span>
 				strCurrency,
 				&quot;ALL&quot;,
 				strOTCFixFloatMaturity,
 				&quot;MAIN&quot;
 			);
 
-<span class="nc bnc" id="L205" title="All 2 branches missed.">		if (null == ffsc)</span>
+<span class="pc bpc" id="L205" title="1 of 2 branches missed.">		if (null == ffsc)</span>
 <span class="nc" id="L206">			throw new java.lang.Exception</span>
 				(&quot;ComposableUnitFloatingPeriod::baseOTCFixFloatRate =&gt; Cannot locate Fix Float Convention!&quot;);
 
-<span class="nc" id="L209">		int iReferencePeriodStartDate = _rip.startDate();</span>
+<span class="fc" id="L209">		int iReferencePeriodStartDate = _rip.startDate();</span>
 
-<span class="nc" id="L211">		org.drip.product.rates.FixFloatComponent ffc = ffsc.createFixFloatComponent (</span>
+<span class="fc" id="L211">		org.drip.product.rates.FixFloatComponent ffc = ffsc.createFixFloatComponent (</span>
 			new org.drip.analytics.date.JulianDate (iReferencePeriodStartDate),
 			strOTCFixFloatMaturity,
 			0.,
@@ -216,14 +216,14 @@ public class ComposableUnitFloatingPeriod extends org.drip.analytics.cashflow.Co
 			1.
 		);
 
-<span class="nc bnc" id="L219" title="All 2 branches missed.">		if (null == ffc)</span>
+<span class="pc bpc" id="L219" title="1 of 2 branches missed.">		if (null == ffc)</span>
 <span class="nc" id="L220">			throw new java.lang.Exception</span>
 				(&quot;ComposableUnitFloatingPeriod::baseOTCFixFloatRate =&gt; Cannot create Fix Float Component!&quot;);
 
-<span class="nc" id="L223">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapFFCOutput = ffc.value (</span>
-<span class="nc" id="L224">			org.drip.param.valuation.ValuationParams.Spot (iReferencePeriodStartDate),</span>
+<span class="fc" id="L223">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapFFCOutput = ffc.value (</span>
+<span class="fc" id="L224">			org.drip.param.valuation.ValuationParams.Spot (iReferencePeriodStartDate),</span>
 			null,
-<span class="nc" id="L226">			org.drip.param.creator.MarketParamsBuilder.Create (</span>
+<span class="fc" id="L226">			org.drip.param.creator.MarketParamsBuilder.Create (</span>
 				dcFunding,
 				null,
 				null,
@@ -235,11 +235,11 @@ public class ComposableUnitFloatingPeriod extends org.drip.analytics.cashflow.Co
 			null
 		);
 
-<span class="nc bnc" id="L238" title="All 4 branches missed.">		if (null == mapFFCOutput || !mapFFCOutput.containsKey (&quot;SwapRate&quot;))</span>
+<span class="pc bpc" id="L238" title="2 of 4 branches missed.">		if (null == mapFFCOutput || !mapFFCOutput.containsKey (&quot;SwapRate&quot;))</span>
 <span class="nc" id="L239">			throw new java.lang.Exception</span>
 				(&quot;ComposableUnitFloatingPeriod::baseOTCFixFloatRate =&gt; Cannot calculate Swap Rate!&quot;);
 
-<span class="nc" id="L242">		return mapFFCOutput.get (&quot;SwapRate&quot;);</span>
+<span class="fc" id="L242">		return mapFFCOutput.get (&quot;SwapRate&quot;);</span>
 	}
 
 	/**
@@ -293,16 +293,16 @@ public class ComposableUnitFloatingPeriod extends org.drip.analytics.cashflow.Co
 
 <span class="fc" id="L294">		org.drip.state.identifier.FloaterLabel floaterLabel = _rip.floaterLabel();</span>
 
-<span class="pc bpc" id="L296" title="1 of 2 branches missed.">		if (floaterLabel instanceof org.drip.state.identifier.ForwardLabel)</span>
+<span class="fc bfc" id="L296" title="All 2 branches covered.">		if (floaterLabel instanceof org.drip.state.identifier.ForwardLabel)</span>
 <span class="fc" id="L297">			return baseForwardRate (</span>
 				csqc,
 <span class="fc" id="L299">				(org.drip.state.identifier.ForwardLabel) _rip.floaterLabel()</span>
 			);
 
-<span class="nc bnc" id="L302" title="All 2 branches missed.">		if (floaterLabel instanceof org.drip.state.identifier.OTCFixFloatLabel)</span>
-<span class="nc" id="L303">			return baseOTCFixFloatRate (</span>
+<span class="pc bpc" id="L302" title="1 of 2 branches missed.">		if (floaterLabel instanceof org.drip.state.identifier.OTCFixFloatLabel)</span>
+<span class="fc" id="L303">			return baseOTCFixFloatRate (</span>
 				csqc,
-<span class="nc" id="L305">				(org.drip.state.identifier.OTCFixFloatLabel) _rip.floaterLabel()</span>
+<span class="fc" id="L305">				(org.drip.state.identifier.OTCFixFloatLabel) _rip.floaterLabel()</span>
 			);
 
 <span class="nc" id="L308">		throw new java.lang.Exception</span>

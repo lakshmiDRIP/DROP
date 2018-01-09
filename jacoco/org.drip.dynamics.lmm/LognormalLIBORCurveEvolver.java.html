@@ -288,51 +288,51 @@ public class LognormalLIBORCurveEvolver implements org.drip.dynamics.evolution.C
 		final double dblForwardDCF,
 		final org.drip.dynamics.lmm.LognormalLIBORVolatility llv)
 	{
-<span class="fc" id="L291">		int[] aiTenorDate = new int[_iNumForwardTenor + 1];</span>
-<span class="fc" id="L292">		double[] adblLIBOR = new double[_iNumForwardTenor + 1];</span>
+<span class="nc" id="L291">		int[] aiTenorDate = new int[_iNumForwardTenor + 1];</span>
+<span class="nc" id="L292">		double[] adblLIBOR = new double[_iNumForwardTenor + 1];</span>
 
-<span class="fc" id="L294">		double[] adblMultivariateRandom = llv.msg().random();</span>
+<span class="nc" id="L294">		double[] adblMultivariateRandom = llv.msg().random();</span>
 
-<span class="fc" id="L296">		org.drip.analytics.date.JulianDate dtTargetPoint = new org.drip.analytics.date.JulianDate</span>
+<span class="nc" id="L296">		org.drip.analytics.date.JulianDate dtTargetPoint = new org.drip.analytics.date.JulianDate</span>
 			(iViewDate);
 
 		try {
-<span class="fc bfc" id="L300" title="All 2 branches covered.">			for (int i = 0; i &lt;= _iNumForwardTenor; ++i) {</span>
-<span class="fc" id="L301">				int iTargetPointDate = dtTargetPoint.julian();</span>
+<span class="nc bnc" id="L300" title="All 2 branches missed.">			for (int i = 0; i &lt;= _iNumForwardTenor; ++i) {</span>
+<span class="nc" id="L301">				int iTargetPointDate = dtTargetPoint.julian();</span>
 
-<span class="fc" id="L303">				double[] adblLognormalFactorPointVolatility = llv.factorPointVolatility (iEvolutionDate,</span>
+<span class="nc" id="L303">				double[] adblLognormalFactorPointVolatility = llv.factorPointVolatility (iEvolutionDate,</span>
 					iTargetPointDate);
 
-<span class="fc" id="L306">				double[] adblContinuousForwardVolatility = llv.continuousForwardVolatility (iTargetPointDate,</span>
+<span class="nc" id="L306">				double[] adblContinuousForwardVolatility = llv.continuousForwardVolatility (iTargetPointDate,</span>
 					fc);
 
-<span class="fc" id="L309">				double dblLIBOR = fc.forward (iTargetPointDate);</span>
+<span class="nc" id="L309">				double dblLIBOR = fc.forward (iTargetPointDate);</span>
 
-<span class="fc" id="L311">				aiTenorDate[i] = iTargetPointDate;</span>
-<span class="fc" id="L312">				double dblCrossVolatilityDotProduct = 0.;</span>
-<span class="fc" id="L313">				double dblLIBORDCF = dblForwardDCF * dblLIBOR;</span>
-<span class="fc" id="L314">				double dblLognormalPointVolatilityModulus = 0.;</span>
-<span class="fc" id="L315">				double dblLIBORVolatilityMultiFactorRandom = 0.;</span>
-<span class="fc" id="L316">				int iNumFactor = adblLognormalFactorPointVolatility.length;</span>
+<span class="nc" id="L311">				aiTenorDate[i] = iTargetPointDate;</span>
+<span class="nc" id="L312">				double dblCrossVolatilityDotProduct = 0.;</span>
+<span class="nc" id="L313">				double dblLIBORDCF = dblForwardDCF * dblLIBOR;</span>
+<span class="nc" id="L314">				double dblLognormalPointVolatilityModulus = 0.;</span>
+<span class="nc" id="L315">				double dblLIBORVolatilityMultiFactorRandom = 0.;</span>
+<span class="nc" id="L316">				int iNumFactor = adblLognormalFactorPointVolatility.length;</span>
 
-<span class="fc bfc" id="L318" title="All 2 branches covered.">				for (int j = 0; j &lt; iNumFactor; ++j) {</span>
-<span class="fc" id="L319">					dblLognormalPointVolatilityModulus += adblLognormalFactorPointVolatility[j] *</span>
+<span class="nc bnc" id="L318" title="All 2 branches missed.">				for (int j = 0; j &lt; iNumFactor; ++j) {</span>
+<span class="nc" id="L319">					dblLognormalPointVolatilityModulus += adblLognormalFactorPointVolatility[j] *</span>
 						adblLognormalFactorPointVolatility[j];
-<span class="fc" id="L321">					dblCrossVolatilityDotProduct += adblLognormalFactorPointVolatility[j] *</span>
+<span class="nc" id="L321">					dblCrossVolatilityDotProduct += adblLognormalFactorPointVolatility[j] *</span>
 						adblContinuousForwardVolatility[j];
-<span class="fc" id="L323">					dblLIBORVolatilityMultiFactorRandom += adblLognormalFactorPointVolatility[j] *</span>
+<span class="nc" id="L323">					dblLIBORVolatilityMultiFactorRandom += adblLognormalFactorPointVolatility[j] *</span>
 						adblMultivariateRandom[j] * dblAnnualizedIncrementSQRT;
 				}
 
-<span class="fc" id="L327">				adblLIBOR[i] = dblLIBOR + dblAnnualizedIncrement * (forwardDerivative (fc, iTargetPointDate)</span>
+<span class="nc" id="L327">				adblLIBOR[i] = dblLIBOR + dblAnnualizedIncrement * (forwardDerivative (fc, iTargetPointDate)</span>
 					+ dblLIBOR * dblCrossVolatilityDotProduct + (dblLognormalPointVolatilityModulus *
 						dblLIBOR * dblLIBORDCF / (1. + dblLIBORDCF))) + dblLIBOR *
 							dblLIBORVolatilityMultiFactorRandom;
 
-<span class="fc" id="L332">				dtTargetPoint = dtTargetPoint.addTenor (strForwardTenor);</span>
+<span class="nc" id="L332">				dtTargetPoint = dtTargetPoint.addTenor (strForwardTenor);</span>
 			}
 
-<span class="fc" id="L335">			return new org.drip.dynamics.lmm.PathwiseQMRealization (aiTenorDate, adblLIBOR);</span>
+<span class="nc" id="L335">			return new org.drip.dynamics.lmm.PathwiseQMRealization (aiTenorDate, adblLIBOR);</span>
 <span class="nc" id="L336">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L337">			e.printStackTrace();</span>
 		}
@@ -659,83 +659,83 @@ public class LognormalLIBORCurveEvolver implements org.drip.dynamics.evolution.C
 		final org.drip.dynamics.evolution.LSQMCurveUpdate lsqmStart,
 		final int iNumSimulation)
 	{
-<span class="pc bpc" id="L662" title="7 of 14 branches missed.">		if (iEvolutionStartDate &gt; iViewDate || iEvolutionFinishDate &lt;= iEvolutionStartDate ||</span>
+<span class="nc bnc" id="L662" title="All 14 branches missed.">		if (iEvolutionStartDate &gt; iViewDate || iEvolutionFinishDate &lt;= iEvolutionStartDate ||</span>
 			iEvolutionFinishDate &gt; iViewDate || iEvolutionIncrement &lt;= 0. || null == lsqmStart || !(lsqmStart
 				instanceof org.drip.dynamics.lmm.BGMCurveUpdate) || 1 &gt;= iNumSimulation)
 <span class="nc" id="L665">			return null;</span>
 
-<span class="fc" id="L667">		org.drip.dynamics.lmm.BGMCurveUpdate bgmMetrics = (org.drip.dynamics.lmm.BGMCurveUpdate) lsqmStart;</span>
+<span class="nc" id="L667">		org.drip.dynamics.lmm.BGMCurveUpdate bgmMetrics = (org.drip.dynamics.lmm.BGMCurveUpdate) lsqmStart;</span>
 
-<span class="fc" id="L669">		org.drip.dynamics.lmm.LognormalLIBORVolatility llv = bgmMetrics.lognormalLIBORVolatility();</span>
+<span class="nc" id="L669">		org.drip.dynamics.lmm.LognormalLIBORVolatility llv = bgmMetrics.lognormalLIBORVolatility();</span>
 
-<span class="fc" id="L671">		java.lang.String strForwardLabel = _lslForward.fullyQualifiedName() + &quot;_QM_LIBOR&quot;;</span>
+<span class="nc" id="L671">		java.lang.String strForwardLabel = _lslForward.fullyQualifiedName() + &quot;_QM_LIBOR&quot;;</span>
 
-<span class="fc" id="L673">		org.drip.state.forward.ForwardCurve fc = bgmMetrics.forwardCurve();</span>
+<span class="nc" id="L673">		org.drip.state.forward.ForwardCurve fc = bgmMetrics.forwardCurve();</span>
 
-<span class="fc" id="L675">		java.lang.String strForwardTenor = _lslForward.tenor();</span>
+<span class="nc" id="L675">		java.lang.String strForwardTenor = _lslForward.tenor();</span>
 
-<span class="fc" id="L677">		int iNumTimeStep = ((iEvolutionFinishDate - iEvolutionStartDate) / iEvolutionIncrement) + 1;</span>
-<span class="fc" id="L678">		double[][] aadblTenorLIBOR = new double[iNumTimeStep][_iNumForwardTenor + 1];</span>
-<span class="fc" id="L679">		double dblAnnualizedIncrement = 1. * iEvolutionIncrement / 365.25;</span>
-<span class="fc" id="L680">		double dblForwardDCF = java.lang.Double.NaN;</span>
+<span class="nc" id="L677">		int iNumTimeStep = ((iEvolutionFinishDate - iEvolutionStartDate) / iEvolutionIncrement) + 1;</span>
+<span class="nc" id="L678">		double[][] aadblTenorLIBOR = new double[iNumTimeStep][_iNumForwardTenor + 1];</span>
+<span class="nc" id="L679">		double dblAnnualizedIncrement = 1. * iEvolutionIncrement / 365.25;</span>
+<span class="nc" id="L680">		double dblForwardDCF = java.lang.Double.NaN;</span>
 
-<span class="fc" id="L682">		double dblAnnualizedIncrementSQRT = java.lang.Math.sqrt (dblAnnualizedIncrement);</span>
+<span class="nc" id="L682">		double dblAnnualizedIncrementSQRT = java.lang.Math.sqrt (dblAnnualizedIncrement);</span>
 
 		org.drip.spline.stretch.BoundarySettings bs =
-<span class="fc" id="L685">			org.drip.spline.stretch.BoundarySettings.NaturalStandard();</span>
+<span class="nc" id="L685">			org.drip.spline.stretch.BoundarySettings.NaturalStandard();</span>
 
 		try {
-<span class="fc" id="L688">			dblForwardDCF = org.drip.analytics.support.Helper.TenorToYearFraction (strForwardTenor);</span>
+<span class="nc" id="L688">			dblForwardDCF = org.drip.analytics.support.Helper.TenorToYearFraction (strForwardTenor);</span>
 <span class="nc" id="L689">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L690">			e.printStackTrace();</span>
 
 <span class="nc" id="L692">			return null;</span>
-<span class="fc" id="L693">		}</span>
+<span class="nc" id="L693">		}</span>
 
-<span class="fc bfc" id="L695" title="All 2 branches covered.">		for (int i = 0 ; i &lt; iNumTimeStep; ++i) {</span>
-<span class="fc bfc" id="L696" title="All 2 branches covered.">			for (int j = 0 ; j &lt;= _iNumForwardTenor; ++j)</span>
-<span class="fc" id="L697">				aadblTenorLIBOR[i][j] = 0.;</span>
+<span class="nc bnc" id="L695" title="All 2 branches missed.">		for (int i = 0 ; i &lt; iNumTimeStep; ++i) {</span>
+<span class="nc bnc" id="L696" title="All 2 branches missed.">			for (int j = 0 ; j &lt;= _iNumForwardTenor; ++j)</span>
+<span class="nc" id="L697">				aadblTenorLIBOR[i][j] = 0.;</span>
 		}
 
-<span class="fc bfc" id="L700" title="All 2 branches covered.">		for (int iSimulationIndex = 0; iSimulationIndex &lt; iNumSimulation; ++iSimulationIndex) {</span>
-<span class="fc" id="L701">			int iEvolutionTimeIndex = 0;</span>
-<span class="fc" id="L702">			org.drip.state.forward.ForwardCurve fcLIBOR = fc;</span>
+<span class="nc bnc" id="L700" title="All 2 branches missed.">		for (int iSimulationIndex = 0; iSimulationIndex &lt; iNumSimulation; ++iSimulationIndex) {</span>
+<span class="nc" id="L701">			int iEvolutionTimeIndex = 0;</span>
+<span class="nc" id="L702">			org.drip.state.forward.ForwardCurve fcLIBOR = fc;</span>
 
-<span class="fc bfc" id="L704" title="All 2 branches covered.">			for (int iEvolutionDate = iEvolutionStartDate; iEvolutionDate &lt;= iEvolutionFinishDate;</span>
-<span class="fc" id="L705">				iEvolutionDate += iEvolutionIncrement) {</span>
-<span class="fc" id="L706">				org.drip.dynamics.lmm.PathwiseQMRealization pqmr = simulateLIBOR (iEvolutionDate, iViewDate,</span>
+<span class="nc bnc" id="L704" title="All 2 branches missed.">			for (int iEvolutionDate = iEvolutionStartDate; iEvolutionDate &lt;= iEvolutionFinishDate;</span>
+<span class="nc" id="L705">				iEvolutionDate += iEvolutionIncrement) {</span>
+<span class="nc" id="L706">				org.drip.dynamics.lmm.PathwiseQMRealization pqmr = simulateLIBOR (iEvolutionDate, iViewDate,</span>
 					dblAnnualizedIncrement, dblAnnualizedIncrementSQRT, fcLIBOR, strForwardTenor,
 						dblForwardDCF, llv);
 
-<span class="pc bpc" id="L710" title="1 of 2 branches missed.">				if (null == pqmr) return null;</span>
+<span class="nc bnc" id="L710" title="All 2 branches missed.">				if (null == pqmr) return null;</span>
 
-<span class="fc" id="L712">				double[] adblSimulatedLIBOR = pqmr.realizedQM();</span>
+<span class="nc" id="L712">				double[] adblSimulatedLIBOR = pqmr.realizedQM();</span>
 
 				try {
-<span class="fc" id="L715">					fcLIBOR = new org.drip.state.curve.BasisSplineForwardRate (_lslForward, new</span>
+<span class="nc" id="L715">					fcLIBOR = new org.drip.state.curve.BasisSplineForwardRate (_lslForward, new</span>
 						org.drip.spline.grid.OverlappingStretchSpan
 							(org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
-<span class="fc" id="L718">						(strForwardLabel + &quot;_QM_LIBOR&quot;, pqmr.targetDate(), adblSimulatedLIBOR, _aSCBCLIBOR,</span>
+<span class="nc" id="L718">						(strForwardLabel + &quot;_QM_LIBOR&quot;, pqmr.targetDate(), adblSimulatedLIBOR, _aSCBCLIBOR,</span>
 							null, bs, org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE)));
 <span class="nc" id="L720">				} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L721">					e.printStackTrace();</span>
 
 <span class="nc" id="L723">					return null;</span>
-<span class="fc" id="L724">				}</span>
+<span class="nc" id="L724">				}</span>
 
-<span class="fc bfc" id="L726" title="All 2 branches covered.">				for (int j = 0 ; j &lt;= _iNumForwardTenor; ++j)</span>
-<span class="fc" id="L727">					aadblTenorLIBOR[iEvolutionTimeIndex][j] += adblSimulatedLIBOR[j];</span>
+<span class="nc bnc" id="L726" title="All 2 branches missed.">				for (int j = 0 ; j &lt;= _iNumForwardTenor; ++j)</span>
+<span class="nc" id="L727">					aadblTenorLIBOR[iEvolutionTimeIndex][j] += adblSimulatedLIBOR[j];</span>
 
-<span class="fc" id="L729">				iEvolutionTimeIndex++;</span>
+<span class="nc" id="L729">				iEvolutionTimeIndex++;</span>
 			}
 		}
 
-<span class="fc bfc" id="L733" title="All 2 branches covered.">		for (int i = 0 ; i &lt; iNumTimeStep; ++i) {</span>
-<span class="fc bfc" id="L734" title="All 2 branches covered.">			for (int j = 0 ; j &lt;= _iNumForwardTenor; ++j)</span>
-<span class="fc" id="L735">				aadblTenorLIBOR[i][j] /= iNumSimulation;</span>
+<span class="nc bnc" id="L733" title="All 2 branches missed.">		for (int i = 0 ; i &lt; iNumTimeStep; ++i) {</span>
+<span class="nc bnc" id="L734" title="All 2 branches missed.">			for (int j = 0 ; j &lt;= _iNumForwardTenor; ++j)</span>
+<span class="nc" id="L735">				aadblTenorLIBOR[i][j] /= iNumSimulation;</span>
 		}
 
-<span class="fc" id="L738">		return aadblTenorLIBOR;</span>
+<span class="nc" id="L738">		return aadblTenorLIBOR;</span>
 	}
 
 	/**
@@ -759,69 +759,69 @@ public class LognormalLIBORCurveEvolver implements org.drip.dynamics.evolution.C
 		final org.drip.dynamics.evolution.LSQMCurveUpdate lsqmStart,
 		final int iNumSimulation)
 	{
-<span class="pc bpc" id="L762" title="7 of 14 branches missed.">		if (iEvolutionStartDate &gt; iViewDate || iEvolutionFinishDate &lt;= iEvolutionStartDate ||</span>
+<span class="nc bnc" id="L762" title="All 14 branches missed.">		if (iEvolutionStartDate &gt; iViewDate || iEvolutionFinishDate &lt;= iEvolutionStartDate ||</span>
 			iEvolutionFinishDate &gt; iViewDate || iEvolutionIncrement &lt;= 0. || null == lsqmStart || !(lsqmStart
 				instanceof org.drip.dynamics.lmm.BGMCurveUpdate) || 1 &gt;= iNumSimulation)
 <span class="nc" id="L765">			return null;</span>
 
-<span class="fc" id="L767">		org.drip.dynamics.lmm.BGMCurveUpdate bgmMetrics = (org.drip.dynamics.lmm.BGMCurveUpdate) lsqmStart;</span>
+<span class="nc" id="L767">		org.drip.dynamics.lmm.BGMCurveUpdate bgmMetrics = (org.drip.dynamics.lmm.BGMCurveUpdate) lsqmStart;</span>
 
-<span class="fc" id="L769">		org.drip.dynamics.lmm.LognormalLIBORVolatility llv = bgmMetrics.lognormalLIBORVolatility();</span>
+<span class="nc" id="L769">		org.drip.dynamics.lmm.LognormalLIBORVolatility llv = bgmMetrics.lognormalLIBORVolatility();</span>
 
-<span class="fc" id="L771">		java.lang.String strForwardLabel = _lslForward.fullyQualifiedName() + &quot;_QM_LIBOR&quot;;</span>
+<span class="nc" id="L771">		java.lang.String strForwardLabel = _lslForward.fullyQualifiedName() + &quot;_QM_LIBOR&quot;;</span>
 
-<span class="fc" id="L773">		org.drip.state.forward.ForwardCurve fc = bgmMetrics.forwardCurve();</span>
+<span class="nc" id="L773">		org.drip.state.forward.ForwardCurve fc = bgmMetrics.forwardCurve();</span>
 
-<span class="fc" id="L775">		java.lang.String strForwardTenor = _lslForward.tenor();</span>
+<span class="nc" id="L775">		java.lang.String strForwardTenor = _lslForward.tenor();</span>
 
-<span class="fc" id="L777">		org.drip.state.forward.ForwardCurve[] aFCLIBOR = new</span>
+<span class="nc" id="L777">		org.drip.state.forward.ForwardCurve[] aFCLIBOR = new</span>
 			org.drip.state.forward.ForwardCurve[iNumSimulation];
-<span class="fc" id="L779">		double dblAnnualizedIncrement = 1. * iEvolutionIncrement / 365.25;</span>
-<span class="fc" id="L780">		double dblForwardDCF = java.lang.Double.NaN;</span>
+<span class="nc" id="L779">		double dblAnnualizedIncrement = 1. * iEvolutionIncrement / 365.25;</span>
+<span class="nc" id="L780">		double dblForwardDCF = java.lang.Double.NaN;</span>
 
-<span class="fc" id="L782">		double dblAnnualizedIncrementSQRT = java.lang.Math.sqrt (dblAnnualizedIncrement);</span>
+<span class="nc" id="L782">		double dblAnnualizedIncrementSQRT = java.lang.Math.sqrt (dblAnnualizedIncrement);</span>
 
 		org.drip.spline.stretch.BoundarySettings bs =
-<span class="fc" id="L785">			org.drip.spline.stretch.BoundarySettings.NaturalStandard();</span>
+<span class="nc" id="L785">			org.drip.spline.stretch.BoundarySettings.NaturalStandard();</span>
 
 		try {
-<span class="fc" id="L788">			dblForwardDCF = org.drip.analytics.support.Helper.TenorToYearFraction (strForwardTenor);</span>
+<span class="nc" id="L788">			dblForwardDCF = org.drip.analytics.support.Helper.TenorToYearFraction (strForwardTenor);</span>
 <span class="nc" id="L789">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L790">			e.printStackTrace();</span>
 
 <span class="nc" id="L792">			return null;</span>
-<span class="fc" id="L793">		}</span>
+<span class="nc" id="L793">		}</span>
 
-<span class="fc bfc" id="L795" title="All 2 branches covered.">		for (int iSimulationIndex = 0; iSimulationIndex &lt; iNumSimulation; ++iSimulationIndex) {</span>
-<span class="fc" id="L796">			System.out.println (&quot;\t\tSimulation #&quot; + (iSimulationIndex + 1));</span>
+<span class="nc bnc" id="L795" title="All 2 branches missed.">		for (int iSimulationIndex = 0; iSimulationIndex &lt; iNumSimulation; ++iSimulationIndex) {</span>
+<span class="nc" id="L796">			System.out.println (&quot;\t\tSimulation #&quot; + (iSimulationIndex + 1));</span>
 
-<span class="fc" id="L798">			org.drip.state.forward.ForwardCurve fcLIBOR = fc;</span>
+<span class="nc" id="L798">			org.drip.state.forward.ForwardCurve fcLIBOR = fc;</span>
 
-<span class="fc bfc" id="L800" title="All 2 branches covered.">			for (int iEvolutionDate = iEvolutionStartDate; iEvolutionDate &lt;= iEvolutionFinishDate;</span>
-<span class="fc" id="L801">				iEvolutionDate += iEvolutionIncrement) {</span>
-<span class="fc" id="L802">				org.drip.dynamics.lmm.PathwiseQMRealization pqmr = simulateLIBOR (iEvolutionDate, iViewDate,</span>
+<span class="nc bnc" id="L800" title="All 2 branches missed.">			for (int iEvolutionDate = iEvolutionStartDate; iEvolutionDate &lt;= iEvolutionFinishDate;</span>
+<span class="nc" id="L801">				iEvolutionDate += iEvolutionIncrement) {</span>
+<span class="nc" id="L802">				org.drip.dynamics.lmm.PathwiseQMRealization pqmr = simulateLIBOR (iEvolutionDate, iViewDate,</span>
 					dblAnnualizedIncrement, dblAnnualizedIncrementSQRT, fcLIBOR, strForwardTenor,
 						dblForwardDCF, llv);
 
-<span class="pc bpc" id="L806" title="1 of 2 branches missed.">				if (null == pqmr) return null;</span>
+<span class="nc bnc" id="L806" title="All 2 branches missed.">				if (null == pqmr) return null;</span>
 
 				try {
-<span class="fc" id="L809">					fcLIBOR = new org.drip.state.curve.BasisSplineForwardRate (_lslForward, new</span>
+<span class="nc" id="L809">					fcLIBOR = new org.drip.state.curve.BasisSplineForwardRate (_lslForward, new</span>
 						org.drip.spline.grid.OverlappingStretchSpan
 							(org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
-<span class="fc" id="L812">						(strForwardLabel + &quot;_QM_LIBOR&quot;, pqmr.targetDate(), pqmr.realizedQM(), _aSCBCLIBOR,</span>
+<span class="nc" id="L812">						(strForwardLabel + &quot;_QM_LIBOR&quot;, pqmr.targetDate(), pqmr.realizedQM(), _aSCBCLIBOR,</span>
 							null, bs, org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE)));
 <span class="nc" id="L814">				} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L815">					e.printStackTrace();</span>
 
 <span class="nc" id="L817">					return null;</span>
-<span class="fc" id="L818">				}</span>
+<span class="nc" id="L818">				}</span>
 			}
 
-<span class="fc" id="L821">			aFCLIBOR[iSimulationIndex] = fcLIBOR;</span>
+<span class="nc" id="L821">			aFCLIBOR[iSimulationIndex] = fcLIBOR;</span>
 		}
 
-<span class="fc" id="L824">		return aFCLIBOR;</span>
+<span class="nc" id="L824">		return aFCLIBOR;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

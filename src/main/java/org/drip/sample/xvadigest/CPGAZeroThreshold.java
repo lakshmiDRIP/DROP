@@ -298,12 +298,12 @@ public class CPGAZeroThreshold {
 				adtVertex[i] = dtSpot.addMonths (6 * i),
 				Double.NaN,
 				dblOvernightNumeraireDrift,
-				new NumeraireMarketVertex (
+				new LatentStateMarketVertex (
 					Math.exp (-0.5 * dblOvernightNumeraireDrift * iNumStep),
 					Math.exp (-0.5 * dblOvernightNumeraireDrift * (iNumStep - i))
 				),
 				dblCSADrift,
-				new NumeraireMarketVertex (
+				new LatentStateMarketVertex (
 					Math.exp (-0.5 * dblCSADrift * iNumStep),
 					Math.exp (-0.5 * dblCSADrift * (iNumStep - i))
 				),
@@ -312,7 +312,7 @@ public class CPGAZeroThreshold {
 					dblBankHazardRate,
 					dblBankRecoveryRate,
 					dblBankFundingSpread,
-					new NumeraireMarketVertex (
+					new LatentStateMarketVertex (
 						Math.exp (-0.5 * dblBankHazardRate * (1. - dblBankRecoveryRate) * iNumStep),
 						Math.exp (-0.5 * dblBankHazardRate * (1. - dblBankRecoveryRate) * (iNumStep - i))
 					),
@@ -325,7 +325,7 @@ public class CPGAZeroThreshold {
 					dblCounterPartyHazardRate,
 					dblCounterPartyRecoveryRate,
 					dblCounterPartyFundingSpread,
-					new NumeraireMarketVertex (
+					new LatentStateMarketVertex (
 						Math.exp (-0.5 * dblCounterPartyHazardRate * (1. - dblCounterPartyRecoveryRate) * iNumStep),
 						Math.exp (-0.5 * dblCounterPartyHazardRate * (1. - dblCounterPartyRecoveryRate) * (iNumStep - i))
 					),

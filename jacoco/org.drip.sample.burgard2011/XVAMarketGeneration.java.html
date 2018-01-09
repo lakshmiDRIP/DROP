@@ -287,12 +287,12 @@ import org.drip.xva.universe.*;
 			dtSpot,
 			dblAssetNumeraireInitial,
 			dblOvernightIndexNumeraireDrift,
-			new NumeraireMarketVertex (
+			new LatentStateMarketVertex (
 				1.,
 				1.
 			),
 			dblCollateralSchemeNumeraireDrift,
-			new NumeraireMarketVertex (
+			new LatentStateMarketVertex (
 				1.,
 				1.
 			),
@@ -301,13 +301,13 @@ import org.drip.xva.universe.*;
 				dblBankHazardRateInitial,
 				dblBankSeniorRecoveryRateInitial,
 				dblBankSeniorFundingNumeraireDrift,
-				new NumeraireMarketVertex (
+				new LatentStateMarketVertex (
 					1.,
 					1.
 				),
 				dblBankSubordinateRecoveryRateInitial,
 				dblBankSubordinateFundingNumeraireDrift,
-				new NumeraireMarketVertex (
+				new LatentStateMarketVertex (
 					1.,
 					1.
 				)
@@ -317,7 +317,7 @@ import org.drip.xva.universe.*;
 				dblCounterPartyHazardRateInitial,
 				dblCounterPartyRecoveryRateInitial,
 				dblCounterPartyFundingNumeraireDrift,
-				new NumeraireMarketVertex (
+				new LatentStateMarketVertex (
 					1.,
 					1.
 				),
@@ -354,11 +354,11 @@ import org.drip.xva.universe.*;
 <span class="fc bfc" id="L354" title="All 2 branches covered.">		for (int i = 0; i &lt; aMV.length; ++i)</span>
 <span class="fc" id="L355">			System.out.println (</span>
 <span class="fc" id="L356">				&quot;\t|| &quot; + aMV[i].anchor() + &quot; =&gt; &quot; +</span>
-<span class="fc" id="L357">				FormatUtil.FormatDouble (aMV[i].assetNumeraire(), 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L358">				FormatUtil.FormatDouble (aMV[i].overnightIndexRate(), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L359">				FormatUtil.FormatDouble (aMV[i].overnightIndexNumeraire().forward(), 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L360">				FormatUtil.FormatDouble (aMV[i].collateralSchemeRate(), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L361">				FormatUtil.FormatDouble (aMV[i].collateralSchemeNumeraire().forward(), 1, 6, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L357">				FormatUtil.FormatDouble (aMV[i].portfolioValue(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L358">				FormatUtil.FormatDouble (aMV[i].overnightRate(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L359">				FormatUtil.FormatDouble (aMV[i].overnightNumeraire().nodal(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L360">				FormatUtil.FormatDouble (aMV[i].csaRate(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L361">				FormatUtil.FormatDouble (aMV[i].csaNumeraire().nodal(), 1, 6, 1.) + &quot; ||&quot;</span>
 			);
 
 <span class="fc" id="L364">		System.out.println (&quot;\t||--------------------------------------------------------------------||&quot;);</span>
@@ -402,10 +402,10 @@ import org.drip.xva.universe.*;
 <span class="fc" id="L402">				FormatUtil.FormatDouble (emvBank.survivalProbability(), 1, 6, 1.) + &quot; | &quot; +</span>
 <span class="fc" id="L403">				FormatUtil.FormatDouble (emvBank.seniorRecoveryRate(), 1, 0, 100.) + &quot;% | &quot; +</span>
 <span class="fc" id="L404">				FormatUtil.FormatDouble (emvBank.seniorFundingSpread(), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L405">				FormatUtil.FormatDouble (emvBank.seniorFundingNumeraire().forward(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L405">				FormatUtil.FormatDouble (emvBank.seniorFundingLatentState().nodal(), 1, 6, 1.) + &quot; | &quot; +</span>
 <span class="fc" id="L406">				FormatUtil.FormatDouble (emvBank.subordinateRecoveryRate(), 1, 0, 100.) + &quot;% | &quot; +</span>
 <span class="fc" id="L407">				FormatUtil.FormatDouble (emvBank.subordinateFundingSpread(), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L408">				FormatUtil.FormatDouble (emvBank.subordinateFundingNumeraire().forward(), 1, 6, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L408">				FormatUtil.FormatDouble (emvBank.subordinateFundingLatentState().nodal(), 1, 6, 1.) + &quot; ||&quot;</span>
 			);
 		}
 
@@ -444,7 +444,7 @@ import org.drip.xva.universe.*;
 <span class="fc" id="L444">				FormatUtil.FormatDouble (emvCounterParty.survivalProbability(), 1, 6, 1.) + &quot; | &quot; +</span>
 <span class="fc" id="L445">				FormatUtil.FormatDouble (emvCounterParty.seniorRecoveryRate(), 1, 0, 100.) + &quot;% | &quot; +</span>
 <span class="fc" id="L446">				FormatUtil.FormatDouble (emvCounterParty.seniorFundingSpread(), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L447">				FormatUtil.FormatDouble (emvCounterParty.seniorFundingNumeraire().forward(), 1, 6, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L447">				FormatUtil.FormatDouble (emvCounterParty.seniorFundingLatentState().nodal(), 1, 6, 1.) + &quot; ||&quot;</span>
 			);
 		}
 

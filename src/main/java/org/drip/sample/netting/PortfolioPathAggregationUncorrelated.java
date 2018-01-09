@@ -358,12 +358,12 @@ public class PortfolioPathAggregationUncorrelated {
 				adtVertex[i] = dtSpot.addMonths (6 * i),
 				Double.NaN,
 				dblOvernightDrift,
-				new NumeraireMarketVertex (
+				new LatentStateMarketVertex (
 					adblOvernightNumeraire[0],
 					adblOvernightNumeraire[i]
 				),
 				dblCSADrift,
-				new NumeraireMarketVertex (
+				new LatentStateMarketVertex (
 					adblCSA[0],
 					adblCSA[i]
 				),
@@ -372,7 +372,7 @@ public class PortfolioPathAggregationUncorrelated {
 					adblBankHazardRate[i],
 					adblBankRecoveryRate[i],
 					adblBankFundingSpread[i],
-					new NumeraireMarketVertex (
+					new LatentStateMarketVertex (
 						Math.exp (-0.5 * adblBankHazardRate[i] * (1. - adblBankRecoveryRate[i]) * iNumStep),
 						Math.exp (-0.5 * adblBankHazardRate[i] * (1. - adblBankRecoveryRate[i]) * (iNumStep - i))
 					),
@@ -385,7 +385,7 @@ public class PortfolioPathAggregationUncorrelated {
 					adblCounterPartyHazardRate[i],
 					adblCounterPartyRecoveryRate[i],
 					adblCounterPartyFundingSpread[i],
-					new NumeraireMarketVertex (
+					new LatentStateMarketVertex (
 						Math.exp (-0.5 * adblCounterPartyHazardRate[i] * (1. - adblCounterPartyRecoveryRate[i]) * iNumStep),
 						Math.exp (-0.5 * adblCounterPartyHazardRate[i] * (1. - adblCounterPartyRecoveryRate[i]) * (iNumStep - i))
 					),

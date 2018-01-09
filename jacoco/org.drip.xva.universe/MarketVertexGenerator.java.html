@@ -355,11 +355,11 @@ public class MarketVertexGenerator {
 
 <span class="fc" id="L356">		double dblBankSubordinateRecoveryRateStart = emvBankInitial.subordinateRecoveryRate();</span>
 
-<span class="fc" id="L358">		org.drip.xva.universe.NumeraireMarketVertex nmvSubordinateFunding =</span>
-<span class="fc" id="L359">			emvBankInitial.subordinateFundingNumeraire();</span>
+<span class="fc" id="L358">		org.drip.xva.universe.LatentStateMarketVertex nmvSubordinateFunding =</span>
+<span class="fc" id="L359">			emvBankInitial.subordinateFundingLatentState();</span>
 
 <span class="pc bpc" id="L361" title="1 of 2 branches missed.">		double dblBankSubordinateFundingNumeraireTerminal = null == nmvSubordinateFunding ?</span>
-<span class="fc" id="L362">			java.lang.Double.NaN : nmvSubordinateFunding.forward();</span>
+<span class="fc" id="L362">			java.lang.Double.NaN : nmvSubordinateFunding.nodal();</span>
 
 <span class="pc bpc" id="L364" title="1 of 2 branches missed.">		boolean bSingleBankBond = null == tBankSubordinateFunding ||</span>
 <span class="pc bpc" id="L365" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblBankSubordinateFundingNumeraireTerminal) ||</span>
@@ -367,19 +367,19 @@ public class MarketVertexGenerator {
 
 		try {
 <span class="pc bpc" id="L369" title="1 of 2 branches missed.">			aJDVAssetNumeraire = !bAssetEvolutionOn ? null : tAsset.numeraireEvolver().vertexSequence (new</span>
-<span class="fc" id="L370">				org.drip.measure.realization.JumpDiffusionVertex (_iSpotDate, mvInitial.assetNumeraire(), 0.,</span>
+<span class="fc" id="L370">				org.drip.measure.realization.JumpDiffusionVertex (_iSpotDate, mvInitial.portfolioValue(), 0.,</span>
 <span class="fc" id="L371">					false), org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (_adblTimeWidth,</span>
 						aadblUnitEvolverSequence[ASSET]), _adblTimeWidth);
 
 <span class="fc" id="L374">			aJDVOvernightIndexNumeraire = _tc.overnightIndex().numeraireEvolver().vertexSequenceReverse (new</span>
 				org.drip.measure.realization.JumpDiffusionVertex (iTerminalDate,
-<span class="fc" id="L376">					mvInitial.overnightIndexNumeraire().forward(), 0., false),</span>
+<span class="fc" id="L376">					mvInitial.overnightNumeraire().nodal(), 0., false),</span>
 <span class="fc" id="L377">						org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (_adblTimeWidth,</span>
 							aadblUnitEvolverSequence[OVERNIGHT_INDEX]), _adblTimeWidth);
 
 <span class="fc" id="L380">			aJDVCollateralSchemeNumeraire = _tc.collateralScheme().numeraireEvolver().vertexSequenceReverse</span>
 <span class="fc" id="L381">				(new org.drip.measure.realization.JumpDiffusionVertex (iTerminalDate,</span>
-<span class="fc" id="L382">					mvInitial.collateralSchemeNumeraire().forward(), 0., false),</span>
+<span class="fc" id="L382">					mvInitial.csaNumeraire().nodal(), 0., false),</span>
 <span class="fc" id="L383">						org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (_adblTimeWidth,</span>
 							aadblUnitEvolverSequence[COLLATERAL_SCHEME]), _adblTimeWidth);
 
@@ -391,7 +391,7 @@ public class MarketVertexGenerator {
 <span class="fc" id="L391">			aJDVBankSeniorFundingNumeraire =</span>
 <span class="fc" id="L392">				_tc.bankSubordinateFunding().numeraireEvolver().vertexSequenceReverse (new</span>
 					org.drip.measure.realization.JumpDiffusionVertex (iTerminalDate,
-<span class="fc" id="L394">						emvBankInitial.seniorFundingNumeraire().forward(), 0., false),</span>
+<span class="fc" id="L394">						emvBankInitial.seniorFundingLatentState().nodal(), 0., false),</span>
 <span class="fc" id="L395">							org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (_adblTimeWidth,</span>
 								aadblUnitEvolverSequence[BANK_SENIOR_FUNDING]), _adblTimeWidth);
 
@@ -424,7 +424,7 @@ public class MarketVertexGenerator {
 <span class="fc" id="L424">			aJDVCounterPartyFundingNumeraire =</span>
 <span class="fc" id="L425">				_tc.counterPartyFunding().numeraireEvolver().vertexSequenceReverse (new</span>
 					org.drip.measure.realization.JumpDiffusionVertex (iTerminalDate,
-<span class="fc" id="L427">						emvCounterPartyInitial.seniorFundingNumeraire().forward(), 0., false),</span>
+<span class="fc" id="L427">						emvCounterPartyInitial.seniorFundingLatentState().nodal(), 0., false),</span>
 <span class="fc" id="L428">							org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (_adblTimeWidth,</span>
 								aadblUnitEvolverSequence[COUNTER_PARTY_FUNDING]), _adblTimeWidth);
 
@@ -489,7 +489,7 @@ public class MarketVertexGenerator {
 <span class="fc" id="L489">					aJDVBankSeniorRecoveryRate[iEventVertex].value(),</span>
 <span class="pc bpc" id="L490" title="1 of 2 branches missed.">					dblTimeWidthReciprocal * java.lang.Math.log (dblBankSeniorFundingNumeraireFinish /</span>
 						dblBankSeniorFundingNumeraireStart) - dblOvernightIndexRate,
-					new org.drip.xva.universe.NumeraireMarketVertex (
+					new org.drip.xva.universe.LatentStateMarketVertex (
 						dblBankSeniorFundingNumeraireInitial,
 						dblBankSeniorFundingNumeraireFinish
 					),
@@ -497,7 +497,7 @@ public class MarketVertexGenerator {
 					bSingleBankBond ? java.lang.Double.NaN : dblTimeWidthReciprocal * java.lang.Math.log
 <span class="pc bpc" id="L498" title="1 of 2 branches missed.">						(dblBankSubordinateFundingNumeraireFinish / dblBankSubordinateFundingNumeraireStart)</span>
 						- dblOvernightIndexRate,
-					bSingleBankBond ? null : new org.drip.xva.universe.NumeraireMarketVertex (
+					bSingleBankBond ? null : new org.drip.xva.universe.LatentStateMarketVertex (
 						dblBankSubordinateFundingNumeraireInitial,
 						dblBankSubordinateFundingNumeraireFinish
 					)
@@ -509,7 +509,7 @@ public class MarketVertexGenerator {
 <span class="fc" id="L509">					aJDVCounterPartyRecoveryRate[iEventVertex].value(),</span>
 <span class="fc" id="L510">					dblTimeWidthReciprocal * java.lang.Math.log (dblCounterPartyFundingNumeraireFinish /</span>
 						dblCounterPartyFundingNumeraireStart) - dblOvernightIndexRate,
-					new org.drip.xva.universe.NumeraireMarketVertex (
+					new org.drip.xva.universe.LatentStateMarketVertex (
 						dblCounterPartyFundingNumeraireInitial,
 						dblCounterPartyFundingNumeraireFinish
 					),
@@ -522,13 +522,13 @@ public class MarketVertexGenerator {
 					new org.drip.analytics.date.JulianDate (_aiEventDate[iEventVertex - 1]),
 <span class="pc" id="L523">					bAssetEvolutionOn ? aJDVAssetNumeraire[iEventVertex].value() : java.lang.Double.NaN,</span>
 					dblOvernightIndexRate,
-					new org.drip.xva.universe.NumeraireMarketVertex (
+					new org.drip.xva.universe.LatentStateMarketVertex (
 						dblOvernightIndexNumeraireInitial,
 						dblOvernightIndexNumeraireFinish
 					),
 <span class="fc" id="L529">					dblTimeWidthReciprocal * java.lang.Math.log (dblCollateralSchemeNumeraireFinish /</span>
 						dblCollateralSchemeNumeraireStart) - dblOvernightIndexRate,
-					new org.drip.xva.universe.NumeraireMarketVertex (
+					new org.drip.xva.universe.LatentStateMarketVertex (
 						dblCollateralSchemeNumeraireInitial,
 						dblCollateralSchemeNumeraireFinish
 					),
@@ -551,14 +551,14 @@ public class MarketVertexGenerator {
 		try {
 <span class="fc" id="L552">			aMV[0] = new org.drip.xva.universe.MarketVertex (</span>
 <span class="fc" id="L553">				mvInitial.anchor(),</span>
-<span class="fc" id="L554">				mvInitial.assetNumeraire(),</span>
-<span class="fc" id="L555">				mvInitial.overnightIndexRate(),</span>
-				new org.drip.xva.universe.NumeraireMarketVertex (
+<span class="fc" id="L554">				mvInitial.portfolioValue(),</span>
+<span class="fc" id="L555">				mvInitial.overnightRate(),</span>
+				new org.drip.xva.universe.LatentStateMarketVertex (
 					dblOvernightIndexNumeraireInitial,
 					dblOvernightIndexNumeraireInitial
 				),
-<span class="fc" id="L560">				aMV[1].collateralSchemeRate(),</span>
-				new org.drip.xva.universe.NumeraireMarketVertex (
+<span class="fc" id="L560">				aMV[1].csaRate(),</span>
+				new org.drip.xva.universe.LatentStateMarketVertex (
 					dblCollateralSchemeNumeraireInitial,
 					dblCollateralSchemeNumeraireInitial
 				),
@@ -567,13 +567,13 @@ public class MarketVertexGenerator {
 <span class="fc" id="L567">					emvBankInitial.hazardRate(),</span>
 <span class="fc" id="L568">					emvBankInitial.seniorRecoveryRate(),</span>
 <span class="fc" id="L569">					aMV[1].bank().seniorFundingSpread(),</span>
-					new org.drip.xva.universe.NumeraireMarketVertex (
+					new org.drip.xva.universe.LatentStateMarketVertex (
 						dblBankSeniorFundingNumeraireInitial,
 						dblBankSeniorFundingNumeraireInitial
 					),
 <span class="fc" id="L574">					emvBankInitial.subordinateRecoveryRate(),</span>
 <span class="pc bpc" id="L575" title="1 of 2 branches missed.">					aMV[1].bank().subordinateFundingSpread(),</span>
-					bSingleBankBond ? null : new org.drip.xva.universe.NumeraireMarketVertex (
+					bSingleBankBond ? null : new org.drip.xva.universe.LatentStateMarketVertex (
 						dblBankSubordinateFundingNumeraireInitial,
 						dblBankSubordinateFundingNumeraireInitial
 					)
@@ -583,7 +583,7 @@ public class MarketVertexGenerator {
 <span class="fc" id="L583">					emvCounterPartyInitial.hazardRate(),</span>
 <span class="fc" id="L584">					emvCounterPartyInitial.seniorRecoveryRate(),</span>
 <span class="fc" id="L585">					aMV[1].counterParty().seniorFundingSpread(),</span>
-					new org.drip.xva.universe.NumeraireMarketVertex (
+					new org.drip.xva.universe.LatentStateMarketVertex (
 						dblCounterPartyFundingNumeraireInitial,
 						dblCounterPartyFundingNumeraireInitial
 					),

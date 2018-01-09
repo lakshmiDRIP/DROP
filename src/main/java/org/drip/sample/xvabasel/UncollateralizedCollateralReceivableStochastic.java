@@ -489,12 +489,12 @@ public class UncollateralizedCollateralReceivableStochastic {
 					adtVertex[j] = dtSpot.addMonths (6 * j),
 					Double.NaN,
 					dblOvernightNumeraireDrift,
-					new NumeraireMarketVertex (
+					new LatentStateMarketVertex (
 						adblOvernightNumeraire[0],
 						adblOvernightNumeraire[j]
 					),
 					dblCSADrift,
-					new NumeraireMarketVertex (
+					new LatentStateMarketVertex (
 						adblCSA[0],
 						adblCSA[j]
 					),
@@ -503,7 +503,7 @@ public class UncollateralizedCollateralReceivableStochastic {
 						adblBankHazardRate[j],
 						adblBankRecoveryRate[j],
 						adblBankFundingSpread[j],
-						new NumeraireMarketVertex (
+						new LatentStateMarketVertex (
 							Math.exp (-0.5 * adblBankHazardRate[j] * (1. - adblBankRecoveryRate[j]) * iNumStep),
 							Math.exp (-0.5 * adblBankHazardRate[j] * (1. - adblBankRecoveryRate[j]) * (iNumStep - j))
 						),
@@ -516,7 +516,7 @@ public class UncollateralizedCollateralReceivableStochastic {
 						adblCounterPartyHazardRate[j],
 						adblCounterPartyRecoveryRate[j],
 						adblCounterPartyFundingSpread[j],
-						new NumeraireMarketVertex (
+						new LatentStateMarketVertex (
 							Math.exp (-0.5 * adblCounterPartyHazardRate[j] * (1. - adblCounterPartyRecoveryRate[j]) * iNumStep),
 							Math.exp (-0.5 * adblCounterPartyHazardRate[j] * (1. - adblCounterPartyRecoveryRate[j]) * (iNumStep - j))
 						),

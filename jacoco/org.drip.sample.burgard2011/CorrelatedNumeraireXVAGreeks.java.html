@@ -105,7 +105,7 @@ import org.drip.xva.universe.*;
 
 <span class="fc" id="L106">		TradeablesContainer tcm = tes.universe();</span>
 
-<span class="fc" id="L108">		double dblCollateralSchemeNumeraire = mvStart.collateralSchemeNumeraire().forward();</span>
+<span class="fc" id="L108">		double dblCollateralSchemeNumeraire = mvStart.csaNumeraire().nodal();</span>
 
 <span class="fc" id="L110">		BurgardKjaerEdgeRun bker = bko.edgeRun (</span>
 			new MarketEdge (
@@ -170,9 +170,9 @@ import org.drip.xva.universe.*;
 
 <span class="fc" id="L171">		double dblCashAccountAccumulationFinish = cae.accumulation();</span>
 
-<span class="fc" id="L173">		double dblBankSeniorFundingNumeraireFinish = mvFinish.bank().seniorFundingNumeraire().forward();</span>
+<span class="fc" id="L173">		double dblBankSeniorFundingNumeraireFinish = mvFinish.bank().seniorFundingLatentState().nodal();</span>
 
-<span class="fc" id="L175">		double dblCounterPartyFundingNumeraireFinish = mvFinish.counterParty().seniorFundingNumeraire().forward();</span>
+<span class="fc" id="L175">		double dblCounterPartyFundingNumeraireFinish = mvFinish.counterParty().seniorFundingLatentState().nodal();</span>
 
 <span class="fc" id="L177">		ReplicationPortfolioVertex rpvFinish = ReplicationPortfolioVertex.Standard (</span>
 			-1. * dblDerivativeXVAValueDeltaFinish,
@@ -421,12 +421,12 @@ import org.drip.xva.universe.*;
 			dtSpot,
 			dblAssetNumeraireInitial,
 			dblOvernightIndexNumeraireDrift,
-			new NumeraireMarketVertex (
+			new LatentStateMarketVertex (
 				1.,
 				1.
 			),
 			dblCollateralSchemeNumeraireDrift,
-			new NumeraireMarketVertex (
+			new LatentStateMarketVertex (
 				1.,
 				1.
 			),
@@ -435,13 +435,13 @@ import org.drip.xva.universe.*;
 				dblBankHazardRateInitial,
 				dblBankSeniorRecoveryRateInitial,
 				dblBankSeniorFundingNumeraireDrift,
-				new NumeraireMarketVertex (
+				new LatentStateMarketVertex (
 					1.,
 					1.
 				),
 				dblBankSubordinateRecoveryRateInitial,
 				dblBankSubordinateFundingNumeraireDrift,
-				new NumeraireMarketVertex (
+				new LatentStateMarketVertex (
 					1.,
 					1.
 				)
@@ -451,7 +451,7 @@ import org.drip.xva.universe.*;
 				dblCounterPartyHazardRateInitial,
 				dblCounterPartyRecoveryRateInitial,
 				dblCounterPartyFundingNumeraireDrift,
-				new NumeraireMarketVertex (
+				new LatentStateMarketVertex (
 					1.,
 					1.
 				),

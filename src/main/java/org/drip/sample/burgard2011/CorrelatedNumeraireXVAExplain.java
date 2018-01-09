@@ -105,7 +105,7 @@ public class CorrelatedNumeraireXVAExplain {
 
 		TradeablesContainer tc = tes.universe();
 
-		double dblCollateralSchemeNumeraire = mvStart.collateralSchemeNumeraire().forward();
+		double dblCollateralSchemeNumeraire = mvStart.csaNumeraire().nodal();
 
 		BurgardKjaerEdgeRun bker = bko.edgeRun (
 			new MarketEdge (
@@ -153,11 +153,11 @@ public class CorrelatedNumeraireXVAExplain {
 
 		double dblCashAccountAccumulationFinish = cae.accumulation();
 
-		double dblAssetNumeraireFinish = mvFinish.assetNumeraire();
+		double dblAssetNumeraireFinish = mvFinish.portfolioValue();
 
-		double dblBankSeniorFundingNumeraireFinish = mvFinish.bank().seniorFundingNumeraire().forward();
+		double dblBankSeniorFundingNumeraireFinish = mvFinish.bank().seniorFundingLatentState().nodal();
 
-		double dblCounterPartyFundingNumeraireFinish = mvFinish.counterParty().seniorFundingNumeraire().forward();
+		double dblCounterPartyFundingNumeraireFinish = mvFinish.counterParty().seniorFundingLatentState().nodal();
 
 		ReplicationPortfolioVertex rpvFinish = ReplicationPortfolioVertex.Standard (
 			-1. * dblDerivativeXVAValueDeltaFinish,
@@ -172,7 +172,7 @@ public class CorrelatedNumeraireXVAExplain {
 			FormatUtil.FormatDouble (dblAssetNumeraireFinish, 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (dblBankSeniorFundingNumeraireFinish, 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (dblCounterPartyFundingNumeraireFinish, 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (mvFinish.collateralSchemeNumeraire().forward(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (mvFinish.csaNumeraire().nodal(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (rpvFinish.assetNumeraireUnits(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (rpvFinish.bankSeniorNumeraireUnits(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (rpvFinish.counterPartyNumeraireUnits(), 1, 6, 1.) + " | " +
@@ -423,12 +423,12 @@ public class CorrelatedNumeraireXVAExplain {
 			dtSpot,
 			dblAssetNumeraireInitial,
 			dblOvernightIndexNumeraireDrift,
-			new NumeraireMarketVertex (
+			new LatentStateMarketVertex (
 				1.,
 				1.
 			),
 			dblCollateralSchemeNumeraireDrift,
-			new NumeraireMarketVertex (
+			new LatentStateMarketVertex (
 				1.,
 				1.
 			),
@@ -437,13 +437,13 @@ public class CorrelatedNumeraireXVAExplain {
 				dblBankHazardRateInitial,
 				dblBankSeniorRecoveryRateInitial,
 				dblBankSeniorFundingNumeraireDrift,
-				new NumeraireMarketVertex (
+				new LatentStateMarketVertex (
 					1.,
 					1.
 				),
 				dblBankSubordinateRecoveryRateInitial,
 				dblBankSubordinateFundingNumeraireDrift,
-				new NumeraireMarketVertex (
+				new LatentStateMarketVertex (
 					1.,
 					1.
 				)
@@ -453,7 +453,7 @@ public class CorrelatedNumeraireXVAExplain {
 				dblCounterPartyHazardRateInitial,
 				dblCounterPartyRecoveryRateInitial,
 				dblCounterPartyFundingNumeraireDrift,
-				new NumeraireMarketVertex (
+				new LatentStateMarketVertex (
 					1.,
 					1.
 				),
@@ -552,10 +552,10 @@ public class CorrelatedNumeraireXVAExplain {
 		System.out.println ("\t||" +
 			FormatUtil.FormatDouble (1., 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (agvInitial.derivativeXVAValue(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (aMV[iNumVertex].assetNumeraire(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (aMV[iNumVertex].bank().seniorFundingNumeraire().forward(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (aMV[iNumVertex].counterParty().seniorFundingNumeraire().forward(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (aMV[iNumVertex].collateralSchemeNumeraire().forward(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (aMV[iNumVertex].portfolioValue(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (aMV[iNumVertex].bank().seniorFundingLatentState().nodal(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (aMV[iNumVertex].counterParty().seniorFundingLatentState().nodal(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (aMV[iNumVertex].csaNumeraire().nodal(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (rpvInitial.assetNumeraireUnits(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (rpvInitial.bankSeniorNumeraireUnits(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (rpvInitial.counterPartyNumeraireUnits(), 1, 6, 1.) + " | " +

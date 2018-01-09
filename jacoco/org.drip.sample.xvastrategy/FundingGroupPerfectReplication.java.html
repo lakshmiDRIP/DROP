@@ -218,12 +218,12 @@ import org.drip.xva.universe.*;
 <span class="fc" id="L218">				adtVertex[i] = dtSpot.addMonths (6 * i),</span>
 				Double.NaN,
 				0.,
-				new NumeraireMarketVertex (
+				new LatentStateMarketVertex (
 <span class="fc" id="L222">					Math.exp (-0.5 * dblOISRate * iNumStep),</span>
 <span class="fc" id="L223">					Math.exp (-0.5 * dblOISRate * (iNumStep - i))</span>
 				),
 				dblCSADrift,
-				new NumeraireMarketVertex (
+				new LatentStateMarketVertex (
 <span class="fc" id="L227">					Math.exp (-0.5 * dblCSADrift * iNumStep),</span>
 <span class="fc" id="L228">					Math.exp (-0.5 * dblCSADrift * (iNumStep - i))</span>
 				),
@@ -232,13 +232,13 @@ import org.drip.xva.universe.*;
 					dblBankHazardRate,
 					dblBankSeniorRecoveryRate,
 					dblBankSeniorFundingSpread,
-					new NumeraireMarketVertex (
+					new LatentStateMarketVertex (
 <span class="fc" id="L236">						Math.exp (-0.5 * dblBankHazardRate * (1. - dblBankSeniorRecoveryRate) * iNumStep),</span>
 <span class="fc" id="L237">						Math.exp (-0.5 * dblBankHazardRate * (1. - dblBankSeniorRecoveryRate) * (iNumStep - i))</span>
 					),
 					dblBankSubordinateRecoveryRate,
 					dblBankSubordinateFundingSpread,
-					new NumeraireMarketVertex (
+					new LatentStateMarketVertex (
 <span class="fc" id="L242">						Math.exp (-0.5 * dblBankHazardRate * (1. - dblBankSubordinateRecoveryRate) * iNumStep),</span>
 <span class="fc" id="L243">						Math.exp (-0.5 * dblBankHazardRate * (1. - dblBankSubordinateRecoveryRate) * (iNumStep - i))</span>
 					)
@@ -248,7 +248,7 @@ import org.drip.xva.universe.*;
 					dblCounterPartyHazardRate,
 					dblCounterPartyRecoveryRate,
 					dblCounterPartyFundingSpread,
-					new NumeraireMarketVertex (
+					new LatentStateMarketVertex (
 <span class="fc" id="L252">						Math.exp (-0.5 * dblCounterPartyHazardRate * (1. - dblCounterPartyRecoveryRate) * iNumStep),</span>
 <span class="fc" id="L253">						Math.exp (-0.5 * dblCounterPartyHazardRate * (1. - dblCounterPartyRecoveryRate) * (iNumStep - i))</span>
 					),
@@ -309,7 +309,7 @@ import org.drip.xva.universe.*;
 <span class="fc" id="L309">				FormatUtil.FormatDouble (aBKV2[i].collateralized(), 1, 6, 1.) + &quot; | &quot; +</span>
 <span class="fc" id="L310">				FormatUtil.FormatDouble (aBKV2[i].uncollateralized(), 1, 6, 1.) + &quot; | &quot; +</span>
 <span class="fc" id="L311">				FormatUtil.FormatDouble (aBKV2[i].collateralBalance(), 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L312">				FormatUtil.FormatDouble (aMV[i].overnightIndexRate(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L312">				FormatUtil.FormatDouble (aMV[i].overnightRate(), 1, 6, 1.) + &quot; | &quot; +</span>
 <span class="fc" id="L313">				FormatUtil.FormatDouble (aMV[i].bank().survivalProbability(), 1, 6, 1.) + &quot; | &quot; +</span>
 <span class="fc" id="L314">				FormatUtil.FormatDouble (aMV[i].bank().seniorRecoveryRate(), 1, 6, 1.) + &quot; | &quot; +</span>
 <span class="fc" id="L315">				FormatUtil.FormatDouble (aMV[i].bank().seniorFundingSpread(), 1, 6, 1.) + &quot; | &quot; +</span>

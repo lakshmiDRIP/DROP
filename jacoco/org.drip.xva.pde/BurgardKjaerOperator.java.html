@@ -144,7 +144,7 @@ public class BurgardKjaerOperator {
 
 <span class="fc" id="L145">		double dblGainOnBankDefault = etvStart.gainOnBankDefault();</span>
 
-<span class="fc" id="L147">		double dblAssetValue = mvFinish.assetNumeraire();</span>
+<span class="fc" id="L147">		double dblAssetValue = mvFinish.portfolioValue();</span>
 
 <span class="fc" id="L149">		double dblAssetBump = _pdeec.sensitivityShiftFactor() * dblAssetValue;</span>
 
@@ -168,7 +168,7 @@ public class BurgardKjaerOperator {
 				-1. * adblBumpedTheta[0],
 				-1. * adblBumpedTheta[1],
 				-1. * adblBumpedTheta[2],
-<span class="fc" id="L171">				mvFinish.collateralSchemeNumeraire().forward() * dblCollateral,</span>
+<span class="fc" id="L171">				mvFinish.csaNumeraire().nodal() * dblCollateral,</span>
 				(dblBankSeniorDefaultIntensity + dblCounterPartyDefaultIntensity) * dblDerivativeXVAValueStart,
 				-1. * dblBankSeniorDefaultIntensity * dblGainOnBankDefault,
 				-1. * dblGainOnCounterPartyDefault,
@@ -218,7 +218,7 @@ public class BurgardKjaerOperator {
 <span class="pc bpc" id="L218" title="1 of 2 branches missed.">		double dblBankExposure = dblCloseOutMTM &gt; 0. ? dblCloseOutMTM : emvBankFinish.seniorRecoveryRate() *</span>
 			dblCloseOutMTM;
 
-<span class="fc" id="L221">		double dblAssetValue = mvFinish.assetNumeraire();</span>
+<span class="fc" id="L221">		double dblAssetValue = mvFinish.portfolioValue();</span>
 
 <span class="fc" id="L223">		double dblAssetBump = _pdeec.sensitivityShiftFactor() * dblAssetValue;</span>
 
@@ -238,7 +238,7 @@ public class BurgardKjaerOperator {
 				-1. * adblBumpedTheta[0],
 				-1. * adblBumpedTheta[1],
 				-1. * adblBumpedTheta[2],
-<span class="fc" id="L241">				mvFinish.collateralSchemeNumeraire().forward() * dblCollateral,</span>
+<span class="fc" id="L241">				mvFinish.csaNumeraire().nodal() * dblCollateral,</span>
 				(dblBankDefaultIntensity + dblCounterPartyDefaultIntensity) * dblDerivativeXVAValue,
 				dblBankSeniorFundingSpread * dblBankExposure,
 				-1. * dblBankDefaultIntensity * dblBankExposure,

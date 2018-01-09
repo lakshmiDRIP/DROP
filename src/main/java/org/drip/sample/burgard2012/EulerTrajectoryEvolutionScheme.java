@@ -297,12 +297,12 @@ public class EulerTrajectoryEvolutionScheme {
 			dtSpot,
 			dblAssetNumeraireInitial,
 			dblOvernightIndexNumeraireDrift,
-			new NumeraireMarketVertex (
+			new LatentStateMarketVertex (
 				1.,
 				1.
 			),
 			dblCollateralSchemeNumeraireDrift,
-			new NumeraireMarketVertex (
+			new LatentStateMarketVertex (
 				1.,
 				1.
 			),
@@ -311,13 +311,13 @@ public class EulerTrajectoryEvolutionScheme {
 				dblBankHazardRateInitial,
 				dblBankSeniorRecoveryRateInitial,
 				dblBankSeniorFundingNumeraireDrift,
-				new NumeraireMarketVertex (
+				new LatentStateMarketVertex (
 					1.,
 					1.
 				),
 				dblBankSubordinateRecoveryRateInitial,
 				dblBankSubordinateFundingNumeraireDrift,
-				new NumeraireMarketVertex (
+				new LatentStateMarketVertex (
 					1.,
 					1.
 				)
@@ -327,7 +327,7 @@ public class EulerTrajectoryEvolutionScheme {
 				dblCounterPartyHazardRateInitial,
 				dblCounterPartyRecoveryRateInitial,
 				dblCounterPartyFundingNumeraireDrift,
-				new NumeraireMarketVertex (
+				new LatentStateMarketVertex (
 					1.,
 					1.
 				),
@@ -428,10 +428,10 @@ public class EulerTrajectoryEvolutionScheme {
 		System.out.println ("\t||" +
 			FormatUtil.FormatDouble (1., 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (agvInitial.derivativeXVAValue(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (aMVBase[aMV.length - 1].assetNumeraire(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (aMVBase[aMV.length - 1].bank().seniorFundingNumeraire().forward(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (aMVBase[aMV.length - 1].counterParty().seniorFundingNumeraire().forward(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (aMVBase[aMV.length - 1].collateralSchemeNumeraire().forward(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (aMVBase[aMV.length - 1].portfolioValue(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (aMVBase[aMV.length - 1].bank().seniorFundingLatentState().nodal(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (aMVBase[aMV.length - 1].counterParty().seniorFundingLatentState().nodal(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (aMVBase[aMV.length - 1].csaNumeraire().nodal(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (rpvInitial.assetNumeraireUnits(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (rpvInitial.bankSeniorNumeraireUnits(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (rpvInitial.counterPartyNumeraireUnits(), 1, 6, 1.) + " | " +
@@ -467,10 +467,10 @@ public class EulerTrajectoryEvolutionScheme {
 			System.out.println ("\t||" +
 				FormatUtil.FormatDouble (etv.time(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (etv.assetGreekVertex().derivativeXVAValue(), 1, 6, 1.) + " | " +
-				FormatUtil.FormatDouble (aMVBase[i].assetNumeraire(), 1, 6, 1.) + " | " +
-				FormatUtil.FormatDouble (aMVBase[i].bank().seniorFundingNumeraire().forward(), 1, 6, 1.) + " | " +
-				FormatUtil.FormatDouble (aMVBase[i].counterParty().seniorFundingNumeraire().forward(), 1, 6, 1.) + " | " +
-				FormatUtil.FormatDouble (aMVBase[i].collateralSchemeNumeraire().forward(), 1, 6, 1.) + " | " +
+				FormatUtil.FormatDouble (aMVBase[i].portfolioValue(), 1, 6, 1.) + " | " +
+				FormatUtil.FormatDouble (aMVBase[i].bank().seniorFundingLatentState().nodal(), 1, 6, 1.) + " | " +
+				FormatUtil.FormatDouble (aMVBase[i].counterParty().seniorFundingLatentState().nodal(), 1, 6, 1.) + " | " +
+				FormatUtil.FormatDouble (aMVBase[i].csaNumeraire().nodal(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (etv.replicationPortfolioVertex().assetNumeraireUnits(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (etv.replicationPortfolioVertex().bankSeniorNumeraireUnits(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (etv.replicationPortfolioVertex().counterPartyNumeraireUnits(), 1, 6, 1.) + " | " +

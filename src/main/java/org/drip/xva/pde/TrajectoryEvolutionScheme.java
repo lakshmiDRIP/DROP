@@ -148,25 +148,25 @@ public class TrajectoryEvolutionScheme {
 
 		org.drip.xva.universe.EntityMarketVertex emvCounterPartyFinish = mvFinish.counterParty();
 
-		double dblAssetNumeraireFinish = mvFinish.assetNumeraire();
+		double dblAssetNumeraireFinish = mvFinish.portfolioValue();
 
-		double dblBankSeniorFundingNumeraireFinish = emvBankFinish.seniorFundingNumeraire().forward();
+		double dblBankSeniorFundingNumeraireFinish = emvBankFinish.seniorFundingLatentState().nodal();
 
-		double dblCounterPartyNumeraireFinish = emvCounterPartyFinish.seniorFundingNumeraire().forward();
+		double dblCounterPartyNumeraireFinish = emvCounterPartyFinish.seniorFundingLatentState().nodal();
 
 		double dblBankSubordinateFundingNumeraireStart = java.lang.Double.NaN;
 		double dblBankSubordinateFundingNumeraireFinish = java.lang.Double.NaN;
 
-		org.drip.xva.universe.NumeraireMarketVertex nmvBankSubordinateFundingStart =
-			emvBankStart.seniorFundingNumeraire();
+		org.drip.xva.universe.LatentStateMarketVertex nmvBankSubordinateFundingStart =
+			emvBankStart.seniorFundingLatentState();
 
-		org.drip.xva.universe.NumeraireMarketVertex nmvBankSubordinateFundingFinish =
-			emvBankFinish.seniorFundingNumeraire();
+		org.drip.xva.universe.LatentStateMarketVertex nmvBankSubordinateFundingFinish =
+			emvBankFinish.seniorFundingLatentState();
 
 		if (null != nmvBankSubordinateFundingStart && null != nmvBankSubordinateFundingFinish) {
-			dblBankSubordinateFundingNumeraireStart = nmvBankSubordinateFundingStart.forward();
+			dblBankSubordinateFundingNumeraireStart = nmvBankSubordinateFundingStart.nodal();
 
-			dblBankSubordinateFundingNumeraireFinish = nmvBankSubordinateFundingFinish.forward();
+			dblBankSubordinateFundingNumeraireFinish = nmvBankSubordinateFundingFinish.nodal();
 		}
 
 		double dblTimeIncrement = me.vertexIncrement() / 365.25;
@@ -181,7 +181,7 @@ public class TrajectoryEvolutionScheme {
 				dblTimeIncrement;
 
 		double dblCounterPartyPositionValueChange = dblCounterPartyNumeraireUnitsStart *
-			(dblCounterPartyNumeraireFinish - mvStart.counterParty().seniorFundingNumeraire().forward());
+			(dblCounterPartyNumeraireFinish - mvStart.counterParty().seniorFundingLatentState().nodal());
 
 		double dblCashAccountBalance = -1. * etvStart.assetGreekVertex().derivativeXVAValue() -
 			dblBankSeniorNumeraireUnitsStart * dblBankSeniorFundingNumeraireFinish;
@@ -199,8 +199,8 @@ public class TrajectoryEvolutionScheme {
 				dblTimeIncrement;
 
 		double dblDerivativeXVAValueChange = -1. * (dblAssetNumeraireUnitsStart * (dblAssetNumeraireFinish -
-			mvStart.assetNumeraire()) + dblBankSeniorNumeraireUnitsStart *
-				(dblBankSeniorFundingNumeraireFinish - emvBankStart.seniorFundingNumeraire().forward()) +
+			mvStart.portfolioValue()) + dblBankSeniorNumeraireUnitsStart *
+				(dblBankSeniorFundingNumeraireFinish - emvBankStart.seniorFundingLatentState().nodal()) +
 					dblCounterPartyPositionValueChange + (dblAssetCashChange +
 						dblCounterPartyCashAccumulation + dblBankCashAccumulation) * dblTimeIncrement);
 
@@ -292,7 +292,7 @@ public class TrajectoryEvolutionScheme {
 			dblCounterPartyGainOnBankDefault);
 
 		double dblCounterPartyNumeraireUnitsFinish = dblGainOnCounterPartyDefaultFinish /
-			emvCounterPartyFinish.seniorFundingNumeraire().forward();
+			emvCounterPartyFinish.seniorFundingLatentState().nodal();
 
 		org.drip.xva.derivative.CashAccountRebalancer car = rebalanceCash (etvStart, me);
 
@@ -300,13 +300,13 @@ public class TrajectoryEvolutionScheme {
 
 		org.drip.xva.derivative.CashAccountEdge cae = car.cashAccount();
 
-		double dblBankSeniorFundingNumeraire = emvBankFinish.seniorFundingNumeraire().forward();
+		double dblBankSeniorFundingNumeraire = emvBankFinish.seniorFundingLatentState().nodal();
 
-		org.drip.xva.universe.NumeraireMarketVertex nmvBankSubordinateFunding =
-			emvBankFinish.subordinateFundingNumeraire();
+		org.drip.xva.universe.LatentStateMarketVertex nmvBankSubordinateFunding =
+			emvBankFinish.seniorFundingLatentState();
 
 		if (null != nmvBankSubordinateFunding)
-			dblBankSubordinateFundingNumeraire = nmvBankSubordinateFunding.forward();
+			dblBankSubordinateFundingNumeraire = nmvBankSubordinateFunding.nodal();
 
 		org.drip.xva.universe.Tradeable tCollateralScheme = _tc.collateralScheme();
 
@@ -333,7 +333,7 @@ public class TrajectoryEvolutionScheme {
 						tCollateralScheme.numeraireEvolver().evaluator().drift().value (
 							new org.drip.measure.realization.JumpDiffusionVertex (
 								dblTimeStart - 0.5 * dblTimeIncrement,
-								me.start().collateralSchemeNumeraire().forward(),
+								me.start().csaNumeraire().nodal(),
 								0.,
 								false
 							)

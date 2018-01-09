@@ -210,14 +210,14 @@ public class EvolutionTrajectoryVertex {
 
 <span class="nc" id="L211">		org.drip.xva.universe.EntityMarketVertex emvBank = mv.bank();</span>
 
-<span class="nc" id="L213">		double dblFundingConstraint = _agv.derivativeXVAValue() + emvBank.seniorFundingNumeraire().forward()</span>
+<span class="nc" id="L213">		double dblFundingConstraint = _agv.derivativeXVAValue() + emvBank.seniorFundingLatentState().nodal()</span>
 <span class="nc" id="L214">			* _rpv.bankSeniorNumeraireUnits();</span>
 
-<span class="nc" id="L216">		org.drip.xva.universe.NumeraireMarketVertex nmvBankSubordinateFunding =</span>
-<span class="nc" id="L217">			emvBank.subordinateFundingNumeraire();</span>
+<span class="nc" id="L216">		org.drip.xva.universe.LatentStateMarketVertex nmvBankSubordinateFunding =</span>
+<span class="nc" id="L217">			emvBank.subordinateFundingLatentState();</span>
 
 <span class="nc bnc" id="L219" title="All 2 branches missed.">		if (null != nmvBankSubordinateFunding)</span>
-<span class="nc" id="L220">			dblFundingConstraint += nmvBankSubordinateFunding.forward() *</span>
+<span class="nc" id="L220">			dblFundingConstraint += nmvBankSubordinateFunding.nodal() *</span>
 <span class="nc" id="L221">				_rpv.bankSubordinateNumeraireUnits();</span>
 
 <span class="nc" id="L223">		return dblFundingConstraint;</span>

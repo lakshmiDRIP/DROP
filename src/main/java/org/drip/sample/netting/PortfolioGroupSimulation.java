@@ -169,12 +169,12 @@ public class PortfolioGroupSimulation {
 				adtVertex[i] = dtSpot.addMonths (6 * i),
 				Double.NaN,
 				0.,
-				new NumeraireMarketVertex (
+				new LatentStateMarketVertex (
 					Math.exp (-0.5 * dblOISRate * iNumStep),
 					Math.exp (-0.5 * dblOISRate * (iNumStep - i))
 				),
 				dblCSADrift,
-				new NumeraireMarketVertex (
+				new LatentStateMarketVertex (
 					Math.exp (-0.5 * dblCSADrift * iNumStep),
 					Math.exp (-0.5 * dblCSADrift * (iNumStep - i))
 				),
@@ -183,7 +183,7 @@ public class PortfolioGroupSimulation {
 					dblBankHazardRate,
 					dblBankRecoveryRate,
 					dblBankFundingSpread,
-					new NumeraireMarketVertex (
+					new LatentStateMarketVertex (
 						Math.exp (-0.5 * dblBankHazardRate * (1. - dblBankRecoveryRate) * iNumStep),
 						Math.exp (-0.5 * dblBankHazardRate * (1. - dblBankRecoveryRate) * (iNumStep - i))
 					),
@@ -196,7 +196,7 @@ public class PortfolioGroupSimulation {
 					dblCounterPartyHazardRate,
 					dblCounterPartyRecoveryRate,
 					dblCounterPartyFundingSpread,
-					new NumeraireMarketVertex (
+					new LatentStateMarketVertex (
 						Math.exp (-0.5 * dblCounterPartyHazardRate * (1. - dblCounterPartyRecoveryRate) * iNumStep),
 						Math.exp (-0.5 * dblCounterPartyHazardRate * (1. - dblCounterPartyRecoveryRate) * (iNumStep - i))
 					),

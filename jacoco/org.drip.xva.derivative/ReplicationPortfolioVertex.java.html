@@ -209,13 +209,13 @@ public class ReplicationPortfolioVertex {
 
 <span class="nc" id="L210">		org.drip.xva.universe.EntityMarketVertex emvBank = mv.bank();</span>
 
-<span class="nc" id="L212">		double dblValue = -1. * emvBank.seniorFundingNumeraire().forward() * _dblBankSeniorNumeraireUnits;</span>
+<span class="nc" id="L212">		double dblValue = -1. * emvBank.seniorFundingLatentState().nodal() * _dblBankSeniorNumeraireUnits;</span>
 
-<span class="nc" id="L214">		org.drip.xva.universe.NumeraireMarketVertex nmvBankSubordinateFunding =</span>
-<span class="nc" id="L215">			emvBank.subordinateFundingNumeraire();</span>
+<span class="nc" id="L214">		org.drip.xva.universe.LatentStateMarketVertex nmvBankSubordinateFunding =</span>
+<span class="nc" id="L215">			emvBank.subordinateFundingLatentState();</span>
 
 <span class="nc bnc" id="L217" title="All 2 branches missed.">		if (null != nmvBankSubordinateFunding)</span>
-<span class="nc" id="L218">			dblValue -= nmvBankSubordinateFunding.forward() * _dblBankSubordinateNumeraireUnits;</span>
+<span class="nc" id="L218">			dblValue -= nmvBankSubordinateFunding.nodal() * _dblBankSubordinateNumeraireUnits;</span>
 
 <span class="nc" id="L220">		return dblValue;</span>
 	}
@@ -240,14 +240,14 @@ public class ReplicationPortfolioVertex {
 
 <span class="nc" id="L241">		org.drip.xva.universe.EntityMarketVertex emvBank = mv.bank();</span>
 
-<span class="nc" id="L243">		double dblValue = emvBank.seniorFundingNumeraire().forward() * _dblBankSeniorNumeraireUnits *</span>
+<span class="nc" id="L243">		double dblValue = emvBank.seniorFundingLatentState().nodal() * _dblBankSeniorNumeraireUnits *</span>
 <span class="nc" id="L244">			emvBank.seniorRecoveryRate();</span>
 
-<span class="nc" id="L246">		org.drip.xva.universe.NumeraireMarketVertex nmvBankSubordinateFunding =</span>
-<span class="nc" id="L247">			emvBank.subordinateFundingNumeraire();</span>
+<span class="nc" id="L246">		org.drip.xva.universe.LatentStateMarketVertex nmvBankSubordinateFunding =</span>
+<span class="nc" id="L247">			emvBank.subordinateFundingLatentState();</span>
 
 <span class="nc bnc" id="L249" title="All 2 branches missed.">		if (null != nmvBankSubordinateFunding)</span>
-<span class="nc" id="L250">			dblValue -= nmvBankSubordinateFunding.forward() * _dblBankSubordinateNumeraireUnits *</span>
+<span class="nc" id="L250">			dblValue -= nmvBankSubordinateFunding.nodal() * _dblBankSubordinateNumeraireUnits *</span>
 <span class="nc" id="L251">				emvBank.subordinateRecoveryRate();</span>
 
 <span class="nc" id="L253">		return dblValue;</span>

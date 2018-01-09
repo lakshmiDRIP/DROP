@@ -287,12 +287,12 @@ public class XVAMarketGeneration {
 			dtSpot,
 			dblAssetNumeraireInitial,
 			dblOvernightIndexNumeraireDrift,
-			new NumeraireMarketVertex (
+			new LatentStateMarketVertex (
 				1.,
 				1.
 			),
 			dblCollateralSchemeNumeraireDrift,
-			new NumeraireMarketVertex (
+			new LatentStateMarketVertex (
 				1.,
 				1.
 			),
@@ -301,13 +301,13 @@ public class XVAMarketGeneration {
 				dblBankHazardRateInitial,
 				dblBankSeniorRecoveryRateInitial,
 				dblBankSeniorFundingNumeraireDrift,
-				new NumeraireMarketVertex (
+				new LatentStateMarketVertex (
 					1.,
 					1.
 				),
 				dblBankSubordinateRecoveryRateInitial,
 				dblBankSubordinateFundingNumeraireDrift,
-				new NumeraireMarketVertex (
+				new LatentStateMarketVertex (
 					1.,
 					1.
 				)
@@ -317,7 +317,7 @@ public class XVAMarketGeneration {
 				dblCounterPartyHazardRateInitial,
 				dblCounterPartyRecoveryRateInitial,
 				dblCounterPartyFundingNumeraireDrift,
-				new NumeraireMarketVertex (
+				new LatentStateMarketVertex (
 					1.,
 					1.
 				),
@@ -354,11 +354,11 @@ public class XVAMarketGeneration {
 		for (int i = 0; i < aMV.length; ++i)
 			System.out.println (
 				"\t|| " + aMV[i].anchor() + " => " +
-				FormatUtil.FormatDouble (aMV[i].assetNumeraire(), 1, 6, 1.) + " | " +
-				FormatUtil.FormatDouble (aMV[i].overnightIndexRate(), 1, 2, 100.) + "% | " +
-				FormatUtil.FormatDouble (aMV[i].overnightIndexNumeraire().forward(), 1, 6, 1.) + " | " +
-				FormatUtil.FormatDouble (aMV[i].collateralSchemeRate(), 1, 2, 100.) + "% | " +
-				FormatUtil.FormatDouble (aMV[i].collateralSchemeNumeraire().forward(), 1, 6, 1.) + " ||"
+				FormatUtil.FormatDouble (aMV[i].portfolioValue(), 1, 6, 1.) + " | " +
+				FormatUtil.FormatDouble (aMV[i].overnightRate(), 1, 2, 100.) + "% | " +
+				FormatUtil.FormatDouble (aMV[i].overnightNumeraire().nodal(), 1, 6, 1.) + " | " +
+				FormatUtil.FormatDouble (aMV[i].csaRate(), 1, 2, 100.) + "% | " +
+				FormatUtil.FormatDouble (aMV[i].csaNumeraire().nodal(), 1, 6, 1.) + " ||"
 			);
 
 		System.out.println ("\t||--------------------------------------------------------------------||");
@@ -402,10 +402,10 @@ public class XVAMarketGeneration {
 				FormatUtil.FormatDouble (emvBank.survivalProbability(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (emvBank.seniorRecoveryRate(), 1, 0, 100.) + "% | " +
 				FormatUtil.FormatDouble (emvBank.seniorFundingSpread(), 1, 2, 100.) + "% | " +
-				FormatUtil.FormatDouble (emvBank.seniorFundingNumeraire().forward(), 1, 6, 1.) + " | " +
+				FormatUtil.FormatDouble (emvBank.seniorFundingLatentState().nodal(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (emvBank.subordinateRecoveryRate(), 1, 0, 100.) + "% | " +
 				FormatUtil.FormatDouble (emvBank.subordinateFundingSpread(), 1, 2, 100.) + "% | " +
-				FormatUtil.FormatDouble (emvBank.subordinateFundingNumeraire().forward(), 1, 6, 1.) + " ||"
+				FormatUtil.FormatDouble (emvBank.subordinateFundingLatentState().nodal(), 1, 6, 1.) + " ||"
 			);
 		}
 
@@ -444,7 +444,7 @@ public class XVAMarketGeneration {
 				FormatUtil.FormatDouble (emvCounterParty.survivalProbability(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (emvCounterParty.seniorRecoveryRate(), 1, 0, 100.) + "% | " +
 				FormatUtil.FormatDouble (emvCounterParty.seniorFundingSpread(), 1, 2, 100.) + "% | " +
-				FormatUtil.FormatDouble (emvCounterParty.seniorFundingNumeraire().forward(), 1, 6, 1.) + " ||"
+				FormatUtil.FormatDouble (emvCounterParty.seniorFundingLatentState().nodal(), 1, 6, 1.) + " ||"
 			);
 		}
 

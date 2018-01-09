@@ -103,8 +103,8 @@ package org.drip.xva.hypothecation;
 
 <span class="fc" id="L104">		org.drip.xva.universe.EntityMarketVertex emvBank = mv.bank();</span>
 
-<span class="fc" id="L106">		org.drip.xva.universe.NumeraireMarketVertex nmvBankSubordinate =</span>
-<span class="fc" id="L107">			emvBank.subordinateFundingNumeraire();</span>
+<span class="fc" id="L106">		org.drip.xva.universe.LatentStateMarketVertex nmvBankSubordinate =</span>
+<span class="fc" id="L107">			emvBank.subordinateFundingLatentState();</span>
 
 <span class="pc bpc" id="L109" title="1 of 2 branches missed.">		if (null == nmvBankSubordinate) return null;</span>
 
@@ -122,7 +122,7 @@ package org.drip.xva.hypothecation;
 <span class="fc" id="L122">			(dblCounterPartySurvival - 1.) * cgvea.credit() +</span>
 <span class="fc" id="L123">			dblCounterPartySurvival * dblIncrementalBankSurvival * cgvea.debt() +</span>
 			dblCounterPartySurvival * dblIncrementalBankSurvival * dblFundingExposure -
-<span class="fc" id="L125">			dblBankSurvival * dblCounterPartySurvival * mv.collateralSchemeSpread() * cgvea.collateralBalance();</span>
+<span class="fc" id="L125">			dblBankSurvival * dblCounterPartySurvival * mv.csaSpread() * cgvea.collateralBalance();</span>
 
 		try {
 <span class="fc" id="L128">			return new org.drip.xva.hypothecation.BurgardKjaerVertex (</span>
@@ -133,9 +133,9 @@ package org.drip.xva.hypothecation;
 				cgvco,
 				new org.drip.xva.derivative.ReplicationPortfolioVertexBank (
 					(dblFundingExposure + dblBankSubordinateRecovery * dblAdjustedExposure - dblBankDefaultCloseOut) /
-<span class="fc" id="L136">						(dblBankSeniorRecovery - dblBankSubordinateRecovery) / emvBank.seniorFundingNumeraire().forward(),</span>
+<span class="fc" id="L136">						(dblBankSeniorRecovery - dblBankSubordinateRecovery) / emvBank.seniorFundingLatentState().nodal(),</span>
 					(dblFundingExposure + dblBankSeniorRecovery * dblAdjustedExposure - dblBankDefaultCloseOut) /
-<span class="fc" id="L138">						(dblBankSubordinateRecovery - dblBankSeniorRecovery) / nmvBankSubordinate.forward()</span>
+<span class="fc" id="L138">						(dblBankSubordinateRecovery - dblBankSeniorRecovery) / nmvBankSubordinate.nodal()</span>
 				)
 			);
 <span class="nc" id="L141">		} catch (java.lang.Exception e) {</span>
@@ -176,8 +176,8 @@ package org.drip.xva.hypothecation;
 
 <span class="fc" id="L177">		org.drip.xva.universe.EntityMarketVertex emvBankFinish = mvFinish.bank();</span>
 
-<span class="fc" id="L179">		org.drip.xva.universe.NumeraireMarketVertex nmvBankSubordinateFinish =</span>
-<span class="fc" id="L180">			emvBankFinish.subordinateFundingNumeraire();</span>
+<span class="fc" id="L179">		org.drip.xva.universe.LatentStateMarketVertex nmvBankSubordinateFinish =</span>
+<span class="fc" id="L180">			emvBankFinish.subordinateFundingLatentState();</span>
 
 <span class="pc bpc" id="L182" title="1 of 2 branches missed.">		if (null == nmvBankSubordinateFinish) return null;</span>
 
@@ -195,7 +195,7 @@ package org.drip.xva.hypothecation;
 <span class="fc" id="L195">			(dblCounterPartySurvivalFinish - mvStart.counterParty().survivalProbability()) * cgvea.credit() +</span>
 <span class="fc" id="L196">			dblCounterPartySurvivalFinish * dblIncrementalBankSurvival * cgvea.debt() +</span>
 			dblCounterPartySurvivalFinish * dblIncrementalBankSurvival * dblFundingExposure -
-<span class="fc" id="L198">			dblBankSurvivalFinish * dblCounterPartySurvivalFinish * mvFinish.collateralSchemeSpread() * cgvea.collateralBalance();</span>
+<span class="fc" id="L198">			dblBankSurvivalFinish * dblCounterPartySurvivalFinish * mvFinish.csaSpread() * cgvea.collateralBalance();</span>
 
 		try {
 <span class="fc" id="L201">			return new org.drip.xva.hypothecation.BurgardKjaerVertex (</span>
@@ -207,9 +207,9 @@ package org.drip.xva.hypothecation;
 				new org.drip.xva.derivative.ReplicationPortfolioVertexBank (
 					(dblFundingExposure + dblBankSubordinateRecoveryFinish * dblAdjustedExposure - dblBankDefaultCloseOut) /
 						(dblBankSeniorRecoveryFinish - dblBankSubordinateRecoveryFinish) /
-<span class="fc" id="L210">							emvBankFinish.seniorFundingNumeraire().forward(),</span>
+<span class="fc" id="L210">							emvBankFinish.seniorFundingLatentState().nodal(),</span>
 					(dblFundingExposure + dblBankSeniorRecoveryFinish * dblAdjustedExposure - dblBankDefaultCloseOut) /
-<span class="fc" id="L212">						(dblBankSubordinateRecoveryFinish - dblBankSeniorRecoveryFinish) / nmvBankSubordinateFinish.forward()</span>
+<span class="fc" id="L212">						(dblBankSubordinateRecoveryFinish - dblBankSeniorRecoveryFinish) / nmvBankSubordinateFinish.nodal()</span>
 				)
 			);
 <span class="nc" id="L215">		} catch (java.lang.Exception e) {</span>

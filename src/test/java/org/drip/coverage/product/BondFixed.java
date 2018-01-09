@@ -1,5 +1,21 @@
 
-package org.drip.xva.universe;
+package org.drip.coverage.product;
+
+import org.drip.sample.bondfixed.Bareilly;
+import org.drip.sample.bondfixed.BulletAgency;
+import org.drip.sample.bondfixed.BulletCorporate1;
+import org.drip.sample.bondfixed.BulletCorporate2;
+import org.drip.sample.bondfixed.BulletCorporate3;
+import org.drip.sample.bondfixed.BulletCorporate4;
+import org.drip.sample.bondfixed.BulletCorporate5;
+import org.drip.sample.bondfixed.BulletCorporate6;
+import org.drip.sample.bondfixed.HubbaliDharwad;
+import org.drip.sample.bondfixed.Moradabad;
+import org.drip.sample.bondfixed.Mysore;
+import org.drip.sample.bondfixed.Tiruchirapalli;
+import org.drip.sample.bondfixed.Tiruppur;
+
+import org.junit.Test;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -48,77 +64,39 @@ package org.drip.xva.universe;
  */
 
 /**
- * NumeraireMarketVertex holds the Epochal and the Forward Numeraire Realizations at a Market Trajectory
- *  Vertex needed for computing the Valuation Adjustment. The References are:
- *  
- *  - Burgard, C., and M. Kjaer (2013): Funding Strategies, Funding Costs, Risk, 24 (12) 82-87.
- *  
- *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
- *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
- *  
- *  - Burgard, C., and M. Kjaer (2014): In the Balance, Risk, 24 (11) 72-75.
- *  
- *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk, Risk 20 (2) 86-90.
- * 
- *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
- *  	21 (2) 97-102.
- * 
+ * BondFixed holds the JUnit Code Coverage Tests for the Fixed Bond Product Module.
+ *
  * @author Lakshmi Krishnamurthy
  */
 
-public class NumeraireMarketVertex {
-	private double _dblEpochal = java.lang.Double.NaN;
-	private double _dblForward = java.lang.Double.NaN;
-
-	/**
-	 * NumeraireMarketVertex Constructor
-	 * 
-	 * @param dblEpochal The Epochal Numeraire Realization
-	 * @param dblForward The Forward Numeraire Realization
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public NumeraireMarketVertex (
-		final double dblEpochal,
-		final double dblForward)
-		throws java.lang.Exception
+public class BondFixed
+{
+	@Test public void codeCoverageTest() throws Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblEpochal = dblEpochal) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblForward = dblForward))
-			throw new java.lang.Exception ("NumeraireMarketVertex Constructor => Invalid Inputs");
-	}
+		Bareilly.main (null);
 
-	/**
-	 * Retrieve the Epochal Numeraire Realization
-	 * 
-	 * @return The Epochal Numeraire Realization
-	 */
+		BulletAgency.main (null);
 
-	public double epochal()
-	{
-		return _dblEpochal;
-	}
+		BulletCorporate1.main (null);
 
-	/**
-	 * Retrieve the Forward Numeraire Realization
-	 * 
-	 * @return The Forward Numeraire Realization
-	 */
+		BulletCorporate2.main (null);
 
-	public double forward()
-	{
-		return _dblForward;
-	}
+		BulletCorporate3.main (null);
 
-	/**
-	 * Retrieve the Epochal/Forward Numeraire Scale
-	 * 
-	 * @return The Epochal/Forward Numeraire Scale
-	 */
+		BulletCorporate4.main (null);
 
-	public double epochalForwardScale()
-	{
-		return _dblEpochal / _dblForward;
-	}
+		BulletCorporate5.main (null);
+
+		BulletCorporate6.main (null);
+
+		HubbaliDharwad.main (null);
+
+		Moradabad.main (null);
+
+		Mysore.main (null);
+
+		Tiruchirapalli.main (null);
+
+		Tiruppur.main (null);
+    }
 }

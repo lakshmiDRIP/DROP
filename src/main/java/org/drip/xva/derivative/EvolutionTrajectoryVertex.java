@@ -210,14 +210,14 @@ public class EvolutionTrajectoryVertex {
 
 		org.drip.xva.universe.EntityMarketVertex emvBank = mv.bank();
 
-		double dblFundingConstraint = _agv.derivativeXVAValue() + emvBank.seniorFundingNumeraire().forward()
+		double dblFundingConstraint = _agv.derivativeXVAValue() + emvBank.seniorFundingLatentState().nodal()
 			* _rpv.bankSeniorNumeraireUnits();
 
-		org.drip.xva.universe.NumeraireMarketVertex nmvBankSubordinateFunding =
-			emvBank.subordinateFundingNumeraire();
+		org.drip.xva.universe.LatentStateMarketVertex nmvBankSubordinateFunding =
+			emvBank.subordinateFundingLatentState();
 
 		if (null != nmvBankSubordinateFunding)
-			dblFundingConstraint += nmvBankSubordinateFunding.forward() *
+			dblFundingConstraint += nmvBankSubordinateFunding.nodal() *
 				_rpv.bankSubordinateNumeraireUnits();
 
 		return dblFundingConstraint;

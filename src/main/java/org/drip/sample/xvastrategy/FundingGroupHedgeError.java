@@ -219,12 +219,12 @@ public class FundingGroupHedgeError {
 				adtVertex[i] = dtSpot.addMonths (6 * i),
 				Double.NaN,
 				0.,
-				new NumeraireMarketVertex (
+				new LatentStateMarketVertex (
 					Math.exp (-0.5 * dblOISRate * iNumStep),
 					Math.exp (-0.5 * dblOISRate * (iNumStep - i))
 				),
 				dblCSADrift,
-				new NumeraireMarketVertex (
+				new LatentStateMarketVertex (
 					Math.exp (-0.5 * dblCSADrift * iNumStep),
 					Math.exp (-0.5 * dblCSADrift * (iNumStep - i))
 				),
@@ -233,13 +233,13 @@ public class FundingGroupHedgeError {
 					dblBankHazardRate,
 					dblBankSeniorRecoveryRate,
 					dblBankSeniorFundingSpread,
-					new NumeraireMarketVertex (
+					new LatentStateMarketVertex (
 						Math.exp (-0.5 * dblBankHazardRate * (1. - dblBankSeniorRecoveryRate) * iNumStep),
 						Math.exp (-0.5 * dblBankHazardRate * (1. - dblBankSeniorRecoveryRate) * (iNumStep - i))
 					),
 					dblBankSubordinateRecoveryRate,
 					dblBankSubordinateFundingSpread,
-					new NumeraireMarketVertex (
+					new LatentStateMarketVertex (
 						Math.exp (-0.5 * dblBankHazardRate * (1. - dblBankSubordinateRecoveryRate) * iNumStep),
 						Math.exp (-0.5 * dblBankHazardRate * (1. - dblBankSubordinateRecoveryRate) * (iNumStep - i))
 					)
@@ -249,7 +249,7 @@ public class FundingGroupHedgeError {
 					dblCounterPartyHazardRate,
 					dblCounterPartyRecoveryRate,
 					dblCounterPartyFundingSpread,
-					new NumeraireMarketVertex (
+					new LatentStateMarketVertex (
 						Math.exp (-0.5 * dblCounterPartyHazardRate * (1. - dblCounterPartyRecoveryRate) * iNumStep),
 						Math.exp (-0.5 * dblCounterPartyHazardRate * (1. - dblCounterPartyRecoveryRate) * (iNumStep - i))
 					),
@@ -310,7 +310,7 @@ public class FundingGroupHedgeError {
 				FormatUtil.FormatDouble (aBKV2[i].collateralized(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (aBKV2[i].uncollateralized(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (aBKV2[i].collateralBalance(), 1, 6, 1.) + " | " +
-				FormatUtil.FormatDouble (aMV[i].overnightIndexRate(), 1, 6, 1.) + " | " +
+				FormatUtil.FormatDouble (aMV[i].overnightRate(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (aMV[i].bank().survivalProbability(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (aMV[i].bank().seniorRecoveryRate(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (aMV[i].bank().seniorFundingSpread(), 1, 6, 1.) + " | " +

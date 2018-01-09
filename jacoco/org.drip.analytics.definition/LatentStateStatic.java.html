@@ -51,7 +51,7 @@ package org.drip.analytics.definition;
  */
 
 /**
- * LatentStateStatic contains the Analytics Latent STate Static/Textual Identifiers.
+ * LatentStateStatic contains the Analytics Latent State Static/Textual Identifiers.
  *
  * @author Lakshmi Krishnamurthy
  */
