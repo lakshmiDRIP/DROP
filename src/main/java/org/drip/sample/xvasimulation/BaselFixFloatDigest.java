@@ -2,14 +2,16 @@
 package org.drip.sample.xvasimulation;
 
 import org.drip.analytics.date.*;
+import org.drip.analytics.support.Helper;
 import org.drip.measure.dynamics.*;
-import org.drip.measure.process.DiffusionEvolver;
+import org.drip.measure.process.*;
 import org.drip.measure.statistics.UnivariateDiscreteThin;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.xva.cpty.*;
 import org.drip.xva.dynamics.*;
 import org.drip.xva.set.*;
+import org.drip.xva.universe.*;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -79,6 +81,126 @@ import org.drip.xva.set.*;
 
 public class BaselFixFloatDigest
 {
+
+	private static final TradeablesContainer GenerateTradeablesContainer()
+		throws Exception
+	{
+		double dblAssetNumeraireDrift = 0.06;
+		double dblAssetNumeraireVolatility = 0.10;
+		double dblAssetNumeraireRepo = 0.03;
+		double dblAssetNumeraireDividend = 0.02;
+
+		double dblOvernightIndexNumeraireDrift = 0.0025;
+		double dblOvernightIndexNumeraireVolatility = 0.001;
+		double dblOvernightIndexNumeraireRepo = 0.0;
+
+		double dblCollateralSchemeNumeraireDrift = 0.01;
+		double dblCollateralSchemeNumeraireVolatility = 0.002;
+		double dblCollateralSchemeNumeraireRepo = 0.005;
+
+		double dblBankSeniorFundingNumeraireDrift = 0.03;
+		double dblBankSeniorFundingNumeraireVolatility = 0.002;
+		double dblBankSeniorFundingNumeraireRepo = 0.028;
+
+		double dblBankSubordinateFundingNumeraireDrift = 0.045;
+		double dblBankSubordinateFundingNumeraireVolatility = 0.002;
+		double dblBankSubordinateFundingNumeraireRepo = 0.028;
+
+		double dblCounterPartyFundingNumeraireDrift = 0.03;
+		double dblCounterPartyFundingNumeraireVolatility = 0.003;
+		double dblCounterPartyFundingNumeraireRepo = 0.028;
+
+		double dblBankHazardRateInitial = 0.03;
+
+		double dblBankSeniorRecoveryRateInitial = 0.45;
+
+		double dblBankSubordinateRecoveryRateInitial = 0.25;
+
+		double dblCounterPartyHazardRateInitial = 0.05;
+
+		double dblCounterPartyRecoveryRateInitial = 0.30;
+
+		Tradeable tAsset = new Tradeable (
+			new DiffusionEvolver (
+				DiffusionEvaluatorLogarithmic.Standard (
+					dblAssetNumeraireDrift - dblAssetNumeraireDividend,
+					dblAssetNumeraireVolatility
+				)
+			),
+			dblAssetNumeraireRepo
+		);
+
+		Tradeable tOvernightIndex = new Tradeable (
+			new DiffusionEvolver (
+				DiffusionEvaluatorLogarithmic.Standard (
+					dblOvernightIndexNumeraireDrift,
+					dblOvernightIndexNumeraireVolatility
+				)
+			),
+			dblOvernightIndexNumeraireRepo
+		);
+
+		Tradeable tCollateralScheme = new Tradeable (
+			new DiffusionEvolver (
+				DiffusionEvaluatorLogarithmic.Standard (
+					dblCollateralSchemeNumeraireDrift,
+					dblCollateralSchemeNumeraireVolatility
+				)
+			),
+			dblCollateralSchemeNumeraireRepo
+		);
+
+		Tradeable tBankSeniorFunding = new Tradeable (
+			new JumpDiffusionEvolver (
+				DiffusionEvaluatorLogarithmic.Standard (
+					dblBankSeniorFundingNumeraireDrift,
+					dblBankSeniorFundingNumeraireVolatility
+				),
+				HazardJumpEvaluator.Standard (
+					dblBankHazardRateInitial,
+					dblBankSeniorRecoveryRateInitial
+				)
+			),
+			dblBankSeniorFundingNumeraireRepo
+		);
+
+		Tradeable tBankSubordinateFunding = new Tradeable (
+			new JumpDiffusionEvolver (
+				DiffusionEvaluatorLogarithmic.Standard (
+					dblBankSubordinateFundingNumeraireDrift,
+					dblBankSubordinateFundingNumeraireVolatility
+				),
+				HazardJumpEvaluator.Standard (
+					dblBankHazardRateInitial,
+					dblBankSubordinateRecoveryRateInitial
+				)
+			),
+			dblBankSubordinateFundingNumeraireRepo
+		);
+
+		Tradeable tCounterPartyFunding = new Tradeable (
+			new JumpDiffusionEvolver (
+				DiffusionEvaluatorLogarithmic.Standard (
+					dblCounterPartyFundingNumeraireDrift,
+					dblCounterPartyFundingNumeraireVolatility
+				),
+				HazardJumpEvaluator.Standard (
+					dblCounterPartyHazardRateInitial,
+					dblCounterPartyRecoveryRateInitial
+				)
+			),
+			dblCounterPartyFundingNumeraireRepo
+		);
+
+		return new TradeablesContainer (
+			tAsset,
+			tOvernightIndex,
+			tCollateralScheme,
+			tBankSeniorFunding,
+			tBankSubordinateFunding,
+			tCounterPartyFunding
+		);
+	}
 
 	private static final DiffusionSettings GenerateDiffusionSettings (
 		final double dblTimeHorizon)
@@ -252,16 +374,10 @@ public class BaselFixFloatDigest
 		 */
 
 		int iNumPath = 100000;
-		int iNumTimeSteps = 10;
-		double dblTimeHorizon = 5.;
+		int eventCount = 10;
+		String eventTenor = "6M";
 
 		JulianDate dtSpot = DateUtil.Today();
-
-		EvolutionControl fixFloatEvolutionControl = new EvolutionControl (
-			dtSpot,
-			dblTimeHorizon,
-			iNumTimeSteps
-		);
 
 		/*
 		 * Group Settings
@@ -270,25 +386,27 @@ public class BaselFixFloatDigest
 		double dblBankThreshold = -0.1;
 		double dblCounterPartyThreshold = 0.1;
 
-		GroupSettings fixFloatGroupSettings = new GroupSettings (
-			CollateralGroupSpecification.FixedThreshold (
-				"FIXEDTHRESHOLD",
-				dblCounterPartyThreshold,
-				dblBankThreshold
-			),
-			CounterPartyGroupSpecification.Standard ("CPGROUP")
-		);
-
-		DiffusionSettings fixFloatDiffusionSettings = GenerateDiffusionSettings (dblTimeHorizon);
-
 		PathSimulator fixFloatPathSimulator = new PathSimulator (
 			iNumPath,
-			fixFloatGroupSettings,
-			fixFloatDiffusionSettings,
-			fixFloatEvolutionControl
+			GenerateTradeablesContainer(),
+			EvolutionControl.PeriodHorizon (
+				dtSpot,
+				eventTenor,
+				eventCount
+			),
+			GenerateDiffusionSettings (Helper.TenorToYearFraction (eventTenor) * eventCount),
+			new GroupSettings (
+				CollateralGroupSpecification.FixedThreshold (
+					"FIXEDTHRESHOLD",
+					dblCounterPartyThreshold,
+					dblBankThreshold
+				),
+				CounterPartyGroupSpecification.Standard ("CPGROUP")
+			)
 		);
 
-		StateEntityRealization initialStateEntityRealization = new StateEntityRealization (
+		MarketVertex initialMarketVertex = MarketVertex.StartUp (
+			dtSpot,
 			0.000, 				// dblPortfolioValueInitial
 			1.000, 				// dblOvernightNumeraireInitial
 			1.000, 				// dblCSANumeraire
@@ -300,7 +418,7 @@ public class BaselFixFloatDigest
 			0.030 / (1 - 0.30) 	// dblCounterPartyFundingSpread
 		);
 
-		ExposureAdjustmentAggregator eaa = fixFloatPathSimulator.simulate (initialStateEntityRealization);
+		ExposureAdjustmentAggregator eaa = fixFloatPathSimulator.simulate (initialMarketVertex);
 
 		ExposureAdjustmentDigest ead = eaa.digest();
 

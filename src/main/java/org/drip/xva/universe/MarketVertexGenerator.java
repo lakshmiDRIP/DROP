@@ -68,7 +68,8 @@ package org.drip.xva.universe;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MarketVertexGenerator {
+public class MarketVertexGenerator
+{
 
 	/**
 	 * Asset Numeraire Wanderer Index
@@ -143,9 +144,9 @@ public class MarketVertexGenerator {
 	private org.drip.xva.universe.TradeablesContainer _tc = null;
 	private org.drip.measure.process.DiffusionEvolver _deBankHazardRate = null;
 	private org.drip.measure.process.DiffusionEvolver _deBankSeniorRecoveryRate = null;
-	private org.drip.measure.process.DiffusionEvolver _deBankSubordinateRecoveryRate = null;
 	private org.drip.measure.process.DiffusionEvolver _deCounterPartyHazardRate = null;
 	private org.drip.measure.process.DiffusionEvolver _deCounterPartyRecoveryRate = null;
+	private org.drip.measure.process.DiffusionEvolver _deBankSubordinateRecoveryRate = null;
 
 	/**
 	 * MarketVertexGenerator Constructor
@@ -327,6 +328,7 @@ public class MarketVertexGenerator {
 		int iNumEventVertex = _aiEventDate.length;
 		boolean bAssetEvolutionOn = null != tAsset;
 		double dblBankSurvivalProbabilityExponent = 0.;
+		int iTerminalDate = _aiEventDate[iNumEventVertex - 1];
 		double dblCounterPartySurvivalProbabilityExponent = 0.;
 		org.drip.measure.realization.JumpDiffusionVertex[] aJDVAssetNumeraire = null;
 		org.drip.measure.realization.JumpDiffusionVertex[] aJDVBankHazardRate = null;
@@ -341,11 +343,13 @@ public class MarketVertexGenerator {
 		org.drip.measure.realization.JumpDiffusionVertex[] aJDVBankSubordinateFundingNumeraire = null;
 		org.drip.xva.universe.MarketVertex[] aMV = new
 			org.drip.xva.universe.MarketVertex[iNumEventVertex + 1];
-		int iTerminalDate = _aiEventDate[iNumEventVertex - 1];
 
-		double[][] aadblUnitEvolverSequence = org.drip.quant.linearalgebra.Matrix.Transpose
-			(org.drip.measure.discrete.SequenceGenerator.GaussianJoint (iNumEventVertex,
-				_aadblCorrelationMatrix));
+		double[][] aadblUnitEvolverSequence = org.drip.quant.linearalgebra.Matrix.Transpose (
+			org.drip.measure.discrete.SequenceGenerator.GaussianJoint (
+				iNumEventVertex,
+				_aadblCorrelationMatrix
+			)
+		);
 
 		if (null == aadblUnitEvolverSequence) return null;
 
@@ -366,73 +370,162 @@ public class MarketVertexGenerator {
 				!org.drip.quant.common.NumberUtil.IsValid (dblBankSubordinateRecoveryRateStart);
 
 		try {
-			aJDVAssetNumeraire = !bAssetEvolutionOn ? null : tAsset.numeraireEvolver().vertexSequence (new
-				org.drip.measure.realization.JumpDiffusionVertex (_iSpotDate, mvInitial.portfolioValue(), 0.,
-					false), org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (_adblTimeWidth,
-						aadblUnitEvolverSequence[ASSET]), _adblTimeWidth);
+			aJDVAssetNumeraire = !bAssetEvolutionOn ? null : tAsset.numeraireEvolver().vertexSequence (
+				new org.drip.measure.realization.JumpDiffusionVertex (
+					_iSpotDate,
+					mvInitial.portfolioValue(),
+					0.,
+					false
+				),
+				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
+					_adblTimeWidth,
+					aadblUnitEvolverSequence[ASSET]
+				),
+				_adblTimeWidth
+			);
 
-			aJDVOvernightIndexNumeraire = _tc.overnightIndex().numeraireEvolver().vertexSequenceReverse (new
-				org.drip.measure.realization.JumpDiffusionVertex (iTerminalDate,
-					mvInitial.overnightNumeraire().nodal(), 0., false),
-						org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (_adblTimeWidth,
-							aadblUnitEvolverSequence[OVERNIGHT_INDEX]), _adblTimeWidth);
+			aJDVOvernightIndexNumeraire = _tc.overnightIndex().numeraireEvolver().vertexSequenceReverse (
+				new org.drip.measure.realization.JumpDiffusionVertex (
+					iTerminalDate,
+					mvInitial.overnightNumeraire().nodal(),
+					0.,
+					false
+				),
+				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
+					_adblTimeWidth,
+					aadblUnitEvolverSequence[OVERNIGHT_INDEX]
+				),
+				_adblTimeWidth
+			);
 
-			aJDVCollateralSchemeNumeraire = _tc.collateralScheme().numeraireEvolver().vertexSequenceReverse
-				(new org.drip.measure.realization.JumpDiffusionVertex (iTerminalDate,
-					mvInitial.csaNumeraire().nodal(), 0., false),
-						org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (_adblTimeWidth,
-							aadblUnitEvolverSequence[COLLATERAL_SCHEME]), _adblTimeWidth);
+			aJDVCollateralSchemeNumeraire = _tc.collateralScheme().numeraireEvolver().vertexSequenceReverse (
+				new org.drip.measure.realization.JumpDiffusionVertex (
+					iTerminalDate,
+					mvInitial.csaNumeraire().nodal(),
+					0.,
+					false
+				),
+				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
+					_adblTimeWidth,
+					aadblUnitEvolverSequence[COLLATERAL_SCHEME]
+				),
+			_adblTimeWidth);
 
-			aJDVBankHazardRate = _deBankHazardRate.vertexSequence (new
-				org.drip.measure.realization.JumpDiffusionVertex (_iSpotDate, emvBankInitial.hazardRate(),
-					0., false), org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (_adblTimeWidth,
-						aadblUnitEvolverSequence[BANK_HAZARD_RATE]), _adblTimeWidth);
+			aJDVBankHazardRate = _deBankHazardRate.vertexSequence (
+				new org.drip.measure.realization.JumpDiffusionVertex (
+					_iSpotDate,
+					emvBankInitial.hazardRate(),
+					0.,
+					false
+				),
+				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
+					_adblTimeWidth,
+					aadblUnitEvolverSequence[BANK_HAZARD_RATE]
+				),
+				_adblTimeWidth
+			);
 
 			aJDVBankSeniorFundingNumeraire =
-				_tc.bankSubordinateFunding().numeraireEvolver().vertexSequenceReverse (new
-					org.drip.measure.realization.JumpDiffusionVertex (iTerminalDate,
-						emvBankInitial.seniorFundingLatentState().nodal(), 0., false),
-							org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (_adblTimeWidth,
-								aadblUnitEvolverSequence[BANK_SENIOR_FUNDING]), _adblTimeWidth);
+				_tc.bankSubordinateFunding().numeraireEvolver().vertexSequenceReverse (
+					new org.drip.measure.realization.JumpDiffusionVertex (
+						iTerminalDate,
+						emvBankInitial.seniorFundingLatentState().nodal(),
+						0.,
+						false
+					),
+					org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
+						_adblTimeWidth,
+						aadblUnitEvolverSequence[BANK_SENIOR_FUNDING]
+					),
+					_adblTimeWidth
+				);
 
-			aJDVBankSeniorRecoveryRate = _deBankSeniorRecoveryRate.vertexSequence (new
-				org.drip.measure.realization.JumpDiffusionVertex (_iSpotDate,
-					emvBankInitial.seniorRecoveryRate(), 0., false),
-						org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (_adblTimeWidth,
-							aadblUnitEvolverSequence[BANK_SENIOR_RECOVERY_RATE]), _adblTimeWidth);
+			aJDVBankSeniorRecoveryRate = _deBankSeniorRecoveryRate.vertexSequence (
+				new org.drip.measure.realization.JumpDiffusionVertex (
+					_iSpotDate,
+					emvBankInitial.seniorRecoveryRate(),
+					0.,
+					false
+				),
+				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
+					_adblTimeWidth,
+					aadblUnitEvolverSequence[BANK_SENIOR_RECOVERY_RATE]
+				),
+				_adblTimeWidth
+			);
 
 			aJDVBankSubordinateFundingNumeraire = bSingleBankBond ? null :
-				tBankSubordinateFunding.numeraireEvolver().vertexSequenceReverse (new
-					org.drip.measure.realization.JumpDiffusionVertex (iTerminalDate,
-						dblBankSubordinateFundingNumeraireTerminal, 0., false),
-							org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (_adblTimeWidth,
-								aadblUnitEvolverSequence[BANK_SUBORDINATE_FUNDING]), _adblTimeWidth);
+				tBankSubordinateFunding.numeraireEvolver().vertexSequenceReverse (
+					new org.drip.measure.realization.JumpDiffusionVertex (
+						iTerminalDate,
+						dblBankSubordinateFundingNumeraireTerminal,
+						0.,
+						false
+					),
+					org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
+						_adblTimeWidth,
+						aadblUnitEvolverSequence[BANK_SUBORDINATE_FUNDING]
+					),
+					_adblTimeWidth
+				);
 
 			aJDVBankSubordinateRecoveryRate = bSingleBankBond ? null :
-				_deBankSubordinateRecoveryRate.vertexSequence (new
-					org.drip.measure.realization.JumpDiffusionVertex (_iSpotDate,
-						dblBankSubordinateRecoveryRateStart, 0., false),
-							org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (_adblTimeWidth,
-								aadblUnitEvolverSequence[BANK_SUBORDINATE_RECOVERY_RATE]), _adblTimeWidth);
+				_deBankSubordinateRecoveryRate.vertexSequence (
+					new org.drip.measure.realization.JumpDiffusionVertex (
+						_iSpotDate,
+						dblBankSubordinateRecoveryRateStart,
+						0.,
+						false
+					),
+					org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
+						_adblTimeWidth,
+						aadblUnitEvolverSequence[BANK_SUBORDINATE_RECOVERY_RATE]
+					),
+					_adblTimeWidth
+				);
 
-			aJDVCounterPartyHazardRate = _deCounterPartyHazardRate.vertexSequence (new
-				org.drip.measure.realization.JumpDiffusionVertex (_iSpotDate,
-					emvCounterPartyInitial.hazardRate(), 0., false),
-						org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (_adblTimeWidth,
-							aadblUnitEvolverSequence[COUNTER_PARTY_HAZARD_RATE]), _adblTimeWidth);
+			aJDVCounterPartyHazardRate = _deCounterPartyHazardRate.vertexSequence (
+				new org.drip.measure.realization.JumpDiffusionVertex (
+					_iSpotDate,
+					emvCounterPartyInitial.hazardRate(),
+					0.,
+					false
+				),
+				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
+					_adblTimeWidth,
+					aadblUnitEvolverSequence[COUNTER_PARTY_HAZARD_RATE]
+				),
+				_adblTimeWidth
+			);
 
 			aJDVCounterPartyFundingNumeraire =
-				_tc.counterPartyFunding().numeraireEvolver().vertexSequenceReverse (new
-					org.drip.measure.realization.JumpDiffusionVertex (iTerminalDate,
-						emvCounterPartyInitial.seniorFundingLatentState().nodal(), 0., false),
-							org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (_adblTimeWidth,
-								aadblUnitEvolverSequence[COUNTER_PARTY_FUNDING]), _adblTimeWidth);
+				_tc.counterPartyFunding().numeraireEvolver().vertexSequenceReverse (
+					new org.drip.measure.realization.JumpDiffusionVertex (
+						iTerminalDate,
+						emvCounterPartyInitial.seniorFundingLatentState().nodal(),
+						0.,
+						false
+					),
+					org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
+						_adblTimeWidth,
+						aadblUnitEvolverSequence[COUNTER_PARTY_FUNDING]
+					),
+					_adblTimeWidth
+				);
 
-			aJDVCounterPartyRecoveryRate = _deCounterPartyRecoveryRate.vertexSequence (new
-				org.drip.measure.realization.JumpDiffusionVertex (_iSpotDate,
-					emvCounterPartyInitial.seniorRecoveryRate(), 0., false),
-						org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (_adblTimeWidth,
-							aadblUnitEvolverSequence[COUNTER_PARTY_RECOVERY_RATE]), _adblTimeWidth);
+			aJDVCounterPartyRecoveryRate = _deCounterPartyRecoveryRate.vertexSequence (
+				new org.drip.measure.realization.JumpDiffusionVertex (
+					_iSpotDate,
+					emvCounterPartyInitial.seniorRecoveryRate(),
+					0.,
+					false
+				),
+				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
+					_adblTimeWidth,
+					aadblUnitEvolverSequence[COUNTER_PARTY_RECOVERY_RATE]
+				),
+				_adblTimeWidth
+			);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 

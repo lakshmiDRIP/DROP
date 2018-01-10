@@ -80,6 +80,71 @@ public class MarketVertex
 	private org.drip.xva.universe.LatentStateMarketVertex _lsmvOvernightNumeraire = null;
 
 	/**
+	 * Generate an Initial Instance of MarketVertex
+	 * 
+	 * @param dtEpoch The Epoch Date
+	 * @param dblPortfolioValue Realized Portfolio Value
+	 * @param dblOvernightNumeraire Realized Overnight Numeraire
+	 * @param dblCSANumeraire Realized CSA Numeraire
+	 * @param dblBankHazardRate Realized Bank Hazard Rate
+	 * @param dblBankRecoveryRate Realized Bank Recovery Rate
+	 * @param dblBankFundingSpread Realized Bank Funding Spread
+	 * @param dblCounterPartyHazardRate Realized Counter Party Hazard Rate
+	 * @param dblCounterPartyRecoveryRate Realized Counter Party Recovery Rate
+	 * @param dblCounterPartyFundingSpread Realized Counter Party Funding Spread
+	 * 
+	 * @return The Initial MarketVertex Instance
+	 */
+
+	public static final MarketVertex StartUp (
+		final org.drip.analytics.date.JulianDate dtEpoch,
+		final double dblPortfolioValue,
+		final double dblOvernightNumeraire,
+		final double dblCSANumeraire,
+		final double dblBankHazardRate,
+		final double dblBankRecoveryRate,
+		final double dblBankFundingSpread,
+		final double dblCounterPartyHazardRate,
+		final double dblCounterPartyRecoveryRate,
+		final double dblCounterPartyFundingSpread)
+	{
+		try {
+			return new org.drip.xva.universe.MarketVertex (
+				dtEpoch,
+				dblPortfolioValue,
+				0.,
+				new org.drip.xva.universe.LatentStateMarketVertex (
+					dblOvernightNumeraire,
+					dblOvernightNumeraire
+				),
+				0.,
+				new org.drip.xva.universe.LatentStateMarketVertex (
+					dblCSANumeraire,
+					dblCSANumeraire
+				),
+				org.drip.xva.universe.EntityMarketVertex.Senior (
+					0.,
+					dblBankHazardRate,
+					dblBankRecoveryRate,
+					dblBankFundingSpread,
+					null
+				),
+				org.drip.xva.universe.EntityMarketVertex.Senior (
+					0.,
+					dblCounterPartyHazardRate,
+					dblCounterPartyRecoveryRate,
+					dblCounterPartyFundingSpread,
+					null
+				)
+			);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * MarketVertex Constructor
 	 * 
 	 * @param dtAnchor The Vertex Date Anchor

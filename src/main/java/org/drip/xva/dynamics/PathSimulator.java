@@ -72,212 +72,13 @@ public class PathSimulator
 	private org.drip.xva.dynamics.GroupSettings _groupSettings = null;
 	private org.drip.xva.dynamics.EvolutionControl _evolutionControl = null;
 	private org.drip.xva.dynamics.DiffusionSettings _diffusionSettings = null;
-
-	private double[] vertexValueRealization (
-		final org.drip.measure.process.DiffusionEvolver deValue,
-		final double dblInitialValue,
-		final double[] adblRandom)
-	{
-		int iNumTimeStep = _evolutionControl.numTimeSteps();
-
-		double[] adblNodeTime = _evolutionControl.timeNodes();
-
-		double[] adblValue = new double[iNumTimeStep + 1];
-		double[] adblTimeWidth = new double[iNumTimeStep];
-		org.drip.measure.realization.JumpDiffusionVertex[] aJumpDiffusionVertex = null;
-
-		for (int i = 0; i < iNumTimeStep; ++i)
-			adblTimeWidth[i] = adblNodeTime[i + 1] - adblNodeTime[i];
-
-		try {
-			aJumpDiffusionVertex = deValue.vertexSequenceReverse (
-				new org.drip.measure.realization.JumpDiffusionVertex (
-					_evolutionControl.horizonTime(),
-					dblInitialValue,
-					0.,
-					false
-				),
-				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
-					adblTimeWidth,
-					adblRandom
-				),
-				adblTimeWidth
-			);
-		} catch (java.lang.Exception e) {
-			e.printStackTrace();
-
-			return null;
-		}
-
-		for (int j = 0; j <= iNumTimeStep; ++j)
-			adblValue[j] = aJumpDiffusionVertex[j].value();
-
-		return adblValue;
-	}
-
-	private org.drip.xva.universe.MarketPath generateMarketPath (
-		final org.drip.analytics.date.JulianDate[] dateVertexArray,
-		final org.drip.xva.dynamics.StateEntityRealization initialStateEntityRealization,
-		final double[][] aadblRandom)
-	{
-		int iNumTimeStep = _evolutionControl.numTimeSteps();
-
-		double[] adblNodeTime = _evolutionControl.timeNodes();
-
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = new
-			org.drip.xva.universe.MarketVertex[iNumTimeStep + 1];
-
-		org.drip.measure.process.DiffusionEvolver dePortfolioValue =
-			_diffusionSettings.portfolioValueEvolver();
-
-		org.drip.measure.process.DiffusionEvolver deOvernightNumeraire =
-			_diffusionSettings.overnightNumeraireEvolver();
-
-		org.drip.measure.process.DiffusionEvolver deCSANumeraire = _diffusionSettings.csaNumeraireEvolver();
-
-		org.drip.measure.process.DiffusionEvolver deBankHazardRate =
-			_diffusionSettings.bankHazardRateEvolver();
-
-		org.drip.measure.process.DiffusionEvolver deBankRecoveryRate =
-			_diffusionSettings.bankRecoveryRateEvolver();
-
-		org.drip.measure.process.DiffusionEvolver deBankFundingSpread =
-			_diffusionSettings.bankFundingSpreadEvolver();
-
-		org.drip.measure.process.DiffusionEvolver deCounterPartyHazardRate =
-			_diffusionSettings.counterPartyHazardRateEvolver();
-
-		org.drip.measure.process.DiffusionEvolver deCounterPartyRecoveryRate =
-			_diffusionSettings.counterPartyRecoveryRateEvolver();
-
-		org.drip.measure.process.DiffusionEvolver deCounterPartyFundingSpread =
-			_diffusionSettings.counterPartyFundingSpreadEvolver();
-
-		double[] adblPortfolioValue = vertexValueRealization (
-			dePortfolioValue,
-			initialStateEntityRealization.portfolioValue(),
-			aadblRandom[0]
-		);
-
-		if (null == adblPortfolioValue) return null;
-
-		double[] adblOvernightNumeraire = vertexValueRealization (
-			deOvernightNumeraire,
-			initialStateEntityRealization.overnightNumeraire(),
-			aadblRandom[1]
-		);
-
-		if (null == adblOvernightNumeraire) return null;
-
-		double[] adblCSANumeraire = vertexValueRealization (
-			deCSANumeraire,
-			initialStateEntityRealization.csaNumeraire(),
-			aadblRandom[2]
-		);
-
-		if (null == adblCSANumeraire) return null;
-
-		double[] adblBankHazardRate = vertexValueRealization (
-			deBankHazardRate,
-			initialStateEntityRealization.bankHazardRate(),
-			aadblRandom[3]
-		);
-
-		if (null == adblBankHazardRate) return null;
-
-		double[] adblBankRecoveryRate = vertexValueRealization (
-			deBankRecoveryRate,
-			initialStateEntityRealization.bankRecoveryRate(),
-			aadblRandom[4]
-		);
-
-		if (null == adblBankRecoveryRate) return null;
-
-		double[] adblBankFundingSpread = vertexValueRealization (
-			deBankFundingSpread,
-			initialStateEntityRealization.bankFundingSpread(),
-			aadblRandom[5]
-		);
-
-		if (null == adblBankFundingSpread) return null;
-
-		double[] adblCounterPartyHazardRate = vertexValueRealization (
-			deCounterPartyHazardRate,
-			initialStateEntityRealization.counterPartyHazardRate(),
-			aadblRandom[6]
-		);
-
-		if (null == adblCounterPartyHazardRate) return null;
-
-		double[] adblCounterPartyRecoveryRate = vertexValueRealization (
-			deCounterPartyRecoveryRate,
-			initialStateEntityRealization.counterPartyRecoveryRate(),
-			aadblRandom[7]
-		);
-
-		if (null == adblCounterPartyRecoveryRate) return null;
-
-		double[] adblCounterPartyFundingSpread = vertexValueRealization (
-			deCounterPartyFundingSpread,
-			initialStateEntityRealization.counterPartyFundingSpread(),
-			aadblRandom[8]
-		);
-
-		if (null == adblCounterPartyFundingSpread) return null;
-
-		try
-		{
-			for (int j = 0; j <= iNumTimeStep; ++j)
-			{
-				double dblOvernightHorizonNumeraire = adblOvernightNumeraire[0] / adblOvernightNumeraire[j];
-
-				marketVertexArray[j] = new org.drip.xva.universe.MarketVertex (
-					dateVertexArray[j],
-					adblPortfolioValue[j],
-					0 == adblNodeTime[j] ? 0. : -1. * java.lang.Math.log (dblOvernightHorizonNumeraire) /
-						adblNodeTime[j],
-					new org.drip.xva.universe.LatentStateMarketVertex (
-						adblOvernightNumeraire[0],
-						adblOvernightNumeraire[j]
-					),
-					0 == adblNodeTime[j] ? 0. : java.lang.Math.log
-						(adblCSANumeraire[j] / adblCSANumeraire[0]) / adblNodeTime[j],
-					new org.drip.xva.universe.LatentStateMarketVertex (
-						adblCSANumeraire[0],
-						adblCSANumeraire[j]
-					),
-					org.drip.xva.universe.EntityMarketVertex.Senior (
-						adblNodeTime[j],
-						adblBankHazardRate[j],
-						adblBankRecoveryRate[j],
-						adblBankFundingSpread[j],
-						0 == j ? null : marketVertexArray[j - 1].bank()
-					),
-					org.drip.xva.universe.EntityMarketVertex.Senior (
-						adblNodeTime[j],
-						adblCounterPartyHazardRate[j],
-						adblCounterPartyRecoveryRate[j],
-						adblCounterPartyFundingSpread[j],
-						0 == j ? null : marketVertexArray[j - 1].counterParty()
-					)
-				);
-			}
-
-			return new org.drip.xva.universe.MarketPath (marketVertexArray);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
+	private org.drip.xva.universe.TradeablesContainer _tradeablesContainer = null;
 
 	private org.drip.xva.hypothecation.CollateralGroupPath[] generateCollateralGroupVertexes (
-		final org.drip.analytics.date.JulianDate[] dateVertexArray,
+		final int[] dateVertexArray,
 		final org.drip.xva.universe.MarketPath marketPath)
 	{
-		int iNumTimeStep = _evolutionControl.numTimeSteps();
+		int iNumTimeStep = _evolutionControl.eventDates().length;
 
 		org.drip.xva.universe.MarketVertex[] marketVertexes = marketPath.vertexes();
 
@@ -294,21 +95,24 @@ public class PathSimulator
 		{
 			try
 			{
+				org.drip.analytics.date.JulianDate vertexDate = new org.drip.analytics.date.JulianDate
+					(dateVertexArray[j]);
+
 				collateralGroupVertexArray[j] = new org.drip.xva.hypothecation.AlbaneseAndersenVertex (
-					dateVertexArray[j],
+					vertexDate,
 					marketVertexes[j].portfolioValue(),
 					0.,
 					0 == j ? 0. : new org.drip.xva.hypothecation.CollateralAmountEstimator (
 						collateralGroupSpecification,
 						counterPartyGroupSpecification,
 						new org.drip.measure.bridge.BrokenDateInterpolatorLinearT (
-							dateVertexArray[j - 1].julian(),
-							dateVertexArray[j].julian(),
+							dateVertexArray[j - 1],
+							dateVertexArray[j],
 							marketVertexes[j - 1].portfolioValue(),
 							marketVertexes[j].portfolioValue()
 						),
 						java.lang.Double.NaN
-					).postingRequirement (dateVertexArray[j])
+					).postingRequirement (vertexDate)
 				);
 			}
 			catch (java.lang.Exception e)
@@ -335,26 +139,32 @@ public class PathSimulator
 	}
 
 	private org.drip.xva.cpty.MonoPathExposureAdjustment singleTrajectory (
-		final org.drip.analytics.date.JulianDate[] dateVertexArray,
-		final org.drip.xva.dynamics.StateEntityRealization initialStateEntityRealization,
-		final double[][] aadblRandom)
+		final org.drip.xva.universe.MarketVertex initialMarketVertex)
 	{
-		org.drip.xva.universe.MarketPath marketPath = generateMarketPath (
-			dateVertexArray,
-			initialStateEntityRealization,
-			aadblRandom
-		);
-
-		if (null == marketPath) return null;
-
-		org.drip.xva.hypothecation.CollateralGroupPath[] collateralGroupPathArray =
-			generateCollateralGroupVertexes (
-				dateVertexArray,
-				marketPath
-			);
+		int[] eventDates = _evolutionControl.eventDates();
 
 		try
 		{
+			org.drip.xva.universe.MarketPath marketPath = new org.drip.xva.universe.MarketPath (
+				new org.drip.xva.universe.MarketVertexGenerator (
+					_evolutionControl.spotDate().julian(),
+					eventDates,
+					_diffusionSettings.correlationMatrix(),
+					_tradeablesContainer,
+					_diffusionSettings.bankHazardRateEvolver(),
+					_diffusionSettings.bankRecoveryRateEvolver(),
+					null,
+					_diffusionSettings.counterPartyHazardRateEvolver(),
+					_diffusionSettings.counterPartyRecoveryRateEvolver()
+				).marketVertex (initialMarketVertex)
+			);
+
+			org.drip.xva.hypothecation.CollateralGroupPath[] collateralGroupPathArray =
+				generateCollateralGroupVertexes (
+					eventDates,
+					marketPath
+				);
+
 			return new org.drip.xva.cpty.MonoPathExposureAdjustment (
 				new org.drip.xva.strategy.AlbaneseAndersenNettingGroupPath[]
 				{
@@ -384,24 +194,27 @@ public class PathSimulator
 	 * PathSimulator Constructor
 	 * 
 	 * @param iCount Path Count
-	 * @param groupSettings Group Settings
-	 * @param diffusionSettings Diffusion Settings
+	 * @param tradeablesContainer Tradeables Container
 	 * @param evolutionControl Evolution Control
+	 * @param diffusionSettings Diffusion Settings
+	 * @param groupSettings Group Settings
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public PathSimulator (
 		final int iCount,
-		final org.drip.xva.dynamics.GroupSettings groupSettings,
+		final org.drip.xva.universe.TradeablesContainer tradeablesContainer,
+		final org.drip.xva.dynamics.EvolutionControl evolutionControl,
 		final org.drip.xva.dynamics.DiffusionSettings diffusionSettings,
-		final org.drip.xva.dynamics.EvolutionControl evolutionControl)
+		final org.drip.xva.dynamics.GroupSettings groupSettings)
 		throws java.lang.Exception
 	{
 		if (0 >= (_iCount = iCount) ||
-			null == (_groupSettings = groupSettings) ||
+			null == (_tradeablesContainer = tradeablesContainer) ||
+			null == (_evolutionControl = evolutionControl) ||
 			null == (_diffusionSettings = diffusionSettings) ||
-			null == (_evolutionControl = evolutionControl))
+			null == (_groupSettings = groupSettings))
 			throw new java.lang.Exception ("PathSimulator Constructor => Invalid Inputs");
 	}
 
@@ -414,6 +227,17 @@ public class PathSimulator
 	public int count()
 	{
 		return _iCount;
+	}
+
+	/**
+	 * Retrieve the Tradeables Container
+	 * 
+	 * @return The Tradeables Container
+	 */
+
+	public org.drip.xva.universe.TradeablesContainer tradeablesContainer()
+	{
+		return _tradeablesContainer;
 	}
 
 	/**
@@ -441,45 +265,20 @@ public class PathSimulator
 	/**
 	 * Simulate the Realized State/Entity Values and their Aggregates over the Paths
 	 * 
-	 * @param initialStateEntityRealization The Starting State Entity Realization
+	 * @param initialMarketVertex The Initial Market Vertex
 	 * 
 	 * @return The Exposure Adjustment Aggregator - Simulation Result
 	 */
 
 	public org.drip.xva.cpty.ExposureAdjustmentAggregator simulate (
-		final org.drip.xva.dynamics.StateEntityRealization initialStateEntityRealization)
+		final org.drip.xva.universe.MarketVertex initialMarketVertex)
 	{
-		int iNumTimeStep = _evolutionControl.numTimeSteps();
-
-		double[][] aadblCorrelation = _diffusionSettings.correlationMatrix();
-
-		org.drip.analytics.date.JulianDate dtSpot = _evolutionControl.spotDate();
-
-		org.drip.analytics.date.JulianDate[] dateVertexArray = new
-			org.drip.analytics.date.JulianDate[iNumTimeStep + 1];
 		org.drip.xva.cpty.PathExposureAdjustment[] pathExposureAdjustmentArray = new
 			org.drip.xva.cpty.PathExposureAdjustment[_iCount];
 
-		for (int j = 0; j <= iNumTimeStep; ++j)
-		{
-			if (null == (dateVertexArray[j] = dtSpot.addMonths (6 * j))) return null;
-		}
-
 		for (int i = 0; i < _iCount; ++i)
 		{
-			double[][] aadblRandom = org.drip.quant.linearalgebra.Matrix.Transpose (
-				org.drip.measure.discrete.SequenceGenerator.GaussianJoint (
-					iNumTimeStep,
-					aadblCorrelation
-				)
-			);
-
-			if (null == aadblRandom) return null;
-
-			if (null == (pathExposureAdjustmentArray[i] = singleTrajectory (
-				dateVertexArray,
-				initialStateEntityRealization,
-				aadblRandom)))
+			if (null == (pathExposureAdjustmentArray[i] = singleTrajectory (initialMarketVertex)))
 				return null;
 		}
 

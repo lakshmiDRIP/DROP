@@ -68,29 +68,73 @@ package org.drip.xva.dynamics;
 
 public class EvolutionControl
 {
-	private int _iNumTimeSteps = -1;
-	private double _dblHorizonTime = java.lang.Double.NaN;
-	private org.drip.analytics.date.JulianDate _dtSpot = null;
+	private int[] _eventDateArray = null;
+	private org.drip.analytics.date.JulianDate _spotDate = null;
+
+	/**
+	 * Generate the EvolutionControl Instance from the Spot Date, the Period Tenor, and the Period Count
+	 * 
+	 * @param spotDate The Spot Date
+	 * @param periodTenor The Period Tenor
+	 * @param periodCount The Period Count
+	 * 
+	 * @return The EvolutionControl Instance
+	 */
+
+	public static final EvolutionControl PeriodHorizon (
+		final org.drip.analytics.date.JulianDate spotDate,
+		final java.lang.String periodTenor,
+		final int periodCount)
+	{
+		if (null == spotDate)
+		{
+			return null;
+		}
+
+		int[] eventDates = new int[periodCount];
+		org.drip.analytics.date.JulianDate previousDate = spotDate;
+
+		for (int i = 0; i < periodCount; ++i)
+		{
+			if (null == (previousDate = previousDate.addTenor (periodTenor)))
+			{
+				return null;
+			}
+
+			eventDates[i] = previousDate.julian();
+		}
+
+		try
+		{
+			return new EvolutionControl (
+				spotDate,
+				eventDates
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 
 	/**
 	 * EvolutionControl Constructor
 	 * 
-	 * @param dtSpot Spot Date
-	 * @param dblTimeHorizon Time Horizon
-	 * @param iNumTimeSteps Steps in the Time Discretization
+	 * @param spotDate Spot Date
+	 * @param eventDateArray Array of Event Dates
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public EvolutionControl (
-		final org.drip.analytics.date.JulianDate dtSpot,
-		final double dblTimeHorizon,
-		final int iNumTimeSteps)
+		final org.drip.analytics.date.JulianDate spotDate,
+		final int[] eventDateArray)
 		throws java.lang.Exception
 	{
-		if (null == (_dtSpot = dtSpot) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblHorizonTime = dblTimeHorizon) ||
-			0 >= (_iNumTimeSteps = iNumTimeSteps))
+		if (null == (_spotDate = spotDate) ||
+			null == (_eventDateArray = eventDateArray) || 0 == _eventDateArray.length)
 			throw new java.lang.Exception ("EvolutionControl Constructor => Invalid Inputs");
 	}
 
@@ -102,46 +146,17 @@ public class EvolutionControl
 
 	public org.drip.analytics.date.JulianDate spotDate()
 	{
-		return _dtSpot;
+		return _spotDate;
 	}
 
 	/**
-	 * Retrieve the Count of the Number of Time Steps
+	 * Retrieve the Array of Event Dates
 	 * 
-	 * @return Count of the Number of Time Steps
+	 * @return Array of Event Dates
 	 */
 
-	public int numTimeSteps()
+	public int[] eventDates()
 	{
-		return _iNumTimeSteps;
-	}
-
-	/**
-	 * Retrieve the Horizon Time
-	 * 
-	 * @return The Horizon Time
-	 */
-
-	public double horizonTime()
-	{
-		return _dblHorizonTime;
-	}
-
-	/**
-	 * Retrieve the Time Node Array
-	 * 
-	 * @return The Time Node Array
-	 */
-
-	public double[] timeNodes()
-	{
-		double[] adblNodeTime = new double[_iNumTimeSteps + 1];
-		double dblTimeWidth = _dblHorizonTime / _iNumTimeSteps;
-		adblNodeTime[0] = 0.;
-
-		for (int i = 1; i <= _iNumTimeSteps; ++i)
-			adblNodeTime[i] = dblTimeWidth * i;
-
-		return adblNodeTime;
+		return _eventDateArray;
 	}
 }
