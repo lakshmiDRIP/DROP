@@ -149,6 +149,75 @@ public class MarketVertexGenerator
 	private org.drip.measure.process.DiffusionEvolver _deBankSubordinateRecoveryRate = null;
 
 	/**
+	 * Construct a MarketVertexGenerator Instance from the Spot Date, the Period Tenor, and the Period Count
+	 * 
+	 * @param spotDate The Spot Date
+	 * @param periodTenor The Period Tenor
+	 * @param periodCount The Period Count
+	 * @param aadblCorrelationMatrix The Correlation Matrix
+	 * @param tc The Tradeables Container Instance
+	 * @param deBankHazardRate The Bank Hazard Rate Diffusive Evolver
+	 * @param deBankSeniorRecoveryRate The Bank Senior Recovery Rate Diffusive Evolver
+	 * @param deBankSubordinateRecoveryRate The Bank Subordinate Rate Diffusive Evolver
+	 * @param deCounterPartyHazardRate The Counter Party Hazard Rate Diffusive Evolver
+	 * @param deCounterPartyRecoveryRate The Counter Party Recovery Rate Diffusive Evolver
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final MarketVertexGenerator PeriodHorizon (
+		final org.drip.analytics.date.JulianDate spotDate,
+		final java.lang.String periodTenor,
+		final int periodCount,
+		final double[][] aadblCorrelationMatrix,
+		final org.drip.xva.universe.TradeablesContainer tc,
+		final org.drip.measure.process.DiffusionEvolver deBankHazardRate,
+		final org.drip.measure.process.DiffusionEvolver deBankSeniorRecoveryRate,
+		final org.drip.measure.process.DiffusionEvolver deBankSubordinateRecoveryRate,
+		final org.drip.measure.process.DiffusionEvolver deCounterPartyHazardRate,
+		final org.drip.measure.process.DiffusionEvolver deCounterPartyRecoveryRate)
+	{
+		if (null == spotDate)
+		{
+			return null;
+		}
+
+		int[] eventDates = new int[periodCount];
+		org.drip.analytics.date.JulianDate previousDate = spotDate;
+
+		for (int i = 0; i < periodCount; ++i)
+		{
+			if (null == (previousDate = previousDate.addTenor (periodTenor)))
+			{
+				return null;
+			}
+
+			eventDates[i] = previousDate.julian();
+		}
+
+		try
+		{
+			return new MarketVertexGenerator (
+				spotDate.julian(),
+				eventDates,
+				aadblCorrelationMatrix,
+				tc,
+				deBankHazardRate,
+				deBankSeniorRecoveryRate,
+				deBankSubordinateRecoveryRate,
+				deCounterPartyHazardRate,
+				deCounterPartyRecoveryRate
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * MarketVertexGenerator Constructor
 	 * 
 	 * @param iSpotDate The Spot Date
@@ -221,14 +290,21 @@ public class MarketVertexGenerator
 	}
 
 	/**
-	 * Retrieve the Event Date Array
+	 * Retrieve the Vertex Date Array
 	 * 
-	 * @return The Event Date Array
+	 * @return The Vertex Date Array
 	 */
 
-	public int[] eventDate()
+	public int[] vertexDates()
 	{
-		return _aiEventDate;
+		int eventDateCount = _aiEventDate.length;
+		int[] vertexDateArray = new int[eventDateCount + 1];
+		vertexDateArray[0] = _iSpotDate;
+
+		for (int i = 0; i < eventDateCount; ++i)
+			vertexDateArray[i + 1] = _aiEventDate[i];
+
+		return vertexDateArray;
 	}
 
 	/**

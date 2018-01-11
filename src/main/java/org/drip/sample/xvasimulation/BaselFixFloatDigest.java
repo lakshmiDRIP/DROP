@@ -2,7 +2,6 @@
 package org.drip.sample.xvasimulation;
 
 import org.drip.analytics.date.*;
-import org.drip.analytics.support.Helper;
 import org.drip.measure.dynamics.*;
 import org.drip.measure.process.*;
 import org.drip.measure.statistics.UnivariateDiscreteThin;
@@ -202,48 +201,39 @@ public class BaselFixFloatDigest
 		);
 	}
 
-	private static final DiffusionSettings GenerateDiffusionSettings (
-		final double dblTimeHorizon)
+	private static final MarketVertexGenerator ConstructMarketVertexGenerator (
+		final JulianDate spotDate,
+		final String periodTenor,
+		final int periodCount)
 		throws Exception
 	{
-		double dblATMSwapRateVolatility = 0.25;
-		double dblOvernightNumeraireDrift = 0.01;
-		double dblOvernightNumeraireVolatility = 0.05;
-		double dblCSADrift = 0.01;
-		double dblCSAVolatility = 0.05;
 		double dblBankHazardRateDrift = 0.002;
 		double dblBankHazardRateVolatility = 0.20;
 		double dblBankRecoveryRateDrift = 0.002;
 		double dblBankRecoveryRateVolatility = 0.02;
-		double dblBankFundingSpreadDrift = 0.00002;
-		double dblBankFundingSpreadVolatility = 0.002;
 		double dblCounterPartyHazardRateDrift = 0.002;
 		double dblCounterPartyHazardRateVolatility = 0.30;
 		double dblCounterPartyRecoveryRateDrift = 0.002;
 		double dblCounterPartyRecoveryRateVolatility = 0.02;
-		double dblCounterPartyFundingSpreadDrift = 0.00002;
-		double dblCounterPartyFundingSpreadVolatility = 0.002;
 
-		return new DiffusionSettings (
-			new DiffusionEvolver (
-				DiffusionEvaluatorLinearFader.Standard (
-					0.,
-					dblATMSwapRateVolatility,
-					dblTimeHorizon
-				)
-			),
-			new DiffusionEvolver (
-				DiffusionEvaluatorLogarithmic.Standard (
-					dblOvernightNumeraireDrift,
-					dblOvernightNumeraireVolatility
-				)
-			),
-			new DiffusionEvolver (
-				DiffusionEvaluatorLogarithmic.Standard (
-					dblCSADrift,
-					dblCSAVolatility
-				)
-			),
+		return MarketVertexGenerator.PeriodHorizon (
+			spotDate,
+			periodTenor,
+			periodCount,
+			new double[][] {
+				{1.00, 0.00, 0.20, 0.15, 0.05, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #0 ASSET NUMERAIRE
+				{0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #1 OVERNIGHT POLICY INDEX NUMERAIRE
+				{0.20, 0.00, 1.00, 0.13, 0.25, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #2 COLLATERAL SCHEME NUMERAIRE
+				{0.15, 0.00, 0.13, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #3 BANK HAZARD RATE
+				{0.05, 0.00, 0.25, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #4 BANK SENIOR FUNDING NUMERAIRE
+				{0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #5 BANK SENIOR RECOVERY RATE
+				{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00}, // #6 BANK SUBORDINATE FUNDING NUMERAIRE
+				{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00}, // #7 BANK SUBORDINATE RECOVERY RATE
+				{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00}, // #8 COUNTER PARTY HAZARD RATE
+				{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00}, // #9 COUNTER PARTY FUNDING NUMERAIRE
+				{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00}  // #10 COUNTER PARTY RECOVERY RATE
+			},
+			GenerateTradeablesContainer(),
 			new DiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
 					dblBankHazardRateDrift,
@@ -256,12 +246,7 @@ public class BaselFixFloatDigest
 					dblBankRecoveryRateVolatility
 				)
 			),
-			new DiffusionEvolver (
-				DiffusionEvaluatorLinear.Standard (
-					dblBankFundingSpreadDrift,
-					dblBankFundingSpreadVolatility
-				)
-			),
+			null,
 			new DiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
 					dblCounterPartyHazardRateDrift,
@@ -273,24 +258,7 @@ public class BaselFixFloatDigest
 					dblCounterPartyRecoveryRateDrift,
 					dblCounterPartyRecoveryRateVolatility
 				)
-			),
-			new DiffusionEvolver (
-				DiffusionEvaluatorLinear.Standard (
-					dblCounterPartyFundingSpreadDrift,
-					dblCounterPartyFundingSpreadVolatility
-				)
-			),
-			new double[][] {
-				{1.00,  0.00,  0.03,  0.07,  0.04,  0.05,  0.08,  0.00,  0.00},  // PORTFOLIO
-				{0.00,  1.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  1.00},  // OVERNIGHT
-				{0.03,  0.00,  1.00,  0.26,  0.33,  0.21,  0.35,  0.13,  0.00},  // CSA
-				{0.07,  0.00,  0.26,  1.00,  0.45, -0.17,  0.07,  0.77,  0.00},  // BANK HAZARD
-				{0.04,  0.00,  0.33,  0.45,  1.00, -0.22, -0.54,  0.58,  0.00},  // COUNTER PARTY HAZARD
-				{0.05,  0.00,  0.21, -0.17, -0.22,  1.00,  0.47, -0.23,  0.00},  // BANK RECOVERY
-				{0.08,  0.00,  0.35,  0.07, -0.54,  0.47,  1.00,  0.01,  0.00},  // COUNTER PARTY RECOVERY
-				{0.00,  0.00,  0.13,  0.77,  0.58, -0.23,  0.01,  1.00,  0.00},  // BANK FUNDING SPREAD
-				{0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  1.00}   // COUNTER PARTY FUNDING SPREAD
-			}
+			)
 		);
 	}
 
@@ -388,13 +356,11 @@ public class BaselFixFloatDigest
 
 		PathSimulator fixFloatPathSimulator = new PathSimulator (
 			iNumPath,
-			GenerateTradeablesContainer(),
-			EvolutionControl.PeriodHorizon (
+			ConstructMarketVertexGenerator (
 				dtSpot,
 				eventTenor,
 				eventCount
 			),
-			GenerateDiffusionSettings (Helper.TenorToYearFraction (eventTenor) * eventCount),
 			new GroupSettings (
 				CollateralGroupSpecification.FixedThreshold (
 					"FIXEDTHRESHOLD",
@@ -407,7 +373,7 @@ public class BaselFixFloatDigest
 
 		MarketVertex initialMarketVertex = MarketVertex.StartUp (
 			dtSpot,
-			0.000, 				// dblPortfolioValueInitial
+			1.000, 				// dblPortfolioValueInitial
 			1.000, 				// dblOvernightNumeraireInitial
 			1.000, 				// dblCSANumeraire
 			0.015, 				// dblBankHazardRate

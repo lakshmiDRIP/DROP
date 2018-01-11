@@ -53,7 +53,8 @@ package org.drip.service.scenario;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BondReplicator {
+public class BondReplicator
+{
 	private int _iSettleLag = -1;
 	private double[] _adblGovvieQuote = null;
 	private double[] _adblCreditQuote = null;
@@ -348,21 +349,21 @@ public class BondReplicator {
 		if (null == (_csqcFunding01Up = org.drip.param.creator.MarketParamsBuilder.Create
 			(org.drip.service.template.LatentMarketStateBuilder.ShapePreservingFundingCurve (_dtSpot,
 				strCurrency, _astrDepositTenor, org.drip.analytics.support.Helper.ParallelNodeBump
-					(_adblDepositQuote, 0.0001 * _dblTenorBump), "ForwardRate",
-						org.drip.analytics.support.Helper.ParallelNodeBump (_adblFuturesQuote, 0.0001 *
-							_dblTenorBump), "ForwardRate", _astrFixFloatTenor,
+					(_adblDepositQuote, 0.0001), "ForwardRate",
+						org.drip.analytics.support.Helper.ParallelNodeBump (_adblFuturesQuote, 0.0001),
+							"ForwardRate", _astrFixFloatTenor,
 								org.drip.analytics.support.Helper.ParallelNodeBump (_adblFixFloatQuote,
-									0.0001 * _dblTenorBump), "SwapRate"), gc, null, null, null, null, null)))
+									0.0001), "SwapRate"), gc, null, null, null, null, null)))
 			throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
 
 		if (_bond.isFloater() && java.lang.Integer.MIN_VALUE != _iResetDate) {
 			if (fl instanceof org.drip.state.identifier.ForwardLabel) {
 				if (!_csqcFunding01Up.setFixing (_iResetDate, (org.drip.state.identifier.ForwardLabel) fl,
-					_dblResetRate + 0.0001 * _dblTenorBump))
+					_dblResetRate + 0.0001))
 					throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
 			} else if (fl instanceof org.drip.state.identifier.OTCFixFloatLabel) {
 			if (!_csqcFunding01Up.setFixing (_iResetDate, (org.drip.state.identifier.OTCFixFloatLabel) fl,
-				_dblResetRate + 0.0001 * _dblTenorBump))
+				_dblResetRate + 0.0001))
 				throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
 			}
 		}
@@ -1094,7 +1095,7 @@ public class BondReplicator {
 		double dblMacaulayDurationToMaturity = java.lang.Double.NaN;
 		double dblModifiedDurationToExercise = java.lang.Double.NaN;
 		double dblModifiedDurationToMaturity = java.lang.Double.NaN;
-		double dblWALPrincipalOnlyToExercise = java.lang.Double.NaN;
+		double dblWALPrincipalOnlyToMaturity = java.lang.Double.NaN;
 		java.util.Map<java.lang.String, java.lang.Double> mapCreditKRD = null;
 		java.util.Map<java.lang.String, java.lang.Double> mapCreditKPRD = null;
 
@@ -1266,7 +1267,7 @@ public class BondReplicator {
 
 		try {
 			dblModifiedDurationToMaturity = (_dblCurrentPrice - _bond.priceFromBondBasis (_valParams,
-				_csqcFunding01Up, null, dblBondBasisToMaturity)) / _dblCurrentPrice / _dblTenorBump;
+				_csqcFunding01Up, null, dblBondBasisToMaturity)) / _dblCurrentPrice;
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -1281,7 +1282,7 @@ public class BondReplicator {
 		try {
 			dblModifiedDurationToExercise = (_dblCurrentPrice - _bond.priceFromBondBasis (_valParams,
 				_csqcFunding01Up, null, iWorkoutDate, dblWorkoutFactor, dblBondBasisToExercise)) /
-					_dblCurrentPrice / _dblTenorBump;
+					_dblCurrentPrice;
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -1412,8 +1413,8 @@ public class BondReplicator {
 		}
 
 		try {
-			dblWALPrincipalOnlyToExercise = _bond.weightedAverageLifePrincipalOnly (_valParams,
-				_csqcFundingBase, iWorkoutDate, dblWorkoutFactor);
+			dblWALPrincipalOnlyToMaturity = _bond.weightedAverageLifePrincipalOnly (_valParams,
+				_csqcFundingBase, iMaturityDate, 1.);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -1728,7 +1729,7 @@ public class BondReplicator {
 				return null;
 
 			if (!arr.addNamedField (new org.drip.service.scenario.NamedField ("WAL",
-				dblWALPrincipalOnlyToExercise)))
+				dblWALPrincipalOnlyToMaturity)))
 				return null;
 
 			if (!arr.addNamedField (new org.drip.service.scenario.NamedField ("WAL2",
@@ -1741,7 +1742,7 @@ public class BondReplicator {
 				return null;
 
 			if (!arr.addNamedField (new org.drip.service.scenario.NamedField ("WAL4",
-				dblWALPrincipalOnlyToExercise)))
+				dblWALPrincipalOnlyToMaturity)))
 				return null;
 
 			if (!arr.addNamedField (new org.drip.service.scenario.NamedField ("WAL_Adj",

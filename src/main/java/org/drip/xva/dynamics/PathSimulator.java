@@ -70,15 +70,12 @@ public class PathSimulator
 {
 	private int _iCount = -1;
 	private org.drip.xva.dynamics.GroupSettings _groupSettings = null;
-	private org.drip.xva.dynamics.EvolutionControl _evolutionControl = null;
-	private org.drip.xva.dynamics.DiffusionSettings _diffusionSettings = null;
-	private org.drip.xva.universe.TradeablesContainer _tradeablesContainer = null;
+	private org.drip.xva.universe.MarketVertexGenerator _marketVertexGenerator = null;
 
 	private org.drip.xva.hypothecation.CollateralGroupPath[] generateCollateralGroupVertexes (
-		final int[] dateVertexArray,
 		final org.drip.xva.universe.MarketPath marketPath)
 	{
-		int iNumTimeStep = _evolutionControl.eventDates().length;
+		int[] dateVertexArray = _marketVertexGenerator.vertexDates();
 
 		org.drip.xva.universe.MarketVertex[] marketVertexes = marketPath.vertexes();
 
@@ -88,10 +85,11 @@ public class PathSimulator
 		org.drip.xva.set.CounterPartyGroupSpecification counterPartyGroupSpecification =
 			_groupSettings.counterPartyGroupSpecification();
 
+		int iNumTimeStep = dateVertexArray.length;
 		org.drip.xva.hypothecation.CollateralGroupVertex[] collateralGroupVertexArray = new
-			org.drip.xva.hypothecation.CollateralGroupVertex[iNumTimeStep + 1];
+			org.drip.xva.hypothecation.CollateralGroupVertex[iNumTimeStep];
 
-		for (int j = 0; j <= iNumTimeStep; ++j)
+		for (int j = 0; j < iNumTimeStep; ++j)
 		{
 			try
 			{
@@ -141,29 +139,13 @@ public class PathSimulator
 	private org.drip.xva.cpty.MonoPathExposureAdjustment singleTrajectory (
 		final org.drip.xva.universe.MarketVertex initialMarketVertex)
 	{
-		int[] eventDates = _evolutionControl.eventDates();
-
 		try
 		{
-			org.drip.xva.universe.MarketPath marketPath = new org.drip.xva.universe.MarketPath (
-				new org.drip.xva.universe.MarketVertexGenerator (
-					_evolutionControl.spotDate().julian(),
-					eventDates,
-					_diffusionSettings.correlationMatrix(),
-					_tradeablesContainer,
-					_diffusionSettings.bankHazardRateEvolver(),
-					_diffusionSettings.bankRecoveryRateEvolver(),
-					null,
-					_diffusionSettings.counterPartyHazardRateEvolver(),
-					_diffusionSettings.counterPartyRecoveryRateEvolver()
-				).marketVertex (initialMarketVertex)
-			);
+			org.drip.xva.universe.MarketPath marketPath = new org.drip.xva.universe.MarketPath
+				(_marketVertexGenerator.marketVertex (initialMarketVertex));
 
 			org.drip.xva.hypothecation.CollateralGroupPath[] collateralGroupPathArray =
-				generateCollateralGroupVertexes (
-					eventDates,
-					marketPath
-				);
+				generateCollateralGroupVertexes (marketPath);
 
 			return new org.drip.xva.cpty.MonoPathExposureAdjustment (
 				new org.drip.xva.strategy.AlbaneseAndersenNettingGroupPath[]
@@ -194,9 +176,7 @@ public class PathSimulator
 	 * PathSimulator Constructor
 	 * 
 	 * @param iCount Path Count
-	 * @param tradeablesContainer Tradeables Container
-	 * @param evolutionControl Evolution Control
-	 * @param diffusionSettings Diffusion Settings
+	 * @param marketVertexGenerator Market Vertex Generator
 	 * @param groupSettings Group Settings
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
@@ -204,16 +184,12 @@ public class PathSimulator
 
 	public PathSimulator (
 		final int iCount,
-		final org.drip.xva.universe.TradeablesContainer tradeablesContainer,
-		final org.drip.xva.dynamics.EvolutionControl evolutionControl,
-		final org.drip.xva.dynamics.DiffusionSettings diffusionSettings,
+		final org.drip.xva.universe.MarketVertexGenerator marketVertexGenerator,
 		final org.drip.xva.dynamics.GroupSettings groupSettings)
 		throws java.lang.Exception
 	{
 		if (0 >= (_iCount = iCount) ||
-			null == (_tradeablesContainer = tradeablesContainer) ||
-			null == (_evolutionControl = evolutionControl) ||
-			null == (_diffusionSettings = diffusionSettings) ||
+			null == (_marketVertexGenerator = marketVertexGenerator) ||
 			null == (_groupSettings = groupSettings))
 			throw new java.lang.Exception ("PathSimulator Constructor => Invalid Inputs");
 	}
@@ -230,36 +206,14 @@ public class PathSimulator
 	}
 
 	/**
-	 * Retrieve the Tradeables Container
+	 * Retrieve the Market Vertex Generator
 	 * 
-	 * @return The Tradeables Container
+	 * @return The Market Vertex Generator
 	 */
 
-	public org.drip.xva.universe.TradeablesContainer tradeablesContainer()
+	public org.drip.xva.universe.MarketVertexGenerator marketVertexGenerator()
 	{
-		return _tradeablesContainer;
-	}
-
-	/**
-	 * Retrieve the Diffusion Settings
-	 * 
-	 * @return The Diffusion Settings
-	 */
-
-	public org.drip.xva.dynamics.DiffusionSettings diffusors()
-	{
-		return _diffusionSettings;
-	}
-
-	/**
-	 * Retrieve the Evolution Control
-	 * 
-	 * @return The Evolution Control
-	 */
-
-	public org.drip.xva.dynamics.EvolutionControl evolutionControl()
-	{
-		return _evolutionControl;
+		return _marketVertexGenerator;
 	}
 
 	/**
