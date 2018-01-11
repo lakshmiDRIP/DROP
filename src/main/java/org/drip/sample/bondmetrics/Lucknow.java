@@ -234,7 +234,7 @@ public class Lucknow {
 			null
 		);
 
-		BondReplicator abr = BondReplicator.Standard (
+		BondReplicator abr = BondReplicator.CorporateSenior (
 			dblCleanPrice,
 			dblIssuePrice,
 			dblIssueAmount,

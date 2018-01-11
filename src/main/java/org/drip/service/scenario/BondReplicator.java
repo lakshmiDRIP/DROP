@@ -55,6 +55,25 @@ package org.drip.service.scenario;
 
 public class BondReplicator
 {
+
+	/**
+	 * Subordinate Corporate Recovery Rate
+	 */
+
+	public static final double CORPORATE_SUBORDINATE_RECOVERY_RATE = 0.20;
+
+	/**
+	 * Senior Corporate Recovery Rate
+	 */
+
+	public static final double CORPORATE_SENIOR_RECOVERY_RATE = 0.40;
+
+	/**
+	 * Loan Corporate Recovery Rate
+	 */
+
+	public static final double CORPORATE_LOAN_RECOVERY_RATE = 0.70;
+
 	private int _iSettleLag = -1;
 	private double[] _adblGovvieQuote = null;
 	private double[] _adblCreditQuote = null;
@@ -119,7 +138,7 @@ public class BondReplicator
 			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.param.market.CurveSurfaceQuoteContainer>();
 
 	/**
-	 * Generate a Standard BondReplicator Instance
+	 * Generate a Standard Subordinate Corporate BondReplicator Instance
 	 * 
 	 * @param dblCurrentPrice Current Price
 	 * @param dblIssuePrice Issue Price
@@ -142,10 +161,10 @@ public class BondReplicator
 	 * @param iSettleLag Settlement Lag
 	 * @param bond Bond Component Instance
 	 * 
-	 * @return The BondReplicator Instance
+	 * @return The Standard Subordinate BondReplicator Instance
 	 */
 
-	public static final BondReplicator Standard (
+	public static final BondReplicator CorporateSubordinate (
 		final double dblCurrentPrice,
 		final double dblIssuePrice,
 		final double dblIssueAmount,
@@ -192,7 +211,175 @@ public class BondReplicator
 				dblFX,
 				dblResetRate,
 				iSettleLag,
-				0.4,
+				CORPORATE_SUBORDINATE_RECOVERY_RATE,
+				bond
+			);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate a Standard Senior Corporate BondReplicator Instance
+	 * 
+	 * @param dblCurrentPrice Current Price
+	 * @param dblIssuePrice Issue Price
+	 * @param dblIssueAmount Issue Amount
+	 * @param dtSpot Spot Date
+	 * @param astrDepositTenor Array of Deposit Tenors
+	 * @param adblDepositQuote Array of Deposit Quotes
+	 * @param adblFuturesQuote Array of Futures Quotes
+	 * @param astrFixFloatTenor Array of Fix-Float Tenors
+	 * @param adblFixFloatQuote Array of Fix-Float Quotes
+	 * @param dblSpreadBump Yield/Spread Bump
+	 * @param dblSpreadDurationMultiplier Spread Duration Multiplier
+	 * @param strGovvieCode Govvie Code
+	 * @param astrGovvieTenor Array of Govvie Tenor
+	 * @param adblGovvieQuote Array of Govvie Quotes
+	 * @param astrCreditTenor Array of Credit Tenors
+	 * @param adblCreditQuote Array of Credit Quotes
+	 * @param dblFX FX Rate Applicable
+	 * @param dblResetRate Reset Rate Applicable
+	 * @param iSettleLag Settlement Lag
+	 * @param bond Bond Component Instance
+	 * 
+	 * @return The Standard Senior BondReplicator Instance
+	 */
+
+	public static final BondReplicator CorporateSenior (
+		final double dblCurrentPrice,
+		final double dblIssuePrice,
+		final double dblIssueAmount,
+		final org.drip.analytics.date.JulianDate dtSpot,
+		final java.lang.String[] astrDepositTenor,
+		final double[] adblDepositQuote,
+		final double[] adblFuturesQuote,
+		final java.lang.String[] astrFixFloatTenor,
+		final double[] adblFixFloatQuote,
+		final double dblSpreadBump,
+		final double dblSpreadDurationMultiplier,
+		final java.lang.String strGovvieCode,
+		final java.lang.String[] astrGovvieTenor,
+		final double[] adblGovvieQuote,
+		final java.lang.String[] astrCreditTenor,
+		final double[] adblCreditQuote,
+		final double dblFX,
+		final double dblResetRate,
+		final int iSettleLag,
+		final org.drip.product.credit.BondComponent bond)
+	{
+		try {
+			return new BondReplicator (
+				dblCurrentPrice,
+				dblIssuePrice,
+				dblIssueAmount,
+				dtSpot,
+				astrDepositTenor,
+				adblDepositQuote,
+				adblFuturesQuote,
+				astrFixFloatTenor,
+				adblFixFloatQuote,
+				dblSpreadBump,
+				dblSpreadBump,
+				dblSpreadBump,
+				dblSpreadBump,
+				dblSpreadDurationMultiplier,
+				strGovvieCode,
+				astrGovvieTenor,
+				adblGovvieQuote,
+				true,
+				astrCreditTenor,
+				adblCreditQuote,
+				dblFX,
+				dblResetRate,
+				iSettleLag,
+				CORPORATE_SENIOR_RECOVERY_RATE,
+				bond
+			);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate a Standard Corporate Loan BondReplicator Instance
+	 * 
+	 * @param dblCurrentPrice Current Price
+	 * @param dblIssuePrice Issue Price
+	 * @param dblIssueAmount Issue Amount
+	 * @param dtSpot Spot Date
+	 * @param astrDepositTenor Array of Deposit Tenors
+	 * @param adblDepositQuote Array of Deposit Quotes
+	 * @param adblFuturesQuote Array of Futures Quotes
+	 * @param astrFixFloatTenor Array of Fix-Float Tenors
+	 * @param adblFixFloatQuote Array of Fix-Float Quotes
+	 * @param dblSpreadBump Yield/Spread Bump
+	 * @param dblSpreadDurationMultiplier Spread Duration Multiplier
+	 * @param strGovvieCode Govvie Code
+	 * @param astrGovvieTenor Array of Govvie Tenor
+	 * @param adblGovvieQuote Array of Govvie Quotes
+	 * @param astrCreditTenor Array of Credit Tenors
+	 * @param adblCreditQuote Array of Credit Quotes
+	 * @param dblFX FX Rate Applicable
+	 * @param dblResetRate Reset Rate Applicable
+	 * @param iSettleLag Settlement Lag
+	 * @param bond Bond Component Instance
+	 * 
+	 * @return The Standard Senior BondReplicator Instance
+	 */
+
+	public static final BondReplicator CorporateLoan (
+		final double dblCurrentPrice,
+		final double dblIssuePrice,
+		final double dblIssueAmount,
+		final org.drip.analytics.date.JulianDate dtSpot,
+		final java.lang.String[] astrDepositTenor,
+		final double[] adblDepositQuote,
+		final double[] adblFuturesQuote,
+		final java.lang.String[] astrFixFloatTenor,
+		final double[] adblFixFloatQuote,
+		final double dblSpreadBump,
+		final double dblSpreadDurationMultiplier,
+		final java.lang.String strGovvieCode,
+		final java.lang.String[] astrGovvieTenor,
+		final double[] adblGovvieQuote,
+		final java.lang.String[] astrCreditTenor,
+		final double[] adblCreditQuote,
+		final double dblFX,
+		final double dblResetRate,
+		final int iSettleLag,
+		final org.drip.product.credit.BondComponent bond)
+	{
+		try {
+			return new BondReplicator (
+				dblCurrentPrice,
+				dblIssuePrice,
+				dblIssueAmount,
+				dtSpot,
+				astrDepositTenor,
+				adblDepositQuote,
+				adblFuturesQuote,
+				astrFixFloatTenor,
+				adblFixFloatQuote,
+				dblSpreadBump,
+				dblSpreadBump,
+				dblSpreadBump,
+				dblSpreadBump,
+				dblSpreadDurationMultiplier,
+				strGovvieCode,
+				astrGovvieTenor,
+				adblGovvieQuote,
+				true,
+				astrCreditTenor,
+				adblCreditQuote,
+				dblFX,
+				dblResetRate,
+				iSettleLag,
+				CORPORATE_LOAN_RECOVERY_RATE,
 				bond
 			);
 		} catch (java.lang.Exception e) {

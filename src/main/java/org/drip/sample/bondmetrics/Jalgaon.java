@@ -346,7 +346,7 @@ public class Jalgaon {
 
 		System.out.println();
 
-		BondReplicator abr = BondReplicator.Standard (
+		BondReplicator abr = BondReplicator.CorporateSenior (
 			dblCleanPrice,
 			dblIssuePrice,
 			dblIssueAmount,

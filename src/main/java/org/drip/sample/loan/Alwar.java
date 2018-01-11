@@ -237,7 +237,7 @@ public class Alwar {
 			"SwapRate"
 		);
 
-		BondReplicator abr = BondReplicator.Standard (
+		BondReplicator abr = BondReplicator.CorporateLoan (
 			dblCleanPrice,
 			dblIssuePrice,
 			dblIssueAmount,

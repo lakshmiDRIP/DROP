@@ -276,7 +276,7 @@ public class Bellary {
 			null
 		);
 
-		BondReplicator abr = BondReplicator.Standard (
+		BondReplicator abr = BondReplicator.CorporateSenior (
 			dblCleanPrice,
 			dblIssuePrice,
 			dblIssueAmount,

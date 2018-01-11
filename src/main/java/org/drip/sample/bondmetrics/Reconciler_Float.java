@@ -1201,7 +1201,7 @@ public class Reconciler_Float {
 			wi.factor()
 		);
 
-		BondReplicator ar = BondReplicator.Standard (
+		BondReplicator ar = BondReplicator.CorporateSenior (
 			dblCleanPrice,
 			dblIssuePrice,
 			dblIssueAmount,

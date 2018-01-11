@@ -1140,7 +1140,7 @@ public class Reconciler_Sink {
 
 		System.out.println();
 
-		BondReplicator ar = BondReplicator.Standard (
+		BondReplicator ar = BondReplicator.CorporateSenior (
 			dblCleanPrice,
 			dblIssuePrice,
 			dblIssueAmount,

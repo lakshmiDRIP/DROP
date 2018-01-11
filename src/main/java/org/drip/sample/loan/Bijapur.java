@@ -274,7 +274,7 @@ public class Bijapur {
 			"SwapRate"
 		);
 
-		BondReplicator abr = BondReplicator.Standard (
+		BondReplicator abr = BondReplicator.CorporateLoan (
 			dblCleanPrice,
 			dblIssuePrice,
 			dblIssueAmount,

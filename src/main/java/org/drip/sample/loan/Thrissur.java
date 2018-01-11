@@ -237,7 +237,7 @@ public class Thrissur {
 			"SwapRate"
 		);
 
-		BondReplicator abr = BondReplicator.Standard (
+		BondReplicator abr = BondReplicator.CorporateLoan (
 			dblCleanPrice,
 			dblIssuePrice,
 			dblIssueAmount,

@@ -1128,7 +1128,7 @@ public class Reconciler_Fixed {
 
 		System.out.println();
 
-		BondReplicator ar = BondReplicator.Standard (
+		BondReplicator ar = BondReplicator.CorporateSenior (
 			dblCleanPrice,
 			dblIssuePrice,
 			dblIssueAmount,

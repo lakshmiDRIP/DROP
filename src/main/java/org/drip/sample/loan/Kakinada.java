@@ -237,7 +237,7 @@ public class Kakinada {
 			"SwapRate"
 		);
 
-		BondReplicator abr = BondReplicator.Standard (
+		BondReplicator abr = BondReplicator.CorporateLoan (
 			dblCleanPrice,
 			dblIssuePrice,
 			dblIssueAmount,
