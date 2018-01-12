@@ -70,28 +70,32 @@ package org.drip.xva.universe;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Equity extends org.drip.xva.universe.Tradeable {
-	private double _dblDividendRate = java.lang.Double.NaN;
+public class Equity extends org.drip.xva.universe.Tradeable
+{
+	private double _dividendRate = java.lang.Double.NaN;
 
 	/**
 	 * Equity Constructor
 	 * 
-	 * @param deNumeraire The Equity Price Numeraire
+	 * @param evolver The Equity Price Evolver
 	 * @param dblRepoRate The Equity Repo Rate
-	 * @param dblDividendRate The Equity Dividend Rate
+	 * @param dividendRate The Equity Dividend Rate
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public Equity (
-		final org.drip.measure.process.DiffusionEvolver deNumeraire,
+		final org.drip.measure.process.DiffusionEvolver evolver,
 		final double dblRepoRate,
-		final double dblDividendRate)
+		final double dividendRate)
 		throws java.lang.Exception
 	{
-		super (deNumeraire, dblRepoRate);
+		super (
+			evolver,
+			dblRepoRate
+		);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblDividendRate = dblDividendRate))
+		if (!org.drip.quant.common.NumberUtil.IsValid (_dividendRate = dividendRate))
 			throw new java.lang.Exception ("Equity Constructor => Invalid Inputs");
 	}
 
@@ -103,11 +107,11 @@ public class Equity extends org.drip.xva.universe.Tradeable {
 
 	public double dividendRate()
 	{
-		return _dblDividendRate;
+		return _dividendRate;
 	}
 
 	@Override public double cashAccumulationRate()
 	{
-		return _dblDividendRate - repoRate();
+		return _dividendRate - repoRate();
 	}
 }

@@ -69,38 +69,39 @@ package org.drip.xva.universe;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Tradeable {
-	private double _dblRepoRate = java.lang.Double.NaN;
-	private org.drip.measure.process.DiffusionEvolver _deNumeraire = null;
+public class Tradeable
+{
+	private double _repoRate = java.lang.Double.NaN;
+	private org.drip.measure.process.DiffusionEvolver _evolver = null;
 
 	/**
 	 * Tradeable Constructor
 	 * 
-	 * @param deNumeraire The Numeraire Evolver
-	 * @param dblRepoRate The Repo Rate
+	 * @param evolver The Tradeable Evolver
+	 * @param repoRate The Repo Rate
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public Tradeable (
-		final org.drip.measure.process.DiffusionEvolver deNumeraire,
-		final double dblRepoRate)
+		final org.drip.measure.process.DiffusionEvolver evolver,
+		final double repoRate)
 		throws java.lang.Exception
 	{
-		if (null == (_deNumeraire = deNumeraire) || !org.drip.quant.common.NumberUtil.IsValid (_dblRepoRate =
-			dblRepoRate))
+		if (null == (_evolver = evolver) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_repoRate = repoRate))
 			throw new java.lang.Exception ("Tradeable Constructor => Invalid Inputs");
 	}
 
 	/**
-	 * Retrieve the Numeraire Evolver
+	 * Retrieve the Evolver
 	 * 
-	 * @return The Numeraire Evolver
+	 * @return The Evolver
 	 */
 
-	public org.drip.measure.process.DiffusionEvolver numeraireEvolver()
+	public org.drip.measure.process.DiffusionEvolver evolver()
 	{
-		return _deNumeraire;
+		return _evolver;
 	}
 
 	/**
@@ -111,7 +112,7 @@ public class Tradeable {
 
 	public double repoRate()
 	{
-		return _dblRepoRate;
+		return _repoRate;
 	}
 
 	/**
@@ -122,6 +123,6 @@ public class Tradeable {
 
 	public double cashAccumulationRate()
 	{
-		return -1. * _dblRepoRate;
+		return -1. * _repoRate;
 	}
 }

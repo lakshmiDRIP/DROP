@@ -189,7 +189,7 @@ public class CorrelatedNumeraireXVAGreeks {
 				dblDerivativeXVAValueDeltaFinish,
 				dblDerivativeXVAValueGammaFinish,
 				agvStart.derivativeFairValue() * Math.exp (
-					-1. * dblTimeWidth * tcm.collateralScheme().numeraireEvolver().evaluator().drift().value (
+					-1. * dblTimeWidth * tcm.csa().evolver().evaluator().drift().value (
 						new JumpDiffusionVertex (
 							dblTime,
 							dblCollateralSchemeNumeraire,

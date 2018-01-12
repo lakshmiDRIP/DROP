@@ -68,25 +68,25 @@ package org.drip.xva.universe;
 
 public class LatentStateMarketVertex
 {
-	private double _dblNodal = java.lang.Double.NaN;
-	private double _dblEpochal = java.lang.Double.NaN;
+	private double _nodal = java.lang.Double.NaN;
+	private double _epochal = java.lang.Double.NaN;
 
 	/**
 	 * LatentStateMarketVertex Constructor
 	 * 
-	 * @param dblEpochal The Epochal Latent State Realization
-	 * @param dblNodal The Nodal Latent State Realization
+	 * @param epochal The Epochal Latent State Realization
+	 * @param nodal The Nodal Latent State Realization
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public LatentStateMarketVertex (
-		final double dblEpochal,
-		final double dblNodal)
+		final double epochal,
+		final double nodal)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblEpochal = dblEpochal) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblNodal = dblNodal))
+		if (!org.drip.quant.common.NumberUtil.IsValid (_epochal = epochal) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_nodal = nodal))
 			throw new java.lang.Exception ("LatentStateMarketVertex Constructor => Invalid Inputs");
 	}
 
@@ -98,7 +98,7 @@ public class LatentStateMarketVertex
 
 	public double epochal()
 	{
-		return _dblEpochal;
+		return _epochal;
 	}
 
 	/**
@@ -109,7 +109,7 @@ public class LatentStateMarketVertex
 
 	public double nodal()
 	{
-		return _dblNodal;
+		return _nodal;
 	}
 
 	/**
@@ -120,6 +120,6 @@ public class LatentStateMarketVertex
 
 	public double epochalNodalScale()
 	{
-		return _dblEpochal / _dblNodal;
+		return _epochal / _nodal;
 	}
 }

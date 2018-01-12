@@ -166,7 +166,7 @@ public class MarketVertexGenerator
 	 */
 
 	public static final MarketVertexGenerator PeriodHorizon (
-		final org.drip.analytics.date.JulianDate spotDate,
+		final int spotDate,
 		final java.lang.String periodTenor,
 		final int periodCount,
 		final double[][] aadblCorrelationMatrix,
@@ -177,29 +177,15 @@ public class MarketVertexGenerator
 		final org.drip.measure.process.DiffusionEvolver deCounterPartyHazardRate,
 		final org.drip.measure.process.DiffusionEvolver deCounterPartyRecoveryRate)
 	{
-		if (null == spotDate)
-		{
-			return null;
-		}
-
-		int[] eventDates = new int[periodCount];
-		org.drip.analytics.date.JulianDate previousDate = spotDate;
-
-		for (int i = 0; i < periodCount; ++i)
-		{
-			if (null == (previousDate = previousDate.addTenor (periodTenor)))
-			{
-				return null;
-			}
-
-			eventDates[i] = previousDate.julian();
-		}
-
 		try
 		{
 			return new MarketVertexGenerator (
-				spotDate.julian(),
-				eventDates,
+				spotDate,
+				org.drip.xva.universe.VertexDateBuilder.SpotDatePeriodTenor (
+					spotDate,
+					periodTenor,
+					periodCount
+				),
 				aadblCorrelationMatrix,
 				tc,
 				deBankHazardRate,
@@ -397,7 +383,7 @@ public class MarketVertexGenerator
 	{
 		if (null == mvInitial) return null;
 
-		org.drip.xva.universe.Tradeable tAsset = _tc.asset();
+		org.drip.xva.universe.Tradeable tAsset = _tc.position();
 
 		org.drip.xva.universe.Tradeable tBankSubordinateFunding = _tc.bankSubordinateFunding();
 
@@ -446,7 +432,7 @@ public class MarketVertexGenerator
 				!org.drip.quant.common.NumberUtil.IsValid (dblBankSubordinateRecoveryRateStart);
 
 		try {
-			aJDVAssetNumeraire = !bAssetEvolutionOn ? null : tAsset.numeraireEvolver().vertexSequence (
+			aJDVAssetNumeraire = !bAssetEvolutionOn ? null : tAsset.evolver().vertexSequence (
 				new org.drip.measure.realization.JumpDiffusionVertex (
 					_iSpotDate,
 					mvInitial.portfolioValue(),
@@ -460,7 +446,7 @@ public class MarketVertexGenerator
 				_adblTimeWidth
 			);
 
-			aJDVOvernightIndexNumeraire = _tc.overnightIndex().numeraireEvolver().vertexSequenceReverse (
+			aJDVOvernightIndexNumeraire = _tc.overnight().evolver().vertexSequenceReverse (
 				new org.drip.measure.realization.JumpDiffusionVertex (
 					iTerminalDate,
 					mvInitial.overnightNumeraire().nodal(),
@@ -474,7 +460,7 @@ public class MarketVertexGenerator
 				_adblTimeWidth
 			);
 
-			aJDVCollateralSchemeNumeraire = _tc.collateralScheme().numeraireEvolver().vertexSequenceReverse (
+			aJDVCollateralSchemeNumeraire = _tc.csa().evolver().vertexSequenceReverse (
 				new org.drip.measure.realization.JumpDiffusionVertex (
 					iTerminalDate,
 					mvInitial.csaNumeraire().nodal(),
@@ -502,7 +488,7 @@ public class MarketVertexGenerator
 			);
 
 			aJDVBankSeniorFundingNumeraire =
-				_tc.bankSubordinateFunding().numeraireEvolver().vertexSequenceReverse (
+				_tc.bankSubordinateFunding().evolver().vertexSequenceReverse (
 					new org.drip.measure.realization.JumpDiffusionVertex (
 						iTerminalDate,
 						emvBankInitial.seniorFundingLatentState().nodal(),
@@ -531,7 +517,7 @@ public class MarketVertexGenerator
 			);
 
 			aJDVBankSubordinateFundingNumeraire = bSingleBankBond ? null :
-				tBankSubordinateFunding.numeraireEvolver().vertexSequenceReverse (
+				tBankSubordinateFunding.evolver().vertexSequenceReverse (
 					new org.drip.measure.realization.JumpDiffusionVertex (
 						iTerminalDate,
 						dblBankSubordinateFundingNumeraireTerminal,
@@ -575,7 +561,7 @@ public class MarketVertexGenerator
 			);
 
 			aJDVCounterPartyFundingNumeraire =
-				_tc.counterPartyFunding().numeraireEvolver().vertexSequenceReverse (
+				_tc.counterPartyFunding().evolver().vertexSequenceReverse (
 					new org.drip.measure.realization.JumpDiffusionVertex (
 						iTerminalDate,
 						emvCounterPartyInitial.seniorFundingLatentState().nodal(),

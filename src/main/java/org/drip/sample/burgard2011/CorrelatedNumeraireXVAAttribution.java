@@ -190,7 +190,7 @@ public class CorrelatedNumeraireXVAAttribution {
 				dblDerivativeXVAValueDeltaFinish,
 				dblDerivativeXVAValueGammaFinish,
 				agvStart.derivativeFairValue() * Math.exp (
-					-1. * dblTimeWidth * tes.universe().collateralScheme().numeraireEvolver().evaluator().drift().value (
+					-1. * dblTimeWidth * tes.universe().csa().evolver().evaluator().drift().value (
 						new JumpDiffusionVertex (
 							dblTime,
 							dblCollateralSchemeNumeraire,

@@ -66,100 +66,119 @@ package org.drip.xva.universe;
  * @author Lakshmi Krishnamurthy
  */
 
-public class VertexDateBuilder {
+public class VertexDateBuilder
+{
 
 	/**
-	 * Construct an Array of JulianDate from the Spot Date and the Vertex Tenor Array
+	 * Construct an Array of Dates from the Spot Date and the Vertex Tenor Array
 	 * 
-	 * @param iSpotDate The Spot Date
-	 * @param astrVertexTenor The Vertex Tenor Array
+	 * @param spotDate The Spot Date
+	 * @param vertexTenorArray The Vertex Tenor Array
 	 * 
-	 * @return The Array of JulianDate
+	 * @return The Array of Dates
 	 */
 
-	public static final int[] FromStartTenorArray (
-		final int iSpotDate,
-		final java.lang.String[] astrVertexTenor)
+	public static final int[] SpotDateVertexTenor (
+		final int spotDate,
+		final java.lang.String[] vertexTenorArray)
 	{
-		if (0 >= iSpotDate || null == astrVertexTenor) return null;
+		if (0 >= spotDate || null == vertexTenorArray) return null;
 
-		int iNumVertex = astrVertexTenor.length;
-		int[] aiDate = 0 == iNumVertex ? null : new int[iNumVertex];
+		int vertexCount = vertexTenorArray.length;
+		int[] vertexDateArray = 0 == vertexCount ? null : new int[vertexCount];
 
-		if (0 == iNumVertex) return null;
+		if (0 == vertexCount) return null;
 
-		org.drip.analytics.date.JulianDate dtSpot = new org.drip.analytics.date.JulianDate (iSpotDate);
+		org.drip.analytics.date.JulianDate spotDateJulian = new org.drip.analytics.date.JulianDate
+			(spotDate);
 
-		for (int iVertex = 0; iVertex < iNumVertex; ++iVertex) {
-			org.drip.analytics.date.JulianDate dtVertex = dtSpot.addTenor (astrVertexTenor[iVertex]);
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+		{
+			org.drip.analytics.date.JulianDate vertexDateJulian = spotDateJulian.addTenor
+				(vertexTenorArray[vertexIndex]);
 
-			if (null == dtVertex) return null;
+			if (null == vertexDateJulian)
+			{
+				return null;
+			}
 
-			aiDate[iVertex] = dtVertex.julian();
+			vertexDateArray[vertexIndex] = vertexDateJulian.julian();
 		}
 
-		return aiDate;
+		return vertexDateArray;
 	}
 
 	/**
 	 * Construct an Array of Vertex Dates from the Spot Date, Tenor Spacing Width, and the Vertex Count
 	 * 
-	 * @param iSpotDate The Spot Date
-	 * @param strTenorWidth The Tenor Spacing Width
-	 * @param iNumVertex The Number of Vertexes
+	 * @param spotDate The Spot Date
+	 * @param periodTenor The Tenor Spacing Width
+	 * @param vertexCount The Number of Vertexes
 	 * 
 	 * @return The Array of Vertex Dates
 	 */
 
-	public static final int[] FromTenorWidth (
-		final int iSpotDate,
-		final java.lang.String strTenorWidth,
-		final int iNumVertex)
+	public static final int[] SpotDatePeriodTenor (
+		final int spotDate,
+		final java.lang.String periodTenor,
+		final int vertexCount)
 	{
-		if (0 >= iSpotDate || 0 >= iNumVertex) return null;
-
-		int[] aiDate = new int[iNumVertex];
-
-		org.drip.analytics.date.JulianDate dtPrevious = new org.drip.analytics.date.JulianDate (iSpotDate);
-
-		for (int iVertex = 0; iVertex < iNumVertex; ++iVertex) {
-			org.drip.analytics.date.JulianDate dtVertex = dtPrevious.addTenor (strTenorWidth);
-
-			if (null == dtVertex) return null;
-
-			aiDate[iVertex] = dtVertex.julian();
-
-			dtPrevious = dtVertex;
+		if (0 >= spotDate || 0 >= vertexCount)
+		{
+			return null;
 		}
 
-		return aiDate;
+		int[] vertexDateArray = new int[vertexCount];
+
+		org.drip.analytics.date.JulianDate previousDateJulian = new org.drip.analytics.date.JulianDate
+			(spotDate);
+
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+		{
+			org.drip.analytics.date.JulianDate vertexDateJulian = previousDateJulian.addTenor (periodTenor);
+
+			if (null == vertexDateJulian)
+			{
+				return null;
+			}
+
+			vertexDateArray[vertexIndex] = vertexDateJulian.julian();
+
+			previousDateJulian = vertexDateJulian;
+		}
+
+		return vertexDateArray;
 	}
 
 	/**
-	 * Generate Equal Width Vertex Dates from the specified Spot Date
+	 * Generate Equal Width Vertex Dates from the specified Spot Date and the Terminal Date
 	 * 
-	 * @param iSpotDate The Spot Date
-	 * @param iFinalDate The Final Date
-	 * @param iNumVertex The Number of Vertexes
+	 * @param spotDate The Spot Date
+	 * @param terminalDate The Terminal Date
+	 * @param vertexCount The Number of Vertexes
 	 * 
 	 * @return Array of Equal Width Vertex Dates
 	 */
 
 	public static final int[] EqualWidth (
-		final int iSpotDate,
-		final int iFinalDate,
-		final int iNumVertex)
+		final int spotDate,
+		final int terminalDate,
+		final int vertexCount)
 	{
-		if (0 >= iSpotDate || iFinalDate <= iSpotDate || 0 >= iNumVertex) return null;
-
-		int[] aiDate = new int[iNumVertex];
-		aiDate[iNumVertex - 1] = iFinalDate;
-		double dblWidth = ((double) (iFinalDate - iSpotDate)) / iNumVertex;
-
-		for (int iVertex = 0; iVertex < iNumVertex - 1; ++iVertex) {
-			aiDate[iVertex] = iSpotDate + (int) ((iVertex + 1) * dblWidth);
+		if (0 >= spotDate || terminalDate <= spotDate || 0 >= vertexCount)
+		{
+			return null;
 		}
 
-		return aiDate;
+		int[] vertexDateArray = new int[vertexCount];
+		vertexDateArray[vertexCount - 1] = terminalDate;
+		double periodWidth = ((double) (terminalDate - spotDate)) / vertexCount;
+
+		for (int vertexIndex = 0; vertexIndex < vertexCount - 1; ++vertexIndex)
+		{
+			vertexDateArray[vertexIndex] = spotDate + (int) ((vertexIndex + 1) * periodWidth);
+		}
+
+		return vertexDateArray;
 	}
 }

@@ -190,7 +190,7 @@ public class XVAReplicationPortfolio {
 				dblDerivativeXVAValueDeltaFinish,
 				dblDerivativeXVAValueGammaFinish,
 				agvStart.derivativeFairValue() * Math.exp (
-					-1. * dblTimeWidth * tc.collateralScheme().numeraireEvolver().evaluator().drift().value (
+					-1. * dblTimeWidth * tc.csa().evolver().evaluator().drift().value (
 						new JumpDiffusionVertex (
 							dblTime,
 							dblCollateralSchemeNumeraire,

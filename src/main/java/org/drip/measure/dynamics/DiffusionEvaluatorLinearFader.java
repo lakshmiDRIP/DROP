@@ -81,7 +81,13 @@ public class DiffusionEvaluatorLinearFader extends org.drip.measure.dynamics.Dif
 				final org.drip.measure.realization.JumpDiffusionVertex jdv)
 				throws java.lang.Exception
 			{
-				return dblDrift;
+				if (null == jdv)
+					throw new java.lang.Exception
+						("DiffusionEvaluatorLinearFader::Standard::Drift::LocalEvaluator::value => Invalid Inputs");
+
+				double dblTimeToTermination = (dblTerminationTime - jdv.time()) / 365.25;
+
+				return dblTimeToTermination <= 0. ? 0. : -1. * jdv.value() / dblTimeToTermination;
 			}
 		};
 
@@ -92,13 +98,7 @@ public class DiffusionEvaluatorLinearFader extends org.drip.measure.dynamics.Dif
 				final org.drip.measure.realization.JumpDiffusionVertex jdv)
 				throws java.lang.Exception
 			{
-				if (null == jdv)
-					throw new java.lang.Exception
-						("DiffusionEvaluatorLinearFader::Standard::LocalEvaluator::value => Invalid Inputs");
-
-				double dblTime = jdv.time();
-
-				return (dblTime > dblTerminationTime ? 0. : dblTime - dblTerminationTime) * dblVolatility;
+				return dblVolatility;
 			}
 		};
 

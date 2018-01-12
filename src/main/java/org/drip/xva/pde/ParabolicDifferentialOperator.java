@@ -121,7 +121,7 @@ public class ParabolicDifferentialOperator {
 
 		org.drip.xva.derivative.AssetGreekVertex agv = etv.assetGreekVertex();
 
-		double dblVolatility = _t.numeraireEvolver().evaluator().volatility().value (new
+		double dblVolatility = _t.evolver().evaluator().volatility().value (new
 			org.drip.measure.realization.JumpDiffusionVertex (etv.time(), dblAssetNumeraireVertex, 0.,
 				false));
 
@@ -156,7 +156,7 @@ public class ParabolicDifferentialOperator {
 		double dblVolatility = java.lang.Double.NaN;
 
 		try {
-			dblVolatility = _t.numeraireEvolver().evaluator().volatility().value (new
+			dblVolatility = _t.evolver().evaluator().volatility().value (new
 				org.drip.measure.realization.JumpDiffusionVertex (etv.time(), dblAssetNumeraireVertex, 0.,
 					false));
 		} catch (java.lang.Exception e) {

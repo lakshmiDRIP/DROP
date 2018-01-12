@@ -81,13 +81,15 @@ import org.drip.xva.universe.*;
 public class BaselFixFloatDigest
 {
 
-	private static final TradeablesContainer GenerateTradeablesContainer()
+	private static final TradeablesContainer GenerateTradeablesContainer (
+		final String eventTenor,
+		final int eventCount,
+		final int iTerminationDate)
 		throws Exception
 	{
-		double dblAssetNumeraireDrift = 0.06;
-		double dblAssetNumeraireVolatility = 0.10;
-		double dblAssetNumeraireRepo = 0.03;
-		double dblAssetNumeraireDividend = 0.02;
+		double dblAssetNumeraireDrift = 0.0;
+		double dblAssetNumeraireVolatility = 0.25;
+		double dblAssetNumeraireRepo = 0.0;
 
 		double dblOvernightIndexNumeraireDrift = 0.0025;
 		double dblOvernightIndexNumeraireVolatility = 0.001;
@@ -121,9 +123,10 @@ public class BaselFixFloatDigest
 
 		Tradeable tAsset = new Tradeable (
 			new DiffusionEvolver (
-				DiffusionEvaluatorLogarithmic.Standard (
-					dblAssetNumeraireDrift - dblAssetNumeraireDividend,
-					dblAssetNumeraireVolatility
+				DiffusionEvaluatorLinearFader.Standard (
+					dblAssetNumeraireDrift,
+					dblAssetNumeraireVolatility,
+					iTerminationDate
 				)
 			),
 			dblAssetNumeraireRepo
@@ -207,6 +210,7 @@ public class BaselFixFloatDigest
 		final int periodCount)
 		throws Exception
 	{
+		JulianDate terminationDate = spotDate;
 		double dblBankHazardRateDrift = 0.002;
 		double dblBankHazardRateVolatility = 0.20;
 		double dblBankRecoveryRateDrift = 0.002;
@@ -216,8 +220,11 @@ public class BaselFixFloatDigest
 		double dblCounterPartyRecoveryRateDrift = 0.002;
 		double dblCounterPartyRecoveryRateVolatility = 0.02;
 
+		for (int i = 0; i < periodCount; ++i)
+			terminationDate = terminationDate.addTenor (periodTenor);
+
 		return MarketVertexGenerator.PeriodHorizon (
-			spotDate,
+			spotDate.julian(),
 			periodTenor,
 			periodCount,
 			new double[][] {
@@ -233,7 +240,11 @@ public class BaselFixFloatDigest
 				{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00}, // #9 COUNTER PARTY FUNDING NUMERAIRE
 				{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00}  // #10 COUNTER PARTY RECOVERY RATE
 			},
-			GenerateTradeablesContainer(),
+			GenerateTradeablesContainer (
+				periodTenor,
+				periodCount,
+				terminationDate.julian()
+			),
 			new DiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
 					dblBankHazardRateDrift,
@@ -373,7 +384,7 @@ public class BaselFixFloatDigest
 
 		MarketVertex initialMarketVertex = MarketVertex.StartUp (
 			dtSpot,
-			1.000, 				// dblPortfolioValueInitial
+			0.000, 				// dblPortfolioValueInitial
 			1.000, 				// dblOvernightNumeraireInitial
 			1.000, 				// dblCSANumeraire
 			0.015, 				// dblBankHazardRate

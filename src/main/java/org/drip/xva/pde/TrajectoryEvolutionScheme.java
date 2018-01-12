@@ -171,7 +171,7 @@ public class TrajectoryEvolutionScheme {
 
 		double dblTimeIncrement = me.vertexIncrement() / 365.25;
 
-		double dblAssetCashChange = dblAssetNumeraireUnitsStart * _tc.asset().cashAccumulationRate() *
+		double dblAssetCashChange = dblAssetNumeraireUnitsStart * _tc.position().cashAccumulationRate() *
 			dblAssetNumeraireFinish * dblTimeIncrement;
 
 		org.drip.xva.universe.Tradeable tCounterPartyNumeraire = _tc.counterPartyFunding();
@@ -190,7 +190,7 @@ public class TrajectoryEvolutionScheme {
 			dblCashAccountBalance -= dblBankSubordinateNumeraireUnitsStart *
 				dblBankSubordinateFundingNumeraireFinish;
 
-		org.drip.xva.universe.Tradeable tCollateralScheme = _tc.collateralScheme();
+		org.drip.xva.universe.Tradeable tCollateralScheme = _tc.csa();
 
 		org.drip.xva.universe.Tradeable tBankSeniorFunding = _tc.bankSeniorFunding();
 
@@ -308,7 +308,7 @@ public class TrajectoryEvolutionScheme {
 		if (null != nmvBankSubordinateFunding)
 			dblBankSubordinateFundingNumeraire = nmvBankSubordinateFunding.nodal();
 
-		org.drip.xva.universe.Tradeable tCollateralScheme = _tc.collateralScheme();
+		org.drip.xva.universe.Tradeable tCollateralScheme = _tc.csa();
 
 		try {
 			org.drip.xva.derivative.EvolutionTrajectoryVertex etvFinish = new
@@ -330,7 +330,7 @@ public class TrajectoryEvolutionScheme {
 						dblTimeIncrement / (dblAssetNumeraireBump * dblAssetNumeraireBump),
 					agvStart.derivativeFairValue() * java.lang.Math.exp (
 						-1. * dblTimeIncrement *
-						tCollateralScheme.numeraireEvolver().evaluator().drift().value (
+						tCollateralScheme.evolver().evaluator().drift().value (
 							new org.drip.measure.realization.JumpDiffusionVertex (
 								dblTimeStart - 0.5 * dblTimeIncrement,
 								me.start().csaNumeraire().nodal(),

@@ -159,7 +159,7 @@ public class BurgardKjaerOperator {
 
 		try {
 			double[] adblBumpedTheta = new org.drip.xva.pde.ParabolicDifferentialOperator
-				(_tc.asset()).thetaUpDown (etvStart, dblAssetValue, dblAssetBump);
+				(_tc.position()).thetaUpDown (etvStart, dblAssetValue, dblAssetBump);
 
 			if (null == adblBumpedTheta || 3 != adblBumpedTheta.length) return null;
 
@@ -229,7 +229,7 @@ public class BurgardKjaerOperator {
 
 		try {
 			double[] adblBumpedTheta = new org.drip.xva.pde.ParabolicDifferentialOperator
-				(_tc.asset()).thetaUpDown (etvStart, dblAssetValue, dblAssetBump);
+				(_tc.position()).thetaUpDown (etvStart, dblAssetValue, dblAssetBump);
 
 			if (null == adblBumpedTheta || 3 != adblBumpedTheta.length) return null;
 

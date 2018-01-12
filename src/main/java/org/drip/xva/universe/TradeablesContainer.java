@@ -68,54 +68,56 @@ package org.drip.xva.universe;
  * @author Lakshmi Krishnamurthy
  */
 
-public class TradeablesContainer {
-	private org.drip.xva.universe.Tradeable _tAsset = null;
-	private org.drip.xva.universe.Tradeable _tOvernightIndex = null;
-	private org.drip.xva.universe.Tradeable _tCollateralScheme = null;
-	private org.drip.xva.universe.Tradeable _tBankSeniorFunding = null;
-	private org.drip.xva.universe.Tradeable _tCounterPartyFunding = null;
-	private org.drip.xva.universe.Tradeable _tBankSubordinateFunding = null;
+public class TradeablesContainer
+{
+	private org.drip.xva.universe.Tradeable _csa = null;
+	private org.drip.xva.universe.Tradeable _position = null;
+	private org.drip.xva.universe.Tradeable _overnight = null;
+	private org.drip.xva.universe.Tradeable _bankSeniorFunding = null;
+	private org.drip.xva.universe.Tradeable _counterPartyFunding = null;
+	private org.drip.xva.universe.Tradeable _bankSubordinateFunding = null;
 
 	/**
 	 * LatentStateDynamicsContainer Constructor
 	 * 
-	 * @param tAsset The Asset Tradeable
-	 * @param tOvernightIndex The Overnight Index Tradeable
-	 * @param tCollateralScheme The Collateral Scheme Tradeable
-	 * @param tBankSeniorFunding Bank Senior Funding Tradeable
-	 * @param tBankSubordinateFunding Bank Subordinate Funding Tradeable
-	 * @param tCounterPartyFunding Counter Party Funding Tradeable
+	 * @param position The Book of Traded Positions
+	 * @param overnight The Overnight Index Tradeable
+	 * @param csa The CSA Tradeable
+	 * @param bankSeniorFunding Bank Senior Funding Tradeable
+	 * @param bankSubordinateFunding Bank Subordinate Funding Tradeable
+	 * @param counterPartyFunding Counter Party Funding Tradeable
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public TradeablesContainer (
-		final org.drip.xva.universe.Tradeable tAsset,
-		final org.drip.xva.universe.Tradeable tOvernightIndex,
-		final org.drip.xva.universe.Tradeable tCollateralScheme,
-		final org.drip.xva.universe.Tradeable tBankSeniorFunding,
-		final org.drip.xva.universe.Tradeable tBankSubordinateFunding,
-		final org.drip.xva.universe.Tradeable tCounterPartyFunding)
+		final org.drip.xva.universe.Tradeable position,
+		final org.drip.xva.universe.Tradeable overnight,
+		final org.drip.xva.universe.Tradeable csa,
+		final org.drip.xva.universe.Tradeable bankSeniorFunding,
+		final org.drip.xva.universe.Tradeable bankSubordinateFunding,
+		final org.drip.xva.universe.Tradeable counterPartyFunding)
 		throws java.lang.Exception
 	{
-		if (null == (_tOvernightIndex = tOvernightIndex) || null == (_tCollateralScheme = tCollateralScheme)
-			|| null == (_tBankSeniorFunding = tBankSeniorFunding) || null == (_tCounterPartyFunding =
-				tCounterPartyFunding))
+		if (null == (_overnight = overnight) ||
+			null == (_csa = csa) ||
+			null == (_bankSeniorFunding = bankSeniorFunding) ||
+			null == (_counterPartyFunding = counterPartyFunding))
 			throw new java.lang.Exception ("LatentStateDynamicsContainer Constructor => Invalid Inputs");
 
-		_tAsset = tAsset;
-		_tBankSubordinateFunding = tBankSubordinateFunding;
+		_position = position;
+		_bankSubordinateFunding = bankSubordinateFunding;
 	}
 
 	/**
-	 * Retrieve the Asset Tradeable
+	 * Retrieve the Book of Traded Positions
 	 * 
-	 * @return The Asset Tradeable
+	 * @return The Book of Traded Positions
 	 */
 
-	public org.drip.xva.universe.Tradeable asset()
+	public org.drip.xva.universe.Tradeable position()
 	{
-		return _tAsset;
+		return _position;
 	}
 
 	/**
@@ -124,20 +126,20 @@ public class TradeablesContainer {
 	 * @return The Overnight Index Tradeable
 	 */
 
-	public org.drip.xva.universe.Tradeable overnightIndex()
+	public org.drip.xva.universe.Tradeable overnight()
 	{
-		return _tOvernightIndex;
+		return _overnight;
 	}
 
 	/**
-	 * Retrieve the Collateral Scheme Tradeable
+	 * Retrieve the CSA Tradeable
 	 * 
-	 * @return The Collateral Scheme Tradeable
+	 * @return The CSA Tradeable
 	 */
 
-	public org.drip.xva.universe.Tradeable collateralScheme()
+	public org.drip.xva.universe.Tradeable csa()
 	{
-		return _tCollateralScheme;
+		return _csa;
 	}
 
 	/**
@@ -148,7 +150,7 @@ public class TradeablesContainer {
 
 	public org.drip.xva.universe.Tradeable bankSeniorFunding()
 	{
-		return _tBankSeniorFunding;
+		return _bankSeniorFunding;
 	}
 
 	/**
@@ -159,7 +161,7 @@ public class TradeablesContainer {
 
 	public org.drip.xva.universe.Tradeable bankSubordinateFunding()
 	{
-		return _tBankSubordinateFunding;
+		return _bankSubordinateFunding;
 	}
 
 	/**
@@ -170,6 +172,6 @@ public class TradeablesContainer {
 
 	public org.drip.xva.universe.Tradeable counterPartyFunding()
 	{
-		return _tCounterPartyFunding;
+		return _counterPartyFunding;
 	}
 }
