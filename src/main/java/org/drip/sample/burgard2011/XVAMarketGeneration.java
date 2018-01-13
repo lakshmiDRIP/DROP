@@ -353,8 +353,8 @@ public class XVAMarketGeneration {
 
 		for (int i = 0; i < aMV.length; ++i)
 			System.out.println (
-				"\t|| " + aMV[i].anchor() + " => " +
-				FormatUtil.FormatDouble (aMV[i].portfolioValue(), 1, 6, 1.) + " | " +
+				"\t|| " + aMV[i].anchorDate() + " => " +
+				FormatUtil.FormatDouble (aMV[i].positionValue(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (aMV[i].overnightRate(), 1, 2, 100.) + "% | " +
 				FormatUtil.FormatDouble (aMV[i].overnightNumeraire().nodal(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (aMV[i].csaRate(), 1, 2, 100.) + "% | " +
@@ -397,7 +397,7 @@ public class XVAMarketGeneration {
 			EntityMarketVertex emvBank = aMV[i].bank();
 
 			System.out.println (
-				"\t|| " + aMV[i].anchor() + " => " +
+				"\t|| " + aMV[i].anchorDate() + " => " +
 				FormatUtil.FormatDouble (emvBank.hazardRate(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (emvBank.survivalProbability(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (emvBank.seniorRecoveryRate(), 1, 0, 100.) + "% | " +
@@ -439,7 +439,7 @@ public class XVAMarketGeneration {
 			EntityMarketVertex emvCounterParty = aMV[i].counterParty();
 
 			System.out.println (
-				"\t|| " + aMV[i].anchor() + " => " +
+				"\t|| " + aMV[i].anchorDate() + " => " +
 				FormatUtil.FormatDouble (emvCounterParty.hazardRate(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (emvCounterParty.survivalProbability(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (emvCounterParty.seniorRecoveryRate(), 1, 0, 100.) + "% | " +

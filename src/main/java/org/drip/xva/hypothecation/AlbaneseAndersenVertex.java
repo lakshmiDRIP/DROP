@@ -73,42 +73,47 @@ public class AlbaneseAndersenVertex extends org.drip.xva.hypothecation.Collatera
 	/**
 	 * AlbaneseAndersenVertex Constructor
 	 * 
-	 * @param dtAnchor The Vertex Date Anchor
-	 * @param dblForward The Forward Exposure at the Path Vertex Time Node
-	 * @param dblAccrued The Default Window Accrued Cash-flow at the Path Vertex Time Node
-	 * @param dblCollateralBalance The Collateral Balance at the Path Vertex Time Node
+	 * @param anchorDate The Vertex Date Anchor
+	 * @param forward The Forward Exposure at the Path Vertex Time Node
+	 * @param accrued The Default Window Accrued Cash-flow at the Path Vertex Time Node
+	 * @param collateralBalance The Collateral Balance at the Path Vertex Time Node
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public AlbaneseAndersenVertex (
-		final org.drip.analytics.date.JulianDate dtAnchor,
-		final double dblForward,
-		final double dblAccrued,
-		final double dblCollateralBalance)
+		final org.drip.analytics.date.JulianDate anchorDate,
+		final double forward,
+		final double accrued,
+		final double collateralBalance)
 		throws java.lang.Exception
 	{
-		super (dtAnchor, dblForward, dblAccrued, dblCollateralBalance);
+		super (
+			anchorDate,
+			forward,
+			accrued,
+			collateralBalance
+		);
 	}
 
 	@Override public double credit()
 	{
-		double dblCreditExposure = collateralized();
+		double creditExposure = collateralized();
 
-		return 0. < dblCreditExposure ? dblCreditExposure : 0.;
+		return 0. < creditExposure ? creditExposure : 0.;
 	}
 
 	@Override public double debt()
 	{
-		double dblDebtExposure = collateralized();
+		double debtExposure = collateralized();
 
-		return 0. > dblDebtExposure ? dblDebtExposure : 0.;
+		return 0. > debtExposure ? debtExposure : 0.;
 	}
 
 	@Override public double funding()
 	{
-		double dblCreditExposure = collateralized();
+		double creditExposure = collateralized();
 
-		return 0. < dblCreditExposure ? dblCreditExposure : 0.;
+		return 0. < creditExposure ? creditExposure : 0.;
 	}
 }

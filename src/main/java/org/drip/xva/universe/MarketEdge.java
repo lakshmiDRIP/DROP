@@ -69,26 +69,30 @@ package org.drip.xva.universe;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MarketEdge {
-	private org.drip.xva.universe.MarketVertex _mvStart = null;
-	private org.drip.xva.universe.MarketVertex _mvFinish = null;
+public class MarketEdge
+{
+	private org.drip.xva.universe.MarketVertex _startingMarketVertex = null;
+	private org.drip.xva.universe.MarketVertex _finishingMarketVertex = null;
 
 	/**
 	 * MarketEdge Constructor
 	 * 
-	 * @param mvStart The Starting Market Vertex Instance
-	 * @param mvFinish The Finishing Market Vertex Instance
+	 * @param startingMarketVertex The Starting Market Vertex Instance
+	 * @param finishingMarketVertex The Finishing Market Vertex Instance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public MarketEdge (
-		final org.drip.xva.universe.MarketVertex mvStart,
-		final org.drip.xva.universe.MarketVertex mvFinish)
+		final org.drip.xva.universe.MarketVertex startingMarketVertex,
+		final org.drip.xva.universe.MarketVertex finishingMarketVertex)
 		throws java.lang.Exception
 	{
-		if (null == (_mvStart = mvStart) || null == (_mvFinish = mvFinish))
+		if (null == (_startingMarketVertex = startingMarketVertex) ||
+			null == (_finishingMarketVertex = finishingMarketVertex))
+		{
 			throw new java.lang.Exception ("MarketEdge Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -99,7 +103,7 @@ public class MarketEdge {
 
 	public int vertexIncrement()
 	{
-		return _mvFinish.anchor().julian() - _mvStart.anchor().julian();
+		return _finishingMarketVertex.anchorDate().julian() - _startingMarketVertex.anchorDate().julian();
 	}
 
 	/**
@@ -110,7 +114,7 @@ public class MarketEdge {
 
 	public org.drip.xva.universe.MarketVertex start()
 	{
-		return _mvStart;
+		return _startingMarketVertex;
 	}
 
 	/**
@@ -121,6 +125,6 @@ public class MarketEdge {
 
 	public org.drip.xva.universe.MarketVertex finish()
 	{
-		return _mvFinish;
+		return _finishingMarketVertex;
 	}
 }

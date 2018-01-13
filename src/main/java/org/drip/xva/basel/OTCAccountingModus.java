@@ -68,15 +68,18 @@ package org.drip.xva.basel;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class OTCAccountingModus {
-	private org.drip.xva.cpty.ExposureAdjustmentAggregator _eaa = null;
+public abstract class OTCAccountingModus
+{
+	private org.drip.xva.cpty.ExposureAdjustmentAggregator _exposureAdjustmentAggregator = null;
 
 	protected OTCAccountingModus (
-		final org.drip.xva.cpty.ExposureAdjustmentAggregator eaa)
+		final org.drip.xva.cpty.ExposureAdjustmentAggregator exposureAdjustmentAggregator)
 		throws java.lang.Exception
 	{
-		if (null == (_eaa = eaa))
+		if (null == (_exposureAdjustmentAggregator = exposureAdjustmentAggregator))
+		{
 			throw new java.lang.Exception ("OTCAccountingModus Contructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -87,7 +90,7 @@ public abstract class OTCAccountingModus {
 
 	public org.drip.xva.cpty.ExposureAdjustmentAggregator aggregator()
 	{
-		return _eaa;
+		return _exposureAdjustmentAggregator;
 	}
 
 	/**
@@ -109,11 +112,11 @@ public abstract class OTCAccountingModus {
 	/**
 	 * Generate the Fee Policy Based on the Aggregation Incremental
 	 * 
-	 * @param eaaNext The "Next" Exposure Adjustment Aggregator Instance
+	 * @param exposureAdjustmentAggregatorNext The "Next" Exposure Adjustment Aggregator Instance
 	 * 
 	 * @return The OTC Fee Policy
 	 */
 
 	public abstract org.drip.xva.basel.OTCAccountingPolicy feePolicy (
-		final org.drip.xva.cpty.ExposureAdjustmentAggregator eaaNext);
+		final org.drip.xva.cpty.ExposureAdjustmentAggregator exposureAdjustmentAggregatorNext);
 }

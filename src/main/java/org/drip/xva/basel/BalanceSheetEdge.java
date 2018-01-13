@@ -68,26 +68,30 @@ package org.drip.xva.basel;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BalanceSheetEdge {
-	private org.drip.xva.basel.BalanceSheetVertex _bsvHead = null;
-	private org.drip.xva.basel.BalanceSheetVertex _bsvTail = null;
+public class BalanceSheetEdge
+{
+	private org.drip.xva.basel.BalanceSheetVertex _headBalanceSheetVertex = null;
+	private org.drip.xva.basel.BalanceSheetVertex _tailBalanceSheetVertex = null;
 
 	/**
 	 * BalanceSheetEdge Constructor
 	 * 
-	 * @param bsvHead Balance Sheet Account Vertex Head Instance
-	 * @param bsvTail Balance Sheet Account Vertex Tail Instance
+	 * @param headBalanceSheetVertex Balance Sheet Account Vertex Head Instance
+	 * @param tailBalanceSheetVertex Balance Sheet Account Vertex Tail Instance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BalanceSheetEdge (
-		final org.drip.xva.basel.BalanceSheetVertex bsvHead,
-		final org.drip.xva.basel.BalanceSheetVertex bsvTail)
+		final org.drip.xva.basel.BalanceSheetVertex headBalanceSheetVertex,
+		final org.drip.xva.basel.BalanceSheetVertex tailBalanceSheetVertex)
 		throws java.lang.Exception
 	{
-		if (null == (_bsvHead = bsvHead) || null == (_bsvTail = bsvTail))
+		if (null == (_headBalanceSheetVertex = headBalanceSheetVertex) ||
+			null == (_tailBalanceSheetVertex = tailBalanceSheetVertex))
+		{
 			throw new java.lang.Exception ("BalanceSheetEdge Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -98,7 +102,7 @@ public class BalanceSheetEdge {
 
 	public org.drip.xva.basel.BalanceSheetVertex head()
 	{
-		return _bsvHead;
+		return _headBalanceSheetVertex;
 	}
 
 	/**
@@ -109,7 +113,7 @@ public class BalanceSheetEdge {
 
 	public org.drip.xva.basel.BalanceSheetVertex tail()
 	{
-		return _bsvTail;
+		return _tailBalanceSheetVertex;
 	}
 
 	/**
@@ -120,8 +124,8 @@ public class BalanceSheetEdge {
 
 	public double cet1Change()
 	{
-		return _bsvTail.retainedEarnings() - _bsvTail.contraAsset() - _bsvHead.retainedEarnings() +
-			_bsvHead.contraAsset();
+		return _tailBalanceSheetVertex.retainedEarnings() - _tailBalanceSheetVertex.contraAsset() -
+			_headBalanceSheetVertex.retainedEarnings() + _headBalanceSheetVertex.contraAsset();
 	}
 
 	/**
@@ -132,7 +136,8 @@ public class BalanceSheetEdge {
 
 	public double income()
 	{
-		return _bsvTail.retainedEarnings() + _bsvTail.contraLiability() - _bsvTail.contraAsset() -
-			_bsvHead.retainedEarnings() + _bsvHead.contraAsset() - _bsvHead.contraLiability();
+		return _tailBalanceSheetVertex.retainedEarnings() + _tailBalanceSheetVertex.contraLiability() -
+			_tailBalanceSheetVertex.contraAsset() - _headBalanceSheetVertex.retainedEarnings() +
+			_headBalanceSheetVertex.contraAsset() - _headBalanceSheetVertex.contraLiability();
 	}
 }

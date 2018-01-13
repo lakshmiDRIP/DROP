@@ -130,7 +130,7 @@ public class TrajectoryEvolutionScheme {
 
 		org.drip.xva.derivative.ReplicationPortfolioVertex rpvStart = etvStart.replicationPortfolioVertex();
 
-		double dblAssetNumeraireUnitsStart = rpvStart.assetNumeraireUnits();
+		double dblAssetNumeraireUnitsStart = rpvStart.positionUnits();
 
 		double dblBankSeniorNumeraireUnitsStart = rpvStart.bankSeniorNumeraireUnits();
 
@@ -148,7 +148,7 @@ public class TrajectoryEvolutionScheme {
 
 		org.drip.xva.universe.EntityMarketVertex emvCounterPartyFinish = mvFinish.counterParty();
 
-		double dblAssetNumeraireFinish = mvFinish.portfolioValue();
+		double dblAssetNumeraireFinish = mvFinish.positionValue();
 
 		double dblBankSeniorFundingNumeraireFinish = emvBankFinish.seniorFundingLatentState().nodal();
 
@@ -183,7 +183,7 @@ public class TrajectoryEvolutionScheme {
 		double dblCounterPartyPositionValueChange = dblCounterPartyNumeraireUnitsStart *
 			(dblCounterPartyNumeraireFinish - mvStart.counterParty().seniorFundingLatentState().nodal());
 
-		double dblCashAccountBalance = -1. * etvStart.assetGreekVertex().derivativeXVAValue() -
+		double dblCashAccountBalance = -1. * etvStart.positionGreekVertex().derivativeXVAValue() -
 			dblBankSeniorNumeraireUnitsStart * dblBankSeniorFundingNumeraireFinish;
 
 		if (org.drip.quant.common.NumberUtil.IsValid (dblBankSubordinateFundingNumeraireFinish))
@@ -199,7 +199,7 @@ public class TrajectoryEvolutionScheme {
 				dblTimeIncrement;
 
 		double dblDerivativeXVAValueChange = -1. * (dblAssetNumeraireUnitsStart * (dblAssetNumeraireFinish -
-			mvStart.portfolioValue()) + dblBankSeniorNumeraireUnitsStart *
+			mvStart.positionValue()) + dblBankSeniorNumeraireUnitsStart *
 				(dblBankSeniorFundingNumeraireFinish - emvBankStart.seniorFundingLatentState().nodal()) +
 					dblCounterPartyPositionValueChange + (dblAssetCashChange +
 						dblCounterPartyCashAccumulation + dblBankCashAccumulation) * dblTimeIncrement);
@@ -240,7 +240,7 @@ public class TrajectoryEvolutionScheme {
 	{
 		if (null == me || null == bko || null == etvStart) return null;
 
-		org.drip.xva.derivative.AssetGreekVertex agvStart = etvStart.assetGreekVertex();
+		org.drip.xva.derivative.PositionGreekVertex agvStart = etvStart.positionGreekVertex();
 
 		org.drip.xva.pde.BurgardKjaerEdgeRun bker = bko.edgeRun (me, etvStart, dblCollateral);
 
@@ -298,7 +298,7 @@ public class TrajectoryEvolutionScheme {
 
 		if (null == car) return null;
 
-		org.drip.xva.derivative.CashAccountEdge cae = car.cashAccount();
+		org.drip.xva.derivative.CashAccountEdge cae = car.cashAccountEdge();
 
 		double dblBankSeniorFundingNumeraire = emvBankFinish.seniorFundingLatentState().nodal();
 
@@ -322,7 +322,7 @@ public class TrajectoryEvolutionScheme {
 					dblCounterPartyNumeraireUnitsFinish,
 					etvStart.replicationPortfolioVertex().cashAccount() + cae.accumulation()
 				),
-				new org.drip.xva.derivative.AssetGreekVertex (
+				new org.drip.xva.derivative.PositionGreekVertex (
 					dblDerivativeXVAValueFinish,
 					dblDerivativeXVAValueDeltaFinish,
 					agvStart.derivativeXVAValueGamma() +

@@ -68,7 +68,8 @@ package org.drip.xva.hypothecation;
  * @author Lakshmi Krishnamurthy
  */
 
-public interface CollateralGroupVertexExposureComponent {
+public interface CollateralGroupVertexExposureComponent
+{
 
 	/**
 	 * Retrieve the Credit Exposure of the Collateral Group

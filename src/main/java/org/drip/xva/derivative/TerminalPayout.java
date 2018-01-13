@@ -2,7 +2,7 @@
 package org.drip.xva.derivative;
 
 /*
- * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ * -*- mode: java; tab-witerminalDateh: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
@@ -69,26 +69,30 @@ package org.drip.xva.derivative;
  * @author Lakshmi Krishnamurthy
  */
 
-public class TerminalPayout {
-	private org.drip.analytics.date.JulianDate _dt = null;
-	private org.drip.function.definition.R1ToR1 _r1ToR1Payout = null;
+public class TerminalPayout
+{
+	private org.drip.analytics.date.JulianDate _terminalDate = null;
+	private org.drip.function.definition.R1ToR1 _payoutFunction = null;
 
 	/**
 	 * TerminalPayout Constructor
 	 * 
-	 * @param dt The Terminal Pay Out Date
-	 * @param r1ToR1Payout The R^1 To R^1 Pay-out Function
+	 * @param terminalDate The Terminal Pay Out Date
+	 * @param payoutFunction The R^1 To R^1 Pay-out Function
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public TerminalPayout (
-		final org.drip.analytics.date.JulianDate dt,
-		final org.drip.function.definition.R1ToR1 r1ToR1Payout)
+		final org.drip.analytics.date.JulianDate terminalDate,
+		final org.drip.function.definition.R1ToR1 payoutFunction)
 		throws java.lang.Exception
 	{
-		if (null == (_dt = dt) || null == (_r1ToR1Payout = r1ToR1Payout))
+		if (null == (_terminalDate = terminalDate) ||
+			null == (_payoutFunction = payoutFunction))
+		{
 			throw new java.lang.Exception ("TerminalPayout Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -99,7 +103,7 @@ public class TerminalPayout {
 
 	public org.drip.analytics.date.JulianDate date()
 	{
-		return _dt;
+		return _terminalDate;
 	}
 
 	/**
@@ -110,6 +114,6 @@ public class TerminalPayout {
 
 	public org.drip.function.definition.R1ToR1 function()
 	{
-		return _r1ToR1Payout;
+		return _payoutFunction;
 	}
 }

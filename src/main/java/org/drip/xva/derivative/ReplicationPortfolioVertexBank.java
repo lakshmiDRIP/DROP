@@ -67,24 +67,31 @@ package org.drip.xva.derivative;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ReplicationPortfolioVertexBank {
-	private double _dblSeniorNumeraireUnits = java.lang.Double.NaN;
-	private double _dblSubordinateNumeraireUnits = java.lang.Double.NaN;
+public class ReplicationPortfolioVertexBank
+{
+	private double _seniorNumeraireUnits = java.lang.Double.NaN;
+	private double _subordinateNumeraireUnits = java.lang.Double.NaN;
 
 	/**
 	 * Construct a ReplicationPortfolioVertexBank Instance from the Senior Bank Numeraire alone
 	 * 
-	 * @param dblSeniorNumeraireUnits The Bank Senior Numeraire Units
+	 * @param seniorNumeraireUnits The Bank Senior Numeraire Units
 	 * 
 	 * @return The ReplicationPortfolioVertexBank Instance from the Senior Bank Numeraire alone
 	 */
 
 	public static final ReplicationPortfolioVertexBank Standard (
-		final double dblSeniorNumeraireUnits)
+		final double seniorNumeraireUnits)
 	{
-		try {
-			return new ReplicationPortfolioVertexBank (dblSeniorNumeraireUnits, 0.);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new ReplicationPortfolioVertexBank (
+				seniorNumeraireUnits,
+				0.
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -94,21 +101,23 @@ public class ReplicationPortfolioVertexBank {
 	/**
 	 * ReplicationPortfolioVertexBank Constructor
 	 * 
-	 * @param dblSeniorNumeraireUnits The Bank Senior Numeraire Units
-	 * @param dblSubordinateNumeraireUnits The Bank Subordinate Numeraire Units
+	 * @param seniorNumeraireUnits The Bank Senior Numeraire Units
+	 * @param subordinateNumeraireUnits The Bank Subordinate Numeraire Units
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ReplicationPortfolioVertexBank (
-		final double dblSeniorNumeraireUnits,
-		final double dblSubordinateNumeraireUnits)
+		final double seniorNumeraireUnits,
+		final double subordinateNumeraireUnits)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblSeniorNumeraireUnits = dblSeniorNumeraireUnits) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblSubordinateNumeraireUnits =
-				dblSubordinateNumeraireUnits))
+		if (!org.drip.quant.common.NumberUtil.IsValid (_seniorNumeraireUnits = seniorNumeraireUnits) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_subordinateNumeraireUnits =
+				subordinateNumeraireUnits))
+		{
 			throw new java.lang.Exception ("ReplicationPortfolioVertex Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -119,7 +128,7 @@ public class ReplicationPortfolioVertexBank {
 
 	public double seniorNumeraireUnits()
 	{
-		return _dblSeniorNumeraireUnits;
+		return _seniorNumeraireUnits;
 	}
 
 	/**
@@ -130,6 +139,6 @@ public class ReplicationPortfolioVertexBank {
 
 	public double subordinateNumeraireUnits()
 	{
-		return _dblSubordinateNumeraireUnits;
+		return _subordinateNumeraireUnits;
 	}
 }

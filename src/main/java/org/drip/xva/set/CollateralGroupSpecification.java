@@ -67,27 +67,37 @@ package org.drip.xva.set;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CollateralGroupSpecification extends org.drip.xva.set.RollUpGroupSpecification {
-	private double _dblIndependentAmount = java.lang.Double.NaN;
-	private double _dblMinimumTransferAmount = java.lang.Double.NaN;
-	private org.drip.function.definition.R1ToR1 _r1ToR1BankThreshold = null;
-	private org.drip.function.definition.R1ToR1[] _aR1ToR1CounterPartyThreshold = null;
+public class CollateralGroupSpecification extends org.drip.xva.set.RollUpGroupSpecification
+{
+	private double _independentAmount = java.lang.Double.NaN;
+	private double _minimumTransferAmount = java.lang.Double.NaN;
+	private org.drip.function.definition.R1ToR1 _bankThresholdFunction = null;
+	private org.drip.function.definition.R1ToR1[] _counterPartyThresholdFunctionArray = null;
 
 	/**
 	 * Generate a Zero-Threshold Instance of the Named Collateral Group
 	 * 
-	 * @param strName The Collateral Group Name
+	 * @param name The Collateral Group Name
 	 * 
 	 * @return The Zero-Threshold Instance of the Named Collateral Group
 	 */
 
 	public static final CollateralGroupSpecification ZeroThreshold (
-		final java.lang.String strName)
+		final java.lang.String name)
 	{
-		try {
-			return new CollateralGroupSpecification (org.drip.quant.common.StringUtil.GUID(), strName, null,
-				null, 0., 0.);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new CollateralGroupSpecification (
+				org.drip.quant.common.StringUtil.GUID(),
+				name,
+				null,
+				null,
+				0.,
+				0.
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -97,29 +107,40 @@ public class CollateralGroupSpecification extends org.drip.xva.set.RollUpGroupSp
 	/**
 	 * Generate a Fixed-Threshold Instance of the Named Collateral Group
 	 * 
-	 * @param strName The Collateral Group Name
-	 * @param dblCounterPartyThreshold The Fixed Counter Party Threshold
-	 * @param dblBankThreshold The Fixed Bank Threshold
+	 * @param name The Collateral Group Name
+	 * @param counterPartyThreshold The Fixed Counter Party Threshold
+	 * @param bankThreshold The Fixed Bank Threshold
 	 * 
 	 * @return The Fixed-Threshold Instance of the Named Collateral Group
 	 */
 
 	public static final CollateralGroupSpecification FixedThreshold (
-		final java.lang.String strName,
-		final double dblCounterPartyThreshold,
-		final double dblBankThreshold)
+		final java.lang.String name,
+		final double counterPartyThreshold,
+		final double bankThreshold)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblCounterPartyThreshold) || 0. >
-			dblCounterPartyThreshold || !org.drip.quant.common.NumberUtil.IsValid (dblBankThreshold) || 0. <
-				dblBankThreshold)
+		if (!org.drip.quant.common.NumberUtil.IsValid (counterPartyThreshold) || 0. > counterPartyThreshold ||
+			!org.drip.quant.common.NumberUtil.IsValid (bankThreshold) || 0. < bankThreshold)
+		{
 			return null;
+		}
 
-		try {
-			return new CollateralGroupSpecification (org.drip.quant.common.StringUtil.GUID(), strName, new
-				org.drip.function.r1tor1.FlatUnivariate[] {new org.drip.function.r1tor1.FlatUnivariate
-					(dblCounterPartyThreshold)}, new org.drip.function.r1tor1.FlatUnivariate
-						(dblBankThreshold), 0., 0.);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new CollateralGroupSpecification (
+				org.drip.quant.common.StringUtil.GUID(),
+				name,
+				new org.drip.function.r1tor1.FlatUnivariate[]
+				{
+					new org.drip.function.r1tor1.FlatUnivariate (counterPartyThreshold)
+				},
+				new org.drip.function.r1tor1.FlatUnivariate (bankThreshold),
+				0.,
+				0.
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -129,34 +150,39 @@ public class CollateralGroupSpecification extends org.drip.xva.set.RollUpGroupSp
 	/**
 	 * CollateralGroupSpecification Constructor
 	 * 
-	 * @param strID The Collateral Group ID
-	 * @param strName The Collateral Group Name
-	 * @param aR1ToR1CounterPartyThreshold The Array of Collateral Group Counter Party Threshold R^1 - R^1
+	 * @param id The Collateral Group ID
+	 * @param name The Collateral Group Name
+	 * @param counterPartyThresholdFunctionArray The Array of Collateral Group Counter Party Threshold R^1 - R^1
 	 * 		Functions
-	 * @param r1ToR1BankThreshold The Collateral Group Bank Threshold R^1 - R^1 Function
-	 * @param dblMinimumTransferAmount The Collateral Group Minimum Transfer Amount
-	 * @param dblIndependentAmount The Collateral Group Independent Amount
+	 * @param bankThresholdFunction The Collateral Group Bank Threshold R^1 - R^1 Function
+	 * @param minimumTransferAmount The Collateral Group Minimum Transfer Amount
+	 * @param independentAmount The Collateral Group Independent Amount
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CollateralGroupSpecification (
-		final java.lang.String strID,
-		final java.lang.String strName,
-		final org.drip.function.definition.R1ToR1[] aR1ToR1CounterPartyThreshold,
-		final org.drip.function.definition.R1ToR1 r1ToR1BankThreshold,
-		final double dblMinimumTransferAmount,
-		final double dblIndependentAmount)
+		final java.lang.String id,
+		final java.lang.String name,
+		final org.drip.function.definition.R1ToR1[] counterPartyThresholdFunctionArray,
+		final org.drip.function.definition.R1ToR1 bankThresholdFunction,
+		final double minimumTransferAmount,
+		final double independentAmount)
 		throws java.lang.Exception
 	{
-		super (strID, strName);
+		super (
+			id,
+			name
+		);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblMinimumTransferAmount = dblMinimumTransferAmount)
-			|| !org.drip.quant.common.NumberUtil.IsValid (_dblIndependentAmount = dblIndependentAmount))
+		if (!org.drip.quant.common.NumberUtil.IsValid (_minimumTransferAmount = minimumTransferAmount) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_independentAmount = independentAmount))
+		{
 			throw new java.lang.Exception ("CollateralGroupSpecification Constructor => Invalid Inputs");
+		}
 
-		_r1ToR1BankThreshold = r1ToR1BankThreshold;
-		_aR1ToR1CounterPartyThreshold = aR1ToR1CounterPartyThreshold;
+		_bankThresholdFunction = bankThresholdFunction;
+		_counterPartyThresholdFunctionArray = counterPartyThresholdFunctionArray;
 	}
 
 	/**
@@ -167,7 +193,7 @@ public class CollateralGroupSpecification extends org.drip.xva.set.RollUpGroupSp
 
 	public org.drip.function.definition.R1ToR1[] counterPartyThreshold()
 	{
-		return _aR1ToR1CounterPartyThreshold;
+		return _counterPartyThresholdFunctionArray;
 	}
 
 	/**
@@ -178,7 +204,7 @@ public class CollateralGroupSpecification extends org.drip.xva.set.RollUpGroupSp
 
 	public org.drip.function.definition.R1ToR1 bankThreshold()
 	{
-		return _r1ToR1BankThreshold;
+		return _bankThresholdFunction;
 	}
 
 	/**
@@ -189,7 +215,7 @@ public class CollateralGroupSpecification extends org.drip.xva.set.RollUpGroupSp
 
 	public double minimumTransferAmount()
 	{
-		return _dblMinimumTransferAmount;
+		return _minimumTransferAmount;
 	}
 
 	/**
@@ -200,7 +226,7 @@ public class CollateralGroupSpecification extends org.drip.xva.set.RollUpGroupSp
 
 	public double independentAmount()
 	{
-		return _dblIndependentAmount;
+		return _independentAmount;
 	}
 
 	/**
@@ -211,6 +237,6 @@ public class CollateralGroupSpecification extends org.drip.xva.set.RollUpGroupSp
 
 	public boolean isUncollateralized()
 	{
-		return null == _aR1ToR1CounterPartyThreshold && null == _r1ToR1BankThreshold;
+		return null == _counterPartyThresholdFunctionArray && null == _bankThresholdFunction;
 	}
 }

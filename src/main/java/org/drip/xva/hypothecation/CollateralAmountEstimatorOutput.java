@@ -68,62 +68,61 @@ package org.drip.xva.hypothecation;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CollateralAmountEstimatorOutput {
-	private double _dblPostingRequirement = java.lang.Double.NaN;
-	private org.drip.analytics.date.JulianDate _dtBankMargin = null;
-	private double _dblBankWindowMarginValue = java.lang.Double.NaN;
-	private double _dblBankPostingRequirement = java.lang.Double.NaN;
-	private double _dblBankCollateralThreshold = java.lang.Double.NaN;
-	private org.drip.analytics.date.JulianDate _dtCounterPartyMargin = null;
-	private double _dblCounterPartyWindowMarginValue = java.lang.Double.NaN;
-	private double _dblCounterPartyPostingRequirement = java.lang.Double.NaN;
-	private double _dblCounterPartyCollateralThreshold = java.lang.Double.NaN;
+public class CollateralAmountEstimatorOutput
+{
+	private double _postingRequirement = java.lang.Double.NaN;
+	private double _bankWindowMarginValue = java.lang.Double.NaN;
+	private double _bankPostingRequirement = java.lang.Double.NaN;
+	private double _bankCollateralThreshold = java.lang.Double.NaN;
+	private org.drip.analytics.date.JulianDate _bankMarginDate = null;
+	private double _counterPartyWindowMarginValue = java.lang.Double.NaN;
+	private double _counterPartyPostingRequirement = java.lang.Double.NaN;
+	private double _counterPartyCollateralThreshold = java.lang.Double.NaN;
+	private org.drip.analytics.date.JulianDate _counterPartyMarginDate = null;
 
 	/**
 	 * CollateralAmountEstimatorOutput Constructor
 	 * 
-	 * @param dtBankMargin The Bank Margin Date
-	 * @param dtCounterPartyMargin The Counter Party Margin Date
-	 * @param dblBankWindowMarginValue The Margin Value at the Bank Default Window
-	 * @param dblBankCollateralThreshold The Bank Collateral Threshold
-	 * @param dblBankPostingRequirement The Bank Collateral Posting Requirement
-	 * @param dblCounterPartyWindowMarginValue The Margin Value at the Counter Party Default Window
-	 * @param dblCounterPartyCollateralThreshold The Counter Party Collateral Threshold
-	 * @param dblCounterPartyPostingRequirement The Counter Party Collateral Posting Requirement
-	 * @param dblPostingRequirement The Total Collateral Posting Requirement
+	 * @param bankMarginDate The Bank Margin Date
+	 * @param counterPartyMarginDate The Counter Party Margin Date
+	 * @param bankWindowMarginValue The Margin Value at the Bank Default Window
+	 * @param bankCollateralThreshold The Bank Collateral Threshold
+	 * @param bankPostingRequirement The Bank Collateral Posting Requirement
+	 * @param counterPartyWindowMarginValue The Margin Value at the Counter Party Default Window
+	 * @param counterPartyCollateralThreshold The Counter Party Collateral Threshold
+	 * @param counterPartyPostingRequirement The Counter Party Collateral Posting Requirement
+	 * @param postingRequirement The Total Collateral Posting Requirement
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CollateralAmountEstimatorOutput (
-		final org.drip.analytics.date.JulianDate dtBankMargin,
-		final org.drip.analytics.date.JulianDate dtCounterPartyMargin,
-		final double dblBankWindowMarginValue,
-		final double dblBankCollateralThreshold,
-		final double dblBankPostingRequirement,
-		final double dblCounterPartyWindowMarginValue,
-		final double dblCounterPartyCollateralThreshold,
-		final double dblCounterPartyPostingRequirement,
-		final double dblPostingRequirement)
+		final org.drip.analytics.date.JulianDate bankMarginDate,
+		final org.drip.analytics.date.JulianDate counterPartyMarginDate,
+		final double bankWindowMarginValue,
+		final double bankCollateralThreshold,
+		final double bankPostingRequirement,
+		final double counterPartyWindowMarginValue,
+		final double counterPartyCollateralThreshold,
+		final double counterPartyPostingRequirement,
+		final double postingRequirement)
 		throws java.lang.Exception
 	{
-		if (null == (_dtBankMargin = dtBankMargin) || null == (_dtCounterPartyMargin = dtCounterPartyMargin)
-			|| !org.drip.quant.common.NumberUtil.IsValid (_dblBankWindowMarginValue =
-				dblBankWindowMarginValue) || !org.drip.quant.common.NumberUtil.IsValid
-					(_dblBankCollateralThreshold = dblBankCollateralThreshold) ||
-						!org.drip.quant.common.NumberUtil.IsValid (_dblBankPostingRequirement =
-							dblBankPostingRequirement) || !org.drip.quant.common.NumberUtil.IsValid
-								(_dblCounterPartyWindowMarginValue = dblCounterPartyWindowMarginValue) ||
-									!org.drip.quant.common.NumberUtil.IsValid
-										(_dblCounterPartyCollateralThreshold =
-											dblCounterPartyCollateralThreshold) ||
-												!org.drip.quant.common.NumberUtil.IsValid
-													(_dblCounterPartyPostingRequirement =
-														dblCounterPartyPostingRequirement) ||
-															!org.drip.quant.common.NumberUtil.IsValid
-																(_dblPostingRequirement =
-																	dblPostingRequirement))
+		if (null == (_bankMarginDate = bankMarginDate) ||
+			null == (_counterPartyMarginDate = counterPartyMarginDate) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_bankWindowMarginValue = bankWindowMarginValue) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_bankCollateralThreshold = bankCollateralThreshold) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_bankPostingRequirement = bankPostingRequirement) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_counterPartyWindowMarginValue =
+				counterPartyWindowMarginValue) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_counterPartyCollateralThreshold =
+				counterPartyCollateralThreshold) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_counterPartyPostingRequirement =
+				counterPartyPostingRequirement) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_postingRequirement = postingRequirement))
+		{
 			throw new java.lang.Exception ("CollateralAmountEstimatorOutput Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -134,7 +133,7 @@ public class CollateralAmountEstimatorOutput {
 
 	public org.drip.analytics.date.JulianDate bankMarginDate()
 	{
-		return _dtBankMargin;
+		return _bankMarginDate;
 	}
 
 	/**
@@ -145,7 +144,7 @@ public class CollateralAmountEstimatorOutput {
 
 	public org.drip.analytics.date.JulianDate counterPartyMarginDate()
 	{
-		return _dtCounterPartyMargin;
+		return _counterPartyMarginDate;
 	}
 
 	/**
@@ -156,7 +155,7 @@ public class CollateralAmountEstimatorOutput {
 
 	public double bankWindowMarginValue()
 	{
-		return _dblBankWindowMarginValue;
+		return _bankWindowMarginValue;
 	}
 
 	/**
@@ -167,7 +166,7 @@ public class CollateralAmountEstimatorOutput {
 
 	public double bankCollateralThreshold()
 	{
-		return _dblBankCollateralThreshold;
+		return _bankCollateralThreshold;
 	}
 
 	/**
@@ -178,7 +177,7 @@ public class CollateralAmountEstimatorOutput {
 
 	public double bankPostingRequirement()
 	{
-		return _dblBankPostingRequirement;
+		return _bankPostingRequirement;
 	}
 
 	/**
@@ -189,7 +188,7 @@ public class CollateralAmountEstimatorOutput {
 
 	public double counterPartyWindowMarginValue()
 	{
-		return _dblCounterPartyWindowMarginValue;
+		return _counterPartyWindowMarginValue;
 	}
 
 	/**
@@ -200,7 +199,7 @@ public class CollateralAmountEstimatorOutput {
 
 	public double counterPartyCollateralThreshold()
 	{
-		return _dblCounterPartyCollateralThreshold;
+		return _counterPartyCollateralThreshold;
 	}
 
 	/**
@@ -211,7 +210,7 @@ public class CollateralAmountEstimatorOutput {
 
 	public double counterPartyPostingRequirement()
 	{
-		return _dblCounterPartyPostingRequirement;
+		return _counterPartyPostingRequirement;
 	}
 
 	/**
@@ -222,6 +221,6 @@ public class CollateralAmountEstimatorOutput {
 
 	public double postingRequirement()
 	{
-		return _dblPostingRequirement;
+		return _postingRequirement;
 	}
 }

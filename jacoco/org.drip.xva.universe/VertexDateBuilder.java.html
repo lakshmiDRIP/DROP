@@ -66,101 +66,120 @@ package org.drip.xva.universe;
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L69">public class VertexDateBuilder {</span>
+<span class="nc" id="L69">public class VertexDateBuilder</span>
+{
 
 	/**
-	 * Construct an Array of JulianDate from the Spot Date and the Vertex Tenor Array
+	 * Construct an Array of Dates from the Spot Date and the Vertex Tenor Array
 	 * 
-	 * @param iSpotDate The Spot Date
-	 * @param astrVertexTenor The Vertex Tenor Array
+	 * @param spotDate The Spot Date
+	 * @param vertexTenorArray The Vertex Tenor Array
 	 * 
-	 * @return The Array of JulianDate
+	 * @return The Array of Dates
 	 */
 
-	public static final int[] FromStartTenorArray (
-		final int iSpotDate,
-		final java.lang.String[] astrVertexTenor)
+	public static final int[] SpotDateVertexTenor (
+		final int spotDate,
+		final java.lang.String[] vertexTenorArray)
 	{
-<span class="nc bnc" id="L84" title="All 4 branches missed.">		if (0 &gt;= iSpotDate || null == astrVertexTenor) return null;</span>
+<span class="nc bnc" id="L85" title="All 4 branches missed.">		if (0 &gt;= spotDate || null == vertexTenorArray) return null;</span>
 
-<span class="nc" id="L86">		int iNumVertex = astrVertexTenor.length;</span>
-<span class="nc bnc" id="L87" title="All 2 branches missed.">		int[] aiDate = 0 == iNumVertex ? null : new int[iNumVertex];</span>
+<span class="nc" id="L87">		int vertexCount = vertexTenorArray.length;</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">		int[] vertexDateArray = 0 == vertexCount ? null : new int[vertexCount];</span>
 
-<span class="nc bnc" id="L89" title="All 2 branches missed.">		if (0 == iNumVertex) return null;</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">		if (0 == vertexCount) return null;</span>
 
-<span class="nc" id="L91">		org.drip.analytics.date.JulianDate dtSpot = new org.drip.analytics.date.JulianDate (iSpotDate);</span>
+<span class="nc" id="L92">		org.drip.analytics.date.JulianDate spotDateJulian = new org.drip.analytics.date.JulianDate</span>
+			(spotDate);
 
-<span class="nc bnc" id="L93" title="All 2 branches missed.">		for (int iVertex = 0; iVertex &lt; iNumVertex; ++iVertex) {</span>
-<span class="nc" id="L94">			org.drip.analytics.date.JulianDate dtVertex = dtSpot.addTenor (astrVertexTenor[iVertex]);</span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+		{
+<span class="nc" id="L97">			org.drip.analytics.date.JulianDate vertexDateJulian = spotDateJulian.addTenor</span>
+<span class="nc" id="L98">				(vertexTenorArray[vertexIndex]);</span>
 
-<span class="nc bnc" id="L96" title="All 2 branches missed.">			if (null == dtVertex) return null;</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">			if (null == vertexDateJulian)</span>
+			{
+<span class="nc" id="L102">				return null;</span>
+			}
 
-<span class="nc" id="L98">			aiDate[iVertex] = dtVertex.julian();</span>
+<span class="nc" id="L105">			vertexDateArray[vertexIndex] = vertexDateJulian.julian();</span>
 		}
 
-<span class="nc" id="L101">		return aiDate;</span>
+<span class="nc" id="L108">		return vertexDateArray;</span>
 	}
 
 	/**
 	 * Construct an Array of Vertex Dates from the Spot Date, Tenor Spacing Width, and the Vertex Count
 	 * 
-	 * @param iSpotDate The Spot Date
-	 * @param strTenorWidth The Tenor Spacing Width
-	 * @param iNumVertex The Number of Vertexes
+	 * @param spotDate The Spot Date
+	 * @param periodTenor The Tenor Spacing Width
+	 * @param vertexCount The Number of Vertexes
 	 * 
 	 * @return The Array of Vertex Dates
 	 */
 
-	public static final int[] FromTenorWidth (
-		final int iSpotDate,
-		final java.lang.String strTenorWidth,
-		final int iNumVertex)
+	public static final int[] SpotDatePeriodTenor (
+		final int spotDate,
+		final java.lang.String periodTenor,
+		final int vertexCount)
 	{
-<span class="nc bnc" id="L119" title="All 4 branches missed.">		if (0 &gt;= iSpotDate || 0 &gt;= iNumVertex) return null;</span>
-
-<span class="nc" id="L121">		int[] aiDate = new int[iNumVertex];</span>
-
-<span class="nc" id="L123">		org.drip.analytics.date.JulianDate dtPrevious = new org.drip.analytics.date.JulianDate (iSpotDate);</span>
-
-<span class="nc bnc" id="L125" title="All 2 branches missed.">		for (int iVertex = 0; iVertex &lt; iNumVertex; ++iVertex) {</span>
-<span class="nc" id="L126">			org.drip.analytics.date.JulianDate dtVertex = dtPrevious.addTenor (strTenorWidth);</span>
-
-<span class="nc bnc" id="L128" title="All 2 branches missed.">			if (null == dtVertex) return null;</span>
-
-<span class="nc" id="L130">			aiDate[iVertex] = dtVertex.julian();</span>
-
-<span class="nc" id="L132">			dtPrevious = dtVertex;</span>
+<span class="nc bnc" id="L126" title="All 4 branches missed.">		if (0 &gt;= spotDate || 0 &gt;= vertexCount)</span>
+		{
+<span class="nc" id="L128">			return null;</span>
 		}
 
-<span class="nc" id="L135">		return aiDate;</span>
+<span class="nc" id="L131">		int[] vertexDateArray = new int[vertexCount];</span>
+
+<span class="nc" id="L133">		org.drip.analytics.date.JulianDate previousDateJulian = new org.drip.analytics.date.JulianDate</span>
+			(spotDate);
+
+<span class="nc bnc" id="L136" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+		{
+<span class="nc" id="L138">			org.drip.analytics.date.JulianDate vertexDateJulian = previousDateJulian.addTenor (periodTenor);</span>
+
+<span class="nc bnc" id="L140" title="All 2 branches missed.">			if (null == vertexDateJulian)</span>
+			{
+<span class="nc" id="L142">				return null;</span>
+			}
+
+<span class="nc" id="L145">			vertexDateArray[vertexIndex] = vertexDateJulian.julian();</span>
+
+<span class="nc" id="L147">			previousDateJulian = vertexDateJulian;</span>
+		}
+
+<span class="nc" id="L150">		return vertexDateArray;</span>
 	}
 
 	/**
-	 * Generate Equal Width Vertex Dates from the specified Spot Date
+	 * Generate Equal Width Vertex Dates from the specified Spot Date and the Terminal Date
 	 * 
-	 * @param iSpotDate The Spot Date
-	 * @param iFinalDate The Final Date
-	 * @param iNumVertex The Number of Vertexes
+	 * @param spotDate The Spot Date
+	 * @param terminalDate The Terminal Date
+	 * @param vertexCount The Number of Vertexes
 	 * 
 	 * @return Array of Equal Width Vertex Dates
 	 */
 
 	public static final int[] EqualWidth (
-		final int iSpotDate,
-		final int iFinalDate,
-		final int iNumVertex)
+		final int spotDate,
+		final int terminalDate,
+		final int vertexCount)
 	{
-<span class="pc bpc" id="L153" title="3 of 6 branches missed.">		if (0 &gt;= iSpotDate || iFinalDate &lt;= iSpotDate || 0 &gt;= iNumVertex) return null;</span>
-
-<span class="fc" id="L155">		int[] aiDate = new int[iNumVertex];</span>
-<span class="fc" id="L156">		aiDate[iNumVertex - 1] = iFinalDate;</span>
-<span class="fc" id="L157">		double dblWidth = ((double) (iFinalDate - iSpotDate)) / iNumVertex;</span>
-
-<span class="fc bfc" id="L159" title="All 2 branches covered.">		for (int iVertex = 0; iVertex &lt; iNumVertex - 1; ++iVertex) {</span>
-<span class="fc" id="L160">			aiDate[iVertex] = iSpotDate + (int) ((iVertex + 1) * dblWidth);</span>
+<span class="pc bpc" id="L168" title="3 of 6 branches missed.">		if (0 &gt;= spotDate || terminalDate &lt;= spotDate || 0 &gt;= vertexCount)</span>
+		{
+<span class="nc" id="L170">			return null;</span>
 		}
 
-<span class="fc" id="L163">		return aiDate;</span>
+<span class="fc" id="L173">		int[] vertexDateArray = new int[vertexCount];</span>
+<span class="fc" id="L174">		vertexDateArray[vertexCount - 1] = terminalDate;</span>
+<span class="fc" id="L175">		double periodWidth = ((double) (terminalDate - spotDate)) / vertexCount;</span>
+
+<span class="fc bfc" id="L177" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount - 1; ++vertexIndex)</span>
+		{
+<span class="fc" id="L179">			vertexDateArray[vertexIndex] = spotDate + (int) ((vertexIndex + 1) * periodWidth);</span>
+		}
+
+<span class="fc" id="L182">		return vertexDateArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -68,36 +68,38 @@ package org.drip.xva.basel;
  * @author Lakshmi Krishnamurthy
  */
 
-public class OTCAccountingPolicy {
-	private double _dblCET1Change = java.lang.Double.NaN;
-	private double _dblPortfolioValueChange = java.lang.Double.NaN;
-	private double _dblContraLiabilityChange = java.lang.Double.NaN;
-	private double _dblFundingTransferPricing = java.lang.Double.NaN;
+public class OTCAccountingPolicy
+{
+	private double _cet1Change = java.lang.Double.NaN;
+	private double _portfolioValueChange = java.lang.Double.NaN;
+	private double _contraLiabilityChange = java.lang.Double.NaN;
+	private double _fundingTransferPricing = java.lang.Double.NaN;
 
 	/**
 	 * OTCAccountingPolicy Constructor
 	 * 
-	 * @param dblFundingTransferPricing The Funding Transfer Pricing
-	 * @param dblCET1Change The CET1 Change
-	 * @param dblContraLiabilityChange The Contra-Liability Change
-	 * @param dblPortfolioValueChange The Portfolio Value Change
+	 * @param fundingTransferPricing The Funding Transfer Pricing
+	 * @param cet1Change The CET1 Change
+	 * @param contraLiabilityChange The Contra-Liability Change
+	 * @param portfolioValueChange The Portfolio Value Change
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public OTCAccountingPolicy (
-		final double dblFundingTransferPricing,
-		final double dblCET1Change,
-		final double dblContraLiabilityChange,
-		final double dblPortfolioValueChange)
+		final double fundingTransferPricing,
+		final double cet1Change,
+		final double contraLiabilityChange,
+		final double portfolioValueChange)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblFundingTransferPricing =
-			dblFundingTransferPricing) || !org.drip.quant.common.NumberUtil.IsValid (_dblCET1Change =
-				dblCET1Change) || !org.drip.quant.common.NumberUtil.IsValid (_dblContraLiabilityChange =
-					dblContraLiabilityChange) || !org.drip.quant.common.NumberUtil.IsValid
-						(_dblPortfolioValueChange = dblPortfolioValueChange))
+		if (!org.drip.quant.common.NumberUtil.IsValid (_fundingTransferPricing = fundingTransferPricing) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_cet1Change = cet1Change) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_contraLiabilityChange = contraLiabilityChange) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_portfolioValueChange = portfolioValueChange))
+		{
 			throw new java.lang.Exception ("OTCAccountingPolicy Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -108,7 +110,7 @@ public class OTCAccountingPolicy {
 
 	public double fundingTransferPricing()
 	{
-		return _dblFundingTransferPricing;
+		return _fundingTransferPricing;
 	}
 
 	/**
@@ -119,7 +121,7 @@ public class OTCAccountingPolicy {
 
 	public double cet1Change()
 	{
-		return _dblCET1Change;
+		return _cet1Change;
 	}
 
 	/**
@@ -130,7 +132,7 @@ public class OTCAccountingPolicy {
 
 	public double contraLiabilityChange()
 	{
-		return _dblContraLiabilityChange;
+		return _contraLiabilityChange;
 	}
 
 	/**
@@ -141,6 +143,6 @@ public class OTCAccountingPolicy {
 
 	public double portfolioValueChange()
 	{
-		return _dblPortfolioValueChange;
+		return _portfolioValueChange;
 	}
 }

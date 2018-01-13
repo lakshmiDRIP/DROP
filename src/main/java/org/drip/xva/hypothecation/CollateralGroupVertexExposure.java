@@ -68,24 +68,28 @@ package org.drip.xva.hypothecation;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CollateralGroupVertexExposure {
-	private double _dblAccrued = java.lang.Double.NaN;
-	private double _dblForward = java.lang.Double.NaN;
+public class CollateralGroupVertexExposure
+{
+	private double _accrued = java.lang.Double.NaN;
+	private double _forward = java.lang.Double.NaN;
 
 	/**
 	 * Construct the Unaccrued CollateralGroupVertexExposure Instance
 	 * 
-	 * @param dblForward The Unrealized Forward Exposure
+	 * @param forward The Unrealized Forward Exposure
 	 * 
 	 * @return Unaccrued CollateralGroupVertexExposure Instance
 	 */
 
 	public static final CollateralGroupVertexExposure Unaccrued (
-		final double dblForward)
+		final double forward)
 	{
-		try {
-			return new CollateralGroupVertexExposure (dblForward, 0.);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new CollateralGroupVertexExposure (forward, 0.);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -95,20 +99,22 @@ public class CollateralGroupVertexExposure {
 	/**
 	 * CollateralGroupVertexExposure Constructor
 	 * 
-	 * @param dblForward The Unrealized Forward Exposure
-	 * @param dblAccrued The Accrued Exposure
+	 * @param forward The Unrealized Forward Exposure
+	 * @param accrued The Accrued Exposure
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CollateralGroupVertexExposure (
-		final double dblForward,
-		final double dblAccrued)
+		final double forward,
+		final double accrued)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblForward = dblForward) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblAccrued = dblAccrued))
+		if (!org.drip.quant.common.NumberUtil.IsValid (_forward = forward) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_accrued = accrued))
+		{
 			throw new java.lang.Exception ("CollateralGroupVertexExposure Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -119,7 +125,7 @@ public class CollateralGroupVertexExposure {
 
 	public double forward()
 	{
-		return _dblForward;
+		return _forward;
 	}
 
 	/**
@@ -130,7 +136,7 @@ public class CollateralGroupVertexExposure {
 
 	public double accrued()
 	{
-		return _dblAccrued;
+		return _accrued;
 	}
 
 	/**
@@ -141,6 +147,6 @@ public class CollateralGroupVertexExposure {
 
 	public double uncollateralized()
 	{
-		return _dblForward + _dblAccrued;
+		return _forward + _accrued;
 	}
 }

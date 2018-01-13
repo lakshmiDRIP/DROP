@@ -70,7 +70,8 @@ package org.drip.xva.definition;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PDEEvolutionControl {
+public class PDEEvolutionControl
+{
 
 	/**
 	 * Set the Close-out to the Derivative MTM according to Li and Tang (2007) or Gregory (2009) 
@@ -84,28 +85,28 @@ public class PDEEvolutionControl {
 
 	public static final int CLOSEOUT_BURGARD_KJAER = 2;
 
-<span class="fc" id="L87">	private int _iCloseOutScheme = CLOSEOUT_GREGORY_LI_TANG;</span>
-<span class="fc" id="L88">	private double _dblSensitivityShiftFactor = java.lang.Double.NaN;</span>
+<span class="fc" id="L88">	private int _closeOutScheme = CLOSEOUT_GREGORY_LI_TANG;</span>
+<span class="fc" id="L89">	private double _sensitivityShiftFactor = java.lang.Double.NaN;</span>
 
 	/**
 	 * PDEEvolutionControl Constructor
 	 * 
-	 * @param iCloseOutScheme The Close Out Scheme
-	 * @param dblSensitivityShiftFactor The Factor needed to evaluate Sensitivity Shifts
+	 * @param closeOutScheme The Close Out Scheme
+	 * @param sensitivityShiftFactor The Factor needed to evaluate Sensitivity Shifts
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public PDEEvolutionControl (
-		final int iCloseOutScheme,
-		final double dblSensitivityShiftFactor)
+		final int closeOutScheme,
+		final double sensitivityShiftFactor)
 		throws java.lang.Exception
-<span class="fc" id="L103">	{</span>
-<span class="pc bpc" id="L104" title="3 of 4 branches missed.">		if ((CLOSEOUT_GREGORY_LI_TANG != (_iCloseOutScheme = iCloseOutScheme) &amp;&amp; CLOSEOUT_BURGARD_KJAER !=</span>
-<span class="pc bpc" id="L105" title="1 of 2 branches missed.">			_iCloseOutScheme) || !org.drip.quant.common.NumberUtil.IsValid (_dblSensitivityShiftFactor =</span>
-				dblSensitivityShiftFactor))
-<span class="nc" id="L107">			throw new java.lang.Exception (&quot;PDEEvolutionControl Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L108">	}</span>
+<span class="fc" id="L104">	{</span>
+<span class="pc bpc" id="L105" title="3 of 4 branches missed.">		if ((CLOSEOUT_GREGORY_LI_TANG != (_closeOutScheme = closeOutScheme) &amp;&amp;</span>
+			CLOSEOUT_BURGARD_KJAER != _closeOutScheme) ||
+<span class="pc bpc" id="L107" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_sensitivityShiftFactor = sensitivityShiftFactor))</span>
+<span class="nc" id="L108">			throw new java.lang.Exception (&quot;PDEEvolutionControl Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L109">	}</span>
 
 	/**
 	 * Retrieve the Close-out Scheme
@@ -115,7 +116,7 @@ public class PDEEvolutionControl {
 
 	public int closeOutScheme()
 	{
-<span class="fc" id="L118">		return _iCloseOutScheme;</span>
+<span class="fc" id="L119">		return _closeOutScheme;</span>
 	}
 
 	/**
@@ -126,7 +127,7 @@ public class PDEEvolutionControl {
 
 	public double sensitivityShiftFactor()
 	{
-<span class="fc" id="L129">		return _dblSensitivityShiftFactor;</span>
+<span class="fc" id="L130">		return _sensitivityShiftFactor;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

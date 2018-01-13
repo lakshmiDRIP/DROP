@@ -70,46 +70,52 @@ package org.drip.xva.derivative;
  * @author Lakshmi Krishnamurthy
  */
 
-public class EvolutionTrajectoryVertex {
-	private double _dblTime = java.lang.Double.NaN;
-	private double _dblCollateral = java.lang.Double.NaN;
-	private double _dblHedgeError = java.lang.Double.NaN;
-	private org.drip.xva.derivative.AssetGreekVertex _agv = null;
-	private org.drip.xva.derivative.ReplicationPortfolioVertex _rpv = null;
-	private double _dblBankGainOnCounterPartyDefault = java.lang.Double.NaN;
-	private double _dblCounterPartyGainOnBankDefault = java.lang.Double.NaN;
+public class EvolutionTrajectoryVertex
+{
+	private double _time = java.lang.Double.NaN;
+	private double _collateral = java.lang.Double.NaN;
+	private double _hedgeError = java.lang.Double.NaN;
+	private double _bankGainOnCounterPartyDefault = java.lang.Double.NaN;
+	private double _counterPartyGainOnBankDefault = java.lang.Double.NaN;
+	private org.drip.xva.derivative.PositionGreekVertex _positionGreekVertex = null;
+	private org.drip.xva.derivative.ReplicationPortfolioVertex _replicationPortfolioVertex = null;
 
 	/**
 	 * EvolutionTrajectoryVertex Constructor
 	 * 
-	 * @param dblTime The Evolution Trajectory Edge Time
-	 * @param rpv The Replication Portfolio Vertex
-	 * @param agv The Asset Greek Vertex
-	 * @param dblCounterPartyGainOnBankDefault Counter Party Gain On Bank Default
-	 * @param dblBankGainOnCounterPartyDefault Bank Gain On Default of Counter Party
-	 * @param dblCollateral The Vertex Collateral
-	 * @param dblHedgeError The Vertex Hedge Error
+	 * @param time The Evolution Trajectory Edge Time
+	 * @param replicationPortfolioVertex The Replication Portfolio Vertex
+	 * @param positionGreekVertex The Position Greek Vertex
+	 * @param counterPartyGainOnBankDefault Counter Party Gain On Bank Default
+	 * @param bankGainOnCounterPartyDefault Bank Gain On Default of Counter Party
+	 * @param collateral The Vertex Collateral
+	 * @param hedgeError The Vertex Hedge Error
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public EvolutionTrajectoryVertex (
-		final double dblTime,
-		final org.drip.xva.derivative.ReplicationPortfolioVertex rpv,
-		final org.drip.xva.derivative.AssetGreekVertex agv,
-		final double dblCounterPartyGainOnBankDefault,
-		final double dblBankGainOnCounterPartyDefault,
-		final double dblCollateral,
-		final double dblHedgeError)
+		final double time,
+		final org.drip.xva.derivative.ReplicationPortfolioVertex replicationPortfolioVertex,
+		final org.drip.xva.derivative.PositionGreekVertex positionGreekVertex,
+		final double counterPartyGainOnBankDefault,
+		final double bankGainOnCounterPartyDefault,
+		final double collateral,
+		final double hedgeError)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblTime = dblTime) || null == (_rpv = rpv) || null ==
-			(_agv = agv) || !org.drip.quant.common.NumberUtil.IsValid (_dblCounterPartyGainOnBankDefault =
-				dblCounterPartyGainOnBankDefault) || !org.drip.quant.common.NumberUtil.IsValid
-					(_dblBankGainOnCounterPartyDefault = dblBankGainOnCounterPartyDefault) ||
-						!org.drip.quant.common.NumberUtil.IsValid (_dblCollateral = dblCollateral) ||
-							!org.drip.quant.common.NumberUtil.IsValid (_dblHedgeError = dblHedgeError))
+		if (!org.drip.quant.common.NumberUtil.IsValid (_time = time) ||
+			null == (_replicationPortfolioVertex = replicationPortfolioVertex) ||
+			null == (_positionGreekVertex = positionGreekVertex) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_counterPartyGainOnBankDefault =
+				counterPartyGainOnBankDefault) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_bankGainOnCounterPartyDefault =
+				bankGainOnCounterPartyDefault) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_collateral = collateral) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_hedgeError = hedgeError))
+		{
 			throw new java.lang.Exception ("EvolutionTrajectoryVertex Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -120,7 +126,7 @@ public class EvolutionTrajectoryVertex {
 
 	public double time()
 	{
-		return _dblTime;
+		return _time;
 	}
 
 	/**
@@ -131,7 +137,7 @@ public class EvolutionTrajectoryVertex {
 
 	public double collateral()
 	{
-		return _dblCollateral;
+		return _collateral;
 	}
 
 	/**
@@ -142,7 +148,7 @@ public class EvolutionTrajectoryVertex {
 
 	public double hedgeError()
 	{
-		return _dblHedgeError;
+		return _hedgeError;
 	}
 
 	/**
@@ -153,18 +159,18 @@ public class EvolutionTrajectoryVertex {
 
 	public org.drip.xva.derivative.ReplicationPortfolioVertex replicationPortfolioVertex()
 	{
-		return _rpv;
+		return _replicationPortfolioVertex;
 	}
 
 	/**
-	 * Retrieve the Asset Greek Vertex
+	 * Retrieve the Position Greek Vertex
 	 * 
-	 * @return The Asset Greek Vertex
+	 * @return The Position Greek Vertex
 	 */
 
-	public org.drip.xva.derivative.AssetGreekVertex assetGreekVertex()
+	public org.drip.xva.derivative.PositionGreekVertex positionGreekVertex()
 	{
-		return _agv;
+		return _positionGreekVertex;
 	}
 
 	/**
@@ -175,7 +181,7 @@ public class EvolutionTrajectoryVertex {
 
 	public double gainOnBankDefault()
 	{
-		return _dblCounterPartyGainOnBankDefault;
+		return _counterPartyGainOnBankDefault;
 	}
 
 	/**
@@ -186,14 +192,14 @@ public class EvolutionTrajectoryVertex {
 
 	public double gainOnCounterPartyDefault()
 	{
-		return _dblBankGainOnCounterPartyDefault;
+		return _bankGainOnCounterPartyDefault;
 	}
 
 	/**
 	 * Indicate whether Replication Portfolio satisfies the Funding Constraint implied by the Vertex
 	 * 	Numeraire
 	 * 
-	 * @param mv The Market Vertex
+	 * @param marketVertex The Market Vertex
 	 * 
 	 * @return The Funding Constraint Verification Mismatch
 	 * 
@@ -201,25 +207,26 @@ public class EvolutionTrajectoryVertex {
 	 */
 
 	public double verifyFundingConstraint (
-		final org.drip.xva.universe.MarketVertex mv)
+		final org.drip.xva.universe.MarketVertex marketVertex)
 		throws java.lang.Exception
 	{
-		if (null == mv)
+		if (null == marketVertex)
 			throw new java.lang.Exception
 				("EvolutionTrajectoryVertex::verifyFundingConstraint => Invalid Inputs");
 
-		org.drip.xva.universe.EntityMarketVertex emvBank = mv.bank();
+		org.drip.xva.universe.EntityMarketVertex bankMarketVertex = marketVertex.bank();
 
-		double dblFundingConstraint = _agv.derivativeXVAValue() + emvBank.seniorFundingLatentState().nodal()
-			* _rpv.bankSeniorNumeraireUnits();
+		double fundingConstraint = _positionGreekVertex.derivativeXVAValue() +
+			bankMarketVertex.seniorFundingLatentState().nodal() *
+			_replicationPortfolioVertex.bankSeniorNumeraireUnits();
 
-		org.drip.xva.universe.LatentStateMarketVertex nmvBankSubordinateFunding =
-			emvBank.subordinateFundingLatentState();
+		org.drip.xva.universe.LatentStateMarketVertex bankSubordinateFundingMarketVertex =
+			bankMarketVertex.subordinateFundingLatentState();
 
-		if (null != nmvBankSubordinateFunding)
-			dblFundingConstraint += nmvBankSubordinateFunding.nodal() *
-				_rpv.bankSubordinateNumeraireUnits();
+		if (null != bankSubordinateFundingMarketVertex)
+			fundingConstraint += bankSubordinateFundingMarketVertex.nodal() *
+				_replicationPortfolioVertex.bankSubordinateNumeraireUnits();
 
-		return dblFundingConstraint;
+		return fundingConstraint;
 	}
 }

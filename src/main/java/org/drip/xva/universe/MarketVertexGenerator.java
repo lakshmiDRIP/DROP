@@ -137,16 +137,16 @@ public class MarketVertexGenerator
 
 	public static final int COUNTER_PARTY_RECOVERY_RATE = 10;
 
-	private int _iSpotDate = -1;
-	private int[] _aiEventDate = null;
-	private double[] _adblTimeWidth = null;
-	private double[][] _aadblCorrelationMatrix = null;
-	private org.drip.xva.universe.TradeablesContainer _tc = null;
-	private org.drip.measure.process.DiffusionEvolver _deBankHazardRate = null;
-	private org.drip.measure.process.DiffusionEvolver _deBankSeniorRecoveryRate = null;
-	private org.drip.measure.process.DiffusionEvolver _deCounterPartyHazardRate = null;
-	private org.drip.measure.process.DiffusionEvolver _deCounterPartyRecoveryRate = null;
-	private org.drip.measure.process.DiffusionEvolver _deBankSubordinateRecoveryRate = null;
+	private int _spotDate = -1;
+	private double[] _ycfWidth = null;
+	private int[] _eventDateArray = null;
+	private double[][] _correlationMatrix = null;
+	private org.drip.xva.universe.TradeablesContainer _tradeablesContainer = null;
+	private org.drip.measure.process.DiffusionEvolver _bankHazardRateEvolver = null;
+	private org.drip.measure.process.DiffusionEvolver _bankSeniorRecoveryRateEvolver = null;
+	private org.drip.measure.process.DiffusionEvolver _counterPartyHazardRateFinishVertexArrayEvolver = null;
+	private org.drip.measure.process.DiffusionEvolver _counterPartyRecoveryRateEvolver = null;
+	private org.drip.measure.process.DiffusionEvolver _bankSubordinateRecoveryRateEvolver = null;
 
 	/**
 	 * Construct a MarketVertexGenerator Instance from the Spot Date, the Period Tenor, and the Period Count
@@ -154,13 +154,13 @@ public class MarketVertexGenerator
 	 * @param spotDate The Spot Date
 	 * @param periodTenor The Period Tenor
 	 * @param periodCount The Period Count
-	 * @param aadblCorrelationMatrix The Correlation Matrix
-	 * @param tc The Tradeables Container Instance
-	 * @param deBankHazardRate The Bank Hazard Rate Diffusive Evolver
-	 * @param deBankSeniorRecoveryRate The Bank Senior Recovery Rate Diffusive Evolver
-	 * @param deBankSubordinateRecoveryRate The Bank Subordinate Rate Diffusive Evolver
-	 * @param deCounterPartyHazardRate The Counter Party Hazard Rate Diffusive Evolver
-	 * @param deCounterPartyRecoveryRate The Counter Party Recovery Rate Diffusive Evolver
+	 * @param correlationMatrix The Correlation Matrix
+	 * @param tradeablesContainer The Tradeables Container Instance
+	 * @param bankHazardRateEvolver The Bank Hazard Rate Diffusive Evolver
+	 * @param bankSeniorRecoveryRateEvolver The Bank Senior Recovery Rate Diffusive Evolver
+	 * @param bankSubordinateRecoveryRateEvolver The Bank Subordinate Rate Diffusive Evolver
+	 * @param counterPartyHazardRateFinishVertexArrayEvolver The Counter Party Hazard Rate Diffusive Evolver
+	 * @param counterPartyRecoveryRateEvolver The Counter Party Recovery Rate Diffusive Evolver
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -169,13 +169,13 @@ public class MarketVertexGenerator
 		final int spotDate,
 		final java.lang.String periodTenor,
 		final int periodCount,
-		final double[][] aadblCorrelationMatrix,
-		final org.drip.xva.universe.TradeablesContainer tc,
-		final org.drip.measure.process.DiffusionEvolver deBankHazardRate,
-		final org.drip.measure.process.DiffusionEvolver deBankSeniorRecoveryRate,
-		final org.drip.measure.process.DiffusionEvolver deBankSubordinateRecoveryRate,
-		final org.drip.measure.process.DiffusionEvolver deCounterPartyHazardRate,
-		final org.drip.measure.process.DiffusionEvolver deCounterPartyRecoveryRate)
+		final double[][] correlationMatrix,
+		final org.drip.xva.universe.TradeablesContainer tradeablesContainer,
+		final org.drip.measure.process.DiffusionEvolver bankHazardRateEvolver,
+		final org.drip.measure.process.DiffusionEvolver bankSeniorRecoveryRateEvolver,
+		final org.drip.measure.process.DiffusionEvolver bankSubordinateRecoveryRateEvolver,
+		final org.drip.measure.process.DiffusionEvolver counterPartyHazardRateFinishVertexArrayEvolver,
+		final org.drip.measure.process.DiffusionEvolver counterPartyRecoveryRateEvolver)
 	{
 		try
 		{
@@ -186,13 +186,13 @@ public class MarketVertexGenerator
 					periodTenor,
 					periodCount
 				),
-				aadblCorrelationMatrix,
-				tc,
-				deBankHazardRate,
-				deBankSeniorRecoveryRate,
-				deBankSubordinateRecoveryRate,
-				deCounterPartyHazardRate,
-				deCounterPartyRecoveryRate
+				correlationMatrix,
+				tradeablesContainer,
+				bankHazardRateEvolver,
+				bankSeniorRecoveryRateEvolver,
+				bankSubordinateRecoveryRateEvolver,
+				counterPartyHazardRateFinishVertexArrayEvolver,
+				counterPartyRecoveryRateEvolver
 			);
 		}
 		catch (java.lang.Exception e)
@@ -206,61 +206,72 @@ public class MarketVertexGenerator
 	/**
 	 * MarketVertexGenerator Constructor
 	 * 
-	 * @param iSpotDate The Spot Date
-	 * @param aiEventDate Array of the Event Dates
-	 * @param aadblCorrelationMatrix The Correlation Matrix
-	 * @param tc The Tradeables Container Instance
-	 * @param deBankHazardRate The Bank Hazard Rate Diffusive Evolver
-	 * @param deBankSeniorRecoveryRate The Bank Senior Recovery Rate Diffusive Evolver
-	 * @param deBankSubordinateRecoveryRate The Bank Subordinate Rate Diffusive Evolver
-	 * @param deCounterPartyHazardRate The Counter Party Hazard Rate Diffusive Evolver
-	 * @param deCounterPartyRecoveryRate The Counter Party Recovery Rate Diffusive Evolver
+	 * @param spotDate The Spot Date
+	 * @param eventDateArray Array of the Event Dates
+	 * @param correlationMatrix The Correlation Matrix
+	 * @param tradeablesContainer The Tradeables Container Instance
+	 * @param bankHazardRateEvolver The Bank Hazard Rate Diffusive Evolver
+	 * @param bankSeniorRecoveryRateEvolver The Bank Senior Recovery Rate Diffusive Evolver
+	 * @param bankSubordinateRecoveryRateEvolver The Bank Subordinate Rate Diffusive Evolver
+	 * @param counterPartyHazardRateFinishVertexArrayEvolver The Counter Party Hazard Rate Diffusive Evolver
+	 * @param counterPartyRecoveryRateEvolver The Counter Party Recovery Rate Diffusive Evolver
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public MarketVertexGenerator (
-		final int iSpotDate,
-		final int[] aiEventDate,
-		final double[][] aadblCorrelationMatrix,
-		final org.drip.xva.universe.TradeablesContainer tc,
-		final org.drip.measure.process.DiffusionEvolver deBankHazardRate,
-		final org.drip.measure.process.DiffusionEvolver deBankSeniorRecoveryRate,
-		final org.drip.measure.process.DiffusionEvolver deBankSubordinateRecoveryRate,
-		final org.drip.measure.process.DiffusionEvolver deCounterPartyHazardRate,
-		final org.drip.measure.process.DiffusionEvolver deCounterPartyRecoveryRate)
+		final int spotDate,
+		final int[] eventDateArray,
+		final double[][] correlationMatrix,
+		final org.drip.xva.universe.TradeablesContainer tradeablesContainer,
+		final org.drip.measure.process.DiffusionEvolver bankHazardRateEvolver,
+		final org.drip.measure.process.DiffusionEvolver bankSeniorRecoveryRateEvolver,
+		final org.drip.measure.process.DiffusionEvolver bankSubordinateRecoveryRateEvolver,
+		final org.drip.measure.process.DiffusionEvolver counterPartyHazardRateFinishVertexArrayEvolver,
+		final org.drip.measure.process.DiffusionEvolver counterPartyRecoveryRateEvolver)
 		throws java.lang.Exception
 	{
-		if (0 >= (_iSpotDate = iSpotDate) ||
-			null == (_aiEventDate = aiEventDate) ||
-			null == (_aadblCorrelationMatrix = aadblCorrelationMatrix) ||
-			null == (_tc = tc) ||
-			null == (_deBankHazardRate = deBankHazardRate) ||
-			null == (_deBankSeniorRecoveryRate = deBankSeniorRecoveryRate) ||
-			null == (_deCounterPartyHazardRate = deCounterPartyHazardRate) ||
-			null == (_deCounterPartyRecoveryRate = deCounterPartyRecoveryRate))
+		if (0 >= (_spotDate = spotDate) ||
+			null == (_eventDateArray = eventDateArray) ||
+			null == (_correlationMatrix = correlationMatrix) ||
+			null == (_tradeablesContainer = tradeablesContainer) ||
+			null == (_bankHazardRateEvolver = bankHazardRateEvolver) ||
+			null == (_bankSeniorRecoveryRateEvolver = bankSeniorRecoveryRateEvolver) ||
+			null == (_counterPartyHazardRateFinishVertexArrayEvolver = counterPartyHazardRateFinishVertexArrayEvolver) ||
+			null == (_counterPartyRecoveryRateEvolver = counterPartyRecoveryRateEvolver))
+		{
 			throw new java.lang.Exception ("MarketVertexGenerator Constructor => Invalid Inputs");
-
-		int iNumEventVertex = _aiEventDate.length;
-		int iNumDimension = _aadblCorrelationMatrix.length;
-		_deBankSubordinateRecoveryRate = deBankSubordinateRecoveryRate;
-		_adblTimeWidth = 0 == iNumEventVertex ? null : new double[iNumEventVertex];
-
-		if (0 == iNumEventVertex || 11 != iNumDimension || 0. >= (_adblTimeWidth[0] = ((double)
-			(_aiEventDate[0] - _iSpotDate)) / 365.25))
-			throw new java.lang.Exception ("MarketVertexGenerator Constructor => Invalid Inputs");
-
-		for (int iEventVertex = 1; iEventVertex < iNumEventVertex; ++iEventVertex) {
-			if (0. >= (_adblTimeWidth[iEventVertex] = ((double) (_aiEventDate[iEventVertex] -
-				_aiEventDate[iEventVertex - 1])) / 365.25))
-				throw new java.lang.Exception ("MarketVertexGenerator Constructor => Invalid Inputs");
 		}
 
-		for (int iDimension = 0; iDimension < iNumDimension; ++iDimension) {
-			if (null == _aadblCorrelationMatrix[iDimension] || 11 !=
-				_aadblCorrelationMatrix[iDimension].length || !org.drip.quant.common.NumberUtil.IsValid
-					(_aadblCorrelationMatrix[iDimension]))
+		int eventVertexCount = _eventDateArray.length;
+		int dimensionCount = _correlationMatrix.length;
+		_ycfWidth = 0 == eventVertexCount ? null : new double[eventVertexCount];
+		_bankSubordinateRecoveryRateEvolver = bankSubordinateRecoveryRateEvolver;
+
+		if (0 == eventVertexCount ||
+			11 != dimensionCount ||
+			0. >= (_ycfWidth[0] = ((double) (_eventDateArray[0] - _spotDate)) / 365.25))
+		{
+			throw new java.lang.Exception ("MarketVertexGenerator Constructor => Invalid Inputs");
+		}
+
+		for (int eventVertexIndex = 1; eventVertexIndex < eventVertexCount; ++eventVertexIndex)
+		{
+			if (0. >= (_ycfWidth[eventVertexIndex] = ((double) (_eventDateArray[eventVertexIndex] -
+				_eventDateArray[eventVertexIndex - 1])) / 365.25))
+			{
 				throw new java.lang.Exception ("MarketVertexGenerator Constructor => Invalid Inputs");
+			}
+		}
+
+		for (int dimensionIndex = 0; dimensionIndex < dimensionCount; ++dimensionIndex)
+		{
+			if (null == _correlationMatrix[dimensionIndex] ||
+				11 != _correlationMatrix[dimensionIndex].length ||
+				!org.drip.quant.common.NumberUtil.IsValid (_correlationMatrix[dimensionIndex]))
+			{
+				throw new java.lang.Exception ("MarketVertexGenerator Constructor => Invalid Inputs");
+			}
 		}
 	}
 
@@ -272,7 +283,7 @@ public class MarketVertexGenerator
 
 	public int spotDate()
 	{
-		return _iSpotDate;
+		return _spotDate;
 	}
 
 	/**
@@ -283,12 +294,12 @@ public class MarketVertexGenerator
 
 	public int[] vertexDates()
 	{
-		int eventDateCount = _aiEventDate.length;
+		int eventDateCount = _eventDateArray.length;
 		int[] vertexDateArray = new int[eventDateCount + 1];
-		vertexDateArray[0] = _iSpotDate;
+		vertexDateArray[0] = _spotDate;
 
 		for (int i = 0; i < eventDateCount; ++i)
-			vertexDateArray[i + 1] = _aiEventDate[i];
+			vertexDateArray[i + 1] = _eventDateArray[i];
 
 		return vertexDateArray;
 	}
@@ -301,7 +312,7 @@ public class MarketVertexGenerator
 
 	public double[] timeWidth()
 	{
-		return _adblTimeWidth;
+		return _ycfWidth;
 	}
 
 	/**
@@ -312,7 +323,7 @@ public class MarketVertexGenerator
 
 	public double[][] correlationMatrix()
 	{
-		return _aadblCorrelationMatrix;
+		return _correlationMatrix;
 	}
 
 	/**
@@ -323,7 +334,7 @@ public class MarketVertexGenerator
 
 	public org.drip.measure.process.DiffusionEvolver bankHazardRateEvolver()
 	{
-		return _deBankHazardRate;
+		return _bankHazardRateEvolver;
 	}
 
 	/**
@@ -334,7 +345,7 @@ public class MarketVertexGenerator
 
 	public org.drip.measure.process.DiffusionEvolver bankSeniorRecoveryRateEvolver()
 	{
-		return _deBankSeniorRecoveryRate;
+		return _bankSeniorRecoveryRateEvolver;
 	}
 
 	/**
@@ -345,7 +356,7 @@ public class MarketVertexGenerator
 
 	public org.drip.measure.process.DiffusionEvolver bankSubordinateRecoveryRateEvolver()
 	{
-		return _deBankSubordinateRecoveryRate;
+		return _bankSubordinateRecoveryRateEvolver;
 	}
 
 	/**
@@ -354,9 +365,9 @@ public class MarketVertexGenerator
 	 * @return The Counter Party Rate Evolver
 	 */
 
-	public org.drip.measure.process.DiffusionEvolver counterPartyHazardRateEvolver()
+	public org.drip.measure.process.DiffusionEvolver counterPartyHazardRateFinishVertexArrayEvolver()
 	{
-		return _deCounterPartyHazardRate;
+		return _counterPartyHazardRateFinishVertexArrayEvolver;
 	}
 
 	/**
@@ -367,380 +378,400 @@ public class MarketVertexGenerator
 
 	public org.drip.measure.process.DiffusionEvolver counterPartyRecoveryRateEvolver()
 	{
-		return _deCounterPartyRecoveryRate;
+		return _counterPartyRecoveryRateEvolver;
 	}
 
 	/**
 	 * Generated the Sequence of the Simulated Market Vertexes
 	 * 
-	 * @param mvInitial The Initial Market Vertex
+	 * @param initialMarketVertex The Initial Market Vertex
 	 * 
 	 * @return The Array of the Simulated Market Vertexes
 	 */
 
 	public org.drip.xva.universe.MarketVertex[] marketVertex (
-		final org.drip.xva.universe.MarketVertex mvInitial)
+		final org.drip.xva.universe.MarketVertex initialMarketVertex)
 	{
-		if (null == mvInitial) return null;
+		if (null == initialMarketVertex)
+		{
+			return null;
+		}
 
-		org.drip.xva.universe.Tradeable tAsset = _tc.position();
+		org.drip.xva.universe.Tradeable position = _tradeablesContainer.position();
 
-		org.drip.xva.universe.Tradeable tBankSubordinateFunding = _tc.bankSubordinateFunding();
+		org.drip.xva.universe.Tradeable bankSubordinateFundingNumeraire =
+			_tradeablesContainer.bankSubordinateFunding();
 
-		int iNumEventVertex = _aiEventDate.length;
-		boolean bAssetEvolutionOn = null != tAsset;
-		double dblBankSurvivalProbabilityExponent = 0.;
-		int iTerminalDate = _aiEventDate[iNumEventVertex - 1];
-		double dblCounterPartySurvivalProbabilityExponent = 0.;
-		org.drip.measure.realization.JumpDiffusionVertex[] aJDVAssetNumeraire = null;
-		org.drip.measure.realization.JumpDiffusionVertex[] aJDVBankHazardRate = null;
-		org.drip.measure.realization.JumpDiffusionVertex[] aJDVBankSeniorRecoveryRate = null;
-		org.drip.measure.realization.JumpDiffusionVertex[] aJDVCounterPartyHazardRate = null;
-		org.drip.measure.realization.JumpDiffusionVertex[] aJDVOvernightIndexNumeraire = null;
-		org.drip.measure.realization.JumpDiffusionVertex[] aJDVCounterPartyRecoveryRate = null;
-		org.drip.measure.realization.JumpDiffusionVertex[] aJDVCollateralSchemeNumeraire = null;
-		org.drip.measure.realization.JumpDiffusionVertex[] aJDVBankSeniorFundingNumeraire = null;
-		org.drip.measure.realization.JumpDiffusionVertex[] aJDVBankSubordinateRecoveryRate = null;
-		org.drip.measure.realization.JumpDiffusionVertex[] aJDVCounterPartyFundingNumeraire = null;
-		org.drip.measure.realization.JumpDiffusionVertex[] aJDVBankSubordinateFundingNumeraire = null;
-		org.drip.xva.universe.MarketVertex[] aMV = new
-			org.drip.xva.universe.MarketVertex[iNumEventVertex + 1];
+		double bankSurvivalProbabilityExponent = 0.;
+		int eventVertexCount = _eventDateArray.length;
+		boolean positionEvolutionOn = null != position;
+		double counterPartySurvivalProbabilityExponent = 0.;
+		int terminalDate = _eventDateArray[eventVertexCount - 1];
+		org.drip.measure.realization.JumpDiffusionVertex[] csaNumeraireVertexArray = null;
+		org.drip.measure.realization.JumpDiffusionVertex[] positionValueVertexArray = null;
+		org.drip.measure.realization.JumpDiffusionVertex[] bankHazardRateVertexArray = null;
+		org.drip.measure.realization.JumpDiffusionVertex[] overnightNumeraireVertexArray = null;
+		org.drip.measure.realization.JumpDiffusionVertex[] bankSeniorRecoveryRateVertexArray = null;
+		org.drip.measure.realization.JumpDiffusionVertex[] counterPartyHazardRateFinishVertexArray = null;
+		org.drip.measure.realization.JumpDiffusionVertex[] counterPartyRecoveryRateVertexArray = null;
+		org.drip.measure.realization.JumpDiffusionVertex[] bankSeniorFundingNumeraireVertexArray = null;
+		org.drip.measure.realization.JumpDiffusionVertex[] bankSubordinateRecoveryRateVertexArray = null;
+		org.drip.measure.realization.JumpDiffusionVertex[] counterPartyFundingNumeraireVertexArray = null;
+		org.drip.measure.realization.JumpDiffusionVertex[] bankSubordinateFundingNumeraireVertexArray = null;
+		org.drip.xva.universe.MarketVertex[] marketVertexArray = new
+			org.drip.xva.universe.MarketVertex[eventVertexCount + 1];
 
-		double[][] aadblUnitEvolverSequence = org.drip.quant.linearalgebra.Matrix.Transpose (
+		double[][] unitEvolverSequence = org.drip.quant.linearalgebra.Matrix.Transpose (
 			org.drip.measure.discrete.SequenceGenerator.GaussianJoint (
-				iNumEventVertex,
-				_aadblCorrelationMatrix
+				eventVertexCount,
+				_correlationMatrix
 			)
 		);
 
-		if (null == aadblUnitEvolverSequence) return null;
+		if (null == unitEvolverSequence)
+		{
+			return null;
+		}
 
-		org.drip.xva.universe.EntityMarketVertex emvBankInitial = mvInitial.bank();
+		org.drip.xva.universe.EntityMarketVertex initialBankVertex = initialMarketVertex.bank();
 
-		org.drip.xva.universe.EntityMarketVertex emvCounterPartyInitial = mvInitial.bank();
+		double initialBankSubordinateRecovery = initialBankVertex.subordinateRecoveryRate();
 
-		double dblBankSubordinateRecoveryRateStart = emvBankInitial.subordinateRecoveryRate();
+		org.drip.xva.universe.EntityMarketVertex initialCounterPartyVertex = initialMarketVertex.counterParty();
 
-		org.drip.xva.universe.LatentStateMarketVertex nmvSubordinateFunding =
-			emvBankInitial.subordinateFundingLatentState();
+		org.drip.xva.universe.LatentStateMarketVertex subordinateFundingLatentState =
+			initialBankVertex.subordinateFundingLatentState();
 
-		double dblBankSubordinateFundingNumeraireTerminal = null == nmvSubordinateFunding ?
-			java.lang.Double.NaN : nmvSubordinateFunding.nodal();
+		double terminalBankSubordinateFundingNumeraire = null == subordinateFundingLatentState ?
+			java.lang.Double.NaN : subordinateFundingLatentState.nodal();
 
-		boolean bSingleBankBond = null == tBankSubordinateFunding ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblBankSubordinateFundingNumeraireTerminal) ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblBankSubordinateRecoveryRateStart);
+		boolean useSingleBankBondOnly = null == bankSubordinateFundingNumeraire ||
+			!org.drip.quant.common.NumberUtil.IsValid (terminalBankSubordinateFundingNumeraire) ||
+				!org.drip.quant.common.NumberUtil.IsValid (initialBankSubordinateRecovery);
 
-		try {
-			aJDVAssetNumeraire = !bAssetEvolutionOn ? null : tAsset.evolver().vertexSequence (
+		try
+		{
+			positionValueVertexArray = !positionEvolutionOn ? null : position.evolver().vertexSequence (
 				new org.drip.measure.realization.JumpDiffusionVertex (
-					_iSpotDate,
-					mvInitial.portfolioValue(),
+					_spotDate,
+					initialMarketVertex.positionValue(),
 					0.,
 					false
 				),
 				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
-					_adblTimeWidth,
-					aadblUnitEvolverSequence[ASSET]
+					_ycfWidth,
+					unitEvolverSequence[ASSET]
 				),
-				_adblTimeWidth
+				_ycfWidth
 			);
 
-			aJDVOvernightIndexNumeraire = _tc.overnight().evolver().vertexSequenceReverse (
+			overnightNumeraireVertexArray = _tradeablesContainer.overnight().evolver().vertexSequenceReverse (
 				new org.drip.measure.realization.JumpDiffusionVertex (
-					iTerminalDate,
-					mvInitial.overnightNumeraire().nodal(),
+					terminalDate,
+					initialMarketVertex.overnightNumeraire().nodal(),
 					0.,
 					false
 				),
 				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
-					_adblTimeWidth,
-					aadblUnitEvolverSequence[OVERNIGHT_INDEX]
+					_ycfWidth,
+					unitEvolverSequence[OVERNIGHT_INDEX]
 				),
-				_adblTimeWidth
+				_ycfWidth
 			);
 
-			aJDVCollateralSchemeNumeraire = _tc.csa().evolver().vertexSequenceReverse (
+			csaNumeraireVertexArray = _tradeablesContainer.csa().evolver().vertexSequenceReverse (
 				new org.drip.measure.realization.JumpDiffusionVertex (
-					iTerminalDate,
-					mvInitial.csaNumeraire().nodal(),
+					terminalDate,
+					initialMarketVertex.csaNumeraire().nodal(),
 					0.,
 					false
 				),
 				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
-					_adblTimeWidth,
-					aadblUnitEvolverSequence[COLLATERAL_SCHEME]
+					_ycfWidth,
+					unitEvolverSequence[COLLATERAL_SCHEME]
 				),
-			_adblTimeWidth);
+			_ycfWidth);
 
-			aJDVBankHazardRate = _deBankHazardRate.vertexSequence (
+			bankHazardRateVertexArray = _bankHazardRateEvolver.vertexSequence (
 				new org.drip.measure.realization.JumpDiffusionVertex (
-					_iSpotDate,
-					emvBankInitial.hazardRate(),
+					_spotDate,
+					initialBankVertex.hazardRate(),
 					0.,
 					false
 				),
 				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
-					_adblTimeWidth,
-					aadblUnitEvolverSequence[BANK_HAZARD_RATE]
+					_ycfWidth,
+					unitEvolverSequence[BANK_HAZARD_RATE]
 				),
-				_adblTimeWidth
+				_ycfWidth
 			);
 
-			aJDVBankSeniorFundingNumeraire =
-				_tc.bankSubordinateFunding().evolver().vertexSequenceReverse (
+			bankSeniorFundingNumeraireVertexArray =
+				_tradeablesContainer.bankSubordinateFunding().evolver().vertexSequenceReverse (
 					new org.drip.measure.realization.JumpDiffusionVertex (
-						iTerminalDate,
-						emvBankInitial.seniorFundingLatentState().nodal(),
+						terminalDate,
+						initialBankVertex.seniorFundingLatentState().nodal(),
 						0.,
 						false
 					),
 					org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
-						_adblTimeWidth,
-						aadblUnitEvolverSequence[BANK_SENIOR_FUNDING]
+						_ycfWidth,
+						unitEvolverSequence[BANK_SENIOR_FUNDING]
 					),
-					_adblTimeWidth
+					_ycfWidth
 				);
 
-			aJDVBankSeniorRecoveryRate = _deBankSeniorRecoveryRate.vertexSequence (
+			bankSeniorRecoveryRateVertexArray = _bankSeniorRecoveryRateEvolver.vertexSequence (
 				new org.drip.measure.realization.JumpDiffusionVertex (
-					_iSpotDate,
-					emvBankInitial.seniorRecoveryRate(),
+					_spotDate,
+					initialBankVertex.seniorRecoveryRate(),
 					0.,
 					false
 				),
 				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
-					_adblTimeWidth,
-					aadblUnitEvolverSequence[BANK_SENIOR_RECOVERY_RATE]
+					_ycfWidth,
+					unitEvolverSequence[BANK_SENIOR_RECOVERY_RATE]
 				),
-				_adblTimeWidth
+				_ycfWidth
 			);
 
-			aJDVBankSubordinateFundingNumeraire = bSingleBankBond ? null :
-				tBankSubordinateFunding.evolver().vertexSequenceReverse (
+			bankSubordinateFundingNumeraireVertexArray = useSingleBankBondOnly ? null :
+				bankSubordinateFundingNumeraire.evolver().vertexSequenceReverse (
 					new org.drip.measure.realization.JumpDiffusionVertex (
-						iTerminalDate,
-						dblBankSubordinateFundingNumeraireTerminal,
+						terminalDate,
+						terminalBankSubordinateFundingNumeraire,
 						0.,
 						false
 					),
 					org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
-						_adblTimeWidth,
-						aadblUnitEvolverSequence[BANK_SUBORDINATE_FUNDING]
+						_ycfWidth,
+						unitEvolverSequence[BANK_SUBORDINATE_FUNDING]
 					),
-					_adblTimeWidth
+					_ycfWidth
 				);
 
-			aJDVBankSubordinateRecoveryRate = bSingleBankBond ? null :
-				_deBankSubordinateRecoveryRate.vertexSequence (
+			bankSubordinateRecoveryRateVertexArray = useSingleBankBondOnly ? null :
+				_bankSubordinateRecoveryRateEvolver.vertexSequence (
 					new org.drip.measure.realization.JumpDiffusionVertex (
-						_iSpotDate,
-						dblBankSubordinateRecoveryRateStart,
+						_spotDate,
+						initialBankSubordinateRecovery,
 						0.,
 						false
 					),
 					org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
-						_adblTimeWidth,
-						aadblUnitEvolverSequence[BANK_SUBORDINATE_RECOVERY_RATE]
+						_ycfWidth,
+						unitEvolverSequence[BANK_SUBORDINATE_RECOVERY_RATE]
 					),
-					_adblTimeWidth
+					_ycfWidth
 				);
 
-			aJDVCounterPartyHazardRate = _deCounterPartyHazardRate.vertexSequence (
+			counterPartyHazardRateFinishVertexArray = _counterPartyHazardRateFinishVertexArrayEvolver.vertexSequence (
 				new org.drip.measure.realization.JumpDiffusionVertex (
-					_iSpotDate,
-					emvCounterPartyInitial.hazardRate(),
+					_spotDate,
+					initialCounterPartyVertex.hazardRate(),
 					0.,
 					false
 				),
 				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
-					_adblTimeWidth,
-					aadblUnitEvolverSequence[COUNTER_PARTY_HAZARD_RATE]
+					_ycfWidth,
+					unitEvolverSequence[COUNTER_PARTY_HAZARD_RATE]
 				),
-				_adblTimeWidth
+				_ycfWidth
 			);
 
-			aJDVCounterPartyFundingNumeraire =
-				_tc.counterPartyFunding().evolver().vertexSequenceReverse (
+			counterPartyFundingNumeraireVertexArray =
+				_tradeablesContainer.counterPartyFunding().evolver().vertexSequenceReverse (
 					new org.drip.measure.realization.JumpDiffusionVertex (
-						iTerminalDate,
-						emvCounterPartyInitial.seniorFundingLatentState().nodal(),
+						terminalDate,
+						initialCounterPartyVertex.seniorFundingLatentState().nodal(),
 						0.,
 						false
 					),
 					org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
-						_adblTimeWidth,
-						aadblUnitEvolverSequence[COUNTER_PARTY_FUNDING]
+						_ycfWidth,
+						unitEvolverSequence[COUNTER_PARTY_FUNDING]
 					),
-					_adblTimeWidth
+					_ycfWidth
 				);
 
-			aJDVCounterPartyRecoveryRate = _deCounterPartyRecoveryRate.vertexSequence (
+			counterPartyRecoveryRateVertexArray = _counterPartyRecoveryRateEvolver.vertexSequence (
 				new org.drip.measure.realization.JumpDiffusionVertex (
-					_iSpotDate,
-					emvCounterPartyInitial.seniorRecoveryRate(),
+					_spotDate,
+					initialCounterPartyVertex.seniorRecoveryRate(),
 					0.,
 					false
 				),
 				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
-					_adblTimeWidth,
-					aadblUnitEvolverSequence[COUNTER_PARTY_RECOVERY_RATE]
+					_ycfWidth,
+					unitEvolverSequence[COUNTER_PARTY_RECOVERY_RATE]
 				),
-				_adblTimeWidth
+				_ycfWidth
 			);
-		} catch (java.lang.Exception e) {
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 
 			return null;
 		}
 
-		double dblOvernightIndexNumeraireStart = aJDVOvernightIndexNumeraire[0].value();
+		double initialCSANumeraire = csaNumeraireVertexArray[0].value();
 
-		double dblCollateralSchemeNumeraireStart = aJDVCollateralSchemeNumeraire[0].value();
+		double initialOvernightNumeraire = overnightNumeraireVertexArray[0].value();
 
-		double dblBankSeniorFundingNumeraireStart = aJDVBankSeniorFundingNumeraire[0].value();
+		double initialBankSeniorFundingNumeraire = bankSeniorFundingNumeraireVertexArray[0].value();
 
-		double dblBankSubordinateFundingNumeraireStart = bSingleBankBond ? java.lang.Double.NaN :
-			aJDVBankSubordinateFundingNumeraire[0].value();
+		double initialBankSubordinateFundingNumeraire = useSingleBankBondOnly ? java.lang.Double.NaN :
+			bankSubordinateFundingNumeraireVertexArray[0].value();
 
-		double dblCounterPartyFundingNumeraireStart = aJDVCounterPartyFundingNumeraire[0].value();
+		double initialCounterPartyFundingNumeraire = counterPartyFundingNumeraireVertexArray[0].value();
 
-		double dblOvernightIndexNumeraireInitial = dblOvernightIndexNumeraireStart;
-		double dblCollateralSchemeNumeraireInitial = dblCollateralSchemeNumeraireStart;
-		double dblBankSeniorFundingNumeraireInitial = dblBankSeniorFundingNumeraireStart;
-		double dblCounterPartyFundingNumeraireInitial = dblCounterPartyFundingNumeraireStart;
-		double dblBankSubordinateFundingNumeraireInitial = dblBankSubordinateFundingNumeraireStart;
+		double csaNumeraireStart = initialCSANumeraire;
+		double overnightIndexNumeraireStart = initialOvernightNumeraire;
+		double bankSeniorFundingNumeraireStart = initialBankSeniorFundingNumeraire;
+		double counterPartyFundingNumeraireStart = initialCounterPartyFundingNumeraire;
+		double bankSubordinateFundingNumeraireStart = initialBankSubordinateFundingNumeraire;
 
-		for (int iEventVertex = 1; iEventVertex <= iNumEventVertex; ++iEventVertex) {
-			double dblBankHazardRate = aJDVBankHazardRate[iEventVertex].value();
+		for (int eventVertexIndex = 1; eventVertexIndex <= eventVertexCount; ++eventVertexIndex)
+		{
+			double bankHazardRate = bankHazardRateVertexArray[eventVertexIndex].value();
 
-			double dblCounterPartyHazardRate = aJDVCounterPartyHazardRate[iEventVertex].value();
+			double csaNumeraireFinish =  csaNumeraireVertexArray[eventVertexIndex].value();
 
-			double dblOvernightIndexNumeraireFinish = aJDVOvernightIndexNumeraire[iEventVertex].value();
+			double overnightNumeraireFinish = overnightNumeraireVertexArray[eventVertexIndex].value();
 
-			double dblCollateralSchemeNumeraireFinish =  aJDVCollateralSchemeNumeraire[iEventVertex].value();
+			double counterPartyHazardRateFinish =
+				counterPartyHazardRateFinishVertexArray[eventVertexIndex].value();
 
-			double dblBankSeniorFundingNumeraireFinish =
-				aJDVBankSeniorFundingNumeraire[iEventVertex].value();
+			double bankSeniorFundingNumeraireFinish =
+				bankSeniorFundingNumeraireVertexArray[eventVertexIndex].value();
 
-			double dblBankSubordinateFundingNumeraireFinish = bSingleBankBond ? java.lang.Double.NaN :
-				aJDVBankSubordinateFundingNumeraire[iEventVertex].value();
+			double bankSubordinateFundingNumeraireFinish = useSingleBankBondOnly ? java.lang.Double.NaN :
+				bankSubordinateFundingNumeraireVertexArray[eventVertexIndex].value();
 
-			double dblCounterPartyFundingNumeraireFinish =
-				aJDVCounterPartyFundingNumeraire[iEventVertex].value();
+			double counterPartyFundingNumeraireFinish =
+				counterPartyFundingNumeraireVertexArray[eventVertexIndex].value();
 
-			double dblTimeWidth = _adblTimeWidth[iEventVertex - 1];
-			dblCounterPartySurvivalProbabilityExponent += dblCounterPartyHazardRate * dblTimeWidth;
-			dblBankSurvivalProbabilityExponent += dblBankHazardRate * dblTimeWidth;
-			double dblTimeWidthReciprocal = 1. / dblTimeWidth;
+			double timeWidth = _ycfWidth[eventVertexIndex - 1];
+			double timeWidthReciprocal = 1. / timeWidth;
+			bankSurvivalProbabilityExponent += bankHazardRate * timeWidth;
+			counterPartySurvivalProbabilityExponent += counterPartyHazardRateFinish * timeWidth;
 
-			double dblOvernightIndexRate = dblTimeWidthReciprocal * java.lang.Math.log
-				(dblOvernightIndexNumeraireFinish / dblOvernightIndexNumeraireStart);
+			double overnightRate = timeWidthReciprocal * java.lang.Math.log
+				(overnightNumeraireFinish / initialOvernightNumeraire);
 
-			try {
-				org.drip.xva.universe.EntityMarketVertex emvBank = new org.drip.xva.universe.EntityMarketVertex (
-					java.lang.Math.exp (-1. * dblBankSurvivalProbabilityExponent),
-					dblBankHazardRate,
-					aJDVBankSeniorRecoveryRate[iEventVertex].value(),
-					dblTimeWidthReciprocal * java.lang.Math.log (dblBankSeniorFundingNumeraireFinish /
-						dblBankSeniorFundingNumeraireStart) - dblOvernightIndexRate,
-					new org.drip.xva.universe.LatentStateMarketVertex (
-						dblBankSeniorFundingNumeraireInitial,
-						dblBankSeniorFundingNumeraireFinish
+			try
+			{
+				org.drip.xva.universe.EntityMarketVertex bankMarketVertex = new
+					org.drip.xva.universe.EntityMarketVertex (
+						java.lang.Math.exp (-1. * bankSurvivalProbabilityExponent),
+						bankHazardRate,
+						bankSeniorRecoveryRateVertexArray[eventVertexIndex].value(),
+						timeWidthReciprocal * java.lang.Math.log (bankSeniorFundingNumeraireFinish /
+							initialBankSeniorFundingNumeraire) - overnightRate,
+						new org.drip.xva.universe.LatentStateMarketVertex (
+							bankSeniorFundingNumeraireStart,
+							bankSeniorFundingNumeraireFinish
 					),
-					bSingleBankBond ? java.lang.Double.NaN : aJDVBankSubordinateRecoveryRate[iEventVertex].value(),
-					bSingleBankBond ? java.lang.Double.NaN : dblTimeWidthReciprocal * java.lang.Math.log
-						(dblBankSubordinateFundingNumeraireFinish / dblBankSubordinateFundingNumeraireStart)
-						- dblOvernightIndexRate,
-					bSingleBankBond ? null : new org.drip.xva.universe.LatentStateMarketVertex (
-						dblBankSubordinateFundingNumeraireInitial,
-						dblBankSubordinateFundingNumeraireFinish
+					useSingleBankBondOnly ? java.lang.Double.NaN :
+						bankSubordinateRecoveryRateVertexArray[eventVertexIndex].value(),
+					useSingleBankBondOnly ? java.lang.Double.NaN : timeWidthReciprocal * java.lang.Math.log
+						(bankSubordinateFundingNumeraireFinish / initialBankSubordinateFundingNumeraire) -
+						overnightRate,
+					useSingleBankBondOnly ? null : new org.drip.xva.universe.LatentStateMarketVertex (
+						bankSubordinateFundingNumeraireStart,
+						bankSubordinateFundingNumeraireFinish
 					)
 				);
 
-				org.drip.xva.universe.EntityMarketVertex emvCounterParty = new org.drip.xva.universe.EntityMarketVertex (
-					java.lang.Math.exp (-1. * dblCounterPartySurvivalProbabilityExponent),
-					dblCounterPartyHazardRate,
-					aJDVCounterPartyRecoveryRate[iEventVertex].value(),
-					dblTimeWidthReciprocal * java.lang.Math.log (dblCounterPartyFundingNumeraireFinish /
-						dblCounterPartyFundingNumeraireStart) - dblOvernightIndexRate,
-					new org.drip.xva.universe.LatentStateMarketVertex (
-						dblCounterPartyFundingNumeraireInitial,
-						dblCounterPartyFundingNumeraireFinish
-					),
-					java.lang.Double.NaN,
-					java.lang.Double.NaN,
-					null
-				);
+				org.drip.xva.universe.EntityMarketVertex counterPartyMarketVertex = new
+					org.drip.xva.universe.EntityMarketVertex (
+						java.lang.Math.exp (-1. * counterPartySurvivalProbabilityExponent),
+						counterPartyHazardRateFinish,
+						counterPartyRecoveryRateVertexArray[eventVertexIndex].value(),
+						timeWidthReciprocal * java.lang.Math.log (counterPartyFundingNumeraireFinish /
+							initialCounterPartyFundingNumeraire) - overnightRate,
+						new org.drip.xva.universe.LatentStateMarketVertex (
+							counterPartyFundingNumeraireStart,
+							counterPartyFundingNumeraireFinish
+						),
+						java.lang.Double.NaN,
+						java.lang.Double.NaN,
+						null
+					);
 
-				aMV[iEventVertex] = new org.drip.xva.universe.MarketVertex (
-					new org.drip.analytics.date.JulianDate (_aiEventDate[iEventVertex - 1]),
-					bAssetEvolutionOn ? aJDVAssetNumeraire[iEventVertex].value() : java.lang.Double.NaN,
-					dblOvernightIndexRate,
+				marketVertexArray[eventVertexIndex] = new org.drip.xva.universe.MarketVertex (
+					new org.drip.analytics.date.JulianDate (_eventDateArray[eventVertexIndex - 1]),
+					positionEvolutionOn ? positionValueVertexArray[eventVertexIndex].value() :
+						java.lang.Double.NaN,
+					overnightRate,
 					new org.drip.xva.universe.LatentStateMarketVertex (
-						dblOvernightIndexNumeraireInitial,
-						dblOvernightIndexNumeraireFinish
+						overnightIndexNumeraireStart,
+						overnightNumeraireFinish
 					),
-					dblTimeWidthReciprocal * java.lang.Math.log (dblCollateralSchemeNumeraireFinish /
-						dblCollateralSchemeNumeraireStart) - dblOvernightIndexRate,
+					timeWidthReciprocal * java.lang.Math.log (csaNumeraireFinish / initialCSANumeraire) -
+						overnightRate,
 					new org.drip.xva.universe.LatentStateMarketVertex (
-						dblCollateralSchemeNumeraireInitial,
-						dblCollateralSchemeNumeraireFinish
+						csaNumeraireStart,
+						csaNumeraireFinish
 					),
-					emvBank,
-					emvCounterParty
+					bankMarketVertex,
+					counterPartyMarketVertex
 				);
-			} catch (java.lang.Exception e) {
+			}
+			catch (java.lang.Exception e)
+			{
 				e.printStackTrace();
 
 				return null;
 			}
 
-			dblOvernightIndexNumeraireStart = dblOvernightIndexNumeraireFinish;
-			dblCollateralSchemeNumeraireStart = dblCollateralSchemeNumeraireFinish;
-			dblBankSeniorFundingNumeraireStart = dblBankSeniorFundingNumeraireFinish;
-			dblCounterPartyFundingNumeraireStart = dblCounterPartyFundingNumeraireFinish;
-			dblBankSubordinateFundingNumeraireStart = dblBankSubordinateFundingNumeraireFinish;
+			initialCSANumeraire = csaNumeraireFinish;
+			initialOvernightNumeraire = overnightNumeraireFinish;
+			initialBankSeniorFundingNumeraire = bankSeniorFundingNumeraireFinish;
+			initialCounterPartyFundingNumeraire = counterPartyFundingNumeraireFinish;
+			initialBankSubordinateFundingNumeraire = bankSubordinateFundingNumeraireFinish;
 		}
 
-		try {
-			aMV[0] = new org.drip.xva.universe.MarketVertex (
-				mvInitial.anchor(),
-				mvInitial.portfolioValue(),
-				mvInitial.overnightRate(),
+		try
+		{
+			marketVertexArray[0] = new org.drip.xva.universe.MarketVertex (
+				initialMarketVertex.anchorDate(),
+				initialMarketVertex.positionValue(),
+				initialMarketVertex.overnightRate(),
 				new org.drip.xva.universe.LatentStateMarketVertex (
-					dblOvernightIndexNumeraireInitial,
-					dblOvernightIndexNumeraireInitial
+					overnightIndexNumeraireStart,
+					overnightIndexNumeraireStart
 				),
-				aMV[1].csaRate(),
+				marketVertexArray[1].csaRate(),
 				new org.drip.xva.universe.LatentStateMarketVertex (
-					dblCollateralSchemeNumeraireInitial,
-					dblCollateralSchemeNumeraireInitial
+					csaNumeraireStart,
+					csaNumeraireStart
 				),
 				new org.drip.xva.universe.EntityMarketVertex (
-					emvBankInitial.survivalProbability(),
-					emvBankInitial.hazardRate(),
-					emvBankInitial.seniorRecoveryRate(),
-					aMV[1].bank().seniorFundingSpread(),
+					initialBankVertex.survivalProbability(),
+					initialBankVertex.hazardRate(),
+					initialBankVertex.seniorRecoveryRate(),
+					marketVertexArray[1].bank().seniorFundingSpread(),
 					new org.drip.xva.universe.LatentStateMarketVertex (
-						dblBankSeniorFundingNumeraireInitial,
-						dblBankSeniorFundingNumeraireInitial
+						bankSeniorFundingNumeraireStart,
+						bankSeniorFundingNumeraireStart
 					),
-					emvBankInitial.subordinateRecoveryRate(),
-					aMV[1].bank().subordinateFundingSpread(),
-					bSingleBankBond ? null : new org.drip.xva.universe.LatentStateMarketVertex (
-						dblBankSubordinateFundingNumeraireInitial,
-						dblBankSubordinateFundingNumeraireInitial
+					initialBankVertex.subordinateRecoveryRate(),
+					marketVertexArray[1].bank().subordinateFundingSpread(),
+					useSingleBankBondOnly ? null : new org.drip.xva.universe.LatentStateMarketVertex (
+						bankSubordinateFundingNumeraireStart,
+						bankSubordinateFundingNumeraireStart
 					)
 				),
 				new org.drip.xva.universe.EntityMarketVertex (
-					emvCounterPartyInitial.survivalProbability(),
-					emvCounterPartyInitial.hazardRate(),
-					emvCounterPartyInitial.seniorRecoveryRate(),
-					aMV[1].counterParty().seniorFundingSpread(),
+					initialCounterPartyVertex.survivalProbability(),
+					initialCounterPartyVertex.hazardRate(),
+					initialCounterPartyVertex.seniorRecoveryRate(),
+					marketVertexArray[1].counterParty().seniorFundingSpread(),
 					new org.drip.xva.universe.LatentStateMarketVertex (
-						dblCounterPartyFundingNumeraireInitial,
-						dblCounterPartyFundingNumeraireInitial
+						counterPartyFundingNumeraireStart,
+						counterPartyFundingNumeraireStart
 					),
 					java.lang.Double.NaN,
 					java.lang.Double.NaN,
@@ -753,6 +784,6 @@ public class MarketVertexGenerator
 			return null;
 		}
 
-		return aMV;
+		return marketVertexArray;
 	}
 }

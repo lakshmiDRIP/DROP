@@ -81,24 +81,24 @@ public class DiffusionEvaluatorLinearFader extends org.drip.measure.dynamics.Dif
 				final org.drip.measure.realization.JumpDiffusionVertex jdv)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L84">				return dblDrift;</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">				if (null == jdv)</span>
+<span class="nc" id="L85">					throw new java.lang.Exception</span>
+						(&quot;DiffusionEvaluatorLinearFader::Standard::Drift::LocalEvaluator::value =&gt; Invalid Inputs&quot;);
+
+<span class="nc" id="L88">				double dblTimeToTermination = (dblTerminationTime - jdv.time()) / 365.25;</span>
+
+<span class="nc bnc" id="L90" title="All 2 branches missed.">				return dblTimeToTermination &lt;= 0. ? 0. : -1. * jdv.value() / dblTimeToTermination;</span>
 			}
 		};
 
-<span class="nc" id="L88">		org.drip.measure.dynamics.LocalEvaluator leVolatility = new</span>
+<span class="nc" id="L94">		org.drip.measure.dynamics.LocalEvaluator leVolatility = new</span>
 			org.drip.measure.dynamics.LocalEvaluator()
-<span class="nc" id="L90">		{</span>
+<span class="nc" id="L96">		{</span>
 			@Override public double value (
 				final org.drip.measure.realization.JumpDiffusionVertex jdv)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L95" title="All 2 branches missed.">				if (null == jdv)</span>
-<span class="nc" id="L96">					throw new java.lang.Exception</span>
-						(&quot;DiffusionEvaluatorLinearFader::Standard::LocalEvaluator::value =&gt; Invalid Inputs&quot;);
-
-<span class="nc" id="L99">				double dblTime = jdv.time();</span>
-
-<span class="nc bnc" id="L101" title="All 2 branches missed.">				return (dblTime &gt; dblTerminationTime ? 0. : dblTime - dblTerminationTime) * dblVolatility;</span>
+<span class="nc" id="L101">				return dblVolatility;</span>
 			}
 		};
 

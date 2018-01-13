@@ -68,35 +68,46 @@ package org.drip.xva.hypothecation;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CollateralGroupPath {
-	private org.drip.xva.hypothecation.CollateralGroupVertex[] _aCGV = null;
+public class CollateralGroupPath
+{
+	private org.drip.xva.hypothecation.CollateralGroupVertex[] _collateralGroupVertexArray = null;
 
 	/**
 	 * CollateralGroupPath Constructor
 	 * 
-	 * @param aCGV The Array of Collateral Hypothecation Group Trajectory Vertexes
+	 * @param collateralGroupVertexArray The Array of Collateral Hypothecation Group Trajectory Vertexes
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CollateralGroupPath (
-		final org.drip.xva.hypothecation.CollateralGroupVertex[] aCGV)
+		final org.drip.xva.hypothecation.CollateralGroupVertex[] collateralGroupVertexArray)
 		throws java.lang.Exception
 	{
-		if (null == (_aCGV = aCGV))
+		if (null == (_collateralGroupVertexArray = collateralGroupVertexArray))
+		{
 			throw new java.lang.Exception ("CollateralGroupPath Constructor => Invalid Inputs");
+		}
 
-		int iNumPath = _aCGV.length;
+		int pathCount = _collateralGroupVertexArray.length;
 
-		if (1 >= iNumPath)
+		if (1 >= pathCount)
+		{
 			throw new java.lang.Exception ("CollateralGroupPath Constructor => Invalid Inputs");
+		}
 
-		for (int i = 0; i < iNumPath; ++i) {
-			if (null == _aCGV[i])
+		for (int i = 0; i < pathCount; ++i)
+		{
+			if (null == _collateralGroupVertexArray[i])
+			{
 				throw new java.lang.Exception ("CollateralGroupPath Constructor => Invalid Inputs");
+			}
 
-			if (0 != i && _aCGV[i - 1].anchor().julian() >= _aCGV[i].anchor().julian())
+			if (0 != i && _collateralGroupVertexArray[i - 1].anchor().julian() >=
+				_collateralGroupVertexArray[i].anchor().julian())
+			{
 				throw new java.lang.Exception ("CollateralGroupPath Constructor => Invalid Inputs");
+			}
 		}
 	}
 
@@ -108,7 +119,7 @@ public class CollateralGroupPath {
 
 	public org.drip.xva.hypothecation.CollateralGroupVertex[] vertexes()
 	{
-		return _aCGV;
+		return _collateralGroupVertexArray;
 	}
 
 	/**
@@ -117,15 +128,18 @@ public class CollateralGroupPath {
 	 * @return The Array of the Vertex Anchor Dates
 	 */
 
-	public org.drip.analytics.date.JulianDate[] anchors()
+	public org.drip.analytics.date.JulianDate[] anchorDates()
 	{
-		int iNumVertex = _aCGV.length;
-		org.drip.analytics.date.JulianDate[] adtVertex = new org.drip.analytics.date.JulianDate[iNumVertex];
+		int vertexCount = _collateralGroupVertexArray.length;
+		org.drip.analytics.date.JulianDate[] vertexDateArray = new
+			org.drip.analytics.date.JulianDate[vertexCount];
 
-		for (int i = 0; i < iNumVertex; ++i)
-			adtVertex[i] = _aCGV[i].anchor();
+		for (int i = 0; i < vertexCount; ++i)
+		{
+			vertexDateArray[i] = _collateralGroupVertexArray[i].anchor();
+		}
 
-		return adtVertex;
+		return vertexDateArray;
 	}
 
 	/**
@@ -136,13 +150,15 @@ public class CollateralGroupPath {
 
 	public double[] collateralizedExposure()
 	{
-		int iNumVertex = _aCGV.length;
-		double[] adblCollateralizedExposure = new double[iNumVertex];
+		int vertexCount = _collateralGroupVertexArray.length;
+		double[] collateralizedExposure = new double[vertexCount];
 
-		for (int i = 0; i < iNumVertex; ++i)
-			adblCollateralizedExposure[i] = _aCGV[i].collateralized();
+		for (int i = 0; i < vertexCount; ++i)
+		{
+			collateralizedExposure[i] = _collateralGroupVertexArray[i].collateralized();
+		}
 
-		return adblCollateralizedExposure;
+		return collateralizedExposure;
 	}
 
 	/**
@@ -153,13 +169,15 @@ public class CollateralGroupPath {
 
 	public double[] uncollateralizedExposure()
 	{
-		int iNumVertex = _aCGV.length;
-		double[] adblUncollateralizedExposure = new double[iNumVertex];
+		int vertexCount = _collateralGroupVertexArray.length;
+		double[] uncollateralizedExposure = new double[vertexCount];
 
-		for (int i = 0; i < iNumVertex; ++i)
-			adblUncollateralizedExposure[i] = _aCGV[i].uncollateralized();
+		for (int i = 0; i < vertexCount; ++i)
+		{
+			uncollateralizedExposure[i] = _collateralGroupVertexArray[i].uncollateralized();
+		}
 
-		return adblUncollateralizedExposure;
+		return uncollateralizedExposure;
 	}
 
 	/**
@@ -170,13 +188,15 @@ public class CollateralGroupPath {
 
 	public double[] creditExposure()
 	{
-		int iNumVertex = _aCGV.length;
-		double[] adblCreditExposure = new double[iNumVertex];
+		int vertexCount = _collateralGroupVertexArray.length;
+		double[] creditExposure = new double[vertexCount];
 
-		for (int i = 0; i < iNumVertex; ++i)
-			adblCreditExposure[i] = _aCGV[i].credit();
+		for (int i = 0; i < vertexCount; ++i)
+		{
+			creditExposure[i] = _collateralGroupVertexArray[i].credit();
+		}
 
-		return adblCreditExposure;
+		return creditExposure;
 	}
 
 	/**
@@ -187,13 +207,15 @@ public class CollateralGroupPath {
 
 	public double[] debtExposure()
 	{
-		int iNumVertex = _aCGV.length;
-		double[] adblDebtExposure = new double[iNumVertex];
+		int vertexCount = _collateralGroupVertexArray.length;
+		double[] debtExposure = new double[vertexCount];
 
-		for (int i = 0; i < iNumVertex; ++i)
-			adblDebtExposure[i] = _aCGV[i].debt();
+		for (int i = 0; i < vertexCount; ++i)
+		{
+			debtExposure[i] = _collateralGroupVertexArray[i].debt();
+		}
 
-		return adblDebtExposure;
+		return debtExposure;
 	}
 
 	/**
@@ -204,13 +226,15 @@ public class CollateralGroupPath {
 
 	public double[] fundingExposure()
 	{
-		int iNumVertex = _aCGV.length;
-		double[] adblFundingExposure = new double[iNumVertex];
+		int vertexCount = _collateralGroupVertexArray.length;
+		double[] fundingExposure = new double[vertexCount];
 
-		for (int i = 0; i < iNumVertex; ++i)
-			adblFundingExposure[i] = _aCGV[i].funding();
+		for (int i = 0; i < vertexCount; ++i)
+		{
+			fundingExposure[i] = _collateralGroupVertexArray[i].funding();
+		}
 
-		return adblFundingExposure;
+		return fundingExposure;
 	}
 
 	/**
@@ -221,12 +245,14 @@ public class CollateralGroupPath {
 
 	public double[] collateralBalance()
 	{
-		int iNumVertex = _aCGV.length;
-		double[] adblCollateralizedBalance = new double[iNumVertex];
+		int vertexCount = _collateralGroupVertexArray.length;
+		double[] collateralizedBalance = new double[vertexCount];
 
-		for (int i = 0; i < iNumVertex; ++i)
-			adblCollateralizedBalance[i] = _aCGV[i].collateralBalance();
+		for (int i = 0; i < vertexCount; ++i)
+		{
+			collateralizedBalance[i] = _collateralGroupVertexArray[i].collateralBalance();
+		}
 
-		return adblCollateralizedBalance;
+		return collateralizedBalance;
 	}
 }

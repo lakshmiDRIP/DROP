@@ -366,7 +366,7 @@ public class EulerTrajectoryEvolutionScheme {
 			pdeec
 		);
 
-		AssetGreekVertex agvInitial = new AssetGreekVertex (
+		PositionGreekVertex agvInitial = new PositionGreekVertex (
 			dblDerivativeXVAValue,
 			-1.,
 			0.,
@@ -428,11 +428,11 @@ public class EulerTrajectoryEvolutionScheme {
 		System.out.println ("\t||" +
 			FormatUtil.FormatDouble (1., 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (agvInitial.derivativeXVAValue(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (aMVBase[aMV.length - 1].portfolioValue(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (aMVBase[aMV.length - 1].positionValue(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (aMVBase[aMV.length - 1].bank().seniorFundingLatentState().nodal(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (aMVBase[aMV.length - 1].counterParty().seniorFundingLatentState().nodal(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (aMVBase[aMV.length - 1].csaNumeraire().nodal(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (rpvInitial.assetNumeraireUnits(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (rpvInitial.positionUnits(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (rpvInitial.bankSeniorNumeraireUnits(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (rpvInitial.counterPartyNumeraireUnits(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (rpvInitial.cashAccount(), 1, 6, 1.) + " | " +
@@ -466,12 +466,12 @@ public class EulerTrajectoryEvolutionScheme {
 
 			System.out.println ("\t||" +
 				FormatUtil.FormatDouble (etv.time(), 1, 6, 1.) + " | " +
-				FormatUtil.FormatDouble (etv.assetGreekVertex().derivativeXVAValue(), 1, 6, 1.) + " | " +
-				FormatUtil.FormatDouble (aMVBase[i].portfolioValue(), 1, 6, 1.) + " | " +
+				FormatUtil.FormatDouble (etv.positionGreekVertex().derivativeXVAValue(), 1, 6, 1.) + " | " +
+				FormatUtil.FormatDouble (aMVBase[i].positionValue(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (aMVBase[i].bank().seniorFundingLatentState().nodal(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (aMVBase[i].counterParty().seniorFundingLatentState().nodal(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (aMVBase[i].csaNumeraire().nodal(), 1, 6, 1.) + " | " +
-				FormatUtil.FormatDouble (etv.replicationPortfolioVertex().assetNumeraireUnits(), 1, 6, 1.) + " | " +
+				FormatUtil.FormatDouble (etv.replicationPortfolioVertex().positionUnits(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (etv.replicationPortfolioVertex().bankSeniorNumeraireUnits(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (etv.replicationPortfolioVertex().counterPartyNumeraireUnits(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (etv.replicationPortfolioVertex().cashAccount(), 1, 6, 1.) + " | " +

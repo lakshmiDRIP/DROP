@@ -67,28 +67,32 @@ package org.drip.xva.definition;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CloseOutBilateral extends org.drip.xva.definition.CloseOutGeneral {
-	private double _dblCounterPartyRecovery = java.lang.Double.NaN;;
-	private double _dblBankSeniorFundingRecovery = java.lang.Double.NaN;
+public class CloseOutBilateral extends org.drip.xva.definition.CloseOutGeneral
+{
+	private double _counterPartyRecovery = java.lang.Double.NaN;;
+	private double _bankSeniorFundingRecovery = java.lang.Double.NaN;
 
 	/**
 	 * CloseOutBilateral Constructor
 	 * 
-	 * @param dblBankSeniorFundingRecovery The Bank Senior Funding Recovery Rate
-	 * @param dblCounterPartyRecovery Counter Party Recovery Rate
+	 * @param bankSeniorFundingRecovery The Bank Senior Funding Recovery Rate
+	 * @param counterPartyRecovery Counter Party Recovery Rate
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CloseOutBilateral (
-		final double dblBankSeniorFundingRecovery,
-		final double dblCounterPartyRecovery)
+		final double bankSeniorFundingRecovery,
+		final double counterPartyRecovery)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblBankSeniorFundingRecovery =
-			dblBankSeniorFundingRecovery) || !org.drip.quant.common.NumberUtil.IsValid
-				(_dblCounterPartyRecovery = dblCounterPartyRecovery))
+		if (!org.drip.quant.common.NumberUtil.IsValid (_bankSeniorFundingRecovery =
+			bankSeniorFundingRecovery) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_counterPartyRecovery = counterPartyRecovery))
+		{
 			throw new java.lang.Exception ("CloseOutBilateral Constructor => Invalid Inputs");
+			
+		}
 	}
 
 	/**
@@ -99,7 +103,7 @@ public class CloseOutBilateral extends org.drip.xva.definition.CloseOutGeneral {
 
 	public double bankSeniorFundingRecovery()
 	{
-		return _dblBankSeniorFundingRecovery;
+		return _bankSeniorFundingRecovery;
 	}
 
 	/**
@@ -110,39 +114,42 @@ public class CloseOutBilateral extends org.drip.xva.definition.CloseOutGeneral {
 
 	public double counterPartyRecovery()
 	{
-		return _dblCounterPartyRecovery;
+		return _counterPartyRecovery;
 	}
 
 	@Override public double bankDefault (
-		final double dblUncollateralizedExposure,
-		final double dblCollateralAmount)
+		final double uncollateralizedExposure,
+		final double collateralAmount)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblUncollateralizedExposure) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblCollateralAmount))
+		if (!org.drip.quant.common.NumberUtil.IsValid (uncollateralizedExposure) ||
+			!org.drip.quant.common.NumberUtil.IsValid (collateralAmount))
+		{
 			throw new java.lang.Exception ("CloseOutBilateral::bankDefault => Invalid Inputs");
+		}
 
-		double dblCollateralizedExposure = dblUncollateralizedExposure - dblCollateralAmount;
+		double collateralizedExposure = uncollateralizedExposure - collateralAmount;
 
-		return (dblCollateralizedExposure > 0. ? dblCollateralizedExposure : 0.) +
-			_dblBankSeniorFundingRecovery * (dblCollateralizedExposure < 0. ? dblCollateralizedExposure : 0.)
-				+ dblCollateralAmount;
+		return (collateralizedExposure > 0. ? collateralizedExposure : 0.) +_bankSeniorFundingRecovery *
+			(collateralizedExposure < 0. ? collateralizedExposure : 0.) + collateralAmount;
 	}
 
 	@Override public double counterPartyDefault (
-		final double dblUncollateralizedExposure,
-		final double dblCollateralAmount)
+		final double uncollateralizedExposure,
+		final double collateralAmount)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblUncollateralizedExposure) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblCollateralAmount))
+		if (!org.drip.quant.common.NumberUtil.IsValid (uncollateralizedExposure) ||
+			!org.drip.quant.common.NumberUtil.IsValid (collateralAmount))
+		{
 			throw new java.lang.Exception ("CloseOutBilateral::counterPartyDefault => Invalid Inputs");
+		}
 
-		double dblCounterPartyGroupCollateralizedExposure = dblUncollateralizedExposure -
-			dblCollateralAmount;
+		double counterPartyGroupCollateralizedExposure = uncollateralizedExposure - collateralAmount;
 
-		return _dblCounterPartyRecovery * (dblCounterPartyGroupCollateralizedExposure > 0. ?
-			dblCounterPartyGroupCollateralizedExposure : 0.) + (dblCounterPartyGroupCollateralizedExposure <
-				0. ? dblCounterPartyGroupCollateralizedExposure : 0.) + dblCollateralAmount;
+		return _counterPartyRecovery * (counterPartyGroupCollateralizedExposure > 0. ?
+			counterPartyGroupCollateralizedExposure : 0.) +
+			(counterPartyGroupCollateralizedExposure < 0. ? counterPartyGroupCollateralizedExposure : 0.) +
+			collateralAmount;
 	}
 }

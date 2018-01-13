@@ -67,32 +67,36 @@ package org.drip.xva.set;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NettingGroupSpecification extends org.drip.xva.set.RollUpGroupSpecification {
-	private boolean _bContractual = true;
-	private boolean _bEnforceable = true;
+public class NettingGroupSpecification extends org.drip.xva.set.RollUpGroupSpecification
+{
+	private boolean _contractual = true;
+	private boolean _enforceable = true;
 
 	/**
 	 * NettingGroupSpecification Constructor
 	 * 
-	 * @param strID The Collateral Group ID
-	 * @param strName The Collateral Group Name
-	 * @param bContractual TRUE - The Netting is Contractual
-	 * @param bEnforceable TRUE - The Netting is Enforceable
+	 * @param id The Collateral Group ID
+	 * @param name The Collateral Group Name
+	 * @param contractual TRUE - The Netting is Contractual
+	 * @param enforceable TRUE - The Netting is Enforceable
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public NettingGroupSpecification (
-		final java.lang.String strID,
-		final java.lang.String strName,
-		final boolean bContractual,
-		final boolean bEnforceable)
+		final java.lang.String id,
+		final java.lang.String name,
+		final boolean contractual,
+		final boolean enforceable)
 		throws java.lang.Exception
 	{
-		super (strID, strName);
+		super (
+			id,
+			name
+		);
 
-		_bContractual = bContractual;
-		_bEnforceable = bEnforceable;
+		_contractual = contractual;
+		_enforceable = enforceable;
 	}
 
 	/**
@@ -103,7 +107,7 @@ public class NettingGroupSpecification extends org.drip.xva.set.RollUpGroupSpeci
 
 	public boolean contractual()
 	{
-		return _bContractual;
+		return _contractual;
 	}
 
 	/**
@@ -114,6 +118,6 @@ public class NettingGroupSpecification extends org.drip.xva.set.RollUpGroupSpeci
 
 	public boolean enforceable()
 	{
-		return _bEnforceable;
+		return _enforceable;
 	}
 }

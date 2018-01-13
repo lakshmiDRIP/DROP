@@ -138,13 +138,13 @@ public class BurgardKjaerOperator {
 
 		org.drip.xva.universe.EntityMarketVertex emvCounterPartyFinish = mvFinish.counterParty();
 
-		org.drip.xva.derivative.AssetGreekVertex agvStart = etvStart.assetGreekVertex();
+		org.drip.xva.derivative.PositionGreekVertex agvStart = etvStart.positionGreekVertex();
 
 		double dblDerivativeXVAValueStart = agvStart.derivativeXVAValue();
 
 		double dblGainOnBankDefault = etvStart.gainOnBankDefault();
 
-		double dblAssetValue = mvFinish.portfolioValue();
+		double dblAssetValue = mvFinish.positionValue();
 
 		double dblAssetBump = _pdeec.sensitivityShiftFactor() * dblAssetValue;
 
@@ -200,7 +200,7 @@ public class BurgardKjaerOperator {
 
 		org.drip.xva.universe.MarketVertex mvFinish = me.finish();
 
-		double dblDerivativeXVAValue = etvStart.assetGreekVertex().derivativeXVAValue();
+		double dblDerivativeXVAValue = etvStart.positionGreekVertex().derivativeXVAValue();
 
 		org.drip.xva.universe.EntityMarketVertex emvBankFinish = mvFinish.bank();
 
@@ -218,7 +218,7 @@ public class BurgardKjaerOperator {
 		double dblBankExposure = dblCloseOutMTM > 0. ? dblCloseOutMTM : emvBankFinish.seniorRecoveryRate() *
 			dblCloseOutMTM;
 
-		double dblAssetValue = mvFinish.portfolioValue();
+		double dblAssetValue = mvFinish.positionValue();
 
 		double dblAssetBump = _pdeec.sensitivityShiftFactor() * dblAssetValue;
 

@@ -68,37 +68,47 @@ package org.drip.xva.hypothecation;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BurgardKjaerVertex extends org.drip.xva.hypothecation.CollateralGroupVertex {
-	private org.drip.xva.hypothecation.BurgardKjaerVertexExposure _bkve = null;
-	private org.drip.xva.derivative.ReplicationPortfolioVertexBank _rpvb = null;
-	private org.drip.xva.hypothecation.CollateralGroupVertexCloseOut _cgvco = null;
+public class BurgardKjaerVertex extends org.drip.xva.hypothecation.CollateralGroupVertex
+{
+	private org.drip.xva.hypothecation.BurgardKjaerVertexExposure _burgardKjaerVertexExposure = null;
+	private org.drip.xva.hypothecation.CollateralGroupVertexCloseOut _collateralGroupCloseOut = null;
+	private org.drip.xva.derivative.ReplicationPortfolioVertexBank _bankReplicationPortfolioVertex = null;
 
 	/**
 	 * BurgardKjaerVertex Constructor
 	 * 
-	 * @param dtAnchor The Vertex Date Anchor
-	 * @param dblForward The Unrealized Forward Exposure
-	 * @param dblAccrued The Accrued Exposure
-	 * @param bkve The Collateral Group Vertex
-	 * @param cgvco The Collateral Group Vertex Close Out Instance
-	 * @param rpvb The Bank Replication Portfolio Vertex Instance
+	 * @param anchorDate The Vertex Date Anchor
+	 * @param forward The Unrealized Forward Exposure
+	 * @param accrued The Accrued Exposure
+	 * @param burgardKjaerVertexExposure The Collateral Group Vertex
+	 * @param collateralGroupCloseOut The Collateral Group Vertex Close Out Instance
+	 * @param bankReplicationPortfolioVertex The Bank Replication Portfolio Vertex Instance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BurgardKjaerVertex (
-		final org.drip.analytics.date.JulianDate dtAnchor,
-		final double dblForward,
-		final double dblAccrued,
-		final org.drip.xva.hypothecation.BurgardKjaerVertexExposure bkve,
-		final org.drip.xva.hypothecation.CollateralGroupVertexCloseOut cgvco,
-		final org.drip.xva.derivative.ReplicationPortfolioVertexBank rpvb)
+		final org.drip.analytics.date.JulianDate anchorDate,
+		final double forward,
+		final double accrued,
+		final org.drip.xva.hypothecation.BurgardKjaerVertexExposure burgardKjaerVertexExposure,
+		final org.drip.xva.hypothecation.CollateralGroupVertexCloseOut collateralGroupCloseOut,
+		final org.drip.xva.derivative.ReplicationPortfolioVertexBank bankReplicationPortfolioVertex)
 		throws java.lang.Exception
 	{
-		super (dtAnchor, dblForward, dblAccrued, bkve.collateralBalance());
+		super (
+			anchorDate,
+			forward,
+			accrued,
+			burgardKjaerVertexExposure.collateralBalance()
+		);
 
-		if (null == (_bkve = bkve) || null == (_cgvco = cgvco) || null == (_rpvb = rpvb))
+		if (null == (_burgardKjaerVertexExposure = burgardKjaerVertexExposure) ||
+			null == (_collateralGroupCloseOut = collateralGroupCloseOut) ||
+			null == (_bankReplicationPortfolioVertex = bankReplicationPortfolioVertex))
+		{
 			throw new java.lang.Exception ("BurgardKjaerVertex Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -109,7 +119,7 @@ public class BurgardKjaerVertex extends org.drip.xva.hypothecation.CollateralGro
 
 	public double bankDefaultCloseOut()
 	{
-		return _cgvco.bank();
+		return _collateralGroupCloseOut.bank();
 	}
 
 	/**
@@ -120,22 +130,22 @@ public class BurgardKjaerVertex extends org.drip.xva.hypothecation.CollateralGro
 
 	public double counterPartyDefaultCloseOut()
 	{
-		return _cgvco.counterParty();
+		return _collateralGroupCloseOut.counterParty();
 	}
 
 	@Override public double credit()
 	{
-		return _bkve.credit();
+		return _burgardKjaerVertexExposure.credit();
 	}
 
 	@Override public double debt()
 	{
-		return _bkve.debt();
+		return _burgardKjaerVertexExposure.debt();
 	}
 
 	@Override public double funding()
 	{
-		return _bkve.funding();
+		return _burgardKjaerVertexExposure.funding();
 	}
 
 	/**
@@ -146,7 +156,7 @@ public class BurgardKjaerVertex extends org.drip.xva.hypothecation.CollateralGro
 
 	public double hedgeError()
 	{
-		return _bkve.funding();
+		return _burgardKjaerVertexExposure.funding();
 	}
 
 	/**
@@ -157,6 +167,6 @@ public class BurgardKjaerVertex extends org.drip.xva.hypothecation.CollateralGro
 
 	public org.drip.xva.derivative.ReplicationPortfolioVertexBank bankReplicationPortfolio()
 	{
-		return _rpvb;
+		return _bankReplicationPortfolioVertex;
 	}
 }

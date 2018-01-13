@@ -70,7 +70,8 @@ package org.drip.xva.definition;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PDEEvolutionControl {
+public class PDEEvolutionControl
+{
 
 	/**
 	 * Set the Close-out to the Derivative MTM according to Li and Tang (2007) or Gregory (2009) 
@@ -84,26 +85,26 @@ public class PDEEvolutionControl {
 
 	public static final int CLOSEOUT_BURGARD_KJAER = 2;
 
-	private int _iCloseOutScheme = CLOSEOUT_GREGORY_LI_TANG;
-	private double _dblSensitivityShiftFactor = java.lang.Double.NaN;
+	private int _closeOutScheme = CLOSEOUT_GREGORY_LI_TANG;
+	private double _sensitivityShiftFactor = java.lang.Double.NaN;
 
 	/**
 	 * PDEEvolutionControl Constructor
 	 * 
-	 * @param iCloseOutScheme The Close Out Scheme
-	 * @param dblSensitivityShiftFactor The Factor needed to evaluate Sensitivity Shifts
+	 * @param closeOutScheme The Close Out Scheme
+	 * @param sensitivityShiftFactor The Factor needed to evaluate Sensitivity Shifts
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public PDEEvolutionControl (
-		final int iCloseOutScheme,
-		final double dblSensitivityShiftFactor)
+		final int closeOutScheme,
+		final double sensitivityShiftFactor)
 		throws java.lang.Exception
 	{
-		if ((CLOSEOUT_GREGORY_LI_TANG != (_iCloseOutScheme = iCloseOutScheme) && CLOSEOUT_BURGARD_KJAER !=
-			_iCloseOutScheme) || !org.drip.quant.common.NumberUtil.IsValid (_dblSensitivityShiftFactor =
-				dblSensitivityShiftFactor))
+		if ((CLOSEOUT_GREGORY_LI_TANG != (_closeOutScheme = closeOutScheme) &&
+			CLOSEOUT_BURGARD_KJAER != _closeOutScheme) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_sensitivityShiftFactor = sensitivityShiftFactor))
 			throw new java.lang.Exception ("PDEEvolutionControl Constructor => Invalid Inputs");
 	}
 
@@ -115,7 +116,7 @@ public class PDEEvolutionControl {
 
 	public int closeOutScheme()
 	{
-		return _iCloseOutScheme;
+		return _closeOutScheme;
 	}
 
 	/**
@@ -126,6 +127,6 @@ public class PDEEvolutionControl {
 
 	public double sensitivityShiftFactor()
 	{
-		return _dblSensitivityShiftFactor;
+		return _sensitivityShiftFactor;
 	}
 }

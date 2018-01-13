@@ -70,47 +70,53 @@ package org.drip.xva.derivative;
  * @author Lakshmi Krishnamurthy
  */
 
-public class EvolutionTrajectoryVertex {
-<span class="fc" id="L74">	private double _dblTime = java.lang.Double.NaN;</span>
-<span class="fc" id="L75">	private double _dblCollateral = java.lang.Double.NaN;</span>
-<span class="fc" id="L76">	private double _dblHedgeError = java.lang.Double.NaN;</span>
-<span class="fc" id="L77">	private org.drip.xva.derivative.AssetGreekVertex _agv = null;</span>
-<span class="fc" id="L78">	private org.drip.xva.derivative.ReplicationPortfolioVertex _rpv = null;</span>
-<span class="fc" id="L79">	private double _dblBankGainOnCounterPartyDefault = java.lang.Double.NaN;</span>
-<span class="fc" id="L80">	private double _dblCounterPartyGainOnBankDefault = java.lang.Double.NaN;</span>
+public class EvolutionTrajectoryVertex
+{
+<span class="fc" id="L75">	private double _time = java.lang.Double.NaN;</span>
+<span class="fc" id="L76">	private double _collateral = java.lang.Double.NaN;</span>
+<span class="fc" id="L77">	private double _hedgeError = java.lang.Double.NaN;</span>
+<span class="fc" id="L78">	private double _bankGainOnCounterPartyDefault = java.lang.Double.NaN;</span>
+<span class="fc" id="L79">	private double _counterPartyGainOnBankDefault = java.lang.Double.NaN;</span>
+<span class="fc" id="L80">	private org.drip.xva.derivative.PositionGreekVertex _positionGreekVertex = null;</span>
+<span class="fc" id="L81">	private org.drip.xva.derivative.ReplicationPortfolioVertex _replicationPortfolioVertex = null;</span>
 
 	/**
 	 * EvolutionTrajectoryVertex Constructor
 	 * 
-	 * @param dblTime The Evolution Trajectory Edge Time
-	 * @param rpv The Replication Portfolio Vertex
-	 * @param agv The Asset Greek Vertex
-	 * @param dblCounterPartyGainOnBankDefault Counter Party Gain On Bank Default
-	 * @param dblBankGainOnCounterPartyDefault Bank Gain On Default of Counter Party
-	 * @param dblCollateral The Vertex Collateral
-	 * @param dblHedgeError The Vertex Hedge Error
+	 * @param time The Evolution Trajectory Edge Time
+	 * @param replicationPortfolioVertex The Replication Portfolio Vertex
+	 * @param positionGreekVertex The Position Greek Vertex
+	 * @param counterPartyGainOnBankDefault Counter Party Gain On Bank Default
+	 * @param bankGainOnCounterPartyDefault Bank Gain On Default of Counter Party
+	 * @param collateral The Vertex Collateral
+	 * @param hedgeError The Vertex Hedge Error
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public EvolutionTrajectoryVertex (
-		final double dblTime,
-		final org.drip.xva.derivative.ReplicationPortfolioVertex rpv,
-		final org.drip.xva.derivative.AssetGreekVertex agv,
-		final double dblCounterPartyGainOnBankDefault,
-		final double dblBankGainOnCounterPartyDefault,
-		final double dblCollateral,
-		final double dblHedgeError)
+		final double time,
+		final org.drip.xva.derivative.ReplicationPortfolioVertex replicationPortfolioVertex,
+		final org.drip.xva.derivative.PositionGreekVertex positionGreekVertex,
+		final double counterPartyGainOnBankDefault,
+		final double bankGainOnCounterPartyDefault,
+		final double collateral,
+		final double hedgeError)
 		throws java.lang.Exception
-<span class="fc" id="L105">	{</span>
-<span class="pc bpc" id="L106" title="3 of 6 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblTime = dblTime) || null == (_rpv = rpv) || null ==</span>
-<span class="pc bpc" id="L107" title="1 of 2 branches missed.">			(_agv = agv) || !org.drip.quant.common.NumberUtil.IsValid (_dblCounterPartyGainOnBankDefault =</span>
-				dblCounterPartyGainOnBankDefault) || !org.drip.quant.common.NumberUtil.IsValid
-<span class="pc bpc" id="L109" title="1 of 2 branches missed.">					(_dblBankGainOnCounterPartyDefault = dblBankGainOnCounterPartyDefault) ||</span>
-<span class="pc bpc" id="L110" title="1 of 2 branches missed.">						!org.drip.quant.common.NumberUtil.IsValid (_dblCollateral = dblCollateral) ||</span>
-<span class="pc bpc" id="L111" title="1 of 2 branches missed.">							!org.drip.quant.common.NumberUtil.IsValid (_dblHedgeError = dblHedgeError))</span>
-<span class="nc" id="L112">			throw new java.lang.Exception (&quot;EvolutionTrajectoryVertex Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L113">	}</span>
+<span class="fc" id="L106">	{</span>
+<span class="pc bpc" id="L107" title="3 of 6 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_time = time) ||</span>
+			null == (_replicationPortfolioVertex = replicationPortfolioVertex) ||
+			null == (_positionGreekVertex = positionGreekVertex) ||
+<span class="pc bpc" id="L110" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_counterPartyGainOnBankDefault =</span>
+				counterPartyGainOnBankDefault) ||
+<span class="pc bpc" id="L112" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_bankGainOnCounterPartyDefault =</span>
+				bankGainOnCounterPartyDefault) ||
+<span class="pc bpc" id="L114" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_collateral = collateral) ||</span>
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_hedgeError = hedgeError))</span>
+		{
+<span class="nc" id="L117">			throw new java.lang.Exception (&quot;EvolutionTrajectoryVertex Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="fc" id="L119">	}</span>
 
 	/**
 	 * Retrieve the Time Instant
@@ -120,7 +126,7 @@ public class EvolutionTrajectoryVertex {
 
 	public double time()
 	{
-<span class="fc" id="L123">		return _dblTime;</span>
+<span class="fc" id="L129">		return _time;</span>
 	}
 
 	/**
@@ -131,7 +137,7 @@ public class EvolutionTrajectoryVertex {
 
 	public double collateral()
 	{
-<span class="nc" id="L134">		return _dblCollateral;</span>
+<span class="nc" id="L140">		return _collateral;</span>
 	}
 
 	/**
@@ -142,7 +148,7 @@ public class EvolutionTrajectoryVertex {
 
 	public double hedgeError()
 	{
-<span class="nc" id="L145">		return _dblHedgeError;</span>
+<span class="nc" id="L151">		return _hedgeError;</span>
 	}
 
 	/**
@@ -153,18 +159,18 @@ public class EvolutionTrajectoryVertex {
 
 	public org.drip.xva.derivative.ReplicationPortfolioVertex replicationPortfolioVertex()
 	{
-<span class="fc" id="L156">		return _rpv;</span>
+<span class="fc" id="L162">		return _replicationPortfolioVertex;</span>
 	}
 
 	/**
-	 * Retrieve the Asset Greek Vertex
+	 * Retrieve the Position Greek Vertex
 	 * 
-	 * @return The Asset Greek Vertex
+	 * @return The Position Greek Vertex
 	 */
 
-	public org.drip.xva.derivative.AssetGreekVertex assetGreekVertex()
+	public org.drip.xva.derivative.PositionGreekVertex positionGreekVertex()
 	{
-<span class="fc" id="L167">		return _agv;</span>
+<span class="fc" id="L173">		return _positionGreekVertex;</span>
 	}
 
 	/**
@@ -175,7 +181,7 @@ public class EvolutionTrajectoryVertex {
 
 	public double gainOnBankDefault()
 	{
-<span class="fc" id="L178">		return _dblCounterPartyGainOnBankDefault;</span>
+<span class="fc" id="L184">		return _counterPartyGainOnBankDefault;</span>
 	}
 
 	/**
@@ -186,14 +192,14 @@ public class EvolutionTrajectoryVertex {
 
 	public double gainOnCounterPartyDefault()
 	{
-<span class="fc" id="L189">		return _dblBankGainOnCounterPartyDefault;</span>
+<span class="fc" id="L195">		return _bankGainOnCounterPartyDefault;</span>
 	}
 
 	/**
 	 * Indicate whether Replication Portfolio satisfies the Funding Constraint implied by the Vertex
 	 * 	Numeraire
 	 * 
-	 * @param mv The Market Vertex
+	 * @param marketVertex The Market Vertex
 	 * 
 	 * @return The Funding Constraint Verification Mismatch
 	 * 
@@ -201,26 +207,27 @@ public class EvolutionTrajectoryVertex {
 	 */
 
 	public double verifyFundingConstraint (
-		final org.drip.xva.universe.MarketVertex mv)
+		final org.drip.xva.universe.MarketVertex marketVertex)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L207" title="All 2 branches missed.">		if (null == mv)</span>
-<span class="nc" id="L208">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L213" title="All 2 branches missed.">		if (null == marketVertex)</span>
+<span class="nc" id="L214">			throw new java.lang.Exception</span>
 				(&quot;EvolutionTrajectoryVertex::verifyFundingConstraint =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L211">		org.drip.xva.universe.EntityMarketVertex emvBank = mv.bank();</span>
+<span class="nc" id="L217">		org.drip.xva.universe.EntityMarketVertex bankMarketVertex = marketVertex.bank();</span>
 
-<span class="nc" id="L213">		double dblFundingConstraint = _agv.derivativeXVAValue() + emvBank.seniorFundingLatentState().nodal()</span>
-<span class="nc" id="L214">			* _rpv.bankSeniorNumeraireUnits();</span>
+<span class="nc" id="L219">		double fundingConstraint = _positionGreekVertex.derivativeXVAValue() +</span>
+<span class="nc" id="L220">			bankMarketVertex.seniorFundingLatentState().nodal() *</span>
+<span class="nc" id="L221">			_replicationPortfolioVertex.bankSeniorNumeraireUnits();</span>
 
-<span class="nc" id="L216">		org.drip.xva.universe.LatentStateMarketVertex nmvBankSubordinateFunding =</span>
-<span class="nc" id="L217">			emvBank.subordinateFundingLatentState();</span>
+<span class="nc" id="L223">		org.drip.xva.universe.LatentStateMarketVertex bankSubordinateFundingMarketVertex =</span>
+<span class="nc" id="L224">			bankMarketVertex.subordinateFundingLatentState();</span>
 
-<span class="nc bnc" id="L219" title="All 2 branches missed.">		if (null != nmvBankSubordinateFunding)</span>
-<span class="nc" id="L220">			dblFundingConstraint += nmvBankSubordinateFunding.nodal() *</span>
-<span class="nc" id="L221">				_rpv.bankSubordinateNumeraireUnits();</span>
+<span class="nc bnc" id="L226" title="All 2 branches missed.">		if (null != bankSubordinateFundingMarketVertex)</span>
+<span class="nc" id="L227">			fundingConstraint += bankSubordinateFundingMarketVertex.nodal() *</span>
+<span class="nc" id="L228">				_replicationPortfolioVertex.bankSubordinateNumeraireUnits();</span>
 
-<span class="nc" id="L223">		return dblFundingConstraint;</span>
+<span class="nc" id="L230">		return fundingConstraint;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

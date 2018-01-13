@@ -67,31 +67,35 @@ package org.drip.xva.csa;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FundingBasisEvolver {
-	private double _dblCorrelation = java.lang.Double.NaN;
-	private org.drip.measure.dynamics.DiffusionEvaluatorLogarithmic _delUnderlying = null;
-	private org.drip.measure.dynamics.DiffusionEvaluatorMeanReversion _demrFundingSpread = null;
+public class FundingBasisEvolver
+{
+	private double _correlation = java.lang.Double.NaN;
+	private org.drip.measure.dynamics.DiffusionEvaluatorLogarithmic _underlyingEvolver = null;
+	private org.drip.measure.dynamics.DiffusionEvaluatorMeanReversion _fundingSpreadEvolver = null;
 
 	/**
 	 * FundingBasisEvolver Constructor
 	 * 
-	 * @param delUnderlying The Underlying Diffusion Evaluator
-	 * @param demrFundingSpread The Funding Spread Diffusion Evaluator
-	 * @param dblCorrelation Correlation between the Underlying and the Funding Spread Processes
+	 * @param underlyingEvolver The Underlying Diffusion Evaluator
+	 * @param fundingSpreadEvolver The Funding Spread Diffusion Evaluator
+	 * @param correlation Correlation between the Underlying and the Funding Spread Processes
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public FundingBasisEvolver (
-		final org.drip.measure.dynamics.DiffusionEvaluatorLogarithmic delUnderlying,
-		final org.drip.measure.dynamics.DiffusionEvaluatorMeanReversion demrFundingSpread,
-		final double dblCorrelation)
+		final org.drip.measure.dynamics.DiffusionEvaluatorLogarithmic underlyingEvolver,
+		final org.drip.measure.dynamics.DiffusionEvaluatorMeanReversion fundingSpreadEvolver,
+		final double correlation)
 		throws java.lang.Exception
 	{
-		if (null == (_delUnderlying = delUnderlying) || null == (_demrFundingSpread = demrFundingSpread) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblCorrelation = dblCorrelation) || 1. <
-				_dblCorrelation || -1. > _dblCorrelation)
+		if (null == (_underlyingEvolver = underlyingEvolver) || null == (_fundingSpreadEvolver =
+			fundingSpreadEvolver) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_correlation = correlation) ||
+			1. < _correlation || -1. > _correlation)
+		{
 			throw new java.lang.Exception ("FundingBasisEvolver Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -100,9 +104,9 @@ public class FundingBasisEvolver {
 	 * @return The Underlying Diffusion Evaluator
 	 */
 
-	public org.drip.measure.dynamics.DiffusionEvaluatorLogarithmic underlyingEvaluator()
+	public org.drip.measure.dynamics.DiffusionEvaluatorLogarithmic underlyingEvolver()
 	{
-		return _delUnderlying;
+		return _underlyingEvolver;
 	}
 
 	/**
@@ -111,9 +115,9 @@ public class FundingBasisEvolver {
 	 * @return The Funding Spread Diffusion Evaluator
 	 */
 
-	public org.drip.measure.dynamics.DiffusionEvaluatorMeanReversion fundingSpreadEvaluator()
+	public org.drip.measure.dynamics.DiffusionEvaluatorMeanReversion fundingSpreadEvolver()
 	{
-		return _demrFundingSpread;
+		return _fundingSpreadEvolver;
 	}
 
 	/**
@@ -124,7 +128,7 @@ public class FundingBasisEvolver {
 
 	public double underlyingFundingSpreadCorrelation()
 	{
-		return _dblCorrelation;
+		return _correlation;
 	}
 
 	/**
@@ -136,32 +140,38 @@ public class FundingBasisEvolver {
 	public org.drip.measure.process.DiffusionEvolver csaForwardProcess()
 	{
 		try {
-			org.drip.measure.dynamics.LocalEvaluator leDrift = new org.drip.measure.dynamics.LocalEvaluator()
+			org.drip.measure.dynamics.LocalEvaluator driftEvolver = new
+				org.drip.measure.dynamics.LocalEvaluator()
 			{
 				@Override public double value (
-					final org.drip.measure.realization.JumpDiffusionVertex jdv)
+					final org.drip.measure.realization.JumpDiffusionVertex vertex)
 					throws java.lang.Exception
 				{
 					return 0.;
 				}
 			};
 
-			org.drip.measure.dynamics.LocalEvaluator leVolatility = new
-				org.drip.measure.dynamics.LocalEvaluator() {
+			org.drip.measure.dynamics.LocalEvaluator volatilityEvolver = new
+				org.drip.measure.dynamics.LocalEvaluator()
+			{
 				@Override public double value (
-					final org.drip.measure.realization.JumpDiffusionVertex jdv)
+					final org.drip.measure.realization.JumpDiffusionVertex vertex)
 					throws java.lang.Exception
 				{
-					if (null == jdv)
+					if (null == vertex)
 						throw new java.lang.Exception
 							("FundingBasisEvolver::CSAForwardVolatility::Evaluator::value => Invalid Inputs");
 
-					return jdv.value() * _delUnderlying.volatilityValue();
+					return vertex.value() * _underlyingEvolver.volatilityValue();
 				}
 			};
 
 			return new org.drip.measure.process.DiffusionEvolver (new
-				org.drip.measure.dynamics.DiffusionEvaluator (leDrift, leVolatility));
+				org.drip.measure.dynamics.DiffusionEvaluator (
+					driftEvolver,
+					volatilityEvolver
+				)
+			);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -172,24 +182,24 @@ public class FundingBasisEvolver {
 	/**
 	 * Generate the Funding Numeraire Diffusion Process
 	 * 
-	 * @param strTenor The Tenor of the Underlying Forward
+	 * @param tenor The Tenor of the Underlying Forward
 	 * 
 	 * @return The Funding Numeraire Diffusion Process
 	 */
 
 	public org.drip.measure.process.DiffusionEvolver fundingNumeraireProcess (
-		final java.lang.String strTenor)
+		final java.lang.String tenor)
 	{
 		try {
-			double dblMeanReversionSpeed = _demrFundingSpread.meanReversionRate();
+			double meanReversionSpeed = _fundingSpreadEvolver.meanReversionRate();
 
-			double dblB = org.drip.analytics.support.Helper.TenorToYearFraction (strTenor);
+			double b = org.drip.analytics.support.Helper.TenorToYearFraction (tenor);
 
-			if (0. != dblMeanReversionSpeed)
-				dblB = (1. - java.lang.Math.exp (-1. * dblMeanReversionSpeed * dblB)) /
-					dblMeanReversionSpeed;
+			if (0. != meanReversionSpeed)
+				b = (1. - java.lang.Math.exp (-1. * meanReversionSpeed * b)) /
+					meanReversionSpeed;
 
-			final double dblPiterbarg2010BFactor = dblB;
+			final double dblPiterbarg2010BFactor = b;
 
 			org.drip.measure.dynamics.LocalEvaluator leDrift = new org.drip.measure.dynamics.LocalEvaluator()
 			{
@@ -211,7 +221,7 @@ public class FundingBasisEvolver {
 						throw new java.lang.Exception
 							("FundingBasisEvolver::CSAFundingNumeraireVolatility::Evaluator::value => Invalid Inputs");
 
-					return -1. * jdv.value() * dblPiterbarg2010BFactor * _demrFundingSpread.volatilityValue();
+					return -1. * jdv.value() * dblPiterbarg2010BFactor * _fundingSpreadEvolver.volatilityValue();
 				}
 			};
 
@@ -227,24 +237,24 @@ public class FundingBasisEvolver {
 	/**
 	 * Generate the Funding Spread Numeraire Diffusion Process
 	 * 
-	 * @param strTenor The Tenor of the Underlying Forward
+	 * @param tenor The Tenor of the Underlying Forward
 	 * 
 	 * @return The Funding Spread Numeraire Diffusion Process
 	 */
 
 	public org.drip.measure.process.DiffusionEvolver fundingSpreadNumeraireProcess (
-		final java.lang.String strTenor)
+		final java.lang.String tenor)
 	{
 		try {
-			double dblMeanReversionSpeed = _demrFundingSpread.meanReversionRate();
+			double meanReversionSpeed = _fundingSpreadEvolver.meanReversionRate();
 
-			double dblB = org.drip.analytics.support.Helper.TenorToYearFraction (strTenor);
+			double b = org.drip.analytics.support.Helper.TenorToYearFraction (tenor);
 
-			if (0. != dblMeanReversionSpeed)
-				dblB = (1. - java.lang.Math.exp (-1. * dblMeanReversionSpeed * dblB)) /
-					dblMeanReversionSpeed;
+			if (0. != meanReversionSpeed)
+				b = (1. - java.lang.Math.exp (-1. * meanReversionSpeed * b)) /
+					meanReversionSpeed;
 
-			final double dblPiterbarg2010BFactor = dblB;
+			final double dblPiterbarg2010BFactor = b;
 
 			org.drip.measure.dynamics.LocalEvaluator leDrift = new org.drip.measure.dynamics.LocalEvaluator()
 			{
@@ -266,7 +276,7 @@ public class FundingBasisEvolver {
 						throw new java.lang.Exception
 							("FundingBasisEvolver::CSAFundingSpreadNumeraireVolatility::Evaluator::value => Invalid Inputs");
 
-					return -1. * jdv.value() * dblPiterbarg2010BFactor * _demrFundingSpread.volatilityValue();
+					return -1. * jdv.value() * dblPiterbarg2010BFactor * _fundingSpreadEvolver.volatilityValue();
 				}
 			};
 
@@ -282,7 +292,7 @@ public class FundingBasisEvolver {
 	/**
 	 * Compute the CSA vs. No CSA Forward Ratio
 	 * 
-	 * @param strTenor The Tenor of the Underlying Forward
+	 * @param tenor The Tenor of the Underlying Forward
 	 * 
 	 * @return The CSA vs. No CSA Forward Ratio
 	 * 
@@ -290,25 +300,27 @@ public class FundingBasisEvolver {
 	 */
 
 	public double CSANoCSARatio (
-		final java.lang.String strTenor)
+		final java.lang.String tenor)
 		throws java.lang.Exception
 	{
-		double dblUnderlyingVolatility = _delUnderlying.volatilityValue();
+		double underlyingVolatility = _underlyingEvolver.volatilityValue();
 
-		double dblMeanReversionSpeed = _demrFundingSpread.meanReversionRate();
+		double meanReversionSpeed = _fundingSpreadEvolver.meanReversionRate();
 
-		double dblFundingSpreadVolatility = _demrFundingSpread.volatilityValue();
+		double fundingSpreadVolatility = _fundingSpreadEvolver.volatilityValue();
 
-		double dblMaturity = org.drip.analytics.support.Helper.TenorToYearFraction (strTenor);
+		double maturity = org.drip.analytics.support.Helper.TenorToYearFraction (tenor);
 
-		if (0. == dblMeanReversionSpeed)
-			return java.lang.Math.exp (-0.5 * _dblCorrelation * dblUnderlyingVolatility *
-				dblFundingSpreadVolatility * dblMaturity * dblMaturity);
+		if (0. == meanReversionSpeed)
+		{
+			return java.lang.Math.exp (-0.5 * _correlation * underlyingVolatility *
+				fundingSpreadVolatility * maturity * maturity);
+		}
 
-		double dblB = (1. - java.lang.Math.exp (-1. * dblMeanReversionSpeed * dblMaturity)) /
-			dblMeanReversionSpeed;
+		double b = (1. - java.lang.Math.exp (-1. * meanReversionSpeed * maturity)) /
+			meanReversionSpeed;
 
-		return java.lang.Math.exp (-1. * _dblCorrelation * dblUnderlyingVolatility *
-			dblFundingSpreadVolatility * (dblMaturity - dblB) / dblMeanReversionSpeed);
+		return java.lang.Math.exp (-1. * _correlation * underlyingVolatility *
+			fundingSpreadVolatility * (maturity - b) / meanReversionSpeed);
 	}
 }

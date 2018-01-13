@@ -119,7 +119,7 @@ public class ParabolicDifferentialOperator {
 		if (null == etv || !org.drip.quant.common.NumberUtil.IsValid (dblAssetNumeraireVertex))
 			throw new java.lang.Exception ("ParabolicDifferentialOperator::theta => Invalid Inputs");
 
-		org.drip.xva.derivative.AssetGreekVertex agv = etv.assetGreekVertex();
+		org.drip.xva.derivative.PositionGreekVertex agv = etv.positionGreekVertex();
 
 		double dblVolatility = _t.evolver().evaluator().volatility().value (new
 			org.drip.measure.realization.JumpDiffusionVertex (etv.time(), dblAssetNumeraireVertex, 0.,
@@ -149,7 +149,7 @@ public class ParabolicDifferentialOperator {
 			!org.drip.quant.common.NumberUtil.IsValid (dblShift))
 			return null;
 
-		org.drip.xva.derivative.AssetGreekVertex agv = etv.assetGreekVertex();
+		org.drip.xva.derivative.PositionGreekVertex agv = etv.positionGreekVertex();
 
 		double dblAssetNumeraireVertexDown = dblAssetNumeraireVertex - dblShift;
 		double dblAssetNumeraireVertexUp = dblAssetNumeraireVertex + dblShift;

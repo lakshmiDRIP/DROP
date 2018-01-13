@@ -130,7 +130,7 @@ public class ExposureGroupPath {
 
 	public org.drip.analytics.date.JulianDate[] anchors()
 	{
-		return _aHGP[0].anchors();
+		return _aHGP[0].anchorDates();
 	}
 
 	/**
@@ -586,7 +586,7 @@ public class ExposureGroupPath {
 							aMV[iVertexIndex].overnightNumeraire().epochalNodalScale();
 
 			dblBilateralCollateralValueAdjustment -= 0.5 * (dblPeriodIntegrandStart + dblPeriodIntegrandEnd)
-				* (aMV[iVertexIndex].anchor().julian() - aMV[iVertexIndex - 1].anchor().julian()) / 365.25;
+				* (aMV[iVertexIndex].anchorDate().julian() - aMV[iVertexIndex - 1].anchorDate().julian()) / 365.25;
 		}
 
 		return dblBilateralCollateralValueAdjustment;
@@ -622,7 +622,7 @@ public class ExposureGroupPath {
 						aMV[iVertexIndex].overnightNumeraire().epochalNodalScale();
 
 			dblUnilateralCollateralValueAdjustment -= 0.5 * (dblPeriodIntegrandStart + dblPeriodIntegrandEnd)
-				* (aMV[iVertexIndex].anchor().julian() - aMV[iVertexIndex - 1].anchor().julian()) / 365.25;
+				* (aMV[iVertexIndex].anchorDate().julian() - aMV[iVertexIndex - 1].anchorDate().julian()) / 365.25;
 		}
 
 		return dblUnilateralCollateralValueAdjustment;
@@ -672,8 +672,8 @@ public class ExposureGroupPath {
 						aMV[iVertexIndex].overnightNumeraire().epochalNodalScale();
 
 			adblUnilateralCollateralValueAdjustment[iVertexIndex - 1] = -0.5 * (dblPeriodIntegrandStart +
-				dblPeriodIntegrandEnd) * (aMV[iVertexIndex].anchor().julian() -
-					aMV[iVertexIndex - 1].anchor().julian()) / 365.25;
+				dblPeriodIntegrandEnd) * (aMV[iVertexIndex].anchorDate().julian() -
+					aMV[iVertexIndex - 1].anchorDate().julian()) / 365.25;
 		}
 
 		return adblUnilateralCollateralValueAdjustment;
@@ -711,8 +711,8 @@ public class ExposureGroupPath {
 							aMV[iVertexIndex].overnightNumeraire().epochalNodalScale();
 
 			adblBilateralCollateralValueAdjustment[iVertexIndex - 1] = -0.5 * (dblPeriodIntegrandStart +
-				dblPeriodIntegrandEnd) * (aMV[iVertexIndex].anchor().julian() -
-					aMV[iVertexIndex - 1].anchor().julian()) / 365.25;
+				dblPeriodIntegrandEnd) * (aMV[iVertexIndex].anchorDate().julian() -
+					aMV[iVertexIndex - 1].anchorDate().julian()) / 365.25;
 		}
 
 		return adblBilateralCollateralValueAdjustment;

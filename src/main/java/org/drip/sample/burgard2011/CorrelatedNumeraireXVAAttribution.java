@@ -91,13 +91,13 @@ public class CorrelatedNumeraireXVAAttribution {
 		final MarketVertex mvFinish)
 		throws Exception
 	{
-		AssetGreekVertex agvStart = etvStart.assetGreekVertex();
+		PositionGreekVertex agvStart = etvStart.positionGreekVertex();
 
 		ReplicationPortfolioVertex rpvStart = etvStart.replicationPortfolioVertex();
 
 		double dblDerivativeXVAValueStart = agvStart.derivativeXVAValue();
 
-		double dblTimeWidth = (mvFinish.anchor().julian() - mvStart.anchor().julian()) / 365.;
+		double dblTimeWidth = (mvFinish.anchorDate().julian() - mvStart.anchorDate().julian()) / 365.;
 
 		double dblTimeStart = etvStart.time();
 
@@ -148,11 +148,11 @@ public class CorrelatedNumeraireXVAAttribution {
 				mvStart,
 				mvFinish
 			)
-		).cashAccount();
+		).cashAccountEdge();
 
 		double dblCashAccountAccumulationFinish = cae.accumulation();
 
-		double dblAssetNumeraireFinish = mvFinish.portfolioValue();
+		double dblAssetNumeraireFinish = mvFinish.positionValue();
 
 		double dblBankSeniorFundingNumeraireFinish = mvFinish.bank().seniorFundingLatentState().nodal();
 
@@ -172,7 +172,7 @@ public class CorrelatedNumeraireXVAAttribution {
 			FormatUtil.FormatDouble (dblBankSeniorFundingNumeraireFinish, 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (dblCounterPartyFundingNumeraireFinish, 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (mvFinish.csaNumeraire().nodal(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (rpvFinish.assetNumeraireUnits(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (rpvFinish.positionUnits(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (rpvFinish.bankSeniorNumeraireUnits(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (rpvFinish.counterPartyNumeraireUnits(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (rpvFinish.cashAccount(), 1, 6, 1.) + " | " +
@@ -185,7 +185,7 @@ public class CorrelatedNumeraireXVAAttribution {
 		return new EvolutionTrajectoryVertex (
 			dblTime,
 			rpvFinish,
-			new AssetGreekVertex (
+			new PositionGreekVertex (
 				dblDerivativeXVAValueFinish,
 				dblDerivativeXVAValueDeltaFinish,
 				dblDerivativeXVAValueGammaFinish,
@@ -487,7 +487,7 @@ public class CorrelatedNumeraireXVAAttribution {
 			pdeec
 		);
 
-		AssetGreekVertex agvInitial = new AssetGreekVertex (
+		PositionGreekVertex agvInitial = new PositionGreekVertex (
 			dblDerivativeXVAValue,
 			-1.,
 			0.,
@@ -549,11 +549,11 @@ public class CorrelatedNumeraireXVAAttribution {
 		System.out.println ("\t||" +
 			FormatUtil.FormatDouble (1., 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (agvInitial.derivativeXVAValue(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (aMV[iNumVertex].portfolioValue(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (aMV[iNumVertex].positionValue(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (aMV[iNumVertex].bank().seniorFundingLatentState().nodal(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (aMV[iNumVertex].counterParty().seniorFundingLatentState().nodal(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (aMV[iNumVertex].csaNumeraire().nodal(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (rpvInitial.assetNumeraireUnits(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (rpvInitial.positionUnits(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (rpvInitial.bankSeniorNumeraireUnits(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (rpvInitial.counterPartyNumeraireUnits(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (rpvInitial.cashAccount(), 1, 6, 1.) + " | " +

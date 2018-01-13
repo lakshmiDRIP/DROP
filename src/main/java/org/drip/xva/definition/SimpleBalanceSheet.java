@@ -68,26 +68,27 @@ package org.drip.xva.definition;
  * @author Lakshmi Krishnamurthy
  */
 
-public class SimpleBalanceSheet {
-	private double _dblAsset = java.lang.Double.NaN;
-	private double _dblLiability = java.lang.Double.NaN;
+public class SimpleBalanceSheet
+{
+	private double _asset = java.lang.Double.NaN;
+	private double _liability = java.lang.Double.NaN;
 
 	/**
 	 * SimpleBalanceSheet Constructor
 	 * 
-	 * @param dblAsset The Balance Sheet Asset
-	 * @param dblLiability The Balance Sheet Liability
+	 * @param asset The Balance Sheet Asset
+	 * @param liability The Balance Sheet Liability
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public SimpleBalanceSheet (
-		final double dblAsset,
-		final double dblLiability)
+		final double asset,
+		final double liability)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblAsset = dblAsset) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblLiability = dblLiability))
+		if (!org.drip.quant.common.NumberUtil.IsValid (_asset = asset) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_liability = liability))
 			throw new java.lang.Exception ("SimpleBalanceSheet Constructor => Invalid Inputs");
 	}
 
@@ -99,7 +100,7 @@ public class SimpleBalanceSheet {
 
 	public double asset()
 	{
-		return _dblAsset;
+		return _asset;
 	}
 
 	/**
@@ -108,9 +109,9 @@ public class SimpleBalanceSheet {
 	 * @return The Balance Sheet Liability
 	 */
 
-	public double liability()
+	public double _liability()
 	{
-		return _dblLiability;
+		return _liability;
 	}
 
 	/**
@@ -121,7 +122,7 @@ public class SimpleBalanceSheet {
 
 	public double impliedRecovery()
 	{
-		return _dblAsset / _dblLiability;
+		return _asset / _liability;
 	}
 
 	/**
@@ -136,12 +137,16 @@ public class SimpleBalanceSheet {
 		final double dblDerivativeValue)
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (dblDerivativeValue) || 0. > dblDerivativeValue)
+		{
 			return null;
+		}
 
-		try {
-			return new SimpleBalanceSheet (_dblAsset + dblDerivativeValue, _dblLiability +
-				dblDerivativeValue);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new SimpleBalanceSheet (_asset + dblDerivativeValue, _liability + dblDerivativeValue);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 

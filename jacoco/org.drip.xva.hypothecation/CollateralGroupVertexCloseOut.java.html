@@ -68,65 +68,74 @@ package org.drip.xva.hypothecation;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CollateralGroupVertexCloseOut {
-<span class="fc" id="L72">	private double _dblBank = java.lang.Double.NaN;</span>
-<span class="fc" id="L73">	private double _dblCounterParty = java.lang.Double.NaN;</span>
+public class CollateralGroupVertexCloseOut
+{
+<span class="fc" id="L73">	private double _bank = java.lang.Double.NaN;</span>
+<span class="fc" id="L74">	private double _counterParty = java.lang.Double.NaN;</span>
 
 	/**
 	 * Construct a Static Instance of CollateralGroupVertexCloseOut
 	 * 
-	 * @param cog The Close Out General Instance
-	 * @param dblUncollateralizedExposure The Uncollateralized Exposure
-	 * @param dblCollateralBalance The Collateral Balance
+	 * @param closeOutGeneral The Close Out General Instance
+	 * @param uncollateralizedExposure The Uncollateralized Exposure
+	 * @param collateralBalance The Collateral Balance
 	 * 
 	 * @return The Static Instance of CollateralGroupVertexCloseOut
 	 */
 
 	public static final CollateralGroupVertexCloseOut Standard (
-		final org.drip.xva.definition.CloseOutGeneral cog,
-		final double dblUncollateralizedExposure,
-		final double dblCollateralBalance)
+		final org.drip.xva.definition.CloseOutGeneral closeOutGeneral,
+		final double uncollateralizedExposure,
+		final double collateralBalance)
 	{
-<span class="pc bpc" id="L90" title="2 of 4 branches missed.">		if (null == cog || !org.drip.quant.common.NumberUtil.IsValid (dblUncollateralizedExposure) ||</span>
-<span class="pc bpc" id="L91" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblCollateralBalance))</span>
-<span class="nc" id="L92">			return null;</span>
-
-		try {
-<span class="fc" id="L95">			return new CollateralGroupVertexCloseOut (</span>
-<span class="fc" id="L96">				cog.bankDefault (</span>
-					dblUncollateralizedExposure,
-					dblCollateralBalance
-				),
-<span class="fc" id="L100">				cog.counterPartyDefault (</span>
-					dblUncollateralizedExposure,
-					dblCollateralBalance
-				)
-			);
-<span class="nc" id="L105">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L106">			e.printStackTrace();</span>
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">		if (null == closeOutGeneral ||</span>
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (uncollateralizedExposure) ||</span>
+<span class="pc bpc" id="L93" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (collateralBalance))</span>
+		{
+<span class="nc" id="L95">			return null;</span>
 		}
 
-<span class="nc" id="L109">		return null;</span>
+		try
+		{
+<span class="fc" id="L100">			return new CollateralGroupVertexCloseOut (</span>
+<span class="fc" id="L101">				closeOutGeneral.bankDefault (</span>
+					uncollateralizedExposure,
+					collateralBalance
+				),
+<span class="fc" id="L105">				closeOutGeneral.counterPartyDefault (</span>
+					uncollateralizedExposure,
+					collateralBalance
+				)
+			);
+		}
+<span class="nc" id="L111">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L113">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L116">		return null;</span>
 	}
 
 	/**
 	 * CollateralGroupVertexCloseOut Constructor
 	 * 
-	 * @param dblBank The Bank Close Out
-	 * @param dblCounterParty The Counter Party Close Out
+	 * @param bank The Bank Close Out
+	 * @param counterParty The Counter Party Close Out
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CollateralGroupVertexCloseOut (
-		final double dblBank,
-		final double dblCounterParty)
+		final double bank,
+		final double counterParty)
 		throws java.lang.Exception
-<span class="fc" id="L125">	{</span>
-<span class="pc bpc" id="L126" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblBank = dblBank) ||</span>
-<span class="pc bpc" id="L127" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblCounterParty = dblCounterParty))</span>
-<span class="nc" id="L128">			throw new java.lang.Exception (&quot;CollateralGroupVertexCloseOut Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L129">	}</span>
+<span class="fc" id="L132">	{</span>
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_bank = bank) ||</span>
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_counterParty = counterParty))</span>
+		{
+<span class="nc" id="L136">			throw new java.lang.Exception (&quot;CollateralGroupVertexCloseOut Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="fc" id="L138">	}</span>
 
 	/**
 	 * Retrieve the Bank Close Out
@@ -136,7 +145,7 @@ public class CollateralGroupVertexCloseOut {
 
 	public double bank()
 	{
-<span class="fc" id="L139">		return _dblBank;</span>
+<span class="fc" id="L148">		return _bank;</span>
 	}
 
 	/**
@@ -147,7 +156,7 @@ public class CollateralGroupVertexCloseOut {
 
 	public double counterParty()
 	{
-<span class="fc" id="L150">		return _dblCounterParty;</span>
+<span class="fc" id="L159">		return _counterParty;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AssetGreekVertex.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.xva.derivative</a> &gt; <span class="el_source">AssetGreekVertex.java</span></div><h1>AssetGreekVertex.java</h1><pre class="source lang-java linenums">
+
 package org.drip.xva.derivative;
 
 /*
@@ -33,14 +33,14 @@ package org.drip.xva.derivative;
  * 
  *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
  * 
- *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *  Licensed under the Apache License, Version 2.0 (the "License");
  *   	you may not use this file except in compliance with the License.
  *   
  *  You may obtain a copy of the License at
  *  	http://www.apache.org/licenses/LICENSE-2.0
  *  
  *  Unless required by applicable law or agreed to in writing, software
- *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	distributed under the License is distributed on an "AS IS" BASIS,
  *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  
  *  See the License for the specific language governing permissions and
@@ -48,7 +48,7 @@ package org.drip.xva.derivative;
  */
 
 /**
- * AssetGreekVertex holds the Derivative XVA Value, its Delta, and its Gamma to the Asset Value. The
+ * PositionGreekVertex holds the Derivative XVA Value, its Delta, and its Gamma to the Position Value. The
  *  References are:
  *  
  *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
@@ -69,38 +69,41 @@ package org.drip.xva.derivative;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AssetGreekVertex {
-<span class="fc" id="L73">	private double _dblDerivativeXVAValue = java.lang.Double.NaN;</span>
-<span class="fc" id="L74">	private double _dblDerivativeFairValue = java.lang.Double.NaN;</span>
-<span class="fc" id="L75">	private double _dblDerivativeXVAValueDelta = java.lang.Double.NaN;</span>
-<span class="fc" id="L76">	private double _dblDerivativeXVAValueGamma = java.lang.Double.NaN;</span>
+public class PositionGreekVertex
+{
+	private double _derivativeXVAValue = java.lang.Double.NaN;
+	private double _derivativeFairValue = java.lang.Double.NaN;
+	private double _derivativeXVAValueDelta = java.lang.Double.NaN;
+	private double _derivativeXVAValueGamma = java.lang.Double.NaN;
 
 	/**
-	 * AssetGreekVertex Constructor
+	 * PositionGreekVertex Constructor
 	 * 
-	 * @param dblDerivativeXVAValue The Derivative XVA Value
-	 * @param dblDerivativeXVAValueDelta The Derivative XVA Value Delta
-	 * @param dblDerivativeXVAValueGamma The Derivative XVA Value Gamma
-	 * @param dblDerivativeFairValue The Derivative &quot;Fair&quot; Value
+	 * @param derivativeXVAValue The Derivative XVA Value
+	 * @param derivativeXVAValueDelta The Derivative XVA Value Delta
+	 * @param derivativeXVAValueGamma The Derivative XVA Value Gamma
+	 * @param derivativeFairValue The Derivative "Fair" Value
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public AssetGreekVertex (
-		final double dblDerivativeXVAValue,
-		final double dblDerivativeXVAValueDelta,
-		final double dblDerivativeXVAValueGamma,
-		final double dblDerivativeFairValue)
+	public PositionGreekVertex (
+		final double derivativeXVAValue,
+		final double derivativeXVAValueDelta,
+		final double derivativeXVAValueGamma,
+		final double derivativeFairValue)
 		throws java.lang.Exception
-<span class="fc" id="L95">	{</span>
-<span class="pc bpc" id="L96" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblDerivativeXVAValue = dblDerivativeXVAValue) ||</span>
-<span class="pc bpc" id="L97" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblDerivativeXVAValueDelta =</span>
-				dblDerivativeXVAValueDelta) || !org.drip.quant.common.NumberUtil.IsValid
-<span class="pc bpc" id="L99" title="1 of 2 branches missed.">					(_dblDerivativeXVAValueGamma = dblDerivativeXVAValueGamma))</span>
-<span class="nc" id="L100">			throw new java.lang.Exception (&quot;AssetGreekVertex Constructor =&gt; Invalid Inputs&quot;);</span>
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (_derivativeXVAValue = derivativeXVAValue) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_derivativeXVAValueDelta =
+				derivativeXVAValueDelta) || !org.drip.quant.common.NumberUtil.IsValid
+					(_derivativeXVAValueGamma = derivativeXVAValueGamma))
+		{
+			throw new java.lang.Exception ("PositionGreekVertex Constructor => Invalid Inputs");
+		}
 
-<span class="fc" id="L102">		_dblDerivativeFairValue = dblDerivativeFairValue;</span>
-<span class="fc" id="L103">	}</span>
+		_derivativeFairValue = derivativeFairValue;
+	}
 
 	/**
 	 * Retrieve the Derivative XVA Value
@@ -110,7 +113,7 @@ public class AssetGreekVertex {
 
 	public double derivativeXVAValue()
 	{
-<span class="fc" id="L113">		return _dblDerivativeXVAValue;</span>
+		return _derivativeXVAValue;
 	}
 
 	/**
@@ -121,7 +124,7 @@ public class AssetGreekVertex {
 
 	public double derivativeXVAValueDelta()
 	{
-<span class="fc" id="L124">		return _dblDerivativeXVAValueDelta;</span>
+		return _derivativeXVAValueDelta;
 	}
 
 	/**
@@ -132,18 +135,18 @@ public class AssetGreekVertex {
 
 	public double derivativeXVAValueGamma()
 	{
-<span class="fc" id="L135">		return _dblDerivativeXVAValueGamma;</span>
+		return _derivativeXVAValueGamma;
 	}
 
 	/**
-	 * Retrieve the Derivative De-XVA &quot;Fair&quot; Value
+	 * Retrieve the Derivative De-XVA "Fair" Value
 	 * 
-	 * @return The Derivative De-XVA &quot;Fair&quot; Value
+	 * @return The Derivative De-XVA "Fair" Value
 	 */
 
 	public double derivativeFairValue()
 	{
-<span class="fc" id="L146">		return _dblDerivativeFairValue;</span>
+		return _derivativeFairValue;
 	}
 
 	/**
@@ -154,7 +157,6 @@ public class AssetGreekVertex {
 
 	public double derivativeXVA()
 	{
-<span class="nc" id="L157">		return _dblDerivativeXVAValue - _dblDerivativeXVAValue;</span>
+		return _derivativeXVAValue - _derivativeXVAValue;
 	}
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

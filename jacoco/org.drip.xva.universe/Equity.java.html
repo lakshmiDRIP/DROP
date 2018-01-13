@@ -70,30 +70,34 @@ package org.drip.xva.universe;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Equity extends org.drip.xva.universe.Tradeable {
-<span class="nc" id="L74">	private double _dblDividendRate = java.lang.Double.NaN;</span>
+public class Equity extends org.drip.xva.universe.Tradeable
+{
+<span class="nc" id="L75">	private double _dividendRate = java.lang.Double.NaN;</span>
 
 	/**
 	 * Equity Constructor
 	 * 
-	 * @param deNumeraire The Equity Price Numeraire
+	 * @param evolver The Equity Price Evolver
 	 * @param dblRepoRate The Equity Repo Rate
-	 * @param dblDividendRate The Equity Dividend Rate
+	 * @param dividendRate The Equity Dividend Rate
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public Equity (
-		final org.drip.measure.process.DiffusionEvolver deNumeraire,
+		final org.drip.measure.process.DiffusionEvolver evolver,
 		final double dblRepoRate,
-		final double dblDividendRate)
+		final double dividendRate)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L92">		super (deNumeraire, dblRepoRate);</span>
+<span class="nc" id="L93">		super (</span>
+			evolver,
+			dblRepoRate
+		);
 
-<span class="nc bnc" id="L94" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblDividendRate = dblDividendRate))</span>
-<span class="nc" id="L95">			throw new java.lang.Exception (&quot;Equity Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L96">	}</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dividendRate = dividendRate))</span>
+<span class="nc" id="L99">			throw new java.lang.Exception (&quot;Equity Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L100">	}</span>
 
 	/**
 	 * Retrieve the Equity Dividend Rate
@@ -103,12 +107,12 @@ public class Equity extends org.drip.xva.universe.Tradeable {
 
 	public double dividendRate()
 	{
-<span class="nc" id="L106">		return _dblDividendRate;</span>
+<span class="nc" id="L110">		return _dividendRate;</span>
 	}
 
 	@Override public double cashAccumulationRate()
 	{
-<span class="nc" id="L111">		return _dblDividendRate - repoRate();</span>
+<span class="nc" id="L115">		return _dividendRate - repoRate();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

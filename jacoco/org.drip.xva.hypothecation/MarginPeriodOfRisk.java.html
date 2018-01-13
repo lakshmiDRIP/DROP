@@ -68,7 +68,8 @@ package org.drip.xva.hypothecation;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MarginPeriodOfRisk {
+public class MarginPeriodOfRisk
+{
 
 	/**
 	 * MPoR Interpolation Type - LINEAR
@@ -88,8 +89,8 @@ public class MarginPeriodOfRisk {
 
 	public static final int MPOR_INTERPOLATION_BROWNIAN_BRIDGE = 4;
 
-<span class="nc" id="L91">	private int _iInterpolationType = -1;</span>
-<span class="nc" id="L92">	private int _iMarginCallFrequency = -1;</span>
+<span class="nc" id="L92">	private int _interpolationType = -1;</span>
+<span class="nc" id="L93">	private int _marginCallFrequency = -1;</span>
 
 	/**
 	 * Construct a Standard Instance of MarginPeriodOfRisk
@@ -99,34 +100,40 @@ public class MarginPeriodOfRisk {
 
 	public static final MarginPeriodOfRisk Standard()
 	{
-		try {
-<span class="nc" id="L103">			return new MarginPeriodOfRisk (1, MPOR_INTERPOLATION_BROWNIAN_BRIDGE);</span>
-<span class="nc" id="L104">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L105">			e.printStackTrace();</span>
+		try
+		{
+<span class="nc" id="L105">			return new MarginPeriodOfRisk (1, MPOR_INTERPOLATION_BROWNIAN_BRIDGE);</span>
+		}
+<span class="nc" id="L107">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L109">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L108">		return null;</span>
+<span class="nc" id="L112">		return null;</span>
 	}
 
 	/**
 	 * MarginPeriodOfRisk Constructor
 	 * 
-	 * @param iMarginCallFrequency The MPoR Margin Call Frequency
-	 * @param iInterpolationType The MPoR Interpolation Type
+	 * @param marginCallFrequency The MPoR Margin Call Frequency
+	 * @param interpolationType The MPoR Interpolation Type
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public MarginPeriodOfRisk (
-		final int iMarginCallFrequency,
-		final int iInterpolationType)
+		final int marginCallFrequency,
+		final int interpolationType)
 		throws java.lang.Exception
-<span class="nc" id="L124">	{</span>
-<span class="nc bnc" id="L125" title="All 8 branches missed.">		if (-1 &gt;= (_iMarginCallFrequency = iMarginCallFrequency) || (MPOR_INTERPOLATION_LINEAR !=</span>
-			(_iInterpolationType = iInterpolationType) &amp;&amp; MPOR_INTERPOLATION_SQRT_T != _iInterpolationType &amp;&amp;
-				MPOR_INTERPOLATION_BROWNIAN_BRIDGE != _iInterpolationType))
-<span class="nc" id="L128">			throw new java.lang.Exception (&quot;MarginPeriodOfRisk Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L129">	}</span>
+<span class="nc" id="L128">	{</span>
+<span class="nc bnc" id="L129" title="All 8 branches missed.">		if (-1 &gt;= (_marginCallFrequency = marginCallFrequency) ||</span>
+			(MPOR_INTERPOLATION_LINEAR != (_interpolationType = interpolationType) &amp;&amp;
+			MPOR_INTERPOLATION_SQRT_T != _interpolationType &amp;&amp;
+			MPOR_INTERPOLATION_BROWNIAN_BRIDGE != _interpolationType))
+		{
+<span class="nc" id="L134">			throw new java.lang.Exception (&quot;MarginPeriodOfRisk Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="nc" id="L136">	}</span>
 
 	/**
 	 * Retrieve the MPoR Margin Call Frequency
@@ -136,7 +143,7 @@ public class MarginPeriodOfRisk {
 
 	public int marginCallFrequency()
 	{
-<span class="nc" id="L139">		return _iMarginCallFrequency;</span>
+<span class="nc" id="L146">		return _marginCallFrequency;</span>
 	}
 
 	/**
@@ -147,7 +154,7 @@ public class MarginPeriodOfRisk {
 
 	public int interpolationType()
 	{
-<span class="nc" id="L150">		return _iInterpolationType;</span>
+<span class="nc" id="L157">		return _interpolationType;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

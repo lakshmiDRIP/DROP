@@ -119,9 +119,9 @@ public class ParabolicDifferentialOperator {
 <span class="nc bnc" id="L119" title="All 4 branches missed.">		if (null == etv || !org.drip.quant.common.NumberUtil.IsValid (dblAssetNumeraireVertex))</span>
 <span class="nc" id="L120">			throw new java.lang.Exception (&quot;ParabolicDifferentialOperator::theta =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L122">		org.drip.xva.derivative.AssetGreekVertex agv = etv.assetGreekVertex();</span>
+<span class="nc" id="L122">		org.drip.xva.derivative.PositionGreekVertex agv = etv.positionGreekVertex();</span>
 
-<span class="nc" id="L124">		double dblVolatility = _t.numeraireEvolver().evaluator().volatility().value (new</span>
+<span class="nc" id="L124">		double dblVolatility = _t.evolver().evaluator().volatility().value (new</span>
 <span class="nc" id="L125">			org.drip.measure.realization.JumpDiffusionVertex (etv.time(), dblAssetNumeraireVertex, 0.,</span>
 				false));
 
@@ -149,14 +149,14 @@ public class ParabolicDifferentialOperator {
 <span class="pc bpc" id="L149" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblShift))</span>
 <span class="nc" id="L150">			return null;</span>
 
-<span class="fc" id="L152">		org.drip.xva.derivative.AssetGreekVertex agv = etv.assetGreekVertex();</span>
+<span class="fc" id="L152">		org.drip.xva.derivative.PositionGreekVertex agv = etv.positionGreekVertex();</span>
 
 <span class="fc" id="L154">		double dblAssetNumeraireVertexDown = dblAssetNumeraireVertex - dblShift;</span>
 <span class="fc" id="L155">		double dblAssetNumeraireVertexUp = dblAssetNumeraireVertex + dblShift;</span>
 <span class="fc" id="L156">		double dblVolatility = java.lang.Double.NaN;</span>
 
 		try {
-<span class="fc" id="L159">			dblVolatility = _t.numeraireEvolver().evaluator().volatility().value (new</span>
+<span class="fc" id="L159">			dblVolatility = _t.evolver().evaluator().volatility().value (new</span>
 <span class="fc" id="L160">				org.drip.measure.realization.JumpDiffusionVertex (etv.time(), dblAssetNumeraireVertex, 0.,</span>
 					false));
 <span class="nc" id="L162">		} catch (java.lang.Exception e) {</span>

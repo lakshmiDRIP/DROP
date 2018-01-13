@@ -69,38 +69,39 @@ package org.drip.xva.universe;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Tradeable {
-<span class="fc" id="L73">	private double _dblRepoRate = java.lang.Double.NaN;</span>
-<span class="fc" id="L74">	private org.drip.measure.process.DiffusionEvolver _deNumeraire = null;</span>
+public class Tradeable
+{
+<span class="fc" id="L74">	private double _repoRate = java.lang.Double.NaN;</span>
+<span class="fc" id="L75">	private org.drip.measure.process.DiffusionEvolver _evolver = null;</span>
 
 	/**
 	 * Tradeable Constructor
 	 * 
-	 * @param deNumeraire The Numeraire Evolver
-	 * @param dblRepoRate The Repo Rate
+	 * @param evolver The Tradeable Evolver
+	 * @param repoRate The Repo Rate
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public Tradeable (
-		final org.drip.measure.process.DiffusionEvolver deNumeraire,
-		final double dblRepoRate)
+		final org.drip.measure.process.DiffusionEvolver evolver,
+		final double repoRate)
 		throws java.lang.Exception
-<span class="fc" id="L89">	{</span>
-<span class="pc bpc" id="L90" title="2 of 4 branches missed.">		if (null == (_deNumeraire = deNumeraire) || !org.drip.quant.common.NumberUtil.IsValid (_dblRepoRate =</span>
-			dblRepoRate))
-<span class="nc" id="L92">			throw new java.lang.Exception (&quot;Tradeable Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L93">	}</span>
+<span class="fc" id="L90">	{</span>
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">		if (null == (_evolver = evolver) ||</span>
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_repoRate = repoRate))</span>
+<span class="nc" id="L93">			throw new java.lang.Exception (&quot;Tradeable Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L94">	}</span>
 
 	/**
-	 * Retrieve the Numeraire Evolver
+	 * Retrieve the Evolver
 	 * 
-	 * @return The Numeraire Evolver
+	 * @return The Evolver
 	 */
 
-	public org.drip.measure.process.DiffusionEvolver numeraireEvolver()
+	public org.drip.measure.process.DiffusionEvolver evolver()
 	{
-<span class="fc" id="L103">		return _deNumeraire;</span>
+<span class="fc" id="L104">		return _evolver;</span>
 	}
 
 	/**
@@ -111,7 +112,7 @@ public class Tradeable {
 
 	public double repoRate()
 	{
-<span class="nc" id="L114">		return _dblRepoRate;</span>
+<span class="nc" id="L115">		return _repoRate;</span>
 	}
 
 	/**
@@ -122,7 +123,7 @@ public class Tradeable {
 
 	public double cashAccumulationRate()
 	{
-<span class="fc" id="L125">		return -1. * _dblRepoRate;</span>
+<span class="fc" id="L126">		return -1. * _repoRate;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

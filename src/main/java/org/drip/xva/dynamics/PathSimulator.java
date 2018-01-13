@@ -98,7 +98,7 @@ public class PathSimulator
 
 				collateralGroupVertexArray[j] = new org.drip.xva.hypothecation.AlbaneseAndersenVertex (
 					vertexDate,
-					marketVertexes[j].portfolioValue(),
+					marketVertexes[j].positionValue(),
 					0.,
 					0 == j ? 0. : new org.drip.xva.hypothecation.CollateralAmountEstimator (
 						collateralGroupSpecification,
@@ -106,8 +106,8 @@ public class PathSimulator
 						new org.drip.measure.bridge.BrokenDateInterpolatorLinearT (
 							dateVertexArray[j - 1],
 							dateVertexArray[j],
-							marketVertexes[j - 1].portfolioValue(),
-							marketVertexes[j].portfolioValue()
+							marketVertexes[j - 1].positionValue(),
+							marketVertexes[j].positionValue()
 						),
 						java.lang.Double.NaN
 					).postingRequirement (vertexDate)

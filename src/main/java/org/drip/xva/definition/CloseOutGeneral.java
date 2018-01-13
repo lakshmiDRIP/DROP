@@ -67,7 +67,8 @@ package org.drip.xva.definition;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class CloseOutGeneral {
+public abstract class CloseOutGeneral
+{
 
 	/**
 	 * Retrieve the Close-out from the Exposure on Bank Default

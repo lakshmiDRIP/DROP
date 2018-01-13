@@ -70,292 +70,84 @@ public class PathSimulator
 {
 <span class="nc" id="L71">	private int _iCount = -1;</span>
 <span class="nc" id="L72">	private org.drip.xva.dynamics.GroupSettings _groupSettings = null;</span>
-<span class="nc" id="L73">	private org.drip.xva.dynamics.EvolutionControl _evolutionControl = null;</span>
-<span class="nc" id="L74">	private org.drip.xva.dynamics.DiffusionSettings _diffusionSettings = null;</span>
-
-	private double[] vertexValueRealization (
-		final org.drip.measure.process.DiffusionEvolver deValue,
-		final double dblInitialValue,
-		final double[] adblRandom)
-	{
-<span class="nc" id="L81">		int iNumTimeStep = _evolutionControl.numTimeSteps();</span>
-
-<span class="nc" id="L83">		double[] adblNodeTime = _evolutionControl.timeNodes();</span>
-
-<span class="nc" id="L85">		double[] adblValue = new double[iNumTimeStep + 1];</span>
-<span class="nc" id="L86">		double[] adblTimeWidth = new double[iNumTimeStep];</span>
-<span class="nc" id="L87">		org.drip.measure.realization.JumpDiffusionVertex[] aJumpDiffusionVertex = null;</span>
-
-<span class="nc bnc" id="L89" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumTimeStep; ++i)</span>
-<span class="nc" id="L90">			adblTimeWidth[i] = adblNodeTime[i + 1] - adblNodeTime[i];</span>
-
-		try {
-<span class="nc" id="L93">			aJumpDiffusionVertex = deValue.vertexSequenceReverse (</span>
-				new org.drip.measure.realization.JumpDiffusionVertex (
-<span class="nc" id="L95">					_evolutionControl.horizonTime(),</span>
-					dblInitialValue,
-					0.,
-					false
-				),
-<span class="nc" id="L100">				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (</span>
-					adblTimeWidth,
-					adblRandom
-				),
-				adblTimeWidth
-			);
-<span class="nc" id="L106">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L107">			e.printStackTrace();</span>
-
-<span class="nc" id="L109">			return null;</span>
-<span class="nc" id="L110">		}</span>
-
-<span class="nc bnc" id="L112" title="All 2 branches missed.">		for (int j = 0; j &lt;= iNumTimeStep; ++j)</span>
-<span class="nc" id="L113">			adblValue[j] = aJumpDiffusionVertex[j].value();</span>
-
-<span class="nc" id="L115">		return adblValue;</span>
-	}
-
-	private org.drip.xva.universe.MarketPath generateMarketPath (
-		final org.drip.analytics.date.JulianDate[] dateVertexArray,
-		final org.drip.xva.dynamics.StateEntityRealization initialStateEntityRealization,
-		final double[][] aadblRandom)
-	{
-<span class="nc" id="L123">		int iNumTimeStep = _evolutionControl.numTimeSteps();</span>
-
-<span class="nc" id="L125">		double[] adblNodeTime = _evolutionControl.timeNodes();</span>
-
-<span class="nc" id="L127">		org.drip.xva.universe.MarketVertex[] marketVertexArray = new</span>
-			org.drip.xva.universe.MarketVertex[iNumTimeStep + 1];
-
-<span class="nc" id="L130">		org.drip.measure.process.DiffusionEvolver dePortfolioValue =</span>
-<span class="nc" id="L131">			_diffusionSettings.portfolioValueEvolver();</span>
-
-<span class="nc" id="L133">		org.drip.measure.process.DiffusionEvolver deOvernightNumeraire =</span>
-<span class="nc" id="L134">			_diffusionSettings.overnightNumeraireEvolver();</span>
-
-<span class="nc" id="L136">		org.drip.measure.process.DiffusionEvolver deCSANumeraire = _diffusionSettings.csaNumeraireEvolver();</span>
-
-<span class="nc" id="L138">		org.drip.measure.process.DiffusionEvolver deBankHazardRate =</span>
-<span class="nc" id="L139">			_diffusionSettings.bankHazardRateEvolver();</span>
-
-<span class="nc" id="L141">		org.drip.measure.process.DiffusionEvolver deBankRecoveryRate =</span>
-<span class="nc" id="L142">			_diffusionSettings.bankRecoveryRateEvolver();</span>
-
-<span class="nc" id="L144">		org.drip.measure.process.DiffusionEvolver deBankFundingSpread =</span>
-<span class="nc" id="L145">			_diffusionSettings.bankFundingSpreadEvolver();</span>
-
-<span class="nc" id="L147">		org.drip.measure.process.DiffusionEvolver deCounterPartyHazardRate =</span>
-<span class="nc" id="L148">			_diffusionSettings.counterPartyHazardRateEvolver();</span>
-
-<span class="nc" id="L150">		org.drip.measure.process.DiffusionEvolver deCounterPartyRecoveryRate =</span>
-<span class="nc" id="L151">			_diffusionSettings.counterPartyRecoveryRateEvolver();</span>
-
-<span class="nc" id="L153">		org.drip.measure.process.DiffusionEvolver deCounterPartyFundingSpread =</span>
-<span class="nc" id="L154">			_diffusionSettings.counterPartyFundingSpreadEvolver();</span>
-
-<span class="nc" id="L156">		double[] adblPortfolioValue = vertexValueRealization (</span>
-			dePortfolioValue,
-<span class="nc" id="L158">			initialStateEntityRealization.portfolioValue(),</span>
-			aadblRandom[0]
-		);
-
-<span class="nc bnc" id="L162" title="All 2 branches missed.">		if (null == adblPortfolioValue) return null;</span>
-
-<span class="nc" id="L164">		double[] adblOvernightNumeraire = vertexValueRealization (</span>
-			deOvernightNumeraire,
-<span class="nc" id="L166">			initialStateEntityRealization.overnightNumeraire(),</span>
-			aadblRandom[1]
-		);
-
-<span class="nc bnc" id="L170" title="All 2 branches missed.">		if (null == adblOvernightNumeraire) return null;</span>
-
-<span class="nc" id="L172">		double[] adblCSANumeraire = vertexValueRealization (</span>
-			deCSANumeraire,
-<span class="nc" id="L174">			initialStateEntityRealization.csaNumeraire(),</span>
-			aadblRandom[2]
-		);
-
-<span class="nc bnc" id="L178" title="All 2 branches missed.">		if (null == adblCSANumeraire) return null;</span>
-
-<span class="nc" id="L180">		double[] adblBankHazardRate = vertexValueRealization (</span>
-			deBankHazardRate,
-<span class="nc" id="L182">			initialStateEntityRealization.bankHazardRate(),</span>
-			aadblRandom[3]
-		);
-
-<span class="nc bnc" id="L186" title="All 2 branches missed.">		if (null == adblBankHazardRate) return null;</span>
-
-<span class="nc" id="L188">		double[] adblBankRecoveryRate = vertexValueRealization (</span>
-			deBankRecoveryRate,
-<span class="nc" id="L190">			initialStateEntityRealization.bankRecoveryRate(),</span>
-			aadblRandom[4]
-		);
-
-<span class="nc bnc" id="L194" title="All 2 branches missed.">		if (null == adblBankRecoveryRate) return null;</span>
-
-<span class="nc" id="L196">		double[] adblBankFundingSpread = vertexValueRealization (</span>
-			deBankFundingSpread,
-<span class="nc" id="L198">			initialStateEntityRealization.bankFundingSpread(),</span>
-			aadblRandom[5]
-		);
-
-<span class="nc bnc" id="L202" title="All 2 branches missed.">		if (null == adblBankFundingSpread) return null;</span>
-
-<span class="nc" id="L204">		double[] adblCounterPartyHazardRate = vertexValueRealization (</span>
-			deCounterPartyHazardRate,
-<span class="nc" id="L206">			initialStateEntityRealization.counterPartyHazardRate(),</span>
-			aadblRandom[6]
-		);
-
-<span class="nc bnc" id="L210" title="All 2 branches missed.">		if (null == adblCounterPartyHazardRate) return null;</span>
-
-<span class="nc" id="L212">		double[] adblCounterPartyRecoveryRate = vertexValueRealization (</span>
-			deCounterPartyRecoveryRate,
-<span class="nc" id="L214">			initialStateEntityRealization.counterPartyRecoveryRate(),</span>
-			aadblRandom[7]
-		);
-
-<span class="nc bnc" id="L218" title="All 2 branches missed.">		if (null == adblCounterPartyRecoveryRate) return null;</span>
-
-<span class="nc" id="L220">		double[] adblCounterPartyFundingSpread = vertexValueRealization (</span>
-			deCounterPartyFundingSpread,
-<span class="nc" id="L222">			initialStateEntityRealization.counterPartyFundingSpread(),</span>
-			aadblRandom[8]
-		);
-
-<span class="nc bnc" id="L226" title="All 2 branches missed.">		if (null == adblCounterPartyFundingSpread) return null;</span>
-
-		try
-		{
-<span class="nc bnc" id="L230" title="All 2 branches missed.">			for (int j = 0; j &lt;= iNumTimeStep; ++j)</span>
-			{
-<span class="nc" id="L232">				double dblOvernightHorizonNumeraire = adblOvernightNumeraire[0] / adblOvernightNumeraire[j];</span>
-
-<span class="nc bnc" id="L234" title="All 2 branches missed.">				marketVertexArray[j] = new org.drip.xva.universe.MarketVertex (</span>
-					dateVertexArray[j],
-					adblPortfolioValue[j],
-<span class="nc bnc" id="L237" title="All 2 branches missed.">					0 == adblNodeTime[j] ? 0. : -1. * java.lang.Math.log (dblOvernightHorizonNumeraire) /</span>
-						adblNodeTime[j],
-					new org.drip.xva.universe.LatentStateMarketVertex (
-						adblOvernightNumeraire[0],
-						adblOvernightNumeraire[j]
-					),
-					0 == adblNodeTime[j] ? 0. : java.lang.Math.log
-<span class="nc bnc" id="L244" title="All 2 branches missed.">						(adblCSANumeraire[j] / adblCSANumeraire[0]) / adblNodeTime[j],</span>
-					new org.drip.xva.universe.LatentStateMarketVertex (
-						adblCSANumeraire[0],
-						adblCSANumeraire[j]
-					),
-<span class="nc bnc" id="L249" title="All 2 branches missed.">					org.drip.xva.universe.EntityMarketVertex.Senior (</span>
-						adblNodeTime[j],
-						adblBankHazardRate[j],
-						adblBankRecoveryRate[j],
-						adblBankFundingSpread[j],
-<span class="nc" id="L254">						0 == j ? null : marketVertexArray[j - 1].bank()</span>
-					),
-<span class="nc" id="L256">					org.drip.xva.universe.EntityMarketVertex.Senior (</span>
-						adblNodeTime[j],
-						adblCounterPartyHazardRate[j],
-						adblCounterPartyRecoveryRate[j],
-						adblCounterPartyFundingSpread[j],
-<span class="nc" id="L261">						0 == j ? null : marketVertexArray[j - 1].counterParty()</span>
-					)
-				);
-			}
-
-<span class="nc" id="L266">			return new org.drip.xva.universe.MarketPath (marketVertexArray);</span>
-		}
-<span class="nc" id="L268">		catch (java.lang.Exception e)</span>
-		{
-<span class="nc" id="L270">			e.printStackTrace();</span>
-		}
-
-<span class="nc" id="L273">		return null;</span>
-	}
+<span class="nc" id="L73">	private org.drip.xva.universe.MarketVertexGenerator _marketVertexGenerator = null;</span>
 
 	private org.drip.xva.hypothecation.CollateralGroupPath[] generateCollateralGroupVertexes (
-		final org.drip.analytics.date.JulianDate[] dateVertexArray,
 		final org.drip.xva.universe.MarketPath marketPath)
 	{
-<span class="nc" id="L280">		int iNumTimeStep = _evolutionControl.numTimeSteps();</span>
+<span class="nc" id="L78">		int[] dateVertexArray = _marketVertexGenerator.vertexDates();</span>
 
-<span class="nc" id="L282">		org.drip.xva.universe.MarketVertex[] marketVertexes = marketPath.vertexes();</span>
+<span class="nc" id="L80">		org.drip.xva.universe.MarketVertex[] marketVertexes = marketPath.vertexes();</span>
 
-<span class="nc" id="L284">		org.drip.xva.set.CollateralGroupSpecification collateralGroupSpecification =</span>
-<span class="nc" id="L285">			_groupSettings.collateralGroupSpecification();</span>
+<span class="nc" id="L82">		org.drip.xva.set.CollateralGroupSpecification collateralGroupSpecification =</span>
+<span class="nc" id="L83">			_groupSettings.collateralGroupSpecification();</span>
 
-<span class="nc" id="L287">		org.drip.xva.set.CounterPartyGroupSpecification counterPartyGroupSpecification =</span>
-<span class="nc" id="L288">			_groupSettings.counterPartyGroupSpecification();</span>
+<span class="nc" id="L85">		org.drip.xva.set.CounterPartyGroupSpecification counterPartyGroupSpecification =</span>
+<span class="nc" id="L86">			_groupSettings.counterPartyGroupSpecification();</span>
 
-<span class="nc" id="L290">		org.drip.xva.hypothecation.CollateralGroupVertex[] collateralGroupVertexArray = new</span>
-			org.drip.xva.hypothecation.CollateralGroupVertex[iNumTimeStep + 1];
+<span class="nc" id="L88">		int iNumTimeStep = dateVertexArray.length;</span>
+<span class="nc" id="L89">		org.drip.xva.hypothecation.CollateralGroupVertex[] collateralGroupVertexArray = new</span>
+			org.drip.xva.hypothecation.CollateralGroupVertex[iNumTimeStep];
 
-<span class="nc bnc" id="L293" title="All 2 branches missed.">		for (int j = 0; j &lt;= iNumTimeStep; ++j)</span>
+<span class="nc bnc" id="L92" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumTimeStep; ++j)</span>
 		{
 			try
 			{
-<span class="nc" id="L297">				collateralGroupVertexArray[j] = new org.drip.xva.hypothecation.AlbaneseAndersenVertex (</span>
-					dateVertexArray[j],
-<span class="nc bnc" id="L299" title="All 2 branches missed.">					marketVertexes[j].portfolioValue(),</span>
+<span class="nc" id="L96">				org.drip.analytics.date.JulianDate vertexDate = new org.drip.analytics.date.JulianDate</span>
+					(dateVertexArray[j]);
+
+<span class="nc" id="L99">				collateralGroupVertexArray[j] = new org.drip.xva.hypothecation.AlbaneseAndersenVertex (</span>
+					vertexDate,
+<span class="nc bnc" id="L101" title="All 2 branches missed.">					marketVertexes[j].positionValue(),</span>
 					0.,
 					0 == j ? 0. : new org.drip.xva.hypothecation.CollateralAmountEstimator (
 						collateralGroupSpecification,
 						counterPartyGroupSpecification,
 						new org.drip.measure.bridge.BrokenDateInterpolatorLinearT (
-<span class="nc" id="L305">							dateVertexArray[j - 1].julian(),</span>
-<span class="nc" id="L306">							dateVertexArray[j].julian(),</span>
-<span class="nc" id="L307">							marketVertexes[j - 1].portfolioValue(),</span>
-<span class="nc" id="L308">							marketVertexes[j].portfolioValue()</span>
+							dateVertexArray[j - 1],
+							dateVertexArray[j],
+<span class="nc" id="L109">							marketVertexes[j - 1].positionValue(),</span>
+<span class="nc" id="L110">							marketVertexes[j].positionValue()</span>
 						),
 						java.lang.Double.NaN
-<span class="nc" id="L311">					).postingRequirement (dateVertexArray[j])</span>
+<span class="nc" id="L113">					).postingRequirement (vertexDate)</span>
 				);
 			}
-<span class="nc" id="L314">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L116">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L316">				e.printStackTrace();</span>
+<span class="nc" id="L118">				e.printStackTrace();</span>
 
-<span class="nc" id="L318">				return null;</span>
-<span class="nc" id="L319">			}</span>
+<span class="nc" id="L120">				return null;</span>
+<span class="nc" id="L121">			}</span>
 		}
 
 		try
 		{
-<span class="nc" id="L324">			return new org.drip.xva.hypothecation.CollateralGroupPath[]</span>
+<span class="nc" id="L126">			return new org.drip.xva.hypothecation.CollateralGroupPath[]</span>
 			{
 				new org.drip.xva.hypothecation.CollateralGroupPath (collateralGroupVertexArray)
 			};
 		}
-<span class="nc" id="L329">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L131">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L331">			e.printStackTrace();</span>
+<span class="nc" id="L133">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L334">		return null;</span>
+<span class="nc" id="L136">		return null;</span>
 	}
 
 	private org.drip.xva.cpty.MonoPathExposureAdjustment singleTrajectory (
-		final org.drip.analytics.date.JulianDate[] dateVertexArray,
-		final org.drip.xva.dynamics.StateEntityRealization initialStateEntityRealization,
-		final double[][] aadblRandom)
+		final org.drip.xva.universe.MarketVertex initialMarketVertex)
 	{
-<span class="nc" id="L342">		org.drip.xva.universe.MarketPath marketPath = generateMarketPath (</span>
-			dateVertexArray,
-			initialStateEntityRealization,
-			aadblRandom
-		);
-
-<span class="nc bnc" id="L348" title="All 2 branches missed.">		if (null == marketPath) return null;</span>
-
-<span class="nc" id="L350">		org.drip.xva.hypothecation.CollateralGroupPath[] collateralGroupPathArray =</span>
-<span class="nc" id="L351">			generateCollateralGroupVertexes (</span>
-				dateVertexArray,
-				marketPath
-			);
-
 		try
 		{
-<span class="nc" id="L358">			return new org.drip.xva.cpty.MonoPathExposureAdjustment (</span>
+<span class="nc" id="L144">			org.drip.xva.universe.MarketPath marketPath = new org.drip.xva.universe.MarketPath</span>
+<span class="nc" id="L145">				(_marketVertexGenerator.marketVertex (initialMarketVertex));</span>
+
+<span class="nc" id="L147">			org.drip.xva.hypothecation.CollateralGroupPath[] collateralGroupPathArray =</span>
+<span class="nc" id="L148">				generateCollateralGroupVertexes (marketPath);</span>
+
+<span class="nc" id="L150">			return new org.drip.xva.cpty.MonoPathExposureAdjustment (</span>
 				new org.drip.xva.strategy.AlbaneseAndersenNettingGroupPath[]
 				{
 					new org.drip.xva.strategy.AlbaneseAndersenNettingGroupPath (
@@ -372,38 +164,35 @@ public class PathSimulator
 				}
 			);
 		}
-<span class="nc" id="L375">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L167">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L377">			e.printStackTrace();</span>
+<span class="nc" id="L169">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L380">		return null;</span>
+<span class="nc" id="L172">		return null;</span>
 	}
 
 	/**
 	 * PathSimulator Constructor
 	 * 
 	 * @param iCount Path Count
+	 * @param marketVertexGenerator Market Vertex Generator
 	 * @param groupSettings Group Settings
-	 * @param diffusionSettings Diffusion Settings
-	 * @param evolutionControl Evolution Control
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public PathSimulator (
 		final int iCount,
-		final org.drip.xva.dynamics.GroupSettings groupSettings,
-		final org.drip.xva.dynamics.DiffusionSettings diffusionSettings,
-		final org.drip.xva.dynamics.EvolutionControl evolutionControl)
+		final org.drip.xva.universe.MarketVertexGenerator marketVertexGenerator,
+		final org.drip.xva.dynamics.GroupSettings groupSettings)
 		throws java.lang.Exception
-<span class="nc" id="L400">	{</span>
-<span class="nc bnc" id="L401" title="All 8 branches missed.">		if (0 &gt;= (_iCount = iCount) ||</span>
-			null == (_groupSettings = groupSettings) ||
-			null == (_diffusionSettings = diffusionSettings) ||
-			null == (_evolutionControl = evolutionControl))
-<span class="nc" id="L405">			throw new java.lang.Exception (&quot;PathSimulator Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L406">	}</span>
+<span class="nc" id="L190">	{</span>
+<span class="nc bnc" id="L191" title="All 6 branches missed.">		if (0 &gt;= (_iCount = iCount) ||</span>
+			null == (_marketVertexGenerator = marketVertexGenerator) ||
+			null == (_groupSettings = groupSettings))
+<span class="nc" id="L194">			throw new java.lang.Exception (&quot;PathSimulator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L195">	}</span>
 
 	/**
 	 * Retrieve the Path Count
@@ -413,86 +202,50 @@ public class PathSimulator
 
 	public int count()
 	{
-<span class="nc" id="L416">		return _iCount;</span>
+<span class="nc" id="L205">		return _iCount;</span>
 	}
 
 	/**
-	 * Retrieve the Diffusion Settings
+	 * Retrieve the Market Vertex Generator
 	 * 
-	 * @return The Diffusion Settings
+	 * @return The Market Vertex Generator
 	 */
 
-	public org.drip.xva.dynamics.DiffusionSettings diffusors()
+	public org.drip.xva.universe.MarketVertexGenerator marketVertexGenerator()
 	{
-<span class="nc" id="L427">		return _diffusionSettings;</span>
-	}
-
-	/**
-	 * Retrieve the Evolution Control
-	 * 
-	 * @return The Evolution Control
-	 */
-
-	public org.drip.xva.dynamics.EvolutionControl evolutionControl()
-	{
-<span class="nc" id="L438">		return _evolutionControl;</span>
+<span class="nc" id="L216">		return _marketVertexGenerator;</span>
 	}
 
 	/**
 	 * Simulate the Realized State/Entity Values and their Aggregates over the Paths
 	 * 
-	 * @param initialStateEntityRealization The Starting State Entity Realization
+	 * @param initialMarketVertex The Initial Market Vertex
 	 * 
 	 * @return The Exposure Adjustment Aggregator - Simulation Result
 	 */
 
 	public org.drip.xva.cpty.ExposureAdjustmentAggregator simulate (
-		final org.drip.xva.dynamics.StateEntityRealization initialStateEntityRealization)
+		final org.drip.xva.universe.MarketVertex initialMarketVertex)
 	{
-<span class="nc" id="L452">		int iNumTimeStep = _evolutionControl.numTimeSteps();</span>
-
-<span class="nc" id="L454">		double[][] aadblCorrelation = _diffusionSettings.correlationMatrix();</span>
-
-<span class="nc" id="L456">		org.drip.analytics.date.JulianDate dtSpot = _evolutionControl.spotDate();</span>
-
-<span class="nc" id="L458">		org.drip.analytics.date.JulianDate[] dateVertexArray = new</span>
-			org.drip.analytics.date.JulianDate[iNumTimeStep + 1];
-<span class="nc" id="L460">		org.drip.xva.cpty.PathExposureAdjustment[] pathExposureAdjustmentArray = new</span>
+<span class="nc" id="L230">		org.drip.xva.cpty.PathExposureAdjustment[] pathExposureAdjustmentArray = new</span>
 			org.drip.xva.cpty.PathExposureAdjustment[_iCount];
 
-<span class="nc bnc" id="L463" title="All 2 branches missed.">		for (int j = 0; j &lt;= iNumTimeStep; ++j)</span>
+<span class="nc bnc" id="L233" title="All 2 branches missed.">		for (int i = 0; i &lt; _iCount; ++i)</span>
 		{
-<span class="nc bnc" id="L465" title="All 2 branches missed.">			if (null == (dateVertexArray[j] = dtSpot.addMonths (6 * j))) return null;</span>
-		}
-
-<span class="nc bnc" id="L468" title="All 2 branches missed.">		for (int i = 0; i &lt; _iCount; ++i)</span>
-		{
-<span class="nc" id="L470">			double[][] aadblRandom = org.drip.quant.linearalgebra.Matrix.Transpose (</span>
-<span class="nc" id="L471">				org.drip.measure.discrete.SequenceGenerator.GaussianJoint (</span>
-					iNumTimeStep,
-					aadblCorrelation
-				)
-			);
-
-<span class="nc bnc" id="L477" title="All 2 branches missed.">			if (null == aadblRandom) return null;</span>
-
-<span class="nc bnc" id="L479" title="All 2 branches missed.">			if (null == (pathExposureAdjustmentArray[i] = singleTrajectory (</span>
-				dateVertexArray,
-				initialStateEntityRealization,
-				aadblRandom)))
-<span class="nc" id="L483">				return null;</span>
+<span class="nc bnc" id="L235" title="All 2 branches missed.">			if (null == (pathExposureAdjustmentArray[i] = singleTrajectory (initialMarketVertex)))</span>
+<span class="nc" id="L236">				return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L488">			return new org.drip.xva.cpty.ExposureAdjustmentAggregator (pathExposureAdjustmentArray);</span>
+<span class="nc" id="L241">			return new org.drip.xva.cpty.ExposureAdjustmentAggregator (pathExposureAdjustmentArray);</span>
 		}
-<span class="nc" id="L490">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L243">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L492">			e.printStackTrace();</span>
+<span class="nc" id="L245">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L495">		return null;</span>
+<span class="nc" id="L248">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

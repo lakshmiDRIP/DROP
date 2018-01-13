@@ -104,7 +104,7 @@ public abstract class FundingGroupPath extends org.drip.xva.netting.ExposureGrou
 					aMV[iVertexIndex].bank().seniorFundingSpread();
 
 			dblUnilateralFundingCostAdjustment -= 0.5 * (dblPeriodIntegrandStart + dblPeriodIntegrandEnd) *
-				(aMV[iVertexIndex].anchor().julian() - aMV[iVertexIndex - 1].anchor().julian()) / 365.25;
+				(aMV[iVertexIndex].anchorDate().julian() - aMV[iVertexIndex - 1].anchorDate().julian()) / 365.25;
 		}
 
 		return dblUnilateralFundingCostAdjustment;
@@ -140,7 +140,7 @@ public abstract class FundingGroupPath extends org.drip.xva.netting.ExposureGrou
 						aMV[iVertexIndex].counterParty().survivalProbability();
 
 			dblBilateralFundingValueAdjustment -= 0.5 * (dblPeriodIntegrandStart + dblPeriodIntegrandEnd) *
-				(aMV[iVertexIndex].anchor().julian() - aMV[iVertexIndex - 1].anchor().julian()) / 365.25;
+				(aMV[iVertexIndex].anchorDate().julian() - aMV[iVertexIndex - 1].anchorDate().julian()) / 365.25;
 		}
 
 		return dblBilateralFundingValueAdjustment;
@@ -171,7 +171,7 @@ public abstract class FundingGroupPath extends org.drip.xva.netting.ExposureGrou
 					aMV[iVertexIndex].bank().seniorFundingSpread();
 
 			dblUnilateralFundingDebtAdjustment -= 0.5 * (dblPeriodIntegrandStart + dblPeriodIntegrandEnd) *
-				(aMV[iVertexIndex].anchor().julian() - aMV[iVertexIndex - 1].anchor().julian()) / 365.25;
+				(aMV[iVertexIndex].anchorDate().julian() - aMV[iVertexIndex - 1].anchorDate().julian()) / 365.25;
 		}
 
 		return dblUnilateralFundingDebtAdjustment;
@@ -209,7 +209,7 @@ public abstract class FundingGroupPath extends org.drip.xva.netting.ExposureGrou
 							aMV[iVertexIndex].counterParty().survivalProbability();
 
 			dblBilateralFundingDebtAdjustment += 0.5 * (dblPeriodIntegrandStart + dblPeriodIntegrandEnd) *
-				(aMV[iVertexIndex].anchor().julian() - aMV[iVertexIndex - 1].anchor().julian()) / 365.25;
+				(aMV[iVertexIndex].anchorDate().julian() - aMV[iVertexIndex - 1].anchorDate().julian()) / 365.25;
 		}
 
 		return dblBilateralFundingDebtAdjustment;
@@ -240,7 +240,7 @@ public abstract class FundingGroupPath extends org.drip.xva.netting.ExposureGrou
 					aMV[iVertexIndex].bank().seniorFundingSpread();
 
 			dblSymmetricFundingValueAdjustment -= 0.5 * (dblPeriodIntegrandStart + dblPeriodIntegrandEnd) *
-				(aMV[iVertexIndex].anchor().julian() - aMV[iVertexIndex - 1].anchor().julian()) / 365.25;
+				(aMV[iVertexIndex].anchorDate().julian() - aMV[iVertexIndex - 1].anchorDate().julian()) / 365.25;
 		}
 
 		return dblSymmetricFundingValueAdjustment;
@@ -272,8 +272,8 @@ public abstract class FundingGroupPath extends org.drip.xva.netting.ExposureGrou
 					aMV[iVertexIndex].bank().seniorRecoveryRate()) * aMV[iVertexIndex].bank().hazardRate();
 
 			adblUnilateralFundingValueAdjustment[iVertexIndex - 1] = 0.5 * (dblPeriodIntegrandStart +
-				dblPeriodIntegrandEnd) * (aMV[iVertexIndex].anchor().julian() -
-					aMV[iVertexIndex - 1].anchor().julian()) / 365.25;
+				dblPeriodIntegrandEnd) * (aMV[iVertexIndex].anchorDate().julian() -
+					aMV[iVertexIndex - 1].anchorDate().julian()) / 365.25;
 		}
 
 		return adblUnilateralFundingValueAdjustment;
@@ -310,8 +310,8 @@ public abstract class FundingGroupPath extends org.drip.xva.netting.ExposureGrou
 						aMV[iVertexIndex].counterParty().survivalProbability();
 
 			adblBilateralFundingValueAdjustment[iVertexIndex - 1] = 0.5 * (dblPeriodIntegrandStart +
-				dblPeriodIntegrandEnd) * (aMV[iVertexIndex].anchor().julian() -
-					aMV[iVertexIndex - 1].anchor().julian()) / 365.25;
+				dblPeriodIntegrandEnd) * (aMV[iVertexIndex].anchorDate().julian() -
+					aMV[iVertexIndex - 1].anchorDate().julian()) / 365.25;
 		}
 
 		return adblBilateralFundingValueAdjustment;
@@ -342,8 +342,8 @@ public abstract class FundingGroupPath extends org.drip.xva.netting.ExposureGrou
 					aMV[iVertexIndex].bank().seniorFundingSpread();
 
 			adblUnilateralFundingDebtAdjustment[iVertexIndex - 1] = -0.5 * (dblPeriodIntegrandStart +
-				dblPeriodIntegrandEnd) * (aMV[iVertexIndex].anchor().julian() -
-					aMV[iVertexIndex - 1].anchor().julian()) / 365.25;
+				dblPeriodIntegrandEnd) * (aMV[iVertexIndex].anchorDate().julian() -
+					aMV[iVertexIndex - 1].anchorDate().julian()) / 365.25;
 		}
 
 		return adblUnilateralFundingDebtAdjustment;
@@ -380,8 +380,8 @@ public abstract class FundingGroupPath extends org.drip.xva.netting.ExposureGrou
 						aMV[iVertexIndex].counterParty().survivalProbability();
 
 			adblBilateralFundingDebtAdjustment[iVertexIndex - 1] = 0.5 * (dblPeriodIntegrandStart +
-				dblPeriodIntegrandEnd) * (aMV[iVertexIndex].anchor().julian() -
-					aMV[iVertexIndex - 1].anchor().julian()) / 365.25;
+				dblPeriodIntegrandEnd) * (aMV[iVertexIndex].anchorDate().julian() -
+					aMV[iVertexIndex - 1].anchorDate().julian()) / 365.25;
 		}
 
 		return adblBilateralFundingDebtAdjustment;
@@ -412,8 +412,8 @@ public abstract class FundingGroupPath extends org.drip.xva.netting.ExposureGrou
 					aMV[iVertexIndex].bank().seniorFundingSpread();
 
 			adblSymmetricFundingValueAdjustment[iVertexIndex - 1] = 0.5 * (dblPeriodIntegrandStart +
-				dblPeriodIntegrandEnd) * (aMV[iVertexIndex].anchor().julian() -
-					aMV[iVertexIndex - 1].anchor().julian()) / 365.25;
+				dblPeriodIntegrandEnd) * (aMV[iVertexIndex].anchorDate().julian() -
+					aMV[iVertexIndex - 1].anchorDate().julian()) / 365.25;
 		}
 
 		return adblSymmetricFundingValueAdjustment;

@@ -69,35 +69,37 @@ package org.drip.xva.derivative;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CashAccountEdge {
-<span class="fc" id="L73">	private double _dblBankAccumulation = java.lang.Double.NaN;</span>
-<span class="fc" id="L74">	private double _dblAssetAccumulation = java.lang.Double.NaN;</span>
-<span class="fc" id="L75">	private double _dblCounterPartyAccumulation = java.lang.Double.NaN;</span>
+public class CashAccountEdge
+{
+<span class="fc" id="L74">	private double _bankAccumulation = java.lang.Double.NaN;</span>
+<span class="fc" id="L75">	private double _positionAccumulation = java.lang.Double.NaN;</span>
+<span class="fc" id="L76">	private double _counterPartyAccumulation = java.lang.Double.NaN;</span>
 
 	/**
 	 * CashAccountEdge Constructor
 	 * 
-	 * @param dblAssetAccumulation The Incremental Amount added to the Cash Account coming from the Asset
-	 * @param dblBankAccumulation The Incremental Amount added to the Cash Account coming from the Bank
+	 * @param positionAccumulation The Incremental Amount added to the Cash Account coming from the Position
+	 * @param bankAccumulation The Incremental Amount added to the Cash Account coming from the Bank
 	 * 	Borrowing/Funding
-	 * @param dblCounterPartyAccumulation The Incremental Amount added to the Cash Account coming from the
+	 * @param counterPartyAccumulation The Incremental Amount added to the Cash Account coming from the
 	 *  Counter Party Repo
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CashAccountEdge (
-		final double dblAssetAccumulation,
-		final double dblBankAccumulation,
-		final double dblCounterPartyAccumulation)
+		final double positionAccumulation,
+		final double bankAccumulation,
+		final double counterPartyAccumulation)
 		throws java.lang.Exception
-<span class="fc" id="L94">	{</span>
-<span class="pc bpc" id="L95" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblAssetAccumulation = dblAssetAccumulation) ||</span>
-<span class="pc bpc" id="L96" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblBankAccumulation = dblBankAccumulation) ||</span>
-<span class="pc bpc" id="L97" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblCounterPartyAccumulation =</span>
-					dblCounterPartyAccumulation))
-<span class="nc" id="L99">			throw new java.lang.Exception (&quot;CashAccountEdge Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L100">	}</span>
+<span class="fc" id="L95">	{</span>
+<span class="pc bpc" id="L96" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_positionAccumulation = positionAccumulation) ||</span>
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_bankAccumulation = bankAccumulation) ||</span>
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_counterPartyAccumulation = counterPartyAccumulation))</span>
+		{
+<span class="nc" id="L100">			throw new java.lang.Exception (&quot;CashAccountEdge Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="fc" id="L102">	}</span>
 
 	/**
 	 * Retrieve the Incremental Amount added to the Cash Account coming from the Asset
@@ -107,7 +109,7 @@ public class CashAccountEdge {
 
 	public double assetAccumulation()
 	{
-<span class="fc" id="L110">		return _dblAssetAccumulation;</span>
+<span class="fc" id="L112">		return _positionAccumulation;</span>
 	}
 
 	/**
@@ -118,7 +120,7 @@ public class CashAccountEdge {
 
 	public double bankAccumulation()
 	{
-<span class="fc" id="L121">		return _dblBankAccumulation;</span>
+<span class="fc" id="L123">		return _bankAccumulation;</span>
 	}
 
 	/**
@@ -129,7 +131,7 @@ public class CashAccountEdge {
 
 	public double counterPartyAccumulation()
 	{
-<span class="fc" id="L132">		return _dblCounterPartyAccumulation;</span>
+<span class="fc" id="L134">		return _counterPartyAccumulation;</span>
 	}
 
 	/**
@@ -140,7 +142,7 @@ public class CashAccountEdge {
 
 	public double accumulation()
 	{
-<span class="fc" id="L143">		return _dblAssetAccumulation + _dblBankAccumulation + _dblCounterPartyAccumulation;</span>
+<span class="fc" id="L145">		return _positionAccumulation + _bankAccumulation + _counterPartyAccumulation;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

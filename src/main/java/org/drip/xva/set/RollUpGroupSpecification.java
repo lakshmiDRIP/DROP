@@ -67,27 +67,30 @@ package org.drip.xva.set;
  * @author Lakshmi Krishnamurthy
  */
 
-public class RollUpGroupSpecification {
-	private java.lang.String _strID = "";
-	private java.lang.String _strName = "";
+public class RollUpGroupSpecification
+{
+	private java.lang.String _id = "";
+	private java.lang.String _name = "";
 
 	/**
 	 * RollUpGroupSpecification Constructor
 	 * 
-	 * @param strID The Collateral Group ID
-	 * @param strName The Collateral Group Name
+	 * @param id The Collateral Group ID
+	 * @param name The Collateral Group Name
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RollUpGroupSpecification (
-		final java.lang.String strID,
-		final java.lang.String strName)
+		final java.lang.String id,
+		final java.lang.String name)
 		throws java.lang.Exception
 	{
-		if (null == (_strID = strID) || _strID.isEmpty() || null == (_strName = strName) ||
-			_strName.isEmpty())
+		if (null == (_id = id) || _id.isEmpty() ||
+			null == (_name = name) || _name.isEmpty())
+		{
 			throw new java.lang.Exception ("RollUpGroupSpecification Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -98,7 +101,7 @@ public class RollUpGroupSpecification {
 
 	public java.lang.String id()
 	{
-		return _strID;
+		return _id;
 	}
 
 	/**
@@ -109,6 +112,6 @@ public class RollUpGroupSpecification {
 
 	public java.lang.String name()
 	{
-		return _strName;
+		return _name;
 	}
 }

@@ -68,54 +68,56 @@ package org.drip.xva.universe;
  * @author Lakshmi Krishnamurthy
  */
 
-public class TradeablesContainer {
-<span class="fc" id="L72">	private org.drip.xva.universe.Tradeable _tAsset = null;</span>
-<span class="fc" id="L73">	private org.drip.xva.universe.Tradeable _tOvernightIndex = null;</span>
-<span class="fc" id="L74">	private org.drip.xva.universe.Tradeable _tCollateralScheme = null;</span>
-<span class="fc" id="L75">	private org.drip.xva.universe.Tradeable _tBankSeniorFunding = null;</span>
-<span class="fc" id="L76">	private org.drip.xva.universe.Tradeable _tCounterPartyFunding = null;</span>
-<span class="fc" id="L77">	private org.drip.xva.universe.Tradeable _tBankSubordinateFunding = null;</span>
+public class TradeablesContainer
+{
+<span class="fc" id="L73">	private org.drip.xva.universe.Tradeable _csa = null;</span>
+<span class="fc" id="L74">	private org.drip.xva.universe.Tradeable _position = null;</span>
+<span class="fc" id="L75">	private org.drip.xva.universe.Tradeable _overnight = null;</span>
+<span class="fc" id="L76">	private org.drip.xva.universe.Tradeable _bankSeniorFunding = null;</span>
+<span class="fc" id="L77">	private org.drip.xva.universe.Tradeable _counterPartyFunding = null;</span>
+<span class="fc" id="L78">	private org.drip.xva.universe.Tradeable _bankSubordinateFunding = null;</span>
 
 	/**
 	 * LatentStateDynamicsContainer Constructor
 	 * 
-	 * @param tAsset The Asset Tradeable
-	 * @param tOvernightIndex The Overnight Index Tradeable
-	 * @param tCollateralScheme The Collateral Scheme Tradeable
-	 * @param tBankSeniorFunding Bank Senior Funding Tradeable
-	 * @param tBankSubordinateFunding Bank Subordinate Funding Tradeable
-	 * @param tCounterPartyFunding Counter Party Funding Tradeable
+	 * @param position The Book of Traded Positions
+	 * @param overnight The Overnight Index Tradeable
+	 * @param csa The CSA Tradeable
+	 * @param bankSeniorFunding Bank Senior Funding Tradeable
+	 * @param bankSubordinateFunding Bank Subordinate Funding Tradeable
+	 * @param counterPartyFunding Counter Party Funding Tradeable
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public TradeablesContainer (
-		final org.drip.xva.universe.Tradeable tAsset,
-		final org.drip.xva.universe.Tradeable tOvernightIndex,
-		final org.drip.xva.universe.Tradeable tCollateralScheme,
-		final org.drip.xva.universe.Tradeable tBankSeniorFunding,
-		final org.drip.xva.universe.Tradeable tBankSubordinateFunding,
-		final org.drip.xva.universe.Tradeable tCounterPartyFunding)
+		final org.drip.xva.universe.Tradeable position,
+		final org.drip.xva.universe.Tradeable overnight,
+		final org.drip.xva.universe.Tradeable csa,
+		final org.drip.xva.universe.Tradeable bankSeniorFunding,
+		final org.drip.xva.universe.Tradeable bankSubordinateFunding,
+		final org.drip.xva.universe.Tradeable counterPartyFunding)
 		throws java.lang.Exception
-<span class="fc" id="L100">	{</span>
-<span class="pc bpc" id="L101" title="4 of 8 branches missed.">		if (null == (_tOvernightIndex = tOvernightIndex) || null == (_tCollateralScheme = tCollateralScheme)</span>
-			|| null == (_tBankSeniorFunding = tBankSeniorFunding) || null == (_tCounterPartyFunding =
-				tCounterPartyFunding))
-<span class="nc" id="L104">			throw new java.lang.Exception (&quot;LatentStateDynamicsContainer Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L101">	{</span>
+<span class="pc bpc" id="L102" title="4 of 8 branches missed.">		if (null == (_overnight = overnight) ||</span>
+			null == (_csa = csa) ||
+			null == (_bankSeniorFunding = bankSeniorFunding) ||
+			null == (_counterPartyFunding = counterPartyFunding))
+<span class="nc" id="L106">			throw new java.lang.Exception (&quot;LatentStateDynamicsContainer Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L106">		_tAsset = tAsset;</span>
-<span class="fc" id="L107">		_tBankSubordinateFunding = tBankSubordinateFunding;</span>
-<span class="fc" id="L108">	}</span>
+<span class="fc" id="L108">		_position = position;</span>
+<span class="fc" id="L109">		_bankSubordinateFunding = bankSubordinateFunding;</span>
+<span class="fc" id="L110">	}</span>
 
 	/**
-	 * Retrieve the Asset Tradeable
+	 * Retrieve the Book of Traded Positions
 	 * 
-	 * @return The Asset Tradeable
+	 * @return The Book of Traded Positions
 	 */
 
-	public org.drip.xva.universe.Tradeable asset()
+	public org.drip.xva.universe.Tradeable position()
 	{
-<span class="fc" id="L118">		return _tAsset;</span>
+<span class="fc" id="L120">		return _position;</span>
 	}
 
 	/**
@@ -124,20 +126,20 @@ public class TradeablesContainer {
 	 * @return The Overnight Index Tradeable
 	 */
 
-	public org.drip.xva.universe.Tradeable overnightIndex()
+	public org.drip.xva.universe.Tradeable overnight()
 	{
-<span class="fc" id="L129">		return _tOvernightIndex;</span>
+<span class="fc" id="L131">		return _overnight;</span>
 	}
 
 	/**
-	 * Retrieve the Collateral Scheme Tradeable
+	 * Retrieve the CSA Tradeable
 	 * 
-	 * @return The Collateral Scheme Tradeable
+	 * @return The CSA Tradeable
 	 */
 
-	public org.drip.xva.universe.Tradeable collateralScheme()
+	public org.drip.xva.universe.Tradeable csa()
 	{
-<span class="fc" id="L140">		return _tCollateralScheme;</span>
+<span class="fc" id="L142">		return _csa;</span>
 	}
 
 	/**
@@ -148,7 +150,7 @@ public class TradeablesContainer {
 
 	public org.drip.xva.universe.Tradeable bankSeniorFunding()
 	{
-<span class="fc" id="L151">		return _tBankSeniorFunding;</span>
+<span class="fc" id="L153">		return _bankSeniorFunding;</span>
 	}
 
 	/**
@@ -159,7 +161,7 @@ public class TradeablesContainer {
 
 	public org.drip.xva.universe.Tradeable bankSubordinateFunding()
 	{
-<span class="fc" id="L162">		return _tBankSubordinateFunding;</span>
+<span class="fc" id="L164">		return _bankSubordinateFunding;</span>
 	}
 
 	/**
@@ -170,7 +172,7 @@ public class TradeablesContainer {
 
 	public org.drip.xva.universe.Tradeable counterPartyFunding()
 	{
-<span class="fc" id="L173">		return _tCounterPartyFunding;</span>
+<span class="fc" id="L175">		return _counterPartyFunding;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -67,25 +67,33 @@ package org.drip.xva.set;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CounterPartyGroupSpecification extends org.drip.xva.set.RollUpGroupSpecification {
-	private int _iBankDefaultWindow = -1;
-	private int _iCounterPartyDefaultWindow = -1;
+public class CounterPartyGroupSpecification extends org.drip.xva.set.RollUpGroupSpecification
+{
+	private int _bankDefaultWindow = -1;
+	private int _counterPartyDefaultWindow = -1;
 
 	/**
 	 * Construct a Standard Instance of CounterPartyGroupSpecification
 	 * 
-	 * @param strName The Collateral Group Name
+	 * @param name The Collateral Group Name
 	 * 
 	 * @return The Standard Instance of CounterPartyGroupSpecification
 	 */
 
 	public static final CounterPartyGroupSpecification Standard (
-		final java.lang.String strName)
+		final java.lang.String name)
 	{
-		try {
-			return new CounterPartyGroupSpecification (org.drip.quant.common.StringUtil.GUID(), strName, 14,
-				14);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new CounterPartyGroupSpecification (
+				org.drip.quant.common.StringUtil.GUID(),
+				name,
+				14,
+				14
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -95,26 +103,31 @@ public class CounterPartyGroupSpecification extends org.drip.xva.set.RollUpGroup
 	/**
 	 * CounterPartyGroup Constructor
 	 * 
-	 * @param strID The Collateral Group ID
-	 * @param strName The Collateral Group Name
-	 * @param iCounterPartyDefaultWindow The Counter Party Default Window
-	 * @param iBankDefaultWindow The Bank Default Window
+	 * @param id The Collateral Group ID
+	 * @param name The Collateral Group Name
+	 * @param counterPartyDefaultWindow The Counter Party Default Window
+	 * @param bankDefaultWindow The Bank Default Window
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CounterPartyGroupSpecification (
-		final java.lang.String strID,
-		final java.lang.String strName,
-		final int iCounterPartyDefaultWindow,
-		final int iBankDefaultWindow)
+		final java.lang.String id,
+		final java.lang.String name,
+		final int counterPartyDefaultWindow,
+		final int bankDefaultWindow)
 		throws java.lang.Exception
 	{
-		super (strID, strName);
+		super (
+			id,
+			name
+		);
 
-		if (-1 >= (_iCounterPartyDefaultWindow = iCounterPartyDefaultWindow) || -1 >= (_iBankDefaultWindow =
-			iBankDefaultWindow))
+		if (-1 >= (_counterPartyDefaultWindow = counterPartyDefaultWindow) ||
+			-1 >= (_bankDefaultWindow = bankDefaultWindow))
+		{
 			throw new java.lang.Exception ("CounterPartyGroupSpecification Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -125,7 +138,7 @@ public class CounterPartyGroupSpecification extends org.drip.xva.set.RollUpGroup
 
 	public int counterPartyDefaultWindow()
 	{
-		return _iCounterPartyDefaultWindow;
+		return _counterPartyDefaultWindow;
 	}
 
 	/**
@@ -136,6 +149,6 @@ public class CounterPartyGroupSpecification extends org.drip.xva.set.RollUpGroup
 
 	public int bankDefaultWindow()
 	{
-		return _iBankDefaultWindow;
+		return _bankDefaultWindow;
 	}
 }

@@ -70,32 +70,43 @@ package org.drip.xva.hypothecation;
  */
 
 public class BurgardKjaerVertexExposure implements
-	org.drip.xva.hypothecation.CollateralGroupVertexExposureComponent {
-	private double _dblDebt = java.lang.Double.NaN;
-	private double _dblCredit = java.lang.Double.NaN;
-	private double _dblFunding = java.lang.Double.NaN;
-	private double _dblCollateralBalance = java.lang.Double.NaN;
+	org.drip.xva.hypothecation.CollateralGroupVertexExposureComponent
+{
+	private double _debt = java.lang.Double.NaN;
+	private double _credit = java.lang.Double.NaN;
+	private double _funding = java.lang.Double.NaN;
+	private double _collateralBalance = java.lang.Double.NaN;
 
 	/**
 	 * Generate an Initial Instance of Burgard Kjaer Vertex Exposure
 	 * 
-	 * @param dblUncollateralizedExposure The Uncollateralized Exposure
-	 * @param cgvco Collateral Group Vertex Close Out
+	 * @param uncollateralizedExposure The Uncollateralized Exposure
+	 * @param collateralGroupVertexCloseOut Collateral Group Vertex Close Out
 	 * 
 	 * @return Initial Instance of Burgard Kjaer Vertex Exposure
 	 */
 
 	public static final BurgardKjaerVertexExposure Initial (
-		final double dblUncollateralizedExposure,
-		final org.drip.xva.hypothecation.CollateralGroupVertexCloseOut cgvco)
+		final double uncollateralizedExposure,
+		final org.drip.xva.hypothecation.CollateralGroupVertexCloseOut collateralGroupVertexCloseOut)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblUncollateralizedExposure) || null == cgvco)
+		if (!org.drip.quant.common.NumberUtil.IsValid (uncollateralizedExposure) ||
+			null == collateralGroupVertexCloseOut)
+		{
 			return null;
+		}
 
-		try {
-			return new BurgardKjaerVertexExposure (dblUncollateralizedExposure - cgvco.counterParty(),
-				dblUncollateralizedExposure - cgvco.bank(), 0., 0.);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new BurgardKjaerVertexExposure (
+				uncollateralizedExposure - collateralGroupVertexCloseOut.counterParty(),
+				uncollateralizedExposure - collateralGroupVertexCloseOut.bank(),
+				0.,
+				0.
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -105,45 +116,47 @@ public class BurgardKjaerVertexExposure implements
 	/**
 	 * BurgardKjaerVertexExposure Constructor
 	 * 
-	 * @param dblCredit The Credit Exposure of the Collateral Group
-	 * @param dblDebt The Debt Exposure of the Collateral Group
-	 * @param dblFunding The Funding Exposure of the Collateral Group
-	 * @param dblCollateralBalance The Collateral Balance of the Collateral Group
+	 * @param credit The Credit Exposure of the Collateral Group
+	 * @param debt The Debt Exposure of the Collateral Group
+	 * @param funding The Funding Exposure of the Collateral Group
+	 * @param collateralBalance The Collateral Balance of the Collateral Group
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BurgardKjaerVertexExposure (
-		final double dblCredit,
-		final double dblDebt,
-		final double dblFunding,
-		final double dblCollateralBalance)
+		final double credit,
+		final double debt,
+		final double funding,
+		final double collateralBalance)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblCredit = dblCredit) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblDebt = dblDebt) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblFunding = dblFunding) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblCollateralBalance = dblCollateralBalance))
+		if (!org.drip.quant.common.NumberUtil.IsValid (_credit = credit) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_debt = debt) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_funding = funding) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_collateralBalance = collateralBalance))
+		{
 			throw new java.lang.Exception ("BurgardKjaerVertexExposure Constructor => Invalid Inputs");
+		}
 	}
 
 	@Override public double credit()
 	{
-		return _dblCredit;
+		return _credit;
 	}
 
 	@Override public double debt()
 	{
-		return _dblDebt;
+		return _debt;
 	}
 
 	@Override public double funding()
 	{
-		return _dblFunding;
+		return _funding;
 	}
 
 	@Override public double collateralBalance()
 	{
-		return _dblCollateralBalance;
+		return _collateralBalance;
 	}
 }

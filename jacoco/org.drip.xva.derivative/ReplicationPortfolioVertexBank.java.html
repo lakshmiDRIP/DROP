@@ -67,49 +67,58 @@ package org.drip.xva.derivative;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ReplicationPortfolioVertexBank {
-<span class="fc" id="L71">	private double _dblSeniorNumeraireUnits = java.lang.Double.NaN;</span>
-<span class="fc" id="L72">	private double _dblSubordinateNumeraireUnits = java.lang.Double.NaN;</span>
+public class ReplicationPortfolioVertexBank
+{
+<span class="fc" id="L72">	private double _seniorNumeraireUnits = java.lang.Double.NaN;</span>
+<span class="fc" id="L73">	private double _subordinateNumeraireUnits = java.lang.Double.NaN;</span>
 
 	/**
 	 * Construct a ReplicationPortfolioVertexBank Instance from the Senior Bank Numeraire alone
 	 * 
-	 * @param dblSeniorNumeraireUnits The Bank Senior Numeraire Units
+	 * @param seniorNumeraireUnits The Bank Senior Numeraire Units
 	 * 
 	 * @return The ReplicationPortfolioVertexBank Instance from the Senior Bank Numeraire alone
 	 */
 
 	public static final ReplicationPortfolioVertexBank Standard (
-		final double dblSeniorNumeraireUnits)
+		final double seniorNumeraireUnits)
 	{
-		try {
-<span class="nc" id="L86">			return new ReplicationPortfolioVertexBank (dblSeniorNumeraireUnits, 0.);</span>
-<span class="nc" id="L87">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L88">			e.printStackTrace();</span>
+		try
+		{
+<span class="nc" id="L88">			return new ReplicationPortfolioVertexBank (</span>
+				seniorNumeraireUnits,
+				0.
+			);
+		}
+<span class="nc" id="L93">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L95">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L91">		return null;</span>
+<span class="nc" id="L98">		return null;</span>
 	}
 
 	/**
 	 * ReplicationPortfolioVertexBank Constructor
 	 * 
-	 * @param dblSeniorNumeraireUnits The Bank Senior Numeraire Units
-	 * @param dblSubordinateNumeraireUnits The Bank Subordinate Numeraire Units
+	 * @param seniorNumeraireUnits The Bank Senior Numeraire Units
+	 * @param subordinateNumeraireUnits The Bank Subordinate Numeraire Units
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ReplicationPortfolioVertexBank (
-		final double dblSeniorNumeraireUnits,
-		final double dblSubordinateNumeraireUnits)
+		final double seniorNumeraireUnits,
+		final double subordinateNumeraireUnits)
 		throws java.lang.Exception
-<span class="fc" id="L107">	{</span>
-<span class="pc bpc" id="L108" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblSeniorNumeraireUnits = dblSeniorNumeraireUnits) ||</span>
-<span class="pc bpc" id="L109" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblSubordinateNumeraireUnits =</span>
-				dblSubordinateNumeraireUnits))
-<span class="nc" id="L111">			throw new java.lang.Exception (&quot;ReplicationPortfolioVertex Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L112">	}</span>
+<span class="fc" id="L114">	{</span>
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_seniorNumeraireUnits = seniorNumeraireUnits) ||</span>
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_subordinateNumeraireUnits =</span>
+				subordinateNumeraireUnits))
+		{
+<span class="nc" id="L119">			throw new java.lang.Exception (&quot;ReplicationPortfolioVertex Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="fc" id="L121">	}</span>
 
 	/**
 	 * Retrieve the Number of Bank Senior Numeraire Units
@@ -119,7 +128,7 @@ public class ReplicationPortfolioVertexBank {
 
 	public double seniorNumeraireUnits()
 	{
-<span class="fc" id="L122">		return _dblSeniorNumeraireUnits;</span>
+<span class="fc" id="L131">		return _seniorNumeraireUnits;</span>
 	}
 
 	/**
@@ -130,7 +139,7 @@ public class ReplicationPortfolioVertexBank {
 
 	public double subordinateNumeraireUnits()
 	{
-<span class="fc" id="L133">		return _dblSubordinateNumeraireUnits;</span>
+<span class="fc" id="L142">		return _subordinateNumeraireUnits;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -68,153 +68,164 @@ package org.drip.xva.universe;
 
 public class EntityMarketVertex
 {
-<span class="fc" id="L71">	private double _dblHazardRate = java.lang.Double.NaN;</span>
-<span class="fc" id="L72">	private double _dblSeniorRecoveryRate = java.lang.Double.NaN;</span>
-<span class="fc" id="L73">	private double _dblSeniorFundingSpread = java.lang.Double.NaN;</span>
-<span class="fc" id="L74">	private double _dblSurvivalProbability = java.lang.Double.NaN;</span>
-<span class="fc" id="L75">	private double _dblSubordinateRecoveryRate = java.lang.Double.NaN;</span>
-<span class="fc" id="L76">	private double _dblSubordinateFundingSpread = java.lang.Double.NaN;</span>
-<span class="fc" id="L77">	private org.drip.xva.universe.LatentStateMarketVertex _lsmvSeniorFunding = null;</span>
-<span class="fc" id="L78">	private org.drip.xva.universe.LatentStateMarketVertex _lsmvSubordinateFunding = null;</span>
+<span class="fc" id="L71">	private double _hazardRate = java.lang.Double.NaN;</span>
+<span class="fc" id="L72">	private double _seniorRecoveryRate = java.lang.Double.NaN;</span>
+<span class="fc" id="L73">	private double _seniorFundingSpread = java.lang.Double.NaN;</span>
+<span class="fc" id="L74">	private double _survivalProbability = java.lang.Double.NaN;</span>
+<span class="fc" id="L75">	private double _subordinateRecoveryRate = java.lang.Double.NaN;</span>
+<span class="fc" id="L76">	private double _subordinateFundingSpread = java.lang.Double.NaN;</span>
+<span class="fc" id="L77">	private org.drip.xva.universe.LatentStateMarketVertex _seniorFundingLatentState = null;</span>
+<span class="fc" id="L78">	private org.drip.xva.universe.LatentStateMarketVertex _subordinateFundingLatentState = null;</span>
 
 	/**
 	 * Instance of Senior EntityMarketVertex
 	 * 
-	 * @param dblTimeWidth The Time Width of the Node
-	 * @param dblHazardRate The Hazard Rate
-	 * @param dblRecoveryRate The Recovery Rate
-	 * @param dblFundingSpread The Funding Spread
-	 * @param emvPrevious The Previous Instance of EntityMarketVertex
+	 * @param timeWidth The Time Width of the Node
+	 * @param hazardRate The Hazard Rate
+	 * @param recoveryRate The Recovery Rate
+	 * @param fundingSpread The Funding Spread
+	 * @param previousEntityMarketVertex The Previous Instance of EntityMarketVertex
 	 * 
 	 * @return Instance of Senior EntityMarketVertex
 	 */
 
 	public static final EntityMarketVertex Senior (
-		final double dblTimeWidth,
-		final double dblHazardRate,
-		final double dblRecoveryRate,
-		final double dblFundingSpread,
-		final org.drip.xva.universe.EntityMarketVertex emvPrevious)
+		final double timeWidth,
+		final double hazardRate,
+		final double recoveryRate,
+		final double fundingSpread,
+		final org.drip.xva.universe.EntityMarketVertex previousEntityMarketVertex)
 	{
-<span class="nc bnc" id="L99" title="All 2 branches missed.">		org.drip.xva.universe.LatentStateMarketVertex lsmvSenior = null == emvPrevious ? null :</span>
-<span class="nc" id="L100">			emvPrevious.seniorFundingLatentState();</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">		org.drip.xva.universe.LatentStateMarketVertex lsmvSenior = null == previousEntityMarketVertex ? null :</span>
+<span class="nc" id="L100">			previousEntityMarketVertex.seniorFundingLatentState();</span>
 
-		try {
-<span class="nc bnc" id="L103" title="All 2 branches missed.">			return new org.drip.xva.universe.EntityMarketVertex (</span>
-<span class="nc" id="L104">				(null == emvPrevious ? 1. : emvPrevious.survivalProbability()) *</span>
-<span class="nc bnc" id="L105" title="All 2 branches missed.">					java.lang.Math.exp (-1. * dblHazardRate * dblTimeWidth),</span>
-				dblHazardRate,
-				dblRecoveryRate,
-				dblFundingSpread,
+		try
+		{
+<span class="nc bnc" id="L104" title="All 2 branches missed.">			return new org.drip.xva.universe.EntityMarketVertex (</span>
+<span class="nc" id="L105">				(null == previousEntityMarketVertex ? 1. : previousEntityMarketVertex.survivalProbability())</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">					* java.lang.Math.exp (-1. * hazardRate * timeWidth),</span>
+				hazardRate,
+				recoveryRate,
+				fundingSpread,
 				new org.drip.xva.universe.LatentStateMarketVertex (
-<span class="nc bnc" id="L110" title="All 2 branches missed.">					null == lsmvSenior ? 1. : lsmvSenior.epochal(),</span>
-<span class="nc" id="L111">					(null == lsmvSenior ? 1. : lsmvSenior.nodal()) *</span>
-<span class="nc" id="L112">						java.lang.Math.exp (-1. * dblFundingSpread * dblTimeWidth)</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">					null == lsmvSenior ? 1. : lsmvSenior.epochal(),</span>
+<span class="nc" id="L112">					(null == lsmvSenior ? 1. : lsmvSenior.nodal()) *</span>
+<span class="nc" id="L113">						java.lang.Math.exp (-1. * fundingSpread * timeWidth)</span>
 				),
 				java.lang.Double.NaN,
 				java.lang.Double.NaN,
 				null
 			);
-<span class="nc" id="L118">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L119">			e.printStackTrace();</span>
+		}
+<span class="nc" id="L120">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L122">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L122">		return null;</span>
+<span class="nc" id="L125">		return null;</span>
 	}
 
 	/**
 	 * Instance of Senior EntityMarketVertex
 	 * 
 	 * @param dblTimeWidth The Time Width
-	 * @param dblHazardRate The Hazard Rate
-	 * @param dblSeniorRecoveryRate The Senior Recovery Rate
-	 * @param dblSeniorFundingSpread The Senior Funding Spread
-	 * @param dblSubordinateRecoveryRate The Subordinate Recovery Rate
-	 * @param dblSubordinateFundingSpread The Subordinate Funding Spread
-	 * @param emvPrevious The Previous Instance of EntityMarketVertex
+	 * @param hazardRate The Hazard Rate
+	 * @param seniorRecoveryRate The Senior Recovery Rate
+	 * @param seniorFundingSpread The Senior Funding Spread
+	 * @param subordinateRecoveryRate The Subordinate Recovery Rate
+	 * @param subordinateFundingSpread The Subordinate Funding Spread
+	 * @param previousEntityMarketVertex The Previous Instance of EntityMarketVertex
 	 * 
 	 * @return Instance of Senior EntityMarketVertex
 	 */
 
 	public static final EntityMarketVertex SeniorSubordinate (
 		final double dblTimeWidth,
-		final double dblHazardRate,
-		final double dblSeniorRecoveryRate,
-		final double dblSeniorFundingSpread,
-		final double dblSubordinateRecoveryRate,
-		final double dblSubordinateFundingSpread,
-		final org.drip.xva.universe.EntityMarketVertex emvPrevious)
+		final double hazardRate,
+		final double seniorRecoveryRate,
+		final double seniorFundingSpread,
+		final double subordinateRecoveryRate,
+		final double subordinateFundingSpread,
+		final org.drip.xva.universe.EntityMarketVertex previousEntityMarketVertex)
 	{
-<span class="nc bnc" id="L148" title="All 2 branches missed.">		org.drip.xva.universe.LatentStateMarketVertex lsmvSenior = null == emvPrevious ? null :</span>
-<span class="nc" id="L149">			emvPrevious.seniorFundingLatentState();</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">		org.drip.xva.universe.LatentStateMarketVertex previousSeniorFundingLatentState = null ==</span>
+<span class="nc" id="L152">			previousEntityMarketVertex ? null : previousEntityMarketVertex.seniorFundingLatentState();</span>
 
-<span class="nc bnc" id="L151" title="All 2 branches missed.">		org.drip.xva.universe.LatentStateMarketVertex lsmvSubordinate = null == emvPrevious ? null :</span>
-<span class="nc" id="L152">			emvPrevious.subordinateFundingLatentState();</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">		org.drip.xva.universe.LatentStateMarketVertex previousSubordinateFundingLatentState = null ==</span>
+<span class="nc" id="L155">			previousEntityMarketVertex ? null : previousEntityMarketVertex.subordinateFundingLatentState();</span>
 
-		try {
-<span class="nc bnc" id="L155" title="All 4 branches missed.">			return null == lsmvSubordinate ? null : new org.drip.xva.universe.EntityMarketVertex (</span>
-<span class="nc" id="L156">				(null == emvPrevious ? 1. : emvPrevious.survivalProbability()) *</span>
-<span class="nc bnc" id="L157" title="All 2 branches missed.">					java.lang.Math.exp (-1. * dblHazardRate * dblTimeWidth),</span>
-				dblHazardRate,
-				dblSeniorRecoveryRate,
-				dblSeniorFundingSpread,
+		try
+		{
+<span class="nc bnc" id="L159" title="All 4 branches missed.">			return null == previousSubordinateFundingLatentState ? null : new</span>
+				org.drip.xva.universe.EntityMarketVertex (
+<span class="nc" id="L161">				(null == previousEntityMarketVertex ? 1. : previousEntityMarketVertex.survivalProbability())</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">					* java.lang.Math.exp (-1. * hazardRate * dblTimeWidth),</span>
+				hazardRate,
+				seniorRecoveryRate,
+				seniorFundingSpread,
 				new org.drip.xva.universe.LatentStateMarketVertex (
-<span class="nc bnc" id="L162" title="All 2 branches missed.">					null == lsmvSenior ? 1. : lsmvSenior.epochal(),</span>
-<span class="nc" id="L163">					(null == lsmvSenior ? 1. : lsmvSenior.nodal()) *</span>
-<span class="nc bnc" id="L164" title="All 2 branches missed.">						java.lang.Math.exp (-1. * dblSeniorFundingSpread * dblTimeWidth)</span>
+<span class="nc bnc" id="L167" title="All 2 branches missed.">					null == previousSeniorFundingLatentState ? 1. : previousSeniorFundingLatentState.epochal(),</span>
+<span class="nc" id="L168">					(null == previousSeniorFundingLatentState ? 1. : previousSeniorFundingLatentState.nodal())</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">						* java.lang.Math.exp (-1. * seniorFundingSpread * dblTimeWidth)</span>
 				),
-				dblSubordinateRecoveryRate,
-				dblSubordinateFundingSpread,
+				subordinateRecoveryRate,
+				subordinateFundingSpread,
 				new org.drip.xva.universe.LatentStateMarketVertex (
-<span class="nc bnc" id="L169" title="All 2 branches missed.">					null == lsmvSubordinate ? 1. : lsmvSubordinate.epochal(),</span>
-<span class="nc" id="L170">					(null == lsmvSubordinate ? 1. : lsmvSubordinate.nodal()) *</span>
-<span class="nc" id="L171">						java.lang.Math.exp (-1. * dblSubordinateFundingSpread * dblTimeWidth)</span>
+					null == previousSubordinateFundingLatentState ? 1. :
+<span class="nc bnc" id="L175" title="All 2 branches missed.">						previousSubordinateFundingLatentState.epochal(),</span>
+					(null == previousSubordinateFundingLatentState ? 1. :
+<span class="nc" id="L177">						previousSubordinateFundingLatentState.nodal()) * java.lang.Math.exp (-1. *</span>
+							subordinateFundingSpread * dblTimeWidth)
 				)
 			);
-<span class="nc" id="L174">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L175">			e.printStackTrace();</span>
+		}
+<span class="nc" id="L182">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L184">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L178">		return null;</span>
+<span class="nc" id="L187">		return null;</span>
 	}
 
 	/**
 	 * EntityMarketVertex Constructor
 	 * 
-	 * @param dblSurvivalProbability The Realized Entity Survival Probability
-	 * @param dblHazardRate The Realized Entity Hazard Rate
-	 * @param dblSeniorRecoveryRate The Entity Senior Recovery Rate
-	 * @param dblSeniorFundingSpread The Entity Senior Funding Spread
-	 * @param lsmvSeniorFunding The Entity Senior Funding Latent State Vertex
-	 * @param dblSubordinateRecoveryRate The Entity Subordinate Recovery Rate
-	 * @param dblSubordinateFundingSpread The Entity Subordinate Funding Spread
-	 * @param lsmvSubordinateFunding The Entity Subordinate Funding Latent State Vertex
+	 * @param survivalProbability The Realized Entity Survival Probability
+	 * @param hazardRate The Realized Entity Hazard Rate
+	 * @param seniorRecoveryRate The Entity Senior Recovery Rate
+	 * @param seniorFundingSpread The Entity Senior Funding Spread
+	 * @param seniorFundingLatentState The Entity Senior Funding Latent State Vertex
+	 * @param subordinateRecoveryRate The Entity Subordinate Recovery Rate
+	 * @param subordinateFundingSpread The Entity Subordinate Funding Spread
+	 * @param subordinateFundingLatentState The Entity Subordinate Funding Latent State Vertex
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public EntityMarketVertex (
-		final double dblSurvivalProbability,
-		final double dblHazardRate,
-		final double dblSeniorRecoveryRate,
-		final double dblSeniorFundingSpread,
-		final org.drip.xva.universe.LatentStateMarketVertex lsmvSeniorFunding,
-		final double dblSubordinateRecoveryRate,
-		final double dblSubordinateFundingSpread,
-		final org.drip.xva.universe.LatentStateMarketVertex lsmvSubordinateFunding)
+		final double survivalProbability,
+		final double hazardRate,
+		final double seniorRecoveryRate,
+		final double seniorFundingSpread,
+		final org.drip.xva.universe.LatentStateMarketVertex seniorFundingLatentState,
+		final double subordinateRecoveryRate,
+		final double subordinateFundingSpread,
+		final org.drip.xva.universe.LatentStateMarketVertex subordinateFundingLatentState)
 		throws java.lang.Exception
-<span class="fc" id="L206">	{</span>
-<span class="pc bpc" id="L207" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblSurvivalProbability = dblSurvivalProbability) ||</span>
-<span class="pc bpc" id="L208" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblSeniorRecoveryRate = dblSeniorRecoveryRate) ||</span>
-<span class="pc bpc" id="L209" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblHazardRate = dblHazardRate) ||</span>
-<span class="pc bpc" id="L210" title="2 of 4 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblSeniorFundingSpread =</span>
-						dblSeniorFundingSpread) || null == (_lsmvSeniorFunding = lsmvSeniorFunding))
-<span class="nc" id="L212">			throw new java.lang.Exception (&quot;EntityMarketVertex Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L215">	{</span>
+<span class="pc bpc" id="L216" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_survivalProbability = survivalProbability) ||</span>
+<span class="pc bpc" id="L217" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_seniorRecoveryRate = seniorRecoveryRate) ||</span>
+<span class="pc bpc" id="L218" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_hazardRate = hazardRate) ||</span>
+<span class="pc bpc" id="L219" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_seniorFundingSpread = seniorFundingSpread) ||</span>
+			null == (_seniorFundingLatentState = seniorFundingLatentState))
+		{
+<span class="nc" id="L222">			throw new java.lang.Exception (&quot;EntityMarketVertex Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
 
-<span class="fc" id="L214">		_lsmvSubordinateFunding = lsmvSubordinateFunding;</span>
-<span class="fc" id="L215">		_dblSubordinateRecoveryRate = dblSubordinateRecoveryRate;</span>
-<span class="fc" id="L216">		_dblSubordinateFundingSpread = dblSubordinateFundingSpread;</span>
-<span class="fc" id="L217">	}</span>
+<span class="fc" id="L225">		_subordinateRecoveryRate = subordinateRecoveryRate;</span>
+<span class="fc" id="L226">		_subordinateFundingSpread = subordinateFundingSpread;</span>
+<span class="fc" id="L227">		_subordinateFundingLatentState = subordinateFundingLatentState;</span>
+<span class="fc" id="L228">	}</span>
 
 	/**
 	 * Retrieve the Realized Entity Hazard Rate
@@ -224,7 +235,7 @@ public class EntityMarketVertex
 
 	public double hazardRate()
 	{
-<span class="fc" id="L227">		return _dblHazardRate;</span>
+<span class="fc" id="L238">		return _hazardRate;</span>
 	}
 
 	/**
@@ -235,7 +246,7 @@ public class EntityMarketVertex
 
 	public double survivalProbability()
 	{
-<span class="fc" id="L238">		return _dblSurvivalProbability;</span>
+<span class="fc" id="L249">		return _survivalProbability;</span>
 	}
 
 	/**
@@ -246,7 +257,7 @@ public class EntityMarketVertex
 
 	public double seniorRecoveryRate()
 	{
-<span class="fc" id="L249">		return _dblSeniorRecoveryRate;</span>
+<span class="fc" id="L260">		return _seniorRecoveryRate;</span>
 	}
 
 	/**
@@ -257,7 +268,7 @@ public class EntityMarketVertex
 
 	public double seniorFundingSpread()
 	{
-<span class="fc" id="L260">		return _dblSeniorFundingSpread;</span>
+<span class="fc" id="L271">		return _seniorFundingSpread;</span>
 	}
 
 	/**
@@ -268,7 +279,7 @@ public class EntityMarketVertex
 
 	public org.drip.xva.universe.LatentStateMarketVertex seniorFundingLatentState()
 	{
-<span class="fc" id="L271">		return _lsmvSeniorFunding;</span>
+<span class="fc" id="L282">		return _seniorFundingLatentState;</span>
 	}
 
 	/**
@@ -279,7 +290,7 @@ public class EntityMarketVertex
 
 	public double subordinateRecoveryRate()
 	{
-<span class="fc" id="L282">		return _dblSubordinateRecoveryRate;</span>
+<span class="fc" id="L293">		return _subordinateRecoveryRate;</span>
 	}
 
 	/**
@@ -290,7 +301,7 @@ public class EntityMarketVertex
 
 	public double subordinateFundingSpread()
 	{
-<span class="fc" id="L293">		return _dblSubordinateFundingSpread;</span>
+<span class="fc" id="L304">		return _subordinateFundingSpread;</span>
 	}
 
 	/**
@@ -301,7 +312,7 @@ public class EntityMarketVertex
 
 	public org.drip.xva.universe.LatentStateMarketVertex subordinateFundingLatentState()
 	{
-<span class="fc" id="L304">		return _lsmvSubordinateFunding;</span>
+<span class="fc" id="L315">		return _subordinateFundingLatentState;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

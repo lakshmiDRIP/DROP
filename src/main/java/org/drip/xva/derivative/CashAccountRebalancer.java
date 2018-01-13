@@ -70,27 +70,30 @@ package org.drip.xva.derivative;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CashAccountRebalancer {
-	private org.drip.xva.derivative.CashAccountEdge _cae = null;
-	private double _dblDerivativeXVAValueEdge = java.lang.Double.NaN;
+public class CashAccountRebalancer
+{
+	private double _derivativeXVAValueEdge = java.lang.Double.NaN;
+	private org.drip.xva.derivative.CashAccountEdge _cashAccountEdge = null;
 
 	/**
 	 * CashAccountRebalancer Constructor
 	 * 
-	 * @param cae The Cash Account Edge
-	 * @param dblDerivativeXVAValueEdge The XVA Derivative Value Edge
+	 * @param cashAccountEdge The Cash Account Edge
+	 * @param derivativeXVAValueEdge The XVA Derivative Value Edge
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CashAccountRebalancer (
-		final org.drip.xva.derivative.CashAccountEdge cae,
-		final double dblDerivativeXVAValueEdge)
+		final org.drip.xva.derivative.CashAccountEdge cashAccountEdge,
+		final double derivativeXVAValueEdge)
 		throws java.lang.Exception
 	{
-		if (null == (_cae = cae) || !org.drip.quant.common.NumberUtil.IsValid (_dblDerivativeXVAValueEdge =
-			dblDerivativeXVAValueEdge))
+		if (null == (_cashAccountEdge = cashAccountEdge) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_derivativeXVAValueEdge = derivativeXVAValueEdge))
+		{
 			throw new java.lang.Exception ("CashAccountRebalancer Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -99,9 +102,9 @@ public class CashAccountRebalancer {
 	 * @return The Cash Account Edge Instance
 	 */
 
-	public org.drip.xva.derivative.CashAccountEdge cashAccount()
+	public org.drip.xva.derivative.CashAccountEdge cashAccountEdge()
 	{
-		return _cae;
+		return _cashAccountEdge;
 	}
 
 	/**
@@ -112,6 +115,6 @@ public class CashAccountRebalancer {
 
 	public double derivativeXVAValueEdge()
 	{
-		return _dblDerivativeXVAValueEdge;
+		return _derivativeXVAValueEdge;
 	}
 }

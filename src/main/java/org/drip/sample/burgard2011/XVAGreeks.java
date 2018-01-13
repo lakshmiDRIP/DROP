@@ -90,13 +90,13 @@ public class XVAGreeks {
 		final MarketVertex mvFinish)
 		throws Exception
 	{
-		AssetGreekVertex agvStart = etvStart.assetGreekVertex();
+		PositionGreekVertex agvStart = etvStart.positionGreekVertex();
 
 		ReplicationPortfolioVertex rpvStart = etvStart.replicationPortfolioVertex();
 
 		double dblDerivativeXVAValueStart = agvStart.derivativeXVAValue();
 
-		double dblTimeWidth = (mvFinish.anchor().julian() - mvStart.anchor().julian()) / 365.;
+		double dblTimeWidth = (mvFinish.anchorDate().julian() - mvStart.anchorDate().julian()) / 365.;
 
 		double dblTimeStart = etvStart.time();
 
@@ -165,7 +165,7 @@ public class XVAGreeks {
 				mvStart,
 				mvFinish
 			)
-		).cashAccount();
+		).cashAccountEdge();
 
 		return new EvolutionTrajectoryVertex (
 			dblTimeStart + dblTimeWidth,
@@ -175,7 +175,7 @@ public class XVAGreeks {
 				dblGainOnCounterPartyDefaultFinish / mvFinish.counterParty().seniorFundingLatentState().nodal(),
 				rpvStart.cashAccount() + cae.accumulation()
 			),
-			new AssetGreekVertex (
+			new PositionGreekVertex (
 				dblDerivativeXVAValueFinish,
 				dblDerivativeXVAValueDeltaFinish,
 				dblDerivativeXVAValueGammaFinish,
@@ -477,7 +477,7 @@ public class XVAGreeks {
 			pdeec
 		);
 
-		AssetGreekVertex agvInitial = new AssetGreekVertex (
+		PositionGreekVertex agvInitial = new PositionGreekVertex (
 			dblDerivativeXVAValue,
 			-1.,
 			0.,

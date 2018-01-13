@@ -68,7 +68,8 @@ package org.drip.xva.hypothecation;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MarginPeriodOfRisk {
+public class MarginPeriodOfRisk
+{
 
 	/**
 	 * MPoR Interpolation Type - LINEAR
@@ -88,8 +89,8 @@ public class MarginPeriodOfRisk {
 
 	public static final int MPOR_INTERPOLATION_BROWNIAN_BRIDGE = 4;
 
-	private int _iInterpolationType = -1;
-	private int _iMarginCallFrequency = -1;
+	private int _interpolationType = -1;
+	private int _marginCallFrequency = -1;
 
 	/**
 	 * Construct a Standard Instance of MarginPeriodOfRisk
@@ -99,9 +100,12 @@ public class MarginPeriodOfRisk {
 
 	public static final MarginPeriodOfRisk Standard()
 	{
-		try {
+		try
+		{
 			return new MarginPeriodOfRisk (1, MPOR_INTERPOLATION_BROWNIAN_BRIDGE);
-		} catch (java.lang.Exception e) {
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -111,21 +115,24 @@ public class MarginPeriodOfRisk {
 	/**
 	 * MarginPeriodOfRisk Constructor
 	 * 
-	 * @param iMarginCallFrequency The MPoR Margin Call Frequency
-	 * @param iInterpolationType The MPoR Interpolation Type
+	 * @param marginCallFrequency The MPoR Margin Call Frequency
+	 * @param interpolationType The MPoR Interpolation Type
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public MarginPeriodOfRisk (
-		final int iMarginCallFrequency,
-		final int iInterpolationType)
+		final int marginCallFrequency,
+		final int interpolationType)
 		throws java.lang.Exception
 	{
-		if (-1 >= (_iMarginCallFrequency = iMarginCallFrequency) || (MPOR_INTERPOLATION_LINEAR !=
-			(_iInterpolationType = iInterpolationType) && MPOR_INTERPOLATION_SQRT_T != _iInterpolationType &&
-				MPOR_INTERPOLATION_BROWNIAN_BRIDGE != _iInterpolationType))
+		if (-1 >= (_marginCallFrequency = marginCallFrequency) ||
+			(MPOR_INTERPOLATION_LINEAR != (_interpolationType = interpolationType) &&
+			MPOR_INTERPOLATION_SQRT_T != _interpolationType &&
+			MPOR_INTERPOLATION_BROWNIAN_BRIDGE != _interpolationType))
+		{
 			throw new java.lang.Exception ("MarginPeriodOfRisk Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -136,7 +143,7 @@ public class MarginPeriodOfRisk {
 
 	public int marginCallFrequency()
 	{
-		return _iMarginCallFrequency;
+		return _marginCallFrequency;
 	}
 
 	/**
@@ -147,6 +154,6 @@ public class MarginPeriodOfRisk {
 
 	public int interpolationType()
 	{
-		return _iInterpolationType;
+		return _interpolationType;
 	}
 }

@@ -68,40 +68,42 @@ package org.drip.xva.basel;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BalanceSheetVertex {
-	private double _dblAsset = java.lang.Double.NaN;
-	private double _dblLiability = java.lang.Double.NaN;
-	private double _dblContraAsset = java.lang.Double.NaN;
-	private double _dblContraLiability = java.lang.Double.NaN;
-	private double _dblRetainedEarnings = java.lang.Double.NaN;
+public class BalanceSheetVertex
+{
+	private double _asset = java.lang.Double.NaN;
+	private double _liability = java.lang.Double.NaN;
+	private double _contraAsset = java.lang.Double.NaN;
+	private double _contraLiability = java.lang.Double.NaN;
+	private double _retainedEarnings = java.lang.Double.NaN;
 
 	/**
 	 * BalanceSheetVertex Constructor
 	 * 
-	 * @param dblAsset The Asset Account
-	 * @param dblLiability The Liability Account
-	 * @param dblContraAsset The Contra Asset Account
-	 * @param dblContraLiability The Contra Liability Account
-	 * @param dblRetainedEarnings The Retained Earnings Account
+	 * @param asset The Asset Account
+	 * @param liability The Liability Account
+	 * @param contraAsset The Contra Asset Account
+	 * @param contraLiability The Contra Liability Account
+	 * @param retainedEarnings The Retained Earnings Account
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BalanceSheetVertex (
-		final double dblAsset,
-		final double dblLiability,
-		final double dblContraAsset,
-		final double dblContraLiability,
-		final double dblRetainedEarnings)
+		final double asset,
+		final double liability,
+		final double contraAsset,
+		final double contraLiability,
+		final double retainedEarnings)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblAsset = dblAsset) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblLiability = dblLiability) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblContraAsset = dblContraAsset) ||
-					!org.drip.quant.common.NumberUtil.IsValid (_dblContraLiability = dblContraLiability) ||
-						!org.drip.quant.common.NumberUtil.IsValid (_dblRetainedEarnings =
-							dblRetainedEarnings))
+		if (!org.drip.quant.common.NumberUtil.IsValid (_asset = asset) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_liability = liability) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_contraAsset = contraAsset) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_contraLiability = contraLiability) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_retainedEarnings = retainedEarnings))
+		{
 			throw new java.lang.Exception ("BalanceSheetVertex Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -112,7 +114,7 @@ public class BalanceSheetVertex {
 
 	public double asset()
 	{
-		return _dblAsset;
+		return _asset;
 	}
 
 	/**
@@ -123,7 +125,7 @@ public class BalanceSheetVertex {
 
 	public double liability()
 	{
-		return _dblLiability;
+		return _liability;
 	}
 
 	/**
@@ -134,7 +136,7 @@ public class BalanceSheetVertex {
 
 	public double contraAsset()
 	{
-		return _dblContraAsset;
+		return _contraAsset;
 	}
 
 	/**
@@ -145,7 +147,7 @@ public class BalanceSheetVertex {
 
 	public double contraLiability()
 	{
-		return _dblContraLiability;
+		return _contraLiability;
 	}
 
 	/**
@@ -156,7 +158,7 @@ public class BalanceSheetVertex {
 
 	public double retainedEarnings()
 	{
-		return _dblRetainedEarnings;
+		return _retainedEarnings;
 	}
 
 	/**
@@ -167,7 +169,7 @@ public class BalanceSheetVertex {
 
 	public double equity()
 	{
-		return _dblAsset - _dblLiability - _dblContraAsset + _dblContraLiability + _dblRetainedEarnings;
+		return _asset - _liability - _contraAsset + _contraLiability + _retainedEarnings;
 	}
 
 	/**
@@ -178,6 +180,6 @@ public class BalanceSheetVertex {
 
 	public double cet1()
 	{
-		return _dblAsset - _dblLiability - _dblContraAsset + _dblRetainedEarnings;
+		return _asset - _liability - _contraAsset + _retainedEarnings;
 	}
 }

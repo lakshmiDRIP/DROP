@@ -70,29 +70,34 @@ package org.drip.xva.derivative;
  * @author Lakshmi Krishnamurthy
  */
 
-public class EvolutionTrajectoryEdge {
-	private org.drip.xva.derivative.CashAccountEdge _cae = null;
-	private org.drip.xva.derivative.EvolutionTrajectoryVertex _etvStart = null;
-	private org.drip.xva.derivative.EvolutionTrajectoryVertex _etvFinish = null;
+public class EvolutionTrajectoryEdge
+{
+	private org.drip.xva.derivative.CashAccountEdge _cashAccountEdge = null;
+	private org.drip.xva.derivative.EvolutionTrajectoryVertex _startingTrajectoryVertex = null;
+	private org.drip.xva.derivative.EvolutionTrajectoryVertex _finishingTrajectoryVertex = null;
 
 	/**
 	 * EvolutionTrajectoryEdge Constructor
 	 * 
-	 * @param etvStart The Starting Evolution Trajectory Vertex
-	 * @param etvFinish The Finishing Evolution Trajectory Vertex
-	 * @param cae The Cash Account Edge
+	 * @param startingTrajectoryVertex The Starting Evolution Trajectory Vertex
+	 * @param finishingTrajectoryVertex The Finishing Evolution Trajectory Vertex
+	 * @param cashAccountEdge The Cash Account Edge
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public EvolutionTrajectoryEdge (
-		final org.drip.xva.derivative.EvolutionTrajectoryVertex etvStart,
-		final org.drip.xva.derivative.EvolutionTrajectoryVertex etvFinish,
-		final org.drip.xva.derivative.CashAccountEdge cae)
+		final org.drip.xva.derivative.EvolutionTrajectoryVertex startingTrajectoryVertex,
+		final org.drip.xva.derivative.EvolutionTrajectoryVertex finishingTrajectoryVertex,
+		final org.drip.xva.derivative.CashAccountEdge cashAccountEdge)
 		throws java.lang.Exception
 	{
-		if (null == (_etvStart = etvStart) || null == (_etvFinish = etvFinish) || null == (_cae = cae))
+		if (null == (_startingTrajectoryVertex = startingTrajectoryVertex) ||
+			null == (_finishingTrajectoryVertex = finishingTrajectoryVertex) ||
+			null == (_cashAccountEdge = cashAccountEdge))
+		{
 			throw new java.lang.Exception ("EvolutionTrajectoryEdge Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -103,7 +108,7 @@ public class EvolutionTrajectoryEdge {
 
 	public org.drip.xva.derivative.EvolutionTrajectoryVertex vertexStart()
 	{
-		return _etvStart;
+		return _startingTrajectoryVertex;
 	}
 
 	/**
@@ -114,7 +119,7 @@ public class EvolutionTrajectoryEdge {
 
 	public org.drip.xva.derivative.EvolutionTrajectoryVertex vertexFinish()
 	{
-		return _etvFinish;
+		return _finishingTrajectoryVertex;
 	}
 
 	/**
@@ -125,6 +130,6 @@ public class EvolutionTrajectoryEdge {
 
 	public org.drip.xva.derivative.CashAccountEdge cashAccountEdge()
 	{
-		return _cae;
+		return _cashAccountEdge;
 	}
 }

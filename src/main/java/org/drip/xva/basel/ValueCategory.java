@@ -68,10 +68,11 @@ package org.drip.xva.basel;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ValueCategory {
-	private java.lang.String _strID = "";
-	private boolean _bCET1Contributor = false;
-	private java.lang.String _strDescription = "";
+public class ValueCategory
+{
+	private java.lang.String _id = "";
+	private boolean _cet1Contributor = false;
+	private java.lang.String _decription = "";
 
 	/**
 	 * Retrieve an Instance of the CF1 Cash Flow
@@ -81,9 +82,16 @@ public class ValueCategory {
 
 	public static final ValueCategory CF1()
 	{
-		try {
-			return new ValueCategory ("CF1", "Underlying Trade Contractual Cash Flow", true);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new ValueCategory (
+				"CF1",
+				"Underlying Trade Contractual Cash Flow",
+				true
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -98,9 +106,16 @@ public class ValueCategory {
 
 	public static final ValueCategory CF2()
 	{
-		try {
-			return new ValueCategory ("CF2", "Counter Party Default Cash Flow", true);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new ValueCategory (
+				"CF2",
+				"Counter Party Default Cash Flow",
+				true
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -115,9 +130,16 @@ public class ValueCategory {
 
 	public static final ValueCategory CF3()
 	{
-		try {
-			return new ValueCategory ("CF3", "Bank Default Related Cash Flow", false);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new ValueCategory (
+				"CF3",
+				"Bank Default Related Cash Flow",
+				false
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -132,9 +154,16 @@ public class ValueCategory {
 
 	public static final ValueCategory CF4()
 	{
-		try {
-			return new ValueCategory ("CF4", "Pre Bank Default Dynamic Flow", false);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new ValueCategory (
+				"CF4",
+				"Pre Bank Default Dynamic Flow",
+				false
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -149,9 +178,16 @@ public class ValueCategory {
 
 	public static final ValueCategory CF5()
 	{
-		try {
-			return new ValueCategory ("CF5", "Post Bank Default Dynamic Flow", false);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new ValueCategory (
+				"CF5",
+				"Post Bank Default Dynamic Flow",
+				false
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -166,9 +202,16 @@ public class ValueCategory {
 
 	public static final ValueCategory CF6()
 	{
-		try {
-			return new ValueCategory ("CF6", "CSA Related Cash Flow", false);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new ValueCategory (
+				"CF6",
+				"CSA Related Cash Flow",
+				false
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -183,9 +226,16 @@ public class ValueCategory {
 
 	public static final ValueCategory HYBRID()
 	{
-		try {
-			return new ValueCategory ("HYBRID", "Mixed Cash Flow Types", false);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new ValueCategory (
+				"HYBRID",
+				"Mixed Cash Flow Types",
+				false
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -195,24 +245,26 @@ public class ValueCategory {
 	/**
 	 * ValueCategory Constructor
 	 * 
-	 * @param strID The Category ID
-	 * @param strDescription The Category Description
-	 * @param bCET1Contributor TRUE - The Category is a CET1 Contributor
+	 * @param id The Category ID
+	 * @param decription The Category Description
+	 * @param cet1Contributor TRUE - The Category is a CET1 Contributor
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ValueCategory (
-		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final boolean bCET1Contributor)
+		final java.lang.String id,
+		final java.lang.String decription,
+		final boolean cet1Contributor)
 		throws java.lang.Exception
 	{
-		if (null == (_strID = strID) || _strID.isEmpty() || null == (_strDescription = strDescription) ||
-			_strDescription.isEmpty())
+		if (null == (_id = id) || _id.isEmpty() ||
+			null == (_decription = decription) || _decription.isEmpty())
+		{
 			throw new java.lang.Exception ("ValueCategory Constructor => Invalid Inputs");
+		}
 
-		_bCET1Contributor = bCET1Contributor;
+		_cet1Contributor = cet1Contributor;
 	}
 
 	/**
@@ -223,7 +275,7 @@ public class ValueCategory {
 
 	public java.lang.String id()
 	{
-		return _strID;
+		return _id;
 	}
 
 	/**
@@ -234,7 +286,7 @@ public class ValueCategory {
 
 	public java.lang.String description()
 	{
-		return _strDescription;
+		return _decription;
 	}
 
 	/**
@@ -245,6 +297,6 @@ public class ValueCategory {
 
 	public boolean isCET1Contributor()
 	{
-		return _bCET1Contributor;
+		return _cet1Contributor;
 	}
 }

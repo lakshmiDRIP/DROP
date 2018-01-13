@@ -67,32 +67,35 @@ package org.drip.xva.csa;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NumeraireInducedMeasureShift {
-<span class="fc" id="L71">	private double _dblCSAForward = java.lang.Double.NaN;</span>
-<span class="fc" id="L72">	private double _dblNoCSAForward = java.lang.Double.NaN;</span>
-<span class="fc" id="L73">	private double _dblTerminalVariance = java.lang.Double.NaN;</span>
+public class NumeraireInducedMeasureShift
+{
+<span class="fc" id="L72">	private double _csaForward = java.lang.Double.NaN;</span>
+<span class="fc" id="L73">	private double _noCSAForward = java.lang.Double.NaN;</span>
+<span class="fc" id="L74">	private double _terminalVariance = java.lang.Double.NaN;</span>
 
 	/**
 	 * NumeraireInducedMeasureShift Constructor
 	 * 
-	 * @param dblCSAForward The CSA Implied Forward Value
-	 * @param dblNoCSAForward The No CSA Implied Forward Value
-	 * @param dblTerminalVariance The Terminal Variance of the Underlying
+	 * @param csaForward The CSA Implied Forward Value
+	 * @param noCSAForward The No CSA Implied Forward Value
+	 * @param terminalVariance The Terminal Variance of the Underlying
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public NumeraireInducedMeasureShift (
-		final double dblCSAForward,
-		final double dblNoCSAForward,
-		final double dblTerminalVariance)
+		final double csaForward,
+		final double noCSAForward,
+		final double terminalVariance)
 		throws java.lang.Exception
-<span class="fc" id="L90">	{</span>
-<span class="pc bpc" id="L91" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblCSAForward = dblCSAForward) ||</span>
-<span class="pc bpc" id="L92" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblNoCSAForward = dblNoCSAForward) ||</span>
-<span class="pc bpc" id="L93" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblTerminalVariance = dblTerminalVariance))</span>
-<span class="nc" id="L94">			throw new java.lang.Exception (&quot;NumeraireInducedMeasureShift Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L95">	}</span>
+<span class="fc" id="L91">	{</span>
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_csaForward = csaForward) ||</span>
+<span class="pc bpc" id="L93" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_noCSAForward = noCSAForward) ||</span>
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_terminalVariance = terminalVariance))</span>
+		{
+<span class="nc" id="L96">			throw new java.lang.Exception (&quot;NumeraireInducedMeasureShift Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="fc" id="L98">	}</span>
 
 	/**
 	 * Return the Value of the Forward Contract under CSA
@@ -102,7 +105,7 @@ public class NumeraireInducedMeasureShift {
 
 	public double csaForward()
 	{
-<span class="nc" id="L105">		return _dblCSAForward;</span>
+<span class="nc" id="L108">		return _csaForward;</span>
 	}
 
 	/**
@@ -113,7 +116,7 @@ public class NumeraireInducedMeasureShift {
 
 	public double noCSAForward()
 	{
-<span class="nc" id="L116">		return _dblNoCSAForward;</span>
+<span class="nc" id="L119">		return _noCSAForward;</span>
 	}
 
 	/**
@@ -124,7 +127,7 @@ public class NumeraireInducedMeasureShift {
 
 	public double terminalVariance()
 	{
-<span class="nc" id="L127">		return _dblTerminalVariance;</span>
+<span class="nc" id="L130">		return _terminalVariance;</span>
 	}
 
 	/**
@@ -135,7 +138,7 @@ public class NumeraireInducedMeasureShift {
 
 	public double alpha1()
 	{
-<span class="nc" id="L138">		return (_dblNoCSAForward - _dblCSAForward) / _dblTerminalVariance;</span>
+<span class="nc" id="L141">		return (_noCSAForward - _csaForward) / _terminalVariance;</span>
 	}
 
 	/**
@@ -146,13 +149,13 @@ public class NumeraireInducedMeasureShift {
 
 	public double alpha0()
 	{
-<span class="nc" id="L149">		return 1. - alpha1() * _dblCSAForward;</span>
+<span class="nc" id="L152">		return 1. - alpha1() * _csaForward;</span>
 	}
 
 	/**
 	 * Compute the No CSA/CSA Density Re-scaling using the Antonov and Arneguy (2009) Linear Proxy Approach
 	 * 
-	 * @param dblK The Strike at which the Density Re-scaling is Sought
+	 * @param k The Strike at which the Density Re-scaling is Sought
 	 * 
 	 * @return The No CSA/CSA Density Re-scaling using the Antonov and Arneguy (2009) Linear Proxy Approach
 	 * 
@@ -160,14 +163,16 @@ public class NumeraireInducedMeasureShift {
 	 */
 
 	public double densityRescale (
-		final double dblK)
+		final double k)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L166" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblK))</span>
-<span class="nc" id="L167">			throw new java.lang.Exception (&quot;NumeraireInducedMeasureShift::densityRescale =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (k))</span>
+		{
+<span class="nc" id="L171">			throw new java.lang.Exception (&quot;NumeraireInducedMeasureShift::densityRescale =&gt; Invalid Inputs&quot;);</span>
+		}
 
-<span class="fc" id="L169">		double dblAlpha1 = (_dblNoCSAForward - _dblCSAForward) / _dblTerminalVariance;</span>
-<span class="fc" id="L170">		return 1. - dblAlpha1 * _dblCSAForward + dblAlpha1 * dblK;</span>
+<span class="fc" id="L174">		double dblAlpha1 = (_noCSAForward - _csaForward) / _terminalVariance;</span>
+<span class="fc" id="L175">		return 1. - dblAlpha1 * _csaForward + dblAlpha1 * k;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

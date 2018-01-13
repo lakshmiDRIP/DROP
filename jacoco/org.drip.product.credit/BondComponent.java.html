@@ -467,10 +467,10 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 <span class="fc bfc" id="L467" title="All 2 branches covered.">			dblCleanPrice = null == cc ? priceFromFundingCurve (valParams, csqc, iExerciseDate,</span>
 <span class="fc" id="L468">				dblExerciseFactor, 0.) : priceFromCreditCurve (valParams, csqc, iExerciseDate,</span>
 					dblExerciseFactor, 0., false);
-<span class="nc" id="L470">		} catch (java.lang.Exception e) {</span>
+<span class="fc" id="L470">		} catch (java.lang.Exception e) {</span>
 			if (!s_bSuppressErrors) e.printStackTrace();
 
-<span class="nc" id="L473">			return null;</span>
+<span class="fc" id="L473">			return null;</span>
 <span class="fc" id="L474">		}</span>
 
 <span class="pc bpc" id="L476" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblCleanPrice)) return null;</span>
@@ -741,41 +741,41 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 <span class="fc" id="L741">				double dblPeriodCreditRiskyDirtyDV01 = dblPeriodCreditRisklessDirtyDV01;</span>
 <span class="fc" id="L742">				double dblPeriodCreditRiskyPrincipalPV = dblPeriodCreditRiskessPrincipalPV;</span>
 
-<span class="pc bpc" id="L744" title="1 of 4 branches missed.">				if (null != cc &amp;&amp; null != pricerParams) {</span>
-<span class="nc bnc" id="L745" title="All 2 branches missed.">					double dblSurvProb = cc.survival (pricerParams.survivalToPayDate() ? iPeriodPayDate :</span>
+<span class="fc bfc" id="L744" title="All 4 branches covered.">				if (null != cc &amp;&amp; null != pricerParams) {</span>
+<span class="pc bpc" id="L745" title="1 of 2 branches missed.">					double dblSurvProb = cc.survival (pricerParams.survivalToPayDate() ? iPeriodPayDate :</span>
 						iPeriodEndDate);
 
-<span class="nc" id="L748">					dblPeriodCreditRiskyDirtyDV01 *= dblSurvProb;</span>
-<span class="nc" id="L749">					dblPeriodCreditRiskyPrincipalPV *= dblSurvProb;</span>
+<span class="fc" id="L748">					dblPeriodCreditRiskyDirtyDV01 *= dblSurvProb;</span>
+<span class="fc" id="L749">					dblPeriodCreditRiskyPrincipalPV *= dblSurvProb;</span>
 
-<span class="nc bnc" id="L751" title="All 2 branches missed.">					for (org.drip.analytics.cashflow.LossQuadratureMetrics lqm : period.lossMetrics (this,</span>
-<span class="nc" id="L752">						valParams, pricerParams, terminationAdjust (iWorkoutDate), csqc)) {</span>
-<span class="nc bnc" id="L753" title="All 2 branches missed.">						if (null == lqm) continue;</span>
+<span class="fc bfc" id="L751" title="All 2 branches covered.">					for (org.drip.analytics.cashflow.LossQuadratureMetrics lqm : period.lossMetrics (this,</span>
+<span class="fc" id="L752">						valParams, pricerParams, terminationAdjust (iWorkoutDate), csqc)) {</span>
+<span class="pc bpc" id="L753" title="1 of 2 branches missed.">						if (null == lqm) continue;</span>
 
-<span class="nc" id="L755">						int iSubPeriodEndDate = lqm.endDate();</span>
+<span class="fc" id="L755">						int iSubPeriodEndDate = lqm.endDate();</span>
 
-<span class="nc" id="L757">						int iSubPeriodStartDate = lqm.startDate();</span>
+<span class="fc" id="L757">						int iSubPeriodStartDate = lqm.startDate();</span>
 
-<span class="nc" id="L759">						double dblSubPeriodDF = dcFunding.effectiveDF (iSubPeriodStartDate + iLossPayLag,</span>
+<span class="fc" id="L759">						double dblSubPeriodDF = dcFunding.effectiveDF (iSubPeriodStartDate + iLossPayLag,</span>
 							iSubPeriodEndDate + iLossPayLag);
 
-<span class="nc" id="L762">						double dblSubPeriodNotional = notional (iSubPeriodStartDate, iSubPeriodEndDate);</span>
+<span class="fc" id="L762">						double dblSubPeriodNotional = notional (iSubPeriodStartDate, iSubPeriodEndDate);</span>
 
-<span class="nc" id="L764">						double dblSubPeriodSurvival = cc.survival (iSubPeriodStartDate) - cc.survival</span>
-<span class="nc" id="L765">							(iSubPeriodEndDate);</span>
+<span class="fc" id="L764">						double dblSubPeriodSurvival = cc.survival (iSubPeriodStartDate) - cc.survival</span>
+<span class="fc" id="L765">							(iSubPeriodEndDate);</span>
 
-<span class="nc bnc" id="L767" title="All 2 branches missed.">						if (bAccrualOnDefault)</span>
-<span class="nc" id="L768">							dblPeriodCreditRiskyDirtyDV01 += 0.0001 * lqm.accrualDCF() * dblSubPeriodSurvival</span>
+<span class="pc bpc" id="L767" title="1 of 2 branches missed.">						if (bAccrualOnDefault)</span>
+<span class="fc" id="L768">							dblPeriodCreditRiskyDirtyDV01 += 0.0001 * lqm.accrualDCF() * dblSubPeriodSurvival</span>
 								* dblSubPeriodDF * dblSubPeriodNotional;
 
-<span class="nc bnc" id="L771" title="All 2 branches missed.">						double dblRecovery = bUseCurveRecovery ? cc.effectiveRecovery (iSubPeriodStartDate,</span>
+<span class="pc bpc" id="L771" title="1 of 2 branches missed.">						double dblRecovery = bUseCurveRecovery ? cc.effectiveRecovery (iSubPeriodStartDate,</span>
 							iSubPeriodEndDate) : dblProductRecovery;
 
-<span class="nc" id="L774">						double dblSubPeriodExpRecovery = dblRecovery * dblSubPeriodSurvival *</span>
+<span class="fc" id="L774">						double dblSubPeriodExpRecovery = dblRecovery * dblSubPeriodSurvival *</span>
 							dblSubPeriodNotional;
-<span class="nc" id="L776">						dblRecoveryPV += dblSubPeriodExpRecovery * dblSubPeriodDF;</span>
-<span class="nc" id="L777">						dblExpectedRecovery += dblSubPeriodExpRecovery;</span>
-<span class="nc" id="L778">					}</span>
+<span class="fc" id="L776">						dblRecoveryPV += dblSubPeriodExpRecovery * dblSubPeriodDF;</span>
+<span class="fc" id="L777">						dblExpectedRecovery += dblSubPeriodExpRecovery;</span>
+<span class="fc" id="L778">					}</span>
 				}
 
 <span class="fc" id="L781">				dblCreditRiskyDirtyDV01 += dblPeriodCreditRiskyDirtyDV01;</span>
@@ -796,10 +796,10 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 <span class="fc bfc" id="L797" title="All 2 branches covered.">				if (bTerminateCouponFlow) break;</span>
 <span class="fc" id="L798">			}</span>
-<span class="nc" id="L799">		} catch (java.lang.Exception e) {</span>
+<span class="fc" id="L799">		} catch (java.lang.Exception e) {</span>
 			if (!s_bSuppressErrors) e.printStackTrace();
 
-<span class="nc" id="L802">			return null;</span>
+<span class="fc" id="L802">			return null;</span>
 <span class="fc" id="L803">		}</span>
 
 <span class="fc" id="L805">		int iCashPayDate = java.lang.Integer.MIN_VALUE;</span>
@@ -889,7 +889,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 <span class="fc" id="L889">		org.drip.analytics.output.BondWorkoutMeasures bwmFair = workoutMeasures (valParams, pricerParams,</span>
 			csqc, iMaturityDate, 1.);
 
-<span class="pc bpc" id="L892" title="1 of 2 branches missed.">		if (null == bwmFair) return null;</span>
+<span class="fc bfc" id="L892" title="All 2 branches covered.">		if (null == bwmFair) return null;</span>
 
 <span class="fc" id="L894">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapMeasures = bwmFair.toMap (&quot;&quot;);</span>
 
@@ -15190,7 +15190,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 <span class="fc" id="L15190">				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapCalibMeasures =</span>
 <span class="fc" id="L15191">					calibMeasures (valParams, pricerParams, csqs, vcp);</span>
 
-<span class="pc bpc" id="L15193" title="2 of 4 branches missed.">				if (null != mapCalibMeasures &amp;&amp; mapCalibMeasures.containsKey (calibParams.measure()))</span>
+<span class="pc bpc" id="L15193" title="1 of 4 branches missed.">				if (null != mapCalibMeasures &amp;&amp; mapCalibMeasures.containsKey (calibParams.measure()))</span>
 <span class="fc" id="L15194">					return mapCalibMeasures;</span>
 			}
 		}
@@ -15198,7 +15198,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 <span class="fc" id="L15198">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapMeasures = fairMeasures</span>
 <span class="fc" id="L15199">			(valParams, pricerParams, csqs, vcp);</span>
 
-<span class="pc bpc" id="L15201" title="1 of 2 branches missed.">		if (null == mapMeasures) return null;</span>
+<span class="fc bfc" id="L15201" title="All 2 branches covered.">		if (null == mapMeasures) return null;</span>
 
 <span class="fc" id="L15203">		java.lang.String strName = name();</span>
 

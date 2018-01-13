@@ -68,77 +68,98 @@ package org.drip.xva.hypothecation;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BurgardKjaerVertexBuilder {
+public class BurgardKjaerVertexBuilder
+{
 
 	/**
 	 * Construct the Initial Dynamic Bank Portfolio
 	 * 
-	 * @param dtAnchor The Anchor Date
-	 * @param dblForward The Unrealized Forward Exposure
-	 * @param mv The Market Vertex
-	 * @param cog The Generic Close Out Instance
+	 * @param anchorDate The Anchor Date
+	 * @param forward The Unrealized Forward Exposure
+	 * @param marketVertex The Market Vertex
+	 * @param closeOutScheme The Generic Close Out Instance
 	 * 
 	 * @return The Burgard Kjaer Bank Portfolio Vertex
 	 */
 
 	public static final org.drip.xva.hypothecation.BurgardKjaerVertex Initial (
-		final org.drip.analytics.date.JulianDate dtAnchor,
-		final double dblForward,
-		final org.drip.xva.universe.MarketVertex mv,
-		final org.drip.xva.definition.CloseOutGeneral cog)
+		final org.drip.analytics.date.JulianDate anchorDate,
+		final double forward,
+		final org.drip.xva.universe.MarketVertex marketVertex,
+		final org.drip.xva.definition.CloseOutGeneral closeOutScheme)
 	{
-		if (null == mv) return null;
+		if (null == marketVertex)
+		{
+			return null;
+		}
 
-		org.drip.xva.hypothecation.CollateralGroupVertexCloseOut cgvco =
-			org.drip.xva.hypothecation.CollateralGroupVertexCloseOut.Standard (cog, dblForward, 0.);
+		org.drip.xva.hypothecation.CollateralGroupVertexCloseOut collateralGroupVertexCloseOut =
+			org.drip.xva.hypothecation.CollateralGroupVertexCloseOut.Standard (
+				closeOutScheme,
+				forward,
+				0.
+			);
 
-		org.drip.xva.hypothecation.BurgardKjaerVertexExposure cgvea =
-			org.drip.xva.hypothecation.BurgardKjaerVertexExposure.Initial (dblForward, cgvco);
+		org.drip.xva.hypothecation.BurgardKjaerVertexExposure burgardKjaerVertexExposure =
+			org.drip.xva.hypothecation.BurgardKjaerVertexExposure.Initial (
+				forward,
+				collateralGroupVertexCloseOut
+			);
 
-		if (null == cgvea) return null;
+		if (null == burgardKjaerVertexExposure)
+		{
+			return null;
+		}
 
-		double dblFundingExposure = cgvea.funding();
+		double fundingExposure = burgardKjaerVertexExposure.funding();
 
-		double dblBankDefaultCloseOut = cgvco.bank();
+		double bankDefaultCloseOut = collateralGroupVertexCloseOut.bank();
 
-		org.drip.xva.universe.EntityMarketVertex emvBank = mv.bank();
+		org.drip.xva.universe.EntityMarketVertex bankMarketVertex = marketVertex.bank();
 
-		org.drip.xva.universe.LatentStateMarketVertex nmvBankSubordinate =
-			emvBank.subordinateFundingLatentState();
+		org.drip.xva.universe.LatentStateMarketVertex bankSubordinateFundingMarketVertex =
+			bankMarketVertex.subordinateFundingLatentState();
 
-		if (null == nmvBankSubordinate) return null;
+		if (null == bankSubordinateFundingMarketVertex)
+		{
+			return null;
+		}
 
-		double dblBankSurvival = emvBank.survivalProbability();
+		double bankSurvival = bankMarketVertex.survivalProbability();
 
-		double dblBankSeniorRecovery = emvBank.seniorRecoveryRate();
+		double bankSeniorRecoveryRate = bankMarketVertex.seniorRecoveryRate();
 
-		double dblBankSubordinateRecovery = emvBank.subordinateRecoveryRate();
+		double bankSubordinateRecoveryRate = bankMarketVertex.subordinateRecoveryRate();
 
-		double dblCounterPartySurvival = mv.counterParty().survivalProbability();
+		double counterPartySurvival = marketVertex.counterParty().survivalProbability();
 
-		double dblIncrementalBankSurvival = dblBankSurvival - 1.;
+		double incrementalBankSurvival = bankSurvival - 1.;
 
-		double dblAdjustedExposure = dblForward + dblBankSurvival *
-			(dblCounterPartySurvival - 1.) * cgvea.credit() +
-			dblCounterPartySurvival * dblIncrementalBankSurvival * cgvea.debt() +
-			dblCounterPartySurvival * dblIncrementalBankSurvival * dblFundingExposure -
-			dblBankSurvival * dblCounterPartySurvival * mv.csaSpread() * cgvea.collateralBalance();
+		double adjustedExposure =
+			forward + bankSurvival * (counterPartySurvival - 1.) * burgardKjaerVertexExposure.credit() +
+			counterPartySurvival * incrementalBankSurvival * burgardKjaerVertexExposure.debt() +
+			counterPartySurvival * incrementalBankSurvival * fundingExposure -
+			bankSurvival * counterPartySurvival * marketVertex.csaSpread() *
+				burgardKjaerVertexExposure.collateralBalance();
 
-		try {
+		try
+		{
 			return new org.drip.xva.hypothecation.BurgardKjaerVertex (
-				dtAnchor,
-				dblForward,
+				anchorDate,
+				forward,
 				0.,
-				cgvea,
-				cgvco,
+				burgardKjaerVertexExposure,
+				collateralGroupVertexCloseOut,
 				new org.drip.xva.derivative.ReplicationPortfolioVertexBank (
-					(dblFundingExposure + dblBankSubordinateRecovery * dblAdjustedExposure - dblBankDefaultCloseOut) /
-						(dblBankSeniorRecovery - dblBankSubordinateRecovery) / emvBank.seniorFundingLatentState().nodal(),
-					(dblFundingExposure + dblBankSeniorRecovery * dblAdjustedExposure - dblBankDefaultCloseOut) /
-						(dblBankSubordinateRecovery - dblBankSeniorRecovery) / nmvBankSubordinate.nodal()
+					(fundingExposure + bankSubordinateRecoveryRate * adjustedExposure - bankDefaultCloseOut) /
+						(bankSeniorRecoveryRate - bankSubordinateRecoveryRate) / bankMarketVertex.seniorFundingLatentState().nodal(),
+					(fundingExposure + bankSeniorRecoveryRate * adjustedExposure - bankDefaultCloseOut) /
+						(bankSubordinateRecoveryRate - bankSeniorRecoveryRate) / bankSubordinateFundingMarketVertex.nodal()
 				)
 			);
-		} catch (java.lang.Exception e) {
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -148,71 +169,87 @@ public class BurgardKjaerVertexBuilder {
 	/**
 	 * Construct a Path-wise Dynamic Bank Portfolio
 	 * 
-	 * @param dtAnchor The Anchor Date
-	 * @param cgver The Raw Collateral Group Vertex Exposure
-	 * @param me The Market Edge
-	 * @param cgvco The Collateral Group Vertex Close Out
-	 * @param cgvea The Collateral Group Vertex Exposure Decomposition
+	 * @param anchorDate The Anchor Date
+	 * @param collateralGroupVertexExposure The Raw Collateral Group Vertex Exposure
+	 * @param marketEdge The Market Edge
+	 * @param collateralGroupVertexCloseOut The Collateral Group Vertex Close Out
+	 * @param burgardKjaerVertexExposure The Collateral Group Vertex Exposure Decomposition
 	 * 
 	 * @return The Burgard Kjaer Bank Portfolio Vertex
 	 */
 
 	public static final org.drip.xva.hypothecation.BurgardKjaerVertex BankPortfolioBuilder (
-		final org.drip.analytics.date.JulianDate dtAnchor,
-		final org.drip.xva.hypothecation.CollateralGroupVertexExposure cgver,
-		final org.drip.xva.universe.MarketEdge me,
-		final org.drip.xva.hypothecation.CollateralGroupVertexCloseOut cgvco,
-		final org.drip.xva.hypothecation.BurgardKjaerVertexExposure cgvea)
+		final org.drip.analytics.date.JulianDate anchorDate,
+		final org.drip.xva.hypothecation.CollateralGroupVertexExposure collateralGroupVertexExposure,
+		final org.drip.xva.universe.MarketEdge marketEdge,
+		final org.drip.xva.hypothecation.CollateralGroupVertexCloseOut collateralGroupVertexCloseOut,
+		final org.drip.xva.hypothecation.BurgardKjaerVertexExposure burgardKjaerVertexExposure)
 	{
-		if (null == cgver || null == me || null == cgvco || null == cgvea) return null;
+		if (null == collateralGroupVertexExposure ||
+			null == marketEdge ||
+			null == collateralGroupVertexCloseOut ||
+			null == burgardKjaerVertexExposure)
+		{
+			return null;
+		}
 
-		double dblFundingExposure = cgvea.funding();
+		double fundingExposure = burgardKjaerVertexExposure.funding();
 
-		double dblBankDefaultCloseOut = cgvco.bank();
+		double bankDefaultCloseOut = collateralGroupVertexCloseOut.bank();
 
-		org.drip.xva.universe.MarketVertex mvStart = me.start();
+		org.drip.xva.universe.MarketVertex marketVertexStart = marketEdge.start();
 
-		org.drip.xva.universe.MarketVertex mvFinish = me.finish();
+		org.drip.xva.universe.MarketVertex marketVertexFinish = marketEdge.finish();
 
-		org.drip.xva.universe.EntityMarketVertex emvBankFinish = mvFinish.bank();
+		org.drip.xva.universe.EntityMarketVertex bankMarketVertexFinish = marketVertexFinish.bank();
 
-		org.drip.xva.universe.LatentStateMarketVertex nmvBankSubordinateFinish =
-			emvBankFinish.subordinateFundingLatentState();
+		org.drip.xva.universe.LatentStateMarketVertex bankSubordinateFundingMarketVertexFinish =
+			bankMarketVertexFinish.subordinateFundingLatentState();
 
-		if (null == nmvBankSubordinateFinish) return null;
+		if (null == bankSubordinateFundingMarketVertexFinish)
+		{
+			return null;
+		}
 
-		double dblBankSurvivalFinish = emvBankFinish.survivalProbability();
+		double bankSurvivalFinish = bankMarketVertexFinish.survivalProbability();
 
-		double dblBankSeniorRecoveryFinish = emvBankFinish.seniorRecoveryRate();
+		double bankSeniorRecoveryRateFinish = bankMarketVertexFinish.seniorRecoveryRate();
 
-		double dblBankSubordinateRecoveryFinish = emvBankFinish.subordinateRecoveryRate();
+		double bankSubordinateRecoveryRateFinish = bankMarketVertexFinish.subordinateRecoveryRate();
 
-		double dblCounterPartySurvivalFinish = mvFinish.counterParty().survivalProbability();
+		double counterPartySurvivalFinish = marketVertexFinish.counterParty().survivalProbability();
 
-		double dblIncrementalBankSurvival = dblBankSurvivalFinish - mvStart.bank().survivalProbability();
+		double incrementalBankSurvival = bankSurvivalFinish - marketVertexStart.bank().survivalProbability();
 
-		double dblAdjustedExposure = cgver.uncollateralized() + dblBankSurvivalFinish *
-			(dblCounterPartySurvivalFinish - mvStart.counterParty().survivalProbability()) * cgvea.credit() +
-			dblCounterPartySurvivalFinish * dblIncrementalBankSurvival * cgvea.debt() +
-			dblCounterPartySurvivalFinish * dblIncrementalBankSurvival * dblFundingExposure -
-			dblBankSurvivalFinish * dblCounterPartySurvivalFinish * mvFinish.csaSpread() * cgvea.collateralBalance();
+		double adjustedExposure =
+			collateralGroupVertexExposure.uncollateralized() +
+			bankSurvivalFinish *
+				(counterPartySurvivalFinish - marketVertexStart.counterParty().survivalProbability()) *
+				burgardKjaerVertexExposure.credit() +
+			counterPartySurvivalFinish * incrementalBankSurvival * burgardKjaerVertexExposure.debt() +
+			counterPartySurvivalFinish * incrementalBankSurvival * fundingExposure -
+			bankSurvivalFinish * counterPartySurvivalFinish * marketVertexFinish.csaSpread() *
+				burgardKjaerVertexExposure.collateralBalance();
 
-		try {
+		try
+		{
 			return new org.drip.xva.hypothecation.BurgardKjaerVertex (
-				dtAnchor,
-				cgver.forward(),
-				cgver.accrued(),
-				cgvea,
-				cgvco,
+				anchorDate,
+				collateralGroupVertexExposure.forward(),
+				collateralGroupVertexExposure.accrued(),
+				burgardKjaerVertexExposure,
+				collateralGroupVertexCloseOut,
 				new org.drip.xva.derivative.ReplicationPortfolioVertexBank (
-					(dblFundingExposure + dblBankSubordinateRecoveryFinish * dblAdjustedExposure - dblBankDefaultCloseOut) /
-						(dblBankSeniorRecoveryFinish - dblBankSubordinateRecoveryFinish) /
-							emvBankFinish.seniorFundingLatentState().nodal(),
-					(dblFundingExposure + dblBankSeniorRecoveryFinish * dblAdjustedExposure - dblBankDefaultCloseOut) /
-						(dblBankSubordinateRecoveryFinish - dblBankSeniorRecoveryFinish) / nmvBankSubordinateFinish.nodal()
+					(fundingExposure + bankSubordinateRecoveryRateFinish * adjustedExposure - bankDefaultCloseOut) /
+						(bankSeniorRecoveryRateFinish - bankSubordinateRecoveryRateFinish) /
+							bankMarketVertexFinish.seniorFundingLatentState().nodal(),
+					(fundingExposure + bankSeniorRecoveryRateFinish * adjustedExposure - bankDefaultCloseOut) /
+						(bankSubordinateRecoveryRateFinish - bankSeniorRecoveryRateFinish) / bankSubordinateFundingMarketVertexFinish.nodal()
 				)
 			);
-		} catch (java.lang.Exception e) {
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -223,62 +260,70 @@ public class BurgardKjaerVertexBuilder {
 	 * Construct a Standard Instance of BurgardKjaerVertex using the specified Hedge Error with Two Bank
 	 *  Bonds
 	 * 
-	 * @param dtAnchor The Vertex Date Anchor
-	 * @param dblExposure The Exposure at the Path Vertex Time Node
-	 * @param dblRealizedCashFlow The Default Window Realized Cash-flow at the Path Vertex Time Node
-	 * @param dblCollateralBalance The Collateral Balance at the Path Vertex Time Node
-	 * @param dblHedgeError The Hedge Error
-	 * @param me The Market Edge
-	 * @param cog The Generic Close-Out Evaluator Instance
+	 * @param anchorDate The Vertex Date Anchor
+	 * @param exposure The Exposure at the Path Vertex Time Node
+	 * @param realizedCashFlow The Default Window Realized Cash-flow at the Path Vertex Time Node
+	 * @param collateralBalance The Collateral Balance at the Path Vertex Time Node
+	 * @param hedgeError The Hedge Error
+	 * @param marketEdge The Market Edge
+	 * @param closeOutScheme The Generic Close-Out Evaluator Instance
 	 * 
 	 * @return The Standard Instance of BurgardKjaerVertex using the specified Hedge Error with Two Bank
 	 *  Bonds
 	 */
 
 	public static final org.drip.xva.hypothecation.BurgardKjaerVertex HedgeErrorDualBond (
-		final org.drip.analytics.date.JulianDate dtAnchor,
-		final double dblExposure,
-		final double dblRealizedCashFlow,
-		final double dblCollateralBalance,
-		final double dblHedgeError,
-		final org.drip.xva.universe.MarketEdge me,
-		final org.drip.xva.definition.CloseOutGeneral cog)
+		final org.drip.analytics.date.JulianDate anchorDate,
+		final double exposure,
+		final double realizedCashFlow,
+		final double collateralBalance,
+		final double hedgeError,
+		final org.drip.xva.universe.MarketEdge marketEdge,
+		final org.drip.xva.definition.CloseOutGeneral closeOutScheme)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblExposure) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblRealizedCashFlow) ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblCollateralBalance) ||
-					!org.drip.quant.common.NumberUtil.IsValid (dblHedgeError))
+		if (!org.drip.quant.common.NumberUtil.IsValid (exposure) ||
+			!org.drip.quant.common.NumberUtil.IsValid (realizedCashFlow) ||
+			!org.drip.quant.common.NumberUtil.IsValid (collateralBalance) ||
+			!org.drip.quant.common.NumberUtil.IsValid (hedgeError))
+		{
 			return null;
+		}
 
-		double dblUncollateralizedExposure = dblExposure + dblRealizedCashFlow;
-		double dblCollateralizedExposure = dblUncollateralizedExposure - dblCollateralBalance;
+		double uncollateralizedExposure = exposure + realizedCashFlow;
+		double collateralizedExposure = uncollateralizedExposure - collateralBalance;
 
-		org.drip.xva.hypothecation.CollateralGroupVertexCloseOut cgvco =
+		org.drip.xva.hypothecation.CollateralGroupVertexCloseOut collateralGroupVertexCloseOut =
 			org.drip.xva.hypothecation.CollateralGroupVertexCloseOut.Standard (
-				cog,
-				dblUncollateralizedExposure,
-				dblCollateralBalance
+				closeOutScheme,
+				uncollateralizedExposure,
+				collateralBalance
 			);
 
-		if (null == cgvco) return null;
+		if (null == collateralGroupVertexCloseOut)
+		{
+			return null;
+		}
 
-		try {
+		try
+		{
 			return BankPortfolioBuilder (
-				dtAnchor,
+				anchorDate,
 				new org.drip.xva.hypothecation.CollateralGroupVertexExposure (
-					dblExposure,
-					dblRealizedCashFlow
+					exposure,
+					realizedCashFlow
 				),
-				me,
-				cgvco,
+				marketEdge,
+				collateralGroupVertexCloseOut,
 				new org.drip.xva.hypothecation.BurgardKjaerVertexExposure (
-					dblCollateralizedExposure - cgvco.counterParty(),
-					dblCollateralizedExposure - cgvco.bank(),
-					dblHedgeError,
-					dblCollateralBalance
+					collateralizedExposure - collateralGroupVertexCloseOut.counterParty(),
+					collateralizedExposure - collateralGroupVertexCloseOut.bank(),
+					hedgeError,
+					collateralBalance
 				)
 			);
-		} catch (java.lang.Exception e) {
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -289,54 +334,59 @@ public class BurgardKjaerVertexBuilder {
 	 * Construct a Standard Instance of BurgardKjaerVertex using semi-replication with no Short-fall at own
 	 *  Default using Two Bonds
 	 * 
-	 * @param dtAnchor The Vertex Date Anchor
-	 * @param dblExposure The Exposure at the Path Vertex Time Node
-	 * @param dblRealizedCashFlow The Default Window Realized Cash-flow at the Path Vertex Time Node
-	 * @param dblCollateralBalance The Collateral Balance at the Path Vertex Time Node
-	 * @param me The Market Edge
-	 * @param cog The Generic Close-Out Evaluator Instance
+	 * @param anchorDate The Vertex Date Anchor
+	 * @param exposure The Exposure at the Path Vertex Time Node
+	 * @param realizedCashFlow The Default Window Realized Cash-flow at the Path Vertex Time Node
+	 * @param collateralBalance The Collateral Balance at the Path Vertex Time Node
+	 * @param marketEdge The Market Edge
+	 * @param closeOutScheme The Generic Close-Out Evaluator Instance
 	 * 
 	 * @return The Standard Instance of BurgardKjaerVertex using semi-replication with no Short-fall at own
 	 *  Default using Two Bonds
 	 */
 
 	public static final org.drip.xva.hypothecation.BurgardKjaerVertex SemiReplicationDualBond (
-		final org.drip.analytics.date.JulianDate dtAnchor,
-		final double dblExposure,
-		final double dblRealizedCashFlow,
-		final double dblCollateralBalance,
-		final org.drip.xva.universe.MarketEdge me,
-		final org.drip.xva.definition.CloseOutGeneral cog)
+		final org.drip.analytics.date.JulianDate anchorDate,
+		final double exposure,
+		final double realizedCashFlow,
+		final double collateralBalance,
+		final org.drip.xva.universe.MarketEdge marketEdge,
+		final org.drip.xva.definition.CloseOutGeneral closeOutScheme)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblExposure) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblRealizedCashFlow) ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblCollateralBalance))
+		if (!org.drip.quant.common.NumberUtil.IsValid (exposure) ||
+			!org.drip.quant.common.NumberUtil.IsValid (realizedCashFlow) ||
+			!org.drip.quant.common.NumberUtil.IsValid (collateralBalance))
+		{
 			return null;
+		}
 
-		double dblUncollateralizedExposure = dblExposure + dblRealizedCashFlow;
-		double dblCollateralizedExposure = dblUncollateralizedExposure - dblCollateralBalance;
+		double uncollateralizedExposure = exposure + realizedCashFlow;
+		double collateralizedExposure = uncollateralizedExposure - collateralBalance;
 
-		try {
+		try
+		{
 			return BankPortfolioBuilder (
-				dtAnchor,
+				anchorDate,
 				new org.drip.xva.hypothecation.CollateralGroupVertexExposure (
-					dblExposure,
-					dblRealizedCashFlow
+					exposure,
+					realizedCashFlow
 				),
-				me,
+				marketEdge,
 				org.drip.xva.hypothecation.CollateralGroupVertexCloseOut.Standard (
-					cog,
-					dblUncollateralizedExposure,
-					dblCollateralBalance
+					closeOutScheme,
+					uncollateralizedExposure,
+					collateralBalance
 				),
 				new org.drip.xva.hypothecation.BurgardKjaerVertexExposure (
-					0. < dblCollateralizedExposure ? dblCollateralizedExposure : 0.,
-					0. > dblCollateralizedExposure ? dblCollateralizedExposure : 0.,
-					0. < dblCollateralizedExposure ? dblCollateralizedExposure : 0.,
-					dblCollateralBalance
+					0. < collateralizedExposure ? collateralizedExposure : 0.,
+					0. > collateralizedExposure ? collateralizedExposure : 0.,
+					0. < collateralizedExposure ? collateralizedExposure : 0.,
+					collateralBalance
 				)
 			);
-		} catch (java.lang.Exception e) {
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -347,49 +397,54 @@ public class BurgardKjaerVertexBuilder {
 	 * Construct a Standard Instance of BurgardKjaerVertex using a Fully Collateralized Strategy, i.e., also
 	 * 	referred to as the 2 Way Gold Plated CSA
 	 * 
-	 * @param dtAnchor The Vertex Date Anchor
-	 * @param dblExposure The Exposure at the Path Vertex Time Node
-	 * @param dblRealizedCashFlow The Default Window Realized Cash-flow at the Path Vertex Time Node
-	 * @param me The Market Edge
-	 * @param cog The Generic Close-Out Evaluator Instance
+	 * @param anchorDate The Vertex Date Anchor
+	 * @param exposure The Exposure at the Path Vertex Time Node
+	 * @param realizedCashFlow The Default Window Realized Cash-flow at the Path Vertex Time Node
+	 * @param marketEdge The Market Edge
+	 * @param closeOutScheme The Generic Close-Out Evaluator Instance
 	 * 
 	 * @return The Standard Instance of BurgardKjaerVertex using using a Fully Collateralized Strategy
 	 */
 
 	public static final org.drip.xva.hypothecation.BurgardKjaerVertex GoldPlatedTwoWayCSA (
-		final org.drip.analytics.date.JulianDate dtAnchor,
-		final double dblExposure,
-		final double dblRealizedCashFlow,
-		final org.drip.xva.universe.MarketEdge me,
-		final org.drip.xva.definition.CloseOutGeneral cog)
+		final org.drip.analytics.date.JulianDate anchorDate,
+		final double exposure,
+		final double realizedCashFlow,
+		final org.drip.xva.universe.MarketEdge marketEdge,
+		final org.drip.xva.definition.CloseOutGeneral closeOutScheme)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblExposure) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblRealizedCashFlow))
+		if (!org.drip.quant.common.NumberUtil.IsValid (exposure) ||
+			!org.drip.quant.common.NumberUtil.IsValid (realizedCashFlow))
+		{
 			return null;
+		}
 
-		double dblUncollateralizedExposure = dblExposure + dblRealizedCashFlow;
+		double uncollateralizedExposure = exposure + realizedCashFlow;
 
-		try {
+		try
+		{
 			return BankPortfolioBuilder (
-				dtAnchor,
+				anchorDate,
 				new org.drip.xva.hypothecation.CollateralGroupVertexExposure (
-					dblExposure,
-					dblRealizedCashFlow
+					exposure,
+					realizedCashFlow
 				),
-				me,
+				marketEdge,
 				org.drip.xva.hypothecation.CollateralGroupVertexCloseOut.Standard (
-					cog,
-					dblUncollateralizedExposure,
-					dblUncollateralizedExposure
+					closeOutScheme,
+					uncollateralizedExposure,
+					uncollateralizedExposure
 				),
 				new org.drip.xva.hypothecation.BurgardKjaerVertexExposure (
 					0.,
 					0.,
 					0.,
-					dblUncollateralizedExposure
+					uncollateralizedExposure
 				)
 			);
-		} catch (java.lang.Exception e) {
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -399,50 +454,55 @@ public class BurgardKjaerVertexBuilder {
 	/**
 	 * Construct a Standard Instance of BurgardKjaerVertex using One Way CSA
 	 * 
-	 * @param dtAnchor The Vertex Date Anchor
-	 * @param dblExposure The Exposure at the Path Vertex Time Node
-	 * @param dblRealizedCashFlow The Default Window Realized Cash-flow at the Path Vertex Time Node
-	 * @param me The Market Edge
-	 * @param cog The Generic Close-Out Evaluator Instance
+	 * @param anchorDate The Vertex Date Anchor
+	 * @param exposure The Exposure at the Path Vertex Time Node
+	 * @param realizedCashFlow The Default Window Realized Cash-flow at the Path Vertex Time Node
+	 * @param marketEdge The Market Edge
+	 * @param closeOutScheme The Generic Close-Out Evaluator Instance
 	 * 
 	 * @return The Standard Instance of BurgardKjaerVertex using One Way CSA
 	 */
 
 	public static final org.drip.xva.hypothecation.BurgardKjaerVertex OneWayCSA (
-		final org.drip.analytics.date.JulianDate dtAnchor,
-		final double dblExposure,
-		final double dblRealizedCashFlow,
-		final org.drip.xva.universe.MarketEdge me,
-		final org.drip.xva.definition.CloseOutGeneral cog)
+		final org.drip.analytics.date.JulianDate anchorDate,
+		final double exposure,
+		final double realizedCashFlow,
+		final org.drip.xva.universe.MarketEdge marketEdge,
+		final org.drip.xva.definition.CloseOutGeneral closeOutScheme)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblExposure) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblRealizedCashFlow))
+		if (!org.drip.quant.common.NumberUtil.IsValid (exposure) ||
+			!org.drip.quant.common.NumberUtil.IsValid (realizedCashFlow))
+		{
 			return null;
+		}
 
-		double dblUncollateralizedExposure = dblExposure + dblRealizedCashFlow;
-		double dblCollateralBalance = 0. > dblUncollateralizedExposure ? dblUncollateralizedExposure : 0.;
+		double uncollateralizedExposure = exposure + realizedCashFlow;
+		double collateralBalance = 0. > uncollateralizedExposure ? uncollateralizedExposure : 0.;
 
-		try {
+		try
+		{
 			return BankPortfolioBuilder (
-				dtAnchor,
+				anchorDate,
 				new org.drip.xva.hypothecation.CollateralGroupVertexExposure (
-					dblExposure,
-					dblRealizedCashFlow
+					exposure,
+					realizedCashFlow
 				),
-				me,
+				marketEdge,
 				org.drip.xva.hypothecation.CollateralGroupVertexCloseOut.Standard (
-					cog,
-					dblUncollateralizedExposure,
-					dblCollateralBalance
+					closeOutScheme,
+					uncollateralizedExposure,
+					collateralBalance
 				),
 				new org.drip.xva.hypothecation.BurgardKjaerVertexExposure (
-					0. < dblUncollateralizedExposure ? dblUncollateralizedExposure : 0.,
+					0. < uncollateralizedExposure ? uncollateralizedExposure : 0.,
 					0.,
-					0. < dblUncollateralizedExposure ? dblUncollateralizedExposure : 0.,
-					dblCollateralBalance
+					0. < uncollateralizedExposure ? uncollateralizedExposure : 0.,
+					collateralBalance
 				)
 			);
-		} catch (java.lang.Exception e) {
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -452,55 +512,60 @@ public class BurgardKjaerVertexBuilder {
 	/**
 	 * Construct a Standard Instance of BurgardKjaerVertex using the "Set Off" Legal Agreement Scheme
 	 * 
-	 * @param dtAnchor The Vertex Date Anchor
-	 * @param dblExposure The Exposure at the Path Vertex Time Node
-	 * @param dblRealizedCashFlow The Default Window Realized Cash-flow at the Path Vertex Time Node
-	 * @param dblCollateralBalance The Collateral Balance at the Path Vertex Time Node
-	 * @param me The Market Edge
+	 * @param anchorDate The Vertex Date Anchor
+	 * @param exposure The Exposure at the Path Vertex Time Node
+	 * @param realizedCashFlow The Default Window Realized Cash-flow at the Path Vertex Time Node
+	 * @param collateralBalance The Collateral Balance at the Path Vertex Time Node
+	 * @param marketEdge The Market Edge
 	 * 
 	 * @return The Standard Instance of BurgardKjaerVertex using the "Set Off" Legal Agreement Scheme
 	 */
 
 	public static final org.drip.xva.hypothecation.BurgardKjaerVertex SetOff (
-		final org.drip.analytics.date.JulianDate dtAnchor,
-		final double dblExposure,
-		final double dblRealizedCashFlow,
-		final double dblCollateralBalance,
-		final org.drip.xva.universe.MarketEdge me)
+		final org.drip.analytics.date.JulianDate anchorDate,
+		final double exposure,
+		final double realizedCashFlow,
+		final double collateralBalance,
+		final org.drip.xva.universe.MarketEdge marketEdge)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblExposure) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblRealizedCashFlow) ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblCollateralBalance))
+		if (!org.drip.quant.common.NumberUtil.IsValid (exposure) ||
+			!org.drip.quant.common.NumberUtil.IsValid (realizedCashFlow) ||
+			!org.drip.quant.common.NumberUtil.IsValid (collateralBalance))
+		{
 			return null;
+		}
 
-		org.drip.xva.universe.MarketVertex mvFinish = me.finish();
+		org.drip.xva.universe.MarketVertex marketVertexFinish = marketEdge.finish();
 
-		double dblBankSeniorRecoveryFinish = mvFinish.bank().seniorRecoveryRate();
+		double bankSeniorRecoveryRateFinish = marketVertexFinish.bank().seniorRecoveryRate();
 
-		double dblCounterPartyRecoveryFinish = mvFinish.counterParty().seniorRecoveryRate();
+		double dblCounterPartyRecoveryFinish = marketVertexFinish.counterParty().seniorRecoveryRate();
 
-		double dblCollateralizedExposure = dblExposure + dblRealizedCashFlow - dblCollateralBalance;
+		double collateralizedExposure = exposure + realizedCashFlow - collateralBalance;
 
-		try {
+		try
+		{
 			return BankPortfolioBuilder (
-				dtAnchor,
+				anchorDate,
 				new org.drip.xva.hypothecation.CollateralGroupVertexExposure (
-					dblExposure,
-					dblRealizedCashFlow
+					exposure,
+					realizedCashFlow
 				),
-				me,
+				marketEdge,
 				new org.drip.xva.hypothecation.CollateralGroupVertexCloseOut (
-					dblCollateralizedExposure * dblBankSeniorRecoveryFinish,
-					dblCollateralizedExposure * dblCounterPartyRecoveryFinish
+					collateralizedExposure * bankSeniorRecoveryRateFinish,
+					collateralizedExposure * dblCounterPartyRecoveryFinish
 				),
 				new org.drip.xva.hypothecation.BurgardKjaerVertexExposure (
-					dblCollateralizedExposure * (1. - dblCounterPartyRecoveryFinish),
-					dblCollateralizedExposure * (1. - dblBankSeniorRecoveryFinish),
+					collateralizedExposure * (1. - dblCounterPartyRecoveryFinish),
+					collateralizedExposure * (1. - bankSeniorRecoveryRateFinish),
 					0.,
-					dblCollateralBalance
+					collateralBalance
 				)
 			);
-		} catch (java.lang.Exception e) {
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 

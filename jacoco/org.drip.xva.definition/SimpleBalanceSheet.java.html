@@ -68,28 +68,29 @@ package org.drip.xva.definition;
  * @author Lakshmi Krishnamurthy
  */
 
-public class SimpleBalanceSheet {
-<span class="nc" id="L72">	private double _dblAsset = java.lang.Double.NaN;</span>
-<span class="nc" id="L73">	private double _dblLiability = java.lang.Double.NaN;</span>
+public class SimpleBalanceSheet
+{
+<span class="nc" id="L73">	private double _asset = java.lang.Double.NaN;</span>
+<span class="nc" id="L74">	private double _liability = java.lang.Double.NaN;</span>
 
 	/**
 	 * SimpleBalanceSheet Constructor
 	 * 
-	 * @param dblAsset The Balance Sheet Asset
-	 * @param dblLiability The Balance Sheet Liability
+	 * @param asset The Balance Sheet Asset
+	 * @param liability The Balance Sheet Liability
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public SimpleBalanceSheet (
-		final double dblAsset,
-		final double dblLiability)
+		final double asset,
+		final double liability)
 		throws java.lang.Exception
-<span class="nc" id="L88">	{</span>
-<span class="nc bnc" id="L89" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblAsset = dblAsset) ||</span>
-<span class="nc bnc" id="L90" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblLiability = dblLiability))</span>
-<span class="nc" id="L91">			throw new java.lang.Exception (&quot;SimpleBalanceSheet Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L92">	}</span>
+<span class="nc" id="L89">	{</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_asset = asset) ||</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_liability = liability))</span>
+<span class="nc" id="L92">			throw new java.lang.Exception (&quot;SimpleBalanceSheet Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L93">	}</span>
 
 	/**
 	 * Retrieve the Balance Sheet Asset
@@ -99,7 +100,7 @@ public class SimpleBalanceSheet {
 
 	public double asset()
 	{
-<span class="nc" id="L102">		return _dblAsset;</span>
+<span class="nc" id="L103">		return _asset;</span>
 	}
 
 	/**
@@ -108,9 +109,9 @@ public class SimpleBalanceSheet {
 	 * @return The Balance Sheet Liability
 	 */
 
-	public double liability()
+	public double _liability()
 	{
-<span class="nc" id="L113">		return _dblLiability;</span>
+<span class="nc" id="L114">		return _liability;</span>
 	}
 
 	/**
@@ -121,7 +122,7 @@ public class SimpleBalanceSheet {
 
 	public double impliedRecovery()
 	{
-<span class="nc" id="L124">		return _dblAsset / _dblLiability;</span>
+<span class="nc" id="L125">		return _asset / _liability;</span>
 	}
 
 	/**
@@ -135,17 +136,21 @@ public class SimpleBalanceSheet {
 	public SimpleBalanceSheet derivativeInfusion (
 		final double dblDerivativeValue)
 	{
-<span class="nc bnc" id="L138" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblDerivativeValue) || 0. &gt; dblDerivativeValue)</span>
-<span class="nc" id="L139">			return null;</span>
-
-		try {
-<span class="nc" id="L142">			return new SimpleBalanceSheet (_dblAsset + dblDerivativeValue, _dblLiability +</span>
-				dblDerivativeValue);
-<span class="nc" id="L144">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L145">			e.printStackTrace();</span>
+<span class="nc bnc" id="L139" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblDerivativeValue) || 0. &gt; dblDerivativeValue)</span>
+		{
+<span class="nc" id="L141">			return null;</span>
 		}
 
-<span class="nc" id="L148">		return null;</span>
+		try
+		{
+<span class="nc" id="L146">			return new SimpleBalanceSheet (_asset + dblDerivativeValue, _liability + dblDerivativeValue);</span>
+		}
+<span class="nc" id="L148">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L150">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L153">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -67,31 +67,34 @@ package org.drip.xva.csa;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NumeraireInducedMeasureShift {
-	private double _dblCSAForward = java.lang.Double.NaN;
-	private double _dblNoCSAForward = java.lang.Double.NaN;
-	private double _dblTerminalVariance = java.lang.Double.NaN;
+public class NumeraireInducedMeasureShift
+{
+	private double _csaForward = java.lang.Double.NaN;
+	private double _noCSAForward = java.lang.Double.NaN;
+	private double _terminalVariance = java.lang.Double.NaN;
 
 	/**
 	 * NumeraireInducedMeasureShift Constructor
 	 * 
-	 * @param dblCSAForward The CSA Implied Forward Value
-	 * @param dblNoCSAForward The No CSA Implied Forward Value
-	 * @param dblTerminalVariance The Terminal Variance of the Underlying
+	 * @param csaForward The CSA Implied Forward Value
+	 * @param noCSAForward The No CSA Implied Forward Value
+	 * @param terminalVariance The Terminal Variance of the Underlying
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public NumeraireInducedMeasureShift (
-		final double dblCSAForward,
-		final double dblNoCSAForward,
-		final double dblTerminalVariance)
+		final double csaForward,
+		final double noCSAForward,
+		final double terminalVariance)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblCSAForward = dblCSAForward) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblNoCSAForward = dblNoCSAForward) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblTerminalVariance = dblTerminalVariance))
+		if (!org.drip.quant.common.NumberUtil.IsValid (_csaForward = csaForward) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_noCSAForward = noCSAForward) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_terminalVariance = terminalVariance))
+		{
 			throw new java.lang.Exception ("NumeraireInducedMeasureShift Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -102,7 +105,7 @@ public class NumeraireInducedMeasureShift {
 
 	public double csaForward()
 	{
-		return _dblCSAForward;
+		return _csaForward;
 	}
 
 	/**
@@ -113,7 +116,7 @@ public class NumeraireInducedMeasureShift {
 
 	public double noCSAForward()
 	{
-		return _dblNoCSAForward;
+		return _noCSAForward;
 	}
 
 	/**
@@ -124,7 +127,7 @@ public class NumeraireInducedMeasureShift {
 
 	public double terminalVariance()
 	{
-		return _dblTerminalVariance;
+		return _terminalVariance;
 	}
 
 	/**
@@ -135,7 +138,7 @@ public class NumeraireInducedMeasureShift {
 
 	public double alpha1()
 	{
-		return (_dblNoCSAForward - _dblCSAForward) / _dblTerminalVariance;
+		return (_noCSAForward - _csaForward) / _terminalVariance;
 	}
 
 	/**
@@ -146,13 +149,13 @@ public class NumeraireInducedMeasureShift {
 
 	public double alpha0()
 	{
-		return 1. - alpha1() * _dblCSAForward;
+		return 1. - alpha1() * _csaForward;
 	}
 
 	/**
 	 * Compute the No CSA/CSA Density Re-scaling using the Antonov and Arneguy (2009) Linear Proxy Approach
 	 * 
-	 * @param dblK The Strike at which the Density Re-scaling is Sought
+	 * @param k The Strike at which the Density Re-scaling is Sought
 	 * 
 	 * @return The No CSA/CSA Density Re-scaling using the Antonov and Arneguy (2009) Linear Proxy Approach
 	 * 
@@ -160,13 +163,15 @@ public class NumeraireInducedMeasureShift {
 	 */
 
 	public double densityRescale (
-		final double dblK)
+		final double k)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblK))
+		if (!org.drip.quant.common.NumberUtil.IsValid (k))
+		{
 			throw new java.lang.Exception ("NumeraireInducedMeasureShift::densityRescale => Invalid Inputs");
+		}
 
-		double dblAlpha1 = (_dblNoCSAForward - _dblCSAForward) / _dblTerminalVariance;
-		return 1. - dblAlpha1 * _dblCSAForward + dblAlpha1 * dblK;
+		double dblAlpha1 = (_noCSAForward - _csaForward) / _terminalVariance;
+		return 1. - dblAlpha1 * _csaForward + dblAlpha1 * k;
 	}
 }

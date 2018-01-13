@@ -68,24 +68,31 @@ package org.drip.xva.basel;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ValueAdjustment {
-	private double _dblAmount = java.lang.Double.NaN;
-	private org.drip.xva.basel.ValueCategory _vc = null;
+public class ValueAdjustment
+{
+	private double _amount = java.lang.Double.NaN;
+	private org.drip.xva.basel.ValueCategory _valueCategory = null;
 
 	/**
 	 * Construct the Collateralized Transaction Value Adjustment Instance
 	 * 
-	 * @param dblAmount Valuation Adjustment Amount
+	 * @param amount Valuation Adjustment Amount
 	 * 
 	 * @return The Collateralized Transaction Value Adjustment Instance
 	 */
 
 	public static final ValueAdjustment Collateralized (
-		final double dblAmount)
+		final double amount)
 	{
-		try {
-			return new ValueAdjustment (dblAmount, org.drip.xva.basel.ValueCategory.CF1());
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new ValueAdjustment (
+				amount,
+				org.drip.xva.basel.ValueCategory.CF1()
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -95,17 +102,23 @@ public class ValueAdjustment {
 	/**
 	 * Construct the UCVA Value Adjustment Instance
 	 * 
-	 * @param dblAmount Valuation Adjustment Amount
+	 * @param amount Valuation Adjustment Amount
 	 * 
 	 * @return The UCVA Value Adjustment Instance
 	 */
 
 	public static final ValueAdjustment UCVA (
-		final double dblAmount)
+		final double amount)
 	{
-		try {
-			return new ValueAdjustment (dblAmount, org.drip.xva.basel.ValueCategory.CF2());
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new ValueAdjustment (
+				amount,
+				org.drip.xva.basel.ValueCategory.CF2()
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -115,17 +128,23 @@ public class ValueAdjustment {
 	/**
 	 * Construct the FTDCVA Value Adjustment Instance
 	 * 
-	 * @param dblAmount Valuation Adjustment Amount
+	 * @param amount Valuation Adjustment Amount
 	 * 
 	 * @return The FTDCVA Value Adjustment Instance
 	 */
 
 	public static final ValueAdjustment FTDCVA (
-		final double dblAmount)
+		final double amount)
 	{
-		try {
-			return new ValueAdjustment (dblAmount, org.drip.xva.basel.ValueCategory.CF2());
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new ValueAdjustment (
+				amount,
+				org.drip.xva.basel.ValueCategory.CF2()
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -135,17 +154,23 @@ public class ValueAdjustment {
 	/**
 	 * Construct the DVA Value Adjustment Instance
 	 * 
-	 * @param dblAmount Valuation Adjustment Amount
+	 * @param amount Valuation Adjustment Amount
 	 * 
 	 * @return The DVA Value Adjustment Instance
 	 */
 
 	public static final ValueAdjustment DVA (
-		final double dblAmount)
+		final double amount)
 	{
-		try {
-			return new ValueAdjustment (dblAmount, org.drip.xva.basel.ValueCategory.CF3());
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new ValueAdjustment (
+				amount,
+				org.drip.xva.basel.ValueCategory.CF3()
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -155,17 +180,23 @@ public class ValueAdjustment {
 	/**
 	 * Construct the CVA Contra-Liability Value Adjustment Instance
 	 * 
-	 * @param dblAmount Valuation Adjustment Amount
+	 * @param amount Valuation Adjustment Amount
 	 * 
 	 * @return The CVA Contra-Liability Value Adjustment Instance
 	 */
 
 	public static final ValueAdjustment CVACL (
-		final double dblAmount)
+		final double amount)
 	{
-		try {
-			return new ValueAdjustment (dblAmount, org.drip.xva.basel.ValueCategory.CF3());
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new ValueAdjustment (
+				amount,
+				org.drip.xva.basel.ValueCategory.CF3()
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -175,16 +206,16 @@ public class ValueAdjustment {
 	/**
 	 * Construct the FVA Value Adjustment Instance
 	 * 
-	 * @param dblAmount Valuation Adjustment Amount
+	 * @param amount Valuation Adjustment Amount
 	 * 
 	 * @return The FVA Value Adjustment Instance
 	 */
 
 	public static final ValueAdjustment FVA (
-		final double dblAmount)
+		final double amount)
 	{
 		try {
-			return new ValueAdjustment (dblAmount, org.drip.xva.basel.ValueCategory.CF4());
+			return new ValueAdjustment (amount, org.drip.xva.basel.ValueCategory.CF4());
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -195,17 +226,23 @@ public class ValueAdjustment {
 	/**
 	 * Construct the FDA Value Adjustment Instance
 	 * 
-	 * @param dblAmount Valuation Adjustment Amount
+	 * @param amount Valuation Adjustment Amount
 	 * 
 	 * @return The FDA Value Adjustment Instance
 	 */
 
 	public static final ValueAdjustment FDA (
-		final double dblAmount)
+		final double amount)
 	{
-		try {
-			return new ValueAdjustment (dblAmount, org.drip.xva.basel.ValueCategory.CF5());
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new ValueAdjustment (
+				amount,
+				org.drip.xva.basel.ValueCategory.CF5()
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -215,17 +252,23 @@ public class ValueAdjustment {
 	/**
 	 * Construct the COLVA Value Adjustment Instance
 	 * 
-	 * @param dblAmount Valuation Adjustment Amount
+	 * @param amount Valuation Adjustment Amount
 	 * 
 	 * @return The COLVA Value Adjustment Instance
 	 */
 
 	public static final ValueAdjustment COLVA (
-		final double dblAmount)
+		final double amount)
 	{
-		try {
-			return new ValueAdjustment (dblAmount, org.drip.xva.basel.ValueCategory.CF6());
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new ValueAdjustment (
+				amount,
+				org.drip.xva.basel.ValueCategory.CF6()
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -235,17 +278,23 @@ public class ValueAdjustment {
 	/**
 	 * Construct the HYBRID Value Adjustment Instance
 	 * 
-	 * @param dblAmount Valuation Adjustment Amount
+	 * @param amount Valuation Adjustment Amount
 	 * 
 	 * @return The HYBRID Value Adjustment Instance
 	 */
 
 	public static final ValueAdjustment HYBRID (
-		final double dblAmount)
+		final double amount)
 	{
-		try {
-			return new ValueAdjustment (dblAmount, org.drip.xva.basel.ValueCategory.HYBRID());
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new ValueAdjustment (
+				amount,
+				org.drip.xva.basel.ValueCategory.HYBRID()
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -255,19 +304,22 @@ public class ValueAdjustment {
 	/**
 	 * ValueAdjustment Constructor
 	 * 
-	 * @param dblAmount Valuation Adjustment Amount
-	 * @param vc Valuation Adjustment Attribution Category
+	 * @param amount Valuation Adjustment Amount
+	 * @param valueCategory Valuation Adjustment Attribution Category
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ValueAdjustment (
-		final double dblAmount,
-		final org.drip.xva.basel.ValueCategory vc)
+		final double amount,
+		final org.drip.xva.basel.ValueCategory valueCategory)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblAmount = dblAmount) || null == (_vc = vc))
+		if (!org.drip.quant.common.NumberUtil.IsValid (_amount = amount) ||
+			null == (_valueCategory = valueCategory))
+		{
 			throw new java.lang.Exception ("ValueAdjustment Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -278,7 +330,7 @@ public class ValueAdjustment {
 
 	public double amount()
 	{
-		return _dblAmount;
+		return _amount;
 	}
 
 	/**
@@ -289,6 +341,6 @@ public class ValueAdjustment {
 
 	public org.drip.xva.basel.ValueCategory valueCategory()
 	{
-		return _vc;
+		return _valueCategory;
 	}
 }

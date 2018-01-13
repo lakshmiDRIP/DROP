@@ -68,41 +68,48 @@ package org.drip.xva.hypothecation;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CollateralGroupVertexCloseOut {
-	private double _dblBank = java.lang.Double.NaN;
-	private double _dblCounterParty = java.lang.Double.NaN;
+public class CollateralGroupVertexCloseOut
+{
+	private double _bank = java.lang.Double.NaN;
+	private double _counterParty = java.lang.Double.NaN;
 
 	/**
 	 * Construct a Static Instance of CollateralGroupVertexCloseOut
 	 * 
-	 * @param cog The Close Out General Instance
-	 * @param dblUncollateralizedExposure The Uncollateralized Exposure
-	 * @param dblCollateralBalance The Collateral Balance
+	 * @param closeOutGeneral The Close Out General Instance
+	 * @param uncollateralizedExposure The Uncollateralized Exposure
+	 * @param collateralBalance The Collateral Balance
 	 * 
 	 * @return The Static Instance of CollateralGroupVertexCloseOut
 	 */
 
 	public static final CollateralGroupVertexCloseOut Standard (
-		final org.drip.xva.definition.CloseOutGeneral cog,
-		final double dblUncollateralizedExposure,
-		final double dblCollateralBalance)
+		final org.drip.xva.definition.CloseOutGeneral closeOutGeneral,
+		final double uncollateralizedExposure,
+		final double collateralBalance)
 	{
-		if (null == cog || !org.drip.quant.common.NumberUtil.IsValid (dblUncollateralizedExposure) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblCollateralBalance))
+		if (null == closeOutGeneral ||
+			!org.drip.quant.common.NumberUtil.IsValid (uncollateralizedExposure) ||
+			!org.drip.quant.common.NumberUtil.IsValid (collateralBalance))
+		{
 			return null;
+		}
 
-		try {
+		try
+		{
 			return new CollateralGroupVertexCloseOut (
-				cog.bankDefault (
-					dblUncollateralizedExposure,
-					dblCollateralBalance
+				closeOutGeneral.bankDefault (
+					uncollateralizedExposure,
+					collateralBalance
 				),
-				cog.counterPartyDefault (
-					dblUncollateralizedExposure,
-					dblCollateralBalance
+				closeOutGeneral.counterPartyDefault (
+					uncollateralizedExposure,
+					collateralBalance
 				)
 			);
-		} catch (java.lang.Exception e) {
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -112,20 +119,22 @@ public class CollateralGroupVertexCloseOut {
 	/**
 	 * CollateralGroupVertexCloseOut Constructor
 	 * 
-	 * @param dblBank The Bank Close Out
-	 * @param dblCounterParty The Counter Party Close Out
+	 * @param bank The Bank Close Out
+	 * @param counterParty The Counter Party Close Out
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CollateralGroupVertexCloseOut (
-		final double dblBank,
-		final double dblCounterParty)
+		final double bank,
+		final double counterParty)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblBank = dblBank) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblCounterParty = dblCounterParty))
+		if (!org.drip.quant.common.NumberUtil.IsValid (_bank = bank) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_counterParty = counterParty))
+		{
 			throw new java.lang.Exception ("CollateralGroupVertexCloseOut Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -136,7 +145,7 @@ public class CollateralGroupVertexCloseOut {
 
 	public double bank()
 	{
-		return _dblBank;
+		return _bank;
 	}
 
 	/**
@@ -147,6 +156,6 @@ public class CollateralGroupVertexCloseOut {
 
 	public double counterParty()
 	{
-		return _dblCounterParty;
+		return _counterParty;
 	}
 }

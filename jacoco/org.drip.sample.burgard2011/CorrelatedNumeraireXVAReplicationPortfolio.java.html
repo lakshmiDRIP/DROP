@@ -92,13 +92,13 @@ import org.drip.xva.universe.*;
 		final MarketVertex mvFinish)
 		throws Exception
 	{
-<span class="fc" id="L95">		AssetGreekVertex agvStart = etvStart.assetGreekVertex();</span>
+<span class="fc" id="L95">		PositionGreekVertex agvStart = etvStart.positionGreekVertex();</span>
 
 <span class="fc" id="L97">		ReplicationPortfolioVertex rpvStart = etvStart.replicationPortfolioVertex();</span>
 
 <span class="fc" id="L99">		double dblDerivativeXVAValueStart = agvStart.derivativeXVAValue();</span>
 
-<span class="fc" id="L101">		double dblTimeWidth = (mvFinish.anchor().julian() - mvStart.anchor().julian()) / 365.;</span>
+<span class="fc" id="L101">		double dblTimeWidth = (mvFinish.anchorDate().julian() - mvStart.anchorDate().julian()) / 365.;</span>
 
 <span class="fc" id="L103">		double dblTimeStart = etvStart.time();</span>
 
@@ -149,7 +149,7 @@ import org.drip.xva.universe.*;
 				mvStart,
 				mvFinish
 			)
-<span class="fc" id="L152">		).cashAccount();</span>
+<span class="fc" id="L152">		).cashAccountEdge();</span>
 
 <span class="fc" id="L154">		double dblCashAccountAccumulationFinish = cae.accumulation();</span>
 
@@ -167,11 +167,11 @@ import org.drip.xva.universe.*;
 <span class="fc" id="L167">		System.out.println (&quot;\t||&quot; +</span>
 <span class="fc" id="L168">			FormatUtil.FormatDouble (dblTime, 1, 6, 1.) + &quot; | &quot; +</span>
 <span class="fc" id="L169">			FormatUtil.FormatDouble (dblDerivativeXVAValueFinish, 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L170">			FormatUtil.FormatDouble (mvFinish.portfolioValue(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L170">			FormatUtil.FormatDouble (mvFinish.positionValue(), 1, 6, 1.) + &quot; | &quot; +</span>
 <span class="fc" id="L171">			FormatUtil.FormatDouble (dblBankSeniorFundingNumeraireFinish, 1, 6, 1.) + &quot; | &quot; +</span>
 <span class="fc" id="L172">			FormatUtil.FormatDouble (dblCounterPartyFundingNumeraireFinish, 1, 6, 1.) + &quot; | &quot; +</span>
 <span class="fc" id="L173">			FormatUtil.FormatDouble (mvFinish.csaNumeraire().nodal(), 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L174">			FormatUtil.FormatDouble (rpvFinish.assetNumeraireUnits(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L174">			FormatUtil.FormatDouble (rpvFinish.positionUnits(), 1, 6, 1.) + &quot; | &quot; +</span>
 <span class="fc" id="L175">			FormatUtil.FormatDouble (rpvFinish.bankSeniorNumeraireUnits(), 1, 6, 1.) + &quot; | &quot; +</span>
 <span class="fc" id="L176">			FormatUtil.FormatDouble (rpvFinish.counterPartyNumeraireUnits(), 1, 6, 1.) + &quot; | &quot; +</span>
 <span class="fc" id="L177">			FormatUtil.FormatDouble (rpvFinish.cashAccount(), 1, 6, 1.) + &quot; | &quot; +</span>
@@ -184,12 +184,12 @@ import org.drip.xva.universe.*;
 <span class="fc" id="L184">		return new EvolutionTrajectoryVertex (</span>
 			dblTimeStart + dblTimeWidth,
 			rpvFinish,
-			new AssetGreekVertex (
+			new PositionGreekVertex (
 				dblDerivativeXVAValueFinish,
 				dblDerivativeXVAValueDeltaFinish,
 				dblDerivativeXVAValueGammaFinish,
 <span class="fc" id="L191">				agvStart.derivativeFairValue() * Math.exp (</span>
-<span class="fc" id="L192">					-1. * dblTimeWidth * tc.collateralScheme().numeraireEvolver().evaluator().drift().value (</span>
+<span class="fc" id="L192">					-1. * dblTimeWidth * tc.csa().evolver().evaluator().drift().value (</span>
 						new JumpDiffusionVertex (
 							dblTime,
 <span class="fc" id="L195">							mvFinish.csaNumeraire().nodal(),</span>
@@ -486,7 +486,7 @@ import org.drip.xva.universe.*;
 			pdeec
 		);
 
-<span class="fc" id="L489">		AssetGreekVertex agvInitial = new AssetGreekVertex (</span>
+<span class="fc" id="L489">		PositionGreekVertex agvInitial = new PositionGreekVertex (</span>
 			dblDerivativeXVAValue,
 			-1.,
 			0.,

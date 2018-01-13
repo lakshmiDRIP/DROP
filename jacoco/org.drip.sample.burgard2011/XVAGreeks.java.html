@@ -90,13 +90,13 @@ import org.drip.xva.universe.*;
 		final MarketVertex mvFinish)
 		throws Exception
 	{
-<span class="fc" id="L93">		AssetGreekVertex agvStart = etvStart.assetGreekVertex();</span>
+<span class="fc" id="L93">		PositionGreekVertex agvStart = etvStart.positionGreekVertex();</span>
 
 <span class="fc" id="L95">		ReplicationPortfolioVertex rpvStart = etvStart.replicationPortfolioVertex();</span>
 
 <span class="fc" id="L97">		double dblDerivativeXVAValueStart = agvStart.derivativeXVAValue();</span>
 
-<span class="fc" id="L99">		double dblTimeWidth = (mvFinish.anchor().julian() - mvStart.anchor().julian()) / 365.;</span>
+<span class="fc" id="L99">		double dblTimeWidth = (mvFinish.anchorDate().julian() - mvStart.anchorDate().julian()) / 365.;</span>
 
 <span class="fc" id="L101">		double dblTimeStart = etvStart.time();</span>
 
@@ -165,7 +165,7 @@ import org.drip.xva.universe.*;
 				mvStart,
 				mvFinish
 			)
-<span class="fc" id="L168">		).cashAccount();</span>
+<span class="fc" id="L168">		).cashAccountEdge();</span>
 
 <span class="fc" id="L170">		return new EvolutionTrajectoryVertex (</span>
 			dblTimeStart + dblTimeWidth,
@@ -175,12 +175,12 @@ import org.drip.xva.universe.*;
 <span class="fc" id="L175">				dblGainOnCounterPartyDefaultFinish / mvFinish.counterParty().seniorFundingLatentState().nodal(),</span>
 <span class="fc" id="L176">				rpvStart.cashAccount() + cae.accumulation()</span>
 			),
-			new AssetGreekVertex (
+			new PositionGreekVertex (
 				dblDerivativeXVAValueFinish,
 				dblDerivativeXVAValueDeltaFinish,
 				dblDerivativeXVAValueGammaFinish,
 <span class="fc" id="L182">				agvStart.derivativeFairValue() * Math.exp (</span>
-<span class="fc" id="L183">					-1. * dblTimeWidth * tc.collateralScheme().numeraireEvolver().evaluator().drift().value (</span>
+<span class="fc" id="L183">					-1. * dblTimeWidth * tc.csa().evolver().evaluator().drift().value (</span>
 						new JumpDiffusionVertex (
 							dblTime,
 							dblCollateralSchemeNumeraire,
@@ -477,7 +477,7 @@ import org.drip.xva.universe.*;
 			pdeec
 		);
 
-<span class="fc" id="L480">		AssetGreekVertex agvInitial = new AssetGreekVertex (</span>
+<span class="fc" id="L480">		PositionGreekVertex agvInitial = new PositionGreekVertex (</span>
 			dblDerivativeXVAValue,
 			-1.,
 			0.,

@@ -66,24 +66,27 @@ package org.drip.xva.universe;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MarketPath {
-<span class="fc" id="L70">	private org.drip.xva.universe.MarketVertex[] _aMV = null;</span>
+public class MarketPath
+{
+<span class="fc" id="L71">	private org.drip.xva.universe.MarketVertex[] _marketVertexArray = null;</span>
 
 	/**
 	 * MarketPath Constructor
 	 * 
-	 * @param aMV Array of the Numeraire Vertexes
+	 * @param marketVertexArray Array of the Market Vertexes
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public MarketPath (
-		final org.drip.xva.universe.MarketVertex[] aMV)
+		final org.drip.xva.universe.MarketVertex[] marketVertexArray)
 		throws java.lang.Exception
-<span class="fc" id="L83">	{</span>
-<span class="pc bpc" id="L84" title="2 of 4 branches missed.">		if (null == (_aMV = aMV) || 0 == _aMV.length)</span>
-<span class="nc" id="L85">			throw new java.lang.Exception (&quot;MarketPath Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L86">	}</span>
+<span class="fc" id="L84">	{</span>
+<span class="pc bpc" id="L85" title="2 of 4 branches missed.">		if (null == (_marketVertexArray = marketVertexArray) || 0 == _marketVertexArray.length)</span>
+		{
+<span class="nc" id="L87">			throw new java.lang.Exception (&quot;MarketPath Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="fc" id="L89">	}</span>
 
 	/**
 	 * Retrieve the Array of the Vertex Anchor Dates
@@ -91,15 +94,18 @@ public class MarketPath {
 	 * @return The Array of the Vertex Anchor Dates
 	 */
 
-	public org.drip.analytics.date.JulianDate[] anchors()
+	public org.drip.analytics.date.JulianDate[] anchorDates()
 	{
-<span class="nc" id="L96">		int iNumVertex = _aMV.length;</span>
-<span class="nc" id="L97">		org.drip.analytics.date.JulianDate[] adtVertex = new org.drip.analytics.date.JulianDate[iNumVertex];</span>
+<span class="nc" id="L99">		int vertexCount = _marketVertexArray.length;</span>
+<span class="nc" id="L100">		org.drip.analytics.date.JulianDate[] vertexDateArray = new</span>
+			org.drip.analytics.date.JulianDate[vertexCount];
 
-<span class="nc bnc" id="L99" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVertex; ++i)</span>
-<span class="nc" id="L100">			adtVertex[i] = _aMV[i].anchor();</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">		for (int i = 0; i &lt; vertexCount; ++i)</span>
+		{
+<span class="nc" id="L105">			vertexDateArray[i] = _marketVertexArray[i].anchorDate();</span>
+		}
 
-<span class="nc" id="L102">		return adtVertex;</span>
+<span class="nc" id="L108">		return vertexDateArray;</span>
 	}
 
 	/**
@@ -110,7 +116,7 @@ public class MarketPath {
 
 	public org.drip.xva.universe.MarketVertex[] vertexes()
 	{
-<span class="fc" id="L113">		return _aMV;</span>
+<span class="fc" id="L119">		return _marketVertexArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

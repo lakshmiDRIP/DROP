@@ -68,16 +68,19 @@ package org.drip.xva.basel;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class OTCAccountingModus {
-<span class="fc" id="L72">	private org.drip.xva.cpty.ExposureAdjustmentAggregator _eaa = null;</span>
+public abstract class OTCAccountingModus
+{
+<span class="fc" id="L73">	private org.drip.xva.cpty.ExposureAdjustmentAggregator _exposureAdjustmentAggregator = null;</span>
 
 	protected OTCAccountingModus (
-		final org.drip.xva.cpty.ExposureAdjustmentAggregator eaa)
+		final org.drip.xva.cpty.ExposureAdjustmentAggregator exposureAdjustmentAggregator)
 		throws java.lang.Exception
-<span class="fc" id="L77">	{</span>
-<span class="pc bpc" id="L78" title="1 of 2 branches missed.">		if (null == (_eaa = eaa))</span>
-<span class="nc" id="L79">			throw new java.lang.Exception (&quot;OTCAccountingModus Contructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L80">	}</span>
+<span class="fc" id="L78">	{</span>
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">		if (null == (_exposureAdjustmentAggregator = exposureAdjustmentAggregator))</span>
+		{
+<span class="nc" id="L81">			throw new java.lang.Exception (&quot;OTCAccountingModus Contructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="fc" id="L83">	}</span>
 
 	/**
 	 * Retrieve the Counter Party Group Aggregator Instance
@@ -87,7 +90,7 @@ public abstract class OTCAccountingModus {
 
 	public org.drip.xva.cpty.ExposureAdjustmentAggregator aggregator()
 	{
-<span class="fc" id="L90">		return _eaa;</span>
+<span class="fc" id="L93">		return _exposureAdjustmentAggregator;</span>
 	}
 
 	/**
@@ -109,12 +112,12 @@ public abstract class OTCAccountingModus {
 	/**
 	 * Generate the Fee Policy Based on the Aggregation Incremental
 	 * 
-	 * @param eaaNext The &quot;Next&quot; Exposure Adjustment Aggregator Instance
+	 * @param exposureAdjustmentAggregatorNext The &quot;Next&quot; Exposure Adjustment Aggregator Instance
 	 * 
 	 * @return The OTC Fee Policy
 	 */
 
 	public abstract org.drip.xva.basel.OTCAccountingPolicy feePolicy (
-		final org.drip.xva.cpty.ExposureAdjustmentAggregator eaaNext);
+		final org.drip.xva.cpty.ExposureAdjustmentAggregator exposureAdjustmentAggregatorNext);
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -69,34 +69,36 @@ package org.drip.xva.derivative;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CashAccountEdge {
-	private double _dblBankAccumulation = java.lang.Double.NaN;
-	private double _dblAssetAccumulation = java.lang.Double.NaN;
-	private double _dblCounterPartyAccumulation = java.lang.Double.NaN;
+public class CashAccountEdge
+{
+	private double _bankAccumulation = java.lang.Double.NaN;
+	private double _positionAccumulation = java.lang.Double.NaN;
+	private double _counterPartyAccumulation = java.lang.Double.NaN;
 
 	/**
 	 * CashAccountEdge Constructor
 	 * 
-	 * @param dblAssetAccumulation The Incremental Amount added to the Cash Account coming from the Asset
-	 * @param dblBankAccumulation The Incremental Amount added to the Cash Account coming from the Bank
+	 * @param positionAccumulation The Incremental Amount added to the Cash Account coming from the Position
+	 * @param bankAccumulation The Incremental Amount added to the Cash Account coming from the Bank
 	 * 	Borrowing/Funding
-	 * @param dblCounterPartyAccumulation The Incremental Amount added to the Cash Account coming from the
+	 * @param counterPartyAccumulation The Incremental Amount added to the Cash Account coming from the
 	 *  Counter Party Repo
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CashAccountEdge (
-		final double dblAssetAccumulation,
-		final double dblBankAccumulation,
-		final double dblCounterPartyAccumulation)
+		final double positionAccumulation,
+		final double bankAccumulation,
+		final double counterPartyAccumulation)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblAssetAccumulation = dblAssetAccumulation) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblBankAccumulation = dblBankAccumulation) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblCounterPartyAccumulation =
-					dblCounterPartyAccumulation))
+		if (!org.drip.quant.common.NumberUtil.IsValid (_positionAccumulation = positionAccumulation) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_bankAccumulation = bankAccumulation) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_counterPartyAccumulation = counterPartyAccumulation))
+		{
 			throw new java.lang.Exception ("CashAccountEdge Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -107,7 +109,7 @@ public class CashAccountEdge {
 
 	public double assetAccumulation()
 	{
-		return _dblAssetAccumulation;
+		return _positionAccumulation;
 	}
 
 	/**
@@ -118,7 +120,7 @@ public class CashAccountEdge {
 
 	public double bankAccumulation()
 	{
-		return _dblBankAccumulation;
+		return _bankAccumulation;
 	}
 
 	/**
@@ -129,7 +131,7 @@ public class CashAccountEdge {
 
 	public double counterPartyAccumulation()
 	{
-		return _dblCounterPartyAccumulation;
+		return _counterPartyAccumulation;
 	}
 
 	/**
@@ -140,6 +142,6 @@ public class CashAccountEdge {
 
 	public double accumulation()
 	{
-		return _dblAssetAccumulation + _dblBankAccumulation + _dblCounterPartyAccumulation;
+		return _positionAccumulation + _bankAccumulation + _counterPartyAccumulation;
 	}
 }

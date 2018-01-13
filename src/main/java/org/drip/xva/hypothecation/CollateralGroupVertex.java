@@ -48,8 +48,8 @@ package org.drip.xva.hypothecation;
  */
 
 /**
- * AlbaneseAndersenVertex holds the Albanese and Andersen (2014) Vertex Exposures of a Projected Path of a
- *  Simulation Run of a Collateral Hypothecation Group. The References are:
+ * CollateralGroupVertex holds the Vertex Exposures of a Projected Path of a Simulation Run of a Collateral
+ *  Hypothecation Group. The References are:
  *  
  *  - Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and the
  *  	Re-Hypothecation Option, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955, eSSRN.
@@ -67,23 +67,30 @@ package org.drip.xva.hypothecation;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class CollateralGroupVertex extends org.drip.xva.hypothecation.CollateralGroupVertexExposure
-	implements org.drip.xva.hypothecation.CollateralGroupVertexExposureComponent {
-	private double _dblCollateralBalance = java.lang.Double.NaN;
-	private org.drip.analytics.date.JulianDate _dtAnchor = null;
+public abstract class CollateralGroupVertex
+	extends org.drip.xva.hypothecation.CollateralGroupVertexExposure
+	implements org.drip.xva.hypothecation.CollateralGroupVertexExposureComponent
+{
+	private double _collateralBalance = java.lang.Double.NaN;
+	private org.drip.analytics.date.JulianDate _anchorDate = null;
 
 	protected CollateralGroupVertex (
-		final org.drip.analytics.date.JulianDate dtAnchor,
-		final double dblForward,
-		final double dblAccrued,
-		final double dblCollateralBalance)
+		final org.drip.analytics.date.JulianDate anchorDate,
+		final double forward,
+		final double accrued,
+		final double collateralBalance)
 		throws java.lang.Exception
 	{
-		super (dblForward, dblAccrued);
+		super (
+			forward,
+			accrued
+		);
 
-		if (null == (_dtAnchor = dtAnchor) || !org.drip.quant.common.NumberUtil.IsValid
-			(_dblCollateralBalance = dblCollateralBalance))
+		if (null == (_anchorDate = anchorDate) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_collateralBalance = collateralBalance))
+		{
 			throw new java.lang.Exception ("CollateralGroupVertex Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -94,7 +101,7 @@ public abstract class CollateralGroupVertex extends org.drip.xva.hypothecation.C
 
 	public org.drip.analytics.date.JulianDate anchor()
 	{
-		return _dtAnchor;
+		return _anchorDate;
 	}
 
 	/**
@@ -105,7 +112,7 @@ public abstract class CollateralGroupVertex extends org.drip.xva.hypothecation.C
 
 	public double collateralBalance()
 	{
-		return _dblCollateralBalance;
+		return _collateralBalance;
 	}
 
 	/**
@@ -116,6 +123,6 @@ public abstract class CollateralGroupVertex extends org.drip.xva.hypothecation.C
 
 	public double collateralized()
 	{
-		return forward() + accrued() - _dblCollateralBalance;
+		return forward() + accrued() - _collateralBalance;
 	}
 }

@@ -69,54 +69,71 @@ package org.drip.xva.basel;
  * @author Lakshmi Krishnamurthy
  */
 
-public class OTCAccountingModusFVAFDA extends org.drip.xva.basel.OTCAccountingModus {
+public class OTCAccountingModusFVAFDA extends org.drip.xva.basel.OTCAccountingModus
+{
 
 	/**
 	 * OTCAccountingModusFVAFDA Constructor
 	 * 
-	 * @param eaa The Counter Party Group Aggregator Instance
+	 * @param exposureAdjustmentAggregator The Counter Party Group Aggregator Instance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public OTCAccountingModusFVAFDA (
-		final org.drip.xva.cpty.ExposureAdjustmentAggregator eaa)
+		final org.drip.xva.cpty.ExposureAdjustmentAggregator exposureAdjustmentAggregator)
 		throws java.lang.Exception
 	{
-		super (eaa);
+		super (exposureAdjustmentAggregator);
 	}
 
 	@Override public double contraAssetAdjustment()
 	{
-		org.drip.xva.cpty.ExposureAdjustmentAggregator eaa = aggregator();
+		org.drip.xva.cpty.ExposureAdjustmentAggregator exposureAdjustmentAggregator = aggregator();
 
-		return eaa.ucva().amount() + eaa.fva().amount();
+		return exposureAdjustmentAggregator.ucva().amount() + exposureAdjustmentAggregator.fva().amount();
 	}
 
 	@Override public double contraLiabilityAdjustment()
 	{
-		org.drip.xva.cpty.ExposureAdjustmentAggregator eaa = aggregator();
+		org.drip.xva.cpty.ExposureAdjustmentAggregator exposureAdjustmentAggregator = aggregator();
 
-		return eaa.cvacl().amount() + eaa.dva().amount() + eaa.fda().amount();
+		return exposureAdjustmentAggregator.cvacl().amount() + exposureAdjustmentAggregator.dva().amount() +
+			exposureAdjustmentAggregator.fda().amount();
 	}
 
 	@Override public org.drip.xva.basel.OTCAccountingPolicy feePolicy (
-		final org.drip.xva.cpty.ExposureAdjustmentAggregator eaaNext)
+		final org.drip.xva.cpty.ExposureAdjustmentAggregator exposureAdjustmentAggregatorNext)
 	{
-		if (null == eaaNext) return null;
+		if (null == exposureAdjustmentAggregatorNext)
+		{
+			return null;
+		}
 
-		org.drip.xva.cpty.ExposureAdjustmentAggregator eaa = aggregator();
+		org.drip.xva.cpty.ExposureAdjustmentAggregator exposureAdjustmentAggregator = aggregator();
 
-		double dblCollateralVAChange = eaaNext.colva().amount() - eaa.colva().amount();
+		double collateralVAChange = exposureAdjustmentAggregatorNext.colva().amount() -
+			exposureAdjustmentAggregator.colva().amount();
 
-		double dblContraLiabilityChange = eaaNext.dva().amount() + eaaNext.fda().amount() +
-			eaaNext.cvacl().amount() - eaa.dva().amount() - eaa.fda().amount() - eaa.cvacl().amount();
+		double contraLiabilityChange = exposureAdjustmentAggregatorNext.dva().amount() +
+			exposureAdjustmentAggregatorNext.fda().amount() +
+			exposureAdjustmentAggregatorNext.cvacl().amount() - exposureAdjustmentAggregator.dva().amount() -
+			exposureAdjustmentAggregator.fda().amount() - exposureAdjustmentAggregator.cvacl().amount();
 
-		try {
-			return new org.drip.xva.basel.OTCAccountingPolicy (eaaNext.ucva().amount() +
-				eaaNext.fva().amount() - eaa.ucva().amount() - eaa.fva().amount() + dblCollateralVAChange,
-					0., dblContraLiabilityChange, dblContraLiabilityChange);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new org.drip.xva.basel.OTCAccountingPolicy (
+				exposureAdjustmentAggregatorNext.ucva().amount() +
+				exposureAdjustmentAggregatorNext.fva().amount() -
+				exposureAdjustmentAggregator.ucva().amount() -
+				exposureAdjustmentAggregator.fva().amount() + collateralVAChange,
+				0.,
+				contraLiabilityChange,
+				contraLiabilityChange
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
