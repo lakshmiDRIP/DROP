@@ -104,7 +104,7 @@ public class XVAReplicationPortfolio {
 
 		double dblCollateralSchemeNumeraire = mvStart.csaNumeraire().nodal();
 
-		TradeablesContainer tc = tes.universe();
+		TradeablesContainer tc = tes.tradeablesContainer();
 
 		BurgardKjaerEdgeRun bker = bko.edgeRun (
 			new MarketEdge (
@@ -117,11 +117,11 @@ public class XVAReplicationPortfolio {
 
 		double dblTheta = bker.theta();
 
-		double dblAssetNumeraireBump = bker.assetNumeraireBump();
+		double dblAssetNumeraireBump = bker.positionValueBump();
 
-		double dblThetaAssetNumeraireUp = bker.thetaAssetNumeraireUp();
+		double dblThetaAssetNumeraireUp = bker.thetaPositionValueUp();
 
-		double dblThetaAssetNumeraireDown = bker.thetaAssetNumeraireDown();
+		double dblThetaAssetNumeraireDown = bker.thetaPositionValueDown();
 
 		double dblDerivativeXVAValueDeltaFinish = agvStart.derivativeXVAValueDelta() -
 			0.5 * (dblThetaAssetNumeraireUp - dblThetaAssetNumeraireDown) * dblTimeWidth / dblAssetNumeraireBump;

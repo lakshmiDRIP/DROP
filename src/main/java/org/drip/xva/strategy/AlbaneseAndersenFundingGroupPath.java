@@ -68,25 +68,34 @@ package org.drip.xva.strategy;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AlbaneseAndersenFundingGroupPath extends org.drip.xva.netting.FundingGroupPath {
+public class AlbaneseAndersenFundingGroupPath extends org.drip.xva.netting.FundingGroupPath
+{
 
 	/**
 	 * Generate a "Mono" AlbaneseAndersenFundingGroupPath Instance
 	 * 
-	 * @param hgp The "Mono" Hypothecation Group Path
-	 * @param mp The Market Path
+	 * @param collateralGroupPath The "Mono" Hypothecation Group Path
+	 * @param marketPath The Market Path
 	 * 
 	 * @return The "Mono" AlbaneseAndersenFundingGroupPath Instance
 	 */
 
 	public static final AlbaneseAndersenFundingGroupPath Mono (
-		final org.drip.xva.hypothecation.CollateralGroupPath hgp,
-		final org.drip.xva.universe.MarketPath mp)
+		final org.drip.xva.hypothecation.CollateralGroupPath collateralGroupPath,
+		final org.drip.xva.universe.MarketPath marketPath)
 	{
-		try {
-			return new org.drip.xva.strategy.AlbaneseAndersenFundingGroupPath (new
-				org.drip.xva.hypothecation.CollateralGroupPath[] {hgp}, mp);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new org.drip.xva.strategy.AlbaneseAndersenFundingGroupPath (
+				new org.drip.xva.hypothecation.CollateralGroupPath[]
+				{
+					collateralGroupPath
+				},
+				marketPath
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -96,18 +105,21 @@ public class AlbaneseAndersenFundingGroupPath extends org.drip.xva.netting.Fundi
 	/**
 	 * AlbaneseAndersenFundingGroupPath Constructor
 	 * 
-	 * @param aHGP Array of the Collateral Group Trajectory Paths
-	 * @param mp The Market Path
+	 * @param collateralGroupPathArray Array of the Collateral Group Trajectory Paths
+	 * @param marketPath The Market Path
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public AlbaneseAndersenFundingGroupPath (
-		final org.drip.xva.hypothecation.CollateralGroupPath[] aHGP,
-		final org.drip.xva.universe.MarketPath mp)
+		final org.drip.xva.hypothecation.CollateralGroupPath[] collateralGroupPathArray,
+		final org.drip.xva.universe.MarketPath marketPath)
 		throws java.lang.Exception
 	{
-		super (aHGP, mp);
+		super (
+			collateralGroupPathArray,
+			marketPath
+		);
 	}
 
 	@Override public double fundingValueAdjustment()

@@ -116,11 +116,11 @@ public class CorrelatedNumeraireXVAAttribution {
 
 		double dblTheta = bkea.theta();
 
-		double dblAssetNumeraireBump = bkea.assetNumeraireBump();
+		double dblAssetNumeraireBump = bkea.positionValueBump();
 
-		double dblThetaAssetNumeraireUp = bkea.thetaAssetNumeraireUp();
+		double dblThetaAssetNumeraireUp = bkea.thetaPositionValueUp();
 
-		double dblThetaAssetNumeraireDown = bkea.thetaAssetNumeraireDown();
+		double dblThetaAssetNumeraireDown = bkea.thetaPositionValueDown();
 
 		double dblDerivativeXVAValueDeltaFinish = agvStart.derivativeXVAValueDelta() -
 			0.5 * (dblThetaAssetNumeraireUp - dblThetaAssetNumeraireDown) * dblTimeWidth / dblAssetNumeraireBump;
@@ -190,7 +190,7 @@ public class CorrelatedNumeraireXVAAttribution {
 				dblDerivativeXVAValueDeltaFinish,
 				dblDerivativeXVAValueGammaFinish,
 				agvStart.derivativeFairValue() * Math.exp (
-					-1. * dblTimeWidth * tes.universe().csa().evolver().evaluator().drift().value (
+					-1. * dblTimeWidth * tes.tradeablesContainer().csa().evolver().evaluator().drift().value (
 						new JumpDiffusionVertex (
 							dblTime,
 							dblCollateralSchemeNumeraire,

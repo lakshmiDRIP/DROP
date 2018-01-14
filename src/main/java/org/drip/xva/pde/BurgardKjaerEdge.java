@@ -69,40 +69,45 @@ package org.drip.xva.pde;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class BurgardKjaerEdge {
-	private double _dblAssetNumeraireBump = java.lang.Double.NaN;
-	private double _dblDerivativeXVACollateralGrowth = java.lang.Double.NaN;
-	private double _dblDerivativeXVAStochasticGrowth = java.lang.Double.NaN;
-	private double _dblDerivativeXVAStochasticGrowthUp = java.lang.Double.NaN;
-	private double _dblDerivativeXVAStochasticGrowthDown = java.lang.Double.NaN;
+public abstract class BurgardKjaerEdge
+{
+	private double _positionValueBump = java.lang.Double.NaN;
+	private double _derivativeXVACollateralGrowth = java.lang.Double.NaN;
+	private double _derivativeXVAStochasticGrowth = java.lang.Double.NaN;
+	private double _derivativeXVAStochasticGrowthUp = java.lang.Double.NaN;
+	private double _derivativeXVAStochasticGrowthDown = java.lang.Double.NaN;
 
 	protected BurgardKjaerEdge (
-		final double dblAssetNumeraireBump,
-		final double dblDerivativeXVAStochasticGrowthDown,
-		final double dblDerivativeXVAStochasticGrowth,
-		final double dblDerivativeXVAStochasticGrowthUp,
-		final double dblDerivativeXVACollateralGrowth)
+		final double positionValueBump,
+		final double derivativeXVAStochasticGrowthDown,
+		final double derivativeXVAStochasticGrowth,
+		final double derivativeXVAStochasticGrowthUp,
+		final double derivativeXVACollateralGrowth)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblAssetNumeraireBump = dblAssetNumeraireBump) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblDerivativeXVAStochasticGrowthDown =
-				dblDerivativeXVAStochasticGrowthDown) || !org.drip.quant.common.NumberUtil.IsValid
-					(_dblDerivativeXVAStochasticGrowth = dblDerivativeXVAStochasticGrowth) ||
-						!org.drip.quant.common.NumberUtil.IsValid (_dblDerivativeXVAStochasticGrowthUp =
-							dblDerivativeXVAStochasticGrowthUp) || !org.drip.quant.common.NumberUtil.IsValid
-								(_dblDerivativeXVACollateralGrowth = dblDerivativeXVACollateralGrowth))
+		if (!org.drip.quant.common.NumberUtil.IsValid (_positionValueBump = positionValueBump) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_derivativeXVAStochasticGrowthDown =
+				derivativeXVAStochasticGrowthDown) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_derivativeXVAStochasticGrowth =
+				derivativeXVAStochasticGrowth) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_derivativeXVAStochasticGrowthUp =
+				derivativeXVAStochasticGrowthUp) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_derivativeXVACollateralGrowth =
+				derivativeXVACollateralGrowth))
+		{
 			throw new java.lang.Exception ("BurgardKjaerEdge Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
-	 * Retrieve the Asset Numeraire Bump
+	 * Retrieve the Position Value Bump
 	 * 
-	 * @return The Asset Numeraire Bump
+	 * @return The Position Value Bump
 	 */
 
-	public double assetNumeraireBump()
+	public double positionValueBump()
 	{
-		return _dblAssetNumeraireBump;
+		return _positionValueBump;
 	}
 
 	/**
@@ -113,7 +118,7 @@ public abstract class BurgardKjaerEdge {
 
 	public double derivativeXVAStochasticGrowthDown()
 	{
-		return _dblDerivativeXVAStochasticGrowthDown;
+		return _derivativeXVAStochasticGrowthDown;
 	}
 
 	/**
@@ -124,7 +129,7 @@ public abstract class BurgardKjaerEdge {
 
 	public double derivativeXVAStochasticGrowth()
 	{
-		return _dblDerivativeXVAStochasticGrowth;
+		return _derivativeXVAStochasticGrowth;
 	}
 
 	/**
@@ -135,7 +140,7 @@ public abstract class BurgardKjaerEdge {
 
 	public double derivativeXVAStochasticGrowthUp()
 	{
-		return _dblDerivativeXVAStochasticGrowthUp;
+		return _derivativeXVAStochasticGrowthUp;
 	}
 
 	/**
@@ -146,30 +151,30 @@ public abstract class BurgardKjaerEdge {
 
 	public double derivativeXVACollateralGrowth()
 	{
-		return _dblDerivativeXVACollateralGrowth;
+		return _derivativeXVACollateralGrowth;
 	}
 
 	/**
-	 * Compute the Gross Theta from Asset Numeraire Down
+	 * Compute the Gross Theta from Position Value Down
 	 * 
-	 * @return The Gross Theta from Asset Numeraire Down
+	 * @return The Gross Theta from Position Value Down
 	 */
 
-	public abstract double thetaAssetNumeraireDown();
+	public abstract double thetaPositionValueDown();
 
 	/**
-	 * Compute the Gross Theta from Asset Numeraire Base
+	 * Compute the Gross Theta from Position Value Base
 	 * 
-	 * @return The Gross Theta from Asset Numeraire Base
+	 * @return The Gross Theta from Position Value Base
 	 */
 
 	public abstract double theta();
 
 	/**
-	 * Compute the Gross Theta from Asset Numeraire Up
+	 * Compute the Gross Theta from Position Value Up
 	 * 
-	 * @return The Gross Theta from Asset Numeraire Up
+	 * @return The Gross Theta from Position Value Up
 	 */
 
-	public abstract double thetaAssetNumeraireUp();
+	public abstract double thetaPositionValueUp();
 }

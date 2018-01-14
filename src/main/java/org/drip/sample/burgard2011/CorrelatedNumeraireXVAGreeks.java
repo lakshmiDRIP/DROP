@@ -103,7 +103,7 @@ public class CorrelatedNumeraireXVAGreeks {
 
 		double dblTime = dblTimeStart + dblTimeWidth;
 
-		TradeablesContainer tcm = tes.universe();
+		TradeablesContainer tcm = tes.tradeablesContainer();
 
 		double dblCollateralSchemeNumeraire = mvStart.csaNumeraire().nodal();
 
@@ -118,11 +118,11 @@ public class CorrelatedNumeraireXVAGreeks {
 
 		double dblTheta = bker.theta();
 
-		double dblAssetNumeraireBump = bker.assetNumeraireBump();
+		double dblAssetNumeraireBump = bker.positionValueBump();
 
-		double dblThetaAssetNumeraireUp = bker.thetaAssetNumeraireUp();
+		double dblThetaAssetNumeraireUp = bker.thetaPositionValueUp();
 
-		double dblThetaAssetNumeraireDown = bker.thetaAssetNumeraireDown();
+		double dblThetaAssetNumeraireDown = bker.thetaPositionValueDown();
 
 		double dblDerivativeXVAValueDeltaFinish = agvStart.derivativeXVAValueDelta() -
 			0.5 * (dblThetaAssetNumeraireUp - dblThetaAssetNumeraireDown) * dblTimeWidth / dblAssetNumeraireBump;

@@ -191,7 +191,9 @@ public class PathSimulator
 		if (0 >= (_iCount = iCount) ||
 			null == (_marketVertexGenerator = marketVertexGenerator) ||
 			null == (_groupSettings = groupSettings))
+		{
 			throw new java.lang.Exception ("PathSimulator Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -233,7 +235,9 @@ public class PathSimulator
 		for (int i = 0; i < _iCount; ++i)
 		{
 			if (null == (pathExposureAdjustmentArray[i] = singleTrajectory (initialMarketVertex)))
+			{
 				return null;
+			}
 		}
 
 		try

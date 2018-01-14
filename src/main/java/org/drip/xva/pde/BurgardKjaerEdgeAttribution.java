@@ -70,55 +70,64 @@ package org.drip.xva.pde;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BurgardKjaerEdgeAttribution extends org.drip.xva.pde.BurgardKjaerEdge {
-	private double _dblDerivativeXVAFundingGrowth = java.lang.Double.NaN;
-	private double _dblDerivativeXVABankDefaultGrowth = java.lang.Double.NaN;
-	private double _dblDerivativeXVAEarlyTerminationGrowth = java.lang.Double.NaN;
-	private double _dblDerivativeXVACounterPartyDefaultGrowth = java.lang.Double.NaN;
+public class BurgardKjaerEdgeAttribution extends org.drip.xva.pde.BurgardKjaerEdge
+{
+	private double _derivativeXVAFundingGrowth = java.lang.Double.NaN;
+	private double _derivativeXVABankDefaultGrowth = java.lang.Double.NaN;
+	private double _derivativeXVAEarlyTerminationGrowth = java.lang.Double.NaN;
+	private double _derivativeXVACounterPartyDefaultGrowth = java.lang.Double.NaN;
 
 	/**
 	 * BurgardKjaerEdgeAttribution Constructor
 	 * 
-	 * @param dblAssetNumeraireBump The Bump in the Asset Numeraire Value
-	 * @param dblDerivativeXVAStochasticGrowthDown The Stochastic Down Component of the Derivative XVA Value
+	 * @param positionValueBump The Bump in the Position Value
+	 * @param derivativeXVAStochasticGrowthDown The Stochastic Down Component of the Derivative XVA Value
 	 * 		Growth
-	 * @param dblDerivativeXVAStochasticGrowth The Stochastic Component of the Derivative XVA Value Growth
-	 * @param dblDerivativeXVAStochasticGrowthUp The Stochastic Up Component of the Derivative XVA Value
+	 * @param derivativeXVAStochasticGrowth The Stochastic Component of the Derivative XVA Value Growth
+	 * @param derivativeXVAStochasticGrowthUp The Stochastic Up Component of the Derivative XVA Value
 	 * 		Growth
-	 * @param dblDerivativeXVACollateralGrowth The Collateral Component of the Derivative XVA Value Growth
-	 * @param dblDerivativeXVAEarlyTerminationGrowth The Early Termination Component of the Derivative XVA
+	 * @param derivativeXVACollateralGrowth The Collateral Component of the Derivative XVA Value Growth
+	 * @param derivativeXVAEarlyTerminationGrowth The Early Termination Component of the Derivative XVA
 	 * 		Value Growth
-	 * @param dblDerivativeXVAFundingGrowth The Funding Component of the Derivative XVA Value Growth
-	 * @param dblDerivativeXVABankDefaultGrowth The Bank Default Component of the Derivative Value XVA Growth
-	 * @param dblDerivativeXVACounterPartyDefaultGrowth The Counter Party Default Component of the Derivative
+	 * @param derivativeXVAFundingGrowth The Funding Component of the Derivative XVA Value Growth
+	 * @param derivativeXVABankDefaultGrowth The Bank Default Component of the Derivative Value XVA Growth
+	 * @param derivativeXVACounterPartyDefaultGrowth The Counter Party Default Component of the Derivative
 	 * 		XVA Value Growth
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BurgardKjaerEdgeAttribution (
-		final double dblAssetNumeraireBump,
-		final double dblDerivativeXVAStochasticGrowthDown,
-		final double dblDerivativeXVAStochasticGrowth,
-		final double dblDerivativeXVAStochasticGrowthUp,
-		final double dblDerivativeXVACollateralGrowth,
-		final double dblDerivativeXVAEarlyTerminationGrowth,
-		final double dblDerivativeXVAFundingGrowth,
-		final double dblDerivativeXVABankDefaultGrowth,
-		final double dblDerivativeXVACounterPartyDefaultGrowth)
+		final double positionValueBump,
+		final double derivativeXVAStochasticGrowthDown,
+		final double derivativeXVAStochasticGrowth,
+		final double derivativeXVAStochasticGrowthUp,
+		final double derivativeXVACollateralGrowth,
+		final double derivativeXVAEarlyTerminationGrowth,
+		final double derivativeXVAFundingGrowth,
+		final double derivativeXVABankDefaultGrowth,
+		final double derivativeXVACounterPartyDefaultGrowth)
 		throws java.lang.Exception
 	{
-		super (dblAssetNumeraireBump, dblDerivativeXVAStochasticGrowthDown, dblDerivativeXVAStochasticGrowth,
-			dblDerivativeXVAStochasticGrowthUp, dblDerivativeXVACollateralGrowth);
+		super (
+			positionValueBump,
+			derivativeXVAStochasticGrowthDown,
+			derivativeXVAStochasticGrowth,
+			derivativeXVAStochasticGrowthUp,
+			derivativeXVACollateralGrowth
+		);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblDerivativeXVAEarlyTerminationGrowth =
-			dblDerivativeXVAEarlyTerminationGrowth) || !org.drip.quant.common.NumberUtil.IsValid
-				(_dblDerivativeXVAFundingGrowth = dblDerivativeXVAFundingGrowth) ||
-					!org.drip.quant.common.NumberUtil.IsValid (_dblDerivativeXVABankDefaultGrowth =
-						dblDerivativeXVABankDefaultGrowth) || !org.drip.quant.common.NumberUtil.IsValid
-							(_dblDerivativeXVACounterPartyDefaultGrowth =
-								dblDerivativeXVACounterPartyDefaultGrowth))
+		if (!org.drip.quant.common.NumberUtil.IsValid (_derivativeXVAEarlyTerminationGrowth =
+				derivativeXVAEarlyTerminationGrowth) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_derivativeXVAFundingGrowth =
+				derivativeXVAFundingGrowth) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_derivativeXVABankDefaultGrowth =
+				derivativeXVABankDefaultGrowth) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_derivativeXVACounterPartyDefaultGrowth =
+				derivativeXVACounterPartyDefaultGrowth))
+		{
 			throw new java.lang.Exception ("BurgardKjaerEdgeAttribution Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -129,7 +138,7 @@ public class BurgardKjaerEdgeAttribution extends org.drip.xva.pde.BurgardKjaerEd
 
 	public double derivativeXVAEarlyTerminationGrowth()
 	{
-		return _dblDerivativeXVAEarlyTerminationGrowth;
+		return _derivativeXVAEarlyTerminationGrowth;
 	}
 
 	/**
@@ -140,7 +149,7 @@ public class BurgardKjaerEdgeAttribution extends org.drip.xva.pde.BurgardKjaerEd
 
 	public double derivativeXVAFundingGrowth()
 	{
-		return _dblDerivativeXVAFundingGrowth;
+		return _derivativeXVAFundingGrowth;
 	}
 
 	/**
@@ -151,7 +160,7 @@ public class BurgardKjaerEdgeAttribution extends org.drip.xva.pde.BurgardKjaerEd
 
 	public double derivativeXVABankDefaultGrowth()
 	{
-		return _dblDerivativeXVABankDefaultGrowth;
+		return _derivativeXVABankDefaultGrowth;
 	}
 
 	/**
@@ -162,27 +171,27 @@ public class BurgardKjaerEdgeAttribution extends org.drip.xva.pde.BurgardKjaerEd
 
 	public double derivativeXVACounterPartyDefaultGrowth()
 	{
-		return _dblDerivativeXVACounterPartyDefaultGrowth;
+		return _derivativeXVACounterPartyDefaultGrowth;
 	}
 
-	@Override public double thetaAssetNumeraireDown()
+	@Override public double thetaPositionValueDown()
 	{
 		return super.derivativeXVAStochasticGrowthDown() + super.derivativeXVACollateralGrowth() +
-			_dblDerivativeXVAEarlyTerminationGrowth + _dblDerivativeXVAFundingGrowth +
-				_dblDerivativeXVABankDefaultGrowth + _dblDerivativeXVACounterPartyDefaultGrowth;
+			_derivativeXVAEarlyTerminationGrowth + _derivativeXVAFundingGrowth +
+				_derivativeXVABankDefaultGrowth + _derivativeXVACounterPartyDefaultGrowth;
 	}
 
 	@Override public double theta()
 	{
 		return super.derivativeXVAStochasticGrowth() + super.derivativeXVACollateralGrowth() +
-			_dblDerivativeXVAEarlyTerminationGrowth + _dblDerivativeXVAFundingGrowth +
-				_dblDerivativeXVABankDefaultGrowth + _dblDerivativeXVACounterPartyDefaultGrowth;
+			_derivativeXVAEarlyTerminationGrowth + _derivativeXVAFundingGrowth +
+				_derivativeXVABankDefaultGrowth + _derivativeXVACounterPartyDefaultGrowth;
 	}
 
-	@Override public double thetaAssetNumeraireUp()
+	@Override public double thetaPositionValueUp()
 	{
 		return super.derivativeXVAStochasticGrowthUp() + super.derivativeXVACollateralGrowth() +
-			_dblDerivativeXVAEarlyTerminationGrowth + _dblDerivativeXVAFundingGrowth +
-				_dblDerivativeXVABankDefaultGrowth + _dblDerivativeXVACounterPartyDefaultGrowth;
+			_derivativeXVAEarlyTerminationGrowth + _derivativeXVAFundingGrowth +
+				_derivativeXVABankDefaultGrowth + _derivativeXVACounterPartyDefaultGrowth;
 	}
 }

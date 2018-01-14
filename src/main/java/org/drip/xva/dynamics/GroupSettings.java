@@ -87,7 +87,9 @@ public class GroupSettings
 	{
 		if (null == (_collateralGroupSpecification = collateralGroupSpecification) ||
 			null == (_counterPartyGroupSpecification = counterPartyGroupSpecification))
+		{
 			throw new java.lang.Exception ("GroupSettings Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
