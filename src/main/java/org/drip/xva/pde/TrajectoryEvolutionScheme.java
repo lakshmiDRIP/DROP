@@ -130,13 +130,13 @@ public class TrajectoryEvolutionScheme {
 
 		org.drip.xva.derivative.ReplicationPortfolioVertex rpvStart = etvStart.replicationPortfolioVertex();
 
-		double dblAssetNumeraireUnitsStart = rpvStart.positionUnits();
+		double dblAssetNumeraireUnitsStart = rpvStart.positionHoldings();
 
-		double dblBankSeniorNumeraireUnitsStart = rpvStart.bankSeniorNumeraireUnits();
+		double dblBankSeniorNumeraireUnitsStart = rpvStart.bankSeniorNumeraireHoldings();
 
-		double dblCounterPartyNumeraireUnitsStart = rpvStart.counterPartyNumeraireUnits();
+		double dblCounterPartyNumeraireUnitsStart = rpvStart.counterPartyNumeraireHoldings();
 
-		double dblBankSubordinateNumeraireUnitsStart = rpvStart.bankSubordinateNumeraireUnits();
+		double dblBankSubordinateNumeraireUnitsStart = rpvStart.bankSubordinateNumeraireHoldings();
 
 		org.drip.xva.universe.MarketVertex mvStart = me.start();
 

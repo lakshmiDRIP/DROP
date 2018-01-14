@@ -72,35 +72,35 @@ package org.drip.xva.derivative;
 public class ReplicationPortfolioVertex
 {
 	private double _cashAccount = java.lang.Double.NaN;
-	private double _positionUnits = java.lang.Double.NaN;
-	private double _bankSeniorNumeraireUnits = java.lang.Double.NaN;
-	private double _counterPartyNumeraireUnits = java.lang.Double.NaN;
-	private double _bankSubordinateNumeraireUnits = java.lang.Double.NaN;
+	private double _positionHoldings = java.lang.Double.NaN;
+	private double _bankSeniorNumeraireHoldings = java.lang.Double.NaN;
+	private double _counterPartyNumeraireHoldings = java.lang.Double.NaN;
+	private double _bankSubordinateNumeraireHoldings = java.lang.Double.NaN;
 
 	/**
 	 * Construct a ReplicationPortfolioVertex Instance without the Zero Recovery Bank Numeraire
 	 * 
-	 * @param positionUnits The Asset Numeraire Units
-	 * @param bankSeniorNumeraireUnits The Bank Senior Numeraire Units
-	 * @param counterPartyNumeraireUnits The Counter Party Numeraire Replication Units
+	 * @param positionHoldings The Asset Numeraire Holdings
+	 * @param bankSeniorNumeraireHoldings The Bank Senior Numeraire Holdings
+	 * @param counterPartyNumeraireHoldings The Counter Party Numeraire Replication Holdings
 	 * @param cashAccount The Cash Account
 	 * 
 	 * @return The ReplicationPortfolioVertex Instance without the Zero Recovery Bank Numeraire
 	 */
 
 	public static final ReplicationPortfolioVertex Standard (
-		final double positionUnits,
-		final double bankSeniorNumeraireUnits,
-		final double counterPartyNumeraireUnits,
+		final double positionHoldings,
+		final double bankSeniorNumeraireHoldings,
+		final double counterPartyNumeraireHoldings,
 		final double cashAccount)
 	{
 		try
 		{
 			return new ReplicationPortfolioVertex (
-				positionUnits,
-				bankSeniorNumeraireUnits,
+				positionHoldings,
+				bankSeniorNumeraireHoldings,
 				0.,
-				counterPartyNumeraireUnits,
+				counterPartyNumeraireHoldings,
 				cashAccount
 			);
 		}
@@ -115,78 +115,78 @@ public class ReplicationPortfolioVertex
 	/**
 	 * ReplicationPortfolioVertex Constructor
 	 * 
-	 * @param positionUnits The Asset Numeraire Units
-	 * @param bankSeniorNumeraireUnits The Bank Senior Numeraire Units
-	 * @param bankSubordinateNumeraireUnits The Bank Subordinate Numeraire Units
-	 * @param counterPartyNumeraireUnits The Counter Party Numeraire Units
+	 * @param positionHoldings The Asset Numeraire Holdings
+	 * @param bankSeniorNumeraireHoldings The Bank Senior Numeraire Holdings
+	 * @param bankSubordinateNumeraireHoldings The Bank Subordinate Numeraire Holdings
+	 * @param counterPartyNumeraireHoldings The Counter Party Numeraire Holdings
 	 * @param cashAccount The Cash Account
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ReplicationPortfolioVertex (
-		final double positionUnits,
-		final double bankSeniorNumeraireUnits,
-		final double bankSubordinateNumeraireUnits,
-		final double counterPartyNumeraireUnits,
+		final double positionHoldings,
+		final double bankSeniorNumeraireHoldings,
+		final double bankSubordinateNumeraireHoldings,
+		final double counterPartyNumeraireHoldings,
 		final double cashAccount)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_bankSeniorNumeraireUnits = bankSeniorNumeraireUnits) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_bankSubordinateNumeraireUnits =
-				bankSubordinateNumeraireUnits) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_counterPartyNumeraireUnits =
-				counterPartyNumeraireUnits) ||
+		if (!org.drip.quant.common.NumberUtil.IsValid (_bankSeniorNumeraireHoldings = bankSeniorNumeraireHoldings) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_bankSubordinateNumeraireHoldings =
+				bankSubordinateNumeraireHoldings) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_counterPartyNumeraireHoldings =
+				counterPartyNumeraireHoldings) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_cashAccount = cashAccount))
 		{
 			throw new java.lang.Exception ("ReplicationPortfolioVertex Constructor => Invalid Inputs");
 		}
 
-		_positionUnits = positionUnits;
+		_positionHoldings = positionHoldings;
 	}
 
 	/**
-	 * Retrieve the Number of Position Units
+	 * Retrieve the Number of Position Holdings
 	 * 
-	 * @return The Number of Position Units
+	 * @return The Number of Position Holdings
 	 */
 
-	public double positionUnits()
+	public double positionHoldings()
 	{
-		return _positionUnits;
+		return _positionHoldings;
 	}
 
 	/**
-	 * Retrieve the Number of Bank Senior Numeraire Units
+	 * Retrieve the Number of Bank Senior Numeraire Holdings
 	 * 
-	 * @return The Number of Bank Senior Numeraire Units
+	 * @return The Number of Bank Senior Numeraire Holdings
 	 */
 
-	public double bankSeniorNumeraireUnits()
+	public double bankSeniorNumeraireHoldings()
 	{
-		return _bankSeniorNumeraireUnits;
+		return _bankSeniorNumeraireHoldings;
 	}
 
 	/**
-	 * Retrieve the Number of Bank Subordinate Numeraire Units
+	 * Retrieve the Number of Bank Subordinate Numeraire Holdings
 	 * 
-	 * @return The Number of Bank Subordinate Numeraire Units
+	 * @return The Number of Bank Subordinate Numeraire Holdings
 	 */
 
-	public double bankSubordinateNumeraireUnits()
+	public double bankSubordinateNumeraireHoldings()
 	{
-		return _bankSubordinateNumeraireUnits;
+		return _bankSubordinateNumeraireHoldings;
 	}
 
 	/**
-	 * Retrieve the Counter Party Numeraire Units
+	 * Retrieve the Counter Party Numeraire Holdings
 	 * 
-	 * @return The Counter Party Numeraire Units
+	 * @return The Counter Party Numeraire Holdings
 	 */
 
-	public double counterPartyNumeraireUnits()
+	public double counterPartyNumeraireHoldings()
 	{
-		return _counterPartyNumeraireUnits;
+		return _counterPartyNumeraireHoldings;
 	}
 
 	/**
@@ -220,13 +220,13 @@ public class ReplicationPortfolioVertex
 
 		org.drip.xva.universe.EntityMarketVertex bankMarketVertex = marketVertex.bank();
 
-		double value = -1. * bankMarketVertex.seniorFundingLatentState().nodal() * _bankSeniorNumeraireUnits;
+		double value = -1. * bankMarketVertex.seniorFundingLatentState().nodal() * _bankSeniorNumeraireHoldings;
 
 		org.drip.xva.universe.LatentStateMarketVertex bankSubordinateFundingMarketVertex =
 			bankMarketVertex.subordinateFundingLatentState();
 
 		if (null != bankSubordinateFundingMarketVertex)
-			value -= bankSubordinateFundingMarketVertex.nodal() * _bankSubordinateNumeraireUnits;
+			value -= bankSubordinateFundingMarketVertex.nodal() * _bankSubordinateNumeraireHoldings;
 
 		return value;
 	}
@@ -251,14 +251,14 @@ public class ReplicationPortfolioVertex
 
 		org.drip.xva.universe.EntityMarketVertex bankMarketVertex = marketVertex.bank();
 
-		double value = bankMarketVertex.seniorFundingLatentState().nodal() * _bankSeniorNumeraireUnits *
+		double value = bankMarketVertex.seniorFundingLatentState().nodal() * _bankSeniorNumeraireHoldings *
 			bankMarketVertex.seniorRecoveryRate();
 
 		org.drip.xva.universe.LatentStateMarketVertex bankSubordinateFundingMarketVertex =
 			bankMarketVertex.subordinateFundingLatentState();
 
 		if (null != bankSubordinateFundingMarketVertex)
-			value -= bankSubordinateFundingMarketVertex.nodal() * _bankSubordinateNumeraireUnits *
+			value -= bankSubordinateFundingMarketVertex.nodal() * _bankSubordinateNumeraireHoldings *
 				bankMarketVertex.subordinateRecoveryRate();
 
 		return value;

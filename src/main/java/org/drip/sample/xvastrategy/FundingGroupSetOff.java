@@ -497,7 +497,7 @@ public class FundingGroupSetOff {
 			}
 		);
 
-		JulianDate[] adtVertexNode = eaa.anchors();
+		JulianDate[] adtVertexNode = eaa.anchorDates();
 
 		System.out.println ("\t|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|");
 
@@ -612,8 +612,8 @@ public class FundingGroupSetOff {
 			ReplicationPortfolioVertexBank rpvb = aBKV1[i].bankReplicationPortfolio();
 
 			System.out.println ("\t|| [" + adtVertex[i] + "] =>   " +
-				FormatUtil.FormatDouble (rpvb.seniorNumeraireUnits(), 1, 3, 1.) + "  |  " +
-				FormatUtil.FormatDouble (rpvb.subordinateNumeraireUnits(), 1, 3, 1.) + "   || "
+				FormatUtil.FormatDouble (rpvb.seniorNumeraireHoldings(), 1, 3, 1.) + "  |  " +
+				FormatUtil.FormatDouble (rpvb.subordinateNumeraireHoldings(), 1, 3, 1.) + "   || "
 			);
 		}
 
@@ -639,8 +639,8 @@ public class FundingGroupSetOff {
 			ReplicationPortfolioVertexBank rpvb = aBKV2[i].bankReplicationPortfolio();
 
 			System.out.println ("\t|| [" + adtVertex[i] + "] =>   " +
-				FormatUtil.FormatDouble (rpvb.seniorNumeraireUnits(), 1, 3, 1.) + "  |  " +
-				FormatUtil.FormatDouble (rpvb.subordinateNumeraireUnits(), 1, 3, 1.) + "   || "
+				FormatUtil.FormatDouble (rpvb.seniorNumeraireHoldings(), 1, 3, 1.) + "  |  " +
+				FormatUtil.FormatDouble (rpvb.subordinateNumeraireHoldings(), 1, 3, 1.) + "   || "
 			);
 		}
 

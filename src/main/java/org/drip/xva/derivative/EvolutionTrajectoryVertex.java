@@ -218,14 +218,14 @@ public class EvolutionTrajectoryVertex
 
 		double fundingConstraint = _positionGreekVertex.derivativeXVAValue() +
 			bankMarketVertex.seniorFundingLatentState().nodal() *
-			_replicationPortfolioVertex.bankSeniorNumeraireUnits();
+			_replicationPortfolioVertex.bankSeniorNumeraireHoldings();
 
 		org.drip.xva.universe.LatentStateMarketVertex bankSubordinateFundingMarketVertex =
 			bankMarketVertex.subordinateFundingLatentState();
 
 		if (null != bankSubordinateFundingMarketVertex)
 			fundingConstraint += bankSubordinateFundingMarketVertex.nodal() *
-				_replicationPortfolioVertex.bankSubordinateNumeraireUnits();
+				_replicationPortfolioVertex.bankSubordinateNumeraireHoldings();
 
 		return fundingConstraint;
 	}

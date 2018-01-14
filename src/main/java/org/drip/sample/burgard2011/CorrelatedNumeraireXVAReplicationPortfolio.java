@@ -171,9 +171,9 @@ public class CorrelatedNumeraireXVAReplicationPortfolio {
 			FormatUtil.FormatDouble (dblBankSeniorFundingNumeraireFinish, 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (dblCounterPartyFundingNumeraireFinish, 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (mvFinish.csaNumeraire().nodal(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (rpvFinish.positionUnits(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (rpvFinish.bankSeniorNumeraireUnits(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (rpvFinish.counterPartyNumeraireUnits(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (rpvFinish.positionHoldings(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (rpvFinish.bankSeniorNumeraireHoldings(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (rpvFinish.counterPartyNumeraireHoldings(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (rpvFinish.cashAccount(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (dblCashAccountAccumulationFinish, 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (cae.assetAccumulation(), 1, 6, 1.) + " | " +

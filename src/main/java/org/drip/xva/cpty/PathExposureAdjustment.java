@@ -68,7 +68,8 @@ package org.drip.xva.cpty;
  * @author Lakshmi Krishnamurthy
  */
 
-public interface PathExposureAdjustment {
+public interface PathExposureAdjustment
+{
 
 	/**
 	 * Retrieve the Array of the Vertex Anchor Dates
@@ -76,7 +77,7 @@ public interface PathExposureAdjustment {
 	 * @return The Array of the Vertex Anchor Dates
 	 */
 
-	abstract public org.drip.analytics.date.JulianDate[] anchors();
+	abstract public org.drip.analytics.date.JulianDate[] anchorDates();
 
 	/**
 	 * Retrieve the Array of Collateralized Exposures

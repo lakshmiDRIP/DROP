@@ -329,7 +329,7 @@ public class CollateralizedCollateralGroup {
 
 		ExposureAdjustmentAggregator eaa = new ExposureAdjustmentAggregator (aMPEA);
 
-		JulianDate[] adtVertexNode = eaa.anchors();
+		JulianDate[] adtVertexNode = eaa.anchorDates();
 
 		System.out.println();
 

@@ -69,24 +69,24 @@ package org.drip.xva.derivative;
 
 public class ReplicationPortfolioVertexBank
 {
-	private double _seniorNumeraireUnits = java.lang.Double.NaN;
-	private double _subordinateNumeraireUnits = java.lang.Double.NaN;
+	private double _seniorNumeraireHoldings = java.lang.Double.NaN;
+	private double _subordinateNumeraireHoldings = java.lang.Double.NaN;
 
 	/**
 	 * Construct a ReplicationPortfolioVertexBank Instance from the Senior Bank Numeraire alone
 	 * 
-	 * @param seniorNumeraireUnits The Bank Senior Numeraire Units
+	 * @param seniorNumeraireHoldings The Bank Senior Numeraire Holdings
 	 * 
 	 * @return The ReplicationPortfolioVertexBank Instance from the Senior Bank Numeraire alone
 	 */
 
 	public static final ReplicationPortfolioVertexBank Standard (
-		final double seniorNumeraireUnits)
+		final double seniorNumeraireHoldings)
 	{
 		try
 		{
 			return new ReplicationPortfolioVertexBank (
-				seniorNumeraireUnits,
+				seniorNumeraireHoldings,
 				0.
 			);
 		}
@@ -101,44 +101,44 @@ public class ReplicationPortfolioVertexBank
 	/**
 	 * ReplicationPortfolioVertexBank Constructor
 	 * 
-	 * @param seniorNumeraireUnits The Bank Senior Numeraire Units
-	 * @param subordinateNumeraireUnits The Bank Subordinate Numeraire Units
+	 * @param seniorNumeraireHoldings The Bank Senior Numeraire Holdings
+	 * @param subordinateNumeraireHoldings The Bank Subordinate Numeraire Holdings
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ReplicationPortfolioVertexBank (
-		final double seniorNumeraireUnits,
-		final double subordinateNumeraireUnits)
+		final double seniorNumeraireHoldings,
+		final double subordinateNumeraireHoldings)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_seniorNumeraireUnits = seniorNumeraireUnits) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_subordinateNumeraireUnits =
-				subordinateNumeraireUnits))
+		if (!org.drip.quant.common.NumberUtil.IsValid (_seniorNumeraireHoldings = seniorNumeraireHoldings) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_subordinateNumeraireHoldings =
+				subordinateNumeraireHoldings))
 		{
 			throw new java.lang.Exception ("ReplicationPortfolioVertex Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Number of Bank Senior Numeraire Units
+	 * Retrieve the Number of Bank Senior Numeraire Holdings
 	 * 
-	 * @return The Number of Bank Senior Numeraire Units
+	 * @return The Number of Bank Senior Numeraire Holdings
 	 */
 
-	public double seniorNumeraireUnits()
+	public double seniorNumeraireHoldings()
 	{
-		return _seniorNumeraireUnits;
+		return _seniorNumeraireHoldings;
 	}
 
 	/**
-	 * Retrieve the Number of Bank Subordinate Numeraire Units
+	 * Retrieve the Number of Bank Subordinate Numeraire Holdings
 	 * 
-	 * @return The Number of Bank Subordinate Numeraire Units
+	 * @return The Number of Bank Subordinate Numeraire Holdings
 	 */
 
-	public double subordinateNumeraireUnits()
+	public double subordinateNumeraireHoldings()
 	{
-		return _subordinateNumeraireUnits;
+		return _subordinateNumeraireHoldings;
 	}
 }

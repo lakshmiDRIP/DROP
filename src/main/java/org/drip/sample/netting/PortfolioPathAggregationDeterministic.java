@@ -244,7 +244,7 @@ public class PortfolioPathAggregationDeterministic {
 
 		ExposureAdjustmentAggregator eaa = new ExposureAdjustmentAggregator (aMPEA);
 
-		JulianDate[] adtVertexNode = eaa.anchors();
+		JulianDate[] adtVertexNode = eaa.anchorDates();
 
 		System.out.println();
 

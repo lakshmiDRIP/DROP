@@ -432,9 +432,9 @@ public class EulerTrajectoryEvolutionScheme {
 			FormatUtil.FormatDouble (aMVBase[aMV.length - 1].bank().seniorFundingLatentState().nodal(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (aMVBase[aMV.length - 1].counterParty().seniorFundingLatentState().nodal(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (aMVBase[aMV.length - 1].csaNumeraire().nodal(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (rpvInitial.positionUnits(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (rpvInitial.bankSeniorNumeraireUnits(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (rpvInitial.counterPartyNumeraireUnits(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (rpvInitial.positionHoldings(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (rpvInitial.bankSeniorNumeraireHoldings(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (rpvInitial.counterPartyNumeraireHoldings(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (rpvInitial.cashAccount(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (0., 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (0., 1, 6, 1.) + " | " +
@@ -471,9 +471,9 @@ public class EulerTrajectoryEvolutionScheme {
 				FormatUtil.FormatDouble (aMVBase[i].bank().seniorFundingLatentState().nodal(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (aMVBase[i].counterParty().seniorFundingLatentState().nodal(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (aMVBase[i].csaNumeraire().nodal(), 1, 6, 1.) + " | " +
-				FormatUtil.FormatDouble (etv.replicationPortfolioVertex().positionUnits(), 1, 6, 1.) + " | " +
-				FormatUtil.FormatDouble (etv.replicationPortfolioVertex().bankSeniorNumeraireUnits(), 1, 6, 1.) + " | " +
-				FormatUtil.FormatDouble (etv.replicationPortfolioVertex().counterPartyNumeraireUnits(), 1, 6, 1.) + " | " +
+				FormatUtil.FormatDouble (etv.replicationPortfolioVertex().positionHoldings(), 1, 6, 1.) + " | " +
+				FormatUtil.FormatDouble (etv.replicationPortfolioVertex().bankSeniorNumeraireHoldings(), 1, 6, 1.) + " | " +
+				FormatUtil.FormatDouble (etv.replicationPortfolioVertex().counterPartyNumeraireHoldings(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (etv.replicationPortfolioVertex().cashAccount(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (lca.accumulation(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (lca.assetAccumulation(), 1, 6, 1.) + " | " +

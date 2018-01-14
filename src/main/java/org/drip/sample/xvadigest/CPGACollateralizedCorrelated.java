@@ -621,49 +621,49 @@ public class CPGACollateralizedCorrelated {
 
 		UDTDump (
 			"\t|                                                                                COLLATERALIZED EXPOSURE                                                                                |",
-			eaa.anchors(),
+			eaa.anchorDates(),
 			ead.collateralizedExposure()
 		);
 
 		UDTDump (
 			"\t|                                                                               UNCOLLATERALIZED EXPOSURE                                                                               |",
-			eaa.anchors(),
+			eaa.anchorDates(),
 			ead.uncollateralizedExposure()
 		);
 
 		UDTDump (
 			"\t|                                                                                COLLATERALIZED EXPOSURE PV                                                                             |",
-			eaa.anchors(),
+			eaa.anchorDates(),
 			ead.collateralizedExposurePV()
 		);
 
 		UDTDump (
 			"\t|                                                                               UNCOLLATERALIZED EXPOSURE PV                                                                            |",
-			eaa.anchors(),
+			eaa.anchorDates(),
 			ead.uncollateralizedExposurePV()
 		);
 
 		UDTDump (
 			"\t|                                                                            COLLATERALIZED POSITIVE EXPOSURE PV                                                                        |",
-			eaa.anchors(),
+			eaa.anchorDates(),
 			ead.collateralizedPositiveExposure()
 		);
 
 		UDTDump (
 			"\t|                                                                           UNCOLLATERALIZED POSITIVE EXPOSURE PV                                                                       |",
-			eaa.anchors(),
+			eaa.anchorDates(),
 			ead.uncollateralizedPositiveExposure()
 		);
 
 		UDTDump (
 			"\t|                                                                            COLLATERALIZED NEGATIVE EXPOSURE PV                                                                        |",
-			eaa.anchors(),
+			eaa.anchorDates(),
 			ead.collateralizedNegativeExposure()
 		);
 
 		UDTDump (
 			"\t|                                                                           UNCOLLATERALIZED NEGATIVE EXPOSURE PV                                                                       |",
-			eaa.anchors(),
+			eaa.anchorDates(),
 			ead.uncollateralizedNegativeExposure()
 		);
 

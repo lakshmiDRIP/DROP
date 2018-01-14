@@ -68,32 +68,41 @@ package org.drip.xva.cpty;
  * @author Lakshmi Krishnamurthy
  */
 
-public class GroupPathExposureAdjustment implements org.drip.xva.cpty.PathExposureAdjustment {
-	private org.drip.xva.cpty.MonoPathExposureAdjustment[] _aMPEA = null;
+public class GroupPathExposureAdjustment implements org.drip.xva.cpty.PathExposureAdjustment
+{
+	private org.drip.xva.cpty.MonoPathExposureAdjustment[] _monoPathExposureAdjustmentArray = null;
 
 	/**
 	 * GroupPathExposureAdjustment Constructor
 	 * 
-	 * @param aMPEA Array of Single Counter Party Path Exposure Adjustments
+	 * @param monoPathExposureAdjustmentArray Array of Single Counter Party Path Exposure Adjustments
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public GroupPathExposureAdjustment (
-		final org.drip.xva.cpty.MonoPathExposureAdjustment[] aMPEA)
+		final org.drip.xva.cpty.MonoPathExposureAdjustment[] monoPathExposureAdjustmentArray)
 		throws java.lang.Exception
 	{
-		if (null == (_aMPEA = aMPEA) || 0 == _aMPEA.length)
+		if (null == (_monoPathExposureAdjustmentArray = monoPathExposureAdjustmentArray) ||
+			0 == _monoPathExposureAdjustmentArray.length)
+		{
 			throw new java.lang.Exception ("GroupPathExposureAdjustment Constructor => Invalid Inputs");
+		}
 
-		int iNumCounterPartyGroup = _aMPEA.length;
+		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;
 
-		if (0 == iNumCounterPartyGroup)
+		if (0 == counterPartyGroupCount)
+		{
 			throw new java.lang.Exception ("GroupPathExposureAdjustment Constructor => Invalid Inputs");
+		}
 
-		for (int i = 0; i < iNumCounterPartyGroup; ++i) {
-			if (null == _aMPEA[i])
+		for (int i = 0; i < counterPartyGroupCount; ++i)
+		{
+			if (null == _monoPathExposureAdjustmentArray[i])
+			{
 				throw new java.lang.Exception ("GroupPathExposureAdjustment Constructor => Invalid Inputs");
+			}
 		}
 	}
 
@@ -105,305 +114,369 @@ public class GroupPathExposureAdjustment implements org.drip.xva.cpty.PathExposu
 
 	public org.drip.xva.cpty.MonoPathExposureAdjustment[] counterPartyGroupPaths()
 	{
-		return _aMPEA;
+		return _monoPathExposureAdjustmentArray;
 	}
 
-	@Override public org.drip.analytics.date.JulianDate[] anchors()
+	@Override public org.drip.analytics.date.JulianDate[] anchorDates()
 	{
-		return _aMPEA[0].anchors();
+		return _monoPathExposureAdjustmentArray[0].anchorDates();
 	}
 
 	@Override public double[] collateralizedExposure()
 	{
-		int iNumVertex = anchors().length;
+		int vertexCount = anchorDates().length;
 
-		int iNumCounterPartyGroup = _aMPEA.length;
-		double[] adblCollateralizedExposure = new double[iNumVertex];
+		double[] collateralizedExposure = new double[vertexCount];
+		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;
 
-		for (int j = 0; j < iNumVertex; ++j)
-			adblCollateralizedExposure[j] = 0.;
-
-		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex < iNumCounterPartyGroup;
-			++iCounterPartyGroupIndex) {
-			double[] adblCounterPartyGroupCollateralizedExposure =
-				_aMPEA[iCounterPartyGroupIndex].collateralizedExposure();
-
-			for (int iVertexIndex = 0; iVertexIndex < iNumVertex; ++iVertexIndex)
-				adblCollateralizedExposure[iVertexIndex] +=
-					adblCounterPartyGroupCollateralizedExposure[iVertexIndex];
+		for (int j = 0; j < vertexCount; ++j)
+		{
+			collateralizedExposure[j] = 0.;
 		}
 
-		return adblCollateralizedExposure;
+		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex < counterPartyGroupCount;
+			++counterPartyGroupIndex)
+		{
+			double[] counterPartyGroupCollateralizedExposure =
+				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].collateralizedExposure();
+
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+			{
+				collateralizedExposure[vertexIndex] += counterPartyGroupCollateralizedExposure[vertexIndex];
+			}
+		}
+
+		return collateralizedExposure;
 	}
 
 	@Override public double[] collateralizedExposurePV()
 	{
-		int iNumVertex = anchors().length;
+		int vertexCount = anchorDates().length;
 
-		int iNumCounterPartyGroup = _aMPEA.length;
-		double[] adblCollateralizedExposurePV = new double[iNumVertex];
+		double[] collateralizedExposurePV = new double[vertexCount];
+		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;
 
-		for (int j = 0; j < iNumVertex; ++j)
-			adblCollateralizedExposurePV[j] = 0.;
-
-		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex < iNumCounterPartyGroup;
-			++iCounterPartyGroupIndex) {
-			double[] adblCounterPartyGroupCollateralizedExposurePV =
-				_aMPEA[iCounterPartyGroupIndex].collateralizedExposurePV();
-
-			for (int iVertexIndex = 0; iVertexIndex < iNumVertex; ++iVertexIndex)
-				adblCollateralizedExposurePV[iVertexIndex] +=
-					adblCounterPartyGroupCollateralizedExposurePV[iVertexIndex];
+		for (int j = 0; j < vertexCount; ++j)
+		{
+			collateralizedExposurePV[j] = 0.;
 		}
 
-		return adblCollateralizedExposurePV;
+		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex < counterPartyGroupCount;
+			++counterPartyGroupIndex)
+		{
+			double[] counterPartyGroupCollateralizedExposurePV =
+				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].collateralizedExposurePV();
+
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+			{
+				collateralizedExposurePV[vertexIndex] +=
+					counterPartyGroupCollateralizedExposurePV[vertexIndex];
+			}
+		}
+
+		return collateralizedExposurePV;
 	}
 
 	@Override public double[] uncollateralizedExposure()
 	{
-		int iNumVertex = anchors().length;
+		int vertexCount = anchorDates().length;
 
-		int iNumCounterPartyGroup = _aMPEA.length;
-		double[] adblUncollateralizedExposure = new double[iNumVertex];
+		double[] uncollateralizedExposure = new double[vertexCount];
+		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;
 
-		for (int iVertexIndex = 0; iVertexIndex < iNumVertex; ++iVertexIndex)
-			adblUncollateralizedExposure[iVertexIndex] = 0.;
-
-		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex < iNumCounterPartyGroup;
-			++iCounterPartyGroupIndex) {
-			double[] adblPathUncollateralizedExposure =
-				_aMPEA[iCounterPartyGroupIndex].uncollateralizedExposure();
-
-			for (int iVertexIndex = 0; iVertexIndex < iNumVertex; ++iVertexIndex)
-				adblUncollateralizedExposure[iVertexIndex] += adblPathUncollateralizedExposure[iVertexIndex];
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+		{
+			uncollateralizedExposure[vertexIndex] = 0.;
 		}
 
-		return adblUncollateralizedExposure;
+		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex < counterPartyGroupCount;
+			++counterPartyGroupIndex)
+		{
+			double[] pathUncollateralizedExposure =
+				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].uncollateralizedExposure();
+
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+			{
+				uncollateralizedExposure[vertexIndex] += pathUncollateralizedExposure[vertexIndex];
+			}
+		}
+
+		return uncollateralizedExposure;
 	}
 
 	@Override public double[] uncollateralizedExposurePV()
 	{
-		int iNumVertex = anchors().length;
+		int vertexCount = anchorDates().length;
 
-		int iNumCounterPartyGroup = _aMPEA.length;
-		double[] adblUncollateralizedExposurePV = new double[iNumVertex];
+		double[] uncollateralizedExposurePV = new double[vertexCount];
+		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;
 
-		for (int iVertexIndex = 0; iVertexIndex < iNumVertex; ++iVertexIndex)
-			adblUncollateralizedExposurePV[iVertexIndex] = 0.;
-
-		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex < iNumCounterPartyGroup;
-			++iCounterPartyGroupIndex) {
-			double[] adblPathUncollateralizedExposurePV =
-				_aMPEA[iCounterPartyGroupIndex].uncollateralizedExposurePV();
-
-			for (int iVertexIndex = 0; iVertexIndex < iNumVertex; ++iVertexIndex)
-				adblUncollateralizedExposurePV[iVertexIndex] +=
-					adblPathUncollateralizedExposurePV[iVertexIndex];
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+		{
+			uncollateralizedExposurePV[vertexIndex] = 0.;
 		}
 
-		return adblUncollateralizedExposurePV;
+		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex < counterPartyGroupCount;
+			++counterPartyGroupIndex)
+		{
+			double[] pathUncollateralizedExposurePV =
+				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].uncollateralizedExposurePV();
+
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+			{
+				uncollateralizedExposurePV[vertexIndex] += pathUncollateralizedExposurePV[vertexIndex];
+			}
+		}
+
+		return uncollateralizedExposurePV;
 	}
 
 	@Override public double[] collateralizedPositiveExposure()
 	{
-		int iNumVertex = anchors().length;
+		int vertexCount = anchorDates().length;
 
-		int iNumCounterPartyGroup = _aMPEA.length;
-		double[] adblCollateralizedPositiveExposure = new double[iNumVertex];
+		double[] collateralizedPositiveExposure = new double[vertexCount];
+		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;
 
-		for (int iVertexIndex = 0; iVertexIndex < iNumVertex; ++iVertexIndex)
-			adblCollateralizedPositiveExposure[iVertexIndex] = 0.;
-
-		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex < iNumCounterPartyGroup;
-			++iCounterPartyGroupIndex) {
-			double[] adblPathCollateralizedPositiveExposure =
-				_aMPEA[iCounterPartyGroupIndex].collateralizedPositiveExposure();
-
-			for (int iVertexIndex = 0; iVertexIndex < iNumVertex; ++iVertexIndex)
-				adblCollateralizedPositiveExposure[iVertexIndex] +=
-					adblPathCollateralizedPositiveExposure[iVertexIndex];
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+		{
+			collateralizedPositiveExposure[vertexIndex] = 0.;
 		}
 
-		return adblCollateralizedPositiveExposure;
+		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex < counterPartyGroupCount;
+			++counterPartyGroupIndex)
+		{
+			double[] pathCollateralizedPositiveExposure =
+				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].collateralizedPositiveExposure();
+
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+			{
+				collateralizedPositiveExposure[vertexIndex] +=
+					pathCollateralizedPositiveExposure[vertexIndex];
+			}
+		}
+
+		return collateralizedPositiveExposure;
 	}
 
 	@Override public double[] collateralizedPositiveExposurePV()
 	{
-		int iNumVertex = anchors().length;
+		int vertexCount = anchorDates().length;
 
-		int iNumCounterPartyGroup = _aMPEA.length;
-		double[] adblCollateralizedPositiveExposurePV = new double[iNumVertex];
+		double[] collateralizedPositiveExposurePV = new double[vertexCount];
+		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;
 
-		for (int iVertexIndex = 0; iVertexIndex < iNumVertex; ++iVertexIndex)
-			adblCollateralizedPositiveExposurePV[iVertexIndex] = 0.;
-
-		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex < iNumCounterPartyGroup;
-			++iCounterPartyGroupIndex) {
-			double[] adblPathCollateralizedPositiveExposurePV =
-				_aMPEA[iCounterPartyGroupIndex].collateralizedPositiveExposurePV();
-
-			for (int iVertexIndex = 0; iVertexIndex < iNumVertex; ++iVertexIndex)
-				adblCollateralizedPositiveExposurePV[iVertexIndex] +=
-					adblPathCollateralizedPositiveExposurePV[iVertexIndex];
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+		{
+			collateralizedPositiveExposurePV[vertexIndex] = 0.;
 		}
 
-		return adblCollateralizedPositiveExposurePV;
+		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex < counterPartyGroupCount;
+			++counterPartyGroupIndex)
+		{
+			double[] pathCollateralizedPositiveExposurePV =
+				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].collateralizedPositiveExposurePV();
+
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+			{
+				collateralizedPositiveExposurePV[vertexIndex] +=
+					pathCollateralizedPositiveExposurePV[vertexIndex];
+			}
+		}
+
+		return collateralizedPositiveExposurePV;
 	}
 
 	@Override public double[] uncollateralizedPositiveExposure()
 	{
-		int iNumVertex = anchors().length;
+		int vertexCount = anchorDates().length;
 
-		int iNumCounterPartyGroup = _aMPEA.length;
-		double[] adblUncollateralizedPositiveExposure = new double[iNumVertex];
+		double[] uncollateralizedPositiveExposure = new double[vertexCount];
+		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;
 
-		for (int iVertexIndex = 0; iVertexIndex < iNumVertex; ++iVertexIndex)
-			adblUncollateralizedPositiveExposure[iVertexIndex] = 0.;
-
-		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex < iNumCounterPartyGroup;
-			++iCounterPartyGroupIndex) {
-			double[] adblPathUncollateralizedPositiveExposure =
-				_aMPEA[iCounterPartyGroupIndex].uncollateralizedPositiveExposure();
-
-			for (int iVertexIndex = 0; iVertexIndex < iNumVertex; ++iVertexIndex)
-				adblUncollateralizedPositiveExposure[iVertexIndex] +=
-					adblPathUncollateralizedPositiveExposure[iVertexIndex];
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+		{
+			uncollateralizedPositiveExposure[vertexIndex] = 0.;
 		}
 
-		return adblUncollateralizedPositiveExposure;
+		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex < counterPartyGroupCount;
+			++counterPartyGroupIndex)
+		{
+			double[] pathUncollateralizedPositiveExposure =
+				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].uncollateralizedPositiveExposure();
+
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+			{
+				uncollateralizedPositiveExposure[vertexIndex] +=
+					pathUncollateralizedPositiveExposure[vertexIndex];
+			}
+		}
+
+		return uncollateralizedPositiveExposure;
 	}
 
 	@Override public double[] uncollateralizedPositiveExposurePV()
 	{
-		int iNumVertex = anchors().length;
+		int vertexCount = anchorDates().length;
 
-		int iNumCounterPartyGroup = _aMPEA.length;
-		double[] adblUncollateralizedPositiveExposurePV = new double[iNumVertex];
+		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;
+		double[] uncollateralizedPositiveExposurePV = new double[vertexCount];
 
-		for (int iVertexIndex = 0; iVertexIndex < iNumVertex; ++iVertexIndex)
-			adblUncollateralizedPositiveExposurePV[iVertexIndex] = 0.;
-
-		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex < iNumCounterPartyGroup;
-			++iCounterPartyGroupIndex) {
-			double[] adblPathUncollateralizedPositiveExposurePV =
-				_aMPEA[iCounterPartyGroupIndex].uncollateralizedPositiveExposurePV();
-
-			for (int iVertexIndex = 0; iVertexIndex < iNumVertex; ++iVertexIndex)
-				adblUncollateralizedPositiveExposurePV[iVertexIndex] +=
-					adblPathUncollateralizedPositiveExposurePV[iVertexIndex];
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+		{
+			uncollateralizedPositiveExposurePV[vertexIndex] = 0.;
 		}
 
-		return adblUncollateralizedPositiveExposurePV;
+		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex < counterPartyGroupCount;
+			++counterPartyGroupIndex)
+		{
+			double[] pathUncollateralizedPositiveExposurePV =
+				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].uncollateralizedPositiveExposurePV();
+
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+			{
+				uncollateralizedPositiveExposurePV[vertexIndex] +=
+					pathUncollateralizedPositiveExposurePV[vertexIndex];
+			}
+		}
+
+		return uncollateralizedPositiveExposurePV;
 	}
 
 	@Override public double[] collateralizedNegativeExposure()
 	{
-		int iNumVertex = anchors().length;
+		int vertexCount = anchorDates().length;
 
-		int iNumCounterPartyGroup = _aMPEA.length;
-		double[] adblCollateralizedNegativeExposure = new double[iNumVertex];
+		double[] collateralizedNegativeExposure = new double[vertexCount];
+		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;
 
-		for (int iVertexIndex = 0; iVertexIndex < iNumVertex; ++iVertexIndex)
-			adblCollateralizedNegativeExposure[iVertexIndex] = 0.;
-
-		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex < iNumCounterPartyGroup;
-			++iCounterPartyGroupIndex) {
-			double[] adblPathCollateralizedNegativeExposure =
-				_aMPEA[iCounterPartyGroupIndex].collateralizedNegativeExposure();
-
-			for (int iVertexIndex = 0; iVertexIndex < iNumVertex; ++iVertexIndex)
-				adblCollateralizedNegativeExposure[iVertexIndex] +=
-					adblPathCollateralizedNegativeExposure[iVertexIndex];
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+		{
+			collateralizedNegativeExposure[vertexIndex] = 0.;
 		}
 
-		return adblCollateralizedNegativeExposure;
+		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex < counterPartyGroupCount;
+			++counterPartyGroupIndex)
+		{
+			double[] pathCollateralizedNegativeExposure =
+				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].collateralizedNegativeExposure();
+
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+			{
+				collateralizedNegativeExposure[vertexIndex] +=
+					pathCollateralizedNegativeExposure[vertexIndex];
+			}
+		}
+
+		return collateralizedNegativeExposure;
 	}
 
 	@Override public double[] collateralizedNegativeExposurePV()
 	{
-		int iNumVertex = anchors().length;
+		int vertexCount = anchorDates().length;
 
-		int iNumCounterPartyGroup = _aMPEA.length;
-		double[] adblCollateralizedNegativeExposurePV = new double[iNumVertex];
+		double[] collateralizedNegativeExposurePV = new double[vertexCount];
+		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;
 
-		for (int iVertexIndex = 0; iVertexIndex < iNumVertex; ++iVertexIndex)
-			adblCollateralizedNegativeExposurePV[iVertexIndex] = 0.;
-
-		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex < iNumCounterPartyGroup;
-			++iCounterPartyGroupIndex) {
-			double[] adblPathCollateralizedNegativeExposurePV =
-				_aMPEA[iCounterPartyGroupIndex].collateralizedNegativeExposurePV();
-
-			for (int iVertexIndex = 0; iVertexIndex < iNumVertex; ++iVertexIndex)
-				adblCollateralizedNegativeExposurePV[iVertexIndex] +=
-					adblPathCollateralizedNegativeExposurePV[iVertexIndex];
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+		{
+			collateralizedNegativeExposurePV[vertexIndex] = 0.;
 		}
 
-		return adblCollateralizedNegativeExposurePV;
+		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex < counterPartyGroupCount;
+			++counterPartyGroupIndex)
+		{
+			double[] pathCollateralizedNegativeExposurePV =
+				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].collateralizedNegativeExposurePV();
+
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+			{
+				collateralizedNegativeExposurePV[vertexIndex] +=
+					pathCollateralizedNegativeExposurePV[vertexIndex];
+			}
+		}
+
+		return collateralizedNegativeExposurePV;
 	}
 
 	@Override public double[] uncollateralizedNegativeExposure()
 	{
-		int iNumVertex = anchors().length;
+		int vertexCount = anchorDates().length;
 
-		int iNumCounterPartyGroup = _aMPEA.length;
-		double[] adblUncollateralizedNegativeExposure = new double[iNumVertex];
+		double[] uncollateralizedNegativeExposure = new double[vertexCount];
+		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;
 
-		for (int iVertexIndex = 0; iVertexIndex < iNumVertex; ++iVertexIndex)
-			adblUncollateralizedNegativeExposure[iVertexIndex] = 0.;
-
-		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex < iNumCounterPartyGroup;
-			++iCounterPartyGroupIndex) {
-			double[] adblPathUncollateralizedNegativeExposure =
-				_aMPEA[iCounterPartyGroupIndex].uncollateralizedNegativeExposure();
-
-			for (int iVertexIndex = 0; iVertexIndex < iNumVertex; ++iVertexIndex)
-				adblUncollateralizedNegativeExposure[iVertexIndex] +=
-					adblPathUncollateralizedNegativeExposure[iVertexIndex];
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+		{
+			uncollateralizedNegativeExposure[vertexIndex] = 0.;
 		}
 
-		return adblUncollateralizedNegativeExposure;
+		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex < counterPartyGroupCount;
+			++counterPartyGroupIndex)
+		{
+			double[] adblPathUncollateralizedNegativeExposure =
+				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].uncollateralizedNegativeExposure();
+
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+			{
+				uncollateralizedNegativeExposure[vertexIndex] +=
+					adblPathUncollateralizedNegativeExposure[vertexIndex];
+			}
+		}
+
+		return uncollateralizedNegativeExposure;
 	}
 
 	@Override public double[] uncollateralizedNegativeExposurePV()
 	{
-		int iNumVertex = anchors().length;
+		int vertexCount = anchorDates().length;
 
-		int iNumCounterPartyGroup = _aMPEA.length;
-		double[] adblUncollateralizedNegativeExposurePV = new double[iNumVertex];
+		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;
+		double[] uncollateralizedNegativeExposurePV = new double[vertexCount];
 
-		for (int iVertexIndex = 0; iVertexIndex < iNumVertex; ++iVertexIndex)
-			adblUncollateralizedNegativeExposurePV[iVertexIndex] = 0.;
-
-		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex < iNumCounterPartyGroup;
-			++iCounterPartyGroupIndex) {
-			double[] adblPathUncollateralizedNegativeExposurePV =
-				_aMPEA[iCounterPartyGroupIndex].uncollateralizedNegativeExposurePV();
-
-			for (int iVertexIndex = 0; iVertexIndex < iNumVertex; ++iVertexIndex)
-				adblUncollateralizedNegativeExposurePV[iVertexIndex] +=
-					adblPathUncollateralizedNegativeExposurePV[iVertexIndex];
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+		{
+			uncollateralizedNegativeExposurePV[vertexIndex] = 0.;
 		}
 
-		return adblUncollateralizedNegativeExposurePV;
+		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex < counterPartyGroupCount;
+			++counterPartyGroupIndex)
+		{
+			double[] pathUncollateralizedNegativeExposurePV =
+				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].uncollateralizedNegativeExposurePV();
+
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+			{
+				uncollateralizedNegativeExposurePV[vertexIndex] +=
+					pathUncollateralizedNegativeExposurePV[vertexIndex];
+			}
+		}
+
+		return uncollateralizedNegativeExposurePV;
 	}
 
 	@Override public double[] creditExposure()
 	{
-		int iNumVertex = anchors().length;
+		int vertexCount = anchorDates().length;
 
-		int iNumCounterPartyGroup = _aMPEA.length;
-		double[] adblCreditExposure = new double[iNumVertex];
+		double[] adblCreditExposure = new double[vertexCount];
+		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;
 
-		for (int iVertexIndex = 0; iVertexIndex < iNumVertex; ++iVertexIndex)
-			adblCreditExposure[iVertexIndex] = 0.;
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+		{
+			adblCreditExposure[vertexIndex] = 0.;
+		}
 
-		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex < iNumCounterPartyGroup;
-			++iCounterPartyGroupIndex) {
-			double[] adblPathCreditExposure = _aMPEA[iCounterPartyGroupIndex].creditExposure();
+		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex < counterPartyGroupCount;
+			++counterPartyGroupIndex)
+		{
+			double[] pathCreditExposure =
+				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].creditExposure();
 
-			for (int iVertexIndex = 0; iVertexIndex < iNumVertex; ++iVertexIndex)
-				adblCreditExposure[iVertexIndex] += adblPathCreditExposure[iVertexIndex];
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+			{
+				adblCreditExposure[vertexIndex] += pathCreditExposure[vertexIndex];
+			}
 		}
 
 		return adblCreditExposure;
@@ -411,20 +484,26 @@ public class GroupPathExposureAdjustment implements org.drip.xva.cpty.PathExposu
 
 	@Override public double[] creditExposurePV()
 	{
-		int iNumVertex = anchors().length;
+		int vertexCount = anchorDates().length;
 
-		int iNumCounterPartyGroup = _aMPEA.length;
-		double[] adblCreditExposure = new double[iNumVertex];
+		double[] adblCreditExposure = new double[vertexCount];
+		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;
 
-		for (int iVertexIndex = 0; iVertexIndex < iNumVertex; ++iVertexIndex)
-			adblCreditExposure[iVertexIndex] = 0.;
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+		{
+			adblCreditExposure[vertexIndex] = 0.;
+		}
 
-		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex < iNumCounterPartyGroup;
-			++iCounterPartyGroupIndex) {
-			double[] adblPathCreditExposure = _aMPEA[iCounterPartyGroupIndex].creditExposurePV();
+		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex < counterPartyGroupCount;
+			++counterPartyGroupIndex)
+		{
+			double[] pathCreditExposure =
+				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].creditExposurePV();
 
-			for (int iVertexIndex = 0; iVertexIndex < iNumVertex; ++iVertexIndex)
-				adblCreditExposure[iVertexIndex] += adblPathCreditExposure[iVertexIndex];
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+			{
+				adblCreditExposure[vertexIndex] += pathCreditExposure[vertexIndex];
+			}
 		}
 
 		return adblCreditExposure;
@@ -432,114 +511,142 @@ public class GroupPathExposureAdjustment implements org.drip.xva.cpty.PathExposu
 
 	@Override public double[] debtExposure()
 	{
-		int iNumVertex = anchors().length;
+		int vertexCount = anchorDates().length;
 
-		int iNumCounterPartyGroup = _aMPEA.length;
-		double[] adblDebtExposure = new double[iNumVertex];
+		double[] debtExposure = new double[vertexCount];
+		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;
 
-		for (int iVertexIndex = 0; iVertexIndex < iNumVertex; ++iVertexIndex)
-			adblDebtExposure[iVertexIndex] = 0.;
-
-		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex < iNumCounterPartyGroup;
-			++iCounterPartyGroupIndex) {
-			double[] adblPathDebtExposure = _aMPEA[iCounterPartyGroupIndex].debtExposure();
-
-			for (int iVertexIndex = 0; iVertexIndex < iNumVertex; ++iVertexIndex)
-				adblDebtExposure[iVertexIndex] += adblPathDebtExposure[iVertexIndex];
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+		{
+			debtExposure[vertexIndex] = 0.;
 		}
 
-		return adblDebtExposure;
+		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex < counterPartyGroupCount;
+			++counterPartyGroupIndex)
+		{
+			double[] pathDebtExposure =
+				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].debtExposure();
+
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+			{
+				debtExposure[vertexIndex] += pathDebtExposure[vertexIndex];
+			}
+		}
+
+		return debtExposure;
 	}
 
 	@Override public double[] debtExposurePV()
 	{
-		int iNumVertex = anchors().length;
+		int vertexCount = anchorDates().length;
 
-		int iNumCounterPartyGroup = _aMPEA.length;
-		double[] adblDebtExposure = new double[iNumVertex];
+		double[] debtExposure = new double[vertexCount];
+		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;
 
-		for (int iVertexIndex = 0; iVertexIndex < iNumVertex; ++iVertexIndex)
-			adblDebtExposure[iVertexIndex] = 0.;
-
-		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex < iNumCounterPartyGroup;
-			++iCounterPartyGroupIndex) {
-			double[] adblPathDebtExposure = _aMPEA[iCounterPartyGroupIndex].debtExposurePV();
-
-			for (int iVertexIndex = 0; iVertexIndex < iNumVertex; ++iVertexIndex)
-				adblDebtExposure[iVertexIndex] += adblPathDebtExposure[iVertexIndex];
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+		{
+			debtExposure[vertexIndex] = 0.;
 		}
 
-		return adblDebtExposure;
+		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex < counterPartyGroupCount;
+			++counterPartyGroupIndex)
+		{
+			double[] pathDebtExposure =
+				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].debtExposurePV();
+
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+			{
+				debtExposure[vertexIndex] += pathDebtExposure[vertexIndex];
+			}
+		}
+
+		return debtExposure;
 	}
 
 	@Override public double[] fundingExposure()
 	{
-		int iNumVertex = anchors().length;
+		int vertexCount = anchorDates().length;
 
-		int iNumCounterPartyGroup = _aMPEA.length;
-		double[] adblFundingExposure = new double[iNumVertex];
+		double[] fundingExposure = new double[vertexCount];
+		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;
 
-		for (int iVertexIndex = 0; iVertexIndex < iNumVertex; ++iVertexIndex)
-			adblFundingExposure[iVertexIndex] = 0.;
-
-		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex < iNumCounterPartyGroup;
-			++iCounterPartyGroupIndex) {
-			double[] adblPathFundingExposure = _aMPEA[iCounterPartyGroupIndex].fundingExposure();
-
-			for (int iVertexIndex = 0; iVertexIndex < iNumVertex; ++iVertexIndex)
-				adblFundingExposure[iVertexIndex] += adblPathFundingExposure[iVertexIndex];
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+		{
+			fundingExposure[vertexIndex] = 0.;
 		}
 
-		return adblFundingExposure;
+		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex < counterPartyGroupCount;
+			++counterPartyGroupIndex)
+		{
+			double[] pathFundingExposure =
+				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].fundingExposure();
+
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+			{
+				fundingExposure[vertexIndex] += pathFundingExposure[vertexIndex];
+			}
+		}
+
+		return fundingExposure;
 	}
 
 	@Override public double[] fundingExposurePV()
 	{
-		int iNumVertex = anchors().length;
+		int vertexCount = anchorDates().length;
 
-		int iNumCounterPartyGroup = _aMPEA.length;
-		double[] adblFundingExposure = new double[iNumVertex];
+		double[] fundingExposure = new double[vertexCount];
+		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;
 
-		for (int iVertexIndex = 0; iVertexIndex < iNumVertex; ++iVertexIndex)
-			adblFundingExposure[iVertexIndex] = 0.;
-
-		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex < iNumCounterPartyGroup;
-			++iCounterPartyGroupIndex) {
-			double[] adblPathFundingExposure = _aMPEA[iCounterPartyGroupIndex].fundingExposurePV();
-
-			for (int iVertexIndex = 0; iVertexIndex < iNumVertex; ++iVertexIndex)
-				adblFundingExposure[iVertexIndex] += adblPathFundingExposure[iVertexIndex];
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+		{
+			fundingExposure[vertexIndex] = 0.;
 		}
 
-		return adblFundingExposure;
+		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex < counterPartyGroupCount;
+			++counterPartyGroupIndex)
+		{
+			double[] pathFundingExposure =
+				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].fundingExposurePV();
+
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+			{
+				fundingExposure[vertexIndex] += pathFundingExposure[vertexIndex];
+			}
+		}
+
+		return fundingExposure;
 	}
 
 	@Override public double unilateralCollateralAdjustment()
 		throws java.lang.Exception
 	{
-		double dblUnilateralCollateralAdjustment = 0.;
-		int iNumCounterPartyGroup = _aMPEA.length;
+		double unilateralCollateralAdjustment = 0.;
+		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;
 
-		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex < iNumCounterPartyGroup;
-			++iCounterPartyGroupIndex)
-			dblUnilateralCollateralAdjustment +=
-				_aMPEA[iCounterPartyGroupIndex].unilateralCollateralAdjustment();
+		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex < counterPartyGroupCount;
+			++counterPartyGroupIndex)
+		{
+			unilateralCollateralAdjustment +=
+				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].unilateralCollateralAdjustment();
+		}
 
-		return dblUnilateralCollateralAdjustment;
+		return unilateralCollateralAdjustment;
 	}
 
 	@Override public double bilateralCollateralAdjustment()
 		throws java.lang.Exception
 	{
-		double dblBilateralCollateralAdjustment = 0.;
-		int iNumCounterPartyGroup = _aMPEA.length;
+		double bilateralCollateralAdjustment = 0.;
+		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;
 
-		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex < iNumCounterPartyGroup;
-			++iCounterPartyGroupIndex)
-			dblBilateralCollateralAdjustment +=
-				_aMPEA[iCounterPartyGroupIndex].bilateralCollateralAdjustment();
+		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex < counterPartyGroupCount;
+			++counterPartyGroupIndex)
+		{
+			bilateralCollateralAdjustment +=
+				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].bilateralCollateralAdjustment();
+		}
 
-		return dblBilateralCollateralAdjustment;
+		return bilateralCollateralAdjustment;
 	}
 
 	@Override public double collateralAdjustment()
@@ -551,27 +658,33 @@ public class GroupPathExposureAdjustment implements org.drip.xva.cpty.PathExposu
 	@Override public double unilateralCreditAdjustment()
 		throws java.lang.Exception
 	{
-		double dblUnilateralCreditAdjustment = 0.;
-		int iNumCounterPartyGroup = _aMPEA.length;
+		double unilateralCreditAdjustment = 0.;
+		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;
 
-		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex < iNumCounterPartyGroup;
-			++iCounterPartyGroupIndex)
-			dblUnilateralCreditAdjustment += _aMPEA[iCounterPartyGroupIndex].unilateralCreditAdjustment();
+		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex < counterPartyGroupCount;
+			++counterPartyGroupIndex)
+		{
+			unilateralCreditAdjustment +=
+				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].unilateralCreditAdjustment();
+		}
 
-		return dblUnilateralCreditAdjustment;
+		return unilateralCreditAdjustment;
 	}
 
 	@Override public double bilateralCreditAdjustment()
 		throws java.lang.Exception
 	{
-		double dblBilateralCreditAdjustment = 0.;
-		int iNumCounterPartyGroup = _aMPEA.length;
+		double bilateralCreditAdjustment = 0.;
+		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;
 
-		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex < iNumCounterPartyGroup;
-			++iCounterPartyGroupIndex)
-			dblBilateralCreditAdjustment += _aMPEA[iCounterPartyGroupIndex].bilateralCreditAdjustment();
+		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex < counterPartyGroupCount;
+			++counterPartyGroupIndex)
+		{
+			bilateralCreditAdjustment +=
+				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].bilateralCreditAdjustment();
+		}
 
-		return dblBilateralCreditAdjustment;
+		return bilateralCreditAdjustment;
 	}
 
 	@Override public double creditAdjustment()
@@ -583,104 +696,125 @@ public class GroupPathExposureAdjustment implements org.drip.xva.cpty.PathExposu
 	@Override public double contraLiabilityCreditAdjustment()
 		throws java.lang.Exception
 	{
-		int iNumCounterPartyGroup = _aMPEA.length;
-		double dblContraLiabilityCreditAdjustment = 0.;
+		double contraLiabilityCreditAdjustment = 0.;
+		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;
 
-		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex < iNumCounterPartyGroup;
-			++iCounterPartyGroupIndex)
-			dblContraLiabilityCreditAdjustment +=
-				_aMPEA[iCounterPartyGroupIndex].contraLiabilityCreditAdjustment();
+		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex < counterPartyGroupCount;
+			++counterPartyGroupIndex)
+		{
+			contraLiabilityCreditAdjustment +=
+				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].contraLiabilityCreditAdjustment();
+		}
 
-		return dblContraLiabilityCreditAdjustment;
+		return contraLiabilityCreditAdjustment;
 	}
 
 	@Override public double debtAdjustment()
 	{
-		double dblDebtAdjustment = 0.;
-		int iNumCounterPartyGroup = _aMPEA.length;
+		double debtAdjustment = 0.;
+		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;
 
-		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex < iNumCounterPartyGroup;
-			++iCounterPartyGroupIndex)
-			dblDebtAdjustment += _aMPEA[iCounterPartyGroupIndex].debtAdjustment();
+		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex < counterPartyGroupCount;
+			++counterPartyGroupIndex)
+		{
+			debtAdjustment += _monoPathExposureAdjustmentArray[counterPartyGroupIndex].debtAdjustment();
+		}
 
-		return dblDebtAdjustment;
+		return debtAdjustment;
 	}
 
 	@Override public double fundingValueAdjustment()
 		throws java.lang.Exception
 	{
-		double dblFundingValueAdjustment = 0.;
-		int iNumCounterPartyGroup = _aMPEA.length;
+		double fundingValueAdjustment = 0.;
+		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;
 
-		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex < iNumCounterPartyGroup;
-			++iCounterPartyGroupIndex)
-			dblFundingValueAdjustment += _aMPEA[iCounterPartyGroupIndex].fundingValueAdjustment();
+		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex < counterPartyGroupCount;
+			++counterPartyGroupIndex)
+		{
+			fundingValueAdjustment +=
+				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].fundingValueAdjustment();
+		}
 
-		return dblFundingValueAdjustment;
+		return fundingValueAdjustment;
 	}
 
 	@Override public double fundingDebtAdjustment()
-			throws java.lang.Exception
+		throws java.lang.Exception
 	{
-		double dblFundingDebtAdjustment = 0.;
-		int iNumCounterPartyGroup = _aMPEA.length;
+		double fundingDebtAdjustment = 0.;
+		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;
 
-		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex < iNumCounterPartyGroup;
-			++iCounterPartyGroupIndex)
-			dblFundingDebtAdjustment += _aMPEA[iCounterPartyGroupIndex].fundingDebtAdjustment();
+		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex < counterPartyGroupCount;
+			++counterPartyGroupIndex)
+		{
+			fundingDebtAdjustment +=
+				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].fundingDebtAdjustment();
+		}
 
-		return dblFundingDebtAdjustment;
+		return fundingDebtAdjustment;
 	}
 
 	@Override public double fundingCostAdjustment()
 	{
-		double dblFundingCostAdjustment = 0.;
-		int iNumCounterPartyGroup = _aMPEA.length;
+		double fundingCostAdjustment = 0.;
+		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;
 
-		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex < iNumCounterPartyGroup;
-			++iCounterPartyGroupIndex)
-			dblFundingCostAdjustment += _aMPEA[iCounterPartyGroupIndex].fundingCostAdjustment();
+		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex < counterPartyGroupCount;
+			++counterPartyGroupIndex)
+		{
+			fundingCostAdjustment +=
+				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].fundingCostAdjustment();
+		}
 
-		return dblFundingCostAdjustment;
+		return fundingCostAdjustment;
 	}
 
 	@Override public double fundingBenefitAdjustment()
 	{
-		double dblFundingBenefitAdjustment = 0.;
-		int iNumCounterPartyGroup = _aMPEA.length;
+		double fundingBenefitAdjustment = 0.;
+		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;
 
-		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex < iNumCounterPartyGroup;
-			++iCounterPartyGroupIndex)
-			dblFundingBenefitAdjustment += _aMPEA[iCounterPartyGroupIndex].fundingBenefitAdjustment();
+		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex < counterPartyGroupCount;
+			++counterPartyGroupIndex)
+		{
+			fundingBenefitAdjustment +=
+				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].fundingBenefitAdjustment();
+		}
 
-		return dblFundingBenefitAdjustment;
+		return fundingBenefitAdjustment;
 	}
 
 	@Override public double symmetricFundingValueAdjustment()
 	{
-		int iNumCounterPartyGroup = _aMPEA.length;
-		double dblSymmetricFundingValueAdjustment = 0.;
+		double symmetricFundingValueAdjustment = 0.;
+		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;
 
-		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex < iNumCounterPartyGroup;
-			++iCounterPartyGroupIndex)
-			dblSymmetricFundingValueAdjustment +=
-				_aMPEA[iCounterPartyGroupIndex].symmetricFundingValueAdjustment();
+		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex < counterPartyGroupCount;
+			++counterPartyGroupIndex)
+		{
+			symmetricFundingValueAdjustment +=
+				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].symmetricFundingValueAdjustment();
+		}
 
-		return dblSymmetricFundingValueAdjustment;
+		return symmetricFundingValueAdjustment;
 	}
 
 	@Override public double totalAdjustment()
 		throws java.lang.Exception
 	{
-		double dblTotalAdjustment = 0.;
-		int iNumCounterPartyGroup = _aMPEA.length;
+		double totalAdjustment = 0.;
+		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;
 
-		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex < iNumCounterPartyGroup;
-			++iCounterPartyGroupIndex)
-			dblTotalAdjustment += _aMPEA[iCounterPartyGroupIndex].creditAdjustment() +
-				_aMPEA[iCounterPartyGroupIndex].debtAdjustment() +
-					_aMPEA[iCounterPartyGroupIndex].fundingValueAdjustment();
+		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex < counterPartyGroupCount;
+			++counterPartyGroupIndex)
+		{
+			totalAdjustment +=
+				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].creditAdjustment() +
+				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].debtAdjustment() +
+				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].fundingValueAdjustment();
+		}
 
-		return dblTotalAdjustment;
+		return totalAdjustment;
 	}
 }

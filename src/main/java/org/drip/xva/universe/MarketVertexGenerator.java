@@ -162,7 +162,7 @@ public class MarketVertexGenerator
 	 * @param counterPartyHazardRateFinishVertexArrayEvolver The Counter Party Hazard Rate Diffusive Evolver
 	 * @param counterPartyRecoveryRateEvolver The Counter Party Recovery Rate Diffusive Evolver
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @return The MarketVertexGenerator Instance from the Spot Date, the Period Tenor, and the Period Count
 	 */
 
 	public static final MarketVertexGenerator PeriodHorizon (
