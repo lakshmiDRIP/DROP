@@ -160,7 +160,7 @@ public class TrajectoryEvolutionScheme
 
 		org.drip.xva.universe.EntityMarketVertex counterPartyMarketVertex = finalMarketVertex.counterParty();
 
-		double finalPortfolioValue = finalMarketVertex.positionValue();
+		double finalPortfolioValue = finalMarketVertex.positionManifestValue();
 
 		double finalBankSeniorFundingNumeraire = bankMarketVertex.seniorFundingLatentState().nodal();
 
@@ -186,7 +186,7 @@ public class TrajectoryEvolutionScheme
 		double timeIncrement = marketEdge.vertexIncrement() / 365.25;
 
 		double portfolioCashChange = initialPortfolioHoldings *
-			_tradeablesContainer.position().cashAccumulationRate() * finalPortfolioValue * timeIncrement;
+			_tradeablesContainer.positionManifest().cashAccumulationRate() * finalPortfolioValue * timeIncrement;
 
 		org.drip.xva.universe.Tradeable counterPartyFundingTradeable =
 			_tradeablesContainer.counterPartyFunding();
@@ -217,7 +217,7 @@ public class TrajectoryEvolutionScheme
 				timeIncrement;
 
 		double derivativeXVAValueChange = -1. * (initialPortfolioHoldings * (finalPortfolioValue -
-			initialMarketVertex.positionValue()) + initialBankSeniorNumeraireHoldings *
+			initialMarketVertex.positionManifestValue()) + initialBankSeniorNumeraireHoldings *
 				(finalBankSeniorFundingNumeraire - emvBankStart.seniorFundingLatentState().nodal()) +
 					counterPartyHoldingsValueChange + (portfolioCashChange +
 						counterPartyCashAccumulation + bankCashAccumulation) * timeIncrement);

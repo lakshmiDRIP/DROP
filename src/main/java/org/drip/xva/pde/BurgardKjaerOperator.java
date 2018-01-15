@@ -154,7 +154,7 @@ public class BurgardKjaerOperator
 
 		double gainOnBankDefault = initialTrajectoryVertex.gainOnBankDefault();
 
-		double initialPortfolioValue = finalMarketVertex.positionValue();
+		double initialPortfolioValue = finalMarketVertex.positionManifestValue();
 
 		double portfolioValueBump = _pdeEvolutionControl.sensitivityShiftFactor() * initialPortfolioValue;
 
@@ -169,7 +169,7 @@ public class BurgardKjaerOperator
 		try
 		{
 			double[] bumpedThetaArray = new org.drip.xva.pde.ParabolicDifferentialOperator
-				(_tradeablesContainer.position()).thetaUpDown (
+				(_tradeablesContainer.positionManifest()).thetaUpDown (
 					initialTrajectoryVertex,
 					initialPortfolioValue,
 					portfolioValueBump
@@ -242,7 +242,7 @@ public class BurgardKjaerOperator
 		double bankExposure = closeOutMTM > 0. ? closeOutMTM : finalBankMarketVertex.seniorRecoveryRate() *
 			closeOutMTM;
 
-		double initialPortfolioValue = finalMarketVertex.positionValue();
+		double initialPortfolioValue = finalMarketVertex.positionManifestValue();
 
 		double portfolioValueBump = _pdeEvolutionControl.sensitivityShiftFactor() * initialPortfolioValue;
 
@@ -255,7 +255,7 @@ public class BurgardKjaerOperator
 		try
 		{
 			double[] bumpedThetaArray = new org.drip.xva.pde.ParabolicDifferentialOperator
-				(_tradeablesContainer.position()).thetaUpDown (
+				(_tradeablesContainer.positionManifest()).thetaUpDown (
 					initialTrajectoryVertex,
 					initialPortfolioValue,
 					portfolioValueBump

@@ -167,7 +167,7 @@ public class CorrelatedNumeraireXVAReplicationPortfolio {
 		System.out.println ("\t||" +
 			FormatUtil.FormatDouble (dblTime, 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (dblDerivativeXVAValueFinish, 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (mvFinish.positionValue(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (mvFinish.positionManifestValue(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (dblBankSeniorFundingNumeraireFinish, 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (dblCounterPartyFundingNumeraireFinish, 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (mvFinish.csaNumeraire().nodal(), 1, 6, 1.) + " | " +

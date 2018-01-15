@@ -153,7 +153,7 @@ public class XVAExplain {
 
 		double dblCashAccountAccumulationFinish = cae.accumulation();
 
-		double dblAssetNumeraireFinish = mvFinish.positionValue();
+		double dblAssetNumeraireFinish = mvFinish.positionManifestValue();
 
 		double dblBankSeniorFundingNumeraireFinish = mvFinish.bank().seniorFundingLatentState().nodal();
 
@@ -550,7 +550,7 @@ public class XVAExplain {
 		System.out.println ("\t||" +
 			FormatUtil.FormatDouble (1., 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (agvInitial.derivativeXVAValue(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (aMV[aMV.length - 1].positionValue(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (aMV[aMV.length - 1].positionManifestValue(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (1., 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (1., 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (1., 1, 6, 1.) + " | " +

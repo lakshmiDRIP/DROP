@@ -354,7 +354,7 @@ public class XVAMarketGeneration {
 		for (int i = 0; i < aMV.length; ++i)
 			System.out.println (
 				"\t|| " + aMV[i].anchorDate() + " => " +
-				FormatUtil.FormatDouble (aMV[i].positionValue(), 1, 6, 1.) + " | " +
+				FormatUtil.FormatDouble (aMV[i].positionManifestValue(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (aMV[i].overnightRate(), 1, 2, 100.) + "% | " +
 				FormatUtil.FormatDouble (aMV[i].overnightNumeraire().nodal(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (aMV[i].csaRate(), 1, 2, 100.) + "% | " +

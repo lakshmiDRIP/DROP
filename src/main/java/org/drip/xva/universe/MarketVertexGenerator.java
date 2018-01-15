@@ -144,9 +144,9 @@ public class MarketVertexGenerator
 	private org.drip.xva.universe.TradeablesContainer _tradeablesContainer = null;
 	private org.drip.measure.process.DiffusionEvolver _bankHazardRateEvolver = null;
 	private org.drip.measure.process.DiffusionEvolver _bankSeniorRecoveryRateEvolver = null;
-	private org.drip.measure.process.DiffusionEvolver _counterPartyHazardRateFinishVertexArrayEvolver = null;
 	private org.drip.measure.process.DiffusionEvolver _counterPartyRecoveryRateEvolver = null;
 	private org.drip.measure.process.DiffusionEvolver _bankSubordinateRecoveryRateEvolver = null;
+	private org.drip.measure.process.DiffusionEvolver _counterPartyHazardRateFinishVertexArrayEvolver = null;
 
 	/**
 	 * Construct a MarketVertexGenerator Instance from the Spot Date, the Period Tenor, and the Period Count
@@ -237,7 +237,8 @@ public class MarketVertexGenerator
 			null == (_tradeablesContainer = tradeablesContainer) ||
 			null == (_bankHazardRateEvolver = bankHazardRateEvolver) ||
 			null == (_bankSeniorRecoveryRateEvolver = bankSeniorRecoveryRateEvolver) ||
-			null == (_counterPartyHazardRateFinishVertexArrayEvolver = counterPartyHazardRateFinishVertexArrayEvolver) ||
+			null == (_counterPartyHazardRateFinishVertexArrayEvolver =
+				counterPartyHazardRateFinishVertexArrayEvolver) ||
 			null == (_counterPartyRecoveryRateEvolver = counterPartyRecoveryRateEvolver))
 		{
 			throw new java.lang.Exception ("MarketVertexGenerator Constructor => Invalid Inputs");
@@ -397,19 +398,19 @@ public class MarketVertexGenerator
 			return null;
 		}
 
-		org.drip.xva.universe.Tradeable position = _tradeablesContainer.position();
+		org.drip.xva.universe.Tradeable positionManifest = _tradeablesContainer.positionManifest();
 
 		org.drip.xva.universe.Tradeable bankSubordinateFundingNumeraire =
 			_tradeablesContainer.bankSubordinateFunding();
 
 		double bankSurvivalProbabilityExponent = 0.;
 		int eventVertexCount = _eventDateArray.length;
-		boolean positionEvolutionOn = null != position;
 		double counterPartySurvivalProbabilityExponent = 0.;
+		boolean positionEvolutionOn = null != positionManifest;
 		int terminalDate = _eventDateArray[eventVertexCount - 1];
 		org.drip.measure.realization.JumpDiffusionVertex[] csaNumeraireVertexArray = null;
-		org.drip.measure.realization.JumpDiffusionVertex[] positionValueVertexArray = null;
 		org.drip.measure.realization.JumpDiffusionVertex[] bankHazardRateVertexArray = null;
+		org.drip.measure.realization.JumpDiffusionVertex[] positionManifestVertexArray = null;
 		org.drip.measure.realization.JumpDiffusionVertex[] overnightNumeraireVertexArray = null;
 		org.drip.measure.realization.JumpDiffusionVertex[] bankSeniorRecoveryRateVertexArray = null;
 		org.drip.measure.realization.JumpDiffusionVertex[] counterPartyHazardRateFinishVertexArray = null;
@@ -437,7 +438,8 @@ public class MarketVertexGenerator
 
 		double initialBankSubordinateRecovery = initialBankVertex.subordinateRecoveryRate();
 
-		org.drip.xva.universe.EntityMarketVertex initialCounterPartyVertex = initialMarketVertex.counterParty();
+		org.drip.xva.universe.EntityMarketVertex initialCounterPartyVertex =
+			initialMarketVertex.counterParty();
 
 		org.drip.xva.universe.LatentStateMarketVertex subordinateFundingLatentState =
 			initialBankVertex.subordinateFundingLatentState();
@@ -451,19 +453,20 @@ public class MarketVertexGenerator
 
 		try
 		{
-			positionValueVertexArray = !positionEvolutionOn ? null : position.evolver().vertexSequence (
-				new org.drip.measure.realization.JumpDiffusionVertex (
-					_spotDate,
-					initialMarketVertex.positionValue(),
-					0.,
-					false
-				),
-				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
-					_ycfWidth,
-					unitEvolverSequence[ASSET]
-				),
-				_ycfWidth
-			);
+			positionManifestVertexArray = !positionEvolutionOn ? null :
+				positionManifest.evolver().vertexSequence (
+					new org.drip.measure.realization.JumpDiffusionVertex (
+						_spotDate,
+						initialMarketVertex.positionManifestValue(),
+						0.,
+						false
+					),
+					org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
+						_ycfWidth,
+						unitEvolverSequence[ASSET]
+					),
+					_ycfWidth
+				);
 
 			overnightNumeraireVertexArray = _tradeablesContainer.overnight().evolver().vertexSequenceReverse (
 				new org.drip.measure.realization.JumpDiffusionVertex (
@@ -702,7 +705,7 @@ public class MarketVertexGenerator
 
 				marketVertexArray[eventVertexIndex] = new org.drip.xva.universe.MarketVertex (
 					new org.drip.analytics.date.JulianDate (_eventDateArray[eventVertexIndex - 1]),
-					positionEvolutionOn ? positionValueVertexArray[eventVertexIndex].value() :
+					positionEvolutionOn ? positionManifestVertexArray[eventVertexIndex].value() :
 						java.lang.Double.NaN,
 					overnightRate,
 					new org.drip.xva.universe.LatentStateMarketVertex (
@@ -737,7 +740,7 @@ public class MarketVertexGenerator
 		{
 			marketVertexArray[0] = new org.drip.xva.universe.MarketVertex (
 				initialMarketVertex.anchorDate(),
-				initialMarketVertex.positionValue(),
+				initialMarketVertex.positionManifestValue(),
 				initialMarketVertex.overnightRate(),
 				new org.drip.xva.universe.LatentStateMarketVertex (
 					overnightIndexNumeraireStart,
@@ -778,7 +781,9 @@ public class MarketVertexGenerator
 					null
 				)
 			);
-		} catch (java.lang.Exception e) {
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 
 			return null;

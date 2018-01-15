@@ -2,6 +2,7 @@
 package org.drip.sample.xvasimulation;
 
 import org.drip.analytics.date.*;
+import org.drip.function.definition.R1ToR1;
 import org.drip.measure.dynamics.*;
 import org.drip.measure.process.*;
 import org.drip.measure.statistics.UnivariateDiscreteThin;
@@ -123,10 +124,9 @@ public class BaselFixFloatDigest
 
 		Tradeable tAsset = new Tradeable (
 			new DiffusionEvolver (
-				DiffusionEvaluatorLinearFader.Standard (
+				DiffusionEvaluatorLinear.Standard (
 					dblAssetNumeraireDrift,
-					dblAssetNumeraireVolatility,
-					iTerminationDate
+					dblAssetNumeraireVolatility
 				)
 			),
 			dblAssetNumeraireRepo
@@ -358,6 +358,13 @@ public class BaselFixFloatDigest
 
 		JulianDate dtSpot = DateUtil.Today();
 
+		JulianDate terminationDate = dtSpot;
+
+		for (int i = 0; i < eventCount; ++i)
+			terminationDate = terminationDate.addTenor (eventTenor);
+
+		final int maturityDate = terminationDate.julian();
+
 		/*
 		 * Group Settings
 		 */
@@ -379,7 +386,18 @@ public class BaselFixFloatDigest
 					dblBankThreshold
 				),
 				CounterPartyGroupSpecification.Standard ("CPGROUP")
-			)
+			),
+			new R1ToR1 (null)
+			{
+				@Override public double evaluate (
+					final double dblDate)
+					throws Exception
+				{
+					double dblTimeToHorizon = 1. * (maturityDate - dblDate) / 365.25;
+
+					return dblTimeToHorizon > 0. ? dblTimeToHorizon : 0.;
+				}
+			}
 		);
 
 		MarketVertex initialMarketVertex = MarketVertex.StartUp (

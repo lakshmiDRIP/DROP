@@ -71,8 +71,8 @@ package org.drip.xva.universe;
 public class MarketVertex
 {
 	private double _csaSpread = java.lang.Double.NaN;
-	public double _positionValue = java.lang.Double.NaN;
 	private double _overnightRate = java.lang.Double.NaN;
+	private double _positionManifestValue = java.lang.Double.NaN;
 	private org.drip.analytics.date.JulianDate _anchorDate = null;
 	private org.drip.xva.universe.EntityMarketVertex _bankEntityMarketVertex = null;
 	private org.drip.xva.universe.LatentStateMarketVertex _csaNumeraireMarketVertex = null;
@@ -83,7 +83,7 @@ public class MarketVertex
 	 * Generate an Initial Instance of MarketVertex
 	 * 
 	 * @param anchorDate The Anchor Date
-	 * @param positionValue Realized Position Value
+	 * @param positionManifestValue Realized Position Manifest Value
 	 * @param overnightNumeraire Realized Overnight Numeraire
 	 * @param csaNumeraire Realized CSA Numeraire
 	 * @param bankHazardRate Realized Bank Hazard Rate
@@ -98,7 +98,7 @@ public class MarketVertex
 
 	public static final MarketVertex StartUp (
 		final org.drip.analytics.date.JulianDate anchorDate,
-		final double positionValue,
+		final double positionManifestValue,
 		final double overnightNumeraire,
 		final double csaNumeraire,
 		final double bankHazardRate,
@@ -111,7 +111,7 @@ public class MarketVertex
 		try {
 			return new org.drip.xva.universe.MarketVertex (
 				anchorDate,
-				positionValue,
+				positionManifestValue,
 				0.,
 				new org.drip.xva.universe.LatentStateMarketVertex (
 					overnightNumeraire,
@@ -148,7 +148,7 @@ public class MarketVertex
 	 * MarketVertex Constructor
 	 * 
 	 * @param anchorDate The Vertex Date Anchor
-	 * @param positionValue The Realized Position Value
+	 * @param positionManifestValue The Realized Position Manifest Value
 	 * @param overnightRate The Realized Overnight Rate
 	 * @param overnightNumeraireMarketVertex The Realized Overnight Numeraire Market Vertex
 	 * @param csaSpread The Realized CSA Spread
@@ -161,7 +161,7 @@ public class MarketVertex
 
 	public MarketVertex (
 		final org.drip.analytics.date.JulianDate anchorDate,
-		final double positionValue,
+		final double positionManifestValue,
 		final double overnightRate,
 		final org.drip.xva.universe.LatentStateMarketVertex overnightNumeraireMarketVertex,
 		final double csaSpread,
@@ -179,7 +179,7 @@ public class MarketVertex
 			null == (_counterPartyEntityMarketVertex = counterPartyEntityMarketVertex))
 			throw new java.lang.Exception ("MarketVertex Constructor => Invalid Inputs");
 
-		_positionValue = positionValue;
+		_positionManifestValue = positionManifestValue;
 	}
 
 	/**
@@ -194,14 +194,14 @@ public class MarketVertex
 	}
 
 	/**
-	 * Retrieve the Realized Position Value
+	 * Retrieve the Realized Position Manifest Value
 	 * 
-	 * @return The Position Value
+	 * @return The Realized Position Manifest Value
 	 */
 
-	public double positionValue()
+	public double positionManifestValue()
 	{
-		return _positionValue;
+		return _positionManifestValue;
 	}
 
 	/**

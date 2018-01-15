@@ -71,8 +71,8 @@ package org.drip.xva.universe;
 public class TradeablesContainer
 {
 	private org.drip.xva.universe.Tradeable _csa = null;
-	private org.drip.xva.universe.Tradeable _position = null;
 	private org.drip.xva.universe.Tradeable _overnight = null;
+	private org.drip.xva.universe.Tradeable _positionManifest = null;
 	private org.drip.xva.universe.Tradeable _bankSeniorFunding = null;
 	private org.drip.xva.universe.Tradeable _counterPartyFunding = null;
 	private org.drip.xva.universe.Tradeable _bankSubordinateFunding = null;
@@ -80,7 +80,7 @@ public class TradeablesContainer
 	/**
 	 * LatentStateDynamicsContainer Constructor
 	 * 
-	 * @param position The Book of Traded Positions
+	 * @param positionManifest The Position Tradeable Manifest
 	 * @param overnight The Overnight Index Tradeable
 	 * @param csa The CSA Tradeable
 	 * @param bankSeniorFunding Bank Senior Funding Tradeable
@@ -91,7 +91,7 @@ public class TradeablesContainer
 	 */
 
 	public TradeablesContainer (
-		final org.drip.xva.universe.Tradeable position,
+		final org.drip.xva.universe.Tradeable positionManifest,
 		final org.drip.xva.universe.Tradeable overnight,
 		final org.drip.xva.universe.Tradeable csa,
 		final org.drip.xva.universe.Tradeable bankSeniorFunding,
@@ -105,19 +105,19 @@ public class TradeablesContainer
 			null == (_counterPartyFunding = counterPartyFunding))
 			throw new java.lang.Exception ("LatentStateDynamicsContainer Constructor => Invalid Inputs");
 
-		_position = position;
+		_positionManifest = positionManifest;
 		_bankSubordinateFunding = bankSubordinateFunding;
 	}
 
 	/**
-	 * Retrieve the Book of Traded Positions
+	 * Retrieve the Position Tradeable Manifest
 	 * 
-	 * @return The Book of Traded Positions
+	 * @return The Position Tradeable Manifest
 	 */
 
-	public org.drip.xva.universe.Tradeable position()
+	public org.drip.xva.universe.Tradeable positionManifest()
 	{
-		return _position;
+		return _positionManifest;
 	}
 
 	/**

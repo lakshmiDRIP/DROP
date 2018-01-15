@@ -428,7 +428,7 @@ public class EulerTrajectoryEvolutionScheme {
 		System.out.println ("\t||" +
 			FormatUtil.FormatDouble (1., 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (agvInitial.derivativeXVAValue(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (aMVBase[aMV.length - 1].positionValue(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (aMVBase[aMV.length - 1].positionManifestValue(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (aMVBase[aMV.length - 1].bank().seniorFundingLatentState().nodal(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (aMVBase[aMV.length - 1].counterParty().seniorFundingLatentState().nodal(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (aMVBase[aMV.length - 1].csaNumeraire().nodal(), 1, 6, 1.) + " | " +
@@ -467,7 +467,7 @@ public class EulerTrajectoryEvolutionScheme {
 			System.out.println ("\t||" +
 				FormatUtil.FormatDouble (etv.time(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (etv.positionGreekVertex().derivativeXVAValue(), 1, 6, 1.) + " | " +
-				FormatUtil.FormatDouble (aMVBase[i].positionValue(), 1, 6, 1.) + " | " +
+				FormatUtil.FormatDouble (aMVBase[i].positionManifestValue(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (aMVBase[i].bank().seniorFundingLatentState().nodal(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (aMVBase[i].counterParty().seniorFundingLatentState().nodal(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (aMVBase[i].csaNumeraire().nodal(), 1, 6, 1.) + " | " +
