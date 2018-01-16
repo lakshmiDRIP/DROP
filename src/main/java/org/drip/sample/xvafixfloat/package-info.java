@@ -5,4 +5,4 @@
  * @author Lakshmi Krishnamurthy
  */
 
-package org.drip.sample.xvasimulation;
+package org.drip.sample.xvafixfloat;

@@ -410,7 +410,6 @@ public class XVAExplain {
 		MarketVertexGenerator mvg = new MarketVertexGenerator (
 			iSpotDate,
 			aiVertexDate,
-			aadblCorrelationMatrix,
 			tc,
 			deBankHazardRate,
 			deBankSeniorRecoveryRate,
@@ -463,7 +462,10 @@ public class XVAExplain {
 			)
 		);
 
-		MarketVertex[] aMV = mvg.marketVertex (mvInitial);
+		MarketVertex[] aMV = mvg.marketVertex (
+			mvInitial,
+			aadblCorrelationMatrix
+		);
 
 		double dblDerivativeValue = dblTerminalXVADerivativeValue;
 		double dblDerivativeXVAValue = dblTerminalXVADerivativeValue;

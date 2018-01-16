@@ -284,7 +284,6 @@ public class EulerTrajectoryEvolutionScheme {
 		MarketVertexGenerator mvg = new MarketVertexGenerator (
 			iSpotDate,
 			aiVertexDate,
-			aadblCorrelationMatrix,
 			tc,
 			deBankHazardRate,
 			deBankSeniorRecoveryRate,
@@ -337,7 +336,10 @@ public class EulerTrajectoryEvolutionScheme {
 			)
 		);
 
-		MarketVertex[] aMVBase = mvg.marketVertex (mvInitial);
+		MarketVertex[] aMVBase = mvg.marketVertex (
+			mvInitial,
+			aadblCorrelationMatrix
+		);
 
 		MarketVertex[] aMV = new MarketVertex[aMVBase.length];
 		double dblDerivativeValue = dblTerminalXVADerivativeValue;

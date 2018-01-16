@@ -409,7 +409,6 @@ public class CorrelatedNumeraireXVAAttribution {
 		MarketVertexGenerator mvg = new MarketVertexGenerator (
 			iSpotDate,
 			aiVertexDate,
-			aadblCorrelationMatrix,
 			tc,
 			deBankHazardRate,
 			deBankSeniorRecoveryRate,
@@ -462,7 +461,10 @@ public class CorrelatedNumeraireXVAAttribution {
 			)
 		);
 
-		MarketVertex[] aMV = mvg.marketVertex (mvInitial);
+		MarketVertex[] aMV = mvg.marketVertex (
+			mvInitial,
+			aadblCorrelationMatrix
+		);
 
 		double dblDerivativeValue = dblTerminalXVADerivativeValue;
 		double dblDerivativeXVAValue = dblTerminalXVADerivativeValue;

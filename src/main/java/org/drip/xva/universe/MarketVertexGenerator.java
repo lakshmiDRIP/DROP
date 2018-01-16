@@ -140,7 +140,6 @@ public class MarketVertexGenerator
 	private int _spotDate = -1;
 	private double[] _ycfWidth = null;
 	private int[] _eventDateArray = null;
-	private double[][] _correlationMatrix = null;
 	private org.drip.xva.universe.TradeablesContainer _tradeablesContainer = null;
 	private org.drip.measure.process.DiffusionEvolver _bankHazardRateEvolver = null;
 	private org.drip.measure.process.DiffusionEvolver _bankSeniorRecoveryRateEvolver = null;
@@ -154,7 +153,6 @@ public class MarketVertexGenerator
 	 * @param spotDate The Spot Date
 	 * @param periodTenor The Period Tenor
 	 * @param periodCount The Period Count
-	 * @param correlationMatrix The Correlation Matrix
 	 * @param tradeablesContainer The Tradeables Container Instance
 	 * @param bankHazardRateEvolver The Bank Hazard Rate Diffusive Evolver
 	 * @param bankSeniorRecoveryRateEvolver The Bank Senior Recovery Rate Diffusive Evolver
@@ -169,7 +167,6 @@ public class MarketVertexGenerator
 		final int spotDate,
 		final java.lang.String periodTenor,
 		final int periodCount,
-		final double[][] correlationMatrix,
 		final org.drip.xva.universe.TradeablesContainer tradeablesContainer,
 		final org.drip.measure.process.DiffusionEvolver bankHazardRateEvolver,
 		final org.drip.measure.process.DiffusionEvolver bankSeniorRecoveryRateEvolver,
@@ -186,7 +183,6 @@ public class MarketVertexGenerator
 					periodTenor,
 					periodCount
 				),
-				correlationMatrix,
 				tradeablesContainer,
 				bankHazardRateEvolver,
 				bankSeniorRecoveryRateEvolver,
@@ -208,7 +204,6 @@ public class MarketVertexGenerator
 	 * 
 	 * @param spotDate The Spot Date
 	 * @param eventDateArray Array of the Event Dates
-	 * @param correlationMatrix The Correlation Matrix
 	 * @param tradeablesContainer The Tradeables Container Instance
 	 * @param bankHazardRateEvolver The Bank Hazard Rate Diffusive Evolver
 	 * @param bankSeniorRecoveryRateEvolver The Bank Senior Recovery Rate Diffusive Evolver
@@ -222,7 +217,6 @@ public class MarketVertexGenerator
 	public MarketVertexGenerator (
 		final int spotDate,
 		final int[] eventDateArray,
-		final double[][] correlationMatrix,
 		final org.drip.xva.universe.TradeablesContainer tradeablesContainer,
 		final org.drip.measure.process.DiffusionEvolver bankHazardRateEvolver,
 		final org.drip.measure.process.DiffusionEvolver bankSeniorRecoveryRateEvolver,
@@ -233,7 +227,6 @@ public class MarketVertexGenerator
 	{
 		if (0 >= (_spotDate = spotDate) ||
 			null == (_eventDateArray = eventDateArray) ||
-			null == (_correlationMatrix = correlationMatrix) ||
 			null == (_tradeablesContainer = tradeablesContainer) ||
 			null == (_bankHazardRateEvolver = bankHazardRateEvolver) ||
 			null == (_bankSeniorRecoveryRateEvolver = bankSeniorRecoveryRateEvolver) ||
@@ -245,12 +238,10 @@ public class MarketVertexGenerator
 		}
 
 		int eventVertexCount = _eventDateArray.length;
-		int dimensionCount = _correlationMatrix.length;
 		_ycfWidth = 0 == eventVertexCount ? null : new double[eventVertexCount];
 		_bankSubordinateRecoveryRateEvolver = bankSubordinateRecoveryRateEvolver;
 
 		if (0 == eventVertexCount ||
-			11 != dimensionCount ||
 			0. >= (_ycfWidth[0] = ((double) (_eventDateArray[0] - _spotDate)) / 365.25))
 		{
 			throw new java.lang.Exception ("MarketVertexGenerator Constructor => Invalid Inputs");
@@ -260,16 +251,6 @@ public class MarketVertexGenerator
 		{
 			if (0. >= (_ycfWidth[eventVertexIndex] = ((double) (_eventDateArray[eventVertexIndex] -
 				_eventDateArray[eventVertexIndex - 1])) / 365.25))
-			{
-				throw new java.lang.Exception ("MarketVertexGenerator Constructor => Invalid Inputs");
-			}
-		}
-
-		for (int dimensionIndex = 0; dimensionIndex < dimensionCount; ++dimensionIndex)
-		{
-			if (null == _correlationMatrix[dimensionIndex] ||
-				11 != _correlationMatrix[dimensionIndex].length ||
-				!org.drip.quant.common.NumberUtil.IsValid (_correlationMatrix[dimensionIndex]))
 			{
 				throw new java.lang.Exception ("MarketVertexGenerator Constructor => Invalid Inputs");
 			}
@@ -314,17 +295,6 @@ public class MarketVertexGenerator
 	public double[] timeWidth()
 	{
 		return _ycfWidth;
-	}
-
-	/**
-	 * Retrieve the Latent State Correlation Matrix
-	 * 
-	 * @return The Latent State Correlation Matrix
-	 */
-
-	public double[][] correlationMatrix()
-	{
-		return _correlationMatrix;
 	}
 
 	/**
@@ -391,11 +361,29 @@ public class MarketVertexGenerator
 	 */
 
 	public org.drip.xva.universe.MarketVertex[] marketVertex (
-		final org.drip.xva.universe.MarketVertex initialMarketVertex)
+		final org.drip.xva.universe.MarketVertex initialMarketVertex,
+		final double[][] correlationMatrix)
 	{
-		if (null == initialMarketVertex)
+		if (null == initialMarketVertex || null == correlationMatrix)
 		{
 			return null;
+		}
+
+		int dimensionCount = correlationMatrix.length;
+
+		if (11 != dimensionCount)
+		{
+			return null;
+		}
+
+		for (int dimensionIndex = 0; dimensionIndex < dimensionCount; ++dimensionIndex)
+		{
+			if (null == correlationMatrix[dimensionIndex] ||
+				11 != correlationMatrix[dimensionIndex].length ||
+				!org.drip.quant.common.NumberUtil.IsValid (correlationMatrix[dimensionIndex]))
+			{
+				return null;
+			}
 		}
 
 		org.drip.xva.universe.Tradeable positionManifest = _tradeablesContainer.positionManifest();
@@ -425,7 +413,7 @@ public class MarketVertexGenerator
 		double[][] unitEvolverSequence = org.drip.quant.linearalgebra.Matrix.Transpose (
 			org.drip.measure.discrete.SequenceGenerator.GaussianJoint (
 				eventVertexCount,
-				_correlationMatrix
+				correlationMatrix
 			)
 		);
 

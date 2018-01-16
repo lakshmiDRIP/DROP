@@ -70,6 +70,7 @@ public class PathSimulator
 {
 	private int _iCount = -1;
 	private org.drip.xva.dynamics.GroupSettings _groupSettings = null;
+	private org.drip.xva.dynamics.PathSimulatorScheme _simulatorScheme = null;
 	private org.drip.xva.universe.MarketVertexGenerator _marketVertexGenerator = null;
 	private org.drip.function.definition.R1ToR1 _r1ToR1PositionGroupValueGenerator = null;
 
@@ -97,29 +98,72 @@ public class PathSimulator
 		return positionGroupValueArray;
 	}
 
-	private double collateralBalance (
-		final org.drip.xva.universe.MarketVertex marketVertexLeft,
-		final org.drip.xva.universe.MarketVertex marketVertexRight,
-		final double positionValue)
+	private org.drip.measure.bridge.BrokenDateInterpolator brokenDateInterpolator (
+		final org.drip.xva.universe.MarketVertex[] marketVertexArray,
+		final double[] positionValueArray,
+		final int index)
 		throws java.lang.Exception
 	{
-		org.drip.analytics.date.JulianDate vertexDateRightJulian = marketVertexRight.anchorDate();
+		int brokenDateScheme = _simulatorScheme.brokenDateScheme();
 
-		int vertexDateLeft = marketVertexLeft.anchorDate().julian();
+		if (org.drip.xva.dynamics.BrokenDateScheme.LINEAR_TIME == brokenDateScheme)
+		{
+			return 0 == index ? null : new org.drip.measure.bridge.BrokenDateInterpolatorLinearT (
+				marketVertexArray[index - 1].anchorDate().julian(),
+				marketVertexArray[index].anchorDate().julian(),
+				positionValueArray[index - 1],
+				positionValueArray[index]
+			);
+		}
 
-		return new org.drip.xva.hypothecation.CollateralAmountEstimator (
+		if (org.drip.xva.dynamics.BrokenDateScheme.SQUARE_ROOT_OF_TIME == brokenDateScheme)
+		{
+			return 0 == index ? null : new org.drip.measure.bridge.BrokenDateInterpolatorSqrtT (
+				marketVertexArray[index - 1].anchorDate().julian(),
+				marketVertexArray[index].anchorDate().julian(),
+				positionValueArray[index - 1],
+				positionValueArray[index]
+			);
+		}
+
+		if (org.drip.xva.dynamics.BrokenDateScheme.THREE_POINT_BROWNIAN_BRIDGE == brokenDateScheme)
+		{
+			return 0 == index || 1 == index ? null : new
+				org.drip.measure.bridge.BrokenDateInterpolatorBrownian3P (
+					marketVertexArray[index - 2].anchorDate().julian(),
+					marketVertexArray[index - 1].anchorDate().julian(),
+					marketVertexArray[index].anchorDate().julian(),
+					positionValueArray[index - 2],
+					positionValueArray[index - 1],
+					positionValueArray[index]
+				);
+		}
+
+		return null;
+	}
+
+	private double collateralBalance (
+		final org.drip.xva.universe.MarketVertex[] marketVertexArray,
+		final double[] positionValueArray,
+		final int index)
+		throws java.lang.Exception
+	{
+		org.drip.measure.bridge.BrokenDateInterpolator brokenDateInterpolator = brokenDateInterpolator (
+			marketVertexArray,
+			positionValueArray,
+			index
+		);
+
+		return null == brokenDateInterpolator ? 0. : new org.drip.xva.hypothecation.CollateralAmountEstimator (
 			_groupSettings.collateralGroupSpecification(),
 			_groupSettings.counterPartyGroupSpecification(),
-			new org.drip.measure.bridge.BrokenDateInterpolatorLinearT (
-				vertexDateLeft,
-				vertexDateRightJulian.julian(),
-				marketVertexLeft.positionManifestValue() *
-					(null == _r1ToR1PositionGroupValueGenerator ? 1. :
-					_r1ToR1PositionGroupValueGenerator.evaluate (vertexDateLeft)),
-				positionValue
+			brokenDateInterpolator (
+				marketVertexArray,
+				positionValueArray,
+				index
 			),
 			java.lang.Double.NaN
-		).postingRequirement (vertexDateRightJulian);
+		).postingRequirement (marketVertexArray[index].anchorDate());
 	}
 
 	private double[] collateralBalanceArray (
@@ -133,10 +177,10 @@ public class PathSimulator
 		{
 			try
 			{
-				collateralBalanceArray[i] = 0 == i ? 0. : collateralBalance (
-					marketVertexArray[i - 1],
-					marketVertexArray[i],
-					positionValueArray[i]
+				collateralBalanceArray[i] = collateralBalance (
+					marketVertexArray,
+					positionValueArray,
+					i
 				);
 			}
 			catch (java.lang.Exception e)
@@ -155,18 +199,83 @@ public class PathSimulator
 		final double positionGroupValue,
 		final double realizedCashFlow,
 		final double collateralBalance,
-		final double hedgeError,
-		final org.drip.xva.universe.MarketEdge marketEdge,
-		final org.drip.xva.definition.CloseOutGeneral closeOutScheme)
+		final org.drip.xva.universe.MarketEdge marketEdge)
 	{
 		try
 		{
-			return new org.drip.xva.hypothecation.AlbaneseAndersenVertex (
-				anchorDate,
-				positionGroupValue,
-				realizedCashFlow,
-				collateralBalance
-			);
+			if (org.drip.xva.dynamics.PositionReplicationScheme.ALBANESE_ANDERSEN_VERTEX ==
+				_simulatorScheme.positionReplicationScheme())
+			{
+				return new org.drip.xva.hypothecation.AlbaneseAndersenVertex (
+					anchorDate,
+					positionGroupValue,
+					realizedCashFlow,
+					collateralBalance
+				);
+			}
+
+			if (org.drip.xva.dynamics.PositionReplicationScheme.BURGARD_KJAER_HEDGE_ERROR_DUAL_BOND_VERTEX ==
+				_simulatorScheme.positionReplicationScheme())
+			{
+				return org.drip.xva.hypothecation.BurgardKjaerVertexBuilder.HedgeErrorDualBond (
+					anchorDate,
+					positionGroupValue,
+					realizedCashFlow,
+					collateralBalance,
+					_simulatorScheme.hedgeError(),
+					marketEdge,
+					_simulatorScheme.closeOutScheme()
+				);
+			}
+
+			if (org.drip.xva.dynamics.PositionReplicationScheme.BURGARD_KJAER_SEMI_REPLICATION_DUAL_BOND_VERTEX
+				== _simulatorScheme.positionReplicationScheme())
+			{
+				return org.drip.xva.hypothecation.BurgardKjaerVertexBuilder.SemiReplicationDualBond (
+					anchorDate,
+					positionGroupValue,
+					realizedCashFlow,
+					collateralBalance,
+					marketEdge,
+					_simulatorScheme.closeOutScheme()
+				);
+			}
+
+			if (org.drip.xva.dynamics.PositionReplicationScheme.BURGARD_KJAER_GOLD_PLATED_TWO_WAY_CSA_VERTEX
+				== _simulatorScheme.positionReplicationScheme())
+			{
+				return org.drip.xva.hypothecation.BurgardKjaerVertexBuilder.GoldPlatedTwoWayCSA (
+					anchorDate,
+					positionGroupValue,
+					realizedCashFlow,
+					marketEdge,
+					_simulatorScheme.closeOutScheme()
+				);
+			}
+
+			if (org.drip.xva.dynamics.PositionReplicationScheme.BURGARD_KJAER_ONE_WAY_CSA_VERTEX ==
+				_simulatorScheme.positionReplicationScheme())
+			{
+				return org.drip.xva.hypothecation.BurgardKjaerVertexBuilder.OneWayCSA (
+					anchorDate,
+					positionGroupValue,
+					realizedCashFlow,
+					marketEdge,
+					_simulatorScheme.closeOutScheme()
+				);
+			}
+
+			if (org.drip.xva.dynamics.PositionReplicationScheme.BURGARD_KJAER_SET_OFF_VERTEX ==
+				_simulatorScheme.positionReplicationScheme())
+			{
+				return org.drip.xva.hypothecation.BurgardKjaerVertexBuilder.SetOff (
+					anchorDate,
+					positionGroupValue,
+					realizedCashFlow,
+					collateralBalance,
+					marketEdge
+				);
+			}
 		}
 		catch (java.lang.Exception e)
 		{
@@ -203,12 +312,10 @@ public class PathSimulator
 					positionGroupValueArray[j],
 					0.,
 					collateralBalanceArray[j],
-					0.,
 					0 == j ? null : new org.drip.xva.universe.MarketEdge (
 						marketVertexArray[j - 1],
 						marketVertexArray[j]
-					),
-					null
+					)
 				);
 			}
 			catch (java.lang.Exception e)
@@ -248,32 +355,41 @@ public class PathSimulator
 	}
 
 	private org.drip.xva.cpty.PathExposureAdjustment singleTrajectory (
-		final org.drip.xva.universe.MarketVertex initialMarketVertex)
+		final org.drip.xva.universe.MarketVertex initialMarketVertex,
+		final double[][] correlationMatrix)
 	{
 		try
 		{
-			org.drip.xva.universe.MarketPath marketPath = new org.drip.xva.universe.MarketPath
-				(_marketVertexGenerator.marketVertex (initialMarketVertex));
+			org.drip.xva.universe.MarketPath marketPath = new org.drip.xva.universe.MarketPath (
+				_marketVertexGenerator.marketVertex (
+					initialMarketVertex,
+					correlationMatrix
+				)
+			);
 
 			org.drip.xva.hypothecation.CollateralGroupPath[] collateralGroupPathArray =
 				collateralGroupPathArray (marketPath);
 
-			return new org.drip.xva.cpty.MonoPathExposureAdjustment (
-				new org.drip.xva.strategy.AlbaneseAndersenNettingGroupPath[]
-				{
-					new org.drip.xva.strategy.AlbaneseAndersenNettingGroupPath (
-						collateralGroupPathArray,
-						marketPath
-					)
-				},
-				new org.drip.xva.strategy.AlbaneseAndersenFundingGroupPath[]
-				{
-					new org.drip.xva.strategy.AlbaneseAndersenFundingGroupPath (
-						collateralGroupPathArray,
-						marketPath
-					)
-				}
-			);
+			if (org.drip.xva.dynamics.AdjustmentDigestScheme.ALBANESE_ANDERSEN_METRICS_POINTER ==
+				_simulatorScheme.adjustmentDigestScheme())
+			{
+				return new org.drip.xva.cpty.MonoPathExposureAdjustment (
+					new org.drip.xva.strategy.AlbaneseAndersenNettingGroupPath[]
+					{
+						new org.drip.xva.strategy.AlbaneseAndersenNettingGroupPath (
+							collateralGroupPathArray,
+							marketPath
+						)
+					},
+					new org.drip.xva.strategy.AlbaneseAndersenFundingGroupPath[]
+					{
+						new org.drip.xva.strategy.AlbaneseAndersenFundingGroupPath (
+							collateralGroupPathArray,
+							marketPath
+						)
+					}
+				);
+			}
 		}
 		catch (java.lang.Exception e)
 		{
@@ -305,6 +421,7 @@ public class PathSimulator
 				iCount,
 				marketVertexGenerator,
 				groupSettings,
+				org.drip.xva.dynamics.PathSimulatorScheme.AlbaneseAndersenVertex(),
 				new org.drip.function.r1tor1.FlatUnivariate (1.)
 			);
 		}
@@ -322,6 +439,7 @@ public class PathSimulator
 	 * @param iCount Path Count
 	 * @param marketVertexGenerator Market Vertex Generator
 	 * @param groupSettings Group Settings
+	 * @param simulatorScheme Path Simulator Scheme
 	 * @param r1ToR1PositionGroupValueGenerator R^1 To R^1 Position Group Value Generator
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
@@ -331,12 +449,14 @@ public class PathSimulator
 		final int iCount,
 		final org.drip.xva.universe.MarketVertexGenerator marketVertexGenerator,
 		final org.drip.xva.dynamics.GroupSettings groupSettings,
+		final org.drip.xva.dynamics.PathSimulatorScheme simulatorScheme,
 		final org.drip.function.definition.R1ToR1 r1ToR1PositionGroupValueGenerator)
 		throws java.lang.Exception
 	{
 		if (0 >= (_iCount = iCount) ||
 			null == (_marketVertexGenerator = marketVertexGenerator) ||
 			null == (_groupSettings = groupSettings) ||
+			null == (_simulatorScheme = simulatorScheme) ||
 			null == (_r1ToR1PositionGroupValueGenerator = r1ToR1PositionGroupValueGenerator))
 		{
 			throw new java.lang.Exception ("PathSimulator Constructor => Invalid Inputs");
@@ -377,6 +497,17 @@ public class PathSimulator
 	}
 
 	/**
+	 * Retrieve the Path Simulator Scheme
+	 * 
+	 * @return The Path Simulator Scheme
+	 */
+
+	public org.drip.xva.dynamics.PathSimulatorScheme scheme()
+	{
+		return _simulatorScheme;
+	}
+
+	/**
 	 * Retrieve the R^1 -> R^1 Position Group Value Generator
 	 * 
 	 * @return R^1 -> R^1 Position Group Value Generator
@@ -391,19 +522,23 @@ public class PathSimulator
 	 * Simulate the Realized State/Entity Values and their Aggregates over the Paths
 	 * 
 	 * @param initialMarketVertex The Initial Market Vertex
+	 * @param correlationMatrix The Correlation Matrix
 	 * 
 	 * @return The Exposure Adjustment Aggregator - Simulation Result
 	 */
 
 	public org.drip.xva.cpty.ExposureAdjustmentAggregator simulate (
-		final org.drip.xva.universe.MarketVertex initialMarketVertex)
+		final org.drip.xva.universe.MarketVertex initialMarketVertex,
+		final double[][] correlationMatrix)
 	{
 		org.drip.xva.cpty.PathExposureAdjustment[] pathExposureAdjustmentArray = new
 			org.drip.xva.cpty.PathExposureAdjustment[_iCount];
 
 		for (int i = 0; i < _iCount; ++i)
 		{
-			if (null == (pathExposureAdjustmentArray[i] = singleTrajectory (initialMarketVertex)))
+			if (null == (pathExposureAdjustmentArray[i] = singleTrajectory (
+				initialMarketVertex,
+				correlationMatrix)))
 			{
 				return null;
 			}

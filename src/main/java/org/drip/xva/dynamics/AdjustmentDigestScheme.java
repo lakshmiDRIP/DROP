@@ -47,8 +47,8 @@ package org.drip.xva.dynamics;
  */
 
 /**
- * PositionReplicationScheme holds the various Position Group Replication Schemes and their corresponding
- * 	Vertex Generation Mechanisms. The References are:
+ * AdjustmentDigestScheme contains Settings to the Schemes that generate Aggregated Valuation Adjustment
+ * 	Metrics. The References are:
  *  
  *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
  *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
@@ -67,42 +67,13 @@ package org.drip.xva.dynamics;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PositionReplicationScheme
+public class AdjustmentDigestScheme
 {
 
 	/**
-	 * Albanese Andersen Vertex Generator Scheme
+	 * Albanese Andersen Metrics Pointer Scheme
 	 */
 
-	public static final int ALBANESE_ANDERSEN_VERTEX = 1;
+	public static final int ALBANESE_ANDERSEN_METRICS_POINTER = 1;
 
-	/**
-	 * Burgard Kjaer Hedge Error Dual Bond Vertex Generator Scheme
-	 */
-
-	public static final int BURGARD_KJAER_HEDGE_ERROR_DUAL_BOND_VERTEX = 2;
-
-	/**
-	 * Burgard Kjaer Semi Replication Dual Bond Vertex Generator Scheme
-	 */
-
-	public static final int BURGARD_KJAER_SEMI_REPLICATION_DUAL_BOND_VERTEX = 3;
-
-	/**
-	 * Burgard Kjaer Gold Plated Two Way CSA Vertex Generator Scheme
-	 */
-
-	public static final int BURGARD_KJAER_GOLD_PLATED_TWO_WAY_CSA_VERTEX = 4;
-
-	/**
-	 * Burgard Kjaer One Way CSA Vertex Generator Scheme
-	 */
-
-	public static final int BURGARD_KJAER_ONE_WAY_CSA_VERTEX = 5;
-
-	/**
-	 * Burgard Kjaer One Way CSA Vertex Generator Scheme
-	 */
-
-	public static final int BURGARD_KJAER_SET_OFF_VERTEX = 6;
 }

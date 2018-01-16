@@ -1,5 +1,5 @@
 
-package org.drip.sample.xvasimulation;
+package org.drip.sample.xvafixfloat;
 
 import org.drip.analytics.date.*;
 import org.drip.function.definition.R1ToR1;
@@ -59,8 +59,9 @@ import org.drip.xva.universe.*;
  */
 
 /**
- * BaselFixFloatDigest simulates for various Latent States and Exposures for an Fix Float Swap and computes
- *  the XVA Metrics using the Basel Proxy-Style Fading Swap Volatility. The References are:
+ * AlbaneseAndersenBaselProxy simulates for various Latent States and Exposures for an Fix Float Swap and
+ *  computes the XVA Metrics using the Basel Proxy-Style Exposure Generator using Albanese Andersen
+ *  Vertexes. The References are:
  *  
  *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
  *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
@@ -79,7 +80,7 @@ import org.drip.xva.universe.*;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BaselFixFloatDigest
+public class AlbaneseAndersenBaselProxy
 {
 
 	private static final TradeablesContainer GenerateTradeablesContainer (
@@ -227,19 +228,6 @@ public class BaselFixFloatDigest
 			spotDate.julian(),
 			periodTenor,
 			periodCount,
-			new double[][] {
-				{1.00, 0.00, 0.20, 0.15, 0.05, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #0 ASSET NUMERAIRE
-				{0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #1 OVERNIGHT POLICY INDEX NUMERAIRE
-				{0.20, 0.00, 1.00, 0.13, 0.25, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #2 COLLATERAL SCHEME NUMERAIRE
-				{0.15, 0.00, 0.13, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #3 BANK HAZARD RATE
-				{0.05, 0.00, 0.25, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #4 BANK SENIOR FUNDING NUMERAIRE
-				{0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #5 BANK SENIOR RECOVERY RATE
-				{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00}, // #6 BANK SUBORDINATE FUNDING NUMERAIRE
-				{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00}, // #7 BANK SUBORDINATE RECOVERY RATE
-				{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00}, // #8 COUNTER PARTY HAZARD RATE
-				{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00}, // #9 COUNTER PARTY FUNDING NUMERAIRE
-				{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00}  // #10 COUNTER PARTY RECOVERY RATE
-			},
 			GenerateTradeablesContainer (
 				periodTenor,
 				periodCount,
@@ -387,6 +375,7 @@ public class BaselFixFloatDigest
 				),
 				CounterPartyGroupSpecification.Standard ("CPGROUP")
 			),
+			PathSimulatorScheme.AlbaneseAndersenVertex(),
 			new R1ToR1 (null)
 			{
 				@Override public double evaluate (
@@ -413,7 +402,22 @@ public class BaselFixFloatDigest
 			0.030 / (1 - 0.30) 	// dblCounterPartyFundingSpread
 		);
 
-		ExposureAdjustmentAggregator eaa = fixFloatPathSimulator.simulate (initialMarketVertex);
+		ExposureAdjustmentAggregator eaa = fixFloatPathSimulator.simulate (
+			initialMarketVertex,
+			new double[][] {
+				{1.00, 0.00, 0.20, 0.15, 0.05, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #0 ASSET NUMERAIRE
+				{0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #1 OVERNIGHT POLICY INDEX NUMERAIRE
+				{0.20, 0.00, 1.00, 0.13, 0.25, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #2 COLLATERAL SCHEME NUMERAIRE
+				{0.15, 0.00, 0.13, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #3 BANK HAZARD RATE
+				{0.05, 0.00, 0.25, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #4 BANK SENIOR FUNDING NUMERAIRE
+				{0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #5 BANK SENIOR RECOVERY RATE
+				{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00}, // #6 BANK SUBORDINATE FUNDING NUMERAIRE
+				{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00}, // #7 BANK SUBORDINATE RECOVERY RATE
+				{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00}, // #8 COUNTER PARTY HAZARD RATE
+				{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00}, // #9 COUNTER PARTY FUNDING NUMERAIRE
+				{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00}  // #10 COUNTER PARTY RECOVERY RATE
+			}
+		);
 
 		ExposureAdjustmentDigest ead = eaa.digest();
 

@@ -408,7 +408,6 @@ public class CorrelatedNumeraireXVAGreeks {
 		MarketVertexGenerator mvg = new MarketVertexGenerator (
 			iSpotDate,
 			aiVertexDate,
-			aadblCorrelationMatrix,
 			tc,
 			deBankHazardRate,
 			deBankSeniorRecoveryRate,
@@ -461,7 +460,10 @@ public class CorrelatedNumeraireXVAGreeks {
 			)
 		);
 
-		MarketVertex[] aMV = mvg.marketVertex (mvInitial);
+		MarketVertex[] aMV = mvg.marketVertex (
+			mvInitial,
+			aadblCorrelationMatrix
+		);
 
 		double dblDerivativeValue = dblTerminalXVADerivativeValue;
 		double dblDerivativeXVAValue = dblTerminalXVADerivativeValue;

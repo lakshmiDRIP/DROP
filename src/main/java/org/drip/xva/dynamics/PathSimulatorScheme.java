@@ -47,8 +47,8 @@ package org.drip.xva.dynamics;
  */
 
 /**
- * PositionReplicationScheme holds the various Position Group Replication Schemes and their corresponding
- * 	Vertex Generation Mechanisms. The References are:
+ * PathSimulatorScheme specifies the Hypothecation Vertex Generation Schemes for the Simulation. The
+ *  References are:
  *  
  *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
  *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
@@ -67,42 +67,123 @@ package org.drip.xva.dynamics;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PositionReplicationScheme
+public class PathSimulatorScheme
 {
+	private int _brokenDateScheme = -1;
+	private int _adjustmentDigestScheme = -1;
+	private int _positionReplicationScheme = -1;
+	private double _hedgeError = java.lang.Double.NaN;
+	private org.drip.xva.definition.CloseOutGeneral _closeOutScheme = null;
 
 	/**
-	 * Albanese Andersen Vertex Generator Scheme
+	 * Construct an Albanese Andersen Vertex Generator Based Path Simulator Scheme
+	 * 
+	 * @return The Albanese Andersen Vertex Generator Based Path Simulator Scheme
 	 */
 
-	public static final int ALBANESE_ANDERSEN_VERTEX = 1;
+	public static PathSimulatorScheme AlbaneseAndersenVertex()
+	{
+		try
+		{
+			return new PathSimulatorScheme (
+				org.drip.xva.dynamics.PositionReplicationScheme.ALBANESE_ANDERSEN_VERTEX,
+				org.drip.xva.dynamics.BrokenDateScheme.LINEAR_TIME,
+				org.drip.xva.dynamics.AdjustmentDigestScheme.ALBANESE_ANDERSEN_METRICS_POINTER,
+				0.,
+				null
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 
 	/**
-	 * Burgard Kjaer Hedge Error Dual Bond Vertex Generator Scheme
+	 * PathSimulatorScheme Constructor
+	 * 
+	 * @param positionReplicationScheme Position Replication Scheme
+	 * @param brokenDateScheme Broken Date Interpolation Scheme
+	 * @param adjustmentDigestScheme Adjustment Digest Scheme
+	 * @param hedgeError Hedge Error
+	 * @param closeoutScheme Close Out Scheme
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final int BURGARD_KJAER_HEDGE_ERROR_DUAL_BOND_VERTEX = 2;
+	public PathSimulatorScheme (
+		final int positionReplicationScheme,
+		final int brokenDateScheme,
+		final int adjustmentDigestScheme,
+		final double hedgeError,
+		final org.drip.xva.definition.CloseOutGeneral closeOutScheme)
+		throws java.lang.Exception
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (_hedgeError = hedgeError))
+		{
+			throw new java.lang.Exception ("PathSimulatorScheme Constructor => Invalid Inputs!");
+		}
+
+		_closeOutScheme = closeOutScheme;
+		_brokenDateScheme = brokenDateScheme;
+		_adjustmentDigestScheme = adjustmentDigestScheme;
+		_positionReplicationScheme = positionReplicationScheme;
+	}
 
 	/**
-	 * Burgard Kjaer Semi Replication Dual Bond Vertex Generator Scheme
+	 * Retrieve the Position Replication Scheme
+	 * 
+	 * @return The Position Replication Scheme
 	 */
 
-	public static final int BURGARD_KJAER_SEMI_REPLICATION_DUAL_BOND_VERTEX = 3;
+	public int positionReplicationScheme()
+	{
+		return _positionReplicationScheme;
+	}
 
 	/**
-	 * Burgard Kjaer Gold Plated Two Way CSA Vertex Generator Scheme
+	 * Retrieve the Broken Date Interpolation Scheme
+	 * 
+	 * @return The Broken Date Interpolation Scheme
 	 */
 
-	public static final int BURGARD_KJAER_GOLD_PLATED_TWO_WAY_CSA_VERTEX = 4;
+	public int brokenDateScheme()
+	{
+		return _brokenDateScheme;
+	}
 
 	/**
-	 * Burgard Kjaer One Way CSA Vertex Generator Scheme
+	 * Retrieve the Adjustment Digest Scheme
+	 * 
+	 * @return The Adjustment Digest Scheme
 	 */
 
-	public static final int BURGARD_KJAER_ONE_WAY_CSA_VERTEX = 5;
+	public int adjustmentDigestScheme()
+	{
+		return _adjustmentDigestScheme;
+	}
 
 	/**
-	 * Burgard Kjaer One Way CSA Vertex Generator Scheme
+	 * Retrieve the Hedge Error
+	 * 
+	 * @return The Hedge Error
 	 */
 
-	public static final int BURGARD_KJAER_SET_OFF_VERTEX = 6;
+	public double hedgeError()
+	{
+		return _hedgeError;
+	}
+
+	/**
+	 * Retrieve the Close Out Scheme
+	 * 
+	 * @return The Close Out Scheme
+	 */
+
+	public org.drip.xva.definition.CloseOutGeneral closeOutScheme()
+	{
+		return _closeOutScheme;
+	}
 }

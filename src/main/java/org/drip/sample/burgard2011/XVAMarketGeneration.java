@@ -267,7 +267,6 @@ public class XVAMarketGeneration {
 		MarketVertexGenerator mvg = new MarketVertexGenerator (
 			iSpotDate,
 			aiVertexDate,
-			aadblCorrelationMatrix,
 			new TradeablesContainer (
 				tAsset,
 				tOvernightIndex,
@@ -327,7 +326,10 @@ public class XVAMarketGeneration {
 			)
 		);
 
-		MarketVertex[] aMV = mvg.marketVertex (mvInitial);
+		MarketVertex[] aMV = mvg.marketVertex (
+			mvInitial,
+			aadblCorrelationMatrix
+		);
 
 		System.out.println();
 
