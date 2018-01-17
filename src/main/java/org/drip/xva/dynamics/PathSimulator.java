@@ -354,51 +354,6 @@ public class PathSimulator
 		return null;
 	}
 
-	private org.drip.xva.cpty.PathExposureAdjustment singleTrajectory (
-		final org.drip.xva.universe.MarketVertex initialMarketVertex,
-		final double[][] correlationMatrix)
-	{
-		try
-		{
-			org.drip.xva.universe.MarketPath marketPath = new org.drip.xva.universe.MarketPath (
-				_marketVertexGenerator.marketVertex (
-					initialMarketVertex,
-					correlationMatrix
-				)
-			);
-
-			org.drip.xva.hypothecation.CollateralGroupPath[] collateralGroupPathArray =
-				collateralGroupPathArray (marketPath);
-
-			if (org.drip.xva.dynamics.AdjustmentDigestScheme.ALBANESE_ANDERSEN_METRICS_POINTER ==
-				_simulatorScheme.adjustmentDigestScheme())
-			{
-				return new org.drip.xva.cpty.MonoPathExposureAdjustment (
-					new org.drip.xva.strategy.AlbaneseAndersenNettingGroupPath[]
-					{
-						new org.drip.xva.strategy.AlbaneseAndersenNettingGroupPath (
-							collateralGroupPathArray,
-							marketPath
-						)
-					},
-					new org.drip.xva.strategy.AlbaneseAndersenFundingGroupPath[]
-					{
-						new org.drip.xva.strategy.AlbaneseAndersenFundingGroupPath (
-							collateralGroupPathArray,
-							marketPath
-						)
-					}
-				);
-			}
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
 	/**
 	 * Generate a PathSimulator Instance with a Constant Position Group Value
 	 * 
@@ -413,7 +368,6 @@ public class PathSimulator
 		final int iCount,
 		final org.drip.xva.universe.MarketVertexGenerator marketVertexGenerator,
 		final org.drip.xva.dynamics.GroupSettings groupSettings)
-		throws java.lang.Exception
 	{
 		try
 		{
@@ -508,14 +462,68 @@ public class PathSimulator
 	}
 
 	/**
-	 * Retrieve the R^1 -> R^1 Position Group Value Generator
+	 * Retrieve the R^1 To R^1 Position Group Value Generator
 	 * 
-	 * @return R^1 -> R^1 Position Group Value Generator
+	 * @return R^1 To R^1 Position Group Value Generator
 	 */
 
 	public org.drip.function.definition.R1ToR1 positionGroupValueGenerator()
 	{
 		return _r1ToR1PositionGroupValueGenerator;
+	}
+
+	/**
+	 * Generate a Single Trajectory from the Specified Initial Market Vertex and the Evolver Sequence
+	 * 
+	 * @param initialMarketVertex The Initial Market Vertex
+	 * @param unitEvolverSequence The Evolver Sequence
+	 * 
+	 * @return Single Trajectory Path Exposure Adjustment
+	 */
+
+	public org.drip.xva.cpty.PathExposureAdjustment singleTrajectory (
+		final org.drip.xva.universe.MarketVertex initialMarketVertex,
+		final double[][] unitEvolverSequence)
+	{
+		try
+		{
+			org.drip.xva.universe.MarketPath marketPath = new org.drip.xva.universe.MarketPath (
+				_marketVertexGenerator.marketVertex (
+					initialMarketVertex,
+					unitEvolverSequence
+				)
+			);
+
+			org.drip.xva.hypothecation.CollateralGroupPath[] collateralGroupPathArray =
+				collateralGroupPathArray (marketPath);
+
+			if (org.drip.xva.dynamics.AdjustmentDigestScheme.ALBANESE_ANDERSEN_METRICS_POINTER ==
+				_simulatorScheme.adjustmentDigestScheme())
+			{
+				return new org.drip.xva.cpty.MonoPathExposureAdjustment (
+					new org.drip.xva.strategy.AlbaneseAndersenNettingGroupPath[]
+					{
+						new org.drip.xva.strategy.AlbaneseAndersenNettingGroupPath (
+							collateralGroupPathArray,
+							marketPath
+						)
+					},
+					new org.drip.xva.strategy.AlbaneseAndersenFundingGroupPath[]
+					{
+						new org.drip.xva.strategy.AlbaneseAndersenFundingGroupPath (
+							collateralGroupPathArray,
+							marketPath
+						)
+					}
+				);
+			}
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	/**
@@ -534,11 +542,17 @@ public class PathSimulator
 		org.drip.xva.cpty.PathExposureAdjustment[] pathExposureAdjustmentArray = new
 			org.drip.xva.cpty.PathExposureAdjustment[_iCount];
 
+		int randomCount = _marketVertexGenerator.vertexDates().length - 1;
+
 		for (int i = 0; i < _iCount; ++i)
 		{
 			if (null == (pathExposureAdjustmentArray[i] = singleTrajectory (
 				initialMarketVertex,
-				correlationMatrix)))
+				org.drip.quant.linearalgebra.Matrix.Transpose (
+					org.drip.measure.discrete.SequenceGenerator.GaussianJoint (
+						randomCount,
+						correlationMatrix
+					)))))
 			{
 				return null;
 			}

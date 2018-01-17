@@ -68,68 +68,80 @@ package org.drip.xva.strategy;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AlbaneseAndersenNettingGroupPath extends org.drip.xva.netting.CreditDebtGroupPath {
+public class AlbaneseAndersenNettingGroupPath extends org.drip.xva.netting.CreditDebtGroupPath
+{
 
 	/**
 	 * Generate a &quot;Mono&quot; AlbaneseAndersenNettingGroupPath Instance
 	 * 
-	 * @param hgp The &quot;Mono&quot; Hypothecation Group Path
-	 * @param mp The Market Path
+	 * @param collateralGroupPath The &quot;Mono&quot; Hypothecation Group Path
+	 * @param marketPath The Market Path
 	 * 
 	 * @return The &quot;Mono&quot; AlbaneseAndersenNettingGroupPath Instance
 	 */
 
 	public static final AlbaneseAndersenNettingGroupPath Mono (
-		final org.drip.xva.hypothecation.CollateralGroupPath hgp,
-		final org.drip.xva.universe.MarketPath mp)
+		final org.drip.xva.hypothecation.CollateralGroupPath collateralGroupPath,
+		final org.drip.xva.universe.MarketPath marketPath)
 	{
-		try {
-<span class="nc" id="L87">			return new org.drip.xva.strategy.AlbaneseAndersenNettingGroupPath (new</span>
-				org.drip.xva.hypothecation.CollateralGroupPath[] {hgp}, mp);
-<span class="nc" id="L89">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L90">			e.printStackTrace();</span>
+		try
+		{
+<span class="nc" id="L89">			return new org.drip.xva.strategy.AlbaneseAndersenNettingGroupPath (</span>
+				new org.drip.xva.hypothecation.CollateralGroupPath[]
+				{
+					collateralGroupPath
+				},
+				marketPath
+			);
+		}
+<span class="nc" id="L97">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L99">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L93">		return null;</span>
+<span class="nc" id="L102">		return null;</span>
 	}
 
 	/**
 	 * AlbaneseAndersenNettingGroupPath Constructor
 	 * 
-	 * @param aHGP Array of the Hypothecation Group Trajectory Paths
-	 * @param mp The Market Path
+	 * @param collateralGroupPathArray Array of the Hypothecation Group Trajectory Paths
+	 * @param marketPath The Market Path
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public AlbaneseAndersenNettingGroupPath (
-		final org.drip.xva.hypothecation.CollateralGroupPath[] aHGP,
-		final org.drip.xva.universe.MarketPath mp)
+		final org.drip.xva.hypothecation.CollateralGroupPath[] collateralGroupPathArray,
+		final org.drip.xva.universe.MarketPath marketPath)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L110">		super (aHGP, mp);</span>
-<span class="fc" id="L111">	}</span>
+<span class="fc" id="L119">		super (</span>
+			collateralGroupPathArray,
+			marketPath
+		);
+<span class="fc" id="L123">	}</span>
 
 	@Override public double creditAdjustment()
 		throws java.lang.Exception
 	{
-<span class="fc" id="L116">		return bilateralCreditAdjustment();</span>
+<span class="fc" id="L128">		return bilateralCreditAdjustment();</span>
 	}
 
 	@Override public double debtAdjustment()
 	{
-<span class="fc" id="L121">		return unilateralDebtAdjustment();</span>
+<span class="fc" id="L133">		return unilateralDebtAdjustment();</span>
 	}
 
 	@Override public double[] periodCreditAdjustment()
 		throws java.lang.Exception
 	{
-<span class="fc" id="L127">		return periodBilateralCreditAdjustment();</span>
+<span class="fc" id="L139">		return periodBilateralCreditAdjustment();</span>
 	}
 
 	@Override public double[] periodDebtAdjustment()
 	{
-<span class="fc" id="L132">		return periodUnilateralDebtAdjustment();</span>
+<span class="fc" id="L144">		return periodUnilateralDebtAdjustment();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

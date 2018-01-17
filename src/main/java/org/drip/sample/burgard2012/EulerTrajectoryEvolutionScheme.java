@@ -2,9 +2,11 @@
 package org.drip.sample.burgard2012;
 
 import org.drip.analytics.date.*;
+import org.drip.measure.discrete.SequenceGenerator;
 import org.drip.measure.dynamics.*;
 import org.drip.measure.process.*;
 import org.drip.quant.common.FormatUtil;
+import org.drip.quant.linearalgebra.Matrix;
 import org.drip.service.env.EnvManager;
 import org.drip.xva.definition.*;
 import org.drip.xva.derivative.*;
@@ -338,7 +340,12 @@ public class EulerTrajectoryEvolutionScheme {
 
 		MarketVertex[] aMVBase = mvg.marketVertex (
 			mvInitial,
-			aadblCorrelationMatrix
+			Matrix.Transpose (
+				SequenceGenerator.GaussianJoint (
+					iNumVertex,
+					aadblCorrelationMatrix
+				)
+			)
 		);
 
 		MarketVertex[] aMV = new MarketVertex[aMVBase.length];

@@ -2,10 +2,12 @@
 package org.drip.sample.burgard2011;
 
 import org.drip.analytics.date.*;
+import org.drip.measure.discrete.SequenceGenerator;
 import org.drip.measure.dynamics.*;
 import org.drip.measure.process.*;
 import org.drip.measure.realization.*;
 import org.drip.quant.common.FormatUtil;
+import org.drip.quant.linearalgebra.Matrix;
 import org.drip.service.env.EnvManager;
 import org.drip.xva.definition.*;
 import org.drip.xva.derivative.*;
@@ -463,7 +465,12 @@ public class CorrelatedNumeraireXVAAttribution {
 
 		MarketVertex[] aMV = mvg.marketVertex (
 			mvInitial,
-			aadblCorrelationMatrix
+			Matrix.Transpose (
+				SequenceGenerator.GaussianJoint (
+					iNumVertex,
+					aadblCorrelationMatrix
+				)
+			)
 		);
 
 		double dblDerivativeValue = dblTerminalXVADerivativeValue;

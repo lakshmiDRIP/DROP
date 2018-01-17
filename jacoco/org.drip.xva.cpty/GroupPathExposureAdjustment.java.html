@@ -68,34 +68,43 @@ package org.drip.xva.cpty;
  * @author Lakshmi Krishnamurthy
  */
 
-public class GroupPathExposureAdjustment implements org.drip.xva.cpty.PathExposureAdjustment {
-<span class="nc" id="L72">	private org.drip.xva.cpty.MonoPathExposureAdjustment[] _aMPEA = null;</span>
+public class GroupPathExposureAdjustment implements org.drip.xva.cpty.PathExposureAdjustment
+{
+<span class="nc" id="L73">	private org.drip.xva.cpty.MonoPathExposureAdjustment[] _monoPathExposureAdjustmentArray = null;</span>
 
 	/**
 	 * GroupPathExposureAdjustment Constructor
 	 * 
-	 * @param aMPEA Array of Single Counter Party Path Exposure Adjustments
+	 * @param monoPathExposureAdjustmentArray Array of Single Counter Party Path Exposure Adjustments
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public GroupPathExposureAdjustment (
-		final org.drip.xva.cpty.MonoPathExposureAdjustment[] aMPEA)
+		final org.drip.xva.cpty.MonoPathExposureAdjustment[] monoPathExposureAdjustmentArray)
 		throws java.lang.Exception
-<span class="nc" id="L85">	{</span>
-<span class="nc bnc" id="L86" title="All 4 branches missed.">		if (null == (_aMPEA = aMPEA) || 0 == _aMPEA.length)</span>
-<span class="nc" id="L87">			throw new java.lang.Exception (&quot;GroupPathExposureAdjustment Constructor =&gt; Invalid Inputs&quot;);</span>
-
-<span class="nc" id="L89">		int iNumCounterPartyGroup = _aMPEA.length;</span>
-
-<span class="nc bnc" id="L91" title="All 2 branches missed.">		if (0 == iNumCounterPartyGroup)</span>
-<span class="nc" id="L92">			throw new java.lang.Exception (&quot;GroupPathExposureAdjustment Constructor =&gt; Invalid Inputs&quot;);</span>
-
-<span class="nc bnc" id="L94" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumCounterPartyGroup; ++i) {</span>
-<span class="nc bnc" id="L95" title="All 2 branches missed.">			if (null == _aMPEA[i])</span>
-<span class="nc" id="L96">				throw new java.lang.Exception (&quot;GroupPathExposureAdjustment Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L86">	{</span>
+<span class="nc bnc" id="L87" title="All 4 branches missed.">		if (null == (_monoPathExposureAdjustmentArray = monoPathExposureAdjustmentArray) ||</span>
+			0 == _monoPathExposureAdjustmentArray.length)
+		{
+<span class="nc" id="L90">			throw new java.lang.Exception (&quot;GroupPathExposureAdjustment Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L98">	}</span>
+
+<span class="nc" id="L93">		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;</span>
+
+<span class="nc bnc" id="L95" title="All 2 branches missed.">		if (0 == counterPartyGroupCount)</span>
+		{
+<span class="nc" id="L97">			throw new java.lang.Exception (&quot;GroupPathExposureAdjustment Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc bnc" id="L100" title="All 2 branches missed.">		for (int i = 0; i &lt; counterPartyGroupCount; ++i)</span>
+		{
+<span class="nc bnc" id="L102" title="All 2 branches missed.">			if (null == _monoPathExposureAdjustmentArray[i])</span>
+			{
+<span class="nc" id="L104">				throw new java.lang.Exception (&quot;GroupPathExposureAdjustment Constructor =&gt; Invalid Inputs&quot;);</span>
+			}
+		}
+<span class="nc" id="L107">	}</span>
 
 	/**
 	 * Retrieve the Array of Counter Party Group Paths
@@ -105,583 +114,708 @@ public class GroupPathExposureAdjustment implements org.drip.xva.cpty.PathExposu
 
 	public org.drip.xva.cpty.MonoPathExposureAdjustment[] counterPartyGroupPaths()
 	{
-<span class="nc" id="L108">		return _aMPEA;</span>
+<span class="nc" id="L117">		return _monoPathExposureAdjustmentArray;</span>
 	}
 
-	@Override public org.drip.analytics.date.JulianDate[] anchors()
+	@Override public org.drip.analytics.date.JulianDate[] anchorDates()
 	{
-<span class="nc" id="L113">		return _aMPEA[0].anchors();</span>
+<span class="nc" id="L122">		return _monoPathExposureAdjustmentArray[0].anchorDates();</span>
 	}
 
 	@Override public double[] collateralizedExposure()
 	{
-<span class="nc" id="L118">		int iNumVertex = anchors().length;</span>
+<span class="nc" id="L127">		int vertexCount = anchorDates().length;</span>
 
-<span class="nc" id="L120">		int iNumCounterPartyGroup = _aMPEA.length;</span>
-<span class="nc" id="L121">		double[] adblCollateralizedExposure = new double[iNumVertex];</span>
+<span class="nc" id="L129">		double[] collateralizedExposure = new double[vertexCount];</span>
+<span class="nc" id="L130">		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;</span>
 
-<span class="nc bnc" id="L123" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumVertex; ++j)</span>
-<span class="nc" id="L124">			adblCollateralizedExposure[j] = 0.;</span>
-
-<span class="nc bnc" id="L126" title="All 2 branches missed.">		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex &lt; iNumCounterPartyGroup;</span>
-<span class="nc" id="L127">			++iCounterPartyGroupIndex) {</span>
-<span class="nc" id="L128">			double[] adblCounterPartyGroupCollateralizedExposure =</span>
-<span class="nc" id="L129">				_aMPEA[iCounterPartyGroupIndex].collateralizedExposure();</span>
-
-<span class="nc bnc" id="L131" title="All 2 branches missed.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="nc" id="L132">				adblCollateralizedExposure[iVertexIndex] +=</span>
-					adblCounterPartyGroupCollateralizedExposure[iVertexIndex];
+<span class="nc bnc" id="L132" title="All 2 branches missed.">		for (int j = 0; j &lt; vertexCount; ++j)</span>
+		{
+<span class="nc" id="L134">			collateralizedExposure[j] = 0.;</span>
 		}
 
-<span class="nc" id="L136">		return adblCollateralizedExposure;</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex &lt; counterPartyGroupCount;</span>
+<span class="nc" id="L138">			++counterPartyGroupIndex)</span>
+		{
+<span class="nc" id="L140">			double[] counterPartyGroupCollateralizedExposure =</span>
+<span class="nc" id="L141">				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].collateralizedExposure();</span>
+
+<span class="nc bnc" id="L143" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+			{
+<span class="nc" id="L145">				collateralizedExposure[vertexIndex] += counterPartyGroupCollateralizedExposure[vertexIndex];</span>
+			}
+		}
+
+<span class="nc" id="L149">		return collateralizedExposure;</span>
 	}
 
 	@Override public double[] collateralizedExposurePV()
 	{
-<span class="nc" id="L141">		int iNumVertex = anchors().length;</span>
+<span class="nc" id="L154">		int vertexCount = anchorDates().length;</span>
 
-<span class="nc" id="L143">		int iNumCounterPartyGroup = _aMPEA.length;</span>
-<span class="nc" id="L144">		double[] adblCollateralizedExposurePV = new double[iNumVertex];</span>
+<span class="nc" id="L156">		double[] collateralizedExposurePV = new double[vertexCount];</span>
+<span class="nc" id="L157">		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;</span>
 
-<span class="nc bnc" id="L146" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumVertex; ++j)</span>
-<span class="nc" id="L147">			adblCollateralizedExposurePV[j] = 0.;</span>
-
-<span class="nc bnc" id="L149" title="All 2 branches missed.">		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex &lt; iNumCounterPartyGroup;</span>
-<span class="nc" id="L150">			++iCounterPartyGroupIndex) {</span>
-<span class="nc" id="L151">			double[] adblCounterPartyGroupCollateralizedExposurePV =</span>
-<span class="nc" id="L152">				_aMPEA[iCounterPartyGroupIndex].collateralizedExposurePV();</span>
-
-<span class="nc bnc" id="L154" title="All 2 branches missed.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="nc" id="L155">				adblCollateralizedExposurePV[iVertexIndex] +=</span>
-					adblCounterPartyGroupCollateralizedExposurePV[iVertexIndex];
+<span class="nc bnc" id="L159" title="All 2 branches missed.">		for (int j = 0; j &lt; vertexCount; ++j)</span>
+		{
+<span class="nc" id="L161">			collateralizedExposurePV[j] = 0.;</span>
 		}
 
-<span class="nc" id="L159">		return adblCollateralizedExposurePV;</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex &lt; counterPartyGroupCount;</span>
+<span class="nc" id="L165">			++counterPartyGroupIndex)</span>
+		{
+<span class="nc" id="L167">			double[] counterPartyGroupCollateralizedExposurePV =</span>
+<span class="nc" id="L168">				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].collateralizedExposurePV();</span>
+
+<span class="nc bnc" id="L170" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+			{
+<span class="nc" id="L172">				collateralizedExposurePV[vertexIndex] +=</span>
+					counterPartyGroupCollateralizedExposurePV[vertexIndex];
+			}
+		}
+
+<span class="nc" id="L177">		return collateralizedExposurePV;</span>
 	}
 
 	@Override public double[] uncollateralizedExposure()
 	{
-<span class="nc" id="L164">		int iNumVertex = anchors().length;</span>
+<span class="nc" id="L182">		int vertexCount = anchorDates().length;</span>
 
-<span class="nc" id="L166">		int iNumCounterPartyGroup = _aMPEA.length;</span>
-<span class="nc" id="L167">		double[] adblUncollateralizedExposure = new double[iNumVertex];</span>
+<span class="nc" id="L184">		double[] uncollateralizedExposure = new double[vertexCount];</span>
+<span class="nc" id="L185">		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;</span>
 
-<span class="nc bnc" id="L169" title="All 2 branches missed.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="nc" id="L170">			adblUncollateralizedExposure[iVertexIndex] = 0.;</span>
-
-<span class="nc bnc" id="L172" title="All 2 branches missed.">		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex &lt; iNumCounterPartyGroup;</span>
-<span class="nc" id="L173">			++iCounterPartyGroupIndex) {</span>
-<span class="nc" id="L174">			double[] adblPathUncollateralizedExposure =</span>
-<span class="nc" id="L175">				_aMPEA[iCounterPartyGroupIndex].uncollateralizedExposure();</span>
-
-<span class="nc bnc" id="L177" title="All 2 branches missed.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="nc" id="L178">				adblUncollateralizedExposure[iVertexIndex] += adblPathUncollateralizedExposure[iVertexIndex];</span>
+<span class="nc bnc" id="L187" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+		{
+<span class="nc" id="L189">			uncollateralizedExposure[vertexIndex] = 0.;</span>
 		}
 
-<span class="nc" id="L181">		return adblUncollateralizedExposure;</span>
+<span class="nc bnc" id="L192" title="All 2 branches missed.">		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex &lt; counterPartyGroupCount;</span>
+<span class="nc" id="L193">			++counterPartyGroupIndex)</span>
+		{
+<span class="nc" id="L195">			double[] pathUncollateralizedExposure =</span>
+<span class="nc" id="L196">				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].uncollateralizedExposure();</span>
+
+<span class="nc bnc" id="L198" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+			{
+<span class="nc" id="L200">				uncollateralizedExposure[vertexIndex] += pathUncollateralizedExposure[vertexIndex];</span>
+			}
+		}
+
+<span class="nc" id="L204">		return uncollateralizedExposure;</span>
 	}
 
 	@Override public double[] uncollateralizedExposurePV()
 	{
-<span class="nc" id="L186">		int iNumVertex = anchors().length;</span>
+<span class="nc" id="L209">		int vertexCount = anchorDates().length;</span>
 
-<span class="nc" id="L188">		int iNumCounterPartyGroup = _aMPEA.length;</span>
-<span class="nc" id="L189">		double[] adblUncollateralizedExposurePV = new double[iNumVertex];</span>
+<span class="nc" id="L211">		double[] uncollateralizedExposurePV = new double[vertexCount];</span>
+<span class="nc" id="L212">		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;</span>
 
-<span class="nc bnc" id="L191" title="All 2 branches missed.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="nc" id="L192">			adblUncollateralizedExposurePV[iVertexIndex] = 0.;</span>
-
-<span class="nc bnc" id="L194" title="All 2 branches missed.">		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex &lt; iNumCounterPartyGroup;</span>
-<span class="nc" id="L195">			++iCounterPartyGroupIndex) {</span>
-<span class="nc" id="L196">			double[] adblPathUncollateralizedExposurePV =</span>
-<span class="nc" id="L197">				_aMPEA[iCounterPartyGroupIndex].uncollateralizedExposurePV();</span>
-
-<span class="nc bnc" id="L199" title="All 2 branches missed.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="nc" id="L200">				adblUncollateralizedExposurePV[iVertexIndex] +=</span>
-					adblPathUncollateralizedExposurePV[iVertexIndex];
+<span class="nc bnc" id="L214" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+		{
+<span class="nc" id="L216">			uncollateralizedExposurePV[vertexIndex] = 0.;</span>
 		}
 
-<span class="nc" id="L204">		return adblUncollateralizedExposurePV;</span>
+<span class="nc bnc" id="L219" title="All 2 branches missed.">		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex &lt; counterPartyGroupCount;</span>
+<span class="nc" id="L220">			++counterPartyGroupIndex)</span>
+		{
+<span class="nc" id="L222">			double[] pathUncollateralizedExposurePV =</span>
+<span class="nc" id="L223">				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].uncollateralizedExposurePV();</span>
+
+<span class="nc bnc" id="L225" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+			{
+<span class="nc" id="L227">				uncollateralizedExposurePV[vertexIndex] += pathUncollateralizedExposurePV[vertexIndex];</span>
+			}
+		}
+
+<span class="nc" id="L231">		return uncollateralizedExposurePV;</span>
 	}
 
 	@Override public double[] collateralizedPositiveExposure()
 	{
-<span class="nc" id="L209">		int iNumVertex = anchors().length;</span>
+<span class="nc" id="L236">		int vertexCount = anchorDates().length;</span>
 
-<span class="nc" id="L211">		int iNumCounterPartyGroup = _aMPEA.length;</span>
-<span class="nc" id="L212">		double[] adblCollateralizedPositiveExposure = new double[iNumVertex];</span>
+<span class="nc" id="L238">		double[] collateralizedPositiveExposure = new double[vertexCount];</span>
+<span class="nc" id="L239">		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;</span>
 
-<span class="nc bnc" id="L214" title="All 2 branches missed.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="nc" id="L215">			adblCollateralizedPositiveExposure[iVertexIndex] = 0.;</span>
-
-<span class="nc bnc" id="L217" title="All 2 branches missed.">		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex &lt; iNumCounterPartyGroup;</span>
-<span class="nc" id="L218">			++iCounterPartyGroupIndex) {</span>
-<span class="nc" id="L219">			double[] adblPathCollateralizedPositiveExposure =</span>
-<span class="nc" id="L220">				_aMPEA[iCounterPartyGroupIndex].collateralizedPositiveExposure();</span>
-
-<span class="nc bnc" id="L222" title="All 2 branches missed.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="nc" id="L223">				adblCollateralizedPositiveExposure[iVertexIndex] +=</span>
-					adblPathCollateralizedPositiveExposure[iVertexIndex];
+<span class="nc bnc" id="L241" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+		{
+<span class="nc" id="L243">			collateralizedPositiveExposure[vertexIndex] = 0.;</span>
 		}
 
-<span class="nc" id="L227">		return adblCollateralizedPositiveExposure;</span>
+<span class="nc bnc" id="L246" title="All 2 branches missed.">		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex &lt; counterPartyGroupCount;</span>
+<span class="nc" id="L247">			++counterPartyGroupIndex)</span>
+		{
+<span class="nc" id="L249">			double[] pathCollateralizedPositiveExposure =</span>
+<span class="nc" id="L250">				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].collateralizedPositiveExposure();</span>
+
+<span class="nc bnc" id="L252" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+			{
+<span class="nc" id="L254">				collateralizedPositiveExposure[vertexIndex] +=</span>
+					pathCollateralizedPositiveExposure[vertexIndex];
+			}
+		}
+
+<span class="nc" id="L259">		return collateralizedPositiveExposure;</span>
 	}
 
 	@Override public double[] collateralizedPositiveExposurePV()
 	{
-<span class="nc" id="L232">		int iNumVertex = anchors().length;</span>
+<span class="nc" id="L264">		int vertexCount = anchorDates().length;</span>
 
-<span class="nc" id="L234">		int iNumCounterPartyGroup = _aMPEA.length;</span>
-<span class="nc" id="L235">		double[] adblCollateralizedPositiveExposurePV = new double[iNumVertex];</span>
+<span class="nc" id="L266">		double[] collateralizedPositiveExposurePV = new double[vertexCount];</span>
+<span class="nc" id="L267">		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;</span>
 
-<span class="nc bnc" id="L237" title="All 2 branches missed.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="nc" id="L238">			adblCollateralizedPositiveExposurePV[iVertexIndex] = 0.;</span>
-
-<span class="nc bnc" id="L240" title="All 2 branches missed.">		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex &lt; iNumCounterPartyGroup;</span>
-<span class="nc" id="L241">			++iCounterPartyGroupIndex) {</span>
-<span class="nc" id="L242">			double[] adblPathCollateralizedPositiveExposurePV =</span>
-<span class="nc" id="L243">				_aMPEA[iCounterPartyGroupIndex].collateralizedPositiveExposurePV();</span>
-
-<span class="nc bnc" id="L245" title="All 2 branches missed.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="nc" id="L246">				adblCollateralizedPositiveExposurePV[iVertexIndex] +=</span>
-					adblPathCollateralizedPositiveExposurePV[iVertexIndex];
+<span class="nc bnc" id="L269" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+		{
+<span class="nc" id="L271">			collateralizedPositiveExposurePV[vertexIndex] = 0.;</span>
 		}
 
-<span class="nc" id="L250">		return adblCollateralizedPositiveExposurePV;</span>
+<span class="nc bnc" id="L274" title="All 2 branches missed.">		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex &lt; counterPartyGroupCount;</span>
+<span class="nc" id="L275">			++counterPartyGroupIndex)</span>
+		{
+<span class="nc" id="L277">			double[] pathCollateralizedPositiveExposurePV =</span>
+<span class="nc" id="L278">				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].collateralizedPositiveExposurePV();</span>
+
+<span class="nc bnc" id="L280" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+			{
+<span class="nc" id="L282">				collateralizedPositiveExposurePV[vertexIndex] +=</span>
+					pathCollateralizedPositiveExposurePV[vertexIndex];
+			}
+		}
+
+<span class="nc" id="L287">		return collateralizedPositiveExposurePV;</span>
 	}
 
 	@Override public double[] uncollateralizedPositiveExposure()
 	{
-<span class="nc" id="L255">		int iNumVertex = anchors().length;</span>
+<span class="nc" id="L292">		int vertexCount = anchorDates().length;</span>
 
-<span class="nc" id="L257">		int iNumCounterPartyGroup = _aMPEA.length;</span>
-<span class="nc" id="L258">		double[] adblUncollateralizedPositiveExposure = new double[iNumVertex];</span>
+<span class="nc" id="L294">		double[] uncollateralizedPositiveExposure = new double[vertexCount];</span>
+<span class="nc" id="L295">		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;</span>
 
-<span class="nc bnc" id="L260" title="All 2 branches missed.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="nc" id="L261">			adblUncollateralizedPositiveExposure[iVertexIndex] = 0.;</span>
-
-<span class="nc bnc" id="L263" title="All 2 branches missed.">		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex &lt; iNumCounterPartyGroup;</span>
-<span class="nc" id="L264">			++iCounterPartyGroupIndex) {</span>
-<span class="nc" id="L265">			double[] adblPathUncollateralizedPositiveExposure =</span>
-<span class="nc" id="L266">				_aMPEA[iCounterPartyGroupIndex].uncollateralizedPositiveExposure();</span>
-
-<span class="nc bnc" id="L268" title="All 2 branches missed.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="nc" id="L269">				adblUncollateralizedPositiveExposure[iVertexIndex] +=</span>
-					adblPathUncollateralizedPositiveExposure[iVertexIndex];
+<span class="nc bnc" id="L297" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+		{
+<span class="nc" id="L299">			uncollateralizedPositiveExposure[vertexIndex] = 0.;</span>
 		}
 
-<span class="nc" id="L273">		return adblUncollateralizedPositiveExposure;</span>
+<span class="nc bnc" id="L302" title="All 2 branches missed.">		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex &lt; counterPartyGroupCount;</span>
+<span class="nc" id="L303">			++counterPartyGroupIndex)</span>
+		{
+<span class="nc" id="L305">			double[] pathUncollateralizedPositiveExposure =</span>
+<span class="nc" id="L306">				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].uncollateralizedPositiveExposure();</span>
+
+<span class="nc bnc" id="L308" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+			{
+<span class="nc" id="L310">				uncollateralizedPositiveExposure[vertexIndex] +=</span>
+					pathUncollateralizedPositiveExposure[vertexIndex];
+			}
+		}
+
+<span class="nc" id="L315">		return uncollateralizedPositiveExposure;</span>
 	}
 
 	@Override public double[] uncollateralizedPositiveExposurePV()
 	{
-<span class="nc" id="L278">		int iNumVertex = anchors().length;</span>
+<span class="nc" id="L320">		int vertexCount = anchorDates().length;</span>
 
-<span class="nc" id="L280">		int iNumCounterPartyGroup = _aMPEA.length;</span>
-<span class="nc" id="L281">		double[] adblUncollateralizedPositiveExposurePV = new double[iNumVertex];</span>
+<span class="nc" id="L322">		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;</span>
+<span class="nc" id="L323">		double[] uncollateralizedPositiveExposurePV = new double[vertexCount];</span>
 
-<span class="nc bnc" id="L283" title="All 2 branches missed.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="nc" id="L284">			adblUncollateralizedPositiveExposurePV[iVertexIndex] = 0.;</span>
-
-<span class="nc bnc" id="L286" title="All 2 branches missed.">		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex &lt; iNumCounterPartyGroup;</span>
-<span class="nc" id="L287">			++iCounterPartyGroupIndex) {</span>
-<span class="nc" id="L288">			double[] adblPathUncollateralizedPositiveExposurePV =</span>
-<span class="nc" id="L289">				_aMPEA[iCounterPartyGroupIndex].uncollateralizedPositiveExposurePV();</span>
-
-<span class="nc bnc" id="L291" title="All 2 branches missed.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="nc" id="L292">				adblUncollateralizedPositiveExposurePV[iVertexIndex] +=</span>
-					adblPathUncollateralizedPositiveExposurePV[iVertexIndex];
+<span class="nc bnc" id="L325" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+		{
+<span class="nc" id="L327">			uncollateralizedPositiveExposurePV[vertexIndex] = 0.;</span>
 		}
 
-<span class="nc" id="L296">		return adblUncollateralizedPositiveExposurePV;</span>
+<span class="nc bnc" id="L330" title="All 2 branches missed.">		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex &lt; counterPartyGroupCount;</span>
+<span class="nc" id="L331">			++counterPartyGroupIndex)</span>
+		{
+<span class="nc" id="L333">			double[] pathUncollateralizedPositiveExposurePV =</span>
+<span class="nc" id="L334">				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].uncollateralizedPositiveExposurePV();</span>
+
+<span class="nc bnc" id="L336" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+			{
+<span class="nc" id="L338">				uncollateralizedPositiveExposurePV[vertexIndex] +=</span>
+					pathUncollateralizedPositiveExposurePV[vertexIndex];
+			}
+		}
+
+<span class="nc" id="L343">		return uncollateralizedPositiveExposurePV;</span>
 	}
 
 	@Override public double[] collateralizedNegativeExposure()
 	{
-<span class="nc" id="L301">		int iNumVertex = anchors().length;</span>
+<span class="nc" id="L348">		int vertexCount = anchorDates().length;</span>
 
-<span class="nc" id="L303">		int iNumCounterPartyGroup = _aMPEA.length;</span>
-<span class="nc" id="L304">		double[] adblCollateralizedNegativeExposure = new double[iNumVertex];</span>
+<span class="nc" id="L350">		double[] collateralizedNegativeExposure = new double[vertexCount];</span>
+<span class="nc" id="L351">		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;</span>
 
-<span class="nc bnc" id="L306" title="All 2 branches missed.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="nc" id="L307">			adblCollateralizedNegativeExposure[iVertexIndex] = 0.;</span>
-
-<span class="nc bnc" id="L309" title="All 2 branches missed.">		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex &lt; iNumCounterPartyGroup;</span>
-<span class="nc" id="L310">			++iCounterPartyGroupIndex) {</span>
-<span class="nc" id="L311">			double[] adblPathCollateralizedNegativeExposure =</span>
-<span class="nc" id="L312">				_aMPEA[iCounterPartyGroupIndex].collateralizedNegativeExposure();</span>
-
-<span class="nc bnc" id="L314" title="All 2 branches missed.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="nc" id="L315">				adblCollateralizedNegativeExposure[iVertexIndex] +=</span>
-					adblPathCollateralizedNegativeExposure[iVertexIndex];
+<span class="nc bnc" id="L353" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+		{
+<span class="nc" id="L355">			collateralizedNegativeExposure[vertexIndex] = 0.;</span>
 		}
 
-<span class="nc" id="L319">		return adblCollateralizedNegativeExposure;</span>
+<span class="nc bnc" id="L358" title="All 2 branches missed.">		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex &lt; counterPartyGroupCount;</span>
+<span class="nc" id="L359">			++counterPartyGroupIndex)</span>
+		{
+<span class="nc" id="L361">			double[] pathCollateralizedNegativeExposure =</span>
+<span class="nc" id="L362">				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].collateralizedNegativeExposure();</span>
+
+<span class="nc bnc" id="L364" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+			{
+<span class="nc" id="L366">				collateralizedNegativeExposure[vertexIndex] +=</span>
+					pathCollateralizedNegativeExposure[vertexIndex];
+			}
+		}
+
+<span class="nc" id="L371">		return collateralizedNegativeExposure;</span>
 	}
 
 	@Override public double[] collateralizedNegativeExposurePV()
 	{
-<span class="nc" id="L324">		int iNumVertex = anchors().length;</span>
+<span class="nc" id="L376">		int vertexCount = anchorDates().length;</span>
 
-<span class="nc" id="L326">		int iNumCounterPartyGroup = _aMPEA.length;</span>
-<span class="nc" id="L327">		double[] adblCollateralizedNegativeExposurePV = new double[iNumVertex];</span>
+<span class="nc" id="L378">		double[] collateralizedNegativeExposurePV = new double[vertexCount];</span>
+<span class="nc" id="L379">		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;</span>
 
-<span class="nc bnc" id="L329" title="All 2 branches missed.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="nc" id="L330">			adblCollateralizedNegativeExposurePV[iVertexIndex] = 0.;</span>
-
-<span class="nc bnc" id="L332" title="All 2 branches missed.">		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex &lt; iNumCounterPartyGroup;</span>
-<span class="nc" id="L333">			++iCounterPartyGroupIndex) {</span>
-<span class="nc" id="L334">			double[] adblPathCollateralizedNegativeExposurePV =</span>
-<span class="nc" id="L335">				_aMPEA[iCounterPartyGroupIndex].collateralizedNegativeExposurePV();</span>
-
-<span class="nc bnc" id="L337" title="All 2 branches missed.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="nc" id="L338">				adblCollateralizedNegativeExposurePV[iVertexIndex] +=</span>
-					adblPathCollateralizedNegativeExposurePV[iVertexIndex];
+<span class="nc bnc" id="L381" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+		{
+<span class="nc" id="L383">			collateralizedNegativeExposurePV[vertexIndex] = 0.;</span>
 		}
 
-<span class="nc" id="L342">		return adblCollateralizedNegativeExposurePV;</span>
+<span class="nc bnc" id="L386" title="All 2 branches missed.">		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex &lt; counterPartyGroupCount;</span>
+<span class="nc" id="L387">			++counterPartyGroupIndex)</span>
+		{
+<span class="nc" id="L389">			double[] pathCollateralizedNegativeExposurePV =</span>
+<span class="nc" id="L390">				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].collateralizedNegativeExposurePV();</span>
+
+<span class="nc bnc" id="L392" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+			{
+<span class="nc" id="L394">				collateralizedNegativeExposurePV[vertexIndex] +=</span>
+					pathCollateralizedNegativeExposurePV[vertexIndex];
+			}
+		}
+
+<span class="nc" id="L399">		return collateralizedNegativeExposurePV;</span>
 	}
 
 	@Override public double[] uncollateralizedNegativeExposure()
 	{
-<span class="nc" id="L347">		int iNumVertex = anchors().length;</span>
+<span class="nc" id="L404">		int vertexCount = anchorDates().length;</span>
 
-<span class="nc" id="L349">		int iNumCounterPartyGroup = _aMPEA.length;</span>
-<span class="nc" id="L350">		double[] adblUncollateralizedNegativeExposure = new double[iNumVertex];</span>
+<span class="nc" id="L406">		double[] uncollateralizedNegativeExposure = new double[vertexCount];</span>
+<span class="nc" id="L407">		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;</span>
 
-<span class="nc bnc" id="L352" title="All 2 branches missed.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="nc" id="L353">			adblUncollateralizedNegativeExposure[iVertexIndex] = 0.;</span>
-
-<span class="nc bnc" id="L355" title="All 2 branches missed.">		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex &lt; iNumCounterPartyGroup;</span>
-<span class="nc" id="L356">			++iCounterPartyGroupIndex) {</span>
-<span class="nc" id="L357">			double[] adblPathUncollateralizedNegativeExposure =</span>
-<span class="nc" id="L358">				_aMPEA[iCounterPartyGroupIndex].uncollateralizedNegativeExposure();</span>
-
-<span class="nc bnc" id="L360" title="All 2 branches missed.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="nc" id="L361">				adblUncollateralizedNegativeExposure[iVertexIndex] +=</span>
-					adblPathUncollateralizedNegativeExposure[iVertexIndex];
+<span class="nc bnc" id="L409" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+		{
+<span class="nc" id="L411">			uncollateralizedNegativeExposure[vertexIndex] = 0.;</span>
 		}
 
-<span class="nc" id="L365">		return adblUncollateralizedNegativeExposure;</span>
+<span class="nc bnc" id="L414" title="All 2 branches missed.">		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex &lt; counterPartyGroupCount;</span>
+<span class="nc" id="L415">			++counterPartyGroupIndex)</span>
+		{
+<span class="nc" id="L417">			double[] adblPathUncollateralizedNegativeExposure =</span>
+<span class="nc" id="L418">				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].uncollateralizedNegativeExposure();</span>
+
+<span class="nc bnc" id="L420" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+			{
+<span class="nc" id="L422">				uncollateralizedNegativeExposure[vertexIndex] +=</span>
+					adblPathUncollateralizedNegativeExposure[vertexIndex];
+			}
+		}
+
+<span class="nc" id="L427">		return uncollateralizedNegativeExposure;</span>
 	}
 
 	@Override public double[] uncollateralizedNegativeExposurePV()
 	{
-<span class="nc" id="L370">		int iNumVertex = anchors().length;</span>
+<span class="nc" id="L432">		int vertexCount = anchorDates().length;</span>
 
-<span class="nc" id="L372">		int iNumCounterPartyGroup = _aMPEA.length;</span>
-<span class="nc" id="L373">		double[] adblUncollateralizedNegativeExposurePV = new double[iNumVertex];</span>
+<span class="nc" id="L434">		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;</span>
+<span class="nc" id="L435">		double[] uncollateralizedNegativeExposurePV = new double[vertexCount];</span>
 
-<span class="nc bnc" id="L375" title="All 2 branches missed.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="nc" id="L376">			adblUncollateralizedNegativeExposurePV[iVertexIndex] = 0.;</span>
-
-<span class="nc bnc" id="L378" title="All 2 branches missed.">		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex &lt; iNumCounterPartyGroup;</span>
-<span class="nc" id="L379">			++iCounterPartyGroupIndex) {</span>
-<span class="nc" id="L380">			double[] adblPathUncollateralizedNegativeExposurePV =</span>
-<span class="nc" id="L381">				_aMPEA[iCounterPartyGroupIndex].uncollateralizedNegativeExposurePV();</span>
-
-<span class="nc bnc" id="L383" title="All 2 branches missed.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="nc" id="L384">				adblUncollateralizedNegativeExposurePV[iVertexIndex] +=</span>
-					adblPathUncollateralizedNegativeExposurePV[iVertexIndex];
+<span class="nc bnc" id="L437" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+		{
+<span class="nc" id="L439">			uncollateralizedNegativeExposurePV[vertexIndex] = 0.;</span>
 		}
 
-<span class="nc" id="L388">		return adblUncollateralizedNegativeExposurePV;</span>
+<span class="nc bnc" id="L442" title="All 2 branches missed.">		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex &lt; counterPartyGroupCount;</span>
+<span class="nc" id="L443">			++counterPartyGroupIndex)</span>
+		{
+<span class="nc" id="L445">			double[] pathUncollateralizedNegativeExposurePV =</span>
+<span class="nc" id="L446">				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].uncollateralizedNegativeExposurePV();</span>
+
+<span class="nc bnc" id="L448" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+			{
+<span class="nc" id="L450">				uncollateralizedNegativeExposurePV[vertexIndex] +=</span>
+					pathUncollateralizedNegativeExposurePV[vertexIndex];
+			}
+		}
+
+<span class="nc" id="L455">		return uncollateralizedNegativeExposurePV;</span>
 	}
 
 	@Override public double[] creditExposure()
 	{
-<span class="nc" id="L393">		int iNumVertex = anchors().length;</span>
+<span class="nc" id="L460">		int vertexCount = anchorDates().length;</span>
 
-<span class="nc" id="L395">		int iNumCounterPartyGroup = _aMPEA.length;</span>
-<span class="nc" id="L396">		double[] adblCreditExposure = new double[iNumVertex];</span>
+<span class="nc" id="L462">		double[] adblCreditExposure = new double[vertexCount];</span>
+<span class="nc" id="L463">		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;</span>
 
-<span class="nc bnc" id="L398" title="All 2 branches missed.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="nc" id="L399">			adblCreditExposure[iVertexIndex] = 0.;</span>
-
-<span class="nc bnc" id="L401" title="All 2 branches missed.">		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex &lt; iNumCounterPartyGroup;</span>
-<span class="nc" id="L402">			++iCounterPartyGroupIndex) {</span>
-<span class="nc" id="L403">			double[] adblPathCreditExposure = _aMPEA[iCounterPartyGroupIndex].creditExposure();</span>
-
-<span class="nc bnc" id="L405" title="All 2 branches missed.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="nc" id="L406">				adblCreditExposure[iVertexIndex] += adblPathCreditExposure[iVertexIndex];</span>
+<span class="nc bnc" id="L465" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+		{
+<span class="nc" id="L467">			adblCreditExposure[vertexIndex] = 0.;</span>
 		}
 
-<span class="nc" id="L409">		return adblCreditExposure;</span>
+<span class="nc bnc" id="L470" title="All 2 branches missed.">		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex &lt; counterPartyGroupCount;</span>
+<span class="nc" id="L471">			++counterPartyGroupIndex)</span>
+		{
+<span class="nc" id="L473">			double[] pathCreditExposure =</span>
+<span class="nc" id="L474">				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].creditExposure();</span>
+
+<span class="nc bnc" id="L476" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+			{
+<span class="nc" id="L478">				adblCreditExposure[vertexIndex] += pathCreditExposure[vertexIndex];</span>
+			}
+		}
+
+<span class="nc" id="L482">		return adblCreditExposure;</span>
 	}
 
 	@Override public double[] creditExposurePV()
 	{
-<span class="nc" id="L414">		int iNumVertex = anchors().length;</span>
+<span class="nc" id="L487">		int vertexCount = anchorDates().length;</span>
 
-<span class="nc" id="L416">		int iNumCounterPartyGroup = _aMPEA.length;</span>
-<span class="nc" id="L417">		double[] adblCreditExposure = new double[iNumVertex];</span>
+<span class="nc" id="L489">		double[] adblCreditExposure = new double[vertexCount];</span>
+<span class="nc" id="L490">		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;</span>
 
-<span class="nc bnc" id="L419" title="All 2 branches missed.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="nc" id="L420">			adblCreditExposure[iVertexIndex] = 0.;</span>
-
-<span class="nc bnc" id="L422" title="All 2 branches missed.">		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex &lt; iNumCounterPartyGroup;</span>
-<span class="nc" id="L423">			++iCounterPartyGroupIndex) {</span>
-<span class="nc" id="L424">			double[] adblPathCreditExposure = _aMPEA[iCounterPartyGroupIndex].creditExposurePV();</span>
-
-<span class="nc bnc" id="L426" title="All 2 branches missed.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="nc" id="L427">				adblCreditExposure[iVertexIndex] += adblPathCreditExposure[iVertexIndex];</span>
+<span class="nc bnc" id="L492" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+		{
+<span class="nc" id="L494">			adblCreditExposure[vertexIndex] = 0.;</span>
 		}
 
-<span class="nc" id="L430">		return adblCreditExposure;</span>
+<span class="nc bnc" id="L497" title="All 2 branches missed.">		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex &lt; counterPartyGroupCount;</span>
+<span class="nc" id="L498">			++counterPartyGroupIndex)</span>
+		{
+<span class="nc" id="L500">			double[] pathCreditExposure =</span>
+<span class="nc" id="L501">				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].creditExposurePV();</span>
+
+<span class="nc bnc" id="L503" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+			{
+<span class="nc" id="L505">				adblCreditExposure[vertexIndex] += pathCreditExposure[vertexIndex];</span>
+			}
+		}
+
+<span class="nc" id="L509">		return adblCreditExposure;</span>
 	}
 
 	@Override public double[] debtExposure()
 	{
-<span class="nc" id="L435">		int iNumVertex = anchors().length;</span>
+<span class="nc" id="L514">		int vertexCount = anchorDates().length;</span>
 
-<span class="nc" id="L437">		int iNumCounterPartyGroup = _aMPEA.length;</span>
-<span class="nc" id="L438">		double[] adblDebtExposure = new double[iNumVertex];</span>
+<span class="nc" id="L516">		double[] debtExposure = new double[vertexCount];</span>
+<span class="nc" id="L517">		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;</span>
 
-<span class="nc bnc" id="L440" title="All 2 branches missed.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="nc" id="L441">			adblDebtExposure[iVertexIndex] = 0.;</span>
-
-<span class="nc bnc" id="L443" title="All 2 branches missed.">		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex &lt; iNumCounterPartyGroup;</span>
-<span class="nc" id="L444">			++iCounterPartyGroupIndex) {</span>
-<span class="nc" id="L445">			double[] adblPathDebtExposure = _aMPEA[iCounterPartyGroupIndex].debtExposure();</span>
-
-<span class="nc bnc" id="L447" title="All 2 branches missed.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="nc" id="L448">				adblDebtExposure[iVertexIndex] += adblPathDebtExposure[iVertexIndex];</span>
+<span class="nc bnc" id="L519" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+		{
+<span class="nc" id="L521">			debtExposure[vertexIndex] = 0.;</span>
 		}
 
-<span class="nc" id="L451">		return adblDebtExposure;</span>
+<span class="nc bnc" id="L524" title="All 2 branches missed.">		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex &lt; counterPartyGroupCount;</span>
+<span class="nc" id="L525">			++counterPartyGroupIndex)</span>
+		{
+<span class="nc" id="L527">			double[] pathDebtExposure =</span>
+<span class="nc" id="L528">				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].debtExposure();</span>
+
+<span class="nc bnc" id="L530" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+			{
+<span class="nc" id="L532">				debtExposure[vertexIndex] += pathDebtExposure[vertexIndex];</span>
+			}
+		}
+
+<span class="nc" id="L536">		return debtExposure;</span>
 	}
 
 	@Override public double[] debtExposurePV()
 	{
-<span class="nc" id="L456">		int iNumVertex = anchors().length;</span>
+<span class="nc" id="L541">		int vertexCount = anchorDates().length;</span>
 
-<span class="nc" id="L458">		int iNumCounterPartyGroup = _aMPEA.length;</span>
-<span class="nc" id="L459">		double[] adblDebtExposure = new double[iNumVertex];</span>
+<span class="nc" id="L543">		double[] debtExposure = new double[vertexCount];</span>
+<span class="nc" id="L544">		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;</span>
 
-<span class="nc bnc" id="L461" title="All 2 branches missed.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="nc" id="L462">			adblDebtExposure[iVertexIndex] = 0.;</span>
-
-<span class="nc bnc" id="L464" title="All 2 branches missed.">		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex &lt; iNumCounterPartyGroup;</span>
-<span class="nc" id="L465">			++iCounterPartyGroupIndex) {</span>
-<span class="nc" id="L466">			double[] adblPathDebtExposure = _aMPEA[iCounterPartyGroupIndex].debtExposurePV();</span>
-
-<span class="nc bnc" id="L468" title="All 2 branches missed.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="nc" id="L469">				adblDebtExposure[iVertexIndex] += adblPathDebtExposure[iVertexIndex];</span>
+<span class="nc bnc" id="L546" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+		{
+<span class="nc" id="L548">			debtExposure[vertexIndex] = 0.;</span>
 		}
 
-<span class="nc" id="L472">		return adblDebtExposure;</span>
+<span class="nc bnc" id="L551" title="All 2 branches missed.">		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex &lt; counterPartyGroupCount;</span>
+<span class="nc" id="L552">			++counterPartyGroupIndex)</span>
+		{
+<span class="nc" id="L554">			double[] pathDebtExposure =</span>
+<span class="nc" id="L555">				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].debtExposurePV();</span>
+
+<span class="nc bnc" id="L557" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+			{
+<span class="nc" id="L559">				debtExposure[vertexIndex] += pathDebtExposure[vertexIndex];</span>
+			}
+		}
+
+<span class="nc" id="L563">		return debtExposure;</span>
 	}
 
 	@Override public double[] fundingExposure()
 	{
-<span class="nc" id="L477">		int iNumVertex = anchors().length;</span>
+<span class="nc" id="L568">		int vertexCount = anchorDates().length;</span>
 
-<span class="nc" id="L479">		int iNumCounterPartyGroup = _aMPEA.length;</span>
-<span class="nc" id="L480">		double[] adblFundingExposure = new double[iNumVertex];</span>
+<span class="nc" id="L570">		double[] fundingExposure = new double[vertexCount];</span>
+<span class="nc" id="L571">		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;</span>
 
-<span class="nc bnc" id="L482" title="All 2 branches missed.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="nc" id="L483">			adblFundingExposure[iVertexIndex] = 0.;</span>
-
-<span class="nc bnc" id="L485" title="All 2 branches missed.">		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex &lt; iNumCounterPartyGroup;</span>
-<span class="nc" id="L486">			++iCounterPartyGroupIndex) {</span>
-<span class="nc" id="L487">			double[] adblPathFundingExposure = _aMPEA[iCounterPartyGroupIndex].fundingExposure();</span>
-
-<span class="nc bnc" id="L489" title="All 2 branches missed.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="nc" id="L490">				adblFundingExposure[iVertexIndex] += adblPathFundingExposure[iVertexIndex];</span>
+<span class="nc bnc" id="L573" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+		{
+<span class="nc" id="L575">			fundingExposure[vertexIndex] = 0.;</span>
 		}
 
-<span class="nc" id="L493">		return adblFundingExposure;</span>
+<span class="nc bnc" id="L578" title="All 2 branches missed.">		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex &lt; counterPartyGroupCount;</span>
+<span class="nc" id="L579">			++counterPartyGroupIndex)</span>
+		{
+<span class="nc" id="L581">			double[] pathFundingExposure =</span>
+<span class="nc" id="L582">				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].fundingExposure();</span>
+
+<span class="nc bnc" id="L584" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+			{
+<span class="nc" id="L586">				fundingExposure[vertexIndex] += pathFundingExposure[vertexIndex];</span>
+			}
+		}
+
+<span class="nc" id="L590">		return fundingExposure;</span>
 	}
 
 	@Override public double[] fundingExposurePV()
 	{
-<span class="nc" id="L498">		int iNumVertex = anchors().length;</span>
+<span class="nc" id="L595">		int vertexCount = anchorDates().length;</span>
 
-<span class="nc" id="L500">		int iNumCounterPartyGroup = _aMPEA.length;</span>
-<span class="nc" id="L501">		double[] adblFundingExposure = new double[iNumVertex];</span>
+<span class="nc" id="L597">		double[] fundingExposure = new double[vertexCount];</span>
+<span class="nc" id="L598">		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;</span>
 
-<span class="nc bnc" id="L503" title="All 2 branches missed.">		for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="nc" id="L504">			adblFundingExposure[iVertexIndex] = 0.;</span>
-
-<span class="nc bnc" id="L506" title="All 2 branches missed.">		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex &lt; iNumCounterPartyGroup;</span>
-<span class="nc" id="L507">			++iCounterPartyGroupIndex) {</span>
-<span class="nc" id="L508">			double[] adblPathFundingExposure = _aMPEA[iCounterPartyGroupIndex].fundingExposurePV();</span>
-
-<span class="nc bnc" id="L510" title="All 2 branches missed.">			for (int iVertexIndex = 0; iVertexIndex &lt; iNumVertex; ++iVertexIndex)</span>
-<span class="nc" id="L511">				adblFundingExposure[iVertexIndex] += adblPathFundingExposure[iVertexIndex];</span>
+<span class="nc bnc" id="L600" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+		{
+<span class="nc" id="L602">			fundingExposure[vertexIndex] = 0.;</span>
 		}
 
-<span class="nc" id="L514">		return adblFundingExposure;</span>
+<span class="nc bnc" id="L605" title="All 2 branches missed.">		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex &lt; counterPartyGroupCount;</span>
+<span class="nc" id="L606">			++counterPartyGroupIndex)</span>
+		{
+<span class="nc" id="L608">			double[] pathFundingExposure =</span>
+<span class="nc" id="L609">				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].fundingExposurePV();</span>
+
+<span class="nc bnc" id="L611" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+			{
+<span class="nc" id="L613">				fundingExposure[vertexIndex] += pathFundingExposure[vertexIndex];</span>
+			}
+		}
+
+<span class="nc" id="L617">		return fundingExposure;</span>
 	}
 
 	@Override public double unilateralCollateralAdjustment()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L520">		double dblUnilateralCollateralAdjustment = 0.;</span>
-<span class="nc" id="L521">		int iNumCounterPartyGroup = _aMPEA.length;</span>
+<span class="nc" id="L623">		double unilateralCollateralAdjustment = 0.;</span>
+<span class="nc" id="L624">		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;</span>
 
-<span class="nc bnc" id="L523" title="All 2 branches missed.">		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex &lt; iNumCounterPartyGroup;</span>
-<span class="nc" id="L524">			++iCounterPartyGroupIndex)</span>
-<span class="nc" id="L525">			dblUnilateralCollateralAdjustment +=</span>
-<span class="nc" id="L526">				_aMPEA[iCounterPartyGroupIndex].unilateralCollateralAdjustment();</span>
+<span class="nc bnc" id="L626" title="All 2 branches missed.">		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex &lt; counterPartyGroupCount;</span>
+<span class="nc" id="L627">			++counterPartyGroupIndex)</span>
+		{
+<span class="nc" id="L629">			unilateralCollateralAdjustment +=</span>
+<span class="nc" id="L630">				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].unilateralCollateralAdjustment();</span>
+		}
 
-<span class="nc" id="L528">		return dblUnilateralCollateralAdjustment;</span>
+<span class="nc" id="L633">		return unilateralCollateralAdjustment;</span>
 	}
 
 	@Override public double bilateralCollateralAdjustment()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L534">		double dblBilateralCollateralAdjustment = 0.;</span>
-<span class="nc" id="L535">		int iNumCounterPartyGroup = _aMPEA.length;</span>
+<span class="nc" id="L639">		double bilateralCollateralAdjustment = 0.;</span>
+<span class="nc" id="L640">		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;</span>
 
-<span class="nc bnc" id="L537" title="All 2 branches missed.">		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex &lt; iNumCounterPartyGroup;</span>
-<span class="nc" id="L538">			++iCounterPartyGroupIndex)</span>
-<span class="nc" id="L539">			dblBilateralCollateralAdjustment +=</span>
-<span class="nc" id="L540">				_aMPEA[iCounterPartyGroupIndex].bilateralCollateralAdjustment();</span>
+<span class="nc bnc" id="L642" title="All 2 branches missed.">		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex &lt; counterPartyGroupCount;</span>
+<span class="nc" id="L643">			++counterPartyGroupIndex)</span>
+		{
+<span class="nc" id="L645">			bilateralCollateralAdjustment +=</span>
+<span class="nc" id="L646">				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].bilateralCollateralAdjustment();</span>
+		}
 
-<span class="nc" id="L542">		return dblBilateralCollateralAdjustment;</span>
+<span class="nc" id="L649">		return bilateralCollateralAdjustment;</span>
 	}
 
 	@Override public double collateralAdjustment()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L548">		return bilateralCollateralAdjustment();</span>
+<span class="nc" id="L655">		return bilateralCollateralAdjustment();</span>
 	}
 
 	@Override public double unilateralCreditAdjustment()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L554">		double dblUnilateralCreditAdjustment = 0.;</span>
-<span class="nc" id="L555">		int iNumCounterPartyGroup = _aMPEA.length;</span>
+<span class="nc" id="L661">		double unilateralCreditAdjustment = 0.;</span>
+<span class="nc" id="L662">		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;</span>
 
-<span class="nc bnc" id="L557" title="All 2 branches missed.">		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex &lt; iNumCounterPartyGroup;</span>
-<span class="nc" id="L558">			++iCounterPartyGroupIndex)</span>
-<span class="nc" id="L559">			dblUnilateralCreditAdjustment += _aMPEA[iCounterPartyGroupIndex].unilateralCreditAdjustment();</span>
+<span class="nc bnc" id="L664" title="All 2 branches missed.">		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex &lt; counterPartyGroupCount;</span>
+<span class="nc" id="L665">			++counterPartyGroupIndex)</span>
+		{
+<span class="nc" id="L667">			unilateralCreditAdjustment +=</span>
+<span class="nc" id="L668">				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].unilateralCreditAdjustment();</span>
+		}
 
-<span class="nc" id="L561">		return dblUnilateralCreditAdjustment;</span>
+<span class="nc" id="L671">		return unilateralCreditAdjustment;</span>
 	}
 
 	@Override public double bilateralCreditAdjustment()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L567">		double dblBilateralCreditAdjustment = 0.;</span>
-<span class="nc" id="L568">		int iNumCounterPartyGroup = _aMPEA.length;</span>
+<span class="nc" id="L677">		double bilateralCreditAdjustment = 0.;</span>
+<span class="nc" id="L678">		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;</span>
 
-<span class="nc bnc" id="L570" title="All 2 branches missed.">		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex &lt; iNumCounterPartyGroup;</span>
-<span class="nc" id="L571">			++iCounterPartyGroupIndex)</span>
-<span class="nc" id="L572">			dblBilateralCreditAdjustment += _aMPEA[iCounterPartyGroupIndex].bilateralCreditAdjustment();</span>
+<span class="nc bnc" id="L680" title="All 2 branches missed.">		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex &lt; counterPartyGroupCount;</span>
+<span class="nc" id="L681">			++counterPartyGroupIndex)</span>
+		{
+<span class="nc" id="L683">			bilateralCreditAdjustment +=</span>
+<span class="nc" id="L684">				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].bilateralCreditAdjustment();</span>
+		}
 
-<span class="nc" id="L574">		return dblBilateralCreditAdjustment;</span>
+<span class="nc" id="L687">		return bilateralCreditAdjustment;</span>
 	}
 
 	@Override public double creditAdjustment()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L580">		return bilateralCreditAdjustment();</span>
+<span class="nc" id="L693">		return bilateralCreditAdjustment();</span>
 	}
 
 	@Override public double contraLiabilityCreditAdjustment()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L586">		int iNumCounterPartyGroup = _aMPEA.length;</span>
-<span class="nc" id="L587">		double dblContraLiabilityCreditAdjustment = 0.;</span>
+<span class="nc" id="L699">		double contraLiabilityCreditAdjustment = 0.;</span>
+<span class="nc" id="L700">		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;</span>
 
-<span class="nc bnc" id="L589" title="All 2 branches missed.">		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex &lt; iNumCounterPartyGroup;</span>
-<span class="nc" id="L590">			++iCounterPartyGroupIndex)</span>
-<span class="nc" id="L591">			dblContraLiabilityCreditAdjustment +=</span>
-<span class="nc" id="L592">				_aMPEA[iCounterPartyGroupIndex].contraLiabilityCreditAdjustment();</span>
+<span class="nc bnc" id="L702" title="All 2 branches missed.">		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex &lt; counterPartyGroupCount;</span>
+<span class="nc" id="L703">			++counterPartyGroupIndex)</span>
+		{
+<span class="nc" id="L705">			contraLiabilityCreditAdjustment +=</span>
+<span class="nc" id="L706">				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].contraLiabilityCreditAdjustment();</span>
+		}
 
-<span class="nc" id="L594">		return dblContraLiabilityCreditAdjustment;</span>
+<span class="nc" id="L709">		return contraLiabilityCreditAdjustment;</span>
 	}
 
 	@Override public double debtAdjustment()
 	{
-<span class="nc" id="L599">		double dblDebtAdjustment = 0.;</span>
-<span class="nc" id="L600">		int iNumCounterPartyGroup = _aMPEA.length;</span>
+<span class="nc" id="L714">		double debtAdjustment = 0.;</span>
+<span class="nc" id="L715">		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;</span>
 
-<span class="nc bnc" id="L602" title="All 2 branches missed.">		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex &lt; iNumCounterPartyGroup;</span>
-<span class="nc" id="L603">			++iCounterPartyGroupIndex)</span>
-<span class="nc" id="L604">			dblDebtAdjustment += _aMPEA[iCounterPartyGroupIndex].debtAdjustment();</span>
+<span class="nc bnc" id="L717" title="All 2 branches missed.">		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex &lt; counterPartyGroupCount;</span>
+<span class="nc" id="L718">			++counterPartyGroupIndex)</span>
+		{
+<span class="nc" id="L720">			debtAdjustment += _monoPathExposureAdjustmentArray[counterPartyGroupIndex].debtAdjustment();</span>
+		}
 
-<span class="nc" id="L606">		return dblDebtAdjustment;</span>
+<span class="nc" id="L723">		return debtAdjustment;</span>
 	}
 
 	@Override public double fundingValueAdjustment()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L612">		double dblFundingValueAdjustment = 0.;</span>
-<span class="nc" id="L613">		int iNumCounterPartyGroup = _aMPEA.length;</span>
+<span class="nc" id="L729">		double fundingValueAdjustment = 0.;</span>
+<span class="nc" id="L730">		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;</span>
 
-<span class="nc bnc" id="L615" title="All 2 branches missed.">		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex &lt; iNumCounterPartyGroup;</span>
-<span class="nc" id="L616">			++iCounterPartyGroupIndex)</span>
-<span class="nc" id="L617">			dblFundingValueAdjustment += _aMPEA[iCounterPartyGroupIndex].fundingValueAdjustment();</span>
+<span class="nc bnc" id="L732" title="All 2 branches missed.">		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex &lt; counterPartyGroupCount;</span>
+<span class="nc" id="L733">			++counterPartyGroupIndex)</span>
+		{
+<span class="nc" id="L735">			fundingValueAdjustment +=</span>
+<span class="nc" id="L736">				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].fundingValueAdjustment();</span>
+		}
 
-<span class="nc" id="L619">		return dblFundingValueAdjustment;</span>
+<span class="nc" id="L739">		return fundingValueAdjustment;</span>
 	}
 
 	@Override public double fundingDebtAdjustment()
-			throws java.lang.Exception
+		throws java.lang.Exception
 	{
-<span class="nc" id="L625">		double dblFundingDebtAdjustment = 0.;</span>
-<span class="nc" id="L626">		int iNumCounterPartyGroup = _aMPEA.length;</span>
+<span class="nc" id="L745">		double fundingDebtAdjustment = 0.;</span>
+<span class="nc" id="L746">		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;</span>
 
-<span class="nc bnc" id="L628" title="All 2 branches missed.">		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex &lt; iNumCounterPartyGroup;</span>
-<span class="nc" id="L629">			++iCounterPartyGroupIndex)</span>
-<span class="nc" id="L630">			dblFundingDebtAdjustment += _aMPEA[iCounterPartyGroupIndex].fundingDebtAdjustment();</span>
+<span class="nc bnc" id="L748" title="All 2 branches missed.">		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex &lt; counterPartyGroupCount;</span>
+<span class="nc" id="L749">			++counterPartyGroupIndex)</span>
+		{
+<span class="nc" id="L751">			fundingDebtAdjustment +=</span>
+<span class="nc" id="L752">				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].fundingDebtAdjustment();</span>
+		}
 
-<span class="nc" id="L632">		return dblFundingDebtAdjustment;</span>
+<span class="nc" id="L755">		return fundingDebtAdjustment;</span>
 	}
 
 	@Override public double fundingCostAdjustment()
 	{
-<span class="nc" id="L637">		double dblFundingCostAdjustment = 0.;</span>
-<span class="nc" id="L638">		int iNumCounterPartyGroup = _aMPEA.length;</span>
+<span class="nc" id="L760">		double fundingCostAdjustment = 0.;</span>
+<span class="nc" id="L761">		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;</span>
 
-<span class="nc bnc" id="L640" title="All 2 branches missed.">		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex &lt; iNumCounterPartyGroup;</span>
-<span class="nc" id="L641">			++iCounterPartyGroupIndex)</span>
-<span class="nc" id="L642">			dblFundingCostAdjustment += _aMPEA[iCounterPartyGroupIndex].fundingCostAdjustment();</span>
+<span class="nc bnc" id="L763" title="All 2 branches missed.">		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex &lt; counterPartyGroupCount;</span>
+<span class="nc" id="L764">			++counterPartyGroupIndex)</span>
+		{
+<span class="nc" id="L766">			fundingCostAdjustment +=</span>
+<span class="nc" id="L767">				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].fundingCostAdjustment();</span>
+		}
 
-<span class="nc" id="L644">		return dblFundingCostAdjustment;</span>
+<span class="nc" id="L770">		return fundingCostAdjustment;</span>
 	}
 
 	@Override public double fundingBenefitAdjustment()
 	{
-<span class="nc" id="L649">		double dblFundingBenefitAdjustment = 0.;</span>
-<span class="nc" id="L650">		int iNumCounterPartyGroup = _aMPEA.length;</span>
+<span class="nc" id="L775">		double fundingBenefitAdjustment = 0.;</span>
+<span class="nc" id="L776">		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;</span>
 
-<span class="nc bnc" id="L652" title="All 2 branches missed.">		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex &lt; iNumCounterPartyGroup;</span>
-<span class="nc" id="L653">			++iCounterPartyGroupIndex)</span>
-<span class="nc" id="L654">			dblFundingBenefitAdjustment += _aMPEA[iCounterPartyGroupIndex].fundingBenefitAdjustment();</span>
+<span class="nc bnc" id="L778" title="All 2 branches missed.">		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex &lt; counterPartyGroupCount;</span>
+<span class="nc" id="L779">			++counterPartyGroupIndex)</span>
+		{
+<span class="nc" id="L781">			fundingBenefitAdjustment +=</span>
+<span class="nc" id="L782">				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].fundingBenefitAdjustment();</span>
+		}
 
-<span class="nc" id="L656">		return dblFundingBenefitAdjustment;</span>
+<span class="nc" id="L785">		return fundingBenefitAdjustment;</span>
 	}
 
 	@Override public double symmetricFundingValueAdjustment()
 	{
-<span class="nc" id="L661">		int iNumCounterPartyGroup = _aMPEA.length;</span>
-<span class="nc" id="L662">		double dblSymmetricFundingValueAdjustment = 0.;</span>
+<span class="nc" id="L790">		double symmetricFundingValueAdjustment = 0.;</span>
+<span class="nc" id="L791">		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;</span>
 
-<span class="nc bnc" id="L664" title="All 2 branches missed.">		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex &lt; iNumCounterPartyGroup;</span>
-<span class="nc" id="L665">			++iCounterPartyGroupIndex)</span>
-<span class="nc" id="L666">			dblSymmetricFundingValueAdjustment +=</span>
-<span class="nc" id="L667">				_aMPEA[iCounterPartyGroupIndex].symmetricFundingValueAdjustment();</span>
+<span class="nc bnc" id="L793" title="All 2 branches missed.">		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex &lt; counterPartyGroupCount;</span>
+<span class="nc" id="L794">			++counterPartyGroupIndex)</span>
+		{
+<span class="nc" id="L796">			symmetricFundingValueAdjustment +=</span>
+<span class="nc" id="L797">				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].symmetricFundingValueAdjustment();</span>
+		}
 
-<span class="nc" id="L669">		return dblSymmetricFundingValueAdjustment;</span>
+<span class="nc" id="L800">		return symmetricFundingValueAdjustment;</span>
 	}
 
 	@Override public double totalAdjustment()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L675">		double dblTotalAdjustment = 0.;</span>
-<span class="nc" id="L676">		int iNumCounterPartyGroup = _aMPEA.length;</span>
+<span class="nc" id="L806">		double totalAdjustment = 0.;</span>
+<span class="nc" id="L807">		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;</span>
 
-<span class="nc bnc" id="L678" title="All 2 branches missed.">		for (int iCounterPartyGroupIndex = 0; iCounterPartyGroupIndex &lt; iNumCounterPartyGroup;</span>
-<span class="nc" id="L679">			++iCounterPartyGroupIndex)</span>
-<span class="nc" id="L680">			dblTotalAdjustment += _aMPEA[iCounterPartyGroupIndex].creditAdjustment() +</span>
-<span class="nc" id="L681">				_aMPEA[iCounterPartyGroupIndex].debtAdjustment() +</span>
-<span class="nc" id="L682">					_aMPEA[iCounterPartyGroupIndex].fundingValueAdjustment();</span>
+<span class="nc bnc" id="L809" title="All 2 branches missed.">		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex &lt; counterPartyGroupCount;</span>
+<span class="nc" id="L810">			++counterPartyGroupIndex)</span>
+		{
+<span class="nc" id="L812">			totalAdjustment +=</span>
+<span class="nc" id="L813">				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].creditAdjustment() +</span>
+<span class="nc" id="L814">				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].debtAdjustment() +</span>
+<span class="nc" id="L815">				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].fundingValueAdjustment();</span>
+		}
 
-<span class="nc" id="L684">		return dblTotalAdjustment;</span>
+<span class="nc" id="L818">		return totalAdjustment;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

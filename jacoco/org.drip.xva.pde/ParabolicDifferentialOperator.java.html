@@ -70,41 +70,44 @@ package org.drip.xva.pde;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ParabolicDifferentialOperator {
-<span class="fc" id="L74">	private org.drip.xva.universe.Tradeable _t = null;</span>
+public class ParabolicDifferentialOperator
+{
+<span class="fc" id="L75">	private org.drip.xva.universe.Tradeable _tradeable = null;</span>
 
 	/**
 	 * ParabolicDifferentialOperator Constructor
 	 * 
-	 * @param t The Trade-able Asset
+	 * @param tradeable The Tradeable Position
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ParabolicDifferentialOperator (
-		final org.drip.xva.universe.Tradeable t)
+		final org.drip.xva.universe.Tradeable tradeable)
 		throws java.lang.Exception
-<span class="fc" id="L87">	{</span>
-<span class="pc bpc" id="L88" title="1 of 2 branches missed.">		if (null == (_t = t))</span>
-<span class="nc" id="L89">			throw new java.lang.Exception (&quot;ParabolicDifferentialOperator Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L90">	}</span>
+<span class="fc" id="L88">	{</span>
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">		if (null == (_tradeable = tradeable))</span>
+		{
+<span class="nc" id="L91">			throw new java.lang.Exception (&quot;ParabolicDifferentialOperator Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="fc" id="L93">	}</span>
 
 	/**
-	 * Retrieve the Reference Trade-able Asset
+	 * Retrieve the Tradeable Position
 	 * 
-	 * @return The Reference Trade-able Asset
+	 * @return The Tradeable Position
 	 */
 
 	public org.drip.xva.universe.Tradeable asset()
 	{
-<span class="nc" id="L100">		return _t;</span>
+<span class="nc" id="L103">		return _tradeable;</span>
 	}
 
 	/**
 	 * Compute the Theta for the Derivative from the Asset Edge Value
 	 * 
-	 * @param etv The Derivative's Evolution Trajectory Vertex
-	 * @param dblAssetNumeraireVertex The Asset Numeraire Vertex Value
+	 * @param evolutionTrajectoryVertex The Derivative's Evolution Trajectory Vertex
+	 * @param positionValueVertex The Position Value Vertex
 	 * 
 	 * @return The Theta
 	 * 
@@ -112,68 +115,97 @@ public class ParabolicDifferentialOperator {
 	 */
 
 	public double theta (
-		final org.drip.xva.derivative.EvolutionTrajectoryVertex etv,
-		final double dblAssetNumeraireVertex)
+		final org.drip.xva.derivative.EvolutionTrajectoryVertex evolutionTrajectoryVertex,
+		final double positionValueVertex)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L119" title="All 4 branches missed.">		if (null == etv || !org.drip.quant.common.NumberUtil.IsValid (dblAssetNumeraireVertex))</span>
-<span class="nc" id="L120">			throw new java.lang.Exception (&quot;ParabolicDifferentialOperator::theta =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">		if (null == evolutionTrajectoryVertex ||</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (positionValueVertex))</span>
+		{
+<span class="nc" id="L125">			throw new java.lang.Exception (&quot;ParabolicDifferentialOperator::theta =&gt; Invalid Inputs&quot;);</span>
+		}
 
-<span class="nc" id="L122">		org.drip.xva.derivative.PositionGreekVertex agv = etv.positionGreekVertex();</span>
+<span class="nc" id="L128">		org.drip.xva.derivative.PositionGreekVertex positionGreekVertex =</span>
+<span class="nc" id="L129">			evolutionTrajectoryVertex.positionGreekVertex();</span>
 
-<span class="nc" id="L124">		double dblVolatility = _t.evolver().evaluator().volatility().value (new</span>
-<span class="nc" id="L125">			org.drip.measure.realization.JumpDiffusionVertex (etv.time(), dblAssetNumeraireVertex, 0.,</span>
-				false));
+<span class="nc" id="L131">		double volatility = _tradeable.evolver().evaluator().volatility().value (</span>
+			new org.drip.measure.realization.JumpDiffusionVertex (
+<span class="nc" id="L133">				evolutionTrajectoryVertex.time(),</span>
+				positionValueVertex,
+				0.,
+				false
+			)
+		);
 
-<span class="nc" id="L128">		return 0.5 * dblVolatility * dblVolatility * dblAssetNumeraireVertex * dblAssetNumeraireVertex *</span>
-<span class="nc" id="L129">			agv.derivativeXVAValueGamma() - _t.cashAccumulationRate() * dblAssetNumeraireVertex *</span>
-<span class="nc" id="L130">				agv.derivativeXVAValueDelta();</span>
+<span class="nc" id="L140">		return</span>
+			0.5 * volatility * volatility * positionValueVertex * positionValueVertex *
+<span class="nc" id="L142">				positionGreekVertex.derivativeXVAValueGamma() -</span>
+<span class="nc" id="L143">			_tradeable.cashAccumulationRate() * positionValueVertex *</span>
+<span class="nc" id="L144">				positionGreekVertex.derivativeXVAValueDelta();</span>
 	}
 
 	/**
 	 * Compute the Up/Down Thetas
 	 *  
-	 * @param etv The Derivative's Evolution Trajectory Vertex
-	 * @param dblAssetNumeraireVertex The Asset Numeraire Vertex Value
-	 * @param dblShift The Amount to Shift the Reference Underlier Numeraire By
+	 * @param evolutionTrajectoryVertex The Derivative's Evolution Trajectory Vertex
+	 * @param positionValueVertex The Asset Numeraire Vertex Value
+	 * @param shift The Amount to Shift the Reference Underlier Numeraire By
 	 * 
 	 * @return The Array of the Up/Down Thetas
 	 */
 
 	public double[] thetaUpDown (
-		final org.drip.xva.derivative.EvolutionTrajectoryVertex etv,
-		final double dblAssetNumeraireVertex,
-		final double dblShift)
+		final org.drip.xva.derivative.EvolutionTrajectoryVertex evolutionTrajectoryVertex,
+		final double positionValueVertex,
+		final double shift)
 	{
-<span class="pc bpc" id="L148" title="2 of 4 branches missed.">		if (null == etv || !org.drip.quant.common.NumberUtil.IsValid (dblAssetNumeraireVertex) ||</span>
-<span class="pc bpc" id="L149" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblShift))</span>
-<span class="nc" id="L150">			return null;</span>
+<span class="pc bpc" id="L162" title="1 of 2 branches missed.">		if (null == evolutionTrajectoryVertex ||</span>
+<span class="pc bpc" id="L163" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (positionValueVertex) ||</span>
+<span class="pc bpc" id="L164" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (shift))</span>
+		{
+<span class="nc" id="L166">			return null;</span>
+		}
 
-<span class="fc" id="L152">		org.drip.xva.derivative.PositionGreekVertex agv = etv.positionGreekVertex();</span>
+<span class="fc" id="L169">		org.drip.xva.derivative.PositionGreekVertex positionGreekVertex =</span>
+<span class="fc" id="L170">			evolutionTrajectoryVertex.positionGreekVertex();</span>
 
-<span class="fc" id="L154">		double dblAssetNumeraireVertexDown = dblAssetNumeraireVertex - dblShift;</span>
-<span class="fc" id="L155">		double dblAssetNumeraireVertexUp = dblAssetNumeraireVertex + dblShift;</span>
-<span class="fc" id="L156">		double dblVolatility = java.lang.Double.NaN;</span>
+<span class="fc" id="L172">		double positionValueVertexDown = positionValueVertex - shift;</span>
+<span class="fc" id="L173">		double positionValueVertexUp = positionValueVertex + shift;</span>
+<span class="fc" id="L174">		double volatility = java.lang.Double.NaN;</span>
 
-		try {
-<span class="fc" id="L159">			dblVolatility = _t.evolver().evaluator().volatility().value (new</span>
-<span class="fc" id="L160">				org.drip.measure.realization.JumpDiffusionVertex (etv.time(), dblAssetNumeraireVertex, 0.,</span>
-					false));
-<span class="nc" id="L162">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L163">			e.printStackTrace();</span>
+		try
+		{
+<span class="fc" id="L178">			volatility = _tradeable.evolver().evaluator().volatility().value (</span>
+				new org.drip.measure.realization.JumpDiffusionVertex (
+<span class="fc" id="L180">					evolutionTrajectoryVertex.time(),</span>
+					positionValueVertex,
+					0.,
+					false
+				)
+			);
+		}
+<span class="nc" id="L187">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L189">			e.printStackTrace();</span>
 
-<span class="nc" id="L165">			return null;</span>
-<span class="fc" id="L166">		}</span>
+<span class="nc" id="L191">			return null;</span>
+<span class="fc" id="L192">		}</span>
 
-<span class="fc" id="L168">		double dblGammaCoefficient = 0.5 * dblVolatility * dblVolatility * agv.derivativeXVAValueGamma();</span>
+<span class="fc" id="L194">		double gammaCoefficient = 0.5 * volatility * volatility *</span>
+<span class="fc" id="L195">			positionGreekVertex.derivativeXVAValueGamma();</span>
 
-<span class="fc" id="L170">		double dblDeltaCoefficient = -1. * _t.cashAccumulationRate() * agv.derivativeXVAValueDelta();</span>
+<span class="fc" id="L197">		double deltaCoefficient = -1. * _tradeable.cashAccumulationRate() *</span>
+<span class="fc" id="L198">			positionGreekVertex.derivativeXVAValueDelta();</span>
 
-<span class="fc" id="L172">		return new double[] {dblGammaCoefficient * dblAssetNumeraireVertexDown * dblAssetNumeraireVertexDown</span>
-			+ dblDeltaCoefficient * dblAssetNumeraireVertexDown, dblGammaCoefficient *
-				dblAssetNumeraireVertex * dblAssetNumeraireVertex + dblDeltaCoefficient *
-					dblAssetNumeraireVertex, dblGammaCoefficient * dblAssetNumeraireVertexUp *
-						dblAssetNumeraireVertexUp + dblDeltaCoefficient * dblAssetNumeraireVertexUp};
+<span class="fc" id="L200">		return new double[]</span>
+		{
+			gammaCoefficient * positionValueVertexDown * positionValueVertexDown + deltaCoefficient *
+				positionValueVertexDown,
+			gammaCoefficient * positionValueVertex * positionValueVertex + deltaCoefficient *
+				positionValueVertex,
+			gammaCoefficient * positionValueVertexUp * positionValueVertexUp + deltaCoefficient *
+				positionValueVertexUp
+		};
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

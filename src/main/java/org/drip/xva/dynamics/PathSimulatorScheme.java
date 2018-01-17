@@ -87,7 +87,7 @@ public class PathSimulatorScheme
 		{
 			return new PathSimulatorScheme (
 				org.drip.xva.dynamics.PositionReplicationScheme.ALBANESE_ANDERSEN_VERTEX,
-				org.drip.xva.dynamics.BrokenDateScheme.LINEAR_TIME,
+				org.drip.xva.dynamics.BrokenDateScheme.SQUARE_ROOT_OF_TIME,
 				org.drip.xva.dynamics.AdjustmentDigestScheme.ALBANESE_ANDERSEN_METRICS_POINTER,
 				0.,
 				null
@@ -108,7 +108,7 @@ public class PathSimulatorScheme
 	 * @param brokenDateScheme Broken Date Interpolation Scheme
 	 * @param adjustmentDigestScheme Adjustment Digest Scheme
 	 * @param hedgeError Hedge Error
-	 * @param closeoutScheme Close Out Scheme
+	 * @param closeOutScheme Close Out Scheme
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */

@@ -72,35 +72,35 @@ package org.drip.xva.derivative;
 public class ReplicationPortfolioVertex
 {
 <span class="fc" id="L74">	private double _cashAccount = java.lang.Double.NaN;</span>
-<span class="fc" id="L75">	private double _positionUnits = java.lang.Double.NaN;</span>
-<span class="fc" id="L76">	private double _bankSeniorNumeraireUnits = java.lang.Double.NaN;</span>
-<span class="fc" id="L77">	private double _counterPartyNumeraireUnits = java.lang.Double.NaN;</span>
-<span class="fc" id="L78">	private double _bankSubordinateNumeraireUnits = java.lang.Double.NaN;</span>
+<span class="fc" id="L75">	private double _positionHoldings = java.lang.Double.NaN;</span>
+<span class="fc" id="L76">	private double _bankSeniorNumeraireHoldings = java.lang.Double.NaN;</span>
+<span class="fc" id="L77">	private double _counterPartyNumeraireHoldings = java.lang.Double.NaN;</span>
+<span class="fc" id="L78">	private double _bankSubordinateNumeraireHoldings = java.lang.Double.NaN;</span>
 
 	/**
 	 * Construct a ReplicationPortfolioVertex Instance without the Zero Recovery Bank Numeraire
 	 * 
-	 * @param positionUnits The Asset Numeraire Units
-	 * @param bankSeniorNumeraireUnits The Bank Senior Numeraire Units
-	 * @param counterPartyNumeraireUnits The Counter Party Numeraire Replication Units
+	 * @param positionHoldings The Asset Numeraire Holdings
+	 * @param bankSeniorNumeraireHoldings The Bank Senior Numeraire Holdings
+	 * @param counterPartyNumeraireHoldings The Counter Party Numeraire Replication Holdings
 	 * @param cashAccount The Cash Account
 	 * 
 	 * @return The ReplicationPortfolioVertex Instance without the Zero Recovery Bank Numeraire
 	 */
 
 	public static final ReplicationPortfolioVertex Standard (
-		final double positionUnits,
-		final double bankSeniorNumeraireUnits,
-		final double counterPartyNumeraireUnits,
+		final double positionHoldings,
+		final double bankSeniorNumeraireHoldings,
+		final double counterPartyNumeraireHoldings,
 		final double cashAccount)
 	{
 		try
 		{
 <span class="fc" id="L99">			return new ReplicationPortfolioVertex (</span>
-				positionUnits,
-				bankSeniorNumeraireUnits,
+				positionHoldings,
+				bankSeniorNumeraireHoldings,
 				0.,
-				counterPartyNumeraireUnits,
+				counterPartyNumeraireHoldings,
 				cashAccount
 			);
 		}
@@ -115,78 +115,78 @@ public class ReplicationPortfolioVertex
 	/**
 	 * ReplicationPortfolioVertex Constructor
 	 * 
-	 * @param positionUnits The Asset Numeraire Units
-	 * @param bankSeniorNumeraireUnits The Bank Senior Numeraire Units
-	 * @param bankSubordinateNumeraireUnits The Bank Subordinate Numeraire Units
-	 * @param counterPartyNumeraireUnits The Counter Party Numeraire Units
+	 * @param positionHoldings The Asset Numeraire Holdings
+	 * @param bankSeniorNumeraireHoldings The Bank Senior Numeraire Holdings
+	 * @param bankSubordinateNumeraireHoldings The Bank Subordinate Numeraire Holdings
+	 * @param counterPartyNumeraireHoldings The Counter Party Numeraire Holdings
 	 * @param cashAccount The Cash Account
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ReplicationPortfolioVertex (
-		final double positionUnits,
-		final double bankSeniorNumeraireUnits,
-		final double bankSubordinateNumeraireUnits,
-		final double counterPartyNumeraireUnits,
+		final double positionHoldings,
+		final double bankSeniorNumeraireHoldings,
+		final double bankSubordinateNumeraireHoldings,
+		final double counterPartyNumeraireHoldings,
 		final double cashAccount)
 		throws java.lang.Exception
 <span class="fc" id="L134">	{</span>
-<span class="pc bpc" id="L135" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_bankSeniorNumeraireUnits = bankSeniorNumeraireUnits) ||</span>
-<span class="pc bpc" id="L136" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_bankSubordinateNumeraireUnits =</span>
-				bankSubordinateNumeraireUnits) ||
-<span class="pc bpc" id="L138" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_counterPartyNumeraireUnits =</span>
-				counterPartyNumeraireUnits) ||
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_bankSeniorNumeraireHoldings = bankSeniorNumeraireHoldings) ||</span>
+<span class="pc bpc" id="L136" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_bankSubordinateNumeraireHoldings =</span>
+				bankSubordinateNumeraireHoldings) ||
+<span class="pc bpc" id="L138" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_counterPartyNumeraireHoldings =</span>
+				counterPartyNumeraireHoldings) ||
 <span class="pc bpc" id="L140" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_cashAccount = cashAccount))</span>
 		{
 <span class="nc" id="L142">			throw new java.lang.Exception (&quot;ReplicationPortfolioVertex Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="fc" id="L145">		_positionUnits = positionUnits;</span>
+<span class="fc" id="L145">		_positionHoldings = positionHoldings;</span>
 <span class="fc" id="L146">	}</span>
 
 	/**
-	 * Retrieve the Number of Position Units
+	 * Retrieve the Number of Position Holdings
 	 * 
-	 * @return The Number of Position Units
+	 * @return The Number of Position Holdings
 	 */
 
-	public double positionUnits()
+	public double positionHoldings()
 	{
-<span class="fc" id="L156">		return _positionUnits;</span>
+<span class="fc" id="L156">		return _positionHoldings;</span>
 	}
 
 	/**
-	 * Retrieve the Number of Bank Senior Numeraire Units
+	 * Retrieve the Number of Bank Senior Numeraire Holdings
 	 * 
-	 * @return The Number of Bank Senior Numeraire Units
+	 * @return The Number of Bank Senior Numeraire Holdings
 	 */
 
-	public double bankSeniorNumeraireUnits()
+	public double bankSeniorNumeraireHoldings()
 	{
-<span class="fc" id="L167">		return _bankSeniorNumeraireUnits;</span>
+<span class="fc" id="L167">		return _bankSeniorNumeraireHoldings;</span>
 	}
 
 	/**
-	 * Retrieve the Number of Bank Subordinate Numeraire Units
+	 * Retrieve the Number of Bank Subordinate Numeraire Holdings
 	 * 
-	 * @return The Number of Bank Subordinate Numeraire Units
+	 * @return The Number of Bank Subordinate Numeraire Holdings
 	 */
 
-	public double bankSubordinateNumeraireUnits()
+	public double bankSubordinateNumeraireHoldings()
 	{
-<span class="fc" id="L178">		return _bankSubordinateNumeraireUnits;</span>
+<span class="fc" id="L178">		return _bankSubordinateNumeraireHoldings;</span>
 	}
 
 	/**
-	 * Retrieve the Counter Party Numeraire Units
+	 * Retrieve the Counter Party Numeraire Holdings
 	 * 
-	 * @return The Counter Party Numeraire Units
+	 * @return The Counter Party Numeraire Holdings
 	 */
 
-	public double counterPartyNumeraireUnits()
+	public double counterPartyNumeraireHoldings()
 	{
-<span class="fc" id="L189">		return _counterPartyNumeraireUnits;</span>
+<span class="fc" id="L189">		return _counterPartyNumeraireHoldings;</span>
 	}
 
 	/**
@@ -220,13 +220,13 @@ public class ReplicationPortfolioVertex
 
 <span class="nc" id="L221">		org.drip.xva.universe.EntityMarketVertex bankMarketVertex = marketVertex.bank();</span>
 
-<span class="nc" id="L223">		double value = -1. * bankMarketVertex.seniorFundingLatentState().nodal() * _bankSeniorNumeraireUnits;</span>
+<span class="nc" id="L223">		double value = -1. * bankMarketVertex.seniorFundingLatentState().nodal() * _bankSeniorNumeraireHoldings;</span>
 
 <span class="nc" id="L225">		org.drip.xva.universe.LatentStateMarketVertex bankSubordinateFundingMarketVertex =</span>
 <span class="nc" id="L226">			bankMarketVertex.subordinateFundingLatentState();</span>
 
 <span class="nc bnc" id="L228" title="All 2 branches missed.">		if (null != bankSubordinateFundingMarketVertex)</span>
-<span class="nc" id="L229">			value -= bankSubordinateFundingMarketVertex.nodal() * _bankSubordinateNumeraireUnits;</span>
+<span class="nc" id="L229">			value -= bankSubordinateFundingMarketVertex.nodal() * _bankSubordinateNumeraireHoldings;</span>
 
 <span class="nc" id="L231">		return value;</span>
 	}
@@ -251,14 +251,14 @@ public class ReplicationPortfolioVertex
 
 <span class="nc" id="L252">		org.drip.xva.universe.EntityMarketVertex bankMarketVertex = marketVertex.bank();</span>
 
-<span class="nc" id="L254">		double value = bankMarketVertex.seniorFundingLatentState().nodal() * _bankSeniorNumeraireUnits *</span>
+<span class="nc" id="L254">		double value = bankMarketVertex.seniorFundingLatentState().nodal() * _bankSeniorNumeraireHoldings *</span>
 <span class="nc" id="L255">			bankMarketVertex.seniorRecoveryRate();</span>
 
 <span class="nc" id="L257">		org.drip.xva.universe.LatentStateMarketVertex bankSubordinateFundingMarketVertex =</span>
 <span class="nc" id="L258">			bankMarketVertex.subordinateFundingLatentState();</span>
 
 <span class="nc bnc" id="L260" title="All 2 branches missed.">		if (null != bankSubordinateFundingMarketVertex)</span>
-<span class="nc" id="L261">			value -= bankSubordinateFundingMarketVertex.nodal() * _bankSubordinateNumeraireUnits *</span>
+<span class="nc" id="L261">			value -= bankSubordinateFundingMarketVertex.nodal() * _bankSubordinateNumeraireHoldings *</span>
 <span class="nc" id="L262">				bankMarketVertex.subordinateRecoveryRate();</span>
 
 <span class="nc" id="L264">		return value;</span>

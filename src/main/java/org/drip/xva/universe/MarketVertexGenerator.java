@@ -356,34 +356,25 @@ public class MarketVertexGenerator
 	 * Generated the Sequence of the Simulated Market Vertexes
 	 * 
 	 * @param initialMarketVertex The Initial Market Vertex
+	 * @param unitEvolverSequence Dual Array of Unit Evolver Sequence
 	 * 
 	 * @return The Array of the Simulated Market Vertexes
 	 */
 
 	public org.drip.xva.universe.MarketVertex[] marketVertex (
 		final org.drip.xva.universe.MarketVertex initialMarketVertex,
-		final double[][] correlationMatrix)
+		final double[][] unitEvolverSequence)
 	{
-		if (null == initialMarketVertex || null == correlationMatrix)
+		if (null == initialMarketVertex || null == unitEvolverSequence)
 		{
 			return null;
 		}
 
-		int dimensionCount = correlationMatrix.length;
+		int dimensionCount = unitEvolverSequence.length;
 
 		if (11 != dimensionCount)
 		{
 			return null;
-		}
-
-		for (int dimensionIndex = 0; dimensionIndex < dimensionCount; ++dimensionIndex)
-		{
-			if (null == correlationMatrix[dimensionIndex] ||
-				11 != correlationMatrix[dimensionIndex].length ||
-				!org.drip.quant.common.NumberUtil.IsValid (correlationMatrix[dimensionIndex]))
-			{
-				return null;
-			}
 		}
 
 		org.drip.xva.universe.Tradeable positionManifest = _tradeablesContainer.positionManifest();
@@ -410,17 +401,12 @@ public class MarketVertexGenerator
 		org.drip.xva.universe.MarketVertex[] marketVertexArray = new
 			org.drip.xva.universe.MarketVertex[eventVertexCount + 1];
 
-		double[][] unitEvolverSequence = org.drip.quant.linearalgebra.Matrix.Transpose (
+		/* double[][] unitEvolverSequence = org.drip.quant.linearalgebra.Matrix.Transpose (
 			org.drip.measure.discrete.SequenceGenerator.GaussianJoint (
 				eventVertexCount,
-				correlationMatrix
+				covarianceMatrix.correlationMatrix()
 			)
-		);
-
-		if (null == unitEvolverSequence)
-		{
-			return null;
-		}
+		); */
 
 		org.drip.xva.universe.EntityMarketVertex initialBankVertex = initialMarketVertex.bank();
 
