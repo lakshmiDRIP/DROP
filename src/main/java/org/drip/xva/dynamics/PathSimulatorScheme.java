@@ -74,6 +74,7 @@ public class PathSimulatorScheme
 	private int _positionReplicationScheme = -1;
 	private double _hedgeError = java.lang.Double.NaN;
 	private org.drip.xva.definition.CloseOutGeneral _closeOutScheme = null;
+	private org.drip.measure.discrete.CorrelatedPathVertexDimension _correlatedPathVertexDimension = null;
 
 	/**
 	 * Construct an Albanese Andersen Vertex Generator Based Path Simulator Scheme
@@ -185,5 +186,16 @@ public class PathSimulatorScheme
 	public org.drip.xva.definition.CloseOutGeneral closeOutScheme()
 	{
 		return _closeOutScheme;
+	}
+
+	/**
+	 * Retrieve the Path Vertex Dimension Generator
+	 * 
+	 * @return The Path Vertex Dimension Generator
+	 */
+
+	public org.drip.measure.discrete.CorrelatedPathVertexDimension correlatedPathVertexDimension()
+	{
+		return _correlatedPathVertexDimension;
 	}
 }

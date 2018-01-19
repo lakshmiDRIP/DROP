@@ -1255,7 +1255,6 @@ public class BondReplicator
 		double dblBEYToMaturity = java.lang.Double.NaN;
 		double dblOASToExercise = java.lang.Double.NaN;
 		double dblOASToMaturity = java.lang.Double.NaN;
-		double dblWALToExercise = java.lang.Double.NaN;
 		double dblSpreadDuration = java.lang.Double.NaN;
 		double dblYieldToMaturity = java.lang.Double.NaN;
 		double dblParOASToExercise = java.lang.Double.NaN;
@@ -1282,6 +1281,7 @@ public class BondReplicator
 		double dblMacaulayDurationToMaturity = java.lang.Double.NaN;
 		double dblModifiedDurationToExercise = java.lang.Double.NaN;
 		double dblModifiedDurationToMaturity = java.lang.Double.NaN;
+		double dblWALPrincipalOnlyToExercise = java.lang.Double.NaN;
 		double dblWALPrincipalOnlyToMaturity = java.lang.Double.NaN;
 		java.util.Map<java.lang.String, java.lang.Double> mapCreditKRD = null;
 		java.util.Map<java.lang.String, java.lang.Double> mapCreditKPRD = null;
@@ -1593,8 +1593,8 @@ public class BondReplicator
 		}
 
 		try {
-			dblWALToExercise = _bond.weightedAverageLife (_valParams, _csqcFundingBase, iWorkoutDate,
-				dblWorkoutFactor);
+			dblWALPrincipalOnlyToExercise = _bond.weightedAverageLifePrincipalOnly (_valParams,
+				_csqcFundingBase, iWorkoutDate, dblWorkoutFactor);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -1912,7 +1912,7 @@ public class BondReplicator
 				return null;
 
 			if (!arr.addNamedField (new org.drip.service.scenario.NamedField ("WAL To Worst",
-				dblWALToExercise)))
+				dblWALPrincipalOnlyToExercise)))
 				return null;
 
 			if (!arr.addNamedField (new org.drip.service.scenario.NamedField ("WAL",

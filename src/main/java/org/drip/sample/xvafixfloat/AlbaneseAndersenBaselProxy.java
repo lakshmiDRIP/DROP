@@ -3,7 +3,8 @@ package org.drip.sample.xvafixfloat;
 
 import org.drip.analytics.date.*;
 import org.drip.function.definition.R1ToR1;
-import org.drip.measure.discrete.SequenceGenerator;
+import org.drip.measure.crng.*;
+import org.drip.measure.discrete.CorrelatedPathVertexDimension;
 import org.drip.measure.dynamics.*;
 import org.drip.measure.process.*;
 import org.drip.measure.statistics.UnivariateDiscreteThin;
@@ -391,15 +392,18 @@ public class AlbaneseAndersenBaselProxy
 				CounterPartyGroupSpecification.Standard ("CPGROUP")
 			),
 			PathSimulatorScheme.AlbaneseAndersenVertex(),
-			new R1ToR1 (null)
+			new org.drip.function.definition.R1ToR1[]
 			{
-				@Override public double evaluate (
-					final double dblDate)
-					throws Exception
+				new R1ToR1 (null)
 				{
-					double dblTimeToHorizon = 1. * (maturityDate - dblDate) / 365.25;
+					@Override public double evaluate (
+						final double dblDate)
+						throws Exception
+					{
+						double dblTimeToHorizon = 1. * (maturityDate - dblDate) / 365.25;
 
-					return dblTimeToHorizon > 0. ? dblTimeToHorizon : 0.;
+						return dblTimeToHorizon > 0. ? dblTimeToHorizon : 0.;
+					}
 				}
 			}
 		);
@@ -419,16 +423,21 @@ public class AlbaneseAndersenBaselProxy
 
 		PathExposureAdjustment[] pathExposureAdjustmentArray = new PathExposureAdjustment[iNumPath];
 
+		CorrelatedPathVertexDimension correlatedPathVertexDimension = new CorrelatedPathVertexDimension (
+			LinearCongruentialGenerator.NumericalRecipes (MultipleRecursiveGeneratorLEcuyer.MRG32k3a()),
+			correlationMatrix,
+			eventCount,
+			iNumPath,
+			true,
+			null
+		);
+
 		for (int i = 0; i < iNumPath; ++i)
 		{
 			pathExposureAdjustmentArray[i] = fixFloatPathSimulator.singleTrajectory (
 				initialMarketVertex,
-				Matrix.Transpose (
-					SequenceGenerator.GaussianJoint (
-						eventCount,
-						correlationMatrix
-					)
-			));
+				Matrix.Transpose (correlatedPathVertexDimension.straightPathVertexRd().flatform())
+			);
 		}
 
 		ExposureAdjustmentAggregator eaa = new ExposureAdjustmentAggregator (pathExposureAdjustmentArray);
