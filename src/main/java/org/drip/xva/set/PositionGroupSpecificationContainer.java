@@ -1,5 +1,5 @@
 
-package org.drip.xva.dynamics;
+package org.drip.xva.set;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,18 +47,18 @@ package org.drip.xva.dynamics;
  */
 
 /**
- * GroupSettings holds the Settings that control the Aggregate Exposure Calculations. The References are:
+ * PositionGroupSpecificationContainer contains the Specifications of a Position Group. The References are:
  *  
  *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
  *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
  *  
  *  - Burgard, C., and M. Kjaer (2014): In the Balance, Risk, 24 (11) 72-75.
  *  
- *  - Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and the
- *  	Re-Hypothecation Option, eSSRN, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955.
+ *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk, Risk 20 (2) 86-90.
  *  
- *  - Burgard, C., and M. Kjaer (2017): Derivatives Funding, Netting, and Accounting, eSSRN,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2534011.
+ *  - Li, B., and Y. Tang (2007): Quantitative Analysis, Derivatives Modeling, and Trading Strategies in the
+ *  	Presence of Counter-party Credit Risk for the Fixed Income Market, World Scientific Publishing,
+ *  	Singapore.
  * 
  *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
  *  	21 (2) 97-102.
@@ -66,51 +66,7 @@ package org.drip.xva.dynamics;
  * @author Lakshmi Krishnamurthy
  */
 
-public class GroupSettings
+public class PositionGroupSpecificationContainer
 {
-	private org.drip.xva.set.CollateralGroupSpecification _collateralGroupSpecification = null;
-	private org.drip.xva.set.CounterPartyGroupSpecification _counterPartyGroupSpecification = null;
 
-	/**
-	 * GroupSettings Constructor
-	 * 
-	 * @param collateralGroupSpecification The Collateral Group Specification
-	 * @param counterPartyGroupSpecification The Counter Party Group Specification
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public GroupSettings (
-		final org.drip.xva.set.CollateralGroupSpecification collateralGroupSpecification,
-		final org.drip.xva.set.CounterPartyGroupSpecification counterPartyGroupSpecification)
-		throws java.lang.Exception
-	{
-		if (null == (_collateralGroupSpecification = collateralGroupSpecification) ||
-			null == (_counterPartyGroupSpecification = counterPartyGroupSpecification))
-		{
-			throw new java.lang.Exception ("GroupSettings Constructor => Invalid Inputs");
-		}
-	}
-
-	/**
-	 * Retrieve the Collateral Group Specification
-	 * 
-	 * @return The Collateral Group Specification
-	 */
-
-	public org.drip.xva.set.CollateralGroupSpecification collateralGroupSpecification()
-	{
-		return _collateralGroupSpecification;
-	}
-
-	/**
-	 * Retrieve the Counter Party Group Specification
-	 * 
-	 * @return The Counter Party Group Specification
-	 */
-
-	public org.drip.xva.set.CounterPartyGroupSpecification counterPartyGroupSpecification()
-	{
-		return _counterPartyGroupSpecification;
-	}
 }

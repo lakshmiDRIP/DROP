@@ -13,6 +13,7 @@ import org.drip.quant.linearalgebra.Matrix;
 import org.drip.service.env.EnvManager;
 import org.drip.xva.cpty.*;
 import org.drip.xva.dynamics.*;
+import org.drip.xva.holdings.*;
 import org.drip.xva.set.*;
 import org.drip.xva.universe.*;
 
@@ -383,29 +384,42 @@ public class AlbaneseAndersenBaselProxy
 				eventTenor,
 				eventCount
 			),
-			new GroupSettings (
-				CollateralGroupSpecification.FixedThreshold (
-					"FIXEDTHRESHOLD",
-					dblCounterPartyThreshold,
-					dblBankThreshold
-				),
-				CounterPartyGroupSpecification.Standard ("CPGROUP")
-			),
 			PathSimulatorScheme.AlbaneseAndersenVertex(),
-			new org.drip.function.definition.R1ToR1[]
-			{
-				new R1ToR1 (null)
-				{
-					@Override public double evaluate (
-						final double dblDate)
-						throws Exception
+			PositionGroupContainer.Solo (
+				new PositionGroup (
+					new PositionGroupSpecification (
+						"POSGRPSPEC",
+						"POSGRPSPEC",
+						CollateralGroupSpecification.FixedThreshold (
+							"FIXEDTHRESHOLD",
+							dblCounterPartyThreshold,
+							dblBankThreshold
+						),
+						CounterPartyGroupSpecification.Standard ("CPGROUP"),
+						new NettingGroupSpecification (
+							"NETGRPSPEC",
+							"NETGRPSPEC",
+							true,
+							true
+						),
+						new RollUpGroupSpecification (
+							"FUNDGRPSPEC",
+							"FUNDGRPSPEC"
+						)
+					),
+					new R1ToR1 (null)
 					{
-						double dblTimeToHorizon = 1. * (maturityDate - dblDate) / 365.25;
+						@Override public double evaluate (
+							final double dblDate)
+							throws Exception
+						{
+							double dblTimeToHorizon = 1. * (maturityDate - dblDate) / 365.25;
 
-						return dblTimeToHorizon > 0. ? dblTimeToHorizon : 0.;
+							return dblTimeToHorizon > 0. ? dblTimeToHorizon : 0.;
+						}
 					}
-				}
-			}
+				)
+			)
 		);
 
 		MarketVertex initialMarketVertex = MarketVertex.StartUp (

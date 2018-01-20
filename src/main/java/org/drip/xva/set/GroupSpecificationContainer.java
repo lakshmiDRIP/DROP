@@ -47,7 +47,7 @@ package org.drip.xva.set;
  */
 
 /**
- * GroupAggregationContainer holds the Named Group Specifications. The References are:
+ * GroupSpecificationContainer holds the Named Group Specifications. The References are:
  *  
  *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
  *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
@@ -66,7 +66,7 @@ package org.drip.xva.set;
  * @author Lakshmi Krishnamurthy
  */
 
-public class GroupAggregationContainer
+public class GroupSpecificationContainer
 {
 	private org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.xva.set.CollateralGroupSpecification>
 		_collateralGroupMap = null;
@@ -79,10 +79,10 @@ public class GroupAggregationContainer
 		_fundingGroupMap = null;
 
 	/**
-	 * GroupAggregationContainer Constructor
+	 * GroupSpecificationContainer Constructor
 	 */
 
-	public GroupAggregationContainer()
+	public GroupSpecificationContainer()
 	{
 		_collateralGroupMap = new
 			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.xva.set.CollateralGroupSpecification>();
