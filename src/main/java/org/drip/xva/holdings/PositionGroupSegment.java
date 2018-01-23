@@ -47,7 +47,7 @@ package org.drip.xva.holdings;
  */
 
 /**
- * PositionGroup holds the Settings that correspond to a Position/Collateral Group. The References are:
+ * PositionGroupSegment contains one Segment of a Position/Collateral Group. The References are:
  *  
  *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
  *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
@@ -66,123 +66,102 @@ package org.drip.xva.holdings;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PositionGroup
+public class PositionGroupSegment
 {
-	private org.drip.function.definition.R1ToR1 _r1ToR1ValueGenerator = null;
-	private org.drip.xva.hypothecation.CollateralGroupPath _collateralGroupPath = null;
-	private org.drip.xva.set.PositionGroupSpecification _positionGroupSpecification = null;
+	private java.util.Set<org.drip.xva.holdings.PositionGroup> _positionGroupSet = new
+		java.util.HashSet<org.drip.xva.holdings.PositionGroup>();
 
 	/**
-	 * PositionGroup Constructor
-	 * 
-	 * @param positionGroupSpecification The Position Group Specification
-	 * @param r1ToR1ValueGenerator The R^1 To R^1 Position Group Value Generator
-	 * 
-	 * @throws java.lang.Exception Thrown if Inputs are Invalid
+	 * Empty PositionGroupSegment Constructor
 	 */
 
-	public PositionGroup (
-		final org.drip.xva.set.PositionGroupSpecification positionGroupSpecification,
-		final org.drip.function.definition.R1ToR1 r1ToR1ValueGenerator)
-		throws java.lang.Exception
+	public PositionGroupSegment()
 	{
-		if (null == (_positionGroupSpecification = positionGroupSpecification) ||
-			null == (_r1ToR1ValueGenerator = r1ToR1ValueGenerator))
-		{
-			throw  new java.lang.Exception ("PositionGroup Constructor => Invalid Inputs");
-		}
 	}
 
 	/**
-	 * Retrieve the Position Group Specification
+	 * Retrieve the Position Group Segment
 	 * 
-	 * @return The Position Group Specification
+	 * @return The Position Group Segment
 	 */
 
-	public org.drip.xva.set.PositionGroupSpecification positionGroupSpecification()
+	public java.util.Set<org.drip.xva.holdings.PositionGroup> positionGroupSet()
 	{
-		return _positionGroupSpecification;
+		return _positionGroupSet;
 	}
 
 	/**
-	 * Retrieve the R^1 To R^1 Position Group Value Generator
+	 * Add the Specified Position Group to the Segment
 	 * 
-	 * @return The R^1 To R^1 Position Group Value Generator
+	 * @param positionGroup The Position Group
+	 * 
+	 * @return TRUE - The Position Group successfully added
 	 */
 
-	public org.drip.function.definition.R1ToR1 valueGenerator()
+	public boolean add (
+		final org.drip.xva.holdings.PositionGroup positionGroup)
 	{
-		return _r1ToR1ValueGenerator;
-	}
-
-	/**
-	 * Set the Collateral Group Path
-	 * 
-	 * @param collateralGroupPath The Collateral Group Path
-	 * 
-	 * @return TRUE - The Collateral Group Path Successfully Set
-	 */
-
-	public boolean setCollateralGroupPath (
-		final org.drip.xva.hypothecation.CollateralGroupPath collateralGroupPath)
-	{
-		if (null == collateralGroupPath)
+		if (null == positionGroup)
 		{
 			return false;
 		}
 
-		_collateralGroupPath = collateralGroupPath;
+		_positionGroupSet.add (positionGroup);
+
 		return true;
 	}
 
 	/**
-	 * Retrieve the Collateral Group Path
+	 * Retrieve the Position Group Array
 	 * 
-	 * @return The Collateral Group Path
+	 * @return The Position Group Array
 	 */
 
-	public org.drip.xva.hypothecation.CollateralGroupPath collateralGroupPath()
+	public org.drip.xva.holdings.PositionGroup[] positionGroupArray()
 	{
-		return _collateralGroupPath;
+		int segmentCount = _positionGroupSet.size();
+
+		int segmentIndex = 0;
+		org.drip.xva.holdings.PositionGroup[] positionGroupArray = 0 == segmentCount ? null : new
+			org.drip.xva.holdings.PositionGroup[segmentCount];
+
+		if (0 == segmentCount)
+		{
+			return null;
+		}
+
+		for (org.drip.xva.holdings.PositionGroup positionGroup : _positionGroupSet)
+		{
+			positionGroupArray[segmentIndex++] = positionGroup;
+		}
+
+		return positionGroupArray;
 	}
 
 	/**
-	 * Generate the Position Group Value Array at the specified Vertexes
+	 * Retrieve the Position Group Collateral Path Array
 	 * 
-	 * @param marketVertexArray The Vertex Market Parameter Array
-	 * 
-	 * @return The Position Group Value Array
+	 * @return The Position Group Collateral Path Array
 	 */
 
-	public double[] valueArray (
-		final org.drip.xva.universe.MarketVertex[] marketVertexArray)
+	public org.drip.xva.hypothecation.CollateralGroupPath[] collateralGroupPathArray()
 	{
-		if (null == marketVertexArray)
+		int segmentCount = _positionGroupSet.size();
+
+		int segmentIndex = 0;
+		org.drip.xva.hypothecation.CollateralGroupPath[] collateralGroupPathArray = 0 == segmentCount ? null
+			: new org.drip.xva.hypothecation.CollateralGroupPath[segmentCount];
+
+		if (0 == segmentCount)
 		{
 			return null;
 		}
 
-		int vertexCount = marketVertexArray.length;
-		double[] positionGroupValueArray = 0 == vertexCount ? null : new double[vertexCount];
-
-		if (0 == vertexCount)
+		for (org.drip.xva.holdings.PositionGroup positionGroup : _positionGroupSet)
 		{
-			return null;
-		}
-		for (int i = 0; i < vertexCount; ++i)
-		{
-			try {
-				positionGroupValueArray[i] = marketVertexArray[i].positionManifestValue() *
-					_r1ToR1ValueGenerator.evaluate (marketVertexArray[i].anchorDate().julian());
-			}
-			catch (java.lang.Exception e)
-			{
-				e.printStackTrace();
-
-				return null;
-			}
+			collateralGroupPathArray[segmentIndex++] = positionGroup.collateralGroupPath();
 		}
 
-		return positionGroupValueArray;
+		return collateralGroupPathArray;
 	}
 }

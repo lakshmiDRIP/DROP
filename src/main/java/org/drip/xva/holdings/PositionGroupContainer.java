@@ -154,16 +154,33 @@ public class PositionGroupContainer
 	}
 
 	/**
+	 * Set the Specific Position Group's Collateral Group Path
+	 * 
+	 * @param positionGroupIndex The Index in the Position Group
+	 * @param collateralGroupPath Collateral Group Path
+	 * 
+	 * @return TRUE - The Collateral Group Path successfully set
+	 */
+
+	public boolean setCollateralGroupPath (
+		final int positionGroupIndex,
+		final org.drip.xva.hypothecation.CollateralGroupPath collateralGroupPath)
+	{
+		return positionGroupIndex >= count() ? false :
+			_positionGroupArray[positionGroupIndex].setCollateralGroupPath (collateralGroupPath);
+	}
+
+	/**
 	 * Retrieve the Position Groups Sorted into Netting Group Segments
 	 * 
 	 * @return Map of the Position Groups Sorted into Netting Group Segments
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.xva.holdings.PositionGroup> nettingSegments()
+	public java.util.Map<java.lang.String, org.drip.xva.holdings.PositionGroupSegment> nettingSegments()
 	{
-		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.xva.holdings.PositionGroup>
-			nettingSegmentPositionGroup = new
-				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.xva.holdings.PositionGroup>();
+		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.xva.holdings.PositionGroupSegment>
+			nettingPositionGroupSegment = new
+				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.xva.holdings.PositionGroupSegment>();
 
 		int positionGroupCount = _positionGroupArray.length;
 
@@ -171,13 +188,53 @@ public class PositionGroupContainer
 		{
 			org.drip.xva.holdings.PositionGroup positionGroup = _positionGroupArray[positionGroupIndex];
 
-			nettingSegmentPositionGroup.put (
-				positionGroup.positionGroupSpecification().nettingGroupSpecification().id(),
-				positionGroup
-			);
+			java.lang.String groupID =
+				positionGroup.positionGroupSpecification().nettingGroupSpecification().id();
+
+			boolean segmentPresent = nettingPositionGroupSegment.containsKey (groupID);
+
+			org.drip.xva.holdings.PositionGroupSegment positionGroupSegment = segmentPresent ?
+				nettingPositionGroupSegment.get (groupID) : new org.drip.xva.holdings.PositionGroupSegment();
+
+			positionGroupSegment.add (positionGroup);
+
+			if (!segmentPresent)
+			{
+				nettingPositionGroupSegment.put (
+					groupID,
+					positionGroupSegment
+				);
+			}
 		}
 
-		return nettingSegmentPositionGroup;
+		return nettingPositionGroupSegment;
+	}
+
+	/**
+	 * Retrieve the Array of Position Groups Collected into Netting Group Collateral Vertex Paths
+	 * 
+	 * @return Array of the Position Groups Collected into Netting Group Collateral Vertex Paths
+	 */
+
+	public org.drip.xva.hypothecation.CollateralGroupPath[][] nettingSegmentPaths()
+	{
+		java.util.Map<java.lang.String, org.drip.xva.holdings.PositionGroupSegment>
+			nettingPositionGroupSegment = nettingSegments();
+
+		int nettingPositionGroupSegmentCount = nettingPositionGroupSegment.size();
+
+		int nettingPositionGroupSegmentIndex = 0;
+		org.drip.xva.hypothecation.CollateralGroupPath[][] nettingSegmentPathArray = new
+			org.drip.xva.hypothecation.CollateralGroupPath[nettingPositionGroupSegmentCount][];
+
+		for (java.util.Map.Entry<java.lang.String, org.drip.xva.holdings.PositionGroupSegment>
+			nettingPositionGroupSegmentEntry : nettingPositionGroupSegment.entrySet())
+		{
+			nettingSegmentPathArray[nettingPositionGroupSegmentIndex++] =
+				nettingPositionGroupSegmentEntry.getValue().collateralGroupPathArray();
+		}
+
+		return nettingSegmentPathArray;
 	}
 
 	/**
@@ -186,11 +243,11 @@ public class PositionGroupContainer
 	 * @return Map of the Position Groups Sorted into Funding Group Segments
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.xva.holdings.PositionGroup> fundingSegments()
+	public java.util.Map<java.lang.String, org.drip.xva.holdings.PositionGroupSegment> fundingSegments()
 	{
-		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.xva.holdings.PositionGroup>
-			fundingSegmentPositionGroup = new
-				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.xva.holdings.PositionGroup>();
+		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.xva.holdings.PositionGroupSegment>
+			fundingPositionGroupSegment = new
+				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.xva.holdings.PositionGroupSegment>();
 
 		int positionGroupCount = _positionGroupArray.length;
 
@@ -198,12 +255,52 @@ public class PositionGroupContainer
 		{
 			org.drip.xva.holdings.PositionGroup positionGroup = _positionGroupArray[positionGroupIndex];
 
-			fundingSegmentPositionGroup.put (
-				positionGroup.positionGroupSpecification().fundingGroupSpecification().id(),
-				positionGroup
-			);
+			java.lang.String groupID =
+				positionGroup.positionGroupSpecification().fundingGroupSpecification().id();
+
+			boolean segmentPresent = fundingPositionGroupSegment.containsKey (groupID);
+
+			org.drip.xva.holdings.PositionGroupSegment positionGroupSegment = segmentPresent ?
+				fundingPositionGroupSegment.get (groupID) : new org.drip.xva.holdings.PositionGroupSegment();
+
+			positionGroupSegment.add (positionGroup);
+
+			if (!segmentPresent)
+			{
+				fundingPositionGroupSegment.put (
+					groupID,
+					positionGroupSegment
+				);
+			}
 		}
 
-		return fundingSegmentPositionGroup;
+		return fundingPositionGroupSegment;
+	}
+
+	/**
+	 * Retrieve the Array of Position Groups Collected into Funding Group Collateral Vertex Paths
+	 * 
+	 * @return Array of the Position Groups Collected into Funding Group Collateral Vertex Paths
+	 */
+
+	public org.drip.xva.hypothecation.CollateralGroupPath[][] fundingSegmentPaths()
+	{
+		java.util.Map<java.lang.String, org.drip.xva.holdings.PositionGroupSegment>
+			fundingPositionGroupSegment = nettingSegments();
+
+		int fundingPositionGroupSegmentCount = fundingPositionGroupSegment.size();
+
+		int fundingPositionGroupSegmentIndex = 0;
+		org.drip.xva.hypothecation.CollateralGroupPath[][] fundingSegmentPathArray = new
+			org.drip.xva.hypothecation.CollateralGroupPath[fundingPositionGroupSegmentCount][];
+
+		for (java.util.Map.Entry<java.lang.String, org.drip.xva.holdings.PositionGroupSegment>
+			fundingPositionGroupSegmentEntry : fundingPositionGroupSegment.entrySet())
+		{
+			fundingSegmentPathArray[fundingPositionGroupSegmentIndex++] =
+				fundingPositionGroupSegmentEntry.getValue().collateralGroupPathArray();
+		}
+
+		return fundingSegmentPathArray;
 	}
 }

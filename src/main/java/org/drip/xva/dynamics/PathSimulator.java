@@ -355,7 +355,7 @@ public class PathSimulator
 		return collateralGroupVertexArray;
 	}
 
-	private org.drip.xva.hypothecation.CollateralGroupPath[] collateralGroupPathArray (
+	private boolean collateralGroupPathArray (
 		final org.drip.xva.universe.MarketPath marketPath)
 	{
 		org.drip.xva.universe.MarketVertex[] marketVertexArray = marketPath.vertexes();
@@ -368,7 +368,7 @@ public class PathSimulator
 
 		if (null == collateralGroupVertexArray)
 		{
-			return null;
+			return false;
 		}
 
 		int positionGroupCount = collateralGroupVertexArray.length;
@@ -379,17 +379,23 @@ public class PathSimulator
 		{
 			for (int positionGroupIndex = 0; positionGroupIndex < positionGroupCount; ++positionGroupIndex)
 			{
-				collateralGroupPathArray[positionGroupIndex] = new
-					org.drip.xva.hypothecation.CollateralGroupPath
-						(collateralGroupVertexArray[positionGroupIndex]);
+				if (!_positionGroupContainer.setCollateralGroupPath (
+					positionGroupIndex,
+					collateralGroupPathArray[positionGroupIndex] = new
+						org.drip.xva.hypothecation.CollateralGroupPath
+						(collateralGroupVertexArray[positionGroupIndex])
+					))
+					return false;
 			}
+
+			return true;
 		}
 		catch (java.lang.Exception e)
 		{
 			e.printStackTrace();
 		}
 
-		return collateralGroupPathArray;
+		return false;
 	}
 
 	/**
@@ -517,29 +523,52 @@ public class PathSimulator
 				)
 			);
 
-			org.drip.xva.hypothecation.CollateralGroupPath[] collateralGroupPathArray =
-				collateralGroupPathArray (marketPath);
+			if (!collateralGroupPathArray (marketPath))
+			{
+				return null;
+			}
+
+			org.drip.xva.hypothecation.CollateralGroupPath[][] positionFundingGroupPath =
+				_positionGroupContainer.fundingSegmentPaths();
+
+			org.drip.xva.hypothecation.CollateralGroupPath[][] positionCreditDebtGroupPath =
+				_positionGroupContainer.nettingSegmentPaths();
+
+			int positionFundingGroupCount = positionFundingGroupPath.length;
+			int positionCreditDebtGroupCount = positionCreditDebtGroupPath.length;
+			org.drip.xva.netting.FundingGroupPath[] fundingGroupPathArray = new
+				org.drip.xva.strategy.AlbaneseAndersenFundingGroupPath[positionFundingGroupCount];
+			org.drip.xva.netting.CreditDebtGroupPath[] creditDebtGroupPathArray = new
+				org.drip.xva.strategy.AlbaneseAndersenNettingGroupPath[positionCreditDebtGroupCount];
 
 			if (org.drip.xva.dynamics.AdjustmentDigestScheme.ALBANESE_ANDERSEN_METRICS_POINTER ==
 				_simulatorScheme.adjustmentDigestScheme())
 			{
-				return new org.drip.xva.cpty.MonoPathExposureAdjustment (
-					new org.drip.xva.strategy.AlbaneseAndersenNettingGroupPath[]
-					{
-						new org.drip.xva.strategy.AlbaneseAndersenNettingGroupPath (
-							collateralGroupPathArray,
-							marketPath
-						)
-					},
-					new org.drip.xva.strategy.AlbaneseAndersenFundingGroupPath[]
-					{
+				for (int positionFundingGroupIndex = 0; positionFundingGroupIndex <
+					positionFundingGroupCount; ++positionFundingGroupIndex)
+				{
+					fundingGroupPathArray[positionFundingGroupIndex] =
 						new org.drip.xva.strategy.AlbaneseAndersenFundingGroupPath (
-							collateralGroupPathArray,
+							positionFundingGroupPath[positionFundingGroupIndex],
 							marketPath
-						)
-					}
-				);
+						);
+				}
+
+				for (int positionCreditDebtGroupIndex = 0; positionCreditDebtGroupIndex <
+					positionCreditDebtGroupCount; ++positionCreditDebtGroupIndex)
+				{
+					creditDebtGroupPathArray[positionCreditDebtGroupIndex] =
+						new org.drip.xva.strategy.AlbaneseAndersenNettingGroupPath (
+							positionCreditDebtGroupPath[positionCreditDebtGroupIndex],
+							marketPath
+						);
+				}
 			}
+
+			return new org.drip.xva.cpty.MonoPathExposureAdjustment (
+				creditDebtGroupPathArray,
+				fundingGroupPathArray
+			);
 		}
 		catch (java.lang.Exception e)
 		{
