@@ -106,7 +106,7 @@ public class XVAGreeks {
 
 		TradeablesContainer tc = tes.tradeablesContainer();
 
-		double dblCollateralSchemeNumeraire = mvStart.csaNumeraire().nodal();
+		double dblCollateralSchemeNumeraire = mvStart.csaReplicator();
 
 		BurgardKjaerEdgeRun bker = bko.edgeRun (
 			new MarketEdge (
@@ -173,8 +173,8 @@ public class XVAGreeks {
 			dblTimeStart + dblTimeWidth,
 			ReplicationPortfolioVertex.Standard (
 				-1. * dblDerivativeXVAValueDeltaFinish,
-				dblGainOnBankDefaultFinish / mvFinish.bank().seniorFundingLatentState().nodal(),
-				dblGainOnCounterPartyDefaultFinish / mvFinish.counterParty().seniorFundingLatentState().nodal(),
+				dblGainOnBankDefaultFinish / mvFinish.bank().seniorFundingReplicator(),
+				dblGainOnCounterPartyDefaultFinish / mvFinish.counterParty().seniorFundingReplicator(),
 				rpvStart.cashAccount() + cae.accumulation()
 			),
 			new PositionGreekVertex (
@@ -413,43 +413,28 @@ public class XVAGreeks {
 			dtSpot,
 			dblAssetNumeraireInitial,
 			dblOvernightIndexNumeraireDrift,
-			new LatentStateMarketVertex (
-				1.,
-				1.
-			),
+			1.,
 			dblCollateralSchemeNumeraireDrift,
-			new LatentStateMarketVertex (
 				1.,
-				1.
-			),
-			new EntityMarketVertex (
+			new MarketVertexEntity (
 				1.,
 				dblBankHazardRateInitial,
 				dblBankSeniorRecoveryRateInitial,
 				dblBankSeniorFundingNumeraireDrift,
-				new LatentStateMarketVertex (
-					1.,
-					1.
-				),
+				1.,
 				dblBankSubordinateRecoveryRateInitial,
 				dblBankSubordinateFundingNumeraireDrift,
-				new LatentStateMarketVertex (
-					1.,
-					1.
-				)
+				1.
 			),
-			new EntityMarketVertex (
+			new MarketVertexEntity (
 				1.,
 				dblCounterPartyHazardRateInitial,
 				dblCounterPartyRecoveryRateInitial,
 				dblCounterPartyFundingNumeraireDrift,
-				new LatentStateMarketVertex (
-					1.,
-					1.
-				),
+				1.,
 				Double.NaN,
 				Double.NaN,
-				null
+				Double.NaN
 			)
 		);
 

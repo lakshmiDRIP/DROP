@@ -219,43 +219,28 @@ public class SetOffUncollateralizedFunding {
 				adtVertex[i] = dtSpot.addMonths (6 * i),
 				Double.NaN,
 				dblOvernightNumeraireDrift,
-				new LatentStateMarketVertex (
-					Math.exp (-0.5 * dblOvernightNumeraireDrift * iNumStep),
-					Math.exp (-0.5 * dblOvernightNumeraireDrift * (iNumStep - i))
-				),
+				Math.exp (-0.5 * dblOvernightNumeraireDrift * iNumStep),
 				dblCSADrift,
-				new LatentStateMarketVertex (
-					Math.exp (-0.5 * dblCSADrift * iNumStep),
-					Math.exp (-0.5 * dblCSADrift * (iNumStep - i))
-				),
-				new EntityMarketVertex (
+				Math.exp (-0.5 * dblCSADrift * iNumStep),
+				new MarketVertexEntity (
 					Math.exp (-0.5 * dblBankHazardRate * i),
 					dblBankHazardRate,
 					dblBankSeniorRecoveryRate,
 					dblBankSeniorFundingSpread,
-					new LatentStateMarketVertex (
-						Math.exp (-0.5 * dblBankHazardRate * (1. - dblBankSeniorRecoveryRate) * iNumStep),
-						Math.exp (-0.5 * dblBankHazardRate * (1. - dblBankSeniorRecoveryRate) * (iNumStep - i))
-					),
+					Math.exp (-0.5 * dblBankHazardRate * (1. - dblBankSeniorRecoveryRate) * iNumStep),
 					dblBankSubordinateRecoveryRate,
 					dblBankSubordinateFundingSpread,
-					new LatentStateMarketVertex (
-						Math.exp (-0.5 * dblBankHazardRate * (1. - dblBankSubordinateRecoveryRate) * iNumStep),
-						Math.exp (-0.5 * dblBankHazardRate * (1. - dblBankSubordinateRecoveryRate) * (iNumStep - i))
-					)
+					Math.exp (-0.5 * dblBankHazardRate * (1. - dblBankSubordinateRecoveryRate) * iNumStep)
 				),
-				new EntityMarketVertex (
+				new MarketVertexEntity (
 					Math.exp (-0.5 * dblCounterPartyHazardRate * i),
 					dblCounterPartyHazardRate,
 					dblCounterPartyRecoveryRate,
 					dblCounterPartyFundingSpread,
-					new LatentStateMarketVertex (
-						Math.exp (-0.5 * dblCounterPartyHazardRate * (1. - dblCounterPartyRecoveryRate) * iNumStep),
-						Math.exp (-0.5 * dblCounterPartyHazardRate * (1. - dblCounterPartyRecoveryRate) * (iNumStep - i))
-					),
+					Math.exp (-0.5 * dblCounterPartyHazardRate * (1. - dblCounterPartyRecoveryRate) * iNumStep),
 					Double.NaN,
 					Double.NaN,
-					null
+					Double.NaN
 				)
 			);
 

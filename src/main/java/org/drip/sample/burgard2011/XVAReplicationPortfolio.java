@@ -104,7 +104,7 @@ public class XVAReplicationPortfolio {
 
 		double dblTime = dblTimeStart + dblTimeWidth;
 
-		double dblCollateralSchemeNumeraire = mvStart.csaNumeraire().nodal();
+		double dblCollateralSchemeNumeraire = mvStart.csaReplicator();
 
 		TradeablesContainer tc = tes.tradeablesContainer();
 
@@ -156,9 +156,9 @@ public class XVAReplicationPortfolio {
 
 		double dblAssetNumeraireFinish = mvFinish.positionManifestValue();
 
-		double dblBankSeniorFundingNumeraireFinish = mvFinish.bank().seniorFundingLatentState().nodal();
+		double dblBankSeniorFundingNumeraireFinish = mvFinish.bank().seniorFundingReplicator();
 
-		double dblCounterPartyFundingNumeraireFinish = mvFinish.counterParty().seniorFundingLatentState().nodal();
+		double dblCounterPartyFundingNumeraireFinish = mvFinish.counterParty().seniorFundingReplicator();
 
 		ReplicationPortfolioVertex rpvFinish = ReplicationPortfolioVertex.Standard (
 			-1. * dblDerivativeXVAValueDeltaFinish,
@@ -423,43 +423,28 @@ public class XVAReplicationPortfolio {
 			dtSpot,
 			dblAssetNumeraireInitial,
 			dblOvernightIndexNumeraireDrift,
-			new LatentStateMarketVertex (
-				1.,
-				1.
-			),
+			1.,
 			dblCollateralSchemeNumeraireDrift,
-			new LatentStateMarketVertex (
-				1.,
-				1.
-			),
-			new EntityMarketVertex (
+			1.,
+			new MarketVertexEntity (
 				1.,
 				dblBankHazardRateInitial,
 				dblBankSeniorRecoveryRateInitial,
 				dblBankSeniorFundingNumeraireDrift,
-				new LatentStateMarketVertex (
-					1.,
-					1.
-				),
+				1.,
 				dblBankSubordinateRecoveryRateInitial,
 				dblBankSubordinateFundingNumeraireDrift,
-				new LatentStateMarketVertex (
-					1.,
-					1.
-				)
+				1.
 			),
-			new EntityMarketVertex (
+			new MarketVertexEntity (
 				1.,
 				dblCounterPartyHazardRateInitial,
 				dblCounterPartyRecoveryRateInitial,
 				dblCounterPartyFundingNumeraireDrift,
-				new LatentStateMarketVertex (
-					1.,
-					1.
-				),
+				1.,
 				Double.NaN,
 				Double.NaN,
-				null
+				Double.NaN
 			)
 		);
 

@@ -71,21 +71,21 @@ package org.drip.xva.universe;
 public class MarketVertex
 {
 	private double _csaSpread = java.lang.Double.NaN;
+	private double _csaReplicator = java.lang.Double.NaN;
 	private double _overnightRate = java.lang.Double.NaN;
+	private double _overnightReplicator = java.lang.Double.NaN;
 	private double _positionManifestValue = java.lang.Double.NaN;
 	private org.drip.analytics.date.JulianDate _anchorDate = null;
-	private org.drip.xva.universe.EntityMarketVertex _bankEntityMarketVertex = null;
-	private org.drip.xva.universe.LatentStateMarketVertex _csaNumeraireMarketVertex = null;
-	private org.drip.xva.universe.EntityMarketVertex _counterPartyEntityMarketVertex = null;
-	private org.drip.xva.universe.LatentStateMarketVertex _overnightNumeraireMarketVertex = null;
+	private org.drip.xva.universe.MarketVertexEntity _bankMarketVertex = null;
+	private org.drip.xva.universe.MarketVertexEntity _counterPartyMarketVertex = null;
 
 	/**
 	 * Generate an Initial Instance of MarketVertex
 	 * 
 	 * @param anchorDate The Anchor Date
 	 * @param positionManifestValue Realized Position Manifest Value
-	 * @param overnightNumeraire Realized Overnight Numeraire
-	 * @param csaNumeraire Realized CSA Numeraire
+	 * @param overnightReplicator The Realized Overnight Latent State Replicator
+	 * @param csaReplicator The Realized CSA Latent State Replicator
 	 * @param bankHazardRate Realized Bank Hazard Rate
 	 * @param bankRecoveryRate Realized Bank Recovery Rate
 	 * @param bankFundingSpread Realized Bank Funding Spread
@@ -99,8 +99,8 @@ public class MarketVertex
 	public static final MarketVertex StartUp (
 		final org.drip.analytics.date.JulianDate anchorDate,
 		final double positionManifestValue,
-		final double overnightNumeraire,
-		final double csaNumeraire,
+		final double overnightReplicator,
+		final double csaReplicator,
 		final double bankHazardRate,
 		final double bankRecoveryRate,
 		final double bankFundingSpread,
@@ -113,28 +113,20 @@ public class MarketVertex
 				anchorDate,
 				positionManifestValue,
 				0.,
-				new org.drip.xva.universe.LatentStateMarketVertex (
-					overnightNumeraire,
-					overnightNumeraire
-				),
+				overnightReplicator,
 				0.,
-				new org.drip.xva.universe.LatentStateMarketVertex (
-					csaNumeraire,
-					csaNumeraire
-				),
-				org.drip.xva.universe.EntityMarketVertex.Senior (
+				csaReplicator,
+				org.drip.xva.universe.MarketVertexEntity.Senior (
 					0.,
 					bankHazardRate,
 					bankRecoveryRate,
-					bankFundingSpread,
-					null
+					bankFundingSpread
 				),
-				org.drip.xva.universe.EntityMarketVertex.Senior (
+				org.drip.xva.universe.MarketVertexEntity.Senior (
 					0.,
 					counterPartyHazardRate,
 					counterPartyRecoveryRate,
-					counterPartyFundingSpread,
-					null
+					counterPartyFundingSpread
 				)
 			);
 		} catch (java.lang.Exception e) {
@@ -150,11 +142,11 @@ public class MarketVertex
 	 * @param anchorDate The Vertex Date Anchor
 	 * @param positionManifestValue The Realized Position Manifest Value
 	 * @param overnightRate The Realized Overnight Rate
-	 * @param overnightNumeraireMarketVertex The Realized Overnight Numeraire Market Vertex
+	 * @param overnightReplicator The Realized Overnight Latent State Replicator
 	 * @param csaSpread The Realized CSA Spread
-	 * @param csaNumeraireMarketVertex The Realized CSA Numeraire Market Vertex
-	 * @param bankEntityMarketVertex Bank Entity Market Vertex Instance
-	 * @param counterPartyEntityMarketVertex Counter Party Market Vertex Instance
+	 * @param csaReplicator The Realized CSA Latent State Replicator
+	 * @param bankMarketVertex Bank Market Vertex Instance
+	 * @param counterPartyMarketVertex Counter Party Market Vertex Instance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -163,21 +155,23 @@ public class MarketVertex
 		final org.drip.analytics.date.JulianDate anchorDate,
 		final double positionManifestValue,
 		final double overnightRate,
-		final org.drip.xva.universe.LatentStateMarketVertex overnightNumeraireMarketVertex,
+		final double overnightReplicator,
 		final double csaSpread,
-		final org.drip.xva.universe.LatentStateMarketVertex csaNumeraireMarketVertex,
-		final org.drip.xva.universe.EntityMarketVertex bankEntityMarketVertex,
-		final org.drip.xva.universe.EntityMarketVertex counterPartyEntityMarketVertex)
+		final double csaReplicator,
+		final org.drip.xva.universe.MarketVertexEntity bankMarketVertex,
+		final org.drip.xva.universe.MarketVertexEntity counterPartyMarketVertex)
 		throws java.lang.Exception
 	{
 		if (null == (_anchorDate = anchorDate) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_overnightRate = overnightRate) ||
-			null == (_overnightNumeraireMarketVertex = overnightNumeraireMarketVertex) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_overnightReplicator = overnightReplicator) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_csaSpread = csaSpread) ||
-			null == (_csaNumeraireMarketVertex = csaNumeraireMarketVertex) ||
-			null == (_bankEntityMarketVertex = bankEntityMarketVertex) ||
-			null == (_counterPartyEntityMarketVertex = counterPartyEntityMarketVertex))
+			!org.drip.quant.common.NumberUtil.IsValid (_csaReplicator = csaReplicator) ||
+			null == (_bankMarketVertex = bankMarketVertex) ||
+			null == (_counterPartyMarketVertex = counterPartyMarketVertex))
+		{
 			throw new java.lang.Exception ("MarketVertex Constructor => Invalid Inputs");
+		}
 
 		_positionManifestValue = positionManifestValue;
 	}
@@ -221,9 +215,9 @@ public class MarketVertex
 	 * @return The Realized Overnight Index Numeraire
 	 */
 
-	public org.drip.xva.universe.LatentStateMarketVertex overnightNumeraire()
+	public double overnightReplicator()
 	{
-		return _overnightNumeraireMarketVertex;
+		return _overnightReplicator;
 	}
 
 	/**
@@ -243,9 +237,9 @@ public class MarketVertex
 	 * @return The Realized CSA Scheme Numeraire
 	 */
 
-	public org.drip.xva.universe.LatentStateMarketVertex csaNumeraire()
+	public double csaReplicator()
 	{
-		return _csaNumeraireMarketVertex;
+		return _csaReplicator;
 	}
 
 	/**
@@ -265,9 +259,9 @@ public class MarketVertex
 	 * @return The Realized Bank Senior Market Vertex
 	 */
 
-	public org.drip.xva.universe.EntityMarketVertex bank()
+	public org.drip.xva.universe.MarketVertexEntity bank()
 	{
-		return _bankEntityMarketVertex;
+		return _bankMarketVertex;
 	}
 
 	/**
@@ -276,8 +270,8 @@ public class MarketVertex
 	 * @return The Realized Counter Party Market Vertex
 	 */
 
-	public org.drip.xva.universe.EntityMarketVertex counterParty()
+	public org.drip.xva.universe.MarketVertexEntity counterParty()
 	{
-		return _counterPartyEntityMarketVertex;
+		return _counterPartyMarketVertex;
 	}
 }

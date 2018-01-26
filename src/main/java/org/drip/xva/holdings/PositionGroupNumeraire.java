@@ -1,5 +1,5 @@
 
-package org.drip.xva.universe;
+package org.drip.xva.holdings;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -7,7 +7,6 @@ package org.drip.xva.universe;
 
 /*!
  * Copyright (C) 2018 Lakshmi Krishnamurthy
- * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
  *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
  *  	libraries targeting analysts and developers
@@ -48,17 +47,19 @@ package org.drip.xva.universe;
  */
 
 /**
- * LatentStateMarketVertex holds the Epochal and the Nodal Latent State Realizations at a Market Trajectory
- *  Vertex needed for computing the Valuation Adjustment. The References are:
- *  
- *  - Burgard, C., and M. Kjaer (2013): Funding Strategies, Funding Costs, Risk, 24 (12) 82-87.
+ * PositionGroupNumeraire evaluates the Value of the Numeraire for a Position Group given the Realized Market
+ *  Vertex Array. The References are:
  *  
  *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
  *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
  *  
  *  - Burgard, C., and M. Kjaer (2014): In the Balance, Risk, 24 (11) 72-75.
  *  
- *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk, Risk 20 (2) 86-90.
+ *  - Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and the
+ *  	Re-Hypothecation Option, eSSRN, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955.
+ *  
+ *  - Burgard, C., and M. Kjaer (2017): Derivatives Funding, Netting, and Accounting, eSSRN,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2534011.
  * 
  *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
  *  	21 (2) 97-102.
@@ -66,60 +67,31 @@ package org.drip.xva.universe;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LatentStateMarketVertex
+public class PositionGroupNumeraire
 {
-	private double _nodal = java.lang.Double.NaN;
-	private double _epochal = java.lang.Double.NaN;
 
 	/**
-	 * LatentStateMarketVertex Constructor
-	 * 
-	 * @param epochal The Epochal Latent State Realization
-	 * @param nodal The Nodal Latent State Realization
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * Empty PositionGroupNumeraire Constructor
 	 */
 
-	public LatentStateMarketVertex (
-		final double epochal,
-		final double nodal)
+	public PositionGroupNumeraire()
+	{
+	}
+
+	/**
+	 * Compute the Value of the Position Group at the Market Vertex
+	 * 
+	 * @param marketVertex The Market Vertex
+	 * 
+	 * @return The Value of the Position Group
+	 * 
+	 * @throws java.lang.Exception Thrown if the Value cannot be computed
+	 */
+
+	public double value (
+		final org.drip.xva.universe.MarketVertex marketVertex)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_epochal = epochal) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_nodal = nodal))
-			throw new java.lang.Exception ("LatentStateMarketVertex Constructor => Invalid Inputs");
-	}
-
-	/**
-	 * Retrieve the Epochal Latent State Realization
-	 * 
-	 * @return The Epochal Latent State Realization
-	 */
-
-	public double epochal()
-	{
-		return _epochal;
-	}
-
-	/**
-	 * Retrieve the Nodal Latent State Realization
-	 * 
-	 * @return The Nodal Latent State Realization
-	 */
-
-	public double nodal()
-	{
-		return _nodal;
-	}
-
-	/**
-	 * Retrieve the Epochal/Nodal Latent State Scale
-	 * 
-	 * @return The Epochal/Nodal Latent State Scale
-	 */
-
-	public double epochalNodalScale()
-	{
-		return _epochal / _nodal;
+		return 1.;
 	}
 }

@@ -142,9 +142,9 @@ public class BurgardKjaerOperator
 
 		org.drip.xva.universe.MarketVertex finalMarketVertex = marketEdge.finish();
 
-		org.drip.xva.universe.EntityMarketVertex finalBankMarketVertex = finalMarketVertex.bank();
+		org.drip.xva.universe.MarketVertexEntity finalBankMarketVertex = finalMarketVertex.bank();
 
-		org.drip.xva.universe.EntityMarketVertex finalCounterPartyMarketVertex =
+		org.drip.xva.universe.MarketVertexEntity finalCounterPartyMarketVertex =
 			finalMarketVertex.counterParty();
 
 		org.drip.xva.derivative.PositionGreekVertex initialPositionGreekVertex =
@@ -185,7 +185,7 @@ public class BurgardKjaerOperator
 				-1. * bumpedThetaArray[0],
 				-1. * bumpedThetaArray[1],
 				-1. * bumpedThetaArray[2],
-				finalMarketVertex.csaNumeraire().nodal() * collateral,
+				finalMarketVertex.csaReplicator() * collateral,
 				(bankSeniorDefaultIntensity + counterPartyDefaultIntensity) * initialDerivativeXVAValue,
 				-1. * bankSeniorDefaultIntensity * gainOnBankDefault,
 				-1. * gainOnCounterPartyDefault,
@@ -225,9 +225,9 @@ public class BurgardKjaerOperator
 
 		double derivativeXVAValue = initialTrajectoryVertex.positionGreekVertex().derivativeXVAValue();
 
-		org.drip.xva.universe.EntityMarketVertex finalBankMarketVertex = finalMarketVertex.bank();
+		org.drip.xva.universe.MarketVertexEntity finalBankMarketVertex = finalMarketVertex.bank();
 
-		org.drip.xva.universe.EntityMarketVertex finalCounterPartyMarketVertex =
+		org.drip.xva.universe.MarketVertexEntity finalCounterPartyMarketVertex =
 			finalMarketVertex.counterParty();
 
 		double counterPartyRecoveryRate = finalCounterPartyMarketVertex.seniorRecoveryRate();
@@ -271,7 +271,7 @@ public class BurgardKjaerOperator
 				-1. * bumpedThetaArray[0],
 				-1. * bumpedThetaArray[1],
 				-1. * bumpedThetaArray[2],
-				finalMarketVertex.csaNumeraire().nodal() * collateral,
+				finalMarketVertex.csaReplicator() * collateral,
 				(bankDefaultIntensity + counterPartyDefaultIntensity) * derivativeXVAValue,
 				bankSeniorFundingSpread * bankExposure,
 				-1. * bankDefaultIntensity * bankExposure,

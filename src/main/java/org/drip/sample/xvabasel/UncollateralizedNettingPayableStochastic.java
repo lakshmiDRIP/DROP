@@ -267,10 +267,10 @@ public class UncollateralizedNettingPayableStochastic {
 		double dblTime = 5.;
 		double dblATMSwapRateOffsetDrift = 0.0;
 		double dblATMSwapRateOffsetVolatility = 0.25;
-		double dblOvernightNumeraireDrift = 0.004;
+		double dblOvernightNumeraireDrift = -0.004;
 		double dblOvernightNumeraireVolatility = 0.02;
 		double dblOvernightNumeraireInitial = 1.;
-		double dblCSADrift = 0.01;
+		double dblCSADrift = -0.01;
 		double dblCSAVolatility = 0.05;
 		double dblCSAInitial = 1.;
 		double dblBankHazardRateDrift = 0.002;
@@ -488,40 +488,28 @@ public class UncollateralizedNettingPayableStochastic {
 					adtVertex[j] = dtSpot.addMonths (6 * j),
 					Double.NaN,
 					dblOvernightNumeraireDrift,
-					new LatentStateMarketVertex (
-						adblOvernightNumeraire[0],
-						adblOvernightNumeraire[j]
-					),
+					adblOvernightNumeraire[j],
 					dblCSADrift,
-					new LatentStateMarketVertex (
-						adblCSA[0],
-						adblCSA[j]
-					),
-					new EntityMarketVertex (
+					adblCSA[j],
+					new MarketVertexEntity (
 						Math.exp (-0.5 * adblBankHazardRate[j] * j),
 						adblBankHazardRate[j],
 						adblBankRecoveryRate[j],
 						adblBankFundingSpread[j],
-						new LatentStateMarketVertex (
-							Math.exp (-0.5 * adblBankHazardRate[j] * (1. - adblBankRecoveryRate[j]) * iNumStep),
-							Math.exp (-0.5 * adblBankHazardRate[j] * (1. - adblBankRecoveryRate[j]) * (iNumStep - j))
-						),
+						Math.exp (-0.5 * adblBankHazardRate[j] * (1. - adblBankRecoveryRate[j]) * iNumStep),
 						Double.NaN,
 						Double.NaN,
-						null
+						Double.NaN
 					),
-					new EntityMarketVertex (
+					new MarketVertexEntity (
 						Math.exp (-0.5 * adblCounterPartyHazardRate[j] * j),
 						adblCounterPartyHazardRate[j],
 						adblCounterPartyRecoveryRate[j],
 						adblCounterPartyFundingSpread[j],
-						new LatentStateMarketVertex (
-							Math.exp (-0.5 * adblCounterPartyHazardRate[j] * (1. - adblCounterPartyRecoveryRate[j]) * iNumStep),
-							Math.exp (-0.5 * adblCounterPartyHazardRate[j] * (1. - adblCounterPartyRecoveryRate[j]) * (iNumStep - j))
-						),
+						Math.exp (-0.5 * adblCounterPartyHazardRate[j] * (1. - adblCounterPartyRecoveryRate[j]) * iNumStep),
 						Double.NaN,
 						Double.NaN,
-						null
+						Double.NaN
 					)
 				);
 

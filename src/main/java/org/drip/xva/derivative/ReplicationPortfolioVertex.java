@@ -218,15 +218,14 @@ public class ReplicationPortfolioVertex
 			throw new java.lang.Exception
 				("ReplicationPortfolioVertex::bankPreDefaultPositionValue => Invalid Inputs");
 
-		org.drip.xva.universe.EntityMarketVertex bankMarketVertex = marketVertex.bank();
+		org.drip.xva.universe.MarketVertexEntity bankMarketVertex = marketVertex.bank();
 
-		double value = -1. * bankMarketVertex.seniorFundingLatentState().nodal() * _bankSeniorNumeraireHoldings;
+		double value = -1. * bankMarketVertex.seniorFundingReplicator() * _bankSeniorNumeraireHoldings;
 
-		org.drip.xva.universe.LatentStateMarketVertex bankSubordinateFundingMarketVertex =
-			bankMarketVertex.subordinateFundingLatentState();
+		double bankSubordinateFundingMarketVertex = bankMarketVertex.subordinateFundingReplicator();
 
-		if (null != bankSubordinateFundingMarketVertex)
-			value -= bankSubordinateFundingMarketVertex.nodal() * _bankSubordinateNumeraireHoldings;
+		if (org.drip.quant.common.NumberUtil.IsValid (bankSubordinateFundingMarketVertex))
+			value -= bankSubordinateFundingMarketVertex * _bankSubordinateNumeraireHoldings;
 
 		return value;
 	}
@@ -249,16 +248,15 @@ public class ReplicationPortfolioVertex
 			throw new java.lang.Exception
 				("ReplicationPortfolioVertex::bankPostDefaultPositionValue => Invalid Inputs");
 
-		org.drip.xva.universe.EntityMarketVertex bankMarketVertex = marketVertex.bank();
+		org.drip.xva.universe.MarketVertexEntity bankMarketVertex = marketVertex.bank();
 
-		double value = bankMarketVertex.seniorFundingLatentState().nodal() * _bankSeniorNumeraireHoldings *
+		double value = bankMarketVertex.seniorFundingReplicator() * _bankSeniorNumeraireHoldings *
 			bankMarketVertex.seniorRecoveryRate();
 
-		org.drip.xva.universe.LatentStateMarketVertex bankSubordinateFundingMarketVertex =
-			bankMarketVertex.subordinateFundingLatentState();
+		double bankSubordinateFundingMarketVertex = bankMarketVertex.subordinateFundingReplicator();
 
-		if (null != bankSubordinateFundingMarketVertex)
-			value -= bankSubordinateFundingMarketVertex.nodal() * _bankSubordinateNumeraireHoldings *
+		if (org.drip.quant.common.NumberUtil.IsValid (bankSubordinateFundingMarketVertex))
+			value -= bankSubordinateFundingMarketVertex * _bankSubordinateNumeraireHoldings *
 				bankMarketVertex.subordinateRecoveryRate();
 
 		return value;

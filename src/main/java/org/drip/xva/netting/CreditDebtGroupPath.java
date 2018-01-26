@@ -164,7 +164,7 @@ public abstract class CreditDebtGroupPath extends org.drip.xva.netting.ExposureG
 	public double contraLiabilityCreditAdjustment()
 		throws java.lang.Exception
 	{
-		return unilateralCreditAdjustment() - bilateralCreditAdjustment();
+		return bilateralCreditAdjustment() - unilateralCreditAdjustment();
 	}
 
 	/**

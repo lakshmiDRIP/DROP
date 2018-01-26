@@ -2,7 +2,6 @@
 package org.drip.sample.xvafixfloat;
 
 import org.drip.analytics.date.*;
-import org.drip.function.definition.R1ToR1;
 import org.drip.measure.crng.*;
 import org.drip.measure.discrete.CorrelatedPathVertexDimension;
 import org.drip.measure.dynamics.*;
@@ -388,8 +387,8 @@ public class AlbaneseAndersenBaselProxy
 			PositionGroupContainer.Solo (
 				new PositionGroup (
 					new PositionGroupSpecification (
-						"POSGRPSPEC",
-						"POSGRPSPEC",
+						"POSGRPSPEC1",
+						"POSGRPSPEC1",
 						CollateralGroupSpecification.FixedThreshold (
 							"FIXEDTHRESHOLD",
 							dblCounterPartyThreshold,
@@ -397,27 +396,17 @@ public class AlbaneseAndersenBaselProxy
 						),
 						CounterPartyGroupSpecification.Standard ("CPGROUP"),
 						new NettingGroupSpecification (
-							"NETGRPSPEC",
-							"NETGRPSPEC",
+							"NETGRPSPEC1",
+							"NETGRPSPEC1",
 							true,
 							true
 						),
 						new RollUpGroupSpecification (
-							"FUNDGRPSPEC",
-							"FUNDGRPSPEC"
+							"FUNDGRPSPEC1",
+							"FUNDGRPSPEC1"
 						)
 					),
-					new R1ToR1 (null)
-					{
-						@Override public double evaluate (
-							final double dblDate)
-							throws Exception
-						{
-							double dblTimeToHorizon = 1. * (maturityDate - dblDate) / 365.25;
-
-							return dblTimeToHorizon > 0. ? dblTimeToHorizon : 0.;
-						}
-					}
+					new PositionGroupNumeraireFixFloat (maturityDate)
 				)
 			)
 		);
@@ -438,7 +427,8 @@ public class AlbaneseAndersenBaselProxy
 		PathExposureAdjustment[] pathExposureAdjustmentArray = new PathExposureAdjustment[iNumPath];
 
 		CorrelatedPathVertexDimension correlatedPathVertexDimension = new CorrelatedPathVertexDimension (
-			LinearCongruentialGenerator.NumericalRecipes (MultipleRecursiveGeneratorLEcuyer.MRG32k3a()),
+			// LinearCongruentialGenerator.NumericalRecipes (MultipleRecursiveGeneratorLEcuyer.MRG32k3a()),
+			new RandomNumberGenerator(),
 			correlationMatrix,
 			eventCount,
 			iNumPath,

@@ -206,7 +206,7 @@ public class ExposureGroupPath
 			{
 				collateralizedExposurePV[vertexIndex] +=
 					collateralGroupCollateralizedExposure[vertexIndex] *
-						marketVertexArray[vertexIndex].overnightNumeraire().epochalNodalScale();
+						marketVertexArray[vertexIndex].overnightReplicator();
 			}
 		}
 
@@ -284,7 +284,7 @@ public class ExposureGroupPath
 				if (0. < collateralizedExposure)
 				{
 					collateralizedPositiveExposurePV[vertexIndex] += collateralizedExposure *
-						marketVertexArray[vertexIndex].overnightNumeraire().epochalNodalScale();
+						marketVertexArray[vertexIndex].overnightReplicator();
 				}
 			}
 		}
@@ -363,7 +363,7 @@ public class ExposureGroupPath
 				if (0. > collateralizedExposure)
 				{
 					collateralizedNegativeExposurePV[vertexIndex] += collateralizedExposure *
-						marketVertexArray[vertexIndex].overnightNumeraire().epochalNodalScale();
+						marketVertexArray[vertexIndex].overnightReplicator();
 				}
 			}
 		}
@@ -435,7 +435,7 @@ public class ExposureGroupPath
 			{
 				uncollateralizedExposurePV[vertexIndex] +=
 					collateralGroupUncollateralizedExposure[vertexIndex] *
-						marketVertexArray[vertexIndex].overnightNumeraire().epochalNodalScale();
+						marketVertexArray[vertexIndex].overnightReplicator();
 			}
 		}
 
@@ -513,7 +513,7 @@ public class ExposureGroupPath
 				if (0. < uncollateralizedExposure)
 				{
 					uncollateralizedPositiveExposurePV[vertexIndex] += uncollateralizedExposure *
-						marketVertexArray[vertexIndex].overnightNumeraire().epochalNodalScale();
+						marketVertexArray[vertexIndex].overnightReplicator();
 				}
 			}
 		}
@@ -592,7 +592,7 @@ public class ExposureGroupPath
 				if (0. > uncollateralizedExposure)
 				{
 					uncollateralizedNegativeExposurePV[vertexIndex] += uncollateralizedExposure *
-						marketVertexArray[vertexIndex].overnightNumeraire().epochalNodalScale();
+						marketVertexArray[vertexIndex].overnightReplicator();
 				}
 			}
 		}
@@ -657,13 +657,13 @@ public class ExposureGroupPath
 				marketVertexArray[vertexIndex - 1].bank().survivalProbability() *
 				marketVertexArray[vertexIndex - 1].counterParty().survivalProbability() *
 				marketVertexArray[vertexIndex - 1].csaSpread() *
-				marketVertexArray[vertexIndex - 1].overnightNumeraire().epochalNodalScale();
+				marketVertexArray[vertexIndex - 1].overnightReplicator();
 
 			double periodIntegrandEnd = collateralBalance[vertexIndex] *
 				marketVertexArray[vertexIndex].bank().survivalProbability() *
 				marketVertexArray[vertexIndex].counterParty().survivalProbability() *
 				marketVertexArray[vertexIndex].csaSpread() *
-				marketVertexArray[vertexIndex].overnightNumeraire().epochalNodalScale();
+				marketVertexArray[vertexIndex].overnightReplicator();
 
 			bilateralCollateralValueAdjustment -= 0.5 * (periodIntegrandStart + periodIntegrandEnd) *
 				(marketVertexArray[vertexIndex].anchorDate().julian() -
@@ -696,12 +696,12 @@ public class ExposureGroupPath
 			double periodIntegrandStart = collateralBalance[vertexIndex - 1] *
 				marketVertexArray[vertexIndex - 1].counterParty().survivalProbability() *
 				marketVertexArray[vertexIndex - 1].csaSpread() *
-				marketVertexArray[vertexIndex - 1].overnightNumeraire().epochalNodalScale();
+				marketVertexArray[vertexIndex - 1].overnightReplicator();
 
 			double periodIntegrandEnd = collateralBalance[vertexIndex] *
 				marketVertexArray[vertexIndex].counterParty().survivalProbability() *
 				marketVertexArray[vertexIndex].csaSpread() *
-				marketVertexArray[vertexIndex].overnightNumeraire().epochalNodalScale();
+				marketVertexArray[vertexIndex].overnightReplicator();
 
 			unilateralCollateralValueAdjustment -= 0.5 * (periodIntegrandStart + periodIntegrandEnd) *
 				(marketVertexArray[vertexIndex].anchorDate().julian() -
@@ -748,12 +748,12 @@ public class ExposureGroupPath
 			double periodIntegrandStart = collateralBalance[vertexIndex - 1] *
 				marketVertexArray[vertexIndex - 1].counterParty().survivalProbability() *
 				marketVertexArray[vertexIndex - 1].csaSpread() *
-				marketVertexArray[vertexIndex - 1].overnightNumeraire().epochalNodalScale();
+				marketVertexArray[vertexIndex - 1].overnightReplicator();
 
 			double periodIntegrandEnd = collateralBalance[vertexIndex] *
 				marketVertexArray[vertexIndex].counterParty().survivalProbability() *
 				marketVertexArray[vertexIndex].csaSpread() *
-				marketVertexArray[vertexIndex].overnightNumeraire().epochalNodalScale();
+				marketVertexArray[vertexIndex].overnightReplicator();
 
 			periodUnilateralCollateralValueAdjustment[vertexIndex - 1] = -0.5 * (periodIntegrandStart +
 				periodIntegrandEnd) * (marketVertexArray[vertexIndex].anchorDate().julian() -
@@ -787,13 +787,13 @@ public class ExposureGroupPath
 				marketVertexArray[vertexIndex - 1].bank().survivalProbability() *
 				marketVertexArray[vertexIndex - 1].counterParty().survivalProbability() *
 				marketVertexArray[vertexIndex - 1].csaSpread() *
-				marketVertexArray[vertexIndex - 1].overnightNumeraire().epochalNodalScale();
+				marketVertexArray[vertexIndex - 1].overnightReplicator();
 
 			double periodIntegrandEnd = collateralBalance[vertexIndex] *
 				marketVertexArray[vertexIndex].bank().survivalProbability() *
 				marketVertexArray[vertexIndex].counterParty().survivalProbability() *
 				marketVertexArray[vertexIndex].csaSpread() *
-				marketVertexArray[vertexIndex].overnightNumeraire().epochalNodalScale();
+				marketVertexArray[vertexIndex].overnightReplicator();
 
 			periodBilateralCollateralValueAdjustment[vertexIndex - 1] = -0.5 * (periodIntegrandStart +
 				periodIntegrandEnd) * (marketVertexArray[vertexIndex].anchorDate().julian() -
@@ -879,7 +879,7 @@ public class ExposureGroupPath
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
 				creditExposurePV[vertexIndex] += collateralGroupCreditExposure[vertexIndex] *
-					marketVertexArray[vertexIndex].overnightNumeraire().epochalNodalScale();
+					marketVertexArray[vertexIndex].overnightReplicator();
 			}
 		}
 
@@ -948,7 +948,7 @@ public class ExposureGroupPath
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
 				debtExposurePV[vertexIndex] += collateralGroupDebtExposure[vertexIndex] *
-					marketVertexArray[vertexIndex].overnightNumeraire().epochalNodalScale();
+					marketVertexArray[vertexIndex].overnightReplicator();
 			}
 		}
 
@@ -1017,7 +1017,7 @@ public class ExposureGroupPath
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
 				fundingExposurePV[vertexIndex] += collateralGroupFundingExposure[vertexIndex] *
-					marketVertexArray[vertexIndex].overnightNumeraire().epochalNodalScale();
+					marketVertexArray[vertexIndex].overnightReplicator();
 			}
 		}
 

@@ -154,34 +154,21 @@ public class TrajectoryEvolutionScheme
 
 		org.drip.xva.universe.MarketVertex finalMarketVertex = marketEdge.finish();
 
-		org.drip.xva.universe.EntityMarketVertex emvBankStart = initialMarketVertex.bank();
+		org.drip.xva.universe.MarketVertexEntity emvBankStart = initialMarketVertex.bank();
 
-		org.drip.xva.universe.EntityMarketVertex bankMarketVertex = finalMarketVertex.bank();
+		org.drip.xva.universe.MarketVertexEntity bankMarketVertex = finalMarketVertex.bank();
 
-		org.drip.xva.universe.EntityMarketVertex counterPartyMarketVertex = finalMarketVertex.counterParty();
+		org.drip.xva.universe.MarketVertexEntity counterPartyMarketVertex = finalMarketVertex.counterParty();
 
 		double finalPortfolioValue = finalMarketVertex.positionManifestValue();
 
-		double finalBankSeniorFundingNumeraire = bankMarketVertex.seniorFundingLatentState().nodal();
+		double finalBankSeniorFundingNumeraire = bankMarketVertex.seniorFundingReplicator();
 
-		double finalCounterPartyNumeraire = counterPartyMarketVertex.seniorFundingLatentState().nodal();
+		double finalCounterPartyNumeraire = counterPartyMarketVertex.seniorFundingReplicator();
 
-		double initialBankSubordinateFundingNumeraire = java.lang.Double.NaN;
-		double finalBankSubordinateFundingNumeraire = java.lang.Double.NaN;
+		double initialBankSubordinateFundingNumeraire = emvBankStart.subordinateFundingReplicator();
 
-		org.drip.xva.universe.LatentStateMarketVertex initialBankSubordinateFundingMarketVertex =
-			emvBankStart.seniorFundingLatentState();
-
-		org.drip.xva.universe.LatentStateMarketVertex finalBankSubordinateFundingMarketVertex =
-			bankMarketVertex.seniorFundingLatentState();
-
-		if (null != initialBankSubordinateFundingMarketVertex &&
-			null != finalBankSubordinateFundingMarketVertex)
-		{
-			initialBankSubordinateFundingNumeraire = initialBankSubordinateFundingMarketVertex.nodal();
-
-			finalBankSubordinateFundingNumeraire = finalBankSubordinateFundingMarketVertex.nodal();
-		}
+		double finalBankSubordinateFundingNumeraire = bankMarketVertex.subordinateFundingReplicator();
 
 		double timeIncrement = marketEdge.vertexIncrement() / 365.25;
 
@@ -195,8 +182,7 @@ public class TrajectoryEvolutionScheme
 			counterPartyFundingTradeable.cashAccumulationRate() * finalCounterPartyNumeraire * timeIncrement;
 
 		double counterPartyHoldingsValueChange = initialCounterPartyNumeraireHoldings *
-			(finalCounterPartyNumeraire -
-			initialMarketVertex.counterParty().seniorFundingLatentState().nodal());
+			(finalCounterPartyNumeraire - initialMarketVertex.counterParty().seniorFundingReplicator());
 
 		double cashAccountBalance = -1. * initialTrajectoryVertex.positionGreekVertex().derivativeXVAValue()
 			- initialBankSeniorNumeraireHoldings * finalBankSeniorFundingNumeraire;
@@ -218,7 +204,7 @@ public class TrajectoryEvolutionScheme
 
 		double derivativeXVAValueChange = -1. * (initialPortfolioHoldings * (finalPortfolioValue -
 			initialMarketVertex.positionManifestValue()) + initialBankSeniorNumeraireHoldings *
-				(finalBankSeniorFundingNumeraire - emvBankStart.seniorFundingLatentState().nodal()) +
+				(finalBankSeniorFundingNumeraire - emvBankStart.seniorFundingReplicator()) +
 					counterPartyHoldingsValueChange + (portfolioCashChange +
 						counterPartyCashAccumulation + bankCashAccumulation) * timeIncrement);
 
@@ -300,9 +286,9 @@ public class TrajectoryEvolutionScheme
 
 		org.drip.xva.universe.MarketVertex finalMarketVertex = marketEdge.finish();
 
-		org.drip.xva.universe.EntityMarketVertex bankMarketVertex = finalMarketVertex.bank();
+		org.drip.xva.universe.MarketVertexEntity bankMarketVertex = finalMarketVertex.bank();
 
-		org.drip.xva.universe.EntityMarketVertex counterPartyMarketVertex = finalMarketVertex.counterParty();
+		org.drip.xva.universe.MarketVertexEntity counterPartyMarketVertex = finalMarketVertex.counterParty();
 
 		double derivativeXVAValueDeltaFinish =
 			initialPositionGreekVertex.derivativeXVAValueDelta() +
@@ -334,11 +320,12 @@ public class TrajectoryEvolutionScheme
 			return null;
 		}
 
-		double bankSubordinateFundingNumeraire = java.lang.Double.NaN;
+		double bankSubordinateFundingNumeraire = bankMarketVertex.subordinateFundingReplicator();
+
 		double gainOnBankDefaultFinish = -1. * (derivativeXVAValueFinish - counterPartyGainOnBankDefault);
 
 		double finalCounterPartyHoldings = finalGainOnCounterPartyDefault /
-			counterPartyMarketVertex.seniorFundingLatentState().nodal();
+			counterPartyMarketVertex.seniorFundingReplicator();
 
 		org.drip.xva.derivative.CashAccountRebalancer cashAccountRebalancer = rebalanceCash (
 			initialTrajectoryVertex,
@@ -352,15 +339,7 @@ public class TrajectoryEvolutionScheme
 
 		org.drip.xva.derivative.CashAccountEdge cashAccountEdge = cashAccountRebalancer.cashAccountEdge();
 
-		double bankSeniorFundingNumeraire = bankMarketVertex.seniorFundingLatentState().nodal();
-
-		org.drip.xva.universe.LatentStateMarketVertex bankSubordinateFundingVertex =
-			bankMarketVertex.seniorFundingLatentState();
-
-		if (null != bankSubordinateFundingVertex)
-		{
-			bankSubordinateFundingNumeraire = bankSubordinateFundingVertex.nodal();
-		}
+		double bankSeniorFundingNumeraire = bankMarketVertex.seniorFundingReplicator();
 
 		org.drip.xva.universe.Tradeable csaTradeable = _tradeablesContainer.csa();
 
@@ -389,7 +368,7 @@ public class TrajectoryEvolutionScheme
 						csaTradeable.evolver().evaluator().drift().value (
 							new org.drip.measure.realization.JumpDiffusionVertex (
 								initialTime - 0.5 * timeIncrement,
-								marketEdge.start().csaNumeraire().nodal(),
+								marketEdge.start().csaReplicator(),
 								0.,
 								false
 							)

@@ -90,9 +90,9 @@ public class PathSimulator
 				try {
 					positionGroupValueArray[positionGroupIndex][vertexIndex] =
 						marketVertexArray[vertexIndex].positionManifestValue() *
-						(null == positionGroupArray[positionGroupIndex].valueGenerator() ? 1. :
-						positionGroupArray[positionGroupIndex].valueGenerator().evaluate
-						(marketVertexArray[vertexIndex].anchorDate().julian()));
+						(null == positionGroupArray[positionGroupIndex].positionGroupNumeraire() ? 1. :
+						positionGroupArray[positionGroupIndex].positionGroupNumeraire().value
+						(marketVertexArray[vertexIndex]));
 				}
 				catch (java.lang.Exception e)
 				{
@@ -372,8 +372,6 @@ public class PathSimulator
 		}
 
 		int positionGroupCount = collateralGroupVertexArray.length;
-		org.drip.xva.hypothecation.CollateralGroupPath[] collateralGroupPathArray = new
-			org.drip.xva.hypothecation.CollateralGroupPath[positionGroupCount];
 
 		try
 		{
@@ -381,10 +379,8 @@ public class PathSimulator
 			{
 				if (!_positionGroupContainer.setCollateralGroupPath (
 					positionGroupIndex,
-					collateralGroupPathArray[positionGroupIndex] = new
-						org.drip.xva.hypothecation.CollateralGroupPath
-						(collateralGroupVertexArray[positionGroupIndex])
-					))
+					new org.drip.xva.hypothecation.CollateralGroupPath
+						(collateralGroupVertexArray[positionGroupIndex])))
 					return false;
 			}
 

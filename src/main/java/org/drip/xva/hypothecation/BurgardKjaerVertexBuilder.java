@@ -115,15 +115,9 @@ public class BurgardKjaerVertexBuilder
 
 		double bankDefaultCloseOut = collateralGroupVertexCloseOut.bank();
 
-		org.drip.xva.universe.EntityMarketVertex bankMarketVertex = marketVertex.bank();
+		org.drip.xva.universe.MarketVertexEntity bankMarketVertex = marketVertex.bank();
 
-		org.drip.xva.universe.LatentStateMarketVertex bankSubordinateFundingMarketVertex =
-			bankMarketVertex.subordinateFundingLatentState();
-
-		if (null == bankSubordinateFundingMarketVertex)
-		{
-			return null;
-		}
+		double bankSubordinateFundingMarketVertex = bankMarketVertex.subordinateFundingReplicator();
 
 		double bankSurvival = bankMarketVertex.survivalProbability();
 
@@ -152,9 +146,9 @@ public class BurgardKjaerVertexBuilder
 				collateralGroupVertexCloseOut,
 				new org.drip.xva.derivative.ReplicationPortfolioVertexBank (
 					(fundingExposure + bankSubordinateRecoveryRate * adjustedExposure - bankDefaultCloseOut) /
-						(bankSeniorRecoveryRate - bankSubordinateRecoveryRate) / bankMarketVertex.seniorFundingLatentState().nodal(),
+						(bankSeniorRecoveryRate - bankSubordinateRecoveryRate) / bankMarketVertex.seniorFundingReplicator(),
 					(fundingExposure + bankSeniorRecoveryRate * adjustedExposure - bankDefaultCloseOut) /
-						(bankSubordinateRecoveryRate - bankSeniorRecoveryRate) / bankSubordinateFundingMarketVertex.nodal()
+						(bankSubordinateRecoveryRate - bankSeniorRecoveryRate) / bankSubordinateFundingMarketVertex
 				)
 			);
 		}
@@ -201,15 +195,9 @@ public class BurgardKjaerVertexBuilder
 
 		org.drip.xva.universe.MarketVertex marketVertexFinish = marketEdge.finish();
 
-		org.drip.xva.universe.EntityMarketVertex bankMarketVertexFinish = marketVertexFinish.bank();
+		org.drip.xva.universe.MarketVertexEntity bankMarketVertexFinish = marketVertexFinish.bank();
 
-		org.drip.xva.universe.LatentStateMarketVertex bankSubordinateFundingMarketVertexFinish =
-			bankMarketVertexFinish.subordinateFundingLatentState();
-
-		if (null == bankSubordinateFundingMarketVertexFinish)
-		{
-			return null;
-		}
+		double bankSubordinateFundingMarketVertexFinish = bankMarketVertexFinish.subordinateFundingReplicator();
 
 		double bankSurvivalFinish = bankMarketVertexFinish.survivalProbability();
 
@@ -240,11 +228,13 @@ public class BurgardKjaerVertexBuilder
 				burgardKjaerVertexExposure,
 				collateralGroupVertexCloseOut,
 				new org.drip.xva.derivative.ReplicationPortfolioVertexBank (
-					(fundingExposure + bankSubordinateRecoveryRateFinish * adjustedExposure - bankDefaultCloseOut) /
-						(bankSeniorRecoveryRateFinish - bankSubordinateRecoveryRateFinish) /
-							bankMarketVertexFinish.seniorFundingLatentState().nodal(),
-					(fundingExposure + bankSeniorRecoveryRateFinish * adjustedExposure - bankDefaultCloseOut) /
-						(bankSubordinateRecoveryRateFinish - bankSeniorRecoveryRateFinish) / bankSubordinateFundingMarketVertexFinish.nodal()
+					(fundingExposure + bankSubordinateRecoveryRateFinish * adjustedExposure -
+						bankDefaultCloseOut) / (bankSeniorRecoveryRateFinish -
+						bankSubordinateRecoveryRateFinish) /
+						bankMarketVertexFinish.seniorFundingReplicator(),
+					(fundingExposure + bankSeniorRecoveryRateFinish * adjustedExposure - bankDefaultCloseOut)
+						/ (bankSubordinateRecoveryRateFinish - bankSeniorRecoveryRateFinish) /
+						bankSubordinateFundingMarketVertexFinish
 				)
 			);
 		}

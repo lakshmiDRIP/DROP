@@ -401,25 +401,14 @@ public class MarketVertexGenerator
 		org.drip.xva.universe.MarketVertex[] marketVertexArray = new
 			org.drip.xva.universe.MarketVertex[eventVertexCount + 1];
 
-		/* double[][] unitEvolverSequence = org.drip.quant.linearalgebra.Matrix.Transpose (
-			org.drip.measure.discrete.SequenceGenerator.GaussianJoint (
-				eventVertexCount,
-				covarianceMatrix.correlationMatrix()
-			)
-		); */
-
-		org.drip.xva.universe.EntityMarketVertex initialBankVertex = initialMarketVertex.bank();
+		org.drip.xva.universe.MarketVertexEntity initialBankVertex = initialMarketVertex.bank();
 
 		double initialBankSubordinateRecovery = initialBankVertex.subordinateRecoveryRate();
 
-		org.drip.xva.universe.EntityMarketVertex initialCounterPartyVertex =
+		org.drip.xva.universe.MarketVertexEntity initialCounterPartyVertex =
 			initialMarketVertex.counterParty();
 
-		org.drip.xva.universe.LatentStateMarketVertex subordinateFundingLatentState =
-			initialBankVertex.subordinateFundingLatentState();
-
-		double terminalBankSubordinateFundingNumeraire = null == subordinateFundingLatentState ?
-			java.lang.Double.NaN : subordinateFundingLatentState.nodal();
+		double terminalBankSubordinateFundingNumeraire = initialBankVertex.subordinateFundingReplicator();
 
 		boolean useSingleBankBondOnly = null == bankSubordinateFundingNumeraire ||
 			!org.drip.quant.common.NumberUtil.IsValid (terminalBankSubordinateFundingNumeraire) ||
@@ -445,7 +434,7 @@ public class MarketVertexGenerator
 			overnightNumeraireVertexArray = _tradeablesContainer.overnight().evolver().vertexSequenceReverse (
 				new org.drip.measure.realization.JumpDiffusionVertex (
 					terminalDate,
-					initialMarketVertex.overnightNumeraire().nodal(),
+					initialMarketVertex.overnightReplicator(),
 					0.,
 					false
 				),
@@ -459,7 +448,7 @@ public class MarketVertexGenerator
 			csaNumeraireVertexArray = _tradeablesContainer.csa().evolver().vertexSequenceReverse (
 				new org.drip.measure.realization.JumpDiffusionVertex (
 					terminalDate,
-					initialMarketVertex.csaNumeraire().nodal(),
+					initialMarketVertex.csaReplicator(),
 					0.,
 					false
 				),
@@ -487,7 +476,7 @@ public class MarketVertexGenerator
 				_tradeablesContainer.bankSubordinateFunding().evolver().vertexSequenceReverse (
 					new org.drip.measure.realization.JumpDiffusionVertex (
 						terminalDate,
-						initialBankVertex.seniorFundingLatentState().nodal(),
+						initialBankVertex.seniorFundingReplicator(),
 						0.,
 						false
 					),
@@ -560,7 +549,7 @@ public class MarketVertexGenerator
 				_tradeablesContainer.counterPartyFunding().evolver().vertexSequenceReverse (
 					new org.drip.measure.realization.JumpDiffusionVertex (
 						terminalDate,
-						initialCounterPartyVertex.seniorFundingLatentState().nodal(),
+						initialCounterPartyVertex.seniorFundingReplicator(),
 						0.,
 						false
 					),
@@ -639,42 +628,33 @@ public class MarketVertexGenerator
 
 			try
 			{
-				org.drip.xva.universe.EntityMarketVertex bankMarketVertex = new
-					org.drip.xva.universe.EntityMarketVertex (
+				org.drip.xva.universe.MarketVertexEntity bankMarketVertex = new
+					org.drip.xva.universe.MarketVertexEntity (
 						java.lang.Math.exp (-1. * bankSurvivalProbabilityExponent),
 						bankHazardRate,
 						bankSeniorRecoveryRateVertexArray[eventVertexIndex].value(),
 						timeWidthReciprocal * java.lang.Math.log (bankSeniorFundingNumeraireFinish /
 							initialBankSeniorFundingNumeraire) - overnightRate,
-						new org.drip.xva.universe.LatentStateMarketVertex (
-							bankSeniorFundingNumeraireStart,
-							bankSeniorFundingNumeraireFinish
-					),
-					useSingleBankBondOnly ? java.lang.Double.NaN :
-						bankSubordinateRecoveryRateVertexArray[eventVertexIndex].value(),
-					useSingleBankBondOnly ? java.lang.Double.NaN : timeWidthReciprocal * java.lang.Math.log
-						(bankSubordinateFundingNumeraireFinish / initialBankSubordinateFundingNumeraire) -
-						overnightRate,
-					useSingleBankBondOnly ? null : new org.drip.xva.universe.LatentStateMarketVertex (
-						bankSubordinateFundingNumeraireStart,
+						bankSeniorFundingNumeraireFinish,
+						useSingleBankBondOnly ? java.lang.Double.NaN :
+							bankSubordinateRecoveryRateVertexArray[eventVertexIndex].value(),
+						useSingleBankBondOnly ? java.lang.Double.NaN : timeWidthReciprocal *
+							java.lang.Math.log (bankSubordinateFundingNumeraireFinish /
+								initialBankSubordinateFundingNumeraire) - overnightRate,
 						bankSubordinateFundingNumeraireFinish
-					)
-				);
+					);
 
-				org.drip.xva.universe.EntityMarketVertex counterPartyMarketVertex = new
-					org.drip.xva.universe.EntityMarketVertex (
+				org.drip.xva.universe.MarketVertexEntity counterPartyMarketVertex = new
+					org.drip.xva.universe.MarketVertexEntity (
 						java.lang.Math.exp (-1. * counterPartySurvivalProbabilityExponent),
 						counterPartyHazardRateFinish,
 						counterPartyRecoveryRateVertexArray[eventVertexIndex].value(),
 						timeWidthReciprocal * java.lang.Math.log (counterPartyFundingNumeraireFinish /
 							initialCounterPartyFundingNumeraire) - overnightRate,
-						new org.drip.xva.universe.LatentStateMarketVertex (
-							counterPartyFundingNumeraireStart,
-							counterPartyFundingNumeraireFinish
-						),
+						counterPartyFundingNumeraireFinish,
 						java.lang.Double.NaN,
 						java.lang.Double.NaN,
-						null
+						java.lang.Double.NaN
 					);
 
 				marketVertexArray[eventVertexIndex] = new org.drip.xva.universe.MarketVertex (
@@ -682,16 +662,10 @@ public class MarketVertexGenerator
 					positionEvolutionOn ? positionManifestVertexArray[eventVertexIndex].value() :
 						java.lang.Double.NaN,
 					overnightRate,
-					new org.drip.xva.universe.LatentStateMarketVertex (
-						overnightIndexNumeraireStart,
-						overnightNumeraireFinish
-					),
+					overnightNumeraireFinish,
 					timeWidthReciprocal * java.lang.Math.log (csaNumeraireFinish / initialCSANumeraire) -
 						overnightRate,
-					new org.drip.xva.universe.LatentStateMarketVertex (
-						csaNumeraireStart,
-						csaNumeraireFinish
-					),
+					csaNumeraireFinish,
 					bankMarketVertex,
 					counterPartyMarketVertex
 				);
@@ -716,43 +690,28 @@ public class MarketVertexGenerator
 				initialMarketVertex.anchorDate(),
 				initialMarketVertex.positionManifestValue(),
 				initialMarketVertex.overnightRate(),
-				new org.drip.xva.universe.LatentStateMarketVertex (
-					overnightIndexNumeraireStart,
-					overnightIndexNumeraireStart
-				),
+				overnightIndexNumeraireStart,
 				marketVertexArray[1].csaRate(),
-				new org.drip.xva.universe.LatentStateMarketVertex (
-					csaNumeraireStart,
-					csaNumeraireStart
-				),
-				new org.drip.xva.universe.EntityMarketVertex (
+				csaNumeraireStart,
+				new org.drip.xva.universe.MarketVertexEntity (
 					initialBankVertex.survivalProbability(),
 					initialBankVertex.hazardRate(),
 					initialBankVertex.seniorRecoveryRate(),
 					marketVertexArray[1].bank().seniorFundingSpread(),
-					new org.drip.xva.universe.LatentStateMarketVertex (
-						bankSeniorFundingNumeraireStart,
-						bankSeniorFundingNumeraireStart
-					),
+					bankSeniorFundingNumeraireStart,
 					initialBankVertex.subordinateRecoveryRate(),
 					marketVertexArray[1].bank().subordinateFundingSpread(),
-					useSingleBankBondOnly ? null : new org.drip.xva.universe.LatentStateMarketVertex (
-						bankSubordinateFundingNumeraireStart,
-						bankSubordinateFundingNumeraireStart
-					)
+					bankSubordinateFundingNumeraireStart
 				),
-				new org.drip.xva.universe.EntityMarketVertex (
+				new org.drip.xva.universe.MarketVertexEntity (
 					initialCounterPartyVertex.survivalProbability(),
 					initialCounterPartyVertex.hazardRate(),
 					initialCounterPartyVertex.seniorRecoveryRate(),
 					marketVertexArray[1].counterParty().seniorFundingSpread(),
-					new org.drip.xva.universe.LatentStateMarketVertex (
-						counterPartyFundingNumeraireStart,
-						counterPartyFundingNumeraireStart
-					),
+					counterPartyFundingNumeraireStart,
 					java.lang.Double.NaN,
 					java.lang.Double.NaN,
-					null
+					java.lang.Double.NaN
 				)
 			);
 		}

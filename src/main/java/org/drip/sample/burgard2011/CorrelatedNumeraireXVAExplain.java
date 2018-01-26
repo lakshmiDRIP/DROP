@@ -107,7 +107,7 @@ public class CorrelatedNumeraireXVAExplain {
 
 		TradeablesContainer tc = tes.tradeablesContainer();
 
-		double dblCollateralSchemeNumeraire = mvStart.csaNumeraire().nodal();
+		double dblCollateralSchemeNumeraire = mvStart.csaReplicator();
 
 		BurgardKjaerEdgeRun bker = bko.edgeRun (
 			new MarketEdge (
@@ -157,9 +157,9 @@ public class CorrelatedNumeraireXVAExplain {
 
 		double dblAssetNumeraireFinish = mvFinish.positionManifestValue();
 
-		double dblBankSeniorFundingNumeraireFinish = mvFinish.bank().seniorFundingLatentState().nodal();
+		double dblBankSeniorFundingNumeraireFinish = mvFinish.bank().seniorFundingReplicator();
 
-		double dblCounterPartyFundingNumeraireFinish = mvFinish.counterParty().seniorFundingLatentState().nodal();
+		double dblCounterPartyFundingNumeraireFinish = mvFinish.counterParty().seniorFundingReplicator();
 
 		ReplicationPortfolioVertex rpvFinish = ReplicationPortfolioVertex.Standard (
 			-1. * dblDerivativeXVAValueDeltaFinish,
@@ -174,7 +174,7 @@ public class CorrelatedNumeraireXVAExplain {
 			FormatUtil.FormatDouble (dblAssetNumeraireFinish, 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (dblBankSeniorFundingNumeraireFinish, 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (dblCounterPartyFundingNumeraireFinish, 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (mvFinish.csaNumeraire().nodal(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (mvFinish.csaReplicator(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (rpvFinish.positionHoldings(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (rpvFinish.bankSeniorNumeraireHoldings(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (rpvFinish.counterPartyNumeraireHoldings(), 1, 6, 1.) + " | " +
@@ -424,43 +424,28 @@ public class CorrelatedNumeraireXVAExplain {
 			dtSpot,
 			dblAssetNumeraireInitial,
 			dblOvernightIndexNumeraireDrift,
-			new LatentStateMarketVertex (
-				1.,
-				1.
-			),
+			1.,
 			dblCollateralSchemeNumeraireDrift,
-			new LatentStateMarketVertex (
-				1.,
-				1.
-			),
-			new EntityMarketVertex (
+			1.,
+			new MarketVertexEntity (
 				1.,
 				dblBankHazardRateInitial,
 				dblBankSeniorRecoveryRateInitial,
 				dblBankSeniorFundingNumeraireDrift,
-				new LatentStateMarketVertex (
-					1.,
-					1.
-				),
+				1.,
 				dblBankSubordinateRecoveryRateInitial,
 				dblBankSubordinateFundingNumeraireDrift,
-				new LatentStateMarketVertex (
-					1.,
-					1.
-				)
+				1.
 			),
-			new EntityMarketVertex (
+			new MarketVertexEntity (
 				1.,
 				dblCounterPartyHazardRateInitial,
 				dblCounterPartyRecoveryRateInitial,
 				dblCounterPartyFundingNumeraireDrift,
-				new LatentStateMarketVertex (
-					1.,
-					1.
-				),
+				1.,
 				Double.NaN,
 				Double.NaN,
-				null
+				Double.NaN
 			)
 		);
 
@@ -562,9 +547,9 @@ public class CorrelatedNumeraireXVAExplain {
 			FormatUtil.FormatDouble (1., 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (agvInitial.derivativeXVAValue(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (aMV[iNumVertex].positionManifestValue(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (aMV[iNumVertex].bank().seniorFundingLatentState().nodal(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (aMV[iNumVertex].counterParty().seniorFundingLatentState().nodal(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (aMV[iNumVertex].csaNumeraire().nodal(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (aMV[iNumVertex].bank().seniorFundingReplicator(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (aMV[iNumVertex].counterParty().seniorFundingReplicator(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (aMV[iNumVertex].csaReplicator(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (rpvInitial.positionHoldings(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (rpvInitial.bankSeniorNumeraireHoldings(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (rpvInitial.counterPartyNumeraireHoldings(), 1, 6, 1.) + " | " +

@@ -214,17 +214,16 @@ public class EvolutionTrajectoryVertex
 			throw new java.lang.Exception
 				("EvolutionTrajectoryVertex::verifyFundingConstraint => Invalid Inputs");
 
-		org.drip.xva.universe.EntityMarketVertex bankMarketVertex = marketVertex.bank();
+		org.drip.xva.universe.MarketVertexEntity bankMarketVertex = marketVertex.bank();
 
 		double fundingConstraint = _positionGreekVertex.derivativeXVAValue() +
-			bankMarketVertex.seniorFundingLatentState().nodal() *
-			_replicationPortfolioVertex.bankSeniorNumeraireHoldings();
+			bankMarketVertex.seniorFundingReplicator() *
+				_replicationPortfolioVertex.bankSeniorNumeraireHoldings();
 
-		org.drip.xva.universe.LatentStateMarketVertex bankSubordinateFundingMarketVertex =
-			bankMarketVertex.subordinateFundingLatentState();
+		double bankSubordinateFundingMarketVertex = bankMarketVertex.subordinateFundingReplicator();
 
-		if (null != bankSubordinateFundingMarketVertex)
-			fundingConstraint += bankSubordinateFundingMarketVertex.nodal() *
+		if (org.drip.quant.common.NumberUtil.IsValid (bankSubordinateFundingMarketVertex))
+			fundingConstraint += bankSubordinateFundingMarketVertex *
 				_replicationPortfolioVertex.bankSubordinateNumeraireHoldings();
 
 		return fundingConstraint;

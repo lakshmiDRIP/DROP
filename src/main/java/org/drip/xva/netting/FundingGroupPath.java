@@ -175,11 +175,11 @@ public abstract class FundingGroupPath extends org.drip.xva.netting.ExposureGrou
 		{
 			double periodIntegrandStart = debtExposurePV[vertexIndex - 1] *
 				marketVertexArray[vertexIndex - 1].bank().survivalProbability() *
-				marketVertexArray[vertexIndex - 1].bank().seniorFundingSpread();
+				marketVertexArray[vertexIndex - 1].counterParty().seniorFundingSpread();
 
 			double periodIntegrandEnd = debtExposurePV[vertexIndex] *
 				marketVertexArray[vertexIndex].bank().survivalProbability() *
-				marketVertexArray[vertexIndex].bank().seniorFundingSpread();
+				marketVertexArray[vertexIndex].counterParty().seniorFundingSpread();
 
 			unilateralFundingDebtAdjustment -= 0.5 * (periodIntegrandStart + periodIntegrandEnd) *
 				(marketVertexArray[vertexIndex].anchorDate().julian() -
@@ -210,18 +210,16 @@ public abstract class FundingGroupPath extends org.drip.xva.netting.ExposureGrou
 		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
 		{
 			double periodIntegrandStart = debtExposurePV[vertexIndex - 1] *
-				marketVertexArray[vertexIndex - 1].bank().survivalProbability() * (1. -
-				marketVertexArray[vertexIndex - 1].bank().seniorRecoveryRate()) *
-				marketVertexArray[vertexIndex - 1].bank().hazardRate() *
-				marketVertexArray[vertexIndex - 1].counterParty().survivalProbability();
+				marketVertexArray[vertexIndex - 1].bank().survivalProbability() *
+				marketVertexArray[vertexIndex - 1].counterParty().survivalProbability() *
+				marketVertexArray[vertexIndex - 1].counterParty().seniorFundingSpread();
 
 			double periodIntegrandEnd = debtExposurePV[vertexIndex] *
-				marketVertexArray[vertexIndex].bank().survivalProbability() * (1. -
-				marketVertexArray[vertexIndex].bank().seniorRecoveryRate()) *
-				marketVertexArray[vertexIndex].bank().hazardRate() *
-				marketVertexArray[vertexIndex].counterParty().survivalProbability();
+				marketVertexArray[vertexIndex].bank().survivalProbability() *
+				marketVertexArray[vertexIndex - 1].counterParty().survivalProbability() *
+				marketVertexArray[vertexIndex].counterParty().seniorFundingSpread();
 
-			bilateralFundingDebtAdjustment += 0.5 * (periodIntegrandStart + periodIntegrandEnd) *
+			bilateralFundingDebtAdjustment -= 0.5 * (periodIntegrandStart + periodIntegrandEnd) *
 				(marketVertexArray[vertexIndex].anchorDate().julian() -
 				marketVertexArray[vertexIndex - 1].anchorDate().julian()) / 365.25;
 		}
@@ -356,11 +354,11 @@ public abstract class FundingGroupPath extends org.drip.xva.netting.ExposureGrou
 		{
 			double periodIntegrandStart = debtExposurePV[vertexIndex - 1] *
 				marketVertexArray[vertexIndex - 1].bank().survivalProbability() *
-				marketVertexArray[vertexIndex - 1].bank().seniorFundingSpread();
+				marketVertexArray[vertexIndex - 1].counterParty().seniorFundingSpread();
 
 			double periodIntegrandEnd = debtExposurePV[vertexIndex] *
 				marketVertexArray[vertexIndex].bank().survivalProbability() *
-				marketVertexArray[vertexIndex].bank().seniorFundingSpread();
+				marketVertexArray[vertexIndex].counterParty().seniorFundingSpread();
 
 			periodUnilateralFundingDebtAdjustment[vertexIndex - 1] = -0.5 * (periodIntegrandStart +
 				periodIntegrandEnd) * (marketVertexArray[vertexIndex].anchorDate().julian() -
@@ -391,16 +389,14 @@ public abstract class FundingGroupPath extends org.drip.xva.netting.ExposureGrou
 		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
 		{
 			double periodIntegrandStart = debtExposurePV[vertexIndex - 1] *
-				marketVertexArray[vertexIndex - 1].bank().survivalProbability() * (1. -
-				marketVertexArray[vertexIndex - 1].bank().seniorRecoveryRate()) *
-				marketVertexArray[vertexIndex - 1].bank().hazardRate() *
-				marketVertexArray[vertexIndex - 1].counterParty().survivalProbability();
+				marketVertexArray[vertexIndex - 1].bank().survivalProbability() *
+				marketVertexArray[vertexIndex - 1].counterParty().survivalProbability() *
+				marketVertexArray[vertexIndex - 1].counterParty().seniorFundingSpread();
 
 			double periodIntegrandEnd = debtExposurePV[vertexIndex] *
 				marketVertexArray[vertexIndex].bank().survivalProbability() *
-				(1. - marketVertexArray[vertexIndex].bank().seniorRecoveryRate()) *
-				marketVertexArray[vertexIndex].bank().hazardRate() *
-				marketVertexArray[vertexIndex].counterParty().survivalProbability();
+				marketVertexArray[vertexIndex].counterParty().survivalProbability() *
+				marketVertexArray[vertexIndex].counterParty().seniorFundingSpread();
 
 			periodBilateralFundingDebtAdjustment[vertexIndex - 1] = 0.5 * (periodIntegrandStart +
 				periodIntegrandEnd) * (marketVertexArray[vertexIndex].anchorDate().julian() -

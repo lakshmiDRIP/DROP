@@ -47,7 +47,8 @@ package org.drip.xva.holdings;
  */
 
 /**
- * PositionGroup holds the Settings that correspond to a Position/Collateral Group. The References are:
+ * PositionGroupNumeraireFixFloat evaluates the Numeraire Value of a Fix Float Position Group given the
+ *  Realized Market Vertex Array using the Basel Scheme. The References are:
  *  
  *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
  *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
@@ -66,123 +67,50 @@ package org.drip.xva.holdings;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PositionGroup
+public class PositionGroupNumeraireFixFloat extends org.drip.xva.holdings.PositionGroupNumeraire
 {
-	private org.drip.xva.hypothecation.CollateralGroupPath _collateralGroupPath = null;
-	private org.drip.xva.holdings.PositionGroupNumeraire _positionGroupNumeraire = null;
-	private org.drip.xva.set.PositionGroupSpecification _positionGroupSpecification = null;
+	public int _maturityDate = -1;
 
 	/**
-	 * PositionGroup Constructor
+	 * PositionGroupNumeraireFixFloat Constructor
 	 * 
-	 * @param positionGroupSpecification The Position Group Specification
-	 * @param positionGroupNumeraire The Position Group Numeraire
+	 * @param maturityDate The Fix Float Maturity Date
 	 * 
-	 * @throws java.lang.Exception Thrown if Inputs are Invalid
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public PositionGroup (
-		final org.drip.xva.set.PositionGroupSpecification positionGroupSpecification,
-		final org.drip.xva.holdings.PositionGroupNumeraire positionGroupNumeraire)
+	public PositionGroupNumeraireFixFloat (
+		final int maturityDate)
 		throws java.lang.Exception
 	{
-		if (null == (_positionGroupSpecification = positionGroupSpecification) ||
-			null == (_positionGroupNumeraire = positionGroupNumeraire))
+		if (0 >= (_maturityDate = maturityDate))
 		{
-			throw  new java.lang.Exception ("PositionGroup Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("PositionGroupNumeraireFixFloat Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Position Group Specification
+	 * Retrieve the Maturity Date
 	 * 
-	 * @return The Position Group Specification
+	 * @return The Maturity Date
 	 */
 
-	public org.drip.xva.set.PositionGroupSpecification positionGroupSpecification()
+	public int maturityDate()
 	{
-		return _positionGroupSpecification;
+		return _maturityDate;
 	}
 
-	/**
-	 * Retrieve the Position Group Numeraire
-	 * 
-	 * @return The Position Group Numeraire
-	 */
-
-	public org.drip.xva.holdings.PositionGroupNumeraire positionGroupNumeraire()
+	@Override public double value (
+		final org.drip.xva.universe.MarketVertex marketVertex)
+		throws java.lang.Exception
 	{
-		return _positionGroupNumeraire;
-	}
-
-	/**
-	 * Set the Collateral Group Path
-	 * 
-	 * @param collateralGroupPath The Collateral Group Path
-	 * 
-	 * @return TRUE - The Collateral Group Path Successfully Set
-	 */
-
-	public boolean setCollateralGroupPath (
-		final org.drip.xva.hypothecation.CollateralGroupPath collateralGroupPath)
-	{
-		if (null == collateralGroupPath)
+		if (null == marketVertex)
 		{
-			return false;
+			throw new java.lang.Exception ("PositionGroupNumeraireFixFloat::value => Invalid Inputs");
 		}
 
-		_collateralGroupPath = collateralGroupPath;
-		return true;
-	}
+		double dblTimeToHorizon = 1. * (_maturityDate - marketVertex.anchorDate().julian()) / 365.25;
 
-	/**
-	 * Retrieve the Collateral Group Path
-	 * 
-	 * @return The Collateral Group Path
-	 */
-
-	public org.drip.xva.hypothecation.CollateralGroupPath collateralGroupPath()
-	{
-		return _collateralGroupPath;
-	}
-
-	/**
-	 * Generate the Position Group Value Array at the specified Vertexes
-	 * 
-	 * @param marketVertexArray The Vertex Market Parameter Array
-	 * 
-	 * @return The Position Group Value Array
-	 */
-
-	public double[] valueArray (
-		final org.drip.xva.universe.MarketVertex[] marketVertexArray)
-	{
-		if (null == marketVertexArray)
-		{
-			return null;
-		}
-
-		int vertexCount = marketVertexArray.length;
-		double[] positionGroupValueArray = 0 == vertexCount ? null : new double[vertexCount];
-
-		if (0 == vertexCount)
-		{
-			return null;
-		}
-		for (int i = 0; i < vertexCount; ++i)
-		{
-			try {
-				positionGroupValueArray[i] = marketVertexArray[i].positionManifestValue() *
-					_positionGroupNumeraire.value (marketVertexArray[i]);
-			}
-			catch (java.lang.Exception e)
-			{
-				e.printStackTrace();
-
-				return null;
-			}
-		}
-
-		return positionGroupValueArray;
+		return dblTimeToHorizon > 0. ? dblTimeToHorizon : 0.;
 	}
 }
