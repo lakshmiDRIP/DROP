@@ -142,9 +142,9 @@ public class BurgardKjaerOperator
 
 <span class="fc" id="L143">		org.drip.xva.universe.MarketVertex finalMarketVertex = marketEdge.finish();</span>
 
-<span class="fc" id="L145">		org.drip.xva.universe.EntityMarketVertex finalBankMarketVertex = finalMarketVertex.bank();</span>
+<span class="fc" id="L145">		org.drip.xva.universe.MarketVertexEntity finalBankMarketVertex = finalMarketVertex.bank();</span>
 
-<span class="fc" id="L147">		org.drip.xva.universe.EntityMarketVertex finalCounterPartyMarketVertex =</span>
+<span class="fc" id="L147">		org.drip.xva.universe.MarketVertexEntity finalCounterPartyMarketVertex =</span>
 <span class="fc" id="L148">			finalMarketVertex.counterParty();</span>
 
 <span class="fc" id="L150">		org.drip.xva.derivative.PositionGreekVertex initialPositionGreekVertex =</span>
@@ -185,7 +185,7 @@ public class BurgardKjaerOperator
 				-1. * bumpedThetaArray[0],
 				-1. * bumpedThetaArray[1],
 				-1. * bumpedThetaArray[2],
-<span class="fc" id="L188">				finalMarketVertex.csaNumeraire().nodal() * collateral,</span>
+<span class="fc" id="L188">				finalMarketVertex.csaReplicator() * collateral,</span>
 				(bankSeniorDefaultIntensity + counterPartyDefaultIntensity) * initialDerivativeXVAValue,
 				-1. * bankSeniorDefaultIntensity * gainOnBankDefault,
 				-1. * gainOnCounterPartyDefault,
@@ -225,9 +225,9 @@ public class BurgardKjaerOperator
 
 <span class="fc" id="L226">		double derivativeXVAValue = initialTrajectoryVertex.positionGreekVertex().derivativeXVAValue();</span>
 
-<span class="fc" id="L228">		org.drip.xva.universe.EntityMarketVertex finalBankMarketVertex = finalMarketVertex.bank();</span>
+<span class="fc" id="L228">		org.drip.xva.universe.MarketVertexEntity finalBankMarketVertex = finalMarketVertex.bank();</span>
 
-<span class="fc" id="L230">		org.drip.xva.universe.EntityMarketVertex finalCounterPartyMarketVertex =</span>
+<span class="fc" id="L230">		org.drip.xva.universe.MarketVertexEntity finalCounterPartyMarketVertex =</span>
 <span class="fc" id="L231">			finalMarketVertex.counterParty();</span>
 
 <span class="fc" id="L233">		double counterPartyRecoveryRate = finalCounterPartyMarketVertex.seniorRecoveryRate();</span>
@@ -271,7 +271,7 @@ public class BurgardKjaerOperator
 				-1. * bumpedThetaArray[0],
 				-1. * bumpedThetaArray[1],
 				-1. * bumpedThetaArray[2],
-<span class="fc" id="L274">				finalMarketVertex.csaNumeraire().nodal() * collateral,</span>
+<span class="fc" id="L274">				finalMarketVertex.csaReplicator() * collateral,</span>
 				(bankDefaultIntensity + counterPartyDefaultIntensity) * derivativeXVAValue,
 				bankSeniorFundingSpread * bankExposure,
 				-1. * bankDefaultIntensity * bankExposure,

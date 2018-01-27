@@ -275,10 +275,10 @@ public class MarketVertexEntity
 	 * @param hazardRate The Realized Entity Hazard Rate Latent State
 	 * @param seniorRecoveryRate The Entity Senior Recovery Rate Latent State
 	 * @param seniorFundingSpread The Entity Senior Funding Spread Latent State
-	 * @param seniorFundingLatentStateReplicator The Entity Senior Funding Replicator Vertex Latent State
+	 * @param seniorFundingReplicator The Entity Senior Funding Replicator Vertex Latent State
 	 * @param subordinateRecoveryRate The Entity Subordinate Recovery Rate Latent State
 	 * @param subordinateFundingSpread The Entity Subordinate Funding Spread Latent State
-	 * @param subordinateFundingLatentStateReplicator The Entity Subordinate Funding Replicator Vertex Latent
+	 * @param subordinateFundingReplicator The Entity Subordinate Funding Replicator Vertex Latent
 	 * 	State
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid

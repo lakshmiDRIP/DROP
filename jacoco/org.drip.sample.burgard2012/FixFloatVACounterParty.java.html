@@ -160,63 +160,51 @@ import org.drip.xva.universe.*;
 		);
 
 <span class="fc bfc" id="L162" title="All 2 branches covered.">		for (int i = 0; i &lt;= iNumStep; ++i)</span>
-<span class="fc" id="L163">			aMV[i] = new MarketVertex (</span>
+<span class="fc" id="L163">			aMV[i] = MarketVertex.SingleManifestMeasure (</span>
 <span class="fc" id="L164">				adtVertex[i] = dtSpot.addMonths (6 * i),</span>
 				Double.NaN,
 				0.,
-				new LatentStateMarketVertex (
-					1.,
-					1.
-				),
+				1.,
 				dblCSADrift,
-				new LatentStateMarketVertex (
-<span class="fc" id="L173">					Math.exp (-0.5 * dblCSADrift * iNumStep),</span>
-<span class="fc" id="L174">					Math.exp (-0.5 * dblCSADrift * (iNumStep - i))</span>
-				),
-				new EntityMarketVertex (
-<span class="fc" id="L177">					Math.exp (-0.5 * dblBankHazardRate * i),</span>
+<span class="fc" id="L169">				Math.exp (-0.5 * dblCSADrift * iNumStep),</span>
+				new MarketVertexEntity (
+<span class="fc" id="L171">					Math.exp (-0.5 * dblBankHazardRate * i),</span>
 					dblBankHazardRate,
 					dblBankRecoveryRate,
 					dblBankFundingSpread,
-					new LatentStateMarketVertex (
-<span class="fc" id="L182">						Math.exp (-0.5 * dblBankHazardRate * (1. - dblBankRecoveryRate) * iNumStep),</span>
-<span class="fc" id="L183">						Math.exp (-0.5 * dblBankHazardRate * (1. - dblBankRecoveryRate) * (iNumStep - i))</span>
-					),
+<span class="fc" id="L175">					Math.exp (-0.5 * dblBankHazardRate * (1. - dblBankRecoveryRate) * iNumStep),</span>
 					Double.NaN,
 					Double.NaN,
-					null
+					Double.NaN
 				),
-				new EntityMarketVertex (
-<span class="fc" id="L190">					Math.exp (-0.5 * dblCounterPartyHazardRate * i),</span>
+				new MarketVertexEntity (
+<span class="fc" id="L181">					Math.exp (-0.5 * dblCounterPartyHazardRate * i),</span>
 					dblCounterPartyHazardRate,
 					dblCounterPartyRecoveryRate,
 					dblCounterPartyFundingSpread,
-					new LatentStateMarketVertex (
-<span class="fc" id="L195">						Math.exp (-0.5 * dblCounterPartyHazardRate * (1. - dblCounterPartyRecoveryRate) * iNumStep),</span>
-<span class="fc" id="L196">						Math.exp (-0.5 * dblCounterPartyHazardRate * (1. - dblCounterPartyRecoveryRate) * (iNumStep - i))</span>
-					),
+<span class="fc" id="L185">					Math.exp (-0.5 * dblCounterPartyHazardRate * (1. - dblCounterPartyRecoveryRate) * iNumStep),</span>
 					Double.NaN,
 					Double.NaN,
-					null
+					Double.NaN
 				)
 			);
 
-<span class="fc" id="L204">		MarketPath mp = new MarketPath (aMV);</span>
+<span class="fc" id="L192">		MarketPath mp = new MarketPath (aMV);</span>
 
-<span class="fc bfc" id="L206" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPath; ++i) {</span>
-<span class="fc" id="L207">			AlbaneseAndersenVertex[] aHGVR = new AlbaneseAndersenVertex[iNumStep + 1];</span>
+<span class="fc bfc" id="L194" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPath; ++i) {</span>
+<span class="fc" id="L195">			AlbaneseAndersenVertex[] aHGVR = new AlbaneseAndersenVertex[iNumStep + 1];</span>
 
-<span class="fc bfc" id="L209" title="All 2 branches covered.">			for (int j = 0; j &lt;= iNumStep; ++j)</span>
-<span class="fc" id="L210">				aHGVR[j] = new AlbaneseAndersenVertex (</span>
+<span class="fc bfc" id="L197" title="All 2 branches covered.">			for (int j = 0; j &lt;= iNumStep; ++j)</span>
+<span class="fc" id="L198">				aHGVR[j] = new AlbaneseAndersenVertex (</span>
 					adtVertex[j],
 					dblTimeWidth * (iNumStep - j) * aablATMSwapRateOffset[i][j],
 					0.,
 					0.
 				);
 
-<span class="fc" id="L217">			CollateralGroupPath[] aHGP = new CollateralGroupPath[] {new CollateralGroupPath (aHGVR)};</span>
+<span class="fc" id="L205">			CollateralGroupPath[] aHGP = new CollateralGroupPath[] {new CollateralGroupPath (aHGVR)};</span>
 
-<span class="fc" id="L219">			aMPEA[i] = new MonoPathExposureAdjustment (</span>
+<span class="fc" id="L207">			aMPEA[i] = new MonoPathExposureAdjustment (</span>
 				new AlbaneseAndersenNettingGroupPath[] {
 					new AlbaneseAndersenNettingGroupPath (
 						aHGP,
@@ -232,31 +220,31 @@ import org.drip.xva.universe.*;
 			);
 		}
 
-<span class="fc" id="L235">		ExposureAdjustmentAggregator eaa = new ExposureAdjustmentAggregator (aMPEA);</span>
+<span class="fc" id="L223">		ExposureAdjustmentAggregator eaa = new ExposureAdjustmentAggregator (aMPEA);</span>
 
-<span class="fc" id="L237">		System.out.println (&quot;\t|| &quot; +</span>
-<span class="fc" id="L238">			FormatUtil.FormatDouble (dblCounterPartyHazardRate, 3, 0, 10000.) + &quot; bp =&gt; &quot; +</span>
-<span class="fc" id="L239">			FormatUtil.FormatDouble (eaa.ucva().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L240">			FormatUtil.FormatDouble (eaa.ftdcva().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L241">			FormatUtil.FormatDouble (eaa.cva().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L242">			FormatUtil.FormatDouble (eaa.cvacl().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L243">			FormatUtil.FormatDouble (eaa.dva().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L244">			FormatUtil.FormatDouble (eaa.fva().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L245">			FormatUtil.FormatDouble (eaa.fda().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L246">			FormatUtil.FormatDouble (eaa.fca().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L247">			FormatUtil.FormatDouble (eaa.fba().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L248">			FormatUtil.FormatDouble (eaa.sfva().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L249">			FormatUtil.FormatDouble (eaa.total(), 1, 2, 100.) + &quot;% ||&quot;</span>
+<span class="fc" id="L225">		System.out.println (&quot;\t|| &quot; +</span>
+<span class="fc" id="L226">			FormatUtil.FormatDouble (dblCounterPartyHazardRate, 3, 0, 10000.) + &quot; bp =&gt; &quot; +</span>
+<span class="fc" id="L227">			FormatUtil.FormatDouble (eaa.ucva().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L228">			FormatUtil.FormatDouble (eaa.ftdcva().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L229">			FormatUtil.FormatDouble (eaa.cva().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L230">			FormatUtil.FormatDouble (eaa.cvacl().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L231">			FormatUtil.FormatDouble (eaa.dva().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L232">			FormatUtil.FormatDouble (eaa.fva().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L233">			FormatUtil.FormatDouble (eaa.fda().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L234">			FormatUtil.FormatDouble (eaa.fca().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L235">			FormatUtil.FormatDouble (eaa.fba().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L236">			FormatUtil.FormatDouble (eaa.sfva().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L237">			FormatUtil.FormatDouble (eaa.total(), 1, 2, 100.) + &quot;% ||&quot;</span>
 		);
-<span class="fc" id="L251">	}</span>
+<span class="fc" id="L239">	}</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="fc" id="L257">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L245">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L259">		double[] adblCounterPartyHazardRate = new double[] {</span>
+<span class="fc" id="L247">		double[] adblCounterPartyHazardRate = new double[] {</span>
 			0.0025,
 			0.0050,
 			0.0075,
@@ -271,24 +259,24 @@ import org.drip.xva.universe.*;
 			0.0300
 		};
 
-<span class="fc" id="L274">		System.out.println();</span>
+<span class="fc" id="L262">		System.out.println();</span>
 
-<span class="fc" id="L276">		System.out.println (&quot;\t||-------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L264">		System.out.println (&quot;\t||-------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L278">		System.out.println (&quot;\t||                                 VA DEPENDENCE ON COUNTER PARTY HAZARD RATE                                  ||&quot;);</span>
+<span class="fc" id="L266">		System.out.println (&quot;\t||                                 VA DEPENDENCE ON COUNTER PARTY HAZARD RATE                                  ||&quot;);</span>
 
-<span class="fc" id="L280">		System.out.println (&quot;\t||-------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L268">		System.out.println (&quot;\t||-------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L282">		System.out.println (&quot;\t||  Hazard =&gt;  UCVA  | FTDCVA |   CVA  |  CVACL |   DVA  |   FVA  |   FDA  |   FCA  |   FBA  |  SFVA  |  Total ||&quot;);</span>
+<span class="fc" id="L270">		System.out.println (&quot;\t||  Hazard =&gt;  UCVA  | FTDCVA |   CVA  |  CVACL |   DVA  |   FVA  |   FDA  |   FCA  |   FBA  |  SFVA  |  Total ||&quot;);</span>
 
-<span class="fc" id="L284">		System.out.println (&quot;\t||-------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L272">		System.out.println (&quot;\t||-------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L286" title="All 2 branches covered.">		for (double dblCounterPartyHazardRate : adblCounterPartyHazardRate)</span>
-<span class="fc" id="L287">			VA (dblCounterPartyHazardRate);</span>
+<span class="fc bfc" id="L274" title="All 2 branches covered.">		for (double dblCounterPartyHazardRate : adblCounterPartyHazardRate)</span>
+<span class="fc" id="L275">			VA (dblCounterPartyHazardRate);</span>
 
-<span class="fc" id="L289">		System.out.println (&quot;\t||-------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L277">		System.out.println (&quot;\t||-------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L291">		System.out.println();</span>
-<span class="fc" id="L292">	}</span>
+<span class="fc" id="L279">		System.out.println();</span>
+<span class="fc" id="L280">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

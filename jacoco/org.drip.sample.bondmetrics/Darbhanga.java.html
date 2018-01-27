@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Darbhanga.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.bondmetrics</a> &gt; <span class="el_source">Darbhanga.java</span></div><h1>Darbhanga.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.bondmetrics;
+
+import org.drip.analytics.date.*;
+import org.drip.product.creator.BondBuilder;
+import org.drip.product.credit.BondComponent;
+import org.drip.service.env.EnvManager;
+import org.drip.service.scenario.*;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * Darbhanga generates the Full Suite of Replication Metrics for Bond Darbhanga.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L61">public class Darbhanga {</span>
+
+	public static final void main (
+		final String[] astArgs)
+		throws Exception
+	{
+<span class="nc" id="L67">		EnvManager.InitEnv (</span>
+			&quot;&quot;,
+			true
+		);
+
+<span class="nc" id="L72">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+			2018,
+			DateUtil.JANUARY,
+			5
+		);
+
+<span class="nc" id="L78">		String[] astrDepositTenor = new String[] {</span>
+			&quot;2D&quot;
+		};
+
+<span class="nc" id="L82">		double[] adblDepositQuote = new double[] {</span>
+			0.0170393 // 2D
+		};
+
+<span class="nc" id="L86">		double[] adblFuturesQuote = new double[] {</span>
+			0.01810,	// 98.190
+			0.01995,	// 98.005
+			0.02115,	// 97.885
+			0.02220,	// 97.780
+			0.02285,    // 97.715
+			0.02340     // 97.660
+		};
+
+<span class="nc" id="L95">		String[] astrFixFloatTenor = new String[] {</span>
+			&quot;02Y&quot;,
+			&quot;03Y&quot;,
+			&quot;04Y&quot;,
+			&quot;05Y&quot;,
+			&quot;06Y&quot;,
+			&quot;07Y&quot;,
+			&quot;08Y&quot;,
+			&quot;09Y&quot;,
+			&quot;10Y&quot;,
+			&quot;11Y&quot;,
+			&quot;12Y&quot;,
+			&quot;15Y&quot;,
+			&quot;20Y&quot;,
+			&quot;25Y&quot;,
+			&quot;30Y&quot;,
+			&quot;40Y&quot;,
+			&quot;50Y&quot;
+		};
+
+<span class="nc" id="L115">		double[] adblFixFloatQuote = new double[] {</span>
+			0.021489, //  2Y
+			0.022452, //  3Y
+			0.022964, //  4Y
+			0.023324, //  5Y
+			0.023628, //  6Y
+			0.029315, //  7Y
+			0.024195, //  8Y
+			0.024448, //  9Y
+			0.024701, // 10Y
+			0.024946, // 11Y
+			0.025155, // 12Y
+			0.025600, // 15Y
+			0.026034, // 20Y
+			0.026150, // 25Y
+			0.026107, // 30Y
+			0.025936, // 40Y
+			0.025636  // 50Y
+		};
+
+<span class="nc" id="L135">		String[] astrGovvieTenor = new String[] {</span>
+			&quot;1M&quot;,
+			&quot;3M&quot;,
+			&quot;6M&quot;,
+			&quot;1Y&quot;,
+			&quot;2Y&quot;,
+			&quot;3Y&quot;,
+			&quot;5Y&quot;,
+			&quot;7Y&quot;,
+			&quot;10Y&quot;,
+			&quot;15Y&quot;,
+			&quot;20Y&quot;,
+			&quot;30Y&quot;
+		};
+
+<span class="nc" id="L150">		double[] adblGovvieYield = new double[] {</span>
+			0.01270, //  1M
+			0.01390, //  3M
+			0.01580, //  6M
+			0.01800, //  1Y
+			0.01960, //  2Y
+			0.02060, //  3Y
+			0.02290, //  5Y
+			0.02400, //  7Y
+			0.02470, // 10Y
+			0.02535, // 15Y
+			0.02640, // 20Y
+			0.02810  // 30Y
+		};
+
+<span class="nc" id="L165">		String[] astrCreditTenor = new String[] {</span>
+			&quot;06M&quot;,
+			&quot;01Y&quot;,
+			&quot;02Y&quot;,
+			&quot;03Y&quot;,
+			&quot;04Y&quot;,
+			&quot;05Y&quot;,
+			&quot;07Y&quot;,
+			&quot;10Y&quot;
+		};
+
+<span class="nc" id="L176">		double[] adblCreditQuote = new double[] {</span>
+			 60.,	//  6M
+			 68.,	//  1Y
+			 88.,	//  2Y
+			102.,	//  3Y
+			121.,	//  4Y
+			138.,	//  5Y
+			168.,	//  7Y
+			188.	// 10Y
+		};
+
+<span class="nc" id="L187">		double dblFX = 1.;</span>
+<span class="nc" id="L188">		int iSettleLag = 3;</span>
+<span class="nc" id="L189">		int iCouponFreq = 4;</span>
+<span class="nc" id="L190">		String strName = &quot;Darbhanga&quot;;</span>
+<span class="nc" id="L191">		double dblCleanPrice = 1.01546;</span>
+<span class="nc" id="L192">		double dblIssuePrice = 1.;</span>
+<span class="nc" id="L193">		String strCurrency = &quot;USD&quot;;</span>
+<span class="nc" id="L194">		double dblSpreadBump = 20.;</span>
+<span class="nc" id="L195">		double dblIssueAmount = 2.60e7;</span>
+<span class="nc" id="L196">		double dblFloatSpread = 0.01255;</span>
+<span class="nc" id="L197">		String strTreasuryCode = &quot;UST&quot;;</span>
+<span class="nc" id="L198">		double dblFullFirstCoupon = 0.0280378;</span>
+<span class="nc" id="L199">		String strCouponDayCount = &quot;30/360&quot;;</span>
+<span class="nc" id="L200">		double dblSpreadDurationMultiplier = 5.;</span>
+
+<span class="nc" id="L202">		JulianDate dtEffective = DateUtil.CreateFromYMD (</span>
+			2015,
+			3,
+			12
+		);
+
+<span class="nc" id="L208">		JulianDate dtMaturity = DateUtil.CreateFromYMD (</span>
+			2020,
+			3,
+			12
+		);
+
+<span class="nc" id="L214">		double dblResetRate = dblFullFirstCoupon - dblFloatSpread;</span>
+<span class="nc" id="L215">		String strRateIndex = strCurrency + &quot;-&quot; + (12 / iCouponFreq) + &quot;M&quot;;</span>
+
+<span class="nc" id="L217">		BondComponent bond = BondBuilder.CreateSimpleFloater (</span>
+			strName,
+			strCurrency,
+			strRateIndex,
+			strName,
+			dblFloatSpread,
+			iCouponFreq,
+			strCouponDayCount,
+			dtEffective,
+			dtMaturity,
+			null,
+			null
+		);
+
+<span class="nc" id="L231">		BondReplicator abr = BondReplicator.CorporateSenior (</span>
+			dblCleanPrice,
+			dblIssuePrice,
+			dblIssueAmount,
+			dtSpot,
+			astrDepositTenor,
+			adblDepositQuote,
+			adblFuturesQuote,
+			astrFixFloatTenor,
+			adblFixFloatQuote,
+			dblSpreadBump,
+			dblSpreadDurationMultiplier,
+			strTreasuryCode,
+			astrGovvieTenor,
+			adblGovvieYield,
+			astrCreditTenor,
+			adblCreditQuote,
+			dblFX,
+			dblResetRate,
+			iSettleLag,
+			bond
+		);
+
+<span class="nc" id="L254">		BondReplicationRun abrr = abr.generateRun();</span>
+
+<span class="nc" id="L256">		System.out.println (abrr.display());</span>
+
+<span class="nc" id="L258">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L259">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

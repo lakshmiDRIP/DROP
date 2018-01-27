@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PositionGroupSegment.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.xva.holdings</a> &gt; <span class="el_source">PositionGroupSegment.java</span></div><h1>PositionGroupSegment.java</h1><pre class="source lang-java linenums">
+package org.drip.xva.holdings;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * PositionGroupSegment contains one Segment of a Position/Collateral Group. The References are:
+ *  
+ *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
+ *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
+ *  
+ *  - Burgard, C., and M. Kjaer (2014): In the Balance, Risk, 24 (11) 72-75.
+ *  
+ *  - Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and the
+ *  	Re-Hypothecation Option, eSSRN, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955.
+ *  
+ *  - Burgard, C., and M. Kjaer (2017): Derivatives Funding, Netting, and Accounting, eSSRN,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2534011.
+ * 
+ *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
+ *  	21 (2) 97-102.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class PositionGroupSegment
+{
+<span class="nc" id="L71">	private java.util.Set&lt;org.drip.xva.holdings.PositionGroup&gt; _positionGroupSet = new</span>
+		java.util.HashSet&lt;org.drip.xva.holdings.PositionGroup&gt;();
+
+	/**
+	 * Empty PositionGroupSegment Constructor
+	 */
+
+	public PositionGroupSegment()
+<span class="nc" id="L79">	{</span>
+<span class="nc" id="L80">	}</span>
+
+	/**
+	 * Retrieve the Position Group Segment
+	 * 
+	 * @return The Position Group Segment
+	 */
+
+	public java.util.Set&lt;org.drip.xva.holdings.PositionGroup&gt; positionGroupSet()
+	{
+<span class="nc" id="L90">		return _positionGroupSet;</span>
+	}
+
+	/**
+	 * Add the Specified Position Group to the Segment
+	 * 
+	 * @param positionGroup The Position Group
+	 * 
+	 * @return TRUE - The Position Group successfully added
+	 */
+
+	public boolean add (
+		final org.drip.xva.holdings.PositionGroup positionGroup)
+	{
+<span class="nc bnc" id="L104" title="All 2 branches missed.">		if (null == positionGroup)</span>
+		{
+<span class="nc" id="L106">			return false;</span>
+		}
+
+<span class="nc" id="L109">		_positionGroupSet.add (positionGroup);</span>
+
+<span class="nc" id="L111">		return true;</span>
+	}
+
+	/**
+	 * Retrieve the Position Group Array
+	 * 
+	 * @return The Position Group Array
+	 */
+
+	public org.drip.xva.holdings.PositionGroup[] positionGroupArray()
+	{
+<span class="nc" id="L122">		int segmentCount = _positionGroupSet.size();</span>
+
+<span class="nc" id="L124">		int segmentIndex = 0;</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">		org.drip.xva.holdings.PositionGroup[] positionGroupArray = 0 == segmentCount ? null : new</span>
+			org.drip.xva.holdings.PositionGroup[segmentCount];
+
+<span class="nc bnc" id="L128" title="All 2 branches missed.">		if (0 == segmentCount)</span>
+		{
+<span class="nc" id="L130">			return null;</span>
+		}
+
+<span class="nc bnc" id="L133" title="All 2 branches missed.">		for (org.drip.xva.holdings.PositionGroup positionGroup : _positionGroupSet)</span>
+		{
+<span class="nc" id="L135">			positionGroupArray[segmentIndex++] = positionGroup;</span>
+<span class="nc" id="L136">		}</span>
+
+<span class="nc" id="L138">		return positionGroupArray;</span>
+	}
+
+	/**
+	 * Retrieve the Position Group Collateral Path Array
+	 * 
+	 * @return The Position Group Collateral Path Array
+	 */
+
+	public org.drip.xva.hypothecation.CollateralGroupPath[] collateralGroupPathArray()
+	{
+<span class="nc" id="L149">		int segmentCount = _positionGroupSet.size();</span>
+
+<span class="nc" id="L151">		int segmentIndex = 0;</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">		org.drip.xva.hypothecation.CollateralGroupPath[] collateralGroupPathArray = 0 == segmentCount ? null</span>
+			: new org.drip.xva.hypothecation.CollateralGroupPath[segmentCount];
+
+<span class="nc bnc" id="L155" title="All 2 branches missed.">		if (0 == segmentCount)</span>
+		{
+<span class="nc" id="L157">			return null;</span>
+		}
+
+<span class="nc bnc" id="L160" title="All 2 branches missed.">		for (org.drip.xva.holdings.PositionGroup positionGroup : _positionGroupSet)</span>
+		{
+<span class="nc" id="L162">			collateralGroupPathArray[segmentIndex++] = positionGroup.collateralGroupPath();</span>
+<span class="nc" id="L163">		}</span>
+
+<span class="nc" id="L165">		return collateralGroupPathArray;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -71,21 +71,21 @@ package org.drip.xva.universe;
 public class MarketVertex
 {
 <span class="fc" id="L73">	private double _csaSpread = java.lang.Double.NaN;</span>
-<span class="fc" id="L74">	private double _overnightRate = java.lang.Double.NaN;</span>
-<span class="fc" id="L75">	private double _positionManifestValue = java.lang.Double.NaN;</span>
-<span class="fc" id="L76">	private org.drip.analytics.date.JulianDate _anchorDate = null;</span>
-<span class="fc" id="L77">	private org.drip.xva.universe.EntityMarketVertex _bankEntityMarketVertex = null;</span>
-<span class="fc" id="L78">	private org.drip.xva.universe.LatentStateMarketVertex _csaNumeraireMarketVertex = null;</span>
-<span class="fc" id="L79">	private org.drip.xva.universe.EntityMarketVertex _counterPartyEntityMarketVertex = null;</span>
-<span class="fc" id="L80">	private org.drip.xva.universe.LatentStateMarketVertex _overnightNumeraireMarketVertex = null;</span>
+<span class="fc" id="L74">	private double _csaReplicator = java.lang.Double.NaN;</span>
+<span class="fc" id="L75">	private double _overnightRate = java.lang.Double.NaN;</span>
+<span class="fc" id="L76">	private double _overnightReplicator = java.lang.Double.NaN;</span>
+<span class="fc" id="L77">	private double _positionManifestValue = java.lang.Double.NaN;</span>
+<span class="fc" id="L78">	private org.drip.analytics.date.JulianDate _anchorDate = null;</span>
+<span class="fc" id="L79">	private org.drip.xva.universe.MarketVertexEntity _bankMarketVertex = null;</span>
+<span class="fc" id="L80">	private org.drip.xva.universe.MarketVertexEntity _counterPartyMarketVertex = null;</span>
 
 	/**
 	 * Generate an Initial Instance of MarketVertex
 	 * 
 	 * @param anchorDate The Anchor Date
 	 * @param positionManifestValue Realized Position Manifest Value
-	 * @param overnightNumeraire Realized Overnight Numeraire
-	 * @param csaNumeraire Realized CSA Numeraire
+	 * @param overnightReplicator The Realized Overnight Latent State Replicator
+	 * @param csaReplicator The Realized CSA Latent State Replicator
 	 * @param bankHazardRate Realized Bank Hazard Rate
 	 * @param bankRecoveryRate Realized Bank Recovery Rate
 	 * @param bankFundingSpread Realized Bank Funding Spread
@@ -99,8 +99,8 @@ public class MarketVertex
 	public static final MarketVertex StartUp (
 		final org.drip.analytics.date.JulianDate anchorDate,
 		final double positionManifestValue,
-		final double overnightNumeraire,
-		final double csaNumeraire,
+		final double overnightReplicator,
+		final double csaReplicator,
 		final double bankHazardRate,
 		final double bankRecoveryRate,
 		final double bankFundingSpread,
@@ -113,35 +113,73 @@ public class MarketVertex
 				anchorDate,
 				positionManifestValue,
 				0.,
-				new org.drip.xva.universe.LatentStateMarketVertex (
-					overnightNumeraire,
-					overnightNumeraire
-				),
+				overnightReplicator,
 				0.,
-				new org.drip.xva.universe.LatentStateMarketVertex (
-					csaNumeraire,
-					csaNumeraire
-				),
-<span class="nc" id="L125">				org.drip.xva.universe.EntityMarketVertex.Senior (</span>
+				csaReplicator,
+<span class="nc" id="L119">				org.drip.xva.universe.MarketVertexEntity.Senior (</span>
 					0.,
 					bankHazardRate,
 					bankRecoveryRate,
-					bankFundingSpread,
-					null
+					bankFundingSpread
 				),
-<span class="nc" id="L132">				org.drip.xva.universe.EntityMarketVertex.Senior (</span>
+<span class="nc" id="L125">				org.drip.xva.universe.MarketVertexEntity.Senior (</span>
 					0.,
 					counterPartyHazardRate,
 					counterPartyRecoveryRate,
-					counterPartyFundingSpread,
-					null
+					counterPartyFundingSpread
 				)
 			);
-<span class="nc" id="L140">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L141">			e.printStackTrace();</span>
+<span class="nc" id="L132">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L133">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L144">		return null;</span>
+<span class="nc" id="L136">		return null;</span>
+	}
+
+	/**
+	 * Construct a Single Manifest Measure Market Vertex
+	 * 
+	 * @param anchorDate The Vertex Date Anchor
+	 * @param positionManifestValue The Realized Position Manifest Value
+	 * @param overnightRate The Realized Overnight Rate
+	 * @param overnightReplicator The Realized Overnight Latent State Replicator
+	 * @param csaSpread The Realized CSA Spread
+	 * @param csaReplicator The Realized CSA Latent State Replicator
+	 * @param bankMarketVertex Bank Market Vertex Instance
+	 * @param counterPartyMarketVertex Counter Party Market Vertex Instance
+	 * 
+	 * @return The Single Manifest Measure Market Vertex Instance
+	 */
+
+	public static final MarketVertex SingleManifestMeasure (
+		final org.drip.analytics.date.JulianDate anchorDate,
+		final double positionManifestValue,
+		final double overnightRate,
+		final double overnightReplicator,
+		final double csaSpread,
+		final double csaReplicator,
+		final org.drip.xva.universe.MarketVertexEntity bankMarketVertex,
+		final org.drip.xva.universe.MarketVertexEntity counterPartyMarketVertex)
+	{
+		try
+		{
+<span class="fc" id="L166">			return new MarketVertex (</span>
+				anchorDate,
+				positionManifestValue,
+				overnightRate,
+				overnightReplicator,
+				csaSpread,
+				csaReplicator,
+				bankMarketVertex,
+				counterPartyMarketVertex
+			);
+		}
+<span class="nc" id="L177">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L179">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L182">		return null;</span>
 	}
 
 	/**
@@ -150,37 +188,39 @@ public class MarketVertex
 	 * @param anchorDate The Vertex Date Anchor
 	 * @param positionManifestValue The Realized Position Manifest Value
 	 * @param overnightRate The Realized Overnight Rate
-	 * @param overnightNumeraireMarketVertex The Realized Overnight Numeraire Market Vertex
+	 * @param overnightReplicator The Realized Overnight Latent State Replicator
 	 * @param csaSpread The Realized CSA Spread
-	 * @param csaNumeraireMarketVertex The Realized CSA Numeraire Market Vertex
-	 * @param bankEntityMarketVertex Bank Entity Market Vertex Instance
-	 * @param counterPartyEntityMarketVertex Counter Party Market Vertex Instance
+	 * @param csaReplicator The Realized CSA Latent State Replicator
+	 * @param bankMarketVertex Bank Market Vertex Instance
+	 * @param counterPartyMarketVertex Counter Party Market Vertex Instance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public MarketVertex (
+	protected MarketVertex (
 		final org.drip.analytics.date.JulianDate anchorDate,
 		final double positionManifestValue,
 		final double overnightRate,
-		final org.drip.xva.universe.LatentStateMarketVertex overnightNumeraireMarketVertex,
+		final double overnightReplicator,
 		final double csaSpread,
-		final org.drip.xva.universe.LatentStateMarketVertex csaNumeraireMarketVertex,
-		final org.drip.xva.universe.EntityMarketVertex bankEntityMarketVertex,
-		final org.drip.xva.universe.EntityMarketVertex counterPartyEntityMarketVertex)
+		final double csaReplicator,
+		final org.drip.xva.universe.MarketVertexEntity bankMarketVertex,
+		final org.drip.xva.universe.MarketVertexEntity counterPartyMarketVertex)
 		throws java.lang.Exception
-<span class="fc" id="L172">	{</span>
-<span class="pc bpc" id="L173" title="1 of 2 branches missed.">		if (null == (_anchorDate = anchorDate) ||</span>
-<span class="pc bpc" id="L174" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_overnightRate = overnightRate) ||</span>
-			null == (_overnightNumeraireMarketVertex = overnightNumeraireMarketVertex) ||
-<span class="pc bpc" id="L176" title="4 of 8 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_csaSpread = csaSpread) ||</span>
-			null == (_csaNumeraireMarketVertex = csaNumeraireMarketVertex) ||
-			null == (_bankEntityMarketVertex = bankEntityMarketVertex) ||
-			null == (_counterPartyEntityMarketVertex = counterPartyEntityMarketVertex))
-<span class="nc" id="L180">			throw new java.lang.Exception (&quot;MarketVertex Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L210">	{</span>
+<span class="pc bpc" id="L211" title="1 of 2 branches missed.">		if (null == (_anchorDate = anchorDate) ||</span>
+<span class="pc bpc" id="L212" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_overnightRate = overnightRate) ||</span>
+<span class="pc bpc" id="L213" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_overnightReplicator = overnightReplicator) ||</span>
+<span class="pc bpc" id="L214" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_csaSpread = csaSpread) ||</span>
+<span class="pc bpc" id="L215" title="3 of 6 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_csaReplicator = csaReplicator) ||</span>
+			null == (_bankMarketVertex = bankMarketVertex) ||
+			null == (_counterPartyMarketVertex = counterPartyMarketVertex))
+		{
+<span class="nc" id="L219">			throw new java.lang.Exception (&quot;MarketVertex Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
 
-<span class="fc" id="L182">		_positionManifestValue = positionManifestValue;</span>
-<span class="fc" id="L183">	}</span>
+<span class="fc" id="L222">		_positionManifestValue = positionManifestValue;</span>
+<span class="fc" id="L223">	}</span>
 
 	/**
 	 * Retrieve the Date Anchor
@@ -190,7 +230,7 @@ public class MarketVertex
 
 	public org.drip.analytics.date.JulianDate anchorDate()
 	{
-<span class="fc" id="L193">		return _anchorDate;</span>
+<span class="fc" id="L233">		return _anchorDate;</span>
 	}
 
 	/**
@@ -201,7 +241,7 @@ public class MarketVertex
 
 	public double positionManifestValue()
 	{
-<span class="fc" id="L204">		return _positionManifestValue;</span>
+<span class="fc" id="L244">		return _positionManifestValue;</span>
 	}
 
 	/**
@@ -212,7 +252,7 @@ public class MarketVertex
 
 	public double overnightRate()
 	{
-<span class="fc" id="L215">		return _overnightRate;</span>
+<span class="fc" id="L255">		return _overnightRate;</span>
 	}
 
 	/**
@@ -221,9 +261,9 @@ public class MarketVertex
 	 * @return The Realized Overnight Index Numeraire
 	 */
 
-	public org.drip.xva.universe.LatentStateMarketVertex overnightNumeraire()
+	public double overnightReplicator()
 	{
-<span class="fc" id="L226">		return _overnightNumeraireMarketVertex;</span>
+<span class="fc" id="L266">		return _overnightReplicator;</span>
 	}
 
 	/**
@@ -234,7 +274,7 @@ public class MarketVertex
 
 	public double csaSpread()
 	{
-<span class="fc" id="L237">		return _csaSpread;</span>
+<span class="fc" id="L277">		return _csaSpread;</span>
 	}
 
 	/**
@@ -243,9 +283,9 @@ public class MarketVertex
 	 * @return The Realized CSA Scheme Numeraire
 	 */
 
-	public org.drip.xva.universe.LatentStateMarketVertex csaNumeraire()
+	public double csaReplicator()
 	{
-<span class="fc" id="L248">		return _csaNumeraireMarketVertex;</span>
+<span class="fc" id="L288">		return _csaReplicator;</span>
 	}
 
 	/**
@@ -256,7 +296,7 @@ public class MarketVertex
 
 	public double csaRate()
 	{
-<span class="fc" id="L259">		return _overnightRate + _csaSpread;</span>
+<span class="fc" id="L299">		return _overnightRate + _csaSpread;</span>
 	}
 
 	/**
@@ -265,9 +305,9 @@ public class MarketVertex
 	 * @return The Realized Bank Senior Market Vertex
 	 */
 
-	public org.drip.xva.universe.EntityMarketVertex bank()
+	public org.drip.xva.universe.MarketVertexEntity bank()
 	{
-<span class="fc" id="L270">		return _bankEntityMarketVertex;</span>
+<span class="fc" id="L310">		return _bankMarketVertex;</span>
 	}
 
 	/**
@@ -276,9 +316,9 @@ public class MarketVertex
 	 * @return The Realized Counter Party Market Vertex
 	 */
 
-	public org.drip.xva.universe.EntityMarketVertex counterParty()
+	public org.drip.xva.universe.MarketVertexEntity counterParty()
 	{
-<span class="fc" id="L281">		return _counterPartyEntityMarketVertex;</span>
+<span class="fc" id="L321">		return _counterPartyMarketVertex;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

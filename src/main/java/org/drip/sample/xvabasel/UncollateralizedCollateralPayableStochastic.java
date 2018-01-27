@@ -484,7 +484,7 @@ public class UncollateralizedCollateralPayableStochastic {
 			AlbaneseAndersenVertex[] aCGV2 = new AlbaneseAndersenVertex[iNumStep + 1];
 
 			for (int j = 0; j <= iNumStep; ++j) {
-				aNV[j] = new MarketVertex (
+				aNV[j] = MarketVertex.SingleManifestMeasure (
 					adtVertex[j] = dtSpot.addMonths (6 * j),
 					Double.NaN,
 					dblOvernightNumeraireDrift,

@@ -534,7 +534,7 @@ public class ZeroThresholdNettingReceivableStochastic {
 					dblCollateralBalance2 = cae2.postingRequirement (dtEnd);
 				}
 
-				aNV[j] = new MarketVertex (
+				aNV[j] = MarketVertex.SingleManifestMeasure (
 					adtVertex[j] = dtSpot.addMonths (6 * j),
 					Double.NaN,
 					dblOvernightNumeraireDrift,

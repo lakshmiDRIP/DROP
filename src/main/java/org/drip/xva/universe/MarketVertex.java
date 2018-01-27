@@ -137,6 +137,52 @@ public class MarketVertex
 	}
 
 	/**
+	 * Construct a Single Manifest Measure Market Vertex
+	 * 
+	 * @param anchorDate The Vertex Date Anchor
+	 * @param positionManifestValue The Realized Position Manifest Value
+	 * @param overnightRate The Realized Overnight Rate
+	 * @param overnightReplicator The Realized Overnight Latent State Replicator
+	 * @param csaSpread The Realized CSA Spread
+	 * @param csaReplicator The Realized CSA Latent State Replicator
+	 * @param bankMarketVertex Bank Market Vertex Instance
+	 * @param counterPartyMarketVertex Counter Party Market Vertex Instance
+	 * 
+	 * @return The Single Manifest Measure Market Vertex Instance
+	 */
+
+	public static final MarketVertex SingleManifestMeasure (
+		final org.drip.analytics.date.JulianDate anchorDate,
+		final double positionManifestValue,
+		final double overnightRate,
+		final double overnightReplicator,
+		final double csaSpread,
+		final double csaReplicator,
+		final org.drip.xva.universe.MarketVertexEntity bankMarketVertex,
+		final org.drip.xva.universe.MarketVertexEntity counterPartyMarketVertex)
+	{
+		try
+		{
+			return new MarketVertex (
+				anchorDate,
+				positionManifestValue,
+				overnightRate,
+				overnightReplicator,
+				csaSpread,
+				csaReplicator,
+				bankMarketVertex,
+				counterPartyMarketVertex
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * MarketVertex Constructor
 	 * 
 	 * @param anchorDate The Vertex Date Anchor
@@ -151,7 +197,7 @@ public class MarketVertex
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public MarketVertex (
+	protected MarketVertex (
 		final org.drip.analytics.date.JulianDate anchorDate,
 		final double positionManifestValue,
 		final double overnightRate,

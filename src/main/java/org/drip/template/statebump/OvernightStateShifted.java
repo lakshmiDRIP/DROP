@@ -78,7 +78,11 @@ public class OvernightStateShifted {
 		double dblBump = 0.0001;
 		boolean bIsBumpProportional = false;
 
-		JulianDate dtSpot = DateUtil.Today();
+		JulianDate dtSpot = DateUtil.CreateFromYMD (
+			2017,
+			DateUtil.DECEMBER,
+			21
+		);
 
 		String[] astrDepositMaturityTenor = new String[] {
 			"01D",

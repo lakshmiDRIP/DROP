@@ -535,7 +535,7 @@ public class CollateralizedCollateralReceivableStochastic {
 					dblCollateralBalance2 = hae2.postingRequirement (dtEnd);
 				}
 
-				aMV[j] = new MarketVertex (
+				aMV[j] = MarketVertex.SingleManifestMeasure (
 					adtVertex[j] = dtSpot.addMonths (6 * j),
 					Double.NaN,
 					dblOvernightNumeraireDrift,

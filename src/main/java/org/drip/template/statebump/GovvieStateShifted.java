@@ -74,9 +74,10 @@ public class GovvieStateShifted {
 	{
 		EnvManager.InitEnv ("");
 
-		JulianDate dtSpot = DateUtil.Today().addBusDays (
-			0,
-			"USD"
+		JulianDate dtSpot = DateUtil.CreateFromYMD (
+			2017,
+			DateUtil.DECEMBER,
+			21
 		);
 
 		String strCode = "UST";

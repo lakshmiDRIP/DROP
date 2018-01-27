@@ -206,7 +206,7 @@ public class ExposureGroupPath
 			{
 <span class="fc" id="L207">				collateralizedExposurePV[vertexIndex] +=</span>
 					collateralGroupCollateralizedExposure[vertexIndex] *
-<span class="fc" id="L209">						marketVertexArray[vertexIndex].overnightNumeraire().epochalNodalScale();</span>
+<span class="fc" id="L209">						marketVertexArray[vertexIndex].overnightReplicator();</span>
 			}
 		}
 
@@ -284,7 +284,7 @@ public class ExposureGroupPath
 <span class="fc bfc" id="L284" title="All 2 branches covered.">				if (0. &lt; collateralizedExposure)</span>
 				{
 <span class="fc" id="L286">					collateralizedPositiveExposurePV[vertexIndex] += collateralizedExposure *</span>
-<span class="fc" id="L287">						marketVertexArray[vertexIndex].overnightNumeraire().epochalNodalScale();</span>
+<span class="fc" id="L287">						marketVertexArray[vertexIndex].overnightReplicator();</span>
 				}
 			}
 		}
@@ -363,7 +363,7 @@ public class ExposureGroupPath
 <span class="fc bfc" id="L363" title="All 2 branches covered.">				if (0. &gt; collateralizedExposure)</span>
 				{
 <span class="fc" id="L365">					collateralizedNegativeExposurePV[vertexIndex] += collateralizedExposure *</span>
-<span class="fc" id="L366">						marketVertexArray[vertexIndex].overnightNumeraire().epochalNodalScale();</span>
+<span class="fc" id="L366">						marketVertexArray[vertexIndex].overnightReplicator();</span>
 				}
 			}
 		}
@@ -435,7 +435,7 @@ public class ExposureGroupPath
 			{
 <span class="fc" id="L436">				uncollateralizedExposurePV[vertexIndex] +=</span>
 					collateralGroupUncollateralizedExposure[vertexIndex] *
-<span class="fc" id="L438">						marketVertexArray[vertexIndex].overnightNumeraire().epochalNodalScale();</span>
+<span class="fc" id="L438">						marketVertexArray[vertexIndex].overnightReplicator();</span>
 			}
 		}
 
@@ -513,7 +513,7 @@ public class ExposureGroupPath
 <span class="fc bfc" id="L513" title="All 2 branches covered.">				if (0. &lt; uncollateralizedExposure)</span>
 				{
 <span class="fc" id="L515">					uncollateralizedPositiveExposurePV[vertexIndex] += uncollateralizedExposure *</span>
-<span class="fc" id="L516">						marketVertexArray[vertexIndex].overnightNumeraire().epochalNodalScale();</span>
+<span class="fc" id="L516">						marketVertexArray[vertexIndex].overnightReplicator();</span>
 				}
 			}
 		}
@@ -592,7 +592,7 @@ public class ExposureGroupPath
 <span class="fc bfc" id="L592" title="All 2 branches covered.">				if (0. &gt; uncollateralizedExposure)</span>
 				{
 <span class="fc" id="L594">					uncollateralizedNegativeExposurePV[vertexIndex] += uncollateralizedExposure *</span>
-<span class="fc" id="L595">						marketVertexArray[vertexIndex].overnightNumeraire().epochalNodalScale();</span>
+<span class="fc" id="L595">						marketVertexArray[vertexIndex].overnightReplicator();</span>
 				}
 			}
 		}
@@ -657,13 +657,13 @@ public class ExposureGroupPath
 <span class="fc" id="L657">				marketVertexArray[vertexIndex - 1].bank().survivalProbability() *</span>
 <span class="fc" id="L658">				marketVertexArray[vertexIndex - 1].counterParty().survivalProbability() *</span>
 <span class="fc" id="L659">				marketVertexArray[vertexIndex - 1].csaSpread() *</span>
-<span class="fc" id="L660">				marketVertexArray[vertexIndex - 1].overnightNumeraire().epochalNodalScale();</span>
+<span class="fc" id="L660">				marketVertexArray[vertexIndex - 1].overnightReplicator();</span>
 
 <span class="fc" id="L662">			double periodIntegrandEnd = collateralBalance[vertexIndex] *</span>
 <span class="fc" id="L663">				marketVertexArray[vertexIndex].bank().survivalProbability() *</span>
 <span class="fc" id="L664">				marketVertexArray[vertexIndex].counterParty().survivalProbability() *</span>
 <span class="fc" id="L665">				marketVertexArray[vertexIndex].csaSpread() *</span>
-<span class="fc" id="L666">				marketVertexArray[vertexIndex].overnightNumeraire().epochalNodalScale();</span>
+<span class="fc" id="L666">				marketVertexArray[vertexIndex].overnightReplicator();</span>
 
 <span class="fc" id="L668">			bilateralCollateralValueAdjustment -= 0.5 * (periodIntegrandStart + periodIntegrandEnd) *</span>
 <span class="fc" id="L669">				(marketVertexArray[vertexIndex].anchorDate().julian() -</span>
@@ -696,12 +696,12 @@ public class ExposureGroupPath
 <span class="fc" id="L696">			double periodIntegrandStart = collateralBalance[vertexIndex - 1] *</span>
 <span class="fc" id="L697">				marketVertexArray[vertexIndex - 1].counterParty().survivalProbability() *</span>
 <span class="fc" id="L698">				marketVertexArray[vertexIndex - 1].csaSpread() *</span>
-<span class="fc" id="L699">				marketVertexArray[vertexIndex - 1].overnightNumeraire().epochalNodalScale();</span>
+<span class="fc" id="L699">				marketVertexArray[vertexIndex - 1].overnightReplicator();</span>
 
 <span class="fc" id="L701">			double periodIntegrandEnd = collateralBalance[vertexIndex] *</span>
 <span class="fc" id="L702">				marketVertexArray[vertexIndex].counterParty().survivalProbability() *</span>
 <span class="fc" id="L703">				marketVertexArray[vertexIndex].csaSpread() *</span>
-<span class="fc" id="L704">				marketVertexArray[vertexIndex].overnightNumeraire().epochalNodalScale();</span>
+<span class="fc" id="L704">				marketVertexArray[vertexIndex].overnightReplicator();</span>
 
 <span class="fc" id="L706">			unilateralCollateralValueAdjustment -= 0.5 * (periodIntegrandStart + periodIntegrandEnd) *</span>
 <span class="fc" id="L707">				(marketVertexArray[vertexIndex].anchorDate().julian() -</span>
@@ -748,12 +748,12 @@ public class ExposureGroupPath
 <span class="nc" id="L748">			double periodIntegrandStart = collateralBalance[vertexIndex - 1] *</span>
 <span class="nc" id="L749">				marketVertexArray[vertexIndex - 1].counterParty().survivalProbability() *</span>
 <span class="nc" id="L750">				marketVertexArray[vertexIndex - 1].csaSpread() *</span>
-<span class="nc" id="L751">				marketVertexArray[vertexIndex - 1].overnightNumeraire().epochalNodalScale();</span>
+<span class="nc" id="L751">				marketVertexArray[vertexIndex - 1].overnightReplicator();</span>
 
 <span class="nc" id="L753">			double periodIntegrandEnd = collateralBalance[vertexIndex] *</span>
 <span class="nc" id="L754">				marketVertexArray[vertexIndex].counterParty().survivalProbability() *</span>
 <span class="nc" id="L755">				marketVertexArray[vertexIndex].csaSpread() *</span>
-<span class="nc" id="L756">				marketVertexArray[vertexIndex].overnightNumeraire().epochalNodalScale();</span>
+<span class="nc" id="L756">				marketVertexArray[vertexIndex].overnightReplicator();</span>
 
 <span class="nc" id="L758">			periodUnilateralCollateralValueAdjustment[vertexIndex - 1] = -0.5 * (periodIntegrandStart +</span>
 <span class="nc" id="L759">				periodIntegrandEnd) * (marketVertexArray[vertexIndex].anchorDate().julian() -</span>
@@ -787,13 +787,13 @@ public class ExposureGroupPath
 <span class="nc" id="L787">				marketVertexArray[vertexIndex - 1].bank().survivalProbability() *</span>
 <span class="nc" id="L788">				marketVertexArray[vertexIndex - 1].counterParty().survivalProbability() *</span>
 <span class="nc" id="L789">				marketVertexArray[vertexIndex - 1].csaSpread() *</span>
-<span class="nc" id="L790">				marketVertexArray[vertexIndex - 1].overnightNumeraire().epochalNodalScale();</span>
+<span class="nc" id="L790">				marketVertexArray[vertexIndex - 1].overnightReplicator();</span>
 
 <span class="nc" id="L792">			double periodIntegrandEnd = collateralBalance[vertexIndex] *</span>
 <span class="nc" id="L793">				marketVertexArray[vertexIndex].bank().survivalProbability() *</span>
 <span class="nc" id="L794">				marketVertexArray[vertexIndex].counterParty().survivalProbability() *</span>
 <span class="nc" id="L795">				marketVertexArray[vertexIndex].csaSpread() *</span>
-<span class="nc" id="L796">				marketVertexArray[vertexIndex].overnightNumeraire().epochalNodalScale();</span>
+<span class="nc" id="L796">				marketVertexArray[vertexIndex].overnightReplicator();</span>
 
 <span class="nc" id="L798">			periodBilateralCollateralValueAdjustment[vertexIndex - 1] = -0.5 * (periodIntegrandStart +</span>
 <span class="nc" id="L799">				periodIntegrandEnd) * (marketVertexArray[vertexIndex].anchorDate().julian() -</span>
@@ -879,7 +879,7 @@ public class ExposureGroupPath
 <span class="fc bfc" id="L879" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 			{
 <span class="fc" id="L881">				creditExposurePV[vertexIndex] += collateralGroupCreditExposure[vertexIndex] *</span>
-<span class="fc" id="L882">					marketVertexArray[vertexIndex].overnightNumeraire().epochalNodalScale();</span>
+<span class="fc" id="L882">					marketVertexArray[vertexIndex].overnightReplicator();</span>
 			}
 		}
 
@@ -948,7 +948,7 @@ public class ExposureGroupPath
 <span class="fc bfc" id="L948" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 			{
 <span class="fc" id="L950">				debtExposurePV[vertexIndex] += collateralGroupDebtExposure[vertexIndex] *</span>
-<span class="fc" id="L951">					marketVertexArray[vertexIndex].overnightNumeraire().epochalNodalScale();</span>
+<span class="fc" id="L951">					marketVertexArray[vertexIndex].overnightReplicator();</span>
 			}
 		}
 
@@ -1017,7 +1017,7 @@ public class ExposureGroupPath
 <span class="fc bfc" id="L1017" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 			{
 <span class="fc" id="L1019">				fundingExposurePV[vertexIndex] += collateralGroupFundingExposure[vertexIndex] *</span>
-<span class="fc" id="L1020">					marketVertexArray[vertexIndex].overnightNumeraire().epochalNodalScale();</span>
+<span class="fc" id="L1020">					marketVertexArray[vertexIndex].overnightReplicator();</span>
 			}
 		}
 

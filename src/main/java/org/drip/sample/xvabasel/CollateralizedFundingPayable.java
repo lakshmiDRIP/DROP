@@ -216,7 +216,7 @@ public class CollateralizedFundingPayable {
 		);
 
 		for (int i = 0; i <= iNumStep; ++i)
-			aMV[i] = new MarketVertex (
+			aMV[i] = MarketVertex.SingleManifestMeasure (
 				adtVertex[i] = dtSpot.addMonths (6 * i),
 				Double.NaN,
 				dblOvernightNumeraireDrift,

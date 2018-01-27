@@ -284,182 +284,167 @@ import org.drip.xva.universe.*;
 			deCounterPartyRecoveryRate
 		);
 
-<span class="fc" id="L287">		MarketVertex mvInitial = new MarketVertex (</span>
+<span class="fc" id="L287">		MarketVertex mvInitial = MarketVertex.SingleManifestMeasure (</span>
 			dtSpot,
 			dblAssetNumeraireInitial,
 			dblOvernightIndexNumeraireDrift,
-			new LatentStateMarketVertex (
-				1.,
-				1.
-			),
+			1.,
 			dblCollateralSchemeNumeraireDrift,
-			new LatentStateMarketVertex (
-				1.,
-				1.
-			),
-			new EntityMarketVertex (
+			1.,
+			new MarketVertexEntity (
 				1.,
 				dblBankHazardRateInitial,
 				dblBankSeniorRecoveryRateInitial,
 				dblBankSeniorFundingNumeraireDrift,
-				new LatentStateMarketVertex (
-					1.,
-					1.
-				),
+				1.,
 				dblBankSubordinateRecoveryRateInitial,
 				dblBankSubordinateFundingNumeraireDrift,
-				new LatentStateMarketVertex (
-					1.,
-					1.
-				)
+				1.
 			),
-			new EntityMarketVertex (
+			new MarketVertexEntity (
 				1.,
 				dblCounterPartyHazardRateInitial,
 				dblCounterPartyRecoveryRateInitial,
 				dblCounterPartyFundingNumeraireDrift,
-				new LatentStateMarketVertex (
-					1.,
-					1.
-				),
+				1.,
 				Double.NaN,
 				Double.NaN,
-				null
+				Double.NaN
 			)
 		);
 
-<span class="fc" id="L331">		MarketVertex[] aMV = mvg.marketVertex (</span>
+<span class="fc" id="L316">		MarketVertex[] aMV = mvg.marketVertex (</span>
 			mvInitial,
-<span class="fc" id="L333">			Matrix.Transpose (</span>
-<span class="fc" id="L334">				SequenceGenerator.GaussianJoint (</span>
+<span class="fc" id="L318">			Matrix.Transpose (</span>
+<span class="fc" id="L319">				SequenceGenerator.GaussianJoint (</span>
 					iNumVertex,
 					aadblCorrelationMatrix
 				)
 			)
 		);
 
-<span class="fc" id="L341">		System.out.println();</span>
+<span class="fc" id="L326">		System.out.println();</span>
 
-<span class="fc" id="L343">		System.out.println (&quot;\t||--------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L328">		System.out.println (&quot;\t||--------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L345">		System.out.println (&quot;\t||          ASSET, OVERNIGHT INDEX, AND COLLATERAL NUMERAIRE          ||&quot;);</span>
+<span class="fc" id="L330">		System.out.println (&quot;\t||          ASSET, OVERNIGHT INDEX, AND COLLATERAL NUMERAIRE          ||&quot;);</span>
 
-<span class="fc" id="L347">		System.out.println (&quot;\t||--------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L332">		System.out.println (&quot;\t||--------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L349">		System.out.println (&quot;\t||    L -&gt; R:                                                         ||&quot;);</span>
+<span class="fc" id="L334">		System.out.println (&quot;\t||    L -&gt; R:                                                         ||&quot;);</span>
 
-<span class="fc" id="L351">		System.out.println (&quot;\t||            - Date                                                  ||&quot;);</span>
+<span class="fc" id="L336">		System.out.println (&quot;\t||            - Date                                                  ||&quot;);</span>
 
-<span class="fc" id="L353">		System.out.println (&quot;\t||            - Overnight Index Rate                                  ||&quot;);</span>
+<span class="fc" id="L338">		System.out.println (&quot;\t||            - Overnight Index Rate                                  ||&quot;);</span>
 
-<span class="fc" id="L355">		System.out.println (&quot;\t||            - Overnight Index Numeraire                             ||&quot;);</span>
+<span class="fc" id="L340">		System.out.println (&quot;\t||            - Overnight Index Numeraire                             ||&quot;);</span>
 
-<span class="fc" id="L357">		System.out.println (&quot;\t||            - Collateral Scheme Rate                                ||&quot;);</span>
+<span class="fc" id="L342">		System.out.println (&quot;\t||            - Collateral Scheme Rate                                ||&quot;);</span>
 
-<span class="fc" id="L359">		System.out.println (&quot;\t||            - Collateral Scheme Numeraire                           ||&quot;);</span>
+<span class="fc" id="L344">		System.out.println (&quot;\t||            - Collateral Scheme Numeraire                           ||&quot;);</span>
 
-<span class="fc" id="L361">		System.out.println (&quot;\t||--------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L346">		System.out.println (&quot;\t||--------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L363" title="All 2 branches covered.">		for (int i = 0; i &lt; aMV.length; ++i)</span>
-<span class="fc" id="L364">			System.out.println (</span>
-<span class="fc" id="L365">				&quot;\t|| &quot; + aMV[i].anchorDate() + &quot; =&gt; &quot; +</span>
-<span class="fc" id="L366">				FormatUtil.FormatDouble (aMV[i].positionManifestValue(), 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L367">				FormatUtil.FormatDouble (aMV[i].overnightRate(), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L368">				FormatUtil.FormatDouble (aMV[i].overnightNumeraire().nodal(), 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L369">				FormatUtil.FormatDouble (aMV[i].csaRate(), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L370">				FormatUtil.FormatDouble (aMV[i].csaNumeraire().nodal(), 1, 6, 1.) + &quot; ||&quot;</span>
+<span class="fc bfc" id="L348" title="All 2 branches covered.">		for (int i = 0; i &lt; aMV.length; ++i)</span>
+<span class="fc" id="L349">			System.out.println (</span>
+<span class="fc" id="L350">				&quot;\t|| &quot; + aMV[i].anchorDate() + &quot; =&gt; &quot; +</span>
+<span class="fc" id="L351">				FormatUtil.FormatDouble (aMV[i].positionManifestValue(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L352">				FormatUtil.FormatDouble (aMV[i].overnightRate(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L353">				FormatUtil.FormatDouble (aMV[i].overnightReplicator(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L354">				FormatUtil.FormatDouble (aMV[i].csaRate(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L355">				FormatUtil.FormatDouble (aMV[i].csaReplicator(), 1, 6, 1.) + &quot; ||&quot;</span>
 			);
 
-<span class="fc" id="L373">		System.out.println (&quot;\t||--------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L358">		System.out.println (&quot;\t||--------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L375">		System.out.println();</span>
+<span class="fc" id="L360">		System.out.println();</span>
 
-<span class="fc" id="L377">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L362">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L379">		System.out.println (&quot;\t||             BANK REALIZATION VERTEX =&gt; SURVIVAL, SENIOR/SUBORDINATE NODE METRICS             ||&quot;);</span>
+<span class="fc" id="L364">		System.out.println (&quot;\t||             BANK REALIZATION VERTEX =&gt; SURVIVAL, SENIOR/SUBORDINATE NODE METRICS             ||&quot;);</span>
 
-<span class="fc" id="L381">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L366">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L383">		System.out.println (&quot;\t||    L -&gt; R:                                                                                   ||&quot;);</span>
+<span class="fc" id="L368">		System.out.println (&quot;\t||    L -&gt; R:                                                                                   ||&quot;);</span>
 
-<span class="fc" id="L385">		System.out.println (&quot;\t||            - Date                                                                            ||&quot;);</span>
+<span class="fc" id="L370">		System.out.println (&quot;\t||            - Date                                                                            ||&quot;);</span>
 
-<span class="fc" id="L387">		System.out.println (&quot;\t||            - Hazard Rate                                                                     ||&quot;);</span>
+<span class="fc" id="L372">		System.out.println (&quot;\t||            - Hazard Rate                                                                     ||&quot;);</span>
 
-<span class="fc" id="L389">		System.out.println (&quot;\t||            - Survival Probability                                                            ||&quot;);</span>
+<span class="fc" id="L374">		System.out.println (&quot;\t||            - Survival Probability                                                            ||&quot;);</span>
 
-<span class="fc" id="L391">		System.out.println (&quot;\t||            - Senior Recovery Rate                                                            ||&quot;);</span>
+<span class="fc" id="L376">		System.out.println (&quot;\t||            - Senior Recovery Rate                                                            ||&quot;);</span>
 
-<span class="fc" id="L393">		System.out.println (&quot;\t||            - Senior Funding Spread                                                           ||&quot;);</span>
+<span class="fc" id="L378">		System.out.println (&quot;\t||            - Senior Funding Spread                                                           ||&quot;);</span>
 
-<span class="fc" id="L395">		System.out.println (&quot;\t||            - Senior Funding Numeraire                                                        ||&quot;);</span>
+<span class="fc" id="L380">		System.out.println (&quot;\t||            - Senior Funding Numeraire                                                        ||&quot;);</span>
 
-<span class="fc" id="L397">		System.out.println (&quot;\t||            - Subordinate Recovery Rate                                                       ||&quot;);</span>
+<span class="fc" id="L382">		System.out.println (&quot;\t||            - Subordinate Recovery Rate                                                       ||&quot;);</span>
 
-<span class="fc" id="L399">		System.out.println (&quot;\t||            - Subordinate Funding Spread                                                      ||&quot;);</span>
+<span class="fc" id="L384">		System.out.println (&quot;\t||            - Subordinate Funding Spread                                                      ||&quot;);</span>
 
-<span class="fc" id="L401">		System.out.println (&quot;\t||            - Subordinate Funding Numeraire                                                   ||&quot;);</span>
+<span class="fc" id="L386">		System.out.println (&quot;\t||            - Subordinate Funding Numeraire                                                   ||&quot;);</span>
 
-<span class="fc" id="L403">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L388">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L405" title="All 2 branches covered.">		for (int i = 0; i &lt; aMV.length; ++i) {</span>
-<span class="fc" id="L406">			EntityMarketVertex emvBank = aMV[i].bank();</span>
+<span class="fc bfc" id="L390" title="All 2 branches covered.">		for (int i = 0; i &lt; aMV.length; ++i) {</span>
+<span class="fc" id="L391">			MarketVertexEntity emvBank = aMV[i].bank();</span>
 
-<span class="fc" id="L408">			System.out.println (</span>
-<span class="fc" id="L409">				&quot;\t|| &quot; + aMV[i].anchorDate() + &quot; =&gt; &quot; +</span>
-<span class="fc" id="L410">				FormatUtil.FormatDouble (emvBank.hazardRate(), 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L411">				FormatUtil.FormatDouble (emvBank.survivalProbability(), 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L412">				FormatUtil.FormatDouble (emvBank.seniorRecoveryRate(), 1, 0, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L413">				FormatUtil.FormatDouble (emvBank.seniorFundingSpread(), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L414">				FormatUtil.FormatDouble (emvBank.seniorFundingLatentState().nodal(), 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L415">				FormatUtil.FormatDouble (emvBank.subordinateRecoveryRate(), 1, 0, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L416">				FormatUtil.FormatDouble (emvBank.subordinateFundingSpread(), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L417">				FormatUtil.FormatDouble (emvBank.subordinateFundingLatentState().nodal(), 1, 6, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L393">			System.out.println (</span>
+<span class="fc" id="L394">				&quot;\t|| &quot; + aMV[i].anchorDate() + &quot; =&gt; &quot; +</span>
+<span class="fc" id="L395">				FormatUtil.FormatDouble (emvBank.hazardRate(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L396">				FormatUtil.FormatDouble (emvBank.survivalProbability(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L397">				FormatUtil.FormatDouble (emvBank.seniorRecoveryRate(), 1, 0, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L398">				FormatUtil.FormatDouble (emvBank.seniorFundingSpread(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L399">				FormatUtil.FormatDouble (emvBank.seniorFundingReplicator(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L400">				FormatUtil.FormatDouble (emvBank.subordinateRecoveryRate(), 1, 0, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L401">				FormatUtil.FormatDouble (emvBank.subordinateFundingSpread(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L402">				FormatUtil.FormatDouble (emvBank.subordinateFundingReplicator(), 1, 6, 1.) + &quot; ||&quot;</span>
 			);
 		}
 
-<span class="fc" id="L421">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L406">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L423">		System.out.println();</span>
+<span class="fc" id="L408">		System.out.println();</span>
 
-<span class="fc" id="L425">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L410">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L427">		System.out.println (&quot;\t||         COUNTER PARTY REALIZATION VERTEX =&gt; SURVIVAL, SENIOR/SUBORDINATE NODE METRICS        ||&quot;);</span>
+<span class="fc" id="L412">		System.out.println (&quot;\t||         COUNTER PARTY REALIZATION VERTEX =&gt; SURVIVAL, SENIOR/SUBORDINATE NODE METRICS        ||&quot;);</span>
 
-<span class="fc" id="L429">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L414">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L431">		System.out.println (&quot;\t||    L -&gt; R:                                                                                   ||&quot;);</span>
+<span class="fc" id="L416">		System.out.println (&quot;\t||    L -&gt; R:                                                                                   ||&quot;);</span>
 
-<span class="fc" id="L433">		System.out.println (&quot;\t||            - Date                                                                            ||&quot;);</span>
+<span class="fc" id="L418">		System.out.println (&quot;\t||            - Date                                                                            ||&quot;);</span>
 
-<span class="fc" id="L435">		System.out.println (&quot;\t||            - Hazard Rate                                                                     ||&quot;);</span>
+<span class="fc" id="L420">		System.out.println (&quot;\t||            - Hazard Rate                                                                     ||&quot;);</span>
 
-<span class="fc" id="L437">		System.out.println (&quot;\t||            - Survival Probability                                                            ||&quot;);</span>
+<span class="fc" id="L422">		System.out.println (&quot;\t||            - Survival Probability                                                            ||&quot;);</span>
 
-<span class="fc" id="L439">		System.out.println (&quot;\t||            - Senior Recovery Rate                                                            ||&quot;);</span>
+<span class="fc" id="L424">		System.out.println (&quot;\t||            - Senior Recovery Rate                                                            ||&quot;);</span>
 
-<span class="fc" id="L441">		System.out.println (&quot;\t||            - Senior Funding Spread                                                           ||&quot;);</span>
+<span class="fc" id="L426">		System.out.println (&quot;\t||            - Senior Funding Spread                                                           ||&quot;);</span>
 
-<span class="fc" id="L443">		System.out.println (&quot;\t||            - Senior Funding Numeraire                                                        ||&quot;);</span>
+<span class="fc" id="L428">		System.out.println (&quot;\t||            - Senior Funding Numeraire                                                        ||&quot;);</span>
+
+<span class="fc" id="L430">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc bfc" id="L432" title="All 2 branches covered.">		for (int i = 0; i &lt; aMV.length; ++i) {</span>
+<span class="fc" id="L433">			MarketVertexEntity emvCounterParty = aMV[i].counterParty();</span>
+
+<span class="fc" id="L435">			System.out.println (</span>
+<span class="fc" id="L436">				&quot;\t|| &quot; + aMV[i].anchorDate() + &quot; =&gt; &quot; +</span>
+<span class="fc" id="L437">				FormatUtil.FormatDouble (emvCounterParty.hazardRate(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L438">				FormatUtil.FormatDouble (emvCounterParty.survivalProbability(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L439">				FormatUtil.FormatDouble (emvCounterParty.seniorRecoveryRate(), 1, 0, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L440">				FormatUtil.FormatDouble (emvCounterParty.seniorFundingSpread(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L441">				FormatUtil.FormatDouble (emvCounterParty.seniorFundingReplicator(), 1, 6, 1.) + &quot; ||&quot;</span>
+			);
+		}
 
 <span class="fc" id="L445">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L447" title="All 2 branches covered.">		for (int i = 0; i &lt; aMV.length; ++i) {</span>
-<span class="fc" id="L448">			EntityMarketVertex emvCounterParty = aMV[i].counterParty();</span>
-
-<span class="fc" id="L450">			System.out.println (</span>
-<span class="fc" id="L451">				&quot;\t|| &quot; + aMV[i].anchorDate() + &quot; =&gt; &quot; +</span>
-<span class="fc" id="L452">				FormatUtil.FormatDouble (emvCounterParty.hazardRate(), 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L453">				FormatUtil.FormatDouble (emvCounterParty.survivalProbability(), 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L454">				FormatUtil.FormatDouble (emvCounterParty.seniorRecoveryRate(), 1, 0, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L455">				FormatUtil.FormatDouble (emvCounterParty.seniorFundingSpread(), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L456">				FormatUtil.FormatDouble (emvCounterParty.seniorFundingLatentState().nodal(), 1, 6, 1.) + &quot; ||&quot;</span>
-			);
-		}
-
-<span class="fc" id="L460">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------||&quot;);</span>
-
-<span class="fc" id="L462">		System.out.println();</span>
-<span class="fc" id="L463">	}</span>
+<span class="fc" id="L447">		System.out.println();</span>
+<span class="fc" id="L448">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

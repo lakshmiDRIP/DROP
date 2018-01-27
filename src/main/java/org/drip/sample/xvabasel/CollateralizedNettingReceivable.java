@@ -216,7 +216,7 @@ public class CollateralizedNettingReceivable {
 		);
 
 		for (int i = 0; i <= iNumStep; ++i)
-			aNV[i] = new MarketVertex (
+			aNV[i] = MarketVertex.SingleManifestMeasure (
 				adtVertex[i] = dtSpot.addMonths (6 * i),
 				Double.NaN,
 				dblOvernightNumeraireDrift,

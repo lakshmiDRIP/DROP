@@ -521,7 +521,7 @@ public class CPGACollateralizedCorrelated {
 			AlbaneseAndersenVertex[] aHGVR = new AlbaneseAndersenVertex[iNumStep + 1];
 
 			for (int j = 0; j <= iNumStep; ++j) {
-				aMV[j] = new MarketVertex (
+				aMV[j] = MarketVertex.SingleManifestMeasure (
 					adtVertex[j] = dtSpot.addMonths (6 * j),
 					Double.NaN,
 					dblOvernightNumeraireDrift,

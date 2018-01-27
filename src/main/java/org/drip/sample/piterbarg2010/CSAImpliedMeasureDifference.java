@@ -210,9 +210,10 @@ public class CSAImpliedMeasureDifference {
 		double dblFundingSpreadMeanReversionRate = 0.05;
 		String strCurrency = "USD";
 
-		JulianDate dtSpot = DateUtil.Today().addBusDays (
-			0,
-			strCurrency
+		JulianDate dtSpot = DateUtil.CreateFromYMD (
+			2017,
+			DateUtil.DECEMBER,
+			21
 		);
 
 		double[] adblCorrelation = new double[] {

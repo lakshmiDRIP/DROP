@@ -296,89 +296,77 @@ import org.drip.xva.universe.*;
 		);
 
 <span class="fc bfc" id="L298" title="All 2 branches covered.">		for (int i = 0; i &lt;= iNumStep; ++i)</span>
-<span class="fc" id="L299">			aMV[i] = new MarketVertex (</span>
+<span class="fc" id="L299">			aMV[i] = MarketVertex.SingleManifestMeasure (</span>
 <span class="fc" id="L300">				adtVertex[i] = dtSpot.addMonths (6 * i),</span>
 				Double.NaN,
 				dblOvernightNumeraireDrift,
-				new LatentStateMarketVertex (
-<span class="fc" id="L304">					Math.exp (-0.5 * dblOvernightNumeraireDrift * iNumStep),</span>
-<span class="fc" id="L305">					Math.exp (-0.5 * dblOvernightNumeraireDrift * (iNumStep - i))</span>
-				),
+<span class="fc" id="L303">				Math.exp (-0.5 * dblOvernightNumeraireDrift * iNumStep),</span>
 				dblCSADrift,
-				new LatentStateMarketVertex (
-<span class="fc" id="L309">					Math.exp (-0.5 * dblCSADrift * iNumStep),</span>
-<span class="fc" id="L310">					Math.exp (-0.5 * dblCSADrift * (iNumStep - i))</span>
-				),
-				new EntityMarketVertex (
-<span class="fc" id="L313">					Math.exp (-0.5 * dblBankHazardRate * i),</span>
+<span class="fc" id="L305">				Math.exp (-0.5 * dblCSADrift * iNumStep),</span>
+				new MarketVertexEntity (
+<span class="fc" id="L307">					Math.exp (-0.5 * dblBankHazardRate * i),</span>
 					dblBankHazardRate,
 					dblBankRecoveryRate,
 					dblBankFundingSpread,
-					new LatentStateMarketVertex (
-<span class="fc" id="L318">						Math.exp (-0.5 * dblBankHazardRate * (1. - dblBankRecoveryRate) * iNumStep),</span>
-<span class="fc" id="L319">						Math.exp (-0.5 * dblBankHazardRate * (1. - dblBankRecoveryRate) * (iNumStep - i))</span>
-					),
+<span class="fc" id="L311">					Math.exp (-0.5 * dblBankHazardRate * (1. - dblBankRecoveryRate) * iNumStep),</span>
 					Double.NaN,
 					Double.NaN,
-					null
+					Double.NaN
 				),
-				new EntityMarketVertex (
-<span class="fc" id="L326">					Math.exp (-0.5 * dblCounterPartyHazardRate * i),</span>
+				new MarketVertexEntity (
+<span class="fc" id="L317">					Math.exp (-0.5 * dblCounterPartyHazardRate * i),</span>
 					dblCounterPartyHazardRate,
 					dblCounterPartyRecoveryRate,
 					dblCounterPartyFundingSpread,
-					new LatentStateMarketVertex (
-<span class="fc" id="L331">						Math.exp (-0.5 * dblCounterPartyHazardRate * (1. - dblCounterPartyRecoveryRate) * iNumStep),</span>
-<span class="fc" id="L332">						Math.exp (-0.5 * dblCounterPartyHazardRate * (1. - dblCounterPartyRecoveryRate) * (iNumStep - i))</span>
-					),
+<span class="fc" id="L321">					Math.exp (-0.5 * dblCounterPartyHazardRate * (1. - dblCounterPartyRecoveryRate) * iNumStep),</span>
 					Double.NaN,
 					Double.NaN,
-					null
+					Double.NaN
 				)
 			);
 
-<span class="fc" id="L340">		MarketPath mp = new MarketPath (aMV);</span>
+<span class="fc" id="L328">		MarketPath mp = new MarketPath (aMV);</span>
 
-<span class="fc bfc" id="L342" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPath; ++i) {</span>
-<span class="fc" id="L343">			JulianDate dtStart = dtSpot;</span>
-<span class="fc" id="L344">			double dblValueStart = dblTime * dblATMSwapRateStart;</span>
-<span class="fc" id="L345">			AlbaneseAndersenVertex[] aHGVR = new AlbaneseAndersenVertex[iNumStep + 1];</span>
+<span class="fc bfc" id="L330" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPath; ++i) {</span>
+<span class="fc" id="L331">			JulianDate dtStart = dtSpot;</span>
+<span class="fc" id="L332">			double dblValueStart = dblTime * dblATMSwapRateStart;</span>
+<span class="fc" id="L333">			AlbaneseAndersenVertex[] aHGVR = new AlbaneseAndersenVertex[iNumStep + 1];</span>
 
-<span class="fc bfc" id="L347" title="All 2 branches covered.">			for (int j = 0; j &lt;= iNumStep; ++j) {</span>
-<span class="fc" id="L348">				JulianDate dtEnd = adtVertex[j];</span>
-<span class="fc" id="L349">				double dblCollateralBalance = 0.;</span>
-<span class="fc" id="L350">				double dblValueEnd = aadblSwapPortfolioValueRealization[i][j];</span>
+<span class="fc bfc" id="L335" title="All 2 branches covered.">			for (int j = 0; j &lt;= iNumStep; ++j) {</span>
+<span class="fc" id="L336">				JulianDate dtEnd = adtVertex[j];</span>
+<span class="fc" id="L337">				double dblCollateralBalance = 0.;</span>
+<span class="fc" id="L338">				double dblValueEnd = aadblSwapPortfolioValueRealization[i][j];</span>
 
-<span class="fc bfc" id="L352" title="All 2 branches covered.">				if (0 != j) {</span>
-<span class="fc" id="L353">					CollateralAmountEstimator hae = new CollateralAmountEstimator (</span>
+<span class="fc bfc" id="L340" title="All 2 branches covered.">				if (0 != j) {</span>
+<span class="fc" id="L341">					CollateralAmountEstimator hae = new CollateralAmountEstimator (</span>
 						cgs,
 						cpgs,
 						new BrokenDateInterpolatorLinearT (
-<span class="fc" id="L357">							dtStart.julian(),</span>
-<span class="fc" id="L358">							dtEnd.julian(),</span>
+<span class="fc" id="L345">							dtStart.julian(),</span>
+<span class="fc" id="L346">							dtEnd.julian(),</span>
 							dblValueStart,
 							dblValueEnd
 						),
 						Double.NaN
 					);
 
-<span class="fc" id="L365">					dblCollateralBalance = hae.postingRequirement (dtEnd);</span>
+<span class="fc" id="L353">					dblCollateralBalance = hae.postingRequirement (dtEnd);</span>
 				}
 
-<span class="fc" id="L368">				aHGVR[j] = new AlbaneseAndersenVertex (</span>
+<span class="fc" id="L356">				aHGVR[j] = new AlbaneseAndersenVertex (</span>
 					adtVertex[j],
 					aadblSwapPortfolioValueRealization[i][j],
 					0.,
 					dblCollateralBalance
 				);
 
-<span class="fc" id="L375">				dtStart = dtEnd;</span>
-<span class="fc" id="L376">				dblValueStart = dblValueEnd;</span>
+<span class="fc" id="L363">				dtStart = dtEnd;</span>
+<span class="fc" id="L364">				dblValueStart = dblValueEnd;</span>
 			}
 
-<span class="fc" id="L379">			CollateralGroupPath[] aHGP = new CollateralGroupPath[] {new CollateralGroupPath (aHGVR)};</span>
+<span class="fc" id="L367">			CollateralGroupPath[] aHGP = new CollateralGroupPath[] {new CollateralGroupPath (aHGVR)};</span>
 
-<span class="fc" id="L381">			aMPEA[i] = new MonoPathExposureAdjustment (</span>
+<span class="fc" id="L369">			aMPEA[i] = new MonoPathExposureAdjustment (</span>
 				new AlbaneseAndersenNettingGroupPath[] {
 					new AlbaneseAndersenNettingGroupPath (
 						aHGP,
@@ -394,140 +382,140 @@ import org.drip.xva.universe.*;
 			);
 		}
 
-<span class="fc" id="L397">		ExposureAdjustmentAggregator eaa = new ExposureAdjustmentAggregator (aMPEA);</span>
+<span class="fc" id="L385">		ExposureAdjustmentAggregator eaa = new ExposureAdjustmentAggregator (aMPEA);</span>
 
-<span class="fc" id="L399">		ExposureAdjustmentDigest ead = eaa.digest();</span>
+<span class="fc" id="L387">		ExposureAdjustmentDigest ead = eaa.digest();</span>
 
-<span class="fc" id="L401">		System.out.println();</span>
+<span class="fc" id="L389">		System.out.println();</span>
+
+<span class="fc" id="L391">		UDTDump (</span>
+			&quot;\t|                                                                                COLLATERALIZED EXPOSURE                                                                                |&quot;,
+<span class="fc" id="L393">			eaa.anchorDates(),</span>
+<span class="fc" id="L394">			ead.collateralizedExposure()</span>
+		);
+
+<span class="fc" id="L397">		UDTDump (</span>
+			&quot;\t|                                                                               UNCOLLATERALIZED EXPOSURE                                                                               |&quot;,
+<span class="fc" id="L399">			eaa.anchorDates(),</span>
+<span class="fc" id="L400">			ead.uncollateralizedExposure()</span>
+		);
 
 <span class="fc" id="L403">		UDTDump (</span>
-			&quot;\t|                                                                                COLLATERALIZED EXPOSURE                                                                                |&quot;,
+			&quot;\t|                                                                                COLLATERALIZED EXPOSURE PV                                                                             |&quot;,
 <span class="fc" id="L405">			eaa.anchorDates(),</span>
-<span class="fc" id="L406">			ead.collateralizedExposure()</span>
+<span class="fc" id="L406">			ead.collateralizedExposurePV()</span>
 		);
 
 <span class="fc" id="L409">		UDTDump (</span>
-			&quot;\t|                                                                               UNCOLLATERALIZED EXPOSURE                                                                               |&quot;,
+			&quot;\t|                                                                               UNCOLLATERALIZED EXPOSURE PV                                                                            |&quot;,
 <span class="fc" id="L411">			eaa.anchorDates(),</span>
-<span class="fc" id="L412">			ead.uncollateralizedExposure()</span>
+<span class="fc" id="L412">			ead.uncollateralizedExposurePV()</span>
 		);
 
 <span class="fc" id="L415">		UDTDump (</span>
-			&quot;\t|                                                                                COLLATERALIZED EXPOSURE PV                                                                             |&quot;,
+			&quot;\t|                                                                            COLLATERALIZED POSITIVE EXPOSURE PV                                                                        |&quot;,
 <span class="fc" id="L417">			eaa.anchorDates(),</span>
-<span class="fc" id="L418">			ead.collateralizedExposurePV()</span>
+<span class="fc" id="L418">			ead.collateralizedPositiveExposure()</span>
 		);
 
 <span class="fc" id="L421">		UDTDump (</span>
-			&quot;\t|                                                                               UNCOLLATERALIZED EXPOSURE PV                                                                            |&quot;,
+			&quot;\t|                                                                           UNCOLLATERALIZED POSITIVE EXPOSURE PV                                                                       |&quot;,
 <span class="fc" id="L423">			eaa.anchorDates(),</span>
-<span class="fc" id="L424">			ead.uncollateralizedExposurePV()</span>
+<span class="fc" id="L424">			ead.uncollateralizedPositiveExposure()</span>
 		);
 
 <span class="fc" id="L427">		UDTDump (</span>
-			&quot;\t|                                                                            COLLATERALIZED POSITIVE EXPOSURE PV                                                                        |&quot;,
+			&quot;\t|                                                                            COLLATERALIZED NEGATIVE EXPOSURE PV                                                                        |&quot;,
 <span class="fc" id="L429">			eaa.anchorDates(),</span>
-<span class="fc" id="L430">			ead.collateralizedPositiveExposure()</span>
+<span class="fc" id="L430">			ead.collateralizedNegativeExposure()</span>
 		);
 
 <span class="fc" id="L433">		UDTDump (</span>
-			&quot;\t|                                                                           UNCOLLATERALIZED POSITIVE EXPOSURE PV                                                                       |&quot;,
-<span class="fc" id="L435">			eaa.anchorDates(),</span>
-<span class="fc" id="L436">			ead.uncollateralizedPositiveExposure()</span>
-		);
-
-<span class="fc" id="L439">		UDTDump (</span>
-			&quot;\t|                                                                            COLLATERALIZED NEGATIVE EXPOSURE PV                                                                        |&quot;,
-<span class="fc" id="L441">			eaa.anchorDates(),</span>
-<span class="fc" id="L442">			ead.collateralizedNegativeExposure()</span>
-		);
-
-<span class="fc" id="L445">		UDTDump (</span>
 			&quot;\t|                                                                           UNCOLLATERALIZED NEGATIVE EXPOSURE PV                                                                       |&quot;,
-<span class="fc" id="L447">			eaa.anchorDates(),</span>
-<span class="fc" id="L448">			ead.uncollateralizedNegativeExposure()</span>
+<span class="fc" id="L435">			eaa.anchorDates(),</span>
+<span class="fc" id="L436">			ead.uncollateralizedNegativeExposure()</span>
 		);
 
-<span class="fc" id="L451">		System.out.println();</span>
+<span class="fc" id="L439">		System.out.println();</span>
 
-<span class="fc" id="L453">		System.out.println (&quot;\t||-----------------------------------------------------||&quot;);</span>
+<span class="fc" id="L441">		System.out.println (&quot;\t||-----------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L455">		System.out.println (&quot;\t||  UCVA CVA FTDCVA DVA FCA UNIVARIATE THIN STATISTICS ||&quot;);</span>
+<span class="fc" id="L443">		System.out.println (&quot;\t||  UCVA CVA FTDCVA DVA FCA UNIVARIATE THIN STATISTICS ||&quot;);</span>
+
+<span class="fc" id="L445">		System.out.println (&quot;\t||-----------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L447">		System.out.println (&quot;\t||    L -&gt; R:                                          ||&quot;);</span>
+
+<span class="fc" id="L449">		System.out.println (&quot;\t||            - Path Average                           ||&quot;);</span>
+
+<span class="fc" id="L451">		System.out.println (&quot;\t||            - Path Maximum                           ||&quot;);</span>
+
+<span class="fc" id="L453">		System.out.println (&quot;\t||            - Path Minimum                           ||&quot;);</span>
+
+<span class="fc" id="L455">		System.out.println (&quot;\t||            - Monte Carlo Error                      ||&quot;);</span>
 
 <span class="fc" id="L457">		System.out.println (&quot;\t||-----------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L459">		System.out.println (&quot;\t||    L -&gt; R:                                          ||&quot;);</span>
-
-<span class="fc" id="L461">		System.out.println (&quot;\t||            - Path Average                           ||&quot;);</span>
-
-<span class="fc" id="L463">		System.out.println (&quot;\t||            - Path Maximum                           ||&quot;);</span>
-
-<span class="fc" id="L465">		System.out.println (&quot;\t||            - Path Minimum                           ||&quot;);</span>
-
-<span class="fc" id="L467">		System.out.println (&quot;\t||            - Monte Carlo Error                      ||&quot;);</span>
-
-<span class="fc" id="L469">		System.out.println (&quot;\t||-----------------------------------------------------||&quot;);</span>
-
-<span class="fc" id="L471">		UDTDump (</span>
+<span class="fc" id="L459">		UDTDump (</span>
 			&quot;\t||  UCVA  =&gt; &quot;,
-<span class="fc" id="L473">			ead.ucva()</span>
+<span class="fc" id="L461">			ead.ucva()</span>
 		);
 
-<span class="fc" id="L476">		UDTDump (</span>
+<span class="fc" id="L464">		UDTDump (</span>
 			&quot;\t|| FTDCVA =&gt; &quot;,
-<span class="fc" id="L478">			ead.ftdcva()</span>
+<span class="fc" id="L466">			ead.ftdcva()</span>
 		);
 
-<span class="fc" id="L481">		UDTDump (</span>
+<span class="fc" id="L469">		UDTDump (</span>
 			&quot;\t||   CVA  =&gt; &quot;,
-<span class="fc" id="L483">			ead.cva()</span>
+<span class="fc" id="L471">			ead.cva()</span>
 		);
 
-<span class="fc" id="L486">		UDTDump (</span>
+<span class="fc" id="L474">		UDTDump (</span>
 			&quot;\t||  CVACL =&gt; &quot;,
-<span class="fc" id="L488">			ead.cvacl()</span>
+<span class="fc" id="L476">			ead.cvacl()</span>
 		);
 
-<span class="fc" id="L491">		UDTDump (</span>
+<span class="fc" id="L479">		UDTDump (</span>
 			&quot;\t||   DVA  =&gt; &quot;,
-<span class="fc" id="L493">			ead.dva()</span>
+<span class="fc" id="L481">			ead.dva()</span>
 		);
 
-<span class="fc" id="L496">		UDTDump (</span>
+<span class="fc" id="L484">		UDTDump (</span>
 			&quot;\t||   FVA  =&gt; &quot;,
-<span class="fc" id="L498">			ead.fva()</span>
+<span class="fc" id="L486">			ead.fva()</span>
 		);
 
-<span class="fc" id="L501">		UDTDump (</span>
+<span class="fc" id="L489">		UDTDump (</span>
 			&quot;\t||   FDA  =&gt; &quot;,
-<span class="fc" id="L503">			ead.fda()</span>
+<span class="fc" id="L491">			ead.fda()</span>
 		);
 
-<span class="fc" id="L506">		UDTDump (</span>
+<span class="fc" id="L494">		UDTDump (</span>
 			&quot;\t||   FCA  =&gt; &quot;,
-<span class="fc" id="L508">			ead.fca()</span>
+<span class="fc" id="L496">			ead.fca()</span>
 		);
+
+<span class="fc" id="L499">		UDTDump (</span>
+			&quot;\t||   FBA  =&gt; &quot;,
+<span class="fc" id="L501">			ead.fba()</span>
+		);
+
+<span class="fc" id="L504">		UDTDump (</span>
+			&quot;\t||  SFVA  =&gt; &quot;,
+<span class="fc" id="L506">			ead.sfva()</span>
+		);
+
+<span class="fc" id="L509">		System.out.println (&quot;\t||-----------------------------------------------------||&quot;);</span>
 
 <span class="fc" id="L511">		UDTDump (</span>
-			&quot;\t||   FBA  =&gt; &quot;,
-<span class="fc" id="L513">			ead.fba()</span>
-		);
-
-<span class="fc" id="L516">		UDTDump (</span>
-			&quot;\t||  SFVA  =&gt; &quot;,
-<span class="fc" id="L518">			ead.sfva()</span>
-		);
-
-<span class="fc" id="L521">		System.out.println (&quot;\t||-----------------------------------------------------||&quot;);</span>
-
-<span class="fc" id="L523">		UDTDump (</span>
 			&quot;\t||  Total =&gt; &quot;,
-<span class="fc" id="L525">			ead.totalVA()</span>
+<span class="fc" id="L513">			ead.totalVA()</span>
 		);
 
-<span class="fc" id="L528">		System.out.println (&quot;\t||-----------------------------------------------------||&quot;);</span>
+<span class="fc" id="L516">		System.out.println (&quot;\t||-----------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L530">		System.out.println();</span>
-<span class="fc" id="L531">	}</span>
+<span class="fc" id="L518">		System.out.println();</span>
+<span class="fc" id="L519">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

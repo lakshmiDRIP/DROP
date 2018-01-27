@@ -528,7 +528,7 @@ public class UnilateralCSAUncollateralizedFundingStochastic {
 			CollateralGroupVertex[] aCGV2 = new CollateralGroupVertex[iNumStep + 1];
 
 			for (int j = 0; j <= iNumStep; ++j) {
-				aMV[j] = new MarketVertex (
+				aMV[j] = MarketVertex.SingleManifestMeasure (
 					adtVertex[j] = dtSpot.addMonths (6 * j),
 					Double.NaN,
 					dblOvernightNumeraireDrift,

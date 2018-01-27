@@ -214,20 +214,19 @@ public class EvolutionTrajectoryVertex
 <span class="nc" id="L214">			throw new java.lang.Exception</span>
 				(&quot;EvolutionTrajectoryVertex::verifyFundingConstraint =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L217">		org.drip.xva.universe.EntityMarketVertex bankMarketVertex = marketVertex.bank();</span>
+<span class="nc" id="L217">		org.drip.xva.universe.MarketVertexEntity bankMarketVertex = marketVertex.bank();</span>
 
 <span class="nc" id="L219">		double fundingConstraint = _positionGreekVertex.derivativeXVAValue() +</span>
-<span class="nc" id="L220">			bankMarketVertex.seniorFundingLatentState().nodal() *</span>
-<span class="nc" id="L221">			_replicationPortfolioVertex.bankSeniorNumeraireHoldings();</span>
+<span class="nc" id="L220">			bankMarketVertex.seniorFundingReplicator() *</span>
+<span class="nc" id="L221">				_replicationPortfolioVertex.bankSeniorNumeraireHoldings();</span>
 
-<span class="nc" id="L223">		org.drip.xva.universe.LatentStateMarketVertex bankSubordinateFundingMarketVertex =</span>
-<span class="nc" id="L224">			bankMarketVertex.subordinateFundingLatentState();</span>
+<span class="nc" id="L223">		double bankSubordinateFundingMarketVertex = bankMarketVertex.subordinateFundingReplicator();</span>
 
-<span class="nc bnc" id="L226" title="All 2 branches missed.">		if (null != bankSubordinateFundingMarketVertex)</span>
-<span class="nc" id="L227">			fundingConstraint += bankSubordinateFundingMarketVertex.nodal() *</span>
-<span class="nc" id="L228">				_replicationPortfolioVertex.bankSubordinateNumeraireHoldings();</span>
+<span class="nc bnc" id="L225" title="All 2 branches missed.">		if (org.drip.quant.common.NumberUtil.IsValid (bankSubordinateFundingMarketVertex))</span>
+<span class="nc" id="L226">			fundingConstraint += bankSubordinateFundingMarketVertex *</span>
+<span class="nc" id="L227">				_replicationPortfolioVertex.bankSubordinateNumeraireHoldings();</span>
 
-<span class="nc" id="L230">		return fundingConstraint;</span>
+<span class="nc" id="L229">		return fundingConstraint;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

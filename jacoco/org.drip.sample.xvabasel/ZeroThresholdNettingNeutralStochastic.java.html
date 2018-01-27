@@ -270,10 +270,10 @@ import org.drip.xva.universe.*;
 <span class="fc" id="L270">		double dblTime = 5.;</span>
 <span class="fc" id="L271">		double dblATMSwapRateOffsetDrift = 0.0;</span>
 <span class="fc" id="L272">		double dblATMSwapRateOffsetVolatility = 0.25;</span>
-<span class="fc" id="L273">		double dblOvernightNumeraireDrift = 0.004;</span>
+<span class="fc" id="L273">		double dblOvernightNumeraireDrift = -0.004;</span>
 <span class="fc" id="L274">		double dblOvernightNumeraireVolatility = 0.02;</span>
 <span class="fc" id="L275">		double dblOvernightNumeraireInitial = 1.;</span>
-<span class="fc" id="L276">		double dblCSADrift = 0.01;</span>
+<span class="fc" id="L276">		double dblCSADrift = -0.01;</span>
 <span class="fc" id="L277">		double dblCSAVolatility = 0.05;</span>
 <span class="fc" id="L278">		double dblCSAInitial = 1.;</span>
 <span class="fc" id="L279">		double dblBankHazardRateDrift = 0.002;</span>
@@ -536,55 +536,43 @@ import org.drip.xva.universe.*;
 <span class="fc" id="L536">					dblCollateralBalance2 = cae2.postingRequirement (dtEnd);</span>
 				}
 
-<span class="fc" id="L539">				aNV[j] = new MarketVertex (</span>
+<span class="fc" id="L539">				aNV[j] = MarketVertex.SingleManifestMeasure (</span>
 <span class="fc" id="L540">					adtVertex[j] = dtSpot.addMonths (6 * j),</span>
 					Double.NaN,
 					dblOvernightNumeraireDrift,
-					new LatentStateMarketVertex (
-						adblOvernightNumeraire[0],
-						adblOvernightNumeraire[j]
-					),
+					adblOvernightNumeraire[j],
 					dblCSADrift,
-					new LatentStateMarketVertex (
-						adblCSA[0],
-						adblCSA[j]
-					),
-					new EntityMarketVertex (
-<span class="fc" id="L553">						Math.exp (-0.5 * adblBankHazardRate[j] * j),</span>
+					adblCSA[j],
+					new MarketVertexEntity (
+<span class="fc" id="L547">						Math.exp (-0.5 * adblBankHazardRate[j] * j),</span>
 						adblBankHazardRate[j],
 						adblBankRecoveryRate[j],
 						adblBankFundingSpread[j],
-						new LatentStateMarketVertex (
-<span class="fc" id="L558">							Math.exp (-0.5 * adblBankHazardRate[j] * (1. - adblBankRecoveryRate[j]) * iNumStep),</span>
-<span class="fc" id="L559">							Math.exp (-0.5 * adblBankHazardRate[j] * (1. - adblBankRecoveryRate[j]) * (iNumStep - j))</span>
-						),
+<span class="fc" id="L551">						Math.exp (-0.5 * adblBankHazardRate[j] * (1. - adblBankRecoveryRate[j]) * iNumStep),</span>
 						Double.NaN,
 						Double.NaN,
-						null
+						Double.NaN
 					),
-					new EntityMarketVertex (
-<span class="fc" id="L566">						Math.exp (-0.5 * adblCounterPartyHazardRate[j] * j),</span>
+					new MarketVertexEntity (
+<span class="fc" id="L557">						Math.exp (-0.5 * adblCounterPartyHazardRate[j] * j),</span>
 						adblCounterPartyHazardRate[j],
 						adblCounterPartyRecoveryRate[j],
 						adblCounterPartyFundingSpread[j],
-						new LatentStateMarketVertex (
-<span class="fc" id="L571">							Math.exp (-0.5 * adblCounterPartyHazardRate[j] * (1. - adblCounterPartyRecoveryRate[j]) * iNumStep),</span>
-<span class="fc" id="L572">							Math.exp (-0.5 * adblCounterPartyHazardRate[j] * (1. - adblCounterPartyRecoveryRate[j]) * (iNumStep - j))</span>
-						),
+<span class="fc" id="L561">						Math.exp (-0.5 * adblCounterPartyHazardRate[j] * (1. - adblCounterPartyRecoveryRate[j]) * iNumStep),</span>
 						Double.NaN,
 						Double.NaN,
-						null
+						Double.NaN
 					)
 				);
 
-<span class="fc" id="L580">				aCGV1[j] = new AlbaneseAndersenVertex (</span>
+<span class="fc" id="L568">				aCGV1[j] = new AlbaneseAndersenVertex (</span>
 					adtVertex[j],
 					aadblPortfolio1Value[i][j],
 					0.,
 					dblCollateralBalance1
 				);
 
-<span class="fc" id="L587">				aCGV2[j] = new AlbaneseAndersenVertex (</span>
+<span class="fc" id="L575">				aCGV2[j] = new AlbaneseAndersenVertex (</span>
 					adtVertex[j],
 					aadblPortfolio2Value[i][j],
 					0.,
@@ -592,17 +580,17 @@ import org.drip.xva.universe.*;
 				);
 			}
 
-<span class="fc" id="L595">			MarketPath np = new MarketPath (aNV);</span>
+<span class="fc" id="L583">			MarketPath np = new MarketPath (aNV);</span>
 
-<span class="fc" id="L597">			CollateralGroupPath[] aCGP1 = new CollateralGroupPath[] {</span>
+<span class="fc" id="L585">			CollateralGroupPath[] aCGP1 = new CollateralGroupPath[] {</span>
 				new CollateralGroupPath (aCGV1)
 			};
 
-<span class="fc" id="L601">			CollateralGroupPath[] aCGP2 = new CollateralGroupPath[] {</span>
+<span class="fc" id="L589">			CollateralGroupPath[] aCGP2 = new CollateralGroupPath[] {</span>
 				new CollateralGroupPath (aCGV2)
 			};
 
-<span class="fc" id="L605">			aCPGPGround[i] = new MonoPathExposureAdjustment (</span>
+<span class="fc" id="L593">			aCPGPGround[i] = new MonoPathExposureAdjustment (</span>
 				new AlbaneseAndersenNettingGroupPath[] {
 					new AlbaneseAndersenNettingGroupPath (
 						aCGP1,
@@ -617,7 +605,7 @@ import org.drip.xva.universe.*;
 				}
 			);
 
-<span class="fc" id="L620">			aCPGPExtended[i] = new MonoPathExposureAdjustment (</span>
+<span class="fc" id="L608">			aCPGPExtended[i] = new MonoPathExposureAdjustment (</span>
 				new AlbaneseAndersenNettingGroupPath[] {
 					new AlbaneseAndersenNettingGroupPath (
 						aCGP1,
@@ -641,7 +629,7 @@ import org.drip.xva.universe.*;
 			);
 		}
 
-<span class="fc" id="L644">		return new ExposureAdjustmentAggregator[] {</span>
+<span class="fc" id="L632">		return new ExposureAdjustmentAggregator[] {</span>
 			new ExposureAdjustmentAggregator (aCPGPGround),
 			new ExposureAdjustmentAggregator (aCPGPExtended)
 		};
@@ -652,118 +640,118 @@ import org.drip.xva.universe.*;
 		final ExposureAdjustmentDigest ead)
 		throws Exception
 	{
-<span class="fc" id="L655">		System.out.println();</span>
+<span class="fc" id="L643">		System.out.println();</span>
 
-<span class="fc" id="L657">		UnivariateDiscreteThin udtUCOLVA = ead.ucolva();</span>
+<span class="fc" id="L645">		UnivariateDiscreteThin udtUCOLVA = ead.ucolva();</span>
 
-<span class="fc" id="L659">		UnivariateDiscreteThin udtFTDCOLVA = ead.ftdcolva();</span>
+<span class="fc" id="L647">		UnivariateDiscreteThin udtFTDCOLVA = ead.ftdcolva();</span>
 
-<span class="fc" id="L661">		UnivariateDiscreteThin udtUCVA = ead.ucva();</span>
+<span class="fc" id="L649">		UnivariateDiscreteThin udtUCVA = ead.ucva();</span>
 
-<span class="fc" id="L663">		UnivariateDiscreteThin udtFTDCVA = ead.ftdcva();</span>
+<span class="fc" id="L651">		UnivariateDiscreteThin udtFTDCVA = ead.ftdcva();</span>
 
-<span class="fc" id="L665">		UnivariateDiscreteThin udtCVACL = ead.cvacl();</span>
+<span class="fc" id="L653">		UnivariateDiscreteThin udtCVACL = ead.cvacl();</span>
 
-<span class="fc" id="L667">		UnivariateDiscreteThin udtCVA = ead.cva();</span>
+<span class="fc" id="L655">		UnivariateDiscreteThin udtCVA = ead.cva();</span>
 
-<span class="fc" id="L669">		UnivariateDiscreteThin udtDVA = ead.dva();</span>
+<span class="fc" id="L657">		UnivariateDiscreteThin udtDVA = ead.dva();</span>
 
-<span class="fc" id="L671">		UnivariateDiscreteThin udtFVA = ead.fva();</span>
+<span class="fc" id="L659">		UnivariateDiscreteThin udtFVA = ead.fva();</span>
 
-<span class="fc" id="L673">		UnivariateDiscreteThin udtFDA = ead.fda();</span>
+<span class="fc" id="L661">		UnivariateDiscreteThin udtFDA = ead.fda();</span>
 
-<span class="fc" id="L675">		UnivariateDiscreteThin udtFCA = ead.fca();</span>
+<span class="fc" id="L663">		UnivariateDiscreteThin udtFCA = ead.fca();</span>
 
-<span class="fc" id="L677">		UnivariateDiscreteThin udtFBA = ead.fba();</span>
+<span class="fc" id="L665">		UnivariateDiscreteThin udtFBA = ead.fba();</span>
 
-<span class="fc" id="L679">		UnivariateDiscreteThin udtSFVA = ead.sfva();</span>
+<span class="fc" id="L667">		UnivariateDiscreteThin udtSFVA = ead.sfva();</span>
 
-<span class="fc" id="L681">		System.out.println (</span>
+<span class="fc" id="L669">		System.out.println (</span>
 			&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------||&quot;
 		);
 
-<span class="fc" id="L685">		System.out.println (strHeader);</span>
+<span class="fc" id="L673">		System.out.println (strHeader);</span>
 
-<span class="fc" id="L687">		System.out.println (</span>
+<span class="fc" id="L675">		System.out.println (</span>
 			&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------||&quot;
 		);
 
-<span class="fc" id="L691">		System.out.println (</span>
+<span class="fc" id="L679">		System.out.println (</span>
 			&quot;\t||  OODLE  =&gt; UCOLVA  | FTDCOLVA |  UCVA   | FTDCVA  |  CVACL  |   CVA   |   DVA   |   FVA   |   FDA   |   FCA   |   FBA   |   SFVA  ||&quot;
 		);
 
-<span class="fc" id="L695">		System.out.println (</span>
+<span class="fc" id="L683">		System.out.println (</span>
 			&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------||&quot;
 		);
 
-<span class="fc" id="L699">		System.out.println (</span>
+<span class="fc" id="L687">		System.out.println (</span>
 			&quot;\t|| Average =&gt; &quot; +
-<span class="fc" id="L701">			FormatUtil.FormatDouble (udtUCOLVA.average(), 2, 2, 1.) + &quot;  |  &quot; +</span>
-<span class="fc" id="L702">			FormatUtil.FormatDouble (udtFTDCOLVA.average(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="fc" id="L703">			FormatUtil.FormatDouble (udtUCVA.average(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="fc" id="L704">			FormatUtil.FormatDouble (udtFTDCVA.average(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="fc" id="L705">			FormatUtil.FormatDouble (udtCVACL.average(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="fc" id="L706">			FormatUtil.FormatDouble (udtCVA.average(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="fc" id="L707">			FormatUtil.FormatDouble (udtDVA.average(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="fc" id="L708">			FormatUtil.FormatDouble (udtFVA.average(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="fc" id="L709">			FormatUtil.FormatDouble (udtFDA.average(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="fc" id="L710">			FormatUtil.FormatDouble (udtFCA.average(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="fc" id="L711">			FormatUtil.FormatDouble (udtFBA.average(), 2, 2, 1.) + &quot;  | &quot; + </span>
-<span class="fc" id="L712">			FormatUtil.FormatDouble (udtSFVA.average(), 2, 2, 1.) + &quot;  ||&quot;</span>
+<span class="fc" id="L689">			FormatUtil.FormatDouble (udtUCOLVA.average(), 2, 2, 1.) + &quot;  |  &quot; +</span>
+<span class="fc" id="L690">			FormatUtil.FormatDouble (udtFTDCOLVA.average(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="fc" id="L691">			FormatUtil.FormatDouble (udtUCVA.average(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="fc" id="L692">			FormatUtil.FormatDouble (udtFTDCVA.average(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="fc" id="L693">			FormatUtil.FormatDouble (udtCVACL.average(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="fc" id="L694">			FormatUtil.FormatDouble (udtCVA.average(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="fc" id="L695">			FormatUtil.FormatDouble (udtDVA.average(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="fc" id="L696">			FormatUtil.FormatDouble (udtFVA.average(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="fc" id="L697">			FormatUtil.FormatDouble (udtFDA.average(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="fc" id="L698">			FormatUtil.FormatDouble (udtFCA.average(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="fc" id="L699">			FormatUtil.FormatDouble (udtFBA.average(), 2, 2, 1.) + &quot;  | &quot; + </span>
+<span class="fc" id="L700">			FormatUtil.FormatDouble (udtSFVA.average(), 2, 2, 1.) + &quot;  ||&quot;</span>
 		);
 
-<span class="fc" id="L715">		System.out.println (</span>
+<span class="fc" id="L703">		System.out.println (</span>
 			&quot;\t|| Minimum =&gt; &quot; +
-<span class="fc" id="L717">			FormatUtil.FormatDouble (udtUCOLVA.minimum(), 2, 2, 1.) + &quot;  |  &quot; +</span>
-<span class="fc" id="L718">			FormatUtil.FormatDouble (udtFTDCOLVA.minimum(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="fc" id="L719">			FormatUtil.FormatDouble (udtUCVA.minimum(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="fc" id="L720">			FormatUtil.FormatDouble (udtFTDCVA.minimum(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="fc" id="L721">			FormatUtil.FormatDouble (udtCVACL.minimum(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="fc" id="L722">			FormatUtil.FormatDouble (udtCVA.minimum(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="fc" id="L723">			FormatUtil.FormatDouble (udtDVA.minimum(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="fc" id="L724">			FormatUtil.FormatDouble (udtFVA.minimum(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="fc" id="L725">			FormatUtil.FormatDouble (udtFDA.minimum(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="fc" id="L726">			FormatUtil.FormatDouble (udtFCA.minimum(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="fc" id="L727">			FormatUtil.FormatDouble (udtFBA.minimum(), 2, 2, 1.) + &quot;  | &quot; + </span>
-<span class="fc" id="L728">			FormatUtil.FormatDouble (udtSFVA.minimum(), 2, 2, 1.) + &quot;  ||&quot;</span>
+<span class="fc" id="L705">			FormatUtil.FormatDouble (udtUCOLVA.minimum(), 2, 2, 1.) + &quot;  |  &quot; +</span>
+<span class="fc" id="L706">			FormatUtil.FormatDouble (udtFTDCOLVA.minimum(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="fc" id="L707">			FormatUtil.FormatDouble (udtUCVA.minimum(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="fc" id="L708">			FormatUtil.FormatDouble (udtFTDCVA.minimum(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="fc" id="L709">			FormatUtil.FormatDouble (udtCVACL.minimum(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="fc" id="L710">			FormatUtil.FormatDouble (udtCVA.minimum(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="fc" id="L711">			FormatUtil.FormatDouble (udtDVA.minimum(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="fc" id="L712">			FormatUtil.FormatDouble (udtFVA.minimum(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="fc" id="L713">			FormatUtil.FormatDouble (udtFDA.minimum(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="fc" id="L714">			FormatUtil.FormatDouble (udtFCA.minimum(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="fc" id="L715">			FormatUtil.FormatDouble (udtFBA.minimum(), 2, 2, 1.) + &quot;  | &quot; + </span>
+<span class="fc" id="L716">			FormatUtil.FormatDouble (udtSFVA.minimum(), 2, 2, 1.) + &quot;  ||&quot;</span>
 		);
 
-<span class="fc" id="L731">		System.out.println (</span>
+<span class="fc" id="L719">		System.out.println (</span>
 			&quot;\t|| Maximum =&gt; &quot; +
-<span class="fc" id="L733">			FormatUtil.FormatDouble (udtUCOLVA.maximum(), 2, 2, 1.) + &quot;  |  &quot; +</span>
-<span class="fc" id="L734">			FormatUtil.FormatDouble (udtFTDCOLVA.maximum(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="fc" id="L735">			FormatUtil.FormatDouble (udtUCVA.maximum(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="fc" id="L736">			FormatUtil.FormatDouble (udtFTDCVA.maximum(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="fc" id="L737">			FormatUtil.FormatDouble (udtCVACL.maximum(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="fc" id="L738">			FormatUtil.FormatDouble (udtCVA.maximum(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="fc" id="L739">			FormatUtil.FormatDouble (udtDVA.maximum(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="fc" id="L740">			FormatUtil.FormatDouble (udtFVA.maximum(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="fc" id="L741">			FormatUtil.FormatDouble (udtFDA.maximum(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="fc" id="L742">			FormatUtil.FormatDouble (udtFCA.maximum(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="fc" id="L743">			FormatUtil.FormatDouble (udtFBA.maximum(), 2, 2, 1.) + &quot;  | &quot; + </span>
-<span class="fc" id="L744">			FormatUtil.FormatDouble (udtSFVA.maximum(), 2, 2, 1.) + &quot;  ||&quot;</span>
+<span class="fc" id="L721">			FormatUtil.FormatDouble (udtUCOLVA.maximum(), 2, 2, 1.) + &quot;  |  &quot; +</span>
+<span class="fc" id="L722">			FormatUtil.FormatDouble (udtFTDCOLVA.maximum(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="fc" id="L723">			FormatUtil.FormatDouble (udtUCVA.maximum(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="fc" id="L724">			FormatUtil.FormatDouble (udtFTDCVA.maximum(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="fc" id="L725">			FormatUtil.FormatDouble (udtCVACL.maximum(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="fc" id="L726">			FormatUtil.FormatDouble (udtCVA.maximum(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="fc" id="L727">			FormatUtil.FormatDouble (udtDVA.maximum(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="fc" id="L728">			FormatUtil.FormatDouble (udtFVA.maximum(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="fc" id="L729">			FormatUtil.FormatDouble (udtFDA.maximum(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="fc" id="L730">			FormatUtil.FormatDouble (udtFCA.maximum(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="fc" id="L731">			FormatUtil.FormatDouble (udtFBA.maximum(), 2, 2, 1.) + &quot;  | &quot; + </span>
+<span class="fc" id="L732">			FormatUtil.FormatDouble (udtSFVA.maximum(), 2, 2, 1.) + &quot;  ||&quot;</span>
 		);
 
-<span class="fc" id="L747">		System.out.println (</span>
+<span class="fc" id="L735">		System.out.println (</span>
 			&quot;\t||  Error  =&gt; &quot; +
-<span class="fc" id="L749">			FormatUtil.FormatDouble (udtUCOLVA.error(), 2, 2, 1.) + &quot;  |  &quot; +</span>
-<span class="fc" id="L750">			FormatUtil.FormatDouble (udtFTDCOLVA.error(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="fc" id="L751">			FormatUtil.FormatDouble (udtUCVA.error(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="fc" id="L752">			FormatUtil.FormatDouble (udtFTDCVA.error(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="fc" id="L753">			FormatUtil.FormatDouble (udtCVACL.error(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="fc" id="L754">			FormatUtil.FormatDouble (udtCVA.error(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="fc" id="L755">			FormatUtil.FormatDouble (udtDVA.error(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="fc" id="L756">			FormatUtil.FormatDouble (udtFVA.error(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="fc" id="L757">			FormatUtil.FormatDouble (udtFDA.error(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="fc" id="L758">			FormatUtil.FormatDouble (udtFCA.error(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="fc" id="L759">			FormatUtil.FormatDouble (udtFBA.error(), 2, 2, 1.) + &quot;  | &quot; + </span>
-<span class="fc" id="L760">			FormatUtil.FormatDouble (udtSFVA.error(), 2, 2, 1.) + &quot;  ||&quot;</span>
+<span class="fc" id="L737">			FormatUtil.FormatDouble (udtUCOLVA.error(), 2, 2, 1.) + &quot;  |  &quot; +</span>
+<span class="fc" id="L738">			FormatUtil.FormatDouble (udtFTDCOLVA.error(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="fc" id="L739">			FormatUtil.FormatDouble (udtUCVA.error(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="fc" id="L740">			FormatUtil.FormatDouble (udtFTDCVA.error(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="fc" id="L741">			FormatUtil.FormatDouble (udtCVACL.error(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="fc" id="L742">			FormatUtil.FormatDouble (udtCVA.error(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="fc" id="L743">			FormatUtil.FormatDouble (udtDVA.error(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="fc" id="L744">			FormatUtil.FormatDouble (udtFVA.error(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="fc" id="L745">			FormatUtil.FormatDouble (udtFDA.error(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="fc" id="L746">			FormatUtil.FormatDouble (udtFCA.error(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="fc" id="L747">			FormatUtil.FormatDouble (udtFBA.error(), 2, 2, 1.) + &quot;  | &quot; + </span>
+<span class="fc" id="L748">			FormatUtil.FormatDouble (udtSFVA.error(), 2, 2, 1.) + &quot;  ||&quot;</span>
 		);
 
-<span class="fc" id="L763">		System.out.println (</span>
+<span class="fc" id="L751">		System.out.println (</span>
 			&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------||&quot;
 		);
-<span class="fc" id="L766">	}</span>
+<span class="fc" id="L754">	}</span>
 
 	private static final void CPGDDiffDump (
 		final String strHeader,
@@ -771,46 +759,46 @@ import org.drip.xva.universe.*;
 		final ExposureAdjustmentDigest eadExpanded)
 		throws Exception
 	{
-<span class="fc" id="L774">		System.out.println();</span>
+<span class="fc" id="L762">		System.out.println();</span>
 
-<span class="fc" id="L776">		System.out.println (</span>
+<span class="fc" id="L764">		System.out.println (</span>
 			&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------||&quot;
 		);
 
-<span class="fc" id="L780">		System.out.println (strHeader);</span>
+<span class="fc" id="L768">		System.out.println (strHeader);</span>
 
-<span class="fc" id="L782">		System.out.println (</span>
+<span class="fc" id="L770">		System.out.println (</span>
 			&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------||&quot;
 		);
 
-<span class="fc" id="L786">		System.out.println (</span>
+<span class="fc" id="L774">		System.out.println (</span>
 			&quot;\t||  OODLE  =&gt; UCOLVA  | FTDCOLVA |  UCVA   | FTDCVA  |  CVACL  |   CVA   |   DVA   |   FVA   |   FDA   |   FCA   |   FBA   |   SFVA  ||&quot;
 		);
 
-<span class="fc" id="L790">		System.out.println (</span>
+<span class="fc" id="L778">		System.out.println (</span>
 			&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------||&quot;
 		);
 
-<span class="fc" id="L794">		System.out.println (</span>
+<span class="fc" id="L782">		System.out.println (</span>
 			&quot;\t|| Average =&gt; &quot; +
-<span class="fc" id="L796">			FormatUtil.FormatDouble (eadExpanded.ucolva().average() - eadGround.ucolva().average(), 3, 1, 10000.) + &quot;  |  &quot; +</span>
-<span class="fc" id="L797">			FormatUtil.FormatDouble (eadExpanded.ftdcolva().average() - eadGround.ftdcolva().average(), 3, 1, 10000.) + &quot;  | &quot; +</span>
-<span class="fc" id="L798">			FormatUtil.FormatDouble (eadExpanded.ucva().average() - eadGround.ucva().average(), 3, 1, 10000.) + &quot;  | &quot; +</span>
-<span class="fc" id="L799">			FormatUtil.FormatDouble (eadExpanded.ftdcva().average() - eadGround.ftdcva().average(), 3, 1, 10000.) + &quot;  | &quot; +</span>
-<span class="fc" id="L800">			FormatUtil.FormatDouble (eadExpanded.cvacl().average() - eadGround.cvacl().average(), 3, 1, 10000.) + &quot;  | &quot; +</span>
-<span class="fc" id="L801">			FormatUtil.FormatDouble (eadExpanded.cva().average() - eadGround.cva().average(), 3, 1, 10000.) + &quot;  | &quot; +</span>
-<span class="fc" id="L802">			FormatUtil.FormatDouble (eadExpanded.dva().average() - eadGround.dva().average(), 3, 1, 10000.) + &quot;  | &quot; +</span>
-<span class="fc" id="L803">			FormatUtil.FormatDouble (eadExpanded.fva().average() - eadGround.fva().average(), 3, 1, 10000.) + &quot;  | &quot; +</span>
-<span class="fc" id="L804">			FormatUtil.FormatDouble (eadExpanded.fda().average() - eadGround.fda().average(), 3, 1, 10000.) + &quot;  | &quot; +</span>
-<span class="fc" id="L805">			FormatUtil.FormatDouble (eadExpanded.fca().average() - eadGround.fca().average(), 3, 1, 10000.) + &quot;  | &quot; +</span>
-<span class="fc" id="L806">			FormatUtil.FormatDouble (eadExpanded.fba().average() - eadGround.fba().average(), 3, 1, 10000.) + &quot;  | &quot; + </span>
-<span class="fc" id="L807">			FormatUtil.FormatDouble (eadExpanded.sfva().average() - eadGround.sfva().average(), 3, 1, 10000.) + &quot;  ||&quot;</span>
+<span class="fc" id="L784">			FormatUtil.FormatDouble (eadExpanded.ucolva().average() - eadGround.ucolva().average(), 3, 1, 10000.) + &quot;  |  &quot; +</span>
+<span class="fc" id="L785">			FormatUtil.FormatDouble (eadExpanded.ftdcolva().average() - eadGround.ftdcolva().average(), 3, 1, 10000.) + &quot;  | &quot; +</span>
+<span class="fc" id="L786">			FormatUtil.FormatDouble (eadExpanded.ucva().average() - eadGround.ucva().average(), 3, 1, 10000.) + &quot;  | &quot; +</span>
+<span class="fc" id="L787">			FormatUtil.FormatDouble (eadExpanded.ftdcva().average() - eadGround.ftdcva().average(), 3, 1, 10000.) + &quot;  | &quot; +</span>
+<span class="fc" id="L788">			FormatUtil.FormatDouble (eadExpanded.cvacl().average() - eadGround.cvacl().average(), 3, 1, 10000.) + &quot;  | &quot; +</span>
+<span class="fc" id="L789">			FormatUtil.FormatDouble (eadExpanded.cva().average() - eadGround.cva().average(), 3, 1, 10000.) + &quot;  | &quot; +</span>
+<span class="fc" id="L790">			FormatUtil.FormatDouble (eadExpanded.dva().average() - eadGround.dva().average(), 3, 1, 10000.) + &quot;  | &quot; +</span>
+<span class="fc" id="L791">			FormatUtil.FormatDouble (eadExpanded.fva().average() - eadGround.fva().average(), 3, 1, 10000.) + &quot;  | &quot; +</span>
+<span class="fc" id="L792">			FormatUtil.FormatDouble (eadExpanded.fda().average() - eadGround.fda().average(), 3, 1, 10000.) + &quot;  | &quot; +</span>
+<span class="fc" id="L793">			FormatUtil.FormatDouble (eadExpanded.fca().average() - eadGround.fca().average(), 3, 1, 10000.) + &quot;  | &quot; +</span>
+<span class="fc" id="L794">			FormatUtil.FormatDouble (eadExpanded.fba().average() - eadGround.fba().average(), 3, 1, 10000.) + &quot;  | &quot; + </span>
+<span class="fc" id="L795">			FormatUtil.FormatDouble (eadExpanded.sfva().average() - eadGround.sfva().average(), 3, 1, 10000.) + &quot;  ||&quot;</span>
 		);
 
-<span class="fc" id="L810">		System.out.println (</span>
+<span class="fc" id="L798">		System.out.println (</span>
 			&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------||&quot;
 		);
-<span class="fc" id="L813">	}</span>
+<span class="fc" id="L801">	}</span>
 
 	private static final void BaselAccountingMetrics (
 		final String strHeader,
@@ -818,94 +806,94 @@ import org.drip.xva.universe.*;
 		final ExposureAdjustmentAggregator cpgaExpanded)
 		throws Exception
 	{
-<span class="fc" id="L821">		OTCAccountingModus oasFCAFBA = new OTCAccountingModusFCAFBA (cpgaGround);</span>
+<span class="fc" id="L809">		OTCAccountingModus oasFCAFBA = new OTCAccountingModusFCAFBA (cpgaGround);</span>
 
-<span class="fc" id="L823">		OTCAccountingModus oasFVAFDA = new OTCAccountingModusFVAFDA (cpgaGround);</span>
+<span class="fc" id="L811">		OTCAccountingModus oasFVAFDA = new OTCAccountingModusFVAFDA (cpgaGround);</span>
 
-<span class="fc" id="L825">		OTCAccountingPolicy oapFCAFBA = oasFCAFBA.feePolicy (cpgaExpanded);</span>
+<span class="fc" id="L813">		OTCAccountingPolicy oapFCAFBA = oasFCAFBA.feePolicy (cpgaExpanded);</span>
 
-<span class="fc" id="L827">		OTCAccountingPolicy oapFVAFDA = oasFVAFDA.feePolicy (cpgaExpanded);</span>
+<span class="fc" id="L815">		OTCAccountingPolicy oapFVAFDA = oasFVAFDA.feePolicy (cpgaExpanded);</span>
 
-<span class="fc" id="L829">		System.out.println();</span>
+<span class="fc" id="L817">		System.out.println();</span>
 
-<span class="fc" id="L831">		System.out.println (</span>
+<span class="fc" id="L819">		System.out.println (</span>
 			&quot;\t||---------------------------------------------------------------------||&quot;
 		);
 
-<span class="fc" id="L835">		System.out.println (strHeader);</span>
+<span class="fc" id="L823">		System.out.println (strHeader);</span>
 
-<span class="fc" id="L837">		System.out.println (</span>
+<span class="fc" id="L825">		System.out.println (</span>
 			&quot;\t||---------------------------------------------------------------------||&quot;
 		);
 
-<span class="fc" id="L841">		System.out.println (</span>
+<span class="fc" id="L829">		System.out.println (</span>
 			&quot;\t|| L -&gt; R:                                                             ||&quot;
 		);
 
-<span class="fc" id="L845">		System.out.println (</span>
+<span class="fc" id="L833">		System.out.println (</span>
 			&quot;\t||         - Accounting Type (FCA/FBA vs. FVA/FDA)                     ||&quot;
 		);
 
-<span class="fc" id="L849">		System.out.println (</span>
+<span class="fc" id="L837">		System.out.println (</span>
 			&quot;\t||         - Contra Asset Adjustment                                   ||&quot;
 		);
 
-<span class="fc" id="L853">		System.out.println (</span>
+<span class="fc" id="L841">		System.out.println (</span>
 			&quot;\t||         - Contra Liability Adjustment                               ||&quot;
 		);
 
-<span class="fc" id="L857">		System.out.println (</span>
+<span class="fc" id="L845">		System.out.println (</span>
 			&quot;\t||         - FTP (Funding Transfer Pricing) (bp)                       ||&quot;
 		);
 
-<span class="fc" id="L861">		System.out.println (</span>
+<span class="fc" id="L849">		System.out.println (</span>
 			&quot;\t||         - CET1 (Common Equity Tier I) Change (bp)                   ||&quot;
 		);
 
-<span class="fc" id="L865">		System.out.println (</span>
+<span class="fc" id="L853">		System.out.println (</span>
 			&quot;\t||         - CL (Contra Liability) Change (bp)                         ||&quot;
 		);
 
-<span class="fc" id="L869">		System.out.println (</span>
+<span class="fc" id="L857">		System.out.println (</span>
 			&quot;\t||         - PFV (Porfolio Value) Change (Income) (bp)                 ||&quot;
 		);
 
-<span class="fc" id="L873">		System.out.println (</span>
+<span class="fc" id="L861">		System.out.println (</span>
 			&quot;\t||---------------------------------------------------------------------||&quot;
 		);
 
-<span class="fc" id="L877">		System.out.println (&quot;\t|| FCA/FBA Accounting =&gt; &quot; +</span>
-<span class="fc" id="L878">			FormatUtil.FormatDouble (oasFCAFBA.contraAssetAdjustment(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L879">			FormatUtil.FormatDouble (oasFCAFBA.contraLiabilityAdjustment(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L880">			FormatUtil.FormatDouble (oapFCAFBA.fundingTransferPricing(), 3, 0, 10000.) + &quot; | &quot; +</span>
-<span class="fc" id="L881">			FormatUtil.FormatDouble (oapFCAFBA.cet1Change(), 3, 0, 10000.) + &quot; | &quot; +</span>
-<span class="fc" id="L882">			FormatUtil.FormatDouble (oapFCAFBA.contraLiabilityChange(), 3, 0, 10000.) + &quot; | &quot; +</span>
-<span class="fc" id="L883">			FormatUtil.FormatDouble (oapFCAFBA.portfolioValueChange(), 3, 0, 10000.) + &quot; || &quot;</span>
+<span class="fc" id="L865">		System.out.println (&quot;\t|| FCA/FBA Accounting =&gt; &quot; +</span>
+<span class="fc" id="L866">			FormatUtil.FormatDouble (oasFCAFBA.contraAssetAdjustment(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L867">			FormatUtil.FormatDouble (oasFCAFBA.contraLiabilityAdjustment(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L868">			FormatUtil.FormatDouble (oapFCAFBA.fundingTransferPricing(), 3, 0, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L869">			FormatUtil.FormatDouble (oapFCAFBA.cet1Change(), 3, 0, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L870">			FormatUtil.FormatDouble (oapFCAFBA.contraLiabilityChange(), 3, 0, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L871">			FormatUtil.FormatDouble (oapFCAFBA.portfolioValueChange(), 3, 0, 10000.) + &quot; || &quot;</span>
 		);
 
-<span class="fc" id="L886">		System.out.println (&quot;\t|| FVA/FDA Accounting =&gt; &quot; +</span>
-<span class="fc" id="L887">			FormatUtil.FormatDouble (oasFVAFDA.contraAssetAdjustment(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L888">			FormatUtil.FormatDouble (oasFVAFDA.contraLiabilityAdjustment(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L889">			FormatUtil.FormatDouble (oapFVAFDA.fundingTransferPricing(), 3, 0, 10000.) + &quot; | &quot; +</span>
-<span class="fc" id="L890">			FormatUtil.FormatDouble (oapFVAFDA.cet1Change(), 3, 0, 10000.) + &quot; | &quot; +</span>
-<span class="fc" id="L891">			FormatUtil.FormatDouble (oapFVAFDA.contraLiabilityChange(), 3, 0, 10000.) + &quot; | &quot; +</span>
-<span class="fc" id="L892">			FormatUtil.FormatDouble (oapFVAFDA.portfolioValueChange(), 3, 0, 10000.) + &quot; || &quot;</span>
+<span class="fc" id="L874">		System.out.println (&quot;\t|| FVA/FDA Accounting =&gt; &quot; +</span>
+<span class="fc" id="L875">			FormatUtil.FormatDouble (oasFVAFDA.contraAssetAdjustment(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L876">			FormatUtil.FormatDouble (oasFVAFDA.contraLiabilityAdjustment(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L877">			FormatUtil.FormatDouble (oapFVAFDA.fundingTransferPricing(), 3, 0, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L878">			FormatUtil.FormatDouble (oapFVAFDA.cet1Change(), 3, 0, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L879">			FormatUtil.FormatDouble (oapFVAFDA.contraLiabilityChange(), 3, 0, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L880">			FormatUtil.FormatDouble (oapFVAFDA.portfolioValueChange(), 3, 0, 10000.) + &quot; || &quot;</span>
 		);
 
-<span class="fc" id="L895">		System.out.println (</span>
+<span class="fc" id="L883">		System.out.println (</span>
 			&quot;\t||---------------------------------------------------------------------||&quot;
 		);
 
-<span class="fc" id="L899">		System.out.println();</span>
-<span class="fc" id="L900">	}</span>
+<span class="fc" id="L887">		System.out.println();</span>
+<span class="fc" id="L888">	}</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="fc" id="L906">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L894">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L908">		ExposureAdjustmentAggregator[] aCPGA = Mix (</span>
+<span class="fc" id="L896">		ExposureAdjustmentAggregator[] aCPGA = Mix (</span>
 			5.,
 			0.,
 			100.,
@@ -914,34 +902,34 @@ import org.drip.xva.universe.*;
 			1.
 		);
 
-<span class="fc" id="L917">		ExposureAdjustmentAggregator cpgaGround = aCPGA[0];</span>
-<span class="fc" id="L918">		ExposureAdjustmentAggregator cpgaExtended = aCPGA[1];</span>
+<span class="fc" id="L905">		ExposureAdjustmentAggregator cpgaGround = aCPGA[0];</span>
+<span class="fc" id="L906">		ExposureAdjustmentAggregator cpgaExtended = aCPGA[1];</span>
 
-<span class="fc" id="L920">		ExposureAdjustmentDigest cpgdGround = cpgaGround.digest();</span>
+<span class="fc" id="L908">		ExposureAdjustmentDigest cpgdGround = cpgaGround.digest();</span>
 
-<span class="fc" id="L922">		ExposureAdjustmentDigest cpgdExtended = cpgaExtended.digest();</span>
+<span class="fc" id="L910">		ExposureAdjustmentDigest cpgdExtended = cpgaExtended.digest();</span>
 
-<span class="fc" id="L924">		CPGDDump (</span>
+<span class="fc" id="L912">		CPGDDump (</span>
 			&quot;\t||                                                  GROUND BOOK ADJUSTMENT METRICS                                                   ||&quot;,
 			cpgdGround
 		);
 
-<span class="fc" id="L929">		CPGDDump (</span>
+<span class="fc" id="L917">		CPGDDump (</span>
 			&quot;\t||                                                 EXTENDED BOOK ADJUSTMENT METRICS                                                  ||&quot;,
 			cpgdExtended
 		);
 
-<span class="fc" id="L934">		CPGDDiffDump (</span>
+<span class="fc" id="L922">		CPGDDiffDump (</span>
 			&quot;\t||                                             TRADE INCREMENT ADJUSTMENT METRICS (bp)                                               ||&quot;,
 			cpgdGround,
 			cpgdExtended
 		);
 
-<span class="fc" id="L940">		BaselAccountingMetrics (</span>
+<span class="fc" id="L928">		BaselAccountingMetrics (</span>
 			&quot;\t||           ALBANESE &amp; ANDERSEN (2015) BCBS OTC ACCOUNTING            ||&quot;,
 			cpgaGround,
 			cpgaExtended
 		);
-<span class="fc" id="L945">	}</span>
+<span class="fc" id="L933">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

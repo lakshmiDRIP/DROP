@@ -218,17 +218,16 @@ public class ReplicationPortfolioVertex
 <span class="nc" id="L218">			throw new java.lang.Exception</span>
 				(&quot;ReplicationPortfolioVertex::bankPreDefaultPositionValue =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L221">		org.drip.xva.universe.EntityMarketVertex bankMarketVertex = marketVertex.bank();</span>
+<span class="nc" id="L221">		org.drip.xva.universe.MarketVertexEntity bankMarketVertex = marketVertex.bank();</span>
 
-<span class="nc" id="L223">		double value = -1. * bankMarketVertex.seniorFundingLatentState().nodal() * _bankSeniorNumeraireHoldings;</span>
+<span class="nc" id="L223">		double value = -1. * bankMarketVertex.seniorFundingReplicator() * _bankSeniorNumeraireHoldings;</span>
 
-<span class="nc" id="L225">		org.drip.xva.universe.LatentStateMarketVertex bankSubordinateFundingMarketVertex =</span>
-<span class="nc" id="L226">			bankMarketVertex.subordinateFundingLatentState();</span>
+<span class="nc" id="L225">		double bankSubordinateFundingMarketVertex = bankMarketVertex.subordinateFundingReplicator();</span>
 
-<span class="nc bnc" id="L228" title="All 2 branches missed.">		if (null != bankSubordinateFundingMarketVertex)</span>
-<span class="nc" id="L229">			value -= bankSubordinateFundingMarketVertex.nodal() * _bankSubordinateNumeraireHoldings;</span>
+<span class="nc bnc" id="L227" title="All 2 branches missed.">		if (org.drip.quant.common.NumberUtil.IsValid (bankSubordinateFundingMarketVertex))</span>
+<span class="nc" id="L228">			value -= bankSubordinateFundingMarketVertex * _bankSubordinateNumeraireHoldings;</span>
 
-<span class="nc" id="L231">		return value;</span>
+<span class="nc" id="L230">		return value;</span>
 	}
 
 	/**
@@ -245,23 +244,22 @@ public class ReplicationPortfolioVertex
 		final org.drip.xva.universe.MarketVertex marketVertex)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L248" title="All 2 branches missed.">		if (null == marketVertex)</span>
-<span class="nc" id="L249">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L247" title="All 2 branches missed.">		if (null == marketVertex)</span>
+<span class="nc" id="L248">			throw new java.lang.Exception</span>
 				(&quot;ReplicationPortfolioVertex::bankPostDefaultPositionValue =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L252">		org.drip.xva.universe.EntityMarketVertex bankMarketVertex = marketVertex.bank();</span>
+<span class="nc" id="L251">		org.drip.xva.universe.MarketVertexEntity bankMarketVertex = marketVertex.bank();</span>
 
-<span class="nc" id="L254">		double value = bankMarketVertex.seniorFundingLatentState().nodal() * _bankSeniorNumeraireHoldings *</span>
-<span class="nc" id="L255">			bankMarketVertex.seniorRecoveryRate();</span>
+<span class="nc" id="L253">		double value = bankMarketVertex.seniorFundingReplicator() * _bankSeniorNumeraireHoldings *</span>
+<span class="nc" id="L254">			bankMarketVertex.seniorRecoveryRate();</span>
 
-<span class="nc" id="L257">		org.drip.xva.universe.LatentStateMarketVertex bankSubordinateFundingMarketVertex =</span>
-<span class="nc" id="L258">			bankMarketVertex.subordinateFundingLatentState();</span>
+<span class="nc" id="L256">		double bankSubordinateFundingMarketVertex = bankMarketVertex.subordinateFundingReplicator();</span>
 
-<span class="nc bnc" id="L260" title="All 2 branches missed.">		if (null != bankSubordinateFundingMarketVertex)</span>
-<span class="nc" id="L261">			value -= bankSubordinateFundingMarketVertex.nodal() * _bankSubordinateNumeraireHoldings *</span>
-<span class="nc" id="L262">				bankMarketVertex.subordinateRecoveryRate();</span>
+<span class="nc bnc" id="L258" title="All 2 branches missed.">		if (org.drip.quant.common.NumberUtil.IsValid (bankSubordinateFundingMarketVertex))</span>
+<span class="nc" id="L259">			value -= bankSubordinateFundingMarketVertex * _bankSubordinateNumeraireHoldings *</span>
+<span class="nc" id="L260">				bankMarketVertex.subordinateRecoveryRate();</span>
 
-<span class="nc" id="L264">		return value;</span>
+<span class="nc" id="L262">		return value;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

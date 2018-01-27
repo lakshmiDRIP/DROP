@@ -420,7 +420,7 @@ public class CorrelatedNumeraireXVAExplain {
 			deCounterPartyRecoveryRate
 		);
 
-		MarketVertex mvInitial = new MarketVertex (
+		MarketVertex mvInitial = MarketVertex.SingleManifestMeasure (
 			dtSpot,
 			dblAssetNumeraireInitial,
 			dblOvernightIndexNumeraireDrift,
