@@ -143,7 +143,7 @@ public class MarketVertexEntity
 	{
 		try
 		{
-			Senior (
+			return Senior (
 				timeWidth,
 				hazardRate,
 				seniorRecoveryRate,

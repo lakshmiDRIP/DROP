@@ -141,11 +141,7 @@ public class MarketVertexGenerator
 	private double[] _ycfWidth = null;
 	private int[] _eventDateArray = null;
 	private org.drip.xva.universe.TradeablesContainer _tradeablesContainer = null;
-	private org.drip.measure.process.DiffusionEvolver _bankHazardRateEvolver = null;
-	private org.drip.measure.process.DiffusionEvolver _bankSeniorRecoveryRateEvolver = null;
-	private org.drip.measure.process.DiffusionEvolver _counterPartyRecoveryRateEvolver = null;
-	private org.drip.measure.process.DiffusionEvolver _bankSubordinateRecoveryRateEvolver = null;
-	private org.drip.measure.process.DiffusionEvolver _counterPartyHazardRateFinishVertexArrayEvolver = null;
+	private org.drip.xva.universe.EntityLatentStateEvolver _entityLatentStateEvolver = null;
 
 	/**
 	 * Construct a MarketVertexGenerator Instance from the Spot Date, the Period Tenor, and the Period Count
@@ -208,7 +204,7 @@ public class MarketVertexGenerator
 	 * @param bankHazardRateEvolver The Bank Hazard Rate Diffusive Evolver
 	 * @param bankSeniorRecoveryRateEvolver The Bank Senior Recovery Rate Diffusive Evolver
 	 * @param bankSubordinateRecoveryRateEvolver The Bank Subordinate Rate Diffusive Evolver
-	 * @param counterPartyHazardRateFinishVertexArrayEvolver The Counter Party Hazard Rate Diffusive Evolver
+	 * @param counterPartyHazardRateEvolver The Counter Party Hazard Rate Diffusive Evolver
 	 * @param counterPartyRecoveryRateEvolver The Counter Party Recovery Rate Diffusive Evolver
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
@@ -221,25 +217,27 @@ public class MarketVertexGenerator
 		final org.drip.measure.process.DiffusionEvolver bankHazardRateEvolver,
 		final org.drip.measure.process.DiffusionEvolver bankSeniorRecoveryRateEvolver,
 		final org.drip.measure.process.DiffusionEvolver bankSubordinateRecoveryRateEvolver,
-		final org.drip.measure.process.DiffusionEvolver counterPartyHazardRateFinishVertexArrayEvolver,
+		final org.drip.measure.process.DiffusionEvolver counterPartyHazardRateEvolver,
 		final org.drip.measure.process.DiffusionEvolver counterPartyRecoveryRateEvolver)
 		throws java.lang.Exception
 	{
 		if (0 >= (_spotDate = spotDate) ||
 			null == (_eventDateArray = eventDateArray) ||
-			null == (_tradeablesContainer = tradeablesContainer) ||
-			null == (_bankHazardRateEvolver = bankHazardRateEvolver) ||
-			null == (_bankSeniorRecoveryRateEvolver = bankSeniorRecoveryRateEvolver) ||
-			null == (_counterPartyHazardRateFinishVertexArrayEvolver =
-				counterPartyHazardRateFinishVertexArrayEvolver) ||
-			null == (_counterPartyRecoveryRateEvolver = counterPartyRecoveryRateEvolver))
+			null == (_tradeablesContainer = tradeablesContainer))
 		{
 			throw new java.lang.Exception ("MarketVertexGenerator Constructor => Invalid Inputs");
 		}
 
+		_entityLatentStateEvolver = new org.drip.xva.universe.EntityLatentStateEvolver (
+			bankHazardRateEvolver,
+			bankSeniorRecoveryRateEvolver,
+			bankSubordinateRecoveryRateEvolver,
+			counterPartyHazardRateEvolver,
+			counterPartyRecoveryRateEvolver
+		);
+
 		int eventVertexCount = _eventDateArray.length;
 		_ycfWidth = 0 == eventVertexCount ? null : new double[eventVertexCount];
-		_bankSubordinateRecoveryRateEvolver = bankSubordinateRecoveryRateEvolver;
 
 		if (0 == eventVertexCount ||
 			0. >= (_ycfWidth[0] = ((double) (_eventDateArray[0] - _spotDate)) / 365.25))
@@ -298,61 +296,6 @@ public class MarketVertexGenerator
 	}
 
 	/**
-	 * Retrieve the Bank Hazard Rate Evolver
-	 * 
-	 * @return The Bank Hazard Rate Evolver
-	 */
-
-	public org.drip.measure.process.DiffusionEvolver bankHazardRateEvolver()
-	{
-		return _bankHazardRateEvolver;
-	}
-
-	/**
-	 * Retrieve the Bank Senior Recovery Rate Evolver
-	 * 
-	 * @return The Bank Senior Recovery Rate Evolver
-	 */
-
-	public org.drip.measure.process.DiffusionEvolver bankSeniorRecoveryRateEvolver()
-	{
-		return _bankSeniorRecoveryRateEvolver;
-	}
-
-	/**
-	 * Retrieve the Bank Subordinate Recovery Rate Evolver
-	 * 
-	 * @return The Bank Subordinate Recovery Rate Evolver
-	 */
-
-	public org.drip.measure.process.DiffusionEvolver bankSubordinateRecoveryRateEvolver()
-	{
-		return _bankSubordinateRecoveryRateEvolver;
-	}
-
-	/**
-	 * Retrieve the Counter Party Rate Evolver
-	 * 
-	 * @return The Counter Party Rate Evolver
-	 */
-
-	public org.drip.measure.process.DiffusionEvolver counterPartyHazardRateFinishVertexArrayEvolver()
-	{
-		return _counterPartyHazardRateFinishVertexArrayEvolver;
-	}
-
-	/**
-	 * Retrieve the Counter Party Recovery Rate Evolver
-	 * 
-	 * @return The Counter Party Recovery Rate Evolver
-	 */
-
-	public org.drip.measure.process.DiffusionEvolver counterPartyRecoveryRateEvolver()
-	{
-		return _counterPartyRecoveryRateEvolver;
-	}
-
-	/**
 	 * Generated the Sequence of the Simulated Market Vertexes
 	 * 
 	 * @param initialMarketVertex The Initial Market Vertex
@@ -392,7 +335,7 @@ public class MarketVertexGenerator
 		org.drip.measure.realization.JumpDiffusionVertex[] positionManifestVertexArray = null;
 		org.drip.measure.realization.JumpDiffusionVertex[] overnightNumeraireVertexArray = null;
 		org.drip.measure.realization.JumpDiffusionVertex[] bankSeniorRecoveryRateVertexArray = null;
-		org.drip.measure.realization.JumpDiffusionVertex[] counterPartyHazardRateFinishVertexArray = null;
+		org.drip.measure.realization.JumpDiffusionVertex[] counterPartyHazardRateVertexArray = null;
 		org.drip.measure.realization.JumpDiffusionVertex[] counterPartyRecoveryRateVertexArray = null;
 		org.drip.measure.realization.JumpDiffusionVertex[] bankSeniorFundingNumeraireVertexArray = null;
 		org.drip.measure.realization.JumpDiffusionVertex[] bankSubordinateRecoveryRateVertexArray = null;
@@ -458,7 +401,7 @@ public class MarketVertexGenerator
 				),
 			_ycfWidth);
 
-			bankHazardRateVertexArray = _bankHazardRateEvolver.vertexSequence (
+			bankHazardRateVertexArray = _entityLatentStateEvolver.bankHazardRateEvolver().vertexSequence (
 				new org.drip.measure.realization.JumpDiffusionVertex (
 					_spotDate,
 					initialBankVertex.hazardRate(),
@@ -487,19 +430,20 @@ public class MarketVertexGenerator
 					_ycfWidth
 				);
 
-			bankSeniorRecoveryRateVertexArray = _bankSeniorRecoveryRateEvolver.vertexSequence (
-				new org.drip.measure.realization.JumpDiffusionVertex (
-					_spotDate,
-					initialBankVertex.seniorRecoveryRate(),
-					0.,
-					false
-				),
-				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
-					_ycfWidth,
-					unitEvolverSequence[BANK_SENIOR_RECOVERY_RATE]
-				),
-				_ycfWidth
-			);
+			bankSeniorRecoveryRateVertexArray =
+				_entityLatentStateEvolver.bankSeniorRecoveryRateEvolver().vertexSequence (
+					new org.drip.measure.realization.JumpDiffusionVertex (
+						_spotDate,
+						initialBankVertex.seniorRecoveryRate(),
+						0.,
+						false
+					),
+					org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
+						_ycfWidth,
+						unitEvolverSequence[BANK_SENIOR_RECOVERY_RATE]
+					),
+					_ycfWidth
+				);
 
 			bankSubordinateFundingNumeraireVertexArray = useSingleBankBondOnly ? null :
 				bankSubordinateFundingNumeraire.evolver().vertexSequenceReverse (
@@ -517,7 +461,7 @@ public class MarketVertexGenerator
 				);
 
 			bankSubordinateRecoveryRateVertexArray = useSingleBankBondOnly ? null :
-				_bankSubordinateRecoveryRateEvolver.vertexSequence (
+				_entityLatentStateEvolver.bankSubordinateRecoveryRateEvolver().vertexSequence (
 					new org.drip.measure.realization.JumpDiffusionVertex (
 						_spotDate,
 						initialBankSubordinateRecovery,
@@ -531,19 +475,20 @@ public class MarketVertexGenerator
 					_ycfWidth
 				);
 
-			counterPartyHazardRateFinishVertexArray = _counterPartyHazardRateFinishVertexArrayEvolver.vertexSequence (
-				new org.drip.measure.realization.JumpDiffusionVertex (
-					_spotDate,
-					initialCounterPartyVertex.hazardRate(),
-					0.,
-					false
-				),
-				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
-					_ycfWidth,
-					unitEvolverSequence[COUNTER_PARTY_HAZARD_RATE]
-				),
-				_ycfWidth
-			);
+			counterPartyHazardRateVertexArray =
+				_entityLatentStateEvolver.counterPartyHazardRateEvolver().vertexSequence (
+					new org.drip.measure.realization.JumpDiffusionVertex (
+						_spotDate,
+						initialCounterPartyVertex.hazardRate(),
+						0.,
+						false
+					),
+					org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
+						_ycfWidth,
+						unitEvolverSequence[COUNTER_PARTY_HAZARD_RATE]
+					),
+					_ycfWidth
+				);
 
 			counterPartyFundingNumeraireVertexArray =
 				_tradeablesContainer.counterPartyFunding().evolver().vertexSequenceReverse (
@@ -560,19 +505,20 @@ public class MarketVertexGenerator
 					_ycfWidth
 				);
 
-			counterPartyRecoveryRateVertexArray = _counterPartyRecoveryRateEvolver.vertexSequence (
-				new org.drip.measure.realization.JumpDiffusionVertex (
-					_spotDate,
-					initialCounterPartyVertex.seniorRecoveryRate(),
-					0.,
-					false
-				),
-				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
-					_ycfWidth,
-					unitEvolverSequence[COUNTER_PARTY_RECOVERY_RATE]
-				),
-				_ycfWidth
-			);
+			counterPartyRecoveryRateVertexArray =
+				_entityLatentStateEvolver.counterPartyRecoveryRateEvolver().vertexSequence (
+					new org.drip.measure.realization.JumpDiffusionVertex (
+						_spotDate,
+						initialCounterPartyVertex.seniorRecoveryRate(),
+						0.,
+						false
+					),
+					org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
+						_ycfWidth,
+						unitEvolverSequence[COUNTER_PARTY_RECOVERY_RATE]
+					),
+					_ycfWidth
+				);
 		}
 		catch (java.lang.Exception e)
 		{
@@ -607,7 +553,7 @@ public class MarketVertexGenerator
 			double overnightNumeraireFinish = overnightNumeraireVertexArray[eventVertexIndex].value();
 
 			double counterPartyHazardRateFinish =
-				counterPartyHazardRateFinishVertexArray[eventVertexIndex].value();
+				counterPartyHazardRateVertexArray[eventVertexIndex].value();
 
 			double bankSeniorFundingNumeraireFinish =
 				bankSeniorFundingNumeraireVertexArray[eventVertexIndex].value();
