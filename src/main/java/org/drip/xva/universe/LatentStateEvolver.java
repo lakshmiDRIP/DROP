@@ -47,8 +47,8 @@ package org.drip.xva.universe;
  */
 
 /**
- * MarketVertexGenerator generates the Market Realizations at a Trajectory Vertex needed for computing the
- *  Valuation Adjustment. The References are:<br><br>
+ * LatentStateEvolver contains th Latent State Label and the corresponding Diffusion Evolver. The References
+ *  are:<br><br>
  *  
  *  - Burgard, C., and M. Kjaer (2013): Funding Strategies, Funding Costs <i>Risk</i> <b>24 (12)</b>
  *  	82-87.<br><br>
