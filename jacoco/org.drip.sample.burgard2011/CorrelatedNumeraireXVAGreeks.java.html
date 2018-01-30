@@ -411,14 +411,16 @@ import org.drip.xva.universe.*;
 			iSpotDate,
 			aiVertexDate,
 			tc,
-			deBankHazardRate,
-			deBankSeniorRecoveryRate,
-			deBankSubordinateRecoveryRate,
-			deCounterPartyHazardRate,
-			deCounterPartyRecoveryRate
+			new EntityLatentStateEvolver (
+				deBankHazardRate,
+				deBankSeniorRecoveryRate,
+				deBankSubordinateRecoveryRate,
+				deCounterPartyHazardRate,
+				deCounterPartyRecoveryRate
+			)
 		);
 
-<span class="fc" id="L421">		MarketVertex mvInitial = MarketVertex.SingleManifestMeasure (</span>
+<span class="fc" id="L423">		MarketVertex mvInitial = MarketVertex.SingleManifestMeasure (</span>
 			dtSpot,
 			dblAssetNumeraireInitial,
 			dblOvernightIndexNumeraireDrift,
@@ -447,117 +449,117 @@ import org.drip.xva.universe.*;
 			)
 		);
 
-<span class="fc" id="L450">		MarketVertex[] aMV = mvg.marketVertex (</span>
+<span class="fc" id="L452">		MarketVertex[] aMV = mvg.marketVertex (</span>
 			mvInitial,
-<span class="fc" id="L452">			Matrix.Transpose (</span>
-<span class="fc" id="L453">				SequenceGenerator.GaussianJoint (</span>
+<span class="fc" id="L454">			Matrix.Transpose (</span>
+<span class="fc" id="L455">				SequenceGenerator.GaussianJoint (</span>
 					iNumVertex,
 					aadblCorrelationMatrix
 				)
 			)
 		);
 
-<span class="fc" id="L460">		double dblDerivativeValue = dblTerminalXVADerivativeValue;</span>
-<span class="fc" id="L461">		double dblDerivativeXVAValue = dblTerminalXVADerivativeValue;</span>
+<span class="fc" id="L462">		double dblDerivativeValue = dblTerminalXVADerivativeValue;</span>
+<span class="fc" id="L463">		double dblDerivativeXVAValue = dblTerminalXVADerivativeValue;</span>
 
-<span class="fc" id="L463">		PDEEvolutionControl pdeec = new PDEEvolutionControl (</span>
+<span class="fc" id="L465">		PDEEvolutionControl pdeec = new PDEEvolutionControl (</span>
 			PDEEvolutionControl.CLOSEOUT_GREGORY_LI_TANG,
 			dblSensitivityShiftFactor
 		);
 
-<span class="fc" id="L468">		CloseOutBilateral cob = new CloseOutBilateral (</span>
+<span class="fc" id="L470">		CloseOutBilateral cob = new CloseOutBilateral (</span>
 			dblBankSeniorRecoveryRateInitial,
 			dblCounterPartyRecoveryRateInitial
 		);
 
-<span class="fc" id="L473">		TrajectoryEvolutionScheme tes = new TrajectoryEvolutionScheme (</span>
+<span class="fc" id="L475">		TrajectoryEvolutionScheme tes = new TrajectoryEvolutionScheme (</span>
 			tc,
 			pdeec
 		);
 
-<span class="fc" id="L478">		BurgardKjaerOperator bko = new BurgardKjaerOperator (</span>
+<span class="fc" id="L480">		BurgardKjaerOperator bko = new BurgardKjaerOperator (</span>
 			tc,
 			pdeec
 		);
 
-<span class="fc" id="L483">		PositionGreekVertex agvInitial = new PositionGreekVertex (</span>
+<span class="fc" id="L485">		PositionGreekVertex agvInitial = new PositionGreekVertex (</span>
 			dblDerivativeXVAValue,
 			-1.,
 			0.,
 			dblDerivativeValue
 		);
 
-<span class="fc" id="L490">		double dblGainOnBankDefaultInitial = -1. * (dblDerivativeXVAValue - cob.bankDefault (dblDerivativeXVAValue));</span>
+<span class="fc" id="L492">		double dblGainOnBankDefaultInitial = -1. * (dblDerivativeXVAValue - cob.bankDefault (dblDerivativeXVAValue));</span>
 
-<span class="fc" id="L492">		double dblGainOnCounterPartyDefaultInitial = -1. * (dblDerivativeXVAValue -</span>
-<span class="fc" id="L493">			cob.counterPartyDefault (dblDerivativeXVAValue));</span>
+<span class="fc" id="L494">		double dblGainOnCounterPartyDefaultInitial = -1. * (dblDerivativeXVAValue -</span>
+<span class="fc" id="L495">			cob.counterPartyDefault (dblDerivativeXVAValue));</span>
 
-<span class="fc" id="L495">		System.out.println();</span>
+<span class="fc" id="L497">		System.out.println();</span>
 
-<span class="fc" id="L497">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L499">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L499">		System.out.println (&quot;\t||                                            BILATERAL XVA EVOLVER - BURGARD &amp; KJAER (2011) REPLICATION PORTFOLIO EVOLUTION                                             ||&quot;);</span>
+<span class="fc" id="L501">		System.out.println (&quot;\t||                                            BILATERAL XVA EVOLVER - BURGARD &amp; KJAER (2011) REPLICATION PORTFOLIO EVOLUTION                                             ||&quot;);</span>
 
-<span class="fc" id="L501">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L503">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L503">		System.out.println (&quot;\t||    L -&gt; R:                                                                                                                                                            ||&quot;);</span>
+<span class="fc" id="L505">		System.out.println (&quot;\t||    L -&gt; R:                                                                                                                                                            ||&quot;);</span>
 
-<span class="fc" id="L505">		System.out.println (&quot;\t||            - Time                                                                                                                                                     ||&quot;);</span>
+<span class="fc" id="L507">		System.out.println (&quot;\t||            - Time                                                                                                                                                     ||&quot;);</span>
 
-<span class="fc" id="L507">		System.out.println (&quot;\t||            - Derivative XVA Value                                                                                                                                     ||&quot;);</span>
+<span class="fc" id="L509">		System.out.println (&quot;\t||            - Derivative XVA Value                                                                                                                                     ||&quot;);</span>
 
-<span class="fc" id="L509">		System.out.println (&quot;\t||            - Derivative XVA Delta                                                                                                                                     ||&quot;);</span>
+<span class="fc" id="L511">		System.out.println (&quot;\t||            - Derivative XVA Delta                                                                                                                                     ||&quot;);</span>
 
-<span class="fc" id="L511">		System.out.println (&quot;\t||            - Derivative XVA Gamma                                                                                                                                     ||&quot;);</span>
+<span class="fc" id="L513">		System.out.println (&quot;\t||            - Derivative XVA Gamma                                                                                                                                     ||&quot;);</span>
 
-<span class="fc" id="L513">		System.out.println (&quot;\t||            - Derivative Gain on Bank Default                                                                                                                          ||&quot;);</span>
+<span class="fc" id="L515">		System.out.println (&quot;\t||            - Derivative Gain on Bank Default                                                                                                                          ||&quot;);</span>
 
-<span class="fc" id="L515">		System.out.println (&quot;\t||            - Derivative Gain on Counter Party Default                                                                                                                 ||&quot;);</span>
+<span class="fc" id="L517">		System.out.println (&quot;\t||            - Derivative Gain on Counter Party Default                                                                                                                 ||&quot;);</span>
 
-<span class="fc" id="L517">		System.out.println (&quot;\t||            - Derivative XVA Stochastic Growth Rate                                                                                                                    ||&quot;);</span>
+<span class="fc" id="L519">		System.out.println (&quot;\t||            - Derivative XVA Stochastic Growth Rate                                                                                                                    ||&quot;);</span>
 
-<span class="fc" id="L519">		System.out.println (&quot;\t||            - Derivative XVA Collateral Growth Rate                                                                                                                    ||&quot;);</span>
+<span class="fc" id="L521">		System.out.println (&quot;\t||            - Derivative XVA Collateral Growth Rate                                                                                                                    ||&quot;);</span>
 
-<span class="fc" id="L521">		System.out.println (&quot;\t||            - Derivative XVA Funding Growth Rate                                                                                                                       ||&quot;);</span>
+<span class="fc" id="L523">		System.out.println (&quot;\t||            - Derivative XVA Funding Growth Rate                                                                                                                       ||&quot;);</span>
 
-<span class="fc" id="L523">		System.out.println (&quot;\t||            - Derivative XVA Value Cash Account Replication Units                                                                                                      ||&quot;);</span>
+<span class="fc" id="L525">		System.out.println (&quot;\t||            - Derivative XVA Value Cash Account Replication Units                                                                                                      ||&quot;);</span>
 
-<span class="fc" id="L525">		System.out.println (&quot;\t||            - Derivative XVA Funding Growth                                                                                                                            ||&quot;);</span>
+<span class="fc" id="L527">		System.out.println (&quot;\t||            - Derivative XVA Funding Growth                                                                                                                            ||&quot;);</span>
 
-<span class="fc" id="L527">		System.out.println (&quot;\t||            - Derivative XVA Bank Default Growth                                                                                                                       ||&quot;);</span>
+<span class="fc" id="L529">		System.out.println (&quot;\t||            - Derivative XVA Bank Default Growth                                                                                                                       ||&quot;);</span>
 
-<span class="fc" id="L529">		System.out.println (&quot;\t||            - Derivative XVA Counter Party Default Growth                                                                                                              ||&quot;);</span>
+<span class="fc" id="L531">		System.out.println (&quot;\t||            - Derivative XVA Counter Party Default Growth                                                                                                              ||&quot;);</span>
 
-<span class="fc" id="L531">		System.out.println (&quot;\t||            - Derivative XVA Early Termination Growth                                                                                                                  ||&quot;);</span>
+<span class="fc" id="L533">		System.out.println (&quot;\t||            - Derivative XVA Early Termination Growth                                                                                                                  ||&quot;);</span>
 
-<span class="fc" id="L533">		System.out.println (&quot;\t||            - Derivative XVA Theta Asset Numeraire Down                                                                                                                ||&quot;);</span>
+<span class="fc" id="L535">		System.out.println (&quot;\t||            - Derivative XVA Theta Asset Numeraire Down                                                                                                                ||&quot;);</span>
 
-<span class="fc" id="L535">		System.out.println (&quot;\t||            - Derivative XVA Theta Asset Numeraire Flat                                                                                                                ||&quot;);</span>
+<span class="fc" id="L537">		System.out.println (&quot;\t||            - Derivative XVA Theta Asset Numeraire Flat                                                                                                                ||&quot;);</span>
 
-<span class="fc" id="L537">		System.out.println (&quot;\t||            - Derivative XVA Theta Asset Numeraire Up                                                                                                                  ||&quot;);</span>
+<span class="fc" id="L539">		System.out.println (&quot;\t||            - Derivative XVA Theta Asset Numeraire Up                                                                                                                  ||&quot;);</span>
 
-<span class="fc" id="L539">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L541">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L541">		System.out.println (&quot;\t||&quot; +</span>
-<span class="fc" id="L542">			FormatUtil.FormatDouble (1., 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L543">			FormatUtil.FormatDouble (dblDerivativeXVAValue, 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L544">			FormatUtil.FormatDouble (-1., 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L545">			FormatUtil.FormatDouble (0., 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L546">			FormatUtil.FormatDouble (dblGainOnBankDefaultInitial, 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L547">			FormatUtil.FormatDouble (dblGainOnCounterPartyDefaultInitial, 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L548">			FormatUtil.FormatDouble (0., 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L549">			FormatUtil.FormatDouble (0., 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L543">		System.out.println (&quot;\t||&quot; +</span>
+<span class="fc" id="L544">			FormatUtil.FormatDouble (1., 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L545">			FormatUtil.FormatDouble (dblDerivativeXVAValue, 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L546">			FormatUtil.FormatDouble (-1., 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L547">			FormatUtil.FormatDouble (0., 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L548">			FormatUtil.FormatDouble (dblGainOnBankDefaultInitial, 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L549">			FormatUtil.FormatDouble (dblGainOnCounterPartyDefaultInitial, 1, 6, 1.) + &quot; | &quot; +</span>
 <span class="fc" id="L550">			FormatUtil.FormatDouble (0., 1, 6, 1.) + &quot; | &quot; +</span>
 <span class="fc" id="L551">			FormatUtil.FormatDouble (0., 1, 6, 1.) + &quot; | &quot; +</span>
 <span class="fc" id="L552">			FormatUtil.FormatDouble (0., 1, 6, 1.) + &quot; | &quot; +</span>
 <span class="fc" id="L553">			FormatUtil.FormatDouble (0., 1, 6, 1.) + &quot; | &quot; +</span>
 <span class="fc" id="L554">			FormatUtil.FormatDouble (0., 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L555">			FormatUtil.FormatDouble (0., 1, 6, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L555">			FormatUtil.FormatDouble (0., 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L556">			FormatUtil.FormatDouble (0., 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L557">			FormatUtil.FormatDouble (0., 1, 6, 1.) + &quot; ||&quot;</span>
 		);
 
-<span class="fc" id="L558">		EvolutionTrajectoryVertex etv = new EvolutionTrajectoryVertex (</span>
+<span class="fc" id="L560">		EvolutionTrajectoryVertex etv = new EvolutionTrajectoryVertex (</span>
 			1.,
-<span class="fc" id="L560">			ReplicationPortfolioVertex.Standard (</span>
+<span class="fc" id="L562">			ReplicationPortfolioVertex.Standard (</span>
 				1.,
 				dblGainOnBankDefaultInitial,
 				dblGainOnCounterPartyDefaultInitial,
@@ -570,8 +572,8 @@ import org.drip.xva.universe.*;
 			0.
 		);
 
-<span class="fc bfc" id="L573" title="All 2 branches covered.">		for (int i = iNumVertex - 1; i &gt;= 0; --i)</span>
-<span class="fc" id="L574">			etv = RunStep (</span>
+<span class="fc bfc" id="L575" title="All 2 branches covered.">		for (int i = iNumVertex - 1; i &gt;= 0; --i)</span>
+<span class="fc" id="L576">			etv = RunStep (</span>
 				tes,
 				bko,
 				etv,
@@ -579,9 +581,9 @@ import org.drip.xva.universe.*;
 				aMV[i]
 			);
 
-<span class="fc" id="L582">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L584">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L584">		System.out.println();</span>
-<span class="fc" id="L585">	}</span>
+<span class="fc" id="L586">		System.out.println();</span>
+<span class="fc" id="L587">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

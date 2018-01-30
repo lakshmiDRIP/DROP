@@ -277,11 +277,13 @@ public class XVAMarketGeneration {
 				tBankSubordinateFunding,
 				tCounterPartyFunding
 			),
-			deBankHazardRate,
-			deBankSeniorRecoveryRate,
-			deBankSubordinateRecoveryRate,
-			deCounterPartyHazardRate,
-			deCounterPartyRecoveryRate
+			new EntityLatentStateEvolver (
+				deBankHazardRate,
+				deBankSeniorRecoveryRate,
+				deBankSubordinateRecoveryRate,
+				deCounterPartyHazardRate,
+				deCounterPartyRecoveryRate
+			)
 		);
 
 		MarketVertex mvInitial = MarketVertex.SingleManifestMeasure (

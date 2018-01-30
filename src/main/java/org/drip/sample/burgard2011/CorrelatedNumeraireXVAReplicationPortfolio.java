@@ -411,11 +411,13 @@ public class CorrelatedNumeraireXVAReplicationPortfolio {
 			iSpotDate,
 			aiVertexDate,
 			tc,
-			deBankHazardRate,
-			deBankSeniorRecoveryRate,
-			deBankSubordinateRecoveryRate,
-			deCounterPartyHazardRate,
-			deCounterPartyRecoveryRate
+			new org.drip.xva.universe.EntityLatentStateEvolver (
+				deBankHazardRate,
+				deBankSeniorRecoveryRate,
+				deBankSubordinateRecoveryRate,
+				deCounterPartyHazardRate,
+				deCounterPartyRecoveryRate
+			)
 		);
 
 		MarketVertex mvInitial = MarketVertex.SingleManifestMeasure (

@@ -150,11 +150,7 @@ public class MarketVertexGenerator
 	 * @param periodTenor The Period Tenor
 	 * @param periodCount The Period Count
 	 * @param tradeablesContainer The Tradeables Container Instance
-	 * @param bankHazardRateEvolver The Bank Hazard Rate Diffusive Evolver
-	 * @param bankSeniorRecoveryRateEvolver The Bank Senior Recovery Rate Diffusive Evolver
-	 * @param bankSubordinateRecoveryRateEvolver The Bank Subordinate Rate Diffusive Evolver
-	 * @param counterPartyHazardRateFinishVertexArrayEvolver The Counter Party Hazard Rate Diffusive Evolver
-	 * @param counterPartyRecoveryRateEvolver The Counter Party Recovery Rate Diffusive Evolver
+	 * @param entityLatentStateEvolver The Bank/Counter Party Entity Latent State Evolver
 	 * 
 	 * @return The MarketVertexGenerator Instance from the Spot Date, the Period Tenor, and the Period Count
 	 */
@@ -164,11 +160,7 @@ public class MarketVertexGenerator
 		final java.lang.String periodTenor,
 		final int periodCount,
 		final org.drip.xva.universe.TradeablesContainer tradeablesContainer,
-		final org.drip.measure.process.DiffusionEvolver bankHazardRateEvolver,
-		final org.drip.measure.process.DiffusionEvolver bankSeniorRecoveryRateEvolver,
-		final org.drip.measure.process.DiffusionEvolver bankSubordinateRecoveryRateEvolver,
-		final org.drip.measure.process.DiffusionEvolver counterPartyHazardRateFinishVertexArrayEvolver,
-		final org.drip.measure.process.DiffusionEvolver counterPartyRecoveryRateEvolver)
+		final org.drip.xva.universe.EntityLatentStateEvolver entityLatentStateEvolver)
 	{
 		try
 		{
@@ -180,11 +172,7 @@ public class MarketVertexGenerator
 					periodCount
 				),
 				tradeablesContainer,
-				bankHazardRateEvolver,
-				bankSeniorRecoveryRateEvolver,
-				bankSubordinateRecoveryRateEvolver,
-				counterPartyHazardRateFinishVertexArrayEvolver,
-				counterPartyRecoveryRateEvolver
+				entityLatentStateEvolver
 			);
 		}
 		catch (java.lang.Exception e)
@@ -201,11 +189,7 @@ public class MarketVertexGenerator
 	 * @param spotDate The Spot Date
 	 * @param eventDateArray Array of the Event Dates
 	 * @param tradeablesContainer The Tradeables Container Instance
-	 * @param bankHazardRateEvolver The Bank Hazard Rate Diffusive Evolver
-	 * @param bankSeniorRecoveryRateEvolver The Bank Senior Recovery Rate Diffusive Evolver
-	 * @param bankSubordinateRecoveryRateEvolver The Bank Subordinate Rate Diffusive Evolver
-	 * @param counterPartyHazardRateEvolver The Counter Party Hazard Rate Diffusive Evolver
-	 * @param counterPartyRecoveryRateEvolver The Counter Party Recovery Rate Diffusive Evolver
+	 * @param entityLatentStateEvolver The Bank/Counter Party Entity Latent State Evolver
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -214,27 +198,16 @@ public class MarketVertexGenerator
 		final int spotDate,
 		final int[] eventDateArray,
 		final org.drip.xva.universe.TradeablesContainer tradeablesContainer,
-		final org.drip.measure.process.DiffusionEvolver bankHazardRateEvolver,
-		final org.drip.measure.process.DiffusionEvolver bankSeniorRecoveryRateEvolver,
-		final org.drip.measure.process.DiffusionEvolver bankSubordinateRecoveryRateEvolver,
-		final org.drip.measure.process.DiffusionEvolver counterPartyHazardRateEvolver,
-		final org.drip.measure.process.DiffusionEvolver counterPartyRecoveryRateEvolver)
+		final org.drip.xva.universe.EntityLatentStateEvolver entityLatentStateEvolver)
 		throws java.lang.Exception
 	{
 		if (0 >= (_spotDate = spotDate) ||
 			null == (_eventDateArray = eventDateArray) ||
-			null == (_tradeablesContainer = tradeablesContainer))
+			null == (_tradeablesContainer = tradeablesContainer) ||
+			null == (_entityLatentStateEvolver = entityLatentStateEvolver))
 		{
 			throw new java.lang.Exception ("MarketVertexGenerator Constructor => Invalid Inputs");
 		}
-
-		_entityLatentStateEvolver = new org.drip.xva.universe.EntityLatentStateEvolver (
-			bankHazardRateEvolver,
-			bankSeniorRecoveryRateEvolver,
-			bankSubordinateRecoveryRateEvolver,
-			counterPartyHazardRateEvolver,
-			counterPartyRecoveryRateEvolver
-		);
 
 		int eventVertexCount = _eventDateArray.length;
 		_ycfWidth = 0 == eventVertexCount ? null : new double[eventVertexCount];
@@ -264,6 +237,17 @@ public class MarketVertexGenerator
 	public int spotDate()
 	{
 		return _spotDate;
+	}
+
+	/**
+	 * Retrieve the Entity Latent State Evolver
+	 * 
+	 * @return The Entity Latent State Evolver
+	 */
+
+	public org.drip.xva.universe.EntityLatentStateEvolver entityLatentStateEvolver()
+	{
+		return _entityLatentStateEvolver;
 	}
 
 	/**

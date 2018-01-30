@@ -236,29 +236,31 @@ public class AlbaneseAndersenBaselProxy
 				periodCount,
 				terminationDate.julian()
 			),
-			new DiffusionEvolver (
-				DiffusionEvaluatorLogarithmic.Standard (
-					dblBankHazardRateDrift,
-					dblBankHazardRateVolatility
-				)
-			),
-			new DiffusionEvolver (
-				DiffusionEvaluatorLogarithmic.Standard (
-					dblBankRecoveryRateDrift,
-					dblBankRecoveryRateVolatility
-				)
-			),
-			null,
-			new DiffusionEvolver (
-				DiffusionEvaluatorLogarithmic.Standard (
-					dblCounterPartyHazardRateDrift,
-					dblCounterPartyHazardRateVolatility
-				)
-			),
-			new DiffusionEvolver (
-				DiffusionEvaluatorLogarithmic.Standard (
-					dblCounterPartyRecoveryRateDrift,
-					dblCounterPartyRecoveryRateVolatility
+			new EntityLatentStateEvolver (
+				new DiffusionEvolver (
+					DiffusionEvaluatorLogarithmic.Standard (
+						dblBankHazardRateDrift,
+						dblBankHazardRateVolatility
+					)
+				),
+				new DiffusionEvolver (
+					DiffusionEvaluatorLogarithmic.Standard (
+						dblBankRecoveryRateDrift,
+						dblBankRecoveryRateVolatility
+					)
+				),
+				null,
+				new DiffusionEvolver (
+					DiffusionEvaluatorLogarithmic.Standard (
+						dblCounterPartyHazardRateDrift,
+						dblCounterPartyHazardRateVolatility
+					)
+				),
+				new DiffusionEvolver (
+					DiffusionEvaluatorLogarithmic.Standard (
+						dblCounterPartyRecoveryRateDrift,
+						dblCounterPartyRecoveryRateVolatility
+					)
 				)
 			)
 		);

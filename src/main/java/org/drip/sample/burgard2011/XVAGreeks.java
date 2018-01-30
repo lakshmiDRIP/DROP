@@ -402,11 +402,13 @@ public class XVAGreeks {
 			iSpotDate,
 			aiVertexDate,
 			tc,
-			deBankHazardRate,
-			deBankSeniorRecoveryRate,
-			deBankSubordinateRecoveryRate,
-			deCounterPartyHazardRate,
-			deCounterPartyRecoveryRate
+			new EntityLatentStateEvolver (
+				deBankHazardRate,
+				deBankSeniorRecoveryRate,
+				deBankSubordinateRecoveryRate,
+				deCounterPartyHazardRate,
+				deCounterPartyRecoveryRate
+			)
 		);
 
 		MarketVertex mvInitial = MarketVertex.SingleManifestMeasure (
