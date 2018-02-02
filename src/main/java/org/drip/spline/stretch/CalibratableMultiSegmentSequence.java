@@ -376,7 +376,9 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 			return calcRightEdgeDerivative (bs.rightDerivOrder());
 
 		if (org.drip.spline.stretch.BoundarySettings.BOUNDARY_CONDITION_FINANCIAL == iBC)
+		{
 			return calcRightEdgeDerivative (bs.rightDerivOrder());
+		}
 
 		if (org.drip.spline.stretch.BoundarySettings.BOUNDARY_CONDITION_NOT_A_KNOT == iBC)
 			return calcRightEdgeDerivative (bs.rightDerivOrder()) - calcLeftEdgeDerivative

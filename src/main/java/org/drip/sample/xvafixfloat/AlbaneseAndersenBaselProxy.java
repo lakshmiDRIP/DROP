@@ -10,8 +10,14 @@ import org.drip.measure.statistics.UnivariateDiscreteThin;
 import org.drip.quant.common.FormatUtil;
 import org.drip.quant.linearalgebra.Matrix;
 import org.drip.service.env.EnvManager;
+import org.drip.state.identifier.CreditLabel;
+import org.drip.state.identifier.CreditSupportAnnexLabel;
+import org.drip.state.identifier.EquityLabel;
+import org.drip.state.identifier.OvernightLabel;
 import org.drip.xva.cpty.*;
 import org.drip.xva.dynamics.*;
+import org.drip.xva.evolver.PrimarySecurity;
+import org.drip.xva.evolver.PrimarySecurityContainer;
 import org.drip.xva.holdings.*;
 import org.drip.xva.set.*;
 import org.drip.xva.universe.*;
@@ -86,12 +92,16 @@ import org.drip.xva.universe.*;
 public class AlbaneseAndersenBaselProxy
 {
 
-	private static final TradeablesContainer GenerateTradeablesContainer (
+	private static final PrimarySecurityContainer GenerateTradeablesContainer (
 		final String eventTenor,
 		final int eventCount,
 		final int iTerminationDate)
 		throws Exception
 	{
+		String bank = "WFC";
+		String currency = "USD";
+		String counterParty = "BAC";
+
 		double dblAssetNumeraireDrift = 0.0;
 		double dblAssetNumeraireVolatility = 0.25;
 		double dblAssetNumeraireRepo = 0.0;
@@ -126,9 +136,10 @@ public class AlbaneseAndersenBaselProxy
 
 		double dblCounterPartyRecoveryRateInitial = 0.30;
 
-		Tradeable tAsset = new Tradeable (
+		PrimarySecurity tAsset = new PrimarySecurity (
+			EquityLabel.Standard ("AAPL"),
 			new DiffusionEvolver (
-				DiffusionEvaluatorLinear.Standard (
+				DiffusionEvaluatorLogarithmic.Standard (
 					dblAssetNumeraireDrift,
 					dblAssetNumeraireVolatility
 				)
@@ -136,7 +147,8 @@ public class AlbaneseAndersenBaselProxy
 			dblAssetNumeraireRepo
 		);
 
-		Tradeable tOvernightIndex = new Tradeable (
+		PrimarySecurity tOvernightIndex = new PrimarySecurity (
+			OvernightLabel.Create (currency),
 			new DiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
 					dblOvernightIndexNumeraireDrift,
@@ -146,7 +158,8 @@ public class AlbaneseAndersenBaselProxy
 			dblOvernightIndexNumeraireRepo
 		);
 
-		Tradeable tCollateralScheme = new Tradeable (
+		PrimarySecurity tCollateralScheme = new PrimarySecurity (
+			CreditSupportAnnexLabel.ISDA (currency),
 			new DiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
 					dblCollateralSchemeNumeraireDrift,
@@ -156,7 +169,8 @@ public class AlbaneseAndersenBaselProxy
 			dblCollateralSchemeNumeraireRepo
 		);
 
-		Tradeable tBankSeniorFunding = new Tradeable (
+		PrimarySecurity tBankSeniorFunding = new PrimarySecurity (
+			CreditLabel.Standard (bank),
 			new JumpDiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
 					dblBankSeniorFundingNumeraireDrift,
@@ -170,7 +184,8 @@ public class AlbaneseAndersenBaselProxy
 			dblBankSeniorFundingNumeraireRepo
 		);
 
-		Tradeable tBankSubordinateFunding = new Tradeable (
+		PrimarySecurity tBankSubordinateFunding = new PrimarySecurity (
+			CreditLabel.Standard (bank),
 			new JumpDiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
 					dblBankSubordinateFundingNumeraireDrift,
@@ -184,7 +199,8 @@ public class AlbaneseAndersenBaselProxy
 			dblBankSubordinateFundingNumeraireRepo
 		);
 
-		Tradeable tCounterPartyFunding = new Tradeable (
+		PrimarySecurity tCounterPartyFunding = new PrimarySecurity (
+			CreditLabel.Standard (counterParty),
 			new JumpDiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
 					dblCounterPartyFundingNumeraireDrift,
@@ -198,7 +214,7 @@ public class AlbaneseAndersenBaselProxy
 			dblCounterPartyFundingNumeraireRepo
 		);
 
-		return new TradeablesContainer (
+		return new PrimarySecurityContainer (
 			tAsset,
 			tOvernightIndex,
 			tCollateralScheme,

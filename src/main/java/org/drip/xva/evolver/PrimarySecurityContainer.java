@@ -1,5 +1,5 @@
 
-package org.drip.xva.universe;
+package org.drip.xva.evolver;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -48,7 +48,7 @@ package org.drip.xva.universe;
  */
 
 /**
- * TradeablesContainer describes the Economy with the following Traded Assets - the Overnight Index
+ * PrimarySecurityContainer holds the Economy with the following Traded Assets - the Overnight Index
  *  Numeraire, the Collateral Scheme Numeraire, the Default-able Bank Bond Numeraire, the Array of
  *  Default-able Counter-party Numeraires, and an Asset that follows Brownian Motion. The References are:
  *  
@@ -68,109 +68,111 @@ package org.drip.xva.universe;
  * @author Lakshmi Krishnamurthy
  */
 
-public class TradeablesContainer
+public class PrimarySecurityContainer
 {
-	private org.drip.xva.universe.Tradeable _csa = null;
-	private org.drip.xva.universe.Tradeable _overnight = null;
-	private org.drip.xva.universe.Tradeable _positionManifest = null;
-	private org.drip.xva.universe.Tradeable _bankSeniorFunding = null;
-	private org.drip.xva.universe.Tradeable _counterPartyFunding = null;
-	private org.drip.xva.universe.Tradeable _bankSubordinateFunding = null;
+	private org.drip.xva.evolver.PrimarySecurity _csa = null;
+	private org.drip.xva.evolver.PrimarySecurity _position = null;
+	private org.drip.xva.evolver.PrimarySecurity _overnight = null;
+	private org.drip.xva.evolver.PrimarySecurity _bankSeniorFunding = null;
+	private org.drip.xva.evolver.PrimarySecurity _counterPartyFunding = null;
+	private org.drip.xva.evolver.PrimarySecurity _bankSubordinateFunding = null;
 
 	/**
-	 * LatentStateDynamicsContainer Constructor
+	 * PrimarySecurityContainer Constructor
 	 * 
-	 * @param positionManifest The Position Tradeable Manifest
-	 * @param overnight The Overnight Index Tradeable
-	 * @param csa The CSA Tradeable
-	 * @param bankSeniorFunding Bank Senior Funding Tradeable
-	 * @param bankSubordinateFunding Bank Subordinate Funding Tradeable
-	 * @param counterPartyFunding Counter Party Funding Tradeable
+	 * @param position The Position Primary Security
+	 * @param overnight The Overnight Index Primary Security
+	 * @param csa The CSA Primary Security
+	 * @param bankSeniorFunding Bank Senior Funding Primary Security
+	 * @param bankSubordinateFunding Bank Subordinate Funding Primary Security
+	 * @param counterPartyFunding Counter Party Funding Primary Security
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public TradeablesContainer (
-		final org.drip.xva.universe.Tradeable positionManifest,
-		final org.drip.xva.universe.Tradeable overnight,
-		final org.drip.xva.universe.Tradeable csa,
-		final org.drip.xva.universe.Tradeable bankSeniorFunding,
-		final org.drip.xva.universe.Tradeable bankSubordinateFunding,
-		final org.drip.xva.universe.Tradeable counterPartyFunding)
+	public PrimarySecurityContainer (
+		final org.drip.xva.evolver.PrimarySecurity position,
+		final org.drip.xva.evolver.PrimarySecurity overnight,
+		final org.drip.xva.evolver.PrimarySecurity csa,
+		final org.drip.xva.evolver.PrimarySecurity bankSeniorFunding,
+		final org.drip.xva.evolver.PrimarySecurity bankSubordinateFunding,
+		final org.drip.xva.evolver.PrimarySecurity counterPartyFunding)
 		throws java.lang.Exception
 	{
 		if (null == (_overnight = overnight) ||
 			null == (_csa = csa) ||
 			null == (_bankSeniorFunding = bankSeniorFunding) ||
 			null == (_counterPartyFunding = counterPartyFunding))
-			throw new java.lang.Exception ("LatentStateDynamicsContainer Constructor => Invalid Inputs");
+		{
+			throw new java.lang.Exception ("PrimarySecurityContainer Constructor => Invalid Inputs");
+		}
 
-		_positionManifest = positionManifest;
+		_position = position;
 		_bankSubordinateFunding = bankSubordinateFunding;
 	}
 
 	/**
-	 * Retrieve the Position Tradeable Manifest
+	 * Retrieve the Position Primary Security
 	 * 
-	 * @return The Position Tradeable Manifest
+	 * @return The Position Primary Security
 	 */
 
-	public org.drip.xva.universe.Tradeable positionManifest()
+	public org.drip.xva.evolver.PrimarySecurity position()
 	{
-		return _positionManifest;
+		return _position;
 	}
 
 	/**
-	 * Retrieve the Overnight Index Tradeable
+	 * Retrieve the Overnight Index Primary Security
 	 * 
-	 * @return The Overnight Index Tradeable
+	 * @return The Overnight Index Primary Security
 	 */
 
-	public org.drip.xva.universe.Tradeable overnight()
+	public org.drip.xva.evolver.PrimarySecurity overnight()
 	{
 		return _overnight;
 	}
 
 	/**
-	 * Retrieve the CSA Tradeable
+	 * Retrieve the CSA Primary Security
 	 * 
-	 * @return The CSA Tradeable
+	 * @return The CSA Primary Security
 	 */
 
-	public org.drip.xva.universe.Tradeable csa()
+	public org.drip.xva.evolver.PrimarySecurity csa()
 	{
 		return _csa;
 	}
 
 	/**
-	 * Retrieve the Bank Senior Funding Tradeable
+	 * Retrieve the Bank Senior Funding Primary Security
 	 * 
-	 * @return The Bank Senior Funding Tradeable
+	 * @return The Bank Senior Funding Primary Security
 	 */
 
-	public org.drip.xva.universe.Tradeable bankSeniorFunding()
+	public org.drip.xva.evolver.PrimarySecurity bankSeniorFunding()
 	{
 		return _bankSeniorFunding;
 	}
 
 	/**
-	 * Retrieve the Bank Subordinate Funding Tradeable
+	 * Retrieve the Bank Subordinate Funding Primary Security
 	 * 
-	 * @return The Bank Subordinate Funding Tradeable
+	 * @return The Bank Subordinate Funding Primary Security
 	 */
 
-	public org.drip.xva.universe.Tradeable bankSubordinateFunding()
+	public org.drip.xva.evolver.PrimarySecurity bankSubordinateFunding()
 	{
 		return _bankSubordinateFunding;
 	}
 
 	/**
-	 * Retrieve the Counter Party Funding Tradeable
+	 * Retrieve the Counter Party Funding Primary Security
 	 * 
-	 * @return The Counter Party Funding Tradeable
+	 * @return The Counter Party Funding Primary Security
 	 */
 
-	public org.drip.xva.universe.Tradeable counterPartyFunding()
+	public org.drip.xva.evolver.PrimarySecurity counterPartyFunding()
 	{
 		return _counterPartyFunding;
 	}

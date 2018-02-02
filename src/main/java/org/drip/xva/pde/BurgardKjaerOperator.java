@@ -72,7 +72,7 @@ package org.drip.xva.pde;
 
 public class BurgardKjaerOperator
 {
-	private org.drip.xva.universe.TradeablesContainer _tradeablesContainer = null;
+	private org.drip.xva.evolver.PrimarySecurityContainer _tradeablesContainer = null;
 	private org.drip.xva.definition.PDEEvolutionControl _pdeEvolutionControl = null;
 
 	/**
@@ -85,7 +85,7 @@ public class BurgardKjaerOperator
 	 */
 
 	public BurgardKjaerOperator (
-		final org.drip.xva.universe.TradeablesContainer tradeablesContainer,
+		final org.drip.xva.evolver.PrimarySecurityContainer tradeablesContainer,
 		final org.drip.xva.definition.PDEEvolutionControl pdeEvolutionControl)
 		throws java.lang.Exception
 	{
@@ -102,7 +102,7 @@ public class BurgardKjaerOperator
 	 * @return The Universe of Trade-able Assets
 	 */
 
-	public org.drip.xva.universe.TradeablesContainer tradeablesContainer()
+	public org.drip.xva.evolver.PrimarySecurityContainer tradeablesContainer()
 	{
 		return _tradeablesContainer;
 	}
@@ -169,7 +169,7 @@ public class BurgardKjaerOperator
 		try
 		{
 			double[] bumpedThetaArray = new org.drip.xva.pde.ParabolicDifferentialOperator
-				(_tradeablesContainer.positionManifest()).thetaUpDown (
+				(_tradeablesContainer.position()).thetaUpDown (
 					initialTrajectoryVertex,
 					initialPortfolioValue,
 					portfolioValueBump
@@ -255,7 +255,7 @@ public class BurgardKjaerOperator
 		try
 		{
 			double[] bumpedThetaArray = new org.drip.xva.pde.ParabolicDifferentialOperator
-				(_tradeablesContainer.positionManifest()).thetaUpDown (
+				(_tradeablesContainer.position()).thetaUpDown (
 					initialTrajectoryVertex,
 					initialPortfolioValue,
 					portfolioValueBump

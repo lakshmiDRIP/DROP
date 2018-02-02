@@ -140,7 +140,7 @@ public class MarketVertexGenerator
 	private int _spotDate = -1;
 	private double[] _ycfWidth = null;
 	private int[] _eventDateArray = null;
-	private org.drip.xva.universe.TradeablesContainer _tradeablesContainer = null;
+	private org.drip.xva.evolver.PrimarySecurityContainer _tradeablesContainer = null;
 	private org.drip.xva.universe.EntityLatentStateEvolver _entityLatentStateEvolver = null;
 
 	/**
@@ -159,14 +159,14 @@ public class MarketVertexGenerator
 		final int spotDate,
 		final java.lang.String periodTenor,
 		final int periodCount,
-		final org.drip.xva.universe.TradeablesContainer tradeablesContainer,
+		final org.drip.xva.evolver.PrimarySecurityContainer tradeablesContainer,
 		final org.drip.xva.universe.EntityLatentStateEvolver entityLatentStateEvolver)
 	{
 		try
 		{
 			return new MarketVertexGenerator (
 				spotDate,
-				org.drip.xva.universe.VertexDateBuilder.SpotDatePeriodTenor (
+				org.drip.analytics.support.VertexDateBuilder.SpotDatePeriodTenor (
 					spotDate,
 					periodTenor,
 					periodCount
@@ -197,7 +197,7 @@ public class MarketVertexGenerator
 	public MarketVertexGenerator (
 		final int spotDate,
 		final int[] eventDateArray,
-		final org.drip.xva.universe.TradeablesContainer tradeablesContainer,
+		final org.drip.xva.evolver.PrimarySecurityContainer tradeablesContainer,
 		final org.drip.xva.universe.EntityLatentStateEvolver entityLatentStateEvolver)
 		throws java.lang.Exception
 	{
@@ -304,9 +304,9 @@ public class MarketVertexGenerator
 			return null;
 		}
 
-		org.drip.xva.universe.Tradeable positionManifest = _tradeablesContainer.positionManifest();
+		org.drip.xva.evolver.PrimarySecurity positionManifest = _tradeablesContainer.position();
 
-		org.drip.xva.universe.Tradeable bankSubordinateFundingNumeraire =
+		org.drip.xva.evolver.PrimarySecurity bankSubordinateFundingNumeraire =
 			_tradeablesContainer.bankSubordinateFunding();
 
 		double bankSurvivalProbabilityExponent = 0.;

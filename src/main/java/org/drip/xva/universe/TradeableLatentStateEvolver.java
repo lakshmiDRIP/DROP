@@ -47,8 +47,8 @@ package org.drip.xva.universe;
  */
 
 /**
- * LatentStateEvolverContainer holds the Latent States and their Jump Diffusion Evolvers. The References
- * 	are:<br><br>
+ * TradeableLatentStateEvolver is a Latent State Evolver that doubles up as a Tradeable. The References
+ *  are:<br><br>
  *  
  *  - Burgard, C., and M. Kjaer (2013): Funding Strategies, Funding Costs <i>Risk</i> <b>24 (12)</b>
  *  	82-87.<br><br>
@@ -67,79 +67,45 @@ package org.drip.xva.universe;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LatentStateEvolverContainer
+public class TradeableLatentStateEvolver extends org.drip.xva.evolver.TerminalLatentState
 {
-	private java.util.Map<java.lang.String, org.drip.xva.universe.LatentStateEvolver> _evolverMap =
-		new org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.xva.universe.LatentStateEvolver>();
+	private org.drip.xva.evolver.PrimarySecurity _tradeable = null;
 
 	/**
-	 * Empty LatentStateEvolverContainer Constructor
+	 * TradeableLatentStateEvolver Constructor
+	 * 
+	 * @param label The Latest State Label
+	 * @param diffusionEvolver The Latent State Diffusion Evolver
+	 * @param tradeable The Tradeable Component
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public LatentStateEvolverContainer()
+	public TradeableLatentStateEvolver (
+		final org.drip.state.identifier.LatentStateLabel label,
+		final org.drip.measure.process.DiffusionEvolver diffusionEvolver,
+		final org.drip.xva.evolver.PrimarySecurity tradeable)
+		throws java.lang.Exception
 	{
-	}
-
-	/**
-	 * Retrieve the Jump Diffusion Evolver Map
-	 * 
-	 * @return The Jump Diffusion Evolver Map
-	 */
-
-	public java.util.Map<java.lang.String, org.drip.xva.universe.LatentStateEvolver> evolverMap()
-	{
-		return _evolverMap;
-	}
-
-	/**
-	 * Add a Latent State Jump Diffusion Evolver
-	 * 
-	 * @param latentStateEvolver The Latent State Jump Diffusion Evolver
-	 * 
-	 * @return TRUE - The Latent State Evolver successfully added
-	 */
-
-	public boolean addEvolver (
-		final org.drip.xva.universe.LatentStateEvolver latentStateEvolver)
-	{
-		if (null == latentStateEvolver)
-		{
-			return false;
-		}
-
-		_evolverMap.put (
-			latentStateEvolver.label().fullyQualifiedName(),
-			latentStateEvolver
+		super (
+			label,
+			diffusionEvolver
 		);
 
-		return true;
+		if (null == (_tradeable = tradeable))
+		{
+			throw new java.lang.Exception ("TradeableLatentStateEvolver Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
-	 * Indicate if the Latent State Jump Diffusion Evolver exists
+	 * Retrieve the Tradeable
 	 * 
-	 * @param label The Latent State Label
-	 * 
-	 * @return TRUE - The Latent State Evolver exists
+	 * @return The Tradeable
 	 */
 
-	public boolean containsEvolver (
-		final org.drip.state.identifier.LatentStateLabel label)
+	public org.drip.xva.evolver.PrimarySecurity tradeable()
 	{
-		return null == label ? false : _evolverMap.containsKey (label.fullyQualifiedName());
-	}
-
-	/**
-	 * Retrieve the Latent State Jump Diffusion Evolver given the Label
-	 * 
-	 * @param label The Latent State Label
-	 * 
-	 * @return The Latent State Evolver from the Label
-	 */
-
-	public org.drip.xva.universe.LatentStateEvolver evolver (
-		final org.drip.state.identifier.LatentStateLabel label)
-	{
-		return containsEvolver (label) ? _evolverMap.get (label.fullyQualifiedName()) : null;
+		return _tradeable;
 	}
 }

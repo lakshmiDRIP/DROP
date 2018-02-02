@@ -281,7 +281,7 @@ public abstract class DiscountCurve implements org.drip.analytics.definition.Cur
 
 				adblForwardRate[i] = ((df (iStartDate) / df (aiDate[i])) - 1.) /
 					org.drip.analytics.daycount.Convention.YearFraction (iStartDate, aiDate[i], strDayCount,
-						false, aap, strCurrency) + (aiDate[i] >= iDateLeft && aiDate[i] < iDateRight ?
+						false, aap, strCurrency) + (aiDate[i] > iDateLeft && aiDate[i] <= iDateRight ?
 							dblBump : 0.);
 			}
 

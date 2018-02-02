@@ -1,5 +1,5 @@
 
-package org.drip.xva.universe;
+package org.drip.xva.evolver;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -48,81 +48,75 @@ package org.drip.xva.universe;
  */
 
 /**
- * Tradeable holds Definitions and Parameters that specify a Tradeable Entity in XVA Terms. The References
- *  are:
+ * Equity describes a Tradeable Equity. The References are:
  *  
- *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
- *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
+ *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter Party Risk
+ *  	and Funding Costs <i>Journal of Credit Risk</i> <b>7 (3)</b> 1-19.<br><br>
  *  
  *  - Cesari, G., J. Aquilina, N. Charpillon, X. Filipovic, G. Lee, and L. Manda (2009): Modeling, Pricing,
- *  	and Hedging Counter-party Credit Exposure - A Technical Guide, Springer Finance, New York.
+ *  	and Hedging Counter-party Credit Exposure - A Technical Guide <i>Springer Finance</i>
+ *  		<b>New York</b>.<br><br>
  *  
- *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk, Risk 20 (2) 86-90.
+ *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk <i>Risk</i> <b>20 (2)</b>
+ *  	86-90.<br><br>
  *  
  *  - Li, B., and Y. Tang (2007): Quantitative Analysis, Derivatives Modeling, and Trading Strategies in the
- *  	Presence of Counter-party Credit Risk for the Fixed Income Market, World Scientific Publishing,
- *  	Singapore.
+ *  	Presence of Counter-party Credit Risk for the Fixed Income Market <i>World Scientific Publishing </i>
+ *  		<b>Singapore</b>.<br><br>
  * 
- *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
- *  	21 (2) 97-102.
+ *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing
+ *  	<i>Risk</i> <b>21 (2)</b> 97-102.<br><br>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class Tradeable
+public class Equity extends org.drip.xva.evolver.PrimarySecurity
 {
-	private double _repoRate = java.lang.Double.NaN;
-	private org.drip.measure.process.DiffusionEvolver _evolver = null;
+	private double _dividendRate = java.lang.Double.NaN;
 
 	/**
-	 * Tradeable Constructor
+	 * Equity Constructor
 	 * 
-	 * @param evolver The Tradeable Evolver
-	 * @param repoRate The Repo Rate
+	 * @param label The Latent State Label
+	 * @param evolver The Equity Price Evolver
+	 * @param dblRepoRate The Equity Repo Rate
+	 * @param dividendRate The Equity Dividend Rate
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public Tradeable (
+	public Equity (
+		final org.drip.state.identifier.LatentStateLabel label,
 		final org.drip.measure.process.DiffusionEvolver evolver,
-		final double repoRate)
+		final double dblRepoRate,
+		final double dividendRate)
 		throws java.lang.Exception
 	{
-		if (null == (_evolver = evolver) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_repoRate = repoRate))
-			throw new java.lang.Exception ("Tradeable Constructor => Invalid Inputs");
+		super (
+			label,
+			evolver,
+			dblRepoRate
+		);
+
+		if (!org.drip.quant.common.NumberUtil.IsValid (_dividendRate = dividendRate))
+		{
+			throw new java.lang.Exception ("Equity Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
-	 * Retrieve the Evolver
+	 * Retrieve the Equity Dividend Rate
 	 * 
-	 * @return The Evolver
+	 * @return The Equity Dividend Rate
 	 */
 
-	public org.drip.measure.process.DiffusionEvolver evolver()
+	public double dividendRate()
 	{
-		return _evolver;
+		return _dividendRate;
 	}
 
-	/**
-	 * Retrieve the Repo Rate
-	 * 
-	 * @return The Repo Rate
-	 */
-
-	public double repoRate()
+	@Override public double cashAccumulationRate()
 	{
-		return _repoRate;
-	}
-
-	/**
-	 * Retrieve the Cash Accumulation Rate
-	 * 
-	 * @return The Cash Accumulation Rate
-	 */
-
-	public double cashAccumulationRate()
-	{
-		return -1. * _repoRate;
+		return _dividendRate - repoRate();
 	}
 }

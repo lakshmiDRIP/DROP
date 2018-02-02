@@ -2,6 +2,7 @@
 package org.drip.sample.burgard2011;
 
 import org.drip.analytics.date.*;
+import org.drip.analytics.support.VertexDateBuilder;
 import org.drip.measure.discrete.SequenceGenerator;
 import org.drip.measure.dynamics.*;
 import org.drip.measure.process.*;
@@ -9,8 +10,14 @@ import org.drip.measure.realization.*;
 import org.drip.quant.common.FormatUtil;
 import org.drip.quant.linearalgebra.Matrix;
 import org.drip.service.env.EnvManager;
+import org.drip.state.identifier.CreditLabel;
+import org.drip.state.identifier.CreditSupportAnnexLabel;
+import org.drip.state.identifier.EquityLabel;
+import org.drip.state.identifier.OvernightLabel;
 import org.drip.xva.definition.*;
 import org.drip.xva.derivative.*;
+import org.drip.xva.evolver.PrimarySecurity;
+import org.drip.xva.evolver.PrimarySecurityContainer;
 import org.drip.xva.pde.*;
 import org.drip.xva.universe.*;
 
@@ -104,7 +111,7 @@ public class XVAGreeks {
 
 		double dblTime = dblTimeStart + dblTimeWidth;
 
-		TradeablesContainer tc = tes.tradeablesContainer();
+		PrimarySecurityContainer tc = tes.tradeablesContainer();
 
 		double dblCollateralSchemeNumeraire = mvStart.csaReplicator();
 
@@ -205,7 +212,10 @@ public class XVAGreeks {
 	{
 		EnvManager.InitEnv ("");
 
+		String bank = "WFC";
 		int iNumVertex = 24;
+		String currency = "USD";
+		String counterParty = "BAC";
 		int iSimulationDuration = 365;
 
 		double[][] aadblCorrelationMatrix = new double[][] {
@@ -272,7 +282,8 @@ public class XVAGreeks {
 
 		double dblSensitivityShiftFactor = 0.001;
 
-		Tradeable tAsset = new Tradeable (
+		PrimarySecurity tAsset = new PrimarySecurity (
+			EquityLabel.Standard ("AAPL"),
 			new DiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
 					dblAssetNumeraireDrift - dblAssetNumeraireDividend,
@@ -282,7 +293,8 @@ public class XVAGreeks {
 			dblAssetNumeraireRepo
 		);
 
-		Tradeable tOvernightIndex = new Tradeable (
+		PrimarySecurity tOvernightIndex = new PrimarySecurity (
+			OvernightLabel.Create (currency),
 			new DiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
 					dblOvernightIndexNumeraireDrift,
@@ -292,7 +304,8 @@ public class XVAGreeks {
 			dblOvernightIndexNumeraireRepo
 		);
 
-		Tradeable tCollateralScheme = new Tradeable (
+		PrimarySecurity tCollateralScheme = new PrimarySecurity (
+			CreditSupportAnnexLabel.ISDA (currency),
 			new DiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
 					dblCollateralSchemeNumeraireDrift,
@@ -302,7 +315,8 @@ public class XVAGreeks {
 			dblCollateralSchemeNumeraireRepo
 		);
 
-		Tradeable tBankSeniorFunding = new Tradeable (
+		PrimarySecurity tBankSeniorFunding = new PrimarySecurity (
+			CreditLabel.Standard (bank),
 			new JumpDiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
 					dblBankSeniorFundingNumeraireDrift,
@@ -316,7 +330,8 @@ public class XVAGreeks {
 			dblBankSeniorFundingNumeraireRepo
 		);
 
-		Tradeable tBankSubordinateFunding = new Tradeable (
+		PrimarySecurity tBankSubordinateFunding = new PrimarySecurity (
+			CreditLabel.Standard (bank),
 			new JumpDiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
 					dblBankSubordinateFundingNumeraireDrift,
@@ -330,7 +345,8 @@ public class XVAGreeks {
 			dblBankSubordinateFundingNumeraireRepo
 		);
 
-		Tradeable tCounterPartyFunding = new Tradeable (
+		PrimarySecurity tCounterPartyFunding = new PrimarySecurity (
+			CreditLabel.Standard (counterParty),
 			new JumpDiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
 					dblCounterPartyFundingNumeraireDrift,
@@ -389,7 +405,7 @@ public class XVAGreeks {
 			iNumVertex
 		);
 
-		TradeablesContainer tc = new TradeablesContainer (
+		PrimarySecurityContainer tc = new PrimarySecurityContainer (
 			tAsset,
 			tOvernightIndex,
 			tCollateralScheme,

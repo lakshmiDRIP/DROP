@@ -1,5 +1,5 @@
 
-package org.drip.xva.universe;
+package org.drip.xva.evolver;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -7,6 +7,7 @@ package org.drip.xva.universe;
 
 /*!
  * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
  *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
  *  	libraries targeting analysts and developers
@@ -47,49 +48,53 @@ package org.drip.xva.universe;
  */
 
 /**
- * LatentStateEvolver contains the Latent State Label and the corresponding Diffusion Evolver. The References
- *  are:<br><br>
- *  
- *  - Burgard, C., and M. Kjaer (2013): Funding Strategies, Funding Costs <i>Risk</i> <b>24 (12)</b>
- *  	82-87.<br><br>
+ * PrimarySecurity holds Definitions and Parameters that specify a Primary Security in XVA Terms. The
+ *  References are:
  *  
  *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
- *  	and Funding Costs <i>Journal of Credit Risk</i> <b>7 (3)</b> 1-19.<br><br>
+ *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
  *  
- *  - Burgard, C., and M. Kjaer (2014): In the Balance <i>Risk</i> <b>24 (11)</b> 72-75.<br><br>
+ *  - Cesari, G., J. Aquilina, N. Charpillon, X. Filipovic, G. Lee, and L. Manda (2009): Modeling, Pricing,
+ *  	and Hedging Counter-party Credit Exposure - A Technical Guide, Springer Finance, New York.
  *  
- *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk <i>Risk</i> <b>20 (2)</b>
- *  	86-90.<br><br>
+ *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk, Risk 20 (2) 86-90.
+ *  
+ *  - Li, B., and Y. Tang (2007): Quantitative Analysis, Derivatives Modeling, and Trading Strategies in the
+ *  	Presence of Counter-party Credit Risk for the Fixed Income Market, World Scientific Publishing,
+ *  	Singapore.
  * 
- *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing
- *  	<i>Risk</i> <b>21 (2)</b> 97-102.<br><br>
+ *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
+ *  	21 (2) 97-102.
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class LatentStateEvolver
+public class PrimarySecurity extends org.drip.xva.evolver.Numeraire
 {
+	private double _repoRate = java.lang.Double.NaN;
 	private org.drip.state.identifier.LatentStateLabel _label = null;
-	private org.drip.measure.process.DiffusionEvolver _diffusionEvolver = null;
 
 	/**
-	 * LatentStateEvolver Constructor
+	 * PrimarySecurity Constructor
 	 * 
-	 * @param label The Latest State Label
-	 * @param diffusionEvolver The Latent State Diffusion Evolver
+	 * @param label The Latent State Label
+	 * @param evolver The Primary Security Evolver
+	 * @param repoRate The Repo Rate
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public LatentStateEvolver (
+	public PrimarySecurity (
 		final org.drip.state.identifier.LatentStateLabel label,
-		final org.drip.measure.process.DiffusionEvolver diffusionEvolver)
+		final org.drip.measure.process.DiffusionEvolver evolver,
+		final double repoRate)
 		throws java.lang.Exception
 	{
-		if (null == (_label = label) ||
-			(null == (_diffusionEvolver = diffusionEvolver)))
+		super (evolver);
+
+		if (!org.drip.quant.common.NumberUtil.IsValid (_repoRate = repoRate))
 		{
-			throw new java.lang.Exception ("LatentStateEvolver Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("PrimarySecurity Constructor => Invalid Inputs");
 		}
 	}
 
@@ -105,13 +110,35 @@ public class LatentStateEvolver
 	}
 
 	/**
-	 * Retrieve the Diffusion Evolver
+	 * Retrieve the Repo Rate
 	 * 
-	 * @return The Diffusion Evolver
+	 * @return The Repo Rate
 	 */
 
-	public org.drip.measure.process.DiffusionEvolver diffusionEvolver()
+	public double repoRate()
 	{
-		return _diffusionEvolver;
+		return _repoRate;
+	}
+
+	/**
+	 * Indicate if the PrimarySecurity is Repo-able
+	 * 
+	 * @return TRUE - The PrimarySecurity is Repo-able
+	 */
+
+	public boolean isRepoable()
+	{
+		return 0. != _repoRate;
+	}
+
+	/**
+	 * Retrieve the Cash Accumulation Rate
+	 * 
+	 * @return The Cash Accumulation Rate
+	 */
+
+	public double cashAccumulationRate()
+	{
+		return -1. * _repoRate;
 	}
 }

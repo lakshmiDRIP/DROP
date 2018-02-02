@@ -71,7 +71,7 @@ package org.drip.xva.pde;
 
 public class TrajectoryEvolutionScheme
 {
-	private org.drip.xva.universe.TradeablesContainer _tradeablesContainer = null;
+	private org.drip.xva.evolver.PrimarySecurityContainer _tradeablesContainer = null;
 	private org.drip.xva.definition.PDEEvolutionControl _pdeEvolutionControl = null;
 
 	/**
@@ -84,7 +84,7 @@ public class TrajectoryEvolutionScheme
 	 */
 
 	public TrajectoryEvolutionScheme (
-		final org.drip.xva.universe.TradeablesContainer tradeablesContainer,
+		final org.drip.xva.evolver.PrimarySecurityContainer tradeablesContainer,
 		final org.drip.xva.definition.PDEEvolutionControl pdeEvolutionControl)
 		throws java.lang.Exception
 	{
@@ -101,7 +101,7 @@ public class TrajectoryEvolutionScheme
 	 * @return The Universe of Tradeables
 	 */
 
-	public org.drip.xva.universe.TradeablesContainer tradeablesContainer()
+	public org.drip.xva.evolver.PrimarySecurityContainer tradeablesContainer()
 	{
 		return _tradeablesContainer;
 	}
@@ -173,9 +173,9 @@ public class TrajectoryEvolutionScheme
 		double timeIncrement = marketEdge.vertexIncrement() / 365.25;
 
 		double portfolioCashChange = initialPortfolioHoldings *
-			_tradeablesContainer.positionManifest().cashAccumulationRate() * finalPortfolioValue * timeIncrement;
+			_tradeablesContainer.position().cashAccumulationRate() * finalPortfolioValue * timeIncrement;
 
-		org.drip.xva.universe.Tradeable counterPartyFundingTradeable =
+		org.drip.xva.evolver.PrimarySecurity counterPartyFundingTradeable =
 			_tradeablesContainer.counterPartyFunding();
 
 		double counterPartyCashAccumulation = initialCounterPartyNumeraireHoldings *
@@ -193,9 +193,9 @@ public class TrajectoryEvolutionScheme
 				finalBankSubordinateFundingNumeraire;
 		}
 
-		org.drip.xva.universe.Tradeable csaTradeable = _tradeablesContainer.csa();
+		org.drip.xva.evolver.PrimarySecurity csaTradeable = _tradeablesContainer.csa();
 
-		org.drip.xva.universe.Tradeable bankSeniorFundingTradeable =
+		org.drip.xva.evolver.PrimarySecurity bankSeniorFundingTradeable =
 			_tradeablesContainer.bankSeniorFunding();
 
 		double bankCashAccumulation = cashAccountBalance * (cashAccountBalance > 0. ?
@@ -341,7 +341,7 @@ public class TrajectoryEvolutionScheme
 
 		double bankSeniorFundingNumeraire = bankMarketVertex.seniorFundingReplicator();
 
-		org.drip.xva.universe.Tradeable csaTradeable = _tradeablesContainer.csa();
+		org.drip.xva.evolver.PrimarySecurity csaTradeable = _tradeablesContainer.csa();
 
 		try
 		{

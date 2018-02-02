@@ -484,7 +484,7 @@ public class BondReplicator
 		_valParams = new org.drip.param.valuation.ValuationParams (_dtSpot, _dtSettle, strCurrency);
 
 		org.drip.state.discount.MergedDiscountForwardCurve mdfc =
-			org.drip.service.template.LatentMarketStateBuilder.ShapePreservingFundingCurve (_dtSpot,
+			org.drip.service.template.LatentMarketStateBuilder.SmoothFundingCurve (_dtSpot,
 				strCurrency, _astrDepositTenor, _adblDepositQuote, "ForwardRate", _adblFuturesQuote,
 					"ForwardRate", _astrFixFloatTenor, _adblFixFloatQuote, "SwapRate");
 
@@ -534,7 +534,7 @@ public class BondReplicator
 		}
 
 		if (null == (_csqcFunding01Up = org.drip.param.creator.MarketParamsBuilder.Create
-			(org.drip.service.template.LatentMarketStateBuilder.ShapePreservingFundingCurve (_dtSpot,
+			(org.drip.service.template.LatentMarketStateBuilder.SmoothFundingCurve (_dtSpot,
 				strCurrency, _astrDepositTenor, org.drip.analytics.support.Helper.ParallelNodeBump
 					(_adblDepositQuote, 0.0001), "ForwardRate",
 						org.drip.analytics.support.Helper.ParallelNodeBump (_adblFuturesQuote, 0.0001),
@@ -556,7 +556,7 @@ public class BondReplicator
 		}
 
 		if (null == (_csqcFundingEuroDollar = org.drip.param.creator.MarketParamsBuilder.Create
-			(org.drip.service.template.LatentMarketStateBuilder.ShapePreservingFundingCurve (_dtSpot,
+			(org.drip.service.template.LatentMarketStateBuilder.SmoothFundingCurve (_dtSpot,
 				strCurrency, _astrDepositTenor, _adblDepositQuote, "ForwardRate", _adblFuturesQuote,
 					"ForwardRate", null, null, "SwapRate"), gc, null, null, null, null, null)))
 			throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
@@ -578,7 +578,7 @@ public class BondReplicator
 				org.drip.service.template.LatentMarketStateBuilder.BumpedForwardFundingCurve (_dtSpot,
 					strCurrency, _astrDepositTenor, _adblDepositQuote, "ForwardRate", _adblFuturesQuote,
 						"ForwardRate", _astrFixFloatTenor, _adblFixFloatQuote, "SwapRate",
-							org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING, 0.0001 *
+							org.drip.service.template.LatentMarketStateBuilder.SMOOTH, 0.0001 *
 								_dblTenorBump, false);
 
 		java.util.Map<java.lang.String, org.drip.state.discount.MergedDiscountForwardCurve>
@@ -586,7 +586,7 @@ public class BondReplicator
 				org.drip.service.template.LatentMarketStateBuilder.BumpedForwardFundingCurve (_dtSpot,
 					strCurrency, _astrDepositTenor, _adblDepositQuote, "ForwardRate", _adblFuturesQuote,
 						"ForwardRate", _astrFixFloatTenor, _adblFixFloatQuote, "SwapRate",
-							org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING, -0.0001 *
+							org.drip.service.template.LatentMarketStateBuilder.SMOOTH, -0.0001 *
 								_dblTenorBump, false);
 
 		if (null == mapTenorForwardFundingUp || null == mapTenorForwardFundingDown)
@@ -616,14 +616,14 @@ public class BondReplicator
 			mapTenorFundingUp = org.drip.service.template.LatentMarketStateBuilder.BumpedFundingCurve
 				(_dtSpot, strCurrency, _astrDepositTenor, _adblDepositQuote, "ForwardRate",
 					_adblFuturesQuote, "ForwardRate", _astrFixFloatTenor, _adblFixFloatQuote, "SwapRate",
-						org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING, 0.0001 *
+						org.drip.service.template.LatentMarketStateBuilder.SMOOTH, 0.0001 *
 							_dblTenorBump, false);
 
 		java.util.Map<java.lang.String, org.drip.state.discount.MergedDiscountForwardCurve>
 			mapTenorFundingDown = org.drip.service.template.LatentMarketStateBuilder.BumpedFundingCurve
 				(_dtSpot, strCurrency, _astrDepositTenor, _adblDepositQuote, "ForwardRate",
 					_adblFuturesQuote, "ForwardRate", _astrFixFloatTenor, _adblFixFloatQuote, "SwapRate",
-						org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING, -0.0001 *
+						org.drip.service.template.LatentMarketStateBuilder.SMOOTH, -0.0001 *
 							_dblTenorBump, false);
 
 		if (null == mapTenorFundingUp || null == mapTenorFundingDown)

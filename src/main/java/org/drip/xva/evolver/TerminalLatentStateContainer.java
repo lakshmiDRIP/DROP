@@ -1,5 +1,5 @@
 
-package org.drip.xva.universe;
+package org.drip.xva.evolver;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -7,7 +7,6 @@ package org.drip.xva.universe;
 
 /*!
  * Copyright (C) 2018 Lakshmi Krishnamurthy
- * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
  *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
  *  	libraries targeting analysts and developers
@@ -48,21 +47,19 @@ package org.drip.xva.universe;
  */
 
 /**
- * Equity describes a Tradeable Equity. The References are:
+ * TerminalLatentStateContainer holds the Latent States and their Terminal Jump Diffusion Evolvers. The
+ *  References are:<br><br>
  *  
- *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter Party Risk
+ *  - Burgard, C., and M. Kjaer (2013): Funding Strategies, Funding Costs <i>Risk</i> <b>24 (12)</b>
+ *  	82-87.<br><br>
+ *  
+ *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
  *  	and Funding Costs <i>Journal of Credit Risk</i> <b>7 (3)</b> 1-19.<br><br>
  *  
- *  - Cesari, G., J. Aquilina, N. Charpillon, X. Filipovic, G. Lee, and L. Manda (2009): Modeling, Pricing,
- *  	and Hedging Counter-party Credit Exposure - A Technical Guide <i>Springer Finance</i>
- *  		<b>New York</b>.<br><br>
+ *  - Burgard, C., and M. Kjaer (2014): In the Balance <i>Risk</i> <b>24 (11)</b> 72-75.<br><br>
  *  
  *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk <i>Risk</i> <b>20 (2)</b>
  *  	86-90.<br><br>
- *  
- *  - Li, B., and Y. Tang (2007): Quantitative Analysis, Derivatives Modeling, and Trading Strategies in the
- *  	Presence of Counter-party Credit Risk for the Fixed Income Market <i>World Scientific Publishing </i>
- *  		<b>Singapore</b>.<br><br>
  * 
  *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing
  *  	<i>Risk</i> <b>21 (2)</b> 97-102.<br><br>
@@ -70,48 +67,79 @@ package org.drip.xva.universe;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Equity extends org.drip.xva.universe.Tradeable
+public class TerminalLatentStateContainer
 {
-	private double _dividendRate = java.lang.Double.NaN;
+	private java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> _evolverMap =
+		new org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.xva.evolver.TerminalLatentState>();
 
 	/**
-	 * Equity Constructor
-	 * 
-	 * @param evolver The Equity Price Evolver
-	 * @param dblRepoRate The Equity Repo Rate
-	 * @param dividendRate The Equity Dividend Rate
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * Empty TerminalLatentStateContainer Constructor
 	 */
 
-	public Equity (
-		final org.drip.measure.process.DiffusionEvolver evolver,
-		final double dblRepoRate,
-		final double dividendRate)
-		throws java.lang.Exception
+	public TerminalLatentStateContainer()
 	{
-		super (
-			evolver,
-			dblRepoRate
+	}
+
+	/**
+	 * Retrieve the Jump Diffusion Evolver Map
+	 * 
+	 * @return The Jump Diffusion Evolver Map
+	 */
+
+	public java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> evolverMap()
+	{
+		return _evolverMap;
+	}
+
+	/**
+	 * Add a Latent State Jump Diffusion Evolver
+	 * 
+	 * @param latentStateEvolver The Latent State Jump Diffusion Evolver
+	 * 
+	 * @return TRUE - The Latent State Evolver successfully added
+	 */
+
+	public boolean addEvolver (
+		final org.drip.xva.evolver.TerminalLatentState latentStateEvolver)
+	{
+		if (null == latentStateEvolver)
+		{
+			return false;
+		}
+
+		_evolverMap.put (
+			latentStateEvolver.label().fullyQualifiedName(),
+			latentStateEvolver
 		);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dividendRate = dividendRate))
-			throw new java.lang.Exception ("Equity Constructor => Invalid Inputs");
+		return true;
 	}
 
 	/**
-	 * Retrieve the Equity Dividend Rate
+	 * Indicate if the Latent State Jump Diffusion Evolver exists
 	 * 
-	 * @return The Equity Dividend Rate
+	 * @param label The Latent State Label
+	 * 
+	 * @return TRUE - The Latent State Evolver exists
 	 */
 
-	public double dividendRate()
+	public boolean containsEvolver (
+		final org.drip.state.identifier.LatentStateLabel label)
 	{
-		return _dividendRate;
+		return null == label ? false : _evolverMap.containsKey (label.fullyQualifiedName());
 	}
 
-	@Override public double cashAccumulationRate()
+	/**
+	 * Retrieve the Latent State Jump Diffusion Evolver given the Label
+	 * 
+	 * @param label The Latent State Label
+	 * 
+	 * @return The Latent State Evolver from the Label
+	 */
+
+	public org.drip.xva.evolver.TerminalLatentState evolver (
+		final org.drip.state.identifier.LatentStateLabel label)
 	{
-		return _dividendRate - repoRate();
+		return containsEvolver (label) ? _evolverMap.get (label.fullyQualifiedName()) : null;
 	}
 }
