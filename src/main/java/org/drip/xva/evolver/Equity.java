@@ -77,6 +77,7 @@ public class Equity extends org.drip.xva.evolver.PrimarySecurity
 	/**
 	 * Equity Constructor
 	 * 
+	 * @param id The Security ID
 	 * @param label The Latent State Label
 	 * @param evolver The Equity Price Evolver
 	 * @param dblRepoRate The Equity Repo Rate
@@ -86,6 +87,7 @@ public class Equity extends org.drip.xva.evolver.PrimarySecurity
 	 */
 
 	public Equity (
+		final java.lang.String id,
 		final org.drip.state.identifier.LatentStateLabel label,
 		final org.drip.measure.process.DiffusionEvolver evolver,
 		final double dblRepoRate,
@@ -93,6 +95,7 @@ public class Equity extends org.drip.xva.evolver.PrimarySecurity
 		throws java.lang.Exception
 	{
 		super (
+			id,
 			label,
 			evolver,
 			dblRepoRate

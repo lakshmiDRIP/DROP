@@ -283,6 +283,7 @@ public class XVAGreeks {
 		double dblSensitivityShiftFactor = 0.001;
 
 		PrimarySecurity tAsset = new PrimarySecurity (
+			"AAPL",
 			EquityLabel.Standard ("AAPL"),
 			new DiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
@@ -294,6 +295,7 @@ public class XVAGreeks {
 		);
 
 		PrimarySecurity tOvernightIndex = new PrimarySecurity (
+			currency + "_OVERNIGHT_ZERO",
 			OvernightLabel.Create (currency),
 			new DiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
@@ -305,6 +307,7 @@ public class XVAGreeks {
 		);
 
 		PrimarySecurity tCollateralScheme = new PrimarySecurity (
+			currency + "_CSA_ZERO",
 			CreditSupportAnnexLabel.ISDA (currency),
 			new DiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
@@ -316,6 +319,7 @@ public class XVAGreeks {
 		);
 
 		PrimarySecurity tBankSeniorFunding = new PrimarySecurity (
+			bank + "_" + currency + "_SENIOR_ZERO",
 			CreditLabel.Standard (bank),
 			new JumpDiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
@@ -331,6 +335,7 @@ public class XVAGreeks {
 		);
 
 		PrimarySecurity tBankSubordinateFunding = new PrimarySecurity (
+			bank + "_" + currency + "_SUBORDINATE_ZERO",
 			CreditLabel.Standard (bank),
 			new JumpDiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
@@ -346,6 +351,7 @@ public class XVAGreeks {
 		);
 
 		PrimarySecurity tCounterPartyFunding = new PrimarySecurity (
+			counterParty + "_" + currency + "_SENIOR_ZERO",
 			CreditLabel.Standard (counterParty),
 			new JumpDiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (

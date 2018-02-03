@@ -67,10 +67,9 @@ package org.drip.xva.evolver;
  * @author Lakshmi Krishnamurthy
  */
 
-public class TerminalLatentState
+public class TerminalLatentState extends org.drip.xva.evolver.Numeraire
 {
 	private org.drip.state.identifier.LatentStateLabel _label = null;
-	private org.drip.measure.process.DiffusionEvolver _diffusionEvolver = null;
 
 	/**
 	 * TerminalLatentState Constructor
@@ -86,8 +85,9 @@ public class TerminalLatentState
 		final org.drip.measure.process.DiffusionEvolver diffusionEvolver)
 		throws java.lang.Exception
 	{
-		if (null == (_label = label) ||
-			(null == (_diffusionEvolver = diffusionEvolver)))
+		super (diffusionEvolver);
+
+		if (null == (_label = label))
 		{
 			throw new java.lang.Exception ("TerminalLatentState Constructor => Invalid Inputs");
 		}
@@ -102,16 +102,5 @@ public class TerminalLatentState
 	public org.drip.state.identifier.LatentStateLabel label()
 	{
 		return _label;
-	}
-
-	/**
-	 * Retrieve the Diffusion Evolver
-	 * 
-	 * @return The Diffusion Evolver
-	 */
-
-	public org.drip.measure.process.DiffusionEvolver diffusionEvolver()
-	{
-		return _diffusionEvolver;
 	}
 }

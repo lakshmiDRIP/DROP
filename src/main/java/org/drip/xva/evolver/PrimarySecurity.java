@@ -69,14 +69,15 @@ package org.drip.xva.evolver;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PrimarySecurity extends org.drip.xva.evolver.Numeraire
+public class PrimarySecurity extends org.drip.xva.evolver.TerminalLatentState
 {
+	private java.lang.String _id = "";
 	private double _repoRate = java.lang.Double.NaN;
-	private org.drip.state.identifier.LatentStateLabel _label = null;
 
 	/**
 	 * PrimarySecurity Constructor
 	 * 
+	 * @param id The Security ID
 	 * @param label The Latent State Label
 	 * @param evolver The Primary Security Evolver
 	 * @param repoRate The Repo Rate
@@ -85,28 +86,33 @@ public class PrimarySecurity extends org.drip.xva.evolver.Numeraire
 	 */
 
 	public PrimarySecurity (
+		final java.lang.String id,
 		final org.drip.state.identifier.LatentStateLabel label,
 		final org.drip.measure.process.DiffusionEvolver evolver,
 		final double repoRate)
 		throws java.lang.Exception
 	{
-		super (evolver);
+		super (
+			label,
+			evolver
+		);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_repoRate = repoRate))
+		if (null == (_id = id) || _id.isEmpty() ||
+			!org.drip.quant.common.NumberUtil.IsValid (_repoRate = repoRate))
 		{
 			throw new java.lang.Exception ("PrimarySecurity Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Latent State Label
+	 * Retrieve the Security ID
 	 * 
-	 * @return The Latent State Label
+	 * @return The Repo Rate
 	 */
 
-	public org.drip.state.identifier.LatentStateLabel label()
+	public java.lang.String id()
 	{
-		return _label;
+		return _id;
 	}
 
 	/**

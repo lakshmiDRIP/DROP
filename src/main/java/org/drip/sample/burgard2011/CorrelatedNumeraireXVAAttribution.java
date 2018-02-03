@@ -293,6 +293,7 @@ public class CorrelatedNumeraireXVAAttribution {
 		double dblSensitivityShiftFactor = 0.001;
 
 		PrimarySecurity tAsset = new PrimarySecurity (
+			"AAPL",
 			EquityLabel.Standard ("AAPL"),
 			new DiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
@@ -304,6 +305,7 @@ public class CorrelatedNumeraireXVAAttribution {
 		);
 
 		PrimarySecurity tOvernightIndex = new PrimarySecurity (
+			currency + "_" + "_OVERNIGHT_ZERO",
 			OvernightLabel.Create (currency),
 			new DiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
@@ -315,6 +317,7 @@ public class CorrelatedNumeraireXVAAttribution {
 		);
 
 		PrimarySecurity tCollateralScheme = new PrimarySecurity (
+			currency + "_" + "CSA_ZERO",
 			CreditSupportAnnexLabel.ISDA (currency),
 			new DiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
@@ -326,6 +329,7 @@ public class CorrelatedNumeraireXVAAttribution {
 		);
 
 		PrimarySecurity tBankSeniorFunding = new PrimarySecurity (
+			bank + "_" + currency + "_" + "_SENIOR_ZERO",
 			CreditLabel.Standard (bank),
 			new JumpDiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
@@ -341,6 +345,7 @@ public class CorrelatedNumeraireXVAAttribution {
 		);
 
 		PrimarySecurity tBankSubordinateFunding = new PrimarySecurity (
+			bank + "_" + currency + "_" + "_SUBORDINATE_ZERO",
 			CreditLabel.Standard (bank),
 			new JumpDiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
@@ -356,6 +361,7 @@ public class CorrelatedNumeraireXVAAttribution {
 		);
 
 		PrimarySecurity tCounterPartyFunding = new PrimarySecurity (
+			counterParty + "_" + currency + "_" + "_SENIOR_ZERO",
 			CreditLabel.Standard (counterParty),
 			new JumpDiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (

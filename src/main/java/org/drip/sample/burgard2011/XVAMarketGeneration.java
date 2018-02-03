@@ -160,6 +160,7 @@ public class XVAMarketGeneration {
 		double dblCounterPartyRecoveryRateInitial = 0.30;
 
 		PrimarySecurity tAsset = new PrimarySecurity (
+			"AAPL",
 			EquityLabel.Standard ("AAPL"),
 			new DiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
@@ -171,6 +172,7 @@ public class XVAMarketGeneration {
 		);
 
 		PrimarySecurity tOvernightIndex = new PrimarySecurity (
+			currency + "_OVERNIGHT_ZERO",
 			OvernightLabel.Create (currency),
 			new DiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
@@ -182,6 +184,7 @@ public class XVAMarketGeneration {
 		);
 
 		PrimarySecurity tCollateralScheme = new PrimarySecurity (
+			currency + "_CSA_ZERO",
 			CreditSupportAnnexLabel.ISDA (currency),
 			new DiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
@@ -193,6 +196,7 @@ public class XVAMarketGeneration {
 		);
 
 		PrimarySecurity tBankSeniorFunding = new PrimarySecurity (
+			bank + "_" + currency + "_SENIOR_ZERO",
 			CreditLabel.Standard (bank),
 			new JumpDiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
@@ -208,6 +212,7 @@ public class XVAMarketGeneration {
 		);
 
 		PrimarySecurity tBankSubordinateFunding = new PrimarySecurity (
+			bank + "_" + currency + "_SUBORDINATE_ZERO",
 			CreditLabel.Standard (bank),
 			new JumpDiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
@@ -223,6 +228,7 @@ public class XVAMarketGeneration {
 		);
 
 		PrimarySecurity tCounterPartyFunding = new PrimarySecurity (
+			counterParty + "_" + currency + "_SENIOR_ZERO",
 			CreditLabel.Standard (counterParty),
 			new JumpDiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (

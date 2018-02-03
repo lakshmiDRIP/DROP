@@ -137,9 +137,10 @@ public class AlbaneseAndersenBaselProxy
 		double dblCounterPartyRecoveryRateInitial = 0.30;
 
 		PrimarySecurity tAsset = new PrimarySecurity (
+			"AAPL",
 			EquityLabel.Standard ("AAPL"),
 			new DiffusionEvolver (
-				DiffusionEvaluatorLogarithmic.Standard (
+				DiffusionEvaluatorLinear.Standard (
 					dblAssetNumeraireDrift,
 					dblAssetNumeraireVolatility
 				)
@@ -148,6 +149,7 @@ public class AlbaneseAndersenBaselProxy
 		);
 
 		PrimarySecurity tOvernightIndex = new PrimarySecurity (
+			currency + "_OVERNIGHT",
 			OvernightLabel.Create (currency),
 			new DiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
@@ -159,6 +161,7 @@ public class AlbaneseAndersenBaselProxy
 		);
 
 		PrimarySecurity tCollateralScheme = new PrimarySecurity (
+			currency + "_CSA",
 			CreditSupportAnnexLabel.ISDA (currency),
 			new DiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
@@ -170,6 +173,7 @@ public class AlbaneseAndersenBaselProxy
 		);
 
 		PrimarySecurity tBankSeniorFunding = new PrimarySecurity (
+			bank + "_" + currency + "_SENIOR_ZERO",
 			CreditLabel.Standard (bank),
 			new JumpDiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
@@ -185,6 +189,7 @@ public class AlbaneseAndersenBaselProxy
 		);
 
 		PrimarySecurity tBankSubordinateFunding = new PrimarySecurity (
+			bank + "_" + currency + "_SUBORDINATE_ZERO",
 			CreditLabel.Standard (bank),
 			new JumpDiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
@@ -200,6 +205,7 @@ public class AlbaneseAndersenBaselProxy
 		);
 
 		PrimarySecurity tCounterPartyFunding = new PrimarySecurity (
+			counterParty + "_" + currency + "_SENIOR_ZERO",
 			CreditLabel.Standard (counterParty),
 			new JumpDiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
