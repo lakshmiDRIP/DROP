@@ -69,7 +69,7 @@ package org.drip.xva.evolver;
 
 public class DynamicsContainer
 {
-	private java.util.Map<java.lang.String, org.drip.xva.evolver.Numeraire> _mapScalingNumeraireDynamics =
+	private java.util.Map<java.lang.String, org.drip.xva.evolver.ScalingNumeraire> _mapScalingNumeraireDynamics =
 		null;
 	private java.util.Map<java.lang.String, org.drip.xva.evolver.PrimarySecurity> _mapPrimarySecurityDynamics
 		= null;
@@ -83,7 +83,7 @@ public class DynamicsContainer
 	public DynamicsContainer()
 	{
 		_mapScalingNumeraireDynamics = new
-			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.xva.evolver.Numeraire>();
+			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.xva.evolver.ScalingNumeraire>();
 
 		_mapPrimarySecurityDynamics = new
 			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.xva.evolver.PrimarySecurity>();
@@ -98,7 +98,7 @@ public class DynamicsContainer
 	 * @return The Scaling Numeraire Evolver Dynamics Settings Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.xva.evolver.Numeraire> scalingNumeraireDynamics()
+	public java.util.Map<java.lang.String, org.drip.xva.evolver.ScalingNumeraire> scalingNumeraireDynamics()
 	{
 		return _mapScalingNumeraireDynamics;
 	}
@@ -114,7 +114,7 @@ public class DynamicsContainer
 
 	public boolean addScalingNumeraire (
 		final java.lang.String numeraireName,
-		final org.drip.xva.evolver.Numeraire numeraire)
+		final org.drip.xva.evolver.ScalingNumeraire numeraire)
 	{
 		if (null == numeraireName || numeraireName.isEmpty() ||
 			null == numeraire)
@@ -153,7 +153,7 @@ public class DynamicsContainer
 	 * @return The Scaling Numeraire
 	 */
 
-	public org.drip.xva.evolver.Numeraire scalingNumeraire (
+	public org.drip.xva.evolver.ScalingNumeraire scalingNumeraire (
 		final java.lang.String numeraireName)
 	{
 		return !scalingNumeraireExists (numeraireName) ? null : _mapScalingNumeraireDynamics.get
@@ -289,5 +289,20 @@ public class DynamicsContainer
 		final org.drip.state.identifier.LatentStateLabel label)
 	{
 		return null == label ? false : _mapPrimarySecurityDynamics.containsKey (label.fullyQualifiedName());
+	}
+
+	/**
+	 * Retrieve the Primary Security Evolver given the Label
+	 * 
+	 * @param label The Primary Security Label
+	 * 
+	 * @return The Primary Security Evolver
+	 */
+
+	public org.drip.xva.evolver.PrimarySecurity primarySecurity (
+		final org.drip.state.identifier.LatentStateLabel label)
+	{
+		return primarySecurityExists (label) ? _mapPrimarySecurityDynamics.get (label.fullyQualifiedName()) :
+			null;
 	}
 }

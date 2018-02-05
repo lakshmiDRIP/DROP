@@ -68,14 +68,14 @@ package org.drip.xva.evolver;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PrimarySecurityContainer
+public class PrimarySecurityContainer extends org.drip.xva.evolver.DynamicsContainer
 {
-	private org.drip.xva.evolver.PrimarySecurity _csa = null;
-	private org.drip.xva.evolver.PrimarySecurity _position = null;
-	private org.drip.xva.evolver.PrimarySecurity _overnight = null;
-	private org.drip.xva.evolver.PrimarySecurity _bankSeniorFunding = null;
-	private org.drip.xva.evolver.PrimarySecurity _counterPartyFunding = null;
-	private org.drip.xva.evolver.PrimarySecurity _bankSubordinateFunding = null;
+	private org.drip.state.identifier.LatentStateLabel _csaLabel = null;
+	private org.drip.state.identifier.LatentStateLabel _positionLabel = null;
+	private org.drip.state.identifier.LatentStateLabel _overnightLabel = null;
+	private org.drip.state.identifier.LatentStateLabel _bankSeniorFundingLabel = null;
+	private org.drip.state.identifier.LatentStateLabel _counterPartyFundingLabel = null;
+	private org.drip.state.identifier.LatentStateLabel _bankSubordinateFundingLabel = null;
 
 	/**
 	 * PrimarySecurityContainer Constructor
@@ -99,16 +99,29 @@ public class PrimarySecurityContainer
 		final org.drip.xva.evolver.PrimarySecurity counterPartyFunding)
 		throws java.lang.Exception
 	{
-		if (null == (_overnight = overnight) ||
-			null == (_csa = csa) ||
-			null == (_bankSeniorFunding = bankSeniorFunding) ||
-			null == (_counterPartyFunding = counterPartyFunding))
+		if (!addPrimarySecurity (overnight) ||
+			!addPrimarySecurity (csa) ||
+			!addPrimarySecurity (bankSeniorFunding) ||
+			!addPrimarySecurity (counterPartyFunding) ||
+			!addPrimarySecurity (bankSubordinateFunding))
 		{
 			throw new java.lang.Exception ("PrimarySecurityContainer Constructor => Invalid Inputs");
 		}
 
-		_position = position;
-		_bankSubordinateFunding = bankSubordinateFunding;
+		addPrimarySecurity (position);
+
+		_csaLabel = csa.label();
+
+		_overnightLabel = overnight.label();
+
+		_bankSeniorFundingLabel = bankSeniorFunding.label();
+
+		_counterPartyFundingLabel = counterPartyFunding.label();
+
+		_positionLabel = null == position ? null : position.label();
+
+		_bankSubordinateFundingLabel = null == bankSubordinateFunding ? null :
+			bankSubordinateFunding.label();
 	}
 
 	/**
@@ -119,7 +132,7 @@ public class PrimarySecurityContainer
 
 	public org.drip.xva.evolver.PrimarySecurity position()
 	{
-		return _position;
+		return primarySecurity (_positionLabel);
 	}
 
 	/**
@@ -130,7 +143,7 @@ public class PrimarySecurityContainer
 
 	public org.drip.xva.evolver.PrimarySecurity overnight()
 	{
-		return _overnight;
+		return primarySecurity (_overnightLabel);
 	}
 
 	/**
@@ -141,7 +154,7 @@ public class PrimarySecurityContainer
 
 	public org.drip.xva.evolver.PrimarySecurity csa()
 	{
-		return _csa;
+		return primarySecurity (_csaLabel);
 	}
 
 	/**
@@ -152,7 +165,7 @@ public class PrimarySecurityContainer
 
 	public org.drip.xva.evolver.PrimarySecurity bankSeniorFunding()
 	{
-		return _bankSeniorFunding;
+		return primarySecurity (_bankSeniorFundingLabel);
 	}
 
 	/**
@@ -163,7 +176,7 @@ public class PrimarySecurityContainer
 
 	public org.drip.xva.evolver.PrimarySecurity bankSubordinateFunding()
 	{
-		return _bankSubordinateFunding;
+		return primarySecurity (_bankSubordinateFundingLabel);
 	}
 
 	/**
@@ -174,6 +187,6 @@ public class PrimarySecurityContainer
 
 	public org.drip.xva.evolver.PrimarySecurity counterPartyFunding()
 	{
-		return _counterPartyFunding;
+		return primarySecurity (_counterPartyFundingLabel);
 	}
 }

@@ -10,14 +10,10 @@ import org.drip.measure.statistics.UnivariateDiscreteThin;
 import org.drip.quant.common.FormatUtil;
 import org.drip.quant.linearalgebra.Matrix;
 import org.drip.service.env.EnvManager;
-import org.drip.state.identifier.CreditLabel;
-import org.drip.state.identifier.CreditSupportAnnexLabel;
-import org.drip.state.identifier.EquityLabel;
-import org.drip.state.identifier.OvernightLabel;
+import org.drip.state.identifier.*;
 import org.drip.xva.cpty.*;
 import org.drip.xva.dynamics.*;
-import org.drip.xva.evolver.PrimarySecurity;
-import org.drip.xva.evolver.PrimarySecurityContainer;
+import org.drip.xva.evolver.*;
 import org.drip.xva.holdings.*;
 import org.drip.xva.set.*;
 import org.drip.xva.universe.*;
@@ -95,12 +91,12 @@ public class AlbaneseAndersenBaselProxy
 	private static final PrimarySecurityContainer GenerateTradeablesContainer (
 		final String eventTenor,
 		final int eventCount,
-		final int iTerminationDate)
+		final int iTerminationDate,
+		final String bank,
+		final String counterParty)
 		throws Exception
 	{
-		String bank = "WFC";
 		String currency = "USD";
-		String counterParty = "BAC";
 
 		double dblAssetNumeraireDrift = 0.0;
 		double dblAssetNumeraireVolatility = 0.25;
@@ -233,7 +229,9 @@ public class AlbaneseAndersenBaselProxy
 	private static final MarketVertexGenerator ConstructMarketVertexGenerator (
 		final JulianDate spotDate,
 		final String periodTenor,
-		final int periodCount)
+		final int periodCount,
+		final String bank,
+		final String counterParty)
 		throws Exception
 	{
 		JulianDate terminationDate = spotDate;
@@ -256,32 +254,46 @@ public class AlbaneseAndersenBaselProxy
 			GenerateTradeablesContainer (
 				periodTenor,
 				periodCount,
-				terminationDate.julian()
+				terminationDate.julian(),
+				bank,
+				counterParty
 			),
-			new EntityLatentStateEvolver (
-				new DiffusionEvolver (
-					DiffusionEvaluatorLogarithmic.Standard (
-						dblBankHazardRateDrift,
-						dblBankHazardRateVolatility
+			new MarketDynamicsContainer (
+				new TerminalLatentState (
+					CreditLabel.Standard (bank),
+					new DiffusionEvolver (
+						DiffusionEvaluatorLogarithmic.Standard (
+							dblBankHazardRateDrift,
+							dblBankHazardRateVolatility
+						)
 					)
 				),
-				new DiffusionEvolver (
-					DiffusionEvaluatorLogarithmic.Standard (
-						dblBankRecoveryRateDrift,
-						dblBankRecoveryRateVolatility
+				new TerminalLatentState (
+					RecoveryLabel.Standard (bank + "_SENIOR"),
+					new DiffusionEvolver (
+						DiffusionEvaluatorLogarithmic.Standard (
+							dblBankRecoveryRateDrift,
+							dblBankRecoveryRateVolatility
+						)
 					)
 				),
 				null,
-				new DiffusionEvolver (
-					DiffusionEvaluatorLogarithmic.Standard (
-						dblCounterPartyHazardRateDrift,
-						dblCounterPartyHazardRateVolatility
+				new TerminalLatentState (
+					CreditLabel.Standard (counterParty),
+					new DiffusionEvolver (
+						DiffusionEvaluatorLogarithmic.Standard (
+							dblCounterPartyHazardRateDrift,
+							dblCounterPartyHazardRateVolatility
+						)
 					)
 				),
-				new DiffusionEvolver (
-					DiffusionEvaluatorLogarithmic.Standard (
-						dblCounterPartyRecoveryRateDrift,
-						dblCounterPartyRecoveryRateVolatility
+				new TerminalLatentState (
+					RecoveryLabel.Standard (counterParty + "_SENIOR"),
+					new DiffusionEvolver (
+						DiffusionEvaluatorLogarithmic.Standard (
+							dblCounterPartyRecoveryRateDrift,
+							dblCounterPartyRecoveryRateVolatility
+						)
 					)
 				)
 			)
@@ -363,6 +375,9 @@ public class AlbaneseAndersenBaselProxy
 			true
 		);
 
+		String bank = "CITI";
+		String counterParty = "AIG";
+
 		/*
 		 * Evolution Control
 		 */
@@ -405,7 +420,9 @@ public class AlbaneseAndersenBaselProxy
 			ConstructMarketVertexGenerator (
 				dtSpot,
 				eventTenor,
-				eventCount
+				eventCount,
+				bank,
+				counterParty
 			),
 			PathSimulatorScheme.AlbaneseAndersenVertex(),
 			PositionGroupContainer.Solo (

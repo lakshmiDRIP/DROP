@@ -57,23 +57,26 @@ package org.drip.state.identifier;
  * @author Lakshmi Krishnamurthy
  */
 
-public class EquityLabel implements org.drip.state.identifier.LatentStateLabel {
-	private java.lang.String _strReferenceEntity = "";
+public class EquityLabel extends org.drip.state.identifier.DesignateLabel
+{
 
 	/**
 	 * Make a Standard Equity Label from the Reference Entity Name
 	 * 
-	 * @param strReferenceEntity The Reference Entity Name
+	 * @param referenceEntity The Reference Entity Name
 	 * 
 	 * @return The Equity Label
 	 */
 
 	public static final EquityLabel Standard (
-		final java.lang.String strReferenceEntity)
+		final java.lang.String referenceEntity)
 	{
-		try {
-			return new EquityLabel (strReferenceEntity);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new EquityLabel (referenceEntity);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -83,28 +86,22 @@ public class EquityLabel implements org.drip.state.identifier.LatentStateLabel {
 	/**
 	 * EquityLabel constructor
 	 * 
-	 * @param strReferenceEntity The Reference Entity Name
+	 * @param referenceEntity The Reference Entity Name
 	 * 
 	 * @throws java.lang.Exception Thrown if the inputs are invalid
 	 */
 
 	private EquityLabel (
-		final java.lang.String strReferenceEntity)
+		final java.lang.String referenceEntity)
 		throws java.lang.Exception
 	{
-		if (null == (_strReferenceEntity = strReferenceEntity) || _strReferenceEntity.isEmpty())
-			throw new java.lang.Exception ("EquityLabel ctr: Invalid Inputs");
-	}
-
-	@Override public java.lang.String fullyQualifiedName()
-	{
-		return _strReferenceEntity;
+		super (referenceEntity);
 	}
 
 	@Override public boolean match (
 		final org.drip.state.identifier.LatentStateLabel lslOther)
 	{
 		return null == lslOther || !(lslOther instanceof org.drip.state.identifier.CreditLabel) ? false :
-			_strReferenceEntity.equalsIgnoreCase (lslOther.fullyQualifiedName());
+			super.match (lslOther);
 	}
 }

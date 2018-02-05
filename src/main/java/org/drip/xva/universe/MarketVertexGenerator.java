@@ -141,7 +141,7 @@ public class MarketVertexGenerator
 	private double[] _ycfWidth = null;
 	private int[] _eventDateArray = null;
 	private org.drip.xva.evolver.PrimarySecurityContainer _tradeablesContainer = null;
-	private org.drip.xva.universe.EntityLatentStateEvolver _entityLatentStateEvolver = null;
+	private org.drip.xva.evolver.MarketDynamicsContainer _entityLatentStateEvolver = null;
 
 	/**
 	 * Construct a MarketVertexGenerator Instance from the Spot Date, the Period Tenor, and the Period Count
@@ -160,7 +160,7 @@ public class MarketVertexGenerator
 		final java.lang.String periodTenor,
 		final int periodCount,
 		final org.drip.xva.evolver.PrimarySecurityContainer tradeablesContainer,
-		final org.drip.xva.universe.EntityLatentStateEvolver entityLatentStateEvolver)
+		final org.drip.xva.evolver.MarketDynamicsContainer entityLatentStateEvolver)
 	{
 		try
 		{
@@ -198,7 +198,7 @@ public class MarketVertexGenerator
 		final int spotDate,
 		final int[] eventDateArray,
 		final org.drip.xva.evolver.PrimarySecurityContainer tradeablesContainer,
-		final org.drip.xva.universe.EntityLatentStateEvolver entityLatentStateEvolver)
+		final org.drip.xva.evolver.MarketDynamicsContainer entityLatentStateEvolver)
 		throws java.lang.Exception
 	{
 		if (0 >= (_spotDate = spotDate) ||
@@ -245,7 +245,7 @@ public class MarketVertexGenerator
 	 * @return The Entity Latent State Evolver
 	 */
 
-	public org.drip.xva.universe.EntityLatentStateEvolver entityLatentStateEvolver()
+	public org.drip.xva.evolver.MarketDynamicsContainer entityLatentStateEvolver()
 	{
 		return _entityLatentStateEvolver;
 	}

@@ -1,5 +1,5 @@
 
-package org.drip.xva.universe;
+package org.drip.xva.evolver;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -7,6 +7,7 @@ package org.drip.xva.universe;
 
 /*!
  * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
  *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
  *  	libraries targeting analysts and developers
@@ -47,65 +48,56 @@ package org.drip.xva.universe;
  */
 
 /**
- * TradeableLatentStateEvolver is a Latent State Evolver that doubles up as a Tradeable. The References
- *  are:<br><br>
- *  
- *  - Burgard, C., and M. Kjaer (2013): Funding Strategies, Funding Costs <i>Risk</i> <b>24 (12)</b>
- *  	82-87.<br><br>
+ * ScalingNumeraire holds Parameters that guide the Diffusion of a Scaling Numeraire. The References are:
  *  
  *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
- *  	and Funding Costs <i>Journal of Credit Risk</i> <b>7 (3)</b> 1-19.<br><br>
+ *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
  *  
- *  - Burgard, C., and M. Kjaer (2014): In the Balance <i>Risk</i> <b>24 (11)</b> 72-75.<br><br>
+ *  - Cesari, G., J. Aquilina, N. Charpillon, X. Filipovic, G. Lee, and L. Manda (2009): Modeling, Pricing,
+ *  	and Hedging Counter-party Credit Exposure - A Technical Guide, Springer Finance, New York.
  *  
- *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk <i>Risk</i> <b>20 (2)</b>
- *  	86-90.<br><br>
+ *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk, Risk 20 (2) 86-90.
+ *  
+ *  - Li, B., and Y. Tang (2007): Quantitative Analysis, Derivatives Modeling, and Trading Strategies in the
+ *  	Presence of Counter-party Credit Risk for the Fixed Income Market, World Scientific Publishing,
+ *  	Singapore.
  * 
- *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing
- *  	<i>Risk</i> <b>21 (2)</b> 97-102.<br><br>
+ *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
+ *  	21 (2) 97-102.
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class TradeableLatentStateEvolver extends org.drip.xva.evolver.TerminalLatentState
+public class ScalingNumeraire
 {
-	private org.drip.xva.evolver.PrimarySecurity _tradeable = null;
+	private org.drip.measure.process.DiffusionEvolver _evolver = null;
 
 	/**
-	 * TradeableLatentStateEvolver Constructor
+	 * ScalingNumeraire Constructor
 	 * 
-	 * @param label The Latest State Label
-	 * @param diffusionEvolver The Latent State Diffusion Evolver
-	 * @param tradeable The Tradeable Component
+	 * @param evolver The Scaling Numeraire Diffusion Evolver
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public TradeableLatentStateEvolver (
-		final org.drip.state.identifier.LatentStateLabel label,
-		final org.drip.measure.process.DiffusionEvolver diffusionEvolver,
-		final org.drip.xva.evolver.PrimarySecurity tradeable)
+	public ScalingNumeraire (
+		final org.drip.measure.process.DiffusionEvolver evolver)
 		throws java.lang.Exception
 	{
-		super (
-			label,
-			diffusionEvolver
-		);
-
-		if (null == (_tradeable = tradeable))
+		if (null == (_evolver = evolver))
 		{
-			throw new java.lang.Exception ("TradeableLatentStateEvolver Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("ScalingNumeraire Constructor => Invalid Inputs!");
 		}
 	}
 
 	/**
-	 * Retrieve the Tradeable
+	 * Retrieve the Scaling Numeraire Evolver
 	 * 
-	 * @return The Tradeable
+	 * @return The Scaling Numeraire Evolver
 	 */
 
-	public org.drip.xva.evolver.PrimarySecurity tradeable()
+	public org.drip.measure.process.DiffusionEvolver evolver()
 	{
-		return _tradeable;
+		return _evolver;
 	}
 }

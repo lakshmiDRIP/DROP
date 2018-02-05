@@ -57,13 +57,13 @@ package org.drip.state.identifier;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CreditLabel implements org.drip.state.identifier.LatentStateLabel {
-	private java.lang.String _strReferenceEntity = "";
+public class CreditLabel extends org.drip.state.identifier.DesignateLabel
+{
 
 	/**
 	 * Make a Standard Credit Label from the Reference Entity Name
 	 * 
-	 * @param strReferenceEntity The Reference Entity Name
+	 * @param referenceEntity The Reference Entity Name
 	 * 
 	 * @return The Credit Label
 	 */
@@ -71,9 +71,12 @@ public class CreditLabel implements org.drip.state.identifier.LatentStateLabel {
 	public static final CreditLabel Standard (
 		final java.lang.String strReferenceEntity)
 	{
-		try {
+		try
+		{
 			return new CreditLabel (strReferenceEntity);
-		} catch (java.lang.Exception e) {
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -83,39 +86,22 @@ public class CreditLabel implements org.drip.state.identifier.LatentStateLabel {
 	/**
 	 * CreditLabel constructor
 	 * 
-	 * @param strReferenceEntity The Reference Entity Name
+	 * @param referenceEntity The Reference Entity Name
 	 * 
 	 * @throws java.lang.Exception Thrown if the inputs are invalid
 	 */
 
 	public CreditLabel (
-		final java.lang.String strReferenceEntity)
+		final java.lang.String referenceEntity)
 		throws java.lang.Exception
 	{
-		if (null == (_strReferenceEntity = strReferenceEntity) || _strReferenceEntity.isEmpty())
-			throw new java.lang.Exception ("CreditLabel ctr: Invalid Inputs");
-	}
-
-	@Override public java.lang.String fullyQualifiedName()
-	{
-		return _strReferenceEntity;
+		super (referenceEntity);
 	}
 
 	@Override public boolean match (
 		final org.drip.state.identifier.LatentStateLabel lslOther)
 	{
 		return null == lslOther || !(lslOther instanceof org.drip.state.identifier.CreditLabel) ? false :
-			_strReferenceEntity.equalsIgnoreCase (lslOther.fullyQualifiedName());
-	}
-
-	/**
-	 * Retrieve the Reference Entity
-	 * 
-	 * @return The Reference Entity
-	 */
-
-	public java.lang.String referenceEntity()
-	{
-		return _strReferenceEntity;
+			super.match (lslOther);
 	}
 }

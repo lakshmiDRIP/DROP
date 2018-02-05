@@ -67,7 +67,7 @@ package org.drip.xva.evolver;
  * @author Lakshmi Krishnamurthy
  */
 
-public class TerminalLatentState extends org.drip.xva.evolver.Numeraire
+public class TerminalLatentState extends org.drip.xva.evolver.ScalingNumeraire
 {
 	private org.drip.state.identifier.LatentStateLabel _label = null;
 

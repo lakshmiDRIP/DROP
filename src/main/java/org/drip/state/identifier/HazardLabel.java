@@ -1,21 +1,5 @@
 
-package org.drip.coverage.product;
-
-import org.drip.sample.bondfixed.Bareilly;
-import org.drip.sample.bondfixed.BulletAgency;
-import org.drip.sample.bondfixed.BulletCorporate1;
-import org.drip.sample.bondfixed.BulletCorporate2;
-import org.drip.sample.bondfixed.BulletCorporate3;
-import org.drip.sample.bondfixed.BulletCorporate4;
-import org.drip.sample.bondfixed.BulletCorporate5;
-import org.drip.sample.bondfixed.BulletCorporate6;
-import org.drip.sample.bondfixed.HubbaliDharwad;
-import org.drip.sample.bondfixed.Moradabad;
-import org.drip.sample.bondfixed.Mysore;
-import org.drip.sample.bondfixed.Tiruchirapalli;
-import org.drip.sample.bondfixed.Tiruppur;
-
-import org.junit.Test;
+package org.drip.state.identifier;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -23,7 +7,6 @@ import org.junit.Test;
 
 /*!
  * Copyright (C) 2018 Lakshmi Krishnamurthy
- * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
  *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
  *  	libraries targeting analysts and developers
@@ -64,39 +47,57 @@ import org.junit.Test;
  */
 
 /**
- * BondFixed holds the JUnit Code Coverage Tests for the Fixed Bond Product Module.
- *
+ * HazardLabel contains the Identifier Parameters referencing the Latent State of the named Hazard Curve.
+ *  Currently it only contains the Reference Entity Name.
+ *  
  * @author Lakshmi Krishnamurthy
  */
 
-public class BondFixed
+public class HazardLabel extends org.drip.state.identifier.DesignateLabel
 {
-	@Test public void codeCoverageTest() throws Exception
+
+	/**
+	 * Make a Standard Hazard Label from the Reference Entity Name
+	 * 
+	 * @param referenceEntity The Reference Entity Name
+	 * 
+	 * @return The Hazard Label
+	 */
+
+	public static final HazardLabel Standard (
+		final java.lang.String referenceEntity)
 	{
-		Bareilly.main (null);
+		try
+		{
+			return new HazardLabel (referenceEntity);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
 
-		BulletAgency.main (null);
+		return null;
+	}
 
-		BulletCorporate1.main (null);
+	/**
+	 * HazardLabel constructor
+	 * 
+	 * @param referenceEntity The Reference Entity Name
+	 * 
+	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 */
 
-		BulletCorporate2.main (null);
+	public HazardLabel (
+		final java.lang.String referenceEntity)
+		throws java.lang.Exception
+	{
+		super (referenceEntity);
+	}
 
-		BulletCorporate3.main (null);
-
-		BulletCorporate4.main (null);
-
-		BulletCorporate5.main (null);
-
-		BulletCorporate6.main (null);
-
-		HubbaliDharwad.main (null);
-
-		Moradabad.main (null);
-
-		Mysore.main (null);
-
-		Tiruchirapalli.main (null);
-
-		Tiruppur.main (null);
-    }
+	@Override public boolean match (
+		final org.drip.state.identifier.LatentStateLabel lslOther)
+	{
+		return null == lslOther || !(lslOther instanceof org.drip.state.identifier.HazardLabel) ? false :
+			super.match (lslOther);
+	}
 }

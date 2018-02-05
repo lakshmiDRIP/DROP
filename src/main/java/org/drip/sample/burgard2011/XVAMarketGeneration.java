@@ -9,12 +9,8 @@ import org.drip.measure.process.*;
 import org.drip.quant.common.FormatUtil;
 import org.drip.quant.linearalgebra.Matrix;
 import org.drip.service.env.EnvManager;
-import org.drip.state.identifier.CreditLabel;
-import org.drip.state.identifier.CreditSupportAnnexLabel;
-import org.drip.state.identifier.EquityLabel;
-import org.drip.state.identifier.OvernightLabel;
-import org.drip.xva.evolver.PrimarySecurity;
-import org.drip.xva.evolver.PrimarySecurityContainer;
+import org.drip.state.identifier.*;
+import org.drip.xva.evolver.*;
 import org.drip.xva.universe.*;
 
 /*
@@ -299,12 +295,27 @@ public class XVAMarketGeneration {
 				tBankSubordinateFunding,
 				tCounterPartyFunding
 			),
-			new EntityLatentStateEvolver (
-				deBankHazardRate,
-				deBankSeniorRecoveryRate,
-				deBankSubordinateRecoveryRate,
-				deCounterPartyHazardRate,
-				deCounterPartyRecoveryRate
+			new MarketDynamicsContainer (
+				new TerminalLatentState (
+					CreditLabel.Standard (bank),
+					deBankHazardRate
+				),
+				new TerminalLatentState (
+					RecoveryLabel.Standard (bank + "_SENIOR"),
+					deBankSeniorRecoveryRate
+				),
+				new TerminalLatentState (
+					RecoveryLabel.Standard (bank + "_SUBORDINATE"),
+					deBankSubordinateRecoveryRate
+				),
+				new TerminalLatentState (
+					CreditLabel.Standard (counterParty),
+					deCounterPartyHazardRate
+				),
+				new TerminalLatentState (
+					RecoveryLabel.Standard (counterParty + "_SENIOR"),
+					deCounterPartyRecoveryRate
+				)
 			)
 		);
 

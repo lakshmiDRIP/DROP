@@ -1,16 +1,5 @@
 
-package org.drip.coverage.spline;
-
-import org.drip.sample.spline.BSplineSequence;
-import org.drip.sample.spline.BasisBSplineSet;
-import org.drip.sample.spline.BasisMonicBSpline;
-import org.drip.sample.spline.BasisMonicHatComparison;
-import org.drip.sample.spline.BasisMulticBSpline;
-import org.drip.sample.spline.BasisSplineSet;
-import org.drip.sample.spline.BasisTensionSplineSet;
-import org.drip.sample.spline.PolynomialBasisSpline;
-
-import org.junit.Test;
+package org.drip.state.identifier;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -18,7 +7,6 @@ import org.junit.Test;
 
 /*!
  * Copyright (C) 2018 Lakshmi Krishnamurthy
- * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
  *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
  *  	libraries targeting analysts and developers
@@ -59,29 +47,45 @@ import org.junit.Test;
  */
 
 /**
- * Spline holds the JUnit Code Coverage Tests for the Segment Spline Module.
- *
+ * DesignateLabel contains the Identifier Parameters referencing the Latent State of an Entity Designate.
+ *  
  * @author Lakshmi Krishnamurthy
  */
 
-public class Spline
+public abstract class DesignateLabel implements org.drip.state.identifier.LatentStateLabel
 {
-	@Test public void codeCoverageTest() throws Exception
+	private java.lang.String _referenceEntity = "";
+
+	protected DesignateLabel (
+		final java.lang.String referenceEntity)
+		throws java.lang.Exception
 	{
-		BasisBSplineSet.main (null);
+		if (null == (_referenceEntity = referenceEntity) || _referenceEntity.isEmpty())
+		{
+			throw new java.lang.Exception ("DesignateLabel ctr: Invalid Inputs");
+		}
+	}
 
-		BasisMonicBSpline.main (null);
+	@Override public java.lang.String fullyQualifiedName()
+	{
+		return _referenceEntity;
+	}
 
-		BasisMonicHatComparison.main (null);
+	@Override public boolean match (
+		final org.drip.state.identifier.LatentStateLabel lslOther)
+	{
+		return null == lslOther || !(lslOther instanceof org.drip.state.identifier.DesignateLabel) ? false :
+			_referenceEntity.equalsIgnoreCase (lslOther.fullyQualifiedName());
+	}
 
-		BasisMulticBSpline.main (null);
+	/**
+	 * Retrieve the Reference Entity
+	 * 
+	 * @return The Reference Entity
+	 */
 
-		BasisSplineSet.main (null);
-
-		BasisTensionSplineSet.main (null);
-
-		BSplineSequence.main (null);
-
-		PolynomialBasisSpline.main (null);
-    }
+	public java.lang.String referenceEntity()
+	{
+		return _referenceEntity;
+	}
 }
