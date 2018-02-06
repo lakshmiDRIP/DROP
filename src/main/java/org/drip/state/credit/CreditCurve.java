@@ -72,7 +72,7 @@ public abstract class CreditCurve implements org.drip.analytics.definition.Curve
 
 	protected java.lang.String _strCurrency = "";
 	protected int _iEpochDate = java.lang.Integer.MIN_VALUE;
-	protected org.drip.state.identifier.CreditLabel _label = null;
+	protected org.drip.state.identifier.EntityCreditLabel _label = null;
 	protected int _iSpecificDefaultDate = java.lang.Integer.MIN_VALUE;
 
 	/*
@@ -95,7 +95,7 @@ public abstract class CreditCurve implements org.drip.analytics.definition.Curve
 
 	protected CreditCurve (
 		final int iEpochDate,
-		final org.drip.state.identifier.CreditLabel label,
+		final org.drip.state.identifier.EntityCreditLabel label,
 		final java.lang.String strCurrency)
 		throws java.lang.Exception
 	{

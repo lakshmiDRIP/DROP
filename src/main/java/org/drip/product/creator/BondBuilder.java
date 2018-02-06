@@ -232,7 +232,10 @@ public class BondBuilder {
 				strCurrency,
 				null,
 				!org.drip.quant.common.StringUtil.IsEmpty (strCreditCurveName) ?
-					org.drip.state.identifier.CreditLabel.Standard (strCreditCurveName) : null
+					org.drip.state.identifier.EntityCreditLabel.Standard (
+						strCreditCurveName,
+						strCurrency
+					) : null
 			), new org.drip.product.params.NotionalSetting (
 				100.,
 				strCurrency,
@@ -358,7 +361,10 @@ public class BondBuilder {
 				strCurrency,
 				null,
 				!org.drip.quant.common.StringUtil.IsEmpty (strCreditCurveName) ?
-					org.drip.state.identifier.CreditLabel.Standard (strCreditCurveName) : null
+					org.drip.state.identifier.EntityCreditLabel.Standard (
+						strCreditCurveName,
+						strCurrency
+					) : null
 			), new org.drip.product.params.NotionalSetting (
 				100.,
 				strCurrency,
@@ -613,7 +619,11 @@ public class BondBuilder {
 				strCurrency,
 				org.drip.state.identifier.ForwardLabel.Standard (strRateIndex),
 				null == strCreditCurveName || strCreditCurveName.isEmpty() ? null :
-					org.drip.state.identifier.CreditLabel.Standard (strCreditCurveName)),
+					org.drip.state.identifier.EntityCreditLabel.Standard (
+						strCreditCurveName,
+						strCurrency
+					)
+				),
 			new org.drip.product.params.NotionalSetting (
 				100.,
 				strCurrency,
@@ -746,7 +756,11 @@ public class BondBuilder {
 				strCurrency,
 				org.drip.state.identifier.ForwardLabel.Standard (strRateIndex),
 				null == strCreditCurveName || strCreditCurveName.isEmpty() ? null :
-					org.drip.state.identifier.CreditLabel.Standard (strCreditCurveName)),
+					org.drip.state.identifier.EntityCreditLabel.Standard (
+						strCreditCurveName,
+						strCurrency
+					)
+				),
 			new org.drip.product.params.NotionalSetting (
 				100.,
 				strCurrency,
@@ -1332,7 +1346,10 @@ public class BondBuilder {
 						dapAccrualEnd,
 						org.drip.state.identifier.ForwardLabel.Standard (strFloatIndex),
 						!org.drip.quant.common.StringUtil.IsEmpty (strCreditCurveName) ?
-							org.drip.state.identifier.CreditLabel.Standard (strCreditCurveName) : null
+							org.drip.state.identifier.EntityCreditLabel.Standard (
+								strCreditCurveName,
+								strCurrency
+							) : null
 					),
 					iMaturityDate,
 					""
@@ -1788,7 +1805,11 @@ public class BondBuilder {
 				strCurrency,
 				org.drip.state.identifier.OTCFixFloatLabel.Standard (strRateIndex),
 				null == strCreditCurveName || strCreditCurveName.isEmpty() ? null :
-					org.drip.state.identifier.CreditLabel.Standard (strCreditCurveName)),
+					org.drip.state.identifier.EntityCreditLabel.Standard (
+						strCreditCurveName,
+						strCurrency
+					)
+				),
 			new org.drip.product.params.NotionalSetting (
 				100.,
 				strCurrency,
@@ -1922,7 +1943,11 @@ public class BondBuilder {
 				strCurrency,
 				org.drip.state.identifier.OTCFixFloatLabel.Standard (strRateIndex),
 				null == strCreditCurveName || strCreditCurveName.isEmpty() ? null :
-					org.drip.state.identifier.CreditLabel.Standard (strCreditCurveName)),
+					org.drip.state.identifier.EntityCreditLabel.Standard (
+						strCreditCurveName,
+						strCurrency
+					)
+				),
 			new org.drip.product.params.NotionalSetting (
 				100.,
 				strCurrency,

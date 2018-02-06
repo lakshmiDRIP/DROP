@@ -51,29 +51,35 @@ package org.drip.state.identifier;
  */
 
 /**
- * CreditLabel contains the Identifier Parameters referencing the Latent State of the named Credit Curve.
- *  Currently it only contains the Reference Entity Name.
+ * EntityRecoveryLabel contains the Identifier Parameters referencing the Latent State of the Entity Recovery
+ *  Curve.
  *  
  * @author Lakshmi Krishnamurthy
  */
 
-public class CreditLabel extends org.drip.state.identifier.DesignateLabel
+public class EntityRecoveryLabel extends org.drip.state.identifier.EntityCreditLabel
 {
 
 	/**
-	 * Make a Standard Credit Label from the Reference Entity Name
+	 * Make a Standard SENIOR Entity Recovery Label from the Reference Entity
 	 * 
-	 * @param referenceEntity The Reference Entity Name
+	 * @param referenceEntity The Reference Entity
+	 * @param currency The Currency
 	 * 
-	 * @return The Credit Label
+	 * @return The SENIOR Recovery Label
 	 */
 
-	public static final CreditLabel Standard (
-		final java.lang.String strReferenceEntity)
+	public static final EntityRecoveryLabel Senior (
+		final java.lang.String referenceEntity,
+		final java.lang.String currency)
 	{
 		try
 		{
-			return new CreditLabel (strReferenceEntity);
+			return new EntityRecoveryLabel (
+				referenceEntity,
+				currency,
+				org.drip.state.identifier.EntityCreditLabel.SENIORITY_SENIOR
+			);
 		}
 		catch (java.lang.Exception e)
 		{
@@ -84,24 +90,61 @@ public class CreditLabel extends org.drip.state.identifier.DesignateLabel
 	}
 
 	/**
-	 * CreditLabel constructor
+	 * Make a Standard SUBORDINATE Entity Recovery Label from the Reference Entity
 	 * 
-	 * @param referenceEntity The Reference Entity Name
+	 * @param referenceEntity The Reference Entity
+	 * @param currency The Currency
+	 * 
+	 * @return The SUBORDINATE Recovery Label
+	 */
+
+	public static final EntityRecoveryLabel Subordinate (
+		final java.lang.String referenceEntity,
+		final java.lang.String currency)
+	{
+		try
+		{
+			return new EntityRecoveryLabel (
+				referenceEntity,
+				currency,
+				org.drip.state.identifier.EntityCreditLabel.SENIORITY_SUBORDINATE
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * EntityRecoveryLabel constructor
+	 * 
+	 * @param referenceEntity The Reference Entity
+	 * @param currency The Currency
+	 * @param seniority The Obligation Seniority
 	 * 
 	 * @throws java.lang.Exception Thrown if the inputs are invalid
 	 */
 
-	public CreditLabel (
-		final java.lang.String referenceEntity)
+	private EntityRecoveryLabel (
+		final java.lang.String referenceEntity,
+		final java.lang.String currency,
+		final java.lang.String seniority)
 		throws java.lang.Exception
 	{
-		super (referenceEntity);
+		super (
+			referenceEntity,
+			currency,
+			seniority
+		);
 	}
 
 	@Override public boolean match (
 		final org.drip.state.identifier.LatentStateLabel lslOther)
 	{
-		return null == lslOther || !(lslOther instanceof org.drip.state.identifier.CreditLabel) ? false :
-			super.match (lslOther);
+		return null == lslOther || !(lslOther instanceof org.drip.state.identifier.EntityRecoveryLabel) ?
+			false : super.match (lslOther);
 	}
 }

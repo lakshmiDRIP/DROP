@@ -227,7 +227,8 @@ public class DynamicsContainer
 	public org.drip.xva.evolver.TerminalLatentState terminalLatentState (
 		final org.drip.state.identifier.LatentStateLabel label)
 	{
-		return terminalLatentStateExists (label) ? _mapTerminalLatentStateDynamics.get (label) : null;
+		return terminalLatentStateExists (label) ? _mapTerminalLatentStateDynamics.get
+			(label.fullyQualifiedName()) : null;
 	}
 
 	/**

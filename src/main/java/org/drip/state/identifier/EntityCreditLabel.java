@@ -8,6 +8,9 @@ package org.drip.state.identifier;
 /*!
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
  *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
  *  	libraries targeting analysts and developers
@@ -48,50 +51,52 @@ package org.drip.state.identifier;
  */
 
 /**
- * CreditSupportAnnexLabel specifies the Label of of a CSA Specification. The References are:
+ * EntityCreditLabel contains the Identifier Parameters referencing the Latent State of the named Entity
+ * 	Credit Curve.
  *  
- *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter Party Risk
- *  	and Funding Costs <i>Journal of Credit Risk</i> <b>7 (3)</b> 1-19.<br><br>
- *  
- *  - Cesari, G., J. Aquilina, N. Charpillon, X. Filipovic, G. Lee, and L. Manda (2009): Modeling, Pricing,
- *  	and Hedging Counter-party Credit Exposure - A Technical Guide <i>Springer Finance</i>
- *  		<b>New York</b>.<br><br>
- *  
- *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk <i>Risk</i> <b>20 (2)</b>
- *  	86-90.<br><br>
- *  
- *  - Li, B., and Y. Tang (2007): Quantitative Analysis, Derivatives Modeling, and Trading Strategies in the
- *  	Presence of Counter-party Credit Risk for the Fixed Income Market <i>World Scientific Publishing </i>
- *  		<b>Singapore</b>.<br><br>
- * 
- *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing
- *  	<i>Risk</i> <b>21 (2)</b> 97-102.<br><br>
- * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class CreditSupportAnnexLabel implements org.drip.state.identifier.LatentStateLabel
+public class EntityCreditLabel extends org.drip.state.identifier.EntityDesignateLabel
 {
-	private java.lang.String _strCurrency = "";
-	private java.lang.String _strAssociation = "";
 
 	/**
-	 * Generate the ISDA CSA
-	 * 
-	 * @param strCurrency The Currency
-	 * 
-	 * @return The ISDA CSA
+	 * The "SENIOR" Seniority Setting
 	 */
 
-	public static final CreditSupportAnnexLabel ISDA (
-		final java.lang.String strCurrency)
+	public static final java.lang.String SENIORITY_SENIOR = "SENIOR";
+
+	/**
+	 * The "SUBORDINATE" Seniority Setting
+	 */
+
+	public static final java.lang.String SENIORITY_SUBORDINATE = "SUBORDINATE";
+
+	private java.lang.String _seniority = "";
+
+	/**
+	 * Make a Standard SENIOR Entity Credit Label from the Reference Entity
+	 * 
+	 * @param referenceEntity The Reference Entity
+	 * @param currency The Currency
+	 * 
+	 * @return The SENIOR Entity Credit Label
+	 */
+
+	public static EntityCreditLabel Standard (
+		final java.lang.String referenceEntity,
+		final java.lang.String currency)
 	{
-		try {
-			return new CreditSupportAnnexLabel (
-				strCurrency,
-				"ISDA"
+		try
+		{
+			return new EntityCreditLabel (
+				referenceEntity,
+				currency,
+				SENIORITY_SENIOR
 			);
-		} catch (java.lang.Exception e) {
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -99,55 +104,58 @@ public class CreditSupportAnnexLabel implements org.drip.state.identifier.Latent
 	}
 
 	/**
-	 * CreditSupportAnnexLabel Constructor
+	 * EntityCreditLabel constructor
 	 * 
-	 * @param strCurrency The CSA Currency
-	 * @param strAssociation The CSA Specifier
+	 * @param referenceEntity The Reference Entity
+	 * @param currency The Currency
+	 * @param seniority The Obligation Seniority
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws java.lang.Exception Thrown if the inputs are invalid
 	 */
 
-	public CreditSupportAnnexLabel (
-		final java.lang.String strCurrency,
-		final java.lang.String strAssociation)
+	public EntityCreditLabel (
+		final java.lang.String referenceEntity,
+		final java.lang.String currency,
+		final java.lang.String seniority)
 		throws java.lang.Exception
 	{
-		if (null == (_strCurrency = strCurrency) || _strCurrency.isEmpty() ||
-			null == (_strAssociation = strAssociation) || _strAssociation.isEmpty())
-			throw new java.lang.Exception ("CreditSupportAnnexLabel Constructor => Invalid Inputs");
+		super (
+			referenceEntity,
+			currency
+		);
+
+		if (null == (_seniority = seniority) ||
+			(!SENIORITY_SENIOR.equals (_seniority) && !SENIORITY_SUBORDINATE.equals (_seniority)))
+		{
+			throw new java.lang.Exception ("EntityCreditLabel Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
-	 * Retrieve the CSA Currency
+	 * Retrieve the Seniority
 	 * 
-	 * @return The CSA Currency
+	 * @return The Seniority
 	 */
 
-	public java.lang.String currency()
+	public java.lang.String seniority()
 	{
-		return _strCurrency;
-	}
-
-	/**
-	 * Retrieve the CSA Specification Association/Organization
-	 * 
-	 * @return The CSA Specification Association/Organization
-	 */
-
-	public java.lang.String association()
-	{
-		return _strAssociation;
+		return _seniority;
 	}
 
 	@Override public java.lang.String fullyQualifiedName()
 	{
-		return _strCurrency + "::" + _strAssociation;
+		return super.fullyQualifiedName() + "::" + _seniority;
 	}
 
 	@Override public boolean match (
 		final org.drip.state.identifier.LatentStateLabel lslOther)
 	{
-		return null == lslOther || !(lslOther instanceof org.drip.state.identifier.CreditSupportAnnexLabel) ?
-			false : fullyQualifiedName().equalsIgnoreCase (lslOther.fullyQualifiedName());
+		if (null == lslOther || !(lslOther instanceof org.drip.state.identifier.EntityCreditLabel))
+		{
+			return false;
+		}
+
+		return super.match (lslOther) && _seniority.equalsIgnoreCase
+			(((org.drip.state.identifier.EntityCreditLabel) lslOther).seniority());
 	}
 }

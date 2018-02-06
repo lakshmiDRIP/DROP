@@ -100,7 +100,7 @@ public interface BasketMarketParamRef {
 	 * @return The Array of Credit Curve Latent State Identifier Labels
 	 */
 
-	public abstract org.drip.state.identifier.CreditLabel[] creditLabel();
+	public abstract org.drip.state.identifier.EntityCreditLabel[] creditLabel();
 
 	/**
 	 * Get the Array of Forward Labels

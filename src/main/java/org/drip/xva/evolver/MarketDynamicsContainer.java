@@ -95,10 +95,10 @@ public class MarketDynamicsContainer extends org.drip.xva.evolver.DynamicsContai
 		final org.drip.xva.evolver.TerminalLatentState counterPartyRecoveryLatentState)
 		throws java.lang.Exception
 	{
-		if (null == bankHazardLatentState ||
-			null == bankSeniorRecoveryLatentState ||
-			null == counterPartyHazardLatentState ||
-			null == counterPartyRecoveryLatentState)
+		if (!addTerminalLatentState (bankHazardLatentState) ||
+			!addTerminalLatentState (bankSeniorRecoveryLatentState) ||
+			!addTerminalLatentState (counterPartyHazardLatentState) ||
+			!addTerminalLatentState (counterPartyRecoveryLatentState))
 		{
 			throw new java.lang.Exception ("MarketDynamicsContainer Constructor => Invalid Inputs");
 		}
@@ -110,6 +110,8 @@ public class MarketDynamicsContainer extends org.drip.xva.evolver.DynamicsContai
 		_counterPartyHazardLabel = counterPartyHazardLatentState.label();
 
 		_counterPartyRecoveryLabel = counterPartyRecoveryLatentState.label();
+
+		addTerminalLatentState (bankSeniorRecoveryLatentState);
 
 		_bankSubordinateRecoveryLabel = null == bankSeniorRecoveryLatentState ? null :
 			bankSeniorRecoveryLatentState.label();

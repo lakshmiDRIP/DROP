@@ -134,7 +134,10 @@ public class AlbaneseAndersenBaselProxy
 
 		PrimarySecurity tAsset = new PrimarySecurity (
 			"AAPL",
-			EquityLabel.Standard ("AAPL"),
+			EntityEquityLabel.Standard (
+				"AAPL",
+				currency
+			),
 			new DiffusionEvolver (
 				DiffusionEvaluatorLinear.Standard (
 					dblAssetNumeraireDrift,
@@ -158,7 +161,7 @@ public class AlbaneseAndersenBaselProxy
 
 		PrimarySecurity tCollateralScheme = new PrimarySecurity (
 			currency + "_CSA",
-			CreditSupportAnnexLabel.ISDA (currency),
+			CSALabel.ISDA (currency),
 			new DiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
 					dblCollateralSchemeNumeraireDrift,
@@ -170,7 +173,10 @@ public class AlbaneseAndersenBaselProxy
 
 		PrimarySecurity tBankSeniorFunding = new PrimarySecurity (
 			bank + "_" + currency + "_SENIOR_ZERO",
-			CreditLabel.Standard (bank),
+			EntityFundingLabel.Senior (
+				bank,
+				currency
+			),
 			new JumpDiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
 					dblBankSeniorFundingNumeraireDrift,
@@ -186,7 +192,10 @@ public class AlbaneseAndersenBaselProxy
 
 		PrimarySecurity tBankSubordinateFunding = new PrimarySecurity (
 			bank + "_" + currency + "_SUBORDINATE_ZERO",
-			CreditLabel.Standard (bank),
+			EntityFundingLabel.Subordinate (
+				bank,
+				currency
+			),
 			new JumpDiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
 					dblBankSubordinateFundingNumeraireDrift,
@@ -202,7 +211,10 @@ public class AlbaneseAndersenBaselProxy
 
 		PrimarySecurity tCounterPartyFunding = new PrimarySecurity (
 			counterParty + "_" + currency + "_SENIOR_ZERO",
-			CreditLabel.Standard (counterParty),
+			EntityFundingLabel.Senior (
+				counterParty,
+				currency
+			),
 			new JumpDiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
 					dblCounterPartyFundingNumeraireDrift,
@@ -230,6 +242,7 @@ public class AlbaneseAndersenBaselProxy
 		final JulianDate spotDate,
 		final String periodTenor,
 		final int periodCount,
+		final String currency,
 		final String bank,
 		final String counterParty)
 		throws Exception
@@ -260,7 +273,10 @@ public class AlbaneseAndersenBaselProxy
 			),
 			new MarketDynamicsContainer (
 				new TerminalLatentState (
-					CreditLabel.Standard (bank),
+					EntityHazardLabel.Standard (
+						bank,
+						currency
+					),
 					new DiffusionEvolver (
 						DiffusionEvaluatorLogarithmic.Standard (
 							dblBankHazardRateDrift,
@@ -269,7 +285,10 @@ public class AlbaneseAndersenBaselProxy
 					)
 				),
 				new TerminalLatentState (
-					RecoveryLabel.Standard (bank + "_SENIOR"),
+					EntityRecoveryLabel.Senior (
+						bank,
+						currency
+					),
 					new DiffusionEvolver (
 						DiffusionEvaluatorLogarithmic.Standard (
 							dblBankRecoveryRateDrift,
@@ -279,7 +298,10 @@ public class AlbaneseAndersenBaselProxy
 				),
 				null,
 				new TerminalLatentState (
-					CreditLabel.Standard (counterParty),
+					EntityHazardLabel.Standard (
+						counterParty,
+						currency
+					),
 					new DiffusionEvolver (
 						DiffusionEvaluatorLogarithmic.Standard (
 							dblCounterPartyHazardRateDrift,
@@ -288,7 +310,10 @@ public class AlbaneseAndersenBaselProxy
 					)
 				),
 				new TerminalLatentState (
-					RecoveryLabel.Standard (counterParty + "_SENIOR"),
+					EntityRecoveryLabel.Senior (
+						counterParty,
+						currency
+					),
 					new DiffusionEvolver (
 						DiffusionEvaluatorLogarithmic.Standard (
 							dblCounterPartyRecoveryRateDrift,
@@ -377,6 +402,7 @@ public class AlbaneseAndersenBaselProxy
 
 		String bank = "CITI";
 		String counterParty = "AIG";
+		String currency = "USD";
 
 		/*
 		 * Evolution Control
@@ -421,6 +447,7 @@ public class AlbaneseAndersenBaselProxy
 				dtSpot,
 				eventTenor,
 				eventCount,
+				currency,
 				bank,
 				counterParty
 			),

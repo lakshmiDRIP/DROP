@@ -289,7 +289,10 @@ public class CorrelatedNumeraireXVAReplicationPortfolio {
 
 		PrimarySecurity tAsset = new PrimarySecurity (
 			"AAPL",
-			EquityLabel.Standard ("AAPL"),
+			EntityEquityLabel.Standard (
+				"AAPL",
+				currency
+			),
 			new DiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
 					dblAssetNumeraireDrift - dblAssetNumeraireDividend,
@@ -313,7 +316,7 @@ public class CorrelatedNumeraireXVAReplicationPortfolio {
 
 		PrimarySecurity tCollateralScheme = new PrimarySecurity (
 			currency + "_" + "_CSA_ZERO",
-			CreditSupportAnnexLabel.ISDA (currency),
+			CSALabel.ISDA (currency),
 			new DiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
 					dblCollateralSchemeNumeraireDrift,
@@ -325,7 +328,10 @@ public class CorrelatedNumeraireXVAReplicationPortfolio {
 
 		PrimarySecurity tBankSeniorFunding = new PrimarySecurity (
 			bank + "_" + currency + "_" + "_SENIOR_ZERO",
-			CreditLabel.Standard (bank),
+			EntityFundingLabel.Senior (
+				bank,
+				currency
+			),
 			new JumpDiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
 					dblBankSeniorFundingNumeraireDrift,
@@ -341,7 +347,10 @@ public class CorrelatedNumeraireXVAReplicationPortfolio {
 
 		PrimarySecurity tBankSubordinateFunding = new PrimarySecurity (
 			bank + "_" + currency + "_" + "_SUBORDINATE_ZERO",
-			CreditLabel.Standard (bank),
+			EntityFundingLabel.Subordinate (
+				bank,
+				currency
+			),
 			new JumpDiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
 					dblBankSubordinateFundingNumeraireDrift,
@@ -357,7 +366,10 @@ public class CorrelatedNumeraireXVAReplicationPortfolio {
 
 		PrimarySecurity tCounterPartyFunding = new PrimarySecurity (
 			counterParty + "_" + currency + "_" + "_SENIOR_ZERO",
-			CreditLabel.Standard (counterParty),
+			EntityFundingLabel.Senior (
+				counterParty,
+				currency
+			),
 			new JumpDiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
 					dblCounterPartyFundingNumeraireDrift,
@@ -431,23 +443,38 @@ public class CorrelatedNumeraireXVAReplicationPortfolio {
 			tc,
 			new MarketDynamicsContainer (
 				new TerminalLatentState (
-					CreditLabel.Standard (bank),
+					EntityHazardLabel.Standard (
+						bank,
+						currency
+					),
 					deBankHazardRate
 				),
 				new TerminalLatentState (
-					RecoveryLabel.Standard (bank + "_SENIOR"),
+					EntityRecoveryLabel.Senior (
+						bank,
+						currency
+					),
 					deBankSeniorRecoveryRate
 				),
 				new TerminalLatentState (
-					RecoveryLabel.Standard (bank + "_SUBORDINATE"),
+					EntityRecoveryLabel.Subordinate (
+						bank,
+						currency
+					),
 					deBankSubordinateRecoveryRate
 				),
 				new TerminalLatentState (
-					CreditLabel.Standard (counterParty),
+					EntityHazardLabel.Standard (
+						counterParty,
+						currency
+					),
 					deCounterPartyHazardRate
 				),
 				new TerminalLatentState (
-					RecoveryLabel.Standard (counterParty + "_SENIOR"),
+					EntityRecoveryLabel.Senior (
+						counterParty,
+						currency
+					),
 					deCounterPartyRecoveryRate
 				)
 			)

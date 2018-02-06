@@ -241,14 +241,14 @@ public abstract class BasketProduct implements org.drip.product.definition.Baske
 
 			if (null != csqsTenorUp && null != compCurve && null != compCurve._cc && null !=
 				compCurve._strName && !compCurve._strName.isEmpty()) {
-				ccVirginUp = csqsTenorUp.creditState (org.drip.state.identifier.CreditLabel.Standard
-					(compCurve._strName));
+				ccVirginUp = csqsTenorUp.creditState (org.drip.state.identifier.EntityCreditLabel.Standard
+					(compCurve._strName, couponCurrency()[0]));
 
 				csqsTenorUp.setCreditState (compCurve._cc);
 
 				if (null != csqsTenorDown) {
-					ccVirginDown = csqsTenorDown.creditState (org.drip.state.identifier.CreditLabel.Standard
-						(compCurve._strName));
+					ccVirginDown = csqsTenorDown.creditState (org.drip.state.identifier.EntityCreditLabel.Standard
+						(compCurve._strName, couponCurrency()[0]));
 
 					csqsTenorDown.setCreditState (compCurve._cc);
 				}
@@ -329,8 +329,8 @@ public abstract class BasketProduct implements org.drip.product.definition.Baske
 			if (null != csqs)
 				mapComponentTenorDGMM.put (strComponentName, accumulateTenorDeltaGammaMeasures (valParams,
 					pricerParams, mapTenorUpCSQS, mapTenorDownCSQS, vcp, mapBaseMeasures, new ComponentCurve
-						(strComponentName, csqs.creditState (org.drip.state.identifier.CreditLabel.Standard
-							(strComponentName)))));
+						(strComponentName, csqs.creditState (org.drip.state.identifier.EntityCreditLabel.Standard
+							(strComponentName, couponCurrency()[0])))));
 		}
 
 		if (0 == mapComponentTenorDGMM.size()) return null;
@@ -537,7 +537,7 @@ public abstract class BasketProduct implements org.drip.product.definition.Baske
 		return astrPrincipalCurrency;
 	}
 
-	@Override public org.drip.state.identifier.CreditLabel[] creditLabel()
+	@Override public org.drip.state.identifier.EntityCreditLabel[] creditLabel()
 	{
 		org.drip.product.definition.Component[] aComp = components();
 
@@ -547,13 +547,13 @@ public abstract class BasketProduct implements org.drip.product.definition.Baske
 
 		if (0 == iNumComp) return null;
 
-		java.util.Set<org.drip.state.identifier.CreditLabel> sLSLCredit = new
-			java.util.HashSet<org.drip.state.identifier.CreditLabel>();
+		java.util.Set<org.drip.state.identifier.EntityCreditLabel> sLSLCredit = new
+			java.util.HashSet<org.drip.state.identifier.EntityCreditLabel>();
 
 		for (int i = 0; i < iNumComp; ++i) {
 			if (null == aComp[i]) return null;
 
-			org.drip.state.identifier.CreditLabel lslCredit = aComp[i].creditLabel();
+			org.drip.state.identifier.EntityCreditLabel lslCredit = aComp[i].creditLabel();
 
 			if (null != lslCredit) sLSLCredit.add (lslCredit);
 		}
@@ -563,10 +563,10 @@ public abstract class BasketProduct implements org.drip.product.definition.Baske
 		if (0 == iNumCreditCurve) return null;
 
 		int i = 0;
-		org.drip.state.identifier.CreditLabel[] aLSLCredit = new
-			org.drip.state.identifier.CreditLabel[iNumCreditCurve];
+		org.drip.state.identifier.EntityCreditLabel[] aLSLCredit = new
+			org.drip.state.identifier.EntityCreditLabel[iNumCreditCurve];
 
-		for (org.drip.state.identifier.CreditLabel lslCredit : sLSLCredit)
+		for (org.drip.state.identifier.EntityCreditLabel lslCredit : sLSLCredit)
 			aLSLCredit[i++] = lslCredit;
 
 		return aLSLCredit;

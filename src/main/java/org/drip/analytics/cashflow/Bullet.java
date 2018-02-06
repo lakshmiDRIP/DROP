@@ -75,7 +75,7 @@ public class Bullet {
 
 	private java.lang.String _strPayCurrency = "";
 	private java.lang.String _strCouponCurrency = "";
-	private org.drip.state.identifier.CreditLabel _creditLabel = null;
+	private org.drip.state.identifier.EntityCreditLabel _creditLabel = null;
 
 	/*
 	 * Period Cash Extensive Fields
@@ -90,7 +90,7 @@ public class Bullet {
 	{
 		org.drip.state.identifier.FXLabel fxLabel = fxLabel();
 
-		org.drip.state.identifier.CreditLabel creditLabel = creditLabel();
+		org.drip.state.identifier.EntityCreditLabel creditLabel = creditLabel();
 
 		org.drip.state.identifier.FundingLabel fundingLabel = fundingLabel();
 
@@ -180,7 +180,7 @@ public class Bullet {
 		final org.drip.quant.common.Array2D a2DNotionalSchedule,
 		final java.lang.String strPayCurrency,
 		final java.lang.String strCouponCurrency,
-		final org.drip.state.identifier.CreditLabel creditLabel)
+		final org.drip.state.identifier.EntityCreditLabel creditLabel)
 		throws java.lang.Exception
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (_dblBaseNotional = dblBaseNotional) ||
@@ -373,7 +373,7 @@ public class Bullet {
 	 * @return The Credit Label
 	 */
 
-	public org.drip.state.identifier.CreditLabel creditLabel()
+	public org.drip.state.identifier.EntityCreditLabel creditLabel()
 	{
 		return _creditLabel;
 	}

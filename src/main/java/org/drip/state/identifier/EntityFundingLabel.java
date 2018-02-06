@@ -7,10 +7,6 @@ package org.drip.state.identifier;
 
 /*!
  * Copyright (C) 2018 Lakshmi Krishnamurthy
- * Copyright (C) 2017 Lakshmi Krishnamurthy
- * Copyright (C) 2016 Lakshmi Krishnamurthy
- * Copyright (C) 2015 Lakshmi Krishnamurthy
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
  *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
  *  	libraries targeting analysts and developers
@@ -51,29 +47,38 @@ package org.drip.state.identifier;
  */
 
 /**
- * RecoveryLabel contains the Identifier Parameters referencing the Latent State of the named Recovery Curve.
- *  Currently it only contains the Reference Entity Name.
+ * EntityFundingLabel contains the Identifier Parameters referencing the Latent State of the Entity Funding
+ *  Curve.
  *  
  * @author Lakshmi Krishnamurthy
  */
 
-public class RecoveryLabel implements org.drip.state.identifier.LatentStateLabel {
-	private java.lang.String _strReferenceEntity = "";
+public class EntityFundingLabel extends org.drip.state.identifier.EntityCreditLabel
+{
 
 	/**
-	 * Make a Standard Recovery Label from the Reference Entity Name
+	 * Make a Standard SENIOR Entity Funding Label from the Reference Entity
 	 * 
-	 * @param strReferenceEntity The Reference Entity Name
+	 * @param referenceEntity The Reference Entity
+	 * @param currency The Currency
 	 * 
-	 * @return The Recovery Label
+	 * @return The SENIOR Funding Label
 	 */
 
-	public static final RecoveryLabel Standard (
-		final java.lang.String strReferenceEntity)
+	public static final EntityFundingLabel Senior (
+		final java.lang.String referenceEntity,
+		final java.lang.String currency)
 	{
-		try {
-			return new RecoveryLabel (strReferenceEntity);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new EntityFundingLabel (
+				referenceEntity,
+				currency,
+				org.drip.state.identifier.EntityCreditLabel.SENIORITY_SENIOR
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -81,30 +86,61 @@ public class RecoveryLabel implements org.drip.state.identifier.LatentStateLabel
 	}
 
 	/**
-	 * RecoveryLabel constructor
+	 * Make a Standard SUBORDINATE Entity Funding Label from the Reference Entity
 	 * 
-	 * @param strReferenceEntity The Reference Entity Name
+	 * @param referenceEntity The Reference Entity
+	 * @param currency The Currency
+	 * 
+	 * @return The SUBORDINATE Funding Label
+	 */
+
+	public static final EntityFundingLabel Subordinate (
+		final java.lang.String referenceEntity,
+		final java.lang.String currency)
+	{
+		try
+		{
+			return new EntityFundingLabel (
+				referenceEntity,
+				currency,
+				org.drip.state.identifier.EntityCreditLabel.SENIORITY_SUBORDINATE
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * EntityFundingLabel constructor
+	 * 
+	 * @param referenceEntity The Reference Entity
+	 * @param currency The Currency
+	 * @param seniority The Obligation Seniority
 	 * 
 	 * @throws java.lang.Exception Thrown if the inputs are invalid
 	 */
 
-	private RecoveryLabel (
-		final java.lang.String strReferenceEntity)
+	public EntityFundingLabel (
+		final java.lang.String referenceEntity,
+		final java.lang.String currency,
+		final java.lang.String seniority)
 		throws java.lang.Exception
 	{
-		if (null == (_strReferenceEntity = strReferenceEntity) || _strReferenceEntity.isEmpty())
-			throw new java.lang.Exception ("RecoveryLabel ctr: Invalid Inputs");
-	}
-
-	@Override public java.lang.String fullyQualifiedName()
-	{
-		return _strReferenceEntity;
+		super (
+			referenceEntity,
+			currency,
+			seniority
+		);
 	}
 
 	@Override public boolean match (
 		final org.drip.state.identifier.LatentStateLabel lslOther)
 	{
-		return null == lslOther || !(lslOther instanceof org.drip.state.identifier.CreditLabel) ? false :
-			_strReferenceEntity.equalsIgnoreCase (lslOther.fullyQualifiedName());
+		return null == lslOther || !(lslOther instanceof org.drip.state.identifier.EntityFundingLabel) ?
+			false : super.match (lslOther);
 	}
 }

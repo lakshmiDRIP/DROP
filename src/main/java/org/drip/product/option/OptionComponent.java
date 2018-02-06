@@ -229,7 +229,7 @@ public abstract class OptionComponent extends org.drip.product.definition.Calibr
 		return _comp.freq();
 	}
 
-	@Override public org.drip.state.identifier.CreditLabel creditLabel()
+	@Override public org.drip.state.identifier.EntityCreditLabel creditLabel()
 	{
 		return _comp.creditLabel();
 	}

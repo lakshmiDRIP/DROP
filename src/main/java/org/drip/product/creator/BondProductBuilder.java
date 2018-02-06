@@ -1587,8 +1587,8 @@ public class BondProductBuilder {
 								_strCouponCurrency, !org.drip.quant.common.StringUtil.IsEmpty (_strRateIndex)
 									? org.drip.state.identifier.ForwardLabel.Standard (_strRateIndex) : null,
 										!org.drip.quant.common.StringUtil.IsEmpty (_strIssuerSPN) ?
-											org.drip.state.identifier.CreditLabel.Standard (_strIssuerSPN) :
-												null);
+											org.drip.state.identifier.EntityCreditLabel.Standard (_strIssuerSPN,
+												_strCouponCurrency) : null);
 	}
 
 	/**

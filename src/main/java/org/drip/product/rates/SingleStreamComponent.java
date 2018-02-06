@@ -170,7 +170,7 @@ public class SingleStreamComponent extends org.drip.product.definition.Calibrata
 		return org.drip.state.identifier.GovvieLabel.Standard (payCurrency());
 	}
 
-	@Override public org.drip.state.identifier.CreditLabel creditLabel()
+	@Override public org.drip.state.identifier.EntityCreditLabel creditLabel()
 	{
 		return _stream.creditLabel();
 	}

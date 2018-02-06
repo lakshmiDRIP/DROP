@@ -62,7 +62,7 @@ public class BulletMetrics {
 	 * Bullet Latent State Identification Support Fields
 	 */
 
-	private org.drip.state.identifier.CreditLabel _creditLabel = null;
+	private org.drip.state.identifier.EntityCreditLabel _creditLabel = null;
 	private org.drip.state.identifier.FundingLabel _fundingLabel = null;
 	private org.drip.state.identifier.FXLabel _fxLabel = null;
 
@@ -113,7 +113,7 @@ public class BulletMetrics {
 		final double dblDF,
 		final double dblFX,
 		final org.drip.analytics.output.ConvexityAdjustment convAdj,
-		final org.drip.state.identifier.CreditLabel creditLabel,
+		final org.drip.state.identifier.EntityCreditLabel creditLabel,
 		final org.drip.state.identifier.FundingLabel fundingLabel,
 		final org.drip.state.identifier.FXLabel fxLabel)
 		throws java.lang.Exception
@@ -228,7 +228,7 @@ public class BulletMetrics {
 	 */
 
 	public java.util.Map<java.lang.Integer, java.lang.Double> survivalProbabilityCreditLoading (
-		final org.drip.state.identifier.CreditLabel creditLabel)
+		final org.drip.state.identifier.EntityCreditLabel creditLabel)
 	{
 		if (null == creditLabel || !creditLabel.match (_creditLabel)) return null;
 
@@ -290,7 +290,7 @@ public class BulletMetrics {
 	 * @return The Credit Label
 	 */
 
-	public org.drip.state.identifier.CreditLabel creditLabel()
+	public org.drip.state.identifier.EntityCreditLabel creditLabel()
 	{
 		return _creditLabel;
 	}

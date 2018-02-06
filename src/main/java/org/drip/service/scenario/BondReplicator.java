@@ -689,7 +689,7 @@ public class BondReplicator
 				throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
 		}
 
-		org.drip.state.identifier.CreditLabel cl = _bond.creditLabel();
+		org.drip.state.identifier.EntityCreditLabel cl = _bond.creditLabel();
 
 		java.lang.String strReferenceEntity = null != cl ? cl.referenceEntity() : null;
 
@@ -1507,7 +1507,7 @@ public class BondReplicator
 							dblCreditBasisToExercise + 0.0001 * _dblCustomCreditBasisBump)) /
 								_dblCurrentPrice / _dblCustomCreditBasisBump;
 				else {
-					org.drip.state.identifier.CreditLabel cl = _bond.creditLabel();
+					org.drip.state.identifier.EntityCreditLabel cl = _bond.creditLabel();
 
 					org.drip.state.credit.CreditCurve ccBase = _csqcCreditBase.creditState (cl);
 

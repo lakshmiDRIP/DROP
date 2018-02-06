@@ -70,12 +70,12 @@ package org.drip.xva.evolver;
 
 public class PrimarySecurityContainer extends org.drip.xva.evolver.DynamicsContainer
 {
-	private org.drip.state.identifier.LatentStateLabel _csaLabel = null;
+	private org.drip.state.identifier.CSALabel _csaLabel = null;
+	private org.drip.state.identifier.OvernightLabel _overnightLabel = null;
 	private org.drip.state.identifier.LatentStateLabel _positionLabel = null;
-	private org.drip.state.identifier.LatentStateLabel _overnightLabel = null;
-	private org.drip.state.identifier.LatentStateLabel _bankSeniorFundingLabel = null;
-	private org.drip.state.identifier.LatentStateLabel _counterPartyFundingLabel = null;
-	private org.drip.state.identifier.LatentStateLabel _bankSubordinateFundingLabel = null;
+	private org.drip.state.identifier.EntityFundingLabel _bankSeniorFundingLabel = null;
+	private org.drip.state.identifier.EntityFundingLabel _counterPartyFundingLabel = null;
+	private org.drip.state.identifier.EntityFundingLabel _bankSubordinateFundingLabel = null;
 
 	/**
 	 * PrimarySecurityContainer Constructor
@@ -110,18 +110,35 @@ public class PrimarySecurityContainer extends org.drip.xva.evolver.DynamicsConta
 
 		addPrimarySecurity (position);
 
-		_csaLabel = csa.label();
+		org.drip.state.identifier.LatentStateLabel csaLabel = csa.label();
 
-		_overnightLabel = overnight.label();
+		org.drip.state.identifier.LatentStateLabel overnightLabel = overnight.label();
 
-		_bankSeniorFundingLabel = bankSeniorFunding.label();
+		org.drip.state.identifier.LatentStateLabel bankSeniorFundingLabel = bankSeniorFunding.label();
 
-		_counterPartyFundingLabel = counterPartyFunding.label();
+		org.drip.state.identifier.LatentStateLabel counterPartyFundingLabel = counterPartyFunding.label();
+
+		org.drip.state.identifier.LatentStateLabel bankSubordinateFundingLabel = null ==
+			bankSubordinateFunding ? null : bankSubordinateFunding.label();
+
+		if (!(csaLabel instanceof org.drip.state.identifier.CSALabel) ||
+			!(overnightLabel instanceof org.drip.state.identifier.OvernightLabel) ||
+			!(bankSeniorFundingLabel instanceof org.drip.state.identifier.EntityFundingLabel) ||
+			!(counterPartyFundingLabel instanceof org.drip.state.identifier.EntityFundingLabel) ||
+			(null != bankSubordinateFundingLabel && !(bankSubordinateFundingLabel instanceof
+				org.drip.state.identifier.EntityFundingLabel)))
+		{
+			throw new java.lang.Exception ("PrimarySecurityContainer Constructor => Invalid Inputs");
+		}
+
+		_csaLabel = (org.drip.state.identifier.CSALabel) csaLabel;
+		_overnightLabel = (org.drip.state.identifier.OvernightLabel) overnightLabel;
+		_bankSeniorFundingLabel = (org.drip.state.identifier.EntityFundingLabel) bankSeniorFundingLabel;
+		_counterPartyFundingLabel = (org.drip.state.identifier.EntityFundingLabel) counterPartyFundingLabel;
+		_bankSubordinateFundingLabel = null == bankSubordinateFundingLabel ? null :
+			(org.drip.state.identifier.EntityFundingLabel) bankSubordinateFundingLabel;
 
 		_positionLabel = null == position ? null : position.label();
-
-		_bankSubordinateFundingLabel = null == bankSubordinateFunding ? null :
-			bankSubordinateFunding.label();
 	}
 
 	/**

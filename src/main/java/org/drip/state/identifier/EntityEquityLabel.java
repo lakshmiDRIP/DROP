@@ -51,29 +51,33 @@ package org.drip.state.identifier;
  */
 
 /**
- * EquityLabel contains the Identifier Parameters referencing the Latent State of the named Equity Curve.
- *  Currently it only contains the Reference Entity Name.
- *  
+ * EntityEquityLabel contains the Identifier Parameters referencing the Latent State of the Entity Equity
+ *  Curve. *  
  * @author Lakshmi Krishnamurthy
  */
 
-public class EquityLabel extends org.drip.state.identifier.DesignateLabel
+public class EntityEquityLabel extends org.drip.state.identifier.EntityDesignateLabel
 {
 
 	/**
-	 * Make a Standard Equity Label from the Reference Entity Name
+	 * Make a Standard Equity Entity Label from the Reference Entity Name
 	 * 
 	 * @param referenceEntity The Reference Entity Name
+	 * @param currency The Currency
 	 * 
-	 * @return The Equity Label
+	 * @return The Entity Equity Label
 	 */
 
-	public static final EquityLabel Standard (
-		final java.lang.String referenceEntity)
+	public static final EntityEquityLabel Standard (
+		final java.lang.String referenceEntity,
+		final java.lang.String currency)
 	{
 		try
 		{
-			return new EquityLabel (referenceEntity);
+			return new EntityEquityLabel (
+				referenceEntity,
+				currency
+			);
 		}
 		catch (java.lang.Exception e)
 		{
@@ -84,24 +88,29 @@ public class EquityLabel extends org.drip.state.identifier.DesignateLabel
 	}
 
 	/**
-	 * EquityLabel constructor
+	 * EntityEquityLabel constructor
 	 * 
-	 * @param referenceEntity The Reference Entity Name
+	 * @param referenceEntity The Reference Entity
+	 * @param currency The Currency
 	 * 
 	 * @throws java.lang.Exception Thrown if the inputs are invalid
 	 */
 
-	private EquityLabel (
-		final java.lang.String referenceEntity)
+	private EntityEquityLabel (
+		final java.lang.String referenceEntity,
+		final java.lang.String currency)
 		throws java.lang.Exception
 	{
-		super (referenceEntity);
+		super (
+			referenceEntity,
+			currency
+		);
 	}
 
 	@Override public boolean match (
 		final org.drip.state.identifier.LatentStateLabel lslOther)
 	{
-		return null == lslOther || !(lslOther instanceof org.drip.state.identifier.CreditLabel) ? false :
-			super.match (lslOther);
+		return null == lslOther || !(lslOther instanceof org.drip.state.identifier.EntityEquityLabel) ? false
+			: super.match (lslOther);
 	}
 }

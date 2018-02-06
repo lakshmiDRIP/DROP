@@ -47,35 +47,47 @@ package org.drip.state.identifier;
  */
 
 /**
- * DesignateLabel contains the Identifier Parameters referencing the Latent State of an Entity Designate.
+ * EntityDesignateLabel contains the Identifier Parameters referencing the Latent State of an Entity
+ *  Designate.
  *  
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class DesignateLabel implements org.drip.state.identifier.LatentStateLabel
+public abstract class EntityDesignateLabel implements org.drip.state.identifier.LatentStateLabel
 {
+	private java.lang.String _currency = "";
 	private java.lang.String _referenceEntity = "";
 
-	protected DesignateLabel (
+	protected EntityDesignateLabel (
+		final java.lang.String currency,
 		final java.lang.String referenceEntity)
 		throws java.lang.Exception
 	{
-		if (null == (_referenceEntity = referenceEntity) || _referenceEntity.isEmpty())
+		if (null == (_currency = currency) || _currency.isEmpty() ||
+			null == (_referenceEntity = referenceEntity) || _referenceEntity.isEmpty())
 		{
-			throw new java.lang.Exception ("DesignateLabel ctr: Invalid Inputs");
+			throw new java.lang.Exception ("EntityDesignateLabel ctr: Invalid Inputs");
 		}
 	}
 
 	@Override public java.lang.String fullyQualifiedName()
 	{
-		return _referenceEntity;
+		return _referenceEntity + "::" + _currency;
 	}
 
 	@Override public boolean match (
 		final org.drip.state.identifier.LatentStateLabel lslOther)
 	{
-		return null == lslOther || !(lslOther instanceof org.drip.state.identifier.DesignateLabel) ? false :
-			_referenceEntity.equalsIgnoreCase (lslOther.fullyQualifiedName());
+		if (null == lslOther || !(lslOther instanceof org.drip.state.identifier.EntityDesignateLabel))
+		{
+			return false;
+		}
+
+		org.drip.state.identifier.EntityDesignateLabel entityDesignateLabel =
+			(org.drip.state.identifier.EntityDesignateLabel) lslOther;
+
+		return _referenceEntity.equalsIgnoreCase (entityDesignateLabel.referenceEntity()) &&
+			_currency.equalsIgnoreCase (entityDesignateLabel.currency());
 	}
 
 	/**
@@ -87,5 +99,16 @@ public abstract class DesignateLabel implements org.drip.state.identifier.Latent
 	public java.lang.String referenceEntity()
 	{
 		return _referenceEntity;
+	}
+
+	/**
+	 * Retrieve the Currency
+	 * 
+	 * @return The Currency
+	 */
+
+	public java.lang.String currency()
+	{
+		return _currency;
 	}
 }

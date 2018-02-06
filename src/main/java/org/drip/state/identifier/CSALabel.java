@@ -8,9 +8,6 @@ package org.drip.state.identifier;
 /*!
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
- * Copyright (C) 2016 Lakshmi Krishnamurthy
- * Copyright (C) 2015 Lakshmi Krishnamurthy
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
  *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
  *  	libraries targeting analysts and developers
@@ -51,28 +48,49 @@ package org.drip.state.identifier;
  */
 
 /**
- * PaydownLabel contains the Identifier Parameters referencing the Latent State of the named Paydown Curve.
- *  Currently it only contains the Reference Entity Name.
+ * CSALabel specifies the Label of of a Credit Support Annex (CSA) Specification. The References are:
  *  
+ *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter Party Risk
+ *  	and Funding Costs <i>Journal of Credit Risk</i> <b>7 (3)</b> 1-19.<br><br>
+ *  
+ *  - Cesari, G., J. Aquilina, N. Charpillon, X. Filipovic, G. Lee, and L. Manda (2009): Modeling, Pricing,
+ *  	and Hedging Counter-party Credit Exposure - A Technical Guide <i>Springer Finance</i>
+ *  		<b>New York</b>.<br><br>
+ *  
+ *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk <i>Risk</i> <b>20 (2)</b>
+ *  	86-90.<br><br>
+ *  
+ *  - Li, B., and Y. Tang (2007): Quantitative Analysis, Derivatives Modeling, and Trading Strategies in the
+ *  	Presence of Counter-party Credit Risk for the Fixed Income Market <i>World Scientific Publishing </i>
+ *  		<b>Singapore</b>.<br><br>
+ * 
+ *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing
+ *  	<i>Risk</i> <b>21 (2)</b> 97-102.<br><br>
+ * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class PaydownLabel implements org.drip.state.identifier.LatentStateLabel {
-	private java.lang.String _strReferenceEntity = "";
+public class CSALabel implements org.drip.state.identifier.LatentStateLabel
+{
+	private java.lang.String _strCurrency = "";
+	private java.lang.String _strAssociation = "";
 
 	/**
-	 * Make a Standard Pay-down Label from the Reference Entity Name
+	 * Generate the ISDA CSA
 	 * 
-	 * @param strReferenceEntity The Reference Entity Name
+	 * @param strCurrency The Currency
 	 * 
-	 * @return The Pay-down Label
+	 * @return The ISDA CSA
 	 */
 
-	public static final PaydownLabel Standard (
-		final java.lang.String strReferenceEntity)
+	public static final CSALabel ISDA (
+		final java.lang.String strCurrency)
 	{
 		try {
-			return new PaydownLabel (strReferenceEntity);
+			return new CSALabel (
+				strCurrency,
+				"ISDA"
+			);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -81,30 +99,57 @@ public class PaydownLabel implements org.drip.state.identifier.LatentStateLabel 
 	}
 
 	/**
-	 * PaydownLabel constructor
+	 * CSALabel Constructor
 	 * 
-	 * @param strReferenceEntity The Reference Entity Name
+	 * @param strCurrency The CSA Currency
+	 * @param strAssociation The CSA Specifier
 	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	private PaydownLabel (
-		final java.lang.String strReferenceEntity)
+	public CSALabel (
+		final java.lang.String strCurrency,
+		final java.lang.String strAssociation)
 		throws java.lang.Exception
 	{
-		if (null == (_strReferenceEntity = strReferenceEntity) || _strReferenceEntity.isEmpty())
-			throw new java.lang.Exception ("PaydownLabel ctr: Invalid Inputs");
+		if (null == (_strCurrency = strCurrency) || _strCurrency.isEmpty() ||
+			null == (_strAssociation = strAssociation) || _strAssociation.isEmpty())
+		{
+			throw new java.lang.Exception ("CSALabel Constructor => Invalid Inputs");
+		}
+	}
+
+	/**
+	 * Retrieve the CSA Currency
+	 * 
+	 * @return The CSA Currency
+	 */
+
+	public java.lang.String currency()
+	{
+		return _strCurrency;
+	}
+
+	/**
+	 * Retrieve the CSA Specification Association/Organization
+	 * 
+	 * @return The CSA Specification Association/Organization
+	 */
+
+	public java.lang.String association()
+	{
+		return _strAssociation;
 	}
 
 	@Override public java.lang.String fullyQualifiedName()
 	{
-		return _strReferenceEntity;
+		return _strCurrency + "::" + _strAssociation;
 	}
 
 	@Override public boolean match (
 		final org.drip.state.identifier.LatentStateLabel lslOther)
 	{
-		return null == lslOther || !(lslOther instanceof org.drip.state.identifier.EntityCreditLabel) ? false :
-			_strReferenceEntity.equalsIgnoreCase (lslOther.fullyQualifiedName());
+		return null == lslOther || !(lslOther instanceof org.drip.state.identifier.CSALabel) ? false :
+			fullyQualifiedName().equalsIgnoreCase (lslOther.fullyQualifiedName());
 	}
 }

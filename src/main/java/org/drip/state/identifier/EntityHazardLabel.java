@@ -47,29 +47,34 @@ package org.drip.state.identifier;
  */
 
 /**
- * HazardLabel contains the Identifier Parameters referencing the Latent State of the named Hazard Curve.
- *  Currently it only contains the Reference Entity Name.
+ * EntityHazardLabel contains the Identifier Parameters referencing the Latent State of the Entity Hazard
+ *  Curve.
  *  
  * @author Lakshmi Krishnamurthy
  */
 
-public class HazardLabel extends org.drip.state.identifier.DesignateLabel
+public class EntityHazardLabel extends org.drip.state.identifier.EntityDesignateLabel
 {
 
 	/**
-	 * Make a Standard Hazard Label from the Reference Entity Name
+	 * Make a Standard Entity Hazard Label from the Reference Entity Name
 	 * 
 	 * @param referenceEntity The Reference Entity Name
+	 * @param currency The Currency
 	 * 
 	 * @return The Hazard Label
 	 */
 
-	public static final HazardLabel Standard (
-		final java.lang.String referenceEntity)
+	public static final EntityHazardLabel Standard (
+		final java.lang.String referenceEntity,
+		final java.lang.String currency)
 	{
 		try
 		{
-			return new HazardLabel (referenceEntity);
+			return new EntityHazardLabel (
+				referenceEntity,
+				currency
+			);
 		}
 		catch (java.lang.Exception e)
 		{
@@ -80,24 +85,29 @@ public class HazardLabel extends org.drip.state.identifier.DesignateLabel
 	}
 
 	/**
-	 * HazardLabel constructor
+	 * EntityHazardLabel constructor
 	 * 
-	 * @param referenceEntity The Reference Entity Name
+	 * @param referenceEntity The Reference Entity
+	 * @param currency The Currency
 	 * 
 	 * @throws java.lang.Exception Thrown if the inputs are invalid
 	 */
 
-	public HazardLabel (
-		final java.lang.String referenceEntity)
+	public EntityHazardLabel (
+		final java.lang.String referenceEntity,
+		final java.lang.String currency)
 		throws java.lang.Exception
 	{
-		super (referenceEntity);
+		super (
+			referenceEntity,
+			currency
+		);
 	}
 
 	@Override public boolean match (
 		final org.drip.state.identifier.LatentStateLabel lslOther)
 	{
-		return null == lslOther || !(lslOther instanceof org.drip.state.identifier.HazardLabel) ? false :
-			super.match (lslOther);
+		return null == lslOther || !(lslOther instanceof org.drip.state.identifier.EntityHazardLabel) ? false
+			: super.match (lslOther);
 	}
 }

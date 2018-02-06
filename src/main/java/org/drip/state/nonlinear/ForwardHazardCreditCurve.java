@@ -108,7 +108,7 @@ public class ForwardHazardCreditCurve extends org.drip.state.credit.ExplicitBoot
 
 	public ForwardHazardCreditCurve (
 		final int iStartDate,
-		final org.drip.state.identifier.CreditLabel label,
+		final org.drip.state.identifier.EntityCreditLabel label,
 		final java.lang.String strCurrency,
 		final double adblHazardRate[],
 		final int aiHazardDate[],
