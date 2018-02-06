@@ -1,0 +1,828 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LatentStateDynamicsContainer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.xva.evolver</a> &gt; <span class="el_source">LatentStateDynamicsContainer.java</span></div><h1>LatentStateDynamicsContainer.java</h1><pre class="source lang-java linenums">
+package org.drip.xva.evolver;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * LatentStateDynamicsContainer holds the Latent State Labels for a variety of Latent States and their
+ * 	Evolvers.  The References are:&lt;br&gt;&lt;br&gt;
+ *  
+ *  - Burgard, C., and M. Kjaer (2013): Funding Strategies, Funding Costs &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;24 (12)&lt;/b&gt;
+ *  	82-87.&lt;br&gt;&lt;br&gt;
+ *  
+ *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
+ *  	and Funding Costs &lt;i&gt;Journal of Credit Risk&lt;/i&gt; &lt;b&gt;7 (3)&lt;/b&gt; 1-19.&lt;br&gt;&lt;br&gt;
+ *  
+ *  - Burgard, C., and M. Kjaer (2014): In the Balance &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;24 (11)&lt;/b&gt; 72-75.&lt;br&gt;&lt;br&gt;
+ *  
+ *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;20 (2)&lt;/b&gt;
+ *  	86-90.&lt;br&gt;&lt;br&gt;
+ * 
+ *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing
+ *  	&lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;21 (2)&lt;/b&gt; 97-102.&lt;br&gt;&lt;br&gt;
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class LatentStateDynamicsContainer
+{
+<span class="nc" id="L72">	private java.util.Map&lt;java.lang.String, org.drip.xva.evolver.TerminalLatentState&gt; _fxEvolver = null;</span>
+<span class="nc" id="L73">	private java.util.Map&lt;java.lang.String, org.drip.xva.evolver.TerminalLatentState&gt; _csaEvolver = null;</span>
+<span class="nc" id="L74">	private java.util.Map&lt;java.lang.String, org.drip.xva.evolver.TerminalLatentState&gt; _repoEvolver = null;</span>
+<span class="nc" id="L75">	private java.util.Map&lt;java.lang.String, org.drip.xva.evolver.TerminalLatentState&gt; _customEvolver = null;</span>
+<span class="nc" id="L76">	private java.util.Map&lt;java.lang.String, org.drip.xva.evolver.TerminalLatentState&gt; _govvieEvolver = null;</span>
+<span class="nc" id="L77">	private java.util.Map&lt;java.lang.String, org.drip.xva.evolver.TerminalLatentState&gt; _ratingEvolver = null;</span>
+<span class="nc" id="L78">	private java.util.Map&lt;java.lang.String, org.drip.xva.evolver.TerminalLatentState&gt; _forwardEvolver = null;</span>
+<span class="nc" id="L79">	private java.util.Map&lt;java.lang.String, org.drip.xva.evolver.TerminalLatentState&gt; _fundingEvolver = null;</span>
+<span class="nc" id="L80">	private java.util.Map&lt;java.lang.String, org.drip.xva.evolver.TerminalLatentState&gt; _payDownEvolver = null;</span>
+<span class="nc" id="L81">	private java.util.Map&lt;java.lang.String, org.drip.xva.evolver.TerminalLatentState&gt; _overnightEvolver =</span>
+		null;
+<span class="nc" id="L83">	private java.util.Map&lt;java.lang.String, org.drip.xva.evolver.TerminalLatentState&gt; _collateralEvolver =</span>
+		null;
+<span class="nc" id="L85">	private java.util.Map&lt;java.lang.String, org.drip.xva.evolver.TerminalLatentState&gt; _volatilityEvolver = </span>
+		null;
+<span class="nc" id="L87">	private java.util.Map&lt;java.lang.String, org.drip.xva.evolver.TerminalLatentState&gt; _otcFixFloatEvolver =</span>
+		null;
+<span class="nc" id="L89">	private java.util.Map&lt;java.lang.String, org.drip.xva.evolver.TerminalLatentState&gt; _entityCreditEvolver =</span>
+		null;
+<span class="nc" id="L91">	private java.util.Map&lt;java.lang.String, org.drip.xva.evolver.TerminalLatentState&gt; _entityEquityEvolver =</span>
+		null;
+<span class="nc" id="L93">	private java.util.Map&lt;java.lang.String, org.drip.xva.evolver.TerminalLatentState&gt; _entityHazardEvolver =</span>
+		null;
+<span class="nc" id="L95">	private java.util.Map&lt;java.lang.String, org.drip.xva.evolver.TerminalLatentState&gt; _entityFundingEvolver =</span>
+		null;
+<span class="nc" id="L97">	private java.util.Map&lt;java.lang.String, org.drip.xva.evolver.TerminalLatentState&gt; _entityRecoveryEvolver</span>
+		= null;
+
+	/**
+	 * Empty LatentStateDynamicsContainer Constructor
+	 */
+
+	public LatentStateDynamicsContainer()
+<span class="nc" id="L105">	{</span>
+<span class="nc" id="L106">		_fxEvolver = new</span>
+			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.xva.evolver.TerminalLatentState&gt;();
+
+<span class="nc" id="L109">		_csaEvolver = new</span>
+			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.xva.evolver.TerminalLatentState&gt;();
+
+<span class="nc" id="L112">		_repoEvolver = new</span>
+			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.xva.evolver.TerminalLatentState&gt;();
+
+<span class="nc" id="L115">		_customEvolver = new</span>
+			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.xva.evolver.TerminalLatentState&gt;();
+
+<span class="nc" id="L118">		_govvieEvolver = new</span>
+			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.xva.evolver.TerminalLatentState&gt;();
+
+<span class="nc" id="L121">		_ratingEvolver = new</span>
+			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.xva.evolver.TerminalLatentState&gt;();
+
+<span class="nc" id="L124">		_forwardEvolver = new</span>
+			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.xva.evolver.TerminalLatentState&gt;();
+
+<span class="nc" id="L127">		_fundingEvolver = new</span>
+			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.xva.evolver.TerminalLatentState&gt;();
+
+<span class="nc" id="L130">		_payDownEvolver = new</span>
+			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.xva.evolver.TerminalLatentState&gt;();
+
+<span class="nc" id="L133">		_overnightEvolver = new</span>
+			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.xva.evolver.TerminalLatentState&gt;();
+
+<span class="nc" id="L136">		_collateralEvolver = new</span>
+			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.xva.evolver.TerminalLatentState&gt;();
+
+<span class="nc" id="L139">		_volatilityEvolver = new</span>
+			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.xva.evolver.TerminalLatentState&gt;();
+
+<span class="nc" id="L142">		_otcFixFloatEvolver = new</span>
+			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.xva.evolver.TerminalLatentState&gt;();
+
+<span class="nc" id="L145">		_entityCreditEvolver = new</span>
+			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.xva.evolver.TerminalLatentState&gt;();
+
+<span class="nc" id="L148">		_entityEquityEvolver = new</span>
+			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.xva.evolver.TerminalLatentState&gt;();
+
+<span class="nc" id="L151">		_entityHazardEvolver = new</span>
+			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.xva.evolver.TerminalLatentState&gt;();
+
+<span class="nc" id="L154">		_entityFundingEvolver = new</span>
+			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.xva.evolver.TerminalLatentState&gt;();
+
+<span class="nc" id="L157">		_entityRecoveryEvolver = new</span>
+			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.xva.evolver.TerminalLatentState&gt;();
+<span class="nc" id="L159">	}</span>
+
+	/**
+	 * Retrieve the Equity Evolver Map
+	 * 
+	 * @return The Equity Evolver Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, org.drip.xva.evolver.TerminalLatentState&gt; entityEquityEvolver()
+	{
+<span class="nc" id="L169">		return _entityEquityEvolver;</span>
+	}
+
+	/**
+	 * Indicate if the Entity Equity Latent State Exists
+	 * 
+	 * @param entityEquityLabel The Entity Equity Latent State Label
+	 * 
+	 * @return TRUE - The Entity Equity Latent State Exists
+	 */
+
+	public boolean entityEquityExists (
+		final org.drip.state.identifier.EntityEquityLabel entityEquityLabel)
+	{
+<span class="nc bnc" id="L183" title="All 2 branches missed.">		return null == entityEquityLabel ? false : _entityEquityEvolver.containsKey</span>
+<span class="nc" id="L184">			(entityEquityLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Retrieve the Entity Equity Latent State
+	 * 
+	 * @param entityEquityLabel The Entity Equity Latent State Label
+	 * 
+	 * @return The Entity Equity Latent State
+	 */
+
+	public org.drip.xva.evolver.TerminalLatentState entityEquity (
+		final org.drip.state.identifier.EntityEquityLabel entityEquityLabel)
+	{
+<span class="nc bnc" id="L198" title="All 2 branches missed.">		return entityEquityExists (entityEquityLabel) ? _entityEquityEvolver.get</span>
+<span class="nc" id="L199">			(entityEquityLabel.fullyQualifiedName()) : null;</span>
+	}
+
+	/**
+	 * Retrieve the Funding Evolver Map
+	 * 
+	 * @return The Funding Evolver Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, org.drip.xva.evolver.TerminalLatentState&gt; fundingEvolver()
+	{
+<span class="nc" id="L210">		return _fundingEvolver;</span>
+	}
+
+	/**
+	 * Indicate if the Funding Latent State Exists
+	 * 
+	 * @param fundingLabel The Funding Latent State Label
+	 * 
+	 * @return TRUE - The Funding Latent State Exists
+	 */
+
+	public boolean fundingExists (
+		final org.drip.state.identifier.FundingLabel fundingLabel)
+	{
+<span class="nc bnc" id="L224" title="All 2 branches missed.">		return null == fundingLabel ? false : _fundingEvolver.containsKey</span>
+<span class="nc" id="L225">			(fundingLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Retrieve the Funding Latent State
+	 * 
+	 * @param fundingLabel The Funding Latent State Label
+	 * 
+	 * @return The Funding Latent State
+	 */
+
+	public org.drip.xva.evolver.TerminalLatentState funding (
+		final org.drip.state.identifier.FundingLabel fundingLabel)
+	{
+<span class="nc bnc" id="L239" title="All 2 branches missed.">		return fundingExists (fundingLabel) ? _fundingEvolver.get (fundingLabel.fullyQualifiedName()) : null;</span>
+	}
+
+	/**
+	 * Retrieve the Govvie Evolver Map
+	 * 
+	 * @return The Govvie Evolver Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, org.drip.xva.evolver.TerminalLatentState&gt; govvieEvolver()
+	{
+<span class="nc" id="L250">		return _govvieEvolver;</span>
+	}
+
+	/**
+	 * Indicate if the Govvie Latent State Exists
+	 * 
+	 * @param govvieLabel The Govvie Latent State Label
+	 * 
+	 * @return TRUE - The Govvie Latent State Exists
+	 */
+
+	public boolean govvieExists (
+		final org.drip.state.identifier.GovvieLabel govvieLabel)
+	{
+<span class="nc bnc" id="L264" title="All 2 branches missed.">		return null == govvieLabel ? false : _govvieEvolver.containsKey (govvieLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Retrieve the Govvie Latent State
+	 * 
+	 * @param govvieLabel The Govvie Latent State Label
+	 * 
+	 * @return The Govvie Latent State
+	 */
+
+	public org.drip.xva.evolver.TerminalLatentState govvie (
+		final org.drip.state.identifier.GovvieLabel govvieLabel)
+	{
+<span class="nc bnc" id="L278" title="All 2 branches missed.">		return govvieExists (govvieLabel) ? _govvieEvolver.get (govvieLabel.fullyQualifiedName()) : null;</span>
+	}
+
+	/**
+	 * Retrieve the FX Evolver Map
+	 * 
+	 * @return The FX Evolver Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, org.drip.xva.evolver.TerminalLatentState&gt; fxEvolver()
+	{
+<span class="nc" id="L289">		return _fxEvolver;</span>
+	}
+
+	/**
+	 * Indicate if the FX Latent State Exists
+	 * 
+	 * @param fxLabel The FX Latent State Label
+	 * 
+	 * @return TRUE - The FX Latent State Exists
+	 */
+
+	public boolean fxExists (
+		final org.drip.state.identifier.FXLabel fxLabel)
+	{
+<span class="nc bnc" id="L303" title="All 2 branches missed.">		return null == fxLabel ? false : _fxEvolver.containsKey (fxLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Retrieve the FX Latent State
+	 * 
+	 * @param fxLabel The FX Latent State Label
+	 * 
+	 * @return The FX Latent State
+	 */
+
+	public org.drip.xva.evolver.TerminalLatentState fx (
+		final org.drip.state.identifier.FXLabel fxLabel)
+	{
+<span class="nc bnc" id="L317" title="All 2 branches missed.">		return fxExists (fxLabel) ? _fxEvolver.get (fxLabel.fullyQualifiedName()) : null;</span>
+	}
+
+	/**
+	 * Retrieve the Forward Evolver Map
+	 * 
+	 * @return The Forward Evolver Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, org.drip.xva.evolver.TerminalLatentState&gt; forwardEvolver()
+	{
+<span class="nc" id="L328">		return _forwardEvolver;</span>
+	}
+
+	/**
+	 * Indicate if the Forward Latent State Exists
+	 * 
+	 * @param forwardLabel The Forward Latent State Label
+	 * 
+	 * @return TRUE - The Forward Latent State Exists
+	 */
+
+	public boolean forwardExists (
+		final org.drip.state.identifier.ForwardLabel forwardLabel)
+	{
+<span class="nc bnc" id="L342" title="All 2 branches missed.">		return null == forwardLabel ? false : _forwardEvolver.containsKey</span>
+<span class="nc" id="L343">			(forwardLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Retrieve the Forward Latent State
+	 * 
+	 * @param forwardLabel The Forward Latent State Label
+	 * 
+	 * @return The Forward Latent State
+	 */
+
+	public org.drip.xva.evolver.TerminalLatentState forward (
+		final org.drip.state.identifier.ForwardLabel forwardLabel)
+	{
+<span class="nc bnc" id="L357" title="All 2 branches missed.">		return forwardExists (forwardLabel) ? _forwardEvolver.get (forwardLabel.fullyQualifiedName()) : null;</span>
+	}
+
+	/**
+	 * Retrieve the OTC Fix Float Evolver Map
+	 * 
+	 * @return The OTC Fix Float Evolver Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, org.drip.xva.evolver.TerminalLatentState&gt; otcFixFloatEvolver()
+	{
+<span class="nc" id="L368">		return _otcFixFloatEvolver;</span>
+	}
+
+	/**
+	 * Indicate if the OTC Fix Float Latent State Exists
+	 * 
+	 * @param otcFixFloatLabel The OTC Fix Float Latent State Label
+	 * 
+	 * @return TRUE - The OTC Fix Float Latent State Exists
+	 */
+
+	public boolean otcFixFloatExists (
+		final org.drip.state.identifier.OTCFixFloatLabel otcFixFloatLabel)
+	{
+<span class="nc bnc" id="L382" title="All 2 branches missed.">		return null == otcFixFloatLabel ? false : _otcFixFloatEvolver.containsKey</span>
+<span class="nc" id="L383">			(otcFixFloatLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Retrieve the OTC Fix Float Latent State
+	 * 
+	 * @param otcFixFloatLabel The OTC Fix Float Latent State Label
+	 * 
+	 * @return The OTC Fix Float Latent State
+	 */
+
+	public org.drip.xva.evolver.TerminalLatentState otcFixFloat (
+		final org.drip.state.identifier.OTCFixFloatLabel otcFixFloatLabel)
+	{
+<span class="nc bnc" id="L397" title="All 2 branches missed.">		return otcFixFloatExists (otcFixFloatLabel) ? _otcFixFloatEvolver.get</span>
+<span class="nc" id="L398">			(otcFixFloatLabel.fullyQualifiedName()) : null;</span>
+	}
+
+	/**
+	 * Retrieve the Overnight Evolver Map
+	 * 
+	 * @return The Overnight Evolver Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, org.drip.xva.evolver.TerminalLatentState&gt; overnightEvolver()
+	{
+<span class="nc" id="L409">		return _overnightEvolver;</span>
+	}
+
+	/**
+	 * Indicate if the Overnight Latent State Exists
+	 * 
+	 * @param overnightLabel The Overnight Latent State Label
+	 * 
+	 * @return TRUE - The Overnight Latent State Exists
+	 */
+
+	public boolean overnightExists (
+		final org.drip.state.identifier.OvernightLabel overnightLabel)
+	{
+<span class="nc bnc" id="L423" title="All 2 branches missed.">		return null == overnightLabel ? false : _otcFixFloatEvolver.containsKey</span>
+<span class="nc" id="L424">			(overnightLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Retrieve the Overnight Latent State
+	 * 
+	 * @param overnightLabel The Overnight Latent State Label
+	 * 
+	 * @return The Overnight Latent State
+	 */
+
+	public org.drip.xva.evolver.TerminalLatentState overnight (
+		final org.drip.state.identifier.OvernightLabel overnightLabel)
+	{
+<span class="nc bnc" id="L438" title="All 2 branches missed.">		return overnightExists (overnightLabel) ? _overnightEvolver.get (overnightLabel.fullyQualifiedName())</span>
+			: null;
+	}
+
+	/**
+	 * Retrieve the Collateral Evolver Map
+	 * 
+	 * @return The Collateral Evolver Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, org.drip.xva.evolver.TerminalLatentState&gt; collateralEvolver()
+	{
+<span class="nc" id="L450">		return _collateralEvolver;</span>
+	}
+
+	/**
+	 * Indicate if the Collateral Latent State Exists
+	 * 
+	 * @param collateralLabel The Collateral Latent State Label
+	 * 
+	 * @return TRUE - The Collateral Latent State Exists
+	 */
+
+	public boolean collateralExists (
+		final org.drip.state.identifier.CollateralLabel collateralLabel)
+	{
+<span class="nc bnc" id="L464" title="All 2 branches missed.">		return null == collateralLabel ? false : _collateralEvolver.containsKey</span>
+<span class="nc" id="L465">			(collateralLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Retrieve the Collateral Latent State
+	 * 
+	 * @param collateralLabel The Collateral Latent State Label
+	 * 
+	 * @return The Collateral Latent State
+	 */
+
+	public org.drip.xva.evolver.TerminalLatentState collateral (
+		final org.drip.state.identifier.CollateralLabel collateralLabel)
+	{
+<span class="nc bnc" id="L479" title="All 2 branches missed.">		return collateralExists (collateralLabel) ? _collateralEvolver.get</span>
+<span class="nc" id="L480">			(collateralLabel.fullyQualifiedName()) : null;</span>
+	}
+
+	/**
+	 * Retrieve the CSA Evolver Map
+	 * 
+	 * @return The CSA Evolver Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, org.drip.xva.evolver.TerminalLatentState&gt; csaEvolver()
+	{
+<span class="nc" id="L491">		return _csaEvolver;</span>
+	}
+
+	/**
+	 * Indicate if the CSA Latent State Exists
+	 * 
+	 * @param csaLabel The CSA Latent State Label
+	 * 
+	 * @return TRUE - The CSA Latent State Exists
+	 */
+
+	public boolean csaExists (
+		final org.drip.state.identifier.CSALabel csaLabel)
+	{
+<span class="nc bnc" id="L505" title="All 2 branches missed.">		return null == csaLabel ? false : _csaEvolver.containsKey (csaLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Retrieve the CSA Latent State
+	 * 
+	 * @param csaLabel The CSA Latent State Label
+	 * 
+	 * @return The CSA Latent State
+	 */
+
+	public org.drip.xva.evolver.TerminalLatentState csa (
+		final org.drip.state.identifier.CSALabel csaLabel)
+	{
+<span class="nc bnc" id="L519" title="All 2 branches missed.">		return csaExists (csaLabel) ? _csaEvolver.get (csaLabel.fullyQualifiedName()) : null;</span>
+	}
+
+	/**
+	 * Retrieve the Entity Hazard Evolver Map
+	 * 
+	 * @return The Entity Hazard Evolver Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, org.drip.xva.evolver.TerminalLatentState&gt; entityHazardEvolver()
+	{
+<span class="nc" id="L530">		return _entityHazardEvolver;</span>
+	}
+
+	/**
+	 * Indicate if the Entity Hazard Latent State Exists
+	 * 
+	 * @param entityHazardLabel The Entity Hazard Latent State Label
+	 * 
+	 * @return TRUE - The Entity Hazard Latent State Exists
+	 */
+
+	public boolean entityHazardExists (
+		final org.drip.state.identifier.EntityHazardLabel entityHazardLabel)
+	{
+<span class="nc bnc" id="L544" title="All 2 branches missed.">		return null == entityHazardLabel ? false : _entityHazardEvolver.containsKey</span>
+<span class="nc" id="L545">			(entityHazardLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Retrieve the Entity Hazard Latent State
+	 * 
+	 * @param entityHazardLabel The Entity Hazard Latent State Label
+	 * 
+	 * @return The Entity Hazard Latent State
+	 */
+
+	public org.drip.xva.evolver.TerminalLatentState entityHazard (
+		final org.drip.state.identifier.EntityHazardLabel entityHazardLabel)
+	{
+<span class="nc bnc" id="L559" title="All 2 branches missed.">		return entityHazardExists (entityHazardLabel) ? _entityHazardEvolver.get</span>
+<span class="nc" id="L560">			(entityHazardLabel.fullyQualifiedName()) : null;</span>
+	}
+
+	/**
+	 * Retrieve the Entity Credit Evolver Map
+	 * 
+	 * @return The Entity Credit Evolver Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, org.drip.xva.evolver.TerminalLatentState&gt; entityCreditEvolver()
+	{
+<span class="nc" id="L571">		return _entityCreditEvolver;</span>
+	}
+
+	/**
+	 * Indicate if the Entity Credit Latent State Exists
+	 * 
+	 * @param entityCreditLabel The Entity Credit Latent State Label
+	 * 
+	 * @return TRUE - The Entity Credit Latent State Exists
+	 */
+
+	public boolean entityCreditExists (
+		final org.drip.state.identifier.EntityCreditLabel entityCreditLabel)
+	{
+<span class="nc bnc" id="L585" title="All 2 branches missed.">		return null == entityCreditLabel ? false : _entityCreditEvolver.containsKey</span>
+<span class="nc" id="L586">			(entityCreditLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Retrieve the Entity Credit Latent State
+	 * 
+	 * @param entityCreditLabel The Entity Credit Latent State Label
+	 * 
+	 * @return The Entity Credit Latent State
+	 */
+
+	public org.drip.xva.evolver.TerminalLatentState entityCredit (
+		final org.drip.state.identifier.EntityCreditLabel entityCreditLabel)
+	{
+<span class="nc bnc" id="L600" title="All 2 branches missed.">		return entityCreditExists (entityCreditLabel) ? _entityCreditEvolver.get</span>
+<span class="nc" id="L601">			(entityCreditLabel.fullyQualifiedName()) : null;</span>
+	}
+
+	/**
+	 * Retrieve the Entity Recovery Evolver Map
+	 * 
+	 * @return The Entity Recovery Evolver Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, org.drip.xva.evolver.TerminalLatentState&gt; entityRecoveryEvolver()
+	{
+<span class="nc" id="L612">		return _entityRecoveryEvolver;</span>
+	}
+
+	/**
+	 * Indicate if the Entity Recovery Latent State Exists
+	 * 
+	 * @param entityRecoveryLabel The Entity Recovery Latent State Label
+	 * 
+	 * @return TRUE - The Entity Recovery Latent State Exists
+	 */
+
+	public boolean entityRecoveryExists (
+		final org.drip.state.identifier.EntityRecoveryLabel entityRecoveryLabel)
+	{
+<span class="nc bnc" id="L626" title="All 2 branches missed.">		return null == entityRecoveryLabel ? false : _entityRecoveryEvolver.containsKey</span>
+<span class="nc" id="L627">			(entityRecoveryLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Retrieve the Entity Recovery Latent State
+	 * 
+	 * @param entityRecoveryLabel The Entity Recovery Latent State Label
+	 * 
+	 * @return The Entity Recovery Latent State
+	 */
+
+	public org.drip.xva.evolver.TerminalLatentState entityRecovery (
+		final org.drip.state.identifier.EntityRecoveryLabel entityRecoveryLabel)
+	{
+<span class="nc bnc" id="L641" title="All 2 branches missed.">		return entityRecoveryExists (entityRecoveryLabel) ? _entityRecoveryEvolver.get</span>
+<span class="nc" id="L642">			(entityRecoveryLabel.fullyQualifiedName()) : null;</span>
+	}
+
+	/**
+	 * Retrieve the Entity Funding Evolver Map
+	 * 
+	 * @return The Entity Funding Evolver Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, org.drip.xva.evolver.TerminalLatentState&gt; entityFundingEvolver()
+	{
+<span class="nc" id="L653">		return _entityFundingEvolver;</span>
+	}
+
+	/**
+	 * Indicate if the Entity Funding Latent State Exists
+	 * 
+	 * @param entityFundingLabel The Entity Funding Latent State Label
+	 * 
+	 * @return TRUE - The Entity Funding Latent State Exists
+	 */
+
+	public boolean entityFundingExists (
+		final org.drip.state.identifier.EntityFundingLabel entityFundingLabel)
+	{
+<span class="nc bnc" id="L667" title="All 2 branches missed.">		return null == entityFundingLabel ? false : _entityFundingEvolver.containsKey</span>
+<span class="nc" id="L668">			(entityFundingLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Retrieve the Entity Funding Latent State
+	 * 
+	 * @param entityFundingLabel The Entity Funding Latent State Label
+	 * 
+	 * @return The Entity Funding Latent State
+	 */
+
+	public org.drip.xva.evolver.TerminalLatentState entityFunding (
+		final org.drip.state.identifier.EntityFundingLabel entityFundingLabel)
+	{
+<span class="nc bnc" id="L682" title="All 2 branches missed.">		return entityFundingExists (entityFundingLabel) ? _entityFundingEvolver.get</span>
+<span class="nc" id="L683">			(entityFundingLabel.fullyQualifiedName()) : null;</span>
+	}
+
+	/**
+	 * Retrieve the Volatility Evolver Map
+	 * 
+	 * @return The Volatility Evolver Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, org.drip.xva.evolver.TerminalLatentState&gt; volatilityEvolver()
+	{
+<span class="nc" id="L694">		return _volatilityEvolver;</span>
+	}
+
+	/**
+	 * Indicate if the Volatility Latent State Exists
+	 * 
+	 * @param volatilityLabel The Volatility Latent State Label
+	 * 
+	 * @return TRUE - The Volatility Latent State Exists
+	 */
+
+	public boolean volatilityExists (
+		final org.drip.state.identifier.VolatilityLabel volatilityLabel)
+	{
+<span class="nc bnc" id="L708" title="All 2 branches missed.">		return null == volatilityLabel ? false : _volatilityEvolver.containsKey</span>
+<span class="nc" id="L709">			(volatilityLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Retrieve the Volatility Latent State
+	 * 
+	 * @param volatilityLabel The Volatility Latent State Label
+	 * 
+	 * @return The Volatility Latent State
+	 */
+
+	public org.drip.xva.evolver.TerminalLatentState volatility (
+		final org.drip.state.identifier.VolatilityLabel volatilityLabel)
+	{
+<span class="nc bnc" id="L723" title="All 2 branches missed.">		return volatilityExists (volatilityLabel) ? _volatilityEvolver.get</span>
+<span class="nc" id="L724">			(volatilityLabel.fullyQualifiedName()) : null;</span>
+	}
+
+	/**
+	 * Retrieve the Ratings Evolver Map
+	 * 
+	 * @return The Ratings Evolver Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, org.drip.xva.evolver.TerminalLatentState&gt; ratingEvolver()
+	{
+<span class="nc" id="L735">		return _ratingEvolver;</span>
+	}
+
+	/**
+	 * Indicate if the Rating Latent State Exists
+	 * 
+	 * @param ratingLabel The Rating Latent State Label
+	 * 
+	 * @return TRUE - The Rating Latent State Exists
+	 */
+
+	public boolean ratingStateExists (
+		final org.drip.state.identifier.RatingLabel ratingLabel)
+	{
+<span class="nc bnc" id="L749" title="All 2 branches missed.">		return null == ratingLabel ? false : _ratingEvolver.containsKey (ratingLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Retrieve the Repo Evolver Map
+	 * 
+	 * @return The Repo Evolver Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, org.drip.xva.evolver.TerminalLatentState&gt; repoEvolver()
+	{
+<span class="nc" id="L760">		return _repoEvolver;</span>
+	}
+
+	/**
+	 * Indicate if the Repo Latent State Exists
+	 * 
+	 * @param repoLabel The Repo Latent State Label
+	 * 
+	 * @return TRUE - The Repo Latent State Exists
+	 */
+
+	public boolean repoStateExists (
+		final org.drip.state.identifier.RepoLabel repoLabel)
+	{
+<span class="nc bnc" id="L774" title="All 2 branches missed.">		return null == repoLabel ? false : _repoEvolver.containsKey (repoLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Retrieve the Pay Down Evolver Map
+	 * 
+	 * @return The Pay Down Evolver Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, org.drip.xva.evolver.TerminalLatentState&gt; payDownEvolver()
+	{
+<span class="nc" id="L785">		return _payDownEvolver;</span>
+	}
+
+	/**
+	 * Indicate if the Pay Down Latent State Exists
+	 * 
+	 * @param payDownLabel The Pay Down Latent State Label
+	 * 
+	 * @return TRUE - The Pay Down Latent State Exists
+	 */
+
+	public boolean payDownStateExists (
+		final org.drip.state.identifier.PaydownLabel payDownLabel)
+	{
+<span class="nc bnc" id="L799" title="All 2 branches missed.">		return null == payDownLabel ? false : _payDownEvolver.containsKey</span>
+<span class="nc" id="L800">			(payDownLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Retrieve the Custom Evolver Map
+	 * 
+	 * @return The Custom Evolver Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, org.drip.xva.evolver.TerminalLatentState&gt; customEvolver()
+	{
+<span class="nc" id="L811">		return _customEvolver;</span>
+	}
+
+	/**
+	 * Indicate if the Custom Latent State Exists
+	 * 
+	 * @param customLabel The Custom Latent State Label
+	 * 
+	 * @return TRUE - The Custom Latent State Exists
+	 */
+
+	public boolean customStateExists (
+		final org.drip.state.identifier.CustomLabel customLabel)
+	{
+<span class="nc bnc" id="L825" title="All 2 branches missed.">		return null == customLabel ? false : _customEvolver.containsKey (customLabel.fullyQualifiedName());</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

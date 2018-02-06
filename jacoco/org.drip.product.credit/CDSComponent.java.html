@@ -447,8 +447,8 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 
 <span class="pc bpc" id="L448" title="1 of 2 branches missed.">		org.drip.param.period.CompositePeriodSetting cps = new org.drip.param.period.CompositePeriodSetting</span>
 			(iFreq, strTenor, _strCouponCurrency, null, _dblNotional = dblNotional, null, _notlSchedule,
-				null, null == _crValParams ? null : org.drip.state.identifier.CreditLabel.Standard
-<span class="fc" id="L451">					(_crValParams.creditCurveName()));</span>
+				null, null == _crValParams ? null : org.drip.state.identifier.EntityCreditLabel.Standard
+<span class="fc" id="L451">					(_crValParams.creditCurveName(), _strCouponCurrency));</span>
 
 <span class="fc" id="L453">		java.util.List&lt;java.lang.Integer&gt; lsStreamEdgeDate =</span>
 <span class="fc" id="L454">			org.drip.analytics.support.CompositePeriodBuilder.BackwardEdgeDates (new</span>
@@ -589,11 +589,11 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 <span class="nc" id="L589">		return null;</span>
 	}
 
-	@Override public org.drip.state.identifier.CreditLabel creditLabel()
+	@Override public org.drip.state.identifier.EntityCreditLabel creditLabel()
 	{
 <span class="pc bpc" id="L594" title="2 of 4 branches missed.">		return null == _crValParams || null == _crValParams.creditCurveName() ||</span>
-<span class="pc bpc" id="L595" title="1 of 2 branches missed.">			_crValParams.creditCurveName().isEmpty() ? null : org.drip.state.identifier.CreditLabel.Standard</span>
-<span class="fc" id="L596">				(_crValParams.creditCurveName());</span>
+<span class="pc bpc" id="L595" title="1 of 2 branches missed.">			_crValParams.creditCurveName().isEmpty() ? null : org.drip.state.identifier.EntityCreditLabel.Standard</span>
+<span class="fc" id="L596">				(_crValParams.creditCurveName(), _strCouponCurrency);</span>
 	}
 
 	@Override public
@@ -1065,9 +1065,9 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 
 		try {
 <span class="fc" id="L1067">			if (null == (ccQS = org.drip.state.creator.ScenarioCreditCurveBuilder.Custom</span>
-<span class="pc bpc" id="L1068" title="1 of 2 branches missed.">				(creditLabel().fullyQualifiedName(), new org.drip.analytics.date.JulianDate</span>
+<span class="pc bpc" id="L1068" title="1 of 2 branches missed.">				(creditLabel().referenceEntity(), new org.drip.analytics.date.JulianDate</span>
 <span class="pc bpc" id="L1069" title="1 of 2 branches missed.">					(valParams.valueDate()), aComp, dcFunding, adblQS, astrCalibMeasure, null != cc ?</span>
-<span class="pc" id="L1070">						cc.recovery (valParams.valueDate()) : 0.4, false)))</span>
+<span class="pc" id="L1070">						cc.recovery (valParams.valueDate()) : 0.4, true)))</span>
 <span class="nc" id="L1071">				return null;</span>
 <span class="nc" id="L1072">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L1073">			e.printStackTrace();</span>

@@ -168,7 +168,9 @@ public class CreditCurveScenario {
 
 			if (!org.drip.state.nonlinear.NonlinearCurveBuilder.CreditCurve (valParams, aCalibInst[i],
 				tqm._dblQuote, tqm._strMeasure, bFlat, i, ebcc, dc, gc, pricerParams, lsfc, vcp, cp))
+			{
 				return null;
+			}
 		}
 
 		ebcc.setInstrCalibInputs (valParams, bFlat, dc, gc, pricerParams, aCalibInst, adblCalibQuote,

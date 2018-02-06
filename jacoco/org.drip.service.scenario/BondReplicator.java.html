@@ -484,7 +484,7 @@ public class BondReplicator
 <span class="fc" id="L484">		_valParams = new org.drip.param.valuation.ValuationParams (_dtSpot, _dtSettle, strCurrency);</span>
 
 <span class="fc" id="L486">		org.drip.state.discount.MergedDiscountForwardCurve mdfc =</span>
-<span class="fc" id="L487">			org.drip.service.template.LatentMarketStateBuilder.ShapePreservingFundingCurve (_dtSpot,</span>
+<span class="fc" id="L487">			org.drip.service.template.LatentMarketStateBuilder.SmoothFundingCurve (_dtSpot,</span>
 				strCurrency, _astrDepositTenor, _adblDepositQuote, &quot;ForwardRate&quot;, _adblFuturesQuote,
 					&quot;ForwardRate&quot;, _astrFixFloatTenor, _adblFixFloatQuote, &quot;SwapRate&quot;);
 
@@ -534,7 +534,7 @@ public class BondReplicator
 		}
 
 <span class="fc" id="L536">		if (null == (_csqcFunding01Up = org.drip.param.creator.MarketParamsBuilder.Create</span>
-<span class="pc bpc" id="L537" title="1 of 2 branches missed.">			(org.drip.service.template.LatentMarketStateBuilder.ShapePreservingFundingCurve (_dtSpot,</span>
+<span class="pc bpc" id="L537" title="1 of 2 branches missed.">			(org.drip.service.template.LatentMarketStateBuilder.SmoothFundingCurve (_dtSpot,</span>
 				strCurrency, _astrDepositTenor, org.drip.analytics.support.Helper.ParallelNodeBump
 <span class="fc" id="L539">					(_adblDepositQuote, 0.0001), &quot;ForwardRate&quot;,</span>
 <span class="fc" id="L540">						org.drip.analytics.support.Helper.ParallelNodeBump (_adblFuturesQuote, 0.0001),</span>
@@ -556,7 +556,7 @@ public class BondReplicator
 		}
 
 <span class="fc" id="L558">		if (null == (_csqcFundingEuroDollar = org.drip.param.creator.MarketParamsBuilder.Create</span>
-<span class="pc bpc" id="L559" title="1 of 2 branches missed.">			(org.drip.service.template.LatentMarketStateBuilder.ShapePreservingFundingCurve (_dtSpot,</span>
+<span class="pc bpc" id="L559" title="1 of 2 branches missed.">			(org.drip.service.template.LatentMarketStateBuilder.SmoothFundingCurve (_dtSpot,</span>
 				strCurrency, _astrDepositTenor, _adblDepositQuote, &quot;ForwardRate&quot;, _adblFuturesQuote,
 					&quot;ForwardRate&quot;, null, null, &quot;SwapRate&quot;), gc, null, null, null, null, null)))
 <span class="nc" id="L562">			throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
@@ -578,7 +578,7 @@ public class BondReplicator
 <span class="fc" id="L578">				org.drip.service.template.LatentMarketStateBuilder.BumpedForwardFundingCurve (_dtSpot,</span>
 					strCurrency, _astrDepositTenor, _adblDepositQuote, &quot;ForwardRate&quot;, _adblFuturesQuote,
 						&quot;ForwardRate&quot;, _astrFixFloatTenor, _adblFixFloatQuote, &quot;SwapRate&quot;,
-							org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING, 0.0001 *
+							org.drip.service.template.LatentMarketStateBuilder.SMOOTH, 0.0001 *
 								_dblTenorBump, false);
 
 		java.util.Map&lt;java.lang.String, org.drip.state.discount.MergedDiscountForwardCurve&gt;
@@ -586,7 +586,7 @@ public class BondReplicator
 <span class="fc" id="L586">				org.drip.service.template.LatentMarketStateBuilder.BumpedForwardFundingCurve (_dtSpot,</span>
 					strCurrency, _astrDepositTenor, _adblDepositQuote, &quot;ForwardRate&quot;, _adblFuturesQuote,
 						&quot;ForwardRate&quot;, _astrFixFloatTenor, _adblFixFloatQuote, &quot;SwapRate&quot;,
-							org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING, -0.0001 *
+							org.drip.service.template.LatentMarketStateBuilder.SMOOTH, -0.0001 *
 								_dblTenorBump, false);
 
 <span class="pc bpc" id="L592" title="2 of 4 branches missed.">		if (null == mapTenorForwardFundingUp || null == mapTenorForwardFundingDown)</span>
@@ -616,14 +616,14 @@ public class BondReplicator
 <span class="fc" id="L616">			mapTenorFundingUp = org.drip.service.template.LatentMarketStateBuilder.BumpedFundingCurve</span>
 <span class="fc" id="L617">				(_dtSpot, strCurrency, _astrDepositTenor, _adblDepositQuote, &quot;ForwardRate&quot;,</span>
 					_adblFuturesQuote, &quot;ForwardRate&quot;, _astrFixFloatTenor, _adblFixFloatQuote, &quot;SwapRate&quot;,
-						org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING, 0.0001 *
+						org.drip.service.template.LatentMarketStateBuilder.SMOOTH, 0.0001 *
 							_dblTenorBump, false);
 
 		java.util.Map&lt;java.lang.String, org.drip.state.discount.MergedDiscountForwardCurve&gt;
 <span class="fc" id="L623">			mapTenorFundingDown = org.drip.service.template.LatentMarketStateBuilder.BumpedFundingCurve</span>
 <span class="fc" id="L624">				(_dtSpot, strCurrency, _astrDepositTenor, _adblDepositQuote, &quot;ForwardRate&quot;,</span>
 					_adblFuturesQuote, &quot;ForwardRate&quot;, _astrFixFloatTenor, _adblFixFloatQuote, &quot;SwapRate&quot;,
-						org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING, -0.0001 *
+						org.drip.service.template.LatentMarketStateBuilder.SMOOTH, -0.0001 *
 							_dblTenorBump, false);
 
 <span class="pc bpc" id="L629" title="2 of 4 branches missed.">		if (null == mapTenorFundingUp || null == mapTenorFundingDown)</span>
@@ -689,7 +689,7 @@ public class BondReplicator
 <span class="nc" id="L689">				throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
 <span class="fc" id="L690">		}</span>
 
-<span class="fc" id="L692">		org.drip.state.identifier.CreditLabel cl = _bond.creditLabel();</span>
+<span class="fc" id="L692">		org.drip.state.identifier.EntityCreditLabel cl = _bond.creditLabel();</span>
 
 <span class="pc bpc" id="L694" title="1 of 2 branches missed.">		java.lang.String strReferenceEntity = null != cl ? cl.referenceEntity() : null;</span>
 
@@ -1507,7 +1507,7 @@ public class BondReplicator
 							dblCreditBasisToExercise + 0.0001 * _dblCustomCreditBasisBump)) /
 								_dblCurrentPrice / _dblCustomCreditBasisBump;
 				else {
-<span class="fc" id="L1510">					org.drip.state.identifier.CreditLabel cl = _bond.creditLabel();</span>
+<span class="fc" id="L1510">					org.drip.state.identifier.EntityCreditLabel cl = _bond.creditLabel();</span>
 
 <span class="fc" id="L1512">					org.drip.state.credit.CreditCurve ccBase = _csqcCreditBase.creditState (cl);</span>
 

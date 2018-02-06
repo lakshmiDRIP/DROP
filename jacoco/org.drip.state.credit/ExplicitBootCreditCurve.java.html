@@ -63,7 +63,7 @@ public abstract class ExplicitBootCreditCurve extends org.drip.state.credit.Cred
 
 	protected ExplicitBootCreditCurve (
 		final int iEpochDate,
-		final org.drip.state.identifier.CreditLabel label,
+		final org.drip.state.identifier.EntityCreditLabel label,
 		final java.lang.String strCurrency)
 		throws java.lang.Exception
 	{

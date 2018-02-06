@@ -241,14 +241,14 @@ package org.drip.product.definition;
 
 <span class="nc bnc" id="L242" title="All 8 branches missed.">			if (null != csqsTenorUp &amp;&amp; null != compCurve &amp;&amp; null != compCurve._cc &amp;&amp; null !=</span>
 <span class="nc bnc" id="L243" title="All 2 branches missed.">				compCurve._strName &amp;&amp; !compCurve._strName.isEmpty()) {</span>
-<span class="nc" id="L244">				ccVirginUp = csqsTenorUp.creditState (org.drip.state.identifier.CreditLabel.Standard</span>
-<span class="nc" id="L245">					(compCurve._strName));</span>
+<span class="nc" id="L244">				ccVirginUp = csqsTenorUp.creditState (org.drip.state.identifier.EntityCreditLabel.Standard</span>
+<span class="nc" id="L245">					(compCurve._strName, couponCurrency()[0]));</span>
 
 <span class="nc" id="L247">				csqsTenorUp.setCreditState (compCurve._cc);</span>
 
 <span class="nc bnc" id="L249" title="All 2 branches missed.">				if (null != csqsTenorDown) {</span>
-<span class="nc" id="L250">					ccVirginDown = csqsTenorDown.creditState (org.drip.state.identifier.CreditLabel.Standard</span>
-<span class="nc" id="L251">						(compCurve._strName));</span>
+<span class="nc" id="L250">					ccVirginDown = csqsTenorDown.creditState (org.drip.state.identifier.EntityCreditLabel.Standard</span>
+<span class="nc" id="L251">						(compCurve._strName, couponCurrency()[0]));</span>
 
 <span class="nc" id="L253">					csqsTenorDown.setCreditState (compCurve._cc);</span>
 				}
@@ -329,8 +329,8 @@ package org.drip.product.definition;
 <span class="nc bnc" id="L329" title="All 2 branches missed.">			if (null != csqs)</span>
 <span class="nc" id="L330">				mapComponentTenorDGMM.put (strComponentName, accumulateTenorDeltaGammaMeasures (valParams,</span>
 					pricerParams, mapTenorUpCSQS, mapTenorDownCSQS, vcp, mapBaseMeasures, new ComponentCurve
-<span class="nc" id="L332">						(strComponentName, csqs.creditState (org.drip.state.identifier.CreditLabel.Standard</span>
-<span class="nc" id="L333">							(strComponentName)))));</span>
+<span class="nc" id="L332">						(strComponentName, csqs.creditState (org.drip.state.identifier.EntityCreditLabel.Standard</span>
+<span class="nc" id="L333">							(strComponentName, couponCurrency()[0])))));</span>
 <span class="nc" id="L334">		}</span>
 
 <span class="nc bnc" id="L336" title="All 2 branches missed.">		if (0 == mapComponentTenorDGMM.size()) return null;</span>
@@ -537,7 +537,7 @@ package org.drip.product.definition;
 <span class="nc" id="L537">		return astrPrincipalCurrency;</span>
 	}
 
-	@Override public org.drip.state.identifier.CreditLabel[] creditLabel()
+	@Override public org.drip.state.identifier.EntityCreditLabel[] creditLabel()
 	{
 <span class="nc" id="L542">		org.drip.product.definition.Component[] aComp = components();</span>
 
@@ -547,13 +547,13 @@ package org.drip.product.definition;
 
 <span class="nc bnc" id="L548" title="All 2 branches missed.">		if (0 == iNumComp) return null;</span>
 
-<span class="nc" id="L550">		java.util.Set&lt;org.drip.state.identifier.CreditLabel&gt; sLSLCredit = new</span>
-			java.util.HashSet&lt;org.drip.state.identifier.CreditLabel&gt;();
+<span class="nc" id="L550">		java.util.Set&lt;org.drip.state.identifier.EntityCreditLabel&gt; sLSLCredit = new</span>
+			java.util.HashSet&lt;org.drip.state.identifier.EntityCreditLabel&gt;();
 
 <span class="nc bnc" id="L553" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i) {</span>
 <span class="nc bnc" id="L554" title="All 2 branches missed.">			if (null == aComp[i]) return null;</span>
 
-<span class="nc" id="L556">			org.drip.state.identifier.CreditLabel lslCredit = aComp[i].creditLabel();</span>
+<span class="nc" id="L556">			org.drip.state.identifier.EntityCreditLabel lslCredit = aComp[i].creditLabel();</span>
 
 <span class="nc bnc" id="L558" title="All 2 branches missed.">			if (null != lslCredit) sLSLCredit.add (lslCredit);</span>
 		}
@@ -563,10 +563,10 @@ package org.drip.product.definition;
 <span class="nc bnc" id="L563" title="All 2 branches missed.">		if (0 == iNumCreditCurve) return null;</span>
 
 <span class="nc" id="L565">		int i = 0;</span>
-<span class="nc" id="L566">		org.drip.state.identifier.CreditLabel[] aLSLCredit = new</span>
-			org.drip.state.identifier.CreditLabel[iNumCreditCurve];
+<span class="nc" id="L566">		org.drip.state.identifier.EntityCreditLabel[] aLSLCredit = new</span>
+			org.drip.state.identifier.EntityCreditLabel[iNumCreditCurve];
 
-<span class="nc bnc" id="L569" title="All 2 branches missed.">		for (org.drip.state.identifier.CreditLabel lslCredit : sLSLCredit)</span>
+<span class="nc bnc" id="L569" title="All 2 branches missed.">		for (org.drip.state.identifier.EntityCreditLabel lslCredit : sLSLCredit)</span>
 <span class="nc" id="L570">			aLSLCredit[i++] = lslCredit;</span>
 
 <span class="nc" id="L572">		return aLSLCredit;</span>

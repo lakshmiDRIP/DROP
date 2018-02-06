@@ -1065,9 +1065,9 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 
 		try {
 			if (null == (ccQS = org.drip.state.creator.ScenarioCreditCurveBuilder.Custom
-				(creditLabel().fullyQualifiedName(), new org.drip.analytics.date.JulianDate
+				(creditLabel().referenceEntity(), new org.drip.analytics.date.JulianDate
 					(valParams.valueDate()), aComp, dcFunding, adblQS, astrCalibMeasure, null != cc ?
-						cc.recovery (valParams.valueDate()) : 0.4, false)))
+						cc.recovery (valParams.valueDate()) : 0.4, true)))
 				return null;
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();

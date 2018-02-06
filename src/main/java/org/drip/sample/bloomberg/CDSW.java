@@ -281,7 +281,11 @@ public class CDSW {
 			true
 		);
 
-		JulianDate dtCurve = DateUtil.Today();
+		JulianDate dtCurve = DateUtil.CreateFromYMD (
+			2018,
+			DateUtil.JANUARY,
+			5
+		);
 
 		JulianDate dtValue = dtCurve.addDays (1);
 

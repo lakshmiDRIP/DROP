@@ -919,7 +919,7 @@ public class CoreCashFlowMeasures {
 
 		Bond bond = BondBuilder.CreateSimpleFixed (
 			"CCCalibBond",
-			"DKK",
+			"USD",
 			"CC",
 			0.05,
 			2,
@@ -944,7 +944,7 @@ public class CoreCashFlowMeasures {
 
 		MergedDiscountForwardCurve dc = ScenarioDiscountCurveBuilder.ExponentiallyCompoundedFlatRate (
 			DateUtil.Today(),
-			"DKK",
+			"USD",
 			0.04
 		);
 
@@ -1010,10 +1010,10 @@ public class CoreCashFlowMeasures {
 			DateUtil.Today(),
 			DateUtil.Today().addTenor ("5Y"),
 			0.1,
-			"DKK",
+			"USD",
 			0.40,
 			"CC",
-			"DKK",
+			"USD",
 			true
 		);
 

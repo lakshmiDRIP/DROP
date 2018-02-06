@@ -281,11 +281,15 @@ import org.drip.state.identifier.ForwardLabel;
 			true
 		);
 
-<span class="fc" id="L284">		JulianDate dtCurve = DateUtil.Today();</span>
+<span class="fc" id="L284">		JulianDate dtCurve = DateUtil.CreateFromYMD (</span>
+			2018,
+			DateUtil.JANUARY,
+			5
+		);
 
-<span class="fc" id="L286">		JulianDate dtValue = dtCurve.addDays (1);</span>
+<span class="fc" id="L290">		JulianDate dtValue = dtCurve.addDays (1);</span>
 
-<span class="fc" id="L288">		JulianDate dtSettle = dtValue.addBusDays (</span>
+<span class="fc" id="L292">		JulianDate dtSettle = dtValue.addBusDays (</span>
 			3,
 			&quot;USD&quot;
 		);
@@ -294,20 +298,20 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Model the USD ISDA Standard Curve
 		 */
 
-<span class="fc" id="L297">		double dblRecovery = 0.4;</span>
-<span class="fc" id="L298">		double dblNotional = -10.e+06;</span>
-<span class="fc" id="L299">		String[] astrCashTenor = new String[] {   &quot;1M&quot;,     &quot;2M&quot;,     &quot;3M&quot;,     &quot;6M&quot;,    &quot;12M&quot;};</span>
-<span class="fc" id="L300">		double[] adblCashRate = new double[] {0.001864, 0.002289, 0.002638, 0.003965, 0.006759};</span>
-<span class="fc" id="L301">		String[] astrIRSTenor = new String[] {   &quot;2Y&quot;,     &quot;3Y&quot;,     &quot;4Y&quot;,     &quot;5Y&quot;,     &quot;6Y&quot;,     &quot;7Y&quot;,</span>
+<span class="fc" id="L301">		double dblRecovery = 0.4;</span>
+<span class="fc" id="L302">		double dblNotional = -10.e+06;</span>
+<span class="fc" id="L303">		String[] astrCashTenor = new String[] {   &quot;1M&quot;,     &quot;2M&quot;,     &quot;3M&quot;,     &quot;6M&quot;,    &quot;12M&quot;};</span>
+<span class="fc" id="L304">		double[] adblCashRate = new double[] {0.001864, 0.002289, 0.002638, 0.003965, 0.006759};</span>
+<span class="fc" id="L305">		String[] astrIRSTenor = new String[] {   &quot;2Y&quot;,     &quot;3Y&quot;,     &quot;4Y&quot;,     &quot;5Y&quot;,     &quot;6Y&quot;,     &quot;7Y&quot;,</span>
 				&quot;8Y&quot;,     &quot;9Y&quot;,    &quot;10Y&quot;,    &quot;12Y&quot;,    &quot;15Y&quot;,    &quot;20Y&quot;,    &quot;25Y&quot;,    &quot;30Y&quot;};
-<span class="fc" id="L303">		double[] adblIRSRate = new double[] {0.004750, 0.007700, 0.011600, 0.015425, 0.018900, 0.021760,</span>
+<span class="fc" id="L307">		double[] adblIRSRate = new double[] {0.004750, 0.007700, 0.011600, 0.015425, 0.018900, 0.021760,</span>
 			0.024105, 0.026095, 0.027750, 0.030400, 0.032890, 0.034855, 0.035805, 0.036345};
 
 		/*
 		 * Build the USD ISDA Standard Curve
 		 */
 
-<span class="fc" id="L310">		MergedDiscountForwardCurve dc = BuildRatesCurveFromInstruments (</span>
+<span class="fc" id="L314">		MergedDiscountForwardCurve dc = BuildRatesCurveFromInstruments (</span>
 			dtCurve,
 			astrCashTenor,
 			adblCashRate,
@@ -321,10 +325,10 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Build the CDS Instrument Quotes
 		 */
 
-<span class="fc" id="L324">		String[] astrCDSTenor = new String[] {</span>
+<span class="fc" id="L328">		String[] astrCDSTenor = new String[] {</span>
 			&quot;6M&quot;, &quot;1Y&quot;, &quot;2Y&quot;, &quot;3Y&quot;, &quot;4Y&quot;, &quot;5Y&quot;, &quot;7Y&quot;, &quot;10Y&quot;
 		};
-<span class="fc" id="L327">		double[] adblCDSParSpread = new double[] {</span>
+<span class="fc" id="L331">		double[] adblCDSParSpread = new double[] {</span>
 			60., 68., 88., 102., 121., 138., 168., 188.
 		};
 
@@ -332,7 +336,7 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Build the Base Credit Curve
 		 */
 
-<span class="fc" id="L335">		CreditCurve cc = CreateCreditCurveFromCDS (</span>
+<span class="fc" id="L339">		CreditCurve cc = CreateCreditCurveFromCDS (</span>
 			dtValue,
 			adblCDSParSpread,
 			astrCDSTenor,
@@ -348,80 +352,80 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Display Survival Probability to the instrument maturities
 		 */
 
-<span class="fc" id="L351">		DisplayInstrumentMaturitySurvival (cc);</span>
+<span class="fc" id="L355">		DisplayInstrumentMaturitySurvival (cc);</span>
 
 		/*
 		 * Create the CDS to price. Contract Maturity is 6Y. Traded Spread Input is 0.05 (500 bp).
 		 */
 
-<span class="fc" id="L357">		CreditDefaultSwap cds = CreateCDS (</span>
+<span class="fc" id="L361">		CreditDefaultSwap cds = CreateCDS (</span>
 			dtValue,
 			&quot;6Y&quot;,
 			0.05,
 			&quot;MS&quot;
 		);
 
-<span class="fc" id="L364">		ValuationParams valParams = new ValuationParams (</span>
+<span class="fc" id="L368">		ValuationParams valParams = new ValuationParams (</span>
 			dtValue,
 			dtSettle,
 			&quot;USD&quot;
 		);
 
-<span class="fc" id="L370">		CreditPricerParams pricerParams = CreditPricerParams.Standard();</span>
+<span class="fc" id="L374">		CreditPricerParams pricerParams = CreditPricerParams.Standard();</span>
 
-<span class="fc" id="L372">		System.out.println (&quot;\n---- Valuation Details ----&quot;);</span>
+<span class="fc" id="L376">		System.out.println (&quot;\n---- Valuation Details ----&quot;);</span>
 
-<span class="fc" id="L374">		System.out.println (&quot;Trade Date   : &quot; + dtCurve);</span>
+<span class="fc" id="L378">		System.out.println (&quot;Trade Date   : &quot; + dtCurve);</span>
 
-<span class="fc" id="L376">		System.out.println (&quot;Cash Settle  : &quot; + dtSettle);</span>
+<span class="fc" id="L380">		System.out.println (&quot;Cash Settle  : &quot; + dtSettle);</span>
 
-<span class="fc" id="L378">		System.out.println (&quot;\n---- CDS Details ----&quot;);</span>
+<span class="fc" id="L382">		System.out.println (&quot;\n---- CDS Details ----&quot;);</span>
 
-<span class="fc" id="L380">		System.out.println (&quot;Effective    : &quot; + cds.effectiveDate());</span>
+<span class="fc" id="L384">		System.out.println (&quot;Effective    : &quot; + cds.effectiveDate());</span>
 
-<span class="fc" id="L382">		System.out.println (&quot;Maturity     : &quot; + cds.maturityDate());</span>
+<span class="fc" id="L386">		System.out.println (&quot;Maturity     : &quot; + cds.maturityDate());</span>
 
 		/*
 		 * Generate the base CDS Measures
 		 */
 
-<span class="fc" id="L388">		CurveSurfaceQuoteContainer mktParams = MarketParamsBuilder.Credit (</span>
+<span class="fc" id="L392">		CurveSurfaceQuoteContainer mktParams = MarketParamsBuilder.Credit (</span>
 			dc,
 			cc
 		);
 
-<span class="fc" id="L393">		CaseInsensitiveTreeMap&lt;Double&gt; mapBaseMeasures = cds.value (</span>
+<span class="fc" id="L397">		CaseInsensitiveTreeMap&lt;Double&gt; mapBaseMeasures = cds.value (</span>
 			valParams,
 			pricerParams,
 			mktParams,
 			null
 		);
 
-<span class="fc" id="L400">		double dblAccrued = mapBaseMeasures.get (&quot;Accrued&quot;) * 100. * dblNotional;</span>
+<span class="fc" id="L404">		double dblAccrued = mapBaseMeasures.get (&quot;Accrued&quot;) * 100. * dblNotional;</span>
 
-<span class="fc" id="L402">		double dblBaseDirtyPV = mapBaseMeasures.get (&quot;DirtyPV&quot;);</span>
+<span class="fc" id="L406">		double dblBaseDirtyPV = mapBaseMeasures.get (&quot;DirtyPV&quot;);</span>
 
-<span class="fc" id="L404">		double dblPrincipal = mapBaseMeasures.get (&quot;Upfront&quot;) * 0.01 * dblNotional;</span>
+<span class="fc" id="L408">		double dblPrincipal = mapBaseMeasures.get (&quot;Upfront&quot;) * 0.01 * dblNotional;</span>
 
-<span class="fc" id="L406">		System.out.println (&quot;\n---- Base CDS Measures ----&quot;);</span>
+<span class="fc" id="L410">		System.out.println (&quot;\n---- Base CDS Measures ----&quot;);</span>
 
-<span class="fc" id="L408">		System.out.println (&quot;Price        : &quot; + FormatUtil.FormatDouble (mapBaseMeasures.get (&quot;Price&quot;), 1, 2, 1.));</span>
+<span class="fc" id="L412">		System.out.println (&quot;Price        : &quot; + FormatUtil.FormatDouble (mapBaseMeasures.get (&quot;Price&quot;), 1, 2, 1.));</span>
 
-<span class="fc" id="L410">		System.out.println (&quot;Principal    : &quot; + FormatUtil.FormatDouble (dblPrincipal, 1, 0, 1.));</span>
+<span class="fc" id="L414">		System.out.println (&quot;Principal    : &quot; + FormatUtil.FormatDouble (dblPrincipal, 1, 0, 1.));</span>
 
-<span class="fc" id="L412">		System.out.println (&quot;Accrued      : &quot; + FormatUtil.FormatDouble (dblAccrued, 1, 0, 1.));</span>
+<span class="fc" id="L416">		System.out.println (&quot;Accrued      : &quot; + FormatUtil.FormatDouble (dblAccrued, 1, 0, 1.));</span>
 
-<span class="fc" id="L414">		System.out.println (&quot;Accrual Days : &quot; + FormatUtil.FormatDouble (mapBaseMeasures.get (&quot;AccrualDays&quot;), 1, 0, 1.));</span>
+<span class="fc" id="L418">		System.out.println (&quot;Accrual Days : &quot; + FormatUtil.FormatDouble (mapBaseMeasures.get (&quot;AccrualDays&quot;), 1, 0, 1.));</span>
 
-<span class="fc" id="L416">		System.out.println (&quot;Cash Amount  : &quot; + FormatUtil.FormatDouble (dblAccrued + dblPrincipal, 1, 0, 1.));</span>
+<span class="fc" id="L420">		System.out.println (&quot;Cash Amount  : &quot; + FormatUtil.FormatDouble (dblAccrued + dblPrincipal, 1, 0, 1.));</span>
 
-<span class="fc" id="L418">		System.out.println (&quot;Repl Spread  : &quot; + FormatUtil.FormatDouble (mapBaseMeasures.get (&quot;FairPremium&quot;), 1, 4, 1.));</span>
+<span class="fc" id="L422">		System.out.println (&quot;Repl Spread  : &quot; + FormatUtil.FormatDouble (mapBaseMeasures.get (&quot;FairPremium&quot;), 1, 4, 1.));</span>
 
 		/*
 		 * Build the Bumped 01 Credit Curve
 		 */
 
-<span class="fc" id="L424">		CreditCurve cc01Bump = CreateCreditCurveFromCDS (</span>
+<span class="fc" id="L428">		CreditCurve cc01Bump = CreateCreditCurveFromCDS (</span>
 			dtValue,
 			adblCDSParSpread,
 			astrCDSTenor,
@@ -437,25 +441,25 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Generate the 1 bp flat Credit Curve bumped  Measures
 		 */
 
-<span class="fc" id="L440">		CaseInsensitiveTreeMap&lt;Double&gt; mapCreditFlat01Measures = cds.value (</span>
+<span class="fc" id="L444">		CaseInsensitiveTreeMap&lt;Double&gt; mapCreditFlat01Measures = cds.value (</span>
 			valParams,
 			pricerParams,
-<span class="fc" id="L443">			MarketParamsBuilder.Credit (</span>
+<span class="fc" id="L447">			MarketParamsBuilder.Credit (</span>
 				dc,
 				cc01Bump
 			),
 			null
 		);
 
-<span class="fc" id="L450">		double dblCreditFlat01DirtyPV = mapCreditFlat01Measures.get (&quot;DirtyPV&quot;);</span>
+<span class="fc" id="L454">		double dblCreditFlat01DirtyPV = mapCreditFlat01Measures.get (&quot;DirtyPV&quot;);</span>
 
-<span class="fc" id="L452">		System.out.println (&quot;CS01         : &quot; + FormatUtil.FormatDouble (dblCreditFlat01DirtyPV - dblBaseDirtyPV, 1, 0, 0.01 * dblNotional));</span>
+<span class="fc" id="L456">		System.out.println (&quot;CS01         : &quot; + FormatUtil.FormatDouble (dblCreditFlat01DirtyPV - dblBaseDirtyPV, 1, 0, 0.01 * dblNotional));</span>
 
 		/*
 		 * Build the Bumped 01 Rates Curve
 		 */
 
-<span class="fc" id="L458">		MergedDiscountForwardCurve dc01Bump = BuildRatesCurveFromInstruments (</span>
+<span class="fc" id="L462">		MergedDiscountForwardCurve dc01Bump = BuildRatesCurveFromInstruments (</span>
 			dtCurve,
 			astrCashTenor,
 			adblCashRate,
@@ -469,42 +473,42 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Generate the 1 bp flat Rates Curve bumped  Measures
 		 */
 
-<span class="fc" id="L472">		CaseInsensitiveTreeMap&lt;Double&gt; mapRatesFlat01Measures = cds.value (</span>
+<span class="fc" id="L476">		CaseInsensitiveTreeMap&lt;Double&gt; mapRatesFlat01Measures = cds.value (</span>
 			valParams,
 			pricerParams,
-<span class="fc" id="L475">			MarketParamsBuilder.Credit (</span>
+<span class="fc" id="L479">			MarketParamsBuilder.Credit (</span>
 				dc01Bump,
 				cc
 			),
 			null
 		);
 
-<span class="fc" id="L482">		double dblRatesFlat01DirtyPV = mapRatesFlat01Measures.get (&quot;DirtyPV&quot;);</span>
+<span class="fc" id="L486">		double dblRatesFlat01DirtyPV = mapRatesFlat01Measures.get (&quot;DirtyPV&quot;);</span>
 
-<span class="fc" id="L484">		System.out.println (&quot;IR01         : &quot; + FormatUtil.FormatDouble (dblRatesFlat01DirtyPV - dblBaseDirtyPV, 1, 0, 0.01 * dblNotional));</span>
+<span class="fc" id="L488">		System.out.println (&quot;IR01         : &quot; + FormatUtil.FormatDouble (dblRatesFlat01DirtyPV - dblBaseDirtyPV, 1, 0, 0.01 * dblNotional));</span>
 
 		/*
 		 * Generates and displays the coupon period details for the bonds
 		 */
 
-<span class="fc" id="L490">		System.out.println (&quot;\n---- CDS Coupon Flows ----&quot;);</span>
+<span class="fc" id="L494">		System.out.println (&quot;\n---- CDS Coupon Flows ----&quot;);</span>
 
-<span class="fc bfc" id="L492" title="All 2 branches covered.">		for (CompositePeriod p : cds.couponPeriods())</span>
-<span class="fc" id="L493">			System.out.println (</span>
-<span class="fc" id="L494">				DateUtil.YYYYMMDD (p.startDate()) + FIELD_SEPARATOR +</span>
-<span class="fc" id="L495">				DateUtil.YYYYMMDD (p.endDate()) + FIELD_SEPARATOR +</span>
-<span class="fc" id="L496">				DateUtil.YYYYMMDD (p.payDate()) + FIELD_SEPARATOR +</span>
-<span class="fc" id="L497">				FormatUtil.FormatDouble (p.couponDCF(), 1, 3, 1.) + FIELD_SEPARATOR +</span>
-<span class="fc" id="L498">				FormatUtil.FormatDouble (p.couponDCF(), 1, 2, 0.01 * dblNotional) + FIELD_SEPARATOR +</span>
-<span class="fc" id="L499">				FormatUtil.FormatDouble (dc.df (p.payDate()), 1, 4, 1.) + FIELD_SEPARATOR +</span>
-<span class="fc" id="L500">				FormatUtil.FormatDouble (cc.survival (p.payDate()), 1, 4, 1.)</span>
+<span class="fc bfc" id="L496" title="All 2 branches covered.">		for (CompositePeriod p : cds.couponPeriods())</span>
+<span class="fc" id="L497">			System.out.println (</span>
+<span class="fc" id="L498">				DateUtil.YYYYMMDD (p.startDate()) + FIELD_SEPARATOR +</span>
+<span class="fc" id="L499">				DateUtil.YYYYMMDD (p.endDate()) + FIELD_SEPARATOR +</span>
+<span class="fc" id="L500">				DateUtil.YYYYMMDD (p.payDate()) + FIELD_SEPARATOR +</span>
+<span class="fc" id="L501">				FormatUtil.FormatDouble (p.couponDCF(), 1, 3, 1.) + FIELD_SEPARATOR +</span>
+<span class="fc" id="L502">				FormatUtil.FormatDouble (p.couponDCF(), 1, 2, 0.01 * dblNotional) + FIELD_SEPARATOR +</span>
+<span class="fc" id="L503">				FormatUtil.FormatDouble (dc.df (p.payDate()), 1, 4, 1.) + FIELD_SEPARATOR +</span>
+<span class="fc" id="L504">				FormatUtil.FormatDouble (cc.survival (p.payDate()), 1, 4, 1.)</span>
 			);
 
 		/*
 		 * Generate the Quoted Spread Based CDS Measures
 		 */
 
-<span class="fc" id="L507">		CaseInsensitiveTreeMap&lt;Double&gt; mapQSMeasures = cds.valueFromQuotedSpread (</span>
+<span class="fc" id="L511">		CaseInsensitiveTreeMap&lt;Double&gt; mapQSMeasures = cds.valueFromQuotedSpread (</span>
 			valParams,
 			pricerParams,
 			mktParams,
@@ -513,13 +517,13 @@ import org.drip.state.identifier.ForwardLabel;
 			208.
 		);
 
-<span class="fc" id="L516">		System.out.println (&quot;\n---- Quoted Spread CDS Measures ----&quot;);</span>
+<span class="fc" id="L520">		System.out.println (&quot;\n---- Quoted Spread CDS Measures ----&quot;);</span>
 
-<span class="fc" id="L518">		System.out.println (&quot;QS Price     : &quot; + FormatUtil.FormatDouble (mapQSMeasures.get (&quot;Price&quot;), 1, 2, 1.));</span>
+<span class="fc" id="L522">		System.out.println (&quot;QS Price     : &quot; + FormatUtil.FormatDouble (mapQSMeasures.get (&quot;Price&quot;), 1, 2, 1.));</span>
 
-<span class="fc" id="L520">		System.out.println (&quot;QS Repl Spd  : &quot; + FormatUtil.FormatDouble (mapQSMeasures.get (&quot;FairPremium&quot;), 1, 4, 1.));</span>
+<span class="fc" id="L524">		System.out.println (&quot;QS Repl Spd  : &quot; + FormatUtil.FormatDouble (mapQSMeasures.get (&quot;FairPremium&quot;), 1, 4, 1.));</span>
 
-<span class="fc" id="L522">		EnvManager.TerminateEnv();</span>
-<span class="fc" id="L523">	}</span>
+<span class="fc" id="L526">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L527">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -59,12 +59,12 @@ public abstract class EntityDesignateLabel implements org.drip.state.identifier.
 	private java.lang.String _referenceEntity = "";
 
 	protected EntityDesignateLabel (
-		final java.lang.String currency,
-		final java.lang.String referenceEntity)
+		final java.lang.String referenceEntity,
+		final java.lang.String currency)
 		throws java.lang.Exception
 	{
-		if (null == (_currency = currency) || _currency.isEmpty() ||
-			null == (_referenceEntity = referenceEntity) || _referenceEntity.isEmpty())
+		if (null == (_referenceEntity = referenceEntity) || _referenceEntity.isEmpty() ||
+			null == (_currency = currency) || _currency.isEmpty())
 		{
 			throw new java.lang.Exception ("EntityDesignateLabel ctr: Invalid Inputs");
 		}
