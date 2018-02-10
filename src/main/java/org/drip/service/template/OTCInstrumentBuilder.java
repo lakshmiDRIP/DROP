@@ -436,6 +436,54 @@ public class OTCInstrumentBuilder {
 	}
 
 	/**
+	 * Construct an Array of OTC Funding Deposit and Futures Instruments
+	 * 
+	 * @param dtSpot Spot Date
+	 * @param strCurrency Currency
+	 * @param astrDepositMaturityTenor Array of Deposit Maturity Tenors
+	 * @param iNumFutures Number of Serial Futures to be included
+	 * 
+	 * @return Array of OTC Funding Deposit Instruments from their corresponding Maturity Tenors
+	 */
+
+	public static final org.drip.product.rates.SingleStreamComponent[] FundingDepositFutures (
+		final org.drip.analytics.date.JulianDate dtSpot,
+		final java.lang.String strCurrency,
+		final java.lang.String[] astrDepositMaturityTenor,
+		final int iNumFutures)
+	{
+		if (null == astrDepositMaturityTenor) return null;
+
+		int iNumDeposit = astrDepositMaturityTenor.length;
+		org.drip.product.rates.SingleStreamComponent[] aSSCDepositFutures = new
+			org.drip.product.rates.SingleStreamComponent[iNumDeposit + iNumFutures];
+
+		if (0 == iNumDeposit) return null;
+
+		for (int i = 0; i < iNumDeposit; ++i) {
+			if (null == (aSSCDepositFutures[i] = FundingDeposit (dtSpot, strCurrency,
+				astrDepositMaturityTenor[i])))
+				return null;
+
+			aSSCDepositFutures[i].setPrimaryCode (astrDepositMaturityTenor[i]);
+		}
+
+		if (0 == iNumFutures) return aSSCDepositFutures;
+
+		org.drip.product.rates.SingleStreamComponent[] aSSCFutures =
+			org.drip.service.template.ExchangeInstrumentBuilder.ForwardRateFuturesPack (dtSpot, iNumFutures,
+				strCurrency);
+
+		if (null == aSSCFutures) return null;
+
+		for (int i = iNumDeposit; i < iNumDeposit + iNumFutures; ++i) {
+			if (null == (aSSCDepositFutures[i] = aSSCFutures[i - iNumDeposit])) return null;
+		}
+
+		return aSSCDepositFutures;
+	}
+
+	/**
 	 * Construct an Array of OTC Forward Deposit Instruments from the corresponding Maturity Tenors
 	 * 
 	 * @param dtSpot Spot Date

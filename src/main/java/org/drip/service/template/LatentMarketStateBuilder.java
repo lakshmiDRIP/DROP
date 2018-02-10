@@ -151,6 +151,135 @@ public class LatentMarketStateBuilder {
 	}
 
 	/**
+	 * Construct a Single Stretch Funding Curve Based off of the Input Exchange/OTC Market Instruments Using
+	 *  the specified Spline
+	 * 
+	 * @param dtSpot The Spot Date
+	 * @param strCurrency Currency
+	 * @param astrDepositMaturityTenor Array of Deposit Maturity Tenors
+	 * @param adblDepositQuote Array of Deposit Quotes
+	 * @param strDepositMeasure Deposit Calibration Measure
+	 * @param adblFuturesQuote Array of Futures Quotes
+	 * @param strFuturesMeasure Futures Calibration Measure
+	 * @param astrFixFloatMaturityTenor Array of Fix Float Swap Maturity Tenors
+	 * @param adblFixFloatQuote Array of Fix Float Swap Quotes
+	 * @param strFixFloatMeasure Fix Float Calibration Measure
+	 * @param scbc Segment Custom Builder Control
+	 * 
+	 * @return The Funding Curve Instance
+	 */
+
+	public static final org.drip.state.discount.MergedDiscountForwardCurve SingleStretchFundingCurve (
+		final org.drip.analytics.date.JulianDate dtSpot,
+		final java.lang.String strCurrency,
+		final java.lang.String[] astrDepositMaturityTenor,
+		final double[] adblDepositQuote,
+		final java.lang.String strDepositMeasure,
+		final double[] adblFuturesQuote,
+		final java.lang.String strFuturesMeasure,
+		final java.lang.String[] astrFixFloatMaturityTenor,
+		final double[] adblFixFloatQuote,
+		final java.lang.String strFixFloatMeasure,
+		final org.drip.spline.params.SegmentCustomBuilderControl scbc)
+	{
+		if (null == dtSpot || null == strCurrency || strCurrency.isEmpty()) return null;
+
+		org.drip.analytics.date.JulianDate dtEffective = dtSpot.addBusDays (0, strCurrency);
+
+		int iNumFixFloatComp = null == astrFixFloatMaturityTenor ? 0 : astrFixFloatMaturityTenor.length;
+		int iNumDepositComp = null == astrDepositMaturityTenor ? 0 : astrDepositMaturityTenor.length;
+		int iNumFixFloatQuote = null == adblFixFloatQuote ? 0 : adblFixFloatQuote.length;
+		int iNumDepositQuote = null == adblDepositQuote ? 0 : adblDepositQuote.length;
+		int iNumFuturesComp = null == adblFuturesQuote ? 0 : adblFuturesQuote.length;
+		org.drip.state.inference.LatentStateStretchSpec lsssDepositFutures = null;
+		org.drip.state.inference.LatentStateStretchSpec lsssFixFloat = null;
+		int iNumDepositFuturesComp = iNumDepositComp + iNumFuturesComp;
+		double[] adblDepositFuturesQuote = new double[iNumDepositFuturesComp];
+
+		if (iNumDepositQuote != iNumDepositComp || iNumFixFloatQuote != iNumFixFloatComp) return null;
+
+		for (int i = 0; i < iNumDepositFuturesComp; ++i)
+			adblDepositFuturesQuote[i] = i < iNumDepositComp ? adblDepositQuote[i] :
+				adblFuturesQuote[i - iNumDepositComp];
+
+		if (0 != iNumDepositComp)
+			lsssDepositFutures = org.drip.state.estimator.LatentStateStretchBuilder.ForwardFundingStretchSpec
+				("DEPOSIT", org.drip.service.template.OTCInstrumentBuilder.FundingDepositFutures
+					(dtEffective, strCurrency, astrDepositMaturityTenor, iNumFuturesComp), strDepositMeasure,
+						adblDepositFuturesQuote);
+
+		if (0 != iNumFixFloatComp)
+			lsssFixFloat = org.drip.state.estimator.LatentStateStretchBuilder.ForwardFundingStretchSpec
+				("FIXFLOAT", org.drip.service.template.OTCInstrumentBuilder.FixFloatStandard (dtEffective,
+					strCurrency, "ALL", astrFixFloatMaturityTenor, "MAIN", 0.), strFixFloatMeasure,
+						adblFixFloatQuote);
+
+		try {
+			org.drip.state.inference.LinearLatentStateCalibrator lcc = new
+				org.drip.state.inference.LinearLatentStateCalibrator (scbc,
+					org.drip.spline.stretch.BoundarySettings.NaturalStandard(),
+						org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE, null, null);
+
+			return org.drip.state.creator.ScenarioDiscountCurveBuilder.ShapePreservingDFBuild (strCurrency,
+				lcc, new org.drip.state.inference.LatentStateStretchSpec[] {lsssDepositFutures,
+					lsssFixFloat}, org.drip.param.valuation.ValuationParams.Spot (dtSpot.julian()), null,
+						null, null, 1.);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct a Shape Preserving Single Stretch Funding Curve Based off of the Input Exchange/OTC Market
+	 *  Instruments
+	 * 
+	 * @param dtSpot The Spot Date
+	 * @param strCurrency Currency
+	 * @param astrDepositMaturityTenor Array of Deposit Maturity Tenors
+	 * @param adblDepositQuote Array of Deposit Quotes
+	 * @param strDepositMeasure Deposit Calibration Measure
+	 * @param adblFuturesQuote Array of Futures Quotes
+	 * @param strFuturesMeasure Futures Calibration Measure
+	 * @param astrFixFloatMaturityTenor Array of Fix Float Swap Maturity Tenors
+	 * @param adblFixFloatQuote Array of Fix Float Swap Quotes
+	 * @param strFixFloatMeasure Fix Float Calibration Measure
+	 * 
+	 * @return The Single Stretch Funding Curve Instance
+	 */
+
+	public static final org.drip.state.discount.MergedDiscountForwardCurve SingleStretchShapePreservingFundingCurve (
+		final org.drip.analytics.date.JulianDate dtSpot,
+		final java.lang.String strCurrency,
+		final java.lang.String[] astrDepositMaturityTenor,
+		final double[] adblDepositQuote,
+		final java.lang.String strDepositMeasure,
+		final double[] adblFuturesQuote,
+		final java.lang.String strFuturesMeasure,
+		final java.lang.String[] astrFixFloatMaturityTenor,
+		final double[] adblFixFloatQuote,
+		final java.lang.String strFixFloatMeasure)
+	{
+		try {
+			return SingleStretchFundingCurve (dtSpot, strCurrency, astrDepositMaturityTenor, adblDepositQuote,
+				strDepositMeasure, adblFuturesQuote, strFuturesMeasure, astrFixFloatMaturityTenor,
+					adblFixFloatQuote, strFixFloatMeasure, new
+						org.drip.spline.params.SegmentCustomBuilderControl
+							(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
+								org.drip.spline.basis.PolynomialFunctionSetParams (2),
+									org.drip.spline.params.SegmentInelasticDesignControl.Create (0, 2), new
+										org.drip.spline.params.ResponseScalingShapeControl (true, new
+											org.drip.function.r1tor1.QuadraticRationalShapeControl (0.)),
+												null));
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * Construct a Shape Preserving Funding Curve Based off of the Input Exchange/OTC Market Instruments
 	 * 
 	 * @param dtSpot The Spot Date
@@ -245,6 +374,53 @@ public class LatentMarketStateBuilder {
 	}
 
 	/**
+	 * Construct a Smooth Single Stretch Funding Curve Based off of the Input Exchange/OTC Market Instruments
+	 * 
+	 * @param dtSpot The Spot Date
+	 * @param strCurrency Currency
+	 * @param astrDepositMaturityTenor Array of Deposit Maturity Tenors
+	 * @param adblDepositQuote Array of Deposit Quotes
+	 * @param strDepositMeasure Deposit Calibration Measure
+	 * @param adblFuturesQuote Array of Futures Quotes
+	 * @param strFuturesMeasure Futures Calibration Measure
+	 * @param astrFixFloatMaturityTenor Array of Fix Float Swap Maturity Tenors
+	 * @param adblFixFloatQuote Array of Fix Float Swap Quotes
+	 * @param strFixFloatMeasure Fix Float Calibration Measure
+	 * 
+	 * @return The Single Stretch Funding Curve Instance
+	 */
+
+	public static final org.drip.state.discount.MergedDiscountForwardCurve SingleStretchSmoothFundingCurve (
+		final org.drip.analytics.date.JulianDate dtSpot,
+		final java.lang.String strCurrency,
+		final java.lang.String[] astrDepositMaturityTenor,
+		final double[] adblDepositQuote,
+		final java.lang.String strDepositMeasure,
+		final double[] adblFuturesQuote,
+		final java.lang.String strFuturesMeasure,
+		final java.lang.String[] astrFixFloatMaturityTenor,
+		final double[] adblFixFloatQuote,
+		final java.lang.String strFixFloatMeasure)
+	{
+		try {
+			return SingleStretchFundingCurve (dtSpot, strCurrency, astrDepositMaturityTenor,
+				adblDepositQuote, strDepositMeasure, adblFuturesQuote, strFuturesMeasure,
+					astrFixFloatMaturityTenor, adblFixFloatQuote, strFixFloatMeasure, new
+						org.drip.spline.params.SegmentCustomBuilderControl
+							(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
+								org.drip.spline.basis.PolynomialFunctionSetParams (4),
+									org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), new
+										org.drip.spline.params.ResponseScalingShapeControl (true, new
+											org.drip.function.r1tor1.QuadraticRationalShapeControl (0.)),
+												null));
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * Construct a Funding Curve Based off of the Input Exchange/OTC Market Instruments
 	 * 
 	 * @param dtSpot The Spot Date
@@ -284,6 +460,50 @@ public class LatentMarketStateBuilder {
 			return SmoothFundingCurve (dtSpot, strCurrency, astrDepositMaturityTenor, adblDepositQuote,
 				strDepositMeasure, adblFuturesQuote, strFuturesMeasure, astrFixFloatMaturityTenor,
 					adblFixFloatQuote, strFixFloatMeasure);
+
+		return null;
+	}
+
+	/**
+	 * Construct a Single Stretch Funding Curve Based off of the Input Exchange/OTC Market Instruments
+	 * 
+	 * @param dtSpot The Spot Date
+	 * @param strCurrency Currency
+	 * @param astrDepositMaturityTenor Array of Deposit Maturity Tenors
+	 * @param adblDepositQuote Array of Deposit Quotes
+	 * @param strDepositMeasure Deposit Calibration Measure
+	 * @param adblFuturesQuote Array of Futures Quotes
+	 * @param strFuturesMeasure Futures Calibration Measure
+	 * @param astrFixFloatMaturityTenor Array of Fix Float Swap Maturity Tenors
+	 * @param adblFixFloatQuote Array of Fix Float Swap Quotes
+	 * @param strFixFloatMeasure Fix Float Calibration Measure
+	 * @param iLatentStateType SHAPE_PRESERVING/SMOOTH
+	 * 
+	 * @return The Single Stretch Funding Curve Instance
+	 */
+
+	public static final org.drip.state.discount.MergedDiscountForwardCurve SingleStretchFundingCurve (
+		final org.drip.analytics.date.JulianDate dtSpot,
+		final java.lang.String strCurrency,
+		final java.lang.String[] astrDepositMaturityTenor,
+		final double[] adblDepositQuote,
+		final java.lang.String strDepositMeasure,
+		final double[] adblFuturesQuote,
+		final java.lang.String strFuturesMeasure,
+		final java.lang.String[] astrFixFloatMaturityTenor,
+		final double[] adblFixFloatQuote,
+		final java.lang.String strFixFloatMeasure,
+		final int iLatentStateType)
+	{
+		if (SHAPE_PRESERVING == iLatentStateType)
+			return SingleStretchShapePreservingFundingCurve (dtSpot, strCurrency, astrDepositMaturityTenor,
+				adblDepositQuote, strDepositMeasure, adblFuturesQuote, strFuturesMeasure,
+					astrFixFloatMaturityTenor, adblFixFloatQuote, strFixFloatMeasure);
+
+		if (SMOOTH == iLatentStateType)
+			return SingleStretchSmoothFundingCurve (dtSpot, strCurrency, astrDepositMaturityTenor,
+				adblDepositQuote, strDepositMeasure, adblFuturesQuote, strFuturesMeasure,
+					astrFixFloatMaturityTenor, adblFixFloatQuote, strFixFloatMeasure);
 
 		return null;
 	}
@@ -1527,7 +1747,7 @@ public class LatentMarketStateBuilder {
 			mapBumpedCurve = new
 				org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.discount.MergedDiscountForwardCurve>();
 
-		org.drip.state.discount.MergedDiscountForwardCurve dcFundingBase = FundingCurve (dtSpot, strCurrency,
+		org.drip.state.discount.MergedDiscountForwardCurve dcFundingBase = SingleStretchFundingCurve (dtSpot, strCurrency,
 			astrDepositMaturityTenor, adblDepositQuote, strDepositMeasure, adblFuturesQuote,
 				strFuturesMeasure, astrFixFloatMaturityTenor, adblFixFloatQuote, strFixFloatMeasure,
 					iLatentStateType);
@@ -1541,12 +1761,12 @@ public class LatentMarketStateBuilder {
 		int iNumDepositFuturesFixFloat = iNumDepositFutures + iNumFixFloat;
 		int[] aiDate = new int[iNumDepositFuturesFixFloat];
 
-		for (int i = 0; i < iNumDeposit; ++i)
-			aiDate[i] = dtSpot.addTenor (astrDepositMaturityTenor[i]).julian();
-
 		org.drip.product.rates.SingleStreamComponent[] aSSC =
 			org.drip.service.template.ExchangeInstrumentBuilder.ForwardRateFuturesPack (dtSpot, iNumFutures,
 				strCurrency);
+
+		for (int i = 0; i < iNumDeposit; ++i)
+			aiDate[i] = dtSpot.addTenor (astrDepositMaturityTenor[i]).julian();
 
 		for (int i = iNumDeposit; i < iNumDepositFutures; ++i)
 			aiDate[i] = aSSC[i - iNumDeposit].maturityDate().julian();
@@ -1568,17 +1788,13 @@ public class LatentMarketStateBuilder {
 
 		mapBumpedCurve.put ("bump", ffdcBumped);
 
-		int iDateLeft = dtSpot.julian();
-
 		for (int i = 0; i < iNumDepositFuturesFixFloat; ++i) {
 			org.drip.state.nonlinear.FlatForwardDiscountCurve ffdcTenorBumped =
-				dcFundingBase.flatNativeForwardEI (aiDate, iDateLeft, aiDate[i], dblBump);
+				dcFundingBase.flatNativeForwardEI (aiDate, i, dblBump);
 
 			if (null == ffdcTenorBumped) return null;
 
 			mapBumpedCurve.put ("tenor::" + i, ffdcTenorBumped);
-
-			iDateLeft = aiDate[i];
 		}
 
 		return mapBumpedCurve;

@@ -155,14 +155,20 @@ public class ComposableUnitFloatingPeriod extends org.drip.analytics.cashflow.Co
 
 		int iReferencePeriodStartDate = _rip.startDate();
 
-		if (iEpochDate > iReferencePeriodStartDate)
-			iReferencePeriodEndDate = new org.drip.analytics.date.JulianDate (iReferencePeriodStartDate =
-				iEpochDate).addTenor (forwardLabel.tenor()).julian();
+		iReferencePeriodStartDate = iReferencePeriodStartDate > iEpochDate ? iReferencePeriodStartDate :
+			iEpochDate;
 
 		return dcFunding.libor (
 			iReferencePeriodStartDate,
 			iReferencePeriodEndDate,
-			_rip.dcf()
+			org.drip.analytics.daycount.Convention.YearFraction (
+				iReferencePeriodStartDate,
+				iReferencePeriodEndDate,
+				floaterIndex.dayCount(),
+				false,
+				null,
+				floaterIndex.calendar()
+			)
 		);
 	}
 

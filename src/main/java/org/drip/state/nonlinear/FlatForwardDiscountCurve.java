@@ -272,8 +272,9 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 
 		while (i < iNumDate && (int) iDate >= (int) _aiDate[i]) {
 			if (_bDiscreteCompounding)
-				dblDF *= java.lang.Math.pow (1. + (_adblForwardRate[i] / _iCompoundingFreq), -1. * yearFract
-					(iStartDate, _aiDate[i]) * _iCompoundingFreq);
+				/* dblDF *= java.lang.Math.pow (1. + (_adblForwardRate[i] / _iCompoundingFreq), -1. * yearFract
+					(iStartDate, _aiDate[i]) * _iCompoundingFreq); */
+				dblDF /= (1. + (_adblForwardRate[i] * yearFract (iStartDate, _aiDate[i])));
 			else
 				dblExpArg -= _adblForwardRate[i] * yearFract (iStartDate, _aiDate[i]);
 
@@ -283,8 +284,9 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 		if (i >= iNumDate) i = iNumDate - 1;
 
 		if (_bDiscreteCompounding)
-			dblDF *= java.lang.Math.pow (1. + (_adblForwardRate[i] / _iCompoundingFreq), -1. * yearFract
-				(iStartDate, iDate) * _iCompoundingFreq);
+			/* dblDF *= java.lang.Math.pow (1. + (_adblForwardRate[i] / _iCompoundingFreq), -1. * yearFract
+				(iStartDate, iDate) * _iCompoundingFreq); */
+			dblDF /= (1. + (_adblForwardRate[i] * yearFract (iStartDate, iDate)));
 		else
 			dblExpArg -= _adblForwardRate[i] * yearFract (iStartDate, iDate);
 

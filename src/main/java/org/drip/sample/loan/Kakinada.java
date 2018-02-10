@@ -3,6 +3,7 @@ package org.drip.sample.loan;
 
 import org.drip.analytics.cashflow.*;
 import org.drip.analytics.date.*;
+import org.drip.market.definition.FloaterIndex;
 import org.drip.param.market.CurveSurfaceQuoteContainer;
 import org.drip.param.valuation.ValuationParams;
 import org.drip.product.creator.BondBuilder;
@@ -10,9 +11,6 @@ import org.drip.product.credit.BondComponent;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.service.scenario.*;
-import org.drip.service.template.LatentMarketStateBuilder;
-import org.drip.state.discount.MergedDiscountForwardCurve;
-import org.drip.state.identifier.FloaterLabel;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -68,6 +66,94 @@ import org.drip.state.identifier.FloaterLabel;
 
 public class Kakinada {
 
+	private static final void PrintCashFlows (
+		final BondComponent bond,
+		final ValuationParams valParams,
+		final CurveSurfaceQuoteContainer csqc)
+		throws Exception
+	{
+		double dirtyPV = 0.;
+		double startDF = 1.;
+
+		FloaterIndex floaterIndex = bond.floaterSetting().fri().floaterIndex();
+
+		System.out.println ("\t||----------------------------------------------------------------------------------------------------------------------||");
+
+		System.out.println ("\t||                                            PERIOD LABELS AND CURVE FACTORS                                           ||");
+
+		System.out.println ("\t||----------------------------------------------------------------------------------------------------------------------||");
+
+		System.out.println ("\t||   L -> R:                                                                                                            ||");
+
+		System.out.println ("\t||           - Period Start Date                                                                                        ||");
+
+		System.out.println ("\t||           - Period End Date                                                                                          ||");
+
+		System.out.println ("\t||           - Period Coupon Rate (%)                                                                                   ||");
+
+		System.out.println ("\t||           - Period Coupon Year Fraction                                                                              ||");
+
+		System.out.println ("\t||           - Period Start DF                                                                                          ||");
+
+		System.out.println ("\t||           - Period End DF                                                                                            ||");
+
+		System.out.println ("\t||           - Recalculated Rate                                                                                        ||");
+
+		System.out.println ("\t||----------------------------------------------------------------------------------------------------------------------||");
+
+		for (CompositePeriod p : bond.couponPeriods()) {
+			int iEndDate = p.endDate();
+
+			int iPayDate = p.payDate();
+
+			int iStartDate = p.startDate() > valParams.valueDate() ? p.startDate() : valParams.valueDate();
+
+			double dblCouponRate = bond.couponMetrics (
+				iPayDate,
+				valParams,
+				csqc
+			).rate();
+
+			double dblCouponDCF = p.couponDCF();
+
+			double dblDCF = org.drip.analytics.daycount.Convention.YearFraction (
+				iStartDate,
+				iEndDate,
+				floaterIndex.dayCount(),
+				false,
+				null,
+				floaterIndex.calendar()
+			);
+
+			double endDF = p.df (csqc);
+
+			double dblCouponPV = dblCouponRate * dblDCF * endDF;
+
+			System.out.println ("\t|| " +
+				DateUtil.YYYYMMDD (iStartDate) + " => " +
+				DateUtil.YYYYMMDD (iEndDate) + " | " +
+				FormatUtil.FormatDouble (dblCouponRate, 1, 4, 100.) + "% | " +
+				FormatUtil.FormatDouble (dblCouponDCF, 1, 4, 1.) + " | " +
+				FormatUtil.FormatDouble (startDF, 1, 6, 1.) + " | " +
+				FormatUtil.FormatDouble (endDF, 1, 6, 1.) + " | " +
+				FormatUtil.FormatDouble (dblDCF, 1, 4, 1.) + " | " +
+				FormatUtil.FormatDouble (dblCouponPV, 1, 6, 1.) + " | " +
+				FormatUtil.FormatDouble (((startDF / endDF) - 1.) / dblDCF, 1, 4, 100.) + "% | "
+			);
+
+			dirtyPV += dblCouponPV;
+			startDF = endDF;
+		}
+
+		System.out.println ("\t||----------------------------------------------------------------------------------------------------------------------||");
+
+		System.out.println ("\t||                    PV : " + FormatUtil.FormatDouble (dirtyPV + startDF, 1, 6, 1.));
+
+		System.out.println ("\t||----------------------------------------------------------------------------------------------------------------------||");
+
+		System.out.println();
+	}
+
 	public static final void main (
 		final String[] astArgs)
 		throws Exception
@@ -81,20 +167,20 @@ public class Kakinada {
 		);
 
 		String[] astrDepositTenor = new String[] {
-			"2D"
+			"1D"
 		};
 
 		double[] adblDepositQuote = new double[] {
-			0.0130411 // 2D
+			0.01304  // 1D
 		};
 
 		double[] adblFuturesQuote = new double[] {
-			0.01345,	// 98.655
-			0.01470,	// 98.530
-			0.01575,	// 98.425
-			0.01660,	// 98.340
-			0.01745,    // 98.255
-			0.01845     // 98.155
+			0.01345, // 98.655
+			0.01470, // 98.530
+			0.01575, // 98.425
+			0.01660, // 98.340
+			0.01745, // 98.255
+			0.01845  // 98.155
 		};
 
 		String[] astrFixFloatTenor = new String[] {
@@ -183,20 +269,19 @@ public class Kakinada {
 
 		double dblFX = 1;
 		int iSettleLag = 3;
-		double dblSpread = 0.0450;
-		String strCurrency = "USD";
+		double dblSpread = 0.00; // 0.0450;
 		double dblCleanPrice = 1.0;
 		double dblIssuePrice = 0.995;
-		double dblSpreadBump = 20.;
+		double dblSpreadBump = 1.;
 		String strTreasuryCode = "UST";
 		double dblIssueAmount = 321500000.;
 		double dblSpreadDurationMultiplier = 5.;
 		double dblResetRate = adblDepositQuote[0];
 
 		JulianDate dtEffective = DateUtil.CreateFromYMD (
-			2016,
-			1,
-			27
+			2017,
+			7,
+			26
 		);
 
 		JulianDate dtMaturity = DateUtil.CreateFromYMD (
@@ -217,24 +302,6 @@ public class Kakinada {
 			dtMaturity,
 			null,
 			null
-		);
-
-		CompositeFloatingPeriod cfp = (CompositeFloatingPeriod) bond.stream().containingPeriod (dtSpot.julian());
-
-		int iResetDate = ((org.drip.analytics.cashflow.ComposableUnitFloatingPeriod) (cfp.periods().get
-			(0))).referenceIndexPeriod().fixingDate();
-
-		MergedDiscountForwardCurve mdfc = LatentMarketStateBuilder.SmoothFundingCurve (
-			dtSpot,
-			strCurrency,
-			astrDepositTenor,
-			adblDepositQuote,
-			"ForwardRate",
-			adblFuturesQuote,
-			"ForwardRate",
-			astrFixFloatTenor,
-			adblFixFloatQuote,
-			"SwapRate"
 		);
 
 		BondReplicator abr = BondReplicator.CorporateLoan (
@@ -268,11 +335,7 @@ public class Kakinada {
 
 		System.out.println();
 
-		CurveSurfaceQuoteContainer csqc = abr.creditBaseCSQC();
-
-		FloaterLabel fl = bond.floaterSetting().fri();
-
-		csqc.setFixing (iResetDate, fl, dblResetRate);
+		CurveSurfaceQuoteContainer csqc = abr.fundingBaseCSQC();
 
 		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());
 
@@ -289,91 +352,17 @@ public class Kakinada {
 
 		System.out.println ("Price Out : " +
 			bond.priceFromYield (
-				ValuationParams.Spot (dtSpot.julian()),
+				valParams,
 				csqc,
 				null,
 				dblYield
 			)
 		);
 
-		System.out.println ("\t||----------------------------------------------------------------------------------------------------------------------||");
-
-		System.out.println ("\t||                                            PERIOD LABELS AND CURVE FACTORS                                           ||");
-
-		System.out.println ("\t||----------------------------------------------------------------------------------------------------------------------||");
-
-		System.out.println ("\t||   L -> R:                                                                                                            ||");
-
-		System.out.println ("\t||           - Period Start Date                                                                                        ||");
-
-		System.out.println ("\t||           - Period End Date                                                                                          ||");
-
-		System.out.println ("\t||           - Period Credit Label                                                                                      ||");
-
-		System.out.println ("\t||           - Period Funding Label                                                                                     ||");
-
-		System.out.println ("\t||           - Period Coupon Rate (%)                                                                                   ||");
-
-		System.out.println ("\t||           - Period Coupon Year Fraction                                                                              ||");
-
-		System.out.println ("\t||           - Period Coupon Amount                                                                                     ||");
-
-		System.out.println ("\t||           - Period Principal Amount                                                                                  ||");
-
-		System.out.println ("\t||           - Period Discount Factor                                                                                   ||");
-
-		System.out.println ("\t||           - Period Survival Probability                                                                              ||");
-
-		System.out.println ("\t||           - Period Recovery                                                                                          ||");
-
-		System.out.println ("\t||----------------------------------------------------------------------------------------------------------------------||");
-
-		for (CompositePeriod p : bond.couponPeriods()) {
-			int iEndDate = p.endDate();
-
-			int iPayDate = p.payDate();
-
-			int iStartDate = p.startDate();
-
-			double dblCouponRate = bond.couponMetrics (
-				iPayDate,
-				valParams,
-				csqc
-			).rate();
-
-			double dblCouponDCF = p.couponDCF();
-
-			System.out.println ("\t|| " +
-				DateUtil.YYYYMMDD (iStartDate) + " => " +
-				DateUtil.YYYYMMDD (iEndDate) + " | ? | " +
-				p.fundingLabel().fullyQualifiedName() + " | " +
-				p.floaterLabel().fullyQualifiedName() + " | " +
-				FormatUtil.FormatDouble (dblCouponRate, 1, 2, 100.) + "% | " +
-				FormatUtil.FormatDouble (dblCouponDCF, 1, 4, 1.) + " | " +
-				FormatUtil.FormatDouble (dblCouponRate * dblCouponDCF * p.notional (iEndDate) * p.couponFactor (iEndDate), 1, 4, 1.) + " | " +
-				FormatUtil.FormatDouble (p.notional (iStartDate) - p.notional (iEndDate), 1, 4, 1.) + " | " +
-				FormatUtil.FormatDouble (p.df (csqc), 1, 4, 1.) + " | " +
-				FormatUtil.FormatDouble (p.survival (csqc), 1, 4, 1.) + " | " +
-				FormatUtil.FormatDouble (p.recovery (csqc), 2, 0, 100.) + "% ||"
-			);
-		}
-
-		System.out.println ("\t|| " +
-			DateUtil.YYYYMMDD (dtEffective.julian()) + " => " +
-			DateUtil.YYYYMMDD (dtMaturity.julian()) + " | ? | " +
-			bond.fundingLabel().fullyQualifiedName() + " | " +
-			bond.forwardLabel().get (bond.name()).fullyQualifiedName() + " | " +
-			FormatUtil.FormatDouble (0., 1, 2, 100.) + "% | " +
-			FormatUtil.FormatDouble (0., 1, 4, 1.) + " | " +
-			FormatUtil.FormatDouble (0., 1, 4, 1.) + " | " +
-			FormatUtil.FormatDouble (bond.notional (dtMaturity.julian()), 1, 4, 1.) + " | " +
-			FormatUtil.FormatDouble (mdfc.df (dtMaturity), 1, 4, 1.) + " | " +
-			FormatUtil.FormatDouble (1., 1, 4, 1.) + " | " +
-			FormatUtil.FormatDouble (1., 2, 0, 100.) + "% ||"
+		PrintCashFlows (
+			bond,
+			valParams,
+			csqc
 		);
-
-		System.out.println ("\t||----------------------------------------------------------------------------------------------------------------------||");
-
-		System.out.println();
 	}
 }
