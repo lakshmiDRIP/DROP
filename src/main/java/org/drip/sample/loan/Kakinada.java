@@ -269,10 +269,10 @@ public class Kakinada {
 
 		double dblFX = 1;
 		int iSettleLag = 3;
-		double dblSpread = 0.00; // 0.0450;
+		double dblSpread = 0.0450;
 		double dblCleanPrice = 1.0;
 		double dblIssuePrice = 0.995;
-		double dblSpreadBump = 1.;
+		double dblSpreadBump = 20.;
 		String strTreasuryCode = "UST";
 		double dblIssueAmount = 321500000.;
 		double dblSpreadDurationMultiplier = 5.;

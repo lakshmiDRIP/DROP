@@ -197,7 +197,7 @@ public class Kollam {
 		int iSettleLag = 3;
 		double dblSpread = 0.0;
 		String strCurrency = "USD";
-		double dblCleanPrice = 0.7588125;
+		double dblCleanPrice = 0.9588125;
 		double dblIssuePrice = 1.0;
 		double dblSpreadBump = 20.;
 		String strTreasuryCode = "UST";

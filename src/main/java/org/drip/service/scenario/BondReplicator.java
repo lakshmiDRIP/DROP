@@ -1720,17 +1720,24 @@ public class BondReplicator
 				org.drip.param.market.CurveSurfaceQuoteContainer csqcTenorDown =
 					_mapCSQCForwardFundingDown.get (strKey);
 
-				double dblTenorForwardUpPrice = _bond.priceFromFundingCurve (_valParams, csqcTenorUp,
-					iWorkoutDate, dblWorkoutFactor, 0.);
+				double dblTenorForwardUpPrice = _bond.isFloater() ? _bond.priceFromFundingCurve (_valParams,
+					csqcTenorUp, iWorkoutDate, dblWorkoutFactor, 0.) : _bond.priceFromZSpread (_valParams,
+						csqcTenorUp, null, iWorkoutDate, dblWorkoutFactor, dblZSpreadToExercise);
 
-				double dblTenorForwardUpParPrice = _bond.priceFromFundingCurve (_valParams, csqcTenorUp,
-					iWorkoutDate, dblWorkoutFactor, 0.);
+				double dblTenorForwardUpParPrice = _bond.isFloater() ? _bond.priceFromFundingCurve
+					(_valParams, csqcTenorUp, iWorkoutDate, dblWorkoutFactor, 0.) : _bond.priceFromZSpread
+						(_valParams, csqcTenorUp, null, iWorkoutDate, dblWorkoutFactor,
+							dblParZSpreadToExercise);
 
-				double dblTenorForwardDownPrice = _bond.priceFromFundingCurve (_valParams, csqcTenorDown,
-					iWorkoutDate, dblWorkoutFactor, 0.);
+				double dblTenorForwardDownPrice = _bond.isFloater() ? _bond.priceFromFundingCurve
+					(_valParams, csqcTenorDown, iWorkoutDate, dblWorkoutFactor, 0.) : _bond.priceFromZSpread
+						(_valParams, csqcTenorDown, null, iWorkoutDate, dblWorkoutFactor,
+							dblZSpreadToExercise);
 
-				double dblTenorForwardDownParPrice = _bond.priceFromFundingCurve (_valParams, csqcTenorDown,
-					iWorkoutDate, dblWorkoutFactor, 0.);
+				double dblTenorForwardDownParPrice = _bond.isFloater() ? _bond.priceFromFundingCurve
+					(_valParams, csqcTenorDown, iWorkoutDate, dblWorkoutFactor, 0.) : _bond.priceFromZSpread
+						(_valParams, csqcTenorDown, null, iWorkoutDate, dblWorkoutFactor,
+							dblParZSpreadToExercise);
 
 				mapLIBORKRD.put (strKey, 0.5 * (dblTenorForwardDownPrice - dblTenorForwardUpPrice) /
 					_dblCurrentPrice / _dblTenorBump);
