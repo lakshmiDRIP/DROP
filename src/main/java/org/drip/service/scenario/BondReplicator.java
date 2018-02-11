@@ -778,9 +778,17 @@ public class BondReplicator
 					null)))
 				return;
 
-			if (_bond.isFloater() && !_csqcCreditBase.setFixing (_iResetDate,
-				(org.drip.state.identifier.ForwardLabel) fl, _dblResetRate))
-				throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
+			if (_bond.isFloater())
+			{
+				if (null != fl && org.drip.quant.common.NumberUtil.IsValid (_dblResetRate))
+				{
+					if (!_csqcCreditBase.setFixing (_iResetDate, (org.drip.state.identifier.ForwardLabel) fl,
+					_dblResetRate))
+					{
+						throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
+					}
+				}
+			}
 
 			_csqcCredit01Up = org.drip.param.creator.MarketParamsBuilder.Create (mdfc, gc,
 				org.drip.state.creator.ScenarioCreditCurveBuilder.FlatHazard (dtSpot.julian(),
@@ -1684,25 +1692,24 @@ public class BondReplicator
 				org.drip.param.market.CurveSurfaceQuoteContainer csqcTenorDown = _mapCSQCFundingDown.get
 					(strKey);
 
-				double dblTenorFundingUpPrice = _bond.isFloater() ? _bond.priceFromDiscountMargin
-					(_valParams, csqcTenorUp, null, iWorkoutDate, dblWorkoutFactor, dblZSpreadToExercise) :
-						_bond.priceFromZSpread (_valParams, csqcTenorUp, null, iWorkoutDate,
-							dblWorkoutFactor, dblZSpreadToExercise);
+				double dblTenorFundingUpPrice = _bond.isFloater() ? _bond.priceFromFundingCurve (_valParams,
+					csqcTenorUp, iWorkoutDate, dblWorkoutFactor, 0.) : _bond.priceFromZSpread (_valParams,
+						csqcTenorUp, null, iWorkoutDate, dblWorkoutFactor, dblZSpreadToExercise);
 
-				double dblTenorFundingUpParPrice = _bond.isFloater() ? _bond.priceFromDiscountMargin
-					(_valParams, csqcTenorUp, null, iWorkoutDate, dblWorkoutFactor, dblParZSpreadToExercise)
-						: _bond.priceFromZSpread (_valParams, csqcTenorUp, null, iWorkoutDate,
-							dblWorkoutFactor, dblParZSpreadToExercise);
+				double dblTenorFundingUpParPrice = _bond.isFloater() ? _bond.priceFromFundingCurve
+					(_valParams, csqcTenorUp, iWorkoutDate, dblWorkoutFactor, 0.) : _bond.priceFromZSpread
+						(_valParams, csqcTenorUp, null, iWorkoutDate, dblWorkoutFactor,
+							dblParZSpreadToExercise);
 
-				double dblTenorFundingDownPrice = _bond.isFloater() ? _bond.priceFromDiscountMargin
-					(_valParams, csqcTenorDown, null, iWorkoutDate, dblWorkoutFactor, dblZSpreadToExercise) :
-						_bond.priceFromZSpread (_valParams, csqcTenorDown, null, iWorkoutDate,
-							dblWorkoutFactor, dblZSpreadToExercise);
+				double dblTenorFundingDownPrice = _bond.isFloater() ? _bond.priceFromFundingCurve
+					(_valParams, csqcTenorDown, iWorkoutDate, dblWorkoutFactor, 0.) : _bond.priceFromZSpread
+						(_valParams, csqcTenorDown, null, iWorkoutDate, dblWorkoutFactor,
+							dblZSpreadToExercise);
 
-				double dblTenorFundingDownParPrice = _bond.isFloater() ? _bond.priceFromDiscountMargin
-					(_valParams, csqcTenorDown, null, iWorkoutDate, dblWorkoutFactor,
-						dblParZSpreadToExercise) : _bond.priceFromZSpread (_valParams, csqcTenorDown, null,
-							iWorkoutDate, dblWorkoutFactor, dblParZSpreadToExercise);
+				double dblTenorFundingDownParPrice = _bond.isFloater() ? _bond.priceFromFundingCurve
+					(_valParams, csqcTenorDown, iWorkoutDate, dblWorkoutFactor, 0.) : _bond.priceFromZSpread
+						(_valParams, csqcTenorDown, null, iWorkoutDate, dblWorkoutFactor,
+							dblParZSpreadToExercise);
 
 				mapFundingKRD.put (strKey, 0.5 * (dblTenorFundingDownPrice - dblTenorFundingUpPrice) /
 					_dblCurrentPrice / _dblTenorBump);
