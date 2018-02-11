@@ -272,23 +272,25 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 
 <span class="fc bfc" id="L273" title="All 4 branches covered.">		while (i &lt; iNumDate &amp;&amp; (int) iDate &gt;= (int) _aiDate[i]) {</span>
 <span class="fc bfc" id="L274" title="All 2 branches covered.">			if (_bDiscreteCompounding)</span>
-<span class="fc" id="L275">				dblDF *= java.lang.Math.pow (1. + (_adblForwardRate[i] / _iCompoundingFreq), -1. * yearFract</span>
-<span class="fc" id="L276">					(iStartDate, _aiDate[i]) * _iCompoundingFreq);</span>
+				/* dblDF *= java.lang.Math.pow (1. + (_adblForwardRate[i] / _iCompoundingFreq), -1. * yearFract
+					(iStartDate, _aiDate[i]) * _iCompoundingFreq); */
+<span class="fc" id="L277">				dblDF /= (1. + (_adblForwardRate[i] * yearFract (iStartDate, _aiDate[i])));</span>
 			else
-<span class="fc" id="L278">				dblExpArg -= _adblForwardRate[i] * yearFract (iStartDate, _aiDate[i]);</span>
+<span class="fc" id="L279">				dblExpArg -= _adblForwardRate[i] * yearFract (iStartDate, _aiDate[i]);</span>
 
-<span class="fc" id="L280">			iStartDate = _aiDate[i++];</span>
+<span class="fc" id="L281">			iStartDate = _aiDate[i++];</span>
 		}
 
-<span class="fc bfc" id="L283" title="All 2 branches covered.">		if (i &gt;= iNumDate) i = iNumDate - 1;</span>
+<span class="fc bfc" id="L284" title="All 2 branches covered.">		if (i &gt;= iNumDate) i = iNumDate - 1;</span>
 
-<span class="fc bfc" id="L285" title="All 2 branches covered.">		if (_bDiscreteCompounding)</span>
-<span class="fc" id="L286">			dblDF *= java.lang.Math.pow (1. + (_adblForwardRate[i] / _iCompoundingFreq), -1. * yearFract</span>
-<span class="fc" id="L287">				(iStartDate, iDate) * _iCompoundingFreq);</span>
+<span class="fc bfc" id="L286" title="All 2 branches covered.">		if (_bDiscreteCompounding)</span>
+			/* dblDF *= java.lang.Math.pow (1. + (_adblForwardRate[i] / _iCompoundingFreq), -1. * yearFract
+				(iStartDate, iDate) * _iCompoundingFreq); */
+<span class="fc" id="L289">			dblDF /= (1. + (_adblForwardRate[i] * yearFract (iStartDate, iDate)));</span>
 		else
-<span class="fc" id="L289">			dblExpArg -= _adblForwardRate[i] * yearFract (iStartDate, iDate);</span>
+<span class="fc" id="L291">			dblExpArg -= _adblForwardRate[i] * yearFract (iStartDate, iDate);</span>
 
-<span class="fc bfc" id="L291" title="All 2 branches covered.">		return (_bDiscreteCompounding ? dblDF : java.lang.Math.exp (dblExpArg)) * turnAdjust (_iEpochDate,</span>
+<span class="fc bfc" id="L293" title="All 2 branches covered.">		return (_bDiscreteCompounding ? dblDF : java.lang.Math.exp (dblExpArg)) * turnAdjust (_iEpochDate,</span>
 			iDate);
 	}
 
@@ -297,52 +299,52 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 		final int iDate2)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L300">		int iStartDate = epoch().julian();</span>
+<span class="fc" id="L302">		int iStartDate = epoch().julian();</span>
 
-<span class="pc bpc" id="L302" title="2 of 4 branches missed.">		if (iDate1 &lt; iStartDate || iDate2 &lt; iStartDate) return 0.;</span>
+<span class="pc bpc" id="L304" title="2 of 4 branches missed.">		if (iDate1 &lt; iStartDate || iDate2 &lt; iStartDate) return 0.;</span>
 
-<span class="fc" id="L304">		return 365.25 / (iDate2 - iDate1) * java.lang.Math.log (df (iDate1) / df (iDate2));</span>
+<span class="fc" id="L306">		return 365.25 / (iDate2 - iDate1) * java.lang.Math.log (df (iDate1) / df (iDate2));</span>
 	}
 
 	@Override public double zero (
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L311">		double iStartDate = epoch().julian();</span>
+<span class="fc" id="L313">		double iStartDate = epoch().julian();</span>
 
-<span class="pc bpc" id="L313" title="1 of 2 branches missed.">		if (iDate &lt; iStartDate) return 0.;</span>
+<span class="pc bpc" id="L315" title="1 of 2 branches missed.">		if (iDate &lt; iStartDate) return 0.;</span>
 
-<span class="fc" id="L315">		return -365.25 / (iDate - iStartDate) * java.lang.Math.log (df (iDate));</span>
+<span class="fc" id="L317">		return -365.25 / (iDate - iStartDate) * java.lang.Math.log (df (iDate));</span>
 	}
 
 	@Override public org.drip.state.forward.ForwardRateEstimator forwardRateEstimator (
 		final int iDate,
 		final org.drip.state.identifier.ForwardLabel fri)
 	{
-<span class="nc" id="L322">		return null;</span>
+<span class="nc" id="L324">		return null;</span>
 	}
 
 	@Override public java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; canonicalTruthness (
 		final java.lang.String strLatentQuantificationMetric)
 	{
-<span class="nc" id="L328">		return null;</span>
+<span class="nc" id="L330">		return null;</span>
 	}
 
 	@Override public FlatForwardDiscountCurve parallelShiftManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final double dblShift)
 	{
-<span class="pc bpc" id="L335" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblShift) || null == _ccis) return null;</span>
+<span class="pc bpc" id="L337" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblShift) || null == _ccis) return null;</span>
 
-<span class="nc" id="L337">		org.drip.product.definition.CalibratableComponent[] aCalibInst = _ccis.components();</span>
+<span class="nc" id="L339">		org.drip.product.definition.CalibratableComponent[] aCalibInst = _ccis.components();</span>
 
-<span class="nc" id="L339">		int iNumComp = aCalibInst.length;</span>
-<span class="nc" id="L340">		double[] adblShift = new double[iNumComp];</span>
+<span class="nc" id="L341">		int iNumComp = aCalibInst.length;</span>
+<span class="nc" id="L342">		double[] adblShift = new double[iNumComp];</span>
 
-<span class="nc bnc" id="L342" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i)</span>
-<span class="nc" id="L343">			adblShift[i] = dblShift;</span>
+<span class="nc bnc" id="L344" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i)</span>
+<span class="nc" id="L345">			adblShift[i] = dblShift;</span>
 
-<span class="nc" id="L345">		return shiftManifestMeasure (adblShift);</span>
+<span class="nc" id="L347">		return shiftManifestMeasure (adblShift);</span>
 	}
 
 	@Override public FlatForwardDiscountCurve shiftManifestMeasure (
@@ -350,140 +352,140 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 		final java.lang.String strManifestMeasure,
 		final double dblShift)
 	{
-<span class="nc bnc" id="L353" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblShift) || null == _ccis) return null;</span>
+<span class="nc bnc" id="L355" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblShift) || null == _ccis) return null;</span>
 
-<span class="nc" id="L355">		org.drip.product.definition.CalibratableComponent[] aCalibInst = _ccis.components();</span>
+<span class="nc" id="L357">		org.drip.product.definition.CalibratableComponent[] aCalibInst = _ccis.components();</span>
 
-<span class="nc" id="L357">		int iNumComp = aCalibInst.length;</span>
-<span class="nc" id="L358">		double[] adblShift = new double[iNumComp];</span>
+<span class="nc" id="L359">		int iNumComp = aCalibInst.length;</span>
+<span class="nc" id="L360">		double[] adblShift = new double[iNumComp];</span>
 
-<span class="nc bnc" id="L360" title="All 2 branches missed.">		if (iSpanIndex &gt;= iNumComp) return null;</span>
+<span class="nc bnc" id="L362" title="All 2 branches missed.">		if (iSpanIndex &gt;= iNumComp) return null;</span>
 
-<span class="nc bnc" id="L362" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i)</span>
-<span class="nc bnc" id="L363" title="All 2 branches missed.">			adblShift[i] = i == iSpanIndex ? dblShift : 0.;</span>
+<span class="nc bnc" id="L364" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i)</span>
+<span class="nc bnc" id="L365" title="All 2 branches missed.">			adblShift[i] = i == iSpanIndex ? dblShift : 0.;</span>
 
-<span class="nc" id="L365">		return shiftManifestMeasure (adblShift);</span>
+<span class="nc" id="L367">		return shiftManifestMeasure (adblShift);</span>
 	}
 
 	@Override public org.drip.state.discount.ExplicitBootDiscountCurve customTweakManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final org.drip.param.definition.ManifestMeasureTweak rvtp)
 	{
-<span class="fc" id="L372">		return shiftManifestMeasure (org.drip.analytics.support.Helper.TweakManifestMeasure</span>
-<span class="fc" id="L373">			(_adblForwardRate, rvtp));</span>
+<span class="fc" id="L374">		return shiftManifestMeasure (org.drip.analytics.support.Helper.TweakManifestMeasure</span>
+<span class="fc" id="L375">			(_adblForwardRate, rvtp));</span>
 	}
 
 	@Override public FlatForwardDiscountCurve parallelShiftQuantificationMetric (
 		final double dblShift)
 	{
-<span class="pc bpc" id="L379" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblShift)) return null;</span>
+<span class="pc bpc" id="L381" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblShift)) return null;</span>
 
-<span class="fc" id="L381">		int iNumDate = _adblForwardRate.length;</span>
-<span class="fc" id="L382">		double[] adblForwardRate = new double[iNumDate];</span>
+<span class="fc" id="L383">		int iNumDate = _adblForwardRate.length;</span>
+<span class="fc" id="L384">		double[] adblForwardRate = new double[iNumDate];</span>
 
-<span class="fc bfc" id="L384" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumDate; ++i)</span>
-<span class="fc" id="L385">			adblForwardRate[i] = _adblForwardRate[i] + dblShift;</span>
+<span class="fc bfc" id="L386" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumDate; ++i)</span>
+<span class="fc" id="L387">			adblForwardRate[i] = _adblForwardRate[i] + dblShift;</span>
 
 		try {
-<span class="fc" id="L388">			return new FlatForwardDiscountCurve (new org.drip.analytics.date.JulianDate (_iEpochDate),</span>
+<span class="fc" id="L390">			return new FlatForwardDiscountCurve (new org.drip.analytics.date.JulianDate (_iEpochDate),</span>
 				_strCurrency, _aiDate, adblForwardRate, _bDiscreteCompounding, _strCompoundingDayCount,
 					_iCompoundingFreq);
-<span class="nc" id="L391">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L392">			e.printStackTrace();</span>
+<span class="nc" id="L393">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L394">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L395">		return null;</span>
+<span class="nc" id="L397">		return null;</span>
 	}
 
 	@Override public org.drip.analytics.definition.Curve customTweakQuantificationMetric (
 		final org.drip.param.definition.ManifestMeasureTweak rvtp)
 	{
 		try {
-<span class="nc" id="L402">			return new FlatForwardDiscountCurve (new org.drip.analytics.date.JulianDate (_iEpochDate),</span>
+<span class="nc" id="L404">			return new FlatForwardDiscountCurve (new org.drip.analytics.date.JulianDate (_iEpochDate),</span>
 				_strCurrency, _aiDate, org.drip.analytics.support.Helper.TweakManifestMeasure
-<span class="nc" id="L404">					(_adblForwardRate, rvtp), _bDiscreteCompounding, _strCompoundingDayCount,</span>
+<span class="nc" id="L406">					(_adblForwardRate, rvtp), _bDiscreteCompounding, _strCompoundingDayCount,</span>
 						_iCompoundingFreq);
-<span class="nc" id="L406">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L407">			e.printStackTrace();</span>
+<span class="nc" id="L408">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L409">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L410">		return null;</span>
+<span class="nc" id="L412">		return null;</span>
 	}
 
 	@Override public FlatForwardDiscountCurve createBasisRateShiftedCurve (
 		final int[] aiDate,
 		final double[] adblBasis)
 	{
-<span class="pc bpc" id="L417" title="2 of 4 branches missed.">		if (null == aiDate || null == adblBasis) return null;</span>
+<span class="pc bpc" id="L419" title="2 of 4 branches missed.">		if (null == aiDate || null == adblBasis) return null;</span>
 
-<span class="fc" id="L419">		int iNumDate = aiDate.length;</span>
+<span class="fc" id="L421">		int iNumDate = aiDate.length;</span>
 
-<span class="pc bpc" id="L421" title="2 of 4 branches missed.">		if (0 == iNumDate || iNumDate != adblBasis.length) return null;</span>
+<span class="pc bpc" id="L423" title="2 of 4 branches missed.">		if (0 == iNumDate || iNumDate != adblBasis.length) return null;</span>
 
-<span class="fc" id="L423">		double[] adblShiftedRate = new double[iNumDate];</span>
+<span class="fc" id="L425">		double[] adblShiftedRate = new double[iNumDate];</span>
 
 		try {
-<span class="fc bfc" id="L426" title="All 2 branches covered.">			for (int i = 0; i &lt; aiDate.length; ++i)</span>
-<span class="fc" id="L427">				adblShiftedRate[i] = zero (aiDate[i]) + adblBasis[i];</span>
+<span class="fc bfc" id="L428" title="All 2 branches covered.">			for (int i = 0; i &lt; aiDate.length; ++i)</span>
+<span class="fc" id="L429">				adblShiftedRate[i] = zero (aiDate[i]) + adblBasis[i];</span>
 
-<span class="fc" id="L429">			return new FlatForwardDiscountCurve (new org.drip.analytics.date.JulianDate (_iEpochDate),</span>
+<span class="fc" id="L431">			return new FlatForwardDiscountCurve (new org.drip.analytics.date.JulianDate (_iEpochDate),</span>
 				_strCurrency, aiDate, adblShiftedRate, _bDiscreteCompounding, _strCompoundingDayCount,
 					_iCompoundingFreq);
-<span class="nc" id="L432">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L433">			e.printStackTrace();</span>
+<span class="nc" id="L434">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L435">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L436">		return null;</span>
+<span class="nc" id="L438">		return null;</span>
 	}
 
 	@Override public java.lang.String latentStateQuantificationMetric()
 	{
-<span class="nc" id="L441">		return org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_ZERO_RATE;</span>
+<span class="nc" id="L443">		return org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_ZERO_RATE;</span>
 	}
 
 	@Override public org.drip.quant.calculus.WengertJacobian jackDDFDManifestMeasure (
 		final int iDate,
 		final java.lang.String strManifestMeasure)
 	{
-<span class="pc bpc" id="L448" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (iDate)) return null;</span>
+<span class="pc bpc" id="L450" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (iDate)) return null;</span>
 
-<span class="fc" id="L450">		int i = 0;</span>
-<span class="fc" id="L451">		double dblDF = java.lang.Double.NaN;</span>
-<span class="fc" id="L452">		double iStartDate = _iEpochDate;</span>
-<span class="fc" id="L453">		org.drip.quant.calculus.WengertJacobian wj = null;</span>
+<span class="fc" id="L452">		int i = 0;</span>
+<span class="fc" id="L453">		double dblDF = java.lang.Double.NaN;</span>
+<span class="fc" id="L454">		double iStartDate = _iEpochDate;</span>
+<span class="fc" id="L455">		org.drip.quant.calculus.WengertJacobian wj = null;</span>
 
 		try {
-<span class="fc" id="L456">			wj = new org.drip.quant.calculus.WengertJacobian (1, _adblForwardRate.length);</span>
-<span class="nc" id="L457">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L458">			e.printStackTrace();</span>
+<span class="fc" id="L458">			wj = new org.drip.quant.calculus.WengertJacobian (1, _adblForwardRate.length);</span>
+<span class="nc" id="L459">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L460">			e.printStackTrace();</span>
 
-<span class="nc" id="L460">			return null;</span>
-<span class="fc" id="L461">		}</span>
+<span class="nc" id="L462">			return null;</span>
+<span class="fc" id="L463">		}</span>
 
-<span class="fc bfc" id="L463" title="All 2 branches covered.">		if (iDate &lt;= _iEpochDate) {</span>
-<span class="pc bpc" id="L464" title="1 of 2 branches missed.">			if (!wj.setWengert (0, 0.)) return null;</span>
+<span class="fc bfc" id="L465" title="All 2 branches covered.">		if (iDate &lt;= _iEpochDate) {</span>
+<span class="pc bpc" id="L466" title="1 of 2 branches missed.">			if (!wj.setWengert (0, 0.)) return null;</span>
 
-<span class="fc" id="L466">			return wj;</span>
+<span class="fc" id="L468">			return wj;</span>
 		}
 
 		try {
-<span class="pc bpc" id="L470" title="1 of 2 branches missed.">			if (!wj.setWengert (0, dblDF = df (iDate))) return null;</span>
-<span class="nc" id="L471">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L472">			e.printStackTrace();</span>
+<span class="pc bpc" id="L472" title="1 of 2 branches missed.">			if (!wj.setWengert (0, dblDF = df (iDate))) return null;</span>
+<span class="nc" id="L473">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L474">			e.printStackTrace();</span>
 
-<span class="nc" id="L474">			return null;</span>
-<span class="fc" id="L475">		}</span>
+<span class="nc" id="L476">			return null;</span>
+<span class="fc" id="L477">		}</span>
 
-<span class="fc bfc" id="L477" title="All 4 branches covered.">		while (i &lt; _adblForwardRate.length &amp;&amp; (int) iDate &gt;= (int) _aiDate[i]) {</span>
-<span class="pc bpc" id="L478" title="1 of 2 branches missed.">			if (!wj.accumulatePartialFirstDerivative (0, i, dblDF * (iStartDate - _aiDate[i]) / 365.25))</span>
-<span class="nc" id="L479">				return null;</span>
+<span class="fc bfc" id="L479" title="All 4 branches covered.">		while (i &lt; _adblForwardRate.length &amp;&amp; (int) iDate &gt;= (int) _aiDate[i]) {</span>
+<span class="pc bpc" id="L480" title="1 of 2 branches missed.">			if (!wj.accumulatePartialFirstDerivative (0, i, dblDF * (iStartDate - _aiDate[i]) / 365.25))</span>
+<span class="nc" id="L481">				return null;</span>
 
-<span class="fc" id="L481">			iStartDate = _aiDate[i++];</span>
+<span class="fc" id="L483">			iStartDate = _aiDate[i++];</span>
 		}
 
-<span class="fc bfc" id="L484" title="All 2 branches covered.">		if (i &gt;= _adblForwardRate.length) i = _adblForwardRate.length - 1;</span>
+<span class="fc bfc" id="L486" title="All 2 branches covered.">		if (i &gt;= _adblForwardRate.length) i = _adblForwardRate.length - 1;</span>
 
-<span class="pc bpc" id="L486" title="1 of 2 branches missed.">		return wj.accumulatePartialFirstDerivative (0, i, dblDF * (iStartDate - iDate) / 365.25) ? wj :</span>
+<span class="pc bpc" id="L488" title="1 of 2 branches missed.">		return wj.accumulatePartialFirstDerivative (0, i, dblDF * (iStartDate - iDate) / 365.25) ? wj :</span>
 			null;
 	}
 
@@ -491,37 +493,37 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 		final int iNodeIndex,
 		final double dblValue)
 	{
-<span class="pc bpc" id="L494" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue) || iNodeIndex &gt; _adblForwardRate.length)</span>
-<span class="nc" id="L495">			return false;</span>
+<span class="pc bpc" id="L496" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue) || iNodeIndex &gt; _adblForwardRate.length)</span>
+<span class="nc" id="L497">			return false;</span>
 
-<span class="fc bfc" id="L497" title="All 2 branches covered.">		for (int i = iNodeIndex; i &lt; _adblForwardRate.length; ++i)</span>
-<span class="fc" id="L498">			_adblForwardRate[i] = dblValue;</span>
+<span class="fc bfc" id="L499" title="All 2 branches covered.">		for (int i = iNodeIndex; i &lt; _adblForwardRate.length; ++i)</span>
+<span class="fc" id="L500">			_adblForwardRate[i] = dblValue;</span>
 
-<span class="fc" id="L500">		return true;</span>
+<span class="fc" id="L502">		return true;</span>
 	}
 
 	@Override public boolean bumpNodeValue (
 		final int iNodeIndex,
 		final double dblValue)
 	{
-<span class="nc bnc" id="L507" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue) || iNodeIndex &gt; _adblForwardRate.length)</span>
-<span class="nc" id="L508">			return false;</span>
+<span class="nc bnc" id="L509" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue) || iNodeIndex &gt; _adblForwardRate.length)</span>
+<span class="nc" id="L510">			return false;</span>
 
-<span class="nc bnc" id="L510" title="All 2 branches missed.">		for (int i = iNodeIndex; i &lt; _adblForwardRate.length; ++i)</span>
-<span class="nc" id="L511">			_adblForwardRate[i] += dblValue;</span>
+<span class="nc bnc" id="L512" title="All 2 branches missed.">		for (int i = iNodeIndex; i &lt; _adblForwardRate.length; ++i)</span>
+<span class="nc" id="L513">			_adblForwardRate[i] += dblValue;</span>
 
-<span class="nc" id="L513">		return true;</span>
+<span class="nc" id="L515">		return true;</span>
 	}
 
 	@Override public boolean setFlatValue (
 		final double dblValue)
 	{
-<span class="nc bnc" id="L519" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue)) return false;</span>
+<span class="nc bnc" id="L521" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue)) return false;</span>
 
-<span class="nc bnc" id="L521" title="All 2 branches missed.">		for (int i = 0; i &lt; _adblForwardRate.length; ++i)</span>
-<span class="nc" id="L522">			_adblForwardRate[i] = dblValue;</span>
+<span class="nc bnc" id="L523" title="All 2 branches missed.">		for (int i = 0; i &lt; _adblForwardRate.length; ++i)</span>
+<span class="nc" id="L524">			_adblForwardRate[i] = dblValue;</span>
 
-<span class="nc" id="L524">		return true;</span>
+<span class="nc" id="L526">		return true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

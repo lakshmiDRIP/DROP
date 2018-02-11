@@ -782,10 +782,20 @@ public class BondReplicator
 			{
 				if (null != fl && org.drip.quant.common.NumberUtil.IsValid (_dblResetRate))
 				{
-					if (!_csqcCreditBase.setFixing (_iResetDate, (org.drip.state.identifier.ForwardLabel) fl,
-					_dblResetRate))
+					if (fl instanceof org.drip.state.identifier.ForwardLabel)
 					{
-						throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
+						if (!_csqcCreditBase.setFixing (_iResetDate, (org.drip.state.identifier.ForwardLabel)
+							fl, _dblResetRate))
+						{
+							throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
+						}
+					} else if (fl instanceof org.drip.state.identifier.OTCFixFloatLabel)
+					{
+						if (!_csqcCreditBase.setFixing (_iResetDate,
+							(org.drip.state.identifier.OTCFixFloatLabel) fl, _dblResetRate))
+						{
+							throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
+						}
 					}
 				}
 			}

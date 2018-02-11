@@ -436,6 +436,54 @@ package org.drip.service.template;
 	}
 
 	/**
+	 * Construct an Array of OTC Funding Deposit and Futures Instruments
+	 * 
+	 * @param dtSpot Spot Date
+	 * @param strCurrency Currency
+	 * @param astrDepositMaturityTenor Array of Deposit Maturity Tenors
+	 * @param iNumFutures Number of Serial Futures to be included
+	 * 
+	 * @return Array of OTC Funding Deposit Instruments from their corresponding Maturity Tenors
+	 */
+
+	public static final org.drip.product.rates.SingleStreamComponent[] FundingDepositFutures (
+		final org.drip.analytics.date.JulianDate dtSpot,
+		final java.lang.String strCurrency,
+		final java.lang.String[] astrDepositMaturityTenor,
+		final int iNumFutures)
+	{
+<span class="pc bpc" id="L455" title="1 of 2 branches missed.">		if (null == astrDepositMaturityTenor) return null;</span>
+
+<span class="fc" id="L457">		int iNumDeposit = astrDepositMaturityTenor.length;</span>
+<span class="fc" id="L458">		org.drip.product.rates.SingleStreamComponent[] aSSCDepositFutures = new</span>
+			org.drip.product.rates.SingleStreamComponent[iNumDeposit + iNumFutures];
+
+<span class="pc bpc" id="L461" title="1 of 2 branches missed.">		if (0 == iNumDeposit) return null;</span>
+
+<span class="fc bfc" id="L463" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumDeposit; ++i) {</span>
+<span class="pc bpc" id="L464" title="1 of 2 branches missed.">			if (null == (aSSCDepositFutures[i] = FundingDeposit (dtSpot, strCurrency,</span>
+				astrDepositMaturityTenor[i])))
+<span class="nc" id="L466">				return null;</span>
+
+<span class="fc" id="L468">			aSSCDepositFutures[i].setPrimaryCode (astrDepositMaturityTenor[i]);</span>
+		}
+
+<span class="pc bpc" id="L471" title="1 of 2 branches missed.">		if (0 == iNumFutures) return aSSCDepositFutures;</span>
+
+<span class="fc" id="L473">		org.drip.product.rates.SingleStreamComponent[] aSSCFutures =</span>
+<span class="fc" id="L474">			org.drip.service.template.ExchangeInstrumentBuilder.ForwardRateFuturesPack (dtSpot, iNumFutures,</span>
+				strCurrency);
+
+<span class="pc bpc" id="L477" title="1 of 2 branches missed.">		if (null == aSSCFutures) return null;</span>
+
+<span class="fc bfc" id="L479" title="All 2 branches covered.">		for (int i = iNumDeposit; i &lt; iNumDeposit + iNumFutures; ++i) {</span>
+<span class="pc bpc" id="L480" title="1 of 2 branches missed.">			if (null == (aSSCDepositFutures[i] = aSSCFutures[i - iNumDeposit])) return null;</span>
+		}
+
+<span class="fc" id="L483">		return aSSCDepositFutures;</span>
+	}
+
+	/**
 	 * Construct an Array of OTC Forward Deposit Instruments from the corresponding Maturity Tenors
 	 * 
 	 * @param dtSpot Spot Date
@@ -450,22 +498,22 @@ package org.drip.service.template;
 		final java.lang.String[] astrMaturityTenor,
 		final org.drip.state.identifier.ForwardLabel forwardLabel)
 	{
-<span class="pc bpc" id="L453" title="1 of 2 branches missed.">		if (null == astrMaturityTenor) return null;</span>
+<span class="pc bpc" id="L501" title="1 of 2 branches missed.">		if (null == astrMaturityTenor) return null;</span>
 
-<span class="fc" id="L455">		int iNumDeposit = astrMaturityTenor.length;</span>
-<span class="fc" id="L456">		org.drip.product.rates.SingleStreamComponent[] aSSCDeposit = new</span>
+<span class="fc" id="L503">		int iNumDeposit = astrMaturityTenor.length;</span>
+<span class="fc" id="L504">		org.drip.product.rates.SingleStreamComponent[] aSSCDeposit = new</span>
 			org.drip.product.rates.SingleStreamComponent[iNumDeposit];
 
-<span class="pc bpc" id="L459" title="1 of 2 branches missed.">		if (0 == iNumDeposit) return null;</span>
+<span class="pc bpc" id="L507" title="1 of 2 branches missed.">		if (0 == iNumDeposit) return null;</span>
 
-<span class="fc bfc" id="L461" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i) {</span>
-<span class="pc bpc" id="L462" title="1 of 2 branches missed.">			if (null == (aSSCDeposit[i] = ForwardRateDeposit (dtSpot, astrMaturityTenor[i], forwardLabel)))</span>
-<span class="nc" id="L463">				return null;</span>
+<span class="fc bfc" id="L509" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i) {</span>
+<span class="pc bpc" id="L510" title="1 of 2 branches missed.">			if (null == (aSSCDeposit[i] = ForwardRateDeposit (dtSpot, astrMaturityTenor[i], forwardLabel)))</span>
+<span class="nc" id="L511">				return null;</span>
 
-<span class="fc" id="L465">			aSSCDeposit[i].setPrimaryCode (astrMaturityTenor[i]);</span>
+<span class="fc" id="L513">			aSSCDeposit[i].setPrimaryCode (astrMaturityTenor[i]);</span>
 		}
 
-<span class="fc" id="L468">		return aSSCDeposit;</span>
+<span class="fc" id="L516">		return aSSCDeposit;</span>
 	}
 
 	/**
@@ -483,19 +531,19 @@ package org.drip.service.template;
 		final java.lang.String strCurrency,
 		final java.lang.String[] astrMaturityTenor)
 	{
-<span class="pc bpc" id="L486" title="1 of 2 branches missed.">		if (null == astrMaturityTenor) return null;</span>
+<span class="pc bpc" id="L534" title="1 of 2 branches missed.">		if (null == astrMaturityTenor) return null;</span>
 
-<span class="fc" id="L488">		int iNumDeposit = astrMaturityTenor.length;</span>
-<span class="fc" id="L489">		org.drip.product.rates.SingleStreamComponent[] aSSCDeposit = new</span>
+<span class="fc" id="L536">		int iNumDeposit = astrMaturityTenor.length;</span>
+<span class="fc" id="L537">		org.drip.product.rates.SingleStreamComponent[] aSSCDeposit = new</span>
 			org.drip.product.rates.SingleStreamComponent[iNumDeposit];
 
-<span class="pc bpc" id="L492" title="1 of 2 branches missed.">		if (0 == iNumDeposit) return null;</span>
+<span class="pc bpc" id="L540" title="1 of 2 branches missed.">		if (0 == iNumDeposit) return null;</span>
 
-<span class="fc bfc" id="L494" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumDeposit; ++i) {</span>
-<span class="pc bpc" id="L495" title="1 of 2 branches missed.">			if (null == (aSSCDeposit[i] = OvernightDeposit (dtSpot, strCurrency, astrMaturityTenor[i])))</span>
-<span class="nc" id="L496">				return null;</span>
+<span class="fc bfc" id="L542" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumDeposit; ++i) {</span>
+<span class="pc bpc" id="L543" title="1 of 2 branches missed.">			if (null == (aSSCDeposit[i] = OvernightDeposit (dtSpot, strCurrency, astrMaturityTenor[i])))</span>
+<span class="nc" id="L544">				return null;</span>
 		}
-<span class="fc" id="L498">		return aSSCDeposit;</span>
+<span class="fc" id="L546">		return aSSCDeposit;</span>
 	}
 
 	/**
@@ -515,21 +563,21 @@ package org.drip.service.template;
 		final java.lang.String[] astrMaturityTenor,
 		final double[] adblFRAStrike)
 	{
-<span class="pc bpc" id="L518" title="2 of 4 branches missed.">		if (null == astrMaturityTenor || null == adblFRAStrike) return null;</span>
+<span class="pc bpc" id="L566" title="2 of 4 branches missed.">		if (null == astrMaturityTenor || null == adblFRAStrike) return null;</span>
 
-<span class="fc" id="L520">		int iNumFRA = astrMaturityTenor.length;</span>
-<span class="fc" id="L521">		org.drip.product.fra.FRAStandardComponent[] aFRA = new</span>
+<span class="fc" id="L568">		int iNumFRA = astrMaturityTenor.length;</span>
+<span class="fc" id="L569">		org.drip.product.fra.FRAStandardComponent[] aFRA = new</span>
 			org.drip.product.fra.FRAStandardComponent[iNumFRA];
 
-<span class="pc bpc" id="L524" title="2 of 4 branches missed.">		if (0 == iNumFRA || iNumFRA != adblFRAStrike.length) return null;</span>
+<span class="pc bpc" id="L572" title="2 of 4 branches missed.">		if (0 == iNumFRA || iNumFRA != adblFRAStrike.length) return null;</span>
 
-<span class="fc bfc" id="L526" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFRA; ++i) {</span>
-<span class="pc bpc" id="L527" title="1 of 2 branches missed.">			if (null == (aFRA[i] = FRAStandard (dtSpot, forwardLabel, astrMaturityTenor[i],</span>
+<span class="fc bfc" id="L574" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFRA; ++i) {</span>
+<span class="pc bpc" id="L575" title="1 of 2 branches missed.">			if (null == (aFRA[i] = FRAStandard (dtSpot, forwardLabel, astrMaturityTenor[i],</span>
 				adblFRAStrike[i])))
-<span class="nc" id="L529">				return null;</span>
+<span class="nc" id="L577">				return null;</span>
 		}
 
-<span class="fc" id="L532">		return aFRA;</span>
+<span class="fc" id="L580">		return aFRA;</span>
 	}
 
 	/**
@@ -553,21 +601,21 @@ package org.drip.service.template;
 		final java.lang.String strIndex,
 		final double dblCoupon)
 	{
-<span class="pc bpc" id="L556" title="1 of 2 branches missed.">		if (null == astrMaturityTenor) return null;</span>
+<span class="pc bpc" id="L604" title="1 of 2 branches missed.">		if (null == astrMaturityTenor) return null;</span>
 
-<span class="fc" id="L558">		int iNumFixFloat = astrMaturityTenor.length;</span>
-<span class="fc" id="L559">		org.drip.product.rates.FixFloatComponent[] aFFC = new</span>
+<span class="fc" id="L606">		int iNumFixFloat = astrMaturityTenor.length;</span>
+<span class="fc" id="L607">		org.drip.product.rates.FixFloatComponent[] aFFC = new</span>
 			org.drip.product.rates.FixFloatComponent[iNumFixFloat];
 
-<span class="pc bpc" id="L562" title="1 of 2 branches missed.">		if (0 == iNumFixFloat) return null;</span>
+<span class="pc bpc" id="L610" title="1 of 2 branches missed.">		if (0 == iNumFixFloat) return null;</span>
 
-<span class="fc bfc" id="L564" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFixFloat; ++i) {</span>
-<span class="pc bpc" id="L565" title="1 of 2 branches missed.">			if (null == (aFFC[i] = FixFloatStandard (dtSpot, strCurrency, strLocation, astrMaturityTenor[i],</span>
+<span class="fc bfc" id="L612" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFixFloat; ++i) {</span>
+<span class="pc bpc" id="L613" title="1 of 2 branches missed.">			if (null == (aFFC[i] = FixFloatStandard (dtSpot, strCurrency, strLocation, astrMaturityTenor[i],</span>
 				strIndex, 0.)))
-<span class="nc" id="L567">				return null;</span>
+<span class="nc" id="L615">				return null;</span>
 		}
 
-<span class="fc" id="L570">		return aFFC;</span>
+<span class="fc" id="L618">		return aFFC;</span>
 	}
 
 	/**
@@ -585,65 +633,65 @@ package org.drip.service.template;
 		final org.drip.state.identifier.ForwardLabel forwardLabel,
 		final java.lang.String[] astrMaturityTenor)
 	{
-<span class="pc bpc" id="L588" title="3 of 6 branches missed.">		if (null == dtSpot || null == forwardLabel || null == astrMaturityTenor) return null;</span>
+<span class="pc bpc" id="L636" title="3 of 6 branches missed.">		if (null == dtSpot || null == forwardLabel || null == astrMaturityTenor) return null;</span>
 
-<span class="fc" id="L590">		int iNumComp = astrMaturityTenor.length;</span>
-<span class="fc" id="L591">		org.drip.param.period.CompositePeriodSetting cpsFloating = null;</span>
-<span class="fc" id="L592">		org.drip.param.period.ComposableFloatingUnitSetting cfusFloating = null;</span>
-<span class="fc" id="L593">		org.drip.product.rates.FixFloatComponent[] aFFC = new</span>
+<span class="fc" id="L638">		int iNumComp = astrMaturityTenor.length;</span>
+<span class="fc" id="L639">		org.drip.param.period.CompositePeriodSetting cpsFloating = null;</span>
+<span class="fc" id="L640">		org.drip.param.period.ComposableFloatingUnitSetting cfusFloating = null;</span>
+<span class="fc" id="L641">		org.drip.product.rates.FixFloatComponent[] aFFC = new</span>
 			org.drip.product.rates.FixFloatComponent[iNumComp];
 
-<span class="pc bpc" id="L596" title="1 of 2 branches missed.">		if (0 == iNumComp) return null;</span>
+<span class="pc bpc" id="L644" title="1 of 2 branches missed.">		if (0 == iNumComp) return null;</span>
 
-<span class="fc" id="L598">		java.lang.String strCurrency = forwardLabel.currency();</span>
+<span class="fc" id="L646">		java.lang.String strCurrency = forwardLabel.currency();</span>
 
-<span class="fc" id="L600">		java.lang.String strForwardTenor = forwardLabel.tenor();</span>
+<span class="fc" id="L648">		java.lang.String strForwardTenor = forwardLabel.tenor();</span>
 
-<span class="fc" id="L602">		int iTenorInMonths = new java.lang.Integer (strForwardTenor.split (&quot;M&quot;)[0]);</span>
+<span class="fc" id="L650">		int iTenorInMonths = new java.lang.Integer (strForwardTenor.split (&quot;M&quot;)[0]);</span>
 
-<span class="fc" id="L604">		org.drip.analytics.date.JulianDate dtEffective = dtSpot.addBusDays (0, strCurrency).addDays (2);</span>
+<span class="fc" id="L652">		org.drip.analytics.date.JulianDate dtEffective = dtSpot.addBusDays (0, strCurrency).addDays (2);</span>
 
 		try {
-<span class="fc" id="L607">			cfusFloating = new org.drip.param.period.ComposableFloatingUnitSetting (strForwardTenor,</span>
+<span class="fc" id="L655">			cfusFloating = new org.drip.param.period.ComposableFloatingUnitSetting (strForwardTenor,</span>
 				org.drip.analytics.support.CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR, null,
 					forwardLabel,
 						org.drip.analytics.support.CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE, 0.);
 
-<span class="fc" id="L612">			cpsFloating = new org.drip.param.period.CompositePeriodSetting (12 / iTenorInMonths,</span>
+<span class="fc" id="L660">			cpsFloating = new org.drip.param.period.CompositePeriodSetting (12 / iTenorInMonths,</span>
 				strForwardTenor, strCurrency, null, -1., null, null, null, null);
-<span class="nc" id="L614">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L615">			e.printStackTrace();</span>
+<span class="nc" id="L662">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L663">			e.printStackTrace();</span>
 
-<span class="nc" id="L617">			return null;</span>
-<span class="fc" id="L618">		}</span>
+<span class="nc" id="L665">			return null;</span>
+<span class="fc" id="L666">		}</span>
 
-<span class="fc bfc" id="L620" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumComp; ++i) {</span>
-<span class="fc" id="L621">			org.drip.market.otc.FixedFloatSwapConvention ffsc =</span>
-<span class="fc" id="L622">				org.drip.market.otc.IBORFixedFloatContainer.ConventionFromJurisdiction (strCurrency, &quot;ALL&quot;,</span>
+<span class="fc bfc" id="L668" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumComp; ++i) {</span>
+<span class="fc" id="L669">			org.drip.market.otc.FixedFloatSwapConvention ffsc =</span>
+<span class="fc" id="L670">				org.drip.market.otc.IBORFixedFloatContainer.ConventionFromJurisdiction (strCurrency, &quot;ALL&quot;,</span>
 					astrMaturityTenor[i], &quot;MAIN&quot;);
 
-<span class="pc bpc" id="L625" title="1 of 2 branches missed.">			if (null == ffsc) return null;</span>
+<span class="pc bpc" id="L673" title="1 of 2 branches missed.">			if (null == ffsc) return null;</span>
 
 			try {
-<span class="fc" id="L628">				org.drip.product.rates.Stream floatingStream = new org.drip.product.rates.Stream</span>
+<span class="fc" id="L676">				org.drip.product.rates.Stream floatingStream = new org.drip.product.rates.Stream</span>
 					(org.drip.analytics.support.CompositePeriodBuilder.FloatingCompositeUnit
-<span class="fc" id="L630">						(org.drip.analytics.support.CompositePeriodBuilder.RegularEdgeDates (dtEffective,</span>
+<span class="fc" id="L678">						(org.drip.analytics.support.CompositePeriodBuilder.RegularEdgeDates (dtEffective,</span>
 							strForwardTenor, astrMaturityTenor[i], null), cpsFloating, cfusFloating));
 
-<span class="fc" id="L633">				org.drip.product.rates.Stream fixedStream = ffsc.fixedStreamConvention().createStream</span>
-<span class="fc" id="L634">					(dtEffective, astrMaturityTenor[i], 0., 1.);</span>
+<span class="fc" id="L681">				org.drip.product.rates.Stream fixedStream = ffsc.fixedStreamConvention().createStream</span>
+<span class="fc" id="L682">					(dtEffective, astrMaturityTenor[i], 0., 1.);</span>
 
-<span class="fc" id="L636">				aFFC[i] = new org.drip.product.rates.FixFloatComponent (fixedStream, floatingStream, null);</span>
-<span class="nc" id="L637">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L638">				e.printStackTrace();</span>
+<span class="fc" id="L684">				aFFC[i] = new org.drip.product.rates.FixFloatComponent (fixedStream, floatingStream, null);</span>
+<span class="nc" id="L685">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L686">				e.printStackTrace();</span>
 
-<span class="nc" id="L640">				return null;</span>
-<span class="fc" id="L641">			}</span>
+<span class="nc" id="L688">				return null;</span>
+<span class="fc" id="L689">			}</span>
 
-<span class="fc" id="L643">			aFFC[i].setPrimaryCode (&quot;FixFloat:&quot; + astrMaturityTenor[i]);</span>
+<span class="fc" id="L691">			aFFC[i].setPrimaryCode (&quot;FixFloat:&quot; + astrMaturityTenor[i]);</span>
 		}
 
-<span class="fc" id="L646">		return aFFC;</span>
+<span class="fc" id="L694">		return aFFC;</span>
 	}
 
 	/**
@@ -665,21 +713,21 @@ package org.drip.service.template;
 		final double[] adblCoupon,
 		final boolean bFund)
 	{
-<span class="pc bpc" id="L668" title="1 of 2 branches missed.">		if (null == astrMaturityTenor) return null;</span>
+<span class="pc bpc" id="L716" title="1 of 2 branches missed.">		if (null == astrMaturityTenor) return null;</span>
 
-<span class="fc" id="L670">		int iNumOIS = astrMaturityTenor.length;</span>
-<span class="fc" id="L671">		org.drip.product.rates.FixFloatComponent[] aFixFloatOIS = new</span>
+<span class="fc" id="L718">		int iNumOIS = astrMaturityTenor.length;</span>
+<span class="fc" id="L719">		org.drip.product.rates.FixFloatComponent[] aFixFloatOIS = new</span>
 			org.drip.product.rates.FixFloatComponent[iNumOIS];
 
-<span class="pc bpc" id="L674" title="1 of 2 branches missed.">		if (0 == iNumOIS) return null;</span>
+<span class="pc bpc" id="L722" title="1 of 2 branches missed.">		if (0 == iNumOIS) return null;</span>
 
-<span class="fc bfc" id="L676" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumOIS; ++i) {</span>
-<span class="pc bpc" id="L677" title="1 of 2 branches missed.">			if (null == (aFixFloatOIS[i] = OISFixFloat (dtSpot, strCurrency, astrMaturityTenor[i],</span>
+<span class="fc bfc" id="L724" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumOIS; ++i) {</span>
+<span class="pc bpc" id="L725" title="1 of 2 branches missed.">			if (null == (aFixFloatOIS[i] = OISFixFloat (dtSpot, strCurrency, astrMaturityTenor[i],</span>
 				adblCoupon[i], bFund)))
-<span class="nc" id="L679">				return null;</span>
+<span class="nc" id="L727">				return null;</span>
 		}
 
-<span class="fc" id="L682">		return aFixFloatOIS;</span>
+<span class="fc" id="L730">		return aFixFloatOIS;</span>
 	}
 
 	/**
@@ -703,24 +751,24 @@ package org.drip.service.template;
 		final double[] adblCoupon,
 		final boolean bFund)
 	{
-<span class="pc bpc" id="L706" title="4 of 8 branches missed.">		if (null == dtSpot || null == astrEffectiveTenor || null == astrMaturityTenor || null == adblCoupon)</span>
-<span class="nc" id="L707">			return null;</span>
+<span class="pc bpc" id="L754" title="4 of 8 branches missed.">		if (null == dtSpot || null == astrEffectiveTenor || null == astrMaturityTenor || null == adblCoupon)</span>
+<span class="nc" id="L755">			return null;</span>
 
-<span class="fc" id="L709">		int iNumOISFutures = astrEffectiveTenor.length;</span>
-<span class="fc" id="L710">		org.drip.product.rates.FixFloatComponent[] aOISFutures = new</span>
+<span class="fc" id="L757">		int iNumOISFutures = astrEffectiveTenor.length;</span>
+<span class="fc" id="L758">		org.drip.product.rates.FixFloatComponent[] aOISFutures = new</span>
 			org.drip.product.rates.FixFloatComponent[iNumOISFutures];
 
-<span class="pc bpc" id="L713" title="3 of 6 branches missed.">		if (0 == iNumOISFutures || iNumOISFutures != astrMaturityTenor.length || iNumOISFutures !=</span>
+<span class="pc bpc" id="L761" title="3 of 6 branches missed.">		if (0 == iNumOISFutures || iNumOISFutures != astrMaturityTenor.length || iNumOISFutures !=</span>
 			adblCoupon.length)
-<span class="nc" id="L715">			return null;</span>
+<span class="nc" id="L763">			return null;</span>
 
-<span class="fc bfc" id="L717" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumOISFutures; ++i) {</span>
-<span class="pc bpc" id="L718" title="1 of 2 branches missed.">			if (null == (aOISFutures[i] = OISFixFloat (dtSpot.addTenor (astrEffectiveTenor[i]), strCurrency,</span>
+<span class="fc bfc" id="L765" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumOISFutures; ++i) {</span>
+<span class="pc bpc" id="L766" title="1 of 2 branches missed.">			if (null == (aOISFutures[i] = OISFixFloat (dtSpot.addTenor (astrEffectiveTenor[i]), strCurrency,</span>
 				astrMaturityTenor[i], adblCoupon[i], bFund)))
-<span class="nc" id="L720">				return null;</span>
+<span class="nc" id="L768">				return null;</span>
 		}
 
-<span class="fc" id="L723">		return aOISFutures;</span>
+<span class="fc" id="L771">		return aOISFutures;</span>
 	}
 
 	/**
@@ -742,24 +790,24 @@ package org.drip.service.template;
 		final java.lang.String[] astrMaturityTenor,
 		final double dblBasis)
 	{
-<span class="pc bpc" id="L745" title="1 of 2 branches missed.">		if (null == astrMaturityTenor) return null;</span>
+<span class="pc bpc" id="L793" title="1 of 2 branches missed.">		if (null == astrMaturityTenor) return null;</span>
 
-<span class="fc" id="L747">		org.drip.market.otc.FloatFloatSwapConvention ffsc =</span>
-<span class="fc" id="L748">			org.drip.market.otc.IBORFloatFloatContainer.ConventionFromJurisdiction (strCurrency);</span>
+<span class="fc" id="L795">		org.drip.market.otc.FloatFloatSwapConvention ffsc =</span>
+<span class="fc" id="L796">			org.drip.market.otc.IBORFloatFloatContainer.ConventionFromJurisdiction (strCurrency);</span>
 
-<span class="fc" id="L750">		int iNumFFC = astrMaturityTenor.length;</span>
-<span class="fc" id="L751">		org.drip.product.rates.FloatFloatComponent[] aFFC = new</span>
+<span class="fc" id="L798">		int iNumFFC = astrMaturityTenor.length;</span>
+<span class="fc" id="L799">		org.drip.product.rates.FloatFloatComponent[] aFFC = new</span>
 			org.drip.product.rates.FloatFloatComponent[iNumFFC];
 
-<span class="pc bpc" id="L754" title="2 of 4 branches missed.">		if (null == ffsc || 0 == iNumFFC) return null;</span>
+<span class="pc bpc" id="L802" title="2 of 4 branches missed.">		if (null == ffsc || 0 == iNumFFC) return null;</span>
 
-<span class="fc bfc" id="L756" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFFC; ++i) {</span>
-<span class="fc bfc" id="L757" title="All 2 branches covered.">			if (null == (aFFC[i] = ffsc.createFloatFloatComponent (dtSpot, strDerivedTenor,</span>
+<span class="fc bfc" id="L804" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFFC; ++i) {</span>
+<span class="fc bfc" id="L805" title="All 2 branches covered.">			if (null == (aFFC[i] = ffsc.createFloatFloatComponent (dtSpot, strDerivedTenor,</span>
 				astrMaturityTenor[i], dblBasis, 1.)))
-<span class="fc" id="L759">				return null;</span>
+<span class="fc" id="L807">				return null;</span>
 		}
 
-<span class="fc" id="L762">		return aFFC;</span>
+<span class="fc" id="L810">		return aFFC;</span>
 	}
 
 	/**
@@ -781,35 +829,35 @@ package org.drip.service.template;
 		final java.lang.String strCurrency,
 		final java.lang.String strCredit)
 	{
-<span class="pc bpc" id="L784" title="4 of 8 branches missed.">		if (null == dtSpot || null == strCurrency || null == astrMaturityTenor || null == adblCoupon)</span>
-<span class="nc" id="L785">			return null;</span>
+<span class="pc bpc" id="L832" title="4 of 8 branches missed.">		if (null == dtSpot || null == strCurrency || null == astrMaturityTenor || null == adblCoupon)</span>
+<span class="nc" id="L833">			return null;</span>
 
-<span class="fc" id="L787">		int iNumCDS = astrMaturityTenor.length;</span>
-<span class="fc" id="L788">		java.lang.String strCalendar = strCurrency;</span>
-<span class="fc" id="L789">		org.drip.product.definition.CreditDefaultSwap[] aCDS = new</span>
+<span class="fc" id="L835">		int iNumCDS = astrMaturityTenor.length;</span>
+<span class="fc" id="L836">		java.lang.String strCalendar = strCurrency;</span>
+<span class="fc" id="L837">		org.drip.product.definition.CreditDefaultSwap[] aCDS = new</span>
 			org.drip.product.definition.CreditDefaultSwap[iNumCDS];
 
-<span class="pc bpc" id="L792" title="2 of 4 branches missed.">		if (0 == iNumCDS || iNumCDS != adblCoupon.length) return null;</span>
+<span class="pc bpc" id="L840" title="2 of 4 branches missed.">		if (0 == iNumCDS || iNumCDS != adblCoupon.length) return null;</span>
 
-<span class="fc" id="L794">		org.drip.analytics.date.JulianDate dtFirstCoupon = dtSpot.addBusDays (0, strCalendar).nextCreditIMM</span>
-<span class="fc" id="L795">			(3);</span>
+<span class="fc" id="L842">		org.drip.analytics.date.JulianDate dtFirstCoupon = dtSpot.addBusDays (0, strCalendar).nextCreditIMM</span>
+<span class="fc" id="L843">			(3);</span>
 
-<span class="pc bpc" id="L797" title="1 of 2 branches missed.">		if (null == dtFirstCoupon) return null;</span>
+<span class="pc bpc" id="L845" title="1 of 2 branches missed.">		if (null == dtFirstCoupon) return null;</span>
 
-<span class="fc" id="L799">		org.drip.analytics.date.JulianDate dtEffective = dtFirstCoupon.subtractTenor (&quot;3M&quot;);</span>
+<span class="fc" id="L847">		org.drip.analytics.date.JulianDate dtEffective = dtFirstCoupon.subtractTenor (&quot;3M&quot;);</span>
 
-<span class="pc bpc" id="L801" title="1 of 2 branches missed.">		if (null == dtEffective) return null;</span>
+<span class="pc bpc" id="L849" title="1 of 2 branches missed.">		if (null == dtEffective) return null;</span>
 
-<span class="pc bpc" id="L803" title="1 of 4 branches missed.">		double dblRecovery = &quot;CAD&quot;.equalsIgnoreCase (strCurrency) || &quot;EUR&quot;.equalsIgnoreCase (strCurrency) ||</span>
-<span class="pc bpc" id="L804" title="2 of 4 branches missed.">			&quot;GBP&quot;.equalsIgnoreCase (strCurrency) || &quot;HKD&quot;.equalsIgnoreCase (strCurrency) ||</span>
-<span class="pc bpc" id="L805" title="1 of 2 branches missed.">				&quot;USD&quot;.equalsIgnoreCase (strCurrency) ? 0.40 : 0.25;</span>
+<span class="pc bpc" id="L851" title="1 of 4 branches missed.">		double dblRecovery = &quot;CAD&quot;.equalsIgnoreCase (strCurrency) || &quot;EUR&quot;.equalsIgnoreCase (strCurrency) ||</span>
+<span class="pc bpc" id="L852" title="2 of 4 branches missed.">			&quot;GBP&quot;.equalsIgnoreCase (strCurrency) || &quot;HKD&quot;.equalsIgnoreCase (strCurrency) ||</span>
+<span class="pc bpc" id="L853" title="1 of 2 branches missed.">				&quot;USD&quot;.equalsIgnoreCase (strCurrency) ? 0.40 : 0.25;</span>
 
-<span class="fc bfc" id="L807" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumCDS; ++i)</span>
-<span class="fc" id="L808">			aCDS[i] = org.drip.product.creator.CDSBuilder.CreateCDS (dtEffective, dtFirstCoupon.addTenor</span>
-<span class="fc" id="L809">				(astrMaturityTenor[i]), adblCoupon[i], strCurrency, dblRecovery, strCredit, strCalendar,</span>
+<span class="fc bfc" id="L855" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumCDS; ++i)</span>
+<span class="fc" id="L856">			aCDS[i] = org.drip.product.creator.CDSBuilder.CreateCDS (dtEffective, dtFirstCoupon.addTenor</span>
+<span class="fc" id="L857">				(astrMaturityTenor[i]), adblCoupon[i], strCurrency, dblRecovery, strCredit, strCalendar,</span>
 					true);
 
-<span class="fc" id="L812">		return aCDS;</span>
+<span class="fc" id="L860">		return aCDS;</span>
 	}
 
 	/**
@@ -827,18 +875,18 @@ package org.drip.service.template;
 		final org.drip.product.params.CurrencyPair ccyPair,
 		final java.lang.String[] astrMaturityTenor)
 	{
-<span class="pc bpc" id="L830" title="1 of 2 branches missed.">		if (null == astrMaturityTenor) return null;</span>
+<span class="pc bpc" id="L878" title="1 of 2 branches missed.">		if (null == astrMaturityTenor) return null;</span>
 
-<span class="fc" id="L832">		int iNumFXComp = astrMaturityTenor.length;</span>
-<span class="fc" id="L833">		org.drip.product.fx.FXForwardComponent[] aFXFC = new </span>
+<span class="fc" id="L880">		int iNumFXComp = astrMaturityTenor.length;</span>
+<span class="fc" id="L881">		org.drip.product.fx.FXForwardComponent[] aFXFC = new </span>
 			org.drip.product.fx.FXForwardComponent[iNumFXComp];
 
-<span class="pc bpc" id="L836" title="1 of 2 branches missed.">		if (0 == iNumFXComp) return null;</span>
+<span class="pc bpc" id="L884" title="1 of 2 branches missed.">		if (0 == iNumFXComp) return null;</span>
 
-<span class="fc bfc" id="L838" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFXComp; ++i)</span>
-<span class="fc" id="L839">			aFXFC[i] = FXForward (dtSpot, ccyPair, astrMaturityTenor[i]);</span>
+<span class="fc bfc" id="L886" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFXComp; ++i)</span>
+<span class="fc" id="L887">			aFXFC[i] = FXForward (dtSpot, ccyPair, astrMaturityTenor[i]);</span>
 
-<span class="fc" id="L841">		return aFXFC;</span>
+<span class="fc" id="L889">		return aFXFC;</span>
 	}
 
 	/**
@@ -860,45 +908,45 @@ package org.drip.service.template;
 		final double dblStrike,
 		final boolean bIsCap)
 	{
-<span class="pc bpc" id="L863" title="2 of 4 branches missed.">		if (null == dtSpot || null == forwardLabel) return null;</span>
+<span class="pc bpc" id="L911" title="2 of 4 branches missed.">		if (null == dtSpot || null == forwardLabel) return null;</span>
 
-<span class="fc" id="L865">		java.lang.String strForwardTenor = forwardLabel.tenor();</span>
+<span class="fc" id="L913">		java.lang.String strForwardTenor = forwardLabel.tenor();</span>
 
-<span class="fc" id="L867">		java.lang.String strCurrency = forwardLabel.currency();</span>
+<span class="fc" id="L915">		java.lang.String strCurrency = forwardLabel.currency();</span>
 
-<span class="fc" id="L869">		java.lang.String strCalendar = strCurrency;</span>
+<span class="fc" id="L917">		java.lang.String strCalendar = strCurrency;</span>
 
-<span class="fc" id="L871">		org.drip.analytics.date.JulianDate dtEffective = dtSpot.addBusDays (0, strCalendar);</span>
+<span class="fc" id="L919">		org.drip.analytics.date.JulianDate dtEffective = dtSpot.addBusDays (0, strCalendar);</span>
 
 		try {
-<span class="fc" id="L874">			org.drip.param.period.ComposableFloatingUnitSetting cfus = new</span>
+<span class="fc" id="L922">			org.drip.param.period.ComposableFloatingUnitSetting cfus = new</span>
 				org.drip.param.period.ComposableFloatingUnitSetting (strForwardTenor,
 					org.drip.analytics.support.CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE, null,
 						forwardLabel,
 							org.drip.analytics.support.CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 								0.);
 
-<span class="fc" id="L881">			org.drip.param.period.CompositePeriodSetting cps = new</span>
+<span class="fc" id="L929">			org.drip.param.period.CompositePeriodSetting cps = new</span>
 				org.drip.param.period.CompositePeriodSetting
-<span class="fc" id="L883">					(org.drip.analytics.support.Helper.TenorToFreq (strForwardTenor),</span>
+<span class="fc" id="L931">					(org.drip.analytics.support.Helper.TenorToFreq (strForwardTenor),</span>
 						strForwardTenor, strCurrency, null, 1., null, null, null, null);
 
-<span class="fc" id="L886">			org.drip.product.rates.Stream floatStream = new org.drip.product.rates.Stream</span>
+<span class="fc" id="L934">			org.drip.product.rates.Stream floatStream = new org.drip.product.rates.Stream</span>
 				(org.drip.analytics.support.CompositePeriodBuilder.FloatingCompositeUnit
-<span class="fc" id="L888">					(org.drip.analytics.support.CompositePeriodBuilder.RegularEdgeDates</span>
-<span class="fc" id="L889">						(dtEffective.julian(), strForwardTenor, strMaturityTenor, null), cps, cfus));</span>
+<span class="fc" id="L936">					(org.drip.analytics.support.CompositePeriodBuilder.RegularEdgeDates</span>
+<span class="fc" id="L937">						(dtEffective.julian(), strForwardTenor, strMaturityTenor, null), cps, cfus));</span>
 
-<span class="pc bpc" id="L891" title="1 of 2 branches missed.">			return new org.drip.product.fra.FRAStandardCapFloor (forwardLabel.fullyQualifiedName() + (bIsCap</span>
+<span class="pc bpc" id="L939" title="1 of 2 branches missed.">			return new org.drip.product.fra.FRAStandardCapFloor (forwardLabel.fullyQualifiedName() + (bIsCap</span>
 				? &quot;::CAP&quot; : &quot;::FLOOR&quot;), floatStream, &quot;ParForward&quot;, bIsCap, dblStrike, new
 					org.drip.product.params.LastTradingDateSetting
 						(org.drip.product.params.LastTradingDateSetting.MID_CURVE_OPTION_QUARTERLY, &quot;&quot;,
 							java.lang.Integer.MIN_VALUE), null, new
 								org.drip.pricer.option.BlackScholesAlgorithm());
-<span class="nc" id="L897">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L898">			e.printStackTrace();</span>
+<span class="nc" id="L945">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L946">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L901">		return null;</span>
+<span class="nc" id="L949">		return null;</span>
 	}
 
 	/**
@@ -920,21 +968,21 @@ package org.drip.service.template;
 		final double[] adblStrike,
 		final boolean bIsCap)
 	{
-<span class="pc bpc" id="L923" title="2 of 4 branches missed.">		if (null == astrMaturityTenor || null == adblStrike) return null;</span>
+<span class="pc bpc" id="L971" title="2 of 4 branches missed.">		if (null == astrMaturityTenor || null == adblStrike) return null;</span>
 
-<span class="fc" id="L925">		int iNumCapFloor = astrMaturityTenor.length;</span>
-<span class="fc" id="L926">		org.drip.product.fra.FRAStandardCapFloor[] aFRACapFloor = new</span>
+<span class="fc" id="L973">		int iNumCapFloor = astrMaturityTenor.length;</span>
+<span class="fc" id="L974">		org.drip.product.fra.FRAStandardCapFloor[] aFRACapFloor = new</span>
 			org.drip.product.fra.FRAStandardCapFloor[iNumCapFloor];
 
-<span class="pc bpc" id="L929" title="2 of 4 branches missed.">		if (0 == iNumCapFloor || iNumCapFloor != adblStrike.length) return null;</span>
+<span class="pc bpc" id="L977" title="2 of 4 branches missed.">		if (0 == iNumCapFloor || iNumCapFloor != adblStrike.length) return null;</span>
 
-<span class="fc bfc" id="L931" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumCapFloor; ++i) {</span>
-<span class="pc bpc" id="L932" title="1 of 2 branches missed.">			if (null == (aFRACapFloor[i] = org.drip.service.template.OTCInstrumentBuilder.CapFloor (dtSpot,</span>
+<span class="fc bfc" id="L979" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumCapFloor; ++i) {</span>
+<span class="pc bpc" id="L980" title="1 of 2 branches missed.">			if (null == (aFRACapFloor[i] = org.drip.service.template.OTCInstrumentBuilder.CapFloor (dtSpot,</span>
 				forwardLabel, astrMaturityTenor[i], adblStrike[i], bIsCap)))
-<span class="nc" id="L934">				return null;</span>
+<span class="nc" id="L982">				return null;</span>
 		}
 
-<span class="fc" id="L937">		return aFRACapFloor;</span>
+<span class="fc" id="L985">		return aFRACapFloor;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
