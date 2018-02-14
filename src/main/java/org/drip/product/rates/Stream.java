@@ -183,7 +183,7 @@ public class Stream {
 	 * @return The Credit Label
 	 */
 
-	public org.drip.state.identifier.EntityCreditLabel creditLabel()
+	public org.drip.state.identifier.EntityCDSLabel creditLabel()
 	{
 		return _lsPeriod.get (0).creditLabel();
 	}

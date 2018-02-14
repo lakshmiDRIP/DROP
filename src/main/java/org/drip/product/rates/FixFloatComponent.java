@@ -169,7 +169,7 @@ public class FixFloatComponent extends org.drip.product.rates.DualStreamComponen
 		return _fixReference.freq();
 	}
 
-	@Override public org.drip.state.identifier.EntityCreditLabel creditLabel()
+	@Override public org.drip.state.identifier.EntityCDSLabel creditLabel()
 	{
 		return _fixReference.creditLabel();
 	}

@@ -337,9 +337,13 @@ public class MarketVertexGenerator
 
 		double terminalBankSubordinateFundingNumeraire = initialBankVertex.subordinateFundingReplicator();
 
-		boolean useSingleBankBondOnly = null == bankSubordinateFundingNumeraire ||
-			!org.drip.quant.common.NumberUtil.IsValid (terminalBankSubordinateFundingNumeraire) ||
-				!org.drip.quant.common.NumberUtil.IsValid (initialBankSubordinateRecovery);
+		org.drip.measure.process.DiffusionEvolver bankSubordinateRecoveryRateEvolver =
+			_entityLatentStateEvolver.bankSubordinateRecoveryRateEvolver();
+
+		boolean useSingleBankBondOnly = null == bankSubordinateFundingNumeraire || null ==
+			bankSubordinateRecoveryRateEvolver || !org.drip.quant.common.NumberUtil.IsValid
+				(terminalBankSubordinateFundingNumeraire) || !org.drip.quant.common.NumberUtil.IsValid
+					(initialBankSubordinateRecovery);
 
 		try
 		{
@@ -445,7 +449,7 @@ public class MarketVertexGenerator
 				);
 
 			bankSubordinateRecoveryRateVertexArray = useSingleBankBondOnly ? null :
-				_entityLatentStateEvolver.bankSubordinateRecoveryRateEvolver().vertexSequence (
+				bankSubordinateRecoveryRateEvolver.vertexSequence (
 					new org.drip.measure.realization.JumpDiffusionVertex (
 						_spotDate,
 						initialBankSubordinateRecovery,

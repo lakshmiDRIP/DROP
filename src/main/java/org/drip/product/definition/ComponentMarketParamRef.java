@@ -100,7 +100,7 @@ public interface ComponentMarketParamRef {
 	 * @return The Credit Curve Latent State Identifier Label
 	 */
 
-	public abstract org.drip.state.identifier.EntityCreditLabel creditLabel();
+	public abstract org.drip.state.identifier.EntityCDSLabel creditLabel();
 
 	/**
 	 * Get the Map of Forward Latent State Labels

@@ -447,7 +447,7 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 
 		org.drip.param.period.CompositePeriodSetting cps = new org.drip.param.period.CompositePeriodSetting
 			(iFreq, strTenor, _strCouponCurrency, null, _dblNotional = dblNotional, null, _notlSchedule,
-				null, null == _crValParams ? null : org.drip.state.identifier.EntityCreditLabel.Standard
+				null, null == _crValParams ? null : org.drip.state.identifier.EntityCDSLabel.Standard
 					(_crValParams.creditCurveName(), _strCouponCurrency));
 
 		java.util.List<java.lang.Integer> lsStreamEdgeDate =
@@ -589,10 +589,10 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 		return null;
 	}
 
-	@Override public org.drip.state.identifier.EntityCreditLabel creditLabel()
+	@Override public org.drip.state.identifier.EntityCDSLabel creditLabel()
 	{
 		return null == _crValParams || null == _crValParams.creditCurveName() ||
-			_crValParams.creditCurveName().isEmpty() ? null : org.drip.state.identifier.EntityCreditLabel.Standard
+			_crValParams.creditCurveName().isEmpty() ? null : org.drip.state.identifier.EntityCDSLabel.Standard
 				(_crValParams.creditCurveName(), _strCouponCurrency);
 	}
 

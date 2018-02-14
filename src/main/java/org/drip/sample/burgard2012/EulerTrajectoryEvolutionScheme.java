@@ -259,41 +259,6 @@ public class EulerTrajectoryEvolutionScheme {
 			dblCounterPartyFundingNumeraireRepo
 		);
 
-		DiffusionEvolver deBankHazardRate = new DiffusionEvolver (
-			DiffusionEvaluatorLogarithmic.Standard (
-				dblBankHazardRateDrift,
-				dblBankHazardRateVolatility
-			)
-		);
-
-		DiffusionEvolver deBankSeniorRecoveryRate = new DiffusionEvolver (
-			DiffusionEvaluatorLogarithmic.Standard (
-				dblBankSeniorRecoveryRateDrift,
-				dblBankSeniorRecoveryRateVolatility
-			)
-		);
-
-		DiffusionEvolver deBankSubordinateRecoveryRate = new DiffusionEvolver (
-			DiffusionEvaluatorLogarithmic.Standard (
-				dblBankSubordinateRecoveryRateDrift,
-				dblBankSubordinateRecoveryRateVolatility
-			)
-		);
-
-		DiffusionEvolver deCounterPartyHazardRate = new DiffusionEvolver (
-			DiffusionEvaluatorLogarithmic.Standard (
-				dblCounterPartyHazardRateDrift,
-				dblCounterPartyHazardRateVolatility
-			)
-		);
-
-		DiffusionEvolver deCounterPartyRecoveryRate = new DiffusionEvolver (
-			DiffusionEvaluatorLogarithmic.Standard (
-				dblCounterPartyRecoveryRateDrift,
-				dblCounterPartyRecoveryRateVolatility
-			)
-		);
-
 		JulianDate dtSpot = DateUtil.Today();
 
 		int iSpotDate = dtSpot.julian();
@@ -323,35 +288,60 @@ public class EulerTrajectoryEvolutionScheme {
 						bank,
 						currency
 					),
-					deBankHazardRate
+					new DiffusionEvolver (
+						DiffusionEvaluatorLogarithmic.Standard (
+							dblBankHazardRateDrift,
+							dblBankHazardRateVolatility
+						)
+					)
 				),
 				new TerminalLatentState (
 					EntityRecoveryLabel.Senior (
 						bank,
 						currency
 					),
-					deBankSeniorRecoveryRate
+					new DiffusionEvolver (
+						DiffusionEvaluatorLogarithmic.Standard (
+							dblBankSeniorRecoveryRateDrift,
+							dblBankSeniorRecoveryRateVolatility
+						)
+					)
 				),
 				new TerminalLatentState (
 					EntityRecoveryLabel.Subordinate (
 						bank,
 						currency
 					),
-					deBankSubordinateRecoveryRate
+					new DiffusionEvolver (
+						DiffusionEvaluatorLogarithmic.Standard (
+							dblBankSubordinateRecoveryRateDrift,
+							dblBankSubordinateRecoveryRateVolatility
+						)
+					)
 				),
 				new TerminalLatentState (
 					EntityHazardLabel.Standard (
 						counterParty,
 						currency
 					),
-					deCounterPartyHazardRate
+					new DiffusionEvolver (
+						DiffusionEvaluatorLogarithmic.Standard (
+							dblCounterPartyHazardRateDrift,
+							dblCounterPartyHazardRateVolatility
+						)
+					)
 				),
 				new TerminalLatentState (
 					EntityRecoveryLabel.Senior (
 						counterParty,
 						currency
 					),
-					deCounterPartyRecoveryRate
+					new DiffusionEvolver (
+						DiffusionEvaluatorLogarithmic.Standard (
+							dblCounterPartyRecoveryRateDrift,
+							dblCounterPartyRecoveryRateVolatility
+						)
+					)
 				)
 			)
 		);

@@ -647,7 +647,7 @@ public class CurveSurfaceQuoteContainer {
 	 */
 
 	public org.drip.state.credit.CreditCurve creditState (
-		final org.drip.state.identifier.EntityCreditLabel creditLabel)
+		final org.drip.state.identifier.EntityCDSLabel creditLabel)
 	{
 		if (null == creditLabel) return null;
 
@@ -1092,7 +1092,7 @@ public class CurveSurfaceQuoteContainer {
 	 */
 
 	public org.drip.state.volatility.VolatilityCurve creditVolatility (
-		final org.drip.state.identifier.EntityCreditLabel creditLabel)
+		final org.drip.state.identifier.EntityCDSLabel creditLabel)
 	{
 		if (null == creditLabel) return null;
 
@@ -1584,8 +1584,8 @@ public class CurveSurfaceQuoteContainer {
 	 */
 
 	public org.drip.function.definition.R1ToR1 creditCreditCorrelation (
-		final org.drip.state.identifier.EntityCreditLabel creditLabel1,
-		final org.drip.state.identifier.EntityCreditLabel creditLabel2)
+		final org.drip.state.identifier.EntityCDSLabel creditLabel1,
+		final org.drip.state.identifier.EntityCDSLabel creditLabel2)
 	{
 		if (null == creditLabel1 || null == creditLabel2) return null;
 
@@ -1613,8 +1613,8 @@ public class CurveSurfaceQuoteContainer {
 	 */
 
 	public boolean setCreditCreditCorrelation (
-		final org.drip.state.identifier.EntityCreditLabel creditLabel1,
-		final org.drip.state.identifier.EntityCreditLabel creditLabel2,
+		final org.drip.state.identifier.EntityCDSLabel creditLabel1,
+		final org.drip.state.identifier.EntityCDSLabel creditLabel2,
 		final org.drip.function.definition.R1ToR1 auCorrelation)
 	{
 		if (null == creditLabel1 || null == creditLabel2 || null == auCorrelation) return false;
@@ -2188,7 +2188,7 @@ public class CurveSurfaceQuoteContainer {
 
 	public org.drip.function.definition.R1ToR1 collateralCreditCorrelation (
 		final java.lang.String strCollateralCurrency,
-		final org.drip.state.identifier.EntityCreditLabel creditLabel)
+		final org.drip.state.identifier.EntityCDSLabel creditLabel)
 	{
 		if (null == strCollateralCurrency || strCollateralCurrency.isEmpty() || null == creditLabel)
 			return null;
@@ -2211,7 +2211,7 @@ public class CurveSurfaceQuoteContainer {
 
 	public boolean setCollateralCreditCorrelation (
 		final java.lang.String strCollateralCurrency,
-		final org.drip.state.identifier.EntityCreditLabel creditLabel,
+		final org.drip.state.identifier.EntityCDSLabel creditLabel,
 		final org.drip.function.definition.R1ToR1 auCorrelation)
 	{
 		if (null == strCollateralCurrency || strCollateralCurrency.isEmpty() || null == creditLabel)
@@ -2748,7 +2748,7 @@ public class CurveSurfaceQuoteContainer {
 	 */
 
 	public org.drip.function.definition.R1ToR1 creditCustomMetricCorrelation (
-		final org.drip.state.identifier.EntityCreditLabel creditLabel,
+		final org.drip.state.identifier.EntityCDSLabel creditLabel,
 		final org.drip.state.identifier.CustomLabel customLabel)
 	{
 		if (null == creditLabel || null == customLabel) return null;
@@ -2771,7 +2771,7 @@ public class CurveSurfaceQuoteContainer {
 	 */
 
 	public boolean setCreditCustomCorrelation (
-		final org.drip.state.identifier.EntityCreditLabel creditLabel,
+		final org.drip.state.identifier.EntityCDSLabel creditLabel,
 		final org.drip.state.identifier.CustomLabel customLabel,
 		final org.drip.function.definition.R1ToR1 auCorrelation)
 	{
@@ -2793,7 +2793,7 @@ public class CurveSurfaceQuoteContainer {
 	 */
 
 	public org.drip.function.definition.R1ToR1 creditEquityCorrelation (
-		final org.drip.state.identifier.EntityCreditLabel creditLabel,
+		final org.drip.state.identifier.EntityCDSLabel creditLabel,
 		final org.drip.state.identifier.EntityEquityLabel equityLabel)
 	{
 		if (null == creditLabel || null == equityLabel) return null;
@@ -2816,7 +2816,7 @@ public class CurveSurfaceQuoteContainer {
 	 */
 
 	public boolean setCreditEquityCorrelation (
-		final org.drip.state.identifier.EntityCreditLabel creditLabel,
+		final org.drip.state.identifier.EntityCDSLabel creditLabel,
 		final org.drip.state.identifier.EntityEquityLabel equityLabel,
 		final org.drip.function.definition.R1ToR1 auCorrelation)
 	{
@@ -2838,7 +2838,7 @@ public class CurveSurfaceQuoteContainer {
 	 */
 
 	public org.drip.function.definition.R1ToR1 creditForwardCorrelation (
-		final org.drip.state.identifier.EntityCreditLabel creditLabel,
+		final org.drip.state.identifier.EntityCDSLabel creditLabel,
 		final org.drip.state.identifier.ForwardLabel forwardLabel)
 	{
 		if (null == creditLabel || null == forwardLabel) return null;
@@ -2861,7 +2861,7 @@ public class CurveSurfaceQuoteContainer {
 	 */
 
 	public boolean setCreditForwardCorrelation (
-		final org.drip.state.identifier.EntityCreditLabel creditLabel,
+		final org.drip.state.identifier.EntityCDSLabel creditLabel,
 		final org.drip.state.identifier.ForwardLabel forwardLabel,
 		final org.drip.function.definition.R1ToR1 auCorrelation)
 	{
@@ -2883,7 +2883,7 @@ public class CurveSurfaceQuoteContainer {
 	 */
 
 	public org.drip.function.definition.R1ToR1 creditFundingCorrelation (
-		final org.drip.state.identifier.EntityCreditLabel creditLabel,
+		final org.drip.state.identifier.EntityCDSLabel creditLabel,
 		final org.drip.state.identifier.FundingLabel fundingLabel)
 	{
 		if (null == creditLabel || null == fundingLabel) return null;
@@ -2906,7 +2906,7 @@ public class CurveSurfaceQuoteContainer {
 	 */
 
 	public boolean setCreditFundingCorrelation (
-		final org.drip.state.identifier.EntityCreditLabel creditLabel,
+		final org.drip.state.identifier.EntityCDSLabel creditLabel,
 		final org.drip.state.identifier.FundingLabel fundingLabel,
 		final org.drip.function.definition.R1ToR1 auCorrelation)
 	{
@@ -2928,7 +2928,7 @@ public class CurveSurfaceQuoteContainer {
 	 */
 
 	public org.drip.function.definition.R1ToR1 creditFXCorrelation (
-		final org.drip.state.identifier.EntityCreditLabel creditLabel,
+		final org.drip.state.identifier.EntityCDSLabel creditLabel,
 		final org.drip.state.identifier.FXLabel fxLabel)
 	{
 		if (null == creditLabel || null == fxLabel) return null;
@@ -2950,7 +2950,7 @@ public class CurveSurfaceQuoteContainer {
 	 */
 
 	public boolean setCreditFXCorrelation (
-		final org.drip.state.identifier.EntityCreditLabel creditLabel,
+		final org.drip.state.identifier.EntityCDSLabel creditLabel,
 		final org.drip.state.identifier.FXLabel fxLabel,
 		final org.drip.function.definition.R1ToR1 auCorrelation)
 	{
@@ -2972,7 +2972,7 @@ public class CurveSurfaceQuoteContainer {
 	 */
 
 	public org.drip.function.definition.R1ToR1 creditGovvieCorrelation (
-		final org.drip.state.identifier.EntityCreditLabel creditLabel,
+		final org.drip.state.identifier.EntityCDSLabel creditLabel,
 		final org.drip.state.identifier.GovvieLabel govvieLabel)
 	{
 		if (null == creditLabel || null == govvieLabel) return null;
@@ -2995,7 +2995,7 @@ public class CurveSurfaceQuoteContainer {
 	 */
 
 	public boolean setCreditGovvieCorrelation (
-		final org.drip.state.identifier.EntityCreditLabel creditLabel,
+		final org.drip.state.identifier.EntityCDSLabel creditLabel,
 		final org.drip.state.identifier.GovvieLabel govvieLabel,
 		final org.drip.function.definition.R1ToR1 auCorrelation)
 	{
@@ -3017,7 +3017,7 @@ public class CurveSurfaceQuoteContainer {
 	 */
 
 	public org.drip.function.definition.R1ToR1 creditOvernightCorrelation (
-		final org.drip.state.identifier.EntityCreditLabel creditLabel,
+		final org.drip.state.identifier.EntityCDSLabel creditLabel,
 		final org.drip.state.identifier.OvernightLabel overnightLabel)
 	{
 		if (null == creditLabel || null == overnightLabel) return null;
@@ -3040,7 +3040,7 @@ public class CurveSurfaceQuoteContainer {
 	 */
 
 	public boolean setCreditOvernightCorrelation (
-		final org.drip.state.identifier.EntityCreditLabel creditLabel,
+		final org.drip.state.identifier.EntityCDSLabel creditLabel,
 		final org.drip.state.identifier.OvernightLabel overnightLabel,
 		final org.drip.function.definition.R1ToR1 auCorrelation)
 	{
@@ -3062,7 +3062,7 @@ public class CurveSurfaceQuoteContainer {
 	 */
 
 	public org.drip.function.definition.R1ToR1 creditPaydownCorrelation (
-		final org.drip.state.identifier.EntityCreditLabel creditLabel,
+		final org.drip.state.identifier.EntityCDSLabel creditLabel,
 		final org.drip.state.identifier.PaydownLabel paydownLabel)
 	{
 		if (null == creditLabel || null == paydownLabel) return null;
@@ -3085,7 +3085,7 @@ public class CurveSurfaceQuoteContainer {
 	 */
 
 	public boolean setCreditPaydownCorrelation (
-		final org.drip.state.identifier.EntityCreditLabel creditLabel,
+		final org.drip.state.identifier.EntityCDSLabel creditLabel,
 		final org.drip.state.identifier.PaydownLabel paydownLabel,
 		final org.drip.function.definition.R1ToR1 auCorrelation)
 	{
@@ -3107,7 +3107,7 @@ public class CurveSurfaceQuoteContainer {
 	 */
 
 	public org.drip.function.definition.R1ToR1 creditRatingCorrelation (
-		final org.drip.state.identifier.EntityCreditLabel creditLabel,
+		final org.drip.state.identifier.EntityCDSLabel creditLabel,
 		final org.drip.state.identifier.RatingLabel ratingLabel)
 	{
 		if (null == creditLabel || null == ratingLabel) return null;
@@ -3130,7 +3130,7 @@ public class CurveSurfaceQuoteContainer {
 	 */
 
 	public boolean setCreditRatingCorrelation (
-		final org.drip.state.identifier.EntityCreditLabel creditLabel,
+		final org.drip.state.identifier.EntityCDSLabel creditLabel,
 		final org.drip.state.identifier.RatingLabel ratingLabel,
 		final org.drip.function.definition.R1ToR1 auCorrelation)
 	{
@@ -3152,7 +3152,7 @@ public class CurveSurfaceQuoteContainer {
 	 */
 
 	public org.drip.function.definition.R1ToR1 creditRepoCorrelation (
-		final org.drip.state.identifier.EntityCreditLabel creditLabel,
+		final org.drip.state.identifier.EntityCDSLabel creditLabel,
 		final org.drip.state.identifier.RepoLabel repoLabel)
 	{
 		if (null == creditLabel || null == repoLabel) return null;
@@ -3174,7 +3174,7 @@ public class CurveSurfaceQuoteContainer {
 	 */
 
 	public boolean setCreditRepoCorrelation (
-		final org.drip.state.identifier.EntityCreditLabel creditLabel,
+		final org.drip.state.identifier.EntityCDSLabel creditLabel,
 		final org.drip.state.identifier.RepoLabel repoLabel,
 		final org.drip.function.definition.R1ToR1 auCorrelation)
 	{
@@ -3196,7 +3196,7 @@ public class CurveSurfaceQuoteContainer {
 	 */
 
 	public org.drip.function.definition.R1ToR1 creditRecoveryCorrelation (
-		final org.drip.state.identifier.EntityCreditLabel creditLabel,
+		final org.drip.state.identifier.EntityCDSLabel creditLabel,
 		final org.drip.state.identifier.EntityRecoveryLabel recoveryLabel)
 	{
 		if (null == creditLabel || null == recoveryLabel) return null;
@@ -3219,7 +3219,7 @@ public class CurveSurfaceQuoteContainer {
 	 */
 
 	public boolean setCreditRecoveryCorrelation (
-		final org.drip.state.identifier.EntityCreditLabel creditLabel,
+		final org.drip.state.identifier.EntityCDSLabel creditLabel,
 		final org.drip.state.identifier.EntityRecoveryLabel recoveryLabel,
 		final org.drip.function.definition.R1ToR1 auCorrelation)
 	{

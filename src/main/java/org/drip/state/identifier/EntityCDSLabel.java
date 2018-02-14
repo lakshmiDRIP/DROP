@@ -7,10 +7,6 @@ package org.drip.state.identifier;
 
 /*!
  * Copyright (C) 2018 Lakshmi Krishnamurthy
- * Copyright (C) 2017 Lakshmi Krishnamurthy
- * Copyright (C) 2016 Lakshmi Krishnamurthy
- * Copyright (C) 2015 Lakshmi Krishnamurthy
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
  *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
  *  	libraries targeting analysts and developers
@@ -51,29 +47,38 @@ package org.drip.state.identifier;
  */
 
 /**
- * PaydownLabel contains the Identifier Parameters referencing the Latent State of the named Paydown Curve.
- *  Currently it only contains the Reference Entity Name.
+ * EntityCDSLabel contains the Identifier Parameters referencing the Latent State of the named Entity CDS
+ *  Curve.
  *  
  * @author Lakshmi Krishnamurthy
  */
 
-public class PaydownLabel implements org.drip.state.identifier.LatentStateLabel {
-	private java.lang.String _strReferenceEntity = "";
+public class EntityCDSLabel extends org.drip.state.identifier.EntityCreditLabel
+{
 
 	/**
-	 * Make a Standard Pay-down Label from the Reference Entity Name
+	 * Make a Standard SENIOR Entity Credit Label from the Reference Entity
 	 * 
-	 * @param strReferenceEntity The Reference Entity Name
+	 * @param referenceEntity The Reference Entity
+	 * @param currency The Currency
 	 * 
-	 * @return The Pay-down Label
+	 * @return The SENIOR Entity Credit Label
 	 */
 
-	public static final PaydownLabel Standard (
-		final java.lang.String strReferenceEntity)
+	public static EntityCDSLabel Standard (
+		final java.lang.String referenceEntity,
+		final java.lang.String currency)
 	{
-		try {
-			return new PaydownLabel (strReferenceEntity);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new EntityCDSLabel (
+				referenceEntity,
+				currency,
+				org.drip.state.identifier.EntityCreditLabel.SENIORITY_SENIOR
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -81,30 +86,36 @@ public class PaydownLabel implements org.drip.state.identifier.LatentStateLabel 
 	}
 
 	/**
-	 * PaydownLabel constructor
+	 * EntityCDSLabel constructor
 	 * 
-	 * @param strReferenceEntity The Reference Entity Name
+	 * @param referenceEntity The Reference Entity
+	 * @param currency The Currency
+	 * @param seniority The Obligation Seniority
 	 * 
 	 * @throws java.lang.Exception Thrown if the inputs are invalid
 	 */
 
-	private PaydownLabel (
-		final java.lang.String strReferenceEntity)
+	public EntityCDSLabel (
+		final java.lang.String referenceEntity,
+		final java.lang.String currency,
+		final java.lang.String seniority)
 		throws java.lang.Exception
 	{
-		if (null == (_strReferenceEntity = strReferenceEntity) || _strReferenceEntity.isEmpty())
-			throw new java.lang.Exception ("PaydownLabel ctr: Invalid Inputs");
-	}
-
-	@Override public java.lang.String fullyQualifiedName()
-	{
-		return _strReferenceEntity;
+		super (
+			referenceEntity,
+			currency,
+			seniority
+		);
 	}
 
 	@Override public boolean match (
 		final org.drip.state.identifier.LatentStateLabel lslOther)
 	{
-		return null == lslOther || !(lslOther instanceof org.drip.state.identifier.EntityCDSLabel) ? false :
-			_strReferenceEntity.equalsIgnoreCase (lslOther.fullyQualifiedName());
+		if (null == lslOther || !(lslOther instanceof org.drip.state.identifier.EntityCDSLabel))
+		{
+			return false;
+		}
+
+		return super.match (lslOther);
 	}
 }

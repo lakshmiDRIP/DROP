@@ -67,7 +67,7 @@ public abstract class CompositePeriod {
 	private double _dblBaseNotional = java.lang.Double.NaN;
 	private org.drip.quant.common.Array2D _fsCoupon = null;
 	private org.drip.quant.common.Array2D _fsNotional = null;
-	private org.drip.state.identifier.EntityCreditLabel _creditLabel = null;
+	private org.drip.state.identifier.EntityCDSLabel _creditLabel = null;
 	private org.drip.param.period.FixingSetting _fxFixingSetting = null;
 	private java.util.List<org.drip.analytics.cashflow.ComposableUnitPeriod> _lsCUP = null;
 
@@ -357,7 +357,7 @@ public abstract class CompositePeriod {
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqc)
 		throws java.lang.Exception
 	{
-		org.drip.state.identifier.EntityCreditLabel creditLabel = creditLabel();
+		org.drip.state.identifier.EntityCDSLabel creditLabel = creditLabel();
 
 		if (null == creditLabel) return 1.;
 
@@ -386,7 +386,7 @@ public abstract class CompositePeriod {
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqc)
 		throws java.lang.Exception
 	{
-		org.drip.state.identifier.EntityCreditLabel creditLabel = creditLabel();
+		org.drip.state.identifier.EntityCDSLabel creditLabel = creditLabel();
 
 		if (null == creditLabel) return 1.;
 
@@ -563,7 +563,7 @@ public abstract class CompositePeriod {
 	 * @return The Credit Label
 	 */
 
-	public org.drip.state.identifier.EntityCreditLabel creditLabel()
+	public org.drip.state.identifier.EntityCDSLabel creditLabel()
 	{
 		return _creditLabel;
 	}
@@ -634,7 +634,7 @@ public abstract class CompositePeriod {
 
 		org.drip.state.identifier.FXLabel fxLabel = fxLabel();
 
-		org.drip.state.identifier.EntityCreditLabel creditLabel = creditLabel();
+		org.drip.state.identifier.EntityCDSLabel creditLabel = creditLabel();
 
 		org.drip.state.identifier.FloaterLabel floaterLabel = floaterLabel();
 
@@ -803,7 +803,7 @@ public abstract class CompositePeriod {
 
 		org.drip.state.identifier.FXLabel fxLabel = fxLabel();
 
-		org.drip.state.identifier.EntityCreditLabel creditLabel = creditLabel();
+		org.drip.state.identifier.EntityCDSLabel creditLabel = creditLabel();
 
 		org.drip.state.identifier.FloaterLabel floaterLabel = floaterLabel();
 

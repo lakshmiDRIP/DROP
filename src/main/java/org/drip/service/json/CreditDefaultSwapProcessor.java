@@ -89,7 +89,7 @@ public class CreditDefaultSwapProcessor {
 			cds = org.drip.service.template.OTCInstrumentBuilder.CDS (dtSpot,
 				org.drip.json.parser.Converter.StringEntry (jsonParameter, "CDSMaturity"),
 					org.drip.json.parser.Converter.DoubleEntry (jsonParameter, "CDSCoupon"),
-						dcFunding.currency(), ((org.drip.state.identifier.EntityCreditLabel)
+						dcFunding.currency(), ((org.drip.state.identifier.EntityCDSLabel)
 							(ccSurvivalRecovery.label())).referenceEntity());
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();

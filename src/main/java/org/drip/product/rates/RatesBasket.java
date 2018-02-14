@@ -170,11 +170,11 @@ public class RatesBasket extends org.drip.product.definition.CalibratableCompone
 		return null;
 	}
 
-	@Override public org.drip.state.identifier.EntityCreditLabel creditLabel()
+	@Override public org.drip.state.identifier.EntityCDSLabel creditLabel()
 	{
 		if (null != _aCompFixedStream && 0 != _aCompFixedStream.length) {
 			for (org.drip.product.rates.Stream fixedStream : _aCompFixedStream) {
-				org.drip.state.identifier.EntityCreditLabel creditLabel = fixedStream.creditLabel();
+				org.drip.state.identifier.EntityCDSLabel creditLabel = fixedStream.creditLabel();
 
 				if (null != creditLabel) return creditLabel;
 			}
@@ -182,7 +182,7 @@ public class RatesBasket extends org.drip.product.definition.CalibratableCompone
 
 		if (null != _aCompFloatStream && 0 != _aCompFloatStream.length) {
 			for (org.drip.product.rates.Stream floatStream : _aCompFloatStream) {
-				org.drip.state.identifier.EntityCreditLabel creditLabel = floatStream.creditLabel();
+				org.drip.state.identifier.EntityCDSLabel creditLabel = floatStream.creditLabel();
 
 				if (null != creditLabel) return creditLabel;
 			}

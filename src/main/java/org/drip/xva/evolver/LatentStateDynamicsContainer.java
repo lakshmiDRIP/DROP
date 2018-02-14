@@ -844,7 +844,7 @@ public class LatentStateDynamicsContainer
 	 */
 
 	public boolean entityCreditExists (
-		final org.drip.state.identifier.EntityCreditLabel entityCreditLabel)
+		final org.drip.state.identifier.EntityCDSLabel entityCreditLabel)
 	{
 		return null == entityCreditLabel ? false : _entityCreditEvolver.containsKey
 			(entityCreditLabel.fullyQualifiedName());
@@ -859,7 +859,7 @@ public class LatentStateDynamicsContainer
 	 */
 
 	public org.drip.xva.evolver.TerminalLatentState entityCredit (
-		final org.drip.state.identifier.EntityCreditLabel entityCreditLabel)
+		final org.drip.state.identifier.EntityCDSLabel entityCreditLabel)
 	{
 		return entityCreditExists (entityCreditLabel) ? _entityCreditEvolver.get
 			(entityCreditLabel.fullyQualifiedName()) : null;
@@ -1314,6 +1314,117 @@ public class LatentStateDynamicsContainer
 	}
 
 	/**
+	 * Add the Terminal Latent State
+	 * 
+	 * @param terminalLatentState The Terminal Latent State
+	 * 
+	 * @return TRUE - The Terminal Latent State Successfully added
+	 */
+
+	public boolean addTerminalLatentState (
+		final org.drip.xva.evolver.TerminalLatentState terminalLatentState)
+	{
+		if (null == terminalLatentState)
+		{
+			return false;
+		}
+
+		org.drip.state.identifier.LatentStateLabel label = terminalLatentState.label();
+
+		if (label instanceof org.drip.state.identifier.EntityEquityLabel)
+		{
+			return addEntityEquity (terminalLatentState);
+		}
+
+		if (label instanceof org.drip.state.identifier.FundingLabel)
+		{
+			return addFunding (terminalLatentState);
+		}
+
+		if (label instanceof org.drip.state.identifier.GovvieLabel)
+		{
+			return addGovvie (terminalLatentState);
+		}
+
+		if (label instanceof org.drip.state.identifier.FXLabel)
+		{
+			return addFX (terminalLatentState);
+		}
+
+		if (label instanceof org.drip.state.identifier.ForwardLabel)
+		{
+			return addForward (terminalLatentState);
+		}
+
+		if (label instanceof org.drip.state.identifier.OTCFixFloatLabel)
+		{
+			return addOTCFixFloat (terminalLatentState);
+		}
+
+		if (label instanceof org.drip.state.identifier.OvernightLabel)
+		{
+			return addOvernight (terminalLatentState);
+		}
+
+		if (label instanceof org.drip.state.identifier.CollateralLabel)
+		{
+			return addCollateral (terminalLatentState);
+		}
+
+		if (label instanceof org.drip.state.identifier.CSALabel)
+		{
+			return addCSA (terminalLatentState);
+		}
+
+		if (label instanceof org.drip.state.identifier.EntityHazardLabel)
+		{
+			return addEntityHazard (terminalLatentState);
+		}
+
+		if (label instanceof org.drip.state.identifier.EntityRecoveryLabel)
+		{
+			return addEntityRecovery (terminalLatentState);
+		}
+
+		if (label instanceof org.drip.state.identifier.EntityFundingLabel)
+		{
+			return addEntityFunding (terminalLatentState);
+		}
+
+		if (label instanceof org.drip.state.identifier.EntityCDSLabel)
+		{
+			return addEntityCredit (terminalLatentState);
+		}
+
+		if (label instanceof org.drip.state.identifier.VolatilityLabel)
+		{
+			return addVolatility (terminalLatentState);
+		}
+
+		if (label instanceof org.drip.state.identifier.RatingLabel)
+		{
+			return addRating (terminalLatentState);
+		}
+
+		if (label instanceof org.drip.state.identifier.RepoLabel)
+		{
+			return addRepo (terminalLatentState);
+		}
+
+		if (label instanceof org.drip.state.identifier.PaydownLabel)
+		{
+			return addPayDown (terminalLatentState);
+		}
+
+		if (label instanceof org.drip.state.identifier.CustomLabel)
+		{
+			return addCustom (terminalLatentState);
+		}
+
+		return false;
+	}
+
+	/**
 	 * Indicate if the Label exists
 	 * 
 	 * @param label The Latent State Label
@@ -1379,9 +1490,9 @@ public class LatentStateDynamicsContainer
 			return entityHazardExists ((org.drip.state.identifier.EntityHazardLabel) label);
 		}
 
-		if (label instanceof org.drip.state.identifier.EntityCreditLabel)
+		if (label instanceof org.drip.state.identifier.EntityCDSLabel)
 		{
-			return entityCreditExists ((org.drip.state.identifier.EntityCreditLabel) label);
+			return entityCreditExists ((org.drip.state.identifier.EntityCDSLabel) label);
 		}
 
 		if (label instanceof org.drip.state.identifier.EntityRecoveryLabel)

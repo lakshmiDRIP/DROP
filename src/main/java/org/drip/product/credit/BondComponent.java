@@ -1405,14 +1405,14 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		return couponPeriods().get (0).freq();
 	}
 
-	@Override public org.drip.state.identifier.EntityCreditLabel creditLabel()
+	@Override public org.drip.state.identifier.EntityCDSLabel creditLabel()
 	{
 		if (null == _creditSetting) return null;
 
 		java.lang.String strCreditCurveName = _creditSetting.creditCurveName();
 
 		return null == strCreditCurveName  || strCreditCurveName.isEmpty() ? null :
-			org.drip.state.identifier.EntityCreditLabel.Standard (strCreditCurveName, currency());
+			org.drip.state.identifier.EntityCDSLabel.Standard (strCreditCurveName, currency());
 	}
 
 	@Override public

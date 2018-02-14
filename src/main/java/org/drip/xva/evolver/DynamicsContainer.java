@@ -69,12 +69,11 @@ package org.drip.xva.evolver;
 
 public class DynamicsContainer
 {
-	private java.util.Map<java.lang.String, org.drip.xva.evolver.ScalingNumeraire> _mapScalingNumeraireDynamics =
-		null;
+	private org.drip.xva.evolver.LatentStateDynamicsContainer _latentStateDynamicsContainer = null;
 	private java.util.Map<java.lang.String, org.drip.xva.evolver.PrimarySecurity> _mapPrimarySecurityDynamics
 		= null;
-	private java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState>
-		_mapTerminalLatentStateDynamics = null;
+	private java.util.Map<java.lang.String, org.drip.xva.evolver.ScalingNumeraire>
+		_mapScalingNumeraireDynamics = null;
 
 	/**
 	 * Empty DynamicsContainer Constructor 
@@ -88,8 +87,7 @@ public class DynamicsContainer
 		_mapPrimarySecurityDynamics = new
 			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.xva.evolver.PrimarySecurity>();
 
-		_mapTerminalLatentStateDynamics = new
-			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.xva.evolver.TerminalLatentState>();
+		_latentStateDynamicsContainer = new org.drip.xva.evolver.LatentStateDynamicsContainer();
 	}
 
 	/**
@@ -166,9 +164,9 @@ public class DynamicsContainer
 	 * @return The Terminal Latent State Evolver Dynamics Settings Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> terminalLatentStateMap()
+	public org.drip.xva.evolver.LatentStateDynamicsContainer terminalLatentStateContainer()
 	{
-		return _mapTerminalLatentStateDynamics;
+		return _latentStateDynamicsContainer;
 	}
 
 	/**
@@ -182,24 +180,11 @@ public class DynamicsContainer
 	public boolean addTerminalLatentState (
 		final org.drip.xva.evolver.TerminalLatentState terminalLatentState)
 	{
-		if (null == terminalLatentState)
-		{
-			return false;
-		}
-
-		java.lang.String terminalLatentStateLabel = terminalLatentState.label().fullyQualifiedName();
-
-		_mapTerminalLatentStateDynamics.put (
-			terminalLatentStateLabel,
-			terminalLatentState
-		);
-
-		_mapScalingNumeraireDynamics.put (
-			terminalLatentStateLabel,
-			terminalLatentState
-		);
-
-		return true;
+		return _latentStateDynamicsContainer.addTerminalLatentState (terminalLatentState) &&
+			addScalingNumeraire (
+				terminalLatentState.label().fullyQualifiedName(),
+				terminalLatentState
+			);
 	}
 
 	/**
@@ -213,22 +198,7 @@ public class DynamicsContainer
 	public boolean terminalLatentStateExists (
 		final org.drip.state.identifier.LatentStateLabel label)
 	{
-		return null != label && _mapTerminalLatentStateDynamics.containsKey (label.fullyQualifiedName());
-	}
-
-	/**
-	 * Retrieve the Terminal Latent State Evolver
-	 * 
-	 * @param label The Terminal Latent State Label
-	 * 
-	 * @return The Terminal Latent State Evolver
-	 */
-
-	public org.drip.xva.evolver.TerminalLatentState terminalLatentState (
-		final org.drip.state.identifier.LatentStateLabel label)
-	{
-		return terminalLatentStateExists (label) ? _mapTerminalLatentStateDynamics.get
-			(label.fullyQualifiedName()) : null;
+		return _latentStateDynamicsContainer.labelExists (label);
 	}
 
 	/**
@@ -258,24 +228,15 @@ public class DynamicsContainer
 			return false;
 		}
 
-		java.lang.String primarySecurityLabel = primarySecurity.label().fullyQualifiedName();
-
 		_mapPrimarySecurityDynamics.put (
 			primarySecurity.id(),
 			primarySecurity
 		);
 
-		_mapTerminalLatentStateDynamics.put (
-			primarySecurityLabel,
+		return addTerminalLatentState (primarySecurity) && addScalingNumeraire (
+			primarySecurity.id(),
 			primarySecurity
 		);
-
-		_mapScalingNumeraireDynamics.put (
-			primarySecurityLabel,
-			primarySecurity
-		);
-
-		return true;
 	}
 
 	/**

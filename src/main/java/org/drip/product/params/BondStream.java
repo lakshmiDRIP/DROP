@@ -119,7 +119,7 @@ public class BondStream extends org.drip.product.rates.Stream {
 		final java.lang.String strCalendar,
 		final java.lang.String strCurrency,
 		final org.drip.state.identifier.FloaterLabel floaterLabel,
-		final org.drip.state.identifier.EntityCreditLabel creditLabel)
+		final org.drip.state.identifier.EntityCDSLabel creditLabel)
 	{
 		java.util.List<org.drip.analytics.cashflow.CompositePeriod> lsCouponPeriod = null == floaterLabel ?
 			org.drip.product.creator.StreamBuilder.FirstPenultimateDateFixedStream (
@@ -216,7 +216,7 @@ public class BondStream extends org.drip.product.rates.Stream {
 		final java.lang.String strCalendar,
 		final java.lang.String strCurrency,
 		final org.drip.state.identifier.FloaterLabel floaterLabel,
-		final org.drip.state.identifier.EntityCreditLabel creditLabel)
+		final org.drip.state.identifier.EntityCDSLabel creditLabel)
 	{
 		boolean bCouponEOMAdj = null == strCouponDC ? false : strCouponDC.toUpperCase().contains ("EOM");
 

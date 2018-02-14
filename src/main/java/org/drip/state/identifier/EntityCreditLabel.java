@@ -52,12 +52,12 @@ package org.drip.state.identifier;
 
 /**
  * EntityCreditLabel contains the Identifier Parameters referencing the Latent State of the named Entity
- * 	Credit Curve.
+ *  Credit Curve.
  *  
  * @author Lakshmi Krishnamurthy
  */
 
-public class EntityCreditLabel extends org.drip.state.identifier.EntityDesignateLabel
+public abstract class EntityCreditLabel extends org.drip.state.identifier.EntityDesignateLabel
 {
 
 	/**
@@ -74,46 +74,7 @@ public class EntityCreditLabel extends org.drip.state.identifier.EntityDesignate
 
 	private java.lang.String _seniority = "";
 
-	/**
-	 * Make a Standard SENIOR Entity Credit Label from the Reference Entity
-	 * 
-	 * @param referenceEntity The Reference Entity
-	 * @param currency The Currency
-	 * 
-	 * @return The SENIOR Entity Credit Label
-	 */
-
-	public static EntityCreditLabel Standard (
-		final java.lang.String referenceEntity,
-		final java.lang.String currency)
-	{
-		try
-		{
-			return new EntityCreditLabel (
-				referenceEntity,
-				currency,
-				SENIORITY_SENIOR
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * EntityCreditLabel constructor
-	 * 
-	 * @param referenceEntity The Reference Entity
-	 * @param currency The Currency
-	 * @param seniority The Obligation Seniority
-	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
-	 */
-
-	public EntityCreditLabel (
+	protected EntityCreditLabel (
 		final java.lang.String referenceEntity,
 		final java.lang.String currency,
 		final java.lang.String seniority)

@@ -232,7 +232,7 @@ public class BondBuilder {
 				strCurrency,
 				null,
 				!org.drip.quant.common.StringUtil.IsEmpty (strCreditCurveName) ?
-					org.drip.state.identifier.EntityCreditLabel.Standard (
+					org.drip.state.identifier.EntityCDSLabel.Standard (
 						strCreditCurveName,
 						strCurrency
 					) : null
@@ -361,7 +361,7 @@ public class BondBuilder {
 				strCurrency,
 				null,
 				!org.drip.quant.common.StringUtil.IsEmpty (strCreditCurveName) ?
-					org.drip.state.identifier.EntityCreditLabel.Standard (
+					org.drip.state.identifier.EntityCDSLabel.Standard (
 						strCreditCurveName,
 						strCurrency
 					) : null
@@ -619,7 +619,7 @@ public class BondBuilder {
 				strCurrency,
 				org.drip.state.identifier.ForwardLabel.Standard (strRateIndex),
 				null == strCreditCurveName || strCreditCurveName.isEmpty() ? null :
-					org.drip.state.identifier.EntityCreditLabel.Standard (
+					org.drip.state.identifier.EntityCDSLabel.Standard (
 						strCreditCurveName,
 						strCurrency
 					)
@@ -756,7 +756,7 @@ public class BondBuilder {
 				strCurrency,
 				org.drip.state.identifier.ForwardLabel.Standard (strRateIndex),
 				null == strCreditCurveName || strCreditCurveName.isEmpty() ? null :
-					org.drip.state.identifier.EntityCreditLabel.Standard (
+					org.drip.state.identifier.EntityCDSLabel.Standard (
 						strCreditCurveName,
 						strCurrency
 					)
@@ -1346,7 +1346,7 @@ public class BondBuilder {
 						dapAccrualEnd,
 						org.drip.state.identifier.ForwardLabel.Standard (strFloatIndex),
 						!org.drip.quant.common.StringUtil.IsEmpty (strCreditCurveName) ?
-							org.drip.state.identifier.EntityCreditLabel.Standard (
+							org.drip.state.identifier.EntityCDSLabel.Standard (
 								strCreditCurveName,
 								strCurrency
 							) : null
@@ -1805,7 +1805,7 @@ public class BondBuilder {
 				strCurrency,
 				org.drip.state.identifier.OTCFixFloatLabel.Standard (strRateIndex),
 				null == strCreditCurveName || strCreditCurveName.isEmpty() ? null :
-					org.drip.state.identifier.EntityCreditLabel.Standard (
+					org.drip.state.identifier.EntityCDSLabel.Standard (
 						strCreditCurveName,
 						strCurrency
 					)
@@ -1943,7 +1943,7 @@ public class BondBuilder {
 				strCurrency,
 				org.drip.state.identifier.OTCFixFloatLabel.Standard (strRateIndex),
 				null == strCreditCurveName || strCreditCurveName.isEmpty() ? null :
-					org.drip.state.identifier.EntityCreditLabel.Standard (
+					org.drip.state.identifier.EntityCDSLabel.Standard (
 						strCreditCurveName,
 						strCurrency
 					)

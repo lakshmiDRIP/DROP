@@ -69,11 +69,11 @@ package org.drip.xva.evolver;
 
 public class MarketDynamicsContainer extends org.drip.xva.evolver.DynamicsContainer
 {
-	private org.drip.state.identifier.LatentStateLabel _bankHazardLabel = null;
-	private org.drip.state.identifier.LatentStateLabel _counterPartyHazardLabel = null;
-	private org.drip.state.identifier.LatentStateLabel _bankSeniorRecoveryLabel = null;
-	private org.drip.state.identifier.LatentStateLabel _counterPartyRecoveryLabel = null;
-	private org.drip.state.identifier.LatentStateLabel _bankSubordinateRecoveryLabel = null;
+	private org.drip.state.identifier.EntityHazardLabel _bankHazardLabel = null;
+	private org.drip.state.identifier.EntityHazardLabel _counterPartyHazardLabel = null;
+	private org.drip.state.identifier.EntityRecoveryLabel _bankSeniorRecoveryLabel = null;
+	private org.drip.state.identifier.EntityRecoveryLabel _counterPartyRecoveryLabel = null;
+	private org.drip.state.identifier.EntityRecoveryLabel _bankSubordinateRecoveryLabel = null;
 
 	/**
 	 * MarketDynamicsContainer Constructor
@@ -95,7 +95,30 @@ public class MarketDynamicsContainer extends org.drip.xva.evolver.DynamicsContai
 		final org.drip.xva.evolver.TerminalLatentState counterPartyRecoveryLatentState)
 		throws java.lang.Exception
 	{
-		if (!addTerminalLatentState (bankHazardLatentState) ||
+		if (null == bankHazardLatentState ||
+			null == bankSeniorRecoveryLatentState ||
+			null == counterPartyHazardLatentState ||
+			null == counterPartyRecoveryLatentState)
+		{
+			throw new java.lang.Exception ("MarketDynamicsContainer Constructor => Invalid Inputs");
+		}
+
+		org.drip.state.identifier.LatentStateLabel bankHazardLabel = bankHazardLatentState.label();
+
+		org.drip.state.identifier.LatentStateLabel bankSeniorRecoveryLabel =
+			bankSeniorRecoveryLatentState.label();
+
+		org.drip.state.identifier.LatentStateLabel counterPartyHazardLabel =
+			counterPartyHazardLatentState.label();
+
+		org.drip.state.identifier.LatentStateLabel counterPartyRecoveryLabel =
+			counterPartyRecoveryLatentState.label();
+
+		if (!(bankHazardLabel instanceof org.drip.state.identifier.EntityHazardLabel) ||
+			!(bankSeniorRecoveryLabel instanceof org.drip.state.identifier.EntityRecoveryLabel) ||
+			!(counterPartyHazardLabel instanceof org.drip.state.identifier.EntityHazardLabel) ||
+			!(counterPartyRecoveryLabel instanceof org.drip.state.identifier.EntityRecoveryLabel) ||
+			!addTerminalLatentState (bankHazardLatentState) ||
 			!addTerminalLatentState (bankSeniorRecoveryLatentState) ||
 			!addTerminalLatentState (counterPartyHazardLatentState) ||
 			!addTerminalLatentState (counterPartyRecoveryLatentState))
@@ -103,18 +126,25 @@ public class MarketDynamicsContainer extends org.drip.xva.evolver.DynamicsContai
 			throw new java.lang.Exception ("MarketDynamicsContainer Constructor => Invalid Inputs");
 		}
 
-		_bankHazardLabel = bankHazardLatentState.label();
+		_bankHazardLabel = (org.drip.state.identifier.EntityHazardLabel) bankHazardLabel;
+		_counterPartyHazardLabel = (org.drip.state.identifier.EntityHazardLabel) counterPartyHazardLabel;
+		_bankSeniorRecoveryLabel = (org.drip.state.identifier.EntityRecoveryLabel) bankSeniorRecoveryLabel;
+		_counterPartyRecoveryLabel = (org.drip.state.identifier.EntityRecoveryLabel) counterPartyRecoveryLabel;
 
-		_bankSeniorRecoveryLabel = bankSeniorRecoveryLatentState.label();
+		if (null != bankSubordinateRecoveryLatentState)
+		{
+			org.drip.state.identifier.LatentStateLabel bankSubordinateRecoveryLabel =
+				bankSubordinateRecoveryLatentState.label();
 
-		_counterPartyHazardLabel = counterPartyHazardLatentState.label();
+			if (!(bankSubordinateRecoveryLabel instanceof org.drip.state.identifier.EntityRecoveryLabel) ||
+				!addTerminalLatentState (bankSeniorRecoveryLatentState))
+			{
+				throw new java.lang.Exception ("MarketDynamicsContainer Constructor => Invalid Inputs");
+			}
 
-		_counterPartyRecoveryLabel = counterPartyRecoveryLatentState.label();
-
-		addTerminalLatentState (bankSeniorRecoveryLatentState);
-
-		_bankSubordinateRecoveryLabel = null == bankSeniorRecoveryLatentState ? null :
-			bankSeniorRecoveryLatentState.label();
+			_bankSubordinateRecoveryLabel = (org.drip.state.identifier.EntityRecoveryLabel)
+				bankSubordinateRecoveryLabel;
+		}
 	}
 
 	/**
@@ -125,7 +155,7 @@ public class MarketDynamicsContainer extends org.drip.xva.evolver.DynamicsContai
 
 	public org.drip.measure.process.DiffusionEvolver bankHazardRateEvolver()
 	{
-		return terminalLatentState (_bankHazardLabel).evolver();
+		return terminalLatentStateContainer().entityHazard (_bankHazardLabel).evolver();
 	}
 
 	/**
@@ -136,7 +166,7 @@ public class MarketDynamicsContainer extends org.drip.xva.evolver.DynamicsContai
 
 	public org.drip.measure.process.DiffusionEvolver bankSeniorRecoveryRateEvolver()
 	{
-		return terminalLatentState (_bankSeniorRecoveryLabel).evolver();
+		return terminalLatentStateContainer().entityRecovery (_bankSeniorRecoveryLabel).evolver();
 	}
 
 	/**
@@ -147,8 +177,11 @@ public class MarketDynamicsContainer extends org.drip.xva.evolver.DynamicsContai
 
 	public org.drip.measure.process.DiffusionEvolver bankSubordinateRecoveryRateEvolver()
 	{
-		return null == _bankSubordinateRecoveryLabel ? null : terminalLatentState
-			(_bankSubordinateRecoveryLabel).evolver();
+		org.drip.xva.evolver.TerminalLatentState terminalLatentStateBankSubordinateRecovery =
+			terminalLatentStateContainer().entityRecovery (_bankSubordinateRecoveryLabel);
+
+		return null == terminalLatentStateBankSubordinateRecovery ? null :
+			terminalLatentStateBankSubordinateRecovery.evolver();
 	}
 
 	/**
@@ -159,7 +192,7 @@ public class MarketDynamicsContainer extends org.drip.xva.evolver.DynamicsContai
 
 	public org.drip.measure.process.DiffusionEvolver counterPartyHazardRateEvolver()
 	{
-		return terminalLatentState (_counterPartyHazardLabel).evolver();
+		return terminalLatentStateContainer().entityHazard (_counterPartyHazardLabel).evolver();
 	}
 
 	/**
@@ -170,6 +203,6 @@ public class MarketDynamicsContainer extends org.drip.xva.evolver.DynamicsContai
 
 	public org.drip.measure.process.DiffusionEvolver counterPartyRecoveryRateEvolver()
 	{
-		return terminalLatentState (_counterPartyRecoveryLabel).evolver();
+		return terminalLatentStateContainer().entityRecovery (_counterPartyRecoveryLabel).evolver();
 	}
 }

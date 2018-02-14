@@ -393,7 +393,7 @@ public class FXForwardComponent extends org.drip.product.definition.Calibratable
 		return _ccyPair.denomCcy();
 	}
 
-	@Override public org.drip.state.identifier.EntityCreditLabel creditLabel()
+	@Override public org.drip.state.identifier.EntityCDSLabel creditLabel()
 	{
 		return null;
 	}

@@ -162,7 +162,7 @@ public class ScenarioCreditCurveBuilder {
 	{
 		try {
 			return new org.drip.state.nonlinear.ForwardHazardCreditCurve (iStartDate,
-				org.drip.state.identifier.EntityCreditLabel.Standard (strName, strCurrency), strCurrency, new
+				org.drip.state.identifier.EntityCDSLabel.Standard (strName, strCurrency), strCurrency, new
 					double[] {dblHazardRate}, new int[] {iStartDate}, new double[] {dblRecovery}, new int[]
 						{iStartDate}, java.lang.Integer.MIN_VALUE);
 		} catch (java.lang.Exception e) {
@@ -217,7 +217,7 @@ public class ScenarioCreditCurveBuilder {
 			}
 
 			return new org.drip.state.nonlinear.ForwardHazardCreditCurve (iStartDate,
-				org.drip.state.identifier.EntityCreditLabel.Standard (strName, strCurrency), strCurrency,
+				org.drip.state.identifier.EntityCDSLabel.Standard (strName, strCurrency), strCurrency,
 					adblHazard, aiSurvivalDate, adblRecovery, aiRecoveryDate, java.lang.Integer.MIN_VALUE);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
@@ -303,7 +303,7 @@ public class ScenarioCreditCurveBuilder {
 
 		try {
 			return new org.drip.state.nonlinear.ForwardHazardCreditCurve (iStartDate,
-				org.drip.state.identifier.EntityCreditLabel.Standard (strName, strCurrency), strCurrency,
+				org.drip.state.identifier.EntityCDSLabel.Standard (strName, strCurrency), strCurrency,
 					adblHazard, aiHazardDate, adblRecovery, aiRecoveryDate, java.lang.Integer.MIN_VALUE);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
@@ -345,7 +345,7 @@ public class ScenarioCreditCurveBuilder {
 			aiRecoveryDate[0] = dtStart.julian();
 
 			return new org.drip.state.nonlinear.ForwardHazardCreditCurve (dtStart.julian(),
-				org.drip.state.identifier.EntityCreditLabel.Standard (strName, strCurrency), strCurrency,
+				org.drip.state.identifier.EntityCDSLabel.Standard (strName, strCurrency), strCurrency,
 					adblHazardRate, aiDate, adblRecovery, aiRecoveryDate, java.lang.Integer.MIN_VALUE);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
@@ -381,7 +381,7 @@ public class ScenarioCreditCurveBuilder {
 	{
 		try {
 			return new org.drip.state.nonlinear.ForwardHazardCreditCurve (iStartDate,
-				org.drip.state.identifier.EntityCreditLabel.Standard (strName, strCurrency), strCurrency,
+				org.drip.state.identifier.EntityCDSLabel.Standard (strName, strCurrency), strCurrency,
 					adblHazardRate, aiHazardDate, adblRecoveryRate, aiRecoveryDate, iSpecificDefaultDate);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();

@@ -641,7 +641,7 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 		return _aBond[0].payCurrency();
 	}
 
-	@Override public org.drip.state.identifier.EntityCreditLabel creditLabel()
+	@Override public org.drip.state.identifier.EntityCDSLabel creditLabel()
 	{
 		return _aBond[0].creditLabel();
 	}

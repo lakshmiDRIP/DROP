@@ -89,7 +89,7 @@ public class StreamBuilder {
 			final org.drip.analytics.daycount.DateAdjustParams dapStreamEnd,
 			final org.drip.analytics.daycount.DateAdjustParams dapAccrualEnd,
 			final java.lang.String strCurrency,
-			final org.drip.state.identifier.EntityCreditLabel creditLabel)
+			final org.drip.state.identifier.EntityCDSLabel creditLabel)
 	{
 		boolean bCouponEOMAdj = null == strCouponDC ? false : strCouponDC.toUpperCase().contains ("EOM");
 
@@ -199,7 +199,7 @@ public class StreamBuilder {
 			final org.drip.analytics.daycount.DateAdjustParams dapStreamEnd,
 			final org.drip.analytics.daycount.DateAdjustParams dapAccrualEnd,
 			final org.drip.state.identifier.FloaterLabel floaterLabel,
-			final org.drip.state.identifier.EntityCreditLabel creditLabel)
+			final org.drip.state.identifier.EntityCDSLabel creditLabel)
 	{
 		if (null == floaterLabel) return null;
 
@@ -301,7 +301,7 @@ public class StreamBuilder {
 			final org.drip.analytics.daycount.DateAdjustParams dapStreamEnd,
 			final org.drip.analytics.daycount.DateAdjustParams dapAccrualEnd,
 			final org.drip.state.identifier.ForwardLabel forwardLabel,
-			final org.drip.state.identifier.EntityCreditLabel creditLabel)
+			final org.drip.state.identifier.EntityCDSLabel creditLabel)
 	{
 		if (null == forwardLabel) return null;
 

@@ -63,7 +63,7 @@ public class CompositePeriodSetting {
 	private double _dblBaseNotional = java.lang.Double.NaN;
 	private org.drip.quant.common.Array2D _fsCoupon = null;
 	private org.drip.quant.common.Array2D _fsNotional = null;
-	private org.drip.state.identifier.EntityCreditLabel _creditLabel = null;
+	private org.drip.state.identifier.EntityCDSLabel _creditLabel = null;
 	private org.drip.param.period.FixingSetting _fxFixingSetting = null;
 	private org.drip.analytics.daycount.DateAdjustParams _dapPay = null;
 
@@ -92,7 +92,7 @@ public class CompositePeriodSetting {
 		final org.drip.quant.common.Array2D fsCoupon,
 		final org.drip.quant.common.Array2D fsNotional,
 		final org.drip.param.period.FixingSetting fxFixingSetting,
-		final org.drip.state.identifier.EntityCreditLabel creditLabel)
+		final org.drip.state.identifier.EntityCDSLabel creditLabel)
 		throws java.lang.Exception
 	{
 		if (0 >= (_iFreq = iFreq) || null == (_strTenor = strTenor) || _strTenor.isEmpty() || null ==
@@ -204,7 +204,7 @@ public class CompositePeriodSetting {
 	 * @return The Credit Label
 	 */
 
-	public org.drip.state.identifier.EntityCreditLabel creditLabel()
+	public org.drip.state.identifier.EntityCDSLabel creditLabel()
 	{
 		return _creditLabel;
 	}
