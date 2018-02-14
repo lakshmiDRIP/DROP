@@ -88,7 +88,7 @@ import org.drip.xva.universe.*;
 public class AlbaneseAndersenBaselProxy
 {
 
-	private static final PrimarySecurityContainer GenerateTradeablesContainer (
+	private static final PrimarySecurityDynamicsContainer GenerateTradeablesContainer (
 		final String eventTenor,
 		final int eventCount,
 		final int iTerminationDate,
@@ -228,7 +228,7 @@ public class AlbaneseAndersenBaselProxy
 			dblCounterPartyFundingNumeraireRepo
 		);
 
-		return new PrimarySecurityContainer (
+		return new PrimarySecurityDynamicsContainer (
 			tAsset,
 			tOvernightIndex,
 			tCollateralScheme,

@@ -71,7 +71,7 @@ package org.drip.xva.pde;
 
 public class TrajectoryEvolutionScheme
 {
-	private org.drip.xva.evolver.PrimarySecurityContainer _tradeablesContainer = null;
+	private org.drip.xva.evolver.PrimarySecurityDynamicsContainer _tradeablesContainer = null;
 	private org.drip.xva.definition.PDEEvolutionControl _pdeEvolutionControl = null;
 
 	/**
@@ -84,7 +84,7 @@ public class TrajectoryEvolutionScheme
 	 */
 
 	public TrajectoryEvolutionScheme (
-		final org.drip.xva.evolver.PrimarySecurityContainer tradeablesContainer,
+		final org.drip.xva.evolver.PrimarySecurityDynamicsContainer tradeablesContainer,
 		final org.drip.xva.definition.PDEEvolutionControl pdeEvolutionControl)
 		throws java.lang.Exception
 	{
@@ -101,7 +101,7 @@ public class TrajectoryEvolutionScheme
 	 * @return The Universe of Tradeables
 	 */
 
-	public org.drip.xva.evolver.PrimarySecurityContainer tradeablesContainer()
+	public org.drip.xva.evolver.PrimarySecurityDynamicsContainer tradeablesContainer()
 	{
 		return _tradeablesContainer;
 	}

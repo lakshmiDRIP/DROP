@@ -1721,11 +1721,13 @@ public class BondReplicator
 						(_valParams, csqcTenorDown, null, iWorkoutDate, dblWorkoutFactor,
 							dblParZSpreadToExercise);
 
+				double dblBaseFloaterPrice = 0.5 * (dblTenorFundingDownPrice + dblTenorFundingUpPrice);
+
 				mapFundingKRD.put (strKey, 0.5 * (dblTenorFundingDownPrice - dblTenorFundingUpPrice) /
-					_dblCurrentPrice / _dblTenorBump);
+					(_bond.isFloater() ? dblBaseFloaterPrice : _dblCurrentPrice) / _dblTenorBump);
 
 				mapFundingKPRD.put (strKey, 0.5 * (dblTenorFundingDownParPrice - dblTenorFundingUpParPrice) /
-					_dblIssuePrice / _dblTenorBump);
+					(_bond.isFloater() ? dblBaseFloaterPrice : _dblIssuePrice) / _dblTenorBump);
 			}
 
 			for (java.util.Map.Entry<java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer>
@@ -1756,11 +1758,13 @@ public class BondReplicator
 						(_valParams, csqcTenorDown, null, iWorkoutDate, dblWorkoutFactor,
 							dblParZSpreadToExercise);
 
+				double dblBaseFloaterPrice = 0.5 * (dblTenorForwardDownPrice + dblTenorForwardUpPrice);
+
 				mapLIBORKRD.put (strKey, 0.5 * (dblTenorForwardDownPrice - dblTenorForwardUpPrice) /
-					_dblCurrentPrice / _dblTenorBump);
+					(_bond.isFloater() ? dblBaseFloaterPrice : _dblCurrentPrice) / _dblTenorBump);
 
 				mapLIBORKPRD.put (strKey, 0.5 * (dblTenorForwardDownParPrice - dblTenorForwardUpParPrice) /
-					_dblIssuePrice / _dblTenorBump);
+					(_bond.isFloater() ? dblBaseFloaterPrice : _dblIssuePrice) / _dblTenorBump);
 			}
 
 			for (java.util.Map.Entry<java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer>

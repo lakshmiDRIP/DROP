@@ -93,12 +93,12 @@ public class DynamicsContainer
 	}
 
 	/**
-	 * Retrieve the ScalingNumeraire Evolver Dynamics Settings Map
+	 * Retrieve the Scaling Numeraire Evolver Dynamics Settings Map
 	 * 
 	 * @return The Scaling Numeraire Evolver Dynamics Settings Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.xva.evolver.ScalingNumeraire> scalingNumeraireDynamics()
+	public java.util.Map<java.lang.String, org.drip.xva.evolver.ScalingNumeraire> scalingNumeraireMap()
 	{
 		return _mapScalingNumeraireDynamics;
 	}
@@ -166,7 +166,7 @@ public class DynamicsContainer
 	 * @return The Terminal Latent State Evolver Dynamics Settings Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> terminalLatentStateDynamics()
+	public java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> terminalLatentStateMap()
 	{
 		return _mapTerminalLatentStateDynamics;
 	}
@@ -237,7 +237,7 @@ public class DynamicsContainer
 	 * @return The Primary Security Evolver Dynamics Settings Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.xva.evolver.PrimarySecurity> primarySecurityDynamics()
+	public java.util.Map<java.lang.String, org.drip.xva.evolver.PrimarySecurity> primarySecurityMap()
 	{
 		return _mapPrimarySecurityDynamics;
 	}
@@ -261,7 +261,7 @@ public class DynamicsContainer
 		java.lang.String primarySecurityLabel = primarySecurity.label().fullyQualifiedName();
 
 		_mapPrimarySecurityDynamics.put (
-			primarySecurityLabel,
+			primarySecurity.id(),
 			primarySecurity
 		);
 
@@ -281,29 +281,28 @@ public class DynamicsContainer
 	/**
 	 * Indicate if the Primary Security Evolver exists in the Container
 	 * 
-	 * @param label The Primary Security Latent State Label
+	 * @param id The Primary Security ID
 	 * 
 	 * @return TRUE - The Primary Security Evolver exists in the Container
 	 */
 
 	public boolean primarySecurityExists (
-		final org.drip.state.identifier.LatentStateLabel label)
+		final java.lang.String id)
 	{
-		return null == label ? false : _mapPrimarySecurityDynamics.containsKey (label.fullyQualifiedName());
+		return null == id || id.isEmpty() ? false : _mapPrimarySecurityDynamics.containsKey (id);
 	}
 
 	/**
 	 * Retrieve the Primary Security Evolver given the Label
 	 * 
-	 * @param label The Primary Security Label
+	 * @param id The Primary Security ID
 	 * 
 	 * @return The Primary Security Evolver
 	 */
 
 	public org.drip.xva.evolver.PrimarySecurity primarySecurity (
-		final org.drip.state.identifier.LatentStateLabel label)
+		final java.lang.String id)
 	{
-		return primarySecurityExists (label) ? _mapPrimarySecurityDynamics.get (label.fullyQualifiedName()) :
-			null;
+		return primarySecurityExists (id) ? _mapPrimarySecurityDynamics.get (id) : null;
 	}
 }

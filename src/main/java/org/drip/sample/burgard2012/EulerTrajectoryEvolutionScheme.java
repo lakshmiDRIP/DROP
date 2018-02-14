@@ -304,7 +304,7 @@ public class EulerTrajectoryEvolutionScheme {
 			iNumVertex
 		);
 
-		PrimarySecurityContainer tc = new PrimarySecurityContainer (
+		PrimarySecurityDynamicsContainer tc = new PrimarySecurityDynamicsContainer (
 			tAsset,
 			tOvernightIndex,
 			tCollateralScheme,

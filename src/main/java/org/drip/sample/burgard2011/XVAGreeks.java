@@ -107,7 +107,7 @@ public class XVAGreeks {
 
 		double dblTime = dblTimeStart + dblTimeWidth;
 
-		PrimarySecurityContainer tc = tes.tradeablesContainer();
+		PrimarySecurityDynamicsContainer tc = tes.tradeablesContainer();
 
 		double dblCollateralSchemeNumeraire = mvStart.csaReplicator();
 
@@ -419,7 +419,7 @@ public class XVAGreeks {
 			iNumVertex
 		);
 
-		PrimarySecurityContainer tc = new PrimarySecurityContainer (
+		PrimarySecurityDynamicsContainer tc = new PrimarySecurityDynamicsContainer (
 			tAsset,
 			tOvernightIndex,
 			tCollateralScheme,

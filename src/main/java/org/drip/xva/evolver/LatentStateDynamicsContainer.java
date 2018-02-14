@@ -164,9 +164,33 @@ public class LatentStateDynamicsContainer
 	 * @return The Equity Evolver Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> entityEquityEvolver()
+	public java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> entityEquityMap()
 	{
 		return _entityEquityEvolver;
+	}
+
+	/**
+	 * Add the Entity Equity Latent State Evolver
+	 * 
+	 * @param terminalLatentState The Equity Entity Terminal Latent State
+	 * 
+	 * @return TRUE - The Entity Equity Latent Successfully added
+	 */
+
+	public boolean addEntityEquity (
+		final org.drip.xva.evolver.TerminalLatentState terminalLatentState)
+	{
+		if (null == terminalLatentState)
+		{
+			return false;
+		}
+
+		_entityEquityEvolver.put (
+			terminalLatentState.label().fullyQualifiedName(),
+			terminalLatentState
+		);
+
+		return true;
 	}
 
 	/**
@@ -205,9 +229,33 @@ public class LatentStateDynamicsContainer
 	 * @return The Funding Evolver Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> fundingEvolver()
+	public java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> fundingMap()
 	{
 		return _fundingEvolver;
+	}
+
+	/**
+	 * Add the Funding Latent State Evolver
+	 * 
+	 * @param terminalLatentState The Funding Terminal Latent State
+	 * 
+	 * @return TRUE - The Funding Latent State Successfully added
+	 */
+
+	public boolean addFunding (
+		final org.drip.xva.evolver.TerminalLatentState terminalLatentState)
+	{
+		if (null == terminalLatentState)
+		{
+			return false;
+		}
+
+		_fundingEvolver.put (
+			terminalLatentState.label().fullyQualifiedName(),
+			terminalLatentState
+		);
+
+		return true;
 	}
 
 	/**
@@ -245,9 +293,33 @@ public class LatentStateDynamicsContainer
 	 * @return The Govvie Evolver Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> govvieEvolver()
+	public java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> govvieMap()
 	{
 		return _govvieEvolver;
+	}
+
+	/**
+	 * Add the Govvie Latent State Evolver
+	 * 
+	 * @param terminalLatentState The Govvie Terminal Latent State
+	 * 
+	 * @return TRUE - The Govvie Latent State Successfully added
+	 */
+
+	public boolean addGovvie (
+		final org.drip.xva.evolver.TerminalLatentState terminalLatentState)
+	{
+		if (null == terminalLatentState)
+		{
+			return false;
+		}
+
+		_govvieEvolver.put (
+			terminalLatentState.label().fullyQualifiedName(),
+			terminalLatentState
+		);
+
+		return true;
 	}
 
 	/**
@@ -284,9 +356,33 @@ public class LatentStateDynamicsContainer
 	 * @return The FX Evolver Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> fxEvolver()
+	public java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> fxMap()
 	{
 		return _fxEvolver;
+	}
+
+	/**
+	 * Add the FX Latent State Evolver
+	 * 
+	 * @param terminalLatentState The FX Terminal Latent State
+	 * 
+	 * @return TRUE - The FX Latent State Successfully added
+	 */
+
+	public boolean addFX (
+		final org.drip.xva.evolver.TerminalLatentState terminalLatentState)
+	{
+		if (null == terminalLatentState)
+		{
+			return false;
+		}
+
+		_fxEvolver.put (
+			terminalLatentState.label().fullyQualifiedName(),
+			terminalLatentState
+		);
+
+		return true;
 	}
 
 	/**
@@ -323,9 +419,33 @@ public class LatentStateDynamicsContainer
 	 * @return The Forward Evolver Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> forwardEvolver()
+	public java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> forwardMap()
 	{
 		return _forwardEvolver;
+	}
+
+	/**
+	 * Add the Forward Latent State Evolver
+	 * 
+	 * @param terminalLatentState The Forward Terminal Latent State
+	 * 
+	 * @return TRUE - The Forward Latent State Successfully added
+	 */
+
+	public boolean addForward (
+		final org.drip.xva.evolver.TerminalLatentState terminalLatentState)
+	{
+		if (null == terminalLatentState)
+		{
+			return false;
+		}
+
+		_forwardEvolver.put (
+			terminalLatentState.label().fullyQualifiedName(),
+			terminalLatentState
+		);
+
+		return true;
 	}
 
 	/**
@@ -363,9 +483,33 @@ public class LatentStateDynamicsContainer
 	 * @return The OTC Fix Float Evolver Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> otcFixFloatEvolver()
+	public java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> otcFixFloatMap()
 	{
 		return _otcFixFloatEvolver;
+	}
+
+	/**
+	 * Add the OTC Fix Float Latent State Evolver
+	 * 
+	 * @param terminalLatentState The OTC Fix Float Terminal Latent State
+	 * 
+	 * @return TRUE - The OTC Fix Float Latent State Successfully added
+	 */
+
+	public boolean addOTCFixFloat (
+		final org.drip.xva.evolver.TerminalLatentState terminalLatentState)
+	{
+		if (null == terminalLatentState)
+		{
+			return false;
+		}
+
+		_otcFixFloatEvolver.put (
+			terminalLatentState.label().fullyQualifiedName(),
+			terminalLatentState
+		);
+
+		return true;
 	}
 
 	/**
@@ -404,9 +548,33 @@ public class LatentStateDynamicsContainer
 	 * @return The Overnight Evolver Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> overnightEvolver()
+	public java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> overnightMap()
 	{
 		return _overnightEvolver;
+	}
+
+	/**
+	 * Add the Overnight Latent State Evolver
+	 * 
+	 * @param terminalLatentState The Overnight Terminal Latent State
+	 * 
+	 * @return TRUE - The Overnight Latent State Successfully added
+	 */
+
+	public boolean addOvernight (
+		final org.drip.xva.evolver.TerminalLatentState terminalLatentState)
+	{
+		if (null == terminalLatentState)
+		{
+			return false;
+		}
+
+		_overnightEvolver.put (
+			terminalLatentState.label().fullyQualifiedName(),
+			terminalLatentState
+		);
+
+		return true;
 	}
 
 	/**
@@ -420,7 +588,7 @@ public class LatentStateDynamicsContainer
 	public boolean overnightExists (
 		final org.drip.state.identifier.OvernightLabel overnightLabel)
 	{
-		return null == overnightLabel ? false : _otcFixFloatEvolver.containsKey
+		return null == overnightLabel ? false : _overnightEvolver.containsKey
 			(overnightLabel.fullyQualifiedName());
 	}
 
@@ -445,9 +613,33 @@ public class LatentStateDynamicsContainer
 	 * @return The Collateral Evolver Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> collateralEvolver()
+	public java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> collateralMap()
 	{
 		return _collateralEvolver;
+	}
+
+	/**
+	 * Add the Collateral Latent State Evolver
+	 * 
+	 * @param terminalLatentState The Collateral Terminal Latent State
+	 * 
+	 * @return TRUE - The Collateral Latent State Successfully added
+	 */
+
+	public boolean addCollateral (
+		final org.drip.xva.evolver.TerminalLatentState terminalLatentState)
+	{
+		if (null == terminalLatentState)
+		{
+			return false;
+		}
+
+		_collateralEvolver.put (
+			terminalLatentState.label().fullyQualifiedName(),
+			terminalLatentState
+		);
+
+		return true;
 	}
 
 	/**
@@ -486,9 +678,33 @@ public class LatentStateDynamicsContainer
 	 * @return The CSA Evolver Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> csaEvolver()
+	public java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> csaMap()
 	{
 		return _csaEvolver;
+	}
+
+	/**
+	 * Add the CSA Latent State Evolver
+	 * 
+	 * @param terminalLatentState The CSA Terminal Latent State
+	 * 
+	 * @return TRUE - The CSA Latent State Successfully added
+	 */
+
+	public boolean addCSA (
+		final org.drip.xva.evolver.TerminalLatentState terminalLatentState)
+	{
+		if (null == terminalLatentState)
+		{
+			return false;
+		}
+
+		_csaEvolver.put (
+			terminalLatentState.label().fullyQualifiedName(),
+			terminalLatentState
+		);
+
+		return true;
 	}
 
 	/**
@@ -525,9 +741,33 @@ public class LatentStateDynamicsContainer
 	 * @return The Entity Hazard Evolver Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> entityHazardEvolver()
+	public java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> entityHazardMap()
 	{
 		return _entityHazardEvolver;
+	}
+
+	/**
+	 * Add the Entity Hazard Latent State Evolver
+	 * 
+	 * @param terminalLatentState The Entity Hazard Terminal Latent State
+	 * 
+	 * @return TRUE - The Entity Hazard Latent State Successfully added
+	 */
+
+	public boolean addEntityHazard (
+		final org.drip.xva.evolver.TerminalLatentState terminalLatentState)
+	{
+		if (null == terminalLatentState)
+		{
+			return false;
+		}
+
+		_entityHazardEvolver.put (
+			terminalLatentState.label().fullyQualifiedName(),
+			terminalLatentState
+		);
+
+		return true;
 	}
 
 	/**
@@ -566,9 +806,33 @@ public class LatentStateDynamicsContainer
 	 * @return The Entity Credit Evolver Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> entityCreditEvolver()
+	public java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> entityCreditMap()
 	{
 		return _entityCreditEvolver;
+	}
+
+	/**
+	 * Add the Entity Credit Latent State Evolver
+	 * 
+	 * @param terminalLatentState The Entity Credit Terminal Latent State
+	 * 
+	 * @return TRUE - The Entity Credit Latent State Successfully added
+	 */
+
+	public boolean addEntityCredit (
+		final org.drip.xva.evolver.TerminalLatentState terminalLatentState)
+	{
+		if (null == terminalLatentState)
+		{
+			return false;
+		}
+
+		_entityCreditEvolver.put (
+			terminalLatentState.label().fullyQualifiedName(),
+			terminalLatentState
+		);
+
+		return true;
 	}
 
 	/**
@@ -607,9 +871,33 @@ public class LatentStateDynamicsContainer
 	 * @return The Entity Recovery Evolver Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> entityRecoveryEvolver()
+	public java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> entityRecoveryMap()
 	{
 		return _entityRecoveryEvolver;
+	}
+
+	/**
+	 * Add the Entity Recovery Latent State Evolver
+	 * 
+	 * @param terminalLatentState The Entity Recovery Terminal Latent State
+	 * 
+	 * @return TRUE - The Entity Recovery Latent State Successfully added
+	 */
+
+	public boolean addEntityRecovery (
+		final org.drip.xva.evolver.TerminalLatentState terminalLatentState)
+	{
+		if (null == terminalLatentState)
+		{
+			return false;
+		}
+
+		_entityRecoveryEvolver.put (
+			terminalLatentState.label().fullyQualifiedName(),
+			terminalLatentState
+		);
+
+		return true;
 	}
 
 	/**
@@ -648,9 +936,33 @@ public class LatentStateDynamicsContainer
 	 * @return The Entity Funding Evolver Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> entityFundingEvolver()
+	public java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> entityFundingMap()
 	{
 		return _entityFundingEvolver;
+	}
+
+	/**
+	 * Add the Entity Funding Latent State Evolver
+	 * 
+	 * @param terminalLatentState The Entity Funding Terminal Latent State
+	 * 
+	 * @return TRUE - The Entity Funding Latent State Successfully added
+	 */
+
+	public boolean addEntityFunding (
+		final org.drip.xva.evolver.TerminalLatentState terminalLatentState)
+	{
+		if (null == terminalLatentState)
+		{
+			return false;
+		}
+
+		_entityFundingEvolver.put (
+			terminalLatentState.label().fullyQualifiedName(),
+			terminalLatentState
+		);
+
+		return true;
 	}
 
 	/**
@@ -689,9 +1001,33 @@ public class LatentStateDynamicsContainer
 	 * @return The Volatility Evolver Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> volatilityEvolver()
+	public java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> volatilityMap()
 	{
 		return _volatilityEvolver;
+	}
+
+	/**
+	 * Add the Volatility Latent State Evolver
+	 * 
+	 * @param terminalLatentState The Volatility Terminal Latent State
+	 * 
+	 * @return TRUE - The Volatility Latent State Successfully added
+	 */
+
+	public boolean addVolatility (
+		final org.drip.xva.evolver.TerminalLatentState terminalLatentState)
+	{
+		if (null == terminalLatentState)
+		{
+			return false;
+		}
+
+		_volatilityEvolver.put (
+			terminalLatentState.label().fullyQualifiedName(),
+			terminalLatentState
+		);
+
+		return true;
 	}
 
 	/**
@@ -730,9 +1066,33 @@ public class LatentStateDynamicsContainer
 	 * @return The Ratings Evolver Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> ratingEvolver()
+	public java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> ratingMap()
 	{
 		return _ratingEvolver;
+	}
+
+	/**
+	 * Add the Rating Latent State Evolver
+	 * 
+	 * @param terminalLatentState The Rating Terminal Latent State
+	 * 
+	 * @return TRUE - The Rating Latent State Successfully added
+	 */
+
+	public boolean addRating (
+		final org.drip.xva.evolver.TerminalLatentState terminalLatentState)
+	{
+		if (null == terminalLatentState)
+		{
+			return false;
+		}
+
+		_ratingEvolver.put (
+			terminalLatentState.label().fullyQualifiedName(),
+			terminalLatentState
+		);
+
+		return true;
 	}
 
 	/**
@@ -743,10 +1103,24 @@ public class LatentStateDynamicsContainer
 	 * @return TRUE - The Rating Latent State Exists
 	 */
 
-	public boolean ratingStateExists (
+	public boolean ratingExists (
 		final org.drip.state.identifier.RatingLabel ratingLabel)
 	{
 		return null == ratingLabel ? false : _ratingEvolver.containsKey (ratingLabel.fullyQualifiedName());
+	}
+
+	/**
+	 * Retrieve the Rating Latent State
+	 * 
+	 * @param ratingLabel The Rating Latent State Label
+	 * 
+	 * @return The Rating Latent State
+	 */
+
+	public org.drip.xva.evolver.TerminalLatentState rating (
+		final org.drip.state.identifier.RatingLabel ratingLabel)
+	{
+		return ratingExists (ratingLabel) ? _ratingEvolver.get (ratingLabel.fullyQualifiedName()) : null;
 	}
 
 	/**
@@ -755,9 +1129,33 @@ public class LatentStateDynamicsContainer
 	 * @return The Repo Evolver Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> repoEvolver()
+	public java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> repoMap()
 	{
 		return _repoEvolver;
+	}
+
+	/**
+	 * Add the Repo Latent State Evolver
+	 * 
+	 * @param terminalLatentState The Repo Terminal Latent State
+	 * 
+	 * @return TRUE - The Repo Latent State Successfully added
+	 */
+
+	public boolean addRepo (
+		final org.drip.xva.evolver.TerminalLatentState terminalLatentState)
+	{
+		if (null == terminalLatentState)
+		{
+			return false;
+		}
+
+		_repoEvolver.put (
+			terminalLatentState.label().fullyQualifiedName(),
+			terminalLatentState
+		);
+
+		return true;
 	}
 
 	/**
@@ -768,10 +1166,24 @@ public class LatentStateDynamicsContainer
 	 * @return TRUE - The Repo Latent State Exists
 	 */
 
-	public boolean repoStateExists (
+	public boolean repoExists (
 		final org.drip.state.identifier.RepoLabel repoLabel)
 	{
 		return null == repoLabel ? false : _repoEvolver.containsKey (repoLabel.fullyQualifiedName());
+	}
+
+	/**
+	 * Retrieve the Repo Latent State
+	 * 
+	 * @param repoLabel The Repo Latent State Label
+	 * 
+	 * @return The Repo Latent State
+	 */
+
+	public org.drip.xva.evolver.TerminalLatentState repo (
+		final org.drip.state.identifier.RepoLabel repoLabel)
+	{
+		return repoExists (repoLabel) ? _repoEvolver.get (repoLabel.fullyQualifiedName()) : null;
 	}
 
 	/**
@@ -780,9 +1192,33 @@ public class LatentStateDynamicsContainer
 	 * @return The Pay Down Evolver Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> payDownEvolver()
+	public java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> payDownMap()
 	{
 		return _payDownEvolver;
+	}
+
+	/**
+	 * Add the Pay Down Latent State Evolver
+	 * 
+	 * @param terminalLatentState The Pay Down Terminal Latent State
+	 * 
+	 * @return TRUE - The Repo Latent State Successfully added
+	 */
+
+	public boolean addPayDown (
+		final org.drip.xva.evolver.TerminalLatentState terminalLatentState)
+	{
+		if (null == terminalLatentState)
+		{
+			return false;
+		}
+
+		_payDownEvolver.put (
+			terminalLatentState.label().fullyQualifiedName(),
+			terminalLatentState
+		);
+
+		return true;
 	}
 
 	/**
@@ -793,11 +1229,25 @@ public class LatentStateDynamicsContainer
 	 * @return TRUE - The Pay Down Latent State Exists
 	 */
 
-	public boolean payDownStateExists (
+	public boolean payDownExists (
 		final org.drip.state.identifier.PaydownLabel payDownLabel)
 	{
 		return null == payDownLabel ? false : _payDownEvolver.containsKey
 			(payDownLabel.fullyQualifiedName());
+	}
+
+	/**
+	 * Retrieve the Pay Down Latent State
+	 * 
+	 * @param payDownLabel The Pay Down Latent State Label
+	 * 
+	 * @return The Pay Down Latent State
+	 */
+
+	public org.drip.xva.evolver.TerminalLatentState payDown (
+		final org.drip.state.identifier.PaydownLabel payDownLabel)
+	{
+		return payDownExists (payDownLabel) ? _payDownEvolver.get (payDownLabel.fullyQualifiedName()) : null;
 	}
 
 	/**
@@ -806,9 +1256,33 @@ public class LatentStateDynamicsContainer
 	 * @return The Custom Evolver Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> customEvolver()
+	public java.util.Map<java.lang.String, org.drip.xva.evolver.TerminalLatentState> customMap()
 	{
 		return _customEvolver;
+	}
+
+	/**
+	 * Add the Custom Latent State Evolver
+	 * 
+	 * @param terminalLatentState The Custom Terminal Latent State
+	 * 
+	 * @return TRUE - The Custom Latent State Successfully added
+	 */
+
+	public boolean addCustom (
+		final org.drip.xva.evolver.TerminalLatentState terminalLatentState)
+	{
+		if (null == terminalLatentState)
+		{
+			return false;
+		}
+
+		_customEvolver.put (
+			terminalLatentState.label().fullyQualifiedName(),
+			terminalLatentState
+		);
+
+		return true;
 	}
 
 	/**
@@ -819,9 +1293,132 @@ public class LatentStateDynamicsContainer
 	 * @return TRUE - The Custom Latent State Exists
 	 */
 
-	public boolean customStateExists (
+	public boolean customExists (
 		final org.drip.state.identifier.CustomLabel customLabel)
 	{
 		return null == customLabel ? false : _customEvolver.containsKey (customLabel.fullyQualifiedName());
+	}
+
+	/**
+	 * Retrieve the Custom Latent State
+	 * 
+	 * @param customLabel The Custom Latent State Label
+	 * 
+	 * @return The Custom Latent State
+	 */
+
+	public org.drip.xva.evolver.TerminalLatentState custom (
+		final org.drip.state.identifier.CustomLabel customLabel)
+	{
+		return customExists (customLabel) ? _customEvolver.get (customLabel.fullyQualifiedName()) : null;
+	}
+
+	/**
+	 * Indicate if the Label exists
+	 * 
+	 * @param label The Latent State Label
+	 * 
+	 * @return TRUE - The Latent State Label exists
+	 */
+
+	public boolean labelExists (
+		final org.drip.state.identifier.LatentStateLabel label)
+	{
+		if (null == label)
+		{
+			return false;
+		}
+
+		if (label instanceof org.drip.state.identifier.EntityEquityLabel)
+		{
+			return entityEquityExists ((org.drip.state.identifier.EntityEquityLabel) label);
+		}
+
+		if (label instanceof org.drip.state.identifier.FundingLabel)
+		{
+			return fundingExists((org.drip.state.identifier.FundingLabel) label);
+		}
+
+		if (label instanceof org.drip.state.identifier.GovvieLabel)
+		{
+			return govvieExists ((org.drip.state.identifier.GovvieLabel) label);
+		}
+
+		if (label instanceof org.drip.state.identifier.FXLabel)
+		{
+			return fxExists((org.drip.state.identifier.FXLabel) label);
+		}
+
+		if (label instanceof org.drip.state.identifier.ForwardLabel)
+		{
+			return forwardExists ((org.drip.state.identifier.ForwardLabel) label);
+		}
+
+		if (label instanceof org.drip.state.identifier.OTCFixFloatLabel)
+		{
+			return otcFixFloatExists ((org.drip.state.identifier.OTCFixFloatLabel) label);
+		}
+
+		if (label instanceof org.drip.state.identifier.OvernightLabel)
+		{
+			return overnightExists ((org.drip.state.identifier.OvernightLabel) label);
+		}
+
+		if (label instanceof org.drip.state.identifier.CollateralLabel)
+		{
+			return collateralExists ((org.drip.state.identifier.CollateralLabel) label);
+		}
+
+		if (label instanceof org.drip.state.identifier.CSALabel)
+		{
+			return csaExists ((org.drip.state.identifier.CSALabel) label);
+		}
+
+		if (label instanceof org.drip.state.identifier.EntityHazardLabel)
+		{
+			return entityHazardExists ((org.drip.state.identifier.EntityHazardLabel) label);
+		}
+
+		if (label instanceof org.drip.state.identifier.EntityCreditLabel)
+		{
+			return entityCreditExists ((org.drip.state.identifier.EntityCreditLabel) label);
+		}
+
+		if (label instanceof org.drip.state.identifier.EntityRecoveryLabel)
+		{
+			return entityRecoveryExists ((org.drip.state.identifier.EntityRecoveryLabel) label);
+		}
+
+		if (label instanceof org.drip.state.identifier.EntityFundingLabel)
+		{
+			return entityFundingExists ((org.drip.state.identifier.EntityFundingLabel) label);
+		}
+
+		if (label instanceof org.drip.state.identifier.VolatilityLabel)
+		{
+			return volatilityExists ((org.drip.state.identifier.VolatilityLabel) label);
+		}
+
+		if (label instanceof org.drip.state.identifier.RatingLabel)
+		{
+			return ratingExists ((org.drip.state.identifier.RatingLabel) label);
+		}
+
+		if (label instanceof org.drip.state.identifier.RepoLabel)
+		{
+			return repoExists ((org.drip.state.identifier.RepoLabel) label);
+		}
+
+		if (label instanceof org.drip.state.identifier.PaydownLabel)
+		{
+			return payDownExists ((org.drip.state.identifier.PaydownLabel) label);
+		}
+
+		if (label instanceof org.drip.state.identifier.CustomLabel)
+		{
+			return customExists ((org.drip.state.identifier.CustomLabel) label);
+		}
+
+		return false;
 	}
 }

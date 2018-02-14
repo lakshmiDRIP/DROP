@@ -109,7 +109,7 @@ public class CorrelatedNumeraireXVAReplicationPortfolio {
 
 		double dblTime = dblTimeStart + dblTimeWidth;
 
-		PrimarySecurityContainer tc = tes.tradeablesContainer();
+		PrimarySecurityDynamicsContainer tc = tes.tradeablesContainer();
 
 		BurgardKjaerEdgeRun bker = bko.edgeRun (
 			new MarketEdge (
@@ -428,7 +428,7 @@ public class CorrelatedNumeraireXVAReplicationPortfolio {
 			iNumVertex
 		);
 
-		PrimarySecurityContainer tc = new PrimarySecurityContainer (
+		PrimarySecurityDynamicsContainer tc = new PrimarySecurityDynamicsContainer (
 			tAsset,
 			tOvernightIndex,
 			tCollateralScheme,

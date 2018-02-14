@@ -107,7 +107,7 @@ public class XVAExplain {
 
 		double dblTime = dblTimeStart + dblTimeWidth;
 
-		PrimarySecurityContainer tc = tes.tradeablesContainer();
+		PrimarySecurityDynamicsContainer tc = tes.tradeablesContainer();
 
 		double dblCollateralSchemeNumeraire = mvStart.csaReplicator();
 
@@ -430,7 +430,7 @@ public class XVAExplain {
 			iNumVertex
 		);
 
-		PrimarySecurityContainer tc = new PrimarySecurityContainer (
+		PrimarySecurityDynamicsContainer tc = new PrimarySecurityDynamicsContainer (
 			tAsset,
 			tOvernightIndex,
 			tCollateralScheme,

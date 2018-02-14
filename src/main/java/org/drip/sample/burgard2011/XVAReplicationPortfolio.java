@@ -109,7 +109,7 @@ public class XVAReplicationPortfolio {
 
 		double dblCollateralSchemeNumeraire = mvStart.csaReplicator();
 
-		PrimarySecurityContainer tc = tes.tradeablesContainer();
+		PrimarySecurityDynamicsContainer tc = tes.tradeablesContainer();
 
 		BurgardKjaerEdgeRun bker = bko.edgeRun (
 			new MarketEdge (
@@ -429,7 +429,7 @@ public class XVAReplicationPortfolio {
 			iNumVertex
 		);
 
-		PrimarySecurityContainer tc = new PrimarySecurityContainer (
+		PrimarySecurityDynamicsContainer tc = new PrimarySecurityDynamicsContainer (
 			tAsset,
 			tOvernightIndex,
 			tCollateralScheme,

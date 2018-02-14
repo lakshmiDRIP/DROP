@@ -299,7 +299,7 @@ public class XVAMarketGeneration {
 		MarketVertexGenerator mvg = new MarketVertexGenerator (
 			iSpotDate,
 			aiVertexDate,
-			new PrimarySecurityContainer (
+			new PrimarySecurityDynamicsContainer (
 				tAsset,
 				tOvernightIndex,
 				tCollateralScheme,

@@ -48,7 +48,7 @@ package org.drip.xva.evolver;
  */
 
 /**
- * PrimarySecurityContainer holds the Economy with the following Traded Assets - the Overnight Index
+ * PrimarySecurityDynamicsContainer holds the Economy with the following Traded Assets - the Overnight Index
  *  Numeraire, the Collateral Scheme Numeraire, the Default-able Bank Bond Numeraire, the Array of
  *  Default-able Counter-party Numeraires, and an Asset that follows Brownian Motion. The References are:
  *  
@@ -68,17 +68,17 @@ package org.drip.xva.evolver;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PrimarySecurityContainer extends org.drip.xva.evolver.DynamicsContainer
+public class PrimarySecurityDynamicsContainer extends org.drip.xva.evolver.DynamicsContainer
 {
-	private org.drip.state.identifier.CSALabel _csaLabel = null;
-	private org.drip.state.identifier.OvernightLabel _overnightLabel = null;
-	private org.drip.state.identifier.LatentStateLabel _positionLabel = null;
-	private org.drip.state.identifier.EntityFundingLabel _bankSeniorFundingLabel = null;
-	private org.drip.state.identifier.EntityFundingLabel _counterPartyFundingLabel = null;
-	private org.drip.state.identifier.EntityFundingLabel _bankSubordinateFundingLabel = null;
+	private java.lang.String _csaID = null;
+	private java.lang.String _positionID = null;
+	private java.lang.String _overnightID = null;
+	private java.lang.String _bankSeniorFundingID = null;
+	private java.lang.String _counterPartyFundingID = null;
+	private java.lang.String _bankSubordinateFundingID = null;
 
 	/**
-	 * PrimarySecurityContainer Constructor
+	 * PrimarySecurityDynamicsContainer Constructor
 	 * 
 	 * @param position The Position Primary Security
 	 * @param overnight The Overnight Index Primary Security
@@ -90,7 +90,7 @@ public class PrimarySecurityContainer extends org.drip.xva.evolver.DynamicsConta
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public PrimarySecurityContainer (
+	public PrimarySecurityDynamicsContainer (
 		final org.drip.xva.evolver.PrimarySecurity position,
 		final org.drip.xva.evolver.PrimarySecurity overnight,
 		final org.drip.xva.evolver.PrimarySecurity csa,
@@ -105,7 +105,7 @@ public class PrimarySecurityContainer extends org.drip.xva.evolver.DynamicsConta
 			!addPrimarySecurity (counterPartyFunding) ||
 			!addPrimarySecurity (bankSubordinateFunding))
 		{
-			throw new java.lang.Exception ("PrimarySecurityContainer Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("PrimarySecurityDynamicsContainer Constructor => Invalid Inputs");
 		}
 
 		addPrimarySecurity (position);
@@ -128,17 +128,20 @@ public class PrimarySecurityContainer extends org.drip.xva.evolver.DynamicsConta
 			(null != bankSubordinateFundingLabel && !(bankSubordinateFundingLabel instanceof
 				org.drip.state.identifier.EntityFundingLabel)))
 		{
-			throw new java.lang.Exception ("PrimarySecurityContainer Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("PrimarySecurityDynamicsContainer Constructor => Invalid Inputs");
 		}
 
-		_csaLabel = (org.drip.state.identifier.CSALabel) csaLabel;
-		_overnightLabel = (org.drip.state.identifier.OvernightLabel) overnightLabel;
-		_bankSeniorFundingLabel = (org.drip.state.identifier.EntityFundingLabel) bankSeniorFundingLabel;
-		_counterPartyFundingLabel = (org.drip.state.identifier.EntityFundingLabel) counterPartyFundingLabel;
-		_bankSubordinateFundingLabel = null == bankSubordinateFundingLabel ? null :
-			(org.drip.state.identifier.EntityFundingLabel) bankSubordinateFundingLabel;
+		_csaID = csa.id();
 
-		_positionLabel = null == position ? null : position.label();
+		_overnightID = overnight.id();
+
+		_bankSeniorFundingID = bankSeniorFunding.id();
+
+		_counterPartyFundingID = counterPartyFunding.id();
+
+		_positionID = null == position ? null : position.id();
+
+		_bankSubordinateFundingID = null == bankSubordinateFundingLabel ? null : bankSubordinateFunding.id();
 	}
 
 	/**
@@ -149,7 +152,7 @@ public class PrimarySecurityContainer extends org.drip.xva.evolver.DynamicsConta
 
 	public org.drip.xva.evolver.PrimarySecurity position()
 	{
-		return primarySecurity (_positionLabel);
+		return primarySecurity (_positionID);
 	}
 
 	/**
@@ -160,7 +163,7 @@ public class PrimarySecurityContainer extends org.drip.xva.evolver.DynamicsConta
 
 	public org.drip.xva.evolver.PrimarySecurity overnight()
 	{
-		return primarySecurity (_overnightLabel);
+		return primarySecurity (_overnightID);
 	}
 
 	/**
@@ -171,7 +174,7 @@ public class PrimarySecurityContainer extends org.drip.xva.evolver.DynamicsConta
 
 	public org.drip.xva.evolver.PrimarySecurity csa()
 	{
-		return primarySecurity (_csaLabel);
+		return primarySecurity (_csaID);
 	}
 
 	/**
@@ -182,7 +185,7 @@ public class PrimarySecurityContainer extends org.drip.xva.evolver.DynamicsConta
 
 	public org.drip.xva.evolver.PrimarySecurity bankSeniorFunding()
 	{
-		return primarySecurity (_bankSeniorFundingLabel);
+		return primarySecurity (_bankSeniorFundingID);
 	}
 
 	/**
@@ -193,7 +196,7 @@ public class PrimarySecurityContainer extends org.drip.xva.evolver.DynamicsConta
 
 	public org.drip.xva.evolver.PrimarySecurity bankSubordinateFunding()
 	{
-		return primarySecurity (_bankSubordinateFundingLabel);
+		return primarySecurity (_bankSubordinateFundingID);
 	}
 
 	/**
@@ -204,6 +207,6 @@ public class PrimarySecurityContainer extends org.drip.xva.evolver.DynamicsConta
 
 	public org.drip.xva.evolver.PrimarySecurity counterPartyFunding()
 	{
-		return primarySecurity (_counterPartyFundingLabel);
+		return primarySecurity (_counterPartyFundingID);
 	}
 }
