@@ -698,5 +698,7 @@ public class CPGAUncollateralizedCorrelated {
 		System.out.println ("\t||-----------------------------------------------------||");
 
 		System.out.println();
+
+		EnvManager.TerminateEnv();
 	}
 }

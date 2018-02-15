@@ -482,5 +482,7 @@ public class CPGAUncollateralized {
 		System.out.println ("\t||-----------------------------------------------------||");
 
 		System.out.println();
+
+		EnvManager.TerminateEnv();
 	}
 }

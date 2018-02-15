@@ -730,5 +730,7 @@ public class CPGAZeroThresholdCorrelated {
 		System.out.println ("\t||-----------------------------------------------------||");
 
 		System.out.println();
+
+		EnvManager.TerminateEnv();
 	}
 }

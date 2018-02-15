@@ -515,5 +515,7 @@ public class CPGAZeroThreshold {
 		System.out.println ("\t||-----------------------------------------------------||");
 
 		System.out.println();
+
+		EnvManager.TerminateEnv();
 	}
 }

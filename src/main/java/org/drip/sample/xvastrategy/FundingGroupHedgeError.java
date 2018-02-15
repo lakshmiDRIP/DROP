@@ -637,5 +637,7 @@ public class FundingGroupHedgeError {
 		System.out.println ("\t||----------------------------------------||");
 
 		System.out.println();
+
+		EnvManager.TerminateEnv();
 	}
 }

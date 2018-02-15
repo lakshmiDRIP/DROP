@@ -636,5 +636,7 @@ public class FundingGroupPerfectReplication {
 		System.out.println ("\t||----------------------------------------||");
 
 		System.out.println();
+
+		EnvManager.TerminateEnv();
 	}
 }

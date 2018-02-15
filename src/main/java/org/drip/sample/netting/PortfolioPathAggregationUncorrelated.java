@@ -517,5 +517,7 @@ public class PortfolioPathAggregationUncorrelated {
 		System.out.println ("\t||  SFVA  => " + FormatUtil.FormatDouble (eaa.sfva().amount(), 2, 2, 100.) + "% ||");
 
 		System.out.println ("\t||-------------------||");
+
+		EnvManager.TerminateEnv();
 	}
 }
