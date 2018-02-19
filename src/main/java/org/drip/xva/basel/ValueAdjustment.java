@@ -250,6 +250,20 @@ public class ValueAdjustment
 	}
 
 	/**
+	 * Construct the DVA2 Value Adjustment Instance
+	 * 
+	 * @param amount Valuation Adjustment Amount
+	 * 
+	 * @return The DVA2 Value Adjustment Instance
+	 */
+
+	public static final ValueAdjustment DVA2 (
+		final double amount)
+	{
+		return FDA (amount);
+	}
+
+	/**
 	 * Construct the COLVA Value Adjustment Instance
 	 * 
 	 * @param amount Valuation Adjustment Amount

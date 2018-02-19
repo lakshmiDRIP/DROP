@@ -70,6 +70,7 @@ package org.drip.xva.basel;
 
 public class BalanceSheetVertex
 {
+	private double _cash = java.lang.Double.NaN;
 	private double _asset = java.lang.Double.NaN;
 	private double _liability = java.lang.Double.NaN;
 	private double _contraAsset = java.lang.Double.NaN;
@@ -77,7 +78,7 @@ public class BalanceSheetVertex
 	private double _retainedEarnings = java.lang.Double.NaN;
 
 	/**
-	 * BalanceSheetVertex Constructor
+	 * Unrealized Instance of BalanceSheetVertex
 	 * 
 	 * @param asset The Asset Account
 	 * @param liability The Liability Account
@@ -88,7 +89,7 @@ public class BalanceSheetVertex
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public BalanceSheetVertex (
+	public static final BalanceSheetVertex Unrealized (
 		final double asset,
 		final double liability,
 		final double contraAsset,
@@ -96,7 +97,49 @@ public class BalanceSheetVertex
 		final double retainedEarnings)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_asset = asset) ||
+		try
+		{
+			return new BalanceSheetVertex (
+				asset,
+				liability,
+				contraAsset,
+				contraLiability,
+				retainedEarnings,
+				0.
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * BalanceSheetVertex Constructor
+	 * 
+	 * @param asset The Asset Account
+	 * @param liability The Liability Account
+	 * @param contraAsset The Contra Asset Account
+	 * @param contraLiability The Contra Liability Account
+	 * @param retainedEarnings The Retained Earnings Account
+	 * @param cash The Cash Account
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public BalanceSheetVertex (
+		final double asset,
+		final double liability,
+		final double contraAsset,
+		final double contraLiability,
+		final double retainedEarnings,
+		final double cash)
+		throws java.lang.Exception
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (_cash = cash) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_asset = asset) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_liability = liability) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_contraAsset = contraAsset) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_contraLiability = contraLiability) ||
@@ -162,6 +205,28 @@ public class BalanceSheetVertex
 	}
 
 	/**
+	 * Retrieve the Cash Account
+	 * 
+	 * @return The Cash Account
+	 */
+
+	public double cash()
+	{
+		return _cash;
+	}
+
+	/**
+	 * Estimate the Portfolio Value (PFV)
+	 * 
+	 * @return The Portfolio Value (PFV)
+	 */
+
+	public double pfv()
+	{
+		return _asset - _liability;
+	}
+
+	/**
 	 * Estimate the Equity Account
 	 * 
 	 * @return The Equity Account
@@ -169,7 +234,7 @@ public class BalanceSheetVertex
 
 	public double equity()
 	{
-		return _asset - _liability - _contraAsset + _contraLiability + _retainedEarnings;
+		return _cash + _asset - _liability - _contraAsset + _contraLiability + _retainedEarnings;
 	}
 
 	/**
@@ -180,6 +245,6 @@ public class BalanceSheetVertex
 
 	public double cet1()
 	{
-		return _asset - _liability - _contraAsset + _retainedEarnings;
+		return _cash + _asset - _liability - _contraAsset + _retainedEarnings;
 	}
 }

@@ -1035,6 +1035,17 @@ public class ExposureAdjustmentAggregator
 	}
 
 	/**
+	 * Retrieve the Expected DVA2
+	 * 
+	 * @return The Expected DVA2
+	 */
+
+	public org.drip.xva.basel.ValueAdjustment dva2()
+	{
+		return fda();
+	}
+
+	/**
 	 * Retrieve the Expected FCA
 	 * 
 	 * @return The Expected FCA

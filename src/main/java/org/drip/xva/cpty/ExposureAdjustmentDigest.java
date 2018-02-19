@@ -645,6 +645,17 @@ public class ExposureAdjustmentDigest
 	}
 
 	/**
+	 * Retrieve the Univariate Thin Statistics for DVA2
+	 * 
+	 * @return Univariate Thin Statistics for DVA2
+	 */
+
+	public org.drip.measure.statistics.UnivariateDiscreteThin dva2()
+	{
+		return _fdaThinStatistics;
+	}
+
+	/**
 	 * Retrieve the Univariate Thin Statistics for FCA
 	 * 
 	 * @return Univariate Thin Statistics for FCA
