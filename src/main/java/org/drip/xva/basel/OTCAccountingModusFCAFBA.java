@@ -91,14 +91,13 @@ public class OTCAccountingModusFCAFBA extends org.drip.xva.basel.OTCAccountingMo
 	{
 		org.drip.xva.cpty.ExposureAdjustmentAggregator exposureAdjustmentAggregator = aggregator();
 
-		return exposureAdjustmentAggregator.ucva().amount() + exposureAdjustmentAggregator.fva().amount();
+		return exposureAdjustmentAggregator.ucva().amount() + exposureAdjustmentAggregator.fca().amount() -
+			exposureAdjustmentAggregator.fba().amount() + exposureAdjustmentAggregator.udva().amount();
 	}
 
 	@Override public double contraLiabilityAdjustment()
 	{
-		org.drip.xva.cpty.ExposureAdjustmentAggregator exposureAdjustmentAggregator = aggregator();
-
-		return exposureAdjustmentAggregator.cvacl().amount() + exposureAdjustmentAggregator.fba().amount();
+		return aggregator().udva().amount();
 	}
 
 	@Override public org.drip.xva.basel.OTCAccountingPolicy feePolicy (

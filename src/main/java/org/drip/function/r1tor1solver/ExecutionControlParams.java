@@ -83,10 +83,10 @@ public class ExecutionControlParams {
 	public ExecutionControlParams()
 	{
 		_iNumIterations = 200;
-		_dblOFGoalToleranceFactor = 1.0e-06;
-		_dblVariateConvergenceFactor = 1.0e-06;
-		_dblAbsoluteOFToleranceFallback = 1.0e-07;
-		_dblAbsoluteVariateConvergenceFallback = 1.0e-07;
+		_dblOFGoalToleranceFactor = 1.0e-07;
+		_dblVariateConvergenceFactor = 1.0e-07;
+		_dblAbsoluteOFToleranceFallback = 1.0e-08;
+		_dblAbsoluteVariateConvergenceFallback = 1.0e-08;
 	}
 
 	/**

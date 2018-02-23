@@ -709,7 +709,40 @@ public class GroupPathExposureAdjustment implements org.drip.xva.cpty.PathExposu
 		return contraLiabilityCreditAdjustment;
 	}
 
+	@Override public double unilateralDebtAdjustment()
+		throws java.lang.Exception
+	{
+		double unilateralDebtAdjustment = 0.;
+		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;
+
+		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex < counterPartyGroupCount;
+			++counterPartyGroupIndex)
+		{
+			unilateralDebtAdjustment +=
+				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].unilateralDebtAdjustment();
+		}
+
+		return unilateralDebtAdjustment;
+	}
+
+	@Override public double bilateralDebtAdjustment()
+		throws java.lang.Exception
+	{
+		double bilateralDebtAdjustment = 0.;
+		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;
+
+		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex < counterPartyGroupCount;
+			++counterPartyGroupIndex)
+		{
+			bilateralDebtAdjustment +=
+				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].bilateralDebtAdjustment();
+		}
+
+		return bilateralDebtAdjustment;
+	}
+
 	@Override public double debtAdjustment()
+		throws java.lang.Exception
 	{
 		double debtAdjustment = 0.;
 		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;

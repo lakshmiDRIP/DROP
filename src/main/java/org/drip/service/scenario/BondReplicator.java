@@ -548,11 +548,11 @@ public class BondReplicator
 		if (_bond.isFloater() && java.lang.Integer.MIN_VALUE != _iResetDate) {
 			if (fl instanceof org.drip.state.identifier.ForwardLabel) {
 				if (!_csqcFunding01Up.setFixing (_iResetDate, (org.drip.state.identifier.ForwardLabel) fl,
-					_dblResetRate + 0.0001))
+					_dblResetRate /* + 0.0001 */))
 					throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
 			} else if (fl instanceof org.drip.state.identifier.OTCFixFloatLabel) {
 			if (!_csqcFunding01Up.setFixing (_iResetDate, (org.drip.state.identifier.OTCFixFloatLabel) fl,
-				_dblResetRate + 0.0001))
+				_dblResetRate /* + 0.0001 */))
 				throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
 			}
 		}
@@ -649,11 +649,11 @@ public class BondReplicator
 			if (_bond.isFloater() && java.lang.Integer.MIN_VALUE != _iResetDate) {
 				if (fl instanceof org.drip.state.identifier.ForwardLabel) {
 					if (!csqcFundingTenorUp.setFixing (_iResetDate, (org.drip.state.identifier.ForwardLabel)
-						fl, _dblResetRate + 0.0001 * _dblTenorBump))
+						fl, _dblResetRate /* + 0.0001 * _dblTenorBump */))
 						throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
 
 					if (!csqcFundingTenorDown.setFixing (_iResetDate, (org.drip.state.identifier.ForwardLabel)
-						fl, _dblResetRate - 0.0001 * _dblTenorBump))
+						fl, _dblResetRate /* - 0.0001 * _dblTenorBump */))
 						throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
 				} else if (fl instanceof org.drip.state.identifier.OTCFixFloatLabel) {
 					if (!csqcFundingTenorUp.setFixing (_iResetDate,

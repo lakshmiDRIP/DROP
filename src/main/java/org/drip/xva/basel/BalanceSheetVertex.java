@@ -86,7 +86,7 @@ public class BalanceSheetVertex
 	 * @param contraLiability The Contra Liability Account
 	 * @param retainedEarnings The Retained Earnings Account
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @return The Unrealized BalanceSheetVertex Instance
 	 */
 
 	public static final BalanceSheetVertex Unrealized (
@@ -95,7 +95,6 @@ public class BalanceSheetVertex
 		final double contraAsset,
 		final double contraLiability,
 		final double retainedEarnings)
-		throws java.lang.Exception
 	{
 		try
 		{

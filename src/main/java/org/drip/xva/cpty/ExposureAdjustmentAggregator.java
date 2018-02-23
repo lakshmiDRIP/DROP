@@ -960,6 +960,60 @@ public class ExposureAdjustmentAggregator
 	}
 
 	/**
+	 * Retrieve the Expected Unilateral DVA
+	 * 
+	 * @return The Expected Unilateral DVA
+	 */
+
+	public org.drip.xva.basel.ValueAdjustment udva()
+	{
+		double udva = 0.;
+		int pathCount = _pathExposureAdjustmentArray.length;
+
+		try {
+			for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
+			{
+				udva += _pathExposureAdjustmentArray[pathIndex].unilateralDebtAdjustment();
+			}
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+
+			return null;
+		}
+
+		return org.drip.xva.basel.ValueAdjustment.DVA (udva / pathCount);
+	}
+
+	/**
+	 * Retrieve the Expected Bilateral DVA
+	 * 
+	 * @return The Expected Bilateral DVA
+	 */
+
+	public org.drip.xva.basel.ValueAdjustment ftddva()
+	{
+		double ftddva = 0.;
+		int pathCount = _pathExposureAdjustmentArray.length;
+
+		try {
+			for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
+			{
+				ftddva += _pathExposureAdjustmentArray[pathIndex].bilateralDebtAdjustment();
+			}
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+
+			return null;
+		}
+
+		return org.drip.xva.basel.ValueAdjustment.DVA (ftddva / pathCount);
+	}
+
+	/**
 	 * Retrieve the Expected DVA
 	 * 
 	 * @return The Expected DVA
@@ -970,9 +1024,17 @@ public class ExposureAdjustmentAggregator
 		double dva = 0.;
 		int pathCount = _pathExposureAdjustmentArray.length;
 
-		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
+		try {
+			for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
+			{
+				dva += _pathExposureAdjustmentArray[pathIndex].debtAdjustment();
+			}
+		}
+		catch (java.lang.Exception e)
 		{
-			dva += _pathExposureAdjustmentArray[pathIndex].debtAdjustment();
+			e.printStackTrace();
+
+			return null;
 		}
 
 		return org.drip.xva.basel.ValueAdjustment.DVA (dva / pathCount);

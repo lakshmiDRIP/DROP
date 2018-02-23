@@ -3,6 +3,7 @@ package org.drip.sample.ois;
 
 import java.util.*;
 
+import org.drip.analytics.date.DateUtil;
 import org.drip.analytics.date.JulianDate;
 import org.drip.analytics.support.*;
 import org.drip.function.r1tor1.QuadraticRationalShapeControl;
@@ -951,7 +952,11 @@ public class IndexFundCurvesReconciliation {
 
 		String strCurrency = "EUR";
 
-		JulianDate dtToday = org.drip.analytics.date.DateUtil.Today().addTenor ("0D");
+		JulianDate dtToday = DateUtil.CreateFromYMD (
+			2018,
+			DateUtil.FEBRUARY,
+			18
+		);
 
 		MergedDiscountForwardCurve dcIndex = CustomOISCurveBuilderSample (
 			dtToday,

@@ -378,12 +378,9 @@ public abstract class CreditDebtGroupPath extends org.drip.xva.netting.ExposureG
 	 * Compute Period-wise Bilateral Debt Adjustment
 	 * 
 	 * @return The Period-wise Bilateral Debt Adjustment
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double[] periodBilateralDebtAdjustment()
-		throws java.lang.Exception
 	{
 		org.drip.xva.universe.MarketVertex[] marketVertexArray = marketPath().vertexes();
 
@@ -425,9 +422,12 @@ public abstract class CreditDebtGroupPath extends org.drip.xva.netting.ExposureG
 	 * Compute Path Debt Adjustment
 	 * 
 	 * @return The Path Debt Adjustment
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public abstract double debtAdjustment();
+	public abstract double debtAdjustment()
+		throws java.lang.Exception;
 
 	/**
 	 * Compute Period-wise Credit Adjustment

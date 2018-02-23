@@ -98,8 +98,8 @@ public class OTCAccountingModusFVAFDA extends org.drip.xva.basel.OTCAccountingMo
 	{
 		org.drip.xva.cpty.ExposureAdjustmentAggregator exposureAdjustmentAggregator = aggregator();
 
-		return exposureAdjustmentAggregator.cvacl().amount() + exposureAdjustmentAggregator.dva().amount() +
-			exposureAdjustmentAggregator.fda().amount();
+		return exposureAdjustmentAggregator.cvacl().amount() + exposureAdjustmentAggregator.ftddva().amount()
+			+ exposureAdjustmentAggregator.fda().amount();
 	}
 
 	@Override public org.drip.xva.basel.OTCAccountingPolicy feePolicy (
@@ -115,10 +115,11 @@ public class OTCAccountingModusFVAFDA extends org.drip.xva.basel.OTCAccountingMo
 		double collateralVAChange = exposureAdjustmentAggregatorNext.colva().amount() -
 			exposureAdjustmentAggregator.colva().amount();
 
-		double contraLiabilityChange = exposureAdjustmentAggregatorNext.dva().amount() +
+		double contraLiabilityChange = exposureAdjustmentAggregatorNext.ftddva().amount() +
 			exposureAdjustmentAggregatorNext.fda().amount() +
-			exposureAdjustmentAggregatorNext.cvacl().amount() - exposureAdjustmentAggregator.dva().amount() -
-			exposureAdjustmentAggregator.fda().amount() - exposureAdjustmentAggregator.cvacl().amount();
+			exposureAdjustmentAggregatorNext.cvacl().amount() -
+			exposureAdjustmentAggregator.ftddva().amount() - exposureAdjustmentAggregator.fda().amount() -
+			exposureAdjustmentAggregator.cvacl().amount();
 
 		try
 		{

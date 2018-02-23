@@ -301,12 +301,37 @@ public interface PathExposureAdjustment
 		throws java.lang.Exception;
 
 	/**
+	 * Compute Path Unilateral Debt Adjustment
+	 * 
+	 * @return The Path Unilateral Debt Adjustment
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	abstract public double unilateralDebtAdjustment()
+		throws java.lang.Exception;
+
+	/**
+	 * Compute Path Bilateral Debt Adjustment
+	 * 
+	 * @return The Path Bilateral Debt Adjustment
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	abstract public double bilateralDebtAdjustment()
+		throws java.lang.Exception;
+
+	/**
 	 * Compute Path Debt Adjustment
 	 * 
 	 * @return The Path Debt Adjustment
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	abstract public double debtAdjustment();
+	abstract public double debtAdjustment()
+		throws java.lang.Exception;
 
 	/**
 	 * Compute Path Funding Value Adjustment

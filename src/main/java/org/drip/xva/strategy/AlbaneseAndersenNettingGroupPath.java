@@ -129,8 +129,9 @@ public class AlbaneseAndersenNettingGroupPath extends org.drip.xva.netting.Credi
 	}
 
 	@Override public double debtAdjustment()
+		throws java.lang.Exception
 	{
-		return unilateralDebtAdjustment();
+		return bilateralDebtAdjustment();
 	}
 
 	@Override public double[] periodCreditAdjustment()
@@ -141,6 +142,6 @@ public class AlbaneseAndersenNettingGroupPath extends org.drip.xva.netting.Credi
 
 	@Override public double[] periodDebtAdjustment()
 	{
-		return periodUnilateralDebtAdjustment();
+		return periodBilateralDebtAdjustment();
 	}
 }
