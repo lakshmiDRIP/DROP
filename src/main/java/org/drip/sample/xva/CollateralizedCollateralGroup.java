@@ -211,8 +211,6 @@ public class CollateralizedCollateralGroup {
 			dblBankThreshold
 		);
 
-		CounterPartyGroupSpecification cpgs = CounterPartyGroupSpecification.Standard ("CPGROUP");
-
 		double[][] aadblSwapPortfolioValueRealization = SwapPortfolioValueRealization (
 			new DiffusionEvolver (
 				DiffusionEvaluatorLinear.Standard (
@@ -273,7 +271,6 @@ public class CollateralizedCollateralGroup {
 				if (0 != j) {
 					CollateralAmountEstimator hae = new CollateralAmountEstimator (
 						cgs,
-						cpgs,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
 							dtEnd.julian(),

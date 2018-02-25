@@ -73,13 +73,11 @@ public class CollateralAmountEstimator
 	private double _currentBalance = java.lang.Double.NaN;
 	private org.drip.measure.bridge.BrokenDateInterpolator _brokenDateInterpolator = null;
 	private org.drip.xva.set.CollateralGroupSpecification _collateralGroupSpecification = null;
-	private org.drip.xva.set.CounterPartyGroupSpecification _counterPartyGroupSpecification = null;
 
 	/**
 	 * CollateralAmountEstimator Constructor
 	 * 
 	 * @param collateralGroupSpecification The Collateral Group Specification
-	 * @param counterPartyGroupSpecification The Counter Party Group Specification
 	 * @param brokenDateInterpolator The Stochastic Value Broken Date Bridge Estimator
 	 * @param currentBalance The Current Collateral Balance
 	 * 
@@ -88,13 +86,11 @@ public class CollateralAmountEstimator
 
 	public CollateralAmountEstimator (
 		final org.drip.xva.set.CollateralGroupSpecification collateralGroupSpecification,
-		final org.drip.xva.set.CounterPartyGroupSpecification counterPartyGroupSpecification,
 		final org.drip.measure.bridge.BrokenDateInterpolator brokenDateInterpolator,
 		final double currentBalance)
 		throws java.lang.Exception
 	{
 		if (null == (_collateralGroupSpecification = collateralGroupSpecification) ||
-			null == (_counterPartyGroupSpecification = counterPartyGroupSpecification) ||
 			null == (_brokenDateInterpolator = brokenDateInterpolator))
 		{
 			throw new java.lang.Exception ("CollateralAmountEstimator Constructor => Invalid Inputs");
@@ -112,17 +108,6 @@ public class CollateralAmountEstimator
 	public org.drip.xva.set.CollateralGroupSpecification collateralGroupSpecification()
 	{
 		return _collateralGroupSpecification;
-	}
-
-	/**
-	 * Retrieve the Counter Party Group Specification
-	 * 
-	 * @return The Counter Party Group Specification
-	 */
-
-	public org.drip.xva.set.CounterPartyGroupSpecification counterPartyGroupSpecification()
-	{
-		return _counterPartyGroupSpecification;
 	}
 
 	/**
@@ -165,7 +150,8 @@ public class CollateralAmountEstimator
 			throw new java.lang.Exception
 				("CollateralAmountEstimator::bankWindowMarginValue => Invalid Inputs");
 
-		org.drip.analytics.date.JulianDate dtMargin = valuationDateJulian.subtractDays (_counterPartyGroupSpecification.bankDefaultWindow());
+		org.drip.analytics.date.JulianDate dtMargin = valuationDateJulian.subtractDays
+			(_collateralGroupSpecification.bankDefaultWindow());
 
 		if (null == dtMargin)
 			throw new java.lang.Exception
@@ -231,7 +217,7 @@ public class CollateralAmountEstimator
 				("CollateralAmountEstimator::counterPartyWindowMarginValue => Invalid Inputs");
 
 		org.drip.analytics.date.JulianDate dtMargin = valuationDateJulian.subtractDays
-			(_counterPartyGroupSpecification.counterPartyDefaultWindow());
+			(_collateralGroupSpecification.counterPartyDefaultWindow());
 
 		if (null == dtMargin)
 			throw new java.lang.Exception
@@ -254,10 +240,11 @@ public class CollateralAmountEstimator
 		final org.drip.analytics.date.JulianDate valuationDateJulian)
 		throws java.lang.Exception
 	{
-		org.drip.function.definition.R1ToR1[] counterPartyThresholdFunctionArray = _collateralGroupSpecification.counterPartyThreshold();
+		org.drip.function.definition.R1ToR1[] counterPartyThresholdFunctionArray =
+			_collateralGroupSpecification.counterPartyThreshold();
 
-		return null == counterPartyThresholdFunctionArray || null == counterPartyThresholdFunctionArray[0] ? 0. :
-			counterPartyThresholdFunctionArray[0].evaluate (valuationDateJulian.julian());
+		return null == counterPartyThresholdFunctionArray || null == counterPartyThresholdFunctionArray[0] ?
+			0. : counterPartyThresholdFunctionArray[0].evaluate (valuationDateJulian.julian());
 	}
 
 	/**
@@ -315,10 +302,10 @@ public class CollateralAmountEstimator
 		}
 
 		org.drip.analytics.date.JulianDate bankMarginDate = valuationDateJulian.subtractDays
-			(_counterPartyGroupSpecification.bankDefaultWindow());
+			(_collateralGroupSpecification.bankDefaultWindow());
 
 		org.drip.analytics.date.JulianDate counterPartyMarginDate = valuationDateJulian.subtractDays
-			(_counterPartyGroupSpecification.counterPartyDefaultWindow());
+			(_collateralGroupSpecification.counterPartyDefaultWindow());
 
 		if (null == bankMarginDate ||
 			null == counterPartyMarginDate)

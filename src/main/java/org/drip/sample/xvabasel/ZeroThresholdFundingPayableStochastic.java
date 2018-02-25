@@ -313,8 +313,6 @@ public class ZeroThresholdFundingPayableStochastic {
 			dblBankThreshold
 		);
 
-		CounterPartyGroupSpecification cpgs = CounterPartyGroupSpecification.Standard ("CPGROUP");
-
 		JulianDate dtSpot = DateUtil.Today();
 
 		double dblTimeWidth = dblTime / iNumStep;
@@ -509,7 +507,6 @@ public class ZeroThresholdFundingPayableStochastic {
 				if (0 != j) {
 					CollateralAmountEstimator cae1 = new CollateralAmountEstimator (
 						cgs,
-						cpgs,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
 							dtEnd.julian(),
@@ -523,7 +520,6 @@ public class ZeroThresholdFundingPayableStochastic {
 
 					CollateralAmountEstimator cae2 = new CollateralAmountEstimator (
 						cgs,
-						cpgs,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
 							dtEnd.julian(),

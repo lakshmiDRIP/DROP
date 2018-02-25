@@ -209,8 +209,6 @@ public class SetOffCollateralizedFunding {
 			dblBankThreshold
 		);
 
-		CounterPartyGroupSpecification cpgs = CounterPartyGroupSpecification.Standard ("CPGROUP");
-
 		CloseOutGeneral cog = new CloseOutBilateral (
 			dblBankSeniorRecoveryRate,
 			dblCounterPartyRecoveryRate
@@ -292,7 +290,6 @@ public class SetOffCollateralizedFunding {
 				if (0 != j) {
 					CollateralAmountEstimator hae1 = new CollateralAmountEstimator (
 						cgs,
-						cpgs,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
 							dtEnd.julian(),
@@ -306,7 +303,6 @@ public class SetOffCollateralizedFunding {
 
 					CollateralAmountEstimator hae2 = new CollateralAmountEstimator (
 						cgs,
-						cpgs,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
 							dtEnd.julian(),

@@ -169,7 +169,6 @@ public class PathSimulator
 
 		return null == brokenDateInterpolator ? 0. : new org.drip.xva.hypothecation.CollateralAmountEstimator
 			(positionGroupSpecification.collateralGroupSpecification(),
-			positionGroupSpecification.counterPartyGroupSpecification(),
 			brokenDateInterpolator (
 				marketVertexArray,
 				positionGroupValueArray,

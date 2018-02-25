@@ -311,8 +311,6 @@ public class ZeroThresholdNettingReceivableStochastic {
 			dblBankThreshold
 		);
 
-		CounterPartyGroupSpecification cpgs = CounterPartyGroupSpecification.Standard ("CPGROUP");
-
 		JulianDate dtSpot = DateUtil.Today();
 
 		double dblTimeWidth = dblTime / iNumStep;
@@ -507,7 +505,6 @@ public class ZeroThresholdNettingReceivableStochastic {
 				if (0 != j) {
 					CollateralAmountEstimator cae1 = new CollateralAmountEstimator (
 						cgs,
-						cpgs,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
 							dtEnd.julian(),
@@ -521,7 +518,6 @@ public class ZeroThresholdNettingReceivableStochastic {
 
 					CollateralAmountEstimator cae2 = new CollateralAmountEstimator (
 						cgs,
-						cpgs,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
 							dtEnd.julian(),

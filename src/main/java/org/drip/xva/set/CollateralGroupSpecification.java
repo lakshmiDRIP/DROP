@@ -69,6 +69,8 @@ package org.drip.xva.set;
 
 public class CollateralGroupSpecification extends org.drip.xva.set.RollUpGroupSpecification
 {
+	private int _bankDefaultWindow = -1;
+	private int _counterPartyDefaultWindow = -1;
 	private double _independentAmount = java.lang.Double.NaN;
 	private double _minimumTransferAmount = java.lang.Double.NaN;
 	private org.drip.function.definition.R1ToR1 _bankThresholdFunction = null;
@@ -90,6 +92,8 @@ public class CollateralGroupSpecification extends org.drip.xva.set.RollUpGroupSp
 			return new CollateralGroupSpecification (
 				org.drip.quant.common.StringUtil.GUID(),
 				name,
+				14,
+				14,
 				null,
 				null,
 				0.,
@@ -130,6 +134,8 @@ public class CollateralGroupSpecification extends org.drip.xva.set.RollUpGroupSp
 			return new CollateralGroupSpecification (
 				org.drip.quant.common.StringUtil.GUID(),
 				name,
+				14,
+				14,
 				new org.drip.function.r1tor1.FlatUnivariate[]
 				{
 					new org.drip.function.r1tor1.FlatUnivariate (counterPartyThreshold)
@@ -152,6 +158,8 @@ public class CollateralGroupSpecification extends org.drip.xva.set.RollUpGroupSp
 	 * 
 	 * @param id The Collateral Group ID
 	 * @param name The Collateral Group Name
+	 * @param counterPartyDefaultWindow The Counter Party Default Window
+	 * @param bankDefaultWindow The Bank Default Window
 	 * @param counterPartyThresholdFunctionArray The Array of Collateral Group Counter Party Threshold R^1 - R^1
 	 * 		Functions
 	 * @param bankThresholdFunction The Collateral Group Bank Threshold R^1 - R^1 Function
@@ -164,6 +172,8 @@ public class CollateralGroupSpecification extends org.drip.xva.set.RollUpGroupSp
 	public CollateralGroupSpecification (
 		final java.lang.String id,
 		final java.lang.String name,
+		final int counterPartyDefaultWindow,
+		final int bankDefaultWindow,
 		final org.drip.function.definition.R1ToR1[] counterPartyThresholdFunctionArray,
 		final org.drip.function.definition.R1ToR1 bankThresholdFunction,
 		final double minimumTransferAmount,
@@ -175,7 +185,9 @@ public class CollateralGroupSpecification extends org.drip.xva.set.RollUpGroupSp
 			name
 		);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_minimumTransferAmount = minimumTransferAmount) ||
+		if (-1 >= (_counterPartyDefaultWindow = counterPartyDefaultWindow) ||
+			-1 >= (_bankDefaultWindow = bankDefaultWindow) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_minimumTransferAmount = minimumTransferAmount) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_independentAmount = independentAmount))
 		{
 			throw new java.lang.Exception ("CollateralGroupSpecification Constructor => Invalid Inputs");
@@ -183,6 +195,28 @@ public class CollateralGroupSpecification extends org.drip.xva.set.RollUpGroupSp
 
 		_bankThresholdFunction = bankThresholdFunction;
 		_counterPartyThresholdFunctionArray = counterPartyThresholdFunctionArray;
+	}
+
+	/**
+	 * Retrieve the Counter Party Default Window
+	 * 
+	 * @return The Counter Party Default Window
+	 */
+
+	public int counterPartyDefaultWindow()
+	{
+		return _counterPartyDefaultWindow;
+	}
+
+	/**
+	 * Retrieve the Bank Default Window
+	 * 
+	 * @return The Bank Default Window
+	 */
+
+	public int bankDefaultWindow()
+	{
+		return _bankDefaultWindow;
 	}
 
 	/**

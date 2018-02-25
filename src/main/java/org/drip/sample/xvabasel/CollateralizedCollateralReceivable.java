@@ -206,8 +206,6 @@ public class CollateralizedCollateralReceivable {
 			dblBankThreshold
 		);
 
-		CounterPartyGroupSpecification cpgs = CounterPartyGroupSpecification.Standard ("CPGROUP");
-
 		DiffusionEvolver deATMSwapRateOffset = new DiffusionEvolver (
 			DiffusionEvaluatorLinear.Standard (
 				dblATMSwapRateOffsetDrift,
@@ -284,7 +282,6 @@ public class CollateralizedCollateralReceivable {
 				if (0 != j) {
 					CollateralAmountEstimator hae1 = new CollateralAmountEstimator (
 						cgs,
-						cpgs,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
 							dtEnd.julian(),
@@ -298,7 +295,6 @@ public class CollateralizedCollateralReceivable {
 
 					CollateralAmountEstimator hae2 = new CollateralAmountEstimator (
 						cgs,
-						cpgs,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
 							dtEnd.julian(),

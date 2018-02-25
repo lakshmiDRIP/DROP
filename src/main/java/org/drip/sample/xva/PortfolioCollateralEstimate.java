@@ -110,8 +110,6 @@ public class PortfolioCollateralEstimate {
 			dblBankThreshold
 		);
 
-		CounterPartyGroupSpecification cpgs = CounterPartyGroupSpecification.Standard ("CPGROUP");
-
 		DiffusionEvolver dePortfolio = new DiffusionEvolver (
 			DiffusionEvaluatorLinear.Standard (
 				dblPortfolioDrift,
@@ -174,7 +172,6 @@ public class PortfolioCollateralEstimate {
 
 			CollateralAmountEstimator hae = new CollateralAmountEstimator (
 				cgs,
-				cpgs,
 				new BrokenDateInterpolatorLinearT (
 					dtStart.julian(),
 					dtEnd.julian(),

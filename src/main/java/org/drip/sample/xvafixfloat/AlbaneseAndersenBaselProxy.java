@@ -462,7 +462,6 @@ public class AlbaneseAndersenBaselProxy
 							dblCounterPartyThreshold,
 							dblBankThreshold
 						),
-						CounterPartyGroupSpecification.Standard ("CPGROUP"),
 						new NettingGroupSpecification (
 							"NETGRPSPEC1",
 							"NETGRPSPEC1",

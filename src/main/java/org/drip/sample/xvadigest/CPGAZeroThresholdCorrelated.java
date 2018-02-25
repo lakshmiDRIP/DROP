@@ -348,8 +348,6 @@ public class CPGAZeroThresholdCorrelated {
 			0.
 		);
 
-		CounterPartyGroupSpecification cpgs = CounterPartyGroupSpecification.Standard ("CPGROUP");
-
 		double dblTimeWidth = dblTime / iNumStep;
 		JulianDate[] adtVertex = new JulianDate[iNumStep + 1];
 		double[][] aadblPortfolioValue = new double[iNumPath][iNumStep + 1];
@@ -552,7 +550,6 @@ public class CPGAZeroThresholdCorrelated {
 				if (0 != j) {
 					CollateralAmountEstimator hae = new CollateralAmountEstimator (
 						cgs,
-						cpgs,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
 							dtEnd.julian(),

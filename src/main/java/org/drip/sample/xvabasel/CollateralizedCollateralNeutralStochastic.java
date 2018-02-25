@@ -312,8 +312,6 @@ public class CollateralizedCollateralNeutralStochastic {
 			dblBankThreshold
 		);
 
-		CounterPartyGroupSpecification cpgs = CounterPartyGroupSpecification.Standard ("CPGROUP");
-
 		JulianDate dtSpot = DateUtil.Today();
 
 		double dblTimeWidth = dblTime / iNumStep;
@@ -508,7 +506,6 @@ public class CollateralizedCollateralNeutralStochastic {
 				if (0 != j) {
 					CollateralAmountEstimator hae1 = new CollateralAmountEstimator (
 						cgs,
-						cpgs,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
 							dtEnd.julian(),
@@ -522,7 +519,6 @@ public class CollateralizedCollateralNeutralStochastic {
 
 					CollateralAmountEstimator hae2 = new CollateralAmountEstimator (
 						cgs,
-						cpgs,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
 							dtEnd.julian(),

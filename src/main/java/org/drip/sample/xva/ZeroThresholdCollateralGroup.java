@@ -209,8 +209,6 @@ public class ZeroThresholdCollateralGroup {
 			0.
 		);
 
-		CounterPartyGroupSpecification cpgs = CounterPartyGroupSpecification.Standard ("CPGROUP");
-
 		double[][] aadblSwapPortfolioValueRealization = SwapPortfolioValueRealization (
 			new DiffusionEvolver (
 				DiffusionEvaluatorLinear.Standard (
@@ -271,7 +269,6 @@ public class ZeroThresholdCollateralGroup {
 				if (0 != j) {
 					CollateralAmountEstimator hae = new CollateralAmountEstimator (
 						cgs,
-						cpgs,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
 							dtEnd.julian(),

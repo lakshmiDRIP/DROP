@@ -206,8 +206,6 @@ public class ZeroThresholdNettingNeutral {
 			dblBankThreshold
 		);
 
-		CounterPartyGroupSpecification cpgs = CounterPartyGroupSpecification.Standard ("CPGROUP");
-
 		DiffusionEvolver deATMSwapRateOffset = new DiffusionEvolver (
 			DiffusionEvaluatorLinear.Standard (
 				dblATMSwapRateOffsetDrift,
@@ -284,7 +282,6 @@ public class ZeroThresholdNettingNeutral {
 				if (0 != j) {
 					CollateralAmountEstimator cae1 = new CollateralAmountEstimator (
 						cgs,
-						cpgs,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
 							dtEnd.julian(),
@@ -298,7 +295,6 @@ public class ZeroThresholdNettingNeutral {
 
 					CollateralAmountEstimator cae2 = new CollateralAmountEstimator (
 						cgs,
-						cpgs,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
 							dtEnd.julian(),

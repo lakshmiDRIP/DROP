@@ -70,9 +70,6 @@ public class GroupSpecificationContainer
 {
 	private org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.xva.set.CollateralGroupSpecification>
 		_collateralGroupMap = null;
-	private
-		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.xva.set.CounterPartyGroupSpecification>
-			_counterPartyGroupMap = null;
 	private org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.xva.set.NettingGroupSpecification>
 		_nettingGroupMap = null;
 	private org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.xva.set.RollUpGroupSpecification>
@@ -86,9 +83,6 @@ public class GroupSpecificationContainer
 	{
 		_collateralGroupMap = new
 			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.xva.set.CollateralGroupSpecification>();
-
-		_counterPartyGroupMap = new
-			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.xva.set.CounterPartyGroupSpecification>();
 
 		_nettingGroupMap = new
 			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.xva.set.NettingGroupSpecification>();
@@ -107,18 +101,6 @@ public class GroupSpecificationContainer
 		collateralGroupMap()
 	{
 		return _collateralGroupMap;
-	}
-
-	/**
-	 * Retrieve the Counter Party Group Map
-	 * 
-	 * @return The Counter Party Group Map
-	 */
-
-	public org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.xva.set.CounterPartyGroupSpecification>
-		counterPartyGroupMap()
-	{
-		return _counterPartyGroupMap;
 	}
 
 	/**
@@ -195,58 +177,6 @@ public class GroupSpecificationContainer
 		final java.lang.String id)
 	{
 		return !containsCollateralGroupSpecification (id) ? null : _collateralGroupMap.get (id);
-	}
-
-	/**
-	 * Add the Counter Party Group Specification
-	 * 
-	 * @param counterPartyGroupSpecification Counter Party Group Specification
-	 * 
-	 * @return TRUE - The Counter Party Group Specification successfully added
-	 */
-
-	public boolean addCounterPartyGroupSpecification (
-		final org.drip.xva.set.CounterPartyGroupSpecification counterPartyGroupSpecification)
-	{
-		if (null == counterPartyGroupSpecification)
-		{
-			return false;
-		}
-
-		_counterPartyGroupMap.put (
-			counterPartyGroupSpecification.id(),
-			counterPartyGroupSpecification
-		);
-
-		return true;
-	}
-
-	/**
-	 * Indicate if the Map contains the Counter Party Group Specification
-	 * 
-	 * @param id The Counter Party Group ID
-	 * 
-	 * @return TRUE - The Map contains the Counter Party Group Specification
-	 */
-
-	public boolean containsCounterPartyGroupSpecification (
-		final java.lang.String id)
-	{
-		return null != id && !id.isEmpty() && _counterPartyGroupMap.containsKey (id);
-	}
-
-	/**
-	 * Retrieve the Counter Party Group Specification corresponding to the ID
-	 * 
-	 * @param id The Counter Party Group ID
-	 * 
-	 * @return The Counter Party Group Specification
-	 */
-
-	public org.drip.xva.set.CounterPartyGroupSpecification counterPartyGroupSpecification (
-		final java.lang.String id)
-	{
-		return !containsCounterPartyGroupSpecification (id) ? null : _counterPartyGroupMap.get (id);
 	}
 
 	/**

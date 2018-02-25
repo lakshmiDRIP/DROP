@@ -210,8 +210,6 @@ public class SemiReplicationCollateralizedFunding {
 			dblBankThreshold
 		);
 
-		CounterPartyGroupSpecification cpgs = CounterPartyGroupSpecification.Standard ("CPGROUP");
-
 		CloseOutGeneral cog = new CloseOutBilateral (
 			dblBankSeniorRecoveryRate,
 			dblCounterPartyRecoveryRate
@@ -293,7 +291,6 @@ public class SemiReplicationCollateralizedFunding {
 				if (0 != j) {
 					CollateralAmountEstimator hae1 = new CollateralAmountEstimator (
 						cgs,
-						cpgs,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
 							dtEnd.julian(),
@@ -307,7 +304,6 @@ public class SemiReplicationCollateralizedFunding {
 
 					CollateralAmountEstimator hae2 = new CollateralAmountEstimator (
 						cgs,
-						cpgs,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
 							dtEnd.julian(),

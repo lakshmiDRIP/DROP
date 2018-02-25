@@ -71,7 +71,6 @@ public class PositionGroupSpecification extends org.drip.xva.set.RollUpGroupSpec
 	private org.drip.xva.set.RollUpGroupSpecification _fundingGroupSpecification = null;
 	private org.drip.xva.set.NettingGroupSpecification _nettingGroupSpecification = null;
 	private org.drip.xva.set.CollateralGroupSpecification _collateralGroupSpecification = null;
-	private org.drip.xva.set.CounterPartyGroupSpecification _counterPartyGroupSpecification = null;
 
 	/**
 	 * PositionGroupSpecification Constructor
@@ -79,7 +78,6 @@ public class PositionGroupSpecification extends org.drip.xva.set.RollUpGroupSpec
 	 * @param id The Position Group ID
 	 * @param name The Position Group Name
 	 * @param collateralGroupSpecification The Position's Collateral Group Specification
-	 * @param counterPartyGroupSpecification The Position's Counter Party Group Specification
 	 * @param nettingGroupSpecification The Position's Netting Group Specification
 	 * @param fundingGroupSpecification The Position's Funding Group Specification
 	 * 
@@ -90,7 +88,6 @@ public class PositionGroupSpecification extends org.drip.xva.set.RollUpGroupSpec
 		final java.lang.String id,
 		final java.lang.String name,
 		final org.drip.xva.set.CollateralGroupSpecification collateralGroupSpecification,
-		final org.drip.xva.set.CounterPartyGroupSpecification counterPartyGroupSpecification,
 		final org.drip.xva.set.NettingGroupSpecification nettingGroupSpecification,
 		final org.drip.xva.set.RollUpGroupSpecification fundingGroupSpecification)
 		throws java.lang.Exception
@@ -101,7 +98,6 @@ public class PositionGroupSpecification extends org.drip.xva.set.RollUpGroupSpec
 		);
 
 		if (null == (_collateralGroupSpecification = collateralGroupSpecification) ||
-			null == (_counterPartyGroupSpecification = counterPartyGroupSpecification) ||
 			null == (_nettingGroupSpecification = nettingGroupSpecification) ||
 			null == (_fundingGroupSpecification = fundingGroupSpecification))
 		{
@@ -118,17 +114,6 @@ public class PositionGroupSpecification extends org.drip.xva.set.RollUpGroupSpec
 	public org.drip.xva.set.CollateralGroupSpecification collateralGroupSpecification()
 	{
 		return _collateralGroupSpecification;
-	}
-
-	/**
-	 * Retrieve the Position's Counter Party Group Specification
-	 * 
-	 * @return The Position's Counter Party Group Specification
-	 */
-
-	public org.drip.xva.set.CounterPartyGroupSpecification counterPartyGroupSpecification()
-	{
-		return _counterPartyGroupSpecification;
 	}
 
 	/**
