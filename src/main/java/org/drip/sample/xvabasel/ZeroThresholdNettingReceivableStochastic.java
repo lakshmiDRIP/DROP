@@ -313,7 +313,7 @@ public class ZeroThresholdNettingReceivableStochastic {
 			PositionReplicationScheme.ALBANESE_ANDERSEN_VERTEX,
 			BrokenDateScheme.LINEAR_TIME,
 			0.,
-			null
+			CloseOutScheme.ISDA_92
 		);
 
 		JulianDate dtSpot = DateUtil.Today();

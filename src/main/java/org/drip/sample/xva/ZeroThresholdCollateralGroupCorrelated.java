@@ -283,7 +283,7 @@ public class ZeroThresholdCollateralGroupCorrelated {
 			PositionReplicationScheme.ALBANESE_ANDERSEN_VERTEX,
 			BrokenDateScheme.SQUARE_ROOT_OF_TIME,
 			0.,
-			null
+			CloseOutScheme.ISDA_92
 		);
 
 		double dblTimeWidth = dblTime / iNumStep;

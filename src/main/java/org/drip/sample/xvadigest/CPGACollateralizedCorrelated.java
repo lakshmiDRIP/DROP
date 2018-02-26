@@ -352,7 +352,7 @@ public class CPGACollateralizedCorrelated {
 			PositionReplicationScheme.ALBANESE_ANDERSEN_VERTEX,
 			BrokenDateScheme.LINEAR_TIME,
 			0.,
-			null
+			CloseOutScheme.ISDA_92
 		);
 
 		double dblTimeWidth = dblTime / iNumStep;

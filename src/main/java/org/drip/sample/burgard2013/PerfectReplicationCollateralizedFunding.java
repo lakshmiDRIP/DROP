@@ -212,7 +212,7 @@ public class PerfectReplicationCollateralizedFunding {
 			PositionReplicationScheme.BURGARD_KJAER_HEDGE_ERROR_DUAL_BOND_VERTEX,
 			BrokenDateScheme.LINEAR_TIME,
 			0.,
-			null
+			CloseOutScheme.BILATERAL
 		);
 
 		CloseOut cog = new CloseOutBilateral (

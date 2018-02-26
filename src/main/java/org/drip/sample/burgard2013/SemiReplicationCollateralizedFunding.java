@@ -212,7 +212,7 @@ public class SemiReplicationCollateralizedFunding {
 			PositionReplicationScheme.BURGARD_KJAER_SEMI_REPLICATION_DUAL_BOND_VERTEX,
 			BrokenDateScheme.LINEAR_TIME,
 			0.,
-			null
+			CloseOutScheme.BILATERAL
 		);
 
 		CloseOut cog = new CloseOutBilateral (

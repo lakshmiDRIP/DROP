@@ -69,6 +69,7 @@ package org.drip.xva.set;
 
 public class CollateralGroupSpecification extends org.drip.xva.set.RollUpGroupSpecification
 {
+	private int _closeOutScheme = -1;
 	private int _brokenDateScheme = -1;
 	private int _bankDefaultWindow = -1;
 	private int _counterPartyDefaultWindow = -1;
@@ -76,7 +77,6 @@ public class CollateralGroupSpecification extends org.drip.xva.set.RollUpGroupSp
 	private double _hedgeError = java.lang.Double.NaN;
 	private double _independentAmount = java.lang.Double.NaN;
 	private double _minimumTransferAmount = java.lang.Double.NaN;
-	private org.drip.xva.definition.CloseOut _closeOutScheme = null;
 	private org.drip.function.definition.R1ToR1 _bankThresholdFunction = null;
 	private org.drip.function.definition.R1ToR1[] _counterPartyThresholdFunctionArray = null;
 
@@ -97,7 +97,7 @@ public class CollateralGroupSpecification extends org.drip.xva.set.RollUpGroupSp
 		final int positionReplicationScheme,
 		final int brokenDateScheme,
 		final double hedgeError,
-		final org.drip.xva.definition.CloseOut closeOutScheme)
+		final int closeOutScheme)
 	{
 		try
 		{
@@ -145,7 +145,7 @@ public class CollateralGroupSpecification extends org.drip.xva.set.RollUpGroupSp
 		final int positionReplicationScheme,
 		final int brokenDateScheme,
 		final double hedgeError,
-		final org.drip.xva.definition.CloseOut closeOutScheme)
+		final int closeOutScheme)
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (counterPartyThreshold) || 0. > counterPartyThreshold ||
 			!org.drip.quant.common.NumberUtil.IsValid (bankThreshold) || 0. < bankThreshold)
@@ -213,7 +213,7 @@ public class CollateralGroupSpecification extends org.drip.xva.set.RollUpGroupSp
 		final int positionReplicationScheme,
 		final int brokenDateScheme,
 		final double hedgeError,
-		final org.drip.xva.definition.CloseOut closeOutScheme)
+		final int closeOutScheme)
 		throws java.lang.Exception
 	{
 		super (
@@ -342,7 +342,7 @@ public class CollateralGroupSpecification extends org.drip.xva.set.RollUpGroupSp
 	 * @return The Close Out Scheme
 	 */
 
-	public org.drip.xva.definition.CloseOut closeOutScheme()
+	public int closeOutScheme()
 	{
 		return _closeOutScheme;
 	}

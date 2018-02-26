@@ -452,7 +452,7 @@ public class AlbaneseAndersenBaselProxy
 				bank,
 				counterParty
 			),
-			PathSimulatorScheme.AlbaneseAndersenVertex(),
+			AdjustmentDigestScheme.ALBANESE_ANDERSEN_METRICS_POINTER,
 			PositionGroupContainer.Solo (
 				new PositionGroup (
 					new PositionGroupSpecification (
@@ -465,7 +465,7 @@ public class AlbaneseAndersenBaselProxy
 							PositionReplicationScheme.ALBANESE_ANDERSEN_VERTEX,
 							BrokenDateScheme.SQUARE_ROOT_OF_TIME,
 							0.,
-							null
+							CloseOutScheme.ISDA_92
 						),
 						new NettingGroupSpecification (
 							"NETGRPSPEC1",
@@ -499,7 +499,6 @@ public class AlbaneseAndersenBaselProxy
 		PathExposureAdjustment[] pathExposureAdjustmentArray = new PathExposureAdjustment[iNumPath];
 
 		CorrelatedPathVertexDimension correlatedPathVertexDimension = new CorrelatedPathVertexDimension (
-			// LinearCongruentialGenerator.NumericalRecipes (MultipleRecursiveGeneratorLEcuyer.MRG32k3a()),
 			new RandomNumberGenerator(),
 			correlationMatrix,
 			eventCount,

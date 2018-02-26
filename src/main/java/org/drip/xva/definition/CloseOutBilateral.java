@@ -73,6 +73,37 @@ public class CloseOutBilateral extends org.drip.xva.definition.CloseOut
 	private double _bankSeniorFundingRecovery = java.lang.Double.NaN;
 
 	/**
+	 * Generate the Close Out Bilateral Instance from the Market Vertex
+	 * 
+	 * @param marketVertex The Market Vertex Instance
+	 * 
+	 * @return The Close Out Bilateral Instance from the Market Vertex
+	 */
+
+	public static final CloseOutBilateral Market (
+		final org.drip.xva.universe.MarketVertex marketVertex)
+	{
+		if (null == marketVertex)
+		{
+			return null;
+		}
+
+		try
+		{
+			return new CloseOutBilateral (
+				marketVertex.bank().seniorRecoveryRate(),
+				marketVertex.counterParty().seniorRecoveryRate()
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * CloseOutBilateral Constructor
 	 * 
 	 * @param bankSeniorFundingRecovery The Bank Senior Funding Recovery Rate

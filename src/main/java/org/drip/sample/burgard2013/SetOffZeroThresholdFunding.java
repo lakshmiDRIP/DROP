@@ -211,7 +211,7 @@ public class SetOffZeroThresholdFunding {
 			PositionReplicationScheme.BURGARD_KJAER_SET_OFF_VERTEX,
 			BrokenDateScheme.LINEAR_TIME,
 			0.,
-			null
+			CloseOutScheme.BILATERAL
 		);
 
 		CloseOut cog = new CloseOutBilateral (

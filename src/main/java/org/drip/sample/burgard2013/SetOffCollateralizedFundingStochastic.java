@@ -323,7 +323,7 @@ public class SetOffCollateralizedFundingStochastic {
 			PositionReplicationScheme.BURGARD_KJAER_SET_OFF_VERTEX,
 			BrokenDateScheme.LINEAR_TIME,
 			0.,
-			null
+			CloseOutScheme.BILATERAL
 		);
 
 		JulianDate dtSpot = DateUtil.Today();
