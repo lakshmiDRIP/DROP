@@ -11,6 +11,7 @@ import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.xva.hypothecation.*;
 import org.drip.xva.set.*;
+import org.drip.xva.settings.*;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -107,7 +108,11 @@ public class PortfolioCollateralEstimate {
 		CollateralGroupSpecification cgs = CollateralGroupSpecification.FixedThreshold (
 			"FIXEDTHRESHOLD",
 			dblCounterPartyThreshold,
-			dblBankThreshold
+			dblBankThreshold,
+			PositionReplicationScheme.ALBANESE_ANDERSEN_VERTEX,
+			BrokenDateScheme.SQUARE_ROOT_OF_TIME,
+			0.,
+			null
 		);
 
 		DiffusionEvolver dePortfolio = new DiffusionEvolver (

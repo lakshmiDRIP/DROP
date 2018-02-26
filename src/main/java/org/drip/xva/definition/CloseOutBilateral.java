@@ -67,7 +67,7 @@ package org.drip.xva.definition;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CloseOutBilateral extends org.drip.xva.definition.CloseOutGeneral
+public class CloseOutBilateral extends org.drip.xva.definition.CloseOut
 {
 	private double _counterPartyRecovery = java.lang.Double.NaN;;
 	private double _bankSeniorFundingRecovery = java.lang.Double.NaN;

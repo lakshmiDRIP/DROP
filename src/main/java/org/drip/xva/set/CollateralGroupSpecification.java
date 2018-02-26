@@ -69,10 +69,14 @@ package org.drip.xva.set;
 
 public class CollateralGroupSpecification extends org.drip.xva.set.RollUpGroupSpecification
 {
+	private int _brokenDateScheme = -1;
 	private int _bankDefaultWindow = -1;
 	private int _counterPartyDefaultWindow = -1;
+	private int _positionReplicationScheme = -1;
+	private double _hedgeError = java.lang.Double.NaN;
 	private double _independentAmount = java.lang.Double.NaN;
 	private double _minimumTransferAmount = java.lang.Double.NaN;
+	private org.drip.xva.definition.CloseOut _closeOutScheme = null;
 	private org.drip.function.definition.R1ToR1 _bankThresholdFunction = null;
 	private org.drip.function.definition.R1ToR1[] _counterPartyThresholdFunctionArray = null;
 
@@ -80,12 +84,20 @@ public class CollateralGroupSpecification extends org.drip.xva.set.RollUpGroupSp
 	 * Generate a Zero-Threshold Instance of the Named Collateral Group
 	 * 
 	 * @param name The Collateral Group Name
+	 * @param positionReplicationScheme Position Replication Scheme
+	 * @param brokenDateScheme Broken Date Interpolation Scheme
+	 * @param hedgeError Hedge Error
+	 * @param closeOutScheme Close Out Scheme
 	 * 
 	 * @return The Zero-Threshold Instance of the Named Collateral Group
 	 */
 
 	public static final CollateralGroupSpecification ZeroThreshold (
-		final java.lang.String name)
+		final java.lang.String name,
+		final int positionReplicationScheme,
+		final int brokenDateScheme,
+		final double hedgeError,
+		final org.drip.xva.definition.CloseOut closeOutScheme)
 	{
 		try
 		{
@@ -97,7 +109,11 @@ public class CollateralGroupSpecification extends org.drip.xva.set.RollUpGroupSp
 				null,
 				null,
 				0.,
-				0.
+				0.,
+				positionReplicationScheme,
+				brokenDateScheme,
+				hedgeError,
+				closeOutScheme
 			);
 		}
 		catch (java.lang.Exception e)
@@ -114,6 +130,10 @@ public class CollateralGroupSpecification extends org.drip.xva.set.RollUpGroupSp
 	 * @param name The Collateral Group Name
 	 * @param counterPartyThreshold The Fixed Counter Party Threshold
 	 * @param bankThreshold The Fixed Bank Threshold
+	 * @param positionReplicationScheme Position Replication Scheme
+	 * @param brokenDateScheme Broken Date Interpolation Scheme
+	 * @param hedgeError Hedge Error
+	 * @param closeOutScheme Close Out Scheme
 	 * 
 	 * @return The Fixed-Threshold Instance of the Named Collateral Group
 	 */
@@ -121,7 +141,11 @@ public class CollateralGroupSpecification extends org.drip.xva.set.RollUpGroupSp
 	public static final CollateralGroupSpecification FixedThreshold (
 		final java.lang.String name,
 		final double counterPartyThreshold,
-		final double bankThreshold)
+		final double bankThreshold,
+		final int positionReplicationScheme,
+		final int brokenDateScheme,
+		final double hedgeError,
+		final org.drip.xva.definition.CloseOut closeOutScheme)
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (counterPartyThreshold) || 0. > counterPartyThreshold ||
 			!org.drip.quant.common.NumberUtil.IsValid (bankThreshold) || 0. < bankThreshold)
@@ -142,7 +166,11 @@ public class CollateralGroupSpecification extends org.drip.xva.set.RollUpGroupSp
 				},
 				new org.drip.function.r1tor1.FlatUnivariate (bankThreshold),
 				0.,
-				0.
+				0.,
+				positionReplicationScheme,
+				brokenDateScheme,
+				hedgeError,
+				closeOutScheme
 			);
 		}
 		catch (java.lang.Exception e)
@@ -165,6 +193,10 @@ public class CollateralGroupSpecification extends org.drip.xva.set.RollUpGroupSp
 	 * @param bankThresholdFunction The Collateral Group Bank Threshold R^1 - R^1 Function
 	 * @param minimumTransferAmount The Collateral Group Minimum Transfer Amount
 	 * @param independentAmount The Collateral Group Independent Amount
+	 * @param positionReplicationScheme Position Replication Scheme
+	 * @param brokenDateScheme Broken Date Interpolation Scheme
+	 * @param hedgeError Hedge Error
+	 * @param closeOutScheme Close Out Scheme
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -177,7 +209,11 @@ public class CollateralGroupSpecification extends org.drip.xva.set.RollUpGroupSp
 		final org.drip.function.definition.R1ToR1[] counterPartyThresholdFunctionArray,
 		final org.drip.function.definition.R1ToR1 bankThresholdFunction,
 		final double minimumTransferAmount,
-		final double independentAmount)
+		final double independentAmount,
+		final int positionReplicationScheme,
+		final int brokenDateScheme,
+		final double hedgeError,
+		final org.drip.xva.definition.CloseOut closeOutScheme)
 		throws java.lang.Exception
 	{
 		super (
@@ -188,12 +224,16 @@ public class CollateralGroupSpecification extends org.drip.xva.set.RollUpGroupSp
 		if (-1 >= (_counterPartyDefaultWindow = counterPartyDefaultWindow) ||
 			-1 >= (_bankDefaultWindow = bankDefaultWindow) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_minimumTransferAmount = minimumTransferAmount) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_independentAmount = independentAmount))
+			!org.drip.quant.common.NumberUtil.IsValid (_independentAmount = independentAmount) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_hedgeError = hedgeError))
 		{
 			throw new java.lang.Exception ("CollateralGroupSpecification Constructor => Invalid Inputs");
 		}
 
+		_closeOutScheme = closeOutScheme;
+		_brokenDateScheme = brokenDateScheme;
 		_bankThresholdFunction = bankThresholdFunction;
+		_positionReplicationScheme = positionReplicationScheme;
 		_counterPartyThresholdFunctionArray = counterPartyThresholdFunctionArray;
 	}
 
@@ -261,6 +301,50 @@ public class CollateralGroupSpecification extends org.drip.xva.set.RollUpGroupSp
 	public double independentAmount()
 	{
 		return _independentAmount;
+	}
+
+	/**
+	 * Retrieve the Position Replication Scheme
+	 * 
+	 * @return The Position Replication Scheme
+	 */
+
+	public int positionReplicationScheme()
+	{
+		return _positionReplicationScheme;
+	}
+
+	/**
+	 * Retrieve the Broken Date Interpolation Scheme
+	 * 
+	 * @return The Broken Date Interpolation Scheme
+	 */
+
+	public int brokenDateScheme()
+	{
+		return _brokenDateScheme;
+	}
+
+	/**
+	 * Retrieve the Hedge Error
+	 * 
+	 * @return The Hedge Error
+	 */
+
+	public double hedgeError()
+	{
+		return _hedgeError;
+	}
+
+	/**
+	 * Retrieve the Close Out Scheme
+	 * 
+	 * @return The Close Out Scheme
+	 */
+
+	public org.drip.xva.definition.CloseOut closeOutScheme()
+	{
+		return _closeOutScheme;
 	}
 
 	/**

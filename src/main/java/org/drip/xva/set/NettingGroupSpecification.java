@@ -73,6 +73,35 @@ public class NettingGroupSpecification extends org.drip.xva.set.RollUpGroupSpeci
 	private boolean _enforceable = true;
 
 	/**
+	 * Generate a Standard Instance of NettingGroupSpecification
+	 * 
+	 * @param id The Collateral Group ID
+	 * @param name The Collateral Group Name
+	 * 
+	 * @return Standard Instance of NettingGroupSpecification
+	 */
+
+	public static final NettingGroupSpecification Standard (
+		final java.lang.String id,
+		final java.lang.String name)
+	{
+		try {
+			return new NettingGroupSpecification (
+				id,
+				name,
+				true,
+				true
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * NettingGroupSpecification Constructor
 	 * 
 	 * @param id The Collateral Group ID

@@ -102,7 +102,10 @@ public class MarginPeriodOfRisk
 	{
 		try
 		{
-			return new MarginPeriodOfRisk (1, MPOR_INTERPOLATION_BROWNIAN_BRIDGE);
+			return new MarginPeriodOfRisk (
+				1,
+				MPOR_INTERPOLATION_BROWNIAN_BRIDGE
+			);
 		}
 		catch (java.lang.Exception e)
 		{

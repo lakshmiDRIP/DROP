@@ -86,7 +86,7 @@ public class BurgardKjaerVertexBuilder
 		final org.drip.analytics.date.JulianDate anchorDate,
 		final double forward,
 		final org.drip.xva.universe.MarketVertex marketVertex,
-		final org.drip.xva.definition.CloseOutGeneral closeOutScheme)
+		final org.drip.xva.definition.CloseOut closeOutScheme)
 	{
 		if (null == marketVertex)
 		{
@@ -269,7 +269,7 @@ public class BurgardKjaerVertexBuilder
 		final double collateralBalance,
 		final double hedgeError,
 		final org.drip.xva.universe.MarketEdge marketEdge,
-		final org.drip.xva.definition.CloseOutGeneral closeOutScheme)
+		final org.drip.xva.definition.CloseOut closeOutScheme)
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (exposure) ||
 			!org.drip.quant.common.NumberUtil.IsValid (realizedCashFlow) ||
@@ -341,7 +341,7 @@ public class BurgardKjaerVertexBuilder
 		final double realizedCashFlow,
 		final double collateralBalance,
 		final org.drip.xva.universe.MarketEdge marketEdge,
-		final org.drip.xva.definition.CloseOutGeneral closeOutScheme)
+		final org.drip.xva.definition.CloseOut closeOutScheme)
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (exposure) ||
 			!org.drip.quant.common.NumberUtil.IsValid (realizedCashFlow) ||
@@ -401,7 +401,7 @@ public class BurgardKjaerVertexBuilder
 		final double exposure,
 		final double realizedCashFlow,
 		final org.drip.xva.universe.MarketEdge marketEdge,
-		final org.drip.xva.definition.CloseOutGeneral closeOutScheme)
+		final org.drip.xva.definition.CloseOut closeOutScheme)
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (exposure) ||
 			!org.drip.quant.common.NumberUtil.IsValid (realizedCashFlow))
@@ -458,7 +458,7 @@ public class BurgardKjaerVertexBuilder
 		final double exposure,
 		final double realizedCashFlow,
 		final org.drip.xva.universe.MarketEdge marketEdge,
-		final org.drip.xva.definition.CloseOutGeneral closeOutScheme)
+		final org.drip.xva.definition.CloseOut closeOutScheme)
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (exposure) ||
 			!org.drip.quant.common.NumberUtil.IsValid (realizedCashFlow))

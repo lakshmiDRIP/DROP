@@ -200,7 +200,7 @@ public class UnilateralCSACollateralizedFunding {
 		double dblBankSubordinateFundingSpread = dblBankHazardRate / (1. - dblBankSubordinateRecoveryRate);
 		double dblCounterPartyFundingSpread = dblCounterPartyHazardRate / (1. - dblCounterPartyRecoveryRate);
 
-		CloseOutGeneral cog = new CloseOutBilateral (
+		CloseOut cog = new CloseOutBilateral (
 			dblBankSeniorRecoveryRate,
 			dblCounterPartyRecoveryRate
 		);

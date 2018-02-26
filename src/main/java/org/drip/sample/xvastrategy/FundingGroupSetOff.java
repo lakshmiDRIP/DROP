@@ -149,7 +149,7 @@ public class FundingGroupSetOff {
 
 		JulianDate dtSpot = DateUtil.Today();
 
-		CloseOutGeneral cog = new CloseOutBilateral (
+		CloseOut cog = new CloseOutBilateral (
 			dblBankSeniorRecoveryRate,
 			dblCounterPartyRecoveryRate
 		);

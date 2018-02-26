@@ -69,7 +69,7 @@ package org.drip.xva.dynamics;
 public class PathSimulator
 {
 	private int _iCount = -1;
-	private org.drip.xva.dynamics.PathSimulatorScheme _simulatorScheme = null;
+	private org.drip.xva.settings.PathSimulatorScheme _simulatorScheme = null;
 	private org.drip.xva.universe.MarketVertexGenerator _marketVertexGenerator = null;
 	private org.drip.xva.holdings.PositionGroupContainer _positionGroupContainer = null;
 
@@ -114,7 +114,7 @@ public class PathSimulator
 	{
 		int brokenDateScheme = _simulatorScheme.brokenDateScheme();
 
-		if (org.drip.xva.dynamics.BrokenDateScheme.LINEAR_TIME == brokenDateScheme)
+		if (org.drip.xva.settings.BrokenDateScheme.LINEAR_TIME == brokenDateScheme)
 		{
 			return 0 == vertexIndex ? null : new org.drip.measure.bridge.BrokenDateInterpolatorLinearT (
 				marketVertexArray[vertexIndex - 1].anchorDate().julian(),
@@ -124,7 +124,7 @@ public class PathSimulator
 			);
 		}
 
-		if (org.drip.xva.dynamics.BrokenDateScheme.SQUARE_ROOT_OF_TIME == brokenDateScheme)
+		if (org.drip.xva.settings.BrokenDateScheme.SQUARE_ROOT_OF_TIME == brokenDateScheme)
 		{
 			return 0 == vertexIndex ? null : new org.drip.measure.bridge.BrokenDateInterpolatorSqrtT (
 				marketVertexArray[vertexIndex - 1].anchorDate().julian(),
@@ -134,7 +134,7 @@ public class PathSimulator
 			);
 		}
 
-		if (org.drip.xva.dynamics.BrokenDateScheme.THREE_POINT_BROWNIAN_BRIDGE == brokenDateScheme)
+		if (org.drip.xva.settings.BrokenDateScheme.THREE_POINT_BROWNIAN_BRIDGE == brokenDateScheme)
 		{
 			return 0 == vertexIndex || 1 == vertexIndex ? null : new
 				org.drip.measure.bridge.BrokenDateInterpolatorBrownian3P (
@@ -224,7 +224,7 @@ public class PathSimulator
 
 		try
 		{
-			if (org.drip.xva.dynamics.PositionReplicationScheme.ALBANESE_ANDERSEN_VERTEX ==
+			if (org.drip.xva.settings.PositionReplicationScheme.ALBANESE_ANDERSEN_VERTEX ==
 				positionReplicationScheme)
 			{
 				return new org.drip.xva.hypothecation.AlbaneseAndersenVertex (
@@ -235,7 +235,7 @@ public class PathSimulator
 				);
 			}
 
-			if (org.drip.xva.dynamics.PositionReplicationScheme.BURGARD_KJAER_HEDGE_ERROR_DUAL_BOND_VERTEX ==
+			if (org.drip.xva.settings.PositionReplicationScheme.BURGARD_KJAER_HEDGE_ERROR_DUAL_BOND_VERTEX ==
 				positionReplicationScheme)
 			{
 				return org.drip.xva.hypothecation.BurgardKjaerVertexBuilder.HedgeErrorDualBond (
@@ -249,7 +249,7 @@ public class PathSimulator
 				);
 			}
 
-			if (org.drip.xva.dynamics.PositionReplicationScheme.BURGARD_KJAER_SEMI_REPLICATION_DUAL_BOND_VERTEX
+			if (org.drip.xva.settings.PositionReplicationScheme.BURGARD_KJAER_SEMI_REPLICATION_DUAL_BOND_VERTEX
 				== positionReplicationScheme)
 			{
 				return org.drip.xva.hypothecation.BurgardKjaerVertexBuilder.SemiReplicationDualBond (
@@ -262,7 +262,7 @@ public class PathSimulator
 				);
 			}
 
-			if (org.drip.xva.dynamics.PositionReplicationScheme.BURGARD_KJAER_GOLD_PLATED_TWO_WAY_CSA_VERTEX
+			if (org.drip.xva.settings.PositionReplicationScheme.BURGARD_KJAER_GOLD_PLATED_TWO_WAY_CSA_VERTEX
 				== positionReplicationScheme)
 			{
 				return org.drip.xva.hypothecation.BurgardKjaerVertexBuilder.GoldPlatedTwoWayCSA (
@@ -274,7 +274,7 @@ public class PathSimulator
 				);
 			}
 
-			if (org.drip.xva.dynamics.PositionReplicationScheme.BURGARD_KJAER_ONE_WAY_CSA_VERTEX ==
+			if (org.drip.xva.settings.PositionReplicationScheme.BURGARD_KJAER_ONE_WAY_CSA_VERTEX ==
 				positionReplicationScheme)
 			{
 				return org.drip.xva.hypothecation.BurgardKjaerVertexBuilder.OneWayCSA (
@@ -286,7 +286,7 @@ public class PathSimulator
 				);
 			}
 
-			if (org.drip.xva.dynamics.PositionReplicationScheme.BURGARD_KJAER_SET_OFF_VERTEX ==
+			if (org.drip.xva.settings.PositionReplicationScheme.BURGARD_KJAER_SET_OFF_VERTEX ==
 				positionReplicationScheme)
 			{
 				return org.drip.xva.hypothecation.BurgardKjaerVertexBuilder.SetOff (
@@ -413,7 +413,7 @@ public class PathSimulator
 			return new PathSimulator (
 				iPathCount,
 				marketVertexGenerator,
-				org.drip.xva.dynamics.PathSimulatorScheme.AlbaneseAndersenVertex(),
+				org.drip.xva.settings.PathSimulatorScheme.AlbaneseAndersenVertex(),
 				positionGroupContainer
 			);
 		}
@@ -439,7 +439,7 @@ public class PathSimulator
 	public PathSimulator (
 		final int iCount,
 		final org.drip.xva.universe.MarketVertexGenerator marketVertexGenerator,
-		final org.drip.xva.dynamics.PathSimulatorScheme simulatorScheme,
+		final org.drip.xva.settings.PathSimulatorScheme simulatorScheme,
 		final org.drip.xva.holdings.PositionGroupContainer positionGroupContainer)
 		throws java.lang.Exception
 	{
@@ -480,7 +480,7 @@ public class PathSimulator
 	 * @return The Path Simulator Scheme
 	 */
 
-	public org.drip.xva.dynamics.PathSimulatorScheme scheme()
+	public org.drip.xva.settings.PathSimulatorScheme scheme()
 	{
 		return _simulatorScheme;
 	}
@@ -527,7 +527,7 @@ public class PathSimulator
 				_positionGroupContainer.fundingSegmentPaths();
 
 			org.drip.xva.hypothecation.CollateralGroupPath[][] positionCreditDebtGroupPath =
-				_positionGroupContainer.nettingSegmentPaths();
+				_positionGroupContainer.creditDebtSegmentPaths();
 
 			int positionFundingGroupCount = positionFundingGroupPath.length;
 			int positionCreditDebtGroupCount = positionCreditDebtGroupPath.length;
@@ -536,7 +536,7 @@ public class PathSimulator
 			org.drip.xva.netting.CreditDebtGroupPath[] creditDebtGroupPathArray = new
 				org.drip.xva.strategy.AlbaneseAndersenNettingGroupPath[positionCreditDebtGroupCount];
 
-			if (org.drip.xva.dynamics.AdjustmentDigestScheme.ALBANESE_ANDERSEN_METRICS_POINTER ==
+			if (org.drip.xva.settings.AdjustmentDigestScheme.ALBANESE_ANDERSEN_METRICS_POINTER ==
 				_simulatorScheme.adjustmentDigestScheme())
 			{
 				for (int positionFundingGroupIndex = 0; positionFundingGroupIndex <

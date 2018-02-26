@@ -527,7 +527,7 @@ public class BilateralCSAZeroThresholdFundingStochastic {
 			for (int j = 0; j <= iNumStep; ++j) {
 				adtVertex[j] = dtSpot.addMonths (6 * j + 6);
 
-				CloseOutGeneral cog = new CloseOutBilateral (
+				CloseOut cog = new CloseOutBilateral (
 					adblBankSeniorRecoveryRate[j],
 					adblCounterPartyRecoveryRate[j]
 				);

@@ -17,6 +17,7 @@ import org.drip.xva.cpty.*;
 import org.drip.xva.definition.*;
 import org.drip.xva.hypothecation.*;
 import org.drip.xva.set.*;
+import org.drip.xva.settings.*;
 import org.drip.xva.strategy.*;
 import org.drip.xva.universe.*;
 
@@ -318,7 +319,11 @@ public class SetOffCollateralizedFundingStochastic {
 		CollateralGroupSpecification cgs = CollateralGroupSpecification.FixedThreshold (
 			"FIXEDTHRESHOLD",
 			dblCounterPartyThreshold,
-			dblBankThreshold
+			dblBankThreshold,
+			PositionReplicationScheme.BURGARD_KJAER_SET_OFF_VERTEX,
+			BrokenDateScheme.LINEAR_TIME,
+			0.,
+			null
 		);
 
 		JulianDate dtSpot = DateUtil.Today();
@@ -545,7 +550,7 @@ public class SetOffCollateralizedFundingStochastic {
 				double dblValueEnd1 = aadblPortfolio1Value[i][j];
 				double dblValueEnd2 = aadblPortfolio2Value[i][j];
 
-				CloseOutGeneral cog = new CloseOutBilateral (
+				CloseOut cog = new CloseOutBilateral (
 					adblBankSeniorRecoveryRate[j],
 					adblCounterPartyRecoveryRate[j]
 				);

@@ -302,7 +302,7 @@ public class TrajectoryEvolutionScheme
 
 		try
 		{
-			org.drip.xva.definition.CloseOutGeneral closeOutScheme = new
+			org.drip.xva.definition.CloseOut closeOutScheme = new
 				org.drip.xva.definition.CloseOutBilateral (
 					bankMarketVertex.seniorRecoveryRate(),
 					counterPartyMarketVertex.seniorRecoveryRate()

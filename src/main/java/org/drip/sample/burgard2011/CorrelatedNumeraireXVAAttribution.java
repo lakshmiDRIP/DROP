@@ -136,7 +136,7 @@ public class CorrelatedNumeraireXVAAttribution {
 
 		double dblDerivativeXVAValueFinish = dblDerivativeXVAValueStart + dblTheta * dblTimeWidth;
 
-		CloseOutGeneral cog = new CloseOutBilateral (
+		CloseOut cog = new CloseOutBilateral (
 			mvStart.bank().seniorRecoveryRate(),
 			mvStart.counterParty().seniorRecoveryRate()
 		);

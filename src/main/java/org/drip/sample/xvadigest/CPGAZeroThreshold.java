@@ -13,6 +13,7 @@ import org.drip.service.env.EnvManager;
 import org.drip.xva.cpty.*;
 import org.drip.xva.hypothecation.*;
 import org.drip.xva.set.*;
+import org.drip.xva.settings.*;
 import org.drip.xva.strategy.*;
 import org.drip.xva.universe.*;
 
@@ -273,7 +274,11 @@ public class CPGAZeroThreshold {
 		CollateralGroupSpecification cgs = CollateralGroupSpecification.FixedThreshold (
 			"FIXEDTHRESHOLD",
 			0.,
-			0.
+			0.,
+			PositionReplicationScheme.ALBANESE_ANDERSEN_VERTEX,
+			BrokenDateScheme.SQUARE_ROOT_OF_TIME,
+			0.,
+			null
 		);
 
 		double[][] aadblSwapPortfolioValueRealization = SwapPortfolioValueRealization (

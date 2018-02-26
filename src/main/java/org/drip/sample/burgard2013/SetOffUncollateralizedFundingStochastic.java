@@ -559,7 +559,7 @@ public class SetOffUncollateralizedFundingStochastic {
 
 				aadblCollateralBalance[i][j] = 0.;
 
-				CloseOutGeneral cog = new CloseOutBilateral (
+				CloseOut cog = new CloseOutBilateral (
 					adblBankSeniorRecoveryRate[j],
 					adblCounterPartyRecoveryRate[j]
 				);

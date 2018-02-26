@@ -84,7 +84,7 @@ public class CollateralGroupVertexCloseOut
 	 */
 
 	public static final CollateralGroupVertexCloseOut Standard (
-		final org.drip.xva.definition.CloseOutGeneral closeOutGeneral,
+		final org.drip.xva.definition.CloseOut closeOutGeneral,
 		final double uncollateralizedExposure,
 		final double collateralBalance)
 	{

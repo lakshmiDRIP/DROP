@@ -1,5 +1,5 @@
 
-package org.drip.xva.dynamics;
+package org.drip.xva.settings;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-

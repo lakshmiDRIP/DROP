@@ -16,6 +16,7 @@ import org.drip.xva.dynamics.*;
 import org.drip.xva.evolver.*;
 import org.drip.xva.holdings.*;
 import org.drip.xva.set.*;
+import org.drip.xva.settings.*;
 import org.drip.xva.universe.*;
 
 /*
@@ -460,7 +461,11 @@ public class AlbaneseAndersenBaselProxy
 						CollateralGroupSpecification.FixedThreshold (
 							"FIXEDTHRESHOLD",
 							dblCounterPartyThreshold,
-							dblBankThreshold
+							dblBankThreshold,
+							PositionReplicationScheme.ALBANESE_ANDERSEN_VERTEX,
+							BrokenDateScheme.SQUARE_ROOT_OF_TIME,
+							0.,
+							null
 						),
 						new NettingGroupSpecification (
 							"NETGRPSPEC1",

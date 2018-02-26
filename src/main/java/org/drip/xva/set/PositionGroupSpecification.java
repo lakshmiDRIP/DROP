@@ -69,7 +69,7 @@ package org.drip.xva.set;
 public class PositionGroupSpecification extends org.drip.xva.set.RollUpGroupSpecification
 {
 	private org.drip.xva.set.RollUpGroupSpecification _fundingGroupSpecification = null;
-	private org.drip.xva.set.NettingGroupSpecification _nettingGroupSpecification = null;
+	private org.drip.xva.set.NettingGroupSpecification _creditDebtGroupSpecification = null;
 	private org.drip.xva.set.CollateralGroupSpecification _collateralGroupSpecification = null;
 
 	/**
@@ -78,7 +78,7 @@ public class PositionGroupSpecification extends org.drip.xva.set.RollUpGroupSpec
 	 * @param id The Position Group ID
 	 * @param name The Position Group Name
 	 * @param collateralGroupSpecification The Position's Collateral Group Specification
-	 * @param nettingGroupSpecification The Position's Netting Group Specification
+	 * @param creditDebtGroupSpecification The Position's Credit Debt Group Specification
 	 * @param fundingGroupSpecification The Position's Funding Group Specification
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
@@ -88,7 +88,7 @@ public class PositionGroupSpecification extends org.drip.xva.set.RollUpGroupSpec
 		final java.lang.String id,
 		final java.lang.String name,
 		final org.drip.xva.set.CollateralGroupSpecification collateralGroupSpecification,
-		final org.drip.xva.set.NettingGroupSpecification nettingGroupSpecification,
+		final org.drip.xva.set.NettingGroupSpecification creditDebtGroupSpecification,
 		final org.drip.xva.set.RollUpGroupSpecification fundingGroupSpecification)
 		throws java.lang.Exception
 	{
@@ -98,7 +98,7 @@ public class PositionGroupSpecification extends org.drip.xva.set.RollUpGroupSpec
 		);
 
 		if (null == (_collateralGroupSpecification = collateralGroupSpecification) ||
-			null == (_nettingGroupSpecification = nettingGroupSpecification) ||
+			null == (_creditDebtGroupSpecification = creditDebtGroupSpecification) ||
 			null == (_fundingGroupSpecification = fundingGroupSpecification))
 		{
 			throw new java.lang.Exception ("PositionGroupSpecification Constructor => Invalid Inputs");
@@ -117,14 +117,14 @@ public class PositionGroupSpecification extends org.drip.xva.set.RollUpGroupSpec
 	}
 
 	/**
-	 * Retrieve the Position's Netting Group Specification
+	 * Retrieve the Position's Credit Debt Group Specification
 	 * 
-	 * @return The Position's Netting Group Specification
+	 * @return The Position's Credit Debt Group Specification
 	 */
 
-	public org.drip.xva.set.NettingGroupSpecification nettingGroupSpecification()
+	public org.drip.xva.set.NettingGroupSpecification creditDebtGroupSpecification()
 	{
-		return _nettingGroupSpecification;
+		return _creditDebtGroupSpecification;
 	}
 
 	/**
