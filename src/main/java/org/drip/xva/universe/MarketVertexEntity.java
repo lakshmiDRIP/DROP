@@ -243,11 +243,13 @@ public class MarketVertexEntity
 	{
 		try
 		{
-			Senior (
+			return SeniorSubordinate (
 				timeWidth,
 				hazardRate,
 				seniorRecoveryRate,
 				seniorFundingSpread,
+				subordinateRecoveryRate,
+				subordinateFundingSpread,
 				new MarketVertexEntity (
 					1.,
 					hazardRate,

@@ -137,7 +137,7 @@ public class MarketDynamicsContainer extends org.drip.xva.evolver.DynamicsContai
 				bankSubordinateRecoveryLatentState.label();
 
 			if (!(bankSubordinateRecoveryLabel instanceof org.drip.state.identifier.EntityRecoveryLabel) ||
-				!addTerminalLatentState (bankSeniorRecoveryLatentState))
+				!addTerminalLatentState (bankSubordinateRecoveryLatentState))
 			{
 				throw new java.lang.Exception ("MarketDynamicsContainer Constructor => Invalid Inputs");
 			}

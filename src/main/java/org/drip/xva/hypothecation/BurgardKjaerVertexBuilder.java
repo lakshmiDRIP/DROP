@@ -207,12 +207,14 @@ public class BurgardKjaerVertexBuilder
 
 		double counterPartySurvivalFinish = marketVertexFinish.counterParty().survivalProbability();
 
-		double incrementalBankSurvival = bankSurvivalFinish - marketVertexStart.bank().survivalProbability();
+		double incrementalBankSurvival = bankSurvivalFinish -
+			(null == marketVertexStart ? 1. : marketVertexStart.bank().survivalProbability());
 
 		double adjustedExposure =
 			collateralGroupVertexExposure.uncollateralized() +
 			bankSurvivalFinish *
-				(counterPartySurvivalFinish - marketVertexStart.counterParty().survivalProbability()) *
+				(counterPartySurvivalFinish -
+					(null == marketVertexStart ? 1. : marketVertexStart.counterParty().survivalProbability())) *
 				burgardKjaerVertexExposure.credit() +
 			counterPartySurvivalFinish * incrementalBankSurvival * burgardKjaerVertexExposure.debt() +
 			counterPartySurvivalFinish * incrementalBankSurvival * fundingExposure -

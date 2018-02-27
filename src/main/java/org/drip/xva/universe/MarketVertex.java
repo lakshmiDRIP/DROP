@@ -137,6 +137,69 @@ public class MarketVertex
 	}
 
 	/**
+	 * Generate an Initial Instance of MarketVertex
+	 * 
+	 * @param anchorDate The Anchor Date
+	 * @param positionManifestValue Realized Position Manifest Value
+	 * @param overnightReplicator The Realized Overnight Latent State Replicator
+	 * @param csaReplicator The Realized CSA Latent State Replicator
+	 * @param bankHazardRate Realized Bank Hazard Rate
+	 * @param bankSeniorRecoveryRate Realized Bank Senior Recovery Rate
+	 * @param bankSeniorFundingSpread Realized Bank Senior Funding Spread
+	 * @param bankSubordinateRecoveryRate Realized Bank Subordinate Recovery Rate
+	 * @param bankSubordinateFundingSpread Realized Bank Subordinate Funding Spread
+	 * @param counterPartyHazardRate Realized Counter Party Hazard Rate
+	 * @param counterPartyRecoveryRate Realized Counter Party Recovery Rate
+	 * @param counterPartyFundingSpread Realized Counter Party Funding Spread
+	 * 
+	 * @return The Initial MarketVertex Instance
+	 */
+
+	public static final MarketVertex StartUp (
+		final org.drip.analytics.date.JulianDate anchorDate,
+		final double positionManifestValue,
+		final double overnightReplicator,
+		final double csaReplicator,
+		final double bankHazardRate,
+		final double bankSeniorRecoveryRate,
+		final double bankSeniorFundingSpread,
+		final double bankSubordinateRecoveryRate,
+		final double bankSubordinateFundingSpread,
+		final double counterPartyHazardRate,
+		final double counterPartyRecoveryRate,
+		final double counterPartyFundingSpread)
+	{
+		try {
+			return new org.drip.xva.universe.MarketVertex (
+				anchorDate,
+				positionManifestValue,
+				0.,
+				overnightReplicator,
+				0.,
+				csaReplicator,
+				org.drip.xva.universe.MarketVertexEntity.SeniorSubordinate (
+					0.,
+					bankHazardRate,
+					bankSeniorRecoveryRate,
+					bankSeniorFundingSpread,
+					bankSubordinateRecoveryRate,
+					bankSubordinateFundingSpread
+				),
+				org.drip.xva.universe.MarketVertexEntity.Senior (
+					0.,
+					counterPartyHazardRate,
+					counterPartyRecoveryRate,
+					counterPartyFundingSpread
+				)
+			);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * Construct a Single Manifest Measure Market Vertex
 	 * 
 	 * @param anchorDate The Vertex Date Anchor

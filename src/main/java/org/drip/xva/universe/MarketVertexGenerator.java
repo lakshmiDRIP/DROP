@@ -140,8 +140,8 @@ public class MarketVertexGenerator
 	private int _spotDate = -1;
 	private double[] _ycfWidth = null;
 	private int[] _eventDateArray = null;
-	private org.drip.xva.evolver.PrimarySecurityDynamicsContainer _tradeablesContainer = null;
 	private org.drip.xva.evolver.MarketDynamicsContainer _entityLatentStateEvolver = null;
+	private org.drip.xva.evolver.PrimarySecurityDynamicsContainer _tradeablesContainer = null;
 
 	/**
 	 * Construct a MarketVertexGenerator Instance from the Spot Date, the Period Tenor, and the Period Count

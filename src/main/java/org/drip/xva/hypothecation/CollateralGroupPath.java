@@ -89,14 +89,14 @@ public class CollateralGroupPath
 			throw new java.lang.Exception ("CollateralGroupPath Constructor => Invalid Inputs");
 		}
 
-		int pathCount = _collateralGroupVertexArray.length;
+		int vertexCount = _collateralGroupVertexArray.length;
 
-		if (1 >= pathCount)
+		if (1 >= vertexCount)
 		{
 			throw new java.lang.Exception ("CollateralGroupPath Constructor => Invalid Inputs");
 		}
 
-		for (int i = 0; i < pathCount; ++i)
+		for (int i = 0; i < vertexCount; ++i)
 		{
 			if (null == _collateralGroupVertexArray[i])
 			{

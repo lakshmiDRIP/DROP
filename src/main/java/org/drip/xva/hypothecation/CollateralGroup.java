@@ -172,15 +172,16 @@ public class CollateralGroup
 		final double positionGroupValue,
 		final double realizedCashFlow,
 		final double collateralBalance,
-		final org.drip.xva.universe.MarketEdge marketEdge)
+		final org.drip.xva.universe.MarketVertex marketVertexLeft,
+		final org.drip.xva.universe.MarketVertex marketVertexRight)
 	{
 		int closeOutScheme = _collateralGroupSpecification.closeOutScheme();
 
 		int positionReplicationScheme = _collateralGroupSpecification.positionReplicationScheme();
 
 		org.drip.xva.definition.CloseOut closeOut =
-			org.drip.xva.settings.CloseOutScheme.BILATERAL == closeOutScheme  || null == marketEdge ? null :
-				org.drip.xva.definition.CloseOutBilateral.Market (marketEdge.finish());
+			org.drip.xva.settings.CloseOutScheme.ISDA_92 == closeOutScheme ? null :
+				org.drip.xva.definition.CloseOutBilateral.Market (marketVertexRight);
 
 		try
 		{
@@ -198,64 +199,109 @@ public class CollateralGroup
 			if (org.drip.xva.settings.PositionReplicationScheme.BURGARD_KJAER_HEDGE_ERROR_DUAL_BOND_VERTEX ==
 				positionReplicationScheme)
 			{
-				return org.drip.xva.hypothecation.BurgardKjaerVertexBuilder.HedgeErrorDualBond (
-					anchorDate,
-					positionGroupValue,
-					realizedCashFlow,
-					collateralBalance,
-					_collateralGroupSpecification.hedgeError(),
-					marketEdge,
-					closeOut
-				);
+				return null != marketVertexLeft ?
+					org.drip.xva.hypothecation.BurgardKjaerVertexBuilder.HedgeErrorDualBond (
+						anchorDate,
+						positionGroupValue,
+						realizedCashFlow,
+						collateralBalance,
+						_collateralGroupSpecification.hedgeError(),
+						new org.drip.xva.universe.MarketEdge (
+							marketVertexLeft,
+							marketVertexRight
+						),
+						closeOut
+					) : org.drip.xva.hypothecation.BurgardKjaerVertexBuilder.Initial (
+						anchorDate,
+						positionGroupValue,
+						marketVertexRight,
+						closeOut
+					);
 			}
 
 			if (org.drip.xva.settings.PositionReplicationScheme.BURGARD_KJAER_SEMI_REPLICATION_DUAL_BOND_VERTEX
 				== positionReplicationScheme)
 			{
-				return org.drip.xva.hypothecation.BurgardKjaerVertexBuilder.SemiReplicationDualBond (
-					anchorDate,
-					positionGroupValue,
-					realizedCashFlow,
-					collateralBalance,
-					marketEdge,
-					closeOut
-				);
+				return null != marketVertexLeft ?
+					org.drip.xva.hypothecation.BurgardKjaerVertexBuilder.SemiReplicationDualBond (
+						anchorDate,
+						positionGroupValue,
+						realizedCashFlow,
+						collateralBalance,
+						new org.drip.xva.universe.MarketEdge (
+							marketVertexLeft,
+							marketVertexRight
+						),
+						closeOut
+					) : org.drip.xva.hypothecation.BurgardKjaerVertexBuilder.Initial (
+						anchorDate,
+						positionGroupValue,
+						marketVertexRight,
+						closeOut
+					);
 			}
 
 			if (org.drip.xva.settings.PositionReplicationScheme.BURGARD_KJAER_GOLD_PLATED_TWO_WAY_CSA_VERTEX
 				== positionReplicationScheme)
 			{
-				return org.drip.xva.hypothecation.BurgardKjaerVertexBuilder.GoldPlatedTwoWayCSA (
-					anchorDate,
-					positionGroupValue,
-					realizedCashFlow,
-					marketEdge,
-					closeOut
-				);
+				return null != marketVertexLeft ?
+					org.drip.xva.hypothecation.BurgardKjaerVertexBuilder.GoldPlatedTwoWayCSA (
+						anchorDate,
+						positionGroupValue,
+						realizedCashFlow,
+						new org.drip.xva.universe.MarketEdge (
+							marketVertexLeft,
+							marketVertexRight
+						),
+						closeOut
+					) : org.drip.xva.hypothecation.BurgardKjaerVertexBuilder.Initial (
+						anchorDate,
+						positionGroupValue,
+						marketVertexRight,
+						closeOut
+					);
 			}
 
 			if (org.drip.xva.settings.PositionReplicationScheme.BURGARD_KJAER_ONE_WAY_CSA_VERTEX ==
 				positionReplicationScheme)
 			{
-				return org.drip.xva.hypothecation.BurgardKjaerVertexBuilder.OneWayCSA (
-					anchorDate,
-					positionGroupValue,
-					realizedCashFlow,
-					marketEdge,
-					closeOut
-				);
+				return null != marketVertexLeft ?
+					org.drip.xva.hypothecation.BurgardKjaerVertexBuilder.OneWayCSA (
+						anchorDate,
+						positionGroupValue,
+						realizedCashFlow,
+						new org.drip.xva.universe.MarketEdge (
+							marketVertexLeft,
+							marketVertexRight
+						),
+						closeOut
+					) : org.drip.xva.hypothecation.BurgardKjaerVertexBuilder.Initial (
+						anchorDate,
+						positionGroupValue,
+						marketVertexRight,
+						closeOut
+					);
 			}
 
 			if (org.drip.xva.settings.PositionReplicationScheme.BURGARD_KJAER_SET_OFF_VERTEX ==
 				positionReplicationScheme)
 			{
-				return org.drip.xva.hypothecation.BurgardKjaerVertexBuilder.SetOff (
-					anchorDate,
-					positionGroupValue,
-					realizedCashFlow,
-					collateralBalance,
-					marketEdge
-				);
+				return null != marketVertexLeft ?
+					org.drip.xva.hypothecation.BurgardKjaerVertexBuilder.SetOff (
+						anchorDate,
+						positionGroupValue,
+						realizedCashFlow,
+						collateralBalance,
+						new org.drip.xva.universe.MarketEdge (
+							marketVertexLeft,
+							marketVertexRight
+						)
+					) : org.drip.xva.hypothecation.BurgardKjaerVertexBuilder.Initial (
+						anchorDate,
+						positionGroupValue,
+						marketVertexRight,
+						closeOut
+					);
 			}
 		}
 		catch (java.lang.Exception e)
@@ -381,10 +427,8 @@ public class CollateralGroup
 						_positionGroupArrayVertex[positionGroupIndex][vertexIndex],
 						0.,
 						collateralBalanceArray[positionGroupIndex][vertexIndex],
-						0 == vertexIndex ? null : new org.drip.xva.universe.MarketEdge (
-							_marketVertexArray[vertexIndex - 1],
-							_marketVertexArray[vertexIndex]
-						)
+						0 == vertexIndex ? null : _marketVertexArray[vertexIndex - 1],
+						_marketVertexArray[vertexIndex]
 					);
 				}
 				catch (java.lang.Exception e)
