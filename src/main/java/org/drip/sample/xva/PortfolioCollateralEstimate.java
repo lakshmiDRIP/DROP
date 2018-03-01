@@ -10,7 +10,7 @@ import org.drip.measure.realization.*;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.xva.hypothecation.*;
-import org.drip.xva.set.*;
+import org.drip.xva.proto.*;
 import org.drip.xva.settings.*;
 
 /*

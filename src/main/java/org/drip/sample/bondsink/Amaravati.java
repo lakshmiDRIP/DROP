@@ -2,17 +2,11 @@
 package org.drip.sample.bondsink;
 
 import org.drip.analytics.date.*;
-import org.drip.param.creator.MarketParamsBuilder;
-import org.drip.param.market.CurveSurfaceQuoteContainer;
-import org.drip.param.valuation.*;
 import org.drip.product.creator.BondBuilder;
 import org.drip.product.credit.BondComponent;
-import org.drip.product.definition.Component;
-import org.drip.quant.common.*;
+import org.drip.quant.common.Array2D;
 import org.drip.service.env.EnvManager;
-import org.drip.service.template.*;
-import org.drip.state.discount.MergedDiscountForwardCurve;
-import org.drip.state.govvie.GovvieCurve;
+import org.drip.service.scenario.*;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -61,38 +55,46 @@ import org.drip.state.govvie.GovvieCurve;
  */
 
 /**
- * Amaravati demonstrates Sink Fixed Coupon Multi-flavor Pricing and Relative Value Measure Generation for
- *  Amaravati.
+ * Amaravati generates the Full Suite of Replication Metrics for the Sinker Bond Amaravati.
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class Amaravati {
 
-	private static final MergedDiscountForwardCurve FundingCurve (
-		final JulianDate dtSpot,
-		final String strCurrency,
-		final double dblBump)
+	public static final void main (
+		final String[] astArgs)
 		throws Exception
 	{
-		String[] astrDepositMaturityTenor = new String[] {
+		EnvManager.InitEnv (
+			"",
+			true
+		);
+
+		JulianDate dtSpot = DateUtil.CreateFromYMD (
+			2017,
+			DateUtil.MARCH,
+			10
+		);
+
+		String[] astrDepositTenor = new String[] {
 			"2D"
 		};
 
 		double[] adblDepositQuote = new double[] {
-			0.0111956 + dblBump // 2D
+			0.0130411 // 2D
 		};
 
 		double[] adblFuturesQuote = new double[] {
-			0.011375 + dblBump,	// 98.8625
-			0.013350 + dblBump,	// 98.6650
-			0.014800 + dblBump,	// 98.5200
-			0.016450 + dblBump,	// 98.3550
-			0.017850 + dblBump,	// 98.2150
-			0.019300 + dblBump	// 98.0700
+			0.01345,	// 98.655
+			0.01470,	// 98.530
+			0.01575,	// 98.425
+			0.01660,	// 98.340
+			0.01745,    // 98.255
+			0.01845     // 98.155
 		};
 
-		String[] astrFixFloatMaturityTenor = new String[] {
+		String[] astrFixFloatTenor = new String[] {
 			"02Y",
 			"03Y",
 			"04Y",
@@ -112,469 +114,494 @@ public class Amaravati {
 			"50Y"
 		};
 
+		String[] astrGovvieTenor = new String[] {
+			"1Y",
+			"2Y",
+			"3Y",
+			"5Y",
+			"7Y",
+			"10Y",
+			"20Y",
+			"30Y"
+		};
+
 		double[] adblFixFloatQuote = new double[] {
-			0.017029 + dblBump, //  2Y
-			0.019354 + dblBump, //  3Y
-			0.021044 + dblBump, //  4Y
-			0.022291 + dblBump, //  5Y
-			0.023240 + dblBump, //  6Y
-			0.024025 + dblBump, //  7Y
-			0.024683 + dblBump, //  8Y
-			0.025243 + dblBump, //  9Y
-			0.025720 + dblBump, // 10Y
-			0.026130 + dblBump, // 11Y
-			0.026495 + dblBump, // 12Y
-			0.027230 + dblBump, // 15Y
-			0.027855 + dblBump, // 20Y
-			0.028025 + dblBump, // 25Y
-			0.028028 + dblBump, // 30Y
-			0.027902 + dblBump, // 40Y
-			0.027655 + dblBump  // 50Y
+			0.016410, //  2Y
+			0.017863, //  3Y
+			0.019030, //  4Y
+			0.020035, //  5Y
+			0.020902, //  6Y
+			0.021660, //  7Y
+			0.022307, //  8Y
+			0.022879, //  9Y
+			0.023363, // 10Y
+			0.023820, // 11Y
+			0.024172, // 12Y
+			0.024934, // 15Y
+			0.025581, // 20Y
+			0.025906, // 25Y
+			0.025973, // 30Y
+			0.025838, // 40Y
+			0.025560  // 50Y
 		};
 
-		MergedDiscountForwardCurve dcFunding = LatentMarketStateBuilder.SmoothFundingCurve (
-			dtSpot,
-			strCurrency,
-			astrDepositMaturityTenor,
-			adblDepositQuote,
-			"ForwardRate",
-			adblFuturesQuote,
-			"ForwardRate",
-			astrFixFloatMaturityTenor,
-			adblFixFloatQuote,
-			"SwapRate"
-		);
-
-		Component[] aDepositComp = OTCInstrumentBuilder.FundingDeposit (
-			dtSpot,
-			strCurrency,
-			astrDepositMaturityTenor
-		);
-
-		Component[] aFuturesComp = ExchangeInstrumentBuilder.ForwardRateFuturesPack (
-			dtSpot,
-			adblFuturesQuote.length,
-			strCurrency
-		);
-
-		Component[] aFixFloatComp = OTCInstrumentBuilder.FixFloatStandard (
-			dtSpot,
-			strCurrency,
-			"ALL",
-			astrFixFloatMaturityTenor,
-			"MAIN",
-			0.
-		);
-
-		ValuationParams valParams = new ValuationParams (
-			dtSpot,
-			dtSpot,
-			strCurrency
-		);
-
-		CurveSurfaceQuoteContainer csqc = MarketParamsBuilder.Create (
-			dcFunding,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null
-		);
-
-		System.out.println();
-
-		System.out.println ("\t|-------------------------------------||");
-
-		System.out.println ("\t|        DEPOSIT INPUT vs. CALC       ||");
-
-		System.out.println ("\t|-------------------------------------||");
-
-		for (int i = 0; i < aDepositComp.length; ++i)
-			System.out.println ("\t| [" + aDepositComp[i].maturityDate() + "] =" +
-				FormatUtil.FormatDouble (aDepositComp[i].measureValue (
-					valParams,
-					null,
-					csqc,
-					null,
-					"ForwardRate"
-				), 1, 6, 1.) + " |" +
-				FormatUtil.FormatDouble (adblDepositQuote[i], 1, 6, 1.) + " ||"
-			);
-
-		System.out.println ("\t|-------------------------------------||");
-
-		System.out.println();
-
-		System.out.println ("\t|-------------------------------------||");
-
-		System.out.println ("\t|        FUTURES INPUT vs. CALC       ||");
-
-		System.out.println ("\t|-------------------------------------||");
-
-		for (int i = 0; i < aFuturesComp.length; ++i)
-			System.out.println ("\t| [" + aFuturesComp[i].maturityDate() + "] =" +
-				FormatUtil.FormatDouble (aFuturesComp[i].measureValue (
-					valParams,
-					null,
-					csqc,
-					null,
-					"ForwardRate"
-				), 1, 6, 1.) + " |" +
-				FormatUtil.FormatDouble (adblFuturesQuote[i], 1, 6, 1.) + " ||"
-			);
-
-		System.out.println ("\t|-------------------------------------||");
-
-		System.out.println();
-
-		System.out.println ("\t|------------------------------------------------|| ");
-
-		System.out.println ("\t|          FIX-FLOAT INPUTS vs CALIB             ||");
-
-		System.out.println ("\t|------------------------------------------------|| ");
-
-		for (int i = 0; i < aFixFloatComp.length; ++i)
-			System.out.println ("\t| [" + aFixFloatComp[i].maturityDate() + "] =" +
-				FormatUtil.FormatDouble (aFixFloatComp[i].measureValue (
-					valParams,
-					null,
-					csqc,
-					null,
-					"CalibSwapRate"
-				), 1, 6, 1.) + " |" +
-				FormatUtil.FormatDouble (adblFixFloatQuote[i], 1, 6, 1.) + " |" +
-				FormatUtil.FormatDouble (aFixFloatComp[i].measureValue (
-					valParams,
-					null,
-					csqc,
-					null,
-					"FairPremium"
-				), 1, 6, 1.) + " ||"
-			);
-
-		System.out.println ("\t|------------------------------------------------||");
-
-		System.out.println();
-
-		return dcFunding;
-	}
-
-	private static final GovvieCurve GovvieCurve (
-		final JulianDate dtSpot,
-		final String strCode,
-		final double[] adblCoupon,
-		final double[] adblYield)
-		throws Exception
-	{
-		JulianDate[] adtEffective = new JulianDate[] {
-			dtSpot,
-			dtSpot,
-			dtSpot,
-			dtSpot,
-			dtSpot,
-			dtSpot,
-			dtSpot,
-			dtSpot
+		double[] adblGovvieYield = new double[] {
+			0.01219, //  1Y
+			0.01391, //  2Y
+			0.01590, //  3Y
+			0.01937, //  5Y
+			0.02200, //  7Y
+			0.02378, // 10Y
+			0.02677, // 20Y
+			0.02927  // 30Y
 		};
 
-		JulianDate[] adtMaturity = new JulianDate[] {
-			dtSpot.addTenor ("1Y"),
-			dtSpot.addTenor ("2Y"),
-			dtSpot.addTenor ("3Y"),
-			dtSpot.addTenor ("5Y"),
-			dtSpot.addTenor ("7Y"),
-			dtSpot.addTenor ("10Y"),
-			dtSpot.addTenor ("20Y"),
-			dtSpot.addTenor ("30Y")
+		String[] astrCreditTenor = new String[] {
+			"06M",
+			"01Y",
+			"02Y",
+			"03Y",
+			"04Y",
+			"05Y",
+			"07Y",
+			"10Y"
 		};
 
-		GovvieCurve gc = LatentMarketStateBuilder.GovvieCurve (
-			strCode,
-			dtSpot,
-			adtEffective,
-			adtMaturity,
-			adblCoupon,
-			adblYield,
-			"Yield",
-			LatentMarketStateBuilder.SHAPE_PRESERVING
+		double[] adblCreditQuote = new double[] {
+			 60.,	//  6M
+			 68.,	//  1Y
+			 88.,	//  2Y
+			102.,	//  3Y
+			121.,	//  4Y
+			138.,	//  5Y
+			168.,	//  7Y
+			188.	// 10Y
+		};
+
+		double dblFX = 1.;
+		int iSettleLag = 3;
+		int iCouponFreq = 12;
+		String strName = "Amaravati";
+		double dblCleanPrice = 1.233069;
+		double dblIssuePrice = 1.0;
+		String strCurrency = "USD";
+		double dblSpreadBump = 20.;
+		double dblCouponRate = 0.07507; 
+		double dblIssueAmount = 1.0e00;
+		String strTreasuryCode = "UST";
+		String strCouponDayCount = "30/360";
+		double dblSpreadDurationMultiplier = 5.;
+
+		JulianDate dtEffective = DateUtil.CreateFromYMD (
+			2009,
+			DateUtil.DECEMBER,
+			22
 		);
 
-		BondComponent[] aComp = TreasuryBuilder.FromCode (
-			strCode,
-			adtEffective,
-			adtMaturity,
-			adblCoupon
-		);
-
-		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());
-
-		CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();
-
-		csqc.setGovvieState (gc);
-
-		System.out.println();
-
-		System.out.println ("\t|-------------------------------------------||");
-
-		System.out.println ("\t|       TREASURY INPUT vs CALIB YIELD       ||");
-
-		System.out.println ("\t|-------------------------------------------||");
-
-		for (int i = 0; i < aComp.length; ++i)
-			System.out.println ("\t| " + aComp[i].name() + " | " +
-				FormatUtil.FormatDouble (adblYield[i], 1, 3, 100.) + "% | " +
-				FormatUtil.FormatDouble (aComp[i].yieldFromPrice (
-					valParams,
-					null,
-					null,
-					aComp[i].maturityDate().julian(),
-					1.,
-					aComp[i].priceFromYield (
-						valParams,
-						null,
-						null,
-						gc.yield (aComp[i].maturityDate().julian())
-					)
-				), 1, 3, 100.) + "% ||"
-			);
-
-		System.out.println ("\t|-------------------------------------------||");
-
-		return gc;
-	}
-
-	private static final void RVMeasures (
-		final BondComponent bondBullet,
-		final BondComponent bondSinker,
-		final JulianDate dtValue,
-		final CurveSurfaceQuoteContainer csqc,
-		final double dblCleanPrice)
-		throws Exception
-	{
-		JulianDate dtSettle = dtValue.addBusDays (
-			3,
-			bondBullet.currency()
-		);
-
-		ValuationParams valParams = new ValuationParams (
-			dtValue,
-			dtSettle,
-			bondBullet.currency()
-		);
-
-		System.out.println();
-
-		System.out.println ("\t|--------------------------------||");
-
-		System.out.println ("\t| Trade Date       : " + dtValue + " ||");
-
-		System.out.println ("\t| Cash Settle Date : " + dtSettle + " ||");
-
-		System.out.println ("\t|--------------------------------||");
-
-		System.out.println();
-
-		double dblYTM = Double.NaN;
-		double dblYTW = Double.NaN;
-		double dblOASTW = Double.NaN;
-		double dblWALTM = Double.NaN;
-		double dblWALTW = Double.NaN;
-		double dblZSpreadTW = Double.NaN;
-		double dblModifiedDurationTW = Double.NaN;
-
-		WorkoutInfo wi = bondBullet.exerciseYieldFromPrice (
-			valParams,
-			csqc,
-			null,
-			dblCleanPrice
-		);
-
-		try {
-			dblYTW = wi.yield();
-
-			dblYTM = bondBullet.yieldFromPrice (
-				valParams,
-				csqc,
-				null,
-				bondBullet.maturityDate().julian(),
-				1.,
-				dblCleanPrice
-			);
-
-			dblWALTW = bondSinker.weightedAverageLife (
-				valParams,
-				csqc,
-				wi.date(),
-				wi.factor()
-			);
-
-			dblWALTM = bondSinker.weightedAverageLife (
-				valParams,
-				csqc,
-				bondSinker.maturityDate().julian(),
-				1.
-			);
-
-			dblZSpreadTW = bondBullet.zSpreadFromYield (
-				valParams,
-				csqc,
-				null,
-				wi.date(),
-				wi.factor(),
-				wi.yield()
-			);
-
-			dblOASTW = bondBullet.oasFromYield (
-				valParams,
-				csqc,
-				null,
-				wi.date(),
-				wi.factor(),
-				wi.yield()
-			);
-
-			dblModifiedDurationTW = bondSinker.modifiedDurationFromPrice (
-				valParams,
-				csqc,
-				null,
-				wi.date(),
-				wi.factor(),
-				dblCleanPrice
-			);
-		} catch (Exception e) {
-			// e.printStackTrace();
-		}
-
-		System.out.println ("\t Bond Name                 => " + bondSinker.name());
-
-		System.out.println ("\t Effective Date            => " + bondSinker.effectiveDate());
-
-		System.out.println ("\t Maturity Date             => " + bondSinker.maturityDate());
-
-		System.out.println ("\t Exercise Date             => " + new JulianDate (wi.date()));
-
-		System.out.println ("\t Price                     => " + FormatUtil.FormatDouble (dblCleanPrice, 1, 5, 100.));
-
-		System.out.println ("\t Bond Accrued              => " + FormatUtil.FormatDouble (bondBullet.accrued (dtValue.julian(), csqc), 1, 4, 100.));
-
-		System.out.println ("\t Bond YTW                  => " + FormatUtil.FormatDouble (dblYTW, 1, 3, 100.) + "%");
-
-		System.out.println ("\t Bond YTM                  => " + FormatUtil.FormatDouble (dblYTM, 1, 3, 100.) + "%");
-
-		System.out.println ("\t Bond WAL TW               => " + FormatUtil.FormatDouble (dblWALTW, 1, 3, 1.));
-
-		System.out.println ("\t Bond WAL TM               => " + FormatUtil.FormatDouble (dblWALTM, 1, 3, 1.));
-
-		System.out.println ("\t Bond Modified Duration TW => " + FormatUtil.FormatDouble (dblModifiedDurationTW, 1, 4, 10000.));
-
-		System.out.println ("\t Bond Z Spread TW          => " + FormatUtil.FormatDouble (dblZSpreadTW, 1, 1, 10000.));
-
-		System.out.println ("\t Bond OAS TW               => " + FormatUtil.FormatDouble (dblOASTW, 1, 1, 10000.));
-	}
-
-	public static final void main (
-		final String[] astrArgs)
-		throws Exception
-	{
-		EnvManager.InitEnv (
-			"",
-			true
-		);
-
-		JulianDate dtSpot = DateUtil.CreateFromYMD (
-			2017,
-			DateUtil.MARCH,
+		JulianDate dtMaturity = DateUtil.CreateFromYMD (
+			2032,
+			DateUtil.JANUARY,
 			10
 		);
 
-		String strCurrency = "USD";
-		String strTreasuryCode = "UST";
-
-		double[] adblTreasuryCoupon = new double[] {
-			0.0100,
-			0.0100,
-			0.0125,
-			0.0150,
-			0.0200,
-			0.0225,
-			0.0250,
-			0.0300
-		};
-
-		double[] adblTreasuryYield = new double[] {
-			0.0083,	//  1Y
-			0.0122, //  2Y
-			0.0149, //  3Y
-			0.0193, //  5Y
-			0.0227, //  7Y
-			0.0248, // 10Y
-			0.0280, // 20Y
-			0.0308  // 30Y
-		};
-
-		JulianDate dtEffective = DateUtil.CreateFromYMD (2009, 12, 22);
-		JulianDate dtMaturity  = DateUtil.CreateFromYMD (2032,  1, 10);
-		double dblCoupon = 0.07507;
-		double dblCleanPrice = 1.233069;
-		int iFreq = 12;
-		String strCUSIP = "Amaravati";
-		String strDayCount = "30/360";
-		String strDateFactor = "12/22/2009;1;2/10/2010;0.999034198;3/10/2010;0.997909758;4/10/2010;0.996672483;5/10/2010;0.995266021;6/10/2010;0.99379564;7/10/2010;0.992285536;8/10/2010;0.990700723;9/10/2010;0.989105996;10/10/2010;0.987501293;11/10/2010;0.985886551;12/10/2010;0.984261707;1/10/2011;0.982626699;2/10/2011;0.980981462;3/10/2011;0.979325933;4/10/2011;0.977660047;5/10/2011;0.97598374;6/10/2011;0.974296946;7/10/2011;0.9725996;8/10/2011;0.970891635;9/10/2011;0.969172986;10/10/2011;0.967443585;11/10/2011;0.965703365;12/10/2011;0.963952259;1/10/2012;0.962190198;2/10/2012;0.960417114;3/10/2012;0.958632938;4/10/2012;0.9568376;5/10/2012;0.955031031;6/10/2012;0.953213161;7/10/2012;0.951383918;8/10/2012;0.949543232;9/10/2012;0.94769103;10/10/2012;0.945827242;11/10/2012;0.943951794;12/10/2012;0.942064613;1/10/2013;0.940165627;2/10/2013;0.938254761;3/10/2013;0.936331941;4/10/2013;0.934397092;5/10/2013;0.932450139;6/10/2013;0.930491006;7/10/2013;0.928519617;8/10/2013;0.926535895;9/10/2013;0.924539764;10/10/2013;0.922531145;11/10/2013;0.920509961;12/10/2013;0.918476132;1/10/2014;0.91642958;2/10/2014;0.914370225;3/10/2014;0.912297987;4/10/2014;0.910212786;5/10/2014;0.90811454;6/10/2014;0.906003167;7/10/2014;0.903878587;8/10/2014;0.901740715;9/10/2014;0.899589469;10/10/2014;0.897424765;11/10/2014;0.895246519;12/10/2014;0.893054647;1/10/2015;0.890849062;2/10/2015;0.88862968;3/10/2015;0.886396414;4/10/2015;0.884149176;5/10/2015;0.881887881;6/10/2015;0.879612439;7/10/2015;0.877322762;8/10/2015;0.875018761;9/10/2015;0.872700347;10/10/2015;0.87036743;11/10/2015;0.868019918;12/10/2015;0.86565772;1/10/2016;0.863280745;2/10/2016;0.8608889;3/10/2016;0.858482092;4/10/2016;0.856060227;5/10/2016;0.853623212;6/10/2016;0.851170951;7/10/2016;0.848703349;8/10/2016;0.84622031;9/10/2016;0.843721738;10/10/2016;0.841207535;11/10/2016;0.838677603;12/10/2016;0.836131845;1/10/2017;0.833570161;2/10/2017;0.830992451;3/10/2017;0.828398616;4/10/2017;0.825788554;5/10/2017;0.823162164;6/10/2017;0.820519344;7/10/2017;0.81785999;8/10/2017;0.815184001;9/10/2017;0.81249127;10/10/2017;0.809781695;11/10/2017;0.807055169;12/10/2017;0.804311586;1/10/2018;0.801550839;2/10/2018;0.798772822;3/10/2018;0.795977426;4/10/2018;0.793164543;5/10/2018;0.790334062;6/10/2018;0.787485875;7/10/2018;0.78461987;8/10/2018;0.781735936;9/10/2018;0.77883396;10/10/2018;0.77591383;11/10/2018;0.772975432;12/10/2018;0.770018652;1/10/2019;0.767043374;2/10/2019;0.764049484;3/10/2019;0.761036865;4/10/2019;0.758005399;5/10/2019;0.754954969;6/10/2019;0.751885456;7/10/2019;0.74879674;8/10/2019;0.745688703;9/10/2019;0.742561221;10/10/2019;0.739414175;11/10/2019;0.736247441;12/10/2019;0.733060897;1/10/2020;0.729854418;2/10/2020;0.72662788;3/10/2020;0.723381158;4/10/2020;0.720114124;5/10/2020;0.716826652;6/10/2020;0.713518615;7/10/2020;0.710189883;8/10/2020;0.706840327;9/10/2020;0.703469816;10/10/2020;0.700078221;11/10/2020;0.696665408;12/10/2020;0.693231245;1/10/2021;0.689775599;2/10/2021;0.686298334;3/10/2021;0.682799317;4/10/2021;0.67927841;5/10/2021;0.675735477;6/10/2021;0.67217038;7/10/2021;0.66858298;8/10/2021;0.664973138;9/10/2021;0.661340714;10/10/2021;0.657685566;11/10/2021;0.654007551;12/10/2021;0.650306528;1/10/2022;0.646582352;2/10/2022;0.642834878;3/10/2022;0.63906396;4/10/2022;0.635269452;5/10/2022;0.631451206;6/10/2022;0.627609074;7/10/2022;0.623742906;8/10/2022;0.619852552;9/10/2022;0.615937861;10/10/2022;0.61199868;11/10/2022;0.608034856;12/10/2022;0.604046235;1/10/2023;0.600032662;2/10/2023;0.595993981;3/10/2023;0.591930035;4/10/2023;0.587840665;5/10/2023;0.583725712;6/10/2023;0.579585018;7/10/2023;0.575418419;8/10/2023;0.571225756;9/10/2023;0.567006863;10/10/2023;0.562761578;11/10/2023;0.558489735;12/10/2023;0.554191168;1/10/2024;0.54986571;2/10/2024;0.545513193;3/10/2024;0.541133447;4/10/2024;0.536726302;5/10/2024;0.532291587;6/10/2024;0.527829129;7/10/2024;0.523338754;8/10/2024;0.518820289;9/10/2024;0.514273556;10/10/2024;0.50969838;11/10/2024;0.505094583;12/10/2024;0.500461985;1/10/2025;0.495800406;2/10/2025;0.491109665;3/10/2025;0.48638958;4/10/2025;0.481639967;5/10/2025;0.47686064;6/10/2025;0.472051416;7/10/2025;0.467212105;8/10/2025;0.46234252;9/10/2025;0.457442473;10/10/2025;0.452511771;11/10/2025;0.447550224;12/10/2025;0.442557638;1/10/2026;0.437533819;2/10/2026;0.432478572;3/10/2026;0.4273917;4/10/2026;0.422273006;5/10/2026;0.41712229;6/10/2026;0.411939352;7/10/2026;0.40672399;8/10/2026;0.401476002;9/10/2026;0.396195184;10/10/2026;0.390881329;11/10/2026;0.385534232;12/10/2026;0.380153684;1/10/2027;0.374739477;2/10/2027;0.369291399;3/10/2027;0.363809239;4/10/2027;0.358292783;5/10/2027;0.352741818;6/10/2027;0.347156126;7/10/2027;0.341535492;8/10/2027;0.335879695;9/10/2027;0.330188517;10/10/2027;0.324461736;11/10/2027;0.318699129;12/10/2027;0.312900472;1/10/2028;0.307065539;2/10/2028;0.301194105;3/10/2028;0.295285939;4/10/2028;0.289340813;5/10/2028;0.283358496;6/10/2028;0.277338754;7/10/2028;0.271281353;8/10/2028;0.265186058;9/10/2028;0.259052633;10/10/2028;0.252880837;11/10/2028;0.246670432;12/10/2028;0.240421176;1/10/2029;0.234132825;2/10/2029;0.227805135;3/10/2029;0.221437861;4/10/2029;0.215030753;5/10/2029;0.208583564;6/10/2029;0.202096043;7/10/2029;0.195567936;8/10/2029;0.188998991;9/10/2029;0.182388952;10/10/2029;0.175737561;11/10/2029;0.169044561;12/10/2029;0.162309733;1/10/2030;0.156072928;2/10/2030;0.150025552;3/10/2030;0.143940344;4/10/2030;0.137817068;5/10/2030;0.131655486;6/10/2030;0.125455359;7/10/2030;0.119216444;8/10/2030;0.1129385;9/10/2030;0.106621281;10/10/2030;0.100264544;11/10/2030;0.09386804;12/10/2030;0.08743152;1/10/2031;0.080954734;2/10/2031;0.074437431;3/10/2031;0.067879357;4/10/2031;0.061280256;5/10/2031;0.054639873;6/10/2031;0.047957948;7/10/2031;0.041234222;8/10/2031;0.034468434;9/10/2031;0.027660321;10/10/2031;0.020809616;11/10/2031;0.013916055;12/10/2031;0.006979369";
-
-		BondComponent bondBullet = BondBuilder.CreateSimpleFixed (
-			strCUSIP,
+		BondComponent bond = BondBuilder.CreateSimpleFixed (
+			strName,
 			strCurrency,
-			"",
-			dblCoupon,
-			iFreq,
-			strDayCount,
+			strName,
+			dblCouponRate,
+			iCouponFreq,
+			strCouponDayCount,
 			dtEffective,
 			dtMaturity,
-			null,
-			null
-		);
-
-		BondComponent bondSinker = BondBuilder.CreateSimpleFixed (
-			strCUSIP,
-			strCurrency,
-			"",
-			dblCoupon,
-			iFreq,
-			strDayCount,
-			dtEffective,
-			dtMaturity,
-			Array2D.FromDateFactorVertex (
-				strDateFactor,
-				dtMaturity.julian()
+			Array2D.FromArray (
+				new int[] {
+					DateUtil.CreateFromYMD (2017,  4, 10).julian(),
+					DateUtil.CreateFromYMD (2017,  5, 10).julian(),
+					DateUtil.CreateFromYMD (2017,  6, 10).julian(),
+					DateUtil.CreateFromYMD (2017,  7, 10).julian(),
+					DateUtil.CreateFromYMD (2017,  8, 10).julian(),
+					DateUtil.CreateFromYMD (2017,  9, 10).julian(),
+					DateUtil.CreateFromYMD (2017, 10, 10).julian(),
+					DateUtil.CreateFromYMD (2017, 11, 10).julian(),
+					DateUtil.CreateFromYMD (2017, 12, 10).julian(),
+					DateUtil.CreateFromYMD (2018,  1, 10).julian(),
+					DateUtil.CreateFromYMD (2018,  2, 10).julian(),
+					DateUtil.CreateFromYMD (2018,  3, 10).julian(),
+					DateUtil.CreateFromYMD (2018,  4, 10).julian(),
+					DateUtil.CreateFromYMD (2018,  5, 10).julian(),
+					DateUtil.CreateFromYMD (2018,  6, 10).julian(),
+					DateUtil.CreateFromYMD (2018,  7, 10).julian(),
+					DateUtil.CreateFromYMD (2018,  8, 10).julian(),
+					DateUtil.CreateFromYMD (2018,  9, 10).julian(),
+					DateUtil.CreateFromYMD (2018, 10, 10).julian(),
+					DateUtil.CreateFromYMD (2018, 11, 10).julian(),
+					DateUtil.CreateFromYMD (2018, 12, 10).julian(),
+					DateUtil.CreateFromYMD (2019,  1, 10).julian(),
+					DateUtil.CreateFromYMD (2019,  2, 10).julian(),
+					DateUtil.CreateFromYMD (2019,  3, 10).julian(),
+					DateUtil.CreateFromYMD (2019,  4, 10).julian(),
+					DateUtil.CreateFromYMD (2019,  5, 10).julian(),
+					DateUtil.CreateFromYMD (2019,  6, 10).julian(),
+					DateUtil.CreateFromYMD (2019,  7, 10).julian(),
+					DateUtil.CreateFromYMD (2019,  8, 10).julian(),
+					DateUtil.CreateFromYMD (2019,  9, 10).julian(),
+					DateUtil.CreateFromYMD (2019, 10, 10).julian(),
+					DateUtil.CreateFromYMD (2019, 11, 10).julian(),
+					DateUtil.CreateFromYMD (2019, 12, 10).julian(),
+					DateUtil.CreateFromYMD (2020,  1, 10).julian(),
+					DateUtil.CreateFromYMD (2020,  2, 10).julian(),
+					DateUtil.CreateFromYMD (2020,  3, 10).julian(),
+					DateUtil.CreateFromYMD (2020,  4, 10).julian(),
+					DateUtil.CreateFromYMD (2020,  5, 10).julian(),
+					DateUtil.CreateFromYMD (2020,  6, 10).julian(),
+					DateUtil.CreateFromYMD (2020,  7, 10).julian(),
+					DateUtil.CreateFromYMD (2020,  8, 10).julian(),
+					DateUtil.CreateFromYMD (2020,  9, 10).julian(),
+					DateUtil.CreateFromYMD (2020, 10, 10).julian(),
+					DateUtil.CreateFromYMD (2020, 11, 10).julian(),
+					DateUtil.CreateFromYMD (2020, 12, 10).julian(),
+					DateUtil.CreateFromYMD (2021,  1, 10).julian(),
+					DateUtil.CreateFromYMD (2021,  2, 10).julian(),
+					DateUtil.CreateFromYMD (2021,  3, 10).julian(),
+					DateUtil.CreateFromYMD (2021,  4, 10).julian(),
+					DateUtil.CreateFromYMD (2021,  5, 10).julian(),
+					DateUtil.CreateFromYMD (2021,  6, 10).julian(),
+					DateUtil.CreateFromYMD (2021,  7, 10).julian(),
+					DateUtil.CreateFromYMD (2021,  8, 10).julian(),
+					DateUtil.CreateFromYMD (2021,  9, 10).julian(),
+					DateUtil.CreateFromYMD (2021, 10, 10).julian(),
+					DateUtil.CreateFromYMD (2021, 11, 10).julian(),
+					DateUtil.CreateFromYMD (2021, 12, 10).julian(),
+					DateUtil.CreateFromYMD (2022,  1, 10).julian(),
+					DateUtil.CreateFromYMD (2022,  2, 10).julian(),
+					DateUtil.CreateFromYMD (2022,  3, 10).julian(),
+					DateUtil.CreateFromYMD (2022,  4, 10).julian(),
+					DateUtil.CreateFromYMD (2022,  5, 10).julian(),
+					DateUtil.CreateFromYMD (2022,  6, 10).julian(),
+					DateUtil.CreateFromYMD (2022,  7, 10).julian(),
+					DateUtil.CreateFromYMD (2022,  8, 10).julian(),
+					DateUtil.CreateFromYMD (2022,  9, 10).julian(),
+					DateUtil.CreateFromYMD (2022, 10, 10).julian(),
+					DateUtil.CreateFromYMD (2022, 11, 10).julian(),
+					DateUtil.CreateFromYMD (2022, 12, 10).julian(),
+					DateUtil.CreateFromYMD (2023,  1, 10).julian(),
+					DateUtil.CreateFromYMD (2023,  2, 10).julian(),
+					DateUtil.CreateFromYMD (2023,  3, 10).julian(),
+					DateUtil.CreateFromYMD (2023,  4, 10).julian(),
+					DateUtil.CreateFromYMD (2023,  5, 10).julian(),
+					DateUtil.CreateFromYMD (2023,  6, 10).julian(),
+					DateUtil.CreateFromYMD (2023,  7, 10).julian(),
+					DateUtil.CreateFromYMD (2023,  8, 10).julian(),
+					DateUtil.CreateFromYMD (2023,  9, 10).julian(),
+					DateUtil.CreateFromYMD (2023, 10, 10).julian(),
+					DateUtil.CreateFromYMD (2023, 11, 10).julian(),
+					DateUtil.CreateFromYMD (2023, 12, 10).julian(),
+					DateUtil.CreateFromYMD (2024,  1, 10).julian(),
+					DateUtil.CreateFromYMD (2024,  2, 10).julian(),
+					DateUtil.CreateFromYMD (2024,  3, 10).julian(),
+					DateUtil.CreateFromYMD (2024,  4, 10).julian(),
+					DateUtil.CreateFromYMD (2024,  5, 10).julian(),
+					DateUtil.CreateFromYMD (2024,  6, 10).julian(),
+					DateUtil.CreateFromYMD (2024,  7, 10).julian(),
+					DateUtil.CreateFromYMD (2024,  8, 10).julian(),
+					DateUtil.CreateFromYMD (2024,  9, 10).julian(),
+					DateUtil.CreateFromYMD (2024, 10, 10).julian(),
+					DateUtil.CreateFromYMD (2024, 11, 10).julian(),
+					DateUtil.CreateFromYMD (2024, 12, 10).julian(),
+					DateUtil.CreateFromYMD (2025,  1, 10).julian(),
+					DateUtil.CreateFromYMD (2025,  2, 10).julian(),
+					DateUtil.CreateFromYMD (2025,  3, 10).julian(),
+					DateUtil.CreateFromYMD (2025,  4, 10).julian(),
+					DateUtil.CreateFromYMD (2025,  5, 10).julian(),
+					DateUtil.CreateFromYMD (2025,  6, 10).julian(),
+					DateUtil.CreateFromYMD (2025,  7, 10).julian(),
+					DateUtil.CreateFromYMD (2025,  8, 10).julian(),
+					DateUtil.CreateFromYMD (2025,  9, 10).julian(),
+					DateUtil.CreateFromYMD (2025, 10, 10).julian(),
+					DateUtil.CreateFromYMD (2025, 11, 10).julian(),
+					DateUtil.CreateFromYMD (2025, 12, 10).julian(),
+					DateUtil.CreateFromYMD (2026,  1, 10).julian(),
+					DateUtil.CreateFromYMD (2026,  2, 10).julian(),
+					DateUtil.CreateFromYMD (2026,  3, 10).julian(),
+					DateUtil.CreateFromYMD (2026,  4, 10).julian(),
+					DateUtil.CreateFromYMD (2026,  5, 10).julian(),
+					DateUtil.CreateFromYMD (2026,  6, 10).julian(),
+					DateUtil.CreateFromYMD (2026,  7, 10).julian(),
+					DateUtil.CreateFromYMD (2026,  8, 10).julian(),
+					DateUtil.CreateFromYMD (2026,  9, 10).julian(),
+					DateUtil.CreateFromYMD (2026, 10, 10).julian(),
+					DateUtil.CreateFromYMD (2026, 11, 10).julian(),
+					DateUtil.CreateFromYMD (2026, 12, 10).julian(),
+					DateUtil.CreateFromYMD (2027,  1, 10).julian(),
+					DateUtil.CreateFromYMD (2027,  2, 10).julian(),
+					DateUtil.CreateFromYMD (2027,  3, 10).julian(),
+					DateUtil.CreateFromYMD (2027,  4, 10).julian(),
+					DateUtil.CreateFromYMD (2027,  5, 10).julian(),
+					DateUtil.CreateFromYMD (2027,  6, 10).julian(),
+					DateUtil.CreateFromYMD (2027,  7, 10).julian(),
+					DateUtil.CreateFromYMD (2027,  8, 10).julian(),
+					DateUtil.CreateFromYMD (2027,  9, 10).julian(),
+					DateUtil.CreateFromYMD (2027, 10, 10).julian(),
+					DateUtil.CreateFromYMD (2027, 11, 10).julian(),
+					DateUtil.CreateFromYMD (2027, 12, 10).julian(),
+					DateUtil.CreateFromYMD (2028,  1, 10).julian(),
+					DateUtil.CreateFromYMD (2028,  2, 10).julian(),
+					DateUtil.CreateFromYMD (2028,  3, 10).julian(),
+					DateUtil.CreateFromYMD (2028,  4, 10).julian(),
+					DateUtil.CreateFromYMD (2028,  5, 10).julian(),
+					DateUtil.CreateFromYMD (2028,  6, 10).julian(),
+					DateUtil.CreateFromYMD (2028,  7, 10).julian(),
+					DateUtil.CreateFromYMD (2028,  8, 10).julian(),
+					DateUtil.CreateFromYMD (2028,  9, 10).julian(),
+					DateUtil.CreateFromYMD (2028, 10, 10).julian(),
+					DateUtil.CreateFromYMD (2028, 11, 10).julian(),
+					DateUtil.CreateFromYMD (2028, 12, 10).julian(),
+					DateUtil.CreateFromYMD (2029,  1, 10).julian(),
+					DateUtil.CreateFromYMD (2029,  2, 10).julian(),
+					DateUtil.CreateFromYMD (2029,  3, 10).julian(),
+					DateUtil.CreateFromYMD (2029,  4, 10).julian(),
+					DateUtil.CreateFromYMD (2029,  5, 10).julian(),
+					DateUtil.CreateFromYMD (2029,  6, 10).julian(),
+					DateUtil.CreateFromYMD (2029,  7, 10).julian(),
+					DateUtil.CreateFromYMD (2029,  8, 10).julian(),
+					DateUtil.CreateFromYMD (2029,  9, 10).julian(),
+					DateUtil.CreateFromYMD (2029, 10, 10).julian(),
+					DateUtil.CreateFromYMD (2029, 11, 10).julian(),
+					DateUtil.CreateFromYMD (2029, 12, 10).julian(),
+					DateUtil.CreateFromYMD (2030,  1, 10).julian(),
+					DateUtil.CreateFromYMD (2030,  2, 10).julian(),
+					DateUtil.CreateFromYMD (2030,  3, 10).julian(),
+					DateUtil.CreateFromYMD (2030,  4, 10).julian(),
+					DateUtil.CreateFromYMD (2030,  5, 10).julian(),
+					DateUtil.CreateFromYMD (2030,  6, 10).julian(),
+					DateUtil.CreateFromYMD (2030,  7, 10).julian(),
+					DateUtil.CreateFromYMD (2030,  8, 10).julian(),
+					DateUtil.CreateFromYMD (2030,  9, 10).julian(),
+					DateUtil.CreateFromYMD (2030, 10, 10).julian(),
+					DateUtil.CreateFromYMD (2030, 11, 10).julian(),
+					DateUtil.CreateFromYMD (2030, 12, 10).julian(),
+					DateUtil.CreateFromYMD (2031,  1, 10).julian(),
+					DateUtil.CreateFromYMD (2031,  2, 10).julian(),
+					DateUtil.CreateFromYMD (2031,  3, 10).julian(),
+					DateUtil.CreateFromYMD (2031,  4, 10).julian(),
+					DateUtil.CreateFromYMD (2031,  5, 10).julian(),
+					DateUtil.CreateFromYMD (2031,  6, 10).julian(),
+					DateUtil.CreateFromYMD (2031,  7, 10).julian(),
+					DateUtil.CreateFromYMD (2031,  8, 10).julian(),
+					DateUtil.CreateFromYMD (2031,  9, 10).julian(),
+					DateUtil.CreateFromYMD (2031, 10, 10).julian(),
+					DateUtil.CreateFromYMD (2031, 11, 10).julian(),
+					DateUtil.CreateFromYMD (2031, 12, 10).julian(),
+				},
+				new double[] {
+					0.825788554,
+					0.823162164,
+					0.820519344,
+					0.817859990,
+					0.815184001,
+					0.812491270,
+					0.809781695,
+					0.807055169,
+					0.804311586,
+					0.801550839,
+					0.798772822,
+					0.795977426,
+					0.793164543,
+					0.790334062,
+					0.787485875,
+					0.784619870,
+					0.781735936,
+					0.778833960,
+					0.775913830,
+					0.772975432,
+					0.770018652,
+					0.767043374,
+					0.764049484,
+					0.761036865,
+					0.758005399,
+					0.754954969,
+					0.751885456,
+					0.748796740,
+					0.745688703,
+					0.742561221,
+					0.739414175,
+					0.736247441,
+					0.733060897,
+					0.729854418,
+					0.726627880,
+					0.723381158,
+					0.720114124,
+					0.716826652,
+					0.713518615,
+					0.710189883,
+					0.706840327,
+					0.703469816,
+					0.700078221,
+					0.696665408,
+					0.693231245,
+					0.689775599,
+					0.686298334,
+					0.682799317,
+					0.679278410,
+					0.675735477,
+					0.672170380,
+					0.668582980,
+					0.664973138,
+					0.661340714,
+					0.657685566,
+					0.654007551,
+					0.650306528,
+					0.646582352,
+					0.642834878,
+					0.639063960,
+					0.635269452,
+					0.631451206,
+					0.627609074,
+					0.623742906,
+					0.619852552,
+					0.615937861,
+					0.611998680,
+					0.608034856,
+					0.604046235,
+					0.600032662,
+					0.595993981,
+					0.591930035,
+					0.587840665,
+					0.583725712,
+					0.579585018,
+					0.575418419,
+					0.571225756,
+					0.567006863,
+					0.562761578,
+					0.558489735,
+					0.554191168,
+					0.549865710,
+					0.545513193,
+					0.541133447,
+					0.536726302,
+					0.532291587,
+					0.527829129,
+					0.523338754,
+					0.518820289,
+					0.514273556,
+					0.509698380,
+					0.505094583,
+					0.500461985,
+					0.495800406,
+					0.491109665,
+					0.486389580,
+					0.481639967,
+					0.476860640,
+					0.472051416,
+					0.467212105,
+					0.462342520,
+					0.457442473,
+					0.452511771,
+					0.447550224,
+					0.442557638,
+					0.437533819,
+					0.432478572,
+					0.427391700,
+					0.422273006,
+					0.417122290,
+					0.411939352,
+					0.406723990,
+					0.401476002,
+					0.396195184,
+					0.390881329,
+					0.385534232,
+					0.380153684,
+					0.374739477,
+					0.369291399,
+					0.363809239,
+					0.358292783,
+					0.352741818,
+					0.347156126,
+					0.341535492,
+					0.335879695,
+					0.330188517,
+					0.324461736,
+					0.318699129,
+					0.312900472,
+					0.307065539,
+					0.301194105,
+					0.295285939,
+					0.289340813,
+					0.283358496,
+					0.277338754,
+					0.271281353,
+					0.265186058,
+					0.259052633,
+					0.252880837,
+					0.246670432,
+					0.240421176,
+					0.234132825,
+					0.227805135,
+					0.221437861,
+					0.215030753,
+					0.208583564,
+					0.202096043,
+					0.195567936,
+					0.188998991,
+					0.182388952,
+					0.175737561,
+					0.169044561,
+					0.162309733,
+					0.156072928,
+					0.150025552,
+					0.143940344,
+					0.137817068,
+					0.131655486,
+					0.125455359,
+					0.119216444,
+					0.112938500,
+					0.106621281,
+					0.100264544,
+					0.093868040,
+					0.087431520,
+					0.080954734,
+					0.074437431,
+					0.067879357,
+					0.061280256,
+					0.054639873,
+					0.047957948,
+					0.041234222,
+					0.034468434,
+					0.027660321,
+					0.020809616,
+					0.013916055,
+					0.006979369,
+				}
 			),
 			null
 		);
 
-		RVMeasures (
-			bondBullet,
-			bondSinker,
+		BondReplicator abr = BondReplicator.CorporateSenior (
+			dblCleanPrice,
+			dblIssuePrice,
+			dblIssueAmount,
 			dtSpot,
-			MarketParamsBuilder.Create (
-				FundingCurve (
-					dtSpot,
-					strCurrency,
-					0.
-				),
-				GovvieCurve (
-					dtSpot,
-					strTreasuryCode,
-					adblTreasuryCoupon,
-					adblTreasuryYield
-				),
-				null,
-				null,
-				null,
-				null,
-				null
-			),
-			dblCleanPrice
+			astrDepositTenor,
+			adblDepositQuote,
+			adblFuturesQuote,
+			astrFixFloatTenor,
+			adblFixFloatQuote,
+			dblSpreadBump,
+			dblSpreadDurationMultiplier,
+			strTreasuryCode,
+			astrGovvieTenor,
+			adblGovvieYield,
+			astrCreditTenor,
+			adblCreditQuote,
+			dblFX,
+			Double.NaN,
+			iSettleLag,
+			bond
 		);
+
+		BondReplicationRun abrr = abr.generateRun();
+
+		System.out.println (abrr.display());
 
 		EnvManager.TerminateEnv();
 	}

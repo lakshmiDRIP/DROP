@@ -1,5 +1,5 @@
 
-package org.drip.xva.set;
+package org.drip.xva.proto;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -48,7 +48,7 @@ package org.drip.xva.set;
  */
 
 /**
- * NettingGroupSpecification contains the Specification of a Netting Group. The References are:
+ * RollUpGroupSpecification contains the Specifications of a Roll Up Group. The References are:
  *  
  *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
  *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
@@ -67,86 +67,51 @@ package org.drip.xva.set;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NettingGroupSpecification extends org.drip.xva.set.RollUpGroupSpecification
+public class RollUpGroupSpecification
 {
-	private boolean _contractual = true;
-	private boolean _enforceable = true;
+	private java.lang.String _id = "";
+	private java.lang.String _name = "";
 
 	/**
-	 * Generate a Standard Instance of NettingGroupSpecification
+	 * RollUpGroupSpecification Constructor
 	 * 
 	 * @param id The Collateral Group ID
 	 * @param name The Collateral Group Name
-	 * 
-	 * @return Standard Instance of NettingGroupSpecification
-	 */
-
-	public static final NettingGroupSpecification Standard (
-		final java.lang.String id,
-		final java.lang.String name)
-	{
-		try {
-			return new NettingGroupSpecification (
-				id,
-				name,
-				true,
-				true
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * NettingGroupSpecification Constructor
-	 * 
-	 * @param id The Collateral Group ID
-	 * @param name The Collateral Group Name
-	 * @param contractual TRUE - The Netting is Contractual
-	 * @param enforceable TRUE - The Netting is Enforceable
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public NettingGroupSpecification (
+	public RollUpGroupSpecification (
 		final java.lang.String id,
-		final java.lang.String name,
-		final boolean contractual,
-		final boolean enforceable)
+		final java.lang.String name)
 		throws java.lang.Exception
 	{
-		super (
-			id,
-			name
-		);
-
-		_contractual = contractual;
-		_enforceable = enforceable;
+		if (null == (_id = id) || _id.isEmpty() ||
+			null == (_name = name) || _name.isEmpty())
+		{
+			throw new java.lang.Exception ("RollUpGroupSpecification Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
-	 * Indicate if the Netting allowed is Contractual
+	 * Retrieve the Roll Up Group ID
 	 * 
-	 * @return TRUE - The Netting allowed is Contractual
+	 * @return The Roll Up Group ID
 	 */
 
-	public boolean contractual()
+	public java.lang.String id()
 	{
-		return _contractual;
+		return _id;
 	}
 
 	/**
-	 * Indicate if the Netting is Enforceable
+	 * Retrieve the Roll Up Group Name
 	 * 
-	 * @return TRUE - The Netting is Enforceable
+	 * @return The Roll Up Group Name
 	 */
 
-	public boolean enforceable()
+	public java.lang.String name()
 	{
-		return _enforceable;
+		return _name;
 	}
 }

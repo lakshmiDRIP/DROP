@@ -1,5 +1,5 @@
 
-package org.drip.xva.set;
+package org.drip.xva.proto;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,7 +47,7 @@ package org.drip.xva.set;
  */
 
 /**
- * PositionGroupSpecificationContainer contains the Specifications of a Position Group. The References are:
+ * PositionGroupSpecification contains the Specifications of a Position Group. The References are:
  *  
  *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
  *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
@@ -66,7 +66,75 @@ package org.drip.xva.set;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PositionGroupSpecificationContainer
+public class PositionGroupSpecification extends org.drip.xva.proto.RollUpGroupSpecification
 {
+	private org.drip.xva.proto.RollUpGroupSpecification _fundingGroupSpecification = null;
+	private org.drip.xva.proto.CreditDebtGroupSpecification _creditDebtGroupSpecification = null;
+	private org.drip.xva.proto.CollateralGroupSpecification _collateralGroupSpecification = null;
 
+	/**
+	 * PositionGroupSpecification Constructor
+	 * 
+	 * @param id The Position Group ID
+	 * @param name The Position Group Name
+	 * @param collateralGroupSpecification The Position's Collateral Group Specification
+	 * @param creditDebtGroupSpecification The Position's Credit Debt Group Specification
+	 * @param fundingGroupSpecification The Position's Funding Group Specification
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public PositionGroupSpecification (
+		final java.lang.String id,
+		final java.lang.String name,
+		final org.drip.xva.proto.CollateralGroupSpecification collateralGroupSpecification,
+		final org.drip.xva.proto.CreditDebtGroupSpecification creditDebtGroupSpecification,
+		final org.drip.xva.proto.RollUpGroupSpecification fundingGroupSpecification)
+		throws java.lang.Exception
+	{
+		super (
+			id,
+			name
+		);
+
+		if (null == (_collateralGroupSpecification = collateralGroupSpecification) ||
+			null == (_creditDebtGroupSpecification = creditDebtGroupSpecification) ||
+			null == (_fundingGroupSpecification = fundingGroupSpecification))
+		{
+			throw new java.lang.Exception ("PositionGroupSpecification Constructor => Invalid Inputs");
+		}
+	}
+
+	/**
+	 * Retrieve the Position's Collateral Group Specification
+	 * 
+	 * @return The Position's Collateral Group Specification
+	 */
+
+	public org.drip.xva.proto.CollateralGroupSpecification collateralGroupSpecification()
+	{
+		return _collateralGroupSpecification;
+	}
+
+	/**
+	 * Retrieve the Position's Credit Debt Group Specification
+	 * 
+	 * @return The Position's Credit Debt Group Specification
+	 */
+
+	public org.drip.xva.proto.CreditDebtGroupSpecification creditDebtGroupSpecification()
+	{
+		return _creditDebtGroupSpecification;
+	}
+
+	/**
+	 * Retrieve the Position's Funding Group Specification
+	 * 
+	 * @return The Position's Funding Group Specification
+	 */
+
+	public org.drip.xva.proto.RollUpGroupSpecification fundingGroupSpecification()
+	{
+		return _fundingGroupSpecification;
+	}
 }

@@ -1,5 +1,5 @@
 
-package org.drip.xva.set;
+package org.drip.xva.proto;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -67,7 +67,7 @@ package org.drip.xva.set;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CollateralGroupSpecification extends org.drip.xva.set.RollUpGroupSpecification
+public class CollateralGroupSpecification extends org.drip.xva.proto.RollUpGroupSpecification
 {
 	private int _closeOutScheme = -1;
 	private int _brokenDateScheme = -1;

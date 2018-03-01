@@ -58,13 +58,13 @@ import org.drip.state.identifier.ForwardLabel;
  */
 
 /**
- * BrokenDateLIBORForward generates the LIBOR Forward's over Monthly Increments with Maturity up to 60 Years
+ * BrokenDateLIBOREUR generates the EUR LIBOR Forward's over Monthly Increments with Maturity up to 60 Years
  *  for different Forward Tenors.
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class BrokenDateLIBORForward {
+public class BrokenDateLIBOREUR {
 
 	private static final MergedDiscountForwardCurve FundingCurve (
 		final JulianDate dtSpot,
@@ -72,70 +72,41 @@ public class BrokenDateLIBORForward {
 		throws Exception
 	{
 		String[] astrDepositMaturityTenor = new String[] {
-			"2D"
+			"1W",
+			"2W",
+			"1M",
+			"2M",
+			"3M",
+			"6M",
+			"9M"
 		};
 
 		double[] adblDepositQuote = new double[] {
-			0.0130411 // 2D
-		};
-
-		double[] adblFuturesQuote = new double[] {
-			0.01345,	// 98.655
-			0.01470,	// 98.530
-			0.01575,	// 98.425
-			0.01660,	// 98.340
-			0.01745,  	// 98.255
-			0.01845   	// 98.155
+			-0.00379, // 1W
+			-0.00372, // 2W
+			-0.00370, // 1M
+			-0.00341, // 2M
+			-0.00329, // 3M
+			-0.00271, // 6M
+			-0.00221  // 9M
 		};
 
 		String[] astrFixFloatMaturityTenor = new String[] {
-			"02Y",
-			"03Y",
-			"04Y",
-			"05Y",
-			"06Y",
-			"07Y",
-			"08Y",
-			"09Y",
-			"10Y",
-			"11Y",
-			"12Y",
-			"15Y",
-			"20Y",
-			"25Y",
-			"30Y",
-			"40Y",
-			"50Y"
+			"01Y",
 		};
 
 		double[] adblFixFloatQuote = new double[] {
-			0.016410, //  2Y
-			0.017863, //  3Y
-			0.019030, //  4Y
-			0.020035, //  5Y
-			0.020902, //  6Y
-			0.021660, //  7Y
-			0.022307, //  8Y
-			0.022879, //  9Y
-			0.023363, // 10Y
-			0.023820, // 11Y
-			0.024172, // 12Y
-			0.024934, // 15Y
-			0.025581, // 20Y
-			0.025906, // 25Y
-			0.025973, // 30Y
-			0.025838, // 40Y
-			0.025560  // 50Y
+			-0.000204, //  1Y
 		};
 
-		return LatentMarketStateBuilder.SmoothFundingCurve (
+		return LatentMarketStateBuilder.SingleStretchSmoothFundingCurve (
 			dtSpot,
 			strCurrency,
 			astrDepositMaturityTenor,
 			adblDepositQuote,
 			"ForwardRate",
-			adblFuturesQuote,
-			"ForwardRate",
+			null, // adblFuturesQuote,
+			null, // "ForwardRate",
 			astrFixFloatMaturityTenor,
 			adblFixFloatQuote,
 			"SwapRate"

@@ -432,14 +432,37 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 			iCashPayDate = valParams.cashPayDate();
 		}
 
-		return (((dblCumulativePeriodPV + dblWorkoutFactor * org.drip.analytics.support.Helper.Yield2DF
-			(iFrequency, dblYield, s_bYieldDFOffofCouponAccrualDCF ? dblPeriodYearFract :
-				org.drip.analytics.daycount.Convention.YearFraction (iValueDate, terminationAdjust
-					(iWorkoutDate), strDC, bApplyCpnEOMAdj, aap, strCalendar)) * notional (iWorkoutDate)) /
-						org.drip.analytics.support.Helper.Yield2DF (iFrequency, dblYield,
-							org.drip.analytics.daycount.Convention.YearFraction (iValueDate, iCashPayDate,
-								strDC, bApplyCpnEOMAdj, aap, strCalendar))) - accrued (iValueDate, csqc)) /
-									dblScalingNotional;
+		double dblCleanPrice = (((dblCumulativePeriodPV + dblWorkoutFactor * org.drip.analytics.support.Helper.Yield2DF (
+			iFrequency,
+			dblYield,
+			s_bYieldDFOffofCouponAccrualDCF ? dblPeriodYearFract :
+				org.drip.analytics.daycount.Convention.YearFraction (
+					iValueDate,
+					terminationAdjust (iWorkoutDate),
+					strDC,
+					bApplyCpnEOMAdj,
+					aap,
+					strCalendar
+				)
+			) * notional (iWorkoutDate)) /
+			org.drip.analytics.support.Helper.Yield2DF (
+				iFrequency,
+				dblYield,
+				org.drip.analytics.daycount.Convention.YearFraction (
+					iValueDate,
+					iCashPayDate,
+					strDC,
+					bApplyCpnEOMAdj,
+					aap,
+					strCalendar
+				)
+			)
+		) - accrued (
+			iValueDate,
+			csqc
+		)) / dblScalingNotional;
+
+		return dblCleanPrice;
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> calibMeasures (

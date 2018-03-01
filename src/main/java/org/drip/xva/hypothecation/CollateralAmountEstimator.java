@@ -72,7 +72,7 @@ public class CollateralAmountEstimator
 {
 	private double _currentBalance = java.lang.Double.NaN;
 	private org.drip.measure.bridge.BrokenDateInterpolator _brokenDateInterpolator = null;
-	private org.drip.xva.set.CollateralGroupSpecification _collateralGroupSpecification = null;
+	private org.drip.xva.proto.CollateralGroupSpecification _collateralGroupSpecification = null;
 
 	/**
 	 * CollateralAmountEstimator Constructor
@@ -85,7 +85,7 @@ public class CollateralAmountEstimator
 	 */
 
 	public CollateralAmountEstimator (
-		final org.drip.xva.set.CollateralGroupSpecification collateralGroupSpecification,
+		final org.drip.xva.proto.CollateralGroupSpecification collateralGroupSpecification,
 		final org.drip.measure.bridge.BrokenDateInterpolator brokenDateInterpolator,
 		final double currentBalance)
 		throws java.lang.Exception
@@ -105,7 +105,7 @@ public class CollateralAmountEstimator
 	 * @return The Collateral Group Specification
 	 */
 
-	public org.drip.xva.set.CollateralGroupSpecification collateralGroupSpecification()
+	public org.drip.xva.proto.CollateralGroupSpecification collateralGroupSpecification()
 	{
 		return _collateralGroupSpecification;
 	}

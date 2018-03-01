@@ -70,7 +70,7 @@ public class CollateralGroup
 {
 	private double[][] _positionGroupArrayVertex = null;
 	private org.drip.xva.universe.MarketVertex[] _marketVertexArray = null;
-	private org.drip.xva.set.CollateralGroupSpecification _collateralGroupSpecification = null;
+	private org.drip.xva.proto.CollateralGroupSpecification _collateralGroupSpecification = null;
 
 	private org.drip.measure.bridge.BrokenDateInterpolator brokenDateInterpolator (
 		final int positionGroupIndex,
@@ -323,7 +323,7 @@ public class CollateralGroup
 	 */
 
 	public CollateralGroup (
-		final org.drip.xva.set.CollateralGroupSpecification collateralGroupSpecification,
+		final org.drip.xva.proto.CollateralGroupSpecification collateralGroupSpecification,
 		final org.drip.xva.universe.MarketVertex[] marketVertexArray,
 		final double[][] positionGroupArrayVertex)
 		throws java.lang.Exception
@@ -369,7 +369,7 @@ public class CollateralGroup
 	 * @return The Collateral Group Specification
 	 */
 
-	public org.drip.xva.set.CollateralGroupSpecification collateralGroupSpecification()
+	public org.drip.xva.proto.CollateralGroupSpecification collateralGroupSpecification()
 	{
 		return _collateralGroupSpecification;
 	}

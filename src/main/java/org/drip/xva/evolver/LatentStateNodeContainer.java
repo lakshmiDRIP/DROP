@@ -376,7 +376,7 @@ public class LatentStateNodeContainer
 	 * 
 	 * @return The Labeled FX
 	 * 
-	 * @throws Thrown if Inputs are Invalid
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
 	 */
 
 	public double fx (
@@ -438,7 +438,7 @@ public class LatentStateNodeContainer
 	 * 
 	 * @return The Labeled Repo
 	 * 
-	 * @throws Thrown if Inputs are Invalid
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
 	 */
 
 	public double repo (
@@ -500,7 +500,7 @@ public class LatentStateNodeContainer
 	 * 
 	 * @return The Labeled Custom
 	 * 
-	 * @throws Thrown if Inputs are Invalid
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
 	 */
 
 	public double custom (
@@ -562,7 +562,7 @@ public class LatentStateNodeContainer
 	 * 
 	 * @return The Labeled Govvie
 	 * 
-	 * @throws Thrown if Inputs are Invalid
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
 	 */
 
 	public double govvie (
@@ -624,7 +624,7 @@ public class LatentStateNodeContainer
 	 * 
 	 * @return The Labeled Rating
 	 * 
-	 * @throws Thrown if Inputs are Invalid
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
 	 */
 
 	public double rating (
@@ -686,7 +686,7 @@ public class LatentStateNodeContainer
 	 * 
 	 * @return The Labeled Forward
 	 * 
-	 * @throws Thrown if Inputs are Invalid
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
 	 */
 
 	public double forward (
@@ -748,7 +748,7 @@ public class LatentStateNodeContainer
 	 * 
 	 * @return The Labeled Funding
 	 * 
-	 * @throws Thrown if Inputs are Invalid
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
 	 */
 
 	public double funding (
@@ -810,7 +810,7 @@ public class LatentStateNodeContainer
 	 * 
 	 * @return The Labeled Pay Down
 	 * 
-	 * @throws Thrown if Inputs are Invalid
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
 	 */
 
 	public double payDown (
@@ -872,7 +872,7 @@ public class LatentStateNodeContainer
 	 * 
 	 * @return The Labeled Overnight
 	 * 
-	 * @throws Thrown if Inputs are Invalid
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
 	 */
 
 	public double overnight (
@@ -934,7 +934,7 @@ public class LatentStateNodeContainer
 	 * 
 	 * @return The Labeled Collateral
 	 * 
-	 * @throws Thrown if Inputs are Invalid
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
 	 */
 
 	public double collateral (
@@ -996,7 +996,7 @@ public class LatentStateNodeContainer
 	 * 
 	 * @return The Labeled Volatility
 	 * 
-	 * @throws Thrown if Inputs are Invalid
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
 	 */
 
 	public double volatility (
@@ -1015,7 +1015,7 @@ public class LatentStateNodeContainer
 	 * Add the Labeled OTC Fix Float
 	 * 
 	 * @param otcFixFloatLabel The OTC Fix Float Label
-	 * @param otcfixFloat The OTC Fix Float Value
+	 * @param otcFixFloat The OTC Fix Float Value
 	 * 
 	 * @return The Labeled OTC Fix Float successfully added
 	 */
@@ -1058,7 +1058,7 @@ public class LatentStateNodeContainer
 	 * 
 	 * @return The Labeled OTC Fix Float
 	 * 
-	 * @throws Thrown if Inputs are Invalid
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
 	 */
 
 	public double otcFixFloat (
@@ -1121,7 +1121,7 @@ public class LatentStateNodeContainer
 	 * 
 	 * @return The Labeled Entity Credit
 	 * 
-	 * @throws Thrown if Inputs are Invalid
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
 	 */
 
 	public double entityCredit (
@@ -1184,7 +1184,7 @@ public class LatentStateNodeContainer
 	 * 
 	 * @return The Labeled Entity Equity
 	 * 
-	 * @throws Thrown if Inputs are Invalid
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
 	 */
 
 	public double entityEquity (
@@ -1228,7 +1228,7 @@ public class LatentStateNodeContainer
 	/**
 	 * Check Presence of Labeled Entity Hazard
 	 * 
-	 * @param entityRecoveryLabel The Entity Hazard Label
+	 * @param entityHazardLabel The Entity Hazard Label
 	 * 
 	 * @return The Labeled Entity Hazard exists
 	 */
@@ -1247,7 +1247,7 @@ public class LatentStateNodeContainer
 	 * 
 	 * @return The Labeled Entity Hazard
 	 * 
-	 * @throws Thrown if Inputs are Invalid
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
 	 */
 
 	public double entityHazard (
@@ -1291,7 +1291,7 @@ public class LatentStateNodeContainer
 	/**
 	 * Check Presence of Labeled Entity Funding
 	 * 
-	 * @param entityRecoveryLabel The Entity Funding Label
+	 * @param entityFundingLabel The Entity Funding Label
 	 * 
 	 * @return The Labeled Entity Funding Exists
 	 */
@@ -1310,7 +1310,7 @@ public class LatentStateNodeContainer
 	 * 
 	 * @return The Labeled Entity Funding
 	 * 
-	 * @throws Thrown if Inputs are Invalid
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
 	 */
 
 	public double entityFunding (
@@ -1373,7 +1373,7 @@ public class LatentStateNodeContainer
 	 * 
 	 * @return The Labeled Entity Recovery
 	 * 
-	 * @throws Thrown if Inputs are Invalid
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
 	 */
 
 	public double entityRecovery (

@@ -47,8 +47,8 @@ package org.drip.xva.evolver;
  */
 
 /**
- * MarketDynamicsContainer contains the Overnight Primary, the CSA Primary, Bank and the Counter Party Credit
- *  and Funding Latent State Evolvers. The References are:<br><br>
+ * EntityDynamicsContainer contains the Bank and the Counter Party Hazard and Recovery Latent State
+ *  Evolvers. The References are:<br><br>
  *  
  *  - Burgard, C., and M. Kjaer (2013): Funding Strategies, Funding Costs <i>Risk</i> <b>24 (12)</b>
  *  	82-87.<br><br>
@@ -67,7 +67,7 @@ package org.drip.xva.evolver;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MarketDynamicsContainer extends org.drip.xva.evolver.DynamicsContainer
+public class EntityDynamicsContainer extends org.drip.xva.evolver.DynamicsContainer
 {
 	private org.drip.state.identifier.EntityHazardLabel _bankHazardLabel = null;
 	private org.drip.state.identifier.EntityHazardLabel _counterPartyHazardLabel = null;
@@ -76,7 +76,7 @@ public class MarketDynamicsContainer extends org.drip.xva.evolver.DynamicsContai
 	private org.drip.state.identifier.EntityRecoveryLabel _bankSubordinateRecoveryLabel = null;
 
 	/**
-	 * MarketDynamicsContainer Constructor
+	 * EntityDynamicsContainer Constructor
 	 * 
 	 * @param bankHazardLatentState The Bank Hazard Rate Latent State
 	 * @param bankSeniorRecoveryLatentState The Bank Senior Recovery Rate Latent State
@@ -87,7 +87,7 @@ public class MarketDynamicsContainer extends org.drip.xva.evolver.DynamicsContai
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public MarketDynamicsContainer (
+	public EntityDynamicsContainer (
 		final org.drip.xva.evolver.TerminalLatentState bankHazardLatentState,
 		final org.drip.xva.evolver.TerminalLatentState bankSeniorRecoveryLatentState,
 		final org.drip.xva.evolver.TerminalLatentState bankSubordinateRecoveryLatentState,
@@ -100,7 +100,7 @@ public class MarketDynamicsContainer extends org.drip.xva.evolver.DynamicsContai
 			null == counterPartyHazardLatentState ||
 			null == counterPartyRecoveryLatentState)
 		{
-			throw new java.lang.Exception ("MarketDynamicsContainer Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("EntityDynamicsContainer Constructor => Invalid Inputs");
 		}
 
 		org.drip.state.identifier.LatentStateLabel bankHazardLabel = bankHazardLatentState.label();
@@ -123,7 +123,7 @@ public class MarketDynamicsContainer extends org.drip.xva.evolver.DynamicsContai
 			!addTerminalLatentState (counterPartyHazardLatentState) ||
 			!addTerminalLatentState (counterPartyRecoveryLatentState))
 		{
-			throw new java.lang.Exception ("MarketDynamicsContainer Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("EntityDynamicsContainer Constructor => Invalid Inputs");
 		}
 
 		_bankHazardLabel = (org.drip.state.identifier.EntityHazardLabel) bankHazardLabel;
@@ -139,7 +139,7 @@ public class MarketDynamicsContainer extends org.drip.xva.evolver.DynamicsContai
 			if (!(bankSubordinateRecoveryLabel instanceof org.drip.state.identifier.EntityRecoveryLabel) ||
 				!addTerminalLatentState (bankSubordinateRecoveryLatentState))
 			{
-				throw new java.lang.Exception ("MarketDynamicsContainer Constructor => Invalid Inputs");
+				throw new java.lang.Exception ("EntityDynamicsContainer Constructor => Invalid Inputs");
 			}
 
 			_bankSubordinateRecoveryLabel = (org.drip.state.identifier.EntityRecoveryLabel)

@@ -1,12 +1,15 @@
 
-package org.drip.sample.bondsink;
+package org.drip.sample.intexfeed;
 
 import org.drip.analytics.date.*;
-import org.drip.product.creator.BondBuilder;
-import org.drip.product.credit.BondComponent;
-import org.drip.quant.common.Array2D;
+import org.drip.analytics.daycount.Convention;
+import org.drip.analytics.support.Helper;
+import org.drip.market.otc.*;
+import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.service.scenario.*;
+import org.drip.service.template.LatentMarketStateBuilder;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+import org.drip.state.identifier.ForwardLabel;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -55,29 +58,20 @@ import org.drip.service.scenario.*;
  */
 
 /**
- * Firozabad generates the Full Suite of Replication Metrics for the Sinker Bond Firozabad.
+ * BrokenDateLIBORUSD generates the USD LIBOR Forward's over Monthly Increments with Maturity up to 60 Years
+ *  for different Forward Tenors.
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class Firozabad {
+public class BrokenDateLIBORUSD {
 
-	public static final void main (
-		final String[] astArgs)
+	private static final MergedDiscountForwardCurve FundingCurve (
+		final JulianDate dtSpot,
+		final String strCurrency)
 		throws Exception
 	{
-		EnvManager.InitEnv (
-			"",
-			true
-		);
-
-		JulianDate dtSpot = DateUtil.CreateFromYMD (
-			2017,
-			DateUtil.MARCH,
-			15
-		);
-
-		String[] astrDepositTenor = new String[] {
+		String[] astrDepositMaturityTenor = new String[] {
 			"2D"
 		};
 
@@ -90,11 +84,11 @@ public class Firozabad {
 			0.01470,	// 98.530
 			0.01575,	// 98.425
 			0.01660,	// 98.340
-			0.01745,    // 98.255
-			0.01845     // 98.155
+			0.01745,  	// 98.255
+			0.01845   	// 98.155
 		};
 
-		String[] astrFixFloatTenor = new String[] {
+		String[] astrFixFloatMaturityTenor = new String[] {
 			"02Y",
 			"03Y",
 			"04Y",
@@ -112,17 +106,6 @@ public class Firozabad {
 			"30Y",
 			"40Y",
 			"50Y"
-		};
-
-		String[] astrGovvieTenor = new String[] {
-			"1Y",
-			"2Y",
-			"3Y",
-			"5Y",
-			"7Y",
-			"10Y",
-			"20Y",
-			"30Y"
 		};
 
 		double[] adblFixFloatQuote = new double[] {
@@ -145,122 +128,90 @@ public class Firozabad {
 			0.025560  // 50Y
 		};
 
-		double[] adblGovvieYield = new double[] {
-			0.01219, //  1Y
-			0.01391, //  2Y
-			0.01590, //  3Y
-			0.01937, //  5Y
-			0.02200, //  7Y
-			0.02378, // 10Y
-			0.02677, // 20Y
-			0.02927  // 30Y
-		};
-
-		String[] astrCreditTenor = new String[] {
-			"06M",
-			"01Y",
-			"02Y",
-			"03Y",
-			"04Y",
-			"05Y",
-			"07Y",
-			"10Y"
-		};
-
-		double[] adblCreditQuote = new double[] {
-			 60.,	//  6M
-			 68.,	//  1Y
-			 88.,	//  2Y
-			102.,	//  3Y
-			121.,	//  4Y
-			138.,	//  5Y
-			168.,	//  7Y
-			188.	// 10Y
-		};
-
-		double dblFX = 1.;
-		int iSettleLag = 3;
-		int iCouponFreq = 2;
-		String strName = "Firozabad";
-		double dblCleanPrice = 1.1275;
-		double dblIssuePrice = 1.0;
-		String strCurrency = "USD";
-		double dblSpreadBump = 20.;
-		double dblCouponRate = 0.06718; 
-		double dblIssueAmount = 1.0e00;
-		String strTreasuryCode = "UST";
-		String strCouponDayCount = "30/360";
-		double dblSpreadDurationMultiplier = 5.;
-
-		JulianDate dtEffective = DateUtil.CreateFromYMD (
-			2002,
-			DateUtil.APRIL,
-			30
-		);
-
-		JulianDate dtMaturity = DateUtil.CreateFromYMD (
-			2023,
-			DateUtil.JANUARY,
-			2
-		);
-
-		BondComponent bond = BondBuilder.CreateSimpleFixed (
-			strName,
-			strCurrency,
-			strName,
-			dblCouponRate,
-			iCouponFreq,
-			strCouponDayCount,
-			dtEffective,
-			dtMaturity,
-			Array2D.FromArray (
-				new int[] {
-					DateUtil.CreateFromYMD (2018,  1,  2).julian(),
-					DateUtil.CreateFromYMD (2019,  1,  2).julian(),
-					DateUtil.CreateFromYMD (2020,  1,  2).julian(),
-					DateUtil.CreateFromYMD (2021,  1,  2).julian(),
-					DateUtil.CreateFromYMD (2021,  7,  2).julian(),
-					DateUtil.CreateFromYMD (2022,  1,  2).julian(),
-				},
-				new double[] {
-					0.315740266,
-					0.276766084,
-					0.246567856,
-					0.126648950,
-					0.082279581,
-					0.010439822,
-				}
-			),
-			null
-		);
-
-		BondReplicator abr = BondReplicator.CorporateSenior (
-			dblCleanPrice,
-			dblIssuePrice,
-			dblIssueAmount,
+		return LatentMarketStateBuilder.SmoothFundingCurve (
 			dtSpot,
-			astrDepositTenor,
+			strCurrency,
+			astrDepositMaturityTenor,
 			adblDepositQuote,
+			"ForwardRate",
 			adblFuturesQuote,
-			astrFixFloatTenor,
+			"ForwardRate",
+			astrFixFloatMaturityTenor,
 			adblFixFloatQuote,
-			dblSpreadBump,
-			dblSpreadDurationMultiplier,
-			strTreasuryCode,
-			astrGovvieTenor,
-			adblGovvieYield,
-			astrCreditTenor,
-			adblCreditQuote,
-			dblFX,
-			Double.NaN,
-			iSettleLag,
-			bond
+			"SwapRate"
+		);
+	}
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+		EnvManager.InitEnv ("");
+
+		JulianDate dtSpot = DateUtil.CreateFromYMD (
+			2017,
+			DateUtil.OCTOBER,
+			5
 		);
 
-		BondReplicationRun abrr = abr.generateRun();
+		int iNumMonth = 720;
+		String strCurrency = "USD";
+		String[] astrForwardTenor = new String[] {
+			 "1M",
+			 "2M",
+			 "3M",
+			 "6M",
+			"12M"
+		};
 
-		System.out.println (abrr.display());
+		FixedFloatSwapConvention ffsc = IBORFixedFloatContainer.ConventionFromJurisdiction (strCurrency);
 
-		EnvManager.TerminateEnv();
+		ForwardLabel forwardLabel = ffsc.floatStreamConvention().floaterIndex();
+
+		String strLIBORDayCount = forwardLabel.floaterIndex().dayCount();
+
+		int iLIBORFreq = Helper.TenorToFreq (forwardLabel.tenor());
+
+		MergedDiscountForwardCurve mdfc = FundingCurve (
+			dtSpot,
+			strCurrency
+		);
+
+		System.out.println
+			("SpotDate,ViewDate,ForwardTenor,ViewDiscountFactor,ViewForwardDiscountFactor, ForwardRate");
+
+		for (int i = 0; i < iNumMonth; ++i) {
+			JulianDate dtView = 0 == i ? dtSpot : dtSpot.addMonths (i);
+
+			double dblDFView = mdfc.df (dtView);
+
+			for (int j = 0; j < astrForwardTenor.length; ++j) {
+				JulianDate dtForward = dtView.addTenor (astrForwardTenor[j]);
+
+				double dblDFForward = mdfc.df (dtForward);
+
+				double dblForwardRate = Helper.DF2Yield (
+					iLIBORFreq,
+					dblDFForward / dblDFView,
+					Convention.YearFraction (
+						dtView.julian(),
+						dtForward.julian(),
+						strLIBORDayCount,
+						false,
+						null,
+						strCurrency
+					)
+				);
+
+				System.out.println (
+					dtSpot + "," +
+					dtView + "," +
+					astrForwardTenor[j] + "," +
+					FormatUtil.FormatDouble (dblDFView, 1, 8, 1.) + "," +
+					FormatUtil.FormatDouble (dblDFForward, 1, 8, 1.) + "," +
+					FormatUtil.FormatDouble (dblForwardRate, 1, 8, 100.) + "%"
+				);
+			}
+		}
 	}
 }

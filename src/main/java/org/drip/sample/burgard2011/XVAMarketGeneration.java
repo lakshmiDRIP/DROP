@@ -272,7 +272,7 @@ public class XVAMarketGeneration {
 				tBankSubordinateFunding,
 				tCounterPartyFunding
 			),
-			new MarketDynamicsContainer (
+			new EntityDynamicsContainer (
 				new TerminalLatentState (
 					EntityHazardLabel.Standard (
 						bank,

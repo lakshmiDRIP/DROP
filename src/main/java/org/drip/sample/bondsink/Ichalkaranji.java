@@ -55,12 +55,12 @@ import org.drip.service.scenario.*;
  */
 
 /**
- * Firozabad generates the Full Suite of Replication Metrics for the Sinker Bond Firozabad.
+ * Ichalkaranji generates the Full Suite of Replication Metrics for the Sinker Bond Ichalkaranji.
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class Firozabad {
+public class Ichalkaranji {
 
 	public static final void main (
 		final String[] astArgs)
@@ -72,9 +72,9 @@ public class Firozabad {
 		);
 
 		JulianDate dtSpot = DateUtil.CreateFromYMD (
-			2017,
-			DateUtil.MARCH,
-			15
+			2018,
+			DateUtil.FEBRUARY,
+			22
 		);
 
 		String[] astrDepositTenor = new String[] {
@@ -181,27 +181,27 @@ public class Firozabad {
 		double dblFX = 1.;
 		int iSettleLag = 3;
 		int iCouponFreq = 2;
-		String strName = "Firozabad";
-		double dblCleanPrice = 1.1275;
+		String strName = "Ichalkaranji";
+		double dblCleanPrice = 1.0480;
 		double dblIssuePrice = 1.0;
 		String strCurrency = "USD";
 		double dblSpreadBump = 20.;
-		double dblCouponRate = 0.06718; 
+		double dblCouponRate = 0.0525; 
 		double dblIssueAmount = 1.0e00;
 		String strTreasuryCode = "UST";
 		String strCouponDayCount = "30/360";
 		double dblSpreadDurationMultiplier = 5.;
 
 		JulianDate dtEffective = DateUtil.CreateFromYMD (
-			2002,
-			DateUtil.APRIL,
-			30
+			2011,
+			1,
+			25
 		);
 
 		JulianDate dtMaturity = DateUtil.CreateFromYMD (
-			2023,
-			DateUtil.JANUARY,
-			2
+			2021,
+			1,
+			31
 		);
 
 		BondComponent bond = BondBuilder.CreateSimpleFixed (
@@ -215,20 +215,20 @@ public class Firozabad {
 			dtMaturity,
 			Array2D.FromArray (
 				new int[] {
-					DateUtil.CreateFromYMD (2018,  1,  2).julian(),
-					DateUtil.CreateFromYMD (2019,  1,  2).julian(),
-					DateUtil.CreateFromYMD (2020,  1,  2).julian(),
-					DateUtil.CreateFromYMD (2021,  1,  2).julian(),
-					DateUtil.CreateFromYMD (2021,  7,  2).julian(),
-					DateUtil.CreateFromYMD (2022,  1,  2).julian(),
+					DateUtil.CreateFromYMD (2018,  7, 31).julian(),
+					DateUtil.CreateFromYMD (2019,  1, 31).julian(),
+					DateUtil.CreateFromYMD (2019,  7, 31).julian(),
+					DateUtil.CreateFromYMD (2020,  1, 31).julian(),
+					DateUtil.CreateFromYMD (2020,  7, 31).julian(),
+					DateUtil.CreateFromYMD (2021,  1, 31).julian(),
 				},
 				new double[] {
-					0.315740266,
-					0.276766084,
-					0.246567856,
-					0.126648950,
-					0.082279581,
-					0.010439822,
+					0.470306832,
+					0.432538639,
+					0.396328948,
+					0.360213154,
+					0.325458203,
+					0.29240767
 				}
 			),
 			null

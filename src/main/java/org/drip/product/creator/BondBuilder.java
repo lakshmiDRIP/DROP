@@ -240,7 +240,7 @@ public class BondBuilder {
 				100.,
 				strCurrency,
 				fsPrincipalOutstanding,
-				org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END,
+				org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_START,
 				false
 			)
 		);
@@ -369,7 +369,7 @@ public class BondBuilder {
 				100.,
 				strCurrency,
 				fsPrincipalOutstanding,
-				org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END,
+				org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_START,
 				false
 			)
 		);

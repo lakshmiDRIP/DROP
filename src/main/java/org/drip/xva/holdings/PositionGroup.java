@@ -70,7 +70,7 @@ public class PositionGroup
 {
 	private org.drip.xva.hypothecation.CollateralGroupPath _collateralGroupPath = null;
 	private org.drip.xva.holdings.PositionGroupNumeraire _positionGroupNumeraire = null;
-	private org.drip.xva.set.PositionGroupSpecification _positionGroupSpecification = null;
+	private org.drip.xva.proto.PositionGroupSpecification _positionGroupSpecification = null;
 
 	/**
 	 * PositionGroup Constructor
@@ -82,7 +82,7 @@ public class PositionGroup
 	 */
 
 	public PositionGroup (
-		final org.drip.xva.set.PositionGroupSpecification positionGroupSpecification,
+		final org.drip.xva.proto.PositionGroupSpecification positionGroupSpecification,
 		final org.drip.xva.holdings.PositionGroupNumeraire positionGroupNumeraire)
 		throws java.lang.Exception
 	{
@@ -99,7 +99,7 @@ public class PositionGroup
 	 * @return The Position Group Specification
 	 */
 
-	public org.drip.xva.set.PositionGroupSpecification positionGroupSpecification()
+	public org.drip.xva.proto.PositionGroupSpecification positionGroupSpecification()
 	{
 		return _positionGroupSpecification;
 	}

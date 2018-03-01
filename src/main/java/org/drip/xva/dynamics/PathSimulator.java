@@ -196,7 +196,7 @@ public class PathSimulator
 	 * 
 	 * @param iCount Path Count
 	 * @param marketVertexGenerator Market Vertex Generator
-	 * @param simulatorScheme Path Simulator Scheme
+	 * @param adjustmentDigestScheme Adjustment Digest Scheme
 	 * @param positionGroupContainer Container of Position Groups
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid

@@ -282,7 +282,7 @@ public class EulerTrajectoryEvolutionScheme {
 			iSpotDate,
 			aiVertexDate,
 			tc,
-			new MarketDynamicsContainer (
+			new EntityDynamicsContainer (
 				new TerminalLatentState (
 					EntityHazardLabel.Standard (
 						bank,

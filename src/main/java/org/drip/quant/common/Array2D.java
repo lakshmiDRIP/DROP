@@ -224,6 +224,10 @@ public class Array2D {
 
 		adblVertexDate[iNumVertex - 1] = iMaturityDate;
 
+		for (int i = 0; i < iNumVertex - 1; ++i) {
+			System.out.println (new org.drip.analytics.date.JulianDate ((int) adblVertexDate[i]) + " | " + adblVertexFactor[i]);
+		}
+
 		return FromArray (adblVertexDate, adblVertexFactor);
 	}
 
@@ -380,6 +384,8 @@ public class Array2D {
 			throw new java.lang.Exception ("Array2D ctr => Invalid params");
 
 		for (int i = 0; i < iLength; ++i) {
+			// System.out.println (new org.drip.analytics.date.JulianDate ((int) _adblX[i]) + " | " + _adblY[i]);
+
 			if (!org.drip.quant.common.NumberUtil.IsValid (_adblX[i] = adblX[i]) ||
 				!org.drip.quant.common.NumberUtil.IsValid (_adblY[i] = adblY[i]))
 				throw new java.lang.Exception ("Array2D ctr => Invalid params");

@@ -15,7 +15,7 @@ import org.drip.xva.cpty.*;
 import org.drip.xva.dynamics.*;
 import org.drip.xva.evolver.*;
 import org.drip.xva.holdings.*;
-import org.drip.xva.set.*;
+import org.drip.xva.proto.*;
 import org.drip.xva.settings.*;
 import org.drip.xva.universe.*;
 
@@ -274,7 +274,7 @@ public class SemiReplicationBaselProxy
 				bank,
 				counterParty
 			),
-			new MarketDynamicsContainer (
+			new EntityDynamicsContainer (
 				new TerminalLatentState (
 					EntityHazardLabel.Standard (
 						bank,
@@ -480,11 +480,31 @@ public class SemiReplicationBaselProxy
 							0.,
 							CloseOutScheme.BILATERAL
 						),
-						new NettingGroupSpecification (
+						new CreditDebtGroupSpecification (
 							"NETGRPSPEC1",
 							"NETGRPSPEC1",
 							true,
-							true
+							true,
+							EntityHazardLabel.Standard (
+								bank,
+								currency
+							),
+							EntityHazardLabel.Standard (
+								counterParty,
+								currency
+							),
+							EntityRecoveryLabel.Senior (
+								bank,
+								currency
+							),
+							EntityRecoveryLabel.Senior (
+								counterParty,
+								currency
+							),
+							EntityRecoveryLabel.Subordinate (
+								bank,
+								currency
+							)
 						),
 						new RollUpGroupSpecification (
 							"FUNDGRPSPEC1",
