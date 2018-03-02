@@ -5,9 +5,13 @@ import org.drip.analytics.date.*;
 import org.drip.analytics.daycount.Convention;
 import org.drip.analytics.support.Helper;
 import org.drip.market.otc.*;
+import org.drip.product.definition.CalibratableComponent;
+import org.drip.product.rates.*;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.service.template.LatentMarketStateBuilder;
+// import org.drip.service.template.LatentMarketStateBuilder;
+import org.drip.service.template.OTCInstrumentBuilder;
+import org.drip.state.creator.ScenarioDiscountCurveBuilder;
 import org.drip.state.discount.MergedDiscountForwardCurve;
 import org.drip.state.identifier.ForwardLabel;
 
@@ -71,7 +75,7 @@ public class BrokenDateLIBOREUR {
 		final String strCurrency)
 		throws Exception
 	{
-		String[] astrDepositMaturityTenor = new String[] {
+		String[] depositTenorArray = new String[] {
 			"1W",
 			"2W",
 			"1M",
@@ -81,7 +85,7 @@ public class BrokenDateLIBOREUR {
 			"9M"
 		};
 
-		double[] adblDepositQuote = new double[] {
+		double[] depositQuoteArray = new double[] {
 			-0.00379, // 1W
 			-0.00372, // 2W
 			-0.00370, // 1M
@@ -91,26 +95,108 @@ public class BrokenDateLIBOREUR {
 			-0.00221  // 9M
 		};
 
-		String[] astrFixFloatMaturityTenor = new String[] {
-			"01Y",
+		String[] fixFloatMaturityTenorArray = new String[] {
+			"18M",
+			"02Y",
+			"03Y",
+			"04Y",
+			"05Y",
+			"06Y",
+			"07Y",
+			"08Y",
+			"09Y",
+			"10Y",
+			"11Y",
+			"12Y",
+			"15Y",
+			"20Y",
+			"25Y",
+			"30Y",
+			"35Y",
+			"40Y",
+			"45Y",
+			"50Y"
 		};
 
-		double[] adblFixFloatQuote = new double[] {
-			-0.000204, //  1Y
+		double[] fixFloatQuoteArray = new double[] {
+			-0.002040, // 18M
+			-0.001190, // 02Y
+			 0.000855, // 03Y
+			 0.002960, // 04Y
+			 0.004990, // 05Y
+			 0.006630, // 06Y
+			 0.008090, // 07Y
+			 0.009360, // 08Y
+			 0.010490, // 09Y
+			 0.011300, // 10Y
+			 0.012360, // 11Y
+			 0.013150, // 12Y
+			 0.014890, // 15Y
+			 0.016300, // 20Y
+			 0.016690, // 25Y
+			 0.016740, // 30Y
+			 0.016680, // 35Y
+			 0.016530, // 40Y
+			 0.015944, // 45Y
+			 0.016090, // 50Y
 		};
 
-		return LatentMarketStateBuilder.SingleStretchSmoothFundingCurve (
+		int depositCount = depositTenorArray.length;
+		int calibComponentCount = depositCount + fixFloatMaturityTenorArray.length;
+		CalibratableComponent[] calibComponentArray = new CalibratableComponent[calibComponentCount];
+		String[] calibMeasureArray = new String[calibComponentCount];
+		double[] calibQuoteArray = new double[calibComponentCount];
+
+		SingleStreamComponent[] depositArray = OTCInstrumentBuilder.FundingDeposit (
 			dtSpot,
 			strCurrency,
-			astrDepositMaturityTenor,
-			adblDepositQuote,
+			depositTenorArray
+		);
+
+		FixFloatComponent[] fixFloatArray = OTCInstrumentBuilder.FixFloatStandard (
+			dtSpot,
+			strCurrency,
+			"ALL",
+			fixFloatMaturityTenorArray,
+			"MAIN",
+			0.
+		);
+
+		for (int i = 0; i < depositCount; ++i)
+		{
+			calibMeasureArray[i] = "Rate";
+			calibQuoteArray[i] = depositQuoteArray[i];
+			calibComponentArray[i] = depositArray[i];
+		}
+
+		for (int i = depositCount; i < calibComponentCount; ++i)
+		{
+			calibMeasureArray[i] = "SwapRate";
+			calibComponentArray[i] = fixFloatArray[i - depositCount];
+			calibQuoteArray[i] = fixFloatQuoteArray[i - depositCount];
+		}
+
+		return ScenarioDiscountCurveBuilder.NonlinearBuild (
+			dtSpot,
+			"USD",
+			calibComponentArray,
+			calibQuoteArray,
+			calibMeasureArray,
+			null
+		);
+
+		/* return LatentMarketStateBuilder.SingleStretchShapePreservingFundingCurve (
+			dtSpot,
+			strCurrency,
+			depositTenorArray,
+			depositQuoteArray,
 			"ForwardRate",
 			null, // adblFuturesQuote,
 			null, // "ForwardRate",
 			astrFixFloatMaturityTenor,
 			adblFixFloatQuote,
 			"SwapRate"
-		);
+		); */
 	}
 
 	public static final void main (
