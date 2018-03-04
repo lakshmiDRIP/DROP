@@ -67,7 +67,7 @@ package org.drip.xva.proto;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CollateralGroupSpecification extends org.drip.xva.proto.RollUpGroupSpecification
+public class CollateralGroupSpecification extends org.drip.xva.proto.ExposureGroupSpecification
 {
 	private int _closeOutScheme = -1;
 	private int _brokenDateScheme = -1;
@@ -76,6 +76,7 @@ public class CollateralGroupSpecification extends org.drip.xva.proto.RollUpGroup
 	private int _positionReplicationScheme = -1;
 	private double _hedgeError = java.lang.Double.NaN;
 	private double _independentAmount = java.lang.Double.NaN;
+	private org.drip.state.identifier.CSALabel _csaLabel = null;
 	private double _minimumTransferAmount = java.lang.Double.NaN;
 	private org.drip.function.definition.R1ToR1 _bankThresholdFunction = null;
 	private org.drip.function.definition.R1ToR1[] _counterPartyThresholdFunctionArray = null;
@@ -84,6 +85,8 @@ public class CollateralGroupSpecification extends org.drip.xva.proto.RollUpGroup
 	 * Generate a Zero-Threshold Instance of the Named Collateral Group
 	 * 
 	 * @param name The Collateral Group Name
+	 * @param overnightLabel The Overnight Latent State Label
+	 * @param csaLabel The CSA Latent State Label
 	 * @param positionReplicationScheme Position Replication Scheme
 	 * @param brokenDateScheme Broken Date Interpolation Scheme
 	 * @param hedgeError Hedge Error
@@ -94,6 +97,8 @@ public class CollateralGroupSpecification extends org.drip.xva.proto.RollUpGroup
 
 	public static final CollateralGroupSpecification ZeroThreshold (
 		final java.lang.String name,
+		final org.drip.state.identifier.OvernightLabel overnightLabel,
+		final org.drip.state.identifier.CSALabel csaLabel,
 		final int positionReplicationScheme,
 		final int brokenDateScheme,
 		final double hedgeError,
@@ -104,6 +109,8 @@ public class CollateralGroupSpecification extends org.drip.xva.proto.RollUpGroup
 			return new CollateralGroupSpecification (
 				org.drip.quant.common.StringUtil.GUID(),
 				name,
+				overnightLabel,
+				csaLabel,
 				14,
 				14,
 				null,
@@ -128,6 +135,8 @@ public class CollateralGroupSpecification extends org.drip.xva.proto.RollUpGroup
 	 * Generate a Fixed-Threshold Instance of the Named Collateral Group
 	 * 
 	 * @param name The Collateral Group Name
+	 * @param overnightLabel The Overnight Latent State Label
+	 * @param csaLabel The CSA Latent State Label
 	 * @param counterPartyThreshold The Fixed Counter Party Threshold
 	 * @param bankThreshold The Fixed Bank Threshold
 	 * @param positionReplicationScheme Position Replication Scheme
@@ -140,6 +149,8 @@ public class CollateralGroupSpecification extends org.drip.xva.proto.RollUpGroup
 
 	public static final CollateralGroupSpecification FixedThreshold (
 		final java.lang.String name,
+		final org.drip.state.identifier.OvernightLabel overnightLabel,
+		final org.drip.state.identifier.CSALabel csaLabel,
 		final double counterPartyThreshold,
 		final double bankThreshold,
 		final int positionReplicationScheme,
@@ -158,6 +169,8 @@ public class CollateralGroupSpecification extends org.drip.xva.proto.RollUpGroup
 			return new CollateralGroupSpecification (
 				org.drip.quant.common.StringUtil.GUID(),
 				name,
+				overnightLabel,
+				csaLabel,
 				14,
 				14,
 				new org.drip.function.r1tor1.FlatUnivariate[]
@@ -186,6 +199,8 @@ public class CollateralGroupSpecification extends org.drip.xva.proto.RollUpGroup
 	 * 
 	 * @param id The Collateral Group ID
 	 * @param name The Collateral Group Name
+	 * @param overnightLabel The Overnight Latent State Label
+	 * @param csaLabel The CSA Latent State Label
 	 * @param counterPartyDefaultWindow The Counter Party Default Window
 	 * @param bankDefaultWindow The Bank Default Window
 	 * @param counterPartyThresholdFunctionArray The Array of Collateral Group Counter Party Threshold R^1 - R^1
@@ -204,6 +219,8 @@ public class CollateralGroupSpecification extends org.drip.xva.proto.RollUpGroup
 	public CollateralGroupSpecification (
 		final java.lang.String id,
 		final java.lang.String name,
+		final org.drip.state.identifier.OvernightLabel overnightLabel,
+		final org.drip.state.identifier.CSALabel csaLabel,
 		final int counterPartyDefaultWindow,
 		final int bankDefaultWindow,
 		final org.drip.function.definition.R1ToR1[] counterPartyThresholdFunctionArray,
@@ -218,10 +235,12 @@ public class CollateralGroupSpecification extends org.drip.xva.proto.RollUpGroup
 	{
 		super (
 			id,
-			name
+			name,
+			overnightLabel
 		);
 
-		if (-1 >= (_counterPartyDefaultWindow = counterPartyDefaultWindow) ||
+		if (null == (_csaLabel = csaLabel) ||
+			-1 >= (_counterPartyDefaultWindow = counterPartyDefaultWindow) ||
 			-1 >= (_bankDefaultWindow = bankDefaultWindow) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_minimumTransferAmount = minimumTransferAmount) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_independentAmount = independentAmount) ||
@@ -235,6 +254,17 @@ public class CollateralGroupSpecification extends org.drip.xva.proto.RollUpGroup
 		_bankThresholdFunction = bankThresholdFunction;
 		_positionReplicationScheme = positionReplicationScheme;
 		_counterPartyThresholdFunctionArray = counterPartyThresholdFunctionArray;
+	}
+
+	/**
+	 * Retrieve the CSA Label
+	 * 
+	 * @return The CSA Label
+	 */
+
+	public org.drip.state.identifier.CSALabel csaLabel()
+	{
+		return _csaLabel;
 	}
 
 	/**

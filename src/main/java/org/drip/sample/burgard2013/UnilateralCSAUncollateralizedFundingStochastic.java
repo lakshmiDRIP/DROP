@@ -15,8 +15,10 @@ import org.drip.xva.basel.*;
 import org.drip.xva.cpty.*;
 import org.drip.xva.definition.*;
 import org.drip.xva.hypothecation.*;
+import org.drip.xva.netting.CollateralGroupPath;
 import org.drip.xva.strategy.*;
 import org.drip.xva.universe.*;
+import org.drip.xva.vertex.BurgardKjaerBuilder;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -565,7 +567,7 @@ public class UnilateralCSAUncollateralizedFundingStochastic {
 				);
 
 				if (0 != j) {
-					aCGV1[j] = BurgardKjaerVertexBuilder.OneWayCSA (
+					aCGV1[j] = BurgardKjaerBuilder.OneWayCSA (
 						adtVertex[j],
 						aadblPortfolio1Value[i][j],
 						0.,
@@ -576,7 +578,7 @@ public class UnilateralCSAUncollateralizedFundingStochastic {
 						cog
 					);
 
-					aCGV2[j] = BurgardKjaerVertexBuilder.OneWayCSA (
+					aCGV2[j] = BurgardKjaerBuilder.OneWayCSA (
 						adtVertex[j],
 						aadblPortfolio2Value[i][j],
 						0.,
@@ -587,14 +589,14 @@ public class UnilateralCSAUncollateralizedFundingStochastic {
 						cog
 					);
 				} else {
-					aCGV1[j] = BurgardKjaerVertexBuilder.Initial (
+					aCGV1[j] = BurgardKjaerBuilder.Initial (
 						adtVertex[j],
 						aadblPortfolio1Value[i][0],
 						aMV[j],
 						cog
 					);
 
-					aCGV2[j] = BurgardKjaerVertexBuilder.Initial (
+					aCGV2[j] = BurgardKjaerBuilder.Initial (
 						adtVertex[j],
 						aadblPortfolio2Value[i][0],
 						aMV[j],

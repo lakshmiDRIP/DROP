@@ -73,7 +73,7 @@ public abstract class CreditDebtGroupPath extends org.drip.xva.netting.ExposureG
 {
 
 	protected CreditDebtGroupPath (
-		final org.drip.xva.hypothecation.CollateralGroupPath[] collateralGroupPathArray,
+		final org.drip.xva.netting.CollateralGroupPath[] collateralGroupPathArray,
 		final org.drip.xva.universe.MarketPath marketPath)
 		throws java.lang.Exception
 	{

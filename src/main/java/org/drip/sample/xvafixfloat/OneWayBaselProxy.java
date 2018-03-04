@@ -473,6 +473,8 @@ public class OneWayBaselProxy
 						"POSGRPSPEC1",
 						CollateralGroupSpecification.FixedThreshold (
 							"FIXEDTHRESHOLD",
+							OvernightLabel.Create (currency),
+							CSALabel.ISDA (currency),
 							dblCounterPartyThreshold,
 							dblBankThreshold,
 							PositionReplicationScheme.BURGARD_KJAER_ONE_WAY_CSA_VERTEX,
@@ -483,8 +485,7 @@ public class OneWayBaselProxy
 						new CreditDebtGroupSpecification (
 							"NETGRPSPEC1",
 							"NETGRPSPEC1",
-							true,
-							true,
+							OvernightLabel.Create (currency),
 							EntityHazardLabel.Standard (
 								bank,
 								currency
@@ -504,11 +505,14 @@ public class OneWayBaselProxy
 							EntityRecoveryLabel.Subordinate (
 								bank,
 								currency
-							)
+							),
+							true,
+							true
 						),
-						new RollUpGroupSpecification (
+						new ExposureGroupSpecification (
 							"FUNDGRPSPEC1",
-							"FUNDGRPSPEC1"
+							"FUNDGRPSPEC1",
+							OvernightLabel.Create (currency)
 						)
 					),
 					new PositionGroupNumeraireFixFloat (maturityDate)

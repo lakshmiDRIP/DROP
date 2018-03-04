@@ -460,6 +460,8 @@ public class AlbaneseAndersenBaselProxy
 						"POSGRPSPEC1",
 						CollateralGroupSpecification.FixedThreshold (
 							"FIXEDTHRESHOLD",
+							OvernightLabel.Create (currency),
+							CSALabel.ISDA (currency),
 							dblCounterPartyThreshold,
 							dblBankThreshold,
 							PositionReplicationScheme.ALBANESE_ANDERSEN_VERTEX,
@@ -470,8 +472,7 @@ public class AlbaneseAndersenBaselProxy
 						new CreditDebtGroupSpecification (
 							"NETGRPSPEC1",
 							"NETGRPSPEC1",
-							true,
-							true,
+							OvernightLabel.Create (currency),
 							EntityHazardLabel.Standard (
 								bank,
 								currency
@@ -488,11 +489,14 @@ public class AlbaneseAndersenBaselProxy
 								counterParty,
 								currency
 							),
-							null
+							null,
+							true,
+							true
 						),
-						new RollUpGroupSpecification (
+						new ExposureGroupSpecification (
 							"FUNDGRPSPEC1",
-							"FUNDGRPSPEC1"
+							"FUNDGRPSPEC1",
+							OvernightLabel.Create (currency)
 						)
 					),
 					new PositionGroupNumeraireFixFloat (maturityDate)

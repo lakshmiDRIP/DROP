@@ -1,5 +1,5 @@
 
-package org.drip.xva.hypothecation;
+package org.drip.xva.vertex;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -48,8 +48,8 @@ package org.drip.xva.hypothecation;
  */
 
 /**
- * BurgardKjaerVertexBuilder contains the Builders that construct the Burgard Kjaer Vertex using a Variant of
- *  the Generalized Burgard Kjaer (2013) Scheme. The References are:
+ * BurgardKjaerBuilder contains the Builders that construct the Burgard Kjaer Vertex using a Variant of the
+ *  Generalized Burgard Kjaer (2013) Scheme. The References are:
  *  
  *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
  *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
@@ -68,7 +68,7 @@ package org.drip.xva.hypothecation;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BurgardKjaerVertexBuilder
+public class BurgardKjaerBuilder
 {
 
 	/**
@@ -82,7 +82,7 @@ public class BurgardKjaerVertexBuilder
 	 * @return The Burgard Kjaer Bank Portfolio Vertex
 	 */
 
-	public static final org.drip.xva.hypothecation.BurgardKjaerVertex Initial (
+	public static final org.drip.xva.vertex.BurgardKjaer Initial (
 		final org.drip.analytics.date.JulianDate anchorDate,
 		final double forward,
 		final org.drip.xva.universe.MarketVertex marketVertex,
@@ -100,8 +100,8 @@ public class BurgardKjaerVertexBuilder
 				0.
 			);
 
-		org.drip.xva.hypothecation.BurgardKjaerVertexExposure burgardKjaerVertexExposure =
-			org.drip.xva.hypothecation.BurgardKjaerVertexExposure.Initial (
+		org.drip.xva.vertex.BurgardKjaerExposure burgardKjaerVertexExposure =
+			org.drip.xva.vertex.BurgardKjaerExposure.Initial (
 				forward,
 				collateralGroupVertexCloseOut
 			);
@@ -138,7 +138,7 @@ public class BurgardKjaerVertexBuilder
 
 		try
 		{
-			return new org.drip.xva.hypothecation.BurgardKjaerVertex (
+			return new org.drip.xva.vertex.BurgardKjaer (
 				anchorDate,
 				forward,
 				0.,
@@ -172,12 +172,12 @@ public class BurgardKjaerVertexBuilder
 	 * @return The Burgard Kjaer Bank Portfolio Vertex
 	 */
 
-	public static final org.drip.xva.hypothecation.BurgardKjaerVertex BankPortfolioBuilder (
+	public static final org.drip.xva.vertex.BurgardKjaer BankPortfolioBuilder (
 		final org.drip.analytics.date.JulianDate anchorDate,
 		final org.drip.xva.hypothecation.CollateralGroupVertexExposure collateralGroupVertexExposure,
 		final org.drip.xva.universe.MarketEdge marketEdge,
 		final org.drip.xva.hypothecation.CollateralGroupVertexCloseOut collateralGroupVertexCloseOut,
-		final org.drip.xva.hypothecation.BurgardKjaerVertexExposure burgardKjaerVertexExposure)
+		final org.drip.xva.vertex.BurgardKjaerExposure burgardKjaerVertexExposure)
 	{
 		if (null == collateralGroupVertexExposure ||
 			null == marketEdge ||
@@ -223,7 +223,7 @@ public class BurgardKjaerVertexBuilder
 
 		try
 		{
-			return new org.drip.xva.hypothecation.BurgardKjaerVertex (
+			return new org.drip.xva.vertex.BurgardKjaer (
 				anchorDate,
 				collateralGroupVertexExposure.forward(),
 				collateralGroupVertexExposure.accrued(),
@@ -264,7 +264,7 @@ public class BurgardKjaerVertexBuilder
 	 *  Bonds
 	 */
 
-	public static final org.drip.xva.hypothecation.BurgardKjaerVertex HedgeErrorDualBond (
+	public static final org.drip.xva.vertex.BurgardKjaer HedgeErrorDualBond (
 		final org.drip.analytics.date.JulianDate anchorDate,
 		final double exposure,
 		final double realizedCashFlow,
@@ -306,7 +306,7 @@ public class BurgardKjaerVertexBuilder
 				),
 				marketEdge,
 				collateralGroupVertexCloseOut,
-				new org.drip.xva.hypothecation.BurgardKjaerVertexExposure (
+				new org.drip.xva.vertex.BurgardKjaerExposure (
 					collateralizedExposure - collateralGroupVertexCloseOut.counterParty(),
 					collateralizedExposure - collateralGroupVertexCloseOut.bank(),
 					hedgeError,
@@ -337,7 +337,7 @@ public class BurgardKjaerVertexBuilder
 	 *  Default using Two Bonds
 	 */
 
-	public static final org.drip.xva.hypothecation.BurgardKjaerVertex SemiReplicationDualBond (
+	public static final org.drip.xva.vertex.BurgardKjaer SemiReplicationDualBond (
 		final org.drip.analytics.date.JulianDate anchorDate,
 		final double exposure,
 		final double realizedCashFlow,
@@ -369,7 +369,7 @@ public class BurgardKjaerVertexBuilder
 					uncollateralizedExposure,
 					collateralBalance
 				),
-				new org.drip.xva.hypothecation.BurgardKjaerVertexExposure (
+				new org.drip.xva.vertex.BurgardKjaerExposure (
 					0. < collateralizedExposure ? collateralizedExposure : 0.,
 					0. > collateralizedExposure ? collateralizedExposure : 0.,
 					0. < collateralizedExposure ? collateralizedExposure : 0.,
@@ -398,7 +398,7 @@ public class BurgardKjaerVertexBuilder
 	 * @return The Standard Instance of BurgardKjaerVertex using using a Fully Collateralized Strategy
 	 */
 
-	public static final org.drip.xva.hypothecation.BurgardKjaerVertex GoldPlatedTwoWayCSA (
+	public static final org.drip.xva.vertex.BurgardKjaer GoldPlatedTwoWayCSA (
 		final org.drip.analytics.date.JulianDate anchorDate,
 		final double exposure,
 		final double realizedCashFlow,
@@ -427,7 +427,7 @@ public class BurgardKjaerVertexBuilder
 					uncollateralizedExposure,
 					uncollateralizedExposure
 				),
-				new org.drip.xva.hypothecation.BurgardKjaerVertexExposure (
+				new org.drip.xva.vertex.BurgardKjaerExposure (
 					0.,
 					0.,
 					0.,
@@ -455,7 +455,7 @@ public class BurgardKjaerVertexBuilder
 	 * @return The Standard Instance of BurgardKjaerVertex using One Way CSA
 	 */
 
-	public static final org.drip.xva.hypothecation.BurgardKjaerVertex OneWayCSA (
+	public static final org.drip.xva.vertex.BurgardKjaer OneWayCSA (
 		final org.drip.analytics.date.JulianDate anchorDate,
 		final double exposure,
 		final double realizedCashFlow,
@@ -485,7 +485,7 @@ public class BurgardKjaerVertexBuilder
 					uncollateralizedExposure,
 					collateralBalance
 				),
-				new org.drip.xva.hypothecation.BurgardKjaerVertexExposure (
+				new org.drip.xva.vertex.BurgardKjaerExposure (
 					0. < uncollateralizedExposure ? uncollateralizedExposure : 0.,
 					0.,
 					0. < uncollateralizedExposure ? uncollateralizedExposure : 0.,
@@ -513,7 +513,7 @@ public class BurgardKjaerVertexBuilder
 	 * @return The Standard Instance of BurgardKjaerVertex using the "Set Off" Legal Agreement Scheme
 	 */
 
-	public static final org.drip.xva.hypothecation.BurgardKjaerVertex SetOff (
+	public static final org.drip.xva.vertex.BurgardKjaer SetOff (
 		final org.drip.analytics.date.JulianDate anchorDate,
 		final double exposure,
 		final double realizedCashFlow,
@@ -548,7 +548,7 @@ public class BurgardKjaerVertexBuilder
 					collateralizedExposure * bankSeniorRecoveryRateFinish,
 					collateralizedExposure * dblCounterPartyRecoveryFinish
 				),
-				new org.drip.xva.hypothecation.BurgardKjaerVertexExposure (
+				new org.drip.xva.vertex.BurgardKjaerExposure (
 					collateralizedExposure * (1. - dblCounterPartyRecoveryFinish),
 					collateralizedExposure * (1. - bankSeniorRecoveryRateFinish),
 					0.,

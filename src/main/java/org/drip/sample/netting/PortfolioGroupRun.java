@@ -10,8 +10,10 @@ import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.xva.cpty.*;
 import org.drip.xva.hypothecation.*;
+import org.drip.xva.netting.CollateralGroupPath;
 import org.drip.xva.strategy.*;
 import org.drip.xva.universe.*;
+import org.drip.xva.vertex.AlbaneseAndersen;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -233,14 +235,14 @@ public class PortfolioGroupRun {
 				)
 			);
 
-			aCGV1[i] = new AlbaneseAndersenVertex (
+			aCGV1[i] = new AlbaneseAndersen (
 				adtVertex[i],
 				adblAssetValuePath1[i],
 				0.,
 				0.
 			);
 
-			aCGV2[i] = new AlbaneseAndersenVertex (
+			aCGV2[i] = new AlbaneseAndersen (
 				adtVertex[i],
 				adblAssetValuePath2[i],
 				0.,

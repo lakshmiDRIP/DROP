@@ -12,13 +12,17 @@ import org.drip.measure.statistics.UnivariateDiscreteThin;
 import org.drip.quant.common.FormatUtil;
 import org.drip.quant.linearalgebra.Matrix;
 import org.drip.service.env.EnvManager;
+import org.drip.state.identifier.CSALabel;
+import org.drip.state.identifier.OvernightLabel;
 import org.drip.xva.basel.*;
 import org.drip.xva.cpty.*;
 import org.drip.xva.hypothecation.*;
+import org.drip.xva.netting.CollateralGroupPath;
 import org.drip.xva.proto.*;
 import org.drip.xva.settings.*;
 import org.drip.xva.strategy.*;
 import org.drip.xva.universe.*;
+import org.drip.xva.vertex.AlbaneseAndersen;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -265,6 +269,7 @@ public class ZeroThresholdNettingNeutralStochastic {
 		final double dblSwapNotional2)
 		throws Exception
 	{
+		String currency = "USD";
 		int iNumStep = 10;
 		int iNumPath = 100000;
 		int iNumVertex = 10;
@@ -310,6 +315,8 @@ public class ZeroThresholdNettingNeutralStochastic {
 
 		CollateralGroupSpecification cgs = CollateralGroupSpecification.FixedThreshold (
 			"FIXEDTHRESHOLD",
+			OvernightLabel.Create (currency),
+			CSALabel.ISDA (currency),
 			dblCounterPartyThreshold,
 			dblBankThreshold,
 			PositionReplicationScheme.ALBANESE_ANDERSEN_VERTEX,
@@ -498,8 +505,8 @@ public class ZeroThresholdNettingNeutralStochastic {
 			MarketVertex[] aNV = new MarketVertex [iNumStep + 1];
 			double dblValueStart1 = dblTime * dblATMSwapRateOffsetStart1;
 			double dblValueStart2 = dblTime * dblATMSwapRateOffsetStart2;
-			AlbaneseAndersenVertex[] aCGV1 = new AlbaneseAndersenVertex[iNumStep + 1];
-			AlbaneseAndersenVertex[] aCGV2 = new AlbaneseAndersenVertex[iNumStep + 1];
+			AlbaneseAndersen[] aCGV1 = new AlbaneseAndersen[iNumStep + 1];
+			AlbaneseAndersen[] aCGV2 = new AlbaneseAndersen[iNumStep + 1];
 
 			for (int j = 0; j <= iNumStep; ++j) {
 				JulianDate dtEnd = (adtVertex[j] = dtSpot.addMonths (6 * j + 6));
@@ -566,14 +573,14 @@ public class ZeroThresholdNettingNeutralStochastic {
 					)
 				);
 
-				aCGV1[j] = new AlbaneseAndersenVertex (
+				aCGV1[j] = new AlbaneseAndersen (
 					adtVertex[j],
 					aadblPortfolio1Value[i][j],
 					0.,
 					dblCollateralBalance1
 				);
 
-				aCGV2[j] = new AlbaneseAndersenVertex (
+				aCGV2[j] = new AlbaneseAndersen (
 					adtVertex[j],
 					aadblPortfolio2Value[i][j],
 					0.,

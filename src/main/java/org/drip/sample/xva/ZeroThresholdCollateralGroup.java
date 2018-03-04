@@ -9,12 +9,16 @@ import org.drip.measure.process.DiffusionEvolver;
 import org.drip.measure.realization.*;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
+import org.drip.state.identifier.CSALabel;
+import org.drip.state.identifier.OvernightLabel;
 import org.drip.xva.cpty.*;
 import org.drip.xva.hypothecation.*;
+import org.drip.xva.netting.CollateralGroupPath;
 import org.drip.xva.proto.*;
 import org.drip.xva.settings.*;
 import org.drip.xva.strategy.*;
 import org.drip.xva.universe.*;
+import org.drip.xva.vertex.AlbaneseAndersen;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -181,6 +185,7 @@ public class ZeroThresholdCollateralGroup {
 	{
 		EnvManager.InitEnv ("");
 
+		String currency = "USD";
 		int iNumStep = 10;
 		int iNumSwap = 10;
 		double dblTime = 5.;
@@ -206,6 +211,8 @@ public class ZeroThresholdCollateralGroup {
 
 		CollateralGroupSpecification cgs = CollateralGroupSpecification.FixedThreshold (
 			"FIXEDTHRESHOLD",
+			OvernightLabel.Create (currency),
+			CSALabel.ISDA (currency),
 			0.,
 			0.,
 			PositionReplicationScheme.ALBANESE_ANDERSEN_VERTEX,
@@ -264,7 +271,7 @@ public class ZeroThresholdCollateralGroup {
 		for (int i = 0; i < iNumPath; ++i) {
 			JulianDate dtStart = dtSpot;
 			double dblValueStart = dblTime * dblATMSwapRateStart;
-			AlbaneseAndersenVertex[] aHGVR = new AlbaneseAndersenVertex[iNumStep + 1];
+			AlbaneseAndersen[] aHGVR = new AlbaneseAndersen[iNumStep + 1];
 
 			for (int j = 0; j <= iNumStep; ++j) {
 				double dblCollateralBalance = 0.;
@@ -286,7 +293,7 @@ public class ZeroThresholdCollateralGroup {
 					dblCollateralBalance = hae.postingRequirement (dtEnd);
 				}
 
-				aHGVR[j] = new AlbaneseAndersenVertex (
+				aHGVR[j] = new AlbaneseAndersen (
 					adtVertex[j],
 					aadblSwapPortfolioValueRealization[i][j],
 					0.,

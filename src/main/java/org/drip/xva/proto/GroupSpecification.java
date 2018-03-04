@@ -1,5 +1,5 @@
 
-package org.drip.xva.hypothecation;
+package org.drip.xva.proto;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -7,7 +7,6 @@ package org.drip.xva.hypothecation;
 
 /*!
  * Copyright (C) 2018 Lakshmi Krishnamurthy
- * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
  *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
  *  	libraries targeting analysts and developers
@@ -48,11 +47,7 @@ package org.drip.xva.hypothecation;
  */
 
 /**
- * AlbaneseAndersenVertex holds the Albanese and Andersen (2014) Vertex Exposures of a Projected Path of a
- *  Simulation Run of a Collateral Hypothecation Group. The References are:
- *  
- *  - Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and the
- *  	Re-Hypothecation Option, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955, eSSRN.
+ * GroupSpecification contains the Specification Base of a Named Group. The References are:
  *  
  *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
  *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
@@ -61,59 +56,60 @@ package org.drip.xva.hypothecation;
  *  
  *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk, Risk 20 (2) 86-90.
  *  
+ *  - Albanese, C., L. Andersen, and, S. Iabichino (2015): The FVA Puzzle: Accounting, Risk Management, and
+ *  	Collateral Trading <b>https://papers.ssrn.com/sol3/paper.cfm?abstract_id_2517301</b><br><br>
+ * 
  *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
  *  	21 (2) 97-102.
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class AlbaneseAndersenVertex extends org.drip.xva.hypothecation.CollateralGroupVertex
+public class GroupSpecification
 {
+	private java.lang.String _id = "";
+	private java.lang.String _name = "";
 
 	/**
-	 * AlbaneseAndersenVertex Constructor
+	 * GroupSpecification Constructor
 	 * 
-	 * @param anchorDate The Vertex Date Anchor
-	 * @param forward The Forward Exposure at the Path Vertex Time Node
-	 * @param accrued The Default Window Accrued Cash-flow at the Path Vertex Time Node
-	 * @param collateralBalance The Collateral Balance at the Path Vertex Time Node
+	 * @param id The Exposure Roll Up Group ID
+	 * @param name The Exposure Roll Up Group Name
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public AlbaneseAndersenVertex (
-		final org.drip.analytics.date.JulianDate anchorDate,
-		final double forward,
-		final double accrued,
-		final double collateralBalance)
+	public GroupSpecification (
+		final java.lang.String id,
+		final java.lang.String name)
 		throws java.lang.Exception
 	{
-		super (
-			anchorDate,
-			forward,
-			accrued,
-			collateralBalance
-		);
+		if (null == (_id = id) || _id.isEmpty() ||
+			null == (_name = name) || _name.isEmpty())
+		{
+			throw new java.lang.Exception ("GroupSpecification Constructor => Invalid Inputs");
+		}
 	}
 
-	@Override public double credit()
-	{
-		double creditExposure = collateralized();
+	/**
+	 * Retrieve the Exposure Roll Up Group ID
+	 * 
+	 * @return The Exposure Roll Up Group ID
+	 */
 
-		return 0. < creditExposure ? creditExposure : 0.;
+	public java.lang.String id()
+	{
+		return _id;
 	}
 
-	@Override public double debt()
+	/**
+	 * Retrieve the Exposure Roll Up Group Name
+	 * 
+	 * @return The Exposure Roll Up Group Name
+	 */
+
+	public java.lang.String name()
 	{
-		double debtExposure = collateralized();
-
-		return 0. > debtExposure ? debtExposure : 0.;
-	}
-
-	@Override public double funding()
-	{
-		double creditExposure = collateralized();
-
-		return 0. < creditExposure ? creditExposure : 0.;
+		return _name;
 	}
 }

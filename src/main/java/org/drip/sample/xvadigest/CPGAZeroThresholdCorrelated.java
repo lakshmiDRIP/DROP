@@ -11,12 +11,16 @@ import org.drip.measure.statistics.UnivariateDiscreteThin;
 import org.drip.quant.common.FormatUtil;
 import org.drip.quant.linearalgebra.Matrix;
 import org.drip.service.env.EnvManager;
+import org.drip.state.identifier.CSALabel;
+import org.drip.state.identifier.OvernightLabel;
 import org.drip.xva.cpty.*;
 import org.drip.xva.hypothecation.*;
+import org.drip.xva.netting.CollateralGroupPath;
 import org.drip.xva.proto.*;
 import org.drip.xva.settings.*;
 import org.drip.xva.strategy.*;
 import org.drip.xva.universe.*;
+import org.drip.xva.vertex.AlbaneseAndersen;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -299,6 +303,7 @@ public class CPGAZeroThresholdCorrelated {
 	{
 		EnvManager.InitEnv ("");
 
+		String currency = "USD";
 		int iNumStep = 10;
 		int iNumSwap = 10;
 		double dblTime = 5.;
@@ -345,6 +350,8 @@ public class CPGAZeroThresholdCorrelated {
 
 		CollateralGroupSpecification cgs = CollateralGroupSpecification.FixedThreshold (
 			"FIXEDTHRESHOLD",
+			OvernightLabel.Create (currency),
+			CSALabel.ISDA (currency),
 			0.,
 			0.,
 			PositionReplicationScheme.ALBANESE_ANDERSEN_VERTEX,
@@ -516,7 +523,7 @@ public class CPGAZeroThresholdCorrelated {
 			JulianDate dtStart = dtSpot;
 			MarketVertex[] aMV = new MarketVertex [iNumStep + 1];
 			double dblValueStart = dblTime * dblATMSwapRateOffsetStart;
-			AlbaneseAndersenVertex[] aHGVR = new AlbaneseAndersenVertex[iNumStep + 1];
+			AlbaneseAndersen[] aHGVR = new AlbaneseAndersen[iNumStep + 1];
 
 			for (int j = 0; j <= iNumStep; ++j) {
 				aMV[j] = MarketVertex.SingleManifestMeasure (
@@ -567,7 +574,7 @@ public class CPGAZeroThresholdCorrelated {
 					dblCollateralBalance = hae.postingRequirement (dtEnd);
 				}
 
-				aHGVR[j] = new AlbaneseAndersenVertex (
+				aHGVR[j] = new AlbaneseAndersen (
 					adtVertex[j],
 					aadblPortfolioValue[i][j],
 					0.,

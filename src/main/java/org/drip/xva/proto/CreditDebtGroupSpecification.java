@@ -68,7 +68,7 @@ package org.drip.xva.proto;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CreditDebtGroupSpecification extends org.drip.xva.proto.RollUpGroupSpecification
+public class CreditDebtGroupSpecification extends org.drip.xva.proto.ExposureGroupSpecification
 {
 	private boolean _contractual = true;
 	private boolean _enforceable = true;
@@ -83,6 +83,7 @@ public class CreditDebtGroupSpecification extends org.drip.xva.proto.RollUpGroup
 	 * 
 	 * @param id The Collateral Group ID
 	 * @param name The Collateral Group Name
+	 * @param overnightLabel The Overnight Latent State Label
 	 * @param bankHazardLabel The Bank Hazard Rate Latent State Label
 	 * @param counterPartyHazardLabel The Counter Party Hazard Rate Latent State Label
 	 * @param bankSeniorRecoveryLabel The Bank Senior Recovery Rate Latent State Label
@@ -95,6 +96,7 @@ public class CreditDebtGroupSpecification extends org.drip.xva.proto.RollUpGroup
 	public static final CreditDebtGroupSpecification Standard (
 		final java.lang.String id,
 		final java.lang.String name,
+		final org.drip.state.identifier.OvernightLabel overnightLabel,
 		final org.drip.state.identifier.EntityHazardLabel bankHazardLabel,
 		final org.drip.state.identifier.EntityHazardLabel counterPartyHazardLabel,
 		final org.drip.state.identifier.EntityRecoveryLabel bankSeniorRecoveryLabel,
@@ -105,13 +107,14 @@ public class CreditDebtGroupSpecification extends org.drip.xva.proto.RollUpGroup
 			return new CreditDebtGroupSpecification (
 				id,
 				name,
-				true,
-				true,
+				overnightLabel,
 				bankHazardLabel,
 				counterPartyHazardLabel,
 				bankSeniorRecoveryLabel,
 				counterPartyRecoveryLabel,
-				bankSubordinateRecoveryLabel
+				bankSubordinateRecoveryLabel,
+				true,
+				true
 			);
 		}
 		catch (java.lang.Exception e)
@@ -127,13 +130,14 @@ public class CreditDebtGroupSpecification extends org.drip.xva.proto.RollUpGroup
 	 * 
 	 * @param id The Collateral Group ID
 	 * @param name The Collateral Group Name
-	 * @param contractual TRUE - The Netting is Contractual
-	 * @param enforceable TRUE - The Netting is Enforceable
+	 * @param overnightLabel The Overnight Latent State Label
 	 * @param bankHazardLabel The Bank Hazard Rate Latent State Label
 	 * @param counterPartyHazardLabel The Counter Party Hazard Rate Latent State Label
 	 * @param bankSeniorRecoveryLabel The Bank Senior Recovery Rate Latent State Label
 	 * @param counterPartyRecoveryLabel The Counter Party Recovery Rate Latent State Label
 	 * @param bankSubordinateRecoveryLabel The Bank Subordinate Recovery Rate Latent State Label
+	 * @param contractual TRUE - The Netting is Contractual
+	 * @param enforceable TRUE - The Netting is Enforceable
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -141,18 +145,20 @@ public class CreditDebtGroupSpecification extends org.drip.xva.proto.RollUpGroup
 	public CreditDebtGroupSpecification (
 		final java.lang.String id,
 		final java.lang.String name,
-		final boolean contractual,
-		final boolean enforceable,
+		final org.drip.state.identifier.OvernightLabel overnightLabel,
 		final org.drip.state.identifier.EntityHazardLabel bankHazardLabel,
 		final org.drip.state.identifier.EntityHazardLabel counterPartyHazardLabel,
 		final org.drip.state.identifier.EntityRecoveryLabel bankSeniorRecoveryLabel,
 		final org.drip.state.identifier.EntityRecoveryLabel counterPartyRecoveryLabel,
-		final org.drip.state.identifier.EntityRecoveryLabel bankSubordinateRecoveryLabel)
+		final org.drip.state.identifier.EntityRecoveryLabel bankSubordinateRecoveryLabel,
+		final boolean contractual,
+		final boolean enforceable)
 		throws java.lang.Exception
 	{
 		super (
 			id,
-			name
+			name,
+			overnightLabel
 		);
 
 		if (null == (_bankHazardLabel = bankHazardLabel) ||

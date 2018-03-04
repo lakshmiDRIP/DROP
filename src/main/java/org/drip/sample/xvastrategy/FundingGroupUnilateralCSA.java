@@ -11,9 +11,10 @@ import org.drip.service.env.EnvManager;
 import org.drip.xva.cpty.*;
 import org.drip.xva.definition.*;
 import org.drip.xva.derivative.ReplicationPortfolioVertexBank;
-import org.drip.xva.hypothecation.*;
+import org.drip.xva.netting.CollateralGroupPath;
 import org.drip.xva.strategy.*;
 import org.drip.xva.universe.*;
+import org.drip.xva.vertex.*;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -141,8 +142,8 @@ public class FundingGroupUnilateralCSA {
 		double dblTimeWidth = dblTime / iNumStep;
 		MarketVertex[] aMV = new MarketVertex[iNumStep + 1];
 		JulianDate[] adtVertex = new JulianDate[iNumStep + 1];
-		BurgardKjaerVertex[] aBKV1 = new BurgardKjaerVertex[iNumStep + 1];
-		BurgardKjaerVertex[] aBKV2 = new BurgardKjaerVertex[iNumStep + 1];
+		BurgardKjaer[] aBKV1 = new BurgardKjaer[iNumStep + 1];
+		BurgardKjaer[] aBKV2 = new BurgardKjaer[iNumStep + 1];
 		double dblBankSeniorFundingSpread = dblBankHazardRate / (1. - dblBankSeniorRecoveryRate);
 		double dblBankSubordinateFundingSpread = dblBankHazardRate / (1. - dblBankSubordinateRecoveryRate);
 		double dblCounterPartyFundingSpread = dblCounterPartyHazardRate / (1. - dblCounterPartyRecoveryRate);
@@ -244,7 +245,7 @@ public class FundingGroupUnilateralCSA {
 			);
 
 			if (0 != i) {
-				aBKV1[i] = BurgardKjaerVertexBuilder.OneWayCSA (
+				aBKV1[i] = BurgardKjaerBuilder.OneWayCSA (
 					adtVertex[i],
 					adblAssetValuePath1[i],
 					0.,
@@ -255,7 +256,7 @@ public class FundingGroupUnilateralCSA {
 					cog
 				);
 
-				aBKV2[i] = BurgardKjaerVertexBuilder.OneWayCSA (
+				aBKV2[i] = BurgardKjaerBuilder.OneWayCSA (
 					adtVertex[i],
 					adblAssetValuePath2[i],
 					0.,
@@ -266,14 +267,14 @@ public class FundingGroupUnilateralCSA {
 					cog
 				);
 			} else {
-				aBKV1[i] = BurgardKjaerVertexBuilder.Initial (
+				aBKV1[i] = BurgardKjaerBuilder.Initial (
 					adtVertex[i],
 					adblAssetValuePath1[i],
 					aMV[i],
 					cog
 				);
 
-				aBKV2[i] = BurgardKjaerVertexBuilder.Initial (
+				aBKV2[i] = BurgardKjaerBuilder.Initial (
 					adtVertex[i],
 					adblAssetValuePath2[i],
 					aMV[i],

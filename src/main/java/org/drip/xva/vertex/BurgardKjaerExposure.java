@@ -1,5 +1,5 @@
 
-package org.drip.xva.hypothecation;
+package org.drip.xva.vertex;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -48,9 +48,9 @@ package org.drip.xva.hypothecation;
  */
 
 /**
- * BurgardKjaerVertexExposure holds the Credit, the Debt, and the Funding Exposures, as well as the
- *  Collateral Balances at each Re-hypothecation Collateral Group using the Burgard Kjaer (2014) Scheme. The
- *  References are:
+ * BurgardKjaerExposure holds the Credit, the Debt, and the Funding Exposures, as well as the Collateral
+ *  Balances at each Re-hypothecation Collateral Group using the Burgard Kjaer (2014) Scheme. The References
+ *  are:
  *  
  *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
  *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
@@ -69,7 +69,7 @@ package org.drip.xva.hypothecation;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BurgardKjaerVertexExposure implements
+public class BurgardKjaerExposure implements
 	org.drip.xva.hypothecation.CollateralGroupVertexExposureComponent
 {
 	private double _debt = java.lang.Double.NaN;
@@ -86,7 +86,7 @@ public class BurgardKjaerVertexExposure implements
 	 * @return Initial Instance of Burgard Kjaer Vertex Exposure
 	 */
 
-	public static final BurgardKjaerVertexExposure Initial (
+	public static final BurgardKjaerExposure Initial (
 		final double uncollateralizedExposure,
 		final org.drip.xva.hypothecation.CollateralGroupVertexCloseOut collateralGroupVertexCloseOut)
 	{
@@ -98,7 +98,7 @@ public class BurgardKjaerVertexExposure implements
 
 		try
 		{
-			return new BurgardKjaerVertexExposure (
+			return new BurgardKjaerExposure (
 				uncollateralizedExposure - collateralGroupVertexCloseOut.counterParty(),
 				uncollateralizedExposure - collateralGroupVertexCloseOut.bank(),
 				0.,
@@ -114,7 +114,7 @@ public class BurgardKjaerVertexExposure implements
 	}
 
 	/**
-	 * BurgardKjaerVertexExposure Constructor
+	 * BurgardKjaerExposure Constructor
 	 * 
 	 * @param credit The Credit Exposure of the Collateral Group
 	 * @param debt The Debt Exposure of the Collateral Group
@@ -124,7 +124,7 @@ public class BurgardKjaerVertexExposure implements
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public BurgardKjaerVertexExposure (
+	public BurgardKjaerExposure (
 		final double credit,
 		final double debt,
 		final double funding,
@@ -136,7 +136,7 @@ public class BurgardKjaerVertexExposure implements
 			!org.drip.quant.common.NumberUtil.IsValid (_funding = funding) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_collateralBalance = collateralBalance))
 		{
-			throw new java.lang.Exception ("BurgardKjaerVertexExposure Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("BurgardKjaerExposure Constructor => Invalid Inputs");
 		}
 	}
 

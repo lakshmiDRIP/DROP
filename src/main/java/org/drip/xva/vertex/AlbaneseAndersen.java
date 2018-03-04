@@ -1,5 +1,5 @@
 
-package org.drip.xva.proto;
+package org.drip.xva.vertex;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -48,7 +48,11 @@ package org.drip.xva.proto;
  */
 
 /**
- * RollUpGroupSpecification contains the Specifications of a Roll Up Group. The References are:
+ * AlbaneseAndersen holds the Albanese and Andersen (2014) Vertex Exposures of a Projected Path of a
+ *  Simulation Run of a Collateral Hypothecation Group. The References are:
+ *  
+ *  - Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and the
+ *  	Re-Hypothecation Option, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955, eSSRN.
  *  
  *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
  *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
@@ -57,61 +61,59 @@ package org.drip.xva.proto;
  *  
  *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk, Risk 20 (2) 86-90.
  *  
- *  - Li, B., and Y. Tang (2007): Quantitative Analysis, Derivatives Modeling, and Trading Strategies in the
- *  	Presence of Counter-party Credit Risk for the Fixed Income Market, World Scientific Publishing,
- *  	Singapore.
- * 
  *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
  *  	21 (2) 97-102.
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class RollUpGroupSpecification
+public class AlbaneseAndersen extends org.drip.xva.hypothecation.CollateralGroupVertex
 {
-	private java.lang.String _id = "";
-	private java.lang.String _name = "";
 
 	/**
-	 * RollUpGroupSpecification Constructor
+	 * AlbaneseAndersen Constructor
 	 * 
-	 * @param id The Collateral Group ID
-	 * @param name The Collateral Group Name
+	 * @param anchorDate The Vertex Date Anchor
+	 * @param forward The Forward Exposure at the Path Vertex Time Node
+	 * @param accrued The Default Window Accrued Cash-flow at the Path Vertex Time Node
+	 * @param collateralBalance The Collateral Balance at the Path Vertex Time Node
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public RollUpGroupSpecification (
-		final java.lang.String id,
-		final java.lang.String name)
+	public AlbaneseAndersen (
+		final org.drip.analytics.date.JulianDate anchorDate,
+		final double forward,
+		final double accrued,
+		final double collateralBalance)
 		throws java.lang.Exception
 	{
-		if (null == (_id = id) || _id.isEmpty() ||
-			null == (_name = name) || _name.isEmpty())
-		{
-			throw new java.lang.Exception ("RollUpGroupSpecification Constructor => Invalid Inputs");
-		}
+		super (
+			anchorDate,
+			forward,
+			accrued,
+			collateralBalance
+		);
 	}
 
-	/**
-	 * Retrieve the Roll Up Group ID
-	 * 
-	 * @return The Roll Up Group ID
-	 */
-
-	public java.lang.String id()
+	@Override public double credit()
 	{
-		return _id;
+		double creditExposure = collateralized();
+
+		return 0. < creditExposure ? creditExposure : 0.;
 	}
 
-	/**
-	 * Retrieve the Roll Up Group Name
-	 * 
-	 * @return The Roll Up Group Name
-	 */
-
-	public java.lang.String name()
+	@Override public double debt()
 	{
-		return _name;
+		double debtExposure = collateralized();
+
+		return 0. > debtExposure ? debtExposure : 0.;
+	}
+
+	@Override public double funding()
+	{
+		double creditExposure = collateralized();
+
+		return 0. < creditExposure ? creditExposure : 0.;
 	}
 }

@@ -73,7 +73,7 @@ public abstract class FundingGroupPath extends org.drip.xva.netting.ExposureGrou
 {
 
 	protected FundingGroupPath (
-		final org.drip.xva.hypothecation.CollateralGroupPath[] collateralGroupPathArray,
+		final org.drip.xva.netting.CollateralGroupPath[] collateralGroupPathArray,
 		final org.drip.xva.universe.MarketPath marketPath)
 		throws java.lang.Exception
 	{

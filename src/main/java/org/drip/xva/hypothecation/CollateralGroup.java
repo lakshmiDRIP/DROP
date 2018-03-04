@@ -188,7 +188,7 @@ public class CollateralGroup
 			if (org.drip.xva.settings.PositionReplicationScheme.ALBANESE_ANDERSEN_VERTEX ==
 				positionReplicationScheme)
 			{
-				return new org.drip.xva.hypothecation.AlbaneseAndersenVertex (
+				return new org.drip.xva.vertex.AlbaneseAndersen (
 					anchorDate,
 					positionGroupValue,
 					realizedCashFlow,
@@ -200,7 +200,7 @@ public class CollateralGroup
 				positionReplicationScheme)
 			{
 				return null != marketVertexLeft ?
-					org.drip.xva.hypothecation.BurgardKjaerVertexBuilder.HedgeErrorDualBond (
+					org.drip.xva.vertex.BurgardKjaerBuilder.HedgeErrorDualBond (
 						anchorDate,
 						positionGroupValue,
 						realizedCashFlow,
@@ -211,7 +211,7 @@ public class CollateralGroup
 							marketVertexRight
 						),
 						closeOut
-					) : org.drip.xva.hypothecation.BurgardKjaerVertexBuilder.Initial (
+					) : org.drip.xva.vertex.BurgardKjaerBuilder.Initial (
 						anchorDate,
 						positionGroupValue,
 						marketVertexRight,
@@ -223,7 +223,7 @@ public class CollateralGroup
 				== positionReplicationScheme)
 			{
 				return null != marketVertexLeft ?
-					org.drip.xva.hypothecation.BurgardKjaerVertexBuilder.SemiReplicationDualBond (
+					org.drip.xva.vertex.BurgardKjaerBuilder.SemiReplicationDualBond (
 						anchorDate,
 						positionGroupValue,
 						realizedCashFlow,
@@ -233,7 +233,7 @@ public class CollateralGroup
 							marketVertexRight
 						),
 						closeOut
-					) : org.drip.xva.hypothecation.BurgardKjaerVertexBuilder.Initial (
+					) : org.drip.xva.vertex.BurgardKjaerBuilder.Initial (
 						anchorDate,
 						positionGroupValue,
 						marketVertexRight,
@@ -245,7 +245,7 @@ public class CollateralGroup
 				== positionReplicationScheme)
 			{
 				return null != marketVertexLeft ?
-					org.drip.xva.hypothecation.BurgardKjaerVertexBuilder.GoldPlatedTwoWayCSA (
+					org.drip.xva.vertex.BurgardKjaerBuilder.GoldPlatedTwoWayCSA (
 						anchorDate,
 						positionGroupValue,
 						realizedCashFlow,
@@ -254,7 +254,7 @@ public class CollateralGroup
 							marketVertexRight
 						),
 						closeOut
-					) : org.drip.xva.hypothecation.BurgardKjaerVertexBuilder.Initial (
+					) : org.drip.xva.vertex.BurgardKjaerBuilder.Initial (
 						anchorDate,
 						positionGroupValue,
 						marketVertexRight,
@@ -266,7 +266,7 @@ public class CollateralGroup
 				positionReplicationScheme)
 			{
 				return null != marketVertexLeft ?
-					org.drip.xva.hypothecation.BurgardKjaerVertexBuilder.OneWayCSA (
+					org.drip.xva.vertex.BurgardKjaerBuilder.OneWayCSA (
 						anchorDate,
 						positionGroupValue,
 						realizedCashFlow,
@@ -275,7 +275,7 @@ public class CollateralGroup
 							marketVertexRight
 						),
 						closeOut
-					) : org.drip.xva.hypothecation.BurgardKjaerVertexBuilder.Initial (
+					) : org.drip.xva.vertex.BurgardKjaerBuilder.Initial (
 						anchorDate,
 						positionGroupValue,
 						marketVertexRight,
@@ -287,7 +287,7 @@ public class CollateralGroup
 				positionReplicationScheme)
 			{
 				return null != marketVertexLeft ?
-					org.drip.xva.hypothecation.BurgardKjaerVertexBuilder.SetOff (
+					org.drip.xva.vertex.BurgardKjaerBuilder.SetOff (
 						anchorDate,
 						positionGroupValue,
 						realizedCashFlow,
@@ -296,7 +296,7 @@ public class CollateralGroup
 							marketVertexLeft,
 							marketVertexRight
 						)
-					) : org.drip.xva.hypothecation.BurgardKjaerVertexBuilder.Initial (
+					) : org.drip.xva.vertex.BurgardKjaerBuilder.Initial (
 						anchorDate,
 						positionGroupValue,
 						marketVertexRight,

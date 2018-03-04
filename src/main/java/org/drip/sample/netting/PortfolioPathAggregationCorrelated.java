@@ -10,9 +10,10 @@ import org.drip.quant.common.FormatUtil;
 import org.drip.quant.linearalgebra.Matrix;
 import org.drip.service.env.EnvManager;
 import org.drip.xva.cpty.*;
-import org.drip.xva.hypothecation.*;
+import org.drip.xva.netting.CollateralGroupPath;
 import org.drip.xva.strategy.*;
 import org.drip.xva.universe.*;
+import org.drip.xva.vertex.AlbaneseAndersen;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -367,7 +368,7 @@ public class PortfolioPathAggregationCorrelated {
 			);
 
 			MarketVertex[] aMV = new MarketVertex [iNumStep + 1];
-			AlbaneseAndersenVertex[] aHGVR = new AlbaneseAndersenVertex[iNumStep + 1];
+			AlbaneseAndersen[] aHGVR = new AlbaneseAndersen[iNumStep + 1];
 
 			for (int j = 0; j <= iNumStep; ++j) {
 				aMV[j] = MarketVertex.SingleManifestMeasure (
@@ -401,7 +402,7 @@ public class PortfolioPathAggregationCorrelated {
 
 				aadblCollateralBalance[i][j] = 0.;
 
-				aHGVR[j] = new AlbaneseAndersenVertex (
+				aHGVR[j] = new AlbaneseAndersen (
 					adtVertex[j],
 					aadblCollateralPortfolio[i][j],
 					0.,

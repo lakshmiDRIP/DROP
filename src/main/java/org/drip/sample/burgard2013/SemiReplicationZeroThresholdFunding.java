@@ -10,14 +10,18 @@ import org.drip.measure.realization.*;
 import org.drip.measure.statistics.UnivariateDiscreteThin;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
+import org.drip.state.identifier.CSALabel;
+import org.drip.state.identifier.OvernightLabel;
 import org.drip.xva.basel.*;
 import org.drip.xva.cpty.*;
 import org.drip.xva.definition.*;
 import org.drip.xva.hypothecation.*;
+import org.drip.xva.netting.CollateralGroupPath;
 import org.drip.xva.proto.*;
 import org.drip.xva.settings.*;
 import org.drip.xva.strategy.*;
 import org.drip.xva.universe.*;
+import org.drip.xva.vertex.BurgardKjaerBuilder;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -176,6 +180,7 @@ public class SemiReplicationZeroThresholdFunding {
 		final double dblSwapNotional2)
 		throws Exception
 	{
+		String currency = "USD";
 		int iNumStep = 10;
 		int iNumPath = 100000;
 		int iNumVertex = 10;
@@ -207,6 +212,8 @@ public class SemiReplicationZeroThresholdFunding {
 
 		CollateralGroupSpecification cgs = CollateralGroupSpecification.FixedThreshold (
 			"FIXEDTHRESHOLD",
+			OvernightLabel.Create (currency),
+			CSALabel.ISDA (currency),
 			dblCounterPartyThreshold,
 			dblBankThreshold,
 			PositionReplicationScheme.BURGARD_KJAER_SEMI_REPLICATION_DUAL_BOND_VERTEX,
@@ -320,7 +327,7 @@ public class SemiReplicationZeroThresholdFunding {
 
 					dblCollateralBalance2 = cae2.postingRequirement (dtEnd);
 
-					aCGV1[j] = BurgardKjaerVertexBuilder.SemiReplicationDualBond (
+					aCGV1[j] = BurgardKjaerBuilder.SemiReplicationDualBond (
 						adtVertex[j],
 						aadblPortfolio1Value[i][j],
 						0.,
@@ -332,7 +339,7 @@ public class SemiReplicationZeroThresholdFunding {
 						cog
 					);
 
-					aCGV2[j] = BurgardKjaerVertexBuilder.SemiReplicationDualBond (
+					aCGV2[j] = BurgardKjaerBuilder.SemiReplicationDualBond (
 						adtVertex[j],
 						aadblPortfolio2Value[i][j],
 						0.,
@@ -344,14 +351,14 @@ public class SemiReplicationZeroThresholdFunding {
 						cog
 					);
 				} else {
-					aCGV1[j] = BurgardKjaerVertexBuilder.Initial (
+					aCGV1[j] = BurgardKjaerBuilder.Initial (
 						adtVertex[j],
 						aadblPortfolio1Value[i][0],
 						aMV[j],
 						cog
 					);
 
-					aCGV2[j] = BurgardKjaerVertexBuilder.Initial (
+					aCGV2[j] = BurgardKjaerBuilder.Initial (
 						adtVertex[j],
 						aadblPortfolio2Value[i][0],
 						aMV[j],

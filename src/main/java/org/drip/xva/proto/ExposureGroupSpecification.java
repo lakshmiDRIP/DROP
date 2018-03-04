@@ -1,5 +1,5 @@
 
-package org.drip.xva.hypothecation;
+package org.drip.xva.proto;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -48,8 +48,7 @@ package org.drip.xva.hypothecation;
  */
 
 /**
- * BurgardKjaerVertex holds the Close Out Based Vertex Exposures of a Projected Path of a Simulation Run of a
- *  Collateral Hypothecation Group using the Generalized Burgard Kjaer (2013) Scheme. The References are:
+ * ExposureGroupSpecification contains the Specifications of an Exposure Roll Up Group. The References are:
  *  
  *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
  *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
@@ -68,105 +67,45 @@ package org.drip.xva.hypothecation;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BurgardKjaerVertex extends org.drip.xva.hypothecation.CollateralGroupVertex
+public class ExposureGroupSpecification extends org.drip.xva.proto.GroupSpecification
 {
-	private org.drip.xva.hypothecation.BurgardKjaerVertexExposure _burgardKjaerVertexExposure = null;
-	private org.drip.xva.hypothecation.CollateralGroupVertexCloseOut _collateralGroupCloseOut = null;
-	private org.drip.xva.derivative.ReplicationPortfolioVertexBank _bankReplicationPortfolioVertex = null;
+	private org.drip.state.identifier.OvernightLabel _overnightLabel = null;
 
 	/**
-	 * BurgardKjaerVertex Constructor
+	 * ExposureGroupSpecification Constructor
 	 * 
-	 * @param anchorDate The Vertex Date Anchor
-	 * @param forward The Unrealized Forward Exposure
-	 * @param accrued The Accrued Exposure
-	 * @param burgardKjaerVertexExposure The Collateral Group Vertex
-	 * @param collateralGroupCloseOut The Collateral Group Vertex Close Out Instance
-	 * @param bankReplicationPortfolioVertex The Bank Replication Portfolio Vertex Instance
+	 * @param id The Exposure Roll Up Group ID
+	 * @param name The Exposure Roll Up Group Name
+	 * @param overnightLabel The Overnight Latent State Label
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public BurgardKjaerVertex (
-		final org.drip.analytics.date.JulianDate anchorDate,
-		final double forward,
-		final double accrued,
-		final org.drip.xva.hypothecation.BurgardKjaerVertexExposure burgardKjaerVertexExposure,
-		final org.drip.xva.hypothecation.CollateralGroupVertexCloseOut collateralGroupCloseOut,
-		final org.drip.xva.derivative.ReplicationPortfolioVertexBank bankReplicationPortfolioVertex)
+	public ExposureGroupSpecification (
+		final java.lang.String id,
+		final java.lang.String name,
+		final org.drip.state.identifier.OvernightLabel overnightLabel)
 		throws java.lang.Exception
 	{
 		super (
-			anchorDate,
-			forward,
-			accrued,
-			burgardKjaerVertexExposure.collateralBalance()
+			id,
+			name
 		);
 
-		if (null == (_burgardKjaerVertexExposure = burgardKjaerVertexExposure) ||
-			null == (_collateralGroupCloseOut = collateralGroupCloseOut) ||
-			null == (_bankReplicationPortfolioVertex = bankReplicationPortfolioVertex))
+		if (null == (_overnightLabel = overnightLabel))
 		{
-			throw new java.lang.Exception ("BurgardKjaerVertex Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("ExposureGroupSpecification Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Close Out on Bank Default
+	 * Retrieve the Overnight Label
 	 * 
-	 * @return Close Out on Bank Default
+	 * @return The Overnight Label
 	 */
 
-	public double bankDefaultCloseOut()
+	public org.drip.state.identifier.OvernightLabel overnightLabel()
 	{
-		return _collateralGroupCloseOut.bank();
-	}
-
-	/**
-	 * Retrieve the Close Out on Counter Party Default
-	 * 
-	 * @return Close Out on Counter Party Default
-	 */
-
-	public double counterPartyDefaultCloseOut()
-	{
-		return _collateralGroupCloseOut.counterParty();
-	}
-
-	@Override public double credit()
-	{
-		return _burgardKjaerVertexExposure.credit();
-	}
-
-	@Override public double debt()
-	{
-		return _burgardKjaerVertexExposure.debt();
-	}
-
-	@Override public double funding()
-	{
-		return _burgardKjaerVertexExposure.funding();
-	}
-
-	/**
-	 * Retrieve the Hedge Error
-	 * 
-	 * @return The Hedge Error
-	 */
-
-	public double hedgeError()
-	{
-		return _burgardKjaerVertexExposure.funding();
-	}
-
-	/**
-	 * Retrieve the Bank Replication Potrfolio Instance
-	 * 
-	 * @return The Bank Replication Potrfolio Instance
-	 */
-
-	public org.drip.xva.derivative.ReplicationPortfolioVertexBank bankReplicationPortfolio()
-	{
-		return _bankReplicationPortfolioVertex;
+		return _overnightLabel;
 	}
 }

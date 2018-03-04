@@ -1,5 +1,5 @@
 
-package org.drip.xva.proto;
+package org.drip.xva.vertex;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -7,6 +7,7 @@ package org.drip.xva.proto;
 
 /*!
  * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
  *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
  *  	libraries targeting analysts and developers
@@ -47,7 +48,8 @@ package org.drip.xva.proto;
  */
 
 /**
- * PositionGroupSpecification contains the Specifications of a Position Group. The References are:
+ * BurgardKjaer holds the Close Out Based Vertex Exposures of a Projected Path of a Simulation Run of a
+ *  Collateral Hypothecation Group using the Generalized Burgard Kjaer (2013) Scheme. The References are:
  *  
  *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
  *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
@@ -66,75 +68,105 @@ package org.drip.xva.proto;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PositionGroupSpecification extends org.drip.xva.proto.GroupSpecification
+public class BurgardKjaer extends org.drip.xva.hypothecation.CollateralGroupVertex
 {
-	private org.drip.xva.proto.ExposureGroupSpecification _fundingGroupSpecification = null;
-	private org.drip.xva.proto.CreditDebtGroupSpecification _creditDebtGroupSpecification = null;
-	private org.drip.xva.proto.CollateralGroupSpecification _collateralGroupSpecification = null;
+	private org.drip.xva.vertex.BurgardKjaerExposure _burgardKjaerVertexExposure = null;
+	private org.drip.xva.hypothecation.CollateralGroupVertexCloseOut _collateralGroupCloseOut = null;
+	private org.drip.xva.derivative.ReplicationPortfolioVertexBank _bankReplicationPortfolioVertex = null;
 
 	/**
-	 * PositionGroupSpecification Constructor
+	 * BurgardKjaer Constructor
 	 * 
-	 * @param id The Position Group ID
-	 * @param name The Position Group Name
-	 * @param collateralGroupSpecification The Position's Collateral Group Specification
-	 * @param creditDebtGroupSpecification The Position's Credit Debt Group Specification
-	 * @param fundingGroupSpecification The Position's Funding Group Specification
+	 * @param anchorDate The Vertex Date Anchor
+	 * @param forward The Unrealized Forward Exposure
+	 * @param accrued The Accrued Exposure
+	 * @param burgardKjaerVertexExposure The Collateral Group Vertex
+	 * @param collateralGroupCloseOut The Collateral Group Vertex Close Out Instance
+	 * @param bankReplicationPortfolioVertex The Bank Replication Portfolio Vertex Instance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public PositionGroupSpecification (
-		final java.lang.String id,
-		final java.lang.String name,
-		final org.drip.xva.proto.CollateralGroupSpecification collateralGroupSpecification,
-		final org.drip.xva.proto.CreditDebtGroupSpecification creditDebtGroupSpecification,
-		final org.drip.xva.proto.ExposureGroupSpecification fundingGroupSpecification)
+	public BurgardKjaer (
+		final org.drip.analytics.date.JulianDate anchorDate,
+		final double forward,
+		final double accrued,
+		final org.drip.xva.vertex.BurgardKjaerExposure burgardKjaerVertexExposure,
+		final org.drip.xva.hypothecation.CollateralGroupVertexCloseOut collateralGroupCloseOut,
+		final org.drip.xva.derivative.ReplicationPortfolioVertexBank bankReplicationPortfolioVertex)
 		throws java.lang.Exception
 	{
 		super (
-			id,
-			name
+			anchorDate,
+			forward,
+			accrued,
+			burgardKjaerVertexExposure.collateralBalance()
 		);
 
-		if (null == (_collateralGroupSpecification = collateralGroupSpecification) ||
-			null == (_creditDebtGroupSpecification = creditDebtGroupSpecification) ||
-			null == (_fundingGroupSpecification = fundingGroupSpecification))
+		if (null == (_burgardKjaerVertexExposure = burgardKjaerVertexExposure) ||
+			null == (_collateralGroupCloseOut = collateralGroupCloseOut) ||
+			null == (_bankReplicationPortfolioVertex = bankReplicationPortfolioVertex))
 		{
-			throw new java.lang.Exception ("PositionGroupSpecification Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("BurgardKjaer Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Position's Collateral Group Specification
+	 * Retrieve the Close Out on Bank Default
 	 * 
-	 * @return The Position's Collateral Group Specification
+	 * @return Close Out on Bank Default
 	 */
 
-	public org.drip.xva.proto.CollateralGroupSpecification collateralGroupSpecification()
+	public double bankDefaultCloseOut()
 	{
-		return _collateralGroupSpecification;
+		return _collateralGroupCloseOut.bank();
 	}
 
 	/**
-	 * Retrieve the Position's Credit Debt Group Specification
+	 * Retrieve the Close Out on Counter Party Default
 	 * 
-	 * @return The Position's Credit Debt Group Specification
+	 * @return Close Out on Counter Party Default
 	 */
 
-	public org.drip.xva.proto.CreditDebtGroupSpecification creditDebtGroupSpecification()
+	public double counterPartyDefaultCloseOut()
 	{
-		return _creditDebtGroupSpecification;
+		return _collateralGroupCloseOut.counterParty();
+	}
+
+	@Override public double credit()
+	{
+		return _burgardKjaerVertexExposure.credit();
+	}
+
+	@Override public double debt()
+	{
+		return _burgardKjaerVertexExposure.debt();
+	}
+
+	@Override public double funding()
+	{
+		return _burgardKjaerVertexExposure.funding();
 	}
 
 	/**
-	 * Retrieve the Position's Funding Group Specification
+	 * Retrieve the Hedge Error
 	 * 
-	 * @return The Position's Funding Group Specification
+	 * @return The Hedge Error
 	 */
 
-	public org.drip.xva.proto.ExposureGroupSpecification fundingGroupSpecification()
+	public double hedgeError()
 	{
-		return _fundingGroupSpecification;
+		return _burgardKjaerVertexExposure.funding();
+	}
+
+	/**
+	 * Retrieve the Bank Replication Potrfolio Instance
+	 * 
+	 * @return The Bank Replication Potrfolio Instance
+	 */
+
+	public org.drip.xva.derivative.ReplicationPortfolioVertexBank bankReplicationPortfolio()
+	{
+		return _bankReplicationPortfolioVertex;
 	}
 }
