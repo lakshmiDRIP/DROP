@@ -455,7 +455,7 @@ public class AlbaneseAndersenBaselProxy
 			AdjustmentDigestScheme.ALBANESE_ANDERSEN_METRICS_POINTER,
 			PositionGroupContainer.Solo (
 				new PositionGroup (
-					new PositionGroupSpecification (
+					new PositionSchemaSpecification (
 						"POSGRPSPEC1",
 						"POSGRPSPEC1",
 						CollateralGroupSpecification.FixedThreshold (
@@ -472,7 +472,6 @@ public class AlbaneseAndersenBaselProxy
 						new CreditDebtGroupSpecification (
 							"NETGRPSPEC1",
 							"NETGRPSPEC1",
-							OvernightLabel.Create (currency),
 							EntityHazardLabel.Standard (
 								bank,
 								currency
@@ -493,10 +492,21 @@ public class AlbaneseAndersenBaselProxy
 							true,
 							true
 						),
-						new ExposureGroupSpecification (
+						new FundingGroupSpecification (
 							"FUNDGRPSPEC1",
 							"FUNDGRPSPEC1",
-							OvernightLabel.Create (currency)
+							EntityFundingLabel.Senior (
+								bank,
+								currency
+							),
+							EntityFundingLabel.Senior (
+								counterParty,
+								currency
+							),
+							EntityFundingLabel.Subordinate (
+								bank,
+								currency
+							)
 						)
 					),
 					new PositionGroupNumeraireFixFloat (maturityDate)

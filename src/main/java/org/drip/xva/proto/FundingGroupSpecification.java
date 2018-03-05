@@ -47,7 +47,7 @@ package org.drip.xva.proto;
  */
 
 /**
- * PositionGroupSpecification contains the Specification of a Named Position Group. The References are:
+ * GroupSpecification contains the Specification Base of a Named Group. The References are:
  *  
  *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
  *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
@@ -65,26 +65,76 @@ package org.drip.xva.proto;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PositionGroupSpecification extends org.drip.xva.proto.ObjectSpecification
+public class FundingGroupSpecification extends org.drip.xva.proto.ObjectSpecification
 {
+	private org.drip.state.identifier.EntityFundingLabel _bankSeniorFundingLabel = null;
+	private org.drip.state.identifier.EntityFundingLabel _counterPartyFundingLabel = null;
+	private org.drip.state.identifier.EntityFundingLabel _bankSubordinateFundingLabel = null;
 
 	/**
-	 * PositionGroupSpecification Constructor
+	 * FundingGroupSpecification Constructor
 	 * 
-	 * @param id The Exposure Roll Up Group ID
-	 * @param name The Exposure Roll Up Group Name
+	 * @param id Funding Group ID
+	 * @param name Funding Group Name
+	 * @param bankSeniorFundingLabel Bank Senior Funding Label
+	 * @param counterPartyFundingLabel Counter Party Funding Label
+	 * @param bankSubordinateFundingLabel Bank Subordinate Funding Label
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public PositionGroupSpecification (
+	public FundingGroupSpecification (
 		final java.lang.String id,
-		final java.lang.String name)
+		final java.lang.String name,
+		final org.drip.state.identifier.EntityFundingLabel bankSeniorFundingLabel,
+		final org.drip.state.identifier.EntityFundingLabel counterPartyFundingLabel,
+		final org.drip.state.identifier.EntityFundingLabel bankSubordinateFundingLabel)
 		throws java.lang.Exception
 	{
 		super (
 			id,
 			name
 		);
+
+		if (null == (_bankSeniorFundingLabel = bankSeniorFundingLabel) ||
+			null == (_counterPartyFundingLabel = counterPartyFundingLabel))
+		{
+			throw new java.lang.Exception ("FundingGroupSpecification Constructor => Invalid Inputs");
+		}
+
+		_bankSubordinateFundingLabel = bankSubordinateFundingLabel;
+	}
+
+	/**
+	 * Retrieve the Bank Senior Funding Label
+	 * 
+	 * @return The Bank Senior Funding Label
+	 */
+
+	public org.drip.state.identifier.EntityFundingLabel bankSeniorFundingLabel()
+	{
+		return _bankSeniorFundingLabel;
+	}
+
+	/**
+	 * Retrieve the Bank Subordinate Funding Label
+	 * 
+	 * @return The Bank Subordinate Funding Label
+	 */
+
+	public org.drip.state.identifier.EntityFundingLabel bankSubordinateFundingLabel()
+	{
+		return _bankSubordinateFundingLabel;
+	}
+
+	/**
+	 * Retrieve the Counter Party Funding Label
+	 * 
+	 * @return The Counter Party Funding Label
+	 */
+
+	public org.drip.state.identifier.EntityFundingLabel counterPartyFundingLabel()
+	{
+		return _counterPartyFundingLabel;
 	}
 }

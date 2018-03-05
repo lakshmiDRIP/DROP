@@ -1,5 +1,5 @@
 
-package org.drip.xva.proto;
+package org.drip.xva.topology;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,7 +47,8 @@ package org.drip.xva.proto;
  */
 
 /**
- * PositionGroupSpecification contains the Specification of a Named Position Group. The References are:
+ * CollateralGroup represents an Aggregation of Position Groups over a common Collateral Specification. The
+ *  References are:
  *  
  *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
  *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
@@ -65,26 +66,135 @@ package org.drip.xva.proto;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PositionGroupSpecification extends org.drip.xva.proto.ObjectSpecification
+public class CollateralGroup extends org.drip.xva.proto.ObjectSpecification
 {
+	private org.drip.xva.proto.CollateralGroupSpecification _collateralGroupSpecification = null;
+	private java.util.Map<java.lang.String, org.drip.xva.topology.PositionGroup> _positionGroupMap = null;
 
 	/**
-	 * PositionGroupSpecification Constructor
+	 * CollateralGroup Constructor
 	 * 
-	 * @param id The Exposure Roll Up Group ID
-	 * @param name The Exposure Roll Up Group Name
+	 * @param id The Collateral Group ID
+	 * @param name The Collateral Group Name
+	 * @param collateralGroupSpecification The Collateral Group Specification
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public PositionGroupSpecification (
+	public CollateralGroup (
 		final java.lang.String id,
-		final java.lang.String name)
+		final java.lang.String name,
+		final org.drip.xva.proto.CollateralGroupSpecification collateralGroupSpecification)
 		throws java.lang.Exception
 	{
 		super (
 			id,
 			name
 		);
+
+		if (null == (_collateralGroupSpecification = collateralGroupSpecification))
+		{
+			throw new java.lang.Exception ("CollateralGroup Contructor => Invalid Inputs");
+		}
+
+		_positionGroupMap = new
+			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.xva.topology.PositionGroup>();
+	}
+
+	/**
+	 * Retrieve the Collateral Group Specification
+	 * 
+	 * @return The Collateral Group Specification
+	 */
+
+	public org.drip.xva.proto.CollateralGroupSpecification collateralGroupSpecification()
+	{
+		return _collateralGroupSpecification;
+	}
+
+	/**
+	 * Retrieve the Position Group Map
+	 * 
+	 * @return The Position Group Map
+	 */
+
+	public java.util.Map<java.lang.String, org.drip.xva.topology.PositionGroup> positionGroupMap()
+	{
+		return _positionGroupMap;
+	}
+
+	/**
+	 * Add the specified Position Group
+	 * 
+	 * @param positionGroup The Position Group
+	 * 
+	 * @return TRUE - The Position Group successfully added
+	 */
+
+	public boolean addPositionGroup (
+		final org.drip.xva.topology.PositionGroup positionGroup)
+	{
+		if (null == positionGroup)
+		{
+			return false;
+		}
+
+		_positionGroupMap.put (
+			positionGroup.id(),
+			positionGroup
+		);
+
+		return true;
+	}
+
+	/**
+	 * Indicates if the Position Group identified by the specified ID
+	 * 
+	 * @param positionGroupID The Position Group ID
+	 * 
+	 * @return TRUE - The Position Group Exists
+	 */
+
+	public boolean containsPositionGroup (
+		final java.lang.String positionGroupID)
+	{
+		return null == positionGroupID || positionGroupID.isEmpty() ? false : _positionGroupMap.containsKey
+			(positionGroupID);
+	}
+
+	/**
+	 * Retrieve the Position Group identified by the specified ID
+	 * 
+	 * @param positionGroupID The Position Group ID
+	 * 
+	 * @return The Position Group
+	 */
+
+	public org.drip.xva.topology.PositionGroup positionGroup (
+		final java.lang.String positionGroupID)
+	{
+		return containsPositionGroup (positionGroupID) ? _positionGroupMap.get (positionGroupID) : null;
+	}
+
+	/**
+	 * Retrieve the Overnight Label
+	 * 
+	 * @return The Overnight Label
+	 */
+
+	public org.drip.state.identifier.OvernightLabel overnightLabel()
+	{
+		return _collateralGroupSpecification.overnightLabel();
+	}
+
+	/**
+	 * Retrieve the CSA Label
+	 * 
+	 * @return The CSA Label
+	 */
+
+	public org.drip.state.identifier.CSALabel csaLabel()
+	{
+		return _collateralGroupSpecification.csaLabel();
 	}
 }

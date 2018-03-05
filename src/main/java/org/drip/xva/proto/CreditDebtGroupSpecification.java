@@ -68,7 +68,7 @@ package org.drip.xva.proto;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CreditDebtGroupSpecification extends org.drip.xva.proto.ExposureGroupSpecification
+public class CreditDebtGroupSpecification extends org.drip.xva.proto.ObjectSpecification
 {
 	private boolean _contractual = true;
 	private boolean _enforceable = true;
@@ -83,7 +83,6 @@ public class CreditDebtGroupSpecification extends org.drip.xva.proto.ExposureGro
 	 * 
 	 * @param id The Collateral Group ID
 	 * @param name The Collateral Group Name
-	 * @param overnightLabel The Overnight Latent State Label
 	 * @param bankHazardLabel The Bank Hazard Rate Latent State Label
 	 * @param counterPartyHazardLabel The Counter Party Hazard Rate Latent State Label
 	 * @param bankSeniorRecoveryLabel The Bank Senior Recovery Rate Latent State Label
@@ -96,7 +95,6 @@ public class CreditDebtGroupSpecification extends org.drip.xva.proto.ExposureGro
 	public static final CreditDebtGroupSpecification Standard (
 		final java.lang.String id,
 		final java.lang.String name,
-		final org.drip.state.identifier.OvernightLabel overnightLabel,
 		final org.drip.state.identifier.EntityHazardLabel bankHazardLabel,
 		final org.drip.state.identifier.EntityHazardLabel counterPartyHazardLabel,
 		final org.drip.state.identifier.EntityRecoveryLabel bankSeniorRecoveryLabel,
@@ -107,7 +105,6 @@ public class CreditDebtGroupSpecification extends org.drip.xva.proto.ExposureGro
 			return new CreditDebtGroupSpecification (
 				id,
 				name,
-				overnightLabel,
 				bankHazardLabel,
 				counterPartyHazardLabel,
 				bankSeniorRecoveryLabel,
@@ -130,7 +127,6 @@ public class CreditDebtGroupSpecification extends org.drip.xva.proto.ExposureGro
 	 * 
 	 * @param id The Collateral Group ID
 	 * @param name The Collateral Group Name
-	 * @param overnightLabel The Overnight Latent State Label
 	 * @param bankHazardLabel The Bank Hazard Rate Latent State Label
 	 * @param counterPartyHazardLabel The Counter Party Hazard Rate Latent State Label
 	 * @param bankSeniorRecoveryLabel The Bank Senior Recovery Rate Latent State Label
@@ -145,7 +141,6 @@ public class CreditDebtGroupSpecification extends org.drip.xva.proto.ExposureGro
 	public CreditDebtGroupSpecification (
 		final java.lang.String id,
 		final java.lang.String name,
-		final org.drip.state.identifier.OvernightLabel overnightLabel,
 		final org.drip.state.identifier.EntityHazardLabel bankHazardLabel,
 		final org.drip.state.identifier.EntityHazardLabel counterPartyHazardLabel,
 		final org.drip.state.identifier.EntityRecoveryLabel bankSeniorRecoveryLabel,
@@ -157,8 +152,7 @@ public class CreditDebtGroupSpecification extends org.drip.xva.proto.ExposureGro
 	{
 		super (
 			id,
-			name,
-			overnightLabel
+			name
 		);
 
 		if (null == (_bankHazardLabel = bankHazardLabel) ||

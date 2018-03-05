@@ -47,7 +47,7 @@ package org.drip.xva.proto;
  */
 
 /**
- * GroupSpecification contains the Specification Base of a Named Group. The References are:
+ * PositionSchemaSpecification contains the Specifications of a Position Schema. The References are:
  *  
  *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
  *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
@@ -56,8 +56,9 @@ package org.drip.xva.proto;
  *  
  *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk, Risk 20 (2) 86-90.
  *  
- *  - Albanese, C., L. Andersen, and, S. Iabichino (2015): The FVA Puzzle: Accounting, Risk Management, and
- *  	Collateral Trading <b>https://papers.ssrn.com/sol3/paper.cfm?abstract_id_2517301</b><br><br>
+ *  - Li, B., and Y. Tang (2007): Quantitative Analysis, Derivatives Modeling, and Trading Strategies in the
+ *  	Presence of Counter-party Credit Risk for the Fixed Income Market, World Scientific Publishing,
+ *  	Singapore.
  * 
  *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
  *  	21 (2) 97-102.
@@ -65,51 +66,75 @@ package org.drip.xva.proto;
  * @author Lakshmi Krishnamurthy
  */
 
-public class GroupSpecification
+public class PositionSchemaSpecification extends org.drip.xva.proto.ObjectSpecification
 {
-	private java.lang.String _id = "";
-	private java.lang.String _name = "";
+	private org.drip.xva.proto.FundingGroupSpecification _fundingGroupSpecification = null;
+	private org.drip.xva.proto.CreditDebtGroupSpecification _creditDebtGroupSpecification = null;
+	private org.drip.xva.proto.CollateralGroupSpecification _collateralGroupSpecification = null;
 
 	/**
-	 * GroupSpecification Constructor
+	 * PositionSchemaSpecification Constructor
 	 * 
-	 * @param id The Exposure Roll Up Group ID
-	 * @param name The Exposure Roll Up Group Name
+	 * @param id The Position Group ID
+	 * @param name The Position Group Name
+	 * @param collateralGroupSpecification The Position's Collateral Group Specification
+	 * @param creditDebtGroupSpecification The Position's Credit Debt Group Specification
+	 * @param fundingGroupSpecification The Position's Funding Group Specification
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public GroupSpecification (
+	public PositionSchemaSpecification (
 		final java.lang.String id,
-		final java.lang.String name)
+		final java.lang.String name,
+		final org.drip.xva.proto.CollateralGroupSpecification collateralGroupSpecification,
+		final org.drip.xva.proto.CreditDebtGroupSpecification creditDebtGroupSpecification,
+		final org.drip.xva.proto.FundingGroupSpecification fundingGroupSpecification)
 		throws java.lang.Exception
 	{
-		if (null == (_id = id) || _id.isEmpty() ||
-			null == (_name = name) || _name.isEmpty())
+		super (
+			id,
+			name
+		);
+
+		if (null == (_collateralGroupSpecification = collateralGroupSpecification) ||
+			null == (_creditDebtGroupSpecification = creditDebtGroupSpecification) ||
+			null == (_fundingGroupSpecification = fundingGroupSpecification))
 		{
-			throw new java.lang.Exception ("GroupSpecification Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("PositionSchemaSpecification Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Exposure Roll Up Group ID
+	 * Retrieve the Position's Collateral Group Specification
 	 * 
-	 * @return The Exposure Roll Up Group ID
+	 * @return The Position's Collateral Group Specification
 	 */
 
-	public java.lang.String id()
+	public org.drip.xva.proto.CollateralGroupSpecification collateralGroupSpecification()
 	{
-		return _id;
+		return _collateralGroupSpecification;
 	}
 
 	/**
-	 * Retrieve the Exposure Roll Up Group Name
+	 * Retrieve the Position's Credit Debt Group Specification
 	 * 
-	 * @return The Exposure Roll Up Group Name
+	 * @return The Position's Credit Debt Group Specification
 	 */
 
-	public java.lang.String name()
+	public org.drip.xva.proto.CreditDebtGroupSpecification creditDebtGroupSpecification()
 	{
-		return _name;
+		return _creditDebtGroupSpecification;
+	}
+
+	/**
+	 * Retrieve the Position's Funding Group Specification
+	 * 
+	 * @return The Position's Funding Group Specification
+	 */
+
+	public org.drip.xva.proto.FundingGroupSpecification fundingGroupSpecification()
+	{
+		return _fundingGroupSpecification;
 	}
 }

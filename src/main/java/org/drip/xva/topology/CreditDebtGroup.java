@@ -1,5 +1,5 @@
 
-package org.drip.xva.proto;
+package org.drip.xva.topology;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,7 +47,8 @@ package org.drip.xva.proto;
  */
 
 /**
- * PositionGroupSpecification contains the Specification of a Named Position Group. The References are:
+ * CreditDebtGroup represents an Aggregation of Collateral Groups with a common Credit Debt Specification.
+ *  The References are:
  *  
  *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
  *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
@@ -65,26 +66,112 @@ package org.drip.xva.proto;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PositionGroupSpecification extends org.drip.xva.proto.ObjectSpecification
+public class CreditDebtGroup extends org.drip.xva.proto.ObjectSpecification
 {
+	private org.drip.xva.proto.CreditDebtGroupSpecification _creditDebtGroupSpecification = null;
+	private java.util.Map<java.lang.String, org.drip.xva.topology.CollateralGroup> _collateralGroupMap =
+		null;
 
 	/**
-	 * PositionGroupSpecification Constructor
+	 * CreditDebtGroup Constructor
 	 * 
-	 * @param id The Exposure Roll Up Group ID
-	 * @param name The Exposure Roll Up Group Name
+	 * @param id CreditDebtGroup ID
+	 * @param name CreditDebtGroup Name
+	 * @param creditDebtGroupSpecification The CreditDebtGroup Specification
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public PositionGroupSpecification (
+	public CreditDebtGroup (
 		final java.lang.String id,
-		final java.lang.String name)
+		final java.lang.String name,
+		final org.drip.xva.proto.CreditDebtGroupSpecification creditDebtGroupSpecification)
 		throws java.lang.Exception
 	{
 		super (
 			id,
 			name
 		);
+
+		if (null == (_creditDebtGroupSpecification = creditDebtGroupSpecification))
+		{
+			throw new java.lang.Exception ("CreditDebtGroup Constructor => Invalid Inputs");
+		}
+	}
+
+	/**
+	 * Retrieve the Credit Debt Group Specification
+	 * 
+	 * @return The Credit Debt Group Specification
+	 */
+
+	public org.drip.xva.proto.CreditDebtGroupSpecification creditDebtGroupSpecification()
+	{
+		return _creditDebtGroupSpecification;
+	}
+
+	/**
+	 * Retrieve the Collateral Group Map
+	 * 
+	 * @return The Collateral Group Map
+	 */
+
+	public java.util.Map<java.lang.String, org.drip.xva.topology.CollateralGroup> collateralGroupMap()
+	{
+		return _collateralGroupMap;
+	}
+
+	/**
+	 * Add the specified Collateral Group
+	 * 
+	 * @param collateralGroup The Collateral Group
+	 * 
+	 * @return TRUE - The Collateral Group successfully added
+	 */
+
+	public boolean addCollateralGroup (
+		final org.drip.xva.topology.CollateralGroup collateralGroup)
+	{
+		if (null == collateralGroup)
+		{
+			return false;
+		}
+
+		_collateralGroupMap.put (
+			collateralGroup.id(),
+			collateralGroup
+		);
+
+		return true;
+	}
+
+	/**
+	 * Indicates if the Collateral Group identified by the specified ID
+	 * 
+	 * @param collateralGroupID The Collateral Group ID
+	 * 
+	 * @return TRUE - The Collateral Group Exists
+	 */
+
+	public boolean containsCollateralGroup (
+		final java.lang.String collateralGroupID)
+	{
+		return null == collateralGroupID || collateralGroupID.isEmpty() ? false :
+			_collateralGroupMap.containsKey (collateralGroupID);
+	}
+
+	/**
+	 * Retrieve the Collateral Group identified by the specified ID
+	 * 
+	 * @param collateralGroupID The Collateral Group ID
+	 * 
+	 * @return The Collateral Group
+	 */
+
+	public org.drip.xva.topology.CollateralGroup collateralGroup (
+		final java.lang.String collateralGroupID)
+	{
+		return containsCollateralGroup (collateralGroupID) ? _collateralGroupMap.get (collateralGroupID) :
+			null;
 	}
 }

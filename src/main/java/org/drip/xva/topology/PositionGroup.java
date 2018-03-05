@@ -1,5 +1,5 @@
 
-package org.drip.xva.proto;
+package org.drip.xva.topology;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -7,7 +7,6 @@ package org.drip.xva.proto;
 
 /*!
  * Copyright (C) 2018 Lakshmi Krishnamurthy
- * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
  *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
  *  	libraries targeting analysts and developers
@@ -48,7 +47,7 @@ package org.drip.xva.proto;
  */
 
 /**
- * ExposureGroupSpecification contains the Specifications of an Exposure Roll Up Group. The References are:
+ * PositionGroup contains the Named Position Group Instance and Specification. The References are:
  *  
  *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
  *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
@@ -57,9 +56,8 @@ package org.drip.xva.proto;
  *  
  *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk, Risk 20 (2) 86-90.
  *  
- *  - Li, B., and Y. Tang (2007): Quantitative Analysis, Derivatives Modeling, and Trading Strategies in the
- *  	Presence of Counter-party Credit Risk for the Fixed Income Market, World Scientific Publishing,
- *  	Singapore.
+ *  - Albanese, C., L. Andersen, and, S. Iabichino (2015): The FVA Puzzle: Accounting, Risk Management, and
+ *  	Collateral Trading <b>https://papers.ssrn.com/sol3/paper.cfm?abstract_id_2517301</b><br><br>
  * 
  *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
  *  	21 (2) 97-102.
@@ -67,24 +65,24 @@ package org.drip.xva.proto;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ExposureGroupSpecification extends org.drip.xva.proto.GroupSpecification
+public class PositionGroup extends org.drip.xva.proto.ObjectSpecification
 {
-	private org.drip.state.identifier.OvernightLabel _overnightLabel = null;
+	private org.drip.xva.proto.PositionGroupSpecification _positionGroupSpecification = null;
 
 	/**
-	 * ExposureGroupSpecification Constructor
+	 * PositionGroup Constructor
 	 * 
 	 * @param id The Exposure Roll Up Group ID
 	 * @param name The Exposure Roll Up Group Name
-	 * @param overnightLabel The Overnight Latent State Label
+	 * @param positionGroupSpecification The Position Group Specification
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public ExposureGroupSpecification (
+	public PositionGroup (
 		final java.lang.String id,
 		final java.lang.String name,
-		final org.drip.state.identifier.OvernightLabel overnightLabel)
+		final org.drip.xva.proto.PositionGroupSpecification positionGroupSpecification)
 		throws java.lang.Exception
 	{
 		super (
@@ -92,20 +90,20 @@ public class ExposureGroupSpecification extends org.drip.xva.proto.GroupSpecific
 			name
 		);
 
-		if (null == (_overnightLabel = overnightLabel))
+		if (null == (_positionGroupSpecification = positionGroupSpecification))
 		{
-			throw new java.lang.Exception ("ExposureGroupSpecification Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("PositionGroup Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Overnight Label
+	 * Retrieve the Position Group Specification
 	 * 
-	 * @return The Overnight Label
+	 * @return The Position Group Specification
 	 */
 
-	public org.drip.state.identifier.OvernightLabel overnightLabel()
+	public org.drip.xva.proto.PositionGroupSpecification positionGroupSpecification()
 	{
-		return _overnightLabel;
+		return _positionGroupSpecification;
 	}
 }

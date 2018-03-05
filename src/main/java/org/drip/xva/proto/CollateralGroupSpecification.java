@@ -67,7 +67,7 @@ package org.drip.xva.proto;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CollateralGroupSpecification extends org.drip.xva.proto.ExposureGroupSpecification
+public class CollateralGroupSpecification extends org.drip.xva.proto.ObjectSpecification
 {
 	private int _closeOutScheme = -1;
 	private int _brokenDateScheme = -1;
@@ -78,6 +78,7 @@ public class CollateralGroupSpecification extends org.drip.xva.proto.ExposureGro
 	private double _independentAmount = java.lang.Double.NaN;
 	private org.drip.state.identifier.CSALabel _csaLabel = null;
 	private double _minimumTransferAmount = java.lang.Double.NaN;
+	private org.drip.state.identifier.OvernightLabel _overnightLabel = null;
 	private org.drip.function.definition.R1ToR1 _bankThresholdFunction = null;
 	private org.drip.function.definition.R1ToR1[] _counterPartyThresholdFunctionArray = null;
 
@@ -235,11 +236,11 @@ public class CollateralGroupSpecification extends org.drip.xva.proto.ExposureGro
 	{
 		super (
 			id,
-			name,
-			overnightLabel
+			name
 		);
 
-		if (null == (_csaLabel = csaLabel) ||
+		if (null == (_overnightLabel = overnightLabel) ||
+			null == (_csaLabel = csaLabel) ||
 			-1 >= (_counterPartyDefaultWindow = counterPartyDefaultWindow) ||
 			-1 >= (_bankDefaultWindow = bankDefaultWindow) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_minimumTransferAmount = minimumTransferAmount) ||
@@ -254,6 +255,17 @@ public class CollateralGroupSpecification extends org.drip.xva.proto.ExposureGro
 		_bankThresholdFunction = bankThresholdFunction;
 		_positionReplicationScheme = positionReplicationScheme;
 		_counterPartyThresholdFunctionArray = counterPartyThresholdFunctionArray;
+	}
+
+	/**
+	 * Retrieve the Overnight Label
+	 * 
+	 * @return The Overnight Label
+	 */
+
+	public org.drip.state.identifier.OvernightLabel overnightLabel()
+	{
+		return _overnightLabel;
 	}
 
 	/**

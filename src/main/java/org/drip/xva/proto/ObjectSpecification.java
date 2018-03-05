@@ -47,7 +47,7 @@ package org.drip.xva.proto;
  */
 
 /**
- * PositionGroupSpecification contains the Specification of a Named Position Group. The References are:
+ * ObjectSpecification contains the Specification Base of a Named Object. The References are:
  *  
  *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
  *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
@@ -65,11 +65,13 @@ package org.drip.xva.proto;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PositionGroupSpecification extends org.drip.xva.proto.ObjectSpecification
+public class ObjectSpecification
 {
+	private java.lang.String _id = "";
+	private java.lang.String _name = "";
 
 	/**
-	 * PositionGroupSpecification Constructor
+	 * ObjectSpecification Constructor
 	 * 
 	 * @param id The Exposure Roll Up Group ID
 	 * @param name The Exposure Roll Up Group Name
@@ -77,14 +79,37 @@ public class PositionGroupSpecification extends org.drip.xva.proto.ObjectSpecifi
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public PositionGroupSpecification (
+	public ObjectSpecification (
 		final java.lang.String id,
 		final java.lang.String name)
 		throws java.lang.Exception
 	{
-		super (
-			id,
-			name
-		);
+		if (null == (_id = id) || _id.isEmpty() ||
+			null == (_name = name) || _name.isEmpty())
+		{
+			throw new java.lang.Exception ("ObjectSpecification Constructor => Invalid Inputs");
+		}
+	}
+
+	/**
+	 * Retrieve the Exposure Roll Up Group ID
+	 * 
+	 * @return The Exposure Roll Up Group ID
+	 */
+
+	public java.lang.String id()
+	{
+		return _id;
+	}
+
+	/**
+	 * Retrieve the Exposure Roll Up Group Name
+	 * 
+	 * @return The Exposure Roll Up Group Name
+	 */
+
+	public java.lang.String name()
+	{
+		return _name;
 	}
 }
