@@ -72,6 +72,11 @@ public class BuildManager
 				new org.drip.service.env.BuildRecord (
 					"3.34.0",
 					"1.8.0_112",
+					"Mon Mar 05 14:23:32 EST 2018"
+				),
+				new org.drip.service.env.BuildRecord (
+					"3.34.0",
+					"1.8.0_112",
 					"Thu Feb 26 23:27:08 EST 2018"
 				),
 				new org.drip.service.env.BuildRecord (

@@ -97,6 +97,9 @@ public class CreditDebtGroup extends org.drip.xva.proto.ObjectSpecification
 		{
 			throw new java.lang.Exception ("CreditDebtGroup Constructor => Invalid Inputs");
 		}
+
+		_collateralGroupMap = new
+			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.xva.topology.CollateralGroup>();
 	}
 
 	/**
@@ -173,5 +176,121 @@ public class CreditDebtGroup extends org.drip.xva.proto.ObjectSpecification
 	{
 		return containsCollateralGroup (collateralGroupID) ? _collateralGroupMap.get (collateralGroupID) :
 			null;
+	}
+
+	/**
+	 * Retrieve the Bank Hazard Label
+	 * 
+	 * @return The Bank Hazard Label
+	 */
+
+	public org.drip.state.identifier.EntityHazardLabel bankHazardLabel()
+	{
+		return _creditDebtGroupSpecification.bankHazardLabel();
+	}
+
+	/**
+	 * Retrieve the Counter Party Hazard Label
+	 * 
+	 * @return The Counter Party Hazard Label
+	 */
+
+	public org.drip.state.identifier.EntityHazardLabel counterPartyHazardLabel()
+	{
+		return _creditDebtGroupSpecification.counterPartyHazardLabel();
+	}
+
+	/**
+	 * Retrieve the Bank Senior Recovery Label
+	 * 
+	 * @return The Bank Senior Recovery Label
+	 */
+
+	public org.drip.state.identifier.EntityRecoveryLabel bankSeniorRecoveryLabel()
+	{
+		return _creditDebtGroupSpecification.bankSeniorRecoveryLabel();
+	}
+
+	/**
+	 * Retrieve the Bank Subordinate Recovery Label
+	 * 
+	 * @return The Bank Subordinate Recovery Label
+	 */
+
+	public org.drip.state.identifier.EntityRecoveryLabel bankSubordinateRecoveryLabel()
+	{
+		return _creditDebtGroupSpecification.bankSubordinateRecoveryLabel();
+	}
+
+	/**
+	 * Retrieve the Counter Party Senior Recovery Label
+	 * 
+	 * @return The Counter Party Senior Recovery Label
+	 */
+
+	public org.drip.state.identifier.EntityRecoveryLabel counterPartyRecoveryLabel()
+	{
+		return _creditDebtGroupSpecification.counterPartyRecoveryLabel();
+	}
+
+	/**
+	 * Retrieve the Overnight Label Map
+	 * 
+	 * @return The Overnight Label Map
+	 */
+
+	public java.util.Map<java.lang.String, org.drip.state.identifier.OvernightLabel> overnightLabelMap()
+	{
+		java.util.Map<java.lang.String, org.drip.state.identifier.OvernightLabel> overnightLabelMap = new
+			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.state.identifier.OvernightLabel>();
+
+		for (java.util.Map.Entry<java.lang.String, org.drip.xva.topology.CollateralGroup>
+			collateralGroupMapEntry : _collateralGroupMap.entrySet())
+		{
+			org.drip.state.identifier.OvernightLabel overnightLabel =
+				collateralGroupMapEntry.getValue().overnightLabel();
+
+			java.lang.String overnightLabelFQN = overnightLabel.fullyQualifiedName();
+
+			if (!overnightLabelMap.containsKey (overnightLabelFQN))
+			{
+				overnightLabelMap.put (
+					overnightLabelFQN,
+					overnightLabel
+				);
+			}
+		}
+
+		return overnightLabelMap;
+	}
+
+	/**
+	 * Retrieve the CSA Label Map
+	 * 
+	 * @return The CSA Label Map
+	 */
+
+	public java.util.Map<java.lang.String, org.drip.state.identifier.CSALabel> csaLabelMap()
+	{
+		java.util.Map<java.lang.String, org.drip.state.identifier.CSALabel> csaLabelMap = new
+			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.state.identifier.CSALabel>();
+
+		for (java.util.Map.Entry<java.lang.String, org.drip.xva.topology.CollateralGroup>
+			collateralGroupMapEntry : _collateralGroupMap.entrySet())
+		{
+			org.drip.state.identifier.CSALabel csaLabel = collateralGroupMapEntry.getValue().csaLabel();
+
+			java.lang.String csaLabelFQN = csaLabel.fullyQualifiedName();
+
+			if (!csaLabelMap.containsKey (csaLabelFQN))
+			{
+				csaLabelMap.put (
+					csaLabelFQN,
+					csaLabel
+				);
+			}
+		}
+
+		return csaLabelMap;
 	}
 }
