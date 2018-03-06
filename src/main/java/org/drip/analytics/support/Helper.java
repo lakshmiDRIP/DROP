@@ -54,7 +54,7 @@ package org.drip.analytics.support;
  */
 
 /**
- * AnalyticsHelper contains the collection of the analytics related utility functions used by the modules.
+ * Helper contains the collection of the analytics related utility functions used by the modules.
  * 	The following are the functionality that it exposes:
  * 	- Yield to Discount Factor, and vice versa.
  * 	- Map Bloomberg Day Count Codes to Credit Analytics Day Count Codes
