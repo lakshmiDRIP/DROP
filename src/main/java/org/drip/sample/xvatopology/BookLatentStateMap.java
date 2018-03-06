@@ -19,6 +19,7 @@ import org.drip.xva.settings.BrokenDateScheme;
 import org.drip.xva.settings.CloseOutScheme;
 import org.drip.xva.settings.PositionReplicationScheme;
 import org.drip.xva.topology.BookGraph;
+import org.drip.xva.topology.BookMarketParams;
 import org.drip.xva.topology.CollateralGroup;
 import org.drip.xva.topology.CreditDebtGroup;
 import org.drip.xva.topology.FundingGroup;
@@ -70,7 +71,7 @@ import org.drip.xva.topology.PositionGroup;
  */
 
 /**
- * BookGroupLayout represents the Directed Graph of all the Encompassing Book Groups. The References are:
+ * BookLatentStateMap represents the Latent State Map across all the Book Groups. The References are:
  *  
  *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
  *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
@@ -88,7 +89,7 @@ import org.drip.xva.topology.PositionGroup;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BookGroupLayout
+public class BookLatentStateMap
 {
 
 	private static final String ThreeDigitRandom()
@@ -239,96 +240,6 @@ public class BookGroupLayout
 		return bookGraph;
 	}
 
-	private static final void DisplayBookGraph (
-		final BookGraph bookGraph,
-		final String displayPrefix)
-	{
-		System.out.println (
-			displayPrefix +
-			"-------------------------------------------------||"
-		);
-
-		System.out.println (
-			displayPrefix +
-			bookGraph.name() + " | " +
-			bookGraph.id() + " ||"
-		);
-
-		System.out.println (
-			displayPrefix +
-			"-------------------------------------------------||"
-		);
-
-		System.out.println();
-
-		System.out.println (
-			displayPrefix +
-			"----------------------------------------------------------------------------- ||"
-		);
-
-		for (Map.Entry<String, FundingGroup> fundingGroupEntry : bookGraph.fundingGroupMap().entrySet())
-		{
-			FundingGroup fundingGroup = fundingGroupEntry.getValue();
-
-			System.out.println (
-				displayPrefix + "\t" +
-				fundingGroup.name() + " | " +
-				fundingGroup.id() + " ||"
-			);
-
-			System.out.println (
-				displayPrefix +
-				"----------------------------------------------------------------------------- ||"
-			);
-
-			for (Map.Entry<String, CreditDebtGroup> creditDebtGroupEntry :
-				fundingGroup.creditDebtGroupMap().entrySet())
-			{
-				CreditDebtGroup creditDebtGroup = creditDebtGroupEntry.getValue();
-
-				System.out.println (
-					displayPrefix + "\t\t" +
-					creditDebtGroup.name() + " | " +
-					creditDebtGroup.id() + " ||"
-				);
-
-				for (Map.Entry<String, CollateralGroup> collateralGroupEntry :
-					creditDebtGroup.collateralGroupMap().entrySet())
-				{
-					CollateralGroup collateralGroup = collateralGroupEntry.getValue();
-	
-					System.out.println (
-						displayPrefix + "\t\t\t" +
-						collateralGroup.name() + " | " +
-						collateralGroup.id() + " ||"
-					);
-
-					for (Map.Entry<String, PositionGroup> positionGroupEntry :
-						collateralGroup.positionGroupMap().entrySet())
-					{
-						PositionGroup positionGroup = positionGroupEntry.getValue();
-
-						System.out.println (
-							displayPrefix + "\t\t\t\t" +
-							positionGroup.name() + " | " +
-							positionGroup.id() + " ||"
-						);
-					}
-				}
-
-				System.out.println (
-					displayPrefix +
-					"----------------------------------------------------------------------------- ||"
-				);
-			}
-
-			System.out.println (
-				displayPrefix +
-				"----------------------------------------------------------------------------- ||"
-			);
-		}
-	}
-
 	public static final void main (
 		final String[] args)
 		throws Exception
@@ -342,7 +253,6 @@ public class BookGroupLayout
 		int collateralGroupPerCreditDebtGroup = 3;
 		int creditDebtGroupCountPerFundingGroup = 3;
 		int fundingGroupCount = 3;
-		String displayPrefix = "\t|| ";
 
 		BookGraph bookGraph = BookTopology (
 			new PositionGroupSpecification (
@@ -409,10 +319,116 @@ public class BookGroupLayout
 			positionGroupPerCollateralGroup
 		);
 
-		DisplayBookGraph (
-			bookGraph,
-			displayPrefix
-		);
+		BookMarketParams bookMarketParams = bookGraph.marketParams();
+
+		System.out.println ("\t||----------------||");
+
+		System.out.println ("\t||   OVERNIGHT    ||");
+
+		System.out.println ("\t||----------------||");
+
+		for (Map.Entry<String, OvernightLabel> overnightLabelEntry :
+			bookMarketParams.overnightLabelMap().entrySet())
+		{
+			System.out.println ("\t|| " + overnightLabelEntry.getValue().fullyQualifiedName() + " ||");
+		}
+
+		System.out.println ("\t||----------------||");
+
+		System.out.println();
+
+		System.out.println ("\t||-----------||");
+
+		System.out.println ("\t||    CSA    ||");
+
+		System.out.println ("\t||-----------||");
+
+		for (Map.Entry<String, CSALabel> csaLabelEntry : bookMarketParams.csaLabelMap().entrySet())
+		{
+			System.out.println ("\t|| " + csaLabelEntry.getValue().fullyQualifiedName() + " ||");
+		}
+
+		System.out.println ("\t||-----------||");
+
+		System.out.println();
+
+		System.out.println ("\t||----------||");
+
+		System.out.println ("\t|| BANK HAZ ||");
+
+		System.out.println ("\t||----------||");
+
+		for (Map.Entry<String, EntityHazardLabel> bankHazardLabelEntry :
+			bookMarketParams.bankHazardLabelMap().entrySet())
+		{
+			System.out.println ("\t|| " + bankHazardLabelEntry.getValue().fullyQualifiedName() + " ||");
+		}
+
+		System.out.println ("\t||----------||");
+
+		System.out.println();
+
+		System.out.println ("\t||----------||");
+
+		System.out.println ("\t|| CPTY HAZ ||");
+
+		System.out.println ("\t||----------||");
+
+		for (Map.Entry<String, EntityHazardLabel> counterPartyHazardLabelEntry :
+			bookMarketParams.counterPartyHazardLabelMap().entrySet())
+		{
+			System.out.println ("\t|| " + counterPartyHazardLabelEntry.getValue().fullyQualifiedName() + " ||");
+		}
+
+		System.out.println ("\t||----------||");
+
+		System.out.println();
+
+		System.out.println ("\t||------------------||");
+
+		System.out.println ("\t|| BANK SR RECOVERY ||");
+
+		System.out.println ("\t||------------------||");
+
+		for (Map.Entry<String, EntityRecoveryLabel> bankSeniorRecoveryLabelEntry :
+			bookMarketParams.bankSeniorRecoveryLabelMap().entrySet())
+		{
+			System.out.println ("\t|| " + bankSeniorRecoveryLabelEntry.getValue().fullyQualifiedName() + " ||");
+		}
+
+		System.out.println ("\t||------------------||");
+
+		System.out.println();
+
+		System.out.println ("\t||------------------||");
+
+		System.out.println ("\t||  CPTY RECOVERY   ||");
+
+		System.out.println ("\t||------------------||");
+
+		for (Map.Entry<String, EntityRecoveryLabel> counterPartyRecoveryLabelEntry :
+			bookMarketParams.counterPartyRecoveryLabelMap().entrySet())
+		{
+			System.out.println ("\t|| " + counterPartyRecoveryLabelEntry.getValue().fullyQualifiedName() + " ||");
+		}
+
+		System.out.println ("\t||------------------||");
+
+		System.out.println();
+
+		System.out.println ("\t||-----------------------||");
+
+		System.out.println ("\t|| BANK SUBORD RECOVERY  ||");
+
+		System.out.println ("\t||-----------------------||");
+
+		for (Map.Entry<String, EntityRecoveryLabel> bankSubordinateRecoveryLabelEntry :
+			bookMarketParams.bankSubordinateRecoveryLabelMap().entrySet())
+		{
+			System.out.println ("\t|| " + bankSubordinateRecoveryLabelEntry.getValue().fullyQualifiedName() + " ||");
+		}
+
+		System.out.println ("\t||-----------------------||");
 
 		System.out.println();
 
