@@ -69,16 +69,16 @@ package org.drip.xva.netting;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class CreditDebtGroupPath extends org.drip.xva.netting.ExposureGroupPath
+public abstract class CreditDebtGroupPath extends org.drip.xva.netting.CollateralGroupPath
 {
 
 	protected CreditDebtGroupPath (
-		final org.drip.xva.netting.CollateralGroupPath[] collateralGroupPathArray,
+		final org.drip.xva.netting.PositionGroupPath[] positionGroupPathArray,
 		final org.drip.xva.universe.MarketPath marketPath)
 		throws java.lang.Exception
 	{
 		super (
-			collateralGroupPathArray,
+			positionGroupPathArray,
 			marketPath
 		);
 	}
@@ -96,20 +96,19 @@ public abstract class CreditDebtGroupPath extends org.drip.xva.netting.ExposureG
 	{
 		org.drip.xva.universe.MarketVertex[] marketVertexArray = marketPath().vertexes();
 
-		double[] creditExposurePV = creditExposurePV();
+		double[] creditExposure = creditExposure();
 
-		int vertexCount = creditExposurePV.length;
+		int vertexCount = creditExposure.length;
 		double unilateralCreditAdjustment = 0.;
 
 		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
 		{
-			double periodIntegrandStart = creditExposurePV[vertexIndex - 1] * (1. -
-				marketVertexArray[vertexIndex - 1].counterParty().seniorRecoveryRate());
-
-			double periodIntegrandEnd = creditExposurePV[vertexIndex] * (1. -
-				marketVertexArray[vertexIndex].counterParty().seniorRecoveryRate());
-
-			unilateralCreditAdjustment -= 0.5 * (periodIntegrandStart + periodIntegrandEnd) *
+			unilateralCreditAdjustment -=
+				0.5 * (creditExposure[vertexIndex - 1] + creditExposure[vertexIndex]) *
+				0.5 * (marketVertexArray[vertexIndex - 1].counterParty().seniorRecoveryRate() +
+					marketVertexArray[vertexIndex].counterParty().seniorRecoveryRate()) *
+				0.5 * (marketVertexArray[vertexIndex - 1].overnightReplicator() +
+					marketVertexArray[vertexIndex].overnightReplicator()) *
 				(marketVertexArray[vertexIndex - 1].counterParty().survivalProbability() -
 					marketVertexArray[vertexIndex].counterParty().survivalProbability());
 		}
@@ -130,22 +129,21 @@ public abstract class CreditDebtGroupPath extends org.drip.xva.netting.ExposureG
 	{
 		org.drip.xva.universe.MarketVertex[] marketVertexArray = marketPath().vertexes();
 
-		double[] creditExposurePV = creditExposurePV();
+		double[] creditExposure = creditExposure();
 
-		int vertexCount = creditExposurePV.length;
+		int vertexCount = creditExposure.length;
 		double bilateralCreditAdjustment = 0.;
 
 		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
 		{
-			double periodIntegrandStart = creditExposurePV[vertexIndex - 1] * (1. -
-				marketVertexArray[vertexIndex - 1].counterParty().seniorRecoveryRate()) *
-					marketVertexArray[vertexIndex - 1].bank().survivalProbability();
-
-			double periodIntegrandEnd = creditExposurePV[vertexIndex] * (1. -
-				marketVertexArray[vertexIndex].counterParty().seniorRecoveryRate()) *
-					marketVertexArray[vertexIndex].bank().survivalProbability();
-
-			bilateralCreditAdjustment -= 0.5 * (periodIntegrandStart + periodIntegrandEnd) *
+			bilateralCreditAdjustment -=
+				0.5 * (creditExposure[vertexIndex - 1] + creditExposure[vertexIndex]) *
+				0.5 * (marketVertexArray[vertexIndex - 1].counterParty().seniorRecoveryRate() +
+					marketVertexArray[vertexIndex].counterParty().seniorRecoveryRate()) *
+				0.5 * (marketVertexArray[vertexIndex - 1].overnightReplicator() +
+					marketVertexArray[vertexIndex].overnightReplicator()) *
+				0.5 * (marketVertexArray[vertexIndex - 1].bank().survivalProbability() +
+					marketVertexArray[vertexIndex].bank().survivalProbability()) *
 				(marketVertexArray[vertexIndex - 1].counterParty().survivalProbability() -
 					marketVertexArray[vertexIndex].counterParty().survivalProbability());
 		}
@@ -177,20 +175,19 @@ public abstract class CreditDebtGroupPath extends org.drip.xva.netting.ExposureG
 	{
 		org.drip.xva.universe.MarketVertex[] marketVertexArray = marketPath().vertexes();
 
-		double[] debtExposurePV = debtExposurePV();
+		double[] debtExposure = debtExposure();
 
-		int vertexCount = debtExposurePV.length;
+		int vertexCount = debtExposure.length;
 		double unilateralDebtAdjustment = 0.;
 
 		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
 		{
-			double periodIntegrandStart = debtExposurePV[vertexIndex - 1] * (1. -
-				marketVertexArray[vertexIndex - 1].bank().seniorRecoveryRate());
-
-			double periodIntegrandEnd = debtExposurePV[vertexIndex] * (1. -
-				marketVertexArray[vertexIndex].bank().seniorRecoveryRate());
-
-			unilateralDebtAdjustment -= 0.5 * (periodIntegrandStart + periodIntegrandEnd) *
+			unilateralDebtAdjustment -=
+				0.5 * (debtExposure[vertexIndex - 1] + debtExposure[vertexIndex]) *
+				0.5 * (marketVertexArray[vertexIndex - 1].bank().seniorRecoveryRate() +
+					marketVertexArray[vertexIndex].bank().seniorRecoveryRate()) *
+				0.5 * (marketVertexArray[vertexIndex - 1].overnightReplicator() +
+					marketVertexArray[vertexIndex].overnightReplicator()) *
 				(marketVertexArray[vertexIndex - 1].bank().survivalProbability() -
 					marketVertexArray[vertexIndex].bank().survivalProbability());
 		}
@@ -211,22 +208,21 @@ public abstract class CreditDebtGroupPath extends org.drip.xva.netting.ExposureG
 	{
 		org.drip.xva.universe.MarketVertex[] marketVertexArray = marketPath().vertexes();
 
-		double[] debtExposurePV = debtExposurePV();
+		double[] debtExposure = debtExposure();
 
-		int vertexCount = debtExposurePV.length;
+		int vertexCount = debtExposure.length;
 		double bilateralDebtAdjustment = 0.;
 
 		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
 		{
-			double periodIntegrandStart = debtExposurePV[vertexIndex - 1] * (1. -
-				marketVertexArray[vertexIndex - 1].bank().seniorRecoveryRate()) *
-					marketVertexArray[vertexIndex - 1].counterParty().survivalProbability();
-
-			double periodIntegrandEnd = debtExposurePV[vertexIndex] * (1. -
-				marketVertexArray[vertexIndex].bank().seniorRecoveryRate()) *
-					marketVertexArray[vertexIndex].counterParty().survivalProbability();
-
-			bilateralDebtAdjustment -= 0.5 * (periodIntegrandStart + periodIntegrandEnd) *
+			bilateralDebtAdjustment -=
+				0.5 * (debtExposure[vertexIndex - 1] + debtExposure[vertexIndex]) *
+				0.5 * (marketVertexArray[vertexIndex - 1].bank().seniorRecoveryRate() +
+					marketVertexArray[vertexIndex].bank().seniorRecoveryRate()) *
+				0.5 * (marketVertexArray[vertexIndex - 1].overnightReplicator() +
+					marketVertexArray[vertexIndex].overnightReplicator()) *
+				0.5 * (marketVertexArray[vertexIndex - 1].counterParty().survivalProbability() +
+					marketVertexArray[vertexIndex].counterParty().survivalProbability()) *
 				(marketVertexArray[vertexIndex - 1].bank().survivalProbability() -
 					marketVertexArray[vertexIndex].bank().survivalProbability());
 		}
@@ -238,32 +234,28 @@ public abstract class CreditDebtGroupPath extends org.drip.xva.netting.ExposureG
 	 * Compute Period-wise Unilateral Credit Adjustment
 	 * 
 	 * @return The Period-wise Unilateral Credit Adjustment
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double[] periodUnilateralCreditAdjustment()
-		throws java.lang.Exception
 	{
 		org.drip.xva.universe.MarketVertex[] marketVertexArray = marketPath().vertexes();
 
-		double[] creditExposurePV = creditExposurePV();
+		double[] creditExposure = creditExposure();
 
-		int vertexCount = marketVertexArray.length;
-		double[] periodUnilateralCreditAdjustment = new double[vertexCount - 1];
+		int vertexCount = creditExposure.length;
+		double[] periodUnilateralCreditAdjustment = new double[vertexCount];
+		periodUnilateralCreditAdjustment[0] = 0.;
 
 		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
 		{
-			double periodIntegrandStart = creditExposurePV[vertexIndex - 1] * (1. -
-				marketVertexArray[vertexIndex - 1].counterParty().seniorRecoveryRate());
-
-			double periodIntegrandEnd = creditExposurePV[vertexIndex] * (1. -
-				marketVertexArray[vertexIndex].counterParty().seniorRecoveryRate());
-
-			periodUnilateralCreditAdjustment[vertexIndex - 1] =
-				0.5 * (periodIntegrandStart + periodIntegrandEnd) *
+			periodUnilateralCreditAdjustment[vertexIndex] =
+				-0.5 * (creditExposure[vertexIndex - 1] + creditExposure[vertexIndex]) *
+				0.5 * (marketVertexArray[vertexIndex - 1].counterParty().seniorRecoveryRate() +
+					marketVertexArray[vertexIndex].counterParty().seniorRecoveryRate()) *
+				0.5 * (marketVertexArray[vertexIndex - 1].overnightReplicator() +
+					marketVertexArray[vertexIndex].overnightReplicator()) *
 				(marketVertexArray[vertexIndex - 1].counterParty().survivalProbability() -
-				marketVertexArray[vertexIndex].counterParty().survivalProbability());
+					marketVertexArray[vertexIndex].counterParty().survivalProbability());
 		}
 
 		return periodUnilateralCreditAdjustment;
@@ -273,34 +265,30 @@ public abstract class CreditDebtGroupPath extends org.drip.xva.netting.ExposureG
 	 * Compute Period-wise Bilateral Credit Adjustment
 	 * 
 	 * @return The Period-wise Bilateral Credit Adjustment
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double[] periodBilateralCreditAdjustment()
-		throws java.lang.Exception
 	{
 		org.drip.xva.universe.MarketVertex[] marketVertexArray = marketPath().vertexes();
 
-		double[] creditExposurePV = creditExposurePV();
+		double[] creditExposure = creditExposure();
 
-		int vertexCount = marketVertexArray.length;
-		double[] periodBilateralCreditAdjustment = new double[vertexCount - 1];
+		int vertexCount = creditExposure.length;
+		double[] periodBilateralCreditAdjustment = new double[vertexCount];
+		periodBilateralCreditAdjustment[0] = 0.;
 
 		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
 		{
-			double periodIntegrandStart = creditExposurePV[vertexIndex - 1] * (1. -
-				marketVertexArray[vertexIndex - 1].counterParty().seniorRecoveryRate()) *
-					marketVertexArray[vertexIndex - 1].bank().survivalProbability();
-
-			double periodIntegrandEnd = creditExposurePV[vertexIndex] * (1. -
-				marketVertexArray[vertexIndex].counterParty().seniorRecoveryRate()) *
-					marketVertexArray[vertexIndex].bank().survivalProbability();
-
-			periodBilateralCreditAdjustment[vertexIndex - 1] =
-				-0.5 * (periodIntegrandStart + periodIntegrandEnd) *
+			periodBilateralCreditAdjustment[vertexIndex] =
+				-0.5 * (creditExposure[vertexIndex - 1] + creditExposure[vertexIndex]) *
+				0.5 * (marketVertexArray[vertexIndex - 1].counterParty().seniorRecoveryRate() +
+					marketVertexArray[vertexIndex].counterParty().seniorRecoveryRate()) *
+				0.5 * (marketVertexArray[vertexIndex - 1].overnightReplicator() +
+					marketVertexArray[vertexIndex].overnightReplicator()) *
+				0.5 * (marketVertexArray[vertexIndex - 1].bank().survivalProbability() +
+					marketVertexArray[vertexIndex].bank().survivalProbability()) *
 				(marketVertexArray[vertexIndex - 1].counterParty().survivalProbability() -
-				marketVertexArray[vertexIndex].counterParty().survivalProbability());
+					marketVertexArray[vertexIndex].counterParty().survivalProbability());
 		}
 
 		return periodBilateralCreditAdjustment;
@@ -310,34 +298,21 @@ public abstract class CreditDebtGroupPath extends org.drip.xva.netting.ExposureG
 	 * Compute Period-wise Contra-Liability Credit Adjustment
 	 * 
 	 * @return The Period-wise Contra-Liability Credit Adjustment
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double[] periodContraLiabilityCreditAdjustment()
-		throws java.lang.Exception
 	{
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = marketPath().vertexes();
+		double[] periodUnilateralCreditAdjustment = periodUnilateralCreditAdjustment();
 
-		double[] creditExposurePV = creditExposurePV();
+		double[] periodBilateralCreditAdjustment = periodBilateralCreditAdjustment();
 
-		int vertexCount = marketVertexArray.length;
-		double[] periodContraLiabilityCreditAdjustment = new double[vertexCount - 1];
+		int vertexCount = periodUnilateralCreditAdjustment.length;
+		double[] periodContraLiabilityCreditAdjustment = new double[vertexCount];
 
-		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 		{
-			double periodIntegrandStart = creditExposurePV[vertexIndex - 1] * (1. -
-				marketVertexArray[vertexIndex - 1].counterParty().seniorRecoveryRate()) * (1. -
-					marketVertexArray[vertexIndex - 1].bank().survivalProbability());
-
-			double periodIntegrandEnd = creditExposurePV[vertexIndex] * (1. -
-				marketVertexArray[vertexIndex].counterParty().seniorRecoveryRate()) * (1. -
-					marketVertexArray[vertexIndex].bank().survivalProbability());
-
-			periodContraLiabilityCreditAdjustment[vertexIndex - 1] =
-				-0.5 * (periodIntegrandStart + periodIntegrandEnd) *
-				(marketVertexArray[vertexIndex - 1].counterParty().survivalProbability() -
-				marketVertexArray[vertexIndex].counterParty().survivalProbability());
+			periodContraLiabilityCreditAdjustment[vertexIndex] =
+				periodUnilateralCreditAdjustment[vertexIndex] - periodBilateralCreditAdjustment[vertexIndex];
 		}
 
 		return periodContraLiabilityCreditAdjustment;
@@ -353,21 +328,21 @@ public abstract class CreditDebtGroupPath extends org.drip.xva.netting.ExposureG
 	{
 		org.drip.xva.universe.MarketVertex[] marketVertexArray = marketPath().vertexes();
 
-		double[] debtExposurePV = debtExposurePV();
+		double[] debtExposure = debtExposure();
 
-		int vertexCount = marketVertexArray.length;
-		double[] periodUnilateralDebtAdjustment = new double[vertexCount - 1];
+		int vertexCount = debtExposure.length;
+		double[] periodUnilateralDebtAdjustment = new double[vertexCount];
+		periodUnilateralDebtAdjustment[0] = 0.;
 
 		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
 		{
-			double periodIntegrandStart = debtExposurePV[vertexIndex - 1] * (1. -
-				marketVertexArray[vertexIndex - 1].bank().seniorRecoveryRate());
-
-			double periodIntegrandEnd = debtExposurePV[vertexIndex] * (1. -
-				marketVertexArray[vertexIndex].bank().seniorRecoveryRate());
-
-			periodUnilateralDebtAdjustment[vertexIndex - 1] = -0.5 * (periodIntegrandStart +
-				periodIntegrandEnd) * (marketVertexArray[vertexIndex - 1].bank().survivalProbability() -
+			periodUnilateralDebtAdjustment[vertexCount] =
+				-0.5 * (debtExposure[vertexIndex - 1] + debtExposure[vertexIndex]) *
+				0.5 * (marketVertexArray[vertexIndex - 1].bank().seniorRecoveryRate() +
+					marketVertexArray[vertexIndex].bank().seniorRecoveryRate()) *
+				0.5 * (marketVertexArray[vertexIndex - 1].overnightReplicator() +
+					marketVertexArray[vertexIndex].overnightReplicator()) *
+				(marketVertexArray[vertexIndex - 1].bank().survivalProbability() -
 					marketVertexArray[vertexIndex].bank().survivalProbability());
 		}
 
@@ -384,23 +359,23 @@ public abstract class CreditDebtGroupPath extends org.drip.xva.netting.ExposureG
 	{
 		org.drip.xva.universe.MarketVertex[] marketVertexArray = marketPath().vertexes();
 
-		double[] creditExposurePV = creditExposurePV();
+		double[] debtExposure = debtExposure();
 
-		int vertexCount = creditExposurePV.length;
-		double[] periodBilateralDebtAdjustment = new double[vertexCount - 1];
+		int vertexCount = debtExposure.length;
+		double[] periodBilateralDebtAdjustment = new double[vertexCount];
+		periodBilateralDebtAdjustment[0] = 0.;
 
 		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
 		{
-			double periodIntegrandStart = creditExposurePV[vertexIndex - 1] * (1. -
-				marketVertexArray[vertexIndex - 1].bank().seniorRecoveryRate()) *
-					marketVertexArray[vertexIndex - 1].counterParty().survivalProbability();
-
-			double periodIntegrandEnd = creditExposurePV[vertexIndex] * (1. -
-				marketVertexArray[vertexIndex].bank().seniorRecoveryRate()) *
-					marketVertexArray[vertexIndex].counterParty().survivalProbability();
-
-			periodBilateralDebtAdjustment[vertexIndex - 1] = -0.5 * (periodIntegrandStart +
-				periodIntegrandEnd) * (marketVertexArray[vertexIndex - 1].bank().survivalProbability() -
+			periodBilateralDebtAdjustment[vertexCount] =
+				-0.5 * (debtExposure[vertexIndex - 1] + debtExposure[vertexIndex]) *
+				0.5 * (marketVertexArray[vertexIndex - 1].bank().seniorRecoveryRate() +
+					marketVertexArray[vertexIndex].bank().seniorRecoveryRate()) *
+				0.5 * (marketVertexArray[vertexIndex - 1].overnightReplicator() +
+					marketVertexArray[vertexIndex].overnightReplicator()) *
+				0.5 * (marketVertexArray[vertexIndex - 1].counterParty().survivalProbability() +
+					marketVertexArray[vertexIndex].counterParty().survivalProbability()) *
+				(marketVertexArray[vertexIndex - 1].bank().survivalProbability() -
 					marketVertexArray[vertexIndex].bank().survivalProbability());
 		}
 

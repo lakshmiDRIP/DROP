@@ -13,7 +13,7 @@ import org.drip.xva.basel.*;
 import org.drip.xva.cpty.*;
 import org.drip.xva.definition.*;
 import org.drip.xva.hypothecation.*;
-import org.drip.xva.netting.CollateralGroupPath;
+import org.drip.xva.netting.PositionGroupPath;
 import org.drip.xva.strategy.*;
 import org.drip.xva.universe.*;
 import org.drip.xva.vertex.BurgardKjaerBuilder;
@@ -269,8 +269,8 @@ public class PerfectReplicationUncollateralizedFunding {
 				dblSwapNotional2
 			);
 
-			CollateralGroupVertex[] aCGV1 = new CollateralGroupVertex[iNumStep + 1];
-			CollateralGroupVertex[] aCGV2 = new CollateralGroupVertex[iNumStep + 1];
+			PositionGroupVertex[] aCGV1 = new PositionGroupVertex[iNumStep + 1];
+			PositionGroupVertex[] aCGV2 = new PositionGroupVertex[iNumStep + 1];
 
 			for (int j = 0; j <= iNumStep; ++j) {
 				aadblCollateralBalance[i][j] = 0.;
@@ -321,12 +321,12 @@ public class PerfectReplicationUncollateralizedFunding {
 
 			MarketPath np = new MarketPath (aMV);
 
-			CollateralGroupPath[] aCGP1 = new CollateralGroupPath[] {
-				new CollateralGroupPath (aCGV1)
+			PositionGroupPath[] aCGP1 = new PositionGroupPath[] {
+				new PositionGroupPath (aCGV1)
 			};
 
-			CollateralGroupPath[] aCGP2 = new CollateralGroupPath[] {
-				new CollateralGroupPath (aCGV2)
+			PositionGroupPath[] aCGP2 = new PositionGroupPath[] {
+				new PositionGroupPath (aCGV2)
 			};
 
 			aCPGPGround[i] = new MonoPathExposureAdjustment (
@@ -357,9 +357,9 @@ public class PerfectReplicationUncollateralizedFunding {
 				},
 				new AlbaneseAndersenFundingGroupPath[] {
 					new AlbaneseAndersenFundingGroupPath (
-						new CollateralGroupPath[] {
-							new CollateralGroupPath (aCGV1),
-							new CollateralGroupPath (aCGV2)
+						new PositionGroupPath[] {
+							new PositionGroupPath (aCGV1),
+							new PositionGroupPath (aCGV2)
 						},
 						np
 					)

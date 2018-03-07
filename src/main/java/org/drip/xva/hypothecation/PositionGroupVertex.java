@@ -48,8 +48,11 @@ package org.drip.xva.hypothecation;
  */
 
 /**
- * CollateralGroupVertexExposure holds the Uncollateralized Exposure and the Collateral Balances at each
- *  Re-hypothecation Collateral Group. The References are:
+ * PositionGroupVertex holds the Vertex Exposures of a Projected Path of a Simulation Run of a Hypothecation
+ *  Position Group. The References are:
+ *  
+ *  - Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and the
+ *  	Re-Hypothecation Option, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955, eSSRN.
  *  
  *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
  *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
@@ -58,98 +61,68 @@ package org.drip.xva.hypothecation;
  *  
  *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk, Risk 20 (2) 86-90.
  *  
- *  - Li, B., and Y. Tang (2007): Quantitative Analysis, Derivatives Modeling, and Trading Strategies in the
- *  	Presence of Counter-party Credit Risk for the Fixed Income Market, World Scientific Publishing,
- *  	Singapore.
- * 
  *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
  *  	21 (2) 97-102.
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class CollateralGroupVertexExposure
+public abstract class PositionGroupVertex
+	extends org.drip.xva.hypothecation.PositionGroupVertexExposure
+	implements org.drip.xva.hypothecation.PositionGroupVertexExposureComponent
 {
-	private double _accrued = java.lang.Double.NaN;
-	private double _forward = java.lang.Double.NaN;
+	private double _collateralBalance = java.lang.Double.NaN;
+	private org.drip.analytics.date.JulianDate _anchorDate = null;
 
-	/**
-	 * Construct the Unaccrued CollateralGroupVertexExposure Instance
-	 * 
-	 * @param forward The Unrealized Forward Exposure
-	 * 
-	 * @return Unaccrued CollateralGroupVertexExposure Instance
-	 */
-
-	public static final CollateralGroupVertexExposure Unaccrued (
-		final double forward)
-	{
-		try
-		{
-			return new CollateralGroupVertexExposure (
-				forward,
-				0.
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * CollateralGroupVertexExposure Constructor
-	 * 
-	 * @param forward The Unrealized Forward Exposure
-	 * @param accrued The Accrued Exposure
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public CollateralGroupVertexExposure (
+	protected PositionGroupVertex (
+		final org.drip.analytics.date.JulianDate anchorDate,
 		final double forward,
-		final double accrued)
+		final double accrued,
+		final double collateralBalance)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_forward = forward) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_accrued = accrued))
+		super (
+			forward,
+			accrued
+		);
+
+		if (null == (_anchorDate = anchorDate) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_collateralBalance = collateralBalance))
 		{
-			throw new java.lang.Exception ("CollateralGroupVertexExposure Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("PositionGroupVertex Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Unrealized Forward Exposure
+	 * Retrieve the Date Anchor
 	 * 
-	 * @return The Unrealized Forward Exposure
+	 * @return The Date Anchor
 	 */
 
-	public double forward()
+	public org.drip.analytics.date.JulianDate anchor()
 	{
-		return _forward;
+		return _anchorDate;
 	}
 
 	/**
-	 * Retrieve the Accrued Exposure
+	 * Retrieve the Collateral Balance at the Path Vertex Time Node
 	 * 
-	 * @return The Accrued Exposure
+	 * @return The Collateral Balance at the Path Vertex Time Node
 	 */
 
-	public double accrued()
+	public double collateralBalance()
 	{
-		return _accrued;
+		return _collateralBalance;
 	}
 
 	/**
-	 * Retrieve the Gross Uncollateralized Exposure
+	 * Retrieve the Total Collateralized Exposure at the Path Vertex Time Node
 	 * 
-	 * @return The Gross Uncollateralized Exposure
+	 * @return The Total Collateralized Exposure at the Path Vertex Time Node
 	 */
 
-	public double uncollateralized()
+	public double collateralized()
 	{
-		return _forward + _accrued;
+		return forward() + accrued() - _collateralBalance;
 	}
 }

@@ -48,11 +48,8 @@ package org.drip.xva.hypothecation;
  */
 
 /**
- * CollateralGroupVertex holds the Vertex Exposures of a Projected Path of a Simulation Run of a Collateral
- *  Hypothecation Group. The References are:
- *  
- *  - Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and the
- *  	Re-Hypothecation Option, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955, eSSRN.
+ * PositionGroupVertexCloseOut holds the Bank and the Counter Party Close Outs at each Re-hypothecation
+ *  Position Group. The References are:
  *  
  *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
  *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
@@ -61,68 +58,104 @@ package org.drip.xva.hypothecation;
  *  
  *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk, Risk 20 (2) 86-90.
  *  
+ *  - Li, B., and Y. Tang (2007): Quantitative Analysis, Derivatives Modeling, and Trading Strategies in the
+ *  	Presence of Counter-party Credit Risk for the Fixed Income Market, World Scientific Publishing,
+ *  	Singapore.
+ * 
  *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
  *  	21 (2) 97-102.
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class CollateralGroupVertex
-	extends org.drip.xva.hypothecation.CollateralGroupVertexExposure
-	implements org.drip.xva.hypothecation.CollateralGroupVertexExposureComponent
+public class PositionGroupVertexCloseOut
 {
-	private double _collateralBalance = java.lang.Double.NaN;
-	private org.drip.analytics.date.JulianDate _anchorDate = null;
+	private double _bank = java.lang.Double.NaN;
+	private double _counterParty = java.lang.Double.NaN;
 
-	protected CollateralGroupVertex (
-		final org.drip.analytics.date.JulianDate anchorDate,
-		final double forward,
-		final double accrued,
+	/**
+	 * Construct a Static Instance of PositionGroupVertexCloseOut
+	 * 
+	 * @param closeOutGeneral The Close Out General Instance
+	 * @param uncollateralizedExposure The Uncollateralized Exposure
+	 * @param collateralBalance The Collateral Balance
+	 * 
+	 * @return The Static Instance of PositionGroupVertexCloseOut
+	 */
+
+	public static final PositionGroupVertexCloseOut Standard (
+		final org.drip.xva.definition.CloseOut closeOutGeneral,
+		final double uncollateralizedExposure,
 		final double collateralBalance)
+	{
+		if (null == closeOutGeneral ||
+			!org.drip.quant.common.NumberUtil.IsValid (uncollateralizedExposure) ||
+			!org.drip.quant.common.NumberUtil.IsValid (collateralBalance))
+		{
+			return null;
+		}
+
+		try
+		{
+			return new PositionGroupVertexCloseOut (
+				closeOutGeneral.bankDefault (
+					uncollateralizedExposure,
+					collateralBalance
+				),
+				closeOutGeneral.counterPartyDefault (
+					uncollateralizedExposure,
+					collateralBalance
+				)
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * PositionGroupVertexCloseOut Constructor
+	 * 
+	 * @param bank The Bank Close Out
+	 * @param counterParty The Counter Party Close Out
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public PositionGroupVertexCloseOut (
+		final double bank,
+		final double counterParty)
 		throws java.lang.Exception
 	{
-		super (
-			forward,
-			accrued
-		);
-
-		if (null == (_anchorDate = anchorDate) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_collateralBalance = collateralBalance))
+		if (!org.drip.quant.common.NumberUtil.IsValid (_bank = bank) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_counterParty = counterParty))
 		{
-			throw new java.lang.Exception ("CollateralGroupVertex Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("PositionGroupVertexCloseOut Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Date Anchor
+	 * Retrieve the Bank Close Out
 	 * 
-	 * @return The Date Anchor
+	 * @return The Bank Close Out
 	 */
 
-	public org.drip.analytics.date.JulianDate anchor()
+	public double bank()
 	{
-		return _anchorDate;
+		return _bank;
 	}
 
 	/**
-	 * Retrieve the Collateral Balance at the Path Vertex Time Node
+	 * Retrieve the Counter Party Close Out
 	 * 
-	 * @return The Collateral Balance at the Path Vertex Time Node
+	 * @return The Counter Party Close Out
 	 */
 
-	public double collateralBalance()
+	public double counterParty()
 	{
-		return _collateralBalance;
-	}
-
-	/**
-	 * Retrieve the Total Collateralized Exposure at the Path Vertex Time Node
-	 * 
-	 * @return The Total Collateralized Exposure at the Path Vertex Time Node
-	 */
-
-	public double collateralized()
-	{
-		return forward() + accrued() - _collateralBalance;
+		return _counterParty;
 	}
 }

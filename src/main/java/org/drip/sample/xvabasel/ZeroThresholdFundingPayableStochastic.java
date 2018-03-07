@@ -17,7 +17,7 @@ import org.drip.state.identifier.OvernightLabel;
 import org.drip.xva.basel.*;
 import org.drip.xva.cpty.*;
 import org.drip.xva.hypothecation.*;
-import org.drip.xva.netting.CollateralGroupPath;
+import org.drip.xva.netting.PositionGroupPath;
 import org.drip.xva.proto.*;
 import org.drip.xva.settings.*;
 import org.drip.xva.strategy.*;
@@ -590,12 +590,12 @@ public class ZeroThresholdFundingPayableStochastic {
 
 			MarketPath np = new MarketPath (aNV);
 
-			CollateralGroupPath[] aCGP1 = new CollateralGroupPath[] {
-				new CollateralGroupPath (aCGV1)
+			PositionGroupPath[] aCGP1 = new PositionGroupPath[] {
+				new PositionGroupPath (aCGV1)
 			};
 
-			CollateralGroupPath[] aCGP2 = new CollateralGroupPath[] {
-				new CollateralGroupPath (aCGV2)
+			PositionGroupPath[] aCGP2 = new PositionGroupPath[] {
+				new PositionGroupPath (aCGV2)
 			};
 
 			aCPGPGround[i] = new MonoPathExposureAdjustment (
@@ -626,9 +626,9 @@ public class ZeroThresholdFundingPayableStochastic {
 				},
 				new AlbaneseAndersenFundingGroupPath[] {
 					new AlbaneseAndersenFundingGroupPath (
-						new CollateralGroupPath[] {
-							new CollateralGroupPath (aCGV1),
-							new CollateralGroupPath (aCGV2)
+						new PositionGroupPath[] {
+							new PositionGroupPath (aCGV1),
+							new PositionGroupPath (aCGV2)
 						},
 						np
 					)

@@ -9,7 +9,7 @@ import org.drip.measure.realization.*;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.xva.cpty.*;
-import org.drip.xva.netting.CollateralGroupPath;
+import org.drip.xva.netting.PositionGroupPath;
 import org.drip.xva.strategy.*;
 import org.drip.xva.universe.*;
 import org.drip.xva.vertex.AlbaneseAndersen;
@@ -203,7 +203,7 @@ public class FixFloatVACounterParty {
 					0.
 				);
 
-			CollateralGroupPath[] aHGP = new CollateralGroupPath[] {new CollateralGroupPath (aHGVR)};
+			PositionGroupPath[] aHGP = new PositionGroupPath[] {new PositionGroupPath (aHGVR)};
 
 			aMPEA[i] = new MonoPathExposureAdjustment (
 				new AlbaneseAndersenNettingGroupPath[] {

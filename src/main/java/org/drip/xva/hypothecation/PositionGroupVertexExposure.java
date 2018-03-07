@@ -48,8 +48,8 @@ package org.drip.xva.hypothecation;
  */
 
 /**
- * CollateralGroupVertexCloseOut holds the Bank and the Counter Party Close Outs at each Re-hypothecation
- *  Collateral Group. The References are:
+ * PositionGroupVertexExposure holds the Uncollateralized Exposure and the Collateral Balances at each
+ *  Re-hypothecation Position Group. The References are:
  *  
  *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
  *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
@@ -68,44 +68,27 @@ package org.drip.xva.hypothecation;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CollateralGroupVertexCloseOut
+public class PositionGroupVertexExposure
 {
-	private double _bank = java.lang.Double.NaN;
-	private double _counterParty = java.lang.Double.NaN;
+	private double _accrued = java.lang.Double.NaN;
+	private double _forward = java.lang.Double.NaN;
 
 	/**
-	 * Construct a Static Instance of CollateralGroupVertexCloseOut
+	 * Construct the Unaccrued PositionGroupVertexExposure Instance
 	 * 
-	 * @param closeOutGeneral The Close Out General Instance
-	 * @param uncollateralizedExposure The Uncollateralized Exposure
-	 * @param collateralBalance The Collateral Balance
+	 * @param forward The Unrealized Forward Exposure
 	 * 
-	 * @return The Static Instance of CollateralGroupVertexCloseOut
+	 * @return Unaccrued PositionGroupVertexExposure Instance
 	 */
 
-	public static final CollateralGroupVertexCloseOut Standard (
-		final org.drip.xva.definition.CloseOut closeOutGeneral,
-		final double uncollateralizedExposure,
-		final double collateralBalance)
+	public static final PositionGroupVertexExposure Unaccrued (
+		final double forward)
 	{
-		if (null == closeOutGeneral ||
-			!org.drip.quant.common.NumberUtil.IsValid (uncollateralizedExposure) ||
-			!org.drip.quant.common.NumberUtil.IsValid (collateralBalance))
-		{
-			return null;
-		}
-
 		try
 		{
-			return new CollateralGroupVertexCloseOut (
-				closeOutGeneral.bankDefault (
-					uncollateralizedExposure,
-					collateralBalance
-				),
-				closeOutGeneral.counterPartyDefault (
-					uncollateralizedExposure,
-					collateralBalance
-				)
+			return new PositionGroupVertexExposure (
+				forward,
+				0.
 			);
 		}
 		catch (java.lang.Exception e)
@@ -117,45 +100,56 @@ public class CollateralGroupVertexCloseOut
 	}
 
 	/**
-	 * CollateralGroupVertexCloseOut Constructor
+	 * PositionGroupVertexExposure Constructor
 	 * 
-	 * @param bank The Bank Close Out
-	 * @param counterParty The Counter Party Close Out
+	 * @param forward The Unrealized Forward Exposure
+	 * @param accrued The Accrued Exposure
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public CollateralGroupVertexCloseOut (
-		final double bank,
-		final double counterParty)
+	public PositionGroupVertexExposure (
+		final double forward,
+		final double accrued)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_bank = bank) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_counterParty = counterParty))
+		if (!org.drip.quant.common.NumberUtil.IsValid (_forward = forward) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_accrued = accrued))
 		{
-			throw new java.lang.Exception ("CollateralGroupVertexCloseOut Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("PositionGroupVertexExposure Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Bank Close Out
+	 * Retrieve the Unrealized Forward Exposure
 	 * 
-	 * @return The Bank Close Out
+	 * @return The Unrealized Forward Exposure
 	 */
 
-	public double bank()
+	public double forward()
 	{
-		return _bank;
+		return _forward;
 	}
 
 	/**
-	 * Retrieve the Counter Party Close Out
+	 * Retrieve the Accrued Exposure
 	 * 
-	 * @return The Counter Party Close Out
+	 * @return The Accrued Exposure
 	 */
 
-	public double counterParty()
+	public double accrued()
 	{
-		return _counterParty;
+		return _accrued;
+	}
+
+	/**
+	 * Retrieve the Gross Uncollateralized Exposure
+	 * 
+	 * @return The Gross Uncollateralized Exposure
+	 */
+
+	public double uncollateralized()
+	{
+		return _forward + _accrued;
 	}
 }

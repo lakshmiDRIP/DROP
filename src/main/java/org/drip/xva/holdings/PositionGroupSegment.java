@@ -144,13 +144,13 @@ public class PositionGroupSegment
 	 * @return The Position Group Collateral Path Array
 	 */
 
-	public org.drip.xva.netting.CollateralGroupPath[] collateralGroupPathArray()
+	public org.drip.xva.netting.PositionGroupPath[] collateralGroupPathArray()
 	{
 		int segmentCount = _positionGroupSet.size();
 
 		int segmentIndex = 0;
-		org.drip.xva.netting.CollateralGroupPath[] collateralGroupPathArray = 0 == segmentCount ? null
-			: new org.drip.xva.netting.CollateralGroupPath[segmentCount];
+		org.drip.xva.netting.PositionGroupPath[] collateralGroupPathArray = 0 == segmentCount ? null
+			: new org.drip.xva.netting.PositionGroupPath[segmentCount];
 
 		if (0 == segmentCount)
 		{

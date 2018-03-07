@@ -14,7 +14,7 @@ import org.drip.state.identifier.CSALabel;
 import org.drip.state.identifier.OvernightLabel;
 import org.drip.xva.cpty.*;
 import org.drip.xva.hypothecation.*;
-import org.drip.xva.netting.CollateralGroupPath;
+import org.drip.xva.netting.PositionGroupPath;
 import org.drip.xva.proto.*;
 import org.drip.xva.settings.*;
 import org.drip.xva.strategy.*;
@@ -371,7 +371,7 @@ public class CPGAZeroThreshold {
 				dblValueStart = dblValueEnd;
 			}
 
-			CollateralGroupPath[] aHGP = new CollateralGroupPath[] {new CollateralGroupPath (aHGVR)};
+			PositionGroupPath[] aHGP = new PositionGroupPath[] {new PositionGroupPath (aHGVR)};
 
 			aMPEA[i] = new MonoPathExposureAdjustment (
 				new AlbaneseAndersenNettingGroupPath[] {

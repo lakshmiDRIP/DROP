@@ -18,7 +18,7 @@ import org.drip.xva.basel.*;
 import org.drip.xva.cpty.*;
 import org.drip.xva.definition.*;
 import org.drip.xva.hypothecation.*;
-import org.drip.xva.netting.CollateralGroupPath;
+import org.drip.xva.netting.PositionGroupPath;
 import org.drip.xva.proto.*;
 import org.drip.xva.settings.*;
 import org.drip.xva.strategy.*;
@@ -546,8 +546,8 @@ public class SemiReplicationCollateralizedFundingStochastic {
 			MarketVertex[] aMV = new MarketVertex [iNumStep + 1];
 			double dblValueStart1 = dblTime * dblATMSwapRateOffsetStart1;
 			double dblValueStart2 = dblTime * dblATMSwapRateOffsetStart2;
-			CollateralGroupVertex[] aCGV1 = new CollateralGroupVertex[iNumStep + 1];
-			CollateralGroupVertex[] aCGV2 = new CollateralGroupVertex[iNumStep + 1];
+			PositionGroupVertex[] aCGV1 = new PositionGroupVertex[iNumStep + 1];
+			PositionGroupVertex[] aCGV2 = new PositionGroupVertex[iNumStep + 1];
 
 			for (int j = 0; j <= iNumStep; ++j) {
 				JulianDate dtEnd = (adtVertex[j] = dtSpot.addMonths (6 * j + 6));
@@ -660,8 +660,8 @@ public class SemiReplicationCollateralizedFundingStochastic {
 
 			MarketPath mp = new MarketPath (aMV);
 
-			CollateralGroupPath[] aHGPGround = new CollateralGroupPath[] {
-				new CollateralGroupPath (aCGV1)
+			PositionGroupPath[] aHGPGround = new PositionGroupPath[] {
+				new PositionGroupPath (aCGV1)
 			};
 
 			aMPEAGround[i] = new MonoPathExposureAdjustment (
@@ -679,9 +679,9 @@ public class SemiReplicationCollateralizedFundingStochastic {
 				}
 			);
 
-			CollateralGroupPath[] aHGPExtended = new CollateralGroupPath[] {
-				new CollateralGroupPath (aCGV1),
-				new CollateralGroupPath (aCGV2)
+			PositionGroupPath[] aHGPExtended = new PositionGroupPath[] {
+				new PositionGroupPath (aCGV1),
+				new PositionGroupPath (aCGV2)
 			};
 
 			aMPEAExtended[i] = new MonoPathExposureAdjustment (

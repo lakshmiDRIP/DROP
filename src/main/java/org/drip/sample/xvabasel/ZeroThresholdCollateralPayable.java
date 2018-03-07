@@ -15,7 +15,7 @@ import org.drip.state.identifier.OvernightLabel;
 import org.drip.xva.basel.*;
 import org.drip.xva.cpty.*;
 import org.drip.xva.hypothecation.*;
-import org.drip.xva.netting.CollateralGroupPath;
+import org.drip.xva.netting.PositionGroupPath;
 import org.drip.xva.proto.*;
 import org.drip.xva.settings.*;
 import org.drip.xva.strategy.*;
@@ -340,13 +340,13 @@ public class ZeroThresholdCollateralPayable {
 
 			MarketPath np = new MarketPath (aNV);
 
-			CollateralGroupPath[] aCGPGround = new CollateralGroupPath[] {
-				new CollateralGroupPath (aCGV1)
+			PositionGroupPath[] aCGPGround = new PositionGroupPath[] {
+				new PositionGroupPath (aCGV1)
 			};
 
-			CollateralGroupPath[] aCGPExtended = new CollateralGroupPath[] {
-				new CollateralGroupPath (aCGV1),
-				new CollateralGroupPath (aCGV2)
+			PositionGroupPath[] aCGPExtended = new PositionGroupPath[] {
+				new PositionGroupPath (aCGV1),
+				new PositionGroupPath (aCGV2)
 			};
 
 			aCPGPGround[i] = new MonoPathExposureAdjustment (

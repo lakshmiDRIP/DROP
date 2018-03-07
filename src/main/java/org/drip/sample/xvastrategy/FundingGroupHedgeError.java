@@ -11,7 +11,7 @@ import org.drip.service.env.EnvManager;
 import org.drip.xva.cpty.*;
 import org.drip.xva.definition.*;
 import org.drip.xva.derivative.ReplicationPortfolioVertexBank;
-import org.drip.xva.netting.CollateralGroupPath;
+import org.drip.xva.netting.PositionGroupPath;
 import org.drip.xva.strategy.*;
 import org.drip.xva.universe.*;
 import org.drip.xva.vertex.*;
@@ -307,9 +307,9 @@ public class FundingGroupHedgeError {
 
 		MarketPath mp = new MarketPath (aMV);
 
-		CollateralGroupPath[] aCGP1 = new CollateralGroupPath[] {new CollateralGroupPath (aBKV1)};
+		PositionGroupPath[] aCGP1 = new PositionGroupPath[] {new PositionGroupPath (aBKV1)};
 
-		CollateralGroupPath[] aCGP2 = new CollateralGroupPath[] {new CollateralGroupPath (aBKV2)};
+		PositionGroupPath[] aCGP2 = new PositionGroupPath[] {new PositionGroupPath (aBKV2)};
 
 		AlbaneseAndersenNettingGroupPath ngpaa2014_1 = new AlbaneseAndersenNettingGroupPath (
 			aCGP1,

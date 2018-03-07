@@ -432,6 +432,54 @@ public class BookLatentStateMap
 
 		System.out.println();
 
+		System.out.println ("\t||------------------||");
+
+		System.out.println ("\t|| BANK SR FUNDING  ||");
+
+		System.out.println ("\t||------------------||");
+
+		for (Map.Entry<String, EntityFundingLabel> bankSeniorFundingLabelEntry :
+			bookMarketParams.bankSeniorFundingLabelMap().entrySet())
+		{
+			System.out.println ("\t|| " + bankSeniorFundingLabelEntry.getValue().fullyQualifiedName() + " ||");
+		}
+
+		System.out.println ("\t||------------------||");
+
+		System.out.println();
+
+		System.out.println ("\t||------------------||");
+
+		System.out.println ("\t||   CPTY FUNDING   ||");
+
+		System.out.println ("\t||------------------||");
+
+		for (Map.Entry<String, EntityFundingLabel> counterPartyFundingLabelEntry :
+			bookMarketParams.counterPartyFundingLabelMap().entrySet())
+		{
+			System.out.println ("\t|| " + counterPartyFundingLabelEntry.getValue().fullyQualifiedName() + " ||");
+		}
+
+		System.out.println ("\t||------------------||");
+
+		System.out.println();
+
+		System.out.println ("\t||-----------------------||");
+
+		System.out.println ("\t||  BANK SUBORD FUNDING  ||");
+
+		System.out.println ("\t||-----------------------||");
+
+		for (Map.Entry<String, EntityFundingLabel> bankSubordinateFundingLabelEntry :
+			bookMarketParams.bankSubordinateFundingLabelMap().entrySet())
+		{
+			System.out.println ("\t|| " + bankSubordinateFundingLabelEntry.getValue().fullyQualifiedName() + " ||");
+		}
+
+		System.out.println ("\t||-----------------------||");
+
+		System.out.println();
+
 		EnvManager.TerminateEnv();
 	}
 }

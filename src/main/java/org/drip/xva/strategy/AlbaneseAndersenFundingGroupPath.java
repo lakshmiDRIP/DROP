@@ -81,13 +81,13 @@ public class AlbaneseAndersenFundingGroupPath extends org.drip.xva.netting.Fundi
 	 */
 
 	public static final AlbaneseAndersenFundingGroupPath Mono (
-		final org.drip.xva.netting.CollateralGroupPath collateralGroupPath,
+		final org.drip.xva.netting.PositionGroupPath collateralGroupPath,
 		final org.drip.xva.universe.MarketPath marketPath)
 	{
 		try
 		{
 			return new org.drip.xva.strategy.AlbaneseAndersenFundingGroupPath (
-				new org.drip.xva.netting.CollateralGroupPath[]
+				new org.drip.xva.netting.PositionGroupPath[]
 				{
 					collateralGroupPath
 				},
@@ -112,7 +112,7 @@ public class AlbaneseAndersenFundingGroupPath extends org.drip.xva.netting.Fundi
 	 */
 
 	public AlbaneseAndersenFundingGroupPath (
-		final org.drip.xva.netting.CollateralGroupPath[] collateralGroupPathArray,
+		final org.drip.xva.netting.PositionGroupPath[] collateralGroupPathArray,
 		final org.drip.xva.universe.MarketPath marketPath)
 		throws java.lang.Exception
 	{

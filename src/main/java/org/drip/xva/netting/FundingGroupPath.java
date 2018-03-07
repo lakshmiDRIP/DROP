@@ -69,11 +69,11 @@ package org.drip.xva.netting;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class FundingGroupPath extends org.drip.xva.netting.ExposureGroupPath
+public abstract class FundingGroupPath extends org.drip.xva.netting.CollateralGroupPath
 {
 
 	protected FundingGroupPath (
-		final org.drip.xva.netting.CollateralGroupPath[] collateralGroupPathArray,
+		final org.drip.xva.netting.PositionGroupPath[] collateralGroupPathArray,
 		final org.drip.xva.universe.MarketPath marketPath)
 		throws java.lang.Exception
 	{

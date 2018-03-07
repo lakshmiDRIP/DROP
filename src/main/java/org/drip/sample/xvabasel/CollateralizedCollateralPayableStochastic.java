@@ -17,7 +17,7 @@ import org.drip.state.identifier.OvernightLabel;
 import org.drip.xva.basel.*;
 import org.drip.xva.cpty.*;
 import org.drip.xva.hypothecation.*;
-import org.drip.xva.netting.CollateralGroupPath;
+import org.drip.xva.netting.PositionGroupPath;
 import org.drip.xva.proto.*;
 import org.drip.xva.settings.*;
 import org.drip.xva.strategy.*;
@@ -589,8 +589,8 @@ public class CollateralizedCollateralPayableStochastic {
 
 			MarketPath mp = new MarketPath (aMV);
 
-			CollateralGroupPath[] aHGPGround = new CollateralGroupPath[] {
-				new CollateralGroupPath (aHGVR1)
+			PositionGroupPath[] aHGPGround = new PositionGroupPath[] {
+				new PositionGroupPath (aHGVR1)
 			};
 
 			aMPEAGround[i] = new MonoPathExposureAdjustment (
@@ -608,9 +608,9 @@ public class CollateralizedCollateralPayableStochastic {
 				}
 			);
 
-			CollateralGroupPath[] aHGPExtended = new CollateralGroupPath[] {
-				new CollateralGroupPath (aHGVR1),
-				new CollateralGroupPath (aHGVR2)
+			PositionGroupPath[] aHGPExtended = new PositionGroupPath[] {
+				new PositionGroupPath (aHGVR1),
+				new PositionGroupPath (aHGVR2)
 			};
 
 			aMPEAExtended[i] = new MonoPathExposureAdjustment (

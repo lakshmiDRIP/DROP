@@ -1,5 +1,5 @@
 
-package org.drip.xva.hypothecation;
+package org.drip.xva.dynamics;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,7 +47,7 @@ package org.drip.xva.hypothecation;
  */
 
 /**
- * CollateralGroup generates the Customized Collateral Group Trajectories. The References are:<br><br>
+ * PositionGroupTrajectory generates the Customized Position Group Trajectories. The References are:<br><br>
  *  
  *  - Burgard, C., and M. Kjaer (2013): Funding Strategies, Funding Costs <i>Risk</i> <b>24 (12)</b>
  *  	82-87.<br><br>
@@ -66,7 +66,7 @@ package org.drip.xva.hypothecation;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CollateralGroup
+public class PositionGroupTrajectory
 {
 	private double[][] _positionGroupArrayVertex = null;
 	private org.drip.xva.universe.MarketVertex[] _marketVertexArray = null;
@@ -167,7 +167,7 @@ public class CollateralGroup
 		return collateralBalanceArray;
 	}
 
-	private org.drip.xva.hypothecation.CollateralGroupVertex collateralGroupVertex (
+	private org.drip.xva.hypothecation.PositionGroupVertex positionGroupVertex (
 		final org.drip.analytics.date.JulianDate anchorDate,
 		final double positionGroupValue,
 		final double realizedCashFlow,
@@ -313,7 +313,7 @@ public class CollateralGroup
 	}
 
 	/**
-	 * CollateralGroup Constructor
+	 * PositionGroupTrajectory Constructor
 	 * 
 	 * @param collateralGroupSpecification The Collateral Group Specification
 	 * @param marketVertexArray Array of Market Vertexes
@@ -322,7 +322,7 @@ public class CollateralGroup
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public CollateralGroup (
+	public PositionGroupTrajectory (
 		final org.drip.xva.proto.CollateralGroupSpecification collateralGroupSpecification,
 		final org.drip.xva.universe.MarketVertex[] marketVertexArray,
 		final double[][] positionGroupArrayVertex)
@@ -332,7 +332,7 @@ public class CollateralGroup
 			null == (_marketVertexArray = marketVertexArray) ||
 			null == (_positionGroupArrayVertex = positionGroupArrayVertex))
 		{
-			throw new java.lang.Exception ("CollateralGroup Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("PositionGroupTrajectory Constructor => Invalid Inputs");
 		}
 
 		int vertexCount = _marketVertexArray.length;
@@ -341,14 +341,14 @@ public class CollateralGroup
 		if (0 == vertexCount ||
 			0 == positionGroupCount)
 		{
-			throw new java.lang.Exception ("CollateralGroup Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("PositionGroupTrajectory Constructor => Invalid Inputs");
 		}
 
 		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 		{
 			if (null == _marketVertexArray[vertexIndex])
 			{
-				throw new java.lang.Exception ("CollateralGroup Constructor => Invalid Inputs");
+				throw new java.lang.Exception ("PositionGroupTrajectory Constructor => Invalid Inputs");
 			}
 		}
 
@@ -358,7 +358,7 @@ public class CollateralGroup
 				vertexCount != _positionGroupArrayVertex[positionGroupIndex].length ||
 				!org.drip.quant.common.NumberUtil.IsValid (_positionGroupArrayVertex[positionGroupIndex]))
 			{
-				throw new java.lang.Exception ("CollateralGroup Constructor => Invalid Inputs");
+				throw new java.lang.Exception ("PositionGroupTrajectory Constructor => Invalid Inputs");
 			}
 		}
 	}
@@ -402,7 +402,7 @@ public class CollateralGroup
 	 * @return The Position Collateral Group Vertex Array
 	 */
 
-	public org.drip.xva.hypothecation.CollateralGroupVertex[][] positionGroupVertexArray()
+	public org.drip.xva.hypothecation.PositionGroupVertex[][] positionGroupVertexArray()
 	{
 		double[][] collateralBalanceArray = positionGroupCollateralBalanceArray();
 
@@ -413,8 +413,8 @@ public class CollateralGroup
 
 		int vertexCount = _marketVertexArray.length;
 		int positionGroupCount = _positionGroupArrayVertex.length;
-		org.drip.xva.hypothecation.CollateralGroupVertex[][] collateralGroupVertexArray = new
-			org.drip.xva.hypothecation.CollateralGroupVertex[positionGroupCount][vertexCount];
+		org.drip.xva.hypothecation.PositionGroupVertex[][] positionGroupVertexArray = new
+			org.drip.xva.hypothecation.PositionGroupVertex[positionGroupCount][vertexCount];
 
 		for (int positionGroupIndex = 0; positionGroupIndex < positionGroupCount; ++positionGroupIndex)
 		{
@@ -422,7 +422,7 @@ public class CollateralGroup
 			{
 				try
 				{
-					collateralGroupVertexArray[positionGroupIndex][vertexIndex] = collateralGroupVertex (
+					positionGroupVertexArray[positionGroupIndex][vertexIndex] = positionGroupVertex (
 						_marketVertexArray[vertexIndex].anchorDate(),
 						_positionGroupArrayVertex[positionGroupIndex][vertexIndex],
 						0.,
@@ -440,6 +440,6 @@ public class CollateralGroup
 			}
 		}
 
-		return collateralGroupVertexArray;
+		return positionGroupVertexArray;
 	}
 }

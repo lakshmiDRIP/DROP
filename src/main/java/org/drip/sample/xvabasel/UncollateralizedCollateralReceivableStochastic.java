@@ -13,7 +13,7 @@ import org.drip.quant.linearalgebra.Matrix;
 import org.drip.service.env.EnvManager;
 import org.drip.xva.basel.*;
 import org.drip.xva.cpty.*;
-import org.drip.xva.netting.CollateralGroupPath;
+import org.drip.xva.netting.PositionGroupPath;
 import org.drip.xva.strategy.*;
 import org.drip.xva.universe.*;
 import org.drip.xva.vertex.AlbaneseAndersen;
@@ -534,8 +534,8 @@ public class UncollateralizedCollateralReceivableStochastic {
 
 			MarketPath np = new MarketPath (aNV);
 
-			CollateralGroupPath[] aCGPGround = new CollateralGroupPath[] {
-				new CollateralGroupPath (aCGV1)
+			PositionGroupPath[] aCGPGround = new PositionGroupPath[] {
+				new PositionGroupPath (aCGV1)
 			};
 
 			aCPGPGround[i] = new MonoPathExposureAdjustment (
@@ -553,9 +553,9 @@ public class UncollateralizedCollateralReceivableStochastic {
 				}
 			);
 
-			CollateralGroupPath[] aCGPExtended = new CollateralGroupPath[] {
-				new CollateralGroupPath (aCGV1),
-				new CollateralGroupPath (aCGV2)
+			PositionGroupPath[] aCGPExtended = new PositionGroupPath[] {
+				new PositionGroupPath (aCGV1),
+				new PositionGroupPath (aCGV2)
 			};
 
 			aCPGPExtended[i] = new MonoPathExposureAdjustment (

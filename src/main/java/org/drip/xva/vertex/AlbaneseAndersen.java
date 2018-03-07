@@ -67,7 +67,7 @@ package org.drip.xva.vertex;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AlbaneseAndersen extends org.drip.xva.hypothecation.CollateralGroupVertex
+public class AlbaneseAndersen extends org.drip.xva.hypothecation.PositionGroupVertex
 {
 
 	/**
@@ -112,8 +112,8 @@ public class AlbaneseAndersen extends org.drip.xva.hypothecation.CollateralGroup
 
 	@Override public double funding()
 	{
-		double creditExposure = collateralized();
+		double fundingExposure = collateralized();
 
-		return 0. < creditExposure ? creditExposure : 0.;
+		return 0. < fundingExposure ? fundingExposure : 0.;
 	}
 }
