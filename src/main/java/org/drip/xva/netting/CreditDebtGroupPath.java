@@ -367,7 +367,7 @@ public abstract class CreditDebtGroupPath extends org.drip.xva.netting.Collatera
 
 		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
 		{
-			periodBilateralDebtAdjustment[vertexCount] =
+			periodBilateralDebtAdjustment[vertexIndex] =
 				-0.5 * (debtExposure[vertexIndex - 1] + debtExposure[vertexIndex]) *
 				0.5 * (marketVertexArray[vertexIndex - 1].bank().seniorRecoveryRate() +
 					marketVertexArray[vertexIndex].bank().seniorRecoveryRate()) *

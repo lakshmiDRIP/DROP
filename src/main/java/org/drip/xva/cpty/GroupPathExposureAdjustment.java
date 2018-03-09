@@ -617,22 +617,6 @@ public class GroupPathExposureAdjustment implements org.drip.xva.cpty.PathExposu
 		return fundingExposure;
 	}
 
-	@Override public double unilateralCollateralAdjustment()
-		throws java.lang.Exception
-	{
-		double unilateralCollateralAdjustment = 0.;
-		int counterPartyGroupCount = _monoPathExposureAdjustmentArray.length;
-
-		for (int counterPartyGroupIndex = 0; counterPartyGroupIndex < counterPartyGroupCount;
-			++counterPartyGroupIndex)
-		{
-			unilateralCollateralAdjustment +=
-				_monoPathExposureAdjustmentArray[counterPartyGroupIndex].unilateralCollateralAdjustment();
-		}
-
-		return unilateralCollateralAdjustment;
-	}
-
 	@Override public double bilateralCollateralAdjustment()
 		throws java.lang.Exception
 	{

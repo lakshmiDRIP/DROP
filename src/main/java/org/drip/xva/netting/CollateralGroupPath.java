@@ -815,42 +815,6 @@ public class CollateralGroupPath
 	}
 
 	/**
-	 * Compute Period-wise Path Unilateral Collateral Value Adjustment
-	 * 
-	 * @return The Period-wise Path Unilateral Collateral Value Adjustment
-	 */
-
-	public double[] periodUnilateralCollateralValueAdjustment()
-	{
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();
-
-		double[] collateralBalance = collateralBalance();
-
-		int vertexCount = collateralBalance.length;
-		double[] periodUnilateralCollateralValueAdjustment = new double[vertexCount - 1];
-
-		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			double periodIntegrandStart = collateralBalance[vertexIndex - 1] *
-				marketVertexArray[vertexIndex - 1].counterParty().survivalProbability() *
-				marketVertexArray[vertexIndex - 1].csaSpread() *
-				marketVertexArray[vertexIndex - 1].overnightReplicator();
-
-			double periodIntegrandEnd = collateralBalance[vertexIndex] *
-				marketVertexArray[vertexIndex].counterParty().survivalProbability() *
-				marketVertexArray[vertexIndex].csaSpread() *
-				marketVertexArray[vertexIndex].overnightReplicator();
-
-			periodUnilateralCollateralValueAdjustment[vertexIndex - 1] =
-				-0.5 * (periodIntegrandStart + periodIntegrandEnd) *
-				(marketVertexArray[vertexIndex].anchorDate().julian() -
-					marketVertexArray[vertexIndex - 1].anchorDate().julian()) / 365.25;
-		}
-
-		return periodUnilateralCollateralValueAdjustment;
-	}
-
-	/**
 	 * Compute Period-wise Path Bilateral Collateral Value Adjustment
 	 * 
 	 * @return The Period-wise Path Bilateral Collateral Value Adjustment
@@ -970,7 +934,7 @@ public class CollateralGroupPath
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double unilateralCollateralAdjustment()
+	/* public double unilateralCollateralAdjustment()
 		throws java.lang.Exception
 	{
 		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();
@@ -998,7 +962,7 @@ public class CollateralGroupPath
 		}
 
 		return unilateralCollateralValueAdjustment;
-	}
+	} */
 
 	/**
 	 * Compute Path Collateral Value Adjustment

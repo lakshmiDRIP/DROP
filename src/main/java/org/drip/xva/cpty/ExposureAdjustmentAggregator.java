@@ -781,34 +781,6 @@ public class ExposureAdjustmentAggregator
 	}
 
 	/**
-	 * Retrieve the Expected Unilateral Collateral VA
-	 * 
-	 * @return The Expected Unilateral Collateral VA
-	 */
-
-	public org.drip.xva.basel.ValueAdjustment ucolva()
-	{
-		double ucolva = 0.;
-		int pathCount = _pathExposureAdjustmentArray.length;
-
-		try
-		{
-			for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
-			{
-				ucolva += _pathExposureAdjustmentArray[pathIndex].unilateralCollateralAdjustment();
-			}
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-
-			return null;
-		}
-
-		return org.drip.xva.basel.ValueAdjustment.COLVA (ucolva / pathCount);
-	}
-
-	/**
 	 * Retrieve the Expected Bilateral Collateral VA
 	 * 
 	 * @return The Expected Bilateral Collateral VA
@@ -851,7 +823,7 @@ public class ExposureAdjustmentAggregator
 		{
 			for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
 			{
-				colva += _pathExposureAdjustmentArray[pathIndex].unilateralCollateralAdjustment();
+				colva += _pathExposureAdjustmentArray[pathIndex].bilateralCollateralAdjustment();
 			}
 		}
 		catch (java.lang.Exception e)
@@ -1312,7 +1284,7 @@ public class ExposureAdjustmentAggregator
 				pathFTDCVA[pathIndex] = _pathExposureAdjustmentArray[pathIndex].bilateralCreditAdjustment();
 
 				pathCOLVA[pathIndex] =
-					_pathExposureAdjustmentArray[pathIndex].unilateralCollateralAdjustment();
+					_pathExposureAdjustmentArray[pathIndex].bilateralCollateralAdjustment();
 
 				pathFTDCOLVA[pathIndex] =
 					_pathExposureAdjustmentArray[pathIndex].bilateralCollateralAdjustment();
