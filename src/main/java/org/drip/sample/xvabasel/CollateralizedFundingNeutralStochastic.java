@@ -12,8 +12,6 @@ import org.drip.measure.statistics.UnivariateDiscreteThin;
 import org.drip.quant.common.FormatUtil;
 import org.drip.quant.linearalgebra.Matrix;
 import org.drip.service.env.EnvManager;
-import org.drip.state.identifier.CSALabel;
-import org.drip.state.identifier.OvernightLabel;
 import org.drip.xva.basel.*;
 import org.drip.xva.cpty.*;
 import org.drip.xva.hypothecation.*;
@@ -268,7 +266,6 @@ public class CollateralizedFundingNeutralStochastic {
 		final double dblSwapNotional2)
 		throws Exception
 	{
-		String currency = "USD";
 		int iNumStep = 10;
 		int iNumPath = 100000;
 		int iNumVertex = 10;
@@ -312,10 +309,8 @@ public class CollateralizedFundingNeutralStochastic {
 			{0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  1.00}   // COUNTER PARTY FUNDING SPREAD
 		};
 
-		CollateralGroupSpecification cgs = CollateralGroupSpecification.FixedThreshold (
+		PositionGroupSpecification positionGroupSpecification = PositionGroupSpecification.FixedThreshold (
 			"FIXEDTHRESHOLD",
-			OvernightLabel.Create (currency),
-			CSALabel.ISDA (currency),
 			dblCounterPartyThreshold,
 			dblBankThreshold,
 			PositionReplicationScheme.ALBANESE_ANDERSEN_VERTEX,
@@ -516,8 +511,8 @@ public class CollateralizedFundingNeutralStochastic {
 				double dblValueEnd2 = aadblPortfolio2Value[i][j];
 
 				if (0 != j) {
-					CollateralAmountEstimator hae1 = new CollateralAmountEstimator (
-						cgs,
+					MarginAmountEstimator hae1 = new MarginAmountEstimator (
+						positionGroupSpecification,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
 							dtEnd.julian(),
@@ -529,8 +524,8 @@ public class CollateralizedFundingNeutralStochastic {
 
 					dblCollateralBalance1 = hae1.postingRequirement (dtEnd);
 
-					CollateralAmountEstimator hae2 = new CollateralAmountEstimator (
-						cgs,
+					MarginAmountEstimator hae2 = new MarginAmountEstimator (
+						positionGroupSpecification,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
 							dtEnd.julian(),
@@ -936,5 +931,7 @@ public class CollateralizedFundingNeutralStochastic {
 			eaaGround,
 			eaaExtended
 		);
+
+		EnvManager.TerminateEnv();
 	}
 }

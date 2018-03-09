@@ -10,8 +10,6 @@ import org.drip.measure.realization.*;
 import org.drip.measure.statistics.UnivariateDiscreteThin;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.state.identifier.CSALabel;
-import org.drip.state.identifier.OvernightLabel;
 import org.drip.xva.basel.*;
 import org.drip.xva.cpty.*;
 import org.drip.xva.hypothecation.*;
@@ -178,7 +176,6 @@ public class ZeroThresholdCollateralNeutral {
 		final double dblSwapNotional2)
 		throws Exception
 	{
-		String currency = "USD";
 		int iNumStep = 10;
 		int iNumPath = 100000;
 		int iNumVertex = 10;
@@ -206,10 +203,8 @@ public class ZeroThresholdCollateralNeutral {
 		MonoPathExposureAdjustment[] aCPGPExtended = new MonoPathExposureAdjustment[iNumPath];
 		double dblCounterPartyFundingSpread = dblCounterPartyHazardRate / (1. - dblCounterPartyRecoveryRate);
 
-		CollateralGroupSpecification cgs = CollateralGroupSpecification.FixedThreshold (
+		PositionGroupSpecification positionGroupSpecification = PositionGroupSpecification.FixedThreshold (
 			"FIXEDTHRESHOLD",
-			OvernightLabel.Create (currency),
-			CSALabel.ISDA (currency),
 			dblCounterPartyThreshold,
 			dblBankThreshold,
 			PositionReplicationScheme.ALBANESE_ANDERSEN_VERTEX,
@@ -292,8 +287,8 @@ public class ZeroThresholdCollateralNeutral {
 				double dblValueEnd2 = aadblPortfolio2Value[i][j];
 
 				if (0 != j) {
-					CollateralAmountEstimator cae1 = new CollateralAmountEstimator (
-						cgs,
+					MarginAmountEstimator cae1 = new MarginAmountEstimator (
+						positionGroupSpecification,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
 							dtEnd.julian(),
@@ -305,8 +300,8 @@ public class ZeroThresholdCollateralNeutral {
 
 					dblCollateralBalance1 = cae1.postingRequirement (dtEnd);
 
-					CollateralAmountEstimator cae2 = new CollateralAmountEstimator (
-						cgs,
+					MarginAmountEstimator cae2 = new MarginAmountEstimator (
+						positionGroupSpecification,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
 							dtEnd.julian(),
@@ -681,5 +676,7 @@ public class ZeroThresholdCollateralNeutral {
 			cpgaGround,
 			cpgaExtended
 		);
+
+		EnvManager.TerminateEnv();
 	}
 }

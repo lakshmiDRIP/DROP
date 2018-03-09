@@ -345,18 +345,18 @@ public class BookGroupLayout
 		String displayPrefix = "\t|| ";
 
 		BookGraph bookGraph = BookTopology (
-			new PositionGroupSpecification (
-				StringUtil.GUID(),
-				"POSITIONGROUPSPEC"
-			),
-			CollateralGroupSpecification.ZeroThreshold (
-				"COLLATERALGROUPSPEC",
-				OvernightLabel.Create (currency),
-				CSALabel.ISDA (currency),
+			PositionGroupSpecification.ZeroThreshold (
+				"POSITIONGROUPSPEC",
 				PositionReplicationScheme.ALBANESE_ANDERSEN_VERTEX,
 				BrokenDateScheme.SQUARE_ROOT_OF_TIME,
 				0.,
 				CloseOutScheme.ISDA_92
+			),
+			new CollateralGroupSpecification (
+				StringUtil.GUID(),
+				"COLLATERALGROUPSPEC",
+				OvernightLabel.Create (currency),
+				CSALabel.ISDA (currency)
 			),
 			new CreditDebtGroupSpecification (
 				StringUtil.GUID(),

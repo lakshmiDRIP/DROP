@@ -48,8 +48,8 @@ package org.drip.xva.hypothecation;
  */
 
 /**
- * CollateralAmountEstimatorOutput contains the Estimation Output of the Hypothecation Collateral that is to
- *  be Posted during a Single Run of a Collateral Hypothecation Group Valuation. The References are:
+ * MarginAmountEstimatorOutput contains the Estimation Output of the Hypothecation Collateral that is to be
+ *  Posted during a Single Run of a Collateral Hypothecation Group Valuation. The References are:
  *  
  *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
  *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
@@ -68,7 +68,7 @@ package org.drip.xva.hypothecation;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CollateralAmountEstimatorOutput
+public class MarginAmountEstimatorOutput
 {
 	private double _postingRequirement = java.lang.Double.NaN;
 	private double _bankWindowMarginValue = java.lang.Double.NaN;
@@ -81,7 +81,7 @@ public class CollateralAmountEstimatorOutput
 	private org.drip.analytics.date.JulianDate _counterPartyMarginDate = null;
 
 	/**
-	 * CollateralAmountEstimatorOutput Constructor
+	 * MarginAmountEstimatorOutput Constructor
 	 * 
 	 * @param bankMarginDate The Bank Margin Date
 	 * @param counterPartyMarginDate The Counter Party Margin Date
@@ -96,7 +96,7 @@ public class CollateralAmountEstimatorOutput
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public CollateralAmountEstimatorOutput (
+	public MarginAmountEstimatorOutput (
 		final org.drip.analytics.date.JulianDate bankMarginDate,
 		final org.drip.analytics.date.JulianDate counterPartyMarginDate,
 		final double bankWindowMarginValue,
@@ -121,7 +121,7 @@ public class CollateralAmountEstimatorOutput
 				counterPartyPostingRequirement) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_postingRequirement = postingRequirement))
 		{
-			throw new java.lang.Exception ("CollateralAmountEstimatorOutput Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("MarginAmountEstimatorOutput Constructor => Invalid Inputs");
 		}
 	}
 

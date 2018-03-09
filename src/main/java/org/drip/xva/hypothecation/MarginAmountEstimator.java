@@ -48,7 +48,7 @@ package org.drip.xva.hypothecation;
  */
 
 /**
- * CollateralAmountEstimator estimates the Amount of Collateral Hypothecation that is to be Posted during a
+ * MarginAmountEstimator estimates the Amount of Collateral Hypothecation that is to be Posted during a
  *  Single Run of a Collateral Hypothecation Group Valuation. The References are:
  *  
  *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
@@ -68,29 +68,29 @@ package org.drip.xva.hypothecation;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CollateralAmountEstimator
+public class MarginAmountEstimator
 {
 	private double _currentBalance = java.lang.Double.NaN;
 	private org.drip.measure.bridge.BrokenDateInterpolator _brokenDateInterpolator = null;
-	private org.drip.xva.proto.CollateralGroupSpecification _collateralGroupSpecification = null;
+	private org.drip.xva.proto.PositionGroupSpecification _positionGroupSpecification = null;
 
 	/**
-	 * CollateralAmountEstimator Constructor
+	 * MarginAmountEstimator Constructor
 	 * 
-	 * @param collateralGroupSpecification The Collateral Group Specification
+	 * @param positionGroupSpecification The Position Group Specification
 	 * @param brokenDateInterpolator The Stochastic Value Broken Date Bridge Estimator
 	 * @param currentBalance The Current Collateral Balance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public CollateralAmountEstimator (
-		final org.drip.xva.proto.CollateralGroupSpecification collateralGroupSpecification,
+	public MarginAmountEstimator (
+		final org.drip.xva.proto.PositionGroupSpecification positionGroupSpecification,
 		final org.drip.measure.bridge.BrokenDateInterpolator brokenDateInterpolator,
 		final double currentBalance)
 		throws java.lang.Exception
 	{
-		if (null == (_collateralGroupSpecification = collateralGroupSpecification) ||
+		if (null == (_positionGroupSpecification = positionGroupSpecification) ||
 			null == (_brokenDateInterpolator = brokenDateInterpolator))
 		{
 			throw new java.lang.Exception ("CollateralAmountEstimator Constructor => Invalid Inputs");
@@ -100,14 +100,14 @@ public class CollateralAmountEstimator
 	}
 
 	/**
-	 * Retrieve the Collateral Group Specification
+	 * Retrieve the Position Group Specification
 	 * 
-	 * @return The Collateral Group Specification
+	 * @return The Position Group Specification
 	 */
 
-	public org.drip.xva.proto.CollateralGroupSpecification collateralGroupSpecification()
+	public org.drip.xva.proto.PositionGroupSpecification positionGroupSpecification()
 	{
-		return _collateralGroupSpecification;
+		return _positionGroupSpecification;
 	}
 
 	/**
@@ -147,25 +147,23 @@ public class CollateralAmountEstimator
 		throws java.lang.Exception
 	{
 		if (null == valuationDateJulian)
-			throw new java.lang.Exception
-				("CollateralAmountEstimator::bankWindowMarginValue => Invalid Inputs");
+			throw new java.lang.Exception ("MarginAmountEstimator::bankWindowMarginValue => Invalid Inputs");
 
 		org.drip.analytics.date.JulianDate dtMargin = valuationDateJulian.subtractDays
-			(_collateralGroupSpecification.bankDefaultWindow());
+			(_positionGroupSpecification.bankDefaultWindow());
 
 		if (null == dtMargin)
-			throw new java.lang.Exception
-				("CollateralAmountEstimator::bankWindowMarginValue => Invalid Inputs");
+			throw new java.lang.Exception ("MarginAmountEstimator::bankWindowMarginValue => Invalid Inputs");
 
 		return _brokenDateInterpolator.interpolate (dtMargin.julian());
 	}
 
 	/**
-	 * Calculate the Bank Collateral Threshold
+	 * Calculate the Bank Margin Threshold
 	 * 
 	 * @param valuationDateJulian The Valuation Date
 	 * 
-	 * @return The Bank Collateral Threshold
+	 * @return The Bank Margin Threshold
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -174,17 +172,19 @@ public class CollateralAmountEstimator
 		final org.drip.analytics.date.JulianDate valuationDateJulian)
 		throws java.lang.Exception
 	{
-		org.drip.function.definition.R1ToR1 bankThresholdFunction = _collateralGroupSpecification.bankThreshold();
+		org.drip.function.definition.R1ToR1 bankThresholdFunction =
+			_positionGroupSpecification.bankThreshold();
 
-		return null == bankThresholdFunction ? 0. : bankThresholdFunction.evaluate (valuationDateJulian.julian());
+		return null == bankThresholdFunction ? 0. : bankThresholdFunction.evaluate
+			(valuationDateJulian.julian());
 	}
 
 	/**
-	 * Calculate the Collateral Amount Required to be Posted by the Bank
+	 * Calculate the Margin Amount Required to be Posted by the Bank
 	 * 
 	 * @param valuationDateJulian The Valuation Date
 	 * 
-	 * @return The Collateral Amount Required to be Posted by the Bank
+	 * @return The Margin Amount Required to be Posted by the Bank
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -193,7 +193,8 @@ public class CollateralAmountEstimator
 		final org.drip.analytics.date.JulianDate valuationDateJulian)
 		throws java.lang.Exception
 	{
-		double bankPostingRequirement = bankWindowMarginValue (valuationDateJulian) - bankThreshold (valuationDateJulian);
+		double bankPostingRequirement = bankWindowMarginValue (valuationDateJulian) - bankThreshold
+			(valuationDateJulian);
 
 		return 0. < bankPostingRequirement ? 0. : bankPostingRequirement;
 	}
@@ -214,24 +215,24 @@ public class CollateralAmountEstimator
 	{
 		if (null == valuationDateJulian)
 			throw new java.lang.Exception
-				("CollateralAmountEstimator::counterPartyWindowMarginValue => Invalid Inputs");
+				("MarginAmountEstimator::counterPartyWindowMarginValue => Invalid Inputs");
 
 		org.drip.analytics.date.JulianDate dtMargin = valuationDateJulian.subtractDays
-			(_collateralGroupSpecification.counterPartyDefaultWindow());
+			(_positionGroupSpecification.counterPartyDefaultWindow());
 
 		if (null == dtMargin)
 			throw new java.lang.Exception
-				("CollateralAmountEstimator::counterPartyWindowMarginValue => Invalid Inputs");
+				("MarginAmountEstimator::counterPartyWindowMarginValue => Invalid Inputs");
 
 		return _brokenDateInterpolator.interpolate (dtMargin.julian());
 	}
 
 	/**
-	 * Calculate the Counter Party Collateral Threshold
+	 * Calculate the Counter Party Margin Threshold
 	 * 
 	 * @param valuationDateJulian The Valuation Date
 	 * 
-	 * @return The Counter Party Collateral Threshold
+	 * @return The Counter Party Margin Threshold
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -241,18 +242,18 @@ public class CollateralAmountEstimator
 		throws java.lang.Exception
 	{
 		org.drip.function.definition.R1ToR1[] counterPartyThresholdFunctionArray =
-			_collateralGroupSpecification.counterPartyThreshold();
+			_positionGroupSpecification.counterPartyThreshold();
 
 		return null == counterPartyThresholdFunctionArray || null == counterPartyThresholdFunctionArray[0] ?
 			0. : counterPartyThresholdFunctionArray[0].evaluate (valuationDateJulian.julian());
 	}
 
 	/**
-	 * Calculate the Collateral Amount Required to be Posted by the Counter Party
+	 * Calculate the Margin Amount Required to be Posted by the Counter Party
 	 * 
 	 * @param valuationDateJulian The Valuation Date
 	 * 
-	 * @return The Collateral Amount Required to be Posted by the Counter Party
+	 * @return The Margin Amount Required to be Posted by the Counter Party
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -268,11 +269,11 @@ public class CollateralAmountEstimator
 	}
 
 	/**
-	 * Calculate the Gross Collateral Amount Required to be Posted
+	 * Calculate the Gross Margin Amount Required to be Posted
 	 * 
 	 * @param valuationDateJulian The Valuation Date
 	 * 
-	 * @return The Gross Collateral Amount Required to be Posted
+	 * @return The Gross Margin Amount Required to be Posted
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -282,18 +283,19 @@ public class CollateralAmountEstimator
 		throws java.lang.Exception
 	{
 		return org.drip.quant.common.NumberUtil.IsValid (_currentBalance) ? _currentBalance :
-			bankPostingRequirement (valuationDateJulian) + counterPartyPostingRequirement (valuationDateJulian);
+			bankPostingRequirement (valuationDateJulian) + counterPartyPostingRequirement
+				(valuationDateJulian);
 	}
 
 	/**
-	 * Generate the CollateralAmountEstimatorOutput Instance
+	 * Generate the MarginAmountEstimatorOutput Instance
 	 * 
 	 * @param valuationDateJulian The Valuation Date
 	 * 
-	 * @return The CollateralAmountEstimatorOutput Instance
+	 * @return The MarginAmountEstimatorOutput Instance
 	 */
 
-	public org.drip.xva.hypothecation.CollateralAmountEstimatorOutput output (
+	public org.drip.xva.hypothecation.MarginAmountEstimatorOutput output (
 		final org.drip.analytics.date.JulianDate valuationDateJulian)
 	{
 		if (null == valuationDateJulian)
@@ -302,10 +304,10 @@ public class CollateralAmountEstimator
 		}
 
 		org.drip.analytics.date.JulianDate bankMarginDate = valuationDateJulian.subtractDays
-			(_collateralGroupSpecification.bankDefaultWindow());
+			(_positionGroupSpecification.bankDefaultWindow());
 
 		org.drip.analytics.date.JulianDate counterPartyMarginDate = valuationDateJulian.subtractDays
-			(_collateralGroupSpecification.counterPartyDefaultWindow());
+			(_positionGroupSpecification.counterPartyDefaultWindow());
 
 		if (null == bankMarginDate ||
 			null == counterPartyMarginDate)
@@ -314,10 +316,10 @@ public class CollateralAmountEstimator
 		}
 
 		org.drip.function.definition.R1ToR1[] counterPartyThresholdFunctionArray =
-			_collateralGroupSpecification.counterPartyThreshold();
+			_positionGroupSpecification.counterPartyThreshold();
 
 		org.drip.function.definition.R1ToR1 bankThresholdFunction =
-			_collateralGroupSpecification.bankThreshold();
+			_positionGroupSpecification.bankThreshold();
 
 		double valuationDate = valuationDateJulian.julian();
 
@@ -342,7 +344,7 @@ public class CollateralAmountEstimator
 			counterPartyPostingRequirement = 0. > counterPartyPostingRequirement ? 0. :
 				counterPartyPostingRequirement;
 
-			return new org.drip.xva.hypothecation.CollateralAmountEstimatorOutput (
+			return new org.drip.xva.hypothecation.MarginAmountEstimatorOutput (
 				bankMarginDate,
 				counterPartyMarginDate,
 				bankWindowMarginValue,

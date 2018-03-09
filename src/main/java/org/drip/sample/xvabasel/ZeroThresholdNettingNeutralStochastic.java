@@ -12,8 +12,6 @@ import org.drip.measure.statistics.UnivariateDiscreteThin;
 import org.drip.quant.common.FormatUtil;
 import org.drip.quant.linearalgebra.Matrix;
 import org.drip.service.env.EnvManager;
-import org.drip.state.identifier.CSALabel;
-import org.drip.state.identifier.OvernightLabel;
 import org.drip.xva.basel.*;
 import org.drip.xva.cpty.*;
 import org.drip.xva.hypothecation.*;
@@ -269,7 +267,6 @@ public class ZeroThresholdNettingNeutralStochastic {
 		final double dblSwapNotional2)
 		throws Exception
 	{
-		String currency = "USD";
 		int iNumStep = 10;
 		int iNumPath = 100000;
 		int iNumVertex = 10;
@@ -313,10 +310,8 @@ public class ZeroThresholdNettingNeutralStochastic {
 			{0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  1.00}   // COUNTER PARTY FUNDING SPREAD
 		};
 
-		CollateralGroupSpecification cgs = CollateralGroupSpecification.FixedThreshold (
+		PositionGroupSpecification positionGroupSpecification = PositionGroupSpecification.FixedThreshold (
 			"FIXEDTHRESHOLD",
-			OvernightLabel.Create (currency),
-			CSALabel.ISDA (currency),
 			dblCounterPartyThreshold,
 			dblBankThreshold,
 			PositionReplicationScheme.ALBANESE_ANDERSEN_VERTEX,
@@ -517,8 +512,8 @@ public class ZeroThresholdNettingNeutralStochastic {
 				double dblValueEnd2 = aadblPortfolio2Value[i][j];
 
 				if (0 != j) {
-					CollateralAmountEstimator cae1 = new CollateralAmountEstimator (
-						cgs,
+					MarginAmountEstimator cae1 = new MarginAmountEstimator (
+						positionGroupSpecification,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
 							dtEnd.julian(),
@@ -530,8 +525,8 @@ public class ZeroThresholdNettingNeutralStochastic {
 
 					dblCollateralBalance1 = cae1.postingRequirement (dtEnd);
 
-					CollateralAmountEstimator cae2 = new CollateralAmountEstimator (
-						cgs,
+					MarginAmountEstimator cae2 = new MarginAmountEstimator (
+						positionGroupSpecification,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
 							dtEnd.julian(),
@@ -938,5 +933,7 @@ public class ZeroThresholdNettingNeutralStochastic {
 			cpgaGround,
 			cpgaExtended
 		);
+
+		EnvManager.TerminateEnv();
 	}
 }

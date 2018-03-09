@@ -8,6 +8,7 @@ import org.drip.measure.dynamics.*;
 import org.drip.measure.process.*;
 import org.drip.measure.statistics.UnivariateDiscreteThin;
 import org.drip.quant.common.FormatUtil;
+import org.drip.quant.common.StringUtil;
 import org.drip.quant.linearalgebra.Matrix;
 import org.drip.service.env.EnvManager;
 import org.drip.state.identifier.*;
@@ -471,16 +472,20 @@ public class OneWayBaselProxy
 					new PositionSchemaSpecification (
 						"POSGRPSPEC1",
 						"POSGRPSPEC1",
-						CollateralGroupSpecification.FixedThreshold (
+						PositionGroupSpecification.FixedThreshold (
 							"FIXEDTHRESHOLD",
-							OvernightLabel.Create (currency),
-							CSALabel.ISDA (currency),
 							dblCounterPartyThreshold,
 							dblBankThreshold,
 							PositionReplicationScheme.BURGARD_KJAER_ONE_WAY_CSA_VERTEX,
 							BrokenDateScheme.SQUARE_ROOT_OF_TIME,
 							0.,
 							CloseOutScheme.BILATERAL
+						),
+						new CollateralGroupSpecification (
+							StringUtil.GUID(),
+							"FIXEDTHRESHOLD",
+							OvernightLabel.Create (currency),
+							CSALabel.ISDA (currency)
 						),
 						new CreditDebtGroupSpecification (
 							"NETGRPSPEC1",

@@ -10,8 +10,6 @@ import org.drip.measure.realization.*;
 import org.drip.measure.statistics.UnivariateDiscreteThin;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.state.identifier.CSALabel;
-import org.drip.state.identifier.OvernightLabel;
 import org.drip.xva.basel.*;
 import org.drip.xva.cpty.*;
 import org.drip.xva.hypothecation.*;
@@ -116,7 +114,6 @@ public class ZeroThresholdNettingReceivable {
 		for (int i = 0; i < iNumStep; ++i)
 			adblTimeWidth[i] = dblTimeWidth;
 
-
 		JumpDiffusionEdge[] aJDE = deATMSwapRateOffset.incrementSequence (
 			new JumpDiffusionVertex (
 				dblTime,
@@ -179,7 +176,6 @@ public class ZeroThresholdNettingReceivable {
 		final double dblSwapNotional2)
 		throws Exception
 	{
-		String currency = "USD";
 		int iNumStep = 10;
 		int iNumPath = 100000;
 		int iNumVertex = 10;
@@ -207,10 +203,8 @@ public class ZeroThresholdNettingReceivable {
 		MonoPathExposureAdjustment[] aCPGPExtended = new MonoPathExposureAdjustment[iNumPath];
 		double dblCounterPartyFundingSpread = dblCounterPartyHazardRate / (1. - dblCounterPartyRecoveryRate);
 
-		CollateralGroupSpecification cgs = CollateralGroupSpecification.FixedThreshold (
+		PositionGroupSpecification positionGroupSpecification = PositionGroupSpecification.FixedThreshold (
 			"FIXEDTHRESHOLD",
-			OvernightLabel.Create (currency),
-			CSALabel.ISDA (currency),
 			dblCounterPartyThreshold,
 			dblBankThreshold,
 			PositionReplicationScheme.ALBANESE_ANDERSEN_VERTEX,
@@ -293,8 +287,8 @@ public class ZeroThresholdNettingReceivable {
 				double dblValueEnd2 = aadblPortfolio2Value[i][j];
 
 				if (0 != j) {
-					CollateralAmountEstimator cae1 = new CollateralAmountEstimator (
-						cgs,
+					MarginAmountEstimator cae1 = new MarginAmountEstimator (
+						positionGroupSpecification,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
 							dtEnd.julian(),
@@ -306,8 +300,8 @@ public class ZeroThresholdNettingReceivable {
 
 					dblCollateralBalance1 = cae1.postingRequirement (dtEnd);
 
-					CollateralAmountEstimator cae2 = new CollateralAmountEstimator (
-						cgs,
+					MarginAmountEstimator cae2 = new MarginAmountEstimator (
+						positionGroupSpecification,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
 							dtEnd.julian(),
@@ -689,5 +683,7 @@ public class ZeroThresholdNettingReceivable {
 			cpgaGround,
 			cpgaExtended
 		);
+
+		EnvManager.TerminateEnv();
 	}
 }

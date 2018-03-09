@@ -70,13 +70,13 @@ public class PositionGroupTrajectory
 {
 	private double[][] _positionGroupArrayVertex = null;
 	private org.drip.xva.universe.MarketVertex[] _marketVertexArray = null;
-	private org.drip.xva.proto.CollateralGroupSpecification _collateralGroupSpecification = null;
+	private org.drip.xva.proto.PositionGroupSpecification _positionGroupSpecification = null;
 
 	private org.drip.measure.bridge.BrokenDateInterpolator brokenDateInterpolator (
 		final int positionGroupIndex,
 		final int vertexIndex)
 	{
-		int brokenDateScheme = _collateralGroupSpecification.brokenDateScheme();
+		int brokenDateScheme = _positionGroupSpecification.brokenDateScheme();
 
 		try
 		{
@@ -131,8 +131,8 @@ public class PositionGroupTrajectory
 			vertexIndex
 		);
 
-		return null == brokenDateInterpolator ? 0. : new org.drip.xva.hypothecation.CollateralAmountEstimator (
-			_collateralGroupSpecification,
+		return null == brokenDateInterpolator ? 0. : new org.drip.xva.hypothecation.MarginAmountEstimator (
+			_positionGroupSpecification,
 			brokenDateInterpolator,
 			java.lang.Double.NaN
 		).postingRequirement (_marketVertexArray[vertexIndex].anchorDate());
@@ -175,9 +175,9 @@ public class PositionGroupTrajectory
 		final org.drip.xva.universe.MarketVertex marketVertexLeft,
 		final org.drip.xva.universe.MarketVertex marketVertexRight)
 	{
-		int closeOutScheme = _collateralGroupSpecification.closeOutScheme();
+		int closeOutScheme = _positionGroupSpecification.closeOutScheme();
 
-		int positionReplicationScheme = _collateralGroupSpecification.positionReplicationScheme();
+		int positionReplicationScheme = _positionGroupSpecification.positionReplicationScheme();
 
 		org.drip.xva.definition.CloseOut closeOut =
 			org.drip.xva.settings.CloseOutScheme.ISDA_92 == closeOutScheme ? null :
@@ -205,7 +205,7 @@ public class PositionGroupTrajectory
 						positionGroupValue,
 						realizedCashFlow,
 						collateralBalance,
-						_collateralGroupSpecification.hedgeError(),
+						_positionGroupSpecification.hedgeError(),
 						new org.drip.xva.universe.MarketEdge (
 							marketVertexLeft,
 							marketVertexRight
@@ -315,7 +315,7 @@ public class PositionGroupTrajectory
 	/**
 	 * PositionGroupTrajectory Constructor
 	 * 
-	 * @param collateralGroupSpecification The Collateral Group Specification
+	 * @param positionGroupSpecification The Position Group Specification
 	 * @param marketVertexArray Array of Market Vertexes
 	 * @param positionGroupArrayVertex Vertexes of the Position Group Array
 	 * 
@@ -323,12 +323,12 @@ public class PositionGroupTrajectory
 	 */
 
 	public PositionGroupTrajectory (
-		final org.drip.xva.proto.CollateralGroupSpecification collateralGroupSpecification,
+		final org.drip.xva.proto.PositionGroupSpecification positionGroupSpecification,
 		final org.drip.xva.universe.MarketVertex[] marketVertexArray,
 		final double[][] positionGroupArrayVertex)
 		throws java.lang.Exception
 	{
-		if (null == (_collateralGroupSpecification = collateralGroupSpecification) ||
+		if (null == (_positionGroupSpecification = positionGroupSpecification) ||
 			null == (_marketVertexArray = marketVertexArray) ||
 			null == (_positionGroupArrayVertex = positionGroupArrayVertex))
 		{
@@ -364,14 +364,14 @@ public class PositionGroupTrajectory
 	}
 
 	/**
-	 * Retrieve the Collateral Group Specification
+	 * Retrieve the Position Group Specification
 	 * 
-	 * @return The Collateral Group Specification
+	 * @return The Position Group Specification
 	 */
 
-	public org.drip.xva.proto.CollateralGroupSpecification collateralGroupSpecification()
+	public org.drip.xva.proto.PositionGroupSpecification positionGroupSpecification()
 	{
-		return _collateralGroupSpecification;
+		return _positionGroupSpecification;
 	}
 
 	/**

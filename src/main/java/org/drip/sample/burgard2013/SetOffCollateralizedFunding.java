@@ -10,8 +10,6 @@ import org.drip.measure.realization.*;
 import org.drip.measure.statistics.UnivariateDiscreteThin;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.state.identifier.CSALabel;
-import org.drip.state.identifier.OvernightLabel;
 import org.drip.xva.basel.*;
 import org.drip.xva.cpty.*;
 import org.drip.xva.definition.*;
@@ -179,7 +177,6 @@ public class SetOffCollateralizedFunding {
 		final double dblSwapNotional2)
 		throws Exception
 	{
-		String currency = "USD";
 		int iNumStep = 10;
 		int iNumPath = 100000;
 		int iNumVertex = 10;
@@ -209,10 +206,8 @@ public class SetOffCollateralizedFunding {
 		double dblBankSubordinateFundingSpread = dblBankHazardRate / (1. - dblBankSubordinateRecoveryRate);
 		double dblCounterPartyFundingSpread = dblCounterPartyHazardRate / (1. - dblCounterPartyRecoveryRate);
 
-		CollateralGroupSpecification cgs = CollateralGroupSpecification.FixedThreshold (
+		PositionGroupSpecification positionGroupSpecification = PositionGroupSpecification.FixedThreshold (
 			"FIXEDTHRESHOLD",
-			OvernightLabel.Create (currency),
-			CSALabel.ISDA (currency),
 			dblCounterPartyThreshold,
 			dblBankThreshold,
 			PositionReplicationScheme.BURGARD_KJAER_SET_OFF_VERTEX,
@@ -300,8 +295,8 @@ public class SetOffCollateralizedFunding {
 				double dblValueEnd2 = aadblPortfolio2Value[i][j];
 
 				if (0 != j) {
-					CollateralAmountEstimator hae1 = new CollateralAmountEstimator (
-						cgs,
+					MarginAmountEstimator hae1 = new MarginAmountEstimator (
+						positionGroupSpecification,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
 							dtEnd.julian(),
@@ -313,8 +308,8 @@ public class SetOffCollateralizedFunding {
 
 					dblCollateralBalance1 = hae1.postingRequirement (dtEnd);
 
-					CollateralAmountEstimator hae2 = new CollateralAmountEstimator (
-						cgs,
+					MarginAmountEstimator hae2 = new MarginAmountEstimator (
+						positionGroupSpecification,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
 							dtEnd.julian(),
@@ -717,5 +712,7 @@ public class SetOffCollateralizedFunding {
 			eeaGround,
 			eeaExtended
 		);
+
+		EnvManager.TerminateEnv();
 	}
 }

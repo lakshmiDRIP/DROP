@@ -69,6 +69,7 @@ package org.drip.xva.proto;
 public class PositionSchemaSpecification extends org.drip.xva.proto.ObjectSpecification
 {
 	private org.drip.xva.proto.FundingGroupSpecification _fundingGroupSpecification = null;
+	private org.drip.xva.proto.PositionGroupSpecification _positionGroupSpecification = null;
 	private org.drip.xva.proto.CreditDebtGroupSpecification _creditDebtGroupSpecification = null;
 	private org.drip.xva.proto.CollateralGroupSpecification _collateralGroupSpecification = null;
 
@@ -77,9 +78,10 @@ public class PositionSchemaSpecification extends org.drip.xva.proto.ObjectSpecif
 	 * 
 	 * @param id The Position Group ID
 	 * @param name The Position Group Name
-	 * @param collateralGroupSpecification The Position's Collateral Group Specification
-	 * @param creditDebtGroupSpecification The Position's Credit Debt Group Specification
-	 * @param fundingGroupSpecification The Position's Funding Group Specification
+	 * @param positionGroupSpecification The Position Group Specification
+	 * @param collateralGroupSpecification The Collateral Group Specification
+	 * @param creditDebtGroupSpecification The Credit Debt Group Specification
+	 * @param fundingGroupSpecification The Funding Group Specification
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -87,6 +89,7 @@ public class PositionSchemaSpecification extends org.drip.xva.proto.ObjectSpecif
 	public PositionSchemaSpecification (
 		final java.lang.String id,
 		final java.lang.String name,
+		final org.drip.xva.proto.PositionGroupSpecification positionGroupSpecification,
 		final org.drip.xva.proto.CollateralGroupSpecification collateralGroupSpecification,
 		final org.drip.xva.proto.CreditDebtGroupSpecification creditDebtGroupSpecification,
 		final org.drip.xva.proto.FundingGroupSpecification fundingGroupSpecification)
@@ -97,7 +100,8 @@ public class PositionSchemaSpecification extends org.drip.xva.proto.ObjectSpecif
 			name
 		);
 
-		if (null == (_collateralGroupSpecification = collateralGroupSpecification) ||
+		if (null == (_positionGroupSpecification = positionGroupSpecification) ||
+			null == (_collateralGroupSpecification = collateralGroupSpecification) ||
 			null == (_creditDebtGroupSpecification = creditDebtGroupSpecification) ||
 			null == (_fundingGroupSpecification = fundingGroupSpecification))
 		{
@@ -106,9 +110,20 @@ public class PositionSchemaSpecification extends org.drip.xva.proto.ObjectSpecif
 	}
 
 	/**
-	 * Retrieve the Position's Collateral Group Specification
+	 * Retrieve the Margin Group Specification
 	 * 
-	 * @return The Position's Collateral Group Specification
+	 * @return The Margin Group Specification
+	 */
+
+	public org.drip.xva.proto.PositionGroupSpecification positionGroupSpecification()
+	{
+		return _positionGroupSpecification;
+	}
+
+	/**
+	 * Retrieve the Collateral Group Specification
+	 * 
+	 * @return The Collateral Group Specification
 	 */
 
 	public org.drip.xva.proto.CollateralGroupSpecification collateralGroupSpecification()
@@ -117,9 +132,9 @@ public class PositionSchemaSpecification extends org.drip.xva.proto.ObjectSpecif
 	}
 
 	/**
-	 * Retrieve the Position's Credit Debt Group Specification
+	 * Retrieve the Credit Debt Group Specification
 	 * 
-	 * @return The Position's Credit Debt Group Specification
+	 * @return The Credit Debt Group Specification
 	 */
 
 	public org.drip.xva.proto.CreditDebtGroupSpecification creditDebtGroupSpecification()
@@ -128,9 +143,9 @@ public class PositionSchemaSpecification extends org.drip.xva.proto.ObjectSpecif
 	}
 
 	/**
-	 * Retrieve the Position's Funding Group Specification
+	 * Retrieve the Funding Group Specification
 	 * 
-	 * @return The Position's Funding Group Specification
+	 * @return The Funding Group Specification
 	 */
 
 	public org.drip.xva.proto.FundingGroupSpecification fundingGroupSpecification()

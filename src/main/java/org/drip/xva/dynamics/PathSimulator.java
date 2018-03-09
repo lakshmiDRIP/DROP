@@ -116,7 +116,7 @@ public class PathSimulator
 		try
 		{
 			collateralGroup = new org.drip.xva.dynamics.PositionGroupTrajectory (
-				_positionGroupContainer.positionGroupArray()[0].positionGroupSpecification().collateralGroupSpecification(),
+				_positionGroupContainer.positionGroupArray()[0].positionGroupSpecification().positionGroupSpecification(),
 				marketVertexArray,
 				positionGroupValueArray (marketVertexArray)
 			);

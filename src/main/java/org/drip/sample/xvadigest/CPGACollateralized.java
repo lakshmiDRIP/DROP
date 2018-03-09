@@ -10,8 +10,6 @@ import org.drip.measure.realization.*;
 import org.drip.measure.statistics.UnivariateDiscreteThin;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.state.identifier.CSALabel;
-import org.drip.state.identifier.OvernightLabel;
 import org.drip.xva.cpty.*;
 import org.drip.xva.hypothecation.*;
 import org.drip.xva.netting.PositionGroupPath;
@@ -252,7 +250,6 @@ public class CPGACollateralized {
 	{
 		EnvManager.InitEnv ("");
 
-		String currency = "USD";
 		int iNumStep = 10;
 		int iNumSwap = 10;
 		double dblTime = 5.;
@@ -278,10 +275,8 @@ public class CPGACollateralized {
 		MonoPathExposureAdjustment[] aMPEA = new MonoPathExposureAdjustment[iNumPath];
 		double dblCounterPartyFundingSpread = dblCounterPartyHazardRate / (1. - dblCounterPartyRecoveryRate);
 
-		CollateralGroupSpecification cgs = CollateralGroupSpecification.FixedThreshold (
+		PositionGroupSpecification positionGroupSpecification = PositionGroupSpecification.FixedThreshold (
 			"FIXEDTHRESHOLD",
-			OvernightLabel.Create (currency),
-			CSALabel.ISDA (currency),
 			dblCounterPartyThreshold,
 			dblBankThreshold,
 			PositionReplicationScheme.ALBANESE_ANDERSEN_VERTEX,
@@ -348,8 +343,8 @@ public class CPGACollateralized {
 				double dblValueEnd = aadblSwapPortfolioValueRealization[i][j];
 
 				if (0 != j) {
-					CollateralAmountEstimator hae = new CollateralAmountEstimator (
-						cgs,
+					MarginAmountEstimator hae = new MarginAmountEstimator (
+						positionGroupSpecification,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
 							dtEnd.julian(),

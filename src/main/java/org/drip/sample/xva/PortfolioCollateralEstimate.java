@@ -9,8 +9,6 @@ import org.drip.measure.process.DiffusionEvolver;
 import org.drip.measure.realization.*;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.state.identifier.CSALabel;
-import org.drip.state.identifier.OvernightLabel;
 import org.drip.xva.hypothecation.*;
 import org.drip.xva.proto.*;
 import org.drip.xva.settings.*;
@@ -90,7 +88,6 @@ public class PortfolioCollateralEstimate {
 	{
 		EnvManager.InitEnv ("");
 
-		String currency = "USD";
 		int iNumStep = 40;
 		double dblTime = 10.;
 		double dblPortfolioDrift = 0.0;
@@ -108,10 +105,8 @@ public class PortfolioCollateralEstimate {
 		for (int i = 0; i < iNumStep; ++i)
 			adblTimeWidth[i] = dblTimeWidth;
 
-		CollateralGroupSpecification cgs = CollateralGroupSpecification.FixedThreshold (
+		PositionGroupSpecification positionGroupSpecification = PositionGroupSpecification.FixedThreshold (
 			"FIXEDTHRESHOLD",
-			OvernightLabel.Create (currency),
-			CSALabel.ISDA (currency),
 			dblCounterPartyThreshold,
 			dblBankThreshold,
 			PositionReplicationScheme.ALBANESE_ANDERSEN_VERTEX,
@@ -180,8 +175,8 @@ public class PortfolioCollateralEstimate {
 
 			double dblPortfolioValueFinish = dblTimeWidth * (iNumStep - i) * aJDESwapRate[i].finish();
 
-			CollateralAmountEstimator hae = new CollateralAmountEstimator (
-				cgs,
+			MarginAmountEstimator hae = new MarginAmountEstimator (
+				positionGroupSpecification,
 				new BrokenDateInterpolatorLinearT (
 					dtStart.julian(),
 					dtEnd.julian(),
@@ -191,7 +186,7 @@ public class PortfolioCollateralEstimate {
 				Double.NaN
 			);
 
-			CollateralAmountEstimatorOutput haeo = hae.output (dtEnd);
+			MarginAmountEstimatorOutput haeo = hae.output (dtEnd);
 
 			System.out.println (
 				"\t|| " +
