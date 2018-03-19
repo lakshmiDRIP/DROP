@@ -86,7 +86,7 @@ public class ValueCategory
 		{
 			return new ValueCategory (
 				"CF1",
-				"Underlying Trade Contractual Cash Flow",
+				"Dealer Trade Contractual Cash Flow",
 				true
 			);
 		}
@@ -110,7 +110,7 @@ public class ValueCategory
 		{
 			return new ValueCategory (
 				"CF2",
-				"Counter Party Default Cash Flow",
+				"Client Default Cash Flow",
 				true
 			);
 		}
@@ -134,7 +134,7 @@ public class ValueCategory
 		{
 			return new ValueCategory (
 				"CF3",
-				"Bank Default Related Cash Flow",
+				"Dealer Default Related Cash Flow",
 				false
 			);
 		}
@@ -158,7 +158,7 @@ public class ValueCategory
 		{
 			return new ValueCategory (
 				"CF4",
-				"Pre Bank Default Dynamic Flow",
+				"Pre Dealer Default Dynamic Flow",
 				false
 			);
 		}
@@ -182,7 +182,7 @@ public class ValueCategory
 		{
 			return new ValueCategory (
 				"CF5",
-				"Post Bank Default Dynamic Flow",
+				"Post Dealer Default Dynamic Flow",
 				false
 			);
 		}

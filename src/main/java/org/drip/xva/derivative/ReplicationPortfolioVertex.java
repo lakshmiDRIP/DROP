@@ -218,7 +218,7 @@ public class ReplicationPortfolioVertex
 			throw new java.lang.Exception
 				("ReplicationPortfolioVertex::bankPreDefaultPositionValue => Invalid Inputs");
 
-		org.drip.xva.universe.MarketVertexEntity bankMarketVertex = marketVertex.bank();
+		org.drip.xva.universe.MarketVertexEntity bankMarketVertex = marketVertex.dealer();
 
 		double value = -1. * bankMarketVertex.seniorFundingReplicator() * _bankSeniorNumeraireHoldings;
 
@@ -248,7 +248,7 @@ public class ReplicationPortfolioVertex
 			throw new java.lang.Exception
 				("ReplicationPortfolioVertex::bankPostDefaultPositionValue => Invalid Inputs");
 
-		org.drip.xva.universe.MarketVertexEntity bankMarketVertex = marketVertex.bank();
+		org.drip.xva.universe.MarketVertexEntity bankMarketVertex = marketVertex.dealer();
 
 		double value = bankMarketVertex.seniorFundingReplicator() * _bankSeniorNumeraireHoldings *
 			bankMarketVertex.seniorRecoveryRate();

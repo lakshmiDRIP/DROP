@@ -115,7 +115,7 @@ public class BurgardKjaerBuilder
 
 		double bankDefaultCloseOut = collateralGroupVertexCloseOut.bank();
 
-		org.drip.xva.universe.MarketVertexEntity bankMarketVertex = marketVertex.bank();
+		org.drip.xva.universe.MarketVertexEntity bankMarketVertex = marketVertex.dealer();
 
 		double bankSubordinateFundingMarketVertex = bankMarketVertex.subordinateFundingReplicator();
 
@@ -125,7 +125,7 @@ public class BurgardKjaerBuilder
 
 		double bankSubordinateRecoveryRate = bankMarketVertex.subordinateRecoveryRate();
 
-		double counterPartySurvival = marketVertex.counterParty().survivalProbability();
+		double counterPartySurvival = marketVertex.client().survivalProbability();
 
 		double incrementalBankSurvival = bankSurvival - 1.;
 
@@ -195,7 +195,7 @@ public class BurgardKjaerBuilder
 
 		org.drip.xva.universe.MarketVertex marketVertexFinish = marketEdge.finish();
 
-		org.drip.xva.universe.MarketVertexEntity bankMarketVertexFinish = marketVertexFinish.bank();
+		org.drip.xva.universe.MarketVertexEntity bankMarketVertexFinish = marketVertexFinish.dealer();
 
 		double bankSubordinateFundingMarketVertexFinish = bankMarketVertexFinish.subordinateFundingReplicator();
 
@@ -205,16 +205,16 @@ public class BurgardKjaerBuilder
 
 		double bankSubordinateRecoveryRateFinish = bankMarketVertexFinish.subordinateRecoveryRate();
 
-		double counterPartySurvivalFinish = marketVertexFinish.counterParty().survivalProbability();
+		double counterPartySurvivalFinish = marketVertexFinish.client().survivalProbability();
 
 		double incrementalBankSurvival = bankSurvivalFinish -
-			(null == marketVertexStart ? 1. : marketVertexStart.bank().survivalProbability());
+			(null == marketVertexStart ? 1. : marketVertexStart.dealer().survivalProbability());
 
 		double adjustedExposure =
 			collateralGroupVertexExposure.uncollateralized() +
 			bankSurvivalFinish *
 				(counterPartySurvivalFinish -
-					(null == marketVertexStart ? 1. : marketVertexStart.counterParty().survivalProbability())) *
+					(null == marketVertexStart ? 1. : marketVertexStart.client().survivalProbability())) *
 				burgardKjaerVertexExposure.credit() +
 			counterPartySurvivalFinish * incrementalBankSurvival * burgardKjaerVertexExposure.debt() +
 			counterPartySurvivalFinish * incrementalBankSurvival * fundingExposure -
@@ -529,9 +529,9 @@ public class BurgardKjaerBuilder
 
 		org.drip.xva.universe.MarketVertex marketVertexFinish = marketEdge.finish();
 
-		double bankSeniorRecoveryRateFinish = marketVertexFinish.bank().seniorRecoveryRate();
+		double bankSeniorRecoveryRateFinish = marketVertexFinish.dealer().seniorRecoveryRate();
 
-		double dblCounterPartyRecoveryFinish = marketVertexFinish.counterParty().seniorRecoveryRate();
+		double dblCounterPartyRecoveryFinish = marketVertexFinish.client().seniorRecoveryRate();
 
 		double collateralizedExposure = exposure + realizedCashFlow - collateralBalance;
 

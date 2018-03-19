@@ -138,8 +138,8 @@ public class XVAGreeks {
 		double dblDerivativeXVAValueFinish = dblDerivativeXVAValueStart + dblTheta * dblTimeWidth;
 
 		CloseOut cog = new CloseOutBilateral (
-			mvStart.bank().seniorRecoveryRate(),
-			mvStart.counterParty().seniorRecoveryRate()
+			mvStart.dealer().seniorRecoveryRate(),
+			mvStart.client().seniorRecoveryRate()
 		);
 
 		double dblGainOnBankDefaultFinish = -1. * (dblDerivativeXVAValueFinish - cog.bankDefault (dblDerivativeXVAValueFinish));
@@ -176,8 +176,8 @@ public class XVAGreeks {
 			dblTimeStart + dblTimeWidth,
 			ReplicationPortfolioVertex.Standard (
 				-1. * dblDerivativeXVAValueDeltaFinish,
-				dblGainOnBankDefaultFinish / mvFinish.bank().seniorFundingReplicator(),
-				dblGainOnCounterPartyDefaultFinish / mvFinish.counterParty().seniorFundingReplicator(),
+				dblGainOnBankDefaultFinish / mvFinish.dealer().seniorFundingReplicator(),
+				dblGainOnCounterPartyDefaultFinish / mvFinish.client().seniorFundingReplicator(),
 				rpvStart.cashAccount() + cae.accumulation()
 			),
 			new PositionGreekVertex (

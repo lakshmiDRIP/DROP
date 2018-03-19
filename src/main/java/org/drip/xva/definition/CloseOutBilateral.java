@@ -91,8 +91,8 @@ public class CloseOutBilateral extends org.drip.xva.definition.CloseOut
 		try
 		{
 			return new CloseOutBilateral (
-				marketVertex.bank().seniorRecoveryRate(),
-				marketVertex.counterParty().seniorRecoveryRate()
+				marketVertex.dealer().seniorRecoveryRate(),
+				marketVertex.client().seniorRecoveryRate()
 			);
 		}
 		catch (java.lang.Exception e)

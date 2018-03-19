@@ -47,7 +47,8 @@ package org.drip.xva.topology;
  */
 
 /**
- * BookGraph represents the Directed Graph of all the Encompassing Funding Groups. The References are:
+ * Adiabat represents the Directed Graph of all the Encompassing Funding Groups inside of a Closed System
+ * 	(i.e., Adiabat). The References are:
  *  
  *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
  *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
@@ -65,12 +66,12 @@ package org.drip.xva.topology;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BookGraph extends org.drip.xva.proto.ObjectSpecification
+public class Adiabat extends org.drip.xva.proto.ObjectSpecification
 {
 	private java.util.Map<java.lang.String, org.drip.xva.topology.FundingGroup> _fundingGroupMap = null;
 
 	/**
-	 * BookGraph Constructor
+	 * Adiabat Constructor
 	 * 
 	 * @param id BookGraph ID
 	 * @param name BookGraph Name
@@ -78,7 +79,7 @@ public class BookGraph extends org.drip.xva.proto.ObjectSpecification
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public BookGraph (
+	public Adiabat (
 		final java.lang.String id,
 		final java.lang.String name)
 		throws java.lang.Exception
@@ -554,7 +555,7 @@ public class BookGraph extends org.drip.xva.proto.ObjectSpecification
 	 * @return The Book's Dependent Market Parameters
 	 */
 
-	public org.drip.xva.topology.BookMarketParams marketParams()
+	public org.drip.xva.topology.AdiabatMarketParams marketParams()
 	{
 		java.util.Map<java.lang.String, org.drip.state.identifier.CSALabel> csaLabelMap = new
 			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.state.identifier.CSALabel>();
@@ -750,7 +751,7 @@ public class BookGraph extends org.drip.xva.proto.ObjectSpecification
 		}
 
 		try {
-			return new org.drip.xva.topology.BookMarketParams (
+			return new org.drip.xva.topology.AdiabatMarketParams (
 				overnightLabelMap,
 				csaLabelMap,
 				bankHazardLabelMap,

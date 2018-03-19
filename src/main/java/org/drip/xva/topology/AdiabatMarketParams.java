@@ -47,7 +47,7 @@ package org.drip.xva.topology;
  */
 
 /**
- * BookMarketParams contains the Market Parameters that correspond to a given Book. The References are:
+ * AdiabatMarketParams contains the Market Parameters that correspond to a given Adiabat. The References are:
  *  
  *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
  *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
@@ -65,7 +65,7 @@ package org.drip.xva.topology;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BookMarketParams
+public class AdiabatMarketParams
 {
 	private java.util.Map<java.lang.String, org.drip.state.identifier.CSALabel> _csaLabelMap = null;
 	private java.util.Map<java.lang.String, org.drip.state.identifier.OvernightLabel> _overnightLabelMap =
@@ -88,7 +88,7 @@ public class BookMarketParams
 		_bankSubordinateFundingLabelMap = null;
 
 	/**
-	 * BookMarketParams Constructor
+	 * AdiabatMarketParams Constructor
 	 * 
 	 * @param overnightLabelMap Map of Overnight Labels
 	 * @param csaLabelMap Map of CSA Labels
@@ -104,7 +104,7 @@ public class BookMarketParams
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public BookMarketParams (
+	public AdiabatMarketParams (
 		final java.util.Map<java.lang.String, org.drip.state.identifier.OvernightLabel> overnightLabelMap,
 		final java.util.Map<java.lang.String, org.drip.state.identifier.CSALabel> csaLabelMap,
 		final java.util.Map<java.lang.String, org.drip.state.identifier.EntityHazardLabel>
@@ -139,7 +139,7 @@ public class BookMarketParams
 			null == (_counterPartyFundingLabelMap = counterPartyFundingLabelMap) || 0 ==
 				_counterPartyFundingLabelMap.size())
 		{
-			throw new java.lang.Exception ("BookMarketParams Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("AdiabatMarketParams Constructor => Invalid Inputs");
 		}
 
 		_bankSubordinateFundingLabelMap = bankSubordinateFundingLabelMap;

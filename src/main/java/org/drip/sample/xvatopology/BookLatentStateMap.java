@@ -18,8 +18,8 @@ import org.drip.xva.proto.PositionGroupSpecification;
 import org.drip.xva.settings.BrokenDateScheme;
 import org.drip.xva.settings.CloseOutScheme;
 import org.drip.xva.settings.PositionReplicationScheme;
-import org.drip.xva.topology.BookGraph;
-import org.drip.xva.topology.BookMarketParams;
+import org.drip.xva.topology.Adiabat;
+import org.drip.xva.topology.AdiabatMarketParams;
 import org.drip.xva.topology.CollateralGroup;
 import org.drip.xva.topology.CreditDebtGroup;
 import org.drip.xva.topology.FundingGroup;
@@ -185,7 +185,7 @@ public class BookLatentStateMap
 		return creditDebtGroupArray;
 	}
 
-	private static final BookGraph BookTopology (
+	private static final Adiabat BookTopology (
 		final PositionGroupSpecification positionGroupSpecification,
 		final CollateralGroupSpecification collateralGroupSpecification,
 		final CreditDebtGroupSpecification creditDebtGroupSpecification,
@@ -199,7 +199,7 @@ public class BookLatentStateMap
 		final int positionGroupPerCollateralGroup)
 		throws Exception
 	{
-		BookGraph bookGraph = new BookGraph (
+		Adiabat bookGraph = new Adiabat (
 			StringUtil.GUID(),
 			"BOOKGRAPH"
 		);
@@ -254,7 +254,7 @@ public class BookLatentStateMap
 		int creditDebtGroupCountPerFundingGroup = 3;
 		int fundingGroupCount = 3;
 
-		BookGraph bookGraph = BookTopology (
+		Adiabat bookGraph = BookTopology (
 			PositionGroupSpecification.ZeroThreshold (
 				"POSITIONGROUPSPEC",
 				PositionReplicationScheme.ALBANESE_ANDERSEN_VERTEX,
@@ -319,7 +319,7 @@ public class BookLatentStateMap
 			positionGroupPerCollateralGroup
 		);
 
-		BookMarketParams bookMarketParams = bookGraph.marketParams();
+		AdiabatMarketParams bookMarketParams = bookGraph.marketParams();
 
 		System.out.println ("\t||----------------||");
 

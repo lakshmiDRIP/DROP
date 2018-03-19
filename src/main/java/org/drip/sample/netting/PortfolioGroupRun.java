@@ -258,11 +258,11 @@ public class PortfolioGroupRun {
 				FormatUtil.FormatDouble (aCGV2[i].uncollateralized(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (aCGV2[i].collateralBalance(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (aMV[i].overnightRate(), 1, 6, 1.) + " | " +
-				FormatUtil.FormatDouble (aMV[i].bank().survivalProbability(), 1, 6, 1.) + " | " +
-				FormatUtil.FormatDouble (aMV[i].bank().seniorRecoveryRate(), 1, 6, 1.) + " | " +
-				FormatUtil.FormatDouble (aMV[i].bank().seniorFundingSpread(), 1, 6, 1.) + " | " +
-				FormatUtil.FormatDouble (aMV[i].counterParty().survivalProbability(), 1, 6, 1.) + " | " +
-				FormatUtil.FormatDouble (aMV[i].counterParty().seniorRecoveryRate(), 1, 6, 1.) + " ||"
+				FormatUtil.FormatDouble (aMV[i].dealer().survivalProbability(), 1, 6, 1.) + " | " +
+				FormatUtil.FormatDouble (aMV[i].dealer().seniorRecoveryRate(), 1, 6, 1.) + " | " +
+				FormatUtil.FormatDouble (aMV[i].dealer().seniorFundingSpread(), 1, 6, 1.) + " | " +
+				FormatUtil.FormatDouble (aMV[i].client().survivalProbability(), 1, 6, 1.) + " | " +
+				FormatUtil.FormatDouble (aMV[i].client().seniorRecoveryRate(), 1, 6, 1.) + " ||"
 			);
 		}
 

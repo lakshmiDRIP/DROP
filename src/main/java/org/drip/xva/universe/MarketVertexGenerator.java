@@ -90,31 +90,31 @@ public class MarketVertexGenerator
 	public static final int COLLATERAL_SCHEME = 2;
 
 	/**
-	 * Bank Hazard Rate Wanderer Index
+	 * Dealer Hazard Rate Wanderer Index
 	 */
 
 	public static final int BANK_HAZARD_RATE = 3;
 
 	/**
-	 * Bank Senior Funding Wanderer Index
+	 * Dealer Senior Funding Wanderer Index
 	 */
 
 	public static final int BANK_SENIOR_FUNDING = 4;
 
 	/**
-	 * Bank Senior Recovery Rate Wanderer Index
+	 * Dealer Senior Recovery Rate Wanderer Index
 	 */
 
 	public static final int BANK_SENIOR_RECOVERY_RATE = 5;
 
 	/**
-	 * Bank Subordinate Funding Wanderer Index
+	 * Dealer Subordinate Funding Wanderer Index
 	 */
 
 	public static final int BANK_SUBORDINATE_FUNDING = 6;
 
 	/**
-	 * Bank Subordinate Recovery Rate Wanderer Index
+	 * Dealer Subordinate Recovery Rate Wanderer Index
 	 */
 
 	public static final int BANK_SUBORDINATE_RECOVERY_RATE = 7;
@@ -150,7 +150,7 @@ public class MarketVertexGenerator
 	 * @param periodTenor The Period Tenor
 	 * @param periodCount The Period Count
 	 * @param tradeablesContainer The Tradeables Container Instance
-	 * @param entityLatentStateEvolver The Bank/Counter Party Entity Latent State Evolver
+	 * @param entityLatentStateEvolver The Dealer/Counter Party Entity Latent State Evolver
 	 * 
 	 * @return The MarketVertexGenerator Instance from the Spot Date, the Period Tenor, and the Period Count
 	 */
@@ -189,7 +189,7 @@ public class MarketVertexGenerator
 	 * @param spotDate The Spot Date
 	 * @param eventDateArray Array of the Event Dates
 	 * @param tradeablesContainer The Tradeables Container Instance
-	 * @param entityLatentStateEvolver The Bank/Counter Party Entity Latent State Evolver
+	 * @param entityLatentStateEvolver The Dealer/Counter Party Entity Latent State Evolver
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -306,7 +306,7 @@ public class MarketVertexGenerator
 
 		org.drip.xva.evolver.PrimarySecurity positionManifest = _tradeablesContainer.position();
 
-		org.drip.xva.evolver.PrimarySecurity bankSubordinateFundingNumeraire =
+		org.drip.xva.evolver.PrimarySecurity dealerSubordinateFundingNumeraire =
 			_tradeablesContainer.bankSubordinateFunding();
 
 		double bankSurvivalProbabilityExponent = 0.;
@@ -328,19 +328,19 @@ public class MarketVertexGenerator
 		org.drip.xva.universe.MarketVertex[] marketVertexArray = new
 			org.drip.xva.universe.MarketVertex[eventVertexCount + 1];
 
-		org.drip.xva.universe.MarketVertexEntity initialBankVertex = initialMarketVertex.bank();
+		org.drip.xva.universe.MarketVertexEntity initialBankVertex = initialMarketVertex.dealer();
 
 		double initialBankSubordinateRecovery = initialBankVertex.subordinateRecoveryRate();
 
 		org.drip.xva.universe.MarketVertexEntity initialCounterPartyVertex =
-			initialMarketVertex.counterParty();
+			initialMarketVertex.client();
 
 		double terminalBankSubordinateFundingNumeraire = initialBankVertex.subordinateFundingReplicator();
 
 		org.drip.measure.process.DiffusionEvolver bankSubordinateRecoveryRateEvolver =
 			_entityLatentStateEvolver.bankSubordinateRecoveryRateEvolver();
 
-		boolean useSingleBankBondOnly = null == bankSubordinateFundingNumeraire || null ==
+		boolean useSingleBankBondOnly = null == dealerSubordinateFundingNumeraire || null ==
 			bankSubordinateRecoveryRateEvolver || !org.drip.quant.common.NumberUtil.IsValid
 				(terminalBankSubordinateFundingNumeraire) || !org.drip.quant.common.NumberUtil.IsValid
 					(initialBankSubordinateRecovery);
@@ -434,7 +434,7 @@ public class MarketVertexGenerator
 				);
 
 			bankSubordinateFundingNumeraireVertexArray = useSingleBankBondOnly ? null :
-				bankSubordinateFundingNumeraire.evolver().vertexSequenceReverse (
+				dealerSubordinateFundingNumeraire.evolver().vertexSequenceReverse (
 					new org.drip.measure.realization.JumpDiffusionVertex (
 						terminalDate,
 						terminalBankSubordinateFundingNumeraire,
@@ -631,17 +631,17 @@ public class MarketVertexGenerator
 					initialBankVertex.survivalProbability(),
 					initialBankVertex.hazardRate(),
 					initialBankVertex.seniorRecoveryRate(),
-					marketVertexArray[1].bank().seniorFundingSpread(),
+					marketVertexArray[1].dealer().seniorFundingSpread(),
 					bankSeniorFundingNumeraireStart,
 					initialBankVertex.subordinateRecoveryRate(),
-					marketVertexArray[1].bank().subordinateFundingSpread(),
+					marketVertexArray[1].dealer().subordinateFundingSpread(),
 					bankSubordinateFundingNumeraireStart
 				),
 				new org.drip.xva.universe.MarketVertexEntity (
 					initialCounterPartyVertex.survivalProbability(),
 					initialCounterPartyVertex.hazardRate(),
 					initialCounterPartyVertex.seniorRecoveryRate(),
-					marketVertexArray[1].counterParty().seniorFundingSpread(),
+					marketVertexArray[1].client().seniorFundingSpread(),
 					counterPartyFundingNumeraireStart,
 					java.lang.Double.NaN,
 					java.lang.Double.NaN,

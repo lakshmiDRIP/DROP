@@ -142,10 +142,10 @@ public class BurgardKjaerOperator
 
 		org.drip.xva.universe.MarketVertex finalMarketVertex = marketEdge.finish();
 
-		org.drip.xva.universe.MarketVertexEntity finalBankMarketVertex = finalMarketVertex.bank();
+		org.drip.xva.universe.MarketVertexEntity finalBankMarketVertex = finalMarketVertex.dealer();
 
 		org.drip.xva.universe.MarketVertexEntity finalCounterPartyMarketVertex =
-			finalMarketVertex.counterParty();
+			finalMarketVertex.client();
 
 		org.drip.xva.derivative.PositionGreekVertex initialPositionGreekVertex =
 			initialTrajectoryVertex.positionGreekVertex();
@@ -225,10 +225,10 @@ public class BurgardKjaerOperator
 
 		double derivativeXVAValue = initialTrajectoryVertex.positionGreekVertex().derivativeXVAValue();
 
-		org.drip.xva.universe.MarketVertexEntity finalBankMarketVertex = finalMarketVertex.bank();
+		org.drip.xva.universe.MarketVertexEntity finalBankMarketVertex = finalMarketVertex.dealer();
 
 		org.drip.xva.universe.MarketVertexEntity finalCounterPartyMarketVertex =
-			finalMarketVertex.counterParty();
+			finalMarketVertex.client();
 
 		double counterPartyRecoveryRate = finalCounterPartyMarketVertex.seniorRecoveryRate();
 

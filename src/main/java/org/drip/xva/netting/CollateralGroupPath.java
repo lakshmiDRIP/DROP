@@ -832,14 +832,14 @@ public class CollateralGroupPath
 		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
 		{
 			double periodIntegrandStart = collateralBalance[vertexIndex - 1] *
-				marketVertexArray[vertexIndex - 1].bank().survivalProbability() *
-				marketVertexArray[vertexIndex - 1].counterParty().survivalProbability() *
+				marketVertexArray[vertexIndex - 1].dealer().survivalProbability() *
+				marketVertexArray[vertexIndex - 1].client().survivalProbability() *
 				marketVertexArray[vertexIndex - 1].csaSpread() *
 				marketVertexArray[vertexIndex - 1].overnightReplicator();
 
 			double periodIntegrandEnd = collateralBalance[vertexIndex] *
-				marketVertexArray[vertexIndex].bank().survivalProbability() *
-				marketVertexArray[vertexIndex].counterParty().survivalProbability() *
+				marketVertexArray[vertexIndex].dealer().survivalProbability() *
+				marketVertexArray[vertexIndex].client().survivalProbability() *
 				marketVertexArray[vertexIndex].csaSpread() *
 				marketVertexArray[vertexIndex].overnightReplicator();
 
@@ -907,14 +907,14 @@ public class CollateralGroupPath
 		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
 		{
 			double periodIntegrandStart = collateralBalance[vertexIndex - 1] *
-				marketVertexArray[vertexIndex - 1].bank().survivalProbability() *
-				marketVertexArray[vertexIndex - 1].counterParty().survivalProbability() *
+				marketVertexArray[vertexIndex - 1].dealer().survivalProbability() *
+				marketVertexArray[vertexIndex - 1].client().survivalProbability() *
 				marketVertexArray[vertexIndex - 1].csaSpread() *
 				marketVertexArray[vertexIndex - 1].overnightReplicator();
 
 			double periodIntegrandEnd = collateralBalance[vertexIndex] *
-				marketVertexArray[vertexIndex].bank().survivalProbability() *
-				marketVertexArray[vertexIndex].counterParty().survivalProbability() *
+				marketVertexArray[vertexIndex].dealer().survivalProbability() *
+				marketVertexArray[vertexIndex].client().survivalProbability() *
 				marketVertexArray[vertexIndex].csaSpread() *
 				marketVertexArray[vertexIndex].overnightReplicator();
 

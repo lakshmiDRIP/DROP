@@ -440,7 +440,7 @@ public class XVAMarketGeneration {
 		System.out.println ("\t||----------------------------------------------------------------------------------------------||");
 
 		for (int i = 0; i < aMV.length; ++i) {
-			MarketVertexEntity emvBank = aMV[i].bank();
+			MarketVertexEntity emvBank = aMV[i].dealer();
 
 			System.out.println (
 				"\t|| " + aMV[i].anchorDate() + " => " +
@@ -482,7 +482,7 @@ public class XVAMarketGeneration {
 		System.out.println ("\t||----------------------------------------------------------------------------------------------||");
 
 		for (int i = 0; i < aMV.length; ++i) {
-			MarketVertexEntity emvCounterParty = aMV[i].counterParty();
+			MarketVertexEntity emvCounterParty = aMV[i].client();
 
 			System.out.println (
 				"\t|| " + aMV[i].anchorDate() + " => " +

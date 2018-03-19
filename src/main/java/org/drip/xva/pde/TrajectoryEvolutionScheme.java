@@ -154,11 +154,11 @@ public class TrajectoryEvolutionScheme
 
 		org.drip.xva.universe.MarketVertex finalMarketVertex = marketEdge.finish();
 
-		org.drip.xva.universe.MarketVertexEntity emvBankStart = initialMarketVertex.bank();
+		org.drip.xva.universe.MarketVertexEntity emvBankStart = initialMarketVertex.dealer();
 
-		org.drip.xva.universe.MarketVertexEntity bankMarketVertex = finalMarketVertex.bank();
+		org.drip.xva.universe.MarketVertexEntity bankMarketVertex = finalMarketVertex.dealer();
 
-		org.drip.xva.universe.MarketVertexEntity counterPartyMarketVertex = finalMarketVertex.counterParty();
+		org.drip.xva.universe.MarketVertexEntity counterPartyMarketVertex = finalMarketVertex.client();
 
 		double finalPortfolioValue = finalMarketVertex.positionManifestValue();
 
@@ -182,7 +182,7 @@ public class TrajectoryEvolutionScheme
 			counterPartyFundingTradeable.cashAccumulationRate() * finalCounterPartyNumeraire * timeIncrement;
 
 		double counterPartyHoldingsValueChange = initialCounterPartyNumeraireHoldings *
-			(finalCounterPartyNumeraire - initialMarketVertex.counterParty().seniorFundingReplicator());
+			(finalCounterPartyNumeraire - initialMarketVertex.client().seniorFundingReplicator());
 
 		double cashAccountBalance = -1. * initialTrajectoryVertex.positionGreekVertex().derivativeXVAValue()
 			- initialBankSeniorNumeraireHoldings * finalBankSeniorFundingNumeraire;
@@ -286,9 +286,9 @@ public class TrajectoryEvolutionScheme
 
 		org.drip.xva.universe.MarketVertex finalMarketVertex = marketEdge.finish();
 
-		org.drip.xva.universe.MarketVertexEntity bankMarketVertex = finalMarketVertex.bank();
+		org.drip.xva.universe.MarketVertexEntity bankMarketVertex = finalMarketVertex.dealer();
 
-		org.drip.xva.universe.MarketVertexEntity counterPartyMarketVertex = finalMarketVertex.counterParty();
+		org.drip.xva.universe.MarketVertexEntity counterPartyMarketVertex = finalMarketVertex.client();
 
 		double derivativeXVAValueDeltaFinish =
 			initialPositionGreekVertex.derivativeXVAValueDelta() +

@@ -214,7 +214,7 @@ public class EvolutionTrajectoryVertex
 			throw new java.lang.Exception
 				("EvolutionTrajectoryVertex::verifyFundingConstraint => Invalid Inputs");
 
-		org.drip.xva.universe.MarketVertexEntity bankMarketVertex = marketVertex.bank();
+		org.drip.xva.universe.MarketVertexEntity bankMarketVertex = marketVertex.dealer();
 
 		double fundingConstraint = _positionGreekVertex.derivativeXVAValue() +
 			bankMarketVertex.seniorFundingReplicator() *

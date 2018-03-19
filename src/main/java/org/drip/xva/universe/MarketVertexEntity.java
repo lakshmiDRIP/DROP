@@ -49,9 +49,10 @@ package org.drip.xva.universe;
 
 /**
  * MarketVertexEntity holds the Realizations at a Market Trajectory Vertex of the given XVA Entity (i.e.,
- *  Bank/Counter Party). The References are:<br><br>
+ *  Dealer/Client). The References are:<br><br>
  *  
- *  - Burgard, C., and M. Kjaer (2013): Funding Strategies, Funding Costs <i>Risk</i> <b>24 (12)</b> 82-87.<br><br>
+ *  - Burgard, C., and M. Kjaer (2013): Funding Strategies, Funding Costs <i>Risk</i> <b>24 (12)</b>
+ *  	82-87.<br><br>
  *  
  *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
  *  	and Funding Costs <i>Journal of Credit Risk</i> <b>7 (3)</b> 1-19.<br><br>

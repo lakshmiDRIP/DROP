@@ -139,8 +139,8 @@ public class CorrelatedNumeraireXVAExplain {
 		double dblDerivativeXVAValueFinish = dblDerivativeXVAValueStart + dblTheta * dblTimeWidth;
 
 		CloseOut cog = new CloseOutBilateral (
-			mvStart.bank().seniorRecoveryRate(),
-			mvStart.counterParty().seniorRecoveryRate()
+			mvStart.dealer().seniorRecoveryRate(),
+			mvStart.client().seniorRecoveryRate()
 		);
 
 		double dblGainOnBankDefaultFinish = -1. * (dblDerivativeXVAValueFinish - cog.bankDefault (dblDerivativeXVAValueFinish));
@@ -160,9 +160,9 @@ public class CorrelatedNumeraireXVAExplain {
 
 		double dblAssetNumeraireFinish = mvFinish.positionManifestValue();
 
-		double dblBankSeniorFundingNumeraireFinish = mvFinish.bank().seniorFundingReplicator();
+		double dblBankSeniorFundingNumeraireFinish = mvFinish.dealer().seniorFundingReplicator();
 
-		double dblCounterPartyFundingNumeraireFinish = mvFinish.counterParty().seniorFundingReplicator();
+		double dblCounterPartyFundingNumeraireFinish = mvFinish.client().seniorFundingReplicator();
 
 		ReplicationPortfolioVertex rpvFinish = ReplicationPortfolioVertex.Standard (
 			-1. * dblDerivativeXVAValueDeltaFinish,
@@ -599,8 +599,8 @@ public class CorrelatedNumeraireXVAExplain {
 			FormatUtil.FormatDouble (1., 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (agvInitial.derivativeXVAValue(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (aMV[iNumVertex].positionManifestValue(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (aMV[iNumVertex].bank().seniorFundingReplicator(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (aMV[iNumVertex].counterParty().seniorFundingReplicator(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (aMV[iNumVertex].dealer().seniorFundingReplicator(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (aMV[iNumVertex].client().seniorFundingReplicator(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (aMV[iNumVertex].csaReplicator(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (rpvInitial.positionHoldings(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (rpvInitial.bankSeniorNumeraireHoldings(), 1, 6, 1.) + " | " +

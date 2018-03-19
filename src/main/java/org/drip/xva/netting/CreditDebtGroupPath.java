@@ -105,12 +105,12 @@ public abstract class CreditDebtGroupPath extends org.drip.xva.netting.Collatera
 		{
 			unilateralCreditAdjustment -=
 				0.5 * (creditExposure[vertexIndex - 1] + creditExposure[vertexIndex]) *
-				0.5 * (marketVertexArray[vertexIndex - 1].counterParty().seniorRecoveryRate() +
-					marketVertexArray[vertexIndex].counterParty().seniorRecoveryRate()) *
+				0.5 * (marketVertexArray[vertexIndex - 1].client().seniorRecoveryRate() +
+					marketVertexArray[vertexIndex].client().seniorRecoveryRate()) *
 				0.5 * (marketVertexArray[vertexIndex - 1].overnightReplicator() +
 					marketVertexArray[vertexIndex].overnightReplicator()) *
-				(marketVertexArray[vertexIndex - 1].counterParty().survivalProbability() -
-					marketVertexArray[vertexIndex].counterParty().survivalProbability());
+				(marketVertexArray[vertexIndex - 1].client().survivalProbability() -
+					marketVertexArray[vertexIndex].client().survivalProbability());
 		}
 
 		return unilateralCreditAdjustment;
@@ -138,14 +138,14 @@ public abstract class CreditDebtGroupPath extends org.drip.xva.netting.Collatera
 		{
 			bilateralCreditAdjustment -=
 				0.5 * (creditExposure[vertexIndex - 1] + creditExposure[vertexIndex]) *
-				0.5 * (marketVertexArray[vertexIndex - 1].counterParty().seniorRecoveryRate() +
-					marketVertexArray[vertexIndex].counterParty().seniorRecoveryRate()) *
+				0.5 * (marketVertexArray[vertexIndex - 1].client().seniorRecoveryRate() +
+					marketVertexArray[vertexIndex].client().seniorRecoveryRate()) *
 				0.5 * (marketVertexArray[vertexIndex - 1].overnightReplicator() +
 					marketVertexArray[vertexIndex].overnightReplicator()) *
-				0.5 * (marketVertexArray[vertexIndex - 1].bank().survivalProbability() +
-					marketVertexArray[vertexIndex].bank().survivalProbability()) *
-				(marketVertexArray[vertexIndex - 1].counterParty().survivalProbability() -
-					marketVertexArray[vertexIndex].counterParty().survivalProbability());
+				0.5 * (marketVertexArray[vertexIndex - 1].dealer().survivalProbability() +
+					marketVertexArray[vertexIndex].dealer().survivalProbability()) *
+				(marketVertexArray[vertexIndex - 1].client().survivalProbability() -
+					marketVertexArray[vertexIndex].client().survivalProbability());
 		}
 
 		return bilateralCreditAdjustment;
@@ -184,12 +184,12 @@ public abstract class CreditDebtGroupPath extends org.drip.xva.netting.Collatera
 		{
 			unilateralDebtAdjustment -=
 				0.5 * (debtExposure[vertexIndex - 1] + debtExposure[vertexIndex]) *
-				0.5 * (marketVertexArray[vertexIndex - 1].bank().seniorRecoveryRate() +
-					marketVertexArray[vertexIndex].bank().seniorRecoveryRate()) *
+				0.5 * (marketVertexArray[vertexIndex - 1].dealer().seniorRecoveryRate() +
+					marketVertexArray[vertexIndex].dealer().seniorRecoveryRate()) *
 				0.5 * (marketVertexArray[vertexIndex - 1].overnightReplicator() +
 					marketVertexArray[vertexIndex].overnightReplicator()) *
-				(marketVertexArray[vertexIndex - 1].bank().survivalProbability() -
-					marketVertexArray[vertexIndex].bank().survivalProbability());
+				(marketVertexArray[vertexIndex - 1].dealer().survivalProbability() -
+					marketVertexArray[vertexIndex].dealer().survivalProbability());
 		}
 
 		return unilateralDebtAdjustment;
@@ -217,14 +217,14 @@ public abstract class CreditDebtGroupPath extends org.drip.xva.netting.Collatera
 		{
 			bilateralDebtAdjustment -=
 				0.5 * (debtExposure[vertexIndex - 1] + debtExposure[vertexIndex]) *
-				0.5 * (marketVertexArray[vertexIndex - 1].bank().seniorRecoveryRate() +
-					marketVertexArray[vertexIndex].bank().seniorRecoveryRate()) *
+				0.5 * (marketVertexArray[vertexIndex - 1].dealer().seniorRecoveryRate() +
+					marketVertexArray[vertexIndex].dealer().seniorRecoveryRate()) *
 				0.5 * (marketVertexArray[vertexIndex - 1].overnightReplicator() +
 					marketVertexArray[vertexIndex].overnightReplicator()) *
-				0.5 * (marketVertexArray[vertexIndex - 1].counterParty().survivalProbability() +
-					marketVertexArray[vertexIndex].counterParty().survivalProbability()) *
-				(marketVertexArray[vertexIndex - 1].bank().survivalProbability() -
-					marketVertexArray[vertexIndex].bank().survivalProbability());
+				0.5 * (marketVertexArray[vertexIndex - 1].client().survivalProbability() +
+					marketVertexArray[vertexIndex].client().survivalProbability()) *
+				(marketVertexArray[vertexIndex - 1].dealer().survivalProbability() -
+					marketVertexArray[vertexIndex].dealer().survivalProbability());
 		}
 
 		return bilateralDebtAdjustment;
@@ -250,12 +250,12 @@ public abstract class CreditDebtGroupPath extends org.drip.xva.netting.Collatera
 		{
 			periodUnilateralCreditAdjustment[vertexIndex] =
 				-0.5 * (creditExposure[vertexIndex - 1] + creditExposure[vertexIndex]) *
-				0.5 * (marketVertexArray[vertexIndex - 1].counterParty().seniorRecoveryRate() +
-					marketVertexArray[vertexIndex].counterParty().seniorRecoveryRate()) *
+				0.5 * (marketVertexArray[vertexIndex - 1].client().seniorRecoveryRate() +
+					marketVertexArray[vertexIndex].client().seniorRecoveryRate()) *
 				0.5 * (marketVertexArray[vertexIndex - 1].overnightReplicator() +
 					marketVertexArray[vertexIndex].overnightReplicator()) *
-				(marketVertexArray[vertexIndex - 1].counterParty().survivalProbability() -
-					marketVertexArray[vertexIndex].counterParty().survivalProbability());
+				(marketVertexArray[vertexIndex - 1].client().survivalProbability() -
+					marketVertexArray[vertexIndex].client().survivalProbability());
 		}
 
 		return periodUnilateralCreditAdjustment;
@@ -281,14 +281,14 @@ public abstract class CreditDebtGroupPath extends org.drip.xva.netting.Collatera
 		{
 			periodBilateralCreditAdjustment[vertexIndex] =
 				-0.5 * (creditExposure[vertexIndex - 1] + creditExposure[vertexIndex]) *
-				0.5 * (marketVertexArray[vertexIndex - 1].counterParty().seniorRecoveryRate() +
-					marketVertexArray[vertexIndex].counterParty().seniorRecoveryRate()) *
+				0.5 * (marketVertexArray[vertexIndex - 1].client().seniorRecoveryRate() +
+					marketVertexArray[vertexIndex].client().seniorRecoveryRate()) *
 				0.5 * (marketVertexArray[vertexIndex - 1].overnightReplicator() +
 					marketVertexArray[vertexIndex].overnightReplicator()) *
-				0.5 * (marketVertexArray[vertexIndex - 1].bank().survivalProbability() +
-					marketVertexArray[vertexIndex].bank().survivalProbability()) *
-				(marketVertexArray[vertexIndex - 1].counterParty().survivalProbability() -
-					marketVertexArray[vertexIndex].counterParty().survivalProbability());
+				0.5 * (marketVertexArray[vertexIndex - 1].dealer().survivalProbability() +
+					marketVertexArray[vertexIndex].dealer().survivalProbability()) *
+				(marketVertexArray[vertexIndex - 1].client().survivalProbability() -
+					marketVertexArray[vertexIndex].client().survivalProbability());
 		}
 
 		return periodBilateralCreditAdjustment;
@@ -338,12 +338,12 @@ public abstract class CreditDebtGroupPath extends org.drip.xva.netting.Collatera
 		{
 			periodUnilateralDebtAdjustment[vertexCount] =
 				-0.5 * (debtExposure[vertexIndex - 1] + debtExposure[vertexIndex]) *
-				0.5 * (marketVertexArray[vertexIndex - 1].bank().seniorRecoveryRate() +
-					marketVertexArray[vertexIndex].bank().seniorRecoveryRate()) *
+				0.5 * (marketVertexArray[vertexIndex - 1].dealer().seniorRecoveryRate() +
+					marketVertexArray[vertexIndex].dealer().seniorRecoveryRate()) *
 				0.5 * (marketVertexArray[vertexIndex - 1].overnightReplicator() +
 					marketVertexArray[vertexIndex].overnightReplicator()) *
-				(marketVertexArray[vertexIndex - 1].bank().survivalProbability() -
-					marketVertexArray[vertexIndex].bank().survivalProbability());
+				(marketVertexArray[vertexIndex - 1].dealer().survivalProbability() -
+					marketVertexArray[vertexIndex].dealer().survivalProbability());
 		}
 
 		return periodUnilateralDebtAdjustment;
@@ -369,14 +369,14 @@ public abstract class CreditDebtGroupPath extends org.drip.xva.netting.Collatera
 		{
 			periodBilateralDebtAdjustment[vertexIndex] =
 				-0.5 * (debtExposure[vertexIndex - 1] + debtExposure[vertexIndex]) *
-				0.5 * (marketVertexArray[vertexIndex - 1].bank().seniorRecoveryRate() +
-					marketVertexArray[vertexIndex].bank().seniorRecoveryRate()) *
+				0.5 * (marketVertexArray[vertexIndex - 1].dealer().seniorRecoveryRate() +
+					marketVertexArray[vertexIndex].dealer().seniorRecoveryRate()) *
 				0.5 * (marketVertexArray[vertexIndex - 1].overnightReplicator() +
 					marketVertexArray[vertexIndex].overnightReplicator()) *
-				0.5 * (marketVertexArray[vertexIndex - 1].counterParty().survivalProbability() +
-					marketVertexArray[vertexIndex].counterParty().survivalProbability()) *
-				(marketVertexArray[vertexIndex - 1].bank().survivalProbability() -
-					marketVertexArray[vertexIndex].bank().survivalProbability());
+				0.5 * (marketVertexArray[vertexIndex - 1].client().survivalProbability() +
+					marketVertexArray[vertexIndex].client().survivalProbability()) *
+				(marketVertexArray[vertexIndex - 1].dealer().survivalProbability() -
+					marketVertexArray[vertexIndex].dealer().survivalProbability());
 		}
 
 		return periodBilateralDebtAdjustment;

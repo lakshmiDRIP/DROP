@@ -18,7 +18,7 @@ import org.drip.xva.proto.PositionGroupSpecification;
 import org.drip.xva.settings.BrokenDateScheme;
 import org.drip.xva.settings.CloseOutScheme;
 import org.drip.xva.settings.PositionReplicationScheme;
-import org.drip.xva.topology.BookGraph;
+import org.drip.xva.topology.Adiabat;
 import org.drip.xva.topology.CollateralGroup;
 import org.drip.xva.topology.CreditDebtGroup;
 import org.drip.xva.topology.FundingGroup;
@@ -184,7 +184,7 @@ public class BookGroupLayout
 		return creditDebtGroupArray;
 	}
 
-	private static final BookGraph BookTopology (
+	private static final Adiabat BookTopology (
 		final PositionGroupSpecification positionGroupSpecification,
 		final CollateralGroupSpecification collateralGroupSpecification,
 		final CreditDebtGroupSpecification creditDebtGroupSpecification,
@@ -198,7 +198,7 @@ public class BookGroupLayout
 		final int positionGroupPerCollateralGroup)
 		throws Exception
 	{
-		BookGraph bookGraph = new BookGraph (
+		Adiabat bookGraph = new Adiabat (
 			StringUtil.GUID(),
 			"BOOKGRAPH"
 		);
@@ -240,7 +240,7 @@ public class BookGroupLayout
 	}
 
 	private static final void DisplayBookGraph (
-		final BookGraph bookGraph,
+		final Adiabat bookGraph,
 		final String displayPrefix)
 	{
 		System.out.println (
@@ -344,7 +344,7 @@ public class BookGroupLayout
 		int fundingGroupCount = 3;
 		String displayPrefix = "\t|| ";
 
-		BookGraph bookGraph = BookTopology (
+		Adiabat bookGraph = BookTopology (
 			PositionGroupSpecification.ZeroThreshold (
 				"POSITIONGROUPSPEC",
 				PositionReplicationScheme.ALBANESE_ANDERSEN_VERTEX,

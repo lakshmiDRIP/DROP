@@ -138,8 +138,8 @@ public class XVAExplain {
 		double dblDerivativeXVAValueFinish = dblDerivativeXVAValueStart + dblTheta * dblTimeWidth;
 
 		CloseOut cog = new CloseOutBilateral (
-			mvStart.bank().seniorRecoveryRate(),
-			mvStart.counterParty().seniorRecoveryRate()
+			mvStart.dealer().seniorRecoveryRate(),
+			mvStart.client().seniorRecoveryRate()
 		);
 
 		double dblGainOnBankDefaultFinish = -1. * (dblDerivativeXVAValueFinish -
@@ -160,9 +160,9 @@ public class XVAExplain {
 
 		double dblAssetNumeraireFinish = mvFinish.positionManifestValue();
 
-		double dblBankSeniorFundingNumeraireFinish = mvFinish.bank().seniorFundingReplicator();
+		double dblBankSeniorFundingNumeraireFinish = mvFinish.dealer().seniorFundingReplicator();
 
-		double dblCounterPartyFundingNumeraireFinish = mvFinish.counterParty().seniorFundingReplicator();
+		double dblCounterPartyFundingNumeraireFinish = mvFinish.client().seniorFundingReplicator();
 
 		ReplicationPortfolioVertex rpvFinish = ReplicationPortfolioVertex.Standard (
 			-1. * dblDerivativeXVAValueDeltaFinish,

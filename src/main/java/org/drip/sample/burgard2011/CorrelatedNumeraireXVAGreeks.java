@@ -139,8 +139,8 @@ public class CorrelatedNumeraireXVAGreeks {
 		double dblDerivativeXVAValueFinish = dblDerivativeXVAValueStart + dblTheta * dblTimeWidth;
 
 		CloseOut cog = new CloseOutBilateral (
-			mvStart.bank().seniorRecoveryRate(),
-			mvStart.counterParty().seniorRecoveryRate()
+			mvStart.dealer().seniorRecoveryRate(),
+			mvStart.client().seniorRecoveryRate()
 		);
 
 		double dblGainOnBankDefaultFinish = -1. * (dblDerivativeXVAValueFinish - cog.bankDefault (dblDerivativeXVAValueFinish));
@@ -175,9 +175,9 @@ public class CorrelatedNumeraireXVAGreeks {
 
 		double dblCashAccountAccumulationFinish = cae.accumulation();
 
-		double dblBankSeniorFundingNumeraireFinish = mvFinish.bank().seniorFundingReplicator();
+		double dblBankSeniorFundingNumeraireFinish = mvFinish.dealer().seniorFundingReplicator();
 
-		double dblCounterPartyFundingNumeraireFinish = mvFinish.counterParty().seniorFundingReplicator();
+		double dblCounterPartyFundingNumeraireFinish = mvFinish.client().seniorFundingReplicator();
 
 		ReplicationPortfolioVertex rpvFinish = ReplicationPortfolioVertex.Standard (
 			-1. * dblDerivativeXVAValueDeltaFinish,

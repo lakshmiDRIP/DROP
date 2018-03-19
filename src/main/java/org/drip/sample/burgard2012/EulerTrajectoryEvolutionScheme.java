@@ -475,8 +475,8 @@ public class EulerTrajectoryEvolutionScheme {
 			FormatUtil.FormatDouble (1., 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (agvInitial.derivativeXVAValue(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (aMVBase[aMV.length - 1].positionManifestValue(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (aMVBase[aMV.length - 1].bank().seniorFundingReplicator(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (aMVBase[aMV.length - 1].counterParty().seniorFundingReplicator(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (aMVBase[aMV.length - 1].dealer().seniorFundingReplicator(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (aMVBase[aMV.length - 1].client().seniorFundingReplicator(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (aMVBase[aMV.length - 1].csaReplicator(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (rpvInitial.positionHoldings(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (rpvInitial.bankSeniorNumeraireHoldings(), 1, 6, 1.) + " | " +
@@ -514,8 +514,8 @@ public class EulerTrajectoryEvolutionScheme {
 				FormatUtil.FormatDouble (etv.time(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (etv.positionGreekVertex().derivativeXVAValue(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (aMVBase[i].positionManifestValue(), 1, 6, 1.) + " | " +
-				FormatUtil.FormatDouble (aMVBase[i].bank().seniorFundingReplicator(), 1, 6, 1.) + " | " +
-				FormatUtil.FormatDouble (aMVBase[i].counterParty().seniorFundingReplicator(), 1, 6, 1.) + " | " +
+				FormatUtil.FormatDouble (aMVBase[i].dealer().seniorFundingReplicator(), 1, 6, 1.) + " | " +
+				FormatUtil.FormatDouble (aMVBase[i].client().seniorFundingReplicator(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (aMVBase[i].csaReplicator(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (etv.replicationPortfolioVertex().positionHoldings(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (etv.replicationPortfolioVertex().bankSeniorNumeraireHoldings(), 1, 6, 1.) + " | " +
