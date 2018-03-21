@@ -9,7 +9,7 @@ import org.drip.measure.realization.*;
 import org.drip.quant.common.FormatUtil;
 import org.drip.quant.linearalgebra.Matrix;
 import org.drip.service.env.EnvManager;
-import org.drip.xva.cpty.*;
+import org.drip.xva.gross.*;
 import org.drip.xva.netting.PositionGroupPath;
 import org.drip.xva.strategy.*;
 import org.drip.xva.universe.*;

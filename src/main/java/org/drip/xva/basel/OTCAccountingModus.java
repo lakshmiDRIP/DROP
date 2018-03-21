@@ -70,10 +70,10 @@ package org.drip.xva.basel;
 
 public abstract class OTCAccountingModus
 {
-	private org.drip.xva.cpty.ExposureAdjustmentAggregator _exposureAdjustmentAggregator = null;
+	private org.drip.xva.gross.ExposureAdjustmentAggregator _exposureAdjustmentAggregator = null;
 
 	protected OTCAccountingModus (
-		final org.drip.xva.cpty.ExposureAdjustmentAggregator exposureAdjustmentAggregator)
+		final org.drip.xva.gross.ExposureAdjustmentAggregator exposureAdjustmentAggregator)
 		throws java.lang.Exception
 	{
 		if (null == (_exposureAdjustmentAggregator = exposureAdjustmentAggregator))
@@ -88,7 +88,7 @@ public abstract class OTCAccountingModus
 	 * @return The Counter Party Group Aggregator Instance
 	 */
 
-	public org.drip.xva.cpty.ExposureAdjustmentAggregator aggregator()
+	public org.drip.xva.gross.ExposureAdjustmentAggregator aggregator()
 	{
 		return _exposureAdjustmentAggregator;
 	}
@@ -118,5 +118,5 @@ public abstract class OTCAccountingModus
 	 */
 
 	public abstract org.drip.xva.basel.OTCAccountingPolicy feePolicy (
-		final org.drip.xva.cpty.ExposureAdjustmentAggregator exposureAdjustmentAggregatorNext);
+		final org.drip.xva.gross.ExposureAdjustmentAggregator exposureAdjustmentAggregatorNext);
 }

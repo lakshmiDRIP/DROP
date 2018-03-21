@@ -75,8 +75,8 @@ public class EvolutionTrajectoryVertex
 	private double _time = java.lang.Double.NaN;
 	private double _collateral = java.lang.Double.NaN;
 	private double _hedgeError = java.lang.Double.NaN;
-	private double _bankGainOnCounterPartyDefault = java.lang.Double.NaN;
-	private double _counterPartyGainOnBankDefault = java.lang.Double.NaN;
+	private double _clientGainOnDealerDefault = java.lang.Double.NaN;
+	private double _dealerGainOnClientDefault = java.lang.Double.NaN;
 	private org.drip.xva.derivative.PositionGreekVertex _positionGreekVertex = null;
 	private org.drip.xva.derivative.ReplicationPortfolioVertex _replicationPortfolioVertex = null;
 
@@ -86,8 +86,8 @@ public class EvolutionTrajectoryVertex
 	 * @param time The Evolution Trajectory Edge Time
 	 * @param replicationPortfolioVertex The Replication Portfolio Vertex
 	 * @param positionGreekVertex The Position Greek Vertex
-	 * @param counterPartyGainOnBankDefault Counter Party Gain On Bank Default
-	 * @param bankGainOnCounterPartyDefault Bank Gain On Default of Counter Party
+	 * @param clientGainOnDealerDefault Client Gain On Dealer Default
+	 * @param dealerGainOnClientDefault Dealer Gain On Default of Client
 	 * @param collateral The Vertex Collateral
 	 * @param hedgeError The Vertex Hedge Error
 	 * 
@@ -98,8 +98,8 @@ public class EvolutionTrajectoryVertex
 		final double time,
 		final org.drip.xva.derivative.ReplicationPortfolioVertex replicationPortfolioVertex,
 		final org.drip.xva.derivative.PositionGreekVertex positionGreekVertex,
-		final double counterPartyGainOnBankDefault,
-		final double bankGainOnCounterPartyDefault,
+		final double clientGainOnDealerDefault,
+		final double dealerGainOnClientDefault,
 		final double collateral,
 		final double hedgeError)
 		throws java.lang.Exception
@@ -107,10 +107,10 @@ public class EvolutionTrajectoryVertex
 		if (!org.drip.quant.common.NumberUtil.IsValid (_time = time) ||
 			null == (_replicationPortfolioVertex = replicationPortfolioVertex) ||
 			null == (_positionGreekVertex = positionGreekVertex) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_counterPartyGainOnBankDefault =
-				counterPartyGainOnBankDefault) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_bankGainOnCounterPartyDefault =
-				bankGainOnCounterPartyDefault) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_clientGainOnDealerDefault =
+				clientGainOnDealerDefault) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_dealerGainOnClientDefault =
+				dealerGainOnClientDefault) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_collateral = collateral) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_hedgeError = hedgeError))
 		{
@@ -174,25 +174,25 @@ public class EvolutionTrajectoryVertex
 	}
 
 	/**
-	 * Retrieve the Counter Party Gain On Bank Default
+	 * Retrieve the Client Gain On Dealer Default
 	 * 
-	 * @return The Counter Party Gain On Bank Default
+	 * @return The Client Gain On Dealer Default
 	 */
 
-	public double gainOnBankDefault()
+	public double gainOnDealerDefault()
 	{
-		return _counterPartyGainOnBankDefault;
+		return _clientGainOnDealerDefault;
 	}
 
 	/**
-	 * Retrieve the Bank Gain On Individual Counter Party Default
+	 * Retrieve the Dealer Gain On Individual Client Default
 	 * 
-	 * @return The Bank Gain On Individual Counter Party Default
+	 * @return The Dealer Gain On Individual Client Default
 	 */
 
-	public double gainOnCounterPartyDefault()
+	public double gainOnClientDefault()
 	{
-		return _bankGainOnCounterPartyDefault;
+		return _dealerGainOnClientDefault;
 	}
 
 	/**
@@ -211,20 +211,24 @@ public class EvolutionTrajectoryVertex
 		throws java.lang.Exception
 	{
 		if (null == marketVertex)
+		{
 			throw new java.lang.Exception
 				("EvolutionTrajectoryVertex::verifyFundingConstraint => Invalid Inputs");
+		}
 
-		org.drip.xva.universe.MarketVertexEntity bankMarketVertex = marketVertex.dealer();
+		org.drip.xva.universe.MarketVertexEntity dealerMarketVertex = marketVertex.dealer();
 
 		double fundingConstraint = _positionGreekVertex.derivativeXVAValue() +
-			bankMarketVertex.seniorFundingReplicator() *
-				_replicationPortfolioVertex.bankSeniorNumeraireHoldings();
+			dealerMarketVertex.seniorFundingReplicator() *
+				_replicationPortfolioVertex.dealerSeniorNumeraireHoldings();
 
-		double bankSubordinateFundingMarketVertex = bankMarketVertex.subordinateFundingReplicator();
+		double dealerSubordinateFundingMarketVertex = dealerMarketVertex.subordinateFundingReplicator();
 
-		if (org.drip.quant.common.NumberUtil.IsValid (bankSubordinateFundingMarketVertex))
-			fundingConstraint += bankSubordinateFundingMarketVertex *
-				_replicationPortfolioVertex.bankSubordinateNumeraireHoldings();
+		if (org.drip.quant.common.NumberUtil.IsValid (dealerSubordinateFundingMarketVertex))
+		{
+			fundingConstraint += dealerSubordinateFundingMarketVertex *
+				_replicationPortfolioVertex.dealerSubordinateNumeraireHoldings();
+		}
 
 		return fundingConstraint;
 	}

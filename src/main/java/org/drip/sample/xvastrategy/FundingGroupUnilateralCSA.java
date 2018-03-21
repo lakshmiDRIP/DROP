@@ -8,9 +8,9 @@ import org.drip.measure.process.DiffusionEvolver;
 import org.drip.measure.realization.*;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.xva.cpty.*;
 import org.drip.xva.definition.*;
-import org.drip.xva.derivative.ReplicationPortfolioVertexBank;
+import org.drip.xva.derivative.ReplicationPortfolioVertexDealer;
+import org.drip.xva.gross.*;
 import org.drip.xva.netting.PositionGroupPath;
 import org.drip.xva.strategy.*;
 import org.drip.xva.universe.*;
@@ -594,7 +594,7 @@ public class FundingGroupUnilateralCSA {
 		System.out.println ("\t||----------------------------------------||");
 
 		for (int i = 0; i <= iNumStep; ++i) {
-			ReplicationPortfolioVertexBank rpvb = aBKV1[i].bankReplicationPortfolio();
+			ReplicationPortfolioVertexDealer rpvb = aBKV1[i].dealerReplicationPortfolio();
 
 			System.out.println ("\t|| [" + adtVertex[i] + "] =>   " +
 				FormatUtil.FormatDouble (rpvb.seniorNumeraireHoldings(), 1, 3, 1.) + "  |  " +
@@ -621,7 +621,7 @@ public class FundingGroupUnilateralCSA {
 		System.out.println ("\t||----------------------------------------||");
 
 		for (int i = 0; i <= iNumStep; ++i) {
-			ReplicationPortfolioVertexBank rpvb = aBKV2[i].bankReplicationPortfolio();
+			ReplicationPortfolioVertexDealer rpvb = aBKV2[i].dealerReplicationPortfolio();
 
 			System.out.println ("\t|| [" + adtVertex[i] + "] =>   " +
 				FormatUtil.FormatDouble (rpvb.seniorNumeraireHoldings(), 1, 3, 1.) + "  |  " +

@@ -47,8 +47,8 @@ package org.drip.xva.evolver;
  */
 
 /**
- * EntityDynamicsContainer contains the Bank and the Counter Party Hazard and Recovery Latent State
- *  Evolvers. The References are:<br><br>
+ * EntityDynamicsContainer contains the Dealer and the Client Hazard and Recovery Latent State Evolvers. The
+ *  References are:<br><br>
  *  
  *  - Burgard, C., and M. Kjaer (2013): Funding Strategies, Funding Costs <i>Risk</i> <b>24 (12)</b>
  *  	82-87.<br><br>
@@ -69,140 +69,139 @@ package org.drip.xva.evolver;
 
 public class EntityDynamicsContainer extends org.drip.xva.evolver.DynamicsContainer
 {
-	private org.drip.state.identifier.EntityHazardLabel _bankHazardLabel = null;
-	private org.drip.state.identifier.EntityHazardLabel _counterPartyHazardLabel = null;
-	private org.drip.state.identifier.EntityRecoveryLabel _bankSeniorRecoveryLabel = null;
-	private org.drip.state.identifier.EntityRecoveryLabel _counterPartyRecoveryLabel = null;
-	private org.drip.state.identifier.EntityRecoveryLabel _bankSubordinateRecoveryLabel = null;
+	private org.drip.state.identifier.EntityHazardLabel _clientHazardLabel = null;
+	private org.drip.state.identifier.EntityHazardLabel _dealerHazardLabel = null;
+	private org.drip.state.identifier.EntityRecoveryLabel _clientRecoveryLabel = null;
+	private org.drip.state.identifier.EntityRecoveryLabel _dealerSeniorRecoveryLabel = null;
+	private org.drip.state.identifier.EntityRecoveryLabel _dealerSubordinateRecoveryLabel = null;
 
 	/**
 	 * EntityDynamicsContainer Constructor
 	 * 
-	 * @param bankHazardLatentState The Bank Hazard Rate Latent State
-	 * @param bankSeniorRecoveryLatentState The Bank Senior Recovery Rate Latent State
-	 * @param bankSubordinateRecoveryLatentState The Bank Subordinate Rate Latent State
-	 * @param counterPartyHazardLatentState The Counter Party Hazard Rate Latent State
-	 * @param counterPartyRecoveryLatentState The Counter Party Recovery Rate Latent State
+	 * @param dealerHazardLatentState The Dealer Hazard Rate Latent State
+	 * @param dealerSeniorRecoveryLatentState The Dealer Senior Recovery Rate Latent State
+	 * @param dealerSubordinateRecoveryLatentState The Dealer Subordinate Rate Latent State
+	 * @param clientHazardLatentState The Client Hazard Rate Latent State
+	 * @param clientRecoveryLatentState The Client Recovery Rate Latent State
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public EntityDynamicsContainer (
-		final org.drip.xva.evolver.TerminalLatentState bankHazardLatentState,
-		final org.drip.xva.evolver.TerminalLatentState bankSeniorRecoveryLatentState,
-		final org.drip.xva.evolver.TerminalLatentState bankSubordinateRecoveryLatentState,
-		final org.drip.xva.evolver.TerminalLatentState counterPartyHazardLatentState,
-		final org.drip.xva.evolver.TerminalLatentState counterPartyRecoveryLatentState)
+		final org.drip.xva.evolver.TerminalLatentState dealerHazardLatentState,
+		final org.drip.xva.evolver.TerminalLatentState dealerSeniorRecoveryLatentState,
+		final org.drip.xva.evolver.TerminalLatentState dealerSubordinateRecoveryLatentState,
+		final org.drip.xva.evolver.TerminalLatentState clientHazardLatentState,
+		final org.drip.xva.evolver.TerminalLatentState clientRecoveryLatentState)
 		throws java.lang.Exception
 	{
-		if (null == bankHazardLatentState ||
-			null == bankSeniorRecoveryLatentState ||
-			null == counterPartyHazardLatentState ||
-			null == counterPartyRecoveryLatentState)
+		if (null == dealerHazardLatentState ||
+			null == dealerSeniorRecoveryLatentState ||
+			null == clientHazardLatentState ||
+			null == clientRecoveryLatentState)
 		{
 			throw new java.lang.Exception ("EntityDynamicsContainer Constructor => Invalid Inputs");
 		}
 
-		org.drip.state.identifier.LatentStateLabel bankHazardLabel = bankHazardLatentState.label();
+		org.drip.state.identifier.LatentStateLabel dealerHazardLabel = dealerHazardLatentState.label();
 
-		org.drip.state.identifier.LatentStateLabel bankSeniorRecoveryLabel =
-			bankSeniorRecoveryLatentState.label();
+		org.drip.state.identifier.LatentStateLabel dealerSeniorRecoveryLabel =
+			dealerSeniorRecoveryLatentState.label();
 
-		org.drip.state.identifier.LatentStateLabel counterPartyHazardLabel =
-			counterPartyHazardLatentState.label();
+		org.drip.state.identifier.LatentStateLabel clientHazardLabel = clientHazardLatentState.label();
 
-		org.drip.state.identifier.LatentStateLabel counterPartyRecoveryLabel =
-			counterPartyRecoveryLatentState.label();
+		org.drip.state.identifier.LatentStateLabel clientRecoveryLabel = clientRecoveryLatentState.label();
 
-		if (!(bankHazardLabel instanceof org.drip.state.identifier.EntityHazardLabel) ||
-			!(bankSeniorRecoveryLabel instanceof org.drip.state.identifier.EntityRecoveryLabel) ||
-			!(counterPartyHazardLabel instanceof org.drip.state.identifier.EntityHazardLabel) ||
-			!(counterPartyRecoveryLabel instanceof org.drip.state.identifier.EntityRecoveryLabel) ||
-			!addTerminalLatentState (bankHazardLatentState) ||
-			!addTerminalLatentState (bankSeniorRecoveryLatentState) ||
-			!addTerminalLatentState (counterPartyHazardLatentState) ||
-			!addTerminalLatentState (counterPartyRecoveryLatentState))
+		if (!(dealerHazardLabel instanceof org.drip.state.identifier.EntityHazardLabel) ||
+			!(dealerSeniorRecoveryLabel instanceof org.drip.state.identifier.EntityRecoveryLabel) ||
+			!(clientHazardLabel instanceof org.drip.state.identifier.EntityHazardLabel) ||
+			!(clientRecoveryLabel instanceof org.drip.state.identifier.EntityRecoveryLabel) ||
+			!addTerminalLatentState (dealerHazardLatentState) ||
+			!addTerminalLatentState (dealerSeniorRecoveryLatentState) ||
+			!addTerminalLatentState (clientHazardLatentState) ||
+			!addTerminalLatentState (clientRecoveryLatentState))
 		{
 			throw new java.lang.Exception ("EntityDynamicsContainer Constructor => Invalid Inputs");
 		}
 
-		_bankHazardLabel = (org.drip.state.identifier.EntityHazardLabel) bankHazardLabel;
-		_counterPartyHazardLabel = (org.drip.state.identifier.EntityHazardLabel) counterPartyHazardLabel;
-		_bankSeniorRecoveryLabel = (org.drip.state.identifier.EntityRecoveryLabel) bankSeniorRecoveryLabel;
-		_counterPartyRecoveryLabel = (org.drip.state.identifier.EntityRecoveryLabel) counterPartyRecoveryLabel;
+		_dealerHazardLabel = (org.drip.state.identifier.EntityHazardLabel) dealerHazardLabel;
+		_clientHazardLabel = (org.drip.state.identifier.EntityHazardLabel) clientHazardLabel;
+		_dealerSeniorRecoveryLabel = (org.drip.state.identifier.EntityRecoveryLabel)
+			dealerSeniorRecoveryLabel;
+		_clientRecoveryLabel = (org.drip.state.identifier.EntityRecoveryLabel) clientRecoveryLabel;
 
-		if (null != bankSubordinateRecoveryLatentState)
+		if (null != dealerSubordinateRecoveryLatentState)
 		{
-			org.drip.state.identifier.LatentStateLabel bankSubordinateRecoveryLabel =
-				bankSubordinateRecoveryLatentState.label();
+			org.drip.state.identifier.LatentStateLabel dealerSubordinateRecoveryLabel =
+				dealerSubordinateRecoveryLatentState.label();
 
-			if (!(bankSubordinateRecoveryLabel instanceof org.drip.state.identifier.EntityRecoveryLabel) ||
-				!addTerminalLatentState (bankSubordinateRecoveryLatentState))
+			if (!(dealerSubordinateRecoveryLabel instanceof org.drip.state.identifier.EntityRecoveryLabel) ||
+				!addTerminalLatentState (dealerSubordinateRecoveryLatentState))
 			{
 				throw new java.lang.Exception ("EntityDynamicsContainer Constructor => Invalid Inputs");
 			}
 
-			_bankSubordinateRecoveryLabel = (org.drip.state.identifier.EntityRecoveryLabel)
-				bankSubordinateRecoveryLabel;
+			_dealerSubordinateRecoveryLabel = (org.drip.state.identifier.EntityRecoveryLabel)
+				dealerSubordinateRecoveryLabel;
 		}
 	}
 
 	/**
-	 * Retrieve the Bank Hazard Rate Evolver
+	 * Retrieve the Dealer Hazard Rate Evolver
 	 * 
-	 * @return The Bank Hazard Rate Evolver
+	 * @return The Dealer Hazard Rate Evolver
 	 */
 
-	public org.drip.measure.process.DiffusionEvolver bankHazardRateEvolver()
+	public org.drip.measure.process.DiffusionEvolver dealerHazardRateEvolver()
 	{
-		return terminalLatentStateContainer().entityHazard (_bankHazardLabel).evolver();
+		return terminalLatentStateContainer().entityHazard (_dealerHazardLabel).evolver();
 	}
 
 	/**
-	 * Retrieve the Bank Senior Recovery Rate Evolver
+	 * Retrieve the Dealer Senior Recovery Rate Evolver
 	 * 
-	 * @return The Bank Senior Recovery Rate Evolver
+	 * @return The Dealer Senior Recovery Rate Evolver
 	 */
 
-	public org.drip.measure.process.DiffusionEvolver bankSeniorRecoveryRateEvolver()
+	public org.drip.measure.process.DiffusionEvolver dealerSeniorRecoveryRateEvolver()
 	{
-		return terminalLatentStateContainer().entityRecovery (_bankSeniorRecoveryLabel).evolver();
+		return terminalLatentStateContainer().entityRecovery (_dealerSeniorRecoveryLabel).evolver();
 	}
 
 	/**
-	 * Retrieve the Bank Subordinate Recovery Rate Evolver
+	 * Retrieve the Dealer Subordinate Recovery Rate Evolver
 	 * 
-	 * @return The Bank Subordinate Recovery Rate Evolver
+	 * @return The Dealer Subordinate Recovery Rate Evolver
 	 */
 
-	public org.drip.measure.process.DiffusionEvolver bankSubordinateRecoveryRateEvolver()
+	public org.drip.measure.process.DiffusionEvolver dealerSubordinateRecoveryRateEvolver()
 	{
-		org.drip.xva.evolver.TerminalLatentState terminalLatentStateBankSubordinateRecovery =
-			terminalLatentStateContainer().entityRecovery (_bankSubordinateRecoveryLabel);
+		org.drip.xva.evolver.TerminalLatentState terminalLatentStateDealerSubordinateRecovery =
+			terminalLatentStateContainer().entityRecovery (_dealerSubordinateRecoveryLabel);
 
-		return null == terminalLatentStateBankSubordinateRecovery ? null :
-			terminalLatentStateBankSubordinateRecovery.evolver();
+		return null == terminalLatentStateDealerSubordinateRecovery ? null :
+			terminalLatentStateDealerSubordinateRecovery.evolver();
 	}
 
 	/**
-	 * Retrieve the Counter Party Hazard Rate Evolver
+	 * Retrieve the Client Hazard Rate Evolver
 	 * 
-	 * @return The Counter Party Hazard Rate Evolver
+	 * @return The Client Hazard Rate Evolver
 	 */
 
-	public org.drip.measure.process.DiffusionEvolver counterPartyHazardRateEvolver()
+	public org.drip.measure.process.DiffusionEvolver clientHazardRateEvolver()
 	{
-		return terminalLatentStateContainer().entityHazard (_counterPartyHazardLabel).evolver();
+		return terminalLatentStateContainer().entityHazard (_clientHazardLabel).evolver();
 	}
 
 	/**
-	 * Retrieve the Counter Party Recovery Rate Evolver
+	 * Retrieve the Client Recovery Rate Evolver
 	 * 
-	 * @return The Counter Party Recovery Rate Evolver
+	 * @return The Client Recovery Rate Evolver
 	 */
 
-	public org.drip.measure.process.DiffusionEvolver counterPartyRecoveryRateEvolver()
+	public org.drip.measure.process.DiffusionEvolver clientRecoveryRateEvolver()
 	{
-		return terminalLatentStateContainer().entityRecovery (_counterPartyRecoveryLabel).evolver();
+		return terminalLatentStateContainer().entityRecovery (_clientRecoveryLabel).evolver();
 	}
 }

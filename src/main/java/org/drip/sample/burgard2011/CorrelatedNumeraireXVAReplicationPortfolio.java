@@ -142,11 +142,11 @@ public class CorrelatedNumeraireXVAReplicationPortfolio {
 			mvStart.client().seniorRecoveryRate()
 		);
 
-		double dblGainOnBankDefaultFinish = -1. * (dblDerivativeXVAValueFinish -
-			cog.bankDefault (dblDerivativeXVAValueFinish));
+		double dblGainOnBankDefaultFinish = -1. * (dblDerivativeXVAValueFinish - cog.dealerDefault
+			(dblDerivativeXVAValueFinish));
 
-		double dblGainOnCounterPartyDefaultFinish = -1. * (dblDerivativeXVAValueFinish -
-			cog.counterPartyDefault (dblDerivativeXVAValueFinish));
+		double dblGainOnCounterPartyDefaultFinish = -1. * (dblDerivativeXVAValueFinish - cog.clientDefault
+			(dblDerivativeXVAValueFinish));
 
 		org.drip.xva.derivative.CashAccountEdge cae = tes.rebalanceCash (
 			etvStart,
@@ -177,13 +177,13 @@ public class CorrelatedNumeraireXVAReplicationPortfolio {
 			FormatUtil.FormatDouble (dblCounterPartyFundingNumeraireFinish, 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (mvFinish.csaReplicator(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (rpvFinish.positionHoldings(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (rpvFinish.bankSeniorNumeraireHoldings(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (rpvFinish.counterPartyNumeraireHoldings(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (rpvFinish.dealerSeniorNumeraireHoldings(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (rpvFinish.clientNumeraireHoldings(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (rpvFinish.cashAccount(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (dblCashAccountAccumulationFinish, 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (cae.assetAccumulation(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (cae.bankAccumulation(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (cae.counterPartyAccumulation(), 1, 6, 1.) + " ||"
+			FormatUtil.FormatDouble (cae.dealerAccumulation(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (cae.clientAccumulation(), 1, 6, 1.) + " ||"
 		);
 
 		return new EvolutionTrajectoryVertex (
@@ -539,10 +539,11 @@ public class CorrelatedNumeraireXVAReplicationPortfolio {
 			dblDerivativeValue
 		);
 
-		double dblGainOnBankDefaultInitial = -1. * (dblDerivativeXVAValue - cob.bankDefault (dblDerivativeXVAValue));
+		double dblGainOnBankDefaultInitial = -1. * (dblDerivativeXVAValue - cob.dealerDefault
+			(dblDerivativeXVAValue));
 
-		double dblGainOnCounterPartyDefaultInitial = -1. * (dblDerivativeXVAValue -
-			cob.counterPartyDefault (dblDerivativeXVAValue));
+		double dblGainOnCounterPartyDefaultInitial = -1. * (dblDerivativeXVAValue - cob.clientDefault
+			(dblDerivativeXVAValue));
 
 		System.out.println();
 

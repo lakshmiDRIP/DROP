@@ -142,10 +142,11 @@ public class XVAGreeks {
 			mvStart.client().seniorRecoveryRate()
 		);
 
-		double dblGainOnBankDefaultFinish = -1. * (dblDerivativeXVAValueFinish - cog.bankDefault (dblDerivativeXVAValueFinish));
+		double dblGainOnBankDefaultFinish = -1. * (dblDerivativeXVAValueFinish - cog.dealerDefault
+			(dblDerivativeXVAValueFinish));
 
 		double dblGainOnCounterPartyDefaultFinish = -1. * (dblDerivativeXVAValueFinish -
-			cog.counterPartyDefault (dblDerivativeXVAValueFinish));
+			cog.clientDefault (dblDerivativeXVAValueFinish));
 
 		System.out.println ("\t||" +
 			FormatUtil.FormatDouble (dblTime, 1, 6, 1.) + " | " +
@@ -157,8 +158,8 @@ public class XVAGreeks {
 			FormatUtil.FormatDouble (bker.derivativeXVAStochasticGrowth(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (bker.derivativeXVACollateralGrowth(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (bker.derivativeXVAFundingGrowth(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (bker.derivativeXVABankDefaultGrowth(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (bker.derivativeXVACounterPartyDefaultGrowth(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (bker.derivativeXVADealerDefaultGrowth(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (bker.derivativeXVAClientDefaultGrowth(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (dblThetaAssetNumeraireDown, 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (dblTheta, 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (dblThetaAssetNumeraireUp, 1, 6, 1.) + " ||"
@@ -530,10 +531,11 @@ public class XVAGreeks {
 			dblDerivativeValue
 		);
 
-		double dblGainOnBankDefaultInitial = -1. * (dblDerivativeXVAValue - cob.bankDefault (dblDerivativeXVAValue));
+		double dblGainOnBankDefaultInitial = -1. * (dblDerivativeXVAValue - cob.dealerDefault
+			(dblDerivativeXVAValue));
 
-		double dblGainOnCounterPartyDefaultInitial = -1. * (dblDerivativeXVAValue -
-			cob.counterPartyDefault (dblDerivativeXVAValue));
+		double dblGainOnCounterPartyDefaultInitial = -1. * (dblDerivativeXVAValue - cob.clientDefault
+			(dblDerivativeXVAValue));
 
 		System.out.println();
 

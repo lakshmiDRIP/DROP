@@ -179,58 +179,58 @@ public class CreditDebtGroup extends org.drip.xva.proto.ObjectSpecification
 	}
 
 	/**
-	 * Retrieve the Bank Hazard Label
+	 * Retrieve the Dealer Hazard Label
 	 * 
-	 * @return The Bank Hazard Label
+	 * @return The Dealer Hazard Label
 	 */
 
-	public org.drip.state.identifier.EntityHazardLabel bankHazardLabel()
+	public org.drip.state.identifier.EntityHazardLabel dealerHazardLabel()
 	{
-		return _creditDebtGroupSpecification.bankHazardLabel();
+		return _creditDebtGroupSpecification.dealerHazardLabel();
 	}
 
 	/**
-	 * Retrieve the Counter Party Hazard Label
+	 * Retrieve the Client Hazard Label
 	 * 
-	 * @return The Counter Party Hazard Label
+	 * @return The Client Hazard Label
 	 */
 
-	public org.drip.state.identifier.EntityHazardLabel counterPartyHazardLabel()
+	public org.drip.state.identifier.EntityHazardLabel clientPartyHazardLabel()
 	{
-		return _creditDebtGroupSpecification.counterPartyHazardLabel();
+		return _creditDebtGroupSpecification.clientHazardLabel();
 	}
 
 	/**
-	 * Retrieve the Bank Senior Recovery Label
+	 * Retrieve the Dealer Senior Recovery Label
 	 * 
-	 * @return The Bank Senior Recovery Label
+	 * @return The Dealer Senior Recovery Label
 	 */
 
-	public org.drip.state.identifier.EntityRecoveryLabel bankSeniorRecoveryLabel()
+	public org.drip.state.identifier.EntityRecoveryLabel dealerSeniorRecoveryLabel()
 	{
-		return _creditDebtGroupSpecification.bankSeniorRecoveryLabel();
+		return _creditDebtGroupSpecification.dealerSeniorRecoveryLabel();
 	}
 
 	/**
-	 * Retrieve the Bank Subordinate Recovery Label
+	 * Retrieve the Dealer Subordinate Recovery Label
 	 * 
-	 * @return The Bank Subordinate Recovery Label
+	 * @return The Dealer Subordinate Recovery Label
 	 */
 
-	public org.drip.state.identifier.EntityRecoveryLabel bankSubordinateRecoveryLabel()
+	public org.drip.state.identifier.EntityRecoveryLabel dealerSubordinateRecoveryLabel()
 	{
-		return _creditDebtGroupSpecification.bankSubordinateRecoveryLabel();
+		return _creditDebtGroupSpecification.dealerSubordinateRecoveryLabel();
 	}
 
 	/**
-	 * Retrieve the Counter Party Senior Recovery Label
+	 * Retrieve the Client Senior Recovery Label
 	 * 
-	 * @return The Counter Party Senior Recovery Label
+	 * @return The Client Senior Recovery Label
 	 */
 
-	public org.drip.state.identifier.EntityRecoveryLabel counterPartyRecoveryLabel()
+	public org.drip.state.identifier.EntityRecoveryLabel clientRecoveryLabel()
 	{
-		return _creditDebtGroupSpecification.counterPartyRecoveryLabel();
+		return _creditDebtGroupSpecification.clientRecoveryLabel();
 	}
 
 	/**

@@ -48,8 +48,8 @@ package org.drip.xva.definition;
  */
 
 /**
- * CloseOut exposes the General Close Out Amounts to be applied to the MTM Exposure at the Bank/Counter Party
- *  Default. The References are:
+ * CloseOut exposes the General Close Out Amounts to be applied to the MTM Exposure at the Dealer/Client
+ * 	Default. The References are:
  *  
  *  - Burgard, C., and M. Kjaer (2013): Funding Strategies, Funding Costs, Risk, 24 (12) 82-87.
  *  
@@ -71,68 +71,74 @@ public abstract class CloseOut
 {
 
 	/**
-	 * Retrieve the Close-out from the Exposure on Bank Default
+	 * Retrieve the Close-out from the Exposure on Dealer Default
 	 * 
-	 * @param dblUncollateralizedExposure Counter Party Group Uncollateralized Exposure
-	 * @param dblCollateralAmount Counter Party Group Collateral Amount
+	 * @param dblUncollateralizedExposure Group Uncollateralized Exposure
+	 * @param dblCollateralAmount Group Collateral Amount
 	 * 
-	 * @return Close-out from the Exposure on Bank Default
+	 * @return Close-out from the Exposure on Dealer Default
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public abstract double bankDefault (
+	public abstract double dealerDefault (
 		final double dblUncollateralizedExposure,
 		final double dblCollateralAmount)
 		throws java.lang.Exception;
 
 	/**
-	 * Retrieve the Close-out from the Exposure on a specific Counter Party Default
+	 * Retrieve the Close-out from the Exposure on a specific Client Default
 	 * 
-	 * @param dblUncollateralizedExposure Counter Party Group Uncollateralized Exposure
-	 * @param dblCollateralAmount Counter Party Group Collateral Amount
+	 * @param dblUncollateralizedExposure Group Uncollateralized Exposure
+	 * @param dblCollateralAmount Group Collateral Amount
 	 * 
-	 * @return The Close-out from the Exposure on a specific Counter Party Default
+	 * @return The Close-out from the Exposure on a specific Client Default
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public abstract double counterPartyDefault (
+	public abstract double clientDefault (
 		final double dblUncollateralizedExposure,
 		final double dblCollateralAmount)
 		throws java.lang.Exception;
 
 	/**
-	 * Retrieve the Close-out from the Exposure on Bank Default
+	 * Retrieve the Close-out from the Exposure on Dealer Default
 	 * 
-	 * @param dblUncollateralizedExposure Counter Party Group Uncollateralized Exposure
+	 * @param dblUncollateralizedExposure Group Uncollateralized Exposure
 	 * 
-	 * @return Close-out from the Exposure on Bank Default
+	 * @return Close-out from the Exposure on Dealer Default
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double bankDefault (
+	public double dealerDefault (
 		final double dblUncollateralizedExposure)
 		throws java.lang.Exception
 	{
-		return bankDefault (dblUncollateralizedExposure, 0.);
+		return dealerDefault (
+			dblUncollateralizedExposure,
+			0.
+		);
 	}
 
 	/**
-	 * Retrieve the Close-out from the Exposure on specific Counter Party Default
+	 * Retrieve the Close-out from the Exposure on specific Client Default
 	 * 
 	 * @param dblExposure Counter Party Group Exposure
 	 * 
-	 * @return The Close-out from the Exposure on specific Counter Party Default
+	 * @return The Close-out from the Exposure on specific Group Default
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double counterPartyDefault (
+	public double clientDefault (
 		final double dblExposure)
 		throws java.lang.Exception
 	{
-		return counterPartyDefault (dblExposure, 0.);
+		return clientDefault (
+			dblExposure,
+			0.
+		);
 	}
 }

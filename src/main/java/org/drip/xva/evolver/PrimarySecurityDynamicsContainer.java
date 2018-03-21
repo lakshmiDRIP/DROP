@@ -49,8 +49,8 @@ package org.drip.xva.evolver;
 
 /**
  * PrimarySecurityDynamicsContainer holds the Economy with the following Traded Assets - the Overnight Index
- *  Numeraire, the Collateral Scheme Numeraire, the Default-able Bank Bond Numeraire, the Array of
- *  Default-able Counter-party Numeraires, and an Asset that follows Brownian Motion. The References are:
+ *  Numeraire, the Collateral Scheme Numeraire, the Default-able Dealer Bond Numeraire, the Array of
+ *  Default-able Client Numeraires, and an Asset that follows Brownian Motion. The References are:
  *  
  *  - Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and the
  *  	Re-Hypothecation Option, eSSRN, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955.
@@ -73,9 +73,9 @@ public class PrimarySecurityDynamicsContainer extends org.drip.xva.evolver.Dynam
 	private java.lang.String _csaID = null;
 	private java.lang.String _positionID = null;
 	private java.lang.String _overnightID = null;
-	private java.lang.String _bankSeniorFundingID = null;
-	private java.lang.String _counterPartyFundingID = null;
-	private java.lang.String _bankSubordinateFundingID = null;
+	private java.lang.String _clientFundingID = null;
+	private java.lang.String _dealerSeniorFundingID = null;
+	private java.lang.String _dealerSubordinateFundingID = null;
 
 	/**
 	 * PrimarySecurityDynamicsContainer Constructor
@@ -83,9 +83,9 @@ public class PrimarySecurityDynamicsContainer extends org.drip.xva.evolver.Dynam
 	 * @param position The Position Primary Security
 	 * @param overnight The Overnight Index Primary Security
 	 * @param csa The CSA Primary Security
-	 * @param bankSeniorFunding Bank Senior Funding Primary Security
-	 * @param bankSubordinateFunding Bank Subordinate Funding Primary Security
-	 * @param counterPartyFunding Counter Party Funding Primary Security
+	 * @param dealerSeniorFunding Dealer Senior Funding Primary Security
+	 * @param dealerSubordinateFunding Dealer Subordinate Funding Primary Security
+	 * @param clientFunding Client Funding Primary Security
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -94,16 +94,16 @@ public class PrimarySecurityDynamicsContainer extends org.drip.xva.evolver.Dynam
 		final org.drip.xva.evolver.PrimarySecurity position,
 		final org.drip.xva.evolver.PrimarySecurity overnight,
 		final org.drip.xva.evolver.PrimarySecurity csa,
-		final org.drip.xva.evolver.PrimarySecurity bankSeniorFunding,
-		final org.drip.xva.evolver.PrimarySecurity bankSubordinateFunding,
-		final org.drip.xva.evolver.PrimarySecurity counterPartyFunding)
+		final org.drip.xva.evolver.PrimarySecurity dealerSeniorFunding,
+		final org.drip.xva.evolver.PrimarySecurity dealerSubordinateFunding,
+		final org.drip.xva.evolver.PrimarySecurity clientFunding)
 		throws java.lang.Exception
 	{
 		if (!addPrimarySecurity (overnight) ||
 			!addPrimarySecurity (csa) ||
-			!addPrimarySecurity (bankSeniorFunding) ||
-			!addPrimarySecurity (counterPartyFunding) ||
-			!addPrimarySecurity (bankSubordinateFunding))
+			!addPrimarySecurity (dealerSeniorFunding) ||
+			!addPrimarySecurity (clientFunding) ||
+			!addPrimarySecurity (dealerSubordinateFunding))
 		{
 			throw new java.lang.Exception ("PrimarySecurityDynamicsContainer Constructor => Invalid Inputs");
 		}
@@ -114,18 +114,18 @@ public class PrimarySecurityDynamicsContainer extends org.drip.xva.evolver.Dynam
 
 		org.drip.state.identifier.LatentStateLabel overnightLabel = overnight.label();
 
-		org.drip.state.identifier.LatentStateLabel bankSeniorFundingLabel = bankSeniorFunding.label();
+		org.drip.state.identifier.LatentStateLabel clientFundingLabel = clientFunding.label();
 
-		org.drip.state.identifier.LatentStateLabel counterPartyFundingLabel = counterPartyFunding.label();
+		org.drip.state.identifier.LatentStateLabel dealerSeniorFundingLabel = dealerSeniorFunding.label();
 
-		org.drip.state.identifier.LatentStateLabel bankSubordinateFundingLabel = null ==
-			bankSubordinateFunding ? null : bankSubordinateFunding.label();
+		org.drip.state.identifier.LatentStateLabel dealerSubordinateFundingLabel = null ==
+			dealerSubordinateFunding ? null : dealerSubordinateFunding.label();
 
 		if (!(csaLabel instanceof org.drip.state.identifier.CSALabel) ||
 			!(overnightLabel instanceof org.drip.state.identifier.OvernightLabel) ||
-			!(bankSeniorFundingLabel instanceof org.drip.state.identifier.EntityFundingLabel) ||
-			!(counterPartyFundingLabel instanceof org.drip.state.identifier.EntityFundingLabel) ||
-			(null != bankSubordinateFundingLabel && !(bankSubordinateFundingLabel instanceof
+			!(dealerSeniorFundingLabel instanceof org.drip.state.identifier.EntityFundingLabel) ||
+			!(clientFundingLabel instanceof org.drip.state.identifier.EntityFundingLabel) ||
+			(null != dealerSubordinateFundingLabel && !(dealerSubordinateFundingLabel instanceof
 				org.drip.state.identifier.EntityFundingLabel)))
 		{
 			throw new java.lang.Exception ("PrimarySecurityDynamicsContainer Constructor => Invalid Inputs");
@@ -135,13 +135,14 @@ public class PrimarySecurityDynamicsContainer extends org.drip.xva.evolver.Dynam
 
 		_overnightID = overnight.id();
 
-		_bankSeniorFundingID = bankSeniorFunding.id();
+		_clientFundingID = clientFunding.id();
 
-		_counterPartyFundingID = counterPartyFunding.id();
+		_dealerSeniorFundingID = dealerSeniorFunding.id();
 
 		_positionID = null == position ? null : position.id();
 
-		_bankSubordinateFundingID = null == bankSubordinateFundingLabel ? null : bankSubordinateFunding.id();
+		_dealerSubordinateFundingID = null == dealerSubordinateFundingLabel ? null :
+			dealerSubordinateFunding.id();
 	}
 
 	/**
@@ -178,35 +179,35 @@ public class PrimarySecurityDynamicsContainer extends org.drip.xva.evolver.Dynam
 	}
 
 	/**
-	 * Retrieve the Bank Senior Funding Primary Security
+	 * Retrieve the Dealer Senior Funding Primary Security
 	 * 
-	 * @return The Bank Senior Funding Primary Security
+	 * @return The Dealer Senior Funding Primary Security
 	 */
 
-	public org.drip.xva.evolver.PrimarySecurity bankSeniorFunding()
+	public org.drip.xva.evolver.PrimarySecurity dealerSeniorFunding()
 	{
-		return primarySecurity (_bankSeniorFundingID);
+		return primarySecurity (_dealerSeniorFundingID);
 	}
 
 	/**
-	 * Retrieve the Bank Subordinate Funding Primary Security
+	 * Retrieve the Dealer Subordinate Funding Primary Security
 	 * 
-	 * @return The Bank Subordinate Funding Primary Security
+	 * @return The Dealer Subordinate Funding Primary Security
 	 */
 
-	public org.drip.xva.evolver.PrimarySecurity bankSubordinateFunding()
+	public org.drip.xva.evolver.PrimarySecurity dealerSubordinateFunding()
 	{
-		return primarySecurity (_bankSubordinateFundingID);
+		return primarySecurity (_dealerSubordinateFundingID);
 	}
 
 	/**
-	 * Retrieve the Counter Party Funding Primary Security
+	 * Retrieve the Client Funding Primary Security
 	 * 
-	 * @return The Counter Party Funding Primary Security
+	 * @return The Client Funding Primary Security
 	 */
 
-	public org.drip.xva.evolver.PrimarySecurity counterPartyFunding()
+	public org.drip.xva.evolver.PrimarySecurity clientFunding()
 	{
-		return primarySecurity (_counterPartyFundingID);
+		return primarySecurity (_clientFundingID);
 	}
 }

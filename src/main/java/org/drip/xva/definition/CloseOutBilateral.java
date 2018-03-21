@@ -49,7 +49,7 @@ package org.drip.xva.definition;
 
 /**
  * CloseOutBilateral implements the (2002) ISDA Master Agreement Bilateral Close Out Scheme to be applied to
- *  the MTM at the Bank/Counter Party Default. The References are:
+ *  the MTM at the Dealer/Client Default. The References are:
  *  
  *  - Burgard, C., and M. Kjaer (2013): Funding Strategies, Funding Costs, Risk, 24 (12) 82-87.
  *  
@@ -69,8 +69,8 @@ package org.drip.xva.definition;
 
 public class CloseOutBilateral extends org.drip.xva.definition.CloseOut
 {
-	private double _counterPartyRecovery = java.lang.Double.NaN;;
-	private double _bankSeniorFundingRecovery = java.lang.Double.NaN;
+	private double _clientRecovery = java.lang.Double.NaN;;
+	private double _dealerSeniorFundingRecovery = java.lang.Double.NaN;
 
 	/**
 	 * Generate the Close Out Bilateral Instance from the Market Vertex
@@ -106,49 +106,48 @@ public class CloseOutBilateral extends org.drip.xva.definition.CloseOut
 	/**
 	 * CloseOutBilateral Constructor
 	 * 
-	 * @param bankSeniorFundingRecovery The Bank Senior Funding Recovery Rate
-	 * @param counterPartyRecovery Counter Party Recovery Rate
+	 * @param dealerSeniorFundingRecovery The Dealer Senior Funding Recovery Rate
+	 * @param clientRecovery Client Recovery Rate
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CloseOutBilateral (
-		final double bankSeniorFundingRecovery,
-		final double counterPartyRecovery)
+		final double dealerSeniorFundingRecovery,
+		final double clientRecovery)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_bankSeniorFundingRecovery =
-			bankSeniorFundingRecovery) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_counterPartyRecovery = counterPartyRecovery))
+		if (!org.drip.quant.common.NumberUtil.IsValid (_dealerSeniorFundingRecovery =
+			dealerSeniorFundingRecovery) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_clientRecovery = clientRecovery))
 		{
 			throw new java.lang.Exception ("CloseOutBilateral Constructor => Invalid Inputs");
-			
 		}
 	}
 
 	/**
-	 * Retrieve the Bank Senior Funding Recovery Rate
+	 * Retrieve the Dealer Senior Funding Recovery Rate
 	 * 
-	 * @return The Bank Senior Funding Recovery Rate
+	 * @return The Dealer Senior Funding Recovery Rate
 	 */
 
-	public double bankSeniorFundingRecovery()
+	public double dealerSeniorFundingRecovery()
 	{
-		return _bankSeniorFundingRecovery;
+		return _dealerSeniorFundingRecovery;
 	}
 
 	/**
-	 * Retrieve the Counter Party Recovery Rate
+	 * Retrieve the Client Recovery Rate
 	 * 
-	 * @return The Counter Party Recovery Rate
+	 * @return The Client Recovery Rate
 	 */
 
-	public double counterPartyRecovery()
+	public double clientRecovery()
 	{
-		return _counterPartyRecovery;
+		return _clientRecovery;
 	}
 
-	@Override public double bankDefault (
+	@Override public double dealerDefault (
 		final double uncollateralizedExposure,
 		final double collateralAmount)
 		throws java.lang.Exception
@@ -156,16 +155,16 @@ public class CloseOutBilateral extends org.drip.xva.definition.CloseOut
 		if (!org.drip.quant.common.NumberUtil.IsValid (uncollateralizedExposure) ||
 			!org.drip.quant.common.NumberUtil.IsValid (collateralAmount))
 		{
-			throw new java.lang.Exception ("CloseOutBilateral::bankDefault => Invalid Inputs");
+			throw new java.lang.Exception ("CloseOutBilateral::dealerDefault => Invalid Inputs");
 		}
 
 		double collateralizedExposure = uncollateralizedExposure - collateralAmount;
 
-		return (collateralizedExposure > 0. ? collateralizedExposure : 0.) +_bankSeniorFundingRecovery *
+		return (collateralizedExposure > 0. ? collateralizedExposure : 0.) + _dealerSeniorFundingRecovery *
 			(collateralizedExposure < 0. ? collateralizedExposure : 0.) + collateralAmount;
 	}
 
-	@Override public double counterPartyDefault (
+	@Override public double clientDefault (
 		final double uncollateralizedExposure,
 		final double collateralAmount)
 		throws java.lang.Exception
@@ -173,14 +172,12 @@ public class CloseOutBilateral extends org.drip.xva.definition.CloseOut
 		if (!org.drip.quant.common.NumberUtil.IsValid (uncollateralizedExposure) ||
 			!org.drip.quant.common.NumberUtil.IsValid (collateralAmount))
 		{
-			throw new java.lang.Exception ("CloseOutBilateral::counterPartyDefault => Invalid Inputs");
+			throw new java.lang.Exception ("CloseOutBilateral::clientDefault => Invalid Inputs");
 		}
 
-		double counterPartyGroupCollateralizedExposure = uncollateralizedExposure - collateralAmount;
+		double clientCollateralizedExposure = uncollateralizedExposure - collateralAmount;
 
-		return _counterPartyRecovery * (counterPartyGroupCollateralizedExposure > 0. ?
-			counterPartyGroupCollateralizedExposure : 0.) +
-			(counterPartyGroupCollateralizedExposure < 0. ? counterPartyGroupCollateralizedExposure : 0.) +
-			collateralAmount;
+		return _clientRecovery * (clientCollateralizedExposure > 0. ? clientCollateralizedExposure : 0.) +
+			(clientCollateralizedExposure < 0. ? clientCollateralizedExposure : 0.) + collateralAmount;
 	}
 }

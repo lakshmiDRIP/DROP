@@ -48,8 +48,8 @@ package org.drip.xva.definition;
  */
 
 /**
- * SimpleBalanceSheet implements a Simple Bank Balance Sheet Model as specified in Burgard and Kjaer (2012).
- *  The References are:
+ * SimpleBalanceSheet implements a Simple Dealer Balance Sheet Model as specified in Burgard and Kjaer
+ *  (2012). The References are:
  *  
  *  - Burgard, C., and M. Kjaer (2011): PDE Representations of Derivatives with Bilateral Counter-party Risk
  *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
@@ -89,7 +89,9 @@ public class SimpleBalanceSheet
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (_asset = asset) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_liability = liability))
+		{
 			throw new java.lang.Exception ("SimpleBalanceSheet Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -143,7 +145,10 @@ public class SimpleBalanceSheet
 
 		try
 		{
-			return new SimpleBalanceSheet (_asset + dblDerivativeValue, _liability + dblDerivativeValue);
+			return new SimpleBalanceSheet (
+				_asset + dblDerivativeValue,
+				_liability + dblDerivativeValue
+			);
 		}
 		catch (java.lang.Exception e)
 		{

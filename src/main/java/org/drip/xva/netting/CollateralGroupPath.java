@@ -927,44 +927,6 @@ public class CollateralGroupPath
 	}
 
 	/**
-	 * Compute Path Unilateral Collateral Value Adjustment
-	 * 
-	 * @return The Path Unilateral Collateral Value Adjustment
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	/* public double unilateralCollateralAdjustment()
-		throws java.lang.Exception
-	{
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();
-
-		double[] collateralBalance = collateralBalance();
-
-		double unilateralCollateralValueAdjustment = 0.;
-		int vertexCount = collateralBalance.length;
-
-		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			double periodIntegrandStart = collateralBalance[vertexIndex - 1] *
-				marketVertexArray[vertexIndex - 1].counterParty().survivalProbability() *
-				marketVertexArray[vertexIndex - 1].csaSpread() *
-				marketVertexArray[vertexIndex - 1].overnightReplicator();
-
-			double periodIntegrandEnd = collateralBalance[vertexIndex] *
-				marketVertexArray[vertexIndex].counterParty().survivalProbability() *
-				marketVertexArray[vertexIndex].csaSpread() *
-				marketVertexArray[vertexIndex].overnightReplicator();
-
-			unilateralCollateralValueAdjustment -= 0.5 * (periodIntegrandStart + periodIntegrandEnd) *
-				(marketVertexArray[vertexIndex].anchorDate().julian() -
-				marketVertexArray[vertexIndex - 1].anchorDate().julian()) / 365.25;
-		}
-
-		return unilateralCollateralValueAdjustment;
-	} */
-
-	/**
 	 * Compute Path Collateral Value Adjustment
 	 * 
 	 * @return The Path Collateral Value Adjustment

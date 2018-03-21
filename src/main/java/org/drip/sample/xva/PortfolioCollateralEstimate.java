@@ -192,14 +192,14 @@ public class PortfolioCollateralEstimate {
 				"\t|| " +
 				dtEnd + " => " +
 				FormatUtil.FormatDouble (dblPortfolioValueFinish, 1, 4, 1.) + " | " +
-				haeo.bankMarginDate() + " | " +
-				haeo.counterPartyMarginDate() + " | " +
-				FormatUtil.FormatDouble (haeo.bankWindowMarginValue(), 1, 4, 1.) + " | " +
-				FormatUtil.FormatDouble (haeo.counterPartyWindowMarginValue(), 1, 4, 1.) + " | " +
-				FormatUtil.FormatDouble (haeo.bankCollateralThreshold(), 1, 4, 1.) + " | " +
-				FormatUtil.FormatDouble (haeo.counterPartyCollateralThreshold(), 1, 4, 1.) + " | " +
-				FormatUtil.FormatDouble (haeo.bankPostingRequirement(), 1, 4, 1.) + " | " +
-				FormatUtil.FormatDouble (haeo.counterPartyPostingRequirement(), 1, 4, 1.) + " | " +
+				haeo.dealerMarginDate() + " | " +
+				haeo.clientMarginDate() + " | " +
+				FormatUtil.FormatDouble (haeo.dealerWindowMarginValue(), 1, 4, 1.) + " | " +
+				FormatUtil.FormatDouble (haeo.clientWindowMarginValue(), 1, 4, 1.) + " | " +
+				FormatUtil.FormatDouble (haeo.dealerCollateralThreshold(), 1, 4, 1.) + " | " +
+				FormatUtil.FormatDouble (haeo.clientCollateralThreshold(), 1, 4, 1.) + " | " +
+				FormatUtil.FormatDouble (haeo.dealerPostingRequirement(), 1, 4, 1.) + " | " +
+				FormatUtil.FormatDouble (haeo.clientPostingRequirement(), 1, 4, 1.) + " | " +
 				FormatUtil.FormatDouble (haeo.postingRequirement(), 1, 4, 1.) + " ||"
 			);
 

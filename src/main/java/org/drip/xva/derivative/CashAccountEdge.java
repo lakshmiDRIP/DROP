@@ -71,31 +71,30 @@ package org.drip.xva.derivative;
 
 public class CashAccountEdge
 {
-	private double _bankAccumulation = java.lang.Double.NaN;
+	private double _clientAccumulation = java.lang.Double.NaN;
+	private double _dealerAccumulation = java.lang.Double.NaN;
 	private double _positionAccumulation = java.lang.Double.NaN;
-	private double _counterPartyAccumulation = java.lang.Double.NaN;
 
 	/**
 	 * CashAccountEdge Constructor
 	 * 
 	 * @param positionAccumulation The Incremental Amount added to the Cash Account coming from the Position
-	 * @param bankAccumulation The Incremental Amount added to the Cash Account coming from the Bank
+	 * @param dealerAccumulation The Incremental Amount added to the Cash Account coming from the Dealer
 	 * 	Borrowing/Funding
-	 * @param counterPartyAccumulation The Incremental Amount added to the Cash Account coming from the
-	 *  Counter Party Repo
+	 * @param clientAccumulation The Incremental Amount added to the Cash Account coming from the Client Repo
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CashAccountEdge (
 		final double positionAccumulation,
-		final double bankAccumulation,
-		final double counterPartyAccumulation)
+		final double dealerAccumulation,
+		final double clientAccumulation)
 		throws java.lang.Exception
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (_positionAccumulation = positionAccumulation) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_bankAccumulation = bankAccumulation) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_counterPartyAccumulation = counterPartyAccumulation))
+			!org.drip.quant.common.NumberUtil.IsValid (_dealerAccumulation = dealerAccumulation) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_clientAccumulation = clientAccumulation))
 		{
 			throw new java.lang.Exception ("CashAccountEdge Constructor => Invalid Inputs");
 		}
@@ -113,25 +112,25 @@ public class CashAccountEdge
 	}
 
 	/**
-	 * Retrieve the Incremental Amount added to the Cash Account coming from Borrowing/Funding
+	 * Retrieve the Incremental Amount added to the Cash Account coming from Dealer Borrowing/Funding
 	 * 
-	 * @return The Incremental Amount added to the Cash Account coming from Borrowing/Funding
+	 * @return The Incremental Amount added to the Cash Account coming from Dealer Borrowing/Funding
 	 */
 
-	public double bankAccumulation()
+	public double dealerAccumulation()
 	{
-		return _bankAccumulation;
+		return _dealerAccumulation;
 	}
 
 	/**
-	 * Retrieve the Incremental Amount added to the Cash Account coming from the Counter Party Repo
+	 * Retrieve the Incremental Amount added to the Cash Account coming from the Client Repo
 	 * 
-	 * @return The Incremental Amount added to the Cash Account coming from the Counter Party Repo
+	 * @return The Incremental Amount added to the Cash Account coming from the Client Repo
 	 */
 
-	public double counterPartyAccumulation()
+	public double clientAccumulation()
 	{
-		return _counterPartyAccumulation;
+		return _clientAccumulation;
 	}
 
 	/**
@@ -142,6 +141,6 @@ public class CashAccountEdge
 
 	public double accumulation()
 	{
-		return _positionAccumulation + _bankAccumulation + _counterPartyAccumulation;
+		return _positionAccumulation + _dealerAccumulation + _clientAccumulation;
 	}
 }

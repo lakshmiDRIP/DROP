@@ -141,78 +141,76 @@ public class TrajectoryEvolutionScheme
 
 		double initialPortfolioHoldings = initialReplicationPortfolioVertex.positionHoldings();
 
-		double initialBankSeniorNumeraireHoldings =
-			initialReplicationPortfolioVertex.bankSeniorNumeraireHoldings();
+		double initialDealerSeniorNumeraireHoldings =
+			initialReplicationPortfolioVertex.dealerSeniorNumeraireHoldings();
 
-		double initialCounterPartyNumeraireHoldings =
-			initialReplicationPortfolioVertex.counterPartyNumeraireHoldings();
+		double initialClientNumeraireHoldings = initialReplicationPortfolioVertex.clientNumeraireHoldings();
 
-		double initialBankSubordinateNumeraireHoldings =
-			initialReplicationPortfolioVertex.bankSubordinateNumeraireHoldings();
+		double initialDealerSubordinateNumeraireHoldings =
+			initialReplicationPortfolioVertex.dealerSubordinateNumeraireHoldings();
 
 		org.drip.xva.universe.MarketVertex initialMarketVertex = marketEdge.start();
 
 		org.drip.xva.universe.MarketVertex finalMarketVertex = marketEdge.finish();
 
-		org.drip.xva.universe.MarketVertexEntity emvBankStart = initialMarketVertex.dealer();
+		org.drip.xva.universe.MarketVertexEntity emvDealerStart = initialMarketVertex.dealer();
 
-		org.drip.xva.universe.MarketVertexEntity bankMarketVertex = finalMarketVertex.dealer();
+		org.drip.xva.universe.MarketVertexEntity dealerMarketVertex = finalMarketVertex.dealer();
 
-		org.drip.xva.universe.MarketVertexEntity counterPartyMarketVertex = finalMarketVertex.client();
+		org.drip.xva.universe.MarketVertexEntity clientMarketVertex = finalMarketVertex.client();
 
 		double finalPortfolioValue = finalMarketVertex.positionManifestValue();
 
-		double finalBankSeniorFundingNumeraire = bankMarketVertex.seniorFundingReplicator();
+		double finalDealerSeniorFundingNumeraire = dealerMarketVertex.seniorFundingReplicator();
 
-		double finalCounterPartyNumeraire = counterPartyMarketVertex.seniorFundingReplicator();
+		double finalClientNumeraire = clientMarketVertex.seniorFundingReplicator();
 
-		double initialBankSubordinateFundingNumeraire = emvBankStart.subordinateFundingReplicator();
+		double initialDealerSubordinateFundingNumeraire = emvDealerStart.subordinateFundingReplicator();
 
-		double finalBankSubordinateFundingNumeraire = bankMarketVertex.subordinateFundingReplicator();
+		double finalDealerSubordinateFundingNumeraire = dealerMarketVertex.subordinateFundingReplicator();
 
 		double timeIncrement = marketEdge.vertexIncrement() / 365.25;
 
 		double portfolioCashChange = initialPortfolioHoldings *
 			_tradeablesContainer.position().cashAccumulationRate() * finalPortfolioValue * timeIncrement;
 
-		org.drip.xva.evolver.PrimarySecurity counterPartyFundingTradeable =
-			_tradeablesContainer.counterPartyFunding();
+		org.drip.xva.evolver.PrimarySecurity clientFundingTradeable = _tradeablesContainer.clientFunding();
 
-		double counterPartyCashAccumulation = initialCounterPartyNumeraireHoldings *
-			counterPartyFundingTradeable.cashAccumulationRate() * finalCounterPartyNumeraire * timeIncrement;
+		double clientCashAccumulation = initialClientNumeraireHoldings *
+			clientFundingTradeable.cashAccumulationRate() * finalClientNumeraire * timeIncrement;
 
-		double counterPartyHoldingsValueChange = initialCounterPartyNumeraireHoldings *
-			(finalCounterPartyNumeraire - initialMarketVertex.client().seniorFundingReplicator());
+		double clientHoldingsValueChange = initialClientNumeraireHoldings * (finalClientNumeraire -
+			initialMarketVertex.client().seniorFundingReplicator());
 
 		double cashAccountBalance = -1. * initialTrajectoryVertex.positionGreekVertex().derivativeXVAValue()
-			- initialBankSeniorNumeraireHoldings * finalBankSeniorFundingNumeraire;
+			- initialDealerSeniorNumeraireHoldings * finalDealerSeniorFundingNumeraire;
 
-		if (org.drip.quant.common.NumberUtil.IsValid (finalBankSubordinateFundingNumeraire))
+		if (org.drip.quant.common.NumberUtil.IsValid (finalDealerSubordinateFundingNumeraire))
 		{
-			cashAccountBalance -= initialBankSubordinateNumeraireHoldings *
-				finalBankSubordinateFundingNumeraire;
+			cashAccountBalance -= initialDealerSubordinateNumeraireHoldings *
+				finalDealerSubordinateFundingNumeraire;
 		}
 
 		org.drip.xva.evolver.PrimarySecurity csaTradeable = _tradeablesContainer.csa();
 
-		org.drip.xva.evolver.PrimarySecurity bankSeniorFundingTradeable =
-			_tradeablesContainer.bankSeniorFunding();
+		org.drip.xva.evolver.PrimarySecurity dealerSeniorFundingTradeable =
+			_tradeablesContainer.dealerSeniorFunding();
 
-		double bankCashAccumulation = cashAccountBalance * (cashAccountBalance > 0. ?
-			csaTradeable.cashAccumulationRate() : bankSeniorFundingTradeable.cashAccumulationRate()) *
+		double dealerCashAccumulation = cashAccountBalance * (cashAccountBalance > 0. ?
+			csaTradeable.cashAccumulationRate() : dealerSeniorFundingTradeable.cashAccumulationRate()) *
 				timeIncrement;
 
 		double derivativeXVAValueChange = -1. * (initialPortfolioHoldings * (finalPortfolioValue -
-			initialMarketVertex.positionManifestValue()) + initialBankSeniorNumeraireHoldings *
-				(finalBankSeniorFundingNumeraire - emvBankStart.seniorFundingReplicator()) +
-					counterPartyHoldingsValueChange + (portfolioCashChange +
-						counterPartyCashAccumulation + bankCashAccumulation) * timeIncrement);
+			initialMarketVertex.positionManifestValue()) + initialDealerSeniorNumeraireHoldings *
+				(finalDealerSeniorFundingNumeraire - emvDealerStart.seniorFundingReplicator()) +
+					clientHoldingsValueChange + (portfolioCashChange + clientCashAccumulation +
+						dealerCashAccumulation) * timeIncrement);
 
-		if (org.drip.quant.common.NumberUtil.IsValid (initialBankSubordinateFundingNumeraire) &&
-			org.drip.quant.common.NumberUtil.IsValid (finalBankSubordinateFundingNumeraire))
+		if (org.drip.quant.common.NumberUtil.IsValid (initialDealerSubordinateFundingNumeraire) &&
+			org.drip.quant.common.NumberUtil.IsValid (finalDealerSubordinateFundingNumeraire))
 		{
-			derivativeXVAValueChange += initialBankSubordinateNumeraireHoldings *
-				(finalBankSubordinateFundingNumeraire - initialBankSubordinateFundingNumeraire);
+			derivativeXVAValueChange += initialDealerSubordinateNumeraireHoldings *
+				(finalDealerSubordinateFundingNumeraire - initialDealerSubordinateFundingNumeraire);
 		}
 
 		try
@@ -220,8 +218,8 @@ public class TrajectoryEvolutionScheme
 			return new org.drip.xva.derivative.CashAccountRebalancer (
 				new org.drip.xva.derivative.CashAccountEdge (
 					portfolioCashChange,
-					bankCashAccumulation * timeIncrement,
-					counterPartyCashAccumulation * timeIncrement
+					dealerCashAccumulation * timeIncrement,
+					clientCashAccumulation * timeIncrement
 				),
 				derivativeXVAValueChange
 			);
@@ -286,16 +284,16 @@ public class TrajectoryEvolutionScheme
 
 		org.drip.xva.universe.MarketVertex finalMarketVertex = marketEdge.finish();
 
-		org.drip.xva.universe.MarketVertexEntity bankMarketVertex = finalMarketVertex.dealer();
+		org.drip.xva.universe.MarketVertexEntity dealerMarketVertex = finalMarketVertex.dealer();
 
-		org.drip.xva.universe.MarketVertexEntity counterPartyMarketVertex = finalMarketVertex.client();
+		org.drip.xva.universe.MarketVertexEntity clientMarketVertex = finalMarketVertex.client();
 
 		double derivativeXVAValueDeltaFinish =
 			initialPositionGreekVertex.derivativeXVAValueDelta() +
 			0.5 * (thetaPositionValueUp - thetaPositionValueDown) * timeIncrement / positionValueBump;
 
-		double counterPartyGainOnBankDefault = java.lang.Double.NaN;
-		double finalGainOnCounterPartyDefault = java.lang.Double.NaN;
+		double clientGainOnDealerDefault = java.lang.Double.NaN;
+		double finalGainOnClientDefault = java.lang.Double.NaN;
 
 		double derivativeXVAValueFinish = initialPositionGreekVertex.derivativeXVAValue() - theta *
 			timeIncrement;
@@ -304,14 +302,14 @@ public class TrajectoryEvolutionScheme
 		{
 			org.drip.xva.definition.CloseOut closeOutScheme = new
 				org.drip.xva.definition.CloseOutBilateral (
-					bankMarketVertex.seniorRecoveryRate(),
-					counterPartyMarketVertex.seniorRecoveryRate()
+					dealerMarketVertex.seniorRecoveryRate(),
+					clientMarketVertex.seniorRecoveryRate()
 				);
 
-			counterPartyGainOnBankDefault = closeOutScheme.bankDefault (derivativeXVAValueFinish);
+			clientGainOnDealerDefault = closeOutScheme.dealerDefault (derivativeXVAValueFinish);
 
-			finalGainOnCounterPartyDefault = -1. * (derivativeXVAValueFinish -
-				closeOutScheme.counterPartyDefault (derivativeXVAValueFinish));
+			finalGainOnClientDefault = -1. * (derivativeXVAValueFinish - closeOutScheme.clientDefault
+				(derivativeXVAValueFinish));
 		}
 		catch (java.lang.Exception e)
 		{
@@ -320,12 +318,11 @@ public class TrajectoryEvolutionScheme
 			return null;
 		}
 
-		double bankSubordinateFundingNumeraire = bankMarketVertex.subordinateFundingReplicator();
+		double dealerSubordinateFundingNumeraire = dealerMarketVertex.subordinateFundingReplicator();
 
-		double gainOnBankDefaultFinish = -1. * (derivativeXVAValueFinish - counterPartyGainOnBankDefault);
+		double gainOnDealerDefaultFinish = -1. * (derivativeXVAValueFinish - clientGainOnDealerDefault);
 
-		double finalCounterPartyHoldings = finalGainOnCounterPartyDefault /
-			counterPartyMarketVertex.seniorFundingReplicator();
+		double finalClientHoldings = finalGainOnClientDefault / clientMarketVertex.seniorFundingReplicator();
 
 		org.drip.xva.derivative.CashAccountRebalancer cashAccountRebalancer = rebalanceCash (
 			initialTrajectoryVertex,
@@ -339,7 +336,7 @@ public class TrajectoryEvolutionScheme
 
 		org.drip.xva.derivative.CashAccountEdge cashAccountEdge = cashAccountRebalancer.cashAccountEdge();
 
-		double bankSeniorFundingNumeraire = bankMarketVertex.seniorFundingReplicator();
+		double dealerSeniorFundingNumeraire = dealerMarketVertex.seniorFundingReplicator();
 
 		org.drip.xva.evolver.PrimarySecurity csaTradeable = _tradeablesContainer.csa();
 
@@ -350,10 +347,10 @@ public class TrajectoryEvolutionScheme
 				initialTime + timeIncrement,
 				new org.drip.xva.derivative.ReplicationPortfolioVertex (
 					-1. * derivativeXVAValueDeltaFinish,
-					gainOnBankDefaultFinish / bankSeniorFundingNumeraire,
-					!org.drip.quant.common.NumberUtil.IsValid (bankSubordinateFundingNumeraire) ? 0. :
-						gainOnBankDefaultFinish / bankSubordinateFundingNumeraire,
-					finalCounterPartyHoldings,
+					gainOnDealerDefaultFinish / dealerSeniorFundingNumeraire,
+					!org.drip.quant.common.NumberUtil.IsValid (dealerSubordinateFundingNumeraire) ? 0. :
+						gainOnDealerDefaultFinish / dealerSubordinateFundingNumeraire,
+					finalClientHoldings,
 					initialTrajectoryVertex.replicationPortfolioVertex().cashAccount() +
 						cashAccountEdge.accumulation()
 				),
@@ -375,8 +372,8 @@ public class TrajectoryEvolutionScheme
 						)
 					)
 				),
-				gainOnBankDefaultFinish,
-				finalGainOnCounterPartyDefault,
+				gainOnDealerDefaultFinish,
+				finalGainOnClientDefault,
 				collateral,
 				burgardKjaerEdgeRun.derivativeXVAHedgeErrorGrowth()
 			);

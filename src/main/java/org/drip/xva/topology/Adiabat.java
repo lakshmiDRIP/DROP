@@ -248,54 +248,16 @@ public class Adiabat extends org.drip.xva.proto.ObjectSpecification
 	}
 
 	/**
-	 * Retrieve the Bank Hazard Label Map
+	 * Retrieve the Dealer Hazard Label Map
 	 * 
-	 * @return The Bank Hazard Label Map
-	 */
-
-	public java.util.Map<java.lang.String, org.drip.state.identifier.EntityHazardLabel> bankHazardLabelMap()
-	{
-		java.util.Map<java.lang.String, org.drip.state.identifier.EntityHazardLabel> bankHazardLabelMap = new
-			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.state.identifier.EntityHazardLabel>();
-
-		for (java.util.Map.Entry<java.lang.String, org.drip.xva.topology.FundingGroup> fundingGroupEntry :
-			_fundingGroupMap.entrySet())
-		{
-			java.util.Map<java.lang.String, org.drip.xva.topology.CreditDebtGroup> creditDebtGroupMap =
-				fundingGroupEntry.getValue().creditDebtGroupMap();
-
-			for (java.util.Map.Entry<java.lang.String, org.drip.xva.topology.CreditDebtGroup>
-				creditDebtGroupMapEntry : creditDebtGroupMap.entrySet())
-			{
-				org.drip.state.identifier.EntityHazardLabel bankHazardLabel =
-					creditDebtGroupMapEntry.getValue().bankHazardLabel();
-
-				java.lang.String bankHazardLabelFQN = bankHazardLabel.fullyQualifiedName();
-
-				if (!bankHazardLabelMap.containsKey (bankHazardLabelFQN))
-				{
-					bankHazardLabelMap.put (
-						bankHazardLabelFQN,
-						bankHazardLabel
-					);
-				}
-			}
-		}
-
-		return bankHazardLabelMap;
-	}
-
-	/**
-	 * Retrieve the Counter Party Hazard Label Map
-	 * 
-	 * @return The Counter Party Hazard Label Map
+	 * @return The Dealer Hazard Label Map
 	 */
 
 	public java.util.Map<java.lang.String, org.drip.state.identifier.EntityHazardLabel>
-		counterPartyHazardLabelMap()
+		dealerHazardLabelMap()
 	{
-		java.util.Map<java.lang.String, org.drip.state.identifier.EntityHazardLabel>
-			counterPartyHazardLabelMap = new
+		java.util.Map<java.lang.String, org.drip.state.identifier.EntityHazardLabel> dealerHazardLabelMap =
+			new
 				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.state.identifier.EntityHazardLabel>();
 
 		for (java.util.Map.Entry<java.lang.String, org.drip.xva.topology.FundingGroup> fundingGroupEntry :
@@ -307,35 +269,75 @@ public class Adiabat extends org.drip.xva.proto.ObjectSpecification
 			for (java.util.Map.Entry<java.lang.String, org.drip.xva.topology.CreditDebtGroup>
 				creditDebtGroupMapEntry : creditDebtGroupMap.entrySet())
 			{
-				org.drip.state.identifier.EntityHazardLabel counterPartyHazardLabel =
-					creditDebtGroupMapEntry.getValue().counterPartyHazardLabel();
+				org.drip.state.identifier.EntityHazardLabel dealerHazardLabel =
+					creditDebtGroupMapEntry.getValue().dealerHazardLabel();
 
-				java.lang.String counterPartyHazardLabelFQN = counterPartyHazardLabel.fullyQualifiedName();
+				java.lang.String dealerHazardLabelFQN = dealerHazardLabel.fullyQualifiedName();
 
-				if (!counterPartyHazardLabelMap.containsKey (counterPartyHazardLabelFQN))
+				if (!dealerHazardLabelMap.containsKey (dealerHazardLabelFQN))
 				{
-					counterPartyHazardLabelMap.put (
-						counterPartyHazardLabelFQN,
-						counterPartyHazardLabel
+					dealerHazardLabelMap.put (
+						dealerHazardLabelFQN,
+						dealerHazardLabel
 					);
 				}
 			}
 		}
 
-		return counterPartyHazardLabelMap;
+		return dealerHazardLabelMap;
 	}
 
 	/**
-	 * Retrieve the Bank Senior Recovery Label Map
+	 * Retrieve the Client Hazard Label Map
 	 * 
-	 * @return The Bank Senior Recovery Label Map
+	 * @return The Client Hazard Label Map
+	 */
+
+	public java.util.Map<java.lang.String, org.drip.state.identifier.EntityHazardLabel>
+		clientHazardLabelMap()
+	{
+		java.util.Map<java.lang.String, org.drip.state.identifier.EntityHazardLabel> clientHazardLabelMap =
+			new
+				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.state.identifier.EntityHazardLabel>();
+
+		for (java.util.Map.Entry<java.lang.String, org.drip.xva.topology.FundingGroup> fundingGroupEntry :
+			_fundingGroupMap.entrySet())
+		{
+			java.util.Map<java.lang.String, org.drip.xva.topology.CreditDebtGroup> creditDebtGroupMap =
+				fundingGroupEntry.getValue().creditDebtGroupMap();
+
+			for (java.util.Map.Entry<java.lang.String, org.drip.xva.topology.CreditDebtGroup>
+				creditDebtGroupMapEntry : creditDebtGroupMap.entrySet())
+			{
+				org.drip.state.identifier.EntityHazardLabel clientHazardLabel =
+					creditDebtGroupMapEntry.getValue().clientPartyHazardLabel();
+
+				java.lang.String clientHazardLabelFQN = clientHazardLabel.fullyQualifiedName();
+
+				if (!clientHazardLabelMap.containsKey (clientHazardLabelFQN))
+				{
+					clientHazardLabelMap.put (
+						clientHazardLabelFQN,
+						clientHazardLabel
+					);
+				}
+			}
+		}
+
+		return clientHazardLabelMap;
+	}
+
+	/**
+	 * Retrieve the Dealer Senior Recovery Label Map
+	 * 
+	 * @return The Dealer Senior Recovery Label Map
 	 */
 
 	public java.util.Map<java.lang.String, org.drip.state.identifier.EntityRecoveryLabel>
-		bankSeniorRecoveryLabelMap()
+		dealerSeniorRecoveryLabelMap()
 	{
 		java.util.Map<java.lang.String, org.drip.state.identifier.EntityRecoveryLabel>
-			bankSeniorRecoveryLabelMap = new
+			dealerSeniorRecoveryLabelMap = new
 				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.state.identifier.EntityRecoveryLabel>();
 
 		for (java.util.Map.Entry<java.lang.String, org.drip.xva.topology.FundingGroup> fundingGroupEntry :
@@ -347,35 +349,36 @@ public class Adiabat extends org.drip.xva.proto.ObjectSpecification
 			for (java.util.Map.Entry<java.lang.String, org.drip.xva.topology.CreditDebtGroup>
 				creditDebtGroupMapEntry : creditDebtGroupMap.entrySet())
 			{
-				org.drip.state.identifier.EntityRecoveryLabel bankSeniorRecoveryLabel =
-					creditDebtGroupMapEntry.getValue().bankSeniorRecoveryLabel();
+				org.drip.state.identifier.EntityRecoveryLabel dealerSeniorRecoveryLabel =
+					creditDebtGroupMapEntry.getValue().dealerSeniorRecoveryLabel();
 
-				java.lang.String bankSeniorRecoveryLabelFQN = bankSeniorRecoveryLabel.fullyQualifiedName();
+				java.lang.String dealerSeniorRecoveryLabelFQN =
+					dealerSeniorRecoveryLabel.fullyQualifiedName();
 
-				if (!bankSeniorRecoveryLabelMap.containsKey (bankSeniorRecoveryLabelFQN))
+				if (!dealerSeniorRecoveryLabelMap.containsKey (dealerSeniorRecoveryLabelFQN))
 				{
-					bankSeniorRecoveryLabelMap.put (
-						bankSeniorRecoveryLabelFQN,
-						bankSeniorRecoveryLabel
+					dealerSeniorRecoveryLabelMap.put (
+						dealerSeniorRecoveryLabelFQN,
+						dealerSeniorRecoveryLabel
 					);
 				}
 			}
 		}
 
-		return bankSeniorRecoveryLabelMap;
+		return dealerSeniorRecoveryLabelMap;
 	}
 
 	/**
-	 * Retrieve the Counter Party Recovery Label Map
+	 * Retrieve the Client Recovery Label Map
 	 * 
-	 * @return The Counter Party Recovery Label Map
+	 * @return The Client Recovery Label Map
 	 */
 
 	public java.util.Map<java.lang.String, org.drip.state.identifier.EntityRecoveryLabel>
-		counterPartyRecoveryLabelMap()
+		clientRecoveryLabelMap()
 	{
-		java.util.Map<java.lang.String, org.drip.state.identifier.EntityRecoveryLabel>
-			counterPartyRecoveryLabelMap = new
+		java.util.Map<java.lang.String, org.drip.state.identifier.EntityRecoveryLabel> clientRecoveryLabelMap
+			= new
 				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.state.identifier.EntityRecoveryLabel>();
 
 		for (java.util.Map.Entry<java.lang.String, org.drip.xva.topology.FundingGroup> fundingGroupEntry :
@@ -387,35 +390,35 @@ public class Adiabat extends org.drip.xva.proto.ObjectSpecification
 			for (java.util.Map.Entry<java.lang.String, org.drip.xva.topology.CreditDebtGroup>
 				creditDebtGroupMapEntry : creditDebtGroupMap.entrySet())
 			{
-				org.drip.state.identifier.EntityRecoveryLabel counterPartyRecoveryLabel =
-					creditDebtGroupMapEntry.getValue().counterPartyRecoveryLabel();
+				org.drip.state.identifier.EntityRecoveryLabel clientRecoveryLabel =
+					creditDebtGroupMapEntry.getValue().clientRecoveryLabel();
 
-				java.lang.String counterPartyRecoveryLabelFQN = counterPartyRecoveryLabel.fullyQualifiedName();
+				java.lang.String clientRecoveryLabelFQN = clientRecoveryLabel.fullyQualifiedName();
 
-				if (!counterPartyRecoveryLabelMap.containsKey (counterPartyRecoveryLabelFQN))
+				if (!clientRecoveryLabelMap.containsKey (clientRecoveryLabelFQN))
 				{
-					counterPartyRecoveryLabelMap.put (
-						counterPartyRecoveryLabelFQN,
-						counterPartyRecoveryLabel
+					clientRecoveryLabelMap.put (
+						clientRecoveryLabelFQN,
+						clientRecoveryLabel
 					);
 				}
 			}
 		}
 
-		return counterPartyRecoveryLabelMap;
+		return clientRecoveryLabelMap;
 	}
 
 	/**
-	 * Retrieve the Bank Subordinate Recovery Label Map
+	 * Retrieve the Dealer Subordinate Recovery Label Map
 	 * 
-	 * @return The Bank Subordinate Recovery Label Map
+	 * @return The Dealer Subordinate Recovery Label Map
 	 */
 
 	public java.util.Map<java.lang.String, org.drip.state.identifier.EntityRecoveryLabel>
-		bankSubordinateRecoveryLabelMap()
+		dealerSubordinateRecoveryLabelMap()
 	{
 		java.util.Map<java.lang.String, org.drip.state.identifier.EntityRecoveryLabel>
-			bankSubordinateRecoveryLabelMap = new
+			dealerSubordinateRecoveryLabelMap = new
 				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.state.identifier.EntityRecoveryLabel>();
 
 		for (java.util.Map.Entry<java.lang.String, org.drip.xva.topology.FundingGroup> fundingGroupEntry :
@@ -427,132 +430,132 @@ public class Adiabat extends org.drip.xva.proto.ObjectSpecification
 			for (java.util.Map.Entry<java.lang.String, org.drip.xva.topology.CreditDebtGroup>
 				creditDebtGroupMapEntry : creditDebtGroupMap.entrySet())
 			{
-				org.drip.state.identifier.EntityRecoveryLabel bankSubordinateRecoveryLabel =
-					creditDebtGroupMapEntry.getValue().bankSubordinateRecoveryLabel();
+				org.drip.state.identifier.EntityRecoveryLabel dealerSubordinateRecoveryLabel =
+					creditDebtGroupMapEntry.getValue().dealerSubordinateRecoveryLabel();
 
-				java.lang.String bankSubordinateRecoveryLabelFQN =
-					bankSubordinateRecoveryLabel.fullyQualifiedName();
+				java.lang.String dealerSubordinateRecoveryLabelFQN =
+					dealerSubordinateRecoveryLabel.fullyQualifiedName();
 
-				if (!bankSubordinateRecoveryLabelMap.containsKey (bankSubordinateRecoveryLabelFQN))
+				if (!dealerSubordinateRecoveryLabelMap.containsKey (dealerSubordinateRecoveryLabelFQN))
 				{
-					bankSubordinateRecoveryLabelMap.put (
-						bankSubordinateRecoveryLabelFQN,
-						bankSubordinateRecoveryLabel
+					dealerSubordinateRecoveryLabelMap.put (
+						dealerSubordinateRecoveryLabelFQN,
+						dealerSubordinateRecoveryLabel
 					);
 				}
 			}
 		}
 
-		return bankSubordinateRecoveryLabelMap;
+		return dealerSubordinateRecoveryLabelMap;
 	}
 
 	/**
-	 * Retrieve the Bank Senior Funding Label Map
+	 * Retrieve the Dealer Senior Funding Label Map
 	 * 
-	 * @return The Bank Senior Funding Label Map
+	 * @return The Dealer Senior Funding Label Map
 	 */
 
 	public java.util.Map<java.lang.String, org.drip.state.identifier.EntityFundingLabel>
-		bankSeniorFundingLabelMap()
+		dealerSeniorFundingLabelMap()
 	{
 		java.util.Map<java.lang.String, org.drip.state.identifier.EntityFundingLabel>
-			bankSeniorFundingLabelMap = new
+			dealerSeniorFundingLabelMap = new
 				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.state.identifier.EntityFundingLabel>();
 
 		for (java.util.Map.Entry<java.lang.String, org.drip.xva.topology.FundingGroup> fundingGroupMapEntry :
 			_fundingGroupMap.entrySet())
 		{
-			org.drip.state.identifier.EntityFundingLabel bankSeniorFundingLabel =
-				fundingGroupMapEntry.getValue().bankSeniorFundingLabel();
+			org.drip.state.identifier.EntityFundingLabel dealerSeniorFundingLabel =
+				fundingGroupMapEntry.getValue().dealerSeniorFundingLabel();
 
-			java.lang.String bankSeniorFundingLabelFQN = bankSeniorFundingLabel.fullyQualifiedName();
+			java.lang.String dealerSeniorFundingLabelFQN = dealerSeniorFundingLabel.fullyQualifiedName();
 
-			if (!bankSeniorFundingLabelMap.containsKey (bankSeniorFundingLabelFQN))
+			if (!dealerSeniorFundingLabelMap.containsKey (dealerSeniorFundingLabelFQN))
 			{
-				bankSeniorFundingLabelMap.put (
-					bankSeniorFundingLabelFQN,
-					bankSeniorFundingLabel
+				dealerSeniorFundingLabelMap.put (
+					dealerSeniorFundingLabelFQN,
+					dealerSeniorFundingLabel
 				);
 			}
 		}
 
-		return bankSeniorFundingLabelMap;
+		return dealerSeniorFundingLabelMap;
 	}
 
 	/**
-	 * Retrieve the Counter Party Funding Label Map
+	 * Retrieve the Client Funding Label Map
 	 * 
-	 * @return The Counter Party Funding Label Map
+	 * @return The Client Funding Label Map
 	 */
 
 	public java.util.Map<java.lang.String, org.drip.state.identifier.EntityFundingLabel>
-		counterPartyFundingLabelMap()
+		clientFundingLabelMap()
 	{
-		java.util.Map<java.lang.String, org.drip.state.identifier.EntityFundingLabel>
-			counterPartyFundingLabelMap = new
+		java.util.Map<java.lang.String, org.drip.state.identifier.EntityFundingLabel> clientFundingLabelMap =
+			new
 				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.state.identifier.EntityFundingLabel>();
 
 		for (java.util.Map.Entry<java.lang.String, org.drip.xva.topology.FundingGroup> fundingGroupMapEntry :
 			_fundingGroupMap.entrySet())
 		{
-			org.drip.state.identifier.EntityFundingLabel counterPartyFundingLabel =
-				fundingGroupMapEntry.getValue().counterPartyFundingLabel();
+			org.drip.state.identifier.EntityFundingLabel clientFundingLabel =
+				fundingGroupMapEntry.getValue().clientFundingLabel();
 
-			java.lang.String counterPartyFundingLabelFQN = counterPartyFundingLabel.fullyQualifiedName();
+			java.lang.String clientFundingLabelFQN = clientFundingLabel.fullyQualifiedName();
 
-			if (!counterPartyFundingLabelMap.containsKey (counterPartyFundingLabelFQN))
+			if (!clientFundingLabelMap.containsKey (clientFundingLabelFQN))
 			{
-				counterPartyFundingLabelMap.put (
-					counterPartyFundingLabelFQN,
-					counterPartyFundingLabel
+				clientFundingLabelMap.put (
+					clientFundingLabelFQN,
+					clientFundingLabel
 				);
 			}
 		}
 
-		return counterPartyFundingLabelMap;
+		return clientFundingLabelMap;
 	}
 
 	/**
-	 * Retrieve the Bank Subordinate Funding Label Map
+	 * Retrieve the Dealer Subordinate Funding Label Map
 	 * 
-	 * @return The Bank Subordinate Funding Label Map
+	 * @return The Dealer Subordinate Funding Label Map
 	 */
 
 	public java.util.Map<java.lang.String, org.drip.state.identifier.EntityFundingLabel>
-		bankSubordinateFundingLabelMap()
+		dealerSubordinateFundingLabelMap()
 	{
 		java.util.Map<java.lang.String, org.drip.state.identifier.EntityFundingLabel>
-			bankSubordinateFundingLabelMap = new
+			dealerSubordinateFundingLabelMap = new
 				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.state.identifier.EntityFundingLabel>();
 
 		for (java.util.Map.Entry<java.lang.String, org.drip.xva.topology.FundingGroup> fundingGroupMapEntry :
 			_fundingGroupMap.entrySet())
 		{
-			org.drip.state.identifier.EntityFundingLabel bankSubordinateFundingLabel =
-				fundingGroupMapEntry.getValue().bankSubordinateFundingLabel();
+			org.drip.state.identifier.EntityFundingLabel dealerSubordinateFundingLabel =
+				fundingGroupMapEntry.getValue().dealerSubordinateFundingLabel();
 
-			if (null != bankSubordinateFundingLabel)
+			if (null != dealerSubordinateFundingLabel)
 			{
-				java.lang.String bankSubordinateFundingLabelFQN =
-					bankSubordinateFundingLabel.fullyQualifiedName();
+				java.lang.String dealerSubordinateFundingLabelFQN =
+					dealerSubordinateFundingLabel.fullyQualifiedName();
 
-				if (!bankSubordinateFundingLabelMap.containsKey (bankSubordinateFundingLabelFQN))
+				if (!dealerSubordinateFundingLabelMap.containsKey (dealerSubordinateFundingLabelFQN))
 				{
-					bankSubordinateFundingLabelMap.put (
-						bankSubordinateFundingLabelFQN,
-						bankSubordinateFundingLabel
+					dealerSubordinateFundingLabelMap.put (
+						dealerSubordinateFundingLabelFQN,
+						dealerSubordinateFundingLabel
 					);
 				}
 			}
 		}
 
-		return bankSubordinateFundingLabelMap;
+		return dealerSubordinateFundingLabelMap;
 	}
 
 	/**
-	 * Generate the Book's Dependent Market Parameters
+	 * Generate the Adiabat Dependent Market Parameters
 	 * 
-	 * @return The Book's Dependent Market Parameters
+	 * @return The Adiabat Dependent Market Parameters
 	 */
 
 	public org.drip.xva.topology.AdiabatMarketParams marketParams()
@@ -563,79 +566,80 @@ public class Adiabat extends org.drip.xva.proto.ObjectSpecification
 		java.util.Map<java.lang.String, org.drip.state.identifier.OvernightLabel> overnightLabelMap = new
 			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.state.identifier.OvernightLabel>();
 
-		java.util.Map<java.lang.String, org.drip.state.identifier.EntityHazardLabel> bankHazardLabelMap = new
-			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.state.identifier.EntityHazardLabel>();
+		java.util.Map<java.lang.String, org.drip.state.identifier.EntityHazardLabel> dealerHazardLabelMap =
+			new
+				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.state.identifier.EntityHazardLabel>();
 
-		java.util.Map<java.lang.String, org.drip.state.identifier.EntityHazardLabel>
-			counterPartyHazardLabelMap = new
+		java.util.Map<java.lang.String, org.drip.state.identifier.EntityHazardLabel> clientHazardLabelMap =
+			new
 				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.state.identifier.EntityHazardLabel>();
 
 		java.util.Map<java.lang.String, org.drip.state.identifier.EntityRecoveryLabel>
-			bankSeniorRecoveryLabelMap = new
+			dealerSeniorRecoveryLabelMap = new
+				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.state.identifier.EntityRecoveryLabel>();
+
+		java.util.Map<java.lang.String, org.drip.state.identifier.EntityRecoveryLabel> clientRecoveryLabelMap
+			= new
 				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.state.identifier.EntityRecoveryLabel>();
 
 		java.util.Map<java.lang.String, org.drip.state.identifier.EntityRecoveryLabel>
-			counterPartyRecoveryLabelMap = new
-				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.state.identifier.EntityRecoveryLabel>();
-
-		java.util.Map<java.lang.String, org.drip.state.identifier.EntityRecoveryLabel>
-			bankSubordinateRecoveryLabelMap = new
+			dealerSubordinateRecoveryLabelMap = new
 				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.state.identifier.EntityRecoveryLabel>();
 
 		java.util.Map<java.lang.String, org.drip.state.identifier.EntityFundingLabel>
-			bankSeniorFundingLabelMap = new
+			dealerSeniorFundingLabelMap = new
+				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.state.identifier.EntityFundingLabel>();
+
+		java.util.Map<java.lang.String, org.drip.state.identifier.EntityFundingLabel> clientFundingLabelMap =
+			new
 				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.state.identifier.EntityFundingLabel>();
 
 		java.util.Map<java.lang.String, org.drip.state.identifier.EntityFundingLabel>
-			counterPartyFundingLabelMap = new
-				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.state.identifier.EntityFundingLabel>();
-
-		java.util.Map<java.lang.String, org.drip.state.identifier.EntityFundingLabel>
-			bankSubordinateFundingLabelMap = new
+			dealerSubordinateFundingLabelMap = new
 				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.state.identifier.EntityFundingLabel>();
 
 		for (java.util.Map.Entry<java.lang.String, org.drip.xva.topology.FundingGroup> fundingGroupEntry :
 			_fundingGroupMap.entrySet())
 		{
-			org.drip.state.identifier.EntityFundingLabel bankSeniorFundingLabel =
-				fundingGroupEntry.getValue().bankSeniorFundingLabel();
+			org.drip.state.identifier.EntityFundingLabel dealerSeniorFundingLabel =
+				fundingGroupEntry.getValue().dealerSeniorFundingLabel();
 
-			java.lang.String bankSeniorFundingLabelFQN = bankSeniorFundingLabel.fullyQualifiedName();
+			java.lang.String dealerSeniorFundingLabelFQN = dealerSeniorFundingLabel.fullyQualifiedName();
 
-			if (!bankSeniorFundingLabelMap.containsKey (bankSeniorFundingLabelFQN))
+			if (!dealerSeniorFundingLabelMap.containsKey (dealerSeniorFundingLabelFQN))
 			{
-				bankSeniorFundingLabelMap.put (
-					bankSeniorFundingLabelFQN,
-					bankSeniorFundingLabel
+				dealerSeniorFundingLabelMap.put (
+					dealerSeniorFundingLabelFQN,
+					dealerSeniorFundingLabel
 				);
 			}
 
-			org.drip.state.identifier.EntityFundingLabel counterPartyFundingLabel =
-				fundingGroupEntry.getValue().counterPartyFundingLabel();
+			org.drip.state.identifier.EntityFundingLabel clientFundingLabel =
+				fundingGroupEntry.getValue().clientFundingLabel();
 
-			java.lang.String counterPartyFundingLabelFQN = counterPartyFundingLabel.fullyQualifiedName();
+			java.lang.String clientFundingLabelFQN = clientFundingLabel.fullyQualifiedName();
 
-			if (!counterPartyFundingLabelMap.containsKey (counterPartyFundingLabelFQN))
+			if (!clientFundingLabelMap.containsKey (clientFundingLabelFQN))
 			{
-				counterPartyFundingLabelMap.put (
-					counterPartyFundingLabelFQN,
-					counterPartyFundingLabel
+				clientFundingLabelMap.put (
+					clientFundingLabelFQN,
+					clientFundingLabel
 				);
 			}
 
-			org.drip.state.identifier.EntityFundingLabel bankSubordinateFundingLabel =
-				fundingGroupEntry.getValue().bankSubordinateFundingLabel();
+			org.drip.state.identifier.EntityFundingLabel dealerSubordinateFundingLabel =
+				fundingGroupEntry.getValue().dealerSubordinateFundingLabel();
 
-			if (null != bankSubordinateFundingLabel)
+			if (null != dealerSubordinateFundingLabel)
 			{
-				java.lang.String bankSubordinateFundingLabelFQN =
-					bankSubordinateFundingLabel.fullyQualifiedName();
+				java.lang.String dealerSubordinateFundingLabelFQN =
+					dealerSubordinateFundingLabel.fullyQualifiedName();
 
-				if (!bankSubordinateFundingLabelMap.containsKey (bankSubordinateFundingLabelFQN))
+				if (!dealerSubordinateFundingLabelMap.containsKey (dealerSubordinateFundingLabelFQN))
 				{
-					bankSubordinateFundingLabelMap.put (
-						bankSubordinateFundingLabelFQN,
-						bankSubordinateFundingLabel
+					dealerSubordinateFundingLabelMap.put (
+						dealerSubordinateFundingLabelFQN,
+						dealerSubordinateFundingLabel
 					);
 				}
 			}
@@ -649,72 +653,72 @@ public class Adiabat extends org.drip.xva.proto.ObjectSpecification
 				java.util.Map<java.lang.String, org.drip.xva.topology.CollateralGroup> collateralGroupMap =
 					creditDebtGroupEntry.getValue().collateralGroupMap();
 
-				org.drip.state.identifier.EntityHazardLabel bankHazardLabel =
-					creditDebtGroupEntry.getValue().bankHazardLabel();
+				org.drip.state.identifier.EntityHazardLabel dealerHazardLabel =
+					creditDebtGroupEntry.getValue().dealerHazardLabel();
 
-				java.lang.String bankHazardLabelFQN = bankHazardLabel.fullyQualifiedName();
+				java.lang.String dealerHazardLabelFQN = dealerHazardLabel.fullyQualifiedName();
 
-				if (!bankHazardLabelMap.containsKey (bankHazardLabelFQN))
+				if (!dealerHazardLabelMap.containsKey (dealerHazardLabelFQN))
 				{
-					bankHazardLabelMap.put (
-						bankHazardLabelFQN,
-						bankHazardLabel
+					dealerHazardLabelMap.put (
+						dealerHazardLabelFQN,
+						dealerHazardLabel
 					);
 				}
 
-				org.drip.state.identifier.EntityHazardLabel counterPartyHazardLabel =
-					creditDebtGroupEntry.getValue().counterPartyHazardLabel();
+				org.drip.state.identifier.EntityHazardLabel clientHazardLabel =
+					creditDebtGroupEntry.getValue().clientPartyHazardLabel();
 
-				java.lang.String counterPartyHazardLabelFQN = counterPartyHazardLabel.fullyQualifiedName();
+				java.lang.String clientHazardLabelFQN = clientHazardLabel.fullyQualifiedName();
 
-				if (!counterPartyHazardLabelMap.containsKey (counterPartyHazardLabelFQN))
+				if (!clientHazardLabelMap.containsKey (clientHazardLabelFQN))
 				{
-					counterPartyHazardLabelMap.put (
-						counterPartyHazardLabelFQN,
-						counterPartyHazardLabel
+					clientHazardLabelMap.put (
+						clientHazardLabelFQN,
+						clientHazardLabel
 					);
 				}
 
-				org.drip.state.identifier.EntityRecoveryLabel bankSeniorRecoveryLabel =
-					creditDebtGroupEntry.getValue().bankSeniorRecoveryLabel();
+				org.drip.state.identifier.EntityRecoveryLabel dealerSeniorRecoveryLabel =
+					creditDebtGroupEntry.getValue().dealerSeniorRecoveryLabel();
 
-				java.lang.String bankSeniorRecoveryLabelFQN = bankSeniorRecoveryLabel.fullyQualifiedName();
+				java.lang.String dealerSeniorRecoveryLabelFQN =
+					dealerSeniorRecoveryLabel.fullyQualifiedName();
 
-				if (!bankSeniorRecoveryLabelMap.containsKey (bankSeniorRecoveryLabelFQN))
+				if (!dealerSeniorRecoveryLabelMap.containsKey (dealerSeniorRecoveryLabelFQN))
 				{
-					bankSeniorRecoveryLabelMap.put (
-						bankSeniorRecoveryLabelFQN,
-						bankSeniorRecoveryLabel
+					dealerSeniorRecoveryLabelMap.put (
+						dealerSeniorRecoveryLabelFQN,
+						dealerSeniorRecoveryLabel
 					);
 				}
 
-				org.drip.state.identifier.EntityRecoveryLabel counterPartyRecoveryLabel =
-					creditDebtGroupEntry.getValue().counterPartyRecoveryLabel();
+				org.drip.state.identifier.EntityRecoveryLabel clientRecoveryLabel =
+					creditDebtGroupEntry.getValue().clientRecoveryLabel();
 
-				java.lang.String counterPartyRecoveryLabelFQN =
-					counterPartyRecoveryLabel.fullyQualifiedName();
+				java.lang.String clientRecoveryLabelFQN = clientRecoveryLabel.fullyQualifiedName();
 
-				if (!counterPartyRecoveryLabelMap.containsKey (counterPartyRecoveryLabelFQN))
+				if (!clientRecoveryLabelMap.containsKey (clientRecoveryLabelFQN))
 				{
-					counterPartyRecoveryLabelMap.put (
-						counterPartyRecoveryLabelFQN,
-						counterPartyRecoveryLabel
+					clientRecoveryLabelMap.put (
+						clientRecoveryLabelFQN,
+						clientRecoveryLabel
 					);
 				}
 
-				org.drip.state.identifier.EntityRecoveryLabel bankSubordinateRecoveryLabel =
-					creditDebtGroupEntry.getValue().bankSubordinateRecoveryLabel();
+				org.drip.state.identifier.EntityRecoveryLabel dealerSubordinateRecoveryLabel =
+					creditDebtGroupEntry.getValue().dealerSubordinateRecoveryLabel();
 
-				if (null != bankSubordinateRecoveryLabel)
+				if (null != dealerSubordinateRecoveryLabel)
 				{
-					java.lang.String bankSubordinateRecoveryLabelFQN =
-						bankSubordinateRecoveryLabel.fullyQualifiedName();
+					java.lang.String dealerSubordinateRecoveryLabelFQN =
+						dealerSubordinateRecoveryLabel.fullyQualifiedName();
 
-					if (!bankSubordinateRecoveryLabelMap.containsKey (bankSubordinateRecoveryLabelFQN))
+					if (!dealerSubordinateRecoveryLabelMap.containsKey (dealerSubordinateRecoveryLabelFQN))
 					{
-						bankSubordinateRecoveryLabelMap.put (
-							bankSubordinateRecoveryLabelFQN,
-							bankSubordinateRecoveryLabel
+						dealerSubordinateRecoveryLabelMap.put (
+							dealerSubordinateRecoveryLabelFQN,
+							dealerSubordinateRecoveryLabel
 						);
 					}
 				}
@@ -754,14 +758,14 @@ public class Adiabat extends org.drip.xva.proto.ObjectSpecification
 			return new org.drip.xva.topology.AdiabatMarketParams (
 				overnightLabelMap,
 				csaLabelMap,
-				bankHazardLabelMap,
-				counterPartyHazardLabelMap,
-				bankSeniorRecoveryLabelMap,
-				counterPartyRecoveryLabelMap,
-				bankSubordinateRecoveryLabelMap,
-				bankSeniorFundingLabelMap,
-				counterPartyFundingLabelMap,
-				bankSubordinateFundingLabelMap
+				dealerHazardLabelMap,
+				clientHazardLabelMap,
+				dealerSeniorRecoveryLabelMap,
+				clientRecoveryLabelMap,
+				dealerSubordinateRecoveryLabelMap,
+				dealerSeniorFundingLabelMap,
+				clientFundingLabelMap,
+				dealerSubordinateFundingLabelMap
 			);
 		}
 		catch (java.lang.Exception e)

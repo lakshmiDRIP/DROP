@@ -141,10 +141,10 @@ public class CorrelatedNumeraireXVAAttribution {
 			mvStart.client().seniorRecoveryRate()
 		);
 
-		double dblGainOnBankDefaultFinish = -1. * (dblDerivativeXVAValueFinish - cog.bankDefault
+		double dblGainOnBankDefaultFinish = -1. * (dblDerivativeXVAValueFinish - cog.dealerDefault
 			(dblDerivativeXVAValueFinish));
 
-		double dblGainOnCounterPartyDefaultFinish = -1. * (dblDerivativeXVAValueFinish - cog.counterPartyDefault
+		double dblGainOnCounterPartyDefaultFinish = -1. * (dblDerivativeXVAValueFinish - cog.clientDefault
 			(dblDerivativeXVAValueFinish));
 
 		org.drip.xva.derivative.CashAccountEdge cae = tes.rebalanceCash (
@@ -178,12 +178,12 @@ public class CorrelatedNumeraireXVAAttribution {
 			FormatUtil.FormatDouble (dblCounterPartyFundingNumeraireFinish, 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (mvFinish.csaReplicator(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (rpvFinish.positionHoldings(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (rpvFinish.bankSeniorNumeraireHoldings(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (rpvFinish.counterPartyNumeraireHoldings(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (rpvFinish.dealerSeniorNumeraireHoldings(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (rpvFinish.clientNumeraireHoldings(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (rpvFinish.cashAccount(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (bkea.derivativeXVAFundingGrowth(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (bkea.derivativeXVABankDefaultGrowth(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (bkea.derivativeXVACounterPartyDefaultGrowth(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (bkea.derivativeXVADealerDefaultGrowth(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (bkea.derivativeXVAClientDefaultGrowth(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (bkea.derivativeXVAEarlyTerminationGrowth(), 1, 6, 1.) + " ||"
 		);
 
@@ -542,10 +542,11 @@ public class CorrelatedNumeraireXVAAttribution {
 			dblDerivativeValue
 		);
 
-		double dblGainOnBankDefaultInitial = -1. * (dblDerivativeXVAValue - cob.bankDefault (dblDerivativeXVAValue));
+		double dblGainOnBankDefaultInitial = -1. * (dblDerivativeXVAValue - cob.dealerDefault
+			(dblDerivativeXVAValue));
 
-		double dblGainOnCounterPartyDefaultInitial = -1. * (dblDerivativeXVAValue -
-			cob.counterPartyDefault (dblDerivativeXVAValue));
+		double dblGainOnCounterPartyDefaultInitial = -1. * (dblDerivativeXVAValue - cob.clientDefault
+			(dblDerivativeXVAValue));
 
 		ReplicationPortfolioVertex rpvInitial = ReplicationPortfolioVertex.Standard (
 			1.,
@@ -602,8 +603,8 @@ public class CorrelatedNumeraireXVAAttribution {
 			FormatUtil.FormatDouble (aMV[iNumVertex].client().seniorFundingReplicator(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (aMV[iNumVertex].csaReplicator(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (rpvInitial.positionHoldings(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (rpvInitial.bankSeniorNumeraireHoldings(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (rpvInitial.counterPartyNumeraireHoldings(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (rpvInitial.dealerSeniorNumeraireHoldings(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (rpvInitial.clientNumeraireHoldings(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (rpvInitial.cashAccount(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (0., 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (0., 1, 6, 1.) + " | " +

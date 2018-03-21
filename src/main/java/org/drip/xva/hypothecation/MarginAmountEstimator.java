@@ -133,139 +133,149 @@ public class MarginAmountEstimator
 	}
 
 	/**
-	 * Calculate the Margin Value at the Bank Default Window
+	 * Calculate the Margin Value at the Dealer Default Window
 	 * 
 	 * @param valuationDateJulian The Valuation Date
 	 * 
-	 * @return The Margin Value at the Bank Default Window
+	 * @return The Margin Value at the Dealer Default Window
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double bankWindowMarginValue (
+	public double dealerWindowMarginValue (
 		final org.drip.analytics.date.JulianDate valuationDateJulian)
 		throws java.lang.Exception
 	{
 		if (null == valuationDateJulian)
-			throw new java.lang.Exception ("MarginAmountEstimator::bankWindowMarginValue => Invalid Inputs");
+		{
+			throw new java.lang.Exception
+				("MarginAmountEstimator::dealerWindowMarginValue => Invalid Inputs");
+		}
 
-		org.drip.analytics.date.JulianDate dtMargin = valuationDateJulian.subtractDays
-			(_positionGroupSpecification.bankDefaultWindow());
+		org.drip.analytics.date.JulianDate marginDate = valuationDateJulian.subtractDays
+			(_positionGroupSpecification.dealerDefaultWindow());
 
-		if (null == dtMargin)
-			throw new java.lang.Exception ("MarginAmountEstimator::bankWindowMarginValue => Invalid Inputs");
+		if (null == marginDate)
+		{
+			throw new java.lang.Exception
+				("MarginAmountEstimator::dealerWindowMarginValue => Invalid Inputs");
+		}
 
-		return _brokenDateInterpolator.interpolate (dtMargin.julian());
+		return _brokenDateInterpolator.interpolate (marginDate.julian());
 	}
 
 	/**
-	 * Calculate the Bank Margin Threshold
+	 * Calculate the Dealer Margin Threshold
 	 * 
 	 * @param valuationDateJulian The Valuation Date
 	 * 
-	 * @return The Bank Margin Threshold
+	 * @return The Dealer Margin Threshold
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double bankThreshold (
+	public double dealerThreshold (
 		final org.drip.analytics.date.JulianDate valuationDateJulian)
 		throws java.lang.Exception
 	{
-		org.drip.function.definition.R1ToR1 bankThresholdFunction =
-			_positionGroupSpecification.bankThreshold();
+		org.drip.function.definition.R1ToR1 dealerThresholdFunction =
+			_positionGroupSpecification.dealerThresholdFunction();
 
-		return null == bankThresholdFunction ? 0. : bankThresholdFunction.evaluate
+		return null == dealerThresholdFunction ? 0. : dealerThresholdFunction.evaluate
 			(valuationDateJulian.julian());
 	}
 
 	/**
-	 * Calculate the Margin Amount Required to be Posted by the Bank
+	 * Calculate the Margin Amount Required to be Posted by the Dealer
 	 * 
 	 * @param valuationDateJulian The Valuation Date
 	 * 
-	 * @return The Margin Amount Required to be Posted by the Bank
+	 * @return The Margin Amount Required to be Posted by the Dealer
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double bankPostingRequirement (
+	public double dealerPostingRequirement (
 		final org.drip.analytics.date.JulianDate valuationDateJulian)
 		throws java.lang.Exception
 	{
-		double bankPostingRequirement = bankWindowMarginValue (valuationDateJulian) - bankThreshold
+		double dealerPostingRequirement = dealerWindowMarginValue (valuationDateJulian) - dealerThreshold
 			(valuationDateJulian);
 
-		return 0. < bankPostingRequirement ? 0. : bankPostingRequirement;
+		return 0. < dealerPostingRequirement ? 0. : dealerPostingRequirement;
 	}
 
 	/**
-	 * Calculate the Margin Value at the Counter Party Default Window
+	 * Calculate the Margin Value at the Client Default Window
 	 * 
 	 * @param valuationDateJulian The Valuation Date
 	 * 
-	 * @return The Margin Value at the Counter Party Default Window
+	 * @return The Margin Value at the Client Default Window
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double counterPartyWindowMarginValue (
+	public double clientWindowMarginValue (
 		final org.drip.analytics.date.JulianDate valuationDateJulian)
 		throws java.lang.Exception
 	{
 		if (null == valuationDateJulian)
+		{
 			throw new java.lang.Exception
-				("MarginAmountEstimator::counterPartyWindowMarginValue => Invalid Inputs");
+				("MarginAmountEstimator::clientWindowMarginValue => Invalid Inputs");
+		}
 
-		org.drip.analytics.date.JulianDate dtMargin = valuationDateJulian.subtractDays
-			(_positionGroupSpecification.counterPartyDefaultWindow());
+		org.drip.analytics.date.JulianDate marginDate = valuationDateJulian.subtractDays
+			(_positionGroupSpecification.clientDefaultWindow());
 
-		if (null == dtMargin)
+		if (null == marginDate)
+		{
 			throw new java.lang.Exception
-				("MarginAmountEstimator::counterPartyWindowMarginValue => Invalid Inputs");
+				("MarginAmountEstimator::clientWindowMarginValue => Invalid Inputs");
+		}
 
-		return _brokenDateInterpolator.interpolate (dtMargin.julian());
+		return _brokenDateInterpolator.interpolate (marginDate.julian());
 	}
 
 	/**
-	 * Calculate the Counter Party Margin Threshold
+	 * Calculate the Client Margin Threshold
 	 * 
 	 * @param valuationDateJulian The Valuation Date
 	 * 
-	 * @return The Counter Party Margin Threshold
+	 * @return The Client Margin Threshold
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double counterPartyThreshold (
+	public double clientThreshold (
 		final org.drip.analytics.date.JulianDate valuationDateJulian)
 		throws java.lang.Exception
 	{
-		org.drip.function.definition.R1ToR1[] counterPartyThresholdFunctionArray =
-			_positionGroupSpecification.counterPartyThreshold();
+		org.drip.function.definition.R1ToR1[] clientThresholdFunctionArray =
+			_positionGroupSpecification.clientThresholdFunctionArray();
 
-		return null == counterPartyThresholdFunctionArray || null == counterPartyThresholdFunctionArray[0] ?
-			0. : counterPartyThresholdFunctionArray[0].evaluate (valuationDateJulian.julian());
+		return null == clientThresholdFunctionArray || null == clientThresholdFunctionArray[0] ? 0. :
+			clientThresholdFunctionArray[0].evaluate (valuationDateJulian.julian());
 	}
 
 	/**
-	 * Calculate the Margin Amount Required to be Posted by the Counter Party
+	 * Calculate the Margin Amount Required to be Posted by the Client
 	 * 
 	 * @param valuationDateJulian The Valuation Date
 	 * 
-	 * @return The Margin Amount Required to be Posted by the Counter Party
+	 * @return The Margin Amount Required to be Posted by the Client
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double counterPartyPostingRequirement (
+	public double clientPostingRequirement (
 		final org.drip.analytics.date.JulianDate valuationDateJulian)
 		throws java.lang.Exception
 	{
-		double counterPartyPostingRequirement = counterPartyWindowMarginValue (valuationDateJulian) -
-			counterPartyThreshold (valuationDateJulian);
+		double clientPostingRequirement = clientWindowMarginValue (valuationDateJulian) - clientThreshold
+			(valuationDateJulian);
 
-		return 0. > counterPartyPostingRequirement ? 0. : counterPartyPostingRequirement;
+		return 0. > clientPostingRequirement ? 0. : clientPostingRequirement;
 	}
 
 	/**
@@ -283,8 +293,7 @@ public class MarginAmountEstimator
 		throws java.lang.Exception
 	{
 		return org.drip.quant.common.NumberUtil.IsValid (_currentBalance) ? _currentBalance :
-			bankPostingRequirement (valuationDateJulian) + counterPartyPostingRequirement
-				(valuationDateJulian);
+			dealerPostingRequirement (valuationDateJulian) + clientPostingRequirement (valuationDateJulian);
 	}
 
 	/**
@@ -303,58 +312,55 @@ public class MarginAmountEstimator
 			return null;
 		}
 
-		org.drip.analytics.date.JulianDate bankMarginDate = valuationDateJulian.subtractDays
-			(_positionGroupSpecification.bankDefaultWindow());
+		org.drip.analytics.date.JulianDate dealerMarginDate = valuationDateJulian.subtractDays
+			(_positionGroupSpecification.dealerDefaultWindow());
 
-		org.drip.analytics.date.JulianDate counterPartyMarginDate = valuationDateJulian.subtractDays
-			(_positionGroupSpecification.counterPartyDefaultWindow());
+		org.drip.analytics.date.JulianDate clientMarginDate = valuationDateJulian.subtractDays
+			(_positionGroupSpecification.clientDefaultWindow());
 
-		if (null == bankMarginDate ||
-			null == counterPartyMarginDate)
+		if (null == dealerMarginDate ||
+			null == clientMarginDate)
 		{
 			return null;
 		}
 
-		org.drip.function.definition.R1ToR1[] counterPartyThresholdFunctionArray =
-			_positionGroupSpecification.counterPartyThreshold();
+		org.drip.function.definition.R1ToR1[] clientThresholdFunctionArray =
+			_positionGroupSpecification.clientThresholdFunctionArray();
 
-		org.drip.function.definition.R1ToR1 bankThresholdFunction =
-			_positionGroupSpecification.bankThreshold();
+		org.drip.function.definition.R1ToR1 dealerThresholdFunction =
+			_positionGroupSpecification.dealerThresholdFunction();
 
 		double valuationDate = valuationDateJulian.julian();
 
 		try
 		{
-			double bankWindowMarginValue = _brokenDateInterpolator.interpolate (bankMarginDate.julian());
+			double dealerWindowMarginValue = _brokenDateInterpolator.interpolate (dealerMarginDate.julian());
 
-			double counterPartyWindowMarginValue = _brokenDateInterpolator.interpolate
-				(counterPartyMarginDate.julian());
+			double clientWindowMarginValue = _brokenDateInterpolator.interpolate (clientMarginDate.julian());
 
-			double bankThresholdValue = null == bankThresholdFunction ? 0. : bankThresholdFunction.evaluate
-				(valuationDate);
+			double dealerThresholdValue = null == dealerThresholdFunction ? 0. :
+				dealerThresholdFunction.evaluate (valuationDate);
 
-			double counterPartyThresholdValue = null == counterPartyThresholdFunctionArray || null ==
-				counterPartyThresholdFunctionArray[0] ? 0. : counterPartyThresholdFunctionArray[0].evaluate
+			double clientThresholdValue = null == clientThresholdFunctionArray || null ==
+				clientThresholdFunctionArray[0] ? 0. : clientThresholdFunctionArray[0].evaluate
 					(valuationDate);
 
-			double bankPostingRequirement = bankWindowMarginValue - bankThresholdValue;
-			bankPostingRequirement = 0. < bankPostingRequirement ? 0. : bankPostingRequirement;
-			double counterPartyPostingRequirement = counterPartyWindowMarginValue -
-				counterPartyThresholdValue;
-			counterPartyPostingRequirement = 0. > counterPartyPostingRequirement ? 0. :
-				counterPartyPostingRequirement;
+			double dealerPostingRequirement = dealerWindowMarginValue - dealerThresholdValue;
+			dealerPostingRequirement = 0. < dealerPostingRequirement ? 0. : dealerPostingRequirement;
+			double clientPostingRequirement = clientWindowMarginValue - clientThresholdValue;
+			clientPostingRequirement = 0. > clientPostingRequirement ? 0. : clientPostingRequirement;
 
 			return new org.drip.xva.hypothecation.MarginAmountEstimatorOutput (
-				bankMarginDate,
-				counterPartyMarginDate,
-				bankWindowMarginValue,
-				bankThresholdValue,
-				bankPostingRequirement,
-				counterPartyWindowMarginValue,
-				counterPartyThresholdValue,
-				counterPartyPostingRequirement,
+				dealerMarginDate,
+				clientMarginDate,
+				dealerWindowMarginValue,
+				dealerThresholdValue,
+				dealerPostingRequirement,
+				clientWindowMarginValue,
+				clientThresholdValue,
+				clientPostingRequirement,
 				org.drip.quant.common.NumberUtil.IsValid (_currentBalance) ? _currentBalance :
-					bankPostingRequirement + counterPartyPostingRequirement);
+					dealerPostingRequirement + clientPostingRequirement);
 		}
 		catch (java.lang.Exception e)
 		{

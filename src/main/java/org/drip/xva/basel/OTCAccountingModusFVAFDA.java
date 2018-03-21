@@ -81,7 +81,7 @@ public class OTCAccountingModusFVAFDA extends org.drip.xva.basel.OTCAccountingMo
 	 */
 
 	public OTCAccountingModusFVAFDA (
-		final org.drip.xva.cpty.ExposureAdjustmentAggregator exposureAdjustmentAggregator)
+		final org.drip.xva.gross.ExposureAdjustmentAggregator exposureAdjustmentAggregator)
 		throws java.lang.Exception
 	{
 		super (exposureAdjustmentAggregator);
@@ -89,28 +89,28 @@ public class OTCAccountingModusFVAFDA extends org.drip.xva.basel.OTCAccountingMo
 
 	@Override public double contraAssetAdjustment()
 	{
-		org.drip.xva.cpty.ExposureAdjustmentAggregator exposureAdjustmentAggregator = aggregator();
+		org.drip.xva.gross.ExposureAdjustmentAggregator exposureAdjustmentAggregator = aggregator();
 
 		return exposureAdjustmentAggregator.ucva().amount() + exposureAdjustmentAggregator.fva().amount();
 	}
 
 	@Override public double contraLiabilityAdjustment()
 	{
-		org.drip.xva.cpty.ExposureAdjustmentAggregator exposureAdjustmentAggregator = aggregator();
+		org.drip.xva.gross.ExposureAdjustmentAggregator exposureAdjustmentAggregator = aggregator();
 
 		return exposureAdjustmentAggregator.cvacl().amount() + exposureAdjustmentAggregator.ftddva().amount()
 			+ exposureAdjustmentAggregator.fda().amount();
 	}
 
 	@Override public org.drip.xva.basel.OTCAccountingPolicy feePolicy (
-		final org.drip.xva.cpty.ExposureAdjustmentAggregator exposureAdjustmentAggregatorNext)
+		final org.drip.xva.gross.ExposureAdjustmentAggregator exposureAdjustmentAggregatorNext)
 	{
 		if (null == exposureAdjustmentAggregatorNext)
 		{
 			return null;
 		}
 
-		org.drip.xva.cpty.ExposureAdjustmentAggregator exposureAdjustmentAggregator = aggregator();
+		org.drip.xva.gross.ExposureAdjustmentAggregator exposureAdjustmentAggregator = aggregator();
 
 		double collateralVAChange = exposureAdjustmentAggregatorNext.colva().amount() -
 			exposureAdjustmentAggregator.colva().amount();

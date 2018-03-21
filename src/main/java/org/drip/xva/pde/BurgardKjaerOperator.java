@@ -72,8 +72,8 @@ package org.drip.xva.pde;
 
 public class BurgardKjaerOperator
 {
-	private org.drip.xva.evolver.PrimarySecurityDynamicsContainer _tradeablesContainer = null;
 	private org.drip.xva.definition.PDEEvolutionControl _pdeEvolutionControl = null;
+	private org.drip.xva.evolver.PrimarySecurityDynamicsContainer _tradeablesContainer = null;
 
 	/**
 	 * BurgardKjaerOperator Constructor
@@ -142,29 +142,28 @@ public class BurgardKjaerOperator
 
 		org.drip.xva.universe.MarketVertex finalMarketVertex = marketEdge.finish();
 
-		org.drip.xva.universe.MarketVertexEntity finalBankMarketVertex = finalMarketVertex.dealer();
+		org.drip.xva.universe.MarketVertexEntity finalDealerMarketVertex = finalMarketVertex.dealer();
 
-		org.drip.xva.universe.MarketVertexEntity finalCounterPartyMarketVertex =
-			finalMarketVertex.client();
+		org.drip.xva.universe.MarketVertexEntity finalClientMarketVertex = finalMarketVertex.client();
 
 		org.drip.xva.derivative.PositionGreekVertex initialPositionGreekVertex =
 			initialTrajectoryVertex.positionGreekVertex();
 
 		double initialDerivativeXVAValue = initialPositionGreekVertex.derivativeXVAValue();
 
-		double gainOnBankDefault = initialTrajectoryVertex.gainOnBankDefault();
+		double gainOnDealerDefault = initialTrajectoryVertex.gainOnDealerDefault();
 
 		double initialPortfolioValue = finalMarketVertex.positionManifestValue();
 
 		double portfolioValueBump = _pdeEvolutionControl.sensitivityShiftFactor() * initialPortfolioValue;
 
-		double bankSeniorDefaultIntensity = finalBankMarketVertex.hazardRate();
+		double dealerSeniorDefaultIntensity = finalDealerMarketVertex.hazardRate();
 
-		double counterPartyDefaultIntensity = finalCounterPartyMarketVertex.hazardRate();
+		double clientDefaultIntensity = finalClientMarketVertex.hazardRate();
 
-		double bankGainOnCounterPartyDefault = initialTrajectoryVertex.gainOnCounterPartyDefault();
+		double dealerGainOnClientDefault = initialTrajectoryVertex.gainOnClientDefault();
 
-		double gainOnCounterPartyDefault = counterPartyDefaultIntensity * bankGainOnCounterPartyDefault;
+		double gainOnClientDefault = clientDefaultIntensity * dealerGainOnClientDefault;
 
 		try
 		{
@@ -186,9 +185,9 @@ public class BurgardKjaerOperator
 				-1. * bumpedThetaArray[1],
 				-1. * bumpedThetaArray[2],
 				finalMarketVertex.csaReplicator() * collateral,
-				(bankSeniorDefaultIntensity + counterPartyDefaultIntensity) * initialDerivativeXVAValue,
-				-1. * bankSeniorDefaultIntensity * gainOnBankDefault,
-				-1. * gainOnCounterPartyDefault,
+				(dealerSeniorDefaultIntensity + clientDefaultIntensity) * initialDerivativeXVAValue,
+				-1. * dealerSeniorDefaultIntensity * gainOnDealerDefault,
+				-1. * gainOnClientDefault,
 				0.
 			);
 		}
@@ -225,31 +224,30 @@ public class BurgardKjaerOperator
 
 		double derivativeXVAValue = initialTrajectoryVertex.positionGreekVertex().derivativeXVAValue();
 
-		org.drip.xva.universe.MarketVertexEntity finalBankMarketVertex = finalMarketVertex.dealer();
+		org.drip.xva.universe.MarketVertexEntity finalDealerMarketVertex = finalMarketVertex.dealer();
 
-		org.drip.xva.universe.MarketVertexEntity finalCounterPartyMarketVertex =
-			finalMarketVertex.client();
+		org.drip.xva.universe.MarketVertexEntity finalClientMarketVertex = finalMarketVertex.client();
 
-		double counterPartyRecoveryRate = finalCounterPartyMarketVertex.seniorRecoveryRate();
+		double clientRecoveryRate = finalClientMarketVertex.seniorRecoveryRate();
 
-		double bankDefaultIntensity = finalBankMarketVertex.hazardRate();
+		double dealerDefaultIntensity = finalDealerMarketVertex.hazardRate();
 
-		double counterPartyDefaultIntensity = finalCounterPartyMarketVertex.hazardRate();
+		double clientDefaultIntensity = finalClientMarketVertex.hazardRate();
 
 		double closeOutMTM = org.drip.xva.definition.PDEEvolutionControl.CLOSEOUT_GREGORY_LI_TANG ==
 			_pdeEvolutionControl.closeOutScheme() ? derivativeXVAValue : derivativeXVAValue;
 
-		double bankExposure = closeOutMTM > 0. ? closeOutMTM : finalBankMarketVertex.seniorRecoveryRate() *
-			closeOutMTM;
+		double dealerExposure = closeOutMTM > 0. ? closeOutMTM : finalDealerMarketVertex.seniorRecoveryRate()
+			* closeOutMTM;
 
 		double initialPortfolioValue = finalMarketVertex.positionManifestValue();
 
 		double portfolioValueBump = _pdeEvolutionControl.sensitivityShiftFactor() * initialPortfolioValue;
 
-		double derivativeXVACounterPartyDefaultGrowth = -1. * counterPartyDefaultIntensity *
-			(closeOutMTM < 0. ? closeOutMTM : counterPartyRecoveryRate * closeOutMTM);
+		double derivativeXVAClientDefaultGrowth = -1. * clientDefaultIntensity *
+			(closeOutMTM < 0. ? closeOutMTM : clientRecoveryRate * closeOutMTM);
 
-		double bankSeniorFundingSpread = finalBankMarketVertex.seniorFundingSpread() /
+		double dealerSeniorFundingSpread = finalDealerMarketVertex.seniorFundingSpread() /
 			marketEdge.vertexIncrement();
 
 		try
@@ -272,10 +270,10 @@ public class BurgardKjaerOperator
 				-1. * bumpedThetaArray[1],
 				-1. * bumpedThetaArray[2],
 				finalMarketVertex.csaReplicator() * collateral,
-				(bankDefaultIntensity + counterPartyDefaultIntensity) * derivativeXVAValue,
-				bankSeniorFundingSpread * bankExposure,
-				-1. * bankDefaultIntensity * bankExposure,
-				derivativeXVACounterPartyDefaultGrowth
+				(dealerDefaultIntensity + clientDefaultIntensity) * derivativeXVAValue,
+				dealerSeniorFundingSpread * dealerExposure,
+				-1. * dealerDefaultIntensity * dealerExposure,
+				derivativeXVAClientDefaultGrowth
 			);
 		}
 		catch (java.lang.Exception e)

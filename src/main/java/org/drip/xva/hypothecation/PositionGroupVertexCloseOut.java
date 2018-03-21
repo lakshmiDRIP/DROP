@@ -48,8 +48,8 @@ package org.drip.xva.hypothecation;
  */
 
 /**
- * PositionGroupVertexCloseOut holds the Bank and the Counter Party Close Outs at each Re-hypothecation
- *  Position Group. The References are:
+ * PositionGroupVertexCloseOut holds the Dealer and the Client Close Outs at each Re-hypothecation Position
+ *  Group. The References are:
  *  
  *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
  *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
@@ -70,8 +70,8 @@ package org.drip.xva.hypothecation;
 
 public class PositionGroupVertexCloseOut
 {
-	private double _bank = java.lang.Double.NaN;
-	private double _counterParty = java.lang.Double.NaN;
+	private double _client = java.lang.Double.NaN;
+	private double _dealer = java.lang.Double.NaN;
 
 	/**
 	 * Construct a Static Instance of PositionGroupVertexCloseOut
@@ -98,11 +98,11 @@ public class PositionGroupVertexCloseOut
 		try
 		{
 			return new PositionGroupVertexCloseOut (
-				closeOutGeneral.bankDefault (
+				closeOutGeneral.dealerDefault (
 					uncollateralizedExposure,
 					collateralBalance
 				),
-				closeOutGeneral.counterPartyDefault (
+				closeOutGeneral.clientDefault (
 					uncollateralizedExposure,
 					collateralBalance
 				)
@@ -119,43 +119,43 @@ public class PositionGroupVertexCloseOut
 	/**
 	 * PositionGroupVertexCloseOut Constructor
 	 * 
-	 * @param bank The Bank Close Out
-	 * @param counterParty The Counter Party Close Out
+	 * @param dealer The Dealer Close Out
+	 * @param client The Client Close Out
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public PositionGroupVertexCloseOut (
-		final double bank,
-		final double counterParty)
+		final double dealer,
+		final double client)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_bank = bank) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_counterParty = counterParty))
+		if (!org.drip.quant.common.NumberUtil.IsValid (_dealer = dealer) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_client = client))
 		{
 			throw new java.lang.Exception ("PositionGroupVertexCloseOut Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Bank Close Out
+	 * Retrieve the Dealer Close Out
 	 * 
-	 * @return The Bank Close Out
+	 * @return The Dealer Close Out
 	 */
 
-	public double bank()
+	public double dealer()
 	{
-		return _bank;
+		return _dealer;
 	}
 
 	/**
-	 * Retrieve the Counter Party Close Out
+	 * Retrieve the Client Close Out
 	 * 
-	 * @return The Counter Party Close Out
+	 * @return The Client Close Out
 	 */
 
-	public double counterParty()
+	public double client()
 	{
-		return _counterParty;
+		return _client;
 	}
 }

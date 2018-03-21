@@ -72,14 +72,14 @@ public class BurgardKjaerBuilder
 {
 
 	/**
-	 * Construct the Initial Dynamic Bank Portfolio
+	 * Construct the Initial Dynamic Dealer Portfolio
 	 * 
 	 * @param anchorDate The Anchor Date
 	 * @param forward The Unrealized Forward Exposure
 	 * @param marketVertex The Market Vertex
 	 * @param closeOutScheme The Generic Close Out Instance
 	 * 
-	 * @return The Burgard Kjaer Bank Portfolio Vertex
+	 * @return The Burgard Kjaer Dealer Portfolio Vertex
 	 */
 
 	public static final org.drip.xva.vertex.BurgardKjaer Initial (
@@ -113,27 +113,27 @@ public class BurgardKjaerBuilder
 
 		double fundingExposure = burgardKjaerVertexExposure.funding();
 
-		double bankDefaultCloseOut = collateralGroupVertexCloseOut.bank();
+		double dealerDefaultCloseOut = collateralGroupVertexCloseOut.dealer();
 
-		org.drip.xva.universe.MarketVertexEntity bankMarketVertex = marketVertex.dealer();
+		org.drip.xva.universe.MarketVertexEntity dealerMarketVertex = marketVertex.dealer();
 
-		double bankSubordinateFundingMarketVertex = bankMarketVertex.subordinateFundingReplicator();
+		double dealerSubordinateFundingMarketVertex = dealerMarketVertex.subordinateFundingReplicator();
 
-		double bankSurvival = bankMarketVertex.survivalProbability();
+		double dealerSurvival = dealerMarketVertex.survivalProbability();
 
-		double bankSeniorRecoveryRate = bankMarketVertex.seniorRecoveryRate();
+		double dealerSeniorRecoveryRate = dealerMarketVertex.seniorRecoveryRate();
 
-		double bankSubordinateRecoveryRate = bankMarketVertex.subordinateRecoveryRate();
+		double dealerSubordinateRecoveryRate = dealerMarketVertex.subordinateRecoveryRate();
 
-		double counterPartySurvival = marketVertex.client().survivalProbability();
+		double clientSurvival = marketVertex.client().survivalProbability();
 
-		double incrementalBankSurvival = bankSurvival - 1.;
+		double incrementalDealerSurvival = dealerSurvival - 1.;
 
 		double adjustedExposure =
-			forward + bankSurvival * (counterPartySurvival - 1.) * burgardKjaerVertexExposure.credit() +
-			counterPartySurvival * incrementalBankSurvival * burgardKjaerVertexExposure.debt() +
-			counterPartySurvival * incrementalBankSurvival * fundingExposure -
-			bankSurvival * counterPartySurvival * marketVertex.csaSpread() *
+			forward + dealerSurvival * (clientSurvival - 1.) * burgardKjaerVertexExposure.credit() +
+			clientSurvival * incrementalDealerSurvival * burgardKjaerVertexExposure.debt() +
+			clientSurvival * incrementalDealerSurvival * fundingExposure -
+			dealerSurvival * clientSurvival * marketVertex.csaSpread() *
 				burgardKjaerVertexExposure.collateralBalance();
 
 		try
@@ -144,11 +144,11 @@ public class BurgardKjaerBuilder
 				0.,
 				burgardKjaerVertexExposure,
 				collateralGroupVertexCloseOut,
-				new org.drip.xva.derivative.ReplicationPortfolioVertexBank (
-					(fundingExposure + bankSubordinateRecoveryRate * adjustedExposure - bankDefaultCloseOut) /
-						(bankSeniorRecoveryRate - bankSubordinateRecoveryRate) / bankMarketVertex.seniorFundingReplicator(),
-					(fundingExposure + bankSeniorRecoveryRate * adjustedExposure - bankDefaultCloseOut) /
-						(bankSubordinateRecoveryRate - bankSeniorRecoveryRate) / bankSubordinateFundingMarketVertex
+				new org.drip.xva.derivative.ReplicationPortfolioVertexDealer (
+					(fundingExposure + dealerSubordinateRecoveryRate * adjustedExposure - dealerDefaultCloseOut) /
+						(dealerSeniorRecoveryRate - dealerSubordinateRecoveryRate) / dealerMarketVertex.seniorFundingReplicator(),
+					(fundingExposure + dealerSeniorRecoveryRate * adjustedExposure - dealerDefaultCloseOut) /
+						(dealerSubordinateRecoveryRate - dealerSeniorRecoveryRate) / dealerSubordinateFundingMarketVertex
 				)
 			);
 		}
@@ -161,7 +161,7 @@ public class BurgardKjaerBuilder
 	}
 
 	/**
-	 * Construct a Path-wise Dynamic Bank Portfolio
+	 * Construct a Path-wise Dynamic Dealer Portfolio
 	 * 
 	 * @param anchorDate The Anchor Date
 	 * @param collateralGroupVertexExposure The Raw Collateral Group Vertex Exposure
@@ -169,10 +169,10 @@ public class BurgardKjaerBuilder
 	 * @param collateralGroupVertexCloseOut The Collateral Group Vertex Close Out
 	 * @param burgardKjaerVertexExposure The Collateral Group Vertex Exposure Decomposition
 	 * 
-	 * @return The Burgard Kjaer Bank Portfolio Vertex
+	 * @return The Burgard Kjaer Dealer Portfolio Vertex
 	 */
 
-	public static final org.drip.xva.vertex.BurgardKjaer BankPortfolioBuilder (
+	public static final org.drip.xva.vertex.BurgardKjaer DealerPortfolioBuilder (
 		final org.drip.analytics.date.JulianDate anchorDate,
 		final org.drip.xva.hypothecation.PositionGroupVertexExposure collateralGroupVertexExposure,
 		final org.drip.xva.universe.MarketEdge marketEdge,
@@ -189,36 +189,36 @@ public class BurgardKjaerBuilder
 
 		double fundingExposure = burgardKjaerVertexExposure.funding();
 
-		double bankDefaultCloseOut = collateralGroupVertexCloseOut.bank();
+		double dealerDefaultCloseOut = collateralGroupVertexCloseOut.dealer();
 
 		org.drip.xva.universe.MarketVertex marketVertexStart = marketEdge.start();
 
 		org.drip.xva.universe.MarketVertex marketVertexFinish = marketEdge.finish();
 
-		org.drip.xva.universe.MarketVertexEntity bankMarketVertexFinish = marketVertexFinish.dealer();
+		org.drip.xva.universe.MarketVertexEntity dealerMarketVertexFinish = marketVertexFinish.dealer();
 
-		double bankSubordinateFundingMarketVertexFinish = bankMarketVertexFinish.subordinateFundingReplicator();
+		double dealerSubordinateFundingMarketVertexFinish = dealerMarketVertexFinish.subordinateFundingReplicator();
 
-		double bankSurvivalFinish = bankMarketVertexFinish.survivalProbability();
+		double dealerSurvivalFinish = dealerMarketVertexFinish.survivalProbability();
 
-		double bankSeniorRecoveryRateFinish = bankMarketVertexFinish.seniorRecoveryRate();
+		double dealerSeniorRecoveryRateFinish = dealerMarketVertexFinish.seniorRecoveryRate();
 
-		double bankSubordinateRecoveryRateFinish = bankMarketVertexFinish.subordinateRecoveryRate();
+		double dealerSubordinateRecoveryRateFinish = dealerMarketVertexFinish.subordinateRecoveryRate();
 
-		double counterPartySurvivalFinish = marketVertexFinish.client().survivalProbability();
+		double clientSurvivalFinish = marketVertexFinish.client().survivalProbability();
 
-		double incrementalBankSurvival = bankSurvivalFinish -
+		double incrementalDealerSurvival = dealerSurvivalFinish -
 			(null == marketVertexStart ? 1. : marketVertexStart.dealer().survivalProbability());
 
 		double adjustedExposure =
 			collateralGroupVertexExposure.uncollateralized() +
-			bankSurvivalFinish *
-				(counterPartySurvivalFinish -
+			dealerSurvivalFinish *
+				(clientSurvivalFinish -
 					(null == marketVertexStart ? 1. : marketVertexStart.client().survivalProbability())) *
 				burgardKjaerVertexExposure.credit() +
-			counterPartySurvivalFinish * incrementalBankSurvival * burgardKjaerVertexExposure.debt() +
-			counterPartySurvivalFinish * incrementalBankSurvival * fundingExposure -
-			bankSurvivalFinish * counterPartySurvivalFinish * marketVertexFinish.csaSpread() *
+			clientSurvivalFinish * incrementalDealerSurvival * burgardKjaerVertexExposure.debt() +
+			clientSurvivalFinish * incrementalDealerSurvival * fundingExposure -
+			dealerSurvivalFinish * clientSurvivalFinish * marketVertexFinish.csaSpread() *
 				burgardKjaerVertexExposure.collateralBalance();
 
 		try
@@ -229,14 +229,14 @@ public class BurgardKjaerBuilder
 				collateralGroupVertexExposure.accrued(),
 				burgardKjaerVertexExposure,
 				collateralGroupVertexCloseOut,
-				new org.drip.xva.derivative.ReplicationPortfolioVertexBank (
-					(fundingExposure + bankSubordinateRecoveryRateFinish * adjustedExposure -
-						bankDefaultCloseOut) / (bankSeniorRecoveryRateFinish -
-						bankSubordinateRecoveryRateFinish) /
-						bankMarketVertexFinish.seniorFundingReplicator(),
-					(fundingExposure + bankSeniorRecoveryRateFinish * adjustedExposure - bankDefaultCloseOut)
-						/ (bankSubordinateRecoveryRateFinish - bankSeniorRecoveryRateFinish) /
-						bankSubordinateFundingMarketVertexFinish
+				new org.drip.xva.derivative.ReplicationPortfolioVertexDealer (
+					(fundingExposure + dealerSubordinateRecoveryRateFinish * adjustedExposure -
+						dealerDefaultCloseOut) / (dealerSeniorRecoveryRateFinish -
+						dealerSubordinateRecoveryRateFinish) /
+						dealerMarketVertexFinish.seniorFundingReplicator(),
+					(fundingExposure + dealerSeniorRecoveryRateFinish * adjustedExposure - dealerDefaultCloseOut)
+						/ (dealerSubordinateRecoveryRateFinish - dealerSeniorRecoveryRateFinish) /
+						dealerSubordinateFundingMarketVertexFinish
 				)
 			);
 		}
@@ -249,7 +249,7 @@ public class BurgardKjaerBuilder
 	}
 
 	/**
-	 * Construct a Standard Instance of BurgardKjaerVertex using the specified Hedge Error with Two Bank
+	 * Construct a Standard Instance of BurgardKjaerVertex using the specified Hedge Error with Two Dealer
 	 *  Bonds
 	 * 
 	 * @param anchorDate The Vertex Date Anchor
@@ -260,7 +260,7 @@ public class BurgardKjaerBuilder
 	 * @param marketEdge The Market Edge
 	 * @param closeOutScheme The Generic Close-Out Evaluator Instance
 	 * 
-	 * @return The Standard Instance of BurgardKjaerVertex using the specified Hedge Error with Two Bank
+	 * @return The Standard Instance of BurgardKjaerVertex using the specified Hedge Error with Two Dealer
 	 *  Bonds
 	 */
 
@@ -298,7 +298,7 @@ public class BurgardKjaerBuilder
 
 		try
 		{
-			return BankPortfolioBuilder (
+			return DealerPortfolioBuilder (
 				anchorDate,
 				new org.drip.xva.hypothecation.PositionGroupVertexExposure (
 					exposure,
@@ -307,8 +307,8 @@ public class BurgardKjaerBuilder
 				marketEdge,
 				collateralGroupVertexCloseOut,
 				new org.drip.xva.vertex.BurgardKjaerExposure (
-					collateralizedExposure - collateralGroupVertexCloseOut.counterParty(),
-					collateralizedExposure - collateralGroupVertexCloseOut.bank(),
+					collateralizedExposure - collateralGroupVertexCloseOut.client(),
+					collateralizedExposure - collateralGroupVertexCloseOut.dealer(),
 					hedgeError,
 					collateralBalance
 				)
@@ -357,7 +357,7 @@ public class BurgardKjaerBuilder
 
 		try
 		{
-			return BankPortfolioBuilder (
+			return DealerPortfolioBuilder (
 				anchorDate,
 				new org.drip.xva.hypothecation.PositionGroupVertexExposure (
 					exposure,
@@ -415,7 +415,7 @@ public class BurgardKjaerBuilder
 
 		try
 		{
-			return BankPortfolioBuilder (
+			return DealerPortfolioBuilder (
 				anchorDate,
 				new org.drip.xva.hypothecation.PositionGroupVertexExposure (
 					exposure,
@@ -473,7 +473,7 @@ public class BurgardKjaerBuilder
 
 		try
 		{
-			return BankPortfolioBuilder (
+			return DealerPortfolioBuilder (
 				anchorDate,
 				new org.drip.xva.hypothecation.PositionGroupVertexExposure (
 					exposure,
@@ -529,15 +529,15 @@ public class BurgardKjaerBuilder
 
 		org.drip.xva.universe.MarketVertex marketVertexFinish = marketEdge.finish();
 
-		double bankSeniorRecoveryRateFinish = marketVertexFinish.dealer().seniorRecoveryRate();
+		double dealerSeniorRecoveryRateFinish = marketVertexFinish.dealer().seniorRecoveryRate();
 
-		double dblCounterPartyRecoveryFinish = marketVertexFinish.client().seniorRecoveryRate();
+		double clientRecoveryFinish = marketVertexFinish.client().seniorRecoveryRate();
 
 		double collateralizedExposure = exposure + realizedCashFlow - collateralBalance;
 
 		try
 		{
-			return BankPortfolioBuilder (
+			return DealerPortfolioBuilder (
 				anchorDate,
 				new org.drip.xva.hypothecation.PositionGroupVertexExposure (
 					exposure,
@@ -545,12 +545,12 @@ public class BurgardKjaerBuilder
 				),
 				marketEdge,
 				new org.drip.xva.hypothecation.PositionGroupVertexCloseOut (
-					collateralizedExposure * bankSeniorRecoveryRateFinish,
-					collateralizedExposure * dblCounterPartyRecoveryFinish
+					collateralizedExposure * dealerSeniorRecoveryRateFinish,
+					collateralizedExposure * clientRecoveryFinish
 				),
 				new org.drip.xva.vertex.BurgardKjaerExposure (
-					collateralizedExposure * (1. - dblCounterPartyRecoveryFinish),
-					collateralizedExposure * (1. - bankSeniorRecoveryRateFinish),
+					collateralizedExposure * (1. - clientRecoveryFinish),
+					collateralizedExposure * (1. - dealerSeniorRecoveryRateFinish),
 					0.,
 					collateralBalance
 				)

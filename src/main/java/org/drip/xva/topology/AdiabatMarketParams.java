@@ -70,36 +70,36 @@ public class AdiabatMarketParams
 	private java.util.Map<java.lang.String, org.drip.state.identifier.CSALabel> _csaLabelMap = null;
 	private java.util.Map<java.lang.String, org.drip.state.identifier.OvernightLabel> _overnightLabelMap =
 		null;
-	private java.util.Map<java.lang.String, org.drip.state.identifier.EntityHazardLabel> _bankHazardLabelMap
-		= null;
 	private java.util.Map<java.lang.String, org.drip.state.identifier.EntityHazardLabel>
-		_counterPartyHazardLabelMap = null;
+		_clientHazardLabelMap = null;
+	private java.util.Map<java.lang.String, org.drip.state.identifier.EntityHazardLabel>
+		_dealerHazardLabelMap = null;
 	private java.util.Map<java.lang.String, org.drip.state.identifier.EntityRecoveryLabel>
-		_bankSeniorRecoveryLabelMap = null;
+		_clientRecoveryLabelMap = null;
 	private java.util.Map<java.lang.String, org.drip.state.identifier.EntityRecoveryLabel>
-		_counterPartyRecoveryLabelMap = null;
+		_dealerSeniorRecoveryLabelMap = null;
+	private java.util.Map<java.lang.String, org.drip.state.identifier.EntityFundingLabel>
+		_clientFundingLabelMap = null;
 	private java.util.Map<java.lang.String, org.drip.state.identifier.EntityRecoveryLabel>
-		_bankSubordinateRecoveryLabelMap = null;
+		_dealerSubordinateRecoveryLabelMap = null;
 	private java.util.Map<java.lang.String, org.drip.state.identifier.EntityFundingLabel>
-		_bankSeniorFundingLabelMap = null;
+		_dealerSeniorFundingLabelMap = null;
 	private java.util.Map<java.lang.String, org.drip.state.identifier.EntityFundingLabel>
-		_counterPartyFundingLabelMap = null;
-	private java.util.Map<java.lang.String, org.drip.state.identifier.EntityFundingLabel>
-		_bankSubordinateFundingLabelMap = null;
+		_dealerSubordinateFundingLabelMap = null;
 
 	/**
 	 * AdiabatMarketParams Constructor
 	 * 
 	 * @param overnightLabelMap Map of Overnight Labels
 	 * @param csaLabelMap Map of CSA Labels
-	 * @param bankHazardLabelMap Map of Bank Hazard Labels
-	 * @param counterPartyHazardLabelMap Map of Counter Party Hazard Labels
-	 * @param bankSeniorRecoveryLabelMap Map of Bank Senior Recovery Labels
-	 * @param counterPartyRecoveryLabelMap Map of Counter Party Recovery Labels
-	 * @param bankSubordinateRecoveryLabelMap Map of Bank Subordinate Recovery Labels
-	 * @param bankSeniorFundingLabelMap Map of Bank Senior Funding Labels
-	 * @param counterPartyFundingLabelMap Map of Counter Party Funding Labels
-	 * @param bankSubordinateFundingLabelMap Map of Bank Subordinate Funding Labels
+	 * @param dealerHazardLabelMap Map of Dealer Hazard Labels
+	 * @param clientHazardLabelMap Map of Client Hazard Labels
+	 * @param dealerSeniorRecoveryLabelMap Map of Dealer Senior Recovery Labels
+	 * @param clientRecoveryLabelMap Map of Client Recovery Labels
+	 * @param dealerSubordinateRecoveryLabelMap Map of Dealer Subordinate Recovery Labels
+	 * @param dealerSeniorFundingLabelMap Map of Dealer Senior Funding Labels
+	 * @param clientFundingLabelMap Map of Client Funding Labels
+	 * @param dealerSubordinateFundingLabelMap Map of Dealer Subordinate Funding Labels
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -108,42 +108,40 @@ public class AdiabatMarketParams
 		final java.util.Map<java.lang.String, org.drip.state.identifier.OvernightLabel> overnightLabelMap,
 		final java.util.Map<java.lang.String, org.drip.state.identifier.CSALabel> csaLabelMap,
 		final java.util.Map<java.lang.String, org.drip.state.identifier.EntityHazardLabel>
-			bankHazardLabelMap,
+			dealerHazardLabelMap,
 		final java.util.Map<java.lang.String, org.drip.state.identifier.EntityHazardLabel>
-			counterPartyHazardLabelMap,
+			clientHazardLabelMap,
 		final java.util.Map<java.lang.String, org.drip.state.identifier.EntityRecoveryLabel>
-			bankSeniorRecoveryLabelMap,
+			dealerSeniorRecoveryLabelMap,
 		final java.util.Map<java.lang.String, org.drip.state.identifier.EntityRecoveryLabel>
-			counterPartyRecoveryLabelMap,
+			clientRecoveryLabelMap,
 		final java.util.Map<java.lang.String, org.drip.state.identifier.EntityRecoveryLabel>
-			bankSubordinateRecoveryLabelMap,
+			dealerSubordinateRecoveryLabelMap,
 		final java.util.Map<java.lang.String, org.drip.state.identifier.EntityFundingLabel>
-			bankSeniorFundingLabelMap,
+			dealerSeniorFundingLabelMap,
 		final java.util.Map<java.lang.String, org.drip.state.identifier.EntityFundingLabel>
-			counterPartyFundingLabelMap,
+			clientFundingLabelMap,
 		final java.util.Map<java.lang.String, org.drip.state.identifier.EntityFundingLabel>
-			bankSubordinateFundingLabelMap)
+			dealerSubordinateFundingLabelMap)
 		throws java.lang.Exception
 	{
 		if (null == (_overnightLabelMap = overnightLabelMap) || 0 == _overnightLabelMap.size() ||
 			null == (_csaLabelMap = csaLabelMap) || 0 == _csaLabelMap.size() ||
-			null == (_bankHazardLabelMap = bankHazardLabelMap) || 0 == _bankHazardLabelMap.size() ||
-			null == (_counterPartyHazardLabelMap = counterPartyHazardLabelMap) || 0 ==
-				_counterPartyHazardLabelMap.size() ||
-			null == (_bankSeniorRecoveryLabelMap = bankSeniorRecoveryLabelMap) || 0 ==
-				_bankSeniorRecoveryLabelMap.size() ||
-			null == (_counterPartyRecoveryLabelMap = counterPartyRecoveryLabelMap) || 0 ==
-				_counterPartyRecoveryLabelMap.size() ||
-			null == (_bankSeniorFundingLabelMap = bankSeniorFundingLabelMap) || 0 ==
-				_bankSeniorFundingLabelMap.size() ||
-			null == (_counterPartyFundingLabelMap = counterPartyFundingLabelMap) || 0 ==
-				_counterPartyFundingLabelMap.size())
+			null == (_dealerHazardLabelMap = dealerHazardLabelMap) || 0 == _dealerHazardLabelMap.size() ||
+			null == (_clientHazardLabelMap = clientHazardLabelMap) || 0 == _clientHazardLabelMap.size() ||
+			null == (_dealerSeniorRecoveryLabelMap = dealerSeniorRecoveryLabelMap) || 0 ==
+				_dealerSeniorRecoveryLabelMap.size() ||
+			null == (_clientRecoveryLabelMap = clientRecoveryLabelMap) || 0 == _clientRecoveryLabelMap.size()
+				||
+			null == (_dealerSeniorFundingLabelMap = dealerSeniorFundingLabelMap) || 0 ==
+				_dealerSeniorFundingLabelMap.size() ||
+			null == (_clientFundingLabelMap = clientFundingLabelMap) || 0 == _clientFundingLabelMap.size())
 		{
 			throw new java.lang.Exception ("AdiabatMarketParams Constructor => Invalid Inputs");
 		}
 
-		_bankSubordinateFundingLabelMap = bankSubordinateFundingLabelMap;
-		_bankSubordinateRecoveryLabelMap = bankSubordinateRecoveryLabelMap;
+		_dealerSubordinateFundingLabelMap = dealerSubordinateFundingLabelMap;
+		_dealerSubordinateRecoveryLabelMap = dealerSubordinateRecoveryLabelMap;
 	}
 
 	/**
@@ -169,97 +167,98 @@ public class AdiabatMarketParams
 	}
 
 	/**
-	 * Retrieve the Map of Bank Hazard Labels
+	 * Retrieve the Map of Dealer Hazard Labels
 	 * 
-	 * @return The Map of Bank Hazard Labels
-	 */
-
-	public java.util.Map<java.lang.String, org.drip.state.identifier.EntityHazardLabel> bankHazardLabelMap()
-	{
-		return _bankHazardLabelMap;
-	}
-
-	/**
-	 * Retrieve the Map of Counter Party Hazard Labels
-	 * 
-	 * @return The Map of Counter Party Hazard Labels
+	 * @return The Map of Dealer Hazard Labels
 	 */
 
 	public java.util.Map<java.lang.String, org.drip.state.identifier.EntityHazardLabel>
-		counterPartyHazardLabelMap()
+		dealerHazardLabelMap()
 	{
-		return _counterPartyHazardLabelMap;
+		return _dealerHazardLabelMap;
 	}
 
 	/**
-	 * Retrieve the Map of Bank Senior Recovery Labels
+	 * Retrieve the Map of Client Hazard Labels
 	 * 
-	 * @return The Map of Bank Senior Recovery Labels
+	 * @return The Map of Client Hazard Labels
+	 */
+
+	public java.util.Map<java.lang.String, org.drip.state.identifier.EntityHazardLabel>
+		clientHazardLabelMap()
+	{
+		return _clientHazardLabelMap;
+	}
+
+	/**
+	 * Retrieve the Map of Dealer Senior Recovery Labels
+	 * 
+	 * @return The Map of Dealer Senior Recovery Labels
 	 */
 
 	public java.util.Map<java.lang.String, org.drip.state.identifier.EntityRecoveryLabel>
-		bankSeniorRecoveryLabelMap()
+		dealerSeniorRecoveryLabelMap()
 	{
-		return _bankSeniorRecoveryLabelMap;
+		return _dealerSeniorRecoveryLabelMap;
 	}
 
 	/**
-	 * Retrieve the Map of Counter Party Recovery Labels
+	 * Retrieve the Map of Client Recovery Labels
 	 * 
-	 * @return The Map of Counter Party Recovery Labels
+	 * @return The Map of Client Recovery Labels
 	 */
 
 	public java.util.Map<java.lang.String, org.drip.state.identifier.EntityRecoveryLabel>
-		counterPartyRecoveryLabelMap()
+		clientRecoveryLabelMap()
 	{
-		return _counterPartyRecoveryLabelMap;
+		return _clientRecoveryLabelMap;
 	}
 
 	/**
-	 * Retrieve the Map of Bank Subordinate Recovery Labels
+	 * Retrieve the Map of Dealer Subordinate Recovery Labels
 	 * 
-	 * @return The Map of Bank Subordinate Recovery Labels
+	 * @return The Map of Dealer Subordinate Recovery Labels
 	 */
 
 	public java.util.Map<java.lang.String, org.drip.state.identifier.EntityRecoveryLabel>
-		bankSubordinateRecoveryLabelMap()
+		dealerSubordinateRecoveryLabelMap()
 	{
-		return _bankSubordinateRecoveryLabelMap;
+		return _dealerSubordinateRecoveryLabelMap;
 	}
 
 	/**
-	 * Retrieve the Map of Bank Senior Funding Labels
+	 * Retrieve the Map of Dealer Senior Funding Labels
 	 * 
-	 * @return The Map of Bank Senior Funding Labels
+	 * @return The Map of Dealer Senior Funding Labels
 	 */
 
 	public java.util.Map<java.lang.String, org.drip.state.identifier.EntityFundingLabel>
-		bankSeniorFundingLabelMap()
+		dealerSeniorFundingLabelMap()
 	{
-		return _bankSeniorFundingLabelMap;
+		return _dealerSeniorFundingLabelMap;
 	}
 
 	/**
-	 * Retrieve the Map of Counter Party Funding Labels
+	 * Retrieve the Map of Client Funding Labels
 	 * 
-	 * @return The Map of Counter Party Funding Labels
+	 * @return The Map of Client Funding Labels
 	 */
 
 	public java.util.Map<java.lang.String, org.drip.state.identifier.EntityFundingLabel>
-		counterPartyFundingLabelMap()
+		clientFundingLabelMap()
 	{
-		return _counterPartyFundingLabelMap;
+		return _clientFundingLabelMap;
 	}
 
 	/**
-	 * Retrieve the Map of Bank Subordinate Funding Labels
+	 * Retrieve the Map of Dealer Subordinate Funding Labels
 	 * 
-	 * @return The Map of Bank Subordinate Funding Labels
+	 * @return The Map of Dealer Subordinate Funding Labels
 	 */
 
 	public java.util.Map<java.lang.String, org.drip.state.identifier.EntityFundingLabel>
-		bankSubordinateFundingLabelMap()
+		dealerSubordinateFundingLabelMap()
 	{
-		return _bankSubordinateFundingLabelMap;
+		return _dealerSubordinateFundingLabelMap;
 	}
 }

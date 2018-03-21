@@ -72,7 +72,7 @@ public class BurgardKjaer extends org.drip.xva.hypothecation.PositionGroupVertex
 {
 	private org.drip.xva.vertex.BurgardKjaerExposure _burgardKjaerVertexExposure = null;
 	private org.drip.xva.hypothecation.PositionGroupVertexCloseOut _collateralGroupCloseOut = null;
-	private org.drip.xva.derivative.ReplicationPortfolioVertexBank _bankReplicationPortfolioVertex = null;
+	private org.drip.xva.derivative.ReplicationPortfolioVertexDealer _dealerReplicationPortfolioVertex = null;
 
 	/**
 	 * BurgardKjaer Constructor
@@ -82,7 +82,7 @@ public class BurgardKjaer extends org.drip.xva.hypothecation.PositionGroupVertex
 	 * @param accrued The Accrued Exposure
 	 * @param burgardKjaerVertexExposure The Collateral Group Vertex
 	 * @param collateralGroupCloseOut The Collateral Group Vertex Close Out Instance
-	 * @param bankReplicationPortfolioVertex The Bank Replication Portfolio Vertex Instance
+	 * @param dealerReplicationPortfolioVertex The Dealer Replication Portfolio Vertex Instance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -93,7 +93,7 @@ public class BurgardKjaer extends org.drip.xva.hypothecation.PositionGroupVertex
 		final double accrued,
 		final org.drip.xva.vertex.BurgardKjaerExposure burgardKjaerVertexExposure,
 		final org.drip.xva.hypothecation.PositionGroupVertexCloseOut collateralGroupCloseOut,
-		final org.drip.xva.derivative.ReplicationPortfolioVertexBank bankReplicationPortfolioVertex)
+		final org.drip.xva.derivative.ReplicationPortfolioVertexDealer dealerReplicationPortfolioVertex)
 		throws java.lang.Exception
 	{
 		super (
@@ -105,32 +105,32 @@ public class BurgardKjaer extends org.drip.xva.hypothecation.PositionGroupVertex
 
 		if (null == (_burgardKjaerVertexExposure = burgardKjaerVertexExposure) ||
 			null == (_collateralGroupCloseOut = collateralGroupCloseOut) ||
-			null == (_bankReplicationPortfolioVertex = bankReplicationPortfolioVertex))
+			null == (_dealerReplicationPortfolioVertex = dealerReplicationPortfolioVertex))
 		{
 			throw new java.lang.Exception ("BurgardKjaer Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Close Out on Bank Default
+	 * Retrieve the Close Out on Dealer Default
 	 * 
-	 * @return Close Out on Bank Default
+	 * @return Close Out on Dealer Default
 	 */
 
-	public double bankDefaultCloseOut()
+	public double dealerDefaultCloseOut()
 	{
-		return _collateralGroupCloseOut.bank();
+		return _collateralGroupCloseOut.dealer();
 	}
 
 	/**
-	 * Retrieve the Close Out on Counter Party Default
+	 * Retrieve the Close Out on Client Default
 	 * 
-	 * @return Close Out on Counter Party Default
+	 * @return Close Out on Client Default
 	 */
 
-	public double counterPartyDefaultCloseOut()
+	public double clientDefaultCloseOut()
 	{
-		return _collateralGroupCloseOut.counterParty();
+		return _collateralGroupCloseOut.client();
 	}
 
 	@Override public double credit()
@@ -160,13 +160,13 @@ public class BurgardKjaer extends org.drip.xva.hypothecation.PositionGroupVertex
 	}
 
 	/**
-	 * Retrieve the Bank Replication Potrfolio Instance
+	 * Retrieve the Dealer Replication Potrfolio Instance
 	 * 
-	 * @return The Bank Replication Potrfolio Instance
+	 * @return The Dealer Replication Potrfolio Instance
 	 */
 
-	public org.drip.xva.derivative.ReplicationPortfolioVertexBank bankReplicationPortfolio()
+	public org.drip.xva.derivative.ReplicationPortfolioVertexDealer dealerReplicationPortfolio()
 	{
-		return _bankReplicationPortfolioVertex;
+		return _dealerReplicationPortfolioVertex;
 	}
 }

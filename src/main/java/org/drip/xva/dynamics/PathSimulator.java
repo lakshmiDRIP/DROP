@@ -272,7 +272,7 @@ public class PathSimulator
 	 * @return Single Trajectory Path Exposure Adjustment
 	 */
 
-	public org.drip.xva.cpty.PathExposureAdjustment singleTrajectory (
+	public org.drip.xva.gross.PathExposureAdjustment singleTrajectory (
 		final org.drip.xva.universe.MarketVertex initialMarketVertex,
 		final double[][] unitEvolverSequence)
 	{
@@ -327,7 +327,7 @@ public class PathSimulator
 				}
 			}
 
-			return new org.drip.xva.cpty.MonoPathExposureAdjustment (
+			return new org.drip.xva.gross.MonoPathExposureAdjustment (
 				creditDebtGroupPathArray,
 				fundingGroupPathArray
 			);
@@ -349,7 +349,7 @@ public class PathSimulator
 	 * @return The Exposure Adjustment Aggregator - Simulation Result
 	 */
 
-	public org.drip.xva.cpty.ExposureAdjustmentAggregator simulate (
+	public org.drip.xva.gross.ExposureAdjustmentAggregator simulate (
 		final org.drip.xva.universe.MarketVertex initialMarketVertex,
 		final org.drip.measure.discrete.CorrelatedPathVertexDimension correlatedPathVertexDimension)
 	{
@@ -358,8 +358,8 @@ public class PathSimulator
 			return null;
 		}
 
-		org.drip.xva.cpty.PathExposureAdjustment[] pathExposureAdjustmentArray = new
-			org.drip.xva.cpty.PathExposureAdjustment[_iCount];
+		org.drip.xva.gross.PathExposureAdjustment[] pathExposureAdjustmentArray = new
+			org.drip.xva.gross.PathExposureAdjustment[_iCount];
 
 		for (int pathIndex = 0; pathIndex < _iCount; ++pathIndex)
 		{
@@ -374,7 +374,7 @@ public class PathSimulator
 
 		try
 		{
-			return new org.drip.xva.cpty.ExposureAdjustmentAggregator (pathExposureAdjustmentArray);
+			return new org.drip.xva.gross.ExposureAdjustmentAggregator (pathExposureAdjustmentArray);
 		}
 		catch (java.lang.Exception e)
 		{

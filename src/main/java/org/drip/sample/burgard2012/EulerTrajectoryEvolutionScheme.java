@@ -419,10 +419,11 @@ public class EulerTrajectoryEvolutionScheme {
 			dblDerivativeValue
 		);
 
-		double dblGainOnBankDefaultInitial = -1. * (dblDerivativeXVAValue - cob.bankDefault (dblDerivativeXVAValue));
+		double dblGainOnBankDefaultInitial = -1. * (dblDerivativeXVAValue - cob.dealerDefault
+			(dblDerivativeXVAValue));
 
-		double dblGainOnCounterPartyDefaultInitial = -1. * (dblDerivativeXVAValue -
-			cob.counterPartyDefault (dblDerivativeXVAValue));
+		double dblGainOnCounterPartyDefaultInitial = -1. * (dblDerivativeXVAValue - cob.clientDefault
+			(dblDerivativeXVAValue));
 
 		ReplicationPortfolioVertex rpvInitial = ReplicationPortfolioVertex.Standard (
 			1.,
@@ -479,8 +480,8 @@ public class EulerTrajectoryEvolutionScheme {
 			FormatUtil.FormatDouble (aMVBase[aMV.length - 1].client().seniorFundingReplicator(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (aMVBase[aMV.length - 1].csaReplicator(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (rpvInitial.positionHoldings(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (rpvInitial.bankSeniorNumeraireHoldings(), 1, 6, 1.) + " | " +
-			FormatUtil.FormatDouble (rpvInitial.counterPartyNumeraireHoldings(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (rpvInitial.dealerSeniorNumeraireHoldings(), 1, 6, 1.) + " | " +
+			FormatUtil.FormatDouble (rpvInitial.clientNumeraireHoldings(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (rpvInitial.cashAccount(), 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (0., 1, 6, 1.) + " | " +
 			FormatUtil.FormatDouble (0., 1, 6, 1.) + " | " +
@@ -518,13 +519,13 @@ public class EulerTrajectoryEvolutionScheme {
 				FormatUtil.FormatDouble (aMVBase[i].client().seniorFundingReplicator(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (aMVBase[i].csaReplicator(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (etv.replicationPortfolioVertex().positionHoldings(), 1, 6, 1.) + " | " +
-				FormatUtil.FormatDouble (etv.replicationPortfolioVertex().bankSeniorNumeraireHoldings(), 1, 6, 1.) + " | " +
-				FormatUtil.FormatDouble (etv.replicationPortfolioVertex().counterPartyNumeraireHoldings(), 1, 6, 1.) + " | " +
+				FormatUtil.FormatDouble (etv.replicationPortfolioVertex().dealerSeniorNumeraireHoldings(), 1, 6, 1.) + " | " +
+				FormatUtil.FormatDouble (etv.replicationPortfolioVertex().clientNumeraireHoldings(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (etv.replicationPortfolioVertex().cashAccount(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (lca.accumulation(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (lca.assetAccumulation(), 1, 6, 1.) + " | " +
-				FormatUtil.FormatDouble (lca.bankAccumulation(), 1, 6, 1.) + " | " +
-				FormatUtil.FormatDouble (lca.counterPartyAccumulation(), 1, 6, 1.) + " ||"
+				FormatUtil.FormatDouble (lca.dealerAccumulation(), 1, 6, 1.) + " | " +
+				FormatUtil.FormatDouble (lca.clientAccumulation(), 1, 6, 1.) + " ||"
 			);
 		}
 

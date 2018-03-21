@@ -70,13 +70,13 @@ public class CloseOutScheme
 {
 
 	/**
-	 * The Bank/Counter Party ISDA 92 Close Out Scheme
+	 * The Dealer/Client ISDA 92 Close Out Scheme
 	 */
 
 	public static final int ISDA_92 = 0;
 
 	/**
-	 * The Bank/Counter Party Bilateral Close Out Scheme
+	 * The Dealer/Client Bilateral Close Out Scheme
 	 */
 
 	public static final int BILATERAL = 1;

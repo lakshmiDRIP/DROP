@@ -71,54 +71,55 @@ package org.drip.xva.hypothecation;
 public class MarginAmountEstimatorOutput
 {
 	private double _postingRequirement = java.lang.Double.NaN;
-	private double _bankWindowMarginValue = java.lang.Double.NaN;
-	private double _bankPostingRequirement = java.lang.Double.NaN;
-	private double _bankCollateralThreshold = java.lang.Double.NaN;
-	private org.drip.analytics.date.JulianDate _bankMarginDate = null;
-	private double _counterPartyWindowMarginValue = java.lang.Double.NaN;
-	private double _counterPartyPostingRequirement = java.lang.Double.NaN;
-	private double _counterPartyCollateralThreshold = java.lang.Double.NaN;
-	private org.drip.analytics.date.JulianDate _counterPartyMarginDate = null;
+	private double _clientWindowMarginValue = java.lang.Double.NaN;
+	private double _dealerWindowMarginValue = java.lang.Double.NaN;
+	private double _clientPostingRequirement = java.lang.Double.NaN;
+	private double _dealerPostingRequirement = java.lang.Double.NaN;
+	private double _clientCollateralThreshold = java.lang.Double.NaN;
+	private double _dealerCollateralThreshold = java.lang.Double.NaN;
+	private org.drip.analytics.date.JulianDate _clientMarginDate = null;
+	private org.drip.analytics.date.JulianDate _dealerMarginDate = null;
 
 	/**
 	 * MarginAmountEstimatorOutput Constructor
 	 * 
-	 * @param bankMarginDate The Bank Margin Date
-	 * @param counterPartyMarginDate The Counter Party Margin Date
-	 * @param bankWindowMarginValue The Margin Value at the Bank Default Window
-	 * @param bankCollateralThreshold The Bank Collateral Threshold
-	 * @param bankPostingRequirement The Bank Collateral Posting Requirement
-	 * @param counterPartyWindowMarginValue The Margin Value at the Counter Party Default Window
-	 * @param counterPartyCollateralThreshold The Counter Party Collateral Threshold
-	 * @param counterPartyPostingRequirement The Counter Party Collateral Posting Requirement
+	 * @param dealerMarginDate The Dealer Margin Date
+	 * @param clientMarginDate The Client Margin Date
+	 * @param dealerWindowMarginValue The Margin Value at the Dealer Default Window
+	 * @param dealerCollateralThreshold The Dealer Collateral Threshold
+	 * @param dealerPostingRequirement The Dealer Collateral Posting Requirement
+	 * @param clientWindowMarginValue The Margin Value at the Client Default Window
+	 * @param clientCollateralThreshold The Client Collateral Threshold
+	 * @param clientPostingRequirement The Client Collateral Posting Requirement
 	 * @param postingRequirement The Total Collateral Posting Requirement
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public MarginAmountEstimatorOutput (
-		final org.drip.analytics.date.JulianDate bankMarginDate,
-		final org.drip.analytics.date.JulianDate counterPartyMarginDate,
-		final double bankWindowMarginValue,
-		final double bankCollateralThreshold,
-		final double bankPostingRequirement,
-		final double counterPartyWindowMarginValue,
-		final double counterPartyCollateralThreshold,
-		final double counterPartyPostingRequirement,
+		final org.drip.analytics.date.JulianDate dealerMarginDate,
+		final org.drip.analytics.date.JulianDate clientMarginDate,
+		final double dealerWindowMarginValue,
+		final double dealerCollateralThreshold,
+		final double dealerPostingRequirement,
+		final double clientWindowMarginValue,
+		final double clientCollateralThreshold,
+		final double clientPostingRequirement,
 		final double postingRequirement)
 		throws java.lang.Exception
 	{
-		if (null == (_bankMarginDate = bankMarginDate) ||
-			null == (_counterPartyMarginDate = counterPartyMarginDate) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_bankWindowMarginValue = bankWindowMarginValue) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_bankCollateralThreshold = bankCollateralThreshold) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_bankPostingRequirement = bankPostingRequirement) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_counterPartyWindowMarginValue =
-				counterPartyWindowMarginValue) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_counterPartyCollateralThreshold =
-				counterPartyCollateralThreshold) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_counterPartyPostingRequirement =
-				counterPartyPostingRequirement) ||
+		if (null == (_dealerMarginDate = dealerMarginDate) ||
+			null == (_clientMarginDate = clientMarginDate) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_dealerWindowMarginValue = dealerWindowMarginValue) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_dealerCollateralThreshold =
+				dealerCollateralThreshold) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_dealerPostingRequirement = dealerPostingRequirement)
+				||
+			!org.drip.quant.common.NumberUtil.IsValid (_clientWindowMarginValue = clientWindowMarginValue) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_clientCollateralThreshold =
+				clientCollateralThreshold) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_clientPostingRequirement = clientPostingRequirement)
+				||
 			!org.drip.quant.common.NumberUtil.IsValid (_postingRequirement = postingRequirement))
 		{
 			throw new java.lang.Exception ("MarginAmountEstimatorOutput Constructor => Invalid Inputs");
@@ -126,91 +127,91 @@ public class MarginAmountEstimatorOutput
 	}
 
 	/**
-	 * Retrieve the Bank Margin Date
+	 * Retrieve the Dealer Margin Date
 	 * 
-	 * @return The Bank Margin Date
+	 * @return The Dealer Margin Date
 	 */
 
-	public org.drip.analytics.date.JulianDate bankMarginDate()
+	public org.drip.analytics.date.JulianDate dealerMarginDate()
 	{
-		return _bankMarginDate;
+		return _dealerMarginDate;
 	}
 
 	/**
-	 * Retrieve the Counter Party Margin Date
+	 * Retrieve the Client Margin Date
 	 * 
-	 * @return The Counter Party Margin Date
+	 * @return The Client Margin Date
 	 */
 
-	public org.drip.analytics.date.JulianDate counterPartyMarginDate()
+	public org.drip.analytics.date.JulianDate clientMarginDate()
 	{
-		return _counterPartyMarginDate;
+		return _clientMarginDate;
 	}
 
 	/**
-	 * Retrieve the Margin Value at the Bank Default Window
+	 * Retrieve the Margin Value at the Dealer Default Window
 	 * 
-	 * @return The Margin Value at the Bank Default Window
+	 * @return The Margin Value at the Dealer Default Window
 	 */
 
-	public double bankWindowMarginValue()
+	public double dealerWindowMarginValue()
 	{
-		return _bankWindowMarginValue;
+		return _dealerWindowMarginValue;
 	}
 
 	/**
-	 * Retrieve the Bank Collateral Threshold
+	 * Retrieve the Dealer Collateral Threshold
 	 * 
-	 * @return The Bank Collateral Threshold
+	 * @return The Dealer Collateral Threshold
 	 */
 
-	public double bankCollateralThreshold()
+	public double dealerCollateralThreshold()
 	{
-		return _bankCollateralThreshold;
+		return _dealerCollateralThreshold;
 	}
 
 	/**
-	 * Retrieve the Bank Posting Requirement
+	 * Retrieve the Dealer Posting Requirement
 	 * 
-	 * @return The Bank Posting Requirement
+	 * @return The Dealer Posting Requirement
 	 */
 
-	public double bankPostingRequirement()
+	public double dealerPostingRequirement()
 	{
-		return _bankPostingRequirement;
+		return _dealerPostingRequirement;
 	}
 
 	/**
-	 * Retrieve the Margin Value at the Counter Party Default Window
+	 * Retrieve the Margin Value at the Client Default Window
 	 * 
-	 * @return The Margin Value at the Counter Party Default Window
+	 * @return The Margin Value at the Client Default Window
 	 */
 
-	public double counterPartyWindowMarginValue()
+	public double clientWindowMarginValue()
 	{
-		return _counterPartyWindowMarginValue;
+		return _clientWindowMarginValue;
 	}
 
 	/**
-	 * Retrieve the Counter Party Collateral Threshold
+	 * Retrieve the Client Collateral Threshold
 	 * 
-	 * @return The Counter Party Collateral Threshold
+	 * @return The Client Collateral Threshold
 	 */
 
-	public double counterPartyCollateralThreshold()
+	public double clientCollateralThreshold()
 	{
-		return _counterPartyCollateralThreshold;
+		return _clientCollateralThreshold;
 	}
 
 	/**
-	 * Retrieve the Counter Party Posting Requirement
+	 * Retrieve the Client Posting Requirement
 	 * 
-	 * @return The Counter Party Posting Requirement
+	 * @return The Client Posting Requirement
 	 */
 
-	public double counterPartyPostingRequirement()
+	public double clientPostingRequirement()
 	{
-		return _counterPartyPostingRequirement;
+		return _clientPostingRequirement;
 	}
 
 	/**

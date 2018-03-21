@@ -67,18 +67,18 @@ package org.drip.xva.proto;
 
 public class FundingGroupSpecification extends org.drip.xva.proto.ObjectSpecification
 {
-	private org.drip.state.identifier.EntityFundingLabel _bankSeniorFundingLabel = null;
-	private org.drip.state.identifier.EntityFundingLabel _counterPartyFundingLabel = null;
-	private org.drip.state.identifier.EntityFundingLabel _bankSubordinateFundingLabel = null;
+	private org.drip.state.identifier.EntityFundingLabel _clientFundingLabel = null;
+	private org.drip.state.identifier.EntityFundingLabel _dealerSeniorFundingLabel = null;
+	private org.drip.state.identifier.EntityFundingLabel _dealerSubordinateFundingLabel = null;
 
 	/**
 	 * FundingGroupSpecification Constructor
 	 * 
 	 * @param id Funding Group ID
 	 * @param name Funding Group Name
-	 * @param bankSeniorFundingLabel Bank Senior Funding Label
-	 * @param counterPartyFundingLabel Counter Party Funding Label
-	 * @param bankSubordinateFundingLabel Bank Subordinate Funding Label
+	 * @param dealerSeniorFundingLabel Dealer Senior Funding Label
+	 * @param clientFundingLabel Client Funding Label
+	 * @param dealerSubordinateFundingLabel Dealer Subordinate Funding Label
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -86,9 +86,9 @@ public class FundingGroupSpecification extends org.drip.xva.proto.ObjectSpecific
 	public FundingGroupSpecification (
 		final java.lang.String id,
 		final java.lang.String name,
-		final org.drip.state.identifier.EntityFundingLabel bankSeniorFundingLabel,
-		final org.drip.state.identifier.EntityFundingLabel counterPartyFundingLabel,
-		final org.drip.state.identifier.EntityFundingLabel bankSubordinateFundingLabel)
+		final org.drip.state.identifier.EntityFundingLabel dealerSeniorFundingLabel,
+		final org.drip.state.identifier.EntityFundingLabel clientFundingLabel,
+		final org.drip.state.identifier.EntityFundingLabel dealerSubordinateFundingLabel)
 		throws java.lang.Exception
 	{
 		super (
@@ -96,45 +96,45 @@ public class FundingGroupSpecification extends org.drip.xva.proto.ObjectSpecific
 			name
 		);
 
-		if (null == (_bankSeniorFundingLabel = bankSeniorFundingLabel) ||
-			null == (_counterPartyFundingLabel = counterPartyFundingLabel))
+		if (null == (_dealerSeniorFundingLabel = dealerSeniorFundingLabel) ||
+			null == (_clientFundingLabel = clientFundingLabel))
 		{
 			throw new java.lang.Exception ("FundingGroupSpecification Constructor => Invalid Inputs");
 		}
 
-		_bankSubordinateFundingLabel = bankSubordinateFundingLabel;
+		_dealerSubordinateFundingLabel = dealerSubordinateFundingLabel;
 	}
 
 	/**
-	 * Retrieve the Bank Senior Funding Label
+	 * Retrieve the Dealer Senior Funding Label
 	 * 
-	 * @return The Bank Senior Funding Label
+	 * @return The Dealer Senior Funding Label
 	 */
 
-	public org.drip.state.identifier.EntityFundingLabel bankSeniorFundingLabel()
+	public org.drip.state.identifier.EntityFundingLabel dealerSeniorFundingLabel()
 	{
-		return _bankSeniorFundingLabel;
+		return _dealerSeniorFundingLabel;
 	}
 
 	/**
-	 * Retrieve the Bank Subordinate Funding Label
+	 * Retrieve the Dealer Subordinate Funding Label
 	 * 
-	 * @return The Bank Subordinate Funding Label
+	 * @return The Dealer Subordinate Funding Label
 	 */
 
-	public org.drip.state.identifier.EntityFundingLabel bankSubordinateFundingLabel()
+	public org.drip.state.identifier.EntityFundingLabel dealerSubordinateFundingLabel()
 	{
-		return _bankSubordinateFundingLabel;
+		return _dealerSubordinateFundingLabel;
 	}
 
 	/**
-	 * Retrieve the Counter Party Funding Label
+	 * Retrieve the Client Funding Label
 	 * 
-	 * @return The Counter Party Funding Label
+	 * @return The Client Funding Label
 	 */
 
-	public org.drip.state.identifier.EntityFundingLabel counterPartyFundingLabel()
+	public org.drip.state.identifier.EntityFundingLabel clientFundingLabel()
 	{
-		return _counterPartyFundingLabel;
+		return _clientFundingLabel;
 	}
 }

@@ -359,7 +359,7 @@ public class BookLatentStateMap
 		System.out.println ("\t||----------||");
 
 		for (Map.Entry<String, EntityHazardLabel> bankHazardLabelEntry :
-			bookMarketParams.bankHazardLabelMap().entrySet())
+			bookMarketParams.dealerHazardLabelMap().entrySet())
 		{
 			System.out.println ("\t|| " + bankHazardLabelEntry.getValue().fullyQualifiedName() + " ||");
 		}
@@ -375,7 +375,7 @@ public class BookLatentStateMap
 		System.out.println ("\t||----------||");
 
 		for (Map.Entry<String, EntityHazardLabel> counterPartyHazardLabelEntry :
-			bookMarketParams.counterPartyHazardLabelMap().entrySet())
+			bookMarketParams.clientHazardLabelMap().entrySet())
 		{
 			System.out.println ("\t|| " + counterPartyHazardLabelEntry.getValue().fullyQualifiedName() + " ||");
 		}
@@ -391,7 +391,7 @@ public class BookLatentStateMap
 		System.out.println ("\t||------------------||");
 
 		for (Map.Entry<String, EntityRecoveryLabel> bankSeniorRecoveryLabelEntry :
-			bookMarketParams.bankSeniorRecoveryLabelMap().entrySet())
+			bookMarketParams.dealerSeniorRecoveryLabelMap().entrySet())
 		{
 			System.out.println ("\t|| " + bankSeniorRecoveryLabelEntry.getValue().fullyQualifiedName() + " ||");
 		}
@@ -407,7 +407,7 @@ public class BookLatentStateMap
 		System.out.println ("\t||------------------||");
 
 		for (Map.Entry<String, EntityRecoveryLabel> counterPartyRecoveryLabelEntry :
-			bookMarketParams.counterPartyRecoveryLabelMap().entrySet())
+			bookMarketParams.clientRecoveryLabelMap().entrySet())
 		{
 			System.out.println ("\t|| " + counterPartyRecoveryLabelEntry.getValue().fullyQualifiedName() + " ||");
 		}
@@ -423,7 +423,7 @@ public class BookLatentStateMap
 		System.out.println ("\t||-----------------------||");
 
 		for (Map.Entry<String, EntityRecoveryLabel> bankSubordinateRecoveryLabelEntry :
-			bookMarketParams.bankSubordinateRecoveryLabelMap().entrySet())
+			bookMarketParams.dealerSubordinateRecoveryLabelMap().entrySet())
 		{
 			System.out.println ("\t|| " + bankSubordinateRecoveryLabelEntry.getValue().fullyQualifiedName() + " ||");
 		}
@@ -439,7 +439,7 @@ public class BookLatentStateMap
 		System.out.println ("\t||------------------||");
 
 		for (Map.Entry<String, EntityFundingLabel> bankSeniorFundingLabelEntry :
-			bookMarketParams.bankSeniorFundingLabelMap().entrySet())
+			bookMarketParams.dealerSeniorFundingLabelMap().entrySet())
 		{
 			System.out.println ("\t|| " + bankSeniorFundingLabelEntry.getValue().fullyQualifiedName() + " ||");
 		}
@@ -455,7 +455,7 @@ public class BookLatentStateMap
 		System.out.println ("\t||------------------||");
 
 		for (Map.Entry<String, EntityFundingLabel> counterPartyFundingLabelEntry :
-			bookMarketParams.counterPartyFundingLabelMap().entrySet())
+			bookMarketParams.clientFundingLabelMap().entrySet())
 		{
 			System.out.println ("\t|| " + counterPartyFundingLabelEntry.getValue().fullyQualifiedName() + " ||");
 		}
@@ -471,7 +471,7 @@ public class BookLatentStateMap
 		System.out.println ("\t||-----------------------||");
 
 		for (Map.Entry<String, EntityFundingLabel> bankSubordinateFundingLabelEntry :
-			bookMarketParams.bankSubordinateFundingLabelMap().entrySet())
+			bookMarketParams.dealerSubordinateFundingLabelMap().entrySet())
 		{
 			System.out.println ("\t|| " + bankSubordinateFundingLabelEntry.getValue().fullyQualifiedName() + " ||");
 		}

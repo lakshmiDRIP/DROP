@@ -48,7 +48,7 @@ package org.drip.xva.hypothecation;
  */
 
 /**
- * MarginPeriodOfRisk contains the Margining Information associated with the Counter Party. The References
+ * MarginPeriodOfRisk contains the Margining Information associated with the Client Exposure. The References
  *  are:
  *  
  *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
