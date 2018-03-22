@@ -827,8 +827,7 @@ public class CollateralGroupPath
 		double[] collateralBalance = collateralBalance();
 
 		int vertexCount = collateralBalance.length;
-		double[] periodCollateralValueAdjustment = new double[vertexCount];
-		periodCollateralValueAdjustment[0] = 0.;
+		double[] periodCollateralValueAdjustment = new double[vertexCount - 1];
 
 		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
 		{
@@ -840,7 +839,7 @@ public class CollateralGroupPath
 				marketVertexArray[vertexIndex].csaSpread() *
 				marketVertexArray[vertexIndex].overnightReplicator();
 
-			periodCollateralValueAdjustment[vertexIndex] =
+			periodCollateralValueAdjustment[vertexIndex - 1] =
 				-0.5 * (periodIntegrandStart + periodIntegrandEnd)
 				* (marketVertexArray[vertexIndex].anchorDate().julian() -
 					marketVertexArray[vertexIndex - 1].anchorDate().julian()) / 365.25;
