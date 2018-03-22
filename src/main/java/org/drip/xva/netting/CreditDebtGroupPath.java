@@ -231,6 +231,60 @@ public abstract class CreditDebtGroupPath extends org.drip.xva.netting.Collatera
 	}
 
 	/**
+	 * Compute Path Bilateral Collateral Value Adjustment
+	 * 
+	 * @return The Path Bilateral Collateral Value Adjustment
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double bilateralCollateralAdjustment()
+		throws java.lang.Exception
+	{
+		org.drip.xva.universe.MarketVertex[] marketVertexArray = marketPath().vertexes();
+
+		double[] collateralBalance = collateralBalance();
+
+		double bilateralCollateralValueAdjustment = 0.;
+		int vertexCount = collateralBalance.length;
+
+		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
+		{
+			double periodIntegrandStart = collateralBalance[vertexIndex - 1] *
+				marketVertexArray[vertexIndex - 1].dealer().survivalProbability() *
+				marketVertexArray[vertexIndex - 1].client().survivalProbability() *
+				marketVertexArray[vertexIndex - 1].csaSpread() *
+				marketVertexArray[vertexIndex - 1].overnightReplicator();
+
+			double periodIntegrandEnd = collateralBalance[vertexIndex] *
+				marketVertexArray[vertexIndex].dealer().survivalProbability() *
+				marketVertexArray[vertexIndex].client().survivalProbability() *
+				marketVertexArray[vertexIndex].csaSpread() *
+				marketVertexArray[vertexIndex].overnightReplicator();
+
+			bilateralCollateralValueAdjustment -= 0.5 * (periodIntegrandStart + periodIntegrandEnd) *
+				(marketVertexArray[vertexIndex].anchorDate().julian() -
+				marketVertexArray[vertexIndex - 1].anchorDate().julian()) / 365.25;
+		}
+
+		return bilateralCollateralValueAdjustment;
+	}
+
+	/**
+	 * Compute Path Collateral Value Adjustment
+	 * 
+	 * @return The Path Collateral Value Adjustment
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double collateralAdjustment()
+		throws java.lang.Exception
+	{
+		return bilateralCollateralAdjustment();
+	}
+
+	/**
 	 * Compute Period-wise Unilateral Credit Adjustment
 	 * 
 	 * @return The Period-wise Unilateral Credit Adjustment

@@ -143,9 +143,9 @@ public class CollateralGroupPath
 	}
 
 	/**
-	 * Retrieve the Array of Collateralized Exposures
+	 * Retrieve the Array of Vertex Collateralized Exposures
 	 * 
-	 * @return The Array of Collateralized Exposures
+	 * @return The Array of Vertex Collateralized Exposures
 	 */
 
 	public double[] collateralizedExposure()
@@ -175,9 +175,9 @@ public class CollateralGroupPath
 	}
 
 	/**
-	 * Retrieve the Array of Collateralized Exposure PV
+	 * Retrieve the Array of Vertex Collateralized Exposure PV
 	 * 
-	 * @return The Array of Collateralized Exposure PV
+	 * @return The Array of Vertex Collateralized Exposure PV
 	 */
 
 	public double[] collateralizedExposurePV()
@@ -210,9 +210,9 @@ public class CollateralGroupPath
 	}
 
 	/**
-	 * Retrieve the Array of Collateralized Positive Exposures
+	 * Retrieve the Array of Vertex Collateralized Positive Exposures
 	 * 
-	 * @return The Array of Collateralized Positive Exposures
+	 * @return The Array of Vertex Collateralized Positive Exposures
 	 */
 
 	public double[] collateralizedPositiveExposure()
@@ -247,9 +247,9 @@ public class CollateralGroupPath
 	}
 
 	/**
-	 * Retrieve the Array of Collateralized Positive Exposure PV
+	 * Retrieve the Array of Vertex Collateralized Positive Exposure PV
 	 * 
-	 * @return The Array of Collateralized Positive Exposures PV
+	 * @return The Array of Vertex Collateralized Positive Exposures PV
 	 */
 
 	public double[] collateralizedPositiveExposurePV()
@@ -287,9 +287,9 @@ public class CollateralGroupPath
 	}
 
 	/**
-	 * Retrieve the Array of Collateralized Negative Exposures
+	 * Retrieve the Array of Vertex Collateralized Negative Exposures
 	 * 
-	 * @return The Array of Collateralized Negative Exposures
+	 * @return The Array of Vertex Collateralized Negative Exposures
 	 */
 
 	public double[] collateralizedNegativeExposure()
@@ -324,9 +324,9 @@ public class CollateralGroupPath
 	}
 
 	/**
-	 * Retrieve the Array of Collateralized Negative Exposure PV
+	 * Retrieve the Array of Vertex Collateralized Negative Exposure PV
 	 * 
-	 * @return The Array of Collateralized Negative Exposure PV
+	 * @return The Array of Vertex Collateralized Negative Exposure PV
 	 */
 
 	public double[] collateralizedNegativeExposurePV()
@@ -364,9 +364,9 @@ public class CollateralGroupPath
 	}
 
 	/**
-	 * Retrieve the Array of Uncollateralized Exposures
+	 * Retrieve the Array of Vertex Uncollateralized Exposures
 	 * 
-	 * @return The Array of Uncollateralized Exposures
+	 * @return The Array of Vertex Uncollateralized Exposures
 	 */
 
 	public double[] uncollateralizedExposure()
@@ -396,9 +396,9 @@ public class CollateralGroupPath
 	}
 
 	/**
-	 * Retrieve the Array of Uncollateralized Exposure PV
+	 * Retrieve the Array of Vertex Uncollateralized Exposure PV
 	 * 
-	 * @return The Array of Uncollateralized Exposure PV
+	 * @return The Array of Vertex Uncollateralized Exposure PV
 	 */
 
 	public double[] uncollateralizedExposurePV()
@@ -431,9 +431,9 @@ public class CollateralGroupPath
 	}
 
 	/**
-	 * Retrieve the Array of Uncollateralized Positive Exposures
+	 * Retrieve the Array of Vertex Uncollateralized Positive Exposures
 	 * 
-	 * @return The Array of Uncollateralized Positive Exposures
+	 * @return The Array of Vertex Uncollateralized Positive Exposures
 	 */
 
 	public double[] uncollateralizedPositiveExposure()
@@ -467,9 +467,9 @@ public class CollateralGroupPath
 	}
 
 	/**
-	 * Retrieve the Array of Uncollateralized Positive Exposure PV
+	 * Retrieve the Array of Vertex Uncollateralized Positive Exposure PV
 	 * 
-	 * @return The Array of Uncollateralized Positive Exposure PV
+	 * @return The Array of Vertex Uncollateralized Positive Exposure PV
 	 */
 
 	public double[] uncollateralizedPositiveExposurePV()
@@ -507,9 +507,9 @@ public class CollateralGroupPath
 	}
 
 	/**
-	 * Retrieve the Array of Uncollateralized Negative Exposures
+	 * Retrieve the Array of Vertex Uncollateralized Negative Exposures
 	 * 
-	 * @return The Array of Uncollateralized Negative Exposures
+	 * @return The Array of Vertex Uncollateralized Negative Exposures
 	 */
 
 	public double[] uncollateralizedNegativeExposure()
@@ -544,9 +544,9 @@ public class CollateralGroupPath
 	}
 
 	/**
-	 * Retrieve the Array of Uncollateralized Negative Exposure PV
+	 * Retrieve the Array of Vertex Uncollateralized Negative Exposure PV
 	 * 
-	 * @return The Array of Uncollateralized Negative Exposure PV
+	 * @return The Array of Vertex Uncollateralized Negative Exposure PV
 	 */
 
 	public double[] uncollateralizedNegativeExposurePV()
@@ -584,9 +584,9 @@ public class CollateralGroupPath
 	}
 
 	/**
-	 * Retrieve the Array of Collateral Balances
+	 * Retrieve the Array of Vertex Collateral Balances
 	 * 
-	 * @return The Array of Collateral Balances
+	 * @return The Array of Vertex Collateral Balances
 	 */
 
 	public double[] collateralBalance()
@@ -616,9 +616,9 @@ public class CollateralGroupPath
 	}
 
 	/**
-	 * Retrieve the Array of Credit Exposures
+	 * Retrieve the Array of Vertex Credit Exposures
 	 * 
-	 * @return The Array of Credit Exposures
+	 * @return The Array of Vertex Credit Exposures
 	 */
 
 	public double[] creditExposure()
@@ -648,9 +648,9 @@ public class CollateralGroupPath
 	}
 
 	/**
-	 * Retrieve the Array of Credit Exposure PV
+	 * Retrieve the Array of Vertex Credit Exposure PV
 	 * 
-	 * @return The Array of Credit Exposure PV
+	 * @return The Array of Vertex Credit Exposure PV
 	 */
 
 	public double[] creditExposurePV()
@@ -683,9 +683,9 @@ public class CollateralGroupPath
 	}
 
 	/**
-	 * Retrieve the Array of Debt Exposures
+	 * Retrieve the Array of Vertex Debt Exposures
 	 * 
-	 * @return The Array of Debt Exposures
+	 * @return The Array of Vertex Debt Exposures
 	 */
 
 	public double[] debtExposure()
@@ -714,9 +714,9 @@ public class CollateralGroupPath
 	}
 
 	/**
-	 * Retrieve the Array of Debt Exposure PV
+	 * Retrieve the Array of Vertex Debt Exposure PV
 	 * 
-	 * @return The Array of Debt Exposure PV
+	 * @return The Array of Vertex Debt Exposure PV
 	 */
 
 	public double[] debtExposurePV()
@@ -748,9 +748,9 @@ public class CollateralGroupPath
 	}
 
 	/**
-	 * Retrieve the Array of Funding Exposures
+	 * Retrieve the Array of Vertex Funding Exposures
 	 * 
-	 * @return The Array of Funding Exposures
+	 * @return The Array of Vertex Funding Exposures
 	 */
 
 	public double[] fundingExposure()
@@ -780,9 +780,9 @@ public class CollateralGroupPath
 	}
 
 	/**
-	 * Retrieve the Array of Funding Exposure PV
+	 * Retrieve the Array of Vertex Funding Exposure PV
 	 * 
-	 * @return The Array of Funding Exposure PV
+	 * @return The Array of Vertex Funding Exposure PV
 	 */
 
 	public double[] fundingExposurePV()
@@ -812,43 +812,6 @@ public class CollateralGroupPath
 		}
 
 		return fundingExposurePV;
-	}
-
-	/**
-	 * Compute Period-wise Path Bilateral Collateral Value Adjustment
-	 * 
-	 * @return The Period-wise Path Bilateral Collateral Value Adjustment
-	 */
-
-	public double[] periodBilateralCollateralValueAdjustment()
-	{
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();
-
-		double[] collateralBalance = collateralBalance();
-
-		int vertexCount = collateralBalance.length;
-		double[] periodBilateralCollateralValueAdjustment = new double[vertexCount - 1];
-
-		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			double periodIntegrandStart = collateralBalance[vertexIndex - 1] *
-				marketVertexArray[vertexIndex - 1].dealer().survivalProbability() *
-				marketVertexArray[vertexIndex - 1].client().survivalProbability() *
-				marketVertexArray[vertexIndex - 1].csaSpread() *
-				marketVertexArray[vertexIndex - 1].overnightReplicator();
-
-			double periodIntegrandEnd = collateralBalance[vertexIndex] *
-				marketVertexArray[vertexIndex].dealer().survivalProbability() *
-				marketVertexArray[vertexIndex].client().survivalProbability() *
-				marketVertexArray[vertexIndex].csaSpread() *
-				marketVertexArray[vertexIndex].overnightReplicator();
-
-			periodBilateralCollateralValueAdjustment[vertexIndex - 1] = -0.5 * (periodIntegrandStart +
-				periodIntegrandEnd) * (marketVertexArray[vertexIndex].anchorDate().julian() -
-					marketVertexArray[vertexIndex - 1].anchorDate().julian()) / 365.25;
-		}
-
-		return periodBilateralCollateralValueAdjustment;
 	}
 
 	/**
@@ -884,59 +847,5 @@ public class CollateralGroupPath
 		}
 
 		return periodCollateralValueAdjustment;
-	}
-
-	/**
-	 * Compute Path Bilateral Collateral Value Adjustment
-	 * 
-	 * @return The Path Bilateral Collateral Value Adjustment
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double bilateralCollateralAdjustment()
-		throws java.lang.Exception
-	{
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();
-
-		double[] collateralBalance = collateralBalance();
-
-		double bilateralCollateralValueAdjustment = 0.;
-		int vertexCount = collateralBalance.length;
-
-		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			double periodIntegrandStart = collateralBalance[vertexIndex - 1] *
-				marketVertexArray[vertexIndex - 1].dealer().survivalProbability() *
-				marketVertexArray[vertexIndex - 1].client().survivalProbability() *
-				marketVertexArray[vertexIndex - 1].csaSpread() *
-				marketVertexArray[vertexIndex - 1].overnightReplicator();
-
-			double periodIntegrandEnd = collateralBalance[vertexIndex] *
-				marketVertexArray[vertexIndex].dealer().survivalProbability() *
-				marketVertexArray[vertexIndex].client().survivalProbability() *
-				marketVertexArray[vertexIndex].csaSpread() *
-				marketVertexArray[vertexIndex].overnightReplicator();
-
-			bilateralCollateralValueAdjustment -= 0.5 * (periodIntegrandStart + periodIntegrandEnd) *
-				(marketVertexArray[vertexIndex].anchorDate().julian() -
-				marketVertexArray[vertexIndex - 1].anchorDate().julian()) / 365.25;
-		}
-
-		return bilateralCollateralValueAdjustment;
-	}
-
-	/**
-	 * Compute Path Collateral Value Adjustment
-	 * 
-	 * @return The Path Collateral Value Adjustment
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double collateralAdjustment()
-		throws java.lang.Exception
-	{
-		return bilateralCollateralAdjustment();
 	}
 }
