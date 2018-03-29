@@ -290,38 +290,32 @@ public class UncollateralizedNettingReceivable {
 			};
 
 			aCPGPGround[i] = new MonoPathExposureAdjustment (
-				new AlbaneseAndersenNettingGroupPath[] {
-					new AlbaneseAndersenNettingGroupPath (
-						aCGP1,
-						np
-					)
-				},
 				new AlbaneseAndersenFundingGroupPath[] {
 					new AlbaneseAndersenFundingGroupPath (
-						aCGP1,
+						new AlbaneseAndersenNettingGroupPath[] {
+							new AlbaneseAndersenNettingGroupPath (
+								aCGP1,
+								np
+							)
+						},
 						np
 					)
 				}
 			);
 
 			aCPGPExtended[i] = new MonoPathExposureAdjustment (
-				new AlbaneseAndersenNettingGroupPath[] {
-					new AlbaneseAndersenNettingGroupPath (
-						aCGP1,
-						np
-					),
-					new AlbaneseAndersenNettingGroupPath (
-						aCGP2,
-						np
-					)
-				},
 				new AlbaneseAndersenFundingGroupPath[] {
 					new AlbaneseAndersenFundingGroupPath (
-						aCGP1,
-						np
-					),
-					new AlbaneseAndersenFundingGroupPath (
-						aCGP2,
+						new AlbaneseAndersenNettingGroupPath[] {
+							new AlbaneseAndersenNettingGroupPath (
+								aCGP1,
+								np
+							),
+							new AlbaneseAndersenNettingGroupPath (
+								aCGP2,
+								np
+							)
+						},
 						np
 					)
 				}

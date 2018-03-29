@@ -497,5 +497,7 @@ public class XVAMarketGeneration {
 		System.out.println ("\t||----------------------------------------------------------------------------------------------||");
 
 		System.out.println();
+
+		EnvManager.TerminateEnv();
 	}
 }

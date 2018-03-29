@@ -74,22 +74,22 @@ public class AlbaneseAndersenFundingGroupPath extends org.drip.xva.netting.Fundi
 	/**
 	 * Generate a "Mono" AlbaneseAndersenFundingGroupPath Instance
 	 * 
-	 * @param collateralGroupPath The "Mono" Hypothecation Group Path
+	 * @param creditDebtGroupPath The "Mono" Credit Debt Group Path
 	 * @param marketPath The Market Path
 	 * 
 	 * @return The "Mono" AlbaneseAndersenFundingGroupPath Instance
 	 */
 
 	public static final AlbaneseAndersenFundingGroupPath Mono (
-		final org.drip.xva.netting.PositionGroupPath collateralGroupPath,
+		final org.drip.xva.netting.CreditDebtGroupPath creditDebtGroupPath,
 		final org.drip.xva.universe.MarketPath marketPath)
 	{
 		try
 		{
 			return new org.drip.xva.strategy.AlbaneseAndersenFundingGroupPath (
-				new org.drip.xva.netting.PositionGroupPath[]
+				new org.drip.xva.netting.CreditDebtGroupPath[]
 				{
-					collateralGroupPath
+					creditDebtGroupPath
 				},
 				marketPath
 			);
@@ -105,31 +105,29 @@ public class AlbaneseAndersenFundingGroupPath extends org.drip.xva.netting.Fundi
 	/**
 	 * AlbaneseAndersenFundingGroupPath Constructor
 	 * 
-	 * @param collateralGroupPathArray Array of the Collateral Group Trajectory Paths
+	 * @param creditDebtGroupPathArray Array of the Credit Debt Group Trajectory Paths
 	 * @param marketPath The Market Path
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public AlbaneseAndersenFundingGroupPath (
-		final org.drip.xva.netting.PositionGroupPath[] collateralGroupPathArray,
+		final org.drip.xva.netting.CreditDebtGroupPath[] creditDebtGroupPathArray,
 		final org.drip.xva.universe.MarketPath marketPath)
 		throws java.lang.Exception
 	{
 		super (
-			collateralGroupPathArray,
+			creditDebtGroupPathArray,
 			marketPath
 		);
 	}
 
 	@Override public double fundingValueAdjustment()
-		throws java.lang.Exception
 	{
 		return bilateralFundingValueAdjustment();
 	}
 
 	@Override public double fundingDebtAdjustment()
-		throws java.lang.Exception
 	{
 		return bilateralFundingDebtAdjustment();
 	}
@@ -145,13 +143,11 @@ public class AlbaneseAndersenFundingGroupPath extends org.drip.xva.netting.Fundi
 	}
 
 	@Override public double[] periodFundingValueAdjustment()
-		throws java.lang.Exception
 	{
 		return periodBilateralFundingValueAdjustment();
 	}
 
 	@Override public double[] periodFundingDebtAdjustment()
-		throws java.lang.Exception
 	{
 		return periodBilateralFundingDebtAdjustment();
 	}

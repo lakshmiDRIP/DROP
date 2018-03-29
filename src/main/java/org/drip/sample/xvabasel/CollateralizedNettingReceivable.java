@@ -344,38 +344,33 @@ public class CollateralizedNettingReceivable {
 			};
 
 			aCPGPGround[i] = new MonoPathExposureAdjustment (
-				new AlbaneseAndersenNettingGroupPath[] {
-					new AlbaneseAndersenNettingGroupPath (
-						aCGP1,
-						np
-					)
-				},
 				new AlbaneseAndersenFundingGroupPath[] {
 					new AlbaneseAndersenFundingGroupPath (
-						aCGP1,
+						new AlbaneseAndersenNettingGroupPath[] {
+							new AlbaneseAndersenNettingGroupPath (
+								aCGP1,
+								np
+							)
+						},
 						np
 					)
 				}
 			);
 
 			aCPGPExtended[i] = new MonoPathExposureAdjustment (
-				new AlbaneseAndersenNettingGroupPath[] {
-					new AlbaneseAndersenNettingGroupPath (
-						aCGP1,
-						np
-					),
-					new AlbaneseAndersenNettingGroupPath (
-						aCGP2,
-						np
-					)
-				},
 				new AlbaneseAndersenFundingGroupPath[] {
-					new AlbaneseAndersenFundingGroupPath (
-						aCGP1,
+					AlbaneseAndersenFundingGroupPath.Mono (
+						new AlbaneseAndersenNettingGroupPath (
+							aCGP1,
+							np
+						),
 						np
 					),
-					new AlbaneseAndersenFundingGroupPath (
-						aCGP2,
+					AlbaneseAndersenFundingGroupPath.Mono (
+						new AlbaneseAndersenNettingGroupPath (
+							aCGP2,
+							np
+						),
 						np
 					)
 				}

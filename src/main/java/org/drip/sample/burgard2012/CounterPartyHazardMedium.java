@@ -162,5 +162,7 @@ public class CounterPartyHazardMedium {
 		System.out.println ("\t||------------------------------------------------||");
 
 		System.out.println();
+
+		EnvManager.TerminateEnv();
 	}
 }

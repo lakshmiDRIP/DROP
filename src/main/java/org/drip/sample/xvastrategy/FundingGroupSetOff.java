@@ -312,7 +312,7 @@ public class FundingGroupSetOff {
 		);
 
 		AlbaneseAndersenFundingGroupPath fgpaa2014_1 = new AlbaneseAndersenFundingGroupPath (
-			aCGP1,
+			new AlbaneseAndersenNettingGroupPath[] {ngpaa2014_1},
 			mp
 		);
 
@@ -322,7 +322,7 @@ public class FundingGroupSetOff {
 		);
 
 		AlbaneseAndersenFundingGroupPath fgpaa2014_2 = new AlbaneseAndersenFundingGroupPath (
-			aCGP2,
+			new AlbaneseAndersenNettingGroupPath[] {ngpaa2014_2},
 			mp
 		);
 
@@ -473,11 +473,9 @@ public class FundingGroupSetOff {
 		ExposureAdjustmentAggregator eaa = new ExposureAdjustmentAggregator (
 			new MonoPathExposureAdjustment[] {
 				new MonoPathExposureAdjustment (
-					new AlbaneseAndersenNettingGroupPath[] {ngpaa2014_1},
 					new AlbaneseAndersenFundingGroupPath[] {fgpaa2014_1}
 				),
 				new MonoPathExposureAdjustment (
-					new AlbaneseAndersenNettingGroupPath[] {ngpaa2014_2},
 					new AlbaneseAndersenFundingGroupPath[] {fgpaa2014_2}
 				)
 			}

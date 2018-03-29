@@ -69,18 +69,227 @@ package org.drip.xva.netting;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class FundingGroupPath extends org.drip.xva.netting.CollateralGroupPath
+public abstract class FundingGroupPath
 {
+	private org.drip.xva.universe.MarketPath _marketPath = null;
+	private org.drip.xva.netting.CreditDebtGroupPath[] _creditDebtGroupPathArray = null;
 
 	protected FundingGroupPath (
-		final org.drip.xva.netting.PositionGroupPath[] collateralGroupPathArray,
+		final org.drip.xva.netting.CreditDebtGroupPath[] creditDebtGroupPathArray,
 		final org.drip.xva.universe.MarketPath marketPath)
 		throws java.lang.Exception
 	{
-		super (
-			collateralGroupPathArray,
-			marketPath
-		);
+		if (null == (_creditDebtGroupPathArray = creditDebtGroupPathArray) ||
+			null == (_marketPath = marketPath))
+		{
+			throw new java.lang.Exception ("FundingGroupPath Constructor => Invalid Inputs");
+		}
+	}
+
+	/**
+	 * Retrieve the Array of CreditDebtGroupPath
+	 * 
+	 * @return The Array of CreditDebtGroupPath
+	 */
+
+	public org.drip.xva.netting.CreditDebtGroupPath[] creditDebtGroupPathArray()
+	{
+		return _creditDebtGroupPathArray;
+	}
+
+	/**
+	 * Compute Path Symmetric Funding Value Spread 01
+	 * 
+	 * @return The Path Symmetric Funding Value Spread 01
+	 */
+
+	public double symmetricFundingValueSpread01()
+	{
+		int creditDebtGroupCount = _creditDebtGroupPathArray.length;
+		double symmetricFundingSpread01 = 0.;
+
+		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex < creditDebtGroupCount;
+			++creditDebtGroupIndex)
+		{
+			symmetricFundingSpread01 +=
+				_creditDebtGroupPathArray[creditDebtGroupIndex].symmetricFundingValueSpread01();
+		}
+
+		return symmetricFundingSpread01;
+	}
+
+	/**
+	 * Compute Path Unilateral Funding Value Spread 01
+	 * 
+	 * @return The Path Unilateral Funding Value Spread 01
+	 */
+
+	public double unilateralFundingValueSpread01()
+	{
+		int creditDebtGroupCount = _creditDebtGroupPathArray.length;
+		double unilateralFundingValueSpread01 = 0.;
+
+		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex < creditDebtGroupCount;
+			++creditDebtGroupIndex)
+		{
+			unilateralFundingValueSpread01 +=
+				_creditDebtGroupPathArray[creditDebtGroupIndex].unilateralFundingValueSpread01();
+		}
+
+		return unilateralFundingValueSpread01;
+	}
+
+	/**
+	 * Compute Path Bilateral Funding Value Spread 01
+	 * 
+	 * @return The Path Bilateral Funding Value Spread 01
+	 */
+
+	public double bilateralFundingValueSpread01()
+	{
+		int creditDebtGroupCount = _creditDebtGroupPathArray.length;
+		double bilateralFundingValueSpread01 = 0.;
+
+		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex < creditDebtGroupCount;
+			++creditDebtGroupIndex)
+		{
+			bilateralFundingValueSpread01 +=
+				_creditDebtGroupPathArray[creditDebtGroupIndex].bilateralFundingValueSpread01();
+		}
+
+		return bilateralFundingValueSpread01;
+	}
+
+	/**
+	 * Compute Period Symmetric Funding Value Spread 01
+	 * 
+	 * @return The Period Symmetric Funding Value Spread 01
+	 */
+
+	public double[] periodSymmetricFundingValueSpread01()
+	{
+		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();
+
+		int periodCount = marketVertexArray.length - 1;
+		int creditDebtGroupCount = _creditDebtGroupPathArray.length;
+		double[] periodSymmetricFundingValueSpread01 = new double[periodCount];
+
+		for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex)
+		{
+			periodSymmetricFundingValueSpread01[periodIndex] += 0.;
+		}
+
+		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex < creditDebtGroupCount;
+			++creditDebtGroupIndex)
+		{
+			double[] periodCreditDebtGroupSymmetricFundingValueSpread01 =
+				_creditDebtGroupPathArray[creditDebtGroupIndex].periodSymmetricFundingValueSpread01();
+
+			for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex)
+			{
+				periodSymmetricFundingValueSpread01[periodIndex] +=
+					periodCreditDebtGroupSymmetricFundingValueSpread01[creditDebtGroupIndex];
+			}
+		}
+
+		return periodSymmetricFundingValueSpread01;
+	}
+
+	/**
+	 * Compute Period Unilateral Funding Value Spread 01
+	 * 
+	 * @return The Period Unilateral Funding Value Spread 01
+	 */
+
+	public double[] periodUnilateralFundingValueSpread01()
+	{
+		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();
+
+		int periodCount = marketVertexArray.length - 1;
+		int creditDebtGroupCount = _creditDebtGroupPathArray.length;
+		double[] periodUnilateralFundingValueSpread01 = new double[periodCount];
+
+		for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex)
+		{
+			periodUnilateralFundingValueSpread01[periodIndex] += 0.;
+		}
+
+		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex < creditDebtGroupCount;
+			++creditDebtGroupIndex)
+		{
+			double[] periodCreditDebtGroupUnilateralFundingValueSpread01 =
+				_creditDebtGroupPathArray[creditDebtGroupIndex].periodUnilateralFundingValueSpread01();
+
+			for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex)
+			{
+				periodUnilateralFundingValueSpread01[periodIndex] +=
+					periodCreditDebtGroupUnilateralFundingValueSpread01[creditDebtGroupIndex];
+			}
+		}
+
+		return periodUnilateralFundingValueSpread01;
+	}
+
+	/**
+	 * Compute Period Bilateral Funding Value Spread 01
+	 * 
+	 * @return The Period Bilateral Funding Value Spread 01
+	 */
+
+	public double[] periodBilateralFundingValueSpread01()
+	{
+		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();
+
+		int periodCount = marketVertexArray.length - 1;
+		int creditDebtGroupCount = _creditDebtGroupPathArray.length;
+		double[] periodBilateralFundingValueSpread01 = new double[periodCount];
+
+		for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex)
+		{
+			periodBilateralFundingValueSpread01[periodIndex] += 0.;
+		}
+
+		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex < creditDebtGroupCount;
+			++creditDebtGroupIndex)
+		{
+			double[] periodCreditDebtGroupBilateralFundingValueSpread01 =
+				_creditDebtGroupPathArray[creditDebtGroupIndex].periodBilateralFundingValueSpread01();
+
+			for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex)
+			{
+				periodBilateralFundingValueSpread01[periodIndex] +=
+					periodCreditDebtGroupBilateralFundingValueSpread01[creditDebtGroupIndex];
+			}
+		}
+
+		return periodBilateralFundingValueSpread01;
+	}
+
+	/**
+	 * Compute Path Symmetric Funding Value Adjustment
+	 * 
+	 * @return The Path Symmetric Funding Value Adjustment
+	 */
+
+	public double symmetricFundingValueAdjustment()
+	{
+		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();
+
+		double[] periodSymmetricFundingValueSpread01 = periodSymmetricFundingValueSpread01();
+
+		int periodCount = periodSymmetricFundingValueSpread01.length;
+		double symmetricFundingValueAdjustment = 0.;
+
+		for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex)
+		{
+			symmetricFundingValueAdjustment +=
+				0.5 * periodSymmetricFundingValueSpread01[periodIndex] * (
+					marketVertexArray[periodIndex].dealer().seniorFundingSpread() +
+					marketVertexArray[periodIndex + 1].dealer().seniorFundingSpread()
+				);
+		}
+
+		return symmetricFundingValueAdjustment;
 	}
 
 	/**
@@ -91,27 +300,20 @@ public abstract class FundingGroupPath extends org.drip.xva.netting.CollateralGr
 
 	public double unilateralFundingValueAdjustment()
 	{
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = marketPath().vertexes();
+		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();
 
-		double[] fundingExposurePV = fundingExposurePV();
+		double[] periodUnilateralFundingValueSpread01 = periodUnilateralFundingValueSpread01();
 
+		int periodCount = periodUnilateralFundingValueSpread01.length;
 		double unilateralFundingValueAdjustment = 0.;
-		int vertexCount = fundingExposurePV.length;
 
-		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
+		for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex)
 		{
-			double periodIntegrandStart = fundingExposurePV[vertexIndex - 1] *
-				marketVertexArray[vertexIndex - 1].dealer().survivalProbability() *
-				marketVertexArray[vertexIndex - 1].dealer().seniorFundingSpread();
-
-			double periodIntegrandEnd = fundingExposurePV[vertexIndex] *
-				marketVertexArray[vertexIndex].dealer().survivalProbability() *
-				marketVertexArray[vertexIndex].dealer().seniorFundingSpread();
-
-			unilateralFundingValueAdjustment -=
-				0.5 * (periodIntegrandStart + periodIntegrandEnd) *
-				(marketVertexArray[vertexIndex].anchorDate().julian() -
-				marketVertexArray[vertexIndex - 1].anchorDate().julian()) / 365.25;
+			unilateralFundingValueAdjustment +=
+				0.5 * periodUnilateralFundingValueSpread01[periodIndex] * (
+					marketVertexArray[periodIndex].dealer().seniorFundingSpread() +
+					marketVertexArray[periodIndex + 1].dealer().seniorFundingSpread()
+				);
 		}
 
 		return unilateralFundingValueAdjustment;
@@ -121,36 +323,24 @@ public abstract class FundingGroupPath extends org.drip.xva.netting.CollateralGr
 	 * Compute Path Bilateral Funding Value Adjustment
 	 * 
 	 * @return The Path Bilateral Funding Value Adjustment
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double bilateralFundingValueAdjustment()
-		throws java.lang.Exception
 	{
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = marketPath().vertexes();
+		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();
 
-		double[] fundingExposurePV = fundingExposurePV();
+		double[] periodBilateralFundingValueSpread01 = periodBilateralFundingValueSpread01();
 
+		int periodCount = periodBilateralFundingValueSpread01.length;
 		double bilateralFundingValueAdjustment = 0.;
-		int vertexCount = fundingExposurePV.length;
 
-		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
+		for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex)
 		{
-			double periodIntegrandStart = fundingExposurePV[vertexIndex - 1] *
-				marketVertexArray[vertexIndex - 1].dealer().survivalProbability() *
-				marketVertexArray[vertexIndex - 1].dealer().seniorFundingSpread() *
-				marketVertexArray[vertexIndex - 1].client().survivalProbability();
-
-			double periodIntegrandEnd = fundingExposurePV[vertexIndex] *
-				marketVertexArray[vertexIndex].dealer().survivalProbability() *
-				marketVertexArray[vertexIndex].dealer().seniorFundingSpread() *
-				marketVertexArray[vertexIndex].client().survivalProbability();
-
-			bilateralFundingValueAdjustment -=
-				0.5 * (periodIntegrandStart + periodIntegrandEnd) *
-				(marketVertexArray[vertexIndex].anchorDate().julian() -
-				marketVertexArray[vertexIndex - 1].anchorDate().julian()) / 365.25;
+			bilateralFundingValueAdjustment +=
+				0.5 * periodBilateralFundingValueSpread01[periodIndex] * (
+					marketVertexArray[periodIndex].dealer().seniorFundingSpread() +
+					marketVertexArray[periodIndex + 1].dealer().seniorFundingSpread()
+				);
 		}
 
 		return bilateralFundingValueAdjustment;
@@ -164,26 +354,14 @@ public abstract class FundingGroupPath extends org.drip.xva.netting.CollateralGr
 
 	public double unilateralFundingDebtAdjustment()
 	{
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = marketPath().vertexes();
+		double[] periodUnilateralFundingDebtAdjustment = periodUnilateralFundingDebtAdjustment();
 
-		double[] debtExposurePV = debtExposurePV();
-
+		int periodCount = periodUnilateralFundingDebtAdjustment.length;
 		double unilateralFundingDebtAdjustment = 0.;
-		int vertexCount = debtExposurePV.length;
 
-		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
+		for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex)
 		{
-			double periodIntegrandStart = debtExposurePV[vertexIndex - 1] *
-				marketVertexArray[vertexIndex - 1].dealer().survivalProbability() *
-				marketVertexArray[vertexIndex - 1].client().seniorFundingSpread();
-
-			double periodIntegrandEnd = debtExposurePV[vertexIndex] *
-				marketVertexArray[vertexIndex].dealer().survivalProbability() *
-				marketVertexArray[vertexIndex].client().seniorFundingSpread();
-
-			unilateralFundingDebtAdjustment -= 0.5 * (periodIntegrandStart + periodIntegrandEnd) *
-				(marketVertexArray[vertexIndex].anchorDate().julian() -
-				marketVertexArray[vertexIndex - 1].anchorDate().julian()) / 365.25;
+			unilateralFundingDebtAdjustment += periodUnilateralFundingDebtAdjustment[periodIndex];
 		}
 
 		return unilateralFundingDebtAdjustment;
@@ -193,71 +371,116 @@ public abstract class FundingGroupPath extends org.drip.xva.netting.CollateralGr
 	 * Compute Path Bilateral Funding Debt Adjustment
 	 * 
 	 * @return The Path Bilateral Funding Debt Adjustment
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double bilateralFundingDebtAdjustment()
-		throws java.lang.Exception
 	{
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = marketPath().vertexes();
+		double[] periodBilateralFundingDebtAdjustment = periodBilateralFundingDebtAdjustment();
 
-		double[] debtExposurePV = debtExposurePV();
-
+		int periodCount = periodBilateralFundingDebtAdjustment.length;
 		double bilateralFundingDebtAdjustment = 0.;
-		int vertexCount = debtExposurePV.length;
 
-		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
+		for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex)
 		{
-			double periodIntegrandStart = debtExposurePV[vertexIndex - 1] *
-				marketVertexArray[vertexIndex - 1].dealer().survivalProbability() *
-				marketVertexArray[vertexIndex - 1].client().survivalProbability() *
-				marketVertexArray[vertexIndex - 1].client().seniorFundingSpread();
-
-			double periodIntegrandEnd = debtExposurePV[vertexIndex] *
-				marketVertexArray[vertexIndex].dealer().survivalProbability() *
-				marketVertexArray[vertexIndex - 1].client().survivalProbability() *
-				marketVertexArray[vertexIndex].client().seniorFundingSpread();
-
-			bilateralFundingDebtAdjustment -= 0.5 * (periodIntegrandStart + periodIntegrandEnd) *
-				(marketVertexArray[vertexIndex].anchorDate().julian() -
-				marketVertexArray[vertexIndex - 1].anchorDate().julian()) / 365.25;
+			bilateralFundingDebtAdjustment += periodBilateralFundingDebtAdjustment[periodIndex];
 		}
 
 		return bilateralFundingDebtAdjustment;
 	}
 
 	/**
-	 * Compute Path Symmetric Funding Value Adjustment
+	 * Compute Vertex Path Funding Exposure
 	 * 
-	 * @return The Path Symmetric Funding Value Adjustment
+	 * @return The Vertex Path Funding Exposure
 	 */
 
-	public double symmetricFundingValueAdjustment()
+	public double[] fundingExposure()
 	{
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = marketPath().vertexes();
+		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();
 
-		double[] collateralizedExposurePV = collateralizedExposurePV();
+		int vertexCount = marketVertexArray.length;
+		double[] fundingExposureArray = new double[vertexCount];
+		int creditDebtGroupCount = _creditDebtGroupPathArray.length;
 
-		int vertexCount = collateralizedExposurePV.length;
-		double symmetricFundingValueAdjustment = 0.;
-
-		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 		{
-			double periodIntegrandStart = collateralizedExposurePV[vertexIndex - 1] *
-				marketVertexArray[vertexIndex - 1].dealer().survivalProbability() *
-				marketVertexArray[vertexIndex - 1].dealer().seniorFundingSpread();
-
-			double periodIntegrandEnd = collateralizedExposurePV[vertexIndex] *
-				marketVertexArray[vertexIndex].dealer().survivalProbability() *
-				marketVertexArray[vertexIndex].dealer().seniorFundingSpread();
-
-			symmetricFundingValueAdjustment -= 0.5 * (periodIntegrandStart + periodIntegrandEnd) *
-				(marketVertexArray[vertexIndex].anchorDate().julian() -
-				marketVertexArray[vertexIndex - 1].anchorDate().julian()) / 365.25;
+			fundingExposureArray[vertexIndex] = 0.;
 		}
 
-		return symmetricFundingValueAdjustment;
+		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex < creditDebtGroupCount;
+			++creditDebtGroupIndex)
+		{
+			double[] creditDebtGroupFundingExposure =
+				_creditDebtGroupPathArray[creditDebtGroupIndex].fundingExposure();
+
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+			{
+				fundingExposureArray[vertexIndex] += creditDebtGroupFundingExposure[vertexIndex];
+			}
+		}
+
+		return fundingExposureArray;
+	}
+
+	/**
+	 * Compute Vertex Path Funding Exposure PV
+	 * 
+	 * @return The Vertex Path Funding Exposure PV
+	 */
+
+	public double[] fundingExposurePV()
+	{
+		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();
+
+		int vertexCount = marketVertexArray.length;
+		double[] fundingExposurePVArray = new double[vertexCount];
+		int creditDebtGroupCount = _creditDebtGroupPathArray.length;
+
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+		{
+			fundingExposurePVArray[vertexIndex] = 0.;
+		}
+
+		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex < creditDebtGroupCount;
+			++creditDebtGroupIndex)
+		{
+			double[] creditDebtGroupFundingExposurePV =
+				_creditDebtGroupPathArray[creditDebtGroupIndex].fundingExposure();
+
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+			{
+				fundingExposurePVArray[vertexIndex] += creditDebtGroupFundingExposurePV[vertexIndex];
+			}
+		}
+
+		return fundingExposurePVArray;
+	}
+
+	/**
+	 * Compute Period-wise Path Symmetric Funding Value Adjustment
+	 * 
+	 * @return The Period-wise Path Symmetric Funding Value Adjustment
+	 */
+
+	public double[] periodSymmetricFundingValueAdjustment()
+	{
+		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();
+
+		double[] periodSymmetricFundingValueSpread01 = periodSymmetricFundingValueSpread01();
+
+		int periodCount = periodSymmetricFundingValueSpread01.length;
+		double[] periodSymmetricFundingValueAdjustment = new double[periodCount];
+
+		for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex)
+		{
+			periodSymmetricFundingValueAdjustment[periodIndex] =
+				0.5 * periodSymmetricFundingValueSpread01[periodIndex] * (
+					marketVertexArray[periodIndex].dealer().seniorFundingSpread() +
+					marketVertexArray[periodIndex + 1].dealer().seniorFundingSpread()
+				);
+		}
+
+		return periodSymmetricFundingValueAdjustment;
 	}
 
 	/**
@@ -268,28 +491,20 @@ public abstract class FundingGroupPath extends org.drip.xva.netting.CollateralGr
 
 	public double[] periodUnilateralFundingValueAdjustment()
 	{
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = marketPath().vertexes();
+		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();
 
-		double[] fundingExposurePV = fundingExposurePV();
+		double[] periodUnilateralFundingValueSpread01 = periodUnilateralFundingValueSpread01();
 
-		int vertexCount = fundingExposurePV.length;
-		double[] periodUnilateralFundingValueAdjustment = new double[vertexCount - 1];
+		int periodCount = periodUnilateralFundingValueSpread01.length;
+		double[] periodUnilateralFundingValueAdjustment = new double[periodCount];
 
-		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
+		for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex)
 		{
-			double periodIntegrandStart = fundingExposurePV[vertexIndex - 1] *
-				marketVertexArray[vertexIndex - 1].dealer().survivalProbability() * (1. -
-				marketVertexArray[vertexIndex - 1].dealer().seniorRecoveryRate()) *
-				marketVertexArray[vertexIndex - 1].dealer().hazardRate();
-
-			double periodIntegrandEnd = fundingExposurePV[vertexIndex] *
-				marketVertexArray[vertexIndex].dealer().survivalProbability() *
-				(1. - marketVertexArray[vertexIndex].dealer().seniorRecoveryRate()) *
-				marketVertexArray[vertexIndex].dealer().hazardRate();
-
-			periodUnilateralFundingValueAdjustment[vertexIndex - 1] = 0.5 * (periodIntegrandStart +
-				periodIntegrandEnd) * (marketVertexArray[vertexIndex].anchorDate().julian() -
-				marketVertexArray[vertexIndex - 1].anchorDate().julian()) / 365.25;
+			periodUnilateralFundingValueAdjustment[periodIndex] =
+				0.5 * periodUnilateralFundingValueSpread01[periodIndex] * (
+					marketVertexArray[periodIndex].dealer().seniorFundingSpread() +
+					marketVertexArray[periodIndex + 1].dealer().seniorFundingSpread()
+				);
 		}
 
 		return periodUnilateralFundingValueAdjustment;
@@ -299,37 +514,24 @@ public abstract class FundingGroupPath extends org.drip.xva.netting.CollateralGr
 	 * Compute Period-wise Bilateral Path Funding Value Adjustment
 	 * 
 	 * @return The Period-wise Bilateral Path Funding Value Adjustment
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double[] periodBilateralFundingValueAdjustment()
-		throws java.lang.Exception
 	{
-		double[] fundingExposurePV = fundingExposurePV();
+		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();
 
-		int vertexCount = fundingExposurePV.length;
-		double[] periodBilateralFundingValueAdjustment = new double[vertexCount - 1];
+		double[] periodBilateralFundingValueSpread01 = periodBilateralFundingValueSpread01();
 
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = marketPath().vertexes();
+		int periodCount = periodBilateralFundingValueSpread01.length;
+		double[] periodBilateralFundingValueAdjustment = new double[periodCount];
 
-		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
+		for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex)
 		{
-			double periodIntegrandStart = fundingExposurePV[vertexIndex - 1] *
-				marketVertexArray[vertexIndex - 1].dealer().survivalProbability() * (1. -
-				marketVertexArray[vertexIndex - 1].dealer().seniorRecoveryRate()) *
-				marketVertexArray[vertexIndex - 1].dealer().hazardRate() *
-				marketVertexArray[vertexIndex - 1].client().survivalProbability();
-
-			double periodIntegrandEnd = fundingExposurePV[vertexIndex] *
-				marketVertexArray[vertexIndex].dealer().survivalProbability() *
-				(1. - marketVertexArray[vertexIndex].dealer().seniorRecoveryRate()) *
-				marketVertexArray[vertexIndex].dealer().hazardRate() *
-				marketVertexArray[vertexIndex].client().survivalProbability();
-
-			periodBilateralFundingValueAdjustment[vertexIndex - 1] = 0.5 * (periodIntegrandStart +
-				periodIntegrandEnd) * (marketVertexArray[vertexIndex].anchorDate().julian() -
-				marketVertexArray[vertexIndex - 1].anchorDate().julian()) / 365.25;
+			periodBilateralFundingValueAdjustment[periodIndex] =
+				0.5 * periodBilateralFundingValueSpread01[periodIndex] * (
+					marketVertexArray[periodIndex].dealer().seniorFundingSpread() +
+					marketVertexArray[periodIndex + 1].dealer().seniorFundingSpread()
+				);
 		}
 
 		return periodBilateralFundingValueAdjustment;
@@ -343,26 +545,28 @@ public abstract class FundingGroupPath extends org.drip.xva.netting.CollateralGr
 
 	public double[] periodUnilateralFundingDebtAdjustment()
 	{
-		double[] debtExposurePV = debtExposurePV();
+		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();
 
-		int vertexCount = debtExposurePV.length;
-		double[] periodUnilateralFundingDebtAdjustment = new double[vertexCount - 1];
+		int periodCount = marketVertexArray.length - 1;
+		int creditDebtGroupCount = _creditDebtGroupPathArray.length;
+		double[] periodUnilateralFundingDebtAdjustment = new double[periodCount];
 
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = marketPath().vertexes();
-
-		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
+		for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex)
 		{
-			double periodIntegrandStart = debtExposurePV[vertexIndex - 1] *
-				marketVertexArray[vertexIndex - 1].dealer().survivalProbability() *
-				marketVertexArray[vertexIndex - 1].client().seniorFundingSpread();
+			periodUnilateralFundingDebtAdjustment[periodIndex] = 0.;
+		}
 
-			double periodIntegrandEnd = debtExposurePV[vertexIndex] *
-				marketVertexArray[vertexIndex].dealer().survivalProbability() *
-				marketVertexArray[vertexIndex].client().seniorFundingSpread();
+		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex < creditDebtGroupCount;
+			++creditDebtGroupIndex)
+		{
+			double[] periodUnilateralFundingDebtAdjustmentCreditDebtGroup =
+				_creditDebtGroupPathArray[creditDebtGroupIndex].periodUnilateralFundingDebtAdjustment();
 
-			periodUnilateralFundingDebtAdjustment[vertexIndex - 1] = -0.5 * (periodIntegrandStart +
-				periodIntegrandEnd) * (marketVertexArray[vertexIndex].anchorDate().julian() -
-				marketVertexArray[vertexIndex - 1].anchorDate().julian()) / 365.25;
+			for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex)
+			{
+				periodUnilateralFundingDebtAdjustment[periodIndex] +=
+					periodUnilateralFundingDebtAdjustmentCreditDebtGroup[periodIndex];
+			}
 		}
 
 		return periodUnilateralFundingDebtAdjustment;
@@ -372,94 +576,52 @@ public abstract class FundingGroupPath extends org.drip.xva.netting.CollateralGr
 	 * Compute Period-wise Path Bilateral Funding Debt Adjustment
 	 * 
 	 * @return The Period-wise Path Bilateral Funding Debt Adjustment
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double[] periodBilateralFundingDebtAdjustment()
-		throws java.lang.Exception
 	{
-		double[] debtExposurePV = debtExposurePV();
+		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();
 
-		int vertexCount = debtExposurePV.length;
-		double[] periodBilateralFundingDebtAdjustment = new double[vertexCount - 1];
+		int periodCount = marketVertexArray.length - 1;
+		int creditDebtGroupCount = _creditDebtGroupPathArray.length;
+		double[] periodBilateralFundingDebtAdjustment = new double[periodCount];
 
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = marketPath().vertexes();
-
-		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
+		for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex)
 		{
-			double periodIntegrandStart = debtExposurePV[vertexIndex - 1] *
-				marketVertexArray[vertexIndex - 1].dealer().survivalProbability() *
-				marketVertexArray[vertexIndex - 1].client().survivalProbability() *
-				marketVertexArray[vertexIndex - 1].client().seniorFundingSpread();
+			periodBilateralFundingDebtAdjustment[periodIndex] = 0.;
+		}
 
-			double periodIntegrandEnd = debtExposurePV[vertexIndex] *
-				marketVertexArray[vertexIndex].dealer().survivalProbability() *
-				marketVertexArray[vertexIndex].client().survivalProbability() *
-				marketVertexArray[vertexIndex].client().seniorFundingSpread();
+		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex < creditDebtGroupCount;
+			++creditDebtGroupIndex)
+		{
+			double[] periodBilateralFundingDebtAdjustmentCreditDebtGroup =
+				_creditDebtGroupPathArray[creditDebtGroupIndex].periodUnilateralFundingDebtAdjustment();
 
-			periodBilateralFundingDebtAdjustment[vertexIndex - 1] = 0.5 * (periodIntegrandStart +
-				periodIntegrandEnd) * (marketVertexArray[vertexIndex].anchorDate().julian() -
-				marketVertexArray[vertexIndex - 1].anchorDate().julian()) / 365.25;
+			for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex)
+			{
+				periodBilateralFundingDebtAdjustment[periodIndex] +=
+					periodBilateralFundingDebtAdjustmentCreditDebtGroup[periodIndex];
+			}
 		}
 
 		return periodBilateralFundingDebtAdjustment;
 	}
 
 	/**
-	 * Compute Period-wise Path Symmetric Funding Value Adjustment
-	 * 
-	 * @return The Period-wise Path Symmetric Funding Value Adjustment
-	 */
-
-	public double[] periodSymmetricFundingValueAdjustment()
-	{
-		double[] collateralizedExposurePV = collateralizedExposurePV();
-
-		int vertexCount = collateralizedExposurePV.length;
-		double[] periodSymmetricFundingValueAdjustment = new double[vertexCount - 1];
-
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = marketPath().vertexes();
-
-		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			double periodIntegrandStart = collateralizedExposurePV[vertexIndex - 1] *
-				marketVertexArray[vertexIndex - 1].dealer().survivalProbability() *
-				marketVertexArray[vertexIndex - 1].dealer().seniorFundingSpread();
-
-			double periodIntegrandEnd = collateralizedExposurePV[vertexIndex] *
-				marketVertexArray[vertexIndex].dealer().survivalProbability() *
-				marketVertexArray[vertexIndex].dealer().seniorFundingSpread();
-
-			periodSymmetricFundingValueAdjustment[vertexIndex - 1] = 0.5 * (periodIntegrandStart +
-				periodIntegrandEnd) * (marketVertexArray[vertexIndex].anchorDate().julian() -
-				marketVertexArray[vertexIndex - 1].anchorDate().julian()) / 365.25;
-		}
-
-		return periodSymmetricFundingValueAdjustment;
-	}
-
-	/**
 	 * Compute Path Funding Value Adjustment
 	 * 
 	 * @return The Path Funding Value Adjustment
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public abstract double fundingValueAdjustment()
-		throws java.lang.Exception;
+	public abstract double fundingValueAdjustment();
 
 	/**
 	 * Compute Path Funding Debt Adjustment
 	 * 
 	 * @return The Path Funding Debt Adjustment
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public abstract double fundingDebtAdjustment()
-		throws java.lang.Exception;
+	public abstract double fundingDebtAdjustment();
 
 	/**
 	 * Compute Path Funding Cost Adjustment
@@ -481,23 +643,17 @@ public abstract class FundingGroupPath extends org.drip.xva.netting.CollateralGr
 	 * Compute Period-wise Path Funding Value Adjustment
 	 * 
 	 * @return The Period-wise Path Funding Value Adjustment
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public abstract double[] periodFundingValueAdjustment()
-		throws java.lang.Exception;
+	public abstract double[] periodFundingValueAdjustment();
 
 	/**
 	 * Compute Period-wise Path Funding Debt Adjustment
 	 * 
 	 * @return The Period-wise Path Funding Debt Adjustment
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public abstract double[] periodFundingDebtAdjustment()
-		throws java.lang.Exception;
+	public abstract double[] periodFundingDebtAdjustment();
 
 	/**
 	 * Compute Period-wise Path Funding Cost Adjustment

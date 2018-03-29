@@ -162,5 +162,7 @@ public class CounterPartyHazardHigh {
 		System.out.println ("\t||------------------------------------------------||");
 
 		System.out.println();
+
+		EnvManager.TerminateEnv();
 	}
 }

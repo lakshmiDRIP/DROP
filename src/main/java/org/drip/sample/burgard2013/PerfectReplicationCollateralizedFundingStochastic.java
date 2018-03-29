@@ -662,15 +662,14 @@ public class PerfectReplicationCollateralizedFundingStochastic {
 			};
 
 			aMPEAGround[i] = new MonoPathExposureAdjustment (
-				new AlbaneseAndersenNettingGroupPath[] {
-					new AlbaneseAndersenNettingGroupPath (
-						aHGPGround,
-						mp
-					)
-				},
 				new AlbaneseAndersenFundingGroupPath[] {
 					new AlbaneseAndersenFundingGroupPath (
-						aHGPGround,
+						new AlbaneseAndersenNettingGroupPath[] {
+							new AlbaneseAndersenNettingGroupPath (
+								aHGPGround,
+								mp
+							)
+						},
 						mp
 					)
 				}
@@ -682,15 +681,14 @@ public class PerfectReplicationCollateralizedFundingStochastic {
 			};
 
 			aMPEAExtended[i] = new MonoPathExposureAdjustment (
-				new AlbaneseAndersenNettingGroupPath[] {
-					new AlbaneseAndersenNettingGroupPath (
-						aHGPExtended,
-						mp
-					)
-				},
 				new AlbaneseAndersenFundingGroupPath[] {
 					new AlbaneseAndersenFundingGroupPath (
-						aHGPExtended,
+						new AlbaneseAndersenNettingGroupPath[] {
+							new AlbaneseAndersenNettingGroupPath (
+								aHGPExtended,
+								mp
+							)
+						},
 						mp
 					)
 				}
@@ -998,5 +996,7 @@ public class PerfectReplicationCollateralizedFundingStochastic {
 			eaaGround,
 			eaaExtended
 		);
+
+		EnvManager.TerminateEnv();
 	}
 }

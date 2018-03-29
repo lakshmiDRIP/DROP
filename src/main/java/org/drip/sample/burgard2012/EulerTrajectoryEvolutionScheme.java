@@ -532,5 +532,7 @@ public class EulerTrajectoryEvolutionScheme {
 		System.out.println ("\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------------------||");
 
 		System.out.println();
+
+		EnvManager.TerminateEnv();
 	}
 }

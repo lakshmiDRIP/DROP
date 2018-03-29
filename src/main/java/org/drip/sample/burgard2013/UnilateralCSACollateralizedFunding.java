@@ -321,36 +321,31 @@ public class UnilateralCSACollateralizedFunding {
 			};
 
 			aMPEAGround[i] = new MonoPathExposureAdjustment (
-				new AlbaneseAndersenNettingGroupPath[] {
-					new AlbaneseAndersenNettingGroupPath (
-						aCGP1,
-						mp
-					)
-				},
 				new AlbaneseAndersenFundingGroupPath[] {
 					new AlbaneseAndersenFundingGroupPath (
-						aCGP1,
+						new AlbaneseAndersenNettingGroupPath[] {
+							new AlbaneseAndersenNettingGroupPath (
+								aCGP1,
+								mp
+							)
+						},
 						mp
 					)
 				}
 			);
 
 			aMPEAExtended[i] = new MonoPathExposureAdjustment (
-				new AlbaneseAndersenNettingGroupPath[] {
-					new AlbaneseAndersenNettingGroupPath (
-						aCGP1,
-						mp
-					),
-					new AlbaneseAndersenNettingGroupPath (
-						aCGP2,
-						mp
-					)
-				},
 				new AlbaneseAndersenFundingGroupPath[] {
 					new AlbaneseAndersenFundingGroupPath (
-						new PositionGroupPath[] {
-							new PositionGroupPath (aCGV1),
-							new PositionGroupPath (aCGV2)
+						new AlbaneseAndersenNettingGroupPath[] {
+							new AlbaneseAndersenNettingGroupPath (
+								aCGP1,
+								mp
+							),
+							new AlbaneseAndersenNettingGroupPath (
+								aCGP2,
+								mp
+							)
 						},
 						mp
 					)
@@ -659,5 +654,7 @@ public class UnilateralCSACollateralizedFunding {
 			eeaGround,
 			eeaExtended
 		);
+
+		EnvManager.TerminateEnv();
 	}
 }

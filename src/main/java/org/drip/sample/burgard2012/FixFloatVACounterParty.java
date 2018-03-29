@@ -206,15 +206,12 @@ public class FixFloatVACounterParty {
 			PositionGroupPath[] aHGP = new PositionGroupPath[] {new PositionGroupPath (aHGVR)};
 
 			aMPEA[i] = new MonoPathExposureAdjustment (
-				new AlbaneseAndersenNettingGroupPath[] {
-					new AlbaneseAndersenNettingGroupPath (
-						aHGP,
-						mp
-					)
-				},
 				new AlbaneseAndersenFundingGroupPath[] {
-					new AlbaneseAndersenFundingGroupPath (
-						aHGP,
+					 AlbaneseAndersenFundingGroupPath.Mono (
+						new AlbaneseAndersenNettingGroupPath (
+							aHGP,
+							mp
+						),
 						mp
 					)
 				}
@@ -278,5 +275,7 @@ public class FixFloatVACounterParty {
 		System.out.println ("\t||-------------------------------------------------------------------------------------------------------------||");
 
 		System.out.println();
+
+		EnvManager.TerminateEnv();
 	}
 }

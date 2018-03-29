@@ -539,15 +539,14 @@ public class UncollateralizedCollateralReceivableStochastic {
 			};
 
 			aCPGPGround[i] = new MonoPathExposureAdjustment (
-				new AlbaneseAndersenNettingGroupPath[] {
-					new AlbaneseAndersenNettingGroupPath (
-						aCGPGround,
-						np
-					)
-				},
 				new AlbaneseAndersenFundingGroupPath[] {
 					new AlbaneseAndersenFundingGroupPath (
-						aCGPGround,
+						new AlbaneseAndersenNettingGroupPath[] {
+							new AlbaneseAndersenNettingGroupPath (
+								aCGPGround,
+								np
+							)
+						},
 						np
 					)
 				}
@@ -559,15 +558,14 @@ public class UncollateralizedCollateralReceivableStochastic {
 			};
 
 			aCPGPExtended[i] = new MonoPathExposureAdjustment (
-				new AlbaneseAndersenNettingGroupPath[] {
-					new AlbaneseAndersenNettingGroupPath (
-						aCGPExtended,
-						np
-					)
-				},
 				new AlbaneseAndersenFundingGroupPath[] {
 					new AlbaneseAndersenFundingGroupPath (
-						aCGPExtended,
+						new AlbaneseAndersenNettingGroupPath[] {
+							new AlbaneseAndersenNettingGroupPath (
+								aCGPExtended,
+								np
+							)
+						},
 						np
 					)
 				}

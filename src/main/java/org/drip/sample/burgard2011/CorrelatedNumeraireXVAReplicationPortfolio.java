@@ -612,5 +612,7 @@ public class CorrelatedNumeraireXVAReplicationPortfolio {
 		System.out.println ("\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------------------||");
 
 		System.out.println();
+
+		EnvManager.TerminateEnv();
 	}
 }

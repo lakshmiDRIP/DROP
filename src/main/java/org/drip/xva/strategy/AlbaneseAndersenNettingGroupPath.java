@@ -123,19 +123,16 @@ public class AlbaneseAndersenNettingGroupPath extends org.drip.xva.netting.Credi
 	}
 
 	@Override public double creditAdjustment()
-		throws java.lang.Exception
 	{
 		return bilateralCreditAdjustment();
 	}
 
 	@Override public double debtAdjustment()
-		throws java.lang.Exception
 	{
 		return bilateralDebtAdjustment();
 	}
 
 	@Override public double[] periodCreditAdjustment()
-		throws java.lang.Exception
 	{
 		return periodBilateralCreditAdjustment();
 	}

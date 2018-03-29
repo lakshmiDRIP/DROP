@@ -321,36 +321,31 @@ public class BilateralCSAZeroThresholdFunding {
 			};
 
 			aCPGPGround[i] = new MonoPathExposureAdjustment (
-				new AlbaneseAndersenNettingGroupPath[] {
-					new AlbaneseAndersenNettingGroupPath (
-						aCGP1,
-						np
-					)
-				},
 				new AlbaneseAndersenFundingGroupPath[] {
 					new AlbaneseAndersenFundingGroupPath (
-						aCGP1,
+						new AlbaneseAndersenNettingGroupPath[] {
+							new AlbaneseAndersenNettingGroupPath (
+								aCGP1,
+								np
+							)
+						},
 						np
 					)
 				}
 			);
 
 			aCPGPExtended[i] = new MonoPathExposureAdjustment (
-				new AlbaneseAndersenNettingGroupPath[] {
-					new AlbaneseAndersenNettingGroupPath (
-						aCGP1,
-						np
-					),
-					new AlbaneseAndersenNettingGroupPath (
-						aCGP2,
-						np
-					)
-				},
 				new AlbaneseAndersenFundingGroupPath[] {
 					new AlbaneseAndersenFundingGroupPath (
-						new PositionGroupPath[] {
-							new PositionGroupPath (aCGV1),
-							new PositionGroupPath (aCGV2)
+						new AlbaneseAndersenNettingGroupPath[] {
+							new AlbaneseAndersenNettingGroupPath (
+								aCGP1,
+								np
+							),
+							new AlbaneseAndersenNettingGroupPath (
+								aCGP2,
+								np
+							)
 						},
 						np
 					)
@@ -659,5 +654,7 @@ public class BilateralCSAZeroThresholdFunding {
 			cpgaGround,
 			cpgaExtended
 		);
+
+		EnvManager.TerminateEnv();
 	}
 }

@@ -344,36 +344,31 @@ public class CollateralizedFundingNeutral {
 			};
 
 			aMPEAGround[i] = new MonoPathExposureAdjustment (
-				new AlbaneseAndersenNettingGroupPath[] {
-					new AlbaneseAndersenNettingGroupPath (
-						aHGP1,
-						mp
-					)
-				},
 				new AlbaneseAndersenFundingGroupPath[] {
 					new AlbaneseAndersenFundingGroupPath (
-						aHGP1,
+						new AlbaneseAndersenNettingGroupPath[] {
+							new AlbaneseAndersenNettingGroupPath (
+								aHGP1,
+								mp
+							)
+						},
 						mp
 					)
 				}
 			);
 
 			aMPEAExtended[i] = new MonoPathExposureAdjustment (
-				new AlbaneseAndersenNettingGroupPath[] {
-					new AlbaneseAndersenNettingGroupPath (
-						aHGP1,
-						mp
-					),
-					new AlbaneseAndersenNettingGroupPath (
-						aHGP2,
-						mp
-					)
-				},
 				new AlbaneseAndersenFundingGroupPath[] {
 					new AlbaneseAndersenFundingGroupPath (
-						new PositionGroupPath[] {
-							new PositionGroupPath (aHGVR1),
-							new PositionGroupPath (aHGVR2)
+						new AlbaneseAndersenNettingGroupPath[] {
+							new AlbaneseAndersenNettingGroupPath (
+								aHGP1,
+								mp
+							),
+							new AlbaneseAndersenNettingGroupPath (
+								aHGP2,
+								mp
+							)
 						},
 						mp
 					)

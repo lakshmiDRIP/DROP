@@ -865,7 +865,11 @@ public class OISCurveQuoteSensitivity {
 
 		EnvManager.InitEnv ("");
 
-		JulianDate dtSpot = DateUtil.Today();
+		JulianDate dtSpot = DateUtil.CreateFromYMD (
+			2018,
+			DateUtil.MARCH,
+			8
+		);
 
 		OISCurveQuoteSensitivitySample (
 			dtSpot,

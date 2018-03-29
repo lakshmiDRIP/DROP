@@ -277,8 +277,8 @@ public class PortfolioGroupRun {
 			mp
 		);
 
-		AlbaneseAndersenFundingGroupPath fgpaa2014_1 = new AlbaneseAndersenFundingGroupPath (
-			aCGP1,
+		AlbaneseAndersenFundingGroupPath fgpaa2014_1 = AlbaneseAndersenFundingGroupPath.Mono (
+			ngpaa2014_1,
 			mp
 		);
 
@@ -287,8 +287,8 @@ public class PortfolioGroupRun {
 			mp
 		);
 
-		AlbaneseAndersenFundingGroupPath fgpaa2014_2 = new AlbaneseAndersenFundingGroupPath (
-			aCGP2,
+		AlbaneseAndersenFundingGroupPath fgpaa2014_2 = AlbaneseAndersenFundingGroupPath.Mono (
+			ngpaa2014_2,
 			mp
 		);
 
@@ -439,11 +439,9 @@ public class PortfolioGroupRun {
 		ExposureAdjustmentAggregator eaa = new ExposureAdjustmentAggregator (
 			new MonoPathExposureAdjustment[] {
 				new MonoPathExposureAdjustment (
-					new AlbaneseAndersenNettingGroupPath[] {ngpaa2014_1},
 					new AlbaneseAndersenFundingGroupPath[] {fgpaa2014_1}
 				),
 				new MonoPathExposureAdjustment (
-					new AlbaneseAndersenNettingGroupPath[] {ngpaa2014_2},
 					new AlbaneseAndersenFundingGroupPath[] {fgpaa2014_2}
 				)
 			}

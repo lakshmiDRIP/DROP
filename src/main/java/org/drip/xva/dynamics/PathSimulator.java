@@ -297,24 +297,16 @@ public class PathSimulator
 				_positionGroupContainer.creditDebtSegmentPaths();
 
 			int positionFundingGroupCount = positionFundingGroupPath.length;
-			int positionCreditDebtGroupCount = positionCreditDebtGroupPath.length;
 			org.drip.xva.netting.FundingGroupPath[] fundingGroupPathArray = new
 				org.drip.xva.strategy.AlbaneseAndersenFundingGroupPath[positionFundingGroupCount];
-			org.drip.xva.netting.CreditDebtGroupPath[] creditDebtGroupPathArray = new
-				org.drip.xva.strategy.AlbaneseAndersenNettingGroupPath[positionCreditDebtGroupCount];
 
 			if (org.drip.xva.settings.AdjustmentDigestScheme.ALBANESE_ANDERSEN_METRICS_POINTER ==
 				_adjustmentDigestScheme)
 			{
-				for (int positionFundingGroupIndex = 0; positionFundingGroupIndex <
-					positionFundingGroupCount; ++positionFundingGroupIndex)
-				{
-					fundingGroupPathArray[positionFundingGroupIndex] =
-						new org.drip.xva.strategy.AlbaneseAndersenFundingGroupPath (
-							positionFundingGroupPath[positionFundingGroupIndex],
-							marketPath
-						);
-				}
+				int positionCreditDebtGroupCount = positionCreditDebtGroupPath.length;
+
+				org.drip.xva.netting.CreditDebtGroupPath[] creditDebtGroupPathArray = new
+					org.drip.xva.strategy.AlbaneseAndersenNettingGroupPath[positionCreditDebtGroupCount];
 
 				for (int positionCreditDebtGroupIndex = 0; positionCreditDebtGroupIndex <
 					positionCreditDebtGroupCount; ++positionCreditDebtGroupIndex)
@@ -325,12 +317,19 @@ public class PathSimulator
 							marketPath
 						);
 				}
+
+				for (int positionFundingGroupIndex = 0; positionFundingGroupIndex <
+					positionFundingGroupCount; ++positionFundingGroupIndex)
+				{
+					fundingGroupPathArray[positionFundingGroupIndex] =
+						new org.drip.xva.strategy.AlbaneseAndersenFundingGroupPath (
+							creditDebtGroupPathArray,
+							marketPath
+						);
+				}
 			}
 
-			return new org.drip.xva.gross.MonoPathExposureAdjustment (
-				creditDebtGroupPathArray,
-				fundingGroupPathArray
-			);
+			return new org.drip.xva.gross.MonoPathExposureAdjustment (fundingGroupPathArray);
 		}
 		catch (java.lang.Exception e)
 		{
