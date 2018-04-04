@@ -403,4 +403,36 @@ public class PositionGroupPath
 
 		return collateralizedBalancePV;
 	}
+
+	/**
+	 * Compute Period-wise Path Collateral Value Adjustment
+	 * 
+	 * @return The Period-wise Path Collateral Value Adjustment
+	 */
+
+	public double[] periodCollateralValueAdjustment()
+	{
+		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();
+
+		double[] collateralBalancePV = collateralBalancePV();
+
+		int vertexCount = collateralBalancePV.length;
+		double[] periodCollateralValueAdjustment = new double[vertexCount - 1];
+
+		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
+		{
+			double periodIntegrandStart = collateralBalancePV[vertexIndex - 1] *
+				marketVertexArray[vertexIndex - 1].csaSpread();
+
+			double periodIntegrandEnd = collateralBalancePV[vertexIndex] *
+				marketVertexArray[vertexIndex].csaSpread();
+
+			periodCollateralValueAdjustment[vertexIndex - 1] =
+				-0.5 * (periodIntegrandStart + periodIntegrandEnd)
+				* (marketVertexArray[vertexIndex].anchorDate().julian() -
+					marketVertexArray[vertexIndex - 1].anchorDate().julian()) / 365.25;
+		}
+
+		return periodCollateralValueAdjustment;
+	}
 }
