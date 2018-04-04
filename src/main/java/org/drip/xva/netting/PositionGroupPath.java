@@ -177,25 +177,25 @@ public class PositionGroupPath
 	}
 
 	/**
-	 * Retrieve the Array of Collateralized Exposures PV
+	 * Retrieve the Array of Collateralized Exposure PV
 	 * 
-	 * @return The Array of Collateralized Exposures PV
+	 * @return The Array of Collateralized Exposure PV
 	 */
 
 	public double[] collateralizedExposurePV()
 	{
 		int vertexCount = _positionGroupVertexArray.length;
-		double[] collateralizedExposure = new double[vertexCount];
+		double[] collateralizedExposurePV = new double[vertexCount];
 
 		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();
 
 		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 		{
-			collateralizedExposure[vertexIndex] = _positionGroupVertexArray[vertexIndex].collateralized() *
+			collateralizedExposurePV[vertexIndex] = _positionGroupVertexArray[vertexIndex].collateralized() *
 				marketVertexArray[vertexIndex].overnightReplicator();
 		}
 
-		return collateralizedExposure;
+		return collateralizedExposurePV;
 	}
 
 	/**
@@ -218,6 +218,29 @@ public class PositionGroupPath
 	}
 
 	/**
+	 * Retrieve the Array of Uncollateralized Exposure PV
+	 * 
+	 * @return The Array of Uncollateralized Exposure PV
+	 */
+
+	public double[] uncollateralizedExposurePV()
+	{
+		int vertexCount = _positionGroupVertexArray.length;
+		double[] uncollateralizedExposurePV = new double[vertexCount];
+
+		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();
+
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+		{
+			uncollateralizedExposurePV[vertexIndex] =
+				_positionGroupVertexArray[vertexIndex].uncollateralized() *
+				marketVertexArray[vertexIndex].overnightReplicator();
+		}
+
+		return uncollateralizedExposurePV;
+	}
+
+	/**
 	 * Retrieve the Array of Credit Exposures
 	 * 
 	 * @return The Array of Credit Exposures
@@ -234,6 +257,28 @@ public class PositionGroupPath
 		}
 
 		return creditExposure;
+	}
+
+	/**
+	 * Retrieve the Array of Credit Exposure PV
+	 * 
+	 * @return The Array of Credit Exposure PV
+	 */
+
+	public double[] creditExposurePV()
+	{
+		int vertexCount = _positionGroupVertexArray.length;
+		double[] creditExposurePV = new double[vertexCount];
+
+		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();
+
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+		{
+			creditExposurePV[vertexIndex] = _positionGroupVertexArray[vertexIndex].credit() *
+				marketVertexArray[vertexIndex].overnightReplicator();
+		}
+
+		return creditExposurePV;
 	}
 
 	/**
@@ -256,6 +301,28 @@ public class PositionGroupPath
 	}
 
 	/**
+	 * Retrieve the Array of Debt Exposures PV
+	 * 
+	 * @return The Array of Debt Exposures PV
+	 */
+
+	public double[] debtExposurePV()
+	{
+		int vertexCount = _positionGroupVertexArray.length;
+		double[] debtExposurePV = new double[vertexCount];
+
+		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();
+
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+		{
+			debtExposurePV[vertexIndex] = _positionGroupVertexArray[vertexIndex].debt() *
+				marketVertexArray[vertexIndex].overnightReplicator();
+		}
+
+		return debtExposurePV;
+	}
+
+	/**
 	 * Retrieve the Array of Funding Exposures
 	 * 
 	 * @return The Array of Funding Exposures
@@ -275,6 +342,28 @@ public class PositionGroupPath
 	}
 
 	/**
+	 * Retrieve the Array of Funding Exposures PV
+	 * 
+	 * @return The Array of Funding Exposures PV
+	 */
+
+	public double[] fundingExposurePV()
+	{
+		int vertexCount = _positionGroupVertexArray.length;
+		double[] fundingExposurePV = new double[vertexCount];
+
+		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();
+
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+		{
+			fundingExposurePV[vertexIndex] = _positionGroupVertexArray[vertexIndex].funding() *
+				marketVertexArray[vertexIndex].overnightReplicator();
+		}
+
+		return fundingExposurePV;
+	}
+
+	/**
 	 * Retrieve the Array of Collateral Balances
 	 * 
 	 * @return The Array of Collateral Balances
@@ -291,5 +380,27 @@ public class PositionGroupPath
 		}
 
 		return collateralizedBalance;
+	}
+
+	/**
+	 * Retrieve the Array of Collateral Balances PV
+	 * 
+	 * @return The Array of Collateral Balances PV
+	 */
+
+	public double[] collateralBalancePV()
+	{
+		int vertexCount = _positionGroupVertexArray.length;
+		double[] collateralizedBalancePV = new double[vertexCount];
+
+		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();
+
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+		{
+			collateralizedBalancePV[vertexIndex] = _positionGroupVertexArray[vertexIndex].collateralBalance()
+				* marketVertexArray[vertexIndex].overnightReplicator();
+		}
+
+		return collateralizedBalancePV;
 	}
 }
