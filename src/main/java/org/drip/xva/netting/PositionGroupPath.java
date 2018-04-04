@@ -177,6 +177,28 @@ public class PositionGroupPath
 	}
 
 	/**
+	 * Retrieve the Array of Collateralized Exposures PV
+	 * 
+	 * @return The Array of Collateralized Exposures PV
+	 */
+
+	public double[] collateralizedExposurePV()
+	{
+		int vertexCount = _positionGroupVertexArray.length;
+		double[] collateralizedExposure = new double[vertexCount];
+
+		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();
+
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+		{
+			collateralizedExposure[vertexIndex] = _positionGroupVertexArray[vertexIndex].collateralized() *
+				marketVertexArray[vertexIndex].overnightReplicator();
+		}
+
+		return collateralizedExposure;
+	}
+
+	/**
 	 * Retrieve the Array of Uncollateralized Exposures
 	 * 
 	 * @return The Array of Uncollateralized Exposures

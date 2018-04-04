@@ -194,15 +194,12 @@ public class CollateralGroupPath
 
 		for (int positionGroupIndex = 0; positionGroupIndex < positionGroupCount; ++positionGroupIndex)
 		{
-			double[] positionGroupCollateralizedExposure =
-				_positionGroupPathArray[positionGroupIndex].collateralizedExposure();
-
-			org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();
+			double[] positionGroupCollateralizedExposurePV =
+				_positionGroupPathArray[positionGroupIndex].collateralizedExposurePV();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
-				collateralizedExposurePV[vertexIndex] += positionGroupCollateralizedExposure[vertexIndex] *
-					marketVertexArray[vertexIndex].overnightReplicator();
+				collateralizedExposurePV[vertexIndex] += positionGroupCollateralizedExposurePV[vertexIndex];
 			}
 		}
 
