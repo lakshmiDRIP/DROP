@@ -282,12 +282,21 @@ public class UncollateralizedCollateralPayable {
 			MarketPath np = new MarketPath (aNV);
 
 			PositionGroupPath[] aCGPGround = new PositionGroupPath[] {
-				new PositionGroupPath (aCGV1)
+				new PositionGroupPath (
+					aCGV1,
+					np
+				)
 			};
 
 			PositionGroupPath[] aCGPExtended = new PositionGroupPath[] {
-				new PositionGroupPath (aCGV1),
-				new PositionGroupPath (aCGV2)
+				new PositionGroupPath (
+					aCGV1,
+					np
+				),
+				new PositionGroupPath (
+					aCGV2,
+					np
+				)
 			};
 
 			aCPGPGround[i] = new MonoPathExposureAdjustment (

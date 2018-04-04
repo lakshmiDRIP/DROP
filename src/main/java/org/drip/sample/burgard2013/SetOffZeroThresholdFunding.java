@@ -366,11 +366,17 @@ public class SetOffZeroThresholdFunding {
 			MarketPath np = new MarketPath (aMV);
 
 			PositionGroupPath[] aCGP1 = new PositionGroupPath[] {
-				new PositionGroupPath (aCGV1)
+				new PositionGroupPath (
+					aCGV1,
+					np
+				)
 			};
 
 			PositionGroupPath[] aCGP2 = new PositionGroupPath[] {
-				new PositionGroupPath (aCGV2)
+				new PositionGroupPath (
+					aCGV2,
+					np
+				)
 			};
 
 			aCPGPGround[i] = new MonoPathExposureAdjustment (

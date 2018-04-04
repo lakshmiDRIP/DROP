@@ -268,9 +268,19 @@ public class PortfolioGroupRun {
 
 		MarketPath mp = new MarketPath (aMV);
 
-		PositionGroupPath[] aCGP1 = new PositionGroupPath[] {new PositionGroupPath (aCGV1)};
+		PositionGroupPath[] aCGP1 = new PositionGroupPath[] {
+			new PositionGroupPath (
+				aCGV1,
+				mp
+			)
+		};
 
-		PositionGroupPath[] aCGP2 = new PositionGroupPath[] {new PositionGroupPath (aCGV2)};
+		PositionGroupPath[] aCGP2 = new PositionGroupPath[] {
+			new PositionGroupPath (
+				aCGV2,
+				mp
+			)
+		};
 
 		AlbaneseAndersenNettingGroupPath ngpaa2014_1 = new AlbaneseAndersenNettingGroupPath (
 			aCGP1,

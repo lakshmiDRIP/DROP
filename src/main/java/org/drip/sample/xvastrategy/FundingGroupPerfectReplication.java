@@ -306,9 +306,19 @@ public class FundingGroupPerfectReplication {
 
 		MarketPath mp = new MarketPath (aMV);
 
-		PositionGroupPath[] aCGP1 = new PositionGroupPath[] {new PositionGroupPath (aBKV1)};
+		PositionGroupPath[] aCGP1 = new PositionGroupPath[] {
+			new PositionGroupPath (
+				aBKV1,
+				mp
+			)
+		};
 
-		PositionGroupPath[] aCGP2 = new PositionGroupPath[] {new PositionGroupPath (aBKV2)};
+		PositionGroupPath[] aCGP2 = new PositionGroupPath[] {
+			new PositionGroupPath (
+				aBKV2,
+				mp
+			)
+		};
 
 		AlbaneseAndersenNettingGroupPath ngpaa2014_1 = new AlbaneseAndersenNettingGroupPath (
 			aCGP1,

@@ -336,12 +336,21 @@ public class CollateralizedCollateralPayable {
 			MarketPath mp = new MarketPath (aMV);
 
 			PositionGroupPath[] aHGPGround = new PositionGroupPath[] {
-				new PositionGroupPath (aHGVR1)
+				new PositionGroupPath (
+					aHGVR1,
+					mp
+				)
 			};
 
 			PositionGroupPath[] aHGPExtended = new PositionGroupPath[] {
-				new PositionGroupPath (aHGVR1),
-				new PositionGroupPath (aHGVR2)
+				new PositionGroupPath (
+					aHGVR1,
+					mp
+				),
+				new PositionGroupPath (
+					aHGVR2,
+					mp
+				)
 			};
 
 			aMPEAGround[i] = new MonoPathExposureAdjustment (

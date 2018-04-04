@@ -658,7 +658,10 @@ public class PerfectReplicationCollateralizedFundingStochastic {
 			MarketPath mp = new MarketPath (aMV);
 
 			PositionGroupPath[] aHGPGround = new PositionGroupPath[] {
-				new PositionGroupPath (aCGV1)
+				new PositionGroupPath (
+					aCGV1,
+					mp
+				)
 			};
 
 			aMPEAGround[i] = new MonoPathExposureAdjustment (
@@ -676,8 +679,14 @@ public class PerfectReplicationCollateralizedFundingStochastic {
 			);
 
 			PositionGroupPath[] aHGPExtended = new PositionGroupPath[] {
-				new PositionGroupPath (aCGV1),
-				new PositionGroupPath (aCGV2)
+				new PositionGroupPath (
+					aCGV1,
+					mp
+				),
+				new PositionGroupPath (
+					aCGV2,
+					mp
+				)
 			};
 
 			aMPEAExtended[i] = new MonoPathExposureAdjustment (

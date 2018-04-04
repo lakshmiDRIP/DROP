@@ -547,7 +547,12 @@ public class CPGAUncollateralizedCorrelated {
 
 			MarketPath mp = new MarketPath (aMV);
 
-			PositionGroupPath[] aHGP = new PositionGroupPath[] {new PositionGroupPath (aHGVR)};
+			PositionGroupPath[] aHGP = new PositionGroupPath[] {
+				new PositionGroupPath (
+					aHGVR,
+					mp
+				)
+			};
 
 			aMPEA[i] = new MonoPathExposureAdjustment (
 				new AlbaneseAndersenFundingGroupPath[] {

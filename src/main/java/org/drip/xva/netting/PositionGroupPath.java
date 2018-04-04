@@ -70,21 +70,25 @@ package org.drip.xva.netting;
 
 public class PositionGroupPath
 {
+	private org.drip.xva.universe.MarketPath _marketPath = null;
 	private org.drip.xva.hypothecation.PositionGroupVertex[] _positionGroupVertexArray = null;
 
 	/**
 	 * PositionGroupPath Constructor
 	 * 
 	 * @param positionGroupVertexArray The Array of Collateral Hypothecation Group Trajectory Vertexes
+	 * @param marketPath The Market Path
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public PositionGroupPath (
-		final org.drip.xva.hypothecation.PositionGroupVertex[] positionGroupVertexArray)
+		final org.drip.xva.hypothecation.PositionGroupVertex[] positionGroupVertexArray,
+		final org.drip.xva.universe.MarketPath marketPath)
 		throws java.lang.Exception
 	{
-		if (null == (_positionGroupVertexArray = positionGroupVertexArray))
+		if (null == (_positionGroupVertexArray = positionGroupVertexArray) ||
+			null == (_marketPath = marketPath))
 		{
 			throw new java.lang.Exception ("PositionGroupPath Constructor => Invalid Inputs");
 		}
@@ -120,6 +124,17 @@ public class PositionGroupPath
 	public org.drip.xva.hypothecation.PositionGroupVertex[] vertexes()
 	{
 		return _positionGroupVertexArray;
+	}
+
+	/**
+	 * Retrieve the Market Path
+	 * 
+	 * @return The Market Path
+	 */
+
+	public org.drip.xva.universe.MarketPath marketPath()
+	{
+		return _marketPath;
 	}
 
 	/**

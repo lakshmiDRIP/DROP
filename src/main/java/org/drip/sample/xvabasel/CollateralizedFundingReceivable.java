@@ -336,11 +336,21 @@ public class CollateralizedFundingReceivable {
 			MarketPath mp = new MarketPath (aMV);
 
 			PositionGroupPath[] aHGP1 = new PositionGroupPath[] {
-				new PositionGroupPath (aHGVR1)
+				new PositionGroupPath (
+					aHGVR1,
+					mp
+				)
 			};
 
 			PositionGroupPath[] aHGP2 = new PositionGroupPath[] {
-				new PositionGroupPath (aHGVR2)
+				new PositionGroupPath (
+					aHGVR1,
+					mp
+				),
+				new PositionGroupPath (
+					aHGVR2,
+					mp
+				)
 			};
 
 			aMPEAGround[i] = new MonoPathExposureAdjustment (

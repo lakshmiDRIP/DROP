@@ -410,7 +410,12 @@ public class PortfolioPathAggregationCorrelated {
 				);
 			}
 
-			PositionGroupPath[] aHGP = new PositionGroupPath[] {new PositionGroupPath (aHGVR)};
+			PositionGroupPath[] aHGP = new PositionGroupPath[] {
+				new PositionGroupPath (
+					aHGVR,
+					new MarketPath (aMV)
+				)
+			};
 
 			aMPEA[i] = new MonoPathExposureAdjustment (
 				new AlbaneseAndersenFundingGroupPath[] {

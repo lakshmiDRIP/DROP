@@ -203,7 +203,12 @@ public class FixFloatVABank {
 					0.
 				);
 
-			PositionGroupPath[] aHGP = new PositionGroupPath[] {new PositionGroupPath (aHGVR)};
+			PositionGroupPath[] aHGP = new PositionGroupPath[] {
+				new PositionGroupPath (
+					aHGVR,
+					mp
+				)
+			};
 
 			aMPEA[i] = new MonoPathExposureAdjustment (
 				new AlbaneseAndersenFundingGroupPath[] {

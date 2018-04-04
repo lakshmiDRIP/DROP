@@ -301,7 +301,12 @@ public class CollateralizedCollateralGroup {
 				dblValueStart = dblValueEnd;
 			}
 
-			PositionGroupPath[] aHGP = new PositionGroupPath[] {new PositionGroupPath (aHGVR)};
+			PositionGroupPath[] aHGP = new PositionGroupPath[] {
+				new PositionGroupPath (
+					aHGVR,
+					mp
+				)
+			};
 
 			aMPEA[i] = new MonoPathExposureAdjustment (
 				new AlbaneseAndersenFundingGroupPath[] {

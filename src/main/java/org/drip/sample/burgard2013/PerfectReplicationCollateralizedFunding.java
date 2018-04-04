@@ -371,11 +371,17 @@ public class PerfectReplicationCollateralizedFunding {
 			MarketPath mp = new MarketPath (aMV);
 
 			PositionGroupPath[] aCGP1 = new PositionGroupPath[] {
-				new PositionGroupPath (aCGV1)
+				new PositionGroupPath (
+					aCGV1,
+					mp
+				)
 			};
 
 			PositionGroupPath[] aCGP2 = new PositionGroupPath[] {
-				new PositionGroupPath (aCGV2)
+				new PositionGroupPath (
+					aCGV2,
+					mp
+				)
 			};
 
 			aMPEAGround[i] = new MonoPathExposureAdjustment (

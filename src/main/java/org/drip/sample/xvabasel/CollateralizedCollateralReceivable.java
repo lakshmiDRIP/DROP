@@ -336,12 +336,21 @@ public class CollateralizedCollateralReceivable {
 			MarketPath np = new MarketPath (aMV);
 
 			PositionGroupPath[] aHGPGround = new PositionGroupPath[] {
-				new PositionGroupPath (aHGVR1)
+				new PositionGroupPath (
+					aHGVR1,
+					np
+				)
 			};
 
 			PositionGroupPath[] aHGPExtended = new PositionGroupPath[] {
-				new PositionGroupPath (aHGVR1),
-				new PositionGroupPath (aHGVR2)
+				new PositionGroupPath (
+					aHGVR1,
+					np
+				),
+				new PositionGroupPath (
+					aHGVR2,
+					np
+				)
 			};
 
 			aMPEAGround[i] = new MonoPathExposureAdjustment (

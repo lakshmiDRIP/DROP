@@ -144,8 +144,10 @@ public class PathSimulator
 			{
 				if (!_positionGroupContainer.setCollateralGroupPath (
 					positionGroupIndex,
-					new org.drip.xva.netting.PositionGroupPath
-						(collateralGroupVertexArray[positionGroupIndex])))
+					new org.drip.xva.netting.PositionGroupPath (
+						collateralGroupVertexArray[positionGroupIndex],
+						marketPath
+					)))
 					return false;
 			}
 

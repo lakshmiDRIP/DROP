@@ -534,7 +534,21 @@ public class UncollateralizedFundingPayableStochastic {
 			MarketPath np = new MarketPath (aNV);
 
 			PositionGroupPath[] aCGP1 = new PositionGroupPath[] {
-				new PositionGroupPath (aCGV1)
+				new PositionGroupPath (
+					aCGV1,
+					np
+				)
+			};
+
+			PositionGroupPath[] aCGP2 = new PositionGroupPath[] {
+				new PositionGroupPath (
+					aCGV1,
+					np
+				),
+				new PositionGroupPath (
+					aCGV2,
+					np
+				)
 			};
 
 			aCPGPGround[i] = new MonoPathExposureAdjustment (
@@ -550,10 +564,6 @@ public class UncollateralizedFundingPayableStochastic {
 					)
 				}
 			);
-
-			PositionGroupPath[] aCGP2 = new PositionGroupPath[] {
-				new PositionGroupPath (aCGV2)
-			};
 
 			aCPGPExtended[i] = new MonoPathExposureAdjustment (
 				new AlbaneseAndersenFundingGroupPath[] {
