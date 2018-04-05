@@ -14,8 +14,8 @@ import org.drip.quant.linearalgebra.Matrix;
 import org.drip.service.env.EnvManager;
 import org.drip.xva.basel.*;
 import org.drip.xva.gross.*;
-import org.drip.xva.hypothecation.*;
-import org.drip.xva.netting.PositionGroupPath;
+import org.drip.xva.margin.CollateralAmountEstimator;
+import org.drip.xva.netting.CollateralGroupPath;
 import org.drip.xva.proto.*;
 import org.drip.xva.settings.*;
 import org.drip.xva.strategy.*;
@@ -511,7 +511,7 @@ public class CollateralizedNettingReceivableStochastic {
 				double dblValueEnd2 = aadblPortfolio2Value[i][j];
 
 				if (0 != j) {
-					MarginAmountEstimator cae1 = new MarginAmountEstimator (
+					CollateralAmountEstimator cae1 = new CollateralAmountEstimator (
 						positionGroupSpecification,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
@@ -524,7 +524,7 @@ public class CollateralizedNettingReceivableStochastic {
 
 					dblCollateralBalance1 = cae1.postingRequirement (dtEnd);
 
-					MarginAmountEstimator cae2 = new MarginAmountEstimator (
+					CollateralAmountEstimator cae2 = new CollateralAmountEstimator (
 							positionGroupSpecification,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
@@ -584,19 +584,15 @@ public class CollateralizedNettingReceivableStochastic {
 
 			MarketPath np = new MarketPath (aNV);
 
-			PositionGroupPath[] aCGP1 = new PositionGroupPath[] {
-				new PositionGroupPath (
+			CollateralGroupPath[] aCGP1 = new CollateralGroupPath[] {
+				new CollateralGroupPath (
 					aCGV1,
 					np
 				)
 			};
 
-			PositionGroupPath[] aCGP2 = new PositionGroupPath[] {
-				new PositionGroupPath (
-					aCGV1,
-					np
-				),
-				new PositionGroupPath (
+			CollateralGroupPath[] aCGP2 = new CollateralGroupPath[] {
+				new CollateralGroupPath (
 					aCGV2,
 					np
 				)

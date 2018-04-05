@@ -11,8 +11,8 @@ import org.drip.measure.statistics.UnivariateDiscreteThin;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.xva.gross.*;
-import org.drip.xva.hypothecation.*;
-import org.drip.xva.netting.PositionGroupPath;
+import org.drip.xva.margin.CollateralAmountEstimator;
+import org.drip.xva.netting.CollateralGroupPath;
 import org.drip.xva.proto.*;
 import org.drip.xva.settings.*;
 import org.drip.xva.strategy.*;
@@ -343,7 +343,7 @@ public class CPGACollateralized {
 				double dblValueEnd = aadblSwapPortfolioValueRealization[i][j];
 
 				if (0 != j) {
-					MarginAmountEstimator hae = new MarginAmountEstimator (
+					CollateralAmountEstimator hae = new CollateralAmountEstimator (
 						positionGroupSpecification,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
@@ -368,8 +368,8 @@ public class CPGACollateralized {
 				dblValueStart = dblValueEnd;
 			}
 
-			PositionGroupPath[] aHGP = new PositionGroupPath[] {
-				new PositionGroupPath (
+			CollateralGroupPath[] aHGP = new CollateralGroupPath[] {
+				new CollateralGroupPath (
 					aHGVR,
 					mp
 				)

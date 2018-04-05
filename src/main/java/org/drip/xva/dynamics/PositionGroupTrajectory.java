@@ -131,7 +131,7 @@ public class PositionGroupTrajectory
 			vertexIndex
 		);
 
-		return null == brokenDateInterpolator ? 0. : new org.drip.xva.hypothecation.MarginAmountEstimator (
+		return null == brokenDateInterpolator ? 0. : new org.drip.xva.margin.CollateralAmountEstimator (
 			_positionGroupSpecification,
 			brokenDateInterpolator,
 			java.lang.Double.NaN
@@ -167,7 +167,7 @@ public class PositionGroupTrajectory
 		return collateralBalanceArray;
 	}
 
-	private org.drip.xva.hypothecation.PositionGroupVertex positionGroupVertex (
+	private org.drip.xva.hypothecation.CollateralGroupVertex positionGroupVertex (
 		final org.drip.analytics.date.JulianDate anchorDate,
 		final double positionGroupValue,
 		final double realizedCashFlow,
@@ -402,7 +402,7 @@ public class PositionGroupTrajectory
 	 * @return The Position Collateral Group Vertex Array
 	 */
 
-	public org.drip.xva.hypothecation.PositionGroupVertex[][] positionGroupVertexArray()
+	public org.drip.xva.hypothecation.CollateralGroupVertex[][] positionGroupVertexArray()
 	{
 		double[][] collateralBalanceArray = positionGroupCollateralBalanceArray();
 
@@ -413,8 +413,8 @@ public class PositionGroupTrajectory
 
 		int vertexCount = _marketVertexArray.length;
 		int positionGroupCount = _positionGroupArrayVertex.length;
-		org.drip.xva.hypothecation.PositionGroupVertex[][] positionGroupVertexArray = new
-			org.drip.xva.hypothecation.PositionGroupVertex[positionGroupCount][vertexCount];
+		org.drip.xva.hypothecation.CollateralGroupVertex[][] positionGroupVertexArray = new
+			org.drip.xva.hypothecation.CollateralGroupVertex[positionGroupCount][vertexCount];
 
 		for (int positionGroupIndex = 0; positionGroupIndex < positionGroupCount; ++positionGroupIndex)
 		{

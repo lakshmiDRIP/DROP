@@ -9,7 +9,7 @@ import org.drip.measure.realization.*;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.xva.gross.*;
-import org.drip.xva.netting.PositionGroupPath;
+import org.drip.xva.netting.CollateralGroupPath;
 import org.drip.xva.strategy.*;
 import org.drip.xva.universe.*;
 import org.drip.xva.vertex.AlbaneseAndersen;
@@ -213,8 +213,8 @@ public class PortfolioPathAggregationDeterministic {
 				);
 			}
 
-			PositionGroupPath[] aHGP = new PositionGroupPath[] {
-				new PositionGroupPath (
+			CollateralGroupPath[] aHGP = new CollateralGroupPath[] {
+				new CollateralGroupPath (
 					aHGVR,
 					mp
 				)

@@ -68,7 +68,7 @@ package org.drip.xva.holdings;
 
 public class PositionGroup
 {
-	private org.drip.xva.netting.PositionGroupPath _collateralGroupPath = null;
+	private org.drip.xva.netting.CollateralGroupPath _collateralGroupPath = null;
 	private org.drip.xva.holdings.PositionGroupNumeraire _positionGroupNumeraire = null;
 	private org.drip.xva.proto.PositionSchemaSpecification _positionGroupSpecification = null;
 
@@ -124,7 +124,7 @@ public class PositionGroup
 	 */
 
 	public boolean setCollateralGroupPath (
-		final org.drip.xva.netting.PositionGroupPath collateralGroupPath)
+		final org.drip.xva.netting.CollateralGroupPath collateralGroupPath)
 	{
 		if (null == collateralGroupPath)
 		{
@@ -141,7 +141,7 @@ public class PositionGroup
 	 * @return The Collateral Group Path
 	 */
 
-	public org.drip.xva.netting.PositionGroupPath collateralGroupPath()
+	public org.drip.xva.netting.CollateralGroupPath collateralGroupPath()
 	{
 		return _collateralGroupPath;
 	}

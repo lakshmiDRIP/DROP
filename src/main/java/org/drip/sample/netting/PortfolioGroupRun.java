@@ -10,7 +10,7 @@ import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.xva.gross.*;
 import org.drip.xva.hypothecation.*;
-import org.drip.xva.netting.PositionGroupPath;
+import org.drip.xva.netting.CollateralGroupPath;
 import org.drip.xva.strategy.*;
 import org.drip.xva.universe.*;
 import org.drip.xva.vertex.AlbaneseAndersen;
@@ -141,8 +141,8 @@ public class PortfolioGroupRun {
 		JulianDate[] adtVertex = new JulianDate[iNumStep + 1];
 		double dblBankFundingSpread = dblBankHazardRate / (1. - dblBankRecoveryRate);
 		double dblCounterPartyFundingSpread = dblCounterPartyHazardRate / (1. - dblCounterPartyRecoveryRate);
-		PositionGroupVertex[] aCGV1 = new PositionGroupVertex[iNumStep + 1];
-		PositionGroupVertex[] aCGV2 = new PositionGroupVertex[iNumStep + 1];
+		CollateralGroupVertex[] aCGV1 = new CollateralGroupVertex[iNumStep + 1];
+		CollateralGroupVertex[] aCGV2 = new CollateralGroupVertex[iNumStep + 1];
 
 		JulianDate dtSpot = DateUtil.Today();
 
@@ -268,15 +268,15 @@ public class PortfolioGroupRun {
 
 		MarketPath mp = new MarketPath (aMV);
 
-		PositionGroupPath[] aCGP1 = new PositionGroupPath[] {
-			new PositionGroupPath (
+		CollateralGroupPath[] aCGP1 = new CollateralGroupPath[] {
+			new CollateralGroupPath (
 				aCGV1,
 				mp
 			)
 		};
 
-		PositionGroupPath[] aCGP2 = new PositionGroupPath[] {
-			new PositionGroupPath (
+		CollateralGroupPath[] aCGP2 = new CollateralGroupPath[] {
+			new CollateralGroupPath (
 				aCGV2,
 				mp
 			)

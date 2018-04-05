@@ -128,7 +128,7 @@ public class PathSimulator
 			return false;
 		}
 
-		org.drip.xva.hypothecation.PositionGroupVertex[][] collateralGroupVertexArray =
+		org.drip.xva.hypothecation.CollateralGroupVertex[][] collateralGroupVertexArray =
 			collateralGroup.positionGroupVertexArray();
 
 		if (null == collateralGroupVertexArray)
@@ -144,7 +144,7 @@ public class PathSimulator
 			{
 				if (!_positionGroupContainer.setCollateralGroupPath (
 					positionGroupIndex,
-					new org.drip.xva.netting.PositionGroupPath (
+					new org.drip.xva.netting.CollateralGroupPath (
 						collateralGroupVertexArray[positionGroupIndex],
 						marketPath
 					)))
@@ -292,10 +292,10 @@ public class PathSimulator
 				return null;
 			}
 
-			org.drip.xva.netting.PositionGroupPath[][] positionFundingGroupPath =
+			org.drip.xva.netting.CollateralGroupPath[][] positionFundingGroupPath =
 				_positionGroupContainer.fundingSegmentPaths();
 
-			org.drip.xva.netting.PositionGroupPath[][] positionCreditDebtGroupPath =
+			org.drip.xva.netting.CollateralGroupPath[][] positionCreditDebtGroupPath =
 				_positionGroupContainer.creditDebtSegmentPaths();
 
 			int positionFundingGroupCount = positionFundingGroupPath.length;

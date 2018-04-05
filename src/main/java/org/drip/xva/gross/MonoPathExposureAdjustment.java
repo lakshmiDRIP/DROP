@@ -162,7 +162,8 @@ public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposu
 
 		for (org.drip.xva.netting.CreditDebtGroupPath creditDebtGroupPath : _creditDebtGroupPathList)
 		{
-			double[] creditDebtGroupCollateralizedExposure = creditDebtGroupPath.collateralizedExposure();
+			double[] creditDebtGroupCollateralizedExposure =
+				creditDebtGroupPath.vertexCollateralizedExposure();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -187,7 +188,7 @@ public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposu
 		for (org.drip.xva.netting.CreditDebtGroupPath creditDebtGroupPath : _creditDebtGroupPathList)
 		{
 			double[] creditDebtGroupCollateralizedExposurePV =
-				creditDebtGroupPath.collateralizedExposurePV();
+				creditDebtGroupPath.vertexCollateralizedExposurePV();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -213,7 +214,7 @@ public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposu
 		for (org.drip.xva.netting.CreditDebtGroupPath creditDebtGroupPath : _creditDebtGroupPathList)
 		{
 			double[] adblCreditDebtGroupCollateralizedPositiveExposure =
-				creditDebtGroupPath.collateralizedPositiveExposure();
+				creditDebtGroupPath.vertexCollateralizedPositiveExposure();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -239,7 +240,7 @@ public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposu
 		for (org.drip.xva.netting.CreditDebtGroupPath creditDebtGroupPath : _creditDebtGroupPathList)
 		{
 			double[] creditDebtGroupCollateralizedPositiveExposurePV =
-				creditDebtGroupPath.collateralizedPositiveExposurePV();
+				creditDebtGroupPath.vertexCollateralizedPositiveExposurePV();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -265,7 +266,7 @@ public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposu
 		for (org.drip.xva.netting.CreditDebtGroupPath creditDebtGroupPath : _creditDebtGroupPathList)
 		{
 			double[] creditDebtGroupCollateralizedNegativeExposure =
-				creditDebtGroupPath.collateralizedNegativeExposure();
+				creditDebtGroupPath.vertexCollateralizedNegativeExposure();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -291,7 +292,7 @@ public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposu
 		for (org.drip.xva.netting.CreditDebtGroupPath creditDebtGroupPath : _creditDebtGroupPathList)
 		{
 			double[] creditDebtGroupCollateralizedNegativeExposurePV =
-				creditDebtGroupPath.collateralizedNegativeExposurePV();
+				creditDebtGroupPath.vertexCollateralizedNegativeExposurePV();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -317,7 +318,7 @@ public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposu
 		for (org.drip.xva.netting.CreditDebtGroupPath creditDebtGroupPath : _creditDebtGroupPathList)
 		{
 			double[] creditDebtGroupUncollateralizedExposure =
-				creditDebtGroupPath.uncollateralizedExposure();
+				creditDebtGroupPath.vertexUncollateralizedExposure();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -343,7 +344,7 @@ public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposu
 		for (org.drip.xva.netting.CreditDebtGroupPath creditDebtGroupPath : _creditDebtGroupPathList)
 		{
 			double[] creditDebtGroupUncollateralizedExposurePV =
-				creditDebtGroupPath.uncollateralizedExposurePV();
+				creditDebtGroupPath.vertexUncollateralizedExposurePV();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -367,7 +368,7 @@ public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposu
 		for (org.drip.xva.netting.CreditDebtGroupPath creditDebtGroupPath : _creditDebtGroupPathList)
 		{
 			double[] creditDebtGroupUncollateralizedPositiveExposure =
-				creditDebtGroupPath.uncollateralizedPositiveExposure();
+				creditDebtGroupPath.vertexUncollateralizedPositiveExposure();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 				adblUncollateralizedPositiveExposure[vertexIndex] +=
@@ -391,7 +392,7 @@ public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposu
 		for (org.drip.xva.netting.CreditDebtGroupPath creditDebtGroupPath : _creditDebtGroupPathList)
 		{
 			double[] creditDebtGroupUncollateralizedPositiveExposurePV =
-				creditDebtGroupPath.uncollateralizedPositiveExposurePV();
+				creditDebtGroupPath.vertexUncollateralizedPositiveExposurePV();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -417,7 +418,7 @@ public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposu
 		for (org.drip.xva.netting.CreditDebtGroupPath creditDebtGroupPath : _creditDebtGroupPathList)
 		{
 			double[] creditDebtGroupUncollateralizedNegativeExposure =
-				creditDebtGroupPath.uncollateralizedNegativeExposure();
+				creditDebtGroupPath.vertexUncollateralizedNegativeExposure();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -443,7 +444,7 @@ public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposu
 		for (org.drip.xva.netting.CreditDebtGroupPath creditDebtGroupPath : _creditDebtGroupPathList)
 		{
 			double[] creditDebtGroupUncollateralizedNegativeExposurePV =
-				creditDebtGroupPath.uncollateralizedNegativeExposurePV();
+				creditDebtGroupPath.vertexUncollateralizedNegativeExposurePV();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -468,7 +469,7 @@ public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposu
 
 		for (org.drip.xva.netting.CreditDebtGroupPath creditDebtGroupPath : _creditDebtGroupPathList)
 		{
-			double[] creditDebtGroupExposure = creditDebtGroupPath.creditExposure();
+			double[] creditDebtGroupExposure = creditDebtGroupPath.vertexCreditExposure();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -492,7 +493,7 @@ public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposu
 
 		for (org.drip.xva.netting.CreditDebtGroupPath creditDebtGroupPath : _creditDebtGroupPathList)
 		{
-			double[] creditDebtGroupExposurePV = creditDebtGroupPath.creditExposurePV();
+			double[] creditDebtGroupExposurePV = creditDebtGroupPath.vertexCreditExposurePV();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -516,7 +517,7 @@ public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposu
 
 		for (org.drip.xva.netting.CreditDebtGroupPath creditDebtGroupPath : _creditDebtGroupPathList)
 		{
-			double[] creditDebtGroupExposure = creditDebtGroupPath.debtExposure();
+			double[] creditDebtGroupExposure = creditDebtGroupPath.vertexDebtExposure();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -540,7 +541,7 @@ public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposu
 
 		for (org.drip.xva.netting.CreditDebtGroupPath creditDebtGroupPath : _creditDebtGroupPathList)
 		{
-			double[] creditDebtGroupExposurePV = creditDebtGroupPath.debtExposurePV();
+			double[] creditDebtGroupExposurePV = creditDebtGroupPath.vertexDebtExposurePV();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{

@@ -14,7 +14,8 @@ import org.drip.xva.basel.*;
 import org.drip.xva.definition.*;
 import org.drip.xva.gross.*;
 import org.drip.xva.hypothecation.*;
-import org.drip.xva.netting.PositionGroupPath;
+import org.drip.xva.margin.CollateralAmountEstimator;
+import org.drip.xva.netting.CollateralGroupPath;
 import org.drip.xva.proto.*;
 import org.drip.xva.settings.*;
 import org.drip.xva.strategy.*;
@@ -285,8 +286,8 @@ public class SemiReplicationZeroThresholdFunding {
 			JulianDate dtStart = dtSpot;
 			double dblValueStart1 = dblTime * dblATMSwapRateOffsetStart1;
 			double dblValueStart2 = dblTime * dblATMSwapRateOffsetStart2;
-			PositionGroupVertex[] aCGV1 = new PositionGroupVertex[iNumStep + 1];
-			PositionGroupVertex[] aCGV2 = new PositionGroupVertex[iNumStep + 1];
+			CollateralGroupVertex[] aCGV1 = new CollateralGroupVertex[iNumStep + 1];
+			CollateralGroupVertex[] aCGV2 = new CollateralGroupVertex[iNumStep + 1];
 
 			for (int j = 0; j <= iNumStep; ++j) {
 				JulianDate dtEnd = adtVertex[j];
@@ -296,7 +297,7 @@ public class SemiReplicationZeroThresholdFunding {
 				double dblValueEnd2 = aadblPortfolio2Value[i][j];
 
 				if (0 != j) {
-					MarginAmountEstimator cae1 = new MarginAmountEstimator (
+					CollateralAmountEstimator cae1 = new CollateralAmountEstimator (
 						positionGroupSpecification,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
@@ -309,7 +310,7 @@ public class SemiReplicationZeroThresholdFunding {
 
 					dblCollateralBalance1 = cae1.postingRequirement (dtEnd);
 
-					MarginAmountEstimator cae2 = new MarginAmountEstimator (
+					CollateralAmountEstimator cae2 = new CollateralAmountEstimator (
 						positionGroupSpecification,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
@@ -368,15 +369,15 @@ public class SemiReplicationZeroThresholdFunding {
 
 			MarketPath np = new MarketPath (aMV);
 
-			PositionGroupPath[] aCGP1 = new PositionGroupPath[] {
-				new PositionGroupPath (
+			CollateralGroupPath[] aCGP1 = new CollateralGroupPath[] {
+				new CollateralGroupPath (
 					aCGV1,
 					np
 				)
 			};
 
-			PositionGroupPath[] aCGP2 = new PositionGroupPath[] {
-				new PositionGroupPath (
+			CollateralGroupPath[] aCGP2 = new CollateralGroupPath[] {
+				new CollateralGroupPath (
 					aCGV2,
 					np
 				)

@@ -12,8 +12,8 @@ import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.xva.basel.*;
 import org.drip.xva.gross.*;
-import org.drip.xva.hypothecation.*;
-import org.drip.xva.netting.PositionGroupPath;
+import org.drip.xva.margin.CollateralAmountEstimator;
+import org.drip.xva.netting.CollateralGroupPath;
 import org.drip.xva.proto.*;
 import org.drip.xva.settings.*;
 import org.drip.xva.strategy.*;
@@ -287,7 +287,7 @@ public class CollateralizedCollateralNeutral {
 				double dblValueEnd2 = aadblPortfolio2Value[i][j];
 
 				if (0 != j) {
-					MarginAmountEstimator hea1 = new MarginAmountEstimator (
+					CollateralAmountEstimator hea1 = new CollateralAmountEstimator (
 						positionGroupSpecification,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
@@ -300,7 +300,7 @@ public class CollateralizedCollateralNeutral {
 
 					dblCollateralBalance1 = hea1.postingRequirement (dtEnd);
 
-					MarginAmountEstimator hea2 = new MarginAmountEstimator (
+					CollateralAmountEstimator hea2 = new CollateralAmountEstimator (
 						positionGroupSpecification,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
@@ -335,19 +335,19 @@ public class CollateralizedCollateralNeutral {
 
 			MarketPath mp = new MarketPath (aMV);
 
-			PositionGroupPath[] aHGPGround = new PositionGroupPath[] {
-				new PositionGroupPath (
+			CollateralGroupPath[] aHGPGround = new CollateralGroupPath[] {
+				new CollateralGroupPath (
 					aHGVR1,
 					mp
 				)
 			};
 
-			PositionGroupPath[] aHGPExtended = new PositionGroupPath[] {
-				new PositionGroupPath (
+			CollateralGroupPath[] aHGPExtended = new CollateralGroupPath[] {
+				new CollateralGroupPath (
 					aHGVR1,
 					mp
 				),
-				new PositionGroupPath (
+				new CollateralGroupPath (
 					aHGVR2,
 					mp
 				)

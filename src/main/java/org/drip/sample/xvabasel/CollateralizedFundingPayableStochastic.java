@@ -14,8 +14,8 @@ import org.drip.quant.linearalgebra.Matrix;
 import org.drip.service.env.EnvManager;
 import org.drip.xva.basel.*;
 import org.drip.xva.gross.*;
-import org.drip.xva.hypothecation.*;
-import org.drip.xva.netting.PositionGroupPath;
+import org.drip.xva.margin.CollateralAmountEstimator;
+import org.drip.xva.netting.CollateralGroupPath;
 import org.drip.xva.proto.*;
 import org.drip.xva.settings.*;
 import org.drip.xva.strategy.*;
@@ -511,7 +511,7 @@ public class CollateralizedFundingPayableStochastic {
 				double dblValueEnd2 = aadblPortfolio2Value[i][j];
 
 				if (0 != j) {
-					MarginAmountEstimator hae1 = new MarginAmountEstimator (
+					CollateralAmountEstimator hae1 = new CollateralAmountEstimator (
 						positionGroupSpecification,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
@@ -524,7 +524,7 @@ public class CollateralizedFundingPayableStochastic {
 
 					dblCollateralBalance1 = hae1.postingRequirement (dtEnd);
 
-					MarginAmountEstimator hae2 = new MarginAmountEstimator (
+					CollateralAmountEstimator hae2 = new CollateralAmountEstimator (
 						positionGroupSpecification,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
@@ -584,19 +584,19 @@ public class CollateralizedFundingPayableStochastic {
 
 			MarketPath mp = new MarketPath (aNV);
 
-			PositionGroupPath[] aHGP1 = new PositionGroupPath[] {
-				new PositionGroupPath (
+			CollateralGroupPath[] aHGP1 = new CollateralGroupPath[] {
+				new CollateralGroupPath (
 					aHGVR1,
 					mp
 				)
 			};
 
-			PositionGroupPath[] aHGP2 = new PositionGroupPath[] {
-				new PositionGroupPath (
+			CollateralGroupPath[] aHGP2 = new CollateralGroupPath[] {
+				new CollateralGroupPath (
 					aHGVR1,
 					mp
 				),
-				new PositionGroupPath (
+				new CollateralGroupPath (
 					aHGVR2,
 					mp
 				)
@@ -620,10 +620,6 @@ public class CollateralizedFundingPayableStochastic {
 				new AlbaneseAndersenFundingGroupPath[] {
 					new AlbaneseAndersenFundingGroupPath (
 						new AlbaneseAndersenNettingGroupPath[] {
-							new AlbaneseAndersenNettingGroupPath (
-								aHGP1,
-								mp
-							),
 							new AlbaneseAndersenNettingGroupPath (
 								aHGP2,
 								mp

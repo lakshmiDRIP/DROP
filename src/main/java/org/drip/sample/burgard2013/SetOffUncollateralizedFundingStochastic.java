@@ -15,7 +15,7 @@ import org.drip.xva.basel.*;
 import org.drip.xva.definition.*;
 import org.drip.xva.gross.*;
 import org.drip.xva.hypothecation.*;
-import org.drip.xva.netting.PositionGroupPath;
+import org.drip.xva.netting.CollateralGroupPath;
 import org.drip.xva.strategy.*;
 import org.drip.xva.universe.*;
 import org.drip.xva.vertex.BurgardKjaerBuilder;
@@ -526,8 +526,8 @@ public class SetOffUncollateralizedFundingStochastic {
 			);
 
 			MarketVertex[] aMV = new MarketVertex [iNumStep + 1];
-			PositionGroupVertex[] aCGV1 = new PositionGroupVertex[iNumStep + 1];
-			PositionGroupVertex[] aCGV2 = new PositionGroupVertex[iNumStep + 1];
+			CollateralGroupVertex[] aCGV1 = new CollateralGroupVertex[iNumStep + 1];
+			CollateralGroupVertex[] aCGV2 = new CollateralGroupVertex[iNumStep + 1];
 
 			for (int j = 0; j <= iNumStep; ++j) {
 				aMV[j] = MarketVertex.SingleManifestMeasure (
@@ -607,15 +607,15 @@ public class SetOffUncollateralizedFundingStochastic {
 
 			MarketPath np = new MarketPath (aMV);
 
-			PositionGroupPath[] aCGP1 = new PositionGroupPath[] {
-				new PositionGroupPath (
+			CollateralGroupPath[] aCGP1 = new CollateralGroupPath[] {
+				new CollateralGroupPath (
 					aCGV1,
 					np
 				)
 			};
 
-			PositionGroupPath[] aCGP2 = new PositionGroupPath[] {
-				new PositionGroupPath (
+			CollateralGroupPath[] aCGP2 = new CollateralGroupPath[] {
+				new CollateralGroupPath (
 					aCGV2,
 					np
 				)

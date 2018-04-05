@@ -69,7 +69,7 @@ package org.drip.xva.vertex;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BurgardKjaerExposure implements org.drip.xva.hypothecation.PositionGroupVertexExposureComponent
+public class BurgardKjaerExposure implements org.drip.xva.hypothecation.CollateralGroupVertexExposureComponent
 {
 	private double _debt = java.lang.Double.NaN;
 	private double _credit = java.lang.Double.NaN;
@@ -87,7 +87,7 @@ public class BurgardKjaerExposure implements org.drip.xva.hypothecation.Position
 
 	public static final BurgardKjaerExposure Initial (
 		final double uncollateralizedExposure,
-		final org.drip.xva.hypothecation.PositionGroupVertexCloseOut collateralGroupVertexCloseOut)
+		final org.drip.xva.hypothecation.CollateralGroupVertexCloseOut collateralGroupVertexCloseOut)
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (uncollateralizedExposure) ||
 			null == collateralGroupVertexCloseOut)

@@ -16,7 +16,8 @@ import org.drip.xva.basel.*;
 import org.drip.xva.definition.*;
 import org.drip.xva.gross.*;
 import org.drip.xva.hypothecation.*;
-import org.drip.xva.netting.PositionGroupPath;
+import org.drip.xva.margin.CollateralAmountEstimator;
+import org.drip.xva.netting.CollateralGroupPath;
 import org.drip.xva.proto.*;
 import org.drip.xva.settings.*;
 import org.drip.xva.strategy.*;
@@ -541,8 +542,8 @@ public class SetOffCollateralizedFundingStochastic {
 			MarketVertex[] aMV = new MarketVertex [iNumStep + 1];
 			double dblValueStart1 = dblTime * dblATMSwapRateOffsetStart1;
 			double dblValueStart2 = dblTime * dblATMSwapRateOffsetStart2;
-			PositionGroupVertex[] aCGV1 = new PositionGroupVertex[iNumStep + 1];
-			PositionGroupVertex[] aCGV2 = new PositionGroupVertex[iNumStep + 1];
+			CollateralGroupVertex[] aCGV1 = new CollateralGroupVertex[iNumStep + 1];
+			CollateralGroupVertex[] aCGV2 = new CollateralGroupVertex[iNumStep + 1];
 
 			for (int j = 0; j <= iNumStep; ++j) {
 				JulianDate dtEnd = (adtVertex[j] = dtSpot.addMonths (6 * j + 6));
@@ -587,7 +588,7 @@ public class SetOffCollateralizedFundingStochastic {
 				);
 
 				if (0 != j) {
-					MarginAmountEstimator hae1 = new MarginAmountEstimator (
+					CollateralAmountEstimator hae1 = new CollateralAmountEstimator (
 						positionGroupSpecification,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
@@ -600,7 +601,7 @@ public class SetOffCollateralizedFundingStochastic {
 
 					dblCollateralBalance1 = hae1.postingRequirement (dtEnd);
 
-					MarginAmountEstimator hae2 = new MarginAmountEstimator (
+					CollateralAmountEstimator hae2 = new CollateralAmountEstimator (
 						positionGroupSpecification,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
@@ -653,8 +654,8 @@ public class SetOffCollateralizedFundingStochastic {
 
 			MarketPath mp = new MarketPath (aMV);
 
-			PositionGroupPath[] aHGPGround = new PositionGroupPath[] {
-				new PositionGroupPath (
+			CollateralGroupPath[] aHGPGround = new CollateralGroupPath[] {
+				new CollateralGroupPath (
 					aCGV1,
 					mp
 				)
@@ -674,12 +675,12 @@ public class SetOffCollateralizedFundingStochastic {
 				}
 			);
 
-			PositionGroupPath[] aHGPExtended = new PositionGroupPath[] {
-				new PositionGroupPath (
+			CollateralGroupPath[] aHGPExtended = new CollateralGroupPath[] {
+				new CollateralGroupPath (
 					aCGV1,
 					mp
 				),
-				new PositionGroupPath (
+				new CollateralGroupPath (
 					aCGV2,
 					mp
 				)

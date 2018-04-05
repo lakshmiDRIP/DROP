@@ -93,8 +93,8 @@ public class BurgardKjaerBuilder
 			return null;
 		}
 
-		org.drip.xva.hypothecation.PositionGroupVertexCloseOut collateralGroupVertexCloseOut =
-			org.drip.xva.hypothecation.PositionGroupVertexCloseOut.Standard (
+		org.drip.xva.hypothecation.CollateralGroupVertexCloseOut collateralGroupVertexCloseOut =
+			org.drip.xva.hypothecation.CollateralGroupVertexCloseOut.Standard (
 				closeOutScheme,
 				forward,
 				0.
@@ -174,9 +174,9 @@ public class BurgardKjaerBuilder
 
 	public static final org.drip.xva.vertex.BurgardKjaer DealerPortfolioBuilder (
 		final org.drip.analytics.date.JulianDate anchorDate,
-		final org.drip.xva.hypothecation.PositionGroupVertexExposure collateralGroupVertexExposure,
+		final org.drip.xva.hypothecation.CollateralGroupVertexExposure collateralGroupVertexExposure,
 		final org.drip.xva.universe.MarketEdge marketEdge,
-		final org.drip.xva.hypothecation.PositionGroupVertexCloseOut collateralGroupVertexCloseOut,
+		final org.drip.xva.hypothecation.CollateralGroupVertexCloseOut collateralGroupVertexCloseOut,
 		final org.drip.xva.vertex.BurgardKjaerExposure burgardKjaerVertexExposure)
 	{
 		if (null == collateralGroupVertexExposure ||
@@ -284,8 +284,8 @@ public class BurgardKjaerBuilder
 		double uncollateralizedExposure = exposure + realizedCashFlow;
 		double collateralizedExposure = uncollateralizedExposure - collateralBalance;
 
-		org.drip.xva.hypothecation.PositionGroupVertexCloseOut collateralGroupVertexCloseOut =
-			org.drip.xva.hypothecation.PositionGroupVertexCloseOut.Standard (
+		org.drip.xva.hypothecation.CollateralGroupVertexCloseOut collateralGroupVertexCloseOut =
+			org.drip.xva.hypothecation.CollateralGroupVertexCloseOut.Standard (
 				closeOutScheme,
 				uncollateralizedExposure,
 				collateralBalance
@@ -300,7 +300,7 @@ public class BurgardKjaerBuilder
 		{
 			return DealerPortfolioBuilder (
 				anchorDate,
-				new org.drip.xva.hypothecation.PositionGroupVertexExposure (
+				new org.drip.xva.hypothecation.CollateralGroupVertexExposure (
 					exposure,
 					realizedCashFlow
 				),
@@ -359,12 +359,12 @@ public class BurgardKjaerBuilder
 		{
 			return DealerPortfolioBuilder (
 				anchorDate,
-				new org.drip.xva.hypothecation.PositionGroupVertexExposure (
+				new org.drip.xva.hypothecation.CollateralGroupVertexExposure (
 					exposure,
 					realizedCashFlow
 				),
 				marketEdge,
-				org.drip.xva.hypothecation.PositionGroupVertexCloseOut.Standard (
+				org.drip.xva.hypothecation.CollateralGroupVertexCloseOut.Standard (
 					closeOutScheme,
 					uncollateralizedExposure,
 					collateralBalance
@@ -417,12 +417,12 @@ public class BurgardKjaerBuilder
 		{
 			return DealerPortfolioBuilder (
 				anchorDate,
-				new org.drip.xva.hypothecation.PositionGroupVertexExposure (
+				new org.drip.xva.hypothecation.CollateralGroupVertexExposure (
 					exposure,
 					realizedCashFlow
 				),
 				marketEdge,
-				org.drip.xva.hypothecation.PositionGroupVertexCloseOut.Standard (
+				org.drip.xva.hypothecation.CollateralGroupVertexCloseOut.Standard (
 					closeOutScheme,
 					uncollateralizedExposure,
 					uncollateralizedExposure
@@ -475,12 +475,12 @@ public class BurgardKjaerBuilder
 		{
 			return DealerPortfolioBuilder (
 				anchorDate,
-				new org.drip.xva.hypothecation.PositionGroupVertexExposure (
+				new org.drip.xva.hypothecation.CollateralGroupVertexExposure (
 					exposure,
 					realizedCashFlow
 				),
 				marketEdge,
-				org.drip.xva.hypothecation.PositionGroupVertexCloseOut.Standard (
+				org.drip.xva.hypothecation.CollateralGroupVertexCloseOut.Standard (
 					closeOutScheme,
 					uncollateralizedExposure,
 					collateralBalance
@@ -539,12 +539,12 @@ public class BurgardKjaerBuilder
 		{
 			return DealerPortfolioBuilder (
 				anchorDate,
-				new org.drip.xva.hypothecation.PositionGroupVertexExposure (
+				new org.drip.xva.hypothecation.CollateralGroupVertexExposure (
 					exposure,
 					realizedCashFlow
 				),
 				marketEdge,
-				new org.drip.xva.hypothecation.PositionGroupVertexCloseOut (
+				new org.drip.xva.hypothecation.CollateralGroupVertexCloseOut (
 					collateralizedExposure * dealerSeniorRecoveryRateFinish,
 					collateralizedExposure * clientRecoveryFinish
 				),

@@ -12,8 +12,8 @@ import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.xva.basel.*;
 import org.drip.xva.gross.*;
-import org.drip.xva.hypothecation.*;
-import org.drip.xva.netting.PositionGroupPath;
+import org.drip.xva.margin.CollateralAmountEstimator;
+import org.drip.xva.netting.CollateralGroupPath;
 import org.drip.xva.proto.*;
 import org.drip.xva.settings.*;
 import org.drip.xva.strategy.*;
@@ -287,7 +287,7 @@ public class ZeroThresholdCollateralPayable {
 				double dblValueEnd2 = aadblPortfolio2Value[i][j];
 
 				if (0 != j) {
-					MarginAmountEstimator cae1 = new MarginAmountEstimator (
+					CollateralAmountEstimator cae1 = new CollateralAmountEstimator (
 						positionGroupSpecification,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
@@ -300,7 +300,7 @@ public class ZeroThresholdCollateralPayable {
 
 					dblCollateralBalance1 = cae1.postingRequirement (dtEnd);
 
-					MarginAmountEstimator cae2 = new MarginAmountEstimator (
+					CollateralAmountEstimator cae2 = new CollateralAmountEstimator (
 						positionGroupSpecification,
 						new BrokenDateInterpolatorLinearT (
 							dtStart.julian(),
@@ -335,19 +335,19 @@ public class ZeroThresholdCollateralPayable {
 
 			MarketPath np = new MarketPath (aNV);
 
-			PositionGroupPath[] aCGPGround = new PositionGroupPath[] {
-				new PositionGroupPath (
+			CollateralGroupPath[] aCGPGround = new CollateralGroupPath[] {
+				new CollateralGroupPath (
 					aCGV1,
 					np
 				)
 			};
 
-			PositionGroupPath[] aCGPExtended = new PositionGroupPath[] {
-				new PositionGroupPath (
+			CollateralGroupPath[] aCGPExtended = new CollateralGroupPath[] {
+				new CollateralGroupPath (
 					aCGV1,
 					np
 				),
-				new PositionGroupPath (
+				new CollateralGroupPath (
 					aCGV2,
 					np
 				)

@@ -164,7 +164,7 @@ public class PositionGroupContainer
 
 	public boolean setCollateralGroupPath (
 		final int positionGroupIndex,
-		final org.drip.xva.netting.PositionGroupPath collateralGroupPath)
+		final org.drip.xva.netting.CollateralGroupPath collateralGroupPath)
 	{
 		return positionGroupIndex >= count() ? false :
 			_positionGroupArray[positionGroupIndex].setCollateralGroupPath (collateralGroupPath);
@@ -216,7 +216,7 @@ public class PositionGroupContainer
 	 * @return Array of the Position Groups Collected into Credit Debt Group Collateral Vertex Paths
 	 */
 
-	public org.drip.xva.netting.PositionGroupPath[][] creditDebtSegmentPaths()
+	public org.drip.xva.netting.CollateralGroupPath[][] creditDebtSegmentPaths()
 	{
 		java.util.Map<java.lang.String, org.drip.xva.holdings.PositionGroupSegment>
 			creditDebtPositionGroupSegment = creditDebtSegments();
@@ -224,8 +224,8 @@ public class PositionGroupContainer
 		int creditDebtPositionGroupSegmentCount = creditDebtPositionGroupSegment.size();
 
 		int creditDebtPositionGroupSegmentIndex = 0;
-		org.drip.xva.netting.PositionGroupPath[][] creditDebtSegmentPathArray = new
-			org.drip.xva.netting.PositionGroupPath[creditDebtPositionGroupSegmentCount][];
+		org.drip.xva.netting.CollateralGroupPath[][] creditDebtSegmentPathArray = new
+			org.drip.xva.netting.CollateralGroupPath[creditDebtPositionGroupSegmentCount][];
 
 		for (java.util.Map.Entry<java.lang.String, org.drip.xva.holdings.PositionGroupSegment>
 			creditDebtPositionGroupSegmentEntry : creditDebtPositionGroupSegment.entrySet())
@@ -283,7 +283,7 @@ public class PositionGroupContainer
 	 * @return Array of the Position Groups Collected into Funding Group Collateral Vertex Paths
 	 */
 
-	public org.drip.xva.netting.PositionGroupPath[][] fundingSegmentPaths()
+	public org.drip.xva.netting.CollateralGroupPath[][] fundingSegmentPaths()
 	{
 		java.util.Map<java.lang.String, org.drip.xva.holdings.PositionGroupSegment>
 			fundingPositionGroupSegment = fundingSegments();
@@ -291,8 +291,8 @@ public class PositionGroupContainer
 		int fundingPositionGroupSegmentCount = fundingPositionGroupSegment.size();
 
 		int fundingPositionGroupSegmentIndex = 0;
-		org.drip.xva.netting.PositionGroupPath[][] fundingSegmentPathArray = new
-			org.drip.xva.netting.PositionGroupPath[fundingPositionGroupSegmentCount][];
+		org.drip.xva.netting.CollateralGroupPath[][] fundingSegmentPathArray = new
+			org.drip.xva.netting.CollateralGroupPath[fundingPositionGroupSegmentCount][];
 
 		for (java.util.Map.Entry<java.lang.String, org.drip.xva.holdings.PositionGroupSegment>
 			fundingPositionGroupSegmentEntry : fundingPositionGroupSegment.entrySet())

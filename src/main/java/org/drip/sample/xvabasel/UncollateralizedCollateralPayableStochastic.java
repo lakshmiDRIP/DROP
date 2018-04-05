@@ -13,7 +13,7 @@ import org.drip.quant.linearalgebra.Matrix;
 import org.drip.service.env.EnvManager;
 import org.drip.xva.basel.*;
 import org.drip.xva.gross.*;
-import org.drip.xva.netting.PositionGroupPath;
+import org.drip.xva.netting.CollateralGroupPath;
 import org.drip.xva.strategy.*;
 import org.drip.xva.universe.*;
 import org.drip.xva.vertex.AlbaneseAndersen;
@@ -533,19 +533,15 @@ public class UncollateralizedCollateralPayableStochastic {
 
 			MarketPath np = new MarketPath (aNV);
 
-			PositionGroupPath[] aCGPGround = new PositionGroupPath[] {
-				new PositionGroupPath (
+			CollateralGroupPath[] aCGPGround = new CollateralGroupPath[] {
+				new CollateralGroupPath (
 					aCGV1,
 					np
 				)
 			};
 
-			PositionGroupPath[] aCGPExtended = new PositionGroupPath[] {
-				new PositionGroupPath (
-					aCGV1,
-					np
-				),
-				new PositionGroupPath (
+			CollateralGroupPath[] aCGPExtended = new CollateralGroupPath[] {
+				new CollateralGroupPath (
 					aCGV2,
 					np
 				)
@@ -569,6 +565,10 @@ public class UncollateralizedCollateralPayableStochastic {
 				new AlbaneseAndersenFundingGroupPath[] {
 					new AlbaneseAndersenFundingGroupPath (
 						new AlbaneseAndersenNettingGroupPath[] {
+							new AlbaneseAndersenNettingGroupPath (
+								aCGPGround,
+								np
+							),
 							new AlbaneseAndersenNettingGroupPath (
 								aCGPExtended,
 								np

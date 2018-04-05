@@ -411,7 +411,7 @@ public abstract class FundingGroupPath
 			++creditDebtGroupIndex)
 		{
 			double[] creditDebtGroupFundingExposure =
-				_creditDebtGroupPathArray[creditDebtGroupIndex].fundingExposure();
+				_creditDebtGroupPathArray[creditDebtGroupIndex].vertexFundingExposure();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -445,7 +445,7 @@ public abstract class FundingGroupPath
 			++creditDebtGroupIndex)
 		{
 			double[] creditDebtGroupFundingExposurePV =
-				_creditDebtGroupPathArray[creditDebtGroupIndex].fundingExposure();
+				_creditDebtGroupPathArray[creditDebtGroupIndex].vertexFundingExposure();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{

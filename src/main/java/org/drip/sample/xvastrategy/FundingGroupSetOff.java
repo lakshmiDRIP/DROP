@@ -11,7 +11,7 @@ import org.drip.service.env.EnvManager;
 import org.drip.xva.definition.*;
 import org.drip.xva.derivative.ReplicationPortfolioVertexDealer;
 import org.drip.xva.gross.*;
-import org.drip.xva.netting.PositionGroupPath;
+import org.drip.xva.netting.CollateralGroupPath;
 import org.drip.xva.strategy.*;
 import org.drip.xva.universe.*;
 import org.drip.xva.vertex.*;
@@ -302,15 +302,15 @@ public class FundingGroupSetOff {
 
 		MarketPath mp = new MarketPath (aMV);
 
-		PositionGroupPath[] aCGP1 = new PositionGroupPath[] {
-			new PositionGroupPath (
+		CollateralGroupPath[] aCGP1 = new CollateralGroupPath[] {
+			new CollateralGroupPath (
 				aBKV1,
 				mp
 			)
 		};
 
-		PositionGroupPath[] aCGP2 = new PositionGroupPath[] {
-			new PositionGroupPath (
+		CollateralGroupPath[] aCGP2 = new CollateralGroupPath[] {
+			new CollateralGroupPath (
 				aBKV2,
 				mp
 			)

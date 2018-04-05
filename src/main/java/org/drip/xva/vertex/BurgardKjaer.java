@@ -68,10 +68,10 @@ package org.drip.xva.vertex;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BurgardKjaer extends org.drip.xva.hypothecation.PositionGroupVertex
+public class BurgardKjaer extends org.drip.xva.hypothecation.CollateralGroupVertex
 {
 	private org.drip.xva.vertex.BurgardKjaerExposure _burgardKjaerVertexExposure = null;
-	private org.drip.xva.hypothecation.PositionGroupVertexCloseOut _collateralGroupCloseOut = null;
+	private org.drip.xva.hypothecation.CollateralGroupVertexCloseOut _collateralGroupCloseOut = null;
 	private org.drip.xva.derivative.ReplicationPortfolioVertexDealer _dealerReplicationPortfolioVertex = null;
 
 	/**
@@ -92,7 +92,7 @@ public class BurgardKjaer extends org.drip.xva.hypothecation.PositionGroupVertex
 		final double forward,
 		final double accrued,
 		final org.drip.xva.vertex.BurgardKjaerExposure burgardKjaerVertexExposure,
-		final org.drip.xva.hypothecation.PositionGroupVertexCloseOut collateralGroupCloseOut,
+		final org.drip.xva.hypothecation.CollateralGroupVertexCloseOut collateralGroupCloseOut,
 		final org.drip.xva.derivative.ReplicationPortfolioVertexDealer dealerReplicationPortfolioVertex)
 		throws java.lang.Exception
 	{

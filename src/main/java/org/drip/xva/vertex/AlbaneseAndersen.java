@@ -67,7 +67,7 @@ package org.drip.xva.vertex;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AlbaneseAndersen extends org.drip.xva.hypothecation.PositionGroupVertex
+public class AlbaneseAndersen extends org.drip.xva.hypothecation.CollateralGroupVertex
 {
 
 	/**
