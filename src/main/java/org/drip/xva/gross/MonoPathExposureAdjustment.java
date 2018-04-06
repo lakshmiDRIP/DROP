@@ -146,7 +146,7 @@ public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposu
 
 	@Override public org.drip.analytics.date.JulianDate[] anchorDates()
 	{
-		return _creditDebtGroupPathList.get (0).anchorDates();
+		return _creditDebtGroupPathList.get (0).vertexDates();
 	}
 
 	@Override public double[] collateralizedExposure()

@@ -92,7 +92,8 @@ public abstract class CreditDebtGroupPath
 			throw new java.lang.Exception ("CreditDebtGroupPath Constructor => Invalid Inputs");
 		}
 
-		for (int collateralGroupIndex = 0; collateralGroupIndex < collateralGroupCount; ++collateralGroupIndex)
+		for (int collateralGroupIndex = 0; collateralGroupIndex < collateralGroupCount;
+			++collateralGroupIndex)
 		{
 			if (null == _collateralGroupPathArray[collateralGroupIndex])
 			{
@@ -129,7 +130,7 @@ public abstract class CreditDebtGroupPath
 	 * @return The Array of the Vertex Anchor Dates
 	 */
 
-	public org.drip.analytics.date.JulianDate[] anchorDates()
+	public org.drip.analytics.date.JulianDate[] vertexDates()
 	{
 		return _collateralGroupPathArray[0].vertexDates();
 	}
@@ -142,7 +143,7 @@ public abstract class CreditDebtGroupPath
 
 	public double[] vertexCollateralizedExposure()
 	{
-		int vertexCount = anchorDates().length;
+		int vertexCount = vertexDates().length;
 
 		int collateralGroupCount = _collateralGroupPathArray.length;
 		double[] vertexCollateralizedExposure = new double[vertexCount];
@@ -176,7 +177,7 @@ public abstract class CreditDebtGroupPath
 
 	public double[] vertexCollateralizedExposurePV()
 	{
-		int vertexCount = anchorDates().length;
+		int vertexCount = vertexDates().length;
 
 		double[] vertexCollateralizedExposurePV = new double[vertexCount];
 		int collateralGroupCount = _collateralGroupPathArray.length;
@@ -294,7 +295,7 @@ public abstract class CreditDebtGroupPath
 
 	public double[] vertexUncollateralizedExposure()
 	{
-		int vertexCount = anchorDates().length;
+		int vertexCount = vertexDates().length;
 
 		int collateralGroupCount = _collateralGroupPathArray.length;
 		double[] vertexUncollateralizedExposure = new double[vertexCount];
@@ -328,7 +329,7 @@ public abstract class CreditDebtGroupPath
 
 	public double[] vertexUncollateralizedExposurePV()
 	{
-		int vertexCount = anchorDates().length;
+		int vertexCount = vertexDates().length;
 
 		int collateralGroupCount = _collateralGroupPathArray.length;
 		double[] vertexUncollateralizedExposurePV = new double[vertexCount];
@@ -446,29 +447,7 @@ public abstract class CreditDebtGroupPath
 
 	public double[] vertexCreditExposure()
 	{
-		int vertexCount = anchorDates().length;
-
-		double[] vertexCreditExposure = new double[vertexCount];
-		int collateralGroupCount = _collateralGroupPathArray.length;
-
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			vertexCreditExposure[vertexIndex] = 0.;
-		}
-
-		for (int collateralGroupIndex = 0; collateralGroupIndex < collateralGroupCount;
-			++collateralGroupIndex)
-		{
-			double[] collateralGroupVertexCreditExposure =
-				_collateralGroupPathArray[collateralGroupIndex].vertexCreditExposure();
-
-			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-			{
-				vertexCreditExposure[vertexIndex] += collateralGroupVertexCreditExposure[vertexIndex];
-			}
-		}
-
-		return vertexCreditExposure;
+		return vertexCollateralizedPositiveExposure();
 	}
 
 	/**
@@ -479,29 +458,7 @@ public abstract class CreditDebtGroupPath
 
 	public double[] vertexCreditExposurePV()
 	{
-		int vertexCount = anchorDates().length;
-
-		double[] vertexCreditExposurePV = new double[vertexCount];
-		int collateralGroupCount = _collateralGroupPathArray.length;
-
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			vertexCreditExposurePV[vertexIndex] = 0.;
-		}
-
-		for (int collateralGroupIndex = 0; collateralGroupIndex < collateralGroupCount;
-			++collateralGroupIndex)
-		{
-			double[] collateralGroupVertexCreditExposurePV =
-				_collateralGroupPathArray[collateralGroupIndex].vertexCreditExposurePV();
-
-			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-			{
-				vertexCreditExposurePV[vertexIndex] += collateralGroupVertexCreditExposurePV[vertexIndex];
-			}
-		}
-
-		return vertexCreditExposurePV;
+		return vertexCollateralizedPositiveExposurePV();
 	}
 
 	/**
@@ -512,29 +469,7 @@ public abstract class CreditDebtGroupPath
 
 	public double[] vertexDebtExposure()
 	{
-		int vertexCount = anchorDates().length;
-
-		double[] vertexDebtExposure = new double[vertexCount];
-		int collateralGroupCount = _collateralGroupPathArray.length;
-
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			vertexDebtExposure[vertexIndex] = 0.;
-		}
-
-		for (int collateralGroupIndex = 0; collateralGroupIndex < collateralGroupCount;
-			++collateralGroupIndex)
-		{
-			double[] collateralGroupVertexDebtExposure =
-				_collateralGroupPathArray[collateralGroupIndex].vertexDebtExposure();
-
-			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-			{
-				vertexDebtExposure[vertexIndex] += collateralGroupVertexDebtExposure[vertexIndex];
-			}
-		}
-
-		return vertexDebtExposure;
+		return vertexCollateralizedNegativeExposure();
 	}
 
 	/**
@@ -545,29 +480,7 @@ public abstract class CreditDebtGroupPath
 
 	public double[] vertexDebtExposurePV()
 	{
-		int vertexCount = anchorDates().length;
-
-		double[] vertexDebtExposurePV = new double[vertexCount];
-		int collateralGroupCount = _collateralGroupPathArray.length;
-
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			vertexDebtExposurePV[vertexIndex] = 0.;
-		}
-
-		for (int collateralGroupIndex = 0; collateralGroupIndex < collateralGroupCount;
-			++collateralGroupIndex)
-		{
-			double[] collateralGroupVertexDebtExposurePV =
-				_collateralGroupPathArray[collateralGroupIndex].vertexDebtExposurePV();
-
-			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-			{
-				vertexDebtExposurePV[vertexIndex] += collateralGroupVertexDebtExposurePV[vertexIndex];
-			}
-		}
-
-		return vertexDebtExposurePV;
+		return vertexCollateralizedNegativeExposurePV();
 	}
 
 	/**
@@ -578,29 +491,7 @@ public abstract class CreditDebtGroupPath
 
 	public double[] vertexFundingExposure()
 	{
-		int vertexCount = anchorDates().length;
-
-		double[] vertexFundingExposure = new double[vertexCount];
-		int collateralGroupCount = _collateralGroupPathArray.length;
-
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			vertexFundingExposure[vertexIndex] = 0.;
-		}
-
-		for (int collateralGroupIndex = 0; collateralGroupIndex < collateralGroupCount;
-			++collateralGroupIndex)
-		{
-			double[] collateralGroupVertexFundingExposure =
-				_collateralGroupPathArray[collateralGroupIndex].vertexFundingExposure();
-
-			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-			{
-				vertexFundingExposure[vertexIndex] += collateralGroupVertexFundingExposure[vertexIndex];
-			}
-		}
-
-		return vertexFundingExposure;
+		return vertexCollateralizedPositiveExposure();
 	}
 
 	/**
@@ -611,29 +502,7 @@ public abstract class CreditDebtGroupPath
 
 	public double[] vertexFundingExposurePV()
 	{
-		int vertexCount = anchorDates().length;
-
-		double[] vertexFundingExposurePV = new double[vertexCount];
-		int collateralGroupCount = _collateralGroupPathArray.length;
-
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			vertexFundingExposurePV[vertexIndex] = 0.;
-		}
-
-		for (int collateralGroupIndex = 0; collateralGroupIndex < collateralGroupCount;
-			++collateralGroupIndex)
-		{
-			double[] collateralGroupVertexFundingExposurePV =
-				_collateralGroupPathArray[collateralGroupIndex].vertexFundingExposurePV();
-
-			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-			{
-				vertexFundingExposurePV[vertexIndex] += collateralGroupVertexFundingExposurePV[vertexIndex];
-			}
-		}
-
-		return vertexFundingExposurePV;
+		return vertexCollateralizedPositiveExposurePV();
 	}
 
 	/**
@@ -644,7 +513,7 @@ public abstract class CreditDebtGroupPath
 
 	public double[] vertexCollateralBalance()
 	{
-		int vertexCount = anchorDates().length;
+		int vertexCount = vertexDates().length;
 
 		int collateralGroupCount = _collateralGroupPathArray.length;
 		double[] vertexCollateralBalance = new double[vertexCount];
@@ -677,7 +546,7 @@ public abstract class CreditDebtGroupPath
 
 	public double[] vertexCollateralBalancePV()
 	{
-		int vertexCount = anchorDates().length;
+		int vertexCount = vertexDates().length;
 
 		int collateralGroupCount = _collateralGroupPathArray.length;
 		double[] vertexCollateralBalancePV = new double[vertexCount];
@@ -711,7 +580,7 @@ public abstract class CreditDebtGroupPath
 
 	public double[] periodCollateralSpread01()
 	{
-		int vertexCount = anchorDates().length;
+		int vertexCount = vertexDates().length;
 
 		int periodCount = vertexCount - 1;
 		int collateralGroupCount = _collateralGroupPathArray.length;
@@ -745,7 +614,7 @@ public abstract class CreditDebtGroupPath
 
 	public double[] periodCollateralValueAdjustment()
 	{
-		int vertexCount = anchorDates().length;
+		int vertexCount = vertexDates().length;
 
 		int periodCount = vertexCount - 1;
 		int collateralGroupCount = _collateralGroupPathArray.length;
