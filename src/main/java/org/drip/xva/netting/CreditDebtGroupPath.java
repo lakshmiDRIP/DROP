@@ -491,7 +491,7 @@ public abstract class CreditDebtGroupPath
 
 	public double[] vertexFundingExposure()
 	{
-		return vertexCollateralizedPositiveExposure();
+		return vertexCollateralizedExposure();
 	}
 
 	/**
@@ -502,7 +502,7 @@ public abstract class CreditDebtGroupPath
 
 	public double[] vertexFundingExposurePV()
 	{
-		return vertexCollateralizedPositiveExposurePV();
+		return vertexCollateralizedExposurePV();
 	}
 
 	/**
@@ -940,6 +940,32 @@ public abstract class CreditDebtGroupPath
 	}
 
 	/**
+	 * Compute Path Unilateral Collateral Value Adjustment
+	 * 
+	 * @return The Path Unilateral Collateral Value Adjustment
+	 */
+
+	public double unilateralCollateralAdjustment()
+	{
+		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();
+
+		double[] periodCollateralValueAdjustment = periodCollateralValueAdjustment();
+
+		double unilateralCollateralValueAdjustment = 0.;
+		int periodCount = periodCollateralValueAdjustment.length;
+
+		for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex)
+		{
+			unilateralCollateralValueAdjustment += 0.5 * periodCollateralValueAdjustment[periodIndex] * (
+				marketVertexArray[periodIndex].client().survivalProbability() +
+				marketVertexArray[periodIndex + 1].client().survivalProbability()
+			);
+		}
+
+		return unilateralCollateralValueAdjustment;
+	}
+
+	/**
 	 * Compute Path Bilateral Collateral Value Adjustment
 	 * 
 	 * @return The Path Bilateral Collateral Value Adjustment
@@ -975,7 +1001,7 @@ public abstract class CreditDebtGroupPath
 
 	public double collateralValueAdjustment()
 	{
-		return bilateralCollateralAdjustment();
+		return unilateralCollateralAdjustment();
 	}
 
 	/**

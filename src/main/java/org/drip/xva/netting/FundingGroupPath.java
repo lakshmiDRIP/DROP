@@ -105,8 +105,8 @@ public abstract class FundingGroupPath
 
 	public double symmetricFundingValueSpread01()
 	{
-		int creditDebtGroupCount = _creditDebtGroupPathArray.length;
 		double symmetricFundingSpread01 = 0.;
+		int creditDebtGroupCount = _creditDebtGroupPathArray.length;
 
 		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex < creditDebtGroupCount;
 			++creditDebtGroupIndex)
@@ -126,8 +126,8 @@ public abstract class FundingGroupPath
 
 	public double unilateralFundingValueSpread01()
 	{
-		int creditDebtGroupCount = _creditDebtGroupPathArray.length;
 		double unilateralFundingValueSpread01 = 0.;
+		int creditDebtGroupCount = _creditDebtGroupPathArray.length;
 
 		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex < creditDebtGroupCount;
 			++creditDebtGroupIndex)
@@ -147,8 +147,8 @@ public abstract class FundingGroupPath
 
 	public double bilateralFundingValueSpread01()
 	{
-		int creditDebtGroupCount = _creditDebtGroupPathArray.length;
 		double bilateralFundingValueSpread01 = 0.;
+		int creditDebtGroupCount = _creditDebtGroupPathArray.length;
 
 		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex < creditDebtGroupCount;
 			++creditDebtGroupIndex)
@@ -176,7 +176,7 @@ public abstract class FundingGroupPath
 
 		for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex)
 		{
-			periodSymmetricFundingValueSpread01[periodIndex] += 0.;
+			periodSymmetricFundingValueSpread01[periodIndex] = 0.;
 		}
 
 		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex < creditDebtGroupCount;
@@ -188,7 +188,7 @@ public abstract class FundingGroupPath
 			for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex)
 			{
 				periodSymmetricFundingValueSpread01[periodIndex] +=
-					periodCreditDebtGroupSymmetricFundingValueSpread01[creditDebtGroupIndex];
+					periodCreditDebtGroupSymmetricFundingValueSpread01[periodIndex];
 			}
 		}
 
@@ -211,7 +211,7 @@ public abstract class FundingGroupPath
 
 		for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex)
 		{
-			periodUnilateralFundingValueSpread01[periodIndex] += 0.;
+			periodUnilateralFundingValueSpread01[periodIndex] = 0.;
 		}
 
 		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex < creditDebtGroupCount;
@@ -223,7 +223,7 @@ public abstract class FundingGroupPath
 			for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex)
 			{
 				periodUnilateralFundingValueSpread01[periodIndex] +=
-					periodCreditDebtGroupUnilateralFundingValueSpread01[creditDebtGroupIndex];
+					periodCreditDebtGroupUnilateralFundingValueSpread01[periodIndex];
 			}
 		}
 
@@ -246,7 +246,7 @@ public abstract class FundingGroupPath
 
 		for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex)
 		{
-			periodBilateralFundingValueSpread01[periodIndex] += 0.;
+			periodBilateralFundingValueSpread01[periodIndex] = 0.;
 		}
 
 		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex < creditDebtGroupCount;
@@ -258,7 +258,7 @@ public abstract class FundingGroupPath
 			for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex)
 			{
 				periodBilateralFundingValueSpread01[periodIndex] +=
-					periodCreditDebtGroupBilateralFundingValueSpread01[creditDebtGroupIndex];
+					periodCreditDebtGroupBilateralFundingValueSpread01[periodIndex];
 			}
 		}
 
@@ -273,9 +273,9 @@ public abstract class FundingGroupPath
 
 	public double symmetricFundingValueAdjustment()
 	{
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();
-
 		double[] periodSymmetricFundingValueSpread01 = periodSymmetricFundingValueSpread01();
+
+		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();
 
 		int periodCount = periodSymmetricFundingValueSpread01.length;
 		double symmetricFundingValueAdjustment = 0.;
@@ -300,9 +300,9 @@ public abstract class FundingGroupPath
 
 	public double unilateralFundingValueAdjustment()
 	{
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();
-
 		double[] periodUnilateralFundingValueSpread01 = periodUnilateralFundingValueSpread01();
+
+		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();
 
 		int periodCount = periodUnilateralFundingValueSpread01.length;
 		double unilateralFundingValueAdjustment = 0.;
@@ -327,9 +327,9 @@ public abstract class FundingGroupPath
 
 	public double bilateralFundingValueAdjustment()
 	{
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();
-
 		double[] periodBilateralFundingValueSpread01 = periodBilateralFundingValueSpread01();
+
+		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();
 
 		int periodCount = periodBilateralFundingValueSpread01.length;
 		double bilateralFundingValueAdjustment = 0.;
@@ -419,6 +419,14 @@ public abstract class FundingGroupPath
 			}
 		}
 
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+		{
+			if (0. > fundingExposureArray[vertexIndex])
+			{
+				fundingExposureArray[vertexIndex] = 0.;
+			}
+		}
+
 		return fundingExposureArray;
 	}
 
@@ -445,11 +453,19 @@ public abstract class FundingGroupPath
 			++creditDebtGroupIndex)
 		{
 			double[] creditDebtGroupFundingExposurePV =
-				_creditDebtGroupPathArray[creditDebtGroupIndex].vertexFundingExposure();
+				_creditDebtGroupPathArray[creditDebtGroupIndex].vertexFundingExposurePV();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
 				fundingExposurePVArray[vertexIndex] += creditDebtGroupFundingExposurePV[vertexIndex];
+			}
+		}
+
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+		{
+			if (0. > fundingExposurePVArray[vertexIndex])
+			{
+				fundingExposurePVArray[vertexIndex] = 0.;
 			}
 		}
 
