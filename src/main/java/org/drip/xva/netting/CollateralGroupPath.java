@@ -71,6 +71,7 @@ package org.drip.xva.netting;
 public class CollateralGroupPath
 {
 	private org.drip.xva.universe.MarketPath _marketPath = null;
+	private double _overnightReplicatorStart = java.lang.Double.NaN;
 	private org.drip.xva.hypothecation.CollateralGroupVertex[] _collateralGroupVertexArray = null;
 
 	/**
@@ -92,6 +93,8 @@ public class CollateralGroupPath
 		{
 			throw new java.lang.Exception ("CollateralGroupPath Constructor => Invalid Inputs");
 		}
+
+		_overnightReplicatorStart = _marketPath.vertexes()[0].overnightReplicator();
 
 		int vertexCount = _collateralGroupVertexArray.length;
 
@@ -121,7 +124,7 @@ public class CollateralGroupPath
 	 * @return The Array of Collateral Group Trajectory Vertexes
 	 */
 
-	public org.drip.xva.hypothecation.CollateralGroupVertex[] positionGroupVertex()
+	public org.drip.xva.hypothecation.CollateralGroupVertex[] collateralGroupVertex()
 	{
 		return _collateralGroupVertexArray;
 	}
@@ -192,7 +195,7 @@ public class CollateralGroupPath
 		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 		{
 			collateralizedExposurePV[vertexIndex] = _collateralGroupVertexArray[vertexIndex].collateralized()
-				* marketVertexArray[vertexIndex].overnightReplicator();
+				* _overnightReplicatorStart / marketVertexArray[vertexIndex].overnightReplicator();
 		}
 
 		return collateralizedExposurePV;
@@ -234,7 +237,7 @@ public class CollateralGroupPath
 		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 		{
 			uncollateralizedExposurePV[vertexIndex] =
-				_collateralGroupVertexArray[vertexIndex].uncollateralized() *
+				_collateralGroupVertexArray[vertexIndex].uncollateralized() * _overnightReplicatorStart /
 				marketVertexArray[vertexIndex].overnightReplicator();
 		}
 
@@ -276,7 +279,7 @@ public class CollateralGroupPath
 		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 		{
 			creditExposurePV[vertexIndex] = _collateralGroupVertexArray[vertexIndex].credit() *
-				marketVertexArray[vertexIndex].overnightReplicator();
+				_overnightReplicatorStart / marketVertexArray[vertexIndex].overnightReplicator();
 		}
 
 		return creditExposurePV;
@@ -317,7 +320,7 @@ public class CollateralGroupPath
 		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 		{
 			debtExposurePV[vertexIndex] = _collateralGroupVertexArray[vertexIndex].debt() *
-				marketVertexArray[vertexIndex].overnightReplicator();
+				_overnightReplicatorStart / marketVertexArray[vertexIndex].overnightReplicator();
 		}
 
 		return debtExposurePV;
@@ -358,7 +361,7 @@ public class CollateralGroupPath
 		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 		{
 			fundingExposurePV[vertexIndex] = _collateralGroupVertexArray[vertexIndex].funding() *
-				marketVertexArray[vertexIndex].overnightReplicator();
+				_overnightReplicatorStart / marketVertexArray[vertexIndex].overnightReplicator();
 		}
 
 		return fundingExposurePV;
@@ -377,7 +380,8 @@ public class CollateralGroupPath
 
 		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 		{
-			collateralizedBalance[vertexIndex] = _collateralGroupVertexArray[vertexIndex].collateralBalance();
+			collateralizedBalance[vertexIndex] =
+				_collateralGroupVertexArray[vertexIndex].collateralBalance();
 		}
 
 		return collateralizedBalance;
@@ -399,7 +403,7 @@ public class CollateralGroupPath
 		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 		{
 			collateralizedBalancePV[vertexIndex] =
-				_collateralGroupVertexArray[vertexIndex].collateralBalance() *
+				_collateralGroupVertexArray[vertexIndex].collateralBalance() * _overnightReplicatorStart /
 					marketVertexArray[vertexIndex].overnightReplicator();
 		}
 
