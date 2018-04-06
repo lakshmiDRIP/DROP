@@ -566,7 +566,8 @@ public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposu
 
 		for (int fundingGroupIndex = 0; fundingGroupIndex < fundingGroupCount; ++fundingGroupIndex)
 		{
-			double[] fundingGroupExposure = _fundingGroupPathArray[fundingGroupIndex].fundingExposure();
+			double[] fundingGroupExposure =
+				_fundingGroupPathArray[fundingGroupIndex].vertexFundingExposure();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -591,7 +592,8 @@ public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposu
 
 		for (int fundingGroupIndex = 0; fundingGroupIndex < fundingGroupCount; ++fundingGroupIndex)
 		{
-			double[] fundingGroupExposurePV = _fundingGroupPathArray[fundingGroupIndex].fundingExposurePV();
+			double[] fundingGroupExposurePV =
+				_fundingGroupPathArray[fundingGroupIndex].vertexFundingExposurePV();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
