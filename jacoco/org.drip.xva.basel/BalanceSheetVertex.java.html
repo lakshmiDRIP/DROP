@@ -70,11 +70,50 @@ package org.drip.xva.basel;
 
 public class BalanceSheetVertex
 {
-<span class="nc" id="L73">	private double _asset = java.lang.Double.NaN;</span>
-<span class="nc" id="L74">	private double _liability = java.lang.Double.NaN;</span>
-<span class="nc" id="L75">	private double _contraAsset = java.lang.Double.NaN;</span>
-<span class="nc" id="L76">	private double _contraLiability = java.lang.Double.NaN;</span>
-<span class="nc" id="L77">	private double _retainedEarnings = java.lang.Double.NaN;</span>
+<span class="nc" id="L73">	private double _cash = java.lang.Double.NaN;</span>
+<span class="nc" id="L74">	private double _asset = java.lang.Double.NaN;</span>
+<span class="nc" id="L75">	private double _liability = java.lang.Double.NaN;</span>
+<span class="nc" id="L76">	private double _contraAsset = java.lang.Double.NaN;</span>
+<span class="nc" id="L77">	private double _contraLiability = java.lang.Double.NaN;</span>
+<span class="nc" id="L78">	private double _retainedEarnings = java.lang.Double.NaN;</span>
+
+	/**
+	 * Unrealized Instance of BalanceSheetVertex
+	 * 
+	 * @param asset The Asset Account
+	 * @param liability The Liability Account
+	 * @param contraAsset The Contra Asset Account
+	 * @param contraLiability The Contra Liability Account
+	 * @param retainedEarnings The Retained Earnings Account
+	 * 
+	 * @return The Unrealized BalanceSheetVertex Instance
+	 */
+
+	public static final BalanceSheetVertex Unrealized (
+		final double asset,
+		final double liability,
+		final double contraAsset,
+		final double contraLiability,
+		final double retainedEarnings)
+	{
+		try
+		{
+<span class="nc" id="L101">			return new BalanceSheetVertex (</span>
+				asset,
+				liability,
+				contraAsset,
+				contraLiability,
+				retainedEarnings,
+				0.
+			);
+		}
+<span class="nc" id="L110">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L112">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L115">		return null;</span>
+	}
 
 	/**
 	 * BalanceSheetVertex Constructor
@@ -84,6 +123,7 @@ public class BalanceSheetVertex
 	 * @param contraAsset The Contra Asset Account
 	 * @param contraLiability The Contra Liability Account
 	 * @param retainedEarnings The Retained Earnings Account
+	 * @param cash The Cash Account
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -93,18 +133,20 @@ public class BalanceSheetVertex
 		final double liability,
 		final double contraAsset,
 		final double contraLiability,
-		final double retainedEarnings)
+		final double retainedEarnings,
+		final double cash)
 		throws java.lang.Exception
-<span class="nc" id="L98">	{</span>
-<span class="nc bnc" id="L99" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_asset = asset) ||</span>
-<span class="nc bnc" id="L100" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_liability = liability) ||</span>
-<span class="nc bnc" id="L101" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_contraAsset = contraAsset) ||</span>
-<span class="nc bnc" id="L102" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_contraLiability = contraLiability) ||</span>
-<span class="nc bnc" id="L103" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_retainedEarnings = retainedEarnings))</span>
+<span class="nc" id="L139">	{</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_cash = cash) ||</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_asset = asset) ||</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_liability = liability) ||</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_contraAsset = contraAsset) ||</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_contraLiability = contraLiability) ||</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_retainedEarnings = retainedEarnings))</span>
 		{
-<span class="nc" id="L105">			throw new java.lang.Exception (&quot;BalanceSheetVertex Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L147">			throw new java.lang.Exception (&quot;BalanceSheetVertex Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L107">	}</span>
+<span class="nc" id="L149">	}</span>
 
 	/**
 	 * Retrieve the Asset Account
@@ -114,7 +156,7 @@ public class BalanceSheetVertex
 
 	public double asset()
 	{
-<span class="nc" id="L117">		return _asset;</span>
+<span class="nc" id="L159">		return _asset;</span>
 	}
 
 	/**
@@ -125,7 +167,7 @@ public class BalanceSheetVertex
 
 	public double liability()
 	{
-<span class="nc" id="L128">		return _liability;</span>
+<span class="nc" id="L170">		return _liability;</span>
 	}
 
 	/**
@@ -136,7 +178,7 @@ public class BalanceSheetVertex
 
 	public double contraAsset()
 	{
-<span class="nc" id="L139">		return _contraAsset;</span>
+<span class="nc" id="L181">		return _contraAsset;</span>
 	}
 
 	/**
@@ -147,7 +189,7 @@ public class BalanceSheetVertex
 
 	public double contraLiability()
 	{
-<span class="nc" id="L150">		return _contraLiability;</span>
+<span class="nc" id="L192">		return _contraLiability;</span>
 	}
 
 	/**
@@ -158,7 +200,29 @@ public class BalanceSheetVertex
 
 	public double retainedEarnings()
 	{
-<span class="nc" id="L161">		return _retainedEarnings;</span>
+<span class="nc" id="L203">		return _retainedEarnings;</span>
+	}
+
+	/**
+	 * Retrieve the Cash Account
+	 * 
+	 * @return The Cash Account
+	 */
+
+	public double cash()
+	{
+<span class="nc" id="L214">		return _cash;</span>
+	}
+
+	/**
+	 * Estimate the Portfolio Value (PFV)
+	 * 
+	 * @return The Portfolio Value (PFV)
+	 */
+
+	public double pfv()
+	{
+<span class="nc" id="L225">		return _asset - _liability;</span>
 	}
 
 	/**
@@ -169,7 +233,7 @@ public class BalanceSheetVertex
 
 	public double equity()
 	{
-<span class="nc" id="L172">		return _asset - _liability - _contraAsset + _contraLiability + _retainedEarnings;</span>
+<span class="nc" id="L236">		return _cash + _asset - _liability - _contraAsset + _contraLiability + _retainedEarnings;</span>
 	}
 
 	/**
@@ -180,7 +244,7 @@ public class BalanceSheetVertex
 
 	public double cet1()
 	{
-<span class="nc" id="L183">		return _asset - _liability - _contraAsset + _retainedEarnings;</span>
+<span class="nc" id="L247">		return _cash + _asset - _liability - _contraAsset + _retainedEarnings;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -108,9 +108,9 @@ public class ExposureAdjustmentAggregator
 	 * @return The Array of the Vertex Anchor Dates
 	 */
 
-	public org.drip.analytics.date.JulianDate[] anchorDates()
+	public org.drip.analytics.date.JulianDate[] vertexDates()
 	{
-		return _pathExposureAdjustmentArray[0].anchorDates();
+		return _pathExposureAdjustmentArray[0].vertexDates();
 	}
 
 	/**
@@ -121,7 +121,7 @@ public class ExposureAdjustmentAggregator
 
 	public double[] collateralizedExposure()
 	{
-		int vertexCount = anchorDates().length;
+		int vertexCount = vertexDates().length;
 
 		int pathCount = _pathExposureAdjustmentArray.length;
 		double[] collateralizedExposure = new double[vertexCount];
@@ -134,7 +134,7 @@ public class ExposureAdjustmentAggregator
 		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
 		{
 			double[] pathCollateralizedExposure =
-				_pathExposureAdjustmentArray[pathIndex].collateralizedExposure();
+				_pathExposureAdjustmentArray[pathIndex].vertexCollateralizedExposure();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -158,7 +158,7 @@ public class ExposureAdjustmentAggregator
 
 	public double[] collateralizedExposurePV()
 	{
-		int vertexCount = anchorDates().length;
+		int vertexCount = vertexDates().length;
 
 		int pathCount = _pathExposureAdjustmentArray.length;
 		double[] collateralizedExposurePV = new double[vertexCount];
@@ -171,7 +171,7 @@ public class ExposureAdjustmentAggregator
 		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
 		{
 			double[] pathCollateralizedExposurePV =
-				_pathExposureAdjustmentArray[pathIndex].collateralizedExposurePV();
+				_pathExposureAdjustmentArray[pathIndex].vertexCollateralizedExposurePV();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -195,7 +195,7 @@ public class ExposureAdjustmentAggregator
 
 	public double[] uncollateralizedExposure()
 	{
-		int vertexCount = anchorDates().length;
+		int vertexCount = vertexDates().length;
 
 		int pathCount = _pathExposureAdjustmentArray.length;
 		double[] uncollateralizedExposure = new double[vertexCount];
@@ -208,7 +208,7 @@ public class ExposureAdjustmentAggregator
 		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
 		{
 			double[] pathUncollateralizedExposure =
-				_pathExposureAdjustmentArray[pathIndex].uncollateralizedExposure();
+				_pathExposureAdjustmentArray[pathIndex].vertexUncollateralizedExposure();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -230,7 +230,7 @@ public class ExposureAdjustmentAggregator
 
 	public double[] uncollateralizedExposurePV()
 	{
-		int vertexCount = anchorDates().length;
+		int vertexCount = vertexDates().length;
 
 		int pathCount = _pathExposureAdjustmentArray.length;
 		double[] uncollateralizedExposurePV = new double[vertexCount];
@@ -243,7 +243,7 @@ public class ExposureAdjustmentAggregator
 		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
 		{
 			double[] pathUncollateralizedExposurePV =
-				_pathExposureAdjustmentArray[pathIndex].uncollateralizedExposurePV();
+				_pathExposureAdjustmentArray[pathIndex].vertexUncollateralizedExposurePV();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -268,7 +268,7 @@ public class ExposureAdjustmentAggregator
 
 	public double[] collateralizedPositiveExposure()
 	{
-		int vertexCount = anchorDates().length;
+		int vertexCount = vertexDates().length;
 
 		int pathCount = _pathExposureAdjustmentArray.length;
 		double[] collateralizedPositiveExposure = new double[vertexCount];
@@ -281,7 +281,7 @@ public class ExposureAdjustmentAggregator
 		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
 		{
 			double[] pathCollateralizedPositiveExposure =
-				_pathExposureAdjustmentArray[pathIndex].collateralizedPositiveExposure();
+				_pathExposureAdjustmentArray[pathIndex].vertexCollateralizedPositiveExposure();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -306,7 +306,7 @@ public class ExposureAdjustmentAggregator
 
 	public double[] collateralizedPositiveExposurePV()
 	{
-		int vertexCount = anchorDates().length;
+		int vertexCount = vertexDates().length;
 
 		int pathCount = _pathExposureAdjustmentArray.length;
 		double[] collateralizedPositiveExposurePV = new double[vertexCount];
@@ -319,7 +319,7 @@ public class ExposureAdjustmentAggregator
 		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
 		{
 			double[] pathCollateralizedPositiveExposurePV =
-				_pathExposureAdjustmentArray[pathIndex].collateralizedPositiveExposurePV();
+				_pathExposureAdjustmentArray[pathIndex].vertexCollateralizedPositiveExposurePV();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -344,7 +344,7 @@ public class ExposureAdjustmentAggregator
 
 	public double[] uncollateralizedPositiveExposure()
 	{
-		int vertexCount = anchorDates().length;
+		int vertexCount = vertexDates().length;
 
 		int pathCount = _pathExposureAdjustmentArray.length;
 		double[] uncollateralizedPositiveExposure = new double[vertexCount];
@@ -357,7 +357,7 @@ public class ExposureAdjustmentAggregator
 		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
 		{
 			double[] pathUncollateralizedPositiveExposure =
-				_pathExposureAdjustmentArray[pathIndex].uncollateralizedPositiveExposure();
+				_pathExposureAdjustmentArray[pathIndex].vertexUncollateralizedPositiveExposure();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -382,7 +382,7 @@ public class ExposureAdjustmentAggregator
 
 	public double[] uncollateralizedPositiveExposurePV()
 	{
-		int vertexCount = anchorDates().length;
+		int vertexCount = vertexDates().length;
 
 		int pathCount = _pathExposureAdjustmentArray.length;
 		double[] uncollateralizedPositiveExposurePV = new double[vertexCount];
@@ -395,7 +395,7 @@ public class ExposureAdjustmentAggregator
 		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
 		{
 			double[] pathUncollateralizedPositiveExposurePV =
-				_pathExposureAdjustmentArray[pathIndex].uncollateralizedPositiveExposurePV();
+				_pathExposureAdjustmentArray[pathIndex].vertexUncollateralizedPositiveExposurePV();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -420,7 +420,7 @@ public class ExposureAdjustmentAggregator
 
 	public double[] collateralizedNegativeExposure()
 	{
-		int vertexCount = anchorDates().length;
+		int vertexCount = vertexDates().length;
 
 		int pathCount = _pathExposureAdjustmentArray.length;
 		double[] collateralizedNegativeExposure = new double[vertexCount];
@@ -433,7 +433,7 @@ public class ExposureAdjustmentAggregator
 		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
 		{
 			double[] pathCollateralizedNegativeExposure =
-				_pathExposureAdjustmentArray[pathIndex].collateralizedNegativeExposure();
+				_pathExposureAdjustmentArray[pathIndex].vertexCollateralizedNegativeExposure();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -458,7 +458,7 @@ public class ExposureAdjustmentAggregator
 
 	public double[] collateralizedNegativeExposurePV()
 	{
-		int vertexCount = anchorDates().length;
+		int vertexCount = vertexDates().length;
 
 		int pathCount = _pathExposureAdjustmentArray.length;
 		double[] collateralizedNegativeExposurePV = new double[vertexCount];
@@ -471,7 +471,7 @@ public class ExposureAdjustmentAggregator
 		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
 		{
 			double[] pathCollateralizedNegativeExposurePV =
-				_pathExposureAdjustmentArray[pathIndex].collateralizedNegativeExposurePV();
+				_pathExposureAdjustmentArray[pathIndex].vertexCollateralizedNegativeExposurePV();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -496,7 +496,7 @@ public class ExposureAdjustmentAggregator
 
 	public double[] uncollateralizedNegativeExposure()
 	{
-		int vertexCount = anchorDates().length;
+		int vertexCount = vertexDates().length;
 
 		int pathCount = _pathExposureAdjustmentArray.length;
 		double[] uncollateralizedNegativeExposure = new double[vertexCount];
@@ -509,7 +509,7 @@ public class ExposureAdjustmentAggregator
 		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
 		{
 			double[] pathUncollateralizedNegativeExposure =
-				_pathExposureAdjustmentArray[pathIndex].uncollateralizedNegativeExposure();
+				_pathExposureAdjustmentArray[pathIndex].vertexUncollateralizedNegativeExposure();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -534,7 +534,7 @@ public class ExposureAdjustmentAggregator
 
 	public double[] uncollateralizedNegativeExposurePV()
 	{
-		int vertexCount = anchorDates().length;
+		int vertexCount = vertexDates().length;
 
 		int pathCount = _pathExposureAdjustmentArray.length;
 		double[] uncollateralizedNegativeExposurePV = new double[vertexCount];
@@ -547,7 +547,7 @@ public class ExposureAdjustmentAggregator
 		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
 		{
 			double[] pathUncollateralizedNegativeExposurePV =
-				_pathExposureAdjustmentArray[pathIndex].uncollateralizedNegativeExposurePV();
+				_pathExposureAdjustmentArray[pathIndex].vertexUncollateralizedNegativeExposurePV();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -565,150 +565,6 @@ public class ExposureAdjustmentAggregator
 	}
 
 	/**
-	 * Retrieve the Array of Credit Exposures
-	 * 
-	 * @return The Array of Credit Exposures
-	 */
-
-	public double[] creditExposure()
-	{
-		int vertexCount = anchorDates().length;
-
-		double[] creditExposure = new double[vertexCount];
-		int pathCount = _pathExposureAdjustmentArray.length;
-
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			creditExposure[vertexIndex] = 0.;
-		}
-
-		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
-		{
-			double[] pathCreditExposure = _pathExposureAdjustmentArray[pathIndex].creditExposure();
-
-			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-			{
-				creditExposure[vertexIndex] += pathCreditExposure[vertexIndex];
-			}
-		}
-
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			creditExposure[vertexIndex] /= pathCount;
-		}
-
-		return creditExposure;
-	}
-
-	/**
-	 * Retrieve the Array of Credit Exposure PV
-	 * 
-	 * @return The Array of Credit Exposure PV
-	 */
-
-	public double[] creditExposurePV()
-	{
-		int vertexCount = anchorDates().length;
-
-		int pathCount = _pathExposureAdjustmentArray.length;
-		double[] creditExposurePV = new double[vertexCount];
-
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			creditExposurePV[vertexIndex] = 0.;
-		}
-
-		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
-		{
-			double[] pathCreditExposurePV = _pathExposureAdjustmentArray[pathIndex].creditExposurePV();
-
-			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-			{
-				creditExposurePV[vertexIndex] += pathCreditExposurePV[vertexIndex];
-			}
-		}
-
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			creditExposurePV[vertexIndex] /= pathCount;
-		}
-
-		return creditExposurePV;
-	}
-
-	/**
-	 * Retrieve the Array of Debt Exposures
-	 * 
-	 * @return The Array of Debt Exposures
-	 */
-
-	public double[] debtExposure()
-	{
-		int vertexCount = anchorDates().length;
-
-		double[] debtExposure = new double[vertexCount];
-		int pathCount = _pathExposureAdjustmentArray.length;
-
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			debtExposure[vertexIndex] = 0.;
-		}
-
-		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
-		{
-			double[] pathDebtExposure = _pathExposureAdjustmentArray[pathIndex].debtExposure();
-
-			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-			{
-				debtExposure[vertexIndex] += pathDebtExposure[vertexIndex];
-			}
-		}
-
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			debtExposure[vertexIndex] /= pathCount;
-		}
-
-		return debtExposure;
-	}
-
-	/**
-	 * Retrieve the Array of Debt Exposure PV
-	 * 
-	 * @return The Array of Debt Exposure PV
-	 */
-
-	public double[] debtExposurePV()
-	{
-		int vertexCount = anchorDates().length;
-
-		int pathCount = _pathExposureAdjustmentArray.length;
-		double[] debtExposurePV = new double[vertexCount];
-
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			debtExposurePV[vertexIndex] = 0.;
-		}
-
-		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
-		{
-			double[] pathDebtExposurePV = _pathExposureAdjustmentArray[pathIndex].debtExposurePV();
-
-			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-			{
-				debtExposurePV[vertexIndex] += pathDebtExposurePV[vertexIndex];
-			}
-		}
-
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			debtExposurePV[vertexIndex] /= pathCount;
-		}
-
-		return debtExposurePV;
-	}
-
-	/**
 	 * Retrieve the Array of Funding Exposures
 	 * 
 	 * @return The Array of Funding Exposures
@@ -716,7 +572,7 @@ public class ExposureAdjustmentAggregator
 
 	public double[] fundingExposure()
 	{
-		int vertexCount = anchorDates().length;
+		int vertexCount = vertexDates().length;
 
 		double[] fundingExposure = new double[vertexCount];
 		int pathCount = _pathExposureAdjustmentArray.length;
@@ -728,7 +584,7 @@ public class ExposureAdjustmentAggregator
 
 		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
 		{
-			double[] pathFundingExposure = _pathExposureAdjustmentArray[pathIndex].fundingExposure();
+			double[] pathFundingExposure = _pathExposureAdjustmentArray[pathIndex].vertexFundingExposure();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -752,7 +608,7 @@ public class ExposureAdjustmentAggregator
 
 	public double[] fundingExposurePV()
 	{
-		int vertexCount = anchorDates().length;
+		int vertexCount = vertexDates().length;
 
 		int pathCount = _pathExposureAdjustmentArray.length;
 		double[] fundingExposurePV = new double[vertexCount];
@@ -764,7 +620,8 @@ public class ExposureAdjustmentAggregator
 
 		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
 		{
-			double[] pathFundingExposurePV = _pathExposureAdjustmentArray[pathIndex].fundingExposurePV();
+			double[] pathFundingExposurePV =
+				_pathExposureAdjustmentArray[pathIndex].vertexFundingExposurePV();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -1155,7 +1012,7 @@ public class ExposureAdjustmentAggregator
 
 	public org.drip.xva.gross.ExposureAdjustmentDigest digest()
 	{
-		int vertexCount = anchorDates().length;
+		int vertexCount = vertexDates().length;
 
 		int pathCount = _pathExposureAdjustmentArray.length;
 		double[] pathCVA = new double[pathCount];
@@ -1171,11 +1028,7 @@ public class ExposureAdjustmentAggregator
 		double[] pathCOLVA = new double[pathCount];
 		double[] pathTotalVA = new double[pathCount];
 		double[] pathFTDCOLVA = new double[pathCount];
-		double[][] debtExposure = new double[vertexCount][pathCount];
-		double[][] creditExposure = new double[vertexCount][pathCount];
-		double[][] debtExposurePV = new double[vertexCount][pathCount];
 		double[][] fundingExposure = new double[vertexCount][pathCount];
-		double[][] creditExposurePV = new double[vertexCount][pathCount];
 		double[][] fundingExposurePV = new double[vertexCount][pathCount];
 		double[][] collateralizedExposure = new double[vertexCount][pathCount];
 		double[][] uncollateralizedExposure = new double[vertexCount][pathCount];
@@ -1212,52 +1065,45 @@ public class ExposureAdjustmentAggregator
 		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
 		{
 			double[] pathCollateralizedExposure =
-				_pathExposureAdjustmentArray[pathIndex].collateralizedExposure();
+				_pathExposureAdjustmentArray[pathIndex].vertexCollateralizedExposure();
 
 			double[] pathCollateralizedExposurePV =
-				_pathExposureAdjustmentArray[pathIndex].collateralizedExposurePV();
+				_pathExposureAdjustmentArray[pathIndex].vertexCollateralizedExposurePV();
 
 			double[] pathCollateralizedPositiveExposure =
-				_pathExposureAdjustmentArray[pathIndex].collateralizedPositiveExposure();
+				_pathExposureAdjustmentArray[pathIndex].vertexCollateralizedPositiveExposure();
 
 			double[] pathCollateralizedPositiveExposurePV =
-				_pathExposureAdjustmentArray[pathIndex].collateralizedPositiveExposurePV();
+				_pathExposureAdjustmentArray[pathIndex].vertexCollateralizedPositiveExposurePV();
 
 			double[] pathCollateralizedNegativeExposure =
-				_pathExposureAdjustmentArray[pathIndex].collateralizedNegativeExposure();
+				_pathExposureAdjustmentArray[pathIndex].vertexCollateralizedNegativeExposure();
 
 			double[] pathCollateralizedNegativeExposurePV =
-				_pathExposureAdjustmentArray[pathIndex].collateralizedNegativeExposurePV();
+				_pathExposureAdjustmentArray[pathIndex].vertexCollateralizedNegativeExposurePV();
 
 			double[] pathUncollateralizedExposure =
-				_pathExposureAdjustmentArray[pathIndex].uncollateralizedExposure();
+				_pathExposureAdjustmentArray[pathIndex].vertexUncollateralizedExposure();
 
 			double[] pathUncollateralizedExposurePV =
-				_pathExposureAdjustmentArray[pathIndex].uncollateralizedExposurePV();
+				_pathExposureAdjustmentArray[pathIndex].vertexUncollateralizedExposurePV();
 
 			double[] pathUncollateralizedPositiveExposure =
-				_pathExposureAdjustmentArray[pathIndex].uncollateralizedPositiveExposure();
+				_pathExposureAdjustmentArray[pathIndex].vertexUncollateralizedPositiveExposure();
 
 			double[] pathUncollateralizedPositiveExposurePV =
-				_pathExposureAdjustmentArray[pathIndex].uncollateralizedPositiveExposurePV();
+				_pathExposureAdjustmentArray[pathIndex].vertexUncollateralizedPositiveExposurePV();
 
 			double[] pathUncollateralizedNegativeExposure =
-				_pathExposureAdjustmentArray[pathIndex].uncollateralizedNegativeExposure();
+				_pathExposureAdjustmentArray[pathIndex].vertexUncollateralizedNegativeExposure();
 
 			double[] pathUncollateralizedNegativeExposurePV =
-				_pathExposureAdjustmentArray[pathIndex].uncollateralizedNegativeExposurePV();
+				_pathExposureAdjustmentArray[pathIndex].vertexUncollateralizedNegativeExposurePV();
 
-			double[] pathCreditExposure = _pathExposureAdjustmentArray[pathIndex].creditExposure();
+			double[] pathFundingExposure = _pathExposureAdjustmentArray[pathIndex].vertexFundingExposure();
 
-			double[] pathCreditExposurePV = _pathExposureAdjustmentArray[pathIndex].creditExposurePV();
-
-			double[] pathDebtExposure = _pathExposureAdjustmentArray[pathIndex].debtExposure();
-
-			double[] pathDebtExposurePV = _pathExposureAdjustmentArray[pathIndex].debtExposurePV();
-
-			double[] pathFundingExposure = _pathExposureAdjustmentArray[pathIndex].fundingExposure();
-
-			double[] pathFundingExposurePV = _pathExposureAdjustmentArray[pathIndex].fundingExposurePV();
+			double[] pathFundingExposurePV =
+				_pathExposureAdjustmentArray[pathIndex].vertexFundingExposurePV();
 
 			try
 			{
@@ -1324,10 +1170,6 @@ public class ExposureAdjustmentAggregator
 					pathUncollateralizedNegativeExposure[vertexIndex];
 				uncollateralizedNegativeExposurePV[vertexIndex][pathIndex] =
 					pathUncollateralizedNegativeExposurePV[vertexIndex];
-				creditExposure[vertexIndex][pathIndex] = pathCreditExposure[vertexIndex];
-				creditExposurePV[vertexIndex][pathIndex] = pathCreditExposurePV[vertexIndex];
-				debtExposure[vertexIndex][pathIndex] = pathDebtExposure[vertexIndex];
-				debtExposurePV[vertexIndex][pathIndex] = pathDebtExposurePV[vertexIndex];
 				fundingExposure[vertexIndex][pathIndex] = pathFundingExposure[vertexIndex];
 				fundingExposurePV[vertexIndex][pathIndex] = pathFundingExposurePV[vertexIndex];
 			}
@@ -1361,10 +1203,6 @@ public class ExposureAdjustmentAggregator
 				uncollateralizedPositiveExposurePV,
 				uncollateralizedNegativeExposure,
 				uncollateralizedNegativeExposurePV,
-				creditExposure,
-				creditExposurePV,
-				debtExposure,
-				debtExposurePV,
 				fundingExposure,
 				fundingExposurePV
 			);

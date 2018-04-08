@@ -81,13 +81,13 @@ public class AlbaneseAndersenNettingGroupPath extends org.drip.xva.netting.Credi
 	 */
 
 	public static final AlbaneseAndersenNettingGroupPath Mono (
-		final org.drip.xva.hypothecation.CollateralGroupPath collateralGroupPath,
+		final org.drip.xva.netting.CollateralGroupPath collateralGroupPath,
 		final org.drip.xva.universe.MarketPath marketPath)
 	{
 		try
 		{
 <span class="nc" id="L89">			return new org.drip.xva.strategy.AlbaneseAndersenNettingGroupPath (</span>
-				new org.drip.xva.hypothecation.CollateralGroupPath[]
+				new org.drip.xva.netting.CollateralGroupPath[]
 				{
 					collateralGroupPath
 				},
@@ -112,7 +112,7 @@ public class AlbaneseAndersenNettingGroupPath extends org.drip.xva.netting.Credi
 	 */
 
 	public AlbaneseAndersenNettingGroupPath (
-		final org.drip.xva.hypothecation.CollateralGroupPath[] collateralGroupPathArray,
+		final org.drip.xva.netting.CollateralGroupPath[] collateralGroupPathArray,
 		final org.drip.xva.universe.MarketPath marketPath)
 		throws java.lang.Exception
 	{
@@ -123,25 +123,23 @@ public class AlbaneseAndersenNettingGroupPath extends org.drip.xva.netting.Credi
 <span class="fc" id="L123">	}</span>
 
 	@Override public double creditAdjustment()
-		throws java.lang.Exception
 	{
-<span class="fc" id="L128">		return bilateralCreditAdjustment();</span>
+<span class="nc" id="L127">		return bilateralCreditAdjustment();</span>
 	}
 
 	@Override public double debtAdjustment()
 	{
-<span class="fc" id="L133">		return unilateralDebtAdjustment();</span>
+<span class="nc" id="L132">		return bilateralDebtAdjustment();</span>
 	}
 
 	@Override public double[] periodCreditAdjustment()
-		throws java.lang.Exception
 	{
-<span class="fc" id="L139">		return periodBilateralCreditAdjustment();</span>
+<span class="fc" id="L137">		return periodBilateralCreditAdjustment();</span>
 	}
 
 	@Override public double[] periodDebtAdjustment()
 	{
-<span class="fc" id="L144">		return periodUnilateralDebtAdjustment();</span>
+<span class="fc" id="L142">		return periodBilateralDebtAdjustment();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

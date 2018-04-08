@@ -117,14 +117,14 @@ public class GroupPathExposureAdjustment implements org.drip.xva.gross.PathExpos
 		return _monoPathExposureAdjustmentArray;
 	}
 
-	@Override public org.drip.analytics.date.JulianDate[] anchorDates()
+	@Override public org.drip.analytics.date.JulianDate[] vertexDates()
 	{
-		return _monoPathExposureAdjustmentArray[0].anchorDates();
+		return _monoPathExposureAdjustmentArray[0].vertexDates();
 	}
 
-	@Override public double[] collateralizedExposure()
+	@Override public double[] vertexCollateralizedExposure()
 	{
-		int vertexCount = anchorDates().length;
+		int vertexCount = vertexDates().length;
 
 		double[] collateralizedExposure = new double[vertexCount];
 		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;
@@ -137,7 +137,7 @@ public class GroupPathExposureAdjustment implements org.drip.xva.gross.PathExpos
 		for (int adiabatGroupIndex = 0; adiabatGroupIndex < adiabatGroupCount; ++adiabatGroupIndex)
 		{
 			double[] counterPartyGroupCollateralizedExposure =
-				_monoPathExposureAdjustmentArray[adiabatGroupIndex].collateralizedExposure();
+				_monoPathExposureAdjustmentArray[adiabatGroupIndex].vertexCollateralizedExposure();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -148,9 +148,9 @@ public class GroupPathExposureAdjustment implements org.drip.xva.gross.PathExpos
 		return collateralizedExposure;
 	}
 
-	@Override public double[] collateralizedExposurePV()
+	@Override public double[] vertexCollateralizedExposurePV()
 	{
-		int vertexCount = anchorDates().length;
+		int vertexCount = vertexDates().length;
 
 		double[] collateralizedExposurePV = new double[vertexCount];
 		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;
@@ -163,7 +163,7 @@ public class GroupPathExposureAdjustment implements org.drip.xva.gross.PathExpos
 		for (int adiabatGroupIndex = 0; adiabatGroupIndex < adiabatGroupCount; ++adiabatGroupIndex)
 		{
 			double[] counterPartyGroupCollateralizedExposurePV =
-				_monoPathExposureAdjustmentArray[adiabatGroupIndex].collateralizedExposurePV();
+				_monoPathExposureAdjustmentArray[adiabatGroupIndex].vertexCollateralizedExposurePV();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -175,9 +175,9 @@ public class GroupPathExposureAdjustment implements org.drip.xva.gross.PathExpos
 		return collateralizedExposurePV;
 	}
 
-	@Override public double[] uncollateralizedExposure()
+	@Override public double[] vertexUncollateralizedExposure()
 	{
-		int vertexCount = anchorDates().length;
+		int vertexCount = vertexDates().length;
 
 		double[] uncollateralizedExposure = new double[vertexCount];
 		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;
@@ -190,7 +190,7 @@ public class GroupPathExposureAdjustment implements org.drip.xva.gross.PathExpos
 		for (int adiabatGroupIndex = 0; adiabatGroupIndex < adiabatGroupCount; ++adiabatGroupIndex)
 		{
 			double[] pathUncollateralizedExposure =
-				_monoPathExposureAdjustmentArray[adiabatGroupIndex].uncollateralizedExposure();
+				_monoPathExposureAdjustmentArray[adiabatGroupIndex].vertexUncollateralizedExposure();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -201,9 +201,9 @@ public class GroupPathExposureAdjustment implements org.drip.xva.gross.PathExpos
 		return uncollateralizedExposure;
 	}
 
-	@Override public double[] uncollateralizedExposurePV()
+	@Override public double[] vertexUncollateralizedExposurePV()
 	{
-		int vertexCount = anchorDates().length;
+		int vertexCount = vertexDates().length;
 
 		double[] uncollateralizedExposurePV = new double[vertexCount];
 		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;
@@ -216,7 +216,7 @@ public class GroupPathExposureAdjustment implements org.drip.xva.gross.PathExpos
 		for (int adiabatGroupIndex = 0; adiabatGroupIndex < adiabatGroupCount; ++adiabatGroupIndex)
 		{
 			double[] pathUncollateralizedExposurePV =
-				_monoPathExposureAdjustmentArray[adiabatGroupIndex].uncollateralizedExposurePV();
+				_monoPathExposureAdjustmentArray[adiabatGroupIndex].vertexUncollateralizedExposurePV();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -227,9 +227,9 @@ public class GroupPathExposureAdjustment implements org.drip.xva.gross.PathExpos
 		return uncollateralizedExposurePV;
 	}
 
-	@Override public double[] collateralizedPositiveExposure()
+	@Override public double[] vertexCollateralizedPositiveExposure()
 	{
-		int vertexCount = anchorDates().length;
+		int vertexCount = vertexDates().length;
 
 		double[] collateralizedPositiveExposure = new double[vertexCount];
 		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;
@@ -242,7 +242,7 @@ public class GroupPathExposureAdjustment implements org.drip.xva.gross.PathExpos
 		for (int adiabatGroupIndex = 0; adiabatGroupIndex < adiabatGroupCount; ++adiabatGroupIndex)
 		{
 			double[] pathCollateralizedPositiveExposure =
-				_monoPathExposureAdjustmentArray[adiabatGroupIndex].collateralizedPositiveExposure();
+				_monoPathExposureAdjustmentArray[adiabatGroupIndex].vertexCollateralizedPositiveExposure();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -254,9 +254,9 @@ public class GroupPathExposureAdjustment implements org.drip.xva.gross.PathExpos
 		return collateralizedPositiveExposure;
 	}
 
-	@Override public double[] collateralizedPositiveExposurePV()
+	@Override public double[] vertexCollateralizedPositiveExposurePV()
 	{
-		int vertexCount = anchorDates().length;
+		int vertexCount = vertexDates().length;
 
 		double[] collateralizedPositiveExposurePV = new double[vertexCount];
 		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;
@@ -269,7 +269,7 @@ public class GroupPathExposureAdjustment implements org.drip.xva.gross.PathExpos
 		for (int adiabatGroupIndex = 0; adiabatGroupIndex < adiabatGroupCount; ++adiabatGroupIndex)
 		{
 			double[] pathCollateralizedPositiveExposurePV =
-				_monoPathExposureAdjustmentArray[adiabatGroupIndex].collateralizedPositiveExposurePV();
+				_monoPathExposureAdjustmentArray[adiabatGroupIndex].vertexCollateralizedPositiveExposurePV();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -281,9 +281,9 @@ public class GroupPathExposureAdjustment implements org.drip.xva.gross.PathExpos
 		return collateralizedPositiveExposurePV;
 	}
 
-	@Override public double[] uncollateralizedPositiveExposure()
+	@Override public double[] vertexUncollateralizedPositiveExposure()
 	{
-		int vertexCount = anchorDates().length;
+		int vertexCount = vertexDates().length;
 
 		double[] uncollateralizedPositiveExposure = new double[vertexCount];
 		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;
@@ -296,7 +296,7 @@ public class GroupPathExposureAdjustment implements org.drip.xva.gross.PathExpos
 		for (int adiabatGroupIndex = 0; adiabatGroupIndex < adiabatGroupCount; ++adiabatGroupIndex)
 		{
 			double[] pathUncollateralizedPositiveExposure =
-				_monoPathExposureAdjustmentArray[adiabatGroupIndex].uncollateralizedPositiveExposure();
+				_monoPathExposureAdjustmentArray[adiabatGroupIndex].vertexUncollateralizedPositiveExposure();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -308,9 +308,9 @@ public class GroupPathExposureAdjustment implements org.drip.xva.gross.PathExpos
 		return uncollateralizedPositiveExposure;
 	}
 
-	@Override public double[] uncollateralizedPositiveExposurePV()
+	@Override public double[] vertexUncollateralizedPositiveExposurePV()
 	{
-		int vertexCount = anchorDates().length;
+		int vertexCount = vertexDates().length;
 
 		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;
 		double[] uncollateralizedPositiveExposurePV = new double[vertexCount];
@@ -323,7 +323,7 @@ public class GroupPathExposureAdjustment implements org.drip.xva.gross.PathExpos
 		for (int adiabatGroupIndex = 0; adiabatGroupIndex < adiabatGroupCount; ++adiabatGroupIndex)
 		{
 			double[] pathUncollateralizedPositiveExposurePV =
-				_monoPathExposureAdjustmentArray[adiabatGroupIndex].uncollateralizedPositiveExposurePV();
+				_monoPathExposureAdjustmentArray[adiabatGroupIndex].vertexUncollateralizedPositiveExposurePV();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -335,9 +335,9 @@ public class GroupPathExposureAdjustment implements org.drip.xva.gross.PathExpos
 		return uncollateralizedPositiveExposurePV;
 	}
 
-	@Override public double[] collateralizedNegativeExposure()
+	@Override public double[] vertexCollateralizedNegativeExposure()
 	{
-		int vertexCount = anchorDates().length;
+		int vertexCount = vertexDates().length;
 
 		double[] collateralizedNegativeExposure = new double[vertexCount];
 		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;
@@ -350,7 +350,7 @@ public class GroupPathExposureAdjustment implements org.drip.xva.gross.PathExpos
 		for (int adiabatGroupIndex = 0; adiabatGroupIndex < adiabatGroupCount; ++adiabatGroupIndex)
 		{
 			double[] pathCollateralizedNegativeExposure =
-				_monoPathExposureAdjustmentArray[adiabatGroupIndex].collateralizedNegativeExposure();
+				_monoPathExposureAdjustmentArray[adiabatGroupIndex].vertexCollateralizedNegativeExposure();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -362,9 +362,9 @@ public class GroupPathExposureAdjustment implements org.drip.xva.gross.PathExpos
 		return collateralizedNegativeExposure;
 	}
 
-	@Override public double[] collateralizedNegativeExposurePV()
+	@Override public double[] vertexCollateralizedNegativeExposurePV()
 	{
-		int vertexCount = anchorDates().length;
+		int vertexCount = vertexDates().length;
 
 		double[] collateralizedNegativeExposurePV = new double[vertexCount];
 		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;
@@ -377,7 +377,7 @@ public class GroupPathExposureAdjustment implements org.drip.xva.gross.PathExpos
 		for (int adiabatGroupIndex = 0; adiabatGroupIndex < adiabatGroupCount; ++adiabatGroupIndex)
 		{
 			double[] pathCollateralizedNegativeExposurePV =
-				_monoPathExposureAdjustmentArray[adiabatGroupIndex].collateralizedNegativeExposurePV();
+				_monoPathExposureAdjustmentArray[adiabatGroupIndex].vertexCollateralizedNegativeExposurePV();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -389,9 +389,9 @@ public class GroupPathExposureAdjustment implements org.drip.xva.gross.PathExpos
 		return collateralizedNegativeExposurePV;
 	}
 
-	@Override public double[] uncollateralizedNegativeExposure()
+	@Override public double[] vertexUncollateralizedNegativeExposure()
 	{
-		int vertexCount = anchorDates().length;
+		int vertexCount = vertexDates().length;
 
 		double[] uncollateralizedNegativeExposure = new double[vertexCount];
 		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;
@@ -404,7 +404,7 @@ public class GroupPathExposureAdjustment implements org.drip.xva.gross.PathExpos
 		for (int adiabatGroupIndex = 0; adiabatGroupIndex < adiabatGroupCount; ++adiabatGroupIndex)
 		{
 			double[] adblPathUncollateralizedNegativeExposure =
-				_monoPathExposureAdjustmentArray[adiabatGroupIndex].uncollateralizedNegativeExposure();
+				_monoPathExposureAdjustmentArray[adiabatGroupIndex].vertexUncollateralizedNegativeExposure();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -416,9 +416,9 @@ public class GroupPathExposureAdjustment implements org.drip.xva.gross.PathExpos
 		return uncollateralizedNegativeExposure;
 	}
 
-	@Override public double[] uncollateralizedNegativeExposurePV()
+	@Override public double[] vertexUncollateralizedNegativeExposurePV()
 	{
-		int vertexCount = anchorDates().length;
+		int vertexCount = vertexDates().length;
 
 		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;
 		double[] uncollateralizedNegativeExposurePV = new double[vertexCount];
@@ -431,7 +431,7 @@ public class GroupPathExposureAdjustment implements org.drip.xva.gross.PathExpos
 		for (int adiabatGroupIndex = 0; adiabatGroupIndex < adiabatGroupCount; ++adiabatGroupIndex)
 		{
 			double[] pathUncollateralizedNegativeExposurePV =
-				_monoPathExposureAdjustmentArray[adiabatGroupIndex].uncollateralizedNegativeExposurePV();
+				_monoPathExposureAdjustmentArray[adiabatGroupIndex].vertexUncollateralizedNegativeExposurePV();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -443,113 +443,9 @@ public class GroupPathExposureAdjustment implements org.drip.xva.gross.PathExpos
 		return uncollateralizedNegativeExposurePV;
 	}
 
-	@Override public double[] creditExposure()
+	@Override public double[] vertexFundingExposure()
 	{
-		int vertexCount = anchorDates().length;
-
-		double[] adblCreditExposure = new double[vertexCount];
-		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;
-
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			adblCreditExposure[vertexIndex] = 0.;
-		}
-
-		for (int adiabatGroupIndex = 0; adiabatGroupIndex < adiabatGroupCount; ++adiabatGroupIndex)
-		{
-			double[] pathCreditExposure =
-				_monoPathExposureAdjustmentArray[adiabatGroupIndex].creditExposure();
-
-			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-			{
-				adblCreditExposure[vertexIndex] += pathCreditExposure[vertexIndex];
-			}
-		}
-
-		return adblCreditExposure;
-	}
-
-	@Override public double[] creditExposurePV()
-	{
-		int vertexCount = anchorDates().length;
-
-		double[] adblCreditExposure = new double[vertexCount];
-		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;
-
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			adblCreditExposure[vertexIndex] = 0.;
-		}
-
-		for (int adiabatGroupIndex = 0; adiabatGroupIndex < adiabatGroupCount; ++adiabatGroupIndex)
-		{
-			double[] pathCreditExposure =
-				_monoPathExposureAdjustmentArray[adiabatGroupIndex].creditExposurePV();
-
-			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-			{
-				adblCreditExposure[vertexIndex] += pathCreditExposure[vertexIndex];
-			}
-		}
-
-		return adblCreditExposure;
-	}
-
-	@Override public double[] debtExposure()
-	{
-		int vertexCount = anchorDates().length;
-
-		double[] debtExposure = new double[vertexCount];
-		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;
-
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			debtExposure[vertexIndex] = 0.;
-		}
-
-		for (int adiabatGroupIndex = 0; adiabatGroupIndex < adiabatGroupCount; ++adiabatGroupIndex)
-		{
-			double[] pathDebtExposure =
-				_monoPathExposureAdjustmentArray[adiabatGroupIndex].debtExposure();
-
-			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-			{
-				debtExposure[vertexIndex] += pathDebtExposure[vertexIndex];
-			}
-		}
-
-		return debtExposure;
-	}
-
-	@Override public double[] debtExposurePV()
-	{
-		int vertexCount = anchorDates().length;
-
-		double[] debtExposure = new double[vertexCount];
-		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;
-
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			debtExposure[vertexIndex] = 0.;
-		}
-
-		for (int adiabatGroupIndex = 0; adiabatGroupIndex < adiabatGroupCount; ++adiabatGroupIndex)
-		{
-			double[] pathDebtExposure =
-				_monoPathExposureAdjustmentArray[adiabatGroupIndex].debtExposurePV();
-
-			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-			{
-				debtExposure[vertexIndex] += pathDebtExposure[vertexIndex];
-			}
-		}
-
-		return debtExposure;
-	}
-
-	@Override public double[] fundingExposure()
-	{
-		int vertexCount = anchorDates().length;
+		int vertexCount = vertexDates().length;
 
 		double[] fundingExposure = new double[vertexCount];
 		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;
@@ -562,7 +458,7 @@ public class GroupPathExposureAdjustment implements org.drip.xva.gross.PathExpos
 		for (int adiabatGroupIndex = 0; adiabatGroupIndex < adiabatGroupCount; ++adiabatGroupIndex)
 		{
 			double[] pathFundingExposure =
-				_monoPathExposureAdjustmentArray[adiabatGroupIndex].fundingExposure();
+				_monoPathExposureAdjustmentArray[adiabatGroupIndex].vertexFundingExposure();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -573,9 +469,9 @@ public class GroupPathExposureAdjustment implements org.drip.xva.gross.PathExpos
 		return fundingExposure;
 	}
 
-	@Override public double[] fundingExposurePV()
+	@Override public double[] vertexFundingExposurePV()
 	{
-		int vertexCount = anchorDates().length;
+		int vertexCount = vertexDates().length;
 
 		double[] fundingExposure = new double[vertexCount];
 		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;
@@ -588,7 +484,7 @@ public class GroupPathExposureAdjustment implements org.drip.xva.gross.PathExpos
 		for (int adiabatGroupIndex = 0; adiabatGroupIndex < adiabatGroupCount; ++adiabatGroupIndex)
 		{
 			double[] pathFundingExposure =
-				_monoPathExposureAdjustmentArray[adiabatGroupIndex].fundingExposurePV();
+				_monoPathExposureAdjustmentArray[adiabatGroupIndex].vertexFundingExposurePV();
 
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
@@ -597,10 +493,23 @@ public class GroupPathExposureAdjustment implements org.drip.xva.gross.PathExpos
 		}
 
 		return fundingExposure;
+	}
+
+	@Override public double unilateralCollateralAdjustment()
+	{
+		double unilateralCollateralAdjustment = 0.;
+		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;
+
+		for (int adiabatGroupIndex = 0; adiabatGroupIndex < adiabatGroupCount; ++adiabatGroupIndex)
+		{
+			unilateralCollateralAdjustment +=
+				_monoPathExposureAdjustmentArray[adiabatGroupIndex].unilateralCollateralAdjustment();
+		}
+
+		return unilateralCollateralAdjustment;
 	}
 
 	@Override public double bilateralCollateralAdjustment()
-		throws java.lang.Exception
 	{
 		double bilateralCollateralAdjustment = 0.;
 		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;
@@ -615,13 +524,11 @@ public class GroupPathExposureAdjustment implements org.drip.xva.gross.PathExpos
 	}
 
 	@Override public double collateralAdjustment()
-		throws java.lang.Exception
 	{
 		return bilateralCollateralAdjustment();
 	}
 
 	@Override public double unilateralCreditAdjustment()
-		throws java.lang.Exception
 	{
 		double unilateralCreditAdjustment = 0.;
 		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;
@@ -636,7 +543,6 @@ public class GroupPathExposureAdjustment implements org.drip.xva.gross.PathExpos
 	}
 
 	@Override public double bilateralCreditAdjustment()
-		throws java.lang.Exception
 	{
 		double bilateralCreditAdjustment = 0.;
 		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;
@@ -651,13 +557,11 @@ public class GroupPathExposureAdjustment implements org.drip.xva.gross.PathExpos
 	}
 
 	@Override public double creditAdjustment()
-		throws java.lang.Exception
 	{
 		return bilateralCreditAdjustment();
 	}
 
 	@Override public double contraLiabilityCreditAdjustment()
-		throws java.lang.Exception
 	{
 		double contraLiabilityCreditAdjustment = 0.;
 		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;
@@ -672,7 +576,6 @@ public class GroupPathExposureAdjustment implements org.drip.xva.gross.PathExpos
 	}
 
 	@Override public double unilateralDebtAdjustment()
-		throws java.lang.Exception
 	{
 		double unilateralDebtAdjustment = 0.;
 		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;
@@ -687,7 +590,6 @@ public class GroupPathExposureAdjustment implements org.drip.xva.gross.PathExpos
 	}
 
 	@Override public double bilateralDebtAdjustment()
-		throws java.lang.Exception
 	{
 		double bilateralDebtAdjustment = 0.;
 		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;
@@ -702,7 +604,6 @@ public class GroupPathExposureAdjustment implements org.drip.xva.gross.PathExpos
 	}
 
 	@Override public double debtAdjustment()
-		throws java.lang.Exception
 	{
 		double debtAdjustment = 0.;
 		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;
@@ -715,8 +616,49 @@ public class GroupPathExposureAdjustment implements org.drip.xva.gross.PathExpos
 		return debtAdjustment;
 	}
 
+	@Override public double contraAssetDebtAdjustment()
+	{
+		double contraAssetDebtAdjustment = 0.;
+		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;
+
+		for (int adiabatGroupIndex = 0; adiabatGroupIndex < adiabatGroupCount; ++adiabatGroupIndex)
+		{
+			contraAssetDebtAdjustment +=
+				_monoPathExposureAdjustmentArray[adiabatGroupIndex].contraAssetDebtAdjustment();
+		}
+
+		return contraAssetDebtAdjustment;
+	}
+
+	@Override public double unilateralFundingValueAdjustment()
+	{
+		double unilateralFundingValueAdjustment = 0.;
+		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;
+
+		for (int adiabatGroupIndex = 0; adiabatGroupIndex < adiabatGroupCount; ++adiabatGroupIndex)
+		{
+			unilateralFundingValueAdjustment +=
+				_monoPathExposureAdjustmentArray[adiabatGroupIndex].unilateralFundingValueAdjustment();
+		}
+
+		return unilateralFundingValueAdjustment;
+	}
+
+	@Override public double bilateralFundingValueAdjustment()
+	{
+		double bilateralFundingValueAdjustment = 0.;
+		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;
+
+		for (int adiabatGroupIndex = 0; adiabatGroupIndex < adiabatGroupCount; ++adiabatGroupIndex)
+		{
+			bilateralFundingValueAdjustment +=
+				_monoPathExposureAdjustmentArray[adiabatGroupIndex].bilateralFundingValueAdjustment();
+		}
+
+		return bilateralFundingValueAdjustment;
+	}
+
 	@Override public double fundingValueAdjustment()
-		throws java.lang.Exception
 	{
 		double fundingValueAdjustment = 0.;
 		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;
@@ -731,7 +673,6 @@ public class GroupPathExposureAdjustment implements org.drip.xva.gross.PathExpos
 	}
 
 	@Override public double fundingDebtAdjustment()
-		throws java.lang.Exception
 	{
 		double fundingDebtAdjustment = 0.;
 		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;
@@ -788,7 +729,6 @@ public class GroupPathExposureAdjustment implements org.drip.xva.gross.PathExpos
 	}
 
 	@Override public double totalAdjustment()
-		throws java.lang.Exception
 	{
 		double totalAdjustment = 0.;
 		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;

@@ -70,7 +70,7 @@ public class DateTime {
 	/**
 	 * Default constructor initializes the time and date to the current time and current date.
 	 * 
-	 * @throws java.lang.Exception Thrown if the DateTime Instance cnnot be created
+	 * @throws java.lang.Exception Thrown if the DateTime Instance cannot be created
 	 */
 
 	public DateTime()

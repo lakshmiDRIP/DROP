@@ -124,12 +124,12 @@ public class AlbaneseAndersenFundingGroupPath extends org.drip.xva.netting.Fundi
 
 	@Override public double fundingValueAdjustment()
 	{
-		return bilateralFundingValueAdjustment();
+		return unilateralFundingValueAdjustment();
 	}
 
 	@Override public double fundingDebtAdjustment()
 	{
-		return bilateralFundingDebtAdjustment();
+		return unilateralFundingDebtAdjustment();
 	}
 
 	@Override public double fundingCostAdjustment()

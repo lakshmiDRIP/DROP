@@ -272,9 +272,9 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 
 <span class="fc bfc" id="L273" title="All 4 branches covered.">		while (i &lt; iNumDate &amp;&amp; (int) iDate &gt;= (int) _aiDate[i]) {</span>
 <span class="fc bfc" id="L274" title="All 2 branches covered.">			if (_bDiscreteCompounding)</span>
-				/* dblDF *= java.lang.Math.pow (1. + (_adblForwardRate[i] / _iCompoundingFreq), -1. * yearFract
-					(iStartDate, _aiDate[i]) * _iCompoundingFreq); */
-<span class="fc" id="L277">				dblDF /= (1. + (_adblForwardRate[i] * yearFract (iStartDate, _aiDate[i])));</span>
+<span class="fc" id="L275">				dblDF *= java.lang.Math.pow (1. + (_adblForwardRate[i] / _iCompoundingFreq), -1. * yearFract</span>
+<span class="fc" id="L276">					(iStartDate, _aiDate[i]) * _iCompoundingFreq);</span>
+				// dblDF /= (1. + (_adblForwardRate[i] * yearFract (iStartDate, _aiDate[i])));
 			else
 <span class="fc" id="L279">				dblExpArg -= _adblForwardRate[i] * yearFract (iStartDate, _aiDate[i]);</span>
 
@@ -284,9 +284,9 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 <span class="fc bfc" id="L284" title="All 2 branches covered.">		if (i &gt;= iNumDate) i = iNumDate - 1;</span>
 
 <span class="fc bfc" id="L286" title="All 2 branches covered.">		if (_bDiscreteCompounding)</span>
-			/* dblDF *= java.lang.Math.pow (1. + (_adblForwardRate[i] / _iCompoundingFreq), -1. * yearFract
-				(iStartDate, iDate) * _iCompoundingFreq); */
-<span class="fc" id="L289">			dblDF /= (1. + (_adblForwardRate[i] * yearFract (iStartDate, iDate)));</span>
+<span class="fc" id="L287">			dblDF *= java.lang.Math.pow (1. + (_adblForwardRate[i] / _iCompoundingFreq), -1. * yearFract</span>
+<span class="fc" id="L288">				(iStartDate, iDate) * _iCompoundingFreq);</span>
+			// dblDF /= (1. + (_adblForwardRate[i] * yearFract (iStartDate, iDate)));
 		else
 <span class="fc" id="L291">			dblExpArg -= _adblForwardRate[i] * yearFract (iStartDate, iDate);</span>
 

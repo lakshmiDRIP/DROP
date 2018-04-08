@@ -48,8 +48,8 @@ package org.drip.xva.definition;
  */
 
 /**
- * SimpleBalanceSheet implements a Simple Bank Balance Sheet Model as specified in Burgard and Kjaer (2012).
- *  The References are:
+ * SimpleBalanceSheet implements a Simple Dealer Balance Sheet Model as specified in Burgard and Kjaer
+ *  (2012). The References are:
  *  
  *  - Burgard, C., and M. Kjaer (2011): PDE Representations of Derivatives with Bilateral Counter-party Risk
  *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
@@ -89,8 +89,10 @@ public class SimpleBalanceSheet
 <span class="nc" id="L89">	{</span>
 <span class="nc bnc" id="L90" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_asset = asset) ||</span>
 <span class="nc bnc" id="L91" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_liability = liability))</span>
-<span class="nc" id="L92">			throw new java.lang.Exception (&quot;SimpleBalanceSheet Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L93">	}</span>
+		{
+<span class="nc" id="L93">			throw new java.lang.Exception (&quot;SimpleBalanceSheet Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="nc" id="L95">	}</span>
 
 	/**
 	 * Retrieve the Balance Sheet Asset
@@ -100,7 +102,7 @@ public class SimpleBalanceSheet
 
 	public double asset()
 	{
-<span class="nc" id="L103">		return _asset;</span>
+<span class="nc" id="L105">		return _asset;</span>
 	}
 
 	/**
@@ -111,7 +113,7 @@ public class SimpleBalanceSheet
 
 	public double _liability()
 	{
-<span class="nc" id="L114">		return _liability;</span>
+<span class="nc" id="L116">		return _liability;</span>
 	}
 
 	/**
@@ -122,7 +124,7 @@ public class SimpleBalanceSheet
 
 	public double impliedRecovery()
 	{
-<span class="nc" id="L125">		return _asset / _liability;</span>
+<span class="nc" id="L127">		return _asset / _liability;</span>
 	}
 
 	/**
@@ -136,21 +138,24 @@ public class SimpleBalanceSheet
 	public SimpleBalanceSheet derivativeInfusion (
 		final double dblDerivativeValue)
 	{
-<span class="nc bnc" id="L139" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblDerivativeValue) || 0. &gt; dblDerivativeValue)</span>
+<span class="nc bnc" id="L141" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblDerivativeValue) || 0. &gt; dblDerivativeValue)</span>
 		{
-<span class="nc" id="L141">			return null;</span>
+<span class="nc" id="L143">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L146">			return new SimpleBalanceSheet (_asset + dblDerivativeValue, _liability + dblDerivativeValue);</span>
+<span class="nc" id="L148">			return new SimpleBalanceSheet (</span>
+				_asset + dblDerivativeValue,
+				_liability + dblDerivativeValue
+			);
 		}
-<span class="nc" id="L148">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L153">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L150">			e.printStackTrace();</span>
+<span class="nc" id="L155">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L153">		return null;</span>
+<span class="nc" id="L158">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

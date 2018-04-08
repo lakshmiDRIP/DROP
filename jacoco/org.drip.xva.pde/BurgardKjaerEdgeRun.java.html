@@ -73,8 +73,8 @@ public class BurgardKjaerEdgeRun extends org.drip.xva.pde.BurgardKjaerEdge
 {
 <span class="fc" id="L74">	private double _derivativeXVAFundingGrowth = java.lang.Double.NaN;</span>
 <span class="fc" id="L75">	private double _derivativeXVAHedgeErrorGrowth = java.lang.Double.NaN;</span>
-<span class="fc" id="L76">	private double _derivativeXVABankDefaultGrowth = java.lang.Double.NaN;</span>
-<span class="fc" id="L77">	private double _derivativeXVACounterPartyDefaultGrowth = java.lang.Double.NaN;</span>
+<span class="fc" id="L76">	private double _derivativeXVAClientDefaultGrowth = java.lang.Double.NaN;</span>
+<span class="fc" id="L77">	private double _derivativeXVADealerDefaultGrowth = java.lang.Double.NaN;</span>
 
 	/**
 	 * BurgardKjaerEdgeRun Constructor
@@ -87,9 +87,10 @@ public class BurgardKjaerEdgeRun extends org.drip.xva.pde.BurgardKjaerEdge
 	 * 		Growth
 	 * @param derivativeXVACollateralGrowth The Collateral Component of the Derivative XVA Value Growth
 	 * @param derivativeXVAFundingGrowth The Funding Component of the Derivative XVA Value Growth
-	 * @param derivativeXVABankDefaultGrowth The Bank Default Component of the Derivative XVA Value Growth
-	 * @param derivativeXVACounterPartyDefaultGrowth The Counter Party Default Component of the Derivative
-	 * 		XVA Value Growth
+	 * @param derivativeXVADealerDefaultGrowth The Dealer Default Component of the Derivative XVA Value
+	 * 		Growth
+	 * @param derivativeXVAClientDefaultGrowth The Client Default Component of the Derivative XVA Value
+	 * 		Growth
 	 * @param derivativeXVAHedgeErrorGrowth The Hedge Error Component of the Derivaitve XVA Growth
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
@@ -102,12 +103,12 @@ public class BurgardKjaerEdgeRun extends org.drip.xva.pde.BurgardKjaerEdge
 		final double derivativeXVAStochasticGrowthUp,
 		final double derivativeXVACollateralGrowth,
 		final double derivativeXVAFundingGrowth,
-		final double derivativeXVABankDefaultGrowth,
-		final double derivativeXVACounterPartyDefaultGrowth,
+		final double derivativeXVADealerDefaultGrowth,
+		final double derivativeXVAClientDefaultGrowth,
 		final double derivativeXVAHedgeErrorGrowth)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L110">		super (</span>
+<span class="fc" id="L111">		super (</span>
 			dblPositionValueBump,
 			derivativeXVAStochasticGrowthDown,
 			derivativeXVAStochasticGrowth,
@@ -115,18 +116,18 @@ public class BurgardKjaerEdgeRun extends org.drip.xva.pde.BurgardKjaerEdge
 			derivativeXVACollateralGrowth
 		);
 
-<span class="pc bpc" id="L118" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_derivativeXVAFundingGrowth =</span>
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_derivativeXVAFundingGrowth =</span>
 				derivativeXVAFundingGrowth) ||
-<span class="pc bpc" id="L120" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_derivativeXVABankDefaultGrowth =</span>
-				derivativeXVABankDefaultGrowth) ||
-<span class="pc bpc" id="L122" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_derivativeXVACounterPartyDefaultGrowth =</span>
-				derivativeXVACounterPartyDefaultGrowth) ||
-<span class="pc bpc" id="L124" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_derivativeXVAHedgeErrorGrowth =</span>
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_derivativeXVADealerDefaultGrowth =</span>
+				derivativeXVADealerDefaultGrowth) ||
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_derivativeXVAClientDefaultGrowth =</span>
+				derivativeXVAClientDefaultGrowth) ||
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_derivativeXVAHedgeErrorGrowth =</span>
 				derivativeXVAHedgeErrorGrowth))
 		{
-<span class="nc" id="L127">			throw new java.lang.Exception (&quot;BurgardKjaerEdgeRun Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L128">			throw new java.lang.Exception (&quot;BurgardKjaerEdgeRun Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L129">	}</span>
+<span class="fc" id="L130">	}</span>
 
 	/**
 	 * Retrieve the Hedge Error Component of the Derivative XVA Value Growth
@@ -136,7 +137,7 @@ public class BurgardKjaerEdgeRun extends org.drip.xva.pde.BurgardKjaerEdge
 
 	public double derivativeXVAHedgeErrorGrowth()
 	{
-<span class="fc" id="L139">		return _derivativeXVAHedgeErrorGrowth;</span>
+<span class="fc" id="L140">		return _derivativeXVAHedgeErrorGrowth;</span>
 	}
 
 	/**
@@ -147,50 +148,50 @@ public class BurgardKjaerEdgeRun extends org.drip.xva.pde.BurgardKjaerEdge
 
 	public double derivativeXVAFundingGrowth()
 	{
-<span class="fc" id="L150">		return _derivativeXVAFundingGrowth;</span>
+<span class="fc" id="L151">		return _derivativeXVAFundingGrowth;</span>
 	}
 
 	/**
-	 * Retrieve the Bank Default Component of the Derivative XVA Value Growth
+	 * Retrieve the Dealer Default Component of the Derivative XVA Value Growth
 	 * 
-	 * @return The Bank Default Component of the Derivative XVA Value Growth
+	 * @return The Dealer Default Component of the Derivative XVA Value Growth
 	 */
 
-	public double derivativeXVABankDefaultGrowth()
+	public double derivativeXVADealerDefaultGrowth()
 	{
-<span class="fc" id="L161">		return _derivativeXVABankDefaultGrowth;</span>
+<span class="fc" id="L162">		return _derivativeXVADealerDefaultGrowth;</span>
 	}
 
 	/**
-	 * Retrieve the Counter Party Default Component of the Derivative XVA Value Growth
+	 * Retrieve the Client Default Component of the Derivative XVA Value Growth
 	 * 
-	 * @return The Counter Party Default Component of the Derivative XVA Value Growth
+	 * @return The Client Default Component of the Derivative XVA Value Growth
 	 */
 
-	public double derivativeXVACounterPartyDefaultGrowth()
+	public double derivativeXVAClientDefaultGrowth()
 	{
-<span class="fc" id="L172">		return _derivativeXVACounterPartyDefaultGrowth;</span>
+<span class="fc" id="L173">		return _derivativeXVAClientDefaultGrowth;</span>
 	}
 
 	@Override public double thetaPositionValueDown()
 	{
-<span class="fc" id="L177">		return super.derivativeXVAStochasticGrowthDown() + super.derivativeXVACollateralGrowth() +</span>
-			_derivativeXVAFundingGrowth + _derivativeXVABankDefaultGrowth +
-				_derivativeXVACounterPartyDefaultGrowth + _derivativeXVAHedgeErrorGrowth;
+<span class="fc" id="L178">		return super.derivativeXVAStochasticGrowthDown() + super.derivativeXVACollateralGrowth() +</span>
+			_derivativeXVAFundingGrowth + _derivativeXVADealerDefaultGrowth +
+				_derivativeXVAClientDefaultGrowth + _derivativeXVAHedgeErrorGrowth;
 	}
 
 	@Override public double theta()
 	{
-<span class="fc" id="L184">		return super.derivativeXVAStochasticGrowth() + super.derivativeXVACollateralGrowth() +</span>
-			_derivativeXVAFundingGrowth + _derivativeXVABankDefaultGrowth +
-				_derivativeXVACounterPartyDefaultGrowth + _derivativeXVAHedgeErrorGrowth;
+<span class="fc" id="L185">		return super.derivativeXVAStochasticGrowth() + super.derivativeXVACollateralGrowth() +</span>
+			_derivativeXVAFundingGrowth + _derivativeXVADealerDefaultGrowth +
+				_derivativeXVAClientDefaultGrowth + _derivativeXVAHedgeErrorGrowth;
 	}
 
 	@Override public double thetaPositionValueUp()
 	{
-<span class="fc" id="L191">		return super.derivativeXVAStochasticGrowthUp() + super.derivativeXVACollateralGrowth() +</span>
-			_derivativeXVAFundingGrowth + _derivativeXVABankDefaultGrowth +
-				_derivativeXVACounterPartyDefaultGrowth + _derivativeXVAHedgeErrorGrowth;
+<span class="fc" id="L192">		return super.derivativeXVAStochasticGrowthUp() + super.derivativeXVACollateralGrowth() +</span>
+			_derivativeXVAFundingGrowth + _derivativeXVADealerDefaultGrowth +
+				_derivativeXVAClientDefaultGrowth + _derivativeXVAHedgeErrorGrowth;
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

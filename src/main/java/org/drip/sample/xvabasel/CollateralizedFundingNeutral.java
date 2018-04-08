@@ -225,15 +225,15 @@ public class CollateralizedFundingNeutral {
 				adtVertex[i] = dtSpot.addMonths (6 * i),
 				Double.NaN,
 				dblOvernightNumeraireDrift,
-				Math.exp (-0.5 * dblOvernightNumeraireDrift * iNumStep),
+				Math.exp (-0.5 * dblOvernightNumeraireDrift * (iNumStep - i)),
 				dblCSADrift,
-				Math.exp (-0.5 * dblCSADrift * iNumStep),
+				Math.exp (-0.5 * dblCSADrift * (iNumStep - i)),
 				new MarketVertexEntity (
 					Math.exp (-0.5 * dblBankHazardRate * i),
 					dblBankHazardRate,
 					dblBankRecoveryRate,
 					dblBankFundingSpread,
-					Math.exp (-0.5 * dblBankHazardRate * (1. - dblBankRecoveryRate) * iNumStep),
+					Math.exp (-0.5 * dblBankHazardRate * (1. - dblBankRecoveryRate) * (iNumStep - i)),
 					Double.NaN,
 					Double.NaN,
 					Double.NaN
@@ -243,7 +243,7 @@ public class CollateralizedFundingNeutral {
 					dblCounterPartyHazardRate,
 					dblCounterPartyRecoveryRate,
 					dblCounterPartyFundingSpread,
-					Math.exp (-0.5 * dblCounterPartyHazardRate * (1. - dblCounterPartyRecoveryRate) * iNumStep),
+					Math.exp (-0.5 * dblCounterPartyHazardRate * (1. - dblCounterPartyRecoveryRate) * (iNumStep - i)),
 					Double.NaN,
 					Double.NaN,
 					Double.NaN

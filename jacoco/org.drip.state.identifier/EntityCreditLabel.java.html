@@ -52,12 +52,12 @@ package org.drip.state.identifier;
 
 /**
  * EntityCreditLabel contains the Identifier Parameters referencing the Latent State of the named Entity
- * 	Credit Curve.
+ *  Credit Curve.
  *  
  * @author Lakshmi Krishnamurthy
  */
 
-public class EntityCreditLabel extends org.drip.state.identifier.EntityDesignateLabel
+public abstract class EntityCreditLabel extends org.drip.state.identifier.EntityDesignateLabel
 {
 
 	/**
@@ -74,62 +74,23 @@ public class EntityCreditLabel extends org.drip.state.identifier.EntityDesignate
 
 <span class="fc" id="L75">	private java.lang.String _seniority = &quot;&quot;;</span>
 
-	/**
-	 * Make a Standard SENIOR Entity Credit Label from the Reference Entity
-	 * 
-	 * @param referenceEntity The Reference Entity
-	 * @param currency The Currency
-	 * 
-	 * @return The SENIOR Entity Credit Label
-	 */
-
-	public static EntityCreditLabel Standard (
-		final java.lang.String referenceEntity,
-		final java.lang.String currency)
-	{
-		try
-		{
-<span class="fc" id="L92">			return new EntityCreditLabel (</span>
-				referenceEntity,
-				currency,
-				SENIORITY_SENIOR
-			);
-		}
-<span class="nc" id="L98">		catch (java.lang.Exception e)</span>
-		{
-<span class="nc" id="L100">			e.printStackTrace();</span>
-		}
-
-<span class="nc" id="L103">		return null;</span>
-	}
-
-	/**
-	 * EntityCreditLabel constructor
-	 * 
-	 * @param referenceEntity The Reference Entity
-	 * @param currency The Currency
-	 * @param seniority The Obligation Seniority
-	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
-	 */
-
-	public EntityCreditLabel (
+	protected EntityCreditLabel (
 		final java.lang.String referenceEntity,
 		final java.lang.String currency,
 		final java.lang.String seniority)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L122">		super (</span>
+<span class="fc" id="L83">		super (</span>
 			referenceEntity,
 			currency
 		);
 
-<span class="pc bpc" id="L127" title="1 of 2 branches missed.">		if (null == (_seniority = seniority) ||</span>
-<span class="pc bpc" id="L128" title="1 of 4 branches missed.">			(!SENIORITY_SENIOR.equals (_seniority) &amp;&amp; !SENIORITY_SUBORDINATE.equals (_seniority)))</span>
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">		if (null == (_seniority = seniority) ||</span>
+<span class="pc bpc" id="L89" title="1 of 4 branches missed.">			(!SENIORITY_SENIOR.equals (_seniority) &amp;&amp; !SENIORITY_SUBORDINATE.equals (_seniority)))</span>
 		{
-<span class="nc" id="L130">			throw new java.lang.Exception (&quot;EntityCreditLabel Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L91">			throw new java.lang.Exception (&quot;EntityCreditLabel Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L132">	}</span>
+<span class="fc" id="L93">	}</span>
 
 	/**
 	 * Retrieve the Seniority
@@ -139,24 +100,24 @@ public class EntityCreditLabel extends org.drip.state.identifier.EntityDesignate
 
 	public java.lang.String seniority()
 	{
-<span class="nc" id="L142">		return _seniority;</span>
+<span class="nc" id="L103">		return _seniority;</span>
 	}
 
 	@Override public java.lang.String fullyQualifiedName()
 	{
-<span class="fc" id="L147">		return super.fullyQualifiedName() + &quot;::&quot; + _seniority;</span>
+<span class="fc" id="L108">		return super.fullyQualifiedName() + &quot;::&quot; + _seniority;</span>
 	}
 
 	@Override public boolean match (
 		final org.drip.state.identifier.LatentStateLabel lslOther)
 	{
-<span class="nc bnc" id="L153" title="All 4 branches missed.">		if (null == lslOther || !(lslOther instanceof org.drip.state.identifier.EntityCreditLabel))</span>
+<span class="nc bnc" id="L114" title="All 4 branches missed.">		if (null == lslOther || !(lslOther instanceof org.drip.state.identifier.EntityCreditLabel))</span>
 		{
-<span class="nc" id="L155">			return false;</span>
+<span class="nc" id="L116">			return false;</span>
 		}
 
-<span class="nc bnc" id="L158" title="All 2 branches missed.">		return super.match (lslOther) &amp;&amp; _seniority.equalsIgnoreCase</span>
-<span class="nc bnc" id="L159" title="All 2 branches missed.">			(((org.drip.state.identifier.EntityCreditLabel) lslOther).seniority());</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">		return super.match (lslOther) &amp;&amp; _seniority.equalsIgnoreCase</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">			(((org.drip.state.identifier.EntityCreditLabel) lslOther).seniority());</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -9,11 +9,14 @@ import org.drip.measure.process.DiffusionEvolver;
 import org.drip.measure.realization.*;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.xva.cpty.*;
-import org.drip.xva.hypothecation.*;
-import org.drip.xva.set.*;
+import org.drip.xva.gross.*;
+import org.drip.xva.margin.CollateralAmountEstimator;
+import org.drip.xva.netting.CollateralGroupPath;
+import org.drip.xva.proto.*;
+import org.drip.xva.settings.*;
 import org.drip.xva.strategy.*;
 import org.drip.xva.universe.*;
+import org.drip.xva.vertex.AlbaneseAndersen;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -82,7 +85,7 @@ import org.drip.xva.universe.*;
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L85">public class ZeroThresholdCollateralGroup {</span>
+<span class="nc" id="L88">public class ZeroThresholdCollateralGroup {</span>
 
 	private static final double[] ATMSwapRateOffsetRealization (
 		final DiffusionEvolver deATMSwapRateOffset,
@@ -92,31 +95,31 @@ import org.drip.xva.universe.*;
 		final int iNumStep)
 		throws Exception
 	{
-<span class="fc" id="L95">		double[] adblATMSwapRateOffset = new double[iNumStep + 1];</span>
-<span class="fc" id="L96">		adblATMSwapRateOffset[0] = dblATMSwapRateOffsetInitial;</span>
-<span class="fc" id="L97">		double[] adblTimeWidth = new double[iNumStep];</span>
+<span class="fc" id="L98">		double[] adblATMSwapRateOffset = new double[iNumStep + 1];</span>
+<span class="fc" id="L99">		adblATMSwapRateOffset[0] = dblATMSwapRateOffsetInitial;</span>
+<span class="fc" id="L100">		double[] adblTimeWidth = new double[iNumStep];</span>
 
-<span class="fc bfc" id="L99" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumStep; ++i)</span>
-<span class="fc" id="L100">			adblTimeWidth[i] = dblTimeWidth;</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumStep; ++i)</span>
+<span class="fc" id="L103">			adblTimeWidth[i] = dblTimeWidth;</span>
 
-<span class="fc" id="L102">		JumpDiffusionEdge[] aJDE = deATMSwapRateOffset.incrementSequence (</span>
+<span class="fc" id="L105">		JumpDiffusionEdge[] aJDE = deATMSwapRateOffset.incrementSequence (</span>
 			new JumpDiffusionVertex (
 				dblTime,
 				dblATMSwapRateOffsetInitial,
 				0.,
 				false
 			),
-<span class="fc" id="L109">			JumpDiffusionEdgeUnit.Diffusion (</span>
+<span class="fc" id="L112">			JumpDiffusionEdgeUnit.Diffusion (</span>
 				adblTimeWidth,
-<span class="fc" id="L111">				SequenceGenerator.Gaussian (iNumStep)</span>
+<span class="fc" id="L114">				SequenceGenerator.Gaussian (iNumStep)</span>
 			),
 			dblTimeWidth
 		);
 
-<span class="fc bfc" id="L116" title="All 2 branches covered.">		for (int j = 1; j &lt;= iNumStep; ++j)</span>
-<span class="fc" id="L117">			adblATMSwapRateOffset[j] = aJDE[j - 1].finish();</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">		for (int j = 1; j &lt;= iNumStep; ++j)</span>
+<span class="fc" id="L120">			adblATMSwapRateOffset[j] = aJDE[j - 1].finish();</span>
 
-<span class="fc" id="L119">		return adblATMSwapRateOffset;</span>
+<span class="fc" id="L122">		return adblATMSwapRateOffset;</span>
 	}
 
 	private static final double[] SwapPortfolioValueRealization (
@@ -128,13 +131,13 @@ import org.drip.xva.universe.*;
 		final int iNumSwap)
 		throws Exception
 	{
-<span class="fc" id="L131">		double[] adblSwapPortfolioValueRealization = new double[iNumStep + 1];</span>
+<span class="fc" id="L134">		double[] adblSwapPortfolioValueRealization = new double[iNumStep + 1];</span>
 
-<span class="fc bfc" id="L133" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumStep; ++i)</span>
-<span class="fc" id="L134">			adblSwapPortfolioValueRealization[i] = 0.;</span>
+<span class="fc bfc" id="L136" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumStep; ++i)</span>
+<span class="fc" id="L137">			adblSwapPortfolioValueRealization[i] = 0.;</span>
 
-<span class="fc bfc" id="L136" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSwap; ++i) {</span>
-<span class="fc" id="L137">			double[] adblATMSwapRateOffsetRealization = ATMSwapRateOffsetRealization (</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSwap; ++i) {</span>
+<span class="fc" id="L140">			double[] adblATMSwapRateOffsetRealization = ATMSwapRateOffsetRealization (</span>
 				deATMSwapRate,
 				dblATMSwapRateStart,
 				dblTime,
@@ -142,11 +145,11 @@ import org.drip.xva.universe.*;
 				iNumStep
 			);
 
-<span class="fc bfc" id="L145" title="All 2 branches covered.">			for (int j = 0; j &lt;= iNumStep; ++j)</span>
-<span class="fc" id="L146">				adblSwapPortfolioValueRealization[j] += dblTimeWidth * (iNumStep - j) * adblATMSwapRateOffsetRealization[j];</span>
+<span class="fc bfc" id="L148" title="All 2 branches covered.">			for (int j = 0; j &lt;= iNumStep; ++j)</span>
+<span class="fc" id="L149">				adblSwapPortfolioValueRealization[j] += dblTimeWidth * (iNumStep - j) * adblATMSwapRateOffsetRealization[j];</span>
 		}
 
-<span class="fc" id="L149">		return adblSwapPortfolioValueRealization;</span>
+<span class="fc" id="L152">		return adblSwapPortfolioValueRealization;</span>
 	}
 
 	private static final double[][] SwapPortfolioValueRealization (
@@ -159,10 +162,10 @@ import org.drip.xva.universe.*;
 		final int iNumSimulation)
 		throws Exception
 	{
-<span class="fc" id="L162">		double[][] aadblSwapPortfolioValueRealization = new double[iNumSimulation][];</span>
+<span class="fc" id="L165">		double[][] aadblSwapPortfolioValueRealization = new double[iNumSimulation][];</span>
 
-<span class="fc bfc" id="L164" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSimulation; ++i)</span>
-<span class="fc" id="L165">			aadblSwapPortfolioValueRealization[i] = SwapPortfolioValueRealization (</span>
+<span class="fc bfc" id="L167" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSimulation; ++i)</span>
+<span class="fc" id="L168">			aadblSwapPortfolioValueRealization[i] = SwapPortfolioValueRealization (</span>
 				deATMSwapRate,
 				dblSwapPortfolioValueStart,
 				iNumStep,
@@ -171,49 +174,51 @@ import org.drip.xva.universe.*;
 				iNumSwap
 			);
 
-<span class="fc" id="L174">		return aadblSwapPortfolioValueRealization;</span>
+<span class="fc" id="L177">		return aadblSwapPortfolioValueRealization;</span>
 	}
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="fc" id="L181">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L184">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L183">		int iNumStep = 10;</span>
-<span class="fc" id="L184">		int iNumSwap = 10;</span>
-<span class="fc" id="L185">		double dblTime = 5.;</span>
-<span class="fc" id="L186">		int iNumPath = 10000;</span>
-<span class="fc" id="L187">		double dblATMSwapRateStart = 0.;</span>
-<span class="fc" id="L188">		double dblATMSwapRateDrift = 0.0;</span>
-<span class="fc" id="L189">		double dblATMSwapRateVolatility = 0.25;</span>
-<span class="fc" id="L190">		double dblOvernightNumeraireDrift = 0.004;</span>
-<span class="fc" id="L191">		double dblCSADrift = 0.01;</span>
-<span class="fc" id="L192">		double dblBankHazardRate = 0.015;</span>
-<span class="fc" id="L193">		double dblBankRecoveryRate = 0.40;</span>
-<span class="fc" id="L194">		double dblCounterPartyHazardRate = 0.030;</span>
-<span class="fc" id="L195">		double dblCounterPartyRecoveryRate = 0.30;</span>
+<span class="fc" id="L186">		int iNumStep = 10;</span>
+<span class="fc" id="L187">		int iNumSwap = 10;</span>
+<span class="fc" id="L188">		double dblTime = 5.;</span>
+<span class="fc" id="L189">		int iNumPath = 10000;</span>
+<span class="fc" id="L190">		double dblATMSwapRateStart = 0.;</span>
+<span class="fc" id="L191">		double dblATMSwapRateDrift = 0.0;</span>
+<span class="fc" id="L192">		double dblATMSwapRateVolatility = 0.25;</span>
+<span class="fc" id="L193">		double dblOvernightNumeraireDrift = 0.004;</span>
+<span class="fc" id="L194">		double dblCSADrift = 0.01;</span>
+<span class="fc" id="L195">		double dblBankHazardRate = 0.015;</span>
+<span class="fc" id="L196">		double dblBankRecoveryRate = 0.40;</span>
+<span class="fc" id="L197">		double dblCounterPartyHazardRate = 0.030;</span>
+<span class="fc" id="L198">		double dblCounterPartyRecoveryRate = 0.30;</span>
 
-<span class="fc" id="L197">		JulianDate dtSpot = DateUtil.Today();</span>
+<span class="fc" id="L200">		JulianDate dtSpot = DateUtil.Today();</span>
 
-<span class="fc" id="L199">		double dblTimeWidth = dblTime / iNumStep;</span>
-<span class="fc" id="L200">		MarketVertex[] aMV = new MarketVertex[iNumStep + 1];</span>
-<span class="fc" id="L201">		JulianDate[] adtVertex = new JulianDate[iNumStep + 1];</span>
-<span class="fc" id="L202">		double dblBankFundingSpread = dblBankHazardRate / (1. - dblBankRecoveryRate);</span>
-<span class="fc" id="L203">		MonoPathExposureAdjustment[] aMPEA = new MonoPathExposureAdjustment[iNumPath];</span>
-<span class="fc" id="L204">		double dblCounterPartyFundingSpread = dblCounterPartyHazardRate / (1. - dblCounterPartyRecoveryRate);</span>
+<span class="fc" id="L202">		double dblTimeWidth = dblTime / iNumStep;</span>
+<span class="fc" id="L203">		MarketVertex[] aMV = new MarketVertex[iNumStep + 1];</span>
+<span class="fc" id="L204">		JulianDate[] adtVertex = new JulianDate[iNumStep + 1];</span>
+<span class="fc" id="L205">		double dblBankFundingSpread = dblBankHazardRate / (1. - dblBankRecoveryRate);</span>
+<span class="fc" id="L206">		MonoPathExposureAdjustment[] aMPEA = new MonoPathExposureAdjustment[iNumPath];</span>
+<span class="fc" id="L207">		double dblCounterPartyFundingSpread = dblCounterPartyHazardRate / (1. - dblCounterPartyRecoveryRate);</span>
 
-<span class="fc" id="L206">		CollateralGroupSpecification cgs = CollateralGroupSpecification.FixedThreshold (</span>
+<span class="fc" id="L209">		PositionGroupSpecification positionGroupSpecification = PositionGroupSpecification.FixedThreshold (</span>
 			&quot;FIXEDTHRESHOLD&quot;,
 			0.,
-			0.
+			0.,
+			PositionReplicationScheme.ALBANESE_ANDERSEN_VERTEX,
+			BrokenDateScheme.LINEAR_TIME,
+			0.,
+			CloseOutScheme.ISDA_92
 		);
 
-<span class="fc" id="L212">		CounterPartyGroupSpecification cpgs = CounterPartyGroupSpecification.Standard (&quot;CPGROUP&quot;);</span>
-
-<span class="fc" id="L214">		double[][] aadblSwapPortfolioValueRealization = SwapPortfolioValueRealization (</span>
+<span class="fc" id="L219">		double[][] aadblSwapPortfolioValueRealization = SwapPortfolioValueRealization (</span>
 			new DiffusionEvolver (
-<span class="fc" id="L216">				DiffusionEvaluatorLinear.Standard (</span>
+<span class="fc" id="L221">				DiffusionEvaluatorLinear.Standard (</span>
 					dblATMSwapRateDrift,
 					dblATMSwapRateVolatility
 				)
@@ -226,191 +231,196 @@ import org.drip.xva.universe.*;
 			iNumPath
 		);
 
-<span class="fc bfc" id="L229" title="All 2 branches covered.">		for (int i = 0; i &lt;= iNumStep; ++i)</span>
-<span class="fc" id="L230">			aMV[i] = MarketVertex.SingleManifestMeasure (</span>
-<span class="fc" id="L231">				adtVertex[i] = dtSpot.addMonths (6 * i),</span>
+<span class="fc bfc" id="L234" title="All 2 branches covered.">		for (int i = 0; i &lt;= iNumStep; ++i)</span>
+<span class="fc" id="L235">			aMV[i] = MarketVertex.SingleManifestMeasure (</span>
+<span class="fc" id="L236">				adtVertex[i] = dtSpot.addMonths (6 * i),</span>
 				Double.NaN,
 				dblOvernightNumeraireDrift,
-<span class="fc" id="L234">				Math.exp (-0.5 * dblOvernightNumeraireDrift * iNumStep),</span>
+<span class="fc" id="L239">				Math.exp (-0.5 * dblOvernightNumeraireDrift * (iNumStep - i)),</span>
 				dblCSADrift,
-<span class="fc" id="L236">				Math.exp (-0.5 * dblCSADrift * iNumStep),</span>
+<span class="fc" id="L241">				Math.exp (-0.5 * dblCSADrift * iNumStep),</span>
 				new MarketVertexEntity (
-<span class="fc" id="L238">					Math.exp (-0.5 * dblBankHazardRate * i),</span>
+<span class="fc" id="L243">					Math.exp (-0.5 * dblBankHazardRate * i),</span>
 					dblBankHazardRate,
 					dblBankRecoveryRate,
 					dblBankFundingSpread,
-<span class="fc" id="L242">					Math.exp (-0.5 * dblBankHazardRate * (1. - dblBankRecoveryRate) * iNumStep),</span>
+<span class="fc" id="L247">					Math.exp (-0.5 * dblBankHazardRate * (1. - dblBankRecoveryRate) * (iNumStep - i)),</span>
 					Double.NaN,
 					Double.NaN,
 					Double.NaN
 				),
 				new MarketVertexEntity (
-<span class="fc" id="L248">					Math.exp (-0.5 * dblCounterPartyHazardRate * i),</span>
+<span class="fc" id="L253">					Math.exp (-0.5 * dblCounterPartyHazardRate * i),</span>
 					dblCounterPartyHazardRate,
 					dblCounterPartyRecoveryRate,
 					dblCounterPartyFundingSpread,
-<span class="fc" id="L252">					Math.exp (-0.5 * dblCounterPartyHazardRate * (1. - dblCounterPartyRecoveryRate) * iNumStep),</span>
+<span class="fc" id="L257">					Math.exp (-0.5 * dblCounterPartyHazardRate * (1. - dblCounterPartyRecoveryRate) * (iNumStep - i)),</span>
 					Double.NaN,
 					Double.NaN,
 					Double.NaN
 				)
 			);
 
-<span class="fc" id="L259">		MarketPath mp = new MarketPath (aMV);</span>
+<span class="fc" id="L264">		MarketPath mp = new MarketPath (aMV);</span>
 
-<span class="fc bfc" id="L261" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPath; ++i) {</span>
-<span class="fc" id="L262">			JulianDate dtStart = dtSpot;</span>
-<span class="fc" id="L263">			double dblValueStart = dblTime * dblATMSwapRateStart;</span>
-<span class="fc" id="L264">			AlbaneseAndersenVertex[] aHGVR = new AlbaneseAndersenVertex[iNumStep + 1];</span>
+<span class="fc bfc" id="L266" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPath; ++i) {</span>
+<span class="fc" id="L267">			JulianDate dtStart = dtSpot;</span>
+<span class="fc" id="L268">			double dblValueStart = dblTime * dblATMSwapRateStart;</span>
+<span class="fc" id="L269">			AlbaneseAndersen[] aHGVR = new AlbaneseAndersen[iNumStep + 1];</span>
 
-<span class="fc bfc" id="L266" title="All 2 branches covered.">			for (int j = 0; j &lt;= iNumStep; ++j) {</span>
-<span class="fc" id="L267">				double dblCollateralBalance = 0.;</span>
-<span class="fc" id="L268">				JulianDate dtEnd = adtVertex[j];</span>
-<span class="fc" id="L269">				double dblValueEnd = aadblSwapPortfolioValueRealization[i][j];</span>
+<span class="fc bfc" id="L271" title="All 2 branches covered.">			for (int j = 0; j &lt;= iNumStep; ++j) {</span>
+<span class="fc" id="L272">				double dblCollateralBalance = 0.;</span>
+<span class="fc" id="L273">				JulianDate dtEnd = adtVertex[j];</span>
+<span class="fc" id="L274">				double dblValueEnd = aadblSwapPortfolioValueRealization[i][j];</span>
 
-<span class="fc bfc" id="L271" title="All 2 branches covered.">				if (0 != j) {</span>
-<span class="fc" id="L272">					CollateralAmountEstimator hae = new CollateralAmountEstimator (</span>
-						cgs,
-						cpgs,
+<span class="fc bfc" id="L276" title="All 2 branches covered.">				if (0 != j) {</span>
+<span class="fc" id="L277">					CollateralAmountEstimator hae = new CollateralAmountEstimator (</span>
+						positionGroupSpecification,
 						new BrokenDateInterpolatorLinearT (
-<span class="fc" id="L276">							dtStart.julian(),</span>
-<span class="fc" id="L277">							dtEnd.julian(),</span>
+<span class="fc" id="L280">							dtStart.julian(),</span>
+<span class="fc" id="L281">							dtEnd.julian(),</span>
 							dblValueStart,
 							dblValueEnd
 						),
 						Double.NaN
 					);
 
-<span class="fc" id="L284">					dblCollateralBalance = hae.postingRequirement (dtEnd);</span>
+<span class="fc" id="L288">					dblCollateralBalance = hae.postingRequirement (dtEnd);</span>
 				}
 
-<span class="fc" id="L287">				aHGVR[j] = new AlbaneseAndersenVertex (</span>
+<span class="fc" id="L291">				aHGVR[j] = new AlbaneseAndersen (</span>
 					adtVertex[j],
 					aadblSwapPortfolioValueRealization[i][j],
 					0.,
 					dblCollateralBalance
 				);
 
-<span class="fc" id="L294">				dtStart = dtEnd;</span>
-<span class="fc" id="L295">				dblValueStart = dblValueEnd;</span>
+<span class="fc" id="L298">				dtStart = dtEnd;</span>
+<span class="fc" id="L299">				dblValueStart = dblValueEnd;</span>
 			}
 
-<span class="fc" id="L298">			CollateralGroupPath[] aHGP = new CollateralGroupPath[] {new CollateralGroupPath (aHGVR)};</span>
+<span class="fc" id="L302">			CollateralGroupPath[] aHGP = new CollateralGroupPath[] {</span>
+				new CollateralGroupPath (
+					aHGVR,
+					mp
+				)
+			};
 
-<span class="fc" id="L300">			aMPEA[i] = new MonoPathExposureAdjustment (</span>
-				new AlbaneseAndersenNettingGroupPath[] {
-					new AlbaneseAndersenNettingGroupPath (
-						aHGP,
-						mp
-					)
-				},
+<span class="fc" id="L309">			aMPEA[i] = new MonoPathExposureAdjustment (</span>
 				new AlbaneseAndersenFundingGroupPath[] {
 					new AlbaneseAndersenFundingGroupPath (
-						aHGP,
+						new AlbaneseAndersenNettingGroupPath[] {
+							new AlbaneseAndersenNettingGroupPath (
+								aHGP,
+								mp
+							)
+						},
 						mp
 					)
 				}
 			);
 		}
 
-<span class="fc" id="L316">		ExposureAdjustmentAggregator eaa = new ExposureAdjustmentAggregator (aMPEA);</span>
+<span class="fc" id="L324">		ExposureAdjustmentAggregator eaa = new ExposureAdjustmentAggregator (aMPEA);</span>
 
-<span class="fc" id="L318">		JulianDate[] adtVertexNode = eaa.anchorDates();</span>
+<span class="fc" id="L326">		JulianDate[] adtVertexNode = eaa.vertexDates();</span>
 
-<span class="fc" id="L320">		System.out.println();</span>
+<span class="fc" id="L328">		System.out.println();</span>
 
-<span class="fc" id="L322">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|&quot;);</span>
+<span class="fc" id="L330">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|&quot;);</span>
 
-<span class="fc" id="L324">		String strDump = &quot;\t|         DATE         =&gt;&quot; ;</span>
+<span class="fc" id="L332">		String strDump = &quot;\t|         DATE         =&gt;&quot; ;</span>
 
-<span class="fc bfc" id="L326" title="All 2 branches covered.">		for (int i = 0; i &lt; adtVertexNode.length; ++i)</span>
-<span class="fc" id="L327">			strDump = strDump + &quot; &quot; + adtVertexNode[i] + &quot; |&quot;;</span>
+<span class="fc bfc" id="L334" title="All 2 branches covered.">		for (int i = 0; i &lt; adtVertexNode.length; ++i)</span>
+<span class="fc" id="L335">			strDump = strDump + &quot; &quot; + adtVertexNode[i] + &quot; |&quot;;</span>
 
-<span class="fc" id="L329">		System.out.println (strDump);</span>
+<span class="fc" id="L337">		System.out.println (strDump);</span>
 
-<span class="fc" id="L331">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|&quot;);</span>
+<span class="fc" id="L339">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|&quot;);</span>
 
-<span class="fc" id="L333">		double[] adblExposure = eaa.collateralizedExposure();</span>
+<span class="fc" id="L341">		double[] adblExposure = eaa.collateralizedExposure();</span>
 
-<span class="fc" id="L335">		strDump = &quot;\t|       EXPOSURE       =&gt;&quot;;</span>
+<span class="fc" id="L343">		strDump = &quot;\t|       EXPOSURE       =&gt;&quot;;</span>
 
-<span class="fc bfc" id="L337" title="All 2 branches covered.">		for (int j = 0; j &lt; adblExposure.length; ++j)</span>
-<span class="fc" id="L338">			strDump = strDump + &quot;   &quot; + FormatUtil.FormatDouble (adblExposure[j], 1, 4, 1.) + &quot;   |&quot;;</span>
+<span class="fc bfc" id="L345" title="All 2 branches covered.">		for (int j = 0; j &lt; adblExposure.length; ++j)</span>
+<span class="fc" id="L346">			strDump = strDump + &quot;   &quot; + FormatUtil.FormatDouble (adblExposure[j], 1, 4, 1.) + &quot;   |&quot;;</span>
 
-<span class="fc" id="L340">		System.out.println (strDump);</span>
+<span class="fc" id="L348">		System.out.println (strDump);</span>
 
-<span class="fc" id="L342">		double[] adblPositiveExposure = eaa.collateralizedPositiveExposure();</span>
+<span class="fc" id="L350">		double[] adblPositiveExposure = eaa.collateralizedPositiveExposure();</span>
 
-<span class="fc" id="L344">		strDump = &quot;\t|  POSITIVE EXPOSURE   =&gt;&quot;;</span>
+<span class="fc" id="L352">		strDump = &quot;\t|  POSITIVE EXPOSURE   =&gt;&quot;;</span>
 
-<span class="fc bfc" id="L346" title="All 2 branches covered.">		for (int j = 0; j &lt; adblPositiveExposure.length; ++j)</span>
-<span class="fc" id="L347">			strDump = strDump + &quot;   &quot; + FormatUtil.FormatDouble (adblPositiveExposure[j], 1, 4, 1.) + &quot;   |&quot;;</span>
+<span class="fc bfc" id="L354" title="All 2 branches covered.">		for (int j = 0; j &lt; adblPositiveExposure.length; ++j)</span>
+<span class="fc" id="L355">			strDump = strDump + &quot;   &quot; + FormatUtil.FormatDouble (adblPositiveExposure[j], 1, 4, 1.) + &quot;   |&quot;;</span>
 
-<span class="fc" id="L349">		System.out.println (strDump);</span>
+<span class="fc" id="L357">		System.out.println (strDump);</span>
 
-<span class="fc" id="L351">		double[] adblNegativeExposure = eaa.collateralizedNegativeExposure();</span>
+<span class="fc" id="L359">		double[] adblNegativeExposure = eaa.collateralizedNegativeExposure();</span>
 
-<span class="fc" id="L353">		strDump = &quot;\t|  NEGATIVE EXPOSURE   =&gt;&quot;;</span>
+<span class="fc" id="L361">		strDump = &quot;\t|  NEGATIVE EXPOSURE   =&gt;&quot;;</span>
 
-<span class="fc bfc" id="L355" title="All 2 branches covered.">		for (int j = 0; j &lt; adblNegativeExposure.length; ++j)</span>
-<span class="fc" id="L356">			strDump = strDump + &quot;   &quot; + FormatUtil.FormatDouble (adblNegativeExposure[j], 1, 4, 1.) + &quot;   |&quot;;</span>
+<span class="fc bfc" id="L363" title="All 2 branches covered.">		for (int j = 0; j &lt; adblNegativeExposure.length; ++j)</span>
+<span class="fc" id="L364">			strDump = strDump + &quot;   &quot; + FormatUtil.FormatDouble (adblNegativeExposure[j], 1, 4, 1.) + &quot;   |&quot;;</span>
 
-<span class="fc" id="L358">		System.out.println (strDump);</span>
+<span class="fc" id="L366">		System.out.println (strDump);</span>
 
-<span class="fc" id="L360">		double[] adblExposurePV = eaa.collateralizedExposurePV();</span>
+<span class="fc" id="L368">		double[] adblExposurePV = eaa.collateralizedExposurePV();</span>
 
-<span class="fc" id="L362">		strDump = &quot;\t|      EXPOSURE PV     =&gt;&quot;;</span>
+<span class="fc" id="L370">		strDump = &quot;\t|      EXPOSURE PV     =&gt;&quot;;</span>
 
-<span class="fc bfc" id="L364" title="All 2 branches covered.">		for (int j = 0; j &lt; adblExposurePV.length; ++j)</span>
-<span class="fc" id="L365">			strDump = strDump + &quot;   &quot; + FormatUtil.FormatDouble (adblExposurePV[j], 1, 4, 1.) + &quot;   |&quot;;</span>
+<span class="fc bfc" id="L372" title="All 2 branches covered.">		for (int j = 0; j &lt; adblExposurePV.length; ++j)</span>
+<span class="fc" id="L373">			strDump = strDump + &quot;   &quot; + FormatUtil.FormatDouble (adblExposurePV[j], 1, 4, 1.) + &quot;   |&quot;;</span>
 
-<span class="fc" id="L367">		System.out.println (strDump);</span>
+<span class="fc" id="L375">		System.out.println (strDump);</span>
 
-<span class="fc" id="L369">		double[] adblPositiveExposurePV = eaa.collateralizedPositiveExposurePV();</span>
+<span class="fc" id="L377">		double[] adblPositiveExposurePV = eaa.collateralizedPositiveExposurePV();</span>
 
-<span class="fc" id="L371">		strDump = &quot;\t| POSITIVE EXPOSURE PV =&gt;&quot;;</span>
+<span class="fc" id="L379">		strDump = &quot;\t| POSITIVE EXPOSURE PV =&gt;&quot;;</span>
 
-<span class="fc bfc" id="L373" title="All 2 branches covered.">		for (int j = 0; j &lt; adblPositiveExposurePV.length; ++j)</span>
-<span class="fc" id="L374">			strDump = strDump + &quot;   &quot; + FormatUtil.FormatDouble (adblPositiveExposurePV[j], 1, 4, 1.) + &quot;   |&quot;;</span>
+<span class="fc bfc" id="L381" title="All 2 branches covered.">		for (int j = 0; j &lt; adblPositiveExposurePV.length; ++j)</span>
+<span class="fc" id="L382">			strDump = strDump + &quot;   &quot; + FormatUtil.FormatDouble (adblPositiveExposurePV[j], 1, 4, 1.) + &quot;   |&quot;;</span>
 
-<span class="fc" id="L376">		System.out.println (strDump);</span>
+<span class="fc" id="L384">		System.out.println (strDump);</span>
 
-<span class="fc" id="L378">		double[] adblNegativeExposurePV = eaa.collateralizedNegativeExposurePV();</span>
+<span class="fc" id="L386">		double[] adblNegativeExposurePV = eaa.collateralizedNegativeExposurePV();</span>
 
-<span class="fc" id="L380">		strDump = &quot;\t| NEGATIVE EXPOSURE PV =&gt;&quot;;</span>
+<span class="fc" id="L388">		strDump = &quot;\t| NEGATIVE EXPOSURE PV =&gt;&quot;;</span>
 
-<span class="fc bfc" id="L382" title="All 2 branches covered.">		for (int j = 0; j &lt; adblNegativeExposurePV.length; ++j)</span>
-<span class="fc" id="L383">			strDump = strDump + &quot;   &quot; + FormatUtil.FormatDouble (adblNegativeExposurePV[j], 1, 4, 1.) + &quot;   |&quot;;</span>
+<span class="fc bfc" id="L390" title="All 2 branches covered.">		for (int j = 0; j &lt; adblNegativeExposurePV.length; ++j)</span>
+<span class="fc" id="L391">			strDump = strDump + &quot;   &quot; + FormatUtil.FormatDouble (adblNegativeExposurePV[j], 1, 4, 1.) + &quot;   |&quot;;</span>
 
-<span class="fc" id="L385">		System.out.println (strDump);</span>
+<span class="fc" id="L393">		System.out.println (strDump);</span>
 
-<span class="fc" id="L387">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|&quot;);</span>
+<span class="fc" id="L395">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|&quot;);</span>
 
-<span class="fc" id="L389">		System.out.println();</span>
+<span class="fc" id="L397">		System.out.println();</span>
 
-<span class="fc" id="L391">		System.out.println (&quot;\t||-------------------||&quot;);</span>
+<span class="fc" id="L399">		System.out.println (&quot;\t||-------------------||&quot;);</span>
 
-<span class="fc" id="L393">		System.out.println (&quot;\t||  UCVA  =&gt; &quot; + FormatUtil.FormatDouble (eaa.ucva().amount(), 2, 2, 100.) + &quot;% ||&quot;);</span>
+<span class="fc" id="L401">		System.out.println (&quot;\t||  UCVA  =&gt; &quot; + FormatUtil.FormatDouble (eaa.ucva().amount(), 2, 2, 100.) + &quot;% ||&quot;);</span>
 
-<span class="fc" id="L395">		System.out.println (&quot;\t|| FTDCVA =&gt; &quot; + FormatUtil.FormatDouble (eaa.ftdcva().amount(), 2, 2, 100.) + &quot;% ||&quot;);</span>
+<span class="fc" id="L403">		System.out.println (&quot;\t|| FTDCVA =&gt; &quot; + FormatUtil.FormatDouble (eaa.ftdcva().amount(), 2, 2, 100.) + &quot;% ||&quot;);</span>
 
-<span class="fc" id="L397">		System.out.println (&quot;\t||  CVA   =&gt; &quot; + FormatUtil.FormatDouble (eaa.cva().amount(), 2, 2, 100.) + &quot;% ||&quot;);</span>
+<span class="fc" id="L405">		System.out.println (&quot;\t||  CVA   =&gt; &quot; + FormatUtil.FormatDouble (eaa.cva().amount(), 2, 2, 100.) + &quot;% ||&quot;);</span>
 
-<span class="fc" id="L399">		System.out.println (&quot;\t||  CVACL =&gt; &quot; + FormatUtil.FormatDouble (eaa.cvacl().amount(), 2, 2, 100.) + &quot;% ||&quot;);</span>
+<span class="fc" id="L407">		System.out.println (&quot;\t||  CVACL =&gt; &quot; + FormatUtil.FormatDouble (eaa.cvacl().amount(), 2, 2, 100.) + &quot;% ||&quot;);</span>
 
-<span class="fc" id="L401">		System.out.println (&quot;\t||  DVA   =&gt; &quot; + FormatUtil.FormatDouble (eaa.dva().amount(), 2, 2, 100.) + &quot;% ||&quot;);</span>
+<span class="fc" id="L409">		System.out.println (&quot;\t||  DVA   =&gt; &quot; + FormatUtil.FormatDouble (eaa.dva().amount(), 2, 2, 100.) + &quot;% ||&quot;);</span>
 
-<span class="fc" id="L403">		System.out.println (&quot;\t||  FVA   =&gt; &quot; + FormatUtil.FormatDouble (eaa.fva().amount(), 2, 2, 100.) + &quot;% ||&quot;);</span>
+<span class="fc" id="L411">		System.out.println (&quot;\t||  FVA   =&gt; &quot; + FormatUtil.FormatDouble (eaa.fva().amount(), 2, 2, 100.) + &quot;% ||&quot;);</span>
 
-<span class="fc" id="L405">		System.out.println (&quot;\t||  FDA   =&gt; &quot; + FormatUtil.FormatDouble (eaa.fda().amount(), 2, 2, 100.) + &quot;% ||&quot;);</span>
+<span class="fc" id="L413">		System.out.println (&quot;\t||  FDA   =&gt; &quot; + FormatUtil.FormatDouble (eaa.fda().amount(), 2, 2, 100.) + &quot;% ||&quot;);</span>
 
-<span class="fc" id="L407">		System.out.println (&quot;\t||  FCA   =&gt; &quot; + FormatUtil.FormatDouble (eaa.fca().amount(), 2, 2, 100.) + &quot;% ||&quot;);</span>
+<span class="fc" id="L415">		System.out.println (&quot;\t||  FCA   =&gt; &quot; + FormatUtil.FormatDouble (eaa.fca().amount(), 2, 2, 100.) + &quot;% ||&quot;);</span>
 
-<span class="fc" id="L409">		System.out.println (&quot;\t||  FBA   =&gt; &quot; + FormatUtil.FormatDouble (eaa.fba().amount(), 2, 2, 100.) + &quot;% ||&quot;);</span>
+<span class="fc" id="L417">		System.out.println (&quot;\t||  FBA   =&gt; &quot; + FormatUtil.FormatDouble (eaa.fba().amount(), 2, 2, 100.) + &quot;% ||&quot;);</span>
 
-<span class="fc" id="L411">		System.out.println (&quot;\t||  SFVA  =&gt; &quot; + FormatUtil.FormatDouble (eaa.sfva().amount(), 2, 2, 100.) + &quot;% ||&quot;);</span>
+<span class="fc" id="L419">		System.out.println (&quot;\t||  SFVA  =&gt; &quot; + FormatUtil.FormatDouble (eaa.sfva().amount(), 2, 2, 100.) + &quot;% ||&quot;);</span>
 
-<span class="fc" id="L413">		System.out.println (&quot;\t||-------------------||&quot;);</span>
-<span class="fc" id="L414">	}</span>
+<span class="fc" id="L421">		System.out.println (&quot;\t||-------------------||&quot;);</span>
+
+<span class="fc" id="L423">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L424">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -577,49 +577,49 @@ public class SemiReplicationBaselProxy
 
 		UDTDump (
 			"\t|                                                                                COLLATERALIZED EXPOSURE                                                                                |",
-			eaa.anchorDates(),
+			eaa.vertexDates(),
 			ead.collateralizedExposure()
 		);
 
 		UDTDump (
 			"\t|                                                                               UNCOLLATERALIZED EXPOSURE                                                                               |",
-			eaa.anchorDates(),
+			eaa.vertexDates(),
 			ead.uncollateralizedExposure()
 		);
 
 		UDTDump (
 			"\t|                                                                                COLLATERALIZED EXPOSURE PV                                                                             |",
-			eaa.anchorDates(),
+			eaa.vertexDates(),
 			ead.collateralizedExposurePV()
 		);
 
 		UDTDump (
 			"\t|                                                                               UNCOLLATERALIZED EXPOSURE PV                                                                            |",
-			eaa.anchorDates(),
+			eaa.vertexDates(),
 			ead.uncollateralizedExposurePV()
 		);
 
 		UDTDump (
 			"\t|                                                                            COLLATERALIZED POSITIVE EXPOSURE PV                                                                        |",
-			eaa.anchorDates(),
+			eaa.vertexDates(),
 			ead.collateralizedPositiveExposure()
 		);
 
 		UDTDump (
 			"\t|                                                                           UNCOLLATERALIZED POSITIVE EXPOSURE PV                                                                       |",
-			eaa.anchorDates(),
+			eaa.vertexDates(),
 			ead.uncollateralizedPositiveExposure()
 		);
 
 		UDTDump (
 			"\t|                                                                            COLLATERALIZED NEGATIVE EXPOSURE PV                                                                        |",
-			eaa.anchorDates(),
+			eaa.vertexDates(),
 			ead.collateralizedNegativeExposure()
 		);
 
 		UDTDump (
 			"\t|                                                                           UNCOLLATERALIZED NEGATIVE EXPOSURE PV                                                                       |",
-			eaa.anchorDates(),
+			eaa.vertexDates(),
 			ead.uncollateralizedNegativeExposure()
 		);
 

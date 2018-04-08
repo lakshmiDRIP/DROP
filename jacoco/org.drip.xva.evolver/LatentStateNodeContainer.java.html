@@ -1,0 +1,1391 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LatentStateNodeContainer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.xva.evolver</a> &gt; <span class="el_source">LatentStateNodeContainer.java</span></div><h1>LatentStateNodeContainer.java</h1><pre class="source lang-java linenums">
+package org.drip.xva.evolver;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * LatentStateNodeContainer holds the Latent State Labels and their corresponding Nodal Realizations. The
+ *  References are:&lt;br&gt;&lt;br&gt;
+ *  
+ *  - Burgard, C., and M. Kjaer (2013): Funding Strategies, Funding Costs &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;24 (12)&lt;/b&gt;
+ *  	82-87.&lt;br&gt;&lt;br&gt;
+ *  
+ *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
+ *  	and Funding Costs &lt;i&gt;Journal of Credit Risk&lt;/i&gt; &lt;b&gt;7 (3)&lt;/b&gt; 1-19.&lt;br&gt;&lt;br&gt;
+ *  
+ *  - Burgard, C., and M. Kjaer (2014): In the Balance &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;24 (11)&lt;/b&gt; 72-75.&lt;br&gt;&lt;br&gt;
+ *  
+ *  - Albanese, C., L. Andersen, and, S. Iabichino (2015): The FVA Puzzle: Accounting, Risk Management, and
+ *  	Collateral Trading &lt;b&gt;https://papers.ssrn.com/sol3/paper.cfm?abstract_id_2517301&lt;/b&gt;&lt;br&gt;&lt;br&gt;
+ * 
+ *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing
+ *  	&lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;21 (2)&lt;/b&gt; 97-102.&lt;br&gt;&lt;br&gt;
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class LatentStateNodeContainer
+{
+<span class="nc" id="L72">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _fx = null;</span>
+<span class="nc" id="L73">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _csa = null;</span>
+<span class="nc" id="L74">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _repo = null;</span>
+<span class="nc" id="L75">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _custom = null;</span>
+<span class="nc" id="L76">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _govvie = null;</span>
+<span class="nc" id="L77">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _rating = null;</span>
+<span class="nc" id="L78">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _forward = null;</span>
+<span class="nc" id="L79">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _funding = null;</span>
+<span class="nc" id="L80">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _payDown = null;</span>
+<span class="nc" id="L81">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _overnight = null;</span>
+<span class="nc" id="L82">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _collateral = null;</span>
+<span class="nc" id="L83">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _volatility = null;</span>
+<span class="nc" id="L84">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _otcFixFloat = null;</span>
+<span class="nc" id="L85">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _entityCredit = null;</span>
+<span class="nc" id="L86">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _entityEquity = null;</span>
+<span class="nc" id="L87">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _entityHazard = null;</span>
+<span class="nc" id="L88">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _entityFunding = null;</span>
+<span class="nc" id="L89">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _entityRecovery = null;</span>
+
+	/**
+	 * Empty LatentStateNodeContainer Constructor
+	 */
+
+	public LatentStateNodeContainer()
+<span class="nc" id="L96">	{</span>
+<span class="nc" id="L97">		_fx = new org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();</span>
+
+<span class="nc" id="L99">		_csa = new org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();</span>
+
+<span class="nc" id="L101">		_repo = new org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();</span>
+
+<span class="nc" id="L103">		_custom = new org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();</span>
+
+<span class="nc" id="L105">		_govvie = new org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();</span>
+
+<span class="nc" id="L107">		_rating = new org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();</span>
+
+<span class="nc" id="L109">		_forward = new org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();</span>
+
+<span class="nc" id="L111">		_funding = new org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();</span>
+
+<span class="nc" id="L113">		_payDown = new org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();</span>
+
+<span class="nc" id="L115">		_overnight = new org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();</span>
+
+<span class="nc" id="L117">		_collateral = new org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();</span>
+
+<span class="nc" id="L119">		_volatility = new org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();</span>
+
+<span class="nc" id="L121">		_otcFixFloat = new org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();</span>
+
+<span class="nc" id="L123">		_entityCredit = new org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();</span>
+
+<span class="nc" id="L125">		_entityEquity = new org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();</span>
+
+<span class="nc" id="L127">		_entityHazard = new org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();</span>
+
+<span class="nc" id="L129">		_entityFunding = new org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();</span>
+
+<span class="nc" id="L131">		_entityRecovery = new org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();</span>
+<span class="nc" id="L132">	}</span>
+
+	/**
+	 * Retrieve the FX Latent State Node Container
+	 * 
+	 * @return The FX Latent State Node Container
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; fx()
+	{
+<span class="nc" id="L142">		return _fx;</span>
+	}
+
+	/**
+	 * Retrieve the CSA Latent State Node Container
+	 * 
+	 * @return The CSA Latent State Node Container
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; csa()
+	{
+<span class="nc" id="L153">		return _csa;</span>
+	}
+
+	/**
+	 * Retrieve the Repo Latent State Node Container
+	 * 
+	 * @return The Repo Latent State Node Container
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; repo()
+	{
+<span class="nc" id="L164">		return _repo;</span>
+	}
+
+	/**
+	 * Retrieve the Custom Latent State Node Container
+	 * 
+	 * @return The Custom Latent State Node Container
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; custom()
+	{
+<span class="nc" id="L175">		return _custom;</span>
+	}
+
+	/**
+	 * Retrieve the Govvie Latent State Node Container
+	 * 
+	 * @return The Govvie Latent State Node Container
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; govvie()
+	{
+<span class="nc" id="L186">		return _govvie;</span>
+	}
+
+	/**
+	 * Retrieve the Govvie Latent State Node Container
+	 * 
+	 * @return The Govvie Latent State Node Container
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; rating()
+	{
+<span class="nc" id="L197">		return _rating;</span>
+	}
+
+	/**
+	 * Retrieve the Forward Latent State Node Container
+	 * 
+	 * @return The Forward Latent State Node Container
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; forward()
+	{
+<span class="nc" id="L208">		return _forward;</span>
+	}
+
+	/**
+	 * Retrieve the Funding Latent State Node Container
+	 * 
+	 * @return The Funding Latent State Node Container
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; funding()
+	{
+<span class="nc" id="L219">		return _funding;</span>
+	}
+
+	/**
+	 * Retrieve the Pay Down Latent State Node Container
+	 * 
+	 * @return The Pay Down Latent State Node Container
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; payDown()
+	{
+<span class="nc" id="L230">		return _payDown;</span>
+	}
+
+	/**
+	 * Retrieve the Overnight Latent State Node Container
+	 * 
+	 * @return The Overnight Latent State Node Container
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; overnight()
+	{
+<span class="nc" id="L241">		return _overnight;</span>
+	}
+
+	/**
+	 * Retrieve the Collateral Latent State Node Container
+	 * 
+	 * @return The Collateral Latent State Node Container
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; collateral()
+	{
+<span class="nc" id="L252">		return _collateral;</span>
+	}
+
+	/**
+	 * Retrieve the Volatility Latent State Node Container
+	 * 
+	 * @return The Volatility Latent State Node Container
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; volatility()
+	{
+<span class="nc" id="L263">		return _volatility;</span>
+	}
+
+	/**
+	 * Retrieve the OTC Fix Float Latent State Node Container
+	 * 
+	 * @return The OTC Fix Float Latent State Node Container
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; otcFixFloat()
+	{
+<span class="nc" id="L274">		return _otcFixFloat;</span>
+	}
+
+	/**
+	 * Retrieve the Entity Credit Latent State Node Container
+	 * 
+	 * @return The Entity Credit Latent State Node Container
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; entityCredit()
+	{
+<span class="nc" id="L285">		return _entityCredit;</span>
+	}
+
+	/**
+	 * Retrieve the Entity Equity Latent State Node Container
+	 * 
+	 * @return The Entity Equity Latent State Node Container
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; entityEquity()
+	{
+<span class="nc" id="L296">		return _entityEquity;</span>
+	}
+
+	/**
+	 * Retrieve the Entity Hazard Latent State Node Container
+	 * 
+	 * @return The Entity Hazard Latent State Node Container
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; entityHazard()
+	{
+<span class="nc" id="L307">		return _entityHazard;</span>
+	}
+
+	/**
+	 * Retrieve the Entity Funding Latent State Node Container
+	 * 
+	 * @return The Entity Funding Latent State Node Container
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; entityFunding()
+	{
+<span class="nc" id="L318">		return _entityFunding;</span>
+	}
+
+	/**
+	 * Retrieve the Entity Recovery Latent State Node Container
+	 * 
+	 * @return The Entity Recovery Latent State Node Container
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; entityRecovery()
+	{
+<span class="nc" id="L329">		return _entityRecovery;</span>
+	}
+
+	/**
+	 * Add the Labeled FX
+	 * 
+	 * @param fxLabel The FX Label
+	 * @param fx The FX
+	 * 
+	 * @return The Labeled FX successfully added
+	 */
+
+	public boolean add (
+		final org.drip.state.identifier.FXLabel fxLabel,
+		final double fx)
+	{
+<span class="nc bnc" id="L345" title="All 4 branches missed.">		if (null == fxLabel || !org.drip.quant.common.NumberUtil.IsValid (fx))</span>
+		{
+<span class="nc" id="L347">			return false;</span>
+		}
+
+<span class="nc" id="L350">		_fx.put (</span>
+<span class="nc" id="L351">			fxLabel.fullyQualifiedName(),</span>
+<span class="nc" id="L352">			fx</span>
+		);
+
+<span class="nc" id="L355">		return true;</span>
+	}
+
+	/**
+	 * Check Presence of Labeled FX
+	 * 
+	 * @param fxLabel The FX Label
+	 * 
+	 * @return The Labeled FX exists
+	 */
+
+	public boolean exists (
+		final org.drip.state.identifier.FXLabel fxLabel)
+	{
+<span class="nc bnc" id="L369" title="All 4 branches missed.">		return null != fxLabel &amp;&amp; _fx.containsKey (fxLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Retrieve of Labeled FX
+	 * 
+	 * @param fxLabel The FX Label
+	 * 
+	 * @return The Labeled FX
+	 * 
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
+	 */
+
+	public double fx (
+		final org.drip.state.identifier.FXLabel fxLabel)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L386" title="All 2 branches missed.">		if (!exists (fxLabel))</span>
+		{
+<span class="nc" id="L388">			throw new java.lang.Exception (&quot;LatentStateNodeContainer::fx =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L391">		return _fx.get (fxLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Add the Labeled Repo
+	 * 
+	 * @param repoLabel The Repo Label
+	 * @param repo The Repo
+	 * 
+	 * @return The Labeled Repo successfully added
+	 */
+
+	public boolean add (
+		final org.drip.state.identifier.RepoLabel repoLabel,
+		final double repo)
+	{
+<span class="nc bnc" id="L407" title="All 4 branches missed.">		if (null == repoLabel || !org.drip.quant.common.NumberUtil.IsValid (repo))</span>
+		{
+<span class="nc" id="L409">			return false;</span>
+		}
+
+<span class="nc" id="L412">		_repo.put (</span>
+<span class="nc" id="L413">			repoLabel.fullyQualifiedName(),</span>
+<span class="nc" id="L414">			repo</span>
+		);
+
+<span class="nc" id="L417">		return true;</span>
+	}
+
+	/**
+	 * Check Presence of Labeled Repo
+	 * 
+	 * @param repoLabel The Repo Label
+	 * 
+	 * @return The Labeled Repo exists
+	 */
+
+	public boolean exists (
+		final org.drip.state.identifier.RepoLabel repoLabel)
+	{
+<span class="nc bnc" id="L431" title="All 4 branches missed.">		return null != repoLabel &amp;&amp; _repo.containsKey (repoLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Retrieve of Labeled Repo
+	 * 
+	 * @param repoLabel The Repo Label
+	 * 
+	 * @return The Labeled Repo
+	 * 
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
+	 */
+
+	public double repo (
+		final org.drip.state.identifier.RepoLabel repoLabel)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L448" title="All 2 branches missed.">		if (!exists (repoLabel))</span>
+		{
+<span class="nc" id="L450">			throw new java.lang.Exception (&quot;LatentStateNodeContainer::repo =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L453">		return _repo.get (repoLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Add the Labeled Custom
+	 * 
+	 * @param customLabel The Custom Label
+	 * @param custom The Custom
+	 * 
+	 * @return The Labeled Custom successfully added
+	 */
+
+	public boolean add (
+		final org.drip.state.identifier.CustomLabel customLabel,
+		final double custom)
+	{
+<span class="nc bnc" id="L469" title="All 4 branches missed.">		if (null == customLabel || !org.drip.quant.common.NumberUtil.IsValid (custom))</span>
+		{
+<span class="nc" id="L471">			return false;</span>
+		}
+
+<span class="nc" id="L474">		_custom.put (</span>
+<span class="nc" id="L475">			customLabel.fullyQualifiedName(),</span>
+<span class="nc" id="L476">			custom</span>
+		);
+
+<span class="nc" id="L479">		return true;</span>
+	}
+
+	/**
+	 * Check Presence of Labeled Custom
+	 * 
+	 * @param customLabel The Custom Label
+	 * 
+	 * @return The Labeled Custom exists
+	 */
+
+	public boolean exists (
+		final org.drip.state.identifier.CustomLabel customLabel)
+	{
+<span class="nc bnc" id="L493" title="All 4 branches missed.">		return null != customLabel &amp;&amp; _custom.containsKey (customLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Retrieve of Labeled Custom
+	 * 
+	 * @param customLabel The Custom Label
+	 * 
+	 * @return The Labeled Custom
+	 * 
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
+	 */
+
+	public double custom (
+		final org.drip.state.identifier.CustomLabel customLabel)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L510" title="All 2 branches missed.">		if (!exists (customLabel))</span>
+		{
+<span class="nc" id="L512">			throw new java.lang.Exception (&quot;LatentStateNodeContainer::custom =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L515">		return _custom.get (customLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Add the Labeled Govvie
+	 * 
+	 * @param govvieLabel The Govvie Label
+	 * @param govvie The Govvie
+	 * 
+	 * @return The Labeled Govvie successfully added
+	 */
+
+	public boolean add (
+		final org.drip.state.identifier.GovvieLabel govvieLabel,
+		final double govvie)
+	{
+<span class="nc bnc" id="L531" title="All 4 branches missed.">		if (null == govvieLabel || !org.drip.quant.common.NumberUtil.IsValid (govvie))</span>
+		{
+<span class="nc" id="L533">			return false;</span>
+		}
+
+<span class="nc" id="L536">		_govvie.put (</span>
+<span class="nc" id="L537">			govvieLabel.fullyQualifiedName(),</span>
+<span class="nc" id="L538">			govvie</span>
+		);
+
+<span class="nc" id="L541">		return true;</span>
+	}
+
+	/**
+	 * Check Presence of Labeled Govvie
+	 * 
+	 * @param govvieLabel The Govvie Label
+	 * 
+	 * @return The Labeled Govvie exists
+	 */
+
+	public boolean exists (
+		final org.drip.state.identifier.GovvieLabel govvieLabel)
+	{
+<span class="nc bnc" id="L555" title="All 4 branches missed.">		return null != govvieLabel &amp;&amp; _govvie.containsKey (govvieLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Retrieve of Labeled Govvie
+	 * 
+	 * @param govvieLabel The Govvie Label
+	 * 
+	 * @return The Labeled Govvie
+	 * 
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
+	 */
+
+	public double govvie (
+		final org.drip.state.identifier.GovvieLabel govvieLabel)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L572" title="All 2 branches missed.">		if (!exists (govvieLabel))</span>
+		{
+<span class="nc" id="L574">			throw new java.lang.Exception (&quot;LatentStateNodeContainer::govvie =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L577">		return _govvie.get (govvieLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Add the Labeled Rating
+	 * 
+	 * @param ratingLabel The Rating Label
+	 * @param rating The Rating
+	 * 
+	 * @return The Labeled Rating successfully added
+	 */
+
+	public boolean add (
+		final org.drip.state.identifier.RatingLabel ratingLabel,
+		final double rating)
+	{
+<span class="nc bnc" id="L593" title="All 4 branches missed.">		if (null == ratingLabel || !org.drip.quant.common.NumberUtil.IsValid (rating))</span>
+		{
+<span class="nc" id="L595">			return false;</span>
+		}
+
+<span class="nc" id="L598">		_rating.put (</span>
+<span class="nc" id="L599">			ratingLabel.fullyQualifiedName(),</span>
+<span class="nc" id="L600">			rating</span>
+		);
+
+<span class="nc" id="L603">		return true;</span>
+	}
+
+	/**
+	 * Check Presence of Labeled Rating
+	 * 
+	 * @param ratingLabel The Rating Label
+	 * 
+	 * @return The Labeled Rating exists
+	 */
+
+	public boolean exists (
+		final org.drip.state.identifier.RatingLabel ratingLabel)
+	{
+<span class="nc bnc" id="L617" title="All 4 branches missed.">		return null != ratingLabel &amp;&amp; _rating.containsKey (ratingLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Retrieve of Labeled Rating
+	 * 
+	 * @param ratingLabel The Rating Label
+	 * 
+	 * @return The Labeled Rating
+	 * 
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
+	 */
+
+	public double rating (
+		final org.drip.state.identifier.RatingLabel ratingLabel)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L634" title="All 2 branches missed.">		if (!exists (ratingLabel))</span>
+		{
+<span class="nc" id="L636">			throw new java.lang.Exception (&quot;LatentStateNodeContainer::rating =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L639">		return _rating.get (ratingLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Add the Labeled Forward
+	 * 
+	 * @param forwardLabel The Forward Label
+	 * @param forward The Forward
+	 * 
+	 * @return The Labeled Forward successfully added
+	 */
+
+	public boolean add (
+		final org.drip.state.identifier.ForwardLabel forwardLabel,
+		final double forward)
+	{
+<span class="nc bnc" id="L655" title="All 4 branches missed.">		if (null == forwardLabel || !org.drip.quant.common.NumberUtil.IsValid (forward))</span>
+		{
+<span class="nc" id="L657">			return false;</span>
+		}
+
+<span class="nc" id="L660">		_forward.put (</span>
+<span class="nc" id="L661">			forwardLabel.fullyQualifiedName(),</span>
+<span class="nc" id="L662">			forward</span>
+		);
+
+<span class="nc" id="L665">		return true;</span>
+	}
+
+	/**
+	 * Check Presence of Labeled Forward
+	 * 
+	 * @param forwardLabel The Forward Label
+	 * 
+	 * @return The Labeled Forward exists
+	 */
+
+	public boolean exists (
+		final org.drip.state.identifier.ForwardLabel forwardLabel)
+	{
+<span class="nc bnc" id="L679" title="All 4 branches missed.">		return null != forwardLabel &amp;&amp; _forward.containsKey (forwardLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Retrieve of Labeled Forward
+	 * 
+	 * @param forwardLabel The Forward Label
+	 * 
+	 * @return The Labeled Forward
+	 * 
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
+	 */
+
+	public double forward (
+		final org.drip.state.identifier.ForwardLabel forwardLabel)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L696" title="All 2 branches missed.">		if (!exists (forwardLabel))</span>
+		{
+<span class="nc" id="L698">			throw new java.lang.Exception (&quot;LatentStateNodeContainer::forward =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L701">		return _forward.get (forwardLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Add the Labeled Funding
+	 * 
+	 * @param fundingLabel The Funding Label
+	 * @param funding The Funding
+	 * 
+	 * @return The Labeled Funding successfully added
+	 */
+
+	public boolean add (
+		final org.drip.state.identifier.FundingLabel fundingLabel,
+		final double funding)
+	{
+<span class="nc bnc" id="L717" title="All 4 branches missed.">		if (null == fundingLabel || !org.drip.quant.common.NumberUtil.IsValid (funding))</span>
+		{
+<span class="nc" id="L719">			return false;</span>
+		}
+
+<span class="nc" id="L722">		_funding.put (</span>
+<span class="nc" id="L723">			fundingLabel.fullyQualifiedName(),</span>
+<span class="nc" id="L724">			funding</span>
+		);
+
+<span class="nc" id="L727">		return true;</span>
+	}
+
+	/**
+	 * Check Presence of Labeled Funding
+	 * 
+	 * @param fundingLabel The Funding Label
+	 * 
+	 * @return The Labeled Funding exists
+	 */
+
+	public boolean exists (
+		final org.drip.state.identifier.FundingLabel fundingLabel)
+	{
+<span class="nc bnc" id="L741" title="All 4 branches missed.">		return null != fundingLabel &amp;&amp; _funding.containsKey (fundingLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Retrieve of Labeled Funding
+	 * 
+	 * @param fundingLabel The Funding Label
+	 * 
+	 * @return The Labeled Funding
+	 * 
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
+	 */
+
+	public double funding (
+		final org.drip.state.identifier.FundingLabel fundingLabel)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L758" title="All 2 branches missed.">		if (!exists (fundingLabel))</span>
+		{
+<span class="nc" id="L760">			throw new java.lang.Exception (&quot;LatentStateNodeContainer::funding =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L763">		return _funding.get (fundingLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Add the Labeled Pay Down
+	 * 
+	 * @param payDownLabel The Pay Down Label
+	 * @param payDown The Pay Down
+	 * 
+	 * @return The Labeled Pay Down successfully added
+	 */
+
+	public boolean add (
+		final org.drip.state.identifier.PaydownLabel payDownLabel,
+		final double payDown)
+	{
+<span class="nc bnc" id="L779" title="All 4 branches missed.">		if (null == payDownLabel || !org.drip.quant.common.NumberUtil.IsValid (payDown))</span>
+		{
+<span class="nc" id="L781">			return false;</span>
+		}
+
+<span class="nc" id="L784">		_payDown.put (</span>
+<span class="nc" id="L785">			payDownLabel.fullyQualifiedName(),</span>
+<span class="nc" id="L786">			payDown</span>
+		);
+
+<span class="nc" id="L789">		return true;</span>
+	}
+
+	/**
+	 * Check Presence of Labeled Pay Down
+	 * 
+	 * @param payDownLabel The Pay Down Label
+	 * 
+	 * @return The Labeled Pay Down exists
+	 */
+
+	public boolean exists (
+		final org.drip.state.identifier.PaydownLabel payDownLabel)
+	{
+<span class="nc bnc" id="L803" title="All 4 branches missed.">		return null != payDownLabel &amp;&amp; _payDown.containsKey (payDownLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Retrieve of Labeled Pay Down
+	 * 
+	 * @param payDownLabel The Pay Down Label
+	 * 
+	 * @return The Labeled Pay Down
+	 * 
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
+	 */
+
+	public double payDown (
+		final org.drip.state.identifier.PaydownLabel payDownLabel)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L820" title="All 2 branches missed.">		if (!exists (payDownLabel))</span>
+		{
+<span class="nc" id="L822">			throw new java.lang.Exception (&quot;LatentStateNodeContainer::payDown =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L825">		return _payDown.get (payDownLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Add the Labeled Overnight
+	 * 
+	 * @param overnightLabel The Overnight Label
+	 * @param overnight The Overnight
+	 * 
+	 * @return The Labeled Overnight successfully added
+	 */
+
+	public boolean add (
+		final org.drip.state.identifier.OvernightLabel overnightLabel,
+		final double overnight)
+	{
+<span class="nc bnc" id="L841" title="All 4 branches missed.">		if (null == overnightLabel || !org.drip.quant.common.NumberUtil.IsValid (overnight))</span>
+		{
+<span class="nc" id="L843">			return false;</span>
+		}
+
+<span class="nc" id="L846">		_overnight.put (</span>
+<span class="nc" id="L847">			overnightLabel.fullyQualifiedName(),</span>
+<span class="nc" id="L848">			overnight</span>
+		);
+
+<span class="nc" id="L851">		return true;</span>
+	}
+
+	/**
+	 * Check Presence of Labeled Overnight
+	 * 
+	 * @param overnightLabel The Overnight Label
+	 * 
+	 * @return The Labeled Overnight exists
+	 */
+
+	public boolean exists (
+		final org.drip.state.identifier.OvernightLabel overnightLabel)
+	{
+<span class="nc bnc" id="L865" title="All 4 branches missed.">		return null != overnightLabel &amp;&amp; _overnight.containsKey (overnightLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Retrieve of Labeled Overnight
+	 * 
+	 * @param overnightLabel The Overnight Label
+	 * 
+	 * @return The Labeled Overnight
+	 * 
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
+	 */
+
+	public double overnight (
+		final org.drip.state.identifier.OvernightLabel overnightLabel)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L882" title="All 2 branches missed.">		if (!exists (overnightLabel))</span>
+		{
+<span class="nc" id="L884">			throw new java.lang.Exception (&quot;LatentStateNodeContainer::overnight =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L887">		return _overnight.get (overnightLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Add the Labeled Collateral
+	 * 
+	 * @param collateralLabel The Collateral Label
+	 * @param collateral The Collateral
+	 * 
+	 * @return The Labeled Collateral successfully added
+	 */
+
+	public boolean add (
+		final org.drip.state.identifier.CollateralLabel collateralLabel,
+		final double collateral)
+	{
+<span class="nc bnc" id="L903" title="All 4 branches missed.">		if (null == collateralLabel || !org.drip.quant.common.NumberUtil.IsValid (collateral))</span>
+		{
+<span class="nc" id="L905">			return false;</span>
+		}
+
+<span class="nc" id="L908">		_collateral.put (</span>
+<span class="nc" id="L909">			collateralLabel.fullyQualifiedName(),</span>
+<span class="nc" id="L910">			collateral</span>
+		);
+
+<span class="nc" id="L913">		return true;</span>
+	}
+
+	/**
+	 * Check Presence of Labeled Collateral
+	 * 
+	 * @param collateralLabel The Collateral Label
+	 * 
+	 * @return The Labeled Collateral exists
+	 */
+
+	public boolean exists (
+		final org.drip.state.identifier.CollateralLabel collateralLabel)
+	{
+<span class="nc bnc" id="L927" title="All 4 branches missed.">		return null != collateralLabel &amp;&amp; _collateral.containsKey (collateralLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Retrieve of Labeled Collateral
+	 * 
+	 * @param collateralLabel The Collateral Label
+	 * 
+	 * @return The Labeled Collateral
+	 * 
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
+	 */
+
+	public double collateral (
+		final org.drip.state.identifier.CollateralLabel collateralLabel)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L944" title="All 2 branches missed.">		if (!exists (collateralLabel))</span>
+		{
+<span class="nc" id="L946">			throw new java.lang.Exception (&quot;LatentStateNodeContainer::collateral =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L949">		return _collateral.get (collateralLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Add the Labeled Volatility
+	 * 
+	 * @param volatilityLabel The Volatility Label
+	 * @param volatility The Volatility
+	 * 
+	 * @return The Labeled Volatility successfully added
+	 */
+
+	public boolean add (
+		final org.drip.state.identifier.VolatilityLabel volatilityLabel,
+		final double volatility)
+	{
+<span class="nc bnc" id="L965" title="All 4 branches missed.">		if (null == volatilityLabel || !org.drip.quant.common.NumberUtil.IsValid (volatility))</span>
+		{
+<span class="nc" id="L967">			return false;</span>
+		}
+
+<span class="nc" id="L970">		_volatility.put (</span>
+<span class="nc" id="L971">			volatilityLabel.fullyQualifiedName(),</span>
+<span class="nc" id="L972">			volatility</span>
+		);
+
+<span class="nc" id="L975">		return true;</span>
+	}
+
+	/**
+	 * Check Presence of Labeled Volatility
+	 * 
+	 * @param volatilityLabel The Volatility Label
+	 * 
+	 * @return The Labeled Volatility exists
+	 */
+
+	public boolean exists (
+		final org.drip.state.identifier.VolatilityLabel volatilityLabel)
+	{
+<span class="nc bnc" id="L989" title="All 4 branches missed.">		return null != volatilityLabel &amp;&amp; _volatility.containsKey (volatilityLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Retrieve of Labeled Volatility
+	 * 
+	 * @param volatilityLabel The Volatility Label
+	 * 
+	 * @return The Labeled Volatility
+	 * 
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
+	 */
+
+	public double volatility (
+		final org.drip.state.identifier.VolatilityLabel volatilityLabel)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L1006" title="All 2 branches missed.">		if (!exists (volatilityLabel))</span>
+		{
+<span class="nc" id="L1008">			throw new java.lang.Exception (&quot;LatentStateNodeContainer::volatility =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L1011">		return _volatility.get (volatilityLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Add the Labeled OTC Fix Float
+	 * 
+	 * @param otcFixFloatLabel The OTC Fix Float Label
+	 * @param otcFixFloat The OTC Fix Float Value
+	 * 
+	 * @return The Labeled OTC Fix Float successfully added
+	 */
+
+	public boolean add (
+		final org.drip.state.identifier.OTCFixFloatLabel otcFixFloatLabel,
+		final double otcFixFloat)
+	{
+<span class="nc bnc" id="L1027" title="All 4 branches missed.">		if (null == otcFixFloatLabel || !org.drip.quant.common.NumberUtil.IsValid (otcFixFloat))</span>
+		{
+<span class="nc" id="L1029">			return false;</span>
+		}
+
+<span class="nc" id="L1032">		_otcFixFloat.put (</span>
+<span class="nc" id="L1033">			otcFixFloatLabel.fullyQualifiedName(),</span>
+<span class="nc" id="L1034">			otcFixFloat</span>
+		);
+
+<span class="nc" id="L1037">		return true;</span>
+	}
+
+	/**
+	 * Check Presence of Labeled OTC Fix Float
+	 * 
+	 * @param otcFixFloatLabel The OTC Fix Float Label
+	 * 
+	 * @return The Labeled OTC Fix Float exists
+	 */
+
+	public boolean exists (
+		final org.drip.state.identifier.OTCFixFloatLabel otcFixFloatLabel)
+	{
+<span class="nc bnc" id="L1051" title="All 4 branches missed.">		return null != otcFixFloatLabel &amp;&amp; _otcFixFloat.containsKey (otcFixFloatLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Retrieve of Labeled OTC Fix Float
+	 * 
+	 * @param otcFixFloatLabel The OTC Fix Float Label
+	 * 
+	 * @return The Labeled OTC Fix Float
+	 * 
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
+	 */
+
+	public double otcFixFloat (
+		final org.drip.state.identifier.OTCFixFloatLabel otcFixFloatLabel)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L1068" title="All 2 branches missed.">		if (!exists (otcFixFloatLabel))</span>
+		{
+<span class="nc" id="L1070">			throw new java.lang.Exception (&quot;LatentStateNodeContainer::otcFixFloat =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L1073">		return _otcFixFloat.get (otcFixFloatLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Add the Labeled Entity Credit
+	 * 
+	 * @param entityCreditLabel The Entity Credit Label
+	 * @param entityCredit The Entity Credit
+	 * 
+	 * @return The Labeled Entity Credit successfully added
+	 */
+
+	public boolean add (
+		final org.drip.state.identifier.EntityCreditLabel entityCreditLabel,
+		final double entityCredit)
+	{
+<span class="nc bnc" id="L1089" title="All 4 branches missed.">		if (null == entityCreditLabel || !org.drip.quant.common.NumberUtil.IsValid (entityCredit))</span>
+		{
+<span class="nc" id="L1091">			return false;</span>
+		}
+
+<span class="nc" id="L1094">		_entityCredit.put (</span>
+<span class="nc" id="L1095">			entityCreditLabel.fullyQualifiedName(),</span>
+<span class="nc" id="L1096">			entityCredit</span>
+		);
+
+<span class="nc" id="L1099">		return true;</span>
+	}
+
+	/**
+	 * Check Presence of Labeled Entity Credit
+	 * 
+	 * @param entityCreditLabel The Entity Credit Label
+	 * 
+	 * @return The Labeled Entity Credit exists
+	 */
+
+	public boolean exists (
+		final org.drip.state.identifier.EntityCreditLabel entityCreditLabel)
+	{
+<span class="nc bnc" id="L1113" title="All 2 branches missed.">		return null != entityCreditLabel &amp;&amp; _entityCredit.containsKey</span>
+<span class="nc bnc" id="L1114" title="All 2 branches missed.">			(entityCreditLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Retrieve of Labeled Entity Credit
+	 * 
+	 * @param entityCreditLabel The Entity Credit Label
+	 * 
+	 * @return The Labeled Entity Credit
+	 * 
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
+	 */
+
+	public double entityCredit (
+		final org.drip.state.identifier.EntityCreditLabel entityCreditLabel)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L1131" title="All 2 branches missed.">		if (!exists (entityCreditLabel))</span>
+		{
+<span class="nc" id="L1133">			throw new java.lang.Exception (&quot;LatentStateNodeContainer::entityCredit =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L1136">		return _entityCredit.get (entityCreditLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Add the Labeled Entity Equity
+	 * 
+	 * @param entityEquityLabel The Entity Equity Label
+	 * @param entityEquity The Entity Equity
+	 * 
+	 * @return The Labeled Entity Equity successfully added
+	 */
+
+	public boolean add (
+		final org.drip.state.identifier.EntityEquityLabel entityEquityLabel,
+		final double entityEquity)
+	{
+<span class="nc bnc" id="L1152" title="All 4 branches missed.">		if (null == entityEquityLabel || !org.drip.quant.common.NumberUtil.IsValid (entityEquity))</span>
+		{
+<span class="nc" id="L1154">			return false;</span>
+		}
+
+<span class="nc" id="L1157">		_entityEquity.put (</span>
+<span class="nc" id="L1158">			entityEquityLabel.fullyQualifiedName(),</span>
+<span class="nc" id="L1159">			entityEquity</span>
+		);
+
+<span class="nc" id="L1162">		return true;</span>
+	}
+
+	/**
+	 * Check Presence of Labeled Entity Equity
+	 * 
+	 * @param entityEquityLabel The Entity Equity Label
+	 * 
+	 * @return The Labeled Entity Equity exists
+	 */
+
+	public boolean exists (
+		final org.drip.state.identifier.EntityEquityLabel entityEquityLabel)
+	{
+<span class="nc bnc" id="L1176" title="All 2 branches missed.">		return null != entityEquityLabel &amp;&amp; _entityEquity.containsKey</span>
+<span class="nc bnc" id="L1177" title="All 2 branches missed.">			(entityEquityLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Retrieve of Labeled Entity Equity
+	 * 
+	 * @param entityEquityLabel The Entity Equity Label
+	 * 
+	 * @return The Labeled Entity Equity
+	 * 
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
+	 */
+
+	public double entityEquity (
+		final org.drip.state.identifier.EntityEquityLabel entityEquityLabel)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L1194" title="All 2 branches missed.">		if (!exists (entityEquityLabel))</span>
+		{
+<span class="nc" id="L1196">			throw new java.lang.Exception (&quot;LatentStateNodeContainer::entityEquity =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L1199">		return _entityEquity.get (entityEquityLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Add the Labeled Entity Hazard
+	 * 
+	 * @param entityHazardLabel The Entity Hazard Label
+	 * @param entityHazard The Entity Hazard
+	 * 
+	 * @return The Labeled Entity Hazard successfully added
+	 */
+
+	public boolean add (
+		final org.drip.state.identifier.EntityHazardLabel entityHazardLabel,
+		final double entityHazard)
+	{
+<span class="nc bnc" id="L1215" title="All 4 branches missed.">		if (null == entityHazardLabel || !org.drip.quant.common.NumberUtil.IsValid (entityHazard))</span>
+		{
+<span class="nc" id="L1217">			return false;</span>
+		}
+
+<span class="nc" id="L1220">		_entityHazard.put (</span>
+<span class="nc" id="L1221">			entityHazardLabel.fullyQualifiedName(),</span>
+<span class="nc" id="L1222">			entityHazard</span>
+		);
+
+<span class="nc" id="L1225">		return true;</span>
+	}
+
+	/**
+	 * Check Presence of Labeled Entity Hazard
+	 * 
+	 * @param entityHazardLabel The Entity Hazard Label
+	 * 
+	 * @return The Labeled Entity Hazard exists
+	 */
+
+	public boolean exists (
+		final org.drip.state.identifier.EntityHazardLabel entityHazardLabel)
+	{
+<span class="nc bnc" id="L1239" title="All 2 branches missed.">		return null != entityHazardLabel &amp;&amp; _entityHazard.containsKey</span>
+<span class="nc bnc" id="L1240" title="All 2 branches missed.">			(entityHazardLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Retrieve of Labeled Entity Hazard
+	 * 
+	 * @param entityHazardLabel The Entity Hazard Label
+	 * 
+	 * @return The Labeled Entity Hazard
+	 * 
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
+	 */
+
+	public double entityHazard (
+		final org.drip.state.identifier.EntityHazardLabel entityHazardLabel)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L1257" title="All 2 branches missed.">		if (!exists (entityHazardLabel))</span>
+		{
+<span class="nc" id="L1259">			throw new java.lang.Exception (&quot;LatentStateNodeContainer::entityHazard =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L1262">		return _entityHazard.get (entityHazardLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Add the Labeled Entity Funding
+	 * 
+	 * @param entityFundingLabel The Entity Funding Label
+	 * @param entityFunding The Entity Funding
+	 * 
+	 * @return The Labeled Entity Funding successfully added
+	 */
+
+	public boolean add (
+		final org.drip.state.identifier.EntityFundingLabel entityFundingLabel,
+		final double entityFunding)
+	{
+<span class="nc bnc" id="L1278" title="All 4 branches missed.">		if (null == entityFundingLabel || !org.drip.quant.common.NumberUtil.IsValid (entityFunding))</span>
+		{
+<span class="nc" id="L1280">			return false;</span>
+		}
+
+<span class="nc" id="L1283">		_entityFunding.put (</span>
+<span class="nc" id="L1284">			entityFundingLabel.fullyQualifiedName(),</span>
+<span class="nc" id="L1285">			entityFunding</span>
+		);
+
+<span class="nc" id="L1288">		return true;</span>
+	}
+
+	/**
+	 * Check Presence of Labeled Entity Funding
+	 * 
+	 * @param entityFundingLabel The Entity Funding Label
+	 * 
+	 * @return The Labeled Entity Funding Exists
+	 */
+
+	public boolean exists (
+		final org.drip.state.identifier.EntityFundingLabel entityFundingLabel)
+	{
+<span class="nc bnc" id="L1302" title="All 2 branches missed.">		return null != entityFundingLabel &amp;&amp; _entityFunding.containsKey</span>
+<span class="nc bnc" id="L1303" title="All 2 branches missed.">			(entityFundingLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Retrieve of Labeled Entity Funding
+	 * 
+	 * @param entityFundingLabel The Entity Funding Label
+	 * 
+	 * @return The Labeled Entity Funding
+	 * 
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
+	 */
+
+	public double entityFunding (
+		final org.drip.state.identifier.EntityRecoveryLabel entityFundingLabel)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L1320" title="All 2 branches missed.">		if (!exists (entityFundingLabel))</span>
+		{
+<span class="nc" id="L1322">			throw new java.lang.Exception (&quot;LatentStateNodeContainer::entityFunding =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L1325">		return _entityFunding.get (entityFundingLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Add the Labeled Entity Recovery
+	 * 
+	 * @param entityRecoveryLabel The Entity Recovery Label
+	 * @param entityRecovery The Entity Recovery
+	 * 
+	 * @return The Labeled Entity Recovery successfully added
+	 */
+
+	public boolean add (
+		final org.drip.state.identifier.EntityRecoveryLabel entityRecoveryLabel,
+		final double entityRecovery)
+	{
+<span class="nc bnc" id="L1341" title="All 4 branches missed.">		if (null == entityRecoveryLabel || !org.drip.quant.common.NumberUtil.IsValid (entityRecovery))</span>
+		{
+<span class="nc" id="L1343">			return false;</span>
+		}
+
+<span class="nc" id="L1346">		_entityRecovery.put (</span>
+<span class="nc" id="L1347">			entityRecoveryLabel.fullyQualifiedName(),</span>
+<span class="nc" id="L1348">			entityRecovery</span>
+		);
+
+<span class="nc" id="L1351">		return true;</span>
+	}
+
+	/**
+	 * Check Presence of Labeled Entity Recovery
+	 * 
+	 * @param entityRecoveryLabel The Entity Recovery Label
+	 * 
+	 * @return The Labeled Entity Recovery exists
+	 */
+
+	public boolean exists (
+		final org.drip.state.identifier.EntityRecoveryLabel entityRecoveryLabel)
+	{
+<span class="nc bnc" id="L1365" title="All 2 branches missed.">		return null != entityRecoveryLabel &amp;&amp; _entityRecovery.containsKey</span>
+<span class="nc bnc" id="L1366" title="All 2 branches missed.">			(entityRecoveryLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Retrieve of Labeled Entity Recovery
+	 * 
+	 * @param entityRecoveryLabel The Entity Recovery Label
+	 * 
+	 * @return The Labeled Entity Recovery
+	 * 
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
+	 */
+
+	public double entityRecovery (
+		final org.drip.state.identifier.EntityRecoveryLabel entityRecoveryLabel)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L1383" title="All 2 branches missed.">		if (!exists (entityRecoveryLabel))</span>
+		{
+<span class="nc" id="L1385">			throw new java.lang.Exception (&quot;LatentStateNodeContainer::entityRecovery =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L1388">		return _entityRecovery.get (entityRecoveryLabel.fullyQualifiedName());</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

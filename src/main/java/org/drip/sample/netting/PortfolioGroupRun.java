@@ -457,7 +457,7 @@ public class PortfolioGroupRun {
 			}
 		);
 
-		JulianDate[] adtVertexNode = eaa.anchorDates();
+		JulianDate[] adtVertexNode = eaa.vertexDates();
 
 		System.out.println ("\t|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|");
 

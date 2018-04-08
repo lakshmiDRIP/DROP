@@ -52,7 +52,7 @@ package org.drip.analytics.support;
  */
 
 /**
- * CaseInsensitiveMap implements a case insensitive key in a hash map
+ * CaseInsensitiveTreeMap implements a Case Insensitive Key in a Tree Map
  * 
  * @author Michael Beer
  */

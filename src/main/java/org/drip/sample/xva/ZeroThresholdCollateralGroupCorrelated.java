@@ -462,11 +462,11 @@ public class ZeroThresholdCollateralGroupCorrelated {
 					dblCSADrift,
 					adblCSA[j],
 					new MarketVertexEntity (
-						Math.exp (-0.5 * adblBankHazardRate[j] * j),
+						Math.exp (-0.5 * adblBankHazardRate[j] * (iNumStep - j)),
 						adblBankHazardRate[j],
 						adblBankRecoveryRate[j],
 						adblBankFundingSpread[j],
-						Math.exp (-0.5 * adblBankHazardRate[j] * (1. - adblBankRecoveryRate[j]) * iNumStep),
+						Math.exp (-0.5 * adblBankHazardRate[j] * (1. - adblBankRecoveryRate[j]) * (iNumStep - j)),
 						Double.NaN,
 						Double.NaN,
 						Double.NaN
@@ -476,7 +476,7 @@ public class ZeroThresholdCollateralGroupCorrelated {
 						adblCounterPartyHazardRate[j],
 						adblCounterPartyRecoveryRate[j],
 						adblCounterPartyFundingSpread[j],
-						Math.exp (-0.5 * adblCounterPartyHazardRate[j] * (1. - adblCounterPartyRecoveryRate[j]) * iNumStep),
+						Math.exp (-0.5 * adblCounterPartyHazardRate[j] * (1. - adblCounterPartyRecoveryRate[j]) * (iNumStep - j)),
 						Double.NaN,
 						Double.NaN,
 						Double.NaN
@@ -539,7 +539,7 @@ public class ZeroThresholdCollateralGroupCorrelated {
 
 		ExposureAdjustmentAggregator eaa = new ExposureAdjustmentAggregator (aMPEA);
 
-		JulianDate[] adtVertexNode = eaa.anchorDates();
+		JulianDate[] adtVertexNode = eaa.vertexDates();
 
 		System.out.println();
 

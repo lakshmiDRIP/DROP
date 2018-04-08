@@ -548,11 +548,11 @@ public class BondReplicator
 <span class="fc bfc" id="L548" title="All 4 branches covered.">		if (_bond.isFloater() &amp;&amp; java.lang.Integer.MIN_VALUE != _iResetDate) {</span>
 <span class="fc bfc" id="L549" title="All 2 branches covered.">			if (fl instanceof org.drip.state.identifier.ForwardLabel) {</span>
 <span class="pc bpc" id="L550" title="1 of 2 branches missed.">				if (!_csqcFunding01Up.setFixing (_iResetDate, (org.drip.state.identifier.ForwardLabel) fl,</span>
-					_dblResetRate + 0.0001))
+					_dblResetRate /* + 0.0001 */))
 <span class="nc" id="L552">					throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
 <span class="pc bpc" id="L553" title="1 of 2 branches missed.">			} else if (fl instanceof org.drip.state.identifier.OTCFixFloatLabel) {</span>
 <span class="pc bpc" id="L554" title="1 of 2 branches missed.">			if (!_csqcFunding01Up.setFixing (_iResetDate, (org.drip.state.identifier.OTCFixFloatLabel) fl,</span>
-				_dblResetRate + 0.0001))
+				_dblResetRate /* + 0.0001 */))
 <span class="nc" id="L556">				throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
 			}
 		}
@@ -649,11 +649,11 @@ public class BondReplicator
 <span class="fc bfc" id="L649" title="All 4 branches covered.">			if (_bond.isFloater() &amp;&amp; java.lang.Integer.MIN_VALUE != _iResetDate) {</span>
 <span class="fc bfc" id="L650" title="All 2 branches covered.">				if (fl instanceof org.drip.state.identifier.ForwardLabel) {</span>
 <span class="pc bpc" id="L651" title="1 of 2 branches missed.">					if (!csqcFundingTenorUp.setFixing (_iResetDate, (org.drip.state.identifier.ForwardLabel)</span>
-						fl, _dblResetRate + 0.0001 * _dblTenorBump))
+						fl, _dblResetRate /* + 0.0001 * _dblTenorBump */))
 <span class="nc" id="L653">						throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
 
 <span class="pc bpc" id="L655" title="1 of 2 branches missed.">					if (!csqcFundingTenorDown.setFixing (_iResetDate, (org.drip.state.identifier.ForwardLabel)</span>
-						fl, _dblResetRate - 0.0001 * _dblTenorBump))
+						fl, _dblResetRate /* - 0.0001 * _dblTenorBump */))
 <span class="nc" id="L657">						throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
 <span class="pc bpc" id="L658" title="1 of 2 branches missed.">				} else if (fl instanceof org.drip.state.identifier.OTCFixFloatLabel) {</span>
 <span class="pc bpc" id="L659" title="1 of 2 branches missed.">					if (!csqcFundingTenorUp.setFixing (_iResetDate,</span>
@@ -713,7 +713,7 @@ public class BondReplicator
 <span class="nc" id="L713">				throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
 <span class="fc" id="L714">		}</span>
 
-<span class="fc" id="L716">		org.drip.state.identifier.EntityCreditLabel cl = _bond.creditLabel();</span>
+<span class="fc" id="L716">		org.drip.state.identifier.EntityCDSLabel cl = _bond.creditLabel();</span>
 
 <span class="pc bpc" id="L718" title="1 of 2 branches missed.">		java.lang.String strReferenceEntity = null != cl ? cl.referenceEntity() : null;</span>
 
@@ -1554,7 +1554,7 @@ public class BondReplicator
 							dblCreditBasisToExercise + 0.0001 * _dblCustomCreditBasisBump)) /
 								_dblCurrentPrice / _dblCustomCreditBasisBump;
 				else {
-<span class="fc" id="L1557">					org.drip.state.identifier.EntityCreditLabel cl = _bond.creditLabel();</span>
+<span class="fc" id="L1557">					org.drip.state.identifier.EntityCDSLabel cl = _bond.creditLabel();</span>
 
 <span class="fc" id="L1559">					org.drip.state.credit.CreditCurve ccBase = _csqcCreditBase.creditState (cl);</span>
 
@@ -1721,316 +1721,320 @@ public class BondReplicator
 <span class="fc" id="L1721">						(_valParams, csqcTenorDown, null, iWorkoutDate, dblWorkoutFactor,</span>
 							dblParZSpreadToExercise);
 
-<span class="fc" id="L1724">				mapFundingKRD.put (strKey, 0.5 * (dblTenorFundingDownPrice - dblTenorFundingUpPrice) /</span>
-					_dblCurrentPrice / _dblTenorBump);
+<span class="fc" id="L1724">				double dblBaseFloaterPrice = 0.5 * (dblTenorFundingDownPrice + dblTenorFundingUpPrice);</span>
 
-<span class="fc" id="L1727">				mapFundingKPRD.put (strKey, 0.5 * (dblTenorFundingDownParPrice - dblTenorFundingUpParPrice) /</span>
-					_dblIssuePrice / _dblTenorBump);
-<span class="fc" id="L1729">			}</span>
+<span class="fc" id="L1726">				mapFundingKRD.put (strKey, 0.5 * (dblTenorFundingDownPrice - dblTenorFundingUpPrice) /</span>
+<span class="fc bfc" id="L1727" title="All 2 branches covered.">					(_bond.isFloater() ? dblBaseFloaterPrice : _dblCurrentPrice) / _dblTenorBump);</span>
+
+<span class="fc" id="L1729">				mapFundingKPRD.put (strKey, 0.5 * (dblTenorFundingDownParPrice - dblTenorFundingUpParPrice) /</span>
+<span class="fc bfc" id="L1730" title="All 2 branches covered.">					(_bond.isFloater() ? dblBaseFloaterPrice : _dblIssuePrice) / _dblTenorBump);</span>
+<span class="fc" id="L1731">			}</span>
 
 			for (java.util.Map.Entry&lt;java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer&gt;
-<span class="fc bfc" id="L1732" title="All 2 branches covered.">				meCSQCUp : _mapCSQCForwardFundingUp.entrySet()) {</span>
-<span class="fc" id="L1733">				java.lang.String strKey = meCSQCUp.getKey();</span>
+<span class="fc bfc" id="L1734" title="All 2 branches covered.">				meCSQCUp : _mapCSQCForwardFundingUp.entrySet()) {</span>
+<span class="fc" id="L1735">				java.lang.String strKey = meCSQCUp.getKey();</span>
 
-<span class="fc" id="L1735">				org.drip.param.market.CurveSurfaceQuoteContainer csqcTenorUp = meCSQCUp.getValue();</span>
+<span class="fc" id="L1737">				org.drip.param.market.CurveSurfaceQuoteContainer csqcTenorUp = meCSQCUp.getValue();</span>
 
-<span class="fc" id="L1737">				org.drip.param.market.CurveSurfaceQuoteContainer csqcTenorDown =</span>
-<span class="fc" id="L1738">					_mapCSQCForwardFundingDown.get (strKey);</span>
+<span class="fc" id="L1739">				org.drip.param.market.CurveSurfaceQuoteContainer csqcTenorDown =</span>
+<span class="fc" id="L1740">					_mapCSQCForwardFundingDown.get (strKey);</span>
 
-<span class="fc bfc" id="L1740" title="All 2 branches covered.">				double dblTenorForwardUpPrice = _bond.isFloater() ? _bond.priceFromFundingCurve (_valParams,</span>
-<span class="fc" id="L1741">					csqcTenorUp, iWorkoutDate, dblWorkoutFactor, 0.) : _bond.priceFromZSpread (_valParams,</span>
+<span class="fc bfc" id="L1742" title="All 2 branches covered.">				double dblTenorForwardUpPrice = _bond.isFloater() ? _bond.priceFromFundingCurve (_valParams,</span>
+<span class="fc" id="L1743">					csqcTenorUp, iWorkoutDate, dblWorkoutFactor, 0.) : _bond.priceFromZSpread (_valParams,</span>
 						csqcTenorUp, null, iWorkoutDate, dblWorkoutFactor, dblZSpreadToExercise);
 
-<span class="fc bfc" id="L1744" title="All 2 branches covered.">				double dblTenorForwardUpParPrice = _bond.isFloater() ? _bond.priceFromFundingCurve</span>
-<span class="fc" id="L1745">					(_valParams, csqcTenorUp, iWorkoutDate, dblWorkoutFactor, 0.) : _bond.priceFromZSpread</span>
-<span class="fc" id="L1746">						(_valParams, csqcTenorUp, null, iWorkoutDate, dblWorkoutFactor,</span>
+<span class="fc bfc" id="L1746" title="All 2 branches covered.">				double dblTenorForwardUpParPrice = _bond.isFloater() ? _bond.priceFromFundingCurve</span>
+<span class="fc" id="L1747">					(_valParams, csqcTenorUp, iWorkoutDate, dblWorkoutFactor, 0.) : _bond.priceFromZSpread</span>
+<span class="fc" id="L1748">						(_valParams, csqcTenorUp, null, iWorkoutDate, dblWorkoutFactor,</span>
 							dblParZSpreadToExercise);
 
-<span class="fc bfc" id="L1749" title="All 2 branches covered.">				double dblTenorForwardDownPrice = _bond.isFloater() ? _bond.priceFromFundingCurve</span>
-<span class="fc" id="L1750">					(_valParams, csqcTenorDown, iWorkoutDate, dblWorkoutFactor, 0.) : _bond.priceFromZSpread</span>
-<span class="fc" id="L1751">						(_valParams, csqcTenorDown, null, iWorkoutDate, dblWorkoutFactor,</span>
+<span class="fc bfc" id="L1751" title="All 2 branches covered.">				double dblTenorForwardDownPrice = _bond.isFloater() ? _bond.priceFromFundingCurve</span>
+<span class="fc" id="L1752">					(_valParams, csqcTenorDown, iWorkoutDate, dblWorkoutFactor, 0.) : _bond.priceFromZSpread</span>
+<span class="fc" id="L1753">						(_valParams, csqcTenorDown, null, iWorkoutDate, dblWorkoutFactor,</span>
 							dblZSpreadToExercise);
 
-<span class="fc bfc" id="L1754" title="All 2 branches covered.">				double dblTenorForwardDownParPrice = _bond.isFloater() ? _bond.priceFromFundingCurve</span>
-<span class="fc" id="L1755">					(_valParams, csqcTenorDown, iWorkoutDate, dblWorkoutFactor, 0.) : _bond.priceFromZSpread</span>
-<span class="fc" id="L1756">						(_valParams, csqcTenorDown, null, iWorkoutDate, dblWorkoutFactor,</span>
+<span class="fc bfc" id="L1756" title="All 2 branches covered.">				double dblTenorForwardDownParPrice = _bond.isFloater() ? _bond.priceFromFundingCurve</span>
+<span class="fc" id="L1757">					(_valParams, csqcTenorDown, iWorkoutDate, dblWorkoutFactor, 0.) : _bond.priceFromZSpread</span>
+<span class="fc" id="L1758">						(_valParams, csqcTenorDown, null, iWorkoutDate, dblWorkoutFactor,</span>
 							dblParZSpreadToExercise);
 
-<span class="fc" id="L1759">				mapLIBORKRD.put (strKey, 0.5 * (dblTenorForwardDownPrice - dblTenorForwardUpPrice) /</span>
-					_dblCurrentPrice / _dblTenorBump);
+<span class="fc" id="L1761">				double dblBaseFloaterPrice = 0.5 * (dblTenorForwardDownPrice + dblTenorForwardUpPrice);</span>
 
-<span class="fc" id="L1762">				mapLIBORKPRD.put (strKey, 0.5 * (dblTenorForwardDownParPrice - dblTenorForwardUpParPrice) /</span>
-					_dblIssuePrice / _dblTenorBump);
-<span class="fc" id="L1764">			}</span>
+<span class="fc" id="L1763">				mapLIBORKRD.put (strKey, 0.5 * (dblTenorForwardDownPrice - dblTenorForwardUpPrice) /</span>
+<span class="fc bfc" id="L1764" title="All 2 branches covered.">					(_bond.isFloater() ? dblBaseFloaterPrice : _dblCurrentPrice) / _dblTenorBump);</span>
+
+<span class="fc" id="L1766">				mapLIBORKPRD.put (strKey, 0.5 * (dblTenorForwardDownParPrice - dblTenorForwardUpParPrice) /</span>
+<span class="fc bfc" id="L1767" title="All 2 branches covered.">					(_bond.isFloater() ? dblBaseFloaterPrice : _dblIssuePrice) / _dblTenorBump);</span>
+<span class="fc" id="L1768">			}</span>
 
 			for (java.util.Map.Entry&lt;java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer&gt;
-<span class="fc bfc" id="L1767" title="All 2 branches covered.">				meCSQCUp : _mapCSQCGovvieUp.entrySet()) {</span>
-<span class="fc" id="L1768">				java.lang.String strKey = meCSQCUp.getKey();</span>
+<span class="fc bfc" id="L1771" title="All 2 branches covered.">				meCSQCUp : _mapCSQCGovvieUp.entrySet()) {</span>
+<span class="fc" id="L1772">				java.lang.String strKey = meCSQCUp.getKey();</span>
 
-<span class="fc" id="L1770">				org.drip.param.market.CurveSurfaceQuoteContainer csqcTenorUp = meCSQCUp.getValue();</span>
+<span class="fc" id="L1774">				org.drip.param.market.CurveSurfaceQuoteContainer csqcTenorUp = meCSQCUp.getValue();</span>
 
-<span class="fc" id="L1772">				org.drip.param.market.CurveSurfaceQuoteContainer csqcTenorDown = _mapCSQCGovvieDown.get</span>
-<span class="fc" id="L1773">					(strKey);</span>
+<span class="fc" id="L1776">				org.drip.param.market.CurveSurfaceQuoteContainer csqcTenorDown = _mapCSQCGovvieDown.get</span>
+<span class="fc" id="L1777">					(strKey);</span>
 
-<span class="fc" id="L1775">				mapGovvieKRD.put (strKey, 0.5 * (_bond.priceFromOAS (_valParams, csqcTenorDown, null,</span>
-<span class="fc" id="L1776">					iWorkoutDate, dblWorkoutFactor, dblOASToExercise) - _bond.priceFromOAS (_valParams,</span>
+<span class="fc" id="L1779">				mapGovvieKRD.put (strKey, 0.5 * (_bond.priceFromOAS (_valParams, csqcTenorDown, null,</span>
+<span class="fc" id="L1780">					iWorkoutDate, dblWorkoutFactor, dblOASToExercise) - _bond.priceFromOAS (_valParams,</span>
 						csqcTenorUp, null, iWorkoutDate, dblWorkoutFactor, dblOASToExercise)) /
 							_dblCurrentPrice / _dblTenorBump);
 
-<span class="fc" id="L1780">				mapGovvieKPRD.put (strKey, 0.5 * (_bond.priceFromOAS (_valParams, csqcTenorDown, null,</span>
-<span class="fc" id="L1781">					iWorkoutDate, dblWorkoutFactor, dblParOASToExercise) - _bond.priceFromOAS (_valParams,</span>
+<span class="fc" id="L1784">				mapGovvieKPRD.put (strKey, 0.5 * (_bond.priceFromOAS (_valParams, csqcTenorDown, null,</span>
+<span class="fc" id="L1785">					iWorkoutDate, dblWorkoutFactor, dblParOASToExercise) - _bond.priceFromOAS (_valParams,</span>
 						csqcTenorUp, null, iWorkoutDate, dblWorkoutFactor, dblParOASToExercise)) /
 							_dblIssuePrice / _dblTenorBump);
-<span class="fc" id="L1784">			}</span>
+<span class="fc" id="L1788">			}</span>
 
-<span class="pc bpc" id="L1786" title="1 of 2 branches missed.">			if (null != _mapCSQCCredit) {</span>
-<span class="nc" id="L1787">				mapCreditKRD = new org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();</span>
+<span class="pc bpc" id="L1790" title="1 of 2 branches missed.">			if (null != _mapCSQCCredit) {</span>
+<span class="nc" id="L1791">				mapCreditKRD = new org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();</span>
 
-<span class="nc" id="L1789">				mapCreditKPRD = new org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();</span>
+<span class="nc" id="L1793">				mapCreditKPRD = new org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();</span>
 
 				for (java.util.Map.Entry&lt;java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer&gt;
-<span class="nc bnc" id="L1792" title="All 2 branches missed.">					meCSQC : _mapCSQCCredit.entrySet()) {</span>
-<span class="nc" id="L1793">					java.lang.String strKey = meCSQC.getKey();</span>
+<span class="nc bnc" id="L1796" title="All 2 branches missed.">					meCSQC : _mapCSQCCredit.entrySet()) {</span>
+<span class="nc" id="L1797">					java.lang.String strKey = meCSQC.getKey();</span>
 
-<span class="nc" id="L1795">					org.drip.param.market.CurveSurfaceQuoteContainer csqcTenor = meCSQC.getValue();</span>
+<span class="nc" id="L1799">					org.drip.param.market.CurveSurfaceQuoteContainer csqcTenor = meCSQC.getValue();</span>
 
-<span class="nc" id="L1797">					mapCreditKRD.put (strKey, (_dblCurrentPrice - _bond.priceFromCreditBasis (_valParams,</span>
+<span class="nc" id="L1801">					mapCreditKRD.put (strKey, (_dblCurrentPrice - _bond.priceFromCreditBasis (_valParams,</span>
 						csqcTenor, null, iWorkoutDate, dblWorkoutFactor, dblCreditBasisToExercise)) /
 							_dblCurrentPrice);
 
-<span class="nc" id="L1801">					mapCreditKPRD.put (strKey, (_dblIssuePrice - _bond.priceFromCreditBasis (_valParams,</span>
+<span class="nc" id="L1805">					mapCreditKPRD.put (strKey, (_dblIssuePrice - _bond.priceFromCreditBasis (_valParams,</span>
 						csqcTenor, null, iWorkoutDate, dblWorkoutFactor, dblParCreditBasisToExercise)) /
 							_dblIssuePrice);
-<span class="nc" id="L1804">				}</span>
+<span class="nc" id="L1808">				}</span>
 			}
 
-<span class="pc bpc" id="L1807" title="1 of 2 branches missed.">			org.drip.analytics.output.BondEOSMetrics bem = null == _emr ? null : _emr.generateRun();</span>
+<span class="pc bpc" id="L1811" title="1 of 2 branches missed.">			org.drip.analytics.output.BondEOSMetrics bem = null == _emr ? null : _emr.generateRun();</span>
 
-<span class="fc bfc" id="L1809" title="All 2 branches covered.">			if (null != bem)</span>
+<span class="fc bfc" id="L1813" title="All 2 branches covered.">			if (null != bem)</span>
 			{
-<span class="pc bpc" id="L1811" title="1 of 2 branches missed.">				if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;MCOAS&quot;, bem.oas())))</span>
-<span class="nc" id="L1812">					return null;</span>
-
-<span class="pc bpc" id="L1814" title="1 of 2 branches missed.">				if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;MCDuration&quot;,</span>
-<span class="fc" id="L1815">					bem.oasDuration())))</span>
+<span class="pc bpc" id="L1815" title="1 of 2 branches missed.">				if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;MCOAS&quot;, bem.oas())))</span>
 <span class="nc" id="L1816">					return null;</span>
 
-<span class="pc bpc" id="L1818" title="1 of 2 branches missed.">				if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;MCConvexity&quot;,</span>
-<span class="fc" id="L1819">					bem.oasConvexity())))</span>
+<span class="pc bpc" id="L1818" title="1 of 2 branches missed.">				if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;MCDuration&quot;,</span>
+<span class="fc" id="L1819">					bem.oasDuration())))</span>
 <span class="nc" id="L1820">					return null;</span>
+
+<span class="pc bpc" id="L1822" title="1 of 2 branches missed.">				if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;MCConvexity&quot;,</span>
+<span class="fc" id="L1823">					bem.oasConvexity())))</span>
+<span class="nc" id="L1824">					return null;</span>
 			}
 
-<span class="pc bpc" id="L1823" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Price&quot;, _dblCurrentPrice)))</span>
-<span class="nc" id="L1824">				return null;</span>
-
-<span class="pc bpc" id="L1826" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Market Value&quot;,</span>
-				_dblCurrentPrice * _dblIssueAmount)))
+<span class="pc bpc" id="L1827" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Price&quot;, _dblCurrentPrice)))</span>
 <span class="nc" id="L1828">				return null;</span>
 
-<span class="pc bpc" id="L1830" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Accrued&quot;, dblAccrued)))</span>
-<span class="nc" id="L1831">				return null;</span>
+<span class="pc bpc" id="L1830" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Market Value&quot;,</span>
+				_dblCurrentPrice * _dblIssueAmount)))
+<span class="nc" id="L1832">				return null;</span>
 
-<span class="pc bpc" id="L1833" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Accrued$&quot;, dblAccrued *</span>
-				_dblIssueAmount)))
+<span class="pc bpc" id="L1834" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Accrued&quot;, dblAccrued)))</span>
 <span class="nc" id="L1835">				return null;</span>
 
-<span class="pc bpc" id="L1837" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Accrued Interest Factor&quot;,</span>
-				dblAccrued * _dblFX)))
+<span class="pc bpc" id="L1837" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Accrued$&quot;, dblAccrued *</span>
+				_dblIssueAmount)))
 <span class="nc" id="L1839">				return null;</span>
 
-<span class="pc bpc" id="L1841" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Yield To Maturity&quot;,</span>
-				dblYieldToMaturity)))
+<span class="pc bpc" id="L1841" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Accrued Interest Factor&quot;,</span>
+				dblAccrued * _dblFX)))
 <span class="nc" id="L1843">				return null;</span>
 
-<span class="pc bpc" id="L1845" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Yield To Maturity CBE&quot;,</span>
-				dblBEYToMaturity)))
+<span class="pc bpc" id="L1845" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Yield To Maturity&quot;,</span>
+				dblYieldToMaturity)))
 <span class="nc" id="L1847">				return null;</span>
 
-<span class="pc bpc" id="L1849" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;YTM fwdCpn&quot;,</span>
-				dblYieldToMaturityFwdCoupon)))
+<span class="pc bpc" id="L1849" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Yield To Maturity CBE&quot;,</span>
+				dblBEYToMaturity)))
 <span class="nc" id="L1851">				return null;</span>
 
-<span class="pc bpc" id="L1853" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Yield To Worst&quot;,</span>
-				dblYieldToExercise)))
+<span class="pc bpc" id="L1853" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;YTM fwdCpn&quot;,</span>
+				dblYieldToMaturityFwdCoupon)))
 <span class="nc" id="L1855">				return null;</span>
 
-<span class="pc bpc" id="L1857" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;YIELD TO CALL&quot;,</span>
-				dblYieldFromPriceNextCall)))
+<span class="pc bpc" id="L1857" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Yield To Worst&quot;,</span>
+				dblYieldToExercise)))
 <span class="nc" id="L1859">				return null;</span>
 
-<span class="pc bpc" id="L1861" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;YIELD TO PUT&quot;,</span>
-				dblYieldFromPriceNextPut)))
+<span class="pc bpc" id="L1861" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;YIELD TO CALL&quot;,</span>
+				dblYieldFromPriceNextCall)))
 <span class="nc" id="L1863">				return null;</span>
 
-<span class="pc bpc" id="L1865" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Nominal Yield&quot;,</span>
-				dblNominalYield)))
+<span class="pc bpc" id="L1865" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;YIELD TO PUT&quot;,</span>
+				dblYieldFromPriceNextPut)))
 <span class="nc" id="L1867">				return null;</span>
 
-<span class="pc bpc" id="L1869" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Z_Spread&quot;, dblOASToExercise)))</span>
-<span class="nc" id="L1870">				return null;</span>
+<span class="pc bpc" id="L1869" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Nominal Yield&quot;,</span>
+				dblNominalYield)))
+<span class="nc" id="L1871">				return null;</span>
 
-<span class="pc bpc" id="L1872" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Z_Vol_OAS&quot;,</span>
-				dblZSpreadToExercise)))
+<span class="pc bpc" id="L1873" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Z_Spread&quot;, dblOASToExercise)))</span>
 <span class="nc" id="L1874">				return null;</span>
 
-<span class="pc bpc" id="L1876" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;OAS&quot;, dblZSpreadToMaturity)))</span>
-<span class="nc" id="L1877">				return null;</span>
+<span class="pc bpc" id="L1876" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Z_Vol_OAS&quot;,</span>
+				dblZSpreadToExercise)))
+<span class="nc" id="L1878">				return null;</span>
 
-<span class="pc bpc" id="L1879" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;TSY OAS&quot;, dblOASToMaturity)))</span>
-<span class="nc" id="L1880">				return null;</span>
+<span class="pc bpc" id="L1880" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;OAS&quot;, dblZSpreadToMaturity)))</span>
+<span class="nc" id="L1881">				return null;</span>
 
-<span class="pc bpc" id="L1882" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;MOD DUR&quot;,</span>
-				dblModifiedDurationToMaturity)))
+<span class="pc bpc" id="L1883" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;TSY OAS&quot;, dblOASToMaturity)))</span>
 <span class="nc" id="L1884">				return null;</span>
 
-<span class="pc bpc" id="L1886" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;MACAULAY DURATION&quot;,</span>
-				dblMacaulayDurationToMaturity)))
+<span class="pc bpc" id="L1886" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;MOD DUR&quot;,</span>
+				dblModifiedDurationToMaturity)))
 <span class="nc" id="L1888">				return null;</span>
 
-<span class="pc bpc" id="L1890" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;MOD DUR TO WORST&quot;,</span>
-				dblModifiedDurationToExercise)))
+<span class="pc bpc" id="L1890" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;MACAULAY DURATION&quot;,</span>
+				dblMacaulayDurationToMaturity)))
 <span class="nc" id="L1892">				return null;</span>
 
-<span class="pc bpc" id="L1894" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Funding DURATION&quot;,</span>
-<span class="fc" id="L1895">				mapFundingKRD.get (&quot;bump&quot;))))</span>
+<span class="pc bpc" id="L1894" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;MOD DUR TO WORST&quot;,</span>
+				dblModifiedDurationToExercise)))
 <span class="nc" id="L1896">				return null;</span>
 
-<span class="pc bpc" id="L1898" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;LIBOR DURATION&quot;,</span>
-<span class="fc" id="L1899">				mapLIBORKRD.get (&quot;bump&quot;))))</span>
+<span class="pc bpc" id="L1898" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Funding DURATION&quot;,</span>
+<span class="fc" id="L1899">				mapFundingKRD.get (&quot;bump&quot;))))</span>
 <span class="nc" id="L1900">				return null;</span>
 
-<span class="pc bpc" id="L1902" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;TREASURY DURATION&quot;,</span>
-<span class="fc" id="L1903">				mapGovvieKRD.get (&quot;bump&quot;))))</span>
+<span class="pc bpc" id="L1902" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;LIBOR DURATION&quot;,</span>
+<span class="fc" id="L1903">				mapLIBORKRD.get (&quot;bump&quot;))))</span>
 <span class="nc" id="L1904">				return null;</span>
 
-<span class="pc bpc" id="L1906" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;EFFECTIVE DURATION&quot;,</span>
-				dblEffectiveDuration)))
+<span class="pc bpc" id="L1906" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;TREASURY DURATION&quot;,</span>
+<span class="fc" id="L1907">				mapGovvieKRD.get (&quot;bump&quot;))))</span>
 <span class="nc" id="L1908">				return null;</span>
 
-<span class="pc bpc" id="L1910" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;EFFECTIVE DURATION ADJ&quot;,</span>
-				dblEffectiveDurationAdjusted)))
+<span class="pc bpc" id="L1910" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;EFFECTIVE DURATION&quot;,</span>
+				dblEffectiveDuration)))
 <span class="nc" id="L1912">				return null;</span>
 
-<span class="pc bpc" id="L1914" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;OAD MULT&quot;,</span>
-				dblEffectiveDurationAdjusted / dblEffectiveDuration)))
+<span class="pc bpc" id="L1914" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;EFFECTIVE DURATION ADJ&quot;,</span>
+				dblEffectiveDurationAdjusted)))
 <span class="nc" id="L1916">				return null;</span>
 
-<span class="pc bpc" id="L1918" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Spread Dur&quot;,</span>
-				dblSpreadDuration)))
+<span class="pc bpc" id="L1918" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;OAD MULT&quot;,</span>
+				dblEffectiveDurationAdjusted / dblEffectiveDuration)))
 <span class="nc" id="L1920">				return null;</span>
 
-<span class="pc bpc" id="L1922" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Spread Dur $&quot;,</span>
-				dblSpreadDuration * _dblIssueAmount)))
+<span class="pc bpc" id="L1922" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Spread Dur&quot;,</span>
+				dblSpreadDuration)))
 <span class="nc" id="L1924">				return null;</span>
 
-<span class="pc bpc" id="L1926" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;DV01&quot;, dblYield01)))</span>
-<span class="nc" id="L1927">				return null;</span>
+<span class="pc bpc" id="L1926" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Spread Dur $&quot;,</span>
+				dblSpreadDuration * _dblIssueAmount)))
+<span class="nc" id="L1928">				return null;</span>
 
-<span class="pc bpc" id="L1929" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;CV01&quot;, dblCV01))) return null;</span>
+<span class="pc bpc" id="L1930" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;DV01&quot;, dblYield01)))</span>
+<span class="nc" id="L1931">				return null;</span>
 
-<span class="pc bpc" id="L1931" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Convexity&quot;,</span>
-				dblConvexityToExercise)))
-<span class="nc" id="L1933">				return null;</span>
+<span class="pc bpc" id="L1933" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;CV01&quot;, dblCV01))) return null;</span>
 
-<span class="pc bpc" id="L1935" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Modified Convexity&quot;,</span>
+<span class="pc bpc" id="L1935" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Convexity&quot;,</span>
 				dblConvexityToExercise)))
 <span class="nc" id="L1937">				return null;</span>
 
-<span class="pc bpc" id="L1939" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;DISCOUNT MARGIN&quot;,</span>
-				dblDiscountMarginToExercise)))
+<span class="pc bpc" id="L1939" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Modified Convexity&quot;,</span>
+				dblConvexityToExercise)))
 <span class="nc" id="L1941">				return null;</span>
 
-<span class="pc bpc" id="L1943" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;E-Spread&quot;,</span>
-				dblESpreadToExercise)))
+<span class="pc bpc" id="L1943" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;DISCOUNT MARGIN&quot;,</span>
+				dblDiscountMarginToExercise)))
 <span class="nc" id="L1945">				return null;</span>
 
-<span class="pc bpc" id="L1947" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;I-Spread&quot;,</span>
-				dblISpreadToExercise)))
+<span class="pc bpc" id="L1947" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;E-Spread&quot;,</span>
+				dblESpreadToExercise)))
 <span class="nc" id="L1949">				return null;</span>
 
-<span class="pc bpc" id="L1951" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;J-Spread&quot;,</span>
-				dblJSpreadToExercise)))
+<span class="pc bpc" id="L1951" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;I-Spread&quot;,</span>
+				dblISpreadToExercise)))
 <span class="nc" id="L1953">				return null;</span>
 
-<span class="pc bpc" id="L1955" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;N-Spread&quot;,</span>
-				dblNSpreadToExercise)))
+<span class="pc bpc" id="L1955" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;J-Spread&quot;,</span>
+				dblJSpreadToExercise)))
 <span class="nc" id="L1957">				return null;</span>
 
-<span class="pc bpc" id="L1959" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;WAL To Worst&quot;,</span>
-				dblWALPrincipalOnlyToExercise)))
+<span class="pc bpc" id="L1959" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;N-Spread&quot;,</span>
+				dblNSpreadToExercise)))
 <span class="nc" id="L1961">				return null;</span>
 
-<span class="pc bpc" id="L1963" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;WAL&quot;,</span>
-				dblWALPrincipalOnlyToMaturity)))
+<span class="pc bpc" id="L1963" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;WAL To Worst&quot;,</span>
+				dblWALPrincipalOnlyToExercise)))
 <span class="nc" id="L1965">				return null;</span>
 
-<span class="pc bpc" id="L1967" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;WAL2&quot;,</span>
-				dblWALLossOnlyToExercise)))
+<span class="pc bpc" id="L1967" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;WAL&quot;,</span>
+				dblWALPrincipalOnlyToMaturity)))
 <span class="nc" id="L1969">				return null;</span>
 
-<span class="pc bpc" id="L1971" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;WAL3&quot;,</span>
-<span class="fc bfc" id="L1972" title="All 2 branches covered.">				!org.drip.quant.common.NumberUtil.IsValid (dblWALCouponOnlyToExercise) ? 0. :</span>
-					dblWALCouponOnlyToExercise)))
-<span class="nc" id="L1974">				return null;</span>
+<span class="pc bpc" id="L1971" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;WAL2&quot;,</span>
+				dblWALLossOnlyToExercise)))
+<span class="nc" id="L1973">				return null;</span>
 
-<span class="pc bpc" id="L1976" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;WAL4&quot;,</span>
-				dblWALPrincipalOnlyToMaturity)))
+<span class="pc bpc" id="L1975" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;WAL3&quot;,</span>
+<span class="fc bfc" id="L1976" title="All 2 branches covered.">				!org.drip.quant.common.NumberUtil.IsValid (dblWALCouponOnlyToExercise) ? 0. :</span>
+					dblWALCouponOnlyToExercise)))
 <span class="nc" id="L1978">				return null;</span>
 
-<span class="pc bpc" id="L1980" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;WAL_Adj&quot;,</span>
-				dblWALCreditToExercise)))
+<span class="pc bpc" id="L1980" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;WAL4&quot;,</span>
+				dblWALPrincipalOnlyToMaturity)))
 <span class="nc" id="L1982">				return null;</span>
 
-<span class="pc bpc" id="L1984" title="1 of 2 branches missed.">			if (!arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap (&quot;Funding KRD&quot;,</span>
-				mapFundingKRD)))
+<span class="pc bpc" id="L1984" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;WAL_Adj&quot;,</span>
+				dblWALCreditToExercise)))
 <span class="nc" id="L1986">				return null;</span>
 
-<span class="pc bpc" id="L1988" title="1 of 2 branches missed.">			if (!arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap (&quot;Funding KPRD&quot;,</span>
-				mapFundingKPRD)))
+<span class="pc bpc" id="L1988" title="1 of 2 branches missed.">			if (!arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap (&quot;Funding KRD&quot;,</span>
+				mapFundingKRD)))
 <span class="nc" id="L1990">				return null;</span>
 
-<span class="pc bpc" id="L1992" title="1 of 2 branches missed.">			if (!arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap (&quot;LIBOR KRD&quot;,</span>
-				mapLIBORKRD)))
+<span class="pc bpc" id="L1992" title="1 of 2 branches missed.">			if (!arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap (&quot;Funding KPRD&quot;,</span>
+				mapFundingKPRD)))
 <span class="nc" id="L1994">				return null;</span>
 
-<span class="pc bpc" id="L1996" title="1 of 2 branches missed.">			if (!arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap (&quot;LIBOR KPRD&quot;,</span>
-				mapLIBORKPRD)))
+<span class="pc bpc" id="L1996" title="1 of 2 branches missed.">			if (!arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap (&quot;LIBOR KRD&quot;,</span>
+				mapLIBORKRD)))
 <span class="nc" id="L1998">				return null;</span>
 
-<span class="pc bpc" id="L2000" title="1 of 2 branches missed.">			if (!arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap (&quot;Govvie KRD&quot;,</span>
-				mapGovvieKRD)))
+<span class="pc bpc" id="L2000" title="1 of 2 branches missed.">			if (!arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap (&quot;LIBOR KPRD&quot;,</span>
+				mapLIBORKPRD)))
 <span class="nc" id="L2002">				return null;</span>
 
-<span class="pc bpc" id="L2004" title="1 of 2 branches missed.">			if (!arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap (&quot;Govvie KPRD&quot;,</span>
-				mapGovvieKPRD)))
+<span class="pc bpc" id="L2004" title="1 of 2 branches missed.">			if (!arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap (&quot;Govvie KRD&quot;,</span>
+				mapGovvieKRD)))
 <span class="nc" id="L2006">				return null;</span>
-<span class="nc" id="L2007">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L2008">			e.printStackTrace();</span>
 
-<span class="nc" id="L2010">			return null;</span>
-<span class="fc" id="L2011">		}</span>
+<span class="pc bpc" id="L2008" title="1 of 2 branches missed.">			if (!arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap (&quot;Govvie KPRD&quot;,</span>
+				mapGovvieKPRD)))
+<span class="nc" id="L2010">				return null;</span>
+<span class="nc" id="L2011">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L2012">			e.printStackTrace();</span>
+
+<span class="nc" id="L2014">			return null;</span>
+<span class="fc" id="L2015">		}</span>
 
 		try {
-<span class="pc bpc" id="L2014" title="1 of 2 branches missed.">			if (null != mapCreditKRD)</span>
-<span class="nc" id="L2015">				arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap (&quot;Credit KRD&quot;,</span>
+<span class="pc bpc" id="L2018" title="1 of 2 branches missed.">			if (null != mapCreditKRD)</span>
+<span class="nc" id="L2019">				arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap (&quot;Credit KRD&quot;,</span>
 					mapCreditKRD));
 
-<span class="pc bpc" id="L2018" title="1 of 2 branches missed.">			if (null != mapCreditKPRD)</span>
-<span class="nc" id="L2019">				arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap (&quot;Credit KPRD&quot;,</span>
+<span class="pc bpc" id="L2022" title="1 of 2 branches missed.">			if (null != mapCreditKPRD)</span>
+<span class="nc" id="L2023">				arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap (&quot;Credit KPRD&quot;,</span>
 					mapCreditKPRD));
-<span class="nc" id="L2021">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L2022">			e.printStackTrace();</span>
-<span class="fc" id="L2023">		}</span>
+<span class="nc" id="L2025">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L2026">			e.printStackTrace();</span>
+<span class="fc" id="L2027">		}</span>
 
-<span class="fc" id="L2025">		System.out.println (&quot;Workout        : &quot; + new org.drip.analytics.date.JulianDate (iWorkoutDate));</span>
+<span class="fc" id="L2029">		System.out.println (&quot;Workout        : &quot; + new org.drip.analytics.date.JulianDate (iWorkoutDate));</span>
 
-<span class="fc" id="L2027">		System.out.println (&quot;Next Call Date : &quot; + new org.drip.analytics.date.JulianDate (iNextCallDate) +</span>
+<span class="fc" id="L2031">		System.out.println (&quot;Next Call Date : &quot; + new org.drip.analytics.date.JulianDate (iNextCallDate) +</span>
 			&quot; | &quot; + dblNextCallFactor);
 
-<span class="fc" id="L2030">		System.out.println (&quot;Maturity Date  : &quot; + new org.drip.analytics.date.JulianDate (iMaturityDate) +</span>
+<span class="fc" id="L2034">		System.out.println (&quot;Maturity Date  : &quot; + new org.drip.analytics.date.JulianDate (iMaturityDate) +</span>
 			&quot; | 1.0&quot;);
 
-<span class="fc" id="L2033">		return arr;</span>
+<span class="fc" id="L2037">		return arr;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

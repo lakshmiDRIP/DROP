@@ -3,6 +3,7 @@ package org.drip.sample.ois;
 
 import java.util.*;
 
+import org.drip.analytics.date.DateUtil;
 import org.drip.analytics.date.JulianDate;
 import org.drip.analytics.support.*;
 import org.drip.function.r1tor1.QuadraticRationalShapeControl;
@@ -80,7 +81,7 @@ import org.drip.state.inference.*;
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L83">public class IndexFundCurvesReconciliation {</span>
+<span class="nc" id="L84">public class IndexFundCurvesReconciliation {</span>
 
 	/*
 	 * Construct the Array of Deposit Instruments from the given set of parameters
@@ -94,21 +95,21 @@ import org.drip.state.inference.*;
 		final int[] aiDay)
 		throws Exception
 	{
-<span class="fc" id="L97">		SingleStreamComponent[] aDeposit = new SingleStreamComponent[aiDay.length];</span>
+<span class="fc" id="L98">		SingleStreamComponent[] aDeposit = new SingleStreamComponent[aiDay.length];</span>
 
-<span class="fc bfc" id="L99" title="All 2 branches covered.">		for (int i = 0; i &lt; aiDay.length; ++i)</span>
-<span class="fc" id="L100">			aDeposit[i] = SingleStreamComponentBuilder.Deposit (</span>
+<span class="fc bfc" id="L100" title="All 2 branches covered.">		for (int i = 0; i &lt; aiDay.length; ++i)</span>
+<span class="fc" id="L101">			aDeposit[i] = SingleStreamComponentBuilder.Deposit (</span>
 				dtEffective,
-<span class="fc" id="L102">				dtEffective.addBusDays (</span>
+<span class="fc" id="L103">				dtEffective.addBusDays (</span>
 					aiDay[i],
 					strCurrency
 				),
-<span class="fc" id="L106">				OvernightLabel.Create (</span>
+<span class="fc" id="L107">				OvernightLabel.Create (</span>
 					strCurrency
 				)
 			);
 
-<span class="fc" id="L111">		return aDeposit;</span>
+<span class="fc" id="L112">		return aDeposit;</span>
 	}
 
 	/*
@@ -124,9 +125,9 @@ import org.drip.state.inference.*;
 		final String strCurrency)
 		throws Exception
 	{
-<span class="fc" id="L127">		FixFloatComponent[] aOIS = new FixFloatComponent[astrMaturityTenor.length];</span>
+<span class="fc" id="L128">		FixFloatComponent[] aOIS = new FixFloatComponent[astrMaturityTenor.length];</span>
 
-<span class="fc" id="L129">		UnitCouponAccrualSetting ucasFixed = new UnitCouponAccrualSetting (</span>
+<span class="fc" id="L130">		UnitCouponAccrualSetting ucasFixed = new UnitCouponAccrualSetting (</span>
 			2,
 			&quot;Act/360&quot;,
 			false,
@@ -137,35 +138,35 @@ import org.drip.state.inference.*;
 			CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC
 		);
 
-<span class="fc" id="L140">		CashSettleParams csp = new CashSettleParams (</span>
+<span class="fc" id="L141">		CashSettleParams csp = new CashSettleParams (</span>
 			0,
 			strCurrency,
 			0
 		);
 
-<span class="fc bfc" id="L146" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i) {</span>
-<span class="fc bfc" id="L147" title="All 2 branches covered.">			java.lang.String strFixedTenor = Helper.LEFT_TENOR_LESSER == Helper.TenorCompare (</span>
+<span class="fc bfc" id="L147" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i) {</span>
+<span class="fc bfc" id="L148" title="All 2 branches covered.">			java.lang.String strFixedTenor = Helper.LEFT_TENOR_LESSER == Helper.TenorCompare (</span>
 				astrMaturityTenor[i],
 				&quot;6M&quot;
 			) ? astrMaturityTenor[i] : &quot;6M&quot;;
 
-<span class="fc bfc" id="L152" title="All 2 branches covered.">			java.lang.String strFloatingTenor = Helper.LEFT_TENOR_LESSER == Helper.TenorCompare (</span>
+<span class="fc bfc" id="L153" title="All 2 branches covered.">			java.lang.String strFloatingTenor = Helper.LEFT_TENOR_LESSER == Helper.TenorCompare (</span>
 				astrMaturityTenor[i],
 				&quot;3M&quot;
 			) ? astrMaturityTenor[i] : &quot;3M&quot;;
 
-<span class="fc" id="L157">			ComposableFloatingUnitSetting cfusFloating = new ComposableFloatingUnitSetting (</span>
+<span class="fc" id="L158">			ComposableFloatingUnitSetting cfusFloating = new ComposableFloatingUnitSetting (</span>
 				&quot;ON&quot;,
 				CompositePeriodBuilder.EDGE_DATE_SEQUENCE_OVERNIGHT,
 				null,
-<span class="fc" id="L161">				OvernightLabel.Create (</span>
+<span class="fc" id="L162">				OvernightLabel.Create (</span>
 					strCurrency
 				),
 				CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 				0.
 			);
 
-<span class="fc" id="L168">			ComposableFixedUnitSetting cfusFixed = new ComposableFixedUnitSetting (</span>
+<span class="fc" id="L169">			ComposableFixedUnitSetting cfusFixed = new ComposableFixedUnitSetting (</span>
 				strFixedTenor,
 				CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 				null,
@@ -174,7 +175,7 @@ import org.drip.state.inference.*;
 				strCurrency
 			);
 
-<span class="fc" id="L177">			CompositePeriodSetting cpsFloating = new CompositePeriodSetting (</span>
+<span class="fc" id="L178">			CompositePeriodSetting cpsFloating = new CompositePeriodSetting (</span>
 				4,
 				strFloatingTenor,
 				strCurrency,
@@ -186,7 +187,7 @@ import org.drip.state.inference.*;
 				null
 			);
 
-<span class="fc" id="L189">			CompositePeriodSetting cpsFixed = new CompositePeriodSetting (</span>
+<span class="fc" id="L190">			CompositePeriodSetting cpsFixed = new CompositePeriodSetting (</span>
 				2,
 				strFixedTenor,
 				strCurrency,
@@ -198,30 +199,30 @@ import org.drip.state.inference.*;
 				null
 			);
 
-<span class="fc" id="L201">			List&lt;Integer&gt; lsFixedStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
+<span class="fc" id="L202">			List&lt;Integer&gt; lsFixedStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
 				dtEffective,
 				strFixedTenor,
 				astrMaturityTenor[i],
 				null
 			);
 
-<span class="fc" id="L208">			List&lt;Integer&gt; lsFloatingStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
+<span class="fc" id="L209">			List&lt;Integer&gt; lsFloatingStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
 				dtEffective,
 				strFloatingTenor,
 				astrMaturityTenor[i],
 				null
 			);
 
-<span class="fc" id="L215">			Stream floatingStream = new Stream (</span>
-<span class="fc" id="L216">				CompositePeriodBuilder.FloatingCompositeUnit (</span>
+<span class="fc" id="L216">			Stream floatingStream = new Stream (</span>
+<span class="fc" id="L217">				CompositePeriodBuilder.FloatingCompositeUnit (</span>
 					lsFloatingStreamEdgeDate,
 					cpsFloating,
 					cfusFloating
 				)
 			);
 
-<span class="fc" id="L223">			Stream fixedStream = new Stream (</span>
-<span class="fc" id="L224">				CompositePeriodBuilder.FixedCompositeUnit (</span>
+<span class="fc" id="L224">			Stream fixedStream = new Stream (</span>
+<span class="fc" id="L225">				CompositePeriodBuilder.FixedCompositeUnit (</span>
 					lsFixedStreamEdgeDate,
 					cpsFixed,
 					ucasFixed,
@@ -229,18 +230,18 @@ import org.drip.state.inference.*;
 				)
 			);
 
-<span class="fc" id="L232">			FixFloatComponent ois = new FixFloatComponent (</span>
+<span class="fc" id="L233">			FixFloatComponent ois = new FixFloatComponent (</span>
 				fixedStream,
 				floatingStream,
 				csp
 			);
 
-<span class="fc" id="L238">			ois.setPrimaryCode (&quot;OIS.&quot; + astrMaturityTenor[i] + &quot;.&quot; + strCurrency);</span>
+<span class="fc" id="L239">			ois.setPrimaryCode (&quot;OIS.&quot; + astrMaturityTenor[i] + &quot;.&quot; + strCurrency);</span>
 
-<span class="fc" id="L240">			aOIS[i] = ois;</span>
+<span class="fc" id="L241">			aOIS[i] = ois;</span>
 		}
 
-<span class="fc" id="L243">		return aOIS;</span>
+<span class="fc" id="L244">		return aOIS;</span>
 	}
 
 	/*
@@ -256,9 +257,9 @@ import org.drip.state.inference.*;
 		final String strCurrency)
 		throws Exception
 	{
-<span class="fc" id="L259">		FixFloatComponent[] aOIS = new FixFloatComponent[astrMaturityTenor.length];</span>
+<span class="fc" id="L260">		FixFloatComponent[] aOIS = new FixFloatComponent[astrMaturityTenor.length];</span>
 
-<span class="fc" id="L261">		UnitCouponAccrualSetting ucasFixed = new UnitCouponAccrualSetting (</span>
+<span class="fc" id="L262">		UnitCouponAccrualSetting ucasFixed = new UnitCouponAccrualSetting (</span>
 			2,
 			&quot;Act/360&quot;,
 			false,
@@ -269,32 +270,32 @@ import org.drip.state.inference.*;
 			CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC
 		);
 
-<span class="fc" id="L272">		CashSettleParams csp = new CashSettleParams (</span>
+<span class="fc" id="L273">		CashSettleParams csp = new CashSettleParams (</span>
 			0,
 			strCurrency,
 			0
 		);
 
-<span class="fc bfc" id="L278" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i) {</span>
-<span class="fc bfc" id="L279" title="All 2 branches covered.">			java.lang.String strFixedTenor = Helper.LEFT_TENOR_LESSER == Helper.TenorCompare (</span>
+<span class="fc bfc" id="L279" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i) {</span>
+<span class="fc bfc" id="L280" title="All 2 branches covered.">			java.lang.String strFixedTenor = Helper.LEFT_TENOR_LESSER == Helper.TenorCompare (</span>
 				astrMaturityTenor[i],
 				&quot;6M&quot;
 			) ? astrMaturityTenor[i] : &quot;6M&quot;;
 
-<span class="fc" id="L284">			java.lang.String strFloatingTenor = &quot;ON&quot;;</span>
+<span class="fc" id="L285">			java.lang.String strFloatingTenor = &quot;ON&quot;;</span>
 
-<span class="fc" id="L286">			ComposableFloatingUnitSetting cfusFloating = new ComposableFloatingUnitSetting (</span>
+<span class="fc" id="L287">			ComposableFloatingUnitSetting cfusFloating = new ComposableFloatingUnitSetting (</span>
 				&quot;ON&quot;,
 				CompositePeriodBuilder.EDGE_DATE_SEQUENCE_OVERNIGHT,
 				null,
-<span class="fc" id="L290">				OvernightLabel.Create (</span>
+<span class="fc" id="L291">				OvernightLabel.Create (</span>
 					strCurrency
 				),
 				CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 				0.
 			);
 
-<span class="fc" id="L297">			ComposableFixedUnitSetting cfusFixed = new ComposableFixedUnitSetting (</span>
+<span class="fc" id="L298">			ComposableFixedUnitSetting cfusFixed = new ComposableFixedUnitSetting (</span>
 				strFixedTenor,
 				CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 				null,
@@ -303,7 +304,7 @@ import org.drip.state.inference.*;
 				strCurrency
 			);
 
-<span class="fc" id="L306">			CompositePeriodSetting cpsFloating = new CompositePeriodSetting (</span>
+<span class="fc" id="L307">			CompositePeriodSetting cpsFloating = new CompositePeriodSetting (</span>
 				360,
 				strFloatingTenor,
 				strCurrency,
@@ -315,7 +316,7 @@ import org.drip.state.inference.*;
 				null
 			);
 
-<span class="fc" id="L318">			CompositePeriodSetting cpsFixed = new CompositePeriodSetting (</span>
+<span class="fc" id="L319">			CompositePeriodSetting cpsFixed = new CompositePeriodSetting (</span>
 				2,
 				strFixedTenor,
 				strCurrency,
@@ -327,29 +328,29 @@ import org.drip.state.inference.*;
 				null
 			);
 
-<span class="fc" id="L330">			List&lt;Integer&gt; lsFixedStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
+<span class="fc" id="L331">			List&lt;Integer&gt; lsFixedStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
 				dtEffective,
 				strFixedTenor,
 				astrMaturityTenor[i],
 				null
 			);
 
-<span class="fc" id="L337">			List&lt;Integer&gt; lsFloatingStreamEdgeDate = CompositePeriodBuilder.OvernightEdgeDates (</span>
+<span class="fc" id="L338">			List&lt;Integer&gt; lsFloatingStreamEdgeDate = CompositePeriodBuilder.OvernightEdgeDates (</span>
 				dtEffective,
-<span class="fc" id="L339">				dtEffective.addTenor (astrMaturityTenor[i]),</span>
+<span class="fc" id="L340">				dtEffective.addTenor (astrMaturityTenor[i]),</span>
 				null
 			);
 
-<span class="fc" id="L343">			Stream floatingStream = new Stream (</span>
-<span class="fc" id="L344">				CompositePeriodBuilder.FloatingCompositeUnit (</span>
+<span class="fc" id="L344">			Stream floatingStream = new Stream (</span>
+<span class="fc" id="L345">				CompositePeriodBuilder.FloatingCompositeUnit (</span>
 					lsFloatingStreamEdgeDate,
 					cpsFloating,
 					cfusFloating
 				)
 			);
 
-<span class="fc" id="L351">			Stream fixedStream = new Stream (</span>
-<span class="fc" id="L352">				CompositePeriodBuilder.FixedCompositeUnit (</span>
+<span class="fc" id="L352">			Stream fixedStream = new Stream (</span>
+<span class="fc" id="L353">				CompositePeriodBuilder.FixedCompositeUnit (</span>
 					lsFixedStreamEdgeDate,
 					cpsFixed,
 					ucasFixed,
@@ -357,18 +358,18 @@ import org.drip.state.inference.*;
 				)
 			);
 
-<span class="fc" id="L360">			FixFloatComponent ois = new FixFloatComponent (</span>
+<span class="fc" id="L361">			FixFloatComponent ois = new FixFloatComponent (</span>
 				fixedStream,
 				floatingStream,
 				csp
 			);
 
-<span class="fc" id="L366">			ois.setPrimaryCode (&quot;OIS.&quot; + astrMaturityTenor[i] + &quot;.&quot; + strCurrency);</span>
+<span class="fc" id="L367">			ois.setPrimaryCode (&quot;OIS.&quot; + astrMaturityTenor[i] + &quot;.&quot; + strCurrency);</span>
 
-<span class="fc" id="L368">			aOIS[i] = ois;</span>
+<span class="fc" id="L369">			aOIS[i] = ois;</span>
 		}
 
-<span class="fc" id="L371">		return aOIS;</span>
+<span class="fc" id="L372">		return aOIS;</span>
 	}
 
 	/*
@@ -385,28 +386,28 @@ import org.drip.state.inference.*;
 		final String strCurrency)
 		throws Exception
 	{
-<span class="fc" id="L388">		FixFloatComponent[] aOIS = new FixFloatComponent[astrStartTenor.length];</span>
+<span class="fc" id="L389">		FixFloatComponent[] aOIS = new FixFloatComponent[astrStartTenor.length];</span>
 
-<span class="fc" id="L390">		CashSettleParams csp = new CashSettleParams (</span>
+<span class="fc" id="L391">		CashSettleParams csp = new CashSettleParams (</span>
 			0,
 			strCurrency,
 			0
 		);
 
-<span class="fc bfc" id="L396" title="All 2 branches covered.">		for (int i = 0; i &lt; astrStartTenor.length; ++i) {</span>
-<span class="fc" id="L397">			JulianDate dtEffective = dtSpot.addTenor (astrStartTenor[i]);</span>
+<span class="fc bfc" id="L397" title="All 2 branches covered.">		for (int i = 0; i &lt; astrStartTenor.length; ++i) {</span>
+<span class="fc" id="L398">			JulianDate dtEffective = dtSpot.addTenor (astrStartTenor[i]);</span>
 
-<span class="pc bpc" id="L399" title="1 of 2 branches missed.">			java.lang.String strFixedTenor = Helper.LEFT_TENOR_LESSER == Helper.TenorCompare (</span>
+<span class="pc bpc" id="L400" title="1 of 2 branches missed.">			java.lang.String strFixedTenor = Helper.LEFT_TENOR_LESSER == Helper.TenorCompare (</span>
 				astrMaturityTenor[i],
 				&quot;6M&quot;
 			) ? astrMaturityTenor[i] : &quot;6M&quot;;
 
-<span class="pc bpc" id="L404" title="1 of 2 branches missed.">			java.lang.String strFloatingTenor = Helper.LEFT_TENOR_LESSER == Helper.TenorCompare (</span>
+<span class="pc bpc" id="L405" title="1 of 2 branches missed.">			java.lang.String strFloatingTenor = Helper.LEFT_TENOR_LESSER == Helper.TenorCompare (</span>
 				astrMaturityTenor[i],
 				&quot;3M&quot;
 			) ? astrMaturityTenor[i] : &quot;3M&quot;;
 
-<span class="fc" id="L409">			ComposableFixedUnitSetting cfusFixed = new ComposableFixedUnitSetting (</span>
+<span class="fc" id="L410">			ComposableFixedUnitSetting cfusFixed = new ComposableFixedUnitSetting (</span>
 				strFixedTenor,
 				CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 				null,
@@ -415,7 +416,7 @@ import org.drip.state.inference.*;
 				strCurrency
 			);
 
-<span class="fc" id="L418">			UnitCouponAccrualSetting ucasFixed = new UnitCouponAccrualSetting (</span>
+<span class="fc" id="L419">			UnitCouponAccrualSetting ucasFixed = new UnitCouponAccrualSetting (</span>
 				2,
 				&quot;Act/360&quot;,
 				false,
@@ -426,18 +427,18 @@ import org.drip.state.inference.*;
 				CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC
 			);
 
-<span class="fc" id="L429">			ComposableFloatingUnitSetting cfusFloating = new ComposableFloatingUnitSetting (</span>
+<span class="fc" id="L430">			ComposableFloatingUnitSetting cfusFloating = new ComposableFloatingUnitSetting (</span>
 				&quot;ON&quot;,
 				CompositePeriodBuilder.EDGE_DATE_SEQUENCE_OVERNIGHT,
 				null,
-<span class="fc" id="L433">				OvernightLabel.Create (</span>
+<span class="fc" id="L434">				OvernightLabel.Create (</span>
 					strCurrency
 				),
 				CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 				0.
 			);
 
-<span class="fc" id="L440">			CompositePeriodSetting cpsFloating = new CompositePeriodSetting (</span>
+<span class="fc" id="L441">			CompositePeriodSetting cpsFloating = new CompositePeriodSetting (</span>
 				4,
 				strFloatingTenor,
 				strCurrency,
@@ -449,7 +450,7 @@ import org.drip.state.inference.*;
 				null
 			);
 
-<span class="fc" id="L452">			CompositePeriodSetting cpsFixed = new CompositePeriodSetting (</span>
+<span class="fc" id="L453">			CompositePeriodSetting cpsFixed = new CompositePeriodSetting (</span>
 				2,
 				strFixedTenor,
 				strCurrency,
@@ -461,30 +462,30 @@ import org.drip.state.inference.*;
 				null
 			);
 
-<span class="fc" id="L464">			List&lt;Integer&gt; lsFixedStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
+<span class="fc" id="L465">			List&lt;Integer&gt; lsFixedStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
 				dtEffective,
 				&quot;6M&quot;,
 				astrMaturityTenor[i],
 				null
 			);
 
-<span class="fc" id="L471">			List&lt;Integer&gt; lsFloatingStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
+<span class="fc" id="L472">			List&lt;Integer&gt; lsFloatingStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
 				dtEffective,
 				&quot;3M&quot;,
 				astrMaturityTenor[i],
 				null
 			);
 
-<span class="fc" id="L478">			Stream floatingStream = new Stream (</span>
-<span class="fc" id="L479">				CompositePeriodBuilder.FloatingCompositeUnit (</span>
+<span class="fc" id="L479">			Stream floatingStream = new Stream (</span>
+<span class="fc" id="L480">				CompositePeriodBuilder.FloatingCompositeUnit (</span>
 					lsFloatingStreamEdgeDate,
 					cpsFloating,
 					cfusFloating
 				)
 			);
 
-<span class="fc" id="L486">			Stream fixedStream = new Stream (</span>
-<span class="fc" id="L487">				CompositePeriodBuilder.FixedCompositeUnit (</span>
+<span class="fc" id="L487">			Stream fixedStream = new Stream (</span>
+<span class="fc" id="L488">				CompositePeriodBuilder.FixedCompositeUnit (</span>
 					lsFixedStreamEdgeDate,
 					cpsFixed,
 					ucasFixed,
@@ -492,18 +493,18 @@ import org.drip.state.inference.*;
 				)
 			);
 
-<span class="fc" id="L495">			FixFloatComponent ois = new FixFloatComponent (</span>
+<span class="fc" id="L496">			FixFloatComponent ois = new FixFloatComponent (</span>
 				fixedStream,
 				floatingStream,
 				csp
 			);
 
-<span class="fc" id="L501">			ois.setPrimaryCode (&quot;OIS.&quot; + astrMaturityTenor[i] + &quot;.&quot; + strCurrency);</span>
+<span class="fc" id="L502">			ois.setPrimaryCode (&quot;OIS.&quot; + astrMaturityTenor[i] + &quot;.&quot; + strCurrency);</span>
 
-<span class="fc" id="L503">			aOIS[i] = ois;</span>
+<span class="fc" id="L504">			aOIS[i] = ois;</span>
 		}
 
-<span class="fc" id="L506">		return aOIS;</span>
+<span class="fc" id="L507">		return aOIS;</span>
 	}
 
 	/*
@@ -520,23 +521,23 @@ import org.drip.state.inference.*;
 		final String strCurrency)
 		throws Exception
 	{
-<span class="fc" id="L523">		FixFloatComponent[] aOIS = new FixFloatComponent[astrStartTenor.length];</span>
+<span class="fc" id="L524">		FixFloatComponent[] aOIS = new FixFloatComponent[astrStartTenor.length];</span>
 
-<span class="fc" id="L525">		CashSettleParams csp = new CashSettleParams (</span>
+<span class="fc" id="L526">		CashSettleParams csp = new CashSettleParams (</span>
 			0,
 			strCurrency,
 			0
 		);
 
-<span class="fc bfc" id="L531" title="All 2 branches covered.">		for (int i = 0; i &lt; astrStartTenor.length; ++i) {</span>
-<span class="fc" id="L532">			JulianDate dtEffective = dtSpot.addTenor (astrStartTenor[i]);</span>
+<span class="fc bfc" id="L532" title="All 2 branches covered.">		for (int i = 0; i &lt; astrStartTenor.length; ++i) {</span>
+<span class="fc" id="L533">			JulianDate dtEffective = dtSpot.addTenor (astrStartTenor[i]);</span>
 
-<span class="pc bpc" id="L534" title="1 of 2 branches missed.">			java.lang.String strFixedTenor = Helper.LEFT_TENOR_LESSER == Helper.TenorCompare (</span>
+<span class="pc bpc" id="L535" title="1 of 2 branches missed.">			java.lang.String strFixedTenor = Helper.LEFT_TENOR_LESSER == Helper.TenorCompare (</span>
 				astrMaturityTenor[i],
 				&quot;6M&quot;
 			) ? astrMaturityTenor[i] : &quot;6M&quot;;
 
-<span class="fc" id="L539">			ComposableFixedUnitSetting cfusFixed = new ComposableFixedUnitSetting (</span>
+<span class="fc" id="L540">			ComposableFixedUnitSetting cfusFixed = new ComposableFixedUnitSetting (</span>
 				strFixedTenor,
 				CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 				null,
@@ -545,7 +546,7 @@ import org.drip.state.inference.*;
 				strCurrency
 			);
 
-<span class="fc" id="L548">			UnitCouponAccrualSetting ucasFixed = new UnitCouponAccrualSetting (</span>
+<span class="fc" id="L549">			UnitCouponAccrualSetting ucasFixed = new UnitCouponAccrualSetting (</span>
 				2,
 				&quot;Act/360&quot;,
 				false,
@@ -556,18 +557,18 @@ import org.drip.state.inference.*;
 				CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC
 			);
 
-<span class="fc" id="L559">			ComposableFloatingUnitSetting cfusFloating = new ComposableFloatingUnitSetting (</span>
+<span class="fc" id="L560">			ComposableFloatingUnitSetting cfusFloating = new ComposableFloatingUnitSetting (</span>
 				&quot;ON&quot;,
 				CompositePeriodBuilder.EDGE_DATE_SEQUENCE_OVERNIGHT,
 				null,
-<span class="fc" id="L563">				OvernightLabel.Create (</span>
+<span class="fc" id="L564">				OvernightLabel.Create (</span>
 					strCurrency
 				),
 				CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 				0.
 			);
 
-<span class="fc" id="L570">			CompositePeriodSetting cpsFloating = new CompositePeriodSetting (</span>
+<span class="fc" id="L571">			CompositePeriodSetting cpsFloating = new CompositePeriodSetting (</span>
 				4,
 				&quot;ON&quot;,
 				strCurrency,
@@ -579,7 +580,7 @@ import org.drip.state.inference.*;
 				null
 			);
 
-<span class="fc" id="L582">			CompositePeriodSetting cpsFixed = new CompositePeriodSetting (</span>
+<span class="fc" id="L583">			CompositePeriodSetting cpsFixed = new CompositePeriodSetting (</span>
 				2,
 				strFixedTenor,
 				strCurrency,
@@ -591,30 +592,30 @@ import org.drip.state.inference.*;
 				null
 			);
 
-<span class="fc" id="L594">			List&lt;Integer&gt; lsFixedStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
+<span class="fc" id="L595">			List&lt;Integer&gt; lsFixedStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
 				dtEffective,
 				&quot;6M&quot;,
 				astrMaturityTenor[i],
 				null
 			);
 
-<span class="fc" id="L601">			List&lt;Integer&gt; lsFloatingStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
+<span class="fc" id="L602">			List&lt;Integer&gt; lsFloatingStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
 				dtEffective,
 				&quot;3M&quot;,
 				astrMaturityTenor[i],
 				null
 			);
 
-<span class="fc" id="L608">			Stream floatingStream = new Stream (</span>
-<span class="fc" id="L609">				CompositePeriodBuilder.FloatingCompositeUnit (</span>
+<span class="fc" id="L609">			Stream floatingStream = new Stream (</span>
+<span class="fc" id="L610">				CompositePeriodBuilder.FloatingCompositeUnit (</span>
 					lsFloatingStreamEdgeDate,
 					cpsFloating,
 					cfusFloating
 				)
 			);
 
-<span class="fc" id="L616">			Stream fixedStream = new Stream (</span>
-<span class="fc" id="L617">				CompositePeriodBuilder.FixedCompositeUnit (</span>
+<span class="fc" id="L617">			Stream fixedStream = new Stream (</span>
+<span class="fc" id="L618">				CompositePeriodBuilder.FixedCompositeUnit (</span>
 					lsFixedStreamEdgeDate,
 					cpsFixed,
 					ucasFixed,
@@ -622,18 +623,18 @@ import org.drip.state.inference.*;
 				)
 			);
 
-<span class="fc" id="L625">			FixFloatComponent ois = new FixFloatComponent (</span>
+<span class="fc" id="L626">			FixFloatComponent ois = new FixFloatComponent (</span>
 				fixedStream,
 				floatingStream,
 				csp
 			);
 
-<span class="fc" id="L631">			ois.setPrimaryCode (&quot;OIS.&quot; + astrMaturityTenor[i] + &quot;.&quot; + strCurrency);</span>
+<span class="fc" id="L632">			ois.setPrimaryCode (&quot;OIS.&quot; + astrMaturityTenor[i] + &quot;.&quot; + strCurrency);</span>
 
-<span class="fc" id="L633">			aOIS[i] = ois;</span>
+<span class="fc" id="L634">			aOIS[i] = ois;</span>
 		}
 
-<span class="fc" id="L636">		return aOIS;</span>
+<span class="fc" id="L637">		return aOIS;</span>
 	}
 
 	private static final MergedDiscountForwardCurve CustomOISCurveBuilderSample (
@@ -643,17 +644,17 @@ import org.drip.state.inference.*;
 		final boolean bOvernightIndex)
 		throws Exception
 	{
-<span class="fc" id="L646">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L647">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
 
-<span class="fc" id="L648">		System.out.println (&quot;\t     &quot; + strHeaderComment);</span>
+<span class="fc" id="L649">		System.out.println (&quot;\t     &quot; + strHeaderComment);</span>
 
-<span class="fc" id="L650">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L651">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
 		/*
 		 * Construct the Array of Deposit Instruments and their Quotes from the given set of parameters
 		 */
 
-<span class="fc" id="L656">		SingleStreamComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (</span>
+<span class="fc" id="L657">		SingleStreamComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (</span>
 			dtToday,
 			strCurrency,
 			new int[] {
@@ -661,7 +662,7 @@ import org.drip.state.inference.*;
 			}
 		);
 
-<span class="fc" id="L664">		double[] adblDepositQuote = new double[] {</span>
+<span class="fc" id="L665">		double[] adblDepositQuote = new double[] {</span>
 			0.0004, 0.0004, 0.0004		 // Deposit
 		};
 
@@ -669,7 +670,7 @@ import org.drip.state.inference.*;
 		 * Construct the Deposit Instrument Set Stretch Builder
 		 */
 
-<span class="fc" id="L672">		LatentStateStretchSpec depositStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
+<span class="fc" id="L673">		LatentStateStretchSpec depositStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
 			&quot;   DEPOSIT   &quot;,
 			aDepositComp,
 			&quot;ForwardRate&quot;,
@@ -680,21 +681,21 @@ import org.drip.state.inference.*;
 		 * Construct the Array of Short End OIS Instruments and their Quotes from the given set of parameters
 		 */
 
-<span class="fc" id="L683">		double[] adblShortEndOISQuote = new double[] {</span>
+<span class="fc" id="L684">		double[] adblShortEndOISQuote = new double[] {</span>
 			0.00070,    //   1W
 			0.00069,    //   2W
 			0.00078,    //   3W
 			0.00074     //   1M
 		};
 
-<span class="fc bfc" id="L690" title="All 2 branches covered.">		CalibratableComponent[] aShortEndOISComp = bOvernightIndex ?</span>
-<span class="fc" id="L691">			OvernightIndexFromMaturityTenor (</span>
+<span class="fc bfc" id="L691" title="All 2 branches covered.">		CalibratableComponent[] aShortEndOISComp = bOvernightIndex ?</span>
+<span class="fc" id="L692">			OvernightIndexFromMaturityTenor (</span>
 				dtToday,
 				new java.lang.String[]
 					{&quot;1W&quot;, &quot;2W&quot;, &quot;3W&quot;, &quot;1M&quot;},
 				adblShortEndOISQuote,
 				strCurrency) :
-<span class="fc" id="L697">			OvernightFundFromMaturityTenor (</span>
+<span class="fc" id="L698">			OvernightFundFromMaturityTenor (</span>
 				dtToday,
 				new java.lang.String[]
 					{&quot;1W&quot;, &quot;2W&quot;, &quot;3W&quot;, &quot;1M&quot;},
@@ -706,7 +707,7 @@ import org.drip.state.inference.*;
 		 * Construct the Short End OIS Instrument Set Stretch Builder
 		 */
 
-<span class="fc" id="L709">		LatentStateStretchSpec oisShortEndStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
+<span class="fc" id="L710">		LatentStateStretchSpec oisShortEndStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
 			&quot;SHORT END OIS&quot;,
 			aShortEndOISComp,
 			&quot;SwapRate&quot;,
@@ -717,7 +718,7 @@ import org.drip.state.inference.*;
 		 * Construct the Array of OIS Futures Instruments and their Quotes from the given set of parameters
 		 */
 
-<span class="fc" id="L720">		double[] adblOISFutureQuote = new double[] {</span>
+<span class="fc" id="L721">		double[] adblOISFutureQuote = new double[] {</span>
 			 0.00046,    //   1M x 1M
 			 0.00016,    //   2M x 1M
 			-0.00007,    //   3M x 1M
@@ -725,15 +726,15 @@ import org.drip.state.inference.*;
 			-0.00014     //   5M x 1M
 		};
 
-<span class="fc bfc" id="L728" title="All 2 branches covered.">		CalibratableComponent[] aOISFutureComp = bOvernightIndex ?</span>
-<span class="fc" id="L729">			OvernightIndexFutureFromMaturityTenor (</span>
+<span class="fc bfc" id="L729" title="All 2 branches covered.">		CalibratableComponent[] aOISFutureComp = bOvernightIndex ?</span>
+<span class="fc" id="L730">			OvernightIndexFutureFromMaturityTenor (</span>
 				dtToday,
 				new java.lang.String[] {&quot;1M&quot;, &quot;2M&quot;, &quot;3M&quot;, &quot;4M&quot;, &quot;5M&quot;},
 				new java.lang.String[] {&quot;1M&quot;, &quot;1M&quot;, &quot;1M&quot;, &quot;1M&quot;, &quot;1M&quot;},
 				adblOISFutureQuote,
 				strCurrency
 			) :
-<span class="fc" id="L736">			OvernightFundFutureFromMaturityTenor (</span>
+<span class="fc" id="L737">			OvernightFundFutureFromMaturityTenor (</span>
 				dtToday,
 				new java.lang.String[] {&quot;1M&quot;, &quot;2M&quot;, &quot;3M&quot;, &quot;4M&quot;, &quot;5M&quot;},
 				new java.lang.String[] {&quot;1M&quot;, &quot;1M&quot;, &quot;1M&quot;, &quot;1M&quot;, &quot;1M&quot;},
@@ -745,7 +746,7 @@ import org.drip.state.inference.*;
 		 * Construct the OIS Future Instrument Set Stretch Builder
 		 */
 
-<span class="fc" id="L748">		LatentStateStretchSpec oisFutureStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
+<span class="fc" id="L749">		LatentStateStretchSpec oisFutureStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
 			&quot; OIS FUTURE  &quot;,
 			aOISFutureComp,
 			&quot;SwapRate&quot;,
@@ -756,7 +757,7 @@ import org.drip.state.inference.*;
 		 * Construct the Array of Long End OIS Instruments and their Quotes from the given set of parameters
 		 */
 
-<span class="fc" id="L759">		double[] adblLongEndOISQuote = new double[] {</span>
+<span class="fc" id="L760">		double[] adblLongEndOISQuote = new double[] {</span>
 			0.00002,    //  15M
 			0.00008,    //  18M
 			0.00021,    //  21M
@@ -777,14 +778,14 @@ import org.drip.state.inference.*;
 			0.02038     //  30Y
 		};
 
-<span class="fc bfc" id="L780" title="All 2 branches covered.">		CalibratableComponent[] aLongEndOISComp = bOvernightIndex ?</span>
-<span class="fc" id="L781">			OvernightIndexFromMaturityTenor (</span>
+<span class="fc bfc" id="L781" title="All 2 branches covered.">		CalibratableComponent[] aLongEndOISComp = bOvernightIndex ?</span>
+<span class="fc" id="L782">			OvernightIndexFromMaturityTenor (</span>
 				dtToday,
 				new java.lang.String[]
 					{&quot;15M&quot;, &quot;18M&quot;, &quot;21M&quot;, &quot;2Y&quot;, &quot;3Y&quot;, &quot;4Y&quot;, &quot;5Y&quot;, &quot;6Y&quot;, &quot;7Y&quot;, &quot;8Y&quot;, &quot;9Y&quot;, &quot;10Y&quot;, &quot;11Y&quot;, &quot;12Y&quot;, &quot;15Y&quot;, &quot;20Y&quot;, &quot;25Y&quot;, &quot;30Y&quot;},
 				adblLongEndOISQuote,
 				strCurrency
-<span class="fc" id="L787">			) : OvernightFundFromMaturityTenor (</span>
+<span class="fc" id="L788">			) : OvernightFundFromMaturityTenor (</span>
 				dtToday,
 				new java.lang.String[]
 					{&quot;15M&quot;, &quot;18M&quot;, &quot;21M&quot;, &quot;2Y&quot;, &quot;3Y&quot;, &quot;4Y&quot;, &quot;5Y&quot;, &quot;6Y&quot;, &quot;7Y&quot;, &quot;8Y&quot;, &quot;9Y&quot;, &quot;10Y&quot;, &quot;11Y&quot;, &quot;12Y&quot;, &quot;15Y&quot;, &quot;20Y&quot;, &quot;25Y&quot;, &quot;30Y&quot;},
@@ -797,14 +798,14 @@ import org.drip.state.inference.*;
 		 * Construct the Long End OIS Instrument Set Stretch Builder
 		 */
 
-<span class="fc" id="L800">		LatentStateStretchSpec oisLongEndStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
+<span class="fc" id="L801">		LatentStateStretchSpec oisLongEndStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
 			&quot;LONG END OIS &quot;,
 			aLongEndOISComp,
 			&quot;SwapRate&quot;,
 			adblLongEndOISQuote
 		);
 
-<span class="fc" id="L807">		LatentStateStretchSpec[] aStretchSpec = new LatentStateStretchSpec[] {</span>
+<span class="fc" id="L808">		LatentStateStretchSpec[] aStretchSpec = new LatentStateStretchSpec[] {</span>
 			depositStretch,
 			oisShortEndStretch,
 			oisFutureStretch,
@@ -819,11 +820,11 @@ import org.drip.state.inference.*;
 		 * 	- Natural Boundary Setting
 		 */
 
-<span class="fc" id="L822">		LinearLatentStateCalibrator lcc = new LinearLatentStateCalibrator (</span>
+<span class="fc" id="L823">		LinearLatentStateCalibrator lcc = new LinearLatentStateCalibrator (</span>
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-<span class="fc" id="L826">				SegmentInelasticDesignControl.Create (</span>
+<span class="fc" id="L827">				SegmentInelasticDesignControl.Create (</span>
 					2,
 					2
 				),
@@ -833,7 +834,7 @@ import org.drip.state.inference.*;
 				),
 				null
 			),
-<span class="fc" id="L836">			BoundarySettings.NaturalStandard(),</span>
+<span class="fc" id="L837">			BoundarySettings.NaturalStandard(),</span>
 			MultiSegmentSequence.CALIBRATE,
 			null,
 			null
@@ -844,7 +845,7 @@ import org.drip.state.inference.*;
 		 *  of Deposit and Swap Stretches.
 		 */
 
-<span class="fc" id="L847">		MergedDiscountForwardCurve dc = ScenarioDiscountCurveBuilder.ShapePreservingDFBuild (</span>
+<span class="fc" id="L848">		MergedDiscountForwardCurve dc = ScenarioDiscountCurveBuilder.ShapePreservingDFBuild (</span>
 			strCurrency,
 			lcc,
 			aStretchSpec,
@@ -864,36 +865,36 @@ import org.drip.state.inference.*;
 		 * 	construction methodologies.
 		 */
 
-<span class="fc" id="L867">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L868">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="fc" id="L869">		System.out.println (&quot;\t     DEPOSIT INSTRUMENTS CALIBRATION RECOVERY&quot;);</span>
+<span class="fc" id="L870">		System.out.println (&quot;\t     DEPOSIT INSTRUMENTS CALIBRATION RECOVERY&quot;);</span>
 
-<span class="fc" id="L871">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L872">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="fc bfc" id="L873" title="All 2 branches covered.">		for (int i = 0; i &lt; aDepositComp.length; ++i)</span>
-<span class="fc" id="L874">			System.out.println (&quot;\t[&quot; + aDepositComp[i].effectiveDate() + &quot; =&gt; &quot; + aDepositComp[i].maturityDate() + &quot;] = &quot; +</span>
-<span class="fc" id="L875">				FormatUtil.FormatDouble (aDepositComp[i].measureValue (new ValuationParams (dtToday, dtToday, strCurrency), null,</span>
-<span class="fc" id="L876">					MarketParamsBuilder.Create (dc, null, null, null, null, null, null),</span>
-<span class="fc" id="L877">						null, &quot;Rate&quot;), 1, 6, 1.) + &quot; | &quot; + FormatUtil.FormatDouble (adblDepositQuote[i], 1, 6, 1.));</span>
+<span class="fc bfc" id="L874" title="All 2 branches covered.">		for (int i = 0; i &lt; aDepositComp.length; ++i)</span>
+<span class="fc" id="L875">			System.out.println (&quot;\t[&quot; + aDepositComp[i].effectiveDate() + &quot; =&gt; &quot; + aDepositComp[i].maturityDate() + &quot;] = &quot; +</span>
+<span class="fc" id="L876">				FormatUtil.FormatDouble (aDepositComp[i].measureValue (new ValuationParams (dtToday, dtToday, strCurrency), null,</span>
+<span class="fc" id="L877">					MarketParamsBuilder.Create (dc, null, null, null, null, null, null),</span>
+<span class="fc" id="L878">						null, &quot;Rate&quot;), 1, 6, 1.) + &quot; | &quot; + FormatUtil.FormatDouble (adblDepositQuote[i], 1, 6, 1.));</span>
 
 		/*
 		 * Cross-Comparison of the Short End OIS Calibration Instrument &quot;Rate&quot; metric across the different curve
 		 * 	construction methodologies.
 		 */
 
-<span class="fc" id="L884">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L885">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
 
-<span class="fc" id="L886">		System.out.println (&quot;\t     OIS SHORT END INSTRUMENTS CALIBRATION RECOVERY&quot;);</span>
+<span class="fc" id="L887">		System.out.println (&quot;\t     OIS SHORT END INSTRUMENTS CALIBRATION RECOVERY&quot;);</span>
 
-<span class="fc" id="L888">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L889">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="fc bfc" id="L890" title="All 2 branches covered.">		for (int i = 0; i &lt; aShortEndOISComp.length; ++i)</span>
-<span class="fc" id="L891">			System.out.println (&quot;\t[&quot; + aShortEndOISComp[i].effectiveDate() + &quot; =&gt; &quot; + aShortEndOISComp[i].maturityDate() + &quot;] = &quot; +</span>
-<span class="fc" id="L892">				FormatUtil.FormatDouble (aShortEndOISComp[i].measureValue (new ValuationParams (dtToday, dtToday, strCurrency), null,</span>
-<span class="fc" id="L893">					MarketParamsBuilder.Create (dc, null, null, null, null, null, null),</span>
-<span class="fc" id="L894">						null, &quot;CalibSwapRate&quot;), 1, 6, 1.) + &quot; | &quot; + FormatUtil.FormatDouble (adblShortEndOISQuote[i], 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L895">							FormatUtil.FormatDouble (aShortEndOISComp[i].measureValue (new ValuationParams (dtToday, dtToday, strCurrency), null,</span>
-<span class="fc" id="L896">								MarketParamsBuilder.Create (dc, null, null, null, null, null, null),</span>
+<span class="fc bfc" id="L891" title="All 2 branches covered.">		for (int i = 0; i &lt; aShortEndOISComp.length; ++i)</span>
+<span class="fc" id="L892">			System.out.println (&quot;\t[&quot; + aShortEndOISComp[i].effectiveDate() + &quot; =&gt; &quot; + aShortEndOISComp[i].maturityDate() + &quot;] = &quot; +</span>
+<span class="fc" id="L893">				FormatUtil.FormatDouble (aShortEndOISComp[i].measureValue (new ValuationParams (dtToday, dtToday, strCurrency), null,</span>
+<span class="fc" id="L894">					MarketParamsBuilder.Create (dc, null, null, null, null, null, null),</span>
+<span class="fc" id="L895">						null, &quot;CalibSwapRate&quot;), 1, 6, 1.) + &quot; | &quot; + FormatUtil.FormatDouble (adblShortEndOISQuote[i], 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L896">							FormatUtil.FormatDouble (aShortEndOISComp[i].measureValue (new ValuationParams (dtToday, dtToday, strCurrency), null,</span>
+<span class="fc" id="L897">								MarketParamsBuilder.Create (dc, null, null, null, null, null, null),</span>
 									null, &quot;FairPremium&quot;), 1, 6, 1.));
 
 		/*
@@ -901,19 +902,19 @@ import org.drip.state.inference.*;
 		 * 	construction methodologies.
 		 */
 
-<span class="fc" id="L904">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L905">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
 
-<span class="fc" id="L906">		System.out.println (&quot;\t     OIS FUTURE INSTRUMENTS CALIBRATION RECOVERY&quot;);</span>
+<span class="fc" id="L907">		System.out.println (&quot;\t     OIS FUTURE INSTRUMENTS CALIBRATION RECOVERY&quot;);</span>
 
-<span class="fc" id="L908">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L909">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="fc bfc" id="L910" title="All 2 branches covered.">		for (int i = 0; i &lt; aOISFutureComp.length; ++i)</span>
-<span class="fc" id="L911">			System.out.println (&quot;\t[&quot; + aOISFutureComp[i].effectiveDate() + &quot; =&gt; &quot; + aOISFutureComp[i].maturityDate() + &quot;] = &quot; +</span>
-<span class="fc" id="L912">				FormatUtil.FormatDouble (aOISFutureComp[i].measureValue (new ValuationParams (dtToday, dtToday, strCurrency), null,</span>
-<span class="fc" id="L913">					MarketParamsBuilder.Create (dc, null, null, null, null, null, null),</span>
-<span class="fc" id="L914">						null, &quot;SwapRate&quot;), 1, 6, 1.) + &quot; | &quot; + FormatUtil.FormatDouble (adblOISFutureQuote[i], 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L915">							FormatUtil.FormatDouble (aOISFutureComp[i].measureValue (new ValuationParams (dtToday, dtToday, strCurrency), null,</span>
-<span class="fc" id="L916">								MarketParamsBuilder.Create (dc, null, null, null, null, null, null),</span>
+<span class="fc bfc" id="L911" title="All 2 branches covered.">		for (int i = 0; i &lt; aOISFutureComp.length; ++i)</span>
+<span class="fc" id="L912">			System.out.println (&quot;\t[&quot; + aOISFutureComp[i].effectiveDate() + &quot; =&gt; &quot; + aOISFutureComp[i].maturityDate() + &quot;] = &quot; +</span>
+<span class="fc" id="L913">				FormatUtil.FormatDouble (aOISFutureComp[i].measureValue (new ValuationParams (dtToday, dtToday, strCurrency), null,</span>
+<span class="fc" id="L914">					MarketParamsBuilder.Create (dc, null, null, null, null, null, null),</span>
+<span class="fc" id="L915">						null, &quot;SwapRate&quot;), 1, 6, 1.) + &quot; | &quot; + FormatUtil.FormatDouble (adblOISFutureQuote[i], 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L916">							FormatUtil.FormatDouble (aOISFutureComp[i].measureValue (new ValuationParams (dtToday, dtToday, strCurrency), null,</span>
+<span class="fc" id="L917">								MarketParamsBuilder.Create (dc, null, null, null, null, null, null),</span>
 									null, &quot;FairPremium&quot;), 1, 6, 1.));
 
 		/*
@@ -921,22 +922,22 @@ import org.drip.state.inference.*;
 		 * 	construction methodologies.
 		 */
 
-<span class="fc" id="L924">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L925">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
 
-<span class="fc" id="L926">		System.out.println (&quot;\t     OIS LONG END INSTRUMENTS CALIBRATION RECOVERY&quot;);</span>
+<span class="fc" id="L927">		System.out.println (&quot;\t     OIS LONG END INSTRUMENTS CALIBRATION RECOVERY&quot;);</span>
 
-<span class="fc" id="L928">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L929">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="fc bfc" id="L930" title="All 2 branches covered.">		for (int i = 0; i &lt; aLongEndOISComp.length; ++i)</span>
-<span class="fc" id="L931">			System.out.println (&quot;\t[&quot; + aLongEndOISComp[i].effectiveDate() + &quot; =&gt; &quot; + aLongEndOISComp[i].maturityDate() + &quot;] = &quot; +</span>
-<span class="fc" id="L932">				FormatUtil.FormatDouble (aLongEndOISComp[i].measureValue (new ValuationParams (dtToday, dtToday, strCurrency), null,</span>
-<span class="fc" id="L933">					MarketParamsBuilder.Create (dc, null, null, null, null, null, null),</span>
-<span class="fc" id="L934">						null, &quot;CalibSwapRate&quot;), 1, 6, 1.) + &quot; | &quot; + FormatUtil.FormatDouble (adblLongEndOISQuote[i], 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L935">							FormatUtil.FormatDouble (aLongEndOISComp[i].measureValue (new ValuationParams (dtToday, dtToday, strCurrency), null,</span>
-<span class="fc" id="L936">								MarketParamsBuilder.Create (dc, null, null, null, null, null, null),</span>
+<span class="fc bfc" id="L931" title="All 2 branches covered.">		for (int i = 0; i &lt; aLongEndOISComp.length; ++i)</span>
+<span class="fc" id="L932">			System.out.println (&quot;\t[&quot; + aLongEndOISComp[i].effectiveDate() + &quot; =&gt; &quot; + aLongEndOISComp[i].maturityDate() + &quot;] = &quot; +</span>
+<span class="fc" id="L933">				FormatUtil.FormatDouble (aLongEndOISComp[i].measureValue (new ValuationParams (dtToday, dtToday, strCurrency), null,</span>
+<span class="fc" id="L934">					MarketParamsBuilder.Create (dc, null, null, null, null, null, null),</span>
+<span class="fc" id="L935">						null, &quot;CalibSwapRate&quot;), 1, 6, 1.) + &quot; | &quot; + FormatUtil.FormatDouble (adblLongEndOISQuote[i], 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L936">							FormatUtil.FormatDouble (aLongEndOISComp[i].measureValue (new ValuationParams (dtToday, dtToday, strCurrency), null,</span>
+<span class="fc" id="L937">								MarketParamsBuilder.Create (dc, null, null, null, null, null, null),</span>
 									null, &quot;FairPremium&quot;), 1, 6, 1.));
 
-<span class="fc" id="L939">		return dc;</span>
+<span class="fc" id="L940">		return dc;</span>
 	}
 
 	public static final void main (
@@ -947,29 +948,33 @@ import org.drip.state.inference.*;
 		 * Initialize the Credit Analytics Library
 		 */
 
-<span class="fc" id="L950">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L951">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L952">		String strCurrency = &quot;EUR&quot;;</span>
+<span class="fc" id="L953">		String strCurrency = &quot;EUR&quot;;</span>
 
-<span class="fc" id="L954">		JulianDate dtToday = org.drip.analytics.date.DateUtil.Today().addTenor (&quot;0D&quot;);</span>
+<span class="fc" id="L955">		JulianDate dtToday = DateUtil.CreateFromYMD (</span>
+			2018,
+			DateUtil.FEBRUARY,
+			18
+		);
 
-<span class="fc" id="L956">		MergedDiscountForwardCurve dcIndex = CustomOISCurveBuilderSample (</span>
+<span class="fc" id="L961">		MergedDiscountForwardCurve dcIndex = CustomOISCurveBuilderSample (</span>
 			dtToday,
 			&quot;---- DISCOUNT CURVE WITH OVERNIGHT INDEX ---&quot;,
 			strCurrency,
 			true
 		);
 
-<span class="fc" id="L963">		MergedDiscountForwardCurve dcFund = CustomOISCurveBuilderSample (</span>
+<span class="fc" id="L968">		MergedDiscountForwardCurve dcFund = CustomOISCurveBuilderSample (</span>
 			dtToday,
 			&quot;---- DISCOUNT CURVE WITH OVERNIGHT FUND ---&quot;,
 			strCurrency,
 			false
 		);
 
-<span class="fc" id="L970">		JulianDate dtCustomOISStart = dtToday.subtractTenor (&quot;2M&quot;);</span>
+<span class="fc" id="L975">		JulianDate dtCustomOISStart = dtToday.subtractTenor (&quot;2M&quot;);</span>
 
-<span class="fc" id="L972">		UnitCouponAccrualSetting ucasCustomFixed = new UnitCouponAccrualSetting (</span>
+<span class="fc" id="L977">		UnitCouponAccrualSetting ucasCustomFixed = new UnitCouponAccrualSetting (</span>
 			2,
 			&quot;Act/360&quot;,
 			false,
@@ -980,18 +985,18 @@ import org.drip.state.inference.*;
 			CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC
 		);
 
-<span class="fc" id="L983">		ComposableFloatingUnitSetting cfusCustomFloating = new ComposableFloatingUnitSetting (</span>
+<span class="fc" id="L988">		ComposableFloatingUnitSetting cfusCustomFloating = new ComposableFloatingUnitSetting (</span>
 			&quot;ON&quot;,
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_OVERNIGHT,
 			null,
-<span class="fc" id="L987">			OvernightLabel.Create (</span>
+<span class="fc" id="L992">			OvernightLabel.Create (</span>
 				strCurrency
 			),
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 			0.
 		);
 
-<span class="fc" id="L994">		ComposableFixedUnitSetting cfusCustomFixed = new ComposableFixedUnitSetting (</span>
+<span class="fc" id="L999">		ComposableFixedUnitSetting cfusCustomFixed = new ComposableFixedUnitSetting (</span>
 			&quot;6M&quot;,
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 			null,
@@ -1000,7 +1005,7 @@ import org.drip.state.inference.*;
 			strCurrency
 		);
 
-<span class="fc" id="L1003">		CompositePeriodSetting cpsCustomFloating = new CompositePeriodSetting (</span>
+<span class="fc" id="L1008">		CompositePeriodSetting cpsCustomFloating = new CompositePeriodSetting (</span>
 			4,
 			&quot;3M&quot;,
 			strCurrency,
@@ -1012,7 +1017,7 @@ import org.drip.state.inference.*;
 			null
 		);
 
-<span class="fc" id="L1015">		CompositePeriodSetting cpsCustomFixed = new CompositePeriodSetting (</span>
+<span class="fc" id="L1020">		CompositePeriodSetting cpsCustomFixed = new CompositePeriodSetting (</span>
 			2,
 			&quot;6M&quot;,
 			strCurrency,
@@ -1024,30 +1029,30 @@ import org.drip.state.inference.*;
 			null
 		);
 
-<span class="fc" id="L1027">		List&lt;Integer&gt; lsCustomFixedStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
+<span class="fc" id="L1032">		List&lt;Integer&gt; lsCustomFixedStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
 			dtCustomOISStart,
 			&quot;6M&quot;,
 			&quot;4M&quot;,
 			null
 		);
 
-<span class="fc" id="L1034">		List&lt;Integer&gt; lsCustomFloatingStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
+<span class="fc" id="L1039">		List&lt;Integer&gt; lsCustomFloatingStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
 			dtCustomOISStart,
 			&quot;3M&quot;,
 			&quot;4M&quot;,
 			null
 		);
 
-<span class="fc" id="L1041">		Stream customFloatingStream = new Stream (</span>
-<span class="fc" id="L1042">			CompositePeriodBuilder.FloatingCompositeUnit (</span>
+<span class="fc" id="L1046">		Stream customFloatingStream = new Stream (</span>
+<span class="fc" id="L1047">			CompositePeriodBuilder.FloatingCompositeUnit (</span>
 				lsCustomFloatingStreamEdgeDate,
 				cpsCustomFloating,
 				cfusCustomFloating
 			)
 		);
 
-<span class="fc" id="L1049">		Stream customFixedStream = new Stream (</span>
-<span class="fc" id="L1050">			CompositePeriodBuilder.FixedCompositeUnit (</span>
+<span class="fc" id="L1054">		Stream customFixedStream = new Stream (</span>
+<span class="fc" id="L1055">			CompositePeriodBuilder.FixedCompositeUnit (</span>
 				lsCustomFixedStreamEdgeDate,
 				cpsCustomFixed,
 				ucasCustomFixed,
@@ -1055,7 +1060,7 @@ import org.drip.state.inference.*;
 			)
 		);
 
-<span class="fc" id="L1058">		FixFloatComponent ois = new FixFloatComponent (</span>
+<span class="fc" id="L1063">		FixFloatComponent ois = new FixFloatComponent (</span>
 			customFixedStream,
 			customFloatingStream,
 			new CashSettleParams (
@@ -1065,7 +1070,7 @@ import org.drip.state.inference.*;
 			)
 		);
 
-<span class="fc" id="L1068">		CurveSurfaceQuoteContainer mktParamsIndex = MarketParamsBuilder.Create (</span>
+<span class="fc" id="L1073">		CurveSurfaceQuoteContainer mktParamsIndex = MarketParamsBuilder.Create (</span>
 			dcIndex,
 			null,
 			null,
@@ -1075,7 +1080,7 @@ import org.drip.state.inference.*;
 			null
 		);
 
-<span class="fc" id="L1078">		CurveSurfaceQuoteContainer mktParamsFund = MarketParamsBuilder.Create (</span>
+<span class="fc" id="L1083">		CurveSurfaceQuoteContainer mktParamsFund = MarketParamsBuilder.Create (</span>
 			dcFund,
 			null,
 			null,
@@ -1085,11 +1090,11 @@ import org.drip.state.inference.*;
 			null
 		);
 
-<span class="fc" id="L1088">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L1093">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
 
-<span class="fc" id="L1090">		System.out.println (&quot;\t----------------------------------------------------------------\n&quot;);</span>
+<span class="fc" id="L1095">		System.out.println (&quot;\t----------------------------------------------------------------\n&quot;);</span>
 
-<span class="fc" id="L1092">		Map&lt;String, Double&gt; mapOISOutputIndex = ois.value (</span>
+<span class="fc" id="L1097">		Map&lt;String, Double&gt; mapOISOutputIndex = ois.value (</span>
 			new ValuationParams (
 				dtToday,
 				dtToday,
@@ -1100,7 +1105,7 @@ import org.drip.state.inference.*;
 			null
 		);
 
-<span class="fc" id="L1103">		Map&lt;String, Double&gt; mapOISOutputFund = ois.value (</span>
+<span class="fc" id="L1108">		Map&lt;String, Double&gt; mapOISOutputFund = ois.value (</span>
 			new ValuationParams (
 				dtToday,
 				dtToday,
@@ -1111,14 +1116,14 @@ import org.drip.state.inference.*;
 			null
 		);
 
-<span class="fc bfc" id="L1114" title="All 2 branches covered.">		for (Map.Entry&lt;String, Double&gt; me : mapOISOutputIndex.entrySet()) {</span>
-<span class="fc" id="L1115">			String strKey = me.getKey();</span>
+<span class="fc bfc" id="L1119" title="All 2 branches covered.">		for (Map.Entry&lt;String, Double&gt; me : mapOISOutputIndex.entrySet()) {</span>
+<span class="fc" id="L1120">			String strKey = me.getKey();</span>
 
-<span class="fc" id="L1117">			double dblIndexMeasure = me.getValue();</span>
+<span class="fc" id="L1122">			double dblIndexMeasure = me.getValue();</span>
 
-<span class="fc" id="L1119">			double dblFundMeasure = mapOISOutputFund.get (strKey);</span>
+<span class="fc" id="L1124">			double dblFundMeasure = mapOISOutputFund.get (strKey);</span>
 
-<span class="fc bfc" id="L1121" title="All 2 branches covered.">			String strReconcile = NumberUtil.WithinTolerance (</span>
+<span class="fc bfc" id="L1126" title="All 2 branches covered.">			String strReconcile = NumberUtil.WithinTolerance (</span>
 				dblIndexMeasure,
 				dblFundMeasure,
 				1.e-08,
@@ -1126,12 +1131,12 @@ import org.drip.state.inference.*;
 			&quot;RECONCILES&quot; :
 			&quot;DOES NOT RECONCILE&quot;;
 
-<span class="fc" id="L1129">			System.out.println (&quot;\t&quot; +</span>
-<span class="fc" id="L1130">				FormatUtil.FormatDouble (dblIndexMeasure, 1, 8, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L1131">				FormatUtil.FormatDouble (dblFundMeasure, 1, 8, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L1134">			System.out.println (&quot;\t&quot; +</span>
+<span class="fc" id="L1135">				FormatUtil.FormatDouble (dblIndexMeasure, 1, 8, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L1136">				FormatUtil.FormatDouble (dblFundMeasure, 1, 8, 1.) + &quot; | &quot; +</span>
 				strReconcile + &quot; &lt;= &quot; + strKey
 			);
-<span class="fc" id="L1134">		}</span>
-<span class="fc" id="L1135">	}</span>
+<span class="fc" id="L1139">		}</span>
+<span class="fc" id="L1140">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

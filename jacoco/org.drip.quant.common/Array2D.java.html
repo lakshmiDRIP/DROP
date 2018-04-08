@@ -224,7 +224,11 @@ public class Array2D {
 
 <span class="fc" id="L225">		adblVertexDate[iNumVertex - 1] = iMaturityDate;</span>
 
-<span class="fc" id="L227">		return FromArray (adblVertexDate, adblVertexFactor);</span>
+<span class="fc bfc" id="L227" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVertex - 1; ++i) {</span>
+<span class="fc" id="L228">			System.out.println (new org.drip.analytics.date.JulianDate ((int) adblVertexDate[i]) + &quot; | &quot; + adblVertexFactor[i]);</span>
+		}
+
+<span class="fc" id="L231">		return FromArray (adblVertexDate, adblVertexFactor);</span>
 	}
 
 	/**
@@ -240,18 +244,18 @@ public class Array2D {
 		final java.lang.String strX,
 		final java.lang.String strY)
 	{
-<span class="nc bnc" id="L243" title="All 8 branches missed.">		if (null == strX || strX.isEmpty() || null == strY || strY.isEmpty()) return null;</span>
+<span class="nc bnc" id="L247" title="All 8 branches missed.">		if (null == strX || strX.isEmpty() || null == strY || strY.isEmpty()) return null;</span>
 
 		try {
-<span class="nc" id="L246">			return new Array2D (org.drip.quant.common.StringUtil.MakeDoubleArrayFromStringTokenizer (new</span>
+<span class="nc" id="L250">			return new Array2D (org.drip.quant.common.StringUtil.MakeDoubleArrayFromStringTokenizer (new</span>
 				java.util.StringTokenizer (strX, &quot;;&quot;)),
-<span class="nc" id="L248">					org.drip.quant.common.StringUtil.MakeDoubleArrayFromStringTokenizer (new</span>
+<span class="nc" id="L252">					org.drip.quant.common.StringUtil.MakeDoubleArrayFromStringTokenizer (new</span>
 						java.util.StringTokenizer (strY, &quot;;&quot;)));
-<span class="nc" id="L250">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L251">			e.printStackTrace();</span>
+<span class="nc" id="L254">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L255">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L254">		return null;</span>
+<span class="nc" id="L258">		return null;</span>
 	}
 
 	/**
@@ -268,12 +272,12 @@ public class Array2D {
 		final double[] adblY)
 	{
 		try {
-<span class="fc" id="L271">			return new Array2D (adblX, adblY);</span>
-<span class="nc" id="L272">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L273">			e.printStackTrace();</span>
+<span class="fc" id="L275">			return new Array2D (adblX, adblY);</span>
+<span class="nc" id="L276">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L277">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L276">		return null;</span>
+<span class="nc" id="L280">		return null;</span>
 	}
 
 	/**
@@ -289,17 +293,17 @@ public class Array2D {
 		final int[] aiX,
 		final double[] adblY)
 	{
-<span class="pc bpc" id="L292" title="1 of 2 branches missed.">		if (null == aiX) return null;</span>
+<span class="pc bpc" id="L296" title="1 of 2 branches missed.">		if (null == aiX) return null;</span>
 
-<span class="fc" id="L294">		int iSize = aiX.length;</span>
-<span class="fc" id="L295">		double[] adblX = new double[iSize];</span>
+<span class="fc" id="L298">		int iSize = aiX.length;</span>
+<span class="fc" id="L299">		double[] adblX = new double[iSize];</span>
 
-<span class="pc bpc" id="L297" title="1 of 2 branches missed.">		if (0 == iSize) return null;</span>
+<span class="pc bpc" id="L301" title="1 of 2 branches missed.">		if (0 == iSize) return null;</span>
 
-<span class="fc bfc" id="L299" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i)</span>
-<span class="fc" id="L300">			adblX[i] = aiX[i];</span>
+<span class="fc bfc" id="L303" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i)</span>
+<span class="fc" id="L304">			adblX[i] = aiX[i];</span>
 
-<span class="fc" id="L302">		return FromArray (adblX, adblY);</span>
+<span class="fc" id="L306">		return FromArray (adblX, adblY);</span>
 	}
 
 	/**
@@ -317,29 +321,29 @@ public class Array2D {
 		final double[] adblYDelta,
 		final double dblYInitial)
 	{
-<span class="nc bnc" id="L320" title="All 6 branches missed.">		if (null == adblX || null == adblYDelta || !org.drip.quant.common.NumberUtil.IsValid (dblYInitial))</span>
-<span class="nc" id="L321">			return null;</span>
+<span class="nc bnc" id="L324" title="All 6 branches missed.">		if (null == adblX || null == adblYDelta || !org.drip.quant.common.NumberUtil.IsValid (dblYInitial))</span>
+<span class="nc" id="L325">			return null;</span>
 
-<span class="nc" id="L323">		int i = 0;</span>
-<span class="nc" id="L324">		int iLength = adblX.length;</span>
-<span class="nc" id="L325">		double[] adblY = new double[iLength];</span>
-<span class="nc" id="L326">		adblY[0] = dblYInitial;</span>
+<span class="nc" id="L327">		int i = 0;</span>
+<span class="nc" id="L328">		int iLength = adblX.length;</span>
+<span class="nc" id="L329">		double[] adblY = new double[iLength];</span>
+<span class="nc" id="L330">		adblY[0] = dblYInitial;</span>
 
-<span class="nc bnc" id="L328" title="All 4 branches missed.">		if (0 == iLength || iLength != adblYDelta.length) return null;</span>
+<span class="nc bnc" id="L332" title="All 4 branches missed.">		if (0 == iLength || iLength != adblYDelta.length) return null;</span>
 
-<span class="nc bnc" id="L330" title="All 2 branches missed.">		for (double dblYDelta : adblYDelta) {</span>
-<span class="nc bnc" id="L331" title="All 2 branches missed.">			if (i &lt; iLength - 1) adblY[i + 1] = adblY[i] - dblYDelta;</span>
+<span class="nc bnc" id="L334" title="All 2 branches missed.">		for (double dblYDelta : adblYDelta) {</span>
+<span class="nc bnc" id="L335" title="All 2 branches missed.">			if (i &lt; iLength - 1) adblY[i + 1] = adblY[i] - dblYDelta;</span>
 
-<span class="nc" id="L333">			++i;</span>
+<span class="nc" id="L337">			++i;</span>
 		}
 
 		try {
-<span class="nc" id="L337">			return new Array2D (adblX, adblY);</span>
-<span class="nc" id="L338">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L339">			e.printStackTrace();</span>
+<span class="nc" id="L341">			return new Array2D (adblX, adblY);</span>
+<span class="nc" id="L342">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L343">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L342">		return null;</span>
+<span class="nc" id="L346">		return null;</span>
 	}
 
 	/**
@@ -350,41 +354,43 @@ public class Array2D {
 
 	public static final Array2D BulletSchedule()
 	{
-<span class="fc" id="L353">		double[] adblFactor = new double[1];</span>
-<span class="fc" id="L354">		double[] adblDate = new double[1];</span>
-<span class="fc" id="L355">		adblFactor[0] = 1.;</span>
+<span class="fc" id="L357">		double[] adblFactor = new double[1];</span>
+<span class="fc" id="L358">		double[] adblDate = new double[1];</span>
+<span class="fc" id="L359">		adblFactor[0] = 1.;</span>
 
-<span class="fc" id="L357">		adblDate[0] = org.drip.analytics.date.DateUtil.CreateFromYMD (1900, 1, 1).julian();</span>
+<span class="fc" id="L361">		adblDate[0] = org.drip.analytics.date.DateUtil.CreateFromYMD (1900, 1, 1).julian();</span>
 
 		try {
-<span class="fc" id="L360">			return new Array2D (adblDate, adblFactor);</span>
-<span class="nc" id="L361">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L362">			e.printStackTrace();</span>
+<span class="fc" id="L364">			return new Array2D (adblDate, adblFactor);</span>
+<span class="nc" id="L365">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L366">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L365">		return null;</span>
+<span class="nc" id="L369">		return null;</span>
 	}
 
 	private Array2D (
 		final double[] adblX,
 		final double[] adblY)
 		throws java.lang.Exception
-<span class="fc" id="L372">	{</span>
-<span class="pc bpc" id="L373" title="2 of 4 branches missed.">		if (null == adblX || null == adblY) throw new java.lang.Exception (&quot;Array2D ctr =&gt; Invalid params&quot;);</span>
+<span class="fc" id="L376">	{</span>
+<span class="pc bpc" id="L377" title="2 of 4 branches missed.">		if (null == adblX || null == adblY) throw new java.lang.Exception (&quot;Array2D ctr =&gt; Invalid params&quot;);</span>
 
-<span class="fc" id="L375">		int iLength = adblX.length;</span>
-<span class="fc" id="L376">		_adblX = new double[iLength];</span>
-<span class="fc" id="L377">		_adblY = new double[iLength];</span>
+<span class="fc" id="L379">		int iLength = adblX.length;</span>
+<span class="fc" id="L380">		_adblX = new double[iLength];</span>
+<span class="fc" id="L381">		_adblY = new double[iLength];</span>
 
-<span class="pc bpc" id="L379" title="2 of 4 branches missed.">		if (0 == iLength || iLength != adblY.length)</span>
-<span class="nc" id="L380">			throw new java.lang.Exception (&quot;Array2D ctr =&gt; Invalid params&quot;);</span>
+<span class="pc bpc" id="L383" title="2 of 4 branches missed.">		if (0 == iLength || iLength != adblY.length)</span>
+<span class="nc" id="L384">			throw new java.lang.Exception (&quot;Array2D ctr =&gt; Invalid params&quot;);</span>
 
-<span class="fc bfc" id="L382" title="All 2 branches covered.">		for (int i = 0; i &lt; iLength; ++i) {</span>
-<span class="pc bpc" id="L383" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (_adblX[i] = adblX[i]) ||</span>
-<span class="pc bpc" id="L384" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_adblY[i] = adblY[i]))</span>
-<span class="nc" id="L385">				throw new java.lang.Exception (&quot;Array2D ctr =&gt; Invalid params&quot;);</span>
+<span class="fc bfc" id="L386" title="All 2 branches covered.">		for (int i = 0; i &lt; iLength; ++i) {</span>
+			// System.out.println (new org.drip.analytics.date.JulianDate ((int) _adblX[i]) + &quot; | &quot; + _adblY[i]);
+
+<span class="pc bpc" id="L389" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (_adblX[i] = adblX[i]) ||</span>
+<span class="pc bpc" id="L390" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_adblY[i] = adblY[i]))</span>
+<span class="nc" id="L391">				throw new java.lang.Exception (&quot;Array2D ctr =&gt; Invalid params&quot;);</span>
 		}
-<span class="fc" id="L387">	}</span>
+<span class="fc" id="L393">	}</span>
 
 	/**
 	 * Retrieve the Y given X
@@ -400,18 +406,18 @@ public class Array2D {
 		final double dblX)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L403" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
-<span class="nc" id="L404">			throw new java.lang.Exception (&quot;Array2D::y =&gt; Invalid Input&quot;);</span>
+<span class="pc bpc" id="L409" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L410">			throw new java.lang.Exception (&quot;Array2D::y =&gt; Invalid Input&quot;);</span>
 
-<span class="fc bfc" id="L406" title="All 2 branches covered.">		if (dblX &lt;= _adblX[0]) return _adblY[0];</span>
+<span class="fc bfc" id="L412" title="All 2 branches covered.">		if (dblX &lt;= _adblX[0]) return _adblY[0];</span>
 
-<span class="fc" id="L408">		int iLength = _adblX.length;</span>
+<span class="fc" id="L414">		int iLength = _adblX.length;</span>
 
-<span class="fc bfc" id="L410" title="All 2 branches covered.">		for (int i = 1; i &lt; iLength; ++i) {</span>
-<span class="pc bpc" id="L411" title="1 of 4 branches missed.">			if (dblX &gt; _adblX[i - 1] &amp;&amp; dblX &lt;= _adblX[i]) return _adblY[i];</span>
+<span class="fc bfc" id="L416" title="All 2 branches covered.">		for (int i = 1; i &lt; iLength; ++i) {</span>
+<span class="pc bpc" id="L417" title="1 of 4 branches missed.">			if (dblX &gt; _adblX[i - 1] &amp;&amp; dblX &lt;= _adblX[i]) return _adblY[i];</span>
 		}
 
-<span class="fc" id="L414">		return _adblY[iLength - 1];</span>
+<span class="fc" id="L420">		return _adblY[iLength - 1];</span>
 	}
 
 	/**
@@ -428,18 +434,18 @@ public class Array2D {
 		final double dblX)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L431" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
-<span class="nc" id="L432">			throw new java.lang.Exception (&quot;Array2D::index =&gt; Invalid Input/State&quot;);</span>
+<span class="pc bpc" id="L437" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L438">			throw new java.lang.Exception (&quot;Array2D::index =&gt; Invalid Input/State&quot;);</span>
 
-<span class="fc bfc" id="L434" title="All 2 branches covered.">		if (dblX &lt;= _adblX[0]) return 0;</span>
+<span class="fc bfc" id="L440" title="All 2 branches covered.">		if (dblX &lt;= _adblX[0]) return 0;</span>
 
-<span class="fc" id="L436">		int iLength = _adblX.length;</span>
+<span class="fc" id="L442">		int iLength = _adblX.length;</span>
 
-<span class="fc bfc" id="L438" title="All 2 branches covered.">		for (int i = 1; i &lt; iLength; ++i) {</span>
-<span class="fc bfc" id="L439" title="All 2 branches covered.">			if (dblX &lt;= _adblX[i]) return i;</span>
+<span class="fc bfc" id="L444" title="All 2 branches covered.">		for (int i = 1; i &lt; iLength; ++i) {</span>
+<span class="fc bfc" id="L445" title="All 2 branches covered.">			if (dblX &lt;= _adblX[i]) return i;</span>
 		}
 
-<span class="fc" id="L442">		return iLength - 1;</span>
+<span class="fc" id="L448">		return iLength - 1;</span>
 	}
 
 	/**
@@ -458,22 +464,22 @@ public class Array2D {
 		final double dblEndX)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L461" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblStartX) ||</span>
-<span class="pc bpc" id="L462" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblEndX))</span>
-<span class="nc" id="L463">			throw new java.lang.Exception (&quot;Array2D::y =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L467" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblStartX) ||</span>
+<span class="pc bpc" id="L468" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblEndX))</span>
+<span class="nc" id="L469">			throw new java.lang.Exception (&quot;Array2D::y =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L465">		int iEndIndex = index (dblEndX);</span>
+<span class="fc" id="L471">		int iEndIndex = index (dblEndX);</span>
 
-<span class="fc" id="L467">		int iStartIndex = index (dblStartX);</span>
+<span class="fc" id="L473">		int iStartIndex = index (dblStartX);</span>
 
-<span class="fc bfc" id="L469" title="All 2 branches covered.">		if (iStartIndex == iEndIndex) return _adblY[iStartIndex];</span>
+<span class="fc bfc" id="L475" title="All 2 branches covered.">		if (iStartIndex == iEndIndex) return _adblY[iStartIndex];</span>
 
-<span class="fc" id="L471">		double dblWeightedY = _adblY[iStartIndex] * (_adblX[iStartIndex] - dblStartX);</span>
+<span class="fc" id="L477">		double dblWeightedY = _adblY[iStartIndex] * (_adblX[iStartIndex] - dblStartX);</span>
 
-<span class="fc bfc" id="L473" title="All 2 branches covered.">		for (int i = iStartIndex + 1; i &lt;= iEndIndex; ++i)</span>
-<span class="fc" id="L474">			dblWeightedY += _adblY[i] * (_adblX[i] - _adblX[i - 1]);</span>
+<span class="fc bfc" id="L479" title="All 2 branches covered.">		for (int i = iStartIndex + 1; i &lt;= iEndIndex; ++i)</span>
+<span class="fc" id="L480">			dblWeightedY += _adblY[i] * (_adblX[i] - _adblX[i - 1]);</span>
 
-<span class="fc" id="L476">		return (dblWeightedY + _adblY[iEndIndex] * (dblEndX - _adblX[iEndIndex])) / (dblEndX - dblStartX);</span>
+<span class="fc" id="L482">		return (dblWeightedY + _adblY[iEndIndex] * (dblEndX - _adblX[iEndIndex])) / (dblEndX - dblStartX);</span>
 	}
 
 	/**
@@ -484,7 +490,7 @@ public class Array2D {
 
 	public double[] x()
 	{
-<span class="nc" id="L487">		return _adblX;</span>
+<span class="nc" id="L493">		return _adblX;</span>
 	}
 
 	/**
@@ -495,7 +501,7 @@ public class Array2D {
 
 	public double[] y()
 	{
-<span class="nc" id="L498">		return _adblY;</span>
+<span class="nc" id="L504">		return _adblY;</span>
 	}
 
 	/**
@@ -509,24 +515,24 @@ public class Array2D {
 	public boolean match (
 		final Array2D a2DOther)
 	{
-<span class="nc bnc" id="L512" title="All 2 branches missed.">		if (null == a2DOther) return false;</span>
+<span class="nc bnc" id="L518" title="All 2 branches missed.">		if (null == a2DOther) return false;</span>
 
-<span class="nc" id="L514">		double[] adblOtherX = a2DOther._adblX;</span>
-<span class="nc" id="L515">		double[] adblOtherY = a2DOther._adblY;</span>
-<span class="nc" id="L516">		int iNumOtherX = adblOtherX.length;</span>
-<span class="nc" id="L517">		int iNumOtherY = adblOtherY.length;</span>
+<span class="nc" id="L520">		double[] adblOtherX = a2DOther._adblX;</span>
+<span class="nc" id="L521">		double[] adblOtherY = a2DOther._adblY;</span>
+<span class="nc" id="L522">		int iNumOtherX = adblOtherX.length;</span>
+<span class="nc" id="L523">		int iNumOtherY = adblOtherY.length;</span>
 
-<span class="nc bnc" id="L519" title="All 4 branches missed.">		if (iNumOtherX != _adblX.length || iNumOtherY != _adblY.length) return false;</span>
+<span class="nc bnc" id="L525" title="All 4 branches missed.">		if (iNumOtherX != _adblX.length || iNumOtherY != _adblY.length) return false;</span>
 
-<span class="nc bnc" id="L521" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumOtherX; ++i) {</span>
-<span class="nc bnc" id="L522" title="All 2 branches missed.">			if (adblOtherX[i] != _adblX[i]) return false;</span>
+<span class="nc bnc" id="L527" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumOtherX; ++i) {</span>
+<span class="nc bnc" id="L528" title="All 2 branches missed.">			if (adblOtherX[i] != _adblX[i]) return false;</span>
 		}
 
-<span class="nc bnc" id="L525" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumOtherY; ++i) {</span>
-<span class="nc bnc" id="L526" title="All 2 branches missed.">			if (adblOtherY[i] != _adblY[i]) return false;</span>
+<span class="nc bnc" id="L531" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumOtherY; ++i) {</span>
+<span class="nc bnc" id="L532" title="All 2 branches missed.">			if (adblOtherY[i] != _adblY[i]) return false;</span>
 		}
 
-<span class="nc" id="L529">		return true;</span>
+<span class="nc" id="L535">		return true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

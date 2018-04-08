@@ -49,7 +49,7 @@ package org.drip.xva.definition;
 
 /**
  * CloseOutBilateral implements the (2002) ISDA Master Agreement Bilateral Close Out Scheme to be applied to
- *  the MTM at the Bank/Counter Party Default. The References are:
+ *  the MTM at the Dealer/Client Default. The References are:
  *  
  *  - Burgard, C., and M. Kjaer (2013): Funding Strategies, Funding Costs, Risk, 24 (12) 82-87.
  *  
@@ -67,90 +67,118 @@ package org.drip.xva.definition;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CloseOutBilateral extends org.drip.xva.definition.CloseOutGeneral
+public class CloseOutBilateral extends org.drip.xva.definition.CloseOut
 {
-<span class="fc" id="L72">	private double _counterPartyRecovery = java.lang.Double.NaN;;</span>
-<span class="fc" id="L73">	private double _bankSeniorFundingRecovery = java.lang.Double.NaN;</span>
+<span class="fc" id="L72">	private double _clientRecovery = java.lang.Double.NaN;;</span>
+<span class="fc" id="L73">	private double _dealerSeniorFundingRecovery = java.lang.Double.NaN;</span>
+
+	/**
+	 * Generate the Close Out Bilateral Instance from the Market Vertex
+	 * 
+	 * @param marketVertex The Market Vertex Instance
+	 * 
+	 * @return The Close Out Bilateral Instance from the Market Vertex
+	 */
+
+	public static final CloseOutBilateral Market (
+		final org.drip.xva.universe.MarketVertex marketVertex)
+	{
+<span class="nc bnc" id="L86" title="All 2 branches missed.">		if (null == marketVertex)</span>
+		{
+<span class="nc" id="L88">			return null;</span>
+		}
+
+		try
+		{
+<span class="nc" id="L93">			return new CloseOutBilateral (</span>
+<span class="nc" id="L94">				marketVertex.dealer().seniorRecoveryRate(),</span>
+<span class="nc" id="L95">				marketVertex.client().seniorRecoveryRate()</span>
+			);
+		}
+<span class="nc" id="L98">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L100">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L103">		return null;</span>
+	}
 
 	/**
 	 * CloseOutBilateral Constructor
 	 * 
-	 * @param bankSeniorFundingRecovery The Bank Senior Funding Recovery Rate
-	 * @param counterPartyRecovery Counter Party Recovery Rate
+	 * @param dealerSeniorFundingRecovery The Dealer Senior Funding Recovery Rate
+	 * @param clientRecovery Client Recovery Rate
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CloseOutBilateral (
-		final double bankSeniorFundingRecovery,
-		final double counterPartyRecovery)
+		final double dealerSeniorFundingRecovery,
+		final double clientRecovery)
 		throws java.lang.Exception
-<span class="fc" id="L88">	{</span>
-<span class="pc bpc" id="L89" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_bankSeniorFundingRecovery =</span>
-			bankSeniorFundingRecovery) ||
-<span class="pc bpc" id="L91" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_counterPartyRecovery = counterPartyRecovery))</span>
+<span class="fc" id="L119">	{</span>
+<span class="pc bpc" id="L120" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dealerSeniorFundingRecovery =</span>
+			dealerSeniorFundingRecovery) ||
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_clientRecovery = clientRecovery))</span>
 		{
-<span class="nc" id="L93">			throw new java.lang.Exception (&quot;CloseOutBilateral Constructor =&gt; Invalid Inputs&quot;);</span>
-			
+<span class="nc" id="L124">			throw new java.lang.Exception (&quot;CloseOutBilateral Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L96">	}</span>
+<span class="fc" id="L126">	}</span>
 
 	/**
-	 * Retrieve the Bank Senior Funding Recovery Rate
+	 * Retrieve the Dealer Senior Funding Recovery Rate
 	 * 
-	 * @return The Bank Senior Funding Recovery Rate
+	 * @return The Dealer Senior Funding Recovery Rate
 	 */
 
-	public double bankSeniorFundingRecovery()
+	public double dealerSeniorFundingRecovery()
 	{
-<span class="nc" id="L106">		return _bankSeniorFundingRecovery;</span>
+<span class="nc" id="L136">		return _dealerSeniorFundingRecovery;</span>
 	}
 
 	/**
-	 * Retrieve the Counter Party Recovery Rate
+	 * Retrieve the Client Recovery Rate
 	 * 
-	 * @return The Counter Party Recovery Rate
+	 * @return The Client Recovery Rate
 	 */
 
-	public double counterPartyRecovery()
+	public double clientRecovery()
 	{
-<span class="nc" id="L117">		return _counterPartyRecovery;</span>
+<span class="nc" id="L147">		return _clientRecovery;</span>
 	}
 
-	@Override public double bankDefault (
+	@Override public double dealerDefault (
 		final double uncollateralizedExposure,
 		final double collateralAmount)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L125" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (uncollateralizedExposure) ||</span>
-<span class="pc bpc" id="L126" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (collateralAmount))</span>
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (uncollateralizedExposure) ||</span>
+<span class="pc bpc" id="L156" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (collateralAmount))</span>
 		{
-<span class="nc" id="L128">			throw new java.lang.Exception (&quot;CloseOutBilateral::bankDefault =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L158">			throw new java.lang.Exception (&quot;CloseOutBilateral::dealerDefault =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="fc" id="L131">		double collateralizedExposure = uncollateralizedExposure - collateralAmount;</span>
+<span class="fc" id="L161">		double collateralizedExposure = uncollateralizedExposure - collateralAmount;</span>
 
-<span class="pc bpc" id="L133" title="1 of 4 branches missed.">		return (collateralizedExposure &gt; 0. ? collateralizedExposure : 0.) +_bankSeniorFundingRecovery *</span>
+<span class="fc bfc" id="L163" title="All 4 branches covered.">		return (collateralizedExposure &gt; 0. ? collateralizedExposure : 0.) + _dealerSeniorFundingRecovery *</span>
 			(collateralizedExposure &lt; 0. ? collateralizedExposure : 0.) + collateralAmount;
 	}
 
-	@Override public double counterPartyDefault (
+	@Override public double clientDefault (
 		final double uncollateralizedExposure,
 		final double collateralAmount)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L142" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (uncollateralizedExposure) ||</span>
-<span class="pc bpc" id="L143" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (collateralAmount))</span>
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (uncollateralizedExposure) ||</span>
+<span class="pc bpc" id="L173" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (collateralAmount))</span>
 		{
-<span class="nc" id="L145">			throw new java.lang.Exception (&quot;CloseOutBilateral::counterPartyDefault =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L175">			throw new java.lang.Exception (&quot;CloseOutBilateral::clientDefault =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="fc" id="L148">		double counterPartyGroupCollateralizedExposure = uncollateralizedExposure - collateralAmount;</span>
+<span class="fc" id="L178">		double clientCollateralizedExposure = uncollateralizedExposure - collateralAmount;</span>
 
-<span class="pc bpc" id="L150" title="1 of 4 branches missed.">		return _counterPartyRecovery * (counterPartyGroupCollateralizedExposure &gt; 0. ?</span>
-			counterPartyGroupCollateralizedExposure : 0.) +
-			(counterPartyGroupCollateralizedExposure &lt; 0. ? counterPartyGroupCollateralizedExposure : 0.) +
-			collateralAmount;
+<span class="fc bfc" id="L180" title="All 4 branches covered.">		return _clientRecovery * (clientCollateralizedExposure &gt; 0. ? clientCollateralizedExposure : 0.) +</span>
+			(clientCollateralizedExposure &lt; 0. ? clientCollateralizedExposure : 0.) + collateralAmount;
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

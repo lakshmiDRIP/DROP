@@ -74,22 +74,22 @@ public class AlbaneseAndersenFundingGroupPath extends org.drip.xva.netting.Fundi
 	/**
 	 * Generate a &quot;Mono&quot; AlbaneseAndersenFundingGroupPath Instance
 	 * 
-	 * @param collateralGroupPath The &quot;Mono&quot; Hypothecation Group Path
+	 * @param creditDebtGroupPath The &quot;Mono&quot; Credit Debt Group Path
 	 * @param marketPath The Market Path
 	 * 
 	 * @return The &quot;Mono&quot; AlbaneseAndersenFundingGroupPath Instance
 	 */
 
 	public static final AlbaneseAndersenFundingGroupPath Mono (
-		final org.drip.xva.hypothecation.CollateralGroupPath collateralGroupPath,
+		final org.drip.xva.netting.CreditDebtGroupPath creditDebtGroupPath,
 		final org.drip.xva.universe.MarketPath marketPath)
 	{
 		try
 		{
-<span class="nc" id="L89">			return new org.drip.xva.strategy.AlbaneseAndersenFundingGroupPath (</span>
-				new org.drip.xva.hypothecation.CollateralGroupPath[]
+<span class="fc" id="L89">			return new org.drip.xva.strategy.AlbaneseAndersenFundingGroupPath (</span>
+				new org.drip.xva.netting.CreditDebtGroupPath[]
 				{
-					collateralGroupPath
+					creditDebtGroupPath
 				},
 				marketPath
 			);
@@ -105,65 +105,61 @@ public class AlbaneseAndersenFundingGroupPath extends org.drip.xva.netting.Fundi
 	/**
 	 * AlbaneseAndersenFundingGroupPath Constructor
 	 * 
-	 * @param collateralGroupPathArray Array of the Collateral Group Trajectory Paths
+	 * @param creditDebtGroupPathArray Array of the Credit Debt Group Trajectory Paths
 	 * @param marketPath The Market Path
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public AlbaneseAndersenFundingGroupPath (
-		final org.drip.xva.hypothecation.CollateralGroupPath[] collateralGroupPathArray,
+		final org.drip.xva.netting.CreditDebtGroupPath[] creditDebtGroupPathArray,
 		final org.drip.xva.universe.MarketPath marketPath)
 		throws java.lang.Exception
 	{
 <span class="fc" id="L119">		super (</span>
-			collateralGroupPathArray,
+			creditDebtGroupPathArray,
 			marketPath
 		);
 <span class="fc" id="L123">	}</span>
 
 	@Override public double fundingValueAdjustment()
-		throws java.lang.Exception
 	{
-<span class="fc" id="L128">		return bilateralFundingValueAdjustment();</span>
+<span class="fc" id="L127">		return unilateralFundingValueAdjustment();</span>
 	}
 
 	@Override public double fundingDebtAdjustment()
-		throws java.lang.Exception
 	{
-<span class="fc" id="L134">		return bilateralFundingDebtAdjustment();</span>
+<span class="fc" id="L132">		return unilateralFundingDebtAdjustment();</span>
 	}
 
 	@Override public double fundingCostAdjustment()
 	{
-<span class="fc" id="L139">		return unilateralFundingValueAdjustment();</span>
+<span class="fc" id="L137">		return unilateralFundingValueAdjustment();</span>
 	}
 
 	@Override public double fundingBenefitAdjustment()
 	{
-<span class="fc" id="L144">		return unilateralFundingDebtAdjustment();</span>
+<span class="fc" id="L142">		return unilateralFundingDebtAdjustment();</span>
 	}
 
 	@Override public double[] periodFundingValueAdjustment()
-		throws java.lang.Exception
 	{
-<span class="fc" id="L150">		return periodBilateralFundingValueAdjustment();</span>
+<span class="fc" id="L147">		return periodBilateralFundingValueAdjustment();</span>
 	}
 
 	@Override public double[] periodFundingDebtAdjustment()
-		throws java.lang.Exception
 	{
-<span class="fc" id="L156">		return periodBilateralFundingDebtAdjustment();</span>
+<span class="fc" id="L152">		return periodBilateralFundingDebtAdjustment();</span>
 	}
 
 	@Override public double[] periodFundingCostAdjustment()
 	{
-<span class="fc" id="L161">		return periodUnilateralFundingValueAdjustment();</span>
+<span class="fc" id="L157">		return periodUnilateralFundingValueAdjustment();</span>
 	}
 
 	@Override public double[] periodFundingBenefitAdjustment()
 	{
-<span class="fc" id="L166">		return periodUnilateralFundingDebtAdjustment();</span>
+<span class="fc" id="L162">		return periodUnilateralFundingDebtAdjustment();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

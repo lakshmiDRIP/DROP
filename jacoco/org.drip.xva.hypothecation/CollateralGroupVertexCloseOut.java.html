@@ -48,7 +48,7 @@ package org.drip.xva.hypothecation;
  */
 
 /**
- * CollateralGroupVertexCloseOut holds the Bank and the Counter Party Close Outs at each Re-hypothecation
+ * CollateralGroupVertexCloseOut holds the Dealer and the Client Close Outs at each Re-hypothecation
  *  Collateral Group. The References are:
  *  
  *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
@@ -70,8 +70,8 @@ package org.drip.xva.hypothecation;
 
 public class CollateralGroupVertexCloseOut
 {
-<span class="fc" id="L73">	private double _bank = java.lang.Double.NaN;</span>
-<span class="fc" id="L74">	private double _counterParty = java.lang.Double.NaN;</span>
+<span class="fc" id="L73">	private double _client = java.lang.Double.NaN;</span>
+<span class="fc" id="L74">	private double _dealer = java.lang.Double.NaN;</span>
 
 	/**
 	 * Construct a Static Instance of CollateralGroupVertexCloseOut
@@ -80,11 +80,11 @@ public class CollateralGroupVertexCloseOut
 	 * @param uncollateralizedExposure The Uncollateralized Exposure
 	 * @param collateralBalance The Collateral Balance
 	 * 
-	 * @return The Static Instance of CollateralGroupVertexCloseOut
+	 * @return The Static Instance of PositionGroupVertexCloseOut
 	 */
 
 	public static final CollateralGroupVertexCloseOut Standard (
-		final org.drip.xva.definition.CloseOutGeneral closeOutGeneral,
+		final org.drip.xva.definition.CloseOut closeOutGeneral,
 		final double uncollateralizedExposure,
 		final double collateralBalance)
 	{
@@ -98,11 +98,11 @@ public class CollateralGroupVertexCloseOut
 		try
 		{
 <span class="fc" id="L100">			return new CollateralGroupVertexCloseOut (</span>
-<span class="fc" id="L101">				closeOutGeneral.bankDefault (</span>
+<span class="fc" id="L101">				closeOutGeneral.dealerDefault (</span>
 					uncollateralizedExposure,
 					collateralBalance
 				),
-<span class="fc" id="L105">				closeOutGeneral.counterPartyDefault (</span>
+<span class="fc" id="L105">				closeOutGeneral.clientDefault (</span>
 					uncollateralizedExposure,
 					collateralBalance
 				)
@@ -119,44 +119,44 @@ public class CollateralGroupVertexCloseOut
 	/**
 	 * CollateralGroupVertexCloseOut Constructor
 	 * 
-	 * @param bank The Bank Close Out
-	 * @param counterParty The Counter Party Close Out
+	 * @param dealer The Dealer Close Out
+	 * @param client The Client Close Out
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CollateralGroupVertexCloseOut (
-		final double bank,
-		final double counterParty)
+		final double dealer,
+		final double client)
 		throws java.lang.Exception
 <span class="fc" id="L132">	{</span>
-<span class="pc bpc" id="L133" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_bank = bank) ||</span>
-<span class="pc bpc" id="L134" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_counterParty = counterParty))</span>
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dealer = dealer) ||</span>
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_client = client))</span>
 		{
 <span class="nc" id="L136">			throw new java.lang.Exception (&quot;CollateralGroupVertexCloseOut Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 <span class="fc" id="L138">	}</span>
 
 	/**
-	 * Retrieve the Bank Close Out
+	 * Retrieve the Dealer Close Out
 	 * 
-	 * @return The Bank Close Out
+	 * @return The Dealer Close Out
 	 */
 
-	public double bank()
+	public double dealer()
 	{
-<span class="fc" id="L148">		return _bank;</span>
+<span class="fc" id="L148">		return _dealer;</span>
 	}
 
 	/**
-	 * Retrieve the Counter Party Close Out
+	 * Retrieve the Client Close Out
 	 * 
-	 * @return The Counter Party Close Out
+	 * @return The Client Close Out
 	 */
 
-	public double counterParty()
+	public double client()
 	{
-<span class="fc" id="L159">		return _counterParty;</span>
+<span class="fc" id="L159">		return _client;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

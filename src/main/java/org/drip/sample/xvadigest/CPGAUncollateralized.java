@@ -290,15 +290,15 @@ public class CPGAUncollateralized {
 				adtVertex[i] = dtSpot.addMonths (6 * i),
 				Double.NaN,
 				dblOvernightNumeraireDrift,
-				Math.exp (-0.5 * dblOvernightNumeraireDrift * iNumStep),
+				Math.exp (-0.5 * dblOvernightNumeraireDrift * (iNumStep - i)),
 				dblCSADrift,
-				Math.exp (-0.5 * dblCSADrift * iNumStep),
+				Math.exp (-0.5 * dblCSADrift * (iNumStep - i)),
 				new MarketVertexEntity (
 					Math.exp (-0.5 * dblBankHazardRate * i),
 					dblBankHazardRate,
 					dblBankRecoveryRate,
 					dblBankFundingSpread,
-					Math.exp (-0.5 * dblBankHazardRate * (1. - dblBankRecoveryRate) * iNumStep),
+					Math.exp (-0.5 * dblBankHazardRate * (1. - dblBankRecoveryRate) * (iNumStep - i)),
 					Double.NaN,
 					Double.NaN,
 					Double.NaN
@@ -308,7 +308,7 @@ public class CPGAUncollateralized {
 					dblCounterPartyHazardRate,
 					dblCounterPartyRecoveryRate,
 					dblCounterPartyFundingSpread,
-					Math.exp (-0.5 * dblCounterPartyHazardRate * (1. - dblCounterPartyRecoveryRate) * iNumStep),
+					Math.exp (-0.5 * dblCounterPartyHazardRate * (1. - dblCounterPartyRecoveryRate) * (iNumStep - i)),
 					Double.NaN,
 					Double.NaN,
 					Double.NaN
@@ -361,49 +361,49 @@ public class CPGAUncollateralized {
 
 		UDTDump (
 			"\t|                                                                                COLLATERALIZED EXPOSURE                                                                                |",
-			eaa.anchorDates(),
+			eaa.vertexDates(),
 			ead.collateralizedExposure()
 		);
 
 		UDTDump (
 			"\t|                                                                               UNCOLLATERALIZED EXPOSURE                                                                               |",
-			eaa.anchorDates(),
+			eaa.vertexDates(),
 			ead.uncollateralizedExposure()
 		);
 
 		UDTDump (
 			"\t|                                                                                COLLATERALIZED EXPOSURE PV                                                                             |",
-			eaa.anchorDates(),
+			eaa.vertexDates(),
 			ead.collateralizedExposurePV()
 		);
 
 		UDTDump (
 			"\t|                                                                               UNCOLLATERALIZED EXPOSURE PV                                                                            |",
-			eaa.anchorDates(),
+			eaa.vertexDates(),
 			ead.uncollateralizedExposurePV()
 		);
 
 		UDTDump (
 			"\t|                                                                            COLLATERALIZED POSITIVE EXPOSURE PV                                                                        |",
-			eaa.anchorDates(),
+			eaa.vertexDates(),
 			ead.collateralizedPositiveExposure()
 		);
 
 		UDTDump (
 			"\t|                                                                           UNCOLLATERALIZED POSITIVE EXPOSURE PV                                                                       |",
-			eaa.anchorDates(),
+			eaa.vertexDates(),
 			ead.uncollateralizedPositiveExposure()
 		);
 
 		UDTDump (
 			"\t|                                                                            COLLATERALIZED NEGATIVE EXPOSURE PV                                                                        |",
-			eaa.anchorDates(),
+			eaa.vertexDates(),
 			ead.collateralizedNegativeExposure()
 		);
 
 		UDTDump (
 			"\t|                                                                           UNCOLLATERALIZED NEGATIVE EXPOSURE PV                                                                       |",
-			eaa.anchorDates(),
+			eaa.vertexDates(),
 			ead.uncollateralizedNegativeExposure()
 		);
 

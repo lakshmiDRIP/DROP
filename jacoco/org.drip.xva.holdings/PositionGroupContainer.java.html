@@ -164,22 +164,22 @@ public class PositionGroupContainer
 
 	public boolean setCollateralGroupPath (
 		final int positionGroupIndex,
-		final org.drip.xva.hypothecation.CollateralGroupPath collateralGroupPath)
+		final org.drip.xva.netting.CollateralGroupPath collateralGroupPath)
 	{
 <span class="nc bnc" id="L169" title="All 2 branches missed.">		return positionGroupIndex &gt;= count() ? false :</span>
 <span class="nc" id="L170">			_positionGroupArray[positionGroupIndex].setCollateralGroupPath (collateralGroupPath);</span>
 	}
 
 	/**
-	 * Retrieve the Position Groups Sorted into Netting Group Segments
+	 * Retrieve the Position Groups Sorted into Credit Debt Group Segments
 	 * 
-	 * @return Map of the Position Groups Sorted into Netting Group Segments
+	 * @return Map of the Position Groups Sorted into Credit Debt Group Segments
 	 */
 
-	public java.util.Map&lt;java.lang.String, org.drip.xva.holdings.PositionGroupSegment&gt; nettingSegments()
+	public java.util.Map&lt;java.lang.String, org.drip.xva.holdings.PositionGroupSegment&gt; creditDebtSegments()
 	{
 		org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.xva.holdings.PositionGroupSegment&gt;
-<span class="nc" id="L182">			nettingPositionGroupSegment = new</span>
+<span class="nc" id="L182">			creditDebtPositionGroupSegment = new</span>
 				org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.xva.holdings.PositionGroupSegment&gt;();
 
 <span class="nc" id="L185">		int positionGroupCount = _positionGroupArray.length;</span>
@@ -189,52 +189,52 @@ public class PositionGroupContainer
 <span class="nc" id="L189">			org.drip.xva.holdings.PositionGroup positionGroup = _positionGroupArray[positionGroupIndex];</span>
 
 <span class="nc" id="L191">			java.lang.String groupID =</span>
-<span class="nc" id="L192">				positionGroup.positionGroupSpecification().nettingGroupSpecification().id();</span>
+<span class="nc" id="L192">				positionGroup.positionGroupSpecification().creditDebtGroupSpecification().id();</span>
 
-<span class="nc" id="L194">			boolean segmentPresent = nettingPositionGroupSegment.containsKey (groupID);</span>
+<span class="nc" id="L194">			boolean segmentPresent = creditDebtPositionGroupSegment.containsKey (groupID);</span>
 
 <span class="nc bnc" id="L196" title="All 2 branches missed.">			org.drip.xva.holdings.PositionGroupSegment positionGroupSegment = segmentPresent ?</span>
-<span class="nc" id="L197">				nettingPositionGroupSegment.get (groupID) : new org.drip.xva.holdings.PositionGroupSegment();</span>
+<span class="nc" id="L197">				creditDebtPositionGroupSegment.get (groupID) : new org.drip.xva.holdings.PositionGroupSegment();</span>
 
 <span class="nc" id="L199">			positionGroupSegment.add (positionGroup);</span>
 
 <span class="nc bnc" id="L201" title="All 2 branches missed.">			if (!segmentPresent)</span>
 			{
-<span class="nc" id="L203">				nettingPositionGroupSegment.put (</span>
+<span class="nc" id="L203">				creditDebtPositionGroupSegment.put (</span>
 					groupID,
 					positionGroupSegment
 				);
 			}
 		}
 
-<span class="nc" id="L210">		return nettingPositionGroupSegment;</span>
+<span class="nc" id="L210">		return creditDebtPositionGroupSegment;</span>
 	}
 
 	/**
-	 * Retrieve the Array of Position Groups Collected into Netting Group Collateral Vertex Paths
+	 * Retrieve the Array of Position Groups Collected into Credit Debt Group Collateral Vertex Paths
 	 * 
-	 * @return Array of the Position Groups Collected into Netting Group Collateral Vertex Paths
+	 * @return Array of the Position Groups Collected into Credit Debt Group Collateral Vertex Paths
 	 */
 
-	public org.drip.xva.hypothecation.CollateralGroupPath[][] nettingSegmentPaths()
+	public org.drip.xva.netting.CollateralGroupPath[][] creditDebtSegmentPaths()
 	{
 		java.util.Map&lt;java.lang.String, org.drip.xva.holdings.PositionGroupSegment&gt;
-<span class="nc" id="L222">			nettingPositionGroupSegment = nettingSegments();</span>
+<span class="nc" id="L222">			creditDebtPositionGroupSegment = creditDebtSegments();</span>
 
-<span class="nc" id="L224">		int nettingPositionGroupSegmentCount = nettingPositionGroupSegment.size();</span>
+<span class="nc" id="L224">		int creditDebtPositionGroupSegmentCount = creditDebtPositionGroupSegment.size();</span>
 
-<span class="nc" id="L226">		int nettingPositionGroupSegmentIndex = 0;</span>
-<span class="nc" id="L227">		org.drip.xva.hypothecation.CollateralGroupPath[][] nettingSegmentPathArray = new</span>
-			org.drip.xva.hypothecation.CollateralGroupPath[nettingPositionGroupSegmentCount][];
+<span class="nc" id="L226">		int creditDebtPositionGroupSegmentIndex = 0;</span>
+<span class="nc" id="L227">		org.drip.xva.netting.CollateralGroupPath[][] creditDebtSegmentPathArray = new</span>
+			org.drip.xva.netting.CollateralGroupPath[creditDebtPositionGroupSegmentCount][];
 
 		for (java.util.Map.Entry&lt;java.lang.String, org.drip.xva.holdings.PositionGroupSegment&gt;
-<span class="nc bnc" id="L231" title="All 2 branches missed.">			nettingPositionGroupSegmentEntry : nettingPositionGroupSegment.entrySet())</span>
+<span class="nc bnc" id="L231" title="All 2 branches missed.">			creditDebtPositionGroupSegmentEntry : creditDebtPositionGroupSegment.entrySet())</span>
 		{
-<span class="nc" id="L233">			nettingSegmentPathArray[nettingPositionGroupSegmentIndex++] =</span>
-<span class="nc" id="L234">				nettingPositionGroupSegmentEntry.getValue().collateralGroupPathArray();</span>
+<span class="nc" id="L233">			creditDebtSegmentPathArray[creditDebtPositionGroupSegmentIndex++] =</span>
+<span class="nc" id="L234">				creditDebtPositionGroupSegmentEntry.getValue().collateralGroupPathArray();</span>
 <span class="nc" id="L235">		}</span>
 
-<span class="nc" id="L237">		return nettingSegmentPathArray;</span>
+<span class="nc" id="L237">		return creditDebtSegmentPathArray;</span>
 	}
 
 	/**
@@ -283,16 +283,16 @@ public class PositionGroupContainer
 	 * @return Array of the Position Groups Collected into Funding Group Collateral Vertex Paths
 	 */
 
-	public org.drip.xva.hypothecation.CollateralGroupPath[][] fundingSegmentPaths()
+	public org.drip.xva.netting.CollateralGroupPath[][] fundingSegmentPaths()
 	{
 		java.util.Map&lt;java.lang.String, org.drip.xva.holdings.PositionGroupSegment&gt;
-<span class="nc" id="L289">			fundingPositionGroupSegment = nettingSegments();</span>
+<span class="nc" id="L289">			fundingPositionGroupSegment = fundingSegments();</span>
 
 <span class="nc" id="L291">		int fundingPositionGroupSegmentCount = fundingPositionGroupSegment.size();</span>
 
 <span class="nc" id="L293">		int fundingPositionGroupSegmentIndex = 0;</span>
-<span class="nc" id="L294">		org.drip.xva.hypothecation.CollateralGroupPath[][] fundingSegmentPathArray = new</span>
-			org.drip.xva.hypothecation.CollateralGroupPath[fundingPositionGroupSegmentCount][];
+<span class="nc" id="L294">		org.drip.xva.netting.CollateralGroupPath[][] fundingSegmentPathArray = new</span>
+			org.drip.xva.netting.CollateralGroupPath[fundingPositionGroupSegmentCount][];
 
 		for (java.util.Map.Entry&lt;java.lang.String, org.drip.xva.holdings.PositionGroupSegment&gt;
 <span class="nc bnc" id="L298" title="All 2 branches missed.">			fundingPositionGroupSegmentEntry : fundingPositionGroupSegment.entrySet())</span>

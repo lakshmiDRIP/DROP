@@ -69,38 +69,36 @@ package org.drip.xva.evolver;
 
 public class DynamicsContainer
 {
-<span class="fc" id="L72">	private java.util.Map&lt;java.lang.String, org.drip.xva.evolver.ScalingNumeraire&gt; _mapScalingNumeraireDynamics =</span>
-		null;
-<span class="fc" id="L74">	private java.util.Map&lt;java.lang.String, org.drip.xva.evolver.PrimarySecurity&gt; _mapPrimarySecurityDynamics</span>
+<span class="fc" id="L72">	private org.drip.xva.evolver.LatentStateDynamicsContainer _latentStateDynamicsContainer = null;</span>
+<span class="fc" id="L73">	private java.util.Map&lt;java.lang.String, org.drip.xva.evolver.PrimarySecurity&gt; _mapPrimarySecurityDynamics</span>
 		= null;
-<span class="fc" id="L76">	private java.util.Map&lt;java.lang.String, org.drip.xva.evolver.TerminalLatentState&gt;</span>
-		_mapTerminalLatentStateDynamics = null;
+<span class="fc" id="L75">	private java.util.Map&lt;java.lang.String, org.drip.xva.evolver.ScalingNumeraire&gt;</span>
+		_mapScalingNumeraireDynamics = null;
 
 	/**
 	 * Empty DynamicsContainer Constructor 
 	 */
 
 	public DynamicsContainer()
-<span class="fc" id="L84">	{</span>
-<span class="fc" id="L85">		_mapScalingNumeraireDynamics = new</span>
+<span class="fc" id="L83">	{</span>
+<span class="fc" id="L84">		_mapScalingNumeraireDynamics = new</span>
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.xva.evolver.ScalingNumeraire&gt;();
 
-<span class="fc" id="L88">		_mapPrimarySecurityDynamics = new</span>
+<span class="fc" id="L87">		_mapPrimarySecurityDynamics = new</span>
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.xva.evolver.PrimarySecurity&gt;();
 
-<span class="fc" id="L91">		_mapTerminalLatentStateDynamics = new</span>
-			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.xva.evolver.TerminalLatentState&gt;();
-<span class="fc" id="L93">	}</span>
+<span class="fc" id="L90">		_latentStateDynamicsContainer = new org.drip.xva.evolver.LatentStateDynamicsContainer();</span>
+<span class="fc" id="L91">	}</span>
 
 	/**
-	 * Retrieve the ScalingNumeraire Evolver Dynamics Settings Map
+	 * Retrieve the Scaling Numeraire Evolver Dynamics Settings Map
 	 * 
 	 * @return The Scaling Numeraire Evolver Dynamics Settings Map
 	 */
 
-	public java.util.Map&lt;java.lang.String, org.drip.xva.evolver.ScalingNumeraire&gt; scalingNumeraireDynamics()
+	public java.util.Map&lt;java.lang.String, org.drip.xva.evolver.ScalingNumeraire&gt; scalingNumeraireMap()
 	{
-<span class="nc" id="L103">		return _mapScalingNumeraireDynamics;</span>
+<span class="nc" id="L101">		return _mapScalingNumeraireDynamics;</span>
 	}
 
 	/**
@@ -116,18 +114,18 @@ public class DynamicsContainer
 		final java.lang.String numeraireName,
 		final org.drip.xva.evolver.ScalingNumeraire numeraire)
 	{
-<span class="nc bnc" id="L119" title="All 6 branches missed.">		if (null == numeraireName || numeraireName.isEmpty() ||</span>
+<span class="pc bpc" id="L117" title="3 of 6 branches missed.">		if (null == numeraireName || numeraireName.isEmpty() ||</span>
 			null == numeraire)
 		{
-<span class="nc" id="L122">			return false;</span>
+<span class="nc" id="L120">			return false;</span>
 		}
 
-<span class="nc" id="L125">		_mapScalingNumeraireDynamics.put (</span>
+<span class="fc" id="L123">		_mapScalingNumeraireDynamics.put (</span>
 			numeraireName,
 			numeraire
 		);
 
-<span class="nc" id="L130">		return true;</span>
+<span class="fc" id="L128">		return true;</span>
 	}
 
 	/**
@@ -141,8 +139,8 @@ public class DynamicsContainer
 	public boolean scalingNumeraireExists (
 		final java.lang.String numeraireName)
 	{
-<span class="nc bnc" id="L144" title="All 4 branches missed.">		return null != numeraireName &amp;&amp; !numeraireName.isEmpty() &amp;&amp; _mapScalingNumeraireDynamics.containsKey</span>
-<span class="nc bnc" id="L145" title="All 2 branches missed.">			(numeraireName);</span>
+<span class="nc bnc" id="L142" title="All 4 branches missed.">		return null != numeraireName &amp;&amp; !numeraireName.isEmpty() &amp;&amp; _mapScalingNumeraireDynamics.containsKey</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">			(numeraireName);</span>
 	}
 
 	/**
@@ -156,8 +154,8 @@ public class DynamicsContainer
 	public org.drip.xva.evolver.ScalingNumeraire scalingNumeraire (
 		final java.lang.String numeraireName)
 	{
-<span class="nc bnc" id="L159" title="All 2 branches missed.">		return !scalingNumeraireExists (numeraireName) ? null : _mapScalingNumeraireDynamics.get</span>
-<span class="nc" id="L160">			(numeraireName);</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">		return !scalingNumeraireExists (numeraireName) ? null : _mapScalingNumeraireDynamics.get</span>
+<span class="nc" id="L158">			(numeraireName);</span>
 	}
 
 	/**
@@ -166,9 +164,9 @@ public class DynamicsContainer
 	 * @return The Terminal Latent State Evolver Dynamics Settings Map
 	 */
 
-	public java.util.Map&lt;java.lang.String, org.drip.xva.evolver.TerminalLatentState&gt; terminalLatentStateDynamics()
+	public org.drip.xva.evolver.LatentStateDynamicsContainer terminalLatentStateContainer()
 	{
-<span class="nc" id="L171">		return _mapTerminalLatentStateDynamics;</span>
+<span class="fc" id="L169">		return _latentStateDynamicsContainer;</span>
 	}
 
 	/**
@@ -182,24 +180,11 @@ public class DynamicsContainer
 	public boolean addTerminalLatentState (
 		final org.drip.xva.evolver.TerminalLatentState terminalLatentState)
 	{
-<span class="pc bpc" id="L185" title="1 of 2 branches missed.">		if (null == terminalLatentState)</span>
-		{
-<span class="nc" id="L187">			return false;</span>
-		}
-
-<span class="fc" id="L190">		java.lang.String terminalLatentStateLabel = terminalLatentState.label().fullyQualifiedName();</span>
-
-<span class="fc" id="L192">		_mapTerminalLatentStateDynamics.put (</span>
-			terminalLatentStateLabel,
-			terminalLatentState
-		);
-
-<span class="fc" id="L197">		_mapScalingNumeraireDynamics.put (</span>
-			terminalLatentStateLabel,
-			terminalLatentState
-		);
-
-<span class="fc" id="L202">		return true;</span>
+<span class="pc bpc" id="L183" title="1 of 2 branches missed.">		return _latentStateDynamicsContainer.addTerminalLatentState (terminalLatentState) &amp;&amp;</span>
+<span class="pc bpc" id="L184" title="1 of 2 branches missed.">			addScalingNumeraire (</span>
+<span class="fc" id="L185">				terminalLatentState.label().fullyQualifiedName(),</span>
+				terminalLatentState
+			);
 	}
 
 	/**
@@ -213,22 +198,7 @@ public class DynamicsContainer
 	public boolean terminalLatentStateExists (
 		final org.drip.state.identifier.LatentStateLabel label)
 	{
-<span class="pc bpc" id="L216" title="2 of 4 branches missed.">		return null != label &amp;&amp; _mapTerminalLatentStateDynamics.containsKey (label.fullyQualifiedName());</span>
-	}
-
-	/**
-	 * Retrieve the Terminal Latent State Evolver
-	 * 
-	 * @param label The Terminal Latent State Label
-	 * 
-	 * @return The Terminal Latent State Evolver
-	 */
-
-	public org.drip.xva.evolver.TerminalLatentState terminalLatentState (
-		final org.drip.state.identifier.LatentStateLabel label)
-	{
-<span class="pc bpc" id="L230" title="1 of 2 branches missed.">		return terminalLatentStateExists (label) ? _mapTerminalLatentStateDynamics.get</span>
-<span class="pc" id="L231">			(label.fullyQualifiedName()) : null;</span>
+<span class="nc" id="L201">		return _latentStateDynamicsContainer.labelExists (label);</span>
 	}
 
 	/**
@@ -237,9 +207,9 @@ public class DynamicsContainer
 	 * @return The Primary Security Evolver Dynamics Settings Map
 	 */
 
-	public java.util.Map&lt;java.lang.String, org.drip.xva.evolver.PrimarySecurity&gt; primarySecurityDynamics()
+	public java.util.Map&lt;java.lang.String, org.drip.xva.evolver.PrimarySecurity&gt; primarySecurityMap()
 	{
-<span class="nc" id="L242">		return _mapPrimarySecurityDynamics;</span>
+<span class="nc" id="L212">		return _mapPrimarySecurityDynamics;</span>
 	}
 
 	/**
@@ -253,58 +223,48 @@ public class DynamicsContainer
 	public boolean addPrimarySecurity (
 		final org.drip.xva.evolver.PrimarySecurity primarySecurity)
 	{
-<span class="pc bpc" id="L256" title="1 of 2 branches missed.">		if (null == primarySecurity)</span>
+<span class="pc bpc" id="L226" title="1 of 2 branches missed.">		if (null == primarySecurity)</span>
 		{
-<span class="nc" id="L258">			return false;</span>
+<span class="nc" id="L228">			return false;</span>
 		}
 
-<span class="fc" id="L261">		java.lang.String primarySecurityLabel = primarySecurity.label().fullyQualifiedName();</span>
-
-<span class="fc" id="L263">		_mapPrimarySecurityDynamics.put (</span>
-			primarySecurityLabel,
+<span class="fc" id="L231">		_mapPrimarySecurityDynamics.put (</span>
+<span class="fc" id="L232">			primarySecurity.id(),</span>
 			primarySecurity
 		);
 
-<span class="fc" id="L268">		_mapTerminalLatentStateDynamics.put (</span>
-			primarySecurityLabel,
+<span class="pc bpc" id="L236" title="2 of 4 branches missed.">		return addTerminalLatentState (primarySecurity) &amp;&amp; addScalingNumeraire (</span>
+<span class="fc" id="L237">			primarySecurity.id(),</span>
 			primarySecurity
 		);
-
-<span class="fc" id="L273">		_mapScalingNumeraireDynamics.put (</span>
-			primarySecurityLabel,
-			primarySecurity
-		);
-
-<span class="fc" id="L278">		return true;</span>
 	}
 
 	/**
 	 * Indicate if the Primary Security Evolver exists in the Container
 	 * 
-	 * @param label The Primary Security Latent State Label
+	 * @param id The Primary Security ID
 	 * 
 	 * @return TRUE - The Primary Security Evolver exists in the Container
 	 */
 
 	public boolean primarySecurityExists (
-		final org.drip.state.identifier.LatentStateLabel label)
+		final java.lang.String id)
 	{
-<span class="pc bpc" id="L292" title="1 of 2 branches missed.">		return null == label ? false : _mapPrimarySecurityDynamics.containsKey (label.fullyQualifiedName());</span>
+<span class="pc bpc" id="L253" title="2 of 4 branches missed.">		return null == id || id.isEmpty() ? false : _mapPrimarySecurityDynamics.containsKey (id);</span>
 	}
 
 	/**
 	 * Retrieve the Primary Security Evolver given the Label
 	 * 
-	 * @param label The Primary Security Label
+	 * @param id The Primary Security ID
 	 * 
 	 * @return The Primary Security Evolver
 	 */
 
 	public org.drip.xva.evolver.PrimarySecurity primarySecurity (
-		final org.drip.state.identifier.LatentStateLabel label)
+		final java.lang.String id)
 	{
-<span class="pc bpc" id="L306" title="1 of 2 branches missed.">		return primarySecurityExists (label) ? _mapPrimarySecurityDynamics.get (label.fullyQualifiedName()) :</span>
-			null;
+<span class="pc bpc" id="L267" title="1 of 2 branches missed.">		return primarySecurityExists (id) ? _mapPrimarySecurityDynamics.get (id) : null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

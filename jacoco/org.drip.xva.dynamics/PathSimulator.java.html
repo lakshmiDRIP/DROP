@@ -69,7 +69,7 @@ package org.drip.xva.dynamics;
 public class PathSimulator
 {
 <span class="nc" id="L71">	private int _iCount = -1;</span>
-<span class="nc" id="L72">	private org.drip.xva.dynamics.PathSimulatorScheme _simulatorScheme = null;</span>
+<span class="nc" id="L72">	private int _adjustmentDigestScheme = -1;</span>
 <span class="nc" id="L73">	private org.drip.xva.universe.MarketVertexGenerator _marketVertexGenerator = null;</span>
 <span class="nc" id="L74">	private org.drip.xva.holdings.PositionGroupContainer _positionGroupContainer = null;</span>
 
@@ -106,292 +106,59 @@ public class PathSimulator
 <span class="nc" id="L106">		return positionGroupValueArray;</span>
 	}
 
-	private org.drip.measure.bridge.BrokenDateInterpolator brokenDateInterpolator (
-		final org.drip.xva.universe.MarketVertex[] marketVertexArray,
-		final double[] positionGroupValueArray,
-		final int vertexIndex)
-		throws java.lang.Exception
-	{
-<span class="nc" id="L115">		int brokenDateScheme = _simulatorScheme.brokenDateScheme();</span>
-
-<span class="nc bnc" id="L117" title="All 2 branches missed.">		if (org.drip.xva.dynamics.BrokenDateScheme.LINEAR_TIME == brokenDateScheme)</span>
-		{
-<span class="nc bnc" id="L119" title="All 2 branches missed.">			return 0 == vertexIndex ? null : new org.drip.measure.bridge.BrokenDateInterpolatorLinearT (</span>
-<span class="nc" id="L120">				marketVertexArray[vertexIndex - 1].anchorDate().julian(),</span>
-<span class="nc" id="L121">				marketVertexArray[vertexIndex].anchorDate().julian(),</span>
-				positionGroupValueArray[vertexIndex - 1],
-				positionGroupValueArray[vertexIndex]
-			);
-		}
-
-<span class="nc bnc" id="L127" title="All 2 branches missed.">		if (org.drip.xva.dynamics.BrokenDateScheme.SQUARE_ROOT_OF_TIME == brokenDateScheme)</span>
-		{
-<span class="nc bnc" id="L129" title="All 2 branches missed.">			return 0 == vertexIndex ? null : new org.drip.measure.bridge.BrokenDateInterpolatorSqrtT (</span>
-<span class="nc" id="L130">				marketVertexArray[vertexIndex - 1].anchorDate().julian(),</span>
-<span class="nc" id="L131">				marketVertexArray[vertexIndex].anchorDate().julian(),</span>
-				positionGroupValueArray[vertexIndex - 1],
-				positionGroupValueArray[vertexIndex]
-			);
-		}
-
-<span class="nc bnc" id="L137" title="All 2 branches missed.">		if (org.drip.xva.dynamics.BrokenDateScheme.THREE_POINT_BROWNIAN_BRIDGE == brokenDateScheme)</span>
-		{
-<span class="nc bnc" id="L139" title="All 4 branches missed.">			return 0 == vertexIndex || 1 == vertexIndex ? null : new</span>
-				org.drip.measure.bridge.BrokenDateInterpolatorBrownian3P (
-<span class="nc" id="L141">					marketVertexArray[vertexIndex - 2].anchorDate().julian(),</span>
-<span class="nc" id="L142">					marketVertexArray[vertexIndex - 1].anchorDate().julian(),</span>
-<span class="nc" id="L143">					marketVertexArray[vertexIndex].anchorDate().julian(),</span>
-					positionGroupValueArray[vertexIndex - 2],
-					positionGroupValueArray[vertexIndex - 1],
-					positionGroupValueArray[vertexIndex]
-				);
-		}
-
-<span class="nc" id="L150">		return null;</span>
-	}
-
-	private double collateralBalance (
-		final org.drip.xva.universe.MarketVertex[] marketVertexArray,
-		final org.drip.xva.holdings.PositionGroup positionGroup,
-		final int vertexIndex)
-		throws java.lang.Exception
-	{
-<span class="nc" id="L159">		double[] positionGroupValueArray = positionGroup.valueArray (marketVertexArray);</span>
-
-<span class="nc" id="L161">		org.drip.measure.bridge.BrokenDateInterpolator brokenDateInterpolator = brokenDateInterpolator (</span>
-			marketVertexArray,
-			positionGroupValueArray,
-			vertexIndex
-		);
-
-<span class="nc" id="L167">		org.drip.xva.set.PositionGroupSpecification positionGroupSpecification =</span>
-<span class="nc" id="L168">			positionGroup.positionGroupSpecification();</span>
-
-<span class="nc bnc" id="L170" title="All 2 branches missed.">		return null == brokenDateInterpolator ? 0. : new org.drip.xva.hypothecation.CollateralAmountEstimator</span>
-<span class="nc" id="L171">			(positionGroupSpecification.collateralGroupSpecification(),</span>
-<span class="nc" id="L172">			positionGroupSpecification.counterPartyGroupSpecification(),</span>
-<span class="nc" id="L173">			brokenDateInterpolator (</span>
-				marketVertexArray,
-				positionGroupValueArray,
-				vertexIndex
-			),
-			java.lang.Double.NaN
-<span class="nc" id="L179">		).postingRequirement (marketVertexArray[vertexIndex].anchorDate());</span>
-	}
-
-	private double[][] collateralBalanceArray (
-		final org.drip.xva.universe.MarketVertex[] marketVertexArray,
-		final double[][] positionGroupValueArray)
-	{
-<span class="nc" id="L186">		org.drip.xva.holdings.PositionGroup[] positionGroupArray =</span>
-<span class="nc" id="L187">			_positionGroupContainer.positionGroupArray();</span>
-
-<span class="nc" id="L189">		int vertexCount = marketVertexArray.length;</span>
-<span class="nc" id="L190">		int positionGroupCount = positionGroupValueArray.length;</span>
-<span class="nc" id="L191">		double[][] collateralBalanceArray = new double[positionGroupCount][vertexCount];</span>
-
-<span class="nc bnc" id="L193" title="All 2 branches missed.">		for (int positionGroupIndex = 0; positionGroupIndex &lt; positionGroupCount; ++positionGroupIndex)</span>
-		{
-<span class="nc bnc" id="L195" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
-			{
-				try
-				{
-<span class="nc" id="L199">					collateralBalanceArray[positionGroupIndex][vertexIndex] = collateralBalance (</span>
-						marketVertexArray,
-						positionGroupArray[positionGroupIndex],
-						vertexIndex
-					);
-				}
-<span class="nc" id="L205">				catch (java.lang.Exception e)</span>
-				{
-<span class="nc" id="L207">					e.printStackTrace();</span>
-
-<span class="nc" id="L209">					return null;</span>
-<span class="nc" id="L210">				}</span>
-			}
-		}
-
-<span class="nc" id="L214">		return collateralBalanceArray;</span>
-	}
-
-	private org.drip.xva.hypothecation.CollateralGroupVertex collateralGroupVertex (
-		final org.drip.analytics.date.JulianDate anchorDate,
-		final double positionGroupValue,
-		final double realizedCashFlow,
-		final double collateralBalance,
-		final org.drip.xva.universe.MarketEdge marketEdge)
-	{
-<span class="nc" id="L224">		int positionReplicationScheme = _simulatorScheme.positionReplicationScheme();</span>
-
-		try
-		{
-<span class="nc bnc" id="L228" title="All 2 branches missed.">			if (org.drip.xva.dynamics.PositionReplicationScheme.ALBANESE_ANDERSEN_VERTEX ==</span>
-				positionReplicationScheme)
-			{
-<span class="nc" id="L231">				return new org.drip.xva.hypothecation.AlbaneseAndersenVertex (</span>
-					anchorDate,
-					positionGroupValue,
-					realizedCashFlow,
-					collateralBalance
-				);
-			}
-
-<span class="nc bnc" id="L239" title="All 2 branches missed.">			if (org.drip.xva.dynamics.PositionReplicationScheme.BURGARD_KJAER_HEDGE_ERROR_DUAL_BOND_VERTEX ==</span>
-				positionReplicationScheme)
-			{
-<span class="nc" id="L242">				return org.drip.xva.hypothecation.BurgardKjaerVertexBuilder.HedgeErrorDualBond (</span>
-					anchorDate,
-					positionGroupValue,
-					realizedCashFlow,
-					collateralBalance,
-<span class="nc" id="L247">					_simulatorScheme.hedgeError(),</span>
-					marketEdge,
-<span class="nc" id="L249">					_simulatorScheme.closeOutScheme()</span>
-				);
-			}
-
-<span class="nc bnc" id="L253" title="All 2 branches missed.">			if (org.drip.xva.dynamics.PositionReplicationScheme.BURGARD_KJAER_SEMI_REPLICATION_DUAL_BOND_VERTEX</span>
-				== positionReplicationScheme)
-			{
-<span class="nc" id="L256">				return org.drip.xva.hypothecation.BurgardKjaerVertexBuilder.SemiReplicationDualBond (</span>
-					anchorDate,
-					positionGroupValue,
-					realizedCashFlow,
-					collateralBalance,
-					marketEdge,
-<span class="nc" id="L262">					_simulatorScheme.closeOutScheme()</span>
-				);
-			}
-
-<span class="nc bnc" id="L266" title="All 2 branches missed.">			if (org.drip.xva.dynamics.PositionReplicationScheme.BURGARD_KJAER_GOLD_PLATED_TWO_WAY_CSA_VERTEX</span>
-				== positionReplicationScheme)
-			{
-<span class="nc" id="L269">				return org.drip.xva.hypothecation.BurgardKjaerVertexBuilder.GoldPlatedTwoWayCSA (</span>
-					anchorDate,
-					positionGroupValue,
-					realizedCashFlow,
-					marketEdge,
-<span class="nc" id="L274">					_simulatorScheme.closeOutScheme()</span>
-				);
-			}
-
-<span class="nc bnc" id="L278" title="All 2 branches missed.">			if (org.drip.xva.dynamics.PositionReplicationScheme.BURGARD_KJAER_ONE_WAY_CSA_VERTEX ==</span>
-				positionReplicationScheme)
-			{
-<span class="nc" id="L281">				return org.drip.xva.hypothecation.BurgardKjaerVertexBuilder.OneWayCSA (</span>
-					anchorDate,
-					positionGroupValue,
-					realizedCashFlow,
-					marketEdge,
-<span class="nc" id="L286">					_simulatorScheme.closeOutScheme()</span>
-				);
-			}
-
-<span class="nc bnc" id="L290" title="All 2 branches missed.">			if (org.drip.xva.dynamics.PositionReplicationScheme.BURGARD_KJAER_SET_OFF_VERTEX ==</span>
-				positionReplicationScheme)
-			{
-<span class="nc" id="L293">				return org.drip.xva.hypothecation.BurgardKjaerVertexBuilder.SetOff (</span>
-					anchorDate,
-					positionGroupValue,
-					realizedCashFlow,
-					collateralBalance,
-					marketEdge
-				);
-			}
-		}
-<span class="nc" id="L302">		catch (java.lang.Exception e)</span>
-		{
-<span class="nc" id="L304">			e.printStackTrace();</span>
-<span class="nc" id="L305">		}</span>
-
-<span class="nc" id="L307">		return null;</span>
-	}
-
-	private org.drip.xva.hypothecation.CollateralGroupVertex[][] collateralGroupVertexArray (
-		final org.drip.xva.universe.MarketVertex[] marketVertexArray,
-		final double[][] positionGroupValueArray)
-	{
-<span class="nc" id="L314">		double[][] collateralBalanceArray = collateralBalanceArray (</span>
-			marketVertexArray,
-			positionGroupValueArray
-		);
-
-<span class="nc bnc" id="L319" title="All 2 branches missed.">		if (null == collateralBalanceArray)</span>
-		{
-<span class="nc" id="L321">			return null;</span>
-		}
-
-<span class="nc" id="L324">		int vertexCount = marketVertexArray.length;</span>
-<span class="nc" id="L325">		int positionGroupCount = positionGroupValueArray.length;</span>
-<span class="nc" id="L326">		org.drip.xva.hypothecation.CollateralGroupVertex[][] collateralGroupVertexArray = new</span>
-			org.drip.xva.hypothecation.CollateralGroupVertex[positionGroupCount][vertexCount];
-
-<span class="nc bnc" id="L329" title="All 2 branches missed.">		for (int positionGroupIndex = 0; positionGroupIndex &lt; positionGroupCount; ++positionGroupIndex)</span>
-		{
-<span class="nc bnc" id="L331" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
-			{
-				try
-				{
-<span class="nc" id="L335">					collateralGroupVertexArray[positionGroupIndex][vertexIndex] = collateralGroupVertex (</span>
-<span class="nc bnc" id="L336" title="All 2 branches missed.">						marketVertexArray[vertexIndex].anchorDate(),</span>
-						positionGroupValueArray[positionGroupIndex][vertexIndex],
-						0.,
-						collateralBalanceArray[positionGroupIndex][vertexIndex],
-						0 == vertexIndex ? null : new org.drip.xva.universe.MarketEdge (
-							marketVertexArray[vertexIndex - 1],
-							marketVertexArray[vertexIndex]
-						)
-					);
-				}
-<span class="nc" id="L346">				catch (java.lang.Exception e)</span>
-				{
-<span class="nc" id="L348">					e.printStackTrace();</span>
-
-<span class="nc" id="L350">					return null;</span>
-<span class="nc" id="L351">				}</span>
-			}
-		}
-
-<span class="nc" id="L355">		return collateralGroupVertexArray;</span>
-	}
-
 	private boolean collateralGroupPathArray (
 		final org.drip.xva.universe.MarketPath marketPath)
 	{
-<span class="nc" id="L361">		org.drip.xva.universe.MarketVertex[] marketVertexArray = marketPath.vertexes();</span>
+<span class="nc" id="L112">		org.drip.xva.dynamics.PositionGroupTrajectory collateralGroup = null;</span>
 
-<span class="nc" id="L363">		org.drip.xva.hypothecation.CollateralGroupVertex[][] collateralGroupVertexArray =</span>
-<span class="nc" id="L364">			collateralGroupVertexArray (</span>
-				marketVertexArray,
-<span class="nc" id="L366">				positionGroupValueArray (marketVertexArray)</span>
-			);
-
-<span class="nc bnc" id="L369" title="All 2 branches missed.">		if (null == collateralGroupVertexArray)</span>
-		{
-<span class="nc" id="L371">			return false;</span>
-		}
-
-<span class="nc" id="L374">		int positionGroupCount = collateralGroupVertexArray.length;</span>
+<span class="nc" id="L114">		org.drip.xva.universe.MarketVertex[] marketVertexArray = marketPath.vertexes();</span>
 
 		try
 		{
-<span class="nc bnc" id="L378" title="All 2 branches missed.">			for (int positionGroupIndex = 0; positionGroupIndex &lt; positionGroupCount; ++positionGroupIndex)</span>
+<span class="nc" id="L118">			collateralGroup = new org.drip.xva.dynamics.PositionGroupTrajectory (</span>
+<span class="nc" id="L119">				_positionGroupContainer.positionGroupArray()[0].positionGroupSpecification().positionGroupSpecification(),</span>
+				marketVertexArray,
+<span class="nc" id="L121">				positionGroupValueArray (marketVertexArray)</span>
+			);
+		}
+<span class="nc" id="L124">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L126">			e.printStackTrace();</span>
+
+<span class="nc" id="L128">			return false;</span>
+<span class="nc" id="L129">		}</span>
+
+<span class="nc" id="L131">		org.drip.xva.hypothecation.CollateralGroupVertex[][] collateralGroupVertexArray =</span>
+<span class="nc" id="L132">			collateralGroup.positionGroupVertexArray();</span>
+
+<span class="nc bnc" id="L134" title="All 2 branches missed.">		if (null == collateralGroupVertexArray)</span>
+		{
+<span class="nc" id="L136">			return false;</span>
+		}
+
+<span class="nc" id="L139">		int positionGroupCount = collateralGroupVertexArray.length;</span>
+
+		try
+		{
+<span class="nc bnc" id="L143" title="All 2 branches missed.">			for (int positionGroupIndex = 0; positionGroupIndex &lt; positionGroupCount; ++positionGroupIndex)</span>
 			{
-<span class="nc bnc" id="L380" title="All 2 branches missed.">				if (!_positionGroupContainer.setCollateralGroupPath (</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">				if (!_positionGroupContainer.setCollateralGroupPath (</span>
 					positionGroupIndex,
-					new org.drip.xva.hypothecation.CollateralGroupPath
-						(collateralGroupVertexArray[positionGroupIndex])))
-<span class="nc" id="L384">					return false;</span>
+					new org.drip.xva.netting.CollateralGroupPath (
+						collateralGroupVertexArray[positionGroupIndex],
+						marketPath
+					)))
+<span class="nc" id="L151">					return false;</span>
 			}
 
-<span class="nc" id="L387">			return true;</span>
+<span class="nc" id="L154">			return true;</span>
 		}
-<span class="nc" id="L389">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L156">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L391">			e.printStackTrace();</span>
+<span class="nc" id="L158">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L394">		return false;</span>
+<span class="nc" id="L161">		return false;</span>
 	}
 
 	/**
@@ -411,19 +178,19 @@ public class PathSimulator
 	{
 		try
 		{
-<span class="nc" id="L414">			return new PathSimulator (</span>
+<span class="nc" id="L181">			return new PathSimulator (</span>
 				iPathCount,
 				marketVertexGenerator,
-<span class="nc" id="L417">				org.drip.xva.dynamics.PathSimulatorScheme.AlbaneseAndersenVertex(),</span>
+				org.drip.xva.settings.AdjustmentDigestScheme.ALBANESE_ANDERSEN_METRICS_POINTER,
 				positionGroupContainer
 			);
 		}
-<span class="nc" id="L421">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L188">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L423">			e.printStackTrace();</span>
+<span class="nc" id="L190">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L426">		return null;</span>
+<span class="nc" id="L193">		return null;</span>
 	}
 
 	/**
@@ -431,7 +198,7 @@ public class PathSimulator
 	 * 
 	 * @param iCount Path Count
 	 * @param marketVertexGenerator Market Vertex Generator
-	 * @param simulatorScheme Path Simulator Scheme
+	 * @param adjustmentDigestScheme Adjustment Digest Scheme
 	 * @param positionGroupContainer Container of Position Groups
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
@@ -440,18 +207,19 @@ public class PathSimulator
 	public PathSimulator (
 		final int iCount,
 		final org.drip.xva.universe.MarketVertexGenerator marketVertexGenerator,
-		final org.drip.xva.dynamics.PathSimulatorScheme simulatorScheme,
+		final int adjustmentDigestScheme,
 		final org.drip.xva.holdings.PositionGroupContainer positionGroupContainer)
 		throws java.lang.Exception
-<span class="nc" id="L446">	{</span>
-<span class="nc bnc" id="L447" title="All 8 branches missed.">		if (0 &gt;= (_iCount = iCount) ||</span>
+<span class="nc" id="L213">	{</span>
+<span class="nc bnc" id="L214" title="All 6 branches missed.">		if (0 &gt;= (_iCount = iCount) ||</span>
 			null == (_marketVertexGenerator = marketVertexGenerator) ||
-			null == (_simulatorScheme = simulatorScheme) ||
 			null == (_positionGroupContainer = positionGroupContainer))
 		{
-<span class="nc" id="L452">			throw new java.lang.Exception (&quot;PathSimulator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L218">			throw new java.lang.Exception (&quot;PathSimulator Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L454">	}</span>
+
+<span class="nc" id="L221">		_adjustmentDigestScheme = adjustmentDigestScheme;</span>
+<span class="nc" id="L222">	}</span>
 
 	/**
 	 * Retrieve the Path Count
@@ -461,7 +229,7 @@ public class PathSimulator
 
 	public int count()
 	{
-<span class="nc" id="L464">		return _iCount;</span>
+<span class="nc" id="L232">		return _iCount;</span>
 	}
 
 	/**
@@ -472,18 +240,18 @@ public class PathSimulator
 
 	public org.drip.xva.universe.MarketVertexGenerator marketVertexGenerator()
 	{
-<span class="nc" id="L475">		return _marketVertexGenerator;</span>
+<span class="nc" id="L243">		return _marketVertexGenerator;</span>
 	}
 
 	/**
-	 * Retrieve the Path Simulator Scheme
+	 * Retrieve the Adjustment Digest Scheme
 	 * 
-	 * @return The Path Simulator Scheme
+	 * @return The Adjustment Digest Scheme
 	 */
 
-	public org.drip.xva.dynamics.PathSimulatorScheme scheme()
+	public int adjustmentDigestScheme()
 	{
-<span class="nc" id="L486">		return _simulatorScheme;</span>
+<span class="nc" id="L254">		return _adjustmentDigestScheme;</span>
 	}
 
 	/**
@@ -494,7 +262,7 @@ public class PathSimulator
 
 	public org.drip.xva.holdings.PositionGroupContainer positionGroupContainer()
 	{
-<span class="nc" id="L497">		return _positionGroupContainer;</span>
+<span class="nc" id="L265">		return _positionGroupContainer;</span>
 	}
 
 	/**
@@ -506,72 +274,71 @@ public class PathSimulator
 	 * @return Single Trajectory Path Exposure Adjustment
 	 */
 
-	public org.drip.xva.cpty.PathExposureAdjustment singleTrajectory (
+	public org.drip.xva.gross.PathExposureAdjustment singleTrajectory (
 		final org.drip.xva.universe.MarketVertex initialMarketVertex,
 		final double[][] unitEvolverSequence)
 	{
 		try
 		{
-<span class="nc" id="L515">			org.drip.xva.universe.MarketPath marketPath = new org.drip.xva.universe.MarketPath (</span>
-<span class="nc" id="L516">				_marketVertexGenerator.marketVertex (</span>
+<span class="nc" id="L283">			org.drip.xva.universe.MarketPath marketPath = new org.drip.xva.universe.MarketPath (</span>
+<span class="nc" id="L284">				_marketVertexGenerator.marketVertex (</span>
 					initialMarketVertex,
 					unitEvolverSequence
 				)
 			);
 
-<span class="nc bnc" id="L522" title="All 2 branches missed.">			if (!collateralGroupPathArray (marketPath))</span>
+<span class="nc bnc" id="L290" title="All 2 branches missed.">			if (!collateralGroupPathArray (marketPath))</span>
 			{
-<span class="nc" id="L524">				return null;</span>
+<span class="nc" id="L292">				return null;</span>
 			}
 
-<span class="nc" id="L527">			org.drip.xva.hypothecation.CollateralGroupPath[][] positionFundingGroupPath =</span>
-<span class="nc" id="L528">				_positionGroupContainer.fundingSegmentPaths();</span>
+<span class="nc" id="L295">			org.drip.xva.netting.CollateralGroupPath[][] positionFundingGroupPath =</span>
+<span class="nc" id="L296">				_positionGroupContainer.fundingSegmentPaths();</span>
 
-<span class="nc" id="L530">			org.drip.xva.hypothecation.CollateralGroupPath[][] positionCreditDebtGroupPath =</span>
-<span class="nc" id="L531">				_positionGroupContainer.nettingSegmentPaths();</span>
+<span class="nc" id="L298">			org.drip.xva.netting.CollateralGroupPath[][] positionCreditDebtGroupPath =</span>
+<span class="nc" id="L299">				_positionGroupContainer.creditDebtSegmentPaths();</span>
 
-<span class="nc" id="L533">			int positionFundingGroupCount = positionFundingGroupPath.length;</span>
-<span class="nc" id="L534">			int positionCreditDebtGroupCount = positionCreditDebtGroupPath.length;</span>
-<span class="nc" id="L535">			org.drip.xva.netting.FundingGroupPath[] fundingGroupPathArray = new</span>
+<span class="nc" id="L301">			int positionFundingGroupCount = positionFundingGroupPath.length;</span>
+<span class="nc" id="L302">			org.drip.xva.netting.FundingGroupPath[] fundingGroupPathArray = new</span>
 				org.drip.xva.strategy.AlbaneseAndersenFundingGroupPath[positionFundingGroupCount];
-<span class="nc" id="L537">			org.drip.xva.netting.CreditDebtGroupPath[] creditDebtGroupPathArray = new</span>
-				org.drip.xva.strategy.AlbaneseAndersenNettingGroupPath[positionCreditDebtGroupCount];
 
-<span class="nc" id="L540">			if (org.drip.xva.dynamics.AdjustmentDigestScheme.ALBANESE_ANDERSEN_METRICS_POINTER ==</span>
-<span class="nc bnc" id="L541" title="All 2 branches missed.">				_simulatorScheme.adjustmentDigestScheme())</span>
+<span class="nc bnc" id="L305" title="All 2 branches missed.">			if (org.drip.xva.settings.AdjustmentDigestScheme.ALBANESE_ANDERSEN_METRICS_POINTER ==</span>
+				_adjustmentDigestScheme)
 			{
-<span class="nc bnc" id="L543" title="All 2 branches missed.">				for (int positionFundingGroupIndex = 0; positionFundingGroupIndex &lt;</span>
-<span class="nc" id="L544">					positionFundingGroupCount; ++positionFundingGroupIndex)</span>
-				{
-<span class="nc" id="L546">					fundingGroupPathArray[positionFundingGroupIndex] =</span>
-						new org.drip.xva.strategy.AlbaneseAndersenFundingGroupPath (
-							positionFundingGroupPath[positionFundingGroupIndex],
-							marketPath
-						);
-				}
+<span class="nc" id="L308">				int positionCreditDebtGroupCount = positionCreditDebtGroupPath.length;</span>
 
-<span class="nc bnc" id="L553" title="All 2 branches missed.">				for (int positionCreditDebtGroupIndex = 0; positionCreditDebtGroupIndex &lt;</span>
-<span class="nc" id="L554">					positionCreditDebtGroupCount; ++positionCreditDebtGroupIndex)</span>
+<span class="nc" id="L310">				org.drip.xva.netting.CreditDebtGroupPath[] creditDebtGroupPathArray = new</span>
+					org.drip.xva.strategy.AlbaneseAndersenNettingGroupPath[positionCreditDebtGroupCount];
+
+<span class="nc bnc" id="L313" title="All 2 branches missed.">				for (int positionCreditDebtGroupIndex = 0; positionCreditDebtGroupIndex &lt;</span>
+<span class="nc" id="L314">					positionCreditDebtGroupCount; ++positionCreditDebtGroupIndex)</span>
 				{
-<span class="nc" id="L556">					creditDebtGroupPathArray[positionCreditDebtGroupIndex] =</span>
+<span class="nc" id="L316">					creditDebtGroupPathArray[positionCreditDebtGroupIndex] =</span>
 						new org.drip.xva.strategy.AlbaneseAndersenNettingGroupPath (
 							positionCreditDebtGroupPath[positionCreditDebtGroupIndex],
 							marketPath
 						);
 				}
+
+<span class="nc bnc" id="L323" title="All 2 branches missed.">				for (int positionFundingGroupIndex = 0; positionFundingGroupIndex &lt;</span>
+<span class="nc" id="L324">					positionFundingGroupCount; ++positionFundingGroupIndex)</span>
+				{
+<span class="nc" id="L326">					fundingGroupPathArray[positionFundingGroupIndex] =</span>
+						new org.drip.xva.strategy.AlbaneseAndersenFundingGroupPath (
+							creditDebtGroupPathArray,
+							marketPath
+						);
+				}
 			}
 
-<span class="nc" id="L564">			return new org.drip.xva.cpty.MonoPathExposureAdjustment (</span>
-				creditDebtGroupPathArray,
-				fundingGroupPathArray
-			);
+<span class="nc" id="L334">			return new org.drip.xva.gross.MonoPathExposureAdjustment (fundingGroupPathArray);</span>
 		}
-<span class="nc" id="L569">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L336">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L571">			e.printStackTrace();</span>
+<span class="nc" id="L338">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L574">		return null;</span>
+<span class="nc" id="L341">		return null;</span>
 	}
 
 	/**
@@ -583,39 +350,39 @@ public class PathSimulator
 	 * @return The Exposure Adjustment Aggregator - Simulation Result
 	 */
 
-	public org.drip.xva.cpty.ExposureAdjustmentAggregator simulate (
+	public org.drip.xva.gross.ExposureAdjustmentAggregator simulate (
 		final org.drip.xva.universe.MarketVertex initialMarketVertex,
 		final org.drip.measure.discrete.CorrelatedPathVertexDimension correlatedPathVertexDimension)
 	{
-<span class="nc bnc" id="L590" title="All 2 branches missed.">		if (null == correlatedPathVertexDimension)</span>
+<span class="nc bnc" id="L357" title="All 2 branches missed.">		if (null == correlatedPathVertexDimension)</span>
 		{
-<span class="nc" id="L592">			return null;</span>
+<span class="nc" id="L359">			return null;</span>
 		}
 
-<span class="nc" id="L595">		org.drip.xva.cpty.PathExposureAdjustment[] pathExposureAdjustmentArray = new</span>
-			org.drip.xva.cpty.PathExposureAdjustment[_iCount];
+<span class="nc" id="L362">		org.drip.xva.gross.PathExposureAdjustment[] pathExposureAdjustmentArray = new</span>
+			org.drip.xva.gross.PathExposureAdjustment[_iCount];
 
-<span class="nc bnc" id="L598" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; _iCount; ++pathIndex)</span>
+<span class="nc bnc" id="L365" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; _iCount; ++pathIndex)</span>
 		{
-<span class="nc bnc" id="L600" title="All 2 branches missed.">			if (null == (pathExposureAdjustmentArray[pathIndex] = singleTrajectory (</span>
+<span class="nc bnc" id="L367" title="All 2 branches missed.">			if (null == (pathExposureAdjustmentArray[pathIndex] = singleTrajectory (</span>
 				initialMarketVertex,
-<span class="nc" id="L602">				org.drip.quant.linearalgebra.Matrix.Transpose (org.drip.quant.linearalgebra.Matrix.Transpose</span>
-<span class="nc" id="L603">					(correlatedPathVertexDimension.straightPathVertexRd().flatform())))))</span>
+<span class="nc" id="L369">				org.drip.quant.linearalgebra.Matrix.Transpose (org.drip.quant.linearalgebra.Matrix.Transpose</span>
+<span class="nc" id="L370">					(correlatedPathVertexDimension.straightPathVertexRd().flatform())))))</span>
 			{
-<span class="nc" id="L605">				return null;</span>
+<span class="nc" id="L372">				return null;</span>
 			}
 		}
 
 		try
 		{
-<span class="nc" id="L611">			return new org.drip.xva.cpty.ExposureAdjustmentAggregator (pathExposureAdjustmentArray);</span>
+<span class="nc" id="L378">			return new org.drip.xva.gross.ExposureAdjustmentAggregator (pathExposureAdjustmentArray);</span>
 		}
-<span class="nc" id="L613">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L380">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L615">			e.printStackTrace();</span>
+<span class="nc" id="L382">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L618">		return null;</span>
+<span class="nc" id="L385">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

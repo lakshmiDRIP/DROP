@@ -272,10 +272,10 @@ public class CollateralizedFundingReceivableStochastic {
 		double dblTime = 5.;
 		double dblATMSwapRateOffsetDrift = 0.0;
 		double dblATMSwapRateOffsetVolatility = 0.25;
-		double dblOvernightNumeraireDrift = -0.004;
+		double dblOvernightNumeraireDrift = 0.004;
 		double dblOvernightNumeraireVolatility = 0.02;
 		double dblOvernightNumeraireInitial = 1.;
-		double dblCSADrift = -0.01;
+		double dblCSADrift = 0.01;
 		double dblCSAVolatility = 0.05;
 		double dblCSAInitial = 1.;
 		double dblBankHazardRateDrift = 0.002;
@@ -550,7 +550,7 @@ public class CollateralizedFundingReceivableStochastic {
 						adblBankHazardRate[j],
 						adblBankRecoveryRate[j],
 						adblBankFundingSpread[j],
-						Math.exp (-0.5 * adblBankHazardRate[j] * (1. - adblBankRecoveryRate[j]) * iNumStep),
+						Math.exp (-0.5 * adblBankHazardRate[j] * (1. - adblBankRecoveryRate[j]) * (iNumStep - j)),
 						Double.NaN,
 						Double.NaN,
 						Double.NaN
@@ -560,7 +560,7 @@ public class CollateralizedFundingReceivableStochastic {
 						adblCounterPartyHazardRate[j],
 						adblCounterPartyRecoveryRate[j],
 						adblCounterPartyFundingSpread[j],
-						Math.exp (-0.5 * adblCounterPartyHazardRate[j] * (1. - adblCounterPartyRecoveryRate[j]) * iNumStep),
+						Math.exp (-0.5 * adblCounterPartyHazardRate[j] * (1. - adblCounterPartyRecoveryRate[j]) * (iNumStep - j)),
 						Double.NaN,
 						Double.NaN,
 						Double.NaN

@@ -77,272 +77,239 @@ public interface PathExposureAdjustment
 	 * @return The Array of the Vertex Anchor Dates
 	 */
 
-	abstract public org.drip.analytics.date.JulianDate[] anchorDates();
+	abstract public org.drip.analytics.date.JulianDate[] vertexDates();
 
 	/**
-	 * Retrieve the Array of Collateralized Exposures
+	 * Retrieve the Array of Collateralized Vertex Exposures
 	 * 
-	 * @return The Array of Collateralized Exposures
+	 * @return The Array of Collateralized Vertex Exposures
 	 */
 
-	abstract public double[] collateralizedExposure();
+	abstract public double[] vertexCollateralizedExposure();
 
 	/**
-	 * Retrieve the Array of Collateralized Exposure PVs
+	 * Retrieve the Array of Collateralized Vertex Exposure PVs
 	 * 
-	 * @return The Array of Collateralized Exposures PVs
+	 * @return The Array of Collateralized Vertex Exposure PVs
 	 */
 
-	abstract public double[] collateralizedExposurePV();
+	abstract public double[] vertexCollateralizedExposurePV();
 
 	/**
-	 * Retrieve the Array of Collateralized Positive Exposures
+	 * Retrieve the Array of Collateralized Positive Vertex Exposures
 	 * 
-	 * @return The Array of Collateralized Positive Exposures
+	 * @return The Array of Collateralized Positive Vertex Exposures
 	 */
 
-	abstract public double[] collateralizedPositiveExposure();
+	abstract public double[] vertexCollateralizedPositiveExposure();
 
 	/**
-	 * Retrieve the Array of Collateralized Positive Exposure PVs
+	 * Retrieve the Array of Collateralized Positive Vertex Exposure PVs
 	 * 
-	 * @return The Array of Collateralized Positive Exposure PVs
+	 * @return The Array of Collateralized Positive Vertex Exposure PVs
 	 */
 
-	abstract public double[] collateralizedPositiveExposurePV();
+	abstract public double[] vertexCollateralizedPositiveExposurePV();
 
 	/**
-	 * Retrieve the Array of Collateralized Negative Exposures
+	 * Retrieve the Array of Collateralized Negative Vertex Exposures
 	 * 
-	 * @return The Array of Collateralized Negative Exposures
+	 * @return The Array of Collateralized Negative Vertex Exposures
 	 */
 
-	abstract public double[] collateralizedNegativeExposure();
+	abstract public double[] vertexCollateralizedNegativeExposure();
 
 	/**
-	 * Retrieve the Array of Collateralized Negative Exposure PV
+	 * Retrieve the Array of Collateralized Negative Vertex Exposure PV
 	 * 
-	 * @return The Array of Collateralized Negative Exposure PV
+	 * @return The Array of Collateralized Negative Vertex Exposure PV
 	 */
 
-	abstract public double[] collateralizedNegativeExposurePV();
+	abstract public double[] vertexCollateralizedNegativeExposurePV();
 
 	/**
-	 * Retrieve the Array of Uncollateralized Exposures
+	 * Retrieve the Array of Uncollateralized Vertex Exposures
 	 * 
-	 * @return The Array of Uncollateralized Exposures
+	 * @return The Array of Uncollateralized Vertex Exposures
 	 */
 
-	abstract public double[] uncollateralizedExposure();
+	abstract public double[] vertexUncollateralizedExposure();
 
 	/**
-	 * Retrieve the Array of Uncollateralized Exposure PV
+	 * Retrieve the Array of Uncollateralized Vertex Exposure PV
 	 * 
-	 * @return The Array of Uncollateralized Exposure PV
+	 * @return The Array of Uncollateralized Vertex Exposure PV
 	 */
 
-	abstract public double[] uncollateralizedExposurePV();
+	abstract public double[] vertexUncollateralizedExposurePV();
 
 	/**
-	 * Retrieve the Array of Uncollateralized Positive Exposures
+	 * Retrieve the Array of Uncollateralized Positive Vertex Exposures
 	 * 
-	 * @return The Array of Uncollateralized Positive Exposures
+	 * @return The Array of Uncollateralized Positive Vertex Exposures
 	 */
 
-	abstract public double[] uncollateralizedPositiveExposure();
+	abstract public double[] vertexUncollateralizedPositiveExposure();
 
 	/**
-	 * Retrieve the Array of Uncollateralized Positive Exposure PV
+	 * Retrieve the Array of Uncollateralized Positive Vertex Exposure PV
 	 * 
-	 * @return The Array of Uncollateralized Positive Exposure PV
+	 * @return The Array of Uncollateralized Positive Vertex Exposure PV
 	 */
 
-	abstract public double[] uncollateralizedPositiveExposurePV();
+	abstract public double[] vertexUncollateralizedPositiveExposurePV();
 
 	/**
-	 * Retrieve the Array of Uncollateralized Negative Exposures
+	 * Retrieve the Array of Uncollateralized Vertex Negative Exposures
 	 * 
-	 * @return The Array of Uncollateralized Negative Exposures
+	 * @return The Array of Uncollateralized Vertex Negative Exposures
 	 */
 
-	abstract public double[] uncollateralizedNegativeExposure();
+	abstract public double[] vertexUncollateralizedNegativeExposure();
 
 	/**
-	 * Retrieve the Array of Uncollateralized Negative Exposure PV
+	 * Retrieve the Array of Uncollateralized Vertex Negative Exposure PV
 	 * 
-	 * @return The Array of Uncollateralized Negative Exposure PV
+	 * @return The Array of Uncollateralized Vertex Negative Exposure PV
 	 */
 
-	abstract public double[] uncollateralizedNegativeExposurePV();
+	abstract public double[] vertexUncollateralizedNegativeExposurePV();
 
 	/**
-	 * Retrieve the Array of Credit Exposures
+	 * Retrieve the Array of Vertex Funding Exposures
 	 * 
-	 * @return The Array of Credit Exposures
+	 * @return The Array of Vertex Funding Exposures
 	 */
 
-	abstract public double[] creditExposure();
+	abstract public double[] vertexFundingExposure();
 
 	/**
-	 * Retrieve the Array of Credit Exposure PVs
+	 * Retrieve the Array of Vertex Funding Exposure PVs
 	 * 
-	 * @return The Array of Credit Exposures PVs
+	 * @return The Array of Vertex Funding Exposures PVs
 	 */
 
-	abstract public double[] creditExposurePV();
+	abstract public double[] vertexFundingExposurePV();
 
 	/**
-	 * Retrieve the Array of Debt Exposures
+	 * Compute Path Unilateral Collateral Adjustment
 	 * 
-	 * @return The Array of Debt Exposures
+	 * @return The Path Unilateral Collateral Adjustment
 	 */
 
-	abstract public double[] debtExposure();
-
-	/**
-	 * Retrieve the Array of Debt Exposure PVs
-	 * 
-	 * @return The Array of Debt Exposures PVs
-	 */
-
-	abstract public double[] debtExposurePV();
-
-	/**
-	 * Retrieve the Array of Funding Exposures
-	 * 
-	 * @return The Array of Funding Exposures
-	 */
-
-	abstract public double[] fundingExposure();
-
-	/**
-	 * Retrieve the Array of Funding Exposure PVs
-	 * 
-	 * @return The Array of Funding Exposures PVs
-	 */
-
-	abstract public double[] fundingExposurePV();
+	abstract public double unilateralCollateralAdjustment();
 
 	/**
 	 * Compute Path Bilateral Collateral Adjustment
 	 * 
 	 * @return The Path Bilateral Collateral Adjustment
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	abstract public double bilateralCollateralAdjustment()
-		throws java.lang.Exception;
+	abstract public double bilateralCollateralAdjustment();
 
 	/**
 	 * Compute Path Collateral Adjustment
 	 * 
 	 * @return The Path Collateral Adjustment
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	abstract public double collateralAdjustment()
-		throws java.lang.Exception;
+	abstract public double collateralAdjustment();
 
 	/**
 	 * Compute Path Unilateral Credit Adjustment
 	 * 
 	 * @return The Path Unilateral Credit Adjustment
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	abstract public double unilateralCreditAdjustment()
-		throws java.lang.Exception;
+	abstract public double unilateralCreditAdjustment();
 
 	/**
 	 * Compute Path Bilateral Credit Adjustment
 	 * 
 	 * @return The Path Bilateral Credit Adjustment
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	abstract public double bilateralCreditAdjustment()
-		throws java.lang.Exception;
+	abstract public double bilateralCreditAdjustment();
 
 	/**
 	 * Compute Path Credit Adjustment
 	 * 
 	 * @return The Path Credit Adjustment
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	abstract public double creditAdjustment()
-		throws java.lang.Exception;
+	abstract public double creditAdjustment();
 
 	/**
 	 * Compute Path Contra-Liability Credit Adjustment
 	 * 
 	 * @return The Path Contra-Liability Credit Adjustment
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	abstract public double contraLiabilityCreditAdjustment()
-		throws java.lang.Exception;
+	abstract public double contraLiabilityCreditAdjustment();
 
 	/**
 	 * Compute Path Unilateral Debt Adjustment
 	 * 
 	 * @return The Path Unilateral Debt Adjustment
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	abstract public double unilateralDebtAdjustment()
-		throws java.lang.Exception;
+	abstract public double unilateralDebtAdjustment();
 
 	/**
 	 * Compute Path Bilateral Debt Adjustment
 	 * 
 	 * @return The Path Bilateral Debt Adjustment
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	abstract public double bilateralDebtAdjustment()
-		throws java.lang.Exception;
+	abstract public double bilateralDebtAdjustment();
 
 	/**
 	 * Compute Path Debt Adjustment
 	 * 
 	 * @return The Path Debt Adjustment
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	abstract public double debtAdjustment()
-		throws java.lang.Exception;
+	abstract public double debtAdjustment();
+
+	/**
+	 * Compute Path Contra-Asset Debt Adjustment
+	 * 
+	 * @return The Path Contra-Asset Debt Adjustment
+	 */
+
+	abstract public double contraAssetDebtAdjustment();
+
+	/**
+	 * Compute Path Unilateral Funding Value Adjustment
+	 * 
+	 * @return The Path Unilateral Funding Value Adjustment
+	 */
+
+	abstract public double unilateralFundingValueAdjustment();
+
+	/**
+	 * Compute Path Bilateral Funding Value Adjustment
+	 * 
+	 * @return The Path Bilateral Funding Value Adjustment
+	 */
+
+	abstract public double bilateralFundingValueAdjustment();
 
 	/**
 	 * Compute Path Funding Value Adjustment
 	 * 
 	 * @return The Path Funding Value Adjustment
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	abstract public double fundingValueAdjustment()
-		throws java.lang.Exception;
+	abstract public double fundingValueAdjustment();
 
 	/**
 	 * Compute Path Funding Debt Adjustment
 	 * 
 	 * @return The Path Funding Debt Adjustment
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	abstract public double fundingDebtAdjustment()
-		throws java.lang.Exception;
+	abstract public double fundingDebtAdjustment();
 
 	/**
 	 * Compute Path Funding Cost Adjustment
@@ -372,10 +339,7 @@ public interface PathExposureAdjustment
 	 * Compute Path Total Adjustment
 	 * 
 	 * @return The Path Total Adjustment
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	abstract public double totalAdjustment()
-		throws java.lang.Exception;
+	abstract public double totalAdjustment();
 }

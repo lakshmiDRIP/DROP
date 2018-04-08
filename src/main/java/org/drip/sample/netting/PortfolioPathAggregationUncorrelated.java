@@ -426,7 +426,7 @@ public class PortfolioPathAggregationUncorrelated {
 
 		ExposureAdjustmentAggregator eaa = new ExposureAdjustmentAggregator (aMPEA);
 
-		JulianDate[] adtVertexNode = eaa.anchorDates();
+		JulianDate[] adtVertexNode = eaa.vertexDates();
 
 		System.out.println();
 
