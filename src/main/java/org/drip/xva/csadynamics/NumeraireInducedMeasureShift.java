@@ -1,5 +1,5 @@
 
-package org.drip.xva.csa;
+package org.drip.xva.csadynamics;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
