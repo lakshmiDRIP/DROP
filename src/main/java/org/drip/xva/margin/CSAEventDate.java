@@ -48,8 +48,8 @@ package org.drip.xva.margin;
  */
 
 /**
- * CSAEventTimeline holds the BCBS/IOSCO prescribed Events Time-line occurring Margin Period. The References
- *  are:
+ * CSAEventDate holds a specific Date composing BCBS/IOSCO prescribed Events Time-line occurring Margin
+ *  Period. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
@@ -70,7 +70,67 @@ package org.drip.xva.margin;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CSAEventTimeline
+public class CSAEventDate
 {
+	private java.lang.String _bcbsDesignation = "";
+	private java.lang.String _aps2017Designation = "";
+	private org.drip.analytics.date.JulianDate _date = null;
 
+	/**
+	 * CSAEventDate Constructor
+	 * 
+	 * @param date The CSA Event Julian Date
+	 * @param bcbsDesignation The BCBS IOSCO CSA Event Designation
+	 * @param aps2017Designation The Andersen Pykhtin Sokol (2017) CSA Event Designation
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public CSAEventDate (
+		final org.drip.analytics.date.JulianDate date,
+		final java.lang.String bcbsDesignation,
+		final java.lang.String aps2017Designation)
+		throws java.lang.Exception
+	{
+		if (null == (_date = date))
+		{
+			throw new java.lang.Exception ("CSAEventDate Constructor => Invalid Inputs");
+		}
+
+		_bcbsDesignation = bcbsDesignation;
+		_aps2017Designation = aps2017Designation;
+	}
+
+	/**
+	 * Retrieve the CSA Event Julian Date
+	 * 
+	 * @return The CSA Event Julian Date
+	 */
+
+	public org.drip.analytics.date.JulianDate date()
+	{
+		return _date;
+	}
+
+	/**
+	 * Retrieve the BCBS IOSCO CSA Event Designation
+	 * 
+	 * @return The BCBS IOSCO CSA Event Designation
+	 */
+
+	public java.lang.String bcbsDesignation()
+	{
+		return _bcbsDesignation;
+	}
+
+	/**
+	 * Retrieve the Andersen Pykhtin Sokol (2017) CSA Event Designation
+	 * 
+	 * @return The Andersen Pykhtin Sokol (2017) CSA Event Designation
+	 */
+
+	public java.lang.String aps2017Designation()
+	{
+		return _aps2017Designation;
+	}
 }
