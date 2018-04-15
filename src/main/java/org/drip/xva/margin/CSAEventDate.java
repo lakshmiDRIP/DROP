@@ -212,6 +212,222 @@ public class CSAEventDate
 	}
 
 	/**
+	 * Construct the Potential Event of Default CSA Event Date
+	 * 
+	 * @param date The Potential Event of Default Date
+	 * 
+	 * @return The Potential Event of Default CSA Event Date
+	 */
+
+	public static final CSAEventDate PED (
+		final org.drip.analytics.date.JulianDate date)
+	{
+		try
+		{
+			return new CSAEventDate (
+				date,
+				"Potential Event of Default Date",
+				"Tau"
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the PED Communication CSA Event Date
+	 * 
+	 * @param date The PED Communication Date
+	 * 
+	 * @return The PED Communication CSA Event Date
+	 */
+
+	public static final CSAEventDate PEDCommunication (
+		final org.drip.analytics.date.JulianDate date)
+	{
+		try
+		{
+			return new CSAEventDate (
+				date,
+				"PED Communication Date",
+				"T4"
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the Event of Default CSA Event Date
+	 * 
+	 * @param date The Event of Default Date
+	 * 
+	 * @return The Event of Default CSA Event Date
+	 */
+
+	public static final CSAEventDate EventOfDefault (
+		final org.drip.analytics.date.JulianDate date)
+	{
+		try
+		{
+			return new CSAEventDate (
+				date,
+				"Event of Default Date",
+				"T5"
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the Event of Default CSA Event Date
+	 * 
+	 * @param date The Event of Default Date
+	 * 
+	 * @return The Event of Default CSA Event Date
+	 */
+
+	public static final CSAEventDate ED (
+		final org.drip.analytics.date.JulianDate date)
+	{
+		try
+		{
+			return new CSAEventDate (
+				date,
+				"Event of Default Date",
+				"T5"
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the ED Communication CSA Event Date
+	 * 
+	 * @param date The ED Communication Date
+	 * 
+	 * @return The ED Communication CSA Event Date
+	 */
+
+	public static final CSAEventDate EDCommunication (
+		final org.drip.analytics.date.JulianDate date)
+	{
+		try
+		{
+			return new CSAEventDate (
+				date,
+				"ED Communication Date",
+				"T6"
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the ETD Designation CSA Event Date
+	 * 
+	 * @param date The ETD Designation Date
+	 * 
+	 * @return The ETD Designation CSA Event Date
+	 */
+
+	public static final CSAEventDate ETDDesignation (
+		final org.drip.analytics.date.JulianDate date)
+	{
+		try
+		{
+			return new CSAEventDate (
+				date,
+				"ETD Designation Date",
+				"T7"
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the Early Termination Date (ETD) CSA Event Date
+	 * 
+	 * @param date The Early Termination Date (ETD)
+	 * 
+	 * @return The Early Termination Date (ETD) CSA Event Date
+	 */
+
+	public static final CSAEventDate ETD (
+		final org.drip.analytics.date.JulianDate date)
+	{
+		try
+		{
+			return new CSAEventDate (
+				date,
+				"Early Termination Date",
+				"T8"
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the Early Termination Date (ETD) CSA Event Date
+	 * 
+	 * @param date The Early Termination Date (ETD)
+	 * 
+	 * @return The Early Termination Date (ETD) CSA Event Date
+	 */
+
+	public static final CSAEventDate EarlyTerminationDate (
+		final org.drip.analytics.date.JulianDate date)
+	{
+		try
+		{
+			return new CSAEventDate (
+				date,
+				"Early Termination Date",
+				"T8"
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * CSAEventDate Constructor
 	 * 
 	 * @param date The CSA Event Julian Date
