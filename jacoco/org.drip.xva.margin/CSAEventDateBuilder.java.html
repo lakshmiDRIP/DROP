@@ -1,0 +1,622 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CSAEventDateBuilder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.xva.margin</a> &gt; <span class="el_source">CSAEventDateBuilder.java</span></div><h1>CSAEventDateBuilder.java</h1><pre class="source lang-java linenums">
+package org.drip.xva.margin;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * CSAEventDateBuilder builds the CSA BCBS/IOSCO Dates prescribed Events Time-line occurring Margin Period.
+ *  The References are:
+ *  
+ *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
+ *  
+ *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
+ *  
+ *  - Anfuso, F., D. Aziz, P. Giltinan, and K Loukopoulus (2017): A Sound Modeling and Back-testing Framework
+ *  	for Forecasting Initial Margin Requirements,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
+ *  
+ *  - BCBS (2015): Margin Requirements for Non-centrally Cleared Derivatives,
+ *  	https://www.bis.org/bcbs/publ/d317.pdf.
+ *  
+ *  - Pykhtin, M. (2009): Modeling Credit Exposure for Collateralized Counter-parties, Journal of Credit
+ *  	Risk, 5 (4) 3-27.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L72">public class CSAEventDateBuilder</span>
+{
+
+	/**
+	 * 1992 ISDA IMA Cure Period of 3 Business Days
+	 */
+
+	public static final int CURE_PERIOD_IMA_1992 = 3;
+
+	/**
+	 * 2002 ISDA IMA Cure Period of 1 Business Day
+	 */
+
+	public static final int CURE_PERIOD_IMA_2002 = 1;
+
+	/**
+	 * Daily Margining Frequency
+	 */
+
+	public static final int MARGIN_FREQUENCY_DAILY = 1;
+
+	/**
+	 * PED Communication Delay
+	 */
+
+	public static final int PED_COMMUNICATION_DELAY = 1;
+
+	/**
+	 * ED Communication Delay
+	 */
+
+	public static final int ED_COMMUNICATION_DELAY = 1;
+
+	/**
+	 * ETD Designation Delay
+	 */
+
+	public static final int ETD_DESIGNATION_DELAY = 1;
+
+	/**
+	 * ETD Call-out Delay
+	 */
+
+	public static final int ETD_CALL_OUT_DELAY = 7;
+
+	/**
+	 * Construct the CSA Valuation Event Date
+	 * 
+	 * @param date The Valuation Date
+	 * 
+	 * @return The CSA Valuation Event Date
+	 */
+
+	public static final CSAEventDate Valuation (
+		final org.drip.analytics.date.JulianDate date)
+	{
+		try
+		{
+<span class="nc" id="L130">			return new CSAEventDate (</span>
+				date,
+				&quot;Valuation Date&quot;,
+				&quot;T0&quot;
+			);
+		}
+<span class="nc" id="L136">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L138">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L141">		return null;</span>
+	}
+
+	/**
+	 * Construct the Last Undisputed and Respected CSA Event Date
+	 * 
+	 * @param date The Last CSA Honored Date
+	 * 
+	 * @return The Last Undisputed and Respected CSA Event Date
+	 */
+
+	public static final org.drip.xva.margin.CSAEventDate LastHonored (
+		final org.drip.analytics.date.JulianDate date)
+	{
+		try
+		{
+<span class="nc" id="L157">			return new org.drip.xva.margin.CSAEventDate (</span>
+				date,
+				&quot;Last Honored Date&quot;,
+				&quot;T1&quot;
+			);
+		}
+<span class="nc" id="L163">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L165">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L168">		return null;</span>
+	}
+
+	/**
+	 * Construct the Last Undisputed and Respected CSA Event Date from the CSA Valuation Date
+	 * 
+	 * @param valuationEventDate The CSA Valuation Event Date
+	 * @param calendarSet The Calendar Set
+	 * 
+	 * @return The Last Undisputed and Respected CSA Event Date from the CSA Valuation Date
+	 */
+
+	public static final org.drip.xva.margin.CSAEventDate LastHonored (
+		final org.drip.xva.margin.CSAEventDate valuationEventDate,
+		final java.lang.String calendarSet)
+	{
+<span class="nc bnc" id="L184" title="All 2 branches missed.">		return null == valuationEventDate ? null : LastHonored (</span>
+<span class="nc" id="L185">			valuationEventDate.date().addBusDays (</span>
+				1,
+				calendarSet
+			)
+		);
+	}
+
+	/**
+	 * Construct the Collateral Transfer Initiation CSA Event Date
+	 * 
+	 * @param date The Collateral Transfer Initiation Date
+	 * 
+	 * @return The Collateral Transfer Initiation CSA Event Date
+	 */
+
+	public static final CSAEventDate CollateralTransferInitiation (
+		final org.drip.analytics.date.JulianDate date)
+	{
+		try
+		{
+<span class="nc" id="L205">			return new CSAEventDate (</span>
+				date,
+				&quot;Collateral Transfer Initiation Date&quot;,
+				&quot;T2&quot;
+			);
+		}
+<span class="nc" id="L211">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L213">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L216">		return null;</span>
+	}
+
+	/**
+	 * Construct the Regular Collateral Transfer Initiation CSA Event Date
+	 * 
+	 * @param lastHonoredEventDate The CSA Last Honored Event Date
+	 * @param calendarSet The Calendar Set
+	 * 
+	 * @return The Regular Collateral Transfer Initiation CSA Event Date
+	 */
+
+	public static final CSAEventDate RegularCollateralTransferInitiation (
+		final org.drip.xva.margin.CSAEventDate lastHonoredEventDate,
+		final java.lang.String calendarSet)
+	{
+<span class="nc bnc" id="L232" title="All 2 branches missed.">		return null == lastHonoredEventDate ? null : CollateralTransferInitiation (</span>
+<span class="nc" id="L233">			lastHonoredEventDate.date().addBusDays (</span>
+				1,
+				calendarSet
+			)
+		);
+	}
+
+	/**
+	 * Construct the Delayed Collateral Transfer Initiation CSA Event Date
+	 * 
+	 * @param lastHonoredEventDate The CSA Last Honored Event Date
+	 * @param calendarSet The Calendar Set
+	 * 
+	 * @return The Delayed Collateral Transfer Initiation CSA Event Date
+	 */
+
+	public static final CSAEventDate DelayedCollateralTransferInitiation (
+		final org.drip.xva.margin.CSAEventDate lastHonoredEventDate,
+		final java.lang.String calendarSet)
+	{
+<span class="nc bnc" id="L253" title="All 2 branches missed.">		return null == lastHonoredEventDate ? null : CollateralTransferInitiation (</span>
+<span class="nc" id="L254">			lastHonoredEventDate.date().addBusDays (</span>
+				1,
+				calendarSet
+<span class="nc" id="L257">			).addBusDays (</span>
+				1,
+				calendarSet
+			)
+		);
+	}
+
+	/**
+	 * Construct the First Non-Honored CSA Event Date
+	 * 
+	 * @param date The First CSA Non-Honored Date
+	 * 
+	 * @return The First Non-Honored CSA Event Date
+	 */
+
+	public static final CSAEventDate FirstNonHonored (
+		final org.drip.analytics.date.JulianDate date)
+	{
+		try
+		{
+<span class="nc" id="L277">			return new CSAEventDate (</span>
+				date,
+				&quot;First Non-Honored Date&quot;,
+				&quot;T3&quot;
+			);
+		}
+<span class="nc" id="L283">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L285">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L288">		return null;</span>
+	}
+
+	/**
+	 * Construct the Last Undisputed and Respected CSA Event Date from the CSA Valuation Date
+	 * 
+	 * @param valuationEventDate The CSA Valuation Event Date
+	 * @param calendarSet The Calendar Set
+	 * @param marginFrequency The Margin Frequency
+	 * 
+	 * @return The Last Undisputed and Respected CSA Event Date from the CSA Valuation Date
+	 */
+
+	public static final org.drip.xva.margin.CSAEventDate FirstNonHonored (
+		final org.drip.xva.margin.CSAEventDate valuationEventDate,
+		final java.lang.String calendarSet,
+		final int marginFrequency)
+	{
+<span class="nc bnc" id="L306" title="All 2 branches missed.">		return null == valuationEventDate ? null : FirstNonHonored (</span>
+<span class="nc" id="L307">			valuationEventDate.date().addBusDays (</span>
+				marginFrequency,
+				calendarSet
+			)
+		);
+	}
+
+	/**
+	 * Construct the Potential Event of Default CSA Event Date
+	 * 
+	 * @param date The Potential Event of Default Date
+	 * 
+	 * @return The Potential Event of Default CSA Event Date
+	 */
+
+	public static final CSAEventDate PotentialEventOfDefault (
+		final org.drip.analytics.date.JulianDate date)
+	{
+		try
+		{
+<span class="nc" id="L327">			return new CSAEventDate (</span>
+				date,
+				&quot;Potential Event of Default Date&quot;,
+				&quot;Tau&quot;
+			);
+		}
+<span class="nc" id="L333">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L335">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L338">		return null;</span>
+	}
+
+	/**
+	 * Construct the Potential Event of Default CSA Event Date
+	 * 
+	 * @param date The Potential Event of Default Date
+	 * 
+	 * @return The Potential Event of Default CSA Event Date
+	 */
+
+	public static final CSAEventDate PED (
+		final org.drip.analytics.date.JulianDate date)
+	{
+		try
+		{
+<span class="nc" id="L354">			return new CSAEventDate (</span>
+				date,
+				&quot;Potential Event of Default Date&quot;,
+				&quot;Tau&quot;
+			);
+		}
+<span class="nc" id="L360">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L362">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L365">		return null;</span>
+	}
+
+	/**
+	 * Construct the PED Communication CSA Event Date
+	 * 
+	 * @param date The PED Communication Date
+	 * 
+	 * @return The PED Communication CSA Event Date
+	 */
+
+	public static final CSAEventDate PEDCommunication (
+		final org.drip.analytics.date.JulianDate date)
+	{
+		try
+		{
+<span class="nc" id="L381">			return new CSAEventDate (</span>
+				date,
+				&quot;PED Communication Date&quot;,
+				&quot;T4&quot;
+			);
+		}
+<span class="nc" id="L387">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L389">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L392">		return null;</span>
+	}
+
+	/**
+	 * Construct the Event of Default CSA Event Date
+	 * 
+	 * @param date The Event of Default Date
+	 * 
+	 * @return The Event of Default CSA Event Date
+	 */
+
+	public static final CSAEventDate EventOfDefault (
+		final org.drip.analytics.date.JulianDate date)
+	{
+		try
+		{
+<span class="nc" id="L408">			return new CSAEventDate (</span>
+				date,
+				&quot;Event of Default Date&quot;,
+				&quot;T5&quot;
+			);
+		}
+<span class="nc" id="L414">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L416">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L419">		return null;</span>
+	}
+
+	/**
+	 * Construct the Event of Default CSA Event Date
+	 * 
+	 * @param date The Event of Default Date
+	 * 
+	 * @return The Event of Default CSA Event Date
+	 */
+
+	public static final CSAEventDate ED (
+		final org.drip.analytics.date.JulianDate date)
+	{
+		try
+		{
+<span class="nc" id="L435">			return new CSAEventDate (</span>
+				date,
+				&quot;Event of Default Date&quot;,
+				&quot;T5&quot;
+			);
+		}
+<span class="nc" id="L441">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L443">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L446">		return null;</span>
+	}
+
+	/**
+	 * Construct the Cure Period Adjusted ED
+	 * 
+	 * @param pedEventDate The PED CSA Event Date
+	 * @param calendarSet The Calendar Set
+	 * @param curePeriod The Cure Period
+	 * 
+	 * @return The Cure Period Adjusted ED
+	 */
+
+	public static final CSAEventDate EventOfDefault (
+		final org.drip.xva.margin.CSAEventDate pedEventDate,
+		final java.lang.String calendarSet,
+		final int curePeriod)
+	{
+<span class="nc bnc" id="L464" title="All 2 branches missed.">		return null == pedEventDate ? null : EventOfDefault (</span>
+<span class="nc" id="L465">			pedEventDate.date().addBusDays (</span>
+				curePeriod,
+				calendarSet
+			)
+		);
+	}
+
+	/**
+	 * Construct the IMA 1992 Cure Period Adjusted ED
+	 * 
+	 * @param pedEventDate The PED CSA Event Date
+	 * @param calendarSet The Calendar Set
+	 * 
+	 * @return The IMA 1992 Cure Period Adjusted ED
+	 */
+
+	public static final CSAEventDate IMA1992ED (
+		final org.drip.xva.margin.CSAEventDate pedEventDate,
+		final java.lang.String calendarSet)
+	{
+<span class="nc bnc" id="L485" title="All 2 branches missed.">		return null == pedEventDate ? null : EventOfDefault (</span>
+<span class="nc" id="L486">			pedEventDate.date().addBusDays (</span>
+				CURE_PERIOD_IMA_1992,
+				calendarSet
+			)
+		);
+	}
+
+	/**
+	 * Construct the IMA 2002 Cure Period Adjusted ED
+	 * 
+	 * @param pedEventDate The PED CSA Event Date
+	 * @param calendarSet The Calendar Set
+	 * 
+	 * @return The IMA 2002 Cure Period Adjusted ED
+	 */
+
+	public static final CSAEventDate IMA2002ED (
+		final org.drip.xva.margin.CSAEventDate pedEventDate,
+		final java.lang.String calendarSet)
+	{
+<span class="nc bnc" id="L506" title="All 2 branches missed.">		return null == pedEventDate ? null : EventOfDefault (</span>
+<span class="nc" id="L507">			pedEventDate.date().addBusDays (</span>
+				CURE_PERIOD_IMA_2002,
+				calendarSet
+			)
+		);
+	}
+
+	/**
+	 * Construct the ED Communication CSA Event Date
+	 * 
+	 * @param date The ED Communication Date
+	 * 
+	 * @return The ED Communication CSA Event Date
+	 */
+
+	public static final CSAEventDate EDCommunication (
+		final org.drip.analytics.date.JulianDate date)
+	{
+		try
+		{
+<span class="nc" id="L527">			return new CSAEventDate (</span>
+				date,
+				&quot;ED Communication Date&quot;,
+				&quot;T6&quot;
+			);
+		}
+<span class="nc" id="L533">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L535">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L538">		return null;</span>
+	}
+
+	/**
+	 * Construct the ETD Designation CSA Event Date
+	 * 
+	 * @param date The ETD Designation Date
+	 * 
+	 * @return The ETD Designation CSA Event Date
+	 */
+
+	public static final CSAEventDate ETDDesignation (
+		final org.drip.analytics.date.JulianDate date)
+	{
+		try
+		{
+<span class="nc" id="L554">			return new CSAEventDate (</span>
+				date,
+				&quot;ETD Designation Date&quot;,
+				&quot;T7&quot;
+			);
+		}
+<span class="nc" id="L560">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L562">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L565">		return null;</span>
+	}
+
+	/**
+	 * Construct the Early Termination Date (ETD) CSA Event Date
+	 * 
+	 * @param date The Early Termination Date (ETD)
+	 * 
+	 * @return The Early Termination Date (ETD) CSA Event Date
+	 */
+
+	public static final CSAEventDate ETD (
+		final org.drip.analytics.date.JulianDate date)
+	{
+		try
+		{
+<span class="nc" id="L581">			return new CSAEventDate (</span>
+				date,
+				&quot;Early Termination Date&quot;,
+				&quot;T8&quot;
+			);
+		}
+<span class="nc" id="L587">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L589">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L592">		return null;</span>
+	}
+
+	/**
+	 * Construct the Early Termination Date (ETD) CSA Event Date
+	 * 
+	 * @param date The Early Termination Date (ETD)
+	 * 
+	 * @return The Early Termination Date (ETD) CSA Event Date
+	 */
+
+	public static final CSAEventDate EarlyTerminationDate (
+		final org.drip.analytics.date.JulianDate date)
+	{
+		try
+		{
+<span class="nc" id="L608">			return new CSAEventDate (</span>
+				date,
+				&quot;Early Termination Date&quot;,
+				&quot;T8&quot;
+			);
+		}
+<span class="nc" id="L614">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L616">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L619">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

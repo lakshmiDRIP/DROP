@@ -4,7 +4,7 @@ package org.drip.sample.piterbarg2010;
 import org.drip.measure.dynamics.*;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.xva.csa.FundingBasisEvolver;
+import org.drip.xva.csadynamics.FundingBasisEvolver;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
