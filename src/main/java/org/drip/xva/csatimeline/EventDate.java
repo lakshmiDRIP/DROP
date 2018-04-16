@@ -1,5 +1,5 @@
 
-package org.drip.xva.margin;
+package org.drip.xva.csatimeline;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,8 +47,8 @@ package org.drip.xva.margin;
  */
 
 /**
- * CSAEventDate holds a specific Date composing BCBS/IOSCO prescribed Events Time-line occurring Margin
- *  Period. The References are:
+ * EventDate holds a specific Date composing BCBS/IOSCO prescribed Events Time-line occurring Margin Period.
+ *  The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
@@ -69,14 +69,14 @@ package org.drip.xva.margin;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CSAEventDate
+public class EventDate
 {
 	private java.lang.String _bcbsDesignation = "";
 	private java.lang.String _aps2017Designation = "";
 	private org.drip.analytics.date.JulianDate _date = null;
 
 	/**
-	 * CSAEventDate Constructor
+	 * EventDate Constructor
 	 * 
 	 * @param date The CSA Event Julian Date
 	 * @param bcbsDesignation The BCBS IOSCO CSA Event Designation
@@ -85,7 +85,7 @@ public class CSAEventDate
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public CSAEventDate (
+	public EventDate (
 		final org.drip.analytics.date.JulianDate date,
 		final java.lang.String bcbsDesignation,
 		final java.lang.String aps2017Designation)
@@ -93,7 +93,7 @@ public class CSAEventDate
 	{
 		if (null == (_date = date))
 		{
-			throw new java.lang.Exception ("CSAEventDate Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("EventDate Constructor => Invalid Inputs");
 		}
 
 		_bcbsDesignation = bcbsDesignation;

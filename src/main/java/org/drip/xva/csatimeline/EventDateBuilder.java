@@ -1,5 +1,6 @@
 
-package org.drip.xva.margin;
+package org.drip.xva.csatimeline;
+
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,8 +48,8 @@ package org.drip.xva.margin;
  */
 
 /**
- * CSAEventDateBuilder builds the CSA BCBS/IOSCO Dates prescribed Events Time-line occurring Margin Period.
- *  The References are:
+ * EventDateBuilder builds the CSA BCBS/IOSCO Dates prescribed Events Time-line occurring Margin Period. The
+ *  References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
@@ -69,7 +70,7 @@ package org.drip.xva.margin;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CSAEventDateBuilder
+public class EventDateBuilder
 {
 
 	/**
@@ -91,28 +92,64 @@ public class CSAEventDateBuilder
 	public static final int MARGIN_FREQUENCY_DAILY = 1;
 
 	/**
-	 * PED Communication Delay
+	 * PED Call Out Delay - Aggressive
 	 */
 
-	public static final int PED_COMMUNICATION_DELAY = 1;
+	public static final int PED_CALL_OUT_DELAY_AGGRESSIVE = 1;
 
 	/**
-	 * ED Communication Delay
+	 * PED Call Out Delay - Conservative
 	 */
 
-	public static final int ED_COMMUNICATION_DELAY = 1;
+	public static final int PED_CALL_OUT_DELAY_CONSERVATIVE = 3;
 
 	/**
-	 * ETD Designation Delay
+	 * PED Communication Delay - Aggressive
 	 */
 
-	public static final int ETD_DESIGNATION_DELAY = 1;
+	public static final int PED_COMMUNICATION_DELAY_AGGRESSIVE = 1;
 
 	/**
-	 * ETD Call-out Delay
+	 * PED Communication Delay - Conservative
 	 */
 
-	public static final int ETD_CALL_OUT_DELAY = 7;
+	public static final int PED_COMMUNICATION_DELAY_CONSERVATIVE = 2;
+
+	/**
+	 * ED Communication Delay - Aggressive
+	 */
+
+	public static final int ED_COMMUNICATION_DELAY_AGGRESSIVE = 1;
+
+	/**
+	 * ED Communication Delay - Conservative
+	 */
+
+	public static final int ED_COMMUNICATION_DELAY_CONSERVATIVE = 2;
+
+	/**
+	 * ETD Designation Delay - Aggressive
+	 */
+
+	public static final int ETD_DESIGNATION_DELAY_AGGRESSIVE = 1;
+
+	/**
+	 * ETD Designation Delay - Conservative
+	 */
+
+	public static final int ETD_DESIGNATION_DELAY_CONSERVATIVE = 3;
+
+	/**
+	 * ETD Call-out Delay - Aggressive
+	 */
+
+	public static final int ETD_CALL_OUT_DELAY_AGGRESSIVE = 1;
+
+	/**
+	 * ETD Call-out Delay - Conservative
+	 */
+
+	public static final int ETD_CALL_OUT_DELAY_CONSERVATIVE = 12;
 
 	/**
 	 * Construct the CSA Valuation Event Date
@@ -122,12 +159,12 @@ public class CSAEventDateBuilder
 	 * @return The CSA Valuation Event Date
 	 */
 
-	public static final CSAEventDate Valuation (
+	public static final EventDate Valuation (
 		final org.drip.analytics.date.JulianDate date)
 	{
 		try
 		{
-			return new CSAEventDate (
+			return new EventDate (
 				date,
 				"Valuation Date",
 				"T0"
@@ -142,21 +179,21 @@ public class CSAEventDateBuilder
 	}
 
 	/**
-	 * Construct the Last Undisputed and Respected CSA Event Date
+	 * Construct the Undisputed and Respected CSA Event Date
 	 * 
-	 * @param date The Last CSA Honored Date
+	 * @param date The CSA Honored Date
 	 * 
-	 * @return The Last Undisputed and Respected CSA Event Date
+	 * @return The Undisputed and Respected CSA Event Date
 	 */
 
-	public static final org.drip.xva.margin.CSAEventDate LastHonored (
+	public static final org.drip.xva.csatimeline.EventDate Honored (
 		final org.drip.analytics.date.JulianDate date)
 	{
 		try
 		{
-			return new org.drip.xva.margin.CSAEventDate (
+			return new org.drip.xva.csatimeline.EventDate (
 				date,
-				"Last Honored Date",
+				"Honored Date",
 				"T1"
 			);
 		}
@@ -169,20 +206,20 @@ public class CSAEventDateBuilder
 	}
 
 	/**
-	 * Construct the Last Undisputed and Respected CSA Event Date from the CSA Valuation Date
+	 * Construct the Undisputed and Respected CSA Event Date from the CSA Valuation Date
 	 * 
-	 * @param valuationEventDate The CSA Valuation Event Date
+	 * @param valuation The CSA Valuation Event Date
 	 * @param calendarSet The Calendar Set
 	 * 
-	 * @return The Last Undisputed and Respected CSA Event Date from the CSA Valuation Date
+	 * @return The Undisputed and Respected CSA Event Date from the CSA Valuation Date
 	 */
 
-	public static final org.drip.xva.margin.CSAEventDate LastHonored (
-		final org.drip.xva.margin.CSAEventDate valuationEventDate,
+	public static final org.drip.xva.csatimeline.EventDate Honored (
+		final org.drip.xva.csatimeline.EventDate valuation,
 		final java.lang.String calendarSet)
 	{
-		return null == valuationEventDate ? null : LastHonored (
-			valuationEventDate.date().addBusDays (
+		return null == valuation ? null : Honored (
+			valuation.date().addBusDays (
 				1,
 				calendarSet
 			)
@@ -197,12 +234,12 @@ public class CSAEventDateBuilder
 	 * @return The Collateral Transfer Initiation CSA Event Date
 	 */
 
-	public static final CSAEventDate CollateralTransferInitiation (
+	public static final EventDate CollateralTransferInitiation (
 		final org.drip.analytics.date.JulianDate date)
 	{
 		try
 		{
-			return new CSAEventDate (
+			return new EventDate (
 				date,
 				"Collateral Transfer Initiation Date",
 				"T2"
@@ -219,18 +256,18 @@ public class CSAEventDateBuilder
 	/**
 	 * Construct the Regular Collateral Transfer Initiation CSA Event Date
 	 * 
-	 * @param lastHonoredEventDate The CSA Last Honored Event Date
+	 * @param honored The CSA Last Honored Event Date
 	 * @param calendarSet The Calendar Set
 	 * 
 	 * @return The Regular Collateral Transfer Initiation CSA Event Date
 	 */
 
-	public static final CSAEventDate RegularCollateralTransferInitiation (
-		final org.drip.xva.margin.CSAEventDate lastHonoredEventDate,
+	public static final EventDate RegularCollateralTransferInitiation (
+		final org.drip.xva.csatimeline.EventDate honored,
 		final java.lang.String calendarSet)
 	{
-		return null == lastHonoredEventDate ? null : CollateralTransferInitiation (
-			lastHonoredEventDate.date().addBusDays (
+		return null == honored ? null : CollateralTransferInitiation (
+			honored.date().addBusDays (
 				1,
 				calendarSet
 			)
@@ -240,43 +277,40 @@ public class CSAEventDateBuilder
 	/**
 	 * Construct the Delayed Collateral Transfer Initiation CSA Event Date
 	 * 
-	 * @param lastHonoredEventDate The CSA Last Honored Event Date
+	 * @param honored The CSA Last Honored Event Date
 	 * @param calendarSet The Calendar Set
 	 * 
 	 * @return The Delayed Collateral Transfer Initiation CSA Event Date
 	 */
 
-	public static final CSAEventDate DelayedCollateralTransferInitiation (
-		final org.drip.xva.margin.CSAEventDate lastHonoredEventDate,
+	public static final EventDate DelayedCollateralTransferInitiation (
+		final org.drip.xva.csatimeline.EventDate honored,
 		final java.lang.String calendarSet)
 	{
-		return null == lastHonoredEventDate ? null : CollateralTransferInitiation (
-			lastHonoredEventDate.date().addBusDays (
-				1,
-				calendarSet
-			).addBusDays (
-				1,
+		return null == honored ? null : CollateralTransferInitiation (
+			honored.date().addBusDays (
+				2,
 				calendarSet
 			)
 		);
 	}
 
 	/**
-	 * Construct the First Non-Honored CSA Event Date
+	 * Construct the Non-Honored CSA Event Date
 	 * 
-	 * @param date The First CSA Non-Honored Date
+	 * @param date The CSA Non-Honored Date
 	 * 
-	 * @return The First Non-Honored CSA Event Date
+	 * @return The Non-Honored CSA Event Date
 	 */
 
-	public static final CSAEventDate FirstNonHonored (
+	public static final EventDate NonHonored (
 		final org.drip.analytics.date.JulianDate date)
 	{
 		try
 		{
-			return new CSAEventDate (
+			return new EventDate (
 				date,
-				"First Non-Honored Date",
+				"Non-Honored Date",
 				"T3"
 			);
 		}
@@ -289,23 +323,21 @@ public class CSAEventDateBuilder
 	}
 
 	/**
-	 * Construct the Last Undisputed and Respected CSA Event Date from the CSA Valuation Date
+	 * Construct the Non-Honored CSA Event Date
 	 * 
-	 * @param valuationEventDate The CSA Valuation Event Date
+	 * @param valuation The CSA Valuation Event Date
 	 * @param calendarSet The Calendar Set
-	 * @param marginFrequency The Margin Frequency
 	 * 
-	 * @return The Last Undisputed and Respected CSA Event Date from the CSA Valuation Date
+	 * @return The Non-Honored CSA Event Date
 	 */
 
-	public static final org.drip.xva.margin.CSAEventDate FirstNonHonored (
-		final org.drip.xva.margin.CSAEventDate valuationEventDate,
-		final java.lang.String calendarSet,
-		final int marginFrequency)
+	public static final org.drip.xva.csatimeline.EventDate NonHonored (
+		final org.drip.xva.csatimeline.EventDate valuation,
+		final java.lang.String calendarSet)
 	{
-		return null == valuationEventDate ? null : FirstNonHonored (
-			valuationEventDate.date().addBusDays (
-				marginFrequency,
+		return null == valuation ? null : NonHonored (
+			valuation.date().addBusDays (
+				1,
 				calendarSet
 			)
 		);
@@ -319,12 +351,12 @@ public class CSAEventDateBuilder
 	 * @return The Potential Event of Default CSA Event Date
 	 */
 
-	public static final CSAEventDate PotentialEventOfDefault (
+	public static final EventDate PotentialEventOfDefault (
 		final org.drip.analytics.date.JulianDate date)
 	{
 		try
 		{
-			return new CSAEventDate (
+			return new EventDate (
 				date,
 				"Potential Event of Default Date",
 				"Tau"
@@ -346,12 +378,12 @@ public class CSAEventDateBuilder
 	 * @return The Potential Event of Default CSA Event Date
 	 */
 
-	public static final CSAEventDate PED (
+	public static final EventDate PED (
 		final org.drip.analytics.date.JulianDate date)
 	{
 		try
 		{
-			return new CSAEventDate (
+			return new EventDate (
 				date,
 				"Potential Event of Default Date",
 				"Tau"
@@ -373,12 +405,12 @@ public class CSAEventDateBuilder
 	 * @return The PED Communication CSA Event Date
 	 */
 
-	public static final CSAEventDate PEDCommunication (
+	public static final EventDate PEDCommunication (
 		final org.drip.analytics.date.JulianDate date)
 	{
 		try
 		{
-			return new CSAEventDate (
+			return new EventDate (
 				date,
 				"PED Communication Date",
 				"T4"
@@ -400,12 +432,12 @@ public class CSAEventDateBuilder
 	 * @return The Event of Default CSA Event Date
 	 */
 
-	public static final CSAEventDate EventOfDefault (
+	public static final EventDate EventOfDefault (
 		final org.drip.analytics.date.JulianDate date)
 	{
 		try
 		{
-			return new CSAEventDate (
+			return new EventDate (
 				date,
 				"Event of Default Date",
 				"T5"
@@ -427,12 +459,12 @@ public class CSAEventDateBuilder
 	 * @return The Event of Default CSA Event Date
 	 */
 
-	public static final CSAEventDate ED (
+	public static final EventDate ED (
 		final org.drip.analytics.date.JulianDate date)
 	{
 		try
 		{
-			return new CSAEventDate (
+			return new EventDate (
 				date,
 				"Event of Default Date",
 				"T5"
@@ -449,20 +481,20 @@ public class CSAEventDateBuilder
 	/**
 	 * Construct the Cure Period Adjusted ED
 	 * 
-	 * @param pedEventDate The PED CSA Event Date
+	 * @param ped The PED CSA Event Date
 	 * @param calendarSet The Calendar Set
 	 * @param curePeriod The Cure Period
 	 * 
 	 * @return The Cure Period Adjusted ED
 	 */
 
-	public static final CSAEventDate EventOfDefault (
-		final org.drip.xva.margin.CSAEventDate pedEventDate,
+	public static final EventDate EventOfDefault (
+		final org.drip.xva.csatimeline.EventDate ped,
 		final java.lang.String calendarSet,
 		final int curePeriod)
 	{
-		return null == pedEventDate ? null : EventOfDefault (
-			pedEventDate.date().addBusDays (
+		return null == ped ? null : EventOfDefault (
+			ped.date().addBusDays (
 				curePeriod,
 				calendarSet
 			)
@@ -472,18 +504,18 @@ public class CSAEventDateBuilder
 	/**
 	 * Construct the IMA 1992 Cure Period Adjusted ED
 	 * 
-	 * @param pedEventDate The PED CSA Event Date
+	 * @param ped The PED CSA Event Date
 	 * @param calendarSet The Calendar Set
 	 * 
 	 * @return The IMA 1992 Cure Period Adjusted ED
 	 */
 
-	public static final CSAEventDate IMA1992ED (
-		final org.drip.xva.margin.CSAEventDate pedEventDate,
+	public static final EventDate IMA1992ED (
+		final org.drip.xva.csatimeline.EventDate ped,
 		final java.lang.String calendarSet)
 	{
-		return null == pedEventDate ? null : EventOfDefault (
-			pedEventDate.date().addBusDays (
+		return null == ped ? null : EventOfDefault (
+			ped.date().addBusDays (
 				CURE_PERIOD_IMA_1992,
 				calendarSet
 			)
@@ -493,18 +525,18 @@ public class CSAEventDateBuilder
 	/**
 	 * Construct the IMA 2002 Cure Period Adjusted ED
 	 * 
-	 * @param pedEventDate The PED CSA Event Date
+	 * @param ped The PED CSA Event Date
 	 * @param calendarSet The Calendar Set
 	 * 
 	 * @return The IMA 2002 Cure Period Adjusted ED
 	 */
 
-	public static final CSAEventDate IMA2002ED (
-		final org.drip.xva.margin.CSAEventDate pedEventDate,
+	public static final EventDate IMA2002ED (
+		final org.drip.xva.csatimeline.EventDate ped,
 		final java.lang.String calendarSet)
 	{
-		return null == pedEventDate ? null : EventOfDefault (
-			pedEventDate.date().addBusDays (
+		return null == ped ? null : EventOfDefault (
+			ped.date().addBusDays (
 				CURE_PERIOD_IMA_2002,
 				calendarSet
 			)
@@ -519,12 +551,12 @@ public class CSAEventDateBuilder
 	 * @return The ED Communication CSA Event Date
 	 */
 
-	public static final CSAEventDate EDCommunication (
+	public static final EventDate EDCommunication (
 		final org.drip.analytics.date.JulianDate date)
 	{
 		try
 		{
-			return new CSAEventDate (
+			return new EventDate (
 				date,
 				"ED Communication Date",
 				"T6"
@@ -546,12 +578,12 @@ public class CSAEventDateBuilder
 	 * @return The ETD Designation CSA Event Date
 	 */
 
-	public static final CSAEventDate ETDDesignation (
+	public static final EventDate ETDDesignation (
 		final org.drip.analytics.date.JulianDate date)
 	{
 		try
 		{
-			return new CSAEventDate (
+			return new EventDate (
 				date,
 				"ETD Designation Date",
 				"T7"
@@ -573,12 +605,12 @@ public class CSAEventDateBuilder
 	 * @return The Early Termination Date (ETD) CSA Event Date
 	 */
 
-	public static final CSAEventDate ETD (
+	public static final EventDate ETD (
 		final org.drip.analytics.date.JulianDate date)
 	{
 		try
 		{
-			return new CSAEventDate (
+			return new EventDate (
 				date,
 				"Early Termination Date",
 				"T8"
@@ -600,12 +632,12 @@ public class CSAEventDateBuilder
 	 * @return The Early Termination Date (ETD) CSA Event Date
 	 */
 
-	public static final CSAEventDate EarlyTerminationDate (
+	public static final EventDate EarlyTerminationDate (
 		final org.drip.analytics.date.JulianDate date)
 	{
 		try
 		{
-			return new CSAEventDate (
+			return new EventDate (
 				date,
 				"Early Termination Date",
 				"T8"
