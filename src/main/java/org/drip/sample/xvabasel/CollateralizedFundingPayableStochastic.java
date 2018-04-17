@@ -582,7 +582,7 @@ public class CollateralizedFundingPayableStochastic {
 				);
 			}
 
-			MarketPath mp = new MarketPath (aNV);
+			MarketPath mp = MarketPath.FromMarketVertexArray (aNV);
 
 			CollateralGroupPath[] aHGP1 = new CollateralGroupPath[] {
 				new CollateralGroupPath (

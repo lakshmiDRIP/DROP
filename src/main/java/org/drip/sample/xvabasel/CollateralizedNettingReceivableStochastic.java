@@ -582,7 +582,7 @@ public class CollateralizedNettingReceivableStochastic {
 				);
 			}
 
-			MarketPath np = new MarketPath (aNV);
+			MarketPath np = MarketPath.FromMarketVertexArray (aNV);
 
 			CollateralGroupPath[] aCGP1 = new CollateralGroupPath[] {
 				new CollateralGroupPath (

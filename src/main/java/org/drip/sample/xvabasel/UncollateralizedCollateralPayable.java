@@ -279,7 +279,7 @@ public class UncollateralizedCollateralPayable {
 				);
 			}
 
-			MarketPath np = new MarketPath (aNV);
+			MarketPath np = MarketPath.FromMarketVertexArray (aNV);
 
 			CollateralGroupPath[] aCGPGround = new CollateralGroupPath[] {
 				new CollateralGroupPath (

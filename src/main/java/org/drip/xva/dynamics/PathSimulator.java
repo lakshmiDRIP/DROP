@@ -74,12 +74,14 @@ public class PathSimulator
 	private org.drip.xva.holdings.PositionGroupContainer _positionGroupContainer = null;
 
 	private double[][] positionGroupValueArray (
-		final org.drip.xva.universe.MarketVertex[] marketVertexArray)
+		final org.drip.xva.universe.MarketPath marketPath)
 	{
 		org.drip.xva.holdings.PositionGroup[] positionGroupArray =
 			_positionGroupContainer.positionGroupArray();
 
-		int vertexCount = marketVertexArray.length;
+		org.drip.analytics.date.JulianDate[] vertexDateArray = marketPath.anchorDates();
+
+		int vertexCount = vertexDateArray.length;
 		int positionGroupCount = positionGroupArray.length;
 		double[][] positionGroupValueArray = new double[positionGroupCount][vertexCount];
 
@@ -87,12 +89,17 @@ public class PathSimulator
 		{
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
+				int forwardDate = vertexDateArray[vertexIndex].julian();
+
 				try {
 					positionGroupValueArray[positionGroupIndex][vertexIndex] =
-						marketVertexArray[vertexIndex].positionManifestValue() *
-						(null == positionGroupArray[positionGroupIndex].positionGroupNumeraire() ? 1. :
-						positionGroupArray[positionGroupIndex].positionGroupNumeraire().value
-						(marketVertexArray[vertexIndex]));
+						marketPath.marketVertex (forwardDate).positionManifestValue() * (
+							null == positionGroupArray[positionGroupIndex].positionGroupNumeraire() ? 1. :
+							positionGroupArray[positionGroupIndex].positionGroupNumeraire().value (
+								forwardDate,
+								marketPath
+							)
+						);
 				}
 				catch (java.lang.Exception e)
 				{
@@ -111,14 +118,12 @@ public class PathSimulator
 	{
 		org.drip.xva.dynamics.PositionGroupTrajectory collateralGroup = null;
 
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = marketPath.vertexes();
-
 		try
 		{
 			collateralGroup = new org.drip.xva.dynamics.PositionGroupTrajectory (
 				_positionGroupContainer.positionGroupArray()[0].positionGroupSpecification().positionGroupSpecification(),
-				marketVertexArray,
-				positionGroupValueArray (marketVertexArray)
+				marketPath,
+				positionGroupValueArray (marketPath)
 			);
 		}
 		catch (java.lang.Exception e)

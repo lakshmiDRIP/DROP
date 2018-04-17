@@ -478,7 +478,7 @@ public class UncollateralizedCollateralGroupCorrelated {
 				);
 			}
 
-			MarketPath mp = new MarketPath (aMV);
+			MarketPath mp = MarketPath.FromMarketVertexArray (aMV);
 
 			CollateralGroupPath[] aHGP = new CollateralGroupPath[] {
 				new CollateralGroupPath (

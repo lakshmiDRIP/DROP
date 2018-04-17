@@ -602,7 +602,7 @@ public class UnilateralCSACollateralizedFundingStochastic {
 				}
 			}
 
-			MarketPath mp = new MarketPath (aMV);
+			MarketPath mp = MarketPath.FromMarketVertexArray (aMV);
 
 			CollateralGroupPath[] aHGPGround = new CollateralGroupPath[] {
 				new CollateralGroupPath (

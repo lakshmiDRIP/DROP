@@ -263,7 +263,7 @@ public class CollateralizedCollateralGroup {
 				)
 			);
 
-		MarketPath mp = new MarketPath (aMV);
+		MarketPath mp = MarketPath.FromMarketVertexArray (aMV);
 
 		for (int i = 0; i < iNumPath; ++i) {
 			JulianDate dtStart = dtSpot;

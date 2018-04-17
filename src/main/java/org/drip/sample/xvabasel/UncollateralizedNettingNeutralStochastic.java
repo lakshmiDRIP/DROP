@@ -531,7 +531,7 @@ public class UncollateralizedNettingNeutralStochastic {
 				);
 			}
 
-			MarketPath np = new MarketPath (aNV);
+			MarketPath np = MarketPath.FromMarketVertexArray (aNV);
 
 			CollateralGroupPath[] aCGP1 = new CollateralGroupPath[] {
 				new CollateralGroupPath (

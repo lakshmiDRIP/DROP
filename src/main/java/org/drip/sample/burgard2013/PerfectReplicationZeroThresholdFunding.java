@@ -369,7 +369,7 @@ public class PerfectReplicationZeroThresholdFunding {
 				dblValueStart2 = dblValueEnd2;
 			}
 
-			MarketPath np = new MarketPath (aMV);
+			MarketPath np = MarketPath.FromMarketVertexArray (aMV);
 
 			CollateralGroupPath[] aCGP1 = new CollateralGroupPath[] {
 				new CollateralGroupPath (

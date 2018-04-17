@@ -605,7 +605,7 @@ public class SetOffUncollateralizedFundingStochastic {
 				}
 			}
 
-			MarketPath np = new MarketPath (aMV);
+			MarketPath np = MarketPath.FromMarketVertexArray (aMV);
 
 			CollateralGroupPath[] aCGP1 = new CollateralGroupPath[] {
 				new CollateralGroupPath (

@@ -410,10 +410,12 @@ public class PortfolioPathAggregationCorrelated {
 				);
 			}
 
+			MarketPath marketPath = MarketPath.FromMarketVertexArray (aMV);
+
 			CollateralGroupPath[] aHGP = new CollateralGroupPath[] {
 				new CollateralGroupPath (
 					aHGVR,
-					new MarketPath (aMV)
+					marketPath
 				)
 			};
 
@@ -423,10 +425,10 @@ public class PortfolioPathAggregationCorrelated {
 						new AlbaneseAndersenNettingGroupPath[] {
 							new AlbaneseAndersenNettingGroupPath (
 								aHGP,
-								new MarketPath (aMV)
+								marketPath
 							)
 						},
-						new MarketPath (aMV)
+						marketPath
 					)
 				}
 			);

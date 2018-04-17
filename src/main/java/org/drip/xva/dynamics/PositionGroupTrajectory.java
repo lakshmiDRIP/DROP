@@ -69,7 +69,7 @@ package org.drip.xva.dynamics;
 public class PositionGroupTrajectory
 {
 	private double[][] _positionGroupArrayVertex = null;
-	private org.drip.xva.universe.MarketVertex[] _marketVertexArray = null;
+	private org.drip.xva.universe.MarketPath _marketPath = null;
 	private org.drip.xva.proto.PositionGroupSpecification _positionGroupSpecification = null;
 
 	private org.drip.measure.bridge.BrokenDateInterpolator brokenDateInterpolator (
@@ -78,13 +78,15 @@ public class PositionGroupTrajectory
 	{
 		int brokenDateScheme = _positionGroupSpecification.brokenDateScheme();
 
+		org.drip.analytics.date.JulianDate[] vertexDateArray = _marketPath.anchorDates();
+
 		try
 		{
 			if (org.drip.xva.settings.BrokenDateScheme.LINEAR_TIME == brokenDateScheme)
 			{
 				return 0 == vertexIndex ? null : new org.drip.measure.bridge.BrokenDateInterpolatorLinearT (
-					_marketVertexArray[vertexIndex - 1].anchorDate().julian(),
-					_marketVertexArray[vertexIndex].anchorDate().julian(),
+					vertexDateArray[vertexIndex - 1].julian(),
+					vertexDateArray[vertexIndex].julian(),
 					_positionGroupArrayVertex[positionGroupIndex][vertexIndex - 1],
 					_positionGroupArrayVertex[positionGroupIndex][vertexIndex]
 				);
@@ -93,8 +95,8 @@ public class PositionGroupTrajectory
 			if (org.drip.xva.settings.BrokenDateScheme.SQUARE_ROOT_OF_TIME == brokenDateScheme)
 			{
 				return 0 == vertexIndex ? null : new org.drip.measure.bridge.BrokenDateInterpolatorSqrtT (
-					_marketVertexArray[vertexIndex - 1].anchorDate().julian(),
-					_marketVertexArray[vertexIndex].anchorDate().julian(),
+					vertexDateArray[vertexIndex - 1].julian(),
+					vertexDateArray[vertexIndex].julian(),
 					_positionGroupArrayVertex[positionGroupIndex][vertexIndex - 1],
 					_positionGroupArrayVertex[positionGroupIndex][vertexIndex]
 				);
@@ -104,9 +106,9 @@ public class PositionGroupTrajectory
 			{
 				return 0 == vertexIndex || 1 == vertexIndex ? null : new
 					org.drip.measure.bridge.BrokenDateInterpolatorBrownian3P (
-						_marketVertexArray[vertexIndex - 2].anchorDate().julian(),
-						_marketVertexArray[vertexIndex - 1].anchorDate().julian(),
-						_marketVertexArray[vertexIndex].anchorDate().julian(),
+						vertexDateArray[vertexIndex - 2].julian(),
+						vertexDateArray[vertexIndex - 1].julian(),
+						vertexDateArray[vertexIndex].julian(),
 						_positionGroupArrayVertex[positionGroupIndex][vertexIndex - 2],
 						_positionGroupArrayVertex[positionGroupIndex][vertexIndex - 1],
 						_positionGroupArrayVertex[positionGroupIndex][vertexIndex]
@@ -135,12 +137,13 @@ public class PositionGroupTrajectory
 			_positionGroupSpecification,
 			brokenDateInterpolator,
 			java.lang.Double.NaN
-		).postingRequirement (_marketVertexArray[vertexIndex].anchorDate());
+		).postingRequirement (_marketPath.anchorDates()[vertexIndex]);
 	}
 
 	private double[][] positionGroupCollateralBalanceArray()
 	{
-		int vertexCount = _marketVertexArray.length;
+		int vertexCount = _marketPath.anchorDates().length;
+
 		int positionGroupCount = _positionGroupArrayVertex.length;
 		double[][] collateralBalanceArray = new double[positionGroupCount][vertexCount];
 
@@ -316,7 +319,7 @@ public class PositionGroupTrajectory
 	 * PositionGroupTrajectory Constructor
 	 * 
 	 * @param positionGroupSpecification The Position Group Specification
-	 * @param marketVertexArray Array of Market Vertexes
+	 * @param marketPath The Market Path
 	 * @param positionGroupArrayVertex Vertexes of the Position Group Array
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
@@ -324,33 +327,25 @@ public class PositionGroupTrajectory
 
 	public PositionGroupTrajectory (
 		final org.drip.xva.proto.PositionGroupSpecification positionGroupSpecification,
-		final org.drip.xva.universe.MarketVertex[] marketVertexArray,
+		final org.drip.xva.universe.MarketPath marketPath,
 		final double[][] positionGroupArrayVertex)
 		throws java.lang.Exception
 	{
 		if (null == (_positionGroupSpecification = positionGroupSpecification) ||
-			null == (_marketVertexArray = marketVertexArray) ||
+			null == (_marketPath = marketPath) ||
 			null == (_positionGroupArrayVertex = positionGroupArrayVertex))
 		{
 			throw new java.lang.Exception ("PositionGroupTrajectory Constructor => Invalid Inputs");
 		}
 
-		int vertexCount = _marketVertexArray.length;
 		int positionGroupCount = _positionGroupArrayVertex.length;
 
-		if (0 == vertexCount ||
-			0 == positionGroupCount)
+		if (0 == positionGroupCount)
 		{
 			throw new java.lang.Exception ("PositionGroupTrajectory Constructor => Invalid Inputs");
 		}
 
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			if (null == _marketVertexArray[vertexIndex])
-			{
-				throw new java.lang.Exception ("PositionGroupTrajectory Constructor => Invalid Inputs");
-			}
-		}
+		int vertexCount = _marketPath.anchorDates().length;
 
 		for (int positionGroupIndex = 0; positionGroupIndex < positionGroupCount; ++positionGroupIndex)
 		{
@@ -375,14 +370,14 @@ public class PositionGroupTrajectory
 	}
 
 	/**
-	 * Retrieve the Market Vertex Array
+	 * Retrieve the Market Path
 	 * 
-	 * @return The Market Vertex Array
+	 * @return The Market Path
 	 */
 
-	public org.drip.xva.universe.MarketVertex[] marketVertexArray()
+	public org.drip.xva.universe.MarketPath marketPath()
 	{
-		return _marketVertexArray;
+		return _marketPath;
 	}
 
 	/**
@@ -411,7 +406,9 @@ public class PositionGroupTrajectory
 			return null;
 		}
 
-		int vertexCount = _marketVertexArray.length;
+		org.drip.analytics.date.JulianDate[] vertexDateArray = _marketPath.anchorDates();
+
+		int vertexCount = vertexDateArray.length;
 		int positionGroupCount = _positionGroupArrayVertex.length;
 		org.drip.xva.hypothecation.CollateralGroupVertex[][] positionGroupVertexArray = new
 			org.drip.xva.hypothecation.CollateralGroupVertex[positionGroupCount][vertexCount];
@@ -420,15 +417,18 @@ public class PositionGroupTrajectory
 		{
 			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 			{
+				org.drip.analytics.date.JulianDate vertexDate = vertexDateArray[vertexIndex];
+
 				try
 				{
 					positionGroupVertexArray[positionGroupIndex][vertexIndex] = positionGroupVertex (
-						_marketVertexArray[vertexIndex].anchorDate(),
+						vertexDateArray[vertexIndex],
 						_positionGroupArrayVertex[positionGroupIndex][vertexIndex],
 						0.,
 						collateralBalanceArray[positionGroupIndex][vertexIndex],
-						0 == vertexIndex ? null : _marketVertexArray[vertexIndex - 1],
-						_marketVertexArray[vertexIndex]
+						0 == vertexIndex ? null :
+							_marketPath.marketVertex (vertexDateArray[vertexIndex - 1].julian()),
+							_marketPath.marketVertex (vertexDate.julian())
 					);
 				}
 				catch (java.lang.Exception e)

@@ -190,7 +190,7 @@ public class FixFloatVACounterParty {
 				)
 			);
 
-		MarketPath mp = new MarketPath (aMV);
+		MarketPath mp = MarketPath.FromMarketVertexArray (aMV);
 
 		for (int i = 0; i < iNumPath; ++i) {
 			AlbaneseAndersen[] aHGVR = new AlbaneseAndersen[iNumStep + 1];

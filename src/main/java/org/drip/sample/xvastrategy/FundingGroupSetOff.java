@@ -300,7 +300,7 @@ public class FundingGroupSetOff {
 			);
 		}
 
-		MarketPath mp = new MarketPath (aMV);
+		MarketPath mp = MarketPath.FromMarketVertexArray (aMV);
 
 		CollateralGroupPath[] aCGP1 = new CollateralGroupPath[] {
 			new CollateralGroupPath (

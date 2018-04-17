@@ -67,7 +67,7 @@ package org.drip.xva.holdings;
  * @author Lakshmi Krishnamurthy
  */
 
-public class StreamDV01 extends org.drip.xva.holdings.PositionGroupNumeraire
+public class StreamDV01
 {
 	private org.drip.product.rates.Stream _stream = null;
 
@@ -82,7 +82,7 @@ public class StreamDV01 extends org.drip.xva.holdings.PositionGroupNumeraire
 		return _stream;
 	}
 
-	@Override public double value (
+	public double value (
 		final org.drip.xva.universe.MarketVertex marketVertex)
 		throws java.lang.Exception
 	{

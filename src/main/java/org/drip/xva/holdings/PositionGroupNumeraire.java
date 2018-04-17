@@ -81,7 +81,8 @@ public class PositionGroupNumeraire
 	/**
 	 * Compute the Value of the Position Group at the Market Vertex
 	 * 
-	 * @param marketVertex The Market Vertex
+	 * @param forwardDate The Forward Date
+	 * @param marketPath The Market Path
 	 * 
 	 * @return The Value of the Position Group
 	 * 
@@ -89,7 +90,8 @@ public class PositionGroupNumeraire
 	 */
 
 	public double value (
-		final org.drip.xva.universe.MarketVertex marketVertex)
+		final int forwardDate,
+		final org.drip.xva.universe.MarketPath marketPath)
 		throws java.lang.Exception
 	{
 		return 1.;

@@ -580,7 +580,7 @@ public class CPGAZeroThresholdCorrelated {
 				dblValueStart = dblValueEnd;
 			}
 
-			MarketPath mp = new MarketPath (aMV);
+			MarketPath mp = MarketPath.FromMarketVertexArray (aMV);
 
 			CollateralGroupPath[] aHGP = new CollateralGroupPath[] {
 				new CollateralGroupPath (

@@ -149,31 +149,39 @@ public class PositionGroup
 	/**
 	 * Generate the Position Group Value Array at the specified Vertexes
 	 * 
-	 * @param marketVertexArray The Vertex Market Parameter Array
+	 * @param marketPath The Market Path
 	 * 
 	 * @return The Position Group Value Array
 	 */
 
 	public double[] valueArray (
-		final org.drip.xva.universe.MarketVertex[] marketVertexArray)
+		final org.drip.xva.universe.MarketPath marketPath)
 	{
-		if (null == marketVertexArray)
+		if (null == marketPath)
 		{
 			return null;
 		}
 
-		int vertexCount = marketVertexArray.length;
+		org.drip.analytics.date.JulianDate[] vertexDateArray = marketPath.anchorDates();
+
+		int vertexCount = vertexDateArray.length;
 		double[] positionGroupValueArray = 0 == vertexCount ? null : new double[vertexCount];
 
 		if (0 == vertexCount)
 		{
 			return null;
 		}
+
 		for (int i = 0; i < vertexCount; ++i)
 		{
+			int forwardDate = vertexDateArray[i].julian();
+
 			try {
-				positionGroupValueArray[i] = marketVertexArray[i].positionManifestValue() *
-					_positionGroupNumeraire.value (marketVertexArray[i]);
+				positionGroupValueArray[i] = marketPath.marketVertex (forwardDate).positionManifestValue() *
+					_positionGroupNumeraire.value (
+						forwardDate,
+						marketPath
+					);
 			}
 			catch (java.lang.Exception e)
 			{

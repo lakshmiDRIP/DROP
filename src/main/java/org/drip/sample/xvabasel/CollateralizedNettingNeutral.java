@@ -333,7 +333,7 @@ public class CollateralizedNettingNeutral {
 				dblValueStart2 = dblValueEnd2;
 			}
 
-			MarketPath np = new MarketPath (aNV);
+			MarketPath np = MarketPath.FromMarketVertexArray (aNV);
 
 			CollateralGroupPath[] aCGP1 = new CollateralGroupPath[] {
 				new CollateralGroupPath (

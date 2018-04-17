@@ -333,7 +333,7 @@ public class CollateralizedCollateralReceivable {
 				dblValueStart2 = dblValueEnd2;
 			}
 
-			MarketPath np = new MarketPath (aMV);
+			MarketPath np = MarketPath.FromMarketVertexArray (aMV);
 
 			CollateralGroupPath[] aHGPGround = new CollateralGroupPath[] {
 				new CollateralGroupPath (

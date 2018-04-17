@@ -101,15 +101,16 @@ public class FixFloatBaselDuration extends org.drip.xva.holdings.PositionGroupNu
 	}
 
 	@Override public double value (
-		final org.drip.xva.universe.MarketVertex marketVertex)
+		final int forwardDate,
+		final org.drip.xva.universe.MarketPath marketPath)
 		throws java.lang.Exception
 	{
-		if (null == marketVertex)
+		if (null == marketPath)
 		{
 			throw new java.lang.Exception ("FixFloatBaselDuration::value => Invalid Inputs");
 		}
 
-		double dblTimeToHorizon = 1. * (_maturityDate - marketVertex.anchorDate().julian()) / 365.25;
+		double dblTimeToHorizon = 1. * (_maturityDate - forwardDate) / 365.25;
 
 		return dblTimeToHorizon > 0. ? dblTimeToHorizon : 0.;
 	}

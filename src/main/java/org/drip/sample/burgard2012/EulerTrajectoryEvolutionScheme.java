@@ -1,6 +1,8 @@
 
 package org.drip.sample.burgard2012;
 
+import java.util.Map;
+
 import org.drip.analytics.date.*;
 import org.drip.analytics.support.VertexDateBuilder;
 import org.drip.measure.discrete.SequenceGenerator;
@@ -86,6 +88,23 @@ import org.drip.xva.universe.*;
  */
 
 public class EulerTrajectoryEvolutionScheme {
+
+	private static final MarketVertex[] MarketVertexArray (
+		final Map<Integer, MarketVertex> marketVertexMap)
+		throws Exception
+	{
+		int marketVertexCount = marketVertexMap.size();
+
+		int marketVertexIndex = 0;
+		MarketVertex[] marketVertexArray = new MarketVertex[marketVertexCount];
+
+		for (Map.Entry<Integer, MarketVertex> marketVertexMapEntry : marketVertexMap.entrySet())
+		{
+			marketVertexArray[marketVertexIndex++] = marketVertexMapEntry.getValue();
+		}
+
+		return marketVertexArray;
+	}
 
 	public static final void main (
 		final String[] astrArgs)
@@ -375,12 +394,14 @@ public class EulerTrajectoryEvolutionScheme {
 			)
 		);
 
-		MarketVertex[] aMVBase = mvg.marketVertex (
-			mvInitial,
-			Matrix.Transpose (
-				SequenceGenerator.GaussianJoint (
-					iNumVertex,
-					aadblCorrelationMatrix
+		MarketVertex[] aMVBase = MarketVertexArray (
+			mvg.marketVertex (
+				mvInitial,
+				Matrix.Transpose (
+					SequenceGenerator.GaussianJoint (
+						iNumVertex,
+						aadblCorrelationMatrix
+					)
 				)
 			)
 		);

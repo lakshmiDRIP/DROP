@@ -280,15 +280,15 @@ public class MarketVertexGenerator
 	}
 
 	/**
-	 * Generated the Sequence of the Simulated Market Vertexes
+	 * Generated the Date Map of the Simulated Market Vertexes
 	 * 
 	 * @param initialMarketVertex The Initial Market Vertex
 	 * @param unitEvolverSequence Dual Array of Unit Evolver Sequence
 	 * 
-	 * @return The Array of the Simulated Market Vertexes
+	 * @return The Date Map of the Simulated Market Vertexes
 	 */
 
-	public org.drip.xva.universe.MarketVertex[] marketVertex (
+	public java.util.Map<java.lang.Integer, org.drip.xva.universe.MarketVertex> marketVertex (
 		final org.drip.xva.universe.MarketVertex initialMarketVertex,
 		final double[][] unitEvolverSequence)
 	{
@@ -314,6 +314,7 @@ public class MarketVertexGenerator
 		double clientSurvivalProbabilityExponent = 0.;
 		boolean positionEvolutionOn = null != positionManifest;
 		int terminalDate = _eventDateArray[eventVertexCount - 1];
+		org.drip.xva.universe.MarketVertex headMarketVertex = null;
 		org.drip.measure.realization.JumpDiffusionVertex[] csaNumeraireVertexArray = null;
 		org.drip.measure.realization.JumpDiffusionVertex[] clientHazardRateVertexArray = null;
 		org.drip.measure.realization.JumpDiffusionVertex[] dealerHazardRateVertexArray = null;
@@ -326,8 +327,9 @@ public class MarketVertexGenerator
 		org.drip.measure.realization.JumpDiffusionVertex[] dealerSubordinateRecoveryRateVertexArray = null;
 		org.drip.measure.realization.JumpDiffusionVertex[] dealerSubordinateFundingNumeraireVertexArray =
 			null;
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = new
-			org.drip.xva.universe.MarketVertex[eventVertexCount + 1];
+
+		java.util.Map<java.lang.Integer, org.drip.xva.universe.MarketVertex> marketVertexMap = new
+			java.util.TreeMap<java.lang.Integer, org.drip.xva.universe.MarketVertex>();
 
 		org.drip.xva.universe.MarketVertexEntity initialDealerVertex = initialMarketVertex.dealer();
 
@@ -592,7 +594,7 @@ public class MarketVertexGenerator
 						java.lang.Double.NaN
 					);
 
-				marketVertexArray[eventVertexIndex] = new org.drip.xva.universe.MarketVertex (
+				org.drip.xva.universe.MarketVertex marketVertex = new org.drip.xva.universe.MarketVertex (
 					new org.drip.analytics.date.JulianDate (_eventDateArray[eventVertexIndex - 1]),
 					positionEvolutionOn ? positionManifestVertexArray[eventVertexIndex].value() :
 						java.lang.Double.NaN,
@@ -603,6 +605,16 @@ public class MarketVertexGenerator
 					csaNumeraireFinish,
 					dealerMarketVertex,
 					clientMarketVertex
+				);
+
+				if (1 == eventVertexIndex)
+				{
+					headMarketVertex = marketVertex;
+				}
+
+				marketVertexMap.put (
+					_eventDateArray[eventVertexIndex - 1],
+					marketVertex
 				);
 			}
 			catch (java.lang.Exception e)
@@ -621,32 +633,37 @@ public class MarketVertexGenerator
 
 		try
 		{
-			marketVertexArray[0] = new org.drip.xva.universe.MarketVertex (
-				initialMarketVertex.anchorDate(),
-				initialMarketVertex.positionManifestValue(),
-				initialMarketVertex.overnightRate(),
-				overnightIndexNumeraireStart,
-				marketVertexArray[1].csaRate(),
-				csaNumeraireStart,
-				new org.drip.xva.universe.MarketVertexEntity (
-					initialDealerVertex.survivalProbability(),
-					initialDealerVertex.hazardRate(),
-					initialDealerVertex.seniorRecoveryRate(),
-					marketVertexArray[1].dealer().seniorFundingSpread(),
-					dealerSeniorFundingNumeraireStart,
-					initialDealerVertex.subordinateRecoveryRate(),
-					marketVertexArray[1].dealer().subordinateFundingSpread(),
-					dealerSubordinateFundingNumeraireStart
-				),
-				new org.drip.xva.universe.MarketVertexEntity (
-					initialClientVertex.survivalProbability(),
-					initialClientVertex.hazardRate(),
-					initialClientVertex.seniorRecoveryRate(),
-					marketVertexArray[1].client().seniorFundingSpread(),
-					clientFundingNumeraireStart,
-					java.lang.Double.NaN,
-					java.lang.Double.NaN,
-					java.lang.Double.NaN
+			org.drip.analytics.date.JulianDate generationEpochDate = initialMarketVertex.anchorDate();
+
+			marketVertexMap.put (
+				generationEpochDate.julian(),
+				new org.drip.xva.universe.MarketVertex (
+					generationEpochDate,
+					initialMarketVertex.positionManifestValue(),
+					initialMarketVertex.overnightRate(),
+					overnightIndexNumeraireStart,
+					headMarketVertex.csaRate(),
+					csaNumeraireStart,
+					new org.drip.xva.universe.MarketVertexEntity (
+						initialDealerVertex.survivalProbability(),
+						initialDealerVertex.hazardRate(),
+						initialDealerVertex.seniorRecoveryRate(),
+						headMarketVertex.dealer().seniorFundingSpread(),
+						dealerSeniorFundingNumeraireStart,
+						initialDealerVertex.subordinateRecoveryRate(),
+						headMarketVertex.dealer().subordinateFundingSpread(),
+						dealerSubordinateFundingNumeraireStart
+					),
+					new org.drip.xva.universe.MarketVertexEntity (
+						initialClientVertex.survivalProbability(),
+						initialClientVertex.hazardRate(),
+						initialClientVertex.seniorRecoveryRate(),
+						headMarketVertex.client().seniorFundingSpread(),
+						clientFundingNumeraireStart,
+						java.lang.Double.NaN,
+						java.lang.Double.NaN,
+						java.lang.Double.NaN
+					)
 				)
 			);
 		}
@@ -657,6 +674,6 @@ public class MarketVertexGenerator
 			return null;
 		}
 
-		return marketVertexArray;
+		return marketVertexMap;
 	}
 }

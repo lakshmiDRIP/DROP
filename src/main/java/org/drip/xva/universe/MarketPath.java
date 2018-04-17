@@ -68,23 +68,107 @@ package org.drip.xva.universe;
 
 public class MarketPath
 {
-	private org.drip.xva.universe.MarketVertex[] _marketVertexArray = null;
+	private org.drip.analytics.date.JulianDate[] _vertexDateArray = null;
+	private org.drip.xva.universe.MarketVertex _epochalMarketVertex = null;
+	private org.drip.xva.universe.MarketVertex _terminalMarketVertex = null;
+	private java.util.Map<java.lang.Integer, org.drip.xva.universe.MarketVertex> _marketVertexMap = null;
+
+	/**
+	 * Generate the Market Path from Market Vertex Array
+	 * 
+	 * @param marketVertexArray The Market Vertex Array
+	 * 
+	 * @return The Market Path
+	 */
+
+	public static final MarketPath FromMarketVertexArray (
+		final org.drip.xva.universe.MarketVertex[] marketVertexArray)
+	{
+		if (null == marketVertexArray)
+		{
+			return null;
+		}
+
+		int vertexCount = marketVertexArray.length;
+
+		if (0 == vertexCount)
+		{
+			return null;
+		}
+
+		java.util.Map<java.lang.Integer, org.drip.xva.universe.MarketVertex> marketVertexMap = new
+			java.util.TreeMap<java.lang.Integer, org.drip.xva.universe.MarketVertex>();
+
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+		{
+			int marketVertexDate = marketVertexArray[vertexIndex].anchorDate().julian();
+
+			if (marketVertexMap.containsKey (marketVertexDate))
+			{
+				return null;
+			}
+
+			marketVertexMap.put (
+				marketVertexDate,
+				marketVertexArray[vertexIndex]
+			);
+		}
+
+		try
+		{
+			return new MarketPath (marketVertexMap);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 
 	/**
 	 * MarketPath Constructor
 	 * 
-	 * @param marketVertexArray Array of the Market Vertexes
+	 * @param marketVertexMap Date Map of the Market Vertexes
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public MarketPath (
-		final org.drip.xva.universe.MarketVertex[] marketVertexArray)
+		final java.util.Map<java.lang.Integer, org.drip.xva.universe.MarketVertex> marketVertexMap)
 		throws java.lang.Exception
 	{
-		if (null == (_marketVertexArray = marketVertexArray) || 0 == _marketVertexArray.length)
+		if (null == (_marketVertexMap = marketVertexMap))
 		{
 			throw new java.lang.Exception ("MarketPath Constructor => Invalid Inputs");
+		}
+
+		int vertexCount = _marketVertexMap.size();
+
+		if (0 == _marketVertexMap.size())
+		{
+			throw new java.lang.Exception ("MarketPath Constructor => Invalid Inputs");
+		}
+
+		int vertexIndex = 0;
+		_vertexDateArray = new org.drip.analytics.date.JulianDate[vertexCount];
+
+		for (java.util.Map.Entry<java.lang.Integer, org.drip.xva.universe.MarketVertex>
+			marketVertexMapEntry : _marketVertexMap.entrySet())
+		{
+			org.drip.xva.universe.MarketVertex marketVertex = marketVertexMapEntry.getValue();
+
+			if (0 == vertexIndex)
+			{
+				_epochalMarketVertex = marketVertex;
+			}
+
+			_vertexDateArray[vertexIndex++] = marketVertex.anchorDate();
+
+			if (vertexCount == vertexIndex)
+			{
+				_terminalMarketVertex = marketVertex;
+			}
 		}
 	}
 
@@ -96,26 +180,90 @@ public class MarketPath
 
 	public org.drip.analytics.date.JulianDate[] anchorDates()
 	{
-		int vertexCount = _marketVertexArray.length;
-		org.drip.analytics.date.JulianDate[] vertexDateArray = new
-			org.drip.analytics.date.JulianDate[vertexCount];
-
-		for (int i = 0; i < vertexCount; ++i)
-		{
-			vertexDateArray[i] = _marketVertexArray[i].anchorDate();
-		}
-
-		return vertexDateArray;
+		return _vertexDateArray;
 	}
 
 	/**
-	 * Array of the Market Vertexes
+	 * Retrieve the Map of the Market Vertexes
 	 * 
-	 * @return The Market Vertexes
+	 * @return The Market Vertex Map
 	 */
 
-	public org.drip.xva.universe.MarketVertex[] vertexes()
+	public java.util.Map<java.lang.Integer, org.drip.xva.universe.MarketVertex> marketVertexMap()
 	{
-		return _marketVertexArray;
+		return _marketVertexMap;
+	}
+
+	/**
+	 * Retrieve the Array of the Market Vertexes
+	 * 
+	 * @return The Market Vertex Array
+	 */
+
+	public org.drip.xva.universe.MarketVertex[] marketVertexArray()
+	{
+		int vertexCount = _marketVertexMap.size();
+
+		int vertexIndex = 0;
+		org.drip.xva.universe.MarketVertex[] marketVertexArray = new
+			org.drip.xva.universe.MarketVertex[vertexCount];
+
+		for (java.util.Map.Entry<java.lang.Integer, org.drip.xva.universe.MarketVertex>
+			marketVertexMapEntry : _marketVertexMap.entrySet())
+		{
+			marketVertexArray[vertexIndex++] = marketVertexMapEntry.getValue();
+		}
+
+		return marketVertexArray;
+	}
+
+	/**
+	 * Retrieve the Epochal Market Vertex
+	 * 
+	 * @return The Epochal Market Vertex
+	 */
+
+	public org.drip.xva.universe.MarketVertex epochalMarketVertex()
+	{
+		return _epochalMarketVertex;
+	}
+
+	/**
+	 * Retrieve the Terminal Market Vertex
+	 * 
+	 * @return The Terminal Market Vertex
+	 */
+
+	public org.drip.xva.universe.MarketVertex terminalMarketVertex()
+	{
+		return _terminalMarketVertex;
+	}
+
+	/**
+	 * Indicate if the Market Vertex is available for the Specified Date
+	 * 
+	 * @param vertexDate The Vertex Date
+	 * 
+	 * @return TRUE => The Market Vertex is available for the Specified Date
+	 */
+
+	public boolean containsDate (
+		final int vertexDate)
+	{
+		return _marketVertexMap.containsKey (vertexDate);
+	}
+
+	/**
+	 * Retrieve the Market Vertex for the Specified Date
+	 * 
+	 * @param vertexDate The Vertex Date
+	 * 
+	 * @return The Market Vertex for the Specified Date
+	 */
+
+	public org.drip.xva.universe.MarketVertex marketVertex (
+		final int vertexDate)
+	{
+		return containsDate (vertexDate) ? _marketVertexMap.get (vertexDate) : null;
 	}
 }
