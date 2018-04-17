@@ -530,7 +530,7 @@ public class HedgeErrorBaselProxy
 							)
 						)
 					),
-					new PositionGroupNumeraireFixFloat (maturityDate)
+					new FixFloatBaselDuration (maturityDate)
 				)
 			)
 		);

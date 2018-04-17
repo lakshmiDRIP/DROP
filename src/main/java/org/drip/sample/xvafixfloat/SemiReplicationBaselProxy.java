@@ -530,7 +530,7 @@ public class SemiReplicationBaselProxy
 							)
 						)
 					),
-					new PositionGroupNumeraireFixFloat (maturityDate)
+					new FixFloatBaselDuration (maturityDate)
 				)
 			)
 		);

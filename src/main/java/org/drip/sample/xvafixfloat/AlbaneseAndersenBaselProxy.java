@@ -514,7 +514,7 @@ public class AlbaneseAndersenBaselProxy
 							)
 						)
 					),
-					new PositionGroupNumeraireFixFloat (maturityDate)
+					new FixFloatBaselDuration (maturityDate)
 				)
 			)
 		);

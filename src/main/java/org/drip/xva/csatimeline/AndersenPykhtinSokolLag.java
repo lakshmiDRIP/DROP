@@ -77,20 +77,45 @@ public class AndersenPykhtinSokolLag
 	private int _dealerMarginFlowGap = -1;
 
 	/**
-	 * Generate the "Classical-" Parameterization of AndersenPykhtinSokolLag
+	 * Generate the "Conservative" Parameterization of AndersenPykhtinSokolLag
 	 * 
-	 * @return The "Classical-" Parameterization of AndersenPykhtinSokolLag
+	 * @return The "Conservative" Parameterization of AndersenPykhtinSokolLag
 	 */
 
-	public static final AndersenPykhtinSokolLag ClassicalMinus()
+	public static final AndersenPykhtinSokolLag Conservative()
 	{
 		try
 		{
 			return new AndersenPykhtinSokolLag (
-				10,
-				10,
-				10,
-				10
+				15,
+				9,
+				8,
+				3
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the "Aggressive" Parameterization of AndersenPykhtinSokolLag
+	 * 
+	 * @return The "Aggressive" Parameterization of AndersenPykhtinSokolLag
+	 */
+
+	public static final AndersenPykhtinSokolLag Aggressive()
+	{
+		try
+		{
+			return new AndersenPykhtinSokolLag (
+				7,
+				6,
+				4,
+				4
 			);
 		}
 		catch (java.lang.Exception e)
@@ -116,6 +141,31 @@ public class AndersenPykhtinSokolLag
 				10,
 				0,
 				0
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the "Classical-" Parameterization of AndersenPykhtinSokolLag
+	 * 
+	 * @return The "Classical-" Parameterization of AndersenPykhtinSokolLag
+	 */
+
+	public static final AndersenPykhtinSokolLag ClassicalMinus()
+	{
+		try
+		{
+			return new AndersenPykhtinSokolLag (
+				10,
+				10,
+				10,
+				10
 			);
 		}
 		catch (java.lang.Exception e)

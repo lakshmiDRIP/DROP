@@ -47,13 +47,13 @@ package org.drip.xva.holdings;
  */
 
 /**
- * PositionGroupNumeraireFixFloat evaluates the Numeraire Value of a Fix Float Position Group given the
- *  Realized Market Vertex Array using the Basel Scheme. The References are:
+ * StreamDV01 evaluates the DV01 for the given Stream off of the Realized Market Vertex. The References are:
  *  
- *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
- *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
+ *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
  *  
- *  - Burgard, C., and M. Kjaer (2014): In the Balance, Risk, 24 (11) 72-75.
+ *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
  *  
  *  - Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and the
  *  	Re-Hypothecation Option, eSSRN, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955.
@@ -67,50 +67,52 @@ package org.drip.xva.holdings;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PositionGroupNumeraireFixFloat extends org.drip.xva.holdings.PositionGroupNumeraire
+public class StreamDV01 extends org.drip.xva.holdings.PositionGroupNumeraire
 {
-	public int _maturityDate = -1;
+	private org.drip.product.rates.Stream _stream = null;
 
 	/**
-	 * PositionGroupNumeraireFixFloat Constructor
+	 * Retrieve the Stream
 	 * 
-	 * @param maturityDate The Fix Float Maturity Date
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @return The Stream
 	 */
 
-	public PositionGroupNumeraireFixFloat (
-		final int maturityDate)
-		throws java.lang.Exception
+	public org.drip.product.rates.Stream stream()
 	{
-		if (0 >= (_maturityDate = maturityDate))
-		{
-			throw new java.lang.Exception ("PositionGroupNumeraireFixFloat Constructor => Invalid Inputs");
-		}
-	}
-
-	/**
-	 * Retrieve the Maturity Date
-	 * 
-	 * @return The Maturity Date
-	 */
-
-	public int maturityDate()
-	{
-		return _maturityDate;
+		return _stream;
 	}
 
 	@Override public double value (
 		final org.drip.xva.universe.MarketVertex marketVertex)
 		throws java.lang.Exception
 	{
-		if (null == marketVertex)
+		double dv01 = 0.;
+
+		int forwardDate = marketVertex.anchorDate().julian();
+
+		for (org.drip.analytics.cashflow.CompositePeriod period : _stream.periods())
 		{
-			throw new java.lang.Exception ("PositionGroupNumeraireFixFloat::value => Invalid Inputs");
+			int periodEndDate = period.endDate();
+
+			if (periodEndDate < forwardDate)
+			{
+				continue;
+			}
+
+			org.drip.analytics.output.CompositePeriodCouponMetrics compositePeriodCouponMetrics =
+				period.couponMetrics (
+					forwardDate,
+					null
+				);
+
+			if (null == compositePeriodCouponMetrics)
+			{
+				throw new java.lang.Exception ("StreamDV01::value => Invalid Inputs");
+			}
+
+			dv01 += compositePeriodCouponMetrics.dcf() * period.notional (periodEndDate);
 		}
 
-		double dblTimeToHorizon = 1. * (_maturityDate - marketVertex.anchorDate().julian()) / 365.25;
-
-		return dblTimeToHorizon > 0. ? dblTimeToHorizon : 0.;
+		return dv01;
 	}
 }

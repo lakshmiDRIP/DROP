@@ -530,7 +530,7 @@ public class OneWayBaselProxy
 							)
 						)
 					),
-					new PositionGroupNumeraireFixFloat (maturityDate)
+					new FixFloatBaselDuration (maturityDate)
 				)
 			)
 		);

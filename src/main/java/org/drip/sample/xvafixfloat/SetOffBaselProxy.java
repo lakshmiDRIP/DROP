@@ -530,7 +530,7 @@ public class SetOffBaselProxy
 							)
 						)
 					),
-					new PositionGroupNumeraireFixFloat (maturityDate)
+					new FixFloatBaselDuration (maturityDate)
 				)
 			)
 		);
