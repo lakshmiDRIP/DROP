@@ -2,6 +2,7 @@
 package org.drip.sample.xva;
 
 import org.drip.analytics.date.*;
+import org.drip.exposure.universe.*;
 import org.drip.measure.discrete.SequenceGenerator;
 import org.drip.measure.dynamics.*;
 import org.drip.measure.process.DiffusionEvolver;
@@ -12,7 +13,6 @@ import org.drip.service.env.EnvManager;
 import org.drip.xva.gross.*;
 import org.drip.xva.netting.CollateralGroupPath;
 import org.drip.xva.strategy.*;
-import org.drip.xva.universe.*;
 import org.drip.xva.vertex.AlbaneseAndersen;
 
 /*

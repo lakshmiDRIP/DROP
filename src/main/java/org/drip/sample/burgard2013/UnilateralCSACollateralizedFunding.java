@@ -2,6 +2,7 @@
 package org.drip.sample.burgard2013;
 
 import org.drip.analytics.date.*;
+import org.drip.exposure.universe.*;
 import org.drip.measure.discrete.SequenceGenerator;
 import org.drip.measure.dynamics.DiffusionEvaluatorLinear;
 import org.drip.measure.process.DiffusionEvolver;
@@ -15,7 +16,6 @@ import org.drip.xva.gross.*;
 import org.drip.xva.hypothecation.*;
 import org.drip.xva.netting.CollateralGroupPath;
 import org.drip.xva.strategy.*;
-import org.drip.xva.universe.*;
 import org.drip.xva.vertex.BurgardKjaerBuilder;
 
 /*

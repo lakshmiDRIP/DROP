@@ -2,6 +2,8 @@
 package org.drip.sample.xva;
 
 import org.drip.analytics.date.*;
+import org.drip.exposure.margin.CollateralAmountEstimator;
+import org.drip.exposure.margin.CollateralAmountEstimatorOutput;
 import org.drip.measure.bridge.BrokenDateInterpolatorLinearT;
 import org.drip.measure.discrete.SequenceGenerator;
 import org.drip.measure.dynamics.DiffusionEvaluatorLinear;
@@ -9,8 +11,6 @@ import org.drip.measure.process.DiffusionEvolver;
 import org.drip.measure.realization.*;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.xva.margin.CollateralAmountEstimator;
-import org.drip.xva.margin.CollateralAmountEstimatorOutput;
 import org.drip.xva.proto.*;
 import org.drip.xva.settings.*;
 

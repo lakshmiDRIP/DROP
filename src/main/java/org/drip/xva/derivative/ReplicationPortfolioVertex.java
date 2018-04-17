@@ -211,7 +211,7 @@ public class ReplicationPortfolioVertex
 	 */
 
 	public double dealerPreDefaultPositionValue (
-		final org.drip.xva.universe.MarketVertex marketVertex)
+		final org.drip.exposure.universe.MarketVertex marketVertex)
 		throws java.lang.Exception
 	{
 		if (null == marketVertex)
@@ -220,7 +220,7 @@ public class ReplicationPortfolioVertex
 				("ReplicationPortfolioVertex::dealerPreDefaultPositionValue => Invalid Inputs");
 		}
 
-		org.drip.xva.universe.MarketVertexEntity dealerMarketVertex = marketVertex.dealer();
+		org.drip.exposure.universe.MarketVertexEntity dealerMarketVertex = marketVertex.dealer();
 
 		double value = -1. * dealerMarketVertex.seniorFundingReplicator() * _dealerSeniorNumeraireHoldings;
 
@@ -245,7 +245,7 @@ public class ReplicationPortfolioVertex
 	 */
 
 	public double dealerPostDefaultPositionValue (
-		final org.drip.xva.universe.MarketVertex marketVertex)
+		final org.drip.exposure.universe.MarketVertex marketVertex)
 		throws java.lang.Exception
 	{
 		if (null == marketVertex)
@@ -254,7 +254,7 @@ public class ReplicationPortfolioVertex
 				("ReplicationPortfolioVertex::dealerPostDefaultPositionValue => Invalid Inputs");
 		}
 
-		org.drip.xva.universe.MarketVertexEntity dealerMarketVertex = marketVertex.dealer();
+		org.drip.exposure.universe.MarketVertexEntity dealerMarketVertex = marketVertex.dealer();
 
 		double value = dealerMarketVertex.seniorFundingReplicator() * _dealerSeniorNumeraireHoldings *
 			dealerMarketVertex.seniorRecoveryRate();

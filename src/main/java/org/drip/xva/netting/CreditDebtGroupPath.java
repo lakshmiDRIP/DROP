@@ -71,12 +71,12 @@ package org.drip.xva.netting;
 
 public abstract class CreditDebtGroupPath
 {
-	private org.drip.xva.universe.MarketPath _marketPath = null;
+	private org.drip.exposure.universe.MarketPath _marketPath = null;
 	private org.drip.xva.netting.CollateralGroupPath[] _collateralGroupPathArray = null;
 
 	protected CreditDebtGroupPath (
 		final org.drip.xva.netting.CollateralGroupPath[] collateralGroupPathArray,
-		final org.drip.xva.universe.MarketPath marketPath)
+		final org.drip.exposure.universe.MarketPath marketPath)
 		throws java.lang.Exception
 	{
 		if (null == (_collateralGroupPathArray = collateralGroupPathArray) ||
@@ -119,7 +119,7 @@ public abstract class CreditDebtGroupPath
 	 * @return The Market Path
 	 */
 
-	public org.drip.xva.universe.MarketPath marketPath()
+	public org.drip.exposure.universe.MarketPath marketPath()
 	{
 		return _marketPath;
 	}
@@ -649,7 +649,7 @@ public abstract class CreditDebtGroupPath
 
 	public double unilateralCreditAdjustment()
 	{
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
+		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
 
 		double[] vertexCreditExposurePV = vertexCreditExposurePV();
 
@@ -680,7 +680,7 @@ public abstract class CreditDebtGroupPath
 
 	public double bilateralCreditAdjustment()
 	{
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
+		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
 
 		double[] vertexCreditExposurePV = vertexCreditExposurePV();
 
@@ -724,7 +724,7 @@ public abstract class CreditDebtGroupPath
 
 	public double unilateralDebtAdjustment()
 	{
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
+		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
 
 		double[] vertexDebtExposurePV = vertexDebtExposurePV();
 
@@ -755,7 +755,7 @@ public abstract class CreditDebtGroupPath
 
 	public double bilateralDebtAdjustment()
 	{
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
+		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
 
 		double[] vertexDebtExposurePV = vertexDebtExposurePV();
 
@@ -799,7 +799,7 @@ public abstract class CreditDebtGroupPath
 
 	public double symmetricFundingValueSpread01()
 	{
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
+		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
 
 		double[] vertexCollateralizedExposurePV = vertexCollateralizedExposurePV();
 
@@ -830,7 +830,7 @@ public abstract class CreditDebtGroupPath
 
 	public double unilateralFundingValueSpread01()
 	{
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
+		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
 
 		double[] vertexFundingExposurePV = vertexFundingExposurePV();
 
@@ -862,7 +862,7 @@ public abstract class CreditDebtGroupPath
 
 	public double bilateralFundingValueSpread01()
 	{
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
+		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
 
 		double[] vertexFundingExposurePV = vertexFundingExposurePV();
 
@@ -896,7 +896,7 @@ public abstract class CreditDebtGroupPath
 
 	public double unilateralFundingDebtAdjustment()
 	{
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
+		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
 
 		double[] vertexDebtExposurePV = vertexDebtExposurePV();
 
@@ -927,7 +927,7 @@ public abstract class CreditDebtGroupPath
 
 	public double bilateralFundingDebtAdjustment()
 	{
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
+		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
 
 		double[] vertexDebtExposurePV = vertexDebtExposurePV();
 
@@ -960,7 +960,7 @@ public abstract class CreditDebtGroupPath
 
 	public double unilateralCollateralAdjustment()
 	{
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
+		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
 
 		double[] periodCollateralValueAdjustment = periodCollateralValueAdjustment();
 
@@ -986,7 +986,7 @@ public abstract class CreditDebtGroupPath
 
 	public double bilateralCollateralAdjustment()
 	{
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
+		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
 
 		double[] periodCollateralValueAdjustment = periodCollateralValueAdjustment();
 
@@ -1025,7 +1025,7 @@ public abstract class CreditDebtGroupPath
 
 	public double[] periodSymmetricFundingValueSpread01()
 	{
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
+		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
 
 		double[] vertexCollateralizedExposurePV = vertexCollateralizedExposurePV();
 
@@ -1054,7 +1054,7 @@ public abstract class CreditDebtGroupPath
 
 	public double[] periodUnilateralCreditAdjustment()
 	{
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
+		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
 
 		double[] vertexCreditExposurePV = vertexCreditExposurePV();
 
@@ -1086,7 +1086,7 @@ public abstract class CreditDebtGroupPath
 
 	public double[] periodBilateralCreditAdjustment()
 	{
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
+		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
 
 		double[] vertexCreditExposurePV = vertexCreditExposurePV();
 
@@ -1145,7 +1145,7 @@ public abstract class CreditDebtGroupPath
 
 	public double[] periodUnilateralDebtAdjustment()
 	{
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
+		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
 
 		double[] vertexDebtExposurePV = vertexDebtExposurePV();
 
@@ -1177,7 +1177,7 @@ public abstract class CreditDebtGroupPath
 
 	public double[] periodBilateralDebtAdjustment()
 	{
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
+		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
 
 		double[] vertexDebtExposurePV = vertexDebtExposurePV();
 
@@ -1211,7 +1211,7 @@ public abstract class CreditDebtGroupPath
 
 	public double[] periodUnilateralFundingValueSpread01()
 	{
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
+		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
 
 		double[] vertexFundingExposurePV = vertexFundingExposurePV();
 
@@ -1244,7 +1244,7 @@ public abstract class CreditDebtGroupPath
 
 	public double[] periodBilateralFundingValueSpread01()
 	{
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
+		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
 
 		double[] vertexFundingExposurePV = vertexFundingExposurePV();
 
@@ -1279,7 +1279,7 @@ public abstract class CreditDebtGroupPath
 
 	public double[] periodUnilateralFundingDebtAdjustment()
 	{
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
+		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
 
 		double[] vertexDebtExposurePV = vertexDebtExposurePV();
 
@@ -1311,7 +1311,7 @@ public abstract class CreditDebtGroupPath
 
 	public double[] periodBilateralFundingDebtAdjustment()
 	{
-		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
+		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
 
 		double[] vertexDebtExposurePV = vertexDebtExposurePV();
 

@@ -4,6 +4,7 @@ package org.drip.sample.piterbarg2010;
 import java.util.Map;
 
 import org.drip.analytics.date.*;
+import org.drip.exposure.csadynamics.*;
 import org.drip.function.r1tor1.FlatUnivariate;
 import org.drip.measure.dynamics.*;
 import org.drip.param.valuation.ValuationParams;
@@ -13,7 +14,6 @@ import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.service.template.LatentMarketStateBuilder;
 import org.drip.state.discount.MergedDiscountForwardCurve;
-import org.drip.xva.csadynamics.*;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-

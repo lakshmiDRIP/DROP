@@ -81,7 +81,7 @@ public class CloseOutBilateral extends org.drip.xva.definition.CloseOut
 	 */
 
 	public static final CloseOutBilateral Market (
-		final org.drip.xva.universe.MarketVertex marketVertex)
+		final org.drip.exposure.universe.MarketVertex marketVertex)
 	{
 		if (null == marketVertex)
 		{

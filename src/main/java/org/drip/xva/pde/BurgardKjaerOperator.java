@@ -73,7 +73,7 @@ package org.drip.xva.pde;
 public class BurgardKjaerOperator
 {
 	private org.drip.xva.definition.PDEEvolutionControl _pdeEvolutionControl = null;
-	private org.drip.xva.evolver.PrimarySecurityDynamicsContainer _tradeablesContainer = null;
+	private org.drip.exposure.evolver.PrimarySecurityDynamicsContainer _tradeablesContainer = null;
 
 	/**
 	 * BurgardKjaerOperator Constructor
@@ -85,7 +85,7 @@ public class BurgardKjaerOperator
 	 */
 
 	public BurgardKjaerOperator (
-		final org.drip.xva.evolver.PrimarySecurityDynamicsContainer tradeablesContainer,
+		final org.drip.exposure.evolver.PrimarySecurityDynamicsContainer tradeablesContainer,
 		final org.drip.xva.definition.PDEEvolutionControl pdeEvolutionControl)
 		throws java.lang.Exception
 	{
@@ -102,7 +102,7 @@ public class BurgardKjaerOperator
 	 * @return The Universe of Trade-able Assets
 	 */
 
-	public org.drip.xva.evolver.PrimarySecurityDynamicsContainer tradeablesContainer()
+	public org.drip.exposure.evolver.PrimarySecurityDynamicsContainer tradeablesContainer()
 	{
 		return _tradeablesContainer;
 	}
@@ -129,7 +129,7 @@ public class BurgardKjaerOperator
 	 */
 
 	public org.drip.xva.pde.BurgardKjaerEdgeRun edgeRun (
-		final org.drip.xva.universe.MarketEdge marketEdge,
+		final org.drip.exposure.universe.MarketEdge marketEdge,
 		final org.drip.xva.derivative.EvolutionTrajectoryVertex initialTrajectoryVertex,
 		final double collateral)
 	{
@@ -140,11 +140,11 @@ public class BurgardKjaerOperator
 			return null;
 		}
 
-		org.drip.xva.universe.MarketVertex finalMarketVertex = marketEdge.finish();
+		org.drip.exposure.universe.MarketVertex finalMarketVertex = marketEdge.finish();
 
-		org.drip.xva.universe.MarketVertexEntity finalDealerMarketVertex = finalMarketVertex.dealer();
+		org.drip.exposure.universe.MarketVertexEntity finalDealerMarketVertex = finalMarketVertex.dealer();
 
-		org.drip.xva.universe.MarketVertexEntity finalClientMarketVertex = finalMarketVertex.client();
+		org.drip.exposure.universe.MarketVertexEntity finalClientMarketVertex = finalMarketVertex.client();
 
 		org.drip.xva.derivative.PositionGreekVertex initialPositionGreekVertex =
 			initialTrajectoryVertex.positionGreekVertex();
@@ -210,7 +210,7 @@ public class BurgardKjaerOperator
 	 */
 
 	public org.drip.xva.pde.BurgardKjaerEdgeAttribution edgeRunAttribution (
-		final org.drip.xva.universe.MarketEdge marketEdge,
+		final org.drip.exposure.universe.MarketEdge marketEdge,
 		final org.drip.xva.derivative.EvolutionTrajectoryVertex initialTrajectoryVertex,
 		final double collateral)
 	{
@@ -220,13 +220,13 @@ public class BurgardKjaerOperator
 			return null;
 		}
 
-		org.drip.xva.universe.MarketVertex finalMarketVertex = marketEdge.finish();
+		org.drip.exposure.universe.MarketVertex finalMarketVertex = marketEdge.finish();
 
 		double derivativeXVAValue = initialTrajectoryVertex.positionGreekVertex().derivativeXVAValue();
 
-		org.drip.xva.universe.MarketVertexEntity finalDealerMarketVertex = finalMarketVertex.dealer();
+		org.drip.exposure.universe.MarketVertexEntity finalDealerMarketVertex = finalMarketVertex.dealer();
 
-		org.drip.xva.universe.MarketVertexEntity finalClientMarketVertex = finalMarketVertex.client();
+		org.drip.exposure.universe.MarketVertexEntity finalClientMarketVertex = finalMarketVertex.client();
 
 		double clientRecoveryRate = finalClientMarketVertex.seniorRecoveryRate();
 

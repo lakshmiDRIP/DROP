@@ -207,7 +207,7 @@ public class EvolutionTrajectoryVertex
 	 */
 
 	public double verifyFundingConstraint (
-		final org.drip.xva.universe.MarketVertex marketVertex)
+		final org.drip.exposure.universe.MarketVertex marketVertex)
 		throws java.lang.Exception
 	{
 		if (null == marketVertex)
@@ -216,7 +216,7 @@ public class EvolutionTrajectoryVertex
 				("EvolutionTrajectoryVertex::verifyFundingConstraint => Invalid Inputs");
 		}
 
-		org.drip.xva.universe.MarketVertexEntity dealerMarketVertex = marketVertex.dealer();
+		org.drip.exposure.universe.MarketVertexEntity dealerMarketVertex = marketVertex.dealer();
 
 		double fundingConstraint = _positionGreekVertex.derivativeXVAValue() +
 			dealerMarketVertex.seniorFundingReplicator() *

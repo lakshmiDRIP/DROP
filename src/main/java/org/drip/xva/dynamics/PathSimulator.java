@@ -70,13 +70,13 @@ public class PathSimulator
 {
 	private int _iCount = -1;
 	private int _adjustmentDigestScheme = -1;
-	private org.drip.xva.universe.MarketVertexGenerator _marketVertexGenerator = null;
-	private org.drip.xva.holdings.PositionGroupContainer _positionGroupContainer = null;
+	private org.drip.exposure.universe.MarketVertexGenerator _marketVertexGenerator = null;
+	private org.drip.exposure.holdings.PositionGroupContainer _positionGroupContainer = null;
 
 	private double[][] positionGroupValueArray (
-		final org.drip.xva.universe.MarketPath marketPath)
+		final org.drip.exposure.universe.MarketPath marketPath)
 	{
-		org.drip.xva.holdings.PositionGroup[] positionGroupArray =
+		org.drip.exposure.holdings.PositionGroup[] positionGroupArray =
 			_positionGroupContainer.positionGroupArray();
 
 		org.drip.analytics.date.JulianDate[] vertexDateArray = marketPath.anchorDates();
@@ -114,7 +114,7 @@ public class PathSimulator
 	}
 
 	private boolean collateralGroupPathArray (
-		final org.drip.xva.universe.MarketPath marketPath)
+		final org.drip.exposure.universe.MarketPath marketPath)
 	{
 		org.drip.xva.dynamics.PositionGroupTrajectory collateralGroup = null;
 
@@ -178,8 +178,8 @@ public class PathSimulator
 
 	public static final PathSimulator UnitPositionGroupValue (
 		final int iPathCount,
-		final org.drip.xva.universe.MarketVertexGenerator marketVertexGenerator,
-		final org.drip.xva.holdings.PositionGroupContainer positionGroupContainer)
+		final org.drip.exposure.universe.MarketVertexGenerator marketVertexGenerator,
+		final org.drip.exposure.holdings.PositionGroupContainer positionGroupContainer)
 	{
 		try
 		{
@@ -211,9 +211,9 @@ public class PathSimulator
 
 	public PathSimulator (
 		final int iCount,
-		final org.drip.xva.universe.MarketVertexGenerator marketVertexGenerator,
+		final org.drip.exposure.universe.MarketVertexGenerator marketVertexGenerator,
 		final int adjustmentDigestScheme,
-		final org.drip.xva.holdings.PositionGroupContainer positionGroupContainer)
+		final org.drip.exposure.holdings.PositionGroupContainer positionGroupContainer)
 		throws java.lang.Exception
 	{
 		if (0 >= (_iCount = iCount) ||
@@ -243,7 +243,7 @@ public class PathSimulator
 	 * @return The Market Vertex Generator
 	 */
 
-	public org.drip.xva.universe.MarketVertexGenerator marketVertexGenerator()
+	public org.drip.exposure.universe.MarketVertexGenerator marketVertexGenerator()
 	{
 		return _marketVertexGenerator;
 	}
@@ -265,7 +265,7 @@ public class PathSimulator
 	 * @return Position Group Container
 	 */
 
-	public org.drip.xva.holdings.PositionGroupContainer positionGroupContainer()
+	public org.drip.exposure.holdings.PositionGroupContainer positionGroupContainer()
 	{
 		return _positionGroupContainer;
 	}
@@ -280,12 +280,12 @@ public class PathSimulator
 	 */
 
 	public org.drip.xva.gross.PathExposureAdjustment singleTrajectory (
-		final org.drip.xva.universe.MarketVertex initialMarketVertex,
+		final org.drip.exposure.universe.MarketVertex initialMarketVertex,
 		final double[][] unitEvolverSequence)
 	{
 		try
 		{
-			org.drip.xva.universe.MarketPath marketPath = new org.drip.xva.universe.MarketPath (
+			org.drip.exposure.universe.MarketPath marketPath = new org.drip.exposure.universe.MarketPath (
 				_marketVertexGenerator.marketVertex (
 					initialMarketVertex,
 					unitEvolverSequence
@@ -356,7 +356,7 @@ public class PathSimulator
 	 */
 
 	public org.drip.xva.gross.ExposureAdjustmentAggregator simulate (
-		final org.drip.xva.universe.MarketVertex initialMarketVertex,
+		final org.drip.exposure.universe.MarketVertex initialMarketVertex,
 		final org.drip.measure.discrete.CorrelatedPathVertexDimension correlatedPathVertexDimension)
 	{
 		if (null == correlatedPathVertexDimension)

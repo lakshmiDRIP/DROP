@@ -69,7 +69,7 @@ package org.drip.xva.dynamics;
 public class PositionGroupTrajectory
 {
 	private double[][] _positionGroupArrayVertex = null;
-	private org.drip.xva.universe.MarketPath _marketPath = null;
+	private org.drip.exposure.universe.MarketPath _marketPath = null;
 	private org.drip.xva.proto.PositionGroupSpecification _positionGroupSpecification = null;
 
 	private org.drip.measure.bridge.BrokenDateInterpolator brokenDateInterpolator (
@@ -133,7 +133,7 @@ public class PositionGroupTrajectory
 			vertexIndex
 		);
 
-		return null == brokenDateInterpolator ? 0. : new org.drip.xva.margin.CollateralAmountEstimator (
+		return null == brokenDateInterpolator ? 0. : new org.drip.exposure.margin.CollateralAmountEstimator (
 			_positionGroupSpecification,
 			brokenDateInterpolator,
 			java.lang.Double.NaN
@@ -175,8 +175,8 @@ public class PositionGroupTrajectory
 		final double positionGroupValue,
 		final double realizedCashFlow,
 		final double collateralBalance,
-		final org.drip.xva.universe.MarketVertex marketVertexLeft,
-		final org.drip.xva.universe.MarketVertex marketVertexRight)
+		final org.drip.exposure.universe.MarketVertex marketVertexLeft,
+		final org.drip.exposure.universe.MarketVertex marketVertexRight)
 	{
 		int closeOutScheme = _positionGroupSpecification.closeOutScheme();
 
@@ -209,7 +209,7 @@ public class PositionGroupTrajectory
 						realizedCashFlow,
 						collateralBalance,
 						_positionGroupSpecification.hedgeError(),
-						new org.drip.xva.universe.MarketEdge (
+						new org.drip.exposure.universe.MarketEdge (
 							marketVertexLeft,
 							marketVertexRight
 						),
@@ -231,7 +231,7 @@ public class PositionGroupTrajectory
 						positionGroupValue,
 						realizedCashFlow,
 						collateralBalance,
-						new org.drip.xva.universe.MarketEdge (
+						new org.drip.exposure.universe.MarketEdge (
 							marketVertexLeft,
 							marketVertexRight
 						),
@@ -252,7 +252,7 @@ public class PositionGroupTrajectory
 						anchorDate,
 						positionGroupValue,
 						realizedCashFlow,
-						new org.drip.xva.universe.MarketEdge (
+						new org.drip.exposure.universe.MarketEdge (
 							marketVertexLeft,
 							marketVertexRight
 						),
@@ -273,7 +273,7 @@ public class PositionGroupTrajectory
 						anchorDate,
 						positionGroupValue,
 						realizedCashFlow,
-						new org.drip.xva.universe.MarketEdge (
+						new org.drip.exposure.universe.MarketEdge (
 							marketVertexLeft,
 							marketVertexRight
 						),
@@ -295,7 +295,7 @@ public class PositionGroupTrajectory
 						positionGroupValue,
 						realizedCashFlow,
 						collateralBalance,
-						new org.drip.xva.universe.MarketEdge (
+						new org.drip.exposure.universe.MarketEdge (
 							marketVertexLeft,
 							marketVertexRight
 						)
@@ -327,7 +327,7 @@ public class PositionGroupTrajectory
 
 	public PositionGroupTrajectory (
 		final org.drip.xva.proto.PositionGroupSpecification positionGroupSpecification,
-		final org.drip.xva.universe.MarketPath marketPath,
+		final org.drip.exposure.universe.MarketPath marketPath,
 		final double[][] positionGroupArrayVertex)
 		throws java.lang.Exception
 	{
@@ -375,7 +375,7 @@ public class PositionGroupTrajectory
 	 * @return The Market Path
 	 */
 
-	public org.drip.xva.universe.MarketPath marketPath()
+	public org.drip.exposure.universe.MarketPath marketPath()
 	{
 		return _marketPath;
 	}

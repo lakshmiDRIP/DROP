@@ -85,7 +85,7 @@ public class BurgardKjaerBuilder
 	public static final org.drip.xva.vertex.BurgardKjaer Initial (
 		final org.drip.analytics.date.JulianDate anchorDate,
 		final double forward,
-		final org.drip.xva.universe.MarketVertex marketVertex,
+		final org.drip.exposure.universe.MarketVertex marketVertex,
 		final org.drip.xva.definition.CloseOut closeOutScheme)
 	{
 		if (null == marketVertex)
@@ -115,7 +115,7 @@ public class BurgardKjaerBuilder
 
 		double dealerDefaultCloseOut = collateralGroupVertexCloseOut.dealer();
 
-		org.drip.xva.universe.MarketVertexEntity dealerMarketVertex = marketVertex.dealer();
+		org.drip.exposure.universe.MarketVertexEntity dealerMarketVertex = marketVertex.dealer();
 
 		double dealerSubordinateFundingMarketVertex = dealerMarketVertex.subordinateFundingReplicator();
 
@@ -175,7 +175,7 @@ public class BurgardKjaerBuilder
 	public static final org.drip.xva.vertex.BurgardKjaer DealerPortfolioBuilder (
 		final org.drip.analytics.date.JulianDate anchorDate,
 		final org.drip.xva.hypothecation.CollateralGroupVertexExposure collateralGroupVertexExposure,
-		final org.drip.xva.universe.MarketEdge marketEdge,
+		final org.drip.exposure.universe.MarketEdge marketEdge,
 		final org.drip.xva.hypothecation.CollateralGroupVertexCloseOut collateralGroupVertexCloseOut,
 		final org.drip.xva.vertex.BurgardKjaerExposure burgardKjaerVertexExposure)
 	{
@@ -191,11 +191,11 @@ public class BurgardKjaerBuilder
 
 		double dealerDefaultCloseOut = collateralGroupVertexCloseOut.dealer();
 
-		org.drip.xva.universe.MarketVertex marketVertexStart = marketEdge.start();
+		org.drip.exposure.universe.MarketVertex marketVertexStart = marketEdge.start();
 
-		org.drip.xva.universe.MarketVertex marketVertexFinish = marketEdge.finish();
+		org.drip.exposure.universe.MarketVertex marketVertexFinish = marketEdge.finish();
 
-		org.drip.xva.universe.MarketVertexEntity dealerMarketVertexFinish = marketVertexFinish.dealer();
+		org.drip.exposure.universe.MarketVertexEntity dealerMarketVertexFinish = marketVertexFinish.dealer();
 
 		double dealerSubordinateFundingMarketVertexFinish = dealerMarketVertexFinish.subordinateFundingReplicator();
 
@@ -270,7 +270,7 @@ public class BurgardKjaerBuilder
 		final double realizedCashFlow,
 		final double collateralBalance,
 		final double hedgeError,
-		final org.drip.xva.universe.MarketEdge marketEdge,
+		final org.drip.exposure.universe.MarketEdge marketEdge,
 		final org.drip.xva.definition.CloseOut closeOutScheme)
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (exposure) ||
@@ -342,7 +342,7 @@ public class BurgardKjaerBuilder
 		final double exposure,
 		final double realizedCashFlow,
 		final double collateralBalance,
-		final org.drip.xva.universe.MarketEdge marketEdge,
+		final org.drip.exposure.universe.MarketEdge marketEdge,
 		final org.drip.xva.definition.CloseOut closeOutScheme)
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (exposure) ||
@@ -402,7 +402,7 @@ public class BurgardKjaerBuilder
 		final org.drip.analytics.date.JulianDate anchorDate,
 		final double exposure,
 		final double realizedCashFlow,
-		final org.drip.xva.universe.MarketEdge marketEdge,
+		final org.drip.exposure.universe.MarketEdge marketEdge,
 		final org.drip.xva.definition.CloseOut closeOutScheme)
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (exposure) ||
@@ -459,7 +459,7 @@ public class BurgardKjaerBuilder
 		final org.drip.analytics.date.JulianDate anchorDate,
 		final double exposure,
 		final double realizedCashFlow,
-		final org.drip.xva.universe.MarketEdge marketEdge,
+		final org.drip.exposure.universe.MarketEdge marketEdge,
 		final org.drip.xva.definition.CloseOut closeOutScheme)
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (exposure) ||
@@ -518,7 +518,7 @@ public class BurgardKjaerBuilder
 		final double exposure,
 		final double realizedCashFlow,
 		final double collateralBalance,
-		final org.drip.xva.universe.MarketEdge marketEdge)
+		final org.drip.exposure.universe.MarketEdge marketEdge)
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (exposure) ||
 			!org.drip.quant.common.NumberUtil.IsValid (realizedCashFlow) ||
@@ -527,7 +527,7 @@ public class BurgardKjaerBuilder
 			return null;
 		}
 
-		org.drip.xva.universe.MarketVertex marketVertexFinish = marketEdge.finish();
+		org.drip.exposure.universe.MarketVertex marketVertexFinish = marketEdge.finish();
 
 		double dealerSeniorRecoveryRateFinish = marketVertexFinish.dealer().seniorRecoveryRate();
 

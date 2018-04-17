@@ -70,7 +70,7 @@ package org.drip.xva.netting;
 
 public class CollateralGroupPath
 {
-	private org.drip.xva.universe.MarketPath _marketPath = null;
+	private org.drip.exposure.universe.MarketPath _marketPath = null;
 	private double _overnightReplicatorStart = java.lang.Double.NaN;
 	private org.drip.xva.hypothecation.CollateralGroupVertex[] _collateralGroupVertexArray = null;
 
@@ -85,7 +85,7 @@ public class CollateralGroupPath
 
 	public CollateralGroupPath (
 		final org.drip.xva.hypothecation.CollateralGroupVertex[] collateralGroupVertexArray,
-		final org.drip.xva.universe.MarketPath marketPath)
+		final org.drip.exposure.universe.MarketPath marketPath)
 		throws java.lang.Exception
 	{
 		if (null == (_collateralGroupVertexArray = collateralGroupVertexArray) ||
@@ -135,7 +135,7 @@ public class CollateralGroupPath
 	 * @return The Market Path
 	 */
 
-	public org.drip.xva.universe.MarketPath marketPath()
+	public org.drip.exposure.universe.MarketPath marketPath()
 	{
 		return _marketPath;
 	}

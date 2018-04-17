@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.drip.analytics.date.*;
 import org.drip.analytics.support.VertexDateBuilder;
+import org.drip.exposure.evolver.*;
+import org.drip.exposure.universe.*;
 import org.drip.measure.discrete.SequenceGenerator;
 import org.drip.measure.dynamics.*;
 import org.drip.measure.process.*;
@@ -12,8 +14,6 @@ import org.drip.quant.common.FormatUtil;
 import org.drip.quant.linearalgebra.Matrix;
 import org.drip.service.env.EnvManager;
 import org.drip.state.identifier.*;
-import org.drip.xva.evolver.*;
-import org.drip.xva.universe.*;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -129,7 +129,7 @@ public class XVAMarketGeneration {
 		};
 
 		double dblAssetNumeraireDrift = 0.06;
-		double dblAssetNumeraireVolatility = 0.10;
+		double dblAssetNumeraireVolatility = 0.010;
 		double dblAssetNumeraireRepo = 0.03;
 		double dblAssetNumeraireDividend = 0.02;
 		double dblAssetNumeraireInitial = 1.;
