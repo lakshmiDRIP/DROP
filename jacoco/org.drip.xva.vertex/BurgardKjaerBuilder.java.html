@@ -85,7 +85,7 @@ package org.drip.xva.vertex;
 	public static final org.drip.xva.vertex.BurgardKjaer Initial (
 		final org.drip.analytics.date.JulianDate anchorDate,
 		final double forward,
-		final org.drip.xva.universe.MarketVertex marketVertex,
+		final org.drip.exposure.universe.MarketVertex marketVertex,
 		final org.drip.xva.definition.CloseOut closeOutScheme)
 	{
 <span class="pc bpc" id="L91" title="1 of 2 branches missed.">		if (null == marketVertex)</span>
@@ -115,7 +115,7 @@ package org.drip.xva.vertex;
 
 <span class="fc" id="L116">		double dealerDefaultCloseOut = collateralGroupVertexCloseOut.dealer();</span>
 
-<span class="fc" id="L118">		org.drip.xva.universe.MarketVertexEntity dealerMarketVertex = marketVertex.dealer();</span>
+<span class="fc" id="L118">		org.drip.exposure.universe.MarketVertexEntity dealerMarketVertex = marketVertex.dealer();</span>
 
 <span class="fc" id="L120">		double dealerSubordinateFundingMarketVertex = dealerMarketVertex.subordinateFundingReplicator();</span>
 
@@ -175,7 +175,7 @@ package org.drip.xva.vertex;
 	public static final org.drip.xva.vertex.BurgardKjaer DealerPortfolioBuilder (
 		final org.drip.analytics.date.JulianDate anchorDate,
 		final org.drip.xva.hypothecation.CollateralGroupVertexExposure collateralGroupVertexExposure,
-		final org.drip.xva.universe.MarketEdge marketEdge,
+		final org.drip.exposure.universe.MarketEdge marketEdge,
 		final org.drip.xva.hypothecation.CollateralGroupVertexCloseOut collateralGroupVertexCloseOut,
 		final org.drip.xva.vertex.BurgardKjaerExposure burgardKjaerVertexExposure)
 	{
@@ -191,11 +191,11 @@ package org.drip.xva.vertex;
 
 <span class="fc" id="L192">		double dealerDefaultCloseOut = collateralGroupVertexCloseOut.dealer();</span>
 
-<span class="fc" id="L194">		org.drip.xva.universe.MarketVertex marketVertexStart = marketEdge.start();</span>
+<span class="fc" id="L194">		org.drip.exposure.universe.MarketVertex marketVertexStart = marketEdge.start();</span>
 
-<span class="fc" id="L196">		org.drip.xva.universe.MarketVertex marketVertexFinish = marketEdge.finish();</span>
+<span class="fc" id="L196">		org.drip.exposure.universe.MarketVertex marketVertexFinish = marketEdge.finish();</span>
 
-<span class="fc" id="L198">		org.drip.xva.universe.MarketVertexEntity dealerMarketVertexFinish = marketVertexFinish.dealer();</span>
+<span class="fc" id="L198">		org.drip.exposure.universe.MarketVertexEntity dealerMarketVertexFinish = marketVertexFinish.dealer();</span>
 
 <span class="fc" id="L200">		double dealerSubordinateFundingMarketVertexFinish = dealerMarketVertexFinish.subordinateFundingReplicator();</span>
 
@@ -270,7 +270,7 @@ package org.drip.xva.vertex;
 		final double realizedCashFlow,
 		final double collateralBalance,
 		final double hedgeError,
-		final org.drip.xva.universe.MarketEdge marketEdge,
+		final org.drip.exposure.universe.MarketEdge marketEdge,
 		final org.drip.xva.definition.CloseOut closeOutScheme)
 	{
 <span class="pc bpc" id="L276" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (exposure) ||</span>
@@ -342,7 +342,7 @@ package org.drip.xva.vertex;
 		final double exposure,
 		final double realizedCashFlow,
 		final double collateralBalance,
-		final org.drip.xva.universe.MarketEdge marketEdge,
+		final org.drip.exposure.universe.MarketEdge marketEdge,
 		final org.drip.xva.definition.CloseOut closeOutScheme)
 	{
 <span class="pc bpc" id="L348" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (exposure) ||</span>
@@ -402,7 +402,7 @@ package org.drip.xva.vertex;
 		final org.drip.analytics.date.JulianDate anchorDate,
 		final double exposure,
 		final double realizedCashFlow,
-		final org.drip.xva.universe.MarketEdge marketEdge,
+		final org.drip.exposure.universe.MarketEdge marketEdge,
 		final org.drip.xva.definition.CloseOut closeOutScheme)
 	{
 <span class="pc bpc" id="L408" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (exposure) ||</span>
@@ -459,7 +459,7 @@ package org.drip.xva.vertex;
 		final org.drip.analytics.date.JulianDate anchorDate,
 		final double exposure,
 		final double realizedCashFlow,
-		final org.drip.xva.universe.MarketEdge marketEdge,
+		final org.drip.exposure.universe.MarketEdge marketEdge,
 		final org.drip.xva.definition.CloseOut closeOutScheme)
 	{
 <span class="pc bpc" id="L465" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (exposure) ||</span>
@@ -518,7 +518,7 @@ package org.drip.xva.vertex;
 		final double exposure,
 		final double realizedCashFlow,
 		final double collateralBalance,
-		final org.drip.xva.universe.MarketEdge marketEdge)
+		final org.drip.exposure.universe.MarketEdge marketEdge)
 	{
 <span class="pc bpc" id="L523" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (exposure) ||</span>
 <span class="pc bpc" id="L524" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (realizedCashFlow) ||</span>
@@ -527,7 +527,7 @@ package org.drip.xva.vertex;
 <span class="nc" id="L527">			return null;</span>
 		}
 
-<span class="fc" id="L530">		org.drip.xva.universe.MarketVertex marketVertexFinish = marketEdge.finish();</span>
+<span class="fc" id="L530">		org.drip.exposure.universe.MarketVertex marketVertexFinish = marketEdge.finish();</span>
 
 <span class="fc" id="L532">		double dealerSeniorRecoveryRateFinish = marketVertexFinish.dealer().seniorRecoveryRate();</span>
 

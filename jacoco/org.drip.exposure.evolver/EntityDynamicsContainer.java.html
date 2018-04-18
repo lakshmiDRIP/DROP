@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EntityDynamicsContainer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.exposure.evolver</a> &gt; <span class="el_source">EntityDynamicsContainer.java</span></div><h1>EntityDynamicsContainer.java</h1><pre class="source lang-java linenums">
+package org.drip.exposure.evolver;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * EntityDynamicsContainer contains the Dealer and the Client Hazard and Recovery Latent State Evolvers. The
+ *  References are:&lt;br&gt;&lt;br&gt;
+ *  
+ *  - Burgard, C., and M. Kjaer (2013): Funding Strategies, Funding Costs &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;24 (12)&lt;/b&gt;
+ *  	82-87.&lt;br&gt;&lt;br&gt;
+ *  
+ *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
+ *  	and Funding Costs &lt;i&gt;Journal of Credit Risk&lt;/i&gt; &lt;b&gt;7 (3)&lt;/b&gt; 1-19.&lt;br&gt;&lt;br&gt;
+ *  
+ *  - Burgard, C., and M. Kjaer (2014): In the Balance &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;24 (11)&lt;/b&gt; 72-75.&lt;br&gt;&lt;br&gt;
+ *  
+ *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;20 (2)&lt;/b&gt;
+ *  	86-90.&lt;br&gt;&lt;br&gt;
+ * 
+ *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing
+ *  	&lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;21 (2)&lt;/b&gt; 97-102.&lt;br&gt;&lt;br&gt;
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class EntityDynamicsContainer extends org.drip.exposure.evolver.DynamicsContainer
+{
+<span class="fc" id="L72">	private org.drip.state.identifier.EntityHazardLabel _clientHazardLabel = null;</span>
+<span class="fc" id="L73">	private org.drip.state.identifier.EntityHazardLabel _dealerHazardLabel = null;</span>
+<span class="fc" id="L74">	private org.drip.state.identifier.EntityRecoveryLabel _clientRecoveryLabel = null;</span>
+<span class="fc" id="L75">	private org.drip.state.identifier.EntityRecoveryLabel _dealerSeniorRecoveryLabel = null;</span>
+<span class="fc" id="L76">	private org.drip.state.identifier.EntityRecoveryLabel _dealerSubordinateRecoveryLabel = null;</span>
+
+	/**
+	 * EntityDynamicsContainer Constructor
+	 * 
+	 * @param dealerHazardLatentState The Dealer Hazard Rate Latent State
+	 * @param dealerSeniorRecoveryLatentState The Dealer Senior Recovery Rate Latent State
+	 * @param dealerSubordinateRecoveryLatentState The Dealer Subordinate Rate Latent State
+	 * @param clientHazardLatentState The Client Hazard Rate Latent State
+	 * @param clientRecoveryLatentState The Client Recovery Rate Latent State
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public EntityDynamicsContainer (
+		final org.drip.exposure.evolver.TerminalLatentState dealerHazardLatentState,
+		final org.drip.exposure.evolver.TerminalLatentState dealerSeniorRecoveryLatentState,
+		final org.drip.exposure.evolver.TerminalLatentState dealerSubordinateRecoveryLatentState,
+		final org.drip.exposure.evolver.TerminalLatentState clientHazardLatentState,
+		final org.drip.exposure.evolver.TerminalLatentState clientRecoveryLatentState)
+		throws java.lang.Exception
+<span class="fc" id="L97">	{</span>
+<span class="pc bpc" id="L98" title="4 of 8 branches missed.">		if (null == dealerHazardLatentState ||</span>
+			null == dealerSeniorRecoveryLatentState ||
+			null == clientHazardLatentState ||
+			null == clientRecoveryLatentState)
+		{
+<span class="nc" id="L103">			throw new java.lang.Exception (&quot;EntityDynamicsContainer Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="fc" id="L106">		org.drip.state.identifier.LatentStateLabel dealerHazardLabel = dealerHazardLatentState.label();</span>
+
+<span class="fc" id="L108">		org.drip.state.identifier.LatentStateLabel dealerSeniorRecoveryLabel =</span>
+<span class="fc" id="L109">			dealerSeniorRecoveryLatentState.label();</span>
+
+<span class="fc" id="L111">		org.drip.state.identifier.LatentStateLabel clientHazardLabel = clientHazardLatentState.label();</span>
+
+<span class="fc" id="L113">		org.drip.state.identifier.LatentStateLabel clientRecoveryLabel = clientRecoveryLatentState.label();</span>
+
+<span class="pc bpc" id="L115" title="4 of 8 branches missed.">		if (!(dealerHazardLabel instanceof org.drip.state.identifier.EntityHazardLabel) ||</span>
+			!(dealerSeniorRecoveryLabel instanceof org.drip.state.identifier.EntityRecoveryLabel) ||
+			!(clientHazardLabel instanceof org.drip.state.identifier.EntityHazardLabel) ||
+			!(clientRecoveryLabel instanceof org.drip.state.identifier.EntityRecoveryLabel) ||
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">			!addTerminalLatentState (dealerHazardLatentState) ||</span>
+<span class="pc bpc" id="L120" title="1 of 2 branches missed.">			!addTerminalLatentState (dealerSeniorRecoveryLatentState) ||</span>
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">			!addTerminalLatentState (clientHazardLatentState) ||</span>
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">			!addTerminalLatentState (clientRecoveryLatentState))</span>
+		{
+<span class="nc" id="L124">			throw new java.lang.Exception (&quot;EntityDynamicsContainer Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="fc" id="L127">		_dealerHazardLabel = (org.drip.state.identifier.EntityHazardLabel) dealerHazardLabel;</span>
+<span class="fc" id="L128">		_clientHazardLabel = (org.drip.state.identifier.EntityHazardLabel) clientHazardLabel;</span>
+<span class="fc" id="L129">		_dealerSeniorRecoveryLabel = (org.drip.state.identifier.EntityRecoveryLabel)</span>
+			dealerSeniorRecoveryLabel;
+<span class="fc" id="L131">		_clientRecoveryLabel = (org.drip.state.identifier.EntityRecoveryLabel) clientRecoveryLabel;</span>
+
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">		if (null != dealerSubordinateRecoveryLatentState)</span>
+		{
+<span class="fc" id="L135">			org.drip.state.identifier.LatentStateLabel dealerSubordinateRecoveryLabel =</span>
+<span class="fc" id="L136">				dealerSubordinateRecoveryLatentState.label();</span>
+
+<span class="pc bpc" id="L138" title="1 of 2 branches missed.">			if (!(dealerSubordinateRecoveryLabel instanceof org.drip.state.identifier.EntityRecoveryLabel) ||</span>
+<span class="pc bpc" id="L139" title="1 of 2 branches missed.">				!addTerminalLatentState (dealerSubordinateRecoveryLatentState))</span>
+			{
+<span class="nc" id="L141">				throw new java.lang.Exception (&quot;EntityDynamicsContainer Constructor =&gt; Invalid Inputs&quot;);</span>
+			}
+
+<span class="fc" id="L144">			_dealerSubordinateRecoveryLabel = (org.drip.state.identifier.EntityRecoveryLabel)</span>
+				dealerSubordinateRecoveryLabel;
+		}
+<span class="fc" id="L147">	}</span>
+
+	/**
+	 * Retrieve the Dealer Hazard Rate Evolver
+	 * 
+	 * @return The Dealer Hazard Rate Evolver
+	 */
+
+	public org.drip.measure.process.DiffusionEvolver dealerHazardRateEvolver()
+	{
+<span class="fc" id="L157">		return terminalLatentStateContainer().entityHazard (_dealerHazardLabel).evolver();</span>
+	}
+
+	/**
+	 * Retrieve the Dealer Senior Recovery Rate Evolver
+	 * 
+	 * @return The Dealer Senior Recovery Rate Evolver
+	 */
+
+	public org.drip.measure.process.DiffusionEvolver dealerSeniorRecoveryRateEvolver()
+	{
+<span class="fc" id="L168">		return terminalLatentStateContainer().entityRecovery (_dealerSeniorRecoveryLabel).evolver();</span>
+	}
+
+	/**
+	 * Retrieve the Dealer Subordinate Recovery Rate Evolver
+	 * 
+	 * @return The Dealer Subordinate Recovery Rate Evolver
+	 */
+
+	public org.drip.measure.process.DiffusionEvolver dealerSubordinateRecoveryRateEvolver()
+	{
+<span class="fc" id="L179">		org.drip.exposure.evolver.TerminalLatentState terminalLatentStateDealerSubordinateRecovery =</span>
+<span class="fc" id="L180">			terminalLatentStateContainer().entityRecovery (_dealerSubordinateRecoveryLabel);</span>
+
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">		return null == terminalLatentStateDealerSubordinateRecovery ? null :</span>
+<span class="fc" id="L183">			terminalLatentStateDealerSubordinateRecovery.evolver();</span>
+	}
+
+	/**
+	 * Retrieve the Client Hazard Rate Evolver
+	 * 
+	 * @return The Client Hazard Rate Evolver
+	 */
+
+	public org.drip.measure.process.DiffusionEvolver clientHazardRateEvolver()
+	{
+<span class="fc" id="L194">		return terminalLatentStateContainer().entityHazard (_clientHazardLabel).evolver();</span>
+	}
+
+	/**
+	 * Retrieve the Client Recovery Rate Evolver
+	 * 
+	 * @return The Client Recovery Rate Evolver
+	 */
+
+	public org.drip.measure.process.DiffusionEvolver clientRecoveryRateEvolver()
+	{
+<span class="fc" id="L205">		return terminalLatentStateContainer().entityRecovery (_clientRecoveryLabel).evolver();</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

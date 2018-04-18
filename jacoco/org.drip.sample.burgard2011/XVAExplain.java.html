@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>XVAExplain.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.burgard2011</a> &gt; <span class="el_source">XVAExplain.java</span></div><h1>XVAExplain.java</h1><pre class="source lang-java linenums">
 package org.drip.sample.burgard2011;
 
+import java.util.Map;
+
 import org.drip.analytics.date.*;
 import org.drip.analytics.support.VertexDateBuilder;
+import org.drip.exposure.evolver.*;
+import org.drip.exposure.universe.*;
 import org.drip.measure.discrete.SequenceGenerator;
 import org.drip.measure.dynamics.*;
 import org.drip.measure.process.*;
@@ -13,9 +17,7 @@ import org.drip.service.env.EnvManager;
 import org.drip.state.identifier.*;
 import org.drip.xva.definition.*;
 import org.drip.xva.derivative.*;
-import org.drip.xva.evolver.*;
 import org.drip.xva.pde.*;
-import org.drip.xva.universe.*;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -85,7 +87,24 @@ import org.drip.xva.universe.*;
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L88">public class XVAExplain {</span>
+<span class="nc" id="L90">public class XVAExplain {</span>
+
+	private static final MarketVertex[] MarketVertexArray (
+		final Map&lt;Integer, MarketVertex&gt; marketVertexMap)
+		throws Exception
+	{
+<span class="fc" id="L96">		int marketVertexCount = marketVertexMap.size();</span>
+
+<span class="fc" id="L98">		int marketVertexIndex = 0;</span>
+<span class="fc" id="L99">		MarketVertex[] marketVertexArray = new MarketVertex[marketVertexCount];</span>
+
+<span class="fc bfc" id="L101" title="All 2 branches covered.">		for (Map.Entry&lt;Integer, MarketVertex&gt; marketVertexMapEntry : marketVertexMap.entrySet())</span>
+		{
+<span class="fc" id="L103">			marketVertexArray[marketVertexIndex++] = marketVertexMapEntry.getValue();</span>
+<span class="fc" id="L104">		}</span>
+
+<span class="fc" id="L106">		return marketVertexArray;</span>
+	}
 
 	private static final EvolutionTrajectoryVertex RunStep (
 		final TrajectoryEvolutionScheme tes,
@@ -95,23 +114,23 @@ import org.drip.xva.universe.*;
 		final MarketVertex mvFinish)
 		throws Exception
 	{
-<span class="fc" id="L98">		PositionGreekVertex agvStart = etvStart.positionGreekVertex();</span>
+<span class="fc" id="L117">		PositionGreekVertex agvStart = etvStart.positionGreekVertex();</span>
 
-<span class="fc" id="L100">		ReplicationPortfolioVertex rpvStart = etvStart.replicationPortfolioVertex();</span>
+<span class="fc" id="L119">		ReplicationPortfolioVertex rpvStart = etvStart.replicationPortfolioVertex();</span>
 
-<span class="fc" id="L102">		double dblDerivativeXVAValueStart = agvStart.derivativeXVAValue();</span>
+<span class="fc" id="L121">		double dblDerivativeXVAValueStart = agvStart.derivativeXVAValue();</span>
 
-<span class="fc" id="L104">		double dblTimeWidth = (mvFinish.anchorDate().julian() - mvStart.anchorDate().julian()) / 365.;</span>
+<span class="fc" id="L123">		double dblTimeWidth = (mvFinish.anchorDate().julian() - mvStart.anchorDate().julian()) / 365.;</span>
 
-<span class="fc" id="L106">		double dblTimeStart = etvStart.time();</span>
+<span class="fc" id="L125">		double dblTimeStart = etvStart.time();</span>
 
-<span class="fc" id="L108">		double dblTime = dblTimeStart + dblTimeWidth;</span>
+<span class="fc" id="L127">		double dblTime = dblTimeStart + dblTimeWidth;</span>
 
-<span class="fc" id="L110">		PrimarySecurityDynamicsContainer tc = tes.tradeablesContainer();</span>
+<span class="fc" id="L129">		PrimarySecurityDynamicsContainer tc = tes.tradeablesContainer();</span>
 
-<span class="fc" id="L112">		double dblCollateralSchemeNumeraire = mvStart.csaReplicator();</span>
+<span class="fc" id="L131">		double dblCollateralSchemeNumeraire = mvStart.csaReplicator();</span>
 
-<span class="fc" id="L114">		BurgardKjaerEdgeRun bker = bko.edgeRun (</span>
+<span class="fc" id="L133">		BurgardKjaerEdgeRun bker = bko.edgeRun (</span>
 			new MarketEdge (
 				mvStart,
 				mvFinish
@@ -120,83 +139,83 @@ import org.drip.xva.universe.*;
 			0.
 		);
 
-<span class="fc" id="L123">		double dblTheta = bker.theta();</span>
+<span class="fc" id="L142">		double dblTheta = bker.theta();</span>
 
-<span class="fc" id="L125">		double dblAssetNumeraireBump = bker.positionValueBump();</span>
+<span class="fc" id="L144">		double dblAssetNumeraireBump = bker.positionValueBump();</span>
 
-<span class="fc" id="L127">		double dblThetaAssetNumeraireUp = bker.thetaPositionValueUp();</span>
+<span class="fc" id="L146">		double dblThetaAssetNumeraireUp = bker.thetaPositionValueUp();</span>
 
-<span class="fc" id="L129">		double dblThetaAssetNumeraireDown = bker.thetaPositionValueDown();</span>
+<span class="fc" id="L148">		double dblThetaAssetNumeraireDown = bker.thetaPositionValueDown();</span>
 
-<span class="fc" id="L131">		double dblDerivativeXVAValueDeltaFinish = agvStart.derivativeXVAValueDelta() -</span>
+<span class="fc" id="L150">		double dblDerivativeXVAValueDeltaFinish = agvStart.derivativeXVAValueDelta() -</span>
 			0.5 * (dblThetaAssetNumeraireUp - dblThetaAssetNumeraireDown) * dblTimeWidth / dblAssetNumeraireBump;
 
-<span class="fc" id="L134">		double dblDerivativeXVAValueGammaFinish = agvStart.derivativeXVAValueGamma() -</span>
+<span class="fc" id="L153">		double dblDerivativeXVAValueGammaFinish = agvStart.derivativeXVAValueGamma() -</span>
 			(dblThetaAssetNumeraireUp + dblThetaAssetNumeraireDown - 2. * dblTheta) * dblTimeWidth /
 				(dblAssetNumeraireBump * dblAssetNumeraireBump);
 
-<span class="fc" id="L138">		double dblDerivativeXVAValueFinish = dblDerivativeXVAValueStart + dblTheta * dblTimeWidth;</span>
+<span class="fc" id="L157">		double dblDerivativeXVAValueFinish = dblDerivativeXVAValueStart + dblTheta * dblTimeWidth;</span>
 
-<span class="fc" id="L140">		CloseOut cog = new CloseOutBilateral (</span>
-<span class="fc" id="L141">			mvStart.dealer().seniorRecoveryRate(),</span>
-<span class="fc" id="L142">			mvStart.client().seniorRecoveryRate()</span>
+<span class="fc" id="L159">		CloseOut cog = new CloseOutBilateral (</span>
+<span class="fc" id="L160">			mvStart.dealer().seniorRecoveryRate(),</span>
+<span class="fc" id="L161">			mvStart.client().seniorRecoveryRate()</span>
 		);
 
-<span class="fc" id="L145">		double dblGainOnBankDefaultFinish = -1. * (dblDerivativeXVAValueFinish - cog.dealerDefault</span>
-<span class="fc" id="L146">			(dblDerivativeXVAValueFinish));</span>
+<span class="fc" id="L164">		double dblGainOnBankDefaultFinish = -1. * (dblDerivativeXVAValueFinish - cog.dealerDefault</span>
+<span class="fc" id="L165">			(dblDerivativeXVAValueFinish));</span>
 
-<span class="fc" id="L148">		double dblGainOnCounterPartyDefaultFinish = -1. * (dblDerivativeXVAValueFinish - cog.clientDefault</span>
-<span class="fc" id="L149">			(dblDerivativeXVAValueFinish));</span>
+<span class="fc" id="L167">		double dblGainOnCounterPartyDefaultFinish = -1. * (dblDerivativeXVAValueFinish - cog.clientDefault</span>
+<span class="fc" id="L168">			(dblDerivativeXVAValueFinish));</span>
 
-<span class="fc" id="L151">		org.drip.xva.derivative.CashAccountEdge cae = tes.rebalanceCash (</span>
+<span class="fc" id="L170">		org.drip.xva.derivative.CashAccountEdge cae = tes.rebalanceCash (</span>
 				etvStart,
 				new MarketEdge (
 					mvStart,
 					mvFinish
 				)
-<span class="fc" id="L157">			).cashAccountEdge();</span>
+<span class="fc" id="L176">			).cashAccountEdge();</span>
 
-<span class="fc" id="L159">		double dblCashAccountAccumulationFinish = cae.accumulation();</span>
+<span class="fc" id="L178">		double dblCashAccountAccumulationFinish = cae.accumulation();</span>
 
-<span class="fc" id="L161">		double dblAssetNumeraireFinish = mvFinish.positionManifestValue();</span>
+<span class="fc" id="L180">		double dblAssetNumeraireFinish = mvFinish.positionManifestValue();</span>
 
-<span class="fc" id="L163">		double dblBankSeniorFundingNumeraireFinish = mvFinish.dealer().seniorFundingReplicator();</span>
+<span class="fc" id="L182">		double dblBankSeniorFundingNumeraireFinish = mvFinish.dealer().seniorFundingReplicator();</span>
 
-<span class="fc" id="L165">		double dblCounterPartyFundingNumeraireFinish = mvFinish.client().seniorFundingReplicator();</span>
+<span class="fc" id="L184">		double dblCounterPartyFundingNumeraireFinish = mvFinish.client().seniorFundingReplicator();</span>
 
-<span class="fc" id="L167">		ReplicationPortfolioVertex rpvFinish = ReplicationPortfolioVertex.Standard (</span>
+<span class="fc" id="L186">		ReplicationPortfolioVertex rpvFinish = ReplicationPortfolioVertex.Standard (</span>
 			-1. * dblDerivativeXVAValueDeltaFinish,
 			dblGainOnBankDefaultFinish / dblBankSeniorFundingNumeraireFinish,
 			dblGainOnCounterPartyDefaultFinish / dblCounterPartyFundingNumeraireFinish,
-<span class="fc" id="L171">			rpvStart.cashAccount() + dblCashAccountAccumulationFinish</span>
+<span class="fc" id="L190">			rpvStart.cashAccount() + dblCashAccountAccumulationFinish</span>
 		);
 
-<span class="fc" id="L174">		System.out.println (&quot;\t||&quot; +</span>
-<span class="fc" id="L175">			FormatUtil.FormatDouble (dblTime, 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L176">			FormatUtil.FormatDouble (dblDerivativeXVAValueFinish, 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L177">			FormatUtil.FormatDouble (dblAssetNumeraireFinish, 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L178">			FormatUtil.FormatDouble (dblBankSeniorFundingNumeraireFinish, 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L179">			FormatUtil.FormatDouble (dblCounterPartyFundingNumeraireFinish, 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L180">			FormatUtil.FormatDouble (dblCollateralSchemeNumeraire, 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L181">			FormatUtil.FormatDouble (rpvFinish.positionHoldings(), 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L182">			FormatUtil.FormatDouble (rpvFinish.dealerSeniorNumeraireHoldings(), 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L183">			FormatUtil.FormatDouble (rpvFinish.clientNumeraireHoldings(), 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L184">			FormatUtil.FormatDouble (rpvFinish.cashAccount(), 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L185">			FormatUtil.FormatDouble (dblCashAccountAccumulationFinish, 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L186">			FormatUtil.FormatDouble (cae.assetAccumulation(), 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L187">			FormatUtil.FormatDouble (cae.dealerAccumulation(), 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L188">			FormatUtil.FormatDouble (cae.clientAccumulation(), 1, 6, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L193">		System.out.println (&quot;\t||&quot; +</span>
+<span class="fc" id="L194">			FormatUtil.FormatDouble (dblTime, 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L195">			FormatUtil.FormatDouble (dblDerivativeXVAValueFinish, 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L196">			FormatUtil.FormatDouble (dblAssetNumeraireFinish, 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L197">			FormatUtil.FormatDouble (dblBankSeniorFundingNumeraireFinish, 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L198">			FormatUtil.FormatDouble (dblCounterPartyFundingNumeraireFinish, 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L199">			FormatUtil.FormatDouble (dblCollateralSchemeNumeraire, 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L200">			FormatUtil.FormatDouble (rpvFinish.positionHoldings(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L201">			FormatUtil.FormatDouble (rpvFinish.dealerSeniorNumeraireHoldings(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L202">			FormatUtil.FormatDouble (rpvFinish.clientNumeraireHoldings(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L203">			FormatUtil.FormatDouble (rpvFinish.cashAccount(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L204">			FormatUtil.FormatDouble (dblCashAccountAccumulationFinish, 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L205">			FormatUtil.FormatDouble (cae.assetAccumulation(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L206">			FormatUtil.FormatDouble (cae.dealerAccumulation(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L207">			FormatUtil.FormatDouble (cae.clientAccumulation(), 1, 6, 1.) + &quot; ||&quot;</span>
 		);
 
-<span class="fc" id="L191">		return new EvolutionTrajectoryVertex (</span>
+<span class="fc" id="L210">		return new EvolutionTrajectoryVertex (</span>
 			dblTimeStart + dblTimeWidth,
 			rpvFinish,
 			new PositionGreekVertex (
 				dblDerivativeXVAValueFinish,
 				dblDerivativeXVAValueDeltaFinish,
 				dblDerivativeXVAValueGammaFinish,
-<span class="fc" id="L198">				agvStart.derivativeFairValue() * Math.exp (</span>
-<span class="fc" id="L199">					-1. * dblTimeWidth * tc.csa().evolver().evaluator().drift().value (</span>
+<span class="fc" id="L217">				agvStart.derivativeFairValue() * Math.exp (</span>
+<span class="fc" id="L218">					-1. * dblTimeWidth * tc.csa().evolver().evaluator().drift().value (</span>
 						new JumpDiffusionVertex (
 							dblTime,
 							dblCollateralSchemeNumeraire,
@@ -217,15 +236,15 @@ import org.drip.xva.universe.*;
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="fc" id="L220">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L239">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L222">		String bank = &quot;WFC&quot;;</span>
-<span class="fc" id="L223">		int iNumVertex = 24;</span>
-<span class="fc" id="L224">		String currency = &quot;USD&quot;;</span>
-<span class="fc" id="L225">		String counterParty = &quot;BAC&quot;;</span>
-<span class="fc" id="L226">		int iSimulationDuration = 365;</span>
+<span class="fc" id="L241">		String bank = &quot;WFC&quot;;</span>
+<span class="fc" id="L242">		int iNumVertex = 24;</span>
+<span class="fc" id="L243">		String currency = &quot;USD&quot;;</span>
+<span class="fc" id="L244">		String counterParty = &quot;BAC&quot;;</span>
+<span class="fc" id="L245">		int iSimulationDuration = 365;</span>
 
-<span class="fc" id="L228">		double[][] aadblCorrelationMatrix = new double[][] {</span>
+<span class="fc" id="L247">		double[][] aadblCorrelationMatrix = new double[][] {</span>
 			{1.00, 0.00, 0.20, 0.15, 0.05, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #0 ASSET NUMERAIRE
 			{0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #1 OVERNIGHT POLICY INDEX NUMERAIRE
 			{0.20, 0.00, 1.00, 0.13, 0.25, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #2 COLLATERAL SCHEME NUMERAIRE
@@ -239,64 +258,64 @@ import org.drip.xva.universe.*;
 			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00}  // #10 COUNTER PARTY RECOVERY RATE
 		};
 
-<span class="fc" id="L242">		double dblAssetNumeraireDrift = 0.06;</span>
-<span class="fc" id="L243">		double dblAssetNumeraireVolatility = 0.10;</span>
-<span class="fc" id="L244">		double dblAssetNumeraireRepo = 0.03;</span>
-<span class="fc" id="L245">		double dblAssetNumeraireDividend = 0.02;</span>
-<span class="fc" id="L246">		double dblAssetNumeraireInitial = 1.;</span>
+<span class="fc" id="L261">		double dblAssetNumeraireDrift = 0.06;</span>
+<span class="fc" id="L262">		double dblAssetNumeraireVolatility = 0.005;</span>
+<span class="fc" id="L263">		double dblAssetNumeraireRepo = 0.03;</span>
+<span class="fc" id="L264">		double dblAssetNumeraireDividend = 0.02;</span>
+<span class="fc" id="L265">		double dblAssetNumeraireInitial = 1.;</span>
 
-<span class="fc" id="L248">		double dblOvernightIndexNumeraireDrift = 0.0025;</span>
-<span class="fc" id="L249">		double dblOvernightIndexNumeraireVolatility = 0.001;</span>
-<span class="fc" id="L250">		double dblOvernightIndexNumeraireRepo = 0.0;</span>
+<span class="fc" id="L267">		double dblOvernightIndexNumeraireDrift = 0.0025;</span>
+<span class="fc" id="L268">		double dblOvernightIndexNumeraireVolatility = 0.001;</span>
+<span class="fc" id="L269">		double dblOvernightIndexNumeraireRepo = 0.0;</span>
 
-<span class="fc" id="L252">		double dblCollateralSchemeNumeraireDrift = 0.01;</span>
-<span class="fc" id="L253">		double dblCollateralSchemeNumeraireVolatility = 0.002;</span>
-<span class="fc" id="L254">		double dblCollateralSchemeNumeraireRepo = 0.005;</span>
+<span class="fc" id="L271">		double dblCollateralSchemeNumeraireDrift = 0.01;</span>
+<span class="fc" id="L272">		double dblCollateralSchemeNumeraireVolatility = 0.002;</span>
+<span class="fc" id="L273">		double dblCollateralSchemeNumeraireRepo = 0.005;</span>
 
-<span class="fc" id="L256">		double dblBankSeniorFundingNumeraireDrift = 0.03;</span>
-<span class="fc" id="L257">		double dblBankSeniorFundingNumeraireVolatility = 0.002;</span>
-<span class="fc" id="L258">		double dblBankSeniorFundingNumeraireRepo = 0.028;</span>
+<span class="fc" id="L275">		double dblBankSeniorFundingNumeraireDrift = 0.03;</span>
+<span class="fc" id="L276">		double dblBankSeniorFundingNumeraireVolatility = 0.002;</span>
+<span class="fc" id="L277">		double dblBankSeniorFundingNumeraireRepo = 0.028;</span>
 
-<span class="fc" id="L260">		double dblBankSubordinateFundingNumeraireDrift = 0.045;</span>
-<span class="fc" id="L261">		double dblBankSubordinateFundingNumeraireVolatility = 0.002;</span>
-<span class="fc" id="L262">		double dblBankSubordinateFundingNumeraireRepo = 0.028;</span>
+<span class="fc" id="L279">		double dblBankSubordinateFundingNumeraireDrift = 0.045;</span>
+<span class="fc" id="L280">		double dblBankSubordinateFundingNumeraireVolatility = 0.002;</span>
+<span class="fc" id="L281">		double dblBankSubordinateFundingNumeraireRepo = 0.028;</span>
 
-<span class="fc" id="L264">		double dblCounterPartyFundingNumeraireDrift = 0.03;</span>
-<span class="fc" id="L265">		double dblCounterPartyFundingNumeraireVolatility = 0.003;</span>
-<span class="fc" id="L266">		double dblCounterPartyFundingNumeraireRepo = 0.028;</span>
+<span class="fc" id="L283">		double dblCounterPartyFundingNumeraireDrift = 0.03;</span>
+<span class="fc" id="L284">		double dblCounterPartyFundingNumeraireVolatility = 0.003;</span>
+<span class="fc" id="L285">		double dblCounterPartyFundingNumeraireRepo = 0.028;</span>
 
-<span class="fc" id="L268">		double dblBankHazardRateDrift = 0.00;</span>
-<span class="fc" id="L269">		double dblBankHazardRateVolatility = 0.005;</span>
-<span class="fc" id="L270">		double dblBankHazardRateInitial = 0.03;</span>
+<span class="fc" id="L287">		double dblBankHazardRateDrift = 0.00;</span>
+<span class="fc" id="L288">		double dblBankHazardRateVolatility = 0.005;</span>
+<span class="fc" id="L289">		double dblBankHazardRateInitial = 0.03;</span>
 
-<span class="fc" id="L272">		double dblBankSeniorRecoveryRateDrift = 0.0;</span>
-<span class="fc" id="L273">		double dblBankSeniorRecoveryRateVolatility = 0.0;</span>
-<span class="fc" id="L274">		double dblBankSeniorRecoveryRateInitial = 0.45;</span>
+<span class="fc" id="L291">		double dblBankSeniorRecoveryRateDrift = 0.0;</span>
+<span class="fc" id="L292">		double dblBankSeniorRecoveryRateVolatility = 0.0;</span>
+<span class="fc" id="L293">		double dblBankSeniorRecoveryRateInitial = 0.45;</span>
 
-<span class="fc" id="L276">		double dblBankSubordinateRecoveryRateDrift = 0.0;</span>
-<span class="fc" id="L277">		double dblBankSubordinateRecoveryRateVolatility = 0.0;</span>
-<span class="fc" id="L278">		double dblBankSubordinateRecoveryRateInitial = 0.25;</span>
+<span class="fc" id="L295">		double dblBankSubordinateRecoveryRateDrift = 0.0;</span>
+<span class="fc" id="L296">		double dblBankSubordinateRecoveryRateVolatility = 0.0;</span>
+<span class="fc" id="L297">		double dblBankSubordinateRecoveryRateInitial = 0.25;</span>
 
-<span class="fc" id="L280">		double dblCounterPartyHazardRateDrift = 0.00;</span>
-<span class="fc" id="L281">		double dblCounterPartyHazardRateVolatility = 0.005;</span>
-<span class="fc" id="L282">		double dblCounterPartyHazardRateInitial = 0.05;</span>
+<span class="fc" id="L299">		double dblCounterPartyHazardRateDrift = 0.00;</span>
+<span class="fc" id="L300">		double dblCounterPartyHazardRateVolatility = 0.005;</span>
+<span class="fc" id="L301">		double dblCounterPartyHazardRateInitial = 0.05;</span>
 
-<span class="fc" id="L284">		double dblCounterPartyRecoveryRateDrift = 0.0;</span>
-<span class="fc" id="L285">		double dblCounterPartyRecoveryRateVolatility = 0.0;</span>
-<span class="fc" id="L286">		double dblCounterPartyRecoveryRateInitial = 0.30;</span>
+<span class="fc" id="L303">		double dblCounterPartyRecoveryRateDrift = 0.0;</span>
+<span class="fc" id="L304">		double dblCounterPartyRecoveryRateVolatility = 0.0;</span>
+<span class="fc" id="L305">		double dblCounterPartyRecoveryRateInitial = 0.30;</span>
 
-<span class="fc" id="L288">		double dblTerminalXVADerivativeValue = 1.;</span>
+<span class="fc" id="L307">		double dblTerminalXVADerivativeValue = 1.;</span>
 
-<span class="fc" id="L290">		double dblSensitivityShiftFactor = 0.001;</span>
+<span class="fc" id="L309">		double dblSensitivityShiftFactor = 0.001;</span>
 
-<span class="fc" id="L292">		PrimarySecurity tAsset = new PrimarySecurity (</span>
+<span class="fc" id="L311">		PrimarySecurity tAsset = new PrimarySecurity (</span>
 			&quot;AAPL&quot;,
-<span class="fc" id="L294">			EntityEquityLabel.Standard (</span>
+<span class="fc" id="L313">			EntityEquityLabel.Standard (</span>
 				&quot;AAPL&quot;,
 				currency
 			),
 			new DiffusionEvolver (
-<span class="fc" id="L299">				DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="fc" id="L318">				DiffusionEvaluatorLogarithmic.Standard (</span>
 					dblAssetNumeraireDrift - dblAssetNumeraireDividend,
 					dblAssetNumeraireVolatility
 				)
@@ -304,11 +323,11 @@ import org.drip.xva.universe.*;
 			dblAssetNumeraireRepo
 		);
 
-<span class="fc" id="L307">		PrimarySecurity tOvernightIndex = new PrimarySecurity (</span>
+<span class="fc" id="L326">		PrimarySecurity tOvernightIndex = new PrimarySecurity (</span>
 			currency + &quot;_OVERNIGHT_ZERO&quot;,
-<span class="fc" id="L309">			OvernightLabel.Create (currency),</span>
+<span class="fc" id="L328">			OvernightLabel.Create (currency),</span>
 			new DiffusionEvolver (
-<span class="fc" id="L311">				DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="fc" id="L330">				DiffusionEvaluatorLogarithmic.Standard (</span>
 					dblOvernightIndexNumeraireDrift,
 					dblOvernightIndexNumeraireVolatility
 				)
@@ -316,11 +335,11 @@ import org.drip.xva.universe.*;
 			dblOvernightIndexNumeraireRepo
 		);
 
-<span class="fc" id="L319">		PrimarySecurity tCollateralScheme = new PrimarySecurity (</span>
+<span class="fc" id="L338">		PrimarySecurity tCollateralScheme = new PrimarySecurity (</span>
 			currency + &quot;_CSA_ZERO&quot;,
-<span class="fc" id="L321">			CSALabel.ISDA (currency),</span>
+<span class="fc" id="L340">			CSALabel.ISDA (currency),</span>
 			new DiffusionEvolver (
-<span class="fc" id="L323">				DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="fc" id="L342">				DiffusionEvaluatorLogarithmic.Standard (</span>
 					dblCollateralSchemeNumeraireDrift,
 					dblCollateralSchemeNumeraireVolatility
 				)
@@ -328,18 +347,18 @@ import org.drip.xva.universe.*;
 			dblCollateralSchemeNumeraireRepo
 		);
 
-<span class="fc" id="L331">		PrimarySecurity tBankSeniorFunding = new PrimarySecurity (</span>
+<span class="fc" id="L350">		PrimarySecurity tBankSeniorFunding = new PrimarySecurity (</span>
 			bank + &quot;_&quot; + currency + &quot;_SENIOR_ZERO&quot;,
-<span class="fc" id="L333">			EntityFundingLabel.Senior (</span>
+<span class="fc" id="L352">			EntityFundingLabel.Senior (</span>
 				bank,
 				currency
 			),
 			new JumpDiffusionEvolver (
-<span class="fc" id="L338">				DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="fc" id="L357">				DiffusionEvaluatorLogarithmic.Standard (</span>
 					dblBankSeniorFundingNumeraireDrift,
 					dblBankSeniorFundingNumeraireVolatility
 				),
-<span class="fc" id="L342">				HazardJumpEvaluator.Standard (</span>
+<span class="fc" id="L361">				HazardJumpEvaluator.Standard (</span>
 					dblBankHazardRateInitial,
 					dblBankSeniorRecoveryRateInitial
 				)
@@ -347,18 +366,18 @@ import org.drip.xva.universe.*;
 			dblBankSeniorFundingNumeraireRepo
 		);
 
-<span class="fc" id="L350">		PrimarySecurity tBankSubordinateFunding = new PrimarySecurity (</span>
+<span class="fc" id="L369">		PrimarySecurity tBankSubordinateFunding = new PrimarySecurity (</span>
 			bank + &quot;_&quot; + currency + &quot;_SUBORDINATE_ZERO&quot;,
-<span class="fc" id="L352">			EntityFundingLabel.Subordinate (</span>
+<span class="fc" id="L371">			EntityFundingLabel.Subordinate (</span>
 				bank,
 				currency
 			),
 			new JumpDiffusionEvolver (
-<span class="fc" id="L357">				DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="fc" id="L376">				DiffusionEvaluatorLogarithmic.Standard (</span>
 					dblBankSubordinateFundingNumeraireDrift,
 					dblBankSubordinateFundingNumeraireVolatility
 				),
-<span class="fc" id="L361">				HazardJumpEvaluator.Standard (</span>
+<span class="fc" id="L380">				HazardJumpEvaluator.Standard (</span>
 					dblBankHazardRateInitial,
 					dblBankSubordinateRecoveryRateInitial
 				)
@@ -366,18 +385,18 @@ import org.drip.xva.universe.*;
 			dblBankSubordinateFundingNumeraireRepo
 		);
 
-<span class="fc" id="L369">		PrimarySecurity tCounterPartyFunding = new PrimarySecurity (</span>
+<span class="fc" id="L388">		PrimarySecurity tCounterPartyFunding = new PrimarySecurity (</span>
 			counterParty + &quot;_&quot; + currency + &quot;_SENIOR_ZERO&quot;,
-<span class="fc" id="L371">			EntityFundingLabel.Senior (</span>
+<span class="fc" id="L390">			EntityFundingLabel.Senior (</span>
 				counterParty,
 				currency
 			),
 			new JumpDiffusionEvolver (
-<span class="fc" id="L376">				DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="fc" id="L395">				DiffusionEvaluatorLogarithmic.Standard (</span>
 					dblCounterPartyFundingNumeraireDrift,
 					dblCounterPartyFundingNumeraireVolatility
 				),
-<span class="fc" id="L380">				HazardJumpEvaluator.Standard (</span>
+<span class="fc" id="L399">				HazardJumpEvaluator.Standard (</span>
 					dblCounterPartyHazardRateInitial,
 					dblCounterPartyRecoveryRateInitial
 				)
@@ -385,17 +404,17 @@ import org.drip.xva.universe.*;
 			dblCounterPartyFundingNumeraireRepo
 		);
 
-<span class="fc" id="L388">		JulianDate dtSpot = DateUtil.Today();</span>
+<span class="fc" id="L407">		JulianDate dtSpot = DateUtil.Today();</span>
 
-<span class="fc" id="L390">		int iSpotDate = dtSpot.julian();</span>
+<span class="fc" id="L409">		int iSpotDate = dtSpot.julian();</span>
 
-<span class="fc" id="L392">		int aiVertexDate[] = VertexDateBuilder.EqualWidth (</span>
+<span class="fc" id="L411">		int aiVertexDate[] = VertexDateBuilder.EqualWidth (</span>
 			iSpotDate,
 			iSpotDate + iSimulationDuration,
 			iNumVertex
 		);
 
-<span class="fc" id="L398">		PrimarySecurityDynamicsContainer tc = new PrimarySecurityDynamicsContainer (</span>
+<span class="fc" id="L417">		PrimarySecurityDynamicsContainer tc = new PrimarySecurityDynamicsContainer (</span>
 			tAsset,
 			tOvernightIndex,
 			tCollateralScheme,
@@ -404,66 +423,66 @@ import org.drip.xva.universe.*;
 			tCounterPartyFunding
 		);
 
-<span class="fc" id="L407">		MarketVertexGenerator mvg = new MarketVertexGenerator (</span>
+<span class="fc" id="L426">		MarketVertexGenerator mvg = new MarketVertexGenerator (</span>
 			iSpotDate,
 			aiVertexDate,
 			tc,
 			new EntityDynamicsContainer (
 				new TerminalLatentState (
-<span class="fc" id="L413">					EntityHazardLabel.Standard (</span>
+<span class="fc" id="L432">					EntityHazardLabel.Standard (</span>
 						bank,
 						currency
 					),
 					new DiffusionEvolver (
-<span class="fc" id="L418">						DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="fc" id="L437">						DiffusionEvaluatorLogarithmic.Standard (</span>
 							dblBankHazardRateDrift,
 							dblBankHazardRateVolatility
 						)
 					)
 				),
 				new TerminalLatentState (
-<span class="fc" id="L425">					EntityRecoveryLabel.Senior (</span>
+<span class="fc" id="L444">					EntityRecoveryLabel.Senior (</span>
 						bank,
 						currency
 					),
 					new DiffusionEvolver (
-<span class="fc" id="L430">						DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="fc" id="L449">						DiffusionEvaluatorLogarithmic.Standard (</span>
 							dblBankSeniorRecoveryRateDrift,
 							dblBankSeniorRecoveryRateVolatility
 						)
 					)
 				),
 				new TerminalLatentState (
-<span class="fc" id="L437">					EntityRecoveryLabel.Subordinate (</span>
+<span class="fc" id="L456">					EntityRecoveryLabel.Subordinate (</span>
 						bank,
 						currency
 					),
 					new DiffusionEvolver (
-<span class="fc" id="L442">						DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="fc" id="L461">						DiffusionEvaluatorLogarithmic.Standard (</span>
 							dblBankSubordinateRecoveryRateDrift,
 							dblBankSubordinateRecoveryRateVolatility
 						)
 					)
 				),
 				new TerminalLatentState (
-<span class="fc" id="L449">					EntityHazardLabel.Standard (</span>
+<span class="fc" id="L468">					EntityHazardLabel.Standard (</span>
 						counterParty,
 						currency
 					),
 					new DiffusionEvolver (
-<span class="fc" id="L454">						DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="fc" id="L473">						DiffusionEvaluatorLogarithmic.Standard (</span>
 							dblCounterPartyHazardRateDrift,
 							dblCounterPartyHazardRateVolatility
 						)
 					)
 				),
 				new TerminalLatentState (
-<span class="fc" id="L461">					EntityRecoveryLabel.Senior (</span>
+<span class="fc" id="L480">					EntityRecoveryLabel.Senior (</span>
 						counterParty,
 						currency
 					),
 					new DiffusionEvolver (
-<span class="fc" id="L466">						DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="fc" id="L485">						DiffusionEvaluatorLogarithmic.Standard (</span>
 							dblCounterPartyRecoveryRateDrift,
 							dblCounterPartyRecoveryRateVolatility
 						)
@@ -472,7 +491,7 @@ import org.drip.xva.universe.*;
 			)
 		);
 
-<span class="fc" id="L475">		MarketVertex mvInitial = MarketVertex.SingleManifestMeasure (</span>
+<span class="fc" id="L494">		MarketVertex mvInitial = MarketVertex.SingleManifestMeasure (</span>
 			dtSpot,
 			dblAssetNumeraireInitial,
 			dblOvernightIndexNumeraireDrift,
@@ -501,119 +520,121 @@ import org.drip.xva.universe.*;
 			)
 		);
 
-<span class="fc" id="L504">		MarketVertex[] aMV = mvg.marketVertex (</span>
-			mvInitial,
-<span class="fc" id="L506">			Matrix.Transpose (</span>
-<span class="fc" id="L507">				SequenceGenerator.GaussianJoint (</span>
-					iNumVertex,
-					aadblCorrelationMatrix
+<span class="fc" id="L523">		MarketVertex[] aMV = MarketVertexArray (</span>
+<span class="fc" id="L524">			mvg.marketVertex (</span>
+				mvInitial,
+<span class="fc" id="L526">				Matrix.Transpose (</span>
+<span class="fc" id="L527">					SequenceGenerator.GaussianJoint (</span>
+						iNumVertex,
+						aadblCorrelationMatrix
+					)
 				)
 			)
 		);
 
-<span class="fc" id="L514">		double dblDerivativeValue = dblTerminalXVADerivativeValue;</span>
-<span class="fc" id="L515">		double dblDerivativeXVAValue = dblTerminalXVADerivativeValue;</span>
+<span class="fc" id="L535">		double dblDerivativeValue = dblTerminalXVADerivativeValue;</span>
+<span class="fc" id="L536">		double dblDerivativeXVAValue = dblTerminalXVADerivativeValue;</span>
 
-<span class="fc" id="L517">		PDEEvolutionControl pdeec = new PDEEvolutionControl (</span>
+<span class="fc" id="L538">		PDEEvolutionControl pdeec = new PDEEvolutionControl (</span>
 			PDEEvolutionControl.CLOSEOUT_GREGORY_LI_TANG,
 			dblSensitivityShiftFactor
 		);
 
-<span class="fc" id="L522">		CloseOutBilateral cob = new CloseOutBilateral (</span>
+<span class="fc" id="L543">		CloseOutBilateral cob = new CloseOutBilateral (</span>
 			dblBankSeniorRecoveryRateInitial,
 			dblCounterPartyRecoveryRateInitial
 		);
 
-<span class="fc" id="L527">		TrajectoryEvolutionScheme tes = new TrajectoryEvolutionScheme (</span>
+<span class="fc" id="L548">		TrajectoryEvolutionScheme tes = new TrajectoryEvolutionScheme (</span>
 			tc,
 			pdeec
 		);
 
-<span class="fc" id="L532">		BurgardKjaerOperator bko = new BurgardKjaerOperator (</span>
+<span class="fc" id="L553">		BurgardKjaerOperator bko = new BurgardKjaerOperator (</span>
 			tc,
 			pdeec
 		);
 
-<span class="fc" id="L537">		PositionGreekVertex agvInitial = new PositionGreekVertex (</span>
+<span class="fc" id="L558">		PositionGreekVertex agvInitial = new PositionGreekVertex (</span>
 			dblDerivativeXVAValue,
 			-1.,
 			0.,
 			dblDerivativeValue
 		);
 
-<span class="fc" id="L544">		double dblGainOnBankDefaultInitial = -1. * (dblDerivativeXVAValue - cob.dealerDefault</span>
-<span class="fc" id="L545">			(dblDerivativeXVAValue));</span>
+<span class="fc" id="L565">		double dblGainOnBankDefaultInitial = -1. * (dblDerivativeXVAValue - cob.dealerDefault</span>
+<span class="fc" id="L566">			(dblDerivativeXVAValue));</span>
 
-<span class="fc" id="L547">		double dblGainOnCounterPartyDefaultInitial = -1. * (dblDerivativeXVAValue - cob.clientDefault</span>
-<span class="fc" id="L548">			(dblDerivativeXVAValue));</span>
+<span class="fc" id="L568">		double dblGainOnCounterPartyDefaultInitial = -1. * (dblDerivativeXVAValue - cob.clientDefault</span>
+<span class="fc" id="L569">			(dblDerivativeXVAValue));</span>
 
-<span class="fc" id="L550">		ReplicationPortfolioVertex rpvInitial = ReplicationPortfolioVertex.Standard (</span>
+<span class="fc" id="L571">		ReplicationPortfolioVertex rpvInitial = ReplicationPortfolioVertex.Standard (</span>
 			1.,
 			dblGainOnBankDefaultInitial,
 			dblGainOnCounterPartyDefaultInitial,
 			0.
 		);
 
-<span class="fc" id="L557">		System.out.println();</span>
+<span class="fc" id="L578">		System.out.println();</span>
 
-<span class="fc" id="L559">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L580">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L561">		System.out.println (&quot;\t||                                            BILATERAL XVA EVOLVER - BURGARD &amp; KJAER (2011) REPLICATION PORTFOLIO EVOLUTION                                             ||&quot;);</span>
+<span class="fc" id="L582">		System.out.println (&quot;\t||                                            BILATERAL XVA EVOLVER - BURGARD &amp; KJAER (2011) REPLICATION PORTFOLIO EVOLUTION                                             ||&quot;);</span>
 
-<span class="fc" id="L563">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L584">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L565">		System.out.println (&quot;\t||    L -&gt; R:                                                                                                                                                            ||&quot;);</span>
+<span class="fc" id="L586">		System.out.println (&quot;\t||    L -&gt; R:                                                                                                                                                            ||&quot;);</span>
 
-<span class="fc" id="L567">		System.out.println (&quot;\t||            - Time                                                                                                                                                     ||&quot;);</span>
+<span class="fc" id="L588">		System.out.println (&quot;\t||            - Time                                                                                                                                                     ||&quot;);</span>
 
-<span class="fc" id="L569">		System.out.println (&quot;\t||            - Derivative XVA Value                                                                                                                                     ||&quot;);</span>
+<span class="fc" id="L590">		System.out.println (&quot;\t||            - Derivative XVA Value                                                                                                                                     ||&quot;);</span>
 
-<span class="fc" id="L571">		System.out.println (&quot;\t||            - Asset Price Realization                                                                                                                                  ||&quot;);</span>
+<span class="fc" id="L592">		System.out.println (&quot;\t||            - Asset Price Realization                                                                                                                                  ||&quot;);</span>
 
-<span class="fc" id="L573">		System.out.println (&quot;\t||            - Realization of the Zero Coupon Bank Bond Price                                                                                                           ||&quot;);</span>
+<span class="fc" id="L594">		System.out.println (&quot;\t||            - Realization of the Zero Coupon Bank Bond Price                                                                                                           ||&quot;);</span>
 
-<span class="fc" id="L575">		System.out.println (&quot;\t||            - Realization of the Zero Coupon Counter Party Bond Price                                                                                                  ||&quot;);</span>
+<span class="fc" id="L596">		System.out.println (&quot;\t||            - Realization of the Zero Coupon Counter Party Bond Price                                                                                                  ||&quot;);</span>
 
-<span class="fc" id="L577">		System.out.println (&quot;\t||            - Realization of the Zero Coupon Collateral Bond Price                                                                                                     ||&quot;);</span>
+<span class="fc" id="L598">		System.out.println (&quot;\t||            - Realization of the Zero Coupon Collateral Bond Price                                                                                                     ||&quot;);</span>
 
-<span class="fc" id="L579">		System.out.println (&quot;\t||            - Derivative XVA Asset Replication Units                                                                                                                   ||&quot;);</span>
+<span class="fc" id="L600">		System.out.println (&quot;\t||            - Derivative XVA Asset Replication Units                                                                                                                   ||&quot;);</span>
 
-<span class="fc" id="L581">		System.out.println (&quot;\t||            - Derivative XVA Value Bank Bond Replication Units                                                                                                         ||&quot;);</span>
+<span class="fc" id="L602">		System.out.println (&quot;\t||            - Derivative XVA Value Bank Bond Replication Units                                                                                                         ||&quot;);</span>
 
-<span class="fc" id="L583">		System.out.println (&quot;\t||            - Derivative XVA Value Counter Party Bond Replication Units                                                                                                ||&quot;);</span>
+<span class="fc" id="L604">		System.out.println (&quot;\t||            - Derivative XVA Value Counter Party Bond Replication Units                                                                                                ||&quot;);</span>
 
-<span class="fc" id="L585">		System.out.println (&quot;\t||            - Derivative XVA Value Cash Account Replication Units                                                                                                      ||&quot;);</span>
+<span class="fc" id="L606">		System.out.println (&quot;\t||            - Derivative XVA Value Cash Account Replication Units                                                                                                      ||&quot;);</span>
 
-<span class="fc" id="L587">		System.out.println (&quot;\t||            - Derivative Cash Account Accumulation Component                                                                                                           ||&quot;);</span>
+<span class="fc" id="L608">		System.out.println (&quot;\t||            - Derivative Cash Account Accumulation Component                                                                                                           ||&quot;);</span>
 
-<span class="fc" id="L589">		System.out.println (&quot;\t||            - Asset Cash Account Accumulation Component                                                                                                                ||&quot;);</span>
+<span class="fc" id="L610">		System.out.println (&quot;\t||            - Asset Cash Account Accumulation Component                                                                                                                ||&quot;);</span>
 
-<span class="fc" id="L591">		System.out.println (&quot;\t||            - Bank Cash Account Accumulation Component                                                                                                                 ||&quot;);</span>
+<span class="fc" id="L612">		System.out.println (&quot;\t||            - Bank Cash Account Accumulation Component                                                                                                                 ||&quot;);</span>
 
-<span class="fc" id="L593">		System.out.println (&quot;\t||            - Counter Party Cash Account Accumulation Component                                                                                                        ||&quot;);</span>
+<span class="fc" id="L614">		System.out.println (&quot;\t||            - Counter Party Cash Account Accumulation Component                                                                                                        ||&quot;);</span>
 
-<span class="fc" id="L595">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L616">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L597">		System.out.println (&quot;\t||&quot; +</span>
-<span class="fc" id="L598">			FormatUtil.FormatDouble (1., 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L599">			FormatUtil.FormatDouble (agvInitial.derivativeXVAValue(), 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L600">			FormatUtil.FormatDouble (aMV[aMV.length - 1].positionManifestValue(), 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L601">			FormatUtil.FormatDouble (1., 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L602">			FormatUtil.FormatDouble (1., 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L603">			FormatUtil.FormatDouble (1., 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L604">			FormatUtil.FormatDouble (rpvInitial.positionHoldings(), 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L605">			FormatUtil.FormatDouble (rpvInitial.dealerSeniorNumeraireHoldings(), 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L606">			FormatUtil.FormatDouble (rpvInitial.clientNumeraireHoldings(), 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L607">			FormatUtil.FormatDouble (rpvInitial.cashAccount(), 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L608">			FormatUtil.FormatDouble (0., 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L609">			FormatUtil.FormatDouble (0., 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L610">			FormatUtil.FormatDouble (0., 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L611">			FormatUtil.FormatDouble (0., 1, 6, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L618">		System.out.println (&quot;\t||&quot; +</span>
+<span class="fc" id="L619">			FormatUtil.FormatDouble (1., 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L620">			FormatUtil.FormatDouble (agvInitial.derivativeXVAValue(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L621">			FormatUtil.FormatDouble (aMV[aMV.length - 1].positionManifestValue(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L622">			FormatUtil.FormatDouble (1., 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L623">			FormatUtil.FormatDouble (1., 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L624">			FormatUtil.FormatDouble (1., 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L625">			FormatUtil.FormatDouble (rpvInitial.positionHoldings(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L626">			FormatUtil.FormatDouble (rpvInitial.dealerSeniorNumeraireHoldings(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L627">			FormatUtil.FormatDouble (rpvInitial.clientNumeraireHoldings(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L628">			FormatUtil.FormatDouble (rpvInitial.cashAccount(), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L629">			FormatUtil.FormatDouble (0., 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L630">			FormatUtil.FormatDouble (0., 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L631">			FormatUtil.FormatDouble (0., 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L632">			FormatUtil.FormatDouble (0., 1, 6, 1.) + &quot; ||&quot;</span>
 		);
 
-<span class="fc" id="L614">		EvolutionTrajectoryVertex etv = new EvolutionTrajectoryVertex (</span>
+<span class="fc" id="L635">		EvolutionTrajectoryVertex etv = new EvolutionTrajectoryVertex (</span>
 			1.,
-<span class="fc" id="L616">			ReplicationPortfolioVertex.Standard (</span>
+<span class="fc" id="L637">			ReplicationPortfolioVertex.Standard (</span>
 				1.,
 				0.,
 				0.,
@@ -626,8 +647,8 @@ import org.drip.xva.universe.*;
 			0.
 		);
 
-<span class="fc bfc" id="L629" title="All 2 branches covered.">		for (int i = iNumVertex - 1; i &gt;= 0; --i)</span>
-<span class="fc" id="L630">			etv = RunStep (</span>
+<span class="fc bfc" id="L650" title="All 2 branches covered.">		for (int i = iNumVertex - 1; i &gt;= 0; --i)</span>
+<span class="fc" id="L651">			etv = RunStep (</span>
 				tes,
 				bko,
 				etv,
@@ -635,11 +656,11 @@ import org.drip.xva.universe.*;
 				aMV[i]
 			);
 
-<span class="fc" id="L638">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L659">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L640">		System.out.println();</span>
+<span class="fc" id="L661">		System.out.println();</span>
 
-<span class="fc" id="L642">		EnvManager.TerminateEnv();</span>
-<span class="fc" id="L643">	}</span>
+<span class="fc" id="L663">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L664">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

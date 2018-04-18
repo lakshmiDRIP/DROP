@@ -2,6 +2,7 @@
 package org.drip.sample.netting;
 
 import org.drip.analytics.date.*;
+import org.drip.exposure.universe.*;
 import org.drip.measure.discrete.SequenceGenerator;
 import org.drip.measure.dynamics.DiffusionEvaluatorLogarithmic;
 import org.drip.measure.process.DiffusionEvolver;
@@ -11,7 +12,6 @@ import org.drip.service.env.EnvManager;
 import org.drip.xva.gross.*;
 import org.drip.xva.netting.CollateralGroupPath;
 import org.drip.xva.strategy.*;
-import org.drip.xva.universe.*;
 import org.drip.xva.vertex.AlbaneseAndersen;
 
 /*
@@ -170,15 +170,15 @@ import org.drip.xva.vertex.AlbaneseAndersen;
 <span class="fc" id="L170">				adtVertex[i] = dtSpot.addMonths (6 * i),</span>
 				Double.NaN,
 				0.,
-<span class="fc" id="L173">				Math.exp (-0.5 * dblOISRate * iNumStep),</span>
+<span class="fc" id="L173">				Math.exp (-0.5 * dblOISRate * (iNumStep - i)),</span>
 				dblCSADrift,
-<span class="fc" id="L175">				Math.exp (-0.5 * dblCSADrift * iNumStep),</span>
+<span class="fc" id="L175">				Math.exp (-0.5 * dblCSADrift * (iNumStep - i)),</span>
 				new MarketVertexEntity (
 <span class="fc" id="L177">					Math.exp (-0.5 * dblBankHazardRate * i),</span>
 					dblBankHazardRate,
 					dblBankRecoveryRate,
 					dblBankFundingSpread,
-<span class="fc" id="L181">					Math.exp (-0.5 * dblBankHazardRate * (1. - dblBankRecoveryRate) * iNumStep),</span>
+<span class="fc" id="L181">					Math.exp (-0.5 * dblBankHazardRate * (1. - dblBankRecoveryRate) * (iNumStep - i)),</span>
 					Double.NaN,
 					Double.NaN,
 					Double.NaN
@@ -188,14 +188,14 @@ import org.drip.xva.vertex.AlbaneseAndersen;
 					dblCounterPartyHazardRate,
 					dblCounterPartyRecoveryRate,
 					dblCounterPartyFundingSpread,
-<span class="fc" id="L191">					Math.exp (-0.5 * dblCounterPartyHazardRate * (1. - dblCounterPartyRecoveryRate) * iNumStep),</span>
+<span class="fc" id="L191">					Math.exp (-0.5 * dblCounterPartyHazardRate * (1. - dblCounterPartyRecoveryRate) * (iNumStep - i)),</span>
 					Double.NaN,
 					Double.NaN,
 					Double.NaN
 				)
 			);
 
-<span class="fc" id="L198">		MarketPath mp = new MarketPath (aMV);</span>
+<span class="fc" id="L198">		MarketPath mp = MarketPath.FromMarketVertexArray (aMV);</span>
 
 <span class="fc bfc" id="L200" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPath; ++i) {</span>
 <span class="fc" id="L201">			AlbaneseAndersen[] aHGVR = new AlbaneseAndersen[iNumStep + 1];</span>

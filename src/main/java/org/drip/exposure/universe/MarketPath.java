@@ -244,7 +244,7 @@ public class MarketPath
 	 * 
 	 * @param vertexDate The Vertex Date
 	 * 
-	 * @return TRUE => The Market Vertex is available for the Specified Date
+	 * @return TRUE - The Market Vertex is available for the Specified Date
 	 */
 
 	public boolean containsDate (

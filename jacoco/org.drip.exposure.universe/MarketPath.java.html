@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MarketPath.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.exposure.universe</a> &gt; <span class="el_source">MarketPath.java</span></div><h1>MarketPath.java</h1><pre class="source lang-java linenums">
+package org.drip.exposure.universe;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * MarketPath holds the Vertex Market Realizations at the Trajectory Vertexes along the Path of a Simulation.
+ *  The References are:&lt;br&gt;&lt;br&gt;
+ *  
+ *  - Burgard, C., and M. Kjaer (2013): Funding Strategies, Funding Costs &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;24 (12)&lt;/b&gt; 82-87.
+ *  
+ *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
+ *  	and Funding Costs &lt;i&gt;Journal of Credit Risk&lt;/i&gt; &lt;b&gt;7 (3)&lt;/b&gt; 1-19.
+ *  
+ *  - Burgard, C., and M. Kjaer (2014): In the Balance &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;24 (11)&lt;/b&gt; 72-75.
+ *  
+ *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;20 (2)&lt;/b&gt; 86-90.
+ *  
+ *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing
+ *  	&lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;21 (2)&lt;/b&gt; 97-102.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class MarketPath
+{
+<span class="fc" id="L71">	private org.drip.analytics.date.JulianDate[] _vertexDateArray = null;</span>
+<span class="fc" id="L72">	private org.drip.exposure.universe.MarketVertex _epochalMarketVertex = null;</span>
+<span class="fc" id="L73">	private org.drip.exposure.universe.MarketVertex _terminalMarketVertex = null;</span>
+<span class="fc" id="L74">	private java.util.Map&lt;java.lang.Integer, org.drip.exposure.universe.MarketVertex&gt; _marketVertexMap = null;</span>
+
+	/**
+	 * Generate the Market Path from Market Vertex Array
+	 * 
+	 * @param marketVertexArray The Market Vertex Array
+	 * 
+	 * @return The Market Path
+	 */
+
+	public static final MarketPath FromMarketVertexArray (
+		final org.drip.exposure.universe.MarketVertex[] marketVertexArray)
+	{
+<span class="pc bpc" id="L87" title="1 of 2 branches missed.">		if (null == marketVertexArray)</span>
+		{
+<span class="nc" id="L89">			return null;</span>
+		}
+
+<span class="fc" id="L92">		int vertexCount = marketVertexArray.length;</span>
+
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">		if (0 == vertexCount)</span>
+		{
+<span class="nc" id="L96">			return null;</span>
+		}
+
+<span class="fc" id="L99">		java.util.Map&lt;java.lang.Integer, org.drip.exposure.universe.MarketVertex&gt; marketVertexMap = new</span>
+			java.util.TreeMap&lt;java.lang.Integer, org.drip.exposure.universe.MarketVertex&gt;();
+
+<span class="fc bfc" id="L102" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+		{
+<span class="fc" id="L104">			int marketVertexDate = marketVertexArray[vertexIndex].anchorDate().julian();</span>
+
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">			if (marketVertexMap.containsKey (marketVertexDate))</span>
+			{
+<span class="nc" id="L108">				return null;</span>
+			}
+
+<span class="fc" id="L111">			marketVertexMap.put (</span>
+<span class="fc" id="L112">				marketVertexDate,</span>
+				marketVertexArray[vertexIndex]
+			);
+		}
+
+		try
+		{
+<span class="fc" id="L119">			return new MarketPath (marketVertexMap);</span>
+		}
+<span class="nc" id="L121">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L123">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L126">		return null;</span>
+	}
+
+	/**
+	 * MarketPath Constructor
+	 * 
+	 * @param marketVertexMap Date Map of the Market Vertexes
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public MarketPath (
+		final java.util.Map&lt;java.lang.Integer, org.drip.exposure.universe.MarketVertex&gt; marketVertexMap)
+		throws java.lang.Exception
+<span class="fc" id="L140">	{</span>
+<span class="pc bpc" id="L141" title="1 of 2 branches missed.">		if (null == (_marketVertexMap = marketVertexMap))</span>
+		{
+<span class="nc" id="L143">			throw new java.lang.Exception (&quot;MarketPath Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="fc" id="L146">		int vertexCount = _marketVertexMap.size();</span>
+
+<span class="pc bpc" id="L148" title="1 of 2 branches missed.">		if (0 == _marketVertexMap.size())</span>
+		{
+<span class="nc" id="L150">			throw new java.lang.Exception (&quot;MarketPath Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="fc" id="L153">		int vertexIndex = 0;</span>
+<span class="fc" id="L154">		_vertexDateArray = new org.drip.analytics.date.JulianDate[vertexCount];</span>
+
+		for (java.util.Map.Entry&lt;java.lang.Integer, org.drip.exposure.universe.MarketVertex&gt;
+<span class="fc bfc" id="L157" title="All 2 branches covered.">			marketVertexMapEntry : _marketVertexMap.entrySet())</span>
+		{
+<span class="fc" id="L159">			org.drip.exposure.universe.MarketVertex marketVertex = marketVertexMapEntry.getValue();</span>
+
+<span class="fc bfc" id="L161" title="All 2 branches covered.">			if (0 == vertexIndex)</span>
+			{
+<span class="fc" id="L163">				_epochalMarketVertex = marketVertex;</span>
+			}
+
+<span class="fc" id="L166">			_vertexDateArray[vertexIndex++] = marketVertex.anchorDate();</span>
+
+<span class="fc bfc" id="L168" title="All 2 branches covered.">			if (vertexCount == vertexIndex)</span>
+			{
+<span class="fc" id="L170">				_terminalMarketVertex = marketVertex;</span>
+			}
+<span class="fc" id="L172">		}</span>
+<span class="fc" id="L173">	}</span>
+
+	/**
+	 * Retrieve the Array of the Vertex Anchor Dates
+	 * 
+	 * @return The Array of the Vertex Anchor Dates
+	 */
+
+	public org.drip.analytics.date.JulianDate[] anchorDates()
+	{
+<span class="fc" id="L183">		return _vertexDateArray;</span>
+	}
+
+	/**
+	 * Retrieve the Map of the Market Vertexes
+	 * 
+	 * @return The Market Vertex Map
+	 */
+
+	public java.util.Map&lt;java.lang.Integer, org.drip.exposure.universe.MarketVertex&gt; marketVertexMap()
+	{
+<span class="nc" id="L194">		return _marketVertexMap;</span>
+	}
+
+	/**
+	 * Retrieve the Array of the Market Vertexes
+	 * 
+	 * @return The Market Vertex Array
+	 */
+
+	public org.drip.exposure.universe.MarketVertex[] marketVertexArray()
+	{
+<span class="fc" id="L205">		int vertexCount = _marketVertexMap.size();</span>
+
+<span class="fc" id="L207">		int vertexIndex = 0;</span>
+<span class="fc" id="L208">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = new</span>
+			org.drip.exposure.universe.MarketVertex[vertexCount];
+
+		for (java.util.Map.Entry&lt;java.lang.Integer, org.drip.exposure.universe.MarketVertex&gt;
+<span class="fc bfc" id="L212" title="All 2 branches covered.">			marketVertexMapEntry : _marketVertexMap.entrySet())</span>
+		{
+<span class="fc" id="L214">			marketVertexArray[vertexIndex++] = marketVertexMapEntry.getValue();</span>
+<span class="fc" id="L215">		}</span>
+
+<span class="fc" id="L217">		return marketVertexArray;</span>
+	}
+
+	/**
+	 * Retrieve the Epochal Market Vertex
+	 * 
+	 * @return The Epochal Market Vertex
+	 */
+
+	public org.drip.exposure.universe.MarketVertex epochalMarketVertex()
+	{
+<span class="fc" id="L228">		return _epochalMarketVertex;</span>
+	}
+
+	/**
+	 * Retrieve the Terminal Market Vertex
+	 * 
+	 * @return The Terminal Market Vertex
+	 */
+
+	public org.drip.exposure.universe.MarketVertex terminalMarketVertex()
+	{
+<span class="nc" id="L239">		return _terminalMarketVertex;</span>
+	}
+
+	/**
+	 * Indicate if the Market Vertex is available for the Specified Date
+	 * 
+	 * @param vertexDate The Vertex Date
+	 * 
+	 * @return TRUE - The Market Vertex is available for the Specified Date
+	 */
+
+	public boolean containsDate (
+		final int vertexDate)
+	{
+<span class="fc" id="L253">		return _marketVertexMap.containsKey (vertexDate);</span>
+	}
+
+	/**
+	 * Retrieve the Market Vertex for the Specified Date
+	 * 
+	 * @param vertexDate The Vertex Date
+	 * 
+	 * @return The Market Vertex for the Specified Date
+	 */
+
+	public org.drip.exposure.universe.MarketVertex marketVertex (
+		final int vertexDate)
+	{
+<span class="pc bpc" id="L267" title="1 of 2 branches missed.">		return containsDate (vertexDate) ? _marketVertexMap.get (vertexDate) : null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

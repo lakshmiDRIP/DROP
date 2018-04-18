@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AggressiveTimeline.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.csaevents</a> &gt; <span class="el_source">AggressiveTimeline.java</span></div><h1>AggressiveTimeline.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.csaevents;
+
+import org.drip.analytics.date.DateUtil;
+import org.drip.analytics.date.JulianDate;
+import org.drip.exposure.csatimeline.EventDate;
+import org.drip.exposure.csatimeline.EventSequence;
+import org.drip.service.env.EnvManager;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * AggressiveTimeline describes CSA mandated Events Time-line occurring Margin Period, as enforced by an
+ * 	&quot;Aggressive&quot; Dealer. The References are:
+ *  
+ *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
+ *  
+ *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
+ *  
+ *  - Anfuso, F., D. Aziz, P. Giltinan, and K Loukopoulus (2017): A Sound Modeling and Back-testing Framework
+ *  	for Forecasting Initial Margin Requirements,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
+ *  
+ *  - BCBS (2015): Margin Requirements for Non-centrally Cleared Derivatives,
+ *  	https://www.bis.org/bcbs/publ/d317.pdf.
+ *  
+ *  - Pykhtin, M. (2009): Modeling Credit Exposure for Collateralized Counter-parties, Journal of Credit
+ *  	Risk, 5 (4) 3-27.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L78">public class AggressiveTimeline</span>
+{
+
+	private static final void DumpCSAEvent (
+		final EventDate csaEventDate)
+		throws Exception
+	{
+<span class="nc" id="L85">		System.out.println (</span>
+			&quot;\t| &quot; +
+<span class="nc" id="L87">			csaEventDate.date() + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L88">			csaEventDate.aps2017Designation() + &quot; | &quot; +</span>
+<span class="nc" id="L89">			csaEventDate.bcbsDesignation()</span>
+		);
+<span class="nc" id="L91">	}</span>
+
+	public static final void main (
+		final String args[])
+		throws Exception
+	{
+<span class="nc" id="L97">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L99">		JulianDate valuationDate = DateUtil.CreateFromYMD (</span>
+			2018,
+			DateUtil.APRIL,
+			16
+		);
+
+<span class="nc" id="L105">		String calendar = &quot;USD&quot;;</span>
+
+<span class="nc" id="L107">		EventSequence csaTimeline = EventSequence.Aggressive (</span>
+			valuationDate,
+			calendar
+		);
+
+<span class="nc" id="L112">		System.out.println (&quot;\t|-----------------------------------------------------------------|&quot;);</span>
+
+<span class="nc" id="L114">		System.out.println (&quot;\t|               CSA IMA 2002 \&quot;Aggressive\&quot; Timeline                |&quot;);</span>
+
+<span class="nc" id="L116">		System.out.println (&quot;\t|-----------------------------------------------------------------|&quot;);</span>
+
+<span class="nc" id="L118">		System.out.println (&quot;\t|  L -&gt; R:                                                        |&quot;);</span>
+
+<span class="nc" id="L120">		System.out.println (&quot;\t|                                                                 |&quot;);</span>
+
+<span class="nc" id="L122">		System.out.println (&quot;\t|      - CSA Event Date                                           |&quot;);</span>
+
+<span class="nc" id="L124">		System.out.println (&quot;\t|      - Andersen-Pykhtin-Sokol (2017) CSA Event Designation      |&quot;);</span>
+
+<span class="nc" id="L126">		System.out.println (&quot;\t|      - BCBS-IOSCO-IMA CSA Event Designation                     |&quot;);</span>
+
+<span class="nc" id="L128">		System.out.println (&quot;\t|-----------------------------------------------------------------|&quot;);</span>
+
+<span class="nc" id="L130">		DumpCSAEvent (csaTimeline.valuation());</span>
+
+<span class="nc" id="L132">		DumpCSAEvent (csaTimeline.honored());</span>
+
+<span class="nc" id="L134">		DumpCSAEvent (csaTimeline.collateralTransferInitiation());</span>
+
+<span class="nc" id="L136">		DumpCSAEvent (csaTimeline.nonHonored());</span>
+
+<span class="nc" id="L138">		DumpCSAEvent (csaTimeline.ped());</span>
+
+<span class="nc" id="L140">		DumpCSAEvent (csaTimeline.pedCommunication());</span>
+
+<span class="nc" id="L142">		DumpCSAEvent (csaTimeline.ed());</span>
+
+<span class="nc" id="L144">		DumpCSAEvent (csaTimeline.edCommunication());</span>
+
+<span class="nc" id="L146">		DumpCSAEvent (csaTimeline.etdDesignation());</span>
+
+<span class="nc" id="L148">		DumpCSAEvent (csaTimeline.etd());</span>
+
+<span class="nc" id="L150">		System.out.println (&quot;\t|-----------------------------------------------------------------|&quot;);</span>
+
+<span class="nc" id="L152">		System.out.println();</span>
+
+<span class="nc" id="L154">		System.out.println (&quot;\t|-----------------------------------------------------------------|&quot;);</span>
+
+<span class="nc" id="L156">		System.out.println (&quot;\t| Margin Period Start =&gt; &quot; + csaTimeline.marginPeriodStart());</span>
+
+<span class="nc" id="L158">		System.out.println (&quot;\t| Margin Period End   =&gt; &quot; + csaTimeline.marginPeriodEnd());</span>
+
+<span class="nc" id="L160">		System.out.println (&quot;\t| Margin Duration     =&gt; &quot; + csaTimeline.marginDuration() + &quot; Calendar Days&quot;);</span>
+
+<span class="nc" id="L162">		System.out.println (&quot;\t| Margin Frequency    =&gt; &quot; + csaTimeline.marginFrequency() + &quot; Business Days&quot;);</span>
+
+<span class="nc" id="L164">		System.out.println (&quot;\t| PED Cure Period     =&gt; &quot; + csaTimeline.curePeriod() + &quot; Business Days&quot;);</span>
+
+<span class="nc" id="L166">		System.out.println (&quot;\t|-----------------------------------------------------------------|&quot;);</span>
+
+<span class="nc" id="L168">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L169">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

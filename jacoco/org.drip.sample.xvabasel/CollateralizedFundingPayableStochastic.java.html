@@ -2,6 +2,8 @@
 package org.drip.sample.xvabasel;
 
 import org.drip.analytics.date.*;
+import org.drip.exposure.margin.CollateralAmountEstimator;
+import org.drip.exposure.universe.*;
 import org.drip.measure.bridge.BrokenDateInterpolatorLinearT;
 import org.drip.measure.crng.RandomNumberGenerator;
 import org.drip.measure.discrete.CorrelatedPathVertexDimension;
@@ -14,12 +16,10 @@ import org.drip.quant.linearalgebra.Matrix;
 import org.drip.service.env.EnvManager;
 import org.drip.xva.basel.*;
 import org.drip.xva.gross.*;
-import org.drip.xva.margin.CollateralAmountEstimator;
 import org.drip.xva.netting.CollateralGroupPath;
 import org.drip.xva.proto.*;
 import org.drip.xva.settings.*;
 import org.drip.xva.strategy.*;
-import org.drip.xva.universe.*;
 import org.drip.xva.vertex.AlbaneseAndersen;
 
 /*
@@ -582,7 +582,7 @@ import org.drip.xva.vertex.AlbaneseAndersen;
 				);
 			}
 
-<span class="fc" id="L585">			MarketPath mp = new MarketPath (aNV);</span>
+<span class="fc" id="L585">			MarketPath mp = MarketPath.FromMarketVertexArray (aNV);</span>
 
 <span class="fc" id="L587">			CollateralGroupPath[] aHGP1 = new CollateralGroupPath[] {</span>
 				new CollateralGroupPath (

@@ -71,12 +71,12 @@ package org.drip.xva.netting;
 
 public abstract class CreditDebtGroupPath
 {
-<span class="fc" id="L74">	private org.drip.xva.universe.MarketPath _marketPath = null;</span>
+<span class="fc" id="L74">	private org.drip.exposure.universe.MarketPath _marketPath = null;</span>
 <span class="fc" id="L75">	private org.drip.xva.netting.CollateralGroupPath[] _collateralGroupPathArray = null;</span>
 
 	protected CreditDebtGroupPath (
 		final org.drip.xva.netting.CollateralGroupPath[] collateralGroupPathArray,
-		final org.drip.xva.universe.MarketPath marketPath)
+		final org.drip.exposure.universe.MarketPath marketPath)
 		throws java.lang.Exception
 <span class="fc" id="L81">	{</span>
 <span class="pc bpc" id="L82" title="2 of 4 branches missed.">		if (null == (_collateralGroupPathArray = collateralGroupPathArray) ||</span>
@@ -119,7 +119,7 @@ public abstract class CreditDebtGroupPath
 	 * @return The Market Path
 	 */
 
-	public org.drip.xva.universe.MarketPath marketPath()
+	public org.drip.exposure.universe.MarketPath marketPath()
 	{
 <span class="nc" id="L124">		return _marketPath;</span>
 	}
@@ -649,7 +649,7 @@ public abstract class CreditDebtGroupPath
 
 	public double unilateralCreditAdjustment()
 	{
-<span class="fc" id="L652">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="fc" id="L652">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="fc" id="L654">		double[] vertexCreditExposurePV = vertexCreditExposurePV();</span>
 
@@ -680,7 +680,7 @@ public abstract class CreditDebtGroupPath
 
 	public double bilateralCreditAdjustment()
 	{
-<span class="fc" id="L683">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="fc" id="L683">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="fc" id="L685">		double[] vertexCreditExposurePV = vertexCreditExposurePV();</span>
 
@@ -724,7 +724,7 @@ public abstract class CreditDebtGroupPath
 
 	public double unilateralDebtAdjustment()
 	{
-<span class="fc" id="L727">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="fc" id="L727">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="fc" id="L729">		double[] vertexDebtExposurePV = vertexDebtExposurePV();</span>
 
@@ -755,7 +755,7 @@ public abstract class CreditDebtGroupPath
 
 	public double bilateralDebtAdjustment()
 	{
-<span class="fc" id="L758">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="fc" id="L758">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="fc" id="L760">		double[] vertexDebtExposurePV = vertexDebtExposurePV();</span>
 
@@ -799,7 +799,7 @@ public abstract class CreditDebtGroupPath
 
 	public double symmetricFundingValueSpread01()
 	{
-<span class="nc" id="L802">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="nc" id="L802">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="nc" id="L804">		double[] vertexCollateralizedExposurePV = vertexCollateralizedExposurePV();</span>
 
@@ -830,7 +830,7 @@ public abstract class CreditDebtGroupPath
 
 	public double unilateralFundingValueSpread01()
 	{
-<span class="nc" id="L833">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="nc" id="L833">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="nc" id="L835">		double[] vertexFundingExposurePV = vertexFundingExposurePV();</span>
 
@@ -862,7 +862,7 @@ public abstract class CreditDebtGroupPath
 
 	public double bilateralFundingValueSpread01()
 	{
-<span class="nc" id="L865">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="nc" id="L865">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="nc" id="L867">		double[] vertexFundingExposurePV = vertexFundingExposurePV();</span>
 
@@ -896,7 +896,7 @@ public abstract class CreditDebtGroupPath
 
 	public double unilateralFundingDebtAdjustment()
 	{
-<span class="nc" id="L899">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="nc" id="L899">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="nc" id="L901">		double[] vertexDebtExposurePV = vertexDebtExposurePV();</span>
 
@@ -927,7 +927,7 @@ public abstract class CreditDebtGroupPath
 
 	public double bilateralFundingDebtAdjustment()
 	{
-<span class="nc" id="L930">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="nc" id="L930">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="nc" id="L932">		double[] vertexDebtExposurePV = vertexDebtExposurePV();</span>
 
@@ -960,7 +960,7 @@ public abstract class CreditDebtGroupPath
 
 	public double unilateralCollateralAdjustment()
 	{
-<span class="nc" id="L963">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="nc" id="L963">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="nc" id="L965">		double[] periodCollateralValueAdjustment = periodCollateralValueAdjustment();</span>
 
@@ -986,7 +986,7 @@ public abstract class CreditDebtGroupPath
 
 	public double bilateralCollateralAdjustment()
 	{
-<span class="fc" id="L989">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="fc" id="L989">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="fc" id="L991">		double[] periodCollateralValueAdjustment = periodCollateralValueAdjustment();</span>
 
@@ -1025,7 +1025,7 @@ public abstract class CreditDebtGroupPath
 
 	public double[] periodSymmetricFundingValueSpread01()
 	{
-<span class="fc" id="L1028">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="fc" id="L1028">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="fc" id="L1030">		double[] vertexCollateralizedExposurePV = vertexCollateralizedExposurePV();</span>
 
@@ -1054,7 +1054,7 @@ public abstract class CreditDebtGroupPath
 
 	public double[] periodUnilateralCreditAdjustment()
 	{
-<span class="fc" id="L1057">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="fc" id="L1057">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="fc" id="L1059">		double[] vertexCreditExposurePV = vertexCreditExposurePV();</span>
 
@@ -1086,7 +1086,7 @@ public abstract class CreditDebtGroupPath
 
 	public double[] periodBilateralCreditAdjustment()
 	{
-<span class="fc" id="L1089">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="fc" id="L1089">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="fc" id="L1091">		double[] vertexCreditExposurePV = vertexCreditExposurePV();</span>
 
@@ -1145,7 +1145,7 @@ public abstract class CreditDebtGroupPath
 
 	public double[] periodUnilateralDebtAdjustment()
 	{
-<span class="nc" id="L1148">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="nc" id="L1148">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="nc" id="L1150">		double[] vertexDebtExposurePV = vertexDebtExposurePV();</span>
 
@@ -1177,7 +1177,7 @@ public abstract class CreditDebtGroupPath
 
 	public double[] periodBilateralDebtAdjustment()
 	{
-<span class="fc" id="L1180">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="fc" id="L1180">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="fc" id="L1182">		double[] vertexDebtExposurePV = vertexDebtExposurePV();</span>
 
@@ -1211,7 +1211,7 @@ public abstract class CreditDebtGroupPath
 
 	public double[] periodUnilateralFundingValueSpread01()
 	{
-<span class="fc" id="L1214">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="fc" id="L1214">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="fc" id="L1216">		double[] vertexFundingExposurePV = vertexFundingExposurePV();</span>
 
@@ -1244,7 +1244,7 @@ public abstract class CreditDebtGroupPath
 
 	public double[] periodBilateralFundingValueSpread01()
 	{
-<span class="fc" id="L1247">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="fc" id="L1247">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="fc" id="L1249">		double[] vertexFundingExposurePV = vertexFundingExposurePV();</span>
 
@@ -1279,7 +1279,7 @@ public abstract class CreditDebtGroupPath
 
 	public double[] periodUnilateralFundingDebtAdjustment()
 	{
-<span class="fc" id="L1282">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="fc" id="L1282">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="fc" id="L1284">		double[] vertexDebtExposurePV = vertexDebtExposurePV();</span>
 
@@ -1311,7 +1311,7 @@ public abstract class CreditDebtGroupPath
 
 	public double[] periodBilateralFundingDebtAdjustment()
 	{
-<span class="fc" id="L1314">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="fc" id="L1314">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="fc" id="L1316">		double[] vertexDebtExposurePV = vertexDebtExposurePV();</span>
 

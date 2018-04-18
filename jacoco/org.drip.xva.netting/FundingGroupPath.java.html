@@ -71,12 +71,12 @@ package org.drip.xva.netting;
 
 public abstract class FundingGroupPath
 {
-<span class="fc" id="L74">	private org.drip.xva.universe.MarketPath _marketPath = null;</span>
+<span class="fc" id="L74">	private org.drip.exposure.universe.MarketPath _marketPath = null;</span>
 <span class="fc" id="L75">	private org.drip.xva.netting.CreditDebtGroupPath[] _creditDebtGroupPathArray = null;</span>
 
 	protected FundingGroupPath (
 		final org.drip.xva.netting.CreditDebtGroupPath[] creditDebtGroupPathArray,
-		final org.drip.xva.universe.MarketPath marketPath)
+		final org.drip.exposure.universe.MarketPath marketPath)
 		throws java.lang.Exception
 <span class="fc" id="L81">	{</span>
 <span class="pc bpc" id="L82" title="2 of 4 branches missed.">		if (null == (_creditDebtGroupPathArray = creditDebtGroupPathArray) ||</span>
@@ -103,7 +103,7 @@ public abstract class FundingGroupPath
 	 * @return The Market Path
 	 */
 
-	public org.drip.xva.universe.MarketPath marketPath()
+	public org.drip.exposure.universe.MarketPath marketPath()
 	{
 <span class="nc" id="L108">		return _marketPath;</span>
 	}
@@ -190,7 +190,7 @@ public abstract class FundingGroupPath
 
 	public double[] periodSymmetricFundingValueSpread01()
 	{
-<span class="fc" id="L193">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="fc" id="L193">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="fc" id="L195">		int periodCount = marketVertexArray.length - 1;</span>
 <span class="fc" id="L196">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
@@ -225,7 +225,7 @@ public abstract class FundingGroupPath
 
 	public double[] periodUnilateralFundingValueSpread01()
 	{
-<span class="fc" id="L228">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="fc" id="L228">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="fc" id="L230">		int periodCount = marketVertexArray.length - 1;</span>
 <span class="fc" id="L231">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
@@ -268,7 +268,7 @@ public abstract class FundingGroupPath
 
 	public double[] periodBilateralFundingValueSpread01()
 	{
-<span class="fc" id="L271">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="fc" id="L271">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="fc" id="L273">		int periodCount = marketVertexArray.length - 1;</span>
 <span class="fc" id="L274">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
@@ -313,7 +313,7 @@ public abstract class FundingGroupPath
 	{
 <span class="fc" id="L314">		double[] periodSymmetricFundingValueSpread01 = periodSymmetricFundingValueSpread01();</span>
 
-<span class="fc" id="L316">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="fc" id="L316">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="fc" id="L318">		int periodCount = periodSymmetricFundingValueSpread01.length;</span>
 <span class="fc" id="L319">		double symmetricFundingValueAdjustment = 0.;</span>
@@ -340,7 +340,7 @@ public abstract class FundingGroupPath
 	{
 <span class="fc" id="L341">		double[] periodUnilateralFundingValueSpread01 = periodUnilateralFundingValueSpread01();</span>
 
-<span class="fc" id="L343">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="fc" id="L343">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="fc" id="L345">		int periodCount = periodUnilateralFundingValueSpread01.length;</span>
 <span class="fc" id="L346">		double unilateralFundingValueAdjustment = 0.;</span>
@@ -367,7 +367,7 @@ public abstract class FundingGroupPath
 	{
 <span class="nc" id="L368">		double[] periodBilateralFundingValueSpread01 = periodBilateralFundingValueSpread01();</span>
 
-<span class="nc" id="L370">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="nc" id="L370">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="nc" id="L372">		int periodCount = periodBilateralFundingValueSpread01.length;</span>
 <span class="nc" id="L373">		double bilateralFundingValueAdjustment = 0.;</span>
@@ -434,7 +434,7 @@ public abstract class FundingGroupPath
 
 	public double[] vertexCollateralizedExposure()
 	{
-<span class="fc" id="L437">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="fc" id="L437">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="fc" id="L439">		int vertexCount = marketVertexArray.length;</span>
 <span class="fc" id="L440">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
@@ -469,7 +469,7 @@ public abstract class FundingGroupPath
 
 	public double[] vertexCollateralizedExposurePV()
 	{
-<span class="fc" id="L472">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="fc" id="L472">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="fc" id="L474">		int vertexCount = marketVertexArray.length;</span>
 <span class="fc" id="L475">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
@@ -504,7 +504,7 @@ public abstract class FundingGroupPath
 
 	public double[] vertexCollateralizedPositiveExposure()
 	{
-<span class="fc" id="L507">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="fc" id="L507">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="fc" id="L509">		int vertexCount = marketVertexArray.length;</span>
 <span class="fc" id="L510">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
@@ -539,7 +539,7 @@ public abstract class FundingGroupPath
 
 	public double[] vertexCollateralizedPositiveExposurePV()
 	{
-<span class="fc" id="L542">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="fc" id="L542">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="fc" id="L544">		int vertexCount = marketVertexArray.length;</span>
 <span class="fc" id="L545">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
@@ -574,7 +574,7 @@ public abstract class FundingGroupPath
 
 	public double[] vertexCollateralizedNegativeExposure()
 	{
-<span class="fc" id="L577">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="fc" id="L577">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="fc" id="L579">		int vertexCount = marketVertexArray.length;</span>
 <span class="fc" id="L580">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
@@ -609,7 +609,7 @@ public abstract class FundingGroupPath
 
 	public double[] vertexCollateralizedNegativeExposurePV()
 	{
-<span class="fc" id="L612">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="fc" id="L612">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="fc" id="L614">		int vertexCount = marketVertexArray.length;</span>
 <span class="fc" id="L615">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
@@ -644,7 +644,7 @@ public abstract class FundingGroupPath
 
 	public double[] vertexUncollateralizedExposure()
 	{
-<span class="fc" id="L647">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="fc" id="L647">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="fc" id="L649">		int vertexCount = marketVertexArray.length;</span>
 <span class="fc" id="L650">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
@@ -679,7 +679,7 @@ public abstract class FundingGroupPath
 
 	public double[] vertexUncollateralizedExposurePV()
 	{
-<span class="fc" id="L682">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="fc" id="L682">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="fc" id="L684">		int vertexCount = marketVertexArray.length;</span>
 <span class="fc" id="L685">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
@@ -714,7 +714,7 @@ public abstract class FundingGroupPath
 
 	public double[] vertexUncollateralizedPositiveExposure()
 	{
-<span class="fc" id="L717">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="fc" id="L717">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="fc" id="L719">		int vertexCount = marketVertexArray.length;</span>
 <span class="fc" id="L720">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
@@ -749,7 +749,7 @@ public abstract class FundingGroupPath
 
 	public double[] vertexUncollateralizedPositiveExposurePV()
 	{
-<span class="fc" id="L752">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="fc" id="L752">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="fc" id="L754">		int vertexCount = marketVertexArray.length;</span>
 <span class="fc" id="L755">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
@@ -784,7 +784,7 @@ public abstract class FundingGroupPath
 
 	public double[] vertexUncollateralizedNegativeExposure()
 	{
-<span class="fc" id="L787">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="fc" id="L787">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="fc" id="L789">		int vertexCount = marketVertexArray.length;</span>
 <span class="fc" id="L790">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
@@ -819,7 +819,7 @@ public abstract class FundingGroupPath
 
 	public double[] vertexUncollateralizedNegativeExposurePV()
 	{
-<span class="fc" id="L822">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="fc" id="L822">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="fc" id="L824">		int vertexCount = marketVertexArray.length;</span>
 <span class="fc" id="L825">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
@@ -854,7 +854,7 @@ public abstract class FundingGroupPath
 
 	public double[] vertexFundingExposure()
 	{
-<span class="fc" id="L857">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="fc" id="L857">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="fc" id="L859">		int vertexCount = marketVertexArray.length;</span>
 <span class="fc" id="L860">		double[] vertexFundingExposure = new double[vertexCount];</span>
@@ -896,7 +896,7 @@ public abstract class FundingGroupPath
 
 	public double[] vertexFundingExposurePV()
 	{
-<span class="fc" id="L899">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="fc" id="L899">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="fc" id="L901">		int vertexCount = marketVertexArray.length;</span>
 <span class="fc" id="L902">		double[] vertexFundingExposurePV = new double[vertexCount];</span>
@@ -938,7 +938,7 @@ public abstract class FundingGroupPath
 
 	public double[] periodSymmetricFundingValueAdjustment()
 	{
-<span class="fc" id="L941">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="fc" id="L941">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="fc" id="L943">		double[] periodSymmetricFundingValueSpread01 = periodSymmetricFundingValueSpread01();</span>
 
@@ -970,7 +970,7 @@ public abstract class FundingGroupPath
 <span class="fc" id="L970">		int periodCount = periodUnilateralFundingValueSpread01.length;</span>
 <span class="fc" id="L971">		double[] periodUnilateralFundingValueAdjustment = new double[periodCount];</span>
 
-<span class="fc" id="L973">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="fc" id="L973">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="fc bfc" id="L975" title="All 2 branches covered.">		for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
 		{
@@ -997,7 +997,7 @@ public abstract class FundingGroupPath
 <span class="fc" id="L997">		int periodCount = periodBilateralFundingValueSpread01.length;</span>
 <span class="fc" id="L998">		double[] periodBilateralFundingValueAdjustment = new double[periodCount];</span>
 
-<span class="fc" id="L1000">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="fc" id="L1000">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="fc bfc" id="L1002" title="All 2 branches covered.">		for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
 		{
@@ -1019,7 +1019,7 @@ public abstract class FundingGroupPath
 
 	public double[] periodUnilateralFundingDebtAdjustment()
 	{
-<span class="fc" id="L1022">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="fc" id="L1022">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="fc" id="L1024">		int periodCount = marketVertexArray.length - 1;</span>
 <span class="fc" id="L1025">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
@@ -1054,7 +1054,7 @@ public abstract class FundingGroupPath
 
 	public double[] periodBilateralFundingDebtAdjustment()
 	{
-<span class="fc" id="L1057">		org.drip.xva.universe.MarketVertex[] marketVertexArray = _marketPath.vertexes();</span>
+<span class="fc" id="L1057">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
 <span class="fc" id="L1059">		int periodCount = marketVertexArray.length - 1;</span>
 <span class="fc" id="L1060">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>

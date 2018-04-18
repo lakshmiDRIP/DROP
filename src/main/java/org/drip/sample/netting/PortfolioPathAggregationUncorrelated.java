@@ -367,7 +367,7 @@ public class PortfolioPathAggregationUncorrelated {
 					adblBankHazardRate[i],
 					adblBankRecoveryRate[i],
 					adblBankFundingSpread[i],
-					Math.exp (-0.5 * adblBankHazardRate[i] * (1. - adblBankRecoveryRate[i]) * iNumStep),
+					Math.exp (-0.5 * adblBankHazardRate[i] * (1. - adblBankRecoveryRate[i]) * (iNumStep - i)),
 					Double.NaN,
 					Double.NaN,
 					Double.NaN
@@ -377,7 +377,7 @@ public class PortfolioPathAggregationUncorrelated {
 					adblCounterPartyHazardRate[i],
 					adblCounterPartyRecoveryRate[i],
 					adblCounterPartyFundingSpread[i],
-					Math.exp (-0.5 * adblCounterPartyHazardRate[i] * (1. - adblCounterPartyRecoveryRate[i]) * iNumStep),
+					Math.exp (-0.5 * adblCounterPartyHazardRate[i] * (1. - adblCounterPartyRecoveryRate[i]) * (iNumStep - i)),
 					Double.NaN,
 					Double.NaN,
 					Double.NaN
