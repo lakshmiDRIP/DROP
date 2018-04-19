@@ -7,7 +7,7 @@ import org.drip.exposure.evolver.EntityDynamicsContainer;
 import org.drip.exposure.evolver.PrimarySecurity;
 import org.drip.exposure.evolver.PrimarySecurityDynamicsContainer;
 import org.drip.exposure.evolver.TerminalLatentState;
-import org.drip.exposure.holdings.StreamDV01;
+import org.drip.exposure.holdings.FixedCouponStream;
 import org.drip.exposure.universe.MarketPath;
 import org.drip.exposure.universe.MarketVertex;
 import org.drip.exposure.universe.MarketVertexGenerator;
@@ -21,6 +21,7 @@ import org.drip.measure.dynamics.HazardJumpEvaluator;
 import org.drip.measure.process.DiffusionEvolver;
 import org.drip.measure.process.JumpDiffusionEvolver;
 import org.drip.product.rates.FixFloatComponent;
+import org.drip.quant.common.FormatUtil;
 import org.drip.quant.linearalgebra.Matrix;
 import org.drip.service.env.EnvManager;
 import org.drip.state.identifier.CSALabel;
@@ -76,7 +77,8 @@ import org.drip.state.identifier.OvernightLabel;
  */
 
 /**
- * StreamDV01Daily displays the Total Exposure DV01 for a given Stream on a Daily Grid. The References are:
+ * FixedStreamDaily displays the Total Exposure for the given Fixed Stream on a Daily Grid. The References
+ *  are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
@@ -96,7 +98,7 @@ import org.drip.state.identifier.OvernightLabel;
  * @author Lakshmi Krishnamurthy
  */
 
-public class StreamDV01Daily
+public class FixedStreamDaily
 {
 
 	private static final FixFloatComponent OTCIRS (
@@ -135,7 +137,7 @@ public class StreamDV01Daily
 		double assetNumeraireRepo = 0.0;
 
 		double overnightIndexNumeraireDrift = 0.0025;
-		double overnightIndexNumeraireVolatility = 0.001;
+		double overnightIndexNumeraireVolatility = 0.0005;
 		double overnightIndexNumeraireRepo = 0.0;
 
 		double collateralSchemeNumeraireDrift = 0.01;
@@ -364,8 +366,9 @@ public class StreamDV01Daily
 			19
 		);
 
+		int pathCount = 1000;
 		String periodTenor = "1D";
-		int periodCount = 360;
+		int periodCount = 370;
 		String currency = "USD";
 		String dealer = "NOM";
 		String client = "SSGA";
@@ -383,7 +386,7 @@ public class StreamDV01Daily
 			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00}  // #10 COUNTER PARTY RECOVERY RATE
 		};
 		String fixFloatMaturityTenor = "1Y";
-		double fixFloatCoupon = 0.02;
+		double fixFloatCoupon = 0.03;
 		double fixFloatNotional = 1.e+06;
 
 		MarketVertexGenerator marketVertexGenerator = ConstructMarketVertexGenerator (
@@ -408,6 +411,18 @@ public class StreamDV01Daily
 			0.030 / (1 - 0.30) 	// dblCounterPartyFundingSpread
 		);
 
+		FixFloatComponent fixFloatComponent = OTCIRS (
+			spotDate,
+			currency,
+			fixFloatMaturityTenor,
+			fixFloatCoupon
+		);
+
+		FixedCouponStream streamDV01 = new FixedCouponStream (
+			fixFloatComponent.referenceStream(),
+			fixFloatNotional
+		);
+
 		CorrelatedPathVertexDimension correlatedPathVertexDimension = new CorrelatedPathVertexDimension (
 			new RandomNumberGenerator(),
 			correlationMatrix,
@@ -417,40 +432,82 @@ public class StreamDV01Daily
 			null
 		);
 
-		MarketPath marketPath = new MarketPath (
-			marketVertexGenerator.marketVertex (
-				initialMarketVertex,
-				Matrix.Transpose (correlatedPathVertexDimension.straightPathVertexRd().flatform())
-			)
-		);
-
-		FixFloatComponent fixFloatComponent = OTCIRS (
-			spotDate,
-			currency,
-			fixFloatMaturityTenor,
-			fixFloatCoupon
-		);
-
-		StreamDV01 streamDV01 = new StreamDV01 (
-			fixFloatComponent.referenceStream(),
-			fixFloatNotional
-		);
-
-		JulianDate forwardDate = spotDate;
+		double[] tradeFlowArray = new double[periodCount + 1];
+		double[] marginFlowArray = new double[periodCount + 1];
 
 		for (int i = 0; i <= periodCount; ++i)
 		{
+			tradeFlowArray[i] = 0.;
+			marginFlowArray[i] = 0.;
+		}
+
+		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
+		{
+			MarketPath marketPath = new MarketPath (
+				marketVertexGenerator.marketVertex (
+					initialMarketVertex,
+					Matrix.Transpose (correlatedPathVertexDimension.straightPathVertexRd().flatform())
+				)
+			);
+
+			JulianDate forwardDate = spotDate;
+
+			for (int i = 0; i <= periodCount; ++i)
+			{
+				tradeFlowArray[i] += streamDV01.tradeFlowExposure (
+					forwardDate.julian(),
+					marketPath
+				);
+
+				marginFlowArray[i] += streamDV01.marginFlowExposure (
+					forwardDate.julian(),
+					marketPath
+				);
+
+				forwardDate = forwardDate.addTenor (periodTenor);
+			}
+		}
+
+		System.out.println();
+
+		System.out.println ("\t|----------------------------------------------------||");
+
+		System.out.println ("\t|      FIXED STREAM MARGIN/TRADE FLOW EXPOSURE       ||");
+
+		System.out.println ("\t|----------------------------------------------------||");
+
+		System.out.println ("\t|                                                    ||");
+
+		System.out.println ("\t|  L -> R:                                           ||");
+
+		System.out.println ("\t|                                                    ||");
+
+		System.out.println ("\t|    - Forward Date                                  ||");
+
+		System.out.println ("\t|    - Forward Margin Exposure                       ||");
+
+		System.out.println ("\t|    - Forward Trade Flow Exposure                   ||");
+
+		System.out.println ("\t|    - Forward Total Exposure                        ||");
+
+		System.out.println ("\t|----------------------------------------------------||");
+
+		for (int i = 0; i <= periodCount; ++i)
+		{
+			JulianDate forwardDate = spotDate;
+
 			System.out.println (
 				"\t| [" +
 				forwardDate + "] => " +
-				streamDV01.value (
-					forwardDate.julian(),
-					marketPath
-				) + " ||"
+				FormatUtil.FormatDouble (marginFlowArray[i] / pathCount, 5, 2, 1) + " | " +
+				FormatUtil.FormatDouble (tradeFlowArray[i] / pathCount, 5, 2, 1) + " | " +
+				FormatUtil.FormatDouble ((marginFlowArray[i] + tradeFlowArray[i]) / pathCount, 5, 2, 1) + " ||"
 			);
 
 			forwardDate = forwardDate.addTenor (periodTenor);
 		}
+
+		System.out.println ("\t|----------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

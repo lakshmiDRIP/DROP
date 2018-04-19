@@ -47,7 +47,8 @@ package org.drip.exposure.holdings;
  */
 
 /**
- * StreamDV01 evaluates the DV01 for the given Stream off of the Realized Market Vertex. The References are:
+ * MarginTradeFlowTrajectory holds the Margin Flow and Trade Flow Exposures for the given Stream off of the
+ * 	Realized Market Path. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
@@ -67,79 +68,77 @@ package org.drip.exposure.holdings;
  * @author Lakshmi Krishnamurthy
  */
 
-public class StreamDV01
+public class MarginTradeFlowTrajectory
 {
-	private double _notional = java.lang.Double.NaN;
-	private org.drip.product.rates.Stream _stream = null;
+	private int[] _forwardDateArray = null;
+	private double[] _tradeFlowExposureArray = null;
+	private double[] _marginFlowExposureArray = null;
 
 	/**
-	 * StreamDV01 Constructor
+	 * MarginTradeFlowTrajectory Constructor
 	 * 
-	 * @param stream The Steam Instance
-	 * @param notional The Steam Notional
+	 * @param forwardDateArray The Forward Exposure Date Array
+	 * @param marginFlowExposureArray The Margin Flow Exposure Array
+	 * @param tradeFlowExposureArray The Trade Flow Exposure Array
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public StreamDV01 (
-		final org.drip.product.rates.Stream stream,
-		final double notional)
+	public MarginTradeFlowTrajectory (
+		final int[] forwardDateArray,
+		final double[] marginFlowExposureArray,
+		final double[] tradeFlowExposureArray)
 		throws java.lang.Exception
 	{
-		if (null == (_stream = stream) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_notional = notional))
+		if (null == (_forwardDateArray = forwardDateArray) ||
+			null == (_marginFlowExposureArray = marginFlowExposureArray) ||
+			null == (_tradeFlowExposureArray = tradeFlowExposureArray))
 		{
-			throw new java.lang.Exception ("StreamDV01 Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("MarginTradeFlowTrajectory Constuctor => Invalid Inputs");
+		}
+
+		int forwardDateCount = _forwardDateArray.length;
+
+		if (0 == forwardDateCount ||
+			forwardDateCount != _marginFlowExposureArray.length ||
+			forwardDateCount != _tradeFlowExposureArray.length ||
+			!org.drip.quant.common.NumberUtil.IsValid (_marginFlowExposureArray) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_tradeFlowExposureArray))
+		{
+			throw new java.lang.Exception ("MarginTradeFlowTrajectory Constuctor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Stream
+	 * Retrieve the Forward Date Array
 	 * 
-	 * @return The Stream
+	 * @return The Forward Date Array
 	 */
 
-	public org.drip.product.rates.Stream stream()
+	public int[] forwardDateArray()
 	{
-		return _stream;
+		return _forwardDateArray;
 	}
 
-	public double value (
-		final int forwardDate,
-		final org.drip.exposure.universe.MarketPath marketPath)
-		throws java.lang.Exception
+	/**
+	 * Retrieve the Margin Flow Exposure Array
+	 * 
+	 * @return The Margin Flow Exposure Array
+	 */
+
+	public double[] marginFlowExposureArray()
 	{
-		double dv01 = 0.;
+		return _marginFlowExposureArray;
+	}
 
-		// double overnightReplicatorForward = marketPath.marketVertex (forwardDate).overnightReplicator();
+	/**
+	 * Retrieve the Trade Flow Exposure Array
+	 * 
+	 * @return The Trade Flow Exposure Array
+	 */
 
-		for (org.drip.analytics.cashflow.CompositePeriod period : _stream.periods())
-		{
-			int periodEndDate = period.endDate();
-
-			if (periodEndDate < forwardDate)
-			{
-				continue;
-			}
-
-			org.drip.analytics.output.CompositePeriodCouponMetrics compositePeriodCouponMetrics =
-				period.couponMetrics (
-					forwardDate,
-					null
-				);
-
-			if (null == compositePeriodCouponMetrics)
-			{
-				throw new java.lang.Exception ("StreamDV01::value => Invalid Inputs");
-			}
-
-			dv01 += compositePeriodCouponMetrics.dcf() * period.notional (periodEndDate);
-
-			/* dv01 += compositePeriodCouponMetrics.dcf() * period.notional (periodEndDate) *
-				overnightReplicatorForward /
-				marketPath.marketVertex (period.payDate()).overnightReplicator(); */
-		}
-
-		return dv01 * _notional;
+	public double[] tradeFlowExposureArray()
+	{
+		return _tradeFlowExposureArray;
 	}
 }
