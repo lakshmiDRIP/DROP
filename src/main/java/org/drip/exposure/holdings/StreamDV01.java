@@ -69,7 +69,29 @@ package org.drip.exposure.holdings;
 
 public class StreamDV01
 {
+	private double _notional = java.lang.Double.NaN;
 	private org.drip.product.rates.Stream _stream = null;
+
+	/**
+	 * StreamDV01 Constructor
+	 * 
+	 * @param stream The Steam Instance
+	 * @param notional The Steam Notional
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public StreamDV01 (
+		final org.drip.product.rates.Stream stream,
+		final double notional)
+		throws java.lang.Exception
+	{
+		if (null == (_stream = stream) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_notional = notional))
+		{
+			throw new java.lang.Exception ("StreamDV01 Constructor => Invalid Inputs");
+		}
+	}
 
 	/**
 	 * Retrieve the Stream
@@ -83,12 +105,13 @@ public class StreamDV01
 	}
 
 	public double value (
-		final org.drip.exposure.universe.MarketVertex marketVertex)
+		final int forwardDate,
+		final org.drip.exposure.universe.MarketPath marketPath)
 		throws java.lang.Exception
 	{
 		double dv01 = 0.;
 
-		int forwardDate = marketVertex.anchorDate().julian();
+		// double overnightReplicatorForward = marketPath.marketVertex (forwardDate).overnightReplicator();
 
 		for (org.drip.analytics.cashflow.CompositePeriod period : _stream.periods())
 		{
@@ -111,8 +134,12 @@ public class StreamDV01
 			}
 
 			dv01 += compositePeriodCouponMetrics.dcf() * period.notional (periodEndDate);
+
+			/* dv01 += compositePeriodCouponMetrics.dcf() * period.notional (periodEndDate) *
+				overnightReplicatorForward /
+				marketPath.marketVertex (period.payDate()).overnightReplicator(); */
 		}
 
-		return dv01;
+		return dv01 * _notional;
 	}
 }
