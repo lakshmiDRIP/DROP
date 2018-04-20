@@ -1,13 +1,18 @@
 
 package org.drip.sample.fixfloatexposure;
 
+import java.util.Map;
+
 import org.drip.analytics.date.DateUtil;
 import org.drip.analytics.date.JulianDate;
+import org.drip.exposure.csatimeline.AndersenPykhtinSokolLag;
 import org.drip.exposure.evolver.EntityDynamicsContainer;
 import org.drip.exposure.evolver.PrimarySecurity;
 import org.drip.exposure.evolver.PrimarySecurityDynamicsContainer;
 import org.drip.exposure.evolver.TerminalLatentState;
 import org.drip.exposure.holdings.FixedCouponStream;
+import org.drip.exposure.holdings.MarginTradeFlowEntry;
+import org.drip.exposure.holdings.MarginTradeFlowTrajectory;
 import org.drip.exposure.universe.MarketPath;
 import org.drip.exposure.universe.MarketVertex;
 import org.drip.exposure.universe.MarketVertexGenerator;
@@ -77,8 +82,8 @@ import org.drip.state.identifier.OvernightLabel;
  */
 
 /**
- * FixedStreamDaily displays the Total Exposure for the given Fixed Stream on a Daily Grid. The References
- *  are:
+ * FixedStreamMPoRDaily displays the MPoR-related Exposure Metrics Suite for the given Fixed Stream on a
+ *  Daily Grid. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
@@ -98,7 +103,7 @@ import org.drip.state.identifier.OvernightLabel;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FixedStreamDaily
+public class FixedStreamMPoRDaily
 {
 
 	private static final FixFloatComponent OTCIRS (
@@ -411,6 +416,8 @@ public class FixedStreamDaily
 			0.030 / (1 - 0.30) 	// dblCounterPartyFundingSpread
 		);
 
+		AndersenPykhtinSokolLag andersenPykhtinSokolLag = AndersenPykhtinSokolLag.ClassicalPlus();
+
 		FixFloatComponent fixFloatComponent = OTCIRS (
 			spotDate,
 			currency,
@@ -418,7 +425,7 @@ public class FixedStreamDaily
 			fixFloatCoupon
 		);
 
-		FixedCouponStream streamDV01 = new FixedCouponStream (
+		FixedCouponStream fixedCouponStream = new FixedCouponStream (
 			fixFloatComponent.referenceStream(),
 			fixFloatNotional
 		);
@@ -432,13 +439,22 @@ public class FixedStreamDaily
 			null
 		);
 
-		double[] tradeFlowArray = new double[periodCount + 1];
-		double[] marginFlowArray = new double[periodCount + 1];
+		JulianDate forwardDate = spotDate;
+		int[] forwardDateArray = new int[periodCount + 1];
+		int[] marginPostingDateArray = new int[periodCount + 1];
+		double[] tradeFlowExposureArray = new double[periodCount + 1];
+		double[] marginFlowExposureArray = new double[periodCount + 1];
+		double[] marginPostingAmountArray = new double[periodCount + 1];
 
 		for (int i = 0; i <= periodCount; ++i)
 		{
-			tradeFlowArray[i] = 0.;
-			marginFlowArray[i] = 0.;
+			tradeFlowExposureArray[i] = 0.;
+			marginFlowExposureArray[i] = 0.;
+			marginPostingAmountArray[i] = 0.;
+
+			forwardDateArray[i] = forwardDate.julian();
+
+			forwardDate = forwardDate.addTenor (periodTenor);
 		}
 
 		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
@@ -450,64 +466,80 @@ public class FixedStreamDaily
 				)
 			);
 
-			JulianDate forwardDate = spotDate;
+			MarginTradeFlowTrajectory marginTradeFlowTrajectory = MarginTradeFlowTrajectory.Standard (
+				forwardDateArray,
+				fixedCouponStream,
+				marketPath,
+				andersenPykhtinSokolLag
+			);
+
+			Map<Integer, MarginTradeFlowEntry> mapMarginTradeFlowEntry =
+				marginTradeFlowTrajectory.mapMarginTradeFlowEntry();
 
 			for (int i = 0; i <= periodCount; ++i)
 			{
-				tradeFlowArray[i] += streamDV01.tradeFlowExposure (
-					forwardDate.julian(),
-					marketPath
-				);
+				MarginTradeFlowEntry marginTradeFlowEntry = mapMarginTradeFlowEntry.get (forwardDateArray[i]);
 
-				marginFlowArray[i] += streamDV01.marginFlowExposure (
-					forwardDate.julian(),
-					marketPath
-				);
+				tradeFlowExposureArray[i] += marginTradeFlowEntry.tradeFlowExposure();
 
-				forwardDate = forwardDate.addTenor (periodTenor);
+				marginFlowExposureArray[i] += marginTradeFlowEntry.marginFlowExposure();
+
+				marginPostingAmountArray[i] += marginTradeFlowEntry.marginFlowActual();
+
+				marginPostingDateArray[i] = marginTradeFlowEntry.marginPostingDate();
 			}
 		}
 
 		System.out.println();
 
-		System.out.println ("\t|----------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------------------------------------------------------||");
 
-		System.out.println ("\t|      FIXED STREAM MARGIN/TRADE FLOW EXPOSURE       ||");
+		System.out.println ("\t|                         FIXED STREAM MARGIN/TRADE FLOW EXPOSURES AND DATES                          ||");
 
-		System.out.println ("\t|----------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------------------------------------------------------||");
 
-		System.out.println ("\t|                                                    ||");
+		System.out.println ("\t|                                                                                                     ||");
 
-		System.out.println ("\t|  L -> R:                                           ||");
+		System.out.println ("\t|  L -> R:                                                                                            ||");
 
-		System.out.println ("\t|                                                    ||");
+		System.out.println ("\t|                                                                                                     ||");
 
-		System.out.println ("\t|    - Forward Date                                  ||");
+		System.out.println ("\t|    - Forward Date                                                                                   ||");
 
-		System.out.println ("\t|    - Forward Margin Exposure                       ||");
+		System.out.println ("\t|    - Forward Margin Flow Exposure                                                                   ||");
 
-		System.out.println ("\t|    - Forward Trade Flow Exposure                   ||");
+		System.out.println ("\t|    - Forward Trade Flow Exposure                                                                    ||");
 
-		System.out.println ("\t|    - Forward Total Exposure                        ||");
+		System.out.println ("\t|    - Forward Total Exposure                                                                         ||");
 
-		System.out.println ("\t|----------------------------------------------------||");
+		System.out.println ("\t|    - Margin Posting Date                                                                            ||");
+
+		System.out.println ("\t|    - Margin Posting Amount                                                                          ||");
+
+		System.out.println ("\t|    - Margin Gap                                                                                     ||");
+
+		System.out.println ("\t|    - Net Margin Period Exposure                                                                     ||");
+
+		System.out.println ("\t|                                                                                                     ||");
+
+		System.out.println ("\t|-----------------------------------------------------------------------------------------------------||");
 
 		for (int i = 0; i <= periodCount; ++i)
 		{
-			JulianDate forwardDate = spotDate;
-
 			System.out.println (
 				"\t| [" +
-				forwardDate + "] => " +
-				FormatUtil.FormatDouble (marginFlowArray[i] / pathCount, 5, 2, 1) + " | " +
-				FormatUtil.FormatDouble (tradeFlowArray[i] / pathCount, 5, 2, 1) + " | " +
-				FormatUtil.FormatDouble ((marginFlowArray[i] + tradeFlowArray[i]) / pathCount, 5, 2, 1) + " ||"
+				new JulianDate (forwardDateArray[i]) + "] => " +
+				FormatUtil.FormatDouble (marginFlowExposureArray[i] / pathCount, 5, 2, 1) + " | " +
+				FormatUtil.FormatDouble (tradeFlowExposureArray[i] / pathCount, 5, 2, 1) + " | " +
+				FormatUtil.FormatDouble ((marginFlowExposureArray[i] + tradeFlowExposureArray[i]) / pathCount, 5, 2, 1) + " | [" +
+				new JulianDate (marginPostingDateArray[i]) + "] | " +
+				FormatUtil.FormatDouble (marginPostingAmountArray[i] / pathCount, 5, 2, 1) + " | " +
+				FormatUtil.FormatDouble ((marginPostingAmountArray[i] - marginFlowExposureArray[i]) / pathCount, 2, 2, 1) + " | " +
+				FormatUtil.FormatDouble ((marginFlowExposureArray[i] + tradeFlowExposureArray[i] - marginPostingAmountArray[i]) / pathCount, 5, 2, 1) + " ||"
 			);
-
-			forwardDate = forwardDate.addTenor (periodTenor);
 		}
 
-		System.out.println ("\t|----------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

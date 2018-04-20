@@ -70,75 +70,123 @@ package org.drip.exposure.holdings;
 
 public class MarginTradeFlowTrajectory
 {
-	private int[] _forwardDateArray = null;
-	private double[] _tradeFlowExposureArray = null;
-	private double[] _marginFlowExposureArray = null;
+	private java.util.Map<java.lang.Integer, org.drip.exposure.holdings.MarginTradeFlowEntry>
+		_mapMarginTradeFlowEntry = null;
+
+	/**
+	 * Construct a Standard Instance of MarginTradeFlowTrajectory
+	 * 
+	 * @param forwardDateArray The Forward Exposure Date Array
+	 * @param marginTradeFlowPath The Margin Flow/Trade Flow Generator
+	 * @param marketPath The Market Path
+	 * @param andersenPykhtinSokolLag The Andersen Pykhtin Sokol Lag Parameterization
+	 * 
+	 * @return Standard Instance of MarginTradeFlowTrajectory
+	 */
+
+	public static final MarginTradeFlowTrajectory Standard (
+		final int[] forwardDateArray,
+		final org.drip.exposure.holdings.MarginTradeFlowPath marginTradeFlowPath,
+		final org.drip.exposure.universe.MarketPath marketPath,
+		final org.drip.exposure.csatimeline.AndersenPykhtinSokolLag andersenPykhtinSokolLag)
+	{
+		if (null == forwardDateArray ||
+			null == marginTradeFlowPath ||
+			null == marketPath)
+		{
+			return null;
+		}
+
+		java.util.Map<java.lang.Integer, java.lang.Double> mapMarginExposure = new
+			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+
+		java.util.Map<java.lang.Integer, org.drip.exposure.holdings.MarginTradeFlowEntry>
+			mapMarginTradeFlowEntry = new java.util.TreeMap<java.lang.Integer,
+				org.drip.exposure.holdings.MarginTradeFlowEntry>();
+
+		int forwardDateCount = forwardDateArray.length;
+		int[] marginPostingDateArray = 0 == forwardDateCount? null : new int[forwardDateCount];
+		double[] marginFlowExposureArray = 0 == forwardDateCount? null : new double[forwardDateCount];
+
+		if (0 == forwardDateCount)
+		{
+			return null;
+		}
+
+		try
+		{
+			for (int forwardDateIndex = 0; forwardDateIndex < forwardDateCount; ++forwardDateIndex)
+			{
+				marginFlowExposureArray[forwardDateIndex] = marginTradeFlowPath.marginFlowExposure (
+					forwardDateArray[forwardDateIndex],
+					marketPath
+				);
+
+				mapMarginExposure.put (
+					forwardDateArray[forwardDateIndex],
+					marginFlowExposureArray[forwardDateIndex]
+				);
+
+				marginPostingDateArray[forwardDateIndex] = forwardDateArray[forwardDateIndex];
+			}
+
+			for (int forwardDateIndex = 0; forwardDateIndex < forwardDateCount; ++forwardDateIndex)
+			{
+				mapMarginTradeFlowEntry.put (
+					forwardDateArray[forwardDateIndex],
+					new org.drip.exposure.holdings.MarginTradeFlowEntry (
+						marginFlowExposureArray[forwardDateIndex],
+						marginPostingDateArray[forwardDateIndex],
+						mapMarginExposure.containsKey (marginPostingDateArray[forwardDateIndex]) ?
+							mapMarginExposure.get (marginPostingDateArray[forwardDateIndex]) :
+							forwardDateArray[forwardDateIndex],
+						marginTradeFlowPath.tradeFlowExposure (
+							forwardDateArray[forwardDateIndex],
+							marketPath
+						)
+					)
+				);
+			}
+
+			return new MarginTradeFlowTrajectory (mapMarginTradeFlowEntry);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 
 	/**
 	 * MarginTradeFlowTrajectory Constructor
 	 * 
-	 * @param forwardDateArray The Forward Exposure Date Array
-	 * @param marginFlowExposureArray The Margin Flow Exposure Array
-	 * @param tradeFlowExposureArray The Trade Flow Exposure Array
+	 * @param mapMarginTradeFlowEntry Map of the Margin Flow and Trade Flow Entries
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public MarginTradeFlowTrajectory (
-		final int[] forwardDateArray,
-		final double[] marginFlowExposureArray,
-		final double[] tradeFlowExposureArray)
+		final java.util.Map<java.lang.Integer, org.drip.exposure.holdings.MarginTradeFlowEntry>
+			mapMarginTradeFlowEntry)
 		throws java.lang.Exception
 	{
-		if (null == (_forwardDateArray = forwardDateArray) ||
-			null == (_marginFlowExposureArray = marginFlowExposureArray) ||
-			null == (_tradeFlowExposureArray = tradeFlowExposureArray))
-		{
-			throw new java.lang.Exception ("MarginTradeFlowTrajectory Constuctor => Invalid Inputs");
-		}
-
-		int forwardDateCount = _forwardDateArray.length;
-
-		if (0 == forwardDateCount ||
-			forwardDateCount != _marginFlowExposureArray.length ||
-			forwardDateCount != _tradeFlowExposureArray.length ||
-			!org.drip.quant.common.NumberUtil.IsValid (_marginFlowExposureArray) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_tradeFlowExposureArray))
+		if (null == (_mapMarginTradeFlowEntry = mapMarginTradeFlowEntry) ||
+			0 == _mapMarginTradeFlowEntry.size())
 		{
 			throw new java.lang.Exception ("MarginTradeFlowTrajectory Constuctor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Forward Date Array
+	 * Retrieve the Map of Dated Margin Flow and Trade Flow Entries
 	 * 
-	 * @return The Forward Date Array
+	 * @return Map of Dated Margin Flow and Trade Flow Entries
 	 */
 
-	public int[] forwardDateArray()
+	public java.util.Map<java.lang.Integer, org.drip.exposure.holdings.MarginTradeFlowEntry>
+		mapMarginTradeFlowEntry()
 	{
-		return _forwardDateArray;
-	}
-
-	/**
-	 * Retrieve the Margin Flow Exposure Array
-	 * 
-	 * @return The Margin Flow Exposure Array
-	 */
-
-	public double[] marginFlowExposureArray()
-	{
-		return _marginFlowExposureArray;
-	}
-
-	/**
-	 * Retrieve the Trade Flow Exposure Array
-	 * 
-	 * @return The Trade Flow Exposure Array
-	 */
-
-	public double[] tradeFlowExposureArray()
-	{
-		return _tradeFlowExposureArray;
+		return _mapMarginTradeFlowEntry;
 	}
 }
