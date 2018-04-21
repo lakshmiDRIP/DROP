@@ -1,5 +1,5 @@
 
-package org.drip.exposure.margin;
+package org.drip.exposure.mpor;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -304,7 +304,7 @@ public class CollateralAmountEstimator
 	 * @return The MarginAmountEstimatorOutput Instance
 	 */
 
-	public org.drip.exposure.margin.CollateralAmountEstimatorOutput output (
+	public org.drip.exposure.mpor.CollateralAmountEstimatorOutput output (
 		final org.drip.analytics.date.JulianDate valuationDateJulian)
 	{
 		if (null == valuationDateJulian)
@@ -350,7 +350,7 @@ public class CollateralAmountEstimator
 			double clientPostingRequirement = clientWindowMarginValue - clientThresholdValue;
 			clientPostingRequirement = 0. > clientPostingRequirement ? 0. : clientPostingRequirement;
 
-			return new org.drip.exposure.margin.CollateralAmountEstimatorOutput (
+			return new org.drip.exposure.mpor.CollateralAmountEstimatorOutput (
 				dealerMarginDate,
 				clientMarginDate,
 				dealerWindowMarginValue,

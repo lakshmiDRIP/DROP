@@ -6,13 +6,14 @@ import java.util.Map;
 import org.drip.analytics.date.DateUtil;
 import org.drip.analytics.date.JulianDate;
 import org.drip.exposure.csatimeline.AndersenPykhtinSokolLag;
+import org.drip.exposure.csatimeline.LastFlowDates;
 import org.drip.exposure.evolver.EntityDynamicsContainer;
 import org.drip.exposure.evolver.PrimarySecurity;
 import org.drip.exposure.evolver.PrimarySecurityDynamicsContainer;
 import org.drip.exposure.evolver.TerminalLatentState;
-import org.drip.exposure.holdings.FixedCouponStream;
-import org.drip.exposure.holdings.MarginTradeFlowEntry;
-import org.drip.exposure.holdings.MarginTradeFlowTrajectory;
+import org.drip.exposure.mpor.FixedCouponStream;
+import org.drip.exposure.mpor.MarginTradeVertexExposure;
+import org.drip.exposure.mpor.MarginTradeTrajectoryEstimator;
 import org.drip.exposure.universe.MarketPath;
 import org.drip.exposure.universe.MarketVertex;
 import org.drip.exposure.universe.MarketVertexGenerator;
@@ -82,8 +83,8 @@ import org.drip.state.identifier.OvernightLabel;
  */
 
 /**
- * FixedStreamMPoRDaily displays the MPoR-related Exposure Metrics Suite for the given Fixed Stream on a
- *  Daily Grid. The References are:
+ * FixedStreamClassicalPlusMPoR displays the MPoR-related Exposure Metrics Suite for the given Fixed Stream
+ *  on a Daily Grid using the "Classical+" Scheme of Andersen, Pykhtin, and Sokol (2017). The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
@@ -103,7 +104,7 @@ import org.drip.state.identifier.OvernightLabel;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FixedStreamMPoRDaily
+public class FixedStreamClassicalPlusMPoR
 {
 
 	private static final FixFloatComponent OTCIRS (
@@ -371,9 +372,9 @@ public class FixedStreamMPoRDaily
 			19
 		);
 
-		int pathCount = 1000;
-		String periodTenor = "1D";
-		int periodCount = 370;
+		int pathCount = 100;
+		String exposurePeriodTenor = "1D";
+		int exposurePeriodCount = 370;
 		String currency = "USD";
 		String dealer = "NOM";
 		String client = "SSGA";
@@ -396,8 +397,8 @@ public class FixedStreamMPoRDaily
 
 		MarketVertexGenerator marketVertexGenerator = ConstructMarketVertexGenerator (
 			spotDate,
-			periodTenor,
-			periodCount,
+			exposurePeriodTenor,
+			exposurePeriodCount,
 			currency,
 			dealer,
 			client
@@ -433,28 +434,29 @@ public class FixedStreamMPoRDaily
 		CorrelatedPathVertexDimension correlatedPathVertexDimension = new CorrelatedPathVertexDimension (
 			new RandomNumberGenerator(),
 			correlationMatrix,
-			periodCount,
+			exposurePeriodCount,
 			1,
 			true,
 			null
 		);
 
-		JulianDate forwardDate = spotDate;
-		int[] forwardDateArray = new int[periodCount + 1];
-		int[] marginPostingDateArray = new int[periodCount + 1];
-		double[] tradeFlowExposureArray = new double[periodCount + 1];
-		double[] marginFlowExposureArray = new double[periodCount + 1];
-		double[] marginPostingAmountArray = new double[periodCount + 1];
+		JulianDate exposureDate = spotDate;
+		int[] exposureDateArray = new int[exposurePeriodCount + 1];
+		int[] marginGapEndDateArray = new int[exposurePeriodCount + 1];
+		int[] marginGapStartDateArray = new int[exposurePeriodCount + 1];
+		double[] tradePaymentArray = new double[exposurePeriodCount + 1];
+		double[] variationMarginPostingArray = new double[exposurePeriodCount + 1];
+		double[] variationMarginEstimateArray = new double[exposurePeriodCount + 1];
 
-		for (int i = 0; i <= periodCount; ++i)
+		for (int i = 0; i <= exposurePeriodCount; ++i)
 		{
-			tradeFlowExposureArray[i] = 0.;
-			marginFlowExposureArray[i] = 0.;
-			marginPostingAmountArray[i] = 0.;
+			tradePaymentArray[i] = 0.;
+			variationMarginPostingArray[i] = 0.;
+			variationMarginEstimateArray[i] = 0.;
 
-			forwardDateArray[i] = forwardDate.julian();
+			exposureDateArray[i] = exposureDate.julian();
 
-			forwardDate = forwardDate.addTenor (periodTenor);
+			exposureDate = exposureDate.addTenor (exposurePeriodTenor);
 		}
 
 		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
@@ -466,80 +468,85 @@ public class FixedStreamMPoRDaily
 				)
 			);
 
-			MarginTradeFlowTrajectory marginTradeFlowTrajectory = MarginTradeFlowTrajectory.Standard (
-				forwardDateArray,
+			MarginTradeTrajectoryEstimator marginTradeFlowTrajectory = MarginTradeTrajectoryEstimator.Standard (
+				exposureDateArray,
+				currency,
 				fixedCouponStream,
 				marketPath,
 				andersenPykhtinSokolLag
 			);
 
-			Map<Integer, MarginTradeFlowEntry> mapMarginTradeFlowEntry =
-				marginTradeFlowTrajectory.mapMarginTradeFlowEntry();
+			Map<Integer, MarginTradeVertexExposure> mapMarginTradeFlowEntry =
+				marginTradeFlowTrajectory.marginTradeExposureTrajectory();
 
-			for (int i = 0; i <= periodCount; ++i)
+			for (int i = 0; i <= exposurePeriodCount; ++i)
 			{
-				MarginTradeFlowEntry marginTradeFlowEntry = mapMarginTradeFlowEntry.get (forwardDateArray[i]);
+				MarginTradeVertexExposure marginTradeFlowEntry = mapMarginTradeFlowEntry.get (exposureDateArray[i]);
 
-				tradeFlowExposureArray[i] += marginTradeFlowEntry.tradeFlowExposure();
+				LastFlowDates lastFlowDates = marginTradeFlowEntry.lastFlowDates();
 
-				marginFlowExposureArray[i] += marginTradeFlowEntry.marginFlowExposure();
+				tradePaymentArray[i] += marginTradeFlowEntry.tradePayment();
 
-				marginPostingAmountArray[i] += marginTradeFlowEntry.marginFlowActual();
+				variationMarginEstimateArray[i] += marginTradeFlowEntry.variationMarginEstimate();
 
-				marginPostingDateArray[i] = marginTradeFlowEntry.marginPostingDate();
+				variationMarginPostingArray[i] += marginTradeFlowEntry.variationMarginPosting();
+
+				marginGapStartDateArray[i] = lastFlowDates.clientMargin().julian();
+
+				marginGapEndDateArray[i] = lastFlowDates.dealerMargin().julian();
 			}
 		}
 
 		System.out.println();
 
-		System.out.println ("\t|-----------------------------------------------------------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------------------------------------------------------------||");
 
-		System.out.println ("\t|                         FIXED STREAM MARGIN/TRADE FLOW EXPOSURES AND DATES                          ||");
+		System.out.println ("\t|                           FIXED STREAM MARGIN/TRADE FLOW EXPOSURES AND DATES                              ||");
 
-		System.out.println ("\t|-----------------------------------------------------------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------------------------------------------------------------||");
 
-		System.out.println ("\t|                                                                                                     ||");
+		System.out.println ("\t|                                                                                                           ||");
 
-		System.out.println ("\t|  L -> R:                                                                                            ||");
+		System.out.println ("\t|  L -> R:                                                                                                  ||");
 
-		System.out.println ("\t|                                                                                                     ||");
+		System.out.println ("\t|                                                                                                           ||");
 
-		System.out.println ("\t|    - Forward Date                                                                                   ||");
+		System.out.println ("\t|    - Exposure Date                                                                                        ||");
 
-		System.out.println ("\t|    - Forward Margin Flow Exposure                                                                   ||");
+		System.out.println ("\t|    - Variation Margin Gap Start Date                                                                      ||");
 
-		System.out.println ("\t|    - Forward Trade Flow Exposure                                                                    ||");
+		System.out.println ("\t|    - Variation Margin Gap End Date                                                                        ||");
 
-		System.out.println ("\t|    - Forward Total Exposure                                                                         ||");
+		System.out.println ("\t|    - Variation Margin Estimate                                                                            ||");
 
-		System.out.println ("\t|    - Margin Posting Date                                                                            ||");
+		System.out.println ("\t|    - Variation Margin Posting                                                                             ||");
 
-		System.out.println ("\t|    - Margin Posting Amount                                                                          ||");
+		System.out.println ("\t|    - Variation Margin Gap                                                                                 ||");
 
-		System.out.println ("\t|    - Margin Gap                                                                                     ||");
+		System.out.println ("\t|    - Trade Payment                                                                                        ||");
 
-		System.out.println ("\t|    - Net Margin Period Exposure                                                                     ||");
+		System.out.println ("\t|    - Exposure                                                                                             ||");
 
-		System.out.println ("\t|                                                                                                     ||");
+		System.out.println ("\t|                                                                                                           ||");
 
-		System.out.println ("\t|-----------------------------------------------------------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------------------------------------------------------------||");
 
-		for (int i = 0; i <= periodCount; ++i)
+		for (int i = 0; i <= exposurePeriodCount; ++i)
 		{
 			System.out.println (
 				"\t| [" +
-				new JulianDate (forwardDateArray[i]) + "] => " +
-				FormatUtil.FormatDouble (marginFlowExposureArray[i] / pathCount, 5, 2, 1) + " | " +
-				FormatUtil.FormatDouble (tradeFlowExposureArray[i] / pathCount, 5, 2, 1) + " | " +
-				FormatUtil.FormatDouble ((marginFlowExposureArray[i] + tradeFlowExposureArray[i]) / pathCount, 5, 2, 1) + " | [" +
-				new JulianDate (marginPostingDateArray[i]) + "] | " +
-				FormatUtil.FormatDouble (marginPostingAmountArray[i] / pathCount, 5, 2, 1) + " | " +
-				FormatUtil.FormatDouble ((marginPostingAmountArray[i] - marginFlowExposureArray[i]) / pathCount, 2, 2, 1) + " | " +
-				FormatUtil.FormatDouble ((marginFlowExposureArray[i] + tradeFlowExposureArray[i] - marginPostingAmountArray[i]) / pathCount, 5, 2, 1) + " ||"
+				new JulianDate (exposureDateArray[i]) + "] => [" +
+				new JulianDate (marginGapStartDateArray[i]) + " -> " +
+				new JulianDate (marginGapEndDateArray[i]) + "] | " +
+				FormatUtil.FormatDouble (variationMarginEstimateArray[i] / pathCount, 5, 2, 1) + " | " +
+				FormatUtil.FormatDouble (variationMarginPostingArray[i] / pathCount, 5, 2, 1) + " | " +
+				FormatUtil.FormatDouble ((variationMarginEstimateArray[i] - variationMarginPostingArray[i]) / pathCount, 5, 2, 1) + " | " +
+				FormatUtil.FormatDouble (tradePaymentArray[i] / pathCount, 5, 2, 1) + " | " +
+				FormatUtil.FormatDouble ((variationMarginEstimateArray[i] + tradePaymentArray[i] - variationMarginPostingArray[i]) / pathCount, 5, 2, 1) + " ||"
 			);
 		}
 
-		System.out.println ("\t|-----------------------------------------------------------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------------------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

@@ -1,5 +1,5 @@
 
-package org.drip.exposure.margin;
+package org.drip.exposure.mpor;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-

@@ -5,4 +5,4 @@
  * @author Lakshmi Krishnamurthy
  */
 
-package org.drip.exposure.margin;
+package org.drip.exposure.mpor;

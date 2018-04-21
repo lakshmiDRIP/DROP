@@ -1,5 +1,5 @@
 
-package org.drip.exposure.holdings;
+package org.drip.exposure.mpor;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,8 +47,8 @@ package org.drip.exposure.holdings;
  */
 
 /**
- * MarginTradeFlowPath exposes the Margin Flow and Trade Flow Exposures off of the Realized Market Path. The
- *  References are:
+ * MarginTradeVertex exposes the Estimated Initial/Variation Margin and the Trade Payment at a Vertex off of
+ *  the Realized Market Path. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
@@ -68,38 +68,35 @@ package org.drip.exposure.holdings;
  * @author Lakshmi Krishnamurthy
  */
 
-public interface MarginTradeFlowPath
+public interface MarginTradeVertex
 {
 
 	/**
-	 * Estimate the Stream's Margin Flow Exposure
+	 * Estimate the Vertex Date Variation Margin Estimate
 	 * 
-	 * @param forwardDate The Forward Date
+	 * @param vertexDate The Vertex Date
 	 * @param marketPath The Market Path
 	 * 
-	 * @return Stream's Margin Flow Exposure
+	 * @return Exposure Date Variation Margin Estimate
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public abstract double marginFlowExposure (
-		final int forwardDate,
+	public abstract double variationMarginEstimate (
+		final int vertexDate,
 		final org.drip.exposure.universe.MarketPath marketPath)
 		throws java.lang.Exception;
 
 	/**
-	 * Estimate the Stream's Trade Flow Exposure
+	 * Estimate the Exposure Vertex Date Trade Payment
 	 * 
-	 * @param forwardDate The Forward Date
+	 * @param vertexDate The Vertex Date
 	 * @param marketPath The Market Path
 	 * 
-	 * @return Stream's Trade Flow Exposure
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @return The Exposure Vertex Date Trade Payment
 	 */
 
-	public double tradeFlowExposure (
-		final int forwardDate,
-		final org.drip.exposure.universe.MarketPath marketPath)
-		throws java.lang.Exception;
+	public org.drip.exposure.mpor.TradePayment tradePayment (
+		final int vertexDate,
+		final org.drip.exposure.universe.MarketPath marketPath);
 }

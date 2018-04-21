@@ -1,5 +1,5 @@
 
-package org.drip.exposure.holdings;
+package org.drip.exposure.mpor;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,8 +47,8 @@ package org.drip.exposure.holdings;
  */
 
 /**
- * MarginTradeFlowEntry holds the Margin Flow and Trade Flow Exposures for a specific Forward Date. The
- *  References are:
+ * DealerClientTradePayment holds the Dealer (Negative) and Client (Positive) Trade Payments at an Exposure
+ * 	Date. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
@@ -68,82 +68,95 @@ package org.drip.exposure.holdings;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MarginTradeFlowEntry
+public class TradePayment
 {
-	private int _marginPostingDate = -1;
-	private double _marginFlowActual = java.lang.Double.NaN;
-	private double _tradeFlowExposure = java.lang.Double.NaN;
-	private double _marginFlowExposure = java.lang.Double.NaN;
+	private double _client = java.lang.Double.NaN;
+	private double _dealer = java.lang.Double.NaN;
 
 	/**
-	 * MarginTradeFlowEntry Constructor
+	 * Construct a "Standard" TradePayment Instance
 	 * 
-	 * @param marginFlowExposure The Calculation Agent Generated Margin Flow Exposure
-	 * @param marginPostingDate The Margin Posting Date
-	 * @param marginFlowActual The Actual Margin Flow Realized from Collateral Rules
-	 * @param tradeFlowExposure The Trade Flow Exposure
+	 * @param tradePayment The Trade Payment
+	 * 
+	 * @return The "Standard" TradePayment Instance
+	 */
+
+	public static final TradePayment Standard (
+		final double tradePayment)
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (tradePayment))
+		{
+			return null;
+		}
+
+		double clientTradePayment = 0.;
+		double dealerTradePayment = 0.;
+
+		if (0. > tradePayment)
+		{
+			dealerTradePayment = tradePayment;
+		}
+		else
+		{
+			clientTradePayment = tradePayment;
+		}
+
+		try
+		{
+			return new TradePayment (
+				dealerTradePayment,
+				clientTradePayment
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * TradePayment Constructor
+	 * 
+	 * @param dealer The Dealer Trade Payment
+	 * @param client The Client Trade Payment
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public MarginTradeFlowEntry (
-		final double marginFlowExposure,
-		final int marginPostingDate,
-		final double marginFlowActual,
-		final double tradeFlowExposure)
+	public TradePayment (
+		final double dealer,
+		final double client)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_marginFlowExposure = marginFlowExposure) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_marginFlowActual = marginFlowActual) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_tradeFlowExposure = tradeFlowExposure))
+		if (!org.drip.quant.common.NumberUtil.IsValid (_dealer = dealer) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_client = client) ||
+			_dealer > 0. || _client < 0.)
 		{
-			throw new java.lang.Exception ("MarginTradeFlowEntry Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("TradePayment Constructor => Invalid Inputs");
 		}
-
-		_marginPostingDate = marginPostingDate;
 	}
 
 	/**
-	 * Retrieve the Calculation Agent Generated Margin Flow Exposure
+	 * Retrieve the Dealer Trade Payment
 	 * 
-	 * @return The Calculation Agent Generated Margin Flow Exposure
+	 * @return The Dealer Trade Payment
 	 */
 
-	public double marginFlowExposure()
+	public double dealer()
 	{
-		return _marginFlowExposure;
+		return _dealer;
 	}
 
 	/**
-	 * Retrieve the Margin Posting Date
+	 * Retrieve the Client Trade Payment
 	 * 
-	 * @return The Margin Posting Date
+	 * @return The Client Trade Payment
 	 */
 
-	public int marginPostingDate()
+	public double client()
 	{
-		return _marginPostingDate;
-	}
-
-	/**
-	 * Retrieve the Actual Margin Flow Realized from Collateral Rules
-	 * 
-	 * @return The Actual Margin Flow Realized from Collateral Rules
-	 */
-
-	public double marginFlowActual()
-	{
-		return _marginFlowActual;
-	}
-
-	/**
-	 * Retrieve the Trade Flow Exposure
-	 * 
-	 * @return The Trade Flow Exposure
-	 */
-
-	public double tradeFlowExposure()
-	{
-		return _tradeFlowExposure;
+		return _client;
 	}
 }

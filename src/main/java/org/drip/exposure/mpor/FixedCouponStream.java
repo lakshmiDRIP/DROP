@@ -1,5 +1,5 @@
 
-package org.drip.exposure.holdings;
+package org.drip.exposure.mpor;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,8 +47,8 @@ package org.drip.exposure.holdings;
  */
 
 /**
- * FixedCouponStream evaluates the Exposure for the given Fixed Coupon Stream off of the Realized Market
- *  Path. The References are:
+ * FixedCouponStream estimates the Variation Margin and the Trade Payments for the given Fixed Coupon Stream
+ *  off of the Realized Market Path. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
@@ -68,7 +68,7 @@ package org.drip.exposure.holdings;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FixedCouponStream implements org.drip.exposure.holdings.MarginTradeFlowPath
+public class FixedCouponStream implements org.drip.exposure.mpor.MarginTradeVertex
 {
 	private double _notional = java.lang.Double.NaN;
 	private org.drip.product.rates.Stream _stream = null;
@@ -90,21 +90,21 @@ public class FixedCouponStream implements org.drip.exposure.holdings.MarginTrade
 		if (null == (_stream = stream) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_notional = notional))
 		{
-			throw new java.lang.Exception ("FixedCoupon Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("FixedCouponStream Constructor => Invalid Inputs");
 		}
 	}
 
-	@Override public double marginFlowExposure (
+	@Override public double variationMarginEstimate (
 		final int forwardDate,
 		final org.drip.exposure.universe.MarketPath marketPath)
 		throws java.lang.Exception
 	{
 		if (null == marketPath)
 		{
-			throw new java.lang.Exception ("FixedCoupon::marginFlowExposure => Invalid Inputs");
+			throw new java.lang.Exception ("FixedCouponStream::variationMarginEstimate => Invalid Inputs");
 		}
 
-		double exposure = 0.;
+		double variationMarginEstimate = 0.;
 
 		double overnightReplicatorForward = marketPath.marketVertex (forwardDate).overnightReplicator();
 
@@ -126,10 +126,10 @@ public class FixedCouponStream implements org.drip.exposure.holdings.MarginTrade
 			if (null == compositePeriodCouponMetrics)
 			{
 				throw new java.lang.Exception
-					("FixedCoupon::marginFlowExposure => Cannot Compute CompositePeriodCouponMetrics");
+					("FixedCouponStream::variationMarginEstimate => Cannot Compute CompositePeriodCouponMetrics");
 			}
 
-			exposure += period.couponDCF() *
+			variationMarginEstimate += period.couponDCF() *
 				period.notional (periodEndDate) *
 				compositePeriodCouponMetrics.rate() *
 				period.couponFactor (periodEndDate) *
@@ -137,17 +137,16 @@ public class FixedCouponStream implements org.drip.exposure.holdings.MarginTrade
 				marketPath.marketVertex (period.payDate()).overnightReplicator();
 		}
 
-		return exposure * _notional;
+		return variationMarginEstimate * _notional;
 	}
 
-	@Override public double tradeFlowExposure (
+	@Override public org.drip.exposure.mpor.TradePayment tradePayment (
 		final int forwardDate,
 		final org.drip.exposure.universe.MarketPath marketPath)
-		throws java.lang.Exception
 	{
 		if (null == marketPath)
 		{
-			throw new java.lang.Exception ("FixedCoupon::tradeFlowExposure => Invalid Inputs");
+			return null;
 		}
 
 		double overnightReplicatorForward = marketPath.marketVertex (forwardDate).overnightReplicator();
@@ -168,20 +167,29 @@ public class FixedCouponStream implements org.drip.exposure.holdings.MarginTrade
 
 				if (null == compositePeriodCouponMetrics)
 				{
-					throw new java.lang.Exception
-						("FixedCoupon::tradeFlowExposure => Cannot Compute CompositePeriodCouponMetrics");
+					return null;
 				}
 
-				return _notional * period.couponDCF() *
-					period.notional (periodEndDate) *
-					compositePeriodCouponMetrics.rate() *
-					period.couponFactor (periodEndDate) *
-					overnightReplicatorForward /
-					marketPath.marketVertex (periodPayDate).overnightReplicator();
+				try
+				{
+					return org.drip.exposure.mpor.TradePayment.Standard (
+						_notional * period.couponDCF() *
+						period.notional (periodEndDate) *
+						compositePeriodCouponMetrics.rate() *
+						period.couponFactor (periodEndDate) *
+						overnightReplicatorForward /
+						marketPath.marketVertex (periodPayDate).overnightReplicator()
+					);
+				}
+				catch (java.lang.Exception e)
+				{
+					e.printStackTrace();
 
+					return null;
+				}
 			}
 		}
 
-		return 0.;
+		return org.drip.exposure.mpor.TradePayment.Standard (0.);
 	}
 }

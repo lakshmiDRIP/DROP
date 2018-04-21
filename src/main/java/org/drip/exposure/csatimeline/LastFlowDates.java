@@ -77,6 +77,8 @@ public class LastFlowDates
 	private org.drip.analytics.date.JulianDate _dealerTrade = null;
 	private org.drip.analytics.date.JulianDate _clientMargin = null;
 	private org.drip.analytics.date.JulianDate _dealerMargin = null;
+	private org.drip.analytics.date.JulianDate _marginPeriodEnd = null;
+	private org.drip.analytics.date.JulianDate _marginPeriodStart = null;
 
 	/**
 	 * Generate a LastFlowDates Instance from the Spot Date and the AndersenPykhtinSokolLag
@@ -103,6 +105,16 @@ public class LastFlowDates
 			calendarSet
 		);
 
+		org.drip.analytics.date.JulianDate dealerMarginFlowDate = spot.subtractBusDays (
+			andersenPykhtinSokolLag.dealerMarginFlowGap(),
+			calendarSet
+		);
+
+		if (null == clientMarginFlowDate || null == dealerMarginFlowDate)
+		{
+			return null;
+		}
+
 		try
 		{
 			return new LastFlowDates (
@@ -111,10 +123,7 @@ public class LastFlowDates
 					calendarSet
 				),
 				clientMarginFlowDate,
-				spot.subtractBusDays (
-					andersenPykhtinSokolLag.dealerMarginFlowGap(),
-					calendarSet
-				),
+				dealerMarginFlowDate,
 				spot.subtractBusDays (
 					andersenPykhtinSokolLag.clientTradeFlowGap(),
 					calendarSet
@@ -123,6 +132,9 @@ public class LastFlowDates
 					andersenPykhtinSokolLag.dealerTradeFlowGap(),
 					calendarSet
 				),
+				spot,
+				clientMarginFlowDate.julian() < dealerMarginFlowDate.julian() ?
+					clientMarginFlowDate : dealerMarginFlowDate,
 				spot
 			);
 		}
@@ -142,7 +154,9 @@ public class LastFlowDates
 	 * @param dealerMargin The Last Dealer Margin Flow (Observation) Date
 	 * @param clientTrade The Last Client Trade Flow (Settlement) Date
 	 * @param dealerTrade The Last Dealer Trade Flow (Settlement) Date
-	 * @param spot TheSpot Date
+	 * @param spot The Spot Date
+	 * @param marginPeriodStart The Margin Period Start Date
+	 * @param marginPeriodEnd The Margin Period End Date
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -153,7 +167,9 @@ public class LastFlowDates
 		final org.drip.analytics.date.JulianDate dealerMargin,
 		final org.drip.analytics.date.JulianDate clientTrade,
 		final org.drip.analytics.date.JulianDate dealerTrade,
-		final org.drip.analytics.date.JulianDate spot)
+		final org.drip.analytics.date.JulianDate spot,
+		final org.drip.analytics.date.JulianDate marginPeriodStart,
+		final org.drip.analytics.date.JulianDate marginPeriodEnd)
 		throws java.lang.Exception
 	{
 		if (null == (_valuation = valuation) ||
@@ -161,7 +177,9 @@ public class LastFlowDates
 			null == (_dealerMargin = dealerMargin) ||
 			null == (_clientTrade = clientTrade) ||
 			null == (_dealerTrade = dealerTrade) ||
-			null == (_spot = spot))
+			null == (_spot = spot) ||
+			null == (_marginPeriodStart = marginPeriodStart) ||
+			null == (_marginPeriodEnd = marginPeriodEnd))
 		{
 			throw new java.lang.Exception ("LastFlowDates Constructor => Invalid Inputs");
 		}
@@ -242,5 +260,27 @@ public class LastFlowDates
 	public org.drip.analytics.date.JulianDate etd()
 	{
 		return _spot;
+	}
+
+	/**
+	 * Retrieve the Margin Period Start Date
+	 * 
+	 * @return The Margin Period Start Date
+	 */
+
+	public org.drip.analytics.date.JulianDate marginPeriodStart()
+	{
+		return _marginPeriodStart;
+	}
+
+	/**
+	 * Retrieve the Margin Period End Date
+	 * 
+	 * @return The Margin Period End Date
+	 */
+
+	public org.drip.analytics.date.JulianDate marginPeriodEnd()
+	{
+		return _marginPeriodEnd;
 	}
 }

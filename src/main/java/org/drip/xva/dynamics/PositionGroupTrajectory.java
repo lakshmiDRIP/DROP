@@ -133,7 +133,7 @@ public class PositionGroupTrajectory
 			vertexIndex
 		);
 
-		return null == brokenDateInterpolator ? 0. : new org.drip.exposure.margin.CollateralAmountEstimator (
+		return null == brokenDateInterpolator ? 0. : new org.drip.exposure.mpor.CollateralAmountEstimator (
 			_positionGroupSpecification,
 			brokenDateInterpolator,
 			java.lang.Double.NaN
