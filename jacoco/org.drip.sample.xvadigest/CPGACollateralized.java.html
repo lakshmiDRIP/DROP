@@ -2,7 +2,7 @@
 package org.drip.sample.xvadigest;
 
 import org.drip.analytics.date.*;
-import org.drip.exposure.margin.CollateralAmountEstimator;
+import org.drip.exposure.mpor.CollateralAmountEstimator;
 import org.drip.exposure.universe.*;
 import org.drip.measure.bridge.BrokenDateInterpolatorLinearT;
 import org.drip.measure.discrete.SequenceGenerator;

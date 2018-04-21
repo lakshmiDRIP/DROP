@@ -270,7 +270,8 @@ public class MarginTradeTrajectoryEstimator
 							clientTradePaymentTrajectory,
 							csaEventDates.clientTrade().julian(),
 							csaEventDates.dealerTrade().julian()
-						) + NetTradePayment (
+						),
+						NetTradePayment (
 							clientTradePaymentTrajectory,
 							dealerTradePaymentTrajectory,
 							csaEventDates.dealerTrade().julian(),

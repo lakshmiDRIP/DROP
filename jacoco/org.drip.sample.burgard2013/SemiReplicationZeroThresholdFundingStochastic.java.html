@@ -2,7 +2,7 @@
 package org.drip.sample.burgard2013;
 
 import org.drip.analytics.date.*;
-import org.drip.exposure.margin.CollateralAmountEstimator;
+import org.drip.exposure.mpor.CollateralAmountEstimator;
 import org.drip.exposure.universe.*;
 import org.drip.measure.bridge.BrokenDateInterpolatorLinearT;
 import org.drip.measure.crng.RandomNumberGenerator;
