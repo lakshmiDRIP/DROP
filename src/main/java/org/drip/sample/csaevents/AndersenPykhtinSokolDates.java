@@ -182,18 +182,18 @@ public class AndersenPykhtinSokolDates
 
 		System.out.println (
 			"\t| Client Margin Flow Date => OBSERVATION | " +
-			csaFlowDatesClassicalPlus.clientMargin() + " | " +
-			csaFlowDatesClassicalMinus.clientMargin() + " | " +
-			csaFlowDatesAggressive.clientMargin() + " | " +
-			csaFlowDatesConservative.clientMargin() + " ||"
+			csaFlowDatesClassicalPlus.clientVariationMargin() + " | " +
+			csaFlowDatesClassicalMinus.clientVariationMargin() + " | " +
+			csaFlowDatesAggressive.clientVariationMargin() + " | " +
+			csaFlowDatesConservative.clientVariationMargin() + " ||"
 		);
 
 		System.out.println (
 			"\t| Dealer Margin Flow Date => OBSERVATION | " +
-			csaFlowDatesClassicalPlus.dealerMargin() + " | " +
-			csaFlowDatesClassicalMinus.dealerMargin() + " | " +
-			csaFlowDatesAggressive.dealerMargin() + " | " +
-			csaFlowDatesConservative.dealerMargin() + " ||"
+			csaFlowDatesClassicalPlus.dealerVariationMargin() + " | " +
+			csaFlowDatesClassicalMinus.dealerVariationMargin() + " | " +
+			csaFlowDatesAggressive.dealerVariationMargin() + " | " +
+			csaFlowDatesConservative.dealerVariationMargin() + " ||"
 		);
 
 		System.out.println (

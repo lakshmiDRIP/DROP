@@ -68,7 +68,7 @@ package org.drip.exposure.mpor;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FixedCouponStream implements org.drip.exposure.mpor.MarginTradeVertex
+public class FixedCouponStream implements org.drip.exposure.mpor.VariationMarginTradeVertexGenerator
 {
 	private double _notional = java.lang.Double.NaN;
 	private org.drip.product.rates.Stream _stream = null;
@@ -102,11 +102,6 @@ public class FixedCouponStream implements org.drip.exposure.mpor.MarginTradeVert
 		if (null == marketPath)
 		{
 			throw new java.lang.Exception ("FixedCouponStream::variationMarginEstimate => Invalid Inputs");
-		}
-
-		if (forwardDate <= _stream.effective().julian() || forwardDate >= _stream.maturity().julian())
-		{
-			return 0.;
 		}
 
 		double variationMarginEstimate = 0.;

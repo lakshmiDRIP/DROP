@@ -83,8 +83,8 @@ import org.drip.state.identifier.OvernightLabel;
  */
 
 /**
- * LongFloatClassicalPlusTimeline displays the MPoR-related Exposure Metrics Suite for the given Long Float
- *  Coupon Stream on a Daily Grid using the "Classical+" CSA Timeline of Andersen, Pykhtin, and Sokol (2017).
+ * LongFloatAggressiveTimeline displays the MPoR-related Exposure Metrics Suite for the given Long Float
+ *  Coupon Stream on a Daily Grid using the "Aggressive" CSA Timeline of Andersen, Pykhtin, and Sokol (2017).
  *  The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
@@ -105,7 +105,7 @@ import org.drip.state.identifier.OvernightLabel;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LongFloatClassicalPlusTimeline
+public class LongFloatAggressiveTimeline
 {
 
 	private static final FixFloatComponent OTCIRS (
@@ -418,7 +418,7 @@ public class LongFloatClassicalPlusTimeline
 			0.030 / (1 - 0.30) 	// dblCounterPartyFundingSpread
 		);
 
-		AndersenPykhtinSokolLag andersenPykhtinSokolLag = AndersenPykhtinSokolLag.ClassicalPlus();
+		AndersenPykhtinSokolLag andersenPykhtinSokolLag = AndersenPykhtinSokolLag.Aggressive();
 
 		FixFloatComponent fixFloatComponent = OTCIRS (
 			spotDate,

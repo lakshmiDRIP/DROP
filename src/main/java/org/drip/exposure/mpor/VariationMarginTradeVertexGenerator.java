@@ -47,8 +47,8 @@ package org.drip.exposure.mpor;
  */
 
 /**
- * MarginTradeVertex exposes the Estimated Initial/Variation Margin and the Trade Payment at a Vertex off of
- *  the Realized Market Path. The References are:
+ * VariationMarginTradeVertexGenerator exposes the Generation of the Estimated Variation Margin and the Trade
+ *  Payment at a Vertex off of the Realized Market Path. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
@@ -68,7 +68,7 @@ package org.drip.exposure.mpor;
  * @author Lakshmi Krishnamurthy
  */
 
-public interface MarginTradeVertex
+public interface VariationMarginTradeVertexGenerator
 {
 
 	/**

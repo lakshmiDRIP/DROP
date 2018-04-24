@@ -83,9 +83,9 @@ import org.drip.state.identifier.OvernightLabel;
  */
 
 /**
- * LongFloatClassicalPlusTimeline displays the MPoR-related Exposure Metrics Suite for the given Long Float
- *  Coupon Stream on a Daily Grid using the "Classical+" CSA Timeline of Andersen, Pykhtin, and Sokol (2017).
- *  The References are:
+ * ShortFloatClassicalMinusTimeline displays the MPoR-related Exposure Metrics Suite for the given Short
+ *  Float Coupon Stream on a Daily Grid using the "Classical-" CSA Timeline of Andersen, Pykhtin, and Sokol
+ *  (2017). The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
@@ -105,7 +105,7 @@ import org.drip.state.identifier.OvernightLabel;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LongFloatClassicalPlusTimeline
+public class ShortFloatClassicalMinusTimeline
 {
 
 	private static final FixFloatComponent OTCIRS (
@@ -394,7 +394,7 @@ public class LongFloatClassicalPlusTimeline
 		};
 		String fixFloatMaturityTenor = "1Y";
 		double fixFloatCoupon = 0.03;
-		double fixFloatNotional = -1.e+06;
+		double fixFloatNotional = 1.e+06;
 
 		MarketVertexGenerator marketVertexGenerator = ConstructMarketVertexGenerator (
 			spotDate.subtractTenor ("1W"),
@@ -418,7 +418,7 @@ public class LongFloatClassicalPlusTimeline
 			0.030 / (1 - 0.30) 	// dblCounterPartyFundingSpread
 		);
 
-		AndersenPykhtinSokolLag andersenPykhtinSokolLag = AndersenPykhtinSokolLag.ClassicalPlus();
+		AndersenPykhtinSokolLag andersenPykhtinSokolLag = AndersenPykhtinSokolLag.ClassicalMinus();
 
 		FixFloatComponent fixFloatComponent = OTCIRS (
 			spotDate,

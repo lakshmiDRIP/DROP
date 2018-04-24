@@ -12,8 +12,8 @@ import org.drip.exposure.evolver.PrimarySecurity;
 import org.drip.exposure.evolver.PrimarySecurityDynamicsContainer;
 import org.drip.exposure.evolver.TerminalLatentState;
 import org.drip.exposure.mpor.FixedCouponStream;
-import org.drip.exposure.mpor.MarginTradeVertexExposure;
-import org.drip.exposure.mpor.MarginTradeTrajectoryEstimator;
+import org.drip.exposure.mpor.VariationMarginTradeVertexExposure;
+import org.drip.exposure.mpor.VariationMarginTradeTrajectoryEstimator;
 import org.drip.exposure.universe.MarketPath;
 import org.drip.exposure.universe.MarketVertex;
 import org.drip.exposure.universe.MarketVertexGenerator;
@@ -483,7 +483,7 @@ public class ShortFixedConservativeTimeline
 				)
 			);
 
-			MarginTradeTrajectoryEstimator marginTradeFlowTrajectory = MarginTradeTrajectoryEstimator.Standard (
+			VariationMarginTradeTrajectoryEstimator marginTradeFlowTrajectory = VariationMarginTradeTrajectoryEstimator.Standard (
 				exposureDateArray,
 				currency,
 				fixedCouponStream,
@@ -491,12 +491,12 @@ public class ShortFixedConservativeTimeline
 				andersenPykhtinSokolLag
 			);
 
-			Map<Integer, MarginTradeVertexExposure> mapMarginTradeFlowEntry =
-				marginTradeFlowTrajectory.marginTradeExposureTrajectory();
+			Map<Integer, VariationMarginTradeVertexExposure> mapMarginTradeFlowEntry =
+				marginTradeFlowTrajectory.variationMarginTradeExposureTrajectory();
 
 			for (int i = 0; i <= exposurePeriodCount; ++i)
 			{
-				MarginTradeVertexExposure marginTradeFlowEntry = mapMarginTradeFlowEntry.get (exposureDateArray[i]);
+				VariationMarginTradeVertexExposure marginTradeFlowEntry = mapMarginTradeFlowEntry.get (exposureDateArray[i]);
 
 				LastFlowDates lastFlowDates = marginTradeFlowEntry.lastFlowDates();
 
@@ -516,9 +516,9 @@ public class ShortFixedConservativeTimeline
 
 				variationMarginGapArray[i] += marginTradeFlowEntry.variationMarginGap();
 
-				variationMarginGapStartDateArray[i] = lastFlowDates.clientMargin().julian();
+				variationMarginGapStartDateArray[i] = lastFlowDates.clientVariationMargin().julian();
 
-				variationMarginGapEndDateArray[i] = lastFlowDates.dealerMargin().julian();
+				variationMarginGapEndDateArray[i] = lastFlowDates.dealerVariationMargin().julian();
 
 				clientTradePaymentGapStartDateArray[i] = lastFlowDates.clientTrade().julian();
 
@@ -526,7 +526,7 @@ public class ShortFixedConservativeTimeline
 
 				clientDealerTradePaymentGapStartDateArray[i] = lastFlowDates.dealerTrade().julian();
 
-				clientDealerTradePaymentGapEndDateArray[i] = lastFlowDates.marginPeriodEnd().julian();
+				clientDealerTradePaymentGapEndDateArray[i] = lastFlowDates.variationMarginPeriodEnd().julian();
 			}
 		}
 

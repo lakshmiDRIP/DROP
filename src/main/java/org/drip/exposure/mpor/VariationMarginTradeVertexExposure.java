@@ -47,8 +47,8 @@ package org.drip.exposure.mpor;
  */
 
 /**
- * MarginTradeVertexExposure holds the Margin and Trade Flows and Exposures for a specific Forward Vertex
- *  Date. The References are:
+ * VariationMarginTradeVertexExposure holds the Variation Margin, Trade Payments, and Exposures for a
+ *  specific Forward Vertex Date. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
@@ -68,7 +68,7 @@ package org.drip.exposure.mpor;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MarginTradeVertexExposure
+public class VariationMarginTradeVertexExposure
 {
 	private double _clientTradePaymentGap = java.lang.Double.NaN;
 	private double _variationMarginPosting = java.lang.Double.NaN;
@@ -77,7 +77,7 @@ public class MarginTradeVertexExposure
 	private org.drip.exposure.csatimeline.LastFlowDates _lastFlowDates = null;
 
 	/**
-	 * MarginTradeVertexExposure Constructor
+	 * VariationMarginTradeVertexExposure Constructor
 	 * 
 	 * @param variationMarginEstimate The Calculation Agent Generated Variation Margin Estimate
 	 * @param variationMarginPosting The Actual Variation Margin Posted from Collateral Rules and Operational
@@ -89,7 +89,7 @@ public class MarginTradeVertexExposure
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public MarginTradeVertexExposure (
+	public VariationMarginTradeVertexExposure (
 		final double variationMarginEstimate,
 		final double variationMarginPosting,
 		final double clientTradePaymentGap,
@@ -104,7 +104,8 @@ public class MarginTradeVertexExposure
 				clientDealerTradePaymentGap) ||
 			null == (_lastFlowDates = lastFlowDates))
 		{
-			throw new java.lang.Exception ("MarginTradeVertexExposure Constructor => Invalid Inputs");
+			throw new java.lang.Exception
+				("VariationMarginTradeVertexExposure Constructor => Invalid Inputs");
 		}
 	}
 

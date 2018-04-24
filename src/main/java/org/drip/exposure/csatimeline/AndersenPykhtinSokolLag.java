@@ -71,10 +71,10 @@ package org.drip.exposure.csatimeline;
 
 public class AndersenPykhtinSokolLag
 {
-	private int _clientTradeFlowGap = -1;
-	private int _dealerTradeFlowGap = -1;
-	private int _clientMarginFlowGap = -1;
-	private int _dealerMarginFlowGap = -1;
+	private int _clientTradeDelay = -1;
+	private int _dealerTradeDelay = -1;
+	private int _clientVariationMarginDelay = -1;
+	private int _dealerVariationMarginDelay = -1;
 
 	/**
 	 * Generate the "Conservative" Parameterization of AndersenPykhtinSokolLag
@@ -179,74 +179,74 @@ public class AndersenPykhtinSokolLag
 	/**
 	 * AndersenPykhtinSokolLag Constructor
 	 * 
-	 * @param clientMarginFlowGap Client Margin Flow Gap (Business Days)
-	 * @param dealerMarginFlowGap Dealer Margin Flow Gap (Business Days)
-	 * @param clientTradeFlowGap Client Trade Flow Gap (Business Days)
-	 * @param dealerTradeFlowGap Dealer Trade Flow Gap (Business Days)
+	 * @param clientVariationMarginDelay Client Variation Margin Flow Delay (Business Days)
+	 * @param dealerVariationMarginDelay Dealer Variation Margin Flow Gap (Business Days)
+	 * @param clientTradeDelay Client Trade Flow Delay (Business Days)
+	 * @param dealerTradeDelay Dealer Trade Flow Delay (Business Days)
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public AndersenPykhtinSokolLag (
-		final int clientMarginFlowGap,
-		final int dealerMarginFlowGap,
-		final int clientTradeFlowGap,
-		final int dealerTradeFlowGap)
+		final int clientVariationMarginDelay,
+		final int dealerVariationMarginDelay,
+		final int clientTradeDelay,
+		final int dealerTradeDelay)
 		throws java.lang.Exception
 	{
-		if (0 > (_clientMarginFlowGap = clientMarginFlowGap) ||
-			0 > (_dealerMarginFlowGap = dealerMarginFlowGap) ||
-			0 > (_clientTradeFlowGap = clientTradeFlowGap) ||
-			0 > (_dealerTradeFlowGap = dealerTradeFlowGap) ||
-			_clientMarginFlowGap < _dealerMarginFlowGap ||
-			_dealerMarginFlowGap < _clientTradeFlowGap ||
-			_clientTradeFlowGap < _dealerTradeFlowGap)
+		if (0 > (_clientVariationMarginDelay = clientVariationMarginDelay) ||
+			0 > (_dealerVariationMarginDelay = dealerVariationMarginDelay) ||
+			0 > (_clientTradeDelay = clientTradeDelay) ||
+			0 > (_dealerTradeDelay = dealerTradeDelay) ||
+			_clientVariationMarginDelay < _dealerVariationMarginDelay ||
+			_dealerVariationMarginDelay < _clientTradeDelay ||
+			_clientTradeDelay < _dealerTradeDelay)
 		{
 			throw new java.lang.Exception ("AndersenPykhtinSokolLag Constuctor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Client Margin Flow Gap
+	 * Retrieve the Client Variation Margin Flow Delay
 	 * 
-	 * @return The Client Margin Flow Gap
+	 * @return The Client Variation Margin Flow Delay
 	 */
 
-	public int clientMarginFlowGap()
+	public int clientVariationMarginDelay()
 	{
-		return _clientMarginFlowGap;
+		return _clientVariationMarginDelay;
 	}
 
 	/**
-	 * Retrieve the Dealer Margin Flow Gap
+	 * Retrieve the Dealer Variation Margin Flow Delay
 	 * 
-	 * @return The Dealer Margin Flow Gap
+	 * @return The Dealer Variation Margin Flow Delay
 	 */
 
-	public int dealerMarginFlowGap()
+	public int dealerVariationMarginDelay()
 	{
-		return _dealerMarginFlowGap;
+		return _dealerVariationMarginDelay;
 	}
 
 	/**
-	 * Retrieve the Client Trade Flow Gap
+	 * Retrieve the Client Trade Flow Delay
 	 * 
-	 * @return The Client Trade Flow Gap
+	 * @return The Client Trade Flow Delay
 	 */
 
-	public int clientTradeFlowGap()
+	public int clientTradeDelay()
 	{
-		return _clientTradeFlowGap;
+		return _clientTradeDelay;
 	}
 
 	/**
-	 * Retrieve the Dealer Trade Flow Gap
+	 * Retrieve the Dealer Trade Flow Delay
 	 * 
-	 * @return The Dealer Trade Flow Gap
+	 * @return The Dealer Trade Flow Delay
 	 */
 
-	public int dealerTradeFlowGap()
+	public int dealerTradeDelay()
 	{
-		return _dealerTradeFlowGap;
+		return _dealerTradeDelay;
 	}
 }

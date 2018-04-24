@@ -83,7 +83,7 @@ import org.drip.state.identifier.OvernightLabel;
  */
 
 /**
- * LongFloatClassicalPlusTimeline displays the MPoR-related Exposure Metrics Suite for the given Long Float
+ * ShortFloatClassicalPlusTimeline displays the MPoR-related Exposure Metrics Suite for the given Short Float
  *  Coupon Stream on a Daily Grid using the "Classical+" CSA Timeline of Andersen, Pykhtin, and Sokol (2017).
  *  The References are:
  *  
@@ -105,7 +105,7 @@ import org.drip.state.identifier.OvernightLabel;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LongFloatClassicalPlusTimeline
+public class ShortFloatClassicalPlusTimeline
 {
 
 	private static final FixFloatComponent OTCIRS (
@@ -394,7 +394,7 @@ public class LongFloatClassicalPlusTimeline
 		};
 		String fixFloatMaturityTenor = "1Y";
 		double fixFloatCoupon = 0.03;
-		double fixFloatNotional = -1.e+06;
+		double fixFloatNotional = 1.e+06;
 
 		MarketVertexGenerator marketVertexGenerator = ConstructMarketVertexGenerator (
 			spotDate.subtractTenor ("1W"),
