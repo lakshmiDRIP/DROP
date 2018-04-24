@@ -47,7 +47,7 @@ package org.drip.exposure.mpor;
  */
 
 /**
- * FixedCouponStream estimates the Variation Margin and the Trade Payments for the given Fixed Coupon Stream
+ * FloatCouponStream estimates the Variation Margin and the Trade Payments for the given Float Coupon Stream
  *  off of the Realized Market Path. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
@@ -68,13 +68,13 @@ package org.drip.exposure.mpor;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FixedCouponStream implements org.drip.exposure.mpor.MarginTradeVertex
+public class FloatCouponStream implements org.drip.exposure.mpor.MarginTradeVertex
 {
 	private double _notional = java.lang.Double.NaN;
 	private org.drip.product.rates.Stream _stream = null;
 
 	/**
-	 * FixedCouponStream Constructor
+	 * FloatCouponStream Constructor
 	 * 
 	 * @param stream The Fixed Coupon Stream Instance
 	 * @param notional The Fixed Coupon Stream Notional
@@ -82,7 +82,7 @@ public class FixedCouponStream implements org.drip.exposure.mpor.MarginTradeVert
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public FixedCouponStream (
+	public FloatCouponStream (
 		final org.drip.product.rates.Stream stream,
 		final double notional)
 		throws java.lang.Exception
@@ -90,7 +90,7 @@ public class FixedCouponStream implements org.drip.exposure.mpor.MarginTradeVert
 		if (null == (_stream = stream) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_notional = notional))
 		{
-			throw new java.lang.Exception ("FixedCouponStream Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("FloatCouponStream Constructor => Invalid Inputs");
 		}
 	}
 
@@ -101,7 +101,7 @@ public class FixedCouponStream implements org.drip.exposure.mpor.MarginTradeVert
 	{
 		if (null == marketPath)
 		{
-			throw new java.lang.Exception ("FixedCouponStream::variationMarginEstimate => Invalid Inputs");
+			throw new java.lang.Exception ("FloatCouponStream::variationMarginEstimate => Invalid Inputs");
 		}
 
 		if (forwardDate <= _stream.effective().julian() || forwardDate >= _stream.maturity().julian())
@@ -122,21 +122,13 @@ public class FixedCouponStream implements org.drip.exposure.mpor.MarginTradeVert
 				continue;
 			}
 
-			org.drip.analytics.output.CompositePeriodCouponMetrics compositePeriodCouponMetrics =
-				period.couponMetrics (
-					forwardDate,
-					null
-				);
-
-			if (null == compositePeriodCouponMetrics)
-			{
-				throw new java.lang.Exception
-					("FixedCouponStream::variationMarginEstimate => Cannot Compute CompositePeriodCouponMetrics");
-			}
+			org.drip.analytics.cashflow.ComposableUnitFloatingPeriod composableUnitFloatingPeriod =
+				(org.drip.analytics.cashflow.ComposableUnitFloatingPeriod) period.periods().get (0);
 
 			variationMarginEstimate += period.couponDCF() *
 				period.notional (periodEndDate) *
-				compositePeriodCouponMetrics.rate() *
+				marketPath.marketVertex
+					(composableUnitFloatingPeriod.referenceIndexPeriod().fixingDate()).positionManifestValue() *
 				period.couponFactor (periodEndDate) *
 				overnightReplicatorForward /
 				marketPath.marketVertex (period.payDate()).overnightReplicator();
@@ -154,6 +146,11 @@ public class FixedCouponStream implements org.drip.exposure.mpor.MarginTradeVert
 			return null;
 		}
 
+		if (forwardDate < _stream.effective().julian() || forwardDate > _stream.maturity().julian())
+		{
+			return org.drip.exposure.mpor.TradePayment.Standard (0.);
+		}
+
 		double overnightReplicatorForward = marketPath.marketVertex (forwardDate).overnightReplicator();
 
 		for (org.drip.analytics.cashflow.CompositePeriod period : _stream.periods())
@@ -164,26 +161,19 @@ public class FixedCouponStream implements org.drip.exposure.mpor.MarginTradeVert
 			{
 				int periodEndDate = period.endDate();
 
-				org.drip.analytics.output.CompositePeriodCouponMetrics compositePeriodCouponMetrics =
-					period.couponMetrics (
-						period.endDate(),
-						null
-					);
-
-				if (null == compositePeriodCouponMetrics)
-				{
-					return null;
-				}
+				org.drip.analytics.cashflow.ComposableUnitFloatingPeriod composableUnitFloatingPeriod =
+					(org.drip.analytics.cashflow.ComposableUnitFloatingPeriod) period.periods().get (0);
 
 				try
 				{
 					return org.drip.exposure.mpor.TradePayment.Standard (
 						_notional * period.couponDCF() *
 						period.notional (periodEndDate) *
-						compositePeriodCouponMetrics.rate() *
+						marketPath.marketVertex
+							(composableUnitFloatingPeriod.referenceIndexPeriod().fixingDate()).positionManifestValue() *
 						period.couponFactor (periodEndDate) *
 						overnightReplicatorForward /
-						marketPath.marketVertex (periodPayDate).overnightReplicator()
+						marketPath.marketVertex (period.payDate()).overnightReplicator()
 					);
 				}
 				catch (java.lang.Exception e)

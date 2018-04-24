@@ -1,5 +1,5 @@
 
-package org.drip.sample.fixfloatexposure;
+package org.drip.sample.streammpor;
 
 import java.util.Map;
 
@@ -83,8 +83,9 @@ import org.drip.state.identifier.OvernightLabel;
  */
 
 /**
- * FixedStreamClassicalPlusMPoR displays the MPoR-related Exposure Metrics Suite for the given Fixed Stream
- *  on a Daily Grid using the "Classical+" Scheme of Andersen, Pykhtin, and Sokol (2017). The References are:
+ * LongFixedAggressiveTimeline displays the MPoR-related Exposure Metrics Suite for the given Long Fixed
+ *  Coupon Stream on a Daily Grid using the "Aggressive" CSA Timeline Scheme of Andersen, Pykhtin, and Sokol
+ *  (2017). The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
@@ -104,7 +105,7 @@ import org.drip.state.identifier.OvernightLabel;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FixedStreamClassicalPlusMPoR
+public class LongFixedAggressiveTimeline
 {
 
 	private static final FixFloatComponent OTCIRS (
@@ -374,7 +375,7 @@ public class FixedStreamClassicalPlusMPoR
 
 		int pathCount = 1000;
 		String exposurePeriodTenor = "1D";
-		int exposurePeriodCount = 370;
+		int exposurePeriodCount = 380;
 		String currency = "USD";
 		String dealer = "NOM";
 		String client = "SSGA";
@@ -417,7 +418,7 @@ public class FixedStreamClassicalPlusMPoR
 			0.030 / (1 - 0.30) 	// dblCounterPartyFundingSpread
 		);
 
-		AndersenPykhtinSokolLag andersenPykhtinSokolLag = AndersenPykhtinSokolLag.ClassicalPlus();
+		AndersenPykhtinSokolLag andersenPykhtinSokolLag = AndersenPykhtinSokolLag.Aggressive();
 
 		FixFloatComponent fixFloatComponent = OTCIRS (
 			spotDate,
@@ -442,25 +443,31 @@ public class FixedStreamClassicalPlusMPoR
 
 		JulianDate exposureDate = spotDate;
 		int[] exposureDateArray = new int[exposurePeriodCount + 1];
-		int[] marginGapEndDateArray = new int[exposurePeriodCount + 1];
-		int[] marginGapStartDateArray = new int[exposurePeriodCount + 1];
+		int[] variationMarginGapEndDateArray = new int[exposurePeriodCount + 1];
+		int[] variationMarginGapStartDateArray = new int[exposurePeriodCount + 1];
 		double[] tradePaymentGapArray = new double[exposurePeriodCount + 1];
-		double[] netTradePaymentGapArray = new double[exposurePeriodCount + 1];
+		double[] variationMarginGapArray = new double[exposurePeriodCount + 1];
 		double[] clientTradePaymentGapArray = new double[exposurePeriodCount + 1];
+		double[] collateralizedExposureArray = new double[exposurePeriodCount + 1];
 		double[] variationMarginPostingArray = new double[exposurePeriodCount + 1];
 		double[] variationMarginEstimateArray = new double[exposurePeriodCount + 1];
-		int[] clientTradePaymentGapStartDateArray = new int[exposurePeriodCount + 1];
+		double[] clientDealerTradePaymentGapArray = new double[exposurePeriodCount + 1];
+		double[] collateralizedPositiveExposureArray = new double[exposurePeriodCount + 1];
 		int[] clientTradePaymentGapEndDateArray = new int[exposurePeriodCount + 1];
-		int[] netTradePaymentGapStartDateArray = new int[exposurePeriodCount + 1];
-		int[] netTradePaymentGapEndDateArray = new int[exposurePeriodCount + 1];
+		int[] clientTradePaymentGapStartDateArray = new int[exposurePeriodCount + 1];
+		int[] clientDealerTradePaymentGapEndDateArray = new int[exposurePeriodCount + 1];
+		int[] clientDealerTradePaymentGapStartDateArray = new int[exposurePeriodCount + 1];
 
 		for (int i = 0; i <= exposurePeriodCount; ++i)
 		{
 			tradePaymentGapArray[i] = 0.;
-			netTradePaymentGapArray[i] = 0.;
+			variationMarginGapArray[i] = 0.;
 			clientTradePaymentGapArray[i] = 0.;
+			collateralizedExposureArray[i] = 0.;
 			variationMarginPostingArray[i] = 0.;
 			variationMarginEstimateArray[i] = 0.;
+			clientDealerTradePaymentGapArray[i] = 0.;
+			collateralizedPositiveExposureArray[i] = 0.;
 
 			exposureDateArray[i] = exposureDate.julian();
 
@@ -495,96 +502,105 @@ public class FixedStreamClassicalPlusMPoR
 
 				tradePaymentGapArray[i] += marginTradeFlowEntry.tradePaymentGap();
 
-				netTradePaymentGapArray[i] += marginTradeFlowEntry.netTradePaymentGap();
-
 				clientTradePaymentGapArray[i] += marginTradeFlowEntry.clientTradePaymentGap();
+
+				clientDealerTradePaymentGapArray[i] += marginTradeFlowEntry.clientDealerTradePaymentGap();
+
+				collateralizedExposureArray[i] += marginTradeFlowEntry.collateralizedExposure();
+
+				collateralizedPositiveExposureArray[i] += marginTradeFlowEntry.collateralizedPositiveExposure();
 
 				variationMarginEstimateArray[i] += marginTradeFlowEntry.variationMarginEstimate();
 
 				variationMarginPostingArray[i] += marginTradeFlowEntry.variationMarginPosting();
 
-				marginGapStartDateArray[i] = lastFlowDates.clientMargin().julian();
+				variationMarginGapArray[i] += marginTradeFlowEntry.variationMarginGap();
 
-				marginGapEndDateArray[i] = lastFlowDates.dealerMargin().julian();
+				variationMarginGapStartDateArray[i] = lastFlowDates.clientMargin().julian();
+
+				variationMarginGapEndDateArray[i] = lastFlowDates.dealerMargin().julian();
 
 				clientTradePaymentGapStartDateArray[i] = lastFlowDates.clientTrade().julian();
 
 				clientTradePaymentGapEndDateArray[i] = lastFlowDates.dealerTrade().julian();
 
-				netTradePaymentGapStartDateArray[i] = lastFlowDates.dealerTrade().julian();
+				clientDealerTradePaymentGapStartDateArray[i] = lastFlowDates.dealerTrade().julian();
 
-				netTradePaymentGapEndDateArray[i] = lastFlowDates.marginPeriodEnd().julian();
+				clientDealerTradePaymentGapEndDateArray[i] = lastFlowDates.marginPeriodEnd().julian();
 			}
 		}
 
 		System.out.println();
 
-		System.out.println ("\t|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------||");
+		System.out.println ("\t|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------||");
 
-		System.out.println ("\t|                                                                      FIXED STREAM MARGIN/TRADE FLOW EXPOSURES AND DATES                                                                         ||");
+		System.out.println ("\t|                                                                            FIXED STREAM MARGIN/TRADE FLOW EXPOSURES AND DATES                                                                               ||");
 
-		System.out.println ("\t|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------||");
+		System.out.println ("\t|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------||");
 
-		System.out.println ("\t|                                                                                                                                                                                                 ||");
+		System.out.println ("\t|                                                                                                                                                                                                             ||");
 
-		System.out.println ("\t|  L -> R:                                                                                                                                                                                        ||");
+		System.out.println ("\t|  L -> R:                                                                                                                                                                                                    ||");
 
-		System.out.println ("\t|                                                                                                                                                                                                 ||");
+		System.out.println ("\t|                                                                                                                                                                                                             ||");
 
-		System.out.println ("\t|    - Exposure Date                                                                                                                                                                              ||");
+		System.out.println ("\t|    - Exposure Date                                                                                                                                                                                          ||");
 
-		System.out.println ("\t|    - Variation Margin Gap Start Date                                                                                                                                                            ||");
+		System.out.println ("\t|    - Variation Margin Gap Start Date                                                                                                                                                                        ||");
 
-		System.out.println ("\t|    - Variation Margin Gap End Date                                                                                                                                                              ||");
+		System.out.println ("\t|    - Variation Margin Gap End Date                                                                                                                                                                          ||");
 
-		System.out.println ("\t|    - Variation Margin Estimate                                                                                                                                                                  ||");
+		System.out.println ("\t|    - Variation Margin Estimate                                                                                                                                                                              ||");
 
-		System.out.println ("\t|    - Variation Margin Posting                                                                                                                                                                   ||");
+		System.out.println ("\t|    - Variation Margin Posting                                                                                                                                                                               ||");
 
-		System.out.println ("\t|    - Variation Margin Gap                                                                                                                                                                       ||");
+		System.out.println ("\t|    - Variation Margin Gap                                                                                                                                                                                   ||");
 
-		System.out.println ("\t|    - Client Trade Payment Gap Start Date                                                                                                                                                        ||");
+		System.out.println ("\t|    - Client Trade Payment Gap Start Date                                                                                                                                                                    ||");
 
-		System.out.println ("\t|    - Client Trade Payment Gap End Date                                                                                                                                                          ||");
+		System.out.println ("\t|    - Client Trade Payment Gap End Date                                                                                                                                                                      ||");
 
-		System.out.println ("\t|    - Client Trade Payment Gap                                                                                                                                                                   ||");
+		System.out.println ("\t|    - Client Trade Payment Gap                                                                                                                                                                               ||");
 
-		System.out.println ("\t|    - Net Trade Payment Gap Start Date                                                                                                                                                           ||");
+		System.out.println ("\t|    - Net Trade Payment Gap Start Date                                                                                                                                                                       ||");
 
-		System.out.println ("\t|    - Net Trade Payment Gap End Date                                                                                                                                                             ||");
+		System.out.println ("\t|    - Net Trade Payment Gap End Date                                                                                                                                                                         ||");
 
-		System.out.println ("\t|    - Net Trade Payment Gap                                                                                                                                                                      ||");
+		System.out.println ("\t|    - Net Trade Payment Gap                                                                                                                                                                                  ||");
 
-		System.out.println ("\t|    - Trade Payment Gap                                                                                                                                                                          ||");
+		System.out.println ("\t|    - Trade Payment Gap                                                                                                                                                                                      ||");
 
-		System.out.println ("\t|    - Exposure                                                                                                                                                                                   ||");
+		System.out.println ("\t|    - Exposure                                                                                                                                                                                               ||");
 
-		System.out.println ("\t|                                                                                                                                                                                                 ||");
+		System.out.println ("\t|    - Positive Exposure                                                                                                                                                                                      ||");
 
-		System.out.println ("\t|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------||");
+		System.out.println ("\t|                                                                                                                                                                                                             ||");
+
+		System.out.println ("\t|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------||");
 
 		for (int i = 0; i <= exposurePeriodCount; ++i)
 		{
 			System.out.println (
 				"\t| [" +
 				new JulianDate (exposureDateArray[i]) + "] => [" +
-				new JulianDate (marginGapStartDateArray[i]) + " -> " +
-				new JulianDate (marginGapEndDateArray[i]) + "] | " +
+				new JulianDate (variationMarginGapStartDateArray[i]) + " -> " +
+				new JulianDate (variationMarginGapEndDateArray[i]) + "] | " +
 				FormatUtil.FormatDouble (variationMarginEstimateArray[i] / pathCount, 5, 2, 1) + " | " +
 				FormatUtil.FormatDouble (variationMarginPostingArray[i] / pathCount, 5, 2, 1) + " | " +
-				FormatUtil.FormatDouble ((variationMarginEstimateArray[i] - variationMarginPostingArray[i]) / pathCount, 5, 2, 1) + " | [" +
+				FormatUtil.FormatDouble (variationMarginGapArray[i] / pathCount, 5, 2, 1) + " | [" +
 				new JulianDate (clientTradePaymentGapStartDateArray[i]) + " -> " +
 				new JulianDate (clientTradePaymentGapEndDateArray[i]) + "] | " +
 				FormatUtil.FormatDouble (clientTradePaymentGapArray[i] / pathCount, 5, 2, 1) + " | [" +
-				new JulianDate (netTradePaymentGapStartDateArray[i]) + " -> " +
-				new JulianDate (netTradePaymentGapEndDateArray[i]) + "] | " +
-				FormatUtil.FormatDouble (netTradePaymentGapArray[i] / pathCount, 5, 2, 1) + " | " +
+				new JulianDate (clientDealerTradePaymentGapStartDateArray[i]) + " -> " +
+				new JulianDate (clientDealerTradePaymentGapEndDateArray[i]) + "] | " +
+				FormatUtil.FormatDouble (clientDealerTradePaymentGapArray[i] / pathCount, 5, 2, 1) + " | " +
 				FormatUtil.FormatDouble (tradePaymentGapArray[i] / pathCount, 5, 2, 1) + " | " +
-				FormatUtil.FormatDouble ((variationMarginEstimateArray[i] + tradePaymentGapArray[i] - variationMarginPostingArray[i]) / pathCount, 5, 2, 1) + " ||"
+				FormatUtil.FormatDouble (collateralizedExposureArray[i] / pathCount, 5, 2, 1) + " | " +
+				FormatUtil.FormatDouble (collateralizedPositiveExposureArray[i] / pathCount, 5, 2, 1) + " ||"
 			);
 		}
 
-		System.out.println ("\t|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------||");
+		System.out.println ("\t|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

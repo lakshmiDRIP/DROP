@@ -70,10 +70,10 @@ package org.drip.exposure.mpor;
 
 public class MarginTradeVertexExposure
 {
-	private double _netTradePaymentGap = java.lang.Double.NaN;
 	private double _clientTradePaymentGap = java.lang.Double.NaN;
 	private double _variationMarginPosting = java.lang.Double.NaN;
 	private double _variationMarginEstimate = java.lang.Double.NaN;
+	private double _clientDealerTradePaymentGap = java.lang.Double.NaN;
 	private org.drip.exposure.csatimeline.LastFlowDates _lastFlowDates = null;
 
 	/**
@@ -83,7 +83,7 @@ public class MarginTradeVertexExposure
 	 * @param variationMarginPosting The Actual Variation Margin Posted from Collateral Rules and Operational
 	 * 		Delays
 	 * @param clientTradePaymentGap The Client Trade Payment Gap
-	 * @param netTradePaymentGap The Net Trade Payment Gap
+	 * @param clientDealerTradePaymentGap The Client-to-Dealer Net Trade Payment Gap
 	 * @param lastFlowDates The Last Flow Dates
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
@@ -93,14 +93,15 @@ public class MarginTradeVertexExposure
 		final double variationMarginEstimate,
 		final double variationMarginPosting,
 		final double clientTradePaymentGap,
-		final double netTradePaymentGap,
+		final double clientDealerTradePaymentGap,
 		final org.drip.exposure.csatimeline.LastFlowDates lastFlowDates)
 		throws java.lang.Exception
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (_variationMarginEstimate = variationMarginEstimate) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_variationMarginPosting = variationMarginPosting) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_clientTradePaymentGap = clientTradePaymentGap) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_netTradePaymentGap = netTradePaymentGap) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_clientDealerTradePaymentGap =
+				clientDealerTradePaymentGap) ||
 			null == (_lastFlowDates = lastFlowDates))
 		{
 			throw new java.lang.Exception ("MarginTradeVertexExposure Constructor => Invalid Inputs");
@@ -130,6 +131,17 @@ public class MarginTradeVertexExposure
 	}
 
 	/**
+	 * Retrieve the Variation Margin Gap
+	 * 
+	 * @return The Variation Margin Gap
+	 */
+
+	public double variationMarginGap()
+	{
+		return _variationMarginEstimate - _variationMarginPosting;
+	}
+
+	/**
 	 * Retrieve the Client Trade Payment Gap
 	 * 
 	 * @return The Client Trade Payment Gap
@@ -141,14 +153,14 @@ public class MarginTradeVertexExposure
 	}
 
 	/**
-	 * Retrieve the Net Trade Payment Gap
+	 * Retrieve the Client-to-Dealer Net Trade Payment Gap
 	 * 
-	 * @return The Net Trade Payment Gap
+	 * @return The Client-to-Dealer Net Trade Payment Gap
 	 */
 
-	public double netTradePaymentGap()
+	public double clientDealerTradePaymentGap()
 	{
-		return _netTradePaymentGap;
+		return _clientDealerTradePaymentGap;
 	}
 
 	/**
@@ -159,7 +171,32 @@ public class MarginTradeVertexExposure
 
 	public double tradePaymentGap()
 	{
-		return _clientTradePaymentGap + _netTradePaymentGap;
+		return _clientTradePaymentGap + _clientDealerTradePaymentGap;
+	}
+
+	/**
+	 * Retrieve the Collateralized Exposure
+	 * 
+	 * @return The Collateralized Exposure
+	 */
+
+	public double collateralizedExposure()
+	{
+		return _variationMarginEstimate + _clientTradePaymentGap + _clientDealerTradePaymentGap -
+			_variationMarginPosting;
+	}
+
+	/**
+	 * Retrieve the Collateralized Positive Exposure
+	 * 
+	 * @return The Collateralized Positive Exposure
+	 */
+
+	public double collateralizedPositiveExposure()
+	{
+		double collateralizedExposure = collateralizedExposure();
+
+		return collateralizedExposure > 0. ? collateralizedExposure : 0.;
 	}
 
 	/**
