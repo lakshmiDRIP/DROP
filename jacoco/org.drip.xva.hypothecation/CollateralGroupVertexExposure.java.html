@@ -70,24 +70,24 @@ package org.drip.xva.hypothecation;
 
 public class CollateralGroupVertexExposure
 {
-<span class="fc" id="L73">	private double _accrued = java.lang.Double.NaN;</span>
-<span class="fc" id="L74">	private double _forward = java.lang.Double.NaN;</span>
+<span class="fc" id="L73">	private double _tradePayment = java.lang.Double.NaN;</span>
+<span class="fc" id="L74">	private double _variationMarginEstimate = java.lang.Double.NaN;</span>
 
 	/**
-	 * Construct the Unaccrued CollateralGroupVertexExposure Instance
+	 * Construct the Variation Margin CollateralGroupVertexExposure Instance
 	 * 
-	 * @param forward The Unrealized Forward Exposure
+	 * @param variationMarginEstimate The Unrealized Variation Margin Forward Exposure Estimate
 	 * 
-	 * @return Unaccrued CollateralGroupVertexExposure Instance
+	 * @return Variation Margin CollateralGroupVertexExposure Instance
 	 */
 
-	public static final CollateralGroupVertexExposure Unaccrued (
-		final double forward)
+	public static final CollateralGroupVertexExposure VariationMarginOnly (
+		final double variationMarginEstimate)
 	{
 		try
 		{
 <span class="nc" id="L89">			return new CollateralGroupVertexExposure (</span>
-				forward,
+				variationMarginEstimate,
 				0.
 			);
 		}
@@ -102,55 +102,55 @@ public class CollateralGroupVertexExposure
 	/**
 	 * CollateralGroupVertexExposure Constructor
 	 * 
-	 * @param forward The Unrealized Forward Exposure
-	 * @param accrued The Accrued Exposure
+	 * @param variationMarginEstimate The Unrealized Variation Margin Forward Exposure Estimate
+	 * @param tradePayment The Accrued Trade Payment Exposure
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CollateralGroupVertexExposure (
-		final double forward,
-		final double accrued)
+		final double variationMarginEstimate,
+		final double tradePayment)
 		throws java.lang.Exception
 <span class="fc" id="L115">	{</span>
-<span class="pc bpc" id="L116" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_forward = forward) ||</span>
-<span class="pc bpc" id="L117" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_accrued = accrued))</span>
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_variationMarginEstimate = variationMarginEstimate) ||</span>
+<span class="pc bpc" id="L117" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_tradePayment = tradePayment))</span>
 		{
 <span class="nc" id="L119">			throw new java.lang.Exception (&quot;CollateralGroupVertexExposure Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 <span class="fc" id="L121">	}</span>
 
 	/**
-	 * Retrieve the Unrealized Forward Exposure
+	 * Retrieve the Unrealized Variation Margin Forward Exposure
 	 * 
-	 * @return The Unrealized Forward Exposure
+	 * @return The Unrealized Variation Margin Forward Exposure
 	 */
 
-	public double forward()
+	public double variationMarginEstimate()
 	{
-<span class="fc" id="L131">		return _forward;</span>
+<span class="fc" id="L131">		return _variationMarginEstimate;</span>
 	}
 
 	/**
-	 * Retrieve the Accrued Exposure
+	 * Retrieve the Accrued Trade Payment Exposure
 	 * 
-	 * @return The Accrued Exposure
+	 * @return The Accrued Trade Payment Exposure
 	 */
 
-	public double accrued()
+	public double tradePayment()
 	{
-<span class="fc" id="L142">		return _accrued;</span>
+<span class="fc" id="L142">		return _tradePayment;</span>
 	}
 
 	/**
-	 * Retrieve the Gross Uncollateralized Exposure
+	 * Retrieve the Gross Uncollateralized Exposure Estimate
 	 * 
-	 * @return The Gross Uncollateralized Exposure
+	 * @return The Gross Uncollateralized Exposure Estimate
 	 */
 
 	public double uncollateralized()
 	{
-<span class="fc" id="L153">		return _forward + _accrued;</span>
+<span class="fc" id="L153">		return _variationMarginEstimate + _tradePayment;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

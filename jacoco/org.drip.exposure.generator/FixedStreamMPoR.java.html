@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FixedStreamMPoR.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.exposure.generator</a> &gt; <span class="el_source">FixedStreamMPoR.java</span></div><h1>FixedStreamMPoR.java</h1><pre class="source lang-java linenums">
+package org.drip.exposure.generator;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * FixedStreamMPoR estimates the MPoR Variation Margin and the Trade Payments for the given Fixed Coupon
+ *  Stream off of the Realized Market Path. The References are:
+ *  
+ *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
+ *  
+ *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
+ *  
+ *  - Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and the
+ *  	Re-Hypothecation Option, eSSRN, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955.
+ *  
+ *  - Burgard, C., and M. Kjaer (2017): Derivatives Funding, Netting, and Accounting, eSSRN,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2534011.
+ * 
+ *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
+ *  	21 (2) 97-102.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class FixedStreamMPoR extends org.drip.exposure.generator.StreamMPoR
+{
+
+	/**
+	 * FixedStreamMPoR Constructor
+	 * 
+	 * @param stream The Fixed Coupon Stream Instance
+	 * @param notional The Fixed Coupon Stream Notional
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public FixedStreamMPoR (
+		final org.drip.product.rates.Stream stream,
+		final double notional)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L88">		super (</span>
+			stream,
+			notional
+		);
+<span class="nc" id="L92">	}</span>
+
+	@Override public double variationMarginEstimate (
+		final int forwardDate,
+		final org.drip.exposure.universe.MarketPath marketPath)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L99" title="All 2 branches missed.">		if (null == marketPath)</span>
+		{
+<span class="nc" id="L101">			throw new java.lang.Exception (&quot;FixedStreamMPoR::variationMarginEstimate =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L104">		double variationMarginEstimate = 0.;</span>
+
+<span class="nc" id="L106">		double overnightReplicatorForward = marketPath.marketVertex (forwardDate).overnightReplicator();</span>
+
+<span class="nc bnc" id="L108" title="All 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod period : stream().periods())</span>
+		{
+<span class="nc" id="L110">			int periodEndDate = period.endDate();</span>
+
+<span class="nc bnc" id="L112" title="All 2 branches missed.">			if (periodEndDate &lt; forwardDate)</span>
+			{
+<span class="nc" id="L114">				continue;</span>
+			}
+
+<span class="nc" id="L117">			org.drip.analytics.output.CompositePeriodCouponMetrics compositePeriodCouponMetrics =</span>
+<span class="nc" id="L118">				period.couponMetrics (</span>
+					forwardDate,
+					null
+				);
+
+<span class="nc bnc" id="L123" title="All 2 branches missed.">			if (null == compositePeriodCouponMetrics)</span>
+			{
+<span class="nc" id="L125">				throw new java.lang.Exception</span>
+					(&quot;FixedStreamMPoR::variationMarginEstimate =&gt; Cannot Compute CompositePeriodCouponMetrics&quot;);
+			}
+
+<span class="nc" id="L129">			variationMarginEstimate += period.couponDCF() *</span>
+<span class="nc" id="L130">				period.notional (periodEndDate) *</span>
+<span class="nc" id="L131">				compositePeriodCouponMetrics.rate() *</span>
+<span class="nc" id="L132">				period.couponFactor (periodEndDate) *</span>
+				overnightReplicatorForward /
+<span class="nc" id="L134">				marketPath.marketVertex (period.payDate()).overnightReplicator();</span>
+<span class="nc" id="L135">		}</span>
+
+<span class="nc" id="L137">		return variationMarginEstimate * notional();</span>
+	}
+
+	@Override public org.drip.exposure.mpor.TradePayment tradePayment (
+		final int forwardDate,
+		final org.drip.exposure.universe.MarketPath marketPath)
+	{
+<span class="nc bnc" id="L144" title="All 2 branches missed.">		if (null == marketPath)</span>
+		{
+<span class="nc" id="L146">			return null;</span>
+		}
+
+<span class="nc" id="L149">		double overnightReplicatorForward = marketPath.marketVertex (forwardDate).overnightReplicator();</span>
+
+<span class="nc bnc" id="L151" title="All 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod period : stream().periods())</span>
+		{
+<span class="nc" id="L153">			int periodPayDate = period.payDate();</span>
+
+<span class="nc bnc" id="L155" title="All 2 branches missed.">			if (periodPayDate == forwardDate)</span>
+			{
+<span class="nc" id="L157">				int periodEndDate = period.endDate();</span>
+
+<span class="nc" id="L159">				org.drip.analytics.output.CompositePeriodCouponMetrics compositePeriodCouponMetrics =</span>
+<span class="nc" id="L160">					period.couponMetrics (</span>
+<span class="nc" id="L161">						period.endDate(),</span>
+						null
+					);
+
+<span class="nc bnc" id="L165" title="All 2 branches missed.">				if (null == compositePeriodCouponMetrics)</span>
+				{
+<span class="nc" id="L167">					return null;</span>
+				}
+
+				try
+				{
+<span class="nc" id="L172">					return org.drip.exposure.mpor.TradePayment.Standard (</span>
+<span class="nc" id="L173">						notional() * period.couponDCF() *</span>
+<span class="nc" id="L174">						period.notional (periodEndDate) *</span>
+<span class="nc" id="L175">						compositePeriodCouponMetrics.rate() *</span>
+<span class="nc" id="L176">						period.couponFactor (periodEndDate) *</span>
+						overnightReplicatorForward /
+<span class="nc" id="L178">						marketPath.marketVertex (periodPayDate).overnightReplicator()</span>
+					);
+				}
+<span class="nc" id="L181">				catch (java.lang.Exception e)</span>
+				{
+<span class="nc" id="L183">					e.printStackTrace();</span>
+
+<span class="nc" id="L185">					return null;</span>
+				}
+			}
+<span class="nc" id="L188">		}</span>
+
+<span class="nc" id="L190">		return org.drip.exposure.mpor.TradePayment.Standard (0.);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

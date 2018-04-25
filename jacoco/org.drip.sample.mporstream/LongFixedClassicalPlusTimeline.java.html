@@ -1,0 +1,609 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LongFixedClassicalPlusTimeline.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.mporstream</a> &gt; <span class="el_source">LongFixedClassicalPlusTimeline.java</span></div><h1>LongFixedClassicalPlusTimeline.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.mporstream;
+
+import java.util.Map;
+
+import org.drip.analytics.date.DateUtil;
+import org.drip.analytics.date.JulianDate;
+import org.drip.exposure.csatimeline.AndersenPykhtinSokolLag;
+import org.drip.exposure.csatimeline.LastFlowDates;
+import org.drip.exposure.evolver.EntityDynamicsContainer;
+import org.drip.exposure.evolver.PrimarySecurity;
+import org.drip.exposure.evolver.PrimarySecurityDynamicsContainer;
+import org.drip.exposure.evolver.TerminalLatentState;
+import org.drip.exposure.generator.FixedStreamMPoR;
+import org.drip.exposure.mpor.VariationMarginTradeVertexExposure;
+import org.drip.exposure.mpor.VariationMarginTradeTrajectoryEstimator;
+import org.drip.exposure.universe.MarketPath;
+import org.drip.exposure.universe.MarketVertex;
+import org.drip.exposure.universe.MarketVertexGenerator;
+import org.drip.market.otc.FixedFloatSwapConvention;
+import org.drip.market.otc.IBORFixedFloatContainer;
+import org.drip.measure.crng.RandomNumberGenerator;
+import org.drip.measure.discrete.CorrelatedPathVertexDimension;
+import org.drip.measure.dynamics.DiffusionEvaluatorLinear;
+import org.drip.measure.dynamics.DiffusionEvaluatorLogarithmic;
+import org.drip.measure.dynamics.HazardJumpEvaluator;
+import org.drip.measure.process.DiffusionEvolver;
+import org.drip.measure.process.JumpDiffusionEvolver;
+import org.drip.product.rates.FixFloatComponent;
+import org.drip.quant.common.FormatUtil;
+import org.drip.quant.linearalgebra.Matrix;
+import org.drip.service.env.EnvManager;
+import org.drip.state.identifier.CSALabel;
+import org.drip.state.identifier.EntityEquityLabel;
+import org.drip.state.identifier.EntityFundingLabel;
+import org.drip.state.identifier.EntityHazardLabel;
+import org.drip.state.identifier.EntityRecoveryLabel;
+import org.drip.state.identifier.OvernightLabel;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * LongFixedClassicalPlusTimeline displays the MPoR-related Exposure Metrics Suite for the given Long Fixed
+ *  Coupon Stream on a Daily Grid using the &quot;Classical+&quot; CSA Timeline of Andersen, Pykhtin, and Sokol (2017).
+ *  The References are:
+ *  
+ *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
+ *  
+ *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
+ *  
+ *  - Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and the
+ *  	Re-Hypothecation Option, eSSRN, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955.
+ *  
+ *  - Burgard, C., and M. Kjaer (2017): Derivatives Funding, Netting, and Accounting, eSSRN,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2534011.
+ * 
+ *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
+ *  	21 (2) 97-102.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L108">public class LongFixedClassicalPlusTimeline</span>
+{
+
+	private static final FixFloatComponent OTCIRS (
+		final JulianDate spotDate,
+		final String currency,
+		final String maturityTenor,
+		final double coupon)
+	{
+<span class="nc" id="L117">		FixedFloatSwapConvention ffConv = IBORFixedFloatContainer.ConventionFromJurisdiction (</span>
+			currency,
+			&quot;ALL&quot;,
+			maturityTenor,
+			&quot;MAIN&quot;
+		);
+
+<span class="nc" id="L124">		return ffConv.createFixFloatComponent (</span>
+			spotDate,
+			maturityTenor,
+			coupon,
+			0.,
+			1.
+		);
+	}
+
+	private static final PrimarySecurityDynamicsContainer GenerateTradeablesContainer (
+		final String eventTenor,
+		final int eventCount,
+		final String dealer,
+		final String client)
+		throws Exception
+	{
+<span class="nc" id="L140">		String currency = &quot;USD&quot;;</span>
+
+<span class="nc" id="L142">		double assetNumeraireDrift = 0.0;</span>
+<span class="nc" id="L143">		double assetNumeraireVolatility = 0.25;</span>
+<span class="nc" id="L144">		double assetNumeraireRepo = 0.0;</span>
+
+<span class="nc" id="L146">		double overnightIndexNumeraireDrift = 0.0025;</span>
+<span class="nc" id="L147">		double overnightIndexNumeraireVolatility = 0.0005;</span>
+<span class="nc" id="L148">		double overnightIndexNumeraireRepo = 0.0;</span>
+
+<span class="nc" id="L150">		double collateralSchemeNumeraireDrift = 0.01;</span>
+<span class="nc" id="L151">		double collateralSchemeNumeraireVolatility = 0.002;</span>
+<span class="nc" id="L152">		double collateralSchemeNumeraireRepo = 0.005;</span>
+
+<span class="nc" id="L154">		double dealerSeniorFundingNumeraireDrift = 0.03;</span>
+<span class="nc" id="L155">		double dealerSeniorFundingNumeraireVolatility = 0.002;</span>
+<span class="nc" id="L156">		double dealerSeniorFundingNumeraireRepo = 0.028;</span>
+
+<span class="nc" id="L158">		double dealerSubordinateFundingNumeraireDrift = 0.045;</span>
+<span class="nc" id="L159">		double dealerSubordinateFundingNumeraireVolatility = 0.002;</span>
+<span class="nc" id="L160">		double dealerSubordinateFundingNumeraireRepo = 0.028;</span>
+
+<span class="nc" id="L162">		double clientFundingNumeraireDrift = 0.03;</span>
+<span class="nc" id="L163">		double clientFundingNumeraireVolatility = 0.003;</span>
+<span class="nc" id="L164">		double clientFundingNumeraireRepo = 0.028;</span>
+
+<span class="nc" id="L166">		double dealerHazardRateInitial = 0.03;</span>
+
+<span class="nc" id="L168">		double dealerSeniorRecoveryRateInitial = 0.45;</span>
+
+<span class="nc" id="L170">		double dealerSubordinateRecoveryRateInitial = 0.25;</span>
+
+<span class="nc" id="L172">		double clientHazardRateInitial = 0.05;</span>
+
+<span class="nc" id="L174">		double clientRecoveryRateInitial = 0.30;</span>
+
+<span class="nc" id="L176">		PrimarySecurity tAsset = new PrimarySecurity (</span>
+			&quot;AAPL&quot;,
+<span class="nc" id="L178">			EntityEquityLabel.Standard (</span>
+				&quot;AAPL&quot;,
+				currency
+			),
+			new DiffusionEvolver (
+<span class="nc" id="L183">				DiffusionEvaluatorLinear.Standard (</span>
+					assetNumeraireDrift,
+					assetNumeraireVolatility
+				)
+			),
+			assetNumeraireRepo
+		);
+
+<span class="nc" id="L191">		PrimarySecurity tOvernightIndex = new PrimarySecurity (</span>
+			currency + &quot;_OVERNIGHT&quot;,
+<span class="nc" id="L193">			OvernightLabel.Create (currency),</span>
+			new DiffusionEvolver (
+<span class="nc" id="L195">				DiffusionEvaluatorLogarithmic.Standard (</span>
+					overnightIndexNumeraireDrift,
+					overnightIndexNumeraireVolatility
+				)
+			),
+			overnightIndexNumeraireRepo
+		);
+
+<span class="nc" id="L203">		PrimarySecurity tCollateralScheme = new PrimarySecurity (</span>
+			currency + &quot;_CSA&quot;,
+<span class="nc" id="L205">			CSALabel.ISDA (currency),</span>
+			new DiffusionEvolver (
+<span class="nc" id="L207">				DiffusionEvaluatorLogarithmic.Standard (</span>
+					collateralSchemeNumeraireDrift,
+					collateralSchemeNumeraireVolatility
+				)
+			),
+			collateralSchemeNumeraireRepo
+		);
+
+<span class="nc" id="L215">		PrimarySecurity tBankSeniorFunding = new PrimarySecurity (</span>
+			dealer + &quot;_&quot; + currency + &quot;_SENIOR_ZERO&quot;,
+<span class="nc" id="L217">			EntityFundingLabel.Senior (</span>
+				dealer,
+				currency
+			),
+			new JumpDiffusionEvolver (
+<span class="nc" id="L222">				DiffusionEvaluatorLogarithmic.Standard (</span>
+					dealerSeniorFundingNumeraireDrift,
+					dealerSeniorFundingNumeraireVolatility
+				),
+<span class="nc" id="L226">				HazardJumpEvaluator.Standard (</span>
+					dealerHazardRateInitial,
+					dealerSeniorRecoveryRateInitial
+				)
+			),
+			dealerSeniorFundingNumeraireRepo
+		);
+
+<span class="nc" id="L234">		PrimarySecurity tBankSubordinateFunding = new PrimarySecurity (</span>
+			dealer + &quot;_&quot; + currency + &quot;_SUBORDINATE_ZERO&quot;,
+<span class="nc" id="L236">			EntityFundingLabel.Subordinate (</span>
+				dealer,
+				currency
+			),
+			new JumpDiffusionEvolver (
+<span class="nc" id="L241">				DiffusionEvaluatorLogarithmic.Standard (</span>
+					dealerSubordinateFundingNumeraireDrift,
+					dealerSubordinateFundingNumeraireVolatility
+				),
+<span class="nc" id="L245">				HazardJumpEvaluator.Standard (</span>
+					dealerHazardRateInitial,
+					dealerSubordinateRecoveryRateInitial
+				)
+			),
+			dealerSubordinateFundingNumeraireRepo
+		);
+
+<span class="nc" id="L253">		PrimarySecurity tCounterPartyFunding = new PrimarySecurity (</span>
+			client + &quot;_&quot; + currency + &quot;_SENIOR_ZERO&quot;,
+<span class="nc" id="L255">			EntityFundingLabel.Senior (</span>
+				client,
+				currency
+			),
+			new JumpDiffusionEvolver (
+<span class="nc" id="L260">				DiffusionEvaluatorLogarithmic.Standard (</span>
+					clientFundingNumeraireDrift,
+					clientFundingNumeraireVolatility
+				),
+<span class="nc" id="L264">				HazardJumpEvaluator.Standard (</span>
+					clientHazardRateInitial,
+					clientRecoveryRateInitial
+				)
+			),
+			clientFundingNumeraireRepo
+		);
+
+<span class="nc" id="L272">		return new PrimarySecurityDynamicsContainer (</span>
+			tAsset,
+			tOvernightIndex,
+			tCollateralScheme,
+			tBankSeniorFunding,
+			tBankSubordinateFunding,
+			tCounterPartyFunding
+		);
+	}
+
+	private static final MarketVertexGenerator ConstructMarketVertexGenerator (
+		final JulianDate spotDate,
+		final String periodTenor,
+		final int periodCount,
+		final String currency,
+		final String dealer,
+		final String client)
+		throws Exception
+	{
+<span class="nc" id="L291">		double dealerHazardRateDrift = 0.002;</span>
+<span class="nc" id="L292">		double dealerHazardRateVolatility = 0.20;</span>
+<span class="nc" id="L293">		double dealerRecoveryRateDrift = 0.002;</span>
+<span class="nc" id="L294">		double dealerRecoveryRateVolatility = 0.02;</span>
+<span class="nc" id="L295">		double clientHazardRateDrift = 0.002;</span>
+<span class="nc" id="L296">		double clientHazardRateVolatility = 0.30;</span>
+<span class="nc" id="L297">		double clientRecoveryRateDrift = 0.002;</span>
+<span class="nc" id="L298">		double clientRecoveryRateVolatility = 0.02;</span>
+
+<span class="nc" id="L300">		return MarketVertexGenerator.PeriodHorizon (</span>
+<span class="nc" id="L301">			spotDate.julian(),</span>
+			periodTenor,
+			periodCount,
+<span class="nc" id="L304">			GenerateTradeablesContainer (</span>
+				periodTenor,
+				periodCount,
+				dealer,
+				client
+			),
+			new EntityDynamicsContainer (
+				new TerminalLatentState (
+<span class="nc" id="L312">					EntityHazardLabel.Standard (</span>
+						dealer,
+						currency
+					),
+					new DiffusionEvolver (
+<span class="nc" id="L317">						DiffusionEvaluatorLogarithmic.Standard (</span>
+							dealerHazardRateDrift,
+							dealerHazardRateVolatility
+						)
+					)
+				),
+				new TerminalLatentState (
+<span class="nc" id="L324">					EntityRecoveryLabel.Senior (</span>
+						dealer,
+						currency
+					),
+					new DiffusionEvolver (
+<span class="nc" id="L329">						DiffusionEvaluatorLogarithmic.Standard (</span>
+							dealerRecoveryRateDrift,
+							dealerRecoveryRateVolatility
+						)
+					)
+				),
+				null,
+				new TerminalLatentState (
+<span class="nc" id="L337">					EntityHazardLabel.Standard (</span>
+						client,
+						currency
+					),
+					new DiffusionEvolver (
+<span class="nc" id="L342">						DiffusionEvaluatorLogarithmic.Standard (</span>
+							clientHazardRateDrift,
+							clientHazardRateVolatility
+						)
+					)
+				),
+				new TerminalLatentState (
+<span class="nc" id="L349">					EntityRecoveryLabel.Senior (</span>
+						client,
+						currency
+					),
+					new DiffusionEvolver (
+<span class="nc" id="L354">						DiffusionEvaluatorLogarithmic.Standard (</span>
+							clientRecoveryRateDrift,
+							clientRecoveryRateVolatility
+						)
+					)
+				)
+			)
+		);
+	}
+
+	public static final void main (
+		final String[] args)
+		throws Exception
+	{
+<span class="nc" id="L368">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L370">		JulianDate spotDate = DateUtil.CreateFromYMD (</span>
+			2018,
+			DateUtil.APRIL,
+			19
+		);
+
+<span class="nc" id="L376">		int pathCount = 1000;</span>
+<span class="nc" id="L377">		String exposurePeriodTenor = &quot;1D&quot;;</span>
+<span class="nc" id="L378">		int exposurePeriodCount = 390;</span>
+<span class="nc" id="L379">		String currency = &quot;USD&quot;;</span>
+<span class="nc" id="L380">		String dealer = &quot;NOM&quot;;</span>
+<span class="nc" id="L381">		String client = &quot;SSGA&quot;;</span>
+<span class="nc" id="L382">		double[][] correlationMatrix = new double[][] {</span>
+			{1.00, 0.00, 0.20, 0.15, 0.05, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #0 ASSET NUMERAIRE
+			{0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #1 OVERNIGHT POLICY INDEX NUMERAIRE
+			{0.20, 0.00, 1.00, 0.13, 0.25, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #2 COLLATERAL SCHEME NUMERAIRE
+			{0.15, 0.00, 0.13, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #3 BANK HAZARD RATE
+			{0.05, 0.00, 0.25, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #4 BANK SENIOR FUNDING NUMERAIRE
+			{0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #5 BANK SENIOR RECOVERY RATE
+			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00}, // #6 BANK SUBORDINATE FUNDING NUMERAIRE
+			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00}, // #7 BANK SUBORDINATE RECOVERY RATE
+			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00}, // #8 COUNTER PARTY HAZARD RATE
+			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00}, // #9 COUNTER PARTY FUNDING NUMERAIRE
+			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00}  // #10 COUNTER PARTY RECOVERY RATE
+		};
+<span class="nc" id="L395">		String fixFloatMaturityTenor = &quot;1Y&quot;;</span>
+<span class="nc" id="L396">		double fixFloatCoupon = 0.03;</span>
+<span class="nc" id="L397">		double fixFloatNotional = 1.e+06;</span>
+
+<span class="nc" id="L399">		MarketVertexGenerator marketVertexGenerator = ConstructMarketVertexGenerator (</span>
+			spotDate,
+			exposurePeriodTenor,
+			exposurePeriodCount,
+			currency,
+			dealer,
+			client
+		);
+
+<span class="nc" id="L408">		MarketVertex initialMarketVertex = MarketVertex.StartUp (</span>
+			spotDate,
+			0.000, 				// dblPortfolioValueInitial
+			1.000, 				// dblOvernightNumeraireInitial
+			1.000, 				// dblCSANumeraire
+			0.015, 				// dblBankHazardRate
+			0.400, 				// dblBankRecoveryRate
+			0.015 / (1 - 0.40), // dblBankFundingSpread
+			0.030, 				// dblCounterPartyHazardRate
+			0.300, 				// dblCounterPartyRecoveryRate
+			0.030 / (1 - 0.30) 	// dblCounterPartyFundingSpread
+		);
+
+<span class="nc" id="L421">		AndersenPykhtinSokolLag andersenPykhtinSokolLag = AndersenPykhtinSokolLag.ClassicalPlus();</span>
+
+<span class="nc" id="L423">		FixFloatComponent fixFloatComponent = OTCIRS (</span>
+			spotDate,
+			currency,
+			fixFloatMaturityTenor,
+			fixFloatCoupon
+		);
+
+<span class="nc" id="L430">		FixedStreamMPoR fixedCouponStream = new FixedStreamMPoR (</span>
+<span class="nc" id="L431">			fixFloatComponent.referenceStream(),</span>
+			fixFloatNotional
+		);
+
+<span class="nc" id="L435">		CorrelatedPathVertexDimension correlatedPathVertexDimension = new CorrelatedPathVertexDimension (</span>
+			new RandomNumberGenerator(),
+			correlationMatrix,
+			exposurePeriodCount,
+			1,
+			true,
+			null
+		);
+
+<span class="nc" id="L444">		JulianDate exposureDate = spotDate;</span>
+<span class="nc" id="L445">		int[] exposureDateArray = new int[exposurePeriodCount + 1];</span>
+<span class="nc" id="L446">		int[] variationMarginGapEndDateArray = new int[exposurePeriodCount + 1];</span>
+<span class="nc" id="L447">		int[] variationMarginGapStartDateArray = new int[exposurePeriodCount + 1];</span>
+<span class="nc" id="L448">		double[] tradePaymentGapArray = new double[exposurePeriodCount + 1];</span>
+<span class="nc" id="L449">		double[] variationMarginGapArray = new double[exposurePeriodCount + 1];</span>
+<span class="nc" id="L450">		double[] clientTradePaymentGapArray = new double[exposurePeriodCount + 1];</span>
+<span class="nc" id="L451">		double[] collateralizedExposureArray = new double[exposurePeriodCount + 1];</span>
+<span class="nc" id="L452">		double[] variationMarginPostingArray = new double[exposurePeriodCount + 1];</span>
+<span class="nc" id="L453">		double[] variationMarginEstimateArray = new double[exposurePeriodCount + 1];</span>
+<span class="nc" id="L454">		double[] clientDealerTradePaymentGapArray = new double[exposurePeriodCount + 1];</span>
+<span class="nc" id="L455">		double[] collateralizedPositiveExposureArray = new double[exposurePeriodCount + 1];</span>
+<span class="nc" id="L456">		int[] clientTradePaymentGapEndDateArray = new int[exposurePeriodCount + 1];</span>
+<span class="nc" id="L457">		int[] clientTradePaymentGapStartDateArray = new int[exposurePeriodCount + 1];</span>
+<span class="nc" id="L458">		int[] clientDealerTradePaymentGapEndDateArray = new int[exposurePeriodCount + 1];</span>
+<span class="nc" id="L459">		int[] clientDealerTradePaymentGapStartDateArray = new int[exposurePeriodCount + 1];</span>
+
+<span class="nc bnc" id="L461" title="All 2 branches missed.">		for (int i = 0; i &lt;= exposurePeriodCount; ++i)</span>
+		{
+<span class="nc" id="L463">			tradePaymentGapArray[i] = 0.;</span>
+<span class="nc" id="L464">			variationMarginGapArray[i] = 0.;</span>
+<span class="nc" id="L465">			clientTradePaymentGapArray[i] = 0.;</span>
+<span class="nc" id="L466">			collateralizedExposureArray[i] = 0.;</span>
+<span class="nc" id="L467">			variationMarginPostingArray[i] = 0.;</span>
+<span class="nc" id="L468">			variationMarginEstimateArray[i] = 0.;</span>
+<span class="nc" id="L469">			clientDealerTradePaymentGapArray[i] = 0.;</span>
+<span class="nc" id="L470">			collateralizedPositiveExposureArray[i] = 0.;</span>
+
+<span class="nc" id="L472">			exposureDateArray[i] = exposureDate.julian();</span>
+
+<span class="nc" id="L474">			exposureDate = exposureDate.addTenor (exposurePeriodTenor);</span>
+		}
+
+<span class="nc bnc" id="L477" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+		{
+<span class="nc" id="L479">			MarketPath marketPath = new MarketPath (</span>
+<span class="nc" id="L480">				marketVertexGenerator.marketVertex (</span>
+					initialMarketVertex,
+<span class="nc" id="L482">					Matrix.Transpose (correlatedPathVertexDimension.straightPathVertexRd().flatform())</span>
+				)
+			);
+
+<span class="nc" id="L486">			VariationMarginTradeTrajectoryEstimator marginTradeFlowTrajectory =</span>
+				new VariationMarginTradeTrajectoryEstimator (
+					exposureDateArray,
+					currency,
+					fixedCouponStream,
+					marketPath,
+					andersenPykhtinSokolLag
+				);
+
+<span class="nc" id="L495">			Map&lt;Integer, VariationMarginTradeVertexExposure&gt; mapMarginTradeFlowEntry =</span>
+<span class="nc" id="L496">				marginTradeFlowTrajectory.trajectory();</span>
+
+<span class="nc bnc" id="L498" title="All 2 branches missed.">			for (int i = 0; i &lt;= exposurePeriodCount; ++i)</span>
+			{
+<span class="nc" id="L500">				VariationMarginTradeVertexExposure marginTradeFlowEntry = mapMarginTradeFlowEntry.get (exposureDateArray[i]);</span>
+
+<span class="nc" id="L502">				LastFlowDates lastFlowDates = marginTradeFlowEntry.lastFlowDates();</span>
+
+<span class="nc" id="L504">				tradePaymentGapArray[i] += marginTradeFlowEntry.tradePaymentGap();</span>
+
+<span class="nc" id="L506">				clientTradePaymentGapArray[i] += marginTradeFlowEntry.clientTradePaymentGap();</span>
+
+<span class="nc" id="L508">				clientDealerTradePaymentGapArray[i] += marginTradeFlowEntry.clientDealerTradePaymentGap();</span>
+
+<span class="nc" id="L510">				collateralizedExposureArray[i] += marginTradeFlowEntry.collateralizedExposure();</span>
+
+<span class="nc" id="L512">				collateralizedPositiveExposureArray[i] += marginTradeFlowEntry.collateralizedPositiveExposure();</span>
+
+<span class="nc" id="L514">				variationMarginEstimateArray[i] += marginTradeFlowEntry.variationMarginEstimate();</span>
+
+<span class="nc" id="L516">				variationMarginPostingArray[i] += marginTradeFlowEntry.variationMarginPosting();</span>
+
+<span class="nc" id="L518">				variationMarginGapArray[i] += marginTradeFlowEntry.variationMarginGap();</span>
+
+<span class="nc" id="L520">				variationMarginGapStartDateArray[i] = lastFlowDates.clientVariationMargin().julian();</span>
+
+<span class="nc" id="L522">				variationMarginGapEndDateArray[i] = lastFlowDates.dealerVariationMargin().julian();</span>
+
+<span class="nc" id="L524">				clientTradePaymentGapStartDateArray[i] = lastFlowDates.clientTrade().julian();</span>
+
+<span class="nc" id="L526">				clientTradePaymentGapEndDateArray[i] = lastFlowDates.dealerTrade().julian();</span>
+
+<span class="nc" id="L528">				clientDealerTradePaymentGapStartDateArray[i] = lastFlowDates.dealerTrade().julian();</span>
+
+<span class="nc" id="L530">				clientDealerTradePaymentGapEndDateArray[i] = lastFlowDates.variationMarginPeriodEnd().julian();</span>
+			}
+		}
+
+<span class="nc" id="L534">		System.out.println();</span>
+
+<span class="nc" id="L536">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L538">		System.out.println (&quot;\t|                                                                            FIXED STREAM MARGIN/TRADE FLOW EXPOSURES AND DATES                                                                               ||&quot;);</span>
+
+<span class="nc" id="L540">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L542">		System.out.println (&quot;\t|                                                                                                                                                                                                             ||&quot;);</span>
+
+<span class="nc" id="L544">		System.out.println (&quot;\t|  L -&gt; R:                                                                                                                                                                                                    ||&quot;);</span>
+
+<span class="nc" id="L546">		System.out.println (&quot;\t|                                                                                                                                                                                                             ||&quot;);</span>
+
+<span class="nc" id="L548">		System.out.println (&quot;\t|    - Exposure Date                                                                                                                                                                                          ||&quot;);</span>
+
+<span class="nc" id="L550">		System.out.println (&quot;\t|    - Variation Margin Gap Start Date                                                                                                                                                                        ||&quot;);</span>
+
+<span class="nc" id="L552">		System.out.println (&quot;\t|    - Variation Margin Gap End Date                                                                                                                                                                          ||&quot;);</span>
+
+<span class="nc" id="L554">		System.out.println (&quot;\t|    - Variation Margin Estimate                                                                                                                                                                              ||&quot;);</span>
+
+<span class="nc" id="L556">		System.out.println (&quot;\t|    - Variation Margin Posting                                                                                                                                                                               ||&quot;);</span>
+
+<span class="nc" id="L558">		System.out.println (&quot;\t|    - Variation Margin Gap                                                                                                                                                                                   ||&quot;);</span>
+
+<span class="nc" id="L560">		System.out.println (&quot;\t|    - Client Trade Payment Gap Start Date                                                                                                                                                                    ||&quot;);</span>
+
+<span class="nc" id="L562">		System.out.println (&quot;\t|    - Client Trade Payment Gap End Date                                                                                                                                                                      ||&quot;);</span>
+
+<span class="nc" id="L564">		System.out.println (&quot;\t|    - Client Trade Payment Gap                                                                                                                                                                               ||&quot;);</span>
+
+<span class="nc" id="L566">		System.out.println (&quot;\t|    - Net Trade Payment Gap Start Date                                                                                                                                                                       ||&quot;);</span>
+
+<span class="nc" id="L568">		System.out.println (&quot;\t|    - Net Trade Payment Gap End Date                                                                                                                                                                         ||&quot;);</span>
+
+<span class="nc" id="L570">		System.out.println (&quot;\t|    - Net Trade Payment Gap                                                                                                                                                                                  ||&quot;);</span>
+
+<span class="nc" id="L572">		System.out.println (&quot;\t|    - Trade Payment Gap                                                                                                                                                                                      ||&quot;);</span>
+
+<span class="nc" id="L574">		System.out.println (&quot;\t|    - Exposure                                                                                                                                                                                               ||&quot;);</span>
+
+<span class="nc" id="L576">		System.out.println (&quot;\t|    - Positive Exposure                                                                                                                                                                                      ||&quot;);</span>
+
+<span class="nc" id="L578">		System.out.println (&quot;\t|                                                                                                                                                                                                             ||&quot;);</span>
+
+<span class="nc" id="L580">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L582" title="All 2 branches missed.">		for (int i = 0; i &lt;= exposurePeriodCount; ++i)</span>
+		{
+<span class="nc" id="L584">			System.out.println (</span>
+				&quot;\t| [&quot; +
+				new JulianDate (exposureDateArray[i]) + &quot;] =&gt; [&quot; +
+				new JulianDate (variationMarginGapStartDateArray[i]) + &quot; -&gt; &quot; +
+				new JulianDate (variationMarginGapEndDateArray[i]) + &quot;] | &quot; +
+<span class="nc" id="L589">				FormatUtil.FormatDouble (variationMarginEstimateArray[i] / pathCount, 5, 2, 1) + &quot; | &quot; +</span>
+<span class="nc" id="L590">				FormatUtil.FormatDouble (variationMarginPostingArray[i] / pathCount, 5, 2, 1) + &quot; | &quot; +</span>
+<span class="nc" id="L591">				FormatUtil.FormatDouble (variationMarginGapArray[i] / pathCount, 5, 2, 1) + &quot; | [&quot; +</span>
+				new JulianDate (clientTradePaymentGapStartDateArray[i]) + &quot; -&gt; &quot; +
+				new JulianDate (clientTradePaymentGapEndDateArray[i]) + &quot;] | &quot; +
+<span class="nc" id="L594">				FormatUtil.FormatDouble (clientTradePaymentGapArray[i] / pathCount, 5, 2, 1) + &quot; | [&quot; +</span>
+				new JulianDate (clientDealerTradePaymentGapStartDateArray[i]) + &quot; -&gt; &quot; +
+				new JulianDate (clientDealerTradePaymentGapEndDateArray[i]) + &quot;] | &quot; +
+<span class="nc" id="L597">				FormatUtil.FormatDouble (clientDealerTradePaymentGapArray[i] / pathCount, 5, 2, 1) + &quot; | &quot; +</span>
+<span class="nc" id="L598">				FormatUtil.FormatDouble (tradePaymentGapArray[i] / pathCount, 5, 2, 1) + &quot; | &quot; +</span>
+<span class="nc" id="L599">				FormatUtil.FormatDouble (collateralizedExposureArray[i] / pathCount, 5, 2, 1) + &quot; | &quot; +</span>
+<span class="nc" id="L600">				FormatUtil.FormatDouble (collateralizedPositiveExposureArray[i] / pathCount, 5, 2, 1) + &quot; ||&quot;</span>
+			);
+		}
+
+<span class="nc" id="L604">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L606">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L607">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -134,7 +134,7 @@ package org.drip.xva.vertex;
 <span class="fc" id="L134">			clientSurvival * incrementalDealerSurvival * burgardKjaerVertexExposure.debt() +</span>
 			clientSurvival * incrementalDealerSurvival * fundingExposure -
 <span class="fc" id="L136">			dealerSurvival * clientSurvival * marketVertex.csaSpread() *</span>
-<span class="fc" id="L137">				burgardKjaerVertexExposure.collateralBalance();</span>
+<span class="fc" id="L137">				burgardKjaerVertexExposure.variationMarginPosting();</span>
 
 		try
 		{
@@ -219,14 +219,14 @@ package org.drip.xva.vertex;
 <span class="fc" id="L219">			clientSurvivalFinish * incrementalDealerSurvival * burgardKjaerVertexExposure.debt() +</span>
 			clientSurvivalFinish * incrementalDealerSurvival * fundingExposure -
 <span class="fc" id="L221">			dealerSurvivalFinish * clientSurvivalFinish * marketVertexFinish.csaSpread() *</span>
-<span class="fc" id="L222">				burgardKjaerVertexExposure.collateralBalance();</span>
+<span class="fc" id="L222">				burgardKjaerVertexExposure.variationMarginPosting();</span>
 
 		try
 		{
 <span class="fc" id="L226">			return new org.drip.xva.vertex.BurgardKjaer (</span>
 				anchorDate,
-<span class="fc" id="L228">				collateralGroupVertexExposure.forward(),</span>
-<span class="fc" id="L229">				collateralGroupVertexExposure.accrued(),</span>
+<span class="fc" id="L228">				collateralGroupVertexExposure.variationMarginEstimate(),</span>
+<span class="fc" id="L229">				collateralGroupVertexExposure.tradePayment(),</span>
 				burgardKjaerVertexExposure,
 				collateralGroupVertexCloseOut,
 				new org.drip.xva.derivative.ReplicationPortfolioVertexDealer (

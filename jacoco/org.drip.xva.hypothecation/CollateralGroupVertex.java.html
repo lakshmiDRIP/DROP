@@ -71,48 +71,48 @@ public abstract class CollateralGroupVertex
 	extends org.drip.xva.hypothecation.CollateralGroupVertexExposure
 	implements org.drip.xva.hypothecation.CollateralGroupVertexExposureComponent
 {
-<span class="fc" id="L74">	private double _collateralBalance = java.lang.Double.NaN;</span>
-<span class="fc" id="L75">	private org.drip.analytics.date.JulianDate _anchorDate = null;</span>
+<span class="fc" id="L74">	private org.drip.analytics.date.JulianDate _vertexDate = null;</span>
+<span class="fc" id="L75">	private double _variationMarginPosting = java.lang.Double.NaN;</span>
 
 	protected CollateralGroupVertex (
-		final org.drip.analytics.date.JulianDate anchorDate,
-		final double forward,
-		final double accrued,
-		final double collateralBalance)
+		final org.drip.analytics.date.JulianDate vertexDate,
+		final double variationMarginEstimate,
+		final double tradePayment,
+		final double variationMarginPosting)
 		throws java.lang.Exception
 	{
 <span class="fc" id="L84">		super (</span>
-			forward,
-			accrued
+			variationMarginEstimate,
+			tradePayment
 		);
 
-<span class="pc bpc" id="L89" title="1 of 2 branches missed.">		if (null == (_anchorDate = anchorDate) ||</span>
-<span class="pc bpc" id="L90" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_collateralBalance = collateralBalance))</span>
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">		if (null == (_vertexDate = vertexDate) ||</span>
+<span class="pc bpc" id="L90" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_variationMarginPosting = variationMarginPosting))</span>
 		{
 <span class="nc" id="L92">			throw new java.lang.Exception (&quot;CollateralGroupVertex Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 <span class="fc" id="L94">	}</span>
 
 	/**
-	 * Retrieve the Date Anchor
+	 * Retrieve the Vertex Date
 	 * 
-	 * @return The Date Anchor
+	 * @return The Vertex Date
 	 */
 
-	public org.drip.analytics.date.JulianDate anchor()
+	public org.drip.analytics.date.JulianDate vertexDate()
 	{
-<span class="fc" id="L104">		return _anchorDate;</span>
+<span class="fc" id="L104">		return _vertexDate;</span>
 	}
 
 	/**
-	 * Retrieve the Collateral Balance at the Path Vertex Time Node
+	 * Retrieve the Posted Variation Margin at the Path Vertex Time Node
 	 * 
-	 * @return The Collateral Balance at the Path Vertex Time Node
+	 * @return The Posted Variation Margin at the Path Vertex Time Node
 	 */
 
-	public double collateralBalance()
+	public double variationMarginPosting()
 	{
-<span class="fc" id="L115">		return _collateralBalance;</span>
+<span class="fc" id="L115">		return _variationMarginPosting;</span>
 	}
 
 	/**
@@ -123,7 +123,7 @@ public abstract class CollateralGroupVertex
 
 	public double collateralized()
 	{
-<span class="fc" id="L126">		return forward() + accrued() - _collateralBalance;</span>
+<span class="fc" id="L126">		return variationMarginEstimate() + tradePayment() - _variationMarginPosting;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

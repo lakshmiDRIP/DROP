@@ -1,0 +1,600 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OTCPayerCSAClassicalMinus.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.mporfixfloatxva</a> &gt; <span class="el_source">OTCPayerCSAClassicalMinus.java</span></div><h1>OTCPayerCSAClassicalMinus.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.mporfixfloatxva;
+
+import java.util.Map;
+
+import org.drip.analytics.date.DateUtil;
+import org.drip.analytics.date.JulianDate;
+import org.drip.exposure.csatimeline.AndersenPykhtinSokolLag;
+import org.drip.exposure.evolver.EntityDynamicsContainer;
+import org.drip.exposure.evolver.PrimarySecurity;
+import org.drip.exposure.evolver.PrimarySecurityDynamicsContainer;
+import org.drip.exposure.evolver.TerminalLatentState;
+import org.drip.exposure.generator.FixFloatMPoR;
+import org.drip.exposure.mpor.VariationMarginTradeTrajectoryEstimator;
+import org.drip.exposure.mpor.VariationMarginTradeVertexExposure;
+import org.drip.exposure.universe.MarketPath;
+import org.drip.exposure.universe.MarketVertex;
+import org.drip.exposure.universe.MarketVertexGenerator;
+import org.drip.market.otc.FixedFloatSwapConvention;
+import org.drip.market.otc.IBORFixedFloatContainer;
+import org.drip.measure.crng.RandomNumberGenerator;
+import org.drip.measure.discrete.CorrelatedPathVertexDimension;
+import org.drip.measure.dynamics.DiffusionEvaluatorLinear;
+import org.drip.measure.dynamics.DiffusionEvaluatorLogarithmic;
+import org.drip.measure.dynamics.HazardJumpEvaluator;
+import org.drip.measure.process.DiffusionEvolver;
+import org.drip.measure.process.JumpDiffusionEvolver;
+import org.drip.measure.statistics.UnivariateDiscreteThin;
+import org.drip.product.rates.FixFloatComponent;
+import org.drip.quant.common.FormatUtil;
+import org.drip.quant.linearalgebra.Matrix;
+import org.drip.service.env.EnvManager;
+import org.drip.state.identifier.CSALabel;
+import org.drip.state.identifier.EntityEquityLabel;
+import org.drip.state.identifier.EntityFundingLabel;
+import org.drip.state.identifier.EntityHazardLabel;
+import org.drip.state.identifier.EntityRecoveryLabel;
+import org.drip.state.identifier.OvernightLabel;
+import org.drip.xva.gross.ExposureAdjustmentAggregator;
+import org.drip.xva.gross.ExposureAdjustmentDigest;
+import org.drip.xva.gross.MonoPathExposureAdjustment;
+import org.drip.xva.gross.PathExposureAdjustment;
+import org.drip.xva.hypothecation.CollateralGroupVertex;
+import org.drip.xva.netting.CollateralGroupPath;
+import org.drip.xva.netting.CreditDebtGroupPath;
+import org.drip.xva.netting.FundingGroupPath;
+import org.drip.xva.strategy.AlbaneseAndersenFundingGroupPath;
+import org.drip.xva.strategy.AlbaneseAndersenNettingGroupPath;
+import org.drip.xva.vertex.AlbaneseAndersen;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * OTCPayerCSAClassicalMinus displays the MPoR-related XVA Metrics Suite for the given OTC Payer Swap on a
+ *  Daily Grid using the &quot;Classical-&quot; CSA Timeline of Andersen, Pykhtin, and Sokol (2017). The References
+ *  are:
+ *  
+ *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
+ *  
+ *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
+ *  
+ *  - Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and the
+ *  	Re-Hypothecation Option, eSSRN, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955.
+ *  
+ *  - Burgard, C., and M. Kjaer (2017): Derivatives Funding, Netting, and Accounting, eSSRN,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2534011.
+ * 
+ *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
+ *  	21 (2) 97-102.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L119">public class OTCPayerCSAClassicalMinus</span>
+{
+
+	private static final FixFloatComponent OTCIRS (
+		final JulianDate spotDate,
+		final String currency,
+		final String maturityTenor,
+		final double coupon)
+	{
+<span class="nc" id="L128">		FixedFloatSwapConvention ffConv = IBORFixedFloatContainer.ConventionFromJurisdiction (</span>
+			currency,
+			&quot;ALL&quot;,
+			maturityTenor,
+			&quot;MAIN&quot;
+		);
+
+<span class="nc" id="L135">		return ffConv.createFixFloatComponent (</span>
+			spotDate,
+			maturityTenor,
+			coupon,
+			0.,
+			1.
+		);
+	}
+
+	private static final PrimarySecurityDynamicsContainer GenerateTradeablesContainer (
+		final String eventTenor,
+		final int eventCount,
+		final String dealer,
+		final String client)
+		throws Exception
+	{
+<span class="nc" id="L151">		String currency = &quot;USD&quot;;</span>
+
+<span class="nc" id="L153">		double liborDrift = 0.0;</span>
+<span class="nc" id="L154">		double liborVolatility = 0.001;</span>
+
+<span class="nc" id="L156">		double overnightIndexNumeraireDrift = 0.0025;</span>
+<span class="nc" id="L157">		double overnightIndexNumeraireVolatility = 0.0005;</span>
+<span class="nc" id="L158">		double overnightIndexNumeraireRepo = 0.0;</span>
+
+<span class="nc" id="L160">		double collateralSchemeNumeraireDrift = 0.01;</span>
+<span class="nc" id="L161">		double collateralSchemeNumeraireVolatility = 0.002;</span>
+<span class="nc" id="L162">		double collateralSchemeNumeraireRepo = 0.005;</span>
+
+<span class="nc" id="L164">		double dealerSeniorFundingNumeraireDrift = 0.03;</span>
+<span class="nc" id="L165">		double dealerSeniorFundingNumeraireVolatility = 0.002;</span>
+<span class="nc" id="L166">		double dealerSeniorFundingNumeraireRepo = 0.028;</span>
+
+<span class="nc" id="L168">		double dealerSubordinateFundingNumeraireDrift = 0.045;</span>
+<span class="nc" id="L169">		double dealerSubordinateFundingNumeraireVolatility = 0.002;</span>
+<span class="nc" id="L170">		double dealerSubordinateFundingNumeraireRepo = 0.028;</span>
+
+<span class="nc" id="L172">		double clientFundingNumeraireDrift = 0.03;</span>
+<span class="nc" id="L173">		double clientFundingNumeraireVolatility = 0.003;</span>
+<span class="nc" id="L174">		double clientFundingNumeraireRepo = 0.028;</span>
+
+<span class="nc" id="L176">		double dealerHazardRateInitial = 0.03;</span>
+
+<span class="nc" id="L178">		double dealerSeniorRecoveryRateInitial = 0.45;</span>
+
+<span class="nc" id="L180">		double dealerSubordinateRecoveryRateInitial = 0.25;</span>
+
+<span class="nc" id="L182">		double clientHazardRateInitial = 0.05;</span>
+
+<span class="nc" id="L184">		double clientRecoveryRateInitial = 0.30;</span>
+
+<span class="nc" id="L186">		PrimarySecurity tAsset = new PrimarySecurity (</span>
+			&quot;AAPL&quot;,
+<span class="nc" id="L188">			EntityEquityLabel.Standard (</span>
+				&quot;AAPL&quot;,
+				currency
+			),
+			new DiffusionEvolver (
+<span class="nc" id="L193">				DiffusionEvaluatorLinear.Standard (</span>
+					liborDrift,
+					liborVolatility
+				)
+			),
+			0.
+		);
+
+<span class="nc" id="L201">		PrimarySecurity tOvernightIndex = new PrimarySecurity (</span>
+			currency + &quot;_OVERNIGHT&quot;,
+<span class="nc" id="L203">			OvernightLabel.Create (currency),</span>
+			new DiffusionEvolver (
+<span class="nc" id="L205">				DiffusionEvaluatorLogarithmic.Standard (</span>
+					overnightIndexNumeraireDrift,
+					overnightIndexNumeraireVolatility
+				)
+			),
+			overnightIndexNumeraireRepo
+		);
+
+<span class="nc" id="L213">		PrimarySecurity tCollateralScheme = new PrimarySecurity (</span>
+			currency + &quot;_CSA&quot;,
+<span class="nc" id="L215">			CSALabel.ISDA (currency),</span>
+			new DiffusionEvolver (
+<span class="nc" id="L217">				DiffusionEvaluatorLogarithmic.Standard (</span>
+					collateralSchemeNumeraireDrift,
+					collateralSchemeNumeraireVolatility
+				)
+			),
+			collateralSchemeNumeraireRepo
+		);
+
+<span class="nc" id="L225">		PrimarySecurity tBankSeniorFunding = new PrimarySecurity (</span>
+			dealer + &quot;_&quot; + currency + &quot;_SENIOR_ZERO&quot;,
+<span class="nc" id="L227">			EntityFundingLabel.Senior (</span>
+				dealer,
+				currency
+			),
+			new JumpDiffusionEvolver (
+<span class="nc" id="L232">				DiffusionEvaluatorLogarithmic.Standard (</span>
+					dealerSeniorFundingNumeraireDrift,
+					dealerSeniorFundingNumeraireVolatility
+				),
+<span class="nc" id="L236">				HazardJumpEvaluator.Standard (</span>
+					dealerHazardRateInitial,
+					dealerSeniorRecoveryRateInitial
+				)
+			),
+			dealerSeniorFundingNumeraireRepo
+		);
+
+<span class="nc" id="L244">		PrimarySecurity tBankSubordinateFunding = new PrimarySecurity (</span>
+			dealer + &quot;_&quot; + currency + &quot;_SUBORDINATE_ZERO&quot;,
+<span class="nc" id="L246">			EntityFundingLabel.Subordinate (</span>
+				dealer,
+				currency
+			),
+			new JumpDiffusionEvolver (
+<span class="nc" id="L251">				DiffusionEvaluatorLogarithmic.Standard (</span>
+					dealerSubordinateFundingNumeraireDrift,
+					dealerSubordinateFundingNumeraireVolatility
+				),
+<span class="nc" id="L255">				HazardJumpEvaluator.Standard (</span>
+					dealerHazardRateInitial,
+					dealerSubordinateRecoveryRateInitial
+				)
+			),
+			dealerSubordinateFundingNumeraireRepo
+		);
+
+<span class="nc" id="L263">		PrimarySecurity tCounterPartyFunding = new PrimarySecurity (</span>
+			client + &quot;_&quot; + currency + &quot;_SENIOR_ZERO&quot;,
+<span class="nc" id="L265">			EntityFundingLabel.Senior (</span>
+				client,
+				currency
+			),
+			new JumpDiffusionEvolver (
+<span class="nc" id="L270">				DiffusionEvaluatorLogarithmic.Standard (</span>
+					clientFundingNumeraireDrift,
+					clientFundingNumeraireVolatility
+				),
+<span class="nc" id="L274">				HazardJumpEvaluator.Standard (</span>
+					clientHazardRateInitial,
+					clientRecoveryRateInitial
+				)
+			),
+			clientFundingNumeraireRepo
+		);
+
+<span class="nc" id="L282">		return new PrimarySecurityDynamicsContainer (</span>
+			tAsset,
+			tOvernightIndex,
+			tCollateralScheme,
+			tBankSeniorFunding,
+			tBankSubordinateFunding,
+			tCounterPartyFunding
+		);
+	}
+
+	private static final MarketVertexGenerator ConstructMarketVertexGenerator (
+		final JulianDate spotDate,
+		final String periodTenor,
+		final int periodCount,
+		final String currency,
+		final String dealer,
+		final String client)
+		throws Exception
+	{
+<span class="nc" id="L301">		double dealerHazardRateDrift = 0.002;</span>
+<span class="nc" id="L302">		double dealerHazardRateVolatility = 0.20;</span>
+<span class="nc" id="L303">		double dealerRecoveryRateDrift = 0.002;</span>
+<span class="nc" id="L304">		double dealerRecoveryRateVolatility = 0.02;</span>
+<span class="nc" id="L305">		double clientHazardRateDrift = 0.002;</span>
+<span class="nc" id="L306">		double clientHazardRateVolatility = 0.30;</span>
+<span class="nc" id="L307">		double clientRecoveryRateDrift = 0.002;</span>
+<span class="nc" id="L308">		double clientRecoveryRateVolatility = 0.02;</span>
+
+<span class="nc" id="L310">		return MarketVertexGenerator.PeriodHorizon (</span>
+<span class="nc" id="L311">			spotDate.julian(),</span>
+			periodTenor,
+			periodCount,
+<span class="nc" id="L314">			GenerateTradeablesContainer (</span>
+				periodTenor,
+				periodCount,
+				dealer,
+				client
+			),
+			new EntityDynamicsContainer (
+				new TerminalLatentState (
+<span class="nc" id="L322">					EntityHazardLabel.Standard (</span>
+						dealer,
+						currency
+					),
+					new DiffusionEvolver (
+<span class="nc" id="L327">						DiffusionEvaluatorLogarithmic.Standard (</span>
+							dealerHazardRateDrift,
+							dealerHazardRateVolatility
+						)
+					)
+				),
+				new TerminalLatentState (
+<span class="nc" id="L334">					EntityRecoveryLabel.Senior (</span>
+						dealer,
+						currency
+					),
+					new DiffusionEvolver (
+<span class="nc" id="L339">						DiffusionEvaluatorLogarithmic.Standard (</span>
+							dealerRecoveryRateDrift,
+							dealerRecoveryRateVolatility
+						)
+					)
+				),
+				null,
+				new TerminalLatentState (
+<span class="nc" id="L347">					EntityHazardLabel.Standard (</span>
+						client,
+						currency
+					),
+					new DiffusionEvolver (
+<span class="nc" id="L352">						DiffusionEvaluatorLogarithmic.Standard (</span>
+							clientHazardRateDrift,
+							clientHazardRateVolatility
+						)
+					)
+				),
+				new TerminalLatentState (
+<span class="nc" id="L359">					EntityRecoveryLabel.Senior (</span>
+						client,
+						currency
+					),
+					new DiffusionEvolver (
+<span class="nc" id="L364">						DiffusionEvaluatorLogarithmic.Standard (</span>
+							clientRecoveryRateDrift,
+							clientRecoveryRateVolatility
+						)
+					)
+				)
+			)
+		);
+	}
+
+	public static final void main (
+		final String[] args)
+		throws Exception
+	{
+<span class="nc" id="L378">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L380">		JulianDate spotDate = DateUtil.CreateFromYMD (</span>
+			2018,
+			DateUtil.APRIL,
+			19
+		);
+
+<span class="nc" id="L386">		int pathCount = 1000;</span>
+<span class="nc" id="L387">		String exposurePeriodTenor = &quot;1D&quot;;</span>
+<span class="nc" id="L388">		int exposurePeriodCount = 390;</span>
+<span class="nc" id="L389">		int vertexGenerationPeriodCount = exposurePeriodCount + 0;</span>
+<span class="nc" id="L390">		String currency = &quot;USD&quot;;</span>
+<span class="nc" id="L391">		String dealer = &quot;NOM&quot;;</span>
+<span class="nc" id="L392">		String client = &quot;SSGA&quot;;</span>
+<span class="nc" id="L393">		double[][] correlationMatrix = new double[][] {</span>
+			{1.00, 0.00, 0.20, 0.15, 0.05, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #0 ASSET NUMERAIRE
+			{0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #1 OVERNIGHT POLICY INDEX NUMERAIRE
+			{0.20, 0.00, 1.00, 0.13, 0.25, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #2 COLLATERAL SCHEME NUMERAIRE
+			{0.15, 0.00, 0.13, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #3 BANK HAZARD RATE
+			{0.05, 0.00, 0.25, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #4 BANK SENIOR FUNDING NUMERAIRE
+			{0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #5 BANK SENIOR RECOVERY RATE
+			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00}, // #6 BANK SUBORDINATE FUNDING NUMERAIRE
+			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00}, // #7 BANK SUBORDINATE RECOVERY RATE
+			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00}, // #8 COUNTER PARTY HAZARD RATE
+			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00}, // #9 COUNTER PARTY FUNDING NUMERAIRE
+			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00}  // #10 COUNTER PARTY RECOVERY RATE
+		};
+<span class="nc" id="L406">		String fixFloatMaturityTenor = &quot;1Y&quot;;</span>
+<span class="nc" id="L407">		double fixFloatCoupon = 0.02;</span>
+<span class="nc" id="L408">		double fixFloatNotional = -10.e+06;</span>
+
+<span class="nc" id="L410">		MarketVertexGenerator marketVertexGenerator = ConstructMarketVertexGenerator (</span>
+			spotDate,
+			exposurePeriodTenor,
+			vertexGenerationPeriodCount,
+			currency,
+			dealer,
+			client
+		);
+
+<span class="nc" id="L419">		MarketVertex initialMarketVertex = MarketVertex.StartUp (</span>
+			spotDate,
+			0.020, 				// Initial LIBOR
+			1.000, 				// dblOvernightNumeraireInitial
+			1.000, 				// dblCSANumeraire
+			0.015, 				// dblBankHazardRate
+			0.400, 				// dblBankRecoveryRate
+			0.015 / (1 - 0.40), // dblBankFundingSpread
+			0.030, 				// dblCounterPartyHazardRate
+			0.300, 				// dblCounterPartyRecoveryRate
+			0.030 / (1 - 0.30) 	// dblCounterPartyFundingSpread
+		);
+
+<span class="nc" id="L432">		AndersenPykhtinSokolLag andersenPykhtinSokolLag = AndersenPykhtinSokolLag.ClassicalMinus();</span>
+
+<span class="nc" id="L434">		FixFloatComponent fixFloatComponent = OTCIRS (</span>
+			spotDate,
+			currency,
+			fixFloatMaturityTenor,
+			fixFloatCoupon
+		);
+
+<span class="nc" id="L441">		FixFloatMPoR fixFloatMPoR = new FixFloatMPoR (</span>
+			fixFloatComponent,
+			fixFloatNotional
+		);
+
+<span class="nc" id="L446">		CorrelatedPathVertexDimension correlatedPathVertexDimension = new CorrelatedPathVertexDimension (</span>
+			new RandomNumberGenerator(),
+			correlationMatrix,
+			vertexGenerationPeriodCount,
+			1,
+			true,
+			null
+		);
+
+<span class="nc" id="L455">		JulianDate exposureDate = spotDate;</span>
+<span class="nc" id="L456">		int[] exposureDateArray = new int[exposurePeriodCount + 1];</span>
+<span class="nc" id="L457">		PathExposureAdjustment[] pathExposureAdjustmentArray = new PathExposureAdjustment[pathCount];</span>
+
+<span class="nc bnc" id="L459" title="All 2 branches missed.">		for (int exposurePeriodIndex = 0; exposurePeriodIndex &lt;= exposurePeriodCount; ++exposurePeriodIndex)</span>
+		{
+<span class="nc" id="L461">			exposureDateArray[exposurePeriodIndex] = exposureDate.julian();</span>
+
+<span class="nc" id="L463">			exposureDate = exposureDate.addTenor (exposurePeriodTenor);</span>
+		}
+
+<span class="nc bnc" id="L466" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+		{
+<span class="nc" id="L468">			MarketPath marketPath = new MarketPath (</span>
+<span class="nc" id="L469">				marketVertexGenerator.marketVertex (</span>
+					initialMarketVertex,
+<span class="nc" id="L471">					Matrix.Transpose (correlatedPathVertexDimension.straightPathVertexRd().flatform())</span>
+				)
+			);
+
+<span class="nc" id="L475">			VariationMarginTradeTrajectoryEstimator variationMarginTradeTrajectoryEstimator =</span>
+				new VariationMarginTradeTrajectoryEstimator (
+					exposureDateArray,
+					currency,
+					fixFloatMPoR,
+					marketPath,
+					andersenPykhtinSokolLag
+				);
+
+<span class="nc" id="L484">			Map&lt;Integer, VariationMarginTradeVertexExposure&gt; mapMarginTradeFlowEntry =</span>
+<span class="nc" id="L485">				variationMarginTradeTrajectoryEstimator.trajectory();</span>
+
+<span class="nc" id="L487">			CollateralGroupVertex[] collateralGroupVertexArray = new</span>
+				CollateralGroupVertex[exposurePeriodCount + 1];
+
+<span class="nc bnc" id="L490" title="All 2 branches missed.">			for (int exposurePeriodIndex = 0; exposurePeriodIndex &lt;= exposurePeriodCount; ++exposurePeriodIndex)</span>
+			{
+<span class="nc" id="L492">				VariationMarginTradeVertexExposure variationMarginTradeVertexExposure =</span>
+<span class="nc" id="L493">					mapMarginTradeFlowEntry.get (exposureDateArray[exposurePeriodIndex]);</span>
+
+<span class="nc" id="L495">				collateralGroupVertexArray[exposurePeriodIndex] = new AlbaneseAndersen (</span>
+					new JulianDate (exposureDateArray[exposurePeriodIndex]),
+<span class="nc" id="L497">					variationMarginTradeVertexExposure.variationMarginEstimate(),</span>
+<span class="nc" id="L498">					variationMarginTradeVertexExposure.tradePaymentGap(),</span>
+<span class="nc" id="L499">					variationMarginTradeVertexExposure.variationMarginPosting()</span>
+				);
+			}
+
+<span class="nc" id="L503">			CollateralGroupPath collateralGroupPath = new CollateralGroupPath (</span>
+				collateralGroupVertexArray,
+				marketPath
+			);
+
+<span class="nc" id="L508">			CreditDebtGroupPath creditDebtGroupPath = new AlbaneseAndersenNettingGroupPath (</span>
+				new CollateralGroupPath[] {collateralGroupPath},
+				marketPath
+			);
+
+<span class="nc" id="L513">			FundingGroupPath fundingGroupPath = new AlbaneseAndersenFundingGroupPath (</span>
+				new CreditDebtGroupPath[] {creditDebtGroupPath},
+				marketPath
+			);
+
+<span class="nc" id="L518">			pathExposureAdjustmentArray[pathIndex] = new MonoPathExposureAdjustment</span>
+				(new FundingGroupPath[] {fundingGroupPath});
+		}
+
+<span class="nc" id="L522">		ExposureAdjustmentAggregator exposureAdjustmentAggregator = new ExposureAdjustmentAggregator</span>
+			(pathExposureAdjustmentArray);
+
+<span class="nc" id="L525">		ExposureAdjustmentDigest exposureAdjustmentDigest = exposureAdjustmentAggregator.digest();</span>
+
+<span class="nc" id="L527">		System.out.println (&quot;\t|---------------------------------------||&quot;);</span>
+
+<span class="nc" id="L529">		System.out.println (&quot;\t|    OTC FIX FLOAT MPOR XVA METRICS     ||&quot;);</span>
+
+<span class="nc" id="L531">		System.out.println (&quot;\t|---------------------------------------||&quot;);</span>
+
+<span class="nc" id="L533">		System.out.println (&quot;\t|                                       ||&quot;);</span>
+
+<span class="nc" id="L535">		System.out.println (&quot;\t|    L -&gt; R:                            ||&quot;);</span>
+
+<span class="nc" id="L537">		System.out.println (&quot;\t|                                       ||&quot;);</span>
+
+<span class="nc" id="L539">		System.out.println (&quot;\t|        - Average                      ||&quot;);</span>
+
+<span class="nc" id="L541">		System.out.println (&quot;\t|        - Minimum                      ||&quot;);</span>
+
+<span class="nc" id="L543">		System.out.println (&quot;\t|        - Maximum                      ||&quot;);</span>
+
+<span class="nc" id="L545">		System.out.println (&quot;\t|        - Error                        ||&quot;);</span>
+
+<span class="nc" id="L547">		System.out.println (&quot;\t|                                       ||&quot;);</span>
+
+<span class="nc" id="L549">		System.out.println (&quot;\t|---------------------------------------||&quot;);</span>
+
+<span class="nc" id="L551">		DisplayThinStatistics (&quot;\t| UCOLVA  &quot;, exposureAdjustmentDigest.ucolva());</span>
+
+<span class="nc" id="L553">		DisplayThinStatistics (&quot;\t| FTDCOLVA&quot;, exposureAdjustmentDigest.ftdcolva());</span>
+
+<span class="nc" id="L555">		DisplayThinStatistics (&quot;\t| UCVA    &quot;, exposureAdjustmentDigest.ucva());</span>
+
+<span class="nc" id="L557">		DisplayThinStatistics (&quot;\t| FTDCVA  &quot;, exposureAdjustmentDigest.ftdcva());</span>
+
+<span class="nc" id="L559">		DisplayThinStatistics (&quot;\t| CVA     &quot;, exposureAdjustmentDigest.cva());</span>
+
+<span class="nc" id="L561">		DisplayThinStatistics (&quot;\t| CVACL   &quot;, exposureAdjustmentDigest.cvacl());</span>
+
+<span class="nc" id="L563">		DisplayThinStatistics (&quot;\t| DVA     &quot;, exposureAdjustmentDigest.dva());</span>
+
+<span class="nc" id="L565">		DisplayThinStatistics (&quot;\t| FVA     &quot;, exposureAdjustmentDigest.fva());</span>
+
+<span class="nc" id="L567">		DisplayThinStatistics (&quot;\t| FDA     &quot;, exposureAdjustmentDigest.fda());</span>
+
+<span class="nc" id="L569">		DisplayThinStatistics (&quot;\t| DVA2    &quot;, exposureAdjustmentDigest.dva2());</span>
+
+<span class="nc" id="L571">		DisplayThinStatistics (&quot;\t| FCA     &quot;, exposureAdjustmentDigest.fca());</span>
+
+<span class="nc" id="L573">		DisplayThinStatistics (&quot;\t| FBA     &quot;, exposureAdjustmentDigest.fba());</span>
+
+<span class="nc" id="L575">		DisplayThinStatistics (&quot;\t| SFVA    &quot;, exposureAdjustmentDigest.sfva());</span>
+
+<span class="nc" id="L577">		System.out.println (&quot;\t|---------------------------------------||&quot;);</span>
+
+<span class="nc" id="L579">		DisplayThinStatistics (&quot;\t| Total VA&quot;, exposureAdjustmentDigest.totalVA());</span>
+
+<span class="nc" id="L581">		System.out.println (&quot;\t|---------------------------------------||&quot;);</span>
+
+<span class="nc" id="L583">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L584">	}</span>
+
+	private static final void DisplayThinStatistics (
+		final String annotation,
+		final UnivariateDiscreteThin univariateDiscreteThin)
+		throws Exception
+	{
+<span class="nc" id="L591">		System.out.println (</span>
+			annotation + &quot; =&gt; &quot; +
+<span class="nc" id="L593">			FormatUtil.FormatDouble (univariateDiscreteThin.average(), 3, 0, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L594">			FormatUtil.FormatDouble (univariateDiscreteThin.minimum(), 3, 0, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L595">			FormatUtil.FormatDouble (univariateDiscreteThin.maximum(), 3, 0, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L596">			FormatUtil.FormatDouble (univariateDiscreteThin.error(), 3, 0, 1.) + &quot; ||&quot;</span>
+		);
+<span class="nc" id="L598">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,6 +1,6 @@
 
 /**
- * CSA Enforced Fixed Float MPoR
+ * CSA Enforced Fix-Float MPoR
  */
 
 package org.drip.sample.mporfixfloat;

@@ -735,6 +735,6 @@ public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposu
 
 	@Override public double totalAdjustment()
 	{
-		return creditAdjustment() + debtAdjustment() + fundingValueAdjustment();
+		return collateralAdjustment() + creditAdjustment() + debtAdjustment() + fundingValueAdjustment();
 	}
 }

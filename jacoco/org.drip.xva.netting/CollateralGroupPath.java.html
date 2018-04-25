@@ -110,8 +110,8 @@ public class CollateralGroupPath
 <span class="nc" id="L110">				throw new java.lang.Exception (&quot;CollateralGroupPath Constructor =&gt; Invalid Inputs&quot;);</span>
 			}
 
-<span class="fc bfc" id="L113" title="All 2 branches covered.">			if (0 != vertexIndex &amp;&amp; _collateralGroupVertexArray[vertexIndex - 1].anchor().julian() &gt;=</span>
-<span class="pc bpc" id="L114" title="1 of 2 branches missed.">				_collateralGroupVertexArray[vertexIndex].anchor().julian())</span>
+<span class="fc bfc" id="L113" title="All 2 branches covered.">			if (0 != vertexIndex &amp;&amp; _collateralGroupVertexArray[vertexIndex - 1].vertexDate().julian() &gt;=</span>
+<span class="pc bpc" id="L114" title="1 of 2 branches missed.">				_collateralGroupVertexArray[vertexIndex].vertexDate().julian())</span>
 			{
 <span class="nc" id="L116">				throw new java.lang.Exception (&quot;CollateralGroupPath Constructor =&gt; Invalid Inputs&quot;);</span>
 			}
@@ -154,7 +154,7 @@ public class CollateralGroupPath
 
 <span class="fc bfc" id="L155" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="fc" id="L157">			vertexDateArray[vertexIndex] = _collateralGroupVertexArray[vertexIndex].anchor();</span>
+<span class="fc" id="L157">			vertexDateArray[vertexIndex] = _collateralGroupVertexArray[vertexIndex].vertexDate();</span>
 		}
 
 <span class="fc" id="L160">		return vertexDateArray;</span>
@@ -386,7 +386,7 @@ public class CollateralGroupPath
 <span class="nc bnc" id="L386" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
 <span class="nc" id="L388">			collateralizedBalance[vertexIndex] =</span>
-<span class="nc" id="L389">				_collateralGroupVertexArray[vertexIndex].collateralBalance();</span>
+<span class="nc" id="L389">				_collateralGroupVertexArray[vertexIndex].variationMarginPosting();</span>
 		}
 
 <span class="nc" id="L392">		return collateralizedBalance;</span>
@@ -408,7 +408,7 @@ public class CollateralGroupPath
 <span class="fc bfc" id="L408" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
 <span class="fc" id="L410">			collateralizedBalancePV[vertexIndex] =</span>
-<span class="fc" id="L411">				_collateralGroupVertexArray[vertexIndex].collateralBalance() * _overnightReplicatorStart /</span>
+<span class="fc" id="L411">				_collateralGroupVertexArray[vertexIndex].variationMarginPosting() * _overnightReplicatorStart /</span>
 <span class="fc" id="L412">				_marketPath.marketVertex (vertexDateArray[vertexIndex].julian()).overnightReplicator();</span>
 		}
 
