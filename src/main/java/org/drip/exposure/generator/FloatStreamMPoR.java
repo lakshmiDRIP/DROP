@@ -1,5 +1,5 @@
 
-package org.drip.exposure.mpor;
+package org.drip.exposure.generator;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,8 +47,8 @@ package org.drip.exposure.mpor;
  */
 
 /**
- * FloatCouponStream estimates the Variation Margin and the Trade Payments for the given Float Coupon Stream
- *  off of the Realized Market Path. The References are:
+ * FloatStreamMPoR estimates the MPoR Variation Margin and the Trade Payments for the given Float Stream off
+ *  of the Realized Market Path. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
@@ -68,13 +68,11 @@ package org.drip.exposure.mpor;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FloatCouponStream implements org.drip.exposure.mpor.VariationMarginTradeVertexGenerator
+public class FloatStreamMPoR  extends org.drip.exposure.generator.StreamMPoR
 {
-	private double _notional = java.lang.Double.NaN;
-	private org.drip.product.rates.Stream _stream = null;
 
 	/**
-	 * FloatCouponStream Constructor
+	 * FloatStreamMPoR Constructor
 	 * 
 	 * @param stream The Fixed Coupon Stream Instance
 	 * @param notional The Fixed Coupon Stream Notional
@@ -82,16 +80,15 @@ public class FloatCouponStream implements org.drip.exposure.mpor.VariationMargin
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public FloatCouponStream (
+	public FloatStreamMPoR (
 		final org.drip.product.rates.Stream stream,
 		final double notional)
 		throws java.lang.Exception
 	{
-		if (null == (_stream = stream) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_notional = notional))
-		{
-			throw new java.lang.Exception ("FloatCouponStream Constructor => Invalid Inputs");
-		}
+		super (
+			stream,
+			notional
+		);
 	}
 
 	@Override public double variationMarginEstimate (
@@ -101,13 +98,13 @@ public class FloatCouponStream implements org.drip.exposure.mpor.VariationMargin
 	{
 		if (null == marketPath)
 		{
-			throw new java.lang.Exception ("FloatCouponStream::variationMarginEstimate => Invalid Inputs");
+			throw new java.lang.Exception ("FloatStreamMPoR::variationMarginEstimate => Invalid Inputs");
 		}
 		double variationMarginEstimate = 0.;
 
 		double overnightReplicatorForward = marketPath.marketVertex (forwardDate).overnightReplicator();
 
-		for (org.drip.analytics.cashflow.CompositePeriod period : _stream.periods())
+		for (org.drip.analytics.cashflow.CompositePeriod period : stream().periods())
 		{
 			int periodEndDate = period.endDate();
 
@@ -128,7 +125,7 @@ public class FloatCouponStream implements org.drip.exposure.mpor.VariationMargin
 				marketPath.marketVertex (period.payDate()).overnightReplicator();
 		}
 
-		return variationMarginEstimate * _notional;
+		return variationMarginEstimate * notional();
 	}
 
 	@Override public org.drip.exposure.mpor.TradePayment tradePayment (
@@ -140,14 +137,9 @@ public class FloatCouponStream implements org.drip.exposure.mpor.VariationMargin
 			return null;
 		}
 
-		if (forwardDate < _stream.effective().julian() || forwardDate > _stream.maturity().julian())
-		{
-			return org.drip.exposure.mpor.TradePayment.Standard (0.);
-		}
-
 		double overnightReplicatorForward = marketPath.marketVertex (forwardDate).overnightReplicator();
 
-		for (org.drip.analytics.cashflow.CompositePeriod period : _stream.periods())
+		for (org.drip.analytics.cashflow.CompositePeriod period : stream().periods())
 		{
 			int periodPayDate = period.payDate();
 
@@ -161,7 +153,7 @@ public class FloatCouponStream implements org.drip.exposure.mpor.VariationMargin
 				try
 				{
 					return org.drip.exposure.mpor.TradePayment.Standard (
-						_notional * period.couponDCF() *
+						notional() * period.couponDCF() *
 						period.notional (periodEndDate) *
 						marketPath.marketVertex
 							(composableUnitFloatingPeriod.referenceIndexPeriod().fixingDate()).positionManifestValue() *

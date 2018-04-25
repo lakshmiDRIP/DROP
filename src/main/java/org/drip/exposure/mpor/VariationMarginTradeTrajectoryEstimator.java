@@ -74,10 +74,8 @@ public class VariationMarginTradeTrajectoryEstimator
 	private java.lang.String _calendar = "";
 	private org.drip.exposure.universe.MarketPath _marketPath = null;
 	private org.drip.exposure.csatimeline.AndersenPykhtinSokolLag _csaTimelineLag = null;
-	private org.drip.exposure.mpor.VariationMarginTradeVertexGenerator _variationMarginTradeVertexGenerator =
+	private org.drip.exposure.generator.VariationMarginTradePaymentVertex _variationMarginTradeVertexGenerator =
 		null;
-	private java.util.Map<java.lang.Integer, org.drip.exposure.mpor.VariationMarginTradeVertexExposure>
-		_variationMarginTradeExposureTrajectory = null;
 
 	private static final double ClientTradePayment (
 		final java.util.Map<java.lang.Integer, java.lang.Double> clientTradePaymentTrajectory,
@@ -113,7 +111,7 @@ public class VariationMarginTradeTrajectoryEstimator
 		{
 			int clientTradePaymentDate = clientTradePaymentEntry.getKey();
 
-			if (clientTradePaymentDate >= startDate && clientTradePaymentDate <= endDate)
+			if (clientTradePaymentDate > startDate && clientTradePaymentDate <= endDate)
 			{
 				netTradePayment += clientTradePaymentEntry.getValue();
 			}
@@ -179,7 +177,7 @@ public class VariationMarginTradeTrajectoryEstimator
 	 * @return Standard Instance of MarginTradeTrajectoryEstimator
 	 */
 
-	public static final VariationMarginTradeTrajectoryEstimator Standard (
+	/* public static final VariationMarginTradeTrajectoryEstimator Standard (
 		final int[] exposureDateArray,
 		final java.lang.String calendar,
 		final org.drip.exposure.mpor.VariationMarginTradeVertexGenerator marginTradeVertex,
@@ -295,7 +293,7 @@ public class VariationMarginTradeTrajectoryEstimator
 		}
 
 		return null;
-	}
+	} */
 
 	/**
 	 * VariationMarginTradeTrajectoryEstimator Constructor
@@ -305,7 +303,7 @@ public class VariationMarginTradeTrajectoryEstimator
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public VariationMarginTradeTrajectoryEstimator (
+	/* public VariationMarginTradeTrajectoryEstimator (
 		final java.util.Map<java.lang.Integer, org.drip.exposure.mpor.VariationMarginTradeVertexExposure>
 			variationMarginTradeExposureTrajectory)
 		throws java.lang.Exception
@@ -316,7 +314,7 @@ public class VariationMarginTradeTrajectoryEstimator
 			throw new java.lang.Exception
 				("VariationMarginTradeTrajectoryEstimator Constuctor => Invalid Inputs");
 		}
-	}
+	} */
 
 	/**
 	 * VariationMarginTradeTrajectoryEstimator Constructor
@@ -333,7 +331,7 @@ public class VariationMarginTradeTrajectoryEstimator
 	public VariationMarginTradeTrajectoryEstimator (
 		final int[] exposureDateArray,
 		final java.lang.String calendar,
-		final org.drip.exposure.mpor.VariationMarginTradeVertexGenerator variationMarginTradeVertexGenerator,
+		final org.drip.exposure.generator.VariationMarginTradePaymentVertex variationMarginTradeVertexGenerator,
 		final org.drip.exposure.universe.MarketPath marketPath,
 		final org.drip.exposure.csatimeline.AndersenPykhtinSokolLag csaTimelineLag)
 		throws java.lang.Exception
@@ -377,7 +375,7 @@ public class VariationMarginTradeTrajectoryEstimator
 	 * @return The Variation Margin Trade Payment Vertex Generator
 	 */
 
-	public org.drip.exposure.mpor.VariationMarginTradeVertexGenerator vertexGenerator()
+	public org.drip.exposure.generator.VariationMarginTradePaymentVertex vertexGenerator()
 	{
 		return _variationMarginTradeVertexGenerator;
 	}
@@ -488,6 +486,34 @@ public class VariationMarginTradeTrajectoryEstimator
 	}
 
 	/**
+	 * Generate the Array of CSA Event Dates
+	 * 
+	 * @return Array of CSA Event Dates
+	 */
+
+	public org.drip.exposure.csatimeline.LastFlowDates[] csaEventDates()
+	{
+		int exposureDateCount = _exposureDateArray.length;
+		org.drip.exposure.csatimeline.LastFlowDates[] csaEventDateArray = new
+			org.drip.exposure.csatimeline.LastFlowDates[exposureDateCount];
+
+		for (int exposureDateIndex = 0; exposureDateIndex < exposureDateCount; ++exposureDateIndex)
+		{
+			if (null == (csaEventDateArray[exposureDateIndex] =
+				org.drip.exposure.csatimeline.LastFlowDates.SpotStandard (
+					new org.drip.analytics.date.JulianDate (_exposureDateArray[exposureDateIndex]),
+					_csaTimelineLag,
+					_calendar
+				)))
+			{
+				return null;
+			}
+		}
+
+		return csaEventDateArray;
+	}
+
+	/**
 	 * Retrieve the Variation Margin Trade Payment Exposure Trajectory
 	 * 
 	 * @return The Variation Margin Trade Payment Exposure Trajectory
@@ -517,46 +543,35 @@ public class VariationMarginTradeTrajectoryEstimator
 			variationMarginTradeExposureTrajectory = new java.util.TreeMap<java.lang.Integer,
 				org.drip.exposure.mpor.VariationMarginTradeVertexExposure>();
 
+		org.drip.exposure.csatimeline.LastFlowDates[] csaEventDateArray = csaEventDates();
+
 		int exposureDateCount = _exposureDateArray.length;
-		double[] variationMarginEstimateArray = 0 == exposureDateCount? null : new double[exposureDateCount];
 
 		try
 		{
 			for (int exposureDateIndex = 0; exposureDateIndex < exposureDateCount; ++exposureDateIndex)
 			{
-				org.drip.exposure.csatimeline.LastFlowDates csaEventDates =
-					org.drip.exposure.csatimeline.LastFlowDates.SpotStandard (
-						new org.drip.analytics.date.JulianDate (_exposureDateArray[exposureDateIndex]),
-						_csaTimelineLag,
-						_calendar
-					);
-
-				if (null == csaEventDates)
-				{
-					return null;
-				}
-
 				variationMarginTradeExposureTrajectory.put (
 					_exposureDateArray[exposureDateIndex],
 					new org.drip.exposure.mpor.VariationMarginTradeVertexExposure (
-						variationMarginEstimateArray[exposureDateIndex],
+						variationMarginEstimateTrajectory.get (_exposureDateArray[exposureDateIndex]),
 						VariationMarginPosting (
 							variationMarginEstimateTrajectory,
-							csaEventDates.clientVariationMargin().julian(),
-							csaEventDates.dealerVariationMargin().julian()
+							csaEventDateArray[exposureDateIndex].clientVariationMargin().julian(),
+							csaEventDateArray[exposureDateIndex].dealerVariationMargin().julian()
 						),
 						ClientTradePayment (
 							clientTradePaymentTrajectory,
-							csaEventDates.clientTrade().julian(),
-							csaEventDates.dealerTrade().julian()
+							csaEventDateArray[exposureDateIndex].clientTrade().julian(),
+							csaEventDateArray[exposureDateIndex].dealerTrade().julian()
 						),
 						NetTradePayment (
 							clientTradePaymentTrajectory,
 							dealerTradePaymentTrajectory,
-							csaEventDates.dealerTrade().julian(),
-							csaEventDates.variationMarginPeriodEnd().julian()
+							csaEventDateArray[exposureDateIndex].dealerTrade().julian(),
+							csaEventDateArray[exposureDateIndex].variationMarginPeriodEnd().julian()
 						),
-						csaEventDates
+						csaEventDateArray[exposureDateIndex]
 					)
 				);
 			}
@@ -577,9 +592,9 @@ public class VariationMarginTradeTrajectoryEstimator
 	 * @return The Variation Margin Trade Payment Exposure Trajectory
 	 */
 
-	public java.util.Map<java.lang.Integer, org.drip.exposure.mpor.VariationMarginTradeVertexExposure>
+	/* public java.util.Map<java.lang.Integer, org.drip.exposure.mpor.VariationMarginTradeVertexExposure>
 		variationMarginTradeExposureTrajectory()
 	{
 		return _variationMarginTradeExposureTrajectory;
-	}
+	} */
 }

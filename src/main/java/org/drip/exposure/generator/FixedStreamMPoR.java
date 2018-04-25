@@ -1,5 +1,5 @@
 
-package org.drip.exposure.mpor;
+package org.drip.exposure.generator;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,8 +47,8 @@ package org.drip.exposure.mpor;
  */
 
 /**
- * FixedCouponStream estimates the Variation Margin and the Trade Payments for the given Fixed Coupon Stream
- *  off of the Realized Market Path. The References are:
+ * FixedStreamMPoR estimates the MPoR Variation Margin and the Trade Payments for the given Fixed Coupon
+ *  Stream off of the Realized Market Path. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
@@ -68,13 +68,11 @@ package org.drip.exposure.mpor;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FixedCouponStream implements org.drip.exposure.mpor.VariationMarginTradeVertexGenerator
+public class FixedStreamMPoR extends org.drip.exposure.generator.StreamMPoR
 {
-	private double _notional = java.lang.Double.NaN;
-	private org.drip.product.rates.Stream _stream = null;
 
 	/**
-	 * FixedCouponStream Constructor
+	 * FixedStreamMPoR Constructor
 	 * 
 	 * @param stream The Fixed Coupon Stream Instance
 	 * @param notional The Fixed Coupon Stream Notional
@@ -82,16 +80,15 @@ public class FixedCouponStream implements org.drip.exposure.mpor.VariationMargin
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public FixedCouponStream (
+	public FixedStreamMPoR (
 		final org.drip.product.rates.Stream stream,
 		final double notional)
 		throws java.lang.Exception
 	{
-		if (null == (_stream = stream) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_notional = notional))
-		{
-			throw new java.lang.Exception ("FixedCouponStream Constructor => Invalid Inputs");
-		}
+		super (
+			stream,
+			notional
+		);
 	}
 
 	@Override public double variationMarginEstimate (
@@ -101,14 +98,14 @@ public class FixedCouponStream implements org.drip.exposure.mpor.VariationMargin
 	{
 		if (null == marketPath)
 		{
-			throw new java.lang.Exception ("FixedCouponStream::variationMarginEstimate => Invalid Inputs");
+			throw new java.lang.Exception ("FixedStreamMPoR::variationMarginEstimate => Invalid Inputs");
 		}
 
 		double variationMarginEstimate = 0.;
 
 		double overnightReplicatorForward = marketPath.marketVertex (forwardDate).overnightReplicator();
 
-		for (org.drip.analytics.cashflow.CompositePeriod period : _stream.periods())
+		for (org.drip.analytics.cashflow.CompositePeriod period : stream().periods())
 		{
 			int periodEndDate = period.endDate();
 
@@ -126,7 +123,7 @@ public class FixedCouponStream implements org.drip.exposure.mpor.VariationMargin
 			if (null == compositePeriodCouponMetrics)
 			{
 				throw new java.lang.Exception
-					("FixedCouponStream::variationMarginEstimate => Cannot Compute CompositePeriodCouponMetrics");
+					("FixedStreamMPoR::variationMarginEstimate => Cannot Compute CompositePeriodCouponMetrics");
 			}
 
 			variationMarginEstimate += period.couponDCF() *
@@ -137,7 +134,7 @@ public class FixedCouponStream implements org.drip.exposure.mpor.VariationMargin
 				marketPath.marketVertex (period.payDate()).overnightReplicator();
 		}
 
-		return variationMarginEstimate * _notional;
+		return variationMarginEstimate * notional();
 	}
 
 	@Override public org.drip.exposure.mpor.TradePayment tradePayment (
@@ -151,7 +148,7 @@ public class FixedCouponStream implements org.drip.exposure.mpor.VariationMargin
 
 		double overnightReplicatorForward = marketPath.marketVertex (forwardDate).overnightReplicator();
 
-		for (org.drip.analytics.cashflow.CompositePeriod period : _stream.periods())
+		for (org.drip.analytics.cashflow.CompositePeriod period : stream().periods())
 		{
 			int periodPayDate = period.payDate();
 
@@ -173,7 +170,7 @@ public class FixedCouponStream implements org.drip.exposure.mpor.VariationMargin
 				try
 				{
 					return org.drip.exposure.mpor.TradePayment.Standard (
-						_notional * period.couponDCF() *
+						notional() * period.couponDCF() *
 						period.notional (periodEndDate) *
 						compositePeriodCouponMetrics.rate() *
 						period.couponFactor (periodEndDate) *

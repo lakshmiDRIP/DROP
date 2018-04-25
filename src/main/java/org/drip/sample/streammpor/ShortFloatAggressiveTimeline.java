@@ -11,7 +11,7 @@ import org.drip.exposure.evolver.EntityDynamicsContainer;
 import org.drip.exposure.evolver.PrimarySecurity;
 import org.drip.exposure.evolver.PrimarySecurityDynamicsContainer;
 import org.drip.exposure.evolver.TerminalLatentState;
-import org.drip.exposure.mpor.FloatCouponStream;
+import org.drip.exposure.generator.FloatStreamMPoR;
 import org.drip.exposure.mpor.VariationMarginTradeVertexExposure;
 import org.drip.exposure.mpor.VariationMarginTradeTrajectoryEstimator;
 import org.drip.exposure.universe.MarketPath;
@@ -427,7 +427,7 @@ public class ShortFloatAggressiveTimeline
 			fixFloatCoupon
 		);
 
-		FloatCouponStream floatCouponStream = new FloatCouponStream (
+		FloatStreamMPoR floatCouponStream = new FloatStreamMPoR (
 			fixFloatComponent.derivedStream(),
 			fixFloatNotional
 		);
@@ -483,16 +483,17 @@ public class ShortFloatAggressiveTimeline
 				)
 			);
 
-			VariationMarginTradeTrajectoryEstimator marginTradeFlowTrajectory = VariationMarginTradeTrajectoryEstimator.Standard (
-				exposureDateArray,
-				currency,
-				floatCouponStream,
-				marketPath,
-				andersenPykhtinSokolLag
-			);
+			VariationMarginTradeTrajectoryEstimator marginTradeFlowTrajectory =
+				new VariationMarginTradeTrajectoryEstimator (
+					exposureDateArray,
+					currency,
+					floatCouponStream,
+					marketPath,
+					andersenPykhtinSokolLag
+				);
 
 			Map<Integer, VariationMarginTradeVertexExposure> mapMarginTradeFlowEntry =
-				marginTradeFlowTrajectory.variationMarginTradeExposureTrajectory();
+				marginTradeFlowTrajectory.trajectory();
 
 			for (int i = 0; i <= exposurePeriodCount; ++i)
 			{

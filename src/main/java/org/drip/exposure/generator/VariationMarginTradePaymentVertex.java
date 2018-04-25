@@ -1,5 +1,5 @@
 
-package org.drip.exposure.mpor;
+package org.drip.exposure.generator;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,7 +47,7 @@ package org.drip.exposure.mpor;
  */
 
 /**
- * VariationMarginTradeVertexGenerator exposes the Generation of the Estimated Variation Margin and the Trade
+ * VariationMarginTradePaymentVertex exposes the Generation of the Estimated Variation Margin and the Trade
  *  Payment at a Vertex off of the Realized Market Path. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
@@ -68,7 +68,7 @@ package org.drip.exposure.mpor;
  * @author Lakshmi Krishnamurthy
  */
 
-public interface VariationMarginTradeVertexGenerator
+public interface VariationMarginTradePaymentVertex
 {
 
 	/**
