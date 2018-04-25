@@ -1,5 +1,5 @@
 
-package org.drip.sample.streammpor;
+package org.drip.sample.mporstream;
 
 import java.util.Map;
 
@@ -83,8 +83,8 @@ import org.drip.state.identifier.OvernightLabel;
  */
 
 /**
- * ShortFixedConservativeTimeline displays the MPoR-related Exposure Metrics Suite for the given Short Fixed
- *  Coupon Stream on a Daily Grid using the "Conservative" CSA Timeline of Andersen, Pykhtin, and Sokol
+ * ShortFixedClassicalPlusTimeline displays the MPoR-related Exposure Metrics Suite for the given Short Fixed
+ *  Coupon Stream on a Daily Grid using the "Classical+" CSA Timeline Scheme of Andersen, Pykhtin, and Sokol
  *  (2017). The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
@@ -105,7 +105,7 @@ import org.drip.state.identifier.OvernightLabel;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ShortFixedConservativeTimeline
+public class ShortFixedClassicalPlusTimeline
 {
 
 	private static final FixFloatComponent OTCIRS (
@@ -418,7 +418,7 @@ public class ShortFixedConservativeTimeline
 			0.030 / (1 - 0.30) 	// dblCounterPartyFundingSpread
 		);
 
-		AndersenPykhtinSokolLag andersenPykhtinSokolLag = AndersenPykhtinSokolLag.Conservative();
+		AndersenPykhtinSokolLag andersenPykhtinSokolLag = AndersenPykhtinSokolLag.ClassicalPlus();
 
 		FixFloatComponent fixFloatComponent = OTCIRS (
 			spotDate,

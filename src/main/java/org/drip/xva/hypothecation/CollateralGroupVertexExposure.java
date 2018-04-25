@@ -70,24 +70,24 @@ package org.drip.xva.hypothecation;
 
 public class CollateralGroupVertexExposure
 {
-	private double _accrued = java.lang.Double.NaN;
-	private double _forward = java.lang.Double.NaN;
+	private double _tradePayment = java.lang.Double.NaN;
+	private double _variationMarginEstimate = java.lang.Double.NaN;
 
 	/**
-	 * Construct the Unaccrued CollateralGroupVertexExposure Instance
+	 * Construct the Variation Margin CollateralGroupVertexExposure Instance
 	 * 
-	 * @param forward The Unrealized Forward Exposure
+	 * @param variationMarginEstimate The Unrealized Variation Margin Forward Exposure Estimate
 	 * 
-	 * @return Unaccrued CollateralGroupVertexExposure Instance
+	 * @return Variation Margin CollateralGroupVertexExposure Instance
 	 */
 
-	public static final CollateralGroupVertexExposure Unaccrued (
-		final double forward)
+	public static final CollateralGroupVertexExposure VariationMarginOnly (
+		final double variationMarginEstimate)
 	{
 		try
 		{
 			return new CollateralGroupVertexExposure (
-				forward,
+				variationMarginEstimate,
 				0.
 			);
 		}
@@ -102,54 +102,54 @@ public class CollateralGroupVertexExposure
 	/**
 	 * CollateralGroupVertexExposure Constructor
 	 * 
-	 * @param forward The Unrealized Forward Exposure
-	 * @param accrued The Accrued Exposure
+	 * @param variationMarginEstimate The Unrealized Variation Margin Forward Exposure Estimate
+	 * @param tradePayment The Accrued Trade Payment Exposure
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CollateralGroupVertexExposure (
-		final double forward,
-		final double accrued)
+		final double variationMarginEstimate,
+		final double tradePayment)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_forward = forward) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_accrued = accrued))
+		if (!org.drip.quant.common.NumberUtil.IsValid (_variationMarginEstimate = variationMarginEstimate) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_tradePayment = tradePayment))
 		{
 			throw new java.lang.Exception ("CollateralGroupVertexExposure Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Unrealized Forward Exposure
+	 * Retrieve the Unrealized Variation Margin Forward Exposure
 	 * 
-	 * @return The Unrealized Forward Exposure
+	 * @return The Unrealized Variation Margin Forward Exposure
 	 */
 
-	public double forward()
+	public double variationMarginEstimate()
 	{
-		return _forward;
+		return _variationMarginEstimate;
 	}
 
 	/**
-	 * Retrieve the Accrued Exposure
+	 * Retrieve the Accrued Trade Payment Exposure
 	 * 
-	 * @return The Accrued Exposure
+	 * @return The Accrued Trade Payment Exposure
 	 */
 
-	public double accrued()
+	public double tradePayment()
 	{
-		return _accrued;
+		return _tradePayment;
 	}
 
 	/**
-	 * Retrieve the Gross Uncollateralized Exposure
+	 * Retrieve the Gross Uncollateralized Exposure Estimate
 	 * 
-	 * @return The Gross Uncollateralized Exposure
+	 * @return The Gross Uncollateralized Exposure Estimate
 	 */
 
 	public double uncollateralized()
 	{
-		return _forward + _accrued;
+		return _variationMarginEstimate + _tradePayment;
 	}
 }

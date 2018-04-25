@@ -100,7 +100,7 @@ public class BurgardKjaer extends org.drip.xva.hypothecation.CollateralGroupVert
 			anchorDate,
 			forward,
 			accrued,
-			burgardKjaerVertexExposure.collateralBalance()
+			burgardKjaerVertexExposure.variationMarginPosting()
 		);
 
 		if (null == (_burgardKjaerVertexExposure = burgardKjaerVertexExposure) ||

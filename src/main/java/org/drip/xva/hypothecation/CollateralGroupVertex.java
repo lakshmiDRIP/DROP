@@ -71,48 +71,48 @@ public abstract class CollateralGroupVertex
 	extends org.drip.xva.hypothecation.CollateralGroupVertexExposure
 	implements org.drip.xva.hypothecation.CollateralGroupVertexExposureComponent
 {
-	private double _collateralBalance = java.lang.Double.NaN;
-	private org.drip.analytics.date.JulianDate _anchorDate = null;
+	private org.drip.analytics.date.JulianDate _vertexDate = null;
+	private double _variationMarginPosting = java.lang.Double.NaN;
 
 	protected CollateralGroupVertex (
-		final org.drip.analytics.date.JulianDate anchorDate,
-		final double forward,
-		final double accrued,
-		final double collateralBalance)
+		final org.drip.analytics.date.JulianDate vertexDate,
+		final double variationMarginEstimate,
+		final double tradePayment,
+		final double variationMarginPosting)
 		throws java.lang.Exception
 	{
 		super (
-			forward,
-			accrued
+			variationMarginEstimate,
+			tradePayment
 		);
 
-		if (null == (_anchorDate = anchorDate) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_collateralBalance = collateralBalance))
+		if (null == (_vertexDate = vertexDate) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_variationMarginPosting = variationMarginPosting))
 		{
 			throw new java.lang.Exception ("CollateralGroupVertex Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Date Anchor
+	 * Retrieve the Vertex Date
 	 * 
-	 * @return The Date Anchor
+	 * @return The Vertex Date
 	 */
 
-	public org.drip.analytics.date.JulianDate anchor()
+	public org.drip.analytics.date.JulianDate vertexDate()
 	{
-		return _anchorDate;
+		return _vertexDate;
 	}
 
 	/**
-	 * Retrieve the Collateral Balance at the Path Vertex Time Node
+	 * Retrieve the Posted Variation Margin at the Path Vertex Time Node
 	 * 
-	 * @return The Collateral Balance at the Path Vertex Time Node
+	 * @return The Posted Variation Margin at the Path Vertex Time Node
 	 */
 
-	public double collateralBalance()
+	public double variationMarginPosting()
 	{
-		return _collateralBalance;
+		return _variationMarginPosting;
 	}
 
 	/**
@@ -123,6 +123,6 @@ public abstract class CollateralGroupVertex
 
 	public double collateralized()
 	{
-		return forward() + accrued() - _collateralBalance;
+		return variationMarginEstimate() + tradePayment() - _variationMarginPosting;
 	}
 }

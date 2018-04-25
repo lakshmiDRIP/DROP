@@ -1,5 +1,5 @@
 
-package org.drip.sample.streammpor;
+package org.drip.sample.mporstream;
 
 import java.util.Map;
 
@@ -11,7 +11,7 @@ import org.drip.exposure.evolver.EntityDynamicsContainer;
 import org.drip.exposure.evolver.PrimarySecurity;
 import org.drip.exposure.evolver.PrimarySecurityDynamicsContainer;
 import org.drip.exposure.evolver.TerminalLatentState;
-import org.drip.exposure.generator.FloatStreamMPoR;
+import org.drip.exposure.generator.FixedStreamMPoR;
 import org.drip.exposure.mpor.VariationMarginTradeVertexExposure;
 import org.drip.exposure.mpor.VariationMarginTradeTrajectoryEstimator;
 import org.drip.exposure.universe.MarketPath;
@@ -83,8 +83,8 @@ import org.drip.state.identifier.OvernightLabel;
  */
 
 /**
- * ShortFloatClassicalMinusTimeline displays the MPoR-related Exposure Metrics Suite for the given Short
- *  Float Coupon Stream on a Daily Grid using the "Classical-" CSA Timeline of Andersen, Pykhtin, and Sokol
+ * LongFixedAggressiveTimeline displays the MPoR-related Exposure Metrics Suite for the given Long Fixed
+ *  Coupon Stream on a Daily Grid using the "Aggressive" CSA Timeline Scheme of Andersen, Pykhtin, and Sokol
  *  (2017). The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
@@ -105,7 +105,7 @@ import org.drip.state.identifier.OvernightLabel;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ShortFloatClassicalMinusTimeline
+public class LongFixedAggressiveTimeline
 {
 
 	private static final FixFloatComponent OTCIRS (
@@ -139,8 +139,9 @@ public class ShortFloatClassicalMinusTimeline
 	{
 		String currency = "USD";
 
-		double liborDrift = 0.0;
-		double liborVolatility = 0.001;
+		double assetNumeraireDrift = 0.0;
+		double assetNumeraireVolatility = 0.25;
+		double assetNumeraireRepo = 0.0;
 
 		double overnightIndexNumeraireDrift = 0.0025;
 		double overnightIndexNumeraireVolatility = 0.0005;
@@ -180,11 +181,11 @@ public class ShortFloatClassicalMinusTimeline
 			),
 			new DiffusionEvolver (
 				DiffusionEvaluatorLinear.Standard (
-					liborDrift,
-					liborVolatility
+					assetNumeraireDrift,
+					assetNumeraireVolatility
 				)
 			),
-			0.
+			assetNumeraireRepo
 		);
 
 		PrimarySecurity tOvernightIndex = new PrimarySecurity (
@@ -374,8 +375,7 @@ public class ShortFloatClassicalMinusTimeline
 
 		int pathCount = 1000;
 		String exposurePeriodTenor = "1D";
-		int exposurePeriodCount = 390;
-		int vertexGenerationPeriodCount = exposurePeriodCount + 10;
+		int exposurePeriodCount = 380;
 		String currency = "USD";
 		String dealer = "NOM";
 		String client = "SSGA";
@@ -397,9 +397,9 @@ public class ShortFloatClassicalMinusTimeline
 		double fixFloatNotional = 1.e+06;
 
 		MarketVertexGenerator marketVertexGenerator = ConstructMarketVertexGenerator (
-			spotDate.subtractTenor ("1W"),
+			spotDate,
 			exposurePeriodTenor,
-			vertexGenerationPeriodCount,
+			exposurePeriodCount,
 			currency,
 			dealer,
 			client
@@ -407,7 +407,7 @@ public class ShortFloatClassicalMinusTimeline
 
 		MarketVertex initialMarketVertex = MarketVertex.StartUp (
 			spotDate,
-			0.020, 				// Initial LIBOR
+			0.000, 				// dblPortfolioValueInitial
 			1.000, 				// dblOvernightNumeraireInitial
 			1.000, 				// dblCSANumeraire
 			0.015, 				// dblBankHazardRate
@@ -418,7 +418,7 @@ public class ShortFloatClassicalMinusTimeline
 			0.030 / (1 - 0.30) 	// dblCounterPartyFundingSpread
 		);
 
-		AndersenPykhtinSokolLag andersenPykhtinSokolLag = AndersenPykhtinSokolLag.ClassicalMinus();
+		AndersenPykhtinSokolLag andersenPykhtinSokolLag = AndersenPykhtinSokolLag.Aggressive();
 
 		FixFloatComponent fixFloatComponent = OTCIRS (
 			spotDate,
@@ -427,15 +427,15 @@ public class ShortFloatClassicalMinusTimeline
 			fixFloatCoupon
 		);
 
-		FloatStreamMPoR floatCouponStream = new FloatStreamMPoR (
-			fixFloatComponent.derivedStream(),
+		FixedStreamMPoR fixedCouponStream = new FixedStreamMPoR (
+			fixFloatComponent.referenceStream(),
 			fixFloatNotional
 		);
 
 		CorrelatedPathVertexDimension correlatedPathVertexDimension = new CorrelatedPathVertexDimension (
 			new RandomNumberGenerator(),
 			correlationMatrix,
-			vertexGenerationPeriodCount,
+			exposurePeriodCount,
 			1,
 			true,
 			null
@@ -487,7 +487,7 @@ public class ShortFloatClassicalMinusTimeline
 				new VariationMarginTradeTrajectoryEstimator (
 					exposureDateArray,
 					currency,
-					floatCouponStream,
+					fixedCouponStream,
 					marketPath,
 					andersenPykhtinSokolLag
 				);

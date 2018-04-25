@@ -1,5 +1,5 @@
 
-package org.drip.sample.streammpor;
+package org.drip.sample.mporstream;
 
 import java.util.Map;
 
@@ -83,8 +83,8 @@ import org.drip.state.identifier.OvernightLabel;
  */
 
 /**
- * LongFixedAggressiveTimeline displays the MPoR-related Exposure Metrics Suite for the given Long Fixed
- *  Coupon Stream on a Daily Grid using the "Aggressive" CSA Timeline Scheme of Andersen, Pykhtin, and Sokol
+ * LongFixedClassicalMinusTimeline displays the MPoR-related Exposure Metrics Suite for the given Long Fixed
+ *  Coupon Stream on a Daily Grid using the "Classical-" CSA Timeline Scheme of Andersen, Pykhtin, and Sokol
  *  (2017). The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
@@ -105,7 +105,7 @@ import org.drip.state.identifier.OvernightLabel;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LongFixedAggressiveTimeline
+public class LongFixedClassicalMinusTimeline
 {
 
 	private static final FixFloatComponent OTCIRS (
@@ -373,7 +373,7 @@ public class LongFixedAggressiveTimeline
 			19
 		);
 
-		int pathCount = 1000;
+		int pathCount = 1;
 		String exposurePeriodTenor = "1D";
 		int exposurePeriodCount = 380;
 		String currency = "USD";
@@ -418,7 +418,7 @@ public class LongFixedAggressiveTimeline
 			0.030 / (1 - 0.30) 	// dblCounterPartyFundingSpread
 		);
 
-		AndersenPykhtinSokolLag andersenPykhtinSokolLag = AndersenPykhtinSokolLag.Aggressive();
+		AndersenPykhtinSokolLag andersenPykhtinSokolLag = AndersenPykhtinSokolLag.ClassicalMinus();
 
 		FixFloatComponent fixFloatComponent = OTCIRS (
 			spotDate,
@@ -483,14 +483,13 @@ public class LongFixedAggressiveTimeline
 				)
 			);
 
-			VariationMarginTradeTrajectoryEstimator marginTradeFlowTrajectory =
-				new VariationMarginTradeTrajectoryEstimator (
-					exposureDateArray,
-					currency,
-					fixedCouponStream,
-					marketPath,
-					andersenPykhtinSokolLag
-				);
+			VariationMarginTradeTrajectoryEstimator marginTradeFlowTrajectory = new VariationMarginTradeTrajectoryEstimator (
+				exposureDateArray,
+				currency,
+				fixedCouponStream,
+				marketPath,
+				andersenPykhtinSokolLag
+			);
 
 			Map<Integer, VariationMarginTradeVertexExposure> mapMarginTradeFlowEntry =
 				marginTradeFlowTrajectory.trajectory();

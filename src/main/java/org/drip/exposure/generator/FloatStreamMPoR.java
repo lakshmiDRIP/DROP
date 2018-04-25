@@ -113,13 +113,14 @@ public class FloatStreamMPoR  extends org.drip.exposure.generator.StreamMPoR
 				continue;
 			}
 
-			org.drip.analytics.cashflow.ComposableUnitFloatingPeriod composableUnitFloatingPeriod =
-				(org.drip.analytics.cashflow.ComposableUnitFloatingPeriod) period.periods().get (0);
+			/* org.drip.analytics.cashflow.ComposableUnitFloatingPeriod composableUnitFloatingPeriod =
+				(org.drip.analytics.cashflow.ComposableUnitFloatingPeriod) period.periods().get (0); */
 
 			variationMarginEstimate += period.couponDCF() *
 				period.notional (periodEndDate) *
-				marketPath.marketVertex
-					(composableUnitFloatingPeriod.referenceIndexPeriod().fixingDate()).positionManifestValue() *
+				marketPath.marketVertex (period.startDate()).positionManifestValue() *
+				/* marketPath.marketVertex
+					(composableUnitFloatingPeriod.referenceIndexPeriod().fixingDate()).positionManifestValue() * */
 				period.couponFactor (periodEndDate) *
 				overnightReplicatorForward /
 				marketPath.marketVertex (period.payDate()).overnightReplicator();
@@ -147,16 +148,17 @@ public class FloatStreamMPoR  extends org.drip.exposure.generator.StreamMPoR
 			{
 				int periodEndDate = period.endDate();
 
-				org.drip.analytics.cashflow.ComposableUnitFloatingPeriod composableUnitFloatingPeriod =
-					(org.drip.analytics.cashflow.ComposableUnitFloatingPeriod) period.periods().get (0);
+				/* org.drip.analytics.cashflow.ComposableUnitFloatingPeriod composableUnitFloatingPeriod =
+					(org.drip.analytics.cashflow.ComposableUnitFloatingPeriod) period.periods().get (0); */
 
 				try
 				{
 					return org.drip.exposure.mpor.TradePayment.Standard (
 						notional() * period.couponDCF() *
 						period.notional (periodEndDate) *
-						marketPath.marketVertex
-							(composableUnitFloatingPeriod.referenceIndexPeriod().fixingDate()).positionManifestValue() *
+						marketPath.marketVertex (period.startDate()).positionManifestValue() *
+						/* marketPath.marketVertex
+							(composableUnitFloatingPeriod.referenceIndexPeriod().fixingDate()).positionManifestValue() * */
 						period.couponFactor (periodEndDate) *
 						overnightReplicatorForward /
 						marketPath.marketVertex (period.payDate()).overnightReplicator()

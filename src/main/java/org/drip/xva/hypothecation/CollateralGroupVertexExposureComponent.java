@@ -96,10 +96,10 @@ public interface CollateralGroupVertexExposureComponent
 	public abstract double funding();
 
 	/**
-	 * Retrieve the Collateral Balance of the Collateral Group
+	 * Retrieve the Posted Variation Margin of the Collateral Group
 	 * 
-	 * @return The Collateral Balance
+	 * @return The Posted Variation Margin Balance
 	 */
 
-	public abstract double collateralBalance();
+	public abstract double variationMarginPosting();
 }

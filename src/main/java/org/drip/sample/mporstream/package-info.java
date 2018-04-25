@@ -3,4 +3,4 @@
  * CSA Enforced Stream Path MPoR
  */
 
-package org.drip.sample.streammpor;
+package org.drip.sample.mporstream;

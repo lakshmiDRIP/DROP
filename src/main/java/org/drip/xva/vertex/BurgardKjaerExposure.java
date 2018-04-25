@@ -154,7 +154,7 @@ public class BurgardKjaerExposure implements org.drip.xva.hypothecation.Collater
 		return _funding;
 	}
 
-	@Override public double collateralBalance()
+	@Override public double variationMarginPosting()
 	{
 		return _collateralBalance;
 	}

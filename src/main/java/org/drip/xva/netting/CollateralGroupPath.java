@@ -110,8 +110,8 @@ public class CollateralGroupPath
 				throw new java.lang.Exception ("CollateralGroupPath Constructor => Invalid Inputs");
 			}
 
-			if (0 != vertexIndex && _collateralGroupVertexArray[vertexIndex - 1].anchor().julian() >=
-				_collateralGroupVertexArray[vertexIndex].anchor().julian())
+			if (0 != vertexIndex && _collateralGroupVertexArray[vertexIndex - 1].vertexDate().julian() >=
+				_collateralGroupVertexArray[vertexIndex].vertexDate().julian())
 			{
 				throw new java.lang.Exception ("CollateralGroupPath Constructor => Invalid Inputs");
 			}
@@ -154,7 +154,7 @@ public class CollateralGroupPath
 
 		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 		{
-			vertexDateArray[vertexIndex] = _collateralGroupVertexArray[vertexIndex].anchor();
+			vertexDateArray[vertexIndex] = _collateralGroupVertexArray[vertexIndex].vertexDate();
 		}
 
 		return vertexDateArray;
@@ -386,7 +386,7 @@ public class CollateralGroupPath
 		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 		{
 			collateralizedBalance[vertexIndex] =
-				_collateralGroupVertexArray[vertexIndex].collateralBalance();
+				_collateralGroupVertexArray[vertexIndex].variationMarginPosting();
 		}
 
 		return collateralizedBalance;
@@ -408,7 +408,7 @@ public class CollateralGroupPath
 		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 		{
 			collateralizedBalancePV[vertexIndex] =
-				_collateralGroupVertexArray[vertexIndex].collateralBalance() * _overnightReplicatorStart /
+				_collateralGroupVertexArray[vertexIndex].variationMarginPosting() * _overnightReplicatorStart /
 				_marketPath.marketVertex (vertexDateArray[vertexIndex].julian()).overnightReplicator();
 		}
 

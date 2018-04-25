@@ -1,5 +1,5 @@
 
-package org.drip.sample.streammpor;
+package org.drip.sample.mporstream;
 
 import java.util.Map;
 
@@ -83,9 +83,9 @@ import org.drip.state.identifier.OvernightLabel;
  */
 
 /**
- * LongFixedConservativeTimeline displays the MPoR-related Exposure Metrics Suite for the given Long Fixed
- *  Coupon Stream on a Daily Grid using the "Conservative" CSA Timeline Scheme of Andersen, Pykhtin, and
- *   Sokol (2017). The References are:
+ * ShortFixedConservativeTimeline displays the MPoR-related Exposure Metrics Suite for the given Short Fixed
+ *  Coupon Stream on a Daily Grid using the "Conservative" CSA Timeline of Andersen, Pykhtin, and Sokol
+ *  (2017). The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
@@ -105,7 +105,7 @@ import org.drip.state.identifier.OvernightLabel;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LongFixedConservativeTimeline
+public class ShortFixedConservativeTimeline
 {
 
 	private static final FixFloatComponent OTCIRS (
@@ -394,7 +394,7 @@ public class LongFixedConservativeTimeline
 		};
 		String fixFloatMaturityTenor = "1Y";
 		double fixFloatCoupon = 0.03;
-		double fixFloatNotional = 1.e+06;
+		double fixFloatNotional = -1.e+06;
 
 		MarketVertexGenerator marketVertexGenerator = ConstructMarketVertexGenerator (
 			spotDate,

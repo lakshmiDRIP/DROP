@@ -134,7 +134,7 @@ public class BurgardKjaerBuilder
 			clientSurvival * incrementalDealerSurvival * burgardKjaerVertexExposure.debt() +
 			clientSurvival * incrementalDealerSurvival * fundingExposure -
 			dealerSurvival * clientSurvival * marketVertex.csaSpread() *
-				burgardKjaerVertexExposure.collateralBalance();
+				burgardKjaerVertexExposure.variationMarginPosting();
 
 		try
 		{
@@ -219,14 +219,14 @@ public class BurgardKjaerBuilder
 			clientSurvivalFinish * incrementalDealerSurvival * burgardKjaerVertexExposure.debt() +
 			clientSurvivalFinish * incrementalDealerSurvival * fundingExposure -
 			dealerSurvivalFinish * clientSurvivalFinish * marketVertexFinish.csaSpread() *
-				burgardKjaerVertexExposure.collateralBalance();
+				burgardKjaerVertexExposure.variationMarginPosting();
 
 		try
 		{
 			return new org.drip.xva.vertex.BurgardKjaer (
 				anchorDate,
-				collateralGroupVertexExposure.forward(),
-				collateralGroupVertexExposure.accrued(),
+				collateralGroupVertexExposure.variationMarginEstimate(),
+				collateralGroupVertexExposure.tradePayment(),
 				burgardKjaerVertexExposure,
 				collateralGroupVertexCloseOut,
 				new org.drip.xva.derivative.ReplicationPortfolioVertexDealer (

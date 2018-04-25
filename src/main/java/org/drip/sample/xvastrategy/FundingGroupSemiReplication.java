@@ -289,10 +289,10 @@ public class FundingGroupSemiReplication {
 				"\t| " + adtVertex[i] + " => " +
 				FormatUtil.FormatDouble (aBKV1[i].collateralized(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (aBKV1[i].uncollateralized(), 1, 6, 1.) + " | " +
-				FormatUtil.FormatDouble (aBKV1[i].collateralBalance(), 1, 6, 1.) + " | " +
+				FormatUtil.FormatDouble (aBKV1[i].variationMarginPosting(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (aBKV2[i].collateralized(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (aBKV2[i].uncollateralized(), 1, 6, 1.) + " | " +
-				FormatUtil.FormatDouble (aBKV2[i].collateralBalance(), 1, 6, 1.) + " | " +
+				FormatUtil.FormatDouble (aBKV2[i].variationMarginPosting(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (aMV[i].overnightRate(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (aMV[i].dealer().survivalProbability(), 1, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (aMV[i].dealer().seniorRecoveryRate(), 1, 6, 1.) + " | " +

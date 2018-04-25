@@ -1,5 +1,5 @@
 
-package org.drip.sample.streammpor;
+package org.drip.sample.mporfixfloat;
 
 import java.util.Map;
 
@@ -11,9 +11,9 @@ import org.drip.exposure.evolver.EntityDynamicsContainer;
 import org.drip.exposure.evolver.PrimarySecurity;
 import org.drip.exposure.evolver.PrimarySecurityDynamicsContainer;
 import org.drip.exposure.evolver.TerminalLatentState;
-import org.drip.exposure.generator.FloatStreamMPoR;
-import org.drip.exposure.mpor.VariationMarginTradeVertexExposure;
+import org.drip.exposure.generator.FixFloatMPoR;
 import org.drip.exposure.mpor.VariationMarginTradeTrajectoryEstimator;
+import org.drip.exposure.mpor.VariationMarginTradeVertexExposure;
 import org.drip.exposure.universe.MarketPath;
 import org.drip.exposure.universe.MarketVertex;
 import org.drip.exposure.universe.MarketVertexGenerator;
@@ -83,8 +83,8 @@ import org.drip.state.identifier.OvernightLabel;
  */
 
 /**
- * ShortFloatConservativeTimeline displays the MPoR-related Exposure Metrics Suite for the given Short Float
- *  Coupon Stream on a Daily Grid using the "Conservative" CSA Timeline of Andersen, Pykhtin, and Sokol
+ * OTCReceiverConservativeTimeline displays the MPoR-related Exposure Metrics Suite for the given OTC
+ *  Receiver Swap on a Daily Grid using the "Conservative" CSA Timeline of Andersen, Pykhtin, and Sokol
  *  (2017). The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
@@ -105,7 +105,7 @@ import org.drip.state.identifier.OvernightLabel;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ShortFloatConservativeTimeline
+public class OTCReceiverConservativeTimeline
 {
 
 	private static final FixFloatComponent OTCIRS (
@@ -393,7 +393,7 @@ public class ShortFloatConservativeTimeline
 			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00}  // #10 COUNTER PARTY RECOVERY RATE
 		};
 		String fixFloatMaturityTenor = "1Y";
-		double fixFloatCoupon = 0.03;
+		double fixFloatCoupon = 0.02;
 		double fixFloatNotional = 1.e+06;
 
 		MarketVertexGenerator marketVertexGenerator = ConstructMarketVertexGenerator (
@@ -427,8 +427,8 @@ public class ShortFloatConservativeTimeline
 			fixFloatCoupon
 		);
 
-		FloatStreamMPoR floatCouponStream = new FloatStreamMPoR (
-			fixFloatComponent.derivedStream(),
+		FixFloatMPoR fixFloatMPoR = new FixFloatMPoR (
+			fixFloatComponent,
 			fixFloatNotional
 		);
 
@@ -487,7 +487,7 @@ public class ShortFloatConservativeTimeline
 				new VariationMarginTradeTrajectoryEstimator (
 					exposureDateArray,
 					currency,
-					floatCouponStream,
+					fixFloatMPoR,
 					marketPath,
 					andersenPykhtinSokolLag
 				);
