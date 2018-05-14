@@ -70,109 +70,392 @@ package org.drip.exposure.universe;
 
 public class MarketVertexGenerator
 {
-
-	/**
-	 * Asset Numeraire Wanderer Index
-	 */
-
-	public static final int ASSET = 0;
-
-	/**
-	 * Overnight Index Policy Numeraire Wanderer Index
-	 */
-
-	public static final int OVERNIGHT_INDEX = 1;
-
-	/**
-	 * Collateral Scheme Numeraire Wanderer Index
-	 */
-
-	public static final int COLLATERAL_SCHEME = 2;
-
-	/**
-	 * Dealer Hazard Rate Wanderer Index
-	 */
-
-	public static final int BANK_HAZARD_RATE = 3;
-
-	/**
-	 * Dealer Senior Funding Wanderer Index
-	 */
-
-	public static final int DEALER_SENIOR_FUNDING = 4;
-
-	/**
-	 * Dealer Senior Recovery Rate Wanderer Index
-	 */
-
-	public static final int DEALER_SENIOR_RECOVERY_RATE = 5;
-
-	/**
-	 * Dealer Subordinate Funding Wanderer Index
-	 */
-
-	public static final int DEALER_SUBORDINATE_FUNDING = 6;
-
-	/**
-	 * Dealer Subordinate Recovery Rate Wanderer Index
-	 */
-
-	public static final int DEALER_SUBORDINATE_RECOVERY_RATE = 7;
-
-	/**
-	 * Client Hazard Rate Wanderer Index
-	 */
-
-	public static final int CLIENT_HAZARD_RATE = 8;
-
-	/**
-	 * Client Funding Wanderer Index
-	 */
-
-	public static final int CLIENT_FUNDING = 9;
-
-	/**
-	 * Client Recovery Rate Wanderer Index
-	 */
-
-	public static final int CLIENT_RECOVERY_RATE = 10;
-
 	private int _spotDate = -1;
 	private double[] _ycfWidth = null;
 	private int[] _eventDateArray = null;
-	private org.drip.exposure.evolver.EntityDynamicsContainer _entityLatentStateEvolver = null;
-	private org.drip.exposure.evolver.PrimarySecurityDynamicsContainer _tradeablesContainer = null;
+	private org.drip.exposure.evolver.EntityDynamicsContainer _entityDynamicsContainer = null;
+	private org.drip.exposure.evolver.LatentStateDynamicsContainer _latentStateDynamicsContainer = null;
+	private org.drip.exposure.evolver.PrimarySecurityDynamicsContainer _primarySecurityDynamicsContainer =
+		null;
 
-	/**
-	 * Construct a MarketVertexGenerator Instance from the Spot Date, the Period Tenor, and the Period Count
-	 * 
-	 * @param spotDate The Spot Date
-	 * @param periodTenor The Period Tenor
-	 * @param periodCount The Period Count
-	 * @param tradeablesContainer The Tradeables Container Instance
-	 * @param entityLatentStateEvolver The Dealer/Client Entity Latent State Evolver
-	 * 
-	 * @return The MarketVertexGenerator Instance from the Spot Date, the Period Tenor, and the Period Count
-	 */
+	private org.drip.measure.process.DiffusionEvolver evolver (
+		final org.drip.state.identifier.LatentStateLabel latentStateLabel)
+	{
+		org.drip.exposure.evolver.TerminalLatentState terminalLatentState =
+			_latentStateDynamicsContainer.terminal (latentStateLabel);
 
-	public static final MarketVertexGenerator PeriodHorizon (
-		final int spotDate,
-		final java.lang.String periodTenor,
-		final int periodCount,
-		final org.drip.exposure.evolver.PrimarySecurityDynamicsContainer tradeablesContainer,
-		final org.drip.exposure.evolver.EntityDynamicsContainer entityLatentStateEvolver)
+		if (null == terminalLatentState)
+		{
+			terminalLatentState = _latentStateDynamicsContainer.terminal (latentStateLabel);
+		}
+
+		return null == terminalLatentState ? null : terminalLatentState.evolver();
+	}
+
+	private java.util.List<org.drip.measure.realization.JumpDiffusionVertex[]> latentStateVertexArrayList (
+		final java.util.List<org.drip.state.identifier.LatentStateLabel> latentStateLabelList,
+		final org.drip.exposure.universe.MarketVertex initialMarketVertex,
+		final org.drip.exposure.universe.LatentStateWeiner latentStateWeiner,
+		final int terminalDate)
+	{
+		if (null == latentStateLabelList)
+		{
+			return null;
+		}
+
+		java.util.List<org.drip.measure.realization.JumpDiffusionVertex[]> latentStateVertexArrayList = new
+			java.util.ArrayList<org.drip.measure.realization.JumpDiffusionVertex[]>();
+
+		for (org.drip.state.identifier.LatentStateLabel latentStateLabel : latentStateLabelList)
+		{
+			org.drip.measure.process.DiffusionEvolver latentStateDiffusionEvolver = evolver
+				(latentStateLabel);
+
+			if (null == latentStateDiffusionEvolver)
+			{
+				continue;
+			}
+
+			try
+			{
+				latentStateVertexArrayList.add (
+					latentStateDiffusionEvolver.vertexSequence (
+						new org.drip.measure.realization.JumpDiffusionVertex (
+							terminalDate,
+							initialMarketVertex.latentStateValue (latentStateLabel),
+							0.,
+							false
+						),
+						org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
+							_ycfWidth,
+							latentStateWeiner.incrementArray (latentStateLabel)
+						),
+						_ycfWidth
+					)
+				);
+			}
+			catch (java.lang.Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+
+		return latentStateVertexArrayList;
+	}
+
+	private org.drip.measure.realization.JumpDiffusionVertex[] overnightReplicatorVertexArray (
+		final org.drip.exposure.universe.MarketVertex initialMarketVertex,
+		final org.drip.exposure.universe.LatentStateWeiner latentStateWeiner,
+		final int terminalDate)
+	{
+		org.drip.exposure.evolver.PrimarySecurity overnightReplicator =
+			_primarySecurityDynamicsContainer.overnight();
+
+		try
+		{
+			return overnightReplicator.evolver().vertexSequenceReverse (
+				new org.drip.measure.realization.JumpDiffusionVertex (
+					terminalDate,
+					initialMarketVertex.overnightReplicator(),
+					0.,
+					false
+				),
+				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
+					_ycfWidth,
+					latentStateWeiner.incrementArray (overnightReplicator.label())
+				),
+				_ycfWidth
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	private org.drip.measure.realization.JumpDiffusionVertex[] csaReplicatorVertexArray (
+		final org.drip.exposure.universe.MarketVertex initialMarketVertex,
+		final org.drip.exposure.universe.LatentStateWeiner latentStateWeiner,
+		final int terminalDate)
+	{
+		org.drip.exposure.evolver.PrimarySecurity csaReplicator = _primarySecurityDynamicsContainer.csa();
+
+		try
+		{
+			return csaReplicator.evolver().vertexSequenceReverse (
+				new org.drip.measure.realization.JumpDiffusionVertex (
+					terminalDate,
+					initialMarketVertex.csaReplicator(),
+					0.,
+					false
+				),
+				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
+					_ycfWidth,
+					latentStateWeiner.incrementArray (csaReplicator.label())
+				),
+				_ycfWidth
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	private org.drip.measure.realization.JumpDiffusionVertex[] dealerSeniorFundingReplicatorVertexArray (
+		final org.drip.exposure.universe.MarketVertex initialMarketVertex,
+		final org.drip.exposure.universe.LatentStateWeiner latentStateWeiner,
+		final int terminalDate)
+	{
+		org.drip.exposure.evolver.PrimarySecurity dealerSeniorFundingReplicator =
+			_primarySecurityDynamicsContainer.dealerSeniorFunding();
+
+		try
+		{
+			return dealerSeniorFundingReplicator.evolver().vertexSequenceReverse (
+				new org.drip.measure.realization.JumpDiffusionVertex (
+					terminalDate,
+					initialMarketVertex.dealer().seniorFundingReplicator(),
+					0.,
+					false
+				),
+				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
+					_ycfWidth,
+					latentStateWeiner.incrementArray (dealerSeniorFundingReplicator.label())
+				),
+				_ycfWidth
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	private org.drip.measure.realization.JumpDiffusionVertex[]
+		dealerSubordinateFundingReplicatorVertexArray (
+			final org.drip.exposure.universe.MarketVertex initialMarketVertex,
+			final org.drip.exposure.universe.LatentStateWeiner latentStateWeiner,
+			final int terminalDate)
+	{
+		org.drip.exposure.evolver.PrimarySecurity dealerSubordinateFundingReplicator =
+			_primarySecurityDynamicsContainer.dealerSubordinateFunding();
+
+		double initialDealerSubordinateFundingReplicator =
+			initialMarketVertex.dealer().subordinateFundingReplicator();
+
+		if (null == dealerSubordinateFundingReplicator ||
+			!org.drip.quant.common.NumberUtil.IsValid (initialDealerSubordinateFundingReplicator))
+		{
+			return null;
+		}
+
+		try
+		{
+			return dealerSubordinateFundingReplicator.evolver().vertexSequenceReverse (
+				new org.drip.measure.realization.JumpDiffusionVertex (
+					terminalDate,
+					initialDealerSubordinateFundingReplicator,
+					0.,
+					false
+				),
+				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
+					_ycfWidth,
+					latentStateWeiner.incrementArray (dealerSubordinateFundingReplicator.label())
+				),
+				_ycfWidth
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	private org.drip.measure.realization.JumpDiffusionVertex[] clientFundingReplicatorVertexArray (
+		final org.drip.exposure.universe.MarketVertex initialMarketVertex,
+		final org.drip.exposure.universe.LatentStateWeiner latentStateWeiner,
+		final int terminalDate)
+	{
+		org.drip.exposure.evolver.PrimarySecurity clientFundingReplicator =
+			_primarySecurityDynamicsContainer.clientFunding();
+
+		try
+		{
+			return clientFundingReplicator.evolver().vertexSequenceReverse (
+				new org.drip.measure.realization.JumpDiffusionVertex (
+					terminalDate,
+					initialMarketVertex.client().seniorFundingReplicator(),
+					0.,
+					false
+				),
+				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
+					_ycfWidth,
+					latentStateWeiner.incrementArray (clientFundingReplicator.label())
+				),
+				_ycfWidth
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	private org.drip.measure.realization.JumpDiffusionVertex[] dealerHazardVertexArray (
+		final org.drip.exposure.universe.MarketVertex initialMarketVertex,
+		final org.drip.exposure.universe.LatentStateWeiner latentStateWeiner,
+		final int terminalDate)
 	{
 		try
 		{
-			return new MarketVertexGenerator (
-				spotDate,
-				org.drip.analytics.support.VertexDateBuilder.SpotDatePeriodTenor (
-					spotDate,
-					periodTenor,
-					periodCount
+			return _entityDynamicsContainer.dealerHazardRateEvolver().vertexSequence (
+				new org.drip.measure.realization.JumpDiffusionVertex (
+					terminalDate,
+					initialMarketVertex.dealer().hazardRate(),
+					0.,
+					false
 				),
-				tradeablesContainer,
-				entityLatentStateEvolver
+				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
+					_ycfWidth,
+					latentStateWeiner.incrementArray (_entityDynamicsContainer.dealerHazardLabel())
+				),
+				_ycfWidth
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	private org.drip.measure.realization.JumpDiffusionVertex[] clientHazardVertexArray (
+		final org.drip.exposure.universe.MarketVertex initialMarketVertex,
+		final org.drip.exposure.universe.LatentStateWeiner latentStateWeiner,
+		final int terminalDate)
+	{
+		try
+		{
+			return _entityDynamicsContainer.clientHazardRateEvolver().vertexSequence (
+				new org.drip.measure.realization.JumpDiffusionVertex (
+					terminalDate,
+					initialMarketVertex.client().hazardRate(),
+					0.,
+					false
+				),
+				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
+					_ycfWidth,
+					latentStateWeiner.incrementArray (_entityDynamicsContainer.clientHazardLabel())
+				),
+				_ycfWidth
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	private org.drip.measure.realization.JumpDiffusionVertex[] dealerSeniorRecoveryVertexArray (
+		final org.drip.exposure.universe.MarketVertex initialMarketVertex,
+		final org.drip.exposure.universe.LatentStateWeiner latentStateWeiner,
+		final int terminalDate)
+	{
+		try
+		{
+			return _entityDynamicsContainer.dealerSeniorRecoveryRateEvolver().vertexSequence (
+				new org.drip.measure.realization.JumpDiffusionVertex (
+					terminalDate,
+					initialMarketVertex.dealer().seniorRecoveryRate(),
+					0.,
+					false
+				),
+				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
+					_ycfWidth,
+					latentStateWeiner.incrementArray (_entityDynamicsContainer.dealerSeniorRecoveryLabel())
+				),
+				_ycfWidth
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	private org.drip.measure.realization.JumpDiffusionVertex[] dealerSubordinateRecoveryVertexArray (
+		final org.drip.exposure.universe.MarketVertex initialMarketVertex,
+		final org.drip.exposure.universe.LatentStateWeiner latentStateWeiner,
+		final int terminalDate)
+	{
+		org.drip.measure.process.DiffusionEvolver dealerSubordinateRecoveryRateEvolver =
+			_entityDynamicsContainer.dealerSubordinateRecoveryRateEvolver();
+
+		if (null == dealerSubordinateRecoveryRateEvolver)
+		{
+			return null;
+		}
+
+		try
+		{
+			return dealerSubordinateRecoveryRateEvolver.vertexSequence (
+				new org.drip.measure.realization.JumpDiffusionVertex (
+					terminalDate,
+					initialMarketVertex.dealer().subordinateRecoveryRate(),
+					0.,
+					false
+				),
+				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
+					_ycfWidth,
+					latentStateWeiner.incrementArray
+						(_entityDynamicsContainer.dealerSubordinateRecoveryLabel())
+				),
+				_ycfWidth
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	private org.drip.measure.realization.JumpDiffusionVertex[] clientRecoveryVertexArray (
+		final org.drip.exposure.universe.MarketVertex initialMarketVertex,
+		final org.drip.exposure.universe.LatentStateWeiner latentStateWeiner,
+		final int terminalDate)
+	{
+		try
+		{
+			return _entityDynamicsContainer.clientRecoveryRateEvolver().vertexSequence (
+				new org.drip.measure.realization.JumpDiffusionVertex (
+					terminalDate,
+					initialMarketVertex.client().seniorRecoveryRate(),
+					0.,
+					false
+				),
+				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
+					_ycfWidth,
+					latentStateWeiner.incrementArray (_entityDynamicsContainer.clientRecoveryLabel())
+				),
+				_ycfWidth
 			);
 		}
 		catch (java.lang.Exception e)
@@ -188,8 +471,9 @@ public class MarketVertexGenerator
 	 * 
 	 * @param spotDate The Spot Date
 	 * @param eventDateArray Array of the Event Dates
-	 * @param tradeablesContainer The Tradeables Container Instance
-	 * @param entityLatentStateEvolver The Dealer/Client Entity Latent State Evolver
+	 * @param entityDynamicsContainer The Dealer/Client Entity Latent State Dynamics Container
+	 * @param primarySecurityDynamicsContainer The Primary Security Dynamics Container
+	 * @param latentStateDynamicsContainer The Latent State Dynamics Container
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -197,19 +481,21 @@ public class MarketVertexGenerator
 	public MarketVertexGenerator (
 		final int spotDate,
 		final int[] eventDateArray,
-		final org.drip.exposure.evolver.PrimarySecurityDynamicsContainer tradeablesContainer,
-		final org.drip.exposure.evolver.EntityDynamicsContainer entityLatentStateEvolver)
+		final org.drip.exposure.evolver.EntityDynamicsContainer entityDynamicsContainer,
+		final org.drip.exposure.evolver.PrimarySecurityDynamicsContainer primarySecurityDynamicsContainer,
+		final org.drip.exposure.evolver.LatentStateDynamicsContainer latentStateDynamicsContainer)
 		throws java.lang.Exception
 	{
 		if (0 >= (_spotDate = spotDate) ||
 			null == (_eventDateArray = eventDateArray) ||
-			null == (_tradeablesContainer = tradeablesContainer) ||
-			null == (_entityLatentStateEvolver = entityLatentStateEvolver))
+			null == (_entityDynamicsContainer = entityDynamicsContainer))
 		{
 			throw new java.lang.Exception ("MarketVertexGenerator Constructor => Invalid Inputs");
 		}
 
 		int eventVertexCount = _eventDateArray.length;
+		_latentStateDynamicsContainer = latentStateDynamicsContainer;
+		_primarySecurityDynamicsContainer = primarySecurityDynamicsContainer;
 		_ycfWidth = 0 == eventVertexCount ? null : new double[eventVertexCount];
 
 		if (0 == eventVertexCount ||
@@ -240,14 +526,47 @@ public class MarketVertexGenerator
 	}
 
 	/**
-	 * Retrieve the Entity Latent State Evolver
+	 * Retrieve the Time Width Array
 	 * 
-	 * @return The Entity Latent State Evolver
+	 * @return The Time Width Array
 	 */
 
-	public org.drip.exposure.evolver.EntityDynamicsContainer entityLatentStateEvolver()
+	public double[] timeWidth()
 	{
-		return _entityLatentStateEvolver;
+		return _ycfWidth;
+	}
+
+	/**
+	 * Retrieve the Entity Dynamics Container
+	 * 
+	 * @return The Entity Dynamics Container
+	 */
+
+	public org.drip.exposure.evolver.EntityDynamicsContainer entityDynamicsContainer()
+	{
+		return _entityDynamicsContainer;
+	}
+
+	/**
+	 * Retrieve the Primary Security Dynamics Container
+	 * 
+	 * @return The Primary Security Dynamics Container
+	 */
+
+	public org.drip.exposure.evolver.PrimarySecurityDynamicsContainer primarySecurityDynamicsContainer()
+	{
+		return _primarySecurityDynamicsContainer;
+	}
+
+	/**
+	 * Retrieve the Latent State Dynamics Container
+	 * 
+	 * @return The Latent State Dynamics Container
+	 */
+
+	public org.drip.exposure.evolver.LatentStateDynamicsContainer latentStateDynamicsContainer()
+	{
+		return _latentStateDynamicsContainer;
 	}
 
 	/**
@@ -269,350 +588,249 @@ public class MarketVertexGenerator
 	}
 
 	/**
-	 * Retrieve the Time Width Array
-	 * 
-	 * @return The Time Width Array
-	 */
-
-	public double[] timeWidth()
-	{
-		return _ycfWidth;
-	}
-
-	/**
-	 * Generated the Date Map of the Simulated Market Vertexes
+	 * Generate the Trajectory of the Simulated Market Vertexes
 	 * 
 	 * @param initialMarketVertex The Initial Market Vertex
 	 * @param unitEvolverSequence Dual Array of Unit Evolver Sequence
 	 * 
-	 * @return The Date Map of the Simulated Market Vertexes
+	 * @return The Trajectory of the Simulated Market Vertexes
 	 */
 
 	public java.util.Map<java.lang.Integer, org.drip.exposure.universe.MarketVertex> marketVertex (
 		final org.drip.exposure.universe.MarketVertex initialMarketVertex,
-		final double[][] unitEvolverSequence)
+		final org.drip.exposure.universe.LatentStateWeiner latentStateWeiner)
 	{
-		if (null == initialMarketVertex || null == unitEvolverSequence)
+		if (null == initialMarketVertex ||
+			null == latentStateWeiner)
 		{
 			return null;
 		}
 
-		int dimensionCount = unitEvolverSequence.length;
+		int latentStateCount = latentStateWeiner.stateCount();
 
-		if (11 != dimensionCount)
+		if (7 > latentStateCount)
 		{
 			return null;
 		}
 
-		org.drip.exposure.evolver.PrimarySecurity positionManifest = _tradeablesContainer.position();
+		org.drip.exposure.evolver.LatentStateVertexContainer latentStateVertexContainerInitial =
+			initialMarketVertex.latentStateVertexContainer();
 
-		org.drip.exposure.evolver.PrimarySecurity dealerSubordinateFundingNumeraire =
-			_tradeablesContainer.dealerSubordinateFunding();
+		java.util.List<org.drip.state.identifier.LatentStateLabel> latentStateLabelList = null ==
+			latentStateVertexContainerInitial ? null : latentStateVertexContainerInitial.labelList();
 
+		double clientSurvivalProbabilityExponent = 0.;
 		double dealerSurvivalProbabilityExponent = 0.;
 		int eventVertexCount = _eventDateArray.length;
-		double clientSurvivalProbabilityExponent = 0.;
-		boolean positionEvolutionOn = null != positionManifest;
 		int terminalDate = _eventDateArray[eventVertexCount - 1];
-		org.drip.exposure.universe.MarketVertex headMarketVertex = null;
-		org.drip.measure.realization.JumpDiffusionVertex[] csaNumeraireVertexArray = null;
-		org.drip.measure.realization.JumpDiffusionVertex[] clientHazardRateVertexArray = null;
-		org.drip.measure.realization.JumpDiffusionVertex[] dealerHazardRateVertexArray = null;
-		org.drip.measure.realization.JumpDiffusionVertex[] positionManifestVertexArray = null;
-		org.drip.measure.realization.JumpDiffusionVertex[] overnightNumeraireVertexArray = null;
-		org.drip.measure.realization.JumpDiffusionVertex[] clientRecoveryRateVertexArray = null;
-		org.drip.measure.realization.JumpDiffusionVertex[] clientFundingNumeraireVertexArray = null;
-		org.drip.measure.realization.JumpDiffusionVertex[] dealerSeniorRecoveryRateVertexArray = null;
-		org.drip.measure.realization.JumpDiffusionVertex[] dealerSeniorFundingNumeraireVertexArray = null;
-		org.drip.measure.realization.JumpDiffusionVertex[] dealerSubordinateRecoveryRateVertexArray = null;
-		org.drip.measure.realization.JumpDiffusionVertex[] dealerSubordinateFundingNumeraireVertexArray =
-			null;
 
-		java.util.Map<java.lang.Integer, org.drip.exposure.universe.MarketVertex> marketVertexMap = new
-			java.util.TreeMap<java.lang.Integer, org.drip.exposure.universe.MarketVertex>();
+		int latentStateLabelCount = null == latentStateLabelList ? 0 : latentStateLabelList.size();
 
-		org.drip.exposure.universe.MarketVertexEntity initialDealerVertex = initialMarketVertex.dealer();
-
-		double initialDealerSubordinateRecovery = initialDealerVertex.subordinateRecoveryRate();
-
-		org.drip.exposure.universe.MarketVertexEntity initialClientVertex = initialMarketVertex.client();
-
-		double terminalDealerSubordinateFundingNumeraire =
-			initialDealerVertex.subordinateFundingReplicator();
-
-		org.drip.measure.process.DiffusionEvolver dealerSubordinateRecoveryRateEvolver =
-			_entityLatentStateEvolver.dealerSubordinateRecoveryRateEvolver();
-
-		boolean useSingleDealerBondOnly =
-			null == dealerSubordinateFundingNumeraire ||
-			null == dealerSubordinateRecoveryRateEvolver ||
-			!org.drip.quant.common.NumberUtil.IsValid (terminalDealerSubordinateFundingNumeraire) ||
-			!org.drip.quant.common.NumberUtil.IsValid (initialDealerSubordinateRecovery);
-
-		try
-		{
-			positionManifestVertexArray = !positionEvolutionOn ? null :
-				positionManifest.evolver().vertexSequence (
-					new org.drip.measure.realization.JumpDiffusionVertex (
-						_spotDate,
-						initialMarketVertex.positionManifestValue(),
-						0.,
-						false
-					),
-					org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
-						_ycfWidth,
-						unitEvolverSequence[ASSET]
-					),
-					_ycfWidth
-				);
-
-			overnightNumeraireVertexArray = _tradeablesContainer.overnight().evolver().vertexSequenceReverse (
-				new org.drip.measure.realization.JumpDiffusionVertex (
-					terminalDate,
-					initialMarketVertex.overnightReplicator(),
-					0.,
-					false
-				),
-				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
-					_ycfWidth,
-					unitEvolverSequence[OVERNIGHT_INDEX]
-				),
-				_ycfWidth
+		org.drip.measure.realization.JumpDiffusionVertex[] overnightReplicatorVertexArray =
+			overnightReplicatorVertexArray (
+				initialMarketVertex,
+				latentStateWeiner,
+				terminalDate
 			);
 
-			csaNumeraireVertexArray = _tradeablesContainer.csa().evolver().vertexSequenceReverse (
-				new org.drip.measure.realization.JumpDiffusionVertex (
-					terminalDate,
-					initialMarketVertex.csaReplicator(),
-					0.,
-					false
-				),
-				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
-					_ycfWidth,
-					unitEvolverSequence[COLLATERAL_SCHEME]
-				),
-			_ycfWidth);
-
-			dealerHazardRateVertexArray = _entityLatentStateEvolver.dealerHazardRateEvolver().vertexSequence (
-				new org.drip.measure.realization.JumpDiffusionVertex (
-					_spotDate,
-					initialDealerVertex.hazardRate(),
-					0.,
-					false
-				),
-				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
-					_ycfWidth,
-					unitEvolverSequence[BANK_HAZARD_RATE]
-				),
-				_ycfWidth
+		org.drip.measure.realization.JumpDiffusionVertex[] csaReplicatorVertexArray =
+			csaReplicatorVertexArray (
+				initialMarketVertex,
+				latentStateWeiner,
+				terminalDate
 			);
 
-			dealerSeniorFundingNumeraireVertexArray =
-				_tradeablesContainer.dealerSubordinateFunding().evolver().vertexSequenceReverse (
-					new org.drip.measure.realization.JumpDiffusionVertex (
-						terminalDate,
-						initialDealerVertex.seniorFundingReplicator(),
-						0.,
-						false
-					),
-					org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
-						_ycfWidth,
-						unitEvolverSequence[DEALER_SENIOR_FUNDING]
-					),
-					_ycfWidth
-				);
+		org.drip.measure.realization.JumpDiffusionVertex[] dealerSeniorFundingReplicatorVertexArray =
+			dealerSeniorFundingReplicatorVertexArray (
+				initialMarketVertex,
+				latentStateWeiner,
+				terminalDate
+			);
 
-			dealerSeniorRecoveryRateVertexArray =
-				_entityLatentStateEvolver.dealerSeniorRecoveryRateEvolver().vertexSequence (
-					new org.drip.measure.realization.JumpDiffusionVertex (
-						_spotDate,
-						initialDealerVertex.seniorRecoveryRate(),
-						0.,
-						false
-					),
-					org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
-						_ycfWidth,
-						unitEvolverSequence[DEALER_SENIOR_RECOVERY_RATE]
-					),
-					_ycfWidth
-				);
+		org.drip.measure.realization.JumpDiffusionVertex[] dealerSubordinateFundingReplicatorVertexArray =
+			dealerSubordinateFundingReplicatorVertexArray (
+				initialMarketVertex,
+				latentStateWeiner,
+				terminalDate
+			);
 
-			dealerSubordinateFundingNumeraireVertexArray = useSingleDealerBondOnly ? null :
-				dealerSubordinateFundingNumeraire.evolver().vertexSequenceReverse (
-					new org.drip.measure.realization.JumpDiffusionVertex (
-						terminalDate,
-						terminalDealerSubordinateFundingNumeraire,
-						0.,
-						false
-					),
-					org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
-						_ycfWidth,
-						unitEvolverSequence[DEALER_SUBORDINATE_FUNDING]
-					),
-					_ycfWidth
-				);
+		org.drip.measure.realization.JumpDiffusionVertex[] clientFundingReplicatorVertexArray =
+			clientFundingReplicatorVertexArray (
+				initialMarketVertex,
+				latentStateWeiner,
+				terminalDate
+			);
 
-			dealerSubordinateRecoveryRateVertexArray = useSingleDealerBondOnly ? null :
-				dealerSubordinateRecoveryRateEvolver.vertexSequence (
-					new org.drip.measure.realization.JumpDiffusionVertex (
-						_spotDate,
-						initialDealerSubordinateRecovery,
-						0.,
-						false
-					),
-					org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
-						_ycfWidth,
-						unitEvolverSequence[DEALER_SUBORDINATE_RECOVERY_RATE]
-					),
-					_ycfWidth
-				);
+		org.drip.measure.realization.JumpDiffusionVertex[] dealerHazardVertexArray =
+			dealerHazardVertexArray (
+				initialMarketVertex,
+				latentStateWeiner,
+				terminalDate
+			);
 
-			clientHazardRateVertexArray =
-				_entityLatentStateEvolver.clientHazardRateEvolver().vertexSequence (
-					new org.drip.measure.realization.JumpDiffusionVertex (
-						_spotDate,
-						initialClientVertex.hazardRate(),
-						0.,
-						false
-					),
-					org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
-						_ycfWidth,
-						unitEvolverSequence[CLIENT_HAZARD_RATE]
-					),
-					_ycfWidth
-				);
+		org.drip.measure.realization.JumpDiffusionVertex[] clientHazardVertexArray =
+			clientHazardVertexArray (
+				initialMarketVertex,
+				latentStateWeiner,
+				terminalDate
+			);
 
-			clientFundingNumeraireVertexArray =
-				_tradeablesContainer.clientFunding().evolver().vertexSequenceReverse (
-					new org.drip.measure.realization.JumpDiffusionVertex (
-						terminalDate,
-						initialClientVertex.seniorFundingReplicator(),
-						0.,
-						false
-					),
-					org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
-						_ycfWidth,
-						unitEvolverSequence[CLIENT_FUNDING]
-					),
-					_ycfWidth
-				);
+		org.drip.measure.realization.JumpDiffusionVertex[] dealerSeniorRecoveryVertexArray =
+			dealerSeniorRecoveryVertexArray (
+				initialMarketVertex,
+				latentStateWeiner,
+				terminalDate
+			);
 
-			clientRecoveryRateVertexArray =
-				_entityLatentStateEvolver.clientRecoveryRateEvolver().vertexSequence (
-					new org.drip.measure.realization.JumpDiffusionVertex (
-						_spotDate,
-						initialClientVertex.seniorRecoveryRate(),
-						0.,
-						false
-					),
-					org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (
-						_ycfWidth,
-						unitEvolverSequence[CLIENT_RECOVERY_RATE]
-					),
-					_ycfWidth
-				);
-		}
-		catch (java.lang.Exception e)
+		org.drip.measure.realization.JumpDiffusionVertex[] dealerSubordinateRecoveryVertexArray =
+			dealerSubordinateRecoveryVertexArray (
+				initialMarketVertex,
+				latentStateWeiner,
+				terminalDate
+			);
+
+		org.drip.measure.realization.JumpDiffusionVertex[] clientRecoveryVertexArray =
+			clientRecoveryVertexArray (
+				initialMarketVertex,
+				latentStateWeiner,
+				terminalDate
+			);
+
+		java.util.List<org.drip.measure.realization.JumpDiffusionVertex[]> latentStateVertexArrayList =
+			latentStateVertexArrayList (
+				latentStateLabelList,
+				initialMarketVertex,
+				latentStateWeiner,
+				terminalDate
+			);
+
+		if (null == overnightReplicatorVertexArray ||
+			null == csaReplicatorVertexArray ||
+			null == dealerSeniorFundingReplicatorVertexArray ||
+			null == clientFundingReplicatorVertexArray ||
+			null == dealerHazardVertexArray ||
+			null == clientHazardVertexArray ||
+			null == dealerSeniorRecoveryVertexArray ||
+			null == clientRecoveryVertexArray)
 		{
-			e.printStackTrace();
-
 			return null;
 		}
 
-		double initialCSANumeraire = csaNumeraireVertexArray[0].value();
+		double initialCSAReplicator = csaReplicatorVertexArray[0].value();
 
-		double initialOvernightNumeraire = overnightNumeraireVertexArray[0].value();
+		double initialOvernightReplicator = overnightReplicatorVertexArray[0].value();
 
-		double initialDealerSeniorFundingNumeraire = dealerSeniorFundingNumeraireVertexArray[0].value();
+		double initialDealerSeniorFundingReplicator = dealerSeniorFundingReplicatorVertexArray[0].value();
 
-		double initialDealerSubordinateFundingNumeraire = useSingleDealerBondOnly ? java.lang.Double.NaN :
-			dealerSubordinateFundingNumeraireVertexArray[0].value();
+		double initialDealerSubordinateFundingReplicator =
+			null == dealerSubordinateFundingReplicatorVertexArray ||
+			null == dealerSubordinateFundingReplicatorVertexArray[0] ?
+			java.lang.Double.NaN : dealerSubordinateFundingReplicatorVertexArray[0].value();
 
-		double initialClientFundingNumeraire = clientFundingNumeraireVertexArray[0].value();
+		double initialClientFundingReplicator = clientFundingReplicatorVertexArray[0].value();
 
-		double csaNumeraireStart = initialCSANumeraire;
-		double overnightIndexNumeraireStart = initialOvernightNumeraire;
-		double clientFundingNumeraireStart = initialClientFundingNumeraire;
-		double dealerSeniorFundingNumeraireStart = initialDealerSeniorFundingNumeraire;
-		double dealerSubordinateFundingNumeraireStart = initialDealerSubordinateFundingNumeraire;
+		java.util.Map<java.lang.Integer, org.drip.exposure.universe.MarketVertex> marketVertexTrajectory =
+			new java.util.TreeMap<java.lang.Integer, org.drip.exposure.universe.MarketVertex>();
 
 		for (int eventVertexIndex = 1; eventVertexIndex <= eventVertexCount; ++eventVertexIndex)
 		{
-			double dealerHazardRate = dealerHazardRateVertexArray[eventVertexIndex].value();
+			double clientHazardRate = clientHazardVertexArray[eventVertexIndex].value();
 
-			double csaNumeraireFinish =  csaNumeraireVertexArray[eventVertexIndex].value();
+			double dealerHazardRate = dealerHazardVertexArray[eventVertexIndex].value();
 
-			double overnightNumeraireFinish = overnightNumeraireVertexArray[eventVertexIndex].value();
+			double csaReplicatorFinish =  csaReplicatorVertexArray[eventVertexIndex].value();
 
-			double clientHazardRateFinish = clientHazardRateVertexArray[eventVertexIndex].value();
+			double overnightReplicatorFinish = overnightReplicatorVertexArray[eventVertexIndex].value();
 
-			double dealerSeniorFundingNumeraireFinish =
-				dealerSeniorFundingNumeraireVertexArray[eventVertexIndex].value();
+			double clientFundingReplicatorFinish =
+				clientFundingReplicatorVertexArray[eventVertexIndex].value();
 
-			double dealerSubordinateFundingNumeraireFinish = useSingleDealerBondOnly ? java.lang.Double.NaN :
-				dealerSubordinateFundingNumeraireVertexArray[eventVertexIndex].value();
-
-			double clientFundingNumeraireFinish =
-				clientFundingNumeraireVertexArray[eventVertexIndex].value();
+			double dealerSeniorFundingReplicatorFinish =
+				dealerSeniorFundingReplicatorVertexArray[eventVertexIndex].value();
 
 			double timeWidth = _ycfWidth[eventVertexIndex - 1];
 			double timeWidthReciprocal = 1. / timeWidth;
+			clientSurvivalProbabilityExponent += clientHazardRate * timeWidth;
 			dealerSurvivalProbabilityExponent += dealerHazardRate * timeWidth;
-			clientSurvivalProbabilityExponent += clientHazardRateFinish * timeWidth;
 
-			double overnightRate = timeWidthReciprocal * java.lang.Math.log
-				(overnightNumeraireFinish / initialOvernightNumeraire);
+			double overnightRate = timeWidthReciprocal * java.lang.Math.log (overnightReplicatorFinish /
+				initialOvernightReplicator);
+
+			double dealerSubordinateFundingReplicatorFinish =
+				null == dealerSubordinateFundingReplicatorVertexArray ||
+				null == dealerSubordinateFundingReplicatorVertexArray[eventVertexIndex] ?
+				java.lang.Double.NaN :
+				dealerSubordinateFundingReplicatorVertexArray[eventVertexIndex].value();
 
 			try
 			{
-				org.drip.exposure.universe.MarketVertexEntity dealerMarketVertex = new
-					org.drip.exposure.universe.MarketVertexEntity (
+				org.drip.exposure.universe.MarketVertexEntity dealerMarketVertex =
+					new org.drip.exposure.universe.MarketVertexEntity (
 						java.lang.Math.exp (-1. * dealerSurvivalProbabilityExponent),
 						dealerHazardRate,
-						dealerSeniorRecoveryRateVertexArray[eventVertexIndex].value(),
-						timeWidthReciprocal * java.lang.Math.log (dealerSeniorFundingNumeraireFinish /
-							initialDealerSeniorFundingNumeraire) - overnightRate,
-						dealerSeniorFundingNumeraireFinish,
-						useSingleDealerBondOnly ? java.lang.Double.NaN :
-							dealerSubordinateRecoveryRateVertexArray[eventVertexIndex].value(),
-						useSingleDealerBondOnly ? java.lang.Double.NaN : timeWidthReciprocal *
-							java.lang.Math.log (dealerSubordinateFundingNumeraireFinish /
-								initialDealerSubordinateFundingNumeraire) - overnightRate,
-						dealerSubordinateFundingNumeraireFinish
+						dealerSeniorRecoveryVertexArray[eventVertexIndex].value(),
+						timeWidthReciprocal * java.lang.Math.log (dealerSeniorFundingReplicatorFinish /
+							initialDealerSeniorFundingReplicator) - overnightRate,
+						dealerSeniorFundingReplicatorFinish,
+						null == dealerSubordinateFundingReplicatorVertexArray ||
+						null == dealerSubordinateRecoveryVertexArray[eventVertexIndex] ? java.lang.Double.NaN
+							: dealerSubordinateRecoveryVertexArray[eventVertexIndex].value(),
+						null == dealerSubordinateFundingReplicatorVertexArray ? java.lang.Double.NaN :
+							timeWidthReciprocal *
+							java.lang.Math.log (dealerSubordinateFundingReplicatorFinish /
+								initialDealerSubordinateFundingReplicator) - overnightRate,
+						dealerSubordinateFundingReplicatorFinish
 					);
 
-				org.drip.exposure.universe.MarketVertexEntity clientMarketVertex = new
-					org.drip.exposure.universe.MarketVertexEntity (
+				org.drip.exposure.universe.MarketVertexEntity clientMarketVertex =
+					new org.drip.exposure.universe.MarketVertexEntity (
 						java.lang.Math.exp (-1. * clientSurvivalProbabilityExponent),
-						clientHazardRateFinish,
-						clientRecoveryRateVertexArray[eventVertexIndex].value(),
-						timeWidthReciprocal * java.lang.Math.log (clientFundingNumeraireFinish /
-							initialClientFundingNumeraire) - overnightRate,
-						clientFundingNumeraireFinish,
+						clientHazardRate,
+						clientRecoveryVertexArray[eventVertexIndex].value(),
+						timeWidthReciprocal * java.lang.Math.log (clientFundingReplicatorFinish /
+							initialClientFundingReplicator) - overnightRate,
+						clientFundingReplicatorFinish,
 						java.lang.Double.NaN,
 						java.lang.Double.NaN,
 						java.lang.Double.NaN
 					);
 
-				org.drip.exposure.universe.MarketVertex marketVertex = new org.drip.exposure.universe.MarketVertex (
-					new org.drip.analytics.date.JulianDate (_eventDateArray[eventVertexIndex - 1]),
-					positionEvolutionOn ? positionManifestVertexArray[eventVertexIndex].value() :
-						java.lang.Double.NaN,
-					overnightRate,
-					overnightNumeraireFinish,
-					timeWidthReciprocal * java.lang.Math.log (csaNumeraireFinish / initialCSANumeraire) -
-						overnightRate,
-					csaNumeraireFinish,
-					dealerMarketVertex,
-					clientMarketVertex
-				);
+				org.drip.exposure.evolver.LatentStateVertexContainer latentStateVertexContainer = new
+					org.drip.exposure.evolver.LatentStateVertexContainer();
 
-				if (1 == eventVertexIndex)
+				if (null != latentStateVertexArrayList && null != latentStateLabelList)
 				{
-					headMarketVertex = marketVertex;
+					for (int latentStateLabelIndex = 0; latentStateLabelIndex < latentStateLabelCount;
+						++latentStateLabelIndex)
+					{
+						org.drip.state.identifier.LatentStateLabel latentStateLabel =
+							latentStateLabelList.get (latentStateLabelIndex);
+
+						if (null != latentStateLabel)
+						{
+							latentStateVertexContainer.addLatentStateValue (
+								latentStateLabel,
+								latentStateVertexArrayList.get
+									(latentStateLabelIndex)[eventVertexIndex].value()
+							);
+						}
+					}
 				}
 
-				marketVertexMap.put (
+				org.drip.exposure.universe.MarketVertex marketVertex =
+					new org.drip.exposure.universe.MarketVertex (
+						new org.drip.analytics.date.JulianDate (_eventDateArray[eventVertexIndex - 1]),
+						overnightRate,
+						overnightReplicatorFinish,
+						timeWidthReciprocal * java.lang.Math.log (csaReplicatorFinish / initialCSAReplicator)
+							- overnightRate,
+						csaReplicatorFinish,
+						dealerMarketVertex,
+						clientMarketVertex,
+						latentStateVertexContainer
+					);
+
+				marketVertexTrajectory.put (
 					_eventDateArray[eventVertexIndex - 1],
 					marketVertex
 				);
@@ -624,46 +842,49 @@ public class MarketVertexGenerator
 				return null;
 			}
 
-			initialCSANumeraire = csaNumeraireFinish;
-			initialOvernightNumeraire = overnightNumeraireFinish;
-			initialClientFundingNumeraire = clientFundingNumeraireFinish;
-			initialDealerSeniorFundingNumeraire = dealerSeniorFundingNumeraireFinish;
-			initialDealerSubordinateFundingNumeraire = dealerSubordinateFundingNumeraireFinish;
+			initialCSAReplicator = csaReplicatorFinish;
+			initialOvernightReplicator = overnightReplicatorFinish;
+			initialClientFundingReplicator = clientFundingReplicatorFinish;
+			initialDealerSeniorFundingReplicator = dealerSeniorFundingReplicatorFinish;
+			initialDealerSubordinateFundingReplicator = dealerSubordinateFundingReplicatorFinish;
 		}
 
 		try
 		{
-			org.drip.analytics.date.JulianDate generationEpochDate = initialMarketVertex.anchorDate();
-
-			marketVertexMap.put (
-				generationEpochDate.julian(),
+			marketVertexTrajectory.put (
+				initialMarketVertex.anchorDate().julian(),
 				new org.drip.exposure.universe.MarketVertex (
-					generationEpochDate,
-					initialMarketVertex.positionManifestValue(),
-					initialMarketVertex.overnightRate(),
-					overnightIndexNumeraireStart,
-					headMarketVertex.csaRate(),
-					csaNumeraireStart,
+					new org.drip.analytics.date.JulianDate (_spotDate),
+					0.,
+					overnightReplicatorVertexArray[0].value(),
+					0.,
+					csaReplicatorVertexArray[0].value(),
 					new org.drip.exposure.universe.MarketVertexEntity (
-						initialDealerVertex.survivalProbability(),
-						initialDealerVertex.hazardRate(),
-						initialDealerVertex.seniorRecoveryRate(),
-						headMarketVertex.dealer().seniorFundingSpread(),
-						dealerSeniorFundingNumeraireStart,
-						initialDealerVertex.subordinateRecoveryRate(),
-						headMarketVertex.dealer().subordinateFundingSpread(),
-						dealerSubordinateFundingNumeraireStart
+						java.lang.Math.exp (-1. * dealerSurvivalProbabilityExponent),
+						dealerHazardVertexArray[0].value(),
+						dealerSeniorRecoveryVertexArray[0].value(),
+						0.,
+						dealerSeniorFundingReplicatorVertexArray[0].value(),
+						null == dealerSubordinateFundingReplicatorVertexArray ||
+						null == dealerSubordinateRecoveryVertexArray[0] ? java.lang.Double.NaN
+							: dealerSubordinateRecoveryVertexArray[0].value(),
+						null == dealerSubordinateFundingReplicatorVertexArray ? java.lang.Double.NaN : 0.,
+						null == dealerSubordinateFundingReplicatorVertexArray ||
+							null == dealerSubordinateFundingReplicatorVertexArray[0] ?
+							java.lang.Double.NaN :
+							dealerSubordinateFundingReplicatorVertexArray[0].value()
 					),
 					new org.drip.exposure.universe.MarketVertexEntity (
-						initialClientVertex.survivalProbability(),
-						initialClientVertex.hazardRate(),
-						initialClientVertex.seniorRecoveryRate(),
-						headMarketVertex.client().seniorFundingSpread(),
-						clientFundingNumeraireStart,
+						java.lang.Math.exp (-1. * clientSurvivalProbabilityExponent),
+						clientHazardVertexArray[0].value(),
+						clientRecoveryVertexArray[0].value(),
+						0.,
+						clientFundingReplicatorVertexArray[0].value(),
 						java.lang.Double.NaN,
 						java.lang.Double.NaN,
 						java.lang.Double.NaN
-					)
+					),
+					initialMarketVertex.latentStateVertexContainer()
 				)
 			);
 		}
@@ -674,6 +895,6 @@ public class MarketVertexGenerator
 			return null;
 		}
 
-		return marketVertexMap;
+		return marketVertexTrajectory;
 	}
 }

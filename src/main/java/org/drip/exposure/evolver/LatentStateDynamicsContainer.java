@@ -1447,7 +1447,7 @@ public class LatentStateDynamicsContainer
 
 		if (label instanceof org.drip.state.identifier.FundingLabel)
 		{
-			return fundingExists((org.drip.state.identifier.FundingLabel) label);
+			return fundingExists ((org.drip.state.identifier.FundingLabel) label);
 		}
 
 		if (label instanceof org.drip.state.identifier.GovvieLabel)
@@ -1531,5 +1531,132 @@ public class LatentStateDynamicsContainer
 		}
 
 		return false;
+	}
+
+	/**
+	 * Retrieve the Terminal Latent State corresponding to the Label
+	 * 
+	 * @param label The Latent State Label
+	 * 
+	 * @return The Terminal Latent State corresponding to the Label
+	 */
+
+	public org.drip.exposure.evolver.TerminalLatentState terminal (
+		final org.drip.state.identifier.LatentStateLabel label)
+	{
+		if (null == label)
+		{
+			return null;
+		}
+
+		if (label instanceof org.drip.state.identifier.EntityEquityLabel &&
+			entityEquityExists ((org.drip.state.identifier.EntityEquityLabel) label))
+		{
+			return _entityEquityEvolver.get (label.fullyQualifiedName());
+		}
+
+		if (label instanceof org.drip.state.identifier.FundingLabel &&
+			fundingExists ((org.drip.state.identifier.FundingLabel) label))
+		{
+			return _fundingEvolver.get (label.fullyQualifiedName());
+		}
+
+		if (label instanceof org.drip.state.identifier.GovvieLabel &&
+			govvieExists ((org.drip.state.identifier.GovvieLabel) label))
+		{
+			return _govvieEvolver.get (label.fullyQualifiedName());
+		}
+
+		if (label instanceof org.drip.state.identifier.FXLabel &&
+			fxExists ((org.drip.state.identifier.FXLabel) label))
+		{
+			return _fxEvolver.get (label.fullyQualifiedName());
+		}
+
+		if (label instanceof org.drip.state.identifier.ForwardLabel &&
+			forwardExists ((org.drip.state.identifier.ForwardLabel) label))
+		{
+			return _forwardEvolver.get (label.fullyQualifiedName());
+		}
+
+		if (label instanceof org.drip.state.identifier.OTCFixFloatLabel &&
+			otcFixFloatExists ((org.drip.state.identifier.OTCFixFloatLabel) label))
+		{
+			return _otcFixFloatEvolver.get (label.fullyQualifiedName());
+		}
+
+		if (label instanceof org.drip.state.identifier.OvernightLabel &&
+			overnightExists ((org.drip.state.identifier.OvernightLabel) label))
+		{
+			return _overnightEvolver.get (label.fullyQualifiedName());
+		}
+
+		if (label instanceof org.drip.state.identifier.CollateralLabel &&
+			collateralExists ((org.drip.state.identifier.CollateralLabel) label))
+		{
+			return _collateralEvolver.get (label.fullyQualifiedName());
+		}
+
+		if (label instanceof org.drip.state.identifier.CSALabel &&
+			csaExists ((org.drip.state.identifier.CSALabel) label))
+		{
+			return _csaEvolver.get (label.fullyQualifiedName());
+		}
+
+		if (label instanceof org.drip.state.identifier.EntityHazardLabel &&
+			entityHazardExists ((org.drip.state.identifier.EntityHazardLabel) label))
+		{
+			return _entityHazardEvolver.get (label.fullyQualifiedName());
+		}
+
+		if (label instanceof org.drip.state.identifier.EntityCDSLabel &&
+			entityCreditExists ((org.drip.state.identifier.EntityCDSLabel) label))
+		{
+			return _entityCreditEvolver.get (label.fullyQualifiedName());
+		}
+
+		if (label instanceof org.drip.state.identifier.EntityRecoveryLabel &&
+			entityRecoveryExists ((org.drip.state.identifier.EntityRecoveryLabel) label))
+		{
+			return _entityRecoveryEvolver.get (label.fullyQualifiedName());
+		}
+
+		if (label instanceof org.drip.state.identifier.EntityFundingLabel &&
+			entityFundingExists ((org.drip.state.identifier.EntityFundingLabel) label))
+		{
+			return _entityFundingEvolver.get (label.fullyQualifiedName());
+		}
+
+		if (label instanceof org.drip.state.identifier.VolatilityLabel &&
+			volatilityExists ((org.drip.state.identifier.VolatilityLabel) label))
+		{
+			return _volatilityEvolver.get (label.fullyQualifiedName());
+		}
+
+		if (label instanceof org.drip.state.identifier.RatingLabel &&
+			ratingExists ((org.drip.state.identifier.RatingLabel) label))
+		{
+			return _ratingEvolver.get (label.fullyQualifiedName());
+		}
+
+		if (label instanceof org.drip.state.identifier.RepoLabel &&
+			repoExists ((org.drip.state.identifier.RepoLabel) label))
+		{
+			return _repoEvolver.get (label.fullyQualifiedName());
+		}
+
+		if (label instanceof org.drip.state.identifier.PaydownLabel &&
+			payDownExists ((org.drip.state.identifier.PaydownLabel) label))
+		{
+			return _payDownEvolver.get (label.fullyQualifiedName());
+		}
+
+		if (label instanceof org.drip.state.identifier.CustomLabel &&
+			customExists ((org.drip.state.identifier.CustomLabel) label))
+		{
+			return _customEvolver.get (label.fullyQualifiedName());
+		}
+
+		return null;
 	}
 }

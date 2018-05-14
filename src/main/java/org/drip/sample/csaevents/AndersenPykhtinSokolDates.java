@@ -182,34 +182,34 @@ public class AndersenPykhtinSokolDates
 
 		System.out.println (
 			"\t| Client Margin Flow Date => OBSERVATION | " +
-			csaFlowDatesClassicalPlus.clientVariationMargin() + " | " +
-			csaFlowDatesClassicalMinus.clientVariationMargin() + " | " +
-			csaFlowDatesAggressive.clientVariationMargin() + " | " +
-			csaFlowDatesConservative.clientVariationMargin() + " ||"
+			csaFlowDatesClassicalPlus.clientVariationMarginPosting() + " | " +
+			csaFlowDatesClassicalMinus.clientVariationMarginPosting() + " | " +
+			csaFlowDatesAggressive.clientVariationMarginPosting() + " | " +
+			csaFlowDatesConservative.clientVariationMarginPosting() + " ||"
 		);
 
 		System.out.println (
 			"\t| Dealer Margin Flow Date => OBSERVATION | " +
-			csaFlowDatesClassicalPlus.dealerVariationMargin() + " | " +
-			csaFlowDatesClassicalMinus.dealerVariationMargin() + " | " +
-			csaFlowDatesAggressive.dealerVariationMargin() + " | " +
-			csaFlowDatesConservative.dealerVariationMargin() + " ||"
+			csaFlowDatesClassicalPlus.dealerVariationMarginPosting() + " | " +
+			csaFlowDatesClassicalMinus.dealerVariationMarginPosting() + " | " +
+			csaFlowDatesAggressive.dealerVariationMarginPosting() + " | " +
+			csaFlowDatesConservative.dealerVariationMarginPosting() + " ||"
 		);
 
 		System.out.println (
 			"\t| Client Trade Flow Date  => SETTLEMENT  | " +
-			csaFlowDatesClassicalPlus.clientTrade() + " | " +
-			csaFlowDatesClassicalMinus.clientTrade() + " | " +
-			csaFlowDatesAggressive.clientTrade() + " | " +
-			csaFlowDatesConservative.clientTrade() + " ||"
+			csaFlowDatesClassicalPlus.clientTradePayment() + " | " +
+			csaFlowDatesClassicalMinus.clientTradePayment() + " | " +
+			csaFlowDatesAggressive.clientTradePayment() + " | " +
+			csaFlowDatesConservative.clientTradePayment() + " ||"
 		);
 
 		System.out.println (
 			"\t| Dealer Trade Flow Date  => SETTLEMENT  | " +
-			csaFlowDatesClassicalPlus.dealerTrade() + " | " +
-			csaFlowDatesClassicalMinus.dealerTrade() + " | " +
-			csaFlowDatesAggressive.dealerTrade() + " | " +
-			csaFlowDatesConservative.dealerTrade() + " ||"
+			csaFlowDatesClassicalPlus.dealerTradePayment() + " | " +
+			csaFlowDatesClassicalMinus.dealerTradePayment() + " | " +
+			csaFlowDatesAggressive.dealerTradePayment() + " | " +
+			csaFlowDatesConservative.dealerTradePayment() + " ||"
 		);
 
 		System.out.println (

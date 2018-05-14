@@ -68,7 +68,7 @@ package org.drip.exposure.generator;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class StreamMPoR implements org.drip.exposure.generator.VariationMarginTradePaymentVertex
+public abstract class StreamMPoR implements org.drip.exposure.mpor.VariationMarginTradePaymentVertex
 {
 	private double _notional = java.lang.Double.NaN;
 	private org.drip.product.rates.Stream _stream = null;

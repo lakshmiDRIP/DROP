@@ -93,12 +93,10 @@ public class PathSimulator
 
 				try {
 					positionGroupValueArray[positionGroupIndex][vertexIndex] =
-						marketPath.marketVertex (forwardDate).positionManifestValue() * (
-							null == positionGroupArray[positionGroupIndex].positionGroupNumeraire() ? 1. :
-							positionGroupArray[positionGroupIndex].positionGroupNumeraire().value (
-								forwardDate,
-								marketPath
-							)
+						null == positionGroupArray[positionGroupIndex].positionGroupEstimator() ? 1. :
+						positionGroupArray[positionGroupIndex].positionGroupEstimator().variationMarginEstimate (
+							forwardDate,
+							marketPath
 						);
 				}
 				catch (java.lang.Exception e)
@@ -281,14 +279,14 @@ public class PathSimulator
 
 	public org.drip.xva.gross.PathExposureAdjustment singleTrajectory (
 		final org.drip.exposure.universe.MarketVertex initialMarketVertex,
-		final double[][] unitEvolverSequence)
+		final org.drip.exposure.universe.LatentStateWeiner latentStateWeiner)
 	{
 		try
 		{
 			org.drip.exposure.universe.MarketPath marketPath = new org.drip.exposure.universe.MarketPath (
 				_marketVertexGenerator.marketVertex (
 					initialMarketVertex,
-					unitEvolverSequence
+					latentStateWeiner
 				)
 			);
 
@@ -349,6 +347,7 @@ public class PathSimulator
 	/**
 	 * Simulate the Realized State/Entity Values and their Aggregates over the Paths
 	 * 
+	 * @param latentStateLabelList Latent State Label List
 	 * @param initialMarketVertex The Initial Market Vertex
 	 * @param correlatedPathVertexDimension Path Vertex Dimension Generator
 	 * 
@@ -356,6 +355,7 @@ public class PathSimulator
 	 */
 
 	public org.drip.xva.gross.ExposureAdjustmentAggregator simulate (
+		final java.util.List<org.drip.state.identifier.LatentStateLabel> latentStateLabelList,
 		final org.drip.exposure.universe.MarketVertex initialMarketVertex,
 		final org.drip.measure.discrete.CorrelatedPathVertexDimension correlatedPathVertexDimension)
 	{
@@ -371,8 +371,11 @@ public class PathSimulator
 		{
 			if (null == (pathExposureAdjustmentArray[pathIndex] = singleTrajectory (
 				initialMarketVertex,
-				org.drip.quant.linearalgebra.Matrix.Transpose (org.drip.quant.linearalgebra.Matrix.Transpose
-					(correlatedPathVertexDimension.straightPathVertexRd().flatform())))))
+				org.drip.exposure.universe.LatentStateWeiner.FromUnitRandom (
+					latentStateLabelList,
+					org.drip.quant.linearalgebra.Matrix.Transpose
+						(org.drip.quant.linearalgebra.Matrix.Transpose
+						(correlatedPathVertexDimension.straightPathVertexRd().flatform()))))))
 			{
 				return null;
 			}

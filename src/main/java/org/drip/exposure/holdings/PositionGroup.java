@@ -69,25 +69,25 @@ package org.drip.exposure.holdings;
 public class PositionGroup
 {
 	private org.drip.xva.netting.CollateralGroupPath _collateralGroupPath = null;
-	private org.drip.exposure.holdings.PositionGroupNumeraire _positionGroupNumeraire = null;
+	private org.drip.exposure.holdings.PositionGroupEstimator _positionGroupEstimator = null;
 	private org.drip.xva.proto.PositionSchemaSpecification _positionGroupSpecification = null;
 
 	/**
 	 * PositionGroup Constructor
 	 * 
 	 * @param positionGroupSpecification The Position Group Specification
-	 * @param positionGroupNumeraire The Position Group Numeraire
+	 * @param positionGroupEstimator The Position Group Estimator
 	 * 
 	 * @throws java.lang.Exception Thrown if Inputs are Invalid
 	 */
 
 	public PositionGroup (
 		final org.drip.xva.proto.PositionSchemaSpecification positionGroupSpecification,
-		final org.drip.exposure.holdings.PositionGroupNumeraire positionGroupNumeraire)
+		final org.drip.exposure.holdings.PositionGroupEstimator positionGroupEstimator)
 		throws java.lang.Exception
 	{
 		if (null == (_positionGroupSpecification = positionGroupSpecification) ||
-			null == (_positionGroupNumeraire = positionGroupNumeraire))
+			null == (_positionGroupEstimator = positionGroupEstimator))
 		{
 			throw  new java.lang.Exception ("PositionGroup Constructor => Invalid Inputs");
 		}
@@ -105,14 +105,14 @@ public class PositionGroup
 	}
 
 	/**
-	 * Retrieve the Position Group Numeraire
+	 * Retrieve the Position Group Estimator
 	 * 
-	 * @return The Position Group Numeraire
+	 * @return The Position Group Estimator
 	 */
 
-	public org.drip.exposure.holdings.PositionGroupNumeraire positionGroupNumeraire()
+	public org.drip.exposure.holdings.PositionGroupEstimator positionGroupEstimator()
 	{
-		return _positionGroupNumeraire;
+		return _positionGroupEstimator;
 	}
 
 	/**
@@ -177,11 +177,10 @@ public class PositionGroup
 			int forwardDate = vertexDateArray[i].julian();
 
 			try {
-				positionGroupValueArray[i] = marketPath.marketVertex (forwardDate).positionManifestValue() *
-					_positionGroupNumeraire.value (
-						forwardDate,
-						marketPath
-					);
+				positionGroupValueArray[i] = _positionGroupEstimator.variationMarginEstimate (
+					forwardDate,
+					marketPath
+				);
 			}
 			catch (java.lang.Exception e)
 			{

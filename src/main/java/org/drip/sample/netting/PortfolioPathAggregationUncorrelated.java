@@ -2,6 +2,7 @@
 package org.drip.sample.netting;
 
 import org.drip.analytics.date.*;
+import org.drip.exposure.evolver.LatentStateVertexContainer;
 import org.drip.exposure.universe.*;
 import org.drip.measure.discrete.SequenceGenerator;
 import org.drip.measure.dynamics.*;
@@ -9,6 +10,7 @@ import org.drip.measure.process.DiffusionEvolver;
 import org.drip.measure.realization.*;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
+import org.drip.state.identifier.OTCFixFloatLabel;
 import org.drip.xva.gross.*;
 import org.drip.xva.netting.CollateralGroupPath;
 import org.drip.xva.strategy.*;
@@ -354,10 +356,17 @@ public class PortfolioPathAggregationUncorrelated {
 			iNumStep
 		);
 
-		for (int i = 0; i <= iNumStep; ++i) {
-			aMV[i] = MarketVertex.SingleManifestMeasure (
+		for (int i = 0; i <= iNumStep; ++i)
+		{
+			LatentStateVertexContainer latentStateVertexContainer = new LatentStateVertexContainer();
+
+			latentStateVertexContainer.add (
+				OTCFixFloatLabel.Standard ("USD-3M-10Y"),
+				Double.NaN
+			);
+
+			aMV[i] = MarketVertex.Nodal (
 				adtVertex[i] = dtSpot.addMonths (6 * i),
-				Double.NaN,
 				dblOvernightDrift,
 				adblOvernightNumeraire[i],
 				dblCSADrift,
@@ -381,7 +390,8 @@ public class PortfolioPathAggregationUncorrelated {
 					Double.NaN,
 					Double.NaN,
 					Double.NaN
-				)
+				),
+				latentStateVertexContainer
 			);
 
 			for (int j = 0; j < iNumPath; ++j)

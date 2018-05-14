@@ -234,7 +234,7 @@ public class DynamicsContainer
 		);
 
 		return addTerminalLatentState (primarySecurity) && addScalingNumeraire (
-			primarySecurity.id(),
+			primarySecurity.label().fullyQualifiedName(),
 			primarySecurity
 		);
 	}

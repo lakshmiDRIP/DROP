@@ -100,7 +100,10 @@ public class FloatStreamMPoR  extends org.drip.exposure.generator.StreamMPoR
 		{
 			throw new java.lang.Exception ("FloatStreamMPoR::variationMarginEstimate => Invalid Inputs");
 		}
+
 		double variationMarginEstimate = 0.;
+
+		org.drip.state.identifier.ForwardLabel forwardLabel = stream().forwardLabel();
 
 		double overnightReplicatorForward = marketPath.marketVertex (forwardDate).overnightReplicator();
 
@@ -118,7 +121,7 @@ public class FloatStreamMPoR  extends org.drip.exposure.generator.StreamMPoR
 
 			variationMarginEstimate += period.couponDCF() *
 				period.notional (periodEndDate) *
-				marketPath.marketVertex (period.startDate()).positionManifestValue() *
+				marketPath.marketVertex (period.startDate()).latentStateValue (forwardLabel) *
 				/* marketPath.marketVertex
 					(composableUnitFloatingPeriod.referenceIndexPeriod().fixingDate()).positionManifestValue() * */
 				period.couponFactor (periodEndDate) *
@@ -138,6 +141,8 @@ public class FloatStreamMPoR  extends org.drip.exposure.generator.StreamMPoR
 			return null;
 		}
 
+		org.drip.state.identifier.ForwardLabel forwardLabel = stream().forwardLabel();
+
 		double overnightReplicatorForward = marketPath.marketVertex (forwardDate).overnightReplicator();
 
 		for (org.drip.analytics.cashflow.CompositePeriod period : stream().periods())
@@ -156,7 +161,7 @@ public class FloatStreamMPoR  extends org.drip.exposure.generator.StreamMPoR
 					return org.drip.exposure.mpor.TradePayment.Standard (
 						notional() * period.couponDCF() *
 						period.notional (periodEndDate) *
-						marketPath.marketVertex (period.startDate()).positionManifestValue() *
+						marketPath.marketVertex (period.startDate()).latentStateValue (forwardLabel) *
 						/* marketPath.marketVertex
 							(composableUnitFloatingPeriod.referenceIndexPeriod().fixingDate()).positionManifestValue() * */
 						period.couponFactor (periodEndDate) *

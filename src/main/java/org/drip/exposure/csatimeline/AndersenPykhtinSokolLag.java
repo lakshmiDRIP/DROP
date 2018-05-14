@@ -71,10 +71,10 @@ package org.drip.exposure.csatimeline;
 
 public class AndersenPykhtinSokolLag
 {
-	private int _clientTradeDelay = -1;
-	private int _dealerTradeDelay = -1;
-	private int _clientVariationMarginDelay = -1;
-	private int _dealerVariationMarginDelay = -1;
+	private int _clientTradePaymentDelay = -1;
+	private int _dealerTradePaymentDelay = -1;
+	private int _clientVariationMarginPostingDelay = -1;
+	private int _dealerVariationMarginPostingDelay = -1;
 
 	/**
 	 * Generate the "Conservative" Parameterization of AndersenPykhtinSokolLag
@@ -179,74 +179,74 @@ public class AndersenPykhtinSokolLag
 	/**
 	 * AndersenPykhtinSokolLag Constructor
 	 * 
-	 * @param clientVariationMarginDelay Client Variation Margin Flow Delay (Business Days)
-	 * @param dealerVariationMarginDelay Dealer Variation Margin Flow Gap (Business Days)
-	 * @param clientTradeDelay Client Trade Flow Delay (Business Days)
-	 * @param dealerTradeDelay Dealer Trade Flow Delay (Business Days)
+	 * @param clientVariationMarginPostingDelay Client Variation Margin Posting Delay (Business Days)
+	 * @param dealerVariationMarginPostingDelay Dealer Variation Margin Posting Gap (Business Days)
+	 * @param clientTradePaymentDelay Client Trade Payment Delay (Business Days)
+	 * @param dealerTradePaymentDelay Dealer Trade Payment Delay (Business Days)
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public AndersenPykhtinSokolLag (
-		final int clientVariationMarginDelay,
-		final int dealerVariationMarginDelay,
-		final int clientTradeDelay,
-		final int dealerTradeDelay)
+		final int clientVariationMarginPostingDelay,
+		final int dealerVariationMarginPostingDelay,
+		final int clientTradePaymentDelay,
+		final int dealerTradePaymentDelay)
 		throws java.lang.Exception
 	{
-		if (0 > (_clientVariationMarginDelay = clientVariationMarginDelay) ||
-			0 > (_dealerVariationMarginDelay = dealerVariationMarginDelay) ||
-			0 > (_clientTradeDelay = clientTradeDelay) ||
-			0 > (_dealerTradeDelay = dealerTradeDelay) ||
-			_clientVariationMarginDelay < _dealerVariationMarginDelay ||
-			_dealerVariationMarginDelay < _clientTradeDelay ||
-			_clientTradeDelay < _dealerTradeDelay)
+		if (0 > (_clientVariationMarginPostingDelay = clientVariationMarginPostingDelay) ||
+			0 > (_dealerVariationMarginPostingDelay = dealerVariationMarginPostingDelay) ||
+			0 > (_clientTradePaymentDelay = clientTradePaymentDelay) ||
+			0 > (_dealerTradePaymentDelay = dealerTradePaymentDelay) ||
+			_clientVariationMarginPostingDelay < _dealerVariationMarginPostingDelay ||
+			_dealerVariationMarginPostingDelay < _clientTradePaymentDelay ||
+			_clientTradePaymentDelay < _dealerTradePaymentDelay)
 		{
 			throw new java.lang.Exception ("AndersenPykhtinSokolLag Constuctor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Client Variation Margin Flow Delay
+	 * Retrieve the Client Variation Margin Posting Delay
 	 * 
-	 * @return The Client Variation Margin Flow Delay
+	 * @return The Client Variation Margin Posting Delay
 	 */
 
-	public int clientVariationMarginDelay()
+	public int clientVariationMarginPostingDelay()
 	{
-		return _clientVariationMarginDelay;
+		return _clientVariationMarginPostingDelay;
 	}
 
 	/**
-	 * Retrieve the Dealer Variation Margin Flow Delay
+	 * Retrieve the Dealer Variation Margin Posting Delay
 	 * 
-	 * @return The Dealer Variation Margin Flow Delay
+	 * @return The Dealer Variation Margin Posting Delay
 	 */
 
-	public int dealerVariationMarginDelay()
+	public int dealerVariationMarginPostingDelay()
 	{
-		return _dealerVariationMarginDelay;
+		return _dealerVariationMarginPostingDelay;
 	}
 
 	/**
-	 * Retrieve the Client Trade Flow Delay
+	 * Retrieve the Client Trade Payment Delay
 	 * 
-	 * @return The Client Trade Flow Delay
+	 * @return The Client Trade Payment Delay
 	 */
 
-	public int clientTradeDelay()
+	public int clientTradePaymentDelay()
 	{
-		return _clientTradeDelay;
+		return _clientTradePaymentDelay;
 	}
 
 	/**
-	 * Retrieve the Dealer Trade Flow Delay
+	 * Retrieve the Dealer Trade Payment Delay
 	 * 
-	 * @return The Dealer Trade Flow Delay
+	 * @return The Dealer Trade Payment Delay
 	 */
 
-	public int dealerTradeDelay()
+	public int dealerTradePaymentDelay()
 	{
-		return _dealerTradeDelay;
+		return _dealerTradePaymentDelay;
 	}
 }

@@ -71,16 +71,16 @@ package org.drip.exposure.evolver;
 public class PrimarySecurityDynamicsContainer extends org.drip.exposure.evolver.DynamicsContainer
 {
 	private java.lang.String _csaID = null;
-	private java.lang.String _positionID = null;
 	private java.lang.String _overnightID = null;
 	private java.lang.String _clientFundingID = null;
 	private java.lang.String _dealerSeniorFundingID = null;
 	private java.lang.String _dealerSubordinateFundingID = null;
+	private java.util.List<java.lang.String> _assetIDList = null;
 
 	/**
 	 * PrimarySecurityDynamicsContainer Constructor
 	 * 
-	 * @param position The Position Primary Security
+	 * @param assetList The List of Asset Primary Securities
 	 * @param overnight The Overnight Index Primary Security
 	 * @param csa The CSA Primary Security
 	 * @param dealerSeniorFunding Dealer Senior Funding Primary Security
@@ -91,7 +91,7 @@ public class PrimarySecurityDynamicsContainer extends org.drip.exposure.evolver.
 	 */
 
 	public PrimarySecurityDynamicsContainer (
-		final org.drip.exposure.evolver.PrimarySecurity position,
+		final java.util.List<org.drip.exposure.evolver.PrimarySecurity> assetList,
 		final org.drip.exposure.evolver.PrimarySecurity overnight,
 		final org.drip.exposure.evolver.PrimarySecurity csa,
 		final org.drip.exposure.evolver.PrimarySecurity dealerSeniorFunding,
@@ -108,7 +108,20 @@ public class PrimarySecurityDynamicsContainer extends org.drip.exposure.evolver.
 			throw new java.lang.Exception ("PrimarySecurityDynamicsContainer Constructor => Invalid Inputs");
 		}
 
-		addPrimarySecurity (position);
+		if (null != assetList && 0 != assetList.size())
+		{
+			_assetIDList = new java.util.ArrayList<java.lang.String>();
+
+			for (org.drip.exposure.evolver.PrimarySecurity asset : assetList)
+			{
+				addPrimarySecurity (asset);
+
+				if (null != asset)
+				{
+					_assetIDList.add (asset.id());
+				}
+			}
+		}
 
 		org.drip.state.identifier.LatentStateLabel csaLabel = csa.label();
 
@@ -139,21 +152,32 @@ public class PrimarySecurityDynamicsContainer extends org.drip.exposure.evolver.
 
 		_dealerSeniorFundingID = dealerSeniorFunding.id();
 
-		_positionID = null == position ? null : position.id();
-
 		_dealerSubordinateFundingID = null == dealerSubordinateFundingLabel ? null :
 			dealerSubordinateFunding.id();
 	}
 
 	/**
-	 * Retrieve the Position Primary Security
+	 * Retrieve the Asset Primary Security List
 	 * 
-	 * @return The Position Primary Security
+	 * @return The Asset Primary Security List
 	 */
 
-	public org.drip.exposure.evolver.PrimarySecurity position()
+	public java.util.List<org.drip.exposure.evolver.PrimarySecurity> assetList()
 	{
-		return primarySecurity (_positionID);
+		if (null == _assetIDList || 0 == _assetIDList.size())
+		{
+			return null;
+		}
+
+		java.util.List<org.drip.exposure.evolver.PrimarySecurity> assetList = new
+			java.util.ArrayList<org.drip.exposure.evolver.PrimarySecurity>();
+
+		for (java.lang.String assetID : _assetIDList)
+		{
+			assetList.add (primarySecurity (assetID));
+		}
+
+		return assetList;
 	}
 
 	/**

@@ -71,8 +71,8 @@ package org.drip.xva.pde;
 
 public class TrajectoryEvolutionScheme
 {
-	private org.drip.exposure.evolver.PrimarySecurityDynamicsContainer _tradeablesContainer = null;
 	private org.drip.xva.definition.PDEEvolutionControl _pdeEvolutionControl = null;
+	private org.drip.exposure.evolver.PrimarySecurityDynamicsContainer _tradeablesContainer = null;
 
 	/**
 	 * TrajectoryEvolutionScheme Constructor
@@ -159,8 +159,6 @@ public class TrajectoryEvolutionScheme
 
 		org.drip.exposure.universe.MarketVertexEntity clientMarketVertex = finalMarketVertex.client();
 
-		double finalPortfolioValue = finalMarketVertex.positionManifestValue();
-
 		double finalDealerSeniorFundingNumeraire = dealerMarketVertex.seniorFundingReplicator();
 
 		double finalClientNumeraire = clientMarketVertex.seniorFundingReplicator();
@@ -170,9 +168,6 @@ public class TrajectoryEvolutionScheme
 		double finalDealerSubordinateFundingNumeraire = dealerMarketVertex.subordinateFundingReplicator();
 
 		double timeIncrement = marketEdge.vertexIncrement() / 365.25;
-
-		double portfolioCashChange = initialPortfolioHoldings *
-			_tradeablesContainer.position().cashAccumulationRate() * finalPortfolioValue * timeIncrement;
 
 		org.drip.exposure.evolver.PrimarySecurity clientFundingTradeable = _tradeablesContainer.clientFunding();
 
@@ -200,21 +195,29 @@ public class TrajectoryEvolutionScheme
 			csaTradeable.cashAccumulationRate() : dealerSeniorFundingTradeable.cashAccumulationRate()) *
 				timeIncrement;
 
-		double derivativeXVAValueChange = -1. * (initialPortfolioHoldings * (finalPortfolioValue -
-			initialMarketVertex.positionManifestValue()) + initialDealerSeniorNumeraireHoldings *
-				(finalDealerSeniorFundingNumeraire - emvDealerStart.seniorFundingReplicator()) +
-					clientHoldingsValueChange + (portfolioCashChange + clientCashAccumulation +
-						dealerCashAccumulation) * timeIncrement);
-
-		if (org.drip.quant.common.NumberUtil.IsValid (initialDealerSubordinateFundingNumeraire) &&
-			org.drip.quant.common.NumberUtil.IsValid (finalDealerSubordinateFundingNumeraire))
-		{
-			derivativeXVAValueChange += initialDealerSubordinateNumeraireHoldings *
-				(finalDealerSubordinateFundingNumeraire - initialDealerSubordinateFundingNumeraire);
-		}
-
 		try
 		{
+			double finalPortfolioValue = finalMarketVertex.latentStateValue
+				(_tradeablesContainer.assetList().get (0).label());
+
+			double portfolioCashChange = initialPortfolioHoldings *
+				_tradeablesContainer.assetList().get (0).cashAccumulationRate() * finalPortfolioValue *
+					timeIncrement;
+
+			double derivativeXVAValueChange = -1. * (initialPortfolioHoldings * (finalPortfolioValue -
+				initialMarketVertex.latentStateValue (_tradeablesContainer.assetList().get (0).label())) +
+					initialDealerSeniorNumeraireHoldings * (finalDealerSeniorFundingNumeraire -
+						emvDealerStart.seniorFundingReplicator()) + clientHoldingsValueChange +
+							(portfolioCashChange + clientCashAccumulation + dealerCashAccumulation) *
+								timeIncrement);
+
+			if (org.drip.quant.common.NumberUtil.IsValid (initialDealerSubordinateFundingNumeraire) &&
+				org.drip.quant.common.NumberUtil.IsValid (finalDealerSubordinateFundingNumeraire))
+			{
+				derivativeXVAValueChange += initialDealerSubordinateNumeraireHoldings *
+					(finalDealerSubordinateFundingNumeraire - initialDealerSubordinateFundingNumeraire);
+			}
+
 			return new org.drip.xva.derivative.CashAccountRebalancer (
 				new org.drip.xva.derivative.CashAccountEdge (
 					portfolioCashChange,

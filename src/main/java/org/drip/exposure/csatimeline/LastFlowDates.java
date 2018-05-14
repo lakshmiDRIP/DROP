@@ -73,12 +73,12 @@ public class LastFlowDates
 {
 	private org.drip.analytics.date.JulianDate _spot = null;
 	private org.drip.analytics.date.JulianDate _valuation = null;
-	private org.drip.analytics.date.JulianDate _clientTrade = null;
-	private org.drip.analytics.date.JulianDate _dealerTrade = null;
-	private org.drip.analytics.date.JulianDate _clientVariationMargin = null;
-	private org.drip.analytics.date.JulianDate _dealerVariationMargin = null;
+	private org.drip.analytics.date.JulianDate _clientTradePayment = null;
+	private org.drip.analytics.date.JulianDate _dealerTradePayment = null;
 	private org.drip.analytics.date.JulianDate _variationMarginPeriodEnd = null;
 	private org.drip.analytics.date.JulianDate _variationMarginPeriodStart = null;
+	private org.drip.analytics.date.JulianDate _clientVariationMarginPosting = null;
+	private org.drip.analytics.date.JulianDate _dealerVariationMarginPosting = null;
 
 	/**
 	 * Generate a LastFlowDates Instance from the Spot Date and the AndersenPykhtinSokolLag
@@ -100,17 +100,17 @@ public class LastFlowDates
 			return null;
 		}
 
-		org.drip.analytics.date.JulianDate clientVariationMargin = spot.subtractBusDays (
-			andersenPykhtinSokolLag.clientVariationMarginDelay(),
+		org.drip.analytics.date.JulianDate clientVariationMarginPostingDate = spot.subtractBusDays (
+			andersenPykhtinSokolLag.clientVariationMarginPostingDelay(),
 			calendarSet
 		);
 
-		org.drip.analytics.date.JulianDate dealerVariationMargin = spot.subtractBusDays (
-			andersenPykhtinSokolLag.dealerVariationMarginDelay(),
+		org.drip.analytics.date.JulianDate dealerVariationMarginPostingDate = spot.subtractBusDays (
+			andersenPykhtinSokolLag.dealerVariationMarginPostingDelay(),
 			calendarSet
 		);
 
-		if (null == clientVariationMargin || null == dealerVariationMargin)
+		if (null == clientVariationMarginPostingDate || null == dealerVariationMarginPostingDate)
 		{
 			return null;
 		}
@@ -118,23 +118,23 @@ public class LastFlowDates
 		try
 		{
 			return new LastFlowDates (
-				clientVariationMargin.subtractBusDays (
+				clientVariationMarginPostingDate.subtractBusDays (
 					1,
 					calendarSet
 				),
-				clientVariationMargin,
-				dealerVariationMargin,
+				clientVariationMarginPostingDate,
+				dealerVariationMarginPostingDate,
 				spot.subtractBusDays (
-					andersenPykhtinSokolLag.clientTradeDelay(),
+					andersenPykhtinSokolLag.clientTradePaymentDelay(),
 					calendarSet
 				),
 				spot.subtractBusDays (
-					andersenPykhtinSokolLag.dealerTradeDelay(),
+					andersenPykhtinSokolLag.dealerTradePaymentDelay(),
 					calendarSet
 				),
 				spot,
-				clientVariationMargin.julian() < dealerVariationMargin.julian() ?
-					clientVariationMargin : dealerVariationMargin,
+				clientVariationMarginPostingDate.julian() < dealerVariationMarginPostingDate.julian() ?
+					clientVariationMarginPostingDate : dealerVariationMarginPostingDate,
 				spot
 			);
 		}
@@ -150,10 +150,10 @@ public class LastFlowDates
 	 * LastFlowDates Constructor
 	 * 
 	 * @param valuation The Margin Collateral Valuation Date
-	 * @param clientVariationMargin The Last Client Variation Margin Flow (Observation) Date
-	 * @param dealerVariationMargin The Last Dealer Variation Margin Flow (Observation) Date
-	 * @param clientTrade The Last Client Trade Flow (Settlement) Date
-	 * @param dealerTrade The Last Dealer Trade Flow (Settlement) Date
+	 * @param clientVariationMarginPosting The Last Client Variation Margin Posting (Observation) Date
+	 * @param dealerVariationMarginPosting The Last Dealer Variation Margin Posting (Observation) Date
+	 * @param clientTradePayment The Last Client Trade Payment (Settlement) Date
+	 * @param dealerTradePayment The Last Dealer Trade Payment (Settlement) Date
 	 * @param spot The Spot Date
 	 * @param variationMarginPeriodStart The Variation Margin Period Start Date
 	 * @param variationMarginPeriodEnd The Variation Margin Period End Date
@@ -163,20 +163,20 @@ public class LastFlowDates
 
 	public LastFlowDates (
 		final org.drip.analytics.date.JulianDate valuation,
-		final org.drip.analytics.date.JulianDate clientVariationMargin,
-		final org.drip.analytics.date.JulianDate dealerVariationMargin,
-		final org.drip.analytics.date.JulianDate clientTrade,
-		final org.drip.analytics.date.JulianDate dealerTrade,
+		final org.drip.analytics.date.JulianDate clientVariationMarginPosting,
+		final org.drip.analytics.date.JulianDate dealerVariationMarginPosting,
+		final org.drip.analytics.date.JulianDate clientTradePayment,
+		final org.drip.analytics.date.JulianDate dealerTradePayment,
 		final org.drip.analytics.date.JulianDate spot,
 		final org.drip.analytics.date.JulianDate variationMarginPeriodStart,
 		final org.drip.analytics.date.JulianDate variationMarginPeriodEnd)
 		throws java.lang.Exception
 	{
 		if (null == (_valuation = valuation) ||
-			null == (_clientVariationMargin = clientVariationMargin) ||
-			null == (_dealerVariationMargin = dealerVariationMargin) ||
-			null == (_clientTrade = clientTrade) ||
-			null == (_dealerTrade = dealerTrade) ||
+			null == (_clientVariationMarginPosting = clientVariationMarginPosting) ||
+			null == (_dealerVariationMarginPosting = dealerVariationMarginPosting) ||
+			null == (_clientTradePayment = clientTradePayment) ||
+			null == (_dealerTradePayment = dealerTradePayment) ||
 			null == (_spot = spot) ||
 			null == (_variationMarginPeriodStart = variationMarginPeriodStart) ||
 			null == (_variationMarginPeriodEnd = variationMarginPeriodEnd))
@@ -197,47 +197,47 @@ public class LastFlowDates
 	}
 
 	/**
-	 * Retrieve the Last Client Variation Margin Flow (Observation) Date
+	 * Retrieve the Last Client Variation Margin Posting (Observation) Date
 	 * 
-	 * @return The Last Client Variation Margin Flow (Observation) Date
+	 * @return The Last Client Variation Margin Posting (Observation) Date
 	 */
 
-	public org.drip.analytics.date.JulianDate clientVariationMargin()
+	public org.drip.analytics.date.JulianDate clientVariationMarginPosting()
 	{
-		return _clientVariationMargin;
+		return _clientVariationMarginPosting;
 	}
 
 	/**
-	 * Retrieve the Last Dealer Variation Margin Flow (Observation) Date
+	 * Retrieve the Last Dealer Variation Margin Posting (Observation) Date
 	 * 
-	 * @return The Last Dealer Variation Margin Flow (Observation) Date
+	 * @return The Last Dealer Variation Margin Posting (Observation) Date
 	 */
 
-	public org.drip.analytics.date.JulianDate dealerVariationMargin()
+	public org.drip.analytics.date.JulianDate dealerVariationMarginPosting()
 	{
-		return _dealerVariationMargin;
+		return _dealerVariationMarginPosting;
 	}
 
 	/**
-	 * Retrieve the Last Client Trade Flow (Settlement) Date
+	 * Retrieve the Last Client Trade Payment (Settlement) Date
 	 * 
-	 * @return The Last Client Trade Flow (Settlement) Date
+	 * @return The Last Client Trade Payment (Settlement) Date
 	 */
 
-	public org.drip.analytics.date.JulianDate clientTrade()
+	public org.drip.analytics.date.JulianDate clientTradePayment()
 	{
-		return _clientTrade;
+		return _clientTradePayment;
 	}
 
 	/**
-	 * Retrieve the Last Dealer Trade Flow (Settlement) Date
+	 * Retrieve the Last Dealer Trade Payment (Settlement) Date
 	 * 
-	 * @return The Last Dealer Trade Flow (Settlement) Date
+	 * @return The Last Dealer Trade Payment (Settlement) Date
 	 */
 
-	public org.drip.analytics.date.JulianDate dealerTrade()
+	public org.drip.analytics.date.JulianDate dealerTradePayment()
 	{
-		return _dealerTrade;
+		return _dealerTradePayment;
 	}
 
 	/**

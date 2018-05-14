@@ -47,7 +47,7 @@ package org.drip.exposure.evolver;
  */
 
 /**
- * LatentStateNodeContainer holds the Latent State Labels and their corresponding Nodal Realizations. The
+ * LatentStateVertexContainer holds the Latent State Labels and their corresponding Vertex Realizations. The
  *  References are:<br><br>
  *  
  *  - Burgard, C., and M. Kjaer (2013): Funding Strategies, Funding Costs <i>Risk</i> <b>24 (12)</b>
@@ -67,7 +67,7 @@ package org.drip.exposure.evolver;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LatentStateNodeContainer
+public class LatentStateVertexContainer
 {
 	private java.util.Map<java.lang.String, java.lang.Double> _fx = null;
 	private java.util.Map<java.lang.String, java.lang.Double> _csa = null;
@@ -88,11 +88,14 @@ public class LatentStateNodeContainer
 	private java.util.Map<java.lang.String, java.lang.Double> _entityFunding = null;
 	private java.util.Map<java.lang.String, java.lang.Double> _entityRecovery = null;
 
+	private java.util.List<org.drip.state.identifier.LatentStateLabel> _loadedLabelList = new
+		java.util.ArrayList<org.drip.state.identifier.LatentStateLabel>();
+
 	/**
-	 * Empty LatentStateNodeContainer Constructor
+	 * Empty LatentStateVertexContainer Constructor
 	 */
 
-	public LatentStateNodeContainer()
+	public LatentStateVertexContainer()
 	{
 		_fx = new org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
 
@@ -330,6 +333,70 @@ public class LatentStateNodeContainer
 	}
 
 	/**
+	 * Add the Labeled CSA
+	 * 
+	 * @param csaLabel The CSA Label
+	 * @param csa The CSA
+	 * 
+	 * @return The Labeled CSA successfully added
+	 */
+
+	public boolean add (
+		final org.drip.state.identifier.CSALabel csaLabel,
+		final double csa)
+	{
+		if (null == csaLabel || !org.drip.quant.common.NumberUtil.IsValid (csa))
+		{
+			return false;
+		}
+
+		_csa.put (
+			csaLabel.fullyQualifiedName(),
+			csa
+		);
+
+		_loadedLabelList.add (csaLabel);
+
+		return true;
+	}
+
+	/**
+	 * Check Presence of Labeled CSA
+	 * 
+	 * @param csaLabel The CSA Label
+	 * 
+	 * @return The Labeled CSA exists
+	 */
+
+	public boolean exists (
+		final org.drip.state.identifier.CSALabel csaLabel)
+	{
+		return null != csaLabel && _csa.containsKey (csaLabel.fullyQualifiedName());
+	}
+
+	/**
+	 * Retrieve of Labeled CSA
+	 * 
+	 * @param csaLabel The CSA Label
+	 * 
+	 * @return The Labeled CSA
+	 * 
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
+	 */
+
+	public double csa (
+		final org.drip.state.identifier.CSALabel csaLabel)
+		throws java.lang.Exception
+	{
+		if (!exists (csaLabel))
+		{
+			throw new java.lang.Exception ("LatentStateNodeContainer::csa => Invalid Inputs");
+		}
+
+		return _csa.get (csaLabel.fullyQualifiedName());
+	}
+
+	/**
 	 * Add the Labeled FX
 	 * 
 	 * @param fxLabel The FX Label
@@ -351,6 +418,8 @@ public class LatentStateNodeContainer
 			fxLabel.fullyQualifiedName(),
 			fx
 		);
+
+		_loadedLabelList.add (fxLabel);
 
 		return true;
 	}
@@ -414,6 +483,8 @@ public class LatentStateNodeContainer
 			repo
 		);
 
+		_loadedLabelList.add (repoLabel);
+
 		return true;
 	}
 
@@ -475,6 +546,8 @@ public class LatentStateNodeContainer
 			customLabel.fullyQualifiedName(),
 			custom
 		);
+
+		_loadedLabelList.add (customLabel);
 
 		return true;
 	}
@@ -538,6 +611,8 @@ public class LatentStateNodeContainer
 			govvie
 		);
 
+		_loadedLabelList.add (govvieLabel);
+
 		return true;
 	}
 
@@ -599,6 +674,8 @@ public class LatentStateNodeContainer
 			ratingLabel.fullyQualifiedName(),
 			rating
 		);
+
+		_loadedLabelList.add (ratingLabel);
 
 		return true;
 	}
@@ -662,6 +739,8 @@ public class LatentStateNodeContainer
 			forward
 		);
 
+		_loadedLabelList.add (forwardLabel);
+
 		return true;
 	}
 
@@ -723,6 +802,8 @@ public class LatentStateNodeContainer
 			fundingLabel.fullyQualifiedName(),
 			funding
 		);
+
+		_loadedLabelList.add (fundingLabel);
 
 		return true;
 	}
@@ -786,6 +867,8 @@ public class LatentStateNodeContainer
 			payDown
 		);
 
+		_loadedLabelList.add (payDownLabel);
+
 		return true;
 	}
 
@@ -847,6 +930,8 @@ public class LatentStateNodeContainer
 			overnightLabel.fullyQualifiedName(),
 			overnight
 		);
+
+		_loadedLabelList.add (overnightLabel);
 
 		return true;
 	}
@@ -910,6 +995,8 @@ public class LatentStateNodeContainer
 			collateral
 		);
 
+		_loadedLabelList.add (collateralLabel);
+
 		return true;
 	}
 
@@ -971,6 +1058,8 @@ public class LatentStateNodeContainer
 			volatilityLabel.fullyQualifiedName(),
 			volatility
 		);
+
+		_loadedLabelList.add (volatilityLabel);
 
 		return true;
 	}
@@ -1034,6 +1123,8 @@ public class LatentStateNodeContainer
 			otcFixFloat
 		);
 
+		_loadedLabelList.add (otcFixFloatLabel);
+
 		return true;
 	}
 
@@ -1095,6 +1186,8 @@ public class LatentStateNodeContainer
 			entityCreditLabel.fullyQualifiedName(),
 			entityCredit
 		);
+
+		_loadedLabelList.add (entityCreditLabel);
 
 		return true;
 	}
@@ -1159,6 +1252,8 @@ public class LatentStateNodeContainer
 			entityEquity
 		);
 
+		_loadedLabelList.add (entityEquityLabel);
+
 		return true;
 	}
 
@@ -1221,6 +1316,8 @@ public class LatentStateNodeContainer
 			entityHazardLabel.fullyQualifiedName(),
 			entityHazard
 		);
+
+		_loadedLabelList.add (entityHazardLabel);
 
 		return true;
 	}
@@ -1285,6 +1382,8 @@ public class LatentStateNodeContainer
 			entityFunding
 		);
 
+		_loadedLabelList.add (entityFundingLabel);
+
 		return true;
 	}
 
@@ -1314,7 +1413,7 @@ public class LatentStateNodeContainer
 	 */
 
 	public double entityFunding (
-		final org.drip.state.identifier.EntityRecoveryLabel entityFundingLabel)
+		final org.drip.state.identifier.EntityFundingLabel entityFundingLabel)
 		throws java.lang.Exception
 	{
 		if (!exists (entityFundingLabel))
@@ -1347,6 +1446,8 @@ public class LatentStateNodeContainer
 			entityRecoveryLabel.fullyQualifiedName(),
 			entityRecovery
 		);
+
+		_loadedLabelList.add (entityRecoveryLabel);
 
 		return true;
 	}
@@ -1386,5 +1487,297 @@ public class LatentStateNodeContainer
 		}
 
 		return _entityRecovery.get (entityRecoveryLabel.fullyQualifiedName());
+	}
+
+	/**
+	 * Add the Value Corresponding to the Specific Latent State
+	 * 
+	 * @param latentStateLabel The Latent State Label
+	 * @param value The Latent State Value
+	 * 
+	 * @return TRUE - The Value Corresponding to the Specific Latent State successfully added
+	 */
+
+	public boolean addLatentStateValue (
+		final org.drip.state.identifier.LatentStateLabel latentStateLabel,
+		final double value)
+	{
+		if (null == latentStateLabel || !org.drip.quant.common.NumberUtil.IsValid (value))
+		{
+			return false;
+		}
+
+		if (latentStateLabel instanceof org.drip.state.identifier.FXLabel)
+		{
+			return add (
+				(org.drip.state.identifier.FXLabel) latentStateLabel,
+				value
+			);
+		}
+
+		if (latentStateLabel instanceof org.drip.state.identifier.CSALabel)
+		{
+			return add (
+				(org.drip.state.identifier.CSALabel) latentStateLabel,
+				value
+			);
+		}
+
+		if (latentStateLabel instanceof org.drip.state.identifier.RepoLabel)
+		{
+			return add (
+				(org.drip.state.identifier.RepoLabel) latentStateLabel,
+				value
+			);
+		}
+
+		if (latentStateLabel instanceof org.drip.state.identifier.CustomLabel)
+		{
+			return add (
+				(org.drip.state.identifier.CustomLabel) latentStateLabel,
+				value
+			);
+		}
+
+		if (latentStateLabel instanceof org.drip.state.identifier.GovvieLabel)
+		{
+			return add (
+				(org.drip.state.identifier.GovvieLabel) latentStateLabel,
+				value
+			);
+		}
+
+		if (latentStateLabel instanceof org.drip.state.identifier.RatingLabel)
+		{
+			{
+				return add (
+					(org.drip.state.identifier.RatingLabel) latentStateLabel,
+					value
+				);
+			}
+		}
+
+		if (latentStateLabel instanceof org.drip.state.identifier.ForwardLabel)
+		{
+			{
+				return add (
+					(org.drip.state.identifier.ForwardLabel) latentStateLabel,
+					value
+				);
+			}
+		}
+
+		if (latentStateLabel instanceof org.drip.state.identifier.FundingLabel)
+		{
+			return add (
+				(org.drip.state.identifier.FundingLabel) latentStateLabel,
+				value
+			);
+		}
+
+		if (latentStateLabel instanceof org.drip.state.identifier.PaydownLabel)
+		{
+			return add (
+				(org.drip.state.identifier.PaydownLabel) latentStateLabel,
+				value
+			);
+		}
+
+		if (latentStateLabel instanceof org.drip.state.identifier.OvernightLabel)
+		{
+			return add (
+				(org.drip.state.identifier.OvernightLabel) latentStateLabel,
+				value
+			);
+		}
+
+		if (latentStateLabel instanceof org.drip.state.identifier.CollateralLabel)
+		{
+			return add (
+				(org.drip.state.identifier.CollateralLabel) latentStateLabel,
+				value
+			);
+		}
+
+		if (latentStateLabel instanceof org.drip.state.identifier.VolatilityLabel)
+		{
+			return add (
+				(org.drip.state.identifier.VolatilityLabel) latentStateLabel,
+				value
+			);
+		}
+
+		if (latentStateLabel instanceof org.drip.state.identifier.OTCFixFloatLabel)
+		{
+			return add (
+				(org.drip.state.identifier.OTCFixFloatLabel) latentStateLabel,
+				value
+			);
+		}
+
+		if (latentStateLabel instanceof org.drip.state.identifier.EntityCreditLabel)
+		{
+			return add (
+				(org.drip.state.identifier.EntityCreditLabel) latentStateLabel,
+				value
+			);
+		}
+
+		if (latentStateLabel instanceof org.drip.state.identifier.EntityEquityLabel)
+		{
+			return add (
+				(org.drip.state.identifier.EntityEquityLabel) latentStateLabel,
+				value
+			);
+		}
+
+		if (latentStateLabel instanceof org.drip.state.identifier.EntityHazardLabel)
+		{
+			return add (
+				(org.drip.state.identifier.EntityHazardLabel) latentStateLabel,
+				value
+			);
+		}
+
+		if (latentStateLabel instanceof org.drip.state.identifier.EntityFundingLabel)
+		{
+			return add (
+				(org.drip.state.identifier.EntityFundingLabel) latentStateLabel,
+				value
+			);
+		}
+
+		if (latentStateLabel instanceof org.drip.state.identifier.EntityRecoveryLabel)
+		{
+			return add (
+				(org.drip.state.identifier.EntityRecoveryLabel) latentStateLabel,
+				value
+			);
+		}
+
+		return false;
+	}
+
+	/**
+	 * Retrieve the Value Corresponding to the Specific Latent State
+	 * 
+	 * @param latentStateLabel The Latent State Label
+	 * 
+	 * @return The Value Corresponding to the Specific Latent State
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double value (
+		final org.drip.state.identifier.LatentStateLabel latentStateLabel)
+		throws java.lang.Exception
+	{
+		if (null == latentStateLabel)
+		{
+			throw new java.lang.Exception ("LatentStateVertexContainer::value => Invalid State Label");
+		}
+
+		if (latentStateLabel instanceof org.drip.state.identifier.FXLabel)
+		{
+			return fx ((org.drip.state.identifier.FXLabel) latentStateLabel);
+		}
+
+		if (latentStateLabel instanceof org.drip.state.identifier.CSALabel)
+		{
+			return csa ((org.drip.state.identifier.CSALabel) latentStateLabel);
+		}
+
+		if (latentStateLabel instanceof org.drip.state.identifier.RepoLabel)
+		{
+			return repo ((org.drip.state.identifier.RepoLabel) latentStateLabel);
+		}
+
+		if (latentStateLabel instanceof org.drip.state.identifier.CustomLabel)
+		{
+			return custom ((org.drip.state.identifier.CustomLabel) latentStateLabel);
+		}
+
+		if (latentStateLabel instanceof org.drip.state.identifier.GovvieLabel)
+		{
+			return govvie ((org.drip.state.identifier.GovvieLabel) latentStateLabel);
+		}
+
+		if (latentStateLabel instanceof org.drip.state.identifier.RatingLabel)
+		{
+			return rating ((org.drip.state.identifier.RatingLabel) latentStateLabel);
+		}
+
+		if (latentStateLabel instanceof org.drip.state.identifier.ForwardLabel)
+		{
+			return forward ((org.drip.state.identifier.ForwardLabel) latentStateLabel);
+		}
+
+		if (latentStateLabel instanceof org.drip.state.identifier.FundingLabel)
+		{
+			return funding ((org.drip.state.identifier.FundingLabel) latentStateLabel);
+		}
+
+		if (latentStateLabel instanceof org.drip.state.identifier.PaydownLabel)
+		{
+			return payDown ((org.drip.state.identifier.PaydownLabel) latentStateLabel);
+		}
+
+		if (latentStateLabel instanceof org.drip.state.identifier.OvernightLabel)
+		{
+			return overnight ((org.drip.state.identifier.OvernightLabel) latentStateLabel);
+		}
+
+		if (latentStateLabel instanceof org.drip.state.identifier.CollateralLabel)
+		{
+			return collateral ((org.drip.state.identifier.CollateralLabel) latentStateLabel);
+		}
+
+		if (latentStateLabel instanceof org.drip.state.identifier.VolatilityLabel)
+		{
+			return volatility ((org.drip.state.identifier.VolatilityLabel) latentStateLabel);
+		}
+
+		if (latentStateLabel instanceof org.drip.state.identifier.OTCFixFloatLabel)
+		{
+			return otcFixFloat ((org.drip.state.identifier.OTCFixFloatLabel) latentStateLabel);
+		}
+
+		if (latentStateLabel instanceof org.drip.state.identifier.EntityCreditLabel)
+		{
+			return entityCredit ((org.drip.state.identifier.EntityCreditLabel) latentStateLabel);
+		}
+
+		if (latentStateLabel instanceof org.drip.state.identifier.EntityEquityLabel)
+		{
+			return entityEquity ((org.drip.state.identifier.EntityEquityLabel) latentStateLabel);
+		}
+
+		if (latentStateLabel instanceof org.drip.state.identifier.EntityHazardLabel)
+		{
+			return entityHazard ((org.drip.state.identifier.EntityHazardLabel) latentStateLabel);
+		}
+
+		if (latentStateLabel instanceof org.drip.state.identifier.EntityFundingLabel)
+		{
+			return entityFunding ((org.drip.state.identifier.EntityFundingLabel) latentStateLabel);
+		}
+
+		if (latentStateLabel instanceof org.drip.state.identifier.EntityRecoveryLabel)
+		{
+			return entityRecovery ((org.drip.state.identifier.EntityRecoveryLabel) latentStateLabel);
+		}
+
+		throw new java.lang.Exception ("LatentStateVertexContainer::value => Invalid State Label");
+	}
+
+	/**
+	 * Retrieve the List of all Loaded Labels
+	 * 
+	 * @return The List of all Loaded Labels
+	 */
+
+	public java.util.List<org.drip.state.identifier.LatentStateLabel> labelList()
+	{
+		return _loadedLabelList;
 	}
 }

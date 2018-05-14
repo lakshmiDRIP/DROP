@@ -204,4 +204,59 @@ public class EntityDynamicsContainer extends org.drip.exposure.evolver.DynamicsC
 	{
 		return terminalLatentStateContainer().entityRecovery (_clientRecoveryLabel).evolver();
 	}
+
+	/**
+	 * Retrieve the Client Hazard Label
+	 * 
+	 * @return The Client Hazard Label
+	 */
+
+	public org.drip.state.identifier.EntityHazardLabel clientHazardLabel()
+	{
+		return _clientHazardLabel;
+	}
+
+	/**
+	 * Retrieve the Client Recovery Label
+	 * 
+	 * @return The Client Recovery Label
+	 */
+
+	public org.drip.state.identifier.EntityRecoveryLabel clientRecoveryLabel()
+	{
+		return _clientRecoveryLabel;
+	}
+
+	/**
+	 * Retrieve the Dealer Hazard Label
+	 * 
+	 * @return The Dealer Hazard Label
+	 */
+
+	public org.drip.state.identifier.EntityHazardLabel dealerHazardLabel()
+	{
+		return _dealerHazardLabel;
+	}
+
+	/**
+	 * Retrieve the Dealer Senior Recovery Label
+	 * 
+	 * @return The Dealer Senior Recovery Label
+	 */
+
+	public org.drip.state.identifier.EntityRecoveryLabel dealerSeniorRecoveryLabel()
+	{
+		return _dealerSeniorRecoveryLabel;
+	}
+
+	/**
+	 * Retrieve the Dealer Subordinate Recovery Label
+	 * 
+	 * @return The Dealer Subordinate Recovery Label
+	 */
+
+	public org.drip.state.identifier.EntityRecoveryLabel dealerSubordinateRecoveryLabel()
+	{
+		return _dealerSubordinateRecoveryLabel;
+	}
 }

@@ -2,6 +2,7 @@
 package org.drip.sample.xva;
 
 import org.drip.analytics.date.*;
+import org.drip.exposure.evolver.LatentStateVertexContainer;
 import org.drip.exposure.universe.*;
 import org.drip.measure.discrete.SequenceGenerator;
 import org.drip.measure.dynamics.*;
@@ -10,6 +11,7 @@ import org.drip.measure.realization.*;
 import org.drip.quant.common.FormatUtil;
 import org.drip.quant.linearalgebra.Matrix;
 import org.drip.service.env.EnvManager;
+import org.drip.state.identifier.OTCFixFloatLabel;
 import org.drip.xva.gross.*;
 import org.drip.xva.netting.CollateralGroupPath;
 import org.drip.xva.strategy.*;
@@ -438,10 +440,17 @@ public class UncollateralizedCollateralGroupCorrelated {
 			MarketVertex[] aMV = new MarketVertex [iNumStep + 1];
 			AlbaneseAndersen[] aHGVR = new AlbaneseAndersen[iNumStep + 1];
 
-			for (int j = 0; j <= iNumStep; ++j) {
-				aMV[j] = MarketVertex.SingleManifestMeasure (
+			for (int j = 0; j <= iNumStep; ++j)
+			{
+				LatentStateVertexContainer latentStateVertexContainer = new LatentStateVertexContainer();
+
+				latentStateVertexContainer.add (
+					OTCFixFloatLabel.Standard ("USD-3M-10Y"),
+					Double.NaN
+				);
+
+				aMV[j] = MarketVertex.Nodal (
 					adtVertex[j] = dtSpot.addMonths (6 * j),
-					Double.NaN,
 					dblOvernightNumeraireDrift,
 					adblOvernightNumeraire[j],
 					dblCSADrift,
@@ -465,7 +474,8 @@ public class UncollateralizedCollateralGroupCorrelated {
 						Double.NaN,
 						Double.NaN,
 						Double.NaN
-					)
+					),
+					latentStateVertexContainer
 				);
 
 				aadblCollateralBalance[i][j] = 0.;

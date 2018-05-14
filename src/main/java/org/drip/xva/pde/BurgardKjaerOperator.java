@@ -153,10 +153,6 @@ public class BurgardKjaerOperator
 
 		double gainOnDealerDefault = initialTrajectoryVertex.gainOnDealerDefault();
 
-		double initialPortfolioValue = finalMarketVertex.positionManifestValue();
-
-		double portfolioValueBump = _pdeEvolutionControl.sensitivityShiftFactor() * initialPortfolioValue;
-
 		double dealerSeniorDefaultIntensity = finalDealerMarketVertex.hazardRate();
 
 		double clientDefaultIntensity = finalClientMarketVertex.hazardRate();
@@ -167,8 +163,14 @@ public class BurgardKjaerOperator
 
 		try
 		{
+			double initialPortfolioValue = finalMarketVertex.latentStateValue
+				(_tradeablesContainer.assetList().get (0).label());
+
+			double portfolioValueBump = _pdeEvolutionControl.sensitivityShiftFactor() *
+				initialPortfolioValue;
+
 			double[] bumpedThetaArray = new org.drip.xva.pde.ParabolicDifferentialOperator
-				(_tradeablesContainer.position()).thetaUpDown (
+				(_tradeablesContainer.assetList().get (0)).thetaUpDown (
 					initialTrajectoryVertex,
 					initialPortfolioValue,
 					portfolioValueBump
@@ -240,10 +242,6 @@ public class BurgardKjaerOperator
 		double dealerExposure = closeOutMTM > 0. ? closeOutMTM : finalDealerMarketVertex.seniorRecoveryRate()
 			* closeOutMTM;
 
-		double initialPortfolioValue = finalMarketVertex.positionManifestValue();
-
-		double portfolioValueBump = _pdeEvolutionControl.sensitivityShiftFactor() * initialPortfolioValue;
-
 		double derivativeXVAClientDefaultGrowth = -1. * clientDefaultIntensity *
 			(closeOutMTM < 0. ? closeOutMTM : clientRecoveryRate * closeOutMTM);
 
@@ -252,8 +250,14 @@ public class BurgardKjaerOperator
 
 		try
 		{
+			double initialPortfolioValue = finalMarketVertex.latentStateValue
+				(_tradeablesContainer.assetList().get (0).label());
+
+			double portfolioValueBump = _pdeEvolutionControl.sensitivityShiftFactor() *
+				initialPortfolioValue;
+
 			double[] bumpedThetaArray = new org.drip.xva.pde.ParabolicDifferentialOperator
-				(_tradeablesContainer.position()).thetaUpDown (
+				(_tradeablesContainer.assetList().get (0)).thetaUpDown (
 					initialTrajectoryVertex,
 					initialPortfolioValue,
 					portfolioValueBump

@@ -1,5 +1,16 @@
 
-package org.drip.exposure.generator;
+package org.drip.coverage.spline;
+
+import org.drip.sample.spline.BSplineSequence;
+import org.drip.sample.spline.BasisBSplineSet;
+import org.drip.sample.spline.BasisMonicBSpline;
+import org.drip.sample.spline.BasisMonicHatComparison;
+import org.drip.sample.spline.BasisMulticBSpline;
+import org.drip.sample.spline.BasisSplineSet;
+import org.drip.sample.spline.BasisTensionSplineSet;
+import org.drip.sample.spline.PolynomialBasisSpline;
+
+import org.junit.Test;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -7,6 +18,7 @@ package org.drip.exposure.generator;
 
 /*!
  * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
  *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
  *  	libraries targeting analysts and developers
@@ -47,56 +59,29 @@ package org.drip.exposure.generator;
  */
 
 /**
- * VariationMarginTradePaymentVertex exposes the Generation of the Estimated Variation Margin and the Trade
- *  Payment at a Vertex off of the Realized Market Path. The References are:
- *  
- *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
- *  
- *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
- *  
- *  - Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and the
- *  	Re-Hypothecation Option, eSSRN, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955.
- *  
- *  - Burgard, C., and M. Kjaer (2017): Derivatives Funding, Netting, and Accounting, eSSRN,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2534011.
- * 
- *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
- *  	21 (2) 97-102.
- * 
+ * Spline holds the JUnit Code Coverage Tests for the Segment Spline Module.
+ *
  * @author Lakshmi Krishnamurthy
  */
 
-public interface VariationMarginTradePaymentVertex
+public class Spline
 {
+	@Test public void codeCoverageTest() throws Exception
+	{
+		BasisBSplineSet.main (null);
 
-	/**
-	 * Estimate the Vertex Date Variation Margin Estimate
-	 * 
-	 * @param vertexDate The Vertex Date
-	 * @param marketPath The Market Path
-	 * 
-	 * @return Exposure Date Variation Margin Estimate
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
+		BasisMonicBSpline.main (null);
 
-	public abstract double variationMarginEstimate (
-		final int vertexDate,
-		final org.drip.exposure.universe.MarketPath marketPath)
-		throws java.lang.Exception;
+		BasisMonicHatComparison.main (null);
 
-	/**
-	 * Estimate the Exposure Vertex Date Trade Payment
-	 * 
-	 * @param vertexDate The Vertex Date
-	 * @param marketPath The Market Path
-	 * 
-	 * @return The Exposure Vertex Date Trade Payment
-	 */
+		BasisMulticBSpline.main (null);
 
-	public org.drip.exposure.mpor.TradePayment tradePayment (
-		final int vertexDate,
-		final org.drip.exposure.universe.MarketPath marketPath);
+		BasisSplineSet.main (null);
+
+		BasisTensionSplineSet.main (null);
+
+		BSplineSequence.main (null);
+
+		PolynomialBasisSpline.main (null);
+    }
 }

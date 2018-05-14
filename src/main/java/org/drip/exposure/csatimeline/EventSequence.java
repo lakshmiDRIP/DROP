@@ -103,18 +103,19 @@ public class EventSequence
 			return null;
 		}
 
-		org.drip.exposure.csatimeline.EventDate valuation = org.drip.exposure.csatimeline.EventDateBuilder.Valuation
-			(valuationDate);
+		org.drip.exposure.csatimeline.EventDate valuation =
+			org.drip.exposure.csatimeline.EventDateBuilder.Valuation (valuationDate);
 
 		if (null == valuation)
 		{
 			return null;
 		}
 
-		org.drip.exposure.csatimeline.EventDate honored = org.drip.exposure.csatimeline.EventDateBuilder.Honored (
-			valuation,
-			calendarSet
-		);
+		org.drip.exposure.csatimeline.EventDate honored =
+			org.drip.exposure.csatimeline.EventDateBuilder.Honored (
+				valuation,
+				calendarSet
+			);
 
 		if (null == honored)
 		{
@@ -149,10 +150,11 @@ public class EventSequence
 			return null;
 		}
 
-		org.drip.exposure.csatimeline.EventDate ed = org.drip.exposure.csatimeline.EventDateBuilder.IMA2002ED (
-			ped,
-			calendarSet
-		);
+		org.drip.exposure.csatimeline.EventDate ed =
+			org.drip.exposure.csatimeline.EventDateBuilder.IMA2002ED (
+				ped,
+				calendarSet
+			);
 
 		if (null == ed)
 		{
@@ -234,18 +236,19 @@ public class EventSequence
 			return null;
 		}
 
-		org.drip.exposure.csatimeline.EventDate valuation = org.drip.exposure.csatimeline.EventDateBuilder.Valuation
-			(valuationDate);
+		org.drip.exposure.csatimeline.EventDate valuation =
+			org.drip.exposure.csatimeline.EventDateBuilder.Valuation (valuationDate);
 
 		if (null == valuation)
 		{
 			return null;
 		}
 
-		org.drip.exposure.csatimeline.EventDate honored = org.drip.exposure.csatimeline.EventDateBuilder.Honored (
-			valuation,
-			calendarSet
-		);
+		org.drip.exposure.csatimeline.EventDate honored =
+			org.drip.exposure.csatimeline.EventDateBuilder.Honored (
+				valuation,
+				calendarSet
+			);
 
 		if (null == honored)
 		{
@@ -280,10 +283,11 @@ public class EventSequence
 			return null;
 		}
 
-		org.drip.exposure.csatimeline.EventDate ed = org.drip.exposure.csatimeline.EventDateBuilder.IMA2002ED (
-			ped,
-			calendarSet
-		);
+		org.drip.exposure.csatimeline.EventDate ed =
+			org.drip.exposure.csatimeline.EventDateBuilder.IMA2002ED (
+				ped,
+				calendarSet
+			);
 
 		if (null == ed)
 		{

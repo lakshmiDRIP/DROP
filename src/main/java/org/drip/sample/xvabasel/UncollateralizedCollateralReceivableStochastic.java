@@ -2,6 +2,7 @@
 package org.drip.sample.xvabasel;
 
 import org.drip.analytics.date.*;
+import org.drip.exposure.evolver.LatentStateVertexContainer;
 import org.drip.exposure.universe.*;
 import org.drip.measure.crng.RandomNumberGenerator;
 import org.drip.measure.discrete.CorrelatedPathVertexDimension;
@@ -12,6 +13,7 @@ import org.drip.measure.statistics.UnivariateDiscreteThin;
 import org.drip.quant.common.FormatUtil;
 import org.drip.quant.linearalgebra.Matrix;
 import org.drip.service.env.EnvManager;
+import org.drip.state.identifier.OTCFixFloatLabel;
 import org.drip.xva.basel.*;
 import org.drip.xva.gross.*;
 import org.drip.xva.netting.CollateralGroupPath;
@@ -264,7 +266,7 @@ public class UncollateralizedCollateralReceivableStochastic {
 		throws Exception
 	{
 		int iNumStep = 10;
-		int iNumPath = 100000;
+		int iNumPath = 60000;
 		int iNumVertex = 10;
 		double dblTime = 5.;
 		double dblATMSwapRateOffsetDrift = 0.0;
@@ -485,10 +487,17 @@ public class UncollateralizedCollateralReceivableStochastic {
 			AlbaneseAndersen[] aCGV1 = new AlbaneseAndersen[iNumStep + 1];
 			AlbaneseAndersen[] aCGV2 = new AlbaneseAndersen[iNumStep + 1];
 
-			for (int j = 0; j <= iNumStep; ++j) {
-				aNV[j] = MarketVertex.SingleManifestMeasure (
+			for (int j = 0; j <= iNumStep; ++j)
+			{
+				LatentStateVertexContainer latentStateVertexContainer = new LatentStateVertexContainer();
+
+				latentStateVertexContainer.add (
+					OTCFixFloatLabel.Standard ("USD-3M-10Y"),
+					Double.NaN
+				);
+
+				aNV[j] = MarketVertex.Nodal (
 					adtVertex[j] = dtSpot.addMonths (6 * j),
-					Double.NaN,
 					dblOvernightNumeraireDrift,
 					adblOvernightNumeraire[j],
 					dblCSADrift,
@@ -512,7 +521,8 @@ public class UncollateralizedCollateralReceivableStochastic {
 						Double.NaN,
 						Double.NaN,
 						Double.NaN
-					)
+					),
+					latentStateVertexContainer
 				);
 
 				aadblCollateralBalance[i][j] = 0.;

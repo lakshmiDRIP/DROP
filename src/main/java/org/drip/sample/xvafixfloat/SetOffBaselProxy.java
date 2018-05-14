@@ -1,6 +1,9 @@
 
 package org.drip.sample.xvafixfloat;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.drip.analytics.date.*;
 import org.drip.exposure.evolver.*;
 import org.drip.exposure.holdings.*;
@@ -90,324 +93,514 @@ import org.drip.xva.settings.*;
 public class SetOffBaselProxy
 {
 
-	private static final PrimarySecurityDynamicsContainer GenerateTradeablesContainer (
-		final String eventTenor,
-		final int eventCount,
-		final int iTerminationDate,
-		final String bank,
-		final String counterParty)
+	private static final PrimarySecurity OvernightReplicator (
+		final String currency,
+		final List<LatentStateLabel> latentStateLabelList)
 		throws Exception
 	{
-		String currency = "USD";
+		double overnightReplicatorDrift = 0.0025;
+		double overnightReplicatorVolatility = 0.001;
+		double overnightReplicatorRepo = 0.0;
 
-		double dblAssetNumeraireDrift = 0.0;
-		double dblAssetNumeraireVolatility = 0.25;
-		double dblAssetNumeraireRepo = 0.0;
+		LatentStateLabel overnightLabel = OvernightLabel.Create (currency);
 
-		double dblOvernightIndexNumeraireDrift = 0.0025;
-		double dblOvernightIndexNumeraireVolatility = 0.001;
-		double dblOvernightIndexNumeraireRepo = 0.0;
+		latentStateLabelList.add (overnightLabel);
 
-		double dblCollateralSchemeNumeraireDrift = 0.01;
-		double dblCollateralSchemeNumeraireVolatility = 0.002;
-		double dblCollateralSchemeNumeraireRepo = 0.005;
-
-		double dblBankSeniorFundingNumeraireDrift = 0.03;
-		double dblBankSeniorFundingNumeraireVolatility = 0.002;
-		double dblBankSeniorFundingNumeraireRepo = 0.028;
-
-		double dblBankSubordinateFundingNumeraireDrift = 0.045;
-		double dblBankSubordinateFundingNumeraireVolatility = 0.002;
-		double dblBankSubordinateFundingNumeraireRepo = 0.028;
-
-		double dblCounterPartyFundingNumeraireDrift = 0.03;
-		double dblCounterPartyFundingNumeraireVolatility = 0.003;
-		double dblCounterPartyFundingNumeraireRepo = 0.028;
-
-		double dblBankHazardRateInitial = 0.03;
-
-		double dblBankSeniorRecoveryRateInitial = 0.45;
-
-		double dblBankSubordinateRecoveryRateInitial = 0.25;
-
-		double dblCounterPartyHazardRateInitial = 0.05;
-
-		double dblCounterPartyRecoveryRateInitial = 0.30;
-
-		PrimarySecurity tAsset = new PrimarySecurity (
-			"AAPL",
-			EntityEquityLabel.Standard (
-				"AAPL",
-				currency
-			),
-			new DiffusionEvolver (
-				DiffusionEvaluatorLinear.Standard (
-					dblAssetNumeraireDrift,
-					dblAssetNumeraireVolatility
-				)
-			),
-			dblAssetNumeraireRepo
-		);
-
-		PrimarySecurity tOvernightIndex = new PrimarySecurity (
+		return new PrimarySecurity (
 			currency + "_OVERNIGHT",
-			OvernightLabel.Create (currency),
+			overnightLabel,
 			new DiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
-					dblOvernightIndexNumeraireDrift,
-					dblOvernightIndexNumeraireVolatility
+					overnightReplicatorDrift,
+					overnightReplicatorVolatility
 				)
 			),
-			dblOvernightIndexNumeraireRepo
-		);
-
-		PrimarySecurity tCollateralScheme = new PrimarySecurity (
-			currency + "_CSA",
-			CSALabel.ISDA (currency),
-			new DiffusionEvolver (
-				DiffusionEvaluatorLogarithmic.Standard (
-					dblCollateralSchemeNumeraireDrift,
-					dblCollateralSchemeNumeraireVolatility
-				)
-			),
-			dblCollateralSchemeNumeraireRepo
-		);
-
-		PrimarySecurity tBankSeniorFunding = new PrimarySecurity (
-			bank + "_" + currency + "_SENIOR_ZERO",
-			EntityFundingLabel.Senior (
-				bank,
-				currency
-			),
-			new JumpDiffusionEvolver (
-				DiffusionEvaluatorLogarithmic.Standard (
-					dblBankSeniorFundingNumeraireDrift,
-					dblBankSeniorFundingNumeraireVolatility
-				),
-				HazardJumpEvaluator.Standard (
-					dblBankHazardRateInitial,
-					dblBankSeniorRecoveryRateInitial
-				)
-			),
-			dblBankSeniorFundingNumeraireRepo
-		);
-
-		PrimarySecurity tBankSubordinateFunding = new PrimarySecurity (
-			bank + "_" + currency + "_SUBORDINATE_ZERO",
-			EntityFundingLabel.Subordinate (
-				bank,
-				currency
-			),
-			new JumpDiffusionEvolver (
-				DiffusionEvaluatorLogarithmic.Standard (
-					dblBankSubordinateFundingNumeraireDrift,
-					dblBankSubordinateFundingNumeraireVolatility
-				),
-				HazardJumpEvaluator.Standard (
-					dblBankHazardRateInitial,
-					dblBankSubordinateRecoveryRateInitial
-				)
-			),
-			dblBankSubordinateFundingNumeraireRepo
-		);
-
-		PrimarySecurity tCounterPartyFunding = new PrimarySecurity (
-			counterParty + "_" + currency + "_SENIOR_ZERO",
-			EntityFundingLabel.Senior (
-				counterParty,
-				currency
-			),
-			new JumpDiffusionEvolver (
-				DiffusionEvaluatorLogarithmic.Standard (
-					dblCounterPartyFundingNumeraireDrift,
-					dblCounterPartyFundingNumeraireVolatility
-				),
-				HazardJumpEvaluator.Standard (
-					dblCounterPartyHazardRateInitial,
-					dblCounterPartyRecoveryRateInitial
-				)
-			),
-			dblCounterPartyFundingNumeraireRepo
-		);
-
-		return new PrimarySecurityDynamicsContainer (
-			tAsset,
-			tOvernightIndex,
-			tCollateralScheme,
-			tBankSeniorFunding,
-			tBankSubordinateFunding,
-			tCounterPartyFunding
+			overnightReplicatorRepo
 		);
 	}
 
-	private static final MarketVertexGenerator ConstructMarketVertexGenerator (
-		final JulianDate spotDate,
-		final String periodTenor,
-		final int periodCount,
+	private static final PrimarySecurity CSAReplicator (
 		final String currency,
-		final String bank,
-		final String counterParty)
+		final List<LatentStateLabel> latentStateLabelList)
 		throws Exception
 	{
-		JulianDate terminationDate = spotDate;
-		double dblBankHazardRateDrift = 0.002;
-		double dblBankHazardRateVolatility = 0.20;
-		double dblBankSeniorRecoveryRateDrift = 0.002;
-		double dblBankSeniorRecoveryRateVolatility = 0.02;
-		double dblBankSubordinateRecoveryRateDrift = 0.002;
-		double dblBankSubordinateRecoveryRateVolatility = 0.02;
-		double dblCounterPartyHazardRateDrift = 0.002;
-		double dblCounterPartyHazardRateVolatility = 0.30;
-		double dblCounterPartyRecoveryRateDrift = 0.002;
-		double dblCounterPartyRecoveryRateVolatility = 0.02;
+		double csaReplicatorDrift = 0.01;
+		double csaReplicatorVolatility = 0.002;
+		double csaReplicatorRepo = 0.005;
 
-		for (int i = 0; i < periodCount; ++i)
-			terminationDate = terminationDate.addTenor (periodTenor);
+		LatentStateLabel csaLabel = CSALabel.ISDA (currency);
 
-		return MarketVertexGenerator.PeriodHorizon (
-			spotDate.julian(),
-			periodTenor,
-			periodCount,
-			GenerateTradeablesContainer (
-				periodTenor,
-				periodCount,
-				terminationDate.julian(),
-				bank,
-				counterParty
+		latentStateLabelList.add (csaLabel);
+
+		return new PrimarySecurity (
+			currency + "_CSA",
+			csaLabel,
+			new DiffusionEvolver (
+				DiffusionEvaluatorLogarithmic.Standard (
+					csaReplicatorDrift,
+					csaReplicatorVolatility
+				)
 			),
-			new EntityDynamicsContainer (
-				new TerminalLatentState (
-					EntityHazardLabel.Standard (
-						bank,
-						currency
-					),
-					new DiffusionEvolver (
-						DiffusionEvaluatorLogarithmic.Standard (
-							dblBankHazardRateDrift,
-							dblBankHazardRateVolatility
-						)
-					)
+			csaReplicatorRepo
+		);
+	}
+
+	private static final PrimarySecurity DealerSeniorFundingReplicator (
+		final String currency,
+		final String dealer,
+		final List<LatentStateLabel> latentStateLabelList)
+		throws Exception
+	{
+		double dealerSeniorFundingReplicatorDrift = 0.03;
+		double dealerSeniorFundingReplicatorVolatility = 0.002;
+		double dealerSeniorFundingReplicatorRepo = 0.028;
+
+		LatentStateLabel dealerSeniorFundingLabel = EntityFundingLabel.Senior (
+			dealer,
+			currency
+		);
+
+		latentStateLabelList.add (dealerSeniorFundingLabel);
+
+		return new PrimarySecurity (
+			dealer + "_" + currency + "_SENIOR_ZERO",
+			dealerSeniorFundingLabel,
+			new JumpDiffusionEvolver (
+				DiffusionEvaluatorLogarithmic.Standard (
+					dealerSeniorFundingReplicatorDrift,
+					dealerSeniorFundingReplicatorVolatility
 				),
-				new TerminalLatentState (
-					EntityRecoveryLabel.Senior (
-						bank,
-						currency
-					),
-					new DiffusionEvolver (
-						DiffusionEvaluatorLogarithmic.Standard (
-							dblBankSeniorRecoveryRateDrift,
-							dblBankSeniorRecoveryRateVolatility
-						)
-					)
+				HazardJumpEvaluator.Standard (
+					0.3,
+					0.45
+				)
+			),
+			dealerSeniorFundingReplicatorRepo
+		);
+	}
+
+	private static final PrimarySecurity DealerSubordinateFundingReplicator (
+		final String currency,
+		final String dealer,
+		final List<LatentStateLabel> latentStateLabelList)
+		throws Exception
+	{
+		double dealerSubordinateFundingReplicatorDrift = 0.045;
+		double dealerSubordinateFundingReplicatorVolatility = 0.002;
+		double dealerSubordinateFundingReplicatorRepo = 0.028;
+
+		LatentStateLabel dealerSubordinateFundingLabel = EntityFundingLabel.Subordinate (
+			dealer,
+			currency
+		);
+
+		latentStateLabelList.add (dealerSubordinateFundingLabel);
+
+		return new PrimarySecurity (
+			dealer + "_" + currency + "_SUBORDINATE_ZERO",
+			dealerSubordinateFundingLabel,
+			new JumpDiffusionEvolver (
+				DiffusionEvaluatorLogarithmic.Standard (
+					dealerSubordinateFundingReplicatorDrift,
+					dealerSubordinateFundingReplicatorVolatility
 				),
-				new TerminalLatentState (
-					EntityRecoveryLabel.Subordinate (
-						bank,
-						currency
-					),
-					new DiffusionEvolver (
-						DiffusionEvaluatorLogarithmic.Standard (
-							dblBankSubordinateRecoveryRateDrift,
-							dblBankSubordinateRecoveryRateVolatility
-						)
-					)
+				HazardJumpEvaluator.Standard (
+					0.3,
+					0.25
+				)
+			),
+			dealerSubordinateFundingReplicatorRepo
+		);
+	}
+
+	private static final PrimarySecurity ClientFundingReplicator (
+		final String currency,
+		final String client,
+		final List<LatentStateLabel> latentStateLabelList)
+		throws Exception
+	{
+		double clientFundingReplicatorDrift = 0.03;
+		double clientFundingReplicatorVolatility = 0.003;
+		double clientFundingReplicatorRepo = 0.028;
+
+		LatentStateLabel clientFundingLabel = EntityFundingLabel.Senior (
+			client,
+			currency
+		);
+
+		latentStateLabelList.add (clientFundingLabel);
+
+		return new PrimarySecurity (
+			client + "_" + currency + "_SENIOR_ZERO",
+			clientFundingLabel,
+			new JumpDiffusionEvolver (
+				DiffusionEvaluatorLogarithmic.Standard (
+					clientFundingReplicatorDrift,
+					clientFundingReplicatorVolatility
 				),
-				new TerminalLatentState (
-					EntityHazardLabel.Standard (
-						counterParty,
-						currency
-					),
-					new DiffusionEvolver (
-						DiffusionEvaluatorLogarithmic.Standard (
-							dblCounterPartyHazardRateDrift,
-							dblCounterPartyHazardRateVolatility
-						)
-					)
-				),
-				new TerminalLatentState (
-					EntityRecoveryLabel.Senior (
-						counterParty,
-						currency
-					),
-					new DiffusionEvolver (
-						DiffusionEvaluatorLogarithmic.Standard (
-							dblCounterPartyRecoveryRateDrift,
-							dblCounterPartyRecoveryRateVolatility
-						)
-					)
+				HazardJumpEvaluator.Standard (
+					0.5,
+					0.30
+				)
+			),
+			clientFundingReplicatorRepo
+		);
+	}
+
+	private static final TerminalLatentState DealerHazard (
+		final String currency,
+		final String dealer,
+		final List<LatentStateLabel> latentStateLabelList)
+		throws Exception
+	{
+		double dealerHazardDrift = 0.0002;
+		double dealerHazardVolatility = 0.02;
+
+		LatentStateLabel dealerHazardLabel = EntityHazardLabel.Standard (
+			dealer,
+			currency
+		);
+
+		latentStateLabelList.add (dealerHazardLabel);
+
+		return new TerminalLatentState (
+			dealerHazardLabel,
+			new DiffusionEvolver (
+				DiffusionEvaluatorLogarithmic.Standard (
+					dealerHazardDrift,
+					dealerHazardVolatility
 				)
 			)
 		);
 	}
 
-	private static final void UDTDump (
-		final String strHeader,
-		final JulianDate[] adtVertexNode,
-		final UnivariateDiscreteThin[] aUDT)
+	private static final TerminalLatentState DealerSeniorRecovery (
+		final String currency,
+		final String dealer,
+		final List<LatentStateLabel> latentStateLabelList)
+		throws Exception
+	{
+		double dealerSeniorRecoveryDrift = 0.0002;
+		double dealerSeniorRecoveryVolatility = 0.02;
+
+		LatentStateLabel dealerSeniorRecoveryLabel = EntityRecoveryLabel.Senior (
+			dealer,
+			currency
+		);
+
+		latentStateLabelList.add (dealerSeniorRecoveryLabel);
+
+		return new TerminalLatentState (
+			dealerSeniorRecoveryLabel,
+			new DiffusionEvolver (
+				DiffusionEvaluatorLogarithmic.Standard (
+					dealerSeniorRecoveryDrift,
+					dealerSeniorRecoveryVolatility
+				)
+			)
+		);
+	}
+
+	private static final TerminalLatentState DealerSubordinateRecovery (
+		final String currency,
+		final String dealer,
+		final List<LatentStateLabel> latentStateLabelList)
+		throws Exception
+	{
+		double dealerSubordinateRecoveryDrift = 0.0002;
+		double dealerSubordinateRecoveryVolatility = 0.02;
+
+		LatentStateLabel dealerSubordinateRecoveryLabel = EntityRecoveryLabel.Subordinate (
+			dealer,
+			currency
+		);
+
+		latentStateLabelList.add (dealerSubordinateRecoveryLabel);
+
+		return new TerminalLatentState (
+			dealerSubordinateRecoveryLabel,
+			new DiffusionEvolver (
+				DiffusionEvaluatorLogarithmic.Standard (
+					dealerSubordinateRecoveryDrift,
+					dealerSubordinateRecoveryVolatility
+				)
+			)
+		);
+	}
+
+	private static final TerminalLatentState ClientHazard (
+		final String currency,
+		final String client,
+		final List<LatentStateLabel> latentStateLabelList)
+		throws Exception
+	{
+		double clientHazardDrift = 0.0002;
+		double clientHazardVolatility = 0.02;
+
+		LatentStateLabel clientHazardLabel = EntityHazardLabel.Standard (
+			client,
+			currency
+		);
+
+		latentStateLabelList.add (clientHazardLabel);
+
+		return new TerminalLatentState (
+			clientHazardLabel,
+			new DiffusionEvolver (
+				DiffusionEvaluatorLogarithmic.Standard (
+					clientHazardDrift,
+					clientHazardVolatility
+				)
+			)
+		);
+	}
+
+	private static final TerminalLatentState ClientRecovery (
+		final String currency,
+		final String client,
+		final List<LatentStateLabel> latentStateLabelList)
+		throws Exception
+	{
+		double clientRecoveryDrift = 0.0002;
+		double clientRecoveryVolatility = 0.02;
+
+		LatentStateLabel clientRecoveryLabel = EntityRecoveryLabel.Senior (
+			client,
+			currency
+		);
+
+		latentStateLabelList.add (clientRecoveryLabel);
+
+		return new TerminalLatentState (
+			clientRecoveryLabel,
+			new DiffusionEvolver (
+				DiffusionEvaluatorLogarithmic.Standard (
+					clientRecoveryDrift,
+					clientRecoveryVolatility
+				)
+			)
+		);
+	}
+
+	private static final EntityDynamicsContainer EntityEvolver (
+		final String currency,
+		final String dealer,
+		final String client,
+		final List<LatentStateLabel> latentStateLabelList)
+		throws Exception
+	{
+		return new EntityDynamicsContainer (
+			DealerHazard (
+				currency,
+				dealer,
+				latentStateLabelList
+			),
+			DealerSeniorRecovery (
+				currency,
+				dealer,
+				latentStateLabelList
+			),
+			DealerSubordinateRecovery (
+				currency,
+				dealer,
+				latentStateLabelList
+			),
+			ClientHazard (
+				currency,
+				client,
+				latentStateLabelList
+			),
+			ClientRecovery (
+				currency,
+				client,
+				latentStateLabelList
+			)
+		);
+	}
+
+	private static final PrimarySecurityDynamicsContainer PrimarySecurityEvolver (
+		final String currency,
+		final String dealer,
+		final String client,
+		final List<LatentStateLabel> latentStateLabelList)
+		throws Exception
+	{
+		return new PrimarySecurityDynamicsContainer (
+			null,
+			OvernightReplicator (
+				currency,
+				latentStateLabelList
+			),
+			CSAReplicator (
+				currency,
+				latentStateLabelList
+			),
+			DealerSeniorFundingReplicator (
+				currency,
+				dealer,
+				latentStateLabelList
+			),
+			DealerSubordinateFundingReplicator (
+				currency,
+				dealer,
+				latentStateLabelList
+			),
+			ClientFundingReplicator (
+				currency,
+				client,
+				latentStateLabelList
+			)
+		);
+	}
+
+	private static final LatentStateDynamicsContainer LatentStateEvolver (
+		final OTCFixFloatLabel otcFixFloatLabel,
+		final List<LatentStateLabel> latentStateLabelList)
+		throws Exception
+	{
+		double otcFixFloatNumeraireDrift = 0.0;
+		double otcFixFloatNumeraireVolatility = 0.25;
+
+		latentStateLabelList.add (otcFixFloatLabel);
+
+		LatentStateDynamicsContainer latentStateDynamicsContainer = new LatentStateDynamicsContainer();
+
+		latentStateDynamicsContainer.addOTCFixFloat (
+			new TerminalLatentState (
+				otcFixFloatLabel,
+				new DiffusionEvolver (
+					DiffusionEvaluatorLinear.Standard (
+						otcFixFloatNumeraireDrift,
+						otcFixFloatNumeraireVolatility
+					)
+				)
+			)
+		);
+
+		return latentStateDynamicsContainer;
+	}
+
+	private static final MarketVertexGenerator ConstructMarketVertexGenerator (
+		final JulianDate spotDate,
+		final String exposureSamplingTenor,
+		final int exposureSamplingNodeCount,
+		final String currency,
+		final String dealer,
+		final String client,
+		final OTCFixFloatLabel otcFixFloatLabel,
+		final List<LatentStateLabel> latentStateLabelList)
+		throws Exception
+	{
+		JulianDate terminationDate = spotDate;
+		int[] eventVertexArray = new int[exposureSamplingNodeCount];
+
+		for (int i = 0; i < exposureSamplingNodeCount; ++i)
+		{
+			terminationDate = terminationDate.addTenor (exposureSamplingTenor);
+
+			eventVertexArray[i] = terminationDate.julian();
+		}
+
+		return new MarketVertexGenerator (
+			spotDate.julian(),
+			eventVertexArray,
+			EntityEvolver (
+				currency,
+				dealer,
+				client,
+				latentStateLabelList
+			),
+			PrimarySecurityEvolver (
+				currency,
+				dealer,
+				client,
+				latentStateLabelList
+			),
+			LatentStateEvolver (
+				otcFixFloatLabel,
+				latentStateLabelList
+			)
+		);
+	}
+
+	private static final void ThinStatistics (
+		final String header,
+		final JulianDate[] vertexDateArray,
+		final UnivariateDiscreteThin[] thinStatisticsArray)
 		throws Exception
 	{
 		System.out.println ("\t|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|");
 
-		System.out.println (strHeader);
+		System.out.println (header);
 
 		System.out.println ("\t|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|");
 
-		String strDump = "\t|       DATE      =>" ;
+		String statisticsDump = "\t|       DATE      =>" ;
 
-		for (int i = 0; i < adtVertexNode.length; ++i)
-			strDump = strDump + " " + adtVertexNode[i] + "  |";
+		for (int i = 0; i < vertexDateArray.length; ++i)
+		{
+			statisticsDump = statisticsDump + " " + vertexDateArray[i] + "  |";
+		}
 
-		System.out.println (strDump);
+		System.out.println (statisticsDump);
 
 		System.out.println ("\t|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|");
 
-		 strDump = "\t|     AVERAGE     =>";
+		statisticsDump = "\t|     AVERAGE     =>";
 
-		for (int j = 0; j < aUDT.length; ++j)
-			strDump = strDump + "   " + FormatUtil.FormatDouble (aUDT[j].average(), 2, 4, 1.) + "   |";
+		for (int j = 0; j < thinStatisticsArray.length; ++j)
+		{
+			statisticsDump = statisticsDump + "   " + FormatUtil.FormatDouble (thinStatisticsArray[j].average(), 2, 4, 1.) + "   |";
+		}
 
-		System.out.println (strDump);
+		System.out.println (statisticsDump);
 
-		strDump = "\t|     MAXIMUM     =>";
+		statisticsDump = "\t|     MAXIMUM     =>";
 
-		for (int j = 0; j < aUDT.length; ++j)
-			strDump = strDump + "   " + FormatUtil.FormatDouble (aUDT[j].maximum(), 2, 4, 1.) + "   |";
+		for (int j = 0; j < thinStatisticsArray.length; ++j)
+		{
+			statisticsDump = statisticsDump + "   " + FormatUtil.FormatDouble (thinStatisticsArray[j].maximum(), 2, 4, 1.) + "   |";
+		}
 
-		System.out.println (strDump);
+		System.out.println (statisticsDump);
 
-		strDump = "\t|     MINIMUM     =>";
+		statisticsDump = "\t|     MINIMUM     =>";
 
-		for (int j = 0; j < aUDT.length; ++j)
-			strDump = strDump + "   " + FormatUtil.FormatDouble (aUDT[j].minimum(), 2, 4, 1.) + "   |";
+		for (int j = 0; j < thinStatisticsArray.length; ++j)
+		{
+			statisticsDump = statisticsDump + "   " + FormatUtil.FormatDouble (thinStatisticsArray[j].minimum(), 2, 4, 1.) + "   |";
+		}
 
-		System.out.println (strDump);
+		System.out.println (statisticsDump);
 
-		strDump = "\t|      ERROR      =>";
+		statisticsDump = "\t|      ERROR      =>";
 
-		for (int j = 0; j < aUDT.length; ++j)
-			strDump = strDump + "   " + FormatUtil.FormatDouble (aUDT[j].error(), 2, 4, 1.) + "   |";
+		for (int j = 0; j < thinStatisticsArray.length; ++j)
+		{
+			statisticsDump = statisticsDump + "   " + FormatUtil.FormatDouble (thinStatisticsArray[j].error(), 2, 4, 1.) + "   |";
+		}
 
-		System.out.println (strDump);
+		System.out.println (statisticsDump);
 
 		System.out.println ("\t|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|");
 	}
 
-	private static final void UDTDump (
-		final String strHeader,
-		final UnivariateDiscreteThin udt)
+	private static final void ThinStatistics (
+		final String header,
+		final UnivariateDiscreteThin thinStatistics)
 		throws Exception
 	{
 		System.out.println (
-			strHeader +
-			FormatUtil.FormatDouble (udt.average(), 3, 2, 100.) + "% | " +
-			FormatUtil.FormatDouble (udt.maximum(), 3, 2, 100.) + "% | " +
-			FormatUtil.FormatDouble (udt.minimum(), 3, 2, 100.) + "% | " +
-			FormatUtil.FormatDouble (udt.error(), 3, 2, 100.) + "% ||"
+			header +
+			FormatUtil.FormatDouble (thinStatistics.average(), 3, 2, 100.) + "% | " +
+			FormatUtil.FormatDouble (thinStatistics.maximum(), 3, 2, 100.) + "% | " +
+			FormatUtil.FormatDouble (thinStatistics.minimum(), 3, 2, 100.) + "% | " +
+			FormatUtil.FormatDouble (thinStatistics.error(), 3, 2, 100.) + "% ||"
 		);
 	}
 
 	public static final void main (
-		final String[] astrArgs)
+		final String[] argumentArray)
 		throws Exception
 	{
 		EnvManager.InitEnv (
@@ -415,56 +608,61 @@ public class SetOffBaselProxy
 			true
 		);
 
-		String bank = "CITI";
-		String counterParty = "AIG";
+		String dealer = "CITI";
+		String client = "AIG";
 		String currency = "USD";
+
+		double dealerVMThreshold = -0.1;
+		double clientVMThreshold = 0.1;
 
 		/*
 		 * Evolution Control
 		 */
 
-		int iNumPath = 100000;
-		int eventCount = 10;
-		String eventTenor = "6M";
+		int pathCount = 60000;
+		int exposureSamplingNodeCount = 10;
+		String exposureSamplingTenor = "6M";
 		double[][] correlationMatrix = new double[][] {
-			{1.00, 0.00, 0.20, 0.15, 0.05, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #0 ASSET NUMERAIRE
-			{0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #1 OVERNIGHT POLICY INDEX NUMERAIRE
-			{0.20, 0.00, 1.00, 0.13, 0.25, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #2 COLLATERAL SCHEME NUMERAIRE
-			{0.15, 0.00, 0.13, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #3 BANK HAZARD RATE
-			{0.05, 0.00, 0.25, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #4 BANK SENIOR FUNDING NUMERAIRE
-			{0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #5 BANK SENIOR RECOVERY RATE
-			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00}, // #6 BANK SUBORDINATE FUNDING NUMERAIRE
-			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00}, // #7 BANK SUBORDINATE RECOVERY RATE
-			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00}, // #8 COUNTER PARTY HAZARD RATE
-			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00}, // #9 COUNTER PARTY FUNDING NUMERAIRE
-			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00}  // #10 COUNTER PARTY RECOVERY RATE
+			{1.00, 0.00, 0.00, 0.20, 0.15, 0.05, 0.00, 0.00, 0.00, 0.00, 0.00}, // #0  DEALER HAZARD
+			{0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #1  DEALER SENIOR RECOVERY
+			{0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #2  DEALER SUBORDINATE RECOVERY
+			{0.20, 0.00, 0.00, 1.00, 0.13, 0.25, 0.00, 0.00, 0.00, 0.00, 0.00}, // #3  CLIENT HAZARD
+			{0.15, 0.00, 0.00, 0.13, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #4  CLIENT RECOVERY
+			{0.05, 0.00, 0.25, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #5  OVERNIGHT REPLICATOR
+			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00}, // #6  CSA REPLICATOR
+			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00}, // #7  DEALER SENIOR FUNDING REPLICATOR
+			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00}, // #8  DEALER SUBORDINATE FUNDING REPLICATOR
+			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00}, // #9  CLIENT FUNDING REPLICATOR
+			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00}, // #10 OTC FIX FLOAT REPLICATOR
 		};
 
-		JulianDate dtSpot = DateUtil.Today();
+		JulianDate spotDate = DateUtil.Today();
 
-		JulianDate terminationDate = dtSpot;
+		OTCFixFloatLabel otcFixFloatLabel = OTCFixFloatLabel.Standard (currency + "-3M-10Y");
 
-		for (int i = 0; i < eventCount; ++i)
-			terminationDate = terminationDate.addTenor (eventTenor);
+		JulianDate terminationDate = spotDate;
+		PathExposureAdjustment[] pathExposureAdjustmentArray = new PathExposureAdjustment[pathCount];
+
+		for (int i = 0; i < exposureSamplingNodeCount; ++i)
+		{
+			terminationDate = terminationDate.addTenor (exposureSamplingTenor);
+		}
 
 		final int maturityDate = terminationDate.julian();
 
-		/*
-		 * Group Settings
-		 */
-
-		double dblBankThreshold = -0.1;
-		double dblCounterPartyThreshold = 0.1;
+		List<LatentStateLabel> latentStateLabelList = new ArrayList<LatentStateLabel>();
 
 		PathSimulator fixFloatPathSimulator = new PathSimulator (
-			iNumPath,
+			pathCount,
 			ConstructMarketVertexGenerator (
-				dtSpot,
-				eventTenor,
-				eventCount,
+				spotDate,
+				exposureSamplingTenor,
+				exposureSamplingNodeCount,
 				currency,
-				bank,
-				counterParty
+				dealer,
+				client,
+				otcFixFloatLabel,
+				latentStateLabelList
 			),
 			AdjustmentDigestScheme.ALBANESE_ANDERSEN_METRICS_POINTER,
 			PositionGroupContainer.Solo (
@@ -474,8 +672,8 @@ public class SetOffBaselProxy
 						"POSGRPSPEC1",
 						PositionGroupSpecification.FixedThreshold (
 							"FIXEDTHRESHOLD",
-							dblCounterPartyThreshold,
-							dblBankThreshold,
+							clientVMThreshold,
+							dealerVMThreshold,
 							PositionReplicationScheme.BURGARD_KJAER_SET_OFF_VERTEX,
 							BrokenDateScheme.SQUARE_ROOT_OF_TIME,
 							0.,
@@ -491,23 +689,23 @@ public class SetOffBaselProxy
 							"NETGRPSPEC1",
 							"NETGRPSPEC1",
 							EntityHazardLabel.Standard (
-								bank,
+								dealer,
 								currency
 							),
 							EntityHazardLabel.Standard (
-								counterParty,
+								client,
 								currency
 							),
 							EntityRecoveryLabel.Senior (
-								bank,
+								dealer,
 								currency
 							),
 							EntityRecoveryLabel.Senior (
-								counterParty,
+								client,
 								currency
 							),
 							EntityRecoveryLabel.Subordinate (
-								bank,
+								dealer,
 								currency
 							),
 							true,
@@ -517,110 +715,122 @@ public class SetOffBaselProxy
 							"FUNDGRPSPEC1",
 							"FUNDGRPSPEC1",
 							EntityFundingLabel.Senior (
-								bank,
+								dealer,
 								currency
 							),
 							EntityFundingLabel.Senior (
-								counterParty,
+								client,
 								currency
 							),
 							EntityFundingLabel.Subordinate (
-								bank,
+								dealer,
 								currency
 							)
 						)
 					),
-					new FixFloatBaselDuration (maturityDate)
+					new FixFloatBaselPositionEstimator (
+						maturityDate,
+						otcFixFloatLabel
+					)
 				)
 			)
 		);
 
-		MarketVertex initialMarketVertex = MarketVertex.StartUp (
-			dtSpot,
-			0.000, 				// dblPortfolioValueInitial
+		LatentStateVertexContainer latentStateVertexContainer = new LatentStateVertexContainer();
+
+		latentStateVertexContainer.add (
+			otcFixFloatLabel,
+			0.
+		);
+
+		MarketVertex initialMarketVertex = MarketVertex.Epochal (
+			spotDate,
 			1.000, 				// dblOvernightNumeraireInitial
 			1.000, 				// dblCSANumeraire
 			0.015, 				// dblBankHazardRate
-			0.400, 				// dblBankSeniorRecoveryRate
-			0.015 * (1 - 0.40), // dblBankSeniorFundingSpread
-			0.200, 				// dblBankSubordinateRecoveryRate
-			0.015 * (1 - 0.20), // dblBankSubordinateFundingSpread
+			0.400, 				// dblBankRecoveryRate
+			0.015 / (1 - 0.40), // dblBankFundingSpread
+			0.250, 				// dblBankRecoveryRate
+			0.015 / (1 - 0.25), // dblBankFundingSpread
 			0.030, 				// dblCounterPartyHazardRate
 			0.300, 				// dblCounterPartyRecoveryRate
-			0.030 * (1 - 0.30) 	// dblCounterPartyFundingSpread
+			0.030 / (1 - 0.30),	// dblCounterPartyFundingSpread
+			latentStateVertexContainer
 		);
-
-		PathExposureAdjustment[] pathExposureAdjustmentArray = new PathExposureAdjustment[iNumPath];
 
 		CorrelatedPathVertexDimension correlatedPathVertexDimension = new CorrelatedPathVertexDimension (
 			new RandomNumberGenerator(),
 			correlationMatrix,
-			eventCount,
-			iNumPath,
+			exposureSamplingNodeCount,
+			1,
 			true,
 			null
 		);
 
-		for (int i = 0; i < iNumPath; ++i)
+		for (int i = 0; i < pathCount; ++i)
 		{
 			pathExposureAdjustmentArray[i] = fixFloatPathSimulator.singleTrajectory (
 				initialMarketVertex,
-				Matrix.Transpose (correlatedPathVertexDimension.straightPathVertexRd().flatform())
+				LatentStateWeiner.FromUnitRandom (
+					latentStateLabelList,
+					Matrix.Transpose (correlatedPathVertexDimension.straightPathVertexRd().flatform())
+				)
 			);
 		}
 
-		ExposureAdjustmentAggregator eaa = new ExposureAdjustmentAggregator (pathExposureAdjustmentArray);
+		ExposureAdjustmentAggregator exposureAdjustmentAggregator = new ExposureAdjustmentAggregator
+			(pathExposureAdjustmentArray);
 
-		ExposureAdjustmentDigest ead = eaa.digest();
+		ExposureAdjustmentDigest exposureAdjustmentDigest = exposureAdjustmentAggregator.digest();
 
 		System.out.println();
 
-		UDTDump (
+		ThinStatistics (
 			"\t|                                                                                COLLATERALIZED EXPOSURE                                                                                |",
-			eaa.vertexDates(),
-			ead.collateralizedExposure()
+			exposureAdjustmentAggregator.vertexDates(),
+			exposureAdjustmentDigest.collateralizedExposure()
 		);
 
-		UDTDump (
+		ThinStatistics (
 			"\t|                                                                               UNCOLLATERALIZED EXPOSURE                                                                               |",
-			eaa.vertexDates(),
-			ead.uncollateralizedExposure()
+			exposureAdjustmentAggregator.vertexDates(),
+			exposureAdjustmentDigest.uncollateralizedExposure()
 		);
 
-		UDTDump (
+		ThinStatistics (
 			"\t|                                                                                COLLATERALIZED EXPOSURE PV                                                                             |",
-			eaa.vertexDates(),
-			ead.collateralizedExposurePV()
+			exposureAdjustmentAggregator.vertexDates(),
+			exposureAdjustmentDigest.collateralizedExposurePV()
 		);
 
-		UDTDump (
+		ThinStatistics (
 			"\t|                                                                               UNCOLLATERALIZED EXPOSURE PV                                                                            |",
-			eaa.vertexDates(),
-			ead.uncollateralizedExposurePV()
+			exposureAdjustmentAggregator.vertexDates(),
+			exposureAdjustmentDigest.uncollateralizedExposurePV()
 		);
 
-		UDTDump (
+		ThinStatistics (
 			"\t|                                                                            COLLATERALIZED POSITIVE EXPOSURE PV                                                                        |",
-			eaa.vertexDates(),
-			ead.collateralizedPositiveExposure()
+			exposureAdjustmentAggregator.vertexDates(),
+			exposureAdjustmentDigest.collateralizedPositiveExposurePV()
 		);
 
-		UDTDump (
+		ThinStatistics (
 			"\t|                                                                           UNCOLLATERALIZED POSITIVE EXPOSURE PV                                                                       |",
-			eaa.vertexDates(),
-			ead.uncollateralizedPositiveExposure()
+			exposureAdjustmentAggregator.vertexDates(),
+			exposureAdjustmentDigest.uncollateralizedPositiveExposurePV()
 		);
 
-		UDTDump (
+		ThinStatistics (
 			"\t|                                                                            COLLATERALIZED NEGATIVE EXPOSURE PV                                                                        |",
-			eaa.vertexDates(),
-			ead.collateralizedNegativeExposure()
+			exposureAdjustmentAggregator.vertexDates(),
+			exposureAdjustmentDigest.collateralizedNegativeExposurePV()
 		);
 
-		UDTDump (
+		ThinStatistics (
 			"\t|                                                                           UNCOLLATERALIZED NEGATIVE EXPOSURE PV                                                                       |",
-			eaa.vertexDates(),
-			ead.uncollateralizedNegativeExposure()
+			exposureAdjustmentAggregator.vertexDates(),
+			exposureAdjustmentDigest.uncollateralizedNegativeExposurePV()
 		);
 
 		System.out.println();
@@ -643,61 +853,61 @@ public class SetOffBaselProxy
 
 		System.out.println ("\t||-----------------------------------------------------||");
 
-		UDTDump (
+		ThinStatistics (
 			"\t||  UCVA  => ",
-			ead.ucva()
+			exposureAdjustmentDigest.ucva()
 		);
 
-		UDTDump (
+		ThinStatistics (
 			"\t|| FTDCVA => ",
-			ead.ftdcva()
+			exposureAdjustmentDigest.ftdcva()
 		);
 
-		UDTDump (
+		ThinStatistics (
 			"\t||   CVA  => ",
-			ead.cva()
+			exposureAdjustmentDigest.cva()
 		);
 
-		UDTDump (
+		ThinStatistics (
 			"\t||  CVACL => ",
-			ead.cvacl()
+			exposureAdjustmentDigest.cvacl()
 		);
 
-		UDTDump (
+		ThinStatistics (
 			"\t||   DVA  => ",
-			ead.dva()
+			exposureAdjustmentDigest.dva()
 		);
 
-		UDTDump (
+		ThinStatistics (
 			"\t||   FVA  => ",
-			ead.fva()
+			exposureAdjustmentDigest.fva()
 		);
 
-		UDTDump (
+		ThinStatistics (
 			"\t||   FDA  => ",
-			ead.fda()
+			exposureAdjustmentDigest.fda()
 		);
 
-		UDTDump (
+		ThinStatistics (
 			"\t||   FCA  => ",
-			ead.fca()
+			exposureAdjustmentDigest.fca()
 		);
 
-		UDTDump (
+		ThinStatistics (
 			"\t||   FBA  => ",
-			ead.fba()
+			exposureAdjustmentDigest.fba()
 		);
 
-		UDTDump (
+		ThinStatistics (
 			"\t||  SFVA  => ",
-			ead.sfva()
+			exposureAdjustmentDigest.sfva()
 		);
 
 		System.out.println ("\t||-----------------------------------------------------||");
 
-		UDTDump (
+		ThinStatistics (
 			"\t||  Total => ",
-			ead.totalVA()
+			exposureAdjustmentDigest.totalVA()
 		);
 
 		System.out.println ("\t||-----------------------------------------------------||");

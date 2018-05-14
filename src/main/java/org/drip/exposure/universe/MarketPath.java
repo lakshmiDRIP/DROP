@@ -71,7 +71,8 @@ public class MarketPath
 	private org.drip.analytics.date.JulianDate[] _vertexDateArray = null;
 	private org.drip.exposure.universe.MarketVertex _epochalMarketVertex = null;
 	private org.drip.exposure.universe.MarketVertex _terminalMarketVertex = null;
-	private java.util.Map<java.lang.Integer, org.drip.exposure.universe.MarketVertex> _marketVertexMap = null;
+	private java.util.Map<java.lang.Integer, org.drip.exposure.universe.MarketVertex> _marketVertexTrajectory
+		= null;
 
 	/**
 	 * Generate the Market Path from Market Vertex Array
@@ -96,19 +97,19 @@ public class MarketPath
 			return null;
 		}
 
-		java.util.Map<java.lang.Integer, org.drip.exposure.universe.MarketVertex> marketVertexMap = new
-			java.util.TreeMap<java.lang.Integer, org.drip.exposure.universe.MarketVertex>();
+		java.util.Map<java.lang.Integer, org.drip.exposure.universe.MarketVertex> marketVertexTrajectory =
+			new java.util.TreeMap<java.lang.Integer, org.drip.exposure.universe.MarketVertex>();
 
 		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 		{
 			int marketVertexDate = marketVertexArray[vertexIndex].anchorDate().julian();
 
-			if (marketVertexMap.containsKey (marketVertexDate))
+			if (marketVertexTrajectory.containsKey (marketVertexDate))
 			{
 				return null;
 			}
 
-			marketVertexMap.put (
+			marketVertexTrajectory.put (
 				marketVertexDate,
 				marketVertexArray[vertexIndex]
 			);
@@ -116,7 +117,7 @@ public class MarketPath
 
 		try
 		{
-			return new MarketPath (marketVertexMap);
+			return new MarketPath (marketVertexTrajectory);
 		}
 		catch (java.lang.Exception e)
 		{
@@ -129,23 +130,23 @@ public class MarketPath
 	/**
 	 * MarketPath Constructor
 	 * 
-	 * @param marketVertexMap Date Map of the Market Vertexes
+	 * @param marketVertexTrajectory Date Map of the Market Vertexes
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public MarketPath (
-		final java.util.Map<java.lang.Integer, org.drip.exposure.universe.MarketVertex> marketVertexMap)
+		final java.util.Map<java.lang.Integer, org.drip.exposure.universe.MarketVertex> marketVertexTrajectory)
 		throws java.lang.Exception
 	{
-		if (null == (_marketVertexMap = marketVertexMap))
+		if (null == (_marketVertexTrajectory = marketVertexTrajectory))
 		{
 			throw new java.lang.Exception ("MarketPath Constructor => Invalid Inputs");
 		}
 
-		int vertexCount = _marketVertexMap.size();
+		int vertexCount = _marketVertexTrajectory.size();
 
-		if (0 == _marketVertexMap.size())
+		if (0 == _marketVertexTrajectory.size())
 		{
 			throw new java.lang.Exception ("MarketPath Constructor => Invalid Inputs");
 		}
@@ -154,7 +155,7 @@ public class MarketPath
 		_vertexDateArray = new org.drip.analytics.date.JulianDate[vertexCount];
 
 		for (java.util.Map.Entry<java.lang.Integer, org.drip.exposure.universe.MarketVertex>
-			marketVertexMapEntry : _marketVertexMap.entrySet())
+			marketVertexMapEntry : _marketVertexTrajectory.entrySet())
 		{
 			org.drip.exposure.universe.MarketVertex marketVertex = marketVertexMapEntry.getValue();
 
@@ -184,14 +185,14 @@ public class MarketPath
 	}
 
 	/**
-	 * Retrieve the Map of the Market Vertexes
+	 * Retrieve the Trajectory of the Market Vertexes
 	 * 
-	 * @return The Market Vertex Map
+	 * @return The Market Vertex Trajectory
 	 */
 
-	public java.util.Map<java.lang.Integer, org.drip.exposure.universe.MarketVertex> marketVertexMap()
+	public java.util.Map<java.lang.Integer, org.drip.exposure.universe.MarketVertex> trajectory()
 	{
-		return _marketVertexMap;
+		return _marketVertexTrajectory;
 	}
 
 	/**
@@ -202,14 +203,14 @@ public class MarketPath
 
 	public org.drip.exposure.universe.MarketVertex[] marketVertexArray()
 	{
-		int vertexCount = _marketVertexMap.size();
+		int vertexCount = _marketVertexTrajectory.size();
 
 		int vertexIndex = 0;
 		org.drip.exposure.universe.MarketVertex[] marketVertexArray = new
 			org.drip.exposure.universe.MarketVertex[vertexCount];
 
 		for (java.util.Map.Entry<java.lang.Integer, org.drip.exposure.universe.MarketVertex>
-			marketVertexMapEntry : _marketVertexMap.entrySet())
+			marketVertexMapEntry : _marketVertexTrajectory.entrySet())
 		{
 			marketVertexArray[vertexIndex++] = marketVertexMapEntry.getValue();
 		}
@@ -250,7 +251,7 @@ public class MarketPath
 	public boolean containsDate (
 		final int vertexDate)
 	{
-		return _marketVertexMap.containsKey (vertexDate);
+		return _marketVertexTrajectory.containsKey (vertexDate);
 	}
 
 	/**
@@ -264,6 +265,6 @@ public class MarketPath
 	public org.drip.exposure.universe.MarketVertex marketVertex (
 		final int vertexDate)
 	{
-		return containsDate (vertexDate) ? _marketVertexMap.get (vertexDate) : null;
+		return containsDate (vertexDate) ? _marketVertexTrajectory.get (vertexDate) : null;
 	}
 }

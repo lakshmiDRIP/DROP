@@ -1,5 +1,10 @@
 
-package org.drip.exposure.holdings;
+package org.drip.coverage.execution;
+
+import org.drip.sample.lvar.OptimalTrajectoryNoDrift;
+import org.drip.sample.lvar.OptimalTrajectoryWithDrift;
+
+import org.junit.Test;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -7,6 +12,7 @@ package org.drip.exposure.holdings;
 
 /*!
  * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
  *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
  *  	libraries targeting analysts and developers
@@ -47,53 +53,17 @@ package org.drip.exposure.holdings;
  */
 
 /**
- * PositionGroupNumeraire evaluates the Value of the Numeraire for a Position Group given the Realized Market
- *  Vertex Array. The References are:
- *  
- *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
- *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
- *  
- *  - Burgard, C., and M. Kjaer (2014): In the Balance, Risk, 24 (11) 72-75.
- *  
- *  - Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and the
- *  	Re-Hypothecation Option, eSSRN, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955.
- *  
- *  - Burgard, C., and M. Kjaer (2017): Derivatives Funding, Netting, and Accounting, eSSRN,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2534011.
- * 
- *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
- *  	21 (2) 97-102.
- * 
+ * LVaR holds the JUnit Code Coverage Tests for the LVaR Execution Module.
+ *
  * @author Lakshmi Krishnamurthy
  */
 
-public class PositionGroupNumeraire
+public class LVaR
 {
-
-	/**
-	 * Empty PositionGroupNumeraire Constructor
-	 */
-
-	public PositionGroupNumeraire()
+	@Test public void codeCoverageTest() throws Exception
 	{
-	}
+		OptimalTrajectoryNoDrift.main (null);
 
-	/**
-	 * Compute the Value of the Position Group at the Market Vertex
-	 * 
-	 * @param forwardDate The Forward Date
-	 * @param marketPath The Market Path
-	 * 
-	 * @return The Value of the Position Group
-	 * 
-	 * @throws java.lang.Exception Thrown if the Value cannot be computed
-	 */
-
-	public double value (
-		final int forwardDate,
-		final org.drip.exposure.universe.MarketPath marketPath)
-		throws java.lang.Exception
-	{
-		return 1.;
+		OptimalTrajectoryWithDrift.main (null);
 	}
 }

@@ -2,6 +2,7 @@
 package org.drip.sample.burgard2013;
 
 import org.drip.analytics.date.*;
+import org.drip.exposure.evolver.LatentStateVertexContainer;
 import org.drip.exposure.mpor.CollateralAmountEstimator;
 import org.drip.exposure.universe.*;
 import org.drip.measure.bridge.BrokenDateInterpolatorLinearT;
@@ -14,6 +15,7 @@ import org.drip.measure.statistics.UnivariateDiscreteThin;
 import org.drip.quant.common.FormatUtil;
 import org.drip.quant.linearalgebra.Matrix;
 import org.drip.service.env.EnvManager;
+import org.drip.state.identifier.OTCFixFloatLabel;
 import org.drip.xva.basel.*;
 import org.drip.xva.definition.*;
 import org.drip.xva.gross.*;
@@ -270,7 +272,7 @@ public class SetOffZeroThresholdFundingStochastic {
 		throws Exception
 	{
 		int iNumStep = 10;
-		int iNumPath = 100000;
+		int iNumPath = 60000;
 		int iNumVertex = 10;
 		double dblTime = 5.;
 		double dblATMSwapRateOffsetDrift = 0.0;
@@ -558,9 +560,15 @@ public class SetOffZeroThresholdFundingStochastic {
 					adblCounterPartyRecoveryRate[j]
 				);
 
-				aMV[j] = MarketVertex.SingleManifestMeasure (
+				LatentStateVertexContainer latentStateVertexContainer = new LatentStateVertexContainer();
+
+				latentStateVertexContainer.add (
+					OTCFixFloatLabel.Standard ("USD-3M-10Y"),
+					Double.NaN
+				);
+
+				aMV[j] = MarketVertex.Nodal (
 					adtVertex[j] = dtSpot.addMonths (6 * j),
-					Double.NaN,
 					dblOvernightNumeraireDrift,
 					adblOvernightNumeraire[j],
 					dblCSADrift,
@@ -584,7 +592,8 @@ public class SetOffZeroThresholdFundingStochastic {
 						Double.NaN,
 						Double.NaN,
 						Double.NaN
-					)
+					),
+					latentStateVertexContainer
 				);
 
 				if (0 != j) {

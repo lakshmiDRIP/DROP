@@ -1,6 +1,8 @@
 
 package org.drip.sample.mporfixfloat;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.drip.analytics.date.DateUtil;
@@ -8,12 +10,15 @@ import org.drip.analytics.date.JulianDate;
 import org.drip.exposure.csatimeline.AndersenPykhtinSokolLag;
 import org.drip.exposure.csatimeline.LastFlowDates;
 import org.drip.exposure.evolver.EntityDynamicsContainer;
+import org.drip.exposure.evolver.LatentStateDynamicsContainer;
+import org.drip.exposure.evolver.LatentStateVertexContainer;
 import org.drip.exposure.evolver.PrimarySecurity;
 import org.drip.exposure.evolver.PrimarySecurityDynamicsContainer;
 import org.drip.exposure.evolver.TerminalLatentState;
 import org.drip.exposure.generator.FixFloatMPoR;
 import org.drip.exposure.mpor.VariationMarginTradeTrajectoryEstimator;
 import org.drip.exposure.mpor.VariationMarginTradeVertexExposure;
+import org.drip.exposure.universe.LatentStateWeiner;
 import org.drip.exposure.universe.MarketPath;
 import org.drip.exposure.universe.MarketVertex;
 import org.drip.exposure.universe.MarketVertexGenerator;
@@ -31,10 +36,11 @@ import org.drip.quant.common.FormatUtil;
 import org.drip.quant.linearalgebra.Matrix;
 import org.drip.service.env.EnvManager;
 import org.drip.state.identifier.CSALabel;
-import org.drip.state.identifier.EntityEquityLabel;
 import org.drip.state.identifier.EntityFundingLabel;
 import org.drip.state.identifier.EntityHazardLabel;
 import org.drip.state.identifier.EntityRecoveryLabel;
+import org.drip.state.identifier.ForwardLabel;
+import org.drip.state.identifier.LatentStateLabel;
 import org.drip.state.identifier.OvernightLabel;
 
 /*
@@ -130,232 +136,401 @@ public class OTCReceiverAggressiveTimeline
 		);
 	}
 
-	private static final PrimarySecurityDynamicsContainer GenerateTradeablesContainer (
-		final String eventTenor,
-		final int eventCount,
-		final String dealer,
-		final String client)
+	private static final PrimarySecurity OvernightReplicator (
+		final String currency,
+		final List<LatentStateLabel> latentStateLabelList)
 		throws Exception
 	{
-		String currency = "USD";
+		double overnightReplicatorDrift = 0.0025;
+		double overnightReplicatorVolatility = 0.001;
+		double overnightReplicatorRepo = 0.0;
 
-		double liborDrift = 0.0;
-		double liborVolatility = 0.001;
+		LatentStateLabel overnightLabel = OvernightLabel.Create (currency);
 
-		double overnightIndexNumeraireDrift = 0.0025;
-		double overnightIndexNumeraireVolatility = 0.0005;
-		double overnightIndexNumeraireRepo = 0.0;
+		latentStateLabelList.add (overnightLabel);
 
-		double collateralSchemeNumeraireDrift = 0.01;
-		double collateralSchemeNumeraireVolatility = 0.002;
-		double collateralSchemeNumeraireRepo = 0.005;
-
-		double dealerSeniorFundingNumeraireDrift = 0.03;
-		double dealerSeniorFundingNumeraireVolatility = 0.002;
-		double dealerSeniorFundingNumeraireRepo = 0.028;
-
-		double dealerSubordinateFundingNumeraireDrift = 0.045;
-		double dealerSubordinateFundingNumeraireVolatility = 0.002;
-		double dealerSubordinateFundingNumeraireRepo = 0.028;
-
-		double clientFundingNumeraireDrift = 0.03;
-		double clientFundingNumeraireVolatility = 0.003;
-		double clientFundingNumeraireRepo = 0.028;
-
-		double dealerHazardRateInitial = 0.03;
-
-		double dealerSeniorRecoveryRateInitial = 0.45;
-
-		double dealerSubordinateRecoveryRateInitial = 0.25;
-
-		double clientHazardRateInitial = 0.05;
-
-		double clientRecoveryRateInitial = 0.30;
-
-		PrimarySecurity tAsset = new PrimarySecurity (
-			"AAPL",
-			EntityEquityLabel.Standard (
-				"AAPL",
-				currency
-			),
-			new DiffusionEvolver (
-				DiffusionEvaluatorLinear.Standard (
-					liborDrift,
-					liborVolatility
-				)
-			),
-			0.
-		);
-
-		PrimarySecurity tOvernightIndex = new PrimarySecurity (
+		return new PrimarySecurity (
 			currency + "_OVERNIGHT",
-			OvernightLabel.Create (currency),
+			overnightLabel,
 			new DiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
-					overnightIndexNumeraireDrift,
-					overnightIndexNumeraireVolatility
+					overnightReplicatorDrift,
+					overnightReplicatorVolatility
 				)
 			),
-			overnightIndexNumeraireRepo
+			overnightReplicatorRepo
 		);
+	}
 
-		PrimarySecurity tCollateralScheme = new PrimarySecurity (
+	private static final PrimarySecurity CSAReplicator (
+		final String currency,
+		final List<LatentStateLabel> latentStateLabelList)
+		throws Exception
+	{
+		double csaReplicatorDrift = 0.01;
+		double csaReplicatorVolatility = 0.002;
+		double csaReplicatorRepo = 0.005;
+
+		LatentStateLabel csaLabel = CSALabel.ISDA (currency);
+
+		latentStateLabelList.add (csaLabel);
+
+		return new PrimarySecurity (
 			currency + "_CSA",
-			CSALabel.ISDA (currency),
+			csaLabel,
 			new DiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
-					collateralSchemeNumeraireDrift,
-					collateralSchemeNumeraireVolatility
+					csaReplicatorDrift,
+					csaReplicatorVolatility
 				)
 			),
-			collateralSchemeNumeraireRepo
+			csaReplicatorRepo
+		);
+	}
+
+	private static final PrimarySecurity DealerSeniorFundingReplicator (
+		final String currency,
+		final String dealer,
+		final List<LatentStateLabel> latentStateLabelList)
+		throws Exception
+	{
+		double dealerSeniorFundingReplicatorDrift = 0.03;
+		double dealerSeniorFundingReplicatorVolatility = 0.002;
+		double dealerSeniorFundingReplicatorRepo = 0.028;
+
+		LatentStateLabel dealerSeniorFundingLabel = EntityFundingLabel.Senior (
+			dealer,
+			currency
 		);
 
-		PrimarySecurity tBankSeniorFunding = new PrimarySecurity (
+		latentStateLabelList.add (dealerSeniorFundingLabel);
+
+		return new PrimarySecurity (
 			dealer + "_" + currency + "_SENIOR_ZERO",
-			EntityFundingLabel.Senior (
-				dealer,
-				currency
-			),
+			dealerSeniorFundingLabel,
 			new JumpDiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
-					dealerSeniorFundingNumeraireDrift,
-					dealerSeniorFundingNumeraireVolatility
+					dealerSeniorFundingReplicatorDrift,
+					dealerSeniorFundingReplicatorVolatility
 				),
 				HazardJumpEvaluator.Standard (
-					dealerHazardRateInitial,
-					dealerSeniorRecoveryRateInitial
+					0.3,
+					0.45
 				)
 			),
-			dealerSeniorFundingNumeraireRepo
+			dealerSeniorFundingReplicatorRepo
+		);
+	}
+
+	private static final PrimarySecurity DealerSubordinateFundingReplicator (
+		final String currency,
+		final String dealer,
+		final List<LatentStateLabel> latentStateLabelList)
+		throws Exception
+	{
+		double dealerSubordinateFundingReplicatorDrift = 0.045;
+		double dealerSubordinateFundingReplicatorVolatility = 0.002;
+		double dealerSubordinateFundingReplicatorRepo = 0.028;
+
+		LatentStateLabel dealerSubordinateFundingLabel = EntityFundingLabel.Subordinate (
+			dealer,
+			currency
 		);
 
-		PrimarySecurity tBankSubordinateFunding = new PrimarySecurity (
+		latentStateLabelList.add (dealerSubordinateFundingLabel);
+
+		return new PrimarySecurity (
 			dealer + "_" + currency + "_SUBORDINATE_ZERO",
-			EntityFundingLabel.Subordinate (
-				dealer,
-				currency
-			),
+			dealerSubordinateFundingLabel,
 			new JumpDiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
-					dealerSubordinateFundingNumeraireDrift,
-					dealerSubordinateFundingNumeraireVolatility
+					dealerSubordinateFundingReplicatorDrift,
+					dealerSubordinateFundingReplicatorVolatility
 				),
 				HazardJumpEvaluator.Standard (
-					dealerHazardRateInitial,
-					dealerSubordinateRecoveryRateInitial
+					0.3,
+					0.25
 				)
 			),
-			dealerSubordinateFundingNumeraireRepo
+			dealerSubordinateFundingReplicatorRepo
+		);
+	}
+
+	private static final PrimarySecurity ClientFundingReplicator (
+		final String currency,
+		final String client,
+		final List<LatentStateLabel> latentStateLabelList)
+		throws Exception
+	{
+		double clientFundingReplicatorDrift = 0.03;
+		double clientFundingReplicatorVolatility = 0.003;
+		double clientFundingReplicatorRepo = 0.028;
+
+		LatentStateLabel clientFundingLabel = EntityFundingLabel.Senior (
+			client,
+			currency
 		);
 
-		PrimarySecurity tCounterPartyFunding = new PrimarySecurity (
+		latentStateLabelList.add (clientFundingLabel);
+
+		return new PrimarySecurity (
 			client + "_" + currency + "_SENIOR_ZERO",
-			EntityFundingLabel.Senior (
-				client,
-				currency
-			),
+			clientFundingLabel,
 			new JumpDiffusionEvolver (
 				DiffusionEvaluatorLogarithmic.Standard (
-					clientFundingNumeraireDrift,
-					clientFundingNumeraireVolatility
+					clientFundingReplicatorDrift,
+					clientFundingReplicatorVolatility
 				),
 				HazardJumpEvaluator.Standard (
-					clientHazardRateInitial,
-					clientRecoveryRateInitial
+					0.5,
+					0.30
 				)
 			),
-			clientFundingNumeraireRepo
+			clientFundingReplicatorRepo
+		);
+	}
+
+	private static final TerminalLatentState DealerHazard (
+		final String currency,
+		final String dealer,
+		final List<LatentStateLabel> latentStateLabelList)
+		throws Exception
+	{
+		double dealerHazardDrift = 0.0002;
+		double dealerHazardVolatility = 0.02;
+
+		LatentStateLabel dealerHazardLabel = EntityHazardLabel.Standard (
+			dealer,
+			currency
 		);
 
-		return new PrimarySecurityDynamicsContainer (
-			tAsset,
-			tOvernightIndex,
-			tCollateralScheme,
-			tBankSeniorFunding,
-			tBankSubordinateFunding,
-			tCounterPartyFunding
+		latentStateLabelList.add (dealerHazardLabel);
+
+		return new TerminalLatentState (
+			dealerHazardLabel,
+			new DiffusionEvolver (
+				DiffusionEvaluatorLogarithmic.Standard (
+					dealerHazardDrift,
+					dealerHazardVolatility
+				)
+			)
 		);
+	}
+
+	private static final TerminalLatentState DealerRecovery (
+		final String currency,
+		final String dealer,
+		final List<LatentStateLabel> latentStateLabelList)
+		throws Exception
+	{
+		double dealerRecoveryDrift = 0.0002;
+		double dealerRecoveryVolatility = 0.02;
+
+		LatentStateLabel dealerRecoveryLabel = EntityRecoveryLabel.Senior (
+			dealer,
+			currency
+		);
+
+		latentStateLabelList.add (dealerRecoveryLabel);
+
+		return new TerminalLatentState (
+			dealerRecoveryLabel,
+			new DiffusionEvolver (
+				DiffusionEvaluatorLogarithmic.Standard (
+					dealerRecoveryDrift,
+					dealerRecoveryVolatility
+				)
+			)
+		);
+	}
+
+	private static final TerminalLatentState ClientHazard (
+		final String currency,
+		final String client,
+		final List<LatentStateLabel> latentStateLabelList)
+		throws Exception
+	{
+		double clientHazardDrift = 0.0002;
+		double clientHazardVolatility = 0.02;
+
+		LatentStateLabel clientHazardLabel = EntityHazardLabel.Standard (
+			client,
+			currency
+		);
+
+		latentStateLabelList.add (clientHazardLabel);
+
+		return new TerminalLatentState (
+			clientHazardLabel,
+			new DiffusionEvolver (
+				DiffusionEvaluatorLogarithmic.Standard (
+					clientHazardDrift,
+					clientHazardVolatility
+				)
+			)
+		);
+	}
+
+	private static final TerminalLatentState ClientRecovery (
+		final String currency,
+		final String client,
+		final List<LatentStateLabel> latentStateLabelList)
+		throws Exception
+	{
+		double clientRecoveryDrift = 0.0002;
+		double clientRecoveryVolatility = 0.02;
+
+		LatentStateLabel clientRecoveryLabel = EntityRecoveryLabel.Senior (
+			client,
+			currency
+		);
+
+		latentStateLabelList.add (clientRecoveryLabel);
+
+		return new TerminalLatentState (
+			clientRecoveryLabel,
+			new DiffusionEvolver (
+				DiffusionEvaluatorLogarithmic.Standard (
+					clientRecoveryDrift,
+					clientRecoveryVolatility
+				)
+			)
+		);
+	}
+
+	private static final EntityDynamicsContainer EntityEvolver (
+		final String currency,
+		final String dealer,
+		final String client,
+		final List<LatentStateLabel> latentStateLabelList)
+		throws Exception
+	{
+		return new EntityDynamicsContainer (
+			DealerHazard (
+				currency,
+				dealer,
+				latentStateLabelList
+			),
+			DealerRecovery (
+				currency,
+				dealer,
+				latentStateLabelList
+			),
+			null,
+			ClientHazard (
+				currency,
+				client,
+				latentStateLabelList
+			),
+			ClientRecovery (
+				currency,
+				client,
+				latentStateLabelList
+			)
+		);
+	}
+
+	private static final PrimarySecurityDynamicsContainer PrimarySecurityEvolver (
+		final String currency,
+		final String dealer,
+		final String client,
+		final List<LatentStateLabel> latentStateLabelList)
+		throws Exception
+	{
+		return new PrimarySecurityDynamicsContainer (
+			null,
+			OvernightReplicator (
+				currency,
+				latentStateLabelList
+			),
+			CSAReplicator (
+				currency,
+				latentStateLabelList
+			),
+			DealerSeniorFundingReplicator (
+				currency,
+				dealer,
+				latentStateLabelList
+			),
+			DealerSubordinateFundingReplicator (
+				currency,
+				dealer,
+				latentStateLabelList
+			),
+			ClientFundingReplicator (
+				currency,
+				client,
+				latentStateLabelList
+			)
+		);
+	}
+
+	private static final LatentStateDynamicsContainer LatentStateEvolver (
+		final ForwardLabel forwardLabel,
+		final List<LatentStateLabel> latentStateLabelList)
+		throws Exception
+	{
+		double otcFixFloatNumeraireDrift = 0.0;
+		double otcFixFloatNumeraireVolatility = 0.25;
+
+		latentStateLabelList.add (forwardLabel);
+
+		LatentStateDynamicsContainer latentStateDynamicsContainer = new LatentStateDynamicsContainer();
+
+		latentStateDynamicsContainer.addForward (
+			new TerminalLatentState (
+				forwardLabel,
+				new DiffusionEvolver (
+					DiffusionEvaluatorLinear.Standard (
+						otcFixFloatNumeraireDrift,
+						otcFixFloatNumeraireVolatility
+					)
+				)
+			)
+		);
+
+		return latentStateDynamicsContainer;
 	}
 
 	private static final MarketVertexGenerator ConstructMarketVertexGenerator (
 		final JulianDate spotDate,
-		final String periodTenor,
-		final int periodCount,
+		final String exposureSamplingTenor,
+		final int exposureSamplingNodeCount,
 		final String currency,
 		final String dealer,
-		final String client)
+		final String client,
+		final ForwardLabel forwardLabel,
+		final List<LatentStateLabel> latentStateLabelList)
 		throws Exception
 	{
-		double dealerHazardRateDrift = 0.002;
-		double dealerHazardRateVolatility = 0.20;
-		double dealerRecoveryRateDrift = 0.002;
-		double dealerRecoveryRateVolatility = 0.02;
-		double clientHazardRateDrift = 0.002;
-		double clientHazardRateVolatility = 0.30;
-		double clientRecoveryRateDrift = 0.002;
-		double clientRecoveryRateVolatility = 0.02;
+		JulianDate terminationDate = spotDate;
+		int[] eventVertexArray = new int[exposureSamplingNodeCount];
 
-		return MarketVertexGenerator.PeriodHorizon (
+		for (int i = 0; i < exposureSamplingNodeCount; ++i)
+		{
+			terminationDate = terminationDate.addTenor (exposureSamplingTenor);
+
+			eventVertexArray[i] = terminationDate.julian();
+		}
+
+		return new MarketVertexGenerator (
 			spotDate.julian(),
-			periodTenor,
-			periodCount,
-			GenerateTradeablesContainer (
-				periodTenor,
-				periodCount,
+			eventVertexArray,
+			EntityEvolver (
+				currency,
 				dealer,
-				client
+				client,
+				latentStateLabelList
 			),
-			new EntityDynamicsContainer (
-				new TerminalLatentState (
-					EntityHazardLabel.Standard (
-						dealer,
-						currency
-					),
-					new DiffusionEvolver (
-						DiffusionEvaluatorLogarithmic.Standard (
-							dealerHazardRateDrift,
-							dealerHazardRateVolatility
-						)
-					)
-				),
-				new TerminalLatentState (
-					EntityRecoveryLabel.Senior (
-						dealer,
-						currency
-					),
-					new DiffusionEvolver (
-						DiffusionEvaluatorLogarithmic.Standard (
-							dealerRecoveryRateDrift,
-							dealerRecoveryRateVolatility
-						)
-					)
-				),
-				null,
-				new TerminalLatentState (
-					EntityHazardLabel.Standard (
-						client,
-						currency
-					),
-					new DiffusionEvolver (
-						DiffusionEvaluatorLogarithmic.Standard (
-							clientHazardRateDrift,
-							clientHazardRateVolatility
-						)
-					)
-				),
-				new TerminalLatentState (
-					EntityRecoveryLabel.Senior (
-						client,
-						currency
-					),
-					new DiffusionEvolver (
-						DiffusionEvaluatorLogarithmic.Standard (
-							clientRecoveryRateDrift,
-							clientRecoveryRateVolatility
-						)
-					)
-				)
+			PrimarySecurityEvolver (
+				currency,
+				dealer,
+				client,
+				latentStateLabelList
+			),
+			LatentStateEvolver (
+				forwardLabel,
+				latentStateLabelList
 			)
 		);
 	}
@@ -379,35 +554,53 @@ public class OTCReceiverAggressiveTimeline
 		String currency = "USD";
 		String dealer = "NOM";
 		String client = "SSGA";
-		double[][] correlationMatrix = new double[][] {
-			{1.00, 0.00, 0.20, 0.15, 0.05, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #0 ASSET NUMERAIRE
-			{0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #1 OVERNIGHT POLICY INDEX NUMERAIRE
-			{0.20, 0.00, 1.00, 0.13, 0.25, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #2 COLLATERAL SCHEME NUMERAIRE
-			{0.15, 0.00, 0.13, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #3 BANK HAZARD RATE
-			{0.05, 0.00, 0.25, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #4 BANK SENIOR FUNDING NUMERAIRE
-			{0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #5 BANK SENIOR RECOVERY RATE
-			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00}, // #6 BANK SUBORDINATE FUNDING NUMERAIRE
-			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00}, // #7 BANK SUBORDINATE RECOVERY RATE
-			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00}, // #8 COUNTER PARTY HAZARD RATE
-			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00}, // #9 COUNTER PARTY FUNDING NUMERAIRE
-			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00}  // #10 COUNTER PARTY RECOVERY RATE
+		double[][] correlationMatrix = new double[][]
+		{
+			{1.00, 0.00, 0.20, 0.15, 0.05, 0.00, 0.00, 0.00, 0.00, 0.00}, // #0  DEALER HAZARD
+			{0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #1  DEALER SENIOR RECOVERY
+			{0.20, 0.00, 1.00, 0.13, 0.25, 0.00, 0.00, 0.00, 0.00, 0.00}, // #2  CLIENT HAZARD
+			{0.15, 0.00, 0.13, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #3  CLIENT RECOVERY
+			{0.05, 0.00, 0.25, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #4  OVERNIGHT REPLICATOR
+			{0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00}, // #5  CSA REPLICATOR
+			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00}, // #6  DEALER SENIOR FUNDING REPLICATOR
+			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00}, // #7  DEALER SUBORDINATE FUNDING REPLICATOR
+			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00}, // #8  CLIENT FUNDING REPLICATOR
+			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00}, // #9  FORWARD NUMERAIRE
 		};
 		String fixFloatMaturityTenor = "1Y";
 		double fixFloatCoupon = 0.02;
 		double fixFloatNotional = 1.e+06;
 
+		ForwardLabel forwardLabel = ForwardLabel.Create (
+			currency,
+			"3M"
+		);
+
+		List<LatentStateLabel> latentStateLabelList = new ArrayList<LatentStateLabel>();
+
 		MarketVertexGenerator marketVertexGenerator = ConstructMarketVertexGenerator (
-			spotDate.subtractTenor ("1W"),
+			spotDate,
 			exposurePeriodTenor,
 			vertexGenerationPeriodCount,
 			currency,
 			dealer,
-			client
+			client,
+			forwardLabel,
+			latentStateLabelList
 		);
 
-		MarketVertex initialMarketVertex = MarketVertex.StartUp (
+		LatentStateVertexContainer latentStateVertexContainer = new LatentStateVertexContainer();
+
+		latentStateVertexContainer.add (
+			ForwardLabel.Create (
+				currency,
+				"3M"
+			),
+			0.02
+		);
+
+		MarketVertex initialMarketVertex = MarketVertex.Epochal (
 			spotDate,
-			0.020, 				// Initial LIBOR
 			1.000, 				// dblOvernightNumeraireInitial
 			1.000, 				// dblCSANumeraire
 			0.015, 				// dblBankHazardRate
@@ -415,7 +608,8 @@ public class OTCReceiverAggressiveTimeline
 			0.015 / (1 - 0.40), // dblBankFundingSpread
 			0.030, 				// dblCounterPartyHazardRate
 			0.300, 				// dblCounterPartyRecoveryRate
-			0.030 / (1 - 0.30) 	// dblCounterPartyFundingSpread
+			0.030 / (1 - 0.30),	// dblCounterPartyFundingSpread
+			latentStateVertexContainer
 		);
 
 		AndersenPykhtinSokolLag andersenPykhtinSokolLag = AndersenPykhtinSokolLag.Aggressive();
@@ -479,7 +673,10 @@ public class OTCReceiverAggressiveTimeline
 			MarketPath marketPath = new MarketPath (
 				marketVertexGenerator.marketVertex (
 					initialMarketVertex,
-					Matrix.Transpose (correlatedPathVertexDimension.straightPathVertexRd().flatform())
+					LatentStateWeiner.FromUnitRandom (
+						latentStateLabelList,
+						Matrix.Transpose (correlatedPathVertexDimension.straightPathVertexRd().flatform())
+					)
 				)
 			);
 
@@ -517,15 +714,15 @@ public class OTCReceiverAggressiveTimeline
 
 				variationMarginGapArray[i] += marginTradeFlowEntry.variationMarginGap();
 
-				variationMarginGapStartDateArray[i] = lastFlowDates.clientVariationMargin().julian();
+				variationMarginGapStartDateArray[i] = lastFlowDates.clientVariationMarginPosting().julian();
 
-				variationMarginGapEndDateArray[i] = lastFlowDates.dealerVariationMargin().julian();
+				variationMarginGapEndDateArray[i] = lastFlowDates.dealerVariationMarginPosting().julian();
 
-				clientTradePaymentGapStartDateArray[i] = lastFlowDates.clientTrade().julian();
+				clientTradePaymentGapStartDateArray[i] = lastFlowDates.clientTradePayment().julian();
 
-				clientTradePaymentGapEndDateArray[i] = lastFlowDates.dealerTrade().julian();
+				clientTradePaymentGapEndDateArray[i] = lastFlowDates.dealerTradePayment().julian();
 
-				clientDealerTradePaymentGapStartDateArray[i] = lastFlowDates.dealerTrade().julian();
+				clientDealerTradePaymentGapStartDateArray[i] = lastFlowDates.dealerTradePayment().julian();
 
 				clientDealerTradePaymentGapEndDateArray[i] = lastFlowDates.variationMarginPeriodEnd().julian();
 			}

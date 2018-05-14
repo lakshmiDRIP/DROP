@@ -2,6 +2,7 @@
 package org.drip.sample.xvabasel;
 
 import org.drip.analytics.date.*;
+import org.drip.exposure.evolver.LatentStateVertexContainer;
 import org.drip.exposure.mpor.CollateralAmountEstimator;
 import org.drip.exposure.universe.*;
 import org.drip.measure.bridge.BrokenDateInterpolatorLinearT;
@@ -12,6 +13,7 @@ import org.drip.measure.realization.*;
 import org.drip.measure.statistics.UnivariateDiscreteThin;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
+import org.drip.state.identifier.OTCFixFloatLabel;
 import org.drip.xva.basel.*;
 import org.drip.xva.gross.*;
 import org.drip.xva.netting.CollateralGroupPath;
@@ -221,9 +223,16 @@ public class CollateralizedNettingNeutral {
 		);
 
 		for (int i = 0; i <= iNumStep; ++i)
-			aNV[i] = MarketVertex.SingleManifestMeasure (
+		{
+			LatentStateVertexContainer latentStateVertexContainer = new LatentStateVertexContainer();
+
+			latentStateVertexContainer.add (
+				OTCFixFloatLabel.Standard ("USD-3M-10Y"),
+				Double.NaN
+			);
+
+			aNV[i] = MarketVertex.Nodal (
 				adtVertex[i] = dtSpot.addMonths (6 * i),
-				Double.NaN,
 				dblOvernightNumeraireDrift,
 				Math.exp (-0.5 * dblOvernightNumeraireDrift * iNumStep),
 				dblCSADrift,
@@ -247,8 +256,10 @@ public class CollateralizedNettingNeutral {
 					Double.NaN,
 					Double.NaN,
 					Double.NaN
-				)
+				),
+				latentStateVertexContainer
 			);
+		}
 
 		for (int i = 0; i < iNumPath; ++i) {
 			aadblPortfolio1Value[i] = SwapPortfolioValueRealization (

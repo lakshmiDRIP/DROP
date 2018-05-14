@@ -2,6 +2,7 @@
 package org.drip.sample.xva;
 
 import org.drip.analytics.date.*;
+import org.drip.exposure.evolver.LatentStateVertexContainer;
 import org.drip.exposure.mpor.CollateralAmountEstimator;
 import org.drip.exposure.universe.*;
 import org.drip.measure.bridge.BrokenDateInterpolatorLinearT;
@@ -11,6 +12,7 @@ import org.drip.measure.process.DiffusionEvolver;
 import org.drip.measure.realization.*;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
+import org.drip.state.identifier.OTCFixFloatLabel;
 import org.drip.xva.gross.*;
 import org.drip.xva.netting.CollateralGroupPath;
 import org.drip.xva.proto.*;
@@ -232,9 +234,16 @@ public class ZeroThresholdCollateralGroup {
 		);
 
 		for (int i = 0; i <= iNumStep; ++i)
-			aMV[i] = MarketVertex.SingleManifestMeasure (
+		{
+			LatentStateVertexContainer latentStateVertexContainer = new LatentStateVertexContainer();
+
+			latentStateVertexContainer.add (
+				OTCFixFloatLabel.Standard ("USD-3M-10Y"),
+				Double.NaN
+			);
+
+			aMV[i] = MarketVertex.Nodal (
 				adtVertex[i] = dtSpot.addMonths (6 * i),
-				Double.NaN,
 				dblOvernightNumeraireDrift,
 				Math.exp (-0.5 * dblOvernightNumeraireDrift * (iNumStep - i)),
 				dblCSADrift,
@@ -258,8 +267,10 @@ public class ZeroThresholdCollateralGroup {
 					Double.NaN,
 					Double.NaN,
 					Double.NaN
-				)
+				),
+				latentStateVertexContainer
 			);
+		}
 
 		MarketPath mp = MarketPath.FromMarketVertexArray (aMV);
 

@@ -68,7 +68,7 @@ package org.drip.exposure.generator;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FixFloatMPoR implements org.drip.exposure.generator.VariationMarginTradePaymentVertex
+public class FixFloatMPoR implements org.drip.exposure.mpor.VariationMarginTradePaymentVertex
 {
 	private org.drip.exposure.generator.FixedStreamMPoR _fixedStreamMPoR = null;
 	private org.drip.exposure.generator.FloatStreamMPoR _floatStreamMPoR = null;

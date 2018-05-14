@@ -85,6 +85,7 @@ public class MarketVertexEntity
 	 * @param hazardRate The Hazard Rate Latent State
 	 * @param seniorRecoveryRate The Recovery Rate Latent State
 	 * @param seniorFundingSpread The Funding Spread Latent State
+	 * @param baseRate The Period Base Discount Rate
 	 * @param previousMarketVertexEntity The Previous Instance of MarketVertexEntity
 	 * 
 	 * @return Instance of Senior MarketVertexEntity
@@ -95,6 +96,7 @@ public class MarketVertexEntity
 		final double hazardRate,
 		final double seniorRecoveryRate,
 		final double seniorFundingSpread,
+		final double baseRate,
 		final org.drip.exposure.universe.MarketVertexEntity previousMarketVertexEntity)
 	{
 		if (null == previousMarketVertexEntity)
@@ -111,7 +113,7 @@ public class MarketVertexEntity
 				seniorRecoveryRate,
 				seniorFundingSpread,
 				previousMarketVertexEntity.seniorFundingReplicator() *
-					java.lang.Math.exp (-1. * seniorFundingSpread * timeWidth),
+					java.lang.Math.exp ((baseRate + seniorFundingSpread) * timeWidth),
 				java.lang.Double.NaN,
 				java.lang.Double.NaN,
 				java.lang.Double.NaN
@@ -132,6 +134,7 @@ public class MarketVertexEntity
 	 * @param hazardRate The Hazard Rate Latent State
 	 * @param seniorRecoveryRate The Recovery Rate Latent State
 	 * @param seniorFundingSpread The Funding Spread Latent State
+	 * @param baseRate The Period Base Discount Rate
 	 * 
 	 * @return Instance of Senior MarketVertexEntity
 	 */
@@ -140,7 +143,8 @@ public class MarketVertexEntity
 		final double timeWidth,
 		final double hazardRate,
 		final double seniorRecoveryRate,
-		final double seniorFundingSpread)
+		final double seniorFundingSpread,
+		final double baseRate)
 	{
 		try
 		{
@@ -149,6 +153,7 @@ public class MarketVertexEntity
 				hazardRate,
 				seniorRecoveryRate,
 				seniorFundingSpread,
+				baseRate,
 				new MarketVertexEntity (
 					1.,
 					hazardRate,
@@ -178,6 +183,7 @@ public class MarketVertexEntity
 	 * @param seniorFundingSpread The Senior Funding Spread Latent State
 	 * @param subordinateRecoveryRate The Subordinate Recovery Rate Latent State
 	 * @param subordinateFundingSpread The Subordinate Funding Spread Latent State
+	 * @param baseRate The Period Base Discount Rate
 	 * @param previousMarketVertexEntity The Previous Instance of MarketVertexEntity
 	 * 
 	 * @return Instance of Senior MarketVertexEntity
@@ -190,6 +196,7 @@ public class MarketVertexEntity
 		final double seniorFundingSpread,
 		final double subordinateRecoveryRate,
 		final double subordinateFundingSpread,
+		final double baseRate,
 		final org.drip.exposure.universe.MarketVertexEntity previousMarketVertexEntity)
 	{
 		if (null == previousMarketVertexEntity)
@@ -206,11 +213,11 @@ public class MarketVertexEntity
 				seniorRecoveryRate,
 				seniorFundingSpread,
 				previousMarketVertexEntity.seniorFundingReplicator() *
-					java.lang.Math.exp (-1. * seniorFundingSpread * timeWidth),
+					java.lang.Math.exp ((baseRate + seniorFundingSpread) * timeWidth),
 				subordinateRecoveryRate,
 				subordinateFundingSpread,
 				previousMarketVertexEntity.subordinateFundingReplicator() *
-					java.lang.Math.exp (-1. * subordinateFundingSpread * timeWidth)
+					java.lang.Math.exp ((baseRate + subordinateFundingSpread) * timeWidth)
 			);
 		}
 		catch (java.lang.Exception e)
@@ -230,6 +237,7 @@ public class MarketVertexEntity
 	 * @param seniorFundingSpread The Senior Funding Spread Latent State
 	 * @param subordinateRecoveryRate The Subordinate Recovery Rate Latent State
 	 * @param subordinateFundingSpread The Subordinate Funding Spread Latent State
+	 * @param baseRate The Period Base Discount Rate
 	 * 
 	 * @return Instance of Senior MarketVertexEntity
 	 */
@@ -240,7 +248,8 @@ public class MarketVertexEntity
 		final double seniorRecoveryRate,
 		final double seniorFundingSpread,
 		final double subordinateRecoveryRate,
-		final double subordinateFundingSpread)
+		final double subordinateFundingSpread,
+		final double baseRate)
 	{
 		try
 		{
@@ -251,6 +260,7 @@ public class MarketVertexEntity
 				seniorFundingSpread,
 				subordinateRecoveryRate,
 				subordinateFundingSpread,
+				baseRate,
 				new MarketVertexEntity (
 					1.,
 					hazardRate,
@@ -281,8 +291,7 @@ public class MarketVertexEntity
 	 * @param seniorFundingReplicator The Entity Senior Funding Replicator Vertex Latent State
 	 * @param subordinateRecoveryRate The Entity Subordinate Recovery Rate Latent State
 	 * @param subordinateFundingSpread The Entity Subordinate Funding Spread Latent State
-	 * @param subordinateFundingReplicator The Entity Subordinate Funding Replicator Vertex Latent
-	 * 	State
+	 * @param subordinateFundingReplicator The Entity Subordinate Funding Replicator Vertex Latent State
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
