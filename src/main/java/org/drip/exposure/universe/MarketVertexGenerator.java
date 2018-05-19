@@ -851,6 +851,10 @@ public class MarketVertexGenerator
 
 		try
 		{
+			double clientHazardVertexEpochal = clientHazardVertexArray[0].value();
+
+			double dealerHazardVertexEpochal = dealerHazardVertexArray[0].value();
+
 			marketVertexTrajectory.put (
 				initialMarketVertex.anchorDate().julian(),
 				new org.drip.exposure.universe.MarketVertex (
@@ -860,25 +864,26 @@ public class MarketVertexGenerator
 					0.,
 					csaReplicatorVertexArray[0].value(),
 					new org.drip.exposure.universe.MarketVertexEntity (
-						java.lang.Math.exp (-1. * dealerSurvivalProbabilityExponent),
-						dealerHazardVertexArray[0].value(),
+						java.lang.Math.exp (-1. * _ycfWidth[0] * dealerHazardVertexEpochal),
+						dealerHazardVertexEpochal,
 						dealerSeniorRecoveryVertexArray[0].value(),
-						0.,
+						initialMarketVertex.dealer().seniorFundingSpread(),
 						dealerSeniorFundingReplicatorVertexArray[0].value(),
 						null == dealerSubordinateFundingReplicatorVertexArray ||
-						null == dealerSubordinateRecoveryVertexArray[0] ? java.lang.Double.NaN
-							: dealerSubordinateRecoveryVertexArray[0].value(),
-						null == dealerSubordinateFundingReplicatorVertexArray ? java.lang.Double.NaN : 0.,
+						null == dealerSubordinateRecoveryVertexArray[0] ? java.lang.Double.NaN :
+							dealerSubordinateRecoveryVertexArray[0].value(),
+						null == dealerSubordinateFundingReplicatorVertexArray ? java.lang.Double.NaN :
+							initialMarketVertex.dealer().subordinateFundingSpread(),
 						null == dealerSubordinateFundingReplicatorVertexArray ||
 							null == dealerSubordinateFundingReplicatorVertexArray[0] ?
 							java.lang.Double.NaN :
 							dealerSubordinateFundingReplicatorVertexArray[0].value()
 					),
 					new org.drip.exposure.universe.MarketVertexEntity (
-						java.lang.Math.exp (-1. * clientSurvivalProbabilityExponent),
-						clientHazardVertexArray[0].value(),
+						java.lang.Math.exp (-1. * _ycfWidth[0] * clientHazardVertexEpochal),
+						clientHazardVertexEpochal,
 						clientRecoveryVertexArray[0].value(),
-						0.,
+						initialMarketVertex.client().seniorFundingSpread(),
 						clientFundingReplicatorVertexArray[0].value(),
 						java.lang.Double.NaN,
 						java.lang.Double.NaN,

@@ -152,7 +152,7 @@ public class OTCReceiverCSAClassicalPlus
 		final List<LatentStateLabel> latentStateLabelList)
 		throws Exception
 	{
-		double overnightReplicatorDrift = 0.0025;
+		double overnightReplicatorDrift = 0.0005;
 		double overnightReplicatorVolatility = 0.001;
 		double overnightReplicatorRepo = 0.0;
 
@@ -307,8 +307,8 @@ public class OTCReceiverCSAClassicalPlus
 		final List<LatentStateLabel> latentStateLabelList)
 		throws Exception
 	{
-		double dealerHazardDrift = 0.0002;
-		double dealerHazardVolatility = 0.02;
+		double dealerHazardDrift = 0.00002;
+		double dealerHazardVolatility = 0.002;
 
 		LatentStateLabel dealerHazardLabel = EntityHazardLabel.Standard (
 			dealer,
@@ -361,8 +361,8 @@ public class OTCReceiverCSAClassicalPlus
 		final List<LatentStateLabel> latentStateLabelList)
 		throws Exception
 	{
-		double clientHazardDrift = 0.0002;
-		double clientHazardVolatility = 0.02;
+		double clientHazardDrift = 0.0000002;
+		double clientHazardVolatility = 0.0002;
 
 		LatentStateLabel clientHazardLabel = EntityHazardLabel.Standard (
 			client,
@@ -482,7 +482,7 @@ public class OTCReceiverCSAClassicalPlus
 		throws Exception
 	{
 		double otcFixFloatNumeraireDrift = 0.0;
-		double otcFixFloatNumeraireVolatility = 0.25;
+		double otcFixFloatNumeraireVolatility = 0.05;
 
 		latentStateLabelList.add (forwardLabel);
 
