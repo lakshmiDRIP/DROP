@@ -42,6 +42,7 @@ import org.drip.state.identifier.EntityRecoveryLabel;
 import org.drip.state.identifier.ForwardLabel;
 import org.drip.state.identifier.LatentStateLabel;
 import org.drip.state.identifier.OvernightLabel;
+import org.drip.xva.gross.BaselExposureDigest;
 import org.drip.xva.gross.ExposureAdjustmentAggregator;
 import org.drip.xva.gross.ExposureAdjustmentDigest;
 import org.drip.xva.gross.MonoPathExposureAdjustment;
@@ -50,6 +51,7 @@ import org.drip.xva.hypothecation.CollateralGroupVertex;
 import org.drip.xva.netting.CollateralGroupPath;
 import org.drip.xva.netting.CreditDebtGroupPath;
 import org.drip.xva.netting.FundingGroupPath;
+import org.drip.xva.settings.StandardizedExposureGeneratorScheme;
 import org.drip.xva.strategy.AlbaneseAndersenFundingGroupPath;
 import org.drip.xva.strategy.AlbaneseAndersenNettingGroupPath;
 import org.drip.xva.vertex.AlbaneseAndersen;
@@ -546,6 +548,50 @@ public class OTCPayerCSAClassicalMinus
 		);
 	}
 
+	private static final void DisplayThinStatistics (
+		final String annotation,
+		final UnivariateDiscreteThin univariateDiscreteThin)
+		throws Exception
+	{
+		System.out.println (
+			annotation + " => " +
+			FormatUtil.FormatDouble (univariateDiscreteThin.average(), 3, 0, 1.) + " | " +
+			FormatUtil.FormatDouble (univariateDiscreteThin.minimum(), 3, 0, 1.) + " | " +
+			FormatUtil.FormatDouble (univariateDiscreteThin.maximum(), 3, 0, 1.) + " | " +
+			FormatUtil.FormatDouble (univariateDiscreteThin.error(), 3, 0, 1.) + " ||"
+		);
+	}
+
+	private static final void DisplayBaselMeasures (
+		final BaselExposureDigest baselExposureDigest)
+		throws Exception
+	{
+		System.out.println (
+			"\t| Expected Exposure                    => " +
+			FormatUtil.FormatDouble (baselExposureDigest.expectedExposure(), 6, 0, 1.) + " ||"
+		);
+
+		System.out.println (
+			"\t| Expected Positive Exposure           => " +
+			FormatUtil.FormatDouble (baselExposureDigest.expectedPositiveExposure(), 6, 0, 1.) + " ||"
+		);
+
+		System.out.println (
+			"\t| Effective Expected Exposure          => " +
+			FormatUtil.FormatDouble (baselExposureDigest.effectiveExpectedExposure(), 6, 0, 1.) + " ||"
+		);
+
+		System.out.println (
+			"\t| Effective Expected Positive Exposure => " +
+			FormatUtil.FormatDouble (baselExposureDigest.effectiveExpectedPositiveExposure(), 6, 0, 1.) + " ||"
+		);
+
+		System.out.println (
+			"\t| Exposure At Default                  => " +
+			FormatUtil.FormatDouble (baselExposureDigest.exposureAtDefault(), 6, 0, 1.) + " ||"
+		);
+	}
+
 	public static final void main (
 		final String[] args)
 		throws Exception
@@ -581,6 +627,15 @@ public class OTCPayerCSAClassicalMinus
 		String fixFloatMaturityTenor = "1Y";
 		double fixFloatCoupon = 0.02;
 		double fixFloatNotional = -10.e+06;
+
+		double eadMultiplier = 1.;
+		int timeIntegrand = 365;
+
+		StandardizedExposureGeneratorScheme standardizedExposureGeneratorScheme =
+			new StandardizedExposureGeneratorScheme (
+				eadMultiplier,
+				timeIntegrand
+			);
 
 		ForwardLabel forwardLabel = ForwardLabel.Create (
 			currency,
@@ -774,20 +829,19 @@ public class OTCPayerCSAClassicalMinus
 
 		System.out.println ("\t|---------------------------------------||");
 
-		EnvManager.TerminateEnv();
-	}
+		System.out.println();
 
-	private static final void DisplayThinStatistics (
-		final String annotation,
-		final UnivariateDiscreteThin univariateDiscreteThin)
-		throws Exception
-	{
-		System.out.println (
-			annotation + " => " +
-			FormatUtil.FormatDouble (univariateDiscreteThin.average(), 3, 0, 1.) + " | " +
-			FormatUtil.FormatDouble (univariateDiscreteThin.minimum(), 3, 0, 1.) + " | " +
-			FormatUtil.FormatDouble (univariateDiscreteThin.maximum(), 3, 0, 1.) + " | " +
-			FormatUtil.FormatDouble (univariateDiscreteThin.error(), 3, 0, 1.) + " ||"
-		);
+		System.out.println ("\t|-------------------------------------------------||");
+
+		System.out.println ("\t|             BASEL EXPOSURE MEASURES             ||");
+
+		System.out.println ("\t|-------------------------------------------------||");
+
+		DisplayBaselMeasures (exposureAdjustmentAggregator.baselExposureDigest
+			(standardizedExposureGeneratorScheme));
+
+		System.out.println ("\t|-------------------------------------------------||");
+
+		EnvManager.TerminateEnv();
 	}
 }
