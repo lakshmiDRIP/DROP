@@ -71,8 +71,8 @@ package org.drip.xva.settings;
 
 public class StandardizedExposureGeneratorScheme
 {
+	private int _timeIntegrand = -1;
 	private double _eadMultiplier = java.lang.Double.NaN;
-	private double _timeIntegrand = java.lang.Double.NaN;
 
 	/**
 	 * StandardizedExposureGeneratorScheme Constructor
@@ -85,11 +85,11 @@ public class StandardizedExposureGeneratorScheme
 
 	public StandardizedExposureGeneratorScheme (
 		final double eadMultiplier,
-		final double timeIntegrand)
+		final int timeIntegrand)
 		throws java.lang.Exception
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (_eadMultiplier = eadMultiplier) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_timeIntegrand = timeIntegrand))
+			0. >= _eadMultiplier || 0 >= (_timeIntegrand = timeIntegrand))
 		{
 			throw new java.lang.Exception
 				("StandardizedExposureGeneratorScheme Constructor => Invalid Inputs");
@@ -113,7 +113,7 @@ public class StandardizedExposureGeneratorScheme
 	 * @return The Time Integrand
 	 */
 
-	public double timeIntegrand()
+	public int timeIntegrand()
 	{
 		return _timeIntegrand;
 	}

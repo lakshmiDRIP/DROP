@@ -1218,6 +1218,8 @@ public class ExposureAdjustmentAggregator
 	/**
 	 * Generate the Basel Exposure Digest
 	 * 
+	 * @param standardizedExposureGeneratorScheme The Standardized Basel Exposure Generation Scheme
+	 * 
 	 * @return The Basel Exposure Digest
 	 */
 
@@ -1235,6 +1237,7 @@ public class ExposureAdjustmentAggregator
 		int[] vertexDateArray = new int[vertexCount];
 		int pathCount = _pathExposureAdjustmentArray.length;
 		double[] collateralizedPositiveExposure = new double[vertexCount];
+		double[] effectiveCollateralizedPositiveExposure = new double[vertexCount];
 		org.drip.spline.params.SegmentCustomBuilderControl[] segmentCustomBuilderControlArray = new
 			org.drip.spline.params.SegmentCustomBuilderControl[vertexCount - 1]; 
 
@@ -1260,6 +1263,19 @@ public class ExposureAdjustmentAggregator
 		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 		{
 			collateralizedPositiveExposure[vertexIndex] /= pathCount;
+
+			if (0 == vertexIndex)
+			{
+				effectiveCollateralizedPositiveExposure[0] = collateralizedPositiveExposure[0];
+			}
+			else
+			{
+				effectiveCollateralizedPositiveExposure[vertexIndex] =
+					collateralizedPositiveExposure[vertexIndex] >
+					effectiveCollateralizedPositiveExposure[vertexIndex - 1] ?
+					collateralizedPositiveExposure[vertexIndex] :
+					effectiveCollateralizedPositiveExposure[vertexIndex - 1];
+			}
 		}
 
 		try
@@ -1282,9 +1298,9 @@ public class ExposureAdjustmentAggregator
 			for (int i = 0; i < vertexCount - 1; ++i)
 				segmentCustomBuilderControlArray[i] = segmentCustomBuilderControl;
 
-			org.drip.spline.stretch.MultiSegmentSequence multiSegmentSequence =
+			org.drip.spline.stretch.MultiSegmentSequence multiSegmentSequenceCollateralizedPositiveExposure =
 				org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator (
-					"DF_STRETCH",
+					"CollateralizedPositiveExposure",
 					vertexDateArray,
 					collateralizedPositiveExposure,
 					segmentCustomBuilderControlArray,
@@ -1293,12 +1309,41 @@ public class ExposureAdjustmentAggregator
 					org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE
 				);
 
+			org.drip.spline.stretch.MultiSegmentSequence
+				multiSegmentSequenceEffectiveCollateralizedPositiveExposure =
+					org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator (
+						"EffectiveCollateralizedPositiveExposure",
+						vertexDateArray,
+						effectiveCollateralizedPositiveExposure,
+						segmentCustomBuilderControlArray,
+						null,
+						org.drip.spline.stretch.BoundarySettings.NaturalStandard(),
+						org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE
+					);
+
+			if (null == multiSegmentSequenceCollateralizedPositiveExposure ||
+				null == multiSegmentSequenceEffectiveCollateralizedPositiveExposure)
+			{
+				return null;
+			}
+
+			int integrandFinish = vertexDateArray[0] + standardizedExposureGeneratorScheme.timeIntegrand();
+
+			double effectiveExpectedPositiveExposure =
+				multiSegmentSequenceEffectiveCollateralizedPositiveExposure.toAU().integrate (
+					vertexDateArray[0],
+					integrandFinish
+				);
+
 			return new BaselExposureDigest (
-				collateralizedPositiveExposure[0],
-				java.lang.Double.NaN, // final double expectedPositiveExposure,
-				java.lang.Double.NaN, // final double effectiveExpectedExposure,
-				java.lang.Double.NaN, // final double effectiveExpectedPositiveExposure,
-				java.lang.Double.NaN // final double exposureAtDefault
+				vertexDateArray[0],
+				multiSegmentSequenceCollateralizedPositiveExposure.toAU().integrate (
+					vertexDateArray[0],
+					integrandFinish
+				),
+				effectiveCollateralizedPositiveExposure[vertexCount - 1],
+				effectiveExpectedPositiveExposure,
+				effectiveExpectedPositiveExposure * standardizedExposureGeneratorScheme.eadMultiplier()
 			);
 		}
 		catch (java.lang.Exception e)
