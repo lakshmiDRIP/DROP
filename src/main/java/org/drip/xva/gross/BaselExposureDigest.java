@@ -71,102 +71,97 @@ package org.drip.xva.gross;
 
 public class BaselExposureDigest
 {
-	private org.drip.measure.statistics.UnivariateDiscreteThin _expectedExposureThinStatistics = null;
-	private org.drip.measure.statistics.UnivariateDiscreteThin _exposureAtDefaultThinStatistics = null;
-	private org.drip.measure.statistics.UnivariateDiscreteThin _expectedPositiveExposureThinStatistics =
-		null;
-	private org.drip.measure.statistics.UnivariateDiscreteThin _effectiveExpectedExposureThinStatistics =
-		null;
-	private org.drip.measure.statistics.UnivariateDiscreteThin
-		_effectiveExpectedPositiveExposureThinStatistics = null;
+	private double _expectedExposure = java.lang.Double.NaN;
+	private double _exposureAtDefault = java.lang.Double.NaN;
+	private double _expectedPositiveExposure = java.lang.Double.NaN;
+	private double _effectiveExpectedExposure = java.lang.Double.NaN;
+	private double _effectiveExpectedPositiveExposure = java.lang.Double.NaN;
 
 	/**
 	 * BaselExposureDigest Constructor
 	 * 
-	 * @param expectedExposureThinStatistics  The Univariate Thin Statistics for the Expected Exposure
-	 * @param expectedPositiveExposureThinStatistics The Univariate Thin Statistics for the Expected Positive
-	 * 		Exposure
-	 * @param effectiveExpectedExposureThinStatistics The Univariate Thin Statistics for the Effective
-	 * 		Expected Exposure
-	 * @param effectiveExpectedPositiveExposureThinStatistics The Univariate Thin Statistics for the
-	 * 		Effective Expected Positive Exposure
-	 * @param exposureAtDefaultThinStatistics The Univariate Thin Statistics for the Exposure At Default
+	 * @param expectedExposure The Expected Exposure
+	 * @param expectedPositiveExposure The Expected Positive Exposure
+	 * @param effectiveExpectedExposure The Effective Expected Exposure
+	 * @param effectiveExpectedPositiveExposure The Effective Expected Positive Exposure
+	 * @param exposureAtDefault The Exposure At Default
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BaselExposureDigest (
-		final org.drip.measure.statistics.UnivariateDiscreteThin expectedExposureThinStatistics,
-		final org.drip.measure.statistics.UnivariateDiscreteThin expectedPositiveExposureThinStatistics,
-		final org.drip.measure.statistics.UnivariateDiscreteThin effectiveExpectedExposureThinStatistics,
-		final org.drip.measure.statistics.UnivariateDiscreteThin
-			effectiveExpectedPositiveExposureThinStatistics,
-		final org.drip.measure.statistics.UnivariateDiscreteThin exposureAtDefaultThinStatistics)
+		final double expectedExposure,
+		final double expectedPositiveExposure,
+		final double effectiveExpectedExposure,
+		final double effectiveExpectedPositiveExposure,
+		final double exposureAtDefault)
 		throws java.lang.Exception
 	{
-		if (null == (_expectedExposureThinStatistics = expectedExposureThinStatistics) ||
-			null == (_expectedPositiveExposureThinStatistics = expectedPositiveExposureThinStatistics) ||
-			null == (_effectiveExpectedExposureThinStatistics = effectiveExpectedExposureThinStatistics) ||
-			null == (_effectiveExpectedPositiveExposureThinStatistics =
-				effectiveExpectedPositiveExposureThinStatistics) ||
-			null == (_exposureAtDefaultThinStatistics = exposureAtDefaultThinStatistics))
+		if (!org.drip.quant.common.NumberUtil.IsValid (_expectedExposure = expectedExposure) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_expectedPositiveExposure = expectedPositiveExposure)
+				||
+			!org.drip.quant.common.NumberUtil.IsValid (_effectiveExpectedExposure =
+				effectiveExpectedExposure) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_effectiveExpectedPositiveExposure =
+				effectiveExpectedPositiveExposure) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_exposureAtDefault = exposureAtDefault))
 		{
 			throw new java.lang.Exception ("BaselExposureDigest Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Univariate Thin Statistics for the Expected Exposure
+	 * Retrieve the Expected Exposure
 	 * 
-	 * @return The Univariate Thin Statistics for the Expected Exposure
+	 * @return The Expected Exposure
 	 */
 
-	public org.drip.measure.statistics.UnivariateDiscreteThin expectedExposure()
+	public double expectedExposure()
 	{
-		return _expectedExposureThinStatistics;
+		return _expectedExposure;
 	}
 
 	/**
-	 * Retrieve the Univariate Thin Statistics for the Expected Positive Exposure
+	 * Retrieve the Expected Positive Exposure
 	 * 
-	 * @return The Univariate Thin Statistics for the Expected Positive Exposure
+	 * @return The Expected Positive Exposure
 	 */
 
-	public org.drip.measure.statistics.UnivariateDiscreteThin expectedPositiveExposure()
+	public double expectedPositiveExposure()
 	{
-		return _expectedPositiveExposureThinStatistics;
+		return _expectedPositiveExposure;
 	}
 
 	/**
-	 * Retrieve the Univariate Thin Statistics for the Effective Expected Exposure
+	 * Retrieve the Effective Expected Exposure
 	 * 
-	 * @return The Univariate Thin Statistics for the Effective Expected Exposure
+	 * @return The Effective Expected Exposure
 	 */
 
-	public org.drip.measure.statistics.UnivariateDiscreteThin effectiveExpectedExposure()
+	public double effectiveExpectedExposure()
 	{
-		return _effectiveExpectedExposureThinStatistics;
+		return _effectiveExpectedExposure;
 	}
 
 	/**
-	 * Retrieve the Univariate Thin Statistics for the Effective Expected Positive Exposure
+	 * Retrieve the Effective Expected Positive Exposure
 	 * 
-	 * @return The Univariate Thin Statistics for the Effective Expected Positive Exposure
+	 * @return The Effective Expected Positive Exposure
 	 */
 
-	public org.drip.measure.statistics.UnivariateDiscreteThin effectiveExpectedPositiveExposure()
+	public double effectiveExpectedPositiveExposure()
 	{
-		return _effectiveExpectedPositiveExposureThinStatistics;
+		return _effectiveExpectedPositiveExposure;
 	}
 
 	/**
-	 * Retrieve the Univariate Thin Statistics for the Exposure At Default
+	 * Retrieve the Exposure At Default
 	 * 
-	 * @return The Univariate Thin Statistics for the Exposure At Default
+	 * @return The Exposure At Default
 	 */
 
-	public org.drip.measure.statistics.UnivariateDiscreteThin exposureAtDefault()
+	public double exposureAtDefault()
 	{
-		return _exposureAtDefaultThinStatistics;
+		return _exposureAtDefault;
 	}
 }

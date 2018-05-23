@@ -153,50 +153,52 @@ public class BurgardKjaerOperator
 
 <span class="fc" id="L154">		double gainOnDealerDefault = initialTrajectoryVertex.gainOnDealerDefault();</span>
 
-<span class="fc" id="L156">		double initialPortfolioValue = finalMarketVertex.positionManifestValue();</span>
+<span class="fc" id="L156">		double dealerSeniorDefaultIntensity = finalDealerMarketVertex.hazardRate();</span>
 
-<span class="fc" id="L158">		double portfolioValueBump = _pdeEvolutionControl.sensitivityShiftFactor() * initialPortfolioValue;</span>
+<span class="fc" id="L158">		double clientDefaultIntensity = finalClientMarketVertex.hazardRate();</span>
 
-<span class="fc" id="L160">		double dealerSeniorDefaultIntensity = finalDealerMarketVertex.hazardRate();</span>
+<span class="fc" id="L160">		double dealerGainOnClientDefault = initialTrajectoryVertex.gainOnClientDefault();</span>
 
-<span class="fc" id="L162">		double clientDefaultIntensity = finalClientMarketVertex.hazardRate();</span>
-
-<span class="fc" id="L164">		double dealerGainOnClientDefault = initialTrajectoryVertex.gainOnClientDefault();</span>
-
-<span class="fc" id="L166">		double gainOnClientDefault = clientDefaultIntensity * dealerGainOnClientDefault;</span>
+<span class="fc" id="L162">		double gainOnClientDefault = clientDefaultIntensity * dealerGainOnClientDefault;</span>
 
 		try
 		{
-<span class="fc" id="L170">			double[] bumpedThetaArray = new org.drip.xva.pde.ParabolicDifferentialOperator</span>
-<span class="fc" id="L171">				(_tradeablesContainer.position()).thetaUpDown (</span>
+<span class="fc" id="L166">			double initialPortfolioValue = finalMarketVertex.latentStateValue</span>
+<span class="fc" id="L167">				(_tradeablesContainer.assetList().get (0).label());</span>
+
+<span class="fc" id="L169">			double portfolioValueBump = _pdeEvolutionControl.sensitivityShiftFactor() *</span>
+				initialPortfolioValue;
+
+<span class="fc" id="L172">			double[] bumpedThetaArray = new org.drip.xva.pde.ParabolicDifferentialOperator</span>
+<span class="fc" id="L173">				(_tradeablesContainer.assetList().get (0)).thetaUpDown (</span>
 					initialTrajectoryVertex,
 					initialPortfolioValue,
 					portfolioValueBump
 				);
 
-<span class="pc bpc" id="L177" title="2 of 4 branches missed.">			if (null == bumpedThetaArray || 3 != bumpedThetaArray.length)</span>
+<span class="pc bpc" id="L179" title="2 of 4 branches missed.">			if (null == bumpedThetaArray || 3 != bumpedThetaArray.length)</span>
 			{
-<span class="nc" id="L179">				return null;</span>
+<span class="nc" id="L181">				return null;</span>
 			}
 
-<span class="fc" id="L182">			return new org.drip.xva.pde.BurgardKjaerEdgeRun (</span>
+<span class="fc" id="L184">			return new org.drip.xva.pde.BurgardKjaerEdgeRun (</span>
 				portfolioValueBump,
 				-1. * bumpedThetaArray[0],
 				-1. * bumpedThetaArray[1],
 				-1. * bumpedThetaArray[2],
-<span class="fc" id="L187">				finalMarketVertex.csaReplicator() * collateral,</span>
+<span class="fc" id="L189">				finalMarketVertex.csaReplicator() * collateral,</span>
 				(dealerSeniorDefaultIntensity + clientDefaultIntensity) * initialDerivativeXVAValue,
 				-1. * dealerSeniorDefaultIntensity * gainOnDealerDefault,
 				-1. * gainOnClientDefault,
 				0.
 			);
 		}
-<span class="nc" id="L194">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L196">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L196">			e.printStackTrace();</span>
+<span class="nc" id="L198">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L199">		return null;</span>
+<span class="nc" id="L201">		return null;</span>
 	}
 
 	/**
@@ -214,74 +216,76 @@ public class BurgardKjaerOperator
 		final org.drip.xva.derivative.EvolutionTrajectoryVertex initialTrajectoryVertex,
 		final double collateral)
 	{
-<span class="pc bpc" id="L217" title="2 of 4 branches missed.">		if (null == marketEdge ||</span>
+<span class="pc bpc" id="L219" title="2 of 4 branches missed.">		if (null == marketEdge ||</span>
 			null == initialTrajectoryVertex)
 		{
-<span class="nc" id="L220">			return null;</span>
+<span class="nc" id="L222">			return null;</span>
 		}
 
-<span class="fc" id="L223">		org.drip.exposure.universe.MarketVertex finalMarketVertex = marketEdge.finish();</span>
+<span class="fc" id="L225">		org.drip.exposure.universe.MarketVertex finalMarketVertex = marketEdge.finish();</span>
 
-<span class="fc" id="L225">		double derivativeXVAValue = initialTrajectoryVertex.positionGreekVertex().derivativeXVAValue();</span>
+<span class="fc" id="L227">		double derivativeXVAValue = initialTrajectoryVertex.positionGreekVertex().derivativeXVAValue();</span>
 
-<span class="fc" id="L227">		org.drip.exposure.universe.MarketVertexEntity finalDealerMarketVertex = finalMarketVertex.dealer();</span>
+<span class="fc" id="L229">		org.drip.exposure.universe.MarketVertexEntity finalDealerMarketVertex = finalMarketVertex.dealer();</span>
 
-<span class="fc" id="L229">		org.drip.exposure.universe.MarketVertexEntity finalClientMarketVertex = finalMarketVertex.client();</span>
+<span class="fc" id="L231">		org.drip.exposure.universe.MarketVertexEntity finalClientMarketVertex = finalMarketVertex.client();</span>
 
-<span class="fc" id="L231">		double clientRecoveryRate = finalClientMarketVertex.seniorRecoveryRate();</span>
+<span class="fc" id="L233">		double clientRecoveryRate = finalClientMarketVertex.seniorRecoveryRate();</span>
 
-<span class="fc" id="L233">		double dealerDefaultIntensity = finalDealerMarketVertex.hazardRate();</span>
+<span class="fc" id="L235">		double dealerDefaultIntensity = finalDealerMarketVertex.hazardRate();</span>
 
-<span class="fc" id="L235">		double clientDefaultIntensity = finalClientMarketVertex.hazardRate();</span>
+<span class="fc" id="L237">		double clientDefaultIntensity = finalClientMarketVertex.hazardRate();</span>
 
-<span class="fc" id="L237">		double closeOutMTM = org.drip.xva.definition.PDEEvolutionControl.CLOSEOUT_GREGORY_LI_TANG ==</span>
-<span class="pc bpc" id="L238" title="1 of 2 branches missed.">			_pdeEvolutionControl.closeOutScheme() ? derivativeXVAValue : derivativeXVAValue;</span>
+<span class="fc" id="L239">		double closeOutMTM = org.drip.xva.definition.PDEEvolutionControl.CLOSEOUT_GREGORY_LI_TANG ==</span>
+<span class="pc bpc" id="L240" title="1 of 2 branches missed.">			_pdeEvolutionControl.closeOutScheme() ? derivativeXVAValue : derivativeXVAValue;</span>
 
-<span class="pc bpc" id="L240" title="1 of 2 branches missed.">		double dealerExposure = closeOutMTM &gt; 0. ? closeOutMTM : finalDealerMarketVertex.seniorRecoveryRate()</span>
+<span class="pc bpc" id="L242" title="1 of 2 branches missed.">		double dealerExposure = closeOutMTM &gt; 0. ? closeOutMTM : finalDealerMarketVertex.seniorRecoveryRate()</span>
 			* closeOutMTM;
 
-<span class="fc" id="L243">		double initialPortfolioValue = finalMarketVertex.positionManifestValue();</span>
-
-<span class="fc" id="L245">		double portfolioValueBump = _pdeEvolutionControl.sensitivityShiftFactor() * initialPortfolioValue;</span>
-
-<span class="pc bpc" id="L247" title="1 of 2 branches missed.">		double derivativeXVAClientDefaultGrowth = -1. * clientDefaultIntensity *</span>
+<span class="pc bpc" id="L245" title="1 of 2 branches missed.">		double derivativeXVAClientDefaultGrowth = -1. * clientDefaultIntensity *</span>
 			(closeOutMTM &lt; 0. ? closeOutMTM : clientRecoveryRate * closeOutMTM);
 
-<span class="fc" id="L250">		double dealerSeniorFundingSpread = finalDealerMarketVertex.seniorFundingSpread() /</span>
-<span class="fc" id="L251">			marketEdge.vertexIncrement();</span>
+<span class="fc" id="L248">		double dealerSeniorFundingSpread = finalDealerMarketVertex.seniorFundingSpread() /</span>
+<span class="fc" id="L249">			marketEdge.vertexIncrement();</span>
 
 		try
 		{
-<span class="fc" id="L255">			double[] bumpedThetaArray = new org.drip.xva.pde.ParabolicDifferentialOperator</span>
-<span class="fc" id="L256">				(_tradeablesContainer.position()).thetaUpDown (</span>
+<span class="fc" id="L253">			double initialPortfolioValue = finalMarketVertex.latentStateValue</span>
+<span class="fc" id="L254">				(_tradeablesContainer.assetList().get (0).label());</span>
+
+<span class="fc" id="L256">			double portfolioValueBump = _pdeEvolutionControl.sensitivityShiftFactor() *</span>
+				initialPortfolioValue;
+
+<span class="fc" id="L259">			double[] bumpedThetaArray = new org.drip.xva.pde.ParabolicDifferentialOperator</span>
+<span class="fc" id="L260">				(_tradeablesContainer.assetList().get (0)).thetaUpDown (</span>
 					initialTrajectoryVertex,
 					initialPortfolioValue,
 					portfolioValueBump
 				);
 
-<span class="pc bpc" id="L262" title="2 of 4 branches missed.">			if (null == bumpedThetaArray || 3 != bumpedThetaArray.length)</span>
+<span class="pc bpc" id="L266" title="2 of 4 branches missed.">			if (null == bumpedThetaArray || 3 != bumpedThetaArray.length)</span>
 			{
-<span class="nc" id="L264">				return null;</span>
+<span class="nc" id="L268">				return null;</span>
 			}
 
-<span class="fc" id="L267">			return new org.drip.xva.pde.BurgardKjaerEdgeAttribution (</span>
+<span class="fc" id="L271">			return new org.drip.xva.pde.BurgardKjaerEdgeAttribution (</span>
 				portfolioValueBump,
 				-1. * bumpedThetaArray[0],
 				-1. * bumpedThetaArray[1],
 				-1. * bumpedThetaArray[2],
-<span class="fc" id="L272">				finalMarketVertex.csaReplicator() * collateral,</span>
+<span class="fc" id="L276">				finalMarketVertex.csaReplicator() * collateral,</span>
 				(dealerDefaultIntensity + clientDefaultIntensity) * derivativeXVAValue,
 				dealerSeniorFundingSpread * dealerExposure,
 				-1. * dealerDefaultIntensity * dealerExposure,
 				derivativeXVAClientDefaultGrowth
 			);
 		}
-<span class="nc" id="L279">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L283">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L281">			e.printStackTrace();</span>
+<span class="nc" id="L285">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L284">		return null;</span>
+<span class="nc" id="L288">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

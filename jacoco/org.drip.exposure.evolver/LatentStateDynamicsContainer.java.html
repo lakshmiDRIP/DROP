@@ -204,8 +204,8 @@ public class LatentStateDynamicsContainer
 	public boolean entityEquityExists (
 		final org.drip.state.identifier.EntityEquityLabel entityEquityLabel)
 	{
-<span class="nc bnc" id="L207" title="All 2 branches missed.">		return null == entityEquityLabel ? false : _entityEquityEvolver.containsKey</span>
-<span class="nc" id="L208">			(entityEquityLabel.fullyQualifiedName());</span>
+<span class="pc bpc" id="L207" title="1 of 2 branches missed.">		return null == entityEquityLabel ? false : _entityEquityEvolver.containsKey</span>
+<span class="fc" id="L208">			(entityEquityLabel.fullyQualifiedName());</span>
 	}
 
 	/**
@@ -911,7 +911,7 @@ public class LatentStateDynamicsContainer
 	public boolean entityRecoveryExists (
 		final org.drip.state.identifier.EntityRecoveryLabel entityRecoveryLabel)
 	{
-<span class="pc bpc" id="L914" title="1 of 2 branches missed.">		return null == entityRecoveryLabel ? false : _entityRecoveryEvolver.containsKey</span>
+<span class="fc bfc" id="L914" title="All 2 branches covered.">		return null == entityRecoveryLabel ? false : _entityRecoveryEvolver.containsKey</span>
 <span class="fc" id="L915">			(entityRecoveryLabel.fullyQualifiedName());</span>
 	}
 
@@ -926,8 +926,8 @@ public class LatentStateDynamicsContainer
 	public org.drip.exposure.evolver.TerminalLatentState entityRecovery (
 		final org.drip.state.identifier.EntityRecoveryLabel entityRecoveryLabel)
 	{
-<span class="pc bpc" id="L929" title="1 of 2 branches missed.">		return entityRecoveryExists (entityRecoveryLabel) ? _entityRecoveryEvolver.get</span>
-<span class="pc" id="L930">			(entityRecoveryLabel.fullyQualifiedName()) : null;</span>
+<span class="fc bfc" id="L929" title="All 2 branches covered.">		return entityRecoveryExists (entityRecoveryLabel) ? _entityRecoveryEvolver.get</span>
+<span class="fc" id="L930">			(entityRecoveryLabel.fullyQualifiedName()) : null;</span>
 	}
 
 	/**
@@ -1447,7 +1447,7 @@ public class LatentStateDynamicsContainer
 
 <span class="nc bnc" id="L1448" title="All 2 branches missed.">		if (label instanceof org.drip.state.identifier.FundingLabel)</span>
 		{
-<span class="nc" id="L1450">			return fundingExists((org.drip.state.identifier.FundingLabel) label);</span>
+<span class="nc" id="L1450">			return fundingExists ((org.drip.state.identifier.FundingLabel) label);</span>
 		}
 
 <span class="nc bnc" id="L1453" title="All 2 branches missed.">		if (label instanceof org.drip.state.identifier.GovvieLabel)</span>
@@ -1531,6 +1531,133 @@ public class LatentStateDynamicsContainer
 		}
 
 <span class="nc" id="L1533">		return false;</span>
+	}
+
+	/**
+	 * Retrieve the Terminal Latent State corresponding to the Label
+	 * 
+	 * @param label The Latent State Label
+	 * 
+	 * @return The Terminal Latent State corresponding to the Label
+	 */
+
+	public org.drip.exposure.evolver.TerminalLatentState terminal (
+		final org.drip.state.identifier.LatentStateLabel label)
+	{
+<span class="pc bpc" id="L1547" title="1 of 2 branches missed.">		if (null == label)</span>
+		{
+<span class="nc" id="L1549">			return null;</span>
+		}
+
+<span class="pc bpc" id="L1552" title="1 of 2 branches missed.">		if (label instanceof org.drip.state.identifier.EntityEquityLabel &amp;&amp;</span>
+<span class="pc bpc" id="L1553" title="1 of 2 branches missed.">			entityEquityExists ((org.drip.state.identifier.EntityEquityLabel) label))</span>
+		{
+<span class="fc" id="L1555">			return _entityEquityEvolver.get (label.fullyQualifiedName());</span>
+		}
+
+<span class="nc bnc" id="L1558" title="All 2 branches missed.">		if (label instanceof org.drip.state.identifier.FundingLabel &amp;&amp;</span>
+<span class="nc bnc" id="L1559" title="All 2 branches missed.">			fundingExists ((org.drip.state.identifier.FundingLabel) label))</span>
+		{
+<span class="nc" id="L1561">			return _fundingEvolver.get (label.fullyQualifiedName());</span>
+		}
+
+<span class="nc bnc" id="L1564" title="All 2 branches missed.">		if (label instanceof org.drip.state.identifier.GovvieLabel &amp;&amp;</span>
+<span class="nc bnc" id="L1565" title="All 2 branches missed.">			govvieExists ((org.drip.state.identifier.GovvieLabel) label))</span>
+		{
+<span class="nc" id="L1567">			return _govvieEvolver.get (label.fullyQualifiedName());</span>
+		}
+
+<span class="nc bnc" id="L1570" title="All 2 branches missed.">		if (label instanceof org.drip.state.identifier.FXLabel &amp;&amp;</span>
+<span class="nc bnc" id="L1571" title="All 2 branches missed.">			fxExists ((org.drip.state.identifier.FXLabel) label))</span>
+		{
+<span class="nc" id="L1573">			return _fxEvolver.get (label.fullyQualifiedName());</span>
+		}
+
+<span class="nc bnc" id="L1576" title="All 2 branches missed.">		if (label instanceof org.drip.state.identifier.ForwardLabel &amp;&amp;</span>
+<span class="nc bnc" id="L1577" title="All 2 branches missed.">			forwardExists ((org.drip.state.identifier.ForwardLabel) label))</span>
+		{
+<span class="nc" id="L1579">			return _forwardEvolver.get (label.fullyQualifiedName());</span>
+		}
+
+<span class="nc bnc" id="L1582" title="All 2 branches missed.">		if (label instanceof org.drip.state.identifier.OTCFixFloatLabel &amp;&amp;</span>
+<span class="nc bnc" id="L1583" title="All 2 branches missed.">			otcFixFloatExists ((org.drip.state.identifier.OTCFixFloatLabel) label))</span>
+		{
+<span class="nc" id="L1585">			return _otcFixFloatEvolver.get (label.fullyQualifiedName());</span>
+		}
+
+<span class="nc bnc" id="L1588" title="All 2 branches missed.">		if (label instanceof org.drip.state.identifier.OvernightLabel &amp;&amp;</span>
+<span class="nc bnc" id="L1589" title="All 2 branches missed.">			overnightExists ((org.drip.state.identifier.OvernightLabel) label))</span>
+		{
+<span class="nc" id="L1591">			return _overnightEvolver.get (label.fullyQualifiedName());</span>
+		}
+
+<span class="nc bnc" id="L1594" title="All 2 branches missed.">		if (label instanceof org.drip.state.identifier.CollateralLabel &amp;&amp;</span>
+<span class="nc bnc" id="L1595" title="All 2 branches missed.">			collateralExists ((org.drip.state.identifier.CollateralLabel) label))</span>
+		{
+<span class="nc" id="L1597">			return _collateralEvolver.get (label.fullyQualifiedName());</span>
+		}
+
+<span class="nc bnc" id="L1600" title="All 2 branches missed.">		if (label instanceof org.drip.state.identifier.CSALabel &amp;&amp;</span>
+<span class="nc bnc" id="L1601" title="All 2 branches missed.">			csaExists ((org.drip.state.identifier.CSALabel) label))</span>
+		{
+<span class="nc" id="L1603">			return _csaEvolver.get (label.fullyQualifiedName());</span>
+		}
+
+<span class="nc bnc" id="L1606" title="All 2 branches missed.">		if (label instanceof org.drip.state.identifier.EntityHazardLabel &amp;&amp;</span>
+<span class="nc bnc" id="L1607" title="All 2 branches missed.">			entityHazardExists ((org.drip.state.identifier.EntityHazardLabel) label))</span>
+		{
+<span class="nc" id="L1609">			return _entityHazardEvolver.get (label.fullyQualifiedName());</span>
+		}
+
+<span class="nc bnc" id="L1612" title="All 2 branches missed.">		if (label instanceof org.drip.state.identifier.EntityCDSLabel &amp;&amp;</span>
+<span class="nc bnc" id="L1613" title="All 2 branches missed.">			entityCreditExists ((org.drip.state.identifier.EntityCDSLabel) label))</span>
+		{
+<span class="nc" id="L1615">			return _entityCreditEvolver.get (label.fullyQualifiedName());</span>
+		}
+
+<span class="nc bnc" id="L1618" title="All 2 branches missed.">		if (label instanceof org.drip.state.identifier.EntityRecoveryLabel &amp;&amp;</span>
+<span class="nc bnc" id="L1619" title="All 2 branches missed.">			entityRecoveryExists ((org.drip.state.identifier.EntityRecoveryLabel) label))</span>
+		{
+<span class="nc" id="L1621">			return _entityRecoveryEvolver.get (label.fullyQualifiedName());</span>
+		}
+
+<span class="nc bnc" id="L1624" title="All 2 branches missed.">		if (label instanceof org.drip.state.identifier.EntityFundingLabel &amp;&amp;</span>
+<span class="nc bnc" id="L1625" title="All 2 branches missed.">			entityFundingExists ((org.drip.state.identifier.EntityFundingLabel) label))</span>
+		{
+<span class="nc" id="L1627">			return _entityFundingEvolver.get (label.fullyQualifiedName());</span>
+		}
+
+<span class="nc bnc" id="L1630" title="All 2 branches missed.">		if (label instanceof org.drip.state.identifier.VolatilityLabel &amp;&amp;</span>
+<span class="nc bnc" id="L1631" title="All 2 branches missed.">			volatilityExists ((org.drip.state.identifier.VolatilityLabel) label))</span>
+		{
+<span class="nc" id="L1633">			return _volatilityEvolver.get (label.fullyQualifiedName());</span>
+		}
+
+<span class="nc bnc" id="L1636" title="All 2 branches missed.">		if (label instanceof org.drip.state.identifier.RatingLabel &amp;&amp;</span>
+<span class="nc bnc" id="L1637" title="All 2 branches missed.">			ratingExists ((org.drip.state.identifier.RatingLabel) label))</span>
+		{
+<span class="nc" id="L1639">			return _ratingEvolver.get (label.fullyQualifiedName());</span>
+		}
+
+<span class="nc bnc" id="L1642" title="All 2 branches missed.">		if (label instanceof org.drip.state.identifier.RepoLabel &amp;&amp;</span>
+<span class="nc bnc" id="L1643" title="All 2 branches missed.">			repoExists ((org.drip.state.identifier.RepoLabel) label))</span>
+		{
+<span class="nc" id="L1645">			return _repoEvolver.get (label.fullyQualifiedName());</span>
+		}
+
+<span class="nc bnc" id="L1648" title="All 2 branches missed.">		if (label instanceof org.drip.state.identifier.PaydownLabel &amp;&amp;</span>
+<span class="nc bnc" id="L1649" title="All 2 branches missed.">			payDownExists ((org.drip.state.identifier.PaydownLabel) label))</span>
+		{
+<span class="nc" id="L1651">			return _payDownEvolver.get (label.fullyQualifiedName());</span>
+		}
+
+<span class="nc bnc" id="L1654" title="All 2 branches missed.">		if (label instanceof org.drip.state.identifier.CustomLabel &amp;&amp;</span>
+<span class="nc bnc" id="L1655" title="All 2 branches missed.">			customExists ((org.drip.state.identifier.CustomLabel) label))</span>
+		{
+<span class="nc" id="L1657">			return _customEvolver.get (label.fullyQualifiedName());</span>
+		}
+
+<span class="nc" id="L1660">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

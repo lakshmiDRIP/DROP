@@ -272,7 +272,7 @@ public class PathSimulator
 	 * Generate a Single Trajectory from the Specified Initial Market Vertex and the Evolver Sequence
 	 * 
 	 * @param initialMarketVertex The Initial Market Vertex
-	 * @param unitEvolverSequence The Evolver Sequence
+	 * @param latentStateWeiner The Latent State Weiner Instance
 	 * 
 	 * @return Single Trajectory Path Exposure Adjustment
 	 */

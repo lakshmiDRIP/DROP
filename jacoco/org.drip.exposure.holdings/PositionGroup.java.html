@@ -69,25 +69,25 @@ package org.drip.exposure.holdings;
 public class PositionGroup
 {
 <span class="nc" id="L71">	private org.drip.xva.netting.CollateralGroupPath _collateralGroupPath = null;</span>
-<span class="nc" id="L72">	private org.drip.exposure.holdings.PositionGroupNumeraire _positionGroupNumeraire = null;</span>
+<span class="nc" id="L72">	private org.drip.exposure.holdings.PositionGroupEstimator _positionGroupEstimator = null;</span>
 <span class="nc" id="L73">	private org.drip.xva.proto.PositionSchemaSpecification _positionGroupSpecification = null;</span>
 
 	/**
 	 * PositionGroup Constructor
 	 * 
 	 * @param positionGroupSpecification The Position Group Specification
-	 * @param positionGroupNumeraire The Position Group Numeraire
+	 * @param positionGroupEstimator The Position Group Estimator
 	 * 
 	 * @throws java.lang.Exception Thrown if Inputs are Invalid
 	 */
 
 	public PositionGroup (
 		final org.drip.xva.proto.PositionSchemaSpecification positionGroupSpecification,
-		final org.drip.exposure.holdings.PositionGroupNumeraire positionGroupNumeraire)
+		final org.drip.exposure.holdings.PositionGroupEstimator positionGroupEstimator)
 		throws java.lang.Exception
 <span class="nc" id="L88">	{</span>
 <span class="nc bnc" id="L89" title="All 4 branches missed.">		if (null == (_positionGroupSpecification = positionGroupSpecification) ||</span>
-			null == (_positionGroupNumeraire = positionGroupNumeraire))
+			null == (_positionGroupEstimator = positionGroupEstimator))
 		{
 <span class="nc" id="L92">			throw  new java.lang.Exception (&quot;PositionGroup Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
@@ -105,14 +105,14 @@ public class PositionGroup
 	}
 
 	/**
-	 * Retrieve the Position Group Numeraire
+	 * Retrieve the Position Group Estimator
 	 * 
-	 * @return The Position Group Numeraire
+	 * @return The Position Group Estimator
 	 */
 
-	public org.drip.exposure.holdings.PositionGroupNumeraire positionGroupNumeraire()
+	public org.drip.exposure.holdings.PositionGroupEstimator positionGroupEstimator()
 	{
-<span class="nc" id="L115">		return _positionGroupNumeraire;</span>
+<span class="nc" id="L115">		return _positionGroupEstimator;</span>
 	}
 
 	/**
@@ -177,21 +177,20 @@ public class PositionGroup
 <span class="nc" id="L177">			int forwardDate = vertexDateArray[i].julian();</span>
 
 			try {
-<span class="nc" id="L180">				positionGroupValueArray[i] = marketPath.marketVertex (forwardDate).positionManifestValue() *</span>
-<span class="nc" id="L181">					_positionGroupNumeraire.value (</span>
-						forwardDate,
-						marketPath
-					);
+<span class="nc" id="L180">				positionGroupValueArray[i] = _positionGroupEstimator.variationMarginEstimate (</span>
+					forwardDate,
+					marketPath
+				);
 			}
-<span class="nc" id="L186">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L185">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L188">				e.printStackTrace();</span>
+<span class="nc" id="L187">				e.printStackTrace();</span>
 
-<span class="nc" id="L190">				return null;</span>
-<span class="nc" id="L191">			}</span>
+<span class="nc" id="L189">				return null;</span>
+<span class="nc" id="L190">			}</span>
 		}
 
-<span class="nc" id="L194">		return positionGroupValueArray;</span>
+<span class="nc" id="L193">		return positionGroupValueArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FixFloatBaselDuration.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.exposure.holdings</a> &gt; <span class="el_source">FixFloatBaselDuration.java</span></div><h1>FixFloatBaselDuration.java</h1><pre class="source lang-java linenums">
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FixFloatBaselPositionEstimator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.exposure.holdings</a> &gt; <span class="el_source">FixFloatBaselPositionEstimator.java</span></div><h1>FixFloatBaselPositionEstimator.java</h1><pre class="source lang-java linenums">
 package org.drip.exposure.holdings;
 
 /*
@@ -47,8 +47,8 @@ package org.drip.exposure.holdings;
  */
 
 /**
- * FixFloatBaselDuration evaluates the Duration Numeraire Value of a Fix Float Position Group given the
- *  Realized Market Vertex Array using the Basel Scheme. The References are:
+ * FixFloatBaselPositionEstimator evaluates the Value of a Fix Float Position Group given the Realized Market
+ *  Path using the Basel Scheme. The References are:
  *  
  *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
  *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
@@ -67,27 +67,31 @@ package org.drip.exposure.holdings;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FixFloatBaselDuration extends org.drip.exposure.holdings.PositionGroupNumeraire
+public class FixFloatBaselPositionEstimator extends org.drip.exposure.holdings.PositionGroupEstimator
 {
-<span class="nc" id="L72">	public int _maturityDate = -1;</span>
+<span class="nc" id="L72">	private int _maturityDate = -1;</span>
+<span class="nc" id="L73">	private org.drip.state.identifier.OTCFixFloatLabel _otcFixFloatLabel = null;</span>
 
 	/**
-	 * FixFloatBaselDuration Constructor
+	 * FixFloatBaselPositionEstimator Constructor
 	 * 
 	 * @param maturityDate The Fix Float Maturity Date
+	 * @param otcFixFloatLabel OTC Fix Float Label
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public FixFloatBaselDuration (
-		final int maturityDate)
+	public FixFloatBaselPositionEstimator (
+		final int maturityDate,
+		final org.drip.state.identifier.OTCFixFloatLabel otcFixFloatLabel)
 		throws java.lang.Exception
-<span class="nc" id="L85">	{</span>
-<span class="nc bnc" id="L86" title="All 2 branches missed.">		if (0 &gt;= (_maturityDate = maturityDate))</span>
+<span class="nc" id="L88">	{</span>
+<span class="nc bnc" id="L89" title="All 4 branches missed.">		if (0 &gt;= (_maturityDate = maturityDate) ||</span>
+			null == (_otcFixFloatLabel = otcFixFloatLabel))
 		{
-<span class="nc" id="L88">			throw new java.lang.Exception (&quot;FixFloatBaselDuration Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L92">			throw new java.lang.Exception (&quot;FixFloatBaselPositionEstimator Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L90">	}</span>
+<span class="nc" id="L94">	}</span>
 
 	/**
 	 * Retrieve the Maturity Date
@@ -97,22 +101,34 @@ public class FixFloatBaselDuration extends org.drip.exposure.holdings.PositionGr
 
 	public int maturityDate()
 	{
-<span class="nc" id="L100">		return _maturityDate;</span>
+<span class="nc" id="L104">		return _maturityDate;</span>
 	}
 
-	@Override public double value (
-		final int forwardDate,
+	/**
+	 * Retrieve the OTC Fix Float Label
+	 * 
+	 * @return The OTC Fix Float Label
+	 */
+
+	public org.drip.state.identifier.OTCFixFloatLabel otcFixFloatLabel()
+	{
+<span class="nc" id="L115">		return _otcFixFloatLabel;</span>
+	}
+
+	@Override public double variationMarginEstimate (
+		final int vertexDate,
 		final org.drip.exposure.universe.MarketPath marketPath)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L108" title="All 2 branches missed.">		if (null == marketPath)</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">		if (null == marketPath)</span>
 		{
-<span class="nc" id="L110">			throw new java.lang.Exception (&quot;FixFloatBaselDuration::value =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L125">			throw new java.lang.Exception (&quot;FixFloatBaselPositionEstimator::value =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L113">		double dblTimeToHorizon = 1. * (_maturityDate - forwardDate) / 365.25;</span>
+<span class="nc" id="L128">		double dblTimeToHorizon = 1. * (_maturityDate - vertexDate) / 365.25;</span>
 
-<span class="nc bnc" id="L115" title="All 2 branches missed.">		return dblTimeToHorizon &gt; 0. ? dblTimeToHorizon : 0.;</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">		return dblTimeToHorizon &gt; 0. ? dblTimeToHorizon *</span>
+<span class="nc" id="L131">			marketPath.marketVertex (vertexDate).latentStateValue (_otcFixFloatLabel) : 0.;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

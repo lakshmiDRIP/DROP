@@ -85,6 +85,7 @@ public class MarketVertexEntity
 	 * @param hazardRate The Hazard Rate Latent State
 	 * @param seniorRecoveryRate The Recovery Rate Latent State
 	 * @param seniorFundingSpread The Funding Spread Latent State
+	 * @param baseRate The Period Base Discount Rate
 	 * @param previousMarketVertexEntity The Previous Instance of MarketVertexEntity
 	 * 
 	 * @return Instance of Senior MarketVertexEntity
@@ -95,34 +96,35 @@ public class MarketVertexEntity
 		final double hazardRate,
 		final double seniorRecoveryRate,
 		final double seniorFundingSpread,
+		final double baseRate,
 		final org.drip.exposure.universe.MarketVertexEntity previousMarketVertexEntity)
 	{
-<span class="nc bnc" id="L100" title="All 2 branches missed.">		if (null == previousMarketVertexEntity)</span>
+<span class="pc bpc" id="L102" title="1 of 2 branches missed.">		if (null == previousMarketVertexEntity)</span>
 		{
-<span class="nc" id="L102">			return null;</span>
+<span class="nc" id="L104">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L107">			return new org.drip.exposure.universe.MarketVertexEntity (</span>
-<span class="nc" id="L108">				previousMarketVertexEntity.survivalProbability()</span>
-<span class="nc" id="L109">					* java.lang.Math.exp (-1. * hazardRate * timeWidth),</span>
+<span class="fc" id="L109">			return new org.drip.exposure.universe.MarketVertexEntity (</span>
+<span class="fc" id="L110">				previousMarketVertexEntity.survivalProbability()</span>
+<span class="fc" id="L111">					* java.lang.Math.exp (-1. * hazardRate * timeWidth),</span>
 				hazardRate,
 				seniorRecoveryRate,
 				seniorFundingSpread,
-<span class="nc" id="L113">				previousMarketVertexEntity.seniorFundingReplicator() *</span>
-<span class="nc" id="L114">					java.lang.Math.exp (-1. * seniorFundingSpread * timeWidth),</span>
+<span class="fc" id="L115">				previousMarketVertexEntity.seniorFundingReplicator() *</span>
+<span class="fc" id="L116">					java.lang.Math.exp ((baseRate + seniorFundingSpread) * timeWidth),</span>
 				java.lang.Double.NaN,
 				java.lang.Double.NaN,
 				java.lang.Double.NaN
 			);
 		}
-<span class="nc" id="L120">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L122">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L122">			e.printStackTrace();</span>
+<span class="nc" id="L124">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L125">		return null;</span>
+<span class="nc" id="L127">		return null;</span>
 	}
 
 	/**
@@ -132,6 +134,7 @@ public class MarketVertexEntity
 	 * @param hazardRate The Hazard Rate Latent State
 	 * @param seniorRecoveryRate The Recovery Rate Latent State
 	 * @param seniorFundingSpread The Funding Spread Latent State
+	 * @param baseRate The Period Base Discount Rate
 	 * 
 	 * @return Instance of Senior MarketVertexEntity
 	 */
@@ -140,15 +143,17 @@ public class MarketVertexEntity
 		final double timeWidth,
 		final double hazardRate,
 		final double seniorRecoveryRate,
-		final double seniorFundingSpread)
+		final double seniorFundingSpread,
+		final double baseRate)
 	{
 		try
 		{
-<span class="nc" id="L147">			return Senior (</span>
+<span class="fc" id="L151">			return Senior (</span>
 				timeWidth,
 				hazardRate,
 				seniorRecoveryRate,
 				seniorFundingSpread,
+				baseRate,
 				new MarketVertexEntity (
 					1.,
 					hazardRate,
@@ -161,12 +166,12 @@ public class MarketVertexEntity
 				)
 			);
 		}
-<span class="nc" id="L164">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L169">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L166">			e.printStackTrace();</span>
+<span class="nc" id="L171">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L169">		return null;</span>
+<span class="nc" id="L174">		return null;</span>
 	}
 
 	/**
@@ -178,6 +183,7 @@ public class MarketVertexEntity
 	 * @param seniorFundingSpread The Senior Funding Spread Latent State
 	 * @param subordinateRecoveryRate The Subordinate Recovery Rate Latent State
 	 * @param subordinateFundingSpread The Subordinate Funding Spread Latent State
+	 * @param baseRate The Period Base Discount Rate
 	 * @param previousMarketVertexEntity The Previous Instance of MarketVertexEntity
 	 * 
 	 * @return Instance of Senior MarketVertexEntity
@@ -190,35 +196,36 @@ public class MarketVertexEntity
 		final double seniorFundingSpread,
 		final double subordinateRecoveryRate,
 		final double subordinateFundingSpread,
+		final double baseRate,
 		final org.drip.exposure.universe.MarketVertexEntity previousMarketVertexEntity)
 	{
-<span class="nc bnc" id="L195" title="All 2 branches missed.">		if (null == previousMarketVertexEntity)</span>
+<span class="nc bnc" id="L202" title="All 2 branches missed.">		if (null == previousMarketVertexEntity)</span>
 		{
-<span class="nc" id="L197">			return null;</span>
+<span class="nc" id="L204">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L202">			return new org.drip.exposure.universe.MarketVertexEntity (</span>
-<span class="nc" id="L203">				previousMarketVertexEntity.survivalProbability() *</span>
-<span class="nc" id="L204">					java.lang.Math.exp (-1. * hazardRate * timeWidth),</span>
+<span class="nc" id="L209">			return new org.drip.exposure.universe.MarketVertexEntity (</span>
+<span class="nc" id="L210">				previousMarketVertexEntity.survivalProbability() *</span>
+<span class="nc" id="L211">					java.lang.Math.exp (-1. * hazardRate * timeWidth),</span>
 				hazardRate,
 				seniorRecoveryRate,
 				seniorFundingSpread,
-<span class="nc" id="L208">				previousMarketVertexEntity.seniorFundingReplicator() *</span>
-<span class="nc" id="L209">					java.lang.Math.exp (-1. * seniorFundingSpread * timeWidth),</span>
+<span class="nc" id="L215">				previousMarketVertexEntity.seniorFundingReplicator() *</span>
+<span class="nc" id="L216">					java.lang.Math.exp ((baseRate + seniorFundingSpread) * timeWidth),</span>
 				subordinateRecoveryRate,
 				subordinateFundingSpread,
-<span class="nc" id="L212">				previousMarketVertexEntity.subordinateFundingReplicator() *</span>
-<span class="nc" id="L213">					java.lang.Math.exp (-1. * subordinateFundingSpread * timeWidth)</span>
+<span class="nc" id="L219">				previousMarketVertexEntity.subordinateFundingReplicator() *</span>
+<span class="nc" id="L220">					java.lang.Math.exp ((baseRate + subordinateFundingSpread) * timeWidth)</span>
 			);
 		}
-<span class="nc" id="L216">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L223">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L218">			e.printStackTrace();</span>
+<span class="nc" id="L225">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L221">		return null;</span>
+<span class="nc" id="L228">		return null;</span>
 	}
 
 	/**
@@ -230,6 +237,7 @@ public class MarketVertexEntity
 	 * @param seniorFundingSpread The Senior Funding Spread Latent State
 	 * @param subordinateRecoveryRate The Subordinate Recovery Rate Latent State
 	 * @param subordinateFundingSpread The Subordinate Funding Spread Latent State
+	 * @param baseRate The Period Base Discount Rate
 	 * 
 	 * @return Instance of Senior MarketVertexEntity
 	 */
@@ -240,17 +248,19 @@ public class MarketVertexEntity
 		final double seniorRecoveryRate,
 		final double seniorFundingSpread,
 		final double subordinateRecoveryRate,
-		final double subordinateFundingSpread)
+		final double subordinateFundingSpread,
+		final double baseRate)
 	{
 		try
 		{
-<span class="nc" id="L247">			return SeniorSubordinate (</span>
+<span class="nc" id="L256">			return SeniorSubordinate (</span>
 				timeWidth,
 				hazardRate,
 				seniorRecoveryRate,
 				seniorFundingSpread,
 				subordinateRecoveryRate,
 				subordinateFundingSpread,
+				baseRate,
 				new MarketVertexEntity (
 					1.,
 					hazardRate,
@@ -263,12 +273,12 @@ public class MarketVertexEntity
 				)
 			);
 		}
-<span class="nc" id="L266">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L276">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L268">			e.printStackTrace();</span>
+<span class="nc" id="L278">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L271">		return null;</span>
+<span class="nc" id="L281">		return null;</span>
 	}
 
 	/**
@@ -281,8 +291,7 @@ public class MarketVertexEntity
 	 * @param seniorFundingReplicator The Entity Senior Funding Replicator Vertex Latent State
 	 * @param subordinateRecoveryRate The Entity Subordinate Recovery Rate Latent State
 	 * @param subordinateFundingSpread The Entity Subordinate Funding Spread Latent State
-	 * @param subordinateFundingReplicator The Entity Subordinate Funding Replicator Vertex Latent
-	 * 	State
+	 * @param subordinateFundingReplicator The Entity Subordinate Funding Replicator Vertex Latent State
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -297,20 +306,20 @@ public class MarketVertexEntity
 		final double subordinateFundingSpread,
 		final double subordinateFundingReplicator)
 		throws java.lang.Exception
-<span class="fc" id="L300">	{</span>
-<span class="pc bpc" id="L301" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_survivalProbability = survivalProbability) ||</span>
-<span class="pc bpc" id="L302" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_hazardRate = hazardRate) ||</span>
-<span class="pc bpc" id="L303" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_seniorRecoveryRate = seniorRecoveryRate) ||</span>
-<span class="pc bpc" id="L304" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_seniorFundingSpread = seniorFundingSpread) ||</span>
-<span class="pc bpc" id="L305" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_seniorFundingReplicator = seniorFundingReplicator))</span>
+<span class="fc" id="L309">	{</span>
+<span class="pc bpc" id="L310" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_survivalProbability = survivalProbability) ||</span>
+<span class="pc bpc" id="L311" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_hazardRate = hazardRate) ||</span>
+<span class="pc bpc" id="L312" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_seniorRecoveryRate = seniorRecoveryRate) ||</span>
+<span class="pc bpc" id="L313" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_seniorFundingSpread = seniorFundingSpread) ||</span>
+<span class="pc bpc" id="L314" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_seniorFundingReplicator = seniorFundingReplicator))</span>
 		{
-<span class="nc" id="L307">			throw new java.lang.Exception (&quot;MarketVertexEntity Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L316">			throw new java.lang.Exception (&quot;MarketVertexEntity Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="fc" id="L310">		_subordinateRecoveryRate = subordinateRecoveryRate;</span>
-<span class="fc" id="L311">		_subordinateFundingSpread = subordinateFundingSpread;</span>
-<span class="fc" id="L312">		_subordinateFundingReplicator = subordinateFundingReplicator;</span>
-<span class="fc" id="L313">	}</span>
+<span class="fc" id="L319">		_subordinateRecoveryRate = subordinateRecoveryRate;</span>
+<span class="fc" id="L320">		_subordinateFundingSpread = subordinateFundingSpread;</span>
+<span class="fc" id="L321">		_subordinateFundingReplicator = subordinateFundingReplicator;</span>
+<span class="fc" id="L322">	}</span>
 
 	/**
 	 * Retrieve the Realized Entity Survival Probability
@@ -320,7 +329,7 @@ public class MarketVertexEntity
 
 	public double survivalProbability()
 	{
-<span class="fc" id="L323">		return _survivalProbability;</span>
+<span class="fc" id="L332">		return _survivalProbability;</span>
 	}
 
 	/**
@@ -331,7 +340,7 @@ public class MarketVertexEntity
 
 	public double hazardRate()
 	{
-<span class="fc" id="L334">		return _hazardRate;</span>
+<span class="fc" id="L343">		return _hazardRate;</span>
 	}
 
 	/**
@@ -342,7 +351,7 @@ public class MarketVertexEntity
 
 	public double seniorRecoveryRate()
 	{
-<span class="fc" id="L345">		return _seniorRecoveryRate;</span>
+<span class="fc" id="L354">		return _seniorRecoveryRate;</span>
 	}
 
 	/**
@@ -353,7 +362,7 @@ public class MarketVertexEntity
 
 	public double seniorFundingSpread()
 	{
-<span class="fc" id="L356">		return _seniorFundingSpread;</span>
+<span class="fc" id="L365">		return _seniorFundingSpread;</span>
 	}
 
 	/**
@@ -364,7 +373,7 @@ public class MarketVertexEntity
 
 	public double seniorFundingReplicator()
 	{
-<span class="fc" id="L367">		return _seniorFundingReplicator;</span>
+<span class="fc" id="L376">		return _seniorFundingReplicator;</span>
 	}
 
 	/**
@@ -375,7 +384,7 @@ public class MarketVertexEntity
 
 	public double subordinateRecoveryRate()
 	{
-<span class="fc" id="L378">		return _subordinateRecoveryRate;</span>
+<span class="fc" id="L387">		return _subordinateRecoveryRate;</span>
 	}
 
 	/**
@@ -386,7 +395,7 @@ public class MarketVertexEntity
 
 	public double subordinateFundingSpread()
 	{
-<span class="fc" id="L389">		return _subordinateFundingSpread;</span>
+<span class="fc" id="L398">		return _subordinateFundingSpread;</span>
 	}
 
 	/**
@@ -397,7 +406,7 @@ public class MarketVertexEntity
 
 	public double subordinateFundingReplicator()
 	{
-<span class="fc" id="L400">		return _subordinateFundingReplicator;</span>
+<span class="fc" id="L409">		return _subordinateFundingReplicator;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

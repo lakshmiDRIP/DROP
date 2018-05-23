@@ -74,7 +74,7 @@ public class VariationMarginTradeTrajectoryEstimator
 <span class="nc" id="L74">	private java.lang.String _calendar = &quot;&quot;;</span>
 <span class="nc" id="L75">	private org.drip.exposure.universe.MarketPath _marketPath = null;</span>
 <span class="nc" id="L76">	private org.drip.exposure.csatimeline.AndersenPykhtinSokolLag _csaTimelineLag = null;</span>
-<span class="nc" id="L77">	private org.drip.exposure.generator.VariationMarginTradePaymentVertex _variationMarginTradeVertexGenerator =</span>
+<span class="nc" id="L77">	private org.drip.exposure.mpor.VariationMarginTradePaymentVertex _variationMarginTradePaymentVertex =</span>
 		null;
 
 	private static final double ClientTradePayment (
@@ -166,162 +166,11 @@ public class VariationMarginTradeTrajectoryEstimator
 	}
 
 	/**
-	 * Construct a Standard Instance of VariationMarginTradeTrajectoryEstimator
-	 * 
-	 * @param exposureDateArray The Forward Exposure Date Array
-	 * @param calendar The Date Adjustment Calendar
-	 * @param marginTradeVertex The Uncollateralized Margin Trade Vertex
-	 * @param marketPath The Market Path
-	 * @param csaTimelineLag The Andersen Pykhtin Sokol CSA Timeline Lag Parameterization
-	 * 
-	 * @return Standard Instance of MarginTradeTrajectoryEstimator
-	 */
-
-	/* public static final VariationMarginTradeTrajectoryEstimator Standard (
-		final int[] exposureDateArray,
-		final java.lang.String calendar,
-		final org.drip.exposure.mpor.VariationMarginTradeVertexGenerator marginTradeVertex,
-		final org.drip.exposure.universe.MarketPath marketPath,
-		final org.drip.exposure.csatimeline.AndersenPykhtinSokolLag csaTimelineLag)
-	{
-		if (null == exposureDateArray ||
-			null == marginTradeVertex ||
-			null == marketPath ||
-			null == csaTimelineLag)
-		{
-			return null;
-		}
-
-		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; clientTradePaymentTrajectory = new
-			java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt;();
-
-		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; dealerTradePaymentTrajectory = new
-			java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt;();
-
-		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; variationMarginEstimateTrajectory = new
-			java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt;();
-
-		java.util.Map&lt;java.lang.Integer, org.drip.exposure.mpor.VariationMarginTradeVertexExposure&gt;
-			marginTradeExposureTrajectory = new java.util.TreeMap&lt;java.lang.Integer,
-				org.drip.exposure.mpor.VariationMarginTradeVertexExposure&gt;();
-
-		int exposureDateCount = exposureDateArray.length;
-		double[] variationMarginEstimateArray = 0 == exposureDateCount? null : new double[exposureDateCount];
-
-		if (0 == exposureDateCount)
-		{
-			return null;
-		}
-
-		try
-		{
-			for (int exposureDateIndex = 0; exposureDateIndex &lt; exposureDateCount; ++exposureDateIndex)
-			{
-				variationMarginEstimateTrajectory.put (
-					exposureDateArray[exposureDateIndex],
-					marginTradeVertex.variationMarginEstimate (
-						exposureDateArray[exposureDateIndex],
-						marketPath
-					)
-				);
-
-				org.drip.exposure.mpor.TradePayment tradePayment = marginTradeVertex.tradePayment (
-					exposureDateArray[exposureDateIndex],
-					marketPath
-				);
-
-				if (null == tradePayment)
-				{
-					return null;
-				}
-
-				clientTradePaymentTrajectory.put (
-					exposureDateArray[exposureDateIndex],
-					tradePayment.client()
-				);
-
-				dealerTradePaymentTrajectory.put (
-					exposureDateArray[exposureDateIndex],
-					tradePayment.dealer()
-				);
-			}
-
-			for (int exposureDateIndex = 0; exposureDateIndex &lt; exposureDateCount; ++exposureDateIndex)
-			{
-				org.drip.exposure.csatimeline.LastFlowDates csaEventDates =
-					org.drip.exposure.csatimeline.LastFlowDates.SpotStandard (
-						new org.drip.analytics.date.JulianDate (exposureDateArray[exposureDateIndex]),
-						csaTimelineLag,
-						calendar
-					);
-
-				if (null == csaEventDates)
-				{
-					return null;
-				}
-
-				marginTradeExposureTrajectory.put (
-					exposureDateArray[exposureDateIndex],
-					new org.drip.exposure.mpor.VariationMarginTradeVertexExposure (
-						variationMarginEstimateArray[exposureDateIndex],
-						VariationMarginPosting (
-							variationMarginEstimateTrajectory,
-							csaEventDates.clientVariationMargin().julian(),
-							csaEventDates.dealerVariationMargin().julian()
-						),
-						ClientTradePayment (
-							clientTradePaymentTrajectory,
-							csaEventDates.clientTrade().julian(),
-							csaEventDates.dealerTrade().julian()
-						),
-						NetTradePayment (
-							clientTradePaymentTrajectory,
-							dealerTradePaymentTrajectory,
-							csaEventDates.dealerTrade().julian(),
-							csaEventDates.variationMarginPeriodEnd().julian()
-						),
-						csaEventDates
-					)
-				);
-			}
-
-			return new VariationMarginTradeTrajectoryEstimator (marginTradeExposureTrajectory);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	} */
-
-	/**
-	 * VariationMarginTradeTrajectoryEstimator Constructor
-	 * 
-	 * @param variationMarginTradeExposureTrajectory Variation Margin Trade Payment Exposure Trajectory
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	/* public VariationMarginTradeTrajectoryEstimator (
-		final java.util.Map&lt;java.lang.Integer, org.drip.exposure.mpor.VariationMarginTradeVertexExposure&gt;
-			variationMarginTradeExposureTrajectory)
-		throws java.lang.Exception
-	{
-		if (null == (_variationMarginTradeExposureTrajectory = variationMarginTradeExposureTrajectory) ||
-			0 == _variationMarginTradeExposureTrajectory.size())
-		{
-			throw new java.lang.Exception
-				(&quot;VariationMarginTradeTrajectoryEstimator Constuctor =&gt; Invalid Inputs&quot;);
-		}
-	} */
-
-	/**
 	 * VariationMarginTradeTrajectoryEstimator Constructor
 	 * 
 	 * @param exposureDateArray Array of Exposure Dates
 	 * @param calendar The Date Adjustment Calendar
-	 * @param variationMarginTradeVertexGenerator The Variation Margin Trade Trajectory Generator
+	 * @param variationMarginTradePaymentVertex The Variation Margin Trade Payment Trajectory Generator
 	 * @param marketPath The Market Path
 	 * @param csaTimelineLag The CSA Time-line Lag Parameters
 	 * 
@@ -331,21 +180,21 @@ public class VariationMarginTradeTrajectoryEstimator
 	public VariationMarginTradeTrajectoryEstimator (
 		final int[] exposureDateArray,
 		final java.lang.String calendar,
-		final org.drip.exposure.generator.VariationMarginTradePaymentVertex variationMarginTradeVertexGenerator,
+		final org.drip.exposure.mpor.VariationMarginTradePaymentVertex variationMarginTradePaymentVertex,
 		final org.drip.exposure.universe.MarketPath marketPath,
 		final org.drip.exposure.csatimeline.AndersenPykhtinSokolLag csaTimelineLag)
 		throws java.lang.Exception
-<span class="nc" id="L338">	{</span>
-<span class="nc bnc" id="L339" title="All 6 branches missed.">		if (null == (_exposureDateArray = exposureDateArray) || 0 == _exposureDateArray.length ||</span>
-<span class="nc bnc" id="L340" title="All 8 branches missed.">			null == (_calendar = calendar) || _calendar.isEmpty() ||</span>
-			null == (_variationMarginTradeVertexGenerator = variationMarginTradeVertexGenerator) ||
+<span class="nc" id="L187">	{</span>
+<span class="nc bnc" id="L188" title="All 6 branches missed.">		if (null == (_exposureDateArray = exposureDateArray) || 0 == _exposureDateArray.length ||</span>
+<span class="nc bnc" id="L189" title="All 8 branches missed.">			null == (_calendar = calendar) || _calendar.isEmpty() ||</span>
+			null == (_variationMarginTradePaymentVertex = variationMarginTradePaymentVertex) ||
 			null == (_marketPath = marketPath) ||
 			null == (_csaTimelineLag = csaTimelineLag))
 		{
-<span class="nc" id="L345">			throw new java.lang.Exception</span>
+<span class="nc" id="L194">			throw new java.lang.Exception</span>
 				(&quot;VariationMarginTradeTrajectoryEstimator Constructor =&gt; Invalid Inputs&quot;);
 		}
-<span class="nc" id="L348">	}</span>
+<span class="nc" id="L197">	}</span>
 
 	/**
 	 * Retrieve the Array of Exposure Dates
@@ -355,7 +204,7 @@ public class VariationMarginTradeTrajectoryEstimator
 
 	public int[] exposureDateArray()
 	{
-<span class="nc" id="L358">		return _exposureDateArray;</span>
+<span class="nc" id="L207">		return _exposureDateArray;</span>
 	}
 
 	/**
@@ -366,7 +215,7 @@ public class VariationMarginTradeTrajectoryEstimator
 
 	public java.lang.String calendar()
 	{
-<span class="nc" id="L369">		return _calendar;</span>
+<span class="nc" id="L218">		return _calendar;</span>
 	}
 
 	/**
@@ -375,9 +224,9 @@ public class VariationMarginTradeTrajectoryEstimator
 	 * @return The Variation Margin Trade Payment Vertex Generator
 	 */
 
-	public org.drip.exposure.generator.VariationMarginTradePaymentVertex vertexGenerator()
+	public org.drip.exposure.mpor.VariationMarginTradePaymentVertex vertexGenerator()
 	{
-<span class="nc" id="L380">		return _variationMarginTradeVertexGenerator;</span>
+<span class="nc" id="L229">		return _variationMarginTradePaymentVertex;</span>
 	}
 
 	/**
@@ -388,7 +237,7 @@ public class VariationMarginTradeTrajectoryEstimator
 
 	public org.drip.exposure.universe.MarketPath marketPath()
 	{
-<span class="nc" id="L391">		return _marketPath;</span>
+<span class="nc" id="L240">		return _marketPath;</span>
 	}
 
 	/**
@@ -399,7 +248,7 @@ public class VariationMarginTradeTrajectoryEstimator
 
 	final org.drip.exposure.csatimeline.AndersenPykhtinSokolLag csaTimelineLag()
 	{
-<span class="nc" id="L402">		return _csaTimelineLag;</span>
+<span class="nc" id="L251">		return _csaTimelineLag;</span>
 	}
 
 	/**
@@ -410,32 +259,32 @@ public class VariationMarginTradeTrajectoryEstimator
 
 	public java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; variationMarginEstimateTrajectory()
 	{
-<span class="nc" id="L413">		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; variationMarginEstimateTrajectory = new</span>
+<span class="nc" id="L262">		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; variationMarginEstimateTrajectory = new</span>
 			java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt;();
 
-<span class="nc" id="L416">		int exposureDateCount = _exposureDateArray.length;</span>
+<span class="nc" id="L265">		int exposureDateCount = _exposureDateArray.length;</span>
 
 		try
 		{
-<span class="nc bnc" id="L420" title="All 2 branches missed.">			for (int exposureDateIndex = 0; exposureDateIndex &lt; exposureDateCount; ++exposureDateIndex)</span>
+<span class="nc bnc" id="L269" title="All 2 branches missed.">			for (int exposureDateIndex = 0; exposureDateIndex &lt; exposureDateCount; ++exposureDateIndex)</span>
 			{
-<span class="nc" id="L422">				variationMarginEstimateTrajectory.put (</span>
-<span class="nc" id="L423">					_exposureDateArray[exposureDateIndex],</span>
-<span class="nc" id="L424">					_variationMarginTradeVertexGenerator.variationMarginEstimate (</span>
+<span class="nc" id="L271">				variationMarginEstimateTrajectory.put (</span>
+<span class="nc" id="L272">					_exposureDateArray[exposureDateIndex],</span>
+<span class="nc" id="L273">					_variationMarginTradePaymentVertex.variationMarginEstimate (</span>
 						_exposureDateArray[exposureDateIndex],
 						_marketPath
 					)
 				);
 			}
 
-<span class="nc" id="L431">			return variationMarginEstimateTrajectory;</span>
+<span class="nc" id="L280">			return variationMarginEstimateTrajectory;</span>
 		}
-<span class="nc" id="L433">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L282">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L435">			e.printStackTrace();</span>
+<span class="nc" id="L284">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L438">		return null;</span>
+<span class="nc" id="L287">		return null;</span>
 	}
 
 	/**
@@ -451,38 +300,38 @@ public class VariationMarginTradeTrajectoryEstimator
 		final java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; clientTradePaymentTrajectory,
 		final java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; dealerTradePaymentTrajectory)
 	{
-<span class="nc bnc" id="L454" title="All 4 branches missed.">		if (null == clientTradePaymentTrajectory || null == dealerTradePaymentTrajectory)</span>
+<span class="nc bnc" id="L303" title="All 4 branches missed.">		if (null == clientTradePaymentTrajectory || null == dealerTradePaymentTrajectory)</span>
 		{
-<span class="nc" id="L456">			return false;</span>
+<span class="nc" id="L305">			return false;</span>
 		}
 
-<span class="nc" id="L459">		int exposureDateCount = _exposureDateArray.length;</span>
+<span class="nc" id="L308">		int exposureDateCount = _exposureDateArray.length;</span>
 
-<span class="nc bnc" id="L461" title="All 2 branches missed.">		for (int exposureDateIndex = 0; exposureDateIndex &lt; exposureDateCount; ++exposureDateIndex)</span>
+<span class="nc bnc" id="L310" title="All 2 branches missed.">		for (int exposureDateIndex = 0; exposureDateIndex &lt; exposureDateCount; ++exposureDateIndex)</span>
 		{
-<span class="nc" id="L463">			org.drip.exposure.mpor.TradePayment tradePayment =</span>
-<span class="nc" id="L464">				_variationMarginTradeVertexGenerator.tradePayment (</span>
+<span class="nc" id="L312">			org.drip.exposure.mpor.TradePayment tradePayment =</span>
+<span class="nc" id="L313">				_variationMarginTradePaymentVertex.tradePayment (</span>
 					_exposureDateArray[exposureDateIndex],
 					_marketPath
 				);
 
-<span class="nc bnc" id="L469" title="All 2 branches missed.">			if (null == tradePayment)</span>
+<span class="nc bnc" id="L318" title="All 2 branches missed.">			if (null == tradePayment)</span>
 			{
-<span class="nc" id="L471">				return false;</span>
+<span class="nc" id="L320">				return false;</span>
 			}
 
-<span class="nc" id="L474">			clientTradePaymentTrajectory.put (</span>
-<span class="nc" id="L475">				_exposureDateArray[exposureDateIndex],</span>
-<span class="nc" id="L476">				tradePayment.client()</span>
+<span class="nc" id="L323">			clientTradePaymentTrajectory.put (</span>
+<span class="nc" id="L324">				_exposureDateArray[exposureDateIndex],</span>
+<span class="nc" id="L325">				tradePayment.client()</span>
 			);
 
-<span class="nc" id="L479">			dealerTradePaymentTrajectory.put (</span>
-<span class="nc" id="L480">				_exposureDateArray[exposureDateIndex],</span>
-<span class="nc" id="L481">				tradePayment.dealer()</span>
+<span class="nc" id="L328">			dealerTradePaymentTrajectory.put (</span>
+<span class="nc" id="L329">				_exposureDateArray[exposureDateIndex],</span>
+<span class="nc" id="L330">				tradePayment.dealer()</span>
 			);
 		}
 
-<span class="nc" id="L485">		return true;</span>
+<span class="nc" id="L334">		return true;</span>
 	}
 
 	/**
@@ -493,24 +342,24 @@ public class VariationMarginTradeTrajectoryEstimator
 
 	public org.drip.exposure.csatimeline.LastFlowDates[] csaEventDates()
 	{
-<span class="nc" id="L496">		int exposureDateCount = _exposureDateArray.length;</span>
-<span class="nc" id="L497">		org.drip.exposure.csatimeline.LastFlowDates[] csaEventDateArray = new</span>
+<span class="nc" id="L345">		int exposureDateCount = _exposureDateArray.length;</span>
+<span class="nc" id="L346">		org.drip.exposure.csatimeline.LastFlowDates[] csaEventDateArray = new</span>
 			org.drip.exposure.csatimeline.LastFlowDates[exposureDateCount];
 
-<span class="nc bnc" id="L500" title="All 2 branches missed.">		for (int exposureDateIndex = 0; exposureDateIndex &lt; exposureDateCount; ++exposureDateIndex)</span>
+<span class="nc bnc" id="L349" title="All 2 branches missed.">		for (int exposureDateIndex = 0; exposureDateIndex &lt; exposureDateCount; ++exposureDateIndex)</span>
 		{
-<span class="nc" id="L502">			if (null == (csaEventDateArray[exposureDateIndex] =</span>
-<span class="nc bnc" id="L503" title="All 2 branches missed.">				org.drip.exposure.csatimeline.LastFlowDates.SpotStandard (</span>
+<span class="nc" id="L351">			if (null == (csaEventDateArray[exposureDateIndex] =</span>
+<span class="nc bnc" id="L352" title="All 2 branches missed.">				org.drip.exposure.csatimeline.LastFlowDates.SpotStandard (</span>
 					new org.drip.analytics.date.JulianDate (_exposureDateArray[exposureDateIndex]),
 					_csaTimelineLag,
 					_calendar
 				)))
 			{
-<span class="nc" id="L509">				return null;</span>
+<span class="nc" id="L358">				return null;</span>
 			}
 		}
 
-<span class="nc" id="L513">		return csaEventDateArray;</span>
+<span class="nc" id="L362">		return csaEventDateArray;</span>
 	}
 
 	/**
@@ -522,68 +371,68 @@ public class VariationMarginTradeTrajectoryEstimator
 	public java.util.Map&lt;java.lang.Integer, org.drip.exposure.mpor.VariationMarginTradeVertexExposure&gt;
 		trajectory()
 	{
-<span class="nc" id="L525">		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; variationMarginEstimateTrajectory =</span>
-<span class="nc" id="L526">			variationMarginEstimateTrajectory();</span>
+<span class="nc" id="L374">		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; variationMarginEstimateTrajectory =</span>
+<span class="nc" id="L375">			variationMarginEstimateTrajectory();</span>
 
-<span class="nc" id="L528">		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; clientTradePaymentTrajectory = new</span>
+<span class="nc" id="L377">		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; clientTradePaymentTrajectory = new</span>
 			java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt;();
 
-<span class="nc" id="L531">		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; dealerTradePaymentTrajectory = new</span>
+<span class="nc" id="L380">		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; dealerTradePaymentTrajectory = new</span>
 			java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt;();
 
-<span class="nc bnc" id="L534" title="All 2 branches missed.">		if (!tradePaymentTrajectory (</span>
+<span class="nc bnc" id="L383" title="All 2 branches missed.">		if (!tradePaymentTrajectory (</span>
 			clientTradePaymentTrajectory,
 			dealerTradePaymentTrajectory
 		))
 		{
-<span class="nc" id="L539">			return null;</span>
+<span class="nc" id="L388">			return null;</span>
 		}
 
 		java.util.Map&lt;java.lang.Integer, org.drip.exposure.mpor.VariationMarginTradeVertexExposure&gt;
-<span class="nc" id="L543">			variationMarginTradeExposureTrajectory = new java.util.TreeMap&lt;java.lang.Integer,</span>
+<span class="nc" id="L392">			variationMarginTradeExposureTrajectory = new java.util.TreeMap&lt;java.lang.Integer,</span>
 				org.drip.exposure.mpor.VariationMarginTradeVertexExposure&gt;();
 
-<span class="nc" id="L546">		org.drip.exposure.csatimeline.LastFlowDates[] csaEventDateArray = csaEventDates();</span>
+<span class="nc" id="L395">		org.drip.exposure.csatimeline.LastFlowDates[] csaEventDateArray = csaEventDates();</span>
 
-<span class="nc" id="L548">		int exposureDateCount = _exposureDateArray.length;</span>
+<span class="nc" id="L397">		int exposureDateCount = _exposureDateArray.length;</span>
 
 		try
 		{
-<span class="nc bnc" id="L552" title="All 2 branches missed.">			for (int exposureDateIndex = 0; exposureDateIndex &lt; exposureDateCount; ++exposureDateIndex)</span>
+<span class="nc bnc" id="L401" title="All 2 branches missed.">			for (int exposureDateIndex = 0; exposureDateIndex &lt; exposureDateCount; ++exposureDateIndex)</span>
 			{
-<span class="nc" id="L554">				variationMarginTradeExposureTrajectory.put (</span>
-<span class="nc" id="L555">					_exposureDateArray[exposureDateIndex],</span>
+<span class="nc" id="L403">				variationMarginTradeExposureTrajectory.put (</span>
+<span class="nc" id="L404">					_exposureDateArray[exposureDateIndex],</span>
 					new org.drip.exposure.mpor.VariationMarginTradeVertexExposure (
-<span class="nc" id="L557">						variationMarginEstimateTrajectory.get (_exposureDateArray[exposureDateIndex]),</span>
-<span class="nc" id="L558">						VariationMarginPosting (</span>
+<span class="nc" id="L406">						variationMarginEstimateTrajectory.get (_exposureDateArray[exposureDateIndex]),</span>
+<span class="nc" id="L407">						VariationMarginPosting (</span>
 							variationMarginEstimateTrajectory,
-<span class="nc" id="L560">							csaEventDateArray[exposureDateIndex].clientVariationMargin().julian(),</span>
-<span class="nc" id="L561">							csaEventDateArray[exposureDateIndex].dealerVariationMargin().julian()</span>
+<span class="nc" id="L409">							csaEventDateArray[exposureDateIndex].clientVariationMarginPosting().julian(),</span>
+<span class="nc" id="L410">							csaEventDateArray[exposureDateIndex].dealerVariationMarginPosting().julian()</span>
 						),
-<span class="nc" id="L563">						ClientTradePayment (</span>
+<span class="nc" id="L412">						ClientTradePayment (</span>
 							clientTradePaymentTrajectory,
-<span class="nc" id="L565">							csaEventDateArray[exposureDateIndex].clientTrade().julian(),</span>
-<span class="nc" id="L566">							csaEventDateArray[exposureDateIndex].dealerTrade().julian()</span>
+<span class="nc" id="L414">							csaEventDateArray[exposureDateIndex].clientTradePayment().julian(),</span>
+<span class="nc" id="L415">							csaEventDateArray[exposureDateIndex].dealerTradePayment().julian()</span>
 						),
-<span class="nc" id="L568">						NetTradePayment (</span>
+<span class="nc" id="L417">						NetTradePayment (</span>
 							clientTradePaymentTrajectory,
 							dealerTradePaymentTrajectory,
-<span class="nc" id="L571">							csaEventDateArray[exposureDateIndex].dealerTrade().julian(),</span>
-<span class="nc" id="L572">							csaEventDateArray[exposureDateIndex].variationMarginPeriodEnd().julian()</span>
+<span class="nc" id="L420">							csaEventDateArray[exposureDateIndex].dealerTradePayment().julian(),</span>
+<span class="nc" id="L421">							csaEventDateArray[exposureDateIndex].variationMarginPeriodEnd().julian()</span>
 						),
 						csaEventDateArray[exposureDateIndex]
 					)
 				);
 			}
 
-<span class="nc" id="L579">			return variationMarginTradeExposureTrajectory;</span>
+<span class="nc" id="L428">			return variationMarginTradeExposureTrajectory;</span>
 		}
-<span class="nc" id="L581">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L430">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L583">			e.printStackTrace();</span>
+<span class="nc" id="L432">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L586">		return null;</span>
+<span class="nc" id="L435">		return null;</span>
 	}
 
 	/**

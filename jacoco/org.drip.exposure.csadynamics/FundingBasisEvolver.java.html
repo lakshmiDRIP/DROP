@@ -76,8 +76,8 @@ public class FundingBasisEvolver
 	/**
 	 * FundingBasisEvolver Constructor
 	 * 
-	 * @param underlyingEvolver The Underlying Diffusion Evaluator
-	 * @param fundingSpreadEvolver The Funding Spread Diffusion Evaluator
+	 * @param underlyingEvolver The Underlying Diffusion Evolver
+	 * @param fundingSpreadEvolver The Funding Spread Diffusion Evolver
 	 * @param correlation Correlation between the Underlying and the Funding Spread Processes
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
@@ -89,8 +89,8 @@ public class FundingBasisEvolver
 		final double correlation)
 		throws java.lang.Exception
 <span class="fc" id="L91">	{</span>
-<span class="pc bpc" id="L92" title="2 of 4 branches missed.">		if (null == (_underlyingEvolver = underlyingEvolver) || null == (_fundingSpreadEvolver =</span>
-			fundingSpreadEvolver) ||
+<span class="pc bpc" id="L92" title="2 of 4 branches missed.">		if (null == (_underlyingEvolver = underlyingEvolver) ||</span>
+			null == (_fundingSpreadEvolver = fundingSpreadEvolver) ||
 <span class="pc bpc" id="L94" title="3 of 6 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_correlation = correlation) ||</span>
 			1. &lt; _correlation || -1. &gt; _correlation)
 		{
@@ -99,9 +99,9 @@ public class FundingBasisEvolver
 <span class="fc" id="L99">	}</span>
 
 	/**
-	 * Retrieve the Underlying Diffusion Evaluator
+	 * Retrieve the Underlying Diffusion Evolver
 	 * 
-	 * @return The Underlying Diffusion Evaluator
+	 * @return The Underlying Diffusion Evolver
 	 */
 
 	public org.drip.measure.dynamics.DiffusionEvaluatorLogarithmic underlyingEvolver()
@@ -110,9 +110,9 @@ public class FundingBasisEvolver
 	}
 
 	/**
-	 * Retrieve the Funding Spread Diffusion Evaluator
+	 * Retrieve the Funding Spread Diffusion Evolver
 	 * 
-	 * @return The Funding Spread Diffusion Evaluator
+	 * @return The Funding Spread Diffusion Evolver
 	 */
 
 	public org.drip.measure.dynamics.DiffusionEvaluatorMeanReversion fundingSpreadEvolver()
@@ -139,44 +139,47 @@ public class FundingBasisEvolver
 
 	public org.drip.measure.process.DiffusionEvolver csaForwardProcess()
 	{
-		try {
-<span class="nc" id="L143">			org.drip.measure.dynamics.LocalEvaluator driftEvolver = new</span>
+		try
+		{
+<span class="nc" id="L144">			org.drip.measure.dynamics.LocalEvaluator driftEvolver = new</span>
 				org.drip.measure.dynamics.LocalEvaluator()
-<span class="nc" id="L145">			{</span>
+<span class="nc" id="L146">			{</span>
 				@Override public double value (
 					final org.drip.measure.realization.JumpDiffusionVertex vertex)
 					throws java.lang.Exception
 				{
-<span class="nc" id="L150">					return 0.;</span>
+<span class="nc" id="L151">					return 0.;</span>
 				}
 			};
 
-<span class="nc" id="L154">			org.drip.measure.dynamics.LocalEvaluator volatilityEvolver = new</span>
+<span class="nc" id="L155">			org.drip.measure.dynamics.LocalEvaluator volatilityEvolver = new</span>
 				org.drip.measure.dynamics.LocalEvaluator()
-<span class="nc" id="L156">			{</span>
+<span class="nc" id="L157">			{</span>
 				@Override public double value (
 					final org.drip.measure.realization.JumpDiffusionVertex vertex)
 					throws java.lang.Exception
 				{
-<span class="nc bnc" id="L161" title="All 2 branches missed.">					if (null == vertex)</span>
-<span class="nc" id="L162">						throw new java.lang.Exception</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">					if (null == vertex)</span>
+<span class="nc" id="L163">						throw new java.lang.Exception</span>
 							(&quot;FundingBasisEvolver::CSAForwardVolatility::Evaluator::value =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L165">					return vertex.value() * _underlyingEvolver.volatilityValue();</span>
+<span class="nc" id="L166">					return vertex.value() * _underlyingEvolver.volatilityValue();</span>
 				}
 			};
 
-<span class="nc" id="L169">			return new org.drip.measure.process.DiffusionEvolver (new</span>
-				org.drip.measure.dynamics.DiffusionEvaluator (
+<span class="nc" id="L170">			return new org.drip.measure.process.DiffusionEvolver (</span>
+				new org.drip.measure.dynamics.DiffusionEvaluator (
 					driftEvolver,
 					volatilityEvolver
 				)
 			);
-<span class="nc" id="L175">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L176">			e.printStackTrace();</span>
+		}
+<span class="nc" id="L177">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L179">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L179">		return null;</span>
+<span class="nc" id="L182">		return null;</span>
 	}
 
 	/**
@@ -191,47 +194,59 @@ public class FundingBasisEvolver
 		final java.lang.String tenor)
 	{
 		try {
-<span class="nc" id="L194">			double meanReversionSpeed = _fundingSpreadEvolver.meanReversionRate();</span>
+<span class="nc" id="L197">			double meanReversionSpeed = _fundingSpreadEvolver.meanReversionRate();</span>
 
-<span class="nc" id="L196">			double b = org.drip.analytics.support.Helper.TenorToYearFraction (tenor);</span>
+<span class="nc" id="L199">			double b = org.drip.analytics.support.Helper.TenorToYearFraction (tenor);</span>
 
-<span class="nc bnc" id="L198" title="All 2 branches missed.">			if (0. != meanReversionSpeed)</span>
-<span class="nc" id="L199">				b = (1. - java.lang.Math.exp (-1. * meanReversionSpeed * b)) /</span>
-					meanReversionSpeed;
+<span class="nc bnc" id="L201" title="All 2 branches missed.">			if (0. != meanReversionSpeed)</span>
+			{
+<span class="nc" id="L203">				b = (1. - java.lang.Math.exp (-1. * meanReversionSpeed * b)) / meanReversionSpeed;</span>
+			}
 
-<span class="nc" id="L202">			final double dblPiterbarg2010BFactor = b;</span>
+<span class="nc" id="L206">			final double piterbarg2010BFactor = b;</span>
 
-<span class="nc" id="L204">			org.drip.measure.dynamics.LocalEvaluator leDrift = new org.drip.measure.dynamics.LocalEvaluator()</span>
-<span class="nc" id="L205">			{</span>
+<span class="nc" id="L208">			org.drip.measure.dynamics.LocalEvaluator driftEvaluator = new</span>
+				org.drip.measure.dynamics.LocalEvaluator()
+<span class="nc" id="L210">			{</span>
 				@Override public double value (
-					final org.drip.measure.realization.JumpDiffusionVertex jdv)
+					final org.drip.measure.realization.JumpDiffusionVertex jumpDiffusionVertex)
 					throws java.lang.Exception
 				{
-<span class="nc" id="L210">					return 0.;</span>
+<span class="nc" id="L215">					return 0.;</span>
 				}
 			};
 
-<span class="nc" id="L214">			org.drip.measure.dynamics.LocalEvaluator leVolatility = new</span>
-<span class="nc" id="L215">				org.drip.measure.dynamics.LocalEvaluator() {</span>
+<span class="nc" id="L219">			org.drip.measure.dynamics.LocalEvaluator volatilityEvaluator = new</span>
+				org.drip.measure.dynamics.LocalEvaluator()
+<span class="nc" id="L221">			{</span>
 				@Override public double value (
-					final org.drip.measure.realization.JumpDiffusionVertex jdv)
+					final org.drip.measure.realization.JumpDiffusionVertex jumpDiffusionVertex)
 					throws java.lang.Exception
 				{
-<span class="nc bnc" id="L220" title="All 2 branches missed.">					if (null == jdv)</span>
-<span class="nc" id="L221">						throw new java.lang.Exception</span>
+<span class="nc bnc" id="L226" title="All 2 branches missed.">					if (null == jumpDiffusionVertex)</span>
+					{
+<span class="nc" id="L228">						throw new java.lang.Exception</span>
 							(&quot;FundingBasisEvolver::CSAFundingNumeraireVolatility::Evaluator::value =&gt; Invalid Inputs&quot;);
+					}
 
-<span class="nc" id="L224">					return -1. * jdv.value() * dblPiterbarg2010BFactor * _fundingSpreadEvolver.volatilityValue();</span>
+<span class="nc" id="L232">					return -1. * jumpDiffusionVertex.value() * piterbarg2010BFactor *</span>
+<span class="nc" id="L233">						_fundingSpreadEvolver.volatilityValue();</span>
 				}
 			};
 
-<span class="nc" id="L228">			return new org.drip.measure.process.DiffusionEvolver (new</span>
-				org.drip.measure.dynamics.DiffusionEvaluator (leDrift, leVolatility));
-<span class="nc" id="L230">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L231">			e.printStackTrace();</span>
+<span class="nc" id="L237">			return new org.drip.measure.process.DiffusionEvolver (</span>
+				new org.drip.measure.dynamics.DiffusionEvaluator (
+					driftEvaluator,
+					volatilityEvaluator
+				)
+			);
+		}
+<span class="nc" id="L244">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L246">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L234">		return null;</span>
+<span class="nc" id="L249">		return null;</span>
 	}
 
 	/**
@@ -245,48 +260,61 @@ public class FundingBasisEvolver
 	public org.drip.measure.process.DiffusionEvolver fundingSpreadNumeraireProcess (
 		final java.lang.String tenor)
 	{
-		try {
-<span class="nc" id="L249">			double meanReversionSpeed = _fundingSpreadEvolver.meanReversionRate();</span>
+		try
+		{
+<span class="nc" id="L265">			double meanReversionSpeed = _fundingSpreadEvolver.meanReversionRate();</span>
 
-<span class="nc" id="L251">			double b = org.drip.analytics.support.Helper.TenorToYearFraction (tenor);</span>
+<span class="nc" id="L267">			double b = org.drip.analytics.support.Helper.TenorToYearFraction (tenor);</span>
 
-<span class="nc bnc" id="L253" title="All 2 branches missed.">			if (0. != meanReversionSpeed)</span>
-<span class="nc" id="L254">				b = (1. - java.lang.Math.exp (-1. * meanReversionSpeed * b)) /</span>
-					meanReversionSpeed;
+<span class="nc bnc" id="L269" title="All 2 branches missed.">			if (0. != meanReversionSpeed)</span>
+			{
+<span class="nc" id="L271">				b = (1. - java.lang.Math.exp (-1. * meanReversionSpeed * b)) / meanReversionSpeed;</span>
+			}
 
-<span class="nc" id="L257">			final double dblPiterbarg2010BFactor = b;</span>
+<span class="nc" id="L274">			final double piterbarg2010BFactor = b;</span>
 
-<span class="nc" id="L259">			org.drip.measure.dynamics.LocalEvaluator leDrift = new org.drip.measure.dynamics.LocalEvaluator()</span>
-<span class="nc" id="L260">			{</span>
+<span class="nc" id="L276">			org.drip.measure.dynamics.LocalEvaluator driftEvaluator = new</span>
+				org.drip.measure.dynamics.LocalEvaluator()
+<span class="nc" id="L278">			{</span>
 				@Override public double value (
-					final org.drip.measure.realization.JumpDiffusionVertex jdv)
+					final org.drip.measure.realization.JumpDiffusionVertex jumpDiffusionVertex)
 					throws java.lang.Exception
 				{
-<span class="nc" id="L265">					return 0.;</span>
+<span class="nc" id="L283">					return 0.;</span>
 				}
 			};
 
-<span class="nc" id="L269">			org.drip.measure.dynamics.LocalEvaluator leVolatility = new</span>
-<span class="nc" id="L270">				org.drip.measure.dynamics.LocalEvaluator() {</span>
+<span class="nc" id="L287">			org.drip.measure.dynamics.LocalEvaluator volatilityEvaluator = new</span>
+				org.drip.measure.dynamics.LocalEvaluator()
+<span class="nc" id="L289">			{</span>
 				@Override public double value (
-					final org.drip.measure.realization.JumpDiffusionVertex jdv)
+					final org.drip.measure.realization.JumpDiffusionVertex jumpDiffusionVertex)
 					throws java.lang.Exception
 				{
-<span class="nc bnc" id="L275" title="All 2 branches missed.">					if (null == jdv)</span>
-<span class="nc" id="L276">						throw new java.lang.Exception</span>
+<span class="nc bnc" id="L294" title="All 2 branches missed.">					if (null == jumpDiffusionVertex)</span>
+					{
+<span class="nc" id="L296">						throw new java.lang.Exception</span>
 							(&quot;FundingBasisEvolver::CSAFundingSpreadNumeraireVolatility::Evaluator::value =&gt; Invalid Inputs&quot;);
+					}
 
-<span class="nc" id="L279">					return -1. * jdv.value() * dblPiterbarg2010BFactor * _fundingSpreadEvolver.volatilityValue();</span>
+<span class="nc" id="L300">					return -1. * jumpDiffusionVertex.value() * piterbarg2010BFactor *</span>
+<span class="nc" id="L301">						_fundingSpreadEvolver.volatilityValue();</span>
 				}
 			};
 
-<span class="nc" id="L283">			return new org.drip.measure.process.DiffusionEvolver (new</span>
-				org.drip.measure.dynamics.DiffusionEvaluator (leDrift, leVolatility));
-<span class="nc" id="L285">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L286">			e.printStackTrace();</span>
+<span class="nc" id="L305">			return new org.drip.measure.process.DiffusionEvolver (</span>
+				new org.drip.measure.dynamics.DiffusionEvaluator (
+					driftEvaluator,
+					volatilityEvaluator
+				)
+			);
+		}
+<span class="nc" id="L312">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L314">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L289">		return null;</span>
+<span class="nc" id="L317">		return null;</span>
 	}
 
 	/**
@@ -303,24 +331,24 @@ public class FundingBasisEvolver
 		final java.lang.String tenor)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L306">		double underlyingVolatility = _underlyingEvolver.volatilityValue();</span>
+<span class="fc" id="L334">		double underlyingVolatility = _underlyingEvolver.volatilityValue();</span>
 
-<span class="fc" id="L308">		double meanReversionSpeed = _fundingSpreadEvolver.meanReversionRate();</span>
+<span class="fc" id="L336">		double meanReversionSpeed = _fundingSpreadEvolver.meanReversionRate();</span>
 
-<span class="fc" id="L310">		double fundingSpreadVolatility = _fundingSpreadEvolver.volatilityValue();</span>
+<span class="fc" id="L338">		double fundingSpreadVolatility = _fundingSpreadEvolver.volatilityValue();</span>
 
-<span class="fc" id="L312">		double maturity = org.drip.analytics.support.Helper.TenorToYearFraction (tenor);</span>
+<span class="fc" id="L340">		double maturity = org.drip.analytics.support.Helper.TenorToYearFraction (tenor);</span>
 
-<span class="pc bpc" id="L314" title="1 of 2 branches missed.">		if (0. == meanReversionSpeed)</span>
+<span class="pc bpc" id="L342" title="1 of 2 branches missed.">		if (0. == meanReversionSpeed)</span>
 		{
-<span class="nc" id="L316">			return java.lang.Math.exp (-0.5 * _correlation * underlyingVolatility *</span>
+<span class="nc" id="L344">			return java.lang.Math.exp (-0.5 * _correlation * underlyingVolatility *</span>
 				fundingSpreadVolatility * maturity * maturity);
 		}
 
-<span class="fc" id="L320">		double b = (1. - java.lang.Math.exp (-1. * meanReversionSpeed * maturity)) /</span>
+<span class="fc" id="L348">		double b = (1. - java.lang.Math.exp (-1. * meanReversionSpeed * maturity)) /</span>
 			meanReversionSpeed;
 
-<span class="fc" id="L323">		return java.lang.Math.exp (-1. * _correlation * underlyingVolatility *</span>
+<span class="fc" id="L351">		return java.lang.Math.exp (-1. * _correlation * underlyingVolatility *</span>
 			fundingSpreadVolatility * (maturity - b) / meanReversionSpeed);
 	}
 }

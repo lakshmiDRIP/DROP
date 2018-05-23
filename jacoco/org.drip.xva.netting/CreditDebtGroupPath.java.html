@@ -755,29 +755,29 @@ public abstract class CreditDebtGroupPath
 
 	public double bilateralDebtAdjustment()
 	{
-<span class="fc" id="L758">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
+<span class="nc" id="L758">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
-<span class="fc" id="L760">		double[] vertexDebtExposurePV = vertexDebtExposurePV();</span>
+<span class="nc" id="L760">		double[] vertexDebtExposurePV = vertexDebtExposurePV();</span>
 
-<span class="fc" id="L762">		int vertexCount = vertexDebtExposurePV.length;</span>
-<span class="fc" id="L763">		double bilateralDebtAdjustment = 0.;</span>
+<span class="nc" id="L762">		int vertexCount = vertexDebtExposurePV.length;</span>
+<span class="nc" id="L763">		double bilateralDebtAdjustment = 0.;</span>
 
-<span class="fc bfc" id="L765" title="All 2 branches covered.">		for (int vertexIndex = 1; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="nc bnc" id="L765" title="All 2 branches missed.">		for (int vertexIndex = 1; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="fc" id="L767">			double periodIntegrandStart = vertexDebtExposurePV[vertexIndex - 1] * (1. -</span>
-<span class="fc" id="L768">				marketVertexArray[vertexIndex - 1].dealer().seniorRecoveryRate()) *</span>
-<span class="fc" id="L769">				marketVertexArray[vertexIndex - 1].client().survivalProbability();</span>
+<span class="nc" id="L767">			double periodIntegrandStart = vertexDebtExposurePV[vertexIndex - 1] * (1. -</span>
+<span class="nc" id="L768">				marketVertexArray[vertexIndex - 1].dealer().seniorRecoveryRate()) *</span>
+<span class="nc" id="L769">				marketVertexArray[vertexIndex - 1].client().survivalProbability();</span>
 
-<span class="fc" id="L771">			double periodIntegrandEnd = vertexDebtExposurePV[vertexIndex] * (1. -</span>
-<span class="fc" id="L772">				marketVertexArray[vertexIndex].dealer().seniorRecoveryRate()) *</span>
-<span class="fc" id="L773">				marketVertexArray[vertexIndex].client().survivalProbability();</span>
+<span class="nc" id="L771">			double periodIntegrandEnd = vertexDebtExposurePV[vertexIndex] * (1. -</span>
+<span class="nc" id="L772">				marketVertexArray[vertexIndex].dealer().seniorRecoveryRate()) *</span>
+<span class="nc" id="L773">				marketVertexArray[vertexIndex].client().survivalProbability();</span>
 
-<span class="fc" id="L775">			bilateralDebtAdjustment -= 0.5 * (periodIntegrandStart + periodIntegrandEnd) *</span>
-<span class="fc" id="L776">				(marketVertexArray[vertexIndex - 1].dealer().survivalProbability() -</span>
-<span class="fc" id="L777">					marketVertexArray[vertexIndex].dealer().survivalProbability());</span>
+<span class="nc" id="L775">			bilateralDebtAdjustment -= 0.5 * (periodIntegrandStart + periodIntegrandEnd) *</span>
+<span class="nc" id="L776">				(marketVertexArray[vertexIndex - 1].dealer().survivalProbability() -</span>
+<span class="nc" id="L777">					marketVertexArray[vertexIndex].dealer().survivalProbability());</span>
 		}
 
-<span class="fc" id="L780">		return bilateralDebtAdjustment;</span>
+<span class="nc" id="L780">		return bilateralDebtAdjustment;</span>
 	}
 
 	/**

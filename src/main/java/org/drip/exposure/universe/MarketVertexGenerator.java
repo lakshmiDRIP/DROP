@@ -591,7 +591,7 @@ public class MarketVertexGenerator
 	 * Generate the Trajectory of the Simulated Market Vertexes
 	 * 
 	 * @param initialMarketVertex The Initial Market Vertex
-	 * @param unitEvolverSequence Dual Array of Unit Evolver Sequence
+	 * @param latentStateWeiner The Latent State Weiner Instance
 	 * 
 	 * @return The Trajectory of the Simulated Market Vertexes
 	 */
