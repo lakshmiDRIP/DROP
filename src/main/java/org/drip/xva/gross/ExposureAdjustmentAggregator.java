@@ -1214,4 +1214,98 @@ public class ExposureAdjustmentAggregator
 
 		return null;
 	}
+
+	/**
+	 * Generate the Basel Exposure Digest
+	 * 
+	 * @return The Basel Exposure Digest
+	 */
+
+	public org.drip.xva.gross.BaselExposureDigest baselExposureDigest (
+		final org.drip.xva.settings.StandardizedExposureGeneratorScheme standardizedExposureGeneratorScheme)
+	{
+		if (null == standardizedExposureGeneratorScheme)
+		{
+			return null;
+		}
+
+		org.drip.analytics.date.JulianDate[] vertexJulianDateArray = vertexDates();
+
+		int vertexCount = vertexJulianDateArray.length;
+		int[] vertexDateArray = new int[vertexCount];
+		int pathCount = _pathExposureAdjustmentArray.length;
+		double[] collateralizedPositiveExposure = new double[vertexCount];
+		org.drip.spline.params.SegmentCustomBuilderControl[] segmentCustomBuilderControlArray = new
+			org.drip.spline.params.SegmentCustomBuilderControl[vertexCount - 1]; 
+
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+		{
+			collateralizedPositiveExposure[vertexIndex] = 0.;
+
+			vertexDateArray[vertexIndex] = vertexJulianDateArray[vertexIndex].julian();
+		}
+
+		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
+		{
+			double[] pathCollateralizedPositiveExposure =
+				_pathExposureAdjustmentArray[pathIndex].vertexCollateralizedPositiveExposure();
+
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+			{
+				collateralizedPositiveExposure[vertexIndex] +=
+					pathCollateralizedPositiveExposure[vertexIndex];
+			}
+		}
+
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+		{
+			collateralizedPositiveExposure[vertexIndex] /= pathCount;
+		}
+
+		try
+		{
+			org.drip.spline.params.SegmentCustomBuilderControl segmentCustomBuilderControl = new
+				org.drip.spline.params.SegmentCustomBuilderControl (
+					org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+					new org.drip.spline.basis.PolynomialFunctionSetParams (2),
+					org.drip.spline.params.SegmentInelasticDesignControl.Create (
+						0,
+						2
+					),
+					new org.drip.spline.params.ResponseScalingShapeControl (
+						true,
+						new org.drip.function.r1tor1.QuadraticRationalShapeControl (0.)
+					),
+					null
+				);
+
+			for (int i = 0; i < vertexCount - 1; ++i)
+				segmentCustomBuilderControlArray[i] = segmentCustomBuilderControl;
+
+			org.drip.spline.stretch.MultiSegmentSequence multiSegmentSequence =
+				org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator (
+					"DF_STRETCH",
+					vertexDateArray,
+					collateralizedPositiveExposure,
+					segmentCustomBuilderControlArray,
+					null,
+					org.drip.spline.stretch.BoundarySettings.NaturalStandard(),
+					org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE
+				);
+
+			return new BaselExposureDigest (
+				collateralizedPositiveExposure[0],
+				java.lang.Double.NaN, // final double expectedPositiveExposure,
+				java.lang.Double.NaN, // final double effectiveExpectedExposure,
+				java.lang.Double.NaN, // final double effectiveExpectedPositiveExposure,
+				java.lang.Double.NaN // final double exposureAtDefault
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 }

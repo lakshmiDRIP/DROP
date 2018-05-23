@@ -1,5 +1,5 @@
 
-package org.drip.xva.basel;
+package org.drip.xva.settings;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,8 +47,8 @@ package org.drip.xva.basel;
  */
 
 /**
- * StandardizedExposureGenerator holds the Fields for the Generation of the Conservative Exposure Measures
- *  generated using the Standardized Basel Approach. The References are:
+ * StandardizedExposureGeneratorScheme holds the Fields for the Generation of the Conservative Exposure
+ *  Measures generated using the Standardized Basel Scheme. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
@@ -69,7 +69,52 @@ package org.drip.xva.basel;
  * @author Lakshmi Krishnamurthy
  */
 
-public class StandardizedExposureGenerator
+public class StandardizedExposureGeneratorScheme
 {
+	private double _eadMultiplier = java.lang.Double.NaN;
+	private double _timeIntegrand = java.lang.Double.NaN;
 
+	/**
+	 * StandardizedExposureGeneratorScheme Constructor
+	 * 
+	 * @param eadMultiplier The EAD Multiplier
+	 * @param timeIntegrand The Time Integrand
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public StandardizedExposureGeneratorScheme (
+		final double eadMultiplier,
+		final double timeIntegrand)
+		throws java.lang.Exception
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (_eadMultiplier = eadMultiplier) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_timeIntegrand = timeIntegrand))
+		{
+			throw new java.lang.Exception
+				("StandardizedExposureGeneratorScheme Constructor => Invalid Inputs");
+		}
+	}
+
+	/**
+	 * Retrieve the EAD Multiplier
+	 * 
+	 * @return The EAD Multiplier
+	 */
+
+	public double eadMultiplier()
+	{
+		return _eadMultiplier;
+	}
+
+	/**
+	 * Retrieve the Time Integrand
+	 * 
+	 * @return The Time Integrand
+	 */
+
+	public double timeIntegrand()
+	{
+		return _timeIntegrand;
+	}
 }
