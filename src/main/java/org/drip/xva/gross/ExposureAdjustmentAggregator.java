@@ -1327,20 +1327,22 @@ public class ExposureAdjustmentAggregator
 				return null;
 			}
 
-			int integrandFinish = vertexDateArray[0] + standardizedExposureGeneratorScheme.timeIntegrand();
+			int exposureGeneratorTimeIntegrand = standardizedExposureGeneratorScheme.timeIntegrand();
+
+			int integrandFinishDate = vertexDateArray[0] + exposureGeneratorTimeIntegrand;
 
 			double effectiveExpectedPositiveExposure =
 				multiSegmentSequenceEffectiveCollateralizedPositiveExposure.toAU().integrate (
 					vertexDateArray[0],
-					integrandFinish
-				);
+					integrandFinishDate
+				) / exposureGeneratorTimeIntegrand;
 
 			return new BaselExposureDigest (
-				vertexDateArray[0],
+				collateralizedPositiveExposure[0],
 				multiSegmentSequenceCollateralizedPositiveExposure.toAU().integrate (
 					vertexDateArray[0],
-					integrandFinish
-				),
+					integrandFinishDate
+				) / exposureGeneratorTimeIntegrand,
 				effectiveCollateralizedPositiveExposure[vertexCount - 1],
 				effectiveExpectedPositiveExposure,
 				effectiveExpectedPositiveExposure * standardizedExposureGeneratorScheme.eadMultiplier()
