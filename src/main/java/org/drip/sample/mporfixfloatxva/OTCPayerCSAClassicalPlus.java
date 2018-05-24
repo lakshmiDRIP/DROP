@@ -630,13 +630,6 @@ public class OTCPayerCSAClassicalPlus
 		double fixFloatNotional = -10.e+06;
 
 		double eadMultiplier = 1.;
-		int timeIntegrand = 365;
-
-		StandardizedExposureGeneratorScheme standardizedExposureGeneratorScheme =
-			new StandardizedExposureGeneratorScheme (
-				eadMultiplier,
-				timeIntegrand
-			);
 
 		ForwardLabel forwardLabel = ForwardLabel.Create (
 			currency,
@@ -839,7 +832,7 @@ public class OTCPayerCSAClassicalPlus
 		System.out.println ("\t|-------------------------------------------------||");
 
 		DisplayBaselMeasures (exposureAdjustmentAggregator.baselExposureDigest
-			(standardizedExposureGeneratorScheme));
+			(StandardizedExposureGeneratorScheme.Basel (eadMultiplier)));
 
 		System.out.println ("\t|-------------------------------------------------||");
 

@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StandardizedExposureGeneratorScheme.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.xva.settings</a> &gt; <span class="el_source">StandardizedExposureGeneratorScheme.java</span></div><h1>StandardizedExposureGeneratorScheme.java</h1><pre class="source lang-java linenums">
+package org.drip.xva.settings;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * StandardizedExposureGeneratorScheme holds the Fields for the Generation of the Conservative Exposure
+ *  Measures generated using the Standardized Basel Scheme. The References are:
+ *  
+ *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
+ *  
+ *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
+ *  
+ *  - Anfuso, F., D. Aziz, P. Giltinan, and K Loukopoulus (2017): A Sound Modeling and Back-testing Framework
+ *  	for Forecasting Initial Margin Requirements,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
+ *  
+ *  - BCBS (2015): Margin Requirements for Non-centrally Cleared Derivatives,
+ *  	https://www.bis.org/bcbs/publ/d317.pdf.
+ *  
+ *  - Pykhtin, M. (2009): Modeling Credit Exposure for Collateralized Counter-parties, Journal of Credit
+ *  	Risk, 5 (4) 3-27.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class StandardizedExposureGeneratorScheme
+{
+
+	/**
+	 * Basel Standard Time Integrand
+	 */
+
+	public static final int BASEL_STANDARD_TIME_INTEGRAND = 365;
+
+<span class="nc" id="L81">	private int _timeIntegrand = -1;</span>
+<span class="nc" id="L82">	private double _eadMultiplier = java.lang.Double.NaN;</span>
+<span class="nc" id="L83">	private org.drip.spline.params.SegmentCustomBuilderControl _collateralizedExposureSegmentBuilderControl =</span>
+		null;
+<span class="nc" id="L85">	private org.drip.spline.params.SegmentCustomBuilderControl</span>
+		_collateralizedPositiveExposureSegmentBuilderControl = null;
+
+	/**
+	 * Construct a Basel Instance of the StandardizedExposureGeneratorScheme
+	 * 
+	 * @param eadMultiplier The EAD Multiplier
+	 * 
+	 * @return The StandardizedExposureGeneratorScheme Instance
+	 */
+
+	public static final StandardizedExposureGeneratorScheme Basel (
+		final double eadMultiplier)
+	{
+		try
+		{
+<span class="nc" id="L101">			org.drip.spline.params.SegmentCustomBuilderControl segmentCustomBuilderControl = new</span>
+				org.drip.spline.params.SegmentCustomBuilderControl (
+					org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+					new org.drip.spline.basis.PolynomialFunctionSetParams (2),
+<span class="nc" id="L105">					org.drip.spline.params.SegmentInelasticDesignControl.Create (</span>
+						0,
+						2
+					),
+					new org.drip.spline.params.ResponseScalingShapeControl (
+						true,
+						new org.drip.function.r1tor1.QuadraticRationalShapeControl (0.)
+					),
+					null
+				);
+
+<span class="nc" id="L116">			return new StandardizedExposureGeneratorScheme (</span>
+				eadMultiplier,
+				BASEL_STANDARD_TIME_INTEGRAND,
+				segmentCustomBuilderControl,
+				segmentCustomBuilderControl
+			);
+		}
+<span class="nc" id="L123">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L125">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L128">		return null;</span>
+	}
+
+	/**
+	 * StandardizedExposureGeneratorScheme Constructor
+	 * 
+	 * @param eadMultiplier The EAD Multiplier
+	 * @param timeIntegrand The Time Integrand
+	 * @param collateralizedExposureSegmentBuilderControl The Collateralized Segment Builder Control
+	 * @param collateralizedPositiveExposureSegmentBuilderControl The Collateralized Positive Segment Builder
+	 *  Control
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public StandardizedExposureGeneratorScheme (
+		final double eadMultiplier,
+		final int timeIntegrand,
+		final org.drip.spline.params.SegmentCustomBuilderControl collateralizedExposureSegmentBuilderControl,
+		final org.drip.spline.params.SegmentCustomBuilderControl
+			collateralizedPositiveExposureSegmentBuilderControl)
+		throws java.lang.Exception
+<span class="nc" id="L150">	{</span>
+<span class="nc bnc" id="L151" title="All 10 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_eadMultiplier = eadMultiplier) ||0. &gt;= _eadMultiplier</span>
+			|| 0 &gt;= (_timeIntegrand = timeIntegrand) ||
+			null == (_collateralizedExposureSegmentBuilderControl =
+				collateralizedExposureSegmentBuilderControl) ||
+			null == (_collateralizedPositiveExposureSegmentBuilderControl =
+				collateralizedPositiveExposureSegmentBuilderControl))
+		{
+<span class="nc" id="L158">			throw new java.lang.Exception</span>
+				(&quot;StandardizedExposureGeneratorScheme Constructor =&gt; Invalid Inputs&quot;);
+		}
+<span class="nc" id="L161">	}</span>
+
+	/**
+	 * Retrieve the EAD Multiplier
+	 * 
+	 * @return The EAD Multiplier
+	 */
+
+	public double eadMultiplier()
+	{
+<span class="nc" id="L171">		return _eadMultiplier;</span>
+	}
+
+	/**
+	 * Retrieve the Time Integrand
+	 * 
+	 * @return The Time Integrand
+	 */
+
+	public int timeIntegrand()
+	{
+<span class="nc" id="L182">		return _timeIntegrand;</span>
+	}
+
+	/**
+	 * Retrieve the Collateralized Exposure Segment Builder Control
+	 * 
+	 * @return The Collateralized Exposure Segment Builder Control
+	 */
+
+	public org.drip.spline.params.SegmentCustomBuilderControl collateralizedExposureSegmentBuilderControl()
+	{
+<span class="nc" id="L193">		return _collateralizedExposureSegmentBuilderControl;</span>
+	}
+
+	/**
+	 * Retrieve the Collateralized Positive Exposure Segment Builder Control
+	 * 
+	 * @return The Collateralized Positive Exposure Segment Builder Control
+	 */
+
+	public org.drip.spline.params.SegmentCustomBuilderControl
+		collateralizedPositiveExposureSegmentBuilderControl()
+	{
+<span class="nc" id="L205">		return _collateralizedPositiveExposureSegmentBuilderControl;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

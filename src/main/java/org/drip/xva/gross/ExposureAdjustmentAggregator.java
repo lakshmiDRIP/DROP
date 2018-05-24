@@ -1238,8 +1238,26 @@ public class ExposureAdjustmentAggregator
 		int pathCount = _pathExposureAdjustmentArray.length;
 		double[] collateralizedPositiveExposure = new double[vertexCount];
 		double[] effectiveCollateralizedPositiveExposure = new double[vertexCount];
-		org.drip.spline.params.SegmentCustomBuilderControl[] segmentCustomBuilderControlArray = new
-			org.drip.spline.params.SegmentCustomBuilderControl[vertexCount - 1]; 
+		org.drip.spline.params.SegmentCustomBuilderControl[] collateralizedExposureSegmentBuilderControlArray
+			= new org.drip.spline.params.SegmentCustomBuilderControl[vertexCount - 1];
+		org.drip.spline.params.SegmentCustomBuilderControl[]
+			collateralizedPositiveExposureSegmentBuilderControlArray = new
+				org.drip.spline.params.SegmentCustomBuilderControl[vertexCount - 1];
+
+		org.drip.spline.params.SegmentCustomBuilderControl collateralizedExposureSegmentBuilderControl =
+			standardizedExposureGeneratorScheme.collateralizedExposureSegmentBuilderControl();
+
+		org.drip.spline.params.SegmentCustomBuilderControl
+			collateralizedPositiveExposureSegmentBuilderControl =
+				standardizedExposureGeneratorScheme.collateralizedPositiveExposureSegmentBuilderControl();
+
+		for (int i = 0; i < vertexCount - 1; ++i)
+		{
+			collateralizedExposureSegmentBuilderControlArray[i] =
+				collateralizedExposureSegmentBuilderControl;
+			collateralizedPositiveExposureSegmentBuilderControlArray[i] =
+				collateralizedPositiveExposureSegmentBuilderControl;
+		}
 
 		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 		{
@@ -1280,30 +1298,12 @@ public class ExposureAdjustmentAggregator
 
 		try
 		{
-			org.drip.spline.params.SegmentCustomBuilderControl segmentCustomBuilderControl = new
-				org.drip.spline.params.SegmentCustomBuilderControl (
-					org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
-					new org.drip.spline.basis.PolynomialFunctionSetParams (2),
-					org.drip.spline.params.SegmentInelasticDesignControl.Create (
-						0,
-						2
-					),
-					new org.drip.spline.params.ResponseScalingShapeControl (
-						true,
-						new org.drip.function.r1tor1.QuadraticRationalShapeControl (0.)
-					),
-					null
-				);
-
-			for (int i = 0; i < vertexCount - 1; ++i)
-				segmentCustomBuilderControlArray[i] = segmentCustomBuilderControl;
-
 			org.drip.spline.stretch.MultiSegmentSequence multiSegmentSequenceCollateralizedPositiveExposure =
 				org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator (
 					"CollateralizedPositiveExposure",
 					vertexDateArray,
 					collateralizedPositiveExposure,
-					segmentCustomBuilderControlArray,
+					collateralizedExposureSegmentBuilderControlArray,
 					null,
 					org.drip.spline.stretch.BoundarySettings.NaturalStandard(),
 					org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE
@@ -1315,7 +1315,7 @@ public class ExposureAdjustmentAggregator
 						"EffectiveCollateralizedPositiveExposure",
 						vertexDateArray,
 						effectiveCollateralizedPositiveExposure,
-						segmentCustomBuilderControlArray,
+						collateralizedPositiveExposureSegmentBuilderControlArray,
 						null,
 						org.drip.spline.stretch.BoundarySettings.NaturalStandard(),
 						org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE
