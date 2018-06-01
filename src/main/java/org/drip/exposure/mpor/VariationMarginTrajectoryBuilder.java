@@ -1,5 +1,5 @@
 
-package org.drip.exposure.generator;
+package org.drip.exposure.mpor;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,8 +47,8 @@ package org.drip.exposure.generator;
  */
 
 /**
- * NumeraireMPoR estimates the MPoR Variation Margin and the Trade Payments for the generic Numeraire off of
- *  the Realized Market Path. The References are:
+ * VariationMarginTrajectoryBuilder builds the Variation Margin Trajectory using several Techniques. The
+ * 	 References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
@@ -62,77 +62,60 @@ package org.drip.exposure.generator;
  *  - Burgard, C., and M. Kjaer (2017): Derivatives Funding, Netting, and Accounting, eSSRN,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2534011.
  * 
- *  - Pykhtin, M. (2009): Modeling Counter-party Credit Exposure in the Presence of Margin Agreements,
- *  	http://www.risk-europe.com/protected/michael-pykhtin.pdf.
+ *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
+ *  	21 (2) 97-102.
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class NumeraireMPoR implements org.drip.exposure.mpor.VariationMarginTradePaymentVertex
+public class VariationMarginTrajectoryBuilder
 {
-	private double _notional = java.lang.Double.NaN;
-	private org.drip.state.identifier.LatentStateLabel _latentStateLabel = null;
 
 	/**
-	 * NumeraireMPoR Constructor
+	 * Generate the Daily Dense Variation Margin Trade Payment Trajectory
 	 * 
-	 * @param latentStateLabel The Latent State Label
-	 * @param notional The Notional
+	 * @param exposureDateArray The Exposure Date Array
+	 * @param variationMarginTradePaymentVertex The Variation Margin Trade Payment Vertex Generator
+	 * @param marketPath The Market Path
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @return The Daily Dense Variation Margin Trade Payment Trajectory
 	 */
 
-	public NumeraireMPoR (
-		final org.drip.state.identifier.LatentStateLabel latentStateLabel,
-		final double notional)
-		throws java.lang.Exception
-	{
-		if (null == (_latentStateLabel = latentStateLabel) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_notional = notional))
-		{
-			throw new java.lang.Exception ("NumeraireMPoR Constructor => Invalid Inputs");
-		}
-	}
-
-	/**
-	 * Retrieve the Notional
-	 * 
-	 * @return The Notional
-	 */
-
-	public double notional()
-	{
-		return _notional;
-	}
-
-	/**
-	 * Retrieve the Latent State Label
-	 * 
-	 * @return The Latent State Label
-	 */
-
-	public org.drip.state.identifier.LatentStateLabel latentStateLabel()
-	{
-		return _latentStateLabel;
-	}
-
-	@Override public double variationMarginEstimate (
-		final int forwardDate,
-		final org.drip.exposure.universe.MarketPath marketPath)
-		throws java.lang.Exception
-	{
-		if (null == marketPath)
-		{
-			throw new java.lang.Exception ("NumeraireVertex::variationMarginEstimate => Invalid Inputs");
-		}
-
-		return _notional * marketPath.marketVertex (forwardDate).latentStateValue (_latentStateLabel);
-	}
-
-	@Override public org.drip.exposure.mpor.TradePayment tradePayment (
-		final int forwardDate,
+	public static final java.util.Map<java.lang.Integer, java.lang.Double> DailyDense (
+		final int[] exposureDateArray,
+		final org.drip.exposure.mpor.VariationMarginTradePaymentVertex variationMarginTradePaymentVertex,
 		final org.drip.exposure.universe.MarketPath marketPath)
 	{
-		return org.drip.exposure.mpor.TradePayment.Standard (0.);
+		if (null == exposureDateArray)
+		{
+			return null;
+		}
+
+		int exposureDateCount = exposureDateArray.length;
+
+		java.util.Map<java.lang.Integer, java.lang.Double> variationMarginEstimateTrajectory = new
+			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+
+		try
+		{
+			for (int exposureDateIndex = 0; exposureDateIndex < exposureDateCount; ++exposureDateIndex)
+			{
+				variationMarginEstimateTrajectory.put (
+					exposureDateArray[exposureDateIndex],
+					variationMarginTradePaymentVertex.variationMarginEstimate (
+						exposureDateArray[exposureDateIndex],
+						marketPath
+					)
+				);
+			}
+
+			return variationMarginEstimateTrajectory;
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

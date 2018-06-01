@@ -259,32 +259,11 @@ public class VariationMarginTradeTrajectoryEstimator
 
 	public java.util.Map<java.lang.Integer, java.lang.Double> variationMarginEstimateTrajectory()
 	{
-		java.util.Map<java.lang.Integer, java.lang.Double> variationMarginEstimateTrajectory = new
-			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
-
-		int exposureDateCount = _exposureDateArray.length;
-
-		try
-		{
-			for (int exposureDateIndex = 0; exposureDateIndex < exposureDateCount; ++exposureDateIndex)
-			{
-				variationMarginEstimateTrajectory.put (
-					_exposureDateArray[exposureDateIndex],
-					_variationMarginTradePaymentVertex.variationMarginEstimate (
-						_exposureDateArray[exposureDateIndex],
-						_marketPath
-					)
-				);
-			}
-
-			return variationMarginEstimateTrajectory;
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
+		return org.drip.exposure.mpor.VariationMarginTrajectoryBuilder.DailyDense (
+			_exposureDateArray,
+			_variationMarginTradePaymentVertex,
+			_marketPath
+		);
 	}
 
 	/**

@@ -13,6 +13,10 @@ import org.drip.exposure.evolver.LatentStateVertexContainer;
 import org.drip.exposure.evolver.PrimarySecurity;
 import org.drip.exposure.evolver.PrimarySecurityDynamicsContainer;
 import org.drip.exposure.evolver.TerminalLatentState;
+import org.drip.exposure.generator.NumeraireMPoR;
+import org.drip.exposure.mpor.VariationMarginTradeTrajectoryEstimator;
+import org.drip.exposure.universe.LatentStateWeiner;
+import org.drip.exposure.universe.MarketPath;
 import org.drip.exposure.universe.MarketVertex;
 import org.drip.exposure.universe.MarketVertexGenerator;
 import org.drip.measure.crng.RandomNumberGenerator;
@@ -22,6 +26,7 @@ import org.drip.measure.dynamics.DiffusionEvaluatorLogarithmic;
 import org.drip.measure.dynamics.HazardJumpEvaluator;
 import org.drip.measure.process.DiffusionEvolver;
 import org.drip.measure.process.JumpDiffusionEvolver;
+import org.drip.quant.linearalgebra.Matrix;
 import org.drip.service.env.EnvManager;
 import org.drip.state.identifier.CSALabel;
 import org.drip.state.identifier.EntityEquityLabel;
@@ -512,8 +517,8 @@ public class BulletConditionalExposureRegression
 			19
 		);
 
-		int pathCount = 1000;
-		String exposurePeriodTenor = "1D";
+		int pathCount = 100;
+		String exposurePeriodTenor = "1M";
 		int exposurePeriodCount = 380;
 		String currency = "USD";
 		String dealer = "NOM";
@@ -530,12 +535,17 @@ public class BulletConditionalExposureRegression
 			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00}, // #8  CLIENT FUNDING REPLICATOR
 			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00}, // #9  OTC FIX FLOAT REPLICATOR
 		};
-		String referenceEntity = "NOM";
+		String referenceEntity = "HYG";
 		double equityNotional = 1.e+06;
 
 		EntityEquityLabel equityLabel = EntityEquityLabel.Standard (
 			referenceEntity,
 			currency
+		);
+
+		NumeraireMPoR numeraireMPoR = new NumeraireMPoR (
+			equityLabel,
+			equityNotional
 		);
 
 		List<LatentStateLabel> latentStateLabelList = new ArrayList<LatentStateLabel>();
@@ -581,5 +591,39 @@ public class BulletConditionalExposureRegression
 			true,
 			null
 		);
+
+		JulianDate exposureDate = spotDate;
+		int[] exposureDateArray = new int[exposurePeriodCount + 1];
+
+		for (int i = 0; i <= exposurePeriodCount; ++i)
+		{
+			exposureDateArray[i] = exposureDate.julian();
+
+			exposureDate = exposureDate.addTenor (exposurePeriodTenor);
+		}
+
+		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
+		{
+			MarketPath marketPath = new MarketPath (
+				marketVertexGenerator.marketVertex (
+					initialMarketVertex,
+					LatentStateWeiner.FromUnitRandom (
+						latentStateLabelList,
+						Matrix.Transpose (correlatedPathVertexDimension.straightPathVertexRd().flatform())
+					)
+				)
+			);
+
+			VariationMarginTradeTrajectoryEstimator marginTradeFlowTrajectory =
+				new VariationMarginTradeTrajectoryEstimator (
+					exposureDateArray,
+					currency,
+					numeraireMPoR,
+					marketPath,
+					andersenPykhtinSokolLag
+				);
+
+			System.out.println (marginTradeFlowTrajectory);
+		}
 	}
 }
