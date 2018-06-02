@@ -82,7 +82,7 @@ public class RawRegressionMetrics
 	{
 		EnvManager.InitEnv ("");
 
-		int exposureCount = 30;
+		int exposureCount = 1000;
 		double exposureLow = 70.;
 		double exposureHigh = 130.;
 		double[] exposureArray = new double[exposureCount];
@@ -96,17 +96,43 @@ public class RawRegressionMetrics
 
 		RealizationPoint[] realizationPointArray = vertexRealization.realizationDynamicsArray();
 
+		System.out.println ("\t||--------------------------------------------||");
+
+		System.out.println ("\t||  Pykhtin (2009) Terminal Brownian Bridge   ||");
+
+		System.out.println ("\t||--------------------------------------------||");
+
+		System.out.println ("\t||                                            ||");
+
+		System.out.println ("\t||  L -> R:                                   ||");
+
+		System.out.println ("\t||                                            ||");
+
+		System.out.println ("\t||      Terminal Numeraire                    ||");
+
+		System.out.println ("\t||      Ranking Ordinal                       ||");
+
+		System.out.println ("\t||      Uniform CDF                           ||");
+
+		System.out.println ("\t||      Gaussian Predictor Variate            ||");
+
+		System.out.println ("\t||      Local Volatility Estimate             ||");
+
+		System.out.println ("\t||--------------------------------------------||");
+
 		for (RealizationPoint realizationPoint : realizationPointArray)
 		{
 			System.out.println (
 				"\t|| " +
 				FormatUtil.FormatDouble (realizationPoint.exposure(), 3, 2, 1.) + " | " +
-				FormatUtil.FormatDouble (realizationPoint.order(), 2, 0, 1.) + " | " +
+				FormatUtil.FormatDouble (realizationPoint.order(), 3, 0, 1.) + " | " +
 				FormatUtil.FormatDouble (realizationPoint.cdf(), 1, 3, 1.) + " | " +
 				FormatUtil.FormatDouble (realizationPoint.variate(), 1, 4, 1.) + " | " +
-				FormatUtil.FormatDouble (realizationPoint.localVolatility(), 2, 2, 1.)
+				FormatUtil.FormatDouble (realizationPoint.localVolatility(), 2, 2, 1.) + " ||"
 			);
 		}
+
+		System.out.println ("\t||--------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

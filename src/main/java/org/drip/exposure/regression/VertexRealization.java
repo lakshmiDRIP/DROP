@@ -151,13 +151,23 @@ public class VertexRealization
 		int realizationCount = _exposureSet.size();
 
 		int realizationIndex = 0;
+		int localVolatilityIndexShift = 20;
 		double[] cdfArray = new double[realizationCount];
 		double[] variateArray = new double[realizationCount];
 		double[] exposureArray = new double[realizationCount];
+		int localVolatilityIndexFloor = localVolatilityIndexShift;
+		double[] localVolatilityArray = new double[realizationCount];
+		int localVolatilityIndexCeiling = realizationCount - localVolatilityIndexShift;
 		org.drip.exposure.regression.RealizationPoint[] realizationPointArray = new
 			org.drip.exposure.regression.RealizationPoint[realizationCount];
 
-		for (int realizationCoordinate = 0; realizationCoordinate < realizationCount;
+		for (double exposure : _exposureSet)
+		{
+			exposureArray[realizationIndex++] = exposure;
+		}
+
+		for (int realizationCoordinate = 0;
+			realizationCoordinate < realizationCount;
 			++realizationCoordinate)
 		{
 			try
@@ -174,13 +184,30 @@ public class VertexRealization
 			}
 		}
 
-		for (double exposure : _exposureSet)
+		for (int realizationCoordinate = localVolatilityIndexFloor;
+			realizationCoordinate < localVolatilityIndexCeiling;
+			++realizationCoordinate)
 		{
-			exposureArray[realizationIndex++] = exposure;
+			localVolatilityArray[realizationCoordinate] =
+				(exposureArray[realizationCoordinate - localVolatilityIndexShift] -
+					exposureArray[realizationCoordinate + localVolatilityIndexShift]) /
+				(variateArray[realizationCoordinate - localVolatilityIndexShift] -
+					variateArray[realizationCoordinate + localVolatilityIndexShift]);
 		}
 
-		double localVolatility = (exposureArray[realizationCount - 1] - exposureArray[0]) /
-			(variateArray[realizationCount - 1] - variateArray[0]);
+		for (int realizationCoordinate = 0;
+			realizationCoordinate < localVolatilityIndexFloor;
+			++realizationCoordinate)
+		{
+			localVolatilityArray[realizationCoordinate] = localVolatilityArray[localVolatilityIndexFloor];
+		}
+
+		for (int realizationCoordinate = localVolatilityIndexCeiling;
+			realizationCoordinate < realizationCount;
+			++realizationCoordinate)
+		{
+			localVolatilityArray[realizationCoordinate] = localVolatilityArray[localVolatilityIndexCeiling - 1];
+		}
 
 		for (int realizationCoordinate = 0; realizationCoordinate < realizationCount;
 			++realizationCoordinate)
@@ -192,7 +219,7 @@ public class VertexRealization
 					realizationCoordinate,
 					cdfArray[realizationCoordinate],
 					variateArray[realizationCoordinate],
-					localVolatility
+					localVolatilityArray[realizationCoordinate]
 				);
 
 				++realizationIndex;
