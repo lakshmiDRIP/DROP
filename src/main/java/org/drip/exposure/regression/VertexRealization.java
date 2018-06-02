@@ -150,23 +150,52 @@ public class VertexRealization
 	{
 		int realizationCount = _exposureSet.size();
 
-		int realizationIndex = 1;
+		int realizationIndex = 0;
+		double[] cdfArray = new double[realizationCount];
+		double[] variateArray = new double[realizationCount];
+		double[] exposureArray = new double[realizationCount];
 		org.drip.exposure.regression.RealizationPoint[] realizationPointArray = new
 			org.drip.exposure.regression.RealizationPoint[realizationCount];
 
-		for (double exposure : _exposureSet)
+		for (int realizationCoordinate = 0; realizationCoordinate < realizationCount;
+			++realizationCoordinate)
 		{
-			double cdf = (((double) realizationIndex) - 0.5) / ((double) realizationCount);
-
 			try
 			{
-				realizationPointArray[realizationIndex - 1] = new org.drip.exposure.regression.RealizationPoint (
-					exposure,
-					realizationIndex,
-					cdf,
-					java.lang.Double.NaN, // variate,
-					java.lang.Double.NaN // localVolatility
+				variateArray[realizationCoordinate] = org.drip.measure.gaussian.NormalQuadrature.InverseCDF
+					(cdfArray[realizationCoordinate] = (((double) realizationCoordinate) + 0.5) / ((double)
+						realizationCount));
+			}
+			catch (java.lang.Exception e)
+			{
+				e.printStackTrace();
+
+				return null;
+			}
+		}
+
+		for (double exposure : _exposureSet)
+		{
+			exposureArray[realizationIndex++] = exposure;
+		}
+
+		double localVolatility = (exposureArray[realizationCount - 1] - exposureArray[0]) /
+			(variateArray[realizationCount - 1] - variateArray[0]);
+
+		for (int realizationCoordinate = 0; realizationCoordinate < realizationCount;
+			++realizationCoordinate)
+		{
+			try
+			{
+				realizationPointArray[realizationCoordinate] = new org.drip.exposure.regression.RealizationPoint (
+					exposureArray[realizationCoordinate],
+					realizationCoordinate,
+					cdfArray[realizationCoordinate],
+					variateArray[realizationCoordinate],
+					localVolatility
 				);
+
+				++realizationIndex;
 			}
 			catch (java.lang.Exception e)
 			{

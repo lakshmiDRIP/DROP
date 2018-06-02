@@ -1,7 +1,9 @@
 
 package org.drip.sample.pykhtin2009;
 
+import org.drip.exposure.regression.RealizationPoint;
 import org.drip.exposure.regression.VertexRealization;
+import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -80,7 +82,7 @@ public class RawRegressionMetrics
 	{
 		EnvManager.InitEnv ("");
 
-		int exposureCount = 10;
+		int exposureCount = 30;
 		double exposureLow = 70.;
 		double exposureHigh = 130.;
 		double[] exposureArray = new double[exposureCount];
@@ -90,10 +92,22 @@ public class RawRegressionMetrics
 			exposureArray[exposureIndex] = exposureLow + (exposureHigh - exposureLow) * Math.random();
 		}
 
-		VertexRealization uncollateralizedVertexExposure =
-			VertexRealization.Standard (exposureArray);
+		VertexRealization vertexRealization = VertexRealization.Standard (exposureArray);
 
-		System.out.println (uncollateralizedVertexExposure);
+		RealizationPoint[] realizationPointArray = vertexRealization.realizationDynamicsArray();
+
+		for (RealizationPoint realizationPoint : realizationPointArray)
+		{
+			System.out.println (
+				"\t|| " +
+				FormatUtil.FormatDouble (realizationPoint.exposure(), 3, 2, 1.) + " | " +
+				FormatUtil.FormatDouble (realizationPoint.order(), 2, 0, 1.) + " | " +
+				FormatUtil.FormatDouble (realizationPoint.cdf(), 1, 3, 1.) + " | " +
+				FormatUtil.FormatDouble (realizationPoint.variate(), 1, 4, 1.) + " | " +
+				FormatUtil.FormatDouble (realizationPoint.localVolatility(), 2, 2, 1.)
+			);
+		}
+
 		EnvManager.TerminateEnv();
 	}
 }
