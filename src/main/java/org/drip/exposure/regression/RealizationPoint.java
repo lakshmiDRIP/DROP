@@ -70,5 +70,94 @@ package org.drip.exposure.regression;
 
 public class RealizationPoint
 {
+	private int _order = -1;
+	private double _cdf = java.lang.Double.NaN;
+	private double _variate = java.lang.Double.NaN;
+	private double _exposure = java.lang.Double.NaN;
+	private double _localVolatility = java.lang.Double.NaN;
 
+	/**
+	 * RealizationPoint Constructor
+	 * 
+	 * @param exposure The Realization Point Exposure
+	 * @param order The Realization Point Order
+	 * @param cdf The Realization Point CDF
+	 * @param variate The Realization Point Variate
+	 * @param localVolatility The Realization Point Local Volatility
+	 * 
+	 * @throws java.lang.Exception Thrown if the iNputs are Invalid
+	 */
+
+	public RealizationPoint (
+		final double exposure,
+		final int order,
+		final double cdf,
+		final double variate,
+		final double localVolatility)
+		throws java.lang.Exception
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (_exposure = exposure) ||
+			0 > (_order = order) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_cdf = cdf) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_variate = variate) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_localVolatility = localVolatility))
+		{
+			throw new java.lang.Exception ("RealizationPoint Constructor => Invalid Inputs");
+		}
+	}
+
+	/**
+	 * Retrieve the Point Exposure
+	 * 
+	 * @return The Point Exposure
+	 */
+
+	public double exposure()
+	{
+		return _exposure;
+	}
+
+	/**
+	 * Retrieve the Point Exposure Order
+	 * 
+	 * @return The Point Exposure Order
+	 */
+
+	public int order()
+	{
+		return _order;
+	}
+
+	/**
+	 * Retrieve the Point Exposure CDF
+	 * 
+	 * @return The Point Exposure CDF
+	 */
+
+	public double cdf()
+	{
+		return _cdf;
+	}
+
+	/**
+	 * Retrieve the Point Exposure Variate
+	 * 
+	 * @return The Point Exposure Variate
+	 */
+
+	public double variate()
+	{
+		return _variate;
+	}
+
+	/**
+	 * Retrieve the Point Exposure Local Volatility
+	 * 
+	 * @return The Point Exposure Local Volatility
+	 */
+
+	public double localVolatility()
+	{
+		return _localVolatility;
+	}
 }

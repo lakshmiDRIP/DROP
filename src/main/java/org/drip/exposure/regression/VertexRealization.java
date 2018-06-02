@@ -139,4 +139,43 @@ public class VertexRealization
 	{
 		return _exposureSet;
 	}
+
+	/**
+	 * Retrieve the Realization Dynamics Array
+	 * 
+	 * @return The Realization Dynamics Array
+	 */
+
+	public org.drip.exposure.regression.RealizationPoint[] realizationDynamicsArray()
+	{
+		int realizationCount = _exposureSet.size();
+
+		int realizationIndex = 1;
+		org.drip.exposure.regression.RealizationPoint[] realizationPointArray = new
+			org.drip.exposure.regression.RealizationPoint[realizationCount];
+
+		for (double exposure : _exposureSet)
+		{
+			double cdf = (((double) realizationIndex) - 0.5) / ((double) realizationCount);
+
+			try
+			{
+				realizationPointArray[realizationIndex - 1] = new org.drip.exposure.regression.RealizationPoint (
+					exposure,
+					realizationIndex,
+					cdf,
+					java.lang.Double.NaN, // variate,
+					java.lang.Double.NaN // localVolatility
+				);
+			}
+			catch (java.lang.Exception e)
+			{
+				e.printStackTrace();
+
+				return null;
+			}
+		}
+
+		return realizationPointArray;
+	}
 }
