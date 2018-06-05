@@ -70,7 +70,7 @@ package org.drip.exposure.regression;
 
 public class VertexRealization
 {
-	private java.util.TreeSet<java.lang.Double> _exposureSet = null;
+	private java.util.List<java.lang.Double> _exposureList = null;
 
 	/**
 	 * Construct an Instance of UncollateralizedVertexExposure from the Exposure Array
@@ -88,7 +88,7 @@ public class VertexRealization
 			return null;
 		}
 
-		java.util.TreeSet<java.lang.Double> exposureSet = new java.util.TreeSet<java.lang.Double>();
+		java.util.List<java.lang.Double> exposureList = new java.util.ArrayList<java.lang.Double>();
 
 		int exposureCount = exposureArray.length;
 
@@ -104,12 +104,14 @@ public class VertexRealization
 				return null;
 			}
 
-			exposureSet.add (exposure);
+			exposureList.add (exposure);
 		}
+
+		java.util.Collections.sort (exposureList);
 
 		try
 		{
-			return new VertexRealization (exposureSet);
+			return new VertexRealization (exposureList);
 		}
 		catch (java.lang.Exception e)
 		{
@@ -120,10 +122,10 @@ public class VertexRealization
 	}
 
 	protected VertexRealization (
-		final java.util.TreeSet<java.lang.Double> exposureSet)
+		final java.util.List<java.lang.Double> exposureList)
 		throws java.lang.Exception
 	{
-		if (null == (_exposureSet = exposureSet) || 0 == _exposureSet.size())
+		if (null == (_exposureList = exposureList) || 0 == _exposureList.size())
 		{
 			throw new java.lang.Exception ("VertexRealization Constructor => Invalid Inputs");
 		}
@@ -135,25 +137,36 @@ public class VertexRealization
 	 * @return The Exposure Set
 	 */
 
-	public java.util.TreeSet<java.lang.Double> exposureSet()
+	public java.util.List<java.lang.Double> exposureList()
 	{
-		return _exposureSet;
+		return _exposureList;
 	}
 
 	/**
 	 * Retrieve the Realization Dynamics Array
 	 * 
+	 * @param localVolatilityGenerationControl The Local Volatility Generation Control
+	 * 
 	 * @return The Realization Dynamics Array
 	 */
 
-	public org.drip.exposure.regression.RealizationPoint[] realizationDynamicsArray()
+	public org.drip.exposure.regression.RealizationPoint[] realizationDynamicsArray (
+		final org.drip.exposure.regression.LocalVolatilityGenerationControl localVolatilityGenerationControl)
 	{
-		int realizationCount = _exposureSet.size();
+		if (null == localVolatilityGenerationControl)
+		{
+			return null;
+		}
+
+		int realizationCount = _exposureList.size();
+
+		double[] uniformCPDArray = localVolatilityGenerationControl.uniformCPDArray();
+
+		int localVolatilityIndexShift = localVolatilityGenerationControl.localVolatilityIndexShift();
+
+		double[] impliedBrownianVariateArray = localVolatilityGenerationControl.impliedBrownianVariateArray();
 
 		int realizationIndex = 0;
-		int localVolatilityIndexShift = 20;
-		double[] cdfArray = new double[realizationCount];
-		double[] variateArray = new double[realizationCount];
 		double[] exposureArray = new double[realizationCount];
 		int localVolatilityIndexFloor = localVolatilityIndexShift;
 		double[] localVolatilityArray = new double[realizationCount];
@@ -161,27 +174,9 @@ public class VertexRealization
 		org.drip.exposure.regression.RealizationPoint[] realizationPointArray = new
 			org.drip.exposure.regression.RealizationPoint[realizationCount];
 
-		for (double exposure : _exposureSet)
+		for (double exposure : _exposureList)
 		{
 			exposureArray[realizationIndex++] = exposure;
-		}
-
-		for (int realizationCoordinate = 0;
-			realizationCoordinate < realizationCount;
-			++realizationCoordinate)
-		{
-			try
-			{
-				variateArray[realizationCoordinate] = org.drip.measure.gaussian.NormalQuadrature.InverseCDF
-					(cdfArray[realizationCoordinate] = (((double) realizationCoordinate) + 0.5) / ((double)
-						realizationCount));
-			}
-			catch (java.lang.Exception e)
-			{
-				e.printStackTrace();
-
-				return null;
-			}
 		}
 
 		for (int realizationCoordinate = localVolatilityIndexFloor;
@@ -191,8 +186,8 @@ public class VertexRealization
 			localVolatilityArray[realizationCoordinate] =
 				(exposureArray[realizationCoordinate - localVolatilityIndexShift] -
 					exposureArray[realizationCoordinate + localVolatilityIndexShift]) /
-				(variateArray[realizationCoordinate - localVolatilityIndexShift] -
-					variateArray[realizationCoordinate + localVolatilityIndexShift]);
+				(impliedBrownianVariateArray[realizationCoordinate - localVolatilityIndexShift] -
+					impliedBrownianVariateArray[realizationCoordinate + localVolatilityIndexShift]);
 		}
 
 		for (int realizationCoordinate = 0;
@@ -214,13 +209,14 @@ public class VertexRealization
 		{
 			try
 			{
-				realizationPointArray[realizationCoordinate] = new org.drip.exposure.regression.RealizationPoint (
-					exposureArray[realizationCoordinate],
-					realizationCoordinate,
-					cdfArray[realizationCoordinate],
-					variateArray[realizationCoordinate],
-					localVolatilityArray[realizationCoordinate]
-				);
+				realizationPointArray[realizationCoordinate] = new
+					org.drip.exposure.regression.RealizationPoint (
+						exposureArray[realizationCoordinate],
+						realizationCoordinate,
+						uniformCPDArray[realizationCoordinate],
+						impliedBrownianVariateArray[realizationCoordinate],
+						localVolatilityArray[realizationCoordinate]
+					);
 
 				++realizationIndex;
 			}
@@ -233,5 +229,65 @@ public class VertexRealization
 		}
 
 		return realizationPointArray;
+	}
+
+	/**
+	 * Generate a Local Volatility R^1 To R^1
+	 * 
+	 * @param localVolatilityGenerationControl The Local Volatility Generation Control
+	 * @param realizationPointArray The Array of the Realization Points
+	 * 
+	 * @return The Local Volatility R^1 To R^1
+	 */
+
+	public org.drip.function.definition.R1ToR1 localVolatilityR1ToR1 (
+		final org.drip.exposure.regression.LocalVolatilityGenerationControl localVolatilityGenerationControl,
+		final org.drip.exposure.regression.RealizationPoint[] realizationPointArray)
+	{
+		if (null == localVolatilityGenerationControl)
+		{
+			return null;
+		}
+
+		int vertexCount = realizationPointArray.length;
+		double[] exposureArray = new double[vertexCount];
+		double[] localVolatilityArray = new double[vertexCount];
+
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+		{
+			exposureArray[vertexIndex] = realizationPointArray[vertexIndex].exposure();
+
+			localVolatilityArray[vertexIndex] = realizationPointArray[vertexIndex].localVolatility();
+		}
+
+		org.drip.spline.stretch.MultiSegmentSequence multiSegmentSequence =
+			org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator (
+				"LocalVolatilityR1ToR1_" + org.drip.quant.common.StringUtil.GUID(),
+				exposureArray,
+				localVolatilityArray,
+				localVolatilityGenerationControl.segmentCustomBuilderControlArray(),
+				null,
+				org.drip.spline.stretch.BoundarySettings.NaturalStandard(),
+				org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE
+			);
+
+		return null == multiSegmentSequence ? null : multiSegmentSequence.toAU();
+	}
+
+	/**
+	 * Generate a Local Volatility R^1 To R^1
+	 * 
+	 * @param localVolatilityGenerationControl The Local Volatility Generation Control
+	 * 
+	 * @return The Local Volatility R^1 To R^1
+	 */
+
+	public org.drip.function.definition.R1ToR1 localVolatilityR1ToR1 (
+		final org.drip.exposure.regression.LocalVolatilityGenerationControl localVolatilityGenerationControl)
+	{
+		return localVolatilityR1ToR1 (
+			localVolatilityGenerationControl,
+			realizationDynamicsArray (localVolatilityGenerationControl)
+		);
 	}
 }

@@ -139,6 +139,13 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 			org.drip.spline.segment.SegmentBasisEvaluator sbe = new
 				org.drip.spline.segment.SegmentBasisEvaluator (fs, rssc);
 
+			if (!org.drip.quant.common.NumberUtil.IsValid (dblLeftPredictorOrdinate) ||
+				!org.drip.quant.common.NumberUtil.IsValid (dblRightPredictorOrdinate) ||
+				dblLeftPredictorOrdinate == dblRightPredictorOrdinate)
+			{
+				return null;
+			}
+
 			org.drip.spline.segment.LatentStateResponseModel lsrm = new
 				org.drip.spline.segment.LatentStateResponseModel (dblLeftPredictorOrdinate,
 					dblRightPredictorOrdinate, sbe, sidc);

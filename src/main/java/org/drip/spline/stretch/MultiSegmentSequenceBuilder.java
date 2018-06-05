@@ -281,9 +281,18 @@ public class MultiSegmentSequenceBuilder {
 		final double[] adblPredictorOrdinate,
 		final org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC)
 	{
+		org.drip.spline.segment.LatentStateResponseModel[] latentStateResponseModelArray = CreateSegmentSet (
+			adblPredictorOrdinate,
+			aSCBC
+		);
+
 		try {
-			return new org.drip.spline.stretch.CalibratableMultiSegmentSequence (strName, CreateSegmentSet
-				(adblPredictorOrdinate, aSCBC), aSCBC);
+			return null == latentStateResponseModelArray ? null :
+			new org.drip.spline.stretch.CalibratableMultiSegmentSequence (
+				strName,
+				latentStateResponseModelArray,
+				aSCBC
+			);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}

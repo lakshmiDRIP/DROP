@@ -70,7 +70,151 @@ package org.drip.exposure.regression;
 
 public class LocalVolatilityGenerationControl
 {
+
+	/**
+	 * The Pyhktin (2009) Empirical Floor
+	 */
+
+	public static final int PYKHTIN_2009_EMPIRICAL_FLOOR = 20;
+
+	/**
+	 * The Pyhktin (2009) Empirical Ceiling Factor
+	 */
+
+	public static final double PYKHTIN_2009_EMPIRICAL_CEILING_FACTOR = 0.05;
+
+	/**
+	 * The Local Volatility Smooth Floor Bias
+	 */
+
+	public static final double LOCAL_VOLATILITY_SMOOTHING_FLOOR_BIAS = 0.90;
+
+	private double[] _uniformCPDArray = null;
 	private int _localVolatilityIndexShift = -1;
+	private double[] _impliedBrownianVariateArray = null;
+	private org.drip.spline.params.SegmentCustomBuilderControl[] _segmentCustomBuilderControlArray = null;
+
+	/**
+	 * Construct a Standard Instance of LocalVolatilityGenerationControl
+	 * 
+	 * @param ensembleSize Size of the Distribution Ensemble
+	 * 
+	 * @return Standard Instance of LocalVolatilityGenerationControl
+	 */
+
+	public static final LocalVolatilityGenerationControl Standard (
+		final int ensembleSize)
+	{
+		if (PYKHTIN_2009_EMPIRICAL_FLOOR > ensembleSize)
+		{
+			return null;
+		}
+
+		double[] uniformCPDArray = new double[ensembleSize];
+		double[] impliedBrownianVariateArray = new double[ensembleSize];
+		int localVolatilityIndexShift = (int) (LOCAL_VOLATILITY_SMOOTHING_FLOOR_BIAS *
+			PYKHTIN_2009_EMPIRICAL_FLOOR + (1 - LOCAL_VOLATILITY_SMOOTHING_FLOOR_BIAS) * ensembleSize);
+
+		if (PYKHTIN_2009_EMPIRICAL_FLOOR > localVolatilityIndexShift)
+		{
+			return null;
+		}
+
+		for (int realizationCoordinate = 0;
+			realizationCoordinate < ensembleSize;
+			++realizationCoordinate)
+		{
+			try
+			{
+				impliedBrownianVariateArray[realizationCoordinate] =
+					org.drip.measure.gaussian.NormalQuadrature.InverseCDF
+						(uniformCPDArray[realizationCoordinate] = (((double) realizationCoordinate) + 0.5) /
+							((double) ensembleSize));
+			}
+			catch (java.lang.Exception e)
+			{
+				e.printStackTrace();
+
+				return null;
+			}
+		}
+
+		try
+		{
+			org.drip.spline.params.SegmentCustomBuilderControl[] segmentCustomBuilderControlArray = new
+				org.drip.spline.params.SegmentCustomBuilderControl[ensembleSize - 1];
+			org.drip.spline.params.SegmentCustomBuilderControl segmentCustomBuilderControl = new
+				org.drip.spline.params.SegmentCustomBuilderControl (
+					org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+					new org.drip.spline.basis.PolynomialFunctionSetParams (2),
+					org.drip.spline.params.SegmentInelasticDesignControl.Create (
+						0,
+						2
+					),
+					new org.drip.spline.params.ResponseScalingShapeControl (
+						true,
+						new org.drip.function.r1tor1.QuadraticRationalShapeControl (0.)
+					),
+					null
+				);
+
+			for (int realizationCoordinate = 0;
+				realizationCoordinate < ensembleSize - 1;
+				++realizationCoordinate)
+			{
+				segmentCustomBuilderControlArray[realizationCoordinate] = segmentCustomBuilderControl;
+			}
+
+			return new LocalVolatilityGenerationControl (
+				localVolatilityIndexShift,
+				uniformCPDArray,
+				impliedBrownianVariateArray,
+				segmentCustomBuilderControlArray
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * LocalVolatilityGenerationControl Constructor
+	 * 
+	 * @param localVolatilityIndexShift The Local Volatility Index Shift
+	 * @param uniformCPDArray The Uniform Cumulative Probability Density Array
+	 * @param impliedBrownianVariateArray The Implied Brownian Variate Array
+	 * @param segmentCustomBuilderControlArray Array of Segment Builder Control
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public LocalVolatilityGenerationControl (
+		final int localVolatilityIndexShift,
+		final double[] uniformCPDArray,
+		final double[] impliedBrownianVariateArray,
+		final org.drip.spline.params.SegmentCustomBuilderControl[] segmentCustomBuilderControlArray)
+		throws java.lang.Exception
+	{
+		if (0 >= (_localVolatilityIndexShift = localVolatilityIndexShift) ||
+			null == (_uniformCPDArray = uniformCPDArray) ||
+			null == (_impliedBrownianVariateArray = impliedBrownianVariateArray) ||
+			null == (_segmentCustomBuilderControlArray = segmentCustomBuilderControlArray))
+		{
+			throw new java.lang.Exception ("LocalVolatilityGenerationControl Constructor => Invalid Inputs");
+		}
+
+		int uniformCPDArraySize = _uniformCPDArray.length;
+
+		if (0 == uniformCPDArraySize ||
+			uniformCPDArraySize != _impliedBrownianVariateArray.length ||
+			uniformCPDArraySize != _segmentCustomBuilderControlArray.length + 1)
+		{
+			throw new java.lang.Exception ("LocalVolatilityGenerationControl Constructor => Invalid Inputs");
+		}
+	}
 
 	/**
 	 * Retrieve the Local Volatility Index Shift
@@ -81,5 +225,38 @@ public class LocalVolatilityGenerationControl
 	public int localVolatilityIndexShift()
 	{
 		return _localVolatilityIndexShift;
+	}
+
+	/**
+	 * Retrieve the Uniform Cumulative Probability Density Array
+	 * 
+	 * @return The Uniform Cumulative Probability Density Array
+	 */
+
+	public double[] uniformCPDArray()
+	{
+		return _uniformCPDArray;
+	}
+
+	/**
+	 * Retrieve the Implied Brownian Variate Array
+	 * 
+	 * @return The Implied Brownian Variate Array
+	 */
+
+	public double[] impliedBrownianVariateArray()
+	{
+		return _impliedBrownianVariateArray;
+	}
+
+	/**
+	 * Retrieve the Custom Segment Builder Control Array
+	 * 
+	 * @return The Custom Segment Builder Control Array
+	 */
+
+	public org.drip.spline.params.SegmentCustomBuilderControl[] segmentCustomBuilderControlArray()
+	{
+		return _segmentCustomBuilderControlArray;
 	}
 }

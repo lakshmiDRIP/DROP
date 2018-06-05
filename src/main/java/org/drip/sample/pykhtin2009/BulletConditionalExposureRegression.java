@@ -3,6 +3,7 @@ package org.drip.sample.pykhtin2009;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.drip.analytics.date.DateUtil;
 import org.drip.analytics.date.JulianDate;
@@ -15,10 +16,13 @@ import org.drip.exposure.evolver.PrimarySecurityDynamicsContainer;
 import org.drip.exposure.evolver.TerminalLatentState;
 import org.drip.exposure.generator.NumeraireMPoR;
 import org.drip.exposure.mpor.VariationMarginTradeTrajectoryEstimator;
+import org.drip.exposure.regression.LocalVolatilityGenerationControl;
+import org.drip.exposure.regression.VertexRealization;
 import org.drip.exposure.universe.LatentStateWeiner;
 import org.drip.exposure.universe.MarketPath;
 import org.drip.exposure.universe.MarketVertex;
 import org.drip.exposure.universe.MarketVertexGenerator;
+import org.drip.function.definition.R1ToR1;
 import org.drip.measure.crng.RandomNumberGenerator;
 import org.drip.measure.discrete.CorrelatedPathVertexDimension;
 import org.drip.measure.dynamics.DiffusionEvaluatorLinear;
@@ -26,6 +30,7 @@ import org.drip.measure.dynamics.DiffusionEvaluatorLogarithmic;
 import org.drip.measure.dynamics.HazardJumpEvaluator;
 import org.drip.measure.process.DiffusionEvolver;
 import org.drip.measure.process.JumpDiffusionEvolver;
+import org.drip.quant.common.FormatUtil;
 import org.drip.quant.linearalgebra.Matrix;
 import org.drip.service.env.EnvManager;
 import org.drip.state.identifier.CSALabel;
@@ -517,9 +522,9 @@ public class BulletConditionalExposureRegression
 			19
 		);
 
-		int pathCount = 100;
-		String exposurePeriodTenor = "1M";
-		int exposurePeriodCount = 380;
+		int pathCount = 100000;
+		String exposurePeriodTenor = "6M";
+		int exposurePeriodCount = 15;
 		String currency = "USD";
 		String dealer = "NOM";
 		String client = "SSGA";
@@ -536,7 +541,10 @@ public class BulletConditionalExposureRegression
 			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00}, // #9  OTC FIX FLOAT REPLICATOR
 		};
 		String referenceEntity = "HYG";
-		double equityNotional = 1.e+06;
+		double equityNotional = 10.;
+
+		LocalVolatilityGenerationControl localVolatilityGenerationControl =
+			LocalVolatilityGenerationControl.Standard (pathCount);
 
 		EntityEquityLabel equityLabel = EntityEquityLabel.Standard (
 			referenceEntity,
@@ -594,6 +602,8 @@ public class BulletConditionalExposureRegression
 
 		JulianDate exposureDate = spotDate;
 		int[] exposureDateArray = new int[exposurePeriodCount + 1];
+		R1ToR1[] localVolatilityR1ToR1Array = new R1ToR1[exposurePeriodCount + 1];
+		double[][] pathExposureArray = new double[exposurePeriodCount + 1][pathCount];
 
 		for (int i = 0; i <= exposurePeriodCount; ++i)
 		{
@@ -614,7 +624,7 @@ public class BulletConditionalExposureRegression
 				)
 			);
 
-			VariationMarginTradeTrajectoryEstimator marginTradeFlowTrajectory =
+			VariationMarginTradeTrajectoryEstimator variationMarginTradeTrajectoryEstimator =
 				new VariationMarginTradeTrajectoryEstimator (
 					exposureDateArray,
 					currency,
@@ -623,7 +633,95 @@ public class BulletConditionalExposureRegression
 					andersenPykhtinSokolLag
 				);
 
-			System.out.println (marginTradeFlowTrajectory);
+			Map<Integer, Double> variationMarginEstimateTrajectory =
+				variationMarginTradeTrajectoryEstimator.variationMarginEstimateTrajectory();
+
+			int exposureDateIndex = 0;
+
+			for (Map.Entry<Integer, Double> variationMarginEstimateTrajectoryEntry :
+				variationMarginEstimateTrajectory.entrySet())
+			{
+				pathExposureArray[exposureDateIndex++][pathIndex] =
+					variationMarginEstimateTrajectoryEntry.getValue();
+			}
 		}
+
+		System.out.println ("\t||------------------------------------------------------------------------------------------------------------");
+
+		System.out.println ("\t||      Sorted Exposure Node Realizations");
+
+		System.out.println ("\t||------------------------------------------------------------------------------------------------------------");
+
+		System.out.println ("\t||                                                      ");
+
+		System.out.println ("\t||    L -> R:                                           ");
+
+		System.out.println ("\t||            - Exposure Date                 ");
+
+		System.out.println ("\t||            - The Spot/Forward Exposures                  ");
+
+		System.out.println ("\t||------------------------------------------------------------------------------------------------------------");
+
+		for (int exposureDateIndex = 0; exposureDateIndex < exposurePeriodCount; ++exposureDateIndex)
+		{
+			String strDump = "\t|| " + new JulianDate (exposureDateArray[exposureDateIndex]) + " => ";
+
+			for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
+			{
+				strDump += FormatUtil.FormatDouble (pathExposureArray[exposureDateIndex][pathIndex], 3, 1, 1.) + " | ";
+			}
+
+			System.out.println (strDump);
+		}
+
+		System.out.println ("\t||------------------------------------------------------------------------------------------------------------");
+
+		System.out.println();
+
+		for (int exposureDateIndex = 0; exposureDateIndex < exposurePeriodCount; ++exposureDateIndex)
+		{
+			VertexRealization vertexRealization = VertexRealization.Standard
+				(pathExposureArray [exposureDateIndex]);
+
+			localVolatilityR1ToR1Array[exposureDateIndex] = null == vertexRealization ? null :
+				vertexRealization.localVolatilityR1ToR1 (localVolatilityGenerationControl);
+		}
+
+		System.out.println ("\t||------------------------------------------------------------------------------------------------------------");
+
+		System.out.println ("\t||           EXPOSURE DATE LOCAL VOLATILITY             ");
+
+		System.out.println ("\t||------------------------------------------------------------------------------------------------------------");
+
+		System.out.println ("\t||                                                      ");
+
+		System.out.println ("\t||    L -> R:                                           ");
+
+		System.out.println ("\t||            - Simulation Path Number                  ");
+
+		System.out.println ("\t||            - The Spot/Forward Dates                  ");
+
+		System.out.println ("\t||------------------------------------------------------------------------------------------------------------");
+
+		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
+		{
+			String strDump = "\t|| " + FormatUtil.FormatDouble (pathIndex, 5, 0, 1.) + " => ";
+
+			for (int exposureDateIndex = 0; exposureDateIndex < exposurePeriodCount; ++exposureDateIndex)
+			{
+				strDump += FormatUtil.FormatDouble (
+					null == localVolatilityR1ToR1Array[exposureDateIndex] ? 0. :
+					localVolatilityR1ToR1Array[exposureDateIndex].evaluate (
+						pathExposureArray [exposureDateIndex][pathIndex]
+					), 1, 6, 1.
+				) + " | ";
+			}
+
+			System.out.println (strDump);
+		}
+
+		System.out.println ("\t||------------------------------------------------------------------------------------------------------------");
+
+		EnvManager.TerminateEnv();
 	}
 }

@@ -1,8 +1,10 @@
 
 package org.drip.sample.pykhtin2009;
 
+import org.drip.exposure.regression.LocalVolatilityGenerationControl;
 import org.drip.exposure.regression.RealizationPoint;
 import org.drip.exposure.regression.VertexRealization;
+import org.drip.function.definition.R1ToR1;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -52,8 +54,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * RawRegressionMetrics is a Demonstration of the Core Exposure Regression Methedology of Pykhtin (2009). The
- * 	References are:
+ * LocalVolatilityRegressor is a Demonstration of the Exposure Regression Local Volatility Methodology of
+ * 	Pykhtin (2009). The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
@@ -73,7 +75,7 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class RawRegressionMetrics
+public class LocalVolatilityRegressor
 {
 
 	public static final void main (
@@ -87,6 +89,9 @@ public class RawRegressionMetrics
 		double exposureHigh = 130.;
 		double[] exposureArray = new double[exposureCount];
 
+		LocalVolatilityGenerationControl localVolatilityGenerationControl =
+			LocalVolatilityGenerationControl.Standard (exposureCount);
+
 		for (int exposureIndex = 0; exposureIndex < exposureCount; ++exposureIndex)
 		{
 			exposureArray[exposureIndex] = exposureLow + (exposureHigh - exposureLow) * Math.random();
@@ -94,45 +99,54 @@ public class RawRegressionMetrics
 
 		VertexRealization vertexRealization = VertexRealization.Standard (exposureArray);
 
-		RealizationPoint[] realizationPointArray = vertexRealization.realizationDynamicsArray();
+		RealizationPoint[] realizationPointArray = vertexRealization.realizationDynamicsArray
+			(localVolatilityGenerationControl);
 
-		System.out.println ("\t||--------------------------------------------||");
+		R1ToR1 localVolatilityR1ToR1 = vertexRealization.localVolatilityR1ToR1 (
+			localVolatilityGenerationControl,
+			realizationPointArray
+		);
 
-		System.out.println ("\t||  Pykhtin (2009) Terminal Brownian Bridge   ||");
+		System.out.println ("\t||-----------------------------------------------------||");
 
-		System.out.println ("\t||--------------------------------------------||");
+		System.out.println ("\t||       Pykhtin (2009) Terminal Brownian Bridge       ||");
 
-		System.out.println ("\t||                                            ||");
+		System.out.println ("\t||-----------------------------------------------------||");
 
-		System.out.println ("\t||  L -> R:                                   ||");
+		System.out.println ("\t||                                                     ||");
 
-		System.out.println ("\t||                                            ||");
+		System.out.println ("\t||  L -> R:                                            ||");
 
-		System.out.println ("\t||      Terminal Numeraire                    ||");
+		System.out.println ("\t||                                                     ||");
 
-		System.out.println ("\t||      Ranking Ordinal                       ||");
+		System.out.println ("\t||      Terminal Numeraire                             ||");
 
-		System.out.println ("\t||      Uniform CDF                           ||");
+		System.out.println ("\t||      Ranking Ordinal                                ||");
 
-		System.out.println ("\t||      Gaussian Predictor Variate            ||");
+		System.out.println ("\t||      Uniform CDF                                    ||");
 
-		System.out.println ("\t||      Local Volatility Estimate             ||");
+		System.out.println ("\t||      Gaussian Predictor Variate                     ||");
 
-		System.out.println ("\t||--------------------------------------------||");
+		System.out.println ("\t||      Local Volatility Estimate                      ||");
+
+		System.out.println ("\t||-----------------------------------------------------||");
 
 		for (RealizationPoint realizationPoint : realizationPointArray)
 		{
+			double exposure = realizationPoint.exposure();
+
 			System.out.println (
 				"\t|| " +
-				FormatUtil.FormatDouble (realizationPoint.exposure(), 3, 2, 1.) + " | " +
+				FormatUtil.FormatDouble (exposure, 3, 2, 1.) + " | " +
 				FormatUtil.FormatDouble (realizationPoint.order(), 3, 0, 1.) + " | " +
 				FormatUtil.FormatDouble (realizationPoint.cdf(), 1, 3, 1.) + " | " +
 				FormatUtil.FormatDouble (realizationPoint.variate(), 1, 4, 1.) + " | " +
-				FormatUtil.FormatDouble (realizationPoint.localVolatility(), 2, 2, 1.) + " ||"
+				FormatUtil.FormatDouble (realizationPoint.localVolatility(), 2, 2, 1.) + " | " +
+				FormatUtil.FormatDouble (localVolatilityR1ToR1.evaluate (exposure), 2, 2, 1.) + " ||"
 			);
 		}
 
-		System.out.println ("\t||--------------------------------------------||");
+		System.out.println ("\t||-----------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}
