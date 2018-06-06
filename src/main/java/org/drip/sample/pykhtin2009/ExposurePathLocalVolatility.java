@@ -17,7 +17,7 @@ import org.drip.exposure.evolver.TerminalLatentState;
 import org.drip.exposure.generator.NumeraireMPoR;
 import org.drip.exposure.mpor.VariationMarginTradeTrajectoryEstimator;
 import org.drip.exposure.regression.LocalVolatilityGenerationControl;
-import org.drip.exposure.regression.VertexRealization;
+import org.drip.exposure.regression.PykhtinPillarDynamics;
 import org.drip.exposure.universe.LatentStateWeiner;
 import org.drip.exposure.universe.MarketPath;
 import org.drip.exposure.universe.MarketVertex;
@@ -87,8 +87,8 @@ import org.drip.state.identifier.OvernightLabel;
  */
 
 /**
- * BulletConditionalExposureRegression estimates the Path-wise Secondary Node Realizations using the Pykhtin
- * 	(2009) Scheme. The References are:
+ * ExposurePathLocalVolatility estimates the Path-wise Local Volatility Realizations using the Pykhtin (2009)
+ * 	Scheme. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
@@ -108,7 +108,7 @@ import org.drip.state.identifier.OvernightLabel;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BulletConditionalExposureRegression
+public class ExposurePathLocalVolatility
 {
 
 	private static final PrimarySecurity OvernightReplicator (
@@ -522,7 +522,7 @@ public class BulletConditionalExposureRegression
 			19
 		);
 
-		int pathCount = 100000;
+		int pathCount = 10000;
 		String exposurePeriodTenor = "6M";
 		int exposurePeriodCount = 15;
 		String currency = "USD";
@@ -680,7 +680,7 @@ public class BulletConditionalExposureRegression
 
 		for (int exposureDateIndex = 0; exposureDateIndex < exposurePeriodCount; ++exposureDateIndex)
 		{
-			VertexRealization vertexRealization = VertexRealization.Standard
+			PykhtinPillarDynamics vertexRealization = PykhtinPillarDynamics.Standard
 				(pathExposureArray [exposureDateIndex]);
 
 			localVolatilityR1ToR1Array[exposureDateIndex] = null == vertexRealization ? null :

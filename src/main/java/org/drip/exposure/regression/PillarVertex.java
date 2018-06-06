@@ -47,8 +47,7 @@ package org.drip.exposure.regression;
  */
 
 /**
- * RealizationPoint holds the Details of a Single Realization Point - the Realization Value, the Order Index,
- *  the CDF, the Transform Variate, and the Local Volatility. The References are:
+ * PillarVertex hold the Date and the Exposure of each Vertex Pillar. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
@@ -68,96 +67,51 @@ package org.drip.exposure.regression;
  * @author Lakshmi Krishnamurthy
  */
 
-public class RealizationPoint
+public class PillarVertex
 {
-	private int _order = -1;
-	private double _cdf = java.lang.Double.NaN;
-	private double _variate = java.lang.Double.NaN;
 	private double _exposure = java.lang.Double.NaN;
-	private double _localVolatility = java.lang.Double.NaN;
+	private org.drip.analytics.date.JulianDate _date = null;
 
 	/**
-	 * RealizationPoint Constructor
+	 * PillarVertexConstructor
 	 * 
-	 * @param exposure The Realization Point Exposure
-	 * @param order The Realization Point Order
-	 * @param cdf The Realization Point CDF
-	 * @param variate The Realization Point Variate
-	 * @param localVolatility The Realization Point Local Volatility
+	 * @param date The Path Pillar Date
+	 * @param exposure The Path Pillar Exposure
 	 * 
-	 * @throws java.lang.Exception Thrown if the iNputs are Invalid
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public RealizationPoint (
-		final double exposure,
-		final int order,
-		final double cdf,
-		final double variate,
-		final double localVolatility)
+	public PillarVertex (
+		final org.drip.analytics.date.JulianDate date,
+		final double exposure)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_exposure = exposure) ||
-			0 > (_order = order) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_cdf = cdf) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_variate = variate) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_localVolatility = localVolatility))
+		if (null == (_date = date) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_exposure = exposure))
 		{
-			throw new java.lang.Exception ("RealizationPoint Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("PillarVertex Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Point Exposure
+	 * Retrieve the Path Pillar Date
 	 * 
-	 * @return The Point Exposure
+	 * @return The Path Pillar Date
+	 */
+
+	public org.drip.analytics.date.JulianDate date()
+	{
+		return _date;
+	}
+
+	/**
+	 * Retrieve the Path Pillar Exposure
+	 * 
+	 * @return The Path Pillar Exposure
 	 */
 
 	public double exposure()
 	{
 		return _exposure;
-	}
-
-	/**
-	 * Retrieve the Point Exposure Order
-	 * 
-	 * @return The Point Exposure Order
-	 */
-
-	public int order()
-	{
-		return _order;
-	}
-
-	/**
-	 * Retrieve the Point Exposure CDF
-	 * 
-	 * @return The Point Exposure CDF
-	 */
-
-	public double cdf()
-	{
-		return _cdf;
-	}
-
-	/**
-	 * Retrieve the Point Exposure Variate
-	 * 
-	 * @return The Point Exposure Variate
-	 */
-
-	public double variate()
-	{
-		return _variate;
-	}
-
-	/**
-	 * Retrieve the Point Exposure Local Volatility
-	 * 
-	 * @return The Point Exposure Local Volatility
-	 */
-
-	public double localVolatility()
-	{
-		return _localVolatility;
 	}
 }

@@ -47,8 +47,8 @@ package org.drip.exposure.regression;
  */
 
 /**
- * VertexRealization holds the Vertex Exposure Realizations to be used in eventual Exposure Regression. The
- *  References are:
+ * PykhtinPillarDynamics generates the Dynamics off of the Pillar Vertex Exposure Realizations to be used in
+ *  eventual Exposure Regression using the Pykhtin (2009) Scheme. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
@@ -68,19 +68,19 @@ package org.drip.exposure.regression;
  * @author Lakshmi Krishnamurthy
  */
 
-public class VertexRealization
+public class PykhtinPillarDynamics
 {
 	private java.util.List<java.lang.Double> _exposureList = null;
 
 	/**
-	 * Construct an Instance of UncollateralizedVertexExposure from the Exposure Array
+	 * Construct an Instance of PykhtinPillarDynamics from the Exposure Array
 	 * 
 	 * @param exposureArray The Exposure Array
 	 * 
 	 * @return The VertexRealization Instance
 	 */
 
-	public static final VertexRealization Standard (
+	public static final PykhtinPillarDynamics Standard (
 		final double[] exposureArray)
 	{
 		if (null == exposureArray)
@@ -111,7 +111,7 @@ public class VertexRealization
 
 		try
 		{
-			return new VertexRealization (exposureList);
+			return new PykhtinPillarDynamics (exposureList);
 		}
 		catch (java.lang.Exception e)
 		{
@@ -121,13 +121,13 @@ public class VertexRealization
 		return null;
 	}
 
-	protected VertexRealization (
+	protected PykhtinPillarDynamics (
 		final java.util.List<java.lang.Double> exposureList)
 		throws java.lang.Exception
 	{
 		if (null == (_exposureList = exposureList) || 0 == _exposureList.size())
 		{
-			throw new java.lang.Exception ("VertexRealization Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("PykhtinPillarVertexDynamics Constructor => Invalid Inputs");
 		}
 	}
 
@@ -143,14 +143,14 @@ public class VertexRealization
 	}
 
 	/**
-	 * Retrieve the Realization Dynamics Array
+	 * Retrieve the Pykhtin Pillar Vertex Array
 	 * 
 	 * @param localVolatilityGenerationControl The Local Volatility Generation Control
 	 * 
-	 * @return The Realization Dynamics Array
+	 * @return The Pykhtin Pillar Vertex Array
 	 */
 
-	public org.drip.exposure.regression.RealizationPoint[] realizationDynamicsArray (
+	public org.drip.exposure.regression.PykhtinPillar[] pillarVertexArray (
 		final org.drip.exposure.regression.LocalVolatilityGenerationControl localVolatilityGenerationControl)
 	{
 		if (null == localVolatilityGenerationControl)
@@ -171,8 +171,8 @@ public class VertexRealization
 		int localVolatilityIndexFloor = localVolatilityIndexShift;
 		double[] localVolatilityArray = new double[realizationCount];
 		int localVolatilityIndexCeiling = realizationCount - localVolatilityIndexShift;
-		org.drip.exposure.regression.RealizationPoint[] realizationPointArray = new
-			org.drip.exposure.regression.RealizationPoint[realizationCount];
+		org.drip.exposure.regression.PykhtinPillar[] pillarVertexArray = new
+			org.drip.exposure.regression.PykhtinPillar[realizationCount];
 
 		for (double exposure : _exposureList)
 		{
@@ -201,7 +201,8 @@ public class VertexRealization
 			realizationCoordinate < realizationCount;
 			++realizationCoordinate)
 		{
-			localVolatilityArray[realizationCoordinate] = localVolatilityArray[localVolatilityIndexCeiling - 1];
+			localVolatilityArray[realizationCoordinate] =
+				localVolatilityArray[localVolatilityIndexCeiling - 1];
 		}
 
 		for (int realizationCoordinate = 0; realizationCoordinate < realizationCount;
@@ -209,8 +210,8 @@ public class VertexRealization
 		{
 			try
 			{
-				realizationPointArray[realizationCoordinate] = new
-					org.drip.exposure.regression.RealizationPoint (
+				pillarVertexArray[realizationCoordinate] =
+					new org.drip.exposure.regression.PykhtinPillar (
 						exposureArray[realizationCoordinate],
 						realizationCoordinate,
 						uniformCPDArray[realizationCoordinate],
@@ -228,36 +229,36 @@ public class VertexRealization
 			}
 		}
 
-		return realizationPointArray;
+		return pillarVertexArray;
 	}
 
 	/**
 	 * Generate a Local Volatility R^1 To R^1
 	 * 
 	 * @param localVolatilityGenerationControl The Local Volatility Generation Control
-	 * @param realizationPointArray The Array of the Realization Points
+	 * @param pillarVertexArray The Array of Pykhtin Pillar Vertexes
 	 * 
 	 * @return The Local Volatility R^1 To R^1
 	 */
 
 	public org.drip.function.definition.R1ToR1 localVolatilityR1ToR1 (
 		final org.drip.exposure.regression.LocalVolatilityGenerationControl localVolatilityGenerationControl,
-		final org.drip.exposure.regression.RealizationPoint[] realizationPointArray)
+		final org.drip.exposure.regression.PykhtinPillar[] pillarVertexArray)
 	{
 		if (null == localVolatilityGenerationControl)
 		{
 			return null;
 		}
 
-		int vertexCount = realizationPointArray.length;
+		int vertexCount = pillarVertexArray.length;
 		double[] exposureArray = new double[vertexCount];
 		double[] localVolatilityArray = new double[vertexCount];
 
 		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 		{
-			exposureArray[vertexIndex] = realizationPointArray[vertexIndex].exposure();
+			exposureArray[vertexIndex] = pillarVertexArray[vertexIndex].exposure();
 
-			localVolatilityArray[vertexIndex] = realizationPointArray[vertexIndex].localVolatility();
+			localVolatilityArray[vertexIndex] = pillarVertexArray[vertexIndex].localVolatility();
 		}
 
 		org.drip.spline.stretch.MultiSegmentSequence multiSegmentSequence =
@@ -287,7 +288,7 @@ public class VertexRealization
 	{
 		return localVolatilityR1ToR1 (
 			localVolatilityGenerationControl,
-			realizationDynamicsArray (localVolatilityGenerationControl)
+			pillarVertexArray (localVolatilityGenerationControl)
 		);
 	}
 }

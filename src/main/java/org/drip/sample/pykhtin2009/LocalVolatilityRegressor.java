@@ -2,8 +2,8 @@
 package org.drip.sample.pykhtin2009;
 
 import org.drip.exposure.regression.LocalVolatilityGenerationControl;
-import org.drip.exposure.regression.RealizationPoint;
-import org.drip.exposure.regression.VertexRealization;
+import org.drip.exposure.regression.PykhtinPillar;
+import org.drip.exposure.regression.PykhtinPillarDynamics;
 import org.drip.function.definition.R1ToR1;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
@@ -97,14 +97,14 @@ public class LocalVolatilityRegressor
 			exposureArray[exposureIndex] = exposureLow + (exposureHigh - exposureLow) * Math.random();
 		}
 
-		VertexRealization vertexRealization = VertexRealization.Standard (exposureArray);
+		PykhtinPillarDynamics vertexRealization = PykhtinPillarDynamics.Standard (exposureArray);
 
-		RealizationPoint[] realizationPointArray = vertexRealization.realizationDynamicsArray
+		PykhtinPillar[] pillarVertexArray = vertexRealization.pillarVertexArray
 			(localVolatilityGenerationControl);
 
 		R1ToR1 localVolatilityR1ToR1 = vertexRealization.localVolatilityR1ToR1 (
 			localVolatilityGenerationControl,
-			realizationPointArray
+			pillarVertexArray
 		);
 
 		System.out.println ("\t||-----------------------------------------------------||");
@@ -131,17 +131,17 @@ public class LocalVolatilityRegressor
 
 		System.out.println ("\t||-----------------------------------------------------||");
 
-		for (RealizationPoint realizationPoint : realizationPointArray)
+		for (PykhtinPillar pillarVertex : pillarVertexArray)
 		{
-			double exposure = realizationPoint.exposure();
+			double exposure = pillarVertex.exposure();
 
 			System.out.println (
 				"\t|| " +
 				FormatUtil.FormatDouble (exposure, 3, 2, 1.) + " | " +
-				FormatUtil.FormatDouble (realizationPoint.order(), 3, 0, 1.) + " | " +
-				FormatUtil.FormatDouble (realizationPoint.cdf(), 1, 3, 1.) + " | " +
-				FormatUtil.FormatDouble (realizationPoint.variate(), 1, 4, 1.) + " | " +
-				FormatUtil.FormatDouble (realizationPoint.localVolatility(), 2, 2, 1.) + " | " +
+				FormatUtil.FormatDouble (pillarVertex.order(), 3, 0, 1.) + " | " +
+				FormatUtil.FormatDouble (pillarVertex.cdf(), 1, 3, 1.) + " | " +
+				FormatUtil.FormatDouble (pillarVertex.variate(), 1, 4, 1.) + " | " +
+				FormatUtil.FormatDouble (pillarVertex.localVolatility(), 2, 2, 1.) + " | " +
 				FormatUtil.FormatDouble (localVolatilityR1ToR1.evaluate (exposure), 2, 2, 1.) + " ||"
 			);
 		}
