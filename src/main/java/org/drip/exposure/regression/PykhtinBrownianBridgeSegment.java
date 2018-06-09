@@ -92,7 +92,7 @@ public class PykhtinBrownianBridgeSegment
 	{
 		if (null == (_leftPillar = leftPillar) ||
 			null == (_rightPillar = rightPillar) ||
-			_leftPillar.date().julian() >= _rightPillar.date().julian() ||
+			_leftPillar.date() >= _rightPillar.date() ||
 			null == (_rightPillarLocalVolatility = rightPillarLocalVolatility))
 		{
 			throw new java.lang.Exception ("PykhtinBrownianBridgeSegment Constructor => Invalid Inputs");
@@ -135,36 +135,42 @@ public class PykhtinBrownianBridgeSegment
 	/**
 	 * Generate the Dense (Complete) Segment Exposures
 	 * 
-	 * @param wanderArray The Array of Random Wanderers
+	 * @param wanderTrajectory The Wander Date Trajectory
 	 * 
 	 * @return The Dense (Complete) Segment Exposures
 	 */
 
-	public double[] denseExposure (
-		final double[] wanderArray)
+	public boolean denseExposureTrajectoryUpdate (
+		final java.util.Map<java.lang.Integer, java.lang.Double> denseExposureTrajectory,
+		final java.util.Map<java.lang.Integer, java.lang.Double> wanderTrajectory)
 	{
-		if (null == wanderArray)
+		if (null == denseExposureTrajectory || null == wanderTrajectory)
 		{
-			return null;
+			return false;
 		}
 
-		int dateWidth = _rightPillar.date().julian() - _leftPillar.date().julian();
+		int leftPillarDate = _leftPillar.date();
 
-		if (dateWidth != wanderArray.length || !org.drip.quant.common.NumberUtil.IsValid (wanderArray))
-		{
-			return null;
-		}
+		int rightPillarDate = _rightPillar.date();
 
 		double leftPillarExposure = _leftPillar.exposure();
 
 		double rightPillarExposure = _rightPillar.exposure();
 
-		double localDrift = (rightPillarExposure - leftPillarExposure) / dateWidth;
-		double[] denseExposure = new double[dateWidth + 1];
-		denseExposure[dateWidth] = rightPillarExposure;
-		double localVolatility = java.lang.Double.NaN;
-		denseExposure[0] = leftPillarExposure;
+		int dateWidth = rightPillarDate - leftPillarDate;
 		double urgency = 1. / dateWidth;
+		double localVolatility = java.lang.Double.NaN;
+		double localDrift = (rightPillarExposure - leftPillarExposure) * urgency;
+
+		denseExposureTrajectory.put (
+			leftPillarDate,
+			leftPillarExposure
+		);
+
+		denseExposureTrajectory.put (
+			rightPillarDate,
+			rightPillarExposure
+		);
 
 		try
 		{
@@ -174,15 +180,25 @@ public class PykhtinBrownianBridgeSegment
 		{
 			e.printStackTrace();
 
-			return null;
+			return false;
 		}
 
-		for (int dateIndex = dateWidth - 1; dateIndex > 0; --dateWidth)
+		for (int dateIndex = dateWidth - 1; dateIndex > 0; --dateIndex)
 		{
-			denseExposure[dateIndex] = denseExposure[dateIndex + 1] - localDrift + localVolatility * urgency
-				* java.lang.Math.sqrt (dateIndex * (dateWidth - dateIndex));
+			int date = leftPillarDate + dateIndex;
+
+			if (!wanderTrajectory.containsKey (date))
+			{
+				return false;
+			}
+
+			denseExposureTrajectory.put (
+				date,
+				rightPillarExposure - localDrift * (dateWidth - dateIndex) + localVolatility * urgency *
+					wanderTrajectory.get (date) * java.lang.Math.sqrt (dateIndex * (dateWidth - dateIndex))
+			);
 		}
 
-		return denseExposure;
+		return true;
 	}
 }

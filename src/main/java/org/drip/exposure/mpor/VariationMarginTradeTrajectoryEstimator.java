@@ -259,7 +259,7 @@ public class VariationMarginTradeTrajectoryEstimator
 
 	public java.util.Map<java.lang.Integer, java.lang.Double> variationMarginEstimateTrajectory()
 	{
-		return org.drip.exposure.mpor.VariationMarginTrajectoryBuilder.DailyDense (
+		return org.drip.exposure.mpor.VariationMarginTrajectoryBuilder.Grid (
 			_exposureDateArray,
 			_variationMarginTradePaymentVertex,
 			_marketPath

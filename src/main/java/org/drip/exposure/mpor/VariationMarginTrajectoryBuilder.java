@@ -81,7 +81,7 @@ public class VariationMarginTrajectoryBuilder
 	 * @return The Daily Dense Variation Margin Trade Payment Trajectory
 	 */
 
-	public static final java.util.Map<java.lang.Integer, java.lang.Double> DailyDense (
+	public static final java.util.Map<java.lang.Integer, java.lang.Double> Grid (
 		final int[] exposureDateArray,
 		final org.drip.exposure.mpor.VariationMarginTradePaymentVertex variationMarginTradePaymentVertex,
 		final org.drip.exposure.universe.MarketPath marketPath)

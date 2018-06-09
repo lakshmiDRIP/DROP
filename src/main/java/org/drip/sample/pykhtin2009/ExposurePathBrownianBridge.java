@@ -4,6 +4,7 @@ package org.drip.sample.pykhtin2009;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.drip.analytics.date.DateUtil;
 import org.drip.analytics.date.JulianDate;
@@ -17,6 +18,7 @@ import org.drip.exposure.evolver.TerminalLatentState;
 import org.drip.exposure.generator.NumeraireMPoR;
 import org.drip.exposure.mpor.VariationMarginTradeTrajectoryEstimator;
 import org.drip.exposure.regression.LocalVolatilityGenerationControl;
+import org.drip.exposure.regression.PykhtinBrownianBridgePath;
 import org.drip.exposure.regression.PykhtinPillarDynamics;
 import org.drip.exposure.universe.LatentStateWeiner;
 import org.drip.exposure.universe.MarketPath;
@@ -28,9 +30,9 @@ import org.drip.measure.discrete.CorrelatedPathVertexDimension;
 import org.drip.measure.dynamics.DiffusionEvaluatorLinear;
 import org.drip.measure.dynamics.DiffusionEvaluatorLogarithmic;
 import org.drip.measure.dynamics.HazardJumpEvaluator;
+import org.drip.measure.gaussian.NormalQuadrature;
 import org.drip.measure.process.DiffusionEvolver;
 import org.drip.measure.process.JumpDiffusionEvolver;
-import org.drip.quant.common.FormatUtil;
 import org.drip.quant.linearalgebra.Matrix;
 import org.drip.service.env.EnvManager;
 import org.drip.state.identifier.CSALabel;
@@ -516,15 +518,15 @@ public class ExposurePathBrownianBridge
 	{
 		EnvManager.InitEnv ("");
 
-		JulianDate spotDate = DateUtil.CreateFromYMD (
+		JulianDate spotDateJulian = DateUtil.CreateFromYMD (
 			2018,
 			DateUtil.APRIL,
 			19
 		);
 
-		int pathCount = 1000;
-		String exposurePeriodTenor = "6M";
-		int exposurePeriodCount = 15;
+		int pathCount = 100;
+		String sparseExposureTenor = "3M";
+		int sparseExposurePeriodCount = 20;
 		String currency = "USD";
 		String dealer = "NOM";
 		String client = "SSGA";
@@ -543,6 +545,8 @@ public class ExposurePathBrownianBridge
 		String referenceEntity = "HYG";
 		double equityNotional = 10.;
 
+		int spotDate = spotDateJulian.julian();
+
 		LocalVolatilityGenerationControl localVolatilityGenerationControl =
 			LocalVolatilityGenerationControl.Standard (pathCount);
 
@@ -559,9 +563,9 @@ public class ExposurePathBrownianBridge
 		List<LatentStateLabel> latentStateLabelList = new ArrayList<LatentStateLabel>();
 
 		MarketVertexGenerator marketVertexGenerator = ConstructMarketVertexGenerator (
-			spotDate,
-			exposurePeriodTenor,
-			exposurePeriodCount,
+			spotDateJulian,
+			sparseExposureTenor,
+			sparseExposurePeriodCount,
 			currency,
 			dealer,
 			client,
@@ -577,7 +581,7 @@ public class ExposurePathBrownianBridge
 		);
 
 		MarketVertex initialMarketVertex = MarketVertex.Epochal (
-			spotDate,
+			spotDateJulian,
 			1.000, 				// dblOvernightNumeraireInitial
 			1.000, 				// dblCSANumeraire
 			0.015, 				// dblBankHazardRate
@@ -594,22 +598,42 @@ public class ExposurePathBrownianBridge
 		CorrelatedPathVertexDimension correlatedPathVertexDimension = new CorrelatedPathVertexDimension (
 			new RandomNumberGenerator(),
 			correlationMatrix,
-			exposurePeriodCount,
+			sparseExposurePeriodCount,
 			1,
 			true,
 			null
 		);
 
-		JulianDate exposureDate = spotDate;
-		int[] exposureDateArray = new int[exposurePeriodCount + 1];
-		R1ToR1[] localVolatilityR1ToR1Array = new R1ToR1[exposurePeriodCount + 1];
-		double[][] pathExposureArray = new double[exposurePeriodCount + 1][pathCount];
+		JulianDate sparseExposureDate = spotDateJulian;
+		int[] sparseExposureDateArray = new int[sparseExposurePeriodCount + 1];
+		double[][] pathSparseExposureArray = new double[sparseExposurePeriodCount + 1][pathCount];
 
-		for (int i = 0; i <= exposurePeriodCount; ++i)
+		for (int i = 0; i <= sparseExposurePeriodCount; ++i)
 		{
-			exposureDateArray[i] = exposureDate.julian();
+			sparseExposureDateArray[i] = sparseExposureDate.julian();
 
-			exposureDate = exposureDate.addTenor (exposurePeriodTenor);
+			sparseExposureDate = sparseExposureDate.addTenor (sparseExposureTenor);
+		}
+
+		int denseExposureDateCount = sparseExposureDateArray[sparseExposurePeriodCount] - spotDate + 1;
+
+		List<Map<Integer, Double>> wanderTrajectoryList = new ArrayList<Map<Integer, Double>>();
+
+		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
+		{
+			Map<Integer, Double> wanderTrajectory = new TreeMap<Integer, Double>();
+
+			for (int denseExposureDate = spotDate;
+				denseExposureDate <= sparseExposureDateArray[sparseExposurePeriodCount];
+				++denseExposureDate)
+			{
+				wanderTrajectory.put (
+					denseExposureDate,
+					NormalQuadrature.Random()
+				);
+			}
+
+			wanderTrajectoryList.add (wanderTrajectory);
 		}
 
 		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
@@ -624,35 +648,37 @@ public class ExposurePathBrownianBridge
 				)
 			);
 
-			VariationMarginTradeTrajectoryEstimator variationMarginTradeTrajectoryEstimator =
+			Map<Integer, Double> variationMarginEstimateTrajectory =
 				new VariationMarginTradeTrajectoryEstimator (
-					exposureDateArray,
+					sparseExposureDateArray,
 					currency,
 					numeraireMPoR,
 					marketPath,
 					andersenPykhtinSokolLag
-				);
+				).variationMarginEstimateTrajectory();
 
-			Map<Integer, Double> variationMarginEstimateTrajectory =
-				variationMarginTradeTrajectoryEstimator.variationMarginEstimateTrajectory();
-
-			int exposureDateIndex = 0;
+			int sparseExposureDateIndex = 0;
 
 			for (Map.Entry<Integer, Double> variationMarginEstimateTrajectoryEntry :
 				variationMarginEstimateTrajectory.entrySet())
 			{
-				pathExposureArray[exposureDateIndex++][pathIndex] =
+				pathSparseExposureArray[sparseExposureDateIndex++][pathIndex] =
 					variationMarginEstimateTrajectoryEntry.getValue();
 			}
 		}
 
-		for (int exposureDateIndex = 0; exposureDateIndex < exposurePeriodCount; ++exposureDateIndex)
+		Map<Integer, R1ToR1> localVolatilityTrajectory = new TreeMap<Integer, R1ToR1>();
+
+		for (int exposureDateIndex = 0; exposureDateIndex <= sparseExposurePeriodCount; ++exposureDateIndex)
 		{
 			PykhtinPillarDynamics vertexRealization = PykhtinPillarDynamics.Standard
-				(pathExposureArray [exposureDateIndex]);
+				(pathSparseExposureArray [exposureDateIndex]);
 
-			localVolatilityR1ToR1Array[exposureDateIndex] = null == vertexRealization ? null :
-				vertexRealization.localVolatilityR1ToR1 (localVolatilityGenerationControl);
+			localVolatilityTrajectory.put (
+				sparseExposureDateArray[exposureDateIndex],
+				null == vertexRealization ? null :
+					vertexRealization.localVolatilityR1ToR1 (localVolatilityGenerationControl)
+			);
 		}
 
 		System.out.println ("\t||------------------------------------------------------------------------------------------------------------");
@@ -671,21 +697,35 @@ public class ExposurePathBrownianBridge
 
 		System.out.println ("\t||------------------------------------------------------------------------------------------------------------");
 
+		double[][] pathDenseExposureDistribution = new double[denseExposureDateCount][pathCount];
+
 		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
 		{
-			String strDump = "\t|| " + FormatUtil.FormatDouble (pathIndex, 5, 0, 1.) + " => ";
+			Map<Integer, Double> sparseExposureTrajectory = new TreeMap<Integer, Double>();
 
-			for (int exposureDateIndex = 0; exposureDateIndex < exposurePeriodCount; ++exposureDateIndex)
+			for (int exposureDateIndex = 0; exposureDateIndex <= sparseExposurePeriodCount; ++exposureDateIndex)
 			{
-				strDump += FormatUtil.FormatDouble (
-					null == localVolatilityR1ToR1Array[exposureDateIndex] ? 0. :
-					localVolatilityR1ToR1Array[exposureDateIndex].evaluate (
-						pathExposureArray [exposureDateIndex][pathIndex]
-					), 1, 6, 1.
-				) + " | ";
+				sparseExposureTrajectory.put (
+					sparseExposureDateArray[exposureDateIndex],
+					pathSparseExposureArray[exposureDateIndex][pathIndex]
+				);
 			}
 
-			System.out.println (strDump);
+			Map<Integer, Double> pathDenseExposureTrajectory = new PykhtinBrownianBridgePath (
+				sparseExposureTrajectory,
+				localVolatilityTrajectory
+			).denseExposure (wanderTrajectoryList.get (pathIndex));
+
+			if (null != pathDenseExposureTrajectory)
+			{
+				for (int denseExposureDate = spotDate;
+					denseExposureDate <= sparseExposureDateArray[sparseExposurePeriodCount];
+					++denseExposureDate)
+				{
+					pathDenseExposureDistribution[denseExposureDate - spotDate][pathIndex] =
+						pathDenseExposureTrajectory.get (denseExposureDate);
+				}
+			}
 		}
 
 		System.out.println ("\t||------------------------------------------------------------------------------------------------------------");

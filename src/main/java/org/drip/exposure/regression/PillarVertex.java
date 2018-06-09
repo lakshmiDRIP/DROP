@@ -69,8 +69,8 @@ package org.drip.exposure.regression;
 
 public class PillarVertex
 {
+	private int _date = -1;
 	private double _exposure = java.lang.Double.NaN;
-	private org.drip.analytics.date.JulianDate _date = null;
 
 	/**
 	 * PillarVertexConstructor
@@ -82,12 +82,11 @@ public class PillarVertex
 	 */
 
 	public PillarVertex (
-		final org.drip.analytics.date.JulianDate date,
+		final int date,
 		final double exposure)
 		throws java.lang.Exception
 	{
-		if (null == (_date = date) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_exposure = exposure))
+		if (0 >= (_date = date) || !org.drip.quant.common.NumberUtil.IsValid (_exposure = exposure))
 		{
 			throw new java.lang.Exception ("PillarVertex Constructor => Invalid Inputs");
 		}
@@ -99,7 +98,7 @@ public class PillarVertex
 	 * @return The Path Pillar Date
 	 */
 
-	public org.drip.analytics.date.JulianDate date()
+	public int date()
 	{
 		return _date;
 	}

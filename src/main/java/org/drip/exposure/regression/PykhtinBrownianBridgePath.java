@@ -70,57 +70,108 @@ package org.drip.exposure.regression;
 
 public class PykhtinBrownianBridgePath
 {
-	private int[] _dateArray = null;
-	private double[] _exposureArray = null;
+	private java.util.Map<java.lang.Integer, java.lang.Double> _sparseVertexExposureTrajectory = null;
+	private java.util.Map<java.lang.Integer, org.drip.function.definition.R1ToR1> _localVolatilityTrajectory
+		= null;
 
 	/**
 	 * PykhtinBrownianBridgePath Constructor
 	 * 
-	 * @param dateArray The Exposure Date Array
-	 * @param exposureArray The Exposure Amount Array
+	 * @param sparseVertexExposureTrajectory The Sparse Vertex Exposure Amount Trajectory
+	 * @param localVolatilityTrajectory The R^1 To R^1 Local Volatility Trajectory
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs ar Invalid
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public PykhtinBrownianBridgePath (
-		final int[] dateArray,
-		final double[] exposureArray)
+		final java.util.Map<java.lang.Integer, java.lang.Double> sparseVertexExposureTrajectory,
+		final java.util.Map<java.lang.Integer, org.drip.function.definition.R1ToR1>
+			localVolatilityTrajectory)
 		throws java.lang.Exception
 	{
-		if (null == (_dateArray = dateArray) ||
-			null == (_exposureArray = exposureArray))
-		{
-			throw new java.lang.Exception ("PykhtinBrownianBridgePath Constructor => Invalid Inputs");
-		}
-
-		int vertexCount = _dateArray.length;
-
-		if (0 == vertexCount || vertexCount != _exposureArray.length ||
-			!org.drip.quant.common.NumberUtil.IsValid (_exposureArray))
+		if (null == (_sparseVertexExposureTrajectory = sparseVertexExposureTrajectory) ||
+			null == (_localVolatilityTrajectory = localVolatilityTrajectory))
 		{
 			throw new java.lang.Exception ("PykhtinBrownianBridgePath Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Array of Exposure Dates
+	 * Retrieve the Path Sparse Vertex Exposure Trajectory
 	 * 
-	 * @return Array of Exposure Dates
+	 * @return The Path Sparse Vertex Exposure Trajectory
 	 */
 
-	public int[] dateArray()
+	public java.util.Map<java.lang.Integer, java.lang.Double> sparseVertexExposureTrajectory()
 	{
-		return _dateArray;
+		return _sparseVertexExposureTrajectory;
 	}
 
 	/**
-	 * Retrieve the Array of Path Exposures
+	 * Retrieve the Path Sparse Vertex Local Volatility Trajectory
 	 * 
-	 * @return Array of Path Exposures
+	 * @return The Path Sparse Vertex Local Volatility Trajectory
 	 */
 
-	public double[] exposureArray()
+	public java.util.Map<java.lang.Integer, org.drip.function.definition.R1ToR1> localVolatilityTrajectory()
 	{
-		return _exposureArray;
+		return _localVolatilityTrajectory;
+	}
+
+	/**
+	 * Generate the Dense (Complete) Segment Exposures
+	 * 
+	 * @param wanderTrajectory The Wander Date Trajectory
+	 * 
+	 * @return The Dense (Complete) Segment Exposures
+	 */
+
+	public java.util.Map<java.lang.Integer, java.lang.Double> denseExposure (
+		final java.util.Map<java.lang.Integer, java.lang.Double> wanderTrajectory)
+	{
+		int sparseLeftPillarDate = -1;
+
+		java.util.Map<java.lang.Integer, java.lang.Double> denseExposureTrajectory = new
+			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+
+		for (java.util.Map.Entry<java.lang.Integer, java.lang.Double> sparseExposureTrajectoryEntry :
+			_sparseVertexExposureTrajectory.entrySet())
+		{
+			int sparseRightPillarDate = sparseExposureTrajectoryEntry.getKey();
+
+			if (-1 == sparseLeftPillarDate)
+			{
+				sparseLeftPillarDate = sparseRightPillarDate;
+				continue;
+			}
+
+			try
+			{
+				new PykhtinBrownianBridgeSegment (
+					new org.drip.exposure.regression.PillarVertex (
+						sparseLeftPillarDate,
+						_sparseVertexExposureTrajectory.get (sparseLeftPillarDate)
+					),
+					new org.drip.exposure.regression.PillarVertex (
+						sparseRightPillarDate,
+						_sparseVertexExposureTrajectory.get (sparseRightPillarDate)
+					),
+					_localVolatilityTrajectory.get (sparseRightPillarDate)
+				).denseExposureTrajectoryUpdate (
+					denseExposureTrajectory,
+					wanderTrajectory
+				);
+			}
+			catch (java.lang.Exception e)
+			{
+				e.printStackTrace();
+
+				return null;
+			}
+
+			sparseLeftPillarDate = sparseRightPillarDate;
+		}
+
+		return denseExposureTrajectory;
 	}
 }
