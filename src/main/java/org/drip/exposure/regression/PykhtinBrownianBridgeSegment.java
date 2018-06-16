@@ -135,6 +135,7 @@ public class PykhtinBrownianBridgeSegment
 	/**
 	 * Generate the Dense (Complete) Segment Exposures
 	 * 
+	 * @param denseExposureTrajectory The Dense Exposure Trajectory
 	 * @param wanderTrajectory The Wander Date Trajectory
 	 * 
 	 * @return The Dense (Complete) Segment Exposures

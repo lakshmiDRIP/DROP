@@ -33,6 +33,8 @@ import org.drip.measure.dynamics.HazardJumpEvaluator;
 import org.drip.measure.gaussian.NormalQuadrature;
 import org.drip.measure.process.DiffusionEvolver;
 import org.drip.measure.process.JumpDiffusionEvolver;
+import org.drip.measure.statistics.UnivariateDiscreteThin;
+import org.drip.quant.common.FormatUtil;
 import org.drip.quant.linearalgebra.Matrix;
 import org.drip.service.env.EnvManager;
 import org.drip.state.identifier.CSALabel;
@@ -524,7 +526,7 @@ public class ExposurePathBrownianBridge
 			19
 		);
 
-		int pathCount = 100;
+		int pathCount = 10000;
 		String sparseExposureTenor = "3M";
 		int sparseExposurePeriodCount = 20;
 		String currency = "USD";
@@ -615,8 +617,6 @@ public class ExposurePathBrownianBridge
 			sparseExposureDate = sparseExposureDate.addTenor (sparseExposureTenor);
 		}
 
-		int denseExposureDateCount = sparseExposureDateArray[sparseExposurePeriodCount] - spotDate + 1;
-
 		List<Map<Integer, Double>> wanderTrajectoryList = new ArrayList<Map<Integer, Double>>();
 
 		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
@@ -681,33 +681,38 @@ public class ExposurePathBrownianBridge
 			);
 		}
 
-		System.out.println ("\t||------------------------------------------------------------------------------------------------------------");
+		System.out.println ("\t||-------------------------------------------------------||");
 
-		System.out.println ("\t||           EXPOSURE DATE LOCAL VOLATILITY             ");
+		System.out.println ("\t||           EXPOSURE DATE LOCAL VOLATILITY              ||");
 
-		System.out.println ("\t||------------------------------------------------------------------------------------------------------------");
+		System.out.println ("\t||-------------------------------------------------------||");
 
-		System.out.println ("\t||                                                      ");
+		System.out.println ("\t||                                                       ||");
 
-		System.out.println ("\t||    L -> R:                                           ");
+		System.out.println ("\t||    L -> R:                                            ||");
 
-		System.out.println ("\t||            - Simulation Path Number                  ");
+		System.out.println ("\t||            - Simulation Path Number                   ||");
 
-		System.out.println ("\t||            - The Spot/Forward Dates                  ");
+		System.out.println ("\t||            - The Spot/Forward Dates                   ||");
 
-		System.out.println ("\t||------------------------------------------------------------------------------------------------------------");
+		System.out.println ("\t||-------------------------------------------------------||");
 
+		int denseExposureDateCount = sparseExposureDateArray[sparseExposurePeriodCount] - spotDate + 1;
 		double[][] pathDenseExposureDistribution = new double[denseExposureDateCount][pathCount];
+		UnivariateDiscreteThin[] univariateDiscreteThinArray = new
+			UnivariateDiscreteThin[denseExposureDateCount];
 
 		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
 		{
 			Map<Integer, Double> sparseExposureTrajectory = new TreeMap<Integer, Double>();
 
-			for (int exposureDateIndex = 0; exposureDateIndex <= sparseExposurePeriodCount; ++exposureDateIndex)
+			for (int sparseExposureDateIndex = 0;
+				sparseExposureDateIndex <= sparseExposurePeriodCount;
+				++sparseExposureDateIndex)
 			{
 				sparseExposureTrajectory.put (
-					sparseExposureDateArray[exposureDateIndex],
-					pathSparseExposureArray[exposureDateIndex][pathIndex]
+					sparseExposureDateArray[sparseExposureDateIndex],
+					pathSparseExposureArray[sparseExposureDateIndex][pathIndex]
 				);
 			}
 
@@ -728,7 +733,26 @@ public class ExposurePathBrownianBridge
 			}
 		}
 
-		System.out.println ("\t||------------------------------------------------------------------------------------------------------------");
+		for (int denseExposureDate = spotDate;
+			denseExposureDate <= sparseExposureDateArray[sparseExposurePeriodCount];
+			++denseExposureDate)
+		{
+			int dateIndex = denseExposureDate - spotDate;
+
+			univariateDiscreteThinArray[dateIndex] = new UnivariateDiscreteThin
+				(pathDenseExposureDistribution[dateIndex]);
+
+			System.out.println (
+				"\t|| " +
+				new JulianDate (denseExposureDate) + " => " +
+				FormatUtil.FormatDouble (univariateDiscreteThinArray[dateIndex].average(), 3, 3, 1.) + " |" +
+				FormatUtil.FormatDouble (univariateDiscreteThinArray[dateIndex].minimum(), 3, 3, 1.) + " |" +
+				FormatUtil.FormatDouble (univariateDiscreteThinArray[dateIndex].maximum(), 3, 3, 1.) + " |" +
+				FormatUtil.FormatDouble (univariateDiscreteThinArray[dateIndex].error(), 3, 3, 1.) + " ||"
+			);
+		}
+
+		System.out.println ("\t||-------------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

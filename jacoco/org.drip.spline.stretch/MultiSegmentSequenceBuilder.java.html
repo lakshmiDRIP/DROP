@@ -281,14 +281,23 @@ package org.drip.spline.stretch;
 		final double[] adblPredictorOrdinate,
 		final org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC)
 	{
+<span class="fc" id="L284">		org.drip.spline.segment.LatentStateResponseModel[] latentStateResponseModelArray = CreateSegmentSet (</span>
+			adblPredictorOrdinate,
+			aSCBC
+		);
+
 		try {
-<span class="fc" id="L285">			return new org.drip.spline.stretch.CalibratableMultiSegmentSequence (strName, CreateSegmentSet</span>
-<span class="fc" id="L286">				(adblPredictorOrdinate, aSCBC), aSCBC);</span>
-<span class="nc" id="L287">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L288">			e.printStackTrace();</span>
+<span class="pc bpc" id="L290" title="1 of 2 branches missed.">			return null == latentStateResponseModelArray ? null :</span>
+			new org.drip.spline.stretch.CalibratableMultiSegmentSequence (
+				strName,
+				latentStateResponseModelArray,
+				aSCBC
+			);
+<span class="nc" id="L296">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L297">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L291">		return null;</span>
+<span class="nc" id="L300">		return null;</span>
 	}
 
 	/**
@@ -315,20 +324,20 @@ package org.drip.spline.stretch;
 		final org.drip.spline.stretch.BoundarySettings bs,
 		final int iCalibrationDetail)
 	{
-<span class="fc" id="L318">		org.drip.spline.stretch.MultiSegmentSequence mss = CreateUncalibratedStretchEstimator (strName,</span>
+<span class="fc" id="L327">		org.drip.spline.stretch.MultiSegmentSequence mss = CreateUncalibratedStretchEstimator (strName,</span>
 			adblPredictorOrdinate, aSCBC);
 
-<span class="pc bpc" id="L321" title="2 of 4 branches missed.">		if (null == mss || null == adblResponseValue) return null;</span>
+<span class="pc bpc" id="L330" title="2 of 4 branches missed.">		if (null == mss || null == adblResponseValue) return null;</span>
 
-<span class="fc" id="L323">		int iNumRightNode = adblResponseValue.length - 1;</span>
-<span class="fc" id="L324">		double[] adblResponseValueRight = new double[iNumRightNode];</span>
+<span class="fc" id="L332">		int iNumRightNode = adblResponseValue.length - 1;</span>
+<span class="fc" id="L333">		double[] adblResponseValueRight = new double[iNumRightNode];</span>
 
-<span class="pc bpc" id="L326" title="1 of 2 branches missed.">		if (0 == iNumRightNode) return null;</span>
+<span class="pc bpc" id="L335" title="1 of 2 branches missed.">		if (0 == iNumRightNode) return null;</span>
 
-<span class="fc bfc" id="L328" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumRightNode; ++i)</span>
-<span class="fc" id="L329">			adblResponseValueRight[i] = adblResponseValue[i + 1];</span>
+<span class="fc bfc" id="L337" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumRightNode; ++i)</span>
+<span class="fc" id="L338">			adblResponseValueRight[i] = adblResponseValue[i + 1];</span>
 
-<span class="pc bpc" id="L331" title="1 of 2 branches missed.">		return mss.setup (adblResponseValue[0], adblResponseValueRight, rbfr, bs, iCalibrationDetail) ? mss :</span>
+<span class="pc bpc" id="L340" title="1 of 2 branches missed.">		return mss.setup (adblResponseValue[0], adblResponseValueRight, rbfr, bs, iCalibrationDetail) ? mss :</span>
 			null;
 	}
 
@@ -356,17 +365,17 @@ package org.drip.spline.stretch;
 		final org.drip.spline.stretch.BoundarySettings bs,
 		final int iCalibrationDetail)
 	{
-<span class="pc bpc" id="L359" title="1 of 2 branches missed.">		if (null == aiPredictorOrdinate) return null;</span>
+<span class="pc bpc" id="L368" title="1 of 2 branches missed.">		if (null == aiPredictorOrdinate) return null;</span>
 
-<span class="fc" id="L361">		int iNumPredictorOrdinate = aiPredictorOrdinate.length;</span>
-<span class="fc" id="L362">		double[] adblPredictorOrdinate = new double[iNumPredictorOrdinate];</span>
+<span class="fc" id="L370">		int iNumPredictorOrdinate = aiPredictorOrdinate.length;</span>
+<span class="fc" id="L371">		double[] adblPredictorOrdinate = new double[iNumPredictorOrdinate];</span>
 
-<span class="pc bpc" id="L364" title="1 of 2 branches missed.">		if (0 == iNumPredictorOrdinate) return null;</span>
+<span class="pc bpc" id="L373" title="1 of 2 branches missed.">		if (0 == iNumPredictorOrdinate) return null;</span>
 
-<span class="fc bfc" id="L366" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPredictorOrdinate; ++i)</span>
-<span class="fc" id="L367">			adblPredictorOrdinate[i] = aiPredictorOrdinate[i];</span>
+<span class="fc bfc" id="L375" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPredictorOrdinate; ++i)</span>
+<span class="fc" id="L376">			adblPredictorOrdinate[i] = aiPredictorOrdinate[i];</span>
 
-<span class="fc" id="L369">		return CreateCalibratedStretchEstimator (strName, adblPredictorOrdinate, adblResponseValue, aSCBC,</span>
+<span class="fc" id="L378">		return CreateCalibratedStretchEstimator (strName, adblPredictorOrdinate, adblResponseValue, aSCBC,</span>
 			rbfr, bs, iCalibrationDetail);
 	}
 
@@ -396,10 +405,10 @@ package org.drip.spline.stretch;
 		final org.drip.spline.stretch.BoundarySettings bs,
 		final int iCalibrationDetail)
 	{
-<span class="fc" id="L399">		org.drip.spline.stretch.MultiSegmentSequence mss = CreateUncalibratedStretchEstimator (strName,</span>
+<span class="fc" id="L408">		org.drip.spline.stretch.MultiSegmentSequence mss = CreateUncalibratedStretchEstimator (strName,</span>
 			adblPredictorOrdinate, aSCBC);
 
-<span class="pc bpc" id="L402" title="2 of 4 branches missed.">		return null == mss ? null : mss.setup (dblStretchLeftResponseValue, aSRVC, rbfr, bs,</span>
+<span class="pc bpc" id="L411" title="2 of 4 branches missed.">		return null == mss ? null : mss.setup (dblStretchLeftResponseValue, aSRVC, rbfr, bs,</span>
 			iCalibrationDetail) ? mss : null;
 	}
 
@@ -429,10 +438,10 @@ package org.drip.spline.stretch;
 		final org.drip.spline.stretch.BoundarySettings bs,
 		final int iCalibrationDetail)
 	{
-<span class="nc" id="L432">		org.drip.spline.stretch.MultiSegmentSequence mss = CreateUncalibratedStretchEstimator (strName,</span>
+<span class="nc" id="L441">		org.drip.spline.stretch.MultiSegmentSequence mss = CreateUncalibratedStretchEstimator (strName,</span>
 			adblPredictorOrdinate, aSCBC);
 
-<span class="nc bnc" id="L435" title="All 4 branches missed.">		return null == mss ? null : mss.setup (srvcStretchLeft, aSRVC, sbfr, bs, iCalibrationDetail) ? mss :</span>
+<span class="nc bnc" id="L444" title="All 4 branches missed.">		return null == mss ? null : mss.setup (srvcStretchLeft, aSRVC, sbfr, bs, iCalibrationDetail) ? mss :</span>
 			null;
 	}
 
@@ -459,25 +468,25 @@ package org.drip.spline.stretch;
 		final org.drip.spline.stretch.BoundarySettings bs,
 		final int iCalibrationDetail)
 	{
-<span class="nc bnc" id="L462" title="All 6 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblResponseValue) || null == adblPredictorOrdinate ||</span>
+<span class="nc bnc" id="L471" title="All 6 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblResponseValue) || null == adblPredictorOrdinate ||</span>
 			null == scbc)
-<span class="nc" id="L464">			return null;</span>
+<span class="nc" id="L473">			return null;</span>
 
-<span class="nc" id="L466">		int iNumPredictorOrdinate = adblPredictorOrdinate.length;</span>
+<span class="nc" id="L475">		int iNumPredictorOrdinate = adblPredictorOrdinate.length;</span>
 
-<span class="nc bnc" id="L468" title="All 2 branches missed.">		if (1 &gt;= iNumPredictorOrdinate) return null;</span>
+<span class="nc bnc" id="L477" title="All 2 branches missed.">		if (1 &gt;= iNumPredictorOrdinate) return null;</span>
 
-<span class="nc" id="L470">		double[] adblResponseValue = new double[iNumPredictorOrdinate];</span>
-<span class="nc" id="L471">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new</span>
+<span class="nc" id="L479">		double[] adblResponseValue = new double[iNumPredictorOrdinate];</span>
+<span class="nc" id="L480">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new</span>
 			org.drip.spline.params.SegmentCustomBuilderControl[iNumPredictorOrdinate - 1];
 
-<span class="nc bnc" id="L474" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumPredictorOrdinate; ++i) {</span>
-<span class="nc" id="L475">			adblResponseValue[i] = dblResponseValue;</span>
+<span class="nc bnc" id="L483" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumPredictorOrdinate; ++i) {</span>
+<span class="nc" id="L484">			adblResponseValue[i] = dblResponseValue;</span>
 
-<span class="nc bnc" id="L477" title="All 2 branches missed.">			if (0 != i) aSCBC[i - 1] = scbc;</span>
+<span class="nc bnc" id="L486" title="All 2 branches missed.">			if (0 != i) aSCBC[i - 1] = scbc;</span>
 		}
 
-<span class="nc" id="L480">		return CreateCalibratedStretchEstimator (strName, adblPredictorOrdinate, adblResponseValue, aSCBC,</span>
+<span class="nc" id="L489">		return CreateCalibratedStretchEstimator (strName, adblPredictorOrdinate, adblResponseValue, aSCBC,</span>
 			sbfr, bs, iCalibrationDetail);
 	}
 
@@ -503,12 +512,12 @@ package org.drip.spline.stretch;
 		final org.drip.spline.stretch.BoundarySettings bs,
 		final int iCalibrationDetail)
 	{
-<span class="fc" id="L506">		org.drip.spline.stretch.MultiSegmentSequence mss = CreateUncalibratedStretchEstimator (strName,</span>
+<span class="fc" id="L515">		org.drip.spline.stretch.MultiSegmentSequence mss = CreateUncalibratedStretchEstimator (strName,</span>
 			adblKnotPredictorOrdinate, aSCBC);
 
-<span class="pc bpc" id="L509" title="1 of 2 branches missed.">		if (null == mss) return null;</span>
+<span class="pc bpc" id="L518" title="1 of 2 branches missed.">		if (null == mss) return null;</span>
 
-<span class="pc bpc" id="L511" title="1 of 2 branches missed.">		return mss.setup (null, null, sbfr, bs, iCalibrationDetail) ? mss : null;</span>
+<span class="pc bpc" id="L520" title="1 of 2 branches missed.">		return mss.setup (null, null, sbfr, bs, iCalibrationDetail) ? mss : null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

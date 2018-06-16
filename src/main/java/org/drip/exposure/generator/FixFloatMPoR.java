@@ -188,4 +188,59 @@ public class FixFloatMPoR implements org.drip.exposure.mpor.VariationMarginTrade
 
 		return null;
 	}
+
+	@Override public org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray (
+		final int startDate,
+		final int endDate,
+		final org.drip.exposure.universe.MarketPath marketPath)
+	{
+		org.drip.exposure.mpor.TradePayment[] fixedStreamTradePaymentArray =
+			_fixedStreamMPoR.denseTradePaymentArray (
+				startDate,
+				endDate,
+				marketPath
+			);
+
+		if (null == fixedStreamTradePaymentArray)
+		{
+			return null;
+		}
+
+		org.drip.exposure.mpor.TradePayment[] floatStreamTradePaymentArray =
+			_floatStreamMPoR.denseTradePaymentArray (
+				startDate,
+				endDate,
+				marketPath
+			);
+
+		if (null == floatStreamTradePaymentArray)
+		{
+			return null;
+		}
+
+		int denseDateCount = endDate - startDate + 1;
+		org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray = new
+			org.drip.exposure.mpor.TradePayment[denseDateCount];
+
+		for (int denseDateIndex = 0; denseDateIndex < denseDateCount; ++denseDateIndex)
+		{
+			try
+			{
+				denseTradePaymentArray[denseDateIndex] = new org.drip.exposure.mpor.TradePayment (
+					fixedStreamTradePaymentArray[denseDateIndex].dealer() +
+						floatStreamTradePaymentArray[denseDateIndex].dealer(),
+					fixedStreamTradePaymentArray[denseDateIndex].client() +
+						floatStreamTradePaymentArray[denseDateIndex].client()
+				);
+			}
+			catch (java.lang.Exception e)
+			{
+				e.printStackTrace();
+
+				return null;
+			}
+		}
+
+		return denseTradePaymentArray;
+	}
 }

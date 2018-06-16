@@ -135,5 +135,30 @@ public class NumeraireMPoR implements org.drip.exposure.mpor.VariationMarginTrad
 	{
 <span class="nc" id="L136">		return org.drip.exposure.mpor.TradePayment.Standard (0.);</span>
 	}
+
+	@Override public org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray (
+		final int startDate,
+		final int endDate,
+		final org.drip.exposure.universe.MarketPath marketPath)
+	{
+<span class="nc bnc" id="L144" title="All 2 branches missed.">		if (endDate &lt; startDate)</span>
+		{
+<span class="nc" id="L146">			return null;</span>
+		}
+
+<span class="nc" id="L149">		int denseDateCount = endDate - startDate + 1;</span>
+<span class="nc" id="L150">		org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray = new</span>
+			org.drip.exposure.mpor.TradePayment[denseDateCount];
+
+<span class="nc" id="L153">		org.drip.exposure.mpor.TradePayment zeroTradePayment = org.drip.exposure.mpor.TradePayment.Standard</span>
+<span class="nc" id="L154">			(0.);</span>
+
+<span class="nc bnc" id="L156" title="All 2 branches missed.">		for (int denseDateIndex = 0; denseDateIndex &lt; denseDateCount; ++denseDateIndex)</span>
+		{
+<span class="nc" id="L158">			denseTradePaymentArray[denseDateIndex] = zeroTradePayment;</span>
+		}
+
+<span class="nc" id="L161">		return denseTradePaymentArray;</span>
+	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

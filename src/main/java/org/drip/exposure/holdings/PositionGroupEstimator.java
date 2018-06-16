@@ -92,4 +92,29 @@ public class PositionGroupEstimator implements org.drip.exposure.mpor.VariationM
 	{
 		return org.drip.exposure.mpor.TradePayment.Standard (0.);
 	}
+
+	@Override public org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray (
+		final int startDate,
+		final int endDate,
+		final org.drip.exposure.universe.MarketPath marketPath)
+	{
+		if (endDate < startDate)
+		{
+			return null;
+		}
+
+		int denseDateCount = endDate - startDate + 1;
+		org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray = new
+			org.drip.exposure.mpor.TradePayment[denseDateCount];
+
+		org.drip.exposure.mpor.TradePayment zeroTradePayment = org.drip.exposure.mpor.TradePayment.Standard
+			(0.);
+
+		for (int denseDateIndex = 0; denseDateIndex < denseDateCount; ++denseDateIndex)
+		{
+			denseTradePaymentArray[denseDateIndex] = zeroTradePayment;
+		}
+
+		return denseTradePaymentArray;
+	}
 }

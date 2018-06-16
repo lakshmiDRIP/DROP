@@ -188,5 +188,60 @@ public class FixFloatMPoR implements org.drip.exposure.mpor.VariationMarginTrade
 
 <span class="nc" id="L189">		return null;</span>
 	}
+
+	@Override public org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray (
+		final int startDate,
+		final int endDate,
+		final org.drip.exposure.universe.MarketPath marketPath)
+	{
+<span class="nc" id="L197">		org.drip.exposure.mpor.TradePayment[] fixedStreamTradePaymentArray =</span>
+<span class="nc" id="L198">			_fixedStreamMPoR.denseTradePaymentArray (</span>
+				startDate,
+				endDate,
+				marketPath
+			);
+
+<span class="nc bnc" id="L204" title="All 2 branches missed.">		if (null == fixedStreamTradePaymentArray)</span>
+		{
+<span class="nc" id="L206">			return null;</span>
+		}
+
+<span class="nc" id="L209">		org.drip.exposure.mpor.TradePayment[] floatStreamTradePaymentArray =</span>
+<span class="nc" id="L210">			_floatStreamMPoR.denseTradePaymentArray (</span>
+				startDate,
+				endDate,
+				marketPath
+			);
+
+<span class="nc bnc" id="L216" title="All 2 branches missed.">		if (null == floatStreamTradePaymentArray)</span>
+		{
+<span class="nc" id="L218">			return null;</span>
+		}
+
+<span class="nc" id="L221">		int denseDateCount = endDate - startDate + 1;</span>
+<span class="nc" id="L222">		org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray = new</span>
+			org.drip.exposure.mpor.TradePayment[denseDateCount];
+
+<span class="nc bnc" id="L225" title="All 2 branches missed.">		for (int denseDateIndex = 0; denseDateIndex &lt; denseDateCount; ++denseDateIndex)</span>
+		{
+			try
+			{
+<span class="nc" id="L229">				denseTradePaymentArray[denseDateIndex] = new org.drip.exposure.mpor.TradePayment (</span>
+<span class="nc" id="L230">					fixedStreamTradePaymentArray[denseDateIndex].dealer() +</span>
+<span class="nc" id="L231">						floatStreamTradePaymentArray[denseDateIndex].dealer(),</span>
+<span class="nc" id="L232">					fixedStreamTradePaymentArray[denseDateIndex].client() +</span>
+<span class="nc" id="L233">						floatStreamTradePaymentArray[denseDateIndex].client()</span>
+				);
+			}
+<span class="nc" id="L236">			catch (java.lang.Exception e)</span>
+			{
+<span class="nc" id="L238">				e.printStackTrace();</span>
+
+<span class="nc" id="L240">				return null;</span>
+<span class="nc" id="L241">			}</span>
+		}
+
+<span class="nc" id="L244">		return denseTradePaymentArray;</span>
+	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

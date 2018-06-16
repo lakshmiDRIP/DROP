@@ -99,4 +99,19 @@ public interface VariationMarginTradePaymentVertex
 	public org.drip.exposure.mpor.TradePayment tradePayment (
 		final int vertexDate,
 		final org.drip.exposure.universe.MarketPath marketPath);
+
+	/**
+	 * Estimate the Dense Exposure Vertex Date Trade Payment on all Dates from the specified Start to End
+	 * 
+	 * @param startDate The Start Date
+	 * @param endDate The Start Date
+	 * @param marketPath The Market Path
+	 * 
+	 * @return The Dense Exposure Vertex Date Trade Payment Array
+	 */
+
+	public org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray (
+		final int startDate,
+		final int endDate,
+		final org.drip.exposure.universe.MarketPath marketPath);
 }

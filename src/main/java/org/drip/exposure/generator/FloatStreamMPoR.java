@@ -143,8 +143,6 @@ public class FloatStreamMPoR  extends org.drip.exposure.generator.StreamMPoR
 
 		org.drip.state.identifier.ForwardLabel forwardLabel = stream().forwardLabel();
 
-		double overnightReplicatorForward = marketPath.marketVertex (forwardDate).overnightReplicator();
-
 		for (org.drip.analytics.cashflow.CompositePeriod period : stream().periods())
 		{
 			int periodPayDate = period.payDate();
@@ -164,9 +162,7 @@ public class FloatStreamMPoR  extends org.drip.exposure.generator.StreamMPoR
 						marketPath.marketVertex (period.startDate()).latentStateValue (forwardLabel) *
 						/* marketPath.marketVertex
 							(composableUnitFloatingPeriod.referenceIndexPeriod().fixingDate()).positionManifestValue() * */
-						period.couponFactor (periodEndDate) *
-						overnightReplicatorForward /
-						marketPath.marketVertex (period.payDate()).overnightReplicator()
+						period.couponFactor (periodEndDate)
 					);
 				}
 				catch (java.lang.Exception e)
@@ -179,5 +175,70 @@ public class FloatStreamMPoR  extends org.drip.exposure.generator.StreamMPoR
 		}
 
 		return org.drip.exposure.mpor.TradePayment.Standard (0.);
+	}
+
+	@Override public org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray (
+		final int startDate,
+		final int endDate,
+		final org.drip.exposure.universe.MarketPath marketPath)
+	{
+		if (endDate < startDate ||
+			null == marketPath)
+		{
+			return null;
+		}
+
+		int denseDateCount = endDate - startDate + 1;
+		org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray = new
+			org.drip.exposure.mpor.TradePayment[denseDateCount];
+
+		org.drip.state.identifier.ForwardLabel forwardLabel = stream().forwardLabel();
+
+		for (org.drip.analytics.cashflow.CompositePeriod period : stream().periods())
+		{
+			int periodPayDate = period.payDate();
+
+			if (periodPayDate < startDate || periodPayDate > endDate)
+			{
+				continue;
+			}
+
+			int periodEndDate = period.endDate();
+
+			/* org.drip.analytics.cashflow.ComposableUnitFloatingPeriod composableUnitFloatingPeriod =
+				(org.drip.analytics.cashflow.ComposableUnitFloatingPeriod) period.periods().get (0); */
+
+			try
+			{
+				denseTradePaymentArray[periodPayDate - startDate] =
+					org.drip.exposure.mpor.TradePayment.Standard (
+						notional() * period.couponDCF() *
+						period.notional (periodEndDate) *
+						marketPath.marketVertex (period.startDate()).latentStateValue (forwardLabel) *
+						/* marketPath.marketVertex
+							(composableUnitFloatingPeriod.referenceIndexPeriod().fixingDate()).positionManifestValue() * */
+						period.couponFactor (periodEndDate)
+					);
+			}
+			catch (java.lang.Exception e)
+			{
+				e.printStackTrace();
+
+				return null;
+			}
+		}
+
+		org.drip.exposure.mpor.TradePayment zeroTradePayment = org.drip.exposure.mpor.TradePayment.Standard
+			(0.);
+
+		for (int denseDateIndex = 0; denseDateIndex < denseDateCount; ++denseDateIndex)
+		{
+			if (null == denseTradePaymentArray[denseDateIndex])
+			{
+				denseTradePaymentArray[denseDateIndex] = zeroTradePayment;
+			}
+		}
+
+		return denseTradePaymentArray;
 	}
 }

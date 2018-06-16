@@ -146,8 +146,6 @@ public class FixedStreamMPoR extends org.drip.exposure.generator.StreamMPoR
 			return null;
 		}
 
-		double overnightReplicatorForward = marketPath.marketVertex (forwardDate).overnightReplicator();
-
 		for (org.drip.analytics.cashflow.CompositePeriod period : stream().periods())
 		{
 			int periodPayDate = period.payDate();
@@ -158,7 +156,7 @@ public class FixedStreamMPoR extends org.drip.exposure.generator.StreamMPoR
 
 				org.drip.analytics.output.CompositePeriodCouponMetrics compositePeriodCouponMetrics =
 					period.couponMetrics (
-						period.endDate(),
+						periodEndDate,
 						null
 					);
 
@@ -173,9 +171,7 @@ public class FixedStreamMPoR extends org.drip.exposure.generator.StreamMPoR
 						notional() * period.couponDCF() *
 						period.notional (periodEndDate) *
 						compositePeriodCouponMetrics.rate() *
-						period.couponFactor (periodEndDate) *
-						overnightReplicatorForward /
-						marketPath.marketVertex (periodPayDate).overnightReplicator()
+						period.couponFactor (periodEndDate)
 					);
 				}
 				catch (java.lang.Exception e)
@@ -188,5 +184,74 @@ public class FixedStreamMPoR extends org.drip.exposure.generator.StreamMPoR
 		}
 
 		return org.drip.exposure.mpor.TradePayment.Standard (0.);
+	}
+
+	@Override public org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray (
+		final int startDate,
+		final int endDate,
+		final org.drip.exposure.universe.MarketPath marketPath)
+	{
+		if (endDate < startDate ||
+			null == marketPath)
+		{
+			return null;
+		}
+
+		int denseDateCount = endDate - startDate + 1;
+		org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray = new
+			org.drip.exposure.mpor.TradePayment[denseDateCount];
+
+		for (org.drip.analytics.cashflow.CompositePeriod period : stream().periods())
+		{
+			int periodPayDate = period.payDate();
+
+			if (periodPayDate < startDate || periodPayDate > endDate)
+			{
+				continue;
+			}
+
+			int periodEndDate = period.endDate();
+
+			org.drip.analytics.output.CompositePeriodCouponMetrics compositePeriodCouponMetrics =
+				period.couponMetrics (
+					periodEndDate,
+					null
+				);
+
+			if (null == compositePeriodCouponMetrics)
+			{
+				return null;
+			}
+
+			try
+			{
+				denseTradePaymentArray[periodPayDate - startDate] =
+					org.drip.exposure.mpor.TradePayment.Standard (
+						notional() * period.couponDCF() *
+						period.notional (periodEndDate) *
+						compositePeriodCouponMetrics.rate() *
+						period.couponFactor (periodEndDate)
+					);
+			}
+			catch (java.lang.Exception e)
+			{
+				e.printStackTrace();
+
+				return null;
+			}
+		}
+
+		org.drip.exposure.mpor.TradePayment zeroTradePayment = org.drip.exposure.mpor.TradePayment.Standard
+			(0.);
+
+		for (int denseDateIndex = 0; denseDateIndex < denseDateCount; ++denseDateIndex)
+		{
+			if (null == denseTradePaymentArray[denseDateIndex])
+			{
+				denseTradePaymentArray[denseDateIndex] = zeroTradePayment;
+			}
+		}
+
+		return denseTradePaymentArray;
 	}
 }
