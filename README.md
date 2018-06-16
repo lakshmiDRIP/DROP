@@ -30,13 +30,7 @@ DROP is composed of four main modules.
 
 ## Module Sub-Projects
 
-* [***Analytics***](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aanalytics)
-
-* [***Asset Backed***](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3A%22asset+backed%22)
-
-* [***Dynamics***](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Adynamics)
-
-* [***Execution***](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aexecution)
+ [**Analytics**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aanalytics)   |   [**Asset Backed**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3A%22asset+backed%22)   |   [**Dynamics**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Adynamics)   |   [**Execution**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aexecution)
 
 ## Installation
 
