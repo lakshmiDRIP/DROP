@@ -47,8 +47,8 @@ package org.drip.exposure.regressiontrade;
  */
 
 /**
- * PathCoordinator coordinates the Generation of the Path-specific Trade Payment Adjusted Variation Margin
- * 	Flows. The References are:
+ * AdjustedVariationMarginEstimator coordinates the Generation of the Path-specific Trade Payment Adjusted
+ *  Variation Margin Flows. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
@@ -68,7 +68,7 @@ package org.drip.exposure.regressiontrade;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PathCoordinator
+public class AdjustedVariationMarginEstimator
 {
 	private org.drip.exposure.universe.MarketPath _marketPath = null;
 	private org.drip.exposure.mpor.VariationMarginTradePaymentVertex _marginTradePaymentGenerator = null;
@@ -80,9 +80,9 @@ public class PathCoordinator
 	{
 		double cumulativeTradePayment = 0.;
 
-		for (int index = startIndex; index <= endIndex; ++index)
+		for (int index = startIndex + 1; index <= endIndex; ++index)
 		{
-			cumulativeTradePayment += (denseTradePaymentArray[index].dealer() -
+			cumulativeTradePayment += (denseTradePaymentArray[index].dealer() +
 				denseTradePaymentArray[index].client());
 		}
 
@@ -90,7 +90,7 @@ public class PathCoordinator
 	}
 
 	/**
-	 * PathCoordinator Constructor
+	 * AdjustedVariationMarginEstimator Constructor
 	 * 
 	 * @param marginTradePaymentGenerator The Path-wise Variation Margin/Trade Payment Generator
 	 * @param marketPath The Market Path
@@ -98,7 +98,7 @@ public class PathCoordinator
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public PathCoordinator (
+	public AdjustedVariationMarginEstimator (
 		final org.drip.exposure.mpor.VariationMarginTradePaymentVertex marginTradePaymentGenerator,
 		final org.drip.exposure.universe.MarketPath marketPath)
 		throws java.lang.Exception
@@ -106,7 +106,7 @@ public class PathCoordinator
 		if (null == (_marginTradePaymentGenerator = marginTradePaymentGenerator) ||
 			null == (_marketPath = marketPath))
 		{
-			throw new java.lang.Exception ("PathCoordinator Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("AdjustedVariationMarginEstimator Constructor => Invalid Inputs");
 		}
 	}
 
@@ -254,5 +254,63 @@ public class PathCoordinator
 		}
 
 		return andersenPykhtinSokolPath;
+	}
+
+	/**
+	 * Generate the Path-wise Andersen Pykhtin Sokol (2017) Adjusted Variation Margin Estimates
+	 * 
+	 * @param exposureDateArray The Path-wise Exposure Dates
+	 * 
+	 * @return The Path-wise Andersen Pykhtin Sokol (2017) Adjusted Variation Margin Estimates
+	 */
+
+	public org.drip.exposure.regressiontrade.AdjustedVariationMarginEstimate adjustedVariationMarginEstimate (
+		final int[] exposureDateArray)
+	{
+		double[] variationMarginEstimateArray = variationMarginEstimate (exposureDateArray);
+
+		if (null == variationMarginEstimateArray)
+		{
+			return null;
+		}
+
+		int exposureDateCount = variationMarginEstimateArray.length;
+		double[] adjustedVariationMarginEstimateArray = new double[exposureDateCount];
+
+		org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray = denseTradePayment (
+			exposureDateArray[0],
+			exposureDateArray[exposureDateArray.length - 1]
+		);
+
+		if (null == denseTradePaymentArray)
+		{
+			return null;
+		}
+
+		for (int exposureDateIndex = 0; exposureDateIndex < exposureDateCount; ++exposureDateIndex)
+		{
+			adjustedVariationMarginEstimateArray[exposureDateIndex] =
+				variationMarginEstimateArray[exposureDateIndex] - (0 == exposureDateIndex ? 0. :
+					CumulativeTradePayment (
+						denseTradePaymentArray,
+						exposureDateArray[exposureDateIndex - 1] - exposureDateArray[0],
+						exposureDateArray[exposureDateIndex] - exposureDateArray[0]
+					)
+				);
+		}
+
+		try
+		{
+			return new org.drip.exposure.regressiontrade.AdjustedVariationMarginEstimate (
+				adjustedVariationMarginEstimateArray,
+				denseTradePaymentArray
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

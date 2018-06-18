@@ -3,7 +3,6 @@ package org.drip.sample.andersen2017vm;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.drip.analytics.date.DateUtil;
 import org.drip.analytics.date.JulianDate;
@@ -14,10 +13,7 @@ import org.drip.exposure.evolver.PrimarySecurity;
 import org.drip.exposure.evolver.PrimarySecurityDynamicsContainer;
 import org.drip.exposure.evolver.TerminalLatentState;
 import org.drip.exposure.generator.FixFloatMPoR;
-import org.drip.exposure.mpor.TradePayment;
-import org.drip.exposure.regressiontrade.AndersenPykhtinSokolPath;
-import org.drip.exposure.regressiontrade.AdjustedVariationMarginEstimator;
-import org.drip.exposure.regressiontrade.VariationMarginEstimateVertex;
+import org.drip.exposure.regressiontrade.AndersenPykhtinSokolEnsemble;
 import org.drip.exposure.universe.LatentStateWeiner;
 import org.drip.exposure.universe.MarketPath;
 import org.drip.exposure.universe.MarketVertex;
@@ -32,7 +28,6 @@ import org.drip.measure.dynamics.HazardJumpEvaluator;
 import org.drip.measure.process.DiffusionEvolver;
 import org.drip.measure.process.JumpDiffusionEvolver;
 import org.drip.product.rates.FixFloatComponent;
-import org.drip.quant.common.FormatUtil;
 import org.drip.quant.linearalgebra.Matrix;
 import org.drip.service.env.EnvManager;
 import org.drip.state.identifier.CSALabel;
@@ -89,8 +84,8 @@ import org.drip.state.identifier.OvernightLabel;
  */
 
 /**
- * PathTradeFlowAdjustment generates the Trade Flow Adjusted Variation Margin from Sparse Nodes for a
- * 	Fix-Float Swap. The References are:
+ * EnsembleTradeFlowAdjustment generates the Trade Flow Adjusted Variation Margin from Sparse Nodes for a
+ * 	Fix-Float Swap across the Ensemble of Paths. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
@@ -110,7 +105,7 @@ import org.drip.state.identifier.OvernightLabel;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PathTradeFlowAdjustment
+public class EnsembleTradeFlowAdjustment
 {
 
 	private static final FixFloatComponent OTCIRS (
@@ -546,6 +541,7 @@ public class PathTradeFlowAdjustment
 			19
 		);
 
+		int pathCount = 100;
 		String latentStateGenerationTenor = "1D";
 		int latentStateGenerationCount = 930;
 		int latentStateVertexCount = latentStateGenerationCount + 10;
@@ -635,6 +631,7 @@ public class PathTradeFlowAdjustment
 
 		JulianDate sparseFixFloatExposureDate = spotDate;
 		int[] sparseFixFloatExposureDateArray = new int[sparseFixFloatExposureCount + 1];
+		MarketPath[] marketPathArray = new MarketPath[pathCount];
 
 		for (int i = 0; i <= sparseFixFloatExposureCount; ++i)
 		{
@@ -643,99 +640,26 @@ public class PathTradeFlowAdjustment
 			sparseFixFloatExposureDate = sparseFixFloatExposureDate.addTenor (sparseFixFloatExposureTenor);
 		}
 
-		MarketPath marketPath = new MarketPath (
-			marketVertexGenerator.marketVertex (
-				initialMarketVertex,
-				LatentStateWeiner.FromUnitRandom (
-					latentStateLabelList,
-					Matrix.Transpose (correlatedPathVertexDimension.straightPathVertexRd().flatform())
+		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
+		{
+			marketPathArray[pathIndex] = new MarketPath (
+				marketVertexGenerator.marketVertex (
+					initialMarketVertex,
+					LatentStateWeiner.FromUnitRandom (
+						latentStateLabelList,
+						Matrix.Transpose (correlatedPathVertexDimension.straightPathVertexRd().flatform())
+					)
 				)
-			)
-		);
-
-		AdjustedVariationMarginEstimator pathCoordinator = new AdjustedVariationMarginEstimator (
-			fixFloatMPoR,
-			marketPath
-		);
-
-		AndersenPykhtinSokolPath andersenPykhtinSokolPath = pathCoordinator.andersenPykhtinSokolPath
-			(sparseFixFloatExposureDateArray);
-
-		TradePayment[] tradePaymentArray = andersenPykhtinSokolPath.denseTradePaymentArray();
-
-		JulianDate denseExposureDate = spotDate;
-
-		System.out.println ("\t||--------------------------------||");
-
-		System.out.println ("\t||  Non-zero Dealer/Client Flows  ||");
-
-		System.out.println ("\t||--------------------------------||");
-
-		System.out.println ("\t||                                ||");
-
-		System.out.println ("\t||    L -> R:                     ||");
-
-		System.out.println ("\t||        - Exposure Date         ||");
-
-		System.out.println ("\t||        - Dealer Trade Flow     ||");
-
-		System.out.println ("\t||        - Client Trade Flow     ||");
-
-		System.out.println ("\t||--------------------------------||");
-
-		for (TradePayment tradePayment : tradePaymentArray)
-		{
-			if (0 != tradePayment.dealer() || 0 != tradePayment.client())
-			{
-				System.out.println ("\t|| " +
-					denseExposureDate + " => " +
-					FormatUtil.FormatDouble (tradePayment.dealer(), 5, 0, 1.) + " | " +
-					FormatUtil.FormatDouble (tradePayment.client(), 5, 0, 1.) + " ||"
-				);
-			}
-
-			denseExposureDate = denseExposureDate.addDays (1);
-		}
-
-		System.out.println ("\t||--------------------------------||");
-
-		System.out.println();
-
-		Map<Integer, VariationMarginEstimateVertex> variationMarginEstimateVertexTrajectory =
-			andersenPykhtinSokolPath.variationMarginEstimateTrajectory();
-
-		System.out.println ("\t||----------------------------------||");
-
-		System.out.println ("\t||      Unadjusted/Adjusted VM      ||");
-
-		System.out.println ("\t||----------------------------------||");
-
-		System.out.println ("\t||                                  ||");
-
-		System.out.println ("\t||    L -> R:                       ||");
-
-		System.out.println ("\t||        - Exposure Date           ||");
-
-		System.out.println ("\t||        - Unadjusted VM           ||");
-
-		System.out.println ("\t||        - Adjusted VM             ||");
-
-		System.out.println ("\t||----------------------------------||");
-
-		for (Map.Entry<Integer, VariationMarginEstimateVertex> variationMarginEstimateVertexEntry :
-			variationMarginEstimateVertexTrajectory.entrySet())
-		{
-			VariationMarginEstimateVertex variationMarginEstimateVertex =
-				variationMarginEstimateVertexEntry.getValue();
-
-			System.out.println ("\t|| " +
-				new JulianDate (variationMarginEstimateVertexEntry.getKey()) + " => " +
-				FormatUtil.FormatDouble (variationMarginEstimateVertex.unadjusted(), 6, 0, 1.) + " | " +
-				FormatUtil.FormatDouble (variationMarginEstimateVertex.adjusted(), 6, 0, 1.) + " ||"
 			);
 		}
 
-		System.out.println ("\t||----------------------------------||");
+		AndersenPykhtinSokolEnsemble andersenPykhtinSokolEnsemble = new AndersenPykhtinSokolEnsemble (
+			fixFloatMPoR,
+			marketPathArray,
+			sparseFixFloatExposureDateArray
+		);
+
+		System.out.println (andersenPykhtinSokolEnsemble.ensembleAdjustedVariationMarginDynamics());
 
 		EnvManager.TerminateEnv();
 	}
