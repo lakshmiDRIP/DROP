@@ -60,6 +60,48 @@ public class UnivariateDiscreteThin {
 	private double _dblMinimum = java.lang.Double.NaN;
 
 	/**
+	 * Generate a UnivariateDiscreteThin Instance from the specified List of Double's
+	 * 
+	 * @param doubleList The List of Doubles
+	 * 
+	 * @return The UnivariateDiscreteThin Instance
+	 */
+
+	public static final UnivariateDiscreteThin FromList (
+		final java.util.List<java.lang.Double> doubleList)
+	{
+		if (null == doubleList)
+		{
+			return null;
+		}
+
+		int listSize = doubleList.size();
+
+		if (0 == listSize)
+		{
+			return null;
+		}
+
+		double[] sequence = new double[listSize];
+
+		for (int index = 0; index < listSize; ++index)
+		{
+			sequence[index] = doubleList.get (index);
+		}
+
+		try
+		{
+			return new UnivariateDiscreteThin (sequence);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * UnivariateDiscreteThin Constructor
 	 * 
 	 * @param adblSequence The Univariate Sequence

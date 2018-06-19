@@ -13,6 +13,8 @@ import org.drip.exposure.evolver.PrimarySecurity;
 import org.drip.exposure.evolver.PrimarySecurityDynamicsContainer;
 import org.drip.exposure.evolver.TerminalLatentState;
 import org.drip.exposure.generator.FixFloatMPoR;
+import org.drip.exposure.regression.LocalVolatilityGenerationControl;
+import org.drip.exposure.regression.PykhtinPillarDynamics;
 import org.drip.exposure.regressiontrade.AndersenPykhtinSokolEnsemble;
 import org.drip.exposure.universe.LatentStateWeiner;
 import org.drip.exposure.universe.MarketPath;
@@ -27,7 +29,9 @@ import org.drip.measure.dynamics.DiffusionEvaluatorLogarithmic;
 import org.drip.measure.dynamics.HazardJumpEvaluator;
 import org.drip.measure.process.DiffusionEvolver;
 import org.drip.measure.process.JumpDiffusionEvolver;
+import org.drip.measure.statistics.UnivariateDiscreteThin;
 import org.drip.product.rates.FixFloatComponent;
+import org.drip.quant.common.FormatUtil;
 import org.drip.quant.linearalgebra.Matrix;
 import org.drip.service.env.EnvManager;
 import org.drip.state.identifier.CSALabel;
@@ -543,7 +547,7 @@ public class EnsembleTradeFlowAdjustment
 
 		int pathCount = 100;
 		String latentStateGenerationTenor = "1D";
-		int latentStateGenerationCount = 930;
+		int latentStateGenerationCount = 390;
 		int latentStateVertexCount = latentStateGenerationCount + 10;
 		String currency = "USD";
 		String dealer = "NOM";
@@ -562,28 +566,13 @@ public class EnsembleTradeFlowAdjustment
 			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00}, // #9  FORWARD NUMERAIRE
 		};
 		String sparseFixFloatExposureTenor = "3M";
-		int sparseFixFloatExposureCount = 8;
-		String fixFloatMaturityTenor = "2Y";
+		int sparseFixFloatExposureDateCount = 4;
+		String fixFloatMaturityTenor = "1Y";
 		double fixFloatCoupon = 0.02;
 		double fixFloatNotional = -1.e+06;
 
-		ForwardLabel forwardLabel = ForwardLabel.Create (
-			currency,
-			"3M"
-		);
-
-		List<LatentStateLabel> latentStateLabelList = new ArrayList<LatentStateLabel>();
-
-		MarketVertexGenerator marketVertexGenerator = ConstructMarketVertexGenerator (
-			spotDate,
-			latentStateGenerationTenor,
-			latentStateVertexCount,
-			currency,
-			dealer,
-			client,
-			forwardLabel,
-			latentStateLabelList
-		);
+		LocalVolatilityGenerationControl localVolatilityGenerationControl =
+			LocalVolatilityGenerationControl.Standard (pathCount);
 
 		LatentStateVertexContainer latentStateVertexContainer = new LatentStateVertexContainer();
 
@@ -608,6 +597,24 @@ public class EnsembleTradeFlowAdjustment
 			latentStateVertexContainer
 		);
 
+		ForwardLabel forwardLabel = ForwardLabel.Create (
+			currency,
+			"3M"
+		);
+
+		List<LatentStateLabel> latentStateLabelList = new ArrayList<LatentStateLabel>();
+
+		MarketVertexGenerator marketVertexGenerator = ConstructMarketVertexGenerator (
+			spotDate,
+			latentStateGenerationTenor,
+			latentStateVertexCount,
+			currency,
+			dealer,
+			client,
+			forwardLabel,
+			latentStateLabelList
+		);
+
 		FixFloatComponent fixFloatComponent = OTCIRS (
 			spotDate,
 			currency,
@@ -630,12 +637,15 @@ public class EnsembleTradeFlowAdjustment
 		);
 
 		JulianDate sparseFixFloatExposureDate = spotDate;
-		int[] sparseFixFloatExposureDateArray = new int[sparseFixFloatExposureCount + 1];
+		int[] sparseFixFloatExposureDateArray = new int[sparseFixFloatExposureDateCount + 1];
 		MarketPath[] marketPathArray = new MarketPath[pathCount];
 
-		for (int i = 0; i <= sparseFixFloatExposureCount; ++i)
+		for (int sparseFixFloatExposureDateIndex = 0;
+			sparseFixFloatExposureDateIndex <= sparseFixFloatExposureDateCount;
+			++sparseFixFloatExposureDateIndex)
 		{
-			sparseFixFloatExposureDateArray[i] = sparseFixFloatExposureDate.julian();
+			sparseFixFloatExposureDateArray[sparseFixFloatExposureDateIndex] =
+				sparseFixFloatExposureDate.julian();
 
 			sparseFixFloatExposureDate = sparseFixFloatExposureDate.addTenor (sparseFixFloatExposureTenor);
 		}
@@ -659,7 +669,58 @@ public class EnsembleTradeFlowAdjustment
 			sparseFixFloatExposureDateArray
 		);
 
-		System.out.println (andersenPykhtinSokolEnsemble.ensembleAdjustedVariationMarginDynamics());
+		PykhtinPillarDynamics[] pillarDynamicsArray = andersenPykhtinSokolEnsemble.ensemblePillarDynamics();
+
+		System.out.println ("\t||-------------------------------------------------------------||");
+
+		System.out.println ("\t||        ENSEMBLE TRADE FLOW ADJUSTED VARIATION MARGIN        ||");
+
+		System.out.println ("\t||-------------------------------------------------------------||");
+
+		System.out.println ("\t||                                                             ||");
+
+		System.out.println ("\t||    L -> R:                                                  ||");
+
+		System.out.println ("\t||          - Average                                          ||");
+
+		System.out.println ("\t||          - Minimum                                          ||");
+
+		System.out.println ("\t||          - Maximum                                          ||");
+
+		System.out.println ("\t||          - Error                                            ||");
+
+		System.out.println ("\t||-------------------------------------------------------------||");
+
+		for (int sparseFixFloatExposureDateIndex = 0;
+			sparseFixFloatExposureDateIndex <= sparseFixFloatExposureDateCount;
+			++sparseFixFloatExposureDateIndex)
+		{
+			UnivariateDiscreteThin univariateDiscreteThin = UnivariateDiscreteThin.FromList
+				(pillarDynamicsArray[sparseFixFloatExposureDateIndex].exposureList());
+
+			System.out.println (
+				"\t|| " +
+				new JulianDate (sparseFixFloatExposureDateArray[sparseFixFloatExposureDateIndex]) + " => " +
+				FormatUtil.FormatDouble (univariateDiscreteThin.average(), 5, 1, 1.) + " | " +
+				FormatUtil.FormatDouble (univariateDiscreteThin.minimum(), 6, 1, 1.) + " | " +
+				FormatUtil.FormatDouble (univariateDiscreteThin.maximum(), 6, 1, 1.) + " | " +
+				FormatUtil.FormatDouble (univariateDiscreteThin.error(), 6, 1, 1.) + " ||"
+			);
+		}
+
+		System.out.println ("\t||-------------------------------------------------------------||");
+
+		for (int sparseFixFloatExposureDateIndex = 0;
+			sparseFixFloatExposureDateIndex <= sparseFixFloatExposureDateCount;
+			++sparseFixFloatExposureDateIndex)
+		{
+			/* System.out.println (
+				"\t\t|| " +
+				new JulianDate (sparseFixFloatExposureDateArray[sparseFixFloatExposureDateIndex]) + " | " +
+				pillarDynamicsArray[sparseFixFloatExposureDateIndex].localVolatilityR1ToR1
+					(localVolatilityGenerationControl)
+			); */
+		}
 
 		EnvManager.TerminateEnv();
 	}

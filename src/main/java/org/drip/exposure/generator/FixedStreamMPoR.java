@@ -205,9 +205,14 @@ public class FixedStreamMPoR extends org.drip.exposure.generator.StreamMPoR
 		{
 			int periodPayDate = period.payDate();
 
-			if (periodPayDate < startDate || periodPayDate > endDate)
+			if (periodPayDate < startDate)
 			{
 				continue;
+			}
+
+			if (periodPayDate > endDate)
+			{
+				break;
 			}
 
 			int periodEndDate = period.endDate();

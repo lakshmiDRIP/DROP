@@ -284,4 +284,75 @@ public class AndersenPykhtinSokolEnsemble
 
 		return null;
 	}
+
+	/**
+	 * Generate the Ensemble Pillar Dynamics Array
+	 * 
+	 * @return The Ensemble Pillar Dynamics Array
+	 */
+
+	public org.drip.exposure.regression.PykhtinPillarDynamics[] ensemblePillarDynamics()
+	{
+		org.drip.exposure.regressiontrade.AdjustedVariationMarginDynamics adjustedVariationMarginDynamics =
+			ensembleAdjustedVariationMarginDynamics();
+
+		return null == adjustedVariationMarginDynamics ? null :
+			adjustedVariationMarginDynamics.pillarDynamics();
+	}
+
+	/**
+	 * Generate the Path-wise Dense Variation Margin Array
+	 * 
+	 * @param localVolatilityGenerationControl Local Volatility Generation Control
+	 * 
+	 * @return The Path-wise Dense Variation Margin Array
+	 */
+
+	public double[][] denseVariationMargin (
+		final org.drip.exposure.regression.LocalVolatilityGenerationControl localVolatilityGenerationControl)
+	{
+		int pathCount = _marketPathArray.length;
+		int sparseExposureDateCount = _sparseExposureDateArray.length;
+		org.drip.function.definition.R1ToR1[] sparseLocalVolatilityArray = new
+			org.drip.function.definition.R1ToR1[sparseExposureDateCount];
+
+		org.drip.exposure.regressiontrade.AdjustedVariationMarginDynamics adjustedVariationMarginDynamics =
+			ensembleAdjustedVariationMarginDynamics();
+
+		org.drip.exposure.regression.PykhtinPillarDynamics[] pillarDynamicsArray =
+			adjustedVariationMarginDynamics.pillarDynamics();
+
+		for (int sparseExposureDateIndex = 0;
+			sparseExposureDateIndex < sparseExposureDateCount;
+			++sparseExposureDateIndex)
+		{
+			sparseLocalVolatilityArray[sparseExposureDateIndex] =
+				pillarDynamicsArray[sparseExposureDateIndex].localVolatilityR1ToR1
+					(localVolatilityGenerationControl);
+		}
+
+		org.drip.exposure.regressiontrade.AdjustedVariationMarginEstimate[]
+			pathAdjustedVariationMarginEstimateArray =
+				adjustedVariationMarginDynamics.adjustedVariationMarginEstimateArray();
+
+		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
+		{
+			try
+			{
+				org.drip.exposure.regression.AndersenPykhtinSokolStretch andersenPykhtinSokolPath = new
+					org.drip.exposure.regression.AndersenPykhtinSokolStretch (
+						_sparseExposureDateArray,
+						pathAdjustedVariationMarginEstimateArray[pathIndex].adjustedVariationMarginEstimateArray(),
+						sparseLocalVolatilityArray,
+						pathAdjustedVariationMarginEstimateArray[pathIndex].denseTradePaymentArray()
+					);
+			}
+			catch (java.lang.Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+
+		return null;
+	}
 }
