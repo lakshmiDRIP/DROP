@@ -18,7 +18,7 @@ import org.drip.exposure.evolver.TerminalLatentState;
 import org.drip.exposure.generator.FixFloatMPoR;
 import org.drip.exposure.mpor.VariationMarginTradeTrajectoryEstimator;
 import org.drip.exposure.regression.LocalVolatilityGenerationControl;
-import org.drip.exposure.regression.PykhtinBrownianBridgePath;
+import org.drip.exposure.regression.PykhtinBrownianBridgeStretch;
 import org.drip.exposure.regression.PykhtinPillarDynamics;
 import org.drip.exposure.universe.LatentStateWeiner;
 import org.drip.exposure.universe.MarketPath;
@@ -739,7 +739,7 @@ public class ExposurePathFixFloat
 				);
 			}
 
-			Map<Integer, Double> pathDenseExposureTrajectory = new PykhtinBrownianBridgePath (
+			Map<Integer, Double> pathDenseExposureTrajectory = new PykhtinBrownianBridgeStretch (
 				sparseExposureTrajectory,
 				localVolatilityTrajectory
 			).denseExposure (wanderTrajectoryList.get (pathIndex));

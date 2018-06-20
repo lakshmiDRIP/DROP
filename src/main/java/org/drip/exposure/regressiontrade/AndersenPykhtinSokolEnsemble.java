@@ -304,17 +304,39 @@ public class AndersenPykhtinSokolEnsemble
 	 * Generate the Path-wise Dense Variation Margin Array
 	 * 
 	 * @param localVolatilityGenerationControl Local Volatility Generation Control
+	 * @param wanderEnsemble The Wander Ensemble
 	 * 
 	 * @return The Path-wise Dense Variation Margin Array
 	 */
 
 	public double[][] denseVariationMargin (
-		final org.drip.exposure.regression.LocalVolatilityGenerationControl localVolatilityGenerationControl)
+		final org.drip.exposure.regression.LocalVolatilityGenerationControl localVolatilityGenerationControl,
+		final double[][] wanderEnsemble)
 	{
+		if (null == wanderEnsemble)
+		{
+			return null;
+		}
+
 		int pathCount = _marketPathArray.length;
+		double[][] denseVariationMargin = new double[pathCount][];
 		int sparseExposureDateCount = _sparseExposureDateArray.length;
 		org.drip.function.definition.R1ToR1[] sparseLocalVolatilityArray = new
 			org.drip.function.definition.R1ToR1[sparseExposureDateCount];
+
+		if (pathCount != wanderEnsemble.length)
+		{
+			return null;
+		}
+
+		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
+		{
+			if (null == wanderEnsemble[pathIndex] || 0 == wanderEnsemble[pathIndex].length ||
+				!org.drip.quant.common.NumberUtil.IsValid (wanderEnsemble[pathIndex]))
+			{
+				return null;
+			}
+		}
 
 		org.drip.exposure.regressiontrade.AdjustedVariationMarginDynamics adjustedVariationMarginDynamics =
 			ensembleAdjustedVariationMarginDynamics();
@@ -339,13 +361,13 @@ public class AndersenPykhtinSokolEnsemble
 		{
 			try
 			{
-				org.drip.exposure.regression.AndersenPykhtinSokolStretch andersenPykhtinSokolPath = new
+				denseVariationMargin[pathIndex] = new
 					org.drip.exposure.regression.AndersenPykhtinSokolStretch (
 						_sparseExposureDateArray,
 						pathAdjustedVariationMarginEstimateArray[pathIndex].adjustedVariationMarginEstimateArray(),
 						sparseLocalVolatilityArray,
 						pathAdjustedVariationMarginEstimateArray[pathIndex].denseTradePaymentArray()
-					);
+					).denseExposure(wanderEnsemble[pathIndex]);
 			}
 			catch (java.lang.Exception e)
 			{
@@ -353,6 +375,6 @@ public class AndersenPykhtinSokolEnsemble
 			}
 		}
 
-		return null;
+		return denseVariationMargin;
 	}
 }

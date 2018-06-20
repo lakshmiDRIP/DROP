@@ -47,8 +47,8 @@ package org.drip.exposure.regression;
  */
 
 /**
- * PykhtinBrownianBridgePath generates the Regression Based Path Exposures off of the Pillar Vertexes using
- *  the Pykhtin (2009) Scheme. The References are:
+ * PykhtinBrownianBridgeStretch generates the Regression Based Path Exposures off of the Pillar Vertexes
+ *  using the Pykhtin (2009) Scheme. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
@@ -68,14 +68,14 @@ package org.drip.exposure.regression;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PykhtinBrownianBridgePath
+public class PykhtinBrownianBridgeStretch
 {
 	private java.util.Map<java.lang.Integer, java.lang.Double> _sparseVertexExposureTrajectory = null;
 	private java.util.Map<java.lang.Integer, org.drip.function.definition.R1ToR1> _localVolatilityTrajectory
 		= null;
 
 	/**
-	 * PykhtinBrownianBridgePath Constructor
+	 * PykhtinBrownianBridgeStretch Constructor
 	 * 
 	 * @param sparseVertexExposureTrajectory The Sparse Vertex Exposure Amount Trajectory
 	 * @param localVolatilityTrajectory The R^1 To R^1 Local Volatility Trajectory
@@ -83,7 +83,7 @@ public class PykhtinBrownianBridgePath
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public PykhtinBrownianBridgePath (
+	public PykhtinBrownianBridgeStretch (
 		final java.util.Map<java.lang.Integer, java.lang.Double> sparseVertexExposureTrajectory,
 		final java.util.Map<java.lang.Integer, org.drip.function.definition.R1ToR1>
 			localVolatilityTrajectory)
@@ -92,7 +92,7 @@ public class PykhtinBrownianBridgePath
 		if (null == (_sparseVertexExposureTrajectory = sparseVertexExposureTrajectory) ||
 			null == (_localVolatilityTrajectory = localVolatilityTrajectory))
 		{
-			throw new java.lang.Exception ("PykhtinBrownianBridgePath Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("PykhtinBrownianBridgeStretch Constructor => Invalid Inputs");
 		}
 	}
 

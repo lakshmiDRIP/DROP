@@ -47,8 +47,9 @@ package org.drip.exposure.mpor;
  */
 
 /**
- * VariationMarginTradeTrajectoryEstimator computes the Variation Margin Estimate/Posting and Trade Payments
- *  for a Realized Market Path. The References are:
+ * PathVariationMarginTrajectoryEstimator computes the Variation Margin Estimate/Posting from the specified
+ *  Dense Uncollateralized Exposures and Trade Payments along the specified Path Trajectory. The References
+ *  are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
@@ -68,14 +69,13 @@ package org.drip.exposure.mpor;
  * @author Lakshmi Krishnamurthy
  */
 
-public class VariationMarginTradeTrajectoryEstimator
+public class PathVariationMarginTrajectoryEstimator
 {
 	private int[] _exposureDateArray = null;
 	private java.lang.String _calendar = "";
-	private org.drip.exposure.universe.MarketPath _marketPath = null;
+	private org.drip.exposure.mpor.TradePayment[] _tradePaymentTrajectory = null;
 	private org.drip.exposure.csatimeline.AndersenPykhtinSokolLag _csaTimelineLag = null;
-	private org.drip.exposure.mpor.VariationMarginTradePaymentVertex _variationMarginTradePaymentVertex =
-		null;
+	private java.util.Map<java.lang.Integer, java.lang.Double> _variationMarginEstimateTrajectory = null;
 
 	private static final double ClientTradePayment (
 		final java.util.Map<java.lang.Integer, java.lang.Double> clientTradePaymentTrajectory,
@@ -166,7 +166,7 @@ public class VariationMarginTradeTrajectoryEstimator
 	}
 
 	/**
-	 * VariationMarginTradeTrajectoryEstimator Constructor
+	 * Generate a Standard Instance of PathVariationMarginTrajectoryEstimator
 	 * 
 	 * @param exposureDateArray Array of Exposure Dates
 	 * @param calendar The Date Adjustment Calendar
@@ -174,25 +174,83 @@ public class VariationMarginTradeTrajectoryEstimator
 	 * @param marketPath The Market Path
 	 * @param csaTimelineLag The CSA Time-line Lag Parameters
 	 * 
-	 * @throws java.lang.Exception Throws if the Inputs are Invalid
+	 * @return The Standard Instance of PathVariationMarginTrajectoryEstimator
 	 */
 
-	public VariationMarginTradeTrajectoryEstimator (
+	public static final PathVariationMarginTrajectoryEstimator Standard (
 		final int[] exposureDateArray,
 		final java.lang.String calendar,
 		final org.drip.exposure.mpor.VariationMarginTradePaymentVertex variationMarginTradePaymentVertex,
 		final org.drip.exposure.universe.MarketPath marketPath,
 		final org.drip.exposure.csatimeline.AndersenPykhtinSokolLag csaTimelineLag)
+	{
+		try
+		{
+			return new PathVariationMarginTrajectoryEstimator (
+				exposureDateArray,
+				calendar,
+				org.drip.exposure.mpor.VariationMarginTrajectoryBuilder.Grid (
+					exposureDateArray,
+					variationMarginTradePaymentVertex,
+					marketPath
+				),
+				null, // tradePaymentTrajectory,
+				csaTimelineLag
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * PathVariationMarginTrajectoryEstimator Constructor
+	 * 
+	 * @param exposureDateArray Array of Exposure Dates
+	 * @param calendar The Date Adjustment Calendar
+	 * @param variationMarginEstimateTrajectory The Variation Margin Estimate Trajectory
+	 * @param tradePaymentTrajectory The Trade Payment Trajectory
+	 * @param csaTimelineLag The CSA Time-line Lag Parameters
+	 * 
+	 * @throws java.lang.Exception Throws if the Inputs are Invalid
+	 */
+
+	public PathVariationMarginTrajectoryEstimator (
+		final int[] exposureDateArray,
+		final java.lang.String calendar,
+		final java.util.Map<java.lang.Integer, java.lang.Double> variationMarginEstimateTrajectory,
+		final org.drip.exposure.mpor.TradePayment[] tradePaymentTrajectory,
+		final org.drip.exposure.csatimeline.AndersenPykhtinSokolLag csaTimelineLag)
 		throws java.lang.Exception
 	{
-		if (null == (_exposureDateArray = exposureDateArray) || 0 == _exposureDateArray.length ||
+		if (null == (_exposureDateArray = exposureDateArray) ||
 			null == (_calendar = calendar) || _calendar.isEmpty() ||
-			null == (_variationMarginTradePaymentVertex = variationMarginTradePaymentVertex) ||
-			null == (_marketPath = marketPath) ||
+			null == (_variationMarginEstimateTrajectory = variationMarginEstimateTrajectory) ||
+			null == (_tradePaymentTrajectory = tradePaymentTrajectory) ||
 			null == (_csaTimelineLag = csaTimelineLag))
 		{
 			throw new java.lang.Exception
-				("VariationMarginTradeTrajectoryEstimator Constructor => Invalid Inputs");
+				("PathVariationMarginTrajectoryEstimator Constructor => Invalid Inputs");
+		}
+
+		int exposureDateCount = _exposureDateArray.length;
+
+		if (0 == exposureDateCount || exposureDateCount != _tradePaymentTrajectory.length)
+		{
+			throw new java.lang.Exception
+				("PathVariationMarginTrajectoryEstimator Constructor => Invalid Inputs");
+		}
+
+		for (int exposureDateIndex = 0; exposureDateIndex < exposureDateCount; ++exposureDateIndex)
+		{
+			if (null == _tradePaymentTrajectory[exposureDateIndex])
+			{
+				throw new java.lang.Exception
+					("PathVariationMarginTrajectoryEstimator Constructor => Invalid Inputs");
+			}
 		}
 	}
 
@@ -219,28 +277,6 @@ public class VariationMarginTradeTrajectoryEstimator
 	}
 
 	/**
-	 * Retrieve the Variation Margin Trade Payment Vertex Generator
-	 * 
-	 * @return The Variation Margin Trade Payment Vertex Generator
-	 */
-
-	public org.drip.exposure.mpor.VariationMarginTradePaymentVertex vertexGenerator()
-	{
-		return _variationMarginTradePaymentVertex;
-	}
-
-	/**
-	 * Retrieve the Market Path
-	 * 
-	 * @return The Market Path
-	 */
-
-	public org.drip.exposure.universe.MarketPath marketPath()
-	{
-		return _marketPath;
-	}
-
-	/**
 	 * Retrieve the CSA Events Timeline Lag
 	 * 
 	 * @return The CSA Events Timeline Lag
@@ -252,18 +288,25 @@ public class VariationMarginTradeTrajectoryEstimator
 	}
 
 	/**
-	 * Generate the Variation Margin Estimate Trajectory
+	 * Retrieve the Variation Margin Estimate Trajectory
 	 * 
 	 * @return The Variation Margin Estimate Trajectory
 	 */
 
 	public java.util.Map<java.lang.Integer, java.lang.Double> variationMarginEstimateTrajectory()
 	{
-		return org.drip.exposure.mpor.VariationMarginTrajectoryBuilder.Grid (
-			_exposureDateArray,
-			_variationMarginTradePaymentVertex,
-			_marketPath
-		);
+		return _variationMarginEstimateTrajectory;
+	}
+
+	/**
+	 * Retrieve the Trade Payment Trajectory
+	 * 
+	 * @return The Trade Payment Trajectory
+	 */
+
+	public org.drip.exposure.mpor.TradePayment[] tradePaymentTrajectory()
+	{
+		return _tradePaymentTrajectory;
 	}
 
 	/**
@@ -288,16 +331,7 @@ public class VariationMarginTradeTrajectoryEstimator
 
 		for (int exposureDateIndex = 0; exposureDateIndex < exposureDateCount; ++exposureDateIndex)
 		{
-			org.drip.exposure.mpor.TradePayment tradePayment =
-				_variationMarginTradePaymentVertex.tradePayment (
-					_exposureDateArray[exposureDateIndex],
-					_marketPath
-				);
-
-			if (null == tradePayment)
-			{
-				return false;
-			}
+			org.drip.exposure.mpor.TradePayment tradePayment = _tradePaymentTrajectory[exposureDateIndex];
 
 			clientTradePaymentTrajectory.put (
 				_exposureDateArray[exposureDateIndex],

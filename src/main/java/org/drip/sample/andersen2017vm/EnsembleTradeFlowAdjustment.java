@@ -13,7 +13,6 @@ import org.drip.exposure.evolver.PrimarySecurity;
 import org.drip.exposure.evolver.PrimarySecurityDynamicsContainer;
 import org.drip.exposure.evolver.TerminalLatentState;
 import org.drip.exposure.generator.FixFloatMPoR;
-import org.drip.exposure.regression.LocalVolatilityGenerationControl;
 import org.drip.exposure.regression.PykhtinPillarDynamics;
 import org.drip.exposure.regressiontrade.AndersenPykhtinSokolEnsemble;
 import org.drip.exposure.universe.LatentStateWeiner;
@@ -571,9 +570,6 @@ public class EnsembleTradeFlowAdjustment
 		double fixFloatCoupon = 0.02;
 		double fixFloatNotional = -1.e+06;
 
-		LocalVolatilityGenerationControl localVolatilityGenerationControl =
-			LocalVolatilityGenerationControl.Standard (pathCount);
-
 		LatentStateVertexContainer latentStateVertexContainer = new LatentStateVertexContainer();
 
 		latentStateVertexContainer.add (
@@ -709,18 +705,6 @@ public class EnsembleTradeFlowAdjustment
 		}
 
 		System.out.println ("\t||-------------------------------------------------------------||");
-
-		for (int sparseFixFloatExposureDateIndex = 0;
-			sparseFixFloatExposureDateIndex <= sparseFixFloatExposureDateCount;
-			++sparseFixFloatExposureDateIndex)
-		{
-			/* System.out.println (
-				"\t\t|| " +
-				new JulianDate (sparseFixFloatExposureDateArray[sparseFixFloatExposureDateIndex]) + " | " +
-				pillarDynamicsArray[sparseFixFloatExposureDateIndex].localVolatilityR1ToR1
-					(localVolatilityGenerationControl)
-			); */
-		}
 
 		EnvManager.TerminateEnv();
 	}
