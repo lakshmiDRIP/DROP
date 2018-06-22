@@ -16,9 +16,9 @@ import org.drip.exposure.evolver.PrimarySecurity;
 import org.drip.exposure.evolver.PrimarySecurityDynamicsContainer;
 import org.drip.exposure.evolver.TerminalLatentState;
 import org.drip.exposure.generator.FixFloatMPoR;
-import org.drip.exposure.mpor.VariationMarginTradeTrajectoryEstimator;
+import org.drip.exposure.mpor.PathVariationMarginTrajectoryEstimator;
 import org.drip.exposure.regression.LocalVolatilityGenerationControl;
-import org.drip.exposure.regression.PykhtinBrownianBridgePath;
+import org.drip.exposure.regression.PykhtinBrownianBridgeStretch;
 import org.drip.exposure.regression.PykhtinPillarDynamics;
 import org.drip.exposure.universe.LatentStateWeiner;
 import org.drip.exposure.universe.MarketPath;
@@ -684,7 +684,7 @@ import org.drip.state.identifier.OvernightLabel;
 			);
 
 <span class="nc" id="L686">			Map&lt;Integer, Double&gt; variationMarginEstimateTrajectory =</span>
-				new VariationMarginTradeTrajectoryEstimator (
+<span class="nc" id="L687">				PathVariationMarginTrajectoryEstimator.Standard (</span>
 					sparseFixFloatExposureDateArray,
 					currency,
 					fixFloatMPoR,
@@ -739,7 +739,7 @@ import org.drip.state.identifier.OvernightLabel;
 				);
 			}
 
-<span class="nc" id="L742">			Map&lt;Integer, Double&gt; pathDenseExposureTrajectory = new PykhtinBrownianBridgePath (</span>
+<span class="nc" id="L742">			Map&lt;Integer, Double&gt; pathDenseExposureTrajectory = new PykhtinBrownianBridgeStretch (</span>
 				sparseExposureTrajectory,
 				localVolatilityTrajectory
 <span class="nc" id="L745">			).denseExposure (wanderTrajectoryList.get (pathIndex));</span>

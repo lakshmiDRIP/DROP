@@ -545,7 +545,7 @@ public class EnsembleVariationMarginEstimate
 			19
 		);
 
-		int pathCount = 500;
+		int pathCount = 100;
 		String latentStateGenerationTenor = "1D";
 		int latentStateGenerationCount = 390;
 		int latentStateVertexCount = latentStateGenerationCount + 10;

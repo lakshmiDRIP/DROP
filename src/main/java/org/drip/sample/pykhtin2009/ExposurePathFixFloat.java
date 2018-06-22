@@ -16,7 +16,7 @@ import org.drip.exposure.evolver.PrimarySecurity;
 import org.drip.exposure.evolver.PrimarySecurityDynamicsContainer;
 import org.drip.exposure.evolver.TerminalLatentState;
 import org.drip.exposure.generator.FixFloatMPoR;
-import org.drip.exposure.mpor.VariationMarginTradeTrajectoryEstimator;
+import org.drip.exposure.mpor.PathVariationMarginTrajectoryEstimator;
 import org.drip.exposure.regression.LocalVolatilityGenerationControl;
 import org.drip.exposure.regression.PykhtinBrownianBridgeStretch;
 import org.drip.exposure.regression.PykhtinPillarDynamics;
@@ -684,7 +684,7 @@ public class ExposurePathFixFloat
 			);
 
 			Map<Integer, Double> variationMarginEstimateTrajectory =
-				new VariationMarginTradeTrajectoryEstimator (
+				PathVariationMarginTrajectoryEstimator.Standard (
 					sparseFixFloatExposureDateArray,
 					currency,
 					fixFloatMPoR,

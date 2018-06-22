@@ -195,11 +195,11 @@ public class AndersenPykhtinSokolSegment
 
 		for (int dateIndex = dateWidth - 1; dateIndex > 0; --dateIndex)
 		{
-			int date = leftPillarDate + dateIndex;
+			int epochIndex = leftPillarDate + dateIndex - _epochDate;
 
-			denseExposureTrajectory[date - _epochDate] = rightPillarExposure - localDrift * (dateWidth -
-				dateIndex) + localVolatility * urgency * wanderTrajectory[date - _epochDate] *
-					java.lang.Math.sqrt (dateIndex * (dateWidth - dateIndex));
+			denseExposureTrajectory[epochIndex] = rightPillarExposure - localDrift * (dateWidth - dateIndex)
+				+ localVolatility * urgency * wanderTrajectory[epochIndex] * java.lang.Math.sqrt (dateIndex *
+					(dateWidth - dateIndex));
 		}
 
 		return true;

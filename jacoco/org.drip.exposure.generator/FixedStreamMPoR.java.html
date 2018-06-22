@@ -205,54 +205,59 @@ public class FixedStreamMPoR extends org.drip.exposure.generator.StreamMPoR
 		{
 <span class="nc" id="L206">			int periodPayDate = period.payDate();</span>
 
-<span class="nc bnc" id="L208" title="All 4 branches missed.">			if (periodPayDate &lt; startDate || periodPayDate &gt; endDate)</span>
+<span class="nc bnc" id="L208" title="All 2 branches missed.">			if (periodPayDate &lt; startDate)</span>
 			{
 <span class="nc" id="L210">				continue;</span>
 			}
 
-<span class="nc" id="L213">			int periodEndDate = period.endDate();</span>
+<span class="nc bnc" id="L213" title="All 2 branches missed.">			if (periodPayDate &gt; endDate)</span>
+			{
+<span class="nc" id="L215">				break;</span>
+			}
 
-<span class="nc" id="L215">			org.drip.analytics.output.CompositePeriodCouponMetrics compositePeriodCouponMetrics =</span>
-<span class="nc" id="L216">				period.couponMetrics (</span>
+<span class="nc" id="L218">			int periodEndDate = period.endDate();</span>
+
+<span class="nc" id="L220">			org.drip.analytics.output.CompositePeriodCouponMetrics compositePeriodCouponMetrics =</span>
+<span class="nc" id="L221">				period.couponMetrics (</span>
 					periodEndDate,
 					null
 				);
 
-<span class="nc bnc" id="L221" title="All 2 branches missed.">			if (null == compositePeriodCouponMetrics)</span>
+<span class="nc bnc" id="L226" title="All 2 branches missed.">			if (null == compositePeriodCouponMetrics)</span>
 			{
-<span class="nc" id="L223">				return null;</span>
+<span class="nc" id="L228">				return null;</span>
 			}
 
 			try
 			{
-<span class="nc" id="L228">				denseTradePaymentArray[periodPayDate - startDate] =</span>
-<span class="nc" id="L229">					org.drip.exposure.mpor.TradePayment.Standard (</span>
-<span class="nc" id="L230">						notional() * period.couponDCF() *</span>
-<span class="nc" id="L231">						period.notional (periodEndDate) *</span>
-<span class="nc" id="L232">						compositePeriodCouponMetrics.rate() *</span>
-<span class="nc" id="L233">						period.couponFactor (periodEndDate)</span>
+<span class="nc" id="L233">				denseTradePaymentArray[periodPayDate - startDate] =</span>
+<span class="nc" id="L234">					org.drip.exposure.mpor.TradePayment.Standard (</span>
+<span class="nc" id="L235">						notional() * period.couponDCF() *</span>
+<span class="nc" id="L236">						period.notional (periodEndDate) *</span>
+<span class="nc" id="L237">						compositePeriodCouponMetrics.rate() *</span>
+<span class="nc" id="L238">						period.couponFactor (periodEndDate)</span>
 					);
 			}
-<span class="nc" id="L236">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L241">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L238">				e.printStackTrace();</span>
+<span class="nc" id="L243">				e.printStackTrace();</span>
 
-<span class="nc" id="L240">				return null;</span>
-<span class="nc" id="L241">			}</span>
-<span class="nc" id="L242">		}</span>
+<span class="nc" id="L245">				return null;</span>
+<span class="nc" id="L246">			}</span>
+<span class="nc" id="L247">		}</span>
 
-<span class="nc" id="L244">		org.drip.exposure.mpor.TradePayment zeroTradePayment = org.drip.exposure.mpor.TradePayment.Standard</span>
-<span class="nc" id="L245">			(0.);</span>
+<span class="nc" id="L249">		org.drip.exposure.mpor.TradePayment zeroTradePayment = org.drip.exposure.mpor.TradePayment.Standard</span>
+<span class="nc" id="L250">			(0.);</span>
 
-<span class="nc bnc" id="L247" title="All 2 branches missed.">		for (int denseDateIndex = 0; denseDateIndex &lt; denseDateCount; ++denseDateIndex)</span>
+<span class="nc bnc" id="L252" title="All 2 branches missed.">		for (int denseDateIndex = 0; denseDateIndex &lt; denseDateCount; ++denseDateIndex)</span>
 		{
-<span class="nc bnc" id="L249" title="All 2 branches missed.">			if (null == denseTradePaymentArray[denseDateIndex])</span>
+<span class="nc bnc" id="L254" title="All 2 branches missed.">			if (null == denseTradePaymentArray[denseDateIndex])</span>
 			{
-<span class="nc" id="L251">				denseTradePaymentArray[denseDateIndex] = zeroTradePayment;</span>
+<span class="nc" id="L256">				denseTradePaymentArray[denseDateIndex] = zeroTradePayment;</span>
 			}
 		}
 
-<span class="nc" id="L255">		return denseTradePaymentArray;</span>
+<span class="nc" id="L260">		return denseTradePaymentArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

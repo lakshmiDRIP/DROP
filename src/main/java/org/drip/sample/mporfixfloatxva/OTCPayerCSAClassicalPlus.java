@@ -15,7 +15,7 @@ import org.drip.exposure.evolver.PrimarySecurity;
 import org.drip.exposure.evolver.PrimarySecurityDynamicsContainer;
 import org.drip.exposure.evolver.TerminalLatentState;
 import org.drip.exposure.generator.FixFloatMPoR;
-import org.drip.exposure.mpor.VariationMarginTradeTrajectoryEstimator;
+import org.drip.exposure.mpor.PathVariationMarginTrajectoryEstimator;
 import org.drip.exposure.mpor.VariationMarginTradeVertexExposure;
 import org.drip.exposure.universe.LatentStateWeiner;
 import org.drip.exposure.universe.MarketPath;
@@ -715,8 +715,8 @@ public class OTCPayerCSAClassicalPlus
 				)
 			);
 
-			VariationMarginTradeTrajectoryEstimator variationMarginTradeTrajectoryEstimator =
-				new VariationMarginTradeTrajectoryEstimator (
+			PathVariationMarginTrajectoryEstimator variationMarginTradeTrajectoryEstimator =
+				PathVariationMarginTrajectoryEstimator.Standard (
 					exposureDateArray,
 					currency,
 					fixFloatMPoR,

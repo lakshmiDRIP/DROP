@@ -16,9 +16,9 @@ import org.drip.exposure.evolver.PrimarySecurity;
 import org.drip.exposure.evolver.PrimarySecurityDynamicsContainer;
 import org.drip.exposure.evolver.TerminalLatentState;
 import org.drip.exposure.generator.NumeraireMPoR;
-import org.drip.exposure.mpor.VariationMarginTradeTrajectoryEstimator;
+import org.drip.exposure.mpor.PathVariationMarginTrajectoryEstimator;
 import org.drip.exposure.regression.LocalVolatilityGenerationControl;
-import org.drip.exposure.regression.PykhtinBrownianBridgePath;
+import org.drip.exposure.regression.PykhtinBrownianBridgeStretch;
 import org.drip.exposure.regression.PykhtinPillarDynamics;
 import org.drip.exposure.universe.LatentStateWeiner;
 import org.drip.exposure.universe.MarketPath;
@@ -526,7 +526,7 @@ import org.drip.state.identifier.OvernightLabel;
 			19
 		);
 
-<span class="nc" id="L529">		int pathCount = 10000;</span>
+<span class="nc" id="L529">		int pathCount = 1000;</span>
 <span class="nc" id="L530">		String sparseExposureTenor = &quot;3M&quot;;</span>
 <span class="nc" id="L531">		int sparseExposurePeriodCount = 20;</span>
 <span class="nc" id="L532">		String currency = &quot;USD&quot;;</span>
@@ -649,7 +649,7 @@ import org.drip.state.identifier.OvernightLabel;
 			);
 
 <span class="nc" id="L651">			Map&lt;Integer, Double&gt; variationMarginEstimateTrajectory =</span>
-				new VariationMarginTradeTrajectoryEstimator (
+<span class="nc" id="L652">				PathVariationMarginTrajectoryEstimator.Standard (</span>
 					sparseExposureDateArray,
 					currency,
 					numeraireMPoR,
@@ -716,7 +716,7 @@ import org.drip.state.identifier.OvernightLabel;
 				);
 			}
 
-<span class="nc" id="L719">			Map&lt;Integer, Double&gt; pathDenseExposureTrajectory = new PykhtinBrownianBridgePath (</span>
+<span class="nc" id="L719">			Map&lt;Integer, Double&gt; pathDenseExposureTrajectory = new PykhtinBrownianBridgeStretch (</span>
 				sparseExposureTrajectory,
 				localVolatilityTrajectory
 <span class="nc" id="L722">			).denseExposure (wanderTrajectoryList.get (pathIndex));</span>

@@ -60,6 +60,48 @@ public class UnivariateDiscreteThin {
 <span class="fc" id="L60">	private double _dblMinimum = java.lang.Double.NaN;</span>
 
 	/**
+	 * Generate a UnivariateDiscreteThin Instance from the specified List of Double's
+	 * 
+	 * @param doubleList The List of Doubles
+	 * 
+	 * @return The UnivariateDiscreteThin Instance
+	 */
+
+	public static final UnivariateDiscreteThin FromList (
+		final java.util.List&lt;java.lang.Double&gt; doubleList)
+	{
+<span class="nc bnc" id="L73" title="All 2 branches missed.">		if (null == doubleList)</span>
+		{
+<span class="nc" id="L75">			return null;</span>
+		}
+
+<span class="nc" id="L78">		int listSize = doubleList.size();</span>
+
+<span class="nc bnc" id="L80" title="All 2 branches missed.">		if (0 == listSize)</span>
+		{
+<span class="nc" id="L82">			return null;</span>
+		}
+
+<span class="nc" id="L85">		double[] sequence = new double[listSize];</span>
+
+<span class="nc bnc" id="L87" title="All 2 branches missed.">		for (int index = 0; index &lt; listSize; ++index)</span>
+		{
+<span class="nc" id="L89">			sequence[index] = doubleList.get (index);</span>
+		}
+
+		try
+		{
+<span class="nc" id="L94">			return new UnivariateDiscreteThin (sequence);</span>
+		}
+<span class="nc" id="L96">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L98">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L101">		return null;</span>
+	}
+
+	/**
 	 * UnivariateDiscreteThin Constructor
 	 * 
 	 * @param adblSequence The Univariate Sequence
@@ -70,42 +112,42 @@ public class UnivariateDiscreteThin {
 	public UnivariateDiscreteThin (
 		final double[] adblSequence)
 		throws java.lang.Exception
-<span class="fc" id="L73">	{</span>
-<span class="pc bpc" id="L74" title="1 of 2 branches missed.">		if (null == adblSequence)</span>
-<span class="nc" id="L75">			throw new java.lang.Exception (&quot;UnivariateDiscreteThin Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L115">	{</span>
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">		if (null == adblSequence)</span>
+<span class="nc" id="L117">			throw new java.lang.Exception (&quot;UnivariateDiscreteThin Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L77">		_dblError = 0.;</span>
-<span class="fc" id="L78">		_dblAverage = 0.;</span>
-<span class="fc" id="L79">		_dblMaximum = 0.;</span>
-<span class="fc" id="L80">		_dblMinimum = 0.;</span>
-<span class="fc" id="L81">		int iSequenceSize = adblSequence.length;</span>
+<span class="fc" id="L119">		_dblError = 0.;</span>
+<span class="fc" id="L120">		_dblAverage = 0.;</span>
+<span class="fc" id="L121">		_dblMaximum = 0.;</span>
+<span class="fc" id="L122">		_dblMinimum = 0.;</span>
+<span class="fc" id="L123">		int iSequenceSize = adblSequence.length;</span>
 
-<span class="pc bpc" id="L83" title="1 of 2 branches missed.">		if (0 == iSequenceSize)</span>
-<span class="nc" id="L84">			throw new java.lang.Exception (&quot;UnivariateDiscreteThin Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">		if (0 == iSequenceSize)</span>
+<span class="nc" id="L126">			throw new java.lang.Exception (&quot;UnivariateDiscreteThin Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L86" title="All 2 branches covered.">		for (int i = 0; i &lt; iSequenceSize; ++i) {</span>
-<span class="pc bpc" id="L87" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (adblSequence[i]))</span>
-<span class="nc" id="L88">				throw new java.lang.Exception (&quot;UnivariateDiscreteThin Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">		for (int i = 0; i &lt; iSequenceSize; ++i) {</span>
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (adblSequence[i]))</span>
+<span class="nc" id="L130">				throw new java.lang.Exception (&quot;UnivariateDiscreteThin Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L90" title="All 2 branches covered.">			if (0 == i) {</span>
-<span class="fc" id="L91">				_dblMaximum = adblSequence[0];</span>
-<span class="fc" id="L92">				_dblMinimum = adblSequence[0];</span>
+<span class="fc bfc" id="L132" title="All 2 branches covered.">			if (0 == i) {</span>
+<span class="fc" id="L133">				_dblMaximum = adblSequence[0];</span>
+<span class="fc" id="L134">				_dblMinimum = adblSequence[0];</span>
 			} else {
-<span class="fc bfc" id="L94" title="All 2 branches covered.">				if (_dblMaximum &lt; adblSequence[i]) _dblMaximum = adblSequence[i];</span>
+<span class="fc bfc" id="L136" title="All 2 branches covered.">				if (_dblMaximum &lt; adblSequence[i]) _dblMaximum = adblSequence[i];</span>
 
-<span class="fc bfc" id="L96" title="All 2 branches covered.">				if (_dblMinimum &gt; adblSequence[i]) _dblMinimum = adblSequence[i];</span>
+<span class="fc bfc" id="L138" title="All 2 branches covered.">				if (_dblMinimum &gt; adblSequence[i]) _dblMinimum = adblSequence[i];</span>
 			}
 
-<span class="fc" id="L99">			_dblAverage = _dblAverage + adblSequence[i];</span>
+<span class="fc" id="L141">			_dblAverage = _dblAverage + adblSequence[i];</span>
 		}
 
-<span class="fc" id="L102">		_dblAverage /= iSequenceSize;</span>
+<span class="fc" id="L144">		_dblAverage /= iSequenceSize;</span>
 
-<span class="fc bfc" id="L104" title="All 2 branches covered.">		for (int i = 0; i &lt; iSequenceSize; ++i)</span>
-<span class="fc" id="L105">			_dblError = _dblError + java.lang.Math.abs (_dblAverage - adblSequence[i]);</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">		for (int i = 0; i &lt; iSequenceSize; ++i)</span>
+<span class="fc" id="L147">			_dblError = _dblError + java.lang.Math.abs (_dblAverage - adblSequence[i]);</span>
 
-<span class="fc" id="L107">		_dblError /= iSequenceSize;</span>
-<span class="fc" id="L108">	}</span>
+<span class="fc" id="L149">		_dblError /= iSequenceSize;</span>
+<span class="fc" id="L150">	}</span>
 
 	/**
 	 * Retrieve the Sequence Average
@@ -115,7 +157,7 @@ public class UnivariateDiscreteThin {
 
 	public double average()
 	{
-<span class="fc" id="L118">		return _dblAverage;</span>
+<span class="fc" id="L160">		return _dblAverage;</span>
 	}
 
 	/**
@@ -126,7 +168,7 @@ public class UnivariateDiscreteThin {
 
 	public double error()
 	{
-<span class="fc" id="L129">		return _dblError;</span>
+<span class="fc" id="L171">		return _dblError;</span>
 	}
 
 	/**
@@ -137,7 +179,7 @@ public class UnivariateDiscreteThin {
 
 	public double maximum()
 	{
-<span class="fc" id="L140">		return _dblMaximum;</span>
+<span class="fc" id="L182">		return _dblMaximum;</span>
 	}
 
 	/**
@@ -148,7 +190,7 @@ public class UnivariateDiscreteThin {
 
 	public double minimum()
 	{
-<span class="fc" id="L151">		return _dblMinimum;</span>
+<span class="fc" id="L193">		return _dblMinimum;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

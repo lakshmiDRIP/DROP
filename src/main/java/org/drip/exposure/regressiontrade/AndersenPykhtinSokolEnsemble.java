@@ -367,7 +367,7 @@ public class AndersenPykhtinSokolEnsemble
 						pathAdjustedVariationMarginEstimateArray[pathIndex].adjustedVariationMarginEstimateArray(),
 						sparseLocalVolatilityArray,
 						pathAdjustedVariationMarginEstimateArray[pathIndex].denseTradePaymentArray()
-					).denseExposure(wanderEnsemble[pathIndex]);
+					).denseExposure (wanderEnsemble[pathIndex]);
 			}
 			catch (java.lang.Exception e)
 			{

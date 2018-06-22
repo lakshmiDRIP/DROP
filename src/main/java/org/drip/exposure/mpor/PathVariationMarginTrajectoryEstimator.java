@@ -184,6 +184,28 @@ public class PathVariationMarginTrajectoryEstimator
 		final org.drip.exposure.universe.MarketPath marketPath,
 		final org.drip.exposure.csatimeline.AndersenPykhtinSokolLag csaTimelineLag)
 	{
+		if (null == exposureDateArray)
+		{
+			return null;
+		}
+
+		int exposureDateCount = exposureDateArray.length;
+		org.drip.exposure.mpor.TradePayment[] tradePaymentTrajectory = 0 == exposureDateCount ? null : new
+			org.drip.exposure.mpor.TradePayment[exposureDateCount];
+
+		if (0 == exposureDateCount)
+		{
+			return null;
+		}
+
+		for (int exposureDateIndex = 0; exposureDateIndex < exposureDateCount; ++exposureDateIndex)
+		{
+			tradePaymentTrajectory[exposureDateIndex] = variationMarginTradePaymentVertex.tradePayment (
+				exposureDateArray[exposureDateIndex],
+				marketPath
+			);
+		}
+
 		try
 		{
 			return new PathVariationMarginTrajectoryEstimator (
@@ -194,7 +216,7 @@ public class PathVariationMarginTrajectoryEstimator
 					variationMarginTradePaymentVertex,
 					marketPath
 				),
-				null, // tradePaymentTrajectory,
+				tradePaymentTrajectory,
 				csaTimelineLag
 			);
 		}

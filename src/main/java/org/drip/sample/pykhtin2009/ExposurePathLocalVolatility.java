@@ -15,7 +15,7 @@ import org.drip.exposure.evolver.PrimarySecurity;
 import org.drip.exposure.evolver.PrimarySecurityDynamicsContainer;
 import org.drip.exposure.evolver.TerminalLatentState;
 import org.drip.exposure.generator.NumeraireMPoR;
-import org.drip.exposure.mpor.VariationMarginTradeTrajectoryEstimator;
+import org.drip.exposure.mpor.PathVariationMarginTrajectoryEstimator;
 import org.drip.exposure.regression.LocalVolatilityGenerationControl;
 import org.drip.exposure.regression.PykhtinPillarDynamics;
 import org.drip.exposure.universe.LatentStateWeiner;
@@ -624,8 +624,8 @@ public class ExposurePathLocalVolatility
 				)
 			);
 
-			VariationMarginTradeTrajectoryEstimator variationMarginTradeTrajectoryEstimator =
-				new VariationMarginTradeTrajectoryEstimator (
+			PathVariationMarginTrajectoryEstimator variationMarginTradeTrajectoryEstimator =
+				PathVariationMarginTrajectoryEstimator.Standard (
 					exposureDateArray,
 					currency,
 					numeraireMPoR,
