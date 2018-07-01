@@ -9,7 +9,7 @@ DROP implements the model libraries and provides systems for fixed income valuat
 DROP is composed of four main modules.
 
  * [***Asset Allocation Module***](https://lakshmidrip.github.io/DROP/AssetAllocationModule.html)   =>   [Asset Allocation Library](https://lakshmidrip.github.io/DROP/AssetAllocationLibrary.html)    |   [Transaction Cost Analytics Library](https://lakshmidrip.github.io/DROP/TransactionCostLibrary.html)
- * [***Fixed Income Analytics Module***](https://lakshmidrip.github.io/DROP/FixedIncomeModule.html)   =>   [Fixed Income Analytics Library](https://lakshmidrip.github.io/DROP/FixedIncomeLibrary.html)    |   [Asset Backed Analytics Library](https://lakshmidrip.github.io/DROP/AssetBackedLibrary.html)    |   [XVA Analytics Library](https://lakshmidrip.github.io/DROP/XVALibrary.html)
+ * [***Fixed Income Analytics Module***](https://lakshmidrip.github.io/DROP/FixedIncomeModule.html)   =>   [Fixed Income Analytics Library](https://lakshmidrip.github.io/DROP/FixedIncomeLibrary.html)    |   [Asset Backed Analytics Library](https://lakshmidrip.github.io/DROP/AssetBackedLibrary.html)    |   [XVA Analytics Library](https://lakshmidrip.github.io/DROP/XVALibrary.html)    |   [Exposure Analytics Library](https://lakshmidrip.github.io/DROP/ExposureLibrary.html)
  * [***Numerical Optimization Module***](https://lakshmidrip.github.io/DROP/NumericalOptimizerModule.html)
  * [***Statistical Learning Module***](https://lakshmidrip.github.io/DROP/StatisticalLearningModule.html)
 
@@ -28,7 +28,7 @@ DROP is composed of four main modules.
 
 [![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome)
 
-## Module Sub-Projects
+## Module Projects
 
  [**Analytics**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aanalytics)   |   [**Asset Backed**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3A%22asset+backed%22)   |   [**Dynamics**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Adynamics)   |   [**Execution**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aexecution)
 
