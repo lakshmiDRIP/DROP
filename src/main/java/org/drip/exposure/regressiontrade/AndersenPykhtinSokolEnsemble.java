@@ -377,4 +377,107 @@ public class AndersenPykhtinSokolEnsemble
 
 		return denseVariationMargin;
 	}
+
+	/**
+	 * Generate the Dense Variation Margin Trajectory
+	 * 
+	 * @param localVolatilityGenerationControl Local Volatility Generation Control
+	 * @param wanderEnsemble The Wander Ensemble
+	 * 
+	 * @return The Dense Variation Margin Trajectory
+	 */
+
+	public org.drip.exposure.regressiontrade.AndersenPykhtinSokolTrajectory[] denseTrajectory (
+		final org.drip.exposure.regression.LocalVolatilityGenerationControl localVolatilityGenerationControl,
+		final double[][] wanderEnsemble)
+	{
+		if (null == wanderEnsemble)
+		{
+			return null;
+		}
+
+		int pathCount = _marketPathArray.length;
+		int denseExposureStartDate = _sparseExposureDateArray[0];
+		int sparseExposureDateCount = _sparseExposureDateArray.length;
+		int denseExposureEndDate = _sparseExposureDateArray[sparseExposureDateCount - 1];
+		org.drip.function.definition.R1ToR1[] sparseLocalVolatilityArray = new
+			org.drip.function.definition.R1ToR1[sparseExposureDateCount];
+		org.drip.exposure.regressiontrade.AndersenPykhtinSokolTrajectory[]
+			andersenPykhtinSokolTrajectoryArray = new
+				org.drip.exposure.regressiontrade.AndersenPykhtinSokolTrajectory[pathCount];
+
+		if (pathCount != wanderEnsemble.length)
+		{
+			return null;
+		}
+
+		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
+		{
+			if (null == wanderEnsemble[pathIndex] || 0 == wanderEnsemble[pathIndex].length ||
+				!org.drip.quant.common.NumberUtil.IsValid (wanderEnsemble[pathIndex]))
+			{
+				return null;
+			}
+		}
+
+		org.drip.exposure.regressiontrade.AdjustedVariationMarginDynamics adjustedVariationMarginDynamics =
+			ensembleAdjustedVariationMarginDynamics();
+
+		org.drip.exposure.regression.PykhtinPillarDynamics[] pillarDynamicsArray =
+			adjustedVariationMarginDynamics.pillarDynamics();
+
+		for (int sparseExposureDateIndex = 0;
+			sparseExposureDateIndex < sparseExposureDateCount;
+			++sparseExposureDateIndex)
+		{
+			sparseLocalVolatilityArray[sparseExposureDateIndex] =
+				pillarDynamicsArray[sparseExposureDateIndex].localVolatilityR1ToR1
+					(localVolatilityGenerationControl);
+		}
+
+		org.drip.exposure.regressiontrade.AdjustedVariationMarginEstimate[]
+			pathAdjustedVariationMarginEstimateArray =
+				adjustedVariationMarginDynamics.adjustedVariationMarginEstimateArray();
+
+		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
+		{
+			java.util.Map<java.lang.Integer, java.lang.Double> variationMarginEstimateTrajectory = new
+				java.util.HashMap<java.lang.Integer, java.lang.Double>();
+
+			try
+			{
+				org.drip.exposure.mpor.TradePayment[] tradePaymentTrajectory =
+					pathAdjustedVariationMarginEstimateArray[pathIndex].denseTradePaymentArray();
+
+				double[] denseExposureArray = new org.drip.exposure.regression.AndersenPykhtinSokolStretch (
+					_sparseExposureDateArray,
+					pathAdjustedVariationMarginEstimateArray[pathIndex].adjustedVariationMarginEstimateArray(),
+					sparseLocalVolatilityArray,
+					tradePaymentTrajectory
+				).denseExposure (wanderEnsemble[pathIndex]);
+
+				for (int denseExposureDate = denseExposureStartDate;
+					denseExposureDate <= denseExposureEndDate;
+					++denseExposureDate)
+				{
+					variationMarginEstimateTrajectory.put (
+						denseExposureDate,
+						denseExposureArray[denseExposureDate - denseExposureStartDate]
+					);
+				}
+
+				andersenPykhtinSokolTrajectoryArray[pathIndex] = new
+					org.drip.exposure.regressiontrade.AndersenPykhtinSokolTrajectory (
+					variationMarginEstimateTrajectory,
+					tradePaymentTrajectory
+				);
+			}
+			catch (java.lang.Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+
+		return andersenPykhtinSokolTrajectoryArray;
+	}
 }

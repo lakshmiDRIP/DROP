@@ -70,30 +70,30 @@ package org.drip.exposure.regressiontrade;
 
 public class AndersenPykhtinSokolTrajectory
 {
-	private double[] _variationMarginArray = null;
 	private org.drip.exposure.mpor.TradePayment[] _tradePaymentTrajectory = null;
+	private java.util.Map<java.lang.Integer, java.lang.Double> _variationMarginEstimateTrajectory = null;
 
 	/**
 	 * AndersenPykhtinSokolTrajectory Constructor
 	 * 
-	 * @param variationMarginArray The Dense Variation Margin Array
+	 * @param variationMarginEstimateTrajectory The Variation Margin Estimate Trajectory
 	 * @param tradePaymentTrajectory The Dense Trade Payment Array
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public AndersenPykhtinSokolTrajectory (
-		final double[] variationMarginArray,
+		final java.util.Map<java.lang.Integer, java.lang.Double> variationMarginEstimateTrajectory,
 		final org.drip.exposure.mpor.TradePayment[] tradePaymentTrajectory)
 		throws java.lang.Exception
 	{
-		if (null == (_variationMarginArray = variationMarginArray) ||
+		if (null == (_variationMarginEstimateTrajectory = variationMarginEstimateTrajectory) ||
 			null == (_tradePaymentTrajectory = tradePaymentTrajectory))
 		{
 			throw new java.lang.Exception ("AndersenPykhtinSokolTrajectory Constructor => Invalid Inputs");
 		}
 
-		int exposureVertexCount = _variationMarginArray.length;
+		int exposureVertexCount = _variationMarginEstimateTrajectory.size();
 
 		if (0 == exposureVertexCount || exposureVertexCount != _tradePaymentTrajectory.length)
 		{
@@ -102,23 +102,23 @@ public class AndersenPykhtinSokolTrajectory
 
 		for (int exposureVertexIndex = 0; exposureVertexIndex < exposureVertexCount; ++exposureVertexIndex)
 		{
-			if (!org.drip.quant.common.NumberUtil.IsValid (_variationMarginArray[exposureVertexIndex]) ||
-				null == _tradePaymentTrajectory[exposureVertexIndex])
+			if (null == _tradePaymentTrajectory[exposureVertexIndex])
 			{
-				throw new java.lang.Exception ("AndersenPykhtinSokolTrajectory Constructor => Invalid Inputs");
+				throw new java.lang.Exception
+					("AndersenPykhtinSokolTrajectory Constructor => Invalid Inputs");
 			}
 		}
 	}
 
 	/**
-	 * Retrieve the Dense Variation Margin Array
+	 * Retrieve the Dense Variation Margin Trajectory
 	 * 
-	 * @return The Dense Variation Margin Array
+	 * @return The Dense Variation Margin Trajectory
 	 */
 
-	public double[] variationMarginArray()
+	public java.util.Map<java.lang.Integer, java.lang.Double> variationMarginEstimateTrajectory()
 	{
-		return _variationMarginArray;
+		return _variationMarginEstimateTrajectory;
 	}
 
 	/**

@@ -94,8 +94,8 @@ import org.drip.state.identifier.OvernightLabel;
 
 /**
  * FixFloatClassicalPlusLong generates the Ensemble of Dense Variation Margin Estimates and the eventual
- *  Collateralized Variation Margin from Sparse Nodes for a Long Fix-Float Swap across the Ensemble of Paths
- *  using the Andersen, Albanese, and Pykhtin (2017) Classical+ Scheme. The References are:
+ *  Collateralized Variation Margin from Sparse Nodes for a Short Fix-Float Swap across the Ensemble of Paths
+ *  using the Andersen, Albanese, and Pykhtin (2017) Classical- Scheme. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
@@ -115,7 +115,7 @@ import org.drip.state.identifier.OvernightLabel;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FixFloatClassicalPlusLong
+public class FixFloatClassicalMinusShort
 {
 
 	private static final FixFloatComponent OTCIRS (
@@ -575,7 +575,7 @@ public class FixFloatClassicalPlusLong
 		int sparseFixFloatExposureDateCount = 4;
 		String fixFloatMaturityTenor = "1Y";
 		double fixFloatCoupon = 0.02;
-		double fixFloatNotional = 1.e+06;
+		double fixFloatNotional = -1.e+06;
 
 		LocalVolatilityGenerationControl localVolatilityGenerationControl =
 			LocalVolatilityGenerationControl.Standard (pathCount);
@@ -692,7 +692,7 @@ public class FixFloatClassicalPlusLong
 				wanderEnsemble
 			);
 
-		AndersenPykhtinSokolLag andersenPykhtinSokolLag = AndersenPykhtinSokolLag.ClassicalPlus();
+		AndersenPykhtinSokolLag andersenPykhtinSokolLag = AndersenPykhtinSokolLag.ClassicalMinus();
 
 		int[] exposureDateArray = new int[denseExposureDateCount];
 		int[] variationMarginGapEndDateArray = new int[denseExposureDateCount];
