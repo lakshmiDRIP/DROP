@@ -1,5 +1,5 @@
 
-package org.drip.simm20.risk;
+package org.drip.simm20.parameters;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,8 +47,8 @@ package org.drip.simm20.risk;
  */
 
 /**
- * InterestRateWeightSpecification holds the ISDA SIMM 2.0 Tenor Vertex Risk Weights/Correlations for Single
- * 	Curves, Cross Currencies, and Inflation. The References are:
+ * InterestRateSettings holds the ISDA SIMM 2.0 Tenor Vertex Risk Weights/Correlations for Single Curves,
+ * 	Cross Currencies, and Inflation. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -69,7 +69,7 @@ package org.drip.simm20.risk;
  * @author Lakshmi Krishnamurthy
  */
 
-public class InterestRateWeightSpecification
+public class InterestRateSettings
 {
 
 	/**
@@ -121,10 +121,10 @@ public class InterestRateWeightSpecification
 	public static final double SINGLE_CURRENCY_CURVE_INFLATION_CORRELATION = 0.29;
 
 	/**
-	 * Single Currency Curve Inflation Volatility Correlation
+	 * Single Currency Curve Volatility Inflation Volatility Correlation
 	 */
 
-	public static final double SINGLE_CURRENCY_CURVE_INFLATION_VOLATILITY_CORRELATION = 0.29;
+	public static final double SINGLE_CURRENCY_CURVE_VOLATILITY_INFLATION_VOLATILITY_CORRELATION = 0.29;
 
 	/**
 	 * Single Currency Curve Basis Swap Spread Correlation
@@ -144,7 +144,7 @@ public class InterestRateWeightSpecification
 
 	public static final double CROSS_CURRENCY_CORRELATION = 0.23;
 
-	private static org.drip.simm20.risk.InterestRateTenorCorrelation s_Correlation = null;
+	private static org.drip.simm20.risk.InterestRateTenorCorrelation s_SingleCurveTenorCorrelation = null;
 
 	private static final java.util.Map<java.lang.String, org.drip.simm20.risk.InterestRateWeight>
 		s_RiskWeight = new java.util.HashMap<java.lang.String, org.drip.simm20.risk.InterestRateWeight>();
@@ -153,21 +153,21 @@ public class InterestRateWeightSpecification
 	{
 		java.util.List<java.lang.String> tenorList = new java.util.ArrayList<java.lang.String>();
 
-		tenorList.add ("2W");
+		tenorList.add ("02W");
 
-		tenorList.add ("1M");
+		tenorList.add ("01M");
 
-		tenorList.add ("3M");
+		tenorList.add ("03M");
 
-		tenorList.add ("6M");
+		tenorList.add ("06M");
 
-		tenorList.add ("1Y");
+		tenorList.add ("01Y");
 
-		tenorList.add ("2Y");
+		tenorList.add ("02Y");
 
-		tenorList.add ("3Y");
+		tenorList.add ("03Y");
 
-		tenorList.add ("5Y");
+		tenorList.add ("05Y");
 
 		tenorList.add ("10Y");
 
@@ -179,7 +179,7 @@ public class InterestRateWeightSpecification
 
 		try
 		{
-			s_Correlation = new org.drip.simm20.risk.InterestRateTenorCorrelation (
+			s_SingleCurveTenorCorrelation = new org.drip.simm20.risk.InterestRateTenorCorrelation (
 				tenorList,
 				new double[][]
 				{
@@ -289,7 +289,7 @@ public class InterestRateWeightSpecification
 			64.
 		);
 
-		tenorWeightMapHighVolatility.put (
+		tenorWeightMapLowVolatility.put (
 			"2W",
 			21.
 		);
@@ -615,19 +615,18 @@ public class InterestRateWeightSpecification
 	public static final org.drip.simm20.risk.InterestRateWeight RiskWeight (
 		final java.lang.String currency)
 	{
-		return ContainsRiskWeight (currency) ? s_RiskWeight.get (currency) :
-			s_RiskWeight.get ("OTHER");
+		return ContainsRiskWeight (currency) ? s_RiskWeight.get (currency) : s_RiskWeight.get ("OTHER");
 	}
 
 	/**
-	 * Retrieve the Interest Rate Tenor Correlation Instance
+	 * Retrieve the Interest Rate Single Curve Tenor Correlation Instance
 	 * 
-	 * @return The Interest Rate Tenor Correlation Instance
+	 * @return The Interest Rate Single Curve Tenor Correlation Instance
 	 */
 
-	public static final org.drip.simm20.risk.InterestRateTenorCorrelation correlation()
+	public static final org.drip.simm20.risk.InterestRateTenorCorrelation SingleCurveTenorCorrelation()
 	{
-		return s_Correlation;
+		return s_SingleCurveTenorCorrelation;
 	}
 
 	/**

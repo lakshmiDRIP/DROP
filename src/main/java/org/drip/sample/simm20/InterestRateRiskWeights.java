@@ -1,12 +1,14 @@
 
 package org.drip.sample.simm20;
 
+import java.util.List;
 import java.util.Map;
 
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
+import org.drip.simm20.parameters.InterestRateSettings;
+import org.drip.simm20.risk.InterestRateTenorCorrelation;
 import org.drip.simm20.risk.InterestRateWeight;
-import org.drip.simm20.risk.InterestRateWeightSpecification;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -90,7 +92,7 @@ public class InterestRateRiskWeights
 
 		System.out.println (
 			"\t|| Currency Set => " +
-			InterestRateWeightSpecification.RegularVolatilityCurrencySet() + " ||"
+			InterestRateSettings.RegularVolatilityCurrencySet() + " ||"
 		);
 
 		System.out.println ("\t||-----------------------------------------------------------------------------------||");
@@ -98,7 +100,7 @@ public class InterestRateRiskWeights
 		System.out.println
 			("\t||------------------------------------------------------------------------------------------------------------------------------------------------------||");
 
-		InterestRateWeight usdRiskWeight = InterestRateWeightSpecification.RiskWeight ("USD");
+		InterestRateWeight usdRiskWeight = InterestRateSettings.RiskWeight ("USD");
 
 		String tenorWeightSequence = "\t|| ";
 
@@ -112,6 +114,210 @@ public class InterestRateRiskWeights
 
 		System.out.println
 			("\t||------------------------------------------------------------------------------------------------------------------------------------------------------||");
+
+		System.out.println();
+	}
+
+	private static final void LowVolatility()
+		throws Exception
+	{
+		System.out.println ("\t||-----------------------------------------------------------------------------------||");
+
+		System.out.println ("\t||                    LOW VOLATILITY CURRENCY SET and RISK WEIGHTS                   ||");
+
+		System.out.println ("\t||-----------------------------------------------------------------------------------||");
+
+		System.out.println (
+			"\t|| Currency Set => " +
+			InterestRateSettings.LowVolatilityCurrencySet()
+		);
+
+		System.out.println ("\t||-----------------------------------------------------------------------------------||");
+
+		System.out.println
+			("\t||----------------------------------------------------------------------------------------------------------------------------------------------------||");
+
+		InterestRateWeight jpyRiskWeight = InterestRateSettings.RiskWeight ("JPY");
+
+		String tenorWeightSequence = "\t|| ";
+
+		for (Map.Entry<String, Double> tenorWeightEntry : jpyRiskWeight.tenorWeightMap().entrySet())
+		{
+			tenorWeightSequence = tenorWeightSequence + " " + tenorWeightEntry.getKey() + " => " +
+				FormatUtil.FormatDouble (tenorWeightEntry.getValue(), 1, 0, 1.) + " |";
+		}
+
+		System.out.println (tenorWeightSequence + "|");
+
+		System.out.println
+			("\t||----------------------------------------------------------------------------------------------------------------------------------------------------||");
+
+		System.out.println();
+	}
+
+	private static final void HighVolatility()
+		throws Exception
+	{
+		System.out.println ("\t||-----------------------------------------------------------------------------------||");
+
+		System.out.println ("\t||                   HIGH VOLATILITY CURRENCY SET and RISK WEIGHTS                   ||");
+
+		System.out.println ("\t||-----------------------------------------------------------------------------------||");
+
+		System.out.println (
+			"\t|| Currency Set => " +
+			InterestRateSettings.HighVolatilityCurrencySet()
+		);
+
+		System.out.println ("\t||-----------------------------------------------------------------------------------||");
+
+		System.out.println
+			("\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------||");
+
+		InterestRateWeight inrRiskWeight = InterestRateSettings.RiskWeight ("INR");
+
+		String tenorWeightSequence = "\t|| ";
+
+		for (Map.Entry<String, Double> tenorWeightEntry : inrRiskWeight.tenorWeightMap().entrySet())
+		{
+			tenorWeightSequence = tenorWeightSequence + " " + tenorWeightEntry.getKey() + " => " +
+				FormatUtil.FormatDouble (tenorWeightEntry.getValue(), 1, 0, 1.) + " |";
+		}
+
+		System.out.println (tenorWeightSequence + "|");
+
+		System.out.println
+			("\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------||");
+
+		System.out.println();
+	}
+
+	private static final void SingleCurrencyTenorCorrelation()
+		throws Exception
+	{
+		InterestRateTenorCorrelation singleCurveTenorCorrelation =
+			InterestRateSettings.SingleCurveTenorCorrelation();
+
+		List<String> tenorList = singleCurveTenorCorrelation.tenorList();
+
+		System.out.println
+			("\t||------------------------------------------------------------------------------------------||");
+
+		System.out.println
+			("\t||                          INTEREST RATE CROSS TENOR CORRELATION                           ||");
+
+		System.out.println
+			("\t||------------------------------------------------------------------------------------------||");
+
+		String rowDump = "\t||      ";
+
+		for (String tenor : tenorList)
+		{
+			rowDump = rowDump + "  " + tenor + "  ";
+		}
+
+		System.out.println (rowDump + "||");
+
+		System.out.println
+			("\t||------------------------------------------------------------------------------------------||");
+
+		for (String innerTenor : tenorList)
+		{
+			rowDump = "\t|| " + innerTenor + " ";
+
+			for (String outerTenor : tenorList)
+			{
+				rowDump = rowDump + " " +
+					FormatUtil.FormatDouble (
+						singleCurveTenorCorrelation.entry (
+							innerTenor,
+							outerTenor
+						),
+					3, 0, 100.) + "% ";
+			}
+
+			System.out.println (rowDump + " ||");
+		}
+
+		System.out.println
+			("\t||------------------------------------------------------------------------------------------||");
+
+		System.out.println();
+	}
+
+	private static final void StaticParametersDump()
+		throws Exception
+	{
+		System.out.println ("\t||-------------------------------------------------------------------------------||");
+
+		System.out.println ("\t||                SYSTEMATIC FACTOR RISK WEIGHTS AND CORRELATIONS                ||");
+
+		System.out.println ("\t||-------------------------------------------------------------------------------||");
+
+		System.out.println (
+			"\t|| Single Currency Inflation Risk Weight                               => " +
+			FormatUtil.FormatDouble (
+				InterestRateSettings.SINGLE_CURRENCY_CURVE_INFLATION_RISK_WEIGHT, 2, 2, 1.
+			) + " ||"
+		);
+
+		System.out.println (
+			"\t|| Single Currency Basis Swap Spread Risk Weight                       => " +
+			FormatUtil.FormatDouble (
+				InterestRateSettings.SINGLE_CURRENCY_CURVE_BASIS_SWAP_SPREAD_RISK_WEIGHT, 2, 2, 1.
+			) + " ||"
+		);
+
+		System.out.println (
+			"\t|| Single Currency Vega Risk Weight                                    => " +
+			FormatUtil.FormatDouble (
+				InterestRateSettings.VEGA_RISK_WEIGHT, 2, 2, 1.
+			) + " ||"
+		);
+
+		System.out.println (
+			"\t|| Single Currency Cross Curve Correlation                             => " +
+			FormatUtil.FormatDouble (
+				InterestRateSettings.SINGLE_CURRENCY_CROSS_CURVE_CORRELATION, 2, 2, 1.
+			) + " ||"
+		);
+
+		System.out.println (
+			"\t|| Single Currency Curve Inflation Correlation                         => " +
+			FormatUtil.FormatDouble (
+				InterestRateSettings.SINGLE_CURRENCY_CURVE_INFLATION_CORRELATION, 2, 2, 1.
+			) + " ||"
+		);
+
+		System.out.println (
+			"\t|| Single Currency Curve Volatility Inflation Volatility Correlation   => " +
+			FormatUtil.FormatDouble (
+				InterestRateSettings.SINGLE_CURRENCY_CURVE_VOLATILITY_INFLATION_VOLATILITY_CORRELATION, 2, 2, 1.
+			) + " ||"
+		);
+
+		System.out.println (
+			"\t|| Single Currency Curve Basis Swap Spread Correlation                 => " +
+			FormatUtil.FormatDouble (
+				InterestRateSettings.SINGLE_CURRENCY_CURVE_BASIS_SWAP_SPREAD_CORRELATION, 2, 2, 1.
+			) + " ||"
+		);
+
+		System.out.println (
+			"\t|| Single Currency Basis Swap Spread Inflation Correlation             => " +
+			FormatUtil.FormatDouble (
+				InterestRateSettings.SINGLE_CURRENCY_BASIS_SWAP_SPREAD_INFLATION_CORRELATION, 2, 2, 1.
+			) + " ||"
+		);
+
+		System.out.println (
+			"\t|| Cross Currency Correlation                                          => " +
+			FormatUtil.FormatDouble (
+				InterestRateSettings.CROSS_CURRENCY_CORRELATION, 2, 2, 1.
+			) + " ||"
+		);
+
+		System.out.println ("\t||-------------------------------------------------------------------------------||");
 	}
 
 	public final static void main (
@@ -121,6 +327,14 @@ public class InterestRateRiskWeights
 		EnvManager.InitEnv ("");
 
 		RegularVolatility();
+
+		LowVolatility();
+
+		HighVolatility();
+
+		SingleCurrencyTenorCorrelation();
+
+		StaticParametersDump();
 
 		EnvManager.TerminateEnv();
 	}

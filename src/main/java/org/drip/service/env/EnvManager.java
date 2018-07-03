@@ -213,7 +213,7 @@ public class EnvManager {
 			return null;
 		}
 
-		if (!org.drip.simm20.risk.InterestRateWeightSpecification.Init()) {
+		if (!org.drip.simm20.parameters.InterestRateSettings.Init()) {
 			System.out.println
 				("EnvManager::InitEnv => Cannot Initialize SIMM 2.0 Interest Rate Weights Specification!");
 
