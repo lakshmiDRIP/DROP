@@ -72,84 +72,12 @@ package org.drip.simm20.parameters;
 public class InterestRateSettings
 {
 
-	/**
-	 * Interest Rate Type - Regular Volatility
-	 */
-
-	public static final java.lang.String VOLATILITY_TYPE_REGULAR = "REGULAR";
-
-	/**
-	 * Interest Rate Type - Low Volatility
-	 */
-
-	public static final java.lang.String VOLATILITY_TYPE_LOW = "LOW";
-
-	/**
-	 * Interest Rate Type - High Volatility
-	 */
-
-	public static final java.lang.String VOLATILITY_TYPE_HIGH = "HIGH";
-
-	/**
-	 * Same Currency Curve Inflation Rate Risk Weight
-	 */
-
-	public static final double SINGLE_CURRENCY_CURVE_INFLATION_RISK_WEIGHT = 46.;
-
-	/**
-	 * Single Currency Single Curve Basis Swap Spread
-	 */
-
-	public static final double SINGLE_CURRENCY_CURVE_BASIS_SWAP_SPREAD_RISK_WEIGHT = 20.;
-
-	/**
-	 * Interest Rate Vega Risk Weight
-	 */
-
-	public static final double VEGA_RISK_WEIGHT = 0.21;
-
-	/**
-	 * Single Currency Cross-Curve Correlation
-	 */
-
-	public static final double SINGLE_CURRENCY_CROSS_CURVE_CORRELATION = 0.98;
-
-	/**
-	 * Single Currency Curve Inflation Correlation
-	 */
-
-	public static final double SINGLE_CURRENCY_CURVE_INFLATION_CORRELATION = 0.29;
-
-	/**
-	 * Single Currency Curve Volatility Inflation Volatility Correlation
-	 */
-
-	public static final double SINGLE_CURRENCY_CURVE_VOLATILITY_INFLATION_VOLATILITY_CORRELATION = 0.29;
-
-	/**
-	 * Single Currency Curve Basis Swap Spread Correlation
-	 */
-
-	public static final double SINGLE_CURRENCY_CURVE_BASIS_SWAP_SPREAD_CORRELATION = 0.20;
-
-	/**
-	 * Single Currency Basis Swap Spread Inflation Correlation
-	 */
-
-	public static final double SINGLE_CURRENCY_BASIS_SWAP_SPREAD_INFLATION_CORRELATION = 0.20;
-
-	/**
-	 * Cross Currency Curve Correlation
-	 */
-
-	public static final double CROSS_CURRENCY_CORRELATION = 0.23;
-
-	private static org.drip.simm20.risk.InterestRateTenorCorrelation s_SingleCurveTenorCorrelation = null;
+	private static org.drip.measure.stochastic.LabelCorrelation s_SingleCurveTenorCorrelation = null;
 
 	private static final java.util.Map<java.lang.String, org.drip.simm20.risk.InterestRateWeight>
 		s_RiskWeight = new java.util.HashMap<java.lang.String, org.drip.simm20.risk.InterestRateWeight>();
 
-	private static final boolean SetupTenorCorrelation()
+	private static final boolean TenorCorrelation()
 	{
 		java.util.List<java.lang.String> tenorList = new java.util.ArrayList<java.lang.String>();
 
@@ -179,7 +107,7 @@ public class InterestRateSettings
 
 		try
 		{
-			s_SingleCurveTenorCorrelation = new org.drip.simm20.risk.InterestRateTenorCorrelation (
+			s_SingleCurveTenorCorrelation = new org.drip.measure.stochastic.LabelCorrelation (
 				tenorList,
 				new double[][]
 				{
@@ -412,17 +340,17 @@ public class InterestRateSettings
 		try
 		{
 			regularVolatilityRiskWeight = new org.drip.simm20.risk.InterestRateWeight (
-				VOLATILITY_TYPE_REGULAR,
+				org.drip.simm20.risk.InterestRateSystemics.VOLATILITY_TYPE_REGULAR,
 				tenorWeightMapRegularVolatility
 			);
 
 			lowVolatilityRiskWeight = new org.drip.simm20.risk.InterestRateWeight (
-				VOLATILITY_TYPE_LOW,
+				org.drip.simm20.risk.InterestRateSystemics.VOLATILITY_TYPE_LOW,
 				tenorWeightMapLowVolatility
 			);
 
 			highVolatilityRiskWeight = new org.drip.simm20.risk.InterestRateWeight (
-				VOLATILITY_TYPE_HIGH,
+				org.drip.simm20.risk.InterestRateSystemics.VOLATILITY_TYPE_HIGH,
 				tenorWeightMapHighVolatility
 			);
 		}
@@ -513,7 +441,7 @@ public class InterestRateSettings
 			regularVolatilityRiskWeight
 		);
 
-		return SetupTenorCorrelation();
+		return TenorCorrelation();
 	}
 
 	/**
@@ -565,7 +493,7 @@ public class InterestRateSettings
 
 	public static final java.util.Set<java.lang.String> RegularVolatilityCurrencySet()
 	{
-		return VolatilityTypeCurrencySet (VOLATILITY_TYPE_REGULAR);
+		return VolatilityTypeCurrencySet (org.drip.simm20.risk.InterestRateSystemics.VOLATILITY_TYPE_REGULAR);
 	}
 
 	/**
@@ -576,7 +504,7 @@ public class InterestRateSettings
 
 	public static final java.util.Set<java.lang.String> LowVolatilityCurrencySet()
 	{
-		return VolatilityTypeCurrencySet (VOLATILITY_TYPE_LOW);
+		return VolatilityTypeCurrencySet (org.drip.simm20.risk.InterestRateSystemics.VOLATILITY_TYPE_LOW);
 	}
 
 	/**
@@ -587,7 +515,7 @@ public class InterestRateSettings
 
 	public static final java.util.Set<java.lang.String> HighVolatilityCurrencySet()
 	{
-		return VolatilityTypeCurrencySet (VOLATILITY_TYPE_HIGH);
+		return VolatilityTypeCurrencySet (org.drip.simm20.risk.InterestRateSystemics.VOLATILITY_TYPE_HIGH);
 	}
 
 	/**
@@ -624,7 +552,7 @@ public class InterestRateSettings
 	 * @return The Interest Rate Single Curve Tenor Correlation Instance
 	 */
 
-	public static final org.drip.simm20.risk.InterestRateTenorCorrelation SingleCurveTenorCorrelation()
+	public static final org.drip.measure.stochastic.LabelCorrelation SingleCurveTenorCorrelation()
 	{
 		return s_SingleCurveTenorCorrelation;
 	}

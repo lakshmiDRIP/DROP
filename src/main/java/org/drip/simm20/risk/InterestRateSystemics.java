@@ -47,8 +47,8 @@ package org.drip.simm20.risk;
  */
 
 /**
- * CreditQualifyingSystemics contains the Systemic Settings of the Credit Qualifying Risk Factors. The
- * 	References are:
+ * InterestRateSystemics contains the Systemic Settings of the Interest Rate Risk Factors. The References
+ *  are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -69,129 +69,78 @@ package org.drip.simm20.risk;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CreditQualifyingSystemics
+public class InterestRateSystemics
 {
 
 	/**
-	 * The "Investment Grade" Credit Quality
+	 * Interest Rate Type - Regular Volatility
 	 */
 
-	public static final java.lang.String CREDIT_QUALITY_IG = "IG";
+	public static final java.lang.String VOLATILITY_TYPE_REGULAR = "REGULAR";
 
 	/**
-	 * The "IG" Credit Quality
+	 * Interest Rate Type - Low Volatility
 	 */
 
-	public static final java.lang.String CREDIT_QUALITY_INVESTMENT_GRADE = "IG";
+	public static final java.lang.String VOLATILITY_TYPE_LOW = "LOW";
 
 	/**
-	 * The "High Yield" Credit Quality
+	 * Interest Rate Type - High Volatility
 	 */
 
-	public static final java.lang.String CREDIT_QUALITY_HY = "HY";
+	public static final java.lang.String VOLATILITY_TYPE_HIGH = "HIGH";
 
 	/**
-	 * The "High Yield" Credit Quality
+	 * Same Currency Curve Inflation Rate Risk Weight
 	 */
 
-	public static final java.lang.String CREDIT_QUALITY_HIGH_YIELD = "HY";
+	public static final double SINGLE_CURRENCY_CURVE_INFLATION_RISK_WEIGHT = 46.;
 
 	/**
-	 * The "Not Rated" Credit Quality
+	 * Single Currency Single Curve Basis Swap Spread
 	 */
 
-	public static final java.lang.String CREDIT_QUALITY_NR = "NR";
+	public static final double SINGLE_CURRENCY_CURVE_BASIS_SWAP_SPREAD_RISK_WEIGHT = 20.;
 
 	/**
-	 * The "Not Rated" Credit Quality
+	 * Interest Rate Vega Risk Weight
 	 */
 
-	public static final java.lang.String CREDIT_QUALITY_NOT_RATED = "NR";
+	public static final double VEGA_RISK_WEIGHT = 0.21;
 
 	/**
-	 * The "Sovereigns" Sector
+	 * Single Currency Cross-Curve Correlation
 	 */
 
-	public static final java.lang.String[] SECTOR_SOVEREIGNS = new java.lang.String[]
-	{
-		"SOVEREIGN",
-		"CENTRAL_BANK"
-	};
+	public static final double SINGLE_CURRENCY_CROSS_CURVE_CORRELATION = 0.98;
 
 	/**
-	 * The "Financials" Sector
+	 * Single Currency Curve Inflation Correlation
 	 */
 
-	public static final java.lang.String[] SECTOR_FINANCIALS = new java.lang.String[]
-	{
-		"FINANCIAL",
-		"GOVERNMENT_BACKED_FINANCIAL"
-	};
+	public static final double SINGLE_CURRENCY_CURVE_INFLATION_CORRELATION = 0.29;
 
 	/**
-	 * The "Basic Materials" Sector
+	 * Single Currency Curve Volatility Inflation Volatility Correlation
 	 */
 
-	public static final java.lang.String[] SECTOR_BASIC_MATERIALS = new java.lang.String[]
-	{
-		"BASIC_MATERIALS",
-		"ENERGY",
-		"INDUSTRIALS"
-	};
+	public static final double SINGLE_CURRENCY_CURVE_VOLATILITY_INFLATION_VOLATILITY_CORRELATION = 0.29;
 
 	/**
-	 * The "Consumer" Sector
+	 * Single Currency Curve Basis Swap Spread Correlation
 	 */
 
-	public static final java.lang.String[] SECTOR_CONSUMER = new java.lang.String[]
-	{
-		"CONSUMER"
-	};
+	public static final double SINGLE_CURRENCY_CURVE_BASIS_SWAP_SPREAD_CORRELATION = 0.20;
 
 	/**
-	 * The "Technology" Sector
+	 * Single Currency Basis Swap Spread Inflation Correlation
 	 */
 
-	public static final java.lang.String[] SECTOR_TECHNOLOGY = new java.lang.String[]
-	{
-		"TECHNOLOGY",
-		"TELECOMMUNICATIONS"
-	};
+	public static final double SINGLE_CURRENCY_BASIS_SWAP_SPREAD_INFLATION_CORRELATION = 0.20;
 
 	/**
-	 * The "Non-Financial" Sector
+	 * Cross Currency Curve Correlation
 	 */
 
-	public static final java.lang.String[] SECTOR_NON_FINANCIAL = new java.lang.String[]
-	{
-		"NON_FINANCIAL",
-		"HEALTH_CARE",
-		"UTILITIES",
-		"LOCAL_GOVERNMENT",
-		"GOVERNMENT_BACKED_CORPORATES"
-	};
-
-	/**
-	 * Residual Bucket - Risk Weight
-	 */
-
-	public static final double RESIDUAL_BUCKET_RISK_WEIGHT = 238.;
-
-	/**
-	 * Credit Qualifying Vega Risk Weight
-	 */
-
-	public static final double VEGA_RISK_WEIGHT = 0.27;
-
-	/**
-	 * Base Correlation - Risk Weight
-	 */
-
-	public static final double BASE_CORRELATION_RISK_WEIGHT = 20.;
-
-	/**
-	 * Base Correlation - Correlation across Index Families
-	 */
-
-	public static final double BASE_CORRELATION_CORRELATION = 0.10;
+	public static final double CROSS_CURRENCY_CORRELATION = 0.23;
 }

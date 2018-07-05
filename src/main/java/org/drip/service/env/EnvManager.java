@@ -213,9 +213,8 @@ public class EnvManager {
 			return null;
 		}
 
-		if (!org.drip.simm20.parameters.InterestRateSettings.Init()) {
-			System.out.println
-				("EnvManager::InitEnv => Cannot Initialize SIMM 2.0 Interest Rate Weights Specification!");
+		if (!org.drip.simm20.parameters.ISDASettingsContainer.Init()) {
+			System.out.println ("EnvManager::InitEnv => Cannot Initialize ISDA SIMM 2.0 Specifications!");
 
 			return null;
 		}

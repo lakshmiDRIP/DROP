@@ -4,10 +4,11 @@ package org.drip.sample.simm20;
 import java.util.List;
 import java.util.Map;
 
+import org.drip.measure.stochastic.LabelCorrelation;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.simm20.parameters.InterestRateSettings;
-import org.drip.simm20.risk.InterestRateTenorCorrelation;
+import org.drip.simm20.risk.InterestRateSystemics;
 import org.drip.simm20.risk.InterestRateWeight;
 
 /*
@@ -195,10 +196,9 @@ public class InterestRateRiskWeights
 	private static final void SingleCurrencyTenorCorrelation()
 		throws Exception
 	{
-		InterestRateTenorCorrelation singleCurveTenorCorrelation =
-			InterestRateSettings.SingleCurveTenorCorrelation();
+		LabelCorrelation singleCurveTenorCorrelation = InterestRateSettings.SingleCurveTenorCorrelation();
 
-		List<String> tenorList = singleCurveTenorCorrelation.tenorList();
+		List<String> tenorList = singleCurveTenorCorrelation.labelList();
 
 		System.out.println
 			("\t||------------------------------------------------------------------------------------------||");
@@ -257,63 +257,63 @@ public class InterestRateRiskWeights
 		System.out.println (
 			"\t|| Single Currency Inflation Risk Weight                               => " +
 			FormatUtil.FormatDouble (
-				InterestRateSettings.SINGLE_CURRENCY_CURVE_INFLATION_RISK_WEIGHT, 2, 2, 1.
+				InterestRateSystemics.SINGLE_CURRENCY_CURVE_INFLATION_RISK_WEIGHT, 2, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Single Currency Basis Swap Spread Risk Weight                       => " +
 			FormatUtil.FormatDouble (
-				InterestRateSettings.SINGLE_CURRENCY_CURVE_BASIS_SWAP_SPREAD_RISK_WEIGHT, 2, 2, 1.
+				InterestRateSystemics.SINGLE_CURRENCY_CURVE_BASIS_SWAP_SPREAD_RISK_WEIGHT, 2, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Single Currency Vega Risk Weight                                    => " +
 			FormatUtil.FormatDouble (
-				InterestRateSettings.VEGA_RISK_WEIGHT, 2, 2, 1.
+				InterestRateSystemics.VEGA_RISK_WEIGHT, 2, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Single Currency Cross Curve Correlation                             => " +
 			FormatUtil.FormatDouble (
-				InterestRateSettings.SINGLE_CURRENCY_CROSS_CURVE_CORRELATION, 2, 2, 1.
+				InterestRateSystemics.SINGLE_CURRENCY_CROSS_CURVE_CORRELATION, 2, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Single Currency Curve Inflation Correlation                         => " +
 			FormatUtil.FormatDouble (
-				InterestRateSettings.SINGLE_CURRENCY_CURVE_INFLATION_CORRELATION, 2, 2, 1.
+				InterestRateSystemics.SINGLE_CURRENCY_CURVE_INFLATION_CORRELATION, 2, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Single Currency Curve Volatility Inflation Volatility Correlation   => " +
 			FormatUtil.FormatDouble (
-				InterestRateSettings.SINGLE_CURRENCY_CURVE_VOLATILITY_INFLATION_VOLATILITY_CORRELATION, 2, 2, 1.
+				InterestRateSystemics.SINGLE_CURRENCY_CURVE_VOLATILITY_INFLATION_VOLATILITY_CORRELATION, 2, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Single Currency Curve Basis Swap Spread Correlation                 => " +
 			FormatUtil.FormatDouble (
-				InterestRateSettings.SINGLE_CURRENCY_CURVE_BASIS_SWAP_SPREAD_CORRELATION, 2, 2, 1.
+				InterestRateSystemics.SINGLE_CURRENCY_CURVE_BASIS_SWAP_SPREAD_CORRELATION, 2, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Single Currency Basis Swap Spread Inflation Correlation             => " +
 			FormatUtil.FormatDouble (
-				InterestRateSettings.SINGLE_CURRENCY_BASIS_SWAP_SPREAD_INFLATION_CORRELATION, 2, 2, 1.
+				InterestRateSystemics.SINGLE_CURRENCY_BASIS_SWAP_SPREAD_INFLATION_CORRELATION, 2, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Cross Currency Correlation                                          => " +
 			FormatUtil.FormatDouble (
-				InterestRateSettings.CROSS_CURRENCY_CORRELATION, 2, 2, 1.
+				InterestRateSystemics.CROSS_CURRENCY_CORRELATION, 2, 2, 1.
 			) + " ||"
 		);
 

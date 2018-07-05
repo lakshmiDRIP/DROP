@@ -1,13 +1,5 @@
 
-package org.drip.coverage.product;
-
-import org.drip.sample.credit.BuiltInCDSPortfolioDefinitions;
-import org.drip.sample.credit.CDSBasketMeasures;
-import org.drip.sample.credit.CDSCashFlowMeasures;
-import org.drip.sample.credit.CDSValuationMetrics;
-import org.drip.sample.credit.CreditIndexDefinitions;
-
-import org.junit.Test;
+package org.drip.simm20.parameters;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -15,7 +7,6 @@ import org.junit.Test;
 
 /*!
  * Copyright (C) 2018 Lakshmi Krishnamurthy
- * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
  *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
  *  	libraries targeting analysts and developers
@@ -56,23 +47,49 @@ import org.junit.Test;
  */
 
 /**
- * Credit holds the JUnit Code Coverage Tests for the Credit Product Module.
- *
+ * ISDASettingsContainer holds the ISDA SIMM 2.0 Risk Weights/Correlations for Interest Rates, Qualifying and
+ * 	Non-qualifying Credit, Equity, Commodity, and Foreign Exchange. The corresponding Concentration
+ * 	Thresholds are also contained. The References are:
+ *  
+ *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
+ *  
+ *  - Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
+ *  	Calculations, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488, eSSRN.
+ *  
+ *  - Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
+ *  	Framework for Forecasting Initial Margin Requirements,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
+ *  
+ *  - Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements
+ *  	- A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167, eSSRN.
+ *  
+ *  - International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology,
+ *  	https://www.isda.org/a/oFiDE/isda-simm-v2.pdf.
+ * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class Credit
+public class ISDASettingsContainer
 {
-	@Test public void codeCoverageTest() throws Exception
+	/**
+	 * Initial the ISDA Settings Container
+	 * 
+	 * @return TRUE - The ISDA Settings Container successfully initialized
+	 */
+
+	public static final boolean Init()
 	{
-		BuiltInCDSPortfolioDefinitions.main (null);
+		if (!org.drip.simm20.parameters.InterestRateSettings.Init())
+		{
+			return false;
+		}
 
-		CDSBasketMeasures.main (null);
+		if (!org.drip.simm20.parameters.CreditQualifyingSettings.Init())
+		{
+			return false;
+		}
 
-		CDSCashFlowMeasures.main (null);
-
-		CDSValuationMetrics.main (null);
-
-		CreditIndexDefinitions.main (null);
-    }
+		return true;
+	}
 }

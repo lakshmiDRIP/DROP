@@ -1,5 +1,5 @@
 
-package org.drip.simm20.risk;
+package org.drip.measure.stochastic;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,7 +47,7 @@ package org.drip.simm20.risk;
  */
 
 /**
- * InterestRateTenorCorrelation holds the ISDA SIMM 2.0 Tenor Correlations with a Single Currency/Curve. The
+ * LabelCorrelation holds the Correlations between any Stochastic Variates identified by their Labels. The
  *  References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
@@ -69,60 +69,60 @@ package org.drip.simm20.risk;
  * @author Lakshmi Krishnamurthy
  */
 
-public class InterestRateTenorCorrelation
+public class LabelCorrelation
 {
 	private double[][] _matrix = null;
-	private java.util.List<java.lang.String> _tenorList = null;
+	private java.util.List<java.lang.String> _labelList = null;
 
-	private java.util.Map<java.lang.String, java.lang.Integer> _tenorIndexMap = new
+	private java.util.Map<java.lang.String, java.lang.Integer> _labelIndexMap = new
 		java.util.HashMap<java.lang.String, java.lang.Integer>();
 
 	/**
-	 * InterestRateTenorCorrelation Constructor
+	 * LabelCorrelation Constructor
 	 * 
-	 * @param tenorList The List of Tenors
+	 * @param labelList The List of Labels
 	 * @param matrix The Correlation Matrix
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public InterestRateTenorCorrelation (
-		final java.util.List<java.lang.String> tenorList,
+	public LabelCorrelation (
+		final java.util.List<java.lang.String> labelList,
 		final double[][] matrix)
 		throws java.lang.Exception
 	{
-		if (null == (_tenorList = tenorList) ||
+		if (null == (_labelList = labelList) ||
 			null == (_matrix = matrix))
 		{
-			throw new java.lang.Exception ("InterestRateTenorCorrelation Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("LabelCorrelation Constructor => Invalid Inputs");
 		}
 
-		int tenorCount = _tenorList.size();
+		int labelCount = _labelList.size();
 
-		if (0 == tenorCount || tenorCount != _matrix.length)
+		if (0 == labelCount || labelCount != _matrix.length)
 		{
-			throw new java.lang.Exception ("InterestRateTenorCorrelation Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("LabelCorrelation Constructor => Invalid Inputs");
 		}
 
-		for (int tenorIndex = 0; tenorIndex < tenorCount; ++tenorIndex)
+		for (int labelIndex = 0; labelIndex < labelCount; ++labelIndex)
 		{
-			_tenorIndexMap.put (
-				_tenorList.get (tenorIndex),
-				tenorIndex
+			_labelIndexMap.put (
+				_labelList.get (labelIndex),
+				labelIndex
 			);
 
-			if (null == _matrix[tenorIndex] || tenorCount != _matrix[tenorIndex].length ||
-				!org.drip.quant.common.NumberUtil.IsValid (_matrix[tenorIndex]))
+			if (null == _matrix[labelIndex] || labelCount != _matrix[labelIndex].length ||
+				!org.drip.quant.common.NumberUtil.IsValid (_matrix[labelIndex]))
 			{
-				throw new java.lang.Exception ("InterestRateTenorCorrelation Constructor => Invalid Inputs");
+				throw new java.lang.Exception ("LabelCorrelation Constructor => Invalid Inputs");
 			}
 		}
 	}
 
 	/**
-	 * Retrieve the Cross-Tenor Correlation Matrix
+	 * Retrieve the Cross-Label Correlation Matrix
 	 * 
-	 * @return The Cross-Tenor Correlation Matrix
+	 * @return The Cross-Label Correlation Matrix
 	 */
 
 	public double[][] matrix()
@@ -131,21 +131,21 @@ public class InterestRateTenorCorrelation
 	}
 
 	/**
-	 * Retrieve the Tenor List
+	 * Retrieve the Label List
 	 * 
-	 * @return The Tenor List
+	 * @return The Label List
 	 */
 
-	public java.util.List<java.lang.String> tenorList()
+	public java.util.List<java.lang.String> labelList()
 	{
-		return _tenorList;
+		return _labelList;
 	}
 
 	/**
-	 * Retrieve the Correlation Entry for the Pait of Tenors
+	 * Retrieve the Correlation Entry for the Pair of Labels
 	 * 
-	 * @param tenor1 Tenor #1
-	 * @param tenor2 Tenor #2
+	 * @param label1 Label #1
+	 * @param label2 Label #2
 	 * 
 	 * @return The Correlation Entry
 	 * 
@@ -153,17 +153,17 @@ public class InterestRateTenorCorrelation
 	 */
 
 	public double entry (
-		final java.lang.String tenor1,
-		final java.lang.String tenor2)
+		final java.lang.String label1,
+		final java.lang.String label2)
 		throws java.lang.Exception
 	{
-		if (null == tenor1 || !_tenorList.contains (tenor1) ||
-			null == tenor2 || !_tenorList.contains (tenor2))
+		if (null == label1 || !_labelList.contains (label1) ||
+			null == label2 || !_labelList.contains (label2))
 		{
-			throw new java.lang.Exception ("InterestRateTenorCorrelation::entry => Invalid Inputs");
+			throw new java.lang.Exception ("LabelCorrelation::entry => Invalid Inputs");
 		}
 
-		return _matrix[_tenorIndexMap.get (tenor1)][_tenorIndexMap.get (tenor2)];
+		return _matrix[_labelIndexMap.get (label1)][_labelIndexMap.get (label2)];
 	}
 
 	/**
@@ -174,7 +174,7 @@ public class InterestRateTenorCorrelation
 	 * @return The InterestRateTenorCorrelation Instance
 	 */
 
-	public InterestRateTenorCorrelation subTenor (
+	public LabelCorrelation subTenor (
 		final java.util.List<java.lang.String> subTenorList)
 	{
 		if (null == subTenorList)
@@ -213,7 +213,7 @@ public class InterestRateTenorCorrelation
 
 		try
 		{
-			return new InterestRateTenorCorrelation (
+			return new LabelCorrelation (
 				subTenorList,
 				subTenorMatrix
 			);

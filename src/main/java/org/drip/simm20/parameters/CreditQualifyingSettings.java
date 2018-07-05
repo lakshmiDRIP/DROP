@@ -72,9 +72,71 @@ import org.drip.simm20.risk.CreditQualifyingSystemics;
 
 public class CreditQualifyingSettings
 {
+
+	private static org.drip.measure.stochastic.LabelCorrelation s_CrossBucketCorrelation = null;
+
 	private static final java.util.Map<java.lang.Integer, org.drip.simm20.risk.CreditQualifyingBucket>
 		s_BucketMap = new java.util.TreeMap<java.lang.Integer,
 			org.drip.simm20.risk.CreditQualifyingBucket>();
+
+	private static final boolean SetUpCrossBucketCorrelation()
+	{
+		java.util.List<java.lang.String> bucketList = new java.util.ArrayList<java.lang.String>();
+
+		bucketList.add ("1");
+
+		bucketList.add ("2");
+
+		bucketList.add ("3");
+
+		bucketList.add ("4");
+
+		bucketList.add ("5");
+
+		bucketList.add ("6");
+
+		bucketList.add ("7");
+
+		bucketList.add ("8");
+
+		bucketList.add ("9");
+
+		bucketList.add ("10");
+
+		bucketList.add ("11");
+
+		bucketList.add ("12");
+
+		try
+		{
+			s_CrossBucketCorrelation = new org.drip.measure.stochastic.LabelCorrelation (
+				bucketList,
+				new double[][]
+				{
+					{1.00, 0.42, 0.39, 0.39, 0.40, 0.38, 0.39, 0.34, 0.37, 0.39, 0.37, 0.31},
+					{0.42, 1.00, 0.44, 0.45, 0.47, 0.45, 0.33, 0.40, 0.41, 0.44, 0.43, 0.47},
+					{0.39, 0.44, 1.00, 0.43, 0.45, 0.43, 0.32, 0.35, 0.41, 0.42, 0.40, 0.36},
+					{0.39, 0.45, 0.43, 1.00, 0.47, 0.44, 0.30, 0.34, 0.39, 0.43, 0.39, 0.36},
+					{0.40, 0.47, 0.45, 0.47, 1.00, 0.47, 0.31, 0.35, 0.40, 0.44, 0.42, 0.37},
+					{0.38, 0.45, 0.43, 0.44, 0.47, 1.00, 0.30, 0.34, 0.38, 0.40, 0.39, 0.38},
+					{0.39, 0.33, 0.32, 0.30, 0.31, 0.30, 1.00, 0.28, 0.31, 0.31, 0.30, 0.26},
+					{0.34, 0.40, 0.35, 0.34, 0.35, 0.34, 0.28, 1.00, 0.34, 0.35, 0.33, 0.30},
+					{0.37, 0.41, 0.41, 0.39, 0.40, 0.38, 0.31, 0.34, 1.00, 0.40, 0.37, 0.32},
+					{0.39, 0.44, 0.42, 0.43, 0.44, 0.40, 0.31, 0.35, 0.40, 1.00, 0.40, 0.35},
+					{0.37, 0.43, 0.40, 0.39, 0.42, 0.39, 0.30, 0.33, 0.37, 0.40, 1.00, 0.34},
+					{0.31, 0.37, 0.36, 0.36, 0.37, 0.38, 0.26, 0.30, 0.32, 0.35, 0.34, 1.00}
+				}
+			);
+
+			return true;
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return false;
+	}
 
 	/**
 	 * Initial the Credit Qualifying Settings
@@ -165,6 +227,46 @@ public class CreditQualifyingSettings
 					238.
 				)
 			);
+
+			s_BucketMap.put (
+				9,
+				new org.drip.simm20.risk.CreditQualifyingBucket (
+					9,
+					CreditQualifyingSystemics.CREDIT_QUALITY_HIGH_YIELD,
+					CreditQualifyingSystemics.SECTOR_BASIC_MATERIALS,
+					151.
+				)
+			);
+
+			s_BucketMap.put (
+				10,
+				new org.drip.simm20.risk.CreditQualifyingBucket (
+					10,
+					CreditQualifyingSystemics.CREDIT_QUALITY_HIGH_YIELD,
+					CreditQualifyingSystemics.SECTOR_CONSUMER,
+					210.
+				)
+			);
+
+			s_BucketMap.put (
+				11,
+				new org.drip.simm20.risk.CreditQualifyingBucket (
+					11,
+					CreditQualifyingSystemics.CREDIT_QUALITY_HIGH_YIELD,
+					CreditQualifyingSystemics.SECTOR_TECHNOLOGY,
+					141.
+				)
+			);
+
+			s_BucketMap.put (
+				12,
+				new org.drip.simm20.risk.CreditQualifyingBucket (
+					12,
+					CreditQualifyingSystemics.CREDIT_QUALITY_HIGH_YIELD,
+					CreditQualifyingSystemics.SECTOR_NON_FINANCIAL,
+					102.
+				)
+			);
 		}
 		catch (java.lang.Exception e)
 		{
@@ -173,9 +275,19 @@ public class CreditQualifyingSettings
 			return false;
 		}
 
-		return true;
+		return SetUpCrossBucketCorrelation();
 	}
 
+	/**
+	 * Retrieve the Set of Bucket Indexes available
+	 * 
+	 * @return The Set of Bucket Indexes available
+	 */
+
+	public static final java.util.Set<java.lang.Integer> BucketSet()
+	{
+		return s_BucketMap.keySet();
+	}
 	/**
 	 * Indicate if the Bucket denoted by the Number is available
 	 * 
@@ -202,6 +314,17 @@ public class CreditQualifyingSettings
 		final int bucketNumber)
 	{
 		return ContainsBucket (bucketNumber) ? s_BucketMap.get (bucketNumber) : null;
+	}
+
+	/**
+	 * Retrieve the Cross Bucket Correlation
+	 * 
+	 * @return The Cross Bucket Correlation
+	 */
+
+	public static final org.drip.measure.stochastic.LabelCorrelation CrossBucketCorrelation()
+	{
+		return s_CrossBucketCorrelation;
 	}
 
 	/**
