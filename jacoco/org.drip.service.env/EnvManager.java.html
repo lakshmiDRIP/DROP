@@ -213,17 +213,23 @@ package org.drip.service.env;
 <span class="nc" id="L213">			return null;</span>
 		}
 
-<span class="pc bpc" id="L216" title="1 of 2 branches missed.">		if (s_bInvocationCapture)</span>
-		{
-<span class="pc bpc" id="L218" title="1 of 2 branches missed.">			if (!org.drip.service.env.InvocationManager.Setup())</span>
-			{
-<span class="nc" id="L220">				System.out.println (&quot;EnvManager::InitEnv =&gt; Cannot Setup Invocation Manager!&quot;);</span>
+<span class="pc bpc" id="L216" title="1 of 2 branches missed.">		if (!org.drip.simm20.parameters.ISDASettingsContainer.Init()) {</span>
+<span class="nc" id="L217">			System.out.println (&quot;EnvManager::InitEnv =&gt; Cannot Initialize ISDA SIMM 2.0 Specifications!&quot;);</span>
 
-<span class="nc" id="L222">				return null;</span>
+<span class="nc" id="L219">			return null;</span>
+		}
+
+<span class="pc bpc" id="L222" title="1 of 2 branches missed.">		if (s_bInvocationCapture)</span>
+		{
+<span class="pc bpc" id="L224" title="1 of 2 branches missed.">			if (!org.drip.service.env.InvocationManager.Setup())</span>
+			{
+<span class="nc" id="L226">				System.out.println (&quot;EnvManager::InitEnv =&gt; Cannot Setup Invocation Manager!&quot;);</span>
+
+<span class="nc" id="L228">				return null;</span>
 			}
 		}
 
-<span class="fc" id="L226">		return org.drip.param.config.ConfigLoader.OracleInit (strConfig);</span>
+<span class="fc" id="L232">		return org.drip.param.config.ConfigLoader.OracleInit (strConfig);</span>
 	}
 
 	/**
@@ -237,7 +243,7 @@ package org.drip.service.env;
 	public static final java.sql.Statement InitEnv (
 		final java.lang.String strConfig)
 	{
-<span class="fc" id="L240">		return InitEnv (</span>
+<span class="fc" id="L246">		return InitEnv (</span>
 			strConfig,
 			true
 		);
@@ -251,7 +257,7 @@ package org.drip.service.env;
 
 	public static final boolean TerminateEnv()
 	{
-<span class="pc bpc" id="L254" title="1 of 2 branches missed.">		return s_bInvocationCapture ? org.drip.service.env.InvocationManager.Terminate() : true;</span>
+<span class="pc bpc" id="L260" title="1 of 2 branches missed.">		return s_bInvocationCapture ? org.drip.service.env.InvocationManager.Terminate() : true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

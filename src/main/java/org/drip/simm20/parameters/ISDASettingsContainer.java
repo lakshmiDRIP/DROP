@@ -90,6 +90,11 @@ public class ISDASettingsContainer
 			return false;
 		}
 
+		if (!org.drip.simm20.parameters.CreditNonQualifyingSettings.Init())
+		{
+			return false;
+		}
+
 		return true;
 	}
 }

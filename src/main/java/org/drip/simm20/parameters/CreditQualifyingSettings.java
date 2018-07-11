@@ -1,8 +1,6 @@
 
 package org.drip.simm20.parameters;
 
-import org.drip.simm20.risk.CreditQualifyingSystemics;
-
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -72,34 +70,33 @@ import org.drip.simm20.risk.CreditQualifyingSystemics;
 
 public class CreditQualifyingSettings
 {
-
 	private static org.drip.measure.stochastic.LabelCorrelation s_CrossBucketCorrelation = null;
 
-	private static final java.util.Map<java.lang.Integer, org.drip.simm20.risk.CreditQualifyingBucket>
+	private static final java.util.Map<java.lang.Integer, org.drip.simm20.risk.CreditBucket>
 		s_BucketMap = new java.util.TreeMap<java.lang.Integer,
-			org.drip.simm20.risk.CreditQualifyingBucket>();
+			org.drip.simm20.risk.CreditBucket>();
 
 	private static final boolean SetUpCrossBucketCorrelation()
 	{
 		java.util.List<java.lang.String> bucketList = new java.util.ArrayList<java.lang.String>();
 
-		bucketList.add ("1");
+		bucketList.add ("01");
 
-		bucketList.add ("2");
+		bucketList.add ("02");
 
-		bucketList.add ("3");
+		bucketList.add ("03");
 
-		bucketList.add ("4");
+		bucketList.add ("04");
 
-		bucketList.add ("5");
+		bucketList.add ("05");
 
-		bucketList.add ("6");
+		bucketList.add ("06");
 
-		bucketList.add ("7");
+		bucketList.add ("07");
 
-		bucketList.add ("8");
+		bucketList.add ("08");
 
-		bucketList.add ("9");
+		bucketList.add ("09");
 
 		bucketList.add ("10");
 
@@ -149,121 +146,131 @@ public class CreditQualifyingSettings
 		try
 		{
 			s_BucketMap.put (
+				-1,
+				new org.drip.simm20.risk.CreditBucket (
+					-1,
+					org.drip.simm20.risk.CreditSystemics.CREDIT_QUALITY_UNSPECIFIED,
+					org.drip.simm20.risk.SectorSystemics.RESIDUAL,
+					238.
+				)
+			);
+
+			s_BucketMap.put (
 				1,
-				new org.drip.simm20.risk.CreditQualifyingBucket (
+				new org.drip.simm20.risk.CreditBucket (
 					1,
-					CreditQualifyingSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
-					CreditQualifyingSystemics.SECTOR_SOVEREIGNS,
+					org.drip.simm20.risk.CreditSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
+					org.drip.simm20.risk.SectorSystemics.SOVEREIGNS,
 					85.
 				)
 			);
 
 			s_BucketMap.put (
 				2,
-				new org.drip.simm20.risk.CreditQualifyingBucket (
+				new org.drip.simm20.risk.CreditBucket (
 					2,
-					CreditQualifyingSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
-					CreditQualifyingSystemics.SECTOR_FINANCIALS,
+					org.drip.simm20.risk.CreditSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
+					org.drip.simm20.risk.SectorSystemics.FINANCIALS,
 					85.
 				)
 			);
 
 			s_BucketMap.put (
 				3,
-				new org.drip.simm20.risk.CreditQualifyingBucket (
+				new org.drip.simm20.risk.CreditBucket (
 					3,
-					CreditQualifyingSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
-					CreditQualifyingSystemics.SECTOR_BASIC_MATERIALS,
+					org.drip.simm20.risk.CreditSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
+					org.drip.simm20.risk.SectorSystemics.BASIC_MATERIALS,
 					73.
 				)
 			);
 
 			s_BucketMap.put (
 				4,
-				new org.drip.simm20.risk.CreditQualifyingBucket (
+				new org.drip.simm20.risk.CreditBucket (
 					4,
-					CreditQualifyingSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
-					CreditQualifyingSystemics.SECTOR_CONSUMER,
+					org.drip.simm20.risk.CreditSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
+					org.drip.simm20.risk.SectorSystemics.CONSUMER,
 					49.
 				)
 			);
 
 			s_BucketMap.put (
 				5,
-				new org.drip.simm20.risk.CreditQualifyingBucket (
+				new org.drip.simm20.risk.CreditBucket (
 					5,
-					CreditQualifyingSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
-					CreditQualifyingSystemics.SECTOR_TECHNOLOGY,
+					org.drip.simm20.risk.CreditSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
+					org.drip.simm20.risk.SectorSystemics.TMT,
 					48.
 				)
 			);
 
 			s_BucketMap.put (
 				6,
-				new org.drip.simm20.risk.CreditQualifyingBucket (
+				new org.drip.simm20.risk.CreditBucket (
 					6,
-					CreditQualifyingSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
-					CreditQualifyingSystemics.SECTOR_NON_FINANCIAL,
+					org.drip.simm20.risk.CreditSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
+					org.drip.simm20.risk.SectorSystemics.LOCAL_SERVICES,
 					43.
 				)
 			);
 
 			s_BucketMap.put (
 				7,
-				new org.drip.simm20.risk.CreditQualifyingBucket (
+				new org.drip.simm20.risk.CreditBucket (
 					7,
-					CreditQualifyingSystemics.CREDIT_QUALITY_HIGH_YIELD,
-					CreditQualifyingSystemics.SECTOR_BASIC_MATERIALS,
+					org.drip.simm20.risk.CreditSystemics.CREDIT_QUALITY_HIGH_YIELD,
+					org.drip.simm20.risk.SectorSystemics.BASIC_MATERIALS,
 					161.
 				)
 			);
 
 			s_BucketMap.put (
 				8,
-				new org.drip.simm20.risk.CreditQualifyingBucket (
+				new org.drip.simm20.risk.CreditBucket (
 					8,
-					CreditQualifyingSystemics.CREDIT_QUALITY_HIGH_YIELD,
-					CreditQualifyingSystemics.SECTOR_FINANCIALS,
+					org.drip.simm20.risk.CreditSystemics.CREDIT_QUALITY_HIGH_YIELD,
+					org.drip.simm20.risk.SectorSystemics.FINANCIALS,
 					238.
 				)
 			);
 
 			s_BucketMap.put (
 				9,
-				new org.drip.simm20.risk.CreditQualifyingBucket (
+				new org.drip.simm20.risk.CreditBucket (
 					9,
-					CreditQualifyingSystemics.CREDIT_QUALITY_HIGH_YIELD,
-					CreditQualifyingSystemics.SECTOR_BASIC_MATERIALS,
+					org.drip.simm20.risk.CreditSystemics.CREDIT_QUALITY_HIGH_YIELD,
+					org.drip.simm20.risk.SectorSystemics.BASIC_MATERIALS,
 					151.
 				)
 			);
 
 			s_BucketMap.put (
 				10,
-				new org.drip.simm20.risk.CreditQualifyingBucket (
+				new org.drip.simm20.risk.CreditBucket (
 					10,
-					CreditQualifyingSystemics.CREDIT_QUALITY_HIGH_YIELD,
-					CreditQualifyingSystemics.SECTOR_CONSUMER,
+					org.drip.simm20.risk.CreditSystemics.CREDIT_QUALITY_HIGH_YIELD,
+					org.drip.simm20.risk.SectorSystemics.CONSUMER,
 					210.
 				)
 			);
 
 			s_BucketMap.put (
 				11,
-				new org.drip.simm20.risk.CreditQualifyingBucket (
+				new org.drip.simm20.risk.CreditBucket (
 					11,
-					CreditQualifyingSystemics.CREDIT_QUALITY_HIGH_YIELD,
-					CreditQualifyingSystemics.SECTOR_TECHNOLOGY,
+					org.drip.simm20.risk.CreditSystemics.CREDIT_QUALITY_HIGH_YIELD,
+					org.drip.simm20.risk.SectorSystemics.TMT,
 					141.
 				)
 			);
 
 			s_BucketMap.put (
 				12,
-				new org.drip.simm20.risk.CreditQualifyingBucket (
+				new org.drip.simm20.risk.CreditBucket (
 					12,
-					CreditQualifyingSystemics.CREDIT_QUALITY_HIGH_YIELD,
-					CreditQualifyingSystemics.SECTOR_NON_FINANCIAL,
+					org.drip.simm20.risk.CreditSystemics.CREDIT_QUALITY_HIGH_YIELD,
+					org.drip.simm20.risk.SectorSystemics.LOCAL_SERVICES,
 					102.
 				)
 			);
@@ -310,7 +317,7 @@ public class CreditQualifyingSettings
 	 * @return The Bucket denoted by the Number
 	 */
 
-	public static final org.drip.simm20.risk.CreditQualifyingBucket Bucket (
+	public static final org.drip.simm20.risk.CreditBucket Bucket (
 		final int bucketNumber)
 	{
 		return ContainsBucket (bucketNumber) ? s_BucketMap.get (bucketNumber) : null;
@@ -333,7 +340,7 @@ public class CreditQualifyingSettings
 	 * @return The Bucket Map
 	 */
 
-	public static final java.util.Map<java.lang.Integer, org.drip.simm20.risk.CreditQualifyingBucket>
+	public static final java.util.Map<java.lang.Integer, org.drip.simm20.risk.CreditBucket>
 		BucketMap()
 	{
 		return s_BucketMap;

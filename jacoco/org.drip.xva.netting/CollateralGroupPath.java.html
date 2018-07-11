@@ -210,16 +210,16 @@ public class CollateralGroupPath
 
 	public double[] vertexUncollateralizedExposure()
 	{
-<span class="nc" id="L213">		int vertexCount = _collateralGroupVertexArray.length;</span>
-<span class="nc" id="L214">		double[] uncollateralizedExposure = new double[vertexCount];</span>
+<span class="fc" id="L213">		int vertexCount = _collateralGroupVertexArray.length;</span>
+<span class="fc" id="L214">		double[] uncollateralizedExposure = new double[vertexCount];</span>
 
-<span class="nc bnc" id="L216" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L216" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="nc" id="L218">			uncollateralizedExposure[vertexIndex] =</span>
-<span class="nc" id="L219">				_collateralGroupVertexArray[vertexIndex].uncollateralized();</span>
+<span class="fc" id="L218">			uncollateralizedExposure[vertexIndex] =</span>
+<span class="fc" id="L219">				_collateralGroupVertexArray[vertexIndex].uncollateralized();</span>
 		}
 
-<span class="nc" id="L222">		return uncollateralizedExposure;</span>
+<span class="fc" id="L222">		return uncollateralizedExposure;</span>
 	}
 
 	/**
@@ -230,20 +230,20 @@ public class CollateralGroupPath
 
 	public double[] vertexUncollateralizedExposurePV()
 	{
-<span class="nc" id="L233">		int vertexCount = _collateralGroupVertexArray.length;</span>
-<span class="nc" id="L234">		double[] uncollateralizedExposurePV = new double[vertexCount];</span>
+<span class="fc" id="L233">		int vertexCount = _collateralGroupVertexArray.length;</span>
+<span class="fc" id="L234">		double[] uncollateralizedExposurePV = new double[vertexCount];</span>
 
-<span class="nc" id="L236">		org.drip.analytics.date.JulianDate[] vertexDateArray = _marketPath.anchorDates();</span>
+<span class="fc" id="L236">		org.drip.analytics.date.JulianDate[] vertexDateArray = _marketPath.anchorDates();</span>
 
-<span class="nc bnc" id="L238" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L238" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="nc" id="L240">			uncollateralizedExposurePV[vertexIndex] =</span>
-<span class="nc" id="L241">				_collateralGroupVertexArray[vertexIndex].uncollateralized() *</span>
+<span class="fc" id="L240">			uncollateralizedExposurePV[vertexIndex] =</span>
+<span class="fc" id="L241">				_collateralGroupVertexArray[vertexIndex].uncollateralized() *</span>
 				_overnightReplicatorStart /
-<span class="nc" id="L243">				_marketPath.marketVertex (vertexDateArray[vertexIndex].julian()).overnightReplicator();</span>
+<span class="fc" id="L243">				_marketPath.marketVertex (vertexDateArray[vertexIndex].julian()).overnightReplicator();</span>
 		}
 
-<span class="nc" id="L246">		return uncollateralizedExposurePV;</span>
+<span class="fc" id="L246">		return uncollateralizedExposurePV;</span>
 	}
 
 	/**

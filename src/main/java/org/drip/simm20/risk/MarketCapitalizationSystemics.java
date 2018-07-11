@@ -1,5 +1,5 @@
 
-package org.drip.simm20.parameters;
+package org.drip.simm20.risk;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,8 +47,8 @@ package org.drip.simm20.parameters;
  */
 
 /**
- * SameBucketSensitivitiesCorrelation contains the between the Same/Different Issuer/Seniority and Different
- * 	Vertex/Currency for the Same Credit Qualifying Buckets. The References are:
+ * MarketCapitalizationSystemics contains the Systemic Settings that contain the Market Capitalization
+ * 	Classification. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -69,30 +69,18 @@ package org.drip.simm20.parameters;
  * @author Lakshmi Krishnamurthy
  */
 
-public class SameBucketSensitivitiesCorrelation
+public class MarketCapitalizationSystemics
 {
 
 	/**
-	 * Correlation between Sensitivities having Same Issuer/Seniority falling under the Same Regular Bucket
+	 * The "Large" Market Capitalization
 	 */
 
-	public static final double SAME_ISSUER_SENIORITY_NON_RESIDUAL = 0.97;
+	public static final java.lang.String LARGE = "LARGE";
 
 	/**
-	 * Correlation between Sensitivities having Different Issuer/Seniority falling under Same Regular Bucket
+	 * The "Small" Market Capitalization
 	 */
 
-	public static final double DIFFERENT_ISSUER_SENIORITY_NON_RESIDUAL = 0.45;
-
-	/**
-	 * Correlation between Sensitivities having Same Issuer/Seniority falling under the Same Residual Bucket
-	 */
-
-	public static final double SAME_ISSUER_SENIORITY_RESIDUAL = 0.50;
-
-	/**
-	 * Correlation between Sensitivities having Different Issuer/Seniority falling under Same Residual Bucket
-	 */
-
-	public static final double DIFFERENT_ISSUER_SENIORITY_RESIDUAL = 0.50;
+	public static final java.lang.String SMALL = "SMALL";
 }

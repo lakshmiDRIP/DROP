@@ -1,14 +1,16 @@
 
 package org.drip.sample.simm20;
 
+import java.util.List;
 import java.util.Set;
 
+import org.drip.measure.stochastic.LabelCorrelation;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.simm20.risk.CreditQualifyingSystemics;
 import org.drip.simm20.parameters.CreditQualifyingSettings;
-import org.drip.simm20.parameters.SameBucketSensitivitiesCorrelation;
-import org.drip.simm20.risk.CreditQualifyingBucket;
+import org.drip.simm20.parameters.CreditQualifyingBucketCorrelation;
+import org.drip.simm20.risk.CreditBucket;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -117,7 +119,7 @@ public class CreditQualifyingRiskWeights
 
 		for (int bucketIndex : bucketIndexSet)
 		{
-			CreditQualifyingBucket creditQualifyingBucket = CreditQualifyingSettings.Bucket (bucketIndex);
+			CreditBucket creditQualifyingBucket = CreditQualifyingSettings.Bucket (bucketIndex);
 
 			String sectorArrayDump = "";
 
@@ -144,6 +146,12 @@ public class CreditQualifyingRiskWeights
 
 	private static final void CreditQualifyingSystemics()
 	{
+		System.out.println ("\t||----------------------------------------------------------------||");
+
+		System.out.println ("\t||                  CREDIT QUALIFYING SYSTEMICS                   ||");
+
+		System.out.println ("\t||----------------------------------------------------------------||");
+
 		System.out.println (
 			"\t|| Residual Bucket Risk Weight                         => " +
 			FormatUtil.FormatDouble (
@@ -175,30 +183,86 @@ public class CreditQualifyingRiskWeights
 		System.out.println (
 			"\t|| Non-Residual Same Issuer/Seniority Correlation      => " +
 			FormatUtil.FormatDouble (
-				SameBucketSensitivitiesCorrelation.SAME_ISSUER_SENIORITY_NON_RESIDUAL, 3, 2, 1.
+				CreditQualifyingBucketCorrelation.SAME_ISSUER_SENIORITY_NON_RESIDUAL, 3, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Non-Residual Different Issuer/Seniority Correlation => " +
 			FormatUtil.FormatDouble (
-				SameBucketSensitivitiesCorrelation.DIFFERENT_ISSUER_SENIORITY_NON_RESIDUAL, 3, 2, 1.
+				CreditQualifyingBucketCorrelation.DIFFERENT_ISSUER_SENIORITY_NON_RESIDUAL, 3, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Residual Same Issuer/Seniority Correlation          => " +
 			FormatUtil.FormatDouble (
-				SameBucketSensitivitiesCorrelation.SAME_ISSUER_SENIORITY_RESIDUAL, 3, 2, 1.
+				CreditQualifyingBucketCorrelation.SAME_ISSUER_SENIORITY_RESIDUAL, 3, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Residual Different Issuer/Seniority Correlation     => " +
 			FormatUtil.FormatDouble (
-				SameBucketSensitivitiesCorrelation.DIFFERENT_ISSUER_SENIORITY_RESIDUAL, 3, 2, 1.
+				CreditQualifyingBucketCorrelation.DIFFERENT_ISSUER_SENIORITY_RESIDUAL, 3, 2, 1.
 			) + " ||"
 		);
+
+		System.out.println ("\t||----------------------------------------------------------------||");
+
+		System.out.println();
+	}
+
+	private static final void CrossBucketCorrelation()
+		throws Exception
+	{
+		LabelCorrelation crossBucketCorrelation = CreditQualifyingSettings.CrossBucketCorrelation();
+
+		List<String> bucketList = crossBucketCorrelation.labelList();
+
+		System.out.println
+			("\t||------------------------------------------------------------------------------------------||");
+
+		System.out.println
+			("\t||                             CROSS BUCKET TENOR CORRELATION                               ||");
+
+		System.out.println
+			("\t||------------------------------------------------------------------------------------------||");
+
+		String rowDump = "\t||     ";
+
+		for (String tenor : bucketList)
+		{
+			rowDump = rowDump + "   " + tenor + "  ";
+		}
+
+		System.out.println (rowDump + " ||");
+
+		System.out.println
+			("\t||------------------------------------------------------------------------------------------||");
+
+		for (String innerBucket : bucketList)
+		{
+			rowDump = "\t|| " + innerBucket + "  ";
+
+			for (String outerBucket : bucketList)
+			{
+				rowDump = rowDump + " " +
+					FormatUtil.FormatDouble (
+						crossBucketCorrelation.entry (
+							innerBucket,
+							outerBucket
+						), 3, 0, 100.
+					) + "% ";
+			}
+
+			System.out.println (rowDump + " ||");
+		}
+
+		System.out.println
+			("\t||------------------------------------------------------------------------------------------||");
+
+		System.out.println();
 	}
 
 	public static final void main (
@@ -210,6 +274,8 @@ public class CreditQualifyingRiskWeights
 		DisplayRiskWeights();
 
 		CreditQualifyingSystemics();
+
+		CrossBucketCorrelation();
 
 		EnvManager.TerminateEnv();
 	}

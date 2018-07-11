@@ -51,7 +51,7 @@ package org.drip.execution.principal;
 /**
  * OptimalMeasureDependence contains the Dependence Exponents on Liquidity, Trade Size, and Permanent Impact
  * 	Adjusted Principal Discount for the Optimal Principal Horizon and the Optional Information Ratio. It also
- *  holds the Constant . The References are:
+ *  holds the Constant. The References are:
  * 
  * 	- Almgren, R., and N. Chriss (1999): Value under Liquidation, Risk 12 (12).
  * 
