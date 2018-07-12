@@ -47,7 +47,8 @@ package org.drip.simm20.parameters;
  */
 
 /**
- * CreditQualifyingSettings holds the ISDA SIMM 2.0 Credit Qualifying Buckets. The References are:
+ * CreditNonQualifyingSettingsContainer holds the ISDA SIMM 2.0 Credit Non-Qualifying Buckets. The References
+ *  are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -68,72 +69,12 @@ package org.drip.simm20.parameters;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CreditQualifyingSettings
+public class CreditNonQualifyingSettingsContainer
 {
-	private static org.drip.measure.stochastic.LabelCorrelation s_CrossBucketCorrelation = null;
-
 	private static final java.util.Map<java.lang.Integer, org.drip.simm20.risk.CreditBucket>
 		s_BucketMap = new java.util.TreeMap<java.lang.Integer,
 			org.drip.simm20.risk.CreditBucket>();
 
-	private static final boolean SetUpCrossBucketCorrelation()
-	{
-		java.util.List<java.lang.String> bucketList = new java.util.ArrayList<java.lang.String>();
-
-		bucketList.add ("01");
-
-		bucketList.add ("02");
-
-		bucketList.add ("03");
-
-		bucketList.add ("04");
-
-		bucketList.add ("05");
-
-		bucketList.add ("06");
-
-		bucketList.add ("07");
-
-		bucketList.add ("08");
-
-		bucketList.add ("09");
-
-		bucketList.add ("10");
-
-		bucketList.add ("11");
-
-		bucketList.add ("12");
-
-		try
-		{
-			s_CrossBucketCorrelation = new org.drip.measure.stochastic.LabelCorrelation (
-				bucketList,
-				new double[][]
-				{
-					{1.00, 0.42, 0.39, 0.39, 0.40, 0.38, 0.39, 0.34, 0.37, 0.39, 0.37, 0.31},
-					{0.42, 1.00, 0.44, 0.45, 0.47, 0.45, 0.33, 0.40, 0.41, 0.44, 0.43, 0.47},
-					{0.39, 0.44, 1.00, 0.43, 0.45, 0.43, 0.32, 0.35, 0.41, 0.42, 0.40, 0.36},
-					{0.39, 0.45, 0.43, 1.00, 0.47, 0.44, 0.30, 0.34, 0.39, 0.43, 0.39, 0.36},
-					{0.40, 0.47, 0.45, 0.47, 1.00, 0.47, 0.31, 0.35, 0.40, 0.44, 0.42, 0.37},
-					{0.38, 0.45, 0.43, 0.44, 0.47, 1.00, 0.30, 0.34, 0.38, 0.40, 0.39, 0.38},
-					{0.39, 0.33, 0.32, 0.30, 0.31, 0.30, 1.00, 0.28, 0.31, 0.31, 0.30, 0.26},
-					{0.34, 0.40, 0.35, 0.34, 0.35, 0.34, 0.28, 1.00, 0.34, 0.35, 0.33, 0.30},
-					{0.37, 0.41, 0.41, 0.39, 0.40, 0.38, 0.31, 0.34, 1.00, 0.40, 0.37, 0.32},
-					{0.39, 0.44, 0.42, 0.43, 0.44, 0.40, 0.31, 0.35, 0.40, 1.00, 0.40, 0.35},
-					{0.37, 0.43, 0.40, 0.39, 0.42, 0.39, 0.30, 0.33, 0.37, 0.40, 1.00, 0.34},
-					{0.31, 0.37, 0.36, 0.36, 0.37, 0.38, 0.26, 0.30, 0.32, 0.35, 0.34, 1.00}
-				}
-			);
-
-			return true;
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return false;
-	}
 
 	/**
 	 * Initial the Credit Qualifying Settings
@@ -151,7 +92,7 @@ public class CreditQualifyingSettings
 					-1,
 					org.drip.simm20.risk.CreditSystemics.CREDIT_QUALITY_UNSPECIFIED,
 					org.drip.simm20.risk.SectorSystemics.RESIDUAL,
-					238.
+					2000.
 				)
 			);
 
@@ -160,8 +101,8 @@ public class CreditQualifyingSettings
 				new org.drip.simm20.risk.CreditBucket (
 					1,
 					org.drip.simm20.risk.CreditSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
-					org.drip.simm20.risk.SectorSystemics.SOVEREIGNS,
-					85.
+					org.drip.simm20.risk.SectorSystemics.RMBS_CMBS,
+					140.
 				)
 			);
 
@@ -169,109 +110,9 @@ public class CreditQualifyingSettings
 				2,
 				new org.drip.simm20.risk.CreditBucket (
 					2,
-					org.drip.simm20.risk.CreditSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
-					org.drip.simm20.risk.SectorSystemics.FINANCIALS,
-					85.
-				)
-			);
-
-			s_BucketMap.put (
-				3,
-				new org.drip.simm20.risk.CreditBucket (
-					3,
-					org.drip.simm20.risk.CreditSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
-					org.drip.simm20.risk.SectorSystemics.BASIC_MATERIALS,
-					73.
-				)
-			);
-
-			s_BucketMap.put (
-				4,
-				new org.drip.simm20.risk.CreditBucket (
-					4,
-					org.drip.simm20.risk.CreditSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
-					org.drip.simm20.risk.SectorSystemics.CONSUMER,
-					49.
-				)
-			);
-
-			s_BucketMap.put (
-				5,
-				new org.drip.simm20.risk.CreditBucket (
-					5,
-					org.drip.simm20.risk.CreditSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
-					org.drip.simm20.risk.SectorSystemics.TMT,
-					48.
-				)
-			);
-
-			s_BucketMap.put (
-				6,
-				new org.drip.simm20.risk.CreditBucket (
-					6,
-					org.drip.simm20.risk.CreditSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
-					org.drip.simm20.risk.SectorSystemics.LOCAL_SERVICES,
-					43.
-				)
-			);
-
-			s_BucketMap.put (
-				7,
-				new org.drip.simm20.risk.CreditBucket (
-					7,
 					org.drip.simm20.risk.CreditSystemics.CREDIT_QUALITY_HIGH_YIELD,
-					org.drip.simm20.risk.SectorSystemics.BASIC_MATERIALS,
-					161.
-				)
-			);
-
-			s_BucketMap.put (
-				8,
-				new org.drip.simm20.risk.CreditBucket (
-					8,
-					org.drip.simm20.risk.CreditSystemics.CREDIT_QUALITY_HIGH_YIELD,
-					org.drip.simm20.risk.SectorSystemics.FINANCIALS,
-					238.
-				)
-			);
-
-			s_BucketMap.put (
-				9,
-				new org.drip.simm20.risk.CreditBucket (
-					9,
-					org.drip.simm20.risk.CreditSystemics.CREDIT_QUALITY_HIGH_YIELD,
-					org.drip.simm20.risk.SectorSystemics.BASIC_MATERIALS,
-					151.
-				)
-			);
-
-			s_BucketMap.put (
-				10,
-				new org.drip.simm20.risk.CreditBucket (
-					10,
-					org.drip.simm20.risk.CreditSystemics.CREDIT_QUALITY_HIGH_YIELD,
-					org.drip.simm20.risk.SectorSystemics.CONSUMER,
-					210.
-				)
-			);
-
-			s_BucketMap.put (
-				11,
-				new org.drip.simm20.risk.CreditBucket (
-					11,
-					org.drip.simm20.risk.CreditSystemics.CREDIT_QUALITY_HIGH_YIELD,
-					org.drip.simm20.risk.SectorSystemics.TMT,
-					141.
-				)
-			);
-
-			s_BucketMap.put (
-				12,
-				new org.drip.simm20.risk.CreditBucket (
-					12,
-					org.drip.simm20.risk.CreditSystemics.CREDIT_QUALITY_HIGH_YIELD,
-					org.drip.simm20.risk.SectorSystemics.LOCAL_SERVICES,
-					102.
+					org.drip.simm20.risk.SectorSystemics.RMBS_CMBS,
+					2000.
 				)
 			);
 		}
@@ -282,7 +123,7 @@ public class CreditQualifyingSettings
 			return false;
 		}
 
-		return SetUpCrossBucketCorrelation();
+		return true;
 	}
 
 	/**
@@ -323,16 +164,6 @@ public class CreditQualifyingSettings
 		return ContainsBucket (bucketNumber) ? s_BucketMap.get (bucketNumber) : null;
 	}
 
-	/**
-	 * Retrieve the Cross Bucket Correlation
-	 * 
-	 * @return The Cross Bucket Correlation
-	 */
-
-	public static final org.drip.measure.stochastic.LabelCorrelation CrossBucketCorrelation()
-	{
-		return s_CrossBucketCorrelation;
-	}
 
 	/**
 	 * Retrieve the Bucket Map

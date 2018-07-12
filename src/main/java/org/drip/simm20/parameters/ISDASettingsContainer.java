@@ -80,17 +80,22 @@ public class ISDASettingsContainer
 
 	public static final boolean Init()
 	{
-		if (!org.drip.simm20.parameters.InterestRateSettings.Init())
+		if (!org.drip.simm20.parameters.InterestRateSettingsContainer.Init())
 		{
 			return false;
 		}
 
-		if (!org.drip.simm20.parameters.CreditQualifyingSettings.Init())
+		if (!org.drip.simm20.parameters.CreditQualifyingSettingsContainer.Init())
 		{
 			return false;
 		}
 
-		if (!org.drip.simm20.parameters.CreditNonQualifyingSettings.Init())
+		if (!org.drip.simm20.parameters.CreditNonQualifyingSettingsContainer.Init())
+		{
+			return false;
+		}
+
+		if (!org.drip.simm20.parameters.EquitySettingsContainer.Init())
 		{
 			return false;
 		}

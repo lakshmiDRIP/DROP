@@ -1,5 +1,5 @@
 
-package org.drip.simm20.parameters;
+package org.drip.simm20.risk;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,7 +47,8 @@ package org.drip.simm20.parameters;
  */
 
 /**
- * CreditNonQualifyingSettings holds the ISDA SIMM 2.0 Credit Non-Qualifying Buckets. The References are:
+ * EquityBucket holds the ISDA SIMM 2.0 Region, Sector, Member Correlation, and Risk Weights for a given
+ *  Equity Issuer Exposure Bucket. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -68,111 +69,127 @@ package org.drip.simm20.parameters;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CreditNonQualifyingSettings
+public class EquityBucket
 {
-	private static final java.util.Map<java.lang.Integer, org.drip.simm20.risk.CreditBucket>
-		s_BucketMap = new java.util.TreeMap<java.lang.Integer,
-			org.drip.simm20.risk.CreditBucket>();
-
+	private int _number = -1;
+	private java.lang.String _size = "";
+	private java.lang.String _region = "";
+	private java.lang.String[] _sectorArray = null;
+	private double _riskWeight = java.lang.Double.NaN;
+	private double _vegaRiskWeight = java.lang.Double.NaN;
+	private double _memberCorrelation = java.lang.Double.NaN;
 
 	/**
-	 * Initial the Credit Qualifying Settings
+	 * EquityBucket Constructor
 	 * 
-	 * @return TRUE - The Credit Qualifying Settings successfully initialized
+	 * @param number Bucket Number
+	 * @param size Bucket Equity Market Capitalization Size
+	 * @param region Buket Region
+	 * @param sectorArray Bucket Sector Array
+	 * @param riskWeight Bucket Risk Weight
+	 * @param memberCorrelation Bucket Member Correlation
+	 * @param vegaRiskWeight The Vega Risk Weight
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final boolean Init()
+	public EquityBucket (
+		final int number,
+		final java.lang.String size,
+		final java.lang.String region,
+		final java.lang.String[] sectorArray,
+		final double riskWeight,
+		final double memberCorrelation,
+		final double vegaRiskWeight)
+		throws java.lang.Exception
 	{
-		try
+		if (null == (_size = size) || _size.isEmpty() ||
+			null == (_region = region) || _region.isEmpty() ||
+			null == (_sectorArray = sectorArray) || 0 == _sectorArray.length ||
+			!org.drip.quant.common.NumberUtil.IsValid (_riskWeight = riskWeight) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_memberCorrelation = memberCorrelation) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_vegaRiskWeight = vegaRiskWeight))
 		{
-			s_BucketMap.put (
-				-1,
-				new org.drip.simm20.risk.CreditBucket (
-					-1,
-					org.drip.simm20.risk.CreditSystemics.CREDIT_QUALITY_UNSPECIFIED,
-					org.drip.simm20.risk.SectorSystemics.RESIDUAL,
-					2000.
-				)
-			);
-
-			s_BucketMap.put (
-				1,
-				new org.drip.simm20.risk.CreditBucket (
-					1,
-					org.drip.simm20.risk.CreditSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
-					org.drip.simm20.risk.SectorSystemics.RMBS_CMBS,
-					140.
-				)
-			);
-
-			s_BucketMap.put (
-				2,
-				new org.drip.simm20.risk.CreditBucket (
-					2,
-					org.drip.simm20.risk.CreditSystemics.CREDIT_QUALITY_HIGH_YIELD,
-					org.drip.simm20.risk.SectorSystemics.RMBS_CMBS,
-					2000.
-				)
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-
-			return false;
+			throw new java.lang.Exception ("EquityBucket Constructor => Invalid Inputs");
 		}
 
-		return true;
+		_number = number;
 	}
 
 	/**
-	 * Retrieve the Set of Bucket Indexes available
+	 * Retrieve the Bucket Number
 	 * 
-	 * @return The Set of Bucket Indexes available
+	 * @return The Bucket Number
 	 */
 
-	public static final java.util.Set<java.lang.Integer> BucketSet()
+	public int number()
 	{
-		return s_BucketMap.keySet();
-	}
-	/**
-	 * Indicate if the Bucket denoted by the Number is available
-	 * 
-	 * @param bucketNumber The Bucket Number
-	 * 
-	 * @return TRUE - The Bucket denoted by the Number is available
-	 */
-
-	public static final boolean ContainsBucket (
-		final int bucketNumber)
-	{
-		return s_BucketMap.containsKey (bucketNumber);
+		return _number;
 	}
 
 	/**
-	 * Retrieve the Bucket denoted by the Number
+	 * Retrieve the Bucket Size
 	 * 
-	 * @param bucketNumber The Bucket Number
-	 * 
-	 * @return The Bucket denoted by the Number
+	 * @return The Bucket Size
 	 */
 
-	public static final org.drip.simm20.risk.CreditBucket Bucket (
-		final int bucketNumber)
+	public java.lang.String size()
 	{
-		return ContainsBucket (bucketNumber) ? s_BucketMap.get (bucketNumber) : null;
+		return _size;
 	}
 
-
 	/**
-	 * Retrieve the Bucket Map
+	 * Retrieve the Bucket Region
 	 * 
-	 * @return The Bucket Map
+	 * @return The Bucket Region
 	 */
 
-	public static final java.util.Map<java.lang.Integer, org.drip.simm20.risk.CreditBucket>
-		BucketMap()
+	public java.lang.String region()
 	{
-		return s_BucketMap;
+		return _region;
+	}
+
+	/**
+	 * Retrieve the Bucket Sector Array
+	 * 
+	 * @return The Bucket Sector Array
+	 */
+
+	public java.lang.String[] sectorArray()
+	{
+		return _sectorArray;
+	}
+
+	/**
+	 * Retrieve the Bucket Risk Weight
+	 * 
+	 * @return The Bucket Risk Weight
+	 */
+
+	public double riskWeight()
+	{
+		return _riskWeight;
+	}
+
+	/**
+	 * Retrieve the Correlation between the Bucket Members
+	 * 
+	 * @return Correlation between the Bucket Members
+	 */
+
+	public double memberCorrelation()
+	{
+		return _memberCorrelation;
+	}
+
+	/**
+	 * Retrieve the Bucket Vega Risk Weight
+	 * 
+	 * @return The Bucket Vega Risk Weight
+	 */
+
+	public double vegaRiskWeight()
+	{
+		return _vegaRiskWeight;
 	}
 }

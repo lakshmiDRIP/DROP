@@ -6,7 +6,7 @@ import java.util.Set;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.simm20.parameters.CreditNonQualifyingBucketCorrelation;
-import org.drip.simm20.parameters.CreditNonQualifyingSettings;
+import org.drip.simm20.parameters.CreditNonQualifyingSettingsContainer;
 import org.drip.simm20.risk.CreditNonQualifyingSystemics;
 import org.drip.simm20.risk.CreditBucket;
 
@@ -56,8 +56,8 @@ import org.drip.simm20.risk.CreditBucket;
  */
 
 /**
- * CreditNonQualifyingRiskWeights demonstrates the Extraction and Display of ISDA SIMM 2.0 Single/Cross
- *  Currency Credit Non-Qualifying Bucket Risk Weights and Correlations. The References are:
+ * CreditNonQualifyingSettings demonstrates the Extraction and Display of ISDA SIMM 2.0 Single/Cross Currency
+ *  Credit Non-Qualifying Bucket Risk Weights, Systemics, and Correlations. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -78,12 +78,12 @@ import org.drip.simm20.risk.CreditBucket;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CreditNonQualifyingRiskWeights
+public class CreditNonQualifyingSettings
 {
 
 	private static final void DisplayRiskWeights()
 	{
-		Set<Integer> bucketIndexSet = CreditNonQualifyingSettings.BucketSet();
+		Set<Integer> bucketIndexSet = CreditNonQualifyingSettingsContainer.BucketSet();
 
 		System.out.println
 			("\t||-------------------------------------------------------------------------------------------------------------||");
@@ -117,7 +117,7 @@ public class CreditNonQualifyingRiskWeights
 
 		for (int bucketIndex : bucketIndexSet)
 		{
-			CreditBucket creditQualifyingBucket = CreditNonQualifyingSettings.Bucket (bucketIndex);
+			CreditBucket creditQualifyingBucket = CreditNonQualifyingSettingsContainer.Bucket (bucketIndex);
 
 			String sectorArrayDump = "";
 
@@ -199,8 +199,6 @@ public class CreditNonQualifyingRiskWeights
 		DisplayRiskWeights();
 
 		CreditNonQualifyingSystemics();
-
-		// CrossBucketCorrelation();
 
 		EnvManager.TerminateEnv();
 	}

@@ -83,4 +83,16 @@ public class MarketCapitalizationSystemics
 	 */
 
 	public static final java.lang.String SMALL = "SMALL";
+
+	/**
+	 * The "All" Market Capitalization
+	 */
+
+	public static final java.lang.String ALL = "ALL";
+
+	/**
+	 * Cutoff for the Large Market Capitalization
+	 */
+
+	public static final double LARGE_MARKET_CAPITALIZATION_CUTOFF = 2.e+09;
 }

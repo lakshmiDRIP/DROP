@@ -47,8 +47,8 @@ package org.drip.simm20.parameters;
  */
 
 /**
- * InterestRateSettings holds the ISDA SIMM 2.0 Tenor Vertex Risk Weights/Correlations for Single Curves,
- * 	Cross Currencies, and Inflation. The References are:
+ * InterestRateSettingsContainer holds the ISDA SIMM 2.0 Tenor Vertex Risk Weights/Correlations for Single
+ *  Curves, Cross Currencies, and Inflation. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -69,7 +69,7 @@ package org.drip.simm20.parameters;
  * @author Lakshmi Krishnamurthy
  */
 
-public class InterestRateSettings
+public class InterestRateSettingsContainer
 {
 
 	private static org.drip.measure.stochastic.LabelCorrelation s_SingleCurveTenorCorrelation = null;

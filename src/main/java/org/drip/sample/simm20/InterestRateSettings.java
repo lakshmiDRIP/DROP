@@ -7,7 +7,7 @@ import java.util.Map;
 import org.drip.measure.stochastic.LabelCorrelation;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.simm20.parameters.InterestRateSettings;
+import org.drip.simm20.parameters.InterestRateSettingsContainer;
 import org.drip.simm20.risk.InterestRateSystemics;
 import org.drip.simm20.risk.InterestRateWeight;
 
@@ -57,8 +57,8 @@ import org.drip.simm20.risk.InterestRateWeight;
  */
 
 /**
- * InterestRateRiskWeights demonstrates the Extraction and Display of ISDA SIMM 2.0 Single/Cross Currency
- * 	Interest Rate Tenor Risk Weights and Correlations. The References are:
+ * InterestRateSettings demonstrates the Extraction and Display of ISDA SIMM 2.0 Single/Cross Currency
+ * 	Interest Rate Tenor Risk Weights, Systemics, and Correlations. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -79,7 +79,7 @@ import org.drip.simm20.risk.InterestRateWeight;
  * @author Lakshmi Krishnamurthy
  */
 
-public class InterestRateRiskWeights
+public class InterestRateSettings
 {
 
 	private static final void RegularVolatility()
@@ -93,7 +93,7 @@ public class InterestRateRiskWeights
 
 		System.out.println (
 			"\t|| Currency Set => " +
-			InterestRateSettings.RegularVolatilityCurrencySet() + " ||"
+			InterestRateSettingsContainer.RegularVolatilityCurrencySet() + " ||"
 		);
 
 		System.out.println ("\t||-----------------------------------------------------------------------------------||");
@@ -101,7 +101,7 @@ public class InterestRateRiskWeights
 		System.out.println
 			("\t||------------------------------------------------------------------------------------------------------------------------------------------------------||");
 
-		InterestRateWeight usdRiskWeight = InterestRateSettings.RiskWeight ("USD");
+		InterestRateWeight usdRiskWeight = InterestRateSettingsContainer.RiskWeight ("USD");
 
 		String tenorWeightSequence = "\t|| ";
 
@@ -130,7 +130,7 @@ public class InterestRateRiskWeights
 
 		System.out.println (
 			"\t|| Currency Set => " +
-			InterestRateSettings.LowVolatilityCurrencySet()
+			InterestRateSettingsContainer.LowVolatilityCurrencySet()
 		);
 
 		System.out.println ("\t||-----------------------------------------------------------------------------------||");
@@ -138,7 +138,7 @@ public class InterestRateRiskWeights
 		System.out.println
 			("\t||----------------------------------------------------------------------------------------------------------------------------------------------------||");
 
-		InterestRateWeight jpyRiskWeight = InterestRateSettings.RiskWeight ("JPY");
+		InterestRateWeight jpyRiskWeight = InterestRateSettingsContainer.RiskWeight ("JPY");
 
 		String tenorWeightSequence = "\t|| ";
 
@@ -167,7 +167,7 @@ public class InterestRateRiskWeights
 
 		System.out.println (
 			"\t|| Currency Set => " +
-			InterestRateSettings.HighVolatilityCurrencySet()
+			InterestRateSettingsContainer.HighVolatilityCurrencySet()
 		);
 
 		System.out.println ("\t||-----------------------------------------------------------------------------------||");
@@ -175,7 +175,7 @@ public class InterestRateRiskWeights
 		System.out.println
 			("\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------||");
 
-		InterestRateWeight inrRiskWeight = InterestRateSettings.RiskWeight ("INR");
+		InterestRateWeight inrRiskWeight = InterestRateSettingsContainer.RiskWeight ("INR");
 
 		String tenorWeightSequence = "\t|| ";
 
@@ -196,7 +196,7 @@ public class InterestRateRiskWeights
 	private static final void SingleCurrencyTenorCorrelation()
 		throws Exception
 	{
-		LabelCorrelation singleCurveTenorCorrelation = InterestRateSettings.SingleCurveTenorCorrelation();
+		LabelCorrelation singleCurveTenorCorrelation = InterestRateSettingsContainer.SingleCurveTenorCorrelation();
 
 		List<String> tenorList = singleCurveTenorCorrelation.labelList();
 

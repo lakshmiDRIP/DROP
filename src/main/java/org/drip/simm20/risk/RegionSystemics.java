@@ -88,4 +88,26 @@ public class RegionSystemics
 	 */
 
 	public static final java.lang.String ALL = "ALL";
+
+	/**
+	 * Array of Developed Countries
+	 */
+
+	public static final java.lang.String[] DEVELOPED_COUNTRIES = new java.lang.String[]
+	{
+		"Canada",
+		"US",
+		"Mexico",
+		"Euro Area",
+		"United Kingdom",
+		"Norway",
+		"Sweden",
+		"Denmark",
+		"Switzerland",
+		"Japan",
+		"Australia",
+		"New Zealand",
+		"Singapore",
+		"Hong Kong"
+	};
 }

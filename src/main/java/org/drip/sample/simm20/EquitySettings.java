@@ -7,10 +7,9 @@ import java.util.Set;
 import org.drip.measure.stochastic.LabelCorrelation;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.simm20.risk.CreditQualifyingSystemics;
-import org.drip.simm20.parameters.CreditQualifyingSettings;
-import org.drip.simm20.parameters.CreditQualifyingBucketCorrelation;
-import org.drip.simm20.risk.CreditBucket;
+import org.drip.simm20.parameters.EquitySettingsContainer;
+import org.drip.simm20.risk.EquitySystemics;
+import org.drip.simm20.risk.EquityBucket;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -58,8 +57,8 @@ import org.drip.simm20.risk.CreditBucket;
  */
 
 /**
- * CreditQualifyingRiskWeights demonstrates the Extraction and Display of ISDA SIMM 2.0 Single/Cross Currency
- * 	Credit Qualifying Bucket Risk Weights and Correlations. The References are:
+ * EquitySettings demonstrates the Extraction and Display of ISDA SIMM 2.0 Single/Cross Currency Equity
+ * 	Bucket Risk Weights, Correlations, and Systemics. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -80,18 +79,18 @@ import org.drip.simm20.risk.CreditBucket;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CreditQualifyingRiskWeights
+public class EquitySettings
 {
 
-	private static final void DisplayRiskWeights()
+	private static final void RiskWeights()
 	{
-		Set<Integer> bucketIndexSet = CreditQualifyingSettings.BucketSet();
+		Set<Integer> bucketIndexSet = EquitySettingsContainer.BucketSet();
 
 		System.out.println
 			("\t||-------------------------------------------------------------------------------------------------------------||");
 
 		System.out.println
-			("\t||                                    CREDIT QUALIFYING BUCKETS RISK WEIGHT                                    ||");
+			("\t||                                         EQUITY BUCKETS RISK WEIGHT                                          ||");
 
 		System.out.println
 			("\t||-------------------------------------------------------------------------------------------------------------||");
@@ -106,10 +105,19 @@ public class CreditQualifyingRiskWeights
 			("\t||                - Bucket Number                                                                              ||");
 
 		System.out.println
-			("\t||                - Bucket Quality                                                                             ||");
+			("\t||                - Bucket Size                                                                                ||");
+
+		System.out.println
+			("\t||                - Bucket Region                                                                              ||");
 
 		System.out.println
 			("\t||                - Bucket Risk Weight                                                                         ||");
+
+		System.out.println
+			("\t||                - Bucket Member Correlation                                                                  ||");
+
+		System.out.println
+			("\t||                - Bucket Vega Risk Weight                                                                    ||");
 
 		System.out.println
 			("\t||                - Bucket Sector                                                                              ||");
@@ -119,11 +127,11 @@ public class CreditQualifyingRiskWeights
 
 		for (int bucketIndex : bucketIndexSet)
 		{
-			CreditBucket creditQualifyingBucket = CreditQualifyingSettings.Bucket (bucketIndex);
+			EquityBucket equityBucket = EquitySettingsContainer.Bucket (bucketIndex);
 
 			String sectorArrayDump = "";
 
-			String[] sectorArray = creditQualifyingBucket.sectorArray();
+			String[] sectorArray = equityBucket.sectorArray();
 
 			for (String sector : sectorArray)
 			{
@@ -131,9 +139,12 @@ public class CreditQualifyingRiskWeights
 			}
 
 			System.out.println (
-				"\t||" + FormatUtil.FormatDouble (creditQualifyingBucket.number(), 2, 0, 1.) + " | " +
-				creditQualifyingBucket.quality() + " | " +
-				FormatUtil.FormatDouble (creditQualifyingBucket.riskWeight(), 3, 0, 1.) + " | {" +
+				"\t||" + FormatUtil.FormatDouble (equityBucket.number(), 2, 0, 1.) + " | " +
+				equityBucket.size() + " | " +
+				equityBucket.region() + " | " +
+				FormatUtil.FormatDouble (equityBucket.riskWeight(), 3, 0, 1.) + " | " +
+				FormatUtil.FormatDouble (equityBucket.memberCorrelation(), 2, 0, 100.) + "% | " +
+				FormatUtil.FormatDouble (equityBucket.vegaRiskWeight(), 1, 2, 1.) + " | {" +
 				sectorArrayDump + "}"
 			);
 		}
@@ -144,67 +155,25 @@ public class CreditQualifyingRiskWeights
 		System.out.println();
 	}
 
-	private static final void CreditQualifyingSystemics()
+	private static final void Systemics()
 	{
 		System.out.println ("\t||----------------------------------------------------------------||");
 
-		System.out.println ("\t||                  CREDIT QUALIFYING SYSTEMICS                   ||");
+		System.out.println ("\t||                        EQUITY SYSTEMICS                        ||");
 
 		System.out.println ("\t||----------------------------------------------------------------||");
 
 		System.out.println (
-			"\t|| Residual Bucket Risk Weight                         => " +
+			"\t|| Historical Volatility Ratio                         => " +
 			FormatUtil.FormatDouble (
-				CreditQualifyingSystemics.RESIDUAL_BUCKET_RISK_WEIGHT, 3, 2, 1.
+				EquitySystemics.HISTORICAL_VOLATILITY_RATIO, 3, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
-			"\t|| Vega Risk Wight                                     => " +
+			"\t|| Residual Bucket Correlation                         => " +
 			FormatUtil.FormatDouble (
-				CreditQualifyingSystemics.VEGA_RISK_WEIGHT, 3, 2, 1.
-			) + " ||"
-		);
-
-		System.out.println (
-			"\t|| Base Correlation Risk Weight                        => " +
-			FormatUtil.FormatDouble (
-				CreditQualifyingSystemics.BASE_CORRELATION_RISK_WEIGHT, 3, 2, 1.
-			) + " ||"
-		);
-
-		System.out.println (
-			"\t|| Cross Base Correlation Index Correlation            => " +
-			FormatUtil.FormatDouble (
-				CreditQualifyingSystemics.BASE_CORRELATION_CORRELATION, 3, 2, 1.
-			) + " ||"
-		);
-
-		System.out.println (
-			"\t|| Non-Residual Same Issuer/Seniority Correlation      => " +
-			FormatUtil.FormatDouble (
-				CreditQualifyingBucketCorrelation.SAME_ISSUER_SENIORITY_NON_RESIDUAL, 3, 2, 1.
-			) + " ||"
-		);
-
-		System.out.println (
-			"\t|| Non-Residual Different Issuer/Seniority Correlation => " +
-			FormatUtil.FormatDouble (
-				CreditQualifyingBucketCorrelation.DIFFERENT_ISSUER_SENIORITY_NON_RESIDUAL, 3, 2, 1.
-			) + " ||"
-		);
-
-		System.out.println (
-			"\t|| Residual Same Issuer/Seniority Correlation          => " +
-			FormatUtil.FormatDouble (
-				CreditQualifyingBucketCorrelation.SAME_ISSUER_SENIORITY_RESIDUAL, 3, 2, 1.
-			) + " ||"
-		);
-
-		System.out.println (
-			"\t|| Residual Different Issuer/Seniority Correlation     => " +
-			FormatUtil.FormatDouble (
-				CreditQualifyingBucketCorrelation.DIFFERENT_ISSUER_SENIORITY_RESIDUAL, 3, 2, 1.
+				EquitySystemics.RESIDUAL_BUCKET_CORRELATION, 3, 2, 1.
 			) + " ||"
 		);
 
@@ -216,7 +185,7 @@ public class CreditQualifyingRiskWeights
 	private static final void CrossBucketCorrelation()
 		throws Exception
 	{
-		LabelCorrelation crossBucketCorrelation = CreditQualifyingSettings.CrossBucketCorrelation();
+		LabelCorrelation crossBucketCorrelation = EquitySettingsContainer.CrossBucketCorrelation();
 
 		List<String> bucketList = crossBucketCorrelation.labelList();
 
@@ -271,9 +240,9 @@ public class CreditQualifyingRiskWeights
 	{
 		EnvManager.InitEnv ("");
 
-		DisplayRiskWeights();
+		RiskWeights();
 
-		CreditQualifyingSystemics();
+		Systemics();
 
 		CrossBucketCorrelation();
 
