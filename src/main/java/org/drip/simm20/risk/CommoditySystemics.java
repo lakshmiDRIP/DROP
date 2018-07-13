@@ -1,16 +1,5 @@
 
-package org.drip.coverage.dynamics;
-
-import org.drip.sample.lmm.ContinuousForwardRateVolatility;
-// import org.drip.sample.lmm.FixFloatMonteCarloEvolver;
-import org.drip.sample.lmm.MultiFactorCurveDynamics;
-import org.drip.sample.lmm.MultiFactorLIBORCurveEvolver;
-// import org.drip.sample.lmm.MultiFactorLIBORMonteCarlo;
-import org.drip.sample.lmm.PointAncillaryMetricsDynamics;
-import org.drip.sample.lmm.PointCoreMetricsDynamics;
-import org.drip.sample.lmm.TwoFactorLIBORVolatility;
-
-import org.junit.Test;
+package org.drip.simm20.risk;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -18,7 +7,6 @@ import org.junit.Test;
 
 /*!
  * Copyright (C) 2018 Lakshmi Krishnamurthy
- * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
  *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
  *  	libraries targeting analysts and developers
@@ -59,29 +47,39 @@ import org.junit.Test;
  */
 
 /**
- * LMM holds the JUnit Code Coverage Tests for the LMM Dynamics Module.
- *
+ * CommoditySystemics contains the Systemic Settings Common to Commodity Risk Factors. The References are:
+ *  
+ *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
+ *  
+ *  - Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
+ *  	Calculations, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488, eSSRN.
+ *  
+ *  - Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
+ *  	Framework for Forecasting Initial Margin Requirements,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
+ *  
+ *  - Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements
+ *  	- A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167, eSSRN.
+ *  
+ *  - International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology,
+ *  	https://www.isda.org/a/oFiDE/isda-simm-v2.pdf.
+ * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class LMM
+public class CommoditySystemics
 {
-	@Test public void codeCoverageTest() throws Exception
-	{
-		ContinuousForwardRateVolatility.main (null);
 
-		// FixFloatMonteCarloEvolver.main (null);
+	/**
+	 * Commodity Risk Class Historical Volatility Ratio (HVR)
+	 */
 
-		MultiFactorCurveDynamics.main (null);
+	public static final double HISTORICAL_VOLATILITY_RATIO = 0.80;
 
-		MultiFactorLIBORCurveEvolver.main (null);
+	/**
+	 * Commodity Risk Class Vega Risk Weight (VRW)
+	 */
 
-		// MultiFactorLIBORMonteCarlo.main (null);
-
-		PointAncillaryMetricsDynamics.main (null);
-
-		PointCoreMetricsDynamics.main (null);
-
-		TwoFactorLIBORVolatility.main (null);
-    }
+	public static final double VEGA_RISK_WEIGHT = 0.38;
 }

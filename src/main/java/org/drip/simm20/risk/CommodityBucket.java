@@ -1,5 +1,5 @@
 
-package org.drip.simm20.parameters;
+package org.drip.simm20.risk;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,9 +47,8 @@ package org.drip.simm20.parameters;
  */
 
 /**
- * ISDASettingsContainer holds the ISDA SIMM 2.0 Risk Weights/Correlations for Interest Rates, Qualifying and
- * 	Non-qualifying Credit, Equity, Commodity, and Foreign Exchange. The corresponding Concentration
- * 	Thresholds are also contained. The References are:
+ * CommodityBucket holds the ISDA SIMM 2.0 Commodity, Risk Weight, and Member Correlation for each Commodity
+ *  Bucket. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -70,41 +69,82 @@ package org.drip.simm20.parameters;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ISDASettingsContainer
+public class CommodityBucket
 {
+	private int _number = -1;
+	private java.lang.String _entity = "";
+	private double _riskWeight = java.lang.Double.NaN;
+	private double _memberCorrelation = java.lang.Double.NaN;
+
 	/**
-	 * Initial the ISDA Settings Container
+	 * CommodityBucket Constructor
 	 * 
-	 * @return TRUE - The ISDA Settings Container successfully initialized
+	 * @param number Bucket Number
+	 * @param entity Bucket Commodity Entity
+	 * @param riskWeight Bucket Risk Weight
+	 * @param memberCorrelation Bucket Cross Member Correlation
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final boolean Init()
+	public CommodityBucket (
+		final int number,
+		final java.lang.String entity,
+		final double riskWeight,
+		final double memberCorrelation)
+		throws java.lang.Exception
 	{
-		if (!org.drip.simm20.parameters.InterestRateSettingsContainer.Init())
+		if (null == (_entity = entity) || _entity.isEmpty() ||
+			!org.drip.quant.common.NumberUtil.IsValid (_riskWeight = riskWeight) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_memberCorrelation = memberCorrelation))
 		{
-			return false;
+			throw new java.lang.Exception ("CommodityBucket Constructor => Invalid Inputs");
 		}
 
-		if (!org.drip.simm20.parameters.CreditQualifyingSettingsContainer.Init())
-		{
-			return false;
-		}
+		_number = number;
+	}
 
-		if (!org.drip.simm20.parameters.CreditNonQualifyingSettingsContainer.Init())
-		{
-			return false;
-		}
+	/**
+	 * Retrieve the SIMM 2.0 Bucket Number
+	 * 
+	 * @return The Bucket Number
+	 */
 
-		if (!org.drip.simm20.parameters.EquitySettingsContainer.Init())
-		{
-			return false;
-		}
+	public int number()
+	{
+		return _number;
+	}
 
-		if (!org.drip.simm20.parameters.CommoditySettingsContainer.Init())
-		{
-			return false;
-		}
+	/**
+	 * Retrieve the SIMM 2.0 Bucket Entity
+	 * 
+	 * @return The Bucket Entity
+	 */
 
-		return true;
+	public java.lang.String entity()
+	{
+		return _entity;
+	}
+
+	/**
+	 * Retrieve the SIMM 2.0 Risk Weight
+	 * 
+	 * @return The Risk Weight
+	 */
+
+	public double riskWeight()
+	{
+		return _riskWeight;
+	}
+
+	/**
+	 * Retrieve the SIMM 2.0 Member Correlation
+	 * 
+	 * @return The Member Correlation
+	 */
+
+	public double memberCorrelation()
+	{
+		return _memberCorrelation;
 	}
 }

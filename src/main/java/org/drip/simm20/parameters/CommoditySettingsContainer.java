@@ -47,7 +47,8 @@ package org.drip.simm20.parameters;
  */
 
 /**
- * EquitySettingsContainer holds the ISDA SIMM 2.0 Equity Buckets and their Correlations. The References are:
+ * CommoditySettingsContainer holds the ISDA SIMM 2.0 Commodity Buckets and their Correlations. The
+ *  References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -68,12 +69,12 @@ package org.drip.simm20.parameters;
  * @author Lakshmi Krishnamurthy
  */
 
-public class EquitySettingsContainer
+public class CommoditySettingsContainer
 {
 	private static org.drip.measure.stochastic.LabelCorrelation s_CrossBucketCorrelation = null;
 
-	private static final java.util.Map<java.lang.Integer, org.drip.simm20.risk.EquityBucket> s_BucketMap =
-		new java.util.TreeMap<java.lang.Integer, org.drip.simm20.risk.EquityBucket>();
+	private static final java.util.Map<java.lang.Integer, org.drip.simm20.risk.CommodityBucket> s_BucketMap =
+		new java.util.TreeMap<java.lang.Integer, org.drip.simm20.risk.CommodityBucket>();
 
 	private static final boolean SetUpCrossBucketCorrelation()
 	{
@@ -103,24 +104,39 @@ public class EquitySettingsContainer
 
 		bucketList.add ("12");
 
+		bucketList.add ("13");
+
+		bucketList.add ("14");
+
+		bucketList.add ("15");
+
+		bucketList.add ("16");
+
+		bucketList.add ("17");
+
 		try
 		{
 			s_CrossBucketCorrelation = new org.drip.measure.stochastic.LabelCorrelation (
 				bucketList,
 				new double[][]
 				{
-					{1.00, 0.15, 0.14, 0.16, 0.10, 0.12, 0.10, 0.11, 0.13, 0.09, 0.17, 0.17}, // #01
-					{0.15, 1.00, 0.16, 0.17, 0.10, 0.11, 0.10, 0.11, 0.14, 0.09, 0.17, 0.17}, // #02
-					{0.14, 0.16, 1.00, 0.19, 0.14, 0.17, 0.18, 0.17, 0.16, 0.14, 0.25, 0.25}, // #03
-					{0.16, 0.17, 0.19, 1.00, 0.15, 0.18, 0.18, 0.18, 0.18, 0.14, 0.28, 0.28}, // #04
-					{0.10, 0.10, 0.14, 0.15, 1.00, 0.28, 0.23, 0.27, 0.13, 0.21, 0.35, 0.35}, // #05
-					{0.12, 0.11, 0.17, 0.18, 0.28, 1.00, 0.30, 0.34, 0.16, 0.26, 0.45, 0.45}, // #06
-					{0.10, 0.10, 0.18, 0.18, 0.23, 0.30, 1.00, 0.29, 0.15, 0.24, 0.41, 0.41}, // #07
-					{0.11, 0.11, 0.17, 0.18, 0.27, 0.34, 0.29, 1.00, 0.16, 0.26, 0.44, 0.44}, // #08
-					{0.13, 0.14, 0.16, 0.18, 0.13, 0.16, 0.15, 0.13, 1.00, 0.16, 0.24, 0.24}, // #09
-					{0.09, 0.09, 0.14, 0.14, 0.21, 0.26, 0.24, 0.26, 0.13, 1.00, 0.33, 0.33}, // #10
-					{0.17, 0.17, 0.25, 0.28, 0.35, 0.45, 0.41, 0.44, 0.24, 0.33, 1.00, 0.62}, // #11
-					{0.17, 0.17, 0.25, 0.28, 0.35, 0.45, 0.41, 0.44, 0.24, 0.33, 0.62, 1.00}, // #12
+					{ 1.00, 0.18, 0.15, 0.20, 0.25, 0.08, 0.19, 0.01, 0.27, 0.00, 0.15, 0.02, 0.06, 0.07,-0.04, 0.00, 0.06}, // #01
+					{ 0.18, 1.00, 0.89, 0.94, 0.93, 0.32, 0.22, 0.27, 0.24, 0.09, 0.45, 0.21, 0.32, 0.28, 0.17, 0.00, 0.37}, // #02
+					{ 0.15, 0.89, 1.00, 0.87, 0.88, 0.25, 0.16, 0.19, 0.12, 0.10, 0.26,-0.01, 0.19, 0.17, 0.10, 0.00, 0.27}, // #03
+					{ 0.20, 0.92, 0.87, 1.00, 0.92, 0.29, 0.22, 0.26, 0.19, 0.00, 0.32, 0.05, 0.20, 0.22, 0.13, 0.00, 0.28}, // #04
+					{ 0.25, 0.93, 0.88, 0.92, 1.00, 0.30, 0.26, 0.22, 0.28, 0.12, 0.42, 0.23, 0.28, 0.29, 0.17, 0.00, 0.34}, // #05
+					{ 0.08, 0.32, 0.25, 0.29, 0.30, 1.00, 0.13, 0.57, 0.05, 0.14, 0.15,-0.02, 0.13, 0.17, 0.01, 0.00, 0.26}, // #06
+					{ 0.19, 0.22, 0.16, 0.22, 0.26, 0.13, 1.00, 0.07, 0.80, 0.19, 0.16, 0.05, 0.17, 0.18, 0.00, 0.00, 0.18}, // #07
+					{ 0.01, 0.27, 0.19, 0.26, 0.22, 0.57, 0.07, 1.00, 0.13, 0.06, 0.16, 0.03, 0.10, 0.12, 0.06, 0.00, 0.23}, // #08
+					{ 0.27, 0.24, 0.12, 0.19, 0.28, 0.05, 0.80, 0.13, 1.00, 0.15, 0.17, 0.05, 0.15, 0.13,-0.03, 0.00, 0.13}, // #09
+					{ 0.00, 0.09, 0.10, 0.00, 0.12, 0.14, 0.19, 0.06, 0.15, 1.00, 0.07, 0.07, 0.17, 0.10, 0.02, 0.00, 0.11}, // #10
+					{ 0.15, 0.45, 0.26, 0.32, 0.42, 0.15, 0.16, 0.16, 0.17, 0.07, 1.00, 0.34, 0.20, 0.21, 0.16, 0.00, 0.27}, // #11
+					{ 0.02, 0.21,-0.01, 0.05, 0.23,-0.02, 0.05, 0.03, 0.05, 0.07, 0.34, 1.00, 0.17, 0.26, 0.11, 0.00, 0.14}, // #12
+					{ 0.06, 0.32, 0.19, 0.20, 0.28, 0.13, 0.17, 0.10, 0.15, 0.17, 0.20, 0.17, 1.00, 0.35, 0.09, 0.00, 0.22}, // #13
+					{ 0.07, 0.28, 0.17, 0.22, 0.29, 0.17, 0.18, 0.12, 0.13, 0.10, 0.21, 0.26, 0.35, 1.00, 0.06, 0.00, 0.20}, // #14
+					{-0.04, 0.17, 0.10, 0.13, 0.17, 0.01, 0.00, 0.06,-0.03, 0.02, 0.16, 0.11, 0.09, 0.06, 1.00, 0.00, 0.16}, // #15
+					{ 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00}, // #16
+					{ 0.06, 0.27, 0.27, 0.28, 0.34, 0.26, 0.18, 0.23, 0.13, 0.11, 0.27, 0.14, 0.22, 0.20, 0.16, 0.00, 1.00}  // #17
 				}
 			);
 
@@ -135,9 +151,9 @@ public class EquitySettingsContainer
 	}
 
 	/**
-	 * Initialize the Equity Settings Container
+	 * Initialize the Commodity Settings Container
 	 * 
-	 * @return TRUE - Equity Settings Container successfully initialized
+	 * @return TRUE - Commodity Settings Container successfully initialized
 	 */
 
 	public static final boolean Init()
@@ -145,171 +161,172 @@ public class EquitySettingsContainer
 		try
 		{
 			s_BucketMap.put (
-				-1,
-				new org.drip.simm20.risk.EquityBucket (
-					-1,
-					org.drip.simm20.risk.MarketCapitalizationSystemics.ALL,
-					org.drip.simm20.risk.RegionSystemics.ALL,
-					org.drip.simm20.risk.SectorSystemics.ALL,
-					32.,
-					0.00,
-					0.64
-				)
-			);
-
-			s_BucketMap.put (
 				1,
-				new org.drip.simm20.risk.EquityBucket (
+				new org.drip.simm20.risk.CommodityBucket (
 					1,
-					org.drip.simm20.risk.MarketCapitalizationSystemics.LARGE,
-					org.drip.simm20.risk.RegionSystemics.EMERGING_MARKETS,
-					org.drip.simm20.risk.SectorSystemics.CONSUMER_SERVICES,
-					25.,
-					0.14,
-					0.28
+					"Coal",
+					19.,
+					0.30
 				)
 			);
 
 			s_BucketMap.put (
 				2,
-				new org.drip.simm20.risk.EquityBucket (
+				new org.drip.simm20.risk.CommodityBucket (
 					2,
-					org.drip.simm20.risk.MarketCapitalizationSystemics.LARGE,
-					org.drip.simm20.risk.RegionSystemics.EMERGING_MARKETS,
-					org.drip.simm20.risk.SectorSystemics.TELECOMMUNICATIONS_INDUSTRIALS,
-					32.,
-					0.20,
-					0.28
+					"Crude",
+					20.,
+					0.97
 				)
 			);
 
 			s_BucketMap.put (
 				3,
-				new org.drip.simm20.risk.EquityBucket (
+				new org.drip.simm20.risk.CommodityBucket (
 					3,
-					org.drip.simm20.risk.MarketCapitalizationSystemics.LARGE,
-					org.drip.simm20.risk.RegionSystemics.EMERGING_MARKETS,
-					org.drip.simm20.risk.SectorSystemics.HEAVY_INDUSTRIALS,
-					29.,
-					0.19,
-					0.28
+					"Light Ends",
+					17.,
+					0.93
 				)
 			);
 
 			s_BucketMap.put (
 				4,
-				new org.drip.simm20.risk.EquityBucket (
+				new org.drip.simm20.risk.CommodityBucket (
 					4,
-					org.drip.simm20.risk.MarketCapitalizationSystemics.LARGE,
-					org.drip.simm20.risk.RegionSystemics.EMERGING_MARKETS,
-					org.drip.simm20.risk.SectorSystemics.INVESTMENT,
-					27.,
-					0.21,
-					0.28
+					"Middle Distillates",
+					18.,
+					0.98
 				)
 			);
 
 			s_BucketMap.put (
 				5,
-				new org.drip.simm20.risk.EquityBucket (
+				new org.drip.simm20.risk.CommodityBucket (
 					5,
-					org.drip.simm20.risk.MarketCapitalizationSystemics.LARGE,
-					org.drip.simm20.risk.RegionSystemics.DEVELOPED_MARKETS,
-					org.drip.simm20.risk.SectorSystemics.CONSUMER_SERVICES,
-					18.,
-					0.24,
-					0.28
+					"Heavy Distillates",
+					24.,
+					0.99
 				)
 			);
 
 			s_BucketMap.put (
 				6,
-				new org.drip.simm20.risk.EquityBucket (
+				new org.drip.simm20.risk.CommodityBucket (
 					6,
-					org.drip.simm20.risk.MarketCapitalizationSystemics.LARGE,
-					org.drip.simm20.risk.RegionSystemics.DEVELOPED_MARKETS,
-					org.drip.simm20.risk.SectorSystemics.TELECOMMUNICATIONS_INDUSTRIALS,
-					21.,
-					0.35,
-					0.28
+					"North American Natural Gas",
+					20.,
+					0.92
 				)
 			);
 
 			s_BucketMap.put (
 				7,
-				new org.drip.simm20.risk.EquityBucket (
+				new org.drip.simm20.risk.CommodityBucket (
 					7,
-					org.drip.simm20.risk.MarketCapitalizationSystemics.LARGE,
-					org.drip.simm20.risk.RegionSystemics.DEVELOPED_MARKETS,
-					org.drip.simm20.risk.SectorSystemics.HEAVY_INDUSTRIALS,
-					25.,
-					0.34,
-					0.28
+					"European Natural Gas",
+					24.,
+					0.999
 				)
 			);
 
 			s_BucketMap.put (
 				8,
-				new org.drip.simm20.risk.EquityBucket (
+				new org.drip.simm20.risk.CommodityBucket (
 					8,
-					org.drip.simm20.risk.MarketCapitalizationSystemics.LARGE,
-					org.drip.simm20.risk.RegionSystemics.DEVELOPED_MARKETS,
-					org.drip.simm20.risk.SectorSystemics.INVESTMENT,
-					22.,
-					0.34,
-					0.28
+					"North American Power",
+					41.,
+					0.58
 				)
 			);
 
 			s_BucketMap.put (
 				9,
-				new org.drip.simm20.risk.EquityBucket (
+				new org.drip.simm20.risk.CommodityBucket (
 					9,
-					org.drip.simm20.risk.MarketCapitalizationSystemics.SMALL,
-					org.drip.simm20.risk.RegionSystemics.EMERGING_MARKETS,
-					org.drip.simm20.risk.SectorSystemics.ALL,
-					27.,
-					0.20,
-					0.28
+					"European Power",
+					25.,
+					0.999
 				)
 			);
 
 			s_BucketMap.put (
 				10,
-				new org.drip.simm20.risk.EquityBucket (
+				new org.drip.simm20.risk.CommodityBucket (
 					10,
-					org.drip.simm20.risk.MarketCapitalizationSystemics.SMALL,
-					org.drip.simm20.risk.RegionSystemics.DEVELOPED_MARKETS,
-					org.drip.simm20.risk.SectorSystemics.ALL,
-					29.,
-					0.24,
-					0.28
+					"Freight",
+					91.,
+					0.10
 				)
 			);
 
 			s_BucketMap.put (
 				11,
-				new org.drip.simm20.risk.EquityBucket (
+				new org.drip.simm20.risk.CommodityBucket (
 					11,
-					org.drip.simm20.risk.MarketCapitalizationSystemics.ALL,
-					org.drip.simm20.risk.RegionSystemics.ALL,
-					org.drip.simm20.risk.SectorSystemics.INDEX_FUND_ETF,
-					16.,
-					0.62,
-					0.28
+					"Base Metals",
+					20.,
+					0.55
 				)
 			);
 
 			s_BucketMap.put (
 				12,
-				new org.drip.simm20.risk.EquityBucket (
+				new org.drip.simm20.risk.CommodityBucket (
 					12,
-					org.drip.simm20.risk.MarketCapitalizationSystemics.ALL,
-					org.drip.simm20.risk.RegionSystemics.ALL,
-					org.drip.simm20.risk.SectorSystemics.VOLATILITY_INDEX,
+					"Precious Metals",
+					19.,
+					0.64
+				)
+			);
+
+			s_BucketMap.put (
+				13,
+				new org.drip.simm20.risk.CommodityBucket (
+					13,
+					"Grains",
 					16.,
-					0.62,
-					0.28
+					0.71
+				)
+			);
+
+			s_BucketMap.put (
+				14,
+				new org.drip.simm20.risk.CommodityBucket (
+					14,
+					"Softs",
+					15.,
+					0.22
+				)
+			);
+
+			s_BucketMap.put (
+				15,
+				new org.drip.simm20.risk.CommodityBucket (
+					15,
+					"Livestock",
+					10.,
+					0.29
+				)
+			);
+
+			s_BucketMap.put (
+				16,
+				new org.drip.simm20.risk.CommodityBucket (
+					16,
+					"Other",
+					91.,
+					0.00
+				)
+			);
+
+			s_BucketMap.put (
+				17,
+				new org.drip.simm20.risk.CommodityBucket (
+					17,
+					"Indexes",
+					17.,
+					0.21
 				)
 			);
 		}
@@ -356,7 +373,7 @@ public class EquitySettingsContainer
 	 * @return The Bucket denoted by the Number
 	 */
 
-	public static final org.drip.simm20.risk.EquityBucket Bucket (
+	public static final org.drip.simm20.risk.CommodityBucket Bucket (
 		final int bucketNumber)
 	{
 		return ContainsBucket (bucketNumber) ? s_BucketMap.get (bucketNumber) : null;
@@ -379,7 +396,7 @@ public class EquitySettingsContainer
 	 * @return The Bucket Map
 	 */
 
-	public static final java.util.Map<java.lang.Integer, org.drip.simm20.risk.EquityBucket> BucketMap()
+	public static final java.util.Map<java.lang.Integer, org.drip.simm20.risk.CommodityBucket> BucketMap()
 	{
 		return s_BucketMap;
 	}
