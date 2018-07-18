@@ -91,6 +91,18 @@ public class InterestRateSystemics
 	public static final java.lang.String VOLATILITY_TYPE_HIGH = "HIGH";
 
 	/**
+	 * Interest Rate Type - Trade Frequency Type Well Traded
+	 */
+
+	public static final java.lang.String TRADE_FREQUENCY_WELL_TRADED = "WELL_TRADED";
+
+	/**
+	 * Interest Rate Type - Trade Frequency Type Less Well Traded
+	 */
+
+	public static final java.lang.String TRADE_FREQUENCY_LESS_WELL_TRADED = "LESS_WELL_TRADED";
+
+	/**
 	 * Same Currency Curve Inflation Rate Risk Weight
 	 */
 

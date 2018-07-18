@@ -1,5 +1,9 @@
 
-package org.drip.simm20.parameters;
+package org.drip.sample.simm20;
+
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.simm20.risk.FXSystemics;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,9 +51,8 @@ package org.drip.simm20.parameters;
  */
 
 /**
- * ISDASettingsContainer holds the ISDA SIMM 2.0 Risk Weights/Correlations for Interest Rates, Qualifying and
- * 	Non-qualifying Credit, Equity, Commodity, and Foreign Exchange. The corresponding Concentration
- * 	Thresholds are also contained. The References are:
+ * FXSettings demonstrates the Extraction and Display of ISDA SIMM 2.0 FX Bucket Risk Weights, Correlations,
+ * 	and Systemics. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -70,46 +73,58 @@ package org.drip.simm20.parameters;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ISDASettingsContainer
+public class FXSettings
 {
-	/**
-	 * Initial the ISDA Settings Container
-	 * 
-	 * @return TRUE - The ISDA Settings Container successfully initialized
-	 */
 
-	public static final boolean Init()
+	private static final void Systemics()
 	{
-		if (!org.drip.simm20.parameters.InterestRateSettingsContainer.Init())
-		{
-			return false;
-		}
+		System.out.println ("\t||----------------------------------------------------------------||");
 
-		if (!org.drip.simm20.parameters.CreditQualifyingSettingsContainer.Init())
-		{
-			return false;
-		}
+		System.out.println ("\t||                         FX SYSTEMICS                           ||");
 
-		if (!org.drip.simm20.parameters.CreditNonQualifyingSettingsContainer.Init())
-		{
-			return false;
-		}
+		System.out.println ("\t||----------------------------------------------------------------||");
 
-		if (!org.drip.simm20.parameters.EquitySettingsContainer.Init())
-		{
-			return false;
-		}
+		System.out.println (
+			"\t|| Risk Weight                                         => " +
+			FormatUtil.FormatDouble (
+				FXSystemics.RISK_WEIGHT, 3, 2, 1.
+			) + " ||"
+		);
 
-		if (!org.drip.simm20.parameters.CommoditySettingsContainer.Init())
-		{
-			return false;
-		}
+		System.out.println (
+			"\t|| Historical Volatility Ratio                         => " +
+			FormatUtil.FormatDouble (
+				FXSystemics.HISTORICAL_VOLATILITY_RATIO, 3, 2, 1.
+			) + " ||"
+		);
 
-		if (!org.drip.simm20.concentration.RiskFactorThresholdContainer.Init())
-		{
-			return false;
-		}
+		System.out.println (
+			"\t|| Vega Risk Weight                                    => " +
+			FormatUtil.FormatDouble (
+				FXSystemics.VEGA_RISK_WEIGHT, 3, 2, 1.
+			) + " ||"
+		);
 
-		return true;
+		System.out.println (
+			"\t|| Correlation                                         => " +
+			FormatUtil.FormatDouble (
+				FXSystemics.CORRELATION, 3, 2, 1.
+			) + " ||"
+		);
+
+		System.out.println ("\t||----------------------------------------------------------------||");
+
+		System.out.println();
+	}
+
+	public static final void main (
+		final String[] args)
+		throws Exception
+	{
+		EnvManager.InitEnv ("");
+
+		Systemics();
+
+		EnvManager.TerminateEnv();
 	}
 }

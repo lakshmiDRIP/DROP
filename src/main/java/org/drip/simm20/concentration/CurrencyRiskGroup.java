@@ -1,5 +1,5 @@
 
-package org.drip.simm20.parameters;
+package org.drip.simm20.concentration;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,9 +47,7 @@ package org.drip.simm20.parameters;
  */
 
 /**
- * ISDASettingsContainer holds the ISDA SIMM 2.0 Risk Weights/Correlations for Interest Rates, Qualifying and
- * 	Non-qualifying Credit, Equity, Commodity, and Foreign Exchange. The corresponding Concentration
- * 	Thresholds are also contained. The References are:
+ * CurrencyRiskGroup holds the ISDA SIMM 2.0 Currency Risk Group Concentrations. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -70,46 +68,66 @@ package org.drip.simm20.parameters;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ISDASettingsContainer
+public class CurrencyRiskGroup
 {
+	private java.lang.String _volatilityType = "";
+	private java.lang.String _tradeFrequencyType = "";
+	private java.lang.String[] _componentArray = null;
+
 	/**
-	 * Initial the ISDA Settings Container
+	 * CurrencyRiskGroup Constructor
 	 * 
-	 * @return TRUE - The ISDA Settings Container successfully initialized
+	 * @param volatilityType The Volatility Type
+	 * @param tradeFrequencyType The Trade Frequency Type
+	 * @param componentArray Array of the COmponent CUrrencies
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final boolean Init()
+	public CurrencyRiskGroup (
+		final java.lang.String volatilityType,
+		final java.lang.String tradeFrequencyType,
+		final java.lang.String[] componentArray)
+		throws java.lang.Exception
 	{
-		if (!org.drip.simm20.parameters.InterestRateSettingsContainer.Init())
+		if (null == (_volatilityType = volatilityType) || _volatilityType.isEmpty() ||
+			null == (_tradeFrequencyType = tradeFrequencyType) || _tradeFrequencyType.isEmpty() ||
+			null == (_componentArray = componentArray) || 0 == _componentArray.length)
 		{
-			return false;
+			throw new java.lang.Exception ("CurrencyRiskGroup Constructor => Invalid Inputs");
 		}
+	}
 
-		if (!org.drip.simm20.parameters.CreditQualifyingSettingsContainer.Init())
-		{
-			return false;
-		}
+	/**
+	 * Retrieve the Volatility Type
+	 * 
+	 * @return The Volatility Type
+	 */
 
-		if (!org.drip.simm20.parameters.CreditNonQualifyingSettingsContainer.Init())
-		{
-			return false;
-		}
+	public java.lang.String volatilityType()
+	{
+		return _volatilityType;
+	}
 
-		if (!org.drip.simm20.parameters.EquitySettingsContainer.Init())
-		{
-			return false;
-		}
+	/**
+	 * Retrieve the Trade Frequency Type
+	 * 
+	 * @return The Trade Frequency Type
+	 */
 
-		if (!org.drip.simm20.parameters.CommoditySettingsContainer.Init())
-		{
-			return false;
-		}
+	public java.lang.String tradeFrequencyType()
+	{
+		return _tradeFrequencyType;
+	}
 
-		if (!org.drip.simm20.concentration.RiskFactorThresholdContainer.Init())
-		{
-			return false;
-		}
+	/**
+	 * Retrieve the Component Currency Array
+	 * 
+	 * @return The Component Currency Array
+	 */
 
-		return true;
+	public java.lang.String[] componentArray()
+	{
+		return _componentArray;
 	}
 }

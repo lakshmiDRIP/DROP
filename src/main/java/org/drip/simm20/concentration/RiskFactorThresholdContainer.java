@@ -1,15 +1,5 @@
 
-package org.drip.coverage.template;
-
-import org.drip.template.forwardratefutures.AUDBBSW3M;
-import org.drip.template.forwardratefutures.CADCDOR3M;
-import org.drip.template.forwardratefutures.CHFLIBOR3M;
-import org.drip.template.forwardratefutures.EURIBOR3M;
-import org.drip.template.forwardratefutures.EuroDollar;
-import org.drip.template.forwardratefutures.GBPLIBOR3M;
-import org.drip.template.forwardratefutures.JPYLIBOR3M;
-
-import org.junit.Test;
+package org.drip.simm20.concentration;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -17,7 +7,6 @@ import org.junit.Test;
 
 /*!
  * Copyright (C) 2018 Lakshmi Krishnamurthy
- * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
  *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
  *  	libraries targeting analysts and developers
@@ -58,27 +47,44 @@ import org.junit.Test;
  */
 
 /**
- * ForwardRateFutures holds the JUnit Code Coverage Tests for the ForwardRateFutures Template Module.
- *
+ * RiskFactorThresholdContainer holds the ISDA SIMM 2.0 Risk Factor Thresholds - the Concentration Limits for
+ * 	Interest Rate, Credit Spread, Equity, Commodity, and FX Risk Factors. The References are:
+ *  
+ *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
+ *  
+ *  - Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
+ *  	Calculations, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488, eSSRN.
+ *  
+ *  - Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
+ *  	Framework for Forecasting Initial Margin Requirements,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
+ *  
+ *  - Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements
+ *  	- A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167, eSSRN.
+ *  
+ *  - International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology,
+ *  	https://www.isda.org/a/oFiDE/isda-simm-v2.pdf.
+ * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class ForwardRateFutures
+public class RiskFactorThresholdContainer
 {
-	@Test public void codeCoverageTest() throws Exception
+
+	/**
+	 * Initialize the Risk Factor Threshold Container
+	 * 
+	 * @return TRUE - The Risk Factor Threshold Container successfully initialized
+	 */
+
+	public static final boolean Init()
 	{
-		AUDBBSW3M.main (null);
+		if (!org.drip.simm20.concentration.InterestRateThresholdContainer.Init())
+		{
+			return false;
+		}
 
-		CADCDOR3M.main (null);
-
-		CHFLIBOR3M.main (null);
-
-		EURIBOR3M.main (null);
-
-		EuroDollar.main (null);
-
-		GBPLIBOR3M.main (null);
-
-		JPYLIBOR3M.main (null);
-    }
+		return true;
+	}
 }

@@ -1,5 +1,12 @@
 
-package org.drip.simm20.parameters;
+package org.drip.sample.simm20;
+
+import java.util.Set;
+
+import org.drip.service.env.EnvManager;
+import org.drip.simm20.concentration.CurrencyRiskGroup;
+import org.drip.simm20.concentration.InterestRateThreshold;
+import org.drip.simm20.concentration.InterestRateThresholdContainer;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,9 +54,8 @@ package org.drip.simm20.parameters;
  */
 
 /**
- * ISDASettingsContainer holds the ISDA SIMM 2.0 Risk Weights/Correlations for Interest Rates, Qualifying and
- * 	Non-qualifying Credit, Equity, Commodity, and Foreign Exchange. The corresponding Concentration
- * 	Thresholds are also contained. The References are:
+ * InterestRateConcentrationThreshold demonstrates the Extraction and Display of ISDA SIMM 2.0 Interest Rate
+ * 	Concentration Thresholds. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -70,46 +76,51 @@ package org.drip.simm20.parameters;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ISDASettingsContainer
+public class InterestRateConcentrationThreshold
 {
-	/**
-	 * Initial the ISDA Settings Container
-	 * 
-	 * @return TRUE - The ISDA Settings Container successfully initialized
-	 */
 
-	public static final boolean Init()
+	private static final void DisplayBuckets()
+		throws Exception
 	{
-		if (!org.drip.simm20.parameters.InterestRateSettingsContainer.Init())
+		Set<Integer> bucketSet = InterestRateThresholdContainer.IndexSet();
+
+		for (int bucketNumber : bucketSet)
 		{
-			return false;
+			InterestRateThreshold interestRateThreshold =
+				InterestRateThresholdContainer.InterestRateThreshold (bucketNumber);
+
+			CurrencyRiskGroup currencyRiskGroup = interestRateThreshold.currencyRiskGroup();
+
+			String[] componentArray = currencyRiskGroup.componentArray();
+
+			String componentSet = "";
+
+			for (String component : componentArray)
+			{
+				componentSet = componentSet + component + ",";
+			}
+
+			System.out.println (
+				"\t|| " + bucketNumber + " => " +
+				currencyRiskGroup.volatilityType() + " | " +
+				currencyRiskGroup.tradeFrequencyType() + " | " +
+				interestRateThreshold.delta() + " | " +
+				interestRateThreshold.vega() + " | " +
+				componentSet
+			);
 		}
 
-		if (!org.drip.simm20.parameters.CreditQualifyingSettingsContainer.Init())
-		{
-			return false;
-		}
+		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
+	}
 
-		if (!org.drip.simm20.parameters.CreditNonQualifyingSettingsContainer.Init())
-		{
-			return false;
-		}
+	public static final void main (
+		final String[] args)
+		throws Exception
+	{
+		EnvManager.InitEnv ("");
 
-		if (!org.drip.simm20.parameters.EquitySettingsContainer.Init())
-		{
-			return false;
-		}
+		DisplayBuckets();
 
-		if (!org.drip.simm20.parameters.CommoditySettingsContainer.Init())
-		{
-			return false;
-		}
-
-		if (!org.drip.simm20.concentration.RiskFactorThresholdContainer.Init())
-		{
-			return false;
-		}
-
-		return true;
+		EnvManager.TerminateEnv();
 	}
 }

@@ -1,5 +1,5 @@
 
-package org.drip.simm20.parameters;
+package org.drip.simm20.concentration;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,9 +47,8 @@ package org.drip.simm20.parameters;
  */
 
 /**
- * ISDASettingsContainer holds the ISDA SIMM 2.0 Risk Weights/Correlations for Interest Rates, Qualifying and
- * 	Non-qualifying Credit, Equity, Commodity, and Foreign Exchange. The corresponding Concentration
- * 	Thresholds are also contained. The References are:
+ * InterestRateThreshold holds the ISDA SIMM 2.0 Interest Rate Delta and Vega Concentration Thresholds. The
+ *  References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -70,46 +69,66 @@ package org.drip.simm20.parameters;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ISDASettingsContainer
+public class InterestRateThreshold
 {
+	private double _vega = java.lang.Double.NaN;
+	private double _delta = java.lang.Double.NaN;
+	private org.drip.simm20.concentration.CurrencyRiskGroup _currencyRiskGroup = null;
+
 	/**
-	 * Initial the ISDA Settings Container
+	 * InterestRateThreshold Constructor
 	 * 
-	 * @return TRUE - The ISDA Settings Container successfully initialized
+	 * @param currencyRiskGroup The Currency Risk Group
+	 * @param delta The Delta Concentration Threshold
+	 * @param vega The Vega Concentration Threshold
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final boolean Init()
+	public InterestRateThreshold (
+		final org.drip.simm20.concentration.CurrencyRiskGroup currencyRiskGroup,
+		final double delta,
+		final double vega)
+		throws java.lang.Exception
 	{
-		if (!org.drip.simm20.parameters.InterestRateSettingsContainer.Init())
+		if (null == (_currencyRiskGroup = currencyRiskGroup) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_delta = delta) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_vega = vega))
 		{
-			return false;
+			throw new java.lang.Exception ("InterestRateThreshold Constructor => Invalid Inputs");
 		}
+	}
 
-		if (!org.drip.simm20.parameters.CreditQualifyingSettingsContainer.Init())
-		{
-			return false;
-		}
+	/**
+	 * Retrieve the Currency Risk Group
+	 * 
+	 * @return The Currency Risk Group
+	 */
 
-		if (!org.drip.simm20.parameters.CreditNonQualifyingSettingsContainer.Init())
-		{
-			return false;
-		}
+	public org.drip.simm20.concentration.CurrencyRiskGroup currencyRiskGroup()
+	{
+		return _currencyRiskGroup;
+	}
 
-		if (!org.drip.simm20.parameters.EquitySettingsContainer.Init())
-		{
-			return false;
-		}
+	/**
+	 * Retrieve the Delta Concentration Threshold
+	 * 
+	 * @return The Delta Concentration Threshold
+	 */
 
-		if (!org.drip.simm20.parameters.CommoditySettingsContainer.Init())
-		{
-			return false;
-		}
+	public double delta()
+	{
+		return _delta;
+	}
 
-		if (!org.drip.simm20.concentration.RiskFactorThresholdContainer.Init())
-		{
-			return false;
-		}
+	/**
+	 * Retrieve the Vega Concentration Threshold
+	 * 
+	 * @return The Vega Concentration Threshold
+	 */
 
-		return true;
+	public double vega()
+	{
+		return _vega;
 	}
 }
