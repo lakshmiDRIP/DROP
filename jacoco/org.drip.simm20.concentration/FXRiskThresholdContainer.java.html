@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FXRiskThresholdContainer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.simm20.concentration</a> &gt; <span class="el_source">FXRiskThresholdContainer.java</span></div><h1>FXRiskThresholdContainer.java</h1><pre class="source lang-java linenums">
+package org.drip.simm20.concentration;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * FXRiskThresholdContainer holds the ISDA SIMM 2.0 FX Risk Thresholds - the FX Categories and the Delta/Vega
+ *  Limits defined for the Concentration Thresholds. The References are:
+ *  
+ *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
+ *  
+ *  - Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
+ *  	Calculations, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488, eSSRN.
+ *  
+ *  - Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
+ *  	Framework for Forecasting Initial Margin Requirements,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
+ *  
+ *  - Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements
+ *  	- A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167, eSSRN.
+ *  
+ *  - International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology,
+ *  	https://www.isda.org/a/oFiDE/isda-simm-v2.pdf.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L72">public class FXRiskThresholdContainer</span>
+{
+	private static final java.util.Map&lt;java.lang.Integer, org.drip.simm20.concentration.FXRiskGroup&gt;
+<span class="fc" id="L75">		s_FXRiskGroupMap = new java.util.TreeMap&lt;java.lang.Integer,</span>
+			org.drip.simm20.concentration.FXRiskGroup&gt;();
+
+<span class="fc" id="L78">	private static final java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; s_CategoryDelta = new</span>
+		java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt;();
+
+<span class="fc" id="L81">	private static final java.util.Map&lt;java.lang.String, java.lang.Double&gt; s_CategoryVega = new</span>
+		java.util.HashMap&lt;java.lang.String, java.lang.Double&gt;();
+
+	/**
+	 * Initialize the FX Risk Threshold Container
+	 * 
+	 * @return TRUE - The FX Risk Threshold Container
+	 */
+
+	public static final boolean Init()
+	{
+		try
+		{
+<span class="fc" id="L94">			s_FXRiskGroupMap.put (</span>
+<span class="fc" id="L95">				1,</span>
+				new org.drip.simm20.concentration.FXRiskGroup (
+					1,
+					&quot;Significantly Material&quot;,
+					new java.lang.String[]
+					{
+						&quot;USD&quot;,
+						&quot;EUR&quot;,
+						&quot;JPY&quot;,
+						&quot;GBP&quot;,
+						&quot;AUD&quot;,
+						&quot;CHF&quot;,
+						&quot;CAD&quot;
+					}
+				)
+			);
+
+<span class="fc" id="L112">			s_FXRiskGroupMap.put (</span>
+<span class="fc" id="L113">				2,</span>
+				new org.drip.simm20.concentration.FXRiskGroup (
+					2,
+					&quot;Frequently Traded&quot;,
+					new java.lang.String[]
+					{
+						&quot;BRL&quot;,
+						&quot;CNY&quot;,
+						&quot;HKD&quot;,
+						&quot;INR&quot;,
+						&quot;KRW&quot;,
+						&quot;MXN&quot;,
+						&quot;NOK&quot;,
+						&quot;NZD&quot;,
+						&quot;RUB&quot;,
+						&quot;SEK&quot;,
+						&quot;SGD&quot;,
+						&quot;TRY&quot;,
+						&quot;ZAR&quot;
+					}
+				)
+			);
+
+<span class="fc" id="L136">			s_FXRiskGroupMap.put (</span>
+<span class="fc" id="L137">				3,</span>
+				new org.drip.simm20.concentration.FXRiskGroup (
+					3,
+					&quot;Others&quot;,
+					new java.lang.String[]
+					{
+						&quot;Other&quot;
+					}
+				)
+			);
+
+<span class="fc" id="L148">			s_CategoryDelta.put (</span>
+<span class="fc" id="L149">				1,</span>
+<span class="fc" id="L150">				8400.</span>
+			);
+
+<span class="fc" id="L153">			s_CategoryDelta.put (</span>
+<span class="fc" id="L154">				2,</span>
+<span class="fc" id="L155">				1900.</span>
+			);
+
+<span class="fc" id="L158">			s_CategoryDelta.put (</span>
+<span class="fc" id="L159">				3,</span>
+<span class="fc" id="L160">				560.</span>
+			);
+
+<span class="fc" id="L163">			s_CategoryVega.put (</span>
+				&quot;1__1&quot;,
+<span class="fc" id="L165">				4000.</span>
+			);
+
+<span class="fc" id="L168">			s_CategoryVega.put (</span>
+				&quot;1__2&quot;,
+<span class="fc" id="L170">				1900.</span>
+			);
+
+<span class="fc" id="L173">			s_CategoryVega.put (</span>
+				&quot;1__3&quot;,
+<span class="fc" id="L175">				320.</span>
+			);
+
+<span class="fc" id="L178">			s_CategoryVega.put (</span>
+				&quot;2__1&quot;,
+<span class="fc" id="L180">				1900.</span>
+			);
+
+<span class="fc" id="L183">			s_CategoryVega.put (</span>
+				&quot;2__2&quot;,
+<span class="fc" id="L185">				120.</span>
+			);
+
+<span class="fc" id="L188">			s_CategoryVega.put (</span>
+				&quot;2__3&quot;,
+<span class="fc" id="L190">				110.</span>
+			);
+
+<span class="fc" id="L193">			s_CategoryVega.put (</span>
+				&quot;3__1&quot;,
+<span class="fc" id="L195">				320.</span>
+			);
+
+<span class="fc" id="L198">			s_CategoryVega.put (</span>
+				&quot;13__2&quot;,
+<span class="fc" id="L200">				110.</span>
+			);
+
+<span class="fc" id="L203">			s_CategoryVega.put (</span>
+				&quot;3__3&quot;,
+<span class="fc" id="L205">				110.</span>
+			);
+		}
+<span class="nc" id="L208">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L210">			e.printStackTrace();</span>
+
+<span class="nc" id="L212">			return false;</span>
+<span class="fc" id="L213">		}</span>
+
+<span class="fc" id="L215">		return true;</span>
+	}
+
+	/**
+	 * Retrieve the Category Set
+	 * 
+	 * @return The Category Set
+	 */
+
+	public static final java.util.Set&lt;java.lang.Integer&gt; CategorySet()
+	{
+<span class="nc" id="L226">		return s_FXRiskGroupMap.keySet();</span>
+	}
+
+	/**
+	 * Indicate if the Category identified by the Number is available in the Map
+	 * 
+	 * @param categoryNumber The Category Number
+	 * 
+	 * @return TRUE - The Category identified by the Number is available in the Map
+	 */
+
+	public static final boolean ContainsCategory (
+		final int categoryNumber)
+	{
+<span class="nc" id="L240">		return s_FXRiskGroupMap.containsKey (categoryNumber);</span>
+	}
+
+	/**
+	 * Retrieve the Risk Group identified by the Category Number
+	 * 
+	 * @param categoryNumber The Category Number
+	 * 
+	 * @return The Risk Group identified by the Category Number
+	 */
+
+	public static final org.drip.simm20.concentration.FXRiskGroup FXRiskGroup (
+		final int categoryNumber)
+	{
+<span class="nc bnc" id="L254" title="All 2 branches missed.">		return ContainsCategory (categoryNumber) ? s_FXRiskGroupMap.get (categoryNumber) : null;</span>
+	}
+
+	/**
+	 * Retrieve the Delta Threshold for the Category specified
+	 * 
+	 * @param categoryNumber The specified Category
+	 * 
+	 * @return Delta Threshold for the Category specified
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final double CategoryDeltaThreshold (
+		final int categoryNumber)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L271" title="All 2 branches missed.">		if (!s_CategoryDelta.containsKey (categoryNumber))</span>
+		{
+<span class="nc" id="L273">			throw new java.lang.Exception</span>
+				(&quot;FXRiskThresholdContainer::CategoryDeltaThreshold =&gt; Invalid Category&quot;);
+		}
+
+<span class="nc" id="L277">		return s_CategoryDelta.get (categoryNumber);</span>
+	}
+
+	/**
+	 * Retrieve the Vega Threshold for the Category Pair specified
+	 * 
+	 * @param categoryNumber1 The specified Category #1
+	 * @param categoryNumber2 The specified Category #2
+	 * 
+	 * @return Vega Threshold for the Category Pair specified
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final double CategoryVegaThreshold (
+		final int categoryNumber1,
+		final int categoryNumber2)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L296">		java.lang.String categoryVegaThresholdKey = categoryNumber1 + &quot;__&quot; + categoryNumber2;</span>
+
+<span class="nc bnc" id="L298" title="All 2 branches missed.">		if (!s_CategoryVega.containsKey (categoryVegaThresholdKey))</span>
+		{
+<span class="nc" id="L300">			throw new java.lang.Exception</span>
+				(&quot;FXRiskThresholdContainer::CategoryVegaThreshold =&gt; Invalid Category&quot;);
+		}
+
+<span class="nc" id="L304">		return s_CategoryDelta.get (categoryVegaThresholdKey);</span>
+	}
+
+	/**
+	 * Retrieve the FX Risk Group Map
+	 * 
+	 * @return The FX Risk Group Map
+	 */
+
+	public static final java.util.Map&lt;java.lang.Integer, org.drip.simm20.concentration.FXRiskGroup&gt;
+		FXRiskGroupMap()
+	{
+<span class="nc" id="L316">		return s_FXRiskGroupMap;</span>
+	}
+
+	/**
+	 * Retrieve the Category Delta Concentration Threshold Map
+	 * 
+	 * @return The Category Delta Concentration Threshold Map
+	 */
+
+	public static final java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; CategoryDeltaMap()
+	{
+<span class="nc" id="L327">		return s_CategoryDelta;</span>
+	}
+
+	/**
+	 * Retrieve the Category Vega Concentration Threshold Map
+	 * 
+	 * @return The Category Vega Concentration Threshold Map
+	 */
+
+	public static final java.util.Map&lt;java.lang.String, java.lang.Double&gt; CategoryVegaMap()
+	{
+<span class="nc" id="L338">		return s_CategoryVega;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -76,6 +76,201 @@ public class CommodityRiskThresholdContainer
 			org.drip.simm20.concentration.DeltaVegaThreshold>();
 
 	/**
+	 * Initialize the Commodity Risk Threshold Container
+	 * 
+	 * @return TRUE - The Commodity Risk Threshold Container successfully initialized
+	 */
+
+	public static final boolean Init()
+	{
+		try
+		{
+			s_DeltaVegaThresholdMap.put (
+				1,
+				new org.drip.simm20.concentration.DeltaVegaThreshold (
+					1400.,
+					250.
+				)
+			);
+
+			s_DeltaVegaThresholdMap.put (
+				2,
+				new org.drip.simm20.concentration.DeltaVegaThreshold (
+					20000.,
+					2000.
+				)
+			);
+
+			s_DeltaVegaThresholdMap.put (
+				3,
+				new org.drip.simm20.concentration.DeltaVegaThreshold (
+					3500.,
+					510.
+				)
+			);
+
+			s_DeltaVegaThresholdMap.put (
+				4,
+				new org.drip.simm20.concentration.DeltaVegaThreshold (
+					3500.,
+					510.
+				)
+			);
+
+			s_DeltaVegaThresholdMap.put (
+				5,
+				new org.drip.simm20.concentration.DeltaVegaThreshold (
+					3500.,
+					510.
+				)
+			);
+
+			s_DeltaVegaThresholdMap.put (
+				6,
+				new org.drip.simm20.concentration.DeltaVegaThreshold (
+					6400.,
+					1900.
+				)
+			);
+
+			s_DeltaVegaThresholdMap.put (
+				7,
+				new org.drip.simm20.concentration.DeltaVegaThreshold (
+					6400.,
+					1900.
+				)
+			);
+
+			s_DeltaVegaThresholdMap.put (
+				8,
+				new org.drip.simm20.concentration.DeltaVegaThreshold (
+					2500.,
+					870.
+				)
+			);
+
+			s_DeltaVegaThresholdMap.put (
+				9,
+				new org.drip.simm20.concentration.DeltaVegaThreshold (
+					2500.,
+					870.
+				)
+			);
+
+			s_DeltaVegaThresholdMap.put (
+				10,
+				new org.drip.simm20.concentration.DeltaVegaThreshold (
+					300.,
+					220.
+				)
+			);
+
+			s_DeltaVegaThresholdMap.put (
+				11,
+				new org.drip.simm20.concentration.DeltaVegaThreshold (
+					2900.,
+					450.
+				)
+			);
+
+			s_DeltaVegaThresholdMap.put (
+				12,
+				new org.drip.simm20.concentration.DeltaVegaThreshold (
+					7600.,
+					740.
+				)
+			);
+
+			s_DeltaVegaThresholdMap.put (
+				13,
+				new org.drip.simm20.concentration.DeltaVegaThreshold (
+					3900.,
+					370.
+				)
+			);
+
+			s_DeltaVegaThresholdMap.put (
+				14,
+				new org.drip.simm20.concentration.DeltaVegaThreshold (
+					3900.,
+					370.
+				)
+			);
+
+			s_DeltaVegaThresholdMap.put (
+				15,
+				new org.drip.simm20.concentration.DeltaVegaThreshold (
+					3900.,
+					370.
+				)
+			);
+
+			s_DeltaVegaThresholdMap.put (
+				16,
+				new org.drip.simm20.concentration.DeltaVegaThreshold (
+					300.,
+					220.
+				)
+			);
+
+			s_DeltaVegaThresholdMap.put (
+				17,
+				new org.drip.simm20.concentration.DeltaVegaThreshold (
+					12000.,
+					430.
+				)
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Retrieve the Commodity Risk Threshold Bucket Set
+	 * 
+	 * @return The Commodity Risk Threshold Bucket Set
+	 */
+
+	public static final java.util.Set<java.lang.Integer> BucketSet()
+	{
+		return s_DeltaVegaThresholdMap.keySet();
+	}
+
+	/**
+	 * Indicate if the Bucket Number is available in the Commodity Risk Threshold Container
+	 * 
+	 * @param bucketNumber The Bucket Number
+	 * 
+	 * @return TRUE - The Bucket Number is available in the Commodity Risk Threshold Container
+	 */
+
+	public static final boolean ContainsBucket (
+		final int bucketNumber)
+	{
+		return s_DeltaVegaThresholdMap.containsKey (bucketNumber);
+	}
+
+	/**
+	 * Retrieve the Threshold indicated by the Bucket Number
+	 * 
+	 * @param bucketNumber The Bucket Number
+	 * 
+	 * @return The Threshold indicated by the Bucket Number
+	 */
+
+	public static final org.drip.simm20.concentration.DeltaVegaThreshold Threshold (
+		final int bucketNumber)
+	{
+		return ContainsBucket (bucketNumber) ? s_DeltaVegaThresholdMap.get (bucketNumber) : null;
+	}
+
+	/**
 	 * Retrieve the Delta Vega Threshold Map
 	 * 
 	 * @return The Delta Vega Threshold Map

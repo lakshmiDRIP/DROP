@@ -95,6 +95,16 @@ public class RiskFactorThresholdContainer
 			return false;
 		}
 
+		if (!org.drip.simm20.concentration.CommodityRiskThresholdContainer.Init())
+		{
+			return false;
+		}
+
+		if (!org.drip.simm20.concentration.FXRiskThresholdContainer.Init())
+		{
+			return false;
+		}
+
 		return true;
 	}
 }
