@@ -3,10 +3,10 @@ package org.drip.sample.simm20;
 
 import java.util.Set;
 
+import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.simm20.concentration.CurrencyRiskGroup;
-import org.drip.simm20.concentration.InterestRateThreshold;
-import org.drip.simm20.concentration.InterestRateThresholdContainer;
+import org.drip.simm20.concentration.DeltaVegaThreshold;
+import org.drip.simm20.concentration.EquityRiskThresholdContainer;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -54,7 +54,7 @@ import org.drip.simm20.concentration.InterestRateThresholdContainer;
  */
 
 /**
- * InterestRateConcentrationThreshold demonstrates the Extraction and Display of ISDA SIMM 2.0 Interest Rate
+ * EquityRiskConcentrationThreshold demonstrates the Extraction and Display of ISDA SIMM 2.0 Equity Risk
  * 	Concentration Thresholds. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
@@ -76,17 +76,17 @@ import org.drip.simm20.concentration.InterestRateThresholdContainer;
  * @author Lakshmi Krishnamurthy
  */
 
-public class InterestRateConcentrationThreshold
+public class EquityRiskConcentrationThreshold
 {
 
 	private static final void DisplayBuckets()
 		throws Exception
 	{
-		Set<Integer> bucketSet = InterestRateThresholdContainer.IndexSet();
+		Set<Integer> bucketSet = EquityRiskThresholdContainer.BucketSet();
 
 		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
 
-		System.out.println ("\t||                              INTEREST RATE CONCENTRATION THRESHOLD                              ||");
+		System.out.println ("\t||                              EQUITY RISK CONCENTRATION THRESHOLD                                ||");
 
 		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
 
@@ -96,41 +96,20 @@ public class InterestRateConcentrationThreshold
 
 		System.out.println ("\t||            - Bucket Number                                                                      ||");
 
-		System.out.println ("\t||            - Volatility Type                                                                    ||");
-
-		System.out.println ("\t||            - Trade Frequency                                                                    ||");
-
 		System.out.println ("\t||            - Delta Concentration Threshold                                                      ||");
 
 		System.out.println ("\t||            - Vega Concentration Threshold                                                       ||");
-
-		System.out.println ("\t||            - Currency Set                                                                       ||");
 
 		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
 
 		for (int bucketNumber : bucketSet)
 		{
-			InterestRateThreshold interestRateThreshold =
-				InterestRateThresholdContainer.InterestRateThreshold (bucketNumber);
-
-			CurrencyRiskGroup currencyRiskGroup = interestRateThreshold.currencyRiskGroup();
-
-			String[] componentArray = currencyRiskGroup.componentArray();
-
-			String componentSet = "";
-
-			for (String component : componentArray)
-			{
-				componentSet = componentSet + component + ",";
-			}
+			DeltaVegaThreshold equityRiskThreshold = EquityRiskThresholdContainer.Threshold (bucketNumber);
 
 			System.out.println (
-				"\t|| " + bucketNumber + " => " +
-				currencyRiskGroup.volatilityType() + " | " +
-				currencyRiskGroup.tradeFrequencyType() + " | " +
-				interestRateThreshold.deltaVega().delta() + " | " +
-				interestRateThreshold.deltaVega().vega() + " | " +
-				componentSet
+				"\t|| " + FormatUtil.FormatDouble (bucketNumber, 2, 0, 1.) + " => " +
+				FormatUtil.FormatDouble (equityRiskThreshold.delta(), 3, 1, 1.) + " | " +
+				FormatUtil.FormatDouble (equityRiskThreshold.vega(), 5, 1, 1.) + " ||"
 			);
 		}
 

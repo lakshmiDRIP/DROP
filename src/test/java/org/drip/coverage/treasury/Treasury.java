@@ -1,5 +1,20 @@
 
-package org.drip.simm20.concentration;
+package org.drip.coverage.treasury;
+
+import org.drip.sample.treasury.GovvieBondDefinitions;
+import org.drip.sample.treasury.TreasuryFixedBullet;
+import org.drip.sample.treasury.YAS_BTPS;
+import org.drip.sample.treasury.YAS_CAN;
+import org.drip.sample.treasury.YAS_DBR;
+import org.drip.sample.treasury.YAS_FRTR;
+import org.drip.sample.treasury.YAS_GGB;
+import org.drip.sample.treasury.YAS_GILT;
+import org.drip.sample.treasury.YAS_JGB;
+import org.drip.sample.treasury.YAS_MBONO;
+import org.drip.sample.treasury.YAS_SPGB;
+import org.drip.sample.treasury.YAS_UST;
+
+import org.junit.Test;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -7,6 +22,7 @@ package org.drip.simm20.concentration;
 
 /*!
  * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
  *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
  *  	libraries targeting analysts and developers
@@ -47,54 +63,37 @@ package org.drip.simm20.concentration;
  */
 
 /**
- * RiskFactorThresholdContainer holds the ISDA SIMM 2.0 Risk Factor Thresholds - the Concentration Limits for
- * 	Interest Rate, Credit Spread, Equity, Commodity, and FX Risk Factors. The References are:
- *  
- *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
- *  
- *  - Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
- *  	Calculations, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488, eSSRN.
- *  
- *  - Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
- *  	Framework for Forecasting Initial Margin Requirements,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
- *  
- *  - Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements
- *  	- A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167, eSSRN.
- *  
- *  - International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology,
- *  	https://www.isda.org/a/oFiDE/isda-simm-v2.pdf.
- * 
+ * Treasury holds the JUnit Code Coverage Tests for the Treasury Product Module.
+ *
  * @author Lakshmi Krishnamurthy
  */
 
-public class RiskFactorThresholdContainer
+public class Treasury
 {
-
-	/**
-	 * Initialize the Risk Factor Threshold Container
-	 * 
-	 * @return TRUE - The Risk Factor Threshold Container successfully initialized
-	 */
-
-	public static final boolean Init()
+	@Test public void codeCoverageTest() throws Exception
 	{
-		if (!org.drip.simm20.concentration.InterestRateThresholdContainer.Init())
-		{
-			return false;
-		}
+		GovvieBondDefinitions.main (null);
 
-		if (!org.drip.simm20.concentration.CreditRiskThresholdContainer.Init())
-		{
-			return false;
-		}
+		TreasuryFixedBullet.main (null);
 
-		if (!org.drip.simm20.concentration.EquityRiskThresholdContainer.Init())
-		{
-			return false;
-		}
+		YAS_BTPS.main (null);
 
-		return true;
-	}
+		YAS_CAN.main (null);
+
+		YAS_DBR.main (null);
+
+		YAS_FRTR.main (null);
+
+		YAS_GGB.main (null);
+
+		YAS_GILT.main (null);
+
+		YAS_JGB.main (null);
+
+		YAS_MBONO.main (null);
+
+		YAS_SPGB.main (null);
+
+		YAS_UST.main (null);
+    }
 }

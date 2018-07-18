@@ -96,8 +96,10 @@ public class InterestRateThresholdContainer
 							"Other"
 						}
 					),
-					8.,
-					110.
+					new org.drip.simm20.concentration.DeltaVegaThreshold (
+						8.,
+						110.
+					)
 				)
 			);
 
@@ -114,8 +116,10 @@ public class InterestRateThresholdContainer
 							"GBP"
 						}
 					),
-					230.,
-					2700.
+					new org.drip.simm20.concentration.DeltaVegaThreshold (
+						230.,
+						2700.
+					)
 				)
 			);
 
@@ -140,8 +144,10 @@ public class InterestRateThresholdContainer
 							"TWD"
 						}
 					),
-					28.,
-					150.
+					new org.drip.simm20.concentration.DeltaVegaThreshold (
+						28.,
+						150.
+					)
 				)
 			);
 
@@ -156,8 +162,10 @@ public class InterestRateThresholdContainer
 							"JPY"
 						}
 					),
-					82.,
-					960.
+					new org.drip.simm20.concentration.DeltaVegaThreshold (
+						82.,
+						960.
+					)
 				)
 			);
 		}

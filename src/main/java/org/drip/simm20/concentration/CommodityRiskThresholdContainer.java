@@ -47,8 +47,8 @@ package org.drip.simm20.concentration;
  */
 
 /**
- * InterestRateThreshold holds the ISDA SIMM 2.0 Interest Rate Delta and Vega Concentration Thresholds. The
- *  References are:
+ * CommodityRiskThresholdContainer holds the ISDA SIMM 2.0 Commodity Risk Thresholds - the Commodity Buckets
+ *  and the Delta/Vega Limits defined for the Concentration Thresholds. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -69,51 +69,21 @@ package org.drip.simm20.concentration;
  * @author Lakshmi Krishnamurthy
  */
 
-public class InterestRateThreshold
+public class CommodityRiskThresholdContainer
 {
-	private org.drip.simm20.concentration.DeltaVegaThreshold _deltaVega = null;
-	private org.drip.simm20.concentration.CurrencyRiskGroup _currencyRiskGroup = null;
+	private static final java.util.Map<java.lang.Integer, org.drip.simm20.concentration.DeltaVegaThreshold>
+		s_DeltaVegaThresholdMap = new java.util.TreeMap<java.lang.Integer,
+			org.drip.simm20.concentration.DeltaVegaThreshold>();
 
 	/**
-	 * InterestRateThreshold Constructor
+	 * Retrieve the Delta Vega Threshold Map
 	 * 
-	 * @param currencyRiskGroup The Currency Risk Group
-	 * @param deltaVega The Delta/Vega Concentration Threshold
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @return The Delta Vega Threshold Map
 	 */
 
-	public InterestRateThreshold (
-		final org.drip.simm20.concentration.CurrencyRiskGroup currencyRiskGroup,
-		final org.drip.simm20.concentration.DeltaVegaThreshold deltaVega)
-		throws java.lang.Exception
+	public static final java.util.Map<java.lang.Integer, org.drip.simm20.concentration.DeltaVegaThreshold>
+		DeltaVegaThresholdMap()
 	{
-		if (null == (_currencyRiskGroup = currencyRiskGroup) ||
-			null == (_deltaVega = deltaVega))
-		{
-			throw new java.lang.Exception ("InterestRateThreshold Constructor => Invalid Inputs");
-		}
-	}
-
-	/**
-	 * Retrieve the Currency Risk Group
-	 * 
-	 * @return The Currency Risk Group
-	 */
-
-	public org.drip.simm20.concentration.CurrencyRiskGroup currencyRiskGroup()
-	{
-		return _currencyRiskGroup;
-	}
-
-	/**
-	 * Retrieve the Delta Vega Concentration Threshold
-	 * 
-	 * @return The Delta Vega Concentration Threshold
-	 */
-
-	public org.drip.simm20.concentration.DeltaVegaThreshold deltaVega()
-	{
-		return _deltaVega;
+		return s_DeltaVegaThresholdMap;
 	}
 }
