@@ -5,8 +5,8 @@ import java.util.Set;
 
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.simm20.concentration.DeltaVegaThreshold;
-import org.drip.simm20.concentration.EquityRiskThresholdContainer;
+import org.drip.simm20.common.DeltaVegaThreshold;
+import org.drip.simm20.equity.EQRiskThresholdContainer;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -82,7 +82,7 @@ public class EquityRiskConcentrationThreshold
 	private static final void DisplayBuckets()
 		throws Exception
 	{
-		Set<Integer> bucketSet = EquityRiskThresholdContainer.BucketSet();
+		Set<Integer> bucketSet = EQRiskThresholdContainer.BucketSet();
 
 		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
 
@@ -104,7 +104,7 @@ public class EquityRiskConcentrationThreshold
 
 		for (int bucketNumber : bucketSet)
 		{
-			DeltaVegaThreshold equityRiskThreshold = EquityRiskThresholdContainer.Threshold (bucketNumber);
+			DeltaVegaThreshold equityRiskThreshold = EQRiskThresholdContainer.Threshold (bucketNumber);
 
 			System.out.println (
 				"\t|| " + FormatUtil.FormatDouble (bucketNumber, 2, 0, 1.) + " => " +

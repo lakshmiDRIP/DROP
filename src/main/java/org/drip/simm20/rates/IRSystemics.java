@@ -1,12 +1,5 @@
 
-package org.drip.sample.simm20;
-
-import java.util.Set;
-
-import org.drip.service.env.EnvManager;
-import org.drip.simm20.rates.CurrencyRiskGroup;
-import org.drip.simm20.rates.IRThreshold;
-import org.drip.simm20.rates.IRThresholdContainer;
+package org.drip.simm20.rates;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -54,8 +47,7 @@ import org.drip.simm20.rates.IRThresholdContainer;
  */
 
 /**
- * InterestRateConcentrationThreshold demonstrates the Extraction and Display of ISDA SIMM 2.0 Interest Rate
- * 	Concentration Thresholds. The References are:
+ * IRSystemics contains the Systemic Settings of the Interest Rate Risk Factors. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -76,74 +68,90 @@ import org.drip.simm20.rates.IRThresholdContainer;
  * @author Lakshmi Krishnamurthy
  */
 
-public class InterestRateConcentrationThreshold
+public class IRSystemics
 {
 
-	private static final void DisplayBuckets()
-		throws Exception
-	{
-		Set<Integer> bucketSet = IRThresholdContainer.IndexSet();
+	/**
+	 * Interest Rate Type - Regular Volatility
+	 */
 
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
+	public static final java.lang.String VOLATILITY_TYPE_REGULAR = "REGULAR";
 
-		System.out.println ("\t||                              INTEREST RATE CONCENTRATION THRESHOLD                              ||");
+	/**
+	 * Interest Rate Type - Low Volatility
+	 */
 
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
+	public static final java.lang.String VOLATILITY_TYPE_LOW = "LOW";
 
-		System.out.println ("\t||                                                                                                 ||");
+	/**
+	 * Interest Rate Type - High Volatility
+	 */
 
-		System.out.println ("\t||      L -> R:                                                                                    ||");
+	public static final java.lang.String VOLATILITY_TYPE_HIGH = "HIGH";
 
-		System.out.println ("\t||            - Bucket Number                                                                      ||");
+	/**
+	 * Interest Rate Type - Trade Frequency Type Well Traded
+	 */
 
-		System.out.println ("\t||            - Volatility Type                                                                    ||");
+	public static final java.lang.String TRADE_FREQUENCY_WELL_TRADED = "WELL_TRADED";
 
-		System.out.println ("\t||            - Trade Frequency                                                                    ||");
+	/**
+	 * Interest Rate Type - Trade Frequency Type Less Well Traded
+	 */
 
-		System.out.println ("\t||            - Delta Concentration Threshold                                                      ||");
+	public static final java.lang.String TRADE_FREQUENCY_LESS_WELL_TRADED = "LESS_WELL_TRADED";
 
-		System.out.println ("\t||            - Vega Concentration Threshold                                                       ||");
+	/**
+	 * Same Currency Curve Inflation Rate Risk Weight
+	 */
 
-		System.out.println ("\t||            - Currency Set                                                                       ||");
+	public static final double SINGLE_CURRENCY_CURVE_INFLATION_RISK_WEIGHT = 46.;
 
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
+	/**
+	 * Single Currency Single Curve Basis Swap Spread
+	 */
 
-		for (int bucketNumber : bucketSet)
-		{
-			IRThreshold interestRateThreshold = IRThresholdContainer.Threshold (bucketNumber);
+	public static final double SINGLE_CURRENCY_CURVE_BASIS_SWAP_SPREAD_RISK_WEIGHT = 20.;
 
-			CurrencyRiskGroup currencyRiskGroup = interestRateThreshold.currencyRiskGroup();
+	/**
+	 * Interest Rate Vega Risk Weight
+	 */
 
-			String[] componentArray = currencyRiskGroup.componentArray();
+	public static final double VEGA_RISK_WEIGHT = 0.21;
 
-			String componentSet = "";
+	/**
+	 * Single Currency Cross-Curve Correlation
+	 */
 
-			for (String component : componentArray)
-			{
-				componentSet = componentSet + component + ",";
-			}
+	public static final double SINGLE_CURRENCY_CROSS_CURVE_CORRELATION = 0.98;
 
-			System.out.println (
-				"\t|| " + bucketNumber + " => " +
-				currencyRiskGroup.volatilityType() + " | " +
-				currencyRiskGroup.tradeFrequencyType() + " | " +
-				interestRateThreshold.deltaVega().delta() + " | " +
-				interestRateThreshold.deltaVega().vega() + " | " +
-				componentSet
-			);
-		}
+	/**
+	 * Single Currency Curve Inflation Correlation
+	 */
 
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-	}
+	public static final double SINGLE_CURRENCY_CURVE_INFLATION_CORRELATION = 0.29;
 
-	public static final void main (
-		final String[] args)
-		throws Exception
-	{
-		EnvManager.InitEnv ("");
+	/**
+	 * Single Currency Curve Volatility Inflation Volatility Correlation
+	 */
 
-		DisplayBuckets();
+	public static final double SINGLE_CURRENCY_CURVE_VOLATILITY_INFLATION_VOLATILITY_CORRELATION = 0.29;
 
-		EnvManager.TerminateEnv();
-	}
+	/**
+	 * Single Currency Curve Basis Swap Spread Correlation
+	 */
+
+	public static final double SINGLE_CURRENCY_CURVE_BASIS_SWAP_SPREAD_CORRELATION = 0.20;
+
+	/**
+	 * Single Currency Basis Swap Spread Inflation Correlation
+	 */
+
+	public static final double SINGLE_CURRENCY_BASIS_SWAP_SPREAD_INFLATION_CORRELATION = 0.20;
+
+	/**
+	 * Cross Currency Curve Correlation
+	 */
+
+	public static final double CROSS_CURRENCY_CORRELATION = 0.23;
 }

@@ -1,12 +1,5 @@
 
-package org.drip.sample.simm20;
-
-import java.util.Set;
-
-import org.drip.service.env.EnvManager;
-import org.drip.simm20.rates.CurrencyRiskGroup;
-import org.drip.simm20.rates.IRThreshold;
-import org.drip.simm20.rates.IRThresholdContainer;
+package org.drip.simm20.fx;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -54,8 +47,8 @@ import org.drip.simm20.rates.IRThresholdContainer;
  */
 
 /**
- * InterestRateConcentrationThreshold demonstrates the Extraction and Display of ISDA SIMM 2.0 Interest Rate
- * 	Concentration Thresholds. The References are:
+ * FXRiskGroup holds the ISDA SIMM 2.0 FX Risk Group Concentration Categories and their Delta Limits. The
+ *  References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -76,74 +69,67 @@ import org.drip.simm20.rates.IRThresholdContainer;
  * @author Lakshmi Krishnamurthy
  */
 
-public class InterestRateConcentrationThreshold
+public class FXRiskGroup
 {
+	private int _category = -1;
+	private java.lang.String _description = "";
+	private java.lang.String[] _currencyArray = null;
 
-	private static final void DisplayBuckets()
-		throws Exception
+	/**
+	 * FXRiskGroup Constructor
+	 * 
+	 * @param category The FX Risk Group Category
+	 * @param description The FX Risk Group Description
+	 * @param currencyArray The FX Risk Group Currency Array
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public FXRiskGroup (
+		final int category,
+		final java.lang.String description,
+		final java.lang.String[] currencyArray)
+		throws java.lang.Exception
 	{
-		Set<Integer> bucketSet = IRThresholdContainer.IndexSet();
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-
-		System.out.println ("\t||                              INTEREST RATE CONCENTRATION THRESHOLD                              ||");
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-
-		System.out.println ("\t||                                                                                                 ||");
-
-		System.out.println ("\t||      L -> R:                                                                                    ||");
-
-		System.out.println ("\t||            - Bucket Number                                                                      ||");
-
-		System.out.println ("\t||            - Volatility Type                                                                    ||");
-
-		System.out.println ("\t||            - Trade Frequency                                                                    ||");
-
-		System.out.println ("\t||            - Delta Concentration Threshold                                                      ||");
-
-		System.out.println ("\t||            - Vega Concentration Threshold                                                       ||");
-
-		System.out.println ("\t||            - Currency Set                                                                       ||");
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-
-		for (int bucketNumber : bucketSet)
+		if (null == (_description = description) || _description.isEmpty() ||
+			null == (_currencyArray = currencyArray) || 0 == _currencyArray.length)
 		{
-			IRThreshold interestRateThreshold = IRThresholdContainer.Threshold (bucketNumber);
-
-			CurrencyRiskGroup currencyRiskGroup = interestRateThreshold.currencyRiskGroup();
-
-			String[] componentArray = currencyRiskGroup.componentArray();
-
-			String componentSet = "";
-
-			for (String component : componentArray)
-			{
-				componentSet = componentSet + component + ",";
-			}
-
-			System.out.println (
-				"\t|| " + bucketNumber + " => " +
-				currencyRiskGroup.volatilityType() + " | " +
-				currencyRiskGroup.tradeFrequencyType() + " | " +
-				interestRateThreshold.deltaVega().delta() + " | " +
-				interestRateThreshold.deltaVega().vega() + " | " +
-				componentSet
-			);
+			throw new java.lang.Exception ("FXRiskGroup Constructor => Invalid Inputs");
 		}
 
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
+		_category = category;
 	}
 
-	public static final void main (
-		final String[] args)
-		throws Exception
+	/**
+	 * Retrieve the FX Risk Group Category
+	 * 
+	 * @return The FX Risk Group Category
+	 */
+
+	public int category()
 	{
-		EnvManager.InitEnv ("");
+		return _category;
+	}
 
-		DisplayBuckets();
+	/**
+	 * Retrieve the FX Risk Group Description
+	 * 
+	 * @return The FX Risk Group Description
+	 */
 
-		EnvManager.TerminateEnv();
+	public java.lang.String description()
+	{
+		return _description;
+	}
+
+	/**
+	 * Retrieve the FX Risk Currency Array
+	 * 
+	 * @return The FX Risk Currency Array
+	 */
+
+	public java.lang.String[] currencyArray()
+	{
+		return _currencyArray;
 	}
 }

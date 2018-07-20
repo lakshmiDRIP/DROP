@@ -1,12 +1,5 @@
 
-package org.drip.sample.simm20;
-
-import java.util.Set;
-
-import org.drip.service.env.EnvManager;
-import org.drip.simm20.rates.CurrencyRiskGroup;
-import org.drip.simm20.rates.IRThreshold;
-import org.drip.simm20.rates.IRThresholdContainer;
+package org.drip.simm20.common;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -54,8 +47,8 @@ import org.drip.simm20.rates.IRThresholdContainer;
  */
 
 /**
- * InterestRateConcentrationThreshold demonstrates the Extraction and Display of ISDA SIMM 2.0 Interest Rate
- * 	Concentration Thresholds. The References are:
+ * RiskFactorThresholdContainer holds the ISDA SIMM 2.0 Risk Factor Thresholds - the Concentration Limits for
+ * 	Interest Rate, Credit Spread, Equity, Commodity, and FX Risk Factors. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -76,74 +69,42 @@ import org.drip.simm20.rates.IRThresholdContainer;
  * @author Lakshmi Krishnamurthy
  */
 
-public class InterestRateConcentrationThreshold
+public class RiskFactorThresholdContainer
 {
 
-	private static final void DisplayBuckets()
-		throws Exception
+	/**
+	 * Initialize the Risk Factor Threshold Container
+	 * 
+	 * @return TRUE - The Risk Factor Threshold Container successfully initialized
+	 */
+
+	public static final boolean Init()
 	{
-		Set<Integer> bucketSet = IRThresholdContainer.IndexSet();
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-
-		System.out.println ("\t||                              INTEREST RATE CONCENTRATION THRESHOLD                              ||");
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-
-		System.out.println ("\t||                                                                                                 ||");
-
-		System.out.println ("\t||      L -> R:                                                                                    ||");
-
-		System.out.println ("\t||            - Bucket Number                                                                      ||");
-
-		System.out.println ("\t||            - Volatility Type                                                                    ||");
-
-		System.out.println ("\t||            - Trade Frequency                                                                    ||");
-
-		System.out.println ("\t||            - Delta Concentration Threshold                                                      ||");
-
-		System.out.println ("\t||            - Vega Concentration Threshold                                                       ||");
-
-		System.out.println ("\t||            - Currency Set                                                                       ||");
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-
-		for (int bucketNumber : bucketSet)
+		if (!org.drip.simm20.rates.IRThresholdContainer.Init())
 		{
-			IRThreshold interestRateThreshold = IRThresholdContainer.Threshold (bucketNumber);
-
-			CurrencyRiskGroup currencyRiskGroup = interestRateThreshold.currencyRiskGroup();
-
-			String[] componentArray = currencyRiskGroup.componentArray();
-
-			String componentSet = "";
-
-			for (String component : componentArray)
-			{
-				componentSet = componentSet + component + ",";
-			}
-
-			System.out.println (
-				"\t|| " + bucketNumber + " => " +
-				currencyRiskGroup.volatilityType() + " | " +
-				currencyRiskGroup.tradeFrequencyType() + " | " +
-				interestRateThreshold.deltaVega().delta() + " | " +
-				interestRateThreshold.deltaVega().vega() + " | " +
-				componentSet
-			);
+			return false;
 		}
 
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-	}
+		if (!org.drip.simm20.credit.CRThresholdContainer.Init())
+		{
+			return false;
+		}
 
-	public static final void main (
-		final String[] args)
-		throws Exception
-	{
-		EnvManager.InitEnv ("");
+		if (!org.drip.simm20.equity.EQRiskThresholdContainer.Init())
+		{
+			return false;
+		}
 
-		DisplayBuckets();
+		if (!org.drip.simm20.commodity.CTRiskThresholdContainer.Init())
+		{
+			return false;
+		}
 
-		EnvManager.TerminateEnv();
+		if (!org.drip.simm20.fx.FXRiskThresholdContainer.Init())
+		{
+			return false;
+		}
+
+		return true;
 	}
 }

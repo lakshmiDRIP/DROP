@@ -1,12 +1,5 @@
 
-package org.drip.sample.simm20;
-
-import java.util.Set;
-
-import org.drip.service.env.EnvManager;
-import org.drip.simm20.rates.CurrencyRiskGroup;
-import org.drip.simm20.rates.IRThreshold;
-import org.drip.simm20.rates.IRThresholdContainer;
+package org.drip.simm20.rates;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -54,8 +47,8 @@ import org.drip.simm20.rates.IRThresholdContainer;
  */
 
 /**
- * InterestRateConcentrationThreshold demonstrates the Extraction and Display of ISDA SIMM 2.0 Interest Rate
- * 	Concentration Thresholds. The References are:
+ * IRWeight holds the ISDA SIMM 2.0 Tenor Interest Rate Vertex Risk Weights for Currencies across all
+ * 	Volatility Types. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -76,74 +69,64 @@ import org.drip.simm20.rates.IRThresholdContainer;
  * @author Lakshmi Krishnamurthy
  */
 
-public class InterestRateConcentrationThreshold
+public class IRWeight
 {
+	private java.lang.String _volatilityType = "";
 
-	private static final void DisplayBuckets()
-		throws Exception
+	private java.util.Map<java.lang.String, java.lang.Double> _tenorWeightMap = new
+		java.util.HashMap<java.lang.String, java.lang.Double>();
+
+	/**
+	 * IRWeight Constructor
+	 * 
+	 * @param volatilityType The Volatility Type
+	 * @param tenorWeightMap The Map of Tenor Risk Weights
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public IRWeight (
+		final java.lang.String volatilityType,
+		final java.util.Map<java.lang.String, java.lang.Double> tenorWeightMap)
+		throws java.lang.Exception
 	{
-		Set<Integer> bucketSet = IRThresholdContainer.IndexSet();
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-
-		System.out.println ("\t||                              INTEREST RATE CONCENTRATION THRESHOLD                              ||");
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-
-		System.out.println ("\t||                                                                                                 ||");
-
-		System.out.println ("\t||      L -> R:                                                                                    ||");
-
-		System.out.println ("\t||            - Bucket Number                                                                      ||");
-
-		System.out.println ("\t||            - Volatility Type                                                                    ||");
-
-		System.out.println ("\t||            - Trade Frequency                                                                    ||");
-
-		System.out.println ("\t||            - Delta Concentration Threshold                                                      ||");
-
-		System.out.println ("\t||            - Vega Concentration Threshold                                                       ||");
-
-		System.out.println ("\t||            - Currency Set                                                                       ||");
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-
-		for (int bucketNumber : bucketSet)
+		if (null == (_volatilityType = volatilityType) || _volatilityType.isEmpty() ||
+			null == (_tenorWeightMap = tenorWeightMap) || 0 == _tenorWeightMap.size())
 		{
-			IRThreshold interestRateThreshold = IRThresholdContainer.Threshold (bucketNumber);
-
-			CurrencyRiskGroup currencyRiskGroup = interestRateThreshold.currencyRiskGroup();
-
-			String[] componentArray = currencyRiskGroup.componentArray();
-
-			String componentSet = "";
-
-			for (String component : componentArray)
-			{
-				componentSet = componentSet + component + ",";
-			}
-
-			System.out.println (
-				"\t|| " + bucketNumber + " => " +
-				currencyRiskGroup.volatilityType() + " | " +
-				currencyRiskGroup.tradeFrequencyType() + " | " +
-				interestRateThreshold.deltaVega().delta() + " | " +
-				interestRateThreshold.deltaVega().vega() + " | " +
-				componentSet
-			);
+			throw new java.lang.Exception ("IRWeight Constructor => Invalid Inputs");
 		}
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
 	}
 
-	public static final void main (
-		final String[] args)
-		throws Exception
+	/**
+	 * Retrieve the Volatility Type
+	 * 
+	 * @return The Volatility Type
+	 */
+
+	public java.lang.String volatilityType()
 	{
-		EnvManager.InitEnv ("");
+		return _volatilityType;
+	}
 
-		DisplayBuckets();
+	/**
+	 * Retrieve the Tenor Weight Map
+	 * 
+	 * @return The Tenor Weight Map
+	 */
 
-		EnvManager.TerminateEnv();
+	public java.util.Map<java.lang.String, java.lang.Double> tenorWeightMap()
+	{
+		return _tenorWeightMap;
+	}
+
+	/**
+	 * Retrieve the Tenors
+	 * 
+	 * @return The Tenors
+	 */
+
+	public java.util.Set<java.lang.String> tenors()
+	{
+		return _tenorWeightMap.keySet();
 	}
 }

@@ -7,9 +7,9 @@ import java.util.Set;
 import org.drip.measure.stochastic.LabelCorrelation;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.simm20.parameters.CommoditySettingsContainer;
-import org.drip.simm20.risk.CommodityBucket;
-import org.drip.simm20.risk.CommoditySystemics;
+import org.drip.simm20.commodity.CTBucket;
+import org.drip.simm20.commodity.CTSettingsContainer;
+import org.drip.simm20.commodity.CTSystemics;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -84,7 +84,7 @@ public class CommoditySettings
 
 	private static final void RiskWeights()
 	{
-		Set<Integer> bucketIndexSet = CommoditySettingsContainer.BucketSet();
+		Set<Integer> bucketIndexSet = CTSettingsContainer.BucketSet();
 
 		System.out.println
 			("\t||-------------------------------------------------------------------------------------------------------------||");
@@ -118,7 +118,7 @@ public class CommoditySettings
 
 		for (int bucketIndex : bucketIndexSet)
 		{
-			CommodityBucket commodityBucket = CommoditySettingsContainer.Bucket (bucketIndex);
+			CTBucket commodityBucket = CTSettingsContainer.Bucket (bucketIndex);
 
 			System.out.println (
 				"\t||" + FormatUtil.FormatDouble (commodityBucket.number(), 2, 0, 1.) + " | " +
@@ -145,14 +145,14 @@ public class CommoditySettings
 		System.out.println (
 			"\t|| Historical Volatility Ratio                         => " +
 			FormatUtil.FormatDouble (
-				CommoditySystemics.HISTORICAL_VOLATILITY_RATIO, 3, 2, 1.
+				CTSystemics.HISTORICAL_VOLATILITY_RATIO, 3, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Vega Risk Weight                                    => " +
 			FormatUtil.FormatDouble (
-				CommoditySystemics.VEGA_RISK_WEIGHT, 3, 2, 1.
+				CTSystemics.VEGA_RISK_WEIGHT, 3, 2, 1.
 			) + " ||"
 		);
 
@@ -164,7 +164,7 @@ public class CommoditySettings
 	private static final void CrossBucketCorrelation()
 		throws Exception
 	{
-		LabelCorrelation crossBucketCorrelation = CommoditySettingsContainer.CrossBucketCorrelation();
+		LabelCorrelation crossBucketCorrelation = CTSettingsContainer.CrossBucketCorrelation();
 
 		List<String> bucketList = crossBucketCorrelation.labelList();
 

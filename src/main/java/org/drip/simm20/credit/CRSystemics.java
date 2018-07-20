@@ -1,12 +1,5 @@
 
-package org.drip.sample.simm20;
-
-import java.util.Set;
-
-import org.drip.service.env.EnvManager;
-import org.drip.simm20.rates.CurrencyRiskGroup;
-import org.drip.simm20.rates.IRThreshold;
-import org.drip.simm20.rates.IRThresholdContainer;
+package org.drip.simm20.credit;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -54,8 +47,8 @@ import org.drip.simm20.rates.IRThresholdContainer;
  */
 
 /**
- * InterestRateConcentrationThreshold demonstrates the Extraction and Display of ISDA SIMM 2.0 Interest Rate
- * 	Concentration Thresholds. The References are:
+ * CRSystemics contains the Systemic Settings Common to both Qualifying and Non-Qualifying Credit Risk
+ *  Factors. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -76,74 +69,48 @@ import org.drip.simm20.rates.IRThresholdContainer;
  * @author Lakshmi Krishnamurthy
  */
 
-public class InterestRateConcentrationThreshold
+public class CRSystemics
 {
 
-	private static final void DisplayBuckets()
-		throws Exception
-	{
-		Set<Integer> bucketSet = IRThresholdContainer.IndexSet();
+	/**
+	 * The "Investment Grade" Credit Quality
+	 */
 
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
+	public static final java.lang.String CREDIT_QUALITY_IG = "IG";
 
-		System.out.println ("\t||                              INTEREST RATE CONCENTRATION THRESHOLD                              ||");
+	/**
+	 * The "IG" Credit Quality
+	 */
 
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
+	public static final java.lang.String CREDIT_QUALITY_INVESTMENT_GRADE = "IG";
 
-		System.out.println ("\t||                                                                                                 ||");
+	/**
+	 * The "High Yield" Credit Quality
+	 */
 
-		System.out.println ("\t||      L -> R:                                                                                    ||");
+	public static final java.lang.String CREDIT_QUALITY_HY = "HY";
 
-		System.out.println ("\t||            - Bucket Number                                                                      ||");
+	/**
+	 * The "High Yield" Credit Quality
+	 */
 
-		System.out.println ("\t||            - Volatility Type                                                                    ||");
+	public static final java.lang.String CREDIT_QUALITY_HIGH_YIELD = "HY";
 
-		System.out.println ("\t||            - Trade Frequency                                                                    ||");
+	/**
+	 * The "Not Rated" Credit Quality
+	 */
 
-		System.out.println ("\t||            - Delta Concentration Threshold                                                      ||");
+	public static final java.lang.String CREDIT_QUALITY_NR = "NR";
 
-		System.out.println ("\t||            - Vega Concentration Threshold                                                       ||");
+	/**
+	 * The "Not Rated" Credit Quality
+	 */
 
-		System.out.println ("\t||            - Currency Set                                                                       ||");
+	public static final java.lang.String CREDIT_QUALITY_NOT_RATED = "NR";
 
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
+	/**
+	 * The "Unspecified" Credit Quality
+	 */
 
-		for (int bucketNumber : bucketSet)
-		{
-			IRThreshold interestRateThreshold = IRThresholdContainer.Threshold (bucketNumber);
-
-			CurrencyRiskGroup currencyRiskGroup = interestRateThreshold.currencyRiskGroup();
-
-			String[] componentArray = currencyRiskGroup.componentArray();
-
-			String componentSet = "";
-
-			for (String component : componentArray)
-			{
-				componentSet = componentSet + component + ",";
-			}
-
-			System.out.println (
-				"\t|| " + bucketNumber + " => " +
-				currencyRiskGroup.volatilityType() + " | " +
-				currencyRiskGroup.tradeFrequencyType() + " | " +
-				interestRateThreshold.deltaVega().delta() + " | " +
-				interestRateThreshold.deltaVega().vega() + " | " +
-				componentSet
-			);
-		}
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-	}
-
-	public static final void main (
-		final String[] args)
-		throws Exception
-	{
-		EnvManager.InitEnv ("");
-
-		DisplayBuckets();
-
-		EnvManager.TerminateEnv();
-	}
+	public static final java.lang.String CREDIT_QUALITY_UNSPECIFIED = "UNSPECIFIED";
 }

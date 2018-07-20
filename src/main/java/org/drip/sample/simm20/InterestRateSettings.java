@@ -7,9 +7,9 @@ import java.util.Map;
 import org.drip.measure.stochastic.LabelCorrelation;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.simm20.parameters.InterestRateSettingsContainer;
-import org.drip.simm20.risk.InterestRateSystemics;
-import org.drip.simm20.risk.InterestRateWeight;
+import org.drip.simm20.rates.IRSettingsContainer;
+import org.drip.simm20.rates.IRSystemics;
+import org.drip.simm20.rates.IRWeight;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -93,7 +93,7 @@ public class InterestRateSettings
 
 		System.out.println (
 			"\t|| Currency Set => " +
-			InterestRateSettingsContainer.RegularVolatilityCurrencySet() + " ||"
+			IRSettingsContainer.RegularVolatilityCurrencySet() + " ||"
 		);
 
 		System.out.println ("\t||-----------------------------------------------------------------------------------||");
@@ -101,7 +101,7 @@ public class InterestRateSettings
 		System.out.println
 			("\t||------------------------------------------------------------------------------------------------------------------------------------------------------||");
 
-		InterestRateWeight usdRiskWeight = InterestRateSettingsContainer.RiskWeight ("USD");
+		IRWeight usdRiskWeight = IRSettingsContainer.RiskWeight ("USD");
 
 		String tenorWeightSequence = "\t|| ";
 
@@ -130,7 +130,7 @@ public class InterestRateSettings
 
 		System.out.println (
 			"\t|| Currency Set => " +
-			InterestRateSettingsContainer.LowVolatilityCurrencySet()
+			IRSettingsContainer.LowVolatilityCurrencySet()
 		);
 
 		System.out.println ("\t||-----------------------------------------------------------------------------------||");
@@ -138,7 +138,7 @@ public class InterestRateSettings
 		System.out.println
 			("\t||----------------------------------------------------------------------------------------------------------------------------------------------------||");
 
-		InterestRateWeight jpyRiskWeight = InterestRateSettingsContainer.RiskWeight ("JPY");
+		IRWeight jpyRiskWeight = IRSettingsContainer.RiskWeight ("JPY");
 
 		String tenorWeightSequence = "\t|| ";
 
@@ -167,7 +167,7 @@ public class InterestRateSettings
 
 		System.out.println (
 			"\t|| Currency Set => " +
-			InterestRateSettingsContainer.HighVolatilityCurrencySet()
+			IRSettingsContainer.HighVolatilityCurrencySet()
 		);
 
 		System.out.println ("\t||-----------------------------------------------------------------------------------||");
@@ -175,7 +175,7 @@ public class InterestRateSettings
 		System.out.println
 			("\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------||");
 
-		InterestRateWeight inrRiskWeight = InterestRateSettingsContainer.RiskWeight ("INR");
+		IRWeight inrRiskWeight = IRSettingsContainer.RiskWeight ("INR");
 
 		String tenorWeightSequence = "\t|| ";
 
@@ -196,7 +196,7 @@ public class InterestRateSettings
 	private static final void SingleCurrencyTenorCorrelation()
 		throws Exception
 	{
-		LabelCorrelation singleCurveTenorCorrelation = InterestRateSettingsContainer.SingleCurveTenorCorrelation();
+		LabelCorrelation singleCurveTenorCorrelation = IRSettingsContainer.SingleCurveTenorCorrelation();
 
 		List<String> tenorList = singleCurveTenorCorrelation.labelList();
 
@@ -257,63 +257,63 @@ public class InterestRateSettings
 		System.out.println (
 			"\t|| Single Currency Inflation Risk Weight                               => " +
 			FormatUtil.FormatDouble (
-				InterestRateSystemics.SINGLE_CURRENCY_CURVE_INFLATION_RISK_WEIGHT, 2, 2, 1.
+				IRSystemics.SINGLE_CURRENCY_CURVE_INFLATION_RISK_WEIGHT, 2, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Single Currency Basis Swap Spread Risk Weight                       => " +
 			FormatUtil.FormatDouble (
-				InterestRateSystemics.SINGLE_CURRENCY_CURVE_BASIS_SWAP_SPREAD_RISK_WEIGHT, 2, 2, 1.
+				IRSystemics.SINGLE_CURRENCY_CURVE_BASIS_SWAP_SPREAD_RISK_WEIGHT, 2, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Single Currency Vega Risk Weight                                    => " +
 			FormatUtil.FormatDouble (
-				InterestRateSystemics.VEGA_RISK_WEIGHT, 2, 2, 1.
+				IRSystemics.VEGA_RISK_WEIGHT, 2, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Single Currency Cross Curve Correlation                             => " +
 			FormatUtil.FormatDouble (
-				InterestRateSystemics.SINGLE_CURRENCY_CROSS_CURVE_CORRELATION, 2, 2, 1.
+				IRSystemics.SINGLE_CURRENCY_CROSS_CURVE_CORRELATION, 2, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Single Currency Curve Inflation Correlation                         => " +
 			FormatUtil.FormatDouble (
-				InterestRateSystemics.SINGLE_CURRENCY_CURVE_INFLATION_CORRELATION, 2, 2, 1.
+				IRSystemics.SINGLE_CURRENCY_CURVE_INFLATION_CORRELATION, 2, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Single Currency Curve Volatility Inflation Volatility Correlation   => " +
 			FormatUtil.FormatDouble (
-				InterestRateSystemics.SINGLE_CURRENCY_CURVE_VOLATILITY_INFLATION_VOLATILITY_CORRELATION, 2, 2, 1.
+				IRSystemics.SINGLE_CURRENCY_CURVE_VOLATILITY_INFLATION_VOLATILITY_CORRELATION, 2, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Single Currency Curve Basis Swap Spread Correlation                 => " +
 			FormatUtil.FormatDouble (
-				InterestRateSystemics.SINGLE_CURRENCY_CURVE_BASIS_SWAP_SPREAD_CORRELATION, 2, 2, 1.
+				IRSystemics.SINGLE_CURRENCY_CURVE_BASIS_SWAP_SPREAD_CORRELATION, 2, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Single Currency Basis Swap Spread Inflation Correlation             => " +
 			FormatUtil.FormatDouble (
-				InterestRateSystemics.SINGLE_CURRENCY_BASIS_SWAP_SPREAD_INFLATION_CORRELATION, 2, 2, 1.
+				IRSystemics.SINGLE_CURRENCY_BASIS_SWAP_SPREAD_INFLATION_CORRELATION, 2, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Cross Currency Correlation                                          => " +
 			FormatUtil.FormatDouble (
-				InterestRateSystemics.CROSS_CURRENCY_CORRELATION, 2, 2, 1.
+				IRSystemics.CROSS_CURRENCY_CORRELATION, 2, 2, 1.
 			) + " ||"
 		);
 

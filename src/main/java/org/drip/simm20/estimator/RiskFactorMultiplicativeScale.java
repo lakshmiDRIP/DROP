@@ -1,12 +1,5 @@
 
-package org.drip.sample.simm20;
-
-import java.util.Set;
-
-import org.drip.service.env.EnvManager;
-import org.drip.simm20.rates.CurrencyRiskGroup;
-import org.drip.simm20.rates.IRThreshold;
-import org.drip.simm20.rates.IRThresholdContainer;
+package org.drip.simm20.estimator;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -54,8 +47,8 @@ import org.drip.simm20.rates.IRThresholdContainer;
  */
 
 /**
- * InterestRateConcentrationThreshold demonstrates the Extraction and Display of ISDA SIMM 2.0 Interest Rate
- * 	Concentration Thresholds. The References are:
+ * RiskFactorMultiplicativeScale holds the Multiplicative Scales Minimum/Default Values for the Four Product
+ * 	Classes - RatesFX, Credit, Equity, and Commodity. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -76,74 +69,30 @@ import org.drip.simm20.rates.IRThresholdContainer;
  * @author Lakshmi Krishnamurthy
  */
 
-public class InterestRateConcentrationThreshold
+public class RiskFactorMultiplicativeScale
 {
 
-	private static final void DisplayBuckets()
-		throws Exception
-	{
-		Set<Integer> bucketSet = IRThresholdContainer.IndexSet();
+	/**
+	 * The RatesFX Multiplicative Factor Default (1.0)
+	 */
 
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
+	public static final double MS_RATESFX_DEFAULT = 1.0;
 
-		System.out.println ("\t||                              INTEREST RATE CONCENTRATION THRESHOLD                              ||");
+	/**
+	 * The Credit Multiplicative Factor Default (1.0)
+	 */
 
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
+	public static final double MS_CREDIT_DEFAULT = 1.0;
 
-		System.out.println ("\t||                                                                                                 ||");
+	/**
+	 * The Equity Multiplicative Factor Default (1.0)
+	 */
 
-		System.out.println ("\t||      L -> R:                                                                                    ||");
+	public static final double MS_EQUITY_DEFAULT = 1.0;
 
-		System.out.println ("\t||            - Bucket Number                                                                      ||");
+	/**
+	 * The Commodity Multiplicative Factor Default (1.0)
+	 */
 
-		System.out.println ("\t||            - Volatility Type                                                                    ||");
-
-		System.out.println ("\t||            - Trade Frequency                                                                    ||");
-
-		System.out.println ("\t||            - Delta Concentration Threshold                                                      ||");
-
-		System.out.println ("\t||            - Vega Concentration Threshold                                                       ||");
-
-		System.out.println ("\t||            - Currency Set                                                                       ||");
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-
-		for (int bucketNumber : bucketSet)
-		{
-			IRThreshold interestRateThreshold = IRThresholdContainer.Threshold (bucketNumber);
-
-			CurrencyRiskGroup currencyRiskGroup = interestRateThreshold.currencyRiskGroup();
-
-			String[] componentArray = currencyRiskGroup.componentArray();
-
-			String componentSet = "";
-
-			for (String component : componentArray)
-			{
-				componentSet = componentSet + component + ",";
-			}
-
-			System.out.println (
-				"\t|| " + bucketNumber + " => " +
-				currencyRiskGroup.volatilityType() + " | " +
-				currencyRiskGroup.tradeFrequencyType() + " | " +
-				interestRateThreshold.deltaVega().delta() + " | " +
-				interestRateThreshold.deltaVega().vega() + " | " +
-				componentSet
-			);
-		}
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-	}
-
-	public static final void main (
-		final String[] args)
-		throws Exception
-	{
-		EnvManager.InitEnv ("");
-
-		DisplayBuckets();
-
-		EnvManager.TerminateEnv();
-	}
+	public static final double MS_COMMODITY_DEFAULT = 1.0;
 }

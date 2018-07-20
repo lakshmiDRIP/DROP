@@ -1,12 +1,5 @@
 
-package org.drip.sample.simm20;
-
-import java.util.Set;
-
-import org.drip.service.env.EnvManager;
-import org.drip.simm20.rates.CurrencyRiskGroup;
-import org.drip.simm20.rates.IRThreshold;
-import org.drip.simm20.rates.IRThresholdContainer;
+package org.drip.simm20.estimator;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -54,8 +47,8 @@ import org.drip.simm20.rates.IRThresholdContainer;
  */
 
 /**
- * InterestRateConcentrationThreshold demonstrates the Extraction and Display of ISDA SIMM 2.0 Interest Rate
- * 	Concentration Thresholds. The References are:
+ * SIMM holds the holds the Initial Margin Estimates across the Four Product Classes - RatesFX, Credit,
+ *  Equity, and Commodity. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -76,74 +69,81 @@ import org.drip.simm20.rates.IRThresholdContainer;
  * @author Lakshmi Krishnamurthy
  */
 
-public class InterestRateConcentrationThreshold
+public class SIMM
 {
+	private double _credit = java.lang.Double.NaN;
+	private double _equity = java.lang.Double.NaN;
+	private double _ratesFX = java.lang.Double.NaN;
+	private double _commodity = java.lang.Double.NaN;
 
-	private static final void DisplayBuckets()
-		throws Exception
+	/**
+	 * SIMM Constructor
+	 * 
+	 * @param ratesFX The RatesFX SIMM Component
+	 * @param credit The Credit SIMM Component
+	 * @param equity The Equity SIMM Component
+	 * @param commodity The Commodity SIMM Component
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public SIMM (
+		final double ratesFX,
+		final double credit,
+		final double equity,
+		final double commodity)
+		throws java.lang.Exception
 	{
-		Set<Integer> bucketSet = IRThresholdContainer.IndexSet();
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-
-		System.out.println ("\t||                              INTEREST RATE CONCENTRATION THRESHOLD                              ||");
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-
-		System.out.println ("\t||                                                                                                 ||");
-
-		System.out.println ("\t||      L -> R:                                                                                    ||");
-
-		System.out.println ("\t||            - Bucket Number                                                                      ||");
-
-		System.out.println ("\t||            - Volatility Type                                                                    ||");
-
-		System.out.println ("\t||            - Trade Frequency                                                                    ||");
-
-		System.out.println ("\t||            - Delta Concentration Threshold                                                      ||");
-
-		System.out.println ("\t||            - Vega Concentration Threshold                                                       ||");
-
-		System.out.println ("\t||            - Currency Set                                                                       ||");
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-
-		for (int bucketNumber : bucketSet)
+		if (!org.drip.quant.common.NumberUtil.IsValid (_ratesFX = ratesFX) || 0. > _ratesFX ||
+			!org.drip.quant.common.NumberUtil.IsValid (_credit = credit) || 0. > _credit ||
+			!org.drip.quant.common.NumberUtil.IsValid (_equity = equity) || 0. > _equity ||
+			!org.drip.quant.common.NumberUtil.IsValid (_commodity = commodity) ||  0. > _commodity)
 		{
-			IRThreshold interestRateThreshold = IRThresholdContainer.Threshold (bucketNumber);
-
-			CurrencyRiskGroup currencyRiskGroup = interestRateThreshold.currencyRiskGroup();
-
-			String[] componentArray = currencyRiskGroup.componentArray();
-
-			String componentSet = "";
-
-			for (String component : componentArray)
-			{
-				componentSet = componentSet + component + ",";
-			}
-
-			System.out.println (
-				"\t|| " + bucketNumber + " => " +
-				currencyRiskGroup.volatilityType() + " | " +
-				currencyRiskGroup.tradeFrequencyType() + " | " +
-				interestRateThreshold.deltaVega().delta() + " | " +
-				interestRateThreshold.deltaVega().vega() + " | " +
-				componentSet
-			);
+			throw new java.lang.Exception ("SIMM Constructor => Invalid Inputs");
 		}
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
 	}
 
-	public static final void main (
-		final String[] args)
-		throws Exception
+	/**
+	 * Retrieve the RatesFX SIMM Initial Margin
+	 * 
+	 * @return The RatesFX SIMM Initial Margin
+	 */
+
+	public double ratesFX()
 	{
-		EnvManager.InitEnv ("");
+		return _ratesFX;
+	}
 
-		DisplayBuckets();
+	/**
+	 * Retrieve the Credit SIMM Initial Margin
+	 * 
+	 * @return The Credit SIMM Initial Margin
+	 */
 
-		EnvManager.TerminateEnv();
+	public double credit()
+	{
+		return _credit;
+	}
+
+	/**
+	 * Retrieve the Equity SIMM Initial Margin
+	 * 
+	 * @return The Equity SIMM Initial Margin
+	 */
+
+	public double equity()
+	{
+		return _equity;
+	}
+
+	/**
+	 * Retrieve the Commodity SIMM Initial Margin
+	 * 
+	 * @return The Commodity SIMM Initial Margin
+	 */
+
+	public double commodity()
+	{
+		return _commodity;
 	}
 }

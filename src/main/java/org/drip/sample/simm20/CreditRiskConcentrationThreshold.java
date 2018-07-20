@@ -5,8 +5,8 @@ import java.util.Set;
 
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.simm20.concentration.DeltaVegaThreshold;
-import org.drip.simm20.concentration.CreditRiskThresholdContainer;
+import org.drip.simm20.common.DeltaVegaThreshold;
+import org.drip.simm20.credit.CRThresholdContainer;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -82,7 +82,7 @@ public class CreditRiskConcentrationThreshold
 	private static final void DisplayQualifyingBuckets()
 		throws Exception
 	{
-		Set<Integer> bucketSet = CreditRiskThresholdContainer.QualifyingBucketSet();
+		Set<Integer> bucketSet = CRThresholdContainer.QualifyingBucketSet();
 
 		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
 
@@ -105,7 +105,7 @@ public class CreditRiskConcentrationThreshold
 		for (int bucketNumber : bucketSet)
 		{
 			DeltaVegaThreshold creditRiskQualifyingThreshold =
-				CreditRiskThresholdContainer.QualifyingThreshold (bucketNumber);
+				CRThresholdContainer.QualifyingThreshold (bucketNumber);
 
 			System.out.println (
 				"\t|| " + FormatUtil.FormatDouble (bucketNumber, 2, 0, 1.) + " => " +
@@ -120,7 +120,7 @@ public class CreditRiskConcentrationThreshold
 	private static final void DisplayNonQualifyingBuckets()
 		throws Exception
 	{
-		Set<Integer> bucketSet = CreditRiskThresholdContainer.NonQualifyingBucketSet();
+		Set<Integer> bucketSet = CRThresholdContainer.NonQualifyingBucketSet();
 
 		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
 
@@ -143,7 +143,7 @@ public class CreditRiskConcentrationThreshold
 		for (int bucketNumber : bucketSet)
 		{
 			DeltaVegaThreshold creditRiskNonQualifyingThreshold =
-				CreditRiskThresholdContainer.NonQualifyingThreshold (bucketNumber);
+				CRThresholdContainer.NonQualifyingThreshold (bucketNumber);
 
 			System.out.println (
 				"\t|| " + FormatUtil.FormatDouble (bucketNumber, 2, 0, 1.) + " => " +

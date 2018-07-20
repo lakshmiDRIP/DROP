@@ -1,12 +1,5 @@
 
-package org.drip.sample.simm20;
-
-import java.util.Set;
-
-import org.drip.service.env.EnvManager;
-import org.drip.simm20.rates.CurrencyRiskGroup;
-import org.drip.simm20.rates.IRThreshold;
-import org.drip.simm20.rates.IRThresholdContainer;
+package org.drip.simm20.credit;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -54,8 +47,7 @@ import org.drip.simm20.rates.IRThresholdContainer;
  */
 
 /**
- * InterestRateConcentrationThreshold demonstrates the Extraction and Display of ISDA SIMM 2.0 Interest Rate
- * 	Concentration Thresholds. The References are:
+ * SectorSystemics contains the Systemic Settings that hold Sector-related Information. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -76,74 +68,168 @@ import org.drip.simm20.rates.IRThresholdContainer;
  * @author Lakshmi Krishnamurthy
  */
 
-public class InterestRateConcentrationThreshold
+public class SectorSystemics
 {
 
-	private static final void DisplayBuckets()
-		throws Exception
+	/**
+	 * The Sovereigns Sector
+	 */
+
+	public static final java.lang.String[] SOVEREIGNS = new java.lang.String[]
 	{
-		Set<Integer> bucketSet = IRThresholdContainer.IndexSet();
+		"SOVEREIGN",
+		"CENTRAL_BANK"
+	};
 
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
+	/**
+	 * The Financials Sector
+	 */
 
-		System.out.println ("\t||                              INTEREST RATE CONCENTRATION THRESHOLD                              ||");
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-
-		System.out.println ("\t||                                                                                                 ||");
-
-		System.out.println ("\t||      L -> R:                                                                                    ||");
-
-		System.out.println ("\t||            - Bucket Number                                                                      ||");
-
-		System.out.println ("\t||            - Volatility Type                                                                    ||");
-
-		System.out.println ("\t||            - Trade Frequency                                                                    ||");
-
-		System.out.println ("\t||            - Delta Concentration Threshold                                                      ||");
-
-		System.out.println ("\t||            - Vega Concentration Threshold                                                       ||");
-
-		System.out.println ("\t||            - Currency Set                                                                       ||");
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-
-		for (int bucketNumber : bucketSet)
-		{
-			IRThreshold interestRateThreshold = IRThresholdContainer.Threshold (bucketNumber);
-
-			CurrencyRiskGroup currencyRiskGroup = interestRateThreshold.currencyRiskGroup();
-
-			String[] componentArray = currencyRiskGroup.componentArray();
-
-			String componentSet = "";
-
-			for (String component : componentArray)
-			{
-				componentSet = componentSet + component + ",";
-			}
-
-			System.out.println (
-				"\t|| " + bucketNumber + " => " +
-				currencyRiskGroup.volatilityType() + " | " +
-				currencyRiskGroup.tradeFrequencyType() + " | " +
-				interestRateThreshold.deltaVega().delta() + " | " +
-				interestRateThreshold.deltaVega().vega() + " | " +
-				componentSet
-			);
-		}
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-	}
-
-	public static final void main (
-		final String[] args)
-		throws Exception
+	public static final java.lang.String[] FINANCIALS = new java.lang.String[]
 	{
-		EnvManager.InitEnv ("");
+		"FINANCIAL",
+		"GOVERNMENT_BACKED_FINANCIAL"
+	};
 
-		DisplayBuckets();
+	/**
+	 * The Basic Materials Sector
+	 */
 
-		EnvManager.TerminateEnv();
-	}
+	public static final java.lang.String[] BASIC_MATERIALS = new java.lang.String[]
+	{
+		"BASIC_MATERIALS",
+		"ENERGY",
+		"INDUSTRIALS"
+	};
+
+	/**
+	 * The Consumer Sector
+	 */
+
+	public static final java.lang.String[] CONSUMER = new java.lang.String[]
+	{
+		"CONSUMER"
+	};
+
+	/**
+	 * The Technology/Media/Telecommunications Sector
+	 */
+
+	public static final java.lang.String[] TMT = new java.lang.String[]
+	{
+		"TECHNOLOGY",
+		"MEDIA",
+		"TELECOMMUNICATIONS"
+	};
+
+	/**
+	 * The Local Services Sector
+	 */
+
+	public static final java.lang.String[] LOCAL_SERVICES = new java.lang.String[]
+	{
+		"NON_FINANCIAL",
+		"HEALTH_CARE",
+		"UTILITIES",
+		"LOCAL_GOVERNMENT",
+		"GOVERNMENT_BACKED_CORPORATES",
+		"NON_FINANCIAL"
+	};
+
+	/**
+	 * The RMBS/CMBS Sector
+	 */
+
+	public static final java.lang.String[] RMBS_CMBS = new java.lang.String[]
+	{
+		"RMBS",
+		"CMBS"
+	};
+
+	/**
+	 * The "Residual" Sector
+	 */
+
+	public static final java.lang.String[] RESIDUAL = new java.lang.String[]
+	{
+		"RESIDUAL"
+	};
+
+	/**
+	 * The Consumer Services Sector
+	 */
+
+	public static final java.lang.String[] CONSUMER_SERVICES = new java.lang.String[]
+	{
+		"CONSUMER_GOODS",
+		"CONSUMER_SERVICES",
+		"TRANSPORTATION_STORAGE",
+		"ADMINISTRATIVE_AND_SUPPORT_SERVICE_ACTIVITIES",
+		"UTILITIES"
+	};
+
+	/**
+	 * The Telecommunications/Industrials Sector
+	 */
+
+	public static final java.lang.String[] TELECOMMUNICATIONS_INDUSTRIALS = new java.lang.String[]
+	{
+		"TELECOMMUNICATIONS",
+		"INDUSTRIALS"
+	};
+
+	/**
+	 * The Heavy Industrials Sector
+	 */
+
+	public static final java.lang.String[] HEAVY_INDUSTRIALS = new java.lang.String[]
+	{
+		"BASIC_MATERIALS",
+		"ENERGY",
+		"AGRICULTURE",
+		"MANUFACTURING",
+		"MINING",
+		"QUARRYING"
+	};
+
+	/**
+	 * The Investment Sector
+	 */
+
+	public static final java.lang.String[] INVESTMENT = new java.lang.String[]
+	{
+		"FINANCIAL",
+		"GOVERNMENT_BACKED_FINANCIAL",
+		"REAL_ESTATE_ACTIVITIES",
+		"TECHNOLOGY"
+	};
+
+	/**
+	 * The "All" Sector
+	 */
+
+	public static final java.lang.String[] ALL = new java.lang.String[]
+	{
+		"ALL"
+	};
+
+	/**
+	 * The Indexes/Funds/ETF's Sector
+	 */
+
+	public static final java.lang.String[] INDEX_FUND_ETF = new java.lang.String[]
+	{
+		"INDEX",
+		"FUND",
+		"ETF"
+	};
+
+	/**
+	 * The Volatility Index Sector
+	 */
+
+	public static final java.lang.String[] VOLATILITY_INDEX = new java.lang.String[]
+	{
+		"VOLATILITY_INDEX"
+	};
 }

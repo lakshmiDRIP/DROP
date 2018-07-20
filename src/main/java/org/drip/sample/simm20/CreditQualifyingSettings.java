@@ -7,10 +7,10 @@ import java.util.Set;
 import org.drip.measure.stochastic.LabelCorrelation;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.simm20.risk.CreditQualifyingSystemics;
-import org.drip.simm20.parameters.CreditQualifyingSettingsContainer;
-import org.drip.simm20.parameters.CreditQualifyingBucketCorrelation;
-import org.drip.simm20.risk.CreditBucket;
+import org.drip.simm20.credit.CRBucket;
+import org.drip.simm20.credit.CRQBucketCorrelation;
+import org.drip.simm20.credit.CRQSettingsContainer;
+import org.drip.simm20.credit.CRQSystemics;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -85,7 +85,7 @@ public class CreditQualifyingSettings
 
 	private static final void RiskWeights()
 	{
-		Set<Integer> bucketIndexSet = CreditQualifyingSettingsContainer.BucketSet();
+		Set<Integer> bucketIndexSet = CRQSettingsContainer.BucketSet();
 
 		System.out.println
 			("\t||-------------------------------------------------------------------------------------------------------------||");
@@ -119,7 +119,7 @@ public class CreditQualifyingSettings
 
 		for (int bucketIndex : bucketIndexSet)
 		{
-			CreditBucket creditQualifyingBucket = CreditQualifyingSettingsContainer.Bucket (bucketIndex);
+			CRBucket creditQualifyingBucket = CRQSettingsContainer.Bucket (bucketIndex);
 
 			String sectorArrayDump = "";
 
@@ -155,56 +155,56 @@ public class CreditQualifyingSettings
 		System.out.println (
 			"\t|| Residual Bucket Risk Weight                         => " +
 			FormatUtil.FormatDouble (
-				CreditQualifyingSystemics.RESIDUAL_BUCKET_RISK_WEIGHT, 3, 2, 1.
+				CRQSystemics.RESIDUAL_BUCKET_RISK_WEIGHT, 3, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Vega Risk Wight                                     => " +
 			FormatUtil.FormatDouble (
-				CreditQualifyingSystemics.VEGA_RISK_WEIGHT, 3, 2, 1.
+				CRQSystemics.VEGA_RISK_WEIGHT, 3, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Base Correlation Risk Weight                        => " +
 			FormatUtil.FormatDouble (
-				CreditQualifyingSystemics.BASE_CORRELATION_RISK_WEIGHT, 3, 2, 1.
+				CRQSystemics.BASE_CORRELATION_RISK_WEIGHT, 3, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Cross Base Correlation Index Correlation            => " +
 			FormatUtil.FormatDouble (
-				CreditQualifyingSystemics.BASE_CORRELATION_CORRELATION, 3, 2, 1.
+				CRQSystemics.BASE_CORRELATION_CORRELATION, 3, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Non-Residual Same Issuer/Seniority Correlation      => " +
 			FormatUtil.FormatDouble (
-				CreditQualifyingBucketCorrelation.SAME_ISSUER_SENIORITY_NON_RESIDUAL, 3, 2, 1.
+				CRQBucketCorrelation.SAME_ISSUER_SENIORITY_NON_RESIDUAL, 3, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Non-Residual Different Issuer/Seniority Correlation => " +
 			FormatUtil.FormatDouble (
-				CreditQualifyingBucketCorrelation.DIFFERENT_ISSUER_SENIORITY_NON_RESIDUAL, 3, 2, 1.
+				CRQBucketCorrelation.DIFFERENT_ISSUER_SENIORITY_NON_RESIDUAL, 3, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Residual Same Issuer/Seniority Correlation          => " +
 			FormatUtil.FormatDouble (
-				CreditQualifyingBucketCorrelation.SAME_ISSUER_SENIORITY_RESIDUAL, 3, 2, 1.
+				CRQBucketCorrelation.SAME_ISSUER_SENIORITY_RESIDUAL, 3, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Residual Different Issuer/Seniority Correlation     => " +
 			FormatUtil.FormatDouble (
-				CreditQualifyingBucketCorrelation.DIFFERENT_ISSUER_SENIORITY_RESIDUAL, 3, 2, 1.
+				CRQBucketCorrelation.DIFFERENT_ISSUER_SENIORITY_RESIDUAL, 3, 2, 1.
 			) + " ||"
 		);
 
@@ -216,7 +216,7 @@ public class CreditQualifyingSettings
 	private static final void CrossBucketCorrelation()
 		throws Exception
 	{
-		LabelCorrelation crossBucketCorrelation = CreditQualifyingSettingsContainer.CrossBucketCorrelation();
+		LabelCorrelation crossBucketCorrelation = CRQSettingsContainer.CrossBucketCorrelation();
 
 		List<String> bucketList = crossBucketCorrelation.labelList();
 

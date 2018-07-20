@@ -1,12 +1,5 @@
 
-package org.drip.sample.simm20;
-
-import java.util.Set;
-
-import org.drip.service.env.EnvManager;
-import org.drip.simm20.rates.CurrencyRiskGroup;
-import org.drip.simm20.rates.IRThreshold;
-import org.drip.simm20.rates.IRThresholdContainer;
+package org.drip.simm20.credit;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -54,8 +47,8 @@ import org.drip.simm20.rates.IRThresholdContainer;
  */
 
 /**
- * InterestRateConcentrationThreshold demonstrates the Extraction and Display of ISDA SIMM 2.0 Interest Rate
- * 	Concentration Thresholds. The References are:
+ * CRNQBucketCorrelation contains the between the Same/Different Issuer/Seniority and Different
+ * 	Vertex/Currency for the Same Credit Non-Qualifying Buckets. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -76,74 +69,36 @@ import org.drip.simm20.rates.IRThresholdContainer;
  * @author Lakshmi Krishnamurthy
  */
 
-public class InterestRateConcentrationThreshold
+public class CRNQBucketCorrelation
 {
 
-	private static final void DisplayBuckets()
-		throws Exception
-	{
-		Set<Integer> bucketSet = IRThresholdContainer.IndexSet();
+	/**
+	 * Correlation between Sensitivities having Overlap of Greater Than 80% Names Non-Residual Same Bucket
+	 */
 
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
+	public static final double GT_80PC_OVERLAP_NON_RESIDUAL = 0.57;
 
-		System.out.println ("\t||                              INTEREST RATE CONCENTRATION THRESHOLD                              ||");
+	/**
+	 * Correlation between Sensitivities having Overlap of Less Than 80% Names Non-Residual Same Bucket
+	 */
 
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
+	public static final double LT_80PC_OVERLAP_NON_RESIDUAL = 0.27;
 
-		System.out.println ("\t||                                                                                                 ||");
+	/**
+	 * Correlation between Sensitivities having Overlap of Greater Than 80% Names Residual
+	 */
 
-		System.out.println ("\t||      L -> R:                                                                                    ||");
+	public static final double GT_80PC_OVERLAP_RESIDUAL = 0.50;
 
-		System.out.println ("\t||            - Bucket Number                                                                      ||");
+	/**
+	 * Correlation between Sensitivities having Overlap of Less Than 80% Names Residual
+	 */
 
-		System.out.println ("\t||            - Volatility Type                                                                    ||");
+	public static final double LT_80PC_OVERLAP_RESIDUAL = 0.50;
 
-		System.out.println ("\t||            - Trade Frequency                                                                    ||");
+	/**
+	 * Correlation between Sensitivities of Non-Residual to Non-Residual
+	 */
 
-		System.out.println ("\t||            - Delta Concentration Threshold                                                      ||");
-
-		System.out.println ("\t||            - Vega Concentration Threshold                                                       ||");
-
-		System.out.println ("\t||            - Currency Set                                                                       ||");
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-
-		for (int bucketNumber : bucketSet)
-		{
-			IRThreshold interestRateThreshold = IRThresholdContainer.Threshold (bucketNumber);
-
-			CurrencyRiskGroup currencyRiskGroup = interestRateThreshold.currencyRiskGroup();
-
-			String[] componentArray = currencyRiskGroup.componentArray();
-
-			String componentSet = "";
-
-			for (String component : componentArray)
-			{
-				componentSet = componentSet + component + ",";
-			}
-
-			System.out.println (
-				"\t|| " + bucketNumber + " => " +
-				currencyRiskGroup.volatilityType() + " | " +
-				currencyRiskGroup.tradeFrequencyType() + " | " +
-				interestRateThreshold.deltaVega().delta() + " | " +
-				interestRateThreshold.deltaVega().vega() + " | " +
-				componentSet
-			);
-		}
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-	}
-
-	public static final void main (
-		final String[] args)
-		throws Exception
-	{
-		EnvManager.InitEnv ("");
-
-		DisplayBuckets();
-
-		EnvManager.TerminateEnv();
-	}
+	public static final double NON_RESIDUAL_TO_NON_RESIDUAL = 0.21;
 }

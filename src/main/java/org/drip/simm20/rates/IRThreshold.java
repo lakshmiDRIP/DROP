@@ -1,12 +1,5 @@
 
-package org.drip.sample.simm20;
-
-import java.util.Set;
-
-import org.drip.service.env.EnvManager;
-import org.drip.simm20.rates.CurrencyRiskGroup;
-import org.drip.simm20.rates.IRThreshold;
-import org.drip.simm20.rates.IRThresholdContainer;
+package org.drip.simm20.rates;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -54,8 +47,8 @@ import org.drip.simm20.rates.IRThresholdContainer;
  */
 
 /**
- * InterestRateConcentrationThreshold demonstrates the Extraction and Display of ISDA SIMM 2.0 Interest Rate
- * 	Concentration Thresholds. The References are:
+ * IRThreshold holds the ISDA SIMM 2.0 Interest Rate Delta and Vega Concentration Thresholds. The References
+ *  are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -76,74 +69,51 @@ import org.drip.simm20.rates.IRThresholdContainer;
  * @author Lakshmi Krishnamurthy
  */
 
-public class InterestRateConcentrationThreshold
+public class IRThreshold
 {
+	private org.drip.simm20.common.DeltaVegaThreshold _deltaVega = null;
+	private org.drip.simm20.rates.CurrencyRiskGroup _currencyRiskGroup = null;
 
-	private static final void DisplayBuckets()
-		throws Exception
+	/**
+	 * IRThreshold Constructor
+	 * 
+	 * @param currencyRiskGroup The Currency Risk Group
+	 * @param deltaVega The Delta/Vega Concentration Threshold
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public IRThreshold (
+		final org.drip.simm20.rates.CurrencyRiskGroup currencyRiskGroup,
+		final org.drip.simm20.common.DeltaVegaThreshold deltaVega)
+		throws java.lang.Exception
 	{
-		Set<Integer> bucketSet = IRThresholdContainer.IndexSet();
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-
-		System.out.println ("\t||                              INTEREST RATE CONCENTRATION THRESHOLD                              ||");
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-
-		System.out.println ("\t||                                                                                                 ||");
-
-		System.out.println ("\t||      L -> R:                                                                                    ||");
-
-		System.out.println ("\t||            - Bucket Number                                                                      ||");
-
-		System.out.println ("\t||            - Volatility Type                                                                    ||");
-
-		System.out.println ("\t||            - Trade Frequency                                                                    ||");
-
-		System.out.println ("\t||            - Delta Concentration Threshold                                                      ||");
-
-		System.out.println ("\t||            - Vega Concentration Threshold                                                       ||");
-
-		System.out.println ("\t||            - Currency Set                                                                       ||");
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-
-		for (int bucketNumber : bucketSet)
+		if (null == (_currencyRiskGroup = currencyRiskGroup) ||
+			null == (_deltaVega = deltaVega))
 		{
-			IRThreshold interestRateThreshold = IRThresholdContainer.Threshold (bucketNumber);
-
-			CurrencyRiskGroup currencyRiskGroup = interestRateThreshold.currencyRiskGroup();
-
-			String[] componentArray = currencyRiskGroup.componentArray();
-
-			String componentSet = "";
-
-			for (String component : componentArray)
-			{
-				componentSet = componentSet + component + ",";
-			}
-
-			System.out.println (
-				"\t|| " + bucketNumber + " => " +
-				currencyRiskGroup.volatilityType() + " | " +
-				currencyRiskGroup.tradeFrequencyType() + " | " +
-				interestRateThreshold.deltaVega().delta() + " | " +
-				interestRateThreshold.deltaVega().vega() + " | " +
-				componentSet
-			);
+			throw new java.lang.Exception ("IRThreshold Constructor => Invalid Inputs");
 		}
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
 	}
 
-	public static final void main (
-		final String[] args)
-		throws Exception
+	/**
+	 * Retrieve the Currency Risk Group
+	 * 
+	 * @return The Currency Risk Group
+	 */
+
+	public org.drip.simm20.rates.CurrencyRiskGroup currencyRiskGroup()
 	{
-		EnvManager.InitEnv ("");
+		return _currencyRiskGroup;
+	}
 
-		DisplayBuckets();
+	/**
+	 * Retrieve the Delta Vega Concentration Threshold
+	 * 
+	 * @return The Delta Vega Concentration Threshold
+	 */
 
-		EnvManager.TerminateEnv();
+	public org.drip.simm20.common.DeltaVegaThreshold deltaVega()
+	{
+		return _deltaVega;
 	}
 }

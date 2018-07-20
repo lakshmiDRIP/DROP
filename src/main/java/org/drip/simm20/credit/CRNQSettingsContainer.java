@@ -1,12 +1,5 @@
 
-package org.drip.sample.simm20;
-
-import java.util.Set;
-
-import org.drip.service.env.EnvManager;
-import org.drip.simm20.rates.CurrencyRiskGroup;
-import org.drip.simm20.rates.IRThreshold;
-import org.drip.simm20.rates.IRThresholdContainer;
+package org.drip.simm20.credit;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -54,8 +47,7 @@ import org.drip.simm20.rates.IRThresholdContainer;
  */
 
 /**
- * InterestRateConcentrationThreshold demonstrates the Extraction and Display of ISDA SIMM 2.0 Interest Rate
- * 	Concentration Thresholds. The References are:
+ * CRNQSettingsContainer holds the ISDA SIMM 2.0 Credit Non-Qualifying Buckets. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -76,74 +68,108 @@ import org.drip.simm20.rates.IRThresholdContainer;
  * @author Lakshmi Krishnamurthy
  */
 
-public class InterestRateConcentrationThreshold
+public class CRNQSettingsContainer
 {
+	private static final java.util.Map<java.lang.Integer, org.drip.simm20.credit.CRBucket> s_BucketMap = new
+		java.util.TreeMap<java.lang.Integer, org.drip.simm20.credit.CRBucket>();
 
-	private static final void DisplayBuckets()
-		throws Exception
+	/**
+	 * Initial the Credit Non-Qualifying Settings
+	 * 
+	 * @return TRUE - The Credit Non-Qualifying Settings successfully initialized
+	 */
+
+	public static final boolean Init()
 	{
-		Set<Integer> bucketSet = IRThresholdContainer.IndexSet();
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-
-		System.out.println ("\t||                              INTEREST RATE CONCENTRATION THRESHOLD                              ||");
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-
-		System.out.println ("\t||                                                                                                 ||");
-
-		System.out.println ("\t||      L -> R:                                                                                    ||");
-
-		System.out.println ("\t||            - Bucket Number                                                                      ||");
-
-		System.out.println ("\t||            - Volatility Type                                                                    ||");
-
-		System.out.println ("\t||            - Trade Frequency                                                                    ||");
-
-		System.out.println ("\t||            - Delta Concentration Threshold                                                      ||");
-
-		System.out.println ("\t||            - Vega Concentration Threshold                                                       ||");
-
-		System.out.println ("\t||            - Currency Set                                                                       ||");
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-
-		for (int bucketNumber : bucketSet)
+		try
 		{
-			IRThreshold interestRateThreshold = IRThresholdContainer.Threshold (bucketNumber);
+			s_BucketMap.put (
+				-1,
+				new org.drip.simm20.credit.CRBucket (
+					-1,
+					org.drip.simm20.credit.CRSystemics.CREDIT_QUALITY_UNSPECIFIED,
+					org.drip.simm20.credit.SectorSystemics.RESIDUAL,
+					2000.
+				)
+			);
 
-			CurrencyRiskGroup currencyRiskGroup = interestRateThreshold.currencyRiskGroup();
+			s_BucketMap.put (
+				1,
+				new org.drip.simm20.credit.CRBucket (
+					1,
+					org.drip.simm20.credit.CRSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
+					org.drip.simm20.credit.SectorSystemics.RMBS_CMBS,
+					140.
+				)
+			);
 
-			String[] componentArray = currencyRiskGroup.componentArray();
-
-			String componentSet = "";
-
-			for (String component : componentArray)
-			{
-				componentSet = componentSet + component + ",";
-			}
-
-			System.out.println (
-				"\t|| " + bucketNumber + " => " +
-				currencyRiskGroup.volatilityType() + " | " +
-				currencyRiskGroup.tradeFrequencyType() + " | " +
-				interestRateThreshold.deltaVega().delta() + " | " +
-				interestRateThreshold.deltaVega().vega() + " | " +
-				componentSet
+			s_BucketMap.put (
+				2,
+				new org.drip.simm20.credit.CRBucket (
+					2,
+					org.drip.simm20.credit.CRSystemics.CREDIT_QUALITY_HIGH_YIELD,
+					org.drip.simm20.credit.SectorSystemics.RMBS_CMBS,
+					2000.
+				)
 			);
 		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
 
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
+			return false;
+		}
+
+		return true;
 	}
 
-	public static final void main (
-		final String[] args)
-		throws Exception
+	/**
+	 * Retrieve the Set of Bucket Indexes available
+	 * 
+	 * @return The Set of Bucket Indexes available
+	 */
+
+	public static final java.util.Set<java.lang.Integer> BucketSet()
 	{
-		EnvManager.InitEnv ("");
+		return s_BucketMap.keySet();
+	}
 
-		DisplayBuckets();
+	/**
+	 * Indicate if the Bucket denoted by the Number is available
+	 * 
+	 * @param bucketNumber The Bucket Number
+	 * 
+	 * @return TRUE - The Bucket denoted by the Number is available
+	 */
 
-		EnvManager.TerminateEnv();
+	public static final boolean ContainsBucket (
+		final int bucketNumber)
+	{
+		return s_BucketMap.containsKey (bucketNumber);
+	}
+
+	/**
+	 * Retrieve the Bucket denoted by the Number
+	 * 
+	 * @param bucketNumber The Bucket Number
+	 * 
+	 * @return The Bucket denoted by the Number
+	 */
+
+	public static final org.drip.simm20.credit.CRBucket Bucket (
+		final int bucketNumber)
+	{
+		return ContainsBucket (bucketNumber) ? s_BucketMap.get (bucketNumber) : null;
+	}
+
+	/**
+	 * Retrieve the Bucket Map
+	 * 
+	 * @return The Bucket Map
+	 */
+
+	public static final java.util.Map<java.lang.Integer, org.drip.simm20.credit.CRBucket> BucketMap()
+	{
+		return s_BucketMap;
 	}
 }

@@ -1,12 +1,5 @@
 
-package org.drip.sample.simm20;
-
-import java.util.Set;
-
-import org.drip.service.env.EnvManager;
-import org.drip.simm20.rates.CurrencyRiskGroup;
-import org.drip.simm20.rates.IRThreshold;
-import org.drip.simm20.rates.IRThresholdContainer;
+package org.drip.simm20.equity;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -54,8 +47,8 @@ import org.drip.simm20.rates.IRThresholdContainer;
  */
 
 /**
- * InterestRateConcentrationThreshold demonstrates the Extraction and Display of ISDA SIMM 2.0 Interest Rate
- * 	Concentration Thresholds. The References are:
+ * EQBucket holds the ISDA SIMM 2.0 Region, Sector, Member Correlation, and Risk Weights for a given Equity
+ *  Issuer Exposure Bucket. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -76,74 +69,127 @@ import org.drip.simm20.rates.IRThresholdContainer;
  * @author Lakshmi Krishnamurthy
  */
 
-public class InterestRateConcentrationThreshold
+public class EQBucket
 {
+	private int _number = -1;
+	private java.lang.String _size = "";
+	private java.lang.String _region = "";
+	private java.lang.String[] _sectorArray = null;
+	private double _riskWeight = java.lang.Double.NaN;
+	private double _vegaRiskWeight = java.lang.Double.NaN;
+	private double _memberCorrelation = java.lang.Double.NaN;
 
-	private static final void DisplayBuckets()
-		throws Exception
+	/**
+	 * EQBucket Constructor
+	 * 
+	 * @param number Bucket Number
+	 * @param size Bucket Equity Market Capitalization Size
+	 * @param region Buket Region
+	 * @param sectorArray Bucket Sector Array
+	 * @param riskWeight Bucket Risk Weight
+	 * @param memberCorrelation Bucket Member Correlation
+	 * @param vegaRiskWeight The Vega Risk Weight
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public EQBucket (
+		final int number,
+		final java.lang.String size,
+		final java.lang.String region,
+		final java.lang.String[] sectorArray,
+		final double riskWeight,
+		final double memberCorrelation,
+		final double vegaRiskWeight)
+		throws java.lang.Exception
 	{
-		Set<Integer> bucketSet = IRThresholdContainer.IndexSet();
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-
-		System.out.println ("\t||                              INTEREST RATE CONCENTRATION THRESHOLD                              ||");
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-
-		System.out.println ("\t||                                                                                                 ||");
-
-		System.out.println ("\t||      L -> R:                                                                                    ||");
-
-		System.out.println ("\t||            - Bucket Number                                                                      ||");
-
-		System.out.println ("\t||            - Volatility Type                                                                    ||");
-
-		System.out.println ("\t||            - Trade Frequency                                                                    ||");
-
-		System.out.println ("\t||            - Delta Concentration Threshold                                                      ||");
-
-		System.out.println ("\t||            - Vega Concentration Threshold                                                       ||");
-
-		System.out.println ("\t||            - Currency Set                                                                       ||");
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-
-		for (int bucketNumber : bucketSet)
+		if (null == (_size = size) || _size.isEmpty() ||
+			null == (_region = region) || _region.isEmpty() ||
+			null == (_sectorArray = sectorArray) || 0 == _sectorArray.length ||
+			!org.drip.quant.common.NumberUtil.IsValid (_riskWeight = riskWeight) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_memberCorrelation = memberCorrelation) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_vegaRiskWeight = vegaRiskWeight))
 		{
-			IRThreshold interestRateThreshold = IRThresholdContainer.Threshold (bucketNumber);
-
-			CurrencyRiskGroup currencyRiskGroup = interestRateThreshold.currencyRiskGroup();
-
-			String[] componentArray = currencyRiskGroup.componentArray();
-
-			String componentSet = "";
-
-			for (String component : componentArray)
-			{
-				componentSet = componentSet + component + ",";
-			}
-
-			System.out.println (
-				"\t|| " + bucketNumber + " => " +
-				currencyRiskGroup.volatilityType() + " | " +
-				currencyRiskGroup.tradeFrequencyType() + " | " +
-				interestRateThreshold.deltaVega().delta() + " | " +
-				interestRateThreshold.deltaVega().vega() + " | " +
-				componentSet
-			);
+			throw new java.lang.Exception ("EQBucket Constructor => Invalid Inputs");
 		}
 
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
+		_number = number;
 	}
 
-	public static final void main (
-		final String[] args)
-		throws Exception
+	/**
+	 * Retrieve the Bucket Number
+	 * 
+	 * @return The Bucket Number
+	 */
+
+	public int number()
 	{
-		EnvManager.InitEnv ("");
+		return _number;
+	}
 
-		DisplayBuckets();
+	/**
+	 * Retrieve the Bucket Size
+	 * 
+	 * @return The Bucket Size
+	 */
 
-		EnvManager.TerminateEnv();
+	public java.lang.String size()
+	{
+		return _size;
+	}
+
+	/**
+	 * Retrieve the Bucket Region
+	 * 
+	 * @return The Bucket Region
+	 */
+
+	public java.lang.String region()
+	{
+		return _region;
+	}
+
+	/**
+	 * Retrieve the Bucket Sector Array
+	 * 
+	 * @return The Bucket Sector Array
+	 */
+
+	public java.lang.String[] sectorArray()
+	{
+		return _sectorArray;
+	}
+
+	/**
+	 * Retrieve the Bucket Risk Weight
+	 * 
+	 * @return The Bucket Risk Weight
+	 */
+
+	public double riskWeight()
+	{
+		return _riskWeight;
+	}
+
+	/**
+	 * Retrieve the Correlation between the Bucket Members
+	 * 
+	 * @return Correlation between the Bucket Members
+	 */
+
+	public double memberCorrelation()
+	{
+		return _memberCorrelation;
+	}
+
+	/**
+	 * Retrieve the Bucket Vega Risk Weight
+	 * 
+	 * @return The Bucket Vega Risk Weight
+	 */
+
+	public double vegaRiskWeight()
+	{
+		return _vegaRiskWeight;
 	}
 }

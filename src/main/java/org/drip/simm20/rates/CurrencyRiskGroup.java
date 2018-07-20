@@ -1,12 +1,5 @@
 
-package org.drip.sample.simm20;
-
-import java.util.Set;
-
-import org.drip.service.env.EnvManager;
-import org.drip.simm20.rates.CurrencyRiskGroup;
-import org.drip.simm20.rates.IRThreshold;
-import org.drip.simm20.rates.IRThresholdContainer;
+package org.drip.simm20.rates;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -54,8 +47,7 @@ import org.drip.simm20.rates.IRThresholdContainer;
  */
 
 /**
- * InterestRateConcentrationThreshold demonstrates the Extraction and Display of ISDA SIMM 2.0 Interest Rate
- * 	Concentration Thresholds. The References are:
+ * CurrencyRiskGroup holds the ISDA SIMM 2.0 Currency Risk Group Concentrations. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -76,74 +68,66 @@ import org.drip.simm20.rates.IRThresholdContainer;
  * @author Lakshmi Krishnamurthy
  */
 
-public class InterestRateConcentrationThreshold
+public class CurrencyRiskGroup
 {
+	private java.lang.String _volatilityType = "";
+	private java.lang.String _tradeFrequencyType = "";
+	private java.lang.String[] _componentArray = null;
 
-	private static final void DisplayBuckets()
-		throws Exception
+	/**
+	 * CurrencyRiskGroup Constructor
+	 * 
+	 * @param volatilityType The Volatility Type
+	 * @param tradeFrequencyType The Trade Frequency Type
+	 * @param componentArray Array of the COmponent CUrrencies
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public CurrencyRiskGroup (
+		final java.lang.String volatilityType,
+		final java.lang.String tradeFrequencyType,
+		final java.lang.String[] componentArray)
+		throws java.lang.Exception
 	{
-		Set<Integer> bucketSet = IRThresholdContainer.IndexSet();
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-
-		System.out.println ("\t||                              INTEREST RATE CONCENTRATION THRESHOLD                              ||");
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-
-		System.out.println ("\t||                                                                                                 ||");
-
-		System.out.println ("\t||      L -> R:                                                                                    ||");
-
-		System.out.println ("\t||            - Bucket Number                                                                      ||");
-
-		System.out.println ("\t||            - Volatility Type                                                                    ||");
-
-		System.out.println ("\t||            - Trade Frequency                                                                    ||");
-
-		System.out.println ("\t||            - Delta Concentration Threshold                                                      ||");
-
-		System.out.println ("\t||            - Vega Concentration Threshold                                                       ||");
-
-		System.out.println ("\t||            - Currency Set                                                                       ||");
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-
-		for (int bucketNumber : bucketSet)
+		if (null == (_volatilityType = volatilityType) || _volatilityType.isEmpty() ||
+			null == (_tradeFrequencyType = tradeFrequencyType) || _tradeFrequencyType.isEmpty() ||
+			null == (_componentArray = componentArray) || 0 == _componentArray.length)
 		{
-			IRThreshold interestRateThreshold = IRThresholdContainer.Threshold (bucketNumber);
-
-			CurrencyRiskGroup currencyRiskGroup = interestRateThreshold.currencyRiskGroup();
-
-			String[] componentArray = currencyRiskGroup.componentArray();
-
-			String componentSet = "";
-
-			for (String component : componentArray)
-			{
-				componentSet = componentSet + component + ",";
-			}
-
-			System.out.println (
-				"\t|| " + bucketNumber + " => " +
-				currencyRiskGroup.volatilityType() + " | " +
-				currencyRiskGroup.tradeFrequencyType() + " | " +
-				interestRateThreshold.deltaVega().delta() + " | " +
-				interestRateThreshold.deltaVega().vega() + " | " +
-				componentSet
-			);
+			throw new java.lang.Exception ("CurrencyRiskGroup Constructor => Invalid Inputs");
 		}
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
 	}
 
-	public static final void main (
-		final String[] args)
-		throws Exception
+	/**
+	 * Retrieve the Volatility Type
+	 * 
+	 * @return The Volatility Type
+	 */
+
+	public java.lang.String volatilityType()
 	{
-		EnvManager.InitEnv ("");
+		return _volatilityType;
+	}
 
-		DisplayBuckets();
+	/**
+	 * Retrieve the Trade Frequency Type
+	 * 
+	 * @return The Trade Frequency Type
+	 */
 
-		EnvManager.TerminateEnv();
+	public java.lang.String tradeFrequencyType()
+	{
+		return _tradeFrequencyType;
+	}
+
+	/**
+	 * Retrieve the Component Currency Array
+	 * 
+	 * @return The Component Currency Array
+	 */
+
+	public java.lang.String[] componentArray()
+	{
+		return _componentArray;
 	}
 }
