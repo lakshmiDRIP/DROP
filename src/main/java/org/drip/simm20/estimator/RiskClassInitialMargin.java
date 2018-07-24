@@ -47,8 +47,8 @@ package org.drip.simm20.estimator;
  */
 
 /**
- * SIMM holds the holds the Initial Margin Estimates across the Four Product Classes - RatesFX, Credit,
- *  Equity, and Commodity. The References are:
+ * RiskClassInitialMargin holds the Cumulative Initial Margin on a Per-Risk Class Basis - across the Four
+ * 	Sensitivities - Delta, Vega, Curvature, and Base Correlation. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -69,81 +69,92 @@ package org.drip.simm20.estimator;
  * @author Lakshmi Krishnamurthy
  */
 
-public class SIMM
+public class RiskClassInitialMargin
 {
-	private double _credit = java.lang.Double.NaN;
-	private double _equity = java.lang.Double.NaN;
-	private double _ratesFX = java.lang.Double.NaN;
-	private double _commodity = java.lang.Double.NaN;
+	private double _vega = java.lang.Double.NaN;
+	private double _delta = java.lang.Double.NaN;
+	private double _curvature = java.lang.Double.NaN;
+	private double _baseCorrelation = java.lang.Double.NaN;
 
 	/**
-	 * SIMM Constructor
+	 * RiskClassInitialMargin Constructor
 	 * 
-	 * @param ratesFX The RatesFX SIMM Component
-	 * @param credit The Credit SIMM Component
-	 * @param equity The Equity SIMM Component
-	 * @param commodity The Commodity SIMM Component
+	 * @param delta Risk Class Delta IM
+	 * @param vega Risk Class Vega IM
+	 * @param curvature Risk Class Curvature IM
+	 * @param baseCorrelation Risk Class Base Correlation IM
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public SIMM (
-		final double ratesFX,
-		final double credit,
-		final double equity,
-		final double commodity)
+	public RiskClassInitialMargin (
+		final double delta,
+		final double vega,
+		final double curvature,
+		final double baseCorrelation)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_ratesFX = ratesFX) || 0. > _ratesFX ||
-			!org.drip.quant.common.NumberUtil.IsValid (_credit = credit) || 0. > _credit ||
-			!org.drip.quant.common.NumberUtil.IsValid (_equity = equity) || 0. > _equity ||
-			!org.drip.quant.common.NumberUtil.IsValid (_commodity = commodity) ||  0. > _commodity)
+		if (!org.drip.quant.common.NumberUtil.IsValid (_delta = delta) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_vega = vega) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_curvature = curvature) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_baseCorrelation = baseCorrelation))
 		{
-			throw new java.lang.Exception ("SIMM Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("RiskClassInitialMargin Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the RatesFX SIMM Initial Margin
+	 * Retrieve the Risk Class Delta IM
 	 * 
-	 * @return The RatesFX SIMM Initial Margin
+	 * @return The Risk Class Delta IM
 	 */
 
-	public double ratesFX()
+	public double delta()
 	{
-		return _ratesFX;
+		return _delta;
 	}
 
 	/**
-	 * Retrieve the Credit SIMM Initial Margin
+	 * Retrieve the Risk Class Vega IM
 	 * 
-	 * @return The Credit SIMM Initial Margin
+	 * @return The Risk Class Vega IM
 	 */
 
-	public double credit()
+	public double vega()
 	{
-		return _credit;
+		return _vega;
 	}
 
 	/**
-	 * Retrieve the Equity SIMM Initial Margin
+	 * Retrieve the Risk Class Curvature IM
 	 * 
-	 * @return The Equity SIMM Initial Margin
+	 * @return The Risk Class Curvature IM
 	 */
 
-	public double equity()
+	public double curvature()
 	{
-		return _equity;
+		return _curvature;
 	}
 
 	/**
-	 * Retrieve the Commodity SIMM Initial Margin
+	 * Retrieve the Risk Class Base Correlation IM
 	 * 
-	 * @return The Commodity SIMM Initial Margin
+	 * @return The Risk Class Base Correlation IM
 	 */
 
-	public double commodity()
+	public double baseCorrelation()
 	{
-		return _commodity;
+		return _baseCorrelation;
+	}
+
+	/**
+	 * Retrieve the Total Initial Margin
+	 * 
+	 * @return The Total Initial Margin
+	 */
+
+	public double im()
+	{
+		return _delta + _vega + _curvature + _baseCorrelation;
 	}
 }

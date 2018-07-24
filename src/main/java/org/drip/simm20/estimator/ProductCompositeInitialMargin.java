@@ -47,8 +47,8 @@ package org.drip.simm20.estimator;
  */
 
 /**
- * RiskFactorMultiplicativeScale holds the Multiplicative Scales Minimum/Default Values for the Four Product
- * 	Classes - RatesFX, Credit, Equity, and Commodity. The References are:
+ * ProductCompositeInitialMargin holds the Initial Margin Estimates Composite across the Four Product Classes
+ *  - RatesFX, Credit, Equity, and Commodity. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -69,30 +69,92 @@ package org.drip.simm20.estimator;
  * @author Lakshmi Krishnamurthy
  */
 
-public class RiskFactorMultiplicativeScale
+public class ProductCompositeInitialMargin
 {
+	private double _credit = java.lang.Double.NaN;
+	private double _equity = java.lang.Double.NaN;
+	private double _ratesFX = java.lang.Double.NaN;
+	private double _commodity = java.lang.Double.NaN;
 
 	/**
-	 * The RatesFX Multiplicative Factor Default (1.0)
+	 * ProductCompositeInitialMargin Constructor
+	 * 
+	 * @param ratesFX The RatesFX SIMM Component
+	 * @param credit The Credit SIMM Component
+	 * @param equity The Equity SIMM Component
+	 * @param commodity The Commodity SIMM Component
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final double MS_RATESFX_DEFAULT = 1.0;
+	public ProductCompositeInitialMargin (
+		final double ratesFX,
+		final double credit,
+		final double equity,
+		final double commodity)
+		throws java.lang.Exception
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (_ratesFX = ratesFX) || 0. > _ratesFX ||
+			!org.drip.quant.common.NumberUtil.IsValid (_credit = credit) || 0. > _credit ||
+			!org.drip.quant.common.NumberUtil.IsValid (_equity = equity) || 0. > _equity ||
+			!org.drip.quant.common.NumberUtil.IsValid (_commodity = commodity) ||  0. > _commodity)
+		{
+			throw new java.lang.Exception ("ProductCompositeInitialMargin Constructor => Invalid Inputs");
+		}
+	}
 
 	/**
-	 * The Credit Multiplicative Factor Default (1.0)
+	 * Retrieve the RatesFX Initial Margin
+	 * 
+	 * @return The RatesFX Initial Margin
 	 */
 
-	public static final double MS_CREDIT_DEFAULT = 1.0;
+	public double ratesFX()
+	{
+		return _ratesFX;
+	}
 
 	/**
-	 * The Equity Multiplicative Factor Default (1.0)
+	 * Retrieve the Credit Initial Margin
+	 * 
+	 * @return The Credit Initial Margin
 	 */
 
-	public static final double MS_EQUITY_DEFAULT = 1.0;
+	public double credit()
+	{
+		return _credit;
+	}
 
 	/**
-	 * The Commodity Multiplicative Factor Default (1.0)
+	 * Retrieve the Equity Initial Margin
+	 * 
+	 * @return The Equity Initial Margin
 	 */
 
-	public static final double MS_COMMODITY_DEFAULT = 1.0;
+	public double equity()
+	{
+		return _equity;
+	}
+
+	/**
+	 * Retrieve the Commodity Initial Margin
+	 * 
+	 * @return The Commodity Initial Margin
+	 */
+
+	public double commodity()
+	{
+		return _commodity;
+	}
+
+	/**
+	 * Retrieve the Total Initial Margin
+	 * 
+	 * @return The Total Initial Margin
+	 */
+
+	public double im()
+	{
+		return _ratesFX + _credit + _equity + _commodity;
+	}
 }
