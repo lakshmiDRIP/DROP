@@ -71,7 +71,6 @@ package org.drip.simm20.rates;
 
 public class IRSettingsContainer
 {
-
 	private static org.drip.measure.stochastic.LabelCorrelation s_SingleCurveTenorCorrelation = null;
 
 	private static final java.util.Map<java.lang.String, org.drip.simm20.rates.IRWeight> s_RiskWeightMap =
@@ -445,6 +444,53 @@ public class IRSettingsContainer
 	}
 
 	/**
+	 * Retrieve the Standard ISDA Rates Tenor Set
+	 * 
+	 * @return The Standard ISDA Rates Tenor Set
+	 */
+
+	public static final java.util.Set<java.lang.String> TenorSet()
+	{
+		return s_RiskWeightMap.get ("USD").tenors();
+	}
+
+	/**
+	 * Indicate if the Sub-Curve is supported for the specified Currency
+	 * 
+	 * @param currency The Currency
+	 * @param subCurve The sub-Curve Type
+	 * 
+	 * @return TRUE - The Sub-Curve is supported for the specified Currency
+	 */
+
+	public static final boolean SubCurveSupported (
+		final java.lang.String currency,
+		final java.lang.String subCurve)
+	{
+		if (null == currency || currency.isEmpty() || null == subCurve)
+		{
+			return false;
+		}
+
+		if (org.drip.simm20.rates.IRSystemics.SUB_YIELD_CURVE_TYPE_OIS.equalsIgnoreCase (subCurve) ||
+			org.drip.simm20.rates.IRSystemics.SUB_YIELD_CURVE_TYPE_LIBOR_1M.equalsIgnoreCase (subCurve) ||
+			org.drip.simm20.rates.IRSystemics.SUB_YIELD_CURVE_TYPE_LIBOR_3M.equalsIgnoreCase (subCurve) ||
+			org.drip.simm20.rates.IRSystemics.SUB_YIELD_CURVE_TYPE_LIBOR_6M.equalsIgnoreCase (subCurve) ||
+			org.drip.simm20.rates.IRSystemics.SUB_YIELD_CURVE_TYPE_LIBOR_12M.equalsIgnoreCase (subCurve))
+		{
+			return true;
+		}
+
+		if (org.drip.simm20.rates.IRSystemics.SUB_YIELD_CURVE_TYPE_PRIME.equalsIgnoreCase (subCurve) ||
+			org.drip.simm20.rates.IRSystemics.SUB_YIELD_CURVE_TYPE_MUNICIPAL.equalsIgnoreCase (subCurve))
+		{
+			return "USD".equalsIgnoreCase (currency);
+		}
+
+		return false;
+	}
+
+	/**
 	 * Retrieve the Set of all Available Currencies
 	 * 
 	 * @return The Set of all Available Currencies
@@ -533,16 +579,60 @@ public class IRSettingsContainer
 	}
 
 	/**
+	 * Indicate if the IR Risk Weight is available for the specified Currency
+	 * 
+	 * @param currency The Currency
+	 * @param subCurve The sub-Curve Type
+	 * 
+	 * @return TRUE - The IR Risk Weight is available for the specified Currency
+	 */
+
+	public static final boolean ContainsRiskWeight (
+		final java.lang.String currency,
+		final java.lang.String subCurve)
+	{
+		return SubCurveSupported (
+			currency,
+			subCurve
+		) && s_RiskWeightMap.containsKey (currency);
+	}
+
+	/**
 	 * Retrieve the IR Risk Weight for the specified Currency
 	 * 
 	 * @param currency The Currency
 	 * 
-	 * @return TRUE - The IR Risk Weight for the specified Currency
+	 * @return The IR Risk Weight for the specified Currency
 	 */
 
 	public static final org.drip.simm20.rates.IRWeight RiskWeight (
 		final java.lang.String currency)
 	{
+		return ContainsRiskWeight (currency) ? s_RiskWeightMap.get (currency) : s_RiskWeightMap.get
+			("OTHER");
+	}
+
+	/**
+	 * Retrieve the IR Risk Weight for the specified Currency
+	 * 
+	 * @param currency The Currency
+	 * @param subCurve The sub-Curve Type
+	 * 
+	 * @return The IR Risk Weight for the specified Currency
+	 */
+
+	public static final org.drip.simm20.rates.IRWeight RiskWeight (
+		final java.lang.String currency,
+		final java.lang.String subCurve)
+	{
+		if (!SubCurveSupported (
+			currency,
+			subCurve
+		))
+		{
+			return null;
+		}
+
 		return ContainsRiskWeight (currency) ? s_RiskWeightMap.get (currency) : s_RiskWeightMap.get
 			("OTHER");
 	}

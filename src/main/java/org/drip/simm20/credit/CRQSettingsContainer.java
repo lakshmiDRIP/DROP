@@ -285,6 +285,29 @@ public class CRQSettingsContainer
 	}
 
 	/**
+	 * Retrieve the Standard ISDA Credit Tenor Set
+	 * 
+	 * @return The Standard ISDA Credit Tenor Set
+	 */
+
+	public static final java.util.Set<java.lang.String> TenorSet()
+	{
+		java.util.Set<java.lang.String> tenorSet = new java.util.HashSet<java.lang.String>();
+
+		tenorSet.add ("1Y");
+
+		tenorSet.add ("2Y");
+
+		tenorSet.add ("3Y");
+
+		tenorSet.add ("5Y");
+
+		tenorSet.add ("10Y");
+
+		return tenorSet;
+	}
+
+	/**
 	 * Retrieve the Set of Bucket Indexes available
 	 * 
 	 * @return The Set of Bucket Indexes available

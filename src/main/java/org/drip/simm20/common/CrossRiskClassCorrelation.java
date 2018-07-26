@@ -75,91 +75,91 @@ public class CrossRiskClassCorrelation
 	 * Correlation between Interest Rate and Credit Qualifying Risk Classes
 	 */
 
-	public static final double INTERESTRATE_CREDITQUALIFYING = 0.28;
+	public static final double IR_CRQ = 0.28;
 
 	/**
 	 * Correlation between Interest Rate and Credit Non-Qualifying Risk Classes
 	 */
 
-	public static final double INTERESTRATE_CREDITNONQUALIFYING = 0.18;
+	public static final double IR_CRNQ = 0.18;
 
 	/**
 	 * Correlation between Interest Rate and Equity Risk Classes
 	 */
 
-	public static final double INTERESTRATE_EQUITY = 0.18;
+	public static final double IR_EQ = 0.18;
 
 	/**
 	 * Correlation between Interest Rate and Commodity Risk Classes
 	 */
 
-	public static final double INTERESTRATE_COMMODITY = 0.30;
+	public static final double IR_CT = 0.30;
 
 	/**
 	 * Correlation between Interest Rate and FX Risk Classes
 	 */
 
-	public static final double INTERESTRATE_FX = 0.22;
+	public static final double IR_FX = 0.22;
 
 	/**
 	 * Correlation between Credit Qualifying and Credit Non-Qualifying Risk Classes
 	 */
 
-	public static final double CREDITQUALIFYING_CREDITNONQUALIFYING = 0.30;
+	public static final double CRQ_CRNQ = 0.30;
 
 	/**
 	 * Correlation between Credit Qualifying and Equity Risk Classes
 	 */
 
-	public static final double CREDITQUALIFYING_EQUITY = 0.66;
+	public static final double CRQ_EQ = 0.66;
 
 	/**
 	 * Correlation between Credit Qualifying and Commodity Risk Classes
 	 */
 
-	public static final double CREDITQUALIFYING_COMMODITY = 0.46;
+	public static final double CRQ_CT = 0.46;
 
 	/**
 	 * Correlation between Credit Qualifying and FX Risk Classes
 	 */
 
-	public static final double CREDITQUALIFYING_FX = 0.27;
+	public static final double CR_FX = 0.27;
 
 	/**
 	 * Correlation between Credit Non Qualifying and Equity Risk Classes
 	 */
 
-	public static final double CREDITNONQUALIFYING_EQUITY = 0.23;
+	public static final double CRNQ_EQ = 0.23;
 
 	/**
 	 * Correlation between Credit Non Qualifying and Commodity Risk Classes
 	 */
 
-	public static final double CREDITNONQUALIFYING_COMMODITY = 0.25;
+	public static final double CRNQ_CT = 0.25;
 
 	/**
 	 * Correlation between Credit Non Qualifying and FX Risk Classes
 	 */
 
-	public static final double CREDITNONQUALIFYING_FX = 0.18;
+	public static final double CRNQ_FX = 0.18;
 
 	/**
 	 * Correlation between Equity and Commodity Risk Classes
 	 */
 
-	public static final double EQUITY_COMMODITY = 0.39;
+	public static final double EQ_CT = 0.39;
 
 	/**
 	 * Correlation between Equity and FX Risk Classes
 	 */
 
-	public static final double EQUITY_FX = 0.24;
+	public static final double EQ_FX = 0.24;
 
 	/**
 	 * Correlation between Commodity and FX Risk Classes
 	 */
 
-	public static final double COMMODITY_FX = 0.32;
+	public static final double CT_FX = 0.32;
 
 	/**
 	 * Retrieve the Correlation between Interest Rate and Credit Qualifying Risk Classes
@@ -167,9 +167,9 @@ public class CrossRiskClassCorrelation
 	 * @return Correlation between Interest Rate and Credit Qualifying Risk Classes
 	 */
 
-	public static final double InterestRate_CreditQualifying()
+	public static final double IR_CRQ()
 	{
-		return INTERESTRATE_CREDITQUALIFYING;
+		return IR_CRQ;
 	}
 
 	/**
@@ -178,9 +178,9 @@ public class CrossRiskClassCorrelation
 	 * @return Correlation between Interest Rate and Credit Qualifying Risk Classes
 	 */
 
-	public static final double CreditQualifying_InterestRate()
+	public static final double CRQ_IR()
 	{
-		return INTERESTRATE_CREDITQUALIFYING;
+		return IR_CRQ;
 	}
 
 	/**
@@ -189,9 +189,9 @@ public class CrossRiskClassCorrelation
 	 * @return Correlation between Interest Rate and Credit Non Qualifying Risk Classes
 	 */
 
-	public static final double InterestRate_CreditNonQualifying()
+	public static final double IR_CRNQ()
 	{
-		return INTERESTRATE_CREDITNONQUALIFYING;
+		return IR_CRNQ;
 	}
 
 	/**
@@ -200,9 +200,9 @@ public class CrossRiskClassCorrelation
 	 * @return Correlation between Interest Rate and Credit Non Qualifying Risk Classes
 	 */
 
-	public static final double CreditNonQualifying_InterestRate()
+	public static final double CRNQ_IR()
 	{
-		return INTERESTRATE_CREDITNONQUALIFYING;
+		return IR_CRNQ;
 	}
 
 	/**
@@ -211,9 +211,9 @@ public class CrossRiskClassCorrelation
 	 * @return Correlation between Interest Rate and Equity Risk Classes
 	 */
 
-	public static final double InterestRate_Equity()
+	public static final double IR_EQ()
 	{
-		return INTERESTRATE_EQUITY;
+		return IR_EQ;
 	}
 
 	/**
@@ -222,9 +222,9 @@ public class CrossRiskClassCorrelation
 	 * @return Correlation between Interest Rate and Equity Risk Classes
 	 */
 
-	public static final double Equity_InterestRate()
+	public static final double EQ_IR()
 	{
-		return INTERESTRATE_EQUITY;
+		return IR_EQ;
 	}
 
 	/**
@@ -233,9 +233,9 @@ public class CrossRiskClassCorrelation
 	 * @return Correlation between Interest Rate and Commodity Risk Classes
 	 */
 
-	public static final double InterestRate_Commodity()
+	public static final double IR_CT()
 	{
-		return INTERESTRATE_COMMODITY;
+		return IR_CT;
 	}
 
 	/**
@@ -244,9 +244,9 @@ public class CrossRiskClassCorrelation
 	 * @return Correlation between Interest Rate and Commodity Risk Classes
 	 */
 
-	public static final double Commodity_InterestRate()
+	public static final double CT_IR()
 	{
-		return INTERESTRATE_COMMODITY;
+		return IR_CT;
 	}
 
 	/**
@@ -255,9 +255,9 @@ public class CrossRiskClassCorrelation
 	 * @return Correlation between Interest Rate and FX Risk Classes
 	 */
 
-	public static final double InterestRate_FX()
+	public static final double IR_FX()
 	{
-		return INTERESTRATE_FX;
+		return IR_FX;
 	}
 
 	/**
@@ -266,9 +266,9 @@ public class CrossRiskClassCorrelation
 	 * @return Correlation between Interest Rate and FX Risk Classes
 	 */
 
-	public static final double FX_InterestRate()
+	public static final double FX_IR()
 	{
-		return INTERESTRATE_FX;
+		return IR_FX;
 	}
 
 	/**
@@ -277,9 +277,9 @@ public class CrossRiskClassCorrelation
 	 * @return Correlation between Credit Qualifying and Credit Non-Qualifying Risk Classes
 	 */
 
-	public static final double CreditQualifying_CreditNonQualifying()
+	public static final double CRQ_CRNQ()
 	{
-		return CREDITQUALIFYING_CREDITNONQUALIFYING;
+		return CRQ_CRNQ;
 	}
 
 	/**
@@ -288,9 +288,9 @@ public class CrossRiskClassCorrelation
 	 * @return Correlation between Credit Qualifying and Credit Non-Qualifying Risk Classes
 	 */
 
-	public static final double CreditNonQualifying_CreditQualifying()
+	public static final double CNRQ_CNQ()
 	{
-		return CREDITQUALIFYING_CREDITNONQUALIFYING;
+		return CRQ_CRNQ;
 	}
 
 	/**
@@ -299,9 +299,9 @@ public class CrossRiskClassCorrelation
 	 * @return Correlation between Credit Qualifying and Equity Risk Classes
 	 */
 
-	public static final double CreditQualifying_Equity()
+	public static final double CRQ_EQ()
 	{
-		return CREDITQUALIFYING_EQUITY;
+		return CRQ_EQ;
 	}
 
 	/**
@@ -310,9 +310,9 @@ public class CrossRiskClassCorrelation
 	 * @return Correlation between Credit Qualifying and Equity Risk Classes
 	 */
 
-	public static final double Equity_CreditQualifying()
+	public static final double EQ_CRQ()
 	{
-		return CREDITQUALIFYING_EQUITY;
+		return CRQ_EQ;
 	}
 
 	/**
@@ -321,9 +321,9 @@ public class CrossRiskClassCorrelation
 	 * @return Correlation between Credit Qualifying and Commodity Risk Classes
 	 */
 
-	public static final double CreditQualifying_Commodity()
+	public static final double CRQ_CT()
 	{
-		return CREDITQUALIFYING_COMMODITY;
+		return CRQ_CT;
 	}
 
 	/**
@@ -332,9 +332,9 @@ public class CrossRiskClassCorrelation
 	 * @return Correlation between Credit Qualifying and Commodity Risk Classes
 	 */
 
-	public static final double Commodity_CreditQualifying()
+	public static final double CT_CRQ()
 	{
-		return CREDITQUALIFYING_COMMODITY;
+		return CRQ_CT;
 	}
 
 	/**
@@ -343,9 +343,9 @@ public class CrossRiskClassCorrelation
 	 * @return Correlation between Credit Qualifying and FX Risk Classes
 	 */
 
-	public static final double CreditQualifying_FX()
+	public static final double CRQ_FX()
 	{
-		return CREDITQUALIFYING_FX;
+		return CR_FX;
 	}
 
 	/**
@@ -354,9 +354,9 @@ public class CrossRiskClassCorrelation
 	 * @return Correlation between Credit Qualifying and FX Risk Classes
 	 */
 
-	public static final double FX_CreditQualifying()
+	public static final double FX_CRQ()
 	{
-		return CREDITQUALIFYING_FX;
+		return CR_FX;
 	}
 
 	/**
@@ -365,9 +365,9 @@ public class CrossRiskClassCorrelation
 	 * @return Correlation between Credit Non Qualifying and Equity Risk Classes
 	 */
 
-	public static final double CreditNonQualifying_Equity()
+	public static final double CNRQ_EQ()
 	{
-		return CREDITNONQUALIFYING_EQUITY;
+		return CRNQ_EQ;
 	}
 
 	/**
@@ -376,9 +376,9 @@ public class CrossRiskClassCorrelation
 	 * @return Correlation between Credit Non Qualifying and Equity Risk Classes
 	 */
 
-	public static final double Equity_CreditNonQualifying()
+	public static final double EQ_CNRQ()
 	{
-		return CREDITNONQUALIFYING_EQUITY;
+		return CRNQ_EQ;
 	}
 
 	/**
@@ -387,9 +387,9 @@ public class CrossRiskClassCorrelation
 	 * @return Correlation between Credit Non Qualifying and Commodity Risk Classes
 	 */
 
-	public static final double CreditNonQualifying_Commodity()
+	public static final double CNRQ_CT()
 	{
-		return CREDITNONQUALIFYING_COMMODITY;
+		return CRNQ_CT;
 	}
 
 	/**
@@ -398,9 +398,9 @@ public class CrossRiskClassCorrelation
 	 * @return Correlation between Credit Non Qualifying and Commodity Risk Classes
 	 */
 
-	public static final double Commodity_CreditNonQualifying()
+	public static final double CT_CNRQ()
 	{
-		return CREDITNONQUALIFYING_COMMODITY;
+		return CRNQ_CT;
 	}
 
 	/**
@@ -411,7 +411,7 @@ public class CrossRiskClassCorrelation
 
 	public static final double CreditNonQualifying_FX()
 	{
-		return CREDITNONQUALIFYING_FX;
+		return CRNQ_FX;
 	}
 
 	/**
@@ -420,9 +420,9 @@ public class CrossRiskClassCorrelation
 	 * @return Correlation between Credit Non Qualifying and FX Risk Classes
 	 */
 
-	public static final double FX_CreditNonQualifying()
+	public static final double FX_CNRQ()
 	{
-		return CREDITNONQUALIFYING_FX;
+		return CRNQ_FX;
 	}
 
 	/**
@@ -431,9 +431,9 @@ public class CrossRiskClassCorrelation
 	 * @return Correlation between Equity and Commodity Risk Classes
 	 */
 
-	public static final double Equity_Commodity()
+	public static final double EQ_CT()
 	{
-		return EQUITY_COMMODITY;
+		return EQ_CT;
 	}
 
 	/**
@@ -442,9 +442,9 @@ public class CrossRiskClassCorrelation
 	 * @return Correlation between Equity and Commodity Risk Classes
 	 */
 
-	public static final double Commodity_Equity()
+	public static final double CT_EQ()
 	{
-		return EQUITY_COMMODITY;
+		return EQ_CT;
 	}
 
 	/**
@@ -453,9 +453,9 @@ public class CrossRiskClassCorrelation
 	 * @return Correlation between Equity and FX Risk Classes
 	 */
 
-	public static final double Equity_FX()
+	public static final double EQ_FX()
 	{
-		return EQUITY_FX;
+		return EQ_FX;
 	}
 
 	/**
@@ -464,9 +464,9 @@ public class CrossRiskClassCorrelation
 	 * @return Correlation between Equity and FX Risk Classes
 	 */
 
-	public static final double FX_Equity()
+	public static final double FX_EQ()
 	{
-		return EQUITY_FX;
+		return EQ_FX;
 	}
 
 	/**
@@ -475,9 +475,9 @@ public class CrossRiskClassCorrelation
 	 * @return Correlation between Commodity and FX Risk Classes
 	 */
 
-	public static final double Commodity_FX()
+	public static final double CT_FX()
 	{
-		return COMMODITY_FX;
+		return CT_FX;
 	}
 
 	/**
@@ -486,8 +486,8 @@ public class CrossRiskClassCorrelation
 	 * @return Correlation between Commodity and FX Risk Classes
 	 */
 
-	public static final double FX_Commodity()
+	public static final double FX_CT()
 	{
-		return COMMODITY_FX;
+		return CT_FX;
 	}
 }

@@ -193,32 +193,21 @@ public class ProductClassInitialMargin
 		totalIM = totalIM + _eq * _eq ;
 		totalIM = totalIM + _fx * _fx ;
 		totalIM = totalIM + _ct * _ct ;
-		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.INTERESTRATE_CREDITQUALIFYING *
-			_ir * _crq;
-		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.INTERESTRATE_CREDITNONQUALIFYING
-			* _ir * _crnq;
-		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.INTERESTRATE_EQUITY * _ir * _eq;
-		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.INTERESTRATE_FX * _ir * _fx;
-		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.INTERESTRATE_COMMODITY * _ir *
-			_ct;
-		totalIM = totalIM +
-			org.drip.simm20.common.CrossRiskClassCorrelation.CREDITQUALIFYING_CREDITNONQUALIFYING * _crq *
-				_crnq;
-		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.CREDITQUALIFYING_EQUITY * _crq *
-			_eq;
-		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.CREDITQUALIFYING_FX * _crq *
-			_fx;
-		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.CREDITQUALIFYING_COMMODITY *
-			_crq * _ct;
-		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.CREDITNONQUALIFYING_EQUITY *
-			_crnq * _eq;
-		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.CREDITNONQUALIFYING_FX * _crnq *
-			_fx;
-		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.CREDITNONQUALIFYING_COMMODITY *
-			_crnq * _ct;
-		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.EQUITY_FX * _eq * _fx;
-		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.EQUITY_COMMODITY * _eq * _ct;
-		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.COMMODITY_FX * _fx * _ct;
+		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.IR_CRQ * _ir * _crq;
+		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.IR_CRNQ * _ir * _crnq;
+		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.IR_EQ * _ir * _eq;
+		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.IR_FX * _ir * _fx;
+		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.IR_CT * _ir * _ct;
+		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.CRQ_CRNQ * _crq * _crnq;
+		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.CRNQ_EQ * _crq * _eq;
+		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.CRNQ_FX * _crq * _fx;
+		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.CRNQ_CT * _crq * _ct;
+		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.CRNQ_EQ * _crnq * _eq;
+		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.CRNQ_FX * _crnq * _fx;
+		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.CRNQ_CT * _crnq * _ct;
+		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.EQ_FX * _eq * _fx;
+		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.EQ_CT * _eq * _ct;
+		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.CT_FX * _fx * _ct;
 		return totalIM;
 	}
 }

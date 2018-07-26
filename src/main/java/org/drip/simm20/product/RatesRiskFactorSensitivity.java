@@ -1,5 +1,5 @@
 
-package org.drip.simm20.rates;
+package org.drip.simm20.product;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,7 +47,8 @@ package org.drip.simm20.rates;
  */
 
 /**
- * IRSystemics contains the Systemic Settings of the Interest Rate Risk Factors. The References are:
+ * RatesRiskFactorSensitivity holds the ISDA SIMM 2.0 Risk Factor Tenor Bucket Sensitivities across Interest
+ * 	Rates Risk Factor Sub Curves. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -68,132 +69,96 @@ package org.drip.simm20.rates;
  * @author Lakshmi Krishnamurthy
  */
 
-public class IRSystemics
+public class RatesRiskFactorSensitivity
 {
+	private org.drip.simm20.product.RiskFactorSensitivity _oisSensitivity = null;
+	private org.drip.simm20.product.RiskFactorSensitivity _libor1MSensitivity = null;
+	private org.drip.simm20.product.RiskFactorSensitivity _libor3MSensitivity = null;
+	private org.drip.simm20.product.RiskFactorSensitivity _libor6MSensitivity = null;
+	private org.drip.simm20.product.RiskFactorSensitivity _libor12MSensitivity = null;
 
 	/**
-	 * Interest Rate Type - Regular Volatility
+	 * RatesRiskFactorSensitivity Constructor
+	 * 
+	 * @param oisSensitivity The OIS Risk Factor Sensitivity
+	 * @param libor1MSensitivity The LIBOR-1M Risk Factor Sensitivity
+	 * @param libor3MSensitivity The LIBOR-3M Risk Factor Sensitivity
+	 * @param libor6MSensitivity The LIBOR-6M Risk Factor Sensitivity
+	 * @param libor12MSensitivity The LIBOR-12M Risk Factor Sensitivity
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final java.lang.String VOLATILITY_TYPE_REGULAR = "REGULAR";
+	public RatesRiskFactorSensitivity (
+		final org.drip.simm20.product.RiskFactorSensitivity oisSensitivity,
+		final org.drip.simm20.product.RiskFactorSensitivity libor1MSensitivity,
+		final org.drip.simm20.product.RiskFactorSensitivity libor3MSensitivity,
+		final org.drip.simm20.product.RiskFactorSensitivity libor6MSensitivity,
+		final org.drip.simm20.product.RiskFactorSensitivity libor12MSensitivity)
+		throws java.lang.Exception
+	{
+		if (null == (_oisSensitivity = oisSensitivity) ||
+			null == (_libor1MSensitivity = libor1MSensitivity) ||
+			null == (_libor3MSensitivity = libor3MSensitivity) ||
+			null == (_libor6MSensitivity = libor6MSensitivity) ||
+			null == (_libor12MSensitivity = libor12MSensitivity))
+		{
+			throw new java.lang.Exception ("RatesRiskFactorSensitivity Constructor => Invalid Inputs");
+		}
+	}
 
 	/**
-	 * Interest Rate Type - Low Volatility
+	 * Retrieve the OIS Risk Factor Sensitivity
+	 * 
+	 * @return The OIS Risk Factor Sensitivity
 	 */
 
-	public static final java.lang.String VOLATILITY_TYPE_LOW = "LOW";
+	public org.drip.simm20.product.RiskFactorSensitivity oisSensitivity()
+	{
+		return _oisSensitivity;
+	}
 
 	/**
-	 * Interest Rate Type - High Volatility
+	 * Retrieve the LIBOR-1M Risk Factor Sensitivity
+	 * 
+	 * @return The LIBOR-1M Risk Factor Sensitivity
 	 */
 
-	public static final java.lang.String VOLATILITY_TYPE_HIGH = "HIGH";
+	public org.drip.simm20.product.RiskFactorSensitivity libor1MSensitivity()
+	{
+		return _libor1MSensitivity;
+	}
 
 	/**
-	 * Interest Rate Type - Trade Frequency Type Well Traded
+	 * Retrieve the LIBOR-3M Risk Factor Sensitivity
+	 * 
+	 * @return The LIBOR-3M Risk Factor Sensitivity
 	 */
 
-	public static final java.lang.String TRADE_FREQUENCY_WELL_TRADED = "WELL_TRADED";
+	public org.drip.simm20.product.RiskFactorSensitivity libor3MSensitivity()
+	{
+		return _libor3MSensitivity;
+	}
 
 	/**
-	 * Interest Rate Type - Trade Frequency Type Less Well Traded
+	 * Retrieve the LIBOR-6M Risk Factor Sensitivity
+	 * 
+	 * @return The LIBOR-6M Risk Factor Sensitivity
 	 */
 
-	public static final java.lang.String TRADE_FREQUENCY_LESS_WELL_TRADED = "LESS_WELL_TRADED";
+	public org.drip.simm20.product.RiskFactorSensitivity libor6MSensitivity()
+	{
+		return _libor6MSensitivity;
+	}
 
 	/**
-	 * Same Currency Curve Inflation Rate Risk Weight
+	 * Retrieve the LIBOR-12M Risk Factor Sensitivity
+	 * 
+	 * @return The LIBOR-12M Risk Factor Sensitivity
 	 */
 
-	public static final double SINGLE_CURRENCY_CURVE_INFLATION_RISK_WEIGHT = 46.;
-
-	/**
-	 * Single Currency Single Curve Basis Swap Spread
-	 */
-
-	public static final double SINGLE_CURRENCY_CURVE_BASIS_SWAP_SPREAD_RISK_WEIGHT = 20.;
-
-	/**
-	 * Interest Rate Vega Risk Weight
-	 */
-
-	public static final double VEGA_RISK_WEIGHT = 0.21;
-
-	/**
-	 * Single Currency Cross-Curve Correlation
-	 */
-
-	public static final double SINGLE_CURRENCY_CROSS_CURVE_CORRELATION = 0.98;
-
-	/**
-	 * Single Currency Curve Inflation Correlation
-	 */
-
-	public static final double SINGLE_CURRENCY_CURVE_INFLATION_CORRELATION = 0.29;
-
-	/**
-	 * Single Currency Curve Volatility Inflation Volatility Correlation
-	 */
-
-	public static final double SINGLE_CURRENCY_CURVE_VOLATILITY_INFLATION_VOLATILITY_CORRELATION = 0.29;
-
-	/**
-	 * Single Currency Curve Basis Swap Spread Correlation
-	 */
-
-	public static final double SINGLE_CURRENCY_CURVE_BASIS_SWAP_SPREAD_CORRELATION = 0.20;
-
-	/**
-	 * Single Currency Basis Swap Spread Inflation Correlation
-	 */
-
-	public static final double SINGLE_CURRENCY_BASIS_SWAP_SPREAD_INFLATION_CORRELATION = 0.20;
-
-	/**
-	 * Cross Currency Curve Correlation
-	 */
-
-	public static final double CROSS_CURRENCY_CORRELATION = 0.23;
-
-	/**
-	 * Sub-Yield Curve Type - OIS
-	 */
-
-	public static final java.lang.String SUB_YIELD_CURVE_TYPE_OIS = "OIS";
-
-	/**
-	 * Sub-Yield Curve Type - LIBOR-1M
-	 */
-
-	public static final java.lang.String SUB_YIELD_CURVE_TYPE_LIBOR_1M = "LIBOR_1M";
-
-	/**
-	 * Sub-Yield Curve Type - LIBOR-3M
-	 */
-
-	public static final java.lang.String SUB_YIELD_CURVE_TYPE_LIBOR_3M = "LIBOR_3M";
-
-	/**
-	 * Sub-Yield Curve Type - LIBOR-6M
-	 */
-
-	public static final java.lang.String SUB_YIELD_CURVE_TYPE_LIBOR_6M = "LIBOR_6M";
-
-	/**
-	 * Sub-Yield Curve Type - LIBOR-12M
-	 */
-
-	public static final java.lang.String SUB_YIELD_CURVE_TYPE_LIBOR_12M = "LIBOR_12M";
-
-	/**
-	 * Sub-Yield Curve Type - PRIME
-	 */
-
-	public static final java.lang.String SUB_YIELD_CURVE_TYPE_PRIME = "PRIME";
-
-	/**
-	 * Sub-Yield Curve Type - MUNICIPAL
-	 */
-
-	public static final java.lang.String SUB_YIELD_CURVE_TYPE_MUNICIPAL = "MUNICIPAL";
+	public org.drip.simm20.product.RiskFactorSensitivity libor12MSensitivity()
+	{
+		return _libor12MSensitivity;
+	}
 }
