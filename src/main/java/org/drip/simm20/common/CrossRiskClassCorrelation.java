@@ -123,7 +123,7 @@ public class CrossRiskClassCorrelation
 	 * Correlation between Credit Qualifying and FX Risk Classes
 	 */
 
-	public static final double CR_FX = 0.27;
+	public static final double CRQ_FX = 0.27;
 
 	/**
 	 * Correlation between Credit Non Qualifying and Equity Risk Classes
@@ -345,7 +345,7 @@ public class CrossRiskClassCorrelation
 
 	public static final double CRQ_FX()
 	{
-		return CR_FX;
+		return CRQ_FX;
 	}
 
 	/**
@@ -356,7 +356,7 @@ public class CrossRiskClassCorrelation
 
 	public static final double FX_CRQ()
 	{
-		return CR_FX;
+		return CRQ_FX;
 	}
 
 	/**
@@ -489,5 +489,84 @@ public class CrossRiskClassCorrelation
 	public static final double FX_CT()
 	{
 		return CT_FX;
+	}
+
+	/**
+	 * Generate the Corresponding Risk Class Correlation Matrix as a LabelCorrelation Instance
+	 * 
+	 * @return The Risk Class Correlation Matrix
+	 */
+
+	public org.drip.measure.stochastic.LabelCorrelation matrix()
+	{
+		double[][] riskClassCorrelationMatrix = new double[6][6];
+
+		for (int i = 0 ; i < 6; ++i)
+		{
+			riskClassCorrelationMatrix[i][i] = 1.;
+		}
+
+		riskClassCorrelationMatrix[0][1] = IR_CRQ;
+		riskClassCorrelationMatrix[1][0] = IR_CRQ;
+		riskClassCorrelationMatrix[0][2] = IR_CRNQ;
+		riskClassCorrelationMatrix[2][0] = IR_CRNQ;
+		riskClassCorrelationMatrix[0][3] = IR_EQ;
+		riskClassCorrelationMatrix[3][0] = IR_EQ;
+		riskClassCorrelationMatrix[0][4] = IR_CT;
+		riskClassCorrelationMatrix[4][0] = IR_CT;
+		riskClassCorrelationMatrix[0][5] = IR_FX;
+		riskClassCorrelationMatrix[5][0] = IR_FX;
+
+		riskClassCorrelationMatrix[1][2] = CRQ_CRNQ;
+		riskClassCorrelationMatrix[2][1] = CRQ_CRNQ;
+		riskClassCorrelationMatrix[1][3] = CRQ_EQ;
+		riskClassCorrelationMatrix[3][1] = CRQ_EQ;
+		riskClassCorrelationMatrix[1][4] = CRQ_CT;
+		riskClassCorrelationMatrix[4][1] = CRQ_CT;
+		riskClassCorrelationMatrix[1][5] = CRQ_FX;
+		riskClassCorrelationMatrix[5][1] = CRQ_FX;
+
+		riskClassCorrelationMatrix[2][3] = CRNQ_EQ;
+		riskClassCorrelationMatrix[3][2] = CRNQ_EQ;
+		riskClassCorrelationMatrix[2][4] = CRNQ_CT;
+		riskClassCorrelationMatrix[4][2] = CRNQ_CT;
+		riskClassCorrelationMatrix[2][5] = CRNQ_FX;
+		riskClassCorrelationMatrix[5][2] = CRNQ_FX;
+
+		riskClassCorrelationMatrix[3][4] = EQ_CT;
+		riskClassCorrelationMatrix[4][3] = EQ_CT;
+		riskClassCorrelationMatrix[3][5] = EQ_FX;
+		riskClassCorrelationMatrix[5][3] = EQ_FX;
+
+		riskClassCorrelationMatrix[4][5] = CT_FX;
+		riskClassCorrelationMatrix[5][4] = CT_FX;
+
+		java.util.List<java.lang.String> chargramList = new java.util.ArrayList<java.lang.String>();
+
+		chargramList.add (org.drip.simm20.common.Chargram.IR);
+
+		chargramList.add (org.drip.simm20.common.Chargram.CRQ);
+
+		chargramList.add (org.drip.simm20.common.Chargram.CRNQ);
+
+		chargramList.add (org.drip.simm20.common.Chargram.EQ);
+
+		chargramList.add (org.drip.simm20.common.Chargram.CT);
+
+		chargramList.add (org.drip.simm20.common.Chargram.FX);
+
+		try
+		{
+			return new org.drip.measure.stochastic.LabelCorrelation (
+				chargramList,
+				riskClassCorrelationMatrix
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

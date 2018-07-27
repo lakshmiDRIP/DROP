@@ -1,21 +1,5 @@
 
-package org.drip.coverage.product;
-
-import org.drip.sample.bondfixed.Bareilly;
-import org.drip.sample.bondfixed.BulletAgency;
-import org.drip.sample.bondfixed.BulletCorporate1;
-import org.drip.sample.bondfixed.BulletCorporate2;
-import org.drip.sample.bondfixed.BulletCorporate3;
-import org.drip.sample.bondfixed.BulletCorporate4;
-import org.drip.sample.bondfixed.BulletCorporate5;
-import org.drip.sample.bondfixed.BulletCorporate6;
-import org.drip.sample.bondfixed.HubbaliDharwad;
-import org.drip.sample.bondfixed.Moradabad;
-import org.drip.sample.bondfixed.Mysore;
-import org.drip.sample.bondfixed.Tiruchirapalli;
-import org.drip.sample.bondfixed.Tiruppur;
-
-import org.junit.Test;
+package org.drip.simm20.common;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -23,7 +7,6 @@ import org.junit.Test;
 
 /*!
  * Copyright (C) 2018 Lakshmi Krishnamurthy
- * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
  *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
  *  	libraries targeting analysts and developers
@@ -64,39 +47,63 @@ import org.junit.Test;
  */
 
 /**
- * BondFixed holds the JUnit Code Coverage Tests for the Fixed Bond Product Module.
- *
+ * Chargram contains the 2-4 Character Code that identifies a specific Risk Class. The References are:
+ *  
+ *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
+ *  
+ *  - Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
+ *  	Calculations, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488, eSSRN.
+ *  
+ *  - Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
+ *  	Framework for Forecasting Initial Margin Requirements,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
+ *  
+ *  - Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements
+ *  	- A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167, eSSRN.
+ *  
+ *  - International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology,
+ *  	https://www.isda.org/a/oFiDE/isda-simm-v2.pdf.
+ * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class BondFixed
+public class Chargram
 {
-	@Test public void codeCoverageTest() throws Exception
-	{
-		Bareilly.main (null);
 
-		BulletAgency.main (null);
+	/**
+	 * The Interest Rate Digram IR
+	 */
 
-		BulletCorporate1.main (null);
+	public static final java.lang.String IR = "IR";
 
-		BulletCorporate2.main (null);
+	/**
+	 * The Credit Qualifying Trigram CRQ
+	 */
 
-		BulletCorporate3.main (null);
+	public static final java.lang.String CRQ = "CRQ";
 
-		BulletCorporate4.main (null);
+	/**
+	 * The Credit Non-Qualifying Quatro-gram CRNQ
+	 */
 
-		BulletCorporate5.main (null);
+	public static final java.lang.String CRNQ = "CRNQ";
 
-		BulletCorporate6.main (null);
+	/**
+	 * The Equity Digram EQ
+	 */
 
-		HubbaliDharwad.main (null);
+	public static final java.lang.String EQ = "EQ";
 
-		Moradabad.main (null);
+	/**
+	 * The FX Digram FX
+	 */
 
-		Mysore.main (null);
+	public static final java.lang.String FX = "FX";
 
-		Tiruchirapalli.main (null);
+	/**
+	 * The Commodity Digram CT
+	 */
 
-		Tiruppur.main (null);
-    }
+	public static final java.lang.String CT = "CT";
 }
