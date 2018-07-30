@@ -4,9 +4,9 @@ package org.drip.sample.simm20;
 import java.util.Set;
 
 import org.drip.service.env.EnvManager;
-import org.drip.simm20.concentration.CurrencyRiskGroup;
-import org.drip.simm20.concentration.InterestRateThreshold;
-import org.drip.simm20.concentration.InterestRateThresholdContainer;
+import org.drip.simm20.rates.CurrencyRiskGroup;
+import org.drip.simm20.rates.IRThreshold;
+import org.drip.simm20.rates.IRThresholdContainer;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -82,7 +82,7 @@ import org.drip.simm20.concentration.InterestRateThresholdContainer;
 	private static final void DisplayBuckets()
 		throws Exception
 	{
-<span class="nc" id="L85">		Set&lt;Integer&gt; bucketSet = InterestRateThresholdContainer.IndexSet();</span>
+<span class="nc" id="L85">		Set&lt;Integer&gt; bucketSet = IRThresholdContainer.IndexSet();</span>
 
 <span class="nc" id="L87">		System.out.println (&quot;\t||-------------------------------------------------------------------------------------------------||&quot;);</span>
 
@@ -110,42 +110,41 @@ import org.drip.simm20.concentration.InterestRateThresholdContainer;
 
 <span class="nc bnc" id="L111" title="All 2 branches missed.">		for (int bucketNumber : bucketSet)</span>
 		{
-<span class="nc" id="L113">			InterestRateThreshold interestRateThreshold =</span>
-<span class="nc" id="L114">				InterestRateThresholdContainer.InterestRateThreshold (bucketNumber);</span>
+<span class="nc" id="L113">			IRThreshold interestRateThreshold = IRThresholdContainer.Threshold (bucketNumber);</span>
 
-<span class="nc" id="L116">			CurrencyRiskGroup currencyRiskGroup = interestRateThreshold.currencyRiskGroup();</span>
+<span class="nc" id="L115">			CurrencyRiskGroup currencyRiskGroup = interestRateThreshold.currencyRiskGroup();</span>
 
-<span class="nc" id="L118">			String[] componentArray = currencyRiskGroup.componentArray();</span>
+<span class="nc" id="L117">			String[] componentArray = currencyRiskGroup.componentArray();</span>
 
-<span class="nc" id="L120">			String componentSet = &quot;&quot;;</span>
+<span class="nc" id="L119">			String componentSet = &quot;&quot;;</span>
 
-<span class="nc bnc" id="L122" title="All 2 branches missed.">			for (String component : componentArray)</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">			for (String component : componentArray)</span>
 			{
-<span class="nc" id="L124">				componentSet = componentSet + component + &quot;,&quot;;</span>
+<span class="nc" id="L123">				componentSet = componentSet + component + &quot;,&quot;;</span>
 			}
 
-<span class="nc" id="L127">			System.out.println (</span>
+<span class="nc" id="L126">			System.out.println (</span>
 				&quot;\t|| &quot; + bucketNumber + &quot; =&gt; &quot; +
-<span class="nc" id="L129">				currencyRiskGroup.volatilityType() + &quot; | &quot; +</span>
-<span class="nc" id="L130">				currencyRiskGroup.tradeFrequencyType() + &quot; | &quot; +</span>
-<span class="nc" id="L131">				interestRateThreshold.deltaVega().delta() + &quot; | &quot; +</span>
-<span class="nc" id="L132">				interestRateThreshold.deltaVega().vega() + &quot; | &quot; +</span>
+<span class="nc" id="L128">				currencyRiskGroup.volatilityType() + &quot; | &quot; +</span>
+<span class="nc" id="L129">				currencyRiskGroup.tradeFrequencyType() + &quot; | &quot; +</span>
+<span class="nc" id="L130">				interestRateThreshold.deltaVega().delta() + &quot; | &quot; +</span>
+<span class="nc" id="L131">				interestRateThreshold.deltaVega().vega() + &quot; | &quot; +</span>
 				componentSet
 			);
-<span class="nc" id="L135">		}</span>
+<span class="nc" id="L134">		}</span>
 
-<span class="nc" id="L137">		System.out.println (&quot;\t||-------------------------------------------------------------------------------------------------||&quot;);</span>
-<span class="nc" id="L138">	}</span>
+<span class="nc" id="L136">		System.out.println (&quot;\t||-------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L137">	}</span>
 
 	public static final void main (
 		final String[] args)
 		throws Exception
 	{
-<span class="nc" id="L144">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L143">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L146">		DisplayBuckets();</span>
+<span class="nc" id="L145">		DisplayBuckets();</span>
 
-<span class="nc" id="L148">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L149">	}</span>
+<span class="nc" id="L147">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L148">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

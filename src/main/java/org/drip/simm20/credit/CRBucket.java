@@ -147,4 +147,35 @@ public class CRBucket
 	{
 		return _riskWeight;
 	}
+
+	/**
+	 * Retrieve the Credit Tenor Risk Weight Map
+	 * 
+	 * @param tenorSet The Tenor Set
+	 * 
+	 * @return The Credit Tenor Risk Weight Map
+	 */
+
+	public java.util.Map<java.lang.String, java.lang.Double> tenorWeightMap (
+		final java.util.Set<java.lang.String> tenorSet)
+	{
+		if (null == tenorSet || 0 == tenorSet.size())
+		{
+			return null;
+		}
+
+		java.util.Map<java.lang.String, java.lang.Double> tenorWeightMap = new
+			java.util.HashMap<java.lang.String, java.lang.Double>();
+
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> tenorWeightEntry :
+			tenorWeightMap.entrySet())
+		{
+			tenorWeightMap.put (
+				tenorWeightEntry.getKey(),
+				_riskWeight
+			);
+		}
+
+		return tenorWeightMap;
+	}
 }

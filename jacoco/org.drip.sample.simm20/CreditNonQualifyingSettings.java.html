@@ -5,10 +5,10 @@ import java.util.Set;
 
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.simm20.parameters.CreditNonQualifyingBucketCorrelation;
-import org.drip.simm20.parameters.CreditNonQualifyingSettingsContainer;
-import org.drip.simm20.risk.CreditNonQualifyingSystemics;
-import org.drip.simm20.risk.CreditBucket;
+import org.drip.simm20.credit.CRBucket;
+import org.drip.simm20.credit.CRNQBucketCorrelation;
+import org.drip.simm20.credit.CRNQSettingsContainer;
+import org.drip.simm20.credit.CRNQSystemics;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -83,7 +83,7 @@ import org.drip.simm20.risk.CreditBucket;
 
 	private static final void DisplayRiskWeights()
 	{
-<span class="nc" id="L86">		Set&lt;Integer&gt; bucketIndexSet = CreditNonQualifyingSettingsContainer.BucketSet();</span>
+<span class="nc" id="L86">		Set&lt;Integer&gt; bucketIndexSet = CRNQSettingsContainer.BucketSet();</span>
 
 <span class="nc" id="L88">		System.out.println</span>
 <span class="nc" id="L89">			(&quot;\t||-------------------------------------------------------------------------------------------------------------||&quot;);</span>
@@ -117,7 +117,7 @@ import org.drip.simm20.risk.CreditBucket;
 
 <span class="nc bnc" id="L118" title="All 2 branches missed.">		for (int bucketIndex : bucketIndexSet)</span>
 		{
-<span class="nc" id="L120">			CreditBucket creditQualifyingBucket = CreditNonQualifyingSettingsContainer.Bucket (bucketIndex);</span>
+<span class="nc" id="L120">			CRBucket creditQualifyingBucket = CRNQSettingsContainer.Bucket (bucketIndex);</span>
 
 <span class="nc" id="L122">			String sectorArrayDump = &quot;&quot;;</span>
 
@@ -153,35 +153,35 @@ import org.drip.simm20.risk.CreditBucket;
 <span class="nc" id="L153">		System.out.println (</span>
 			&quot;\t|| Vega Risk Wight                                     =&gt; &quot; +
 <span class="nc" id="L155">			FormatUtil.FormatDouble (</span>
-				CreditNonQualifyingSystemics.VEGA_RISK_WEIGHT, 3, 2, 1.
+				CRNQSystemics.VEGA_RISK_WEIGHT, 3, 2, 1.
 			) + &quot; ||&quot;
 		);
 
 <span class="nc" id="L160">		System.out.println (</span>
 			&quot;\t|| Non-Residual Correlation &gt;80% Names Overlap         =&gt; &quot; +
 <span class="nc" id="L162">			FormatUtil.FormatDouble (</span>
-				CreditNonQualifyingBucketCorrelation.GT_80PC_OVERLAP_NON_RESIDUAL, 3, 2, 1.
+				CRNQBucketCorrelation.GT_80PC_OVERLAP_NON_RESIDUAL, 3, 2, 1.
 			) + &quot; ||&quot;
 		);
 
 <span class="nc" id="L167">		System.out.println (</span>
 			&quot;\t|| Non-Residual Correlation &lt;80% Names Overlap         =&gt; &quot; +
 <span class="nc" id="L169">			FormatUtil.FormatDouble (</span>
-				CreditNonQualifyingBucketCorrelation.LT_80PC_OVERLAP_NON_RESIDUAL, 3, 2, 1.
+				CRNQBucketCorrelation.LT_80PC_OVERLAP_NON_RESIDUAL, 3, 2, 1.
 			) + &quot; ||&quot;
 		);
 
 <span class="nc" id="L174">		System.out.println (</span>
 			&quot;\t|| Residual Correlation &gt;80% Names Overlap             =&gt; &quot; +
 <span class="nc" id="L176">			FormatUtil.FormatDouble (</span>
-				CreditNonQualifyingBucketCorrelation.GT_80PC_OVERLAP_RESIDUAL, 3, 2, 1.
+				CRNQBucketCorrelation.GT_80PC_OVERLAP_RESIDUAL, 3, 2, 1.
 			) + &quot; ||&quot;
 		);
 
 <span class="nc" id="L181">		System.out.println (</span>
 			&quot;\t|| Residual Correlation &lt;80% Names Overlap             =&gt; &quot; +
 <span class="nc" id="L183">			FormatUtil.FormatDouble (</span>
-				CreditNonQualifyingBucketCorrelation.LT_80PC_OVERLAP_RESIDUAL, 3, 2, 1.
+				CRNQBucketCorrelation.LT_80PC_OVERLAP_RESIDUAL, 3, 2, 1.
 			) + &quot; ||&quot;
 		);
 

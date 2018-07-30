@@ -71,8 +71,91 @@ package org.drip.simm20.rates;
 
 public class IRThresholdContainer
 {
+	private static final java.util.Map<java.lang.String, java.lang.Integer> s_CurrencyThresholdMap = new
+		java.util.HashMap<java.lang.String, java.lang.Integer>();
+
 	private static final java.util.Map<java.lang.Integer, org.drip.simm20.rates.IRThreshold> s_ThresholdMap =
 		new java.util.TreeMap<java.lang.Integer, org.drip.simm20.rates.IRThreshold>();
+
+	private static final boolean SetupCurrencyMap()
+	{
+		s_CurrencyThresholdMap.put (
+			"USD",
+			2
+		);
+
+		s_CurrencyThresholdMap.put (
+			"EUR",
+			2
+		);
+
+		s_CurrencyThresholdMap.put (
+			"GBP",
+			2
+		);
+
+		s_CurrencyThresholdMap.put (
+			"AUD",
+			3
+		);
+
+		s_CurrencyThresholdMap.put (
+			"CAD",
+			3
+		);
+
+		s_CurrencyThresholdMap.put (
+			"CHF",
+			3
+		);
+
+		s_CurrencyThresholdMap.put (
+			"DKK",
+			3
+		);
+
+		s_CurrencyThresholdMap.put (
+			"HKD",
+			3
+		);
+
+		s_CurrencyThresholdMap.put (
+			"KRW",
+			3
+		);
+
+		s_CurrencyThresholdMap.put (
+			"NOK",
+			3
+		);
+
+		s_CurrencyThresholdMap.put (
+			"NZD",
+			3
+		);
+
+		s_CurrencyThresholdMap.put (
+			"SEK",
+			3
+		);
+
+		s_CurrencyThresholdMap.put (
+			"SGD",
+			3
+		);
+
+		s_CurrencyThresholdMap.put (
+			"TWD",
+			3
+		);
+
+		s_CurrencyThresholdMap.put (
+			"JPY",
+			4
+		);
+
+		return true;
+	}
 
 	/**
 	 * Initialize the Container
@@ -175,7 +258,7 @@ public class IRThresholdContainer
 			return false;
 		}
 
-		return true;
+		return SetupCurrencyMap();
 	}
 
 	/**
@@ -190,17 +273,57 @@ public class IRThresholdContainer
 	}
 
 	/**
+	 * Retrieve the Interest Rate Threshold Container Currency Set
+	 * 
+	 * @return The Interest Rate Threshold Container Currency Set
+	 */
+
+	public static final java.util.Set<java.lang.String> CurrencySet()
+	{
+		return s_CurrencyThresholdMap.keySet();
+	}
+
+	/**
 	 * Indicate if the Entry denoted by the Number is available as an Interest Rate Threshold
 	 * 
 	 * @param groupNumber The Group Number
 	 * 
-	 * @return TRUE - The GroupEntry denoted by the Number is available as an Interest Rate Threshold
+	 * @return TRUE - The Entry denoted by the Number is available as an Interest Rate Threshold
 	 */
 
 	public static final boolean ContainsThreshold (
 		final int groupNumber)
 	{
 		return s_ThresholdMap.containsKey (groupNumber);
+	}
+
+	/**
+	 * Indicate if the Currency is available as an Interest Rate Threshold
+	 * 
+	 * @param currency The Currency
+	 * 
+	 * @return TRUE - The Currency is available as an Interest Rate Threshold
+	 */
+
+	public static final boolean ContainsThreshold (
+		final java.lang.String currency)
+	{
+		return s_CurrencyThresholdMap.containsKey (currency);
+	}
+
+	/**
+	 * Retrieve the Interest Rate Threshold denoted by the Currency
+	 * 
+	 * @param currency The Currency
+	 * 
+	 * @return The Interest Rate Threshold
+	 */
+
+	public static final org.drip.simm20.rates.IRThreshold Threshold (
+		final java.lang.String currency)
+	{
+		return ContainsThreshold (currency) ? s_ThresholdMap.get (s_CurrencyThresholdMap.get (currency)) :
+			null;
 	}
 
 	/**
@@ -215,6 +338,17 @@ public class IRThresholdContainer
 		final int groupNumber)
 	{
 		return ContainsThreshold (groupNumber) ? s_ThresholdMap.get (groupNumber) : null;
+	}
+
+	/**
+	 * Retrieve the Currency Threshold Map
+	 * 
+	 * @return The Currency Threshold Map
+	 */
+
+	public static final java.util.Map<java.lang.String, java.lang.Integer> CurrencyThresholdMap()
+	{
+		return s_CurrencyThresholdMap;
 	}
 
 	/**

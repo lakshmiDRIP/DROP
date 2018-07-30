@@ -7,9 +7,9 @@ import java.util.Set;
 import org.drip.measure.stochastic.LabelCorrelation;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.simm20.parameters.CommoditySettingsContainer;
-import org.drip.simm20.risk.CommodityBucket;
-import org.drip.simm20.risk.CommoditySystemics;
+import org.drip.simm20.commodity.CTBucket;
+import org.drip.simm20.commodity.CTSettingsContainer;
+import org.drip.simm20.commodity.CTSystemics;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -84,7 +84,7 @@ import org.drip.simm20.risk.CommoditySystemics;
 
 	private static final void RiskWeights()
 	{
-<span class="nc" id="L87">		Set&lt;Integer&gt; bucketIndexSet = CommoditySettingsContainer.BucketSet();</span>
+<span class="nc" id="L87">		Set&lt;Integer&gt; bucketIndexSet = CTSettingsContainer.BucketSet();</span>
 
 <span class="nc" id="L89">		System.out.println</span>
 <span class="nc" id="L90">			(&quot;\t||-------------------------------------------------------------------------------------------------------------||&quot;);</span>
@@ -118,7 +118,7 @@ import org.drip.simm20.risk.CommoditySystemics;
 
 <span class="nc bnc" id="L119" title="All 2 branches missed.">		for (int bucketIndex : bucketIndexSet)</span>
 		{
-<span class="nc" id="L121">			CommodityBucket commodityBucket = CommoditySettingsContainer.Bucket (bucketIndex);</span>
+<span class="nc" id="L121">			CTBucket commodityBucket = CTSettingsContainer.Bucket (bucketIndex);</span>
 
 <span class="nc" id="L123">			System.out.println (</span>
 <span class="nc" id="L124">				&quot;\t||&quot; + FormatUtil.FormatDouble (commodityBucket.number(), 2, 0, 1.) + &quot; | &quot; +</span>
@@ -145,14 +145,14 @@ import org.drip.simm20.risk.CommoditySystemics;
 <span class="nc" id="L145">		System.out.println (</span>
 			&quot;\t|| Historical Volatility Ratio                         =&gt; &quot; +
 <span class="nc" id="L147">			FormatUtil.FormatDouble (</span>
-				CommoditySystemics.HISTORICAL_VOLATILITY_RATIO, 3, 2, 1.
+				CTSystemics.HISTORICAL_VOLATILITY_RATIO, 3, 2, 1.
 			) + &quot; ||&quot;
 		);
 
 <span class="nc" id="L152">		System.out.println (</span>
 			&quot;\t|| Vega Risk Weight                                    =&gt; &quot; +
 <span class="nc" id="L154">			FormatUtil.FormatDouble (</span>
-				CommoditySystemics.VEGA_RISK_WEIGHT, 3, 2, 1.
+				CTSystemics.VEGA_RISK_WEIGHT, 3, 2, 1.
 			) + &quot; ||&quot;
 		);
 
@@ -164,7 +164,7 @@ import org.drip.simm20.risk.CommoditySystemics;
 	private static final void CrossBucketCorrelation()
 		throws Exception
 	{
-<span class="nc" id="L167">		LabelCorrelation crossBucketCorrelation = CommoditySettingsContainer.CrossBucketCorrelation();</span>
+<span class="nc" id="L167">		LabelCorrelation crossBucketCorrelation = CTSettingsContainer.CrossBucketCorrelation();</span>
 
 <span class="nc" id="L169">		List&lt;String&gt; bucketList = crossBucketCorrelation.labelList();</span>
 

@@ -78,6 +78,48 @@ public class ProductClassInitialMargin
 	private double _ir = java.lang.Double.NaN;
 	private double _crq = java.lang.Double.NaN;
 	private double _crnq = java.lang.Double.NaN;
+	private org.drip.measure.stochastic.LabelCorrelation _labelCorrelation = null;
+
+	/**
+	 * Generate the ProductClassInitialMargin using ISDA SIMM 2.0 Cross Risk Class Correlation Matrix
+	 * 
+	 * @param ir Interest Rate IM
+	 * @param crq Credit (Qualifying) IM
+	 * @param crnq Credit (Non-Qualifying) IM
+	 * @param eq Equity IM
+	 * @param fx FX IM
+	 * @param ct Commodity IM
+	 * 
+	 * @return The ProductClassInitialMargin Instance
+	 */
+
+	public static final ProductClassInitialMargin ISDA (
+		final double ir,
+		final double crq,
+		final double crnq,
+		final double eq,
+		final double fx,
+		final double ct)
+	{
+		try
+		{
+			return new ProductClassInitialMargin (
+				ir,
+				crq,
+				crnq,
+				eq,
+				fx,
+				ct,
+				org.drip.simm20.common.CrossRiskClassCorrelation.Matrix()
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 
 	/**
 	 * ProductClassInitialMargin Constructor
@@ -88,6 +130,7 @@ public class ProductClassInitialMargin
 	 * @param eq Equity IM
 	 * @param fx FX IM
 	 * @param ct Commodity IM
+	 * @param labelCorrelation Cross Risk Class Label Correlation
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -98,7 +141,8 @@ public class ProductClassInitialMargin
 		final double crnq,
 		final double eq,
 		final double fx,
-		final double ct)
+		final double ct,
+		final org.drip.measure.stochastic.LabelCorrelation labelCorrelation)
 		throws java.lang.Exception
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (_ir = ir) || 0. > _ir ||
@@ -106,10 +150,22 @@ public class ProductClassInitialMargin
 			!org.drip.quant.common.NumberUtil.IsValid (_crnq = crnq) || 0. > _crnq ||
 			!org.drip.quant.common.NumberUtil.IsValid (_eq = eq) || 0. > _eq ||
 			!org.drip.quant.common.NumberUtil.IsValid (_fx = fx) || 0. > _fx ||
-			!org.drip.quant.common.NumberUtil.IsValid (_ct = ct) || 0. > _ct)
+			!org.drip.quant.common.NumberUtil.IsValid (_ct = ct) || 0. > _ct ||
+			null == (_labelCorrelation = labelCorrelation))
 		{
 			throw new java.lang.Exception ("ProductClassInitialMarginConstructor => Invalid Inputs");
 		}
+	}
+
+	/**
+	 * Retrieve the Cross Risk Class Label Correlation
+	 * 
+	 * @return The Cross Risk Class Label Correlation
+	 */
+
+	public org.drip.measure.stochastic.LabelCorrelation labelCorrelation()
+	{
+		return _labelCorrelation;
 	}
 
 	/**
@@ -182,32 +238,96 @@ public class ProductClassInitialMargin
 	 * Compute the Total IM
 	 * 
 	 * @return The Total IM
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double total()
+		throws java.lang.Exception
 	{
 		double totalIM = 0.;
 		totalIM = totalIM + _ir *_ir;
 		totalIM = totalIM + _crq * _crq;
 		totalIM = totalIM + _crnq * _crnq;
-		totalIM = totalIM + _eq * _eq ;
-		totalIM = totalIM + _fx * _fx ;
-		totalIM = totalIM + _ct * _ct ;
-		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.IR_CRQ * _ir * _crq;
-		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.IR_CRNQ * _ir * _crnq;
-		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.IR_EQ * _ir * _eq;
-		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.IR_FX * _ir * _fx;
-		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.IR_CT * _ir * _ct;
-		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.CRQ_CRNQ * _crq * _crnq;
-		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.CRNQ_EQ * _crq * _eq;
-		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.CRNQ_FX * _crq * _fx;
-		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.CRNQ_CT * _crq * _ct;
-		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.CRNQ_EQ * _crnq * _eq;
-		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.CRNQ_FX * _crnq * _fx;
-		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.CRNQ_CT * _crnq * _ct;
-		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.EQ_FX * _eq * _fx;
-		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.EQ_CT * _eq * _ct;
-		totalIM = totalIM + org.drip.simm20.common.CrossRiskClassCorrelation.CT_FX * _fx * _ct;
-		return totalIM;
+		totalIM = totalIM + _eq * _eq;
+		totalIM = totalIM + _fx * _fx;
+		totalIM = totalIM + _ct * _ct;
+
+		totalIM = totalIM + _labelCorrelation.entry (
+			org.drip.simm20.common.Chargram.IR,
+			org.drip.simm20.common.Chargram.CRQ
+		) * _ir * _crq;
+
+		totalIM = totalIM + _labelCorrelation.entry (
+			org.drip.simm20.common.Chargram.IR,
+			org.drip.simm20.common.Chargram.CRNQ
+		) * _ir * _crnq;
+
+		totalIM = totalIM + _labelCorrelation.entry (
+			org.drip.simm20.common.Chargram.IR,
+			org.drip.simm20.common.Chargram.EQ
+		) * _ir * _eq;
+
+		totalIM = totalIM + _labelCorrelation.entry (
+			org.drip.simm20.common.Chargram.IR,
+			org.drip.simm20.common.Chargram.FX
+		) * _ir * _fx;
+
+		totalIM = totalIM + _labelCorrelation.entry (
+			org.drip.simm20.common.Chargram.IR,
+			org.drip.simm20.common.Chargram.CT
+		) * _ir * _ct;
+
+		totalIM = totalIM + _labelCorrelation.entry (
+			org.drip.simm20.common.Chargram.CRQ,
+			org.drip.simm20.common.Chargram.CRNQ
+		) * _crq * _crnq;
+
+		totalIM = totalIM + _labelCorrelation.entry (
+			org.drip.simm20.common.Chargram.CRQ,
+			org.drip.simm20.common.Chargram.EQ
+		) * _crq * _eq;
+
+		totalIM = totalIM + _labelCorrelation.entry (
+			org.drip.simm20.common.Chargram.CRQ,
+			org.drip.simm20.common.Chargram.FX
+		) * _crq * _fx;
+
+		totalIM = totalIM + _labelCorrelation.entry (
+			org.drip.simm20.common.Chargram.CRQ,
+			org.drip.simm20.common.Chargram.CT
+		) * _crq * _ct;
+
+		totalIM = totalIM + _labelCorrelation.entry (
+			org.drip.simm20.common.Chargram.CRNQ,
+			org.drip.simm20.common.Chargram.EQ
+		) * _crnq * _eq;
+
+		totalIM = totalIM + _labelCorrelation.entry (
+			org.drip.simm20.common.Chargram.CRNQ,
+			org.drip.simm20.common.Chargram.FX
+		) * _crnq * _fx;
+
+		totalIM = totalIM + _labelCorrelation.entry (
+			org.drip.simm20.common.Chargram.CRNQ,
+			org.drip.simm20.common.Chargram.CT
+		) * _crnq * _ct;
+
+		totalIM = totalIM + _labelCorrelation.entry (
+			org.drip.simm20.common.Chargram.EQ,
+			org.drip.simm20.common.Chargram.FX
+		) * _eq * _fx;
+
+		totalIM = totalIM + _labelCorrelation.entry (
+			org.drip.simm20.common.Chargram.EQ,
+			org.drip.simm20.common.Chargram.CT
+		) * _eq * _ct;
+
+		totalIM = totalIM + _labelCorrelation.entry (
+			org.drip.simm20.common.Chargram.FX,
+			org.drip.simm20.common.Chargram.CT
+		) * _fx * _ct;
+
+		return java.lang.Math.sqrt (totalIM);
 	}
 }

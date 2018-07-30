@@ -497,7 +497,7 @@ public class CrossRiskClassCorrelation
 	 * @return The Risk Class Correlation Matrix
 	 */
 
-	public org.drip.measure.stochastic.LabelCorrelation matrix()
+	public static final org.drip.measure.stochastic.LabelCorrelation Matrix()
 	{
 		double[][] riskClassCorrelationMatrix = new double[6][6];
 

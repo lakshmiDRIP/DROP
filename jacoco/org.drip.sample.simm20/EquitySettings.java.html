@@ -7,9 +7,9 @@ import java.util.Set;
 import org.drip.measure.stochastic.LabelCorrelation;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.simm20.parameters.EquitySettingsContainer;
-import org.drip.simm20.risk.EquitySystemics;
-import org.drip.simm20.risk.EquityBucket;
+import org.drip.simm20.equity.EQBucket;
+import org.drip.simm20.equity.EQSettingsContainer;
+import org.drip.simm20.equity.EQSystemics;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -84,7 +84,7 @@ import org.drip.simm20.risk.EquityBucket;
 
 	private static final void RiskWeights()
 	{
-<span class="nc" id="L87">		Set&lt;Integer&gt; bucketIndexSet = EquitySettingsContainer.BucketSet();</span>
+<span class="nc" id="L87">		Set&lt;Integer&gt; bucketIndexSet = EQSettingsContainer.BucketSet();</span>
 
 <span class="nc" id="L89">		System.out.println</span>
 <span class="nc" id="L90">			(&quot;\t||-------------------------------------------------------------------------------------------------------------||&quot;);</span>
@@ -127,7 +127,7 @@ import org.drip.simm20.risk.EquityBucket;
 
 <span class="nc bnc" id="L128" title="All 2 branches missed.">		for (int bucketIndex : bucketIndexSet)</span>
 		{
-<span class="nc" id="L130">			EquityBucket equityBucket = EquitySettingsContainer.Bucket (bucketIndex);</span>
+<span class="nc" id="L130">			EQBucket equityBucket = EQSettingsContainer.Bucket (bucketIndex);</span>
 
 <span class="nc" id="L132">			String sectorArrayDump = &quot;&quot;;</span>
 
@@ -166,14 +166,14 @@ import org.drip.simm20.risk.EquityBucket;
 <span class="nc" id="L166">		System.out.println (</span>
 			&quot;\t|| Historical Volatility Ratio                         =&gt; &quot; +
 <span class="nc" id="L168">			FormatUtil.FormatDouble (</span>
-				EquitySystemics.HISTORICAL_VOLATILITY_RATIO, 3, 2, 1.
+				EQSystemics.HISTORICAL_VOLATILITY_RATIO, 3, 2, 1.
 			) + &quot; ||&quot;
 		);
 
 <span class="nc" id="L173">		System.out.println (</span>
 			&quot;\t|| Residual Bucket Correlation                         =&gt; &quot; +
 <span class="nc" id="L175">			FormatUtil.FormatDouble (</span>
-				EquitySystemics.RESIDUAL_BUCKET_CORRELATION, 3, 2, 1.
+				EQSystemics.RESIDUAL_BUCKET_CORRELATION, 3, 2, 1.
 			) + &quot; ||&quot;
 		);
 
@@ -185,7 +185,7 @@ import org.drip.simm20.risk.EquityBucket;
 	private static final void CrossBucketCorrelation()
 		throws Exception
 	{
-<span class="nc" id="L188">		LabelCorrelation crossBucketCorrelation = EquitySettingsContainer.CrossBucketCorrelation();</span>
+<span class="nc" id="L188">		LabelCorrelation crossBucketCorrelation = EQSettingsContainer.CrossBucketCorrelation();</span>
 
 <span class="nc" id="L190">		List&lt;String&gt; bucketList = crossBucketCorrelation.labelList();</span>
 

@@ -134,6 +134,37 @@ public class RiskFactorSensitivity
 		return null;
 	}
 
+
+	/**
+	 * Construct the Standard Credit Non-Qualifying ISDA Bucket Sensitivity
+	 * 
+	 * @return The Standard Credit Non-Qualifying ISDA Bucket Sensitivity
+	 */
+
+	public static final RiskFactorSensitivity CRNQ()
+	{
+		java.util.Map<java.lang.String, java.lang.Double> tenorDeltaMap = new
+			java.util.HashMap<java.lang.String, java.lang.Double>();
+
+		for (java.lang.String tenor : org.drip.simm20.credit.CRNQSettingsContainer.TenorSet())
+		{
+			tenorDeltaMap.put (
+				tenor,
+				0.
+			);
+		}
+
+		try
+		{
+			return new RiskFactorSensitivity (tenorDeltaMap);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 	/**
 	 * RiskFactorSensitivity Constructor
 	 * 
@@ -234,5 +265,55 @@ public class RiskFactorSensitivity
 	public java.util.Map<java.lang.String, java.lang.Double> tenorDeltaMap()
 	{
 		return _tenorDeltaMap;
+	}
+
+	/**
+	 * Generate the Cumulative Tenor Delta
+	 * 
+	 * @return The Cumulative Tenor Delta
+	 */
+
+	public double cumulative()
+	{
+		double cumulative = 0.;
+
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> tenorDeltaEntry :
+			_tenorDeltaMap.entrySet())
+		{
+			cumulative = cumulative + tenorDeltaEntry.getValue();
+		}
+
+		return cumulative;
+	}
+
+	/**
+	 * Compute the Concentration Risk Factor
+	 * 
+	 * @param concentrationThreshold The Concentration Threshold
+	 * 
+	 * @return The Concentration Risk Factor
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double concentrationRiskFactor (
+		final double concentrationThreshold)
+		throws java.lang.Exception
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (concentrationThreshold))
+		{
+			throw new java.lang.Exception
+				("RiskFactorSensitivity::concentrationRiskFactor => Invalid Inputs");
+		}
+
+		return java.lang.Math.max (
+			java.lang.Math.sqrt (
+				java.lang.Math.max (
+					cumulative(),
+					0.
+				) / concentrationThreshold
+			),
+			1.
+		);
 	}
 }

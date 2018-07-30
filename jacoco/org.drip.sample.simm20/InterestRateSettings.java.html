@@ -7,9 +7,9 @@ import java.util.Map;
 import org.drip.measure.stochastic.LabelCorrelation;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.simm20.parameters.InterestRateSettingsContainer;
-import org.drip.simm20.risk.InterestRateSystemics;
-import org.drip.simm20.risk.InterestRateWeight;
+import org.drip.simm20.rates.IRSettingsContainer;
+import org.drip.simm20.rates.IRSystemics;
+import org.drip.simm20.rates.IRWeight;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -93,7 +93,7 @@ import org.drip.simm20.risk.InterestRateWeight;
 
 <span class="nc" id="L94">		System.out.println (</span>
 			&quot;\t|| Currency Set =&gt; &quot; +
-<span class="nc" id="L96">			InterestRateSettingsContainer.RegularVolatilityCurrencySet() + &quot; ||&quot;</span>
+<span class="nc" id="L96">			IRSettingsContainer.RegularVolatilityCurrencySet() + &quot; ||&quot;</span>
 		);
 
 <span class="nc" id="L99">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------||&quot;);</span>
@@ -101,7 +101,7 @@ import org.drip.simm20.risk.InterestRateWeight;
 <span class="nc" id="L101">		System.out.println</span>
 <span class="nc" id="L102">			(&quot;\t||------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L104">		InterestRateWeight usdRiskWeight = InterestRateSettingsContainer.RiskWeight (&quot;USD&quot;);</span>
+<span class="nc" id="L104">		IRWeight usdRiskWeight = IRSettingsContainer.RiskWeight (&quot;USD&quot;);</span>
 
 <span class="nc" id="L106">		String tenorWeightSequence = &quot;\t|| &quot;;</span>
 
@@ -130,7 +130,7 @@ import org.drip.simm20.risk.InterestRateWeight;
 
 <span class="nc" id="L131">		System.out.println (</span>
 			&quot;\t|| Currency Set =&gt; &quot; +
-<span class="nc" id="L133">			InterestRateSettingsContainer.LowVolatilityCurrencySet()</span>
+<span class="nc" id="L133">			IRSettingsContainer.LowVolatilityCurrencySet()</span>
 		);
 
 <span class="nc" id="L136">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------||&quot;);</span>
@@ -138,7 +138,7 @@ import org.drip.simm20.risk.InterestRateWeight;
 <span class="nc" id="L138">		System.out.println</span>
 <span class="nc" id="L139">			(&quot;\t||----------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L141">		InterestRateWeight jpyRiskWeight = InterestRateSettingsContainer.RiskWeight (&quot;JPY&quot;);</span>
+<span class="nc" id="L141">		IRWeight jpyRiskWeight = IRSettingsContainer.RiskWeight (&quot;JPY&quot;);</span>
 
 <span class="nc" id="L143">		String tenorWeightSequence = &quot;\t|| &quot;;</span>
 
@@ -167,7 +167,7 @@ import org.drip.simm20.risk.InterestRateWeight;
 
 <span class="nc" id="L168">		System.out.println (</span>
 			&quot;\t|| Currency Set =&gt; &quot; +
-<span class="nc" id="L170">			InterestRateSettingsContainer.HighVolatilityCurrencySet()</span>
+<span class="nc" id="L170">			IRSettingsContainer.HighVolatilityCurrencySet()</span>
 		);
 
 <span class="nc" id="L173">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------||&quot;);</span>
@@ -175,7 +175,7 @@ import org.drip.simm20.risk.InterestRateWeight;
 <span class="nc" id="L175">		System.out.println</span>
 <span class="nc" id="L176">			(&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L178">		InterestRateWeight inrRiskWeight = InterestRateSettingsContainer.RiskWeight (&quot;INR&quot;);</span>
+<span class="nc" id="L178">		IRWeight inrRiskWeight = IRSettingsContainer.RiskWeight (&quot;INR&quot;);</span>
 
 <span class="nc" id="L180">		String tenorWeightSequence = &quot;\t|| &quot;;</span>
 
@@ -196,7 +196,7 @@ import org.drip.simm20.risk.InterestRateWeight;
 	private static final void SingleCurrencyTenorCorrelation()
 		throws Exception
 	{
-<span class="nc" id="L199">		LabelCorrelation singleCurveTenorCorrelation = InterestRateSettingsContainer.SingleCurveTenorCorrelation();</span>
+<span class="nc" id="L199">		LabelCorrelation singleCurveTenorCorrelation = IRSettingsContainer.SingleCurveTenorCorrelation();</span>
 
 <span class="nc" id="L201">		List&lt;String&gt; tenorList = singleCurveTenorCorrelation.labelList();</span>
 
@@ -257,63 +257,63 @@ import org.drip.simm20.risk.InterestRateWeight;
 <span class="nc" id="L257">		System.out.println (</span>
 			&quot;\t|| Single Currency Inflation Risk Weight                               =&gt; &quot; +
 <span class="nc" id="L259">			FormatUtil.FormatDouble (</span>
-				InterestRateSystemics.SINGLE_CURRENCY_CURVE_INFLATION_RISK_WEIGHT, 2, 2, 1.
+				IRSystemics.SINGLE_CURRENCY_CURVE_INFLATION_RISK_WEIGHT, 2, 2, 1.
 			) + &quot; ||&quot;
 		);
 
 <span class="nc" id="L264">		System.out.println (</span>
 			&quot;\t|| Single Currency Basis Swap Spread Risk Weight                       =&gt; &quot; +
 <span class="nc" id="L266">			FormatUtil.FormatDouble (</span>
-				InterestRateSystemics.SINGLE_CURRENCY_CURVE_BASIS_SWAP_SPREAD_RISK_WEIGHT, 2, 2, 1.
+				IRSystemics.SINGLE_CURRENCY_CURVE_BASIS_SWAP_SPREAD_RISK_WEIGHT, 2, 2, 1.
 			) + &quot; ||&quot;
 		);
 
 <span class="nc" id="L271">		System.out.println (</span>
 			&quot;\t|| Single Currency Vega Risk Weight                                    =&gt; &quot; +
 <span class="nc" id="L273">			FormatUtil.FormatDouble (</span>
-				InterestRateSystemics.VEGA_RISK_WEIGHT, 2, 2, 1.
+				IRSystemics.VEGA_RISK_WEIGHT, 2, 2, 1.
 			) + &quot; ||&quot;
 		);
 
 <span class="nc" id="L278">		System.out.println (</span>
 			&quot;\t|| Single Currency Cross Curve Correlation                             =&gt; &quot; +
 <span class="nc" id="L280">			FormatUtil.FormatDouble (</span>
-				InterestRateSystemics.SINGLE_CURRENCY_CROSS_CURVE_CORRELATION, 2, 2, 1.
+				IRSystemics.SINGLE_CURRENCY_CROSS_CURVE_CORRELATION, 2, 2, 1.
 			) + &quot; ||&quot;
 		);
 
 <span class="nc" id="L285">		System.out.println (</span>
 			&quot;\t|| Single Currency Curve Inflation Correlation                         =&gt; &quot; +
 <span class="nc" id="L287">			FormatUtil.FormatDouble (</span>
-				InterestRateSystemics.SINGLE_CURRENCY_CURVE_INFLATION_CORRELATION, 2, 2, 1.
+				IRSystemics.SINGLE_CURRENCY_CURVE_INFLATION_CORRELATION, 2, 2, 1.
 			) + &quot; ||&quot;
 		);
 
 <span class="nc" id="L292">		System.out.println (</span>
 			&quot;\t|| Single Currency Curve Volatility Inflation Volatility Correlation   =&gt; &quot; +
 <span class="nc" id="L294">			FormatUtil.FormatDouble (</span>
-				InterestRateSystemics.SINGLE_CURRENCY_CURVE_VOLATILITY_INFLATION_VOLATILITY_CORRELATION, 2, 2, 1.
+				IRSystemics.SINGLE_CURRENCY_CURVE_VOLATILITY_INFLATION_VOLATILITY_CORRELATION, 2, 2, 1.
 			) + &quot; ||&quot;
 		);
 
 <span class="nc" id="L299">		System.out.println (</span>
 			&quot;\t|| Single Currency Curve Basis Swap Spread Correlation                 =&gt; &quot; +
 <span class="nc" id="L301">			FormatUtil.FormatDouble (</span>
-				InterestRateSystemics.SINGLE_CURRENCY_CURVE_BASIS_SWAP_SPREAD_CORRELATION, 2, 2, 1.
+				IRSystemics.SINGLE_CURRENCY_CURVE_BASIS_SWAP_SPREAD_CORRELATION, 2, 2, 1.
 			) + &quot; ||&quot;
 		);
 
 <span class="nc" id="L306">		System.out.println (</span>
 			&quot;\t|| Single Currency Basis Swap Spread Inflation Correlation             =&gt; &quot; +
 <span class="nc" id="L308">			FormatUtil.FormatDouble (</span>
-				InterestRateSystemics.SINGLE_CURRENCY_BASIS_SWAP_SPREAD_INFLATION_CORRELATION, 2, 2, 1.
+				IRSystemics.SINGLE_CURRENCY_BASIS_SWAP_SPREAD_INFLATION_CORRELATION, 2, 2, 1.
 			) + &quot; ||&quot;
 		);
 
 <span class="nc" id="L313">		System.out.println (</span>
 			&quot;\t|| Cross Currency Correlation                                          =&gt; &quot; +
 <span class="nc" id="L315">			FormatUtil.FormatDouble (</span>
-				InterestRateSystemics.CROSS_CURRENCY_CORRELATION, 2, 2, 1.
+				IRSystemics.CROSS_CURRENCY_CORRELATION, 2, 2, 1.
 			) + &quot; ||&quot;
 		);
 
