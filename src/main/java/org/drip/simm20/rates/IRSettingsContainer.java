@@ -71,6 +71,7 @@ package org.drip.simm20.rates;
 
 public class IRSettingsContainer
 {
+	private static org.drip.simm20.rates.IRWeight ZERO_RISK_WEIGHT = null;
 	private static org.drip.measure.stochastic.LabelCorrelation s_SingleCurveTenorCorrelation = null;
 
 	private static final java.util.Map<java.lang.String, org.drip.simm20.rates.IRWeight> s_RiskWeightMap =
@@ -146,6 +147,9 @@ public class IRSettingsContainer
 		org.drip.simm20.rates.IRWeight lowVolatilityRiskWeight = null;
 		org.drip.simm20.rates.IRWeight highVolatilityRiskWeight = null;
 		org.drip.simm20.rates.IRWeight regularVolatilityRiskWeight = null;
+
+		java.util.Map<java.lang.String, java.lang.Double> zeroIRWeight = new
+			java.util.HashMap<java.lang.String, java.lang.Double>();
 
 		java.util.Map<java.lang.String, java.lang.Double> tenorWeightMapLowVolatility = new
 			java.util.HashMap<java.lang.String, java.lang.Double>();
@@ -336,6 +340,66 @@ public class IRSettingsContainer
 			101.
 		);
 
+		zeroIRWeight.put (
+			"2W",
+			0.
+		);
+
+		zeroIRWeight.put (
+			"1M",
+			0.
+		);
+
+		zeroIRWeight.put (
+			"3M",
+			0.
+		);
+
+		zeroIRWeight.put (
+			"6M",
+			0.
+		);
+
+		zeroIRWeight.put (
+			"1Y",
+			0.
+		);
+
+		zeroIRWeight.put (
+			"2Y",
+			0.
+		);
+
+		zeroIRWeight.put (
+			"3Y",
+			0.
+		);
+
+		zeroIRWeight.put (
+			"5Y",
+			0.
+		);
+
+		zeroIRWeight.put (
+			"10Y",
+			0.
+		);
+
+		zeroIRWeight.put (
+			"15Y",
+			0.
+		);
+
+		zeroIRWeight.put (
+			"20Y",
+			0.
+		);
+
+		zeroIRWeight.put (
+			"30Y",
+			0.
+		);
+
 		try
 		{
 			regularVolatilityRiskWeight = new org.drip.simm20.rates.IRWeight (
@@ -351,6 +415,11 @@ public class IRSettingsContainer
 			highVolatilityRiskWeight = new org.drip.simm20.rates.IRWeight (
 				org.drip.simm20.rates.IRSystemics.VOLATILITY_TYPE_HIGH,
 				tenorWeightMapHighVolatility
+			);
+
+			ZERO_RISK_WEIGHT = new org.drip.simm20.rates.IRWeight (
+				org.drip.simm20.rates.IRSystemics.VOLATILITY_TYPE_NULL,
+				zeroIRWeight
 			);
 		}
 		catch (java.lang.Exception e)
@@ -472,17 +541,17 @@ public class IRSettingsContainer
 			return false;
 		}
 
-		if (org.drip.simm20.rates.IRSystemics.SUB_YIELD_CURVE_TYPE_OIS.equalsIgnoreCase (subCurve) ||
-			org.drip.simm20.rates.IRSystemics.SUB_YIELD_CURVE_TYPE_LIBOR_1M.equalsIgnoreCase (subCurve) ||
-			org.drip.simm20.rates.IRSystemics.SUB_YIELD_CURVE_TYPE_LIBOR_3M.equalsIgnoreCase (subCurve) ||
-			org.drip.simm20.rates.IRSystemics.SUB_YIELD_CURVE_TYPE_LIBOR_6M.equalsIgnoreCase (subCurve) ||
-			org.drip.simm20.rates.IRSystemics.SUB_YIELD_CURVE_TYPE_LIBOR_12M.equalsIgnoreCase (subCurve))
+		if (org.drip.simm20.rates.IRSystemics.SUB_CURVE_OIS.equalsIgnoreCase (subCurve) ||
+			org.drip.simm20.rates.IRSystemics.SUB_CURVE_LIBOR_1M.equalsIgnoreCase (subCurve) ||
+			org.drip.simm20.rates.IRSystemics.SUB_CURVE_LIBOR_3M.equalsIgnoreCase (subCurve) ||
+			org.drip.simm20.rates.IRSystemics.SUB_CURVE_LIBOR_6M.equalsIgnoreCase (subCurve) ||
+			org.drip.simm20.rates.IRSystemics.SUB_CURVE_LIBOR_12M.equalsIgnoreCase (subCurve))
 		{
 			return true;
 		}
 
-		if (org.drip.simm20.rates.IRSystemics.SUB_YIELD_CURVE_TYPE_PRIME.equalsIgnoreCase (subCurve) ||
-			org.drip.simm20.rates.IRSystemics.SUB_YIELD_CURVE_TYPE_MUNICIPAL.equalsIgnoreCase (subCurve))
+		if (org.drip.simm20.rates.IRSystemics.SUB_CURVE_PRIME.equalsIgnoreCase (subCurve) ||
+			org.drip.simm20.rates.IRSystemics.SUB_CURVE_MUNICIPAL.equalsIgnoreCase (subCurve))
 		{
 			return "USD".equalsIgnoreCase (currency);
 		}
@@ -630,7 +699,7 @@ public class IRSettingsContainer
 			subCurve
 		))
 		{
-			return null;
+			return ZERO_RISK_WEIGHT;
 		}
 
 		return ContainsRiskWeight (currency) ? s_RiskWeightMap.get (currency) : s_RiskWeightMap.get

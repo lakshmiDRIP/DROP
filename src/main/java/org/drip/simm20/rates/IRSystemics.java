@@ -90,6 +90,12 @@ public class IRSystemics
 	public static final java.lang.String VOLATILITY_TYPE_HIGH = "HIGH";
 
 	/**
+	 * Interest Rate Type - NULL Volatility
+	 */
+
+	public static final java.lang.String VOLATILITY_TYPE_NULL = "NULL";
+
+	/**
 	 * Interest Rate Type - Trade Frequency Type Well Traded
 	 */
 
@@ -156,44 +162,44 @@ public class IRSystemics
 	public static final double CROSS_CURRENCY_CORRELATION = 0.23;
 
 	/**
-	 * Sub-Yield Curve Type - OIS
+	 * Sub Curve OIS
 	 */
 
-	public static final java.lang.String SUB_YIELD_CURVE_TYPE_OIS = "OIS";
+	public static final java.lang.String SUB_CURVE_OIS = "OIS";
 
 	/**
-	 * Sub-Yield Curve Type - LIBOR-1M
+	 * Sub Curve LIBOR-1M
 	 */
 
-	public static final java.lang.String SUB_YIELD_CURVE_TYPE_LIBOR_1M = "LIBOR_1M";
+	public static final java.lang.String SUB_CURVE_LIBOR_1M = "LIBOR_1M";
 
 	/**
-	 * Sub-Yield Curve Type - LIBOR-3M
+	 * Sub Curve LIBOR-3M
 	 */
 
-	public static final java.lang.String SUB_YIELD_CURVE_TYPE_LIBOR_3M = "LIBOR_3M";
+	public static final java.lang.String SUB_CURVE_LIBOR_3M = "LIBOR_3M";
 
 	/**
-	 * Sub-Yield Curve Type - LIBOR-6M
+	 * Sub Curve LIBOR-6M
 	 */
 
-	public static final java.lang.String SUB_YIELD_CURVE_TYPE_LIBOR_6M = "LIBOR_6M";
+	public static final java.lang.String SUB_CURVE_LIBOR_6M = "LIBOR_6M";
 
 	/**
-	 * Sub-Yield Curve Type - LIBOR-12M
+	 * Sub Curve - LIBOR-12M
 	 */
 
-	public static final java.lang.String SUB_YIELD_CURVE_TYPE_LIBOR_12M = "LIBOR_12M";
+	public static final java.lang.String SUB_CURVE_LIBOR_12M = "LIBOR_12M";
 
 	/**
-	 * Sub-Yield Curve Type - PRIME
+	 * Sub Curve - PRIME
 	 */
 
-	public static final java.lang.String SUB_YIELD_CURVE_TYPE_PRIME = "PRIME";
+	public static final java.lang.String SUB_CURVE_PRIME = "PRIME";
 
 	/**
-	 * Sub-Yield Curve Type - MUNICIPAL
+	 * Sub Curve - MUNICIPAL
 	 */
 
-	public static final java.lang.String SUB_YIELD_CURVE_TYPE_MUNICIPAL = "MUNICIPAL";
+	public static final java.lang.String SUB_CURVE_MUNICIPAL = "MUNICIPAL";
 }

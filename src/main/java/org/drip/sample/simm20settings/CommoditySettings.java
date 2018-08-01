@@ -1,14 +1,15 @@
 
-package org.drip.sample.simm20;
+package org.drip.sample.simm20settings;
 
+import java.util.List;
 import java.util.Set;
 
+import org.drip.measure.stochastic.LabelCorrelation;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.simm20.credit.CRBucket;
-import org.drip.simm20.credit.CRNQBucketCorrelation;
-import org.drip.simm20.credit.CRNQSettingsContainer;
-import org.drip.simm20.credit.CRNQSystemics;
+import org.drip.simm20.commodity.CTBucket;
+import org.drip.simm20.commodity.CTSettingsContainer;
+import org.drip.simm20.commodity.CTSystemics;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -56,8 +57,8 @@ import org.drip.simm20.credit.CRNQSystemics;
  */
 
 /**
- * CreditNonQualifyingSettings demonstrates the Extraction and Display of ISDA SIMM 2.0 Single/Cross Currency
- *  Credit Non-Qualifying Bucket Risk Weights, Systemics, and Correlations. The References are:
+ * CommoditySettings demonstrates the Extraction and Display of ISDA SIMM 2.0 Single/Cross Currency Commodity
+ * 	Bucket Risk Weights, Correlations, and Systemics. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -78,18 +79,18 @@ import org.drip.simm20.credit.CRNQSystemics;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CreditNonQualifyingSettings
+public class CommoditySettings
 {
 
-	private static final void DisplayRiskWeights()
+	private static final void RiskWeights()
 	{
-		Set<Integer> bucketIndexSet = CRNQSettingsContainer.BucketSet();
+		Set<Integer> bucketIndexSet = CTSettingsContainer.BucketSet();
 
 		System.out.println
 			("\t||-------------------------------------------------------------------------------------------------------------||");
 
 		System.out.println
-			("\t||                                  CREDIT NON QUALIFYING BUCKETS RISK WEIGHT                                  ||");
+			("\t||                                       COMMODITY BUCKETS RISK WEIGHT                                         ||");
 
 		System.out.println
 			("\t||-------------------------------------------------------------------------------------------------------------||");
@@ -104,35 +105,26 @@ public class CreditNonQualifyingSettings
 			("\t||                - Bucket Number                                                                              ||");
 
 		System.out.println
-			("\t||                - Bucket Quality                                                                             ||");
-
-		System.out.println
 			("\t||                - Bucket Risk Weight                                                                         ||");
 
 		System.out.println
-			("\t||                - Bucket Sector                                                                              ||");
+			("\t||                - Bucket Member Correlation                                                                  ||");
+
+		System.out.println
+			("\t||                - Bucket Entity                                                                              ||");
 
 		System.out.println
 			("\t||-------------------------------------------------------------------------------------------------------------");
 
 		for (int bucketIndex : bucketIndexSet)
 		{
-			CRBucket creditQualifyingBucket = CRNQSettingsContainer.Bucket (bucketIndex);
-
-			String sectorArrayDump = "";
-
-			String[] sectorArray = creditQualifyingBucket.sectorArray();
-
-			for (String sector : sectorArray)
-			{
-				sectorArrayDump = sectorArrayDump + sector + " ,";
-			}
+			CTBucket commodityBucket = CTSettingsContainer.Bucket (bucketIndex);
 
 			System.out.println (
-				"\t|| " + FormatUtil.FormatDouble (creditQualifyingBucket.number(), 2, 0, 1.) + " | " +
-				FormatUtil.FormatDouble (creditQualifyingBucket.riskWeight(), 4, 0, 1.) + " | " +
-				creditQualifyingBucket.quality() + " | {" +
-				sectorArrayDump + "}"
+				"\t||" + FormatUtil.FormatDouble (commodityBucket.number(), 2, 0, 1.) + " | " +
+				FormatUtil.FormatDouble (commodityBucket.riskWeight(), 3, 0, 1.) + " | " +
+				FormatUtil.FormatDouble (commodityBucket.memberCorrelation(), 2, 1, 100.) + "% | " +
+				commodityBucket.entity()
 			);
 		}
 
@@ -142,50 +134,81 @@ public class CreditNonQualifyingSettings
 		System.out.println();
 	}
 
-	private static final void CreditNonQualifyingSystemics()
+	private static final void Systemics()
 	{
 		System.out.println ("\t||----------------------------------------------------------------||");
 
-		System.out.println ("\t||                CREDIT NON QUALIFYING SYSTEMICS                 ||");
+		System.out.println ("\t||                      COMMODITY SYSTEMICS                       ||");
 
 		System.out.println ("\t||----------------------------------------------------------------||");
 
 		System.out.println (
-			"\t|| Vega Risk Wight                                     => " +
+			"\t|| Historical Volatility Ratio                         => " +
 			FormatUtil.FormatDouble (
-				CRNQSystemics.VEGA_RISK_WEIGHT, 3, 2, 1.
+				CTSystemics.HISTORICAL_VOLATILITY_RATIO, 3, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
-			"\t|| Non-Residual Correlation >80% Names Overlap         => " +
+			"\t|| Vega Risk Weight                                    => " +
 			FormatUtil.FormatDouble (
-				CRNQBucketCorrelation.GT_80PC_OVERLAP_NON_RESIDUAL, 3, 2, 1.
-			) + " ||"
-		);
-
-		System.out.println (
-			"\t|| Non-Residual Correlation <80% Names Overlap         => " +
-			FormatUtil.FormatDouble (
-				CRNQBucketCorrelation.LT_80PC_OVERLAP_NON_RESIDUAL, 3, 2, 1.
-			) + " ||"
-		);
-
-		System.out.println (
-			"\t|| Residual Correlation >80% Names Overlap             => " +
-			FormatUtil.FormatDouble (
-				CRNQBucketCorrelation.GT_80PC_OVERLAP_RESIDUAL, 3, 2, 1.
-			) + " ||"
-		);
-
-		System.out.println (
-			"\t|| Residual Correlation <80% Names Overlap             => " +
-			FormatUtil.FormatDouble (
-				CRNQBucketCorrelation.LT_80PC_OVERLAP_RESIDUAL, 3, 2, 1.
+				CTSystemics.VEGA_RISK_WEIGHT, 3, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println ("\t||----------------------------------------------------------------||");
+
+		System.out.println();
+	}
+
+	private static final void CrossBucketCorrelation()
+		throws Exception
+	{
+		LabelCorrelation crossBucketCorrelation = CTSettingsContainer.CrossBucketCorrelation();
+
+		List<String> bucketList = crossBucketCorrelation.labelList();
+
+		System.out.println
+			("\t||-----------------------------------------------------------------------------------------------------------------------------||");
+
+		System.out.println
+			("\t||                                               CROSS BUCKET TENOR CORRELATION                                                ||");
+
+		System.out.println
+			("\t||-----------------------------------------------------------------------------------------------------------------------------||");
+
+		String rowDump = "\t||     ";
+
+		for (String tenor : bucketList)
+		{
+			rowDump = rowDump + "   " + tenor + "  ";
+		}
+
+		System.out.println (rowDump + " ||");
+
+		System.out.println
+			("\t||-----------------------------------------------------------------------------------------------------------------------------||");
+
+		for (String innerBucket : bucketList)
+		{
+			rowDump = "\t|| " + innerBucket + "  ";
+
+			for (String outerBucket : bucketList)
+			{
+				rowDump = rowDump + " " +
+					FormatUtil.FormatDouble (
+						crossBucketCorrelation.entry (
+							innerBucket,
+							outerBucket
+						), 3, 0, 100.
+					) + "% ";
+			}
+
+			System.out.println (rowDump + " ||");
+		}
+
+		System.out.println
+			("\t||-----------------------------------------------------------------------------------------------------------------------------||");
 
 		System.out.println();
 	}
@@ -196,9 +219,11 @@ public class CreditNonQualifyingSettings
 	{
 		EnvManager.InitEnv ("");
 
-		DisplayRiskWeights();
+		RiskWeights();
 
-		CreditNonQualifyingSystemics();
+		Systemics();
+
+		CrossBucketCorrelation();
 
 		EnvManager.TerminateEnv();
 	}

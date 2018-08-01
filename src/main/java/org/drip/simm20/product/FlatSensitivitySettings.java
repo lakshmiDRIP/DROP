@@ -47,8 +47,8 @@ package org.drip.simm20.product;
  */
 
 /**
- * WeightedNetFlatSensitivitySettings holds the Flat Risk Weights and Concentration Thresholds for each Risk
- * 	Factor. The References are:
+ * FlatSensitivitySettings holds the Flat Risk Weights and Concentration Thresholds for each Risk Factor. The
+ *  References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -69,20 +69,19 @@ package org.drip.simm20.product;
  * @author Lakshmi Krishnamurthy
  */
 
-public class WeightedNetFlatSensitivitySettings extends
-	org.drip.simm20.product.WeightedNetSensitivitySettings
+public class FlatSensitivitySettings extends org.drip.simm20.product.LiquiditySettings
 {
 	private double _riskWeight = java.lang.Double.NaN;
 
 	/**
-	 * Construct the ISDA SIMM 2.0 Standard Equity WeightedNetFlatSensitivitySettings Instance
+	 * Construct the ISDA SIMM 2.0 Standard Equity FlatSensitivitySettings Instance
 	 * 
 	 * @param bucketNumber The Equity Bucket Number
 	 * 
-	 * @return The ISDA SIMM 2.0 Standard Equity WeightedNetFlatSensitivitySettings Instance
+	 * @return The ISDA SIMM 2.0 Standard Equity FlatSensitivitySettings Instance
 	 */
 
-	public static final WeightedNetFlatSensitivitySettings EQ (
+	public static final FlatSensitivitySettings EQ (
 		final int bucketNumber)
 	{
 		org.drip.simm20.equity.EQBucket equityBucket = org.drip.simm20.equity.EQSettingsContainer.Bucket
@@ -94,7 +93,7 @@ public class WeightedNetFlatSensitivitySettings extends
 		try
 		{
 			return null == equityBucket || null == deltaVegaThreshold ? null :
-				new WeightedNetFlatSensitivitySettings (
+				new FlatSensitivitySettings (
 					equityBucket.riskWeight(),
 					deltaVegaThreshold.delta()
 				);
@@ -108,20 +107,20 @@ public class WeightedNetFlatSensitivitySettings extends
 	}
 
 	/**
-	 * Construct the ISDA SIMM 2.0 Standard FX WeightedNetFlatSensitivitySettings Instance
+	 * Construct the ISDA SIMM 2.0 Standard FX FlatSensitivitySettings Instance
 	 * 
 	 * @param categoryNumber The FX Category Number
 	 * 
-	 * @return The ISDA SIMM 2.0 Standard FX WeightedNetFlatSensitivitySettings Instance
+	 * @return The ISDA SIMM 2.0 Standard FX FlatSensitivitySettings Instance
 	 */
 
-	public static final WeightedNetFlatSensitivitySettings FX (
+	public static final FlatSensitivitySettings FX (
 		final int categoryNumber)
 	{
 		try
 		{
 			return !org.drip.simm20.fx.FXRiskThresholdContainer.ContainsCategory (categoryNumber) ? null :
-				new WeightedNetFlatSensitivitySettings (
+				new FlatSensitivitySettings (
 					org.drip.simm20.fx.FXSystemics.RISK_WEIGHT,
 					org.drip.simm20.fx.FXRiskThresholdContainer.CategoryDeltaThreshold (categoryNumber)
 				);
@@ -135,14 +134,14 @@ public class WeightedNetFlatSensitivitySettings extends
 	}
 
 	/**
-	 * Construct the ISDA SIMM 2.0 Standard Commodity WeightedNetFlatSensitivitySettings Instance
+	 * Construct the ISDA SIMM 2.0 Standard Commodity FlatSensitivitySettings Instance
 	 * 
 	 * @param bucketNumber The Commodity Bucket Number
 	 * 
-	 * @return The ISDA SIMM 2.0 Standard Commodity WeightedNetFlatSensitivitySettings Instance
+	 * @return The ISDA SIMM 2.0 Standard Commodity FlatSensitivitySettings Instance
 	 */
 
-	public static final WeightedNetFlatSensitivitySettings CT (
+	public static final FlatSensitivitySettings CT (
 		final int bucketNumber)
 	{
 		org.drip.simm20.commodity.CTBucket commodityBucket =
@@ -154,7 +153,7 @@ public class WeightedNetFlatSensitivitySettings extends
 		try
 		{
 			return null == commodityBucket || null == deltaVegaThreshold ? null :
-				new WeightedNetFlatSensitivitySettings (
+				new FlatSensitivitySettings (
 					commodityBucket.riskWeight(),
 					deltaVegaThreshold.delta()
 				);
@@ -168,7 +167,7 @@ public class WeightedNetFlatSensitivitySettings extends
 	}
 
 	/**
-	 * WeightedNetFlatSensitivitySettings Constructor
+	 * FlatSensitivitySettings Constructor
 	 * 
 	 * @param riskWeight The Risk Weight
 	 * @param concentrationThreshold The Concentration Threshold
@@ -176,7 +175,7 @@ public class WeightedNetFlatSensitivitySettings extends
 	 * @throws java.lang.Exception Thrown if the Inputs ar4e Invalid
 	 */
 
-	public WeightedNetFlatSensitivitySettings (
+	public FlatSensitivitySettings (
 		final double riskWeight,
 		final double concentrationThreshold)
 		throws java.lang.Exception
@@ -185,8 +184,7 @@ public class WeightedNetFlatSensitivitySettings extends
 
 		if (!org.drip.quant.common.NumberUtil.IsValid (_riskWeight = riskWeight))
 		{
-			throw new java.lang.Exception
-				("WeightedNetFlatSensitivitySettings Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("FlatSensitivitySettings Constructor => Invalid Inputs");
 		}
 	}
 

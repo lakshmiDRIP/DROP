@@ -1,5 +1,5 @@
 
-package org.drip.sample.simm20;
+package org.drip.sample.simm20settings;
 
 import java.util.List;
 import java.util.Map;

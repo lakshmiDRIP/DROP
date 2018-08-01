@@ -47,8 +47,7 @@ package org.drip.simm20.product;
  */
 
 /**
- * WeightedNetSensitivitySettings exposes the Concentration Thresholds for each Risk Factor. The References
- *  are:
+ * LiquiditySettings exposes the Concentration Thresholds for each Risk Factor. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -69,17 +68,17 @@ package org.drip.simm20.product;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class WeightedNetSensitivitySettings
+public abstract class LiquiditySettings
 {
 	private double _concentrationThreshold = java.lang.Double.NaN;
 
-	protected WeightedNetSensitivitySettings (
+	protected LiquiditySettings (
 		final double concentrationThreshold)
 		throws java.lang.Exception
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (_concentrationThreshold = concentrationThreshold))
 		{
-			throw new java.lang.Exception ("WeightedNetSensitivitySettings Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("LiquiditySettings Constructor => Invalid Inputs");
 		}
 	}
 

@@ -47,8 +47,8 @@ package org.drip.simm20.product;
  */
 
 /**
- * WeightedNetTenorSensitivitySettings holds the Risk Weights and Concentration Thresholds for each Risk
- *  Factor and its Tenor. The References are:
+ * TenorSensitivitySettings holds the Risk Weights and Concentration Thresholds for each Risk Factor and its
+ *  Tenor. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -69,60 +69,19 @@ package org.drip.simm20.product;
  * @author Lakshmi Krishnamurthy
  */
 
-public class WeightedNetTenorSensitivitySettings extends
-	org.drip.simm20.product.WeightedNetSensitivitySettings
+public class TenorSensitivitySettings extends org.drip.simm20.product.LiquiditySettings
 {
-	private double _subCurveCorrelation = java.lang.Double.NaN;
 	private java.util.Map<java.lang.String, java.lang.Double> _riskWeightMap = null;
-	private org.drip.measure.stochastic.LabelCorrelation _crossTenorCorrelation = null;
 
 	/**
-	 * Construct a ISDA SIMM 2.0 IR Standard Instance of WeightedNetTenorSensitivitySettings
-	 * 
-	 * @param currency The Currency
-	 * @param subCurve The Sub-Curve
-	 * 
-	 * @return The ISDA SIMM 2.0 IR Standard Instance of WeightedNetTenorSensitivitySettings
-	 */
-
-	public static final WeightedNetTenorSensitivitySettings IR (
-		final java.lang.String currency,
-		final java.lang.String subCurve)
-	{
-		org.drip.simm20.rates.IRWeight irWeight = org.drip.simm20.rates.IRSettingsContainer.RiskWeight (
-			currency,
-			subCurve
-		);
-
-		org.drip.simm20.rates.IRThreshold irThreshold =
-			org.drip.simm20.rates.IRThresholdContainer.Threshold (currency);
-
-		try
-		{
-			return null == irWeight || null == irWeight ? null : new WeightedNetTenorSensitivitySettings (
-				irWeight.tenorWeightMap(),
-				irThreshold.deltaVega().delta(),
-				org.drip.simm20.rates.IRSettingsContainer.SingleCurveTenorCorrelation(),
-				org.drip.simm20.rates.IRSystemics.SINGLE_CURRENCY_CROSS_CURVE_CORRELATION
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Construct a ISDA SIMM 2.0 Credit Qualified Standard Instance of WeightedNetTenorSensitivitySettings
+	 * Construct a ISDA SIMM 2.0 Credit Qualified Standard Instance of TenorSensitivitySettings
 	 * 
 	 * @param creditBucket The Credit Bucket Index
 	 * 
-	 * @return The ISDA SIMM 2.0 Credit Qualified Standard Instance of WeightedNetTenorSensitivitySettings
+	 * @return The ISDA SIMM 2.0 Credit Qualified Standard Instance of TenorSensitivitySettings
 	 */
 
-	public static final WeightedNetTenorSensitivitySettings CRQ (
+	public static final TenorSensitivitySettings CRQ (
 		final int creditBucket)
 	{
 		org.drip.simm20.credit.CRBucket crBucket = org.drip.simm20.credit.CRQSettingsContainer.Bucket
@@ -134,11 +93,9 @@ public class WeightedNetTenorSensitivitySettings extends
 		try
 		{
 			return null == crBucket || null == deltaVegaThreshold ? null : new
-				WeightedNetTenorSensitivitySettings (
+				TenorSensitivitySettings (
 					crBucket.tenorWeightMap (org.drip.simm20.credit.CRQSettingsContainer.TenorSet()),
-					deltaVegaThreshold.delta(),
-					null,
-					java.lang.Double.NaN
+					deltaVegaThreshold.delta()
 				);
 		}
 		catch (java.lang.Exception e)
@@ -150,16 +107,14 @@ public class WeightedNetTenorSensitivitySettings extends
 	}
 
 	/**
-	 * Construct a ISDA SIMM 2.0 Credit Non Qualified Standard Instance of
-	 * 		WeightedNetTenorSensitivitySettings
+	 * Construct a ISDA SIMM 2.0 Credit Non Qualified Standard Instance of TenorSensitivitySettings
 	 * 
 	 * @param creditBucket The Credit Bucket Index
 	 * 
-	 * @return The ISDA SIMM 2.0 Credit Non Qualified Standard Instance of
-	 * 		WeightedNetTenorSensitivitySettings
+	 * @return The ISDA SIMM 2.0 Credit Non Qualified Standard Instance of TenorSensitivitySettings
 	 */
 
-	public static final WeightedNetTenorSensitivitySettings CRNQ (
+	public static final TenorSensitivitySettings CRNQ (
 		final int creditBucket)
 	{
 		org.drip.simm20.credit.CRBucket crBucket = org.drip.simm20.credit.CRNQSettingsContainer.Bucket
@@ -171,11 +126,9 @@ public class WeightedNetTenorSensitivitySettings extends
 		try
 		{
 			return null == crBucket || null == deltaVegaThreshold ? null : new
-				WeightedNetTenorSensitivitySettings (
+				TenorSensitivitySettings (
 					crBucket.tenorWeightMap (org.drip.simm20.credit.CRNQSettingsContainer.TenorSet()),
-					deltaVegaThreshold.delta(),
-					null,
-					java.lang.Double.NaN
+					deltaVegaThreshold.delta()
 				);
 		}
 		catch (java.lang.Exception e)
@@ -187,33 +140,25 @@ public class WeightedNetTenorSensitivitySettings extends
 	}
 
 	/**
-	 * WeightedNetTenorSensitivitySettings Constructor
+	 * TenorSensitivitySettings Constructor
 	 * 
 	 * @param riskWeightMap The Risk Weight Map
 	 * @param concentrationThreshold The Concentration Threshold
-	 * @param crossTenorCorrelation The Cross Tenor Label Correlation
-	 * @param subCurveCorrelation Sub Curve Correlation
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public WeightedNetTenorSensitivitySettings (
+	public TenorSensitivitySettings (
 		final java.util.Map<java.lang.String, java.lang.Double> riskWeightMap,
-		final double concentrationThreshold,
-		final org.drip.measure.stochastic.LabelCorrelation crossTenorCorrelation,
-		final double subCurveCorrelation)
+		final double concentrationThreshold)
 		throws java.lang.Exception
 	{
 		super (concentrationThreshold);
 
-		if (null == (_riskWeightMap = riskWeightMap) || 0 == _riskWeightMap.size() ||
-			null == (_crossTenorCorrelation = crossTenorCorrelation))
+		if (null == (_riskWeightMap = riskWeightMap) || 0 == _riskWeightMap.size())
 		{
-			throw new java.lang.Exception
-				("WeightedNetTenorSensitivitySettings Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("TenorSensitivitySettings Constructor => Invalid Inputs");
 		}
-
-		_subCurveCorrelation = subCurveCorrelation;
 	}
 
 	/**
@@ -225,27 +170,5 @@ public class WeightedNetTenorSensitivitySettings extends
 	public java.util.Map<java.lang.String, java.lang.Double> riskWeightMap()
 	{
 		return _riskWeightMap;
-	}
-
-	/**
-	 * Retrieve the Cross Tenor Correlation
-	 * 
-	 * @return The Cross Tenor Correlation
-	 */
-
-	public org.drip.measure.stochastic.LabelCorrelation crossTenorCorrelation()
-	{
-		return _crossTenorCorrelation;
-	}
-
-	/**
-	 * Retrieve the Sub-Curve Correlation
-	 * 
-	 * @return The Sub-Curve Correlation
-	 */
-
-	public double subCurveCorrelation()
-	{
-		return _subCurveCorrelation;
 	}
 }

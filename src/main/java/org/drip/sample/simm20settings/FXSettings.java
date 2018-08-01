@@ -1,5 +1,9 @@
 
-package org.drip.simm20.product;
+package org.drip.sample.simm20settings;
+
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.simm20.fx.FXSystemics;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,9 +51,8 @@ package org.drip.simm20.product;
  */
 
 /**
- * EnhancedIRFactorSensitivity holds the ISDA SIMM 2.0 Risk Factor Tenor Bucket Sensitivities across IR
- *  Factor Sub Curves enhanced with the USD specific Sub-Curve Factors - PRIME and MUNICIPAL. The References
- *  are:
+ * FXSettings demonstrates the Extraction and Display of ISDA SIMM 2.0 FX Bucket Risk Weights, Correlations,
+ * 	and Systemics. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -70,82 +73,58 @@ package org.drip.simm20.product;
  * @author Lakshmi Krishnamurthy
  */
 
-public class EnhancedIRFactorSensitivity extends org.drip.simm20.product.IRFactorSensitivity
+public class FXSettings
 {
-	private org.drip.simm20.product.RiskFactorSensitivity _primeSensitivity = null;
-	private org.drip.simm20.product.RiskFactorSensitivity _municipalSensitivity = null;
 
-	/**
-	 * EnhancedIRFactorSensitivity Constructor
-	 * 
-	 * @param oisSensitivity The OIS Risk Factor Sensitivity
-	 * @param libor1MSensitivity The LIBOR-1M Risk Factor Sensitivity
-	 * @param libor3MSensitivity The LIBOR-3M Risk Factor Sensitivity
-	 * @param libor6MSensitivity The LIBOR-6M Risk Factor Sensitivity
-	 * @param libor12MSensitivity The LIBOR-12M Risk Factor Sensitivity
-	 * @param primeSensitivity The PRIME Risk Factor Sensitivity
-	 * @param municipalSensitivity The MUNICIPAL Risk Factor Sensitivity
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public EnhancedIRFactorSensitivity (
-		final org.drip.simm20.product.RiskFactorSensitivity oisSensitivity,
-		final org.drip.simm20.product.RiskFactorSensitivity libor1MSensitivity,
-		final org.drip.simm20.product.RiskFactorSensitivity libor3MSensitivity,
-		final org.drip.simm20.product.RiskFactorSensitivity libor6MSensitivity,
-		final org.drip.simm20.product.RiskFactorSensitivity libor12MSensitivity,
-		final org.drip.simm20.product.RiskFactorSensitivity primeSensitivity,
-		final org.drip.simm20.product.RiskFactorSensitivity municipalSensitivity)
-		throws java.lang.Exception
+	private static final void Systemics()
 	{
-		super (
-			oisSensitivity,
-			libor1MSensitivity,
-			libor3MSensitivity,
-			libor6MSensitivity,
-			libor12MSensitivity
+		System.out.println ("\t||----------------------------------------------------------------||");
+
+		System.out.println ("\t||                         FX SYSTEMICS                           ||");
+
+		System.out.println ("\t||----------------------------------------------------------------||");
+
+		System.out.println (
+			"\t|| Risk Weight                                         => " +
+			FormatUtil.FormatDouble (
+				FXSystemics.RISK_WEIGHT, 3, 2, 1.
+			) + " ||"
 		);
 
-		if (null == (_primeSensitivity = primeSensitivity) ||
-			null == (_municipalSensitivity = municipalSensitivity))
-		{
-			throw new java.lang.Exception ("EnhancedIRFactorSensitivity Constructor => Invalid Inputs");
-		}
+		System.out.println (
+			"\t|| Historical Volatility Ratio                         => " +
+			FormatUtil.FormatDouble (
+				FXSystemics.HISTORICAL_VOLATILITY_RATIO, 3, 2, 1.
+			) + " ||"
+		);
+
+		System.out.println (
+			"\t|| Vega Risk Weight                                    => " +
+			FormatUtil.FormatDouble (
+				FXSystemics.VEGA_RISK_WEIGHT, 3, 2, 1.
+			) + " ||"
+		);
+
+		System.out.println (
+			"\t|| Correlation                                         => " +
+			FormatUtil.FormatDouble (
+				FXSystemics.CORRELATION, 3, 2, 1.
+			) + " ||"
+		);
+
+		System.out.println ("\t||----------------------------------------------------------------||");
+
+		System.out.println();
 	}
 
-	/**
-	 * Retrieve the PRIME Risk Factor Sensitivity
-	 * 
-	 * @return The PRIME Risk Factor Sensitivity
-	 */
-
-	public org.drip.simm20.product.RiskFactorSensitivity primeSensitivity()
+	public static final void main (
+		final String[] args)
+		throws Exception
 	{
-		return _primeSensitivity;
-	}
+		EnvManager.InitEnv ("");
 
-	/**
-	 * Retrieve the MUNICIPAL Risk Factor Sensitivity
-	 * 
-	 * @return The MUNICIPAL Risk Factor Sensitivity
-	 */
+		Systemics();
 
-	public org.drip.simm20.product.RiskFactorSensitivity municipalSensitivity()
-	{
-		return _municipalSensitivity;
-	}
-
-	/**
-	 * Generate the Cumulative Delta
-	 * 
-	 * @return The Cumulative Delta
-	 */
-
-	public double cumulative()
-	{
-		return super.cumulative() +
-			_primeSensitivity.cumulative() +
-			_municipalSensitivity.cumulative();
+		EnvManager.TerminateEnv();
 	}
 }

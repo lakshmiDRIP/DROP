@@ -47,7 +47,8 @@ package org.drip.simm20.product;
  */
 
 /**
- * RiskFactorSensitivity holds the ISDA SIMM 2.0 Risk Factor Tenor Bucket Sensitivities. The References are:
+ * RiskFactorTenorSensitivity holds the ISDA SIMM 2.0 Risk Factor Tenor Bucket Sensitivities. The References
+ *  are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -68,7 +69,7 @@ package org.drip.simm20.product;
  * @author Lakshmi Krishnamurthy
  */
 
-public class RiskFactorSensitivity
+public class RiskFactorTenorSensitivity
 {
 	private java.util.Map<java.lang.String, java.lang.Double> _tenorDeltaMap = null;
 
@@ -78,7 +79,7 @@ public class RiskFactorSensitivity
 	 * @return The Standard Rates ISDA Bucket Sensitivity
 	 */
 
-	public static final RiskFactorSensitivity IR()
+	public static final RiskFactorTenorSensitivity IR()
 	{
 		java.util.Map<java.lang.String, java.lang.Double> tenorDeltaMap = new
 			java.util.HashMap<java.lang.String, java.lang.Double>();
@@ -93,7 +94,7 @@ public class RiskFactorSensitivity
 
 		try
 		{
-			return new RiskFactorSensitivity (tenorDeltaMap);
+			return new RiskFactorTenorSensitivity (tenorDeltaMap);
 		}
 		catch (java.lang.Exception e)
 		{
@@ -109,7 +110,7 @@ public class RiskFactorSensitivity
 	 * @return The Standard Credit Qualifying ISDA Bucket Sensitivity
 	 */
 
-	public static final RiskFactorSensitivity CRQ()
+	public static final RiskFactorTenorSensitivity CRQ()
 	{
 		java.util.Map<java.lang.String, java.lang.Double> tenorDeltaMap = new
 			java.util.HashMap<java.lang.String, java.lang.Double>();
@@ -124,7 +125,7 @@ public class RiskFactorSensitivity
 
 		try
 		{
-			return new RiskFactorSensitivity (tenorDeltaMap);
+			return new RiskFactorTenorSensitivity (tenorDeltaMap);
 		}
 		catch (java.lang.Exception e)
 		{
@@ -141,7 +142,7 @@ public class RiskFactorSensitivity
 	 * @return The Standard Credit Non-Qualifying ISDA Bucket Sensitivity
 	 */
 
-	public static final RiskFactorSensitivity CRNQ()
+	public static final RiskFactorTenorSensitivity CRNQ()
 	{
 		java.util.Map<java.lang.String, java.lang.Double> tenorDeltaMap = new
 			java.util.HashMap<java.lang.String, java.lang.Double>();
@@ -156,7 +157,7 @@ public class RiskFactorSensitivity
 
 		try
 		{
-			return new RiskFactorSensitivity (tenorDeltaMap);
+			return new RiskFactorTenorSensitivity (tenorDeltaMap);
 		}
 		catch (java.lang.Exception e)
 		{
@@ -166,20 +167,20 @@ public class RiskFactorSensitivity
 		return null;
 	}
 	/**
-	 * RiskFactorSensitivity Constructor
+	 * RiskFactorTenorSensitivity Constructor
 	 * 
 	 * @param tenorDeltaMap The Tenor Delta Map
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public RiskFactorSensitivity (
+	public RiskFactorTenorSensitivity (
 		java.util.Map<java.lang.String, java.lang.Double> tenorDeltaMap)
 		throws java.lang.Exception
 	{
 		if (null == (_tenorDeltaMap = tenorDeltaMap) || 0 == _tenorDeltaMap.size())
 		{
-			throw new java.lang.Exception ("RiskFactorSensitivity Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("RiskFactorTenorSensitivity Constructor => Invalid Inputs");
 		}
 	}
 
@@ -250,7 +251,7 @@ public class RiskFactorSensitivity
 	{
 		if (!tenorExists (tenor))
 		{
-			throw new java.lang.Exception ("RiskFactorSensitivity::delta => Invalid Inputs");
+			throw new java.lang.Exception ("RiskFactorTenorSensitivity::delta => Invalid Inputs");
 		}
 
 		return _tenorDeltaMap.get (tenor);
@@ -303,7 +304,7 @@ public class RiskFactorSensitivity
 		if (!org.drip.quant.common.NumberUtil.IsValid (concentrationThreshold))
 		{
 			throw new java.lang.Exception
-				("RiskFactorSensitivity::concentrationRiskFactor => Invalid Inputs");
+				("RiskFactorTenorSensitivity::concentrationRiskFactor => Invalid Inputs");
 		}
 
 		return java.lang.Math.max (
@@ -315,5 +316,43 @@ public class RiskFactorSensitivity
 			),
 			1.
 		);
+	}
+
+	/**
+	 * Generate the Weighted Net Risk Weight Map
+	 * 
+	 * @param riskWeightMap The Risk Weight Map
+	 * 
+	 * @return The Weighted Net Risk Weight Map
+	 */
+
+	public java.util.Map<java.lang.String, java.lang.Double> netRiskWeight (
+		final java.util.Map<java.lang.String, java.lang.Double> riskWeightMap)
+	{
+		if (null == riskWeightMap || 0 == riskWeightMap.size())
+		{
+			return null;
+		}
+
+		java.util.Map<java.lang.String, java.lang.Double> netRiskWeightMap = new
+			java.util.HashMap<java.lang.String, java.lang.Double>();
+
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> tenorDeltaEntry :
+			_tenorDeltaMap.entrySet())
+		{
+			java.lang.String tenor = tenorDeltaEntry.getKey();
+
+			if (!riskWeightMap.containsKey (tenor))
+			{
+				return null;
+			}
+
+			netRiskWeightMap.put (
+				tenor,
+				tenorDeltaEntry.getValue() * riskWeightMap.get (tenor)
+			);
+		}
+
+		return netRiskWeightMap;
 	}
 }
