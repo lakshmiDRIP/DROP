@@ -962,6 +962,103 @@ public class IRNetSensitivity
 	}
 
 	/**
+	 * Compute the LIBOR1M-PRIME Net Sensitivity Co-variance
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The LIBOR1M-PRIME Net Sensitivity Co-variance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double covariance_LIBOR1M_PRIME (
+		final org.drip.simm20.product.CurveTenorSensitivitySettings curveTenorSensitivitySettings)
+		throws java.lang.Exception
+	{
+		if (null == curveTenorSensitivitySettings)
+		{
+			throw new java.lang.Exception ("IRNetSensitivity::covariance_LIBOR1M_PRIME => Invalid Inputs");
+		}
+
+		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
+			curveTenorSensitivitySettings.singleCurveTenorCorrelation();
+
+		double covariance_LIBOR1M_PRIME = 0.;
+
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor1MEntry : _libor1M.entrySet())
+		{
+			double libor1MSensitivity = libor1MEntry.getValue();
+
+			java.lang.String libor1MTenor = libor1MEntry.getKey();
+
+			for (java.util.Map.Entry<java.lang.String, java.lang.Double> primeEntry : _prime.entrySet())
+			{
+				java.lang.String primeTenor = primeEntry.getKey();
+
+				covariance_LIBOR1M_PRIME = covariance_LIBOR1M_PRIME + libor1MSensitivity *
+					primeEntry.getValue() * (
+						libor1MTenor.equalsIgnoreCase (primeTenor) ? 1. :
+							tenorCorrelation.entry (
+								libor1MTenor,
+								primeTenor
+							)
+						);
+			}
+		}
+
+		return covariance_LIBOR1M_PRIME * curveTenorSensitivitySettings.crossSubCurveCorrelation();
+	}
+
+	/**
+	 * Compute the LIBOR1M-MUNICIPAL Net Sensitivity Co-variance
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The LIBOR1M-MUNICIPAL Net Sensitivity Co-variance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double covariance_LIBOR1M_MUNICIPAL (
+		final org.drip.simm20.product.CurveTenorSensitivitySettings curveTenorSensitivitySettings)
+		throws java.lang.Exception
+	{
+		if (null == curveTenorSensitivitySettings)
+		{
+			throw new java.lang.Exception
+				("IRNetSensitivity::covariance_LIBOR1M_MUNICIPAL => Invalid Inputs");
+		}
+
+		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
+			curveTenorSensitivitySettings.singleCurveTenorCorrelation();
+
+		double covariance_LIBOR1M_MUNICIPAL = 0.;
+
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor1MEntry : _libor1M.entrySet())
+		{
+			double libor1MSensitivity = libor1MEntry.getValue();
+
+			java.lang.String libor1MTenor = libor1MEntry.getKey();
+
+			for (java.util.Map.Entry<java.lang.String, java.lang.Double> municipalEntry : _municipal.entrySet())
+			{
+				java.lang.String municipalTenor = municipalEntry.getKey();
+
+				covariance_LIBOR1M_MUNICIPAL = covariance_LIBOR1M_MUNICIPAL + libor1MSensitivity *
+					municipalEntry.getValue() * (
+						libor1MTenor.equalsIgnoreCase (municipalTenor) ? 1. :
+							tenorCorrelation.entry (
+								libor1MTenor,
+								municipalTenor
+							)
+						);
+			}
+		}
+
+		return covariance_LIBOR1M_MUNICIPAL * curveTenorSensitivitySettings.crossSubCurveCorrelation();
+	}
+
+	/**
 	 * Compute the LIBOR3M-LIBOR6M Net Sensitivity Co-variance
 	 * 
 	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
@@ -1055,5 +1152,392 @@ public class IRNetSensitivity
 		}
 
 		return covariance_LIBOR3M_LIBOR12M * curveTenorSensitivitySettings.crossSubCurveCorrelation();
+	}
+
+	/**
+	 * Compute the LIBOR3M-PRIME Net Sensitivity Co-variance
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The LIBOR3M-PRIME Net Sensitivity Co-variance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double covariance_LIBOR3M_PRIME (
+		final org.drip.simm20.product.CurveTenorSensitivitySettings curveTenorSensitivitySettings)
+		throws java.lang.Exception
+	{
+		if (null == curveTenorSensitivitySettings)
+		{
+			throw new java.lang.Exception ("IRNetSensitivity::covariance_LIBOR3M_PRIME => Invalid Inputs");
+		}
+
+		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
+			curveTenorSensitivitySettings.singleCurveTenorCorrelation();
+
+		double covariance_LIBOR3M_PRIME = 0.;
+
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor3MEntry : _libor3M.entrySet())
+		{
+			double libor3MSensitivity = libor3MEntry.getValue();
+
+			java.lang.String libor3MTenor = libor3MEntry.getKey();
+
+			for (java.util.Map.Entry<java.lang.String, java.lang.Double> primeEntry : _prime.entrySet())
+			{
+				java.lang.String primeTenor = primeEntry.getKey();
+
+				covariance_LIBOR3M_PRIME = covariance_LIBOR3M_PRIME + libor3MSensitivity *
+					primeEntry.getValue() * (
+						libor3MTenor.equalsIgnoreCase (primeTenor) ? 1. :
+							tenorCorrelation.entry (
+								libor3MTenor,
+								primeTenor
+							)
+						);
+			}
+		}
+
+		return covariance_LIBOR3M_PRIME * curveTenorSensitivitySettings.crossSubCurveCorrelation();
+	}
+
+	/**
+	 * Compute the LIBOR3M-MUNICIPAL Net Sensitivity Co-variance
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The LIBOR3M-MUNICIPAL Net Sensitivity Co-variance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double covariance_LIBOR3M_MUNICIPAL (
+		final org.drip.simm20.product.CurveTenorSensitivitySettings curveTenorSensitivitySettings)
+		throws java.lang.Exception
+	{
+		if (null == curveTenorSensitivitySettings)
+		{
+			throw new java.lang.Exception
+				("IRNetSensitivity::covariance_LIBOR3M_MUNICIPAL => Invalid Inputs");
+		}
+
+		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
+			curveTenorSensitivitySettings.singleCurveTenorCorrelation();
+
+		double covariance_LIBOR3M_MUNICIPAL = 0.;
+
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor3MEntry : _libor3M.entrySet())
+		{
+			double libor3MSensitivity = libor3MEntry.getValue();
+
+			java.lang.String libor3MTenor = libor3MEntry.getKey();
+
+			for (java.util.Map.Entry<java.lang.String, java.lang.Double> municipalEntry : _municipal.entrySet())
+			{
+				java.lang.String municipalTenor = municipalEntry.getKey();
+
+				covariance_LIBOR3M_MUNICIPAL = covariance_LIBOR3M_MUNICIPAL + libor3MSensitivity *
+					municipalEntry.getValue() * (
+						libor3MTenor.equalsIgnoreCase (municipalTenor) ? 1. :
+							tenorCorrelation.entry (
+								libor3MTenor,
+								municipalTenor
+							)
+						);
+			}
+		}
+
+		return covariance_LIBOR3M_MUNICIPAL * curveTenorSensitivitySettings.crossSubCurveCorrelation();
+	}
+
+	/**
+	 * Compute the LIBOR6M-LIBOR12M Net Sensitivity Co-variance
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The LIBOR6M-LIBOR12M Net Sensitivity Co-variance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double covariance_LIBOR6M_LIBOR12M (
+		final org.drip.simm20.product.CurveTenorSensitivitySettings curveTenorSensitivitySettings)
+		throws java.lang.Exception
+	{
+		if (null == curveTenorSensitivitySettings)
+		{
+			throw new java.lang.Exception ("IRNetSensitivity::covariance_LIBOR6M_LIBOR12M => Invalid Inputs");
+		}
+
+		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
+			curveTenorSensitivitySettings.singleCurveTenorCorrelation();
+
+		double covariance_LIBOR6M_LIBOR12M = 0.;
+
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor6MEntry : _libor6M.entrySet())
+		{
+			double libor6MSensitivity = libor6MEntry.getValue();
+
+			java.lang.String libor6MTenor = libor6MEntry.getKey();
+
+			for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor12MEntry : _libor12M.entrySet())
+			{
+				java.lang.String libor12MTenor = libor12MEntry.getKey();
+
+				covariance_LIBOR6M_LIBOR12M = covariance_LIBOR6M_LIBOR12M + libor6MSensitivity *
+					libor12MEntry.getValue() * (
+						libor6MTenor.equalsIgnoreCase (libor12MTenor) ? 1. :
+							tenorCorrelation.entry (
+								libor6MTenor,
+								libor12MTenor
+							)
+						);
+			}
+		}
+
+		return covariance_LIBOR6M_LIBOR12M * curveTenorSensitivitySettings.crossSubCurveCorrelation();
+	}
+
+	/**
+	 * Compute the LIBOR6M-PRIME Net Sensitivity Co-variance
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The LIBOR6M-PRIME Net Sensitivity Co-variance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double covariance_LIBOR6M_PRIME (
+		final org.drip.simm20.product.CurveTenorSensitivitySettings curveTenorSensitivitySettings)
+		throws java.lang.Exception
+	{
+		if (null == curveTenorSensitivitySettings)
+		{
+			throw new java.lang.Exception ("IRNetSensitivity::covariance_LIBOR6M_PRIME => Invalid Inputs");
+		}
+
+		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
+			curveTenorSensitivitySettings.singleCurveTenorCorrelation();
+
+		double covariance_LIBOR6M_PRIME = 0.;
+
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor6MEntry : _libor6M.entrySet())
+		{
+			double libor6MSensitivity = libor6MEntry.getValue();
+
+			java.lang.String libor6MTenor = libor6MEntry.getKey();
+
+			for (java.util.Map.Entry<java.lang.String, java.lang.Double> primeEntry : _prime.entrySet())
+			{
+				java.lang.String primeTenor = primeEntry.getKey();
+
+				covariance_LIBOR6M_PRIME = covariance_LIBOR6M_PRIME + libor6MSensitivity *
+					primeEntry.getValue() * (
+						libor6MTenor.equalsIgnoreCase (primeTenor) ? 1. :
+							tenorCorrelation.entry (
+								libor6MTenor,
+								primeTenor
+							)
+						);
+			}
+		}
+
+		return covariance_LIBOR6M_PRIME * curveTenorSensitivitySettings.crossSubCurveCorrelation();
+	}
+
+	/**
+	 * Compute the LIBOR6M-MUNICIPAL Net Sensitivity Co-variance
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The LIBOR6M-MUNICIPAL Net Sensitivity Co-variance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double covariance_LIBOR6M_MUNICIPAL (
+		final org.drip.simm20.product.CurveTenorSensitivitySettings curveTenorSensitivitySettings)
+		throws java.lang.Exception
+	{
+		if (null == curveTenorSensitivitySettings)
+		{
+			throw new java.lang.Exception
+				("IRNetSensitivity::covariance_LIBOR6M_MUNICIPAL => Invalid Inputs");
+		}
+
+		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
+			curveTenorSensitivitySettings.singleCurveTenorCorrelation();
+
+		double covariance_LIBOR6M_MUNICIPAL = 0.;
+
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor6MEntry : _libor6M.entrySet())
+		{
+			double libor6MSensitivity = libor6MEntry.getValue();
+
+			java.lang.String libor6MTenor = libor6MEntry.getKey();
+
+			for (java.util.Map.Entry<java.lang.String, java.lang.Double> municipalEntry : _municipal.entrySet())
+			{
+				java.lang.String municipalTenor = municipalEntry.getKey();
+
+				covariance_LIBOR6M_MUNICIPAL = covariance_LIBOR6M_MUNICIPAL + libor6MSensitivity *
+					municipalEntry.getValue() * (
+						libor6MTenor.equalsIgnoreCase (municipalTenor) ? 1. :
+							tenorCorrelation.entry (
+								libor6MTenor,
+								municipalTenor
+							)
+						);
+			}
+		}
+
+		return covariance_LIBOR6M_MUNICIPAL * curveTenorSensitivitySettings.crossSubCurveCorrelation();
+	}
+
+	/**
+	 * Compute the LIBOR12M-PRIME Net Sensitivity Co-variance
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The LIBOR12M-PRIME Net Sensitivity Co-variance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double covariance_LIBOR12M_PRIME (
+		final org.drip.simm20.product.CurveTenorSensitivitySettings curveTenorSensitivitySettings)
+		throws java.lang.Exception
+	{
+		if (null == curveTenorSensitivitySettings)
+		{
+			throw new java.lang.Exception ("IRNetSensitivity::covariance_LIBOR12M_PRIME => Invalid Inputs");
+		}
+
+		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
+			curveTenorSensitivitySettings.singleCurveTenorCorrelation();
+
+		double covariance_LIBOR12M_PRIME = 0.;
+
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor12MEntry : _libor12M.entrySet())
+		{
+			double libor12MSensitivity = libor12MEntry.getValue();
+
+			java.lang.String libor12MTenor = libor12MEntry.getKey();
+
+			for (java.util.Map.Entry<java.lang.String, java.lang.Double> primeEntry : _prime.entrySet())
+			{
+				java.lang.String primeTenor = primeEntry.getKey();
+
+				covariance_LIBOR12M_PRIME = covariance_LIBOR12M_PRIME + libor12MSensitivity *
+					primeEntry.getValue() * (
+						libor12MTenor.equalsIgnoreCase (primeTenor) ? 1. :
+							tenorCorrelation.entry (
+								libor12MTenor,
+								primeTenor
+							)
+						);
+			}
+		}
+
+		return covariance_LIBOR12M_PRIME * curveTenorSensitivitySettings.crossSubCurveCorrelation();
+	}
+
+	/**
+	 * Compute the LIBOR12M-MUNICIPAL Net Sensitivity Co-variance
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The LIBOR12M-MUNICIPAL Net Sensitivity Co-variance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double covariance_LIBOR12M_MUNICIPAL (
+		final org.drip.simm20.product.CurveTenorSensitivitySettings curveTenorSensitivitySettings)
+		throws java.lang.Exception
+	{
+		if (null == curveTenorSensitivitySettings)
+		{
+			throw new java.lang.Exception
+				("IRNetSensitivity::covariance_LIBOR12M_MUNICIPAL => Invalid Inputs");
+		}
+
+		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
+			curveTenorSensitivitySettings.singleCurveTenorCorrelation();
+
+		double covariance_LIBOR12M_MUNICIPAL = 0.;
+
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor12MEntry : _libor12M.entrySet())
+		{
+			double libor12MSensitivity = libor12MEntry.getValue();
+
+			java.lang.String libor12MTenor = libor12MEntry.getKey();
+
+			for (java.util.Map.Entry<java.lang.String, java.lang.Double> municipalEntry : _municipal.entrySet())
+			{
+				java.lang.String municipalTenor = municipalEntry.getKey();
+
+				covariance_LIBOR12M_MUNICIPAL = covariance_LIBOR12M_MUNICIPAL + libor12MSensitivity *
+					municipalEntry.getValue() * (
+						libor12MTenor.equalsIgnoreCase (municipalTenor) ? 1. :
+							tenorCorrelation.entry (
+								libor12MTenor,
+								municipalTenor
+							)
+						);
+			}
+		}
+
+		return covariance_LIBOR12M_MUNICIPAL * curveTenorSensitivitySettings.crossSubCurveCorrelation();
+	}
+
+	/**
+	 * Compute the PRIME-MUNICIPAL Net Sensitivity Co-variance
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The PRIME-MUNICIPAL Net Sensitivity Co-variance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double covariance_PRIME_MUNICIPAL (
+		final org.drip.simm20.product.CurveTenorSensitivitySettings curveTenorSensitivitySettings)
+		throws java.lang.Exception
+	{
+		if (null == curveTenorSensitivitySettings)
+		{
+			throw new java.lang.Exception ("IRNetSensitivity::covariance_PRIME_MUNICIPAL => Invalid Inputs");
+		}
+
+		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
+			curveTenorSensitivitySettings.singleCurveTenorCorrelation();
+
+		double covariance_PRIME_MUNICIPAL = 0.;
+
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> primeEntry : _prime.entrySet())
+		{
+			double primeSensitivity = primeEntry.getValue();
+
+			java.lang.String primeTenor = primeEntry.getKey();
+
+			for (java.util.Map.Entry<java.lang.String, java.lang.Double> municipalEntry : _municipal.entrySet())
+			{
+				java.lang.String municipalTenor = municipalEntry.getKey();
+
+				covariance_PRIME_MUNICIPAL = covariance_PRIME_MUNICIPAL + primeSensitivity *
+					municipalEntry.getValue() * (
+						primeTenor.equalsIgnoreCase (municipalTenor) ? 1. :
+							tenorCorrelation.entry (
+								primeTenor,
+								municipalTenor
+							)
+						);
+			}
+		}
+
+		return covariance_PRIME_MUNICIPAL * curveTenorSensitivitySettings.crossSubCurveCorrelation();
 	}
 }
