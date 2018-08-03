@@ -1540,4 +1540,56 @@ public class IRNetSensitivity
 
 		return covariance_PRIME_MUNICIPAL * curveTenorSensitivitySettings.crossSubCurveCorrelation();
 	}
+
+	/**
+	 * Compute the Complete Net Sensitivity Margin Co-variance
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The Complete Net Sensitivity Margin Co-variance
+	 */
+
+	public org.drip.simm20.product.IRNetMarginCovariance marginCovariance (
+		final org.drip.simm20.product.CurveTenorSensitivitySettings curveTenorSensitivitySettings)
+	{
+		try
+		{
+			return new org.drip.simm20.product.IRNetMarginCovariance (
+				covariance_OIS_OIS (curveTenorSensitivitySettings),
+				covariance_OIS_LIBOR1M (curveTenorSensitivitySettings),
+				covariance_OIS_LIBOR3M (curveTenorSensitivitySettings),
+				covariance_OIS_LIBOR6M (curveTenorSensitivitySettings),
+				covariance_OIS_LIBOR12M (curveTenorSensitivitySettings),
+				covariance_OIS_PRIME (curveTenorSensitivitySettings),
+				covariance_OIS_MUNICIPAL (curveTenorSensitivitySettings),
+				covariance_LIBOR1M_LIBOR1M (curveTenorSensitivitySettings),
+				covariance_LIBOR1M_LIBOR3M (curveTenorSensitivitySettings),
+				covariance_LIBOR1M_LIBOR6M (curveTenorSensitivitySettings),
+				covariance_LIBOR1M_LIBOR12M (curveTenorSensitivitySettings),
+				covariance_LIBOR1M_PRIME (curveTenorSensitivitySettings),
+				covariance_LIBOR1M_MUNICIPAL (curveTenorSensitivitySettings),
+				covariance_LIBOR3M_LIBOR3M (curveTenorSensitivitySettings),
+				covariance_LIBOR3M_LIBOR6M (curveTenorSensitivitySettings),
+				covariance_LIBOR3M_LIBOR12M (curveTenorSensitivitySettings),
+				covariance_LIBOR3M_PRIME (curveTenorSensitivitySettings),
+				covariance_LIBOR3M_MUNICIPAL (curveTenorSensitivitySettings),
+				covariance_LIBOR6M_LIBOR6M (curveTenorSensitivitySettings),
+				covariance_LIBOR6M_LIBOR12M (curveTenorSensitivitySettings),
+				covariance_LIBOR6M_PRIME (curveTenorSensitivitySettings),
+				covariance_LIBOR6M_MUNICIPAL (curveTenorSensitivitySettings),
+				covariance_LIBOR12M_LIBOR12M (curveTenorSensitivitySettings),
+				covariance_LIBOR12M_PRIME (curveTenorSensitivitySettings),
+				covariance_LIBOR12M_MUNICIPAL (curveTenorSensitivitySettings),
+				covariance_PRIME_PRIME (curveTenorSensitivitySettings),
+				covariance_PRIME_MUNICIPAL (curveTenorSensitivitySettings),
+				covariance_MUNICIPAL_MUNICIPAL (curveTenorSensitivitySettings)
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 }
