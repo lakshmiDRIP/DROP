@@ -1,0 +1,1596 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>IRNetSensitivity.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.simm20.product</a> &gt; <span class="el_source">IRNetSensitivity.java</span></div><h1>IRNetSensitivity.java</h1><pre class="source lang-java linenums">
+package org.drip.simm20.product;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * IRNetSensitivity holds the Weighted Net Sensitivities for each of the IR Risk Factors - OIS, LIBOR 1M,
+ *  LIBOR 3M, LIBOR 6M LIBOR 12M, PRIME, and MUNICIPAL. The References are:
+ *  
+ *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
+ *  
+ *  - Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
+ *  	Calculations, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488, eSSRN.
+ *  
+ *  - Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
+ *  	Framework for Forecasting Initial Margin Requirements,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
+ *  
+ *  - Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements
+ *  	- A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167, eSSRN.
+ *  
+ *  - International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology,
+ *  	https://www.isda.org/a/oFiDE/isda-simm-v2.pdf.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class IRNetSensitivity
+{
+<span class="nc" id="L74">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _ois = null;</span>
+<span class="nc" id="L75">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _prime = null;</span>
+<span class="nc" id="L76">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _libor1M = null;</span>
+<span class="nc" id="L77">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _libor3M = null;</span>
+<span class="nc" id="L78">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _libor6M = null;</span>
+<span class="nc" id="L79">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _libor12M = null;</span>
+<span class="nc" id="L80">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _municipal = null;</span>
+
+	/**
+	 * IRNetSensitivity Constructor
+	 * 
+	 * @param ois OIS Weighted/Unweighted Sensitivity
+	 * @param libor1M LIBOR 1M Weighted/Unweighted Sensitivity
+	 * @param libor3M LIBOR 3M Weighted/Unweighted Sensitivity
+	 * @param libor6M LIBOR 6M Weighted/Unweighted Sensitivity
+	 * @param libor12M LIBOR 12M Weighted/Unweighted Sensitivity
+	 * @param prime Prime Weighted/Unweighted Sensitivity
+	 * @param municipal Municipal Weighted/Unweighted Sensitivity
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public IRNetSensitivity (
+		final java.util.Map&lt;java.lang.String, java.lang.Double&gt; ois,
+		final java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor1M,
+		final java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor3M,
+		final java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor6M,
+		final java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor12M,
+		final java.util.Map&lt;java.lang.String, java.lang.Double&gt; prime,
+		final java.util.Map&lt;java.lang.String, java.lang.Double&gt; municipal)
+		throws java.lang.Exception
+<span class="nc" id="L105">	{</span>
+<span class="nc bnc" id="L106" title="All 14 branches missed.">		if (null == (_ois = ois) ||</span>
+			null == (_libor1M = libor1M) ||
+			null == (_libor3M = libor3M) ||
+			null == (_libor6M = libor6M) ||
+			null == (_libor12M = libor12M) ||
+			null == (_prime = prime) ||
+			null == (_municipal = municipal))
+		{
+<span class="nc" id="L114">			throw new java.lang.Exception (&quot;IRNetSensitivity Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="nc" id="L116">	}</span>
+
+	/**
+	 * Retrieve the OIS Net Tenor Sensitivity Map
+	 * 
+	 * @return The OIS Net Tenor Sensitivity Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; ois()
+	{
+<span class="nc" id="L126">		return _ois;</span>
+	}
+
+	/**
+	 * Retrieve the LIBOR 1M Net Tenor Sensitivity Map
+	 * 
+	 * @return The LIBOR 1M Net Tenor Sensitivity Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor1M()
+	{
+<span class="nc" id="L137">		return _libor1M;</span>
+	}
+
+	/**
+	 * Retrieve the LIBOR 3M Net Tenor Sensitivity Map
+	 * 
+	 * @return The LIBOR 3M Net Tenor Sensitivity Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor3M()
+	{
+<span class="nc" id="L148">		return _libor3M;</span>
+	}
+
+	/**
+	 * Retrieve the LIBOR 6M Net Tenor Sensitivity Map
+	 * 
+	 * @return The LIBOR 6M Net Tenor Sensitivity Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor6M()
+	{
+<span class="nc" id="L159">		return _libor6M;</span>
+	}
+
+	/**
+	 * Retrieve the LIBOR 12M Net Tenor Sensitivity Map
+	 * 
+	 * @return The LIBOR 12M Net Tenor Sensitivity Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor12M()
+	{
+<span class="nc" id="L170">		return _libor12M;</span>
+	}
+
+	/**
+	 * Retrieve the PRIME Net Tenor Sensitivity Map
+	 * 
+	 * @return The PRIME Net Tenor Sensitivity Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; prime()
+	{
+<span class="nc" id="L181">		return _prime;</span>
+	}
+
+	/**
+	 * Retrieve the MUNICIPAL Net Tenor Sensitivity Map
+	 * 
+	 * @return The MUNICIPAL Net Tenor Sensitivity Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; municipal()
+	{
+<span class="nc" id="L192">		return _municipal;</span>
+	}
+
+	/**
+	 * Compute the OIS-OIS Net Sensitivity Co-variance
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The OIS-OIS Net Sensitivity Co-variance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double covariance_OIS_OIS (
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L209" title="All 2 branches missed.">		if (null == curveTenorSensitivitySettings)</span>
+		{
+<span class="nc" id="L211">			throw new java.lang.Exception (&quot;IRNetSensitivity::covariance_OIS_OIS =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L214">		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =</span>
+<span class="nc" id="L215">			curveTenorSensitivitySettings.singleCurveTenorCorrelation();</span>
+
+<span class="nc" id="L217">		double covariance_OIS_OIS = 0.;</span>
+
+<span class="nc bnc" id="L219" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; oisOuterEntry : _ois.entrySet())</span>
+		{
+<span class="nc" id="L221">			double outerSensitivity = oisOuterEntry.getValue();</span>
+
+<span class="nc" id="L223">			java.lang.String outerTenor = oisOuterEntry.getKey();</span>
+
+<span class="nc bnc" id="L225" title="All 2 branches missed.">			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; oisInnerEntry : _ois.entrySet())</span>
+			{
+<span class="nc" id="L227">				java.lang.String innerTenor = oisInnerEntry.getKey();</span>
+
+<span class="nc" id="L229">				covariance_OIS_OIS = covariance_OIS_OIS + outerSensitivity * oisInnerEntry.getValue() * (</span>
+<span class="nc bnc" id="L230" title="All 2 branches missed.">					outerTenor.equalsIgnoreCase (innerTenor) ? 1. :</span>
+<span class="nc" id="L231">						tenorCorrelation.entry (</span>
+							outerTenor,
+							innerTenor
+						)
+					);
+<span class="nc" id="L236">			}</span>
+<span class="nc" id="L237">		}</span>
+
+<span class="nc" id="L239">		return covariance_OIS_OIS;</span>
+	}
+
+	/**
+	 * Compute the LIBOR1M-LIBOR1M Net Sensitivity Co-variance
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The LIBOR1M-LIBOR1M Net Sensitivity Co-variance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double covariance_LIBOR1M_LIBOR1M (
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L256" title="All 2 branches missed.">		if (null == curveTenorSensitivitySettings)</span>
+		{
+<span class="nc" id="L258">			throw new java.lang.Exception (&quot;IRNetSensitivity::covariance_LIBOR1M_LIBOR1M =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L261">		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =</span>
+<span class="nc" id="L262">			curveTenorSensitivitySettings.singleCurveTenorCorrelation();</span>
+
+<span class="nc" id="L264">		double covariance_LIBOR1M_LIBOR1M = 0.;</span>
+
+<span class="nc bnc" id="L266" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; libor1MOuterEntry : _libor1M.entrySet())</span>
+		{
+<span class="nc" id="L268">			double outerSensitivity = libor1MOuterEntry.getValue();</span>
+
+<span class="nc" id="L270">			java.lang.String outerTenor = libor1MOuterEntry.getKey();</span>
+
+			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; libor1MInnerEntry :
+<span class="nc bnc" id="L273" title="All 2 branches missed.">				_libor1M.entrySet())</span>
+			{
+<span class="nc" id="L275">				java.lang.String innerTenor = libor1MInnerEntry.getKey();</span>
+
+<span class="nc" id="L277">				covariance_LIBOR1M_LIBOR1M = covariance_LIBOR1M_LIBOR1M + outerSensitivity *</span>
+<span class="nc" id="L278">					libor1MInnerEntry.getValue() * (</span>
+<span class="nc bnc" id="L279" title="All 2 branches missed.">						outerTenor.equalsIgnoreCase (innerTenor) ? 1. :</span>
+<span class="nc" id="L280">							tenorCorrelation.entry (</span>
+								outerTenor,
+								innerTenor
+							)
+						);
+<span class="nc" id="L285">			}</span>
+<span class="nc" id="L286">		}</span>
+
+<span class="nc" id="L288">		return covariance_LIBOR1M_LIBOR1M;</span>
+	}
+
+	/**
+	 * Compute the LIBOR3M-LIBOR3M Net Sensitivity Co-variance
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The LIBOR3M-LIBOR3M Net Sensitivity Co-variance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double covariance_LIBOR3M_LIBOR3M (
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L305" title="All 2 branches missed.">		if (null == curveTenorSensitivitySettings)</span>
+		{
+<span class="nc" id="L307">			throw new java.lang.Exception (&quot;IRNetSensitivity::covariance_LIBOR3M_LIBOR3M =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L310">		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =</span>
+<span class="nc" id="L311">			curveTenorSensitivitySettings.singleCurveTenorCorrelation();</span>
+
+<span class="nc" id="L313">		double covariance_LIBOR3M_LIBOR3M = 0.;</span>
+
+<span class="nc bnc" id="L315" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; libor3MOuterEntry : _libor3M.entrySet())</span>
+		{
+<span class="nc" id="L317">			double outerSensitivity = libor3MOuterEntry.getValue();</span>
+
+<span class="nc" id="L319">			java.lang.String outerTenor = libor3MOuterEntry.getKey();</span>
+
+			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; libor3MInnerEntry :
+<span class="nc bnc" id="L322" title="All 2 branches missed.">				_libor3M.entrySet())</span>
+			{
+<span class="nc" id="L324">				java.lang.String innerTenor = libor3MInnerEntry.getKey();</span>
+
+<span class="nc" id="L326">				covariance_LIBOR3M_LIBOR3M = covariance_LIBOR3M_LIBOR3M + outerSensitivity *</span>
+<span class="nc" id="L327">					libor3MInnerEntry.getValue() * (</span>
+<span class="nc bnc" id="L328" title="All 2 branches missed.">						outerTenor.equalsIgnoreCase (innerTenor) ? 1. :</span>
+<span class="nc" id="L329">							tenorCorrelation.entry (</span>
+								outerTenor,
+								innerTenor
+							)
+						);
+<span class="nc" id="L334">			}</span>
+<span class="nc" id="L335">		}</span>
+
+<span class="nc" id="L337">		return covariance_LIBOR3M_LIBOR3M;</span>
+	}
+
+	/**
+	 * Compute the LIBOR6M-LIBOR6M Net Sensitivity Co-variance
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The LIBOR6M-LIBOR6M Net Sensitivity Co-variance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double covariance_LIBOR6M_LIBOR6M (
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L354" title="All 2 branches missed.">		if (null == curveTenorSensitivitySettings)</span>
+		{
+<span class="nc" id="L356">			throw new java.lang.Exception (&quot;IRNetSensitivity::covariance_LIBOR6M_LIBOR6M =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L359">		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =</span>
+<span class="nc" id="L360">			curveTenorSensitivitySettings.singleCurveTenorCorrelation();</span>
+
+<span class="nc" id="L362">		double covariance_LIBOR6M_LIBOR6M = 0.;</span>
+
+<span class="nc bnc" id="L364" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; libor6MOuterEntry : _libor6M.entrySet())</span>
+		{
+<span class="nc" id="L366">			double outerSensitivity = libor6MOuterEntry.getValue();</span>
+
+<span class="nc" id="L368">			java.lang.String outerTenor = libor6MOuterEntry.getKey();</span>
+
+			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; libor6MInnerEntry :
+<span class="nc bnc" id="L371" title="All 2 branches missed.">				_libor3M.entrySet())</span>
+			{
+<span class="nc" id="L373">				java.lang.String innerTenor = libor6MInnerEntry.getKey();</span>
+
+<span class="nc" id="L375">				covariance_LIBOR6M_LIBOR6M = covariance_LIBOR6M_LIBOR6M + outerSensitivity *</span>
+<span class="nc" id="L376">					libor6MInnerEntry.getValue() * (</span>
+<span class="nc bnc" id="L377" title="All 2 branches missed.">						outerTenor.equalsIgnoreCase (innerTenor) ? 1. :</span>
+<span class="nc" id="L378">							tenorCorrelation.entry (</span>
+								outerTenor,
+								innerTenor
+							)
+						);
+<span class="nc" id="L383">			}</span>
+<span class="nc" id="L384">		}</span>
+
+<span class="nc" id="L386">		return covariance_LIBOR6M_LIBOR6M;</span>
+	}
+
+	/**
+	 * Compute the LIBOR12M-LIBOR12M Net Sensitivity Co-variance
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The LIBOR12M-LIBOR12M Net Sensitivity Co-variance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double covariance_LIBOR12M_LIBOR12M (
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L403" title="All 2 branches missed.">		if (null == curveTenorSensitivitySettings)</span>
+		{
+<span class="nc" id="L405">			throw new java.lang.Exception</span>
+				(&quot;IRNetSensitivity::covariance_LIBOR12M_LIBOR12M =&gt; Invalid Inputs&quot;);
+		}
+
+<span class="nc" id="L409">		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =</span>
+<span class="nc" id="L410">			curveTenorSensitivitySettings.singleCurveTenorCorrelation();</span>
+
+<span class="nc" id="L412">		double covariance_LIBOR12M_LIBOR12M = 0.;</span>
+
+<span class="nc bnc" id="L414" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; libor12MOuterEntry : _libor12M.entrySet())</span>
+		{
+<span class="nc" id="L416">			double outerSensitivity = libor12MOuterEntry.getValue();</span>
+
+<span class="nc" id="L418">			java.lang.String outerTenor = libor12MOuterEntry.getKey();</span>
+
+			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; libor12MInnerEntry :
+<span class="nc bnc" id="L421" title="All 2 branches missed.">				_libor12M.entrySet())</span>
+			{
+<span class="nc" id="L423">				java.lang.String innerTenor = libor12MInnerEntry.getKey();</span>
+
+<span class="nc" id="L425">				covariance_LIBOR12M_LIBOR12M = covariance_LIBOR12M_LIBOR12M + outerSensitivity *</span>
+<span class="nc" id="L426">					libor12MInnerEntry.getValue() * (</span>
+<span class="nc bnc" id="L427" title="All 2 branches missed.">						outerTenor.equalsIgnoreCase (innerTenor) ? 1. :</span>
+<span class="nc" id="L428">							tenorCorrelation.entry (</span>
+								outerTenor,
+								innerTenor
+							)
+						);
+<span class="nc" id="L433">			}</span>
+<span class="nc" id="L434">		}</span>
+
+<span class="nc" id="L436">		return covariance_LIBOR12M_LIBOR12M;</span>
+	}
+
+	/**
+	 * Compute the PRIME-PRIME Net Sensitivity Co-variance
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The PRIME-PRIME Net Sensitivity Co-variance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double covariance_PRIME_PRIME (
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L453" title="All 2 branches missed.">		if (null == curveTenorSensitivitySettings)</span>
+		{
+<span class="nc" id="L455">			throw new java.lang.Exception (&quot;IRNetSensitivity::covariance_PRIME_PRIME =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L458">		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =</span>
+<span class="nc" id="L459">			curveTenorSensitivitySettings.singleCurveTenorCorrelation();</span>
+
+<span class="nc" id="L461">		double covariance_PRIME_PRIME = 0.;</span>
+
+<span class="nc bnc" id="L463" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; primeOuterEntry : _prime.entrySet())</span>
+		{
+<span class="nc" id="L465">			double outerSensitivity = primeOuterEntry.getValue();</span>
+
+<span class="nc" id="L467">			java.lang.String outerTenor = primeOuterEntry.getKey();</span>
+
+<span class="nc bnc" id="L469" title="All 2 branches missed.">			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; primeInnerEntry : _prime.entrySet())</span>
+			{
+<span class="nc" id="L471">				java.lang.String innerTenor = primeInnerEntry.getKey();</span>
+
+<span class="nc" id="L473">				covariance_PRIME_PRIME = covariance_PRIME_PRIME + outerSensitivity *</span>
+<span class="nc" id="L474">					primeInnerEntry.getValue() * (</span>
+<span class="nc bnc" id="L475" title="All 2 branches missed.">						outerTenor.equalsIgnoreCase (innerTenor) ? 1. :</span>
+<span class="nc" id="L476">							tenorCorrelation.entry (</span>
+								outerTenor,
+								innerTenor
+							)
+						);
+<span class="nc" id="L481">			}</span>
+<span class="nc" id="L482">		}</span>
+
+<span class="nc" id="L484">		return covariance_PRIME_PRIME;</span>
+	}
+
+	/**
+	 * Compute the MUNICIPAL-MUNICIPAL Net Sensitivity Co-variance
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The MUNICIPAL-MUNICIPAL Net Sensitivity Co-variance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double covariance_MUNICIPAL_MUNICIPAL (
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L501" title="All 2 branches missed.">		if (null == curveTenorSensitivitySettings)</span>
+		{
+<span class="nc" id="L503">			throw new java.lang.Exception</span>
+				(&quot;IRNetSensitivity::covariance_MUNICIPAL_MUNICIPAL =&gt; Invalid Inputs&quot;);
+		}
+
+<span class="nc" id="L507">		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =</span>
+<span class="nc" id="L508">			curveTenorSensitivitySettings.singleCurveTenorCorrelation();</span>
+
+<span class="nc" id="L510">		double covariance_MUNICIPAL_MUNICIPAL = 0.;</span>
+
+		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; municipalOuterEntry :
+<span class="nc bnc" id="L513" title="All 2 branches missed.">			_municipal.entrySet())</span>
+		{
+<span class="nc" id="L515">			double outerSensitivity = municipalOuterEntry.getValue();</span>
+
+<span class="nc" id="L517">			java.lang.String outerTenor = municipalOuterEntry.getKey();</span>
+
+			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; municipalInnerEntry :
+<span class="nc bnc" id="L520" title="All 2 branches missed.">				_municipal.entrySet())</span>
+			{
+<span class="nc" id="L522">				java.lang.String innerTenor = municipalInnerEntry.getKey();</span>
+
+<span class="nc" id="L524">				covariance_MUNICIPAL_MUNICIPAL = covariance_MUNICIPAL_MUNICIPAL + outerSensitivity *</span>
+<span class="nc" id="L525">					municipalInnerEntry.getValue() * (</span>
+<span class="nc bnc" id="L526" title="All 2 branches missed.">						outerTenor.equalsIgnoreCase (innerTenor) ? 1. :</span>
+<span class="nc" id="L527">							tenorCorrelation.entry (</span>
+								outerTenor,
+								innerTenor
+							)
+						);
+<span class="nc" id="L532">			}</span>
+<span class="nc" id="L533">		}</span>
+
+<span class="nc" id="L535">		return covariance_MUNICIPAL_MUNICIPAL;</span>
+	}
+
+	/**
+	 * Compute the OIS-LIBOR1M Net Sensitivity Co-variance
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The OIS-LIBOR1M Net Sensitivity Co-variance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double covariance_OIS_LIBOR1M (
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L552" title="All 2 branches missed.">		if (null == curveTenorSensitivitySettings)</span>
+		{
+<span class="nc" id="L554">			throw new java.lang.Exception (&quot;IRNetSensitivity::covariance_OIS_LIBOR1M =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L557">		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =</span>
+<span class="nc" id="L558">			curveTenorSensitivitySettings.singleCurveTenorCorrelation();</span>
+
+<span class="nc" id="L560">		double covariance_OIS_LIBOR1M = 0.;</span>
+
+<span class="nc bnc" id="L562" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; oisEntry : _ois.entrySet())</span>
+		{
+<span class="nc" id="L564">			double oisSensitivity = oisEntry.getValue();</span>
+
+<span class="nc" id="L566">			java.lang.String oisTenor = oisEntry.getKey();</span>
+
+<span class="nc bnc" id="L568" title="All 2 branches missed.">			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; libor1MEntry : _libor1M.entrySet())</span>
+			{
+<span class="nc" id="L570">				java.lang.String libor1MTenor = libor1MEntry.getKey();</span>
+
+<span class="nc" id="L572">				covariance_OIS_LIBOR1M = covariance_OIS_LIBOR1M + oisSensitivity * libor1MEntry.getValue() * (</span>
+<span class="nc bnc" id="L573" title="All 2 branches missed.">					oisTenor.equalsIgnoreCase (libor1MTenor) ? 1. :</span>
+<span class="nc" id="L574">						tenorCorrelation.entry (</span>
+							oisTenor,
+							libor1MTenor
+						)
+					);
+<span class="nc" id="L579">			}</span>
+<span class="nc" id="L580">		}</span>
+
+<span class="nc" id="L582">		return covariance_OIS_LIBOR1M * curveTenorSensitivitySettings.crossSubCurveCorrelation();</span>
+	}
+
+	/**
+	 * Compute the OIS-LIBOR3M Net Sensitivity Co-variance
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The OIS-LIBOR3M Net Sensitivity Co-variance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double covariance_OIS_LIBOR3M (
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L599" title="All 2 branches missed.">		if (null == curveTenorSensitivitySettings)</span>
+		{
+<span class="nc" id="L601">			throw new java.lang.Exception (&quot;IRNetSensitivity::covariance_OIS_LIBOR3M =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L604">		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =</span>
+<span class="nc" id="L605">			curveTenorSensitivitySettings.singleCurveTenorCorrelation();</span>
+
+<span class="nc" id="L607">		double covariance_OIS_LIBOR3M = 0.;</span>
+
+<span class="nc bnc" id="L609" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; oisEntry : _ois.entrySet())</span>
+		{
+<span class="nc" id="L611">			double oisSensitivity = oisEntry.getValue();</span>
+
+<span class="nc" id="L613">			java.lang.String oisTenor = oisEntry.getKey();</span>
+
+<span class="nc bnc" id="L615" title="All 2 branches missed.">			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; libor3MEntry : _libor3M.entrySet())</span>
+			{
+<span class="nc" id="L617">				java.lang.String libor3MTenor = libor3MEntry.getKey();</span>
+
+<span class="nc" id="L619">				covariance_OIS_LIBOR3M = covariance_OIS_LIBOR3M + oisSensitivity * libor3MEntry.getValue() * (</span>
+<span class="nc bnc" id="L620" title="All 2 branches missed.">					oisTenor.equalsIgnoreCase (libor3MTenor) ? 1. :</span>
+<span class="nc" id="L621">						tenorCorrelation.entry (</span>
+							oisTenor,
+							libor3MTenor
+						)
+					);
+<span class="nc" id="L626">			}</span>
+<span class="nc" id="L627">		}</span>
+
+<span class="nc" id="L629">		return covariance_OIS_LIBOR3M * curveTenorSensitivitySettings.crossSubCurveCorrelation();</span>
+	}
+
+	/**
+	 * Compute the OIS-LIBOR6M Net Sensitivity Co-variance
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The OIS-LIBOR6M Net Sensitivity Co-variance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double covariance_OIS_LIBOR6M (
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L646" title="All 2 branches missed.">		if (null == curveTenorSensitivitySettings)</span>
+		{
+<span class="nc" id="L648">			throw new java.lang.Exception (&quot;IRNetSensitivity::covariance_OIS_LIBOR6M =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L651">		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =</span>
+<span class="nc" id="L652">			curveTenorSensitivitySettings.singleCurveTenorCorrelation();</span>
+
+<span class="nc" id="L654">		double covariance_OIS_LIBOR6M = 0.;</span>
+
+<span class="nc bnc" id="L656" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; oisEntry : _ois.entrySet())</span>
+		{
+<span class="nc" id="L658">			double oisSensitivity = oisEntry.getValue();</span>
+
+<span class="nc" id="L660">			java.lang.String oisTenor = oisEntry.getKey();</span>
+
+<span class="nc bnc" id="L662" title="All 2 branches missed.">			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; libor6MEntry : _libor6M.entrySet())</span>
+			{
+<span class="nc" id="L664">				java.lang.String libor6MTenor = libor6MEntry.getKey();</span>
+
+<span class="nc" id="L666">				covariance_OIS_LIBOR6M = covariance_OIS_LIBOR6M + oisSensitivity * libor6MEntry.getValue() * (</span>
+<span class="nc bnc" id="L667" title="All 2 branches missed.">					oisTenor.equalsIgnoreCase (libor6MTenor) ? 1. :</span>
+<span class="nc" id="L668">						tenorCorrelation.entry (</span>
+							oisTenor,
+							libor6MTenor
+						)
+					);
+<span class="nc" id="L673">			}</span>
+<span class="nc" id="L674">		}</span>
+
+<span class="nc" id="L676">		return covariance_OIS_LIBOR6M * curveTenorSensitivitySettings.crossSubCurveCorrelation();</span>
+	}
+
+	/**
+	 * Compute the OIS-LIBOR12M Net Sensitivity Co-variance
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The OIS-LIBOR12M Net Sensitivity Co-variance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double covariance_OIS_LIBOR12M (
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L693" title="All 2 branches missed.">		if (null == curveTenorSensitivitySettings)</span>
+		{
+<span class="nc" id="L695">			throw new java.lang.Exception (&quot;IRNetSensitivity::covariance_OIS_LIBOR12M =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L698">		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =</span>
+<span class="nc" id="L699">			curveTenorSensitivitySettings.singleCurveTenorCorrelation();</span>
+
+<span class="nc" id="L701">		double covariance_OIS_LIBOR12M = 0.;</span>
+
+<span class="nc bnc" id="L703" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; oisEntry : _ois.entrySet())</span>
+		{
+<span class="nc" id="L705">			double oisSensitivity = oisEntry.getValue();</span>
+
+<span class="nc" id="L707">			java.lang.String oisTenor = oisEntry.getKey();</span>
+
+<span class="nc bnc" id="L709" title="All 2 branches missed.">			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; libor12MEntry : _libor12M.entrySet())</span>
+			{
+<span class="nc" id="L711">				java.lang.String libor12MTenor = libor12MEntry.getKey();</span>
+
+<span class="nc" id="L713">				covariance_OIS_LIBOR12M = covariance_OIS_LIBOR12M + oisSensitivity * libor12MEntry.getValue() * (</span>
+<span class="nc bnc" id="L714" title="All 2 branches missed.">					oisTenor.equalsIgnoreCase (libor12MTenor) ? 1. :</span>
+<span class="nc" id="L715">						tenorCorrelation.entry (</span>
+							oisTenor,
+							libor12MTenor
+						)
+					);
+<span class="nc" id="L720">			}</span>
+<span class="nc" id="L721">		}</span>
+
+<span class="nc" id="L723">		return covariance_OIS_LIBOR12M * curveTenorSensitivitySettings.crossSubCurveCorrelation();</span>
+	}
+
+	/**
+	 * Compute the OIS-PRIME Net Sensitivity Co-variance
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The OIS-PRIME Net Sensitivity Co-variance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double covariance_OIS_PRIME (
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L740" title="All 2 branches missed.">		if (null == curveTenorSensitivitySettings)</span>
+		{
+<span class="nc" id="L742">			throw new java.lang.Exception (&quot;IRNetSensitivity::covariance_OIS_PRIME =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L745">		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =</span>
+<span class="nc" id="L746">			curveTenorSensitivitySettings.singleCurveTenorCorrelation();</span>
+
+<span class="nc" id="L748">		double covariance_OIS_PRIME = 0.;</span>
+
+<span class="nc bnc" id="L750" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; oisEntry : _ois.entrySet())</span>
+		{
+<span class="nc" id="L752">			double oisSensitivity = oisEntry.getValue();</span>
+
+<span class="nc" id="L754">			java.lang.String oisTenor = oisEntry.getKey();</span>
+
+<span class="nc bnc" id="L756" title="All 2 branches missed.">			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; primeEntry : _prime.entrySet())</span>
+			{
+<span class="nc" id="L758">				java.lang.String primeTenor = primeEntry.getKey();</span>
+
+<span class="nc" id="L760">				covariance_OIS_PRIME = covariance_OIS_PRIME + oisSensitivity * primeEntry.getValue() * (</span>
+<span class="nc bnc" id="L761" title="All 2 branches missed.">					oisTenor.equalsIgnoreCase (primeTenor) ? 1. :</span>
+<span class="nc" id="L762">						tenorCorrelation.entry (</span>
+							oisTenor,
+							primeTenor
+						)
+					);
+<span class="nc" id="L767">			}</span>
+<span class="nc" id="L768">		}</span>
+
+<span class="nc" id="L770">		return covariance_OIS_PRIME * curveTenorSensitivitySettings.crossSubCurveCorrelation();</span>
+	}
+
+	/**
+	 * Compute the OIS-MUNICIPAL Net Sensitivity Co-variance
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The OIS-MUNICIPAL Net Sensitivity Co-variance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double covariance_OIS_MUNICIPAL (
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L787" title="All 2 branches missed.">		if (null == curveTenorSensitivitySettings)</span>
+		{
+<span class="nc" id="L789">			throw new java.lang.Exception (&quot;IRNetSensitivity::covariance_OIS_MUNICIPAL =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L792">		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =</span>
+<span class="nc" id="L793">			curveTenorSensitivitySettings.singleCurveTenorCorrelation();</span>
+
+<span class="nc" id="L795">		double covariance_OIS_MUNICIPAL = 0.;</span>
+
+<span class="nc bnc" id="L797" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; oisEntry : _ois.entrySet())</span>
+		{
+<span class="nc" id="L799">			double oisSensitivity = oisEntry.getValue();</span>
+
+<span class="nc" id="L801">			java.lang.String oisTenor = oisEntry.getKey();</span>
+
+<span class="nc bnc" id="L803" title="All 2 branches missed.">			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; municipalEntry : _municipal.entrySet())</span>
+			{
+<span class="nc" id="L805">				java.lang.String municipalTenor = municipalEntry.getKey();</span>
+
+<span class="nc" id="L807">				covariance_OIS_MUNICIPAL = covariance_OIS_MUNICIPAL + oisSensitivity * municipalEntry.getValue() * (</span>
+<span class="nc bnc" id="L808" title="All 2 branches missed.">					oisTenor.equalsIgnoreCase (municipalTenor) ? 1. :</span>
+<span class="nc" id="L809">						tenorCorrelation.entry (</span>
+							oisTenor,
+							municipalTenor
+						)
+					);
+<span class="nc" id="L814">			}</span>
+<span class="nc" id="L815">		}</span>
+
+<span class="nc" id="L817">		return covariance_OIS_MUNICIPAL * curveTenorSensitivitySettings.crossSubCurveCorrelation();</span>
+	}
+
+	/**
+	 * Compute the LIBOR1M-LIBOR3M Net Sensitivity Co-variance
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The LIBOR1M-LIBOR3M Net Sensitivity Co-variance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double covariance_LIBOR1M_LIBOR3M (
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L834" title="All 2 branches missed.">		if (null == curveTenorSensitivitySettings)</span>
+		{
+<span class="nc" id="L836">			throw new java.lang.Exception (&quot;IRNetSensitivity::covariance_LIBOR1M_LIBOR3M =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L839">		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =</span>
+<span class="nc" id="L840">			curveTenorSensitivitySettings.singleCurveTenorCorrelation();</span>
+
+<span class="nc" id="L842">		double covariance_LIBOR1M_LIBOR3M = 0.;</span>
+
+<span class="nc bnc" id="L844" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; libor1MEntry : _libor1M.entrySet())</span>
+		{
+<span class="nc" id="L846">			double libor1MSensitivity = libor1MEntry.getValue();</span>
+
+<span class="nc" id="L848">			java.lang.String libor1MTenor = libor1MEntry.getKey();</span>
+
+<span class="nc bnc" id="L850" title="All 2 branches missed.">			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; libor3MEntry : _libor3M.entrySet())</span>
+			{
+<span class="nc" id="L852">				java.lang.String libor3MTenor = libor3MEntry.getKey();</span>
+
+<span class="nc" id="L854">				covariance_LIBOR1M_LIBOR3M = covariance_LIBOR1M_LIBOR3M + libor1MSensitivity *</span>
+<span class="nc" id="L855">					libor3MEntry.getValue() * (</span>
+<span class="nc bnc" id="L856" title="All 2 branches missed.">						libor1MTenor.equalsIgnoreCase (libor3MTenor) ? 1. :</span>
+<span class="nc" id="L857">							tenorCorrelation.entry (</span>
+								libor1MTenor,
+								libor3MTenor
+							)
+						);
+<span class="nc" id="L862">			}</span>
+<span class="nc" id="L863">		}</span>
+
+<span class="nc" id="L865">		return covariance_LIBOR1M_LIBOR3M * curveTenorSensitivitySettings.crossSubCurveCorrelation();</span>
+	}
+
+	/**
+	 * Compute the LIBOR1M-LIBOR6M Net Sensitivity Co-variance
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The LIBOR1M-LIBOR6M Net Sensitivity Co-variance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double covariance_LIBOR1M_LIBOR6M (
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L882" title="All 2 branches missed.">		if (null == curveTenorSensitivitySettings)</span>
+		{
+<span class="nc" id="L884">			throw new java.lang.Exception (&quot;IRNetSensitivity::covariance_LIBOR1M_LIBOR6M =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L887">		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =</span>
+<span class="nc" id="L888">			curveTenorSensitivitySettings.singleCurveTenorCorrelation();</span>
+
+<span class="nc" id="L890">		double covariance_LIBOR1M_LIBOR6M = 0.;</span>
+
+<span class="nc bnc" id="L892" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; libor1MEntry : _libor1M.entrySet())</span>
+		{
+<span class="nc" id="L894">			double libor1MSensitivity = libor1MEntry.getValue();</span>
+
+<span class="nc" id="L896">			java.lang.String libor1MTenor = libor1MEntry.getKey();</span>
+
+<span class="nc bnc" id="L898" title="All 2 branches missed.">			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; libor6MEntry : _libor6M.entrySet())</span>
+			{
+<span class="nc" id="L900">				java.lang.String libor6MTenor = libor6MEntry.getKey();</span>
+
+<span class="nc" id="L902">				covariance_LIBOR1M_LIBOR6M = covariance_LIBOR1M_LIBOR6M + libor1MSensitivity *</span>
+<span class="nc" id="L903">					libor6MEntry.getValue() * (</span>
+<span class="nc bnc" id="L904" title="All 2 branches missed.">						libor1MTenor.equalsIgnoreCase (libor6MTenor) ? 1. :</span>
+<span class="nc" id="L905">							tenorCorrelation.entry (</span>
+								libor1MTenor,
+								libor6MTenor
+							)
+						);
+<span class="nc" id="L910">			}</span>
+<span class="nc" id="L911">		}</span>
+
+<span class="nc" id="L913">		return covariance_LIBOR1M_LIBOR6M * curveTenorSensitivitySettings.crossSubCurveCorrelation();</span>
+	}
+
+	/**
+	 * Compute the LIBOR1M-LIBOR12M Net Sensitivity Co-variance
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The LIBOR1M-LIBOR12M Net Sensitivity Co-variance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double covariance_LIBOR1M_LIBOR12M (
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L930" title="All 2 branches missed.">		if (null == curveTenorSensitivitySettings)</span>
+		{
+<span class="nc" id="L932">			throw new java.lang.Exception (&quot;IRNetSensitivity::covariance_LIBOR1M_LIBOR12M =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L935">		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =</span>
+<span class="nc" id="L936">			curveTenorSensitivitySettings.singleCurveTenorCorrelation();</span>
+
+<span class="nc" id="L938">		double covariance_LIBOR1M_LIBOR12M = 0.;</span>
+
+<span class="nc bnc" id="L940" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; libor1MEntry : _libor1M.entrySet())</span>
+		{
+<span class="nc" id="L942">			double libor1MSensitivity = libor1MEntry.getValue();</span>
+
+<span class="nc" id="L944">			java.lang.String libor1MTenor = libor1MEntry.getKey();</span>
+
+<span class="nc bnc" id="L946" title="All 2 branches missed.">			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; libor12MEntry : _libor12M.entrySet())</span>
+			{
+<span class="nc" id="L948">				java.lang.String libor12MTenor = libor12MEntry.getKey();</span>
+
+<span class="nc" id="L950">				covariance_LIBOR1M_LIBOR12M = covariance_LIBOR1M_LIBOR12M + libor1MSensitivity *</span>
+<span class="nc" id="L951">					libor12MEntry.getValue() * (</span>
+<span class="nc bnc" id="L952" title="All 2 branches missed.">						libor1MTenor.equalsIgnoreCase (libor12MTenor) ? 1. :</span>
+<span class="nc" id="L953">							tenorCorrelation.entry (</span>
+								libor1MTenor,
+								libor12MTenor
+							)
+						);
+<span class="nc" id="L958">			}</span>
+<span class="nc" id="L959">		}</span>
+
+<span class="nc" id="L961">		return covariance_LIBOR1M_LIBOR12M * curveTenorSensitivitySettings.crossSubCurveCorrelation();</span>
+	}
+
+	/**
+	 * Compute the LIBOR1M-PRIME Net Sensitivity Co-variance
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The LIBOR1M-PRIME Net Sensitivity Co-variance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double covariance_LIBOR1M_PRIME (
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L978" title="All 2 branches missed.">		if (null == curveTenorSensitivitySettings)</span>
+		{
+<span class="nc" id="L980">			throw new java.lang.Exception (&quot;IRNetSensitivity::covariance_LIBOR1M_PRIME =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L983">		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =</span>
+<span class="nc" id="L984">			curveTenorSensitivitySettings.singleCurveTenorCorrelation();</span>
+
+<span class="nc" id="L986">		double covariance_LIBOR1M_PRIME = 0.;</span>
+
+<span class="nc bnc" id="L988" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; libor1MEntry : _libor1M.entrySet())</span>
+		{
+<span class="nc" id="L990">			double libor1MSensitivity = libor1MEntry.getValue();</span>
+
+<span class="nc" id="L992">			java.lang.String libor1MTenor = libor1MEntry.getKey();</span>
+
+<span class="nc bnc" id="L994" title="All 2 branches missed.">			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; primeEntry : _prime.entrySet())</span>
+			{
+<span class="nc" id="L996">				java.lang.String primeTenor = primeEntry.getKey();</span>
+
+<span class="nc" id="L998">				covariance_LIBOR1M_PRIME = covariance_LIBOR1M_PRIME + libor1MSensitivity *</span>
+<span class="nc" id="L999">					primeEntry.getValue() * (</span>
+<span class="nc bnc" id="L1000" title="All 2 branches missed.">						libor1MTenor.equalsIgnoreCase (primeTenor) ? 1. :</span>
+<span class="nc" id="L1001">							tenorCorrelation.entry (</span>
+								libor1MTenor,
+								primeTenor
+							)
+						);
+<span class="nc" id="L1006">			}</span>
+<span class="nc" id="L1007">		}</span>
+
+<span class="nc" id="L1009">		return covariance_LIBOR1M_PRIME * curveTenorSensitivitySettings.crossSubCurveCorrelation();</span>
+	}
+
+	/**
+	 * Compute the LIBOR1M-MUNICIPAL Net Sensitivity Co-variance
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The LIBOR1M-MUNICIPAL Net Sensitivity Co-variance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double covariance_LIBOR1M_MUNICIPAL (
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L1026" title="All 2 branches missed.">		if (null == curveTenorSensitivitySettings)</span>
+		{
+<span class="nc" id="L1028">			throw new java.lang.Exception</span>
+				(&quot;IRNetSensitivity::covariance_LIBOR1M_MUNICIPAL =&gt; Invalid Inputs&quot;);
+		}
+
+<span class="nc" id="L1032">		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =</span>
+<span class="nc" id="L1033">			curveTenorSensitivitySettings.singleCurveTenorCorrelation();</span>
+
+<span class="nc" id="L1035">		double covariance_LIBOR1M_MUNICIPAL = 0.;</span>
+
+<span class="nc bnc" id="L1037" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; libor1MEntry : _libor1M.entrySet())</span>
+		{
+<span class="nc" id="L1039">			double libor1MSensitivity = libor1MEntry.getValue();</span>
+
+<span class="nc" id="L1041">			java.lang.String libor1MTenor = libor1MEntry.getKey();</span>
+
+<span class="nc bnc" id="L1043" title="All 2 branches missed.">			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; municipalEntry : _municipal.entrySet())</span>
+			{
+<span class="nc" id="L1045">				java.lang.String municipalTenor = municipalEntry.getKey();</span>
+
+<span class="nc" id="L1047">				covariance_LIBOR1M_MUNICIPAL = covariance_LIBOR1M_MUNICIPAL + libor1MSensitivity *</span>
+<span class="nc" id="L1048">					municipalEntry.getValue() * (</span>
+<span class="nc bnc" id="L1049" title="All 2 branches missed.">						libor1MTenor.equalsIgnoreCase (municipalTenor) ? 1. :</span>
+<span class="nc" id="L1050">							tenorCorrelation.entry (</span>
+								libor1MTenor,
+								municipalTenor
+							)
+						);
+<span class="nc" id="L1055">			}</span>
+<span class="nc" id="L1056">		}</span>
+
+<span class="nc" id="L1058">		return covariance_LIBOR1M_MUNICIPAL * curveTenorSensitivitySettings.crossSubCurveCorrelation();</span>
+	}
+
+	/**
+	 * Compute the LIBOR3M-LIBOR6M Net Sensitivity Co-variance
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The LIBOR3M-LIBOR6M Net Sensitivity Co-variance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double covariance_LIBOR3M_LIBOR6M (
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L1075" title="All 2 branches missed.">		if (null == curveTenorSensitivitySettings)</span>
+		{
+<span class="nc" id="L1077">			throw new java.lang.Exception (&quot;IRNetSensitivity::covariance_LIBOR3M_LIBOR6M =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L1080">		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =</span>
+<span class="nc" id="L1081">			curveTenorSensitivitySettings.singleCurveTenorCorrelation();</span>
+
+<span class="nc" id="L1083">		double covariance_LIBOR3M_LIBOR6M = 0.;</span>
+
+<span class="nc bnc" id="L1085" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; libor3MEntry : _libor3M.entrySet())</span>
+		{
+<span class="nc" id="L1087">			double libor3MSensitivity = libor3MEntry.getValue();</span>
+
+<span class="nc" id="L1089">			java.lang.String libor3MTenor = libor3MEntry.getKey();</span>
+
+<span class="nc bnc" id="L1091" title="All 2 branches missed.">			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; libor6MEntry : _libor6M.entrySet())</span>
+			{
+<span class="nc" id="L1093">				java.lang.String libor6MTenor = libor6MEntry.getKey();</span>
+
+<span class="nc" id="L1095">				covariance_LIBOR3M_LIBOR6M = covariance_LIBOR3M_LIBOR6M + libor3MSensitivity *</span>
+<span class="nc" id="L1096">					libor6MEntry.getValue() * (</span>
+<span class="nc bnc" id="L1097" title="All 2 branches missed.">						libor3MTenor.equalsIgnoreCase (libor6MTenor) ? 1. :</span>
+<span class="nc" id="L1098">							tenorCorrelation.entry (</span>
+								libor3MTenor,
+								libor6MTenor
+							)
+						);
+<span class="nc" id="L1103">			}</span>
+<span class="nc" id="L1104">		}</span>
+
+<span class="nc" id="L1106">		return covariance_LIBOR3M_LIBOR6M * curveTenorSensitivitySettings.crossSubCurveCorrelation();</span>
+	}
+
+	/**
+	 * Compute the LIBOR3M-LIBOR12M Net Sensitivity Co-variance
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The LIBOR3M-LIBOR12M Net Sensitivity Co-variance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double covariance_LIBOR3M_LIBOR12M (
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L1123" title="All 2 branches missed.">		if (null == curveTenorSensitivitySettings)</span>
+		{
+<span class="nc" id="L1125">			throw new java.lang.Exception (&quot;IRNetSensitivity::covariance_LIBOR3M_LIBOR12M =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L1128">		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =</span>
+<span class="nc" id="L1129">			curveTenorSensitivitySettings.singleCurveTenorCorrelation();</span>
+
+<span class="nc" id="L1131">		double covariance_LIBOR3M_LIBOR12M = 0.;</span>
+
+<span class="nc bnc" id="L1133" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; libor3MEntry : _libor3M.entrySet())</span>
+		{
+<span class="nc" id="L1135">			double libor3MSensitivity = libor3MEntry.getValue();</span>
+
+<span class="nc" id="L1137">			java.lang.String libor3MTenor = libor3MEntry.getKey();</span>
+
+<span class="nc bnc" id="L1139" title="All 2 branches missed.">			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; libor12MEntry : _libor12M.entrySet())</span>
+			{
+<span class="nc" id="L1141">				java.lang.String libor12MTenor = libor12MEntry.getKey();</span>
+
+<span class="nc" id="L1143">				covariance_LIBOR3M_LIBOR12M = covariance_LIBOR3M_LIBOR12M + libor3MSensitivity *</span>
+<span class="nc" id="L1144">					libor12MEntry.getValue() * (</span>
+<span class="nc bnc" id="L1145" title="All 2 branches missed.">						libor3MTenor.equalsIgnoreCase (libor12MTenor) ? 1. :</span>
+<span class="nc" id="L1146">							tenorCorrelation.entry (</span>
+								libor3MTenor,
+								libor12MTenor
+							)
+						);
+<span class="nc" id="L1151">			}</span>
+<span class="nc" id="L1152">		}</span>
+
+<span class="nc" id="L1154">		return covariance_LIBOR3M_LIBOR12M * curveTenorSensitivitySettings.crossSubCurveCorrelation();</span>
+	}
+
+	/**
+	 * Compute the LIBOR3M-PRIME Net Sensitivity Co-variance
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The LIBOR3M-PRIME Net Sensitivity Co-variance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double covariance_LIBOR3M_PRIME (
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L1171" title="All 2 branches missed.">		if (null == curveTenorSensitivitySettings)</span>
+		{
+<span class="nc" id="L1173">			throw new java.lang.Exception (&quot;IRNetSensitivity::covariance_LIBOR3M_PRIME =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L1176">		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =</span>
+<span class="nc" id="L1177">			curveTenorSensitivitySettings.singleCurveTenorCorrelation();</span>
+
+<span class="nc" id="L1179">		double covariance_LIBOR3M_PRIME = 0.;</span>
+
+<span class="nc bnc" id="L1181" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; libor3MEntry : _libor3M.entrySet())</span>
+		{
+<span class="nc" id="L1183">			double libor3MSensitivity = libor3MEntry.getValue();</span>
+
+<span class="nc" id="L1185">			java.lang.String libor3MTenor = libor3MEntry.getKey();</span>
+
+<span class="nc bnc" id="L1187" title="All 2 branches missed.">			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; primeEntry : _prime.entrySet())</span>
+			{
+<span class="nc" id="L1189">				java.lang.String primeTenor = primeEntry.getKey();</span>
+
+<span class="nc" id="L1191">				covariance_LIBOR3M_PRIME = covariance_LIBOR3M_PRIME + libor3MSensitivity *</span>
+<span class="nc" id="L1192">					primeEntry.getValue() * (</span>
+<span class="nc bnc" id="L1193" title="All 2 branches missed.">						libor3MTenor.equalsIgnoreCase (primeTenor) ? 1. :</span>
+<span class="nc" id="L1194">							tenorCorrelation.entry (</span>
+								libor3MTenor,
+								primeTenor
+							)
+						);
+<span class="nc" id="L1199">			}</span>
+<span class="nc" id="L1200">		}</span>
+
+<span class="nc" id="L1202">		return covariance_LIBOR3M_PRIME * curveTenorSensitivitySettings.crossSubCurveCorrelation();</span>
+	}
+
+	/**
+	 * Compute the LIBOR3M-MUNICIPAL Net Sensitivity Co-variance
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The LIBOR3M-MUNICIPAL Net Sensitivity Co-variance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double covariance_LIBOR3M_MUNICIPAL (
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L1219" title="All 2 branches missed.">		if (null == curveTenorSensitivitySettings)</span>
+		{
+<span class="nc" id="L1221">			throw new java.lang.Exception</span>
+				(&quot;IRNetSensitivity::covariance_LIBOR3M_MUNICIPAL =&gt; Invalid Inputs&quot;);
+		}
+
+<span class="nc" id="L1225">		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =</span>
+<span class="nc" id="L1226">			curveTenorSensitivitySettings.singleCurveTenorCorrelation();</span>
+
+<span class="nc" id="L1228">		double covariance_LIBOR3M_MUNICIPAL = 0.;</span>
+
+<span class="nc bnc" id="L1230" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; libor3MEntry : _libor3M.entrySet())</span>
+		{
+<span class="nc" id="L1232">			double libor3MSensitivity = libor3MEntry.getValue();</span>
+
+<span class="nc" id="L1234">			java.lang.String libor3MTenor = libor3MEntry.getKey();</span>
+
+<span class="nc bnc" id="L1236" title="All 2 branches missed.">			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; municipalEntry : _municipal.entrySet())</span>
+			{
+<span class="nc" id="L1238">				java.lang.String municipalTenor = municipalEntry.getKey();</span>
+
+<span class="nc" id="L1240">				covariance_LIBOR3M_MUNICIPAL = covariance_LIBOR3M_MUNICIPAL + libor3MSensitivity *</span>
+<span class="nc" id="L1241">					municipalEntry.getValue() * (</span>
+<span class="nc bnc" id="L1242" title="All 2 branches missed.">						libor3MTenor.equalsIgnoreCase (municipalTenor) ? 1. :</span>
+<span class="nc" id="L1243">							tenorCorrelation.entry (</span>
+								libor3MTenor,
+								municipalTenor
+							)
+						);
+<span class="nc" id="L1248">			}</span>
+<span class="nc" id="L1249">		}</span>
+
+<span class="nc" id="L1251">		return covariance_LIBOR3M_MUNICIPAL * curveTenorSensitivitySettings.crossSubCurveCorrelation();</span>
+	}
+
+	/**
+	 * Compute the LIBOR6M-LIBOR12M Net Sensitivity Co-variance
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The LIBOR6M-LIBOR12M Net Sensitivity Co-variance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double covariance_LIBOR6M_LIBOR12M (
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L1268" title="All 2 branches missed.">		if (null == curveTenorSensitivitySettings)</span>
+		{
+<span class="nc" id="L1270">			throw new java.lang.Exception (&quot;IRNetSensitivity::covariance_LIBOR6M_LIBOR12M =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L1273">		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =</span>
+<span class="nc" id="L1274">			curveTenorSensitivitySettings.singleCurveTenorCorrelation();</span>
+
+<span class="nc" id="L1276">		double covariance_LIBOR6M_LIBOR12M = 0.;</span>
+
+<span class="nc bnc" id="L1278" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; libor6MEntry : _libor6M.entrySet())</span>
+		{
+<span class="nc" id="L1280">			double libor6MSensitivity = libor6MEntry.getValue();</span>
+
+<span class="nc" id="L1282">			java.lang.String libor6MTenor = libor6MEntry.getKey();</span>
+
+<span class="nc bnc" id="L1284" title="All 2 branches missed.">			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; libor12MEntry : _libor12M.entrySet())</span>
+			{
+<span class="nc" id="L1286">				java.lang.String libor12MTenor = libor12MEntry.getKey();</span>
+
+<span class="nc" id="L1288">				covariance_LIBOR6M_LIBOR12M = covariance_LIBOR6M_LIBOR12M + libor6MSensitivity *</span>
+<span class="nc" id="L1289">					libor12MEntry.getValue() * (</span>
+<span class="nc bnc" id="L1290" title="All 2 branches missed.">						libor6MTenor.equalsIgnoreCase (libor12MTenor) ? 1. :</span>
+<span class="nc" id="L1291">							tenorCorrelation.entry (</span>
+								libor6MTenor,
+								libor12MTenor
+							)
+						);
+<span class="nc" id="L1296">			}</span>
+<span class="nc" id="L1297">		}</span>
+
+<span class="nc" id="L1299">		return covariance_LIBOR6M_LIBOR12M * curveTenorSensitivitySettings.crossSubCurveCorrelation();</span>
+	}
+
+	/**
+	 * Compute the LIBOR6M-PRIME Net Sensitivity Co-variance
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The LIBOR6M-PRIME Net Sensitivity Co-variance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double covariance_LIBOR6M_PRIME (
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L1316" title="All 2 branches missed.">		if (null == curveTenorSensitivitySettings)</span>
+		{
+<span class="nc" id="L1318">			throw new java.lang.Exception (&quot;IRNetSensitivity::covariance_LIBOR6M_PRIME =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L1321">		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =</span>
+<span class="nc" id="L1322">			curveTenorSensitivitySettings.singleCurveTenorCorrelation();</span>
+
+<span class="nc" id="L1324">		double covariance_LIBOR6M_PRIME = 0.;</span>
+
+<span class="nc bnc" id="L1326" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; libor6MEntry : _libor6M.entrySet())</span>
+		{
+<span class="nc" id="L1328">			double libor6MSensitivity = libor6MEntry.getValue();</span>
+
+<span class="nc" id="L1330">			java.lang.String libor6MTenor = libor6MEntry.getKey();</span>
+
+<span class="nc bnc" id="L1332" title="All 2 branches missed.">			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; primeEntry : _prime.entrySet())</span>
+			{
+<span class="nc" id="L1334">				java.lang.String primeTenor = primeEntry.getKey();</span>
+
+<span class="nc" id="L1336">				covariance_LIBOR6M_PRIME = covariance_LIBOR6M_PRIME + libor6MSensitivity *</span>
+<span class="nc" id="L1337">					primeEntry.getValue() * (</span>
+<span class="nc bnc" id="L1338" title="All 2 branches missed.">						libor6MTenor.equalsIgnoreCase (primeTenor) ? 1. :</span>
+<span class="nc" id="L1339">							tenorCorrelation.entry (</span>
+								libor6MTenor,
+								primeTenor
+							)
+						);
+<span class="nc" id="L1344">			}</span>
+<span class="nc" id="L1345">		}</span>
+
+<span class="nc" id="L1347">		return covariance_LIBOR6M_PRIME * curveTenorSensitivitySettings.crossSubCurveCorrelation();</span>
+	}
+
+	/**
+	 * Compute the LIBOR6M-MUNICIPAL Net Sensitivity Co-variance
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The LIBOR6M-MUNICIPAL Net Sensitivity Co-variance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double covariance_LIBOR6M_MUNICIPAL (
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L1364" title="All 2 branches missed.">		if (null == curveTenorSensitivitySettings)</span>
+		{
+<span class="nc" id="L1366">			throw new java.lang.Exception</span>
+				(&quot;IRNetSensitivity::covariance_LIBOR6M_MUNICIPAL =&gt; Invalid Inputs&quot;);
+		}
+
+<span class="nc" id="L1370">		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =</span>
+<span class="nc" id="L1371">			curveTenorSensitivitySettings.singleCurveTenorCorrelation();</span>
+
+<span class="nc" id="L1373">		double covariance_LIBOR6M_MUNICIPAL = 0.;</span>
+
+<span class="nc bnc" id="L1375" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; libor6MEntry : _libor6M.entrySet())</span>
+		{
+<span class="nc" id="L1377">			double libor6MSensitivity = libor6MEntry.getValue();</span>
+
+<span class="nc" id="L1379">			java.lang.String libor6MTenor = libor6MEntry.getKey();</span>
+
+<span class="nc bnc" id="L1381" title="All 2 branches missed.">			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; municipalEntry : _municipal.entrySet())</span>
+			{
+<span class="nc" id="L1383">				java.lang.String municipalTenor = municipalEntry.getKey();</span>
+
+<span class="nc" id="L1385">				covariance_LIBOR6M_MUNICIPAL = covariance_LIBOR6M_MUNICIPAL + libor6MSensitivity *</span>
+<span class="nc" id="L1386">					municipalEntry.getValue() * (</span>
+<span class="nc bnc" id="L1387" title="All 2 branches missed.">						libor6MTenor.equalsIgnoreCase (municipalTenor) ? 1. :</span>
+<span class="nc" id="L1388">							tenorCorrelation.entry (</span>
+								libor6MTenor,
+								municipalTenor
+							)
+						);
+<span class="nc" id="L1393">			}</span>
+<span class="nc" id="L1394">		}</span>
+
+<span class="nc" id="L1396">		return covariance_LIBOR6M_MUNICIPAL * curveTenorSensitivitySettings.crossSubCurveCorrelation();</span>
+	}
+
+	/**
+	 * Compute the LIBOR12M-PRIME Net Sensitivity Co-variance
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The LIBOR12M-PRIME Net Sensitivity Co-variance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double covariance_LIBOR12M_PRIME (
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L1413" title="All 2 branches missed.">		if (null == curveTenorSensitivitySettings)</span>
+		{
+<span class="nc" id="L1415">			throw new java.lang.Exception (&quot;IRNetSensitivity::covariance_LIBOR12M_PRIME =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L1418">		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =</span>
+<span class="nc" id="L1419">			curveTenorSensitivitySettings.singleCurveTenorCorrelation();</span>
+
+<span class="nc" id="L1421">		double covariance_LIBOR12M_PRIME = 0.;</span>
+
+<span class="nc bnc" id="L1423" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; libor12MEntry : _libor12M.entrySet())</span>
+		{
+<span class="nc" id="L1425">			double libor12MSensitivity = libor12MEntry.getValue();</span>
+
+<span class="nc" id="L1427">			java.lang.String libor12MTenor = libor12MEntry.getKey();</span>
+
+<span class="nc bnc" id="L1429" title="All 2 branches missed.">			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; primeEntry : _prime.entrySet())</span>
+			{
+<span class="nc" id="L1431">				java.lang.String primeTenor = primeEntry.getKey();</span>
+
+<span class="nc" id="L1433">				covariance_LIBOR12M_PRIME = covariance_LIBOR12M_PRIME + libor12MSensitivity *</span>
+<span class="nc" id="L1434">					primeEntry.getValue() * (</span>
+<span class="nc bnc" id="L1435" title="All 2 branches missed.">						libor12MTenor.equalsIgnoreCase (primeTenor) ? 1. :</span>
+<span class="nc" id="L1436">							tenorCorrelation.entry (</span>
+								libor12MTenor,
+								primeTenor
+							)
+						);
+<span class="nc" id="L1441">			}</span>
+<span class="nc" id="L1442">		}</span>
+
+<span class="nc" id="L1444">		return covariance_LIBOR12M_PRIME * curveTenorSensitivitySettings.crossSubCurveCorrelation();</span>
+	}
+
+	/**
+	 * Compute the LIBOR12M-MUNICIPAL Net Sensitivity Co-variance
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The LIBOR12M-MUNICIPAL Net Sensitivity Co-variance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double covariance_LIBOR12M_MUNICIPAL (
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L1461" title="All 2 branches missed.">		if (null == curveTenorSensitivitySettings)</span>
+		{
+<span class="nc" id="L1463">			throw new java.lang.Exception</span>
+				(&quot;IRNetSensitivity::covariance_LIBOR12M_MUNICIPAL =&gt; Invalid Inputs&quot;);
+		}
+
+<span class="nc" id="L1467">		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =</span>
+<span class="nc" id="L1468">			curveTenorSensitivitySettings.singleCurveTenorCorrelation();</span>
+
+<span class="nc" id="L1470">		double covariance_LIBOR12M_MUNICIPAL = 0.;</span>
+
+<span class="nc bnc" id="L1472" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; libor12MEntry : _libor12M.entrySet())</span>
+		{
+<span class="nc" id="L1474">			double libor12MSensitivity = libor12MEntry.getValue();</span>
+
+<span class="nc" id="L1476">			java.lang.String libor12MTenor = libor12MEntry.getKey();</span>
+
+<span class="nc bnc" id="L1478" title="All 2 branches missed.">			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; municipalEntry : _municipal.entrySet())</span>
+			{
+<span class="nc" id="L1480">				java.lang.String municipalTenor = municipalEntry.getKey();</span>
+
+<span class="nc" id="L1482">				covariance_LIBOR12M_MUNICIPAL = covariance_LIBOR12M_MUNICIPAL + libor12MSensitivity *</span>
+<span class="nc" id="L1483">					municipalEntry.getValue() * (</span>
+<span class="nc bnc" id="L1484" title="All 2 branches missed.">						libor12MTenor.equalsIgnoreCase (municipalTenor) ? 1. :</span>
+<span class="nc" id="L1485">							tenorCorrelation.entry (</span>
+								libor12MTenor,
+								municipalTenor
+							)
+						);
+<span class="nc" id="L1490">			}</span>
+<span class="nc" id="L1491">		}</span>
+
+<span class="nc" id="L1493">		return covariance_LIBOR12M_MUNICIPAL * curveTenorSensitivitySettings.crossSubCurveCorrelation();</span>
+	}
+
+	/**
+	 * Compute the PRIME-MUNICIPAL Net Sensitivity Co-variance
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The PRIME-MUNICIPAL Net Sensitivity Co-variance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double covariance_PRIME_MUNICIPAL (
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L1510" title="All 2 branches missed.">		if (null == curveTenorSensitivitySettings)</span>
+		{
+<span class="nc" id="L1512">			throw new java.lang.Exception (&quot;IRNetSensitivity::covariance_PRIME_MUNICIPAL =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L1515">		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =</span>
+<span class="nc" id="L1516">			curveTenorSensitivitySettings.singleCurveTenorCorrelation();</span>
+
+<span class="nc" id="L1518">		double covariance_PRIME_MUNICIPAL = 0.;</span>
+
+<span class="nc bnc" id="L1520" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; primeEntry : _prime.entrySet())</span>
+		{
+<span class="nc" id="L1522">			double primeSensitivity = primeEntry.getValue();</span>
+
+<span class="nc" id="L1524">			java.lang.String primeTenor = primeEntry.getKey();</span>
+
+<span class="nc bnc" id="L1526" title="All 2 branches missed.">			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; municipalEntry : _municipal.entrySet())</span>
+			{
+<span class="nc" id="L1528">				java.lang.String municipalTenor = municipalEntry.getKey();</span>
+
+<span class="nc" id="L1530">				covariance_PRIME_MUNICIPAL = covariance_PRIME_MUNICIPAL + primeSensitivity *</span>
+<span class="nc" id="L1531">					municipalEntry.getValue() * (</span>
+<span class="nc bnc" id="L1532" title="All 2 branches missed.">						primeTenor.equalsIgnoreCase (municipalTenor) ? 1. :</span>
+<span class="nc" id="L1533">							tenorCorrelation.entry (</span>
+								primeTenor,
+								municipalTenor
+							)
+						);
+<span class="nc" id="L1538">			}</span>
+<span class="nc" id="L1539">		}</span>
+
+<span class="nc" id="L1541">		return covariance_PRIME_MUNICIPAL * curveTenorSensitivitySettings.crossSubCurveCorrelation();</span>
+	}
+
+	/**
+	 * Compute the Complete Net Sensitivity Margin Co-variance
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The Complete Net Sensitivity Margin Co-variance
+	 */
+
+	public org.drip.simm20.product.IRMarginCovariance marginCovariance (
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings)
+	{
+		try
+		{
+<span class="nc" id="L1557">			return new org.drip.simm20.product.IRMarginCovariance (</span>
+<span class="nc" id="L1558">				covariance_OIS_OIS (curveTenorSensitivitySettings),</span>
+<span class="nc" id="L1559">				covariance_OIS_LIBOR1M (curveTenorSensitivitySettings),</span>
+<span class="nc" id="L1560">				covariance_OIS_LIBOR3M (curveTenorSensitivitySettings),</span>
+<span class="nc" id="L1561">				covariance_OIS_LIBOR6M (curveTenorSensitivitySettings),</span>
+<span class="nc" id="L1562">				covariance_OIS_LIBOR12M (curveTenorSensitivitySettings),</span>
+<span class="nc" id="L1563">				covariance_OIS_PRIME (curveTenorSensitivitySettings),</span>
+<span class="nc" id="L1564">				covariance_OIS_MUNICIPAL (curveTenorSensitivitySettings),</span>
+<span class="nc" id="L1565">				covariance_LIBOR1M_LIBOR1M (curveTenorSensitivitySettings),</span>
+<span class="nc" id="L1566">				covariance_LIBOR1M_LIBOR3M (curveTenorSensitivitySettings),</span>
+<span class="nc" id="L1567">				covariance_LIBOR1M_LIBOR6M (curveTenorSensitivitySettings),</span>
+<span class="nc" id="L1568">				covariance_LIBOR1M_LIBOR12M (curveTenorSensitivitySettings),</span>
+<span class="nc" id="L1569">				covariance_LIBOR1M_PRIME (curveTenorSensitivitySettings),</span>
+<span class="nc" id="L1570">				covariance_LIBOR1M_MUNICIPAL (curveTenorSensitivitySettings),</span>
+<span class="nc" id="L1571">				covariance_LIBOR3M_LIBOR3M (curveTenorSensitivitySettings),</span>
+<span class="nc" id="L1572">				covariance_LIBOR3M_LIBOR6M (curveTenorSensitivitySettings),</span>
+<span class="nc" id="L1573">				covariance_LIBOR3M_LIBOR12M (curveTenorSensitivitySettings),</span>
+<span class="nc" id="L1574">				covariance_LIBOR3M_PRIME (curveTenorSensitivitySettings),</span>
+<span class="nc" id="L1575">				covariance_LIBOR3M_MUNICIPAL (curveTenorSensitivitySettings),</span>
+<span class="nc" id="L1576">				covariance_LIBOR6M_LIBOR6M (curveTenorSensitivitySettings),</span>
+<span class="nc" id="L1577">				covariance_LIBOR6M_LIBOR12M (curveTenorSensitivitySettings),</span>
+<span class="nc" id="L1578">				covariance_LIBOR6M_PRIME (curveTenorSensitivitySettings),</span>
+<span class="nc" id="L1579">				covariance_LIBOR6M_MUNICIPAL (curveTenorSensitivitySettings),</span>
+<span class="nc" id="L1580">				covariance_LIBOR12M_LIBOR12M (curveTenorSensitivitySettings),</span>
+<span class="nc" id="L1581">				covariance_LIBOR12M_PRIME (curveTenorSensitivitySettings),</span>
+<span class="nc" id="L1582">				covariance_LIBOR12M_MUNICIPAL (curveTenorSensitivitySettings),</span>
+<span class="nc" id="L1583">				covariance_PRIME_PRIME (curveTenorSensitivitySettings),</span>
+<span class="nc" id="L1584">				covariance_PRIME_MUNICIPAL (curveTenorSensitivitySettings),</span>
+<span class="nc" id="L1585">				covariance_MUNICIPAL_MUNICIPAL (curveTenorSensitivitySettings)</span>
+			);
+		}
+<span class="nc" id="L1588">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L1590">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L1593">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

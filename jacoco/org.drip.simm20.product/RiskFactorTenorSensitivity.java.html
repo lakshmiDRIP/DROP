@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RiskFactorTenorSensitivity.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.simm20.product</a> &gt; <span class="el_source">RiskFactorTenorSensitivity.java</span></div><h1>RiskFactorTenorSensitivity.java</h1><pre class="source lang-java linenums">
+package org.drip.simm20.product;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * RiskFactorTenorSensitivity holds the ISDA SIMM 2.0 Risk Factor Tenor Bucket Sensitivities. The References
+ *  are:
+ *  
+ *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
+ *  
+ *  - Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
+ *  	Calculations, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488, eSSRN.
+ *  
+ *  - Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
+ *  	Framework for Forecasting Initial Margin Requirements,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
+ *  
+ *  - Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements
+ *  	- A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167, eSSRN.
+ *  
+ *  - International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology,
+ *  	https://www.isda.org/a/oFiDE/isda-simm-v2.pdf.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class RiskFactorTenorSensitivity
+{
+<span class="nc" id="L74">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _tenorDeltaMap = null;</span>
+
+	/**
+	 * Construct the Standard Rates ISDA Bucket Sensitivity
+	 * 
+	 * @return The Standard Rates ISDA Bucket Sensitivity
+	 */
+
+	public static final RiskFactorTenorSensitivity IR()
+	{
+<span class="nc" id="L84">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorDeltaMap = new</span>
+			java.util.HashMap&lt;java.lang.String, java.lang.Double&gt;();
+
+<span class="nc bnc" id="L87" title="All 2 branches missed.">		for (java.lang.String tenor : org.drip.simm20.rates.IRSettingsContainer.TenorSet())</span>
+		{
+<span class="nc" id="L89">			tenorDeltaMap.put (</span>
+				tenor,
+<span class="nc" id="L91">				0.</span>
+			);
+<span class="nc" id="L93">		}</span>
+
+		try
+		{
+<span class="nc" id="L97">			return new RiskFactorTenorSensitivity (tenorDeltaMap);</span>
+		}
+<span class="nc" id="L99">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L101">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L104">		return null;</span>
+	}
+
+	/**
+	 * Construct the Standard Credit Qualifying ISDA Bucket Sensitivity
+	 * 
+	 * @return The Standard Credit Qualifying ISDA Bucket Sensitivity
+	 */
+
+	public static final RiskFactorTenorSensitivity CRQ()
+	{
+<span class="nc" id="L115">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorDeltaMap = new</span>
+			java.util.HashMap&lt;java.lang.String, java.lang.Double&gt;();
+
+<span class="nc bnc" id="L118" title="All 2 branches missed.">		for (java.lang.String tenor : org.drip.simm20.credit.CRQSettingsContainer.TenorSet())</span>
+		{
+<span class="nc" id="L120">			tenorDeltaMap.put (</span>
+				tenor,
+<span class="nc" id="L122">				0.</span>
+			);
+<span class="nc" id="L124">		}</span>
+
+		try
+		{
+<span class="nc" id="L128">			return new RiskFactorTenorSensitivity (tenorDeltaMap);</span>
+		}
+<span class="nc" id="L130">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L132">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L135">		return null;</span>
+	}
+
+
+	/**
+	 * Construct the Standard Credit Non-Qualifying ISDA Bucket Sensitivity
+	 * 
+	 * @return The Standard Credit Non-Qualifying ISDA Bucket Sensitivity
+	 */
+
+	public static final RiskFactorTenorSensitivity CRNQ()
+	{
+<span class="nc" id="L147">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorDeltaMap = new</span>
+			java.util.HashMap&lt;java.lang.String, java.lang.Double&gt;();
+
+<span class="nc bnc" id="L150" title="All 2 branches missed.">		for (java.lang.String tenor : org.drip.simm20.credit.CRNQSettingsContainer.TenorSet())</span>
+		{
+<span class="nc" id="L152">			tenorDeltaMap.put (</span>
+				tenor,
+<span class="nc" id="L154">				0.</span>
+			);
+<span class="nc" id="L156">		}</span>
+
+		try
+		{
+<span class="nc" id="L160">			return new RiskFactorTenorSensitivity (tenorDeltaMap);</span>
+		}
+<span class="nc" id="L162">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L164">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L167">		return null;</span>
+	}
+	/**
+	 * RiskFactorTenorSensitivity Constructor
+	 * 
+	 * @param tenorDeltaMap The Tenor Delta Map
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public RiskFactorTenorSensitivity (
+		java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorDeltaMap)
+		throws java.lang.Exception
+<span class="nc" id="L180">	{</span>
+<span class="nc bnc" id="L181" title="All 4 branches missed.">		if (null == (_tenorDeltaMap = tenorDeltaMap) || 0 == _tenorDeltaMap.size())</span>
+		{
+<span class="nc" id="L183">			throw new java.lang.Exception (&quot;RiskFactorTenorSensitivity Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="nc" id="L185">	}</span>
+
+	/**
+	 * Retrieve the Set of Tenors
+	 * 
+	 * @return The Set of Tenors
+	 */
+
+	public java.util.Set&lt;java.lang.String&gt; tenorSet()
+	{
+<span class="nc" id="L195">		return _tenorDeltaMap.keySet();</span>
+	}
+
+	/**
+	 * Add the Tenor Delta
+	 * 
+	 * @param tenor The Tenor
+	 * @param delta Delta for the given Tenor
+	 * 
+	 * @return TRUE - The Tenor Delta successfully set
+	 */
+
+	public boolean addTenorDelta (
+		final java.lang.String tenor,
+		final double delta)
+	{
+<span class="nc bnc" id="L211" title="All 4 branches missed.">		if (null == tenor || !org.drip.quant.common.NumberUtil.IsValid (delta))</span>
+		{
+<span class="nc" id="L213">			return false;</span>
+		}
+
+<span class="nc" id="L216">		_tenorDeltaMap.put (</span>
+			tenor,
+<span class="nc" id="L218">			delta</span>
+		);
+
+<span class="nc" id="L221">		return true;</span>
+	}
+
+	/**
+	 * Indicate of the Delta exists for the specified Tenor
+	 * 
+	 * @param tenor The Tenor
+	 * 
+	 * @return TRUE - Delta exists for the specified Tenor
+	 */
+
+	public boolean tenorExists (
+		final java.lang.String tenor)
+	{
+<span class="nc bnc" id="L235" title="All 4 branches missed.">		return null != tenor &amp;&amp; _tenorDeltaMap.containsKey (tenor);</span>
+	}
+
+	/**
+	 * Retrieve the Delta for the Bucket Tenor
+	 * 
+	 * @param tenor The Tenor
+	 * 
+	 * @return The Delta corresponding to the Tenor
+	 * 
+	 * @throws java.lang.Exception Thrown if the Input is Invalid
+	 */
+
+	public double delta (
+		final java.lang.String tenor)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L252" title="All 2 branches missed.">		if (!tenorExists (tenor))</span>
+		{
+<span class="nc" id="L254">			throw new java.lang.Exception (&quot;RiskFactorTenorSensitivity::delta =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L257">		return _tenorDeltaMap.get (tenor);</span>
+	}
+
+	/**
+	 * Retrieve the Map of Tenor Deltas
+	 * 
+	 * @return The Map of Tenor Deltas
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorDeltaMap()
+	{
+<span class="nc" id="L268">		return _tenorDeltaMap;</span>
+	}
+
+	/**
+	 * Generate the Cumulative Tenor Delta
+	 * 
+	 * @return The Cumulative Tenor Delta
+	 */
+
+	public double cumulative()
+	{
+<span class="nc" id="L279">		double cumulative = 0.;</span>
+
+		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; tenorDeltaEntry :
+<span class="nc bnc" id="L282" title="All 2 branches missed.">			_tenorDeltaMap.entrySet())</span>
+		{
+<span class="nc" id="L284">			cumulative = cumulative + tenorDeltaEntry.getValue();</span>
+<span class="nc" id="L285">		}</span>
+
+<span class="nc" id="L287">		return cumulative;</span>
+	}
+
+	/**
+	 * Compute the Concentration Risk Factor
+	 * 
+	 * @param concentrationThreshold The Concentration Threshold
+	 * 
+	 * @return The Concentration Risk Factor
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double concentrationRiskFactor (
+		final double concentrationThreshold)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L304" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (concentrationThreshold))</span>
+		{
+<span class="nc" id="L306">			throw new java.lang.Exception</span>
+				(&quot;RiskFactorTenorSensitivity::concentrationRiskFactor =&gt; Invalid Inputs&quot;);
+		}
+
+<span class="nc" id="L310">		return java.lang.Math.max (</span>
+<span class="nc" id="L311">			java.lang.Math.sqrt (</span>
+<span class="nc" id="L312">				java.lang.Math.max (</span>
+<span class="nc" id="L313">					cumulative(),</span>
+					0.
+				) / concentrationThreshold
+			),
+			1.
+		);
+	}
+
+	/**
+	 * Generate the Weighted Net Risk Weight Map
+	 * 
+	 * @param riskWeightMap The Risk Weight Map
+	 * 
+	 * @return The Weighted Net Risk Weight Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; netRiskWeight (
+		final java.util.Map&lt;java.lang.String, java.lang.Double&gt; riskWeightMap)
+	{
+<span class="nc bnc" id="L332" title="All 4 branches missed.">		if (null == riskWeightMap || 0 == riskWeightMap.size())</span>
+		{
+<span class="nc" id="L334">			return null;</span>
+		}
+
+<span class="nc" id="L337">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; netRiskWeightMap = new</span>
+			java.util.HashMap&lt;java.lang.String, java.lang.Double&gt;();
+
+		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; tenorDeltaEntry :
+<span class="nc bnc" id="L341" title="All 2 branches missed.">			_tenorDeltaMap.entrySet())</span>
+		{
+<span class="nc" id="L343">			java.lang.String tenor = tenorDeltaEntry.getKey();</span>
+
+<span class="nc bnc" id="L345" title="All 2 branches missed.">			if (!riskWeightMap.containsKey (tenor))</span>
+			{
+<span class="nc" id="L347">				return null;</span>
+			}
+
+<span class="nc" id="L350">			netRiskWeightMap.put (</span>
+				tenor,
+<span class="nc" id="L352">				tenorDeltaEntry.getValue() * riskWeightMap.get (tenor)</span>
+			);
+<span class="nc" id="L354">		}</span>
+
+<span class="nc" id="L356">		return netRiskWeightMap;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,753 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>IRSensitivity.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.simm20.product</a> &gt; <span class="el_source">IRSensitivity.java</span></div><h1>IRSensitivity.java</h1><pre class="source lang-java linenums">
+package org.drip.simm20.product;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * IRSensitivity holds the ISDA SIMM 2.0 Risk Factor Tenor Bucket Sensitivities across IR Factor Sub Curves.
+ *  USD Exposures enhanced with the USD specific Sub-Curve Factors - PRIME and MUNICIPAL. The References are:
+ *  
+ *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
+ *  
+ *  - Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
+ *  	Calculations, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488, eSSRN.
+ *  
+ *  - Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
+ *  	Framework for Forecasting Initial Margin Requirements,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
+ *  
+ *  - Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements
+ *  	- A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167, eSSRN.
+ *  
+ *  - International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology,
+ *  	https://www.isda.org/a/oFiDE/isda-simm-v2.pdf.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class IRSensitivity
+{
+<span class="nc" id="L74">	private org.drip.simm20.product.RiskFactorTenorSensitivity _ois = null;</span>
+<span class="nc" id="L75">	private org.drip.simm20.product.RiskFactorTenorSensitivity _prime = null;</span>
+<span class="nc" id="L76">	private org.drip.simm20.product.RiskFactorTenorSensitivity _libor1M = null;</span>
+<span class="nc" id="L77">	private org.drip.simm20.product.RiskFactorTenorSensitivity _libor3M = null;</span>
+<span class="nc" id="L78">	private org.drip.simm20.product.RiskFactorTenorSensitivity _libor6M = null;</span>
+<span class="nc" id="L79">	private org.drip.simm20.product.RiskFactorTenorSensitivity _libor12M = null;</span>
+<span class="nc" id="L80">	private org.drip.simm20.product.RiskFactorTenorSensitivity _municipal = null;</span>
+
+	/**
+	 * IRSensitivity Constructor
+	 * 
+	 * @param ois The OIS Risk Factor Sensitivity
+	 * @param libor1M The LIBOR-1M Risk Factor Sensitivity
+	 * @param libor3M The LIBOR-3M Risk Factor Sensitivity
+	 * @param libor6M The LIBOR-6M Risk Factor Sensitivity
+	 * @param libor12M The LIBOR-12M Risk Factor Sensitivity
+	 * @param prime The PRIME Risk Factor Sensitivity
+	 * @param municipal The MUNICIPAL Risk Factor Sensitivity
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public IRSensitivity (
+		final org.drip.simm20.product.RiskFactorTenorSensitivity ois,
+		final org.drip.simm20.product.RiskFactorTenorSensitivity libor1M,
+		final org.drip.simm20.product.RiskFactorTenorSensitivity libor3M,
+		final org.drip.simm20.product.RiskFactorTenorSensitivity libor6M,
+		final org.drip.simm20.product.RiskFactorTenorSensitivity libor12M,
+		final org.drip.simm20.product.RiskFactorTenorSensitivity prime,
+		final org.drip.simm20.product.RiskFactorTenorSensitivity municipal)
+		throws java.lang.Exception
+<span class="nc" id="L105">	{</span>
+<span class="nc bnc" id="L106" title="All 14 branches missed.">		if (null == (_ois = ois) ||</span>
+			null == (_libor1M = libor1M) ||
+			null == (_libor3M = libor3M) ||
+			null == (_libor6M = libor6M) ||
+			null == (_libor12M = libor12M) ||
+			null == (_prime = prime) ||
+			null == (_municipal = municipal))
+		{
+<span class="nc" id="L114">			throw new java.lang.Exception (&quot;IRSensitivity Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="nc" id="L116">	}</span>
+
+	/**
+	 * Retrieve the OIS Risk Factor Sensitivity
+	 * 
+	 * @return The OIS Risk Factor Sensitivity
+	 */
+
+	public org.drip.simm20.product.RiskFactorTenorSensitivity ois()
+	{
+<span class="nc" id="L126">		return _ois;</span>
+	}
+
+	/**
+	 * Retrieve the LIBOR-1M Risk Factor Sensitivity
+	 * 
+	 * @return The LIBOR-1M Risk Factor Sensitivity
+	 */
+
+	public org.drip.simm20.product.RiskFactorTenorSensitivity libor1M()
+	{
+<span class="nc" id="L137">		return _libor1M;</span>
+	}
+
+	/**
+	 * Retrieve the LIBOR-3M Risk Factor Sensitivity
+	 * 
+	 * @return The LIBOR-3M Risk Factor Sensitivity
+	 */
+
+	public org.drip.simm20.product.RiskFactorTenorSensitivity libor3M()
+	{
+<span class="nc" id="L148">		return _libor3M;</span>
+	}
+
+	/**
+	 * Retrieve the LIBOR-6M Risk Factor Sensitivity
+	 * 
+	 * @return The LIBOR-6M Risk Factor Sensitivity
+	 */
+
+	public org.drip.simm20.product.RiskFactorTenorSensitivity libor6M()
+	{
+<span class="nc" id="L159">		return _libor6M;</span>
+	}
+
+	/**
+	 * Retrieve the LIBOR-12M Risk Factor Sensitivity
+	 * 
+	 * @return The LIBOR-12M Risk Factor Sensitivity
+	 */
+
+	public org.drip.simm20.product.RiskFactorTenorSensitivity libor12M()
+	{
+<span class="nc" id="L170">		return _libor12M;</span>
+	}
+
+	/**
+	 * Retrieve the PRIME Risk Factor Sensitivity
+	 * 
+	 * @return The PRIME Risk Factor Sensitivity
+	 */
+
+	public org.drip.simm20.product.RiskFactorTenorSensitivity prime()
+	{
+<span class="nc" id="L181">		return _prime;</span>
+	}
+
+	/**
+	 * Retrieve the MUNICIPAL Risk Factor Sensitivity
+	 * 
+	 * @return The MUNICIPAL Risk Factor Sensitivity
+	 */
+
+	public org.drip.simm20.product.RiskFactorTenorSensitivity municipal()
+	{
+<span class="nc" id="L192">		return _municipal;</span>
+	}
+
+	/**
+	 * Generate the Cumulative Delta
+	 * 
+	 * @return The Cumulative Delta
+	 */
+
+	public double cumulative()
+	{
+<span class="nc" id="L203">		return _ois.cumulative() +</span>
+<span class="nc" id="L204">			_libor1M.cumulative() +</span>
+<span class="nc" id="L205">			_libor3M.cumulative() +</span>
+<span class="nc" id="L206">			_libor6M.cumulative() +</span>
+<span class="nc" id="L207">			_libor12M.cumulative() +</span>
+<span class="nc" id="L208">			_prime.cumulative() +</span>
+<span class="nc" id="L209">			_municipal.cumulative();</span>
+	}
+
+	/**
+	 * Compute the Concentration Risk Factor
+	 * 
+	 * @param concentrationThreshold The Concentration Threshold
+	 * 
+	 * @return The Concentration Risk Factor
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double concentrationRiskFactor (
+		final double concentrationThreshold)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L226" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (concentrationThreshold))</span>
+		{
+<span class="nc" id="L228">			throw new java.lang.Exception (&quot;IRSensitivity::concentrationRiskFactor =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L231">		return java.lang.Math.max (</span>
+<span class="nc" id="L232">			java.lang.Math.sqrt (</span>
+<span class="nc" id="L233">				java.lang.Math.max (</span>
+<span class="nc" id="L234">					cumulative(),</span>
+					0.
+				) / concentrationThreshold
+			),
+			1.
+		);
+	}
+
+	/**
+	 * Generate the Weighted/Unweighted Net OIS Sensitivity Map
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Teno Sensitivity Settings
+	 * @param weighted TRUE - Generate the Weighted Sensitivity Map
+	 * 
+	 * @return The Weighted/Unweighted Net OIS Sensitivity Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; oisNet (
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings,
+		final boolean weighted)
+	{
+<span class="nc bnc" id="L255" title="All 2 branches missed.">		if (null == curveTenorSensitivitySettings)</span>
+		{
+<span class="nc" id="L257">			return null;</span>
+		}
+
+<span class="nc" id="L260">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; oisNet = _ois.netRiskWeight</span>
+<span class="nc" id="L261">			(curveTenorSensitivitySettings.ois());</span>
+
+<span class="nc bnc" id="L263" title="All 4 branches missed.">		if (null == oisNet || !weighted)</span>
+		{
+<span class="nc" id="L265">			return oisNet;</span>
+		}
+
+<span class="nc" id="L268">		double concentrationRiskFactor = java.lang.Double.NaN;</span>
+
+		try
+		{
+<span class="nc" id="L272">			concentrationRiskFactor = concentrationRiskFactor</span>
+<span class="nc" id="L273">				(curveTenorSensitivitySettings.concentrationThreshold());</span>
+		}
+<span class="nc" id="L275">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L277">			e.printStackTrace();</span>
+
+<span class="nc" id="L279">			return null;</span>
+<span class="nc" id="L280">		}</span>
+
+<span class="nc bnc" id="L282" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; oisNetEntry : oisNet.entrySet())</span>
+		{
+<span class="nc" id="L284">			java.lang.String tenor = oisNetEntry.getKey();</span>
+
+<span class="nc" id="L286">			oisNet.put (</span>
+				tenor,
+<span class="nc" id="L288">				oisNet.get (tenor) * concentrationRiskFactor</span>
+			);
+<span class="nc" id="L290">		}</span>
+
+<span class="nc" id="L292">		return oisNet;</span>
+	}
+
+	/**
+	 * Generate the Weighted/Unweighted Net LIBOR 1M Sensitivity Map
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * @param weighted TRUE - Generate the Weighted Sensitivity Map
+	 * 
+	 * @return The Weighted/Unweighted Net LIBOR 1M Sensitivity Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor1MNet (
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings,
+		final boolean weighted)
+	{
+<span class="nc bnc" id="L308" title="All 2 branches missed.">		if (null == curveTenorSensitivitySettings)</span>
+		{
+<span class="nc" id="L310">			return null;</span>
+		}
+
+<span class="nc" id="L313">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor1MNet = _libor1M.netRiskWeight</span>
+<span class="nc" id="L314">			(curveTenorSensitivitySettings.libor1M());</span>
+
+<span class="nc bnc" id="L316" title="All 4 branches missed.">		if (null == libor1MNet || !weighted)</span>
+		{
+<span class="nc" id="L318">			return libor1MNet;</span>
+		}
+
+<span class="nc" id="L321">		double concentrationRiskFactor = java.lang.Double.NaN;</span>
+
+		try
+		{
+<span class="nc" id="L325">			concentrationRiskFactor = concentrationRiskFactor</span>
+<span class="nc" id="L326">				(curveTenorSensitivitySettings.concentrationThreshold());</span>
+		}
+<span class="nc" id="L328">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L330">			e.printStackTrace();</span>
+
+<span class="nc" id="L332">			return null;</span>
+<span class="nc" id="L333">		}</span>
+
+<span class="nc bnc" id="L335" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; libor1MNetEntry : libor1MNet.entrySet())</span>
+		{
+<span class="nc" id="L337">			java.lang.String tenor = libor1MNetEntry.getKey();</span>
+
+<span class="nc" id="L339">			libor1MNet.put (</span>
+				tenor,
+<span class="nc" id="L341">				libor1MNet.get (tenor) * concentrationRiskFactor</span>
+			);
+<span class="nc" id="L343">		}</span>
+
+<span class="nc" id="L345">		return libor1MNet;</span>
+	}
+
+	/**
+	 * Generate the Weighted/Unweighted Net LIBOR 3M Sensitivity Map
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * @param weighted TRUE - Generate the Weighted Sensitivity Map
+	 * 
+	 * @return The Weighted/Unweighted Net LIBOR 3M Sensitivity Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor3MNet (
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings,
+		final boolean weighted)
+	{
+<span class="nc bnc" id="L361" title="All 2 branches missed.">		if (null == curveTenorSensitivitySettings)</span>
+		{
+<span class="nc" id="L363">			return null;</span>
+		}
+
+<span class="nc" id="L366">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor3MNet = _libor3M.netRiskWeight</span>
+<span class="nc" id="L367">			(curveTenorSensitivitySettings.libor3M());</span>
+
+<span class="nc bnc" id="L369" title="All 4 branches missed.">		if (null == libor3MNet || !weighted)</span>
+		{
+<span class="nc" id="L371">			return libor3MNet;</span>
+		}
+
+<span class="nc" id="L374">		double concentrationRiskFactor = java.lang.Double.NaN;</span>
+
+		try
+		{
+<span class="nc" id="L378">			concentrationRiskFactor = concentrationRiskFactor</span>
+<span class="nc" id="L379">				(curveTenorSensitivitySettings.concentrationThreshold());</span>
+		}
+<span class="nc" id="L381">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L383">			e.printStackTrace();</span>
+
+<span class="nc" id="L385">			return null;</span>
+<span class="nc" id="L386">		}</span>
+
+<span class="nc bnc" id="L388" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; libor3MNetEntry : libor3MNet.entrySet())</span>
+		{
+<span class="nc" id="L390">			java.lang.String tenor = libor3MNetEntry.getKey();</span>
+
+<span class="nc" id="L392">			libor3MNet.put (</span>
+				tenor,
+<span class="nc" id="L394">				libor3MNet.get (tenor) * concentrationRiskFactor</span>
+			);
+<span class="nc" id="L396">		}</span>
+
+<span class="nc" id="L398">		return libor3MNet;</span>
+	}
+
+	/**
+	 * Generate the Weighted/Unweighted Net LIBOR 6M Sensitivity Map
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * @param weighted TRUE - Generate the Weighted Sensitivity Map
+	 * 
+	 * @return The Weighted/Unweighted Net LIBOR 6M Sensitivity Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor6MNet (
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings,
+		final boolean weighted)
+	{
+<span class="nc bnc" id="L414" title="All 2 branches missed.">		if (null == curveTenorSensitivitySettings)</span>
+		{
+<span class="nc" id="L416">			return null;</span>
+		}
+
+<span class="nc" id="L419">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor6MNet = _libor6M.netRiskWeight</span>
+<span class="nc" id="L420">			(curveTenorSensitivitySettings.libor6M());</span>
+
+<span class="nc bnc" id="L422" title="All 4 branches missed.">		if (null == libor6MNet || !weighted)</span>
+		{
+<span class="nc" id="L424">			return libor6MNet;</span>
+		}
+
+<span class="nc" id="L427">		double concentrationRiskFactor = java.lang.Double.NaN;</span>
+
+		try
+		{
+<span class="nc" id="L431">			concentrationRiskFactor = concentrationRiskFactor</span>
+<span class="nc" id="L432">				(curveTenorSensitivitySettings.concentrationThreshold());</span>
+		}
+<span class="nc" id="L434">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L436">			e.printStackTrace();</span>
+
+<span class="nc" id="L438">			return null;</span>
+<span class="nc" id="L439">		}</span>
+
+<span class="nc bnc" id="L441" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; libor6MNetEntry : libor6MNet.entrySet())</span>
+		{
+<span class="nc" id="L443">			java.lang.String tenor = libor6MNetEntry.getKey();</span>
+
+<span class="nc" id="L445">			libor6MNet.put (</span>
+				tenor,
+<span class="nc" id="L447">				libor6MNet.get (tenor) * concentrationRiskFactor</span>
+			);
+<span class="nc" id="L449">		}</span>
+
+<span class="nc" id="L451">		return libor6MNet;</span>
+	}
+
+	/**
+	 * Generate the Weighted/Unweighted Net LIBOR 12M Sensitivity Map
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * @param weighted TRUE - Generate the Weighted Sensitivity Map
+	 * 
+	 * @return The Weighted/Unweighted Net LIBOR 12M Sensitivity Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor12MNet (
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings,
+		final boolean weighted)
+	{
+<span class="nc bnc" id="L467" title="All 2 branches missed.">		if (null == curveTenorSensitivitySettings)</span>
+		{
+<span class="nc" id="L469">			return null;</span>
+		}
+
+<span class="nc" id="L472">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor12MNet = _libor12M.netRiskWeight</span>
+<span class="nc" id="L473">			(curveTenorSensitivitySettings.libor12M());</span>
+
+<span class="nc bnc" id="L475" title="All 4 branches missed.">		if (null == libor12MNet || !weighted)</span>
+		{
+<span class="nc" id="L477">			return libor12MNet;</span>
+		}
+
+<span class="nc" id="L480">		double concentrationRiskFactor = java.lang.Double.NaN;</span>
+
+		try
+		{
+<span class="nc" id="L484">			concentrationRiskFactor = concentrationRiskFactor</span>
+<span class="nc" id="L485">				(curveTenorSensitivitySettings.concentrationThreshold());</span>
+		}
+<span class="nc" id="L487">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L489">			e.printStackTrace();</span>
+
+<span class="nc" id="L491">			return null;</span>
+<span class="nc" id="L492">		}</span>
+
+<span class="nc bnc" id="L494" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; libor12MNetEntry : libor12MNet.entrySet())</span>
+		{
+<span class="nc" id="L496">			java.lang.String tenor = libor12MNetEntry.getKey();</span>
+
+<span class="nc" id="L498">			libor12MNet.put (</span>
+				tenor,
+<span class="nc" id="L500">				libor12MNet.get (tenor) * concentrationRiskFactor</span>
+			);
+<span class="nc" id="L502">		}</span>
+
+<span class="nc" id="L504">		return libor12MNet;</span>
+	}
+
+	/**
+	 * Generate the Weighted/Unweighted Net PRIME Sensitivity Map
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * @param weighted TRUE - Generate the Weighted Sensitivity Map
+	 * 
+	 * @return The Weighted/Unweighted Net PRIME Sensitivity Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; primeNet (
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings,
+		final boolean weighted)
+	{
+<span class="nc bnc" id="L520" title="All 2 branches missed.">		if (null == curveTenorSensitivitySettings)</span>
+		{
+<span class="nc" id="L522">			return null;</span>
+		}
+
+<span class="nc" id="L525">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; primeNet = _prime.netRiskWeight</span>
+<span class="nc" id="L526">			(curveTenorSensitivitySettings.prime());</span>
+
+<span class="nc bnc" id="L528" title="All 4 branches missed.">		if (null == primeNet || !weighted)</span>
+		{
+<span class="nc" id="L530">			return primeNet;</span>
+		}
+
+<span class="nc" id="L533">		double concentrationRiskFactor = java.lang.Double.NaN;</span>
+
+		try
+		{
+<span class="nc" id="L537">			concentrationRiskFactor = concentrationRiskFactor</span>
+<span class="nc" id="L538">				(curveTenorSensitivitySettings.concentrationThreshold());</span>
+		}
+<span class="nc" id="L540">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L542">			e.printStackTrace();</span>
+
+<span class="nc" id="L544">			return null;</span>
+<span class="nc" id="L545">		}</span>
+
+<span class="nc bnc" id="L547" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; primeNetEntry : primeNet.entrySet())</span>
+		{
+<span class="nc" id="L549">			java.lang.String tenor = primeNetEntry.getKey();</span>
+
+<span class="nc" id="L551">			primeNet.put (</span>
+				tenor,
+<span class="nc" id="L553">				primeNet.get (tenor) * concentrationRiskFactor</span>
+			);
+<span class="nc" id="L555">		}</span>
+
+<span class="nc" id="L557">		return primeNet;</span>
+	}
+
+	/**
+	 * Generate the Weighted/Unweighted Net MUNICIPAL Sensitivity Map
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * @param weighted TRUE - Generate the Weighted Sensitivity Map
+	 * 
+	 * @return The Weighted/Unweighted Net MUNICIPAL Sensitivity Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; municipalNet (
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings,
+		final boolean weighted)
+	{
+<span class="nc bnc" id="L573" title="All 2 branches missed.">		if (null == curveTenorSensitivitySettings)</span>
+		{
+<span class="nc" id="L575">			return null;</span>
+		}
+
+<span class="nc" id="L578">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; municipalNet = _municipal.netRiskWeight</span>
+<span class="nc" id="L579">			(curveTenorSensitivitySettings.municipal());</span>
+
+<span class="nc bnc" id="L581" title="All 4 branches missed.">		if (null == municipalNet || !weighted)</span>
+		{
+<span class="nc" id="L583">			return municipalNet;</span>
+		}
+
+<span class="nc" id="L586">		double concentrationRiskFactor = java.lang.Double.NaN;</span>
+
+		try
+		{
+<span class="nc" id="L590">			concentrationRiskFactor = concentrationRiskFactor</span>
+<span class="nc" id="L591">				(curveTenorSensitivitySettings.concentrationThreshold());</span>
+		}
+<span class="nc" id="L593">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L595">			e.printStackTrace();</span>
+
+<span class="nc" id="L597">			return null;</span>
+<span class="nc" id="L598">		}</span>
+
+<span class="nc bnc" id="L600" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; municipalNetEntry : municipalNet.entrySet())</span>
+		{
+<span class="nc" id="L602">			java.lang.String tenor = municipalNetEntry.getKey();</span>
+
+<span class="nc" id="L604">			municipalNet.put (</span>
+				tenor,
+<span class="nc" id="L606">				municipalNet.get (tenor) * concentrationRiskFactor</span>
+			);
+<span class="nc" id="L608">		}</span>
+
+<span class="nc" id="L610">		return municipalNet;</span>
+	}
+
+	/**
+	 * Generate the Weighted/Unweighted Net Curve Sensitivity Map
+	 * 
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * @param weighted TRUE - Generate the Weighted Sensitivity Map
+	 * 
+	 * @return The Weighted/Unweighted Net Curve Sensitivity Map
+	 */
+
+	public org.drip.simm20.product.IRNetSensitivity curveNet (
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings,
+		final boolean weighted)
+	{
+<span class="nc bnc" id="L626" title="All 2 branches missed.">		if (null == curveTenorSensitivitySettings)</span>
+		{
+<span class="nc" id="L628">			return null;</span>
+		}
+
+<span class="nc" id="L631">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; oisNet = _ois.netRiskWeight</span>
+<span class="nc" id="L632">			(curveTenorSensitivitySettings.ois());</span>
+
+<span class="nc" id="L634">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor1MNet = _libor1M.netRiskWeight</span>
+<span class="nc" id="L635">			(curveTenorSensitivitySettings.libor1M());</span>
+
+<span class="nc" id="L637">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor3MNet = _libor3M.netRiskWeight</span>
+<span class="nc" id="L638">			(curveTenorSensitivitySettings.libor3M());</span>
+
+<span class="nc" id="L640">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor6MNet = _libor6M.netRiskWeight</span>
+<span class="nc" id="L641">			(curveTenorSensitivitySettings.libor6M());</span>
+
+<span class="nc" id="L643">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor12MNet = _libor12M.netRiskWeight</span>
+<span class="nc" id="L644">			(curveTenorSensitivitySettings.libor12M());</span>
+
+<span class="nc" id="L646">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; primeNet = _prime.netRiskWeight</span>
+<span class="nc" id="L647">			(curveTenorSensitivitySettings.prime());</span>
+
+<span class="nc" id="L649">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; municipalNet = _municipal.netRiskWeight</span>
+<span class="nc" id="L650">			(curveTenorSensitivitySettings.municipal());</span>
+
+<span class="nc bnc" id="L652" title="All 14 branches missed.">		if (null == oisNet || null == libor1MNet || null == libor3MNet || null == libor6MNet ||</span>
+			null == libor12MNet || null == primeNet || null == municipalNet)
+		{
+<span class="nc" id="L655">			return null;</span>
+		}
+
+<span class="nc bnc" id="L658" title="All 2 branches missed.">		if (!weighted)</span>
+		{
+			try
+			{
+<span class="nc" id="L662">				return new org.drip.simm20.product.IRNetSensitivity (</span>
+					oisNet,
+					libor1MNet,
+					libor3MNet,
+					libor6MNet,
+					libor12MNet,
+					primeNet,
+					municipalNet
+				);
+			}
+<span class="nc" id="L672">			catch (java.lang.Exception e)</span>
+			{
+<span class="nc" id="L674">				e.printStackTrace();</span>
+
+<span class="nc" id="L676">				return null;</span>
+			}
+		}
+<span class="nc" id="L679">		double concentrationRiskFactor = java.lang.Double.NaN;</span>
+
+		try
+		{
+<span class="nc" id="L683">			concentrationRiskFactor = concentrationRiskFactor</span>
+<span class="nc" id="L684">				(curveTenorSensitivitySettings.concentrationThreshold());</span>
+		}
+<span class="nc" id="L686">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L688">			e.printStackTrace();</span>
+
+<span class="nc" id="L690">			return null;</span>
+<span class="nc" id="L691">		}</span>
+
+<span class="nc bnc" id="L693" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; municipalNetEntry : municipalNet.entrySet())</span>
+		{
+<span class="nc" id="L695">			java.lang.String tenor = municipalNetEntry.getKey();</span>
+
+<span class="nc" id="L697">			oisNet.put (</span>
+				tenor,
+<span class="nc" id="L699">				oisNet.get (tenor) * concentrationRiskFactor</span>
+			);
+
+<span class="nc" id="L702">			libor1MNet.put (</span>
+				tenor,
+<span class="nc" id="L704">				libor1MNet.get (tenor) * concentrationRiskFactor</span>
+			);
+
+<span class="nc" id="L707">			libor3MNet.put (</span>
+				tenor,
+<span class="nc" id="L709">				libor3MNet.get (tenor) * concentrationRiskFactor</span>
+			);
+
+<span class="nc" id="L712">			libor6MNet.put (</span>
+				tenor,
+<span class="nc" id="L714">				libor6MNet.get (tenor) * concentrationRiskFactor</span>
+			);
+
+<span class="nc" id="L717">			libor12MNet.put (</span>
+				tenor,
+<span class="nc" id="L719">				libor3MNet.get (tenor) * concentrationRiskFactor</span>
+			);
+
+<span class="nc" id="L722">			primeNet.put (</span>
+				tenor,
+<span class="nc" id="L724">				primeNet.get (tenor) * concentrationRiskFactor</span>
+			);
+
+<span class="nc" id="L727">			municipalNet.put (</span>
+				tenor,
+<span class="nc" id="L729">				municipalNet.get (tenor) * concentrationRiskFactor</span>
+			);
+<span class="nc" id="L731">		}</span>
+
+		try
+		{
+<span class="nc" id="L735">			return new org.drip.simm20.product.IRNetSensitivity (</span>
+				oisNet,
+				libor1MNet,
+				libor3MNet,
+				libor6MNet,
+				libor12MNet,
+				primeNet,
+				municipalNet
+			);
+		}
+<span class="nc" id="L745">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L747">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L750">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

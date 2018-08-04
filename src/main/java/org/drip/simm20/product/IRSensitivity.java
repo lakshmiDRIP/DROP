@@ -249,7 +249,7 @@ public class IRSensitivity
 	 */
 
 	public java.util.Map<java.lang.String, java.lang.Double> oisNet (
-		final org.drip.simm20.product.CurveTenorSensitivitySettings curveTenorSensitivitySettings,
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings,
 		final boolean weighted)
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -302,7 +302,7 @@ public class IRSensitivity
 	 */
 
 	public java.util.Map<java.lang.String, java.lang.Double> libor1MNet (
-		final org.drip.simm20.product.CurveTenorSensitivitySettings curveTenorSensitivitySettings,
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings,
 		final boolean weighted)
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -355,7 +355,7 @@ public class IRSensitivity
 	 */
 
 	public java.util.Map<java.lang.String, java.lang.Double> libor3MNet (
-		final org.drip.simm20.product.CurveTenorSensitivitySettings curveTenorSensitivitySettings,
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings,
 		final boolean weighted)
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -408,7 +408,7 @@ public class IRSensitivity
 	 */
 
 	public java.util.Map<java.lang.String, java.lang.Double> libor6MNet (
-		final org.drip.simm20.product.CurveTenorSensitivitySettings curveTenorSensitivitySettings,
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings,
 		final boolean weighted)
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -461,7 +461,7 @@ public class IRSensitivity
 	 */
 
 	public java.util.Map<java.lang.String, java.lang.Double> libor12MNet (
-		final org.drip.simm20.product.CurveTenorSensitivitySettings curveTenorSensitivitySettings,
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings,
 		final boolean weighted)
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -514,7 +514,7 @@ public class IRSensitivity
 	 */
 
 	public java.util.Map<java.lang.String, java.lang.Double> primeNet (
-		final org.drip.simm20.product.CurveTenorSensitivitySettings curveTenorSensitivitySettings,
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings,
 		final boolean weighted)
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -567,7 +567,7 @@ public class IRSensitivity
 	 */
 
 	public java.util.Map<java.lang.String, java.lang.Double> municipalNet (
-		final org.drip.simm20.product.CurveTenorSensitivitySettings curveTenorSensitivitySettings,
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings,
 		final boolean weighted)
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -620,7 +620,7 @@ public class IRSensitivity
 	 */
 
 	public org.drip.simm20.product.IRNetSensitivity curveNet (
-		final org.drip.simm20.product.CurveTenorSensitivitySettings curveTenorSensitivitySettings,
+		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings,
 		final boolean weighted)
 	{
 		if (null == curveTenorSensitivitySettings)
