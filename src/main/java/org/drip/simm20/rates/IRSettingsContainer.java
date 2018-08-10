@@ -81,21 +81,21 @@ public class IRSettingsContainer
 	{
 		java.util.List<java.lang.String> tenorList = new java.util.ArrayList<java.lang.String>();
 
-		tenorList.add ("02W");
+		tenorList.add ("2W");
 
-		tenorList.add ("01M");
+		tenorList.add ("1M");
 
-		tenorList.add ("03M");
+		tenorList.add ("3M");
 
-		tenorList.add ("06M");
+		tenorList.add ("6M");
 
-		tenorList.add ("01Y");
+		tenorList.add ("1Y");
 
-		tenorList.add ("02Y");
+		tenorList.add ("2Y");
 
-		tenorList.add ("03Y");
+		tenorList.add ("3Y");
 
-		tenorList.add ("05Y");
+		tenorList.add ("5Y");
 
 		tenorList.add ("10Y");
 

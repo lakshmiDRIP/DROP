@@ -9,6 +9,7 @@ import org.drip.service.env.EnvManager;
 import org.drip.simm20.product.IRCurveTenorSettings;
 import org.drip.simm20.product.IRMarginCovariance;
 import org.drip.simm20.product.IRNetSensitivity;
+import org.drip.simm20.product.IRSensitivity;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -89,42 +90,42 @@ public class CurrencyIRNetSensitivityGroup
 		Map<String, Double> oisTenorSensitivities = new HashMap<String, Double>();
 
 		oisTenorSensitivities.put (
-			"02W",
+			"2W",
 			tenorSensitivities[0]
 		);
 
 		oisTenorSensitivities.put (
-			"01M",
+			"1M",
 			tenorSensitivities[1]
 		);
 
 		oisTenorSensitivities.put (
-			"03M",
+			"3M",
 			tenorSensitivities[2]
 		);
 
 		oisTenorSensitivities.put (
-			"06M",
+			"6M",
 			tenorSensitivities[3]
 		);
 
 		oisTenorSensitivities.put (
-			"01Y",
+			"1Y",
 			tenorSensitivities[4]
 		);
 
 		oisTenorSensitivities.put (
-			"02Y",
+			"2Y",
 			tenorSensitivities[5]
 		);
 
 		oisTenorSensitivities.put (
-			"03Y",
+			"3Y",
 			tenorSensitivities[6]
 		);
 
 		oisTenorSensitivities.put (
-			"05Y",
+			"5Y",
 			tenorSensitivities[7]
 		);
 
@@ -268,7 +269,7 @@ public class CurrencyIRNetSensitivityGroup
 			10. * (Math.random() - 0.5),
 		};
 
-		IRNetSensitivity irNetSensitivity = new IRNetSensitivity (
+		IRSensitivity irSensitivity = IRSensitivity.Standard (
 			TenorSensitivityMap (oisTenorSensitivities),
 			TenorSensitivityMap (libor1MTenorSensitivities),
 			TenorSensitivityMap (libor3MTenorSensitivities),
@@ -278,204 +279,235 @@ public class CurrencyIRNetSensitivityGroup
 			TenorSensitivityMap (municipalTenorSensitivities)
 		);
 
+		IRNetSensitivity irNetSensitivity = irSensitivity.curveNet (
+			curveTenorSensitivitySettings,
+			true
+		);
+
 		IRMarginCovariance irNetMarginCovariance = irNetSensitivity.marginCovariance
 			(curveTenorSensitivitySettings);
+
+		System.out.println ("\t|------------------------------------------------------||");
 
 		System.out.println (
 			"\t| IM Covariance[     OIS   -   OIS     ] => " +
 			FormatUtil.FormatDouble (
-				irNetMarginCovariance.ois_ois(), 3, 2, 1.
+				irNetMarginCovariance.ois_ois(), 6, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t| IM Covariance[ LIBOR  1M - LIBOR  1M ] => " +
 			FormatUtil.FormatDouble (
-				irNetMarginCovariance.libor1M_libor1M(), 3, 2, 1.
+				irNetMarginCovariance.libor1M_libor1M(), 6, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t| IM Covariance[ LIBOR  3M - LIBOR  3M ] => " +
 			FormatUtil.FormatDouble (
-				irNetMarginCovariance.libor3M_libor3M(), 3, 2, 1.
+				irNetMarginCovariance.libor3M_libor3M(), 6, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t| IM Covariance[ LIBOR  6M - LIBOR  6M ] => " +
 			FormatUtil.FormatDouble (
-				irNetMarginCovariance.libor6M_libor6M(), 3, 2, 1.
+				irNetMarginCovariance.libor6M_libor6M(), 6, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t| IM Covariance[ LIBOR 12M - LIBOR 12M ] => " +
 			FormatUtil.FormatDouble (
-				irNetMarginCovariance.libor12M_libor12M(), 3, 2, 1.
+				irNetMarginCovariance.libor12M_libor12M(), 6, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t| IM Covariance[   PRIME   -   PRIME   ] => " +
 			FormatUtil.FormatDouble (
-				irNetMarginCovariance.prime_prime(), 3, 2, 1.
+				irNetMarginCovariance.prime_prime(), 6, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t| IM Covariance[ MUNICIPAL - MUNICIPAL ] => " +
 			FormatUtil.FormatDouble (
-				irNetMarginCovariance.municipal_municipal(), 3, 2, 1.
+				irNetMarginCovariance.municipal_municipal(), 6, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t| IM Covariance[     OIS   - LIBOR  1M ] => " +
 			FormatUtil.FormatDouble (
-				irNetMarginCovariance.ois_libor1M(), 3, 2, 1.
+				irNetMarginCovariance.ois_libor1M(), 6, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t| IM Covariance[     OIS   - LIBOR  3M ] => " +
 			FormatUtil.FormatDouble (
-				irNetMarginCovariance.ois_libor3M(), 3, 2, 1.
+				irNetMarginCovariance.ois_libor3M(), 6, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t| IM Covariance[     OIS   - LIBOR  6M ] => " +
 			FormatUtil.FormatDouble (
-				irNetMarginCovariance.ois_libor6M(), 3, 2, 1.
+				irNetMarginCovariance.ois_libor6M(), 6, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t| IM Covariance[     OIS   - LIBOR 12M ] => " +
 			FormatUtil.FormatDouble (
-				irNetMarginCovariance.ois_libor12M(), 3, 2, 1.
+				irNetMarginCovariance.ois_libor12M(), 6, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t| IM Covariance[     OIS   -   PRIME   ] => " +
 			FormatUtil.FormatDouble (
-				irNetMarginCovariance.ois_prime(), 3, 2, 1.
+				irNetMarginCovariance.ois_prime(), 6, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t| IM Covariance[     OIS   - MUNICIPAL ] => " +
 			FormatUtil.FormatDouble (
-				irNetMarginCovariance.ois_municipal(), 3, 2, 1.
+				irNetMarginCovariance.ois_municipal(), 6, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t| IM Covariance[ LIBOR  1M - LIBOR  3M ] => " +
 			FormatUtil.FormatDouble (
-				irNetMarginCovariance.libor1M_libor3M(), 3, 2, 1.
+				irNetMarginCovariance.libor1M_libor3M(), 6, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t| IM Covariance[ LIBOR  1M - LIBOR  6M ] => " +
 			FormatUtil.FormatDouble (
-				irNetMarginCovariance.libor1M_libor6M(), 3, 2, 1.
+				irNetMarginCovariance.libor1M_libor6M(), 6, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t| IM Covariance[ LIBOR  1M - LIBOR 12M ] => " +
 			FormatUtil.FormatDouble (
-				irNetMarginCovariance.libor1M_libor12M(), 3, 2, 1.
+				irNetMarginCovariance.libor1M_libor12M(), 6, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t| IM Covariance[ LIBOR  1M -   PRIME   ] => " +
 			FormatUtil.FormatDouble (
-				irNetMarginCovariance.libor1M_prime(), 3, 2, 1.
+				irNetMarginCovariance.libor1M_prime(), 6, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t| IM Covariance[ LIBOR  1M - MUNICIPAL ] => " +
 			FormatUtil.FormatDouble (
-				irNetMarginCovariance.libor1M_municipal(), 3, 2, 1.
+				irNetMarginCovariance.libor1M_municipal(), 6, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t| IM Covariance[ LIBOR  3M - LIBOR  6M ] => " +
 			FormatUtil.FormatDouble (
-				irNetMarginCovariance.libor3M_libor6M(), 3, 2, 1.
+				irNetMarginCovariance.libor3M_libor6M(), 6, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t| IM Covariance[ LIBOR  3M - LIBOR 12M ] => " +
 			FormatUtil.FormatDouble (
-				irNetMarginCovariance.libor3M_libor12M(), 3, 2, 1.
+				irNetMarginCovariance.libor3M_libor12M(), 6, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t| IM Covariance[ LIBOR  3M -   PRIME   ] => " +
 			FormatUtil.FormatDouble (
-				irNetMarginCovariance.libor3M_prime(), 3, 2, 1.
+				irNetMarginCovariance.libor3M_prime(), 6, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t| IM Covariance[ LIBOR  3M - MUNICIPAL ] => " +
 			FormatUtil.FormatDouble (
-				irNetMarginCovariance.libor3M_municipal(), 3, 2, 1.
+				irNetMarginCovariance.libor3M_municipal(), 6, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t| IM Covariance[ LIBOR  6M - LIBOR 12M ] => " +
 			FormatUtil.FormatDouble (
-				irNetMarginCovariance.libor6M_libor12M(), 3, 2, 1.
+				irNetMarginCovariance.libor6M_libor12M(), 6, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t| IM Covariance[ LIBOR  6M -   PRIME   ] => " +
 			FormatUtil.FormatDouble (
-				irNetMarginCovariance.libor6M_prime(), 3, 2, 1.
+				irNetMarginCovariance.libor6M_prime(), 6, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t| IM Covariance[ LIBOR  6M - MUNICIPAL ] => " +
 			FormatUtil.FormatDouble (
-				irNetMarginCovariance.libor6M_municipal(), 3, 2, 1.
+				irNetMarginCovariance.libor6M_municipal(), 6, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t| IM Covariance[ LIBOR 12M -   PRIME   ] => " +
 			FormatUtil.FormatDouble (
-				irNetMarginCovariance.libor12M_prime(), 3, 2, 1.
+				irNetMarginCovariance.libor12M_prime(), 6, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t| IM Covariance[ LIBOR 12M - MUNICIPAL ] => " +
 			FormatUtil.FormatDouble (
-				irNetMarginCovariance.libor12M_municipal(), 3, 2, 1.
+				irNetMarginCovariance.libor12M_municipal(), 6, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t| IM Covariance[   PRIME   - MUNICIPAL ] => " +
 			FormatUtil.FormatDouble (
-				irNetMarginCovariance.prime_municipal(), 3, 2, 1.
+				irNetMarginCovariance.prime_municipal(), 6, 2, 1.
 			) + " ||"
 		);
+
+		System.out.println ("\t|------------------------------------------------------||");
+
+		System.out.println();
+
+		System.out.println ("\t|------------------------------------------||");
+
+		System.out.println (
+			"\t|  IR Net Margin Covariance => " +
+				FormatUtil.FormatDouble (
+					irNetMarginCovariance.cumulative(), 7, 2, 1.
+				) + " ||"
+		);
+
+		System.out.println (
+			"\t|  IR Net Margin Variance   => " +
+				FormatUtil.FormatDouble (
+					irNetMarginCovariance.variance(), 7, 2, 1.
+				) + " ||"
+		);
+
+		System.out.println ("\t|------------------------------------------||");
+
+		System.out.println();
 
 		EnvManager.TerminateEnv();
 	}

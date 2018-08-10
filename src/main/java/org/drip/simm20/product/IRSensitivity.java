@@ -80,6 +80,49 @@ public class IRSensitivity
 	private org.drip.simm20.product.RiskFactorTenorSensitivity _municipal = null;
 
 	/**
+	 * Generate a Standard Instance of IRSensitivity from the Sensitivity Maps
+	 * 
+	 * @param ois OIS Unweighted Sensitivity Map
+	 * @param libor1M LIBOR 1M Unweighted Sensitivity Map
+	 * @param libor3M LIBOR 3M Unweighted Sensitivity Map
+	 * @param libor6M LIBOR 6M Unweighted Sensitivity Map
+	 * @param libor12M LIBOR 12M Unweighted Sensitivity Map
+	 * @param prime Prime Unweighted Sensitivity Map
+	 * @param municipal Municipal Unweighted Sensitivity Map
+	 * 
+	 * @return Standard Instance of IRSensitivity from the Sensitivity Maps
+	 */
+
+	public static final IRSensitivity Standard (
+		final java.util.Map<java.lang.String, java.lang.Double> ois,
+		final java.util.Map<java.lang.String, java.lang.Double> libor1M,
+		final java.util.Map<java.lang.String, java.lang.Double> libor3M,
+		final java.util.Map<java.lang.String, java.lang.Double> libor6M,
+		final java.util.Map<java.lang.String, java.lang.Double> libor12M,
+		final java.util.Map<java.lang.String, java.lang.Double> prime,
+		final java.util.Map<java.lang.String, java.lang.Double> municipal)
+	{
+		try
+		{
+			return new IRSensitivity (
+				new org.drip.simm20.product.RiskFactorTenorSensitivity (ois),
+				new org.drip.simm20.product.RiskFactorTenorSensitivity (libor1M),
+				new org.drip.simm20.product.RiskFactorTenorSensitivity (libor3M),
+				new org.drip.simm20.product.RiskFactorTenorSensitivity (libor6M),
+				new org.drip.simm20.product.RiskFactorTenorSensitivity (libor12M),
+				new org.drip.simm20.product.RiskFactorTenorSensitivity (prime),
+				new org.drip.simm20.product.RiskFactorTenorSensitivity (municipal)
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * IRSensitivity Constructor
 	 * 
 	 * @param ois The OIS Risk Factor Sensitivity
@@ -666,7 +709,8 @@ public class IRSensitivity
 					libor6MNet,
 					libor12MNet,
 					primeNet,
-					municipalNet
+					municipalNet,
+					1.
 				);
 			}
 			catch (java.lang.Exception e)
@@ -739,7 +783,8 @@ public class IRSensitivity
 				libor6MNet,
 				libor12MNet,
 				primeNet,
-				municipalNet
+				municipalNet,
+				concentrationRiskFactor
 			);
 		}
 		catch (java.lang.Exception e)

@@ -106,6 +106,8 @@ public class IRMarginCovariance
 
 	private double _municipal_municipal = java.lang.Double.NaN;
 
+	private double _concentrationRiskFactor = java.lang.Double.NaN;
+
 	/**
 	 * @param ois_ois The OIS - OIS IM Net Margin Co-variance Entry
 	 * @param ois_libor1M The OIS - LIBOR1M IM Net Margin Co-variance Entry
@@ -135,6 +137,7 @@ public class IRMarginCovariance
 	 * @param prime_prime The PRIME - PRIME IM Net Margin Co-variance Entry
 	 * @param prime_municipal The PRIME - MUNICIPAL IM Net Margin Co-variance Entry
 	 * @param municipal_municipal The MUNICIPAL - MUNICIPAL IM Net Margin Co-variance Entry
+	 * @param concentrationRiskFactor The Currency's Concentration Risk Factor
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -167,7 +170,8 @@ public class IRMarginCovariance
 		final double libor12M_municipal,
 		final double prime_prime,
 		final double prime_municipal,
-		final double municipal_municipal)
+		final double municipal_municipal,
+		final double concentrationRiskFactor)
 		throws java.lang.Exception
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (_ois_ois = ois_ois) ||
@@ -197,7 +201,8 @@ public class IRMarginCovariance
 			!org.drip.quant.common.NumberUtil.IsValid (_libor12M_municipal = libor12M_municipal) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_prime_prime = prime_prime) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_prime_municipal = prime_municipal) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_municipal_municipal = municipal_municipal))
+			!org.drip.quant.common.NumberUtil.IsValid (_municipal_municipal = municipal_municipal) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_concentrationRiskFactor = concentrationRiskFactor))
 		{
 			throw new java.lang.Exception ("IRMarginCovariance Constructor => Invalid Inputs");
 		}
@@ -509,5 +514,46 @@ public class IRMarginCovariance
 	public double municipal_municipal()
 	{
 		return _municipal_municipal;
+	}
+
+	/**
+	 * Compute the Margin Cumulative Covariance
+	 * 
+	 * @return The Margin Cumulative Covariance
+	 */
+
+	public double cumulative()
+	{
+		return _ois_ois + _ois_prime + _ois_libor1M + _ois_libor3M + _ois_libor6M + _ois_libor12M +
+				_ois_municipal +
+			_libor1M_prime + _libor1M_libor1M + _libor1M_libor3M + _libor1M_libor6M + _libor1M_libor12M +
+				_libor1M_municipal +
+			_libor3M_prime + _libor3M_libor3M + _libor3M_libor6M + _libor3M_libor12M + _libor3M_municipal +
+			_libor6M_prime + _libor6M_libor6M + _libor6M_municipal +
+			_libor12M_prime + _libor12M_libor12M + _libor12M_municipal +
+			_prime_prime + _prime_municipal +
+			_municipal_municipal;
+	}
+
+	/**
+	 * Compute the Margin Variance
+	 * 
+	 * @return The Margin Variance
+	 */
+
+	public double variance()
+	{
+		return java.lang.Math.sqrt (cumulative());
+	}
+
+	/**
+	 * Retrieve the Concentration Risk Factor
+	 * 
+	 * @return The Concentration Risk Factor
+	 */
+
+	public double concentrationRiskFactor()
+	{
+		return _concentrationRiskFactor;
 	}
 }

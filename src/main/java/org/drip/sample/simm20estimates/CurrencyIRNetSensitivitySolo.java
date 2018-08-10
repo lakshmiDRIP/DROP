@@ -274,7 +274,8 @@ public class CurrencyIRNetSensitivitySolo
 			TenorSensitivityMap (libor6MTenorSensitivities),
 			TenorSensitivityMap (libor12MTenorSensitivities),
 			TenorSensitivityMap (primeTenorSensitivities),
-			TenorSensitivityMap (municipalTenorSensitivities)
+			TenorSensitivityMap (municipalTenorSensitivities),
+			1.
 		);
 
 		System.out.println (

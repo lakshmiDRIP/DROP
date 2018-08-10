@@ -166,6 +166,7 @@ public class RiskFactorTenorSensitivity
 
 		return null;
 	}
+
 	/**
 	 * RiskFactorTenorSensitivity Constructor
 	 * 
@@ -285,37 +286,6 @@ public class RiskFactorTenorSensitivity
 		}
 
 		return cumulative;
-	}
-
-	/**
-	 * Compute the Concentration Risk Factor
-	 * 
-	 * @param concentrationThreshold The Concentration Threshold
-	 * 
-	 * @return The Concentration Risk Factor
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double concentrationRiskFactor (
-		final double concentrationThreshold)
-		throws java.lang.Exception
-	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (concentrationThreshold))
-		{
-			throw new java.lang.Exception
-				("RiskFactorTenorSensitivity::concentrationRiskFactor => Invalid Inputs");
-		}
-
-		return java.lang.Math.max (
-			java.lang.Math.sqrt (
-				java.lang.Math.max (
-					cumulative(),
-					0.
-				) / concentrationThreshold
-			),
-			1.
-		);
 	}
 
 	/**
