@@ -73,58 +73,51 @@ public class IRNetSensitivity
 {
 
 	private double _concentrationRiskFactor = java.lang.Double.NaN;
-	private org.drip.simm20.product.RiskFactorTenorSensitivity _ois = null;
-	private org.drip.simm20.product.RiskFactorTenorSensitivity _prime = null;
-	private org.drip.simm20.product.RiskFactorTenorSensitivity _libor1M = null;
-	private org.drip.simm20.product.RiskFactorTenorSensitivity _libor3M = null;
-	private org.drip.simm20.product.RiskFactorTenorSensitivity _libor6M = null;
-	private org.drip.simm20.product.RiskFactorTenorSensitivity _libor12M = null;
-	private org.drip.simm20.product.RiskFactorTenorSensitivity _municipal = null;
+	private java.util.Map<java.lang.String, java.lang.Double> _oisThresholded = null;
+	private java.util.Map<java.lang.String, java.lang.Double> _primeThresholded = null;
+	private java.util.Map<java.lang.String, java.lang.Double> _libor1MThresholded = null;
+	private java.util.Map<java.lang.String, java.lang.Double> _libor3MThresholded = null;
+	private java.util.Map<java.lang.String, java.lang.Double> _libor6MThresholded = null;
+	private java.util.Map<java.lang.String, java.lang.Double> _libor12MThresholded = null;
+	private java.util.Map<java.lang.String, java.lang.Double> _municipalThresholded = null;
 
 	/**
 	 * IRNetSensitivity Constructor
 	 * 
-	 * @param ois OIS Weighted/Unweighted Sensitivity
-	 * @param libor1M LIBOR 1M Weighted/Unweighted Sensitivity
-	 * @param libor3M LIBOR 3M Weighted/Unweighted Sensitivity
-	 * @param libor6M LIBOR 6M Weighted/Unweighted Sensitivity
-	 * @param libor12M LIBOR 12M Weighted/Unweighted Sensitivity
-	 * @param prime Prime Weighted/Unweighted Sensitivity
-	 * @param municipal Municipal Weighted/Unweighted Sensitivity
+	 * @param oisThresholded The Thresholded OIS Weighted/Unweighted Sensitivity
+	 * @param libor1MThresholded The Thresholded LIBOR 1M Weighted/Unweighted Sensitivity
+	 * @param libor3MThresholded The Thresholded LIBOR 3M Weighted/Unweighted Sensitivity
+	 * @param libor6MThresholded The Thresholded LIBOR 6M Weighted/Unweighted Sensitivity
+	 * @param libor12MThresholded The Thresholded LIBOR 12M Weighted/Unweighted Sensitivity
+	 * @param primeThresholded The Thresholded Prime Weighted/Unweighted Sensitivity
+	 * @param municipalThresholded The Thresholded Municipal Weighted/Unweighted Sensitivity
 	 * @param concentrationRiskFactor The Currency's Concentration Risk Factor
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public IRNetSensitivity (
-		final java.util.Map<java.lang.String, java.lang.Double> ois,
-		final java.util.Map<java.lang.String, java.lang.Double> libor1M,
-		final java.util.Map<java.lang.String, java.lang.Double> libor3M,
-		final java.util.Map<java.lang.String, java.lang.Double> libor6M,
-		final java.util.Map<java.lang.String, java.lang.Double> libor12M,
-		final java.util.Map<java.lang.String, java.lang.Double> prime,
-		final java.util.Map<java.lang.String, java.lang.Double> municipal,
+		final java.util.Map<java.lang.String, java.lang.Double> oisThresholded,
+		final java.util.Map<java.lang.String, java.lang.Double> libor1MThresholded,
+		final java.util.Map<java.lang.String, java.lang.Double> libor3MThresholded,
+		final java.util.Map<java.lang.String, java.lang.Double> libor6MThresholded,
+		final java.util.Map<java.lang.String, java.lang.Double> libor12MThresholded,
+		final java.util.Map<java.lang.String, java.lang.Double> primeThresholded,
+		final java.util.Map<java.lang.String, java.lang.Double> municipalThresholded,
 		final double concentrationRiskFactor)
 		throws java.lang.Exception
 	{
-		 if (!org.drip.quant.common.NumberUtil.IsValid (_concentrationRiskFactor = concentrationRiskFactor))
+		 if (null == (_oisThresholded = oisThresholded) || 0 == _oisThresholded.size() ||
+			null == (_libor1MThresholded = libor1MThresholded) || 0 == _libor1MThresholded.size() ||
+			null == (_libor3MThresholded = libor3MThresholded) || 0 == _libor3MThresholded.size() ||
+			null == (_libor6MThresholded = libor6MThresholded) || 0 == _libor6MThresholded.size() ||
+			null == (_libor12MThresholded = libor12MThresholded) || 0 == _libor12MThresholded.size() ||
+			null == (_municipalThresholded = municipalThresholded) || 0 == _municipalThresholded.size() ||
+			null == (_primeThresholded = primeThresholded) || 0 == _primeThresholded.size() ||
+			!org.drip.quant.common.NumberUtil.IsValid (_concentrationRiskFactor = concentrationRiskFactor))
 		 {
 			 throw new java.lang.Exception ("IRNetSensitivity Constructor => Invalid Inputs");
 		 }
-
-		 _ois = new org.drip.simm20.product.RiskFactorTenorSensitivity (ois);
-
-		_prime = new org.drip.simm20.product.RiskFactorTenorSensitivity (prime);
-
-		_libor1M = new org.drip.simm20.product.RiskFactorTenorSensitivity (libor1M);
-
-		_libor3M = new org.drip.simm20.product.RiskFactorTenorSensitivity (libor3M);
-
-		_libor6M = new org.drip.simm20.product.RiskFactorTenorSensitivity (libor6M);
-
-		_libor12M = new org.drip.simm20.product.RiskFactorTenorSensitivity (libor12M);
-
-		_municipal = new org.drip.simm20.product.RiskFactorTenorSensitivity (municipal);
 	}
 
 	/**
@@ -133,42 +126,42 @@ public class IRNetSensitivity
 	 * @return The OIS Net Tenor Sensitivity Map
 	 */
 
-	public org.drip.simm20.product.RiskFactorTenorSensitivity ois()
+	public java.util.Map<java.lang.String, java.lang.Double> oisThresholded()
 	{
-		return _ois;
+		return _oisThresholded;
 	}
 
 	/**
-	 * Retrieve the LIBOR 1M Net Tenor Sensitivity Map
+	 * Retrieve the Thresholded LIBOR 1M Net Tenor Sensitivity Map
 	 * 
-	 * @return The LIBOR 1M Net Tenor Sensitivity Map
+	 * @return The Thresholded LIBOR 1M Net Tenor Sensitivity Map
 	 */
 
-	public org.drip.simm20.product.RiskFactorTenorSensitivity libor1M()
+	public java.util.Map<java.lang.String, java.lang.Double> libor1MThresholded()
 	{
-		return _libor1M;
+		return _libor1MThresholded;
 	}
 
 	/**
-	 * Retrieve the LIBOR 3M Net Tenor Sensitivity Map
+	 * Retrieve the Thresholded LIBOR 3M Net Tenor Sensitivity Map
 	 * 
-	 * @return The LIBOR 3M Net Tenor Sensitivity Map
+	 * @return The Thresholded LIBOR 3M Net Tenor Sensitivity Map
 	 */
 
-	public org.drip.simm20.product.RiskFactorTenorSensitivity libor3M()
+	public java.util.Map<java.lang.String, java.lang.Double> libor3MThresholded()
 	{
-		return _libor3M;
+		return _libor3MThresholded;
 	}
 
 	/**
-	 * Retrieve the LIBOR 6M Net Tenor Sensitivity Map
+	 * Retrieve the Thresholded LIBOR 6M Net Tenor Sensitivity Map
 	 * 
-	 * @return The LIBOR 6M Net Tenor Sensitivity Map
+	 * @return The Thresholded LIBOR 6M Net Tenor Sensitivity Map
 	 */
 
-	public org.drip.simm20.product.RiskFactorTenorSensitivity libor6M()
+	public java.util.Map<java.lang.String, java.lang.Double> libor6M()
 	{
-		return _libor6M;
+		return _libor6MThresholded;
 	}
 
 	/**
@@ -177,31 +170,31 @@ public class IRNetSensitivity
 	 * @return The LIBOR 12M Net Tenor Sensitivity Map
 	 */
 
-	public org.drip.simm20.product.RiskFactorTenorSensitivity libor12M()
+	public java.util.Map<java.lang.String, java.lang.Double> libor12M()
 	{
-		return _libor12M;
+		return _libor12MThresholded;
 	}
 
 	/**
-	 * Retrieve the PRIME Net Tenor Sensitivity Map
+	 * Retrieve the Thresholded PRIME Net Tenor Sensitivity Map
 	 * 
-	 * @return The PRIME Net Tenor Sensitivity Map
+	 * @return The Thresholded PRIME Net Tenor Sensitivity Map
 	 */
 
-	public org.drip.simm20.product.RiskFactorTenorSensitivity prime()
+	public java.util.Map<java.lang.String, java.lang.Double> primeThresholded()
 	{
-		return _prime;
+		return _primeThresholded;
 	}
 
 	/**
-	 * Retrieve the MUNICIPAL Net Tenor Sensitivity Map
+	 * Retrieve the Thresholded MUNICIPAL Net Tenor Sensitivity Map
 	 * 
-	 * @return The MUNICIPAL Net Tenor Sensitivity Map
+	 * @return The Thresholded MUNICIPAL Net Tenor Sensitivity Map
 	 */
 
-	public org.drip.simm20.product.RiskFactorTenorSensitivity municipal()
+	public java.util.Map<java.lang.String, java.lang.Double> municipal()
 	{
-		return _municipal;
+		return _municipalThresholded;
 	}
 
 	/**
@@ -229,20 +222,19 @@ public class IRNetSensitivity
 		double covariance_OIS_OIS = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisOuterEntry :
-			_ois.tenorDeltaMap().entrySet())
+			_oisThresholded.entrySet())
 		{
 			double outerSensitivity = oisOuterEntry.getValue();
 
 			java.lang.String outerTenor = oisOuterEntry.getKey();
 
 			for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisInnerEntry :
-				_ois.tenorDeltaMap().entrySet())
+				_oisThresholded.entrySet())
 			{
 				java.lang.String innerTenor = oisInnerEntry.getKey();
 
 				covariance_OIS_OIS = covariance_OIS_OIS + outerSensitivity * oisInnerEntry.getValue() * (
-					outerTenor.equalsIgnoreCase (innerTenor) ? 1. :
-						tenorCorrelation.entry (
+					outerTenor.equalsIgnoreCase (innerTenor) ? 1. : tenorCorrelation.entry (
 							outerTenor,
 							innerTenor
 						)
@@ -278,25 +270,24 @@ public class IRNetSensitivity
 		double covariance_LIBOR1M_LIBOR1M = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor1MOuterEntry :
-			_libor1M.tenorDeltaMap().entrySet())
+			_libor1MThresholded.entrySet())
 		{
 			double outerSensitivity = libor1MOuterEntry.getValue();
 
 			java.lang.String outerTenor = libor1MOuterEntry.getKey();
 
 			for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor1MInnerEntry :
-				_libor1M.tenorDeltaMap().entrySet())
+				_libor1MThresholded.entrySet())
 			{
 				java.lang.String innerTenor = libor1MInnerEntry.getKey();
 
 				covariance_LIBOR1M_LIBOR1M = covariance_LIBOR1M_LIBOR1M + outerSensitivity *
 					libor1MInnerEntry.getValue() * (
-						outerTenor.equalsIgnoreCase (innerTenor) ? 1. :
-							tenorCorrelation.entry (
-								outerTenor,
-								innerTenor
-							)
-						);
+						outerTenor.equalsIgnoreCase (innerTenor) ? 1. : tenorCorrelation.entry (
+							outerTenor,
+							innerTenor
+						)
+					);
 			}
 		}
 
@@ -328,25 +319,24 @@ public class IRNetSensitivity
 		double covariance_LIBOR3M_LIBOR3M = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor3MOuterEntry :
-			_libor3M.tenorDeltaMap().entrySet())
+			_libor3MThresholded.entrySet())
 		{
 			double outerSensitivity = libor3MOuterEntry.getValue();
 
 			java.lang.String outerTenor = libor3MOuterEntry.getKey();
 
 			for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor3MInnerEntry :
-				_libor3M.tenorDeltaMap().entrySet())
+				_libor3MThresholded.entrySet())
 			{
 				java.lang.String innerTenor = libor3MInnerEntry.getKey();
 
 				covariance_LIBOR3M_LIBOR3M = covariance_LIBOR3M_LIBOR3M + outerSensitivity *
 					libor3MInnerEntry.getValue() * (
-						outerTenor.equalsIgnoreCase (innerTenor) ? 1. :
-							tenorCorrelation.entry (
-								outerTenor,
-								innerTenor
-							)
-						);
+						outerTenor.equalsIgnoreCase (innerTenor) ? 1. : tenorCorrelation.entry (
+							outerTenor,
+							innerTenor
+						)
+					);
 			}
 		}
 
@@ -378,25 +368,24 @@ public class IRNetSensitivity
 		double covariance_LIBOR6M_LIBOR6M = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor6MOuterEntry :
-			_libor6M.tenorDeltaMap().entrySet())
+			_libor6MThresholded.entrySet())
 		{
 			double outerSensitivity = libor6MOuterEntry.getValue();
 
 			java.lang.String outerTenor = libor6MOuterEntry.getKey();
 
 			for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor6MInnerEntry :
-				_libor3M.tenorDeltaMap().entrySet())
+				_libor3MThresholded.entrySet())
 			{
 				java.lang.String innerTenor = libor6MInnerEntry.getKey();
 
 				covariance_LIBOR6M_LIBOR6M = covariance_LIBOR6M_LIBOR6M + outerSensitivity *
 					libor6MInnerEntry.getValue() * (
-						outerTenor.equalsIgnoreCase (innerTenor) ? 1. :
-							tenorCorrelation.entry (
-								outerTenor,
-								innerTenor
-							)
-						);
+						outerTenor.equalsIgnoreCase (innerTenor) ? 1. : tenorCorrelation.entry (
+							outerTenor,
+							innerTenor
+						)
+					);
 			}
 		}
 
@@ -429,25 +418,24 @@ public class IRNetSensitivity
 		double covariance_LIBOR12M_LIBOR12M = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor12MOuterEntry :
-			_libor12M.tenorDeltaMap().entrySet())
+			_libor12MThresholded.entrySet())
 		{
 			double outerSensitivity = libor12MOuterEntry.getValue();
 
 			java.lang.String outerTenor = libor12MOuterEntry.getKey();
 
 			for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor12MInnerEntry :
-				_libor12M.tenorDeltaMap().entrySet())
+				_libor12MThresholded.entrySet())
 			{
 				java.lang.String innerTenor = libor12MInnerEntry.getKey();
 
 				covariance_LIBOR12M_LIBOR12M = covariance_LIBOR12M_LIBOR12M + outerSensitivity *
 					libor12MInnerEntry.getValue() * (
-						outerTenor.equalsIgnoreCase (innerTenor) ? 1. :
-							tenorCorrelation.entry (
-								outerTenor,
-								innerTenor
-							)
-						);
+						outerTenor.equalsIgnoreCase (innerTenor) ? 1. : tenorCorrelation.entry (
+							outerTenor,
+							innerTenor
+						)
+					);
 			}
 		}
 
@@ -479,25 +467,24 @@ public class IRNetSensitivity
 		double covariance_PRIME_PRIME = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> primeOuterEntry :
-			_prime.tenorDeltaMap().entrySet())
+			_primeThresholded.entrySet())
 		{
 			double outerSensitivity = primeOuterEntry.getValue();
 
 			java.lang.String outerTenor = primeOuterEntry.getKey();
 
 			for (java.util.Map.Entry<java.lang.String, java.lang.Double> primeInnerEntry :
-				_prime.tenorDeltaMap().entrySet())
+				_primeThresholded.entrySet())
 			{
 				java.lang.String innerTenor = primeInnerEntry.getKey();
 
 				covariance_PRIME_PRIME = covariance_PRIME_PRIME + outerSensitivity *
 					primeInnerEntry.getValue() * (
-						outerTenor.equalsIgnoreCase (innerTenor) ? 1. :
-							tenorCorrelation.entry (
-								outerTenor,
-								innerTenor
-							)
-						);
+						outerTenor.equalsIgnoreCase (innerTenor) ? 1. : tenorCorrelation.entry (
+							outerTenor,
+							innerTenor
+						)
+					);
 			}
 		}
 
@@ -530,25 +517,24 @@ public class IRNetSensitivity
 		double covariance_MUNICIPAL_MUNICIPAL = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> municipalOuterEntry :
-			_municipal.tenorDeltaMap().entrySet())
+			_municipalThresholded.entrySet())
 		{
 			double outerSensitivity = municipalOuterEntry.getValue();
 
 			java.lang.String outerTenor = municipalOuterEntry.getKey();
 
 			for (java.util.Map.Entry<java.lang.String, java.lang.Double> municipalInnerEntry :
-				_municipal.tenorDeltaMap().entrySet())
+				_municipalThresholded.entrySet())
 			{
 				java.lang.String innerTenor = municipalInnerEntry.getKey();
 
 				covariance_MUNICIPAL_MUNICIPAL = covariance_MUNICIPAL_MUNICIPAL + outerSensitivity *
 					municipalInnerEntry.getValue() * (
-						outerTenor.equalsIgnoreCase (innerTenor) ? 1. :
-							tenorCorrelation.entry (
-								outerTenor,
-								innerTenor
-							)
-						);
+						outerTenor.equalsIgnoreCase (innerTenor) ? 1. : tenorCorrelation.entry (
+							outerTenor,
+							innerTenor
+						)
+					);
 			}
 		}
 
@@ -579,21 +565,20 @@ public class IRNetSensitivity
 
 		double covariance_OIS_LIBOR1M = 0.;
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisEntry :
-			_ois.tenorDeltaMap().entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisEntry : _oisThresholded.entrySet())
 		{
 			double oisSensitivity = oisEntry.getValue();
 
 			java.lang.String oisTenor = oisEntry.getKey();
 
 			for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor1MEntry :
-				_libor1M.tenorDeltaMap().entrySet())
+				_libor1MThresholded.entrySet())
 			{
 				java.lang.String libor1MTenor = libor1MEntry.getKey();
 
-				covariance_OIS_LIBOR1M = covariance_OIS_LIBOR1M + oisSensitivity * libor1MEntry.getValue() * (
-					oisTenor.equalsIgnoreCase (libor1MTenor) ? 1. :
-						tenorCorrelation.entry (
+				covariance_OIS_LIBOR1M = covariance_OIS_LIBOR1M + oisSensitivity *
+					libor1MEntry.getValue() * (
+						oisTenor.equalsIgnoreCase (libor1MTenor) ? 1. : tenorCorrelation.entry (
 							oisTenor,
 							libor1MTenor
 						)
@@ -628,21 +613,20 @@ public class IRNetSensitivity
 
 		double covariance_OIS_LIBOR3M = 0.;
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisEntry :
-			_ois.tenorDeltaMap().entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisEntry : _oisThresholded.entrySet())
 		{
 			double oisSensitivity = oisEntry.getValue();
 
 			java.lang.String oisTenor = oisEntry.getKey();
 
 			for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor3MEntry :
-				_libor3M.tenorDeltaMap().entrySet())
+				_libor3MThresholded.entrySet())
 			{
 				java.lang.String libor3MTenor = libor3MEntry.getKey();
 
-				covariance_OIS_LIBOR3M = covariance_OIS_LIBOR3M + oisSensitivity * libor3MEntry.getValue() * (
-					oisTenor.equalsIgnoreCase (libor3MTenor) ? 1. :
-						tenorCorrelation.entry (
+				covariance_OIS_LIBOR3M = covariance_OIS_LIBOR3M + oisSensitivity *
+					libor3MEntry.getValue() * (
+						oisTenor.equalsIgnoreCase (libor3MTenor) ? 1. : tenorCorrelation.entry (
 							oisTenor,
 							libor3MTenor
 						)
@@ -677,21 +661,20 @@ public class IRNetSensitivity
 
 		double covariance_OIS_LIBOR6M = 0.;
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisEntry :
-			_ois.tenorDeltaMap().entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisEntry : _oisThresholded.entrySet())
 		{
 			double oisSensitivity = oisEntry.getValue();
 
 			java.lang.String oisTenor = oisEntry.getKey();
 
 			for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor6MEntry :
-				_libor6M.tenorDeltaMap().entrySet())
+				_libor6MThresholded.entrySet())
 			{
 				java.lang.String libor6MTenor = libor6MEntry.getKey();
 
-				covariance_OIS_LIBOR6M = covariance_OIS_LIBOR6M + oisSensitivity * libor6MEntry.getValue() * (
-					oisTenor.equalsIgnoreCase (libor6MTenor) ? 1. :
-						tenorCorrelation.entry (
+				covariance_OIS_LIBOR6M = covariance_OIS_LIBOR6M + oisSensitivity *
+					libor6MEntry.getValue() * (
+						oisTenor.equalsIgnoreCase (libor6MTenor) ? 1. : tenorCorrelation.entry (
 							oisTenor,
 							libor6MTenor
 						)
@@ -726,21 +709,20 @@ public class IRNetSensitivity
 
 		double covariance_OIS_LIBOR12M = 0.;
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisEntry :
-			_ois.tenorDeltaMap().entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisEntry : _oisThresholded.entrySet())
 		{
 			double oisSensitivity = oisEntry.getValue();
 
 			java.lang.String oisTenor = oisEntry.getKey();
 
 			for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor12MEntry :
-				_libor12M.tenorDeltaMap().entrySet())
+				_libor12MThresholded.entrySet())
 			{
 				java.lang.String libor12MTenor = libor12MEntry.getKey();
 
-				covariance_OIS_LIBOR12M = covariance_OIS_LIBOR12M + oisSensitivity * libor12MEntry.getValue() * (
-					oisTenor.equalsIgnoreCase (libor12MTenor) ? 1. :
-						tenorCorrelation.entry (
+				covariance_OIS_LIBOR12M = covariance_OIS_LIBOR12M + oisSensitivity *
+					libor12MEntry.getValue() * (
+						oisTenor.equalsIgnoreCase (libor12MTenor) ? 1. : tenorCorrelation.entry (
 							oisTenor,
 							libor12MTenor
 						)
@@ -775,25 +757,23 @@ public class IRNetSensitivity
 
 		double covariance_OIS_PRIME = 0.;
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisEntry :
-			_ois.tenorDeltaMap().entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisEntry : _oisThresholded.entrySet())
 		{
 			double oisSensitivity = oisEntry.getValue();
 
 			java.lang.String oisTenor = oisEntry.getKey();
 
 			for (java.util.Map.Entry<java.lang.String, java.lang.Double> primeEntry :
-				_prime.tenorDeltaMap().entrySet())
+				_primeThresholded.entrySet())
 			{
 				java.lang.String primeTenor = primeEntry.getKey();
 
 				covariance_OIS_PRIME = covariance_OIS_PRIME + oisSensitivity * primeEntry.getValue() * (
-					oisTenor.equalsIgnoreCase (primeTenor) ? 1. :
-						tenorCorrelation.entry (
-							oisTenor,
-							primeTenor
-						)
-					);
+					oisTenor.equalsIgnoreCase (primeTenor) ? 1. : tenorCorrelation.entry (
+						oisTenor,
+						primeTenor
+					)
+				);
 			}
 		}
 
@@ -824,26 +804,24 @@ public class IRNetSensitivity
 
 		double covariance_OIS_MUNICIPAL = 0.;
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisEntry :
-			_ois.tenorDeltaMap().entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisEntry : _oisThresholded.entrySet())
 		{
 			double oisSensitivity = oisEntry.getValue();
 
 			java.lang.String oisTenor = oisEntry.getKey();
 
 			for (java.util.Map.Entry<java.lang.String, java.lang.Double> municipalEntry :
-				_municipal.tenorDeltaMap().entrySet())
+				_municipalThresholded.entrySet())
 			{
 				java.lang.String municipalTenor = municipalEntry.getKey();
 
 				covariance_OIS_MUNICIPAL = covariance_OIS_MUNICIPAL + oisSensitivity *
 					municipalEntry.getValue() * (
-						oisTenor.equalsIgnoreCase (municipalTenor) ? 1. :
-							tenorCorrelation.entry (
-								oisTenor,
-								municipalTenor
-							)
-						);
+						oisTenor.equalsIgnoreCase (municipalTenor) ? 1. : tenorCorrelation.entry (
+							oisTenor,
+							municipalTenor
+						)
+					);
 			}
 		}
 
@@ -875,25 +853,24 @@ public class IRNetSensitivity
 		double covariance_LIBOR1M_LIBOR3M = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor1MEntry :
-			_libor1M.tenorDeltaMap().entrySet())
+			_libor1MThresholded.entrySet())
 		{
 			double libor1MSensitivity = libor1MEntry.getValue();
 
 			java.lang.String libor1MTenor = libor1MEntry.getKey();
 
 			for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor3MEntry :
-				_libor3M.tenorDeltaMap().entrySet())
+				_libor3MThresholded.entrySet())
 			{
 				java.lang.String libor3MTenor = libor3MEntry.getKey();
 
 				covariance_LIBOR1M_LIBOR3M = covariance_LIBOR1M_LIBOR3M + libor1MSensitivity *
 					libor3MEntry.getValue() * (
-						libor1MTenor.equalsIgnoreCase (libor3MTenor) ? 1. :
-							tenorCorrelation.entry (
-								libor1MTenor,
-								libor3MTenor
-							)
-						);
+						libor1MTenor.equalsIgnoreCase (libor3MTenor) ? 1. : tenorCorrelation.entry (
+							libor1MTenor,
+							libor3MTenor
+						)
+					);
 			}
 		}
 
@@ -925,25 +902,24 @@ public class IRNetSensitivity
 		double covariance_LIBOR1M_LIBOR6M = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor1MEntry :
-			_libor1M.tenorDeltaMap().entrySet())
+			_libor1MThresholded.entrySet())
 		{
 			double libor1MSensitivity = libor1MEntry.getValue();
 
 			java.lang.String libor1MTenor = libor1MEntry.getKey();
 
 			for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor6MEntry :
-				_libor6M.tenorDeltaMap().entrySet())
+				_libor6MThresholded.entrySet())
 			{
 				java.lang.String libor6MTenor = libor6MEntry.getKey();
 
 				covariance_LIBOR1M_LIBOR6M = covariance_LIBOR1M_LIBOR6M + libor1MSensitivity *
 					libor6MEntry.getValue() * (
-						libor1MTenor.equalsIgnoreCase (libor6MTenor) ? 1. :
-							tenorCorrelation.entry (
-								libor1MTenor,
-								libor6MTenor
-							)
-						);
+						libor1MTenor.equalsIgnoreCase (libor6MTenor) ? 1. : tenorCorrelation.entry (
+							libor1MTenor,
+							libor6MTenor
+						)
+					);
 			}
 		}
 
@@ -975,25 +951,24 @@ public class IRNetSensitivity
 		double covariance_LIBOR1M_LIBOR12M = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor1MEntry :
-			_libor1M.tenorDeltaMap().entrySet())
+			_libor1MThresholded.entrySet())
 		{
 			double libor1MSensitivity = libor1MEntry.getValue();
 
 			java.lang.String libor1MTenor = libor1MEntry.getKey();
 
 			for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor12MEntry :
-				_libor12M.tenorDeltaMap().entrySet())
+				_libor12MThresholded.entrySet())
 			{
 				java.lang.String libor12MTenor = libor12MEntry.getKey();
 
 				covariance_LIBOR1M_LIBOR12M = covariance_LIBOR1M_LIBOR12M + libor1MSensitivity *
 					libor12MEntry.getValue() * (
-						libor1MTenor.equalsIgnoreCase (libor12MTenor) ? 1. :
-							tenorCorrelation.entry (
-								libor1MTenor,
-								libor12MTenor
-							)
-						);
+						libor1MTenor.equalsIgnoreCase (libor12MTenor) ? 1. : tenorCorrelation.entry (
+							libor1MTenor,
+							libor12MTenor
+						)
+					);
 			}
 		}
 
@@ -1025,25 +1000,24 @@ public class IRNetSensitivity
 		double covariance_LIBOR1M_PRIME = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor1MEntry :
-			_libor1M.tenorDeltaMap().entrySet())
+			_libor1MThresholded.entrySet())
 		{
 			double libor1MSensitivity = libor1MEntry.getValue();
 
 			java.lang.String libor1MTenor = libor1MEntry.getKey();
 
 			for (java.util.Map.Entry<java.lang.String, java.lang.Double> primeEntry :
-				_prime.tenorDeltaMap().entrySet())
+				_primeThresholded.entrySet())
 			{
 				java.lang.String primeTenor = primeEntry.getKey();
 
 				covariance_LIBOR1M_PRIME = covariance_LIBOR1M_PRIME + libor1MSensitivity *
 					primeEntry.getValue() * (
-						libor1MTenor.equalsIgnoreCase (primeTenor) ? 1. :
-							tenorCorrelation.entry (
-								libor1MTenor,
-								primeTenor
-							)
-						);
+						libor1MTenor.equalsIgnoreCase (primeTenor) ? 1. : tenorCorrelation.entry (
+							libor1MTenor,
+							primeTenor
+						)
+					);
 			}
 		}
 
@@ -1076,25 +1050,24 @@ public class IRNetSensitivity
 		double covariance_LIBOR1M_MUNICIPAL = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor1MEntry :
-			_libor1M.tenorDeltaMap().entrySet())
+			_libor1MThresholded.entrySet())
 		{
 			double libor1MSensitivity = libor1MEntry.getValue();
 
 			java.lang.String libor1MTenor = libor1MEntry.getKey();
 
 			for (java.util.Map.Entry<java.lang.String, java.lang.Double> municipalEntry :
-				_municipal.tenorDeltaMap().entrySet())
+				_municipalThresholded.entrySet())
 			{
 				java.lang.String municipalTenor = municipalEntry.getKey();
 
 				covariance_LIBOR1M_MUNICIPAL = covariance_LIBOR1M_MUNICIPAL + libor1MSensitivity *
 					municipalEntry.getValue() * (
-						libor1MTenor.equalsIgnoreCase (municipalTenor) ? 1. :
-							tenorCorrelation.entry (
-								libor1MTenor,
-								municipalTenor
-							)
-						);
+						libor1MTenor.equalsIgnoreCase (municipalTenor) ? 1. : tenorCorrelation.entry (
+							libor1MTenor,
+							municipalTenor
+						)
+					);
 			}
 		}
 
@@ -1126,25 +1099,24 @@ public class IRNetSensitivity
 		double covariance_LIBOR3M_LIBOR6M = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor3MEntry :
-			_libor3M.tenorDeltaMap().entrySet())
+			_libor3MThresholded.entrySet())
 		{
 			double libor3MSensitivity = libor3MEntry.getValue();
 
 			java.lang.String libor3MTenor = libor3MEntry.getKey();
 
 			for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor6MEntry :
-				_libor6M.tenorDeltaMap().entrySet())
+				_libor6MThresholded.entrySet())
 			{
 				java.lang.String libor6MTenor = libor6MEntry.getKey();
 
 				covariance_LIBOR3M_LIBOR6M = covariance_LIBOR3M_LIBOR6M + libor3MSensitivity *
 					libor6MEntry.getValue() * (
-						libor3MTenor.equalsIgnoreCase (libor6MTenor) ? 1. :
-							tenorCorrelation.entry (
-								libor3MTenor,
-								libor6MTenor
-							)
-						);
+						libor3MTenor.equalsIgnoreCase (libor6MTenor) ? 1. : tenorCorrelation.entry (
+							libor3MTenor,
+							libor6MTenor
+						)
+					);
 			}
 		}
 
@@ -1176,25 +1148,24 @@ public class IRNetSensitivity
 		double covariance_LIBOR3M_LIBOR12M = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor3MEntry :
-			_libor3M.tenorDeltaMap().entrySet())
+			_libor3MThresholded.entrySet())
 		{
 			double libor3MSensitivity = libor3MEntry.getValue();
 
 			java.lang.String libor3MTenor = libor3MEntry.getKey();
 
 			for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor12MEntry :
-				_libor12M.tenorDeltaMap().entrySet())
+				_libor12MThresholded.entrySet())
 			{
 				java.lang.String libor12MTenor = libor12MEntry.getKey();
 
 				covariance_LIBOR3M_LIBOR12M = covariance_LIBOR3M_LIBOR12M + libor3MSensitivity *
 					libor12MEntry.getValue() * (
-						libor3MTenor.equalsIgnoreCase (libor12MTenor) ? 1. :
-							tenorCorrelation.entry (
-								libor3MTenor,
-								libor12MTenor
-							)
-						);
+						libor3MTenor.equalsIgnoreCase (libor12MTenor) ? 1. : tenorCorrelation.entry (
+							libor3MTenor,
+							libor12MTenor
+						)
+					);
 			}
 		}
 
@@ -1226,25 +1197,24 @@ public class IRNetSensitivity
 		double covariance_LIBOR3M_PRIME = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor3MEntry :
-			_libor3M.tenorDeltaMap().entrySet())
+			_libor3MThresholded.entrySet())
 		{
 			double libor3MSensitivity = libor3MEntry.getValue();
 
 			java.lang.String libor3MTenor = libor3MEntry.getKey();
 
 			for (java.util.Map.Entry<java.lang.String, java.lang.Double> primeEntry :
-				_prime.tenorDeltaMap().entrySet())
+				_primeThresholded.entrySet())
 			{
 				java.lang.String primeTenor = primeEntry.getKey();
 
 				covariance_LIBOR3M_PRIME = covariance_LIBOR3M_PRIME + libor3MSensitivity *
 					primeEntry.getValue() * (
-						libor3MTenor.equalsIgnoreCase (primeTenor) ? 1. :
-							tenorCorrelation.entry (
-								libor3MTenor,
-								primeTenor
-							)
-						);
+						libor3MTenor.equalsIgnoreCase (primeTenor) ? 1. : tenorCorrelation.entry (
+							libor3MTenor,
+							primeTenor
+						)
+					);
 			}
 		}
 
@@ -1277,25 +1247,24 @@ public class IRNetSensitivity
 		double covariance_LIBOR3M_MUNICIPAL = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor3MEntry :
-			_libor3M.tenorDeltaMap().entrySet())
+			_libor3MThresholded.entrySet())
 		{
 			double libor3MSensitivity = libor3MEntry.getValue();
 
 			java.lang.String libor3MTenor = libor3MEntry.getKey();
 
 			for (java.util.Map.Entry<java.lang.String, java.lang.Double> municipalEntry :
-				_municipal.tenorDeltaMap().entrySet())
+				_municipalThresholded.entrySet())
 			{
 				java.lang.String municipalTenor = municipalEntry.getKey();
 
 				covariance_LIBOR3M_MUNICIPAL = covariance_LIBOR3M_MUNICIPAL + libor3MSensitivity *
 					municipalEntry.getValue() * (
-						libor3MTenor.equalsIgnoreCase (municipalTenor) ? 1. :
-							tenorCorrelation.entry (
-								libor3MTenor,
-								municipalTenor
-							)
-						);
+						libor3MTenor.equalsIgnoreCase (municipalTenor) ? 1. : tenorCorrelation.entry (
+							libor3MTenor,
+							municipalTenor
+						)
+					);
 			}
 		}
 
@@ -1327,25 +1296,24 @@ public class IRNetSensitivity
 		double covariance_LIBOR6M_LIBOR12M = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor6MEntry :
-			_libor6M.tenorDeltaMap().entrySet())
+			_libor6MThresholded.entrySet())
 		{
 			double libor6MSensitivity = libor6MEntry.getValue();
 
 			java.lang.String libor6MTenor = libor6MEntry.getKey();
 
 			for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor12MEntry :
-				_libor12M.tenorDeltaMap().entrySet())
+				_libor12MThresholded.entrySet())
 			{
 				java.lang.String libor12MTenor = libor12MEntry.getKey();
 
 				covariance_LIBOR6M_LIBOR12M = covariance_LIBOR6M_LIBOR12M + libor6MSensitivity *
 					libor12MEntry.getValue() * (
-						libor6MTenor.equalsIgnoreCase (libor12MTenor) ? 1. :
-							tenorCorrelation.entry (
-								libor6MTenor,
-								libor12MTenor
-							)
-						);
+						libor6MTenor.equalsIgnoreCase (libor12MTenor) ? 1. : tenorCorrelation.entry (
+							libor6MTenor,
+							libor12MTenor
+						)
+					);
 			}
 		}
 
@@ -1377,25 +1345,24 @@ public class IRNetSensitivity
 		double covariance_LIBOR6M_PRIME = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor6MEntry :
-			_libor6M.tenorDeltaMap().entrySet())
+			_libor6MThresholded.entrySet())
 		{
 			double libor6MSensitivity = libor6MEntry.getValue();
 
 			java.lang.String libor6MTenor = libor6MEntry.getKey();
 
 			for (java.util.Map.Entry<java.lang.String, java.lang.Double> primeEntry :
-				_prime.tenorDeltaMap().entrySet())
+				_primeThresholded.entrySet())
 			{
 				java.lang.String primeTenor = primeEntry.getKey();
 
 				covariance_LIBOR6M_PRIME = covariance_LIBOR6M_PRIME + libor6MSensitivity *
 					primeEntry.getValue() * (
-						libor6MTenor.equalsIgnoreCase (primeTenor) ? 1. :
-							tenorCorrelation.entry (
-								libor6MTenor,
-								primeTenor
-							)
-						);
+						libor6MTenor.equalsIgnoreCase (primeTenor) ? 1. : tenorCorrelation.entry (
+							libor6MTenor,
+							primeTenor
+						)
+					);
 			}
 		}
 
@@ -1428,25 +1395,24 @@ public class IRNetSensitivity
 		double covariance_LIBOR6M_MUNICIPAL = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor6MEntry :
-			_libor6M.tenorDeltaMap().entrySet())
+			_libor6MThresholded.entrySet())
 		{
 			double libor6MSensitivity = libor6MEntry.getValue();
 
 			java.lang.String libor6MTenor = libor6MEntry.getKey();
 
 			for (java.util.Map.Entry<java.lang.String, java.lang.Double> municipalEntry :
-				_municipal.tenorDeltaMap().entrySet())
+				_municipalThresholded.entrySet())
 			{
 				java.lang.String municipalTenor = municipalEntry.getKey();
 
 				covariance_LIBOR6M_MUNICIPAL = covariance_LIBOR6M_MUNICIPAL + libor6MSensitivity *
 					municipalEntry.getValue() * (
-						libor6MTenor.equalsIgnoreCase (municipalTenor) ? 1. :
-							tenorCorrelation.entry (
-								libor6MTenor,
-								municipalTenor
-							)
-						);
+						libor6MTenor.equalsIgnoreCase (municipalTenor) ? 1. : tenorCorrelation.entry (
+							libor6MTenor,
+							municipalTenor
+						)
+					);
 			}
 		}
 
@@ -1478,25 +1444,24 @@ public class IRNetSensitivity
 		double covariance_LIBOR12M_PRIME = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor12MEntry :
-			_libor12M.tenorDeltaMap().entrySet())
+			_libor12MThresholded.entrySet())
 		{
 			double libor12MSensitivity = libor12MEntry.getValue();
 
 			java.lang.String libor12MTenor = libor12MEntry.getKey();
 
 			for (java.util.Map.Entry<java.lang.String, java.lang.Double> primeEntry :
-				_prime.tenorDeltaMap().entrySet())
+				_primeThresholded.entrySet())
 			{
 				java.lang.String primeTenor = primeEntry.getKey();
 
 				covariance_LIBOR12M_PRIME = covariance_LIBOR12M_PRIME + libor12MSensitivity *
 					primeEntry.getValue() * (
-						libor12MTenor.equalsIgnoreCase (primeTenor) ? 1. :
-							tenorCorrelation.entry (
-								libor12MTenor,
-								primeTenor
-							)
-						);
+						libor12MTenor.equalsIgnoreCase (primeTenor) ? 1. : tenorCorrelation.entry (
+							libor12MTenor,
+							primeTenor
+						)
+					);
 			}
 		}
 
@@ -1529,25 +1494,24 @@ public class IRNetSensitivity
 		double covariance_LIBOR12M_MUNICIPAL = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor12MEntry :
-			_libor12M.tenorDeltaMap().entrySet())
+			_libor12MThresholded.entrySet())
 		{
 			double libor12MSensitivity = libor12MEntry.getValue();
 
 			java.lang.String libor12MTenor = libor12MEntry.getKey();
 
 			for (java.util.Map.Entry<java.lang.String, java.lang.Double> municipalEntry :
-				_municipal.tenorDeltaMap().entrySet())
+				_municipalThresholded.entrySet())
 			{
 				java.lang.String municipalTenor = municipalEntry.getKey();
 
 				covariance_LIBOR12M_MUNICIPAL = covariance_LIBOR12M_MUNICIPAL + libor12MSensitivity *
 					municipalEntry.getValue() * (
-						libor12MTenor.equalsIgnoreCase (municipalTenor) ? 1. :
-							tenorCorrelation.entry (
-								libor12MTenor,
-								municipalTenor
-							)
-						);
+						libor12MTenor.equalsIgnoreCase (municipalTenor) ? 1. : tenorCorrelation.entry (
+							libor12MTenor,
+							municipalTenor
+						)
+					);
 			}
 		}
 
@@ -1579,25 +1543,24 @@ public class IRNetSensitivity
 		double covariance_PRIME_MUNICIPAL = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> primeEntry :
-			_prime.tenorDeltaMap().entrySet())
+			_primeThresholded.entrySet())
 		{
 			double primeSensitivity = primeEntry.getValue();
 
 			java.lang.String primeTenor = primeEntry.getKey();
 
 			for (java.util.Map.Entry<java.lang.String, java.lang.Double> municipalEntry :
-				_municipal.tenorDeltaMap().entrySet())
+				_municipalThresholded.entrySet())
 			{
 				java.lang.String municipalTenor = municipalEntry.getKey();
 
 				covariance_PRIME_MUNICIPAL = covariance_PRIME_MUNICIPAL + primeSensitivity *
 					municipalEntry.getValue() * (
-						primeTenor.equalsIgnoreCase (municipalTenor) ? 1. :
-							tenorCorrelation.entry (
-								primeTenor,
-								municipalTenor
-							)
-						);
+						primeTenor.equalsIgnoreCase (municipalTenor) ? 1. : tenorCorrelation.entry (
+							primeTenor,
+							municipalTenor
+						)
+					);
 			}
 		}
 
