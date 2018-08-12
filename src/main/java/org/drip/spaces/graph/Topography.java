@@ -68,7 +68,7 @@ package org.drip.spaces.graph;
 public class Topography
 {
 	private java.util.Map<java.lang.String, org.drip.spaces.graph.VertexNode> _vertexNodeMap = new
-		java.util.HashMap<java.lang.String, org.drip.spaces.graph.VertexNode>();
+		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.spaces.graph.VertexNode>();
 
 	/**
 	 * Empty Topography Constructor
@@ -210,5 +210,85 @@ public class Topography
 		}
 
 		return sourceVertexNode.egressMap().containsKey (destination);
+	}
+
+	/**
+	 * Compute the Weight between Source and Destination if Adjacent
+	 * 
+	 * @param source The Source Vertex Node
+	 * @param destination The Destination Vertex Node
+	 * 
+	 * @return The Weight between Source and Destination if Adjacent
+	 * 
+	 * @throws java.lang.Exception Thrown if the Source and the Destination are not Adjacent
+	 */
+
+	public double adjacentWeight (
+		final java.lang.String source,
+		final java.lang.String destination)
+		throws java.lang.Exception
+	{
+		if (!adjacent (
+			source,
+			destination
+		))
+		{
+			throw new java.lang.Exception ("Topography::adjacentDistance => Invalid Adjaceny Check");
+		}
+
+		return vertexNode (source).egressMap().get (destination);
+	}
+
+	/**
+	 * Generate the Connection Map between valid Pairs of Source and Destination
+	 * 
+	 * @return The Connection Map
+	 */
+
+	public java.util.Map<java.lang.String, java.lang.Double> connectionMap()
+	{
+		java.util.Set<java.lang.String> vertexNodeNameSet = _vertexNodeMap.keySet();
+
+		java.util.Map<java.lang.String, java.lang.Double> connectionMap = new
+			org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
+
+		for (String source : vertexNodeNameSet)
+		{
+			for (String destination : vertexNodeNameSet)
+			{
+				try
+				{
+					if (adjacent (
+						source,
+						destination
+					))
+					{
+						double adjacentWeight = adjacent (
+							source,
+							destination
+						) ? adjacentWeight (
+							source,
+							destination
+						) : 0.;
+
+						connectionMap.put (
+							source + "_" + destination,
+							adjacentWeight
+						);
+
+						connectionMap.put (
+							destination + "_" + source,
+							adjacentWeight
+						);
+					}
+				}
+				catch (java.lang.Exception e)
+				{
+					e.printStackTrace();
+				}
+			}
+		}
+
+		return connectionMap;
 	}
 }
