@@ -7,9 +7,6 @@ package org.drip.spaces.graph;
 
 /*!
  * Copyright (C) 2018 Lakshmi Krishnamurthy
- * Copyright (C) 2017 Lakshmi Krishnamurthy
- * Copyright (C) 2016 Lakshmi Krishnamurthy
- * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
  *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
  *  	libraries targeting analysts and developers
@@ -71,6 +68,120 @@ public class SinglyLinkedNode
 	private SinglyLinkedNode _tail = null;
 	private SinglyLinkedNode _adjacent = null;
 	private double _value = java.lang.Double.NaN;
+
+	/**
+	 * Generate a FIFO Linked List from the Value Array
+	 * 
+	 * @param valueArray The Value Array
+	 * 
+	 * @return The FIFO Linked List
+	 */
+
+	public static final SinglyLinkedNode FIFOListFromArray (
+		final double[] valueArray)
+	{
+		if (null == valueArray)
+		{
+			return null;
+		}
+
+		SinglyLinkedNode singlyLinkedNode = null;
+		int arraySize = valueArray.length;
+
+		if (0 == arraySize)
+		{
+			return null;
+		}
+
+		try
+		{
+			for (int valueIndex = 0; valueIndex < arraySize; ++valueIndex)
+			{
+				if (null == singlyLinkedNode)
+				{
+					singlyLinkedNode = new SinglyLinkedNode (
+						valueArray[valueIndex],
+						null
+					);
+				}
+				else
+				{
+					if (null == singlyLinkedNode.addToTail (
+						new SinglyLinkedNode (
+							valueArray[valueIndex],
+							null
+						)
+					))
+					{
+						return null;
+					}
+				}
+			}
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate a LIFO Linked List from the Value Array
+	 * 
+	 * @param valueArray The Value Array
+	 * 
+	 * @return The LIFO Linked List
+	 */
+
+	public static final SinglyLinkedNode lIFOListFromArray (
+		final double[] valueArray)
+	{
+		if (null == valueArray)
+		{
+			return null;
+		}
+
+		SinglyLinkedNode singlyLinkedNode = null;
+		int arraySize = valueArray.length;
+
+		if (0 == arraySize)
+		{
+			return null;
+		}
+
+		try
+		{
+			for (int valueIndex = 0; valueIndex < arraySize; ++valueIndex)
+			{
+				if (null == singlyLinkedNode)
+				{
+					singlyLinkedNode = new SinglyLinkedNode (
+						valueArray[valueIndex],
+						null
+					);
+				}
+				else
+				{
+					if (null == singlyLinkedNode.addToHead (
+						new SinglyLinkedNode (
+							valueArray[valueIndex],
+							null
+						)
+					))
+					{
+						return null;
+					}
+				}
+			}
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 
 	/**
 	 * SinglyLinkedNode Constructor
@@ -194,7 +305,7 @@ public class SinglyLinkedNode
 
 		SinglyLinkedNode node = this;
 
-		while (_tail != node)
+		while (null != node)
 		{
 			if (node.value() == value)
 			{
@@ -225,7 +336,7 @@ public class SinglyLinkedNode
 
 		SinglyLinkedNode node = this;
 
-		while (_tail != node)
+		while (null != node)
 		{
 			if (node.value() == value)
 			{
@@ -303,7 +414,7 @@ public class SinglyLinkedNode
 		SinglyLinkedNode priorNode = null;
 		SinglyLinkedNode currentNode = this;
 
-		while (_tail != currentNode)
+		while (null != currentNode)
 		{
 			if (currentNode.value() == removalNodeValue)
 			{
@@ -355,5 +466,27 @@ public class SinglyLinkedNode
 		}
 
 		return this;
+	}
+
+	/**
+	 * Convert the Linked List to an Array List
+	 * 
+	 * @return The Array List
+	 */
+
+	public java.util.List<java.lang.Double> toList()
+	{
+		java.util.List<java.lang.Double> valueList = new java.util.ArrayList<java.lang.Double>();
+
+		SinglyLinkedNode node = this;
+
+		while (null != node)
+		{
+			valueList.add (node.value());
+
+			node = node.adjacent();
+		}
+
+		return valueList;
 	}
 }
