@@ -47,7 +47,7 @@ package org.drip.spaces.graph;
  */
 
 /**
- * Topography holds Vertex Nodes and the Paths between them. The References are:
+ * Topography holds Vertexes and the Paths between them. The References are:
  *  
  *  1) Wikipedia (2018a): Graph (Abstract Data Type)
  *  	https://en.wikipedia.org/wiki/Graph_(abstract_data_type).
@@ -67,7 +67,7 @@ package org.drip.spaces.graph;
 
 public class Topography
 {
-	private java.util.Map<java.lang.String, org.drip.spaces.graph.Vertex> _vertexNodeMap = new
+	private java.util.Map<java.lang.String, org.drip.spaces.graph.Vertex> _vertexMap = new
 		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.spaces.graph.Vertex>();
 
 	/**
@@ -79,37 +79,37 @@ public class Topography
 	}
 
 	/**
-	 * Retrieve The Vertex Node Name Set
+	 * Retrieve The Vertex Name Set
 	 * 
-	 * @return The Vertex Node Name Set
+	 * @return The Vertex Name Set
 	 */
 
-	public java.util.Set<java.lang.String> vertexNodeNameSet()
+	public java.util.Set<java.lang.String> vertexNameSet()
 	{
-		return _vertexNodeMap.keySet();
+		return _vertexMap.keySet();
 	}
 
 	/**
-	 * Add The Vertex Node
+	 * Add The Vertex
 	 * 
-	 * @param vertexNodeName Name of the Vertex Node
+	 * @param vertexName Name of the Vertex
 	 * 
-	 * @return TRUE - The Vertex Node successfully added
+	 * @return TRUE - The Vertex successfully added
 	 */
 
-	public boolean addVertexNode (
-		final java.lang.String vertexNodeName)
+	public boolean addVertex (
+		final java.lang.String vertexName)
 	{
-		if (null == vertexNodeName || vertexNodeName.isEmpty())
+		if (null == vertexName || vertexName.isEmpty())
 		{
 			return false;
 		}
 
 		try
 		{
-			_vertexNodeMap.put (
-				vertexNodeName,
-				new org.drip.spaces.graph.Vertex (vertexNodeName)
+			_vertexMap.put (
+				vertexName,
+				new org.drip.spaces.graph.Vertex (vertexName)
 			);
 		}
 		catch (java.lang.Exception e)
@@ -121,102 +121,109 @@ public class Topography
 	}
 
 	/**
-	 * Verify if the Vertex Node is available
+	 * Verify if the Vertex is available
 	 * 
-	 * @param vertexNodeName Name of the Vertex Node
+	 * @param vertexName Name of the Vertex
 	 * 
-	 * @return TRUE - The Vertex Node is available
+	 * @return TRUE - The Vertex is available
 	 */
 
-	public boolean vertexNodeExists (
-		final java.lang.String vertexNodeName)
+	public boolean vertexExists (
+		final java.lang.String vertexName)
 	{
-		return null != vertexNodeName && _vertexNodeMap.containsKey (vertexNodeName);
+		return null != vertexName && _vertexMap.containsKey (vertexName);
 	}
 
 	/**
-	 * Retrieve the Named Vertex Node
+	 * Retrieve the Named Vertex
 	 * 
-	 * @param vertexNodeName Name of the Vertex Node
+	 * @param vertexName Name of the Vertex
 	 * 
-	 * @return The Vertex Node
+	 * @return The Vertex
 	 */
 
-	public org.drip.spaces.graph.Vertex vertexNode (
-		final java.lang.String vertexNodeName)
+	public org.drip.spaces.graph.Vertex vertex (
+		final java.lang.String vertexName)
 	{
-		return vertexNodeExists (vertexNodeName) ? _vertexNodeMap.get (vertexNodeName) : null;
+		return vertexExists (vertexName) ? _vertexMap.get (vertexName) : null;
 	}
 
 	/**
-	 * Add Source To (and Fro) Destination Weighted Path
+	 * Add an Edge
 	 * 
-	 * @param source The Source Vertex Node
-	 * @param destination The Destination Vertex Node
-	 * @param weight The Weight
+	 * @param edge The Edge to be added
 	 * 
-	 * @return TRUE - The Path successfully added
+	 * @return TRUE - The Edge successfully added
 	 */
 
-	public boolean addPath (
-		final java.lang.String source,
-		final java.lang.String destination,
-		final double weight)
+	public boolean addEdge (
+		final org.drip.spaces.graph.Edge edge)
 	{
-		org.drip.spaces.graph.Vertex sourceVertexNode = vertexNode (source);
+		if (null == edge)
+		{
+			return false;
+		}
 
-		org.drip.spaces.graph.Vertex destinationVertexNode = vertexNode (destination);
+		double weight = edge.weight();
 
-		return null != sourceVertexNode && null != destinationVertexNode && sourceVertexNode.addEgress (
+		java.lang.String source = edge.source();
+
+		java.lang.String destination = edge.destination();
+
+		org.drip.spaces.graph.Vertex sourceVertex = vertex (source);
+
+		org.drip.spaces.graph.Vertex destinationVertex = vertex (destination);
+
+		return null != sourceVertex && null != destinationVertex && sourceVertex.addEgress (
 			destination,
 			weight
-		) && destinationVertexNode.addEgress (
+		) && destinationVertex.addEgress (
 			source,
 			weight
 		);
 	}
 
 	/**
-	 * Retrieve the Map of Vertex Nodes
+	 * Retrieve the Map of Vertex
 	 * 
-	 * @return The Map of Vertex Nodes
+	 * @return The Map of Vertex
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.spaces.graph.Vertex> vertexNodeMap()
+	public java.util.Map<java.lang.String, org.drip.spaces.graph.Vertex> vertexMap()
 	{
-		return _vertexNodeMap;
+		return _vertexMap;
 	}
 
 	/**
-	 * Location if the Pair of Nodes are Adjacent
+	 * Indicate if the Pair of Vertexes are Adjacent
 	 * 
-	 * @param source The Source Vertex Node
-	 * @param destination The Destination Vertex Node
+	 * @param source The Source Vertex
+	 * @param destination The Destination Vertex
 	 * 
-	 * @return TRUE - The Pair of Nodes are Adjacent
+	 * @return TRUE - The Pair of Vertexes are Adjacent
 	 */
 
 	public boolean adjacent (
 		final java.lang.String source,
 		final java.lang.String destination)
 	{
-		org.drip.spaces.graph.Vertex sourceVertexNode = vertexNode (source);
+		org.drip.spaces.graph.Vertex sourceVertex = vertex (source);
 
-		org.drip.spaces.graph.Vertex destinationVertexNode = vertexNode (destination);
+		org.drip.spaces.graph.Vertex destinationVertex = vertex (destination);
 
-		if (null == sourceVertexNode || null == destinationVertexNode)
+		if (null == sourceVertex || null == destinationVertex)
 		{
 			return false;
 		}
 
-		return sourceVertexNode.egressMap().containsKey (destination);
+		return sourceVertex.egressMap().containsKey (destination);
 	}
 
 	/**
 	 * Compute the Weight between Source and Destination if Adjacent
 	 * 
-	 * @param source The Source Vertex Node
-	 * @param destination The Destination Vertex Node
+	 * @param source The Source Vertex
+	 * @param destination The Destination Vertex
 	 * 
 	 * @return The Weight between Source and Destination if Adjacent
 	 * 
@@ -233,10 +240,10 @@ public class Topography
 			destination
 		))
 		{
-			throw new java.lang.Exception ("Topography::adjacentDistance => Invalid Adjaceny Check");
+			throw new java.lang.Exception ("Topography::adjacentDistance => Invalid Adjacency Check");
 		}
 
-		return vertexNode (source).egressMap().get (destination);
+		return vertex (source).egressMap().get (destination);
 	}
 
 	/**
@@ -247,14 +254,14 @@ public class Topography
 
 	public java.util.Map<java.lang.String, java.lang.Double> connectionMap()
 	{
-		java.util.Set<java.lang.String> vertexNodeNameSet = _vertexNodeMap.keySet();
+		java.util.Set<java.lang.String> vertexNameSet = _vertexMap.keySet();
 
 		java.util.Map<java.lang.String, java.lang.Double> connectionMap = new
 			org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
 
-		for (String source : vertexNodeNameSet)
+		for (String source : vertexNameSet)
 		{
-			for (String destination : vertexNodeNameSet)
+			for (String destination : vertexNameSet)
 			{
 				try
 				{

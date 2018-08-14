@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
+import org.drip.spaces.graph.Edge;
 import org.drip.spaces.graph.Topography;
 import org.drip.spaces.graph.Vertex;
 
@@ -78,7 +79,7 @@ public class TopographyMap
 	private static final Topography SetTopography()
 		throws Exception
 	{
-		String[] vertexNodeArray = new String[]
+		String[] vertexArray = new String[]
 		{
 			"Delhi     ",
 			"Bombay    ",
@@ -94,94 +95,118 @@ public class TopographyMap
 
 		Topography topography = new Topography();
 
-		for (String vertexNodeName : vertexNodeArray)
+		for (String vertexName : vertexArray)
 		{
-			topography.addVertexNode (vertexNodeName);
+			topography.addVertex (vertexName);
 		}
 
-		topography.addPath (
-			vertexNodeArray[0], // Delhi
-			vertexNodeArray[1], // Bombay
-			1388.
+		topography.addEdge (
+			new Edge (
+				vertexArray[0], // Delhi
+				vertexArray[1], // Bombay
+				1388.
+			)
 		);
 
-		topography.addPath (
-			vertexNodeArray[0], // Delhi
-			vertexNodeArray[2], // Madras
-			2191.
+		topography.addEdge (
+			new Edge (
+				vertexArray[0], // Delhi
+				vertexArray[2], // Madras
+				2191.
+			)
 		);
 
-		topography.addPath (
-			vertexNodeArray[1], // Bombay
-			vertexNodeArray[2], // Madras
-			1279.
+		topography.addEdge (
+			new Edge (
+				vertexArray[1], // Bombay
+				vertexArray[2], // Madras
+				1279.
+			)
 		);
 
-		topography.addPath (
-			vertexNodeArray[0], // Delhi
-			vertexNodeArray[3], // Calcutta
-			1341.
+		topography.addEdge (
+			new Edge (
+				vertexArray[0], // Delhi
+				vertexArray[3], // Calcutta
+				1341.
+			)
 		);
 
-		topography.addPath (
-			vertexNodeArray[1], // Bombay
-			vertexNodeArray[3], // Calcutta
-			1968.
+		topography.addEdge (
+			new Edge (
+				vertexArray[1], // Bombay
+				vertexArray[3], // Calcutta
+				1968.
+			)
 		);
 
-		topography.addPath (
-			vertexNodeArray[2], // Madras
-			vertexNodeArray[3], // Calcutta
-			1663.
+		topography.addEdge (
+			new Edge (
+				vertexArray[2], // Madras
+				vertexArray[3], // Calcutta
+				1663.
+			)
 		);
 
-		topography.addPath (
-			vertexNodeArray[2], // Madras
-			vertexNodeArray[4], // Bangalore
-			361.
+		topography.addEdge (
+			new Edge (
+				vertexArray[2], // Madras
+				vertexArray[4], // Bangalore
+				361.
+			)
 		);
 
-		topography.addPath (
-			vertexNodeArray[2], // Madras
-			vertexNodeArray[5], // Hyderabad
-			784.
+		topography.addEdge (
+			new Edge (
+				vertexArray[2], // Madras
+				vertexArray[5], // Hyderabad
+				784.
+			)
 		);
 
-		topography.addPath (
-			vertexNodeArray[2], // Madras
-			vertexNodeArray[6], // Cochin
-			697.
+		topography.addEdge (
+			new Edge (
+				vertexArray[2], // Madras
+				vertexArray[6], // Cochin
+				697.
+			)
 		);
 
-		topography.addPath (
-			vertexNodeArray[1], // Bombay
-			vertexNodeArray[7], // Pune
-			192.
+		topography.addEdge (
+			new Edge (
+				vertexArray[1], // Bombay
+				vertexArray[7], // Pune
+				192.
+			)
 		);
 
-		topography.addPath (
-			vertexNodeArray[1], // Bombay
-			vertexNodeArray[8], // Ahmedabad
-			492.
+		topography.addEdge (
+			new Edge (
+				vertexArray[1], // Bombay
+				vertexArray[8], // Ahmedabad
+				492.
+			)
 		);
 
-		topography.addPath (
-			vertexNodeArray[0], // Delhi
-			vertexNodeArray[9], // Jaipur
-			308.
+		topography.addEdge (
+			new Edge (
+				vertexArray[0], // Delhi
+				vertexArray[9], // Jaipur
+				308.
+			)
 		);
 
 		return topography;
 	}
 
-	private static final void DisplayVertexNode (
+	private static final void DisplayVertexes (
 		final Topography topography,
-		final String vertexNodeName)
+		final String vertexName)
 		throws Exception
 	{
-		Vertex vertexNode = topography.vertexNode (vertexNodeName);
+		Vertex vertex = topography.vertex (vertexName);
 
-		Map<String, Double> egressMap = vertexNode.egressMap();
+		Map<String, Double> egressMap = vertex.egressMap();
 
 		System.out.println();
 
@@ -190,7 +215,7 @@ public class TopographyMap
 		for (Map.Entry<String, Double> egressEntry : egressMap.entrySet())
 		{
 			System.out.println (
-				"\t|| " + vertexNodeName + " => " +
+				"\t|| " + vertexName + " => " +
 				egressEntry.getKey() + " = " +
 				FormatUtil.FormatDouble (egressEntry.getValue(), 4, 0, 1.) + " ||"
 			);
@@ -207,11 +232,11 @@ public class TopographyMap
 
 		Topography topography = SetTopography();
 
-		for (String vertexNodeName : topography.vertexNodeNameSet())
+		for (String vertexName : topography.vertexNameSet())
 		{
-			DisplayVertexNode (
+			DisplayVertexes (
 				topography,
-				vertexNodeName
+				vertexName
 			);
 		}
 

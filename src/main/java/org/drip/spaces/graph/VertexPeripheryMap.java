@@ -70,8 +70,23 @@ public class VertexPeripheryMap
 	private java.util.Map<java.lang.String, org.drip.spaces.graph.VertexPeriphery> _nameIndex = new
 		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.spaces.graph.VertexPeriphery>();
 
-	private java.util.Map<java.lang.Double, org.drip.spaces.graph.VertexPeriphery> _weightIndex = new
-		java.util.TreeMap<java.lang.Double, org.drip.spaces.graph.VertexPeriphery>();
+	private java.util.Map<java.lang.Double, java.util.List<org.drip.spaces.graph.VertexPeriphery>>
+		_weightIndex = new java.util.TreeMap<java.lang.Double,
+			java.util.List<org.drip.spaces.graph.VertexPeriphery>>();
+
+	private org.drip.spaces.graph.VertexPeriphery getUnvisited (
+		final java.util.List<org.drip.spaces.graph.VertexPeriphery> vertexPeripheryList)
+	{
+		for (org.drip.spaces.graph.VertexPeriphery vertexPeriphery : vertexPeripheryList)
+		{
+			if (!vertexPeriphery.visited())
+			{
+				return vertexPeriphery;
+			}
+		}
+
+		return null;
+	}
 
 	/**
 	 * Empty VertexPeripheryMap Constructor
@@ -102,10 +117,24 @@ public class VertexPeripheryMap
 			vertexPeriphery
 		);
 
-		_weightIndex.put (
-			vertexPeriphery.weightFromSource(),
-			vertexPeriphery
-		);
+		double weightFromSource = vertexPeriphery.weightFromSource();
+
+		if (_weightIndex.containsKey (weightFromSource))
+		{
+			_weightIndex.get (vertexPeriphery.weightFromSource()).add (vertexPeriphery);
+		}
+		else
+		{
+			java.util.List<org.drip.spaces.graph.VertexPeriphery> vertexPeripheryList = new
+				java.util.ArrayList<org.drip.spaces.graph.VertexPeriphery>();
+
+			vertexPeripheryList.add (vertexPeriphery);
+
+			_weightIndex.put (
+				weightFromSource,
+				vertexPeripheryList
+			);
+		}
 
 		return true;
 	}
@@ -121,30 +150,15 @@ public class VertexPeripheryMap
 	public boolean addUnitializedVertexPeriphery (
 		final java.lang.String vertexName)
 	{
-		org.drip.spaces.graph.VertexPeriphery vertexPeriphery = null;
-
 		try
 		{
-			vertexPeriphery = new org.drip.spaces.graph.VertexPeriphery (vertexName);
+			return addVertexPeriphery (new org.drip.spaces.graph.VertexPeriphery (vertexName));
 		}
 		catch (java.lang.Exception e)
 		{
 			e.printStackTrace();
-
-			return false;
 		}
-
-		_nameIndex.put (
-			vertexPeriphery.current(),
-			vertexPeriphery
-		);
-
-		_weightIndex.put (
-			vertexPeriphery.weightFromSource(),
-			vertexPeriphery
-		);
-
-		return true;
+		return false;
 	}
 
 	/**
@@ -183,10 +197,20 @@ public class VertexPeripheryMap
 
 	public org.drip.spaces.graph.VertexPeriphery greedyRetrieval()
 	{
-		for (java.util.Map.Entry<java.lang.Double, org.drip.spaces.graph.VertexPeriphery> weightIndexEntry :
-			_weightIndex.entrySet())
+		for (java.util.Map.Entry<java.lang.Double, java.util.List<org.drip.spaces.graph.VertexPeriphery>>
+			weightIndexEntry : _weightIndex.entrySet())
 		{
-			return weightIndexEntry.getValue();
+			org.drip.spaces.graph.VertexPeriphery vertexPeriphery = getUnvisited
+				(weightIndexEntry.getValue());
+
+			if (null == vertexPeriphery)
+			{
+				continue;
+			}
+
+			vertexPeriphery.setVisited (true);
+
+			return vertexPeriphery;
 		}
 
 		return null;
@@ -209,7 +233,8 @@ public class VertexPeripheryMap
 	 * @return The Weight Indexed Vertex Periphery Map
 	 */
 
-	public java.util.Map<java.lang.Double, org.drip.spaces.graph.VertexPeriphery> weightIndex()
+	public java.util.Map<java.lang.Double, java.util.List<org.drip.spaces.graph.VertexPeriphery>>
+		weightIndex()
 	{
 		return _weightIndex;
 	}

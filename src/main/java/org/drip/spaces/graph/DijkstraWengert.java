@@ -70,13 +70,12 @@ public class DijkstraWengert
 {
 	private org.drip.spaces.graph.VertexPeripheryMap _vertexPeripheryMap = null;
 	private java.util.Map<java.lang.String, java.lang.Double> _connectionMap = null;
-	private java.util.Map<java.lang.String, java.lang.Boolean> _vertexVisitationStatus = null;
 
 	/**
 	 * Generate a Standard DijkstraWengert from the Topography and the Source
 	 * 
 	 * @param topography The Topography Map
-	 * @param source The Source Vertex Node
+	 * @param source The Source Vertex
 	 * 
 	 * @return The DijkstraWengert Instance
 	 */
@@ -90,42 +89,30 @@ public class DijkstraWengert
 			return null;
 		}
 
-		java.util.Set<java.lang.String> vertexNodeNameSet = topography.vertexNodeNameSet();
+		java.util.Set<java.lang.String> vertexNameSet = topography.vertexNameSet();
 
-		if (!vertexNodeNameSet.contains (source))
+		if (!vertexNameSet.contains (source))
 		{
 			return null;
 		}
 
-		java.util.Map<java.lang.String, java.lang.Boolean> vertexVisitationStatus = new
-			org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Boolean>();
-
-		for (java.lang.String vertexNodeName : vertexNodeNameSet)
-		{
-			vertexVisitationStatus.put (
-				vertexNodeName,
-				vertexNodeName.equalsIgnoreCase (source)
-			);
-		}
-
 		java.util.Map<java.lang.String, java.lang.Double> connectionMap = topography.connectionMap();
 
-		java.util.Map<java.lang.String, java.lang.Double> egressMap = topography.vertexNode
-			(source).egressMap();
+		java.util.Map<java.lang.String, java.lang.Double> egressMap = topography.vertex (source).egressMap();
 
 		org.drip.spaces.graph.VertexPeripheryMap vertexPeripheryMap = new
 			org.drip.spaces.graph.VertexPeripheryMap();
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> egressEntry : egressMap.entrySet())
 		{
-			java.lang.String egressNode = egressEntry.getKey();
+			java.lang.String egressVertex = egressEntry.getKey();
 
 			org.drip.spaces.graph.VertexPeriphery vertexPeriphery = null;
-			java.lang.String sourceToEgressNodeKey = source + "_" + egressNode;
+			java.lang.String sourceToEgressVertexKey = source + "_" + egressVertex;
 
 			try
 			{
-				vertexPeriphery = new org.drip.spaces.graph.VertexPeriphery (egressNode);
+				vertexPeriphery = new org.drip.spaces.graph.VertexPeriphery (egressVertex);
 			}
 			catch (java.lang.Exception e)
 			{
@@ -134,14 +121,14 @@ public class DijkstraWengert
 				return null;
 			}
 
-			vertexPeriphery.setPreceedingNode (source);
+			vertexPeriphery.setPreceeding (source);
 
-			vertexPeriphery.setWeightFromSource (connectionMap.get (sourceToEgressNodeKey));
+			vertexPeriphery.setWeightFromSource (connectionMap.get (sourceToEgressVertexKey));
 
 			vertexPeripheryMap.addVertexPeriphery (vertexPeriphery);
 		}
 
-		for (java.lang.String vertexName : vertexNodeNameSet)
+		for (java.lang.String vertexName : vertexNameSet)
 		{
 			if (!vertexPeripheryMap.containsVertex (vertexName))
 			{
@@ -152,7 +139,6 @@ public class DijkstraWengert
 		try
 		{
 			return new DijkstraWengert (
-				vertexVisitationStatus,
 				connectionMap,
 				vertexPeripheryMap
 			);
@@ -168,7 +154,6 @@ public class DijkstraWengert
 	/**
 	 * DijkstraWengert Constructor
 	 * 
-	 * @param vertexVisitationStatus The Vertex Visitation Status Map
 	 * @param connectionMap The Inter-Nodal Connection Map
 	 * @param vertexPeripheryMap The Vertex Periphery Map
 	 * 
@@ -176,28 +161,15 @@ public class DijkstraWengert
 	 */
 
 	public DijkstraWengert (
-		final java.util.Map<java.lang.String, java.lang.Boolean> vertexVisitationStatus,
 		final java.util.Map<java.lang.String, java.lang.Double> connectionMap,
 		final org.drip.spaces.graph.VertexPeripheryMap vertexPeripheryMap)
 		throws java.lang.Exception
 	{
-		if (null == (_vertexVisitationStatus = vertexVisitationStatus) || 0 == _vertexVisitationStatus.size()
-			|| null == (_connectionMap = connectionMap) || 0 == _connectionMap.size() ||
+		if (null == (_connectionMap = connectionMap) || 0 == _connectionMap.size() ||
 			null == (_vertexPeripheryMap = vertexPeripheryMap))
 		{
 			throw new java.lang.Exception ("DijkstraWengert Constructor => Invalid Inputs");
 		}
-	}
-
-	/**
-	 * Retrieve the Vertex Visitation Status Map
-	 * 
-	 * @return The Vertex Visitation Status Map
-	 */
-
-	public java.util.Map<java.lang.String, java.lang.Boolean> vertexVisitationStatus()
-	{
-		return _vertexVisitationStatus;
 	}
 
 	/**
@@ -220,64 +192,5 @@ public class DijkstraWengert
 	public org.drip.spaces.graph.VertexPeripheryMap vertexPeripheryMap()
 	{
 		return _vertexPeripheryMap;
-	}
-
-	/**
-	 * Set the Vertex as Visited
-	 * 
-	 * @param vertexName The Vertex Node Name
-	 * 
-	 * @return TRUE - The Vertex Visitation Status successfully set
-	 */
-
-	public boolean setNodeAsVisited (
-		final java.lang.String vertexName)
-	{
-		if (null == vertexName)
-		{
-			return false;
-		}
-
-		_vertexVisitationStatus.put (
-			vertexName,
-			true
-		);
-
-		return true;
-	}
-
-	/**
-	 * Indicate if the Vertex has been Visited
-	 * 
-	 * @param vertexName The Vertex Node Name
-	 * 
-	 * @return TRUE - The Node has been Visited
-	 */
-
-	public boolean nodeVisited (
-		final java.lang.String vertexName)
-	{
-		return null != vertexName && _vertexVisitationStatus.containsKey (vertexName) &&
-			_vertexVisitationStatus.get (vertexName);
-	}
-
-	/**
-	 * Indicate if all the Vertexes have been hit
-	 * 
-	 * @return TRUE - All the Vertexes have been hit
-	 */
-
-	public boolean navigationComplete()
-	{
-		for (java.util.Map.Entry<java.lang.String, java.lang.Boolean> vertexVisitationEntry :
-			_vertexVisitationStatus.entrySet())
-		{
-			if (!vertexVisitationEntry.getValue())
-			{
-				return false;
-			}
-		}
-
-		return true;
 	}
 }

@@ -71,20 +71,19 @@ public class DijkstraScheme
 	private org.drip.spaces.graph.Topography _topography = null;
 
 	private void visitVertex (
-		final java.lang.String currentVertex,
+		final org.drip.spaces.graph.VertexPeriphery currentVertexPeriphery,
 		final org.drip.spaces.graph.DijkstraWengert dijkstraWengert)
 	{
-		java.util.Map<java.lang.String, java.lang.Double> egressMap = _topography.vertexNode
-			(currentVertex).egressMap();
-
 		org.drip.spaces.graph.VertexPeripheryMap vertexPeripheryMap = dijkstraWengert.vertexPeripheryMap();
-
-		org.drip.spaces.graph.VertexPeriphery currentVertexPeriphery = vertexPeripheryMap.retrieve
-			(currentVertex);
 
 		java.util.Map<java.lang.String, java.lang.Double> connectionMap = dijkstraWengert.connectionMap();
 
 		double currentWeightFromSource = currentVertexPeriphery.weightFromSource();
+
+		java.lang.String currentVertex = currentVertexPeriphery.current();
+
+		java.util.Map<java.lang.String, java.lang.Double> egressMap = _topography.vertex
+			(currentVertex).egressMap();
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> egressEntry : egressMap.entrySet())
 		{
@@ -100,11 +99,9 @@ public class DijkstraScheme
 			{
 				egressVertexPeriphery.setWeightFromSource (weightFromSourceThroughCurrent);
 
-				egressVertexPeriphery.setPreceedingNode (currentVertex);
+				egressVertexPeriphery.setPreceeding (currentVertex);
 			}
 		}
-
-		dijkstraWengert.nodeVisited (currentVertex);
 	}
 
 	/**
@@ -139,7 +136,7 @@ public class DijkstraScheme
 	/**
 	 * Initialize the Dijsktra Scheme
 	 * 
-	 * @param source The Source Vertex Node
+	 * @param source The Source Vertex
 	 * 
 	 * @return The Initial Dijkstra Wengert
 	 */
@@ -156,15 +153,13 @@ public class DijkstraScheme
 	/**
 	 * Run the Dijsktra SPF Algorithm
 	 * 
-	 * @param source The Source Vertex Node
-	 * @param destination The Destination Vertex Node
+	 * @param source The Source Vertex
 	 * 
 	 * @return The Dijkstra Wengert
 	 */
 
 	public org.drip.spaces.graph.DijkstraWengert spf (
-		final java.lang.String source,
-		final java.lang.String destination)
+		final java.lang.String source)
 	{
 		org.drip.spaces.graph.DijkstraWengert dijkstraWengert = setup (source);
 
@@ -173,7 +168,19 @@ public class DijkstraScheme
 			return null;
 		}
 
-		visitVertex (source, null);
+		org.drip.spaces.graph.VertexPeripheryMap vertexPeripheryMap = dijkstraWengert.vertexPeripheryMap();
+
+		org.drip.spaces.graph.VertexPeriphery vertexPeriphery = vertexPeripheryMap.greedyRetrieval();
+
+		while (null != vertexPeriphery)
+		{
+			visitVertex (
+				vertexPeriphery,
+				dijkstraWengert
+			);
+
+			vertexPeriphery = vertexPeripheryMap.greedyRetrieval();
+		}
 
 		return dijkstraWengert;
 	}

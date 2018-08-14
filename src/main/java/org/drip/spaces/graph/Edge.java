@@ -47,8 +47,7 @@ package org.drip.spaces.graph;
  */
 
 /**
- * VertexPeriphery holds the given Vertex's Previous Traversal Vertex and the Weight from the Source. The
- *  References are:
+ * Edge represents the Connection between a Pair of Vertexes. The References are:
  *  
  *  1) Wikipedia (2018a): Graph (Abstract Data Type)
  *  	https://en.wikipedia.org/wiki/Graph_(abstract_data_type).
@@ -66,127 +65,67 @@ package org.drip.spaces.graph;
  * @author Lakshmi Krishnamurthy
  */
 
-public class VertexPeriphery
+public class Edge
 {
-	private boolean _visited = false;
-	private java.lang.String _current = "";
-	private java.lang.String _preceeding = "";
-	private double _weightFromSource = java.lang.Double.POSITIVE_INFINITY;
+	private java.lang.String _source = "";
+	private java.lang.String _destination = "";
+	private double _weight = java.lang.Double.NaN;
 
 	/**
-	 * VertexPeriphery Constructor
+	 * Edge Constructor
 	 * 
-	 * @param current The Current Node
+	 * @param source The Source Vertex Name
+	 * @param destination The Destination Vertex Name
+	 * @param weight The Source-Destination Path Weight
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public VertexPeriphery (
-		final java.lang.String current)
+	public Edge (
+		final java.lang.String source,
+		final java.lang.String destination,
+		final double weight)
 		throws java.lang.Exception
 	{
-		if (null == (_current = current) || _current.isEmpty())
+		if (null == (_source = source) || _source.isEmpty() ||
+			null == (_destination = destination) || _destination.isEmpty())
 		{
-			throw new java.lang.Exception ("VertexPeriphery Constructor => Invalid Inputs");
-		}
-	}
-
-	/**
-	 * Retrieve the Current Vertex
-	 * 
-	 * @return The Current Vertex
-	 */
-
-	public java.lang.String current()
-	{
-		return _current;
-	}
-
-	/**
-	 * Retrieve the Preceeding Traversal Vertex
-	 * 
-	 * @return The Preceeding Traversal Vertex
-	 */
-
-	public java.lang.String preceeding()
-	{
-		return _preceeding;
-	}
-
-	/**
-	 * Set the Preceeding Traversal Vertex
-	 * 
-	 * @param preceeding The Preceeding Traversal Vertex
-	 * 
-	 * @return TRUE - The Preceeding Vertex successfully set
-	 */
-
-	public boolean setPreceeding (
-		final java.lang.String preceeding)
-	{
-		if (null == preceeding || preceeding.isEmpty())
-		{
-			return false;
+			throw new java.lang.Exception ("Edge Constructor => Invalid Inputs");
 		}
 
-		_preceeding = preceeding;
-		return true;
+		_weight = weight;
 	}
 
 	/**
-	 * Retrieve the Weight From the Source
+	 * Retrieve the Source Vertex
 	 * 
-	 * @return The Weight From the Source
+	 * @return The Source Vertex
 	 */
 
-	public double weightFromSource()
+	public java.lang.String source()
 	{
-		return _weightFromSource;
+		return _source;
 	}
 
 	/**
-	 * Set the Weight From Source
+	 * Retrieve the Destination Vertex
 	 * 
-	 * @param weightFromSource The Weight From Source
-	 * 
-	 * @return TRUE - The Weight From Source successfully set
+	 * @return The Destination Vertex
 	 */
 
-	public boolean setWeightFromSource (
-		final double weightFromSource)
+	public java.lang.String destination()
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (weightFromSource))
-		{
-			return false;
-		}
-
-		_weightFromSource = weightFromSource;
-		return true;
+		return _destination;
 	}
 
 	/**
-	 * Indicate if the Vertex has been Visited
+	 * Retrieve the Path Weight
 	 * 
-	 * @return TRUE - The Vertex has been Visited
-	 */
-	
-	public boolean visited()
-	{
-		return _visited;
-	}
-
-	/**
-	 * Set the Visitation Status of the Vertex
-	 * 
-	 * @param visited The Visitation Status
-	 * 
-	 * @return TRUE - The Visitation Status successfully set
+	 * @return The Path Weight
 	 */
 
-	public boolean setVisited (
-		final boolean visited)
+	public double weight()
 	{
-		_visited = visited;
-		return true;
+		return _weight;
 	}
 }

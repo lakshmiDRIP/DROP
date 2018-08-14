@@ -1,9 +1,15 @@
 
 package org.drip.sample.graph;
 
+import java.util.Set;
+
+import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.spaces.graph.DijkstraScheme;
+import org.drip.spaces.graph.Edge;
 import org.drip.spaces.graph.Topography;
+import org.drip.spaces.graph.VertexPeriphery;
+import org.drip.spaces.graph.VertexPeripheryMap;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -75,104 +81,122 @@ public class Dijkstra
 	private static final Topography SetTopography()
 		throws Exception
 	{
-		String[] vertexNodeArray = new String[]
+		String[] vertexArray = new String[]
 		{
 			"Delhi     ",
-			// "Bombay    ",
+			"Bombay    ",
 			"Madras    ",
 			"Calcutta  ",
 			"Bangalore ",
-			// "Hyderabad ",
-			// "Cochin    ",
-			// "Pune      ",
-			// "Ahmedabad ",
-			// "Jaipur    "
+			"Hyderabad ",
+			"Cochin    ",
+			"Pune      ",
+			"Ahmedabad ",
+			"Jaipur    "
 		};
 
 		Topography topography = new Topography();
 
-		for (String vertexNodeName : vertexNodeArray)
+		for (String vertexName : vertexArray)
 		{
-			topography.addVertexNode (vertexNodeName);
+			topography.addVertex (vertexName);
 		}
 
-		/* topography.addPath (
-			vertexNodeArray[0], // Delhi
-			vertexNodeArray[1], // Bombay
-			1388.
-		); */
-
-		topography.addPath (
-			vertexNodeArray[0], // Delhi
-			vertexNodeArray[1], // Madras
-			// vertexNodeArray[2], // Madras
-			2191.
+		topography.addEdge (
+			new Edge (
+				vertexArray[0], // Delhi
+				vertexArray[1], // Bombay
+				1388.
+			)
 		);
 
-		/* topography.addPath (
-			vertexNodeArray[1], // Bombay
-			vertexNodeArray[2], // Madras
-			1279.
-		); */
-
-		topography.addPath (
-			vertexNodeArray[0], // Delhi
-			vertexNodeArray[2], // Calcutta
-			// vertexNodeArray[3], // Calcutta
-			1341.
+		topography.addEdge (
+			new Edge (
+				vertexArray[0], // Delhi
+				vertexArray[2], // Madras
+				2191.
+			)
 		);
 
-		/* topography.addPath (
-			vertexNodeArray[1], // Bombay
-			vertexNodeArray[3], // Calcutta
-			1968.
-		); */
-
-		topography.addPath (
-			vertexNodeArray[1], // Madras
-			vertexNodeArray[2], // Calcutta
-			// vertexNodeArray[2], // Madras
-			// vertexNodeArray[3], // Calcutta
-			1663.
+		topography.addEdge (
+			new Edge (
+				vertexArray[1], // Bombay
+				vertexArray[2], // Madras
+				1279.
+			)
 		);
 
-		topography.addPath (
-			vertexNodeArray[1], // Madras
-			vertexNodeArray[3], // Bangalore
-			// vertexNodeArray[2], // Madras
-			// vertexNodeArray[4], // Bangalore
-			361.
+		topography.addEdge (
+			new Edge (
+				vertexArray[0], // Delhi
+				vertexArray[3], // Calcutta
+				1341.
+			)
 		);
 
-		/* topography.addPath (
-			vertexNodeArray[2], // Madras
-			vertexNodeArray[5], // Hyderabad
-			784.
+		topography.addEdge (
+			new Edge (
+				vertexArray[1], // Bombay
+				vertexArray[3], // Calcutta
+				1968.
+			)
 		);
 
-		topography.addPath (
-			vertexNodeArray[2], // Madras
-			vertexNodeArray[6], // Cochin
-			697.
+		topography.addEdge (
+			new Edge (
+				vertexArray[2], // Madras
+				vertexArray[3], // Calcutta
+				1663.
+			)
 		);
 
-		topography.addPath (
-			vertexNodeArray[1], // Bombay
-			vertexNodeArray[7], // Pune
-			192.
+		topography.addEdge (
+			new Edge (
+				vertexArray[2], // Madras
+				vertexArray[4], // Bangalore
+				361.
+			)
 		);
 
-		topography.addPath (
-			vertexNodeArray[1], // Bombay
-			vertexNodeArray[8], // Ahmedabad
-			492.
+		topography.addEdge (
+			new Edge (
+				vertexArray[2], // Madras
+				vertexArray[5], // Hyderabad
+				784.
+			)
 		);
 
-		topography.addPath (
-			vertexNodeArray[0], // Delhi
-			vertexNodeArray[9], // Jaipur
-			308.
-		); */
+		topography.addEdge (
+			new Edge (
+				vertexArray[2], // Madras
+				vertexArray[6], // Cochin
+				697.
+			)
+		);
+
+		topography.addEdge (
+			new Edge (
+				vertexArray[1], // Bombay
+				vertexArray[7], // Pune
+				192.
+			)
+		);
+
+		topography.addEdge (
+			new Edge (
+				vertexArray[1], // Bombay
+				vertexArray[8], // Ahmedabad
+				492.
+			)
+		);
+
+		topography.addEdge (
+			new Edge (
+				vertexArray[0], // Delhi
+				vertexArray[9], // Jaipur
+				308.
+			)
+		);
 
 		return topography;
 	}
@@ -185,17 +209,32 @@ public class Dijkstra
 
 		Topography topography = SetTopography();
 
-		String source = "Bangalore ";
-		String destination = "Calcutta  ";
-
 		DijkstraScheme dijkstraScheme = new DijkstraScheme (topography);
 
-		System.out.println (
-			dijkstraScheme.spf (
-				source,
-				destination
-			).connectionMap().get (source + "_" + destination)
-		);
+		Set<String> vertexNameSet = topography.vertexNameSet();
+
+		for (String source : vertexNameSet)
+		{
+			VertexPeripheryMap vertexPeripheryMap = dijkstraScheme.spf (source).vertexPeripheryMap();
+
+			System.out.println ("\t||------------------------------------------------------------||");
+
+			for (String vertex : vertexNameSet)
+			{
+				if (!vertex.equalsIgnoreCase(source))
+				{
+					VertexPeriphery vertexPeriphery = vertexPeripheryMap.retrieve (vertex);
+
+					System.out.println (
+						"\t|| " + source + " to " + vertex + " is " +
+						FormatUtil.FormatDouble (vertexPeriphery.weightFromSource(), 4, 0, 1.) +
+						" | Previous is " + vertexPeriphery.preceeding() + " ||"
+					);
+				}
+			}
+
+			System.out.println ("\t||------------------------------------------------------------||\n");
+		}
 
 		EnvManager.TerminateEnv();
 	}
