@@ -67,8 +67,8 @@ package org.drip.spaces.graph;
 
 public class Topography
 {
-	private java.util.Map<java.lang.String, org.drip.spaces.graph.VertexNode> _vertexNodeMap = new
-		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.spaces.graph.VertexNode>();
+	private java.util.Map<java.lang.String, org.drip.spaces.graph.Vertex> _vertexNodeMap = new
+		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.spaces.graph.Vertex>();
 
 	/**
 	 * Empty Topography Constructor
@@ -109,7 +109,7 @@ public class Topography
 		{
 			_vertexNodeMap.put (
 				vertexNodeName,
-				new org.drip.spaces.graph.VertexNode (vertexNodeName)
+				new org.drip.spaces.graph.Vertex (vertexNodeName)
 			);
 		}
 		catch (java.lang.Exception e)
@@ -142,14 +142,14 @@ public class Topography
 	 * @return The Vertex Node
 	 */
 
-	public org.drip.spaces.graph.VertexNode vertexNode (
+	public org.drip.spaces.graph.Vertex vertexNode (
 		final java.lang.String vertexNodeName)
 	{
 		return vertexNodeExists (vertexNodeName) ? _vertexNodeMap.get (vertexNodeName) : null;
 	}
 
 	/**
-	 * Add Source < -- > Destination Weighted Path
+	 * Add Source To (and Fro) Destination Weighted Path
 	 * 
 	 * @param source The Source Vertex Node
 	 * @param destination The Destination Vertex Node
@@ -163,9 +163,9 @@ public class Topography
 		final java.lang.String destination,
 		final double weight)
 	{
-		org.drip.spaces.graph.VertexNode sourceVertexNode = vertexNode (source);
+		org.drip.spaces.graph.Vertex sourceVertexNode = vertexNode (source);
 
-		org.drip.spaces.graph.VertexNode destinationVertexNode = vertexNode (destination);
+		org.drip.spaces.graph.Vertex destinationVertexNode = vertexNode (destination);
 
 		return null != sourceVertexNode && null != destinationVertexNode && sourceVertexNode.addEgress (
 			destination,
@@ -182,7 +182,7 @@ public class Topography
 	 * @return The Map of Vertex Nodes
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.spaces.graph.VertexNode> vertexNodeMap()
+	public java.util.Map<java.lang.String, org.drip.spaces.graph.Vertex> vertexNodeMap()
 	{
 		return _vertexNodeMap;
 	}
@@ -200,9 +200,9 @@ public class Topography
 		final java.lang.String source,
 		final java.lang.String destination)
 	{
-		org.drip.spaces.graph.VertexNode sourceVertexNode = vertexNode (source);
+		org.drip.spaces.graph.Vertex sourceVertexNode = vertexNode (source);
 
-		org.drip.spaces.graph.VertexNode destinationVertexNode = vertexNode (destination);
+		org.drip.spaces.graph.Vertex destinationVertexNode = vertexNode (destination);
 
 		if (null == sourceVertexNode || null == destinationVertexNode)
 		{

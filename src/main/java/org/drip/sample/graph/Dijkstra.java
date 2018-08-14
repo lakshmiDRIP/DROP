@@ -77,7 +77,7 @@ public class Dijkstra
 	{
 		String[] vertexNodeArray = new String[]
 		{
-			// "Delhi     ",
+			"Delhi     ",
 			// "Bombay    ",
 			"Madras    ",
 			"Calcutta  ",
@@ -100,43 +100,45 @@ public class Dijkstra
 			vertexNodeArray[0], // Delhi
 			vertexNodeArray[1], // Bombay
 			1388.
-		);
+		); */
 
 		topography.addPath (
 			vertexNodeArray[0], // Delhi
-			vertexNodeArray[2], // Madras
+			vertexNodeArray[1], // Madras
+			// vertexNodeArray[2], // Madras
 			2191.
 		);
 
-		topography.addPath (
+		/* topography.addPath (
 			vertexNodeArray[1], // Bombay
 			vertexNodeArray[2], // Madras
 			1279.
-		);
+		); */
 
 		topography.addPath (
 			vertexNodeArray[0], // Delhi
-			vertexNodeArray[3], // Calcutta
+			vertexNodeArray[2], // Calcutta
+			// vertexNodeArray[3], // Calcutta
 			1341.
 		);
 
-		topography.addPath (
+		/* topography.addPath (
 			vertexNodeArray[1], // Bombay
 			vertexNodeArray[3], // Calcutta
 			1968.
 		); */
 
 		topography.addPath (
-			vertexNodeArray[0], // Madras
-			vertexNodeArray[1], // Calcutta
+			vertexNodeArray[1], // Madras
+			vertexNodeArray[2], // Calcutta
 			// vertexNodeArray[2], // Madras
 			// vertexNodeArray[3], // Calcutta
 			1663.
 		);
 
 		topography.addPath (
-			vertexNodeArray[0], // Madras
-			vertexNodeArray[2], // Bangalore
+			vertexNodeArray[1], // Madras
+			vertexNodeArray[3], // Bangalore
 			// vertexNodeArray[2], // Madras
 			// vertexNodeArray[4], // Bangalore
 			361.
@@ -192,7 +194,7 @@ public class Dijkstra
 			dijkstraScheme.spf (
 				source,
 				destination
-			)
+			).connectionMap().get (source + "_" + destination)
 		);
 
 		EnvManager.TerminateEnv();

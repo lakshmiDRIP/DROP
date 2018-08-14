@@ -70,72 +70,41 @@ public class DijkstraScheme
 {
 	private org.drip.spaces.graph.Topography _topography = null;
 
-	private void scanAdjacent (
-		final java.lang.String source,
-		final java.lang.String previous,
-		final java.lang.String current,
-		final java.lang.String destination,
+	private void visitVertex (
+		final java.lang.String currentVertex,
 		final org.drip.spaces.graph.DijkstraWengert dijkstraWengert)
 	{
-		System.out.println (source + " | " + previous + " | " + current + " | " + destination);
+		java.util.Map<java.lang.String, java.lang.Double> egressMap = _topography.vertexNode
+			(currentVertex).egressMap();
 
-		if (source.equalsIgnoreCase (current))
-		{
-			return;
-		}
+		org.drip.spaces.graph.VertexPeripheryMap vertexPeripheryMap = dijkstraWengert.vertexPeripheryMap();
+
+		org.drip.spaces.graph.VertexPeriphery currentVertexPeriphery = vertexPeripheryMap.retrieve
+			(currentVertex);
 
 		java.util.Map<java.lang.String, java.lang.Double> connectionMap = dijkstraWengert.connectionMap();
 
-		double sourceToPreviousWeight = source.equalsIgnoreCase (previous) ? 0. : connectionMap.get (source +
-			"_" + previous);
-
-		java.lang.String sourceToCurrentKey = source + "_" + current;
-
-		double sourceToCurrentThroughPreviousWeight = connectionMap.get (previous + "_" + current) +
-			sourceToPreviousWeight;
-
-		if (dijkstraWengert.nodeVisited (current))
-		{
-			double sourceToCurrentWeight = source.equalsIgnoreCase (current) ? 0. : connectionMap.get
-				(sourceToCurrentKey);
-
-			if (sourceToCurrentThroughPreviousWeight < sourceToCurrentWeight)
-			{
-				connectionMap.put (
-					sourceToCurrentKey,
-					sourceToCurrentThroughPreviousWeight
-				);
-			}
-		}
-		else
-		{
-			connectionMap.put (
-				sourceToCurrentKey,
-				sourceToCurrentThroughPreviousWeight
-			);
-
-			dijkstraWengert.setNodeAsVisited (current);
-		}
-
-		if (destination.equalsIgnoreCase (current) || dijkstraWengert.navigationComplete())
-		{
-			// System.exit(33);
-			return;
-		}
-
-		java.util.Map<java.lang.String, java.lang.Double> egressMap = _topography.vertexNode
-			(current).egressMap();
+		double currentWeightFromSource = currentVertexPeriphery.weightFromSource();
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> egressEntry : egressMap.entrySet())
 		{
-			scanAdjacent (
-				source,
-				current,
-				egressEntry.getKey(),
-				destination,
-				dijkstraWengert
-			);
+			java.lang.String egressVertex = egressEntry.getKey();
+
+			double weightFromSourceThroughCurrent = currentWeightFromSource + connectionMap.get
+				(currentVertex + "_" + egressVertex);
+
+			org.drip.spaces.graph.VertexPeriphery egressVertexPeriphery = vertexPeripheryMap.retrieve
+				(egressVertex);
+
+			if (egressVertexPeriphery.weightFromSource() > weightFromSourceThroughCurrent)
+			{
+				egressVertexPeriphery.setWeightFromSource (weightFromSourceThroughCurrent);
+
+				egressVertexPeriphery.setPreceedingNode (currentVertex);
+			}
 		}
+
+		dijkstraWengert.nodeVisited (currentVertex);
 	}
 
 	/**
@@ -204,19 +173,7 @@ public class DijkstraScheme
 			return null;
 		}
 
-		java.util.Map<java.lang.String, java.lang.Double> egressMap = _topography.vertexNode
-			(source).egressMap();
-
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> egressEntry : egressMap.entrySet())
-		{
-			scanAdjacent (
-				source,
-				source,
-				egressEntry.getKey(),
-				destination,
-				dijkstraWengert
-			);
-		}
+		visitVertex (source, null);
 
 		return dijkstraWengert;
 	}

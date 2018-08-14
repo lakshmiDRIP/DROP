@@ -47,7 +47,8 @@ package org.drip.spaces.graph;
  */
 
 /**
- * VertexNode implements a Single Node and the corresponding Egresses emanating from it. The References are:
+ * VertexPeriphery holds the given Vertex's Previous Traversal Vertex and the Weight from the Source. The
+ *  References are:
  *  
  *  1) Wikipedia (2018a): Graph (Abstract Data Type)
  *  	https://en.wikipedia.org/wiki/Graph_(abstract_data_type).
@@ -65,77 +66,100 @@ package org.drip.spaces.graph;
  * @author Lakshmi Krishnamurthy
  */
 
-public class VertexNode
+public class VertexPeriphery
 {
-	private java.lang.String _name = "";
-
-	private java.util.Map<java.lang.String, java.lang.Double> _egressMap = new
-		org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
+	private java.lang.String _current = "";
+	private java.lang.String _preceedingNode = "";
+	private double _weightFromSource = java.lang.Double.POSITIVE_INFINITY;
 
 	/**
-	 * VertexNode Constructor
+	 * VertexPeriphery Constructor
 	 * 
-	 * @param name The Name of the Vertex Node
+	 * @param current The Current Node
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public VertexNode (
-		final java.lang.String name)
+	public VertexPeriphery (
+		final java.lang.String current)
 		throws java.lang.Exception
 	{
-		if (null == (_name = name) || _name.isEmpty())
+		if (null == (_current = current) || _current.isEmpty())
 		{
-			throw new java.lang.Exception ("VertexNode Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("VertexPeriphery Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Name of the Vertex Node
+	 * Retrieve the Current Node
 	 * 
-	 * @return The Name of the Vertex Node
+	 * @return The Current Node
 	 */
 
-	public java.lang.String name()
+	public java.lang.String current()
 	{
-		return _name;
+		return _current;
 	}
 
 	/**
-	 * Retrieve the Egress Map
+	 * Retrieve the Preceeding Traversal Node
 	 * 
-	 * @return The Egress Map
+	 * @return The Preceeding Traversal Node
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> egressMap()
+	public java.lang.String preceedingNode()
 	{
-		return _egressMap;
+		return _preceedingNode;
 	}
 
 	/**
-	 * Add an Egress to the VertexNode
+	 * Set the Preceeding Traversal Node
 	 * 
-	 * @param destinationName Name of the Destination Vertex Node
-	 * @param weight Weight of the Egress Path
+	 * @param preceedingNode The Preceeding Traversal Node
 	 * 
-	 * @return TRUE - The Egress successfully added to the Vertex Node
+	 * @return TRUE - The Preceeding Node successfully set
 	 */
 
-	public boolean addEgress (
-		final java.lang.String destinationName,
-		final double weight)
+	public boolean setPreceedingNode (
+		final java.lang.String preceedingNode)
 	{
-		if (null == destinationName || destinationName.equalsIgnoreCase (_name) ||
-			!org.drip.quant.common.NumberUtil.IsValid (weight))
+		if (null == preceedingNode || preceedingNode.isEmpty())
 		{
 			return false;
 		}
 
-		_egressMap.put (
-			destinationName,
-			weight
-		);
+		_preceedingNode = preceedingNode;
+		return true;
+	}
 
+	/**
+	 * Retrieve the Weight From the Source
+	 * 
+	 * @return The Weight From the Source
+	 */
+
+	public double weightFromSource()
+	{
+		return _weightFromSource;
+	}
+
+	/**
+	 * Set the Weight From Source
+	 * 
+	 * @param weightFromSource The Weight From Source
+	 * 
+	 * @return TRUE - The Weight From Source successfully set
+	 */
+
+	public boolean setWeightFromSource (
+		final double weightFromSource)
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (weightFromSource))
+		{
+			return false;
+		}
+
+		_weightFromSource = weightFromSource;
 		return true;
 	}
 }

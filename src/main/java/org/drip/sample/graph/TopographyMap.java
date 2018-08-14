@@ -6,7 +6,7 @@ import java.util.Map;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.spaces.graph.Topography;
-import org.drip.spaces.graph.VertexNode;
+import org.drip.spaces.graph.Vertex;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -179,7 +179,7 @@ public class TopographyMap
 		final String vertexNodeName)
 		throws Exception
 	{
-		VertexNode vertexNode = topography.vertexNode (vertexNodeName);
+		Vertex vertexNode = topography.vertexNode (vertexNodeName);
 
 		Map<String, Double> egressMap = vertexNode.egressMap();
 
