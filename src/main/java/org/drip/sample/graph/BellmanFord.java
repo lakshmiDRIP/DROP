@@ -5,7 +5,7 @@ import java.util.Set;
 
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.spaces.graph.DijkstraScheme;
+import org.drip.spaces.graph.BellmanFordScheme;
 import org.drip.spaces.graph.Edge;
 import org.drip.spaces.graph.Topography;
 import org.drip.spaces.graph.ShortestPathVertex;
@@ -57,7 +57,8 @@ import org.drip.spaces.graph.ShortestPathTree;
  */
 
 /**
- * Dijkstra illustrates the Execution of the Dijkstra Algorithm. The References are:
+ * BellmanFord illustrates the Execution of the Bellman Ford Shortest Path First Algorithm. The References
+ *  are:
  *  
  *  1) Wikipedia (2018a): Graph (Abstract Data Type)
  *  	https://en.wikipedia.org/wiki/Graph_(abstract_data_type).
@@ -75,7 +76,7 @@ import org.drip.spaces.graph.ShortestPathTree;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Dijkstra
+public class BellmanFord
 {
 
 	private static final Topography SetTopography()
@@ -231,19 +232,19 @@ public class Dijkstra
 
 		Topography topography = SetTopography();
 
-		DijkstraScheme dijkstraScheme = new DijkstraScheme (topography);
+		BellmanFordScheme bellmanFordScheme = new BellmanFordScheme (topography);
 
 		Set<String> vertexNameSet = topography.vertexNameSet();
 
 		for (String source : vertexNameSet)
 		{
-			ShortestPathTree vertexPeripheryMap = dijkstraScheme.spf (source).vertexPeripheryMap();
+			ShortestPathTree vertexPeripheryMap = bellmanFordScheme.spf (source).vertexPeripheryMap();
 
 			System.out.println ("\t||------------------------------------------------------------||");
 
 			for (String vertex : vertexNameSet)
 			{
-				if (!vertex.equalsIgnoreCase(source))
+				if (!vertex.equalsIgnoreCase (source))
 				{
 					ShortestPathVertex vertexPeriphery = vertexPeripheryMap.shortestPathVertex (vertex);
 

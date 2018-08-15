@@ -47,8 +47,8 @@ package org.drip.spaces.graph;
  */
 
 /**
- * DijkstraWengert maintains the Intermediate Wengert Objects generated during a Single Sequence of the
- *  Scheme Run. The References are:
+ * ShortestPathFirstWengert maintains the Intermediate Wengert Objects generated during a Single Sequence of
+ *  the Scheme Run. The References are:
  *  
  *  1) Wikipedia (2018a): Graph (Abstract Data Type)
  *  	https://en.wikipedia.org/wiki/Graph_(abstract_data_type).
@@ -66,21 +66,20 @@ package org.drip.spaces.graph;
  * @author Lakshmi Krishnamurthy
  */
 
-public class DijkstraWengert
+public class ShortestPathFirstWengert
 {
-	private org.drip.spaces.graph.VertexPeripheryMap _vertexPeripheryMap = null;
-	private java.util.Map<java.lang.String, java.lang.Double> _connectionMap = null;
+	private org.drip.spaces.graph.ShortestPathTree _vertexPeripheryMap = null;
 
 	/**
-	 * Generate a Standard DijkstraWengert from the Topography and the Source
+	 * Generate a ShortestPathFirstWengert from the Topography and the Source using the Dijkstra Scheme
 	 * 
 	 * @param topography The Topography Map
 	 * @param source The Source Vertex
 	 * 
-	 * @return The DijkstraWengert Instance
+	 * @return The Dijkstra ShortestPathFirstWengert Instance
 	 */
 
-	public static final DijkstraWengert Standard (
+	public static final ShortestPathFirstWengert Dijkstra (
 		final org.drip.spaces.graph.Topography topography,
 		final java.lang.String source)
 	{
@@ -100,19 +99,19 @@ public class DijkstraWengert
 
 		java.util.Map<java.lang.String, java.lang.Double> egressMap = topography.vertex (source).egressMap();
 
-		org.drip.spaces.graph.VertexPeripheryMap vertexPeripheryMap = new
-			org.drip.spaces.graph.VertexPeripheryMap();
+		org.drip.spaces.graph.ShortestPathTree vertexPeripheryMap = new
+			org.drip.spaces.graph.ShortestPathTree();
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> egressEntry : egressMap.entrySet())
 		{
 			java.lang.String egressVertex = egressEntry.getKey();
 
-			org.drip.spaces.graph.VertexPeriphery vertexPeriphery = null;
+			org.drip.spaces.graph.ShortestPathVertex vertexPeriphery = null;
 			java.lang.String sourceToEgressVertexKey = source + "_" + egressVertex;
 
 			try
 			{
-				vertexPeriphery = new org.drip.spaces.graph.VertexPeriphery (egressVertex);
+				vertexPeriphery = new org.drip.spaces.graph.ShortestPathVertex (egressVertex);
 			}
 			catch (java.lang.Exception e)
 			{
@@ -125,23 +124,20 @@ public class DijkstraWengert
 
 			vertexPeriphery.setWeightFromSource (connectionMap.get (sourceToEgressVertexKey));
 
-			vertexPeripheryMap.addVertexPeriphery (vertexPeriphery);
+			vertexPeripheryMap.addShortestPathVertex (vertexPeriphery);
 		}
 
 		for (java.lang.String vertexName : vertexNameSet)
 		{
 			if (!vertexPeripheryMap.containsVertex (vertexName))
 			{
-				vertexPeripheryMap.addUnitializedVertexPeriphery (vertexName);
+				vertexPeripheryMap.addUnitializedShortestPathVertex (vertexName);
 			}
 		}
 
 		try
 		{
-			return new DijkstraWengert (
-				connectionMap,
-				vertexPeripheryMap
-			);
+			return new ShortestPathFirstWengert (vertexPeripheryMap);
 		}
 		catch (java.lang.Exception e)
 		{
@@ -152,35 +148,88 @@ public class DijkstraWengert
 	}
 
 	/**
-	 * DijkstraWengert Constructor
+	 * Generate a ShortestPathFirstWengert from the Topography and the Source using the Bellman-Ford Scheme
 	 * 
-	 * @param connectionMap The Inter-Nodal Connection Map
+	 * @param topography The Topography Map
+	 * @param source The Source Vertex
+	 * 
+	 * @return The Bellman-Ford ShortestPathFirstWengert Instance
+	 */
+
+	public static final ShortestPathFirstWengert BellmanFord (
+		final org.drip.spaces.graph.Topography topography,
+		final java.lang.String source)
+	{
+		if (null == topography)
+		{
+			return null;
+		}
+
+		java.util.Set<java.lang.String> vertexNameSet = topography.vertexNameSet();
+
+		if (!vertexNameSet.contains (source))
+		{
+			return null;
+		}
+
+		org.drip.spaces.graph.ShortestPathTree vertexPeripheryMap = new
+			org.drip.spaces.graph.ShortestPathTree();
+
+		org.drip.spaces.graph.ShortestPathVertex sourceVertexPeriphery = null;
+
+		try
+		{
+			sourceVertexPeriphery = new org.drip.spaces.graph.ShortestPathVertex (source);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+
+			return null;
+		}
+
+		sourceVertexPeriphery.setPreceeding (source);
+
+		sourceVertexPeriphery.setWeightFromSource (0.);
+
+		vertexPeripheryMap.addShortestPathVertex (sourceVertexPeriphery);
+
+		for (java.lang.String vertexName : vertexNameSet)
+		{
+			if (!vertexName.equalsIgnoreCase (source))
+			{
+				vertexPeripheryMap.addUnitializedShortestPathVertex (vertexName);
+			}
+		}
+
+		try
+		{
+			return new ShortestPathFirstWengert (vertexPeripheryMap);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * ShortestPathFirstWengert Constructor
+	 * 
 	 * @param vertexPeripheryMap The Vertex Periphery Map
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public DijkstraWengert (
-		final java.util.Map<java.lang.String, java.lang.Double> connectionMap,
-		final org.drip.spaces.graph.VertexPeripheryMap vertexPeripheryMap)
+	public ShortestPathFirstWengert (
+		final org.drip.spaces.graph.ShortestPathTree vertexPeripheryMap)
 		throws java.lang.Exception
 	{
-		if (null == (_connectionMap = connectionMap) || 0 == _connectionMap.size() ||
-			null == (_vertexPeripheryMap = vertexPeripheryMap))
+		if (null == (_vertexPeripheryMap = vertexPeripheryMap))
 		{
-			throw new java.lang.Exception ("DijkstraWengert Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("ShortestPathFirstWengert Constructor => Invalid Inputs");
 		}
-	}
-
-	/**
-	 * Retrieve the Inter-Nodal Connection Map
-	 * 
-	 * @return The Inter-Nodal Connection Map
-	 */
-
-	public java.util.Map<java.lang.String, java.lang.Double> connectionMap()
-	{
-		return _connectionMap;
 	}
 
 	/**
@@ -189,7 +238,7 @@ public class DijkstraWengert
 	 * @return The Vertex Periphery Map
 	 */
 
-	public org.drip.spaces.graph.VertexPeripheryMap vertexPeripheryMap()
+	public org.drip.spaces.graph.ShortestPathTree vertexPeripheryMap()
 	{
 		return _vertexPeripheryMap;
 	}

@@ -47,8 +47,8 @@ package org.drip.spaces.graph;
  */
 
 /**
- * DijkstraScheme implements the Dijkstra Algorithm for finding the Shortest Path between a Pair of Vertexes
- *  in a Graph. The References are:
+ * BellmanFordScheme implements the Bellman Ford Algorithm for finding the Shortest Path between a Pair of
+ *  Vertexes in a Graph. The References are:
  *  
  *  1) Wikipedia (2018a): Graph (Abstract Data Type)
  *  	https://en.wikipedia.org/wiki/Graph_(abstract_data_type).
@@ -66,59 +66,49 @@ package org.drip.spaces.graph;
  * @author Lakshmi Krishnamurthy
  */
 
-public class DijkstraScheme
+public class BellmanFordScheme
 {
 	private org.drip.spaces.graph.Topography _topography = null;
 
-	private void visitVertex (
-		final org.drip.spaces.graph.ShortestPathVertex currentVertexPeriphery,
+	private void visitEdge (
+		final org.drip.spaces.graph.Edge edge,
 		final org.drip.spaces.graph.ShortestPathFirstWengert spfWengert)
 	{
+		java.lang.String leftVertex = edge.source();
+
 		org.drip.spaces.graph.ShortestPathTree vertexPeripheryMap = spfWengert.vertexPeripheryMap();
 
-		java.util.Map<java.lang.String, java.lang.Double> connectionMap = _topography.connectionMap();
+		org.drip.spaces.graph.ShortestPathVertex vertexPeripheryLeft = vertexPeripheryMap.shortestPathVertex
+			(leftVertex);
 
-		double currentWeightFromSource = currentVertexPeriphery.weightFromSource();
+		org.drip.spaces.graph.ShortestPathVertex vertexPeripheryRight = vertexPeripheryMap.shortestPathVertex
+			(edge.destination());
 
-		java.lang.String currentVertex = currentVertexPeriphery.current();
+		double sourceToRightThroughLeft = vertexPeripheryLeft.weightFromSource() + edge.weight();
 
-		java.util.Map<java.lang.String, java.lang.Double> egressMap = _topography.vertex
-			(currentVertex).egressMap();
-
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> egressEntry : egressMap.entrySet())
+		if (sourceToRightThroughLeft < vertexPeripheryRight.weightFromSource())
 		{
-			java.lang.String egressVertex = egressEntry.getKey();
+			vertexPeripheryRight.setWeightFromSource (sourceToRightThroughLeft);
 
-			double weightFromSourceThroughCurrent = currentWeightFromSource + connectionMap.get
-				(currentVertex + "_" + egressVertex);
-
-			org.drip.spaces.graph.ShortestPathVertex egressVertexPeriphery =
-				vertexPeripheryMap.shortestPathVertex (egressVertex);
-
-			if (egressVertexPeriphery.weightFromSource() > weightFromSourceThroughCurrent)
-			{
-				egressVertexPeriphery.setWeightFromSource (weightFromSourceThroughCurrent);
-
-				egressVertexPeriphery.setPreceeding (currentVertex);
-			}
+			vertexPeripheryRight.setPreceeding (leftVertex);
 		}
 	}
 
 	/**
-	 * DijkstraScheme Constructor
+	 * BellmanFordScheme Constructor
 	 * 
 	 * @param topography The Topography Map
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public DijkstraScheme (
+	public BellmanFordScheme (
 		final org.drip.spaces.graph.Topography topography)
 		throws java.lang.Exception
 	{
 		if (null == (_topography = topography))
 		{
-			throw new java.lang.Exception ("DijkstraScheme Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("BellmanFordScheme Constructor => Invalid Inputs");
 		}
 	}
 
@@ -134,28 +124,28 @@ public class DijkstraScheme
 	}
 
 	/**
-	 * Initialize the Dijsktra Scheme
+	 * Initialize the Bellman Ford Scheme
 	 * 
 	 * @param source The Source Vertex
 	 * 
-	 * @return The Initial Dijkstra Wengert
+	 * @return The Initial Bellman Ford Wengert
 	 */
 
 	public org.drip.spaces.graph.ShortestPathFirstWengert setup (
 		final java.lang.String source)
 	{
-		return org.drip.spaces.graph.ShortestPathFirstWengert.Dijkstra (
+		return org.drip.spaces.graph.ShortestPathFirstWengert.BellmanFord (
 			_topography,
 			source
 		);
 	}
 
 	/**
-	 * Run the Dijsktra SPF Algorithm
+	 * Run the Bellman Ford SPF Algorithm
 	 * 
 	 * @param source The Source Vertex
 	 * 
-	 * @return The Dijkstra Wengert
+	 * @return The Bellman Ford Wengert
 	 */
 
 	public org.drip.spaces.graph.ShortestPathFirstWengert spf (
@@ -168,19 +158,21 @@ public class DijkstraScheme
 			return null;
 		}
 
-		org.drip.spaces.graph.ShortestPathTree vertexPeripheryMap = spfWengert.vertexPeripheryMap();
+		int vertexCount = _topography.vertexNameSet().size();
 
-		org.drip.spaces.graph.ShortestPathVertex vertexPeriphery =
-			vertexPeripheryMap.greedyShortestPathVertex();
-
-		while (null != vertexPeriphery)
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 		{
-			visitVertex (
-				vertexPeriphery,
-				spfWengert
-			);
+			java.util.Map<java.lang.String, org.drip.spaces.graph.Edge> edgeMap =
+				_topography.topographyEdgeMap().edgeMap();
 
-			vertexPeriphery = vertexPeripheryMap.greedyShortestPathVertex();
+			for (java.util.Map.Entry<java.lang.String, org.drip.spaces.graph.Edge> edgeEntry :
+				edgeMap.entrySet())
+			{
+				visitEdge (
+					edgeEntry.getValue(),
+					spfWengert
+				);
+			}
 		}
 
 		return spfWengert;

@@ -47,7 +47,7 @@ package org.drip.spaces.graph;
  */
 
 /**
- * VertexPeripheryMap holds the Map of Vertex Peripheries by Weight and Vertex Name. The References are:
+ * ShortestPathTree holds the Map of Vertex Peripheries by Weight and Vertex Name. The References are:
  *  
  *  1) Wikipedia (2018a): Graph (Abstract Data Type)
  *  	https://en.wikipedia.org/wiki/Graph_(abstract_data_type).
@@ -65,23 +65,23 @@ package org.drip.spaces.graph;
  * @author Lakshmi Krishnamurthy
  */
 
-public class VertexPeripheryMap
+public class ShortestPathTree
 {
-	private java.util.Map<java.lang.String, org.drip.spaces.graph.VertexPeriphery> _nameIndex = new
-		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.spaces.graph.VertexPeriphery>();
+	private java.util.Map<java.lang.String, org.drip.spaces.graph.ShortestPathVertex> _nameIndex = new
+		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.spaces.graph.ShortestPathVertex>();
 
-	private java.util.Map<java.lang.Double, java.util.List<org.drip.spaces.graph.VertexPeriphery>>
+	private java.util.Map<java.lang.Double, java.util.List<org.drip.spaces.graph.ShortestPathVertex>>
 		_weightIndex = new java.util.TreeMap<java.lang.Double,
-			java.util.List<org.drip.spaces.graph.VertexPeriphery>>();
+			java.util.List<org.drip.spaces.graph.ShortestPathVertex>>();
 
-	private org.drip.spaces.graph.VertexPeriphery getUnvisited (
-		final java.util.List<org.drip.spaces.graph.VertexPeriphery> vertexPeripheryList)
+	private org.drip.spaces.graph.ShortestPathVertex getUnvisited (
+		final java.util.List<org.drip.spaces.graph.ShortestPathVertex> shortestPathVertexList)
 	{
-		for (org.drip.spaces.graph.VertexPeriphery vertexPeriphery : vertexPeripheryList)
+		for (org.drip.spaces.graph.ShortestPathVertex shortestPathVertex : shortestPathVertexList)
 		{
-			if (!vertexPeriphery.visited())
+			if (!shortestPathVertex.visited())
 			{
-				return vertexPeriphery;
+				return shortestPathVertex;
 			}
 		}
 
@@ -89,50 +89,50 @@ public class VertexPeripheryMap
 	}
 
 	/**
-	 * Empty VertexPeripheryMap Constructor
+	 * Empty ShortestPathTree Constructor
 	 */
 
-	public VertexPeripheryMap()
+	public ShortestPathTree()
 	{
 	}
 
 	/**
-	 * Add a Vertex Periphery
+	 * Add a shortestPathVertex
 	 * 
-	 * @param vertexPeriphery The Vertex Periphery
+	 * @param shortestPathVertex The shortestPathVertex
 	 * 
-	 * @return TRUE - The Vertex Periphery successfully added
+	 * @return TRUE - The shortestPathVertex successfully added
 	 */
 
-	public boolean addVertexPeriphery (
-		final org.drip.spaces.graph.VertexPeriphery vertexPeriphery)
+	public boolean addShortestPathVertex (
+		final org.drip.spaces.graph.ShortestPathVertex shortestPathVertex)
 	{
-		if (null == vertexPeriphery)
+		if (null == shortestPathVertex)
 		{
 			return false;
 		}
 
 		_nameIndex.put (
-			vertexPeriphery.current(),
-			vertexPeriphery
+			shortestPathVertex.current(),
+			shortestPathVertex
 		);
 
-		double weightFromSource = vertexPeriphery.weightFromSource();
+		double weightFromSource = shortestPathVertex.weightFromSource();
 
 		if (_weightIndex.containsKey (weightFromSource))
 		{
-			_weightIndex.get (vertexPeriphery.weightFromSource()).add (vertexPeriphery);
+			_weightIndex.get (shortestPathVertex.weightFromSource()).add (shortestPathVertex);
 		}
 		else
 		{
-			java.util.List<org.drip.spaces.graph.VertexPeriphery> vertexPeripheryList = new
-				java.util.ArrayList<org.drip.spaces.graph.VertexPeriphery>();
+			java.util.List<org.drip.spaces.graph.ShortestPathVertex> shortestPathVertexList = new
+				java.util.ArrayList<org.drip.spaces.graph.ShortestPathVertex>();
 
-			vertexPeripheryList.add (vertexPeriphery);
+			shortestPathVertexList.add (shortestPathVertex);
 
 			_weightIndex.put (
 				weightFromSource,
-				vertexPeripheryList
+				shortestPathVertexList
 			);
 		}
 
@@ -140,19 +140,19 @@ public class VertexPeripheryMap
 	}
 
 	/**
-	 * Add an Uninitialized Vertex Periphery
+	 * Add an Uninitialized ShortestPathVertex
 	 * 
 	 * @param vertexName The Vertex Name
 	 * 
-	 * @return TRUE - An Uninitialized Vertex Periphery successfully added
+	 * @return TRUE - An Uninitialized ShortestPathVertex successfully added
 	 */
 
-	public boolean addUnitializedVertexPeriphery (
+	public boolean addUnitializedShortestPathVertex (
 		final java.lang.String vertexName)
 	{
 		try
 		{
-			return addVertexPeriphery (new org.drip.spaces.graph.VertexPeriphery (vertexName));
+			return addShortestPathVertex (new org.drip.spaces.graph.ShortestPathVertex (vertexName));
 		}
 		catch (java.lang.Exception e)
 		{
@@ -183,7 +183,7 @@ public class VertexPeripheryMap
 	 * @return The Vertex Periphery by Name
 	 */
 
-	public org.drip.spaces.graph.VertexPeriphery retrieve (
+	public org.drip.spaces.graph.ShortestPathVertex shortestPathVertex (
 		final java.lang.String vertexName)
 	{
 		return _nameIndex.containsKey (vertexName) ? _nameIndex.get (vertexName) : null;
@@ -195,12 +195,12 @@ public class VertexPeripheryMap
 	 * @return The Vertex Periphery with the least Weight
 	 */
 
-	public org.drip.spaces.graph.VertexPeriphery greedyRetrieval()
+	public org.drip.spaces.graph.ShortestPathVertex greedyShortestPathVertex()
 	{
-		for (java.util.Map.Entry<java.lang.Double, java.util.List<org.drip.spaces.graph.VertexPeriphery>>
+		for (java.util.Map.Entry<java.lang.Double, java.util.List<org.drip.spaces.graph.ShortestPathVertex>>
 			weightIndexEntry : _weightIndex.entrySet())
 		{
-			org.drip.spaces.graph.VertexPeriphery vertexPeriphery = getUnvisited
+			org.drip.spaces.graph.ShortestPathVertex vertexPeriphery = getUnvisited
 				(weightIndexEntry.getValue());
 
 			if (null == vertexPeriphery)
@@ -222,7 +222,7 @@ public class VertexPeripheryMap
 	 * @return The Name Indexed Vertex Periphery Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.spaces.graph.VertexPeriphery> nameIndex()
+	public java.util.Map<java.lang.String, org.drip.spaces.graph.ShortestPathVertex> nameIndex()
 	{
 		return _nameIndex;
 	}
@@ -233,7 +233,7 @@ public class VertexPeripheryMap
 	 * @return The Weight Indexed Vertex Periphery Map
 	 */
 
-	public java.util.Map<java.lang.Double, java.util.List<org.drip.spaces.graph.VertexPeriphery>>
+	public java.util.Map<java.lang.Double, java.util.List<org.drip.spaces.graph.ShortestPathVertex>>
 		weightIndex()
 	{
 		return _weightIndex;

@@ -47,8 +47,8 @@ package org.drip.spaces.graph;
  */
 
 /**
- * DijkstraScheme implements the Dijkstra Algorithm for finding the Shortest Path between a Pair of Vertexes
- *  in a Graph. The References are:
+ * ShortestPathVertex holds the given Vertex's Previous Traversal Vertex and the Weight from the Source. The
+ *  References are:
  *  
  *  1) Wikipedia (2018a): Graph (Abstract Data Type)
  *  	https://en.wikipedia.org/wiki/Graph_(abstract_data_type).
@@ -66,123 +66,127 @@ package org.drip.spaces.graph;
  * @author Lakshmi Krishnamurthy
  */
 
-public class DijkstraScheme
+public class ShortestPathVertex
 {
-	private org.drip.spaces.graph.Topography _topography = null;
-
-	private void visitVertex (
-		final org.drip.spaces.graph.ShortestPathVertex currentVertexPeriphery,
-		final org.drip.spaces.graph.ShortestPathFirstWengert spfWengert)
-	{
-		org.drip.spaces.graph.ShortestPathTree vertexPeripheryMap = spfWengert.vertexPeripheryMap();
-
-		java.util.Map<java.lang.String, java.lang.Double> connectionMap = _topography.connectionMap();
-
-		double currentWeightFromSource = currentVertexPeriphery.weightFromSource();
-
-		java.lang.String currentVertex = currentVertexPeriphery.current();
-
-		java.util.Map<java.lang.String, java.lang.Double> egressMap = _topography.vertex
-			(currentVertex).egressMap();
-
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> egressEntry : egressMap.entrySet())
-		{
-			java.lang.String egressVertex = egressEntry.getKey();
-
-			double weightFromSourceThroughCurrent = currentWeightFromSource + connectionMap.get
-				(currentVertex + "_" + egressVertex);
-
-			org.drip.spaces.graph.ShortestPathVertex egressVertexPeriphery =
-				vertexPeripheryMap.shortestPathVertex (egressVertex);
-
-			if (egressVertexPeriphery.weightFromSource() > weightFromSourceThroughCurrent)
-			{
-				egressVertexPeriphery.setWeightFromSource (weightFromSourceThroughCurrent);
-
-				egressVertexPeriphery.setPreceeding (currentVertex);
-			}
-		}
-	}
+	private boolean _visited = false;
+	private java.lang.String _current = "";
+	private java.lang.String _preceeding = "";
+	private double _weightFromSource = java.lang.Double.POSITIVE_INFINITY;
 
 	/**
-	 * DijkstraScheme Constructor
+	 * ShortestPathVertex Constructor
 	 * 
-	 * @param topography The Topography Map
+	 * @param current The Current Node
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public DijkstraScheme (
-		final org.drip.spaces.graph.Topography topography)
+	public ShortestPathVertex (
+		final java.lang.String current)
 		throws java.lang.Exception
 	{
-		if (null == (_topography = topography))
+		if (null == (_current = current) || _current.isEmpty())
 		{
-			throw new java.lang.Exception ("DijkstraScheme Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("ShortestPathVertex Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Topography Map
+	 * Retrieve the Current Vertex
 	 * 
-	 * @return The Topography Map
+	 * @return The Current Vertex
 	 */
 
-	public org.drip.spaces.graph.Topography topography()
+	public java.lang.String current()
 	{
-		return _topography;
+		return _current;
 	}
 
 	/**
-	 * Initialize the Dijsktra Scheme
+	 * Retrieve the Preceeding Traversal Vertex
 	 * 
-	 * @param source The Source Vertex
-	 * 
-	 * @return The Initial Dijkstra Wengert
+	 * @return The Preceeding Traversal Vertex
 	 */
 
-	public org.drip.spaces.graph.ShortestPathFirstWengert setup (
-		final java.lang.String source)
+	public java.lang.String preceeding()
 	{
-		return org.drip.spaces.graph.ShortestPathFirstWengert.Dijkstra (
-			_topography,
-			source
-		);
+		return _preceeding;
 	}
 
 	/**
-	 * Run the Dijsktra SPF Algorithm
+	 * Set the Preceeding Traversal Vertex
 	 * 
-	 * @param source The Source Vertex
+	 * @param preceeding The Preceeding Traversal Vertex
 	 * 
-	 * @return The Dijkstra Wengert
+	 * @return TRUE - The Preceeding Vertex successfully set
 	 */
 
-	public org.drip.spaces.graph.ShortestPathFirstWengert spf (
-		final java.lang.String source)
+	public boolean setPreceeding (
+		final java.lang.String preceeding)
 	{
-		org.drip.spaces.graph.ShortestPathFirstWengert spfWengert = setup (source);
-
-		if (null == spfWengert)
+		if (null == preceeding || preceeding.isEmpty())
 		{
-			return null;
+			return false;
 		}
 
-		org.drip.spaces.graph.ShortestPathTree vertexPeripheryMap = spfWengert.vertexPeripheryMap();
+		_preceeding = preceeding;
+		return true;
+	}
 
-		org.drip.spaces.graph.ShortestPathVertex vertexPeriphery =
-			vertexPeripheryMap.greedyShortestPathVertex();
+	/**
+	 * Retrieve the Weight From the Source
+	 * 
+	 * @return The Weight From the Source
+	 */
 
-		while (null != vertexPeriphery)
+	public double weightFromSource()
+	{
+		return _weightFromSource;
+	}
+
+	/**
+	 * Set the Weight From Source
+	 * 
+	 * @param weightFromSource The Weight From Source
+	 * 
+	 * @return TRUE - The Weight From Source successfully set
+	 */
+
+	public boolean setWeightFromSource (
+		final double weightFromSource)
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (weightFromSource))
 		{
-			visitVertex (
-				vertexPeriphery,
-				spfWengert
-			);
-
-			vertexPeriphery = vertexPeripheryMap.greedyShortestPathVertex();
+			return false;
 		}
 
-		return spfWengert;
+		_weightFromSource = weightFromSource;
+		return true;
+	}
+
+	/**
+	 * Indicate if the Vertex has been Visited
+	 * 
+	 * @return TRUE - The Vertex has been Visited
+	 */
+	
+	public boolean visited()
+	{
+		return _visited;
+	}
+
+	/**
+	 * Set the Visitation Status of the Vertex
+	 * 
+	 * @param visited The Visitation Status
+	 * 
+	 * @return TRUE - The Visitation Status successfully set
+	 */
+
+	public boolean setVisited (
+		final boolean visited)
+	{
+		_visited = visited;
+		return true;
 	}
 }

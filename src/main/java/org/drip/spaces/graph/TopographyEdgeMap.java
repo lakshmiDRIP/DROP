@@ -47,8 +47,7 @@ package org.drip.spaces.graph;
  */
 
 /**
- * VertexPeriphery holds the given Vertex's Previous Traversal Vertex and the Weight from the Source. The
- *  References are:
+ * TopographyEdgeMap maintains a Map of the Topography Connection Edges. The References are:
  *  
  *  1) Wikipedia (2018a): Graph (Abstract Data Type)
  *  	https://en.wikipedia.org/wiki/Graph_(abstract_data_type).
@@ -66,127 +65,130 @@ package org.drip.spaces.graph;
  * @author Lakshmi Krishnamurthy
  */
 
-public class VertexPeriphery
+public class TopographyEdgeMap
 {
-	private boolean _visited = false;
-	private java.lang.String _current = "";
-	private java.lang.String _preceeding = "";
-	private double _weightFromSource = java.lang.Double.POSITIVE_INFINITY;
+	private java.util.Map<java.lang.String, org.drip.spaces.graph.Edge> _edgeMap = new
+		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.spaces.graph.Edge>();
 
 	/**
-	 * VertexPeriphery Constructor
-	 * 
-	 * @param current The Current Node
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * Empty TopographyEdgeMap Constructor
 	 */
 
-	public VertexPeriphery (
-		final java.lang.String current)
-		throws java.lang.Exception
+	public TopographyEdgeMap()
 	{
-		if (null == (_current = current) || _current.isEmpty())
-		{
-			throw new java.lang.Exception ("VertexPeriphery Constructor => Invalid Inputs");
-		}
 	}
 
 	/**
-	 * Retrieve the Current Vertex
+	 * Add an Edge
 	 * 
-	 * @return The Current Vertex
+	 * @param edge The Edge
+	 * 
+	 * @return TRUE - The Edge successfully added
 	 */
 
-	public java.lang.String current()
+	public boolean addEdge (
+		final org.drip.spaces.graph.Edge edge)
 	{
-		return _current;
-	}
-
-	/**
-	 * Retrieve the Preceeding Traversal Vertex
-	 * 
-	 * @return The Preceeding Traversal Vertex
-	 */
-
-	public java.lang.String preceeding()
-	{
-		return _preceeding;
-	}
-
-	/**
-	 * Set the Preceeding Traversal Vertex
-	 * 
-	 * @param preceeding The Preceeding Traversal Vertex
-	 * 
-	 * @return TRUE - The Preceeding Vertex successfully set
-	 */
-
-	public boolean setPreceeding (
-		final java.lang.String preceeding)
-	{
-		if (null == preceeding || preceeding.isEmpty())
+		if (null == edge)
 		{
 			return false;
 		}
 
-		_preceeding = preceeding;
-		return true;
-	}
+		java.lang.String source = edge.source();
 
-	/**
-	 * Retrieve the Weight From the Source
-	 * 
-	 * @return The Weight From the Source
-	 */
+		java.lang.String destination = edge.destination();
 
-	public double weightFromSource()
-	{
-		return _weightFromSource;
-	}
+		_edgeMap.put (
+			source + "_" + destination,
+			edge
+		);
 
-	/**
-	 * Set the Weight From Source
-	 * 
-	 * @param weightFromSource The Weight From Source
-	 * 
-	 * @return TRUE - The Weight From Source successfully set
-	 */
-
-	public boolean setWeightFromSource (
-		final double weightFromSource)
-	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (weightFromSource))
+		try
 		{
-			return false;
+			_edgeMap.put (
+				destination + "_" + source,
+				new org.drip.spaces.graph.Edge (
+					destination,
+					source,
+					edge.weight()
+				)
+			);
+
+			return true;
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
 		}
 
-		_weightFromSource = weightFromSource;
-		return true;
+		return false;
 	}
 
 	/**
-	 * Indicate if the Vertex has been Visited
+	 * Retrieve the Edge Map
 	 * 
-	 * @return TRUE - The Vertex has been Visited
+	 * @return The Edge Map
 	 */
-	
-	public boolean visited()
+
+	public java.util.Map<java.lang.String, org.drip.spaces.graph.Edge> edgeMap()
 	{
-		return _visited;
+		return _edgeMap;
 	}
 
 	/**
-	 * Set the Visitation Status of the Vertex
+	 * Retrieve the Edge connecting the Source and the Destination
 	 * 
-	 * @param visited The Visitation Status
+	 * @param source The Source
+	 * @param destination The Destination
 	 * 
-	 * @return TRUE - The Visitation Status successfully set
+	 * @return The Edge connecting the Source and the Destination
 	 */
 
-	public boolean setVisited (
-		final boolean visited)
+	public org.drip.spaces.graph.Edge edge (
+		final java.lang.String source,
+		final java.lang.String destination)
 	{
-		_visited = visited;
-		return true;
+		if (null == source || source.isEmpty() ||
+			null == destination || destination.isEmpty())
+		{
+			return null;
+		}
+
+		java.lang.String key = source + "_" + destination;
+
+		return _edgeMap.containsKey (key) ? _edgeMap.get (key) : null;
+	}
+
+	/**
+	 * Retrieve all the Edges corresponding to the Source Vertex
+	 * 
+	 * @param source The Source Vertex
+	 * 
+	 * @return Edges corresponding to the Source Vertex
+	 */
+
+	public java.util.List<org.drip.spaces.graph.Edge> edgeList (
+		final java.lang.String source)
+	{
+		if (null == source || source.isEmpty())
+		{
+			return null;
+		}
+
+		java.util.List<org.drip.spaces.graph.Edge> edgeList = new
+			java.util.ArrayList<org.drip.spaces.graph.Edge>();
+
+		for (java.util.Map.Entry<java.lang.String, org.drip.spaces.graph.Edge> edgeMapEntry :
+			_edgeMap.entrySet())
+		{
+			java.lang.String key = edgeMapEntry.getKey();
+
+			if (key.startsWith (source))
+			{
+				edgeList.add (edgeMapEntry.getValue());
+			}
+		}
+
+		return edgeList;
 	}
 }

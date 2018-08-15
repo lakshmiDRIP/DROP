@@ -47,7 +47,7 @@ package org.drip.spaces.graph;
  */
 
 /**
- * Topography holds Vertexes and the Paths between them. The References are:
+ * Topography holds Vertexes and the Edges between them. The References are:
  *  
  *  1) Wikipedia (2018a): Graph (Abstract Data Type)
  *  	https://en.wikipedia.org/wiki/Graph_(abstract_data_type).
@@ -67,6 +67,9 @@ package org.drip.spaces.graph;
 
 public class Topography
 {
+	private org.drip.spaces.graph.TopographyEdgeMap _topographyEdgeMap = new
+		org.drip.spaces.graph.TopographyEdgeMap();
+
 	private java.util.Map<java.lang.String, org.drip.spaces.graph.Vertex> _vertexMap = new
 		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.spaces.graph.Vertex>();
 
@@ -159,7 +162,7 @@ public class Topography
 	public boolean addEdge (
 		final org.drip.spaces.graph.Edge edge)
 	{
-		if (null == edge)
+		if (null == edge || !_topographyEdgeMap.addEdge (edge))
 		{
 			return false;
 		}
@@ -192,6 +195,17 @@ public class Topography
 	public java.util.Map<java.lang.String, org.drip.spaces.graph.Vertex> vertexMap()
 	{
 		return _vertexMap;
+	}
+
+	/**
+	 * Retrieve the Topography Edge Map
+	 * 
+	 * @return The Topography Edge Map
+	 */
+
+	public org.drip.spaces.graph.TopographyEdgeMap topographyEdgeMap()
+	{
+		return _topographyEdgeMap;
 	}
 
 	/**
