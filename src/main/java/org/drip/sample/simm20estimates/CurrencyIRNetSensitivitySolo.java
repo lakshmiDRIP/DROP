@@ -88,42 +88,42 @@ public class CurrencyIRNetSensitivitySolo
 		Map<String, Double> oisTenorSensitivities = new HashMap<String, Double>();
 
 		oisTenorSensitivities.put (
-			"02W",
+			"2W",
 			tenorSensitivities[0]
 		);
 
 		oisTenorSensitivities.put (
-			"01M",
+			"1M",
 			tenorSensitivities[1]
 		);
 
 		oisTenorSensitivities.put (
-			"03M",
+			"3M",
 			tenorSensitivities[2]
 		);
 
 		oisTenorSensitivities.put (
-			"06M",
+			"6M",
 			tenorSensitivities[3]
 		);
 
 		oisTenorSensitivities.put (
-			"01Y",
+			"1Y",
 			tenorSensitivities[4]
 		);
 
 		oisTenorSensitivities.put (
-			"02Y",
+			"2Y",
 			tenorSensitivities[5]
 		);
 
 		oisTenorSensitivities.put (
-			"03Y",
+			"3Y",
 			tenorSensitivities[6]
 		);
 
 		oisTenorSensitivities.put (
-			"05Y",
+			"5Y",
 			tenorSensitivities[7]
 		);
 
@@ -158,8 +158,7 @@ public class CurrencyIRNetSensitivitySolo
 
 		String currency = "USD";
 
-		IRCurveTenorSettings curveTenorSensitivitySettings = IRCurveTenorSettings.ISDA
-			(currency);
+		IRCurveTenorSettings curveTenorSensitivitySettings = IRCurveTenorSettings.ISDA (currency);
 
 		double[] oisTenorSensitivities = new double[]
 		{

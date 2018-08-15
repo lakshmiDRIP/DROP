@@ -198,6 +198,156 @@ public class IRNetSensitivity
 	}
 
 	/**
+	 * Compute the Cumulative OIS Thresholded Sensitivity
+	 * 
+	 * @return The Cumulative OIS Thresholded Sensitivity
+	 */
+
+	public double cumulativeOISThresholded()
+	{
+		double cumulativeOISThresholdedSensitivity = 0.;
+
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisEntry : _oisThresholded.entrySet())
+		{
+			cumulativeOISThresholdedSensitivity = cumulativeOISThresholdedSensitivity + oisEntry.getValue();
+		}
+
+		return cumulativeOISThresholdedSensitivity;
+	}
+
+	/**
+	 * Compute the Cumulative LIBOR1M Thresholded Sensitivity
+	 * 
+	 * @return The Cumulative LIBOR1M Thresholded Sensitivity
+	 */
+
+	public double cumulativeLIBOR1MThresholded()
+	{
+		double cumulativeLIBOR1MThresholdedSensitivity = 0.;
+
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor1MEntry :
+			_libor1MThresholded.entrySet())
+		{
+			cumulativeLIBOR1MThresholdedSensitivity = cumulativeLIBOR1MThresholdedSensitivity +
+				libor1MEntry.getValue();
+		}
+
+		return cumulativeLIBOR1MThresholdedSensitivity;
+	}
+
+	/**
+	 * Compute the Cumulative LIBOR3M Thresholded Sensitivity
+	 * 
+	 * @return The Cumulative LIBOR3M Thresholded Sensitivity
+	 */
+
+	public double cumulativeLIBOR3MThresholded()
+	{
+		double cumulativeLIBOR3MThresholded = 0.;
+
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor3MEntry :
+			_libor3MThresholded.entrySet())
+		{
+			cumulativeLIBOR3MThresholded = cumulativeLIBOR3MThresholded + libor3MEntry.getValue();
+		}
+
+		return cumulativeLIBOR3MThresholded;
+	}
+
+	/**
+	 * Compute the Cumulative LIBOR6M Thresholded Sensitivity
+	 * 
+	 * @return The Cumulative LIBOR6M Thresholded Sensitivity
+	 */
+
+	public double cumulativeLIBOR6MThresholded()
+	{
+		double cumulativeLIBOR6MThresholded = 0.;
+
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor6MEntry :
+			_libor6MThresholded.entrySet())
+		{
+			cumulativeLIBOR6MThresholded = cumulativeLIBOR6MThresholded + libor6MEntry.getValue();
+		}
+
+		return cumulativeLIBOR6MThresholded;
+	}
+
+	/**
+	 * Compute the Cumulative LIBOR12M Thresholded Sensitivity
+	 * 
+	 * @return The Cumulative LIBOR12M Thresholded Sensitivity
+	 */
+
+	public double cumulativeLIBOR12MThresholded()
+	{
+		double cumulativeLIBOR12MThresholded = 0.;
+
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor12MEntry :
+			_libor12MThresholded.entrySet())
+		{
+			cumulativeLIBOR12MThresholded = cumulativeLIBOR12MThresholded + libor12MEntry.getValue();
+		}
+
+		return cumulativeLIBOR12MThresholded;
+	}
+
+	/**
+	 * Compute the Cumulative PRIME Thresholded Sensitivity
+	 * 
+	 * @return The Cumulative PRIME Thresholded Sensitivity
+	 */
+
+	public double cumulativePRIMEThresholded()
+	{
+		double cumulativePRIMEThresholded = 0.;
+
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> primeEntry :
+			_primeThresholded.entrySet())
+		{
+			cumulativePRIMEThresholded = cumulativePRIMEThresholded + primeEntry.getValue();
+		}
+
+		return cumulativePRIMEThresholded;
+	}
+
+	/**
+	 * Compute the Cumulative MUNICIPAL Thresholded Sensitivity
+	 * 
+	 * @return The Cumulative MUNICIPAL Thresholded Sensitivity
+	 */
+
+	public double cumulativeMUNICIPALThresholded()
+	{
+		double cumulativeMUNICIPALThresholded = 0.;
+
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> municipalEntry :
+			_municipalThresholded.entrySet())
+		{
+			cumulativeMUNICIPALThresholded = cumulativeMUNICIPALThresholded + municipalEntry.getValue();
+		}
+
+		return cumulativeMUNICIPALThresholded;
+	}
+
+	/**
+	 * Compute the Cumulative Gross Thresholded Sensitivity
+	 * 
+	 * @return The Cumulative Gross Thresholded Sensitivity
+	 */
+
+	public double cumulativeGrossThresholded()
+	{
+		return cumulativeOISThresholded() +
+			cumulativeLIBOR1MThresholded() +
+			cumulativeLIBOR3MThresholded() +
+			cumulativeLIBOR6MThresholded() +
+			cumulativeLIBOR12MThresholded() +
+			cumulativePRIMEThresholded() +
+			cumulativeMUNICIPALThresholded();
+	}
+
+	/**
 	 * Compute the OIS-OIS Net Sensitivity Co-variance
 	 * 
 	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
@@ -1609,7 +1759,8 @@ public class IRNetSensitivity
 				covariance_PRIME_PRIME (curveTenorSensitivitySettings),
 				covariance_PRIME_MUNICIPAL (curveTenorSensitivitySettings),
 				covariance_MUNICIPAL_MUNICIPAL (curveTenorSensitivitySettings),
-				_concentrationRiskFactor
+				_concentrationRiskFactor,
+				cumulativeGrossThresholded()
 			);
 		}
 		catch (java.lang.Exception e)

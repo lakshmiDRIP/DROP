@@ -110,6 +110,142 @@ public class IRGroupNetSensitivity
 	}
 
 	/**
+	 * Retrieve the Matrix of gBC Values
+	 * 
+	 * @return The Matrix of gBC Values
+	 */
+
+	public java.util.Map<java.lang.String, java.lang.Double> gBC()
+	{
+		java.util.Map<java.lang.String, java.lang.Double> gBCMap = new
+			org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
+
+		for (java.util.Map.Entry<java.lang.String, org.drip.simm20.product.IRNetSensitivity>
+			netSensitivityMapEntryOuter : _netSensitivityMap.entrySet())
+		{
+			java.lang.String currencyOuter = netSensitivityMapEntryOuter.getKey();
+
+			org.drip.simm20.product.IRNetSensitivity irNetSensitivityOuter =
+				netSensitivityMapEntryOuter.getValue();
+
+			double concentrationRiskFactorOuter = irNetSensitivityOuter.concentrationRiskFactor();
+
+			for (java.util.Map.Entry<java.lang.String, org.drip.simm20.product.IRNetSensitivity>
+				netSensitivityMapEntryInner : _netSensitivityMap.entrySet())
+			{
+				java.lang.String currencyInner = netSensitivityMapEntryInner.getKey();
+
+				org.drip.simm20.product.IRNetSensitivity irNetSensitivityInner =
+					netSensitivityMapEntryInner.getValue();
+
+				double concentrationRiskFactorInner = irNetSensitivityInner.concentrationRiskFactor();
+
+				double gBC = java.lang.Math.min (
+					concentrationRiskFactorInner,
+					concentrationRiskFactorOuter
+				) / java.lang.Math.max (
+					concentrationRiskFactorInner,
+					concentrationRiskFactorOuter
+				);
+
+				gBCMap.put (
+					currencyInner + "_" + currencyOuter,
+					gBC
+				);
+
+				gBCMap.put (
+					currencyOuter + "_" + currencyInner,
+					gBC
+				);
+			}
+		}
+
+		return gBCMap;
+	}
+
+	/**
+	 * Estimate the Delta Margin
+	 * 
+	 * @param groupSettings The Group Settings
+	 * 
+	 * @return The Delta Margin
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double deltaMargin (
+		final org.drip.simm20.product.IRGroupSettings groupSettings)
+		throws java.lang.Exception
+	{
+		if (null == groupSettings)
+		{
+			throw new java.lang.Exception ("IRGroupNetSensitivity::deltaMargin => Invalid Inputs");
+		}
+
+		java.util.Map<java.lang.String, java.lang.Double> marginVarianceMap = new
+			org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
+
+		java.util.Map<java.lang.String, java.lang.Double> adjustedNetThresholdMap = new
+			org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
+
+		for (java.lang.String currency : _netSensitivityMap.keySet())
+		{
+			if (!groupSettings.containsCurrency (currency))
+			{
+				throw new java.lang.Exception ("IRGroupNetSensitivity::deltaMargin => Invalid Inputs");
+			}
+
+			org.drip.simm20.product.IRMarginCovariance marginCovariance = _netSensitivityMap.get
+				(currency).marginCovariance (groupSettings.curveTenorSettings (currency));
+
+			if (null == marginCovariance)
+			{
+				throw new java.lang.Exception ("IRGroupNetSensitivity::deltaMargin => Invalid Inputs");
+			}
+
+			marginVarianceMap.put (
+				currency,
+				marginCovariance.cumulative()
+			);
+
+			adjustedNetThresholdMap.put (
+				currency,
+				marginCovariance.adjustedNetThresholded()
+			);
+		}
+
+		double deltaMarginVariance = 0.;
+
+		java.util.Map<java.lang.String, java.lang.Double> gBC = gBC();
+
+		double crossCurrencyCorrelation = groupSettings.crossCurrencyCorrelation();
+
+		for (java.util.Map.Entry<java.lang.String, org.drip.simm20.product.IRNetSensitivity>
+			netSensitivityMapEntryOuter : _netSensitivityMap.entrySet())
+		{
+			java.lang.String currencyOuter = netSensitivityMapEntryOuter.getKey();
+
+			deltaMarginVariance = deltaMarginVariance + marginVarianceMap.get (currencyOuter);
+
+			double adjustedNetThresholdedOuter = adjustedNetThresholdMap.get (currencyOuter);
+
+			for (java.util.Map.Entry<java.lang.String, org.drip.simm20.product.IRNetSensitivity>
+				netSensitivityMapEntryInner : _netSensitivityMap.entrySet())
+			{
+				java.lang.String currencyInner = netSensitivityMapEntryInner.getKey();
+
+				deltaMarginVariance = deltaMarginVariance +
+					crossCurrencyCorrelation *
+					adjustedNetThresholdedOuter *
+					adjustedNetThresholdMap.get (currencyInner) *
+					gBC.get (currencyOuter + "_" + currencyInner);
+			}
+		}
+
+		return java.lang.Math.sqrt (deltaMarginVariance);
+	}
+
+	/**
 	 * Indicate if the Currency has Net Sensitivity available
 	 * 
 	 * @param currency The Currency

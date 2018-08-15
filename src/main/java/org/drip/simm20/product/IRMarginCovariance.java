@@ -107,6 +107,7 @@ public class IRMarginCovariance
 	private double _municipal_municipal = java.lang.Double.NaN;
 
 	private double _concentrationRiskFactor = java.lang.Double.NaN;
+	private double _cumulativeGrossThresholded = java.lang.Double.NaN;
 
 	/**
 	 * @param ois_ois The OIS - OIS IM Net Margin Co-variance Entry
@@ -138,6 +139,7 @@ public class IRMarginCovariance
 	 * @param prime_municipal The PRIME - MUNICIPAL IM Net Margin Co-variance Entry
 	 * @param municipal_municipal The MUNICIPAL - MUNICIPAL IM Net Margin Co-variance Entry
 	 * @param concentrationRiskFactor The Currency's Concentration Risk Factor
+	 * @param cumulativeGrossThresholded The Cumulative Gross Thresholded Sensitivity
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -171,7 +173,8 @@ public class IRMarginCovariance
 		final double prime_prime,
 		final double prime_municipal,
 		final double municipal_municipal,
-		final double concentrationRiskFactor)
+		final double concentrationRiskFactor,
+		final double cumulativeGrossThresholded)
 		throws java.lang.Exception
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (_ois_ois = ois_ois) ||
@@ -202,7 +205,8 @@ public class IRMarginCovariance
 			!org.drip.quant.common.NumberUtil.IsValid (_prime_prime = prime_prime) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_prime_municipal = prime_municipal) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_municipal_municipal = municipal_municipal) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_concentrationRiskFactor = concentrationRiskFactor))
+			!org.drip.quant.common.NumberUtil.IsValid (_concentrationRiskFactor = concentrationRiskFactor) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_cumulativeGrossThresholded = cumulativeGrossThresholded))
 		{
 			throw new java.lang.Exception ("IRMarginCovariance Constructor => Invalid Inputs");
 		}
@@ -555,5 +559,35 @@ public class IRMarginCovariance
 	public double concentrationRiskFactor()
 	{
 		return _concentrationRiskFactor;
+	}
+
+	/**
+	 * Retrieve the Cumulative Gross Thresholded Sensitivity
+	 * 
+	 * @return The Cumulative Gross Thresholded Sensitivity
+	 */
+
+	public double cumulativeGrossThresholded()
+	{
+		return _cumulativeGrossThresholded;
+	}
+
+	/**
+	 * Calculate the Adjusted Net Thresholded Margin
+	 * 
+	 * @return The Adjusted Net Thresholded Margin
+	 */
+
+	public double adjustedNetThresholded()
+	{
+		double kb = variance();
+
+		return java.lang.Math.max (
+			java.lang.Math.min (
+				_cumulativeGrossThresholded,
+				kb
+			),
+			-kb
+		);
 	}
 }
