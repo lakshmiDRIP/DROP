@@ -71,13 +71,13 @@ package org.drip.simm20.product;
 
 public class IRSensitivity
 {
-	private org.drip.simm20.product.RiskFactorTenorSensitivity _ois = null;
-	private org.drip.simm20.product.RiskFactorTenorSensitivity _prime = null;
-	private org.drip.simm20.product.RiskFactorTenorSensitivity _libor1M = null;
-	private org.drip.simm20.product.RiskFactorTenorSensitivity _libor3M = null;
-	private org.drip.simm20.product.RiskFactorTenorSensitivity _libor6M = null;
-	private org.drip.simm20.product.RiskFactorTenorSensitivity _libor12M = null;
-	private org.drip.simm20.product.RiskFactorTenorSensitivity _municipal = null;
+	private org.drip.simm20.margin.RiskFactorTenorSensitivity _ois = null;
+	private org.drip.simm20.margin.RiskFactorTenorSensitivity _prime = null;
+	private org.drip.simm20.margin.RiskFactorTenorSensitivity _libor1M = null;
+	private org.drip.simm20.margin.RiskFactorTenorSensitivity _libor3M = null;
+	private org.drip.simm20.margin.RiskFactorTenorSensitivity _libor6M = null;
+	private org.drip.simm20.margin.RiskFactorTenorSensitivity _libor12M = null;
+	private org.drip.simm20.margin.RiskFactorTenorSensitivity _municipal = null;
 
 	/**
 	 * Generate a Standard Instance of IRSensitivity from the Sensitivity Maps
@@ -105,13 +105,13 @@ public class IRSensitivity
 		try
 		{
 			return new IRSensitivity (
-				new org.drip.simm20.product.RiskFactorTenorSensitivity (ois),
-				new org.drip.simm20.product.RiskFactorTenorSensitivity (libor1M),
-				new org.drip.simm20.product.RiskFactorTenorSensitivity (libor3M),
-				new org.drip.simm20.product.RiskFactorTenorSensitivity (libor6M),
-				new org.drip.simm20.product.RiskFactorTenorSensitivity (libor12M),
-				new org.drip.simm20.product.RiskFactorTenorSensitivity (prime),
-				new org.drip.simm20.product.RiskFactorTenorSensitivity (municipal)
+				new org.drip.simm20.margin.RiskFactorTenorSensitivity (ois),
+				new org.drip.simm20.margin.RiskFactorTenorSensitivity (libor1M),
+				new org.drip.simm20.margin.RiskFactorTenorSensitivity (libor3M),
+				new org.drip.simm20.margin.RiskFactorTenorSensitivity (libor6M),
+				new org.drip.simm20.margin.RiskFactorTenorSensitivity (libor12M),
+				new org.drip.simm20.margin.RiskFactorTenorSensitivity (prime),
+				new org.drip.simm20.margin.RiskFactorTenorSensitivity (municipal)
 			);
 		}
 		catch (java.lang.Exception e)
@@ -137,13 +137,13 @@ public class IRSensitivity
 	 */
 
 	public IRSensitivity (
-		final org.drip.simm20.product.RiskFactorTenorSensitivity ois,
-		final org.drip.simm20.product.RiskFactorTenorSensitivity libor1M,
-		final org.drip.simm20.product.RiskFactorTenorSensitivity libor3M,
-		final org.drip.simm20.product.RiskFactorTenorSensitivity libor6M,
-		final org.drip.simm20.product.RiskFactorTenorSensitivity libor12M,
-		final org.drip.simm20.product.RiskFactorTenorSensitivity prime,
-		final org.drip.simm20.product.RiskFactorTenorSensitivity municipal)
+		final org.drip.simm20.margin.RiskFactorTenorSensitivity ois,
+		final org.drip.simm20.margin.RiskFactorTenorSensitivity libor1M,
+		final org.drip.simm20.margin.RiskFactorTenorSensitivity libor3M,
+		final org.drip.simm20.margin.RiskFactorTenorSensitivity libor6M,
+		final org.drip.simm20.margin.RiskFactorTenorSensitivity libor12M,
+		final org.drip.simm20.margin.RiskFactorTenorSensitivity prime,
+		final org.drip.simm20.margin.RiskFactorTenorSensitivity municipal)
 		throws java.lang.Exception
 	{
 		if (null == (_ois = ois) ||
@@ -164,7 +164,7 @@ public class IRSensitivity
 	 * @return The OIS Risk Factor Sensitivity
 	 */
 
-	public org.drip.simm20.product.RiskFactorTenorSensitivity ois()
+	public org.drip.simm20.margin.RiskFactorTenorSensitivity ois()
 	{
 		return _ois;
 	}
@@ -175,7 +175,7 @@ public class IRSensitivity
 	 * @return The LIBOR-1M Risk Factor Sensitivity
 	 */
 
-	public org.drip.simm20.product.RiskFactorTenorSensitivity libor1M()
+	public org.drip.simm20.margin.RiskFactorTenorSensitivity libor1M()
 	{
 		return _libor1M;
 	}
@@ -186,7 +186,7 @@ public class IRSensitivity
 	 * @return The LIBOR-3M Risk Factor Sensitivity
 	 */
 
-	public org.drip.simm20.product.RiskFactorTenorSensitivity libor3M()
+	public org.drip.simm20.margin.RiskFactorTenorSensitivity libor3M()
 	{
 		return _libor3M;
 	}
@@ -197,7 +197,7 @@ public class IRSensitivity
 	 * @return The LIBOR-6M Risk Factor Sensitivity
 	 */
 
-	public org.drip.simm20.product.RiskFactorTenorSensitivity libor6M()
+	public org.drip.simm20.margin.RiskFactorTenorSensitivity libor6M()
 	{
 		return _libor6M;
 	}
@@ -208,7 +208,7 @@ public class IRSensitivity
 	 * @return The LIBOR-12M Risk Factor Sensitivity
 	 */
 
-	public org.drip.simm20.product.RiskFactorTenorSensitivity libor12M()
+	public org.drip.simm20.margin.RiskFactorTenorSensitivity libor12M()
 	{
 		return _libor12M;
 	}
@@ -219,7 +219,7 @@ public class IRSensitivity
 	 * @return The PRIME Risk Factor Sensitivity
 	 */
 
-	public org.drip.simm20.product.RiskFactorTenorSensitivity prime()
+	public org.drip.simm20.margin.RiskFactorTenorSensitivity prime()
 	{
 		return _prime;
 	}
@@ -230,7 +230,7 @@ public class IRSensitivity
 	 * @return The MUNICIPAL Risk Factor Sensitivity
 	 */
 
-	public org.drip.simm20.product.RiskFactorTenorSensitivity municipal()
+	public org.drip.simm20.margin.RiskFactorTenorSensitivity municipal()
 	{
 		return _municipal;
 	}
@@ -292,7 +292,7 @@ public class IRSensitivity
 	 */
 
 	public java.util.Map<java.lang.String, java.lang.Double> oisNet (
-		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings,
+		final org.drip.simm20.parameters.IRCurveTenorSettings curveTenorSensitivitySettings,
 		final boolean weighted)
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -345,7 +345,7 @@ public class IRSensitivity
 	 */
 
 	public java.util.Map<java.lang.String, java.lang.Double> libor1MNet (
-		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings,
+		final org.drip.simm20.parameters.IRCurveTenorSettings curveTenorSensitivitySettings,
 		final boolean weighted)
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -398,7 +398,7 @@ public class IRSensitivity
 	 */
 
 	public java.util.Map<java.lang.String, java.lang.Double> libor3MNet (
-		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings,
+		final org.drip.simm20.parameters.IRCurveTenorSettings curveTenorSensitivitySettings,
 		final boolean weighted)
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -451,7 +451,7 @@ public class IRSensitivity
 	 */
 
 	public java.util.Map<java.lang.String, java.lang.Double> libor6MNet (
-		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings,
+		final org.drip.simm20.parameters.IRCurveTenorSettings curveTenorSensitivitySettings,
 		final boolean weighted)
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -504,7 +504,7 @@ public class IRSensitivity
 	 */
 
 	public java.util.Map<java.lang.String, java.lang.Double> libor12MNet (
-		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings,
+		final org.drip.simm20.parameters.IRCurveTenorSettings curveTenorSensitivitySettings,
 		final boolean weighted)
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -557,7 +557,7 @@ public class IRSensitivity
 	 */
 
 	public java.util.Map<java.lang.String, java.lang.Double> primeNet (
-		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings,
+		final org.drip.simm20.parameters.IRCurveTenorSettings curveTenorSensitivitySettings,
 		final boolean weighted)
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -610,7 +610,7 @@ public class IRSensitivity
 	 */
 
 	public java.util.Map<java.lang.String, java.lang.Double> municipalNet (
-		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings,
+		final org.drip.simm20.parameters.IRCurveTenorSettings curveTenorSensitivitySettings,
 		final boolean weighted)
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -662,8 +662,8 @@ public class IRSensitivity
 	 * @return The Weighted/Unweighted Net Curve Sensitivity Map
 	 */
 
-	public org.drip.simm20.product.IRNetSensitivity curveNet (
-		final org.drip.simm20.product.IRCurveTenorSettings curveTenorSensitivitySettings,
+	public org.drip.simm20.margin.IRNetSensitivity curveNet (
+		final org.drip.simm20.parameters.IRCurveTenorSettings curveTenorSensitivitySettings,
 		final boolean weighted)
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -702,7 +702,7 @@ public class IRSensitivity
 		{
 			try
 			{
-				return new org.drip.simm20.product.IRNetSensitivity (
+				return new org.drip.simm20.margin.IRNetSensitivity (
 					oisNet,
 					libor1MNet,
 					libor3MNet,
@@ -776,7 +776,7 @@ public class IRSensitivity
 
 		try
 		{
-			return new org.drip.simm20.product.IRNetSensitivity (
+			return new org.drip.simm20.margin.IRNetSensitivity (
 				oisNet,
 				libor1MNet,
 				libor3MNet,

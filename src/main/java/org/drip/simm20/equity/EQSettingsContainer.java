@@ -79,23 +79,23 @@ public class EQSettingsContainer
 	{
 		java.util.List<java.lang.String> bucketList = new java.util.ArrayList<java.lang.String>();
 
-		bucketList.add ("01");
+		bucketList.add ("1");
 
-		bucketList.add ("02");
+		bucketList.add ("2");
 
-		bucketList.add ("03");
+		bucketList.add ("3");
 
-		bucketList.add ("04");
+		bucketList.add ("4");
 
-		bucketList.add ("05");
+		bucketList.add ("5");
 
-		bucketList.add ("06");
+		bucketList.add ("6");
 
-		bucketList.add ("07");
+		bucketList.add ("7");
 
-		bucketList.add ("08");
+		bucketList.add ("8");
 
-		bucketList.add ("09");
+		bucketList.add ("9");
 
 		bucketList.add ("10");
 

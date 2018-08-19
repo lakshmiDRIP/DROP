@@ -6,8 +6,8 @@ import java.util.Map;
 
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.simm20.product.IRCurveTenorSettings;
-import org.drip.simm20.product.IRNetSensitivity;
+import org.drip.simm20.margin.IRNetSensitivity;
+import org.drip.simm20.parameters.IRCurveTenorSettings;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-

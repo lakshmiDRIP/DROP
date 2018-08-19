@@ -6,11 +6,11 @@ import java.util.Map;
 
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.simm20.product.IRCurveTenorSettings;
-import org.drip.simm20.product.IRGroupNetSensitivity;
-import org.drip.simm20.product.IRGroupSettings;
-import org.drip.simm20.product.IRMarginCovariance;
-import org.drip.simm20.product.IRNetSensitivity;
+import org.drip.simm20.margin.IRGroupNetSensitivity;
+import org.drip.simm20.margin.IRMarginCovariance;
+import org.drip.simm20.margin.IRNetSensitivity;
+import org.drip.simm20.parameters.IRCurveTenorSettings;
+import org.drip.simm20.parameters.IRGroupSettings;
 import org.drip.simm20.product.IRSensitivity;
 
 /*

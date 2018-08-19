@@ -146,18 +146,15 @@ public class EQSensitivity
 	 * @return The Delta Margin Based Net Sensitivity
 	 */
 
-	public org.drip.simm20.product.EQNetSensitivity deltaMargin (
-		final org.drip.simm20.product.EQSensitivitySettings equitySensitivitySettings)
+	public org.drip.simm20.margin.EQNetSensitivity deltaMargin (
+		final org.drip.simm20.parameters.EQSensitivitySettings equitySensitivitySettings)
 	{
-		java.util.Map<java.lang.Integer, java.lang.Double> bucketRiskWeight =
-			equitySensitivitySettings.bucketRiskWeight();
+		java.util.Map<java.lang.Integer, org.drip.simm20.parameters.EQBucketSensitivitySettings>
+			bucketSensitivitySettings = equitySensitivitySettings.bucketSettings();
 
-		java.util.Map<java.lang.Integer, java.lang.Double> bucketDeltaThreshold =
-			equitySensitivitySettings.bucketDeltaThreshold();
-
-		java.util.Map<java.lang.Integer, org.drip.simm20.product.EQBucketNetSensitivity>
+		java.util.Map<java.lang.Integer, org.drip.simm20.margin.EQBucketNetSensitivity>
 			bucketNetSensitivityMap = new java.util.HashMap<java.lang.Integer,
-				org.drip.simm20.product.EQBucketNetSensitivity>();
+				org.drip.simm20.margin.EQBucketNetSensitivity>();
 
 		for (java.util.Map.Entry<java.lang.Integer, java.lang.Double> bucketMapEntry : _bucketMap.entrySet())
 		{
@@ -165,22 +162,24 @@ public class EQSensitivity
 
 			double bucketSensitivity = bucketMapEntry.getValue();
 
-			if (!bucketRiskWeight.containsKey (bucketIndex) || !bucketDeltaThreshold.containsKey
-				(bucketIndex))
+			if (!bucketSensitivitySettings.containsKey (bucketIndex))
 			{
 				return null;
 			}
+
+			org.drip.simm20.parameters.EQBucketSensitivitySettings equityBucketSensitivitySettings =
+				bucketSensitivitySettings.get (bucketIndex);
 
 			try
 			{
 				bucketNetSensitivityMap.put (
 					bucketIndex,
-					new org.drip.simm20.product.EQBucketNetSensitivity (
-						bucketSensitivity * bucketRiskWeight.get (bucketIndex),
+					new org.drip.simm20.margin.EQBucketNetSensitivity (
+						bucketSensitivity * equityBucketSensitivitySettings.riskWeight(),
 						 java.lang.Math.max (
 							1.,
 							java.lang.Math.sqrt (java.lang.Math.abs (bucketSensitivity)) /
-								bucketDeltaThreshold.get (bucketIndex)
+								equityBucketSensitivitySettings.concentrationThreshold()
 						)
 					)
 				);
@@ -191,6 +190,15 @@ public class EQSensitivity
 
 				return null;
 			}
+		}
+
+		try
+		{
+			return new org.drip.simm20.margin.EQNetSensitivity (bucketNetSensitivityMap);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
 		}
 
 		return null;
