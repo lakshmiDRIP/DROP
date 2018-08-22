@@ -124,14 +124,16 @@ public class EQNetSensitivity
 
 		double deltaMargin = 0.;
 
+		int bucketSize = _bucketMap.size() - 1;
+
 		org.drip.measure.stochastic.LabelCorrelation bucketCorrelation =
 			eqSensitivitySettings.bucketCorrelation();
 
-		for (int bucketIndexI = 1; bucketIndexI <= 12; ++bucketIndexI)
+		for (int bucketIndexI = 1; bucketIndexI <= bucketSize; ++bucketIndexI)
 		{
 			double netSensitivityI = _bucketMap.get (bucketIndexI).weightedAndAdjusted();
 
-			for (int bucketIndexJ = 1; bucketIndexJ <= 12; ++bucketIndexJ)
+			for (int bucketIndexJ = 1; bucketIndexJ <= bucketSize; ++bucketIndexJ)
 			{
 				deltaMargin = deltaMargin + netSensitivityI *
 					_bucketMap.get (bucketIndexJ).weightedAndAdjusted() * bucketCorrelation.entry (

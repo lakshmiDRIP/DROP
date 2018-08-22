@@ -72,10 +72,8 @@ package org.drip.simm20.parameters;
 public class EQSensitivitySettings
 {
 	private org.drip.measure.stochastic.LabelCorrelation _bucketCorrelation = null;
-
 	private java.util.Map<java.lang.Integer, org.drip.simm20.parameters.EQBucketSensitivitySettings>
-		_bucketSettings = new java.util.HashMap<java.lang.Integer,
-			org.drip.simm20.parameters.EQBucketSensitivitySettings>();
+		_bucketSettings = null;
 
 	/**
 	 * Construct the ISDA Standard Instances of EQSensitivitySettings

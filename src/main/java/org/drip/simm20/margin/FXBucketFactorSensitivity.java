@@ -1,5 +1,5 @@
 
-package org.drip.simm20.parameters;
+package org.drip.simm20.margin;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,8 +47,8 @@ package org.drip.simm20.parameters;
  */
 
 /**
- * CTBucketSensitivitySettings holds the Settings that govern the Generation of the ISDA SIMM 2.0 Single
- * 	Commodity Bucket Net Sensitivities. The References are:
+ * FXBucketFactorSensitivity holds the ISDA SIMM 2.0 Net Sensitivity and Concentration Factor within a single
+ *  FX Risk Factor Bucket. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -69,40 +69,30 @@ package org.drip.simm20.parameters;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CTBucketSensitivitySettings extends org.drip.simm20.parameters.LiquiditySettings
+public class FXBucketFactorSensitivity
 {
-	private double _riskWeight = java.lang.Double.NaN;
+	private double _weighted = java.lang.Double.NaN;
+	private double _concentrationScaler = java.lang.Double.NaN;
 
 	/**
-	 * CTBucketSensitivitySettings Constructor
+	 * Retrieve the Weighted Net Sensitivity of the Risk Factor and the Bucket
 	 * 
-	 * @param riskWeight The Risk Weight
-	 * @param concentrationFactor The Concentration Factor
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @return The Weighted Net Sensitivity of the Risk Factor and the Bucket
 	 */
 
-	public CTBucketSensitivitySettings (
-		final double riskWeight,
-		final double concentrationFactor)
-		throws java.lang.Exception
+	public double weighted()
 	{
-		super (concentrationFactor);
-
-		if (!org.drip.quant.common.NumberUtil.IsValid (_riskWeight = riskWeight))
-		{
-			throw new java.lang.Exception ("CTBucketSensitivitySettings Constructor => Invalid Inputs");
-		}
+		return _weighted;
 	}
 
 	/**
-	 * Retrieve the Commodity Bucket Risk Weight
+	 * Retrieve the Concentration Scaler for the Bucket
 	 * 
-	 * @return The Commodity Bucket Risk Weight
+	 * @return The Concentration Scaler for the Bucket
 	 */
 
-	public double riskWeight()
+	public double concentrationScaler()
 	{
-		return _riskWeight;
+		return _concentrationScaler;
 	}
 }

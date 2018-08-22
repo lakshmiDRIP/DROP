@@ -72,10 +72,8 @@ package org.drip.simm20.parameters;
 public class CTSensitivitySettings
 {
 	private org.drip.measure.stochastic.LabelCorrelation _bucketCorrelation = null;
-
 	private java.util.Map<java.lang.Integer, org.drip.simm20.parameters.CTBucketSensitivitySettings>
-		_bucketSettings = new java.util.HashMap<java.lang.Integer,
-			org.drip.simm20.parameters.CTBucketSensitivitySettings>();
+		_bucketSettings = null;
 
 	/**
 	 * Construct a ISDA Standard Instance of CTSensitivitySettings
@@ -86,13 +84,30 @@ public class CTSensitivitySettings
 	public static final CTSensitivitySettings ISDA()
 	{
 		java.util.Map<java.lang.Integer, org.drip.simm20.parameters.CTBucketSensitivitySettings>
-			bucketSettings = new java.util.HashMap<java.lang.Integer,
+			bucketSettingsMap = new java.util.HashMap<java.lang.Integer,
 				org.drip.simm20.parameters.CTBucketSensitivitySettings>();
+
+		java.util.Map<java.lang.Integer, org.drip.simm20.commodity.CTBucket> bucketMap =
+			org.drip.simm20.commodity.CTSettingsContainer.BucketMap();
+
+		java.util.Map<java.lang.Integer, org.drip.simm20.common.DeltaVegaThreshold> deltaVegaRiskMap =
+			org.drip.simm20.commodity.CTRiskThresholdContainer.DeltaVegaThresholdMap();
 
 		try
 		{
+			for (int i = 1; i <= 17; ++i)
+			{
+				bucketSettingsMap.put (
+					i,
+					new org.drip.simm20.parameters.CTBucketSensitivitySettings (
+						bucketMap.get (i).riskWeight(),
+						deltaVegaRiskMap.get (i).delta()
+					)
+				);
+			}
+
 			return new CTSensitivitySettings (
-				bucketSettings,
+				bucketSettingsMap,
 				org.drip.simm20.commodity.CTSettingsContainer.CrossBucketCorrelation()
 			);
 		}
@@ -119,7 +134,8 @@ public class CTSensitivitySettings
 		final org.drip.measure.stochastic.LabelCorrelation bucketCorrelation)
 		throws java.lang.Exception
 	{
-		if (null == (_bucketSettings = bucketSettings) || 0 == _bucketSettings.size())
+		if (null == (_bucketSettings = bucketSettings) || 0 == _bucketSettings.size() ||
+			null == (_bucketCorrelation = bucketCorrelation))
 		{
 			throw new java.lang.Exception ("CTSensitivitySettings Constructor => Invalid Inputs");
 		}

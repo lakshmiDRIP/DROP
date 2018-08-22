@@ -1,5 +1,5 @@
 
-package org.drip.simm20.product;
+package org.drip.simm20.margin;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,8 +47,8 @@ package org.drip.simm20.product;
  */
 
 /**
- * CTSensitivity holds the ISDA SIMM 2.0 Bucket Sensitivities across Commodity Risk Factor Buckets. The
- *  References are:
+ * CTNetSensitivity holds the ISDA SIMM 2.0 Net Sensitivity and Concentration Factor within a across CT Risk
+ *  Factor Buckets. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -69,134 +69,80 @@ package org.drip.simm20.product;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CTSensitivity
+public class CTNetSensitivity
 {
-	private java.util.Map<java.lang.Integer, java.lang.Double> _bucketMap = null;
+	private java.util.Map<java.lang.Integer, org.drip.simm20.margin.CTBucketNetSensitivity> _bucketMap = new
+		java.util.HashMap<java.lang.Integer, org.drip.simm20.margin.CTBucketNetSensitivity>();
 
 	/**
-	 * Construct an "Empty" Instance of CTSensitivity
-	 * 
-	 * @return An "Empty" Instance of CTSensitivity
-	 */
-
-	public static final CTSensitivity Insensitive()
-	{
-		java.util.Map<java.lang.Integer, java.lang.Double> bucketMap = new
-			java.util.HashMap<java.lang.Integer, java.lang.Double>();
-
-		for (int bucketIndex = 1; bucketIndex <= 17; ++bucketIndex)
-		{
-			bucketMap.put (
-				bucketIndex,
-				0.
-			);
-		}
-
-		try
-		{
-			return new CTSensitivity (bucketMap);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * CTSensitivity Constructor
+	 * CTNetSensitivity Constructor
 	 * 
 	 * @param bucketMap The Commodity Sensitivity Bucket Map
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public CTSensitivity (
-		final java.util.Map<java.lang.Integer, java.lang.Double> bucketMap)
+	public CTNetSensitivity (
+		final java.util.Map<java.lang.Integer, org.drip.simm20.margin.CTBucketNetSensitivity> bucketMap)
 		throws java.lang.Exception
 	{
 		if (null == (_bucketMap = bucketMap) || 0 == _bucketMap.size())
 		{
-			throw new java.lang.Exception ("CTSensitivity Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("CTNetSensitivity Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Commodity Bucket Sensitivity Map
+	 * Retrieve the Map of Bucket Net Sensitivities
 	 * 
-	 * @return The Commodity Bucket Sensitivity Map
+	 * @return The Map of Bucket Net Sensitivities
 	 */
 
-	public java.util.Map<java.lang.Integer, java.lang.Double> _bucketMap()
+	public java.util.Map<java.lang.Integer, org.drip.simm20.margin.CTBucketNetSensitivity> bucketMap()
 	{
 		return _bucketMap;
 	}
 
 	/**
-	 * Compute the Delta Margin Based Net Sensitivity
+	 * Compute the Commodity Delta Margin
 	 * 
-	 * @param equitySensitivitySettings The Equity Sensitivity Settings
+	 * @param ctSensitivitySettings The Commodity Sensitivity Settings
 	 * 
-	 * @return The Delta Margin Based Net Sensitivity
+	 * @return The Commodity Delta Margin
+	 * 
+	 * @throws java.lang.Exception Throw if the Inputs are Invalid
 	 */
 
-	public org.drip.simm20.margin.CTNetSensitivity deltaMargin (
-		final org.drip.simm20.parameters.CTSensitivitySettings commoditySensitivitySettings)
+	public double deltaMargin (
+		final org.drip.simm20.parameters.CTSensitivitySettings ctSensitivitySettings)
+		throws java.lang.Exception
 	{
-		java.util.Map<java.lang.Integer, org.drip.simm20.parameters.CTBucketSensitivitySettings>
-			bucketSensitivitySettings = commoditySensitivitySettings.bucketSettings();
-
-		java.util.Map<java.lang.Integer, org.drip.simm20.margin.CTBucketNetSensitivity>
-			bucketNetSensitivityMap = new java.util.HashMap<java.lang.Integer,
-				org.drip.simm20.margin.CTBucketNetSensitivity>();
-
-		for (java.util.Map.Entry<java.lang.Integer, java.lang.Double> bucketMapEntry : _bucketMap.entrySet())
+		if (null == ctSensitivitySettings)
 		{
-			int bucketIndex = bucketMapEntry.getKey();
+			throw new java.lang.Exception ("CTNetSensitivity::deltaMargin => Invalid Inputs");
+		}
 
-			double bucketSensitivity = bucketMapEntry.getValue();
+		double deltaMargin = 0.;
 
-			if (!bucketSensitivitySettings.containsKey (bucketIndex))
+		int bucketSize = _bucketMap.size();
+
+		org.drip.measure.stochastic.LabelCorrelation bucketCorrelation =
+			ctSensitivitySettings.bucketCorrelation();
+
+		for (int bucketIndexI = 1; bucketIndexI <= bucketSize; ++bucketIndexI)
+		{
+			double netSensitivityI = _bucketMap.get (bucketIndexI).weightedAndAdjusted();
+
+			for (int bucketIndexJ = 1; bucketIndexJ <= bucketSize; ++bucketIndexJ)
 			{
-				System.out.println (bucketIndex);
-				return null;
-			}
-
-			org.drip.simm20.parameters.CTBucketSensitivitySettings commodityBucketSensitivitySettings =
-				bucketSensitivitySettings.get (bucketIndex);
-
-			try
-			{
-				bucketNetSensitivityMap.put (
-					bucketIndex,
-					new org.drip.simm20.margin.CTBucketNetSensitivity (
-						bucketSensitivity * commodityBucketSensitivitySettings.riskWeight(),
-						 java.lang.Math.max (
-							1.,
-							java.lang.Math.sqrt (java.lang.Math.abs (bucketSensitivity)) /
-								commodityBucketSensitivitySettings.concentrationThreshold()
-						)
-					)
-				);
-			}
-			catch (java.lang.Exception e)
-			{
-				e.printStackTrace();
-
-				return null;
+				deltaMargin = deltaMargin + netSensitivityI *
+					_bucketMap.get (bucketIndexJ).weightedAndAdjusted() * bucketCorrelation.entry (
+						"" + bucketIndexI,
+						"" + bucketIndexJ
+					);
 			}
 		}
 
-		try
-		{
-			return new org.drip.simm20.margin.CTNetSensitivity (bucketNetSensitivityMap);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
+		return java.lang.Math.sqrt (deltaMargin);
 	}
 }

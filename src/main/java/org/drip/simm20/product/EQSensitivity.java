@@ -79,7 +79,7 @@ public class EQSensitivity
 	 * @return The "Zero/NULL" EQSensitivity
 	 */
 
-	public static final EQSensitivity NULL()
+	public static final EQSensitivity Insensitive()
 	{
 		java.util.Map<java.lang.Integer, java.lang.Double> bucketMap = new
 			java.util.HashMap<java.lang.Integer, java.lang.Double>();
