@@ -1,5 +1,5 @@
 
-package org.drip.simm20.parameters;
+package org.drip.simm20.margin;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,8 +47,8 @@ package org.drip.simm20.parameters;
  */
 
 /**
- * CTBucketSensitivitySettings holds the Settings that govern the Generation of the ISDA SIMM 2.0 Single
- * 	Commodity Bucket Net Sensitivities. The References are:
+ * AugmentedRiskFactorSensitivity holds the Weighted and Normalized Bucket Risk Factor Sensitivity along with
+ *  the Normalization Factors. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -69,40 +69,51 @@ package org.drip.simm20.parameters;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FXBucketSensitivitySettings extends org.drip.simm20.parameters.LiquiditySettings
+public class AugmentedRiskFactorSensitivity
 {
-	private double _riskWeight = java.lang.Double.NaN;
+	private double _weightedAndNormalized = java.lang.Double.NaN;
+	private double _concentrationRiskFactor = java.lang.Double.NaN;
 
 	/**
-	 * FXBucketSensitivityParameters Constructor
+	 * AugmentedRiskFactorSensitivity Constructor
 	 * 
-	 * @param riskWeight The Risk Weight
-	 * @param concentrationFactor The Concentration Factor
+	 * @param weightedAndNormalized The Weighted and Normalized Bucket Sensitivity
+	 * @param concentrationRiskFactor The Bucket Concentration Risk Factor
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public FXBucketSensitivitySettings (
-		final double riskWeight,
-		final double concentrationFactor)
+	public AugmentedRiskFactorSensitivity (
+		final double weightedAndNormalized,
+		final double concentrationRiskFactor)
 		throws java.lang.Exception
 	{
-		super (concentrationFactor);
-
-		if (!org.drip.quant.common.NumberUtil.IsValid (_riskWeight = riskWeight))
+		if (!org.drip.quant.common.NumberUtil.IsValid (_weightedAndNormalized = weightedAndNormalized) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_concentrationRiskFactor = concentrationRiskFactor))
 		{
-			throw new java.lang.Exception ("FXBucketSensitivityParameters Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("AugmentedRiskFactorSensitivity Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the FX Bucket Risk Weight
+	 * Retrieve the Weighted and Normalized Bucket Sensitivity
 	 * 
-	 * @return The FX Bucket Risk Weight
+	 * @return The Weighted and Normalized Bucket Sensitivity
 	 */
 
-	public double riskWeight()
+	public double weightedAndNormalized()
 	{
-		return _riskWeight;
+		return _weightedAndNormalized;
+	}
+
+	/**
+	 * Retrieve the Bucket Concentration Risk Factor
+	 * 
+	 * @return The Bucket Concentration Risk Factor
+	 */
+
+	public double concentrationRiskFactor()
+	{
+		return _concentrationRiskFactor;
 	}
 }

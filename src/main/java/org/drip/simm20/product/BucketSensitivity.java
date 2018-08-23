@@ -1,5 +1,5 @@
 
-package org.drip.simm20.parameters;
+package org.drip.simm20.product;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,8 +47,8 @@ package org.drip.simm20.parameters;
  */
 
 /**
- * FXSensitivitySettings holds the Settings that govern the Generation of the ISDA SIMM 2.0 Bucket
- *  Sensitivities across FX Risk Factor Buckets. The References are:
+ * BucketSensitivity holds the holds the Risk Factor Sensitivities inside a single Bucket. The References
+ *  are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -69,111 +69,91 @@ package org.drip.simm20.parameters;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FXSensitivitySettings
+public class BucketSensitivity
 {
-	private org.drip.measure.stochastic.LabelCorrelation _bucketCorrelation = null;
-	private java.util.Map<java.lang.Integer, org.drip.simm20.parameters.FXBucketSensitivitySettings>
-		_bucketSettings = null;
+	private java.util.Map<java.lang.String, java.lang.Double> _riskFactorDeltaMap = null;
 
 	/**
-	 * Construct an ISDA Standard Instance of FXSensitivitySettings
+	 * BucketSensitivity Constructor
 	 * 
-	 * @return ISDA Standard Instance of FXSensitivitySettings
-	 */
-
-	public static final FXSensitivitySettings ISDA()
-	{
-		java.util.Map<java.lang.Integer, org.drip.simm20.parameters.FXBucketSensitivitySettings>
-			bucketSettings = new java.util.HashMap<java.lang.Integer,
-				org.drip.simm20.parameters.FXBucketSensitivitySettings>();
-
-		java.util.Map<java.lang.Integer, java.lang.Double> fxConcentrationCategoryDeltaMap =
-			org.drip.simm20.fx.FXRiskThresholdContainer.CategoryDeltaMap();
-
-		java.util.List<java.lang.String> categoryList = new java.util.ArrayList<java.lang.String>();
-
-		double[][] correlationMatrix = new double[3][3];
-
-		try
-		{
-			for (int categoryIndex = 1; categoryIndex <= 3; ++categoryIndex)
-			{
-				categoryList.add ("" + categoryIndex);
-
-				bucketSettings.put (
-					categoryIndex,
-					new org.drip.simm20.parameters.FXBucketSensitivitySettings (
-						org.drip.simm20.fx.FXSystemics.RISK_WEIGHT,
-						fxConcentrationCategoryDeltaMap.get (categoryIndex)
-					)
-				);
-
-				for (int categoryIndexInner = 1; categoryIndexInner <= 3; ++categoryIndexInner)
-				{
-					correlationMatrix[categoryIndex - 1][categoryIndexInner - 1] =
-						categoryIndex == categoryIndexInner ? 1. :
-						org.drip.simm20.fx.FXSystemics.CORRELATION;
-				}
-			}
-
-			return new FXSensitivitySettings (
-				bucketSettings,
-				new org.drip.measure.stochastic.LabelCorrelation (
-					categoryList,
-					correlationMatrix
-				)
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * FXSensitivitySettings Constructor
-	 * 
-	 * @param bucketSettings The Bucket Settings Map
-	 * @param bucketCorrelation The Bucket Correlation
+	 * @param riskFactorDeltaMap The Map of Risk Factor Deltas
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public FXSensitivitySettings (
-		final java.util.Map<java.lang.Integer, org.drip.simm20.parameters.FXBucketSensitivitySettings>
-			bucketSettings,
-		final org.drip.measure.stochastic.LabelCorrelation bucketCorrelation)
+	public BucketSensitivity (
+		final java.util.Map<java.lang.String, java.lang.Double> riskFactorDeltaMap)
 		throws java.lang.Exception
 	{
-		if (null == (_bucketSettings = bucketSettings) || 0 == _bucketSettings.size() ||
-			null == (_bucketCorrelation = bucketCorrelation))
+		if (null == (_riskFactorDeltaMap = riskFactorDeltaMap) || 0 == _riskFactorDeltaMap.size())
 		{
-			throw new java.lang.Exception ("FXSensitivitySettings Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("BucketSensitivity Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Cross Bucket Correlation
+	 * Retrieve the Map of Risk Factor Deltas
 	 * 
-	 * @return The Cross Bucket Correlation
+	 * @return The Map of Risk Factor Deltas
 	 */
 
-	public org.drip.measure.stochastic.LabelCorrelation bucketCorrelation()
+	public java.util.Map<java.lang.String, java.lang.Double> riskFactorDeltaMap()
 	{
-		return _bucketCorrelation;
+		return _riskFactorDeltaMap;
 	}
 
 	/**
-	 * Retrieve the FX Bucket Settings Map
+	 * Weight and Adjust the Input Sensitivities
 	 * 
-	 * @return The FX Bucket Settings Map
+	 * @param bucketSensitivitySettings The Bucket Sensitivity Settings
+	 * 
+	 * @return Map of Weighted and Adjusted Input Sensitivities
 	 */
 
-	public java.util.Map<java.lang.Integer, org.drip.simm20.parameters.FXBucketSensitivitySettings>
-		bucketSettings()
+	public java.util.Map<java.lang.String, org.drip.simm20.margin.AugmentedRiskFactorSensitivity> augment (
+		final org.drip.simm20.parameters.BucketSensitivitySettings bucketSensitivitySettings)
 	{
-		return _bucketSettings;
+		if (null == bucketSensitivitySettings)
+		{
+			return null;
+		}
+
+		double bucketDeltaRiskWeight = bucketSensitivitySettings.deltaRiskWeight();
+
+		double concentrationNormalizer = 1. / bucketSensitivitySettings.concentrationThreshold();
+
+		java.util.Map<java.lang.String, org.drip.simm20.margin.AugmentedRiskFactorSensitivity>
+			augmentedBucketSensitivityMap = new
+				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.simm20.margin.AugmentedRiskFactorSensitivity>();
+
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> riskFactorDeltaMapEntry :
+			_riskFactorDeltaMap.entrySet())
+		{
+			double riskFactorDelta = riskFactorDeltaMapEntry.getValue();
+
+			double concentrationRiskFactor = java.lang.Math.max (
+				1.,
+				java.lang.Math.sqrt (java.lang.Math.abs (riskFactorDelta) * concentrationNormalizer)
+			);
+
+			try
+			{
+				augmentedBucketSensitivityMap.put (
+					riskFactorDeltaMapEntry.getKey(),
+					new org.drip.simm20.margin.AugmentedRiskFactorSensitivity (
+						riskFactorDelta * bucketDeltaRiskWeight * concentrationRiskFactor,
+						concentrationRiskFactor
+					)
+				);
+			}
+			catch (java.lang.Exception e)
+			{
+				e.printStackTrace();
+
+				return null;
+			}
+		}
+
+		return augmentedBucketSensitivityMap;
 	}
 }

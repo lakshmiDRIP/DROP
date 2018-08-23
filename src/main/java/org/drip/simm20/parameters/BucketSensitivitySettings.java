@@ -1,5 +1,5 @@
 
-package org.drip.simm20.margin;
+package org.drip.simm20.parameters;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,8 +47,8 @@ package org.drip.simm20.margin;
  */
 
 /**
- * FXBucketFactorSensitivity holds the ISDA SIMM 2.0 Net Sensitivity and Concentration Factor within a single
- *  FX Risk Factor Bucket. The References are:
+ * BucketSensitivitySettings holds the Settings that govern the Generation of the ISDA SIMM 2.0 Single Bucket
+ *  Net Sensitivities. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -69,30 +69,55 @@ package org.drip.simm20.margin;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FXBucketFactorSensitivity
+public class BucketSensitivitySettings extends org.drip.simm20.parameters.LiquiditySettings
 {
-	private double _weighted = java.lang.Double.NaN;
-	private double _concentrationScaler = java.lang.Double.NaN;
+	private double _deltaRiskWeight = java.lang.Double.NaN;
+	private double _memberCorrelation = java.lang.Double.NaN;
 
 	/**
-	 * Retrieve the Weighted Net Sensitivity of the Risk Factor and the Bucket
+	 * BucketSensitivitySettings Constructor
 	 * 
-	 * @return The Weighted Net Sensitivity of the Risk Factor and the Bucket
+	 * @param deltaRiskWeight The Delta Risk Weight
+	 * @param concentrationFactor The Concentration Factor
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double weighted()
+	public BucketSensitivitySettings (
+		final double deltaRiskWeight,
+		final double concentrationFactor,
+		final double memberCorrelation)
+		throws java.lang.Exception
 	{
-		return _weighted;
+		super (concentrationFactor);
+
+		if (!org.drip.quant.common.NumberUtil.IsValid (_deltaRiskWeight = deltaRiskWeight) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_memberCorrelation = memberCorrelation) ||
+				1. < _memberCorrelation || -1. > _memberCorrelation)
+		{
+			throw new java.lang.Exception ("BucketSensitivitySettings Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
-	 * Retrieve the Concentration Scaler for the Bucket
+	 * Retrieve the FX Bucket Delta Risk Weight
 	 * 
-	 * @return The Concentration Scaler for the Bucket
+	 * @return The FX Bucket Delta Risk Weight
 	 */
 
-	public double concentrationScaler()
+	public double deltaRiskWeight()
 	{
-		return _concentrationScaler;
+		return _deltaRiskWeight;
+	}
+
+	/**
+	 * Retrieve the Correlation between the Basket Members
+	 * 
+	 * @return The FX Correlation between the Basket Members
+	 */
+
+	public double memberCorrelation()
+	{
+		return _memberCorrelation;
 	}
 }
