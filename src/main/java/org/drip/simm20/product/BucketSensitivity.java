@@ -47,8 +47,7 @@ package org.drip.simm20.product;
  */
 
 /**
- * BucketSensitivity holds the holds the Risk Factor Sensitivities inside a single Bucket. The References
- *  are:
+ * BucketSensitivity holds the Risk Factor Sensitivities inside a single Bucket. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -110,13 +109,18 @@ public class BucketSensitivity
 	 * @return Map of Weighted and Adjusted Input Sensitivities
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.simm20.margin.AugmentedRiskFactorSensitivity> augment (
+	public org.drip.simm20.margin.BucketAggregate augment (
 		final org.drip.simm20.parameters.BucketSensitivitySettings bucketSensitivitySettings)
 	{
 		if (null == bucketSensitivitySettings)
 		{
 			return null;
 		}
+
+		double cumulativeRiskFactorSensitivity = 0.;
+		double weightedAggregateSensitivityVariance = 0.;
+
+		double memberCorrelation = bucketSensitivitySettings.memberCorrelation();
 
 		double bucketDeltaRiskWeight = bucketSensitivitySettings.deltaRiskWeight();
 
@@ -136,12 +140,15 @@ public class BucketSensitivity
 				java.lang.Math.sqrt (java.lang.Math.abs (riskFactorDelta) * concentrationNormalizer)
 			);
 
+			double riskFactorSensitivity = riskFactorDelta * bucketDeltaRiskWeight * concentrationRiskFactor;
+			cumulativeRiskFactorSensitivity = cumulativeRiskFactorSensitivity + riskFactorSensitivity;
+
 			try
 			{
 				augmentedBucketSensitivityMap.put (
 					riskFactorDeltaMapEntry.getKey(),
 					new org.drip.simm20.margin.AugmentedRiskFactorSensitivity (
-						riskFactorDelta * bucketDeltaRiskWeight * concentrationRiskFactor,
+						riskFactorSensitivity,
 						concentrationRiskFactor
 					)
 				);
@@ -154,6 +161,60 @@ public class BucketSensitivity
 			}
 		}
 
-		return augmentedBucketSensitivityMap;
+		for (java.util.Map.Entry<java.lang.String, org.drip.simm20.margin.AugmentedRiskFactorSensitivity>
+			augmentedBucketSensitivityMapOuterEntry : augmentedBucketSensitivityMap.entrySet())
+		{
+			org.drip.simm20.margin.AugmentedRiskFactorSensitivity augmentedRiskFactorSensitivityOuter =
+				augmentedBucketSensitivityMapOuterEntry.getValue();
+
+			double riskFactorSensitivityOuter = augmentedRiskFactorSensitivityOuter.weightedAndNormalized();
+
+			double concentrationRiskFactorOuter =
+				augmentedRiskFactorSensitivityOuter.concentrationRiskFactor();
+
+			java.lang.String riskFactorKeyOuter = augmentedBucketSensitivityMapOuterEntry.getKey();
+
+			for (java.util.Map.Entry<java.lang.String, org.drip.simm20.margin.AugmentedRiskFactorSensitivity>
+				augmentedBucketSensitivityMapInnerEntry : augmentedBucketSensitivityMap.entrySet())
+			{
+				org.drip.simm20.margin.AugmentedRiskFactorSensitivity augmentedRiskFactorSensitivityInner =
+					augmentedBucketSensitivityMapInnerEntry.getValue();
+
+				double concentrationRiskFactorInner =
+					augmentedRiskFactorSensitivityInner.concentrationRiskFactor();
+
+				double riskFactorSensitivityInner =
+					augmentedRiskFactorSensitivityInner.weightedAndNormalized();
+
+				double concentrationScaleDown = java.lang.Math.min (
+					concentrationRiskFactorInner,
+					concentrationRiskFactorOuter
+				) / java.lang.Math.max (
+					concentrationRiskFactorInner,
+					concentrationRiskFactorOuter
+				);
+
+				weightedAggregateSensitivityVariance = weightedAggregateSensitivityVariance +
+					concentrationScaleDown * riskFactorSensitivityOuter *
+						(riskFactorKeyOuter.equalsIgnoreCase
+							(augmentedBucketSensitivityMapInnerEntry.getKey()) ? 1. : memberCorrelation) *
+								riskFactorSensitivityInner;
+			}
+		}
+
+		try
+		{
+			return new org.drip.simm20.margin.BucketAggregate (
+				augmentedBucketSensitivityMap,
+				weightedAggregateSensitivityVariance,
+				cumulativeRiskFactorSensitivity
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

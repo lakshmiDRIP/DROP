@@ -1,5 +1,5 @@
 
-package org.drip.simm20.margin;
+package org.drip.simm20.product;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,8 +47,8 @@ package org.drip.simm20.margin;
  */
 
 /**
- * BucketDigest holds the Augmented Risk Factor Sensitivities and the Weighted Aggregate Sensitivity for a
- *  Single Bucket. The References are:
+ * RiskClassSensitivity holds the Risk Class Bucket Sensitivities for a single Risk Class. The References
+ *  are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -57,7 +57,7 @@ package org.drip.simm20.margin;
  *  	Calculations, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488, eSSRN.
  *  
  *  - Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
- *  	Framework for Forecasting Initial Margin Requirements,
+ *  	Framework for Forecasting .Initial Margin Requirements,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
  *  
  *  - Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements
@@ -69,72 +69,38 @@ package org.drip.simm20.margin;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BucketDigest
+public class RiskClassSensitivity
 {
-	private double _weightedAggregateSensitivity = java.lang.Double.NaN;
-	private double _cumulativeRiskFactorSensitivity = java.lang.Double.NaN;
-	private java.util.Map<java.lang.String, org.drip.simm20.margin.AugmentedRiskFactorSensitivity>
-		_augmentedRiskFactorSensitivityMap = null;
+	private java.util.Map<java.lang.Integer, org.drip.simm20.product.BucketSensitivity> _bucketSensitivityMap
+		= null;
 
 	/**
-	 * BucketDigest Constructor
+	 * RiskClassSensitivity Constructor
 	 * 
-	 * @param augmentedRiskFactorSensitivityMap The Augmented Risk Factor Sensitivity Map
-	 * @param weightedAggregateSensitivity The Bucket's Weighted Aggregate Sensitivity
-	 * @param cumulativeRiskFactorSensitivity The Cumulative Risk Factor Sensitivity
+	 * @param bucketSensitivityMap The Risk Class Bucket Sensitivity Map
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws java.lang.Exception Thrown oif the Inputs are Invalid
 	 */
 
-	public BucketDigest (
-		final java.util.Map<java.lang.String, org.drip.simm20.margin.AugmentedRiskFactorSensitivity>
-			augmentedRiskFactorSensitivityMap,
-		final double weightedAggregateSensitivity,
-		final double cumulativeRiskFactorSensitivity)
+	public RiskClassSensitivity (
+		final java.util.Map<java.lang.Integer, org.drip.simm20.product.BucketSensitivity>
+			bucketSensitivityMap)
 		throws java.lang.Exception
 	{
-		if (null == (_augmentedRiskFactorSensitivityMap = augmentedRiskFactorSensitivityMap) ||
-				0 == _augmentedRiskFactorSensitivityMap.size() ||
-			!org.drip.quant.common.NumberUtil.IsValid (_weightedAggregateSensitivity =
-				weightedAggregateSensitivity) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_cumulativeRiskFactorSensitivity =
-				cumulativeRiskFactorSensitivity))
+		if (null == (_bucketSensitivityMap = bucketSensitivityMap) || 0 == _bucketSensitivityMap.size())
 		{
-			throw new java.lang.Exception ("BucketDigest Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("RiskClassSensitivity Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Augmented Risk Factor Sensitivity Map
+	 * Retrieve the Risk Class Bucket Sensitivity Map
 	 * 
-	 * @return The Augmented Risk Factor Sensitivity Map
+	 * @return The Risk Class Bucket Sensitivity Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.simm20.margin.AugmentedRiskFactorSensitivity>
-		augmentedRiskFactorSensitivityMap()
+	public java.util.Map<java.lang.Integer, org.drip.simm20.product.BucketSensitivity> bucketSensitivityMap()
 	{
-		return _augmentedRiskFactorSensitivityMap;
-	}
-
-	/**
-	 * Retrieve the Bucket's Weighted Aggregate Sensitivity
-	 * 
-	 * @return The Bucket's Weighted Aggregate Sensitivity
-	 */
-
-	public double weightedAggregateSensitivity()
-	{
-		return _weightedAggregateSensitivity;
-	}
-
-	/**
-	 * Retrieve the Bucket's Cumulative Risk Factor Sensitivity
-	 * 
-	 * @return The Bucket's Cumulative Risk Factor Sensitivity
-	 */
-
-	public double cumulativeRiskFactorSensitivity()
-	{
-		return _cumulativeRiskFactorSensitivity;
+		return _bucketSensitivityMap;
 	}
 }

@@ -216,6 +216,42 @@ public class FXRiskThresholdContainer
 	}
 
 	/**
+	 * Retrieve the Category for the specified Currency
+	 * 
+	 * @param currency Currency
+	 * 
+	 * @return The Category
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final int CurrencyCategory (
+		final java.lang.String currency)
+		throws java.lang.Exception
+	{
+		if (null == currency || currency.isEmpty())
+		{
+			throw new java.lang.Exception ("FXRiskThresholdContainer::CurrencyCategory => Invalid Input");
+		}
+
+		for (java.util.Map.Entry<java.lang.Integer, org.drip.simm20.fx.FXRiskGroup> fxRiskGroupEntry :
+			s_FXRiskGroupMap.entrySet())
+		{
+			java.lang.String[] currencyArray = fxRiskGroupEntry.getValue().currencyArray();
+
+			for (java.lang.String currencyEntry : currencyArray)
+			{
+				if (currencyEntry.equalsIgnoreCase (currency))
+				{
+					return fxRiskGroupEntry.getKey();
+				}
+			}
+		}
+
+		return s_FXRiskGroupMap.get (3).category();
+	}
+
+	/**
 	 * Retrieve the Category Set
 	 * 
 	 * @return The Category Set
