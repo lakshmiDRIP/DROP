@@ -73,7 +73,7 @@ public class BucketAggregate
 {
 	private double _weightedSensitivityVariance = java.lang.Double.NaN;
 	private double _cumulativeRiskFactorSensitivity = java.lang.Double.NaN;
-	private java.util.Map<java.lang.String, org.drip.simm20.margin.AugmentedRiskFactorSensitivity>
+	private java.util.Map<java.lang.String, org.drip.simm20.margin.RiskFactorAggregate>
 		_augmentedRiskFactorSensitivityMap = null;
 
 	/**
@@ -87,7 +87,7 @@ public class BucketAggregate
 	 */
 
 	public BucketAggregate (
-		final java.util.Map<java.lang.String, org.drip.simm20.margin.AugmentedRiskFactorSensitivity>
+		final java.util.Map<java.lang.String, org.drip.simm20.margin.RiskFactorAggregate>
 			augmentedRiskFactorSensitivityMap,
 		final double weightedSensitivityVariance,
 		final double cumulativeRiskFactorSensitivity)
@@ -110,7 +110,7 @@ public class BucketAggregate
 	 * @return The Augmented Risk Factor Sensitivity Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.simm20.margin.AugmentedRiskFactorSensitivity>
+	public java.util.Map<java.lang.String, org.drip.simm20.margin.RiskFactorAggregate>
 		augmentedRiskFactorSensitivityMap()
 	{
 		return _augmentedRiskFactorSensitivityMap;
@@ -136,5 +136,24 @@ public class BucketAggregate
 	public double cumulativeRiskFactorSensitivity()
 	{
 		return _cumulativeRiskFactorSensitivity;
+	}
+
+	/**
+	 * Compute the Bounded Weighted Sensitivity
+	 * 
+	 * @return The Bounded Weighted Sensitivity
+	 */
+
+	public double boundedWeightedSensitivity()
+	{
+		double weightedSensitivity = java.lang.Math.sqrt (_weightedSensitivityVariance);
+
+		return java.lang.Math.max (
+			java.lang.Math.min (
+				_cumulativeRiskFactorSensitivity,
+				weightedSensitivity
+			),
+			-1. * weightedSensitivity
+		);
 	}
 }

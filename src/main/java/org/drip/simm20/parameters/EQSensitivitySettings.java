@@ -98,7 +98,7 @@ public class EQSensitivitySettings
 			bucketSettingsMap.put (
 				-1,
 				new org.drip.simm20.parameters.EQBucketSensitivitySettings (
-					bucketMap.get (-1).riskWeight(),
+					bucketMap.get (-1).deltaRiskWeight(),
 					deltaVegaRiskMap.get (-1).delta()
 				)
 			);
@@ -108,7 +108,7 @@ public class EQSensitivitySettings
 				bucketSettingsMap.put (
 					i,
 					new org.drip.simm20.parameters.EQBucketSensitivitySettings (
-						bucketMap.get (i).riskWeight(),
+						bucketMap.get (i).deltaRiskWeight(),
 						deltaVegaRiskMap.get (i).delta()
 					)
 				);

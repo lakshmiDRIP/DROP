@@ -11,6 +11,7 @@ import org.drip.simm20.fx.FXRiskThresholdContainer;
 import org.drip.simm20.margin.BucketAggregate;
 import org.drip.simm20.parameters.RiskClassSensitivitySettings;
 import org.drip.simm20.product.BucketSensitivity;
+import org.drip.simm20.product.RiskClassSensitivity;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -213,6 +214,8 @@ public class FXDeltaMargin
 
 		CategoryRiskFactorSensitivity (categorySensitivityMap);
 
+		Map<Integer, BucketSensitivity> bucketSensitivityMap = new TreeMap<Integer, BucketSensitivity>();
+
 		System.out.println ("\t|--------------------||");
 
 		System.out.println ("\t|  BUCKET AGGREGATE  ||");
@@ -237,17 +240,37 @@ public class FXDeltaMargin
 			BucketSensitivity bucketSensitivity = new BucketSensitivity
 				(categorySensitivityMapEntry.getValue());
 
-			BucketAggregate bucketDigest = bucketSensitivity.augment
-				(riskClassSensitivitySettings.bucketSettingsMap().get (bucketIndex));
+			bucketSensitivityMap.put (
+				bucketIndex,
+				bucketSensitivity
+			);
+
+			BucketAggregate bucketDigest = bucketSensitivity.aggregate
+				(riskClassSensitivitySettings.bucketSensitivitySettingsMap().get (bucketIndex));
 
 			System.out.println ("\t| " +
 				bucketIndex + " => " +
 				FormatUtil.FormatDouble (Math.sqrt (bucketDigest.weightedSensitivityVariance()), 4, 0, 1.) + " | " +
-				FormatUtil.FormatDouble (bucketDigest.cumulativeRiskFactorSensitivity(), 4, 0, 1.) + " ||" 
+				FormatUtil.FormatDouble (bucketDigest.cumulativeRiskFactorSensitivity(), 4, 0, 1.) + " ||"
 			);
 		}
 
 		System.out.println ("\t|--------------------||");
+
+		System.out.println();
+
+		System.out.println ("\t|----------------------------------||");
+
+		System.out.println ("\t| RISK CLASS DELTA MARGIN => " +
+			FormatUtil.FormatDouble (
+				Math.sqrt (
+					new RiskClassSensitivity (bucketSensitivityMap).aggregate
+						(riskClassSensitivitySettings).deltaSBA()
+				),
+			4, 0, 1.) + " ||"
+		);
+
+		System.out.println ("\t|----------------------------------||");
 
 		System.out.println();
 

@@ -75,8 +75,8 @@ public class EQBucket
 	private java.lang.String _size = "";
 	private java.lang.String _region = "";
 	private java.lang.String[] _sectorArray = null;
-	private double _riskWeight = java.lang.Double.NaN;
 	private double _vegaRiskWeight = java.lang.Double.NaN;
+	private double _deltaRiskWeight = java.lang.Double.NaN;
 	private double _memberCorrelation = java.lang.Double.NaN;
 
 	/**
@@ -86,9 +86,9 @@ public class EQBucket
 	 * @param size Bucket Equity Market Capitalization Size
 	 * @param region Buket Region
 	 * @param sectorArray Bucket Sector Array
-	 * @param riskWeight Bucket Risk Weight
+	 * @param deltaRiskWeight Bucket Delta Risk Weight
 	 * @param memberCorrelation Bucket Member Correlation
-	 * @param vegaRiskWeight The Vega Risk Weight
+	 * @param vegaRiskWeight The Bucket Vega Risk Weight
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -98,7 +98,7 @@ public class EQBucket
 		final java.lang.String size,
 		final java.lang.String region,
 		final java.lang.String[] sectorArray,
-		final double riskWeight,
+		final double deltaRiskWeight,
 		final double memberCorrelation,
 		final double vegaRiskWeight)
 		throws java.lang.Exception
@@ -106,7 +106,7 @@ public class EQBucket
 		if (null == (_size = size) || _size.isEmpty() ||
 			null == (_region = region) || _region.isEmpty() ||
 			null == (_sectorArray = sectorArray) || 0 == _sectorArray.length ||
-			!org.drip.quant.common.NumberUtil.IsValid (_riskWeight = riskWeight) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_deltaRiskWeight = deltaRiskWeight) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_memberCorrelation = memberCorrelation) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_vegaRiskWeight = vegaRiskWeight))
 		{
@@ -161,14 +161,14 @@ public class EQBucket
 	}
 
 	/**
-	 * Retrieve the Bucket Risk Weight
+	 * Retrieve the Bucket Delta Risk Weight
 	 * 
-	 * @return The Bucket Risk Weight
+	 * @return The Bucket Delta Risk Weight
 	 */
 
-	public double riskWeight()
+	public double deltaRiskWeight()
 	{
-		return _riskWeight;
+		return _deltaRiskWeight;
 	}
 
 	/**

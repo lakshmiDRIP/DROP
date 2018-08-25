@@ -73,7 +73,66 @@ public class RiskClassSensitivitySettings
 {
 	private org.drip.measure.stochastic.LabelCorrelation _crossBucketCorrelation = null;
 	private java.util.Map<java.lang.Integer, org.drip.simm20.parameters.BucketSensitivitySettings>
-		_bucketSettingsMap = null;
+		_bucketSensitivitySettingsMap = null;
+
+	/**
+	 * Construct an ISDA EQ Standard Instance of RiskClassSensitivitySettings
+	 * 
+	 * @return ISDA EQ Standard Instance of RiskClassSensitivitySettings
+	 */
+
+	public static final RiskClassSensitivitySettings ISDA_EQ()
+	{
+		java.util.Map<java.lang.Integer, org.drip.simm20.parameters.BucketSensitivitySettings>
+			bucketSensitivitySettingsMap = new java.util.HashMap<java.lang.Integer,
+				org.drip.simm20.parameters.BucketSensitivitySettings>();
+
+		java.util.Map<java.lang.Integer, org.drip.simm20.common.DeltaVegaThreshold>
+			eqConcentrationThresholdMap =
+				org.drip.simm20.equity.EQRiskThresholdContainer.DeltaVegaThresholdMap();
+
+		java.util.Map<java.lang.Integer, org.drip.simm20.equity.EQBucket> bucketMap =
+			org.drip.simm20.equity.EQSettingsContainer.BucketMap();
+
+		org.drip.simm20.equity.EQBucket residualEquityBucket = bucketMap.get (-1);
+
+		try
+		{
+			bucketSensitivitySettingsMap.put (
+				-1,
+				new org.drip.simm20.parameters.BucketSensitivitySettings (
+					residualEquityBucket.deltaRiskWeight(),
+					eqConcentrationThresholdMap.get (-1).delta(),
+					residualEquityBucket.memberCorrelation()
+				)
+			);
+
+			for (int bucketIndex = 1; bucketIndex <= 12; ++bucketIndex)
+			{
+				org.drip.simm20.equity.EQBucket equityBucket = bucketMap.get (bucketIndex);
+
+				bucketSensitivitySettingsMap.put (
+					bucketIndex,
+					new org.drip.simm20.parameters.BucketSensitivitySettings (
+						equityBucket.deltaRiskWeight(),
+						eqConcentrationThresholdMap.get (bucketIndex).delta(),
+						equityBucket.memberCorrelation()
+					)
+				);
+			}
+
+			return new RiskClassSensitivitySettings (
+				bucketSensitivitySettingsMap,
+				org.drip.simm20.equity.EQSettingsContainer.CrossBucketCorrelation()
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 
 	/**
 	 * Construct an ISDA FX Standard Instance of RiskClassSensitivitySettings
@@ -84,7 +143,7 @@ public class RiskClassSensitivitySettings
 	public static final RiskClassSensitivitySettings ISDA_FX()
 	{
 		java.util.Map<java.lang.Integer, org.drip.simm20.parameters.BucketSensitivitySettings>
-			bucketSettingsMap = new java.util.HashMap<java.lang.Integer,
+		bucketSensitivitySettingsMap = new java.util.HashMap<java.lang.Integer,
 				org.drip.simm20.parameters.BucketSensitivitySettings>();
 
 		java.util.Map<java.lang.Integer, java.lang.Double> fxConcentrationCategoryDeltaMap =
@@ -100,7 +159,7 @@ public class RiskClassSensitivitySettings
 			{
 				categoryList.add ("" + categoryIndex);
 
-				bucketSettingsMap.put (
+				bucketSensitivitySettingsMap.put (
 					categoryIndex,
 					new org.drip.simm20.parameters.BucketSensitivitySettings (
 						org.drip.simm20.fx.FXSystemics.RISK_WEIGHT,
@@ -118,7 +177,7 @@ public class RiskClassSensitivitySettings
 			}
 
 			return new RiskClassSensitivitySettings (
-				bucketSettingsMap,
+				bucketSensitivitySettingsMap,
 				new org.drip.measure.stochastic.LabelCorrelation (
 					categoryList,
 					crossBucketCorrelationMatrix
@@ -136,7 +195,7 @@ public class RiskClassSensitivitySettings
 	/**
 	 * RiskClassSensitivitySettings Constructor
 	 * 
-	 * @param bucketSettingsMap The Bucket Settings Map
+	 * @param bucketSensitivitySettingsMap The Bucket Sensitivity Settings Map
 	 * @param crossBucketCorrelation The Cross Bucket Correlation
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
@@ -144,11 +203,12 @@ public class RiskClassSensitivitySettings
 
 	public RiskClassSensitivitySettings (
 		final java.util.Map<java.lang.Integer, org.drip.simm20.parameters.BucketSensitivitySettings>
-			bucketSettingsMap,
+			bucketSensitivitySettingsMap,
 		final org.drip.measure.stochastic.LabelCorrelation crossBucketCorrelation)
 		throws java.lang.Exception
 	{
-		if (null == (_bucketSettingsMap = bucketSettingsMap) || 0 == _bucketSettingsMap.size() ||
+		if (null == (_bucketSensitivitySettingsMap = bucketSensitivitySettingsMap) ||
+				0 == _bucketSensitivitySettingsMap.size() ||
 			null == (_crossBucketCorrelation = crossBucketCorrelation))
 		{
 			throw new java.lang.Exception ("RiskClassSensitivitySettings Constructor => Invalid Inputs");
@@ -173,8 +233,8 @@ public class RiskClassSensitivitySettings
 	 */
 
 	public java.util.Map<java.lang.Integer, org.drip.simm20.parameters.BucketSensitivitySettings>
-		bucketSettingsMap()
+		bucketSensitivitySettingsMap()
 	{
-		return _bucketSettingsMap;
+		return _bucketSensitivitySettingsMap;
 	}
 }

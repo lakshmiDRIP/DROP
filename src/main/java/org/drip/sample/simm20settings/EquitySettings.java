@@ -142,7 +142,7 @@ public class EquitySettings
 				"\t||" + FormatUtil.FormatDouble (equityBucket.number(), 2, 0, 1.) + " | " +
 				equityBucket.size() + " | " +
 				equityBucket.region() + " | " +
-				FormatUtil.FormatDouble (equityBucket.riskWeight(), 3, 0, 1.) + " | " +
+				FormatUtil.FormatDouble (equityBucket.deltaRiskWeight(), 3, 0, 1.) + " | " +
 				FormatUtil.FormatDouble (equityBucket.memberCorrelation(), 2, 0, 100.) + "% | " +
 				FormatUtil.FormatDouble (equityBucket.vegaRiskWeight(), 1, 2, 1.) + " | {" +
 				sectorArrayDump + "}"

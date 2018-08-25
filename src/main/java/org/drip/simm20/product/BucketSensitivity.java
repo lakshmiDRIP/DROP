@@ -109,7 +109,7 @@ public class BucketSensitivity
 	 * @return Map of Weighted and Adjusted Input Sensitivities
 	 */
 
-	public org.drip.simm20.margin.BucketAggregate augment (
+	public org.drip.simm20.margin.BucketAggregate aggregate (
 		final org.drip.simm20.parameters.BucketSensitivitySettings bucketSensitivitySettings)
 	{
 		if (null == bucketSensitivitySettings)
@@ -126,9 +126,9 @@ public class BucketSensitivity
 
 		double concentrationNormalizer = 1. / bucketSensitivitySettings.concentrationThreshold();
 
-		java.util.Map<java.lang.String, org.drip.simm20.margin.AugmentedRiskFactorSensitivity>
+		java.util.Map<java.lang.String, org.drip.simm20.margin.RiskFactorAggregate>
 			augmentedBucketSensitivityMap = new
-				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.simm20.margin.AugmentedRiskFactorSensitivity>();
+				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.simm20.margin.RiskFactorAggregate>();
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> riskFactorDeltaMapEntry :
 			_riskFactorDeltaMap.entrySet())
@@ -147,7 +147,7 @@ public class BucketSensitivity
 			{
 				augmentedBucketSensitivityMap.put (
 					riskFactorDeltaMapEntry.getKey(),
-					new org.drip.simm20.margin.AugmentedRiskFactorSensitivity (
+					new org.drip.simm20.margin.RiskFactorAggregate (
 						riskFactorSensitivity,
 						concentrationRiskFactor
 					)
@@ -161,10 +161,10 @@ public class BucketSensitivity
 			}
 		}
 
-		for (java.util.Map.Entry<java.lang.String, org.drip.simm20.margin.AugmentedRiskFactorSensitivity>
+		for (java.util.Map.Entry<java.lang.String, org.drip.simm20.margin.RiskFactorAggregate>
 			augmentedBucketSensitivityMapOuterEntry : augmentedBucketSensitivityMap.entrySet())
 		{
-			org.drip.simm20.margin.AugmentedRiskFactorSensitivity augmentedRiskFactorSensitivityOuter =
+			org.drip.simm20.margin.RiskFactorAggregate augmentedRiskFactorSensitivityOuter =
 				augmentedBucketSensitivityMapOuterEntry.getValue();
 
 			double riskFactorSensitivityOuter = augmentedRiskFactorSensitivityOuter.weightedAndNormalized();
@@ -174,10 +174,10 @@ public class BucketSensitivity
 
 			java.lang.String riskFactorKeyOuter = augmentedBucketSensitivityMapOuterEntry.getKey();
 
-			for (java.util.Map.Entry<java.lang.String, org.drip.simm20.margin.AugmentedRiskFactorSensitivity>
+			for (java.util.Map.Entry<java.lang.String, org.drip.simm20.margin.RiskFactorAggregate>
 				augmentedBucketSensitivityMapInnerEntry : augmentedBucketSensitivityMap.entrySet())
 			{
-				org.drip.simm20.margin.AugmentedRiskFactorSensitivity augmentedRiskFactorSensitivityInner =
+				org.drip.simm20.margin.RiskFactorAggregate augmentedRiskFactorSensitivityInner =
 					augmentedBucketSensitivityMapInnerEntry.getValue();
 
 				double concentrationRiskFactorInner =

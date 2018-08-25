@@ -1,5 +1,5 @@
 
-package org.drip.simm20.product;
+package org.drip.simm20.margin;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,8 +47,8 @@ package org.drip.simm20.product;
  */
 
 /**
- * FXSensitivity holds the ISDA SIMM 2.0 Bucket Sensitivities across FX Risk Factor Buckets. The References
- *  are:
+ * RiskFactorAggregate holds the Weighted and Normalized Bucket Risk Factor Sensitivity along with the
+ *  Normalization Factors. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -69,73 +69,51 @@ package org.drip.simm20.product;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FXSensitivity
+public class RiskFactorAggregate
 {
-	private java.util.Map<java.lang.String, java.lang.Double> _bucketMap = null;
+	private double _weightedAndNormalized = java.lang.Double.NaN;
+	private double _concentrationRiskFactor = java.lang.Double.NaN;
 
 	/**
-	 * Generate an FX Sensitivity Instance with ZERO Currency Sensitivity
+	 * RiskFactorAggregate Constructor
 	 * 
-	 * @param currencySet The CUrrency Set
-	 * 
-	 * @return The FX Sensitivity Instance with ZERO Currency Sensitivity
-	 */
-
-	public static final FXSensitivity Insensitive (
-		final java.util.Set<java.lang.String> currencySet)
-	{
-		if (null == currencySet || 0 == currencySet.size())
-		{
-			return null;
-		}
-
-		java.util.Map<java.lang.String, java.lang.Double> bucketMap = new
-			org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
-
-		try
-		{
-			for (java.lang.String currency : currencySet)
-			{
-				bucketMap.put (
-					currency,
-					0.
-				);
-			}
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * FXSensitivity COnstructor
-	 * 
-	 * @param bucketMap The FX Sensitivity Bucket Map
+	 * @param weightedAndNormalized The Weighted and Normalized Bucket Sensitivity
+	 * @param concentrationRiskFactor The Bucket Concentration Risk Factor
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public FXSensitivity (
-		final java.util.Map<java.lang.String, java.lang.Double> bucketMap)
+	public RiskFactorAggregate (
+		final double weightedAndNormalized,
+		final double concentrationRiskFactor)
 		throws java.lang.Exception
 	{
-		if (null == (_bucketMap = bucketMap) || 0 == _bucketMap.size())
+		if (!org.drip.quant.common.NumberUtil.IsValid (_weightedAndNormalized = weightedAndNormalized) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_concentrationRiskFactor = concentrationRiskFactor))
 		{
-			throw new java.lang.Exception ("FXSensitivity Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("RiskFactorAggregate Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the FX Sensitivity Bucket Map
+	 * Retrieve the Weighted and Normalized Bucket Sensitivity
 	 * 
-	 * @return The FX Sensitivity Bucket Map
+	 * @return The Weighted and Normalized Bucket Sensitivity
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> bucketMap()
+	public double weightedAndNormalized()
 	{
-		return _bucketMap;
+		return _weightedAndNormalized;
+	}
+
+	/**
+	 * Retrieve the Bucket Concentration Risk Factor
+	 * 
+	 * @return The Bucket Concentration Risk Factor
+	 */
+
+	public double concentrationRiskFactor()
+	{
+		return _concentrationRiskFactor;
 	}
 }
