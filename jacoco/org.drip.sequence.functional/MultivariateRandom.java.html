@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MultivariateRandom.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sequence.functional</a> &gt; <span class="el_source">MultivariateRandom.java</span></div><h1>MultivariateRandom.java</h1><pre class="source lang-java linenums">
+package org.drip.sequence.functional;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * MultivariateRandom contains the implementation of the objective Function dependent on Multivariate Random
+ *  Variables.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public abstract class MultivariateRandom extends org.drip.function.definition.RdToR1 {
+
+	protected MultivariateRandom()
+	{
+<span class="fc" id="L63">		super (null);</span>
+<span class="fc" id="L64">	}</span>
+
+	/**
+	 * Compute the Target Variate Function Metrics conditional on the specified Input Non-Target Variate
+	 *  Parameter Sequence Off of the Target Variate Ghost Sample Sequence
+	 * 
+	 * @param adblNonTargetVariate The Non-Target Variate Parameters
+	 * @param iTargetVariateIndex Target Variate Index
+	 * @param adblTargetVariateGhostSample Target Variate Ghost Sample
+	 * 
+	 * @return The Variate-specific Function Metrics
+	 */
+
+	public org.drip.sequence.metrics.SingleSequenceAgnosticMetrics ghostTargetVariateMetrics (
+		final double[] adblNonTargetVariate,
+		final int iTargetVariateIndex,
+		final double[] adblTargetVariateGhostSample)
+	{
+<span class="pc bpc" id="L82" title="2 of 4 branches missed.">		if (!org.drip.function.definition.RdToR1.ValidateInput (adblNonTargetVariate) ||</span>
+			null == adblTargetVariateGhostSample)
+<span class="nc" id="L84">			return null;</span>
+
+<span class="fc" id="L86">		int iNumNonTargetVariate = adblNonTargetVariate.length;</span>
+<span class="fc" id="L87">		int iNumTargetVariateSample = adblTargetVariateGhostSample.length;</span>
+
+<span class="pc bpc" id="L89" title="3 of 6 branches missed.">		if (0 &gt; iTargetVariateIndex || iTargetVariateIndex &gt; iNumNonTargetVariate || 0 ==</span>
+			iNumTargetVariateSample)
+<span class="nc" id="L91">			return null;</span>
+
+<span class="fc" id="L93">		double[] adblFunctionArgs = new double[iNumNonTargetVariate + 1];</span>
+<span class="fc" id="L94">		double[] adblFunctionSequence = new double[iNumTargetVariateSample];</span>
+
+<span class="fc bfc" id="L96" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumNonTargetVariate; ++i) {</span>
+<span class="fc bfc" id="L97" title="All 2 branches covered.">			if (i &lt; iTargetVariateIndex)</span>
+<span class="fc" id="L98">				adblFunctionArgs[i] = adblNonTargetVariate[i];</span>
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">			else if (i &gt;= iTargetVariateIndex)</span>
+<span class="fc" id="L100">				adblFunctionArgs[i + 1] = adblNonTargetVariate[i];</span>
+		}
+
+		try {
+<span class="fc bfc" id="L104" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumTargetVariateSample; ++i) {</span>
+<span class="fc" id="L105">				adblFunctionArgs[iTargetVariateIndex] = adblTargetVariateGhostSample[i];</span>
+
+<span class="fc" id="L107">				adblFunctionSequence[i] = evaluate (adblFunctionArgs);</span>
+			}
+
+<span class="fc" id="L110">			return new org.drip.sequence.metrics.SingleSequenceAgnosticMetrics (adblFunctionSequence, null);</span>
+<span class="nc" id="L111">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L112">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L115">		return null;</span>
+	}
+
+	/**
+	 * Compute the Target Variate Function Metrics conditional on the specified Input Non-Target Variate
+	 *  Parameter Sequence Off of the Target Variate Ghost Sample Sequence
+	 * 
+	 * @param aSSAM Array of Variate Sequence Metrics
+	 * @param aiNonTargetVariateSequenceIndex Array of Non-Target Variate Sequence Indexes
+	 * @param iTargetVariateIndex Target Variate Index
+	 * @param adblTargetVariateGhostSample Target Variate Ghost Sample
+	 * 
+	 * @return The Variate-specific Function Metrics
+	 */
+
+	public org.drip.sequence.metrics.SingleSequenceAgnosticMetrics ghostTargetVariateMetrics (
+		final org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAM,
+		final int[] aiNonTargetVariateSequenceIndex,
+		final int iTargetVariateIndex,
+		final double[] adblTargetVariateGhostSample)
+	{
+<span class="pc bpc" id="L136" title="3 of 6 branches missed.">		if (null == aSSAM || null == aiNonTargetVariateSequenceIndex || 0 &gt; iTargetVariateIndex) return null;</span>
+
+<span class="fc" id="L138">		int iNumNonTargetVariate = aSSAM.length - 1;</span>
+<span class="fc" id="L139">		double[] adblNonTargetVariate = new double[iNumNonTargetVariate];</span>
+
+<span class="pc bpc" id="L141" title="3 of 6 branches missed.">		if (0 &gt;= iNumNonTargetVariate || iNumNonTargetVariate != aiNonTargetVariateSequenceIndex.length ||</span>
+			iTargetVariateIndex &gt; iNumNonTargetVariate)
+<span class="nc" id="L143">			return null;</span>
+
+<span class="fc bfc" id="L145" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumNonTargetVariate; ++i)</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">			adblNonTargetVariate[i] = aSSAM[i &lt; iTargetVariateIndex ? i : i +</span>
+<span class="fc" id="L147">				1].sequence()[aiNonTargetVariateSequenceIndex[i]];</span>
+
+<span class="fc" id="L149">		return ghostTargetVariateMetrics (adblNonTargetVariate, iTargetVariateIndex,</span>
+			adblTargetVariateGhostSample);
+	}
+
+	/**
+	 * Compute the Target Variate Function Metrics over the full Non-target Variate Empirical Distribution
+	 *  Off of the Target Variate Ghost Sample Sequence
+	 * 
+	 * @param aSSAM Array of Variate Sequence Metrics
+	 * @param iTargetVariateIndex Target Variate Index
+	 * @param adblTargetVariateGhostSample Target Variate Ghost Sample
+	 * 
+	 * @return The Variate-specific Function Metrics
+	 */
+
+	public org.drip.sequence.metrics.SingleSequenceAgnosticMetrics ghostTargetVariateMetrics (
+		final org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAM,
+		final int iTargetVariateIndex,
+		final double[] adblTargetVariateGhostSample)
+	{
+<span class="pc bpc" id="L169" title="2 of 4 branches missed.">		if (null == aSSAM || 0 &gt; iTargetVariateIndex) return null;</span>
+
+<span class="fc" id="L171">		int iTargetVariateVarianceIndex = 0;</span>
+<span class="fc" id="L172">		int iNumNonTargetVariate = aSSAM.length - 1;</span>
+
+<span class="pc bpc" id="L174" title="1 of 2 branches missed.">		if (0 &gt;= iNumNonTargetVariate) return null;</span>
+
+<span class="fc" id="L176">		org.drip.spaces.iterator.SequenceIndexIterator sii =</span>
+<span class="fc" id="L177">			org.drip.spaces.iterator.SequenceIndexIterator.Standard (iNumNonTargetVariate,</span>
+<span class="fc" id="L178">				aSSAM[0].sequence().length);</span>
+
+<span class="pc bpc" id="L180" title="1 of 2 branches missed.">		if (null == sii) return null;</span>
+
+<span class="fc" id="L182">		double[] adblTargetVariateVariance = new double[sii.size()];</span>
+
+<span class="fc" id="L184">		int[] aiNonTargetVariateSequenceIndex = sii.first();</span>
+
+<span class="pc bpc" id="L186" title="1 of 4 branches missed.">		while (null != aiNonTargetVariateSequenceIndex &amp;&amp; aiNonTargetVariateSequenceIndex.length ==</span>
+			iNumNonTargetVariate) {
+<span class="fc" id="L188">			org.drip.sequence.metrics.SingleSequenceAgnosticMetrics ssamGhostConditional =</span>
+<span class="fc" id="L189">				ghostTargetVariateMetrics (aSSAM, aiNonTargetVariateSequenceIndex, iTargetVariateIndex,</span>
+					adblTargetVariateGhostSample);
+
+<span class="pc bpc" id="L192" title="1 of 2 branches missed.">			if (null == ssamGhostConditional) return null;</span>
+
+<span class="fc" id="L194">			adblTargetVariateVariance[iTargetVariateVarianceIndex++] =</span>
+<span class="fc" id="L195">				ssamGhostConditional.empiricalVariance();</span>
+
+<span class="fc" id="L197">			aiNonTargetVariateSequenceIndex = sii.next();</span>
+<span class="fc" id="L198">		}</span>
+
+		try {
+<span class="fc" id="L201">			return new org.drip.sequence.metrics.SingleSequenceAgnosticMetrics (adblTargetVariateVariance,</span>
+				null);
+<span class="nc" id="L203">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L204">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L207">		return null;</span>
+	}
+
+	/**
+	 * Compute the Target Variate Function Metrics Conditional on the specified Input Non-Target Variate
+	 *  Parameter Sequence
+	 * 
+	 * @param adblNonTargetVariate The Non-Target Variate Parameters
+	 * @param iTargetVariateIndex Target Variate Index
+	 * @param ssamTarget Target Variate Metrics
+	 * 
+	 * @return The Variate-specific Function Metrics
+	 */
+
+	public org.drip.sequence.metrics.SingleSequenceAgnosticMetrics conditionalTargetVariateMetrics (
+		final double[] adblNonTargetVariate,
+		final int iTargetVariateIndex,
+		final org.drip.sequence.metrics.SingleSequenceAgnosticMetrics ssamTarget)
+	{
+<span class="pc bpc" id="L226" title="1 of 2 branches missed.">		return null == ssamTarget ? null : ghostTargetVariateMetrics (adblNonTargetVariate,</span>
+<span class="fc" id="L227">			iTargetVariateIndex, ssamTarget.sequence());</span>
+	}
+
+	/**
+	 * Compute the Target Variate Function Metrics Conditional on the specified Input Non-target Variate
+	 *  Parameter Sequence
+	 * 
+	 * @param aSSAM Array of Variate Sequence Metrics
+	 * @param aiNonTargetVariateSequenceIndex Array of Non-Target Variate Sequence Indexes
+	 * @param iTargetVariateIndex Target Variate Index
+	 * 
+	 * @return The Variate-specific Function Metrics
+	 */
+
+	public org.drip.sequence.metrics.SingleSequenceAgnosticMetrics conditionalTargetVariateMetrics (
+		final org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAM,
+		final int[] aiNonTargetVariateSequenceIndex,
+		final int iTargetVariateIndex)
+	{
+<span class="pc bpc" id="L246" title="3 of 6 branches missed.">		if (null == aSSAM || null == aiNonTargetVariateSequenceIndex || 0 &gt; iTargetVariateIndex) return null;</span>
+
+<span class="fc" id="L248">		int iNumNonTargetVariate = aSSAM.length - 1;</span>
+<span class="fc" id="L249">		double[] adblNonTargetVariate = new double[iNumNonTargetVariate];</span>
+
+<span class="pc bpc" id="L251" title="3 of 6 branches missed.">		if (0 &gt;= iNumNonTargetVariate || iNumNonTargetVariate != aiNonTargetVariateSequenceIndex.length ||</span>
+			iTargetVariateIndex &gt; iNumNonTargetVariate)
+<span class="nc" id="L253">			return null;</span>
+
+<span class="fc bfc" id="L255" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumNonTargetVariate; ++i)</span>
+<span class="fc bfc" id="L256" title="All 2 branches covered.">			adblNonTargetVariate[i] = aSSAM[i &lt; iTargetVariateIndex ? i : i +</span>
+<span class="fc" id="L257">				1].sequence()[aiNonTargetVariateSequenceIndex[i]];</span>
+
+<span class="fc" id="L259">		return conditionalTargetVariateMetrics (adblNonTargetVariate, iTargetVariateIndex,</span>
+			aSSAM[iTargetVariateIndex]);
+	}
+
+	/**
+	 * Compute the Target Variate Function Metrics over the full Non-target Variate Empirical Distribution
+	 * 
+	 * @param aSSAM Array of Variate Sequence Metrics
+	 * @param iTargetVariateIndex Target Variate Index
+	 * 
+	 * @return The Variate-specific Function Metrics
+	 */
+
+	public org.drip.sequence.metrics.SingleSequenceAgnosticMetrics unconditionalTargetVariateMetrics (
+		final org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAM,
+		final int iTargetVariateIndex)
+	{
+<span class="pc bpc" id="L276" title="2 of 4 branches missed.">		if (null == aSSAM || 0 &gt; iTargetVariateIndex) return null;</span>
+
+<span class="fc" id="L278">		int iTargetVariateVarianceIndex = 0;</span>
+<span class="fc" id="L279">		int iNumNonTargetVariate = aSSAM.length - 1;</span>
+
+<span class="pc bpc" id="L281" title="1 of 2 branches missed.">		if (0 &gt;= iNumNonTargetVariate) return null;</span>
+
+<span class="fc" id="L283">		org.drip.spaces.iterator.SequenceIndexIterator sii =</span>
+<span class="fc" id="L284">			org.drip.spaces.iterator.SequenceIndexIterator.Standard (iNumNonTargetVariate,</span>
+<span class="fc" id="L285">				aSSAM[0].sequence().length);</span>
+
+<span class="pc bpc" id="L287" title="1 of 2 branches missed.">		if (null == sii) return null;</span>
+
+<span class="fc" id="L289">		double[] adblTargetVariateVariance = new double[sii.size()];</span>
+
+<span class="fc" id="L291">		int[] aiNonTargetVariateSequenceIndex = sii.first();</span>
+
+<span class="pc bpc" id="L293" title="1 of 4 branches missed.">		while (null != aiNonTargetVariateSequenceIndex &amp;&amp; aiNonTargetVariateSequenceIndex.length ==</span>
+			iNumNonTargetVariate) {
+<span class="fc" id="L295">			org.drip.sequence.metrics.SingleSequenceAgnosticMetrics ssamConditional =</span>
+<span class="fc" id="L296">				conditionalTargetVariateMetrics (aSSAM, aiNonTargetVariateSequenceIndex,</span>
+					iTargetVariateIndex);
+
+<span class="pc bpc" id="L299" title="1 of 2 branches missed.">			if (null == ssamConditional) return null;</span>
+
+<span class="fc" id="L301">			adblTargetVariateVariance[iTargetVariateVarianceIndex++] = ssamConditional.empiricalVariance();</span>
+
+<span class="fc" id="L303">			aiNonTargetVariateSequenceIndex = sii.next();</span>
+<span class="fc" id="L304">		}</span>
+
+		try {
+<span class="fc" id="L307">			return new org.drip.sequence.metrics.SingleSequenceAgnosticMetrics (adblTargetVariateVariance,</span>
+				null);
+<span class="nc" id="L309">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L310">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L313">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

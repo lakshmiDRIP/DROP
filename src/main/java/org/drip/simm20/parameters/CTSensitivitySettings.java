@@ -100,7 +100,7 @@ public class CTSensitivitySettings
 				bucketSettingsMap.put (
 					i,
 					new org.drip.simm20.parameters.CTBucketSensitivitySettings (
-						bucketMap.get (i).riskWeight(),
+						bucketMap.get (i).deltaRiskWeight(),
 						deltaVegaRiskMap.get (i).delta()
 					)
 				);

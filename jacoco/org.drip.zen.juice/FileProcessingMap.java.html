@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FileProcessingMap.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.zen.juice</a> &gt; <span class="el_source">FileProcessingMap.java</span></div><h1>FileProcessingMap.java</h1><pre class="source lang-java linenums">
+package org.drip.zen.juice;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.TreeMap;
+
+<span class="nc" id="L11">public class FileProcessingMap {</span>
+
+	static int NumberOfLinesInFile (String fullFileName)
+		throws Exception
+	{
+<span class="nc" id="L16">		String line = &quot;&quot;;</span>
+<span class="nc" id="L17">		int numberOfLines = 1;</span>
+<span class="nc" id="L18">		boolean stopReading = false;</span>
+
+<span class="nc" id="L20">		BufferedReader reader = new BufferedReader (new FileReader (fullFileName));</span>
+
+<span class="nc bnc" id="L22" title="All 2 branches missed.">		while (stopReading == false) {</span>
+<span class="nc" id="L23">			line = reader.readLine();</span>
+
+<span class="nc bnc" id="L25" title="All 2 branches missed.">			if (line == null) {</span>
+<span class="nc" id="L26">				stopReading = true;</span>
+			} else {
+<span class="nc" id="L28">				numberOfLines = numberOfLines + 1;</span>
+			}
+		}
+
+<span class="nc" id="L32">		reader.close();</span>
+
+<span class="nc" id="L34">		return numberOfLines;</span>
+	}
+
+	static String[] ReadFile (String fullFileName)
+		throws Exception
+	{
+<span class="nc" id="L40">		int numberOfLinesToRead = NumberOfLinesInFile (fullFileName);</span>
+
+<span class="nc" id="L42">		String[] fileLines = new String[numberOfLinesToRead];</span>
+
+<span class="nc" id="L44">		String line = &quot;&quot;;</span>
+<span class="nc" id="L45">		int lineNumber = 0;</span>
+<span class="nc" id="L46">		boolean stopReading = false;</span>
+
+<span class="nc" id="L48">		BufferedReader reader = new BufferedReader (new FileReader (fullFileName));</span>
+
+<span class="nc bnc" id="L50" title="All 2 branches missed.">		while (stopReading == false) {</span>
+<span class="nc" id="L51">			line = reader.readLine();</span>
+
+<span class="nc bnc" id="L53" title="All 2 branches missed.">			if (line == null)</span>
+<span class="nc" id="L54">				stopReading = true;</span>
+			else {
+<span class="nc" id="L56">				fileLines[lineNumber] = line;</span>
+<span class="nc" id="L57">				lineNumber = lineNumber + 1;</span>
+			}
+		}
+
+<span class="nc" id="L61">		reader.close();</span>
+
+<span class="nc" id="L63">		return fileLines;</span>
+	}
+
+	static int WordCount (String singleLine)
+	{
+<span class="nc bnc" id="L68" title="All 2 branches missed.">		if (singleLine == null)</span>
+		{
+<span class="nc" id="L70">			return 0;</span>
+		}
+
+<span class="nc" id="L73">		int count = 1;</span>
+
+<span class="nc bnc" id="L75" title="All 2 branches missed.">		for (int letterIndex = 0; letterIndex &lt; singleLine.length(); letterIndex = letterIndex + 1)</span>
+		{
+<span class="nc" id="L77">			char letter = singleLine.charAt (letterIndex);</span>
+
+<span class="nc bnc" id="L79" title="All 2 branches missed.">			if (letter == ' ')</span>
+			{
+<span class="nc" id="L81">				count = count + 1;</span>
+			}
+		}
+
+<span class="nc" id="L85">		return count;</span>
+	}
+
+	static String[] Words (String singleLine)
+	{
+<span class="nc bnc" id="L90" title="All 2 branches missed.">		if (singleLine == null)</span>
+		{
+<span class="nc" id="L92">			return null;</span>
+		}
+
+<span class="nc" id="L95">		String[] wordsInLine = singleLine.split (&quot; &quot;);</span>
+
+<span class="nc" id="L97">		return wordsInLine;</span>
+	}
+
+	static void AddWordToCountMap (String singleLine, HashMap&lt;String, Integer&gt; wordCountMap)
+	{
+<span class="nc" id="L102">		String[] wordArray = Words (singleLine);</span>
+
+<span class="nc bnc" id="L104" title="All 2 branches missed.">		if (wordArray == null)</span>
+		{
+<span class="nc" id="L106">			return;</span>
+		}
+
+<span class="nc bnc" id="L109" title="All 2 branches missed.">		for (int j = 0; j &lt; wordArray.length; j = j + 1)</span>
+		{
+<span class="nc" id="L111">			String thisWord = wordArray[j];</span>
+
+<span class="nc bnc" id="L113" title="All 2 branches missed.">			if (wordCountMap.containsKey (thisWord)) {</span>
+<span class="nc" id="L114">				int wordOccurrances = wordCountMap.get (thisWord);</span>
+
+<span class="nc" id="L116">				wordCountMap.put (thisWord, wordOccurrances + 1);</span>
+<span class="nc" id="L117">			} else {</span>
+<span class="nc" id="L118">				wordCountMap.put (thisWord, 1);</span>
+			}
+		}
+<span class="nc" id="L121">	}</span>
+
+	static TreeMap&lt;Integer, String&gt; CountToWordMap (HashMap&lt;String, Integer&gt; wordToCountMap)
+	{
+<span class="nc" id="L125">		TreeMap&lt;Integer, String&gt; counterToWordsMap = new TreeMap&lt;Integer, String&gt;();</span>
+
+<span class="nc" id="L127">		Set&lt;String&gt; wordSet = wordToCountMap.keySet();</span>
+
+<span class="nc bnc" id="L129" title="All 2 branches missed.">		for (String word : wordSet)</span>
+		{
+<span class="nc" id="L131">			counterToWordsMap.put (wordToCountMap.get (word), word);</span>
+<span class="nc" id="L132">		}</span>
+
+<span class="nc" id="L134">		return counterToWordsMap;</span>
+	}
+
+	/*
+	 * Begin Added 7 May 2016
+	 */
+
+	static TreeMap&lt;Integer, Set&lt;String&gt;&gt; CountToWordArrayMap (HashMap&lt;String, Integer&gt; wordToCountMap)
+	{
+<span class="nc" id="L143">		TreeMap&lt;Integer, Set&lt;String&gt;&gt; counterToWordArrayMap = new TreeMap&lt;Integer, Set&lt;String&gt;&gt;();</span>
+
+<span class="nc" id="L145">		Set&lt;String&gt; wordSet = wordToCountMap.keySet();</span>
+
+<span class="nc bnc" id="L147" title="All 2 branches missed.">		for (String word : wordSet)</span>
+		{
+<span class="nc" id="L149">			int wordCount = wordToCountMap.get (word);</span>
+
+<span class="nc bnc" id="L151" title="All 2 branches missed.">			if (counterToWordArrayMap.containsKey (wordCount))</span>
+			{
+<span class="nc" id="L153">				Set&lt;String&gt; countedWordSet = counterToWordArrayMap.get (wordCount);</span>
+
+<span class="nc" id="L155">				countedWordSet.add (word);</span>
+
+<span class="nc" id="L157">				counterToWordArrayMap.put (wordCount, countedWordSet);</span>
+<span class="nc" id="L158">			}</span>
+			else
+			{
+<span class="nc" id="L161">				Set&lt;String&gt; countedWordSet = new HashSet&lt;String&gt;();</span>
+
+<span class="nc" id="L163">				countedWordSet.add (word);</span>
+
+<span class="nc" id="L165">				counterToWordArrayMap.put (wordCount, countedWordSet);</span>
+			}
+<span class="nc" id="L167">		}</span>
+
+<span class="nc" id="L169">		return counterToWordArrayMap;</span>
+	}
+
+	/*
+	 * End Added 7 May 2016
+	 */
+
+	public static final void main (String[] input)
+		throws Exception
+	{
+<span class="nc" id="L179">		String fileLocation = &quot;C:\\DRIP\\CreditAnalytics\\Daemons\\Feeds\\TextMiner\\RomeoAndJuliet.txt&quot;;</span>
+
+<span class="nc" id="L181">		int fileLineCount = NumberOfLinesInFile (fileLocation);</span>
+
+<span class="nc" id="L183">		String[] fileContents = ReadFile (fileLocation);</span>
+
+<span class="nc" id="L185">		int totalWords = 0;</span>
+
+<span class="nc" id="L187">		HashMap&lt;String, Integer&gt; wordToCountMap = new HashMap&lt;String, Integer&gt;();</span>
+
+<span class="nc bnc" id="L189" title="All 2 branches missed.">		for (int i = 0; i &lt; fileLineCount; i = i + 1)</span>
+		{
+<span class="nc" id="L191">			String currentLine = fileContents[i];</span>
+
+<span class="nc" id="L193">			int numberOfWordsInCurrentLine = WordCount (currentLine);</span>
+
+<span class="nc" id="L195">			totalWords = totalWords + numberOfWordsInCurrentLine;</span>
+
+<span class="nc" id="L197">			String[] wordsInCurrentLine = Words (currentLine);</span>
+
+<span class="nc" id="L199">			String wordDump = &quot;&quot;;</span>
+
+<span class="nc" id="L201">			AddWordToCountMap (currentLine, wordToCountMap);</span>
+
+<span class="nc bnc" id="L203" title="All 2 branches missed.">			for (int j = 0; j &lt; numberOfWordsInCurrentLine; j = j + 1)</span>
+			{
+<span class="nc" id="L205">				wordDump = wordDump + wordsInCurrentLine[j] + &quot;,&quot;;</span>
+			}
+
+<span class="nc" id="L208">			System.out.println (wordDump);</span>
+		}
+
+<span class="nc" id="L211">		System.out.println (&quot;\tNumber of Lines in File: &quot; + fileLineCount);</span>
+
+<span class="nc" id="L213">		System.out.println (&quot;\tNumber of Words in File: &quot; + totalWords);</span>
+
+		/* Set&lt;String&gt; wordSet = wordToCountMap.keySet();
+
+		for (String word : wordSet)
+		{
+			System.out.println (&quot;\t\t[&quot; + word + &quot;] =&gt; &quot; + wordToCountMap.get (word));
+		} */
+
+		/*
+		 * Begin Added 7 May 2016
+		 */
+
+<span class="nc" id="L226">		TreeMap&lt;Integer, String&gt; wordCounterMap = CountToWordMap (wordToCountMap);</span>
+
+<span class="nc" id="L228">		Set&lt;Integer&gt; wordCounterSet = wordCounterMap.descendingKeySet();</span>
+
+<span class="nc bnc" id="L230" title="All 2 branches missed.">		for (int wordCount : wordCounterSet)</span>
+		{
+<span class="nc" id="L232">			System.out.println (&quot;\t\t[&quot; + wordCount + &quot;] =&gt; '&quot; + wordCounterMap.get (wordCount) + &quot;'&quot;);</span>
+<span class="nc" id="L233">		}</span>
+
+<span class="nc" id="L235">		TreeMap&lt;Integer, Set&lt;String&gt;&gt; wordCountSetMap = CountToWordArrayMap (wordToCountMap);</span>
+
+<span class="nc" id="L237">		Set&lt;Integer&gt; wordSetCountSet = wordCountSetMap.descendingKeySet();</span>
+
+<span class="nc bnc" id="L239" title="All 2 branches missed.">		for (int wordSetCount : wordSetCountSet)</span>
+		{
+<span class="nc" id="L241">			String counterLineToPrint = &quot;\t\t[&quot; + wordSetCount + &quot;] =&gt;&quot;;</span>
+
+<span class="nc" id="L243">			Set&lt;String&gt; countedWordSet = wordCountSetMap.get (wordSetCount);</span>
+
+<span class="nc bnc" id="L245" title="All 2 branches missed.">			for (String countedWord : countedWordSet)</span>
+			{
+<span class="nc" id="L247">				counterLineToPrint = counterLineToPrint + &quot; '&quot; + countedWord + &quot;' |&quot;;</span>
+<span class="nc" id="L248">			}</span>
+
+<span class="nc" id="L250">			System.out.println (counterLineToPrint);</span>
+<span class="nc" id="L251">		}</span>
+
+		/*
+		 * End Added 7 May 2016
+		 */
+<span class="nc" id="L256">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

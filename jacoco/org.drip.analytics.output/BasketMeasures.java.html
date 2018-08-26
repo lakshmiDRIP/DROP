@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BasketMeasures.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.analytics.output</a> &gt; <span class="el_source">BasketMeasures.java</span></div><h1>BasketMeasures.java</h1><pre class="source lang-java linenums">
+package org.drip.analytics.output;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * Copyright (C) 2012 Lakshmi Krishnamurthy
+ * Copyright (C) 2011 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * BasketMeasures is the place holder for the analytical basket measures, optionally across scenarios. It
+ * 	contains the following scenario measure maps:
+ * 	- Unadjusted Base Measures
+ *	- Flat delta/gamma bump measure maps for IR/credit/RR bump curves
+ *	- Component/tenor bump double maps for IR/credit/RR curves
+ *	- Flat/component recovery bumped measure maps for recovery bumped credit curves
+ *	- Custom scenario measure map
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class BasketMeasures extends org.drip.analytics.output.ComponentMeasures {
+<span class="nc" id="L69">	private</span>
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
+			_mmComponentIRDeltaMeasures = null;
+<span class="nc" id="L72">	private</span>
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
+			_mmComponentIRGammaMeasures = null;
+<span class="nc" id="L75">	private</span>
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
+			_mmComponentCreditDeltaMeasures = null;
+<span class="nc" id="L78">	private</span>
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
+			_mmComponentCreditGammaMeasures = null;
+<span class="nc" id="L81">	private</span>
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
+			_mmComponentRRDeltaMeasures = null;
+<span class="nc" id="L84">	private</span>
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
+			_mmComponentRRGammaMeasures = null;
+<span class="nc" id="L87">	private</span>
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;&gt;
+			_mmmComponentTenorIRDeltaMeasures = null;
+<span class="nc" id="L90">	private</span>
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;&gt;
+			_mmmComponentTenorIRGammaMeasures = null;
+<span class="nc" id="L93">	private</span>
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;&gt;
+			_mmmComponentTenorCreditDeltaMeasures = null;
+<span class="nc" id="L96">	private</span>
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;&gt;
+			_mmmComponentTenorCreditGammaMeasures = null;
+<span class="nc" id="L99">	private</span>
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
+			_mmComponentCustomMeasures = null;
+
+	/**
+	 * Empty constructor - all members initialized to NaN or null
+	 */
+
+	public BasketMeasures()
+<span class="nc" id="L108">	{</span>
+<span class="nc" id="L109">	}</span>
+
+	/**
+	 * Retrieve the Component IR Delta Double Measure Map
+	 * 
+	 * @return The Component IR Delta Double Measure Map
+	 */
+
+	public
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
+			componentIRDeltaMeasures()
+	{
+<span class="nc" id="L121">		return _mmComponentIRDeltaMeasures;</span>
+	}
+
+	/**
+	 * Set the Component IR Delta Double Measures Map
+	 * 
+	 * @param mmComponentIRDeltaMeasures The Component IR Delta Double Measures Map
+	 * 
+	 * @return TRUE - The Component IR Delta Double Measures Map Successfully Set
+	 */
+
+	public boolean setComponentIRDeltaMeasures (
+		final
+			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
+				mmComponentIRDeltaMeasures)
+	{
+<span class="nc bnc" id="L137" title="All 4 branches missed.">		if (null == mmComponentIRDeltaMeasures || 0 == mmComponentIRDeltaMeasures.size()) return false;</span>
+
+<span class="nc" id="L139">		_mmComponentIRDeltaMeasures = mmComponentIRDeltaMeasures;</span>
+<span class="nc" id="L140">		return true;</span>
+	}
+
+	/**
+	 * Retrieve the Component IR Gamma Double Measure Map
+	 * 
+	 * @return The Component IR Gamma Double Measure Map
+	 */
+
+	public
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
+			componentIRGammaMeasures()
+	{
+<span class="nc" id="L153">		return _mmComponentIRGammaMeasures;</span>
+	}
+
+	/**
+	 * Set the Component IR Gamma Double Measures Map
+	 * 
+	 * @param mmComponentIRGammaMeasures The Component IR Gamma Double Measures Map
+	 * 
+	 * @return TRUE - The Component IR Gamma Double Measures Map Successfully Set
+	 */
+
+	public boolean setComponentIRGammaMeasures (
+		final
+			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
+				mmComponentIRGammaMeasures)
+	{
+<span class="nc bnc" id="L169" title="All 4 branches missed.">		if (null == mmComponentIRGammaMeasures || 0 == mmComponentIRGammaMeasures.size()) return false;</span>
+
+<span class="nc" id="L171">		_mmComponentIRGammaMeasures = mmComponentIRGammaMeasures;</span>
+<span class="nc" id="L172">		return true;</span>
+	}
+
+	/**
+	 * Retrieve the Component Credit Delta Double Measure Map
+	 * 
+	 * @return The ComponentCredit Delta Double Measure Map
+	 */
+
+	public
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
+			componentCreditDeltaMeasures()
+	{
+<span class="nc" id="L185">		return _mmComponentCreditDeltaMeasures;</span>
+	}
+
+	/**
+	 * Set the Component Credit Delta Double Measures Map
+	 * 
+	 * @param mmComponentCreditDeltaMeasures The Component Credit Delta Double Measures Map
+	 * 
+	 * @return TRUE - The Component Credit Delta Double Measures Map Successfully Set
+	 */
+
+	public boolean setComponentCreditDeltaMeasures (
+		final
+			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
+				mmComponentCreditDeltaMeasures)
+	{
+<span class="nc bnc" id="L201" title="All 4 branches missed.">		if (null == mmComponentCreditDeltaMeasures || 0 == mmComponentCreditDeltaMeasures.size())</span>
+<span class="nc" id="L202">			return false;</span>
+
+<span class="nc" id="L204">		_mmComponentCreditDeltaMeasures = mmComponentCreditDeltaMeasures;</span>
+<span class="nc" id="L205">		return true;</span>
+	}
+
+	/**
+	 * Retrieve the Component Credit Gamma Double Measure Map
+	 * 
+	 * @return The Component Credit Gamma Double Measure Map
+	 */
+
+	public
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
+			componentCreditGammaMeasures()
+	{
+<span class="nc" id="L218">		return _mmComponentCreditGammaMeasures;</span>
+	}
+
+	/**
+	 * Set the Component Credit Gamma Double Measures Map
+	 * 
+	 * @param mmComponentCreditGammaMeasures The Component Credit Gamma Double Measures Map
+	 * 
+	 * @return TRUE - The Component Credit Gamma Double Measures Map Successfully Set
+	 */
+
+	public boolean setComponentCreditGammaMeasures (
+		final
+			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
+				mmComponentCreditGammaMeasures)
+	{
+<span class="nc bnc" id="L234" title="All 4 branches missed.">		if (null == mmComponentCreditGammaMeasures || 0 == mmComponentCreditGammaMeasures.size()) return false;</span>
+
+<span class="nc" id="L236">		_mmComponentCreditGammaMeasures = mmComponentCreditGammaMeasures;</span>
+<span class="nc" id="L237">		return true;</span>
+	}
+
+	/**
+	 * Retrieve the Component RR Delta Double Measure Map
+	 * 
+	 * @return The Component RR Delta Double Measure Map
+	 */
+
+	public
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
+			componentRRDeltaMeasures()
+	{
+<span class="nc" id="L250">		return _mmComponentRRDeltaMeasures;</span>
+	}
+
+	/**
+	 * Set the Component RR Delta Double Measures Map
+	 * 
+	 * @param mmComponentRRDeltaMeasures The RR Delta Double Measures Map
+	 * 
+	 * @return TRUE - The Component RR Delta Double Measures Map Successfully Set
+	 */
+
+	public boolean setComponentRRDeltaMeasures (
+		final
+			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
+				mmComponentRRDeltaMeasures)
+	{
+<span class="nc bnc" id="L266" title="All 4 branches missed.">		if (null == mmComponentRRDeltaMeasures || 0 == mmComponentRRDeltaMeasures.size()) return false;</span>
+
+<span class="nc" id="L268">		_mmComponentRRDeltaMeasures = mmComponentRRDeltaMeasures;</span>
+<span class="nc" id="L269">		return true;</span>
+	}
+
+	/**
+	 * Retrieve the Component RR Gamma Double Measure Map
+	 * 
+	 * @return The Component RR Gamma Double Measure Map
+	 */
+
+	public
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
+			componentRRGammaMeasures()
+	{
+<span class="nc" id="L282">		return _mmComponentRRGammaMeasures;</span>
+	}
+
+	/**
+	 * Set the Component RR Gamma Double Measures Map
+	 * 
+	 * @param mmComponentRRGammaMeasures The RR Gamma Double Measures Map
+	 * 
+	 * @return TRUE - The Component RR Gamma Double Measures Map Successfully Set
+	 */
+
+	public boolean setComponentRRGammaMeasures (
+		final
+			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
+				mmComponentRRGammaMeasures)
+	{
+<span class="nc bnc" id="L298" title="All 4 branches missed.">		if (null == mmComponentRRGammaMeasures || 0 == mmComponentRRGammaMeasures.size()) return false;</span>
+
+<span class="nc" id="L300">		_mmComponentRRGammaMeasures = mmComponentRRGammaMeasures;</span>
+<span class="nc" id="L301">		return true;</span>
+	}
+
+	/**
+	 * Retrieve the Component/Tenor IR Delta Triple Measure Map
+	 * 
+	 * @return The Component/Tenor IR Delta Triple Measure Map
+	 */
+
+	public
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;&gt;
+			componentTenorIRDeltaMeasures()
+	{
+<span class="nc" id="L314">		return _mmmComponentTenorIRDeltaMeasures;</span>
+	}
+
+	/**
+	 * Set the Component/Tenor IR Delta Triple Measures Map
+	 * 
+	 * @param mmmComponentTenorIRDeltaMeasures The Component/Tenor IR Delta Triple Measures Map
+	 * 
+	 * @return TRUE - The Component/Tenor IR Delta Triple Measures Map Successfully Set
+	 */
+
+	public boolean setComponentTenorIRDeltaMeasures (
+		final
+			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;&gt;
+				mmmComponentTenorIRDeltaMeasures)
+	{
+<span class="nc bnc" id="L330" title="All 4 branches missed.">		if (null == mmmComponentTenorIRDeltaMeasures || 0 == mmmComponentTenorIRDeltaMeasures.size())</span>
+<span class="nc" id="L331">			return false;</span>
+
+<span class="nc" id="L333">		_mmmComponentTenorIRDeltaMeasures = mmmComponentTenorIRDeltaMeasures;</span>
+<span class="nc" id="L334">		return true;</span>
+	}
+
+	/**
+	 * Retrieve the Component/Tenor IR Gamma Triple Measure Map
+	 * 
+	 * @return The Component/Tenor IR Gamma Triple Measure Map
+	 */
+
+	public
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;&gt;
+			componentTenorIRGammaMeasures()
+	{
+<span class="nc" id="L347">		return _mmmComponentTenorIRGammaMeasures;</span>
+	}
+
+	/**
+	 * Set the Component/Tenor IR Gamma Triple Measures Map
+	 * 
+	 * @param mmmComponentTenorIRGammaMeasures The Component/Tenor IR Gamma Triple Measures Map
+	 * 
+	 * @return TRUE - The Component/Tenor IR Gamma Triple Measures Map Successfully Set
+	 */
+
+	public boolean setComponentTenorIRGammaMeasures (
+		final
+			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;&gt;
+				mmmComponentTenorIRGammaMeasures)
+	{
+<span class="nc bnc" id="L363" title="All 4 branches missed.">		if (null == mmmComponentTenorIRGammaMeasures || 0 == mmmComponentTenorIRGammaMeasures.size())</span>
+<span class="nc" id="L364">			return false;</span>
+
+<span class="nc" id="L366">		_mmmComponentTenorIRGammaMeasures = mmmComponentTenorIRGammaMeasures;</span>
+<span class="nc" id="L367">		return true;</span>
+	}
+
+	/**
+	 * Retrieve the Component/Tenor Credit Delta Triple Measure Map
+	 * 
+	 * @return The Component/Tenor Credit Delta Triple Measure Map
+	 */
+
+	public
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;&gt;
+			componentTenorCreditDeltaMeasures()
+	{
+<span class="nc" id="L380">		return _mmmComponentTenorCreditDeltaMeasures;</span>
+	}
+
+	/**
+	 * Set the Component/Tenor Credit Delta Triple Measures Map
+	 * 
+	 * @param mmmComponentTenorCreditDeltaMeasures The Component/Tenor Credit Delta Triple Measures Map
+	 * 
+	 * @return TRUE - The Component/Tenor Credit Delta Triple Measures Map Successfully Set
+	 */
+
+	public boolean setComponentTenorCreditDeltaMeasures (
+		final
+			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;&gt;
+				mmmComponentTenorCreditDeltaMeasures)
+	{
+<span class="nc bnc" id="L396" title="All 4 branches missed.">		if (null == mmmComponentTenorCreditDeltaMeasures || 0 == mmmComponentTenorCreditDeltaMeasures.size())</span>
+<span class="nc" id="L397">			return false;</span>
+
+<span class="nc" id="L399">		_mmmComponentTenorCreditDeltaMeasures = mmmComponentTenorCreditDeltaMeasures;</span>
+<span class="nc" id="L400">		return true;</span>
+	}
+
+	/**
+	 * Retrieve the Component/Tenor Credit Gamma Triple Measure Map
+	 * 
+	 * @return The Component/Tenor Credit Gamma Triple Measure Map
+	 */
+
+	public
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;&gt;
+			componentTenorCreditGammaMeasures()
+	{
+<span class="nc" id="L413">		return _mmmComponentTenorCreditGammaMeasures;</span>
+	}
+
+	/**
+	 * Set the Component/Tenor Credit Gamma Triple Measures Map
+	 * 
+	 * @param mmmComponentTenorCreditGammaMeasures The Component/Tenor Credit Gamma Triple Measures Map
+	 * 
+	 * @return TRUE - The Component/Tenor Credit Gamma Triple Measures Map Successfully Set
+	 */
+
+	public boolean setComponentTenorCreditGammaMeasures (
+		final
+			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;&gt;
+				mmmComponentTenorCreditGammaMeasures)
+	{
+<span class="nc bnc" id="L429" title="All 4 branches missed.">		if (null == mmmComponentTenorCreditGammaMeasures || 0 == mmmComponentTenorCreditGammaMeasures.size())</span>
+<span class="nc" id="L430">			return false;</span>
+
+<span class="nc" id="L432">		_mmmComponentTenorCreditGammaMeasures = mmmComponentTenorCreditGammaMeasures;</span>
+<span class="nc" id="L433">		return true;</span>
+	}
+
+	/**
+	 * Retrieve the Component Custom Double Measure Map
+	 * 
+	 * @return The Component Custom Double Measure Map
+	 */
+
+	public
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
+			componentCustomMeasures()
+	{
+<span class="nc" id="L446">		return _mmComponentCustomMeasures;</span>
+	}
+
+	/**
+	 * Set the Component Custom Double Measures Map
+	 * 
+	 * @param mmComponentCustomMeasures The Component Custom Double Measures Map
+	 * 
+	 * @return TRUE - The Component Custom Double Measures Map Successfully Set
+	 */
+
+	public boolean setComponentCustomMeasures (
+		final
+			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
+				mmComponentCustomMeasures)
+	{
+<span class="nc bnc" id="L462" title="All 4 branches missed.">		if (null == mmComponentCustomMeasures || 0 == mmComponentCustomMeasures.size()) return false;</span>
+
+<span class="nc" id="L464">		_mmComponentCustomMeasures = mmComponentCustomMeasures;</span>
+<span class="nc" id="L465">		return true;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

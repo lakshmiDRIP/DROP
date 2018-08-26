@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Covariance.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.measure.gaussian</a> &gt; <span class="el_source">Covariance.java</span></div><h1>Covariance.java</h1><pre class="source lang-java linenums">
+package org.drip.measure.gaussian;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * Covariance holds the Standard Covariance Matrix, and provides functions to manipulate it.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class Covariance {
+<span class="fc" id="L58">	private double[][] _aadblPrecision = null;</span>
+<span class="fc" id="L59">	private double[][] _aadblCovariance = null;</span>
+
+	/**
+	 * Covariance Constructor
+	 * 
+	 * @param aadblCovariance Double Array of the Covariance Matrix
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public Covariance (
+		final double[][] aadblCovariance)
+		throws java.lang.Exception
+<span class="fc" id="L72">	{</span>
+<span class="pc bpc" id="L73" title="1 of 2 branches missed.">		if (null == (_aadblCovariance = aadblCovariance))</span>
+<span class="nc" id="L74">			throw new java.lang.Exception (&quot;Covariance Constructor =&gt; Invalid Inputs!&quot;);</span>
+
+<span class="fc" id="L76">		int iNumVariate = _aadblCovariance.length;</span>
+
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">		if (0 == iNumVariate)</span>
+<span class="nc" id="L79">			throw new java.lang.Exception (&quot;R1MultivariateNormal Constructor =&gt; Invalid Inputs!&quot;);</span>
+
+<span class="fc bfc" id="L81" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i) {</span>
+<span class="pc bpc" id="L82" title="2 of 4 branches missed.">			if (null == _aadblCovariance[i] || iNumVariate != _aadblCovariance[i].length ||</span>
+<span class="pc bpc" id="L83" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_aadblCovariance[i]))</span>
+<span class="nc" id="L84">				throw new java.lang.Exception (&quot;R1MultivariateNormal Constructor =&gt; Invalid Inputs!&quot;);</span>
+		}
+
+<span class="fc" id="L87">		if (null == (_aadblPrecision = org.drip.quant.linearalgebra.Matrix.InvertUsingGaussianElimination</span>
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">			(_aadblCovariance)))</span>
+<span class="nc" id="L89">			throw new java.lang.Exception (&quot;R1MultivariateNormal Constructor =&gt; Invalid Inputs!&quot;);</span>
+<span class="fc" id="L90">	}</span>
+
+	/**
+	 * Retrieve the Number of Variates
+	 * 
+	 * @return The Number of Variates
+	 */
+
+	public int numVariate()
+	{
+<span class="fc" id="L100">		return _aadblCovariance.length;</span>
+	}
+
+	/**
+	 * Retrieve the Covariance Matrix
+	 * 
+	 * @return The Covariance Matrix
+	 */
+
+	public double[][] covarianceMatrix()
+	{
+<span class="fc" id="L111">		return _aadblCovariance;</span>
+	}
+
+	/**
+	 * Retrieve the Precision Matrix
+	 * 
+	 * @return The Precision Matrix
+	 */
+
+	public double[][] precisionMatrix()
+	{
+<span class="fc" id="L122">		return _aadblPrecision;</span>
+	}
+
+	/**
+	 * Retrieve the Variance Array
+	 * 
+	 * @return The Variance Array
+	 */
+
+	public double[] variance()
+	{
+<span class="nc" id="L133">		int iNumVariate = _aadblCovariance.length;</span>
+<span class="nc" id="L134">		double[] adblVariance = new double[iNumVariate];</span>
+
+<span class="nc bnc" id="L136" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
+<span class="nc" id="L137">			adblVariance[i] = _aadblCovariance[i][i];</span>
+
+<span class="nc" id="L139">		return adblVariance;</span>
+	}
+
+	/**
+	 * Retrieve the Volatility Array
+	 * 
+	 * @return The Volatility Array
+	 */
+
+	public double[] volatility()
+	{
+<span class="nc" id="L150">		int iNumVariate = _aadblCovariance.length;</span>
+<span class="nc" id="L151">		double[] adblVolatility = new double[iNumVariate];</span>
+
+<span class="nc bnc" id="L153" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
+<span class="nc" id="L154">			adblVolatility[i] = java.lang.Math.sqrt (_aadblCovariance[i][i]);</span>
+
+<span class="nc" id="L156">		return adblVolatility;</span>
+	}
+
+	/**
+	 * Retrieve the Correlation Matrix
+	 * 
+	 * @return The Correlation Matrix
+	 */
+
+	public double[][] correlationMatrix()
+	{
+<span class="nc" id="L167">		int iNumVariate = _aadblCovariance.length;</span>
+<span class="nc" id="L168">		double[][] aadblCorrelation = new double[iNumVariate][iNumVariate];</span>
+
+<span class="nc" id="L170">		double[] adblVolatility = volatility();</span>
+
+<span class="nc bnc" id="L172" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVariate; ++i) {</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumVariate; ++j)</span>
+<span class="nc" id="L174">				aadblCorrelation[i][j] = _aadblCovariance[i][j] / (adblVolatility[i] * adblVolatility[j]);</span>
+		}
+
+<span class="nc" id="L177">		return aadblCorrelation;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

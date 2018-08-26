@@ -73,7 +73,7 @@ public class CTBucket
 {
 	private int _number = -1;
 	private java.lang.String _entity = "";
-	private double _riskWeight = java.lang.Double.NaN;
+	private double _deltaRiskWeight = java.lang.Double.NaN;
 	private double _memberCorrelation = java.lang.Double.NaN;
 
 	/**
@@ -81,7 +81,7 @@ public class CTBucket
 	 * 
 	 * @param number Bucket Number
 	 * @param entity Bucket Commodity Entity
-	 * @param riskWeight Bucket Risk Weight
+	 * @param deltaRiskWeight Bucket Delta Risk Weight
 	 * @param memberCorrelation Bucket Cross Member Correlation
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
@@ -90,12 +90,12 @@ public class CTBucket
 	public CTBucket (
 		final int number,
 		final java.lang.String entity,
-		final double riskWeight,
+		final double deltaRiskWeight,
 		final double memberCorrelation)
 		throws java.lang.Exception
 	{
 		if (null == (_entity = entity) || _entity.isEmpty() ||
-			!org.drip.quant.common.NumberUtil.IsValid (_riskWeight = riskWeight) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_deltaRiskWeight = deltaRiskWeight) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_memberCorrelation = memberCorrelation))
 		{
 			throw new java.lang.Exception ("CTBucket Constructor => Invalid Inputs");
@@ -127,14 +127,14 @@ public class CTBucket
 	}
 
 	/**
-	 * Retrieve the SIMM 2.0 Risk Weight
+	 * Retrieve the SIMM 2.0 Delta Risk Weight
 	 * 
-	 * @return The Risk Weight
+	 * @return The Delta Risk Weight
 	 */
 
-	public double riskWeight()
+	public double deltaRiskWeight()
 	{
-		return _riskWeight;
+		return _deltaRiskWeight;
 	}
 
 	/**

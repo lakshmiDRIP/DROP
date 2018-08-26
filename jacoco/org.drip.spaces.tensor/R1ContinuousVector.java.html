@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>R1ContinuousVector.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.spaces.tensor</a> &gt; <span class="el_source">R1ContinuousVector.java</span></div><h1>R1ContinuousVector.java</h1><pre class="source lang-java linenums">
+package org.drip.spaces.tensor;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * R1ContinuousVector exposes the Normed/non-normed, Bounded/Unbounded Continuous R^1 Vector Spaces with
+ *  Real-valued Elements.
+ * 
+ * The Reference we've used is:
+ * 
+ * 	- Carl, B., and I. Stephani (1990): Entropy, Compactness, and Approximation of Operators, Cambridge
+ * 		University Press, Cambridge UK.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class R1ContinuousVector implements org.drip.spaces.tensor.R1GeneralizedVector {
+<span class="nc" id="L65">	private double _dblLeftEdge = java.lang.Double.NaN;</span>
+<span class="nc" id="L66">	private double _dblRightEdge = java.lang.Double.NaN;</span>
+
+	/**
+	 * Create the Standard R^1 Continuous Vector Space
+	 * 
+	 * @return The Standard R^1 Continuous Vector Space
+	 */
+
+	public static final R1ContinuousVector Standard()
+	{
+		try {
+<span class="nc" id="L77">			return new R1ContinuousVector (java.lang.Double.NEGATIVE_INFINITY,</span>
+				java.lang.Double.POSITIVE_INFINITY);
+<span class="nc" id="L79">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L80">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L83">		return null;</span>
+	}
+
+	/**
+	 * R1ContinuousVector Constructor
+	 * 
+	 * @param dblLeftEdge The Left Edge
+	 * @param dblRightEdge The Right Edge
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are invalid
+	 */
+
+	public R1ContinuousVector (
+		final double dblLeftEdge,
+		final double dblRightEdge)
+		throws java.lang.Exception
+<span class="nc" id="L99">	{</span>
+<span class="nc bnc" id="L100" title="All 6 branches missed.">		if (!java.lang.Double.isNaN (_dblLeftEdge = dblLeftEdge) || !java.lang.Double.isNaN (_dblRightEdge =</span>
+			dblRightEdge) || _dblLeftEdge &gt;= _dblRightEdge)
+<span class="nc" id="L102">			throw new java.lang.Exception (&quot;R1ContinuousVector ctr: Invalid Inputs&quot;);</span>
+<span class="nc" id="L103">	}</span>
+
+	@Override public double leftEdge()
+	{
+<span class="nc" id="L107">		return _dblLeftEdge;</span>
+	}
+
+	@Override public double rightEdge()
+	{
+<span class="nc" id="L112">		return _dblRightEdge;</span>
+	}
+
+	@Override public boolean validateInstance (
+		final double dblInstance)
+	{
+<span class="nc bnc" id="L118" title="All 6 branches missed.">		return java.lang.Double.isNaN (dblInstance) &amp;&amp; dblInstance &gt;= _dblLeftEdge &amp;&amp; dblInstance &lt;=</span>
+			_dblRightEdge;
+	}
+
+	@Override public org.drip.spaces.tensor.Cardinality cardinality()
+	{
+<span class="nc" id="L124">		return org.drip.spaces.tensor.Cardinality.UncountablyInfinite();</span>
+	}
+
+	@Override public boolean match (
+		final org.drip.spaces.tensor.GeneralizedVector gvOther)
+	{
+<span class="nc bnc" id="L130" title="All 4 branches missed.">		if (null == gvOther || !(gvOther instanceof R1ContinuousVector)) return false;</span>
+
+<span class="nc" id="L132">		R1ContinuousVector r1cvOther = (R1ContinuousVector) gvOther;</span>
+
+<span class="nc bnc" id="L134" title="All 4 branches missed.">		return r1cvOther.leftEdge() == _dblLeftEdge &amp;&amp; r1cvOther.rightEdge() == _dblRightEdge;</span>
+	}
+
+	@Override public boolean subset (
+		final org.drip.spaces.tensor.GeneralizedVector gvOther)
+	{
+<span class="nc bnc" id="L140" title="All 4 branches missed.">		if (null == gvOther || !(gvOther instanceof R1ContinuousVector)) return false;</span>
+
+<span class="nc" id="L142">		R1ContinuousVector r1cvOther = (R1ContinuousVector) gvOther;</span>
+
+<span class="nc bnc" id="L144" title="All 4 branches missed.">		return r1cvOther.leftEdge() &gt;= _dblLeftEdge &amp;&amp; r1cvOther.rightEdge() &lt;= _dblRightEdge;</span>
+	}
+
+	@Override public boolean isPredictorBounded()
+	{
+<span class="nc bnc" id="L149" title="All 4 branches missed.">		return leftEdge() != java.lang.Double.NEGATIVE_INFINITY &amp;&amp; rightEdge() !=</span>
+			java.lang.Double.POSITIVE_INFINITY;
+	}
+
+	@Override public double hyperVolume()
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L156" title="All 2 branches missed.">		if (!isPredictorBounded())</span>
+<span class="nc" id="L157">			throw new java.lang.Exception (&quot;R1ContinuousVector::hyperVolume =&gt; Space not Bounded&quot;);</span>
+
+<span class="nc" id="L159">		return _dblRightEdge - _dblLeftEdge;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

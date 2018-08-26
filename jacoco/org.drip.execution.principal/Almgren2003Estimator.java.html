@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Almgren2003Estimator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.execution.principal</a> &gt; <span class="el_source">Almgren2003Estimator.java</span></div><h1>Almgren2003Estimator.java</h1><pre class="source lang-java linenums">
+package org.drip.execution.principal;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * Almgren2003Estimator generates the Gross Profit Distribution and the Information Ratio for a given Level
+ *  of Principal Discount for an Optimal Trajectory that is generated using the Almgren (2003) Scheme. The
+ *  References are:
+ * 
+ * 	- Almgren, R., and N. Chriss (1999): Value under Liquidation, Risk 12 (12).
+ * 
+ * 	- Almgren, R., and N. Chriss (2000): Optimal Execution of Portfolio Transactions, Journal of Risk 3 (2)
+ * 		5-39.
+ * 
+ * 	- Almgren, R. (2003): Optimal Execution with Nonlinear Impact Functions and Trading-Enhanced Risk,
+ * 		Applied Mathematical Finance 10 (1) 1-18.
+ *
+ * 	- Almgren, R., and N. Chriss (2003): Bidding Principles, Risk 16 (6) 97-102.
+ * 
+ * 	- Almgren, R., C. Thum, E. Hauptmann, and H. Li (2005): Equity Market Impact, Risk 18 (7) 57-62.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class Almgren2003Estimator extends org.drip.execution.principal.GrossProfitEstimator {
+<span class="fc" id="L72">	private org.drip.execution.dynamics.LinearPermanentExpectationParameters _lpep =  null;</span>
+
+	/**
+	 * Almgren2003Estimator Constructor
+	 * 
+	 * @param pic The Power Continuous Market Impact Trajectory
+	 * @param lpep The Linear Permanent Expectation Paremeter
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public Almgren2003Estimator (
+		final org.drip.execution.optimum.PowerImpactContinuous pic,
+		final org.drip.execution.dynamics.LinearPermanentExpectationParameters lpep)
+		throws java.lang.Exception
+	{
+<span class="fc" id="L88">		super (pic);</span>
+
+<span class="pc bpc" id="L90" title="1 of 2 branches missed.">		if (null == (_lpep = lpep))</span>
+<span class="nc" id="L91">			throw new java.lang.Exception (&quot;Almgren2003Estimator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L92">	}</span>
+
+	/**
+	 * Generate the Horizon that results in the Optimal Information Ratio
+	 * 
+	 * @param dblD The Principal Discount &quot;D&quot;
+	 * 
+	 * @return The Horizon that results in the Optimal Information Ratio
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double optimalInformationRatioHorizon (
+		final double dblD)
+		throws java.lang.Exception
+	{
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblD))</span>
+<span class="nc" id="L109">			throw new java.lang.Exception</span>
+				(&quot;Almgren2003Estimator::optimalInformationRatioHorizon =&gt; Invalid Inputs&quot;);
+
+<span class="fc" id="L112">		org.drip.execution.impact.TransactionFunctionPower tfpTemporaryExpectation =</span>
+			(org.drip.execution.impact.TransactionFunctionPower)
+<span class="fc" id="L114">				_lpep.temporaryExpectation().epochImpactFunction();</span>
+
+<span class="fc" id="L116">		double dblGamma = ((org.drip.execution.impact.TransactionFunctionLinear)</span>
+<span class="fc" id="L117">			_lpep.linearPermanentExpectation().epochImpactFunction()).slope();</span>
+
+<span class="fc" id="L119">		double dblEta = tfpTemporaryExpectation.constant();</span>
+
+<span class="fc" id="L121">		double dblK = tfpTemporaryExpectation.exponent();</span>
+
+<span class="fc" id="L123">		double dblX = efficientTrajectory().tradeSize();</span>
+
+<span class="fc" id="L125">		return dblX * java.lang.Math.pow (dblEta * (dblK + 1.) * (dblK + 1.) / (3. * dblK + 1.) / (dblD - 0.5</span>
+			* dblGamma * dblX), 1. / dblK);
+	}
+
+	/**
+	 * Compute the Optimal Information Ratio
+	 * 
+	 * @param dblD The Principal Discount &quot;D&quot;
+	 * 
+	 * @return The Optimal Information Ratio
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double optimalInformationRatio (
+		final double dblD)
+		throws java.lang.Exception
+	{
+<span class="pc bpc" id="L143" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblD))</span>
+<span class="nc" id="L144">			throw new java.lang.Exception</span>
+				(&quot;Almgren2003Estimator::optimalInformationRatio =&gt; Invalid Inputs&quot;);
+
+<span class="fc" id="L147">		org.drip.execution.impact.TransactionFunctionPower tfpTemporaryExpectation =</span>
+			(org.drip.execution.impact.TransactionFunctionPower)
+<span class="fc" id="L149">				_lpep.temporaryExpectation().epochImpactFunction();</span>
+
+<span class="fc" id="L151">		double dblSigma = _lpep.arithmeticPriceDynamicsSettings().epochVolatility();</span>
+
+<span class="fc" id="L153">		double dblGamma = ((org.drip.execution.impact.TransactionFunctionLinear)</span>
+<span class="fc" id="L154">			_lpep.linearPermanentExpectation().epochImpactFunction()).slope();</span>
+
+<span class="fc" id="L156">		double dblEta = tfpTemporaryExpectation.constant();</span>
+
+<span class="fc" id="L158">		double dblK = tfpTemporaryExpectation.exponent();</span>
+
+<span class="fc" id="L160">		double dblX = efficientTrajectory().tradeSize();</span>
+
+<span class="fc" id="L162">		return java.lang.Math.pow (3. * dblK + 1.              , (1. * dblK + 2.) / (2. * dblK)) /</span>
+<span class="fc" id="L163">			   java.lang.Math.pow (1. * dblK + 1.              , (3. * dblK + 4.) / (2. * dblK)) *</span>
+<span class="fc" id="L164">			   java.lang.Math.pow (dblD - 0.5 * dblGamma * dblX, (1. * dblK + 1.) / (1. * dblK)) /</span>
+<span class="fc" id="L165">			   java.lang.Math.pow (dblEta                      , (0. * dblK + 1.) / (1. * dblK)) /</span>
+			   (dblX * dblSigma);
+	}
+
+	/**
+	 * Compute the Principal Discount Hurdle given the Information Ratio
+	 * 
+	 * @param dblI The Optimal Information Ratio &quot;I&quot;
+	 * 
+	 * @return The Principal Discount Hurdle
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double principalDiscountHurdle (
+		final double dblI)
+		throws java.lang.Exception
+	{
+<span class="pc bpc" id="L183" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblI))</span>
+<span class="nc" id="L184">			throw new java.lang.Exception</span>
+				(&quot;Almgren2003Estimator::principalDiscountHurdle =&gt; Invalid Inputs&quot;);
+
+<span class="fc" id="L187">		org.drip.execution.impact.TransactionFunctionPower tfpTemporaryExpectation =</span>
+			(org.drip.execution.impact.TransactionFunctionPower)
+<span class="fc" id="L189">				_lpep.temporaryExpectation().epochImpactFunction();</span>
+
+<span class="fc" id="L191">		double dblEta = tfpTemporaryExpectation.constant();</span>
+
+<span class="fc" id="L193">		double dblGamma = ((org.drip.execution.impact.TransactionFunctionLinear)</span>
+<span class="fc" id="L194">			_lpep.linearPermanentExpectation().epochImpactFunction()).slope();</span>
+
+<span class="fc" id="L196">		double dblSigma = _lpep.arithmeticPriceDynamicsSettings().epochVolatility();</span>
+
+<span class="fc" id="L198">		double dblK = tfpTemporaryExpectation.exponent();</span>
+
+<span class="fc" id="L200">		double dblX = efficientTrajectory().tradeSize();</span>
+
+<span class="fc" id="L202">		return java.lang.Math.pow (</span>
+			   0.5 * dblGamma * dblX +
+<span class="fc" id="L204">			   java.lang.Math.pow (1. * dblK + 1.              , (3. * dblK + 4.) / (2. * dblK)) /</span>
+<span class="fc" id="L205">			   java.lang.Math.pow (3. * dblK + 1.              , (1. * dblK + 2.) / (2. * dblK)) *</span>
+<span class="fc" id="L206">			   java.lang.Math.pow (dblEta                      , (0. * dblK + 1.) / (1. * dblK)) *</span>
+			   (dblX * dblSigma * dblI),
+			   dblK / (dblK + 1.)
+		);
+	}
+
+	/**
+	 * Generate the Constant/Exponent Dependencies on the Market Parameters for the Optimal Execution Horizon
+	 * 	/ Information Ratio
+	 *  
+	 * @return The Optimal Execution Horizon/Information Ratio Dependency
+	 */
+
+	public org.drip.execution.principal.HorizonInformationRatioDependence optimalMeasures()
+	{
+<span class="fc" id="L221">		org.drip.execution.impact.TransactionFunctionPower tfpTemporaryExpectation =</span>
+			(org.drip.execution.impact.TransactionFunctionPower)
+<span class="fc" id="L223">				_lpep.temporaryExpectation().epochImpactFunction();</span>
+
+<span class="fc" id="L225">		double dblK = tfpTemporaryExpectation.exponent();</span>
+
+		try {
+<span class="fc" id="L228">			return new org.drip.execution.principal.HorizonInformationRatioDependence (</span>
+				new org.drip.execution.principal.OptimalMeasureDependence (
+<span class="fc" id="L230">					java.lang.Math.pow ((dblK + 1.) * (dblK + 1.) / (3. * dblK + 1.), 1. / dblK),</span>
+					1. / dblK,
+					1.,
+					0.,
+					-1. / dblK
+				),
+				new org.drip.execution.principal.OptimalMeasureDependence (
+<span class="fc" id="L237">					java.lang.Math.pow (3. * dblK + 1., (1. * dblK + 2.) / (2. * dblK)) /</span>
+<span class="fc" id="L238">						java.lang.Math.pow (1. * dblK + 1., (3. * dblK + 4.) / (2. * dblK)),</span>
+					-1. / dblK,
+					-1.,
+					-1.,
+					(dblK + 1.) / dblK
+				)
+			);
+<span class="nc" id="L245">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L246">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L249">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

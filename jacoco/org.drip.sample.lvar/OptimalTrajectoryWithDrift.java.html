@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OptimalTrajectoryWithDrift.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.lvar</a> &gt; <span class="el_source">OptimalTrajectoryWithDrift.java</span></div><h1>OptimalTrajectoryWithDrift.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.lvar;
+
+import org.drip.execution.capture.LinearImpactTrajectoryEstimator;
+import org.drip.execution.dynamics.*;
+import org.drip.execution.impact.*;
+import org.drip.execution.nonadaptive.StaticOptimalSchemeDiscrete;
+import org.drip.execution.optimum.EfficientTradingTrajectoryDiscrete;
+import org.drip.execution.parameters.ArithmeticPriceDynamicsSettings;
+import org.drip.execution.profiletime.UniformParticipationRateLinear;
+import org.drip.execution.risk.PowerVarianceObjectiveUtility;
+import org.drip.execution.strategy.*;
+import org.drip.function.r1tor1.FlatUnivariate;
+import org.drip.measure.gaussian.R1UnivariateNormal;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * OptimalTrajectoryWithDrift generates the Trade/Holdings List of Optimal Execution Schedule based on the
+ *  Evolution Walk Parameters specified according to the Liquidity VaR Optimal Objective Function, inclusive
+ *  of Drift. The Generation follows a Numerical Optimizer Scheme. The References are:
+ * 
+ * 	- Almgren, R., and N. Chriss (1999): Value under Liquidation, Risk 12 (12).
+ * 
+ * 	- Almgren, R., and N. Chriss (2000): Optimal Execution of Portfolio Transactions, Journal of Risk, 3 (2),
+ * 		5-39.
+ * 
+ * 	- Almgren, R. (2003): Optimal Execution with Non-linear Impact Functions and Trading Enhanced Risk,
+ * 		Applied Mathematical Finance, 10, 1-18.
+ *
+ * 	- Artzner, P., F. Delbaen, J. M. Eber, and D. Heath (1999): Coherent Measures of Risk, Mathematical
+ * 		Finance, 9, 203-228.
+ *
+ * 	- Basak, S., and A. Shapiro (2001): Value-at-Risk Based Risk Management: Optimal Policies and Asset
+ * 		Prices, Review of Financial Studies, 14, 371-405.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L87">public class OptimalTrajectoryWithDrift {</span>
+
+	public static void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+<span class="fc" id="L93">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="fc" id="L95">		double dblS0 = 50.;</span>
+<span class="fc" id="L96">		double dblSigma = 0.9487;</span>
+<span class="fc" id="L97">		double dblAlpha = 0.02;</span>
+<span class="fc" id="L98">		double dblEpsilon = 0.0625;</span>
+<span class="fc" id="L99">		double dblGamma = 2.5e-07;</span>
+<span class="fc" id="L100">		double dblEta = 2.5e-06;</span>
+<span class="fc" id="L101">		double dblConfidenceLevel = 0.90;</span>
+
+<span class="fc" id="L103">		double dblX = 1000000.;</span>
+<span class="fc" id="L104">		double dblT = 5.;</span>
+<span class="fc" id="L105">		int iN = 5;</span>
+
+<span class="fc" id="L107">		double dblLambdaV = R1UnivariateNormal.Standard().confidenceInterval (dblConfidenceLevel);</span>
+
+<span class="fc" id="L109">		DiscreteTradingTrajectoryControl dttc = DiscreteTradingTrajectoryControl.FixedInterval (</span>
+			new OrderSpecification (
+				dblX,
+				dblT
+			),
+			iN
+		);
+
+<span class="fc" id="L117">		LinearPermanentExpectationParameters lpep = ArithmeticPriceEvolutionParametersBuilder.LinearExpectation (</span>
+			new ArithmeticPriceDynamicsSettings (
+				dblAlpha,
+				new FlatUnivariate (dblSigma),
+				0.
+			),
+			new UniformParticipationRateLinear (
+				new ParticipationRateLinear (
+					0.,
+					dblGamma
+				)
+			),
+			new UniformParticipationRateLinear (
+				new ParticipationRateLinear (
+					dblEpsilon,
+					dblEta
+				)
+			)
+		);
+
+<span class="fc" id="L137">		EfficientTradingTrajectoryDiscrete ettd = (EfficientTradingTrajectoryDiscrete) new StaticOptimalSchemeDiscrete (</span>
+			dttc,
+			lpep,
+<span class="fc" id="L140">			PowerVarianceObjectiveUtility.LiquidityVaR (dblLambdaV)</span>
+<span class="fc" id="L141">		).generate();</span>
+
+<span class="fc" id="L143">		double[] adblExecutionTimeNode = ettd.executionTimeNode();</span>
+
+<span class="fc" id="L145">		double[] adblTradeList = ettd.tradeList();</span>
+
+<span class="fc" id="L147">		double[] adblHoldings = ettd.holdings();</span>
+
+<span class="fc" id="L149">		LinearImpactTrajectoryEstimator lite = new LinearImpactTrajectoryEstimator (ettd);</span>
+
+<span class="fc" id="L151">		R1UnivariateNormal r1un = lite.totalCostDistributionSynopsis (lpep);</span>
+
+<span class="fc" id="L153">		System.out.println (&quot;\n\t|---------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L155">		System.out.println (&quot;\t| ALMGREN-CHRISS TRAJECTORY GENERATOR INPUTS  ||&quot;);</span>
+
+<span class="fc" id="L157">		System.out.println (&quot;\t|---------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L159">		System.out.println (&quot;\t| Initial Stock Price           : &quot; + dblS0);</span>
+
+<span class="fc" id="L161">		System.out.println (&quot;\t| Initial Holdings              : &quot; + dblX);</span>
+
+<span class="fc" id="L163">		System.out.println (&quot;\t| Liquidation Time              : &quot; + dblT);</span>
+
+<span class="fc" id="L165">		System.out.println (&quot;\t| Number of Time Periods        : &quot; + iN);</span>
+
+<span class="fc" id="L167">		System.out.println (&quot;\t| Daily Volume 5 million Shares : &quot; + dblGamma);</span>
+
+<span class="fc" id="L169">		System.out.println (&quot;\t| VaR Confidence Level          :&quot; + FormatUtil.FormatDouble (dblConfidenceLevel, 2, 2, 100.) + &quot;%&quot;);</span>
+
+<span class="fc" id="L171">		System.out.println (&quot;\t| VaR Based Risk Aversion       : &quot; + dblLambdaV);</span>
+
+<span class="fc" id="L173">		System.out.println (&quot;\t|&quot;);</span>
+
+<span class="fc" id="L175">		System.out.println (</span>
+			&quot;\t| Daily Volatility              : &quot; +
+<span class="fc" id="L177">			FormatUtil.FormatDouble (dblSigma, 1, 4, 1.)</span>
+		);
+
+<span class="fc" id="L180">		System.out.println (</span>
+			&quot;\t| Daily Returns                 : &quot; +
+<span class="fc" id="L182">			FormatUtil.FormatDouble (dblAlpha, 1, 4, 1.)</span>
+		);
+
+<span class="fc" id="L185">		System.out.println (&quot;\t| Temporary Impact Fixed Offset :  &quot; + dblEpsilon);</span>
+
+<span class="fc" id="L187">		System.out.println (&quot;\t| Eta                           :  &quot; + dblEta);</span>
+
+<span class="fc" id="L189">		System.out.println (&quot;\t| Gamma                         :  &quot; + dblGamma);</span>
+
+<span class="fc" id="L191">		System.out.println (&quot;\t|---------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L193">		System.out.println (&quot;\n\t|-----------------------------||&quot;);</span>
+
+<span class="fc" id="L195">		System.out.println (&quot;\t| Optimal Trading Trajectory  ||&quot;);</span>
+
+<span class="fc" id="L197">		System.out.println (&quot;\t| ------- ------- ----------  ||&quot;);</span>
+
+<span class="fc" id="L199">		System.out.println (&quot;\t|     L -&gt; R:                 ||&quot;);</span>
+
+<span class="fc" id="L201">		System.out.println (&quot;\t|        Time Node            ||&quot;);</span>
+
+<span class="fc" id="L203">		System.out.println (&quot;\t|        Holdings             ||&quot;);</span>
+
+<span class="fc" id="L205">		System.out.println (&quot;\t|        Trade Amount         ||&quot;);</span>
+
+<span class="fc" id="L207">		System.out.println (&quot;\t|-----------------------------||&quot;);</span>
+
+<span class="fc bfc" id="L209" title="All 2 branches covered.">		for (int i = 0; i &lt;= iN; ++i) {</span>
+<span class="fc bfc" id="L210" title="All 2 branches covered.">			if (i == 0)</span>
+<span class="fc" id="L211">				System.out.println (</span>
+<span class="fc" id="L212">					&quot;\t|&quot; + FormatUtil.FormatDouble (adblExecutionTimeNode[i], 1, 0, 1.) + &quot; =&gt; &quot; +</span>
+<span class="fc" id="L213">					FormatUtil.FormatDouble (adblHoldings[i], 7, 1, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L214">					FormatUtil.FormatDouble (0., 6, 1, 1.) + &quot; ||&quot;</span>
+				);
+			else
+<span class="fc" id="L217">				System.out.println (</span>
+<span class="fc" id="L218">					&quot;\t|&quot; + FormatUtil.FormatDouble (adblExecutionTimeNode[i], 1, 0, 1.) + &quot; =&gt; &quot; +</span>
+<span class="fc" id="L219">					FormatUtil.FormatDouble (adblHoldings[i], 7, 1, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L220">					FormatUtil.FormatDouble (adblTradeList[i - 1], 6, 1, 1.) + &quot; ||&quot;</span>
+				);
+		}
+
+<span class="fc" id="L224">		System.out.println (&quot;\t|-----------------------------||&quot;);</span>
+
+<span class="fc" id="L226">		System.out.println (&quot;\n\t|----------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L228">		System.out.println (&quot;\t|  TRANSACTION COST RECONCILIATION: OPTIMAL vs. EXPLICIT LINEAR  ||&quot;);</span>
+
+<span class="fc" id="L230">		System.out.println (&quot;\t|----------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L232">		System.out.println (</span>
+			&quot;\t| Transaction Cost Expectation         : &quot; +
+<span class="fc" id="L234">			FormatUtil.FormatDouble (r1un.mean(), 7, 1, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L235">			FormatUtil.FormatDouble (ettd.transactionCostExpectation(), 7, 1, 1.) + &quot; ||&quot;</span>
+		);
+
+<span class="fc" id="L238">		System.out.println (</span>
+			&quot;\t| Transaction Cost Variance (X 10^-06) : &quot; +
+<span class="fc" id="L240">			FormatUtil.FormatDouble (r1un.variance(), 7, 1, 1.e-06) + &quot; | &quot; +</span>
+<span class="fc" id="L241">			FormatUtil.FormatDouble (ettd.transactionCostVariance(), 7, 1, 1.e-06) + &quot; ||&quot;</span>
+		);
+
+<span class="fc" id="L244">		System.out.println (&quot;\t|----------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L245">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

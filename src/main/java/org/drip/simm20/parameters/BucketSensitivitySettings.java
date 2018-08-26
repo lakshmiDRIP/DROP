@@ -79,6 +79,7 @@ public class BucketSensitivitySettings extends org.drip.simm20.parameters.Liquid
 	 * 
 	 * @param deltaRiskWeight The Delta Risk Weight
 	 * @param concentrationFactor The Concentration Factor
+	 * @param memberCorrelation The Bucket Member Correlation
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */

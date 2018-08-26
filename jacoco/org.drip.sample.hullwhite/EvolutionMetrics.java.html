@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EvolutionMetrics.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.hullwhite</a> &gt; <span class="el_source">EvolutionMetrics.java</span></div><h1>EvolutionMetrics.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.hullwhite;
+
+import org.drip.analytics.date.*;
+import org.drip.dynamics.hullwhite.*;
+import org.drip.function.r1tor1.FlatUnivariate;
+import org.drip.quant.common.FormatUtil;
+import org.drip.sequence.random.BoxMullerGaussian;
+import org.drip.service.env.EnvManager;
+import org.drip.state.identifier.FundingLabel;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * EvolutionMetrics demonstrates the Construction and Usage of the Hull-White Metrics Using Hull-White 1F
+ * 	Model Dynamics for the Evolution of the Short Rate.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L67">public class EvolutionMetrics {</span>
+
+	private static final SingleFactorStateEvolver HullWhiteEvolver (
+		final String strCurrency,
+		final double dblSigma,
+		final double dblA,
+		final double dblStartingForwardRate)
+		throws Exception
+	{
+<span class="fc" id="L76">		return new SingleFactorStateEvolver (</span>
+<span class="fc" id="L77">			FundingLabel.Standard (strCurrency),</span>
+			dblSigma,
+			dblA,
+			new FlatUnivariate (dblStartingForwardRate),
+			new BoxMullerGaussian (
+				0.,
+				1.
+			)
+		);
+	}
+
+	private static final void DumpMetrics (
+		final ShortRateUpdate hwem)
+		throws Exception
+	{
+<span class="fc" id="L92">		System.out.println (&quot;\t| [&quot; + new JulianDate (hwem.evolutionStartDate()) + &quot; -&gt; &quot; +</span>
+<span class="fc" id="L93">			new JulianDate (hwem.evolutionFinishDate()) + &quot;] =&gt; &quot; +</span>
+<span class="fc" id="L94">			FormatUtil.FormatDouble (hwem.initialShortRate(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L95">			FormatUtil.FormatDouble (hwem.realizedFinalShortRate(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L96">			FormatUtil.FormatDouble (hwem.expectedFinalShortRate(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L97">			FormatUtil.FormatDouble (hwem.zeroCouponBondPrice (0.975), 1, 2, 100.) + &quot; | &quot; +</span>
+<span class="fc" id="L98">			FormatUtil.FormatDouble (Math.sqrt (hwem.finalShortRateVariance()), 1, 2, 100.) + &quot;% || &quot;</span>
+		);
+<span class="fc" id="L100">	}</span>
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+<span class="fc" id="L106">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="fc" id="L108">		JulianDate dtSpot = DateUtil.Today();</span>
+
+<span class="fc" id="L110">		String strCurrency = &quot;USD&quot;;</span>
+<span class="fc" id="L111">		double dblStartingShortRate = 0.05;</span>
+<span class="fc" id="L112">		double dblSigma = 0.03;</span>
+<span class="fc" id="L113">		double dblA = 1.;</span>
+<span class="fc" id="L114">		int iNumRun = 50;</span>
+
+<span class="fc" id="L116">		SingleFactorStateEvolver hw = HullWhiteEvolver (</span>
+			strCurrency,
+			dblSigma,
+			dblA,
+			dblStartingShortRate
+		);
+
+<span class="fc" id="L123">		int iSpotDate = dtSpot.julian();</span>
+
+<span class="fc" id="L125">		int iInitialDate = dtSpot.addMonths (1).julian();</span>
+
+<span class="fc" id="L127">		int iFinalDate = dtSpot.addMonths (7).julian();</span>
+
+<span class="fc" id="L129">		System.out.println (&quot;\n\t|--------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L131">		System.out.println (&quot;\t|                                                                          ||&quot;);</span>
+
+<span class="fc" id="L133">		System.out.println (&quot;\t|    Hull-White Scenario Evolution Metrics                                 ||&quot;);</span>
+
+<span class="fc" id="L135">		System.out.println (&quot;\t|    -------------------------------------                                 ||&quot;);</span>
+
+<span class="fc" id="L137">		System.out.println (&quot;\t|                                                                          ||&quot;);</span>
+
+<span class="fc" id="L139">		System.out.println (&quot;\t|    L-&gt;R:                                                                 ||&quot;);</span>
+
+<span class="fc" id="L141">		System.out.println (&quot;\t|        Initial Date                                                      ||&quot;);</span>
+
+<span class="fc" id="L143">		System.out.println (&quot;\t|        Final Date                                                        ||&quot;);</span>
+
+<span class="fc" id="L145">		System.out.println (&quot;\t|        Initial Short Rate (%)                                            ||&quot;);</span>
+
+<span class="fc" id="L147">		System.out.println (&quot;\t|        Realized Final Short Rate (%)                                     ||&quot;);</span>
+
+<span class="fc" id="L149">		System.out.println (&quot;\t|        Expected Final Short Rate (%)                                     ||&quot;);</span>
+
+<span class="fc" id="L151">		System.out.println (&quot;\t|        Zero Coupon Bond Price                                            ||&quot;);</span>
+
+<span class="fc" id="L153">		System.out.println (&quot;\t|        Final Short Rate Variance (%)                                     ||&quot;);</span>
+
+<span class="fc" id="L155">		System.out.println (&quot;\t|--------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L157">		ShortRateUpdate sruInitial = ShortRateUpdate.Create (</span>
+<span class="fc" id="L158">			FundingLabel.Standard (strCurrency),</span>
+			iInitialDate,
+			iInitialDate,
+			iFinalDate,
+			dblStartingShortRate,
+			dblStartingShortRate,
+			dblStartingShortRate,
+			0.,
+			1.
+		);
+
+<span class="fc bfc" id="L169" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumRun; ++i)</span>
+<span class="fc" id="L170">			DumpMetrics (</span>
+<span class="fc" id="L171">				(ShortRateUpdate) hw.evolve (</span>
+					iSpotDate,
+					iInitialDate,
+					iFinalDate - iInitialDate,
+					sruInitial
+				)
+			);
+
+<span class="fc" id="L179">		System.out.println (&quot;\t|--------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L180">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

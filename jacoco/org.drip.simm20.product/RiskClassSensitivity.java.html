@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RiskClassSensitivity.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.simm20.product</a> &gt; <span class="el_source">RiskClassSensitivity.java</span></div><h1>RiskClassSensitivity.java</h1><pre class="source lang-java linenums">
+package org.drip.simm20.product;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * RiskClassSensitivity holds the Risk Class Bucket Sensitivities for a single Risk Class. The References
+ *  are:
+ *  
+ *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
+ *  
+ *  - Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
+ *  	Calculations, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488, eSSRN.
+ *  
+ *  - Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
+ *  	Framework for Forecasting .Initial Margin Requirements,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
+ *  
+ *  - Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements
+ *  	- A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167, eSSRN.
+ *  
+ *  - International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology,
+ *  	https://www.isda.org/a/oFiDE/isda-simm-v2.pdf.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class RiskClassSensitivity
+{
+<span class="nc" id="L74">	private java.util.Map&lt;java.lang.Integer, org.drip.simm20.product.BucketSensitivity&gt; _bucketSensitivityMap</span>
+		= null;
+
+	/**
+	 * RiskClassSensitivity Constructor
+	 * 
+	 * @param bucketSensitivityMap The Risk Class Bucket Sensitivity Map
+	 * 
+	 * @throws java.lang.Exception Thrown oif the Inputs are Invalid
+	 */
+
+	public RiskClassSensitivity (
+		final java.util.Map&lt;java.lang.Integer, org.drip.simm20.product.BucketSensitivity&gt;
+			bucketSensitivityMap)
+		throws java.lang.Exception
+<span class="nc" id="L89">	{</span>
+<span class="nc bnc" id="L90" title="All 4 branches missed.">		if (null == (_bucketSensitivityMap = bucketSensitivityMap) || 0 == _bucketSensitivityMap.size())</span>
+		{
+<span class="nc" id="L92">			throw new java.lang.Exception (&quot;RiskClassSensitivity Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="nc" id="L94">	}</span>
+
+	/**
+	 * Retrieve the Risk Class Bucket Sensitivity Map
+	 * 
+	 * @return The Risk Class Bucket Sensitivity Map
+	 */
+
+	public java.util.Map&lt;java.lang.Integer, org.drip.simm20.product.BucketSensitivity&gt; bucketSensitivityMap()
+	{
+<span class="nc" id="L104">		return _bucketSensitivityMap;</span>
+	}
+
+	/**
+	 * Generate the Risk Class Aggregate
+	 * 
+	 * @param riskClassSensitivitySettings The Risk Class Sensitivity Settings
+	 * 
+	 * @return The Risk Class Aggregate
+	 */
+
+	public org.drip.simm20.margin.RiskClassAggregate aggregate (
+		final org.drip.simm20.parameters.RiskClassSensitivitySettings riskClassSensitivitySettings)
+	{
+<span class="nc bnc" id="L118" title="All 2 branches missed.">		if (null == riskClassSensitivitySettings)</span>
+		{
+<span class="nc" id="L120">			return null;</span>
+		}
+
+<span class="nc" id="L123">		double coreDeltaSBAVariance = 0.;</span>
+
+<span class="nc" id="L125">		java.util.Map&lt;java.lang.Integer, org.drip.simm20.margin.BucketAggregate&gt; bucketAggregateMap = new</span>
+			java.util.TreeMap&lt;java.lang.Integer, org.drip.simm20.margin.BucketAggregate&gt;();
+
+		java.util.Map&lt;java.lang.Integer, org.drip.simm20.parameters.BucketSensitivitySettings&gt;
+<span class="nc" id="L129">			bucketSensitivitySettingsMap = riskClassSensitivitySettings.bucketSensitivitySettingsMap();</span>
+
+<span class="nc" id="L131">		org.drip.measure.stochastic.LabelCorrelation crossBucketCorrelation =</span>
+<span class="nc" id="L132">			riskClassSensitivitySettings.crossBucketCorrelation();</span>
+
+		for (java.util.Map.Entry&lt;java.lang.Integer, org.drip.simm20.product.BucketSensitivity&gt;
+<span class="nc bnc" id="L135" title="All 2 branches missed.">			bucketSensitivityMapEntry : _bucketSensitivityMap.entrySet())</span>
+		{
+<span class="nc" id="L137">			int bucketIndex = bucketSensitivityMapEntry.getKey();</span>
+
+<span class="nc" id="L139">			org.drip.simm20.product.BucketSensitivity bucketSensitivity =</span>
+<span class="nc" id="L140">				bucketSensitivityMapEntry.getValue();</span>
+
+<span class="nc" id="L142">			org.drip.simm20.margin.BucketAggregate bucketAggregate = bucketSensitivity.aggregate</span>
+<span class="nc" id="L143">				(bucketSensitivitySettingsMap.get (bucketIndex));</span>
+
+<span class="nc bnc" id="L145" title="All 2 branches missed.">			if (null == bucketAggregate)</span>
+			{
+<span class="nc" id="L147">				return null;</span>
+			}
+
+<span class="nc" id="L150">			bucketAggregateMap.put (</span>
+<span class="nc" id="L151">				bucketIndex,</span>
+				bucketAggregate
+			);
+<span class="nc" id="L154">		}</span>
+
+		try
+		{
+			for (java.util.Map.Entry&lt;java.lang.Integer, org.drip.simm20.margin.BucketAggregate&gt;
+<span class="nc bnc" id="L159" title="All 2 branches missed.">				bucketAggregateMapOuterEntry : bucketAggregateMap.entrySet())</span>
+			{
+<span class="nc" id="L161">				int outerKey = bucketAggregateMapOuterEntry.getKey();</span>
+
+<span class="nc" id="L163">				org.drip.simm20.margin.BucketAggregate bucketAggregateOuter =</span>
+<span class="nc" id="L164">					bucketAggregateMapOuterEntry.getValue();</span>
+
+<span class="nc" id="L166">				double weightedSensitivityVarianceOuter = bucketAggregateOuter.weightedSensitivityVariance();</span>
+
+<span class="nc" id="L168">				double boundedWeightedSensitivityOuter = bucketAggregateOuter.boundedWeightedSensitivity();</span>
+
+				for (java.util.Map.Entry&lt;java.lang.Integer, org.drip.simm20.margin.BucketAggregate&gt;
+<span class="nc bnc" id="L171" title="All 2 branches missed.">					bucketAggregateMapInnerEntry : bucketAggregateMap.entrySet())</span>
+				{
+<span class="nc" id="L173">					int innerKey = bucketAggregateMapInnerEntry.getKey();</span>
+
+<span class="nc bnc" id="L175" title="All 4 branches missed.">					if (-1 != outerKey &amp;&amp; -1 != innerKey)</span>
+					{
+<span class="nc bnc" id="L177" title="All 2 branches missed.">						coreDeltaSBAVariance = coreDeltaSBAVariance + (outerKey == innerKey ?</span>
+<span class="nc" id="L178">							weightedSensitivityVarianceOuter : crossBucketCorrelation.entry (</span>
+								&quot;&quot; + outerKey,
+								&quot;&quot; + innerKey
+							) * boundedWeightedSensitivityOuter *
+<span class="nc" id="L182">							bucketAggregateMapInnerEntry.getValue().boundedWeightedSensitivity()</span>
+						);
+					}
+<span class="nc" id="L185">				}</span>
+<span class="nc" id="L186">			}</span>
+
+<span class="nc" id="L188">			return new org.drip.simm20.margin.RiskClassAggregate (</span>
+				bucketAggregateMap,
+				coreDeltaSBAVariance,
+<span class="nc bnc" id="L191" title="All 2 branches missed.">				bucketAggregateMap.containsKey (-1) ?</span>
+<span class="nc" id="L192">					bucketAggregateMap.get (-1).weightedSensitivityVariance() : 0.</span>
+			);
+		}
+<span class="nc" id="L195">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L197">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L200">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

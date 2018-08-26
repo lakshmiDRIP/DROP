@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NonDimensionalCostCorrelated.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.execution.hjb</a> &gt; <span class="el_source">NonDimensionalCostCorrelated.java</span></div><h1>NonDimensionalCostCorrelated.java</h1><pre class="source lang-java linenums">
+package org.drip.execution.hjb;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * NonDimensionalCostCorrelated contains the Level, the Gradient, and the Jacobian of the HJB Non-dimensional
+ *  Cost Value Function to the Individual Correlated Market States. The References are:
+ * 
+ * 	- Almgren, R. F., and N. Chriss (2000): Optimal Execution of Portfolio Transactions, Journal of Risk 3
+ * 		(2) 5-39.
+ *
+ * 	- Almgren, R. F. (2009): Optimal Trading in a Dynamic Market
+ * 		https://www.math.nyu.edu/financial_mathematics/content/02_financial/2009-2.pdf.
+ *
+ * 	- Almgren, R. F. (2012): Optimal Trading with Stochastic Liquidity and Volatility, SIAM Journal of
+ * 		Financial Mathematics  3 (1) 163-181.
+ * 
+ * 	- Geman, H., D. B. Madan, and M. Yor (2001): Time Changes for Levy Processes, Mathematical Finance 11 (1)
+ * 		79-96.
+ * 
+ * 	- Jones, C. M., G. Kaul, and M. L. Lipson (1994): Transactions, Volume, and Volatility, Review of
+ * 		Financial Studies 7 (4) 631-651.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class NonDimensionalCostCorrelated extends org.drip.execution.hjb.NonDimensionalCost {
+<span class="nc" id="L74">	private double _dblLiquidityGradient = java.lang.Double.NaN;</span>
+<span class="nc" id="L75">	private double _dblLiquidityJacobian = java.lang.Double.NaN;</span>
+<span class="nc" id="L76">	private double _dblVolatilityGradient = java.lang.Double.NaN;</span>
+<span class="nc" id="L77">	private double _dblVolatilityJacobian = java.lang.Double.NaN;</span>
+<span class="nc" id="L78">	private double _dblLiquidityVolatilityGradient = java.lang.Double.NaN;</span>
+
+	/**
+	 * Generate a Zero Sensitivity Correlated Non-dimensional Cost Instance
+	 * 
+	 * @return The Zero Sensitivity Correlated Non-dimensional Cost Instance
+	 */
+
+	public static final NonDimensionalCostCorrelated Zero()
+	{
+		try {
+<span class="nc" id="L89">			return new NonDimensionalCostCorrelated (0., 0., 0., 0., 0., 0., 0.);</span>
+<span class="nc" id="L90">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L91">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L94">		return null;</span>
+	}
+
+	/**
+	 * NonDimensionalCostCorrelated Constructor
+	 * 
+	 * @param dblRealization The Realized Non Dimensional Value
+	 * @param dblNonDimensionalTradeRate The Non Dimensional Trade Rate
+	 * @param dblLiquidityGradient The Realized Non Dimensional Value Liquidity Gradient
+	 * @param dblLiquidityJacobian The Realized Non Dimensional Value Liquidity Jacobian
+	 * @param dblVolatilityGradient The Realized Non Dimensional Value Volatility Gradient
+	 * @param dblVolatilityJacobian The Realized Non Dimensional Value Volatility Jacobian
+	 * @param dblLiquidityVolatilityGradient The Realized Non Dimensional Value Liquidity/Volatility Gradient
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public NonDimensionalCostCorrelated (
+		final double dblRealization,
+		final double dblLiquidityGradient,
+		final double dblLiquidityJacobian,
+		final double dblVolatilityGradient,
+		final double dblVolatilityJacobian,
+		final double dblLiquidityVolatilityGradient,
+		final double dblNonDimensionalTradeRate)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L121">		super (dblRealization, dblNonDimensionalTradeRate);</span>
+
+<span class="nc bnc" id="L123" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLiquidityGradient = dblLiquidityGradient) ||</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblLiquidityJacobian = dblLiquidityJacobian) ||</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblVolatilityGradient = dblVolatilityGradient) ||</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblVolatilityJacobian =</span>
+						dblVolatilityJacobian) || !org.drip.quant.common.NumberUtil.IsValid
+<span class="nc bnc" id="L128" title="All 2 branches missed.">							(_dblLiquidityVolatilityGradient = dblLiquidityVolatilityGradient))</span>
+<span class="nc" id="L129">			throw new java.lang.Exception (&quot;NonDimensionalCostCorrelated Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L130">	}</span>
+
+	/**
+	 * Retrieve the Non Dimensional Value Liquidity Gradient
+	 * 
+	 * @return The Non Dimensional Value Liquidity Gradient
+	 */
+
+	public double liquidityGradient()
+	{
+<span class="nc" id="L140">		return _dblLiquidityGradient;</span>
+	}
+
+	/**
+	 * Retrieve the Non Dimensional Value Liquidity Jacobian
+	 * 
+	 * @return The Non Dimensional Value Liquidity Jacobian
+	 */
+
+	public double liquidityJacobian()
+	{
+<span class="nc" id="L151">		return _dblLiquidityJacobian;</span>
+	}
+
+	/**
+	 * Retrieve the Non Dimensional Value Volatility Gradient
+	 * 
+	 * @return The Non Dimensional Value Volatility Gradient
+	 */
+
+	public double volatilityGradient()
+	{
+<span class="nc" id="L162">		return _dblVolatilityGradient;</span>
+	}
+
+	/**
+	 * Retrieve the Non Dimensional Value Volatility Jacobian
+	 * 
+	 * @return The Non Dimensional Value Volatility Jacobian
+	 */
+
+	public double volatilityJacobian()
+	{
+<span class="nc" id="L173">		return _dblVolatilityJacobian;</span>
+	}
+
+	/**
+	 * Retrieve the Non Dimensional Value Liquidity/Volatility Gradient
+	 * 
+	 * @return The Non Dimensional Value Liquidity/Volatility Gradient
+	 */
+
+	public double liquidityVolatilityGradient()
+	{
+<span class="nc" id="L184">		return _dblLiquidityVolatilityGradient;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

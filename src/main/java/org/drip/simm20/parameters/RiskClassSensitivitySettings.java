@@ -135,6 +135,54 @@ public class RiskClassSensitivitySettings
 	}
 
 	/**
+	 * Construct an ISDA CT Standard Instance of RiskClassSensitivitySettings
+	 * 
+	 * @return ISDA CT Standard Instance of RiskClassSensitivitySettings
+	 */
+
+	public static final RiskClassSensitivitySettings ISDA_CT()
+	{
+		java.util.Map<java.lang.Integer, org.drip.simm20.parameters.BucketSensitivitySettings>
+			bucketSensitivitySettingsMap = new java.util.HashMap<java.lang.Integer,
+				org.drip.simm20.parameters.BucketSensitivitySettings>();
+
+		java.util.Map<java.lang.Integer, org.drip.simm20.common.DeltaVegaThreshold>
+			ctConcentrationThresholdMap =
+				org.drip.simm20.commodity.CTRiskThresholdContainer.DeltaVegaThresholdMap();
+
+		java.util.Map<java.lang.Integer, org.drip.simm20.commodity.CTBucket> bucketMap =
+			org.drip.simm20.commodity.CTSettingsContainer.BucketMap();
+
+		try
+		{
+			for (int bucketIndex = 1; bucketIndex <= 17; ++bucketIndex)
+			{
+				org.drip.simm20.commodity.CTBucket commodityBucket = bucketMap.get (bucketIndex);
+
+				bucketSensitivitySettingsMap.put (
+					bucketIndex,
+					new org.drip.simm20.parameters.BucketSensitivitySettings (
+						commodityBucket.deltaRiskWeight(),
+						ctConcentrationThresholdMap.get (bucketIndex).delta(),
+						commodityBucket.memberCorrelation()
+					)
+				);
+			}
+
+			return new RiskClassSensitivitySettings (
+				bucketSensitivitySettingsMap,
+				org.drip.simm20.commodity.CTSettingsContainer.CrossBucketCorrelation()
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * Construct an ISDA FX Standard Instance of RiskClassSensitivitySettings
 	 * 
 	 * @return ISDA FX Standard Instance of RiskClassSensitivitySettings

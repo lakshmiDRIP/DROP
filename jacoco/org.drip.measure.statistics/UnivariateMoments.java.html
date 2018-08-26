@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UnivariateMoments.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.measure.statistics</a> &gt; <span class="el_source">UnivariateMoments.java</span></div><h1>UnivariateMoments.java</h1><pre class="source lang-java linenums">
+package org.drip.measure.statistics;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * UnivariateMoments generates and holds the Specified Univariate Series Mean, Variance, and a few selected
+ * 	Moments.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class UnivariateMoments {
+<span class="nc" id="L59">	private int _iNumSample = 0;</span>
+<span class="nc" id="L60">	private java.lang.String _strName = &quot;&quot;;</span>
+<span class="nc" id="L61">	private double _dblMean = java.lang.Double.NaN;</span>
+<span class="nc" id="L62">	private double _dblVariance = java.lang.Double.NaN;</span>
+<span class="nc" id="L63">	private java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; _mapMoment = null;</span>
+
+	/**
+	 * Construct a UnivariateMoments Instance for the specified Series
+	 * 
+	 * @param strName Series Name
+	 * @param adblEntry Series Entry
+	 * @param aiMoment Array of Moments to be Calculated
+	 * 
+	 * @return The UnivariateMoments Instance
+	 */
+
+	public static final UnivariateMoments Standard (
+		final java.lang.String strName,
+		final double[] adblEntry,
+		final int[] aiMoment)
+	{
+<span class="nc bnc" id="L80" title="All 2 branches missed.">		if (null == adblEntry) return null;</span>
+
+<span class="nc" id="L82">		double dblMean = 0.;</span>
+<span class="nc" id="L83">		double dblVariance = 0.;</span>
+<span class="nc" id="L84">		int iNumSample = adblEntry.length;</span>
+<span class="nc bnc" id="L85" title="All 2 branches missed.">		int iNumMoment = null == aiMoment ? 0 : aiMoment.length;</span>
+<span class="nc bnc" id="L86" title="All 2 branches missed.">		double[] adblMoment = 0 == iNumMoment ? null : new double[iNumMoment];</span>
+
+<span class="nc bnc" id="L88" title="All 2 branches missed.">		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; mapMoment = 0 == iNumMoment ? null : new</span>
+			java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt;();
+
+<span class="nc bnc" id="L91" title="All 2 branches missed.">		if (0 == iNumSample) return null;</span>
+
+<span class="nc bnc" id="L93" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSample; ++i) {</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (adblEntry[i])) return null;</span>
+
+<span class="nc" id="L96">			dblMean += adblEntry[i];</span>
+		}
+
+<span class="nc" id="L99">		dblMean /= iNumSample;</span>
+
+<span class="nc bnc" id="L101" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumMoment; ++j)</span>
+<span class="nc" id="L102">			adblMoment[j] = 0.;</span>
+
+<span class="nc bnc" id="L104" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSample; ++i) {</span>
+<span class="nc" id="L105">			double dblError = dblMean - adblEntry[i];</span>
+<span class="nc" id="L106">			dblVariance += (dblError * dblError);</span>
+
+<span class="nc bnc" id="L108" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumMoment; ++j)</span>
+<span class="nc" id="L109">				adblMoment[j] = adblMoment[j] + java.lang.Math.pow (dblError, aiMoment[j]);</span>
+		}
+
+<span class="nc bnc" id="L112" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumMoment; ++j)</span>
+<span class="nc" id="L113">			mapMoment.put (aiMoment[j], adblMoment[j]);</span>
+
+		try {
+<span class="nc" id="L116">			return new UnivariateMoments (strName, dblMean, dblVariance / iNumSample, iNumSample, mapMoment);</span>
+<span class="nc" id="L117">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L118">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L121">		return null;</span>
+	}
+
+	/**
+	 * Construct a UnivariateMoments Instance for the specified Series
+	 * 
+	 * @param strName Series Name
+	 * @param adblEntry Series Entry
+	 * 
+	 * @return The UnivariateMoments Instance
+	 */
+
+	public static final UnivariateMoments Standard (
+		final java.lang.String strName,
+		final double[] adblEntry)
+	{
+<span class="nc" id="L137">		return Standard (strName, adblEntry, null);</span>
+	}
+
+	protected UnivariateMoments (
+		final java.lang.String strName,
+		final double dblMean,
+		final double dblVariance,
+		final int iNumSample,
+		final java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; mapMoment)
+		throws java.lang.Exception
+<span class="nc" id="L147">	{</span>
+<span class="nc bnc" id="L148" title="All 4 branches missed.">		if (null == (_strName = strName) || _strName.isEmpty() || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="nc bnc" id="L149" title="All 6 branches missed.">			(_dblMean = dblMean) || !org.drip.quant.common.NumberUtil.IsValid (_dblVariance = dblVariance) ||</span>
+				0 &gt;= (_iNumSample = iNumSample))
+<span class="nc" id="L151">			throw new java.lang.Exception (&quot;UnivariateMetrics Constructor =&gt; Invalid Inputs!&quot;);</span>
+
+<span class="nc" id="L153">		_mapMoment = mapMoment;</span>
+<span class="nc" id="L154">	}</span>
+
+	/**
+	 * Retrieve the Series Name
+	 * 
+	 * @return The Series Name
+	 */
+
+	public java.lang.String name()
+	{
+<span class="nc" id="L164">		return _strName;</span>
+	}
+
+	/**
+	 * Retrieve the Number of Samples
+	 * 
+	 * @return The Number of Samples
+	 */
+
+	public int numSample()
+	{
+<span class="nc" id="L175">		return _iNumSample;</span>
+	}
+
+	/**
+	 * Retrieve the Series Mean
+	 * 
+	 * @return The Series Mean
+	 */
+
+	public double mean()
+	{
+<span class="nc" id="L186">		return _dblMean;</span>
+	}
+
+	/**
+	 * Retrieve the Series Variance
+	 * 
+	 * @return The Series Variance
+	 */
+
+	public double variance()
+	{
+<span class="nc" id="L197">		return _dblVariance;</span>
+	}
+
+	/**
+	 * Retrieve the Series Standard Deviation
+	 * 
+	 * @return The Series Standard Deviation
+	 */
+
+	public double stdDev()
+	{
+<span class="nc" id="L208">		return java.lang.Math.sqrt (_dblVariance);</span>
+	}
+
+	/**
+	 * Retrieve the Moments Map
+	 * 
+	 * @return The Map of Moments
+	 */
+
+	public java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; momentMap()
+	{
+<span class="nc" id="L219">		return _mapMoment;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

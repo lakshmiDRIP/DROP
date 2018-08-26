@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MarketParamsBuilder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.param.creator</a> &gt; <span class="el_source">MarketParamsBuilder.java</span></div><h1>MarketParamsBuilder.java</h1><pre class="source lang-java linenums">
+package org.drip.param.creator;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * Copyright (C) 2012 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * MarketParamsBuilder implements the various ways of constructing, de-serializing, and building the Market
+ *  Parameters.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L62">public class MarketParamsBuilder {</span>
+
+	/**
+	 * Create a Market Parameters instance with the funding discount curve, the forward discount curve, the
+	 *  govvie curve, the credit curve, the component quote, the map of treasury benchmark quotes, and the
+	 *  Latent State Fixings Instance.
+	 * 
+	 * @param dcFunding Funding Curve
+	 * @param fc Forward Curve
+	 * @param gc Govvie Curve
+	 * @param cc Credit Curve
+	 * @param strComponentCode Component Code
+	 * @param compQuote Component quote
+	 * @param mTSYQuotes Map of Treasury Benchmark Quotes
+	 * @param lsfc The Latent State Fixings Instance
+	 * 
+	 * @return Market Parameters Instance
+	 */
+
+	public static final org.drip.param.market.CurveSurfaceQuoteContainer Create (
+		final org.drip.state.discount.MergedDiscountForwardCurve dcFunding,
+		final org.drip.state.forward.ForwardCurve fc,
+		final org.drip.state.govvie.GovvieCurve gc,
+		final org.drip.state.credit.CreditCurve cc,
+		final java.lang.String strComponentCode,
+		final org.drip.param.definition.ProductQuote compQuote,
+		final org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.param.definition.ProductQuote&gt;
+			mTSYQuotes,
+		final org.drip.param.market.LatentStateFixingsContainer lsfc)
+	{
+<span class="fc" id="L92">		org.drip.param.market.CurveSurfaceQuoteContainer csqs = new</span>
+			org.drip.param.market.CurveSurfaceQuoteContainer();
+
+<span class="pc bpc" id="L95" title="1 of 4 branches missed.">		if (null != cc &amp;&amp; !csqs.setCreditState (cc)) return null;</span>
+
+<span class="pc bpc" id="L97" title="1 of 4 branches missed.">		if (null != gc &amp;&amp; !csqs.setGovvieState (gc)) return null;</span>
+
+<span class="pc bpc" id="L99" title="1 of 4 branches missed.">		if (null != lsfc &amp;&amp; !csqs.setFixings (lsfc)) return null;</span>
+
+<span class="pc bpc" id="L101" title="1 of 4 branches missed.">		if (null != dcFunding &amp;&amp; !csqs.setFundingState (dcFunding)) return null;</span>
+
+<span class="pc bpc" id="L103" title="1 of 4 branches missed.">		if (null != mTSYQuotes &amp;&amp; !csqs.setQuoteMap (mTSYQuotes)) return null;</span>
+
+<span class="pc bpc" id="L105" title="2 of 6 branches missed.">		if (null != compQuote &amp;&amp; null != strComponentCode &amp;&amp; !strComponentCode.isEmpty() &amp;&amp;</span>
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">			!csqs.setProductQuote (strComponentCode, compQuote))</span>
+<span class="nc" id="L107">			return null;</span>
+
+<span class="pc bpc" id="L109" title="1 of 4 branches missed.">		if (null != fc &amp;&amp; !csqs.setForwardState (fc)) return null;</span>
+
+<span class="fc" id="L111">		return csqs;</span>
+	}
+
+	/**
+	 * Create a Market Parameters instance with the Funding Curve alone
+	 * 
+	 * @param dcFunding Funding Curve
+	 * 
+	 * @return Market Parameters instance
+	 */
+
+	public static final org.drip.param.market.CurveSurfaceQuoteContainer Discount (
+		final org.drip.state.discount.MergedDiscountForwardCurve dcFunding)
+	{
+<span class="fc" id="L125">		return Create (dcFunding, null, null, null, &quot;&quot;, null, null, null);</span>
+	}
+
+	/**
+	 * Create a Market Parameters instance with the Funding Curve and the forward Curve
+	 * 
+	 * @param dcFunding Funding Curve
+	 * @param fc Forward Curve
+	 * 
+	 * @return Market Parameters instance
+	 */
+
+	public static final org.drip.param.market.CurveSurfaceQuoteContainer DiscountForward (
+		final org.drip.state.discount.MergedDiscountForwardCurve dcFunding,
+		final org.drip.state.forward.ForwardCurve fc)
+	{
+<span class="nc" id="L141">		return Create (dcFunding, fc, null, null, &quot;&quot;, null, null, null);</span>
+	}
+
+	/**
+	 * Create a Market Parameters instance with the rates discount curve and the treasury discount curve alone
+	 * 
+	 * @param dcFunding Funding Curve
+	 * @param gc Govvie Curve
+	 * 
+	 * @return Market Parameters instance
+	 */
+
+	public static final org.drip.param.market.CurveSurfaceQuoteContainer Govvie (
+		final org.drip.state.discount.MergedDiscountForwardCurve dcFunding,
+		final org.drip.state.govvie.GovvieCurve gc)
+	{
+<span class="nc" id="L157">		return Create (dcFunding, null, gc, null, &quot;&quot;, null, null, null);</span>
+	}
+
+	/**
+	 * Create a Market Parameters Instance with the Funding Curve and the credit curve
+	 * 
+	 * @param dcFunding Funding Curve
+	 * @param cc Credit Curve
+	 * 
+	 * @return The Market Parameters Instance
+	 */
+
+	public static final org.drip.param.market.CurveSurfaceQuoteContainer Credit (
+		final org.drip.state.discount.MergedDiscountForwardCurve dcFunding,
+		final org.drip.state.credit.CreditCurve cc)
+	{
+<span class="fc" id="L173">		return Create (dcFunding, null, null, cc, &quot;&quot;, null, null, null);</span>
+	}
+
+	/**
+	 * Create a Market Parameters Instance with the Funding Curve, the Govvie Curve, the Credit Curve, the
+	 *  component quote, the map of treasury benchmark quotes, and the Latent State Fixings Container
+	 * 
+	 * @param dcFunding Funding Curve
+	 * @param gc Govvie Curve
+	 * @param cc Credit Curve
+	 * @param strComponentCode Component Code
+	 * @param compQuote Component quote
+	 * @param mTSYQuotes Map of Treasury Benchmark Quotes
+	 * @param lsfc Latent State Fixings Container
+	 * 
+	 * @return Market Parameters Instance
+	 */
+
+	public static final org.drip.param.market.CurveSurfaceQuoteContainer Create (
+		final org.drip.state.discount.MergedDiscountForwardCurve dcFunding,
+		final org.drip.state.govvie.GovvieCurve gc,
+		final org.drip.state.credit.CreditCurve cc,
+		final java.lang.String strComponentCode,
+		final org.drip.param.definition.ProductQuote compQuote,
+		final org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.param.definition.ProductQuote&gt;
+			mTSYQuotes,
+		final org.drip.param.market.LatentStateFixingsContainer lsfc)
+	{
+<span class="fc" id="L201">		return Create (dcFunding, null, gc, cc, strComponentCode, compQuote, mTSYQuotes, lsfc);</span>
+	}
+
+	/**
+	 * Create MarketParams from the array of calibration instruments
+	 * 
+	 * @return MarketParams object
+	 */
+
+	public static final org.drip.param.definition.ScenarioMarketParams CreateMarketParams()
+	{
+		try {
+<span class="nc" id="L213">			return new org.drip.param.market.CurveSurfaceScenarioContainer();</span>
+<span class="nc" id="L214">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L215">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L218">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

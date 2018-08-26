@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Holdings.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.portfolioconstruction.composite</a> &gt; <span class="el_source">Holdings.java</span></div><h1>Holdings.java</h1><pre class="source lang-java linenums">
+package org.drip.portfolioconstruction.composite;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * Holdings is a Portfolio of Holdings in the specified Set of Assets.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class Holdings extends org.drip.portfolioconstruction.core.Block {
+<span class="nc" id="L57">	private java.lang.String _strCurrency = &quot;&quot;;</span>
+
+<span class="nc" id="L59">	private org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; _mapQuantity = new</span>
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
+
+	/**
+	 * Holdings Constructor
+	 * 
+	 * @param strName The Asset Name
+	 * @param strID The Asset ID
+	 * @param strDescription The Asset Description
+	 * @param strCurrency The Account Currency
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public Holdings (
+		final java.lang.String strName,
+		final java.lang.String strID,
+		final java.lang.String strDescription,
+		final java.lang.String strCurrency)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L80">		super (strName, strID, strDescription);</span>
+
+<span class="nc bnc" id="L82" title="All 2 branches missed.">		if (null == (_strCurrency = strCurrency))</span>
+<span class="nc" id="L83">			throw new java.lang.Exception (&quot;Holdings Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L84">	}</span>
+
+	/**
+	 * Retrieve the Set of Asset IDs
+	 * 
+	 * @return The Set of Asset IDs
+	 */
+
+	public java.util.Set&lt;java.lang.String&gt; assets()
+	{
+<span class="nc" id="L94">		return _mapQuantity.keySet();</span>
+	}
+
+	/**
+	 * Retrieve the Map of Holdings Amount
+	 * 
+	 * @return The Map of Holdings Amount
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; quantityMap()
+	{
+<span class="nc" id="L105">		return _mapQuantity;</span>
+	}
+
+	/**
+	 * Add an Asset/Amount Pair
+	 * 
+	 * @param strAssetID The Asset ID
+	 * @param dblQuantity The Amount in the Portfolio
+	 * 
+	 * @return TRUE - The Asset/Amount has been successfully added
+	 */
+
+	public boolean add (
+		final java.lang.String strAssetID,
+		final double dblQuantity)
+	{
+<span class="nc bnc" id="L121" title="All 4 branches missed.">		if (null == strAssetID || strAssetID.isEmpty() || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">			(dblQuantity))</span>
+<span class="nc" id="L123">			return false;</span>
+
+<span class="nc" id="L125">		_mapQuantity.put (strAssetID, dblQuantity);</span>
+
+<span class="nc" id="L127">		return true;</span>
+	}
+
+	/**
+	 * Indicates if an Asset exists in the Holdings
+	 * 
+	 * @param strAssetID The Asset ID
+	 * 
+	 * @return TRUE - The Asset is Part of the Holdings (may have Zero Value though)
+	 */
+
+	public boolean contains (
+		final java.lang.String strAssetID)
+	{
+<span class="nc bnc" id="L141" title="All 4 branches missed.">		return null != strAssetID &amp;&amp; !_mapQuantity.containsKey (strAssetID);</span>
+	}
+
+	/**
+	 * Retrieves the Holdings Quantity for the Asset (if it exists)
+	 * 
+	 * @param strID The Asset ID
+	 * 
+	 * @return The Holdings Quantity for the Asset (if it exists)
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double quantity (
+		final java.lang.String strID)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L158" title="All 2 branches missed.">		if (!contains (strID)) throw new java.lang.Exception (&quot;Holdings::quantity =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc" id="L160">		return _mapQuantity.get (strID);</span>
+	}
+
+	/**
+	 * Retrieve the Currency
+	 * 
+	 * @return The Currency
+	 */
+
+	public java.lang.String currency()
+	{
+<span class="nc" id="L171">		return _strCurrency;</span>
+	}
+
+	/**
+	 * Retrieves the Cash Holdings
+	 * 
+	 * @return The Cash Holdings
+	 */
+
+	public double cash()
+	{
+		try {
+<span class="nc" id="L183">			return quantity (&quot;CASH::&quot; + _strCurrency);</span>
+<span class="nc" id="L184">		} catch (java.lang.Exception e) {</span>
+		}
+
+<span class="nc" id="L187">		return 0.;</span>
+	}
+
+	/**
+	 * Retrieve the Array Form of the Holdings Quantity
+	 * 
+	 * @return Array Form of the Holdings Quantity
+	 */
+
+	public double[] toArray()
+	{
+<span class="nc" id="L198">		int iSize = _mapQuantity.size();</span>
+
+<span class="nc bnc" id="L200" title="All 2 branches missed.">		if (0 == iSize) return null;</span>
+
+<span class="nc" id="L202">		int i = 0;</span>
+<span class="nc" id="L203">		double[] adblQuantity = new double[iSize];</span>
+
+<span class="nc bnc" id="L205" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; meQuantity : _mapQuantity.entrySet())</span>
+<span class="nc" id="L206">			adblQuantity[i++] = meQuantity.getValue();</span>
+
+<span class="nc" id="L208">		return adblQuantity;</span>
+	}
+
+	/**
+	 * Constrict &quot;This&quot; Holdings to those of the Assets in the &quot;Other&quot; Holdings
+	 * 
+	 * @param holdingsOther The Other Holdings Instance
+	 * 
+	 * @return Constriction of &quot;This&quot; Holdings
+	 */
+
+	public double[] constrict (
+		final org.drip.portfolioconstruction.composite.Holdings holdingsOther)
+	{
+<span class="nc bnc" id="L222" title="All 2 branches missed.">		if (null == holdingsOther) return null;</span>
+
+<span class="nc" id="L224">		java.util.Set&lt;java.lang.String&gt; setAsset = holdingsOther.assets();</span>
+
+<span class="nc" id="L226">		java.util.List&lt;java.lang.Double&gt; lsValue = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
+
+<span class="nc bnc" id="L228" title="All 2 branches missed.">		for (java.lang.String strAssetID : setAsset) {</span>
+			try {
+<span class="nc bnc" id="L230" title="All 2 branches missed.">				lsValue.add (contains (strAssetID) ? quantity (strAssetID) : 0.);</span>
+<span class="nc" id="L231">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L232">				e.printStackTrace();</span>
+
+<span class="nc" id="L234">				return null;</span>
+<span class="nc" id="L235">			}</span>
+<span class="nc" id="L236">		}</span>
+
+<span class="nc" id="L238">		int iNumAsset = setAsset.size();</span>
+
+<span class="nc bnc" id="L240" title="All 2 branches missed.">		if (lsValue.size() != iNumAsset) return null;</span>
+
+<span class="nc" id="L242">		int iAssetCount = 0;</span>
+<span class="nc" id="L243">		double[] adblAssetAttributeValue = new double[iNumAsset];</span>
+
+<span class="nc bnc" id="L245" title="All 2 branches missed.">		for (double dblAssetValue : lsValue)</span>
+<span class="nc" id="L246">			adblAssetAttributeValue[iAssetCount++] = dblAssetValue;</span>
+
+<span class="nc" id="L248">		return adblAssetAttributeValue;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,531 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TemplatedFundingCurveBuilder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.funding</a> &gt; <span class="el_source">TemplatedFundingCurveBuilder.java</span></div><h1>TemplatedFundingCurveBuilder.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.funding;
+
+import org.drip.analytics.date.*;
+import org.drip.analytics.support.*;
+import org.drip.market.otc.*;
+import org.drip.param.creator.*;
+import org.drip.param.period.*;
+import org.drip.param.valuation.*;
+import org.drip.product.definition.*;
+import org.drip.product.rates.*;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.state.creator.ScenarioDiscountCurveBuilder;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+import org.drip.state.identifier.ForwardLabel;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * TemplatedFundingCurveBuilder sample demonstrates the usage of the different pre-built Funding Curve
+ * 	Builders. It shows the following:
+ * 	- Construct the Array of Cash Instruments and their Quotes from the given set of parameters.
+ * 	- Construct the Array of Swap Instruments and their Quotes from the given set of parameters.
+ * 	- Construct the Cubic Tension KLK Hyperbolic Discount Factor Shape Preserver.
+ * 	- Construct the Cubic Tension KLK Hyperbolic Discount Factor Shape Preserver with Zero Rate
+ * 		Smoothening applied.
+ * 	- Construct the Cubic Polynomial Discount Factor Shape Preserver.
+ * 	- Construct the Cubic Polynomial Discount Factor Shape Preserver with Zero Rate Smoothening applied.
+ * 	- Construct the Discount Curve using the Bear Sterns' DENSE Methodology.
+ * 	- Construct the Discount Curve using the Bear Sterns' DUALDENSE Methodology.
+ * 	- Cross-Comparison of the Cash Calibration Instrument &quot;Rate&quot; metric across the different curve
+ * 		construction methodologies.
+ * 	- Cross-Comparison of the Swap Calibration Instrument &quot;Rate&quot; metric across the different curve
+ * 		construction methodologies.
+ * 	- Cross-Comparison of the generated Discount Factor across the different curve construction
+ * 		Methodologies for different node points.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L90">public class TemplatedFundingCurveBuilder {</span>
+
+	private static final FixFloatComponent OTCIRS (
+		final JulianDate dtSpot,
+		final String strCurrency,
+		final String strMaturityTenor,
+		final double dblCoupon)
+	{
+<span class="fc" id="L98">		FixedFloatSwapConvention ffConv = IBORFixedFloatContainer.ConventionFromJurisdiction (</span>
+			strCurrency,
+			&quot;ALL&quot;,
+			strMaturityTenor,
+			&quot;MAIN&quot;
+		);
+
+<span class="fc" id="L105">		return ffConv.createFixFloatComponent (</span>
+			dtSpot,
+			strMaturityTenor,
+			dblCoupon,
+			0.,
+			1.
+		);
+	}
+
+	/*
+	 * Construct the Array of Deposit Instruments from the given set of parameters
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final SingleStreamComponent[] DepositInstrumentsFromMaturityDays (
+		final JulianDate dtEffective,
+		final String strCurrency,
+		final int[] aiDay)
+		throws Exception
+	{
+<span class="fc" id="L126">		SingleStreamComponent[] aDeposit = new SingleStreamComponent[aiDay.length];</span>
+
+<span class="fc" id="L128">		ComposableFloatingUnitSetting cfus = new ComposableFloatingUnitSetting (</span>
+			&quot;3M&quot;,
+			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE,
+			null,
+<span class="fc" id="L132">			ForwardLabel.Create (</span>
+				strCurrency,
+				&quot;3M&quot;
+			),
+			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
+			0.
+		);
+
+<span class="fc" id="L140">		CompositePeriodSetting cps = new CompositePeriodSetting (</span>
+			4,
+			&quot;3M&quot;,
+			strCurrency,
+			null,
+			1.,
+			null,
+			null,
+			null,
+			null
+		);
+
+<span class="fc" id="L152">		CashSettleParams csp = new CashSettleParams (</span>
+			0,
+			strCurrency,
+			0
+		);
+
+<span class="fc bfc" id="L158" title="All 2 branches covered.">		for (int i = 0; i &lt; aiDay.length; ++i) {</span>
+<span class="fc" id="L159">			aDeposit[i] = new SingleStreamComponent (</span>
+				&quot;DEPOSIT_&quot; + aiDay[i],
+				new Stream (
+<span class="fc" id="L162">					CompositePeriodBuilder.FloatingCompositeUnit (</span>
+<span class="fc" id="L163">						CompositePeriodBuilder.EdgePair (</span>
+							dtEffective,
+<span class="fc" id="L165">							dtEffective.addBusDays (</span>
+								aiDay[i],
+								strCurrency
+							)
+						),
+						cps,
+						cfus
+					)
+				),
+				csp
+			);
+
+<span class="fc" id="L177">			aDeposit[i].setPrimaryCode (aiDay[i] + &quot;D&quot;);</span>
+		}
+
+<span class="fc" id="L180">		return aDeposit;</span>
+	}
+
+	/*
+	 * Construct the Array of Swap Instruments from the given set of parameters
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final FixFloatComponent[] SwapInstrumentsFromMaturityTenor (
+		final JulianDate dtSpot,
+		final String strCurrency,
+		final String[] astrMaturityTenor)
+		throws Exception
+	{
+<span class="fc" id="L195">		FixFloatComponent[] aIRS = new FixFloatComponent[astrMaturityTenor.length];</span>
+
+<span class="fc bfc" id="L197" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i) {</span>
+<span class="fc" id="L198">			FixFloatComponent irs = OTCIRS (</span>
+				dtSpot,
+				strCurrency,
+				astrMaturityTenor[i],
+				0.
+			);
+
+<span class="fc" id="L205">			irs.setPrimaryCode (&quot;IRS.&quot; + astrMaturityTenor[i] + &quot;.&quot; + strCurrency);</span>
+
+<span class="fc" id="L207">			aIRS[i] = irs;</span>
+		}
+
+<span class="fc" id="L210">		return aIRS;</span>
+	}
+
+	/*
+	 * Compute the desired component Metric
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final double ComponentMetric (
+		final Component comp,
+		final ValuationParams valParams,
+		final MergedDiscountForwardCurve dc,
+		final String strMeasure)
+		throws Exception
+	{
+<span class="fc" id="L226">		return comp.measureValue (</span>
+			valParams,
+			null,
+<span class="fc" id="L229">			MarketParamsBuilder.Create (</span>
+				dc,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null
+			),
+			null,
+			strMeasure
+		);
+	}
+
+	/*
+	 * This sample demonstrates the usage of the different pre-built Discount Curve Builders. It shows the
+	 * 	following:
+	 * 	- Construct the Array of Cash Instruments and their Quotes from the given set of parameters.
+	 * 	- Construct the Array of Swap Instruments and their Quotes from the given set of parameters.
+	 * 	- Construct the Cubic Tension KLK Hyperbolic Discount Factor Shape Preserver.
+	 * 	- Construct the Cubic Tension KLK Hyperbolic Discount Factor Shape Preserver with Zero Rate
+	 * 		Smoothening applied.
+	 * 	- Construct the Cubic Polynomial Discount Factor Shape Preserver.
+	 * 	- Construct the Cubic Polynomial Discount Factor Shape Preserver with Zero Rate Smoothening applied.
+	 * 	- Construct the Discount Curve using the Bear Sterns' DENSE Methodology.
+	 * 	- Construct the Discount Curve using the Bear Sterns' DUALDENSE Methodology.
+	 * 	- Cross-Comparison of the Cash Calibration Instrument &quot;Rate&quot; metric across the different curve
+	 * 		construction methodologies.
+	 * 	- Cross-Comparison of the Swap Calibration Instrument &quot;Rate&quot; metric across the different curve
+	 * 		construction methodologies.
+	 * 	- Cross-Comparison of the generated Discount Factor across the different curve construction
+	 * 		Methodologies for different node points.
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	public static final void TemplatedDiscountCurveBuilderSample (
+		final JulianDate dtSpot,
+		final String strCurrency)
+		throws Exception
+	{
+<span class="fc" id="L270">		ValuationParams valParams = new ValuationParams (</span>
+			dtSpot,
+			dtSpot,
+			strCurrency
+		);
+
+		/*
+		 * Construct the Array of Deposit Instruments and their Quotes from the given set of parameters
+		 */
+
+<span class="fc" id="L280">		SingleStreamComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (</span>
+			dtSpot,
+			strCurrency,
+			new int[] {
+				2, 7, 14, 30, 60, 90, 180, 270, 360, 450, 540, 630, 720
+			}
+		);
+
+<span class="fc" id="L288">		double[] adblDepositQuote = new double[] {</span>
+			0.0017, 0.0017, 0.0018, 0.0020, 0.0023, 0.0027, 0.0032, 0.0041, 0.0054, 0.0077, 0.0104, 0.0134, 0.0160
+		};
+
+<span class="fc" id="L292">		String[] astrDepositManifestMeasure = new String[] {</span>
+			&quot;ForwardRate&quot;,
+			&quot;ForwardRate&quot;,
+			&quot;ForwardRate&quot;,
+			&quot;ForwardRate&quot;,
+			&quot;ForwardRate&quot;,
+			&quot;ForwardRate&quot;,
+			&quot;ForwardRate&quot;,
+			&quot;ForwardRate&quot;,
+			&quot;ForwardRate&quot;,
+			&quot;ForwardRate&quot;,
+			&quot;ForwardRate&quot;,
+			&quot;ForwardRate&quot;,
+			&quot;ForwardRate&quot;
+		};
+
+		/*
+		 * Construct the Array of Swap Instruments and their Quotes from the given set of parameters
+		 */
+
+<span class="fc" id="L312">		FixFloatComponent[] aSwapComp = SwapInstrumentsFromMaturityTenor (</span>
+			dtSpot,
+			strCurrency,
+			new java.lang.String[] {
+				&quot;4Y&quot;, &quot;5Y&quot;, &quot;6Y&quot;, &quot;7Y&quot;, &quot;8Y&quot;, &quot;9Y&quot;, &quot;10Y&quot;, &quot;11Y&quot;, &quot;12Y&quot;, &quot;15Y&quot;, &quot;20Y&quot;, &quot;25Y&quot;, &quot;30Y&quot;, &quot;40Y&quot;, &quot;50Y&quot;
+			}
+		);
+
+<span class="fc" id="L320">		double[] adblSwapQuote = new double[] {</span>
+			0.0166, 0.0206, 0.0241, 0.0269, 0.0292, 0.0311, 0.0326, 0.0340, 0.0351, 0.0375, 0.0393, 0.0402, 0.0407, 0.0409, 0.0409
+		};
+
+<span class="fc" id="L324">		String[] astrSwapManifestMeasure = new String[] {</span>
+			&quot;SwapRate&quot;, &quot;SwapRate&quot;, &quot;SwapRate&quot;, &quot;SwapRate&quot;, &quot;SwapRate&quot;, &quot;SwapRate&quot;, &quot;SwapRate&quot;, &quot;SwapRate&quot;, &quot;SwapRate&quot;, &quot;SwapRate&quot;, &quot;SwapRate&quot;, &quot;SwapRate&quot;, &quot;SwapRate&quot;, &quot;SwapRate&quot;, &quot;SwapRate&quot;
+		};
+
+		/*
+		 * Construct the Cubic Tension KLK Hyperbolic Discount Factor Shape Preserver
+		 */
+
+<span class="fc" id="L332">		MergedDiscountForwardCurve dcKLKHyperbolicShapePreserver = ScenarioDiscountCurveBuilder.CubicKLKHyperbolicDFRateShapePreserver (</span>
+			&quot;KLK_HYPERBOLIC_SHAPE_TEMPLATE&quot;,
+			valParams,
+			aDepositComp,
+			adblDepositQuote,
+			astrDepositManifestMeasure,
+			aSwapComp,
+			adblSwapQuote,
+			astrSwapManifestMeasure,
+			false
+		);
+
+		/*
+		 * Construct the Cubic Tension KLK Hyperbolic Discount Factor Shape Preserver with Zero Rate
+		 * 	Smoothening applied
+		 */
+
+<span class="fc" id="L349">		MergedDiscountForwardCurve dcKLKHyperbolicSmoother = ScenarioDiscountCurveBuilder.CubicKLKHyperbolicDFRateShapePreserver (</span>
+			&quot;KLK_HYPERBOLIC_SMOOTH_TEMPLATE&quot;,
+			valParams,
+			aDepositComp,
+			adblDepositQuote,
+			astrDepositManifestMeasure,
+			aSwapComp,
+			adblSwapQuote,
+			astrSwapManifestMeasure,
+			true
+		);
+
+		/*
+		 * Construct the Cubic Polynomial Discount Factor Shape Preserver
+		 */
+
+<span class="fc" id="L365">		MergedDiscountForwardCurve dcCubicPolyShapePreserver = ScenarioDiscountCurveBuilder.CubicPolyDFRateShapePreserver (</span>
+			&quot;CUBIC_POLY_SHAPE_TEMPLATE&quot;,
+			valParams,
+			aDepositComp,
+			adblDepositQuote,
+			astrDepositManifestMeasure,
+			aSwapComp,
+			adblSwapQuote,
+			astrSwapManifestMeasure,
+			false
+		);
+
+		/*
+		 * Construct the Cubic Polynomial Discount Factor Shape Preserver with Zero Rate Smoothening applied.
+		 */
+
+<span class="fc" id="L381">		MergedDiscountForwardCurve dcCubicPolySmoother = ScenarioDiscountCurveBuilder.CubicPolyDFRateShapePreserver (</span>
+			&quot;CUBIC_POLY_SMOOTH_TEMPLATE&quot;,
+			valParams,
+			aDepositComp,
+			adblDepositQuote,
+			astrDepositManifestMeasure,
+			aSwapComp,
+			adblSwapQuote,
+			astrSwapManifestMeasure,
+			true
+		);
+
+		/*
+		 * Construct the Discount Curve using the Bear Sterns' DENSE Methodology.
+		 */
+
+<span class="fc" id="L397">		MergedDiscountForwardCurve dcDENSE = ScenarioDiscountCurveBuilder.DENSE (</span>
+			&quot;DENSE&quot;,
+			valParams,
+			aDepositComp,
+			adblDepositQuote,
+			astrDepositManifestMeasure,
+			aSwapComp,
+			adblSwapQuote,
+			astrSwapManifestMeasure,
+			null
+		);
+
+		/*
+		 * Construct the Discount Curve using the Bear Sterns' DUAL DENSE Methodology.
+		 */
+
+<span class="fc" id="L413">		MergedDiscountForwardCurve dcDualDENSE = ScenarioDiscountCurveBuilder.DUALDENSE (</span>
+			&quot;DENSE&quot;,
+			valParams,
+			aDepositComp,
+			adblDepositQuote,
+			&quot;1M&quot;,
+			astrDepositManifestMeasure,
+			aSwapComp,
+			adblSwapQuote,
+			&quot;3M&quot;,
+			astrSwapManifestMeasure,
+			null
+		);
+
+		/*
+		 * Cross-Comparison of the Deposit Calibration Instrument &quot;Rate&quot; metric across the different curve
+		 * 	construction methodologies.
+		 */
+
+<span class="fc" id="L432">		System.out.println (&quot;\n\t---------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L434">		System.out.println (&quot;\t\t\t\t\t\t\tDEPOSIT INSTRUMENTS CALIBRATION RECOVERY&quot;);</span>
+
+<span class="fc" id="L436">		System.out.println (&quot;\t---------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L438">		System.out.println (&quot;\t   MATURITY  | KLK HYPER SHAPE | KLK HYPER SMOTH | CUBE POLY SHAPE | CUBE POLY SMOTH |      DENSE      |   DUAL  DENSE   |      INPUT&quot;);</span>
+
+<span class="fc" id="L440">		System.out.println (&quot;\t---------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+
+<span class="fc bfc" id="L442" title="All 2 branches covered.">		for (int i = 0; i &lt; aDepositComp.length; ++i)</span>
+<span class="fc" id="L443">			System.out.println (&quot;\t[&quot; + aDepositComp[i].maturityDate() + &quot;] =    &quot; +</span>
+<span class="fc" id="L444">				FormatUtil.FormatDouble (ComponentMetric (aDepositComp[i], valParams, dcKLKHyperbolicShapePreserver, &quot;Rate&quot;), 1, 6, 1.) + &quot;    |    &quot; +</span>
+<span class="fc" id="L445">				FormatUtil.FormatDouble (ComponentMetric (aDepositComp[i], valParams, dcKLKHyperbolicSmoother, &quot;Rate&quot;), 1, 6, 1.) + &quot;    |    &quot; +</span>
+<span class="fc" id="L446">				FormatUtil.FormatDouble (ComponentMetric (aDepositComp[i], valParams, dcCubicPolyShapePreserver, &quot;Rate&quot;), 1, 6, 1.) + &quot;    |    &quot; +</span>
+<span class="fc" id="L447">				FormatUtil.FormatDouble (ComponentMetric (aDepositComp[i], valParams, dcCubicPolySmoother, &quot;Rate&quot;), 1, 6, 1.) + &quot;    |    &quot; +</span>
+<span class="fc" id="L448">				FormatUtil.FormatDouble (ComponentMetric (aDepositComp[i], valParams, dcDENSE, &quot;Rate&quot;), 1, 6, 1.) + &quot;    |    &quot; +</span>
+<span class="fc" id="L449">				FormatUtil.FormatDouble (ComponentMetric (aDepositComp[i], valParams, dcDualDENSE, &quot;Rate&quot;), 1, 6, 1.) + &quot;    |    &quot; +</span>
+<span class="fc" id="L450">				FormatUtil.FormatDouble (adblDepositQuote[i], 1, 6, 1.)</span>
+			);
+
+		/*
+		 * Cross-Comparison of the Swap Calibration Instrument &quot;Rate&quot; metric across the different curve
+		 * 	construction methodologies.
+		 */
+
+<span class="fc" id="L458">		System.out.println (&quot;\n\t---------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L460">		System.out.println (&quot;\t\t\t\t\t\t\tSWAP INSTRUMENTS CALIBRATION RECOVERY&quot;);</span>
+
+<span class="fc" id="L462">		System.out.println (&quot;\t---------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L464">		System.out.println (&quot;\t   MATURITY  | KLK HYPER SHAPE | KLK HYPER SMOTH | CUBE POLY SHAPE | CUBE POLY SMOTH |      DENSE      |   DUAL  DENSE   |      INPUT&quot;);</span>
+
+<span class="fc" id="L466">		System.out.println (&quot;\t---------------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+
+<span class="fc bfc" id="L468" title="All 2 branches covered.">		for (int i = 0; i &lt; aSwapComp.length; ++i)</span>
+<span class="fc" id="L469">			System.out.println (&quot;\t[&quot; + aSwapComp[i].maturityDate() + &quot;] =    &quot; +</span>
+<span class="fc" id="L470">				FormatUtil.FormatDouble (ComponentMetric (aSwapComp[i], valParams, dcKLKHyperbolicShapePreserver, &quot;CalibSwapRate&quot;), 1, 6, 1.) + &quot;    |    &quot; +</span>
+<span class="fc" id="L471">				FormatUtil.FormatDouble (ComponentMetric (aSwapComp[i], valParams, dcKLKHyperbolicSmoother, &quot;CalibSwapRate&quot;), 1, 6, 1.) + &quot;    |    &quot; +</span>
+<span class="fc" id="L472">				FormatUtil.FormatDouble (ComponentMetric (aSwapComp[i], valParams, dcCubicPolyShapePreserver, &quot;CalibSwapRate&quot;), 1, 6, 1.) + &quot;    |    &quot; +</span>
+<span class="fc" id="L473">				FormatUtil.FormatDouble (ComponentMetric (aSwapComp[i], valParams, dcCubicPolySmoother, &quot;CalibSwapRate&quot;), 1, 6, 1.) + &quot;    |    &quot; +</span>
+<span class="fc" id="L474">				FormatUtil.FormatDouble (ComponentMetric (aSwapComp[i], valParams, dcDENSE, &quot;CalibSwapRate&quot;), 1, 6, 1.) + &quot;    |    &quot; +</span>
+<span class="fc" id="L475">				FormatUtil.FormatDouble (ComponentMetric (aSwapComp[i], valParams, dcDualDENSE, &quot;CalibSwapRate&quot;), 1, 6, 1.) + &quot;    |    &quot; +</span>
+<span class="fc" id="L476">				FormatUtil.FormatDouble (adblSwapQuote[i], 1, 6, 1.)</span>
+			);
+
+		/*
+		 * Cross-Comparison of the generated Discount Factor across the different curve construction
+		 * 	methodologies for different node points.
+		 */
+
+<span class="fc" id="L484">		System.out.println (&quot;\n\t-----------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L486">		System.out.println (&quot;\t      DF     |   KLK HYPER SHAPE |  KLK HYPER SMOTH  |  CUBE POLY SHAPE  |  CUBE POLY SMOTH  |       DENSE       |     DUAL DENSE    &quot;);</span>
+
+<span class="fc" id="L488">		System.out.println (&quot;\t-----------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L490">		int iStartDate = aDepositComp[0].maturityDate().julian();</span>
+
+<span class="fc" id="L492">		int iEndDate = aSwapComp[aSwapComp.length - 1].maturityDate().julian();</span>
+
+<span class="fc" id="L494">		int iDateIncrement = (iEndDate - iStartDate) / 20;</span>
+
+<span class="fc bfc" id="L496" title="All 2 branches covered.">		for (int iDate = iStartDate; iDate &lt;= iEndDate; iDate += iDateIncrement) {</span>
+<span class="fc" id="L497">			System.out.println (&quot;\t[&quot; + new JulianDate (iDate) + &quot;] =    &quot; +</span>
+<span class="fc" id="L498">				FormatUtil.FormatDouble (dcKLKHyperbolicShapePreserver.df (iDate), 1, 8, 1.) + &quot;    |    &quot; +</span>
+<span class="fc" id="L499">				FormatUtil.FormatDouble (dcKLKHyperbolicSmoother.df (iDate), 1, 8, 1.) + &quot;    |    &quot; +</span>
+<span class="fc" id="L500">				FormatUtil.FormatDouble (dcCubicPolyShapePreserver.df (iDate), 1, 8, 1.) + &quot;    |    &quot; +</span>
+<span class="fc" id="L501">				FormatUtil.FormatDouble (dcCubicPolySmoother.df (iDate), 1, 8, 1.) + &quot;    |    &quot; +</span>
+<span class="fc" id="L502">				FormatUtil.FormatDouble (dcDENSE.df (iDate), 1, 8, 1.) + &quot;    |    &quot; +</span>
+<span class="fc" id="L503">				FormatUtil.FormatDouble (dcDualDENSE.df (iDate), 1, 8, 1.)</span>
+			);
+		}
+<span class="fc" id="L506">	}</span>
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+		/*
+		 * Initialize the Credit Analytics Library
+		 */
+
+<span class="fc" id="L516">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="fc" id="L518">		String strCurrency = &quot;EUR&quot;;</span>
+
+<span class="fc" id="L520">		JulianDate dtToday = DateUtil.Today().addTenorAndAdjust (</span>
+			&quot;0D&quot;,
+			strCurrency
+		);
+
+<span class="fc" id="L525">		TemplatedDiscountCurveBuilderSample (</span>
+			dtToday,
+			strCurrency
+		);
+<span class="fc" id="L529">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

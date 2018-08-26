@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JointR1NormalCombinationEngine.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.measure.bayesian</a> &gt; <span class="el_source">JointR1NormalCombinationEngine.java</span></div><h1>JointR1NormalCombinationEngine.java</h1><pre class="source lang-java linenums">
+package org.drip.measure.bayesian;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * JointR1NormalCombinationEngine implements the Engine that generates the Combined/Posterior Distribution
+ *  from the Prior and the Conditional Joint R^1 Multivariate Normal Distributions.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class JointR1NormalCombinationEngine implements org.drip.measure.bayesian.JointR1CombinationEngine {
+
+	/**
+	 * Empty JointR1NormalConvolutionEngine Construction
+	 */
+
+	public JointR1NormalCombinationEngine()
+<span class="nc" id="L65">	{</span>
+<span class="nc" id="L66">	}</span>
+
+	@Override public org.drip.measure.bayesian.JointPosteriorMetrics process (
+		final org.drip.measure.continuous.R1Multivariate r1mPrior,
+		final org.drip.measure.continuous.R1Multivariate r1mUnconditional,
+		final org.drip.measure.continuous.R1Multivariate r1mConditional)
+	{
+<span class="nc bnc" id="L73" title="All 12 branches missed.">		if (null == r1mPrior || !(r1mPrior instanceof org.drip.measure.gaussian.R1MultivariateNormal) || null</span>
+			== r1mConditional || !(r1mConditional instanceof org.drip.measure.gaussian.R1MultivariateNormal)
+				|| null == r1mUnconditional || !(r1mUnconditional instanceof
+					org.drip.measure.gaussian.R1MultivariateNormal))
+<span class="nc" id="L77">			return null;</span>
+
+<span class="nc" id="L79">		org.drip.measure.gaussian.R1MultivariateNormal r1mnPrior =</span>
+			(org.drip.measure.gaussian.R1MultivariateNormal) r1mPrior;
+<span class="nc" id="L81">		org.drip.measure.gaussian.R1MultivariateNormal r1mnConditional =</span>
+			(org.drip.measure.gaussian.R1MultivariateNormal) r1mConditional;
+<span class="nc" id="L83">		org.drip.measure.gaussian.R1MultivariateNormal r1mnUnconditional =</span>
+			(org.drip.measure.gaussian.R1MultivariateNormal) r1mUnconditional;
+
+<span class="nc" id="L86">		double[][] aadblPriorPrecision = r1mnPrior.covariance().precisionMatrix();</span>
+
+<span class="nc" id="L88">		double[][] aadblConditionalPrecision = r1mnConditional.covariance().precisionMatrix();</span>
+
+<span class="nc" id="L90">		int iNumVariate = aadblConditionalPrecision.length;</span>
+<span class="nc" id="L91">		double[] adblJointMean = new double[iNumVariate];</span>
+<span class="nc" id="L92">		double[][] aadblJointPrecision = new double[iNumVariate][iNumVariate];</span>
+<span class="nc" id="L93">		double[][] aadblPosteriorCovariance = new double[iNumVariate][iNumVariate];</span>
+
+<span class="nc bnc" id="L95" title="All 2 branches missed.">		if (aadblPriorPrecision.length != iNumVariate) return null;</span>
+
+<span class="nc" id="L97">		double[] adblPrecisionWeightedPriorMean = org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="nc" id="L98">			(aadblPriorPrecision, r1mnPrior.mean());</span>
+
+<span class="nc bnc" id="L100" title="All 2 branches missed.">		if (null == adblPrecisionWeightedPriorMean) return null;</span>
+
+<span class="nc" id="L102">		double[] adblPrecisionWeightedConditionalMean = org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="nc" id="L103">			(aadblConditionalPrecision, r1mnConditional.mean());</span>
+
+<span class="nc bnc" id="L105" title="All 2 branches missed.">		if (null == adblPrecisionWeightedConditionalMean) return null;</span>
+
+<span class="nc bnc" id="L107" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVariate; ++i) {</span>
+<span class="nc" id="L108">			adblJointMean[i] = adblPrecisionWeightedPriorMean[i] + adblPrecisionWeightedConditionalMean[i];</span>
+
+<span class="nc bnc" id="L110" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumVariate; ++j)</span>
+<span class="nc" id="L111">				aadblJointPrecision[i][j] = aadblPriorPrecision[i][j] + aadblConditionalPrecision[i][j];</span>
+		}
+
+<span class="nc" id="L114">		double[][] aadblJointCovariance = org.drip.quant.linearalgebra.Matrix.InvertUsingGaussianElimination</span>
+<span class="nc" id="L115">			(aadblJointPrecision);</span>
+
+<span class="nc" id="L117">		double[] adblJointPosteriorMean = org.drip.quant.linearalgebra.Matrix.Product (aadblJointCovariance,</span>
+			adblJointMean);
+
+<span class="nc" id="L120">		double[][] aadblUnconditionalCovariance = r1mnUnconditional.covariance().covarianceMatrix();</span>
+
+<span class="nc" id="L122">		org.drip.measure.continuous.MultivariateMeta meta = r1mnPrior.meta();</span>
+
+<span class="nc bnc" id="L124" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVariate; ++i) {</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumVariate; ++j)</span>
+<span class="nc" id="L126">				aadblPosteriorCovariance[i][j] = aadblJointCovariance[i][j] +</span>
+					aadblUnconditionalCovariance[i][j];
+		}
+
+		try {
+<span class="nc" id="L131">			return new org.drip.measure.bayesian.JointPosteriorMetrics (r1mPrior, r1mUnconditional,</span>
+				r1mConditional, new org.drip.measure.gaussian.R1MultivariateNormal (meta,
+					adblJointPosteriorMean, new org.drip.measure.gaussian.Covariance (aadblJointCovariance)),
+						new org.drip.measure.gaussian.R1MultivariateNormal (meta, adblJointPosteriorMean, new
+							org.drip.measure.gaussian.Covariance (aadblPosteriorCovariance)));
+<span class="nc" id="L136">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L137">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L140">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

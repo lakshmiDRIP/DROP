@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ConstraintRealization.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.portfolioconstruction.optimizer</a> &gt; <span class="el_source">ConstraintRealization.java</span></div><h1>ConstraintRealization.java</h1><pre class="source lang-java linenums">
+package org.drip.portfolioconstruction.optimizer;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * ConstraintRealization holds the Realized Set of Values coming out of an Optimizer Run, along with the
+ * 	Bounds.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class ConstraintRealization
+{
+<span class="nc" id="L59">	private double _dblValue = java.lang.Double.NaN;</span>
+<span class="nc" id="L60">	private double _dblLowerBound = java.lang.Double.NaN;</span>
+<span class="nc" id="L61">	private double _dblUpperBound = java.lang.Double.NaN;</span>
+
+	/**
+	 * ConstraintRealization Constructor
+	 * 
+	 * @param dblValue The Constraint Value
+	 * @param dblLowerBound The Constraint Lower Bound
+	 * @param dblUpperBound The Constraint Upper Bound
+	 */
+
+	public ConstraintRealization (
+		final double dblValue,
+		final double dblLowerBound,
+		final double dblUpperBound)
+<span class="nc" id="L75">	{</span>
+<span class="nc" id="L76">		_dblValue = dblValue;</span>
+<span class="nc" id="L77">		_dblLowerBound = dblLowerBound;</span>
+<span class="nc" id="L78">		_dblUpperBound = dblUpperBound;</span>
+<span class="nc" id="L79">	}</span>
+
+	/**
+	 * Retrieve the Lower Bound
+	 * 
+	 * @return The Lower Bound
+	 */
+
+	public double lowerBound()
+	{
+<span class="nc" id="L89">		return _dblLowerBound;</span>
+	}
+
+	/**
+	 * Retrieve the Upper Bound
+	 * 
+	 * @return The Upper Bound
+	 */
+
+	public double upperBound()
+	{
+<span class="nc" id="L100">		return _dblUpperBound;</span>
+	}
+
+	/**
+	 * Retrieve the Point Value
+	 * 
+	 * @return The Point Value
+	 */
+
+	public double value()
+	{
+<span class="nc" id="L111">		return _dblValue;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

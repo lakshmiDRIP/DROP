@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PathGovvie.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.state.sequence</a> &gt; <span class="el_source">PathGovvie.java</span></div><h1>PathGovvie.java</h1><pre class="source lang-java linenums">
+package org.drip.state.sequence;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * PathGovvie exposes the Functionality to generate a Sequence of Govvie Curve Realizations across Multiple
+ *  Paths.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class PathGovvie extends org.drip.state.sequence.PathRd {
+<span class="fc" id="L58">	private org.drip.state.sequence.GovvieBuilderSettings _gbs = null;</span>
+
+	/**
+	 * PathGovvie Constructor
+	 * 
+	 * @param gbs Govvie Builder Settings Instance
+	 * @param dblVolatility Volatility
+	 * @param bLogNormal TRUE - The Generated Random Numbers are Log Normal
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public PathGovvie (
+		final org.drip.state.sequence.GovvieBuilderSettings gbs,
+		final double dblVolatility,
+		final boolean bLogNormal)
+		throws java.lang.Exception
+	{
+<span class="fc" id="L76">		super (gbs.groundForwardYield(), dblVolatility, bLogNormal);</span>
+
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">		if (null == (_gbs = gbs)) throw new java.lang.Exception (&quot;PathGovvie Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L79">	}</span>
+
+	/**
+	 * Generate the Govvie Builder Settings Instance
+	 * 
+	 * @return The Govvie Builder Settings Instance
+	 */
+
+	public org.drip.state.sequence.GovvieBuilderSettings govvieBuilderSettings()
+	{
+<span class="fc" id="L89">		return _gbs;</span>
+	}
+
+	/**
+	 * Generate the R^d Path Govvie Curves using the Initial R^d and the Evolution Time Width
+	 * 
+	 * @param iNumPath Number of Paths
+	 * 
+	 * @return The R^d Path//Vertex Govvie Curves
+	 */
+
+	public org.drip.state.govvie.GovvieCurve[] curveSequence (
+		final int iNumPath)
+	{
+<span class="fc" id="L103">		java.lang.String strCurrency = _gbs.groundState().currency();</span>
+
+<span class="fc" id="L105">		org.drip.analytics.date.JulianDate dtSpot = _gbs.spot();</span>
+
+<span class="fc" id="L107">		double[][] aadblPathSequence = sequence (iNumPath);</span>
+
+<span class="fc" id="L109">		java.lang.String strTreasuryCode = _gbs.code();</span>
+
+<span class="fc" id="L111">		java.lang.String[] astrTenor = _gbs.tenors();</span>
+
+<span class="pc bpc" id="L113" title="1 of 2 branches missed.">		if (null == aadblPathSequence) return null;</span>
+
+<span class="fc" id="L115">		int iEpochDate = dtSpot.julian();</span>
+
+<span class="fc" id="L117">		int iNumTenor = astrTenor.length;</span>
+<span class="fc" id="L118">		int[] aiDate = new int[iNumTenor];</span>
+<span class="fc" id="L119">		org.drip.state.nonlinear.FlatForwardGovvieCurve[] aFFGC = new</span>
+			org.drip.state.nonlinear.FlatForwardGovvieCurve[iNumPath];
+
+<span class="fc bfc" id="L122" title="All 2 branches covered.">		for (int iTenor = 0; iTenor &lt; iNumTenor; ++iTenor) {</span>
+<span class="fc" id="L123">			org.drip.analytics.date.JulianDate dtTenor = dtSpot.addTenor (astrTenor[iTenor]);</span>
+
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">			if (null == dtTenor) return null;</span>
+
+<span class="fc" id="L127">			aiDate[iTenor] = dtTenor.julian();</span>
+		}
+
+<span class="fc bfc" id="L130" title="All 2 branches covered.">		for (int iPath = 0; iPath &lt; iNumPath; ++iPath) {</span>
+			try {
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">				if (null == (aFFGC[iPath] = new org.drip.state.nonlinear.FlatForwardGovvieCurve (iEpochDate,</span>
+					strTreasuryCode, strCurrency, aiDate, aadblPathSequence[iPath])))
+<span class="nc" id="L134">					return null;</span>
+<span class="nc" id="L135">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L136">				e.printStackTrace();</span>
+
+<span class="nc" id="L138">				return null;</span>
+<span class="fc" id="L139">			}</span>
+		}
+
+<span class="fc" id="L142">		return aFFGC;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

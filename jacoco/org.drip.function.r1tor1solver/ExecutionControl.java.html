@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ExecutionControl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.function.r1tor1solver</a> &gt; <span class="el_source">ExecutionControl.java</span></div><h1>ExecutionControl.java</h1><pre class="source lang-java linenums">
+package org.drip.function.r1tor1solver;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * Copyright (C) 2012 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * ExecutionControl implements the core fixed point search execution control and customization functionality.
+ * 
+ * ExecutionControl is used for a) calculating the absolute tolerance, and b) determining whether the OF has
+ * 	reached the goal.
+ * 
+ * ExecutionControl determines the execution termination using its ExecutionControlParams instance. 
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class ExecutionControl {
+<span class="fc" id="L67">	private org.drip.function.r1tor1solver.ExecutionControlParams _ecp = null;</span>
+
+<span class="fc" id="L69">	protected org.drip.function.definition.R1ToR1 _of = null;</span>
+
+	/**
+	 * ExecutionControl constructor
+	 * 
+	 * @param of Objective Function
+	 * @param ecp Execution Control Parameters
+	 * 
+	 * @throws java.lang.Exception Thrown if inputs are invalid
+	 */
+
+	public ExecutionControl (
+		final org.drip.function.definition.R1ToR1 of,
+		final org.drip.function.r1tor1solver.ExecutionControlParams ecp)
+		throws java.lang.Exception
+<span class="fc" id="L84">	{</span>
+<span class="pc bpc" id="L85" title="1 of 2 branches missed.">		if (null == (_of = of))</span>
+<span class="nc" id="L86">			throw new java.lang.Exception (&quot;ExecutionControl constructor: Invalid inputs&quot;);</span>
+
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">		if (null == (_ecp = ecp)) _ecp = new org.drip.function.r1tor1solver.ExecutionControlParams();</span>
+<span class="fc" id="L89">	}</span>
+
+	/**
+	 * Retrieve the Number of Iterations
+	 * 
+	 * @return Number of solver iterations
+	 */
+
+	public int getNumIterations()
+	{
+<span class="fc" id="L99">		return _ecp.getNumIterations();</span>
+	}
+
+	/**
+	 * Calculate the absolute OF tolerance using the initial OF value
+	 * 
+	 * @param dblOFInitial Initial OF Value
+	 * 
+	 * @return The absolute OF Tolerance
+	 * 
+	 * @throws java.lang.Exception Thrown if absolute tolerance cannot be calculated
+	 */
+
+	public double calcAbsoluteOFTolerance (
+		final double dblOFInitial)
+		throws java.lang.Exception
+	{
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblOFInitial))</span>
+<span class="nc" id="L117">			throw new java.lang.Exception (&quot;ExecutionControl::calcAbsoluteOFTolerance =&gt; Invalid inputs!&quot;);</span>
+
+<span class="fc" id="L119">		double dblAbsoluteTolerance = java.lang.Math.abs (dblOFInitial) * _ecp.getOFGoalToleranceFactor();</span>
+
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblAbsoluteTolerance) || dblAbsoluteTolerance &lt;</span>
+<span class="fc bfc" id="L122" title="All 2 branches covered.">			_ecp.getAbsoluteOFToleranceFallback())</span>
+<span class="fc" id="L123">			dblAbsoluteTolerance = _ecp.getAbsoluteOFToleranceFallback();</span>
+
+<span class="fc" id="L125">		return dblAbsoluteTolerance;</span>
+	}
+
+	/**
+	 * Calculate the absolute variate convergence amount using the initial variate
+	 * 
+	 * @param dblInitialVariate Initial Variate
+	 * 
+	 * @return The Absolute Variate Convergence Amount
+	 * 
+	 * @throws java.lang.Exception Thrown if Absolute Variate Convergence Amount cannot be calculated
+	 */
+
+	public double calcAbsoluteVariateConvergence (
+		final double dblInitialVariate)
+		throws java.lang.Exception
+	{
+<span class="pc bpc" id="L142" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblInitialVariate))</span>
+<span class="nc" id="L143">			throw new java.lang.Exception</span>
+				(&quot;ExecutionControl::calcAbsoluteVariateConvergence =&gt; Invalid inputs!&quot;);
+
+<span class="fc" id="L146">		double dblAbsoluteConvergence = java.lang.Math.abs (dblInitialVariate) *</span>
+<span class="fc" id="L147">			_ecp.getVariateConvergenceFactor();</span>
+
+<span class="pc bpc" id="L149" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblAbsoluteConvergence) || dblAbsoluteConvergence &lt;</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">			_ecp.getAbsoluteVariateConvergenceFallback())</span>
+<span class="fc" id="L151">			dblAbsoluteConvergence = _ecp.getAbsoluteVariateConvergenceFallback();</span>
+
+<span class="fc" id="L153">		return dblAbsoluteConvergence;</span>
+	}
+
+	/**
+	 * Check to see if the OF has reached the goal
+	 * 
+	 * @param dblAbsoluteTolerance Absolute Tolerance
+	 * @param dblOF OF Value
+	 * @param dblOFGoal OF Goal
+	 * 
+	 * @return TRUE - If the OF has reached the goal
+	 * 
+	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 */
+
+	public boolean hasOFReachedGoal (
+		final double dblAbsoluteTolerance,
+		final double dblOF,
+		final double dblOFGoal)
+		throws java.lang.Exception
+	{
+<span class="pc bpc" id="L174" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblAbsoluteTolerance) ||</span>
+<span class="pc bpc" id="L175" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblOF) || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L176" title="1 of 2 branches missed.">				(dblOFGoal))</span>
+<span class="nc" id="L177">			throw new java.lang.Exception (&quot;ExecutionControl::hasOFReachedGoal =&gt; Invalid inputs!&quot;);</span>
+
+<span class="fc bfc" id="L179" title="All 2 branches covered.">		return dblAbsoluteTolerance &gt; java.lang.Math.abs (dblOF - dblOFGoal);</span>
+	}
+
+	/**
+	 * Indicate if the variate convergence check has been turned on
+	 * 
+	 * @return TRUE - Variate convergence check has been turned on
+	 */
+
+	public boolean isVariateConvergenceCheckEnabled()
+	{
+<span class="fc" id="L190">		return _ecp.isVariateConvergenceCheckEnabled();</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

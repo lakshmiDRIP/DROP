@@ -9,6 +9,7 @@ import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.simm20.fx.FXRiskThresholdContainer;
 import org.drip.simm20.margin.BucketAggregate;
+import org.drip.simm20.margin.RiskClassAggregate;
 import org.drip.simm20.parameters.RiskClassSensitivitySettings;
 import org.drip.simm20.product.BucketSensitivity;
 import org.drip.simm20.product.RiskClassSensitivity;
@@ -259,18 +260,38 @@ public class FXDeltaMargin
 
 		System.out.println();
 
-		System.out.println ("\t|----------------------------------||");
+		RiskClassAggregate riskClassAggregate = new RiskClassSensitivity (bucketSensitivityMap).aggregate
+			(riskClassSensitivitySettings);
 
-		System.out.println ("\t| RISK CLASS DELTA MARGIN => " +
-			FormatUtil.FormatDouble (
-				Math.sqrt (
-					new RiskClassSensitivity (bucketSensitivityMap).aggregate
-						(riskClassSensitivitySettings).deltaSBA()
-				),
-			4, 0, 1.) + " ||"
+		System.out.println ("\t|--------------------------------------------------||");
+
+		System.out.println ("\t|              SBA BASED DELTA MARGIN              ||");
+
+		System.out.println ("\t|--------------------------------------------------||");
+
+		System.out.println ("\t|                                                  ||");
+
+		System.out.println ("\t|    L -> R:                                       ||");
+
+		System.out.println ("\t|                                                  ||");
+
+		System.out.println ("\t|            - Core Delta SBA Delta                ||");
+
+		System.out.println ("\t|            - Residual Delta SBA Delta            ||");
+
+		System.out.println ("\t|            - SBA Delta Margin                    ||");
+
+		System.out.println ("\t|--------------------------------------------------||");
+
+		System.out.println ("\t| DELTA MARGIN COMPONENTS => " +
+			FormatUtil.FormatDouble (Math.sqrt (riskClassAggregate.coreDeltaSBAVariance()), 4, 0, 1.) +
+				" | " +
+			FormatUtil.FormatDouble (Math.sqrt (riskClassAggregate.residualDeltaSBAVariance()), 4, 0, 1.) +
+				" | " +
+			FormatUtil.FormatDouble (riskClassAggregate.deltaSBA(), 4, 0, 1.) + " ||"
 		);
 
-		System.out.println ("\t|----------------------------------||");
+		System.out.println ("\t|--------------------------------------------------||");
 
 		System.out.println();
 

@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TreasuryAPI.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.service.product</a> &gt; <span class="el_source">TreasuryAPI.java</span></div><h1>TreasuryAPI.java</h1><pre class="source lang-java linenums">
+package org.drip.service.product;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * TreasuryAPI demonstrates the Details behind the Pricing and the Scenario Runs behind a Treasury Bond.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L57">public class TreasuryAPI {</span>
+
+	/**
+	 * Compute the Horizon Change Attribution Details for the Specified Treasury Bond
+	 * 
+	 * @param gcFirst First Day Govvie Curve
+	 * @param gcSecond Second Date Govvie Curve
+	 * @param mapRollDownGovvieCurve Map of the Roll Down Govvie Curves
+	 * @param strMaturityTenor Treasury Bond Maturity Tenor
+	 * @param strCode Treasury Bond Code
+	 * 
+	 * @return The Horizon Change Attribution Instance
+	 */
+
+	public static final org.drip.historical.attribution.PositionChangeComponents HorizonChangeAttribution (
+		final org.drip.state.govvie.GovvieCurve gcFirst,
+		final org.drip.state.govvie.GovvieCurve gcSecond,
+		final org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.state.govvie.GovvieCurve&gt;
+			mapRollDownGovvieCurve,
+		final java.lang.String strMaturityTenor,
+		final java.lang.String strCode)
+	{
+<span class="nc bnc" id="L79" title="All 6 branches missed.">		if (null == gcFirst || null == mapRollDownGovvieCurve || 0 == mapRollDownGovvieCurve.size())</span>
+<span class="nc" id="L80">			return null;</span>
+
+<span class="nc" id="L82">		double dblFirstGovvieCurveYield = java.lang.Double.NaN;</span>
+
+		try {
+<span class="nc" id="L85">			dblFirstGovvieCurveYield = gcFirst.yield (strMaturityTenor);</span>
+<span class="nc" id="L86">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L87">			e.printStackTrace();</span>
+
+<span class="nc" id="L89">			return null;</span>
+<span class="nc" id="L90">		}</span>
+
+<span class="nc" id="L92">		org.drip.analytics.date.JulianDate dtFirst = gcFirst.epoch();</span>
+
+<span class="nc" id="L94">		org.drip.param.market.CurveSurfaceQuoteContainer csqcFirst = new</span>
+			org.drip.param.market.CurveSurfaceQuoteContainer();
+
+<span class="nc bnc" id="L97" title="All 2 branches missed.">		if (!csqcFirst.setGovvieState (gcFirst)) return null;</span>
+
+<span class="nc" id="L99">		org.drip.param.market.CurveSurfaceQuoteContainer csqcSecond = new</span>
+			org.drip.param.market.CurveSurfaceQuoteContainer();
+
+<span class="nc bnc" id="L102" title="All 2 branches missed.">		if (!csqcSecond.setGovvieState (gcSecond)) return null;</span>
+
+		org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;
+<span class="nc" id="L105">			mapCSQCRollDown = new</span>
+				org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;();
+
+<span class="nc bnc" id="L108" title="All 2 branches missed.">		for (java.lang.String strRollDownTenor : mapRollDownGovvieCurve.keySet()) {</span>
+<span class="nc" id="L109">			org.drip.param.market.CurveSurfaceQuoteContainer csqcRollDown = new</span>
+				org.drip.param.market.CurveSurfaceQuoteContainer();
+
+<span class="nc" id="L112">			org.drip.state.govvie.GovvieCurve gcRollDown = mapRollDownGovvieCurve.get (strRollDownTenor);</span>
+
+<span class="nc bnc" id="L114" title="All 4 branches missed.">			if (null == gcRollDown || !csqcRollDown.setGovvieState (gcRollDown)) return null;</span>
+
+<span class="nc" id="L116">			mapCSQCRollDown.put (strRollDownTenor, csqcRollDown);</span>
+<span class="nc" id="L117">		}</span>
+
+		try {
+<span class="nc" id="L120">			return org.drip.historical.engine.HorizonChangeExplainExecutor.GenerateAttribution (new</span>
+				org.drip.historical.engine.TreasuryBondExplainProcessor
+<span class="nc" id="L122">					(org.drip.service.template.TreasuryBuilder.FromCode (strCode, dtFirst, dtFirst.addTenor</span>
+<span class="nc" id="L123">						(strMaturityTenor), dblFirstGovvieCurveYield), &quot;Yield&quot;, dblFirstGovvieCurveYield,</span>
+<span class="nc" id="L124">							dtFirst, gcSecond.epoch(), csqcFirst, csqcSecond, mapCSQCRollDown));</span>
+<span class="nc" id="L125">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L126">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L129">		return null;</span>
+	}
+
+	/**
+	 * Generate the Govvie Curve Horizon Metrics
+	 * 
+	 * @param dtFirst The First Date
+	 * @param dtSecond The Second Date
+	 * @param astrGovvieTreasuryInstrumentTenor Array of Govvie Curve Treasury Instrument Maturity Tenors
+	 * @param adblFirstGovvieTreasuryInstrument Array of First Date Govvie Curve Treasury Instrument Quotes
+	 * @param adblSecondGovvieTreasuryInstrument Array of Second Date Govvie Curve Treasury Instrument Quotes
+	 * @param strMaturityTenor Treasury Bond Maturity Tenor
+	 * @param strCode Treasury Bond Code
+	 * @param astrRollDownHorizon Array of the Roll Down Horizon Tenors
+	 * @param iLatentStateType Latent State Type
+	 * 
+	 * @return The Govvie Curve Horizon Metrics
+	 */
+
+	public static final org.drip.historical.attribution.PositionChangeComponents HorizonChangeAttribution (
+		final org.drip.analytics.date.JulianDate dtFirst,
+		final org.drip.analytics.date.JulianDate dtSecond,
+		final java.lang.String[] astrGovvieTreasuryInstrumentTenor,
+		final double[] adblFirstGovvieTreasuryInstrument,
+		final double[] adblSecondGovvieTreasuryInstrument,
+		final java.lang.String strMaturityTenor,
+		final java.lang.String strCode,
+		final java.lang.String[] astrRollDownHorizon,
+		final int iLatentStateType)
+	{
+<span class="nc bnc" id="L159" title="All 6 branches missed.">		if (null == dtFirst || null == dtSecond || dtFirst.julian() &gt;= dtSecond.julian()) return null;</span>
+
+<span class="nc bnc" id="L161" title="All 2 branches missed.">		int iNumGovvieTreasuryInstrument = null == astrGovvieTreasuryInstrumentTenor ? 0 :</span>
+			astrGovvieTreasuryInstrumentTenor.length;
+<span class="nc bnc" id="L163" title="All 2 branches missed.">		int iNumFirstGovvieTreasuryInstrument = null == adblFirstGovvieTreasuryInstrument ? 0 :</span>
+			adblFirstGovvieTreasuryInstrument.length;
+<span class="nc bnc" id="L165" title="All 2 branches missed.">		int iNumSecondGovvieTreasuryInstrument = null == adblSecondGovvieTreasuryInstrument ? 0 :</span>
+			adblSecondGovvieTreasuryInstrument.length;
+<span class="nc bnc" id="L167" title="All 2 branches missed.">		int iNumRollDownHorizon = null == astrRollDownHorizon ? 0 : astrRollDownHorizon .length;</span>
+<span class="nc" id="L168">		org.drip.analytics.date.JulianDate[] adtFirstEffective = new</span>
+			org.drip.analytics.date.JulianDate[iNumGovvieTreasuryInstrument];
+<span class="nc" id="L170">		org.drip.analytics.date.JulianDate[] adtFirstMaturity = new</span>
+			org.drip.analytics.date.JulianDate[iNumGovvieTreasuryInstrument];
+<span class="nc" id="L172">		org.drip.analytics.date.JulianDate[] adtSecondEffective = new</span>
+			org.drip.analytics.date.JulianDate[iNumGovvieTreasuryInstrument];
+<span class="nc" id="L174">		org.drip.analytics.date.JulianDate[] adtSecondMaturity = new</span>
+			org.drip.analytics.date.JulianDate[iNumGovvieTreasuryInstrument];
+<span class="nc" id="L176">		org.drip.analytics.date.JulianDate[] adtRollDownEffective = new</span>
+			org.drip.analytics.date.JulianDate[iNumGovvieTreasuryInstrument];
+<span class="nc" id="L178">		org.drip.analytics.date.JulianDate[] adtRollDownMaturity = new</span>
+			org.drip.analytics.date.JulianDate[iNumGovvieTreasuryInstrument];
+
+		org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.state.govvie.GovvieCurve&gt;
+<span class="nc bnc" id="L182" title="All 2 branches missed.">			mapRollDownGovvieCurve = 0 == iNumRollDownHorizon ? null : new</span>
+				org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.state.govvie.GovvieCurve&gt;();
+
+<span class="nc bnc" id="L185" title="All 6 branches missed.">		if (0 == iNumGovvieTreasuryInstrument || iNumGovvieTreasuryInstrument !=</span>
+			iNumFirstGovvieTreasuryInstrument || iNumGovvieTreasuryInstrument !=
+				iNumSecondGovvieTreasuryInstrument)
+<span class="nc" id="L188">			return null;</span>
+
+<span class="nc bnc" id="L190" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumGovvieTreasuryInstrument; ++i) {</span>
+<span class="nc" id="L191">			adtFirstMaturity[i] = (adtFirstEffective[i] = dtFirst).addTenor</span>
+<span class="nc" id="L192">				(astrGovvieTreasuryInstrumentTenor[i]);</span>
+
+<span class="nc" id="L194">			adtSecondMaturity[i] = (adtSecondEffective[i] = dtSecond).addTenor</span>
+<span class="nc" id="L195">				(astrGovvieTreasuryInstrumentTenor[i]);</span>
+		}
+
+<span class="nc" id="L198">		org.drip.state.govvie.GovvieCurve gcFirst =</span>
+<span class="nc" id="L199">			org.drip.service.template.LatentMarketStateBuilder.GovvieCurve (strCode, dtFirst,</span>
+				adtFirstEffective, adtFirstMaturity, adblFirstGovvieTreasuryInstrument,
+					adblFirstGovvieTreasuryInstrument, &quot;Yield&quot;, iLatentStateType);
+
+<span class="nc" id="L203">		org.drip.state.govvie.GovvieCurve gcSecond =</span>
+<span class="nc" id="L204">			org.drip.service.template.LatentMarketStateBuilder.GovvieCurve (strCode, dtSecond,</span>
+				adtSecondEffective, adtSecondMaturity, adblSecondGovvieTreasuryInstrument,
+					adblSecondGovvieTreasuryInstrument, &quot;Yield&quot;, iLatentStateType);
+
+<span class="nc" id="L208">		org.drip.state.govvie.GovvieCurve gcRollDown =</span>
+<span class="nc" id="L209">			org.drip.service.template.LatentMarketStateBuilder.GovvieCurve (strCode, dtSecond,</span>
+				adtSecondEffective, adtSecondMaturity, adblFirstGovvieTreasuryInstrument,
+					adblFirstGovvieTreasuryInstrument, &quot;Yield&quot;, iLatentStateType);
+
+<span class="nc bnc" id="L213" title="All 2 branches missed.">		if (null == gcRollDown) return null;</span>
+
+<span class="nc" id="L215">		mapRollDownGovvieCurve.put (&quot;Native&quot;, gcRollDown);</span>
+
+<span class="nc bnc" id="L217" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumRollDownHorizon; ++j) {</span>
+<span class="nc" id="L218">			org.drip.analytics.date.JulianDate dtRollDown = dtFirst.addTenor (astrRollDownHorizon[j]);</span>
+
+<span class="nc bnc" id="L220" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumGovvieTreasuryInstrument; ++i)</span>
+<span class="nc" id="L221">				adtRollDownMaturity[i] = (adtRollDownEffective[i] = dtRollDown).addTenor</span>
+<span class="nc" id="L222">					(astrGovvieTreasuryInstrumentTenor[i]);</span>
+
+<span class="nc" id="L224">			org.drip.state.govvie.GovvieCurve gcHorizonRollDown =</span>
+<span class="nc" id="L225">				org.drip.service.template.LatentMarketStateBuilder.GovvieCurve (strCode, dtRollDown,</span>
+					adtRollDownEffective, adtRollDownMaturity, adblFirstGovvieTreasuryInstrument,
+						adblFirstGovvieTreasuryInstrument, &quot;Yield&quot;, iLatentStateType);
+
+<span class="nc bnc" id="L229" title="All 2 branches missed.">			if (null == gcHorizonRollDown) return null;</span>
+
+<span class="nc" id="L231">			mapRollDownGovvieCurve.put (astrRollDownHorizon[j], gcHorizonRollDown);</span>
+		}
+
+<span class="nc" id="L234">		return HorizonChangeAttribution (gcFirst, gcSecond, mapRollDownGovvieCurve, strMaturityTenor,</span>
+			strCode);
+	}
+
+	/**
+	 * Generate the Govvie Curve Horizon Metrics
+	 * 
+	 * @param adtSpot Array of the Spot Dates
+	 * @param iHorizonGap The Horizon Gap
+	 * @param astrGovvieTreasuryInstrumentTenor Array of Govvie Curve Treasury Instrument Maturity Tenors
+	 * @param aadblGovvieTreasuryInstrumentQuote Array of Govvie Curve Treasury Instrument Quotes
+	 * @param strMaturityTenor Treasury Bond Maturity Tenor
+	 * @param strCode Treasury Bond Code
+	 * @param astrRollDownHorizon Array of the Roll Down Horizon Tenors
+	 * @param iLatentStateType Latent State Type
+	 * 
+	 * @return The Govvie Curve Horizon Metrics
+	 */
+
+	public static final java.util.List&lt;org.drip.historical.attribution.PositionChangeComponents&gt;
+		HorizonChangeAttribution (
+			final org.drip.analytics.date.JulianDate[] adtSpot,
+			final int iHorizonGap,
+			final java.lang.String[] astrGovvieTreasuryInstrumentTenor,
+			final double[][] aadblGovvieTreasuryInstrumentQuote,
+			final java.lang.String strMaturityTenor,
+			final java.lang.String strCode,
+			final java.lang.String[] astrRollDownHorizon,
+			final int iLatentStateType)
+	{
+<span class="nc bnc" id="L264" title="All 6 branches missed.">		if (null == adtSpot || 0 &gt;= iHorizonGap || null == aadblGovvieTreasuryInstrumentQuote) return null;</span>
+
+<span class="nc" id="L266">		int iNumClose = adtSpot.length;</span>
+<span class="nc bnc" id="L267" title="All 2 branches missed.">		int iNumRollDownTenor = null == astrRollDownHorizon ? 0 : astrRollDownHorizon.length;</span>
+
+<span class="nc bnc" id="L269" title="All 6 branches missed.">		if (0 == iNumClose || iNumClose != aadblGovvieTreasuryInstrumentQuote.length || 0 ==</span>
+			iNumRollDownTenor)
+<span class="nc" id="L271">			return null;</span>
+
+<span class="nc" id="L273">		java.util.List&lt;org.drip.historical.attribution.PositionChangeComponents&gt; lsPCC = new</span>
+			java.util.ArrayList&lt;org.drip.historical.attribution.PositionChangeComponents&gt;();
+
+<span class="nc bnc" id="L276" title="All 2 branches missed.">		for (int i = iHorizonGap; i &lt; iNumClose; ++i) {</span>
+<span class="nc" id="L277">			org.drip.historical.attribution.PositionChangeComponents pcc = HorizonChangeAttribution</span>
+<span class="nc" id="L278">				(adtSpot[i - iHorizonGap], adtSpot[i], astrGovvieTreasuryInstrumentTenor,</span>
+					aadblGovvieTreasuryInstrumentQuote[i - iHorizonGap],
+						aadblGovvieTreasuryInstrumentQuote[i], strMaturityTenor, strCode,
+							astrRollDownHorizon, iLatentStateType);
+
+<span class="nc bnc" id="L283" title="All 2 branches missed.">			if (null != pcc) lsPCC.add (pcc);</span>
+		}
+
+<span class="nc" id="L286">		return lsPCC;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

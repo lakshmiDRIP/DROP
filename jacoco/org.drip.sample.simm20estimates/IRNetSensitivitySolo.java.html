@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>IRNetSensitivitySolo.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.simm20estimates</a> &gt; <span class="el_source">IRNetSensitivitySolo.java</span></div><h1>IRNetSensitivitySolo.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.simm20estimates;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.simm20.margin.IRNetSensitivity;
+import org.drip.simm20.parameters.IRCurveTenorSettings;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * IRNetSensitivitySolo computes the Weighted Net Sensitivities across each of the IR Risk Factors on at a
+ *  time - OIS, LIBOR 1M, LIBOR 3M, LIBOR 6M LIBOR 12M, PRIME, and MUNICIPAL - within a single Currency. The
+ *  References are:
+ *  
+ *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
+ *  
+ *  - Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
+ *  	Calculations, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488, eSSRN.
+ *  
+ *  - Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
+ *  	Framework for Forecasting Initial Margin Requirements,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
+ *  
+ *  - Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements
+ *  	- A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167, eSSRN.
+ *  
+ *  - International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology,
+ *  	https://www.isda.org/a/oFiDE/isda-simm-v2.pdf.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L81">public class IRNetSensitivitySolo</span>
+{
+
+	private static final Map&lt;String, Double&gt; TenorSensitivityMap (
+		final double[] tenorSensitivities)
+		throws Exception
+	{
+<span class="nc" id="L88">		Map&lt;String, Double&gt; oisTenorSensitivities = new HashMap&lt;String, Double&gt;();</span>
+
+<span class="nc" id="L90">		oisTenorSensitivities.put (</span>
+			&quot;2W&quot;,
+<span class="nc" id="L92">			tenorSensitivities[0]</span>
+		);
+
+<span class="nc" id="L95">		oisTenorSensitivities.put (</span>
+			&quot;1M&quot;,
+<span class="nc" id="L97">			tenorSensitivities[1]</span>
+		);
+
+<span class="nc" id="L100">		oisTenorSensitivities.put (</span>
+			&quot;3M&quot;,
+<span class="nc" id="L102">			tenorSensitivities[2]</span>
+		);
+
+<span class="nc" id="L105">		oisTenorSensitivities.put (</span>
+			&quot;6M&quot;,
+<span class="nc" id="L107">			tenorSensitivities[3]</span>
+		);
+
+<span class="nc" id="L110">		oisTenorSensitivities.put (</span>
+			&quot;1Y&quot;,
+<span class="nc" id="L112">			tenorSensitivities[4]</span>
+		);
+
+<span class="nc" id="L115">		oisTenorSensitivities.put (</span>
+			&quot;2Y&quot;,
+<span class="nc" id="L117">			tenorSensitivities[5]</span>
+		);
+
+<span class="nc" id="L120">		oisTenorSensitivities.put (</span>
+			&quot;3Y&quot;,
+<span class="nc" id="L122">			tenorSensitivities[6]</span>
+		);
+
+<span class="nc" id="L125">		oisTenorSensitivities.put (</span>
+			&quot;5Y&quot;,
+<span class="nc" id="L127">			tenorSensitivities[7]</span>
+		);
+
+<span class="nc" id="L130">		oisTenorSensitivities.put (</span>
+			&quot;10Y&quot;,
+<span class="nc" id="L132">			tenorSensitivities[8]</span>
+		);
+
+<span class="nc" id="L135">		oisTenorSensitivities.put (</span>
+			&quot;15Y&quot;,
+<span class="nc" id="L137">			tenorSensitivities[9]</span>
+		);
+
+<span class="nc" id="L140">		oisTenorSensitivities.put (</span>
+			&quot;20Y&quot;,
+<span class="nc" id="L142">			tenorSensitivities[10]</span>
+		);
+
+<span class="nc" id="L145">		oisTenorSensitivities.put (</span>
+			&quot;30Y&quot;,
+<span class="nc" id="L147">			tenorSensitivities[11]</span>
+		);
+
+<span class="nc" id="L150">		return oisTenorSensitivities;</span>
+	}
+
+	public static final void main (
+		final String[] inputs)
+		throws Exception
+	{
+<span class="nc" id="L157">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L159">		String currency = &quot;USD&quot;;</span>
+
+<span class="nc" id="L161">		IRCurveTenorSettings curveTenorSensitivitySettings = IRCurveTenorSettings.ISDA (currency);</span>
+
+<span class="nc" id="L163">		double[] oisTenorSensitivities = new double[]</span>
+		{
+			0.017,
+			0.014,
+			0.012,
+			0.009,
+			0.067,
+			0.062,
+			0.093,
+			0.965,
+			0.004,
+			0.000,
+			0.000,
+			0.000
+		};
+<span class="nc" id="L178">		double[] libor1MTenorSensitivities = new double[]</span>
+		{
+			0.002,
+			0.002,
+			0.002,
+			0.001,
+			0.009,
+			0.009,
+			0.013,
+			0.094,
+			0.000,
+			0.000,
+			0.000,
+			0.000
+		};
+<span class="nc" id="L193">		double[] libor3MTenorSensitivities = new double[]</span>
+		{
+			0.023,
+			0.017,
+			0.016,
+			0.012,
+			0.091,
+			0.088,
+			0.126,
+			0.941,
+			0.002,
+			0.000,
+			0.000,
+			0.000
+		};
+<span class="nc" id="L208">		double[] libor6MTenorSensitivities = new double[]</span>
+		{
+			0.027,
+			0.021,
+			0.019,
+			0.015,
+			0.108,
+			0.098,
+			0.154,
+			0.913,
+			0.001,
+			0.000,
+			0.000,
+			0.000
+		};
+<span class="nc" id="L223">		double[] libor12MTenorSensitivities = new double[]</span>
+		{
+			0.001,
+			0.001,
+			0.001,
+			0.001,
+			0.005,
+			0.004,
+			0.007,
+			0.047,
+			0.000,
+			0.000,
+			0.000,
+			0.000
+		};
+<span class="nc" id="L238">		double[] primeTenorSensitivities = new double[]</span>
+		{
+			0.000,
+			0.000,
+			0.000,
+			0.000,
+			0.000,
+			0.000,
+			0.000,
+			0.000,
+			0.000,
+			0.000,
+			0.000,
+			0.000
+		};
+<span class="nc" id="L253">		double[] municipalTenorSensitivities = new double[]</span>
+		{
+			0.000,
+			0.000,
+			0.000,
+			0.000,
+			0.000,
+			0.000,
+			0.000,
+			0.000,
+			0.000,
+			0.000,
+			0.000,
+			0.000
+		};
+
+<span class="nc" id="L269">		IRNetSensitivity irNetSensitivity = new IRNetSensitivity (</span>
+<span class="nc" id="L270">			TenorSensitivityMap (oisTenorSensitivities),</span>
+<span class="nc" id="L271">			TenorSensitivityMap (libor1MTenorSensitivities),</span>
+<span class="nc" id="L272">			TenorSensitivityMap (libor3MTenorSensitivities),</span>
+<span class="nc" id="L273">			TenorSensitivityMap (libor6MTenorSensitivities),</span>
+<span class="nc" id="L274">			TenorSensitivityMap (libor12MTenorSensitivities),</span>
+<span class="nc" id="L275">			TenorSensitivityMap (primeTenorSensitivities),</span>
+<span class="nc" id="L276">			TenorSensitivityMap (municipalTenorSensitivities),</span>
+			1.
+		);
+
+<span class="nc" id="L280">		System.out.println (</span>
+			&quot;\t| IM Covariance[     OIS   -   OIS     ] =&gt; &quot; +
+<span class="nc" id="L282">			FormatUtil.FormatDouble (</span>
+<span class="nc" id="L283">				irNetSensitivity.covariance_OIS_OIS (curveTenorSensitivitySettings), 1, 3, 1.</span>
+			) + &quot; ||&quot;
+		);
+
+<span class="nc" id="L287">		System.out.println (</span>
+			&quot;\t| IM Covariance[ LIBOR  1M - LIBOR  1M ] =&gt; &quot; +
+<span class="nc" id="L289">			FormatUtil.FormatDouble (</span>
+<span class="nc" id="L290">				irNetSensitivity.covariance_LIBOR1M_LIBOR1M (curveTenorSensitivitySettings), 1, 3, 1.</span>
+			) + &quot; ||&quot;
+		);
+
+<span class="nc" id="L294">		System.out.println (</span>
+			&quot;\t| IM Covariance[ LIBOR  3M - LIBOR  3M ] =&gt; &quot; +
+<span class="nc" id="L296">			FormatUtil.FormatDouble (</span>
+<span class="nc" id="L297">				irNetSensitivity.covariance_LIBOR3M_LIBOR3M (curveTenorSensitivitySettings), 1, 3, 1.</span>
+			) + &quot; ||&quot;
+		);
+
+<span class="nc" id="L301">		System.out.println (</span>
+			&quot;\t| IM Covariance[ LIBOR  6M - LIBOR  6M ] =&gt; &quot; +
+<span class="nc" id="L303">			FormatUtil.FormatDouble (</span>
+<span class="nc" id="L304">				irNetSensitivity.covariance_LIBOR6M_LIBOR6M (curveTenorSensitivitySettings), 1, 3, 1.</span>
+			) + &quot; ||&quot;
+		);
+
+<span class="nc" id="L308">		System.out.println (</span>
+			&quot;\t| IM Covariance[ LIBOR 12M - LIBOR 12M ] =&gt; &quot; +
+<span class="nc" id="L310">			FormatUtil.FormatDouble (</span>
+<span class="nc" id="L311">				irNetSensitivity.covariance_LIBOR12M_LIBOR12M (curveTenorSensitivitySettings), 1, 3, 1.</span>
+			) + &quot; ||&quot;
+		);
+
+<span class="nc" id="L315">		System.out.println (</span>
+			&quot;\t| IM Covariance[   PRIME   -   PRIME   ] =&gt; &quot; +
+<span class="nc" id="L317">			FormatUtil.FormatDouble (</span>
+<span class="nc" id="L318">				irNetSensitivity.covariance_PRIME_PRIME (curveTenorSensitivitySettings), 1, 3, 1.</span>
+			) + &quot; ||&quot;
+		);
+
+<span class="nc" id="L322">		System.out.println (</span>
+			&quot;\t| IM Covariance[ MUNICIPAL - MUNICIPAL ] =&gt; &quot; +
+<span class="nc" id="L324">			FormatUtil.FormatDouble (</span>
+<span class="nc" id="L325">				irNetSensitivity.covariance_MUNICIPAL_MUNICIPAL (curveTenorSensitivitySettings), 1, 3, 1.</span>
+			) + &quot; ||&quot;
+		);
+
+<span class="nc" id="L329">		System.out.println (</span>
+			&quot;\t| IM Covariance[     OIS   - LIBOR  1M ] =&gt; &quot; +
+<span class="nc" id="L331">			FormatUtil.FormatDouble (</span>
+<span class="nc" id="L332">				irNetSensitivity.covariance_OIS_LIBOR1M (curveTenorSensitivitySettings), 1, 3, 1.</span>
+			) + &quot; ||&quot;
+		);
+
+<span class="nc" id="L336">		System.out.println (</span>
+			&quot;\t| IM Covariance[     OIS   - LIBOR  3M ] =&gt; &quot; +
+<span class="nc" id="L338">			FormatUtil.FormatDouble (</span>
+<span class="nc" id="L339">				irNetSensitivity.covariance_OIS_LIBOR3M (curveTenorSensitivitySettings), 1, 3, 1.</span>
+			) + &quot; ||&quot;
+		);
+
+<span class="nc" id="L343">		System.out.println (</span>
+			&quot;\t| IM Covariance[     OIS   - LIBOR  6M ] =&gt; &quot; +
+<span class="nc" id="L345">			FormatUtil.FormatDouble (</span>
+<span class="nc" id="L346">				irNetSensitivity.covariance_OIS_LIBOR6M (curveTenorSensitivitySettings), 1, 3, 1.</span>
+			) + &quot; ||&quot;
+		);
+
+<span class="nc" id="L350">		System.out.println (</span>
+			&quot;\t| IM Covariance[     OIS   - LIBOR 12M ] =&gt; &quot; +
+<span class="nc" id="L352">			FormatUtil.FormatDouble (</span>
+<span class="nc" id="L353">				irNetSensitivity.covariance_OIS_LIBOR12M (curveTenorSensitivitySettings), 1, 3, 1.</span>
+			) + &quot; ||&quot;
+		);
+
+<span class="nc" id="L357">		System.out.println (</span>
+			&quot;\t| IM Covariance[     OIS   -   PRIME   ] =&gt; &quot; +
+<span class="nc" id="L359">			FormatUtil.FormatDouble (</span>
+<span class="nc" id="L360">				irNetSensitivity.covariance_OIS_PRIME (curveTenorSensitivitySettings), 1, 3, 1.</span>
+			) + &quot; ||&quot;
+		);
+
+<span class="nc" id="L364">		System.out.println (</span>
+			&quot;\t| IM Covariance[     OIS   - MUNICIPAL ] =&gt; &quot; +
+<span class="nc" id="L366">			FormatUtil.FormatDouble (</span>
+<span class="nc" id="L367">				irNetSensitivity.covariance_OIS_MUNICIPAL (curveTenorSensitivitySettings), 1, 3, 1.</span>
+			) + &quot; ||&quot;
+		);
+
+<span class="nc" id="L371">		System.out.println (</span>
+			&quot;\t| IM Covariance[ LIBOR  1M - LIBOR  3M ] =&gt; &quot; +
+<span class="nc" id="L373">			FormatUtil.FormatDouble (</span>
+<span class="nc" id="L374">				irNetSensitivity.covariance_LIBOR1M_LIBOR3M (curveTenorSensitivitySettings), 1, 3, 1.</span>
+			) + &quot; ||&quot;
+		);
+
+<span class="nc" id="L378">		System.out.println (</span>
+			&quot;\t| IM Covariance[ LIBOR  1M - LIBOR  6M ] =&gt; &quot; +
+<span class="nc" id="L380">			FormatUtil.FormatDouble (</span>
+<span class="nc" id="L381">				irNetSensitivity.covariance_LIBOR1M_LIBOR6M (curveTenorSensitivitySettings), 1, 3, 1.</span>
+			) + &quot; ||&quot;
+		);
+
+<span class="nc" id="L385">		System.out.println (</span>
+			&quot;\t| IM Covariance[ LIBOR  1M - LIBOR 12M ] =&gt; &quot; +
+<span class="nc" id="L387">			FormatUtil.FormatDouble (</span>
+<span class="nc" id="L388">				irNetSensitivity.covariance_LIBOR1M_LIBOR12M (curveTenorSensitivitySettings), 1, 3, 1.</span>
+			) + &quot; ||&quot;
+		);
+
+<span class="nc" id="L392">		System.out.println (</span>
+			&quot;\t| IM Covariance[ LIBOR  1M -   PRIME   ] =&gt; &quot; +
+<span class="nc" id="L394">			FormatUtil.FormatDouble (</span>
+<span class="nc" id="L395">				irNetSensitivity.covariance_LIBOR1M_PRIME (curveTenorSensitivitySettings), 1, 3, 1.</span>
+			) + &quot; ||&quot;
+		);
+
+<span class="nc" id="L399">		System.out.println (</span>
+			&quot;\t| IM Covariance[ LIBOR  1M - MUNICIPAL ] =&gt; &quot; +
+<span class="nc" id="L401">			FormatUtil.FormatDouble (</span>
+<span class="nc" id="L402">				irNetSensitivity.covariance_LIBOR1M_MUNICIPAL (curveTenorSensitivitySettings), 1, 3, 1.</span>
+			) + &quot; ||&quot;
+		);
+
+<span class="nc" id="L406">		System.out.println (</span>
+			&quot;\t| IM Covariance[ LIBOR  3M - LIBOR  6M ] =&gt; &quot; +
+<span class="nc" id="L408">			FormatUtil.FormatDouble (</span>
+<span class="nc" id="L409">				irNetSensitivity.covariance_LIBOR3M_LIBOR6M (curveTenorSensitivitySettings), 1, 3, 1.</span>
+			) + &quot; ||&quot;
+		);
+
+<span class="nc" id="L413">		System.out.println (</span>
+			&quot;\t| IM Covariance[ LIBOR  3M - LIBOR 12M ] =&gt; &quot; +
+<span class="nc" id="L415">			FormatUtil.FormatDouble (</span>
+<span class="nc" id="L416">				irNetSensitivity.covariance_LIBOR3M_LIBOR12M (curveTenorSensitivitySettings), 1, 3, 1.</span>
+			) + &quot; ||&quot;
+		);
+
+<span class="nc" id="L420">		System.out.println (</span>
+			&quot;\t| IM Covariance[ LIBOR  3M -   PRIME   ] =&gt; &quot; +
+<span class="nc" id="L422">			FormatUtil.FormatDouble (</span>
+<span class="nc" id="L423">				irNetSensitivity.covariance_LIBOR3M_PRIME (curveTenorSensitivitySettings), 1, 3, 1.</span>
+			) + &quot; ||&quot;
+		);
+
+<span class="nc" id="L427">		System.out.println (</span>
+			&quot;\t| IM Covariance[ LIBOR  3M - MUNICIPAL ] =&gt; &quot; +
+<span class="nc" id="L429">			FormatUtil.FormatDouble (</span>
+<span class="nc" id="L430">				irNetSensitivity.covariance_LIBOR3M_MUNICIPAL (curveTenorSensitivitySettings), 1, 3, 1.</span>
+			) + &quot; ||&quot;
+		);
+
+<span class="nc" id="L434">		System.out.println (</span>
+			&quot;\t| IM Covariance[ LIBOR  6M - LIBOR 12M ] =&gt; &quot; +
+<span class="nc" id="L436">			FormatUtil.FormatDouble (</span>
+<span class="nc" id="L437">				irNetSensitivity.covariance_LIBOR6M_LIBOR12M (curveTenorSensitivitySettings), 1, 3, 1.</span>
+			) + &quot; ||&quot;
+		);
+
+<span class="nc" id="L441">		System.out.println (</span>
+			&quot;\t| IM Covariance[ LIBOR  6M -   PRIME   ] =&gt; &quot; +
+<span class="nc" id="L443">			FormatUtil.FormatDouble (</span>
+<span class="nc" id="L444">				irNetSensitivity.covariance_LIBOR6M_PRIME (curveTenorSensitivitySettings), 1, 3, 1.</span>
+			) + &quot; ||&quot;
+		);
+
+<span class="nc" id="L448">		System.out.println (</span>
+			&quot;\t| IM Covariance[ LIBOR  6M - MUNICIPAL ] =&gt; &quot; +
+<span class="nc" id="L450">			FormatUtil.FormatDouble (</span>
+<span class="nc" id="L451">				irNetSensitivity.covariance_LIBOR6M_MUNICIPAL (curveTenorSensitivitySettings), 1, 3, 1.</span>
+			) + &quot; ||&quot;
+		);
+
+<span class="nc" id="L455">		System.out.println (</span>
+			&quot;\t| IM Covariance[ LIBOR 12M -   PRIME   ] =&gt; &quot; +
+<span class="nc" id="L457">			FormatUtil.FormatDouble (</span>
+<span class="nc" id="L458">				irNetSensitivity.covariance_LIBOR12M_PRIME (curveTenorSensitivitySettings), 1, 3, 1.</span>
+			) + &quot; ||&quot;
+		);
+
+<span class="nc" id="L462">		System.out.println (</span>
+			&quot;\t| IM Covariance[ LIBOR 12M - MUNICIPAL ] =&gt; &quot; +
+<span class="nc" id="L464">			FormatUtil.FormatDouble (</span>
+<span class="nc" id="L465">				irNetSensitivity.covariance_LIBOR12M_MUNICIPAL (curveTenorSensitivitySettings), 1, 3, 1.</span>
+			) + &quot; ||&quot;
+		);
+
+<span class="nc" id="L469">		System.out.println (</span>
+			&quot;\t| IM Covariance[   PRIME   - MUNICIPAL ] =&gt; &quot; +
+<span class="nc" id="L471">			FormatUtil.FormatDouble (</span>
+<span class="nc" id="L472">				irNetSensitivity.covariance_PRIME_MUNICIPAL (curveTenorSensitivitySettings), 1, 3, 1.</span>
+			) + &quot; ||&quot;
+		);
+
+<span class="nc" id="L476">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L477">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

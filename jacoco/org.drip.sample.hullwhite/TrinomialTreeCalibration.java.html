@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TrinomialTreeCalibration.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.hullwhite</a> &gt; <span class="el_source">TrinomialTreeCalibration.java</span></div><h1>TrinomialTreeCalibration.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.hullwhite;
+
+import java.util.Map;
+
+import org.drip.analytics.date.*;
+import org.drip.dynamics.hullwhite.*;
+import org.drip.function.r1tor1.FlatUnivariate;
+import org.drip.quant.common.FormatUtil;
+import org.drip.sequence.random.BoxMullerGaussian;
+import org.drip.service.env.EnvManager;
+import org.drip.state.identifier.FundingLabel;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * TrinomialTreeCalibration demonstrates the Construction and Calibration of the Hull-White Trinomial Tree
+ * 	and the Eventual Evolution of the Short Rate on it.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L69">public class TrinomialTreeCalibration {</span>
+
+	private static final String SourceToTarget (
+		final String strKey)
+	{
+<span class="fc" id="L74">		String[] astrNode = strKey.split (&quot;#&quot;);</span>
+
+<span class="fc" id="L76">		String[] astrSourceNode = astrNode[0].split (&quot;,&quot;);</span>
+
+<span class="fc" id="L78">		String[] astrTargetNode = astrNode[1].split (&quot;,&quot;);</span>
+
+<span class="fc" id="L80">		return &quot;[&quot; +</span>
+			astrSourceNode[0] + &quot;,&quot; +
+<span class="fc" id="L82">			FormatUtil.FormatDouble (Double.parseDouble (astrSourceNode[1]), 1, 0, 1.) + &quot;] =&gt; [&quot; +</span>
+			astrTargetNode[0] + &quot;,&quot; +
+<span class="fc" id="L84">			FormatUtil.FormatDouble (Double.parseDouble (astrTargetNode[1]), 1, 0, 1.) + &quot;]&quot;;</span>
+	}
+
+	private static final SingleFactorStateEvolver HullWhiteEvolver (
+		final String strCurrency,
+		final double dblSigma,
+		final double dblA,
+		final double dblStartingForwardRate)
+		throws Exception
+	{
+<span class="fc" id="L94">		return new SingleFactorStateEvolver (</span>
+<span class="fc" id="L95">			FundingLabel.Standard (strCurrency),</span>
+			dblSigma,
+			dblA,
+			new FlatUnivariate (dblStartingForwardRate),
+			new BoxMullerGaussian (
+				0.,
+				1.
+			)
+		);
+	}
+
+	private static void EmitNodeDetails (
+		final TrinomialTreeTransitionMetrics hwtm,
+		final TrinomialTreeNodeMetrics hwnm)
+		throws Exception
+	{
+<span class="fc" id="L111">		System.out.println (&quot;\n\n\t|----------------------------------------------------------|&quot;);</span>
+
+<span class="fc" id="L113">		System.out.println (&quot;\t|    NODE [&quot; + hwnm.timeIndex() + &quot;, &quot; + hwnm.xStochasticIndex() + &quot;]                                           |&quot;);</span>
+
+<span class="fc" id="L115">		System.out.println (&quot;\t|----------------------------------------------------------|&quot;);</span>
+
+<span class="fc" id="L117">		System.out.println (&quot;\t|        Expected Terminal X                  :  &quot; + FormatUtil.FormatDouble (hwtm.expectedTerminalX(), 1, 6, 1.) + &quot; |&quot;);</span>
+
+<span class="fc" id="L119">		System.out.println (&quot;\t|        X Variance                           :  &quot; + FormatUtil.FormatDouble (hwtm.xVariance(), 1, 6, 1.) + &quot; |&quot;);</span>
+
+<span class="fc" id="L121">		System.out.println (&quot;\t|        X Stochastic Volatility Shift        :  &quot; + FormatUtil.FormatDouble (hwtm.xStochasticShift(), 1, 6, 1.) + &quot; |&quot;);</span>
+
+<span class="fc" id="L123">		System.out.println (&quot;\t|        X Tree Stochastic Displacement Index :   &quot; + hwtm.treeStochasticDisplacementIndex() + &quot;        |&quot;);</span>
+
+<span class="fc" id="L125">		System.out.println (&quot;\t|        Probability Up                       :  &quot; + FormatUtil.FormatDouble (hwtm.probabilityUp(), 1, 6, 1.) + &quot; |&quot;);</span>
+
+<span class="fc" id="L127">		System.out.println (&quot;\t|        Probability Stay                     :  &quot; + FormatUtil.FormatDouble (hwtm.probabilityStay(), 1, 6, 1.) + &quot; |&quot;);</span>
+
+<span class="fc" id="L129">		System.out.println (&quot;\t|        Probability Down                     :  &quot; + FormatUtil.FormatDouble (hwtm.probabilityDown(), 1, 6, 1.) + &quot; |&quot;);</span>
+
+<span class="fc" id="L131">		System.out.println (&quot;\t|        Node X Value                         :  &quot; + FormatUtil.FormatDouble (hwnm.x(), 1, 6, 1.) + &quot; |&quot;);</span>
+
+<span class="fc" id="L133">		System.out.println (&quot;\t|        Node Alpha                           :  &quot; + FormatUtil.FormatDouble (hwnm.alpha(), 1, 6, 1.) + &quot; |&quot;);</span>
+
+<span class="fc" id="L135">		System.out.println (&quot;\t|        Node Short Rate                      :  &quot; + FormatUtil.FormatDouble (hwnm.shortRate(), 1, 6, 1.) + &quot; |&quot;);</span>
+
+<span class="fc" id="L137">		System.out.println (&quot;\t|----------------------------------------------------------|&quot;);</span>
+<span class="fc" id="L138">	}</span>
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+<span class="fc" id="L144">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="fc" id="L146">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+			2011,
+			DateUtil.MAY,
+			18
+		);
+
+<span class="fc" id="L152">		double dblA = 0.1;</span>
+<span class="fc" id="L153">		double dblSigma = 0.01;</span>
+<span class="fc" id="L154">		String strCurrency = &quot;USD&quot;;</span>
+<span class="fc" id="L155">		String[] astrTenor = {</span>
+			&quot;3M&quot;, &quot;6M&quot;, &quot;9M&quot;
+		};
+<span class="fc" id="L158">		double[] adblQuote = {</span>
+			0.0026, 0.00412, 0.00572
+		};
+
+<span class="fc" id="L162">		SingleFactorStateEvolver hw = HullWhiteEvolver (</span>
+			strCurrency,
+			dblSigma,
+			dblA,
+			adblQuote[0]
+		);
+
+<span class="fc" id="L169">		TrinomialTreeTransitionMetrics hwtmp0p0 = hw.evolveTrinomialTree (</span>
+<span class="fc" id="L170">			dtSpot.julian(),</span>
+<span class="fc" id="L171">			dtSpot.julian(),</span>
+<span class="fc" id="L172">			dtSpot.addTenor (astrTenor[0]).julian(),</span>
+			null
+		);
+
+<span class="fc" id="L176">		EmitNodeDetails (</span>
+			hwtmp0p0,
+<span class="fc" id="L178">			hwtmp0p0.downNodeMetrics()</span>
+		);
+
+<span class="fc" id="L181">		EmitNodeDetails (</span>
+			hwtmp0p0,
+<span class="fc" id="L183">			hwtmp0p0.stayNodeMetrics()</span>
+		);
+
+<span class="fc" id="L186">		EmitNodeDetails (</span>
+			hwtmp0p0,
+<span class="fc" id="L188">			hwtmp0p0.upNodeMetrics()</span>
+		);
+
+<span class="fc" id="L191">		TrinomialTreeTransitionMetrics hwtmp1n1 = hw.evolveTrinomialTree (</span>
+<span class="fc" id="L192">			dtSpot.julian(),</span>
+<span class="fc" id="L193">			dtSpot.addTenor (astrTenor[0]).julian(),</span>
+<span class="fc" id="L194">			dtSpot.addTenor (astrTenor[1]).julian(),</span>
+<span class="fc" id="L195">			hwtmp0p0.downNodeMetrics()</span>
+		);
+
+<span class="fc" id="L198">		EmitNodeDetails (</span>
+			hwtmp1n1,
+<span class="fc" id="L200">			hwtmp1n1.downNodeMetrics()</span>
+		);
+
+<span class="fc" id="L203">		EmitNodeDetails (</span>
+			hwtmp1n1,
+<span class="fc" id="L205">			hwtmp1n1.stayNodeMetrics()</span>
+		);
+
+<span class="fc" id="L208">		EmitNodeDetails (</span>
+			hwtmp1n1,
+<span class="fc" id="L210">			hwtmp1n1.upNodeMetrics()</span>
+		);
+
+<span class="fc" id="L213">		TrinomialTreeTransitionMetrics hwtmp1n0 = hw.evolveTrinomialTree (</span>
+<span class="fc" id="L214">			dtSpot.julian(),</span>
+<span class="fc" id="L215">			dtSpot.addTenor (astrTenor[0]).julian(),</span>
+<span class="fc" id="L216">			dtSpot.addTenor (astrTenor[1]).julian(),</span>
+<span class="fc" id="L217">			hwtmp0p0.stayNodeMetrics()</span>
+		);
+
+<span class="fc" id="L220">		EmitNodeDetails (</span>
+			hwtmp1n0,
+<span class="fc" id="L222">			hwtmp1n0.downNodeMetrics()</span>
+		);
+
+<span class="fc" id="L225">		EmitNodeDetails (</span>
+			hwtmp1n0,
+<span class="fc" id="L227">			hwtmp1n0.stayNodeMetrics()</span>
+		);
+
+<span class="fc" id="L230">		EmitNodeDetails (</span>
+			hwtmp1n0,
+<span class="fc" id="L232">			hwtmp1n0.upNodeMetrics()</span>
+		);
+
+<span class="fc" id="L235">		TrinomialTreeTransitionMetrics hwtmp1p1 = hw.evolveTrinomialTree (</span>
+<span class="fc" id="L236">			dtSpot.julian(),</span>
+<span class="fc" id="L237">			dtSpot.addTenor (astrTenor[0]).julian(),</span>
+<span class="fc" id="L238">			dtSpot.addTenor (astrTenor[1]).julian(),</span>
+<span class="fc" id="L239">			hwtmp0p0.upNodeMetrics()</span>
+		);
+
+<span class="fc" id="L242">		EmitNodeDetails (</span>
+			hwtmp1p1,
+<span class="fc" id="L244">			hwtmp1p1.downNodeMetrics()</span>
+		);
+
+<span class="fc" id="L247">		EmitNodeDetails (</span>
+			hwtmp1p1,
+<span class="fc" id="L249">			hwtmp1p1.stayNodeMetrics()</span>
+		);
+
+<span class="fc" id="L252">		EmitNodeDetails (</span>
+			hwtmp1p1,
+<span class="fc" id="L254">			hwtmp1p1.upNodeMetrics()</span>
+		);
+
+<span class="fc" id="L257">		TrinomialTreeSequenceMetrics hwsm = hw.evolveTrinomialTreeSequence (</span>
+<span class="fc" id="L258">			dtSpot.julian(),</span>
+			30,
+			2
+		);
+
+<span class="fc" id="L263">		System.out.println (&quot;\n\t|-----------------------------------|&quot;);</span>
+
+<span class="fc" id="L265">		System.out.println (&quot;\t| SOURCE TARGET PROBABILITY METRICS |&quot;);</span>
+
+<span class="fc" id="L267">		System.out.println (&quot;\t|-----------------------------------|&quot;);</span>
+
+<span class="fc" id="L269">		Map&lt;String, Double&gt; mapProbSourceTarget = hwsm.sourceTargetTransitionProbability();</span>
+
+<span class="fc bfc" id="L271" title="All 2 branches covered.">		for (Map.Entry&lt;String, Double&gt; me : mapProbSourceTarget.entrySet())</span>
+<span class="fc" id="L272">			System.out.println (&quot;\t|    &quot; + SourceToTarget (me.getKey()) + &quot;: &quot; + FormatUtil.FormatDouble (me.getValue(), 1, 6, 1.) + &quot;    |&quot;);</span>
+
+<span class="fc" id="L274">		System.out.println (&quot;\t|-----------------------------------|&quot;);</span>
+
+<span class="fc" id="L276">		System.out.println (&quot;\n\t|-----------------------------------|&quot;);</span>
+
+<span class="fc" id="L278">		System.out.println (&quot;\t| TARGET SOURCE PROBABILITY METRICS |&quot;);</span>
+
+<span class="fc" id="L280">		System.out.println (&quot;\t|-----------------------------------|&quot;);</span>
+
+<span class="fc" id="L282">		Map&lt;String, Double&gt; mapProbTargetSource = hwsm.targetSourceTransitionProbability();</span>
+
+<span class="fc bfc" id="L284" title="All 2 branches covered.">		for (Map.Entry&lt;String, Double&gt; me : mapProbTargetSource.entrySet())</span>
+<span class="fc" id="L285">			System.out.println (&quot;\t|    &quot; + SourceToTarget (me.getKey()) + &quot;: &quot; + FormatUtil.FormatDouble (me.getValue(), 1, 6, 1.) + &quot;    |&quot;);</span>
+
+<span class="fc" id="L287">		System.out.println (&quot;\t|-----------------------------------|&quot;);</span>
+<span class="fc" id="L288">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

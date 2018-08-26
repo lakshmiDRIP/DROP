@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ServiceSkeleton.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.zen.grid</a> &gt; <span class="el_source">ServiceSkeleton.java</span></div><h1>ServiceSkeleton.java</h1><pre class="source lang-java linenums">
+package org.drip.zen.grid;
+
+/*
+ * 1) Server Class Abstraction Purpose (notion of a State Machine)
+ * 2) Port Number Field / Instance Field Conventions
+ * 3) Constructor
+ * 4) Coding Conventions
+ * 5) &quot;final&quot; Keyword
+ * 6) Full Package Names
+ * 7) Exception's - Introduction and Usage
+ * 8) Class Instance Member Access
+ */
+
+public class ServiceSkeleton {
+<span class="nc" id="L16">	private int _iListenerPort = -1;</span>
+<span class="nc" id="L17">	private java.net.ServerSocket _ssListener = null;</span>
+
+	public ServiceSkeleton (
+		final int iListenerPort)
+		throws java.lang.Exception
+<span class="nc" id="L22">	{</span>
+<span class="nc" id="L23">		_ssListener = new java.net.ServerSocket (_iListenerPort = iListenerPort);</span>
+<span class="nc" id="L24">	}</span>
+
+	public int listenerPort()
+	{
+<span class="nc" id="L28">		return _iListenerPort;</span>
+	}
+
+	public boolean processRequest()
+	{
+		try {
+<span class="nc" id="L34">			java.net.Socket s = _ssListener.accept();</span>
+
+<span class="nc" id="L36">			System.out.println (&quot;[Server] =&gt; Received a Connection from Client &quot; + s);</span>
+
+<span class="nc" id="L38">			java.io.InputStream inputStream = s.getInputStream();</span>
+
+<span class="nc" id="L40">			java.io.InputStreamReader inputReader = new java.io.InputStreamReader (inputStream);</span>
+
+<span class="nc" id="L42">			java.io.BufferedReader bufferedReader = new java.io.BufferedReader (inputReader);</span>
+
+<span class="nc" id="L44">			java.lang.String request = bufferedReader.readLine();</span>
+
+<span class="nc" id="L46">	    	System.out.println (&quot;[Server] =&gt; &quot; + request);</span>
+
+<span class="nc" id="L48">	    	java.io.OutputStream outputStream = s.getOutputStream();</span>
+
+<span class="nc" id="L50">	    	java.io.PrintWriter pw = new java.io.PrintWriter (outputStream, true);</span>
+
+<span class="nc" id="L52">	    	pw.write (&quot;I am OK - looks like our sockets talked to each other\n&quot;);</span>
+
+<span class="nc" id="L54">	    	pw.flush();</span>
+
+<span class="nc" id="L56">	    	return true;</span>
+<span class="nc" id="L57">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L58">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L61">    	return false;</span>
+	}
+
+	public static void main (
+		final java.lang.String[] astrInput)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L68">		int listenerPort = 9090;</span>
+
+<span class="nc" id="L70">		ServiceSkeleton ss = new ServiceSkeleton (listenerPort);</span>
+
+		while (true)
+<span class="nc" id="L73">			ss.processRequest();</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

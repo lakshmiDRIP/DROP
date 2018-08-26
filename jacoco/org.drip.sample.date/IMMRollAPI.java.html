@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>IMMRollAPI.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.date</a> &gt; <span class="el_source">IMMRollAPI.java</span></div><h1>IMMRollAPI.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.date;
+
+import org.drip.analytics.date.*;
+import org.drip.service.env.EnvManager;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * IMMRollAPI demonstrates the API used to generate IMM Rolled Dates specific to different Products.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L60">public class IMMRollAPI {</span>
+
+	public static void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+<span class="fc" id="L66">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="fc" id="L68">		JulianDate dt = DateUtil.CreateFromYMD (</span>
+			2010,
+			DateUtil.DECEMBER,
+			30
+		);
+
+<span class="fc" id="L74">		int iDateGap = 10;</span>
+<span class="fc" id="L75">		int iNumDate = 30;</span>
+
+<span class="fc" id="L77">		System.out.println (&quot;\n\n\t|--------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L79">		System.out.println (&quot;\t|  SPOT DATE | NEXT RATES FUTURES IMM | NEXT BOND FUTURES IMM | NEXT CDS/CDX IMM ||&quot;);</span>
+
+<span class="fc" id="L81">		System.out.println (&quot;\t|--------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc bfc" id="L83" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumDate; ++i) {</span>
+<span class="fc" id="L84">			System.out.println (&quot;\t| &quot; + dt + &quot; |       &quot; +</span>
+<span class="fc" id="L85">				dt.nextRatesFuturesIMM (3) + &quot;       |       &quot; +</span>
+<span class="fc" id="L86">				dt.nextBondFuturesIMM (3, &quot;USD&quot;) + &quot;      |    &quot; +</span>
+<span class="fc" id="L87">				dt.nextCreditIMM (3) + &quot;    ||&quot;</span>
+			);
+
+<span class="fc" id="L90">			dt = dt.addDays (iDateGap);</span>
+		}
+
+<span class="fc" id="L93">		System.out.println (&quot;\t|--------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L94">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

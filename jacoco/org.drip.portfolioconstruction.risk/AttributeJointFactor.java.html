@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AttributeJointFactor.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.portfolioconstruction.risk</a> &gt; <span class="el_source">AttributeJointFactor.java</span></div><h1>AttributeJointFactor.java</h1><pre class="source lang-java linenums">
+package org.drip.portfolioconstruction.risk;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * AttributeJointFactor contains the Factor Based Loadings that determines the Joint Attributes between the
+ *  Pair of Assets.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class AttributeJointFactor extends org.drip.portfolioconstruction.core.Block {
+<span class="nc" id="L58">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _mapAssetFactorLoading = new</span>
+		org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
+
+<span class="nc" id="L61">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _mapFactorAssetLoading = new</span>
+		org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
+
+<span class="nc" id="L64">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _mapFactorFactorAttribute = new</span>
+		org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
+
+<span class="nc" id="L67">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _mapAssetSpecificAttribute = new</span>
+		org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
+
+	/**
+	 * Generate a Standard Instance of AttributeJointFactor
+	 * 
+	 * @param strName AttributeJointFactor Instance Name
+	 * @param strID AttributeJointFactor Instance ID
+	 * @param strDescription AttributeJointFactor Description
+	 * @param astrAssetID Array of Asset IDs
+	 * @param astrFactorID Array of FactorIDs
+	 * @param aadblAssetFactorLoading Matrix of Asset-Factor Loadings
+	 * @param aadblCrossFactorAttribute Matrix of Factor-Factor Attributes
+	 * @param adblSpecificAttribute Array of Specific Attributes
+	 * 
+	 * @return The Standard Instance of AttributeJointFactor
+	 */
+
+	public static final AttributeJointFactor Standard (
+		final java.lang.String strName,
+		final java.lang.String strID,
+		final java.lang.String strDescription,
+		final java.lang.String[] astrAssetID,
+		final java.lang.String[] astrFactorID,
+		final double[][] aadblAssetFactorLoading,
+		final double[][] aadblCrossFactorAttribute,
+		final double[] adblSpecificAttribute)
+	{
+<span class="nc bnc" id="L95" title="All 10 branches missed.">		if (null == astrAssetID || null == astrFactorID || null == aadblAssetFactorLoading || null ==</span>
+			aadblCrossFactorAttribute || null == adblSpecificAttribute)
+<span class="nc" id="L97">			return null;</span>
+
+<span class="nc" id="L99">		AttributeJointFactor ajf = null;</span>
+<span class="nc" id="L100">		int iNumAsset = astrAssetID.length;</span>
+<span class="nc" id="L101">		int iNumFactor = astrFactorID.length;</span>
+
+<span class="nc bnc" id="L103" title="All 10 branches missed.">		if (0 == iNumAsset || 0 == iNumFactor || iNumAsset != aadblAssetFactorLoading.length || iNumFactor !=</span>
+			aadblCrossFactorAttribute.length || iNumAsset != adblSpecificAttribute.length)
+<span class="nc" id="L105">			return null;</span>
+
+		try {
+<span class="nc" id="L108">			ajf = new AttributeJointFactor (strName, strID, strDescription);</span>
+<span class="nc" id="L109">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L110">			e.printStackTrace();</span>
+
+<span class="nc" id="L112">			return null;</span>
+<span class="nc" id="L113">		}</span>
+
+<span class="nc bnc" id="L115" title="All 2 branches missed.">		for (int iAsset = 0; iAsset &lt; iNumAsset; ++iAsset) {</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">			for (int iFactor = 0; iFactor &lt; iNumFactor; ++iFactor) {</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">				if (!ajf.addAssetFactorLoading (astrAssetID[iAsset], astrFactorID[iAsset],</span>
+					aadblAssetFactorLoading[iAsset][iFactor]))
+<span class="nc" id="L119">					return null;</span>
+			}
+
+<span class="nc bnc" id="L122" title="All 2 branches missed.">			if (!ajf.addSpecificAttribute (astrAssetID[iAsset], adblSpecificAttribute[iAsset])) return null;</span>
+		}
+
+<span class="nc bnc" id="L125" title="All 2 branches missed.">		for (int iFactor1 = 0; iFactor1 &lt; iNumFactor; ++iFactor1) {</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">			for (int iFactor2 = 0; iFactor2 &lt; iNumFactor; ++iFactor2) {</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">				if (!ajf.addFactorAttribute (astrFactorID[iFactor1], astrFactorID[iFactor2],</span>
+					aadblCrossFactorAttribute[iFactor1][iFactor2]))
+<span class="nc" id="L129">					return null;</span>
+			}
+		}
+
+<span class="nc" id="L133">		return ajf;</span>
+	}
+
+	/**
+	 * AttributeJointFactor Constructor
+	 * 
+	 * @param strName The Name
+	 * @param strID The ID
+	 * @param strDescription The Description
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public AttributeJointFactor (
+		final java.lang.String strName,
+		final java.lang.String strID,
+		final java.lang.String strDescription)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L152">		super (strName, strID, strDescription);</span>
+<span class="nc" id="L153">	}</span>
+
+	/**
+	 * Retrieve the Joint Asset-Factor Loading Map
+	 * 
+	 * @return The Joint Asset-Factor Loading Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; assetFactorLoading()
+	{
+<span class="nc" id="L163">		return _mapAssetFactorLoading;</span>
+	}
+
+	/**
+	 * Retrieve the Joint Factor-Asset Loading Map
+	 * 
+	 * @return The Joint Factor-Asset Loading Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; factorAssetLoading()
+	{
+<span class="nc" id="L174">		return _mapFactorAssetLoading;</span>
+	}
+
+	/**
+	 * Retrieve the Factor-to-Factor Attribute Map
+	 * 
+	 * @return The Factor-to-Joint Attribute Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; factorJointAttribute()
+	{
+<span class="nc" id="L185">		return _mapFactorFactorAttribute;</span>
+	}
+
+	/**
+	 * Retrieve the Asset Specific Attribute
+	 * 
+	 * @return The Asset Specific Attribute
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; specificRisk()
+	{
+<span class="nc" id="L196">		return _mapAssetSpecificAttribute;</span>
+	}
+
+	/**
+	 * Add the Asset's Factor Loading Coefficient
+	 * 
+	 * @param strAssetID The Asset ID
+	 * @param strFactorID The Factor ID
+	 * @param dblFactorLoading The Factor Loading Coefficient
+	 * 
+	 * @return TRUE - The Asset's Factor Loading Coefficient successfully added
+	 */
+
+	public boolean addAssetFactorLoading (
+		final java.lang.String strAssetID,
+		final java.lang.String strFactorID,
+		final double dblFactorLoading)
+	{
+<span class="nc bnc" id="L214" title="All 8 branches missed.">		if (null == strAssetID || strAssetID.isEmpty() || null == strFactorID || strFactorID.isEmpty() ||</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblFactorLoading))</span>
+<span class="nc" id="L216">			return false;</span>
+
+<span class="nc" id="L218">		_mapAssetFactorLoading.put (strAssetID + &quot;::&quot; + strFactorID, dblFactorLoading);</span>
+
+<span class="nc" id="L220">		_mapFactorAssetLoading.put (strFactorID + &quot;::&quot; + strAssetID, dblFactorLoading);</span>
+
+<span class="nc" id="L222">		return true;</span>
+	}
+
+	/**
+	 * Add the Cross Factor Attribute
+	 * 
+	 * @param strFactorID1 The Factor #1 ID
+	 * @param strFactorID2 The Factor #2 ID
+	 * @param dblCrossFactorAttribute The Cross Factor Attribute
+	 * 
+	 * @return TRUE - The Cross Factor Attribute successfully added
+	 */
+
+	public boolean addFactorAttribute (
+		final java.lang.String strFactorID1,
+		final java.lang.String strFactorID2,
+		final double dblCrossFactorAttribute)
+	{
+<span class="nc bnc" id="L240" title="All 8 branches missed.">		if (null == strFactorID1 || strFactorID1.isEmpty() || null == strFactorID2 || strFactorID2.isEmpty()</span>
+<span class="nc bnc" id="L241" title="All 2 branches missed.">			|| !org.drip.quant.common.NumberUtil.IsValid (dblCrossFactorAttribute))</span>
+<span class="nc" id="L242">			return false;</span>
+
+<span class="nc" id="L244">		_mapFactorFactorAttribute.put (strFactorID1 + &quot;::&quot; + strFactorID2, dblCrossFactorAttribute);</span>
+
+<span class="nc" id="L246">		_mapFactorFactorAttribute.put (strFactorID2 + &quot;::&quot; + strFactorID1, dblCrossFactorAttribute);</span>
+
+<span class="nc" id="L248">		return true;</span>
+	}
+
+	/**
+	 * Add the Asset's Specific Attribute
+	 * 
+	 * @param strAssetID The Asset ID
+	 * @param dblSpecificAttribute The Asset's Specific Attribute
+	 * 
+	 * @return TRUE - The Asset's Specific Risk successfully added
+	 */
+
+	public boolean addSpecificAttribute (
+		final java.lang.String strAssetID,
+		final double dblSpecificAttribute)
+	{
+<span class="nc bnc" id="L264" title="All 4 branches missed.">		if (null == strAssetID || strAssetID.isEmpty() || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="nc bnc" id="L265" title="All 2 branches missed.">			(dblSpecificAttribute))</span>
+<span class="nc" id="L266">			return false;</span>
+
+<span class="nc" id="L268">		_mapAssetSpecificAttribute.put (strAssetID, dblSpecificAttribute);</span>
+
+<span class="nc" id="L270">		return true;</span>
+	}
+
+	/**
+	 * Check if the Asset is represented
+	 * 
+	 * @param strAssetID The Asset ID
+	 * 
+	 * @return TRUE - The Asset is represented
+	 */
+
+	public boolean containsAsset (
+		final java.lang.String strAssetID)
+	{
+<span class="nc bnc" id="L284" title="All 4 branches missed.">		return null != strAssetID &amp;&amp; !strAssetID.isEmpty() &amp;&amp; _mapAssetFactorLoading.containsKey</span>
+<span class="nc bnc" id="L285" title="All 4 branches missed.">			(strAssetID) &amp;&amp; _mapAssetSpecificAttribute.containsKey (strAssetID);</span>
+	}
+
+	/**
+	 * Check if the Factor is available
+	 * 
+	 * @param strFactorID The Factor ID
+	 * 
+	 * @return TRUE - The Factor is available
+	 */
+
+	public boolean containsFactor (
+		final java.lang.String strFactorID)
+	{
+<span class="nc bnc" id="L299" title="All 4 branches missed.">		return null != strFactorID &amp;&amp; !strFactorID.isEmpty() &amp;&amp; _mapFactorAssetLoading.containsKey</span>
+<span class="nc bnc" id="L300" title="All 4 branches missed.">			(strFactorID) &amp;&amp; _mapFactorFactorAttribute.containsKey (strFactorID);</span>
+	}
+
+	/**
+	 * Retrieve the Factor Loading for the specified Asset
+	 * 
+	 * @param strAssetID The Asset ID
+	 * 
+	 * @return The Factor Loading for the specified Asset
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; assetFactorLoading (
+		final java.lang.String strAssetID)
+	{
+<span class="nc bnc" id="L314" title="All 2 branches missed.">		if (!containsAsset (strAssetID)) return null;</span>
+
+<span class="nc" id="L316">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapAssetFactorLoading = new</span>
+			org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
+
+		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; meAssetFactorLoading :
+<span class="nc bnc" id="L320" title="All 2 branches missed.">			_mapAssetFactorLoading.entrySet())</span>
+		{
+<span class="nc bnc" id="L322" title="All 2 branches missed.">			if (meAssetFactorLoading.getKey().startsWith (strAssetID))</span>
+<span class="nc" id="L323">				mapAssetFactorLoading.put (strAssetID, meAssetFactorLoading.getValue());</span>
+<span class="nc" id="L324">		}</span>
+
+<span class="nc" id="L326">		return mapAssetFactorLoading;</span>
+	}
+
+	/**
+	 * Retrieve the Loadings for the specified Factor
+	 * 
+	 * @param strFactorID The Factor ID
+	 * 
+	 * @return The Loadings for the specified Factor
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; factorAssetLoading (
+		final java.lang.String strFactorID)
+	{
+<span class="nc bnc" id="L340" title="All 2 branches missed.">		if (!containsFactor (strFactorID)) return null;</span>
+
+<span class="nc" id="L342">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapFactorAssetLoading = new</span>
+			org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
+
+		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; meFactorAssetLoading :
+<span class="nc bnc" id="L346" title="All 2 branches missed.">			_mapFactorAssetLoading.entrySet())</span>
+		{
+<span class="nc bnc" id="L348" title="All 2 branches missed.">			if (meFactorAssetLoading.getKey().startsWith (strFactorID))</span>
+<span class="nc" id="L349">				mapFactorAssetLoading.put (strFactorID, meFactorAssetLoading.getValue());</span>
+<span class="nc" id="L350">		}</span>
+
+<span class="nc" id="L352">		return mapFactorAssetLoading;</span>
+	}
+
+	/**
+	 * Retrieve the Cross Factor Attribute Entry
+	 * 
+	 * @param strFactorID1 The Factor ID #1
+	 * @param strFactorID2 The Factor ID #2
+	 * 
+	 * @return The Cross Factor Attribute Entry
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double crossFactorAttribute (
+		final java.lang.String strFactorID1,
+		final java.lang.String strFactorID2)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L371" title="All 4 branches missed.">		if (!containsFactor (strFactorID1) || !containsFactor (strFactorID2))</span>
+<span class="nc" id="L372">			throw new java.lang.Exception (&quot;AttributeJointFactor::crossFactorAttribute =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc" id="L374">		return _mapFactorFactorAttribute.get (strFactorID1 + &quot;::&quot; + strFactorID2);</span>
+	}
+
+	/**
+	 * Retrieve the Asset Specific Attribute
+	 * 
+	 * @param strAssetID The Asset ID
+	 * 
+	 * @return The Asset Specific Attribute
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double assetSpecificAttribute (
+		final java.lang.String strAssetID)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L391" title="All 2 branches missed.">		if (!containsFactor (strAssetID))</span>
+<span class="nc" id="L392">			throw new java.lang.Exception (&quot;AttributeJointFactor::assetSpecificAttribute =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc" id="L394">		return _mapAssetSpecificAttribute.get (strAssetID);</span>
+	}
+
+	/**
+	 * Compute the Cross Asset Attribute
+	 * 
+	 * @param strAssetID1 Asset ID #1
+	 * @param strAssetID2 Asset ID #2
+	 * 
+	 * @return The Cross Asset Attribute
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double crossAssetAttribute (
+		final java.lang.String strAssetID1,
+		final java.lang.String strAssetID2)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L413">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapAsset1FactorLoading = assetFactorLoading</span>
+<span class="nc" id="L414">			(strAssetID1);</span>
+
+<span class="nc" id="L416">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapAsset2FactorLoading = assetFactorLoading</span>
+<span class="nc" id="L417">			(strAssetID2);</span>
+
+<span class="nc bnc" id="L419" title="All 4 branches missed.">		if (null == mapAsset1FactorLoading || null == mapAsset2FactorLoading)</span>
+<span class="nc" id="L420">			throw new java.lang.Exception</span>
+				(&quot;AttributeJointFactor::crossAssetAttribute =&gt; Invalid Factor Loadings&quot;);
+
+<span class="nc" id="L423">		double dblCrossAssetAttribute = 0.;</span>
+
+		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; meAsset1FactorLoading :
+<span class="nc bnc" id="L426" title="All 2 branches missed.">			mapAsset1FactorLoading.entrySet())</span>
+		{
+<span class="nc" id="L428">			java.lang.String strFactorID = meAsset1FactorLoading.getKey();</span>
+
+<span class="nc bnc" id="L430" title="All 2 branches missed.">			if (!mapAsset2FactorLoading.containsKey (strFactorID) || !_mapFactorFactorAttribute.containsKey</span>
+<span class="nc bnc" id="L431" title="All 2 branches missed.">				(strFactorID))</span>
+<span class="nc" id="L432">				throw new java.lang.Exception</span>
+					(&quot;AttributeJointFactor::crossAssetAttribute =&gt; Loading not available for &quot; + strAssetID2
+						+ &quot;for factor &quot; + strFactorID);
+
+<span class="nc" id="L436">			dblCrossAssetAttribute += mapAsset1FactorLoading.get (strFactorID) * mapAsset2FactorLoading.get</span>
+<span class="nc" id="L437">				(strFactorID) * crossFactorAttribute (strFactorID, strFactorID);</span>
+<span class="nc" id="L438">		}</span>
+
+<span class="nc" id="L440">		return dblCrossAssetAttribute;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

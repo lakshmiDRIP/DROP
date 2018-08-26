@@ -122,7 +122,7 @@ public class CommoditySettings
 
 			System.out.println (
 				"\t||" + FormatUtil.FormatDouble (commodityBucket.number(), 2, 0, 1.) + " | " +
-				FormatUtil.FormatDouble (commodityBucket.riskWeight(), 3, 0, 1.) + " | " +
+				FormatUtil.FormatDouble (commodityBucket.deltaRiskWeight(), 3, 0, 1.) + " | " +
 				FormatUtil.FormatDouble (commodityBucket.memberCorrelation(), 2, 1, 100.) + "% | " +
 				commodityBucket.entity()
 			);

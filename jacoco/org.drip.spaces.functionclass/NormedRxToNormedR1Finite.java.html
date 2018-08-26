@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NormedRxToNormedR1Finite.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.spaces.functionclass</a> &gt; <span class="el_source">NormedRxToNormedR1Finite.java</span></div><h1>NormedRxToNormedR1Finite.java</h1><pre class="source lang-java linenums">
+package org.drip.spaces.functionclass;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * NormedRxToNormedR1Finite implements the Class F with f E f : Normed R^x To Normed R^1 Space of Finite 
+ * 	Functions.
+ * 
+ * The Reference we've used is:
+ * 
+ * 	- Carl, B., and I. Stephani (1990): Entropy, Compactness, and Approximation of Operators, Cambridge
+ * 		University Press, Cambridge UK.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class NormedRxToNormedR1Finite extends org.drip.spaces.functionclass.NormedRxToNormedRxFinite {
+<span class="nc" id="L65">	private org.drip.spaces.rxtor1.NormedRxToNormedR1[] _aNormedRxToNormedR1 = null;</span>
+
+	protected NormedRxToNormedR1Finite (
+		final double dblMaureyConstant,
+		final org.drip.spaces.rxtor1.NormedRxToNormedR1[] aNormedRxToNormedR1)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L72">		super (dblMaureyConstant);</span>
+
+<span class="nc bnc" id="L74" title="All 2 branches missed.">		int iClassSize = null == (_aNormedRxToNormedR1 = aNormedRxToNormedR1) ? 0 :</span>
+			_aNormedRxToNormedR1.length;
+
+<span class="nc bnc" id="L77" title="All 4 branches missed.">		if (null != _aNormedRxToNormedR1 &amp;&amp; 0 == iClassSize)</span>
+<span class="nc" id="L78">			throw new java.lang.Exception (&quot;NormedRxToNormedR1Finite ctr: Invalid Inputs&quot;);</span>
+
+<span class="nc bnc" id="L80" title="All 2 branches missed.">		for (int i = 0; i &lt; iClassSize; ++i) {</span>
+<span class="nc bnc" id="L81" title="All 2 branches missed.">			if (null == _aNormedRxToNormedR1[i])</span>
+<span class="nc" id="L82">				throw new java.lang.Exception (&quot;NormedRxToNormedR1Finite ctr: Invalid Inputs&quot;);</span>
+		}
+<span class="nc" id="L84">	}</span>
+
+	@Override public org.drip.spaces.cover.FunctionClassCoveringBounds agnosticCoveringNumberBounds()
+	{
+<span class="nc" id="L88">		return null;</span>
+	}
+
+	@Override public org.drip.spaces.metric.GeneralizedMetricVectorSpace inputMetricVectorSpace()
+	{
+<span class="nc bnc" id="L93" title="All 2 branches missed.">		return null == _aNormedRxToNormedR1 ? null : _aNormedRxToNormedR1[0].inputMetricVectorSpace();</span>
+	}
+
+	@Override public org.drip.spaces.metric.R1Normed outputMetricVectorSpace()
+	{
+<span class="nc bnc" id="L98" title="All 2 branches missed.">		return null == _aNormedRxToNormedR1 ? null : _aNormedRxToNormedR1[0].outputMetricVectorSpace();</span>
+	}
+
+	/**
+	 * Retrieve the Array of Function Spaces in the Class
+	 * 
+	 * @return The Array of Function Spaces in the Class
+	 */
+
+	public org.drip.spaces.rxtor1.NormedRxToNormedR1[] functionSpaces()
+	{
+<span class="nc" id="L109">		return _aNormedRxToNormedR1;</span>
+	}
+
+	/**
+	 * Estimate for the Function Class Population Covering Number
+	 * 
+	 * @param dblCover The Size of the Cover
+	 * 
+	 * @return Function Class Population Covering Number Estimate
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double populationCoveringNumber (
+		final double dblCover)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L126" title="All 2 branches missed.">		if (null == _aNormedRxToNormedR1)</span>
+<span class="nc" id="L127">			throw new java.lang.Exception</span>
+				(&quot;NormedRxToNormedR1Finite::populationCoveringNumber =&gt; Finite Function Set Unspecified&quot;);
+
+<span class="nc" id="L130">		int iFunctionSpaceSize = _aNormedRxToNormedR1.length;</span>
+
+<span class="nc" id="L132">		double dblPopulationCoveringNumber = _aNormedRxToNormedR1[0].populationCoveringNumber (dblCover);</span>
+
+<span class="nc bnc" id="L134" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPopulationCoveringNumber))</span>
+<span class="nc" id="L135">			throw new java.lang.Exception</span>
+				(&quot;NormedRxToNormedR1Finite::populationCoveringNumber =&gt; Cannot Compute Population Covering Number&quot;);
+
+<span class="nc bnc" id="L138" title="All 2 branches missed.">		for (int i = 1; i &lt; iFunctionSpaceSize; ++i) {</span>
+<span class="nc" id="L139">			double dblFunctionPopulationCoveringNumber = _aNormedRxToNormedR1[i].populationCoveringNumber</span>
+<span class="nc" id="L140">				(dblCover);</span>
+
+<span class="nc bnc" id="L142" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblFunctionPopulationCoveringNumber))</span>
+<span class="nc" id="L143">				throw new java.lang.Exception</span>
+					(&quot;NormedRxToNormedR1Finite::populationCoveringNumber =&gt; Cannot Compute Population Covering Number&quot;);
+
+<span class="nc bnc" id="L146" title="All 2 branches missed.">			if (dblPopulationCoveringNumber &lt; dblFunctionPopulationCoveringNumber)</span>
+<span class="nc" id="L147">				dblPopulationCoveringNumber = dblFunctionPopulationCoveringNumber;</span>
+		}
+
+<span class="nc" id="L150">		return dblPopulationCoveringNumber;</span>
+	}
+
+	/**
+	 * Estimate for the Function Class Population Supremum Covering Number
+	 * 
+	 * @param dblCover The Size of the Cover
+	 * 
+	 * @return Function Class Population Supremum Covering Number Estimate
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double populationSupremumCoveringNumber (
+		final double dblCover)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L167" title="All 2 branches missed.">		if (null == _aNormedRxToNormedR1)</span>
+<span class="nc" id="L168">			throw new java.lang.Exception</span>
+				(&quot;NormedRxToNormedR1Finite::populationSupremumCoveringNumber =&gt; Finite Function Set Unspecified&quot;);
+
+<span class="nc" id="L171">		int iFunctionSpaceSize = _aNormedRxToNormedR1.length;</span>
+
+<span class="nc" id="L173">		double dblPopulationSupremumCoveringNumber = _aNormedRxToNormedR1[0].populationSupremumCoveringNumber</span>
+<span class="nc" id="L174">			(dblCover);</span>
+
+<span class="nc bnc" id="L176" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPopulationSupremumCoveringNumber))</span>
+<span class="nc" id="L177">			throw new java.lang.Exception</span>
+				(&quot;NormedRxToNormedR1Finite::populationSupremumCoveringNumber =&gt; Cannot Compute Population Supremum Covering Number&quot;);
+
+<span class="nc bnc" id="L180" title="All 2 branches missed.">		for (int i = 1; i &lt; iFunctionSpaceSize; ++i) {</span>
+<span class="nc" id="L181">			double dblFunctionPopulationSupremumCoveringNumber =</span>
+<span class="nc" id="L182">				_aNormedRxToNormedR1[i].populationSupremumCoveringNumber (dblCover);</span>
+
+<span class="nc bnc" id="L184" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblFunctionPopulationSupremumCoveringNumber))</span>
+<span class="nc" id="L185">				throw new java.lang.Exception</span>
+					(&quot;NormedRxToNormedR1Finite::populationSupremumCoveringNumber =&gt; Cannot Compute Population Supremum Covering Number&quot;);
+
+<span class="nc bnc" id="L188" title="All 2 branches missed.">			if (dblPopulationSupremumCoveringNumber &lt; dblFunctionPopulationSupremumCoveringNumber)</span>
+<span class="nc" id="L189">				dblPopulationSupremumCoveringNumber = dblFunctionPopulationSupremumCoveringNumber;</span>
+		}
+
+<span class="nc" id="L192">		return dblPopulationSupremumCoveringNumber;</span>
+	}
+
+	/**
+	 * Estimate for the Scale-Sensitive Sample Covering Number for the specified Cover Size
+	 * 
+	 * @param gvvi The Validated Instance Vector Sequence
+	 * @param dblCover The Size of the Cover
+	 * 
+	 * @return The Scale-Sensitive Sample Covering Number for the specified Cover Size
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double sampleCoveringNumber (
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi,
+		final double dblCover)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L211" title="All 2 branches missed.">		if (null == _aNormedRxToNormedR1)</span>
+<span class="nc" id="L212">			throw new java.lang.Exception</span>
+				(&quot;NormedRxToNormedR1Finite::sampleCoveringNumber =&gt; Finite Function Set Unspecified&quot;);
+
+<span class="nc" id="L215">		int iFunctionSpaceSize = _aNormedRxToNormedR1.length;</span>
+
+<span class="nc" id="L217">		double dblSampleCoveringNumber = _aNormedRxToNormedR1[0].sampleCoveringNumber (gvvi, dblCover);</span>
+
+<span class="nc bnc" id="L219" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblSampleCoveringNumber))</span>
+<span class="nc" id="L220">			throw new java.lang.Exception</span>
+				(&quot;NormedRxToNormedR1Finite::sampleCoveringNumber =&gt; Cannot Compute Sample Covering Number&quot;);
+
+<span class="nc bnc" id="L223" title="All 2 branches missed.">		for (int i = 1; i &lt; iFunctionSpaceSize; ++i) {</span>
+<span class="nc" id="L224">			double dblFunctionSampleCoveringNumber = _aNormedRxToNormedR1[i].sampleCoveringNumber (gvvi,</span>
+				dblCover);
+
+<span class="nc bnc" id="L227" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblFunctionSampleCoveringNumber))</span>
+<span class="nc" id="L228">				throw new java.lang.Exception</span>
+					(&quot;NormedRxToNormedR1Finite::sampleCoveringNumber =&gt; Cannot Compute Sample Covering Number&quot;);
+
+<span class="nc bnc" id="L231" title="All 2 branches missed.">			if (dblSampleCoveringNumber &lt; dblFunctionSampleCoveringNumber)</span>
+<span class="nc" id="L232">				dblSampleCoveringNumber = dblFunctionSampleCoveringNumber;</span>
+		}
+
+<span class="nc" id="L235">		return dblSampleCoveringNumber;</span>
+	}
+
+	/**
+	 * Estimate for the Scale-Sensitive Sample Supremum Covering Number for the specified Cover Size
+	 * 
+	 * @param gvvi The Validated Instance Vector Sequence
+	 * @param dblCover The Size of the Cover
+	 * 
+	 * @return The Scale-Sensitive Sample Supremum Covering Number for the specified Cover Size
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double sampleSupremumCoveringNumber (
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi,
+		final double dblCover)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L254" title="All 2 branches missed.">		if (null == _aNormedRxToNormedR1)</span>
+<span class="nc" id="L255">			throw new java.lang.Exception</span>
+				(&quot;NormedRxToNormedR1Finite::sampleSupremumCoveringNumber =&gt; Finite Function Set Unspecified&quot;);
+
+<span class="nc" id="L258">		int iFunctionSpaceSize = _aNormedRxToNormedR1.length;</span>
+
+<span class="nc" id="L260">		double dblSampleSupremumCoveringNumber = _aNormedRxToNormedR1[0].sampleSupremumCoveringNumber (gvvi,</span>
+			dblCover);
+
+<span class="nc bnc" id="L263" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblSampleSupremumCoveringNumber))</span>
+<span class="nc" id="L264">			throw new java.lang.Exception</span>
+				(&quot;NormedRxToNormedR1Finite::sampleSupremumCoveringNumber =&gt; Cannot Compute Sample Supremum Covering Number&quot;);
+
+<span class="nc bnc" id="L267" title="All 2 branches missed.">		for (int i = 1; i &lt; iFunctionSpaceSize; ++i) {</span>
+<span class="nc" id="L268">			double dblFunctionSampleSupremumCoveringNumber =</span>
+<span class="nc" id="L269">				_aNormedRxToNormedR1[i].sampleSupremumCoveringNumber (gvvi, dblCover);</span>
+
+<span class="nc bnc" id="L271" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblFunctionSampleSupremumCoveringNumber))</span>
+<span class="nc" id="L272">				throw new java.lang.Exception</span>
+					(&quot;NormedRxToNormedR1Finite::sampleSupremumCoveringNumber =&gt; Cannot Compute Sample Supremum Covering Number&quot;);
+
+<span class="nc bnc" id="L275" title="All 2 branches missed.">			if (dblSampleSupremumCoveringNumber &lt; dblFunctionSampleSupremumCoveringNumber)</span>
+<span class="nc" id="L276">				dblSampleSupremumCoveringNumber = dblFunctionSampleSupremumCoveringNumber;</span>
+		}
+
+<span class="nc" id="L279">		return dblSampleSupremumCoveringNumber;</span>
+	}
+
+	@Override public double operatorPopulationMetricNorm()
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L285" title="All 2 branches missed.">		if (null == _aNormedRxToNormedR1)</span>
+<span class="nc" id="L286">			throw new java.lang.Exception</span>
+				(&quot;NormedRxToNormedR1Finite::operatorPopulationMetricNorm =&gt; Finite Function Set Unspecified&quot;);
+
+<span class="nc" id="L289">		int iNumFunction = _aNormedRxToNormedR1.length;</span>
+
+<span class="nc" id="L291">		double dblOperatorPopulationMetricNorm = _aNormedRxToNormedR1[0].populationMetricNorm();</span>
+
+<span class="nc bnc" id="L293" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblOperatorPopulationMetricNorm))</span>
+<span class="nc" id="L294">			throw new java.lang.Exception</span>
+				(&quot;NormedRxToNormedR1Finite::operatorPopulationMetricNorm =&gt; Cannot compute Population Metric Norm for Function #&quot;
+					+ 0);
+
+<span class="nc bnc" id="L298" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumFunction; ++i) {</span>
+<span class="nc" id="L299">			double dblPopulationMetricNorm = _aNormedRxToNormedR1[i].populationMetricNorm();</span>
+
+<span class="nc bnc" id="L301" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblPopulationMetricNorm))</span>
+<span class="nc" id="L302">				throw new java.lang.Exception</span>
+					(&quot;NormedRxToNormedR1Finite::operatorPopulationMetricNorm =&gt; Cannot compute Population Metric Norm for Function #&quot;
+						+ i);
+
+<span class="nc bnc" id="L306" title="All 2 branches missed.">			if (dblOperatorPopulationMetricNorm &gt; dblPopulationMetricNorm)</span>
+<span class="nc" id="L307">				dblOperatorPopulationMetricNorm = dblPopulationMetricNorm;</span>
+		}
+
+<span class="nc" id="L310">		return dblOperatorPopulationMetricNorm;</span>
+	}
+
+	@Override public double operatorPopulationSupremumNorm()
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L316" title="All 2 branches missed.">		if (null == _aNormedRxToNormedR1)</span>
+<span class="nc" id="L317">			throw new java.lang.Exception</span>
+				(&quot;NormedRxToNormedR1Finite::operatorPopulationSupremumNorm =&gt; Finite Function Set Unspecified&quot;);
+
+<span class="nc" id="L320">		int iNumFunction = _aNormedRxToNormedR1.length;</span>
+
+<span class="nc" id="L322">		double dblOperatorPopulationSupremumNorm = _aNormedRxToNormedR1[0].populationESS();</span>
+
+<span class="nc bnc" id="L324" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblOperatorPopulationSupremumNorm))</span>
+<span class="nc" id="L325">			throw new java.lang.Exception</span>
+				(&quot;NormedRxToNormedR1Finite::operatorPopulationSupremumNorm =&gt; Cannot compute Population Supremum Norm for Function #&quot;
+					+ 0);
+
+<span class="nc bnc" id="L329" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumFunction; ++i) {</span>
+<span class="nc" id="L330">			double dblPopulationSupremumNorm = _aNormedRxToNormedR1[i].populationESS();</span>
+
+<span class="nc bnc" id="L332" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblPopulationSupremumNorm))</span>
+<span class="nc" id="L333">				throw new java.lang.Exception</span>
+					(&quot;NormedRxToNormedR1Finite::operatorPopulationSupremumNorm =&gt; Cannot compute Population Supremum Norm for Function #&quot;
+						+ i);
+
+<span class="nc bnc" id="L337" title="All 2 branches missed.">			if (dblOperatorPopulationSupremumNorm &gt; dblPopulationSupremumNorm)</span>
+<span class="nc" id="L338">				dblOperatorPopulationSupremumNorm = dblPopulationSupremumNorm;</span>
+		}
+
+<span class="nc" id="L341">		return dblOperatorPopulationSupremumNorm;</span>
+	}
+
+	@Override public double operatorSampleMetricNorm (
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L348" title="All 2 branches missed.">		if (null == _aNormedRxToNormedR1)</span>
+<span class="nc" id="L349">			throw new java.lang.Exception</span>
+				(&quot;NormedRxToNormedR1Finite::operatorSampleMetricNorm =&gt; Finite Function Set Unspecified&quot;);
+
+<span class="nc" id="L352">		int iNumFunction = _aNormedRxToNormedR1.length;</span>
+
+<span class="nc" id="L354">		double dblOperatorSampleMetricNorm = _aNormedRxToNormedR1[0].sampleMetricNorm (gvvi);</span>
+
+<span class="nc bnc" id="L356" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblOperatorSampleMetricNorm))</span>
+<span class="nc" id="L357">			throw new java.lang.Exception</span>
+				(&quot;NormedRxToNormedR1Finite::operatorSampleMetricNorm =&gt; Cannot compute Sample Metric Norm for Function #&quot;
+					+ 0);
+
+<span class="nc bnc" id="L361" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumFunction; ++i) {</span>
+<span class="nc" id="L362">			double dblSampleMetricNorm = _aNormedRxToNormedR1[i].sampleMetricNorm (gvvi);</span>
+
+<span class="nc bnc" id="L364" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblSampleMetricNorm))</span>
+<span class="nc" id="L365">				throw new java.lang.Exception</span>
+					(&quot;NormedRxToNormedR1Finite::operatorSampleMetricNorm =&gt; Cannot compute Sample Metric Norm for Function #&quot;
+						+ i);
+
+<span class="nc bnc" id="L369" title="All 2 branches missed.">			if (dblOperatorSampleMetricNorm &gt; dblSampleMetricNorm)</span>
+<span class="nc" id="L370">				dblOperatorSampleMetricNorm = dblSampleMetricNorm;</span>
+		}
+
+<span class="nc" id="L373">		return dblOperatorSampleMetricNorm;</span>
+	}
+
+	@Override public double operatorSampleSupremumNorm (
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L380" title="All 2 branches missed.">		if (null == _aNormedRxToNormedR1)</span>
+<span class="nc" id="L381">			throw new java.lang.Exception</span>
+				(&quot;NormedRxToNormedR1Finite::operatorSampleSupremumNorm =&gt; Finite Function Set Unspecified&quot;);
+
+<span class="nc" id="L384">		int iNumFunction = _aNormedRxToNormedR1.length;</span>
+
+<span class="nc" id="L386">		double dblOperatorSampleSupremumNorm = _aNormedRxToNormedR1[0].sampleSupremumNorm (gvvi);</span>
+
+<span class="nc bnc" id="L388" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblOperatorSampleSupremumNorm))</span>
+<span class="nc" id="L389">			throw new java.lang.Exception</span>
+				(&quot;NormedRxToNormedR1Finite::operatorSampleSupremumNorm =&gt; Cannot compute Sample Supremum Norm for Function #&quot;
+					+ 0);
+
+<span class="nc bnc" id="L393" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumFunction; ++i) {</span>
+<span class="nc" id="L394">			double dblSampleSupremumNorm = _aNormedRxToNormedR1[i].sampleSupremumNorm (gvvi);</span>
+
+<span class="nc bnc" id="L396" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblSampleSupremumNorm))</span>
+<span class="nc" id="L397">				throw new java.lang.Exception</span>
+					(&quot;NormedRxToNormedR1Finite::operatorSampleSupremumNorm =&gt; Cannot compute Sample Supremum Norm for Function #&quot;
+						+ i);
+
+<span class="nc bnc" id="L401" title="All 2 branches missed.">			if (dblOperatorSampleSupremumNorm &gt; dblSampleSupremumNorm)</span>
+<span class="nc" id="L402">				dblOperatorSampleSupremumNorm = dblSampleSupremumNorm;</span>
+		}
+
+<span class="nc" id="L405">		return dblOperatorSampleSupremumNorm;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

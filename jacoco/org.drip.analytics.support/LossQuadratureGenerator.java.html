@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LossQuadratureGenerator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.analytics.support</a> &gt; <span class="el_source">LossQuadratureGenerator.java</span></div><h1>LossQuadratureGenerator.java</h1><pre class="source lang-java linenums">
+package org.drip.analytics.support;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * Copyright (C) 2012 Lakshmi Krishnamurthy
+ * Copyright (C) 2011 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * LossQuadratureGenerator generates the decomposed Integrand Quadrature for the Loss Steps.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L62">public class LossQuadratureGenerator {</span>
+
+	/**
+	 * Generate the Set of Loss Quadrature Metrics from the Day Step Loss Periods
+	 * 
+	 * @param comp Component for which the measures are to be generated
+	 * @param valParams ValuationParams from which the periods are generated
+	 * @param period The enveloping coupon period
+	 * @param iWorkoutDate Date representing the absolute end of all the generated periods
+	 * @param iPeriodUnit Day Step Size Unit of the generated Loss Quadrature Periods
+	 * @param csqs The Market Parameters Curves/Quotes
+	 *  
+	 * @return List of the generated LossQuadratureMetrics
+	 */
+
+	public static final java.util.List&lt;org.drip.analytics.cashflow.LossQuadratureMetrics&gt;
+		GenerateDayStepLossPeriods (
+			final org.drip.product.definition.CreditComponent comp,
+			final org.drip.param.valuation.ValuationParams valParams,
+			final org.drip.analytics.cashflow.CompositePeriod period,
+			final int iWorkoutDate,
+			final int iPeriodUnit,
+			final org.drip.param.market.CurveSurfaceQuoteContainer csqs)
+	{
+<span class="pc bpc" id="L86" title="4 of 8 branches missed.">		if (null == comp || null == valParams || null == period || null == csqs) return null;</span>
+
+<span class="fc" id="L88">		org.drip.state.discount.MergedDiscountForwardCurve dc = csqs.fundingState</span>
+<span class="fc" id="L89">			(org.drip.state.identifier.FundingLabel.Standard (comp.payCurrency()));</span>
+
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">		if (null == dc) return null;</span>
+
+<span class="fc" id="L93">		org.drip.state.credit.CreditCurve cc = csqs.creditState (comp.creditLabel());</span>
+
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">		if (null == cc) return null;</span>
+
+<span class="fc" id="L97">		int iLossPayLag = comp.creditValuationParams().lossPayLag();</span>
+
+<span class="fc" id="L99">		int iSubPeriodStartDate = period.startDate();</span>
+
+<span class="pc bpc" id="L101" title="1 of 2 branches missed.">		if (iSubPeriodStartDate &gt; iWorkoutDate) return null;</span>
+
+<span class="fc" id="L103">		int iPeriodEndDate = period.endDate();</span>
+
+<span class="fc" id="L105">		int iValueDate = valParams.valueDate();</span>
+
+<span class="fc" id="L107">		boolean bPeriodDone = false;</span>
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">		iPeriodEndDate = iPeriodEndDate &lt; iWorkoutDate ? iPeriodEndDate : iWorkoutDate;</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">		iSubPeriodStartDate = iSubPeriodStartDate &lt; iValueDate ? iValueDate : iSubPeriodStartDate;</span>
+
+<span class="fc" id="L111">		java.util.List&lt;org.drip.analytics.cashflow.LossQuadratureMetrics&gt; sLP = new</span>
+			java.util.ArrayList&lt;org.drip.analytics.cashflow.LossQuadratureMetrics&gt;();
+
+<span class="fc bfc" id="L114" title="All 2 branches covered.">		while (!bPeriodDone) {</span>
+<span class="fc" id="L115">			int iSubPeriodEndDate = iSubPeriodStartDate + iPeriodUnit;</span>
+
+<span class="pc bpc" id="L117" title="1 of 2 branches missed.">			if (iSubPeriodEndDate &lt; iValueDate) return null;</span>
+
+<span class="fc bfc" id="L119" title="All 2 branches covered.">			if (iSubPeriodEndDate &gt;= iPeriodEndDate) {</span>
+<span class="fc" id="L120">				bPeriodDone = true;</span>
+<span class="fc" id="L121">				iSubPeriodEndDate = iPeriodEndDate;</span>
+			}
+
+			try {
+<span class="fc" id="L125">				org.drip.analytics.cashflow.LossQuadratureMetrics lp =</span>
+<span class="fc" id="L126">					org.drip.analytics.cashflow.LossQuadratureMetrics.MakeDefaultPeriod (iSubPeriodStartDate,</span>
+<span class="fc" id="L127">						iSubPeriodEndDate, period.accrualDCF ((iSubPeriodStartDate + iSubPeriodEndDate) / 2),</span>
+<span class="fc" id="L128">							comp.notional (iSubPeriodStartDate, iSubPeriodEndDate), comp.recovery</span>
+<span class="fc" id="L129">								(iSubPeriodStartDate, iSubPeriodEndDate, cc), dc, cc, iLossPayLag);</span>
+
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">				if (null != lp) sLP.add (lp);</span>
+<span class="nc" id="L132">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L133">				e.printStackTrace();</span>
+
+<span class="nc" id="L135">				return null;</span>
+<span class="fc" id="L136">			}</span>
+
+<span class="fc" id="L138">			iSubPeriodStartDate = iSubPeriodEndDate;</span>
+<span class="fc" id="L139">		}</span>
+
+<span class="fc" id="L141">		return sLP;</span>
+	}
+
+	/**
+	 * Generate the Set of Loss Quadrature Metrics from the Day Step Loss Periods
+	 * 
+	 * @param comp Component for which the measures are to be generated
+	 * @param valParams ValuationParams from which the periods are generated
+	 * @param period The enveloping coupon period
+	 * @param iWorkoutDate The absolute end of all the generated periods
+	 * @param iPeriodUnit Loss Grid Size Unit of the generated Loss Quadrature Periods
+	 * @param csqs The Market Parameters Curves/Quotes
+	 *  
+	 * @return List of the generated LossQuadratureMetrics
+	 */
+
+	public static final java.util.List&lt;org.drip.analytics.cashflow.LossQuadratureMetrics&gt;
+		GeneratePeriodUnitLossPeriods (
+			final org.drip.product.definition.CreditComponent comp,
+			final org.drip.param.valuation.ValuationParams valParams,
+			final org.drip.analytics.cashflow.CompositePeriod period,
+			final int iWorkoutDate,
+			final int iPeriodUnit,
+			final org.drip.param.market.CurveSurfaceQuoteContainer csqs)
+	{
+<span class="nc bnc" id="L166" title="All 8 branches missed.">		if (null == comp || null == valParams || null == period || null == csqs) return null;</span>
+
+<span class="nc" id="L168">		org.drip.state.discount.MergedDiscountForwardCurve dc = csqs.fundingState</span>
+<span class="nc" id="L169">			(org.drip.state.identifier.FundingLabel.Standard (comp.payCurrency()));</span>
+
+<span class="nc bnc" id="L171" title="All 2 branches missed.">		if (null == dc) return null;</span>
+
+<span class="nc" id="L173">		org.drip.state.credit.CreditCurve cc = csqs.creditState (comp.creditLabel());</span>
+
+<span class="nc bnc" id="L175" title="All 2 branches missed.">		if (null == cc) return null;</span>
+
+<span class="nc" id="L177">		int iValueDate = valParams.valueDate();</span>
+
+<span class="nc" id="L179">		int iPeriodEndDate = period.endDate();</span>
+
+<span class="nc" id="L181">		int iSubPeriodStartDate = period.startDate();</span>
+
+<span class="nc" id="L183">		boolean bPeriodDone = false;</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">		iPeriodEndDate = iPeriodEndDate &lt; iWorkoutDate ? iPeriodEndDate : iWorkoutDate;</span>
+<span class="nc bnc" id="L185" title="All 2 branches missed.">		iSubPeriodStartDate = iSubPeriodStartDate &lt; iValueDate ? iValueDate : iSubPeriodStartDate;</span>
+<span class="nc" id="L186">		int iDayStep = (iPeriodEndDate - iSubPeriodStartDate) / iPeriodUnit;</span>
+
+<span class="nc bnc" id="L188" title="All 4 branches missed.">		if (iSubPeriodStartDate &gt; iWorkoutDate || iPeriodEndDate &lt; iValueDate) return null;</span>
+
+<span class="nc bnc" id="L190" title="All 2 branches missed.">		if (iDayStep &lt; org.drip.param.pricer.CreditPricerParams.PERIOD_DAY_STEPS_MINIMUM)</span>
+<span class="nc" id="L191">			iDayStep = org.drip.param.pricer.CreditPricerParams.PERIOD_DAY_STEPS_MINIMUM;</span>
+
+<span class="nc" id="L193">		int iLossPayLag = comp.creditValuationParams().lossPayLag();</span>
+
+<span class="nc" id="L195">		java.util.List&lt;org.drip.analytics.cashflow.LossQuadratureMetrics&gt; sLP = new</span>
+			java.util.ArrayList&lt;org.drip.analytics.cashflow.LossQuadratureMetrics&gt;();
+
+<span class="nc bnc" id="L198" title="All 2 branches missed.">		while (!bPeriodDone) {</span>
+<span class="nc" id="L199">			int iSubPeriodEndDate = iSubPeriodStartDate + iDayStep;</span>
+
+<span class="nc bnc" id="L201" title="All 2 branches missed.">			if (iSubPeriodEndDate &lt; iValueDate) return null;</span>
+
+			try {
+<span class="nc bnc" id="L204" title="All 2 branches missed.">				if (iSubPeriodEndDate &gt;= iPeriodEndDate) {</span>
+<span class="nc" id="L205">					bPeriodDone = true;</span>
+<span class="nc" id="L206">					iSubPeriodEndDate = iPeriodEndDate;</span>
+				}
+
+<span class="nc" id="L209">				org.drip.analytics.cashflow.LossQuadratureMetrics lp =</span>
+<span class="nc" id="L210">					org.drip.analytics.cashflow.LossQuadratureMetrics.MakeDefaultPeriod (iSubPeriodStartDate,</span>
+<span class="nc" id="L211">						iSubPeriodEndDate, period.accrualDCF ((iSubPeriodStartDate + iSubPeriodEndDate) / 2),</span>
+<span class="nc" id="L212">							comp.notional (iSubPeriodStartDate, iSubPeriodEndDate), comp.recovery</span>
+<span class="nc" id="L213">								(iSubPeriodStartDate, iSubPeriodEndDate, cc),  dc, cc, iLossPayLag);</span>
+
+<span class="nc bnc" id="L215" title="All 2 branches missed.">				if (null != lp) sLP.add (lp);</span>
+<span class="nc" id="L216">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L217">				e.printStackTrace();</span>
+
+<span class="nc" id="L219">				return null;</span>
+<span class="nc" id="L220">			}</span>
+
+<span class="nc" id="L222">			iSubPeriodStartDate = iSubPeriodEndDate;</span>
+<span class="nc" id="L223">		}</span>
+
+<span class="nc" id="L225">		return sLP;</span>
+	}
+
+
+	/**
+	 * Generate the Set of Loss Quadrature Metrics from the Day Step Loss Periods
+	 * 
+	 * @param comp Component for which the measures are to be generated
+	 * @param valParams ValuationParams from which the periods are generated
+	 * @param period The Enveloping Coupon period
+	 * @param iWorkoutDate The Absolute End of all the generated periods
+	 * @param csqs The Market Parameters Curves/Quotes
+	 *  
+	 * @return List of the generated LossQuadratureMetrics
+	 */
+
+	public static final java.util.List&lt;org.drip.analytics.cashflow.LossQuadratureMetrics&gt;
+		GenerateWholeLossPeriods (
+			final org.drip.product.definition.CreditComponent comp,
+			final org.drip.param.valuation.ValuationParams valParams,
+			final org.drip.analytics.cashflow.CompositePeriod period,
+			final int iWorkoutDate,
+			final org.drip.param.market.CurveSurfaceQuoteContainer csqs)
+	{
+<span class="pc bpc" id="L249" title="4 of 8 branches missed.">		if (null == comp || null == valParams || null == period || null == csqs) return null;</span>
+
+<span class="fc" id="L251">		org.drip.state.discount.MergedDiscountForwardCurve dc = csqs.fundingState</span>
+<span class="fc" id="L252">			(org.drip.state.identifier.FundingLabel.Standard (comp.payCurrency()));</span>
+
+<span class="pc bpc" id="L254" title="1 of 2 branches missed.">		if (null == dc) return null;</span>
+
+<span class="fc" id="L256">		org.drip.state.credit.CreditCurve cc = csqs.creditState (comp.creditLabel());</span>
+
+<span class="pc bpc" id="L258" title="1 of 2 branches missed.">		if (null == cc) return null;</span>
+
+<span class="fc" id="L260">		int iPeriodStartDate = period.startDate();</span>
+
+<span class="pc bpc" id="L262" title="1 of 2 branches missed.">		if (iPeriodStartDate &gt; iWorkoutDate) return null;</span>
+
+<span class="fc" id="L264">		int iPeriodEndDate = period.endDate();</span>
+
+<span class="fc" id="L266">		int iValueDate = valParams.valueDate();</span>
+
+<span class="fc bfc" id="L268" title="All 2 branches covered.">		iPeriodStartDate = iPeriodStartDate &lt; iValueDate ? iValueDate : iPeriodStartDate;</span>
+<span class="pc bpc" id="L269" title="1 of 2 branches missed.">		iPeriodEndDate = iPeriodEndDate &lt; iWorkoutDate ? iPeriodEndDate : iWorkoutDate;</span>
+
+<span class="fc" id="L271">		int iLossPayLag = comp.creditValuationParams().lossPayLag();</span>
+
+<span class="fc" id="L273">		java.util.List&lt;org.drip.analytics.cashflow.LossQuadratureMetrics&gt; sLP = new</span>
+			java.util.ArrayList&lt;org.drip.analytics.cashflow.LossQuadratureMetrics&gt;();
+
+		try {
+<span class="fc" id="L277">			org.drip.analytics.cashflow.LossQuadratureMetrics lp =</span>
+<span class="fc" id="L278">				org.drip.analytics.cashflow.LossQuadratureMetrics.MakeDefaultPeriod (iPeriodStartDate,</span>
+<span class="fc" id="L279">					iPeriodEndDate, period.accrualDCF ((iPeriodStartDate + iPeriodEndDate) / 2),</span>
+<span class="fc" id="L280">						comp.notional (iPeriodStartDate, iPeriodEndDate), comp.recovery (iPeriodStartDate,</span>
+							iPeriodEndDate, cc), dc, cc, iLossPayLag);
+
+<span class="pc bpc" id="L283" title="1 of 2 branches missed.">			if (null != lp) sLP.add (lp);</span>
+<span class="nc" id="L284">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L285">			e.printStackTrace();</span>
+
+<span class="nc" id="L287">			return null;</span>
+<span class="fc" id="L288">		}</span>
+
+<span class="fc" id="L290">		return sLP;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

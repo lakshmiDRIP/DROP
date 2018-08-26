@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PriorPosteriorMetricsComparison.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.idzorek</a> &gt; <span class="el_source">PriorPosteriorMetricsComparison.java</span></div><h1>PriorPosteriorMetricsComparison.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.idzorek;
+
+import org.drip.measure.bayesian.*;
+import org.drip.measure.continuous.MultivariateMeta;
+import org.drip.measure.gaussian.*;
+import org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput;
+import org.drip.portfolioconstruction.asset.*;
+import org.drip.portfolioconstruction.bayesian.*;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * PriorPosteriorMetricsComparison reconciles the Prior-Posterior Black-Litterman Model Process Metrics
+ * 	generated using the Idzorek Model. The References are:
+ *  
+ *  - He. G., and R. Litterman (1999): The Intuition behind the Black-Litterman Model Portfolios, Goldman
+ *  	Sachs Asset Management
+ *  
+ *  - Idzorek, T. (2005): A Step-by-Step Guide to the Black-Litterman Model: Incorporating User-Specified
+ *  	Confidence Levels, Ibbotson Associates, Chicago
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L73">public class PriorPosteriorMetricsComparison {</span>
+
+	private static final void ForwardOptimizationWeights (
+		final ForwardReverseOptimizationOutput from,
+		final double[] adblWeightReconciler,
+		final int iLeft,
+		final int iRight,
+		final String strHeader)
+	{
+<span class="fc" id="L82">		Portfolio fromPortfolio = from.optimalPortfolio();</span>
+
+<span class="fc" id="L84">		String[] astrAssetID = fromPortfolio.id();</span>
+
+<span class="fc" id="L86">		double[] adblWeight = fromPortfolio.weights();</span>
+
+<span class="fc" id="L88">		AssetComponent acMaxWeight = fromPortfolio.maxWeight();</span>
+
+<span class="fc" id="L90">		AssetComponent acMinWeight = fromPortfolio.minWeight();</span>
+
+<span class="fc" id="L92">		System.out.println (&quot;\t|--------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L94">		System.out.println (strHeader);</span>
+
+<span class="fc" id="L96">		System.out.println (&quot;\t|--------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L98">		System.out.println (&quot;\t|                  ID               =&gt;  CALC   | VERIFY  ||&quot;);</span>
+
+<span class="fc" id="L100">		System.out.println (&quot;\t|--------------------------------------------------------||&quot;);</span>
+
+<span class="fc bfc" id="L102" title="All 2 branches covered.">		for (int i = 0; i &lt; adblWeight.length; ++i)</span>
+<span class="fc" id="L103">			System.out.println (</span>
+				&quot;\t| [&quot; + astrAssetID[i] + &quot;] =&gt; &quot; +
+<span class="fc" id="L105">				FormatUtil.FormatDouble (adblWeight[i], iLeft, iRight, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L106">				FormatUtil.FormatDouble (adblWeightReconciler[i], iLeft, iRight, 100.) + &quot;% ||&quot;</span>
+			);
+
+<span class="fc" id="L109">		System.out.println (&quot;\t|--------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L111">		System.out.println (&quot;\t| HIGH  : &quot; + acMaxWeight.id() + &quot; =&gt; &quot; + FormatUtil.FormatDouble (acMaxWeight.amount(), iLeft, iRight, 100.) + &quot;%     ||&quot;);</span>
+
+<span class="fc" id="L113">		System.out.println (&quot;\t| LOW   : &quot; + acMinWeight.id() + &quot; =&gt; &quot; + FormatUtil.FormatDouble (acMinWeight.amount(), iLeft, iRight, 100.) + &quot;%     ||&quot;);</span>
+
+<span class="fc" id="L115">		System.out.println (&quot;\t|--------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L117">		System.out.println (&quot;\t| TOTAL :                                   &quot; + FormatUtil.FormatDouble (fromPortfolio.notional(), iLeft, iRight, 100.) + &quot;%     ||&quot;);</span>
+
+<span class="fc" id="L119">		System.out.println (&quot;\t|--------------------------------------------------------||\n&quot;);</span>
+<span class="fc" id="L120">	}</span>
+
+	public static final void main (
+		final String[] astArgs)
+		throws Exception
+	{
+<span class="fc" id="L126">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="fc" id="L128">		double dblTau = 0.025;</span>
+<span class="fc" id="L129">		double dblRiskAversion = 3.07;</span>
+<span class="fc" id="L130">		double dblRiskFreeRate = 0.00;</span>
+
+<span class="fc" id="L132">		double[] adblAssetSpaceJointReturnsReconciler = new double[] {</span>
+			0.0007,
+			0.0050,
+			0.0650,
+			0.0432,
+			0.0759,
+			0.0394,
+			0.0493,
+			0.0684
+		};
+
+<span class="fc" id="L143">		double[] adblPosteriorPriorDeviationReconciler = new double[] {</span>
+			-0.0002,
+			-0.0017,
+			 0.0008,
+			 0.0024,
+			 0.0016,
+			 0.0023,
+			 0.0013,
+			 0.0024
+		};
+
+<span class="fc" id="L154">		double[] adblPosteriorPortfolioWeightReconciler = new double[] {</span>
+			  0.2988,
+			  0.1559,
+			  0.0935,
+			  0.1482,
+			  0.0104,
+			  0.0165,
+			  0.2781,
+			  0.0349
+		};
+
+<span class="fc" id="L165">		double[] adblPosteriorWeightDeviationReconciler = new double[] {</span>
+			  0.1054,
+			 -0.1054,
+			 -0.0273,
+			  0.0273,
+			 -0.0030,
+			  0.0030,
+			  0.0363,
+			  0.0000
+		};
+
+<span class="fc" id="L176">		String[] astrAssetID = new String[] {</span>
+			&quot;US BONDS                       &quot;,
+			&quot;INTERNATIONAL BONDS            &quot;,
+			&quot;US LARGE GROWTH                &quot;,
+			&quot;US LARGE VALUE                 &quot;,
+			&quot;US SMALL GROWTH                &quot;,
+			&quot;US SMALL VALUE                 &quot;,
+			&quot;INTERNATIONAL DEVELOPED EQUITY &quot;,
+			&quot;INTERNATIONAL EMERGING EQUITY  &quot;
+		};
+
+<span class="fc" id="L187">		double[] adblAssetEquilibriumWeight = new double[] {</span>
+			0.1934,
+			0.2613,
+			0.1209,
+			0.1209,
+			0.0134,
+			0.0134,
+			0.2418,
+			0.0349
+		};
+
+<span class="fc" id="L198">		double[][] aadblAssetExcessReturnsCovariance = new double[][] {</span>
+			{ 0.001005,  0.001328, -0.000579, -0.000675,  0.000121,  0.000128, -0.000445, -0.000437},
+			{ 0.001328,  0.007277, -0.001307, -0.000610, -0.002237, -0.000989,  0.001442, -0.001535},
+			{-0.000579, -0.001307,  0.059582,  0.027588,  0.063497,  0.023036,  0.032967,  0.048039},
+			{-0.000675, -0.000610,  0.027588,  0.029609,  0.026572,  0.021465,  0.020697,  0.029854},
+			{ 0.000121, -0.002237,  0.063497,  0.026572,  0.102488,  0.042744,  0.039943,  0.065994},
+			{ 0.000128, -0.000989,  0.023036,  0.021465,  0.042744,  0.032056,  0.019881,  0.032235},
+			{-0.000445,  0.001442,  0.032967,  0.020697,  0.039943,  0.019881,  0.028355,  0.035064},
+			{-0.000437, -0.001535,  0.048039,  0.029854,  0.065994,  0.032235,  0.035064,  0.079958}
+		};
+
+<span class="fc" id="L209">		double[][] aadblAssetSpaceViewProjection = new double[][] {</span>
+			{  0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  1.00,  0.00},
+			{ -1.00,  1.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00},
+			{  0.00,  0.00,  0.90, -0.90,  0.10, -0.10,  0.00,  0.00}
+		};
+
+<span class="fc" id="L215">		double[] adblProjectionExpectedExcessReturns = new double[] {</span>
+			0.0525,
+			0.0025,
+			0.0200
+		};
+
+<span class="fc" id="L221">		double[][] aadblProjectionExcessReturnsCovariance = ProjectionDistributionLoading.ProjectionCovariance (</span>
+			aadblAssetExcessReturnsCovariance,
+			aadblAssetSpaceViewProjection,
+			dblTau
+		);
+
+<span class="fc" id="L227">		R1MultivariateNormal viewDistribution = R1MultivariateNormal.Standard (</span>
+			new MultivariateMeta (
+				new String[] {
+					&quot;PROJECTION #1&quot;,
+					&quot;PROJECTION #2&quot;,
+					&quot;PROJECTION #3&quot;
+				}
+			),
+			adblProjectionExpectedExcessReturns,
+			aadblProjectionExcessReturnsCovariance
+		);
+
+<span class="fc" id="L239">		BlackLittermanCombinationEngine blce = new BlackLittermanCombinationEngine (</span>
+<span class="fc" id="L240">			ForwardReverseOptimizationOutput.Reverse (</span>
+<span class="fc" id="L241">				Portfolio.Standard (</span>
+					astrAssetID,
+					adblAssetEquilibriumWeight
+				),
+				aadblAssetExcessReturnsCovariance,
+				dblRiskAversion
+			),
+			new PriorControlSpecification (
+				true,
+				dblRiskFreeRate,
+				dblTau
+			),
+			new ProjectionSpecification (
+				viewDistribution,
+				aadblAssetSpaceViewProjection
+			)
+		);
+
+<span class="fc" id="L259">		JointPosteriorMetrics jpm = blce.customConfidenceRun().combinationMetrics();</span>
+
+<span class="fc" id="L261">		R1MultivariateNormal priorDistribution = (R1MultivariateNormal) jpm.prior();</span>
+
+<span class="fc" id="L263">		R1MultivariateNormal jointDistribution = (R1MultivariateNormal) jpm.joint();</span>
+
+<span class="fc" id="L265">		R1MultivariateNormal posteriorDistribution = (R1MultivariateNormal) jpm.posterior();</span>
+
+<span class="fc" id="L267">		double[] adblAssetSpacePriorReturns = priorDistribution.mean();</span>
+
+<span class="fc" id="L269">		double[] adblAssetSpaceJointReturns = jointDistribution.mean();</span>
+
+<span class="fc" id="L271">		double[][] aadblAssetSpaceJointCovariance = jointDistribution.covariance().covarianceMatrix();</span>
+
+<span class="fc" id="L273">		double[][] aadblAssetSpacePosteriorCovariance = posteriorDistribution.covariance().covarianceMatrix();</span>
+
+<span class="fc" id="L275">		ForwardReverseOptimizationOutput fromPosterior = ForwardReverseOptimizationOutput.Forward (</span>
+			astrAssetID,
+			adblAssetSpaceJointReturns,
+			aadblAssetExcessReturnsCovariance,
+			dblRiskAversion
+		);
+
+<span class="fc" id="L282">		double[] adblPosteriorWeight = fromPosterior.optimalPortfolio().weights();</span>
+
+<span class="fc" id="L284">		System.out.println (&quot;\n\t|---------------------------||&quot;);</span>
+
+<span class="fc" id="L286">		System.out.println (&quot;\t| TAU            =&gt; &quot; + FormatUtil.FormatDouble (dblTau, 1, 4, 1.) + &quot; ||&quot;);</span>
+
+<span class="fc" id="L288">		System.out.println (&quot;\t| RISK AVERSION  =&gt; &quot; + FormatUtil.FormatDouble (dblRiskAversion, 1, 4, 1.) + &quot; ||&quot;);</span>
+
+<span class="fc" id="L290">		System.out.println (&quot;\t| RISK FREE RATE =&gt; &quot; + FormatUtil.FormatDouble (dblRiskAversion, 1, 4, 1.) + &quot; ||&quot;);</span>
+
+<span class="fc" id="L292">		System.out.println (&quot;\t|---------------------------||&quot;);</span>
+
+<span class="fc" id="L294">		System.out.println (&quot;\n\t|-----------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L296">		System.out.println (&quot;\t|                                               PRIOR CROSS ASSET COVARIANCE MATRIX                                                       ||&quot;);</span>
+
+<span class="fc" id="L298">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc bfc" id="L300" title="All 2 branches covered.">		for (int i = 0; i &lt; astrAssetID.length; ++i) {</span>
+<span class="fc" id="L301">			String strDump = &quot;\t| &quot; + astrAssetID[i] + &quot; &quot;;</span>
+
+<span class="fc bfc" id="L303" title="All 2 branches covered.">			for (int j = 0; j &lt; astrAssetID.length; ++j)</span>
+<span class="fc" id="L304">				strDump += &quot;|&quot; + FormatUtil.FormatDouble (aadblAssetExcessReturnsCovariance[i][j], 1, 8, 1.) + &quot; &quot;;</span>
+
+<span class="fc" id="L306">			System.out.println (strDump + &quot;||&quot;);</span>
+		}
+
+<span class="fc" id="L309">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L311">		System.out.println (&quot;\n\t|---------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L313">		System.out.println (&quot;\t|                         VIEW SCOPING ASSET PROJECTION LOADING                               ||&quot;);</span>
+
+<span class="fc" id="L315">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc bfc" id="L317" title="All 2 branches covered.">		for (int i = 0; i &lt; aadblAssetSpaceViewProjection.length; ++i) {</span>
+<span class="fc" id="L318">			String strDump = &quot;\t|  #&quot; + i + &quot; &quot;;</span>
+
+<span class="fc bfc" id="L320" title="All 2 branches covered.">			for (int j = 0; j &lt; astrAssetID.length; ++j)</span>
+<span class="fc" id="L321">				strDump += &quot;| &quot; + FormatUtil.FormatDouble (aadblAssetSpaceViewProjection[i][j], 1, 5, 1.) + &quot; &quot;;</span>
+
+<span class="fc" id="L323">			System.out.println (strDump + &quot;||&quot;);</span>
+		}
+
+<span class="fc" id="L326">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L328">		System.out.println (&quot;\n\t|----------------------------------------------||&quot;);</span>
+
+<span class="fc bfc" id="L330" title="All 2 branches covered.">		for (int i = 0; i &lt; aadblAssetSpaceViewProjection.length; ++i) {</span>
+<span class="fc" id="L331">			String strDump = &quot;\t|  #&quot; + i + &quot; &quot;;</span>
+
+<span class="fc bfc" id="L333" title="All 2 branches covered.">			for (int j = 0; j &lt; aadblAssetSpaceViewProjection.length; ++j)</span>
+<span class="fc" id="L334">				strDump += &quot;|&quot; + FormatUtil.FormatDouble (aadblProjectionExcessReturnsCovariance[i][j], 1, 6, 1.) + &quot; &quot;;</span>
+
+<span class="fc" id="L336">			System.out.println (strDump + &quot;|&quot; + FormatUtil.FormatDouble (adblProjectionExpectedExcessReturns[i], 1, 2, 100.) + &quot;% ||&quot;);</span>
+		}
+
+<span class="fc" id="L339">		System.out.println (&quot;\t|----------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L341">		System.out.println (&quot;\n\t|-----------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L343">		System.out.println (&quot;\t|                                               JOINT CROSS ASSET COVARIANCE MATRIX                                                       ||&quot;);</span>
+
+<span class="fc" id="L345">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc bfc" id="L347" title="All 2 branches covered.">		for (int i = 0; i &lt; astrAssetID.length; ++i) {</span>
+<span class="fc" id="L348">			String strDump = &quot;\t| &quot; + astrAssetID[i] + &quot; &quot;;</span>
+
+<span class="fc bfc" id="L350" title="All 2 branches covered.">			for (int j = 0; j &lt; astrAssetID.length; ++j)</span>
+<span class="fc" id="L351">				strDump += &quot;|&quot; + FormatUtil.FormatDouble (aadblAssetSpaceJointCovariance[i][j], 1, 8, 1.) + &quot; &quot;;</span>
+
+<span class="fc" id="L353">			System.out.println (strDump + &quot;||&quot;);</span>
+		}
+
+<span class="fc" id="L356">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L358">		System.out.println (&quot;\n\t|-----------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L360">		System.out.println (&quot;\t|                                             POSTERIOR CROSS ASSET COVARIANCE MATRIX                                                     ||&quot;);</span>
+
+<span class="fc" id="L362">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc bfc" id="L364" title="All 2 branches covered.">		for (int i = 0; i &lt; astrAssetID.length; ++i) {</span>
+<span class="fc" id="L365">			String strDump = &quot;\t| &quot; + astrAssetID[i] + &quot; &quot;;</span>
+
+<span class="fc bfc" id="L367" title="All 2 branches covered.">			for (int j = 0; j &lt; astrAssetID.length; ++j)</span>
+<span class="fc" id="L368">				strDump += &quot;|&quot; + FormatUtil.FormatDouble (aadblAssetSpacePosteriorCovariance[i][j], 1, 8, 1.) + &quot; &quot;;</span>
+
+<span class="fc" id="L370">			System.out.println (strDump + &quot;||&quot;);</span>
+		}
+
+<span class="fc" id="L373">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------------------------------------------------||\n&quot;);</span>
+
+<span class="fc" id="L375">		System.out.println (&quot;\t|----------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L377">		System.out.println (&quot;\t|               JOINT/POSTERIOR RETURN               ||&quot;);</span>
+
+<span class="fc" id="L379">		System.out.println (&quot;\t|----------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L381">		System.out.println (&quot;\t|                 ID                =&gt; DRIP  | IDZO  ||&quot;);</span>
+
+<span class="fc" id="L383">		System.out.println (&quot;\t|----------------------------------------------------||&quot;);</span>
+
+<span class="fc bfc" id="L385" title="All 2 branches covered.">		for (int i = 0; i &lt; adblAssetSpaceJointReturnsReconciler.length; ++i) {</span>
+<span class="fc" id="L386">			System.out.println (</span>
+				&quot;\t| [&quot; + astrAssetID[i] + &quot;] =&gt;&quot; +
+<span class="fc" id="L388">				FormatUtil.FormatDouble (adblAssetSpaceJointReturns[i], 1, 2, 100.) + &quot;% |&quot; +</span>
+<span class="fc" id="L389">				FormatUtil.FormatDouble (adblAssetSpaceJointReturnsReconciler[i], 1, 2, 100.) + &quot;% ||&quot;</span>
+			);
+		}
+
+<span class="fc" id="L393">		System.out.println (&quot;\t|----------------------------------------------------||\n&quot;);</span>
+
+<span class="fc" id="L395">		System.out.println (&quot;\t|----------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L397">		System.out.println (&quot;\t|           RETURNS DEVIATION RECONCILER             ||&quot;);</span>
+
+<span class="fc" id="L399">		System.out.println (&quot;\t|----------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L401">		System.out.println (&quot;\t|                 ID                =&gt; DRIP  | IDZO  ||&quot;);</span>
+
+<span class="fc" id="L403">		System.out.println (&quot;\t|----------------------------------------------------||&quot;);</span>
+
+<span class="fc bfc" id="L405" title="All 2 branches covered.">		for (int i = 0; i &lt; adblAssetSpacePriorReturns.length; ++i) {</span>
+<span class="fc" id="L406">			System.out.println (</span>
+				&quot;\t| [&quot; + astrAssetID[i] + &quot;] =&gt;&quot; +
+<span class="fc" id="L408">				FormatUtil.FormatDouble (adblAssetSpaceJointReturns[i] - adblAssetSpacePriorReturns[i], 1, 2, 100.) + &quot;% |&quot; +</span>
+<span class="fc" id="L409">				FormatUtil.FormatDouble (adblPosteriorPriorDeviationReconciler[i], 1, 2, 100.) + &quot;% ||&quot;</span>
+			);
+		}
+
+<span class="fc" id="L413">		System.out.println (&quot;\t|----------------------------------------------------||\n&quot;);</span>
+
+<span class="fc" id="L415">		ForwardOptimizationWeights (</span>
+			fromPosterior,
+			adblPosteriorPortfolioWeightReconciler,
+			2,
+			2,
+			&quot;\t|               POSTERIOR WEIGHTS RECONCILER             ||&quot;
+		);
+
+<span class="fc" id="L423">		System.out.println (&quot;\t|--------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L425">		System.out.println (&quot;\t|              WEIGHT DEVIATION RECONCILER               ||&quot;);</span>
+
+<span class="fc" id="L427">		System.out.println (&quot;\t|--------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L429">		System.out.println (&quot;\t|                 ID                =&gt;   DRIP  |   IDZO  ||&quot;);</span>
+
+<span class="fc" id="L431">		System.out.println (&quot;\t|--------------------------------------------------------||&quot;);</span>
+
+<span class="fc bfc" id="L433" title="All 2 branches covered.">		for (int i = 0; i &lt; adblAssetEquilibriumWeight.length; ++i) {</span>
+<span class="fc" id="L434">			System.out.println (</span>
+				&quot;\t| [&quot; + astrAssetID[i] + &quot;] =&gt; &quot; +
+<span class="fc" id="L436">				FormatUtil.FormatDouble (adblPosteriorWeight[i] - adblAssetEquilibriumWeight[i], 2, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L437">				FormatUtil.FormatDouble (adblPosteriorWeightDeviationReconciler[i], 2, 2, 100.) + &quot;% ||&quot;</span>
+			);
+		}
+
+<span class="fc" id="L441">		System.out.println (&quot;\t|--------------------------------------------------------||\n&quot;);</span>
+<span class="fc" id="L442">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StochasticVolatilityStateEvolver.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.dynamics.sabr</a> &gt; <span class="el_source">StochasticVolatilityStateEvolver.java</span></div><h1>StochasticVolatilityStateEvolver.java</h1><pre class="source lang-java linenums">
+package org.drip.dynamics.sabr;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * StochasticVolatilityStateEvolver provides the SABR Stochastic Volatility Evolution Dynamics.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class StochasticVolatilityStateEvolver implements org.drip.dynamics.evolution.PointStateEvolver {
+<span class="fc" id="L59">	private double _dblRho = java.lang.Double.NaN;</span>
+<span class="fc" id="L60">	private double _dblBeta = java.lang.Double.NaN;</span>
+<span class="fc" id="L61">	private double _dblIdiosyncraticRho = java.lang.Double.NaN;</span>
+<span class="fc" id="L62">	private double _dblVolatilityOfVolatility = java.lang.Double.NaN;</span>
+<span class="fc" id="L63">	private org.drip.state.identifier.ForwardLabel _lslForward = null;</span>
+<span class="fc" id="L64">	private org.drip.sequence.random.UnivariateSequenceGenerator _usgForwardRate = null;</span>
+<span class="fc" id="L65">	private org.drip.sequence.random.UnivariateSequenceGenerator _usgForwardRateVolatilityIdiosyncratic =</span>
+		null;
+
+	/**
+	 * Create a Gaussian SABR Instance
+	 * 
+	 * @param lslForward The Forward Rate Latent State Label
+	 * @param dblRho SABR Rho
+	 * @param dblVolatilityOfVolatility SABR Volatility Of Volatility
+	 * @param usgForwardRate The Forward Rate Univariate Sequence Generator
+	 * @param usgForwardRateVolatilityIdiosyncratic The Idiosyncratic Component Forward Rate Volatility
+	 *  Univariate Sequence Generator
+	 * 
+	 * @return The Gaussian SABR Instance
+	 */
+
+	public static final StochasticVolatilityStateEvolver Gaussian (
+		final org.drip.state.identifier.ForwardLabel lslForward,
+		final double dblRho,
+		final double dblVolatilityOfVolatility,
+		final org.drip.sequence.random.UnivariateSequenceGenerator usgForwardRate,
+		final org.drip.sequence.random.UnivariateSequenceGenerator usgForwardRateVolatilityIdiosyncratic)
+	{
+		try {
+<span class="nc" id="L89">			return new StochasticVolatilityStateEvolver (lslForward, 0., dblRho, dblVolatilityOfVolatility,</span>
+				usgForwardRate, usgForwardRateVolatilityIdiosyncratic);
+<span class="nc" id="L91">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L92">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L95">		return null;</span>
+	}
+
+	/**
+	 * Create a Log-normal SABR Instance
+	 * 
+	 * @param lslForward The Forward Rate Latent State Label
+	 * @param dblRho SABR Rho
+	 * @param dblVolatilityOfVolatility SABR Volatility Of Volatility
+	 * @param usgForwardRate The Forward Rate Univariate Sequence Generator
+	 * @param usgForwardRateVolatilityIdiosyncratic The Idiosyncratic Component Forward Rate Volatility
+	 *  Univariate Sequence Generator
+	 * 
+	 * @return The Log-normal SABR Instance
+	 */
+
+	public static final StochasticVolatilityStateEvolver Lognormal (
+		final org.drip.state.identifier.ForwardLabel lslForward,
+		final double dblRho,
+		final double dblVolatilityOfVolatility,
+		final org.drip.sequence.random.UnivariateSequenceGenerator usgForwardRate,
+		final org.drip.sequence.random.UnivariateSequenceGenerator usgForwardRateVolatilityIdiosyncratic)
+	{
+		try {
+<span class="nc" id="L119">			return new StochasticVolatilityStateEvolver (lslForward, 1., dblRho, dblVolatilityOfVolatility,</span>
+				usgForwardRate, usgForwardRateVolatilityIdiosyncratic);
+<span class="nc" id="L121">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L122">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L125">		return null;</span>
+	}
+
+	/**
+	 * Create a Constant Elasticity of Variance SABR Instance
+	 * 
+	 * @param lslForward The Forward Rate Latent State Label
+	 * @param dblBeta SABR Beta
+	 * @param dblRho SABR Rho
+	 * @param usgForwardRate The Forward Rate Univariate Sequence Generator
+	 * @param usgForwardRateVolatilityIdiosyncratic The Idiosyncratic Component Forward Rate Volatility
+	 *  Univariate Sequence Generator
+	 * 
+	 * @return The Constant Elasticity of Variance SABR Instance
+	 */
+
+	public static final StochasticVolatilityStateEvolver CEV (
+		final org.drip.state.identifier.ForwardLabel lslForward,
+		final double dblBeta,
+		final double dblRho,
+		final org.drip.sequence.random.UnivariateSequenceGenerator usgForwardRate,
+		final org.drip.sequence.random.UnivariateSequenceGenerator usgForwardRateVolatilityIdiosyncratic)
+	{
+		try {
+<span class="nc" id="L149">			return new StochasticVolatilityStateEvolver (lslForward, dblBeta, dblRho, 0., usgForwardRate,</span>
+				usgForwardRateVolatilityIdiosyncratic);
+<span class="nc" id="L151">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L152">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L155">		return null;</span>
+	}
+
+	/**
+	 * StochasticVolatilityStateEvolver Constructor
+	 * 
+	 * @param lslForward The Forward Rate Latent State Label
+	 * @param dblBeta SABR Beta
+	 * @param dblRho SABR Rho
+	 * @param dblVolatilityOfVolatility SABR Volatility Of Volatility
+	 * @param usgForwardRate The Forward Rate Univariate Sequence Generator
+	 * @param usgForwardRateVolatilityIdiosyncratic The Idiosyncratic Component Forward Rate Volatility
+	 *  Univariate Sequence Generator
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public StochasticVolatilityStateEvolver (
+		final org.drip.state.identifier.ForwardLabel lslForward,
+		final double dblBeta,
+		final double dblRho,
+		final double dblVolatilityOfVolatility,
+		final org.drip.sequence.random.UnivariateSequenceGenerator usgForwardRate,
+		final org.drip.sequence.random.UnivariateSequenceGenerator usgForwardRateVolatilityIdiosyncratic)
+		throws java.lang.Exception
+<span class="fc" id="L180">	{</span>
+<span class="pc bpc" id="L181" title="2 of 4 branches missed.">		if (null == (_lslForward = lslForward) || !org.drip.quant.common.NumberUtil.IsValid (_dblBeta =</span>
+<span class="pc bpc" id="L182" title="3 of 6 branches missed.">			dblBeta) || !org.drip.quant.common.NumberUtil.IsValid (_dblRho = dblRho) || _dblRho &lt; -1. ||</span>
+<span class="pc bpc" id="L183" title="4 of 8 branches missed.">				_dblRho &gt; 1. || !org.drip.quant.common.NumberUtil.IsValid (_dblVolatilityOfVolatility =</span>
+					dblVolatilityOfVolatility) || null == (_usgForwardRate = usgForwardRate) || (0. !=
+						_dblVolatilityOfVolatility &amp;&amp; null == (_usgForwardRateVolatilityIdiosyncratic =
+							usgForwardRateVolatilityIdiosyncratic)))
+<span class="nc" id="L187">			throw new java.lang.Exception (&quot;StochasticVolatilityStateEvolver ctr =&gt; Invalid Inputs&quot;);</span>
+
+<span class="fc" id="L189">		_dblIdiosyncraticRho = java.lang.Math.sqrt (1. - _dblRho * _dblRho);</span>
+<span class="fc" id="L190">	}</span>
+
+	/**
+	 * Retrieve the Forward Label
+	 * 
+	 * @return The Forward Label
+	 */
+
+	public org.drip.state.identifier.ForwardLabel forwardLabel()
+	{
+<span class="nc" id="L200">		return _lslForward;</span>
+	}
+
+	/**
+	 * Retrieve SABR Volatility of Volatility
+	 * 
+	 * @return SABR Volatility of Volatility
+	 */
+
+	public double volatilityOfVolatility()
+	{
+<span class="nc" id="L211">		return _dblVolatilityOfVolatility;</span>
+	}
+
+	/**
+	 * Retrieve SABR Beta
+	 * 
+	 * @return SABR Beta
+	 */
+
+	public double beta()
+	{
+<span class="nc" id="L222">		return _dblBeta;</span>
+	}
+
+	/**
+	 * Retrieve SABR Rho
+	 * 
+	 * @return SABR Rho
+	 */
+
+	public double rho()
+	{
+<span class="nc" id="L233">		return _dblRho;</span>
+	}
+
+	/**
+	 * The Forward Rate Univariate Random Variable Generator Sequence
+	 * 
+	 * @return The Forward Rate Univariate Random Variable Generator Sequence
+	 */
+
+	public org.drip.sequence.random.UnivariateSequenceGenerator usgForwardRate()
+	{
+<span class="nc" id="L244">		return _usgForwardRate;</span>
+	}
+
+	/**
+	 * The Idiosyncratic Component of Forward Rate Volatility Univariate Random Variable Generator Sequence
+	 * 
+	 * @return The Idiosyncratic Component of Forward Rate Volatility Univariate Random Variable Generator
+	 *  Sequence
+	 */
+
+	public org.drip.sequence.random.UnivariateSequenceGenerator usgForwardRateVolatilityIdiosyncratic()
+	{
+<span class="nc" id="L256">		return _usgForwardRateVolatilityIdiosyncratic;</span>
+	}
+
+	@Override public org.drip.dynamics.evolution.LSQMPointUpdate evolve (
+		final int iSpotDate,
+		final int iViewDate,
+		final int iSpotTimeIncrement,
+		final org.drip.dynamics.evolution.LSQMPointUpdate lsqmPrev)
+	{
+<span class="pc bpc" id="L265" title="3 of 6 branches missed.">		if (iViewDate &lt; iSpotDate || null == lsqmPrev || !(lsqmPrev instanceof</span>
+			org.drip.dynamics.sabr.ForwardRateUpdate))
+<span class="nc" id="L267">			return null;</span>
+<span class="fc" id="L268">		double dblForwardRateZ = _usgForwardRate.random();</span>
+
+
+<span class="fc" id="L271">		double dblAnnualizedIncrement = 1. * iSpotTimeIncrement / 365.25;</span>
+<span class="fc" id="L272">		org.drip.dynamics.sabr.ForwardRateUpdate fruPrev = (org.drip.dynamics.sabr.ForwardRateUpdate)</span>
+			lsqmPrev;
+
+<span class="fc" id="L275">		double dblAnnualizedIncrementSQRT = java.lang.Math.sqrt (dblAnnualizedIncrement);</span>
+
+		try {
+<span class="fc" id="L278">			double dblForwardRate = fruPrev.forwardRate();</span>
+
+<span class="fc" id="L280">			double dblForwardRateVolatility = fruPrev.forwardRateVolatility();</span>
+
+<span class="fc" id="L282">			double dblForwardRateIncrement = dblForwardRateVolatility * java.lang.Math.pow (dblForwardRate,</span>
+				_dblBeta) * dblAnnualizedIncrementSQRT * dblForwardRateZ;
+
+<span class="fc" id="L285">			double dblForwardRateVolatilityIncrement = _dblVolatilityOfVolatility * dblForwardRateVolatility</span>
+				* dblAnnualizedIncrementSQRT * (_dblRho * dblForwardRateZ + _dblIdiosyncraticRho *
+<span class="fc" id="L287">					_usgForwardRateVolatilityIdiosyncratic.random());</span>
+
+<span class="fc" id="L289">			return org.drip.dynamics.sabr.ForwardRateUpdate.Create (_lslForward, iSpotDate, iSpotDate +</span>
+				iSpotTimeIncrement, iViewDate, dblForwardRate + dblForwardRateIncrement,
+					dblForwardRateIncrement, dblForwardRateVolatility + dblForwardRateVolatilityIncrement,
+						dblForwardRateVolatilityIncrement);
+<span class="nc" id="L293">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L294">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L297">		return null;</span>
+	}
+
+	/**
+	 * Compute the Implied ATM Black Volatility for the ATM Forward Rate and the TTE
+	 * 
+	 * @param dblATMForwardRate ATM Forward Rate
+	 * @param dblTTE Time to Expiry
+	 * @param dblSigma0 Initial Sigma
+	 * 
+	 * @return The Implied Black Volatility Instance
+	 */
+
+	public org.drip.dynamics.sabr.ImpliedBlackVolatility computeATMBlackVolatility (
+		final double dblATMForwardRate,
+		final double dblTTE,
+		final double dblSigma0)
+	{
+<span class="nc bnc" id="L315" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblATMForwardRate) ||</span>
+<span class="nc bnc" id="L316" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblTTE) || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="nc bnc" id="L317" title="All 2 branches missed.">				(dblSigma0))</span>
+<span class="nc" id="L318">			return null;</span>
+
+<span class="nc" id="L320">		double dblF0KExpSQRT = java.lang.Math.pow (dblATMForwardRate, 1. - _dblBeta);</span>
+
+<span class="nc" id="L322">		double dblA = dblSigma0 / dblF0KExpSQRT;</span>
+<span class="nc" id="L323">		double dblB = 1. + dblTTE * (((1. - _dblBeta) * (1. - _dblBeta) * dblSigma0 * dblSigma0 / (24. *</span>
+			dblF0KExpSQRT * dblF0KExpSQRT)) + (_dblRho * _dblBeta * _dblVolatilityOfVolatility * dblSigma0 /
+				(4. * dblF0KExpSQRT)) + ((2. - 3. * _dblRho * _dblRho) * _dblVolatilityOfVolatility *
+					_dblVolatilityOfVolatility / 24.));
+
+		try {
+<span class="nc" id="L329">			return new org.drip.dynamics.sabr.ImpliedBlackVolatility (dblATMForwardRate, dblATMForwardRate,</span>
+				dblTTE, dblA, 0., 0., dblB, dblA * dblB);
+<span class="nc" id="L331">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L332">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L335">		return null;</span>
+	}
+
+	/**
+	 * Compute the Implied Black Volatility for the Specified Strike, the ATM Forward Rate, and the TTE
+	 * 
+	 * @param dblStrike Strike
+	 * @param dblATMForwardRate ATM Forward Rate
+	 * @param dblTTE Time to Expiry
+	 * @param dblSigma0 Initial Sigma
+	 * 
+	 * @return The Implied Black Volatility Instance
+	 */
+
+	public org.drip.dynamics.sabr.ImpliedBlackVolatility computeBlackVolatility (
+		final double dblStrike,
+		final double dblATMForwardRate,
+		final double dblTTE,
+		final double dblSigma0)
+	{
+<span class="pc bpc" id="L355" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblStrike) ||</span>
+<span class="pc bpc" id="L356" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblATMForwardRate) ||</span>
+<span class="pc bpc" id="L357" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (dblTTE) ||</span>
+<span class="pc bpc" id="L358" title="1 of 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (dblSigma0))</span>
+<span class="nc" id="L359">			return null;</span>
+
+<span class="pc bpc" id="L361" title="1 of 2 branches missed.">		if (dblStrike == dblATMForwardRate)</span>
+<span class="nc" id="L362">			return computeATMBlackVolatility (dblATMForwardRate, dblTTE, dblSigma0);</span>
+
+<span class="fc" id="L364">		double dblLogF0ByK = java.lang.Math.log (dblATMForwardRate / dblStrike);</span>
+
+<span class="fc" id="L366">		double dblF0KExpSQRT = java.lang.Math.pow (dblATMForwardRate * dblStrike, 0.5 * (1. - _dblBeta));</span>
+
+<span class="fc" id="L368">		double dblZ = _dblVolatilityOfVolatility * dblF0KExpSQRT * dblLogF0ByK / dblSigma0;</span>
+<span class="fc" id="L369">		double dblOneMinusBetaLogF0ByK = (1. - _dblBeta) * (1. - _dblBeta) * dblLogF0ByK * dblLogF0ByK;</span>
+<span class="fc" id="L370">		double dblA = dblSigma0 / (dblF0KExpSQRT * (1. + (dblOneMinusBetaLogF0ByK / 24.) +</span>
+			(dblOneMinusBetaLogF0ByK * dblOneMinusBetaLogF0ByK / 1920.)));
+<span class="fc" id="L372">		double dblB = 1. + dblTTE * (((1. - _dblBeta) * (1. - _dblBeta) * dblSigma0 * dblSigma0 / (24. *</span>
+			dblF0KExpSQRT * dblF0KExpSQRT)) + (_dblRho * _dblBeta * _dblVolatilityOfVolatility * dblSigma0 /
+				(4. * dblF0KExpSQRT)) + ((2. - 3. * _dblRho * _dblRho) * _dblVolatilityOfVolatility *
+					_dblVolatilityOfVolatility / 24.));
+
+<span class="fc" id="L377">		double dblChiZ = java.lang.Math.log ((java.lang.Math.sqrt (1. - 2. * _dblRho * dblZ + dblZ * dblZ) +</span>
+			dblZ - _dblRho) / (1. - _dblRho));
+
+		try {
+<span class="fc" id="L381">			return new org.drip.dynamics.sabr.ImpliedBlackVolatility (dblStrike, dblATMForwardRate, dblTTE,</span>
+				dblA, dblZ, dblChiZ, dblB, dblA * dblZ * dblB / dblChiZ);
+<span class="nc" id="L383">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L384">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L387">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

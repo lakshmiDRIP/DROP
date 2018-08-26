@@ -154,7 +154,7 @@ public class FlatSensitivitySettings extends org.drip.simm20.parameters.Liquidit
 		{
 			return null == commodityBucket || null == deltaVegaThreshold ? null :
 				new FlatSensitivitySettings (
-					commodityBucket.riskWeight(),
+					commodityBucket.deltaRiskWeight(),
 					deltaVegaThreshold.delta()
 				);
 		}

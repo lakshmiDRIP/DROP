@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ExpiryDeliveryTradingDates.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.treasuryfutures</a> &gt; <span class="el_source">ExpiryDeliveryTradingDates.java</span></div><h1>ExpiryDeliveryTradingDates.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.treasuryfutures;
+
+import org.drip.analytics.date.*;
+import org.drip.market.exchange.*;
+import org.drip.service.env.EnvManager;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * ExpiryDeliveryTradingDates illustrates Generation of Event Dates from the Expiry Month/Year of the Bond
+ *  Futures Contracts.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L63">public class ExpiryDeliveryTradingDates {</span>
+
+	private static final void DisplayEventDateInfo (
+		String strCurrency,
+		String strUnderlierType,
+		String strUnderlierSubtype,
+		String strMaturityTenor,
+		JulianDate dtSettle)
+		throws Exception
+	{
+<span class="fc" id="L73">		TreasuryFuturesConvention bfc = TreasuryFuturesConventionContainer.FromJurisdictionTypeMaturity (</span>
+			strCurrency,
+			strUnderlierType,
+			strUnderlierSubtype,
+			strMaturityTenor
+		);
+
+<span class="fc" id="L80">		System.out.println (&quot;\t| &quot; +</span>
+<span class="fc" id="L81">			bfc.eventDates (</span>
+<span class="fc" id="L82">				DateUtil.Year (dtSettle.julian()),</span>
+<span class="fc" id="L83">				DateUtil.Month (dtSettle.julian())</span>
+			) + &quot; | [&quot; +
+			strCurrency + &quot;-&quot; +
+			strUnderlierType + &quot;-&quot; +
+			strUnderlierSubtype + &quot;-&quot; +
+			strMaturityTenor + &quot;]&quot;
+		);
+<span class="fc" id="L90">	}</span>
+
+	public static final void main (
+		final String[] args)
+		throws Exception
+	{
+<span class="fc" id="L96">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="fc" id="L98">		System.out.println();</span>
+
+<span class="fc" id="L100">		java.lang.String strForwardTenor = &quot;3M&quot;;</span>
+
+<span class="fc" id="L102">		JulianDate dtToday = DateUtil.Today().addTenor (strForwardTenor);</span>
+
+<span class="fc" id="L104">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------|&quot;);</span>
+
+<span class="fc" id="L106">		System.out.println (&quot;\t|   EXPIRY   | DELIV START |  DELIV END | DELIV NOTICE | LAST TRADE |           FUTURE           |&quot;);</span>
+
+<span class="fc" id="L108">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------|&quot;);</span>
+
+<span class="fc" id="L110">		DisplayEventDateInfo (&quot;AUD&quot;, &quot;BANK&quot;, &quot;BILLS&quot;, &quot;3M&quot;, dtToday);</span>
+
+<span class="fc" id="L112">		DisplayEventDateInfo (&quot;AUD&quot;, &quot;TREASURY&quot;, &quot;BOND&quot;, &quot;3Y&quot;, dtToday);</span>
+
+<span class="fc" id="L114">		DisplayEventDateInfo (&quot;AUD&quot;, &quot;TREASURY&quot;, &quot;BOND&quot;, &quot;10Y&quot;, dtToday);</span>
+
+<span class="fc" id="L116">		DisplayEventDateInfo (&quot;EUR&quot;, &quot;EURO&quot;, &quot;SCHATZ&quot;, &quot;2Y&quot;, dtToday);</span>
+
+<span class="fc" id="L118">		DisplayEventDateInfo (&quot;EUR&quot;, &quot;EURO&quot;, &quot;BOBL&quot;, &quot;5Y&quot;, dtToday);</span>
+
+<span class="fc" id="L120">		DisplayEventDateInfo (&quot;EUR&quot;, &quot;EURO&quot;, &quot;BUND&quot;, &quot;10Y&quot;, dtToday);</span>
+
+<span class="fc" id="L122">		DisplayEventDateInfo (&quot;EUR&quot;, &quot;EURO&quot;, &quot;BUXL&quot;, &quot;30Y&quot;, dtToday);</span>
+
+<span class="fc" id="L124">		DisplayEventDateInfo (&quot;EUR&quot;, &quot;TREASURY&quot;, &quot;BONO&quot;, &quot;10Y&quot;, dtToday);</span>
+
+<span class="fc" id="L126">		DisplayEventDateInfo (&quot;GBP&quot;, &quot;SHORT&quot;, &quot;GILT&quot;, &quot;2Y&quot;, dtToday);</span>
+
+<span class="fc" id="L128">		DisplayEventDateInfo (&quot;GBP&quot;, &quot;MEDIUM&quot;, &quot;GILT&quot;, &quot;5Y&quot;, dtToday);</span>
+
+<span class="fc" id="L130">		DisplayEventDateInfo (&quot;GBP&quot;, &quot;LONG&quot;, &quot;GILT&quot;, &quot;10Y&quot;, dtToday);</span>
+
+<span class="fc" id="L132">		DisplayEventDateInfo (&quot;JPY&quot;, &quot;TREASURY&quot;, &quot;JGB&quot;, &quot;5Y&quot;, dtToday);</span>
+
+<span class="fc" id="L134">		DisplayEventDateInfo (&quot;JPY&quot;, &quot;TREASURY&quot;, &quot;JGB&quot;, &quot;10Y&quot;, dtToday);</span>
+
+<span class="fc" id="L136">		DisplayEventDateInfo (&quot;USD&quot;, &quot;TREASURY&quot;, &quot;NOTE&quot;, &quot;2Y&quot;, dtToday);</span>
+
+<span class="fc" id="L138">		DisplayEventDateInfo (&quot;USD&quot;, &quot;TREASURY&quot;, &quot;NOTE&quot;, &quot;3Y&quot;, dtToday);</span>
+
+<span class="fc" id="L140">		DisplayEventDateInfo (&quot;USD&quot;, &quot;TREASURY&quot;, &quot;NOTE&quot;, &quot;5Y&quot;, dtToday);</span>
+
+<span class="fc" id="L142">		DisplayEventDateInfo (&quot;USD&quot;, &quot;TREASURY&quot;, &quot;NOTE&quot;, &quot;10Y&quot;, dtToday);</span>
+
+<span class="fc" id="L144">		DisplayEventDateInfo (&quot;USD&quot;, &quot;TREASURY&quot;, &quot;BOND&quot;, &quot;30Y&quot;, dtToday);</span>
+
+<span class="fc" id="L146">		DisplayEventDateInfo (&quot;USD&quot;, &quot;TREASURY&quot;, &quot;BOND&quot;, &quot;ULTRA&quot;, dtToday);</span>
+
+<span class="fc" id="L148">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------|\n&quot;);</span>
+<span class="fc" id="L149">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -71,7 +71,8 @@ package org.drip.simm20.margin;
 
 public class RiskClassAggregate
 {
-	private double _deltaSBA = java.lang.Double.NaN;
+	private double _coreDeltaSBAVariance = java.lang.Double.NaN;
+	private double _residualDeltaSBAVariance = java.lang.Double.NaN;
 	private java.util.Map<java.lang.Integer, org.drip.simm20.margin.BucketAggregate> _bucketAggregateMap =
 		null;
 
@@ -79,18 +80,21 @@ public class RiskClassAggregate
 	 * RiskClassAggregate Constructor
 	 * 
 	 * @param bucketAggregateMap The Bucket Aggregate Map
-	 * @param deltaSBA The SBA Based Bucket Delta
+	 * @param coreDeltaSBAVariance The SBA Based Risk Class Core Delta Variance
+	 * @param residualDeltaSBAVariance The SBA Based Risk Class Residual Delta Variance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RiskClassAggregate (
 		final java.util.Map<java.lang.Integer, org.drip.simm20.margin.BucketAggregate> bucketAggregateMap,
-		final double deltaSBA)
+		final double coreDeltaSBAVariance,
+		final double residualDeltaSBAVariance)
 		throws java.lang.Exception
 	{
 		if (null == (_bucketAggregateMap = bucketAggregateMap) || 0 == _bucketAggregateMap.size() ||
-			!org.drip.quant.common.NumberUtil.IsValid (_deltaSBA = deltaSBA))
+			!org.drip.quant.common.NumberUtil.IsValid (_coreDeltaSBAVariance = coreDeltaSBAVariance) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_residualDeltaSBAVariance = residualDeltaSBAVariance))
 		{
 			throw new java.lang.Exception ("RiskClassAggregate Constructor => Invalid Inputs");
 		}
@@ -108,13 +112,35 @@ public class RiskClassAggregate
 	}
 
 	/**
-	 * Retrieve the Risk Class Delta Margin
+	 * Retrieve the Risk Class Core Delta Margin Variance
 	 * 
-	 * @return The Risk Class Delta Margin
+	 * @return The Risk Class Core Delta Margin Variance
+	 */
+
+	public double coreDeltaSBAVariance()
+	{
+		return _coreDeltaSBAVariance;
+	}
+
+	/**
+	 * Retrieve the Risk Class Residual Delta Margin Variance
+	 * 
+	 * @return The Risk Class Residual Delta Margin Variance
+	 */
+
+	public double residualDeltaSBAVariance()
+	{
+		return _residualDeltaSBAVariance;
+	}
+
+	/**
+	 * Retrieve the Risk Class SBA Based Delta Margin
+	 * 
+	 * @return The Risk Class SBA Based Delta Margin
 	 */
 
 	public double deltaSBA()
 	{
-		return _deltaSBA;
+		return java.lang.Math.sqrt (_coreDeltaSBAVariance) + java.lang.Math.sqrt (_residualDeltaSBAVariance);
 	}
 }

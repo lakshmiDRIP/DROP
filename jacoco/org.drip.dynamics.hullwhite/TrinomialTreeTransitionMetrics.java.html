@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TrinomialTreeTransitionMetrics.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.dynamics.hullwhite</a> &gt; <span class="el_source">TrinomialTreeTransitionMetrics.java</span></div><h1>TrinomialTreeTransitionMetrics.java</h1><pre class="source lang-java linenums">
+package org.drip.dynamics.hullwhite;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * TrinomialTreeTransitionMetrics records the Transition Metrics associated with Node-to-Node Evolution of
+ * 	the Instantaneous Short Rate using the Hull-White Model Trinomial Tree.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class TrinomialTreeTransitionMetrics {
+<span class="fc" id="L60">	private long _lTreeTimeIndex = -1L;</span>
+<span class="fc" id="L61">	private long _lTreeStochasticBaseIndex = -1L;</span>
+<span class="fc" id="L62">	private long _lTreeStochasticDisplacementIndex = -1L;</span>
+<span class="fc" id="L63">	private double _dblXVariance = java.lang.Double.NaN;</span>
+<span class="fc" id="L64">	private double _dblTerminalAlpha = java.lang.Double.NaN;</span>
+<span class="fc" id="L65">	private double _dblProbabilityUp = java.lang.Double.NaN;</span>
+<span class="fc" id="L66">	private int _iInitialDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L67">	private int _iTerminalDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L68">	private double _dblProbabilityDown = java.lang.Double.NaN;</span>
+<span class="fc" id="L69">	private double _dblProbabilityStay = java.lang.Double.NaN;</span>
+<span class="fc" id="L70">	private double _dblXStochasticShift = java.lang.Double.NaN;</span>
+<span class="fc" id="L71">	private double _dblExpectedTerminalX = java.lang.Double.NaN;</span>
+
+	/**
+	 * TrinomialTreeTransitionMetrics Constructor
+	 * 
+	 * @param iInitialDate The Initial Date
+	 * @param iTerminalDate The Terminal/Final Date
+	 * @param lTreeTimeIndex The Tree Time Index
+	 * @param lTreeStochasticBaseIndex The Tree Stochastic Base Index
+	 * @param dblExpectedTerminalX Expectation of the Final/Terminal Value for X
+	 * @param dblXVariance Variance of X
+	 * @param dblTerminalAlpha The Final/Terminal Alpha
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public TrinomialTreeTransitionMetrics (
+		final int iInitialDate,
+		final int iTerminalDate,
+		final long lTreeTimeIndex,
+		final long lTreeStochasticBaseIndex,
+		final double dblExpectedTerminalX,
+		final double dblXVariance,
+		final double dblTerminalAlpha)
+		throws java.lang.Exception
+<span class="fc" id="L96">	{</span>
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">		if (0 &gt; (_lTreeTimeIndex = lTreeTimeIndex) || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">			(_dblExpectedTerminalX = dblExpectedTerminalX) || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">				(_dblXVariance = dblXVariance) || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">					(_dblTerminalAlpha = dblTerminalAlpha))</span>
+<span class="nc" id="L101">			throw new java.lang.Exception (&quot;TrinomialTreeTransitionMetrics ctr: Invalid Inputs&quot;);</span>
+
+<span class="fc" id="L103">		_dblXStochasticShift = java.lang.Math.sqrt (_dblXVariance * 3.);</span>
+
+<span class="fc" id="L105">		_lTreeStochasticDisplacementIndex = java.lang.Math.round (_dblExpectedTerminalX /</span>
+			_dblXStochasticShift);
+
+<span class="fc" id="L108">		_iInitialDate = iInitialDate;</span>
+<span class="fc" id="L109">		_iTerminalDate = iTerminalDate;</span>
+<span class="fc" id="L110">		_lTreeStochasticBaseIndex = lTreeStochasticBaseIndex;</span>
+<span class="fc" id="L111">		double dblEta = _dblExpectedTerminalX - _lTreeStochasticDisplacementIndex * _dblXStochasticShift;</span>
+<span class="fc" id="L112">		_dblProbabilityStay = (2. / 3.) - (dblEta * dblEta / (3. * _dblXVariance));</span>
+<span class="fc" id="L113">		_dblProbabilityDown = (1. / 6.) + (dblEta * dblEta / (6. * _dblXVariance)) - (0.5 * dblEta /</span>
+			_dblXStochasticShift);
+<span class="fc" id="L115">		_dblProbabilityUp = (1. / 6.) + (dblEta * dblEta / (6. * _dblXVariance)) + (0.5 * dblEta /</span>
+			_dblXStochasticShift);
+<span class="fc" id="L117">	}</span>
+
+	/**
+	 * Retrieve the Initial Date
+	 * 
+	 * @return The Initial Date
+	 */
+
+	public int initialDate()
+	{
+<span class="fc" id="L127">		return _iInitialDate;</span>
+	}
+
+	/**
+	 * Retrieve the Terminal Date
+	 * 
+	 * @return The Terminal Date
+	 */
+
+	public int terminalDate()
+	{
+<span class="fc" id="L138">		return _iTerminalDate;</span>
+	}
+
+	/**
+	 * Retrieve the Tree Time Index
+	 * 
+	 * @return The Tree Time Index
+	 */
+
+	public long treeTimeIndex()
+	{
+<span class="fc" id="L149">		return _lTreeTimeIndex;</span>
+	}
+
+	/**
+	 * Retrieve the Expected Final/Terminal Value for X
+	 * 
+	 * @return The Expected Final/Terminal Value for X
+	 */
+
+	public double expectedTerminalX()
+	{
+<span class="fc" id="L160">		return _dblExpectedTerminalX;</span>
+	}
+
+	/**
+	 * Retrieve the Variance in the Final Value of X
+	 * 
+	 * @return The Variance in the Final Value of X
+	 */
+
+	public double xVariance()
+	{
+<span class="fc" id="L171">		return _dblXVariance;</span>
+	}
+
+	/**
+	 * Retrieve the Stochastic Shift of X
+	 * 
+	 * @return The Stochastic Shift of X
+	 */
+
+	public double xStochasticShift()
+	{
+<span class="fc" id="L182">		return _dblXStochasticShift;</span>
+	}
+
+	/**
+	 * Retrieve the Tree Stochastic Displacement Index
+	 * 
+	 * @return The Tree Stochastic Displacement Index
+	 */
+
+	public long treeStochasticDisplacementIndex()
+	{
+<span class="fc" id="L193">		return _lTreeStochasticDisplacementIndex;</span>
+	}
+
+	/**
+	 * Retrieve the Probability of the Up Stochastic Shift
+	 * 
+	 * @return Probability of the Up Stochastic Shift
+	 */
+
+	public double probabilityUp()
+	{
+<span class="fc" id="L204">		return _dblProbabilityUp;</span>
+	}
+
+	/**
+	 * Retrieve the Probability of the Down Stochastic Shift
+	 * 
+	 * @return Probability of the Down Stochastic Shift
+	 */
+
+	public double probabilityDown()
+	{
+<span class="fc" id="L215">		return _dblProbabilityDown;</span>
+	}
+
+	/**
+	 * Retrieve the Probability of the No Shift
+	 * 
+	 * @return Probability of the No Shift
+	 */
+
+	public double probabilityStay()
+	{
+<span class="fc" id="L226">		return _dblProbabilityStay;</span>
+	}
+
+	/**
+	 * Retrieve the &quot;Up&quot; Value for X
+	 * 
+	 * @return The &quot;Up&quot; Value for X
+	 */
+
+	public double xUp()
+	{
+<span class="nc" id="L237">		return (_lTreeStochasticDisplacementIndex + 1) * _dblXStochasticShift;</span>
+	}
+
+	/**
+	 * Retrieve the &quot;Down&quot; Value for X
+	 * 
+	 * @return The &quot;Down&quot; Value for X
+	 */
+
+	public double xDown()
+	{
+<span class="nc" id="L248">		return (_lTreeStochasticDisplacementIndex - 1) * _dblXStochasticShift;</span>
+	}
+
+	/**
+	 * Retrieve the Final/Terminal Alpha
+	 * 
+	 * @return The Final/Terminal Alpha
+	 */
+
+	public double terminalAlpha()
+	{
+<span class="nc" id="L259">		return _dblTerminalAlpha;</span>
+	}
+
+	/**
+	 * Retrieve the &quot;Up&quot; Node Metrics
+	 * 
+	 * @return The &quot;Up&quot; Node Metrics
+	 */
+
+	public org.drip.dynamics.hullwhite.TrinomialTreeNodeMetrics upNodeMetrics()
+	{
+		try {
+<span class="fc" id="L271">			return new org.drip.dynamics.hullwhite.TrinomialTreeNodeMetrics (_lTreeTimeIndex,</span>
+				_lTreeStochasticBaseIndex + 1, (_lTreeStochasticDisplacementIndex + 1) *
+					_dblXStochasticShift, _dblTerminalAlpha);
+<span class="nc" id="L274">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L275">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L278">		return null;</span>
+	}
+
+	/**
+	 * Retrieve the &quot;Down&quot; Node Metrics
+	 * 
+	 * @return The &quot;Down&quot; Node Metrics
+	 */
+
+	public org.drip.dynamics.hullwhite.TrinomialTreeNodeMetrics downNodeMetrics()
+	{
+		try {
+<span class="fc" id="L290">			return new org.drip.dynamics.hullwhite.TrinomialTreeNodeMetrics (_lTreeTimeIndex,</span>
+				_lTreeStochasticBaseIndex - 1, (_lTreeStochasticDisplacementIndex - 1) *
+					_dblXStochasticShift, _dblTerminalAlpha);
+<span class="nc" id="L293">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L294">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L297">		return null;</span>
+	}
+
+	/**
+	 * Retrieve the &quot;Stay&quot; Node Metrics
+	 * 
+	 * @return The &quot;Stay&quot; Node Metrics
+	 */
+
+	public org.drip.dynamics.hullwhite.TrinomialTreeNodeMetrics stayNodeMetrics()
+	{
+		try {
+<span class="fc" id="L309">			return new org.drip.dynamics.hullwhite.TrinomialTreeNodeMetrics (_lTreeTimeIndex,</span>
+				_lTreeStochasticBaseIndex, _lTreeStochasticDisplacementIndex * _dblXStochasticShift,
+					_dblTerminalAlpha);
+<span class="nc" id="L312">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L313">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L316">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

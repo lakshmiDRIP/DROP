@@ -120,7 +120,7 @@ public class RiskClassSensitivity
 			return null;
 		}
 
-		double deltaSBA = 0.;
+		double coreDeltaSBAVariance = 0.;
 
 		java.util.Map<java.lang.Integer, org.drip.simm20.margin.BucketAggregate> bucketAggregateMap = new
 			java.util.TreeMap<java.lang.Integer, org.drip.simm20.margin.BucketAggregate>();
@@ -172,19 +172,24 @@ public class RiskClassSensitivity
 				{
 					int innerKey = bucketAggregateMapInnerEntry.getKey();
 
-					deltaSBA = deltaSBA + ( outerKey == innerKey ? weightedSensitivityVarianceOuter :
-						crossBucketCorrelation.entry (
-							"" + outerKey,
-							"" + innerKey
-						) * boundedWeightedSensitivityOuter *
-						bucketAggregateMapInnerEntry.getValue().boundedWeightedSensitivity()
-					);
+					if (-1 != outerKey && -1 != innerKey)
+					{
+						coreDeltaSBAVariance = coreDeltaSBAVariance + (outerKey == innerKey ?
+							weightedSensitivityVarianceOuter : crossBucketCorrelation.entry (
+								"" + outerKey,
+								"" + innerKey
+							) * boundedWeightedSensitivityOuter *
+							bucketAggregateMapInnerEntry.getValue().boundedWeightedSensitivity()
+						);
+					}
 				}
 			}
 
 			return new org.drip.simm20.margin.RiskClassAggregate (
 				bucketAggregateMap,
-				deltaSBA
+				coreDeltaSBAVariance,
+				bucketAggregateMap.containsKey (-1) ?
+					bucketAggregateMap.get (-1).weightedSensitivityVariance() : 0.
 			);
 		}
 		catch (java.lang.Exception e)

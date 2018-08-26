@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>R1JointDiffusion.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.numeraire</a> &gt; <span class="el_source">R1JointDiffusion.java</span></div><h1>R1JointDiffusion.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.numeraire;
+
+import org.drip.measure.discrete.SequenceGenerator;
+import org.drip.measure.dynamics.DiffusionEvaluatorLogarithmic;
+import org.drip.measure.process.DiffusionEvolver;
+import org.drip.measure.realization.*;
+import org.drip.quant.common.FormatUtil;
+import org.drip.quant.linearalgebra.Matrix;
+import org.drip.service.env.EnvManager;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * R1JointDiffusion demonstrates the Joint Evolution of R^1 Diffusion Variates - the Continuous Asset, the
+ *  Collateral, the Bank, and the Counter-Party Numeraires involved in the Dynamic XVA Replication Portfolio
+ *  of the Burgard and Kjaer (2011) Methodology. The References are:
+ *  
+ *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
+ *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
+ *  
+ *  - Cesari, G., J. Aquilina, N. Charpillon, X. Filipovic, G. Lee, and L. Manda (2009): Modeling, Pricing,
+ *  	and Hedging Counter-party Credit Exposure - A Technical Guide, Springer Finance, New York.
+ *  
+ *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk, Risk 20 (2) 86-90.
+ *  
+ *  - Li, B., and Y. Tang (2007): Quantitative Analysis, Derivatives Modeling, and Trading Strategies in the
+ *  	Presence of Counter-party Credit Risk for the Fixed Income Market, World Scientific Publishing,
+ *  	Singapore.
+ * 
+ *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
+ *  	21 (2) 97-102.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L81">public class R1JointDiffusion {</span>
+
+	private static final double[][] NumeraireSequence (
+		final int iCount,
+		final double[][] aadblCorrelation,
+		final String strHeader)
+		throws Exception
+	{
+<span class="fc" id="L89">		double[][] aadblGaussianJoint = SequenceGenerator.GaussianJoint (</span>
+			iCount,
+			aadblCorrelation
+		);
+
+<span class="fc" id="L94">		System.out.println();</span>
+
+<span class="fc" id="L96">		System.out.println (&quot;\t||----------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L98">		System.out.println (strHeader);</span>
+
+<span class="fc" id="L100">		System.out.println (&quot;\t||----------------------------------------------------||&quot;);</span>
+
+<span class="fc bfc" id="L102" title="All 2 branches covered.">		for (int i = 0; i &lt; iCount; ++i) {</span>
+<span class="fc" id="L103">			String strDump = &quot;\t||&quot; + FormatUtil.FormatDouble (i, 2, 0, 1.) + &quot; |&quot;;</span>
+
+<span class="fc bfc" id="L105" title="All 2 branches covered.">			for (int j = 0; j &lt; aadblCorrelation.length; ++j)</span>
+<span class="fc" id="L106">				strDump = strDump + &quot; &quot; + FormatUtil.FormatDouble (aadblGaussianJoint[i][j], 1, 6, 1.) + &quot; |&quot;;</span>
+
+<span class="fc" id="L108">			System.out.println (strDump + &quot;|&quot;);</span>
+		}
+
+<span class="fc" id="L111">		System.out.println (&quot;\t||----------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L113">		System.out.println();</span>
+
+<span class="fc" id="L115">		return Matrix.Transpose (aadblGaussianJoint);</span>
+	}
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+<span class="fc" id="L122">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="fc" id="L124">		double dblTimeWidth = 1. / 24.;</span>
+<span class="fc" id="L125">		double dblTime = 1.;</span>
+<span class="fc" id="L126">		double[][] aadblCorrelation = new double[][] {</span>
+			{1.00, 0.20, 0.15, 0.05}, // #0 ASSET
+			{0.20, 1.00, 0.13, 0.25}, // #1 COLLATERAL
+			{0.15, 0.13, 1.00, 0.00}, // #2 BANK
+			{0.05, 0.25, 0.00, 1.00}  // #3 COUNTER PARTY
+		};
+<span class="fc" id="L132">		double dblAssetDrift = 0.06;</span>
+<span class="fc" id="L133">		double dblAssetVolatility = 0.15;</span>
+<span class="fc" id="L134">		double dblTerminalBankNumeraire = 1.;</span>
+<span class="fc" id="L135">		double dblTerminalAssetNumeraire = 1.;</span>
+<span class="fc" id="L136">		double dblTerminalCollateralNumeraire = 1.;</span>
+
+<span class="fc" id="L138">		int iNumTimeStep = (int) (dblTime / dblTimeWidth);</span>
+<span class="fc" id="L139">		double[] adblTimeWidth = new double[iNumTimeStep];</span>
+
+<span class="fc bfc" id="L141" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTimeStep; ++i)</span>
+<span class="fc" id="L142">			adblTimeWidth[i] = dblTimeWidth;</span>
+
+<span class="fc" id="L144">		DiffusionEvolver meAsset = new DiffusionEvolver (</span>
+<span class="fc" id="L145">			DiffusionEvaluatorLogarithmic.Standard (</span>
+				dblAssetDrift,
+				dblAssetVolatility
+			)
+		);
+
+<span class="fc" id="L151">		double[][] aadblNumeraireTimeSeries = NumeraireSequence (</span>
+			iNumTimeStep,
+			aadblCorrelation,
+			&quot;\t|| ASSET, COLLATERAL, BANK, COUNTER PARTY REALIZATION ||&quot;
+		);
+
+<span class="fc" id="L157">		JumpDiffusionEdge[] aR1AssetLR = meAsset.incrementSequence (</span>
+			new JumpDiffusionVertex (
+				dblTime,
+				dblTerminalAssetNumeraire,
+				0.,
+				false
+			),
+<span class="fc" id="L164">			JumpDiffusionEdgeUnit.Diffusion (</span>
+				adblTimeWidth,
+				aadblNumeraireTimeSeries[0]
+			),
+			-1. * dblTimeWidth
+		);
+
+<span class="fc" id="L171">		JumpDiffusionEdge[] aR1CollateralLR = meAsset.incrementSequence (</span>
+			new JumpDiffusionVertex (
+				dblTime,
+				dblTerminalCollateralNumeraire,
+				0.,
+				false
+			),
+<span class="fc" id="L178">			JumpDiffusionEdgeUnit.Diffusion (</span>
+				adblTimeWidth,
+				aadblNumeraireTimeSeries[1]
+			),
+			-1. * dblTimeWidth
+		);
+
+<span class="fc" id="L185">		JumpDiffusionEdge[] aR1BankLR = meAsset.incrementSequence (</span>
+			new JumpDiffusionVertex (
+				dblTime,
+				dblTerminalBankNumeraire,
+				0.,
+				false
+			),
+<span class="fc" id="L192">			JumpDiffusionEdgeUnit.Diffusion (</span>
+				adblTimeWidth,
+				aadblNumeraireTimeSeries[2]
+			),
+			-1. * dblTimeWidth
+		);
+
+<span class="fc" id="L199">		JumpDiffusionEdge[] aR1CounterPartyLR = meAsset.incrementSequence (</span>
+			new JumpDiffusionVertex (
+				dblTime,
+				dblTerminalBankNumeraire,
+				0.,
+				false
+			),
+<span class="fc" id="L206">			JumpDiffusionEdgeUnit.Diffusion (</span>
+				adblTimeWidth,
+				aadblNumeraireTimeSeries[3]
+			),
+			-1. * dblTimeWidth
+		);
+
+<span class="fc" id="L213">		System.out.println();</span>
+
+<span class="fc" id="L215">		System.out.println(&quot;\t||----------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L217">		System.out.println(&quot;\t||                  BURGARD &amp; KJAER (2011) CORRELATED JOINT ASSET/COLLATERAL/BANK/COUNTER-PARTY NUMERAIRE EVOLUTION                 ||&quot;);</span>
+
+<span class="fc" id="L219">		System.out.println(&quot;\t||----------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L221">		System.out.println(&quot;\t||    L -&gt; R:                                                                                                                       ||&quot;);</span>
+
+<span class="fc" id="L223">		System.out.println(&quot;\t||          - Time                                                                                                                  ||&quot;);</span>
+
+<span class="fc" id="L225">		System.out.println(&quot;\t||          - Asset Numeraire Finish Value                                                                                          ||&quot;);</span>
+
+<span class="fc" id="L227">		System.out.println(&quot;\t||          - Asset Numeraire Start Value                                                                                           ||&quot;);</span>
+
+<span class="fc" id="L229">		System.out.println(&quot;\t||          - Asset Numeraire Continuous Wander Realization                                                                         ||&quot;);</span>
+
+<span class="fc" id="L231">		System.out.println(&quot;\t||          - Collateral Numeraire Finish Value                                                                                     ||&quot;);</span>
+
+<span class="fc" id="L233">		System.out.println(&quot;\t||          - Collateral Numeraire Start Value                                                                                      ||&quot;);</span>
+
+<span class="fc" id="L235">		System.out.println(&quot;\t||          - Collateral Numeraire Continuous Wander Realization                                                                    ||&quot;);</span>
+
+<span class="fc" id="L237">		System.out.println(&quot;\t||          - Bank Numeraire Finish Value                                                                                           ||&quot;);</span>
+
+<span class="fc" id="L239">		System.out.println(&quot;\t||          - Bank Numeraire Start Value                                                                                            ||&quot;);</span>
+
+<span class="fc" id="L241">		System.out.println(&quot;\t||          - Bank Numeraire Continuous Wander Realization                                                                          ||&quot;);</span>
+
+<span class="fc" id="L243">		System.out.println(&quot;\t||          - Counter-Party Numeraire Finish Value                                                                                  ||&quot;);</span>
+
+<span class="fc" id="L245">		System.out.println(&quot;\t||          - Counter-Party Numeraire Start Value                                                                                   ||&quot;);</span>
+
+<span class="fc" id="L247">		System.out.println(&quot;\t||          - Counter-Party Numeraire Continuous Wander Realization                                                                 ||&quot;);</span>
+
+<span class="fc" id="L249">		System.out.println(&quot;\t||----------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc bfc" id="L251" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTimeStep; ++i) {</span>
+<span class="fc" id="L252">			dblTime = dblTime - dblTimeWidth;</span>
+
+<span class="fc" id="L254">			System.out.println (</span>
+				&quot;\t|| &quot; +
+<span class="fc" id="L256">				FormatUtil.FormatDouble (dblTime, 1, 4, 1.) + &quot; =&gt; &quot; +</span>
+<span class="fc" id="L257">				FormatUtil.FormatDouble (aR1AssetLR[i].start(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L258">				FormatUtil.FormatDouble (aR1AssetLR[i].finish(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L259">				FormatUtil.FormatDouble (aR1AssetLR[i].diffusionWander(), 1, 4, 1.) + &quot; ||&quot; +</span>
+<span class="fc" id="L260">				FormatUtil.FormatDouble (aR1CollateralLR[i].start(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L261">				FormatUtil.FormatDouble (aR1CollateralLR[i].finish(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L262">				FormatUtil.FormatDouble (aR1CollateralLR[i].diffusionWander(), 1, 4, 1.) + &quot; ||&quot; +</span>
+<span class="fc" id="L263">				FormatUtil.FormatDouble (aR1BankLR[i].start(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L264">				FormatUtil.FormatDouble (aR1BankLR[i].finish(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L265">				FormatUtil.FormatDouble (aR1BankLR[i].diffusionWander(), 1, 4, 1.) + &quot; ||&quot; +</span>
+<span class="fc" id="L266">				FormatUtil.FormatDouble (aR1CounterPartyLR[i].start(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L267">				FormatUtil.FormatDouble (aR1CounterPartyLR[i].finish(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L268">				FormatUtil.FormatDouble (aR1CounterPartyLR[i].diffusionWander(), 1, 4, 1.) + &quot; ||&quot;</span>
+			);
+		}
+
+<span class="fc" id="L272">		System.out.println(&quot;\t||----------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L274">		System.out.println();</span>
+<span class="fc" id="L275">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

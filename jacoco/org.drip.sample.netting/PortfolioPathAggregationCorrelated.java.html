@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PortfolioPathAggregationCorrelated.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.netting</a> &gt; <span class="el_source">PortfolioPathAggregationCorrelated.java</span></div><h1>PortfolioPathAggregationCorrelated.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.netting;
+
+import org.drip.analytics.date.*;
+import org.drip.exposure.evolver.LatentStateVertexContainer;
+import org.drip.exposure.universe.*;
+import org.drip.measure.discrete.SequenceGenerator;
+import org.drip.measure.dynamics.*;
+import org.drip.measure.process.DiffusionEvolver;
+import org.drip.measure.realization.*;
+import org.drip.quant.common.FormatUtil;
+import org.drip.quant.linearalgebra.Matrix;
+import org.drip.service.env.EnvManager;
+import org.drip.state.identifier.OTCFixFloatLabel;
+import org.drip.xva.gross.*;
+import org.drip.xva.netting.CollateralGroupPath;
+import org.drip.xva.strategy.*;
+import org.drip.xva.vertex.AlbaneseAndersen;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * PortfolioPathAggregationCorrelated generates the Aggregation of the Portfolio Paths evolved using
+ * 	Correlated Market Parameters. The References are:
+ *  
+ *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
+ *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
+ *  
+ *  - Burgard, C., and M. Kjaer (2014): In the Balance, Risk, 24 (11) 72-75.
+ *  
+ *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk, Risk 20 (2) 86-90.
+ *  
+ *  - Li, B., and Y. Tang (2007): Quantitative Analysis, Derivatives Modeling, and Trading Strategies in the
+ *  	Presence of Counter-party Credit Risk for the Fixed Income Market, World Scientific Publishing,
+ *  	Singapore.
+ * 
+ *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
+ *  	21 (2) 97-102.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L87">public class PortfolioPathAggregationCorrelated {</span>
+
+	private static final double[] NumeraireValueRealization (
+		final DiffusionEvolver deNumeraireValue,
+		final double dblNumeraireValueInitial,
+		final double dblTime,
+		final double dblTimeWidth,
+		final double[] adblRandom,
+		final int iNumStep)
+		throws Exception
+	{
+<span class="fc" id="L98">		double[] adblNumeraireValue = new double[iNumStep + 1];</span>
+<span class="fc" id="L99">		adblNumeraireValue[0] = dblNumeraireValueInitial;</span>
+<span class="fc" id="L100">		double[] adblTimeWidth = new double[iNumStep];</span>
+
+<span class="fc bfc" id="L102" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumStep; ++i)</span>
+<span class="fc" id="L103">			adblTimeWidth[i] = dblTimeWidth;</span>
+
+<span class="fc" id="L105">		JumpDiffusionEdge[] aJDE = deNumeraireValue.incrementSequence (</span>
+			new JumpDiffusionVertex (
+				dblTime,
+				dblNumeraireValueInitial,
+				0.,
+				false
+			),
+<span class="fc" id="L112">			JumpDiffusionEdgeUnit.Diffusion (</span>
+				adblTimeWidth,
+				adblRandom
+			),
+			dblTimeWidth
+		);
+
+<span class="fc bfc" id="L119" title="All 2 branches covered.">		for (int j = 1; j &lt;= iNumStep; ++j)</span>
+<span class="fc" id="L120">			adblNumeraireValue[j] = aJDE[j - 1].finish();</span>
+
+<span class="fc" id="L122">		return adblNumeraireValue;</span>
+	}
+
+	private static final double[] VertexNumeraireRealization (
+		final DiffusionEvolver deNumeraireValue,
+		final double dblNumeraireValueInitial,
+		final double dblTime,
+		final double dblTimeWidth,
+		final double[] adblRandom,
+		final int iNumStep)
+		throws Exception
+	{
+<span class="fc" id="L134">		double[] adblNumeraireValue = new double[iNumStep + 1];</span>
+<span class="fc" id="L135">		double[] adblTimeWidth = new double[iNumStep];</span>
+
+<span class="fc bfc" id="L137" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumStep; ++i)</span>
+<span class="fc" id="L138">			adblTimeWidth[i] = dblTimeWidth;</span>
+
+<span class="fc" id="L140">		JumpDiffusionVertex[] aJDV = deNumeraireValue.vertexSequenceReverse (</span>
+			new JumpDiffusionVertex (
+				dblTime,
+				dblNumeraireValueInitial,
+				0.,
+				false
+			),
+<span class="fc" id="L147">			JumpDiffusionEdgeUnit.Diffusion (</span>
+				adblTimeWidth,
+				adblRandom
+			),
+			adblTimeWidth
+		);
+
+<span class="fc bfc" id="L154" title="All 2 branches covered.">		for (int j = 0; j &lt;= iNumStep; ++j)</span>
+<span class="fc" id="L155">			adblNumeraireValue[j] = aJDV[j].value();</span>
+
+<span class="fc" id="L157">		return adblNumeraireValue;</span>
+	}
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+<span class="fc" id="L164">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="fc" id="L166">		int iNumStep = 10;</span>
+<span class="fc" id="L167">		double dblTime = 5.;</span>
+<span class="fc" id="L168">		int iNumPath = 10000;</span>
+<span class="fc" id="L169">		double dblCollateralPortfolioDrift = 0.06;</span>
+<span class="fc" id="L170">		double dblCollateralPortfolioVolatility = 0.15;</span>
+<span class="fc" id="L171">		double dblCollateralPortfolioInitial = 1.;</span>
+<span class="fc" id="L172">		double dblOvernightDrift = 0.004;</span>
+<span class="fc" id="L173">		double dblOvernightVolatility = 0.02;</span>
+<span class="fc" id="L174">		double dblOvernightInitial = 1.;</span>
+<span class="fc" id="L175">		double dblCSADrift = 0.01;</span>
+<span class="fc" id="L176">		double dblCSAVolatility = 0.05;</span>
+<span class="fc" id="L177">		double dblCSAInitial = 1.;</span>
+<span class="fc" id="L178">		double dblBankHazardRateDrift = 0.002;</span>
+<span class="fc" id="L179">		double dblBankHazardRateVolatility = 0.20;</span>
+<span class="fc" id="L180">		double dblBankHazardRateInitial = 0.015;</span>
+<span class="fc" id="L181">		double dblBankRecoveryRateDrift = 0.002;</span>
+<span class="fc" id="L182">		double dblBankRecoveryRateVolatility = 0.02;</span>
+<span class="fc" id="L183">		double dblBankRecoveryRateInitial = 0.40;</span>
+<span class="fc" id="L184">		double dblCounterPartyHazardRateDrift = 0.002;</span>
+<span class="fc" id="L185">		double dblCounterPartyHazardRateVolatility = 0.30;</span>
+<span class="fc" id="L186">		double dblCounterPartyHazardRateInitial = 0.030;</span>
+<span class="fc" id="L187">		double dblCounterPartyRecoveryRateDrift = 0.002;</span>
+<span class="fc" id="L188">		double dblCounterPartyRecoveryRateVolatility = 0.02;</span>
+<span class="fc" id="L189">		double dblCounterPartyRecoveryRateInitial = 0.30;</span>
+<span class="fc" id="L190">		double dblBankFundingSpreadDrift = 0.00002;</span>
+<span class="fc" id="L191">		double dblBankFundingSpreadVolatility = 0.002;</span>
+<span class="fc" id="L192">		double dblCounterPartyFundingSpreadDrift = 0.000022;</span>
+<span class="fc" id="L193">		double dblCounterPartyFundingSpreadVolatility = 0.0022;</span>
+
+<span class="fc" id="L195">		double[][] aadblCorrelation = new double[][] {</span>
+			{1.00,  0.00,  0.03,  0.07,  0.04,  0.05,  0.08,  0.00,  0.00},  // PORTFOLIO
+			{0.00,  1.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  1.00},  // OVERNIGHT
+			{0.03,  0.00,  1.00,  0.26,  0.33,  0.21,  0.35,  0.13,  0.00},  // CSA
+			{0.07,  0.00,  0.26,  1.00,  0.45, -0.17,  0.07,  0.77,  0.00},  // BANK HAZARD
+			{0.04,  0.00,  0.33,  0.45,  1.00, -0.22, -0.54,  0.58,  0.00},  // COUNTER PARTY HAZARD
+			{0.05,  0.00,  0.21, -0.17, -0.22,  1.00,  0.47, -0.23,  0.00},  // BANK RECOVERY
+			{0.08,  0.00,  0.35,  0.07, -0.54,  0.47,  1.00,  0.01,  0.00},  // COUNTER PARTY RECOVERY
+			{0.00,  0.00,  0.13,  0.77,  0.58, -0.23,  0.01,  1.00,  0.00},  // BANK FUNDING SPREAD
+			{0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  1.00}   // COUNTER PARTY FUNDING SPREAD
+		};
+
+<span class="fc" id="L207">		double dblTimeWidth = dblTime / iNumStep;</span>
+<span class="fc" id="L208">		JulianDate[] adtVertex = new JulianDate[iNumStep + 1];</span>
+<span class="fc" id="L209">		double[][] aadblCollateralBalance = new double[iNumPath][iNumStep + 1];</span>
+<span class="fc" id="L210">		double[][] aadblCollateralPortfolio = new double[iNumPath][iNumStep + 1];</span>
+<span class="fc" id="L211">		MonoPathExposureAdjustment[] aMPEA = new MonoPathExposureAdjustment[iNumPath];</span>
+<span class="fc" id="L212">		double dblBankFundingSpreadInitial = dblBankHazardRateInitial / (1. - dblBankRecoveryRateInitial);</span>
+<span class="fc" id="L213">		double dblCounterPartyFundingSpreadInitial = dblCounterPartyHazardRateInitial / (1. - dblCounterPartyRecoveryRateInitial);</span>
+
+<span class="fc" id="L215">		JulianDate dtSpot = DateUtil.Today();</span>
+
+<span class="fc bfc" id="L217" title="All 2 branches covered.">		for (int j = 0; j &lt;= iNumStep; ++j)</span>
+<span class="fc" id="L218">			adtVertex[j] = dtSpot.addMonths (6 * j + 6);</span>
+
+<span class="fc" id="L220">		DiffusionEvolver deCollateralPortfolio = new DiffusionEvolver (</span>
+<span class="fc" id="L221">			DiffusionEvaluatorLogarithmic.Standard (</span>
+				dblCollateralPortfolioDrift,
+				dblCollateralPortfolioVolatility
+			)
+		);
+
+<span class="fc" id="L227">		DiffusionEvolver deOvernight = new DiffusionEvolver (</span>
+<span class="fc" id="L228">			DiffusionEvaluatorLogarithmic.Standard (</span>
+				dblOvernightDrift,
+				dblOvernightVolatility
+			)
+		);
+
+<span class="fc" id="L234">		DiffusionEvolver deCSA = new DiffusionEvolver (</span>
+<span class="fc" id="L235">			DiffusionEvaluatorLogarithmic.Standard (</span>
+				dblCSADrift,
+				dblCSAVolatility
+			)
+		);
+
+<span class="fc" id="L241">		DiffusionEvolver deBankHazardRate = new DiffusionEvolver (</span>
+<span class="fc" id="L242">			DiffusionEvaluatorLogarithmic.Standard (</span>
+				dblBankHazardRateDrift,
+				dblBankHazardRateVolatility
+			)
+		);
+
+<span class="fc" id="L248">		DiffusionEvolver deCounterPartyHazardRate = new DiffusionEvolver (</span>
+<span class="fc" id="L249">			DiffusionEvaluatorLogarithmic.Standard (</span>
+				dblCounterPartyHazardRateDrift,
+				dblCounterPartyHazardRateVolatility
+			)
+		);
+
+<span class="fc" id="L255">		DiffusionEvolver deBankRecoveryRate = new DiffusionEvolver (</span>
+<span class="fc" id="L256">			DiffusionEvaluatorLogarithmic.Standard (</span>
+				dblBankRecoveryRateDrift,
+				dblBankRecoveryRateVolatility
+			)
+		);
+
+<span class="fc" id="L262">		DiffusionEvolver deCounterPartyRecoveryRate = new DiffusionEvolver (</span>
+<span class="fc" id="L263">			DiffusionEvaluatorLogarithmic.Standard (</span>
+				dblCounterPartyRecoveryRateDrift,
+				dblCounterPartyRecoveryRateVolatility
+			)
+		);
+
+<span class="fc" id="L269">		DiffusionEvolver deBankFundingSpread = new DiffusionEvolver (</span>
+<span class="fc" id="L270">			DiffusionEvaluatorLinear.Standard (</span>
+				dblBankFundingSpreadDrift,
+				dblBankFundingSpreadVolatility
+			)
+		);
+
+<span class="fc" id="L276">		DiffusionEvolver deCounterPartyFundingSpread = new DiffusionEvolver (</span>
+<span class="fc" id="L277">			DiffusionEvaluatorLinear.Standard (</span>
+				dblCounterPartyFundingSpreadDrift,
+				dblCounterPartyFundingSpreadVolatility
+			)
+		);
+
+<span class="fc bfc" id="L283" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPath; ++i) {</span>
+<span class="fc" id="L284">			double[][] aadblNumeraire = Matrix.Transpose (</span>
+<span class="fc" id="L285">				SequenceGenerator.GaussianJoint (</span>
+					iNumStep,
+					aadblCorrelation
+				)
+			);
+
+<span class="fc" id="L291">			aadblCollateralPortfolio[i] = NumeraireValueRealization (</span>
+				deCollateralPortfolio,
+				dblCollateralPortfolioInitial,
+				dblTime,
+				dblTimeWidth,
+				aadblNumeraire[0],
+				iNumStep
+			);
+
+<span class="fc" id="L300">			double[] adblOvernightNumeraire = VertexNumeraireRealization (</span>
+				deOvernight,
+				dblOvernightInitial,
+				dblTime,
+				dblTimeWidth,
+				aadblNumeraire[1],
+				iNumStep
+			);
+
+<span class="fc" id="L309">			double[] adblCSA = VertexNumeraireRealization (</span>
+				deCSA,
+				dblCSAInitial,
+				dblTime,
+				dblTimeWidth,
+				aadblNumeraire[2],
+				iNumStep
+			);
+
+<span class="fc" id="L318">			double[] adblBankHazardRate = NumeraireValueRealization (</span>
+				deBankHazardRate,
+				dblBankHazardRateInitial,
+				dblTime,
+				dblTimeWidth,
+				aadblNumeraire[3],
+				iNumStep
+			);
+
+<span class="fc" id="L327">			double[] adblCounterPartyHazardRate = NumeraireValueRealization (</span>
+				deCounterPartyHazardRate,
+				dblCounterPartyHazardRateInitial,
+				dblTime,
+				dblTimeWidth,
+				aadblNumeraire[4],
+				iNumStep
+			);
+
+<span class="fc" id="L336">			double[] adblBankRecoveryRate = NumeraireValueRealization (</span>
+				deBankRecoveryRate,
+				dblBankRecoveryRateInitial,
+				dblTime,
+				dblTimeWidth,
+				aadblNumeraire[5],
+				iNumStep
+			);
+
+<span class="fc" id="L345">			double[] adblCounterPartyRecoveryRate = NumeraireValueRealization (</span>
+				deCounterPartyRecoveryRate,
+				dblCounterPartyRecoveryRateInitial,
+				dblTime,
+				dblTimeWidth,
+				aadblNumeraire[6],
+				iNumStep
+			);
+
+<span class="fc" id="L354">			double[] adblBankFundingSpread = NumeraireValueRealization (</span>
+				deBankFundingSpread,
+				dblBankFundingSpreadInitial,
+				dblTime,
+				dblTimeWidth,
+				aadblNumeraire[7],
+				iNumStep
+			);
+
+<span class="fc" id="L363">			double[] adblCounterPartyFundingSpread = NumeraireValueRealization (</span>
+				deCounterPartyFundingSpread,
+				dblCounterPartyFundingSpreadInitial,
+				dblTime,
+				dblTimeWidth,
+				aadblNumeraire[8],
+				iNumStep
+			);
+
+<span class="fc" id="L372">			MarketVertex[] aMV = new MarketVertex [iNumStep + 1];</span>
+<span class="fc" id="L373">			AlbaneseAndersen[] aHGVR = new AlbaneseAndersen[iNumStep + 1];</span>
+
+<span class="fc bfc" id="L375" title="All 2 branches covered.">			for (int j = 0; j &lt;= iNumStep; ++j)</span>
+			{
+<span class="fc" id="L377">				LatentStateVertexContainer latentStateVertexContainer = new LatentStateVertexContainer();</span>
+
+<span class="fc" id="L379">				latentStateVertexContainer.add (</span>
+<span class="fc" id="L380">					OTCFixFloatLabel.Standard (&quot;USD-3M-10Y&quot;),</span>
+					Double.NaN
+				);
+
+<span class="fc" id="L384">				aMV[j] = MarketVertex.Nodal (</span>
+<span class="fc" id="L385">					adtVertex[j] = dtSpot.addMonths (6 * j),</span>
+					dblOvernightDrift,
+					adblOvernightNumeraire[j],
+					dblCSADrift,
+					adblCSA[j],
+					new MarketVertexEntity (
+<span class="fc" id="L391">						Math.exp (-0.5 * adblBankHazardRate[j] * j),</span>
+						adblBankHazardRate[j],
+						adblBankRecoveryRate[j],
+						adblBankFundingSpread[j],
+<span class="fc" id="L395">						Math.exp (-0.5 * adblBankHazardRate[j] * (1. - adblBankRecoveryRate[j]) * (iNumStep - j)),</span>
+						Double.NaN,
+						Double.NaN,
+						Double.NaN
+					),
+					new MarketVertexEntity (
+<span class="fc" id="L401">						Math.exp (-0.5 * adblCounterPartyHazardRate[j] * j),</span>
+						adblCounterPartyHazardRate[j],
+						adblCounterPartyRecoveryRate[j],
+						adblCounterPartyFundingSpread[j],
+<span class="fc" id="L405">						Math.exp (-0.5 * adblCounterPartyHazardRate[j] * (1. - adblCounterPartyRecoveryRate[j]) * (iNumStep - j)),</span>
+						Double.NaN,
+						Double.NaN,
+						Double.NaN
+					),
+					latentStateVertexContainer
+				);
+
+<span class="fc" id="L413">				aadblCollateralBalance[i][j] = 0.;</span>
+
+<span class="fc" id="L415">				aHGVR[j] = new AlbaneseAndersen (</span>
+					adtVertex[j],
+					aadblCollateralPortfolio[i][j],
+					0.,
+					0.
+				);
+			}
+
+<span class="fc" id="L423">			MarketPath marketPath = MarketPath.FromMarketVertexArray (aMV);</span>
+
+<span class="fc" id="L425">			CollateralGroupPath[] aHGP = new CollateralGroupPath[] {</span>
+				new CollateralGroupPath (
+					aHGVR,
+					marketPath
+				)
+			};
+
+<span class="fc" id="L432">			aMPEA[i] = new MonoPathExposureAdjustment (</span>
+				new AlbaneseAndersenFundingGroupPath[] {
+					new AlbaneseAndersenFundingGroupPath (
+						new AlbaneseAndersenNettingGroupPath[] {
+							new AlbaneseAndersenNettingGroupPath (
+								aHGP,
+								marketPath
+							)
+						},
+						marketPath
+					)
+				}
+			);
+		}
+
+<span class="fc" id="L447">		ExposureAdjustmentAggregator eaa = new ExposureAdjustmentAggregator (aMPEA);</span>
+
+<span class="fc" id="L449">		JulianDate[] adtVertexNode = eaa.vertexDates();</span>
+
+<span class="fc" id="L451">		System.out.println();</span>
+
+<span class="fc" id="L453">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|&quot;);</span>
+
+<span class="fc" id="L455">		String strDump = &quot;\t|         DATE         =&gt;&quot; ;</span>
+
+<span class="fc bfc" id="L457" title="All 2 branches covered.">		for (int i = 0; i &lt; adtVertexNode.length; ++i)</span>
+<span class="fc" id="L458">			strDump = strDump + &quot; &quot; + adtVertexNode[i] + &quot; |&quot;;</span>
+
+<span class="fc" id="L460">		System.out.println (strDump);</span>
+
+<span class="fc" id="L462">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|&quot;);</span>
+
+<span class="fc" id="L464">		double[] adblExposure = eaa.collateralizedExposure();</span>
+
+<span class="fc" id="L466">		strDump = &quot;\t|       EXPOSURE       =&gt;&quot;;</span>
+
+<span class="fc bfc" id="L468" title="All 2 branches covered.">		for (int j = 0; j &lt; adblExposure.length; ++j)</span>
+<span class="fc" id="L469">			strDump = strDump + &quot;   &quot; + FormatUtil.FormatDouble (adblExposure[j], 1, 4, 1.) + &quot;   |&quot;;</span>
+
+<span class="fc" id="L471">		System.out.println (strDump);</span>
+
+<span class="fc" id="L473">		double[] adblPositiveExposure = eaa.collateralizedPositiveExposure();</span>
+
+<span class="fc" id="L475">		strDump = &quot;\t|  POSITIVE EXPOSURE   =&gt;&quot;;</span>
+
+<span class="fc bfc" id="L477" title="All 2 branches covered.">		for (int j = 0; j &lt; adblPositiveExposure.length; ++j)</span>
+<span class="fc" id="L478">			strDump = strDump + &quot;   &quot; + FormatUtil.FormatDouble (adblPositiveExposure[j], 1, 4, 1.) + &quot;   |&quot;;</span>
+
+<span class="fc" id="L480">		System.out.println (strDump);</span>
+
+<span class="fc" id="L482">		double[] adblNegativeExposure = eaa.collateralizedNegativeExposure();</span>
+
+<span class="fc" id="L484">		strDump = &quot;\t|  NEGATIVE EXPOSURE   =&gt;&quot;;</span>
+
+<span class="fc bfc" id="L486" title="All 2 branches covered.">		for (int j = 0; j &lt; adblNegativeExposure.length; ++j)</span>
+<span class="fc" id="L487">			strDump = strDump + &quot;   &quot; + FormatUtil.FormatDouble (adblNegativeExposure[j], 1, 4, 1.) + &quot;   |&quot;;</span>
+
+<span class="fc" id="L489">		System.out.println (strDump);</span>
+
+<span class="fc" id="L491">		double[] adblExposurePV = eaa.collateralizedExposurePV();</span>
+
+<span class="fc" id="L493">		strDump = &quot;\t|      EXPOSURE PV     =&gt;&quot;;</span>
+
+<span class="fc bfc" id="L495" title="All 2 branches covered.">		for (int j = 0; j &lt; adblExposurePV.length; ++j)</span>
+<span class="fc" id="L496">			strDump = strDump + &quot;   &quot; + FormatUtil.FormatDouble (adblExposurePV[j], 1, 4, 1.) + &quot;   |&quot;;</span>
+
+<span class="fc" id="L498">		System.out.println (strDump);</span>
+
+<span class="fc" id="L500">		double[] adblPositiveExposurePV = eaa.collateralizedPositiveExposurePV();</span>
+
+<span class="fc" id="L502">		strDump = &quot;\t| POSITIVE EXPOSURE PV =&gt;&quot;;</span>
+
+<span class="fc bfc" id="L504" title="All 2 branches covered.">		for (int j = 0; j &lt; adblPositiveExposurePV.length; ++j)</span>
+<span class="fc" id="L505">			strDump = strDump + &quot;   &quot; + FormatUtil.FormatDouble (adblPositiveExposurePV[j], 1, 4, 1.) + &quot;   |&quot;;</span>
+
+<span class="fc" id="L507">		System.out.println (strDump);</span>
+
+<span class="fc" id="L509">		double[] adblNegativeExposurePV = eaa.collateralizedNegativeExposurePV();</span>
+
+<span class="fc" id="L511">		strDump = &quot;\t| NEGATIVE EXPOSURE PV =&gt;&quot;;</span>
+
+<span class="fc bfc" id="L513" title="All 2 branches covered.">		for (int j = 0; j &lt; adblNegativeExposurePV.length; ++j)</span>
+<span class="fc" id="L514">			strDump = strDump + &quot;   &quot; + FormatUtil.FormatDouble (adblNegativeExposurePV[j], 1, 4, 1.) + &quot;   |&quot;;</span>
+
+<span class="fc" id="L516">		System.out.println (strDump);</span>
+
+<span class="fc" id="L518">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|&quot;);</span>
+
+<span class="fc" id="L520">		System.out.println();</span>
+
+<span class="fc" id="L522">		System.out.println (&quot;\t||-------------------||&quot;);</span>
+
+<span class="fc" id="L524">		System.out.println (&quot;\t||  UCVA  =&gt; &quot; + FormatUtil.FormatDouble (eaa.ucva().amount(), 2, 2, 100.) + &quot;% ||&quot;);</span>
+
+<span class="fc" id="L526">		System.out.println (&quot;\t|| FTDCVA =&gt; &quot; + FormatUtil.FormatDouble (eaa.ftdcva().amount(), 2, 2, 100.) + &quot;% ||&quot;);</span>
+
+<span class="fc" id="L528">		System.out.println (&quot;\t||  CVA   =&gt; &quot; + FormatUtil.FormatDouble (eaa.cva().amount(), 2, 2, 100.) + &quot;% ||&quot;);</span>
+
+<span class="fc" id="L530">		System.out.println (&quot;\t||  CVACL =&gt; &quot; + FormatUtil.FormatDouble (eaa.cvacl().amount(), 2, 2, 100.) + &quot;% ||&quot;);</span>
+
+<span class="fc" id="L532">		System.out.println (&quot;\t||  DVA   =&gt; &quot; + FormatUtil.FormatDouble (eaa.dva().amount(), 2, 2, 100.) + &quot;% ||&quot;);</span>
+
+<span class="fc" id="L534">		System.out.println (&quot;\t||  FVA   =&gt; &quot; + FormatUtil.FormatDouble (eaa.fva().amount(), 2, 2, 100.) + &quot;% ||&quot;);</span>
+
+<span class="fc" id="L536">		System.out.println (&quot;\t||  FDA   =&gt; &quot; + FormatUtil.FormatDouble (eaa.fda().amount(), 2, 2, 100.) + &quot;% ||&quot;);</span>
+
+<span class="fc" id="L538">		System.out.println (&quot;\t||  FCA   =&gt; &quot; + FormatUtil.FormatDouble (eaa.fca().amount(), 2, 2, 100.) + &quot;% ||&quot;);</span>
+
+<span class="fc" id="L540">		System.out.println (&quot;\t||  FBA   =&gt; &quot; + FormatUtil.FormatDouble (eaa.fba().amount(), 2, 2, 100.) + &quot;% ||&quot;);</span>
+
+<span class="fc" id="L542">		System.out.println (&quot;\t||  SFVA  =&gt; &quot; + FormatUtil.FormatDouble (eaa.sfva().amount(), 2, 2, 100.) + &quot;% ||&quot;);</span>
+
+<span class="fc" id="L544">		System.out.println (&quot;\t||-------------------||&quot;);</span>
+
+<span class="fc" id="L546">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L547">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

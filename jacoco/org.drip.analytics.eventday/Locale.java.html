@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Locale.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.analytics.eventday</a> &gt; <span class="el_source">Locale.java</span></div><h1>Locale.java</h1><pre class="source lang-java linenums">
+package org.drip.analytics.eventday;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * Copyright (C) 2012 Lakshmi Krishnamurthy
+ * Copyright (C) 2011 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * Locale contains the set of regular holidays and the weekend holidays for a location. It also provides the
+ * 	functionality to add custom holidays and weekends.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class Locale {
+<span class="fc" id="L64">	private Weekend _wkend = null;</span>
+
+<span class="fc" id="L66">	private java.util.Set&lt;Base&gt; _setHolidays = new java.util.HashSet&lt;Base&gt;();</span>
+
+	/**
+	 * Construct an empty LocHolidays instance
+	 */
+
+	public Locale()
+<span class="fc" id="L73">	{</span>
+<span class="fc" id="L74">	}</span>
+
+	/**
+	 * Add the array of weekend days
+	 * 
+	 * @param aiDays Array of weekend days
+	 * 
+	 * @return Succeeded (true), failure (false)
+	 */
+
+	public boolean addWeekend (
+		final int[] aiDays)
+	{
+		try {
+<span class="nc bnc" id="L88" title="All 2 branches missed.">			return null != (_wkend = new Weekend (aiDays));</span>
+<span class="nc" id="L89">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L90">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L93">		return false;</span>
+	}
+
+	/**
+	 * Add the regular SATURDAY/SUNDAY weekend
+	 * 
+	 * @return Succeeded (true), failure (false)
+	 */
+
+	public boolean addStandardWeekend()
+	{
+<span class="fc" id="L104">		_wkend = Weekend.StandardWeekend();</span>
+
+<span class="fc" id="L106">		return true;</span>
+	}
+
+	/**
+	 * Add the given date as a static holiday
+	 * 
+	 * @param dt Date
+	 * @param strDescription Description
+	 * 
+	 * @return Succeeded (true), failure (false)
+	 */
+
+	public boolean addStaticHoliday (
+		final org.drip.analytics.date.JulianDate dt,
+		final java.lang.String strDescription)
+	{
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">		if (null == dt) return false;</span>
+
+		try {
+<span class="fc" id="L125">			_setHolidays.add (new Static (dt, strDescription));</span>
+
+<span class="fc" id="L127">			return true;</span>
+<span class="nc" id="L128">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L129">			System.out.println (e.getMessage());</span>
+		}
+
+<span class="nc" id="L132">		return false;</span>
+	}
+
+	/**
+	 * Add the given string date as a static holiday
+	 * 
+	 * @param strDate Date string
+	 * @param strDescription Description
+	 * 
+	 * @return Succeeded (true), failure (false)
+	 */
+
+	public boolean addStaticHoliday (
+		final java.lang.String strDate,
+		final java.lang.String strDescription)
+	{
+<span class="pc bpc" id="L148" title="2 of 4 branches missed.">		if (null == strDate || strDate.isEmpty()) return false;</span>
+
+<span class="fc" id="L150">		org.drip.analytics.date.JulianDate dtStaticHoliday =</span>
+<span class="fc" id="L151">			org.drip.analytics.date.DateUtil.CreateFromDDMMMYYYY (strDate);</span>
+
+<span class="fc bfc" id="L153" title="All 2 branches covered.">		if (null == dtStaticHoliday) return false;</span>
+
+<span class="fc" id="L155">		return addStaticHoliday (dtStaticHoliday, strDescription);</span>
+	}
+
+	/**
+	 * Add a fixed holiday from the day and month
+	 * 
+	 * @param iDay Day
+	 * @param iMonth Month
+	 * @param strDescription Description
+	 * 
+	 * @return Succeeded (true), failure (false)
+	 */
+
+	public boolean addFixedHoliday (
+		final int iDay,
+		final int iMonth,
+		final java.lang.String strDescription)
+	{
+<span class="nc" id="L173">		_setHolidays.add (new Fixed (iDay, iMonth, _wkend, strDescription));</span>
+
+<span class="nc" id="L175">		return true;</span>
+	}
+
+	/**
+	 * Add a floating holiday from the week in month, the day in week, the month, and whether holidays are
+	 * 		calculated from front/back.
+	 * 
+	 * @param iWeekInMonth Week in the Month
+	 * @param iWeekDay Day in the week
+	 * @param iMonth Month
+	 * @param bFromFront Holidays are calculated from the start of the month (True)
+	 * @param strDescription Description
+	 * 
+	 * @return Succeeded (true), failure (false)
+	 */
+
+	public boolean addFloatingHoliday (
+		final int iWeekInMonth,
+		final int iWeekDay,
+		final int iMonth,
+		final boolean bFromFront,
+		final java.lang.String strDescription)
+	{
+<span class="nc" id="L198">		_setHolidays.add (new Variable (iWeekInMonth, iWeekDay, iMonth, bFromFront, _wkend,</span>
+			strDescription));
+
+<span class="nc" id="L201">		return true;</span>
+	}
+
+	/**
+	 * Return the weekend
+	 * 
+	 * @return Weekend
+	 */
+
+	public Weekend weekendDays()
+	{
+<span class="fc" id="L212">		return _wkend;</span>
+	}
+
+	/**
+	 * Return the set of week day holidays
+	 * 
+	 * @return Set of hoidays
+	 */
+
+	public java.util.Set&lt;Base&gt; holidays()
+	{
+<span class="fc" id="L223">		return _setHolidays;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

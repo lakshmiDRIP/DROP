@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Weekend.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.analytics.eventday</a> &gt; <span class="el_source">Weekend.java</span></div><h1>Weekend.java</h1><pre class="source lang-java linenums">
+package org.drip.analytics.eventday;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * Copyright (C) 2012 Lakshmi Krishnamurthy
+ * Copyright (C) 2011 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * Weekend holds the left and the right weekend days. It provides functionality to retrieve them, check if
+ *  the given day is a weekend, and serialize/de-serialize weekend days.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class Weekend {
+<span class="fc" id="L64">	private int[] _aiDay = null;</span>
+
+	/**
+	 * Create a Weekend Instance with SATURDAY and SUNDAY
+	 * 
+	 * @return Weekend object
+	 */
+
+	public static final Weekend StandardWeekend()
+	{
+		try {
+<span class="fc" id="L75">			return new Weekend (new int[] {org.drip.analytics.date.DateUtil.SUNDAY,</span>
+				org.drip.analytics.date.DateUtil.SATURDAY});
+<span class="nc" id="L77">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L78">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L81">		return null;</span>
+	}
+
+	/**
+	 * Create the weekend instance object from the array of the weekend days
+	 * 
+	 * @param aiDay Array of the weekend days
+	 * 
+	 * @throws java.lang.Exception Thrown if cannot properly de-serialize Weekend
+	 */
+
+	public Weekend (
+		final int[] aiDay)
+		throws java.lang.Exception
+<span class="fc" id="L95">	{</span>
+<span class="pc bpc" id="L96" title="1 of 2 branches missed.">		if (null == aiDay) throw new java.lang.Exception (&quot;Weekend ctr: Invalid Inputs&quot;);</span>
+
+<span class="fc" id="L98">		int iNumWeekendDays = aiDay.length;;</span>
+
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">		if (0 == iNumWeekendDays) throw new java.lang.Exception (&quot;Weekend ctr: Invalid Inputs&quot;);</span>
+
+<span class="fc" id="L102">		_aiDay = new int[iNumWeekendDays];</span>
+
+<span class="fc bfc" id="L104" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumWeekendDays; ++i)</span>
+<span class="fc" id="L105">			_aiDay[i] = aiDay[i];</span>
+<span class="fc" id="L106">	}</span>
+
+	/**
+	 * Retrieve the weekend days
+	 * 
+	 * @return Array of the weekend days
+	 */
+
+	public int[] days()
+	{
+<span class="nc" id="L116">		return _aiDay;</span>
+	}
+
+	/**
+	 * Is the given date a left weekend day
+	 * 
+	 * @param iDate Date
+	 * 
+	 * @return True (Left weekend day)
+	 */
+
+	public boolean isLeftWeekend (
+		final int iDate)
+	{
+<span class="pc bpc" id="L130" title="2 of 4 branches missed.">		if (null == _aiDay || 0 == _aiDay.length) return false;</span>
+
+<span class="fc bfc" id="L132" title="All 2 branches covered.">		if (_aiDay[0] == (iDate % 7)) return true;</span>
+
+<span class="fc" id="L134">		return false;</span>
+	}
+
+	/**
+	 * Is the given date a right weekend day
+	 * 
+	 * @param dblDate Date
+	 * 
+	 * @return True (Right weekend day)
+	 */
+
+	public boolean isRightWeekend (
+		final double dblDate)
+	{
+<span class="pc bpc" id="L148" title="2 of 4 branches missed.">		if (null == _aiDay || 1 &gt;= _aiDay.length) return false;</span>
+
+<span class="fc bfc" id="L150" title="All 2 branches covered.">		if (_aiDay[1] == (dblDate % 7)) return true;</span>
+
+<span class="fc" id="L152">		return false;</span>
+	}
+
+	/**
+	 * Is the given date a weekend day
+	 * 
+	 * @param iDate Date
+	 * 
+	 * @return True (Weekend day)
+	 */
+
+	public boolean isWeekend (
+		final int iDate)
+	{
+<span class="fc bfc" id="L166" title="All 4 branches covered.">		return isLeftWeekend (iDate) || isRightWeekend (iDate);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

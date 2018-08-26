@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SegmentResponseValueConstraint.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.spline.params</a> &gt; <span class="el_source">SegmentResponseValueConstraint.java</span></div><h1>SegmentResponseValueConstraint.java</h1><pre class="source lang-java linenums">
+package org.drip.spline.params;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * SegmentResponseValueConstraint holds the following set of fields that characterize a single global
+ * 	linear constraint between the predictor and the response variables within a single segment, expressed
+ *  linearly across the constituent nodes. Constraints are expressed as
+ * 
+ * 			C = Sigma_j [W_j * y_j] = V where
+ * 
+ * 	x_j - Predictor j
+ * 	y_j - Response j
+ * 	W_j - Weight at ordinate j
+ * 	V - Value of the Constraint
+ * 
+ * SegmentResponseValueConstraint exports the following functionality:
+ * 	- Retrieve the Array of Predictor Ordinates.
+ * 	- Retrieve the Array of Response Weights at each Predictor Ordinate.
+ * 	- Retrieve the Constraint Value.
+ * 	- Convert the Segment Constraint onto Local Predictor Ordinates, the corresponding Response Basis
+ * 		Function, and the Shape Controller Realizations.
+ * 	- Get the Position of the Predictor Knot relative to the Constraints.
+ * 	- Generate a SegmentResponseValueConstraint instance from the given predictor/response pair.
+ * 
+ * SegmentResponseValueConstraint can be viewed as the global response point value transform of
+ *  SegmentBasisFlexureConstraint.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class SegmentResponseValueConstraint {
+
+	/**
+	 * Indicator specifying that the knot is to the left of the constraint ordinates
+	 */
+
+	public static final int LEFT_OF_CONSTRAINT = 1;
+
+	/**
+	 * Indicator specifying that the knot is to the right of the constraint ordinates
+	 */
+
+	public static final int RIGHT_OF_CONSTRAINT = 2;
+
+	/**
+	 * Indicator specifying that the knot splits the constraint ordinates
+	 */
+
+	public static final int SPLITS_CONSTRAINT = 4;
+
+<span class="fc" id="L101">	private double[] _adblPredictorOrdinate = null;</span>
+<span class="fc" id="L102">	private double[] _adblResponseValueWeight = null;</span>
+<span class="fc" id="L103">	private double _dblWeightedResponseValueConstraint = java.lang.Double.NaN;</span>
+
+	/**
+	 * Generate a SegmentResponseValueConstraint instance from the given predictor/response pair.
+	 * 
+	 * @param dblPredictorOrdinate The Predictor Ordinate
+	 * @param dblResponseValue The Response Value
+	 * 
+	 * @return The SegmentResponseValueConstraint instance
+	 */
+
+	public static final SegmentResponseValueConstraint FromPredictorResponsePair (
+		final double dblPredictorOrdinate,
+		final double dblResponseValue)
+	{
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate) ||</span>
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblResponseValue))</span>
+<span class="nc" id="L120">			return null;</span>
+
+		try {
+<span class="fc" id="L123">			return new SegmentResponseValueConstraint (new double[] {dblPredictorOrdinate}, new double[]</span>
+				{1.}, dblResponseValue);
+<span class="nc" id="L125">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L126">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L129">		return null;</span>
+	}
+
+	/**
+	 * SegmentResponseValueConstraint constructor
+	 * 
+	 * @param adblPredictorOrdinate The Array of Global Predictor Ordinates
+	 * @param adblResponseValueWeight The Array of the Weights to be applied to the Response at each
+	 *  Predictor Ordinate
+	 * @param dblWeightedResponseValueConstraint The Value of the Weighted Response Value Constraint
+	 * 
+	 * @throws java.lang.Exception Throws if the Inputs are Invalid
+	 */
+
+	public SegmentResponseValueConstraint (
+		final double[] adblPredictorOrdinate,
+		final double[] adblResponseValueWeight,
+		final double dblWeightedResponseValueConstraint)
+		throws java.lang.Exception
+<span class="fc" id="L148">	{</span>
+<span class="pc bpc" id="L149" title="2 of 4 branches missed.">		if (null == (_adblPredictorOrdinate = adblPredictorOrdinate) || null == (_adblResponseValueWeight =</span>
+			adblResponseValueWeight) || !org.drip.quant.common.NumberUtil.IsValid
+<span class="pc bpc" id="L151" title="1 of 2 branches missed.">				(_dblWeightedResponseValueConstraint = dblWeightedResponseValueConstraint))</span>
+<span class="nc" id="L152">			throw new java.lang.Exception (&quot;SegmentResponseValueConstraint ctr: Invalid Inputs&quot;);</span>
+
+<span class="fc" id="L154">		int iNumPredictorOrdinate = adblPredictorOrdinate.length;</span>
+
+<span class="pc bpc" id="L156" title="2 of 4 branches missed.">		if (0 == iNumPredictorOrdinate || _adblResponseValueWeight.length != iNumPredictorOrdinate)</span>
+<span class="nc" id="L157">			throw new java.lang.Exception (&quot;SegmentResponseValueConstraint ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L158">	}</span>
+
+	/**
+	 * Retrieve the Array of Predictor Ordinates
+	 * 
+	 * @return The Array of Predictor Ordinates
+	 */
+
+	public double[] predictorOrdinates()
+	{
+<span class="fc" id="L168">		return _adblPredictorOrdinate;</span>
+	}
+
+	/**
+	 * Retrieve the Array of Response Weights at each Predictor Ordinate
+	 * 
+	 * @return The Array of Response Weights at each Predictor Ordinate
+	 */
+
+	public double[] responseWeights()
+	{
+<span class="nc" id="L179">		return _adblResponseValueWeight;</span>
+	}
+
+	/**
+	 * Retrieve the Constraint Value
+	 * 
+	 * @return The Constraint Value
+	 */
+
+	public double constraintValue()
+	{
+<span class="nc" id="L190">		return _dblWeightedResponseValueConstraint;</span>
+	}
+
+	public void display (
+		final java.lang.String strComment)
+	{
+<span class="nc bnc" id="L196" title="All 2 branches missed.">		for (int i = 0; i &lt; _adblPredictorOrdinate.length; ++i)</span>
+<span class="nc" id="L197">			System.out.println (&quot;\t\t&quot; + strComment + &quot; - &quot; + new org.drip.analytics.date.JulianDate ((int)</span>
+				_adblPredictorOrdinate[i]) + &quot; =&gt; &quot; + _adblResponseValueWeight[i]);
+
+<span class="nc" id="L200">		System.out.println (&quot;\tConstraint: &quot; + _dblWeightedResponseValueConstraint);</span>
+<span class="nc" id="L201">	}</span>
+
+	/**
+	 * Convert the Segment Constraint onto Local Predictor Ordinates, the corresponding Response Basis
+	 *  Function, and the Shape Controller Realizations
+	 * 
+	 * @param lbe The Local Basis Evaluator
+	 * @param ics Inelastics transformer to convert coordinate space to Local from Global
+	 * 
+	 * @return The Segment Basis Function Constraint
+	 */
+
+	public org.drip.spline.params.SegmentBasisFlexureConstraint responseIndexedBasisConstraint (
+		final org.drip.spline.segment.BasisEvaluator lbe,
+		final org.drip.spline.segment.LatentStateInelastic ics)
+	{
+<span class="pc bpc" id="L217" title="2 of 4 branches missed.">		if (null == lbe || null == ics) return null;</span>
+
+<span class="fc" id="L219">		int iNumResponseBasis = lbe.numBasis();</span>
+
+<span class="fc" id="L221">		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;</span>
+<span class="fc" id="L222">		double[] adblResponseBasisWeight = new double[iNumResponseBasis];</span>
+
+<span class="pc bpc" id="L224" title="1 of 2 branches missed.">		if (0 == iNumResponseBasis) return null;</span>
+
+		try {
+<span class="fc bfc" id="L227" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumResponseBasis; ++i) {</span>
+<span class="fc" id="L228">				adblResponseBasisWeight[i] = 0.;</span>
+
+<span class="fc bfc" id="L230" title="All 2 branches covered.">				for (int j = 0; j &lt; iNumPredictorOrdinate; ++j)</span>
+<span class="fc" id="L231">					adblResponseBasisWeight[i] += _adblResponseValueWeight[j] *</span>
+<span class="fc" id="L232">						lbe.shapedBasisFunctionResponse (_adblPredictorOrdinate[j], i);</span>
+			}
+
+<span class="fc" id="L235">			return new org.drip.spline.params.SegmentBasisFlexureConstraint (adblResponseBasisWeight,</span>
+				_dblWeightedResponseValueConstraint);
+<span class="nc" id="L237">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L238">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L241">		return null;</span>
+	}
+
+	/**
+	 * Get the Position of the Predictor Knot relative to the Constraints
+	 * 
+	 * @param dblPredictorKnot The Predictor Knot Ordinate
+	 * 
+	 * @return Indicator specifying whether the Knot is Left of the constraints, Right of the Constraints, or
+	 *  splits the Constraints
+	 * 
+	 * @throws java.lang.Exception Thrown if Inputs are invalid
+	 */
+
+	public int knotPosition (
+		final double dblPredictorKnot)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L259" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorKnot))</span>
+<span class="nc" id="L260">			throw new java.lang.Exception (&quot;SegmentResponseValueConstraint::knotPosition =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc bnc" id="L262" title="All 2 branches missed.">		if (dblPredictorKnot &lt; _adblPredictorOrdinate[0]) return LEFT_OF_CONSTRAINT;</span>
+
+<span class="nc bnc" id="L264" title="All 2 branches missed.">		if (dblPredictorKnot &gt; _adblPredictorOrdinate[_adblPredictorOrdinate.length - 1])</span>
+<span class="nc" id="L265">			return RIGHT_OF_CONSTRAINT;</span>
+
+<span class="nc" id="L267">		return SPLITS_CONSTRAINT;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

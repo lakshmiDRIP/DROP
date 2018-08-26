@@ -136,7 +136,7 @@ public class CTSensitivity
 	/**
 	 * Compute the Delta Margin Based Net Sensitivity
 	 * 
-	 * @param equitySensitivitySettings The Equity Sensitivity Settings
+	 * @param commoditySensitivitySettings The Equity Sensitivity Settings
 	 * 
 	 * @return The Delta Margin Based Net Sensitivity
 	 */

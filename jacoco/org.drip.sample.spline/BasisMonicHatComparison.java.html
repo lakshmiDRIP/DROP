@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BasisMonicHatComparison.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.spline</a> &gt; <span class="el_source">BasisMonicHatComparison.java</span></div><h1>BasisMonicHatComparison.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.spline;
+
+import org.drip.spline.bspline.*;
+import org.drip.quant.common.FormatUtil;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * BasisMonicBSpline implements the comparison of the basis hat functions used in the construction of the
+ *  monic basis B Splines. It demonstrates the following:
+ * 	- Construction of the Linear Cubic Rational Raw Hat Functions
+ * 	- Construction of the Quadratic Cubic Rational Raw Hat Functions
+ * 	- Construction of the Corresponding Processed Tension Basis Hat Functions
+ * 	- Construction of the Wrapping Monic Functions
+ * 	- Estimation and Comparison of the Ordered Derivatives
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L70">public class BasisMonicHatComparison {</span>
+
+	/*
+	 * This sample display the test of the different shape controller functions. It demonstrates the
+	 * 	following:
+	 * 	- Construct the Raw Cubic rational left Tension Basis using the specified shape controller and
+	 * 		tension.
+	 * 	- Construct the Raw Cubic rational right Tension Basis using the specified shape controller and
+	 *  	tension.
+	 *  - Construct the processed Cubic rational left Tension Basis using the Raw Cubic rational left Tension
+	 *  	Basis.
+	 *  - Construct the processed Cubic rational Right Tension Basis using the Raw Cubic rational Right
+	 *  	Tension Basis.
+	 *  - Construct the Segment Monic Basis Function using the left and the right processed hat functions.
+	 *  - Display the response and the derivatives for the left/right cubic rational, and their corresponding
+	 *  	processed tension hat basis functions.
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final void ShapeControllerTest (
+		final String strShapeController,
+		final double dblTension)
+		throws Exception
+	{
+		/*
+		 * Construct the Raw Cubic rational left Tension Basis using the specified shape controller and
+		 *  tension.
+		 */
+
+<span class="fc" id="L100">		CubicRationalLeftRaw crlr = new CubicRationalLeftRaw (</span>
+			1.,
+			2.,
+			strShapeController,
+			dblTension
+		);
+
+		/*
+		 * Construct the Raw Cubic rational right Tension Basis using the specified shape controller and
+		 * 	tension.
+		 */
+
+<span class="fc" id="L112">		CubicRationalRightRaw crrr = new CubicRationalRightRaw (</span>
+			2.,
+			3.,
+			strShapeController,
+			dblTension
+		);
+
+		/*
+		 * Construct the processed Cubic rational left Tension Basis using the Raw Cubic rational left
+		 * 	Tension Basis.
+		 */
+
+<span class="fc" id="L124">		TensionProcessedBasisHat tpbhLeft = new TensionProcessedBasisHat (</span>
+			crlr,
+			2
+		);
+
+		/*
+		 * Construct the processed Cubic rational right Tension Basis using the Raw Cubic rational Right
+		 * 	Tension Basis.
+		 */
+
+<span class="fc" id="L134">		TensionProcessedBasisHat tpbhRight = new TensionProcessedBasisHat (</span>
+			crrr,
+			2
+		);
+
+		/*
+		 * Construct the Segment Monic Basis Function using the left and the right processed hat functions.
+		 */
+
+<span class="fc" id="L143">		SegmentMonicBasisFunction smbf = new SegmentMonicBasisFunction (</span>
+			tpbhLeft,
+			tpbhRight
+		);
+
+		/*
+		 * Display the response and the derivatives for the left/right cubic rational, and their
+		 *  corresponding processed tension hat basis functions.
+		 */
+
+<span class="fc" id="L153">		double dblX = crlr.left();</span>
+
+<span class="fc bfc" id="L155" title="All 2 branches covered.">		while (dblX &lt;= crrr.right()) {</span>
+<span class="fc" id="L156">			System.out.println (&quot;\tDeriv[&quot; + dblX + &quot;] =&gt; &quot; +</span>
+<span class="fc" id="L157">				FormatUtil.FormatDouble (smbf.derivative (dblX, 1), 1, 5, 1.));</span>
+
+<span class="fc" id="L159">			System.out.println (&quot;\t\tCubic Rational Left Deriv[&quot; + dblX + &quot;]  =&gt; &quot; +</span>
+<span class="fc" id="L160">				FormatUtil.FormatDouble (crlr.derivative (dblX, 3), 1, 5, 1.));</span>
+
+<span class="fc" id="L162">			System.out.println (&quot;\t\tCubic Rational Right Deriv[&quot; + dblX + &quot;] =&gt; &quot; +</span>
+<span class="fc" id="L163">				FormatUtil.FormatDouble (crrr.derivative (dblX, 3), 1, 5, 1.));</span>
+
+<span class="fc" id="L165">			System.out.println (&quot;\t\tTPBH Left Deriv[&quot; + dblX + &quot;]  =&gt; &quot; +</span>
+<span class="fc" id="L166">				FormatUtil.FormatDouble (tpbhLeft.derivative (dblX, 1), 1, 5, 1.));</span>
+
+<span class="fc" id="L168">			System.out.println (&quot;\t\tTPBH Right Deriv[&quot; + dblX + &quot;] =&gt; &quot; +</span>
+<span class="fc" id="L169">				FormatUtil.FormatDouble (tpbhRight.derivative (dblX, 1), 1, 5, 1.));</span>
+
+<span class="fc" id="L171">			dblX += 0.5;</span>
+		}
+<span class="fc" id="L173">	}</span>
+
+	/*
+	 * Sample illustrating the construction and usage of different monic basis hat shape controllers. This
+	 * 	example illustrates the following:
+	 * 	- Test Rational Linear Shape Control with 0.0 Tension Parameter (i.e., no shape control).
+	 * 	- Test Rational Linear Shape Control with 1.0 Tension Parameter.
+	 * 	- Test Rational Quadratic Shape Control with 1.0 Tension Parameter.
+	 * 	- Test Exponential Shape Control with 1.0 Tension Parameter.
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final void BasisMonicHatComparisonSample()
+		throws Exception
+	{
+		/*
+		 * Test Rational Linear Shape Control with 0.0 Tension Parameter (i.e., no shape control)
+		 */
+
+<span class="fc" id="L193">		System.out.println (&quot;\n-------------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L195">		System.out.println (&quot;----------------- NO SHAPE CONTROL --------------------------------&quot;);</span>
+
+<span class="fc" id="L197">		System.out.println (&quot;-------------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L199">		ShapeControllerTest (</span>
+			BasisHatShapeControl.SHAPE_CONTROL_RATIONAL_LINEAR,
+			0.
+		);
+
+		/*
+		 * Test Rational Linear Shape Control with 1.0 Tension Parameter
+		 */
+
+<span class="fc" id="L208">		System.out.println (&quot;\n-------------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L210">		System.out.println (&quot;----------------- LINEAR SHAPE CONTROL; Tension 1.0 ---------------&quot;);</span>
+
+<span class="fc" id="L212">		System.out.println (&quot;-------------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L214">		ShapeControllerTest (</span>
+			BasisHatShapeControl.SHAPE_CONTROL_RATIONAL_LINEAR,
+			1.
+		);
+
+		/*
+		 * Test Rational Quadratic Shape Control with 1.0 Tension Parameter
+		 */
+
+<span class="fc" id="L223">		System.out.println (&quot;\n-------------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L225">		System.out.println (&quot;-------------- QUADRATIC SHAPE CONTROL; Tension 1.0 ---------------&quot;);</span>
+
+<span class="fc" id="L227">		System.out.println (&quot;-------------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L229">		ShapeControllerTest (</span>
+			BasisHatShapeControl.SHAPE_CONTROL_RATIONAL_QUADRATIC,
+			1.
+		);
+
+		/*
+		 * Test Exponential Shape Control with 1.0 Tension Parameter
+		 */
+
+<span class="fc" id="L238">		System.out.println (&quot;\n-------------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L240">		System.out.println (&quot;-------------- EXPONENTIAL SHAPE CONTROL; Tension 1.0 ---------------&quot;);</span>
+
+<span class="fc" id="L242">		System.out.println (&quot;-------------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L244">		ShapeControllerTest (</span>
+			BasisHatShapeControl.SHAPE_CONTROL_RATIONAL_EXPONENTIAL,
+			1.
+		);
+<span class="fc" id="L248">	}</span>
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+<span class="fc" id="L254">		BasisMonicHatComparisonSample();</span>
+<span class="fc" id="L255">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CreditCurveScenarioContainer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.param.market</a> &gt; <span class="el_source">CreditCurveScenarioContainer.java</span></div><h1>CreditCurveScenarioContainer.java</h1><pre class="source lang-java linenums">
+package org.drip.param.market;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * Copyright (C) 2012 Lakshmi Krishnamurthy
+ * Copyright (C) 2011 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * CreditCurveScenarioContainer contains the place holder for the bump parameters and the curves for the
+ * 	different credit curve scenarios. Contains the spread and the recovery bumps, and the credit curve
+ * 	scenario generator object that wraps the calibration instruments. It also contains the base credit curve,
+ *  spread bumped up/down credit curves, recovery bumped up/down credit curves, and the tenor mapped up/down
+ *  credit curves.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class CreditCurveScenarioContainer {
+
+	/**
+	 * CC Scenario Base
+	 */
+
+	public static final int CC_BASE = 0;
+
+	/**
+	 * CC Scenario Parallel Up
+	 */
+
+	public static final int CC_FLAT_UP = 1;
+
+	/**
+	 * CC Scenario Parallel Down
+	 */
+
+	public static final int CC_FLAT_DN = 2;
+
+	/**
+	 * CC Scenario Tenor Up
+	 */
+
+	public static final int CC_TENOR_UP = 4;
+
+	/**
+	 * CC Scenario Tenor Down
+	 */
+
+	public static final int CC_TENOR_DN = 8;
+
+	/**
+	 * CC Scenario Recovery Parallel Up
+	 */
+
+	public static final int CC_RR_FLAT_UP = 16;
+
+	/**
+	 * CC Scenario Recovery Parallel Down
+	 */
+
+	public static final int CC_RR_FLAT_DN = 32;
+
+<span class="nc" id="L109">	private double _dblCouponBump = java.lang.Double.NaN;</span>
+<span class="nc" id="L110">	private double _dblRecoveryBump = java.lang.Double.NaN;</span>
+<span class="nc" id="L111">	private org.drip.state.credit.CreditCurve _ccBase = null;</span>
+<span class="nc" id="L112">	private org.drip.state.credit.CreditCurve _ccBumpUp = null;</span>
+<span class="nc" id="L113">	private org.drip.state.credit.CreditCurve _ccBumpDn = null;</span>
+<span class="nc" id="L114">	private org.drip.state.credit.CreditCurve _ccRecoveryUp = null;</span>
+<span class="nc" id="L115">	private org.drip.state.credit.CreditCurve _ccRecoveryDn = null;</span>
+<span class="nc" id="L116">	private org.drip.product.definition.CalibratableComponent[] _aCalibInst = null;</span>
+<span class="nc" id="L117">	private org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.credit.CreditCurve&gt;</span>
+		_mapCCCustom = null;
+<span class="nc" id="L119">	private org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.credit.CreditCurve&gt;</span>
+		_mapCCTenorBumpUp = null;
+<span class="nc" id="L121">	private org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.credit.CreditCurve&gt;</span>
+		_mapCCTenorBumpDn = null;
+
+	/**
+	 * Construct CreditCurveScenarioContainer from the array of calibration instruments, the coupon bump
+	 * 	parameter, and the recovery bump parameter
+	 * 
+	 * @param aCalibInst Array of calibration instruments
+	 * @param dblCouponBump Coupon Bump
+	 * @param dblRecoveryBump Recovery Bump
+	 * 
+	 * @throws java.lang.Exception Thrown if inputs are invalid
+	 */
+
+	public CreditCurveScenarioContainer (
+		final org.drip.product.definition.CalibratableComponent[] aCalibInst,
+		final double dblCouponBump,
+		final double dblRecoveryBump)
+		throws java.lang.Exception
+<span class="nc" id="L140">	{</span>
+<span class="nc bnc" id="L141" title="All 4 branches missed.">		if (null == (_aCalibInst = aCalibInst) || 0 == _aCalibInst.length ||</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblCouponBump = dblCouponBump) ||</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblRecoveryBump = dblRecoveryBump))</span>
+<span class="nc" id="L144">			throw new java.lang.Exception (&quot;CreditCurveScenarioContainer ctr =&gt; Invalid Inputs!&quot;);</span>
+<span class="nc" id="L145">	}</span>
+
+	/**
+	 * Cook and save the credit curves corresponding to the scenario specified
+	 * 
+	 * @param strName Credit Curve Name
+	 * @param valParams ValuationParams
+	 * @param dc Base Discount Curve
+	 * @param gc Govvie Curve
+	 * @param astrCalibMeasure Matched array of Calibration measures
+	 * @param adblQuote Matched array of Quotes
+	 * @param dblRecovery Curve Recovery
+	 * @param lsfc Latent State Fixings Container
+	 * @param vcp Valuation Customization Parameters
+	 * @param bFlat Whether the calibration is to a flat curve
+	 * @param iScenario One of the values in the CC_ enum listed above. 
+	 * 
+	 * @return Success (true), failure (false)
+	 */
+
+	public boolean cookScenarioCC (
+		final java.lang.String strName,
+		final org.drip.param.valuation.ValuationParams valParams,
+		final org.drip.state.discount.MergedDiscountForwardCurve dc,
+		final org.drip.state.govvie.GovvieCurve gc,
+		final java.lang.String[] astrCalibMeasure,
+		final double[] adblQuote,
+		final double dblRecovery,
+		final org.drip.param.market.LatentStateFixingsContainer lsfc,
+		final org.drip.param.valuation.ValuationCustomizationParams vcp,
+		final boolean bFlat,
+		final int iScenario)
+	{
+<span class="nc bnc" id="L178" title="All 2 branches missed.">		if (null == (_ccBase = org.drip.state.boot.CreditCurveScenario.Standard (strName, valParams,</span>
+			_aCalibInst, adblQuote, astrCalibMeasure, dblRecovery, bFlat, dc, gc, lsfc, vcp, null)))
+<span class="nc" id="L180">			return false;</span>
+
+<span class="nc bnc" id="L182" title="All 2 branches missed.">		if (0 != (org.drip.param.market.CreditCurveScenarioContainer.CC_FLAT_UP &amp; iScenario)) {</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">			if (null == (_ccBumpUp = org.drip.state.boot.CreditCurveScenario.Standard (strName, valParams,</span>
+<span class="nc" id="L184">				_aCalibInst, org.drip.analytics.support.Helper.BumpQuotes (adblQuote, _dblCouponBump, false),</span>
+					astrCalibMeasure, dblRecovery, bFlat, dc, gc, lsfc, vcp, null)))
+<span class="nc" id="L186">				return false;</span>
+		}
+
+<span class="nc bnc" id="L189" title="All 2 branches missed.">		if (0 != (org.drip.param.market.CreditCurveScenarioContainer.CC_FLAT_DN &amp; iScenario)) {</span>
+<span class="nc bnc" id="L190" title="All 2 branches missed.">			if (null == (_ccBumpDn = org.drip.state.boot.CreditCurveScenario.Standard (strName, valParams,</span>
+<span class="nc" id="L191">				_aCalibInst, org.drip.analytics.support.Helper.BumpQuotes (adblQuote, -_dblCouponBump,</span>
+					false), astrCalibMeasure, dblRecovery, bFlat, dc, gc, lsfc, vcp, null)))
+<span class="nc" id="L193">				return false;</span>
+		}
+
+<span class="nc bnc" id="L196" title="All 2 branches missed.">		if (0 != (org.drip.param.market.CreditCurveScenarioContainer.CC_TENOR_UP &amp; iScenario)) {</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">			if (null == (_mapCCTenorBumpUp = org.drip.state.boot.CreditCurveScenario.TenorMap (strName,</span>
+				valParams, _aCalibInst, adblQuote, astrCalibMeasure, dblRecovery, bFlat, _dblCouponBump, dc,
+					gc, lsfc, vcp)))
+<span class="nc" id="L200">				return false;</span>
+		}
+
+<span class="nc bnc" id="L203" title="All 2 branches missed.">		if (0 != (org.drip.param.market.CreditCurveScenarioContainer.CC_TENOR_DN &amp; iScenario)) {</span>
+<span class="nc bnc" id="L204" title="All 2 branches missed.">			if (null == (_mapCCTenorBumpDn = org.drip.state.boot.CreditCurveScenario.TenorMap (strName,</span>
+				valParams, _aCalibInst, adblQuote, astrCalibMeasure, dblRecovery, bFlat, -_dblCouponBump, dc,
+					gc, lsfc, vcp)))
+<span class="nc" id="L207">				return false;</span>
+		}
+
+<span class="nc bnc" id="L210" title="All 2 branches missed.">		if (0 != (org.drip.param.market.CreditCurveScenarioContainer.CC_RR_FLAT_UP &amp; iScenario)) {</span>
+<span class="nc bnc" id="L211" title="All 2 branches missed.">			if (null == (_ccRecoveryUp = org.drip.state.boot.CreditCurveScenario.Standard (strName,</span>
+				valParams, _aCalibInst, adblQuote, astrCalibMeasure, dblRecovery + _dblRecoveryBump, bFlat,
+					dc, gc, lsfc, vcp, null)))
+<span class="nc" id="L214">				return false;</span>
+		}
+
+<span class="nc bnc" id="L217" title="All 2 branches missed.">		if (0 != (org.drip.param.market.CreditCurveScenarioContainer.CC_RR_FLAT_DN &amp; iScenario)) {</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">			if (null == (_ccRecoveryDn = org.drip.state.boot.CreditCurveScenario.Standard (strName,</span>
+				valParams, _aCalibInst, adblQuote, astrCalibMeasure, dblRecovery - _dblRecoveryBump, bFlat,
+					dc, gc, lsfc, vcp, null)))
+<span class="nc" id="L221">				return false;</span>
+		}
+
+<span class="nc" id="L224">		return true;</span>
+	}
+
+	/**
+	 * Cook the credit curve according to the desired tweak parameters
+	 * 
+	 * @param strName Scenario Credit Curve Name
+	 * @param strCustomName Scenario Name
+	 * @param valParams Valuation Parameters
+	 * @param dc Discount Curve
+	 * @param gc Govvie Curve
+	 * @param astrCalibMeasure Array of calibration measures
+	 * @param adblQuote Double array of input quotes
+	 * @param dblRecovery Recovery Rate
+	 * @param lsfc Latent State Fixings Container
+	 * @param vcp Valuation Customization Parameters
+	 * @param bFlat Whether the calibration is flat
+	 * @param rvtpDC Node Tweak Parameters for the Base Discount Curve
+	 * @param rvtpTSY Node Tweak Parameters for the TSY Discount Curve
+	 * @param rvtpCC Node Tweak Parameters for the Credit Curve
+	 * 
+	 * @return True - Credit Curve successfully created
+	 */
+
+	public boolean cookCustomCC (
+		final java.lang.String strName,
+		final java.lang.String strCustomName,
+		final org.drip.param.valuation.ValuationParams valParams,
+		final org.drip.state.discount.MergedDiscountForwardCurve dc,
+		final org.drip.state.govvie.GovvieCurve gc,
+		final java.lang.String[] astrCalibMeasure,
+		final double[] adblQuote,
+		final double dblRecovery,
+		final org.drip.param.market.LatentStateFixingsContainer lsfc,
+		final org.drip.param.valuation.ValuationCustomizationParams vcp,
+		final boolean bFlat,
+		final org.drip.param.definition.ManifestMeasureTweak rvtpDC,
+		final org.drip.param.definition.ManifestMeasureTweak rvtpTSY,
+		final org.drip.param.definition.ManifestMeasureTweak rvtpCC)
+	{
+<span class="nc bnc" id="L264" title="All 2 branches missed.">		if (null == dc) return false;</span>
+
+<span class="nc" id="L266">		org.drip.state.discount.MergedDiscountForwardCurve dcAdj = (org.drip.state.discount.MergedDiscountForwardCurve)</span>
+<span class="nc" id="L267">			dc.customTweakManifestMeasure (&quot;Rate&quot;, rvtpDC);</span>
+
+<span class="nc" id="L269">		org.drip.state.govvie.GovvieCurve gcAdj = (org.drip.state.govvie.GovvieCurve)</span>
+<span class="nc" id="L270">			gc.customTweakManifestMeasure (&quot;Rate&quot;, rvtpTSY);</span>
+
+<span class="nc bnc" id="L272" title="All 4 branches missed.">		org.drip.state.credit.CreditCurve ccBaseCustom = org.drip.state.boot.CreditCurveScenario.Standard</span>
+<span class="nc" id="L273">			(strName, valParams, _aCalibInst, adblQuote, astrCalibMeasure, dblRecovery, bFlat, null == dcAdj</span>
+				? dc : dcAdj, null == gcAdj ? gc : gcAdj, lsfc, vcp, null);
+
+<span class="nc bnc" id="L276" title="All 2 branches missed.">		if (null == ccBaseCustom) return false;</span>
+
+<span class="nc bnc" id="L278" title="All 2 branches missed.">		if (null == _mapCCCustom)</span>
+<span class="nc" id="L279">			_mapCCCustom = new</span>
+				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.credit.CreditCurve&gt;();
+
+<span class="nc" id="L282">		org.drip.state.credit.CreditCurve ccCustom = (org.drip.state.credit.CreditCurve)</span>
+<span class="nc" id="L283">			ccBaseCustom.customTweakManifestMeasure (&quot;Rate&quot;, rvtpCC);</span>
+
+<span class="nc bnc" id="L285" title="All 2 branches missed.">		if (null == ccCustom)</span>
+<span class="nc" id="L286">			_mapCCCustom.put (strCustomName, ccBaseCustom);</span>
+		else
+<span class="nc" id="L288">			_mapCCCustom.put (strCustomName, ccCustom);</span>
+
+<span class="nc" id="L290">		return true;</span>
+	}
+
+	/**
+	 * Return the base credit curve
+	 * 
+	 * @return The base credit curve
+	 */
+
+	public org.drip.state.credit.CreditCurve base()
+	{
+<span class="nc" id="L301">		return _ccBase;</span>
+	}
+
+	/**
+	 * Return the bump up credit curve
+	 * 
+	 * @return The Bumped up credit curve
+	 */
+
+	public org.drip.state.credit.CreditCurve bumpUp()
+	{
+<span class="nc" id="L312">		return _ccBumpUp;</span>
+	}
+
+	/**
+	 * Return the bump Down credit curve
+	 * 
+	 * @return The Bumped Down credit curve
+	 */
+
+	public org.drip.state.credit.CreditCurve bumpDown()
+	{
+<span class="nc" id="L323">		return _ccBumpDn;</span>
+	}
+
+	/**
+	 * Return the recovery bump up credit curve
+	 * 
+	 * @return The Recovery Bumped up credit curve
+	 */
+
+	public org.drip.state.credit.CreditCurve bumpRecoveryUp()
+	{
+<span class="nc" id="L334">		return _ccRecoveryUp;</span>
+	}
+
+	/**
+	 * Return the recovery bump Down credit curve
+	 * 
+	 * @return The Recovery Bumped Down credit curve
+	 */
+
+	public org.drip.state.credit.CreditCurve bumpRecoveryDown()
+	{
+<span class="nc" id="L345">		return _ccRecoveryDn;</span>
+	}
+
+	/**
+	 * Return the tenor bump up credit curve map
+	 * 
+	 * @return The Tenor Bumped up credit curve Map
+	 */
+
+	public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.credit.CreditCurve&gt; tenorBumpUp()
+	{
+<span class="nc" id="L356">		return _mapCCTenorBumpUp;</span>
+	}
+
+	/**
+	 * Return the tenor bump Down credit curve map
+	 * 
+	 * @return The Tenor Bumped Down credit curve Map
+	 */
+
+	public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.credit.CreditCurve&gt;
+		tenorBumpDown()
+	{
+<span class="nc" id="L368">		return _mapCCTenorBumpDn;</span>
+	}
+
+	/**
+	 * Return the Custom credit curve map
+	 * 
+	 * @return The Custom credit curve Map
+	 */
+
+	public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.credit.CreditCurve&gt; custom()
+	{
+<span class="nc" id="L379">		return _mapCCCustom;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

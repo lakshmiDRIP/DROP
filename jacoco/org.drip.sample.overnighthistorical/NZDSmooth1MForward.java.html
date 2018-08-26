@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NZDSmooth1MForward.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.overnighthistorical</a> &gt; <span class="el_source">NZDSmooth1MForward.java</span></div><h1>NZDSmooth1MForward.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.overnighthistorical;
+
+import java.util.Map;
+
+import org.drip.analytics.date.JulianDate;
+import org.drip.feed.loader.*;
+import org.drip.historical.state.FundingCurveMetrics;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.service.state.OvernightCurveAPI;
+import org.drip.service.template.LatentMarketStateBuilder;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * NZDSmooth1MForward Generates the Historical NZD Smoothened Overnight Curve Native 1M Compounded Forward
+ *  Rate.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L68">public class NZDSmooth1MForward {</span>
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+<span class="nc" id="L74">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L76">		String strCurrency = &quot;NZD&quot;;</span>
+<span class="nc" id="L77">		String strClosesLocation = &quot;C:\\DRIP\\CreditAnalytics\\Daemons\\Transforms\\OvernightOISMarks\\&quot; + strCurrency + &quot;OISSmoothReconstitutor.csv&quot;;</span>
+<span class="nc" id="L78">		String[] astrForTenor = new String[] {</span>
+			&quot;1M&quot;
+		};
+<span class="nc" id="L81">		String[] astrInTenor = new String[] {</span>
+			&quot;1W&quot;,
+			&quot;2W&quot;,
+			&quot;3W&quot;,
+			&quot;1M&quot;,
+			&quot;2M&quot;,
+			&quot;3M&quot;,
+			&quot;4M&quot;,
+			&quot;5M&quot;,
+			&quot;6M&quot;,
+			&quot;9M&quot;,
+			&quot;1Y&quot;,
+			&quot;18M&quot;,
+			&quot;2Y&quot;,
+			&quot;3Y&quot;,
+			&quot;4Y&quot;,
+			&quot;5Y&quot;
+		};
+<span class="nc" id="L99">		String[] astrOISMaturityTenor = new String[] {</span>
+			&quot;1W&quot;,
+			&quot;2W&quot;,
+			&quot;3W&quot;,
+			&quot;1M&quot;,
+			&quot;2M&quot;,
+			&quot;3M&quot;,
+			&quot;4M&quot;,
+			&quot;5M&quot;,
+			&quot;6M&quot;,
+			&quot;9M&quot;,
+			&quot;1Y&quot;,
+			&quot;18M&quot;,
+			&quot;2Y&quot;,
+			&quot;3Y&quot;,
+			&quot;4Y&quot;,
+			&quot;5Y&quot;
+		};
+
+<span class="nc" id="L118">		CSVGrid csvGrid = CSVParser.StringGrid (</span>
+			strClosesLocation,
+			true
+		);
+
+<span class="nc" id="L123">		JulianDate[] adtClose = csvGrid.dateArrayAtColumn (0);</span>
+
+<span class="nc" id="L125">		double[] adblOISQuote1W = csvGrid.doubleArrayAtColumn (1);</span>
+
+<span class="nc" id="L127">		double[] adblOISQuote2W = csvGrid.doubleArrayAtColumn (2);</span>
+
+<span class="nc" id="L129">		double[] adblOISQuote3W = csvGrid.doubleArrayAtColumn (3);</span>
+
+<span class="nc" id="L131">		double[] adblOISQuote1M = csvGrid.doubleArrayAtColumn (4);</span>
+
+<span class="nc" id="L133">		double[] adblOISQuote2M = csvGrid.doubleArrayAtColumn (5);</span>
+
+<span class="nc" id="L135">		double[] adblOISQuote3M = csvGrid.doubleArrayAtColumn (6);</span>
+
+<span class="nc" id="L137">		double[] adblOISQuote4M = csvGrid.doubleArrayAtColumn (7);</span>
+
+<span class="nc" id="L139">		double[] adblOISQuote5M = csvGrid.doubleArrayAtColumn (8);</span>
+
+<span class="nc" id="L141">		double[] adblOISQuote6M = csvGrid.doubleArrayAtColumn (9);</span>
+
+<span class="nc" id="L143">		double[] adblOISQuote9M = csvGrid.doubleArrayAtColumn (10);</span>
+
+<span class="nc" id="L145">		double[] adblOISQuote1Y = csvGrid.doubleArrayAtColumn (11);</span>
+
+<span class="nc" id="L147">		double[] adblOISQuote18M = csvGrid.doubleArrayAtColumn (12);</span>
+
+<span class="nc" id="L149">		double[] adblOISQuote2Y = csvGrid.doubleArrayAtColumn (13);</span>
+
+<span class="nc" id="L151">		double[] adblOISQuote3Y = csvGrid.doubleArrayAtColumn (14);</span>
+
+<span class="nc" id="L153">		double[] adblOISQuote4Y = csvGrid.doubleArrayAtColumn (15);</span>
+
+<span class="nc" id="L155">		double[] adblOISQuote5Y = csvGrid.doubleArrayAtColumn (16);</span>
+
+<span class="nc" id="L157">		int iNumClose = adtClose.length;</span>
+<span class="nc" id="L158">		JulianDate[] adtSpot = new JulianDate[iNumClose];</span>
+<span class="nc" id="L159">		double[][] aadblOISQuote = new double[iNumClose][16];</span>
+
+<span class="nc bnc" id="L161" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumClose; ++i) {</span>
+<span class="nc" id="L162">			adtSpot[i] = adtClose[i];</span>
+<span class="nc" id="L163">			aadblOISQuote[i][0] = adblOISQuote1W[i];</span>
+<span class="nc" id="L164">			aadblOISQuote[i][1] = adblOISQuote2W[i];</span>
+<span class="nc" id="L165">			aadblOISQuote[i][2] = adblOISQuote3W[i];</span>
+<span class="nc" id="L166">			aadblOISQuote[i][3] = adblOISQuote1M[i];</span>
+<span class="nc" id="L167">			aadblOISQuote[i][4] = adblOISQuote2M[i];</span>
+<span class="nc" id="L168">			aadblOISQuote[i][5] = adblOISQuote3M[i];</span>
+<span class="nc" id="L169">			aadblOISQuote[i][6] = adblOISQuote4M[i];</span>
+<span class="nc" id="L170">			aadblOISQuote[i][7] = adblOISQuote5M[i];</span>
+<span class="nc" id="L171">			aadblOISQuote[i][8] = adblOISQuote6M[i];</span>
+<span class="nc" id="L172">			aadblOISQuote[i][9] = adblOISQuote9M[i];</span>
+<span class="nc" id="L173">			aadblOISQuote[i][10] = adblOISQuote1Y[i];</span>
+<span class="nc" id="L174">			aadblOISQuote[i][11] = adblOISQuote18M[i];</span>
+<span class="nc" id="L175">			aadblOISQuote[i][12] = adblOISQuote2Y[i];</span>
+<span class="nc" id="L176">			aadblOISQuote[i][13] = adblOISQuote3Y[i];</span>
+<span class="nc" id="L177">			aadblOISQuote[i][14] = adblOISQuote4Y[i];</span>
+<span class="nc" id="L178">			aadblOISQuote[i][15] = adblOISQuote5Y[i];</span>
+		}
+
+<span class="nc" id="L181">		String strDump = &quot;Date&quot;;</span>
+
+<span class="nc bnc" id="L183" title="All 2 branches missed.">		for (String strInTenor : astrInTenor) {</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">			for (String strForTenor : astrForTenor)</span>
+<span class="nc" id="L185">				strDump += &quot;,&quot; + strInTenor + strForTenor;</span>
+		}
+
+<span class="nc" id="L188">		System.out.println (strDump);</span>
+
+<span class="nc" id="L190">		Map&lt;JulianDate, FundingCurveMetrics&gt; mapFCM = OvernightCurveAPI.HorizonMetrics (</span>
+			adtSpot,
+			astrOISMaturityTenor,
+			aadblOISQuote,
+			astrInTenor,
+			astrForTenor,
+			strCurrency,
+			LatentMarketStateBuilder.SMOOTH
+		);
+
+<span class="nc bnc" id="L200" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumClose; ++i) {</span>
+<span class="nc" id="L201">			FundingCurveMetrics fcm = mapFCM.get (adtSpot[i]);</span>
+
+<span class="nc" id="L203">			strDump = adtSpot[i].toString();</span>
+
+<span class="nc bnc" id="L205" title="All 2 branches missed.">			for (String strInTenor : astrInTenor) {</span>
+<span class="nc bnc" id="L206" title="All 2 branches missed.">				for (String strForTenor : astrForTenor)</span>
+<span class="nc" id="L207">					strDump += &quot;,&quot; + FormatUtil.FormatDouble (</span>
+<span class="nc" id="L208">						fcm.nativeForwardRate (</span>
+							strInTenor,
+							strForTenor
+						), 1, 5, 100.
+					);
+			}
+
+<span class="nc" id="L215">			System.out.println (strDump);</span>
+		}
+<span class="nc" id="L217">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

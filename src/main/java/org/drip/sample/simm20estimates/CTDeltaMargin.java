@@ -1,16 +1,6 @@
 
 package org.drip.sample.simm20estimates;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.drip.quant.common.FormatUtil;
-import org.drip.service.env.EnvManager;
-import org.drip.simm20.margin.CTBucketNetSensitivity;
-import org.drip.simm20.margin.CTNetSensitivity;
-import org.drip.simm20.parameters.CTSensitivitySettings;
-import org.drip.simm20.product.CTSensitivity;
-
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -57,7 +47,7 @@ import org.drip.simm20.product.CTSensitivity;
  */
 
 /**
- * CTDeltaMargin illustrates the Computation of the CT Delta Margin for across a Group of Commodity Bucket
+ * CTDeltaMargin illustrates the Computation of the CT Delta Margin for across a Group of Equity Bucket
  *  Exposure Sensitivities. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
@@ -82,107 +72,4 @@ import org.drip.simm20.product.CTSensitivity;
 public class CTDeltaMargin
 {
 
-	private static final Map<Integer, Double> TenorSensitivityMap (
-		final double[] tenorSensitivities)
-		throws Exception
-	{
-		Map<Integer, Double> oisTenorSensitivities = new HashMap<Integer, Double>();
-
-		for (int bucketIndex = 1; bucketIndex <= tenorSensitivities.length; ++bucketIndex)
-		{
-			oisTenorSensitivities.put (
-				bucketIndex,
-				tenorSensitivities[bucketIndex - 1]
-			);
-		}
-
-		return oisTenorSensitivities;
-	}
-
-	public static final void main (
-		final String[] inputs)
-		throws Exception
-	{
-		EnvManager.InitEnv ("");
-
-		double notionalScaler = 100.;
-
-		Map<Integer, Double> bucketSensitivityMap = TenorSensitivityMap (
-			new double[]
-			{
-				notionalScaler * (Math.random() - 0.5),
-				notionalScaler * (Math.random() - 0.5),
-				notionalScaler * (Math.random() - 0.5),
-				notionalScaler * (Math.random() - 0.5),
-				notionalScaler * (Math.random() - 0.5),
-				notionalScaler * (Math.random() - 0.5),
-				notionalScaler * (Math.random() - 0.5),
-				notionalScaler * (Math.random() - 0.5),
-				notionalScaler * (Math.random() - 0.5),
-				notionalScaler * (Math.random() - 0.5),
-				notionalScaler * (Math.random() - 0.5),
-				notionalScaler * (Math.random() - 0.5),
-				notionalScaler * (Math.random() - 0.5),
-				notionalScaler * (Math.random() - 0.5),
-				notionalScaler * (Math.random() - 0.5),
-				notionalScaler * (Math.random() - 0.5),
-				notionalScaler * (Math.random() - 0.5)
-			}
-		);
-
-		CTSensitivitySettings commoditySensitivitySettings = CTSensitivitySettings.ISDA();
-
-		CTNetSensitivity commodityNetSensitivity = new CTSensitivity (bucketSensitivityMap).deltaMargin
-			(commoditySensitivitySettings);
-
-		System.out.println ("\t||---------------------------------------------||");
-
-		System.out.println ("\t||      COMMODITY BUCKET NET SENSITIVITY       ||");
-
-		System.out.println ("\t||---------------------------------------------||");
-
-		System.out.println ("\t||                                             ||");
-
-		System.out.println ("\t||    L -> R:                                  ||");
-
-		System.out.println ("\t||          - Bucket Index                     ||");
-
-		System.out.println ("\t||          - Weighted Net Sensitivity         ||");
-
-		System.out.println ("\t||          - Concentration Factor             ||");
-
-		System.out.println ("\t||          - Weighted/Adjusted Sensitivity    ||");
-
-		System.out.println ("\t||          - Margin Variance                  ||");
-
-		System.out.println ("\t||---------------------------------------------||");
-
-		for (Map.Entry<Integer, CTBucketNetSensitivity> netSensitivityEntry :
-			commodityNetSensitivity.bucketMap().entrySet())
-		{
-			System.out.println (
-				"\t|| " +
-				FormatUtil.FormatDouble (netSensitivityEntry.getKey(), 2, 0, 1.) + " | " +
-				FormatUtil.FormatDouble (netSensitivityEntry.getValue().weighted(), 4, 0, 1.) + " | " +
-				FormatUtil.FormatDouble (netSensitivityEntry.getValue().concentrationFactor(), 2, 3, 1.) + " | " +
-				FormatUtil.FormatDouble (netSensitivityEntry.getValue().weightedAndAdjusted(), 5, 0, 1.) + " | " +
-				FormatUtil.FormatDouble (netSensitivityEntry.getValue().marginVariance(), 9, 0, 1.) + " ||"
-			);
-		}
-
-		System.out.println ("\t||---------------------------------------------||");
-
-		System.out.println();
-
-		System.out.println ("\t||------------------------------------||");
-
-		System.out.println (
-			"\t|| Commodity Delta Margin => " +
-			FormatUtil.FormatDouble (commodityNetSensitivity.deltaMargin (commoditySensitivitySettings), 5, 1, 1.) + " ||"
-		);
-
-		System.out.println ("\t||------------------------------------||");
-
-		EnvManager.TerminateEnv();
-	}
 }

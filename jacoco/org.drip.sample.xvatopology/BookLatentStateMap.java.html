@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BookLatentStateMap.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.xvatopology</a> &gt; <span class="el_source">BookLatentStateMap.java</span></div><h1>BookLatentStateMap.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.xvatopology;
+
+import java.util.Map;
+
+import org.drip.quant.common.FormatUtil;
+import org.drip.quant.common.StringUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.state.identifier.CSALabel;
+import org.drip.state.identifier.EntityFundingLabel;
+import org.drip.state.identifier.EntityHazardLabel;
+import org.drip.state.identifier.EntityRecoveryLabel;
+import org.drip.state.identifier.OvernightLabel;
+import org.drip.xva.proto.CollateralGroupSpecification;
+import org.drip.xva.proto.CreditDebtGroupSpecification;
+import org.drip.xva.proto.FundingGroupSpecification;
+import org.drip.xva.proto.PositionGroupSpecification;
+import org.drip.xva.settings.BrokenDateScheme;
+import org.drip.xva.settings.CloseOutScheme;
+import org.drip.xva.settings.PositionReplicationScheme;
+import org.drip.xva.topology.Adiabat;
+import org.drip.xva.topology.AdiabatMarketParams;
+import org.drip.xva.topology.CollateralGroup;
+import org.drip.xva.topology.CreditDebtGroup;
+import org.drip.xva.topology.FundingGroup;
+import org.drip.xva.topology.PositionGroup;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * BookLatentStateMap represents the Latent State Map across all the Book Groups. The References are:
+ *  
+ *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
+ *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
+ *  
+ *  - Burgard, C., and M. Kjaer (2014): In the Balance, Risk, 24 (11) 72-75.
+ *  
+ *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk, Risk 20 (2) 86-90.
+ *  
+ *  - Albanese, C., L. Andersen, and, S. Iabichino (2015): The FVA Puzzle: Accounting, Risk Management, and
+ *  	Collateral Trading &lt;b&gt;https://papers.ssrn.com/sol3/paper.cfm?abstract_id_2517301&lt;/b&gt;&lt;br&gt;&lt;br&gt;
+ * 
+ *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
+ *  	21 (2) 97-102.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L92">public class BookLatentStateMap</span>
+{
+
+	private static final String ThreeDigitRandom()
+	{
+<span class="nc" id="L97">		return FormatUtil.FormatDouble (Math.random(), 3, 0, 1000.);</span>
+	}
+
+	private static final PositionGroup[] PositionGroupArray (
+		final PositionGroupSpecification positionGroupSpecification,
+		final int count)
+		throws Exception
+	{
+<span class="nc" id="L105">		PositionGroup[] positionGroupArray = new PositionGroup[count];</span>
+
+<span class="nc bnc" id="L107" title="All 2 branches missed.">		for (int i = 0; i &lt; count; ++i)</span>
+		{
+<span class="nc" id="L109">			positionGroupArray[i] = new PositionGroup (</span>
+<span class="nc" id="L110">				StringUtil.GUID(),</span>
+<span class="nc" id="L111">				&quot;POSITIONGROUP&quot; + ThreeDigitRandom(),</span>
+				positionGroupSpecification
+			);
+		}
+
+<span class="nc" id="L116">		return positionGroupArray;</span>
+	}
+
+	private static final CollateralGroup[] CollateralGroupArray (
+		final PositionGroupSpecification positionGroupSpecification,
+		final CollateralGroupSpecification collateralGroupSpecification,
+		final String currency,
+		final int collateralGroupCount,
+		final int positionGroupPerCollateralGroup)
+		throws Exception
+	{
+<span class="nc" id="L127">		CollateralGroup[] collateralGroupArray = new CollateralGroup[collateralGroupCount];</span>
+
+<span class="nc bnc" id="L129" title="All 2 branches missed.">		for (int i = 0; i &lt; collateralGroupCount; ++i)</span>
+		{
+<span class="nc" id="L131">			collateralGroupArray[i] = new CollateralGroup (</span>
+<span class="nc" id="L132">				StringUtil.GUID(),</span>
+<span class="nc" id="L133">				&quot;COLLATERALGROUP&quot; + ThreeDigitRandom(),</span>
+				collateralGroupSpecification
+			);
+
+<span class="nc" id="L137">			PositionGroup[] positionGroupArray = PositionGroupArray (</span>
+				positionGroupSpecification,
+				positionGroupPerCollateralGroup
+			);
+
+<span class="nc bnc" id="L142" title="All 2 branches missed.">			for (PositionGroup positionGroup : positionGroupArray)</span>
+<span class="nc" id="L143">				collateralGroupArray[i].addPositionGroup (positionGroup);</span>
+		}
+
+<span class="nc" id="L146">		return collateralGroupArray;</span>
+	}
+
+	private static final CreditDebtGroup[] CreditDebtGroupArray (
+		final PositionGroupSpecification positionGroupSpecification,
+		final CollateralGroupSpecification collateralGroupSpecification,
+		final CreditDebtGroupSpecification creditDebtGroupSpecification,
+		final int creditDebtGroupCount,
+		final String currency,
+		final String bank,
+		final String counterParty,
+		final int collateralGroupPerCreditDebtGroup,
+		final int positionGroupPerCollateralGroup)
+		throws Exception
+	{
+<span class="nc" id="L161">		CreditDebtGroup[] creditDebtGroupArray = new CreditDebtGroup[creditDebtGroupCount];</span>
+
+<span class="nc bnc" id="L163" title="All 2 branches missed.">		for (int i = 0; i &lt; creditDebtGroupCount; ++i)</span>
+		{
+<span class="nc" id="L165">			creditDebtGroupArray[i] = new CreditDebtGroup (</span>
+<span class="nc" id="L166">				StringUtil.GUID(),</span>
+<span class="nc" id="L167">				&quot;CREDITDEBTGROUP&quot; + ThreeDigitRandom(),</span>
+				creditDebtGroupSpecification
+			);
+
+<span class="nc" id="L171">			CollateralGroup[] collateralGroupArray = CollateralGroupArray (</span>
+				positionGroupSpecification,
+				collateralGroupSpecification,
+				currency,
+				collateralGroupPerCreditDebtGroup,
+				positionGroupPerCollateralGroup
+			);
+
+<span class="nc bnc" id="L179" title="All 2 branches missed.">			for (int j = 0; j &lt; collateralGroupArray.length; ++j)</span>
+			{
+<span class="nc" id="L181">				creditDebtGroupArray[i].addCollateralGroup (collateralGroupArray[j]);</span>
+			}
+		}
+
+<span class="nc" id="L185">		return creditDebtGroupArray;</span>
+	}
+
+	private static final Adiabat BookTopology (
+		final PositionGroupSpecification positionGroupSpecification,
+		final CollateralGroupSpecification collateralGroupSpecification,
+		final CreditDebtGroupSpecification creditDebtGroupSpecification,
+		final FundingGroupSpecification fundingGroupSpecification,
+		final int fundingGroupCount,
+		final String currency,
+		final String bank,
+		final String counterParty,
+		final int creditDebtGroupPerFundingGroup,
+		final int collateralGroupPerCreditDebtGroup,
+		final int positionGroupPerCollateralGroup)
+		throws Exception
+	{
+<span class="nc" id="L202">		Adiabat bookGraph = new Adiabat (</span>
+<span class="nc" id="L203">			StringUtil.GUID(),</span>
+			&quot;BOOKGRAPH&quot;
+		);
+
+<span class="nc" id="L207">		FundingGroup[] fundingGroupArray = new FundingGroup[fundingGroupCount];</span>
+
+<span class="nc bnc" id="L209" title="All 2 branches missed.">		for (int i = 0; i &lt; fundingGroupCount; ++i)</span>
+		{
+<span class="nc" id="L211">			fundingGroupArray[i] = new FundingGroup (</span>
+<span class="nc" id="L212">				StringUtil.GUID(),</span>
+<span class="nc" id="L213">				&quot;FUNDINGGROUP&quot; + ThreeDigitRandom(),</span>
+				fundingGroupSpecification
+			);
+
+<span class="nc" id="L217">			CreditDebtGroup[] creditDebtGroupArray = CreditDebtGroupArray (</span>
+				positionGroupSpecification,
+				collateralGroupSpecification,
+				creditDebtGroupSpecification,
+				creditDebtGroupPerFundingGroup,
+				currency,
+				bank,
+				counterParty,
+				collateralGroupPerCreditDebtGroup,
+				positionGroupPerCollateralGroup
+			);
+
+<span class="nc bnc" id="L229" title="All 2 branches missed.">			for (int j = 0; j &lt; creditDebtGroupArray.length; ++j)</span>
+			{
+<span class="nc" id="L231">				fundingGroupArray[i].addCreditDebtGroup (creditDebtGroupArray[j]);</span>
+			}
+		}
+
+<span class="nc bnc" id="L235" title="All 2 branches missed.">		for (int k = 0; k &lt; fundingGroupArray.length; ++k)</span>
+		{
+<span class="nc" id="L237">			bookGraph.addFundingGroup (fundingGroupArray[k]);</span>
+		}
+
+<span class="nc" id="L240">		return bookGraph;</span>
+	}
+
+	public static final void main (
+		final String[] args)
+		throws Exception
+	{
+<span class="nc" id="L247">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L249">		String bank = &quot;NOM&quot;;</span>
+<span class="nc" id="L250">		String currency = &quot;USD&quot;;</span>
+<span class="nc" id="L251">		String counterParty = &quot;BAC&quot;;</span>
+<span class="nc" id="L252">		int positionGroupPerCollateralGroup = 3;</span>
+<span class="nc" id="L253">		int collateralGroupPerCreditDebtGroup = 3;</span>
+<span class="nc" id="L254">		int creditDebtGroupCountPerFundingGroup = 3;</span>
+<span class="nc" id="L255">		int fundingGroupCount = 3;</span>
+
+<span class="nc" id="L257">		Adiabat bookGraph = BookTopology (</span>
+<span class="nc" id="L258">			PositionGroupSpecification.ZeroThreshold (</span>
+				&quot;POSITIONGROUPSPEC&quot;,
+				PositionReplicationScheme.ALBANESE_ANDERSEN_VERTEX,
+				BrokenDateScheme.SQUARE_ROOT_OF_TIME,
+				0.,
+				CloseOutScheme.ISDA_92
+			),
+			new CollateralGroupSpecification (
+<span class="nc" id="L266">				StringUtil.GUID(),</span>
+				&quot;COLLATERALGROUPSPEC&quot;,
+<span class="nc" id="L268">				OvernightLabel.Create (currency),</span>
+<span class="nc" id="L269">				CSALabel.ISDA (currency)</span>
+			),
+			new CreditDebtGroupSpecification (
+<span class="nc" id="L272">				StringUtil.GUID(),</span>
+				&quot;CREDITDEBTGROUPSPEC&quot;,
+<span class="nc" id="L274">				EntityHazardLabel.Standard (</span>
+					bank,
+					currency
+				),
+<span class="nc" id="L278">				EntityHazardLabel.Standard (</span>
+					counterParty,
+					currency
+				),
+<span class="nc" id="L282">				EntityRecoveryLabel.Senior (</span>
+					bank,
+					currency
+				),
+<span class="nc" id="L286">				EntityRecoveryLabel.Senior (</span>
+					counterParty,
+					currency
+				),
+<span class="nc" id="L290">				EntityRecoveryLabel.Subordinate (</span>
+					bank,
+					currency
+				),
+				true,
+				true
+			),
+			new FundingGroupSpecification (
+<span class="nc" id="L298">				StringUtil.GUID(),</span>
+				&quot;FUNDINGGROUPSPEC&quot;,
+<span class="nc" id="L300">				EntityFundingLabel.Senior (</span>
+					bank,
+					currency
+				),
+<span class="nc" id="L304">				EntityFundingLabel.Senior (</span>
+					counterParty,
+					currency
+				),
+<span class="nc" id="L308">				EntityFundingLabel.Subordinate (</span>
+					bank,
+					currency
+				)
+			),
+			fundingGroupCount,
+			currency,
+			bank,
+			counterParty,
+			creditDebtGroupCountPerFundingGroup,
+			collateralGroupPerCreditDebtGroup,
+			positionGroupPerCollateralGroup
+		);
+
+<span class="nc" id="L322">		AdiabatMarketParams bookMarketParams = bookGraph.marketParams();</span>
+
+<span class="nc" id="L324">		System.out.println (&quot;\t||----------------||&quot;);</span>
+
+<span class="nc" id="L326">		System.out.println (&quot;\t||   OVERNIGHT    ||&quot;);</span>
+
+<span class="nc" id="L328">		System.out.println (&quot;\t||----------------||&quot;);</span>
+
+		for (Map.Entry&lt;String, OvernightLabel&gt; overnightLabelEntry :
+<span class="nc bnc" id="L331" title="All 2 branches missed.">			bookMarketParams.overnightLabelMap().entrySet())</span>
+		{
+<span class="nc" id="L333">			System.out.println (&quot;\t|| &quot; + overnightLabelEntry.getValue().fullyQualifiedName() + &quot; ||&quot;);</span>
+<span class="nc" id="L334">		}</span>
+
+<span class="nc" id="L336">		System.out.println (&quot;\t||----------------||&quot;);</span>
+
+<span class="nc" id="L338">		System.out.println();</span>
+
+<span class="nc" id="L340">		System.out.println (&quot;\t||-----------||&quot;);</span>
+
+<span class="nc" id="L342">		System.out.println (&quot;\t||    CSA    ||&quot;);</span>
+
+<span class="nc" id="L344">		System.out.println (&quot;\t||-----------||&quot;);</span>
+
+<span class="nc bnc" id="L346" title="All 2 branches missed.">		for (Map.Entry&lt;String, CSALabel&gt; csaLabelEntry : bookMarketParams.csaLabelMap().entrySet())</span>
+		{
+<span class="nc" id="L348">			System.out.println (&quot;\t|| &quot; + csaLabelEntry.getValue().fullyQualifiedName() + &quot; ||&quot;);</span>
+<span class="nc" id="L349">		}</span>
+
+<span class="nc" id="L351">		System.out.println (&quot;\t||-----------||&quot;);</span>
+
+<span class="nc" id="L353">		System.out.println();</span>
+
+<span class="nc" id="L355">		System.out.println (&quot;\t||----------||&quot;);</span>
+
+<span class="nc" id="L357">		System.out.println (&quot;\t|| BANK HAZ ||&quot;);</span>
+
+<span class="nc" id="L359">		System.out.println (&quot;\t||----------||&quot;);</span>
+
+		for (Map.Entry&lt;String, EntityHazardLabel&gt; bankHazardLabelEntry :
+<span class="nc bnc" id="L362" title="All 2 branches missed.">			bookMarketParams.dealerHazardLabelMap().entrySet())</span>
+		{
+<span class="nc" id="L364">			System.out.println (&quot;\t|| &quot; + bankHazardLabelEntry.getValue().fullyQualifiedName() + &quot; ||&quot;);</span>
+<span class="nc" id="L365">		}</span>
+
+<span class="nc" id="L367">		System.out.println (&quot;\t||----------||&quot;);</span>
+
+<span class="nc" id="L369">		System.out.println();</span>
+
+<span class="nc" id="L371">		System.out.println (&quot;\t||----------||&quot;);</span>
+
+<span class="nc" id="L373">		System.out.println (&quot;\t|| CPTY HAZ ||&quot;);</span>
+
+<span class="nc" id="L375">		System.out.println (&quot;\t||----------||&quot;);</span>
+
+		for (Map.Entry&lt;String, EntityHazardLabel&gt; counterPartyHazardLabelEntry :
+<span class="nc bnc" id="L378" title="All 2 branches missed.">			bookMarketParams.clientHazardLabelMap().entrySet())</span>
+		{
+<span class="nc" id="L380">			System.out.println (&quot;\t|| &quot; + counterPartyHazardLabelEntry.getValue().fullyQualifiedName() + &quot; ||&quot;);</span>
+<span class="nc" id="L381">		}</span>
+
+<span class="nc" id="L383">		System.out.println (&quot;\t||----------||&quot;);</span>
+
+<span class="nc" id="L385">		System.out.println();</span>
+
+<span class="nc" id="L387">		System.out.println (&quot;\t||------------------||&quot;);</span>
+
+<span class="nc" id="L389">		System.out.println (&quot;\t|| BANK SR RECOVERY ||&quot;);</span>
+
+<span class="nc" id="L391">		System.out.println (&quot;\t||------------------||&quot;);</span>
+
+		for (Map.Entry&lt;String, EntityRecoveryLabel&gt; bankSeniorRecoveryLabelEntry :
+<span class="nc bnc" id="L394" title="All 2 branches missed.">			bookMarketParams.dealerSeniorRecoveryLabelMap().entrySet())</span>
+		{
+<span class="nc" id="L396">			System.out.println (&quot;\t|| &quot; + bankSeniorRecoveryLabelEntry.getValue().fullyQualifiedName() + &quot; ||&quot;);</span>
+<span class="nc" id="L397">		}</span>
+
+<span class="nc" id="L399">		System.out.println (&quot;\t||------------------||&quot;);</span>
+
+<span class="nc" id="L401">		System.out.println();</span>
+
+<span class="nc" id="L403">		System.out.println (&quot;\t||------------------||&quot;);</span>
+
+<span class="nc" id="L405">		System.out.println (&quot;\t||  CPTY RECOVERY   ||&quot;);</span>
+
+<span class="nc" id="L407">		System.out.println (&quot;\t||------------------||&quot;);</span>
+
+		for (Map.Entry&lt;String, EntityRecoveryLabel&gt; counterPartyRecoveryLabelEntry :
+<span class="nc bnc" id="L410" title="All 2 branches missed.">			bookMarketParams.clientRecoveryLabelMap().entrySet())</span>
+		{
+<span class="nc" id="L412">			System.out.println (&quot;\t|| &quot; + counterPartyRecoveryLabelEntry.getValue().fullyQualifiedName() + &quot; ||&quot;);</span>
+<span class="nc" id="L413">		}</span>
+
+<span class="nc" id="L415">		System.out.println (&quot;\t||------------------||&quot;);</span>
+
+<span class="nc" id="L417">		System.out.println();</span>
+
+<span class="nc" id="L419">		System.out.println (&quot;\t||-----------------------||&quot;);</span>
+
+<span class="nc" id="L421">		System.out.println (&quot;\t|| BANK SUBORD RECOVERY  ||&quot;);</span>
+
+<span class="nc" id="L423">		System.out.println (&quot;\t||-----------------------||&quot;);</span>
+
+		for (Map.Entry&lt;String, EntityRecoveryLabel&gt; bankSubordinateRecoveryLabelEntry :
+<span class="nc bnc" id="L426" title="All 2 branches missed.">			bookMarketParams.dealerSubordinateRecoveryLabelMap().entrySet())</span>
+		{
+<span class="nc" id="L428">			System.out.println (&quot;\t|| &quot; + bankSubordinateRecoveryLabelEntry.getValue().fullyQualifiedName() + &quot; ||&quot;);</span>
+<span class="nc" id="L429">		}</span>
+
+<span class="nc" id="L431">		System.out.println (&quot;\t||-----------------------||&quot;);</span>
+
+<span class="nc" id="L433">		System.out.println();</span>
+
+<span class="nc" id="L435">		System.out.println (&quot;\t||------------------||&quot;);</span>
+
+<span class="nc" id="L437">		System.out.println (&quot;\t|| BANK SR FUNDING  ||&quot;);</span>
+
+<span class="nc" id="L439">		System.out.println (&quot;\t||------------------||&quot;);</span>
+
+		for (Map.Entry&lt;String, EntityFundingLabel&gt; bankSeniorFundingLabelEntry :
+<span class="nc bnc" id="L442" title="All 2 branches missed.">			bookMarketParams.dealerSeniorFundingLabelMap().entrySet())</span>
+		{
+<span class="nc" id="L444">			System.out.println (&quot;\t|| &quot; + bankSeniorFundingLabelEntry.getValue().fullyQualifiedName() + &quot; ||&quot;);</span>
+<span class="nc" id="L445">		}</span>
+
+<span class="nc" id="L447">		System.out.println (&quot;\t||------------------||&quot;);</span>
+
+<span class="nc" id="L449">		System.out.println();</span>
+
+<span class="nc" id="L451">		System.out.println (&quot;\t||------------------||&quot;);</span>
+
+<span class="nc" id="L453">		System.out.println (&quot;\t||   CPTY FUNDING   ||&quot;);</span>
+
+<span class="nc" id="L455">		System.out.println (&quot;\t||------------------||&quot;);</span>
+
+		for (Map.Entry&lt;String, EntityFundingLabel&gt; counterPartyFundingLabelEntry :
+<span class="nc bnc" id="L458" title="All 2 branches missed.">			bookMarketParams.clientFundingLabelMap().entrySet())</span>
+		{
+<span class="nc" id="L460">			System.out.println (&quot;\t|| &quot; + counterPartyFundingLabelEntry.getValue().fullyQualifiedName() + &quot; ||&quot;);</span>
+<span class="nc" id="L461">		}</span>
+
+<span class="nc" id="L463">		System.out.println (&quot;\t||------------------||&quot;);</span>
+
+<span class="nc" id="L465">		System.out.println();</span>
+
+<span class="nc" id="L467">		System.out.println (&quot;\t||-----------------------||&quot;);</span>
+
+<span class="nc" id="L469">		System.out.println (&quot;\t||  BANK SUBORD FUNDING  ||&quot;);</span>
+
+<span class="nc" id="L471">		System.out.println (&quot;\t||-----------------------||&quot;);</span>
+
+		for (Map.Entry&lt;String, EntityFundingLabel&gt; bankSubordinateFundingLabelEntry :
+<span class="nc bnc" id="L474" title="All 2 branches missed.">			bookMarketParams.dealerSubordinateFundingLabelMap().entrySet())</span>
+		{
+<span class="nc" id="L476">			System.out.println (&quot;\t|| &quot; + bankSubordinateFundingLabelEntry.getValue().fullyQualifiedName() + &quot; ||&quot;);</span>
+<span class="nc" id="L477">		}</span>
+
+<span class="nc" id="L479">		System.out.println (&quot;\t||-----------------------||&quot;);</span>
+
+<span class="nc" id="L481">		System.out.println();</span>
+
+<span class="nc" id="L483">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L484">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

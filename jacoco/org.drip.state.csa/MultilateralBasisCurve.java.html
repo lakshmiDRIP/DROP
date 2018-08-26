@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MultilateralBasisCurve.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.state.csa</a> &gt; <span class="el_source">MultilateralBasisCurve.java</span></div><h1>MultilateralBasisCurve.java</h1><pre class="source lang-java linenums">
+package org.drip.state.csa;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * MultilateralBasisCurve implements the CSA Cash Rate Curve as a Basis over an Overnight Curve.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L55">public class MultilateralBasisCurve implements org.drip.state.csa.CashFlowEstimator</span>
+{
+	private static final int NUM_DF_QUADRATURES = 5;
+
+<span class="nc" id="L59">	private double _dblBasis = java.lang.Double.NaN;</span>
+<span class="nc" id="L60">	private org.drip.state.discount.MergedDiscountForwardCurve _mdfcOvernight = null;</span>
+
+	/**
+	 * Retrieve the Overnight Curve
+	 * 
+	 * @return The Overnight Curve
+	 */
+
+	public org.drip.state.discount.MergedDiscountForwardCurve overnightCurve()
+	{
+<span class="nc" id="L70">		return _mdfcOvernight;</span>
+	}
+
+	/**
+	 * Retrieve the Basis to the Overnight Curve
+	 * 
+	 * @return The Basis to the Overnight Curve
+	 */
+
+	public double basis()
+	{
+<span class="nc" id="L81">		return _dblBasis;</span>
+	}
+
+	@Override public org.drip.analytics.date.JulianDate epoch()
+	{
+<span class="nc" id="L86">		return _mdfcOvernight.epoch();</span>
+	}
+
+	@Override public double df (
+		final int iDate)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L93">		int iEpochDate = epoch().julian();</span>
+
+<span class="nc bnc" id="L95" title="All 2 branches missed.">		if (iEpochDate &gt;= iDate)</span>
+<span class="nc" id="L96">			throw new java.lang.Exception (&quot;MultilateralBasisCurve::df =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc" id="L98">		return _mdfcOvernight.df (iDate) * java.lang.Math.exp (_dblBasis * (iEpochDate - iDate) / 365.25);</span>
+	}
+
+	@Override public double df (
+		final org.drip.analytics.date.JulianDate dt)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L105" title="All 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;MultilateralBasisCurve::df =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc" id="L107">		return df (dt.julian());</span>
+	}
+
+	@Override public double df (
+		final java.lang.String strTenor)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L114">		return df (epoch().addTenor (strTenor));</span>
+	}
+
+	@Override public double effectiveDF (
+		final int iDate1,
+		final int iDate2)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L122" title="All 4 branches missed.">		if (epoch().julian() &gt; iDate1 || iDate1 &gt;= iDate2)</span>
+<span class="nc" id="L123">			throw new java.lang.Exception (&quot;MultilateralFlatForwardCurve::effectiveDF =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc" id="L125">		int iNumQuadratures = 0;</span>
+<span class="nc" id="L126">		double dblEffectiveDF = 0.;</span>
+<span class="nc" id="L127">		int iQuadratureWidth = (iDate2 - iDate1) / NUM_DF_QUADRATURES;</span>
+
+<span class="nc bnc" id="L129" title="All 2 branches missed.">		if (0 == iQuadratureWidth) iQuadratureWidth = 1;</span>
+
+<span class="nc bnc" id="L131" title="All 2 branches missed.">		for (int iDate = iDate1; iDate &lt;= iDate2; iDate += iQuadratureWidth) {</span>
+<span class="nc" id="L132">			++iNumQuadratures;</span>
+
+<span class="nc" id="L134">			dblEffectiveDF += (df (iDate) + df (iDate + iQuadratureWidth));</span>
+		}
+
+<span class="nc" id="L137">		return dblEffectiveDF / (2. * iNumQuadratures);</span>
+	}
+
+	@Override public double effectiveDF (
+		final org.drip.analytics.date.JulianDate dt1,
+		final org.drip.analytics.date.JulianDate dt2)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L145" title="All 4 branches missed.">		if (null == dt1 || null == dt2)</span>
+<span class="nc" id="L146">			throw new java.lang.Exception (&quot;MultilateralFlatForwardCurve::effectiveDF =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc" id="L148">		return effectiveDF (</span>
+<span class="nc" id="L149">			dt1.julian(),</span>
+<span class="nc" id="L150">			dt2.julian()</span>
+		);
+	}
+
+	@Override public double effectiveDF (
+		final java.lang.String strTenor1,
+		final java.lang.String strTenor2)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L159">		org.drip.analytics.date.JulianDate dtEpoch = epoch();</span>
+
+<span class="nc" id="L161">		return effectiveDF (</span>
+<span class="nc" id="L162">			dtEpoch.addTenor (strTenor1),</span>
+<span class="nc" id="L163">			dtEpoch.addTenor (strTenor2)</span>
+		);
+	}
+
+	@Override public double rate (
+		final int iDate)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L171">		int iEpochDate = epoch().julian();</span>
+
+<span class="nc bnc" id="L173" title="All 2 branches missed.">		if (iEpochDate &gt;= iDate)</span>
+<span class="nc" id="L174">			throw new java.lang.Exception (&quot;MultilateralFlatForwardCurve::rate =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc" id="L176">		return 365.25 * java.lang.Math.log (df (iEpochDate) / df (iDate)) / (iEpochDate - iDate);</span>
+	}
+
+	@Override public double rate (
+		final org.drip.analytics.date.JulianDate dt)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L183" title="All 2 branches missed.">		if (null == dt)</span>
+<span class="nc" id="L184">			throw new java.lang.Exception (&quot;MultilateralFlatForwardCurve::rate =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc" id="L186">		return rate (dt.julian());</span>
+	}
+
+	@Override public double rate (
+		final java.lang.String strTenor)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L193">		return rate (epoch().addTenor (strTenor));</span>
+	}
+
+	@Override public double rate (
+		final int iDate1,
+		final int iDate2)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L201">		int iEpochDate = epoch().julian();</span>
+
+<span class="nc bnc" id="L203" title="All 4 branches missed.">		if (iEpochDate &gt; iDate1 || iDate1 &gt;= iDate2)</span>
+<span class="nc" id="L204">			throw new java.lang.Exception (&quot;MultilateralFlatForwardCurve::rate =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc" id="L206">		return 365.25 * java.lang.Math.log (df (iDate1) / df (iDate2)) / (iDate2 - iDate1);</span>
+	}
+
+	@Override public double rate (
+		final org.drip.analytics.date.JulianDate dt1,
+		final org.drip.analytics.date.JulianDate dt2)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L214" title="All 4 branches missed.">		if (null == dt1 || null == dt2)</span>
+<span class="nc" id="L215">			throw new java.lang.Exception (&quot;MultilateralFlatForwardCurve::rate =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc" id="L217">		return rate (</span>
+<span class="nc" id="L218">			dt1.julian(),</span>
+<span class="nc" id="L219">			dt2.julian()</span>
+		);
+	}
+
+	@Override public double rate (
+		final java.lang.String strTenor1,
+		final java.lang.String strTenor2)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L228">		org.drip.analytics.date.JulianDate dtEpoch = epoch();</span>
+
+<span class="nc" id="L230">		return rate (</span>
+<span class="nc" id="L231">			dtEpoch.addTenor (strTenor1),</span>
+<span class="nc" id="L232">			dtEpoch.addTenor (strTenor2)</span>
+		);
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

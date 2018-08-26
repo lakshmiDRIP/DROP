@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BurgardKjaer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.xva.vertex</a> &gt; <span class="el_source">BurgardKjaer.java</span></div><h1>BurgardKjaer.java</h1><pre class="source lang-java linenums">
+package org.drip.xva.vertex;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * BurgardKjaer holds the Close Out Based Vertex Exposures of a Projected Path of a Simulation Run of a
+ *  Collateral Hypothecation Group using the Generalized Burgard Kjaer (2013) Scheme. The References are:
+ *  
+ *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
+ *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
+ *  
+ *  - Burgard, C., and M. Kjaer (2014): In the Balance, Risk, 24 (11) 72-75.
+ *  
+ *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk, Risk 20 (2) 86-90.
+ *  
+ *  - Li, B., and Y. Tang (2007): Quantitative Analysis, Derivatives Modeling, and Trading Strategies in the
+ *  	Presence of Counter-party Credit Risk for the Fixed Income Market, World Scientific Publishing,
+ *  	Singapore.
+ * 
+ *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
+ *  	21 (2) 97-102.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class BurgardKjaer extends org.drip.xva.hypothecation.CollateralGroupVertex
+{
+<span class="fc" id="L73">	private org.drip.xva.vertex.BurgardKjaerExposure _burgardKjaerVertexExposure = null;</span>
+<span class="fc" id="L74">	private org.drip.xva.hypothecation.CollateralGroupVertexCloseOut _collateralGroupCloseOut = null;</span>
+<span class="fc" id="L75">	private org.drip.xva.derivative.ReplicationPortfolioVertexDealer _dealerReplicationPortfolioVertex = null;</span>
+
+	/**
+	 * BurgardKjaer Constructor
+	 * 
+	 * @param anchorDate The Vertex Date Anchor
+	 * @param forward The Unrealized Forward Exposure
+	 * @param accrued The Accrued Exposure
+	 * @param burgardKjaerVertexExposure The Collateral Group Vertex
+	 * @param collateralGroupCloseOut The Collateral Group Vertex Close Out Instance
+	 * @param dealerReplicationPortfolioVertex The Dealer Replication Portfolio Vertex Instance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public BurgardKjaer (
+		final org.drip.analytics.date.JulianDate anchorDate,
+		final double forward,
+		final double accrued,
+		final org.drip.xva.vertex.BurgardKjaerExposure burgardKjaerVertexExposure,
+		final org.drip.xva.hypothecation.CollateralGroupVertexCloseOut collateralGroupCloseOut,
+		final org.drip.xva.derivative.ReplicationPortfolioVertexDealer dealerReplicationPortfolioVertex)
+		throws java.lang.Exception
+	{
+<span class="fc" id="L99">		super (</span>
+			anchorDate,
+			forward,
+			accrued,
+<span class="fc" id="L103">			burgardKjaerVertexExposure.variationMarginPosting()</span>
+		);
+
+<span class="pc bpc" id="L106" title="3 of 6 branches missed.">		if (null == (_burgardKjaerVertexExposure = burgardKjaerVertexExposure) ||</span>
+			null == (_collateralGroupCloseOut = collateralGroupCloseOut) ||
+			null == (_dealerReplicationPortfolioVertex = dealerReplicationPortfolioVertex))
+		{
+<span class="nc" id="L110">			throw new java.lang.Exception (&quot;BurgardKjaer Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="fc" id="L112">	}</span>
+
+	/**
+	 * Retrieve the Close Out on Dealer Default
+	 * 
+	 * @return Close Out on Dealer Default
+	 */
+
+	public double dealerDefaultCloseOut()
+	{
+<span class="nc" id="L122">		return _collateralGroupCloseOut.dealer();</span>
+	}
+
+	/**
+	 * Retrieve the Close Out on Client Default
+	 * 
+	 * @return Close Out on Client Default
+	 */
+
+	public double clientDefaultCloseOut()
+	{
+<span class="nc" id="L133">		return _collateralGroupCloseOut.client();</span>
+	}
+
+	@Override public double credit()
+	{
+<span class="nc" id="L138">		return _burgardKjaerVertexExposure.credit();</span>
+	}
+
+	@Override public double debt()
+	{
+<span class="nc" id="L143">		return _burgardKjaerVertexExposure.debt();</span>
+	}
+
+	@Override public double funding()
+	{
+<span class="nc" id="L148">		return _burgardKjaerVertexExposure.funding();</span>
+	}
+
+	/**
+	 * Retrieve the Hedge Error
+	 * 
+	 * @return The Hedge Error
+	 */
+
+	public double hedgeError()
+	{
+<span class="nc" id="L159">		return _burgardKjaerVertexExposure.funding();</span>
+	}
+
+	/**
+	 * Retrieve the Dealer Replication Potrfolio Instance
+	 * 
+	 * @return The Dealer Replication Potrfolio Instance
+	 */
+
+	public org.drip.xva.derivative.ReplicationPortfolioVertexDealer dealerReplicationPortfolio()
+	{
+<span class="fc" id="L170">		return _dealerReplicationPortfolioVertex;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

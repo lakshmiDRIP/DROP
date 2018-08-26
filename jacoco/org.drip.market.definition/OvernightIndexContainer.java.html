@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OvernightIndexContainer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.market.definition</a> &gt; <span class="el_source">OvernightIndexContainer.java</span></div><h1>OvernightIndexContainer.java</h1><pre class="source lang-java linenums">
+package org.drip.market.definition;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * OvernightIndexContainer holds the definitions of the overnight index definitions corresponding to
+ *  different jurisdictions.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L60">public class OvernightIndexContainer {</span>
+	private static
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.market.definition.OvernightIndex&gt;
+<span class="fc" id="L63">			_mapNamedOvernightIndex = null;</span>
+	private static
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.market.definition.OvernightIndex&gt;
+<span class="fc" id="L66">			_mapJurisdictionOvernightIndex = null;</span>
+
+	/**
+	 * Initialize the Overnight Index Container with the Overnight Indexes
+	 * 
+	 * @return TRUE - The Overnight Index Container successfully initialized with the indexes
+	 */
+
+	public static final boolean Init()
+	{
+<span class="fc bfc" id="L76" title="All 2 branches covered.">		if (null != _mapNamedOvernightIndex) return true;</span>
+
+<span class="fc" id="L78">		_mapNamedOvernightIndex = new</span>
+			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.market.definition.OvernightIndex&gt;();
+
+<span class="fc" id="L81">		_mapJurisdictionOvernightIndex = new</span>
+			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.market.definition.OvernightIndex&gt;();
+
+		try {
+<span class="fc" id="L85">			org.drip.market.definition.OvernightIndex oiAUD = new org.drip.market.definition.OvernightIndex</span>
+				(&quot;AUD-RBA ON AONIA&quot;, &quot;AONIA&quot;, &quot;AUD&quot;, &quot;Act/365&quot;, &quot;AUD&quot;, &quot;ON&quot;, 0,
+					org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC);
+
+<span class="fc" id="L89">			_mapJurisdictionOvernightIndex.put (&quot;AUD&quot;, oiAUD);</span>
+
+<span class="fc" id="L91">			_mapNamedOvernightIndex.put (&quot;AUD-AONIA&quot;, oiAUD);</span>
+
+<span class="fc" id="L93">			_mapNamedOvernightIndex.put (&quot;AUD-RBA ON AONIA&quot;, oiAUD);</span>
+
+<span class="fc" id="L95">			org.drip.market.definition.OvernightIndex oiBRL = new org.drip.market.definition.OvernightIndex</span>
+				(&quot;BRL-CETIP&quot;, &quot;CETIP&quot;, &quot;BRL&quot;, &quot;Bus/252&quot;, &quot;BRL&quot;, &quot;ON&quot;, 1,
+					org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC);
+
+<span class="fc" id="L99">			_mapJurisdictionOvernightIndex.put (&quot;BRL&quot;, oiBRL);</span>
+
+<span class="fc" id="L101">			_mapNamedOvernightIndex.put (&quot;BRL-CETIP&quot;, oiBRL);</span>
+
+<span class="fc" id="L103">			_mapNamedOvernightIndex.put (&quot;BRL-DI&quot;, oiBRL);</span>
+
+<span class="fc" id="L105">			org.drip.market.definition.OvernightIndex oiCAD = new org.drip.market.definition.OvernightIndex</span>
+				(&quot;CAD-CORRA&quot;, &quot;CORRA&quot;, &quot;CAD&quot;, &quot;Act/365&quot;, &quot;CAD&quot;, &quot;ON&quot;, 1,
+					org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC);
+
+<span class="fc" id="L109">			_mapJurisdictionOvernightIndex.put (&quot;CAD&quot;, oiCAD);</span>
+
+<span class="fc" id="L111">			_mapNamedOvernightIndex.put (&quot;CAD-CORRA&quot;, oiCAD);</span>
+
+<span class="fc" id="L113">			org.drip.market.definition.OvernightIndex oiCHF = new org.drip.market.definition.OvernightIndex</span>
+				(&quot;CHF-TOIS&quot;, &quot;TOIS&quot;, &quot;CHF&quot;, &quot;Act/360&quot;, &quot;CHF&quot;, &quot;TN&quot;, -1,
+					org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC);
+
+<span class="fc" id="L117">			_mapJurisdictionOvernightIndex.put (&quot;CHF&quot;, oiCHF);</span>
+
+<span class="fc" id="L119">			_mapNamedOvernightIndex.put (&quot;CHF-TOIS&quot;, oiCHF);</span>
+
+<span class="fc" id="L121">			org.drip.market.definition.OvernightIndex oiCZK = new org.drip.market.definition.OvernightIndex</span>
+				(&quot;CZK-CZEONIA&quot;, &quot;CZEONIA&quot;, &quot;CZK&quot;, &quot;Act/360&quot;, &quot;CZK&quot;, &quot;ON&quot;, 0,
+					org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC);
+
+<span class="fc" id="L125">			_mapJurisdictionOvernightIndex.put (&quot;CZK&quot;, oiCZK);</span>
+
+<span class="fc" id="L127">			_mapNamedOvernightIndex.put (&quot;CZK-CZEONIA&quot;, oiCZK);</span>
+
+<span class="fc" id="L129">			org.drip.market.definition.OvernightIndex oiDKK = new org.drip.market.definition.OvernightIndex</span>
+				(&quot;DKK-DNB TN&quot;, &quot;DNBTN&quot;, &quot;DKK&quot;, &quot;Act/360&quot;, &quot;DKK&quot;, &quot;TN&quot;, -1,
+					org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC);
+
+<span class="fc" id="L133">			_mapJurisdictionOvernightIndex.put (&quot;DKK&quot;, oiDKK);</span>
+
+<span class="fc" id="L135">			_mapNamedOvernightIndex.put (&quot;DKK-DNBTN&quot;, oiDKK);</span>
+
+<span class="fc" id="L137">			_mapNamedOvernightIndex.put (&quot;DKK-DNB TN&quot;, oiDKK);</span>
+
+<span class="fc" id="L139">			org.drip.market.definition.OvernightIndex oiEUR = new org.drip.market.definition.OvernightIndex</span>
+				(&quot;EUR-EONIA&quot;, &quot;EONIA&quot;, &quot;EUR&quot;, &quot;Act/360&quot;, &quot;EUR&quot;, &quot;ON&quot;, 0,
+					org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC);
+
+<span class="fc" id="L143">			_mapJurisdictionOvernightIndex.put (&quot;EUR&quot;, oiEUR);</span>
+
+<span class="fc" id="L145">			_mapNamedOvernightIndex.put (&quot;EUR-EONIA&quot;, oiEUR);</span>
+
+<span class="fc" id="L147">			org.drip.market.definition.OvernightIndex oiGBP = new org.drip.market.definition.OvernightIndex</span>
+				(&quot;GBP-SONIA&quot;, &quot;SONIA&quot;, &quot;GBP&quot;, &quot;Act/365&quot;, &quot;GBP&quot;, &quot;ON&quot;, 0,
+					org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC);
+
+<span class="fc" id="L151">			_mapJurisdictionOvernightIndex.put (&quot;GBP&quot;, oiGBP);</span>
+
+<span class="fc" id="L153">			_mapNamedOvernightIndex.put (&quot;GBP-SONIA&quot;, oiGBP);</span>
+
+<span class="fc" id="L155">			org.drip.market.definition.OvernightIndex oiHKD = new org.drip.market.definition.OvernightIndex</span>
+				(&quot;HKD-HONIX&quot;, &quot;HONIX&quot;, &quot;HKD&quot;, &quot;Act/365&quot;, &quot;HKD&quot;, &quot;ON&quot;, 0,
+					org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC);
+
+<span class="fc" id="L159">			_mapJurisdictionOvernightIndex.put (&quot;HKD&quot;, oiHKD);</span>
+
+<span class="fc" id="L161">			_mapNamedOvernightIndex.put (&quot;HKD-HONIX&quot;, oiHKD);</span>
+
+<span class="fc" id="L163">			org.drip.market.definition.OvernightIndex oiHUF = new org.drip.market.definition.OvernightIndex</span>
+				(&quot;HUF-HUFONIA&quot;, &quot;HUFONIA&quot;, &quot;HUF&quot;, &quot;Act/360&quot;, &quot;HUF&quot;, &quot;ON&quot;, 0,
+					org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC);
+
+<span class="fc" id="L167">			_mapJurisdictionOvernightIndex.put (&quot;HUF&quot;, oiHUF);</span>
+
+<span class="fc" id="L169">			_mapNamedOvernightIndex.put (&quot;HUF-HUFONIA&quot;, oiHUF);</span>
+
+<span class="fc" id="L171">			org.drip.market.definition.OvernightIndex oiINR = new org.drip.market.definition.OvernightIndex</span>
+				(&quot;INR-ON MIBOR&quot;, &quot;MIBOR&quot;, &quot;INR&quot;, &quot;Act/365&quot;, &quot;INR&quot;, &quot;ON&quot;, 0,
+					org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC);
+
+<span class="fc" id="L175">			_mapJurisdictionOvernightIndex.put (&quot;INR&quot;, oiINR);</span>
+
+<span class="fc" id="L177">			_mapNamedOvernightIndex.put (&quot;INR-MIBOR&quot;, oiINR);</span>
+
+<span class="fc" id="L179">			_mapNamedOvernightIndex.put (&quot;INR-ON MIBOR&quot;, oiINR);</span>
+
+<span class="fc" id="L181">			org.drip.market.definition.OvernightIndex oiINR2 = new org.drip.market.definition.OvernightIndex</span>
+				(&quot;INR-MITOR&quot;, &quot;MITOR&quot;, &quot;INR&quot;, &quot;Act/365&quot;, &quot;INR&quot;, &quot;TN&quot;, 0,
+					org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC);
+
+<span class="fc" id="L185">			_mapJurisdictionOvernightIndex.put (&quot;INR2&quot;, oiINR2);</span>
+
+<span class="fc" id="L187">			_mapNamedOvernightIndex.put (&quot;INR-MITOR&quot;, oiINR2);</span>
+
+<span class="fc" id="L189">			org.drip.market.definition.OvernightIndex oiJPY = new org.drip.market.definition.OvernightIndex</span>
+				(&quot;JPY-TONAR&quot;, &quot;TONAR&quot;, &quot;JPY&quot;, &quot;Act/365&quot;, &quot;JPY&quot;, &quot;ON&quot;, 1,
+					org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC);
+
+<span class="fc" id="L193">			_mapJurisdictionOvernightIndex.put (&quot;JPY&quot;, oiJPY);</span>
+
+<span class="fc" id="L195">			_mapNamedOvernightIndex.put (&quot;JPY-TONAR&quot;, oiJPY);</span>
+
+<span class="fc" id="L197">			org.drip.market.definition.OvernightIndex oiNZD = new org.drip.market.definition.OvernightIndex</span>
+				(&quot;NZD-NZIONA&quot;, &quot;NZIONA&quot;, &quot;NZD&quot;, &quot;Act/365&quot;, &quot;NZD&quot;, &quot;ON&quot;, 0,
+					org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC);
+
+<span class="fc" id="L201">			_mapJurisdictionOvernightIndex.put (&quot;NZD&quot;, oiNZD);</span>
+
+<span class="fc" id="L203">			_mapNamedOvernightIndex.put (&quot;NZD-NZIONA&quot;, oiNZD);</span>
+
+<span class="fc" id="L205">			org.drip.market.definition.OvernightIndex oiPLN = new org.drip.market.definition.OvernightIndex</span>
+				(&quot;PLN-POLONIA&quot;, &quot;POLONIA&quot;, &quot;PLN&quot;, &quot;Act/365&quot;, &quot;PLN&quot;, &quot;ON&quot;, 0,
+					org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC);
+
+<span class="fc" id="L209">			_mapJurisdictionOvernightIndex.put (&quot;PLN&quot;, oiPLN);</span>
+
+<span class="fc" id="L211">			_mapNamedOvernightIndex.put (&quot;PLN-POLONIA&quot;, oiPLN);</span>
+
+<span class="fc" id="L213">			org.drip.market.definition.OvernightIndex oiSEK = new org.drip.market.definition.OvernightIndex</span>
+				(&quot;SEK-SIOR TN STIBOR&quot;, &quot;STIBOR&quot;, &quot;SEK&quot;, &quot;Act/360&quot;, &quot;SEK&quot;, &quot;ON&quot;, -1,
+					org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC);
+
+<span class="fc" id="L217">			_mapJurisdictionOvernightIndex.put (&quot;SEK&quot;, oiSEK);</span>
+
+<span class="fc" id="L219">			_mapNamedOvernightIndex.put (&quot;SEK-SIOR&quot;, oiSEK);</span>
+
+<span class="fc" id="L221">			_mapNamedOvernightIndex.put (&quot;SEK-SIOR TN STIBOR&quot;, oiSEK);</span>
+
+<span class="fc" id="L223">			_mapNamedOvernightIndex.put (&quot;SEK-STIBOR&quot;, oiSEK);</span>
+
+<span class="fc" id="L225">			org.drip.market.definition.OvernightIndex oiSGD = new org.drip.market.definition.OvernightIndex</span>
+				(&quot;SGD-SONAR&quot;, &quot;SONAR&quot;, &quot;SGD&quot;, &quot;Act/365&quot;, &quot;SGD&quot;, &quot;ON&quot;, 0,
+					org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC);
+
+<span class="fc" id="L229">			_mapJurisdictionOvernightIndex.put (&quot;SGD&quot;, oiSGD);</span>
+
+<span class="fc" id="L231">			_mapNamedOvernightIndex.put (&quot;SGD-SONAR&quot;, oiSGD);</span>
+
+<span class="fc" id="L233">			org.drip.market.definition.OvernightIndex oiUSD = new org.drip.market.definition.OvernightIndex</span>
+				(&quot;USD-Fed Fund&quot;, &quot;FedFund&quot;, &quot;USD&quot;, &quot;Act/360&quot;, &quot;USD&quot;, &quot;ON&quot;, 1,
+					org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_ARITHMETIC);
+
+<span class="fc" id="L237">			_mapJurisdictionOvernightIndex.put (&quot;USD&quot;, oiUSD);</span>
+
+<span class="fc" id="L239">			_mapNamedOvernightIndex.put (&quot;USD-Fed Fund&quot;, oiUSD);</span>
+
+<span class="fc" id="L241">			_mapNamedOvernightIndex.put (&quot;USD-FedFund&quot;, oiUSD);</span>
+
+<span class="fc" id="L243">			org.drip.market.definition.OvernightIndex oiZAR = new org.drip.market.definition.OvernightIndex</span>
+				(&quot;ZAR-SAFEX ON Dep Rate&quot;, &quot;SAFEX&quot;, &quot;ZAR&quot;, &quot;Act/365&quot;, &quot;ZAR&quot;, &quot;ON&quot;, 0,
+					org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC);
+
+<span class="fc" id="L247">			_mapJurisdictionOvernightIndex.put (&quot;ZAR&quot;, oiZAR);</span>
+
+<span class="fc" id="L249">			_mapNamedOvernightIndex.put (&quot;ZAR-SAFEX&quot;, oiZAR);</span>
+
+<span class="fc" id="L251">			_mapNamedOvernightIndex.put (&quot;ZAR-SAFEX ON Dep Rate&quot;, oiZAR);</span>
+
+<span class="fc" id="L253">			org.drip.market.definition.OvernightIndex oiZAR2 = new org.drip.market.definition.OvernightIndex</span>
+				(&quot;ZAR-SAONIA&quot;, &quot;SAONIA&quot;, &quot;ZAR&quot;, &quot;Act/365&quot;, &quot;ZAR&quot;, &quot;ON&quot;, 0,
+					org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC);
+
+<span class="fc" id="L257">			_mapJurisdictionOvernightIndex.put (&quot;ZAR2&quot;, oiZAR2);</span>
+
+<span class="fc" id="L259">			_mapNamedOvernightIndex.put (&quot;ZAR-SAONIA&quot;, oiZAR2);</span>
+<span class="nc" id="L260">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L261">			e.printStackTrace();</span>
+
+<span class="nc" id="L263">			return false;</span>
+<span class="fc" id="L264">		}</span>
+
+<span class="fc" id="L266">		return true;</span>
+	}
+
+	/**
+	 * Retrieve the Overnight Index from the Jurisdiction Name
+	 * 
+	 * @param strName The Overnight Index Jurisdiction Name
+	 * 
+	 * @return The Overnight Index
+	 */
+
+	public static final org.drip.market.definition.OvernightIndex IndexFromJurisdiction (
+		final java.lang.String strName)
+	{
+<span class="pc bpc" id="L280" title="1 of 2 branches missed.">		return _mapJurisdictionOvernightIndex.containsKey (strName) ? _mapJurisdictionOvernightIndex.get</span>
+<span class="pc" id="L281">			(strName) : null;</span>
+	}
+
+	/**
+	 * Retrieve the Overnight Index from the Index Name
+	 * 
+	 * @param strName The Overnight Index Index Name
+	 * 
+	 * @return The Overnight Index
+	 */
+
+	public static final org.drip.market.definition.OvernightIndex IndexFromName (
+		final java.lang.String strName)
+	{
+<span class="nc bnc" id="L295" title="All 2 branches missed.">		return _mapNamedOvernightIndex.containsKey (strName) ? _mapNamedOvernightIndex.get (strName) : null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

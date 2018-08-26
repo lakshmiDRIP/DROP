@@ -1,15 +1,17 @@
 
 package org.drip.sample.simm20estimates;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
+import org.drip.analytics.support.CaseInsensitiveHashMap;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.simm20.margin.EQBucketNetSensitivity;
-import org.drip.simm20.margin.EQNetSensitivity;
-import org.drip.simm20.parameters.EQSensitivitySettings;
-import org.drip.simm20.product.EQSensitivity;
+import org.drip.simm20.margin.BucketAggregate;
+import org.drip.simm20.margin.RiskClassAggregate;
+import org.drip.simm20.parameters.RiskClassSensitivitySettings;
+import org.drip.simm20.product.BucketSensitivity;
+import org.drip.simm20.product.RiskClassSensitivity;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -82,26 +84,253 @@ import org.drip.simm20.product.EQSensitivity;
 public class EQDeltaMargin
 {
 
-	private static final Map<Integer, Double> TenorSensitivityMap (
-		final double[] tenorSensitivities)
-		throws Exception
+	private static final void AddBucketRiskFactorSensitivity (
+		final Map<Integer, Map<String, Double>> bucketRiskFactorSensitivityMap,
+		final int bucketIndex,
+		final double notional,
+		final String[] equityArray)
 	{
-		Map<Integer, Double> oisTenorSensitivities = new HashMap<Integer, Double>();
+		Map<String, Double> riskFactorSensitivityMap = new CaseInsensitiveHashMap<Double>();
 
-		oisTenorSensitivities.put (
-			-1,
-			tenorSensitivities[0]
-		);
-
-		for (int bucketIndex = 1; bucketIndex < tenorSensitivities.length; ++bucketIndex)
+		for (String equity : equityArray)
 		{
-			oisTenorSensitivities.put (
-				bucketIndex,
-				tenorSensitivities[bucketIndex]
+			riskFactorSensitivityMap.put (
+				equity,
+				notional * (Math.random() - 0.5)
 			);
 		}
 
-		return oisTenorSensitivities;
+		bucketRiskFactorSensitivityMap.put (
+			bucketIndex,
+			riskFactorSensitivityMap
+		);
+	}
+
+	private static final Map<Integer, Map<String, Double>> BucketRiskFactorSensitivityMap (
+		final double notional)
+		throws Exception
+	{
+		Map<Integer, Map<String, Double>> bucketRiskFactorSensitivityMap =
+			new TreeMap<Integer, Map<String, Double>>();
+
+		AddBucketRiskFactorSensitivity (
+			bucketRiskFactorSensitivityMap,
+			-1,
+			notional,
+			new String[]
+			{
+				"BOEING  ",
+				"LOCKHEED",
+				"RAND    ",
+				"RAYTHEON",
+			}
+		);
+
+		AddBucketRiskFactorSensitivity (
+			bucketRiskFactorSensitivityMap,
+			1,
+			notional,
+			new String[]
+			{
+				"ADP     ",
+				"PSEANDG ",
+				"STAPLES ",
+				"U-HAUL  ",
+			}
+		);
+
+		AddBucketRiskFactorSensitivity (
+			bucketRiskFactorSensitivityMap,
+			2,
+			notional,
+			new String[]
+			{
+				"CISCO   ",
+				"DEERE   ",
+				"HALIBTN ",
+				"VERIZON ",
+			}
+		);
+
+		AddBucketRiskFactorSensitivity (
+			bucketRiskFactorSensitivityMap,
+			3,
+			notional,
+			new String[]
+			{
+				"DUKE    ",
+				"MONSANTO",
+				"MMM     ",
+				"VEDANTA ",
+			}
+		);
+
+		AddBucketRiskFactorSensitivity (
+			bucketRiskFactorSensitivityMap,
+			4,
+			notional,
+			new String[]
+			{
+				"AMAZON  ",
+				"GOLDMAN ",
+				"MORGAN  ",
+				"REMAX   ",
+			}
+		);
+
+		AddBucketRiskFactorSensitivity (
+			bucketRiskFactorSensitivityMap,
+			5,
+			notional,
+			new String[]
+			{
+				"ALDI    ",
+				"INFOSYS ",
+				"OLLA    ",
+				"RELIANCE",
+			}
+		);
+
+		AddBucketRiskFactorSensitivity (
+			bucketRiskFactorSensitivityMap,
+			6,
+			notional,
+			new String[]
+			{
+				"GCC     ",
+				"NOKIA   ",
+				"SIEMENS ",
+				"VODAFONE",
+			}
+		);
+
+		AddBucketRiskFactorSensitivity (
+			bucketRiskFactorSensitivityMap,
+			7,
+			notional,
+			new String[]
+			{
+				"ADIDAS  ",
+				"BAYER   ",
+				"BILLERTN",
+				"DE BEER ",
+			}
+		);
+
+		AddBucketRiskFactorSensitivity (
+			bucketRiskFactorSensitivityMap,
+			8,
+			notional,
+			new String[]
+			{
+				"NOKIA   ",
+				"NOMURA  ",
+				"QATARSOV",
+				"SOTHEBY ",
+			}
+		);
+
+		AddBucketRiskFactorSensitivity (
+			bucketRiskFactorSensitivityMap,
+			9,
+			notional,
+			new String[]
+			{
+				"AUTODESK",
+				"CALYPSO ",
+				"NUMERIX ",
+				"WEBLOGIC",
+			}
+		);
+
+		AddBucketRiskFactorSensitivity (
+			bucketRiskFactorSensitivityMap,
+			10,
+			notional,
+			new String[]
+			{
+				"COGNIZAN",
+				"TATAMOTO",
+				"TOBLERON",
+				"TVS     ",
+			}
+		);
+
+		AddBucketRiskFactorSensitivity (
+			bucketRiskFactorSensitivityMap,
+			11,
+			notional,
+			new String[]
+			{
+				"DJIA    ",
+				"LEHMAN  ",
+				"RUSSELL ",
+				"SANDP   ",
+			}
+		);
+
+		AddBucketRiskFactorSensitivity (
+			bucketRiskFactorSensitivityMap,
+			12,
+			notional,
+			new String[]
+			{
+				"CBOE    ",
+				"CITI    ",
+				"RUSSELL ",
+				"VIX     ",
+			}
+		);
+
+		return bucketRiskFactorSensitivityMap;
+	}
+
+	private static final void DisplayBucketRiskFactorSensitivity (
+		final Map<Integer, Map<String, Double>> bucketRiskFactorSensitivityMap)
+		throws Exception
+	{
+		System.out.println ("\t|--------------------------||");
+
+		System.out.println ("\t|    RISK FACTOR DELTA     ||");
+
+		System.out.println ("\t|--------------------------||");
+
+		System.out.println ("\t|  L -> R:                 ||");
+
+		System.out.println ("\t|    - Ticker              ||");
+
+		System.out.println ("\t|    - Bucket              ||");
+
+		System.out.println ("\t|    - Delta               ||");
+
+		System.out.println ("\t|--------------------------||");
+
+		for (Map.Entry<Integer, Map<String, Double>> bucketSensitivityMapEntry :
+			bucketRiskFactorSensitivityMap.entrySet())
+		{
+			int bucketIndex = bucketSensitivityMapEntry.getKey();
+
+			Map<String, Double> riskFactorSensitivityMap = bucketSensitivityMapEntry.getValue();
+
+			for (Map.Entry<String, Double> riskFactorSensitivityMapEntry :
+				riskFactorSensitivityMap.entrySet())
+			{
+				String currency = riskFactorSensitivityMapEntry.getKey();
+
+				double riskFactorSensitivity = riskFactorSensitivityMapEntry.getValue();
+
+				System.out.println (
+					"\t| " +
+					currency + " => " +
+					FormatUtil.FormatDouble (bucketIndex, 2, 0, 1.) + " | " +
+					FormatUtil.FormatDouble (riskFactorSensitivity, 2, 2, 1.) + " ||"
+				);
+			}
+		}
+
+		System.out.println ("\t|--------------------------||");
+
+		System.out.println();
 	}
 
 	public static final void main (
@@ -110,79 +339,91 @@ public class EQDeltaMargin
 	{
 		EnvManager.InitEnv ("");
 
-		double notionalScaler = 100.;
+		double notional = 100.;
 
-		Map<Integer, Double> bucketSensitivityMap = TenorSensitivityMap (
-			new double[]
-			{
-				notionalScaler * (Math.random() - 0.5),
-				notionalScaler * (Math.random() - 0.5),
-				notionalScaler * (Math.random() - 0.5),
-				notionalScaler * (Math.random() - 0.5),
-				notionalScaler * (Math.random() - 0.5),
-				notionalScaler * (Math.random() - 0.5),
-				notionalScaler * (Math.random() - 0.5),
-				notionalScaler * (Math.random() - 0.5),
-				notionalScaler * (Math.random() - 0.5),
-				notionalScaler * (Math.random() - 0.5),
-				notionalScaler * (Math.random() - 0.5),
-				notionalScaler * (Math.random() - 0.5),
-				notionalScaler * (Math.random() - 0.5)
-			}
-		);
+		RiskClassSensitivitySettings riskClassSensitivitySettings = RiskClassSensitivitySettings.ISDA_EQ();
 
-		EQSensitivitySettings equitySensitivitySettings = EQSensitivitySettings.ISDA();
+		Map<Integer, Map<String, Double>> bucketRiskFactorSensitivityMap = BucketRiskFactorSensitivityMap (notional);
 
-		EQNetSensitivity equityNetSensitivity = new EQSensitivity (bucketSensitivityMap).deltaMargin
-			(equitySensitivitySettings);
+		DisplayBucketRiskFactorSensitivity (bucketRiskFactorSensitivityMap);
 
-		System.out.println ("\t||---------------------------------------------||");
+		Map<Integer, BucketSensitivity> bucketSensitivityMap = new TreeMap<Integer, BucketSensitivity>();
 
-		System.out.println ("\t||        EQUITY BUCKET NET SENSITIVITY        ||");
+		System.out.println ("\t|------------------------||");
 
-		System.out.println ("\t||---------------------------------------------||");
+		System.out.println ("\t|    BUCKET AGGREGATE    ||");
 
-		System.out.println ("\t||                                             ||");
+		System.out.println ("\t|------------------------||");
 
-		System.out.println ("\t||    L -> R:                                  ||");
+		System.out.println ("\t|  L -> R:               ||");
 
-		System.out.println ("\t||          - Bucket Index                     ||");
+		System.out.println ("\t|    - Bucket Index      ||");
 
-		System.out.println ("\t||          - Weighted Net Sensitivity         ||");
+		System.out.println ("\t|    - Bucket Margin     ||");
 
-		System.out.println ("\t||          - Concentration Factor             ||");
+		System.out.println ("\t|    - Bucket Delta      ||");
 
-		System.out.println ("\t||          - Weighted/Adjusted Sensitivity    ||");
+		System.out.println ("\t|------------------------||");
 
-		System.out.println ("\t||          - Margin Variance                  ||");
-
-		System.out.println ("\t||---------------------------------------------||");
-
-		for (Map.Entry<Integer, EQBucketNetSensitivity> netSensitivityEntry :
-			equityNetSensitivity.bucketMap().entrySet())
+		for (Map.Entry<Integer, Map<String, Double>> bucketSensitivityMapEntry :
+			bucketRiskFactorSensitivityMap.entrySet())
 		{
-			System.out.println (
-				"\t|| " +
-				FormatUtil.FormatDouble (netSensitivityEntry.getKey(), 2, 0, 1.) + " | " +
-				FormatUtil.FormatDouble (netSensitivityEntry.getValue().weighted(), 4, 0, 1.) + " | " +
-				FormatUtil.FormatDouble (netSensitivityEntry.getValue().concentrationFactor(), 2, 3, 1.) + " | " +
-				FormatUtil.FormatDouble (netSensitivityEntry.getValue().weightedAndAdjusted(), 5, 0, 1.) + " | " +
-				FormatUtil.FormatDouble (netSensitivityEntry.getValue().marginVariance(), 9, 0, 1.) + " ||"
+			int bucketIndex = bucketSensitivityMapEntry.getKey();
+
+			BucketSensitivity bucketSensitivity = new BucketSensitivity
+				(bucketSensitivityMapEntry.getValue());
+
+			bucketSensitivityMap.put (
+				bucketIndex,
+				bucketSensitivity
+			);
+
+			BucketAggregate bucketDigest = bucketSensitivity.aggregate
+				(riskClassSensitivitySettings.bucketSensitivitySettingsMap().get (bucketIndex));
+
+			System.out.println ("\t| " +
+				FormatUtil.FormatDouble (bucketIndex, 2, 0, 1.) + " => " +
+				FormatUtil.FormatDouble (Math.sqrt (bucketDigest.weightedSensitivityVariance()), 5, 0, 1.) + " | " +
+				FormatUtil.FormatDouble (bucketDigest.cumulativeRiskFactorSensitivity(), 5, 0, 1.) + " ||"
 			);
 		}
 
-		System.out.println ("\t||---------------------------------------------||");
+		System.out.println ("\t|------------------------||");
 
 		System.out.println();
 
-		System.out.println ("\t||---------------------------------||");
+		RiskClassAggregate riskClassAggregate = new RiskClassSensitivity (bucketSensitivityMap).aggregate
+			(riskClassSensitivitySettings);
 
-		System.out.println (
-			"\t|| Equity Delta Margin => " +
-			FormatUtil.FormatDouble (equityNetSensitivity.deltaMargin (equitySensitivitySettings), 5, 1, 1.) + " ||"
+		System.out.println ("\t|-----------------------------------------------------||");
+
+		System.out.println ("\t|               SBA BASED DELTA MARGIN                ||");
+
+		System.out.println ("\t|-----------------------------------------------------||");
+
+		System.out.println ("\t|                                                     ||");
+
+		System.out.println ("\t|    L -> R:                                          ||");
+
+		System.out.println ("\t|                                                     ||");
+
+		System.out.println ("\t|            - Core Delta SBA Delta                   ||");
+
+		System.out.println ("\t|            - Residual Delta SBA Delta               ||");
+
+		System.out.println ("\t|            - SBA Delta Margin                       ||");
+
+		System.out.println ("\t|-----------------------------------------------------||");
+
+		System.out.println ("\t| DELTA MARGIN COMPONENTS => " +
+			FormatUtil.FormatDouble (Math.sqrt (riskClassAggregate.coreDeltaSBAVariance()), 5, 0, 1.) +
+				" | " +
+			FormatUtil.FormatDouble (Math.sqrt (riskClassAggregate.residualDeltaSBAVariance()), 5, 0, 1.) +
+				" | " +
+			FormatUtil.FormatDouble (riskClassAggregate.deltaSBA(), 5, 0, 1.) + " ||"
 		);
 
-		System.out.println ("\t||---------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FRAStandardComponent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.product.fra</a> &gt; <span class="el_source">FRAStandardComponent.java</span></div><h1>FRAStandardComponent.java</h1><pre class="source lang-java linenums">
+package org.drip.product.fra;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * FRAStandardComponent contains the implementation of the Standard Multi-Curve FRA Component.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class FRAStandardComponent extends org.drip.product.rates.SingleStreamComponent {
+<span class="fc" id="L60">	private double _dblStrike = java.lang.Double.NaN;</span>
+
+	/**
+	 * FRAStandardComponent constructor
+	 * 
+	 * @param strName Futures Component Name
+	 * @param stream Futures Stream
+	 * @param dblStrike Futures Strike
+	 * @param csp Cash Settle Parameters Instance
+	 * 
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
+	 */
+
+	public FRAStandardComponent (
+		final java.lang.String strName,
+		final org.drip.product.rates.Stream stream,
+		final double dblStrike,
+		final org.drip.param.valuation.CashSettleParams csp)
+		throws java.lang.Exception
+	{
+<span class="fc" id="L80">		super (strName, stream, csp);</span>
+
+<span class="pc bpc" id="L82" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblStrike = dblStrike))</span>
+<span class="nc" id="L83">			throw new java.lang.Exception (&quot;FRAStandardComponent ctr =&gt; Invalid Inputs!&quot;);</span>
+<span class="fc" id="L84">	}</span>
+
+	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; value (
+		final org.drip.param.valuation.ValuationParams valParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
+		final org.drip.param.valuation.ValuationCustomizationParams vcp)
+	{
+<span class="pc bpc" id="L92" title="2 of 4 branches missed.">		if (null == valParams || null == csqs) return null;</span>
+
+<span class="fc" id="L94">		org.drip.state.identifier.FundingLabel fundingLabel =</span>
+<span class="fc" id="L95">			org.drip.state.identifier.FundingLabel.Standard (payCurrency());</span>
+
+<span class="fc" id="L97">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqs.fundingState (fundingLabel);</span>
+
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">		if (null == dcFunding) return null;</span>
+
+<span class="fc" id="L101">		long lStart = System.nanoTime();</span>
+
+<span class="fc" id="L103">		double dblParForward = java.lang.Double.NaN;</span>
+
+<span class="fc" id="L105">		int iValueDate = valParams.valueDate();</span>
+
+<span class="fc" id="L107">		int iEffectiveDate = effectiveDate().julian();</span>
+
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">		if (iValueDate &gt; iEffectiveDate) return null;</span>
+
+<span class="fc" id="L111">		org.drip.analytics.date.JulianDate dtMaturity = maturityDate();</span>
+
+<span class="fc" id="L113">		int iMaturityDate = dtMaturity.julian();</span>
+
+<span class="fc" id="L115">		org.drip.state.identifier.ForwardLabel forwardLabel = forwardLabel().get (&quot;DERIVED&quot;);</span>
+
+<span class="fc" id="L117">		org.drip.state.forward.ForwardRateEstimator fc = csqs.forwardState (forwardLabel);</span>
+
+<span class="pc bpc" id="L119" title="2 of 4 branches missed.">		if (null == fc || !forwardLabel.match (fc.index())) return null;</span>
+
+<span class="fc" id="L121">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapResult = new</span>
+			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
+
+<span class="fc" id="L124">		org.drip.param.valuation.CashSettleParams settleParams = cashSettleParams();</span>
+
+		try {
+<span class="pc bpc" id="L127" title="1 of 2 branches missed.">			int dblCashSettle = null == settleParams ? valParams.cashPayDate() : settleParams.cashSettleDate</span>
+<span class="fc" id="L128">				(iValueDate);</span>
+
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">			dblParForward = csqs.available (dtMaturity, forwardLabel) ? csqs.fixing (dtMaturity,</span>
+<span class="fc" id="L131">				forwardLabel) : fc.forward (dtMaturity);</span>
+
+<span class="fc" id="L133">			double dblMultiplicativeQuantoAdjustment = java.lang.Math.exp</span>
+<span class="fc" id="L134">				(org.drip.analytics.support.OptionHelper.IntegratedCrossVolQuanto (csqs.forwardVolatility</span>
+<span class="fc" id="L135">					(forwardLabel), csqs.fundingVolatility (fundingLabel), csqs.forwardFundingCorrelation</span>
+<span class="fc" id="L136">						(forwardLabel, fundingLabel), iValueDate, iEffectiveDate));</span>
+
+<span class="fc" id="L138">			double dblDCF = org.drip.analytics.daycount.Convention.YearFraction (iEffectiveDate,</span>
+<span class="fc" id="L139">				iMaturityDate, stream().couponDC(), false, null, stream().calendar());</span>
+
+<span class="fc" id="L141">			double dblQuantoAdjustedParForward = dblParForward * dblMultiplicativeQuantoAdjustment;</span>
+
+<span class="fc" id="L143">			double dblDV01 = 0.0001 * dblDCF * dcFunding.df (iMaturityDate) / dcFunding.df (dblCashSettle)</span>
+<span class="fc" id="L144">				* notional (iValueDate);</span>
+
+<span class="fc" id="L146">			double dblLevelLift = dblQuantoAdjustedParForward - _dblStrike;</span>
+<span class="fc" id="L147">			double dblPV = dblDV01 * dblLevelLift;</span>
+<span class="fc bfc" id="L148" title="All 2 branches covered.">			double dblLevelCapLift = dblLevelLift &lt; 0. ? -1. * dblLevelLift : 0.;</span>
+<span class="fc bfc" id="L149" title="All 2 branches covered.">			double dblLevelFloorLift = dblLevelLift &gt; 0. ? dblLevelLift : 0.;</span>
+
+<span class="fc" id="L151">			double dblDCParForward = dcFunding.libor (iEffectiveDate, iMaturityDate);</span>
+
+<span class="fc" id="L153">			mapResult.put (&quot;additivequantoadjustment&quot;, dblQuantoAdjustedParForward - dblParForward);</span>
+
+<span class="fc" id="L155">			mapResult.put (&quot;caplift&quot;, dblLevelCapLift);</span>
+
+<span class="fc" id="L157">			mapResult.put (&quot;discountcurveadditivebasis&quot;, dblQuantoAdjustedParForward - dblDCParForward);</span>
+
+<span class="fc" id="L159">			mapResult.put (&quot;discountcurvemultiplicativebasis&quot;, dblQuantoAdjustedParForward /</span>
+				dblDCParForward);
+
+<span class="fc" id="L162">			mapResult.put (&quot;discountcurveparforward&quot;, dblDCParForward);</span>
+
+<span class="fc" id="L164">			mapResult.put (&quot;dv01&quot;, dblDV01);</span>
+
+<span class="fc" id="L166">			mapResult.put (&quot;floorlift&quot;, dblLevelFloorLift);</span>
+
+<span class="fc" id="L168">			mapResult.put (&quot;forward&quot;, dblParForward);</span>
+
+<span class="fc" id="L170">			mapResult.put (&quot;forwardrate&quot;, dblParForward);</span>
+
+<span class="fc" id="L172">			mapResult.put (&quot;mercuriorfactor&quot;, (dblDCF * dblDCParForward + 1.) / (dblDCF *</span>
+				dblQuantoAdjustedParForward + 1.));
+
+<span class="fc" id="L175">			mapResult.put (&quot;multiplicativequantoadjustment&quot;, dblMultiplicativeQuantoAdjustment);</span>
+
+<span class="fc" id="L177">			mapResult.put (&quot;parforward&quot;, dblParForward);</span>
+
+<span class="fc" id="L179">			mapResult.put (&quot;parforwardrate&quot;, dblParForward);</span>
+
+<span class="fc" id="L181">			mapResult.put (&quot;price&quot;, dblPV);</span>
+
+<span class="fc" id="L183">			mapResult.put (&quot;pv&quot;, dblPV);</span>
+
+<span class="fc" id="L185">			mapResult.put (&quot;quantoadjustedparforward&quot;, dblQuantoAdjustedParForward);</span>
+
+<span class="fc" id="L187">			mapResult.put (&quot;upfront&quot;, dblPV);</span>
+<span class="nc" id="L188">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L189">			e.printStackTrace();</span>
+
+<span class="nc" id="L191">			return null;</span>
+<span class="fc" id="L192">		}</span>
+
+<span class="fc" id="L194">		mapResult.put (&quot;calctime&quot;, (System.nanoTime() - lStart) * 1.e-09);</span>
+
+<span class="fc" id="L196">		return mapResult;</span>
+	}
+
+	@Override public java.util.Set&lt;java.lang.String&gt; measureNames()
+	{
+<span class="nc" id="L201">		java.util.Set&lt;java.lang.String&gt; setstrMeasureNames = new java.util.TreeSet&lt;java.lang.String&gt;();</span>
+
+<span class="nc" id="L203">		setstrMeasureNames.add (&quot;AdditiveQuantoAdjustment&quot;);</span>
+
+<span class="nc" id="L205">		setstrMeasureNames.add (&quot;CalcTime&quot;);</span>
+
+<span class="nc" id="L207">		setstrMeasureNames.add (&quot;CapLift&quot;);</span>
+
+<span class="nc" id="L209">		setstrMeasureNames.add (&quot;DiscountCurveAdditiveBasis&quot;);</span>
+
+<span class="nc" id="L211">		setstrMeasureNames.add (&quot;DiscountCurveMultiplicativeBasis&quot;);</span>
+
+<span class="nc" id="L213">		setstrMeasureNames.add (&quot;DiscountCurveParForward&quot;);</span>
+
+<span class="nc" id="L215">		setstrMeasureNames.add (&quot;DV01&quot;);</span>
+
+<span class="nc" id="L217">		setstrMeasureNames.add (&quot;FloorLift&quot;);</span>
+
+<span class="nc" id="L219">		setstrMeasureNames.add (&quot;Forward&quot;);</span>
+
+<span class="nc" id="L221">		setstrMeasureNames.add (&quot;ForwardRate&quot;);</span>
+
+<span class="nc" id="L223">		setstrMeasureNames.add (&quot;MercurioRFactor&quot;);</span>
+
+<span class="nc" id="L225">		setstrMeasureNames.add (&quot;MultiplicativeQuantoAdjustment&quot;);</span>
+
+<span class="nc" id="L227">		setstrMeasureNames.add (&quot;ParForward&quot;);</span>
+
+<span class="nc" id="L229">		setstrMeasureNames.add (&quot;ParForwardRate&quot;);</span>
+
+<span class="nc" id="L231">		setstrMeasureNames.add (&quot;Price&quot;);</span>
+
+<span class="nc" id="L233">		setstrMeasureNames.add (&quot;PV&quot;);</span>
+
+<span class="nc" id="L235">		setstrMeasureNames.add (&quot;QuantoAdjustedParForward&quot;);</span>
+
+<span class="nc" id="L237">		setstrMeasureNames.add (&quot;Upfront&quot;);</span>
+
+<span class="nc" id="L239">		return setstrMeasureNames;</span>
+	}
+
+	@Override public org.drip.quant.calculus.WengertJacobian jackDDirtyPVDManifestMeasure (
+		final org.drip.param.valuation.ValuationParams valParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
+		final org.drip.param.valuation.ValuationCustomizationParams vcp)
+	{
+<span class="nc" id="L248">		return null;</span>
+	}
+
+	@Override public org.drip.quant.calculus.WengertJacobian manifestMeasureDFMicroJack (
+		final java.lang.String strManifestMeasure,
+		final org.drip.param.valuation.ValuationParams valParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
+		final org.drip.param.valuation.ValuationCustomizationParams vcp)
+	{
+<span class="nc" id="L258">		return null;</span>
+	}
+
+	@Override public org.drip.product.calib.ProductQuoteSet calibQuoteSet (
+		final org.drip.state.representation.LatentStateSpecification[] aLSS)
+	{
+		try {
+<span class="fc" id="L265">			return new org.drip.product.calib.FRAComponentQuoteSet (aLSS);</span>
+<span class="nc" id="L266">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L267">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L270">		return null;</span>
+	}
+
+	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint fundingPRWC (
+		final org.drip.param.valuation.ValuationParams valParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
+		final org.drip.param.valuation.ValuationCustomizationParams vcp,
+		final org.drip.product.calib.ProductQuoteSet pqs)
+	{
+<span class="nc" id="L280">		return null;</span>
+	}
+
+	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint forwardPRWC (
+		final org.drip.param.valuation.ValuationParams valParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
+		final org.drip.param.valuation.ValuationCustomizationParams vcp,
+		final org.drip.product.calib.ProductQuoteSet pqs)
+	{
+<span class="pc bpc" id="L290" title="3 of 6 branches missed.">		if (null == valParams || null == pqs || !(pqs instanceof</span>
+			org.drip.product.calib.FRAComponentQuoteSet))
+<span class="nc" id="L292">			return null;</span>
+
+<span class="pc bpc" id="L294" title="1 of 2 branches missed.">		if (valParams.valueDate() &gt; effectiveDate().julian()) return null;</span>
+
+<span class="fc" id="L296">		org.drip.product.calib.FRAComponentQuoteSet fcqs = (org.drip.product.calib.FRAComponentQuoteSet) pqs;</span>
+
+<span class="pc bpc" id="L298" title="2 of 4 branches missed.">		if (!fcqs.containsFRARate() &amp;&amp; !fcqs.containsParForwardRate()) return null;</span>
+
+<span class="fc" id="L300">		double dblForwardRate = java.lang.Double.NaN;</span>
+
+		try {
+<span class="pc bpc" id="L303" title="1 of 2 branches missed.">			if (fcqs.containsParForwardRate())</span>
+<span class="fc" id="L304">				dblForwardRate = fcqs.parForwardRate();</span>
+<span class="nc bnc" id="L305" title="All 2 branches missed.">			else if (fcqs.containsFRARate())</span>
+<span class="nc" id="L306">				dblForwardRate = fcqs.fraRate();</span>
+<span class="nc" id="L307">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L308">			e.printStackTrace();</span>
+
+<span class="nc" id="L310">			return null;</span>
+<span class="fc" id="L311">		}</span>
+
+<span class="fc" id="L313">		org.drip.state.estimator.PredictorResponseWeightConstraint prwc = new</span>
+			org.drip.state.estimator.PredictorResponseWeightConstraint();
+
+<span class="fc" id="L316">		double dblMaturity = maturityDate().julian();</span>
+
+<span class="pc bpc" id="L318" title="1 of 2 branches missed.">		if (!prwc.addPredictorResponseWeight (dblMaturity, 1.)) return null;</span>
+
+<span class="pc bpc" id="L320" title="1 of 2 branches missed.">		if (!prwc.addDResponseWeightDManifestMeasure (&quot;Rate&quot;, dblMaturity, 1.)) return null;</span>
+
+<span class="pc bpc" id="L322" title="1 of 2 branches missed.">		if (!prwc.updateValue (dblForwardRate)) return null;</span>
+
+<span class="pc bpc" id="L324" title="1 of 2 branches missed.">		if (!prwc.updateDValueDManifestMeasure (&quot;Rate&quot;, 1.)) return null;</span>
+
+<span class="fc" id="L326">		return prwc;</span>
+	}
+
+	/**
+	 * Retrieve the FRA Strike
+	 * 
+	 * @return The FRA Strike
+	 */
+
+	public double strike()
+	{
+<span class="fc" id="L337">		return _dblStrike;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ItemList.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.json.simple</a> &gt; <span class="el_source">ItemList.java</span></div><h1>ItemList.java</h1><pre class="source lang-java linenums">
+package org.drip.json.simple;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * ItemList is an Adaptation of the ItemList Interface from the RFC4627 compliant JSON Simple
+ *  (https://code.google.com/p/json-simple/).
+ *
+ * 		|a:b:c| = |a|,|b|,|c|
+ * 		|:| = ||,||
+ * 		|a:| = |a|,||
+ * 
+ * @author Fang Yidong
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class ItemList {
+<span class="nc" id="L65">    private String sp=&quot;,&quot;;</span>
+<span class="nc" id="L66">    @SuppressWarnings (&quot;rawtypes&quot;) java.util.List items=new java.util.ArrayList();</span>
+    
+    
+<span class="nc" id="L69">    public ItemList(){}</span>
+    
+    
+<span class="nc" id="L72">    public ItemList(String s){</span>
+<span class="nc" id="L73">            this.split(s,sp,items);</span>
+<span class="nc" id="L74">    }</span>
+    
+<span class="nc" id="L76">    public ItemList(String s,String sp){</span>
+<span class="nc" id="L77">            this.sp=s;</span>
+<span class="nc" id="L78">            this.split(s,sp,items);</span>
+<span class="nc" id="L79">    }</span>
+    
+<span class="nc" id="L81">    public ItemList(String s,String sp,boolean isMultiToken){</span>
+<span class="nc" id="L82">            split(s,sp,items,isMultiToken);</span>
+<span class="nc" id="L83">    }</span>
+    
+    @SuppressWarnings (&quot;rawtypes&quot;) public java.util.List getItems(){
+<span class="nc" id="L86">            return this.items;</span>
+    }
+    
+    public String[] getArray(){
+<span class="nc" id="L90">            return (String[])this.items.toArray();</span>
+    }
+    
+    @SuppressWarnings ({&quot;rawtypes&quot;, &quot;unchecked&quot;}) public void split(String s,String sp,java.util.List append,boolean isMultiToken){
+<span class="nc bnc" id="L94" title="All 4 branches missed.">            if(s==null || sp==null)</span>
+<span class="nc" id="L95">                    return;</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">            if(isMultiToken){</span>
+<span class="nc" id="L97">            	java.util.StringTokenizer tokens=new java.util.StringTokenizer(s,sp);</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">                    while(tokens.hasMoreTokens()){</span>
+<span class="nc" id="L99">                            append.add(tokens.nextToken().trim());</span>
+                    }
+<span class="nc" id="L101">            }</span>
+            else{
+<span class="nc" id="L103">                    this.split(s,sp,append);</span>
+            }
+<span class="nc" id="L105">    }</span>
+    
+    @SuppressWarnings ({&quot;rawtypes&quot;, &quot;unchecked&quot;}) public void split(String s,String sp,java.util.List append){
+<span class="nc bnc" id="L108" title="All 4 branches missed.">            if(s==null || sp==null)</span>
+<span class="nc" id="L109">                    return;</span>
+<span class="nc" id="L110">            int pos=0;</span>
+<span class="nc" id="L111">            int prevPos=0;</span>
+            do{
+<span class="nc" id="L113">                    prevPos=pos;</span>
+<span class="nc" id="L114">                    pos=s.indexOf(sp,pos);</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">                    if(pos==-1)</span>
+<span class="nc" id="L116">                            break;</span>
+<span class="nc" id="L117">                    append.add(s.substring(prevPos,pos).trim());</span>
+<span class="nc" id="L118">                    pos+=sp.length();</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">            }while(pos!=-1);</span>
+<span class="nc" id="L120">            append.add(s.substring(prevPos).trim());</span>
+<span class="nc" id="L121">    }</span>
+    
+    public void setSP(String sp){
+<span class="nc" id="L124">            this.sp=sp;</span>
+<span class="nc" id="L125">    }</span>
+    
+    @SuppressWarnings (&quot;unchecked&quot;) public void add(int i,String item){
+<span class="nc bnc" id="L128" title="All 2 branches missed.">            if(item==null)</span>
+<span class="nc" id="L129">                    return;</span>
+<span class="nc" id="L130">            items.add(i,item.trim());</span>
+<span class="nc" id="L131">    }</span>
+
+    @SuppressWarnings (&quot;unchecked&quot;) public void add(String item){
+<span class="nc bnc" id="L134" title="All 2 branches missed.">            if(item==null)</span>
+<span class="nc" id="L135">                    return;</span>
+<span class="nc" id="L136">            items.add(item.trim());</span>
+<span class="nc" id="L137">    }</span>
+    
+    @SuppressWarnings (&quot;unchecked&quot;) public void addAll(ItemList list){
+<span class="nc" id="L140">            items.addAll(list.items);</span>
+<span class="nc" id="L141">    }</span>
+    
+    public void addAll(String s){
+<span class="nc" id="L144">            this.split(s,sp,items);</span>
+<span class="nc" id="L145">    }</span>
+    
+    public void addAll(String s,String sp){
+<span class="nc" id="L148">            this.split(s,sp,items);</span>
+<span class="nc" id="L149">    }</span>
+    
+    public void addAll(String s,String sp,boolean isMultiToken){
+<span class="nc" id="L152">            this.split(s,sp,items,isMultiToken);</span>
+<span class="nc" id="L153">    }</span>
+    
+    /**
+     * @param i 0-based
+     * @return i
+     */
+    public String get(int i){
+<span class="nc" id="L160">            return (String)items.get(i);</span>
+    }
+    
+    public int size(){
+<span class="nc" id="L164">            return items.size();</span>
+    }
+
+    public String toString(){
+<span class="nc" id="L168">            return toString(sp);</span>
+    }
+    
+    public String toString(String sp){
+<span class="nc" id="L172">            StringBuffer sb=new StringBuffer();</span>
+            
+<span class="nc bnc" id="L174" title="All 2 branches missed.">            for(int i=0;i&lt;items.size();i++){</span>
+<span class="nc bnc" id="L175" title="All 2 branches missed.">                    if(i==0)</span>
+<span class="nc" id="L176">                            sb.append(items.get(i));</span>
+                    else{
+<span class="nc" id="L178">                            sb.append(sp);</span>
+<span class="nc" id="L179">                            sb.append(items.get(i));</span>
+                    }
+            }
+<span class="nc" id="L182">            return sb.toString();</span>
+
+    }
+    
+    public void clear(){
+<span class="nc" id="L187">            items.clear();</span>
+<span class="nc" id="L188">    }</span>
+    
+    public void reset(){
+<span class="nc" id="L191">            sp=&quot;,&quot;;</span>
+<span class="nc" id="L192">            items.clear();</span>
+<span class="nc" id="L193">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

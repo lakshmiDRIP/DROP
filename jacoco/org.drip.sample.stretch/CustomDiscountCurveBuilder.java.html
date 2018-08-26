@@ -1,0 +1,621 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CustomDiscountCurveBuilder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.stretch</a> &gt; <span class="el_source">CustomDiscountCurveBuilder.java</span></div><h1>CustomDiscountCurveBuilder.java</h1><pre class="source lang-java linenums">	
+package org.drip.sample.stretch;
+
+/*
+ * Java Imports
+ */
+
+import java.util.*;
+
+import org.drip.function.r1tor1.QuadraticRationalShapeControl;
+import org.drip.quant.common.FormatUtil;
+import org.drip.spline.basis.*;
+import org.drip.spline.params.*;
+import org.drip.spline.stretch.*;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * CustomDiscountCurveBuilder contains samples that demo how to build a discount curve from purely the cash
+ *  flows. It provides for elaborate curve builder control, both at the segment level and at the Stretch
+ *  level. In particular, it shows the following:
+ * 	- Construct a discount curve from the discount factors available purely from the cash and the euro-dollar
+ *  	instruments.
+ * 	- Construct a discount curve from the cash flows available from the swap instruments.
+ * 
+ * In addition, the sample demonstrates the following ways of controlling curve construction:
+ * 	- Control over the type of segment basis spline
+ * 	- Control over the polynomial basis spline order, Ck, and tension parameters
+ * 	- Provision of custom shape controllers (in this case rational shape controller)
+ * 	- Calculation of segment monotonicity and convexity
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L83">public class CustomDiscountCurveBuilder {</span>
+
+	/*
+	 * Sample API demonstrating the creation of the segment builder parameters based on Koch-Lyche-Kvasov tension spline.
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final SegmentCustomBuilderControl MakeKLKTensionSCBC (
+		final double dblTension)
+		throws Exception
+	{
+<span class="fc" id="L95">		return new SegmentCustomBuilderControl (</span>
+			MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION, // Spline Type KLK Hyperbolic Basis Tension
+			new ExponentialTensionSetParams (dblTension), // Segment Tension Parameter Value
+<span class="fc" id="L98">			SegmentInelasticDesignControl.Create (2, 2), // Ck = 2; Curvature penalty (if necessary) order: 2</span>
+			new ResponseScalingShapeControl (
+				true,
+				new QuadraticRationalShapeControl (0.0)), // Univariate Rational Shape Controller
+			null
+		);
+	}
+
+	/*
+	 * Sample API demonstrating the creation of the segment builder parameters based on polynomial spline.
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	public static final SegmentCustomBuilderControl MakePolynomialSBP (
+		final int iNumDegree)
+		throws Exception
+	{
+<span class="nc" id="L116">		return new SegmentCustomBuilderControl (</span>
+			MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, // Spline Type Polynomial
+			new PolynomialFunctionSetParams (iNumDegree + 1), // Polynomial of degree (i.e, cubic would be 3+1; 4 basis functions - 1 &quot;intercept&quot;)
+<span class="nc" id="L119">			SegmentInelasticDesignControl.Create (2, 2), // Ck = 2; Curvature penalty (if necessary) order: 2</span>
+			new ResponseScalingShapeControl (
+				true,
+				new QuadraticRationalShapeControl (0.0)), // Univariate Rational Shape Controller
+			null
+		);
+	}
+
+	/*
+	 * Sample API demonstrating the creation of the segment builder parameters
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final SegmentCustomBuilderControl MakeSCBC (
+		final String strBasisSpline)
+		throws Exception
+	{
+<span class="nc bnc" id="L137" title="All 2 branches missed.">		if (strBasisSpline.equalsIgnoreCase (MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL)) // Polynomial Basis Spline</span>
+<span class="nc" id="L138">			return new SegmentCustomBuilderControl (</span>
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, // Spline Type Polynomial
+				new PolynomialFunctionSetParams (4), // Polynomial of order 3 (i.e, cubic - 4 basis functions - 1 &quot;intercept&quot;)
+<span class="nc" id="L141">				SegmentInelasticDesignControl.Create (2, 2), // Ck = 2; Curvature penalty (if necessary) order: 2</span>
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.0)), // Univariate Rational Shape Controller
+				null
+			);
+
+<span class="nc bnc" id="L148" title="All 2 branches missed.">		if (strBasisSpline.equalsIgnoreCase (MultiSegmentSequenceBuilder.BASIS_SPLINE_EXPONENTIAL_TENSION)) // Exponential Tension Basis Spline</span>
+<span class="nc" id="L149">			return new SegmentCustomBuilderControl (</span>
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_EXPONENTIAL_TENSION, // Spline Type Exponential Basis Tension
+				new ExponentialTensionSetParams (1.), // Segment Tension Parameter Value = 1.
+<span class="nc" id="L152">				SegmentInelasticDesignControl.Create (2, 2), // Ck = 2; Curvature penalty (if necessary) order: 2</span>
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.0)), // Univariate Rational Shape Controller
+				null
+			);
+
+<span class="nc" id="L159">		return null;</span>
+	}
+
+	/*
+	 * Generate the sample Swap Cash Flows to a given maturity, for the frequency/coupon.
+	 * 	Cash Flow is in the form of &lt;Date, Cash Amount&gt; Map.
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final TreeMap&lt;Double, Double&gt; SwapCashFlow (
+		final double dblCoupon,
+		final int iFreq,
+		final double dblTenorInYears)
+	{
+<span class="fc" id="L174">		TreeMap&lt;Double, Double&gt; mapCF = new TreeMap&lt;Double, Double&gt;();</span>
+
+<span class="fc bfc" id="L176" title="All 2 branches covered.">		for (double dblCFDate = 1. / iFreq; dblCFDate &lt; dblTenorInYears; dblCFDate += 1. / iFreq)</span>
+<span class="fc" id="L177">			mapCF.put (</span>
+<span class="fc" id="L178">				dblCFDate,</span>
+<span class="fc" id="L179">				dblCoupon / iFreq</span>
+			);
+
+<span class="fc" id="L182">		mapCF.put (</span>
+<span class="fc" id="L183">			0.,</span>
+<span class="fc" id="L184">			-1.</span>
+		);
+
+<span class="fc" id="L187">		mapCF.put (</span>
+<span class="fc" id="L188">			1. * dblTenorInYears,</span>
+<span class="fc" id="L189">			1. + dblCoupon / iFreq</span>
+		);
+
+<span class="fc" id="L192">		return mapCF;</span>
+	}
+
+	/**
+	 * Generate the DRIP linear constraint corresponding to an exclusive swap segment. This constraint is
+	 * 	used to calibrate the discount curve in this segment.
+	 *  
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final SegmentResponseValueConstraint GenerateSegmentConstraint (
+		final TreeMap&lt;Double, Double&gt; mapCF,
+		final MultiSegmentSequence mssDF)
+		throws Exception
+	{
+<span class="fc" id="L207">		double dblValue = 0.;</span>
+
+<span class="fc" id="L209">		List&lt;Double&gt; lsTime = new ArrayList&lt;Double&gt;();</span>
+
+<span class="fc" id="L211">		List&lt;Double&gt; lsWeight = new ArrayList&lt;Double&gt;();</span>
+
+<span class="fc bfc" id="L213" title="All 2 branches covered.">		for (Map.Entry&lt;Double, Double&gt; me : mapCF.entrySet()) {</span>
+<span class="fc" id="L214">			double dblTime = me.getKey();</span>
+
+<span class="pc bpc" id="L216" title="1 of 4 branches missed.">			if (null != mssDF &amp;&amp; mssDF.in (dblTime))</span>
+<span class="fc" id="L217">				dblValue += mssDF.responseValue (dblTime) * me.getValue();</span>
+			else {
+<span class="fc" id="L219">				lsTime.add (me.getKey());</span>
+
+<span class="fc" id="L221">				lsWeight.add (me.getValue());</span>
+			}
+<span class="fc" id="L223">		}</span>
+
+<span class="fc" id="L225">		int iSize = lsTime.size();</span>
+
+<span class="fc" id="L227">		double[] adblNode = new double[iSize];</span>
+<span class="fc" id="L228">		double[] adblNodeWeight = new double[iSize];</span>
+
+<span class="fc bfc" id="L230" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="fc" id="L231">			adblNode[i] = lsTime.get (i);</span>
+
+<span class="fc" id="L233">			adblNodeWeight[i] = lsWeight.get (i);</span>
+		}
+
+<span class="fc" id="L236">		return new SegmentResponseValueConstraint (</span>
+			adblNode,
+			adblNodeWeight,
+			-dblValue
+		);
+	}
+
+	/**
+	 * The set of Par Swap Quotes.
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final Map&lt;Double, Double&gt; SwapQuotes()
+	{
+<span class="fc" id="L251">		Map&lt;Double, Double&gt; mapSwapQuotes = new TreeMap&lt;Double, Double&gt;();</span>
+
+<span class="fc" id="L253">		mapSwapQuotes.put (4., 0.0166);</span>
+
+<span class="fc" id="L255">		mapSwapQuotes.put (5., 0.0206);</span>
+
+<span class="fc" id="L257">		mapSwapQuotes.put (6., 0.0241);</span>
+
+<span class="fc" id="L259">		mapSwapQuotes.put (7., 0.0269);</span>
+
+<span class="fc" id="L261">		mapSwapQuotes.put (8., 0.0292);</span>
+
+<span class="fc" id="L263">		mapSwapQuotes.put (9., 0.0311);</span>
+
+<span class="fc" id="L265">		mapSwapQuotes.put (10., 0.0326);</span>
+
+<span class="fc" id="L267">		mapSwapQuotes.put (11., 0.0340);</span>
+
+<span class="fc" id="L269">		mapSwapQuotes.put (12., 0.0351);</span>
+
+<span class="fc" id="L271">		mapSwapQuotes.put (15., 0.0375);</span>
+
+<span class="fc" id="L273">		mapSwapQuotes.put (20., 0.0393);</span>
+
+<span class="fc" id="L275">		mapSwapQuotes.put (25., 0.0402);</span>
+
+<span class="fc" id="L277">		mapSwapQuotes.put (30., 0.0407);</span>
+
+<span class="fc" id="L279">		mapSwapQuotes.put (40., 0.0409);</span>
+
+<span class="fc" id="L281">		mapSwapQuotes.put (50., 0.0409);</span>
+
+<span class="fc" id="L283">		return mapSwapQuotes;</span>
+	}
+
+	/**
+	 * Sample Function illustrating the construction of the discount curve off of swap cash flows and
+	 *  detailed segment level controls for the swap instruments.Further, the Segment Builder Parameters
+	 *  for the cash/swap bridging stretch shown here illustrate using an exponential/hyperbolic spline with
+	 *  very high tension (100000.) to &quot;stitch&quot; the cash stretch with the swaps Stretch.
+	 * 
+	 * Each of the respective stretches have their own tension settings, so the &quot;high&quot; tension
+	 *  ensures that there is no propagation of derivatives and therefore high locality.
+	 *  
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final MultiSegmentSequence BuildSwapCurve (
+		MultiSegmentSequence mss,
+		final BoundarySettings bs,
+		final int iCalibrationDetail)
+		throws Exception
+	{
+<span class="fc" id="L304">		boolean bFirstNode = true;</span>
+
+		/*
+		 * Iterate through the swap instruments and their quotes.
+		 */
+
+<span class="fc bfc" id="L310" title="All 2 branches covered.">		for (Map.Entry&lt;Double, Double&gt; meSwapQuote : SwapQuotes().entrySet()) {</span>
+<span class="fc" id="L311">			double dblTenorInYears = meSwapQuote.getKey(); // Swap Maturity in Years</span>
+
+<span class="fc" id="L313">			double dblQuote = meSwapQuote.getValue(); // Par Swap Quote</span>
+
+			/*
+			 * Generate the Cash flow for the swap Instrument
+			 */
+
+<span class="fc" id="L319">			TreeMap&lt;Double, Double&gt; mapCF = SwapCashFlow (</span>
+				dblQuote,
+				2,
+				dblTenorInYears
+			);
+
+			/*
+			 * Convert the Cash flow into a DRIP segment constraint using the &quot;prior&quot; curve stretch
+			 */
+
+<span class="fc" id="L329">			SegmentResponseValueConstraint srvc = GenerateSegmentConstraint (</span>
+				mapCF,
+				mss
+			);
+
+			/*
+			 * If it is the head segment, create a stretch instance for the discount curve.
+			 */
+
+<span class="pc bpc" id="L338" title="1 of 2 branches missed.">			if (null == mss) {</span>
+				/*
+				 * Set the Segment Builder Parameters. This may be set on a segment-by-segment basis.
+				 */
+
+<span class="nc" id="L343">				SegmentCustomBuilderControl scbc = MakeSCBC (MultiSegmentSequenceBuilder.BASIS_SPLINE_EXPONENTIAL_TENSION);</span>
+
+				/*
+				 * Start off with a single segment stretch, with the corresponding Builder Parameters
+				 */
+
+<span class="nc" id="L349">				mss = MultiSegmentSequenceBuilder.CreateUncalibratedStretchEstimator (</span>
+					&quot;SWAP&quot;,
+					new double[] {0., dblTenorInYears},
+					new SegmentCustomBuilderControl[] {scbc}
+				);
+
+				/*
+				 * Set the stretch up by carrying out a &quot;Natural Boundary&quot; Spline Calibration
+				 */
+
+<span class="nc" id="L359">				mss.setup (</span>
+					1.,
+					new SegmentResponseValueConstraint[] {srvc},
+					null,
+					bs,
+					iCalibrationDetail
+				);
+<span class="nc" id="L366">			} else {</span>
+				/*
+				 * The Segment Builder Parameters shown here illustrate using an exponential/hyperbolic
+				 *  spline with high tension (15.) to &quot;stitch&quot; the cash stretch with the swaps stretch.
+				 *  
+				 * Each of the respective stretches have their own tension settings, so the &quot;high&quot; tension
+				 *  ensures that there is no propagation of derivatives and therefore high locality.
+				 */
+
+<span class="fc" id="L375">				SegmentCustomBuilderControl scbcLocal = null;</span>
+
+<span class="fc bfc" id="L377" title="All 2 branches covered.">				if (bFirstNode) {</span>
+<span class="fc" id="L378">					bFirstNode = false;</span>
+
+<span class="fc" id="L380">					scbcLocal = MakeKLKTensionSCBC (1.);</span>
+				} else
+<span class="fc" id="L382">					scbcLocal = MakeKLKTensionSCBC (1.);</span>
+
+				/*
+				 * If not the head segment, just append the exclusive swap instrument segment to the tail of
+				 * 	the current stretch state, using the constraint generated from the swap cash flow.
+				 */
+
+<span class="fc" id="L389">				mss = org.drip.spline.stretch.MultiSegmentSequenceModifier.AppendSegment (</span>
+					mss,
+					dblTenorInYears,
+					srvc,
+					scbcLocal,
+					bs,
+					iCalibrationDetail
+				);
+			}
+<span class="fc" id="L398">		}</span>
+
+<span class="fc" id="L400">		return mss;</span>
+	}
+
+	/**
+	 * The set of Cash Discount Factors.
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final Map&lt;Double, Double&gt; CashDFQuotes()
+	{
+<span class="fc" id="L411">		Map&lt;Double, Double&gt; mapDFCashQuotes = new TreeMap&lt;Double, Double&gt;();</span>
+
+<span class="fc" id="L413">		mapDFCashQuotes.put (0.005556, 0.999991);</span>
+
+<span class="fc" id="L415">		mapDFCashQuotes.put (0.019444, 0.999967);</span>
+
+<span class="fc" id="L417">		mapDFCashQuotes.put (0.038889, 0.999931);</span>
+
+<span class="fc" id="L419">		mapDFCashQuotes.put (0.083333, 0.999836);</span>
+
+<span class="fc" id="L421">		mapDFCashQuotes.put (0.166667, 0.999622);</span>
+
+<span class="fc" id="L423">		mapDFCashQuotes.put (0.250000, 0.999360);</span>
+
+<span class="fc" id="L425">		mapDFCashQuotes.put (0.500000, 0.998686);</span>
+
+<span class="fc" id="L427">		mapDFCashQuotes.put (0.750000, 0.997888);</span>
+
+<span class="fc" id="L429">		mapDFCashQuotes.put (1.000000, 0.996866);</span>
+
+<span class="fc" id="L431">		mapDFCashQuotes.put (1.250000, 0.995522);</span>
+
+<span class="fc" id="L433">		mapDFCashQuotes.put (1.500000, 0.993609);</span>
+
+<span class="fc" id="L435">		mapDFCashQuotes.put (1.750000, 0.991033);</span>
+
+<span class="fc" id="L437">		mapDFCashQuotes.put (2.000000, 0.987724);</span>
+
+<span class="fc" id="L439">		mapDFCashQuotes.put (2.250000, 0.983789);</span>
+
+<span class="fc" id="L441">		return mapDFCashQuotes;</span>
+	}
+
+	/**
+	 * Sample Function illustrating the construction of the discount curve off of discount factors and
+	 *  detailed segment level controls for the cash instruments.
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final MultiSegmentSequence BuildCashCurve (
+		final org.drip.spline.stretch.BoundarySettings bs,
+		final int iCalibrationDetail)
+		throws Exception
+	{
+		/*
+		 * For the head segment, create a calibrated stretch instance for the discount curve.
+		 */
+
+<span class="fc" id="L460">		MultiSegmentSequence mssCash = MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator (</span>
+			&quot;CASH&quot;,
+			new double[] {0., 0.002778}, // t0 and t1 for the segment
+			new double[] {1., 0.999996}, // the corresponding discount factors
+			new SegmentCustomBuilderControl[] {
+				// MakeSCBC (MultiSegmentSequenceBuilder.BASIS_SPLINE_EXPONENTIAL_TENSION)
+<span class="fc" id="L466">				MakeKLKTensionSCBC (1.)</span>
+			}, // Exponential Tension Basis Spline
+			null,
+			bs,
+			iCalibrationDetail // &quot;Natural&quot; Spline Boundary Condition + Calibrate the full stretch
+		);
+
+		/*
+		 * Construct the discount curve by iterating through the cash instruments and their discount
+		 * 	factors, and inserting them as &quot;knots&quot; onto the existing stretch.
+		 */
+
+<span class="fc bfc" id="L478" title="All 2 branches covered.">		for (Map.Entry&lt;Double, Double&gt; meCashDFQuote : CashDFQuotes().entrySet()) {</span>
+<span class="fc" id="L479">			double dblTenorInYears = meCashDFQuote.getKey(); // Instrument Tenor in Years</span>
+
+<span class="fc" id="L481">			double dblDF = meCashDFQuote.getValue(); // Discount Factor</span>
+
+			/*
+			 * Insert the instrument/quote as a &quot;knot&quot; entity into the stretch. Given the &quot;natural&quot; spline
+			 */
+
+<span class="fc" id="L487">			mssCash = MultiSegmentSequenceModifier.InsertKnot (</span>
+				mssCash,
+				dblTenorInYears,
+				dblDF,
+				bs,
+				iCalibrationDetail
+			);
+<span class="fc" id="L494">		}</span>
+
+<span class="fc" id="L496">		return mssCash;</span>
+	}
+
+	/*
+	 * This sample demonstrates the usage construction and usage of Custom Curve Building. It shows the following:
+	 * 	- Construct the Cash Curve Sequence with the Standard Natural Boundary Condition.
+	 * 	- Construct the Cash Curve Sequence with the Standard Financial Boundary Condition.
+	 * 	- Construct the Cash Curve Sequence with the Standard Not-A-Knot Boundary Condition.
+	 * 	- Display the DF and the monotonicity for the cash instruments.
+	 * 	- Construct the Swap Curve Sequence with the Standard Natural Boundary Condition.
+	 * 	- Construct the Swap Curve Sequence with the Standard Financial Boundary Condition.
+	 * 	- Construct the Swap Curve Sequence with the Standard Not-A-Knot Boundary Condition.
+	 * 	- Display the DF and the monotonicity for the swap instruments.
+	 */
+
+	private static final void CustomCurveBuilderTest()
+		throws Exception
+	{
+		/*
+		 * Construct the Cash Curve Sequence with the Standard Natural Boundary Condition
+		 */
+
+<span class="fc" id="L518">		MultiSegmentSequence mssNaturalCash = BuildCashCurve (</span>
+<span class="fc" id="L519">			BoundarySettings.NaturalStandard(),</span>
+			MultiSegmentSequence.CALIBRATE
+		);
+
+		/*
+		 * Construct the Cash Curve Sequence with the Standard Financial Boundary Condition
+		 */
+
+<span class="fc" id="L527">		MultiSegmentSequence mssFinancialCash = BuildCashCurve (</span>
+<span class="fc" id="L528">			BoundarySettings.FinancialStandard(),</span>
+			MultiSegmentSequence.CALIBRATE
+		);
+
+		/*
+		 * Construct the Cash Curve Sequence with the Standard Not-A-Knot Boundary Condition
+		 */
+
+<span class="fc" id="L536">		MultiSegmentSequence mssNotAKnotCash = BuildCashCurve (</span>
+<span class="fc" id="L537">			BoundarySettings.NotAKnotStandard (1, 1),</span>
+			MultiSegmentSequence.CALIBRATE
+		);
+
+<span class="fc" id="L541">		double dblXShift = 0.1 * (mssNaturalCash.getRightPredictorOrdinateEdge() - mssNaturalCash.getLeftPredictorOrdinateEdge());</span>
+
+<span class="fc" id="L543">		System.out.println (&quot;\n\t\t\t----------------       &lt;====&gt;    ------------------       &lt;====&gt;    ------------------&quot;);</span>
+
+<span class="fc" id="L545">		System.out.println (&quot;\t\t\tNATURAL BOUNDARY       &lt;====&gt;   NOT A KNOT BOUNDARY       &lt;====&gt;    FINANCIAL BOUNDARY&quot;);</span>
+
+<span class="fc" id="L547">		System.out.println (&quot;\t\t\t----------------       &lt;====&gt;    ------------------       &lt;====&gt;    ------------------\n&quot;);</span>
+
+		/*
+		 * Display the DF and the monotonicity for the cash instruments.
+		 */
+
+<span class="fc bfc" id="L553" title="All 2 branches covered.">		for (double dblX = mssNaturalCash.getLeftPredictorOrdinateEdge(); dblX &lt;= mssNaturalCash.getRightPredictorOrdinateEdge(); dblX = dblX + dblXShift)</span>
+<span class="fc" id="L554">			System.out.println (&quot;Cash DF[&quot; +</span>
+<span class="fc" id="L555">				FormatUtil.FormatDouble (dblX, 1, 3, 1.) + &quot;Y] =&gt; &quot; +</span>
+<span class="fc" id="L556">				FormatUtil.FormatDouble (mssNaturalCash.responseValue (dblX), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L557">				mssNaturalCash.monotoneType (dblX) + &quot;  &lt;====&gt;  &quot; +</span>
+<span class="fc" id="L558">				FormatUtil.FormatDouble (mssNotAKnotCash.responseValue (dblX), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L559">				mssNotAKnotCash.monotoneType (dblX) + &quot;  &lt;====&gt;  &quot; +</span>
+<span class="fc" id="L560">				FormatUtil.FormatDouble (mssFinancialCash.responseValue (dblX), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L561">				mssNaturalCash.monotoneType (dblX));</span>
+
+<span class="fc" id="L563">		System.out.println (&quot;\n&quot;);</span>
+
+		/*
+		 * Construct the Swap Curve Sequence with the Standard Natural Boundary Condition
+		 */
+
+<span class="fc" id="L569">		MultiSegmentSequence mssNaturalSwap = BuildSwapCurve (</span>
+			mssNaturalCash,
+<span class="fc" id="L571">			BoundarySettings.NaturalStandard(),</span>
+			MultiSegmentSequence.CALIBRATE
+		);
+
+		/*
+		 * Construct the Swap Curve Sequence with the Standard Financial Boundary Condition
+		 */
+
+<span class="fc" id="L579">		MultiSegmentSequence mssFinancialSwap = BuildSwapCurve (</span>
+			mssFinancialCash,
+<span class="fc" id="L581">			BoundarySettings.FinancialStandard(),</span>
+			MultiSegmentSequence.CALIBRATE
+		);
+
+		/*
+		 * Construct the Swap Curve Sequence with the Standard Not-A-Knot Boundary Condition
+		 */
+
+<span class="fc" id="L589">		MultiSegmentSequence mssNotAKnotSwap = BuildSwapCurve (</span>
+			mssNotAKnotCash,
+<span class="fc" id="L591">			BoundarySettings.NotAKnotStandard (1, 1),</span>
+			MultiSegmentSequence.CALIBRATE
+		);
+
+		/*
+		 * Display the DF and the monotonicity for the swaps.
+		 */
+
+<span class="fc" id="L599">		dblXShift = 0.05 * (mssNaturalSwap.getRightPredictorOrdinateEdge() - mssNaturalSwap.getLeftPredictorOrdinateEdge());</span>
+
+<span class="fc bfc" id="L601" title="All 2 branches covered.">		for (double dblX = mssNaturalSwap.getLeftPredictorOrdinateEdge(); dblX &lt;= mssNaturalSwap.getRightPredictorOrdinateEdge(); dblX = dblX + dblXShift)</span>
+<span class="fc" id="L602">			System.out.println (</span>
+				&quot;Swap DF   [&quot; +
+<span class="fc" id="L604">				FormatUtil.FormatDouble (dblX, 2, 0, 1.) + &quot;Y] =&gt; &quot; +</span>
+<span class="fc" id="L605">				FormatUtil.FormatDouble (mssNaturalSwap.responseValue (dblX), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L606">				mssNaturalSwap.monotoneType (dblX) + &quot;  &lt;====&gt;  &quot; +</span>
+<span class="fc" id="L607">				FormatUtil.FormatDouble (mssNotAKnotSwap.responseValue (dblX), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L608">				mssNotAKnotSwap.monotoneType (dblX) + &quot;  &lt;====&gt;  &quot; +</span>
+<span class="fc" id="L609">				FormatUtil.FormatDouble (mssFinancialSwap.responseValue (dblX), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L610">				mssFinancialSwap.monotoneType (dblX)</span>
+			);
+<span class="fc" id="L612">	}</span>
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+<span class="fc" id="L618">		CustomCurveBuilderTest();</span>
+<span class="fc" id="L619">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

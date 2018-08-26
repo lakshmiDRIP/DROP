@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PortfolioConstructionParameters.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.portfolioconstruction.allocator</a> &gt; <span class="el_source">PortfolioConstructionParameters.java</span></div><h1>PortfolioConstructionParameters.java</h1><pre class="source lang-java linenums">
+package org.drip.portfolioconstruction.allocator;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * PortfolioConstructionParameters holds the Parameters needed to construct the Portfolio.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class PortfolioConstructionParameters {
+<span class="fc" id="L58">	private java.lang.String[] _astrAssetID = null;</span>
+<span class="fc" id="L59">	private org.drip.portfolioconstruction.allocator.CustomRiskUtilitySettings _crus = null;</span>
+<span class="fc" id="L60">	private org.drip.portfolioconstruction.allocator.PortfolioEqualityConstraintSettings _pecs = null;</span>
+
+	/**
+	 * PortfolioConstructionParameters Constructor
+	 * 
+	 * @param astrAssetID Array of Asset IDs
+	 * @param crus The Quadratic Custom Risk Utility Settings
+	 * @param pecs The Portfolio Equality Constraint Settings
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public PortfolioConstructionParameters (
+		final java.lang.String[] astrAssetID,
+		final org.drip.portfolioconstruction.allocator.CustomRiskUtilitySettings crus,
+		final org.drip.portfolioconstruction.allocator.PortfolioEqualityConstraintSettings pecs)
+		throws java.lang.Exception
+<span class="fc" id="L77">	{</span>
+<span class="pc bpc" id="L78" title="4 of 8 branches missed.">		if (null == (_astrAssetID = astrAssetID) || 0 == _astrAssetID.length || null == (_crus = crus) ||</span>
+			null == (_pecs = pecs))
+<span class="nc" id="L80">			throw new java.lang.Exception (&quot;PortfolioConstructionParameters Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L81">	}</span>
+
+	/**
+	 * Retrieve the Asset ID Array
+	 * 
+	 * @return The Asset ID Array
+	 */
+
+	public java.lang.String[] assets()
+	{
+<span class="fc" id="L91">		return _astrAssetID;</span>
+	}
+
+	/**
+	 * Retrieve the Instance of the Quadratic Custom Risk Utility Settings
+	 * 
+	 * @return The Quadratic Custom Risk Utility Settings
+	 */
+
+	public org.drip.portfolioconstruction.allocator.CustomRiskUtilitySettings optimizerSettings()
+	{
+<span class="fc" id="L102">		return _crus;</span>
+	}
+
+	/**
+	 * Retrieve the Instance of the Portfolio Equality Constraint Settings
+	 * 
+	 * @return The Portfolio Equality Constraint Settings
+	 */
+
+	public org.drip.portfolioconstruction.allocator.PortfolioEqualityConstraintSettings constraintSettings()
+	{
+<span class="fc" id="L113">		return _pecs;</span>
+	}
+
+	/**
+	 * Retrieve the Fully Invested Equality Constraint
+
+	 * @return The Fully Invested Equality Constraint
+	 */
+
+	public org.drip.function.definition.RdToR1 fullyInvestedConstraint()
+	{
+		try {
+<span class="fc" id="L125">			return new org.drip.function.rdtor1.AffineMultivariate</span>
+<span class="fc" id="L126">				(org.drip.function.rdtor1.ObjectiveConstraintVariateSet.Unitary (assets().length), -1.);</span>
+<span class="nc" id="L127">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L128">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L131">		return null;</span>
+	}
+
+	/**
+	 * Retrieve the Mandatory Returns Constraint
+	 * 
+	 * @param ausp The Asset Universe Statistical Properties Instance
+	 * 
+	 * @return The Mandatory Returns Constraint
+	 */
+
+	public org.drip.function.definition.RdToR1 returnsConstraint (
+		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties ausp)
+	{
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">		if (null == ausp) return null;</span>
+
+<span class="fc" id="L147">		java.lang.String[] astrAssetID = assets();</span>
+
+<span class="fc" id="L149">		int iNumAsset = astrAssetID.length;</span>
+<span class="fc" id="L150">		double[] adblAssetReturn = new double[iNumAsset];</span>
+
+<span class="fc bfc" id="L152" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumAsset; ++i) {</span>
+<span class="fc" id="L153">			org.drip.portfolioconstruction.params.AssetStatisticalProperties aspAsset = ausp.asp</span>
+<span class="fc" id="L154">				(astrAssetID[i]);</span>
+
+<span class="pc bpc" id="L156" title="1 of 2 branches missed.">			if (null == aspAsset) return null;</span>
+
+<span class="fc" id="L158">			adblAssetReturn[i] = aspAsset.expectedReturn();</span>
+		}
+
+		try {
+<span class="fc" id="L162">			return new org.drip.function.rdtor1.AffineMultivariate (adblAssetReturn, -1. *</span>
+<span class="fc" id="L163">				_pecs.returnsConstraint());</span>
+<span class="nc" id="L164">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L165">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L168">		return null;</span>
+	}
+
+	/**
+	 * Retrieve the Equality Constraint R^d To R^1 Corresponding to the Specified Constraint Type
+	 * 
+	 * @param ausp The Asset Universe Statistical Properties Instance
+	 * 
+	 * @return The Equality Constraint R^d To R^1  Corresponding to the Specified Constraint Type
+	 */
+
+	public org.drip.function.definition.RdToR1[] equalityConstraintRdToR1 (
+		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties ausp)
+	{
+<span class="fc" id="L182">		if (org.drip.portfolioconstruction.allocator.PortfolioEqualityConstraintSettings.NO_CONSTRAINT ==</span>
+<span class="fc bfc" id="L183" title="All 2 branches covered.">			_pecs.constraintType())</span>
+<span class="fc" id="L184">			return null;</span>
+
+<span class="fc" id="L186">		java.util.List&lt;org.drip.function.definition.RdToR1&gt; lsRdToR1 = new</span>
+			java.util.ArrayList&lt;org.drip.function.definition.RdToR1&gt;();
+
+<span class="fc" id="L189">		if (0 !=</span>
+			(org.drip.portfolioconstruction.allocator.PortfolioEqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT
+<span class="pc bpc" id="L191" title="1 of 2 branches missed.">			&amp; _pecs.constraintType()))</span>
+<span class="fc" id="L192">			lsRdToR1.add (fullyInvestedConstraint());</span>
+
+<span class="fc" id="L194">		if (0 !=</span>
+			(org.drip.portfolioconstruction.allocator.PortfolioEqualityConstraintSettings.RETURNS_CONSTRAINT
+<span class="fc bfc" id="L196" title="All 2 branches covered.">			&amp; _pecs.constraintType())) {</span>
+<span class="fc" id="L197">			org.drip.function.definition.RdToR1 rdToR1ReturnsConstraint = returnsConstraint (ausp);</span>
+
+<span class="pc bpc" id="L199" title="1 of 2 branches missed.">			if (null == rdToR1ReturnsConstraint) return null;</span>
+
+<span class="fc" id="L201">			lsRdToR1.add (rdToR1ReturnsConstraint);</span>
+		}
+
+<span class="fc" id="L204">		int iNumConstraint = lsRdToR1.size();</span>
+
+<span class="fc" id="L206">		org.drip.function.definition.RdToR1[] aConstraintRdToR1 = new</span>
+			org.drip.function.definition.RdToR1[iNumConstraint];
+
+<span class="fc bfc" id="L209" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumConstraint; ++i)</span>
+<span class="fc" id="L210">			aConstraintRdToR1[i] = lsRdToR1.get (i);</span>
+
+<span class="fc" id="L212">		return aConstraintRdToR1;</span>
+	}
+
+	/**
+	 * Retrieve the Equality Constraint Values Corresponding to the Specified Constraint Type
+	 * 
+	 * @param ausp The Asset Universe Statistical Properties Instance
+	 * 
+	 * @return The Equality Constraint Values Corresponding to the Specified Constraint Type
+	 */
+
+	public double[] equalityConstraintValue (
+		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties ausp)
+	{
+<span class="nc" id="L226">		double dblReturnsConstraint = _pecs.returnsConstraint();</span>
+
+<span class="nc bnc" id="L228" title="All 2 branches missed.">		return org.drip.quant.common.NumberUtil.IsValid (dblReturnsConstraint) ? new double[] {1.,</span>
+			dblReturnsConstraint} : new double[] {1.};
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

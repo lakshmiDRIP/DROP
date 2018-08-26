@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BlackVolatility.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.sabr</a> &gt; <span class="el_source">BlackVolatility.java</span></div><h1>BlackVolatility.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.sabr;
+
+import org.drip.dynamics.sabr.*;
+import org.drip.quant.common.FormatUtil;
+import org.drip.sequence.random.BoxMullerGaussian;
+import org.drip.service.env.EnvManager;
+import org.drip.state.identifier.ForwardLabel;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * BlackVolatility demonstrates the Construction and Usage of the SABR Model to Imply the Black Volatility of
+ *  a given Contract.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L65">public class BlackVolatility {</span>
+
+	private static StochasticVolatilityStateEvolver SABREvolver (
+		final double dblBeta,
+		final double dblRho,
+		final double dblVolatilityOfVolatility)
+		throws Exception
+	{
+<span class="fc" id="L73">		return new StochasticVolatilityStateEvolver (</span>
+<span class="fc" id="L74">			ForwardLabel.Create (</span>
+				&quot;USD&quot;,
+				&quot;6M&quot;
+			),
+			dblBeta,
+			dblRho,
+			dblVolatilityOfVolatility,
+			new BoxMullerGaussian (
+				0.,
+				1.
+			),
+			new BoxMullerGaussian (
+				0.,
+				1.
+			)
+		);
+	}
+
+	private static void VolatilitySurface (
+		final StochasticVolatilityStateEvolver seSABR,
+		final double[] adblStrike,
+		final double dblATMForwardRate,
+		final double dblTTE,
+		final double dblSigma0)
+	{
+<span class="fc" id="L99">		String strDump = &quot;\t| &quot; + FormatUtil.FormatDouble (dblTTE, 1, 2, 1.) + &quot; =&gt; &quot;;</span>
+
+<span class="fc bfc" id="L101" title="All 2 branches covered.">		for (int i = 0; i &lt; adblStrike.length; ++i) {</span>
+<span class="fc" id="L102">			ImpliedBlackVolatility ibv = seSABR.computeBlackVolatility (</span>
+				adblStrike[i],
+				dblATMForwardRate,
+				dblTTE,
+				dblSigma0
+			);
+
+<span class="fc" id="L109">			strDump += FormatUtil.FormatDouble (ibv.impliedVolatility(), 2, 1, 100.) + &quot; | &quot;;</span>
+		}
+
+<span class="fc" id="L112">		System.out.println (strDump);</span>
+<span class="fc" id="L113">	}</span>
+
+	public static void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+<span class="fc" id="L119">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="fc" id="L121">		double dblRho = 0.;</span>
+<span class="fc" id="L122">		double dblBeta = 0.7;</span>
+<span class="fc" id="L123">		double dblATMForwardRate = 0.04;</span>
+<span class="fc" id="L124">		double dblVolatilityOfVolatility = 0.5;</span>
+<span class="fc" id="L125">		double adblForwardRateVolatility = 0.10;</span>
+<span class="fc" id="L126">		double[] adblStrike = {</span>
+			0.30, 0.35, 0.40, 0.45, 0.50
+		};
+<span class="fc" id="L129">		double[] adblTTE = {</span>
+			0.25, 0.50, 0.75, 1.00, 2.00, 3.00, 4.00, 5.00, 7.00, 9.99
+		};
+
+<span class="fc" id="L133">		StochasticVolatilityStateEvolver seSABR = SABREvolver (</span>
+			dblBeta,
+			dblRho,
+			dblVolatilityOfVolatility
+		);
+
+<span class="fc" id="L139">		System.out.println (&quot;\n\t|------------------------------------------------|&quot;);</span>
+
+<span class="fc" id="L141">		System.out.println (&quot;\t|         SABR IMPLIED BLACK VOLATILITY          |&quot;);</span>
+
+<span class="fc" id="L143">		System.out.println (&quot;\t|------------------------------------------------|&quot;);</span>
+
+<span class="fc bfc" id="L145" title="All 2 branches covered.">		for (double dblTTE : adblTTE)</span>
+<span class="fc" id="L146">			VolatilitySurface (</span>
+				seSABR,
+				adblStrike,
+				dblATMForwardRate,
+				dblTTE,
+				adblForwardRateVolatility
+			);
+
+<span class="fc" id="L154">		System.out.println (&quot;\t|------------------------------------------------|&quot;);</span>
+<span class="fc" id="L155">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

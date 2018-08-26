@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CustomFXCurveBuilder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.fx</a> &gt; <span class="el_source">CustomFXCurveBuilder.java</span></div><h1>CustomFXCurveBuilder.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.fx;
+
+import java.util.Map;
+
+import org.drip.analytics.date.*;
+import org.drip.function.r1tor1.QuadraticRationalShapeControl;
+import org.drip.param.market.CurveSurfaceQuoteContainer;
+import org.drip.param.valuation.ValuationParams;
+import org.drip.product.fx.FXForwardComponent;
+import org.drip.product.params.CurrencyPair;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.spline.basis.PolynomialFunctionSetParams;
+import org.drip.spline.params.*;
+import org.drip.spline.stretch.*;
+import org.drip.state.creator.*;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+import org.drip.state.estimator.LatentStateStretchBuilder;
+import org.drip.state.fx.FXCurve;
+import org.drip.state.inference.*;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * CustomFXCurveBuilder illustrates the Construction and Usage of the FX Forward Curve.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L77">public class CustomFXCurveBuilder {</span>
+
+	private static FXForwardComponent[] FXForwardCalibComponent (
+		final CurrencyPair cp,
+		final JulianDate dtSpot,
+		final String[] astrMaturityTenor)
+		throws Exception
+	{
+<span class="fc" id="L85">		FXForwardComponent[] aFXForward = new FXForwardComponent[astrMaturityTenor.length];</span>
+
+<span class="fc bfc" id="L87" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
+<span class="fc" id="L88">			aFXForward[i] = new FXForwardComponent (</span>
+<span class="fc" id="L89">				cp.code() + &quot;::FXFWD::&quot; + astrMaturityTenor[i],</span>
+				cp,
+<span class="fc" id="L91">				dtSpot.julian(),</span>
+<span class="fc" id="L92">				dtSpot.addTenor (astrMaturityTenor[i]).julian(),</span>
+				1.,
+				null
+			);
+
+<span class="fc" id="L97">		return aFXForward;</span>
+	}
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+<span class="fc" id="L104">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="fc" id="L106">		JulianDate dtToday = DateUtil.Today().addTenor (&quot;0D&quot;);</span>
+
+<span class="fc" id="L108">		CurrencyPair cp = CurrencyPair.FromCode (&quot;USD/EUR&quot;);</span>
+
+<span class="fc" id="L110">		double dblSpot = 1.0993;</span>
+
+<span class="fc" id="L112">		String[] astrMaturityTenor = new String[] {</span>
+			&quot;1W&quot;,
+			&quot;1M&quot;,
+			&quot;3M&quot;,
+			&quot;6M&quot;,
+			&quot;1Y&quot;,
+			&quot;2Y&quot;,
+			&quot;3Y&quot;
+		};
+
+<span class="fc" id="L122">		FXForwardComponent[] aFXForward = FXForwardCalibComponent (</span>
+			cp,
+			dtToday,
+			astrMaturityTenor
+		);
+
+<span class="fc" id="L128">		double[] adblFXForward = new double[] {</span>
+			1.1000, //	&quot;1W&quot;,
+			1.1012,	// 	&quot;1M&quot;,
+			1.1039,	// 	&quot;3M&quot;,
+			1.1148,	// 	&quot;6M&quot;,
+			1.1232,	// 	&quot;1Y&quot;,
+			1.1497,	// 	&quot;2Y&quot;,
+			1.1865,	// 	&quot;3Y&quot;
+		};
+
+<span class="fc" id="L138">		LatentStateStretchSpec fxForwardStretch = LatentStateStretchBuilder.FXStretchSpec (</span>
+			&quot;FXFORWARD&quot;,
+			aFXForward,
+			&quot;Outright&quot;,
+			adblFXForward
+		);
+
+<span class="fc" id="L145">		LatentStateStretchSpec[] aStretchSpec = new LatentStateStretchSpec[] {</span>
+			fxForwardStretch
+		};
+
+<span class="fc" id="L149">		LinearLatentStateCalibrator llsc = new LinearLatentStateCalibrator (</span>
+			new SegmentCustomBuilderControl (
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+				new PolynomialFunctionSetParams (4),
+<span class="fc" id="L153">				SegmentInelasticDesignControl.Create (</span>
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
+				null
+			),
+<span class="fc" id="L163">			BoundarySettings.NaturalStandard(),</span>
+			MultiSegmentSequence.CALIBRATE,
+			null,
+			null
+		);
+
+<span class="fc" id="L169">		ValuationParams valParams = new ValuationParams (</span>
+			dtToday,
+			dtToday,
+<span class="fc" id="L172">			cp.denomCcy()</span>
+		);
+
+<span class="fc" id="L175">		FXCurve fxCurve = ScenarioFXCurveBuilder.ShapePreservingFXCurve (</span>
+			llsc,
+			aStretchSpec,
+			cp,
+			valParams,
+			null,
+			null,
+			null,
+			dblSpot
+		);
+
+<span class="fc" id="L186">		MergedDiscountForwardCurve dcUSD = ScenarioDiscountCurveBuilder.ExponentiallyCompoundedFlatRate (</span>
+			dtToday,
+			&quot;USD&quot;,
+			0.02
+		);
+
+<span class="fc" id="L192">		MergedDiscountForwardCurve dcEUR = ScenarioDiscountCurveBuilder.ExponentiallyCompoundedFlatRate (</span>
+			dtToday,
+			&quot;EUR&quot;,
+			0.01
+		);
+
+<span class="fc" id="L198">		CurveSurfaceQuoteContainer csqs = new CurveSurfaceQuoteContainer();</span>
+
+<span class="fc" id="L200">		csqs.setFXState (fxCurve);</span>
+
+<span class="fc" id="L202">		System.out.println (&quot;\n\t|-------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L204">		System.out.println (&quot;\t|                                                                   ||&quot;);</span>
+
+<span class="fc" id="L206">		System.out.println (&quot;\t|    Custom FX Curve Builder Metrics #1                             ||&quot;);</span>
+
+<span class="fc" id="L208">		System.out.println (&quot;\t|    ------ -- ----- ------- ------- --                             ||&quot;);</span>
+
+<span class="fc" id="L210">		System.out.println (&quot;\t|    L -&gt; R:                                                        ||&quot;);</span>
+
+<span class="fc" id="L212">		System.out.println (&quot;\t|        FX Forward Tenor                                           ||&quot;);</span>
+
+<span class="fc" id="L214">		System.out.println (&quot;\t|        Input FX Forward Outright                                  ||&quot;);</span>
+
+<span class="fc" id="L216">		System.out.println (&quot;\t|        Curve FX Forward Outright                                  ||&quot;);</span>
+
+<span class="fc" id="L218">		System.out.println (&quot;\t|        Product FX Forward Outright                                ||&quot;);</span>
+
+<span class="fc" id="L220">		System.out.println (&quot;\t|        Product FX Forward PIP                                     ||&quot;);</span>
+
+<span class="fc" id="L222">		System.out.println (&quot;\t|        FX Forward Discount Curve Basis EUR Curve                  ||&quot;);</span>
+
+<span class="fc" id="L224">		System.out.println (&quot;\t|        FX Forward Discount Curve Basis USD Curve                  ||&quot;);</span>
+
+<span class="fc" id="L226">		System.out.println (&quot;\t|-------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc bfc" id="L228" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i) {</span>
+<span class="fc" id="L229">			Map&lt;String, Double&gt; mapMeasures = aFXForward[i].value (</span>
+				valParams,
+				null,
+				csqs,
+				null
+			);
+
+<span class="fc" id="L236">			System.out.println (</span>
+				&quot;\t| [&quot; + astrMaturityTenor[i] + &quot;] =&gt; &quot; +
+<span class="fc" id="L238">				FormatUtil.FormatDouble (adblFXForward[i], 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L239">				FormatUtil.FormatDouble (fxCurve.fx (astrMaturityTenor[i]), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L240">				FormatUtil.FormatDouble (mapMeasures.get (&quot;Outright&quot;), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L241">				FormatUtil.FormatDouble (mapMeasures.get (&quot;PIP&quot;), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L242">				FormatUtil.FormatDouble (</span>
+<span class="fc" id="L243">					aFXForward[i].discountCurveBasis (</span>
+						valParams,
+						dcEUR,
+						dcUSD,
+						dblSpot,
+						adblFXForward[i],
+						false
+					), 1, 4, 1.) + &quot; | &quot; +
+<span class="fc" id="L251">				FormatUtil.FormatDouble (</span>
+<span class="fc" id="L252">					aFXForward[i].discountCurveBasis (</span>
+						valParams,
+						dcEUR,
+						dcUSD,
+						dblSpot,
+						adblFXForward[i],
+						true
+					), 1, 4, 1.) + &quot; || &quot;
+			);
+		}
+
+<span class="fc" id="L263">		System.out.println (&quot;\t|-------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L265">		int[] aiDateNode = new int[astrMaturityTenor.length];</span>
+
+<span class="fc bfc" id="L267" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
+<span class="fc" id="L268">			aiDateNode[i] = dtToday.addTenor (astrMaturityTenor[i]).julian();</span>
+
+<span class="fc" id="L270">		double[] adblZeroUSDBasis = fxCurve.zeroBasis (</span>
+			aiDateNode,
+			valParams,
+			dcEUR,
+			dcUSD,
+			true
+		);
+
+<span class="fc" id="L278">		double[] adblZeroEURBasis = fxCurve.zeroBasis (</span>
+			aiDateNode,
+			valParams,
+			dcEUR,
+			dcUSD,
+			false
+		);
+
+<span class="fc" id="L286">		double[] adblBootstrappedUSDBasis = fxCurve.bootstrapBasis (</span>
+			aiDateNode,
+			valParams,
+			dcEUR,
+			dcUSD,
+			true
+		);
+
+<span class="fc" id="L294">		double[] adblBootstrappedEURBasis = fxCurve.bootstrapBasis (</span>
+			aiDateNode,
+			valParams,
+			dcEUR,
+			dcUSD,
+			false
+		);
+
+<span class="fc" id="L302">		System.out.println (&quot;\n\t|-------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L304">		System.out.println (&quot;\t|                                                                   ||&quot;);</span>
+
+<span class="fc" id="L306">		System.out.println (&quot;\t|    Custom FX Curve Builder Metrics #2                             ||&quot;);</span>
+
+<span class="fc" id="L308">		System.out.println (&quot;\t|    ------ -- ----- ------- ------- --                             ||&quot;);</span>
+
+<span class="fc" id="L310">		System.out.println (&quot;\t|    L -&gt; R:                                                        ||&quot;);</span>
+
+<span class="fc" id="L312">		System.out.println (&quot;\t|        FX Forward Tenor                                           ||&quot;);</span>
+
+<span class="fc" id="L314">		System.out.println (&quot;\t|        FX Forward Discount Curve Zero Basis USD Curve             ||&quot;);</span>
+
+<span class="fc" id="L316">		System.out.println (&quot;\t|        FX Forward Discount Curve Zero Basis EUR Curve             ||&quot;);</span>
+
+<span class="fc" id="L318">		System.out.println (&quot;\t|        FX Forward Discount Curve Bootstrapped USD Curve Basis     ||&quot;);</span>
+
+<span class="fc" id="L320">		System.out.println (&quot;\t|        FX Forward Discount Curve Bootstrapped EUR Curve Basis     ||&quot;);</span>
+
+<span class="fc" id="L322">		System.out.println (&quot;\t|-------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc bfc" id="L324" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
+<span class="fc" id="L325">			System.out.println (</span>
+				&quot;\t| [&quot; + astrMaturityTenor[i] + &quot;] =&gt; &quot; +
+<span class="fc" id="L327">				FormatUtil.FormatDouble (adblZeroUSDBasis[i], 1, 4, 100.) + &quot; | &quot; +</span>
+<span class="fc" id="L328">				FormatUtil.FormatDouble (adblZeroEURBasis[i], 1, 4, 100.) + &quot; | &quot; +</span>
+<span class="fc" id="L329">				FormatUtil.FormatDouble (adblBootstrappedUSDBasis[i], 1, 4, 100.) + &quot; | &quot; +</span>
+<span class="fc" id="L330">				FormatUtil.FormatDouble (adblBootstrappedEURBasis[i], 1, 4, 100.) + &quot; ||&quot;</span>
+			);
+
+<span class="fc" id="L333">		System.out.println (&quot;\t|-------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L334">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,881 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OISCurveQuoteSensitivity.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.sensitivity</a> &gt; <span class="el_source">OISCurveQuoteSensitivity.java</span></div><h1>OISCurveQuoteSensitivity.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.sensitivity;
+
+import java.util.List;
+
+import org.drip.analytics.date.*;
+import org.drip.analytics.support.*;
+import org.drip.function.r1tor1.QuadraticRationalShapeControl;
+import org.drip.param.creator.*;
+import org.drip.param.period.*;
+import org.drip.param.valuation.*;
+import org.drip.product.creator.*;
+import org.drip.product.rates.*;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.spline.basis.ExponentialTensionSetParams;
+import org.drip.spline.params.*;
+import org.drip.spline.stretch.*;
+import org.drip.state.creator.ScenarioDiscountCurveBuilder;
+import org.drip.state.discount.*;
+import org.drip.state.estimator.LatentStateStretchBuilder;
+import org.drip.state.identifier.*;
+import org.drip.state.inference.*;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * OISCurveQuoteSensitivity demonstrates the calculation of the OIS discount curve sensitivity to the
+ * 	calibration instrument quotes. It does the following:
+ * 	- Construct the Array of Cash/OIS Instruments and their Quotes from the given set of parameters.
+ * 	- Construct the Cash/OIS Instrument Set Stretch Builder.
+ * 	- Set up the Linear Curve Calibrator using the following parameters:
+ * 		- Cubic Exponential Mixture Basis Spline Set
+ * 		- Ck = 2, Segment Curvature Penalty = 2
+ * 		- Quadratic Rational Shape Controller
+ * 		- Natural Boundary Setting
+ * 	- Construct the Shape Preserving OIS Discount Curve by applying the linear curve calibrator to the array
+ * 		of Cash and OIS Stretches.
+ * 	- Cross-Comparison of the Cash/OIS Calibration Instrument &quot;Rate&quot; metric across the different curve
+ * 		construction methodologies.
+ * 	- Display of the Cash Instrument Discount Factor Quote Jacobian Sensitivities.
+ * 	- Display of the OIS Instrument Discount Factor Quote Jacobian Sensitivities.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L94">public class OISCurveQuoteSensitivity {</span>
+
+	/*
+	 * Construct the Array of Deposit Instruments from the given set of parameters
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final SingleStreamComponent[] DepositInstrumentsFromMaturityDays (
+		final JulianDate dtEffective,
+		final String strCurrency,
+		final int[] aiDay)
+		throws Exception
+	{
+<span class="fc" id="L108">		SingleStreamComponent[] aDeposit = new SingleStreamComponent[aiDay.length];</span>
+
+<span class="fc bfc" id="L110" title="All 2 branches covered.">		for (int i = 0; i &lt; aiDay.length; ++i)</span>
+<span class="fc" id="L111">			aDeposit[i] = SingleStreamComponentBuilder.Deposit (</span>
+				dtEffective,
+<span class="fc" id="L113">				dtEffective.addBusDays (</span>
+					aiDay[i],
+					strCurrency
+				),
+<span class="fc" id="L117">				OvernightLabel.Create (</span>
+					strCurrency
+				)
+			);
+
+<span class="fc" id="L122">		return aDeposit;</span>
+	}
+
+	/*
+	 * Construct the Array of Overnight Index Instruments from the given set of parameters
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final FixFloatComponent[] OvernightIndexFromMaturityTenor (
+		final JulianDate dtEffective,
+		final String[] astrMaturityTenor,
+		final double[] adblCoupon,
+		final String strCurrency)
+		throws Exception
+	{
+<span class="fc" id="L138">		FixFloatComponent[] aOIS = new FixFloatComponent[astrMaturityTenor.length];</span>
+
+<span class="fc" id="L140">		UnitCouponAccrualSetting ucasFixed = new UnitCouponAccrualSetting (</span>
+			2,
+			&quot;Act/360&quot;,
+			false,
+			&quot;Act/360&quot;,
+			false,
+			strCurrency,
+			false,
+			CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC
+		);
+
+<span class="fc" id="L151">		CashSettleParams csp = new CashSettleParams (</span>
+			0,
+			strCurrency,
+			0
+		);
+
+<span class="fc bfc" id="L157" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i) {</span>
+<span class="fc bfc" id="L158" title="All 2 branches covered.">			java.lang.String strFixedTenor = Helper.LEFT_TENOR_LESSER == Helper.TenorCompare (</span>
+				astrMaturityTenor[i],
+				&quot;6M&quot;
+			) ? astrMaturityTenor[i] : &quot;6M&quot;;
+
+<span class="fc bfc" id="L163" title="All 2 branches covered.">			java.lang.String strFloatingTenor = Helper.LEFT_TENOR_LESSER == Helper.TenorCompare (</span>
+				astrMaturityTenor[i],
+				&quot;3M&quot;
+			) ? astrMaturityTenor[i] : &quot;3M&quot;;
+
+<span class="fc" id="L168">			ComposableFloatingUnitSetting cfusFloating = new ComposableFloatingUnitSetting (</span>
+				&quot;ON&quot;,
+				CompositePeriodBuilder.EDGE_DATE_SEQUENCE_OVERNIGHT,
+				null,
+<span class="fc" id="L172">				OvernightLabel.Create (</span>
+					strCurrency
+				),
+				CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
+				0.
+			);
+
+<span class="fc" id="L179">			ComposableFixedUnitSetting cfusFixed = new ComposableFixedUnitSetting (</span>
+				strFixedTenor,
+				CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
+				null,
+				adblCoupon[i],
+				0.,
+				strCurrency
+			);
+
+<span class="fc" id="L188">			CompositePeriodSetting cpsFloating = new CompositePeriodSetting (</span>
+				4,
+				strFloatingTenor,
+				strCurrency,
+				null,
+				-1.,
+				null,
+				null,
+				null,
+				null
+			);
+
+<span class="fc" id="L200">			CompositePeriodSetting cpsFixed = new CompositePeriodSetting (</span>
+				2,
+				strFixedTenor,
+				strCurrency,
+				null,
+				1.,
+				null,
+				null,
+				null,
+				null
+			);
+
+<span class="fc" id="L212">			List&lt;Integer&gt; lsFixedStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
+				dtEffective,
+				strFixedTenor,
+				astrMaturityTenor[i],
+				null
+			);
+
+<span class="fc" id="L219">			List&lt;Integer&gt; lsFloatingStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
+				dtEffective,
+				strFloatingTenor,
+				astrMaturityTenor[i],
+				null
+			);
+
+<span class="fc" id="L226">			Stream floatingStream = new Stream (</span>
+<span class="fc" id="L227">				CompositePeriodBuilder.FloatingCompositeUnit (</span>
+					lsFloatingStreamEdgeDate,
+					cpsFloating,
+					cfusFloating
+				)
+			);
+
+<span class="fc" id="L234">			Stream fixedStream = new Stream (</span>
+<span class="fc" id="L235">				CompositePeriodBuilder.FixedCompositeUnit (</span>
+					lsFixedStreamEdgeDate,
+					cpsFixed,
+					ucasFixed,
+					cfusFixed
+				)
+			);
+
+<span class="fc" id="L243">			FixFloatComponent ois = new FixFloatComponent (</span>
+				fixedStream,
+				floatingStream,
+				csp
+			);
+
+<span class="fc" id="L249">			ois.setPrimaryCode (&quot;OIS.&quot; + astrMaturityTenor[i] + &quot;.&quot; + strCurrency);</span>
+
+<span class="fc" id="L251">			aOIS[i] = ois;</span>
+		}
+
+<span class="fc" id="L254">		return aOIS;</span>
+	}
+
+	/*
+	 * Construct the Array of Overnight Index Future Instruments from the given set of parameters
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final FixFloatComponent[] OvernightIndexFutureFromMaturityTenor (
+		final JulianDate dtSpot,
+		final String[] astrStartTenor,
+		final String[] astrMaturityTenor,
+		final double[] adblCoupon,
+		final String strCurrency)
+		throws Exception
+	{
+<span class="fc" id="L271">		FixFloatComponent[] aOIS = new FixFloatComponent[astrStartTenor.length];</span>
+
+<span class="fc" id="L273">		CashSettleParams csp = new CashSettleParams (</span>
+			0,
+			strCurrency,
+			0
+		);
+
+<span class="fc bfc" id="L279" title="All 2 branches covered.">		for (int i = 0; i &lt; astrStartTenor.length; ++i) {</span>
+<span class="fc" id="L280">			JulianDate dtEffective = dtSpot.addTenor (astrStartTenor[i]);</span>
+
+<span class="pc bpc" id="L282" title="1 of 2 branches missed.">			java.lang.String strFixedTenor = Helper.LEFT_TENOR_LESSER == Helper.TenorCompare (</span>
+				astrMaturityTenor[i],
+				&quot;6M&quot;
+			) ? astrMaturityTenor[i] : &quot;6M&quot;;
+
+<span class="pc bpc" id="L287" title="1 of 2 branches missed.">			java.lang.String strFloatingTenor = Helper.LEFT_TENOR_LESSER == Helper.TenorCompare (</span>
+				astrMaturityTenor[i],
+				&quot;3M&quot;
+			) ? astrMaturityTenor[i] : &quot;3M&quot;;
+
+<span class="fc" id="L292">			ComposableFixedUnitSetting cfusFixed = new ComposableFixedUnitSetting (</span>
+				strFixedTenor,
+				CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
+				null,
+				adblCoupon[i],
+				0.,
+				strCurrency
+			);
+
+<span class="fc" id="L301">			UnitCouponAccrualSetting ucasFixed = new UnitCouponAccrualSetting (</span>
+				2,
+				&quot;Act/360&quot;,
+				false,
+				&quot;Act/360&quot;,
+				false,
+				strCurrency,
+				false,
+				CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC
+			);
+
+<span class="fc" id="L312">			ComposableFloatingUnitSetting cfusFloating = new ComposableFloatingUnitSetting (</span>
+				&quot;ON&quot;,
+				CompositePeriodBuilder.EDGE_DATE_SEQUENCE_OVERNIGHT,
+				null,
+<span class="fc" id="L316">				OvernightLabel.Create (</span>
+					strCurrency
+				),
+				CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
+				0.
+			);
+
+<span class="fc" id="L323">			CompositePeriodSetting cpsFloating = new CompositePeriodSetting (</span>
+				4,
+				strFloatingTenor,
+				strCurrency,
+				null,
+				-1.,
+				null,
+				null,
+				null,
+				null
+			);
+
+<span class="fc" id="L335">			CompositePeriodSetting cpsFixed = new CompositePeriodSetting (</span>
+				2,
+				strFixedTenor,
+				strCurrency,
+				null,
+				1.,
+				null,
+				null,
+				null,
+				null
+			);
+
+<span class="fc" id="L347">			List&lt;Integer&gt; lsFixedStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
+				dtEffective,
+				&quot;6M&quot;,
+				astrMaturityTenor[i],
+				null
+			);
+
+<span class="fc" id="L354">			List&lt;Integer&gt; lsFloatingStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
+				dtEffective,
+				&quot;3M&quot;,
+				astrMaturityTenor[i],
+				null
+			);
+
+<span class="fc" id="L361">			Stream floatingStream = new Stream (</span>
+<span class="fc" id="L362">				CompositePeriodBuilder.FloatingCompositeUnit (</span>
+					lsFloatingStreamEdgeDate,
+					cpsFloating,
+					cfusFloating
+				)
+			);
+
+<span class="fc" id="L369">			Stream fixedStream = new Stream (</span>
+<span class="fc" id="L370">				CompositePeriodBuilder.FixedCompositeUnit (</span>
+					lsFixedStreamEdgeDate,
+					cpsFixed,
+					ucasFixed,
+					cfusFixed
+				)
+			);
+
+<span class="fc" id="L378">			FixFloatComponent ois = new FixFloatComponent (</span>
+				fixedStream,
+				floatingStream,
+				csp
+			);
+
+<span class="fc" id="L384">			ois.setPrimaryCode (&quot;OIS.&quot; + astrMaturityTenor[i] + &quot;.&quot; + strCurrency);</span>
+
+<span class="fc" id="L386">			aOIS[i] = ois;</span>
+		}
+
+<span class="fc" id="L389">		return aOIS;</span>
+	}
+
+	/*
+	 * This sample demonstrates the calculation of the discount curve sensitivity to the calibration
+	 * 	instrument quotes. It does the following:
+	 * 	- Construct the Array of Cash/OIS Instruments and their Quotes from the given set of parameters.
+	 * 	- Construct the Cash/OIS Instrument Set Stretch Builder.
+	 * 	- Set up the Linear Curve Calibrator using the following parameters:
+	 * 		- Cubic Exponential Mixture Basis Spline Set
+	 * 		- Ck = 2, Segment Curvature Penalty = 2
+	 * 		- Quadratic Rational Shape Controller
+	 * 		- Natural Boundary Setting
+	 * 	- Construct the Shape Preserving Discount Curve by applying the linear curve calibrator to the array
+	 * 		of Cash and OIS Stretches.
+	 * 	- Cross-Comparison of the Cash/OIS Calibration Instrument &quot;Rate&quot; metric across the different curve
+	 * 		construction methodologies.
+	 * 	- Display of the Cash Instrument Discount Factor Quote Jacobian Sensitivities.
+	 * 	- Display of the OIS Instrument Discount Factor Quote Jacobian Sensitivities.
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final void OISCurveQuoteSensitivitySample (
+		final JulianDate dtSpot,
+		final String strHeaderComment,
+		final String strCurrency)
+		throws Exception
+	{
+<span class="fc" id="L418">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L420">		System.out.println (&quot;\t&quot; + strHeaderComment);</span>
+
+		/*
+		 * Construct the Array of Deposit Instruments and their Quotes from the given set of parameters
+		 */
+
+<span class="fc" id="L426">		SingleStreamComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (</span>
+			dtSpot,
+			strCurrency,
+			new int[] {
+				1, 2, 3
+			}
+		);
+
+<span class="fc" id="L434">		double[] adblDepositQuote = new double[] {</span>
+			0.0004, 0.0004, 0.0004		 // Deposit
+		};
+
+		/*
+		 * Setup the Deposit instruments stretch latent state representation - this uses the discount factor
+		 * 	quantification metric and the &quot;rate&quot; manifest measure.
+		 */
+
+<span class="fc" id="L443">		LatentStateStretchSpec depositStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
+			&quot;   DEPOSIT   &quot;,
+			aDepositComp,
+			&quot;ForwardRate&quot;,
+			adblDepositQuote
+		);
+
+		/*
+		 * Construct the Array of Short End OIS Instruments and their Quotes from the given set of parameters
+		 */
+
+<span class="fc" id="L454">		double[] adblShortEndOISQuote = new double[] {</span>
+			0.00070,    //   1W
+			0.00069,    //   2W
+			0.00078,    //   3W
+			0.00074     //   1M
+		};
+
+<span class="fc" id="L461">		FixFloatComponent[] aShortEndOISComp = OvernightIndexFromMaturityTenor (</span>
+			dtSpot,
+			new java.lang.String[] {
+				&quot;1W&quot;, &quot;2W&quot;, &quot;3W&quot;, &quot;1M&quot;
+			},
+			adblShortEndOISQuote,
+			strCurrency
+		);
+
+		/*
+		 * Construct the Short End OIS Instrument Set Stretch Builder
+		 */
+
+<span class="fc" id="L474">		LatentStateStretchSpec oisShortEndStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
+			&quot;SHORT END OIS&quot;,
+			aShortEndOISComp,
+			&quot;SwapRate&quot;,
+			adblShortEndOISQuote
+		);
+
+		/*
+		 * Construct the Array of OIS Futures Instruments and their Quotes from the given set of parameters
+		 */
+
+<span class="fc" id="L485">		double[] adblOISFutureQuote = new double[] {</span>
+			 0.00046,    //   1M x 1M
+			 0.00016,    //   2M x 1M
+			-0.00007,    //   3M x 1M
+			-0.00013,    //   4M x 1M
+			-0.00014     //   5M x 1M
+		};
+
+<span class="fc" id="L493">		FixFloatComponent[] aOISFutureComp = OvernightIndexFutureFromMaturityTenor (</span>
+			dtSpot,
+			new java.lang.String[] {
+				&quot;1M&quot;, &quot;2M&quot;, &quot;3M&quot;, &quot;4M&quot;, &quot;5M&quot;
+			},
+			new java.lang.String[] {
+				&quot;1M&quot;, &quot;1M&quot;, &quot;1M&quot;, &quot;1M&quot;, &quot;1M&quot;
+			},
+			adblOISFutureQuote,
+			strCurrency
+		);
+
+		/*
+		 * Construct the OIS Future Instrument Set Stretch Builder
+		 */
+
+<span class="fc" id="L509">		LatentStateStretchSpec oisFutureStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
+			&quot; OIS FUTURE  &quot;,
+			aOISFutureComp,
+			&quot;SwapRate&quot;,
+			adblOISFutureQuote
+		);
+
+		/*
+		 * Construct the Array of Long End OIS Instruments and their Quotes from the given set of parameters
+		 */
+
+<span class="fc" id="L520">		double[] adblLongEndOISQuote = new double[] {</span>
+			0.00002,    //  15M
+			0.00008,    //  18M
+			0.00021,    //  21M
+			0.00036,    //   2Y
+			0.00127,    //   3Y
+			0.00274,    //   4Y
+			0.00456,    //   5Y
+			0.00647,    //   6Y
+			0.00827,    //   7Y
+			0.00996,    //   8Y
+			0.01147,    //   9Y
+			0.01280,    //  10Y
+			0.01404,    //  11Y
+			0.01516,    //  12Y
+			0.01764,    //  15Y
+			0.01939,    //  20Y
+			0.02003,    //  25Y
+			0.02038     //  30Y
+		};
+
+<span class="fc" id="L541">		FixFloatComponent[] aLongEndOISComp = OvernightIndexFromMaturityTenor (</span>
+			dtSpot,
+			new java.lang.String[] {
+				&quot;15M&quot;, &quot;18M&quot;, &quot;21M&quot;, &quot;2Y&quot;, &quot;3Y&quot;, &quot;4Y&quot;, &quot;5Y&quot;, &quot;6Y&quot;, &quot;7Y&quot;, &quot;8Y&quot;, &quot;9Y&quot;, &quot;10Y&quot;, &quot;11Y&quot;, &quot;12Y&quot;, &quot;15Y&quot;, &quot;20Y&quot;, &quot;25Y&quot;, &quot;30Y&quot;
+			},
+			adblLongEndOISQuote,
+			strCurrency
+		);
+
+		/*
+		 * Construct the Long End OIS Instrument Set Stretch Builder
+		 */
+
+<span class="fc" id="L554">		LatentStateStretchSpec oisLongEndStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
+			&quot;LONG END OIS &quot;,
+			aLongEndOISComp,
+			&quot;SwapRate&quot;,
+			adblLongEndOISQuote
+		);
+
+<span class="fc" id="L561">		LatentStateStretchSpec[] aStretchSpec = new LatentStateStretchSpec[] {</span>
+			depositStretch,
+			oisShortEndStretch,
+			oisFutureStretch,
+			oisLongEndStretch
+		};
+
+		/*
+		 * Set up the Linear Curve Calibrator using the following Default Segment Control parameters:
+		 * 	- Cubic Exponential Mixture Basis Spline Set
+		 * 	- Ck = 2, Segment Curvature Penalty = 2
+		 * 	- Quadratic Rational Shape Controller
+		 * 	- Prior Quote Sensitivity Control with first derivative tail fade, with FADE ON
+		 * 	- Natural Boundary Setting
+		 */
+
+<span class="fc" id="L577">		LinearLatentStateCalibrator lcc = new LinearLatentStateCalibrator (</span>
+			new SegmentCustomBuilderControl (
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
+				new ExponentialTensionSetParams (2.),
+<span class="fc" id="L581">				SegmentInelasticDesignControl.Create (</span>
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
+				new org.drip.spline.params.PreceedingManifestSensitivityControl (
+					true,
+					1,
+					null
+				)
+			),
+<span class="fc" id="L595">			BoundarySettings.NaturalStandard(),</span>
+			MultiSegmentSequence.CALIBRATE,
+			null,
+			null
+		);
+
+		/*
+		 * Set up the DEPOSIT Segment Control parameters with the following details:
+		 * 	- Cubic Exponential Mixture Basis Spline Set
+		 * 	- Ck = 2, Segment Curvature Penalty = 2
+		 * 	- Quadratic Rational Shape Controller
+		 * 	- Prior Quote Sensitivity Control with first derivative tail fade, with FADE ON
+		 * 	- Natural Boundary Setting
+		 */
+
+<span class="fc" id="L610">		lcc.setStretchSegmentBuilderControl (</span>
+<span class="fc" id="L611">			depositStretch.name(),</span>
+			new SegmentCustomBuilderControl (
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
+				new ExponentialTensionSetParams (2.),
+<span class="fc" id="L615">				SegmentInelasticDesignControl.Create (</span>
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
+				new org.drip.spline.params.PreceedingManifestSensitivityControl (
+					true,
+					1,
+					null
+				)
+			)
+		);
+
+		/*
+		 * Set up the Short End OIS Segment Control parameters with the following details:
+		 * 	- Cubic Exponential Mixture Basis Spline Set
+		 * 	- Ck = 2, Segment Curvature Penalty = 2
+		 * 	- Quadratic Rational Shape Controller
+		 * 	- Prior Quote Sensitivity Control with first derivative tail fade, with FADE ON
+		 * 	- Natural Boundary Setting
+		 */
+
+<span class="fc" id="L640">		lcc.setStretchSegmentBuilderControl (</span>
+<span class="fc" id="L641">			oisShortEndStretch.name(),</span>
+			new SegmentCustomBuilderControl (
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
+				new ExponentialTensionSetParams (2.),
+<span class="fc" id="L645">				SegmentInelasticDesignControl.Create (</span>
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
+				new org.drip.spline.params.PreceedingManifestSensitivityControl (
+					true,
+					1,
+					null
+				)
+			)
+		);
+
+		/*
+		 * Set up the Long End OIS Segment Control parameters with the following details:
+		 * 	- Cubic Exponential Mixture Basis Spline Set
+		 * 	- Ck = 2, Segment Curvature Penalty = 2
+		 * 	- Quadratic Rational Shape Controller
+		 * 	- Prior Quote Sensitivity Control with first derivative tail fade, with FADE ON
+		 * 	- Natural Boundary Setting
+		 */
+
+<span class="fc" id="L670">		lcc.setStretchSegmentBuilderControl (</span>
+<span class="fc" id="L671">			oisLongEndStretch.name(),</span>
+			new SegmentCustomBuilderControl (
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
+				new ExponentialTensionSetParams (2.),
+<span class="fc" id="L675">				SegmentInelasticDesignControl.Create (</span>
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
+				new org.drip.spline.params.PreceedingManifestSensitivityControl (
+					true,
+					1,
+					null
+				)
+			)
+		);
+
+<span class="fc" id="L691">		ValuationParams valParams = new ValuationParams (</span>
+			dtSpot,
+			dtSpot,
+			strCurrency
+		);
+
+		/*
+		 * Construct the Shape Preserving Discount Curve by applying the linear curve calibrator to the array
+		 *  of DEPOSIT, OIS SHORT END, and OIS LONG END Stretches.
+		 */
+
+<span class="fc" id="L702">		MergedDiscountForwardCurve dc = ScenarioDiscountCurveBuilder.ShapePreservingDFBuild (</span>
+			strCurrency,
+			lcc,
+			aStretchSpec,
+			valParams,
+			null,
+			null,
+			null,
+			1.
+		);
+
+		/*
+		 * Cross-Comparison of the DEPOSIT Calibration Instrument &quot;Rate&quot; metric across the different curve
+		 * 	construction methodologies.
+		 */
+
+<span class="fc" id="L718">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L720">		System.out.println (&quot;\t     DEPOSIT INSTRUMENTS CALIBRATION RECOVERY&quot;);</span>
+
+<span class="fc" id="L722">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+
+<span class="fc bfc" id="L724" title="All 2 branches covered.">		for (int i = 0; i &lt; aDepositComp.length; ++i)</span>
+<span class="fc" id="L725">			System.out.println (&quot;\t[&quot; + aDepositComp[i].maturityDate() + &quot;] = &quot; +</span>
+<span class="fc" id="L726">				FormatUtil.FormatDouble (aDepositComp[i].measureValue (valParams, null,</span>
+<span class="fc" id="L727">					MarketParamsBuilder.Create (dc, null, null, null, null, null, null),</span>
+<span class="fc" id="L728">						null, &quot;Rate&quot;), 1, 6, 1.) + &quot; | &quot; + FormatUtil.FormatDouble (adblDepositQuote[i], 1, 6, 1.));</span>
+
+		/*
+		 * Cross-Comparison of the Short End OIS Calibration Instrument &quot;Rate&quot; metric across the different curve
+		 * 	construction methodologies.
+		 */
+
+<span class="fc" id="L735">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L737">		System.out.println (&quot;\t     SHORT END OIS INSTRUMENTS CALIBRATION RECOVERY&quot;);</span>
+
+<span class="fc" id="L739">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+
+<span class="fc bfc" id="L741" title="All 2 branches covered.">		for (int i = 0; i &lt; aShortEndOISComp.length; ++i)</span>
+<span class="fc" id="L742">			System.out.println (&quot;\t[&quot; + aShortEndOISComp[i].maturityDate() + &quot;] = &quot; +</span>
+<span class="fc" id="L743">				FormatUtil.FormatDouble (aShortEndOISComp[i].measureValue (valParams, null,</span>
+<span class="fc" id="L744">					MarketParamsBuilder.Create (dc, null, null, null, null, null, null),</span>
+<span class="fc" id="L745">						null, &quot;CalibSwapRate&quot;), 1, 6, 1.) + &quot; | &quot; + FormatUtil.FormatDouble (adblShortEndOISQuote[i], 1, 6, 1.));</span>
+
+		/*
+		 * Cross-Comparison of the OIS Future Calibration Instrument &quot;Rate&quot; metric across the different curve
+		 * 	construction methodologies.
+		 */
+
+<span class="fc" id="L752">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L754">		System.out.println (&quot;\t     OIS FUTURE INSTRUMENTS CALIBRATION RECOVERY&quot;);</span>
+
+<span class="fc" id="L756">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+
+<span class="fc bfc" id="L758" title="All 2 branches covered.">		for (int i = 0; i &lt; aOISFutureComp.length; ++i)</span>
+<span class="fc" id="L759">			System.out.println (&quot;\t[&quot; + aOISFutureComp[i].maturityDate() + &quot;] = &quot; +</span>
+<span class="fc" id="L760">				FormatUtil.FormatDouble (aOISFutureComp[i].measureValue (valParams, null,</span>
+<span class="fc" id="L761">					MarketParamsBuilder.Create (dc, null, null, null, null, null, null),</span>
+<span class="fc" id="L762">						null, &quot;SwapRate&quot;), 1, 6, 1.) + &quot; | &quot; + FormatUtil.FormatDouble (adblOISFutureQuote[i], 1, 6, 1.));</span>
+
+		/*
+		 * Cross-Comparison of the Long End OIS Calibration Instrument &quot;Rate&quot; metric across the different curve
+		 * 	construction methodologies.
+		 */
+
+<span class="fc" id="L769">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L771">		System.out.println (&quot;\t     LONG END OIS INSTRUMENTS CALIBRATION RECOVERY&quot;);</span>
+
+<span class="fc" id="L773">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+
+<span class="fc bfc" id="L775" title="All 2 branches covered.">		for (int i = 0; i &lt; aLongEndOISComp.length; ++i)</span>
+<span class="fc" id="L776">			System.out.println (&quot;\t[&quot; + aLongEndOISComp[i].maturityDate() + &quot;] = &quot; +</span>
+<span class="fc" id="L777">				FormatUtil.FormatDouble (aLongEndOISComp[i].measureValue (valParams, null,</span>
+<span class="fc" id="L778">					MarketParamsBuilder.Create (dc, null, null, null, null, null, null),</span>
+<span class="fc" id="L779">						null, &quot;CalibSwapRate&quot;), 1, 6, 1.) + &quot; | &quot; + FormatUtil.FormatDouble (adblLongEndOISQuote[i], 1, 6, 1.));</span>
+
+		/*
+		 * Display of the DEPOSIT Instrument Discount Factor Quote Jacobian Sensitivities.
+		 */
+
+<span class="fc" id="L785">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L787">		System.out.println (&quot;\t     DEPOSIT MATURITY DISCOUNT FACTOR JACOBIAN&quot;);</span>
+
+<span class="fc" id="L789">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+
+<span class="fc bfc" id="L791" title="All 2 branches covered.">		for (int i = 0; i &lt; aDepositComp.length; ++i) {</span>
+<span class="fc" id="L792">			org.drip.quant.calculus.WengertJacobian wj = dc.jackDDFDManifestMeasure (</span>
+<span class="fc" id="L793">				aDepositComp[i].maturityDate(),</span>
+				&quot;PV&quot;
+			);
+
+<span class="fc" id="L797">			System.out.println (aDepositComp[i].maturityDate() + &quot; =&gt; &quot; + wj.displayString());</span>
+		}
+
+		/*
+		 * Display of the Short End OIS Instrument Discount Factor Quote Jacobian Sensitivities.
+		 */
+
+<span class="fc" id="L804">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L806">		System.out.println (&quot;\t     SHORT END OIS MATURITY DISCOUNT FACTOR JACOBIAN&quot;);</span>
+
+<span class="fc" id="L808">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+
+<span class="fc bfc" id="L810" title="All 2 branches covered.">		for (int i = 0; i &lt; aShortEndOISComp.length; ++i) {</span>
+<span class="fc" id="L811">			org.drip.quant.calculus.WengertJacobian wjDFQuote = dc.jackDDFDManifestMeasure (</span>
+<span class="fc" id="L812">				aShortEndOISComp[i].maturityDate(),</span>
+				&quot;PV&quot;
+			);
+
+<span class="fc" id="L816">			System.out.println (aShortEndOISComp[i].maturityDate() + &quot; =&gt; &quot; + wjDFQuote.displayString());</span>
+		}
+
+		/*
+		 * Display of the OIS Future Instrument Discount Factor Quote Jacobian Sensitivities.
+		 */
+
+<span class="fc" id="L823">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L825">		System.out.println (&quot;\t     OIS FUTURE MATURITY DISCOUNT FACTOR JACOBIAN&quot;);</span>
+
+<span class="fc" id="L827">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+
+<span class="fc bfc" id="L829" title="All 2 branches covered.">		for (int i = 0; i &lt; aOISFutureComp.length; ++i) {</span>
+<span class="fc" id="L830">			org.drip.quant.calculus.WengertJacobian wjDFQuote = dc.jackDDFDManifestMeasure (</span>
+<span class="fc" id="L831">				aOISFutureComp[i].maturityDate(),</span>
+				&quot;PV&quot;
+			);
+
+<span class="fc" id="L835">			System.out.println (aOISFutureComp[i].maturityDate() + &quot; =&gt; &quot; + wjDFQuote.displayString());</span>
+		}
+
+		/*
+		 * Display of the Long End OIS Instrument Discount Factor Quote Jacobian Sensitivities.
+		 */
+
+<span class="fc" id="L842">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L844">		System.out.println (&quot;\t     LONG END OIS MATURITY DISCOUNT FACTOR JACOBIAN&quot;);</span>
+
+<span class="fc" id="L846">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+
+<span class="fc bfc" id="L848" title="All 2 branches covered.">		for (int i = 0; i &lt; aLongEndOISComp.length; ++i) {</span>
+<span class="fc" id="L849">			org.drip.quant.calculus.WengertJacobian wjDFQuote = dc.jackDDFDManifestMeasure (</span>
+<span class="fc" id="L850">				aLongEndOISComp[i].maturityDate(),</span>
+				&quot;PV&quot;
+			);
+
+<span class="fc" id="L854">			System.out.println (aLongEndOISComp[i].maturityDate() + &quot; =&gt; &quot; + wjDFQuote.displayString());</span>
+		}
+<span class="fc" id="L856">	}</span>
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+		/*
+		 * Initialize the Credit Analytics Library
+		 */
+
+<span class="fc" id="L866">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="fc" id="L868">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+			2018,
+			DateUtil.MARCH,
+			8
+		);
+
+<span class="fc" id="L874">		OISCurveQuoteSensitivitySample (</span>
+			dtSpot,
+			&quot;---- DISCOUNT CURVE WITH OVERNIGHT INDEX ---&quot;,
+			&quot;EUR&quot;
+		);
+<span class="fc" id="L879">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
