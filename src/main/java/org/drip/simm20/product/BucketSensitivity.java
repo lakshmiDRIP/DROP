@@ -167,7 +167,7 @@ public class BucketSensitivity
 			org.drip.simm20.margin.RiskFactorAggregate augmentedRiskFactorSensitivityOuter =
 				augmentedBucketSensitivityMapOuterEntry.getValue();
 
-			double riskFactorSensitivityOuter = augmentedRiskFactorSensitivityOuter.weightedAndNormalized();
+			double riskFactorSensitivityOuter = augmentedRiskFactorSensitivityOuter.sensitivityMargin();
 
 			double concentrationRiskFactorOuter =
 				augmentedRiskFactorSensitivityOuter.concentrationRiskFactor();
@@ -184,7 +184,7 @@ public class BucketSensitivity
 					augmentedRiskFactorSensitivityInner.concentrationRiskFactor();
 
 				double riskFactorSensitivityInner =
-					augmentedRiskFactorSensitivityInner.weightedAndNormalized();
+					augmentedRiskFactorSensitivityInner.sensitivityMargin();
 
 				double concentrationScaleDown = java.lang.Math.min (
 					concentrationRiskFactorInner,

@@ -8,9 +8,9 @@ import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.simm20.margin.IRGroupNetSensitivity;
 import org.drip.simm20.margin.IRMarginCovariance;
-import org.drip.simm20.margin.IRNetSensitivity;
-import org.drip.simm20.parameters.IRCurveTenorSettings;
-import org.drip.simm20.parameters.IRGroupSettings;
+import org.drip.simm20.margin.IRFactorAggregate;
+import org.drip.simm20.parameters.IRBucketSensitivitySettings;
+import org.drip.simm20.parameters.IRClassSensitivitySettings;
 import org.drip.simm20.product.IRSensitivity;
 
 /*
@@ -153,8 +153,8 @@ public class IRGroupDeltaMargin
 		return oisTenorSensitivities;
 	}
 
-	private static final IRNetSensitivity NetSensitivity (
-		final IRCurveTenorSettings curveTenorSensitivitySettings)
+	private static final IRFactorAggregate NetSensitivity (
+		final IRBucketSensitivitySettings curveTenorSensitivitySettings)
 		throws Exception
 	{
 		double[] oisTenorSensitivities = new double[]
@@ -273,7 +273,7 @@ public class IRGroupDeltaMargin
 			TenorSensitivityMap (municipalTenorSensitivities)
 		);
 
-		IRNetSensitivity irNetSensitivity = irSensitivity.curveNet (
+		IRFactorAggregate irNetSensitivity = irSensitivity.curveNet (
 			curveTenorSensitivitySettings,
 			true
 		);
@@ -516,13 +516,13 @@ public class IRGroupDeltaMargin
 		String eur = "EUR";
 		String gbp = "GBP";
 
-		IRCurveTenorSettings usdCurveTenorSettings = IRCurveTenorSettings.ISDA (usd);
+		IRBucketSensitivitySettings usdCurveTenorSettings = IRBucketSensitivitySettings.ISDA (usd);
 
-		IRCurveTenorSettings eurCurveTenorSettings = IRCurveTenorSettings.ISDA (eur);
+		IRBucketSensitivitySettings eurCurveTenorSettings = IRBucketSensitivitySettings.ISDA (eur);
 
-		IRCurveTenorSettings gbpCurveTenorSettings = IRCurveTenorSettings.ISDA (gbp);
+		IRBucketSensitivitySettings gbpCurveTenorSettings = IRBucketSensitivitySettings.ISDA (gbp);
 
-		IRGroupSettings irGroupSettings = IRGroupSettings.ISDA();
+		IRClassSensitivitySettings irGroupSettings = IRClassSensitivitySettings.ISDA();
 
 		irGroupSettings.addCurveTenorSettings (
 			usd,

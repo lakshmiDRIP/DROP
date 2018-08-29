@@ -47,8 +47,8 @@ package org.drip.simm20.parameters;
  */
 
 /**
- * IRCurveTenorSettings holds the Risk Weights and Concentration Thresholds for each Sub Curve Risk Factor
- *  and its Tenor. The References are:
+ * IRBucketSensitivitySettings holds the Risk Weights, Concentration Thresholds, and Cross-Tenor/Cross-Curve
+ *  Correlations for each Currency Curve and its Tenor. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -69,17 +69,17 @@ package org.drip.simm20.parameters;
  * @author Lakshmi Krishnamurthy
  */
 
-public class IRCurveTenorSettings extends org.drip.simm20.parameters.LiquiditySettings
+public class IRBucketSensitivitySettings extends org.drip.simm20.parameters.LiquiditySettings
 {
-	private double _crossSubCurveCorrelation = java.lang.Double.NaN;
-	private java.util.Map<java.lang.String, java.lang.Double> _ois = null;
-	private java.util.Map<java.lang.String, java.lang.Double> _prime = null;
-	private java.util.Map<java.lang.String, java.lang.Double> _libor1M = null;
-	private java.util.Map<java.lang.String, java.lang.Double> _libor3M = null;
-	private java.util.Map<java.lang.String, java.lang.Double> _libor6M = null;
-	private java.util.Map<java.lang.String, java.lang.Double> _libor12M = null;
-	private java.util.Map<java.lang.String, java.lang.Double> _municipal = null;
-	private org.drip.measure.stochastic.LabelCorrelation _singleCurveTenorCorrelation = null;
+	private double _crossCurveCorrelation = java.lang.Double.NaN;
+	private org.drip.measure.stochastic.LabelCorrelation _crossTenorCorrelation = null;
+	private java.util.Map<java.lang.String, java.lang.Double> _oisTenorRiskWeight = null;
+	private java.util.Map<java.lang.String, java.lang.Double> _primeTenorRiskWeight = null;
+	private java.util.Map<java.lang.String, java.lang.Double> _libor1MTenorRiskWeight = null;
+	private java.util.Map<java.lang.String, java.lang.Double> _libor3MTenorRiskWeight = null;
+	private java.util.Map<java.lang.String, java.lang.Double> _libor6MTenorRiskWeight = null;
+	private java.util.Map<java.lang.String, java.lang.Double> _libor12MTenorRiskWeight = null;
+	private java.util.Map<java.lang.String, java.lang.Double> _municipalTenorRiskWeight = null;
 
 	/**
 	 * Construct the ISDA Standard IR Sensitivity Settings for the Currency
@@ -89,7 +89,7 @@ public class IRCurveTenorSettings extends org.drip.simm20.parameters.LiquiditySe
 	 * @return The ISDA Standard IR Sensitivity Settings for the Currency
 	 */
 
-	public static final IRCurveTenorSettings ISDA (
+	public static final IRBucketSensitivitySettings ISDA (
 		final java.lang.String currency)
 	{
 		org.drip.simm20.rates.IRThreshold irThreshold = org.drip.simm20.rates.IRThresholdContainer.Threshold
@@ -145,7 +145,7 @@ public class IRCurveTenorSettings extends org.drip.simm20.parameters.LiquiditySe
 				null == libor6MRiskWeight ||
 				null == libor12MRiskWeight ||
 				null == primeRiskWeight ||
-				null == municipalRiskWeight ? null : new IRCurveTenorSettings (
+				null == municipalRiskWeight ? null : new IRBucketSensitivitySettings (
 					oisRiskWeight.tenorWeightMap(),
 					libor1MRiskWeight.tenorWeightMap(),
 					libor3MRiskWeight.tenorWeightMap(),
@@ -167,138 +167,138 @@ public class IRCurveTenorSettings extends org.drip.simm20.parameters.LiquiditySe
 	}
 
 	/**
-	 * IRCurveTenorSettings Constructor
+	 * IRBucketSensitivitySettings Constructor
 	 * 
-	 * @param ois The OIS Sensitivity Margin Estimator Settings
-	 * @param libor1M The LIBOR 1M Sensitivity Margin Estimator Settings
-	 * @param libor3M The LIBOR 3M Sensitivity Margin Estimator Settings
-	 * @param libor6M The LIBOR 6M Sensitivity Margin Estimator Settings
-	 * @param libor12M The LIBOR 12M Sensitivity Margin Estimator Settings
-	 * @param prime The PRIME Sensitivity Margin Estimator Settings
-	 * @param municipal The MUNICIPAL 12M Sensitivity Margin Estimator Settings
-	 * @param singleCurveTenorCorrelation Single Curve Tenor Correlation
-	 * @param crossSubCurveCorrelation Cross Sub Curve Correlation
+	 * @param oisTenorRiskWeight The OIS Tenor Risk Weight
+	 * @param libor1MTenorRiskWeight The LIBOR 1M Tenor Risk Weight
+	 * @param libor3MTenorRiskWeight The LIBOR 3M Tenor Risk Weight
+	 * @param libor6MTenorRiskWeight The LIBOR 6M Tenor Risk Weight
+	 * @param libor12MTenorRiskWeight The LIBOR 12M Tenor Risk Weight
+	 * @param primeTenorRiskWeight The PRIME Tenor Risk Weight
+	 * @param municipalTenorRiskWeight The MUNICIPAL Tenor Risk Weight
+	 * @param crossTenorCorrelation Single Curve Cross-Tenor Correlation
+	 * @param crossCurveCorrelation Cross Curve Correlation
 	 * @param concentrationThreshold The Concentration Threshold
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public IRCurveTenorSettings (
-		final java.util.Map<java.lang.String, java.lang.Double> ois,
-		final java.util.Map<java.lang.String, java.lang.Double> libor1M,
-		final java.util.Map<java.lang.String, java.lang.Double> libor3M,
-		final java.util.Map<java.lang.String, java.lang.Double> libor6M,
-		final java.util.Map<java.lang.String, java.lang.Double> libor12M,
-		final java.util.Map<java.lang.String, java.lang.Double> prime,
-		final java.util.Map<java.lang.String, java.lang.Double> municipal,
-		final org.drip.measure.stochastic.LabelCorrelation singleCurveTenorCorrelation,
-		final double crossSubCurveCorrelation,
+	public IRBucketSensitivitySettings (
+		final java.util.Map<java.lang.String, java.lang.Double> oisTenorRiskWeight,
+		final java.util.Map<java.lang.String, java.lang.Double> libor1MTenorRiskWeight,
+		final java.util.Map<java.lang.String, java.lang.Double> libor3MTenorRiskWeight,
+		final java.util.Map<java.lang.String, java.lang.Double> libor6MTenorRiskWeight,
+		final java.util.Map<java.lang.String, java.lang.Double> libor12MTenorRiskWeight,
+		final java.util.Map<java.lang.String, java.lang.Double> primeTenorRiskWeight,
+		final java.util.Map<java.lang.String, java.lang.Double> municipalTenorRiskWeight,
+		final org.drip.measure.stochastic.LabelCorrelation crossTenorCorrelation,
+		final double crossCurveCorrelation,
 		final double concentrationThreshold)
 		throws java.lang.Exception
 	{
 		super (concentrationThreshold);
 
-		if (null == (_ois = ois) ||
-			null == (_libor1M = libor1M) ||
-			null == (_libor3M = libor3M) ||
-			null == (_libor6M = libor6M) ||
-			null == (_libor12M = libor12M) ||
-			null == (_prime = prime) ||
-			null == (_municipal = municipal) ||
-			null == (_singleCurveTenorCorrelation = singleCurveTenorCorrelation) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_crossSubCurveCorrelation = crossSubCurveCorrelation) ||
-				-1. > _crossSubCurveCorrelation || 1. < _crossSubCurveCorrelation)
+		if (null == (_oisTenorRiskWeight = oisTenorRiskWeight) ||
+			null == (_libor1MTenorRiskWeight = libor1MTenorRiskWeight) ||
+			null == (_libor3MTenorRiskWeight = libor3MTenorRiskWeight) ||
+			null == (_libor6MTenorRiskWeight = libor6MTenorRiskWeight) ||
+			null == (_libor12MTenorRiskWeight = libor12MTenorRiskWeight) ||
+			null == (_primeTenorRiskWeight = primeTenorRiskWeight) ||
+			null == (_municipalTenorRiskWeight = municipalTenorRiskWeight) ||
+			null == (_crossTenorCorrelation = crossTenorCorrelation) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_crossCurveCorrelation = crossCurveCorrelation) ||
+				-1. > _crossCurveCorrelation || 1. < _crossCurveCorrelation)
 		{
-			throw new java.lang.Exception ("IRCurveTenorSettings Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("IRBucketSensitivitySettings Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the OIS Sensitivity Margin Estimator Settings
+	 * Retrieve the OIS Tenor Risk Weight
 	 * 
-	 * @return The OIS Sensitivity Margin Estimator Settings
+	 * @return The OIS Tenor Risk Weight
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> ois()
+	public java.util.Map<java.lang.String, java.lang.Double> oisTenorRiskWeight()
 	{
-		return _ois;
+		return _oisTenorRiskWeight;
 	}
 
 	/**
-	 * Retrieve the LIBOR 1M Sensitivity Margin Estimator Settings
+	 * Retrieve the LIBOR 1M Tenor Risk Weight
 	 * 
-	 * @return The LIBOR 1M Sensitivity Margin Estimator Settings
+	 * @return The LIBOR 1M Tenor Risk Weight
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> libor1M()
+	public java.util.Map<java.lang.String, java.lang.Double> libor1MTenorRiskWeight()
 	{
-		return _libor1M;
+		return _libor1MTenorRiskWeight;
 	}
 
 	/**
-	 * Retrieve the LIBOR 3M Sensitivity Margin Estimator Settings
+	 * Retrieve the LIBOR 3M Tenor Risk Weight
 	 * 
-	 * @return The LIBOR 3M Sensitivity Margin Estimator Settings
+	 * @return The LIBOR 3M Tenor Risk Weight
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> libor3M()
+	public java.util.Map<java.lang.String, java.lang.Double> libor3MTenorRiskWeight()
 	{
-		return _libor3M;
+		return _libor3MTenorRiskWeight;
 	}
 
 	/**
-	 * Retrieve the LIBOR 6M Sensitivity Margin Estimator Settings
+	 * Retrieve the LIBOR 6M Tenor Risk Weight
 	 * 
-	 * @return The LIBOR 6M Sensitivity Margin Estimator Settings
+	 * @return The LIBOR 6M Tenor Risk Weight
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> libor6M()
+	public java.util.Map<java.lang.String, java.lang.Double> libor6MTenorRiskWeight()
 	{
-		return _libor6M;
+		return _libor6MTenorRiskWeight;
 	}
 
 	/**
-	 * Retrieve the LIBOR 12M Sensitivity Margin Estimator Settings
+	 * Retrieve the LIBOR 12M Tenor Risk Weight
 	 * 
-	 * @return The LIBOR 12M Sensitivity Margin Estimator Settings
+	 * @return The LIBOR 12M Tenor Risk Weight
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> libor12M()
+	public java.util.Map<java.lang.String, java.lang.Double> libor12MTenorRiskWeight()
 	{
-		return _libor12M;
+		return _libor12MTenorRiskWeight;
 	}
 
 	/**
-	 * Retrieve the PRIME Sensitivity Margin Estimator Settings
+	 * Retrieve the PRIME Tenor Risk Weight
 	 * 
-	 * @return The PRIME Sensitivity Margin Estimator Settings
+	 * @return The PRIME Tenor Risk Weight
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> prime()
+	public java.util.Map<java.lang.String, java.lang.Double> primeTenorRiskWeight()
 	{
-		return _prime;
+		return _primeTenorRiskWeight;
 	}
 
 	/**
-	 * Retrieve the MUNICIPAL Sensitivity Margin Estimator Settings
+	 * Retrieve the MUNICIPAL Curve Tenor Risk Weight
 	 * 
-	 * @return The MUNICIPAL Sensitivity Margin Estimator Settings
+	 * @return The MUNICIPAL Curve Tenor Risk Weight
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> municipal()
+	public java.util.Map<java.lang.String, java.lang.Double> municipalTenorRiskWeight()
 	{
-		return _municipal;
+		return _municipalTenorRiskWeight;
 	}
 
 	/**
-	 * Retrieve the Cross Sub-Curve Correlation
+	 * Retrieve the Cross Curve Correlation
 	 * 
-	 * @return The Cross Sub-Curve Correlation
+	 * @return The Cross Curve Correlation
 	 */
 
-	public double crossSubCurveCorrelation()
+	public double crossCurveCorrelation()
 	{
-		return _crossSubCurveCorrelation;
+		return _crossCurveCorrelation;
 	}
 
 	/**
@@ -307,8 +307,8 @@ public class IRCurveTenorSettings extends org.drip.simm20.parameters.LiquiditySe
 	 * @return The Single Curve Cross Tenor Correlation
 	 */
 
-	public org.drip.measure.stochastic.LabelCorrelation singleCurveTenorCorrelation()
+	public org.drip.measure.stochastic.LabelCorrelation crossTenorCorrelation()
 	{
-		return _singleCurveTenorCorrelation;
+		return _crossTenorCorrelation;
 	}
 }

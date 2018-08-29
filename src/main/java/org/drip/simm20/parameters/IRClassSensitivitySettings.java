@@ -47,8 +47,8 @@ package org.drip.simm20.parameters;
  */
 
 /**
- * CTSensitivitySettings holds the Settings that govern the Generation of the ISDA SIMM 2.0 Bucket
- *  Sensitivities across CT Risk Factor Buckets. The References are:
+ * IRClassSensitivitySettings holds the Constituent IR Currency Bucket Curve Tenor Settings and the
+ *  corresponding Cross-Bucket Correlations. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -69,47 +69,26 @@ package org.drip.simm20.parameters;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CTSensitivitySettings
+public class IRClassSensitivitySettings
 {
-	private org.drip.measure.stochastic.LabelCorrelation _bucketCorrelation = null;
-	private java.util.Map<java.lang.Integer, org.drip.simm20.parameters.CTBucketSensitivitySettings>
-		_bucketSettings = null;
+	private double _crossBucketCorrelation = java.lang.Double.NaN;
+
+	private java.util.Map<java.lang.String, org.drip.simm20.parameters.IRBucketSensitivitySettings>
+		_irBucketSensitivitySettingsMap = new
+			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.simm20.parameters.IRBucketSensitivitySettings>();
 
 	/**
-	 * Construct a ISDA Standard Instance of CTSensitivitySettings
+	 * Construct the ISDA Standard IRClassSensitivitySettings
 	 * 
-	 * @return The ISDA Standard Instance of CTSensitivitySettings
+	 * @return The ISDA Standard IRClassSensitivitySettings
 	 */
 
-	public static final CTSensitivitySettings ISDA()
+	public static final IRClassSensitivitySettings ISDA()
 	{
-		java.util.Map<java.lang.Integer, org.drip.simm20.parameters.CTBucketSensitivitySettings>
-			bucketSettingsMap = new java.util.HashMap<java.lang.Integer,
-				org.drip.simm20.parameters.CTBucketSensitivitySettings>();
-
-		java.util.Map<java.lang.Integer, org.drip.simm20.commodity.CTBucket> bucketMap =
-			org.drip.simm20.commodity.CTSettingsContainer.BucketMap();
-
-		java.util.Map<java.lang.Integer, org.drip.simm20.common.DeltaVegaThreshold> deltaVegaRiskMap =
-			org.drip.simm20.commodity.CTRiskThresholdContainer.DeltaVegaThresholdMap();
-
 		try
 		{
-			for (int i = 1; i <= 17; ++i)
-			{
-				bucketSettingsMap.put (
-					i,
-					new org.drip.simm20.parameters.CTBucketSensitivitySettings (
-						bucketMap.get (i).deltaRiskWeight(),
-						deltaVegaRiskMap.get (i).delta()
-					)
-				);
-			}
-
-			return new CTSensitivitySettings (
-				bucketSettingsMap,
-				org.drip.simm20.commodity.CTSettingsContainer.CrossBucketCorrelation()
-			);
+			return new IRClassSensitivitySettings
+				(org.drip.simm20.rates.IRSystemics.CROSS_CURRENCY_CORRELATION);
 		}
 		catch (java.lang.Exception e)
 		{
@@ -120,47 +99,98 @@ public class CTSensitivitySettings
 	}
 
 	/**
-	 * CTSensitivitySettings Constructor
+	 * IRClassSensitivitySettings Constructor
 	 * 
-	 * @param bucketSettings The Commodity Bucket Settings
-	 * @param bucketCorrelation The Cross Bucket Correlation
+	 * @param crossBucketCorrelation The Cross Currency Bucket Correlation
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public CTSensitivitySettings (
-		final java.util.Map<java.lang.Integer, org.drip.simm20.parameters.CTBucketSensitivitySettings>
-			bucketSettings,
-		final org.drip.measure.stochastic.LabelCorrelation bucketCorrelation)
+	public IRClassSensitivitySettings (
+		final double crossBucketCorrelation)
 		throws java.lang.Exception
 	{
-		if (null == (_bucketSettings = bucketSettings) || 0 == _bucketSettings.size() ||
-			null == (_bucketCorrelation = bucketCorrelation))
+		if (!org.drip.quant.common.NumberUtil.IsValid (_crossBucketCorrelation = crossBucketCorrelation) ||
+			1. < _crossBucketCorrelation || -1. > crossBucketCorrelation)
 		{
-			throw new java.lang.Exception ("CTSensitivitySettings Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("IRClassSensitivitySettings Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Commodity Risk Factor Bucket Correlation
+	 * Retrieve the Cross Currency Bucket Correlation
 	 * 
-	 * @return The Commodity Risk Factor Bucket Correlation
+	 * @return The Cross Currency Bucket Correlation
 	 */
 
-	public org.drip.measure.stochastic.LabelCorrelation bucketCorrelation()
+	public double crossBucketCorrelation()
 	{
-		return _bucketCorrelation;
+		return _crossBucketCorrelation;
 	}
 
 	/**
-	 * Retrieve the Commodity Risk Factor Bucket Sensitivity Settings
+	 * Add the specified Curve Tenor Settings Instance
 	 * 
-	 * @return The Commodity Risk Factor Bucket Sensitivity Settings
+	 * @param currency The Currency
+	 * @param curveTenorSettings The specified Curve Tenor Settings Instance
+	 * 
+	 * @return TRUE - The specified Curve Tenor Settings Instance successfully added
 	 */
 
-	public java.util.Map<java.lang.Integer, org.drip.simm20.parameters.CTBucketSensitivitySettings>
-		bucketSettings()
+	public boolean addCurveTenorSettings (
+		final java.lang.String currency,
+		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSettings)
 	{
-		return _bucketSettings;
+		if (null == currency || currency.isEmpty() || null == curveTenorSettings)
+		{
+			return false;
+		}
+
+		_irBucketSensitivitySettingsMap.put (
+			currency,
+			curveTenorSettings
+		);
+
+		return true;
+	}
+
+	/**
+	 * Indicate if the Currency is available in the Map
+	 * 
+	 * @param currency The Currency
+	 * 
+	 * @return TRUE - The Currency is available in the Map
+	 */
+
+	public boolean containsCurrency (
+		final java.lang.String currency)
+	{
+		return null != currency && !currency.isEmpty() && _irBucketSensitivitySettingsMap.containsKey (currency);
+	}
+
+	/**
+	 * Retrieve the Curve Tenor Settings for the Currency
+	 * 
+	 * @param currency The Currency
+	 * 
+	 * @return The Curve Tenor Settings for the Currency
+	 */
+
+	public org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSettings (
+		final java.lang.String currency)
+	{
+		return containsCurrency (currency) ? _irBucketSensitivitySettingsMap.get (currency) : null;
+	}
+
+	/**
+	 * Retrieve the IR Bucket Sensitivity Settings Map
+	 * 
+	 * @return The IR Bucket Sensitivity Settings Map
+	 */
+
+	public java.util.Map<java.lang.String, org.drip.simm20.parameters.IRBucketSensitivitySettings>
+		irBucketSensitivitySettingsMap()
+	{
+		return _irBucketSensitivitySettingsMap;
 	}
 }

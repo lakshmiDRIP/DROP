@@ -85,20 +85,20 @@ import org.drip.simm20.product.RiskClassSensitivity;
 public class FXDeltaMargin
 {
 
-	private static final Map<Integer, Map<String, Double>> CategorySensitivityMap (
+	private static final Map<String, Map<String, Double>> CategorySensitivityMap (
 		final String[] currencyArray,
 		final double notional)
 		throws Exception
 	{
-		Map<Integer, Map<String, Double>> currencySentivityMap = new TreeMap<Integer, Map<String, Double>>();
+		Map<String, Map<String, Double>> currencySentivityMap = new TreeMap<String, Map<String, Double>>();
 
 		for (String currency : currencyArray)
 		{
 			int categoryIndex = FXRiskThresholdContainer.CurrencyCategory (currency);
 
-			if (currencySentivityMap.containsKey (categoryIndex))
+			if (currencySentivityMap.containsKey ("" + categoryIndex))
 			{
-				Map<String, Double> riskFactorSensitivityMap = currencySentivityMap.get (categoryIndex);
+				Map<String, Double> riskFactorSensitivityMap = currencySentivityMap.get ("" + categoryIndex);
 
 				riskFactorSensitivityMap.put (
 					currency,
@@ -115,7 +115,7 @@ public class FXDeltaMargin
 				);
 
 				currencySentivityMap.put (
-					categoryIndex,
+					"" + categoryIndex,
 					riskFactorSensitivityMap
 				);
 			}
@@ -125,7 +125,7 @@ public class FXDeltaMargin
 	}
 
 	private static final void CategoryRiskFactorSensitivity (
-		final Map<Integer, Map<String, Double>> categorySensitivityMap)
+		final Map<String, Map<String, Double>> categorySensitivityMap)
 		throws Exception
 	{
 		System.out.println ("\t|-------------------||");
@@ -144,10 +144,10 @@ public class FXDeltaMargin
 
 		System.out.println ("\t|-------------------||");
 
-		for (Map.Entry<Integer, Map<String, Double>> categorySensitivityMapEntry :
+		for (Map.Entry<String, Map<String, Double>> categorySensitivityMapEntry :
 			categorySensitivityMap.entrySet())
 		{
-			int categoryIndex = categorySensitivityMapEntry.getKey();
+			String categoryIndex = categorySensitivityMapEntry.getKey();
 
 			Map<String, Double> riskFactorSensitivityMap = categorySensitivityMapEntry.getValue();
 
@@ -208,14 +208,14 @@ public class FXDeltaMargin
 
 		RiskClassSensitivitySettings riskClassSensitivitySettings = RiskClassSensitivitySettings.ISDA_FX();
 
-		Map<Integer, Map<String, Double>> categorySensitivityMap = CategorySensitivityMap (
+		Map<String, Map<String, Double>> categorySensitivityMap = CategorySensitivityMap (
 			currencyArray,
 			notional
 		);
 
 		CategoryRiskFactorSensitivity (categorySensitivityMap);
 
-		Map<Integer, BucketSensitivity> bucketSensitivityMap = new TreeMap<Integer, BucketSensitivity>();
+		Map<String, BucketSensitivity> bucketSensitivityMap = new TreeMap<String, BucketSensitivity>();
 
 		System.out.println ("\t|--------------------||");
 
@@ -233,16 +233,16 @@ public class FXDeltaMargin
 
 		System.out.println ("\t|--------------------||");
 
-		for (Map.Entry<Integer, Map<String, Double>> categorySensitivityMapEntry :
+		for (Map.Entry<String, Map<String, Double>> categorySensitivityMapEntry :
 			categorySensitivityMap.entrySet())
 		{
-			int bucketIndex = categorySensitivityMapEntry.getKey();
+			String bucketIndex = categorySensitivityMapEntry.getKey();
 
 			BucketSensitivity bucketSensitivity = new BucketSensitivity
 				(categorySensitivityMapEntry.getValue());
 
 			bucketSensitivityMap.put (
-				bucketIndex,
+				"" + bucketIndex,
 				bucketSensitivity
 			);
 

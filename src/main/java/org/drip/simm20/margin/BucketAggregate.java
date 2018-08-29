@@ -74,12 +74,12 @@ public class BucketAggregate
 	private double _weightedSensitivityVariance = java.lang.Double.NaN;
 	private double _cumulativeRiskFactorSensitivity = java.lang.Double.NaN;
 	private java.util.Map<java.lang.String, org.drip.simm20.margin.RiskFactorAggregate>
-		_augmentedRiskFactorSensitivityMap = null;
+		_riskFactorAggregateMap = null;
 
 	/**
 	 * BucketAggregate Constructor
 	 * 
-	 * @param augmentedRiskFactorSensitivityMap The Augmented Risk Factor Sensitivity Map
+	 * @param riskFactorAggregateMap The Risk Factor Aggregate Map
 	 * @param weightedSensitivityVariance The Bucket's Weighted Sensitivity Variance
 	 * @param cumulativeRiskFactorSensitivity The Cumulative Risk Factor Sensitivity
 	 * 
@@ -88,14 +88,13 @@ public class BucketAggregate
 
 	public BucketAggregate (
 		final java.util.Map<java.lang.String, org.drip.simm20.margin.RiskFactorAggregate>
-			augmentedRiskFactorSensitivityMap,
+			riskFactorAggregateMap,
 		final double weightedSensitivityVariance,
 		final double cumulativeRiskFactorSensitivity)
 		throws java.lang.Exception
 	{
-		if (null == (_augmentedRiskFactorSensitivityMap = augmentedRiskFactorSensitivityMap) ||
-				0 == _augmentedRiskFactorSensitivityMap.size() ||
-			!org.drip.quant.common.NumberUtil.IsValid (_weightedSensitivityVariance =
+		if (null == (_riskFactorAggregateMap = riskFactorAggregateMap) || 0 == _riskFactorAggregateMap.size()
+			|| !org.drip.quant.common.NumberUtil.IsValid (_weightedSensitivityVariance =
 				weightedSensitivityVariance) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_cumulativeRiskFactorSensitivity =
 				cumulativeRiskFactorSensitivity))
@@ -105,15 +104,15 @@ public class BucketAggregate
 	}
 
 	/**
-	 * Retrieve the Augmented Risk Factor Sensitivity Map
+	 * Retrieve the Risk Factor Aggregate Map
 	 * 
-	 * @return The Augmented Risk Factor Sensitivity Map
+	 * @return The Risk Factor Aggregate Map
 	 */
 
 	public java.util.Map<java.lang.String, org.drip.simm20.margin.RiskFactorAggregate>
-		augmentedRiskFactorSensitivityMap()
+		riskFactorAggregateMap()
 	{
-		return _augmentedRiskFactorSensitivityMap;
+		return _riskFactorAggregateMap;
 	}
 
 	/**

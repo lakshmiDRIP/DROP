@@ -73,7 +73,7 @@ public class RiskClassAggregate
 {
 	private double _coreDeltaSBAVariance = java.lang.Double.NaN;
 	private double _residualDeltaSBAVariance = java.lang.Double.NaN;
-	private java.util.Map<java.lang.Integer, org.drip.simm20.margin.BucketAggregate> _bucketAggregateMap =
+	private java.util.Map<java.lang.String, org.drip.simm20.margin.BucketAggregate> _bucketAggregateMap =
 		null;
 
 	/**
@@ -87,7 +87,7 @@ public class RiskClassAggregate
 	 */
 
 	public RiskClassAggregate (
-		final java.util.Map<java.lang.Integer, org.drip.simm20.margin.BucketAggregate> bucketAggregateMap,
+		final java.util.Map<java.lang.String, org.drip.simm20.margin.BucketAggregate> bucketAggregateMap,
 		final double coreDeltaSBAVariance,
 		final double residualDeltaSBAVariance)
 		throws java.lang.Exception
@@ -106,7 +106,7 @@ public class RiskClassAggregate
 	 * @return The Bucket Aggregate Map
 	 */
 
-	public java.util.Map<java.lang.Integer, org.drip.simm20.margin.BucketAggregate> bucketAggregateMap()
+	public java.util.Map<java.lang.String, org.drip.simm20.margin.BucketAggregate> bucketAggregateMap()
 	{
 		return _bucketAggregateMap;
 	}

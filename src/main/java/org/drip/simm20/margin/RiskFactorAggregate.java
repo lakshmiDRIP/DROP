@@ -71,24 +71,24 @@ package org.drip.simm20.margin;
 
 public class RiskFactorAggregate
 {
-	private double _weightedAndNormalized = java.lang.Double.NaN;
+	private double _sensitivityMargin = java.lang.Double.NaN;
 	private double _concentrationRiskFactor = java.lang.Double.NaN;
 
 	/**
 	 * RiskFactorAggregate Constructor
 	 * 
-	 * @param weightedAndNormalized The Weighted and Normalized Bucket Sensitivity
+	 * @param sensitivityMargin The Bucket Sensitivity Margin
 	 * @param concentrationRiskFactor The Bucket Concentration Risk Factor
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RiskFactorAggregate (
-		final double weightedAndNormalized,
+		final double sensitivityMargin,
 		final double concentrationRiskFactor)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_weightedAndNormalized = weightedAndNormalized) ||
+		if (!org.drip.quant.common.NumberUtil.IsValid (_sensitivityMargin = sensitivityMargin) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_concentrationRiskFactor = concentrationRiskFactor))
 		{
 			throw new java.lang.Exception ("RiskFactorAggregate Constructor => Invalid Inputs");
@@ -96,14 +96,14 @@ public class RiskFactorAggregate
 	}
 
 	/**
-	 * Retrieve the Weighted and Normalized Bucket Sensitivity
+	 * Retrieve the Bucket Sensitivity Margin
 	 * 
-	 * @return The Weighted and Normalized Bucket Sensitivity
+	 * @return The Bucket Sensitivity Margin
 	 */
 
-	public double weightedAndNormalized()
+	public double sensitivityMargin()
 	{
-		return _weightedAndNormalized;
+		return _sensitivityMargin;
 	}
 
 	/**

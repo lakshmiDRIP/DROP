@@ -47,8 +47,8 @@ package org.drip.simm20.margin;
  */
 
 /**
- * IRNetSensitivity holds the Weighted Net Sensitivities for each of the IR Risk Factors - OIS, LIBOR 1M,
- *  LIBOR 3M, LIBOR 6M LIBOR 12M, PRIME, and MUNICIPAL. The References are:
+ * IRFactorAggregate holds the Weighted Net Sensitivity Aggregates for each of the IR Risk Factors - OIS,
+ *  LIBOR 1M, LIBOR 3M, LIBOR 6M LIBOR 12M, PRIME, and MUNICIPAL. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -69,11 +69,10 @@ package org.drip.simm20.margin;
  * @author Lakshmi Krishnamurthy
  */
 
-public class IRNetSensitivity
+public class IRFactorAggregate
 {
-
 	private double _concentrationRiskFactor = java.lang.Double.NaN;
-	private java.util.Map<java.lang.String, java.lang.Double> _oisThresholded = null;
+	private java.util.Map<java.lang.String, java.lang.Double> _oisSensitivityMargin = null;
 	private java.util.Map<java.lang.String, java.lang.Double> _primeThresholded = null;
 	private java.util.Map<java.lang.String, java.lang.Double> _libor1MThresholded = null;
 	private java.util.Map<java.lang.String, java.lang.Double> _libor3MThresholded = null;
@@ -82,9 +81,9 @@ public class IRNetSensitivity
 	private java.util.Map<java.lang.String, java.lang.Double> _municipalThresholded = null;
 
 	/**
-	 * IRNetSensitivity Constructor
+	 * IRFactorAggregate Constructor
 	 * 
-	 * @param oisThresholded The Thresholded OIS Weighted/Unweighted Sensitivity
+	 * @param oisSensitivityMargin The OIS Sensitivity Margin
 	 * @param libor1MThresholded The Thresholded LIBOR 1M Weighted/Unweighted Sensitivity
 	 * @param libor3MThresholded The Thresholded LIBOR 3M Weighted/Unweighted Sensitivity
 	 * @param libor6MThresholded The Thresholded LIBOR 6M Weighted/Unweighted Sensitivity
@@ -96,8 +95,8 @@ public class IRNetSensitivity
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public IRNetSensitivity (
-		final java.util.Map<java.lang.String, java.lang.Double> oisThresholded,
+	public IRFactorAggregate (
+		final java.util.Map<java.lang.String, java.lang.Double> oisSensitivityMargin,
 		final java.util.Map<java.lang.String, java.lang.Double> libor1MThresholded,
 		final java.util.Map<java.lang.String, java.lang.Double> libor3MThresholded,
 		final java.util.Map<java.lang.String, java.lang.Double> libor6MThresholded,
@@ -107,7 +106,7 @@ public class IRNetSensitivity
 		final double concentrationRiskFactor)
 		throws java.lang.Exception
 	{
-		 if (null == (_oisThresholded = oisThresholded) || 0 == _oisThresholded.size() ||
+		 if (null == (_oisSensitivityMargin = oisSensitivityMargin) || 0 == _oisSensitivityMargin.size() ||
 			null == (_libor1MThresholded = libor1MThresholded) || 0 == _libor1MThresholded.size() ||
 			null == (_libor3MThresholded = libor3MThresholded) || 0 == _libor3MThresholded.size() ||
 			null == (_libor6MThresholded = libor6MThresholded) || 0 == _libor6MThresholded.size() ||
@@ -116,19 +115,19 @@ public class IRNetSensitivity
 			null == (_primeThresholded = primeThresholded) || 0 == _primeThresholded.size() ||
 			!org.drip.quant.common.NumberUtil.IsValid (_concentrationRiskFactor = concentrationRiskFactor))
 		 {
-			 throw new java.lang.Exception ("IRNetSensitivity Constructor => Invalid Inputs");
+			 throw new java.lang.Exception ("IRFactorAggregate Constructor => Invalid Inputs");
 		 }
 	}
 
 	/**
-	 * Retrieve the OIS Net Tenor Sensitivity Map
+	 * Retrieve the OIS Sensitivity Margin Map
 	 * 
-	 * @return The OIS Net Tenor Sensitivity Map
+	 * @return The OIS Sensitivity Margin Map
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> oisThresholded()
+	public java.util.Map<java.lang.String, java.lang.Double> oisSensitivityMargin()
 	{
-		return _oisThresholded;
+		return _oisSensitivityMargin;
 	}
 
 	/**
@@ -198,21 +197,23 @@ public class IRNetSensitivity
 	}
 
 	/**
-	 * Compute the Cumulative OIS Thresholded Sensitivity
+	 * Compute the Cumulative OIS Sensitivity Margin
 	 * 
-	 * @return The Cumulative OIS Thresholded Sensitivity
+	 * @return The Cumulative OIS Sensitivity Margin
 	 */
 
-	public double cumulativeOISThresholded()
+	public double cumulativeOISSensitivityMargin()
 	{
-		double cumulativeOISThresholdedSensitivity = 0.;
+		double cumulativeOISSensitivityMargin = 0.;
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisEntry : _oisThresholded.entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisSensitivityMarginEntry :
+			_oisSensitivityMargin.entrySet())
 		{
-			cumulativeOISThresholdedSensitivity = cumulativeOISThresholdedSensitivity + oisEntry.getValue();
+			cumulativeOISSensitivityMargin = cumulativeOISSensitivityMargin +
+				oisSensitivityMarginEntry.getValue();
 		}
 
-		return cumulativeOISThresholdedSensitivity;
+		return cumulativeOISSensitivityMargin;
 	}
 
 	/**
@@ -331,14 +332,14 @@ public class IRNetSensitivity
 	}
 
 	/**
-	 * Compute the Cumulative Gross Thresholded Sensitivity
+	 * Compute the Cumulative Sensitivity Margin
 	 * 
-	 * @return The Cumulative Gross Thresholded Sensitivity
+	 * @return The Cumulative Sensitivity Margin
 	 */
 
-	public double cumulativeGrossThresholded()
+	public double cumulativeSensitivityMargin()
 	{
-		return cumulativeOISThresholded() +
+		return cumulativeOISSensitivityMargin() +
 			cumulativeLIBOR1MThresholded() +
 			cumulativeLIBOR3MThresholded() +
 			cumulativeLIBOR6MThresholded() +
@@ -358,37 +359,38 @@ public class IRNetSensitivity
 	 */
 
 	public double covariance_OIS_OIS (
-		final org.drip.simm20.parameters.IRCurveTenorSettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
 		{
-			throw new java.lang.Exception ("IRNetSensitivity::covariance_OIS_OIS => Invalid Inputs");
+			throw new java.lang.Exception ("IRFactorAggregate::covariance_OIS_OIS => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
-			curveTenorSensitivitySettings.singleCurveTenorCorrelation();
+			curveTenorSensitivitySettings.crossTenorCorrelation();
 
 		double covariance_OIS_OIS = 0.;
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisOuterEntry :
-			_oisThresholded.entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisSensitivityMarginOuterEntry :
+			_oisSensitivityMargin.entrySet())
 		{
-			double outerSensitivity = oisOuterEntry.getValue();
+			double outerSensitivity = oisSensitivityMarginOuterEntry.getValue();
 
-			java.lang.String outerTenor = oisOuterEntry.getKey();
+			java.lang.String outerTenor = oisSensitivityMarginOuterEntry.getKey();
 
-			for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisInnerEntry :
-				_oisThresholded.entrySet())
+			for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisSensitivityMarginInnerEntry :
+				_oisSensitivityMargin.entrySet())
 			{
-				java.lang.String innerTenor = oisInnerEntry.getKey();
+				java.lang.String innerTenor = oisSensitivityMarginInnerEntry.getKey();
 
-				covariance_OIS_OIS = covariance_OIS_OIS + outerSensitivity * oisInnerEntry.getValue() * (
-					outerTenor.equalsIgnoreCase (innerTenor) ? 1. : tenorCorrelation.entry (
-							outerTenor,
-							innerTenor
-						)
-					);
+				covariance_OIS_OIS = covariance_OIS_OIS + outerSensitivity *
+					oisSensitivityMarginInnerEntry.getValue() * (
+						outerTenor.equalsIgnoreCase (innerTenor) ? 1. : tenorCorrelation.entry (
+								outerTenor,
+								innerTenor
+							)
+						);
 			}
 		}
 
@@ -406,16 +408,16 @@ public class IRNetSensitivity
 	 */
 
 	public double covariance_LIBOR1M_LIBOR1M (
-		final org.drip.simm20.parameters.IRCurveTenorSettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
 		{
-			throw new java.lang.Exception ("IRNetSensitivity::covariance_LIBOR1M_LIBOR1M => Invalid Inputs");
+			throw new java.lang.Exception ("IRFactorAggregate::covariance_LIBOR1M_LIBOR1M => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
-			curveTenorSensitivitySettings.singleCurveTenorCorrelation();
+			curveTenorSensitivitySettings.crossTenorCorrelation();
 
 		double covariance_LIBOR1M_LIBOR1M = 0.;
 
@@ -455,16 +457,16 @@ public class IRNetSensitivity
 	 */
 
 	public double covariance_LIBOR3M_LIBOR3M (
-		final org.drip.simm20.parameters.IRCurveTenorSettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
 		{
-			throw new java.lang.Exception ("IRNetSensitivity::covariance_LIBOR3M_LIBOR3M => Invalid Inputs");
+			throw new java.lang.Exception ("IRFactorAggregate::covariance_LIBOR3M_LIBOR3M => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
-			curveTenorSensitivitySettings.singleCurveTenorCorrelation();
+			curveTenorSensitivitySettings.crossTenorCorrelation();
 
 		double covariance_LIBOR3M_LIBOR3M = 0.;
 
@@ -504,16 +506,16 @@ public class IRNetSensitivity
 	 */
 
 	public double covariance_LIBOR6M_LIBOR6M (
-		final org.drip.simm20.parameters.IRCurveTenorSettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
 		{
-			throw new java.lang.Exception ("IRNetSensitivity::covariance_LIBOR6M_LIBOR6M => Invalid Inputs");
+			throw new java.lang.Exception ("IRFactorAggregate::covariance_LIBOR6M_LIBOR6M => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
-			curveTenorSensitivitySettings.singleCurveTenorCorrelation();
+			curveTenorSensitivitySettings.crossTenorCorrelation();
 
 		double covariance_LIBOR6M_LIBOR6M = 0.;
 
@@ -553,17 +555,17 @@ public class IRNetSensitivity
 	 */
 
 	public double covariance_LIBOR12M_LIBOR12M (
-		final org.drip.simm20.parameters.IRCurveTenorSettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
 		{
 			throw new java.lang.Exception
-				("IRNetSensitivity::covariance_LIBOR12M_LIBOR12M => Invalid Inputs");
+				("IRFactorAggregate::covariance_LIBOR12M_LIBOR12M => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
-			curveTenorSensitivitySettings.singleCurveTenorCorrelation();
+			curveTenorSensitivitySettings.crossTenorCorrelation();
 
 		double covariance_LIBOR12M_LIBOR12M = 0.;
 
@@ -603,16 +605,16 @@ public class IRNetSensitivity
 	 */
 
 	public double covariance_PRIME_PRIME (
-		final org.drip.simm20.parameters.IRCurveTenorSettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
 		{
-			throw new java.lang.Exception ("IRNetSensitivity::covariance_PRIME_PRIME => Invalid Inputs");
+			throw new java.lang.Exception ("IRFactorAggregate::covariance_PRIME_PRIME => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
-			curveTenorSensitivitySettings.singleCurveTenorCorrelation();
+			curveTenorSensitivitySettings.crossTenorCorrelation();
 
 		double covariance_PRIME_PRIME = 0.;
 
@@ -652,17 +654,17 @@ public class IRNetSensitivity
 	 */
 
 	public double covariance_MUNICIPAL_MUNICIPAL (
-		final org.drip.simm20.parameters.IRCurveTenorSettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
 		{
 			throw new java.lang.Exception
-				("IRNetSensitivity::covariance_MUNICIPAL_MUNICIPAL => Invalid Inputs");
+				("IRFactorAggregate::covariance_MUNICIPAL_MUNICIPAL => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
-			curveTenorSensitivitySettings.singleCurveTenorCorrelation();
+			curveTenorSensitivitySettings.crossTenorCorrelation();
 
 		double covariance_MUNICIPAL_MUNICIPAL = 0.;
 
@@ -702,20 +704,21 @@ public class IRNetSensitivity
 	 */
 
 	public double covariance_OIS_LIBOR1M (
-		final org.drip.simm20.parameters.IRCurveTenorSettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
 		{
-			throw new java.lang.Exception ("IRNetSensitivity::covariance_OIS_LIBOR1M => Invalid Inputs");
+			throw new java.lang.Exception ("IRFactorAggregate::covariance_OIS_LIBOR1M => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
-			curveTenorSensitivitySettings.singleCurveTenorCorrelation();
+			curveTenorSensitivitySettings.crossTenorCorrelation();
 
 		double covariance_OIS_LIBOR1M = 0.;
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisEntry : _oisThresholded.entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisEntry :
+			_oisSensitivityMargin.entrySet())
 		{
 			double oisSensitivity = oisEntry.getValue();
 
@@ -736,7 +739,7 @@ public class IRNetSensitivity
 			}
 		}
 
-		return covariance_OIS_LIBOR1M * curveTenorSensitivitySettings.crossSubCurveCorrelation();
+		return covariance_OIS_LIBOR1M * curveTenorSensitivitySettings.crossCurveCorrelation();
 	}
 
 	/**
@@ -750,20 +753,20 @@ public class IRNetSensitivity
 	 */
 
 	public double covariance_OIS_LIBOR3M (
-		final org.drip.simm20.parameters.IRCurveTenorSettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
 		{
-			throw new java.lang.Exception ("IRNetSensitivity::covariance_OIS_LIBOR3M => Invalid Inputs");
+			throw new java.lang.Exception ("IRFactorAggregate::covariance_OIS_LIBOR3M => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
-			curveTenorSensitivitySettings.singleCurveTenorCorrelation();
+			curveTenorSensitivitySettings.crossTenorCorrelation();
 
 		double covariance_OIS_LIBOR3M = 0.;
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisEntry : _oisThresholded.entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisEntry : _oisSensitivityMargin.entrySet())
 		{
 			double oisSensitivity = oisEntry.getValue();
 
@@ -784,7 +787,7 @@ public class IRNetSensitivity
 			}
 		}
 
-		return covariance_OIS_LIBOR3M * curveTenorSensitivitySettings.crossSubCurveCorrelation();
+		return covariance_OIS_LIBOR3M * curveTenorSensitivitySettings.crossCurveCorrelation();
 	}
 
 	/**
@@ -798,20 +801,20 @@ public class IRNetSensitivity
 	 */
 
 	public double covariance_OIS_LIBOR6M (
-		final org.drip.simm20.parameters.IRCurveTenorSettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
 		{
-			throw new java.lang.Exception ("IRNetSensitivity::covariance_OIS_LIBOR6M => Invalid Inputs");
+			throw new java.lang.Exception ("IRFactorAggregate::covariance_OIS_LIBOR6M => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
-			curveTenorSensitivitySettings.singleCurveTenorCorrelation();
+			curveTenorSensitivitySettings.crossTenorCorrelation();
 
 		double covariance_OIS_LIBOR6M = 0.;
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisEntry : _oisThresholded.entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisEntry : _oisSensitivityMargin.entrySet())
 		{
 			double oisSensitivity = oisEntry.getValue();
 
@@ -832,7 +835,7 @@ public class IRNetSensitivity
 			}
 		}
 
-		return covariance_OIS_LIBOR6M * curveTenorSensitivitySettings.crossSubCurveCorrelation();
+		return covariance_OIS_LIBOR6M * curveTenorSensitivitySettings.crossCurveCorrelation();
 	}
 
 	/**
@@ -846,20 +849,20 @@ public class IRNetSensitivity
 	 */
 
 	public double covariance_OIS_LIBOR12M (
-		final org.drip.simm20.parameters.IRCurveTenorSettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
 		{
-			throw new java.lang.Exception ("IRNetSensitivity::covariance_OIS_LIBOR12M => Invalid Inputs");
+			throw new java.lang.Exception ("IRFactorAggregate::covariance_OIS_LIBOR12M => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
-			curveTenorSensitivitySettings.singleCurveTenorCorrelation();
+			curveTenorSensitivitySettings.crossTenorCorrelation();
 
 		double covariance_OIS_LIBOR12M = 0.;
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisEntry : _oisThresholded.entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisEntry : _oisSensitivityMargin.entrySet())
 		{
 			double oisSensitivity = oisEntry.getValue();
 
@@ -880,7 +883,7 @@ public class IRNetSensitivity
 			}
 		}
 
-		return covariance_OIS_LIBOR12M * curveTenorSensitivitySettings.crossSubCurveCorrelation();
+		return covariance_OIS_LIBOR12M * curveTenorSensitivitySettings.crossCurveCorrelation();
 	}
 
 	/**
@@ -894,20 +897,20 @@ public class IRNetSensitivity
 	 */
 
 	public double covariance_OIS_PRIME (
-		final org.drip.simm20.parameters.IRCurveTenorSettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
 		{
-			throw new java.lang.Exception ("IRNetSensitivity::covariance_OIS_PRIME => Invalid Inputs");
+			throw new java.lang.Exception ("IRFactorAggregate::covariance_OIS_PRIME => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
-			curveTenorSensitivitySettings.singleCurveTenorCorrelation();
+			curveTenorSensitivitySettings.crossTenorCorrelation();
 
 		double covariance_OIS_PRIME = 0.;
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisEntry : _oisThresholded.entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisEntry : _oisSensitivityMargin.entrySet())
 		{
 			double oisSensitivity = oisEntry.getValue();
 
@@ -927,7 +930,7 @@ public class IRNetSensitivity
 			}
 		}
 
-		return covariance_OIS_PRIME * curveTenorSensitivitySettings.crossSubCurveCorrelation();
+		return covariance_OIS_PRIME * curveTenorSensitivitySettings.crossCurveCorrelation();
 	}
 
 	/**
@@ -941,20 +944,20 @@ public class IRNetSensitivity
 	 */
 
 	public double covariance_OIS_MUNICIPAL (
-		final org.drip.simm20.parameters.IRCurveTenorSettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
 		{
-			throw new java.lang.Exception ("IRNetSensitivity::covariance_OIS_MUNICIPAL => Invalid Inputs");
+			throw new java.lang.Exception ("IRFactorAggregate::covariance_OIS_MUNICIPAL => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
-			curveTenorSensitivitySettings.singleCurveTenorCorrelation();
+			curveTenorSensitivitySettings.crossTenorCorrelation();
 
 		double covariance_OIS_MUNICIPAL = 0.;
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisEntry : _oisThresholded.entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisEntry : _oisSensitivityMargin.entrySet())
 		{
 			double oisSensitivity = oisEntry.getValue();
 
@@ -975,7 +978,7 @@ public class IRNetSensitivity
 			}
 		}
 
-		return covariance_OIS_MUNICIPAL * curveTenorSensitivitySettings.crossSubCurveCorrelation();
+		return covariance_OIS_MUNICIPAL * curveTenorSensitivitySettings.crossCurveCorrelation();
 	}
 
 	/**
@@ -989,16 +992,16 @@ public class IRNetSensitivity
 	 */
 
 	public double covariance_LIBOR1M_LIBOR3M (
-		final org.drip.simm20.parameters.IRCurveTenorSettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
 		{
-			throw new java.lang.Exception ("IRNetSensitivity::covariance_LIBOR1M_LIBOR3M => Invalid Inputs");
+			throw new java.lang.Exception ("IRFactorAggregate::covariance_LIBOR1M_LIBOR3M => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
-			curveTenorSensitivitySettings.singleCurveTenorCorrelation();
+			curveTenorSensitivitySettings.crossTenorCorrelation();
 
 		double covariance_LIBOR1M_LIBOR3M = 0.;
 
@@ -1024,7 +1027,7 @@ public class IRNetSensitivity
 			}
 		}
 
-		return covariance_LIBOR1M_LIBOR3M * curveTenorSensitivitySettings.crossSubCurveCorrelation();
+		return covariance_LIBOR1M_LIBOR3M * curveTenorSensitivitySettings.crossCurveCorrelation();
 	}
 
 	/**
@@ -1038,16 +1041,16 @@ public class IRNetSensitivity
 	 */
 
 	public double covariance_LIBOR1M_LIBOR6M (
-		final org.drip.simm20.parameters.IRCurveTenorSettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
 		{
-			throw new java.lang.Exception ("IRNetSensitivity::covariance_LIBOR1M_LIBOR6M => Invalid Inputs");
+			throw new java.lang.Exception ("IRFactorAggregate::covariance_LIBOR1M_LIBOR6M => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
-			curveTenorSensitivitySettings.singleCurveTenorCorrelation();
+			curveTenorSensitivitySettings.crossTenorCorrelation();
 
 		double covariance_LIBOR1M_LIBOR6M = 0.;
 
@@ -1073,7 +1076,7 @@ public class IRNetSensitivity
 			}
 		}
 
-		return covariance_LIBOR1M_LIBOR6M * curveTenorSensitivitySettings.crossSubCurveCorrelation();
+		return covariance_LIBOR1M_LIBOR6M * curveTenorSensitivitySettings.crossCurveCorrelation();
 	}
 
 	/**
@@ -1087,16 +1090,16 @@ public class IRNetSensitivity
 	 */
 
 	public double covariance_LIBOR1M_LIBOR12M (
-		final org.drip.simm20.parameters.IRCurveTenorSettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
 		{
-			throw new java.lang.Exception ("IRNetSensitivity::covariance_LIBOR1M_LIBOR12M => Invalid Inputs");
+			throw new java.lang.Exception ("IRFactorAggregate::covariance_LIBOR1M_LIBOR12M => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
-			curveTenorSensitivitySettings.singleCurveTenorCorrelation();
+			curveTenorSensitivitySettings.crossTenorCorrelation();
 
 		double covariance_LIBOR1M_LIBOR12M = 0.;
 
@@ -1122,7 +1125,7 @@ public class IRNetSensitivity
 			}
 		}
 
-		return covariance_LIBOR1M_LIBOR12M * curveTenorSensitivitySettings.crossSubCurveCorrelation();
+		return covariance_LIBOR1M_LIBOR12M * curveTenorSensitivitySettings.crossCurveCorrelation();
 	}
 
 	/**
@@ -1136,16 +1139,16 @@ public class IRNetSensitivity
 	 */
 
 	public double covariance_LIBOR1M_PRIME (
-		final org.drip.simm20.parameters.IRCurveTenorSettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
 		{
-			throw new java.lang.Exception ("IRNetSensitivity::covariance_LIBOR1M_PRIME => Invalid Inputs");
+			throw new java.lang.Exception ("IRFactorAggregate::covariance_LIBOR1M_PRIME => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
-			curveTenorSensitivitySettings.singleCurveTenorCorrelation();
+			curveTenorSensitivitySettings.crossTenorCorrelation();
 
 		double covariance_LIBOR1M_PRIME = 0.;
 
@@ -1171,7 +1174,7 @@ public class IRNetSensitivity
 			}
 		}
 
-		return covariance_LIBOR1M_PRIME * curveTenorSensitivitySettings.crossSubCurveCorrelation();
+		return covariance_LIBOR1M_PRIME * curveTenorSensitivitySettings.crossCurveCorrelation();
 	}
 
 	/**
@@ -1185,17 +1188,17 @@ public class IRNetSensitivity
 	 */
 
 	public double covariance_LIBOR1M_MUNICIPAL (
-		final org.drip.simm20.parameters.IRCurveTenorSettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
 		{
 			throw new java.lang.Exception
-				("IRNetSensitivity::covariance_LIBOR1M_MUNICIPAL => Invalid Inputs");
+				("IRFactorAggregate::covariance_LIBOR1M_MUNICIPAL => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
-			curveTenorSensitivitySettings.singleCurveTenorCorrelation();
+			curveTenorSensitivitySettings.crossTenorCorrelation();
 
 		double covariance_LIBOR1M_MUNICIPAL = 0.;
 
@@ -1221,7 +1224,7 @@ public class IRNetSensitivity
 			}
 		}
 
-		return covariance_LIBOR1M_MUNICIPAL * curveTenorSensitivitySettings.crossSubCurveCorrelation();
+		return covariance_LIBOR1M_MUNICIPAL * curveTenorSensitivitySettings.crossCurveCorrelation();
 	}
 
 	/**
@@ -1235,16 +1238,16 @@ public class IRNetSensitivity
 	 */
 
 	public double covariance_LIBOR3M_LIBOR6M (
-		final org.drip.simm20.parameters.IRCurveTenorSettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
 		{
-			throw new java.lang.Exception ("IRNetSensitivity::covariance_LIBOR3M_LIBOR6M => Invalid Inputs");
+			throw new java.lang.Exception ("IRFactorAggregate::covariance_LIBOR3M_LIBOR6M => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
-			curveTenorSensitivitySettings.singleCurveTenorCorrelation();
+			curveTenorSensitivitySettings.crossTenorCorrelation();
 
 		double covariance_LIBOR3M_LIBOR6M = 0.;
 
@@ -1270,7 +1273,7 @@ public class IRNetSensitivity
 			}
 		}
 
-		return covariance_LIBOR3M_LIBOR6M * curveTenorSensitivitySettings.crossSubCurveCorrelation();
+		return covariance_LIBOR3M_LIBOR6M * curveTenorSensitivitySettings.crossCurveCorrelation();
 	}
 
 	/**
@@ -1284,16 +1287,16 @@ public class IRNetSensitivity
 	 */
 
 	public double covariance_LIBOR3M_LIBOR12M (
-		final org.drip.simm20.parameters.IRCurveTenorSettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
 		{
-			throw new java.lang.Exception ("IRNetSensitivity::covariance_LIBOR3M_LIBOR12M => Invalid Inputs");
+			throw new java.lang.Exception ("IRFactorAggregate::covariance_LIBOR3M_LIBOR12M => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
-			curveTenorSensitivitySettings.singleCurveTenorCorrelation();
+			curveTenorSensitivitySettings.crossTenorCorrelation();
 
 		double covariance_LIBOR3M_LIBOR12M = 0.;
 
@@ -1319,7 +1322,7 @@ public class IRNetSensitivity
 			}
 		}
 
-		return covariance_LIBOR3M_LIBOR12M * curveTenorSensitivitySettings.crossSubCurveCorrelation();
+		return covariance_LIBOR3M_LIBOR12M * curveTenorSensitivitySettings.crossCurveCorrelation();
 	}
 
 	/**
@@ -1333,16 +1336,16 @@ public class IRNetSensitivity
 	 */
 
 	public double covariance_LIBOR3M_PRIME (
-		final org.drip.simm20.parameters.IRCurveTenorSettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
 		{
-			throw new java.lang.Exception ("IRNetSensitivity::covariance_LIBOR3M_PRIME => Invalid Inputs");
+			throw new java.lang.Exception ("IRFactorAggregate::covariance_LIBOR3M_PRIME => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
-			curveTenorSensitivitySettings.singleCurveTenorCorrelation();
+			curveTenorSensitivitySettings.crossTenorCorrelation();
 
 		double covariance_LIBOR3M_PRIME = 0.;
 
@@ -1368,7 +1371,7 @@ public class IRNetSensitivity
 			}
 		}
 
-		return covariance_LIBOR3M_PRIME * curveTenorSensitivitySettings.crossSubCurveCorrelation();
+		return covariance_LIBOR3M_PRIME * curveTenorSensitivitySettings.crossCurveCorrelation();
 	}
 
 	/**
@@ -1382,17 +1385,17 @@ public class IRNetSensitivity
 	 */
 
 	public double covariance_LIBOR3M_MUNICIPAL (
-		final org.drip.simm20.parameters.IRCurveTenorSettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
 		{
 			throw new java.lang.Exception
-				("IRNetSensitivity::covariance_LIBOR3M_MUNICIPAL => Invalid Inputs");
+				("IRFactorAggregate::covariance_LIBOR3M_MUNICIPAL => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
-			curveTenorSensitivitySettings.singleCurveTenorCorrelation();
+			curveTenorSensitivitySettings.crossTenorCorrelation();
 
 		double covariance_LIBOR3M_MUNICIPAL = 0.;
 
@@ -1418,7 +1421,7 @@ public class IRNetSensitivity
 			}
 		}
 
-		return covariance_LIBOR3M_MUNICIPAL * curveTenorSensitivitySettings.crossSubCurveCorrelation();
+		return covariance_LIBOR3M_MUNICIPAL * curveTenorSensitivitySettings.crossCurveCorrelation();
 	}
 
 	/**
@@ -1432,16 +1435,16 @@ public class IRNetSensitivity
 	 */
 
 	public double covariance_LIBOR6M_LIBOR12M (
-		final org.drip.simm20.parameters.IRCurveTenorSettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
 		{
-			throw new java.lang.Exception ("IRNetSensitivity::covariance_LIBOR6M_LIBOR12M => Invalid Inputs");
+			throw new java.lang.Exception ("IRFactorAggregate::covariance_LIBOR6M_LIBOR12M => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
-			curveTenorSensitivitySettings.singleCurveTenorCorrelation();
+			curveTenorSensitivitySettings.crossTenorCorrelation();
 
 		double covariance_LIBOR6M_LIBOR12M = 0.;
 
@@ -1467,7 +1470,7 @@ public class IRNetSensitivity
 			}
 		}
 
-		return covariance_LIBOR6M_LIBOR12M * curveTenorSensitivitySettings.crossSubCurveCorrelation();
+		return covariance_LIBOR6M_LIBOR12M * curveTenorSensitivitySettings.crossCurveCorrelation();
 	}
 
 	/**
@@ -1481,16 +1484,16 @@ public class IRNetSensitivity
 	 */
 
 	public double covariance_LIBOR6M_PRIME (
-		final org.drip.simm20.parameters.IRCurveTenorSettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
 		{
-			throw new java.lang.Exception ("IRNetSensitivity::covariance_LIBOR6M_PRIME => Invalid Inputs");
+			throw new java.lang.Exception ("IRFactorAggregate::covariance_LIBOR6M_PRIME => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
-			curveTenorSensitivitySettings.singleCurveTenorCorrelation();
+			curveTenorSensitivitySettings.crossTenorCorrelation();
 
 		double covariance_LIBOR6M_PRIME = 0.;
 
@@ -1516,7 +1519,7 @@ public class IRNetSensitivity
 			}
 		}
 
-		return covariance_LIBOR6M_PRIME * curveTenorSensitivitySettings.crossSubCurveCorrelation();
+		return covariance_LIBOR6M_PRIME * curveTenorSensitivitySettings.crossCurveCorrelation();
 	}
 
 	/**
@@ -1530,17 +1533,17 @@ public class IRNetSensitivity
 	 */
 
 	public double covariance_LIBOR6M_MUNICIPAL (
-		final org.drip.simm20.parameters.IRCurveTenorSettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
 		{
 			throw new java.lang.Exception
-				("IRNetSensitivity::covariance_LIBOR6M_MUNICIPAL => Invalid Inputs");
+				("IRFactorAggregate::covariance_LIBOR6M_MUNICIPAL => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
-			curveTenorSensitivitySettings.singleCurveTenorCorrelation();
+			curveTenorSensitivitySettings.crossTenorCorrelation();
 
 		double covariance_LIBOR6M_MUNICIPAL = 0.;
 
@@ -1566,7 +1569,7 @@ public class IRNetSensitivity
 			}
 		}
 
-		return covariance_LIBOR6M_MUNICIPAL * curveTenorSensitivitySettings.crossSubCurveCorrelation();
+		return covariance_LIBOR6M_MUNICIPAL * curveTenorSensitivitySettings.crossCurveCorrelation();
 	}
 
 	/**
@@ -1580,16 +1583,16 @@ public class IRNetSensitivity
 	 */
 
 	public double covariance_LIBOR12M_PRIME (
-		final org.drip.simm20.parameters.IRCurveTenorSettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
 		{
-			throw new java.lang.Exception ("IRNetSensitivity::covariance_LIBOR12M_PRIME => Invalid Inputs");
+			throw new java.lang.Exception ("IRFactorAggregate::covariance_LIBOR12M_PRIME => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
-			curveTenorSensitivitySettings.singleCurveTenorCorrelation();
+			curveTenorSensitivitySettings.crossTenorCorrelation();
 
 		double covariance_LIBOR12M_PRIME = 0.;
 
@@ -1615,7 +1618,7 @@ public class IRNetSensitivity
 			}
 		}
 
-		return covariance_LIBOR12M_PRIME * curveTenorSensitivitySettings.crossSubCurveCorrelation();
+		return covariance_LIBOR12M_PRIME * curveTenorSensitivitySettings.crossCurveCorrelation();
 	}
 
 	/**
@@ -1629,17 +1632,17 @@ public class IRNetSensitivity
 	 */
 
 	public double covariance_LIBOR12M_MUNICIPAL (
-		final org.drip.simm20.parameters.IRCurveTenorSettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
 		{
 			throw new java.lang.Exception
-				("IRNetSensitivity::covariance_LIBOR12M_MUNICIPAL => Invalid Inputs");
+				("IRFactorAggregate::covariance_LIBOR12M_MUNICIPAL => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
-			curveTenorSensitivitySettings.singleCurveTenorCorrelation();
+			curveTenorSensitivitySettings.crossTenorCorrelation();
 
 		double covariance_LIBOR12M_MUNICIPAL = 0.;
 
@@ -1665,7 +1668,7 @@ public class IRNetSensitivity
 			}
 		}
 
-		return covariance_LIBOR12M_MUNICIPAL * curveTenorSensitivitySettings.crossSubCurveCorrelation();
+		return covariance_LIBOR12M_MUNICIPAL * curveTenorSensitivitySettings.crossCurveCorrelation();
 	}
 
 	/**
@@ -1679,16 +1682,16 @@ public class IRNetSensitivity
 	 */
 
 	public double covariance_PRIME_MUNICIPAL (
-		final org.drip.simm20.parameters.IRCurveTenorSettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
 		{
-			throw new java.lang.Exception ("IRNetSensitivity::covariance_PRIME_MUNICIPAL => Invalid Inputs");
+			throw new java.lang.Exception ("IRFactorAggregate::covariance_PRIME_MUNICIPAL => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
-			curveTenorSensitivitySettings.singleCurveTenorCorrelation();
+			curveTenorSensitivitySettings.crossTenorCorrelation();
 
 		double covariance_PRIME_MUNICIPAL = 0.;
 
@@ -1714,7 +1717,7 @@ public class IRNetSensitivity
 			}
 		}
 
-		return covariance_PRIME_MUNICIPAL * curveTenorSensitivitySettings.crossSubCurveCorrelation();
+		return covariance_PRIME_MUNICIPAL * curveTenorSensitivitySettings.crossCurveCorrelation();
 	}
 
 	/**
@@ -1726,7 +1729,7 @@ public class IRNetSensitivity
 	 */
 
 	public org.drip.simm20.margin.IRMarginCovariance marginCovariance (
-		final org.drip.simm20.parameters.IRCurveTenorSettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
 	{
 		try
 		{
@@ -1760,7 +1763,7 @@ public class IRNetSensitivity
 				covariance_PRIME_MUNICIPAL (curveTenorSensitivitySettings),
 				covariance_MUNICIPAL_MUNICIPAL (curveTenorSensitivitySettings),
 				_concentrationRiskFactor,
-				cumulativeGrossThresholded()
+				cumulativeSensitivityMargin()
 			);
 		}
 		catch (java.lang.Exception e)

@@ -85,7 +85,7 @@ public class EQDeltaMargin
 {
 
 	private static final void AddBucketRiskFactorSensitivity (
-		final Map<Integer, Map<String, Double>> bucketRiskFactorSensitivityMap,
+		final Map<String, Map<String, Double>> bucketRiskFactorSensitivityMap,
 		final int bucketIndex,
 		final double notional,
 		final String[] equityArray)
@@ -101,17 +101,17 @@ public class EQDeltaMargin
 		}
 
 		bucketRiskFactorSensitivityMap.put (
-			bucketIndex,
+			"" + bucketIndex,
 			riskFactorSensitivityMap
 		);
 	}
 
-	private static final Map<Integer, Map<String, Double>> BucketRiskFactorSensitivityMap (
+	private static final Map<String, Map<String, Double>> BucketRiskFactorSensitivityMap (
 		final double notional)
 		throws Exception
 	{
-		Map<Integer, Map<String, Double>> bucketRiskFactorSensitivityMap =
-			new TreeMap<Integer, Map<String, Double>>();
+		Map<String, Map<String, Double>> bucketRiskFactorSensitivityMap =
+			new TreeMap<String, Map<String, Double>>();
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
@@ -286,7 +286,7 @@ public class EQDeltaMargin
 	}
 
 	private static final void DisplayBucketRiskFactorSensitivity (
-		final Map<Integer, Map<String, Double>> bucketRiskFactorSensitivityMap)
+		final Map<String, Map<String, Double>> bucketRiskFactorSensitivityMap)
 		throws Exception
 	{
 		System.out.println ("\t|--------------------------||");
@@ -305,10 +305,10 @@ public class EQDeltaMargin
 
 		System.out.println ("\t|--------------------------||");
 
-		for (Map.Entry<Integer, Map<String, Double>> bucketSensitivityMapEntry :
+		for (Map.Entry<String, Map<String, Double>> bucketSensitivityMapEntry :
 			bucketRiskFactorSensitivityMap.entrySet())
 		{
-			int bucketIndex = bucketSensitivityMapEntry.getKey();
+			String bucketIndex = bucketSensitivityMapEntry.getKey();
 
 			Map<String, Double> riskFactorSensitivityMap = bucketSensitivityMapEntry.getValue();
 
@@ -322,7 +322,7 @@ public class EQDeltaMargin
 				System.out.println (
 					"\t| " +
 					currency + " => " +
-					FormatUtil.FormatDouble (bucketIndex, 2, 0, 1.) + " | " +
+					FormatUtil.FormatDouble (Integer.parseInt (bucketIndex), 2, 0, 1.) + " | " +
 					FormatUtil.FormatDouble (riskFactorSensitivity, 2, 2, 1.) + " ||"
 				);
 			}
@@ -343,11 +343,12 @@ public class EQDeltaMargin
 
 		RiskClassSensitivitySettings riskClassSensitivitySettings = RiskClassSensitivitySettings.ISDA_EQ();
 
-		Map<Integer, Map<String, Double>> bucketRiskFactorSensitivityMap = BucketRiskFactorSensitivityMap (notional);
+		Map<String, Map<String, Double>> bucketRiskFactorSensitivityMap = BucketRiskFactorSensitivityMap
+			(notional);
 
 		DisplayBucketRiskFactorSensitivity (bucketRiskFactorSensitivityMap);
 
-		Map<Integer, BucketSensitivity> bucketSensitivityMap = new TreeMap<Integer, BucketSensitivity>();
+		Map<String, BucketSensitivity> bucketSensitivityMap = new TreeMap<String, BucketSensitivity>();
 
 		System.out.println ("\t|------------------------||");
 
@@ -365,16 +366,16 @@ public class EQDeltaMargin
 
 		System.out.println ("\t|------------------------||");
 
-		for (Map.Entry<Integer, Map<String, Double>> bucketSensitivityMapEntry :
+		for (Map.Entry<String, Map<String, Double>> bucketSensitivityMapEntry :
 			bucketRiskFactorSensitivityMap.entrySet())
 		{
-			int bucketIndex = bucketSensitivityMapEntry.getKey();
+			String bucketIndex = bucketSensitivityMapEntry.getKey();
 
 			BucketSensitivity bucketSensitivity = new BucketSensitivity
 				(bucketSensitivityMapEntry.getValue());
 
 			bucketSensitivityMap.put (
-				bucketIndex,
+				"" + bucketIndex,
 				bucketSensitivity
 			);
 
@@ -382,7 +383,7 @@ public class EQDeltaMargin
 				(riskClassSensitivitySettings.bucketSensitivitySettingsMap().get (bucketIndex));
 
 			System.out.println ("\t| " +
-				FormatUtil.FormatDouble (bucketIndex, 2, 0, 1.) + " => " +
+				FormatUtil.FormatDouble (Integer.parseInt (bucketIndex), 2, 0, 1.) + " => " +
 				FormatUtil.FormatDouble (Math.sqrt (bucketDigest.weightedSensitivityVariance()), 5, 0, 1.) + " | " +
 				FormatUtil.FormatDouble (bucketDigest.cumulativeRiskFactorSensitivity(), 5, 0, 1.) + " ||"
 			);
