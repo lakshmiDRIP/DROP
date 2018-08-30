@@ -308,7 +308,7 @@ public class IRNetSensitivitySolo
 		System.out.println (
 			"\t| IM Covariance[ LIBOR 12M - LIBOR 12M ] => " +
 			FormatUtil.FormatDouble (
-				irNetSensitivity.covariance_LIBOR12M_LIBOR12M (curveTenorSensitivitySettings), 1, 3, 1.
+				irNetSensitivity.marginCovariance_LIBOR12M_LIBOR12M (curveTenorSensitivitySettings), 1, 3, 1.
 			) + " ||"
 		);
 
@@ -322,7 +322,7 @@ public class IRNetSensitivitySolo
 		System.out.println (
 			"\t| IM Covariance[ MUNICIPAL - MUNICIPAL ] => " +
 			FormatUtil.FormatDouble (
-				irNetSensitivity.covariance_MUNICIPAL_MUNICIPAL (curveTenorSensitivitySettings), 1, 3, 1.
+				irNetSensitivity.marginCovariance_MUNICIPAL_MUNICIPAL (curveTenorSensitivitySettings), 1, 3, 1.
 			) + " ||"
 		);
 
@@ -343,14 +343,14 @@ public class IRNetSensitivitySolo
 		System.out.println (
 			"\t| IM Covariance[     OIS   - LIBOR  6M ] => " +
 			FormatUtil.FormatDouble (
-				irNetSensitivity.covariance_OIS_LIBOR6M (curveTenorSensitivitySettings), 1, 3, 1.
+				irNetSensitivity.marginCovariance_OIS_LIBOR6M (curveTenorSensitivitySettings), 1, 3, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t| IM Covariance[     OIS   - LIBOR 12M ] => " +
 			FormatUtil.FormatDouble (
-				irNetSensitivity.covariance_OIS_LIBOR12M (curveTenorSensitivitySettings), 1, 3, 1.
+				irNetSensitivity.marginCovariance_OIS_LIBOR12M (curveTenorSensitivitySettings), 1, 3, 1.
 			) + " ||"
 		);
 
@@ -364,7 +364,7 @@ public class IRNetSensitivitySolo
 		System.out.println (
 			"\t| IM Covariance[     OIS   - MUNICIPAL ] => " +
 			FormatUtil.FormatDouble (
-				irNetSensitivity.covariance_OIS_MUNICIPAL (curveTenorSensitivitySettings), 1, 3, 1.
+				irNetSensitivity.marginCovariance_OIS_MUNICIPAL (curveTenorSensitivitySettings), 1, 3, 1.
 			) + " ||"
 		);
 
@@ -434,7 +434,7 @@ public class IRNetSensitivitySolo
 		System.out.println (
 			"\t| IM Covariance[ LIBOR  6M - LIBOR 12M ] => " +
 			FormatUtil.FormatDouble (
-				irNetSensitivity.covariance_LIBOR6M_LIBOR12M (curveTenorSensitivitySettings), 1, 3, 1.
+				irNetSensitivity.marginCovariance_LIBOR6M_LIBOR12M (curveTenorSensitivitySettings), 1, 3, 1.
 			) + " ||"
 		);
 
@@ -448,7 +448,7 @@ public class IRNetSensitivitySolo
 		System.out.println (
 			"\t| IM Covariance[ LIBOR  6M - MUNICIPAL ] => " +
 			FormatUtil.FormatDouble (
-				irNetSensitivity.covariance_LIBOR6M_MUNICIPAL (curveTenorSensitivitySettings), 1, 3, 1.
+				irNetSensitivity.marginCovariance_LIBOR6M_MUNICIPAL (curveTenorSensitivitySettings), 1, 3, 1.
 			) + " ||"
 		);
 
@@ -462,7 +462,7 @@ public class IRNetSensitivitySolo
 		System.out.println (
 			"\t| IM Covariance[ LIBOR 12M - MUNICIPAL ] => " +
 			FormatUtil.FormatDouble (
-				irNetSensitivity.covariance_LIBOR12M_MUNICIPAL (curveTenorSensitivitySettings), 1, 3, 1.
+				irNetSensitivity.marginCovariance_LIBOR12M_MUNICIPAL (curveTenorSensitivitySettings), 1, 3, 1.
 			) + " ||"
 		);
 
