@@ -174,7 +174,7 @@ public class IRGroupNetSensitivity
 	 */
 
 	public double deltaMargin (
-		final org.drip.simm20.parameters.IRClassSensitivitySettings groupSettings)
+		final org.drip.simm20.parameters.IRClassSensitivitySettings2 groupSettings)
 		throws java.lang.Exception
 	{
 		if (null == groupSettings)
@@ -195,7 +195,7 @@ public class IRGroupNetSensitivity
 				throw new java.lang.Exception ("IRGroupNetSensitivity::deltaMargin => Invalid Inputs");
 			}
 
-			org.drip.simm20.margin.IRClassDeltaAggregate marginCovariance = _netSensitivityMap.get
+			org.drip.simm20.margin.IRDeltaAggregate marginCovariance = _netSensitivityMap.get
 				(currency).marginCovariance (groupSettings.curveTenorSettings (currency));
 
 			if (null == marginCovariance)

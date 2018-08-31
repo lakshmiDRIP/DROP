@@ -1,5 +1,5 @@
 
-package org.drip.simm20.margin;
+package org.drip.simm20.product;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,8 +47,8 @@ package org.drip.simm20.margin;
  */
 
 /**
- * BucketAggregate holds the Single Bucket Sensitivity Margin, the Cumulative Bucket Risk Factor Sensitivity
- *  Margin, as well as the Aggregate Risk Factor Maps. The References are:
+ * RiskClassSensitivityIR holds the Risk Class Bucket Sensitivities for the IR Risk Class. The References
+ *  are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -57,7 +57,7 @@ package org.drip.simm20.margin;
  *  	Calculations, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488, eSSRN.
  *  
  *  - Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
- *  	Framework for Forecasting Initial Margin Requirements,
+ *  	Framework for Forecasting .Initial Margin Requirements,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
  *  
  *  - Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements
@@ -69,90 +69,39 @@ package org.drip.simm20.margin;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BucketAggregate
+public class RiskClassSensitivityIR
 {
-	private double _sensitivityMarginVariance = java.lang.Double.NaN;
-	private double _cumulativeRiskFactorSensitivityMargin = java.lang.Double.NaN;
-	private java.util.Map<java.lang.String, org.drip.simm20.margin.RiskFactorAggregate>
-		_riskFactorAggregateMap = null;
+	private java.util.Map<java.lang.String, org.drip.simm20.product.BucketSensitivityIR>
+		_bucketSensitivityMap = null;
 
 	/**
-	 * BucketAggregate Constructor
+	 * RiskClassSensitivityIR Constructor
 	 * 
-	 * @param riskFactorAggregateMap The Risk Factor Aggregate Map
-	 * @param sensitivityMarginVariance The Bucket's Sensitivity Margin Variance
-	 * @param cumulativeRiskFactorSensitivityMargin The Cumulative Risk Factor Sensitivity Margin
+	 * @param bucketSensitivityMap The IR Class Bucket Sensitivity Map
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public BucketAggregate (
-		final java.util.Map<java.lang.String, org.drip.simm20.margin.RiskFactorAggregate>
-			riskFactorAggregateMap,
-		final double sensitivityMarginVariance,
-		final double cumulativeRiskFactorSensitivityMargin)
+	public RiskClassSensitivityIR (
+		final java.util.Map<java.lang.String, org.drip.simm20.product.BucketSensitivityIR>
+			bucketSensitivityMap)
 		throws java.lang.Exception
 	{
-		if (null == (_riskFactorAggregateMap = riskFactorAggregateMap) || 0 == _riskFactorAggregateMap.size()
-			|| !org.drip.quant.common.NumberUtil.IsValid (_sensitivityMarginVariance =
-				sensitivityMarginVariance) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_cumulativeRiskFactorSensitivityMargin =
-				cumulativeRiskFactorSensitivityMargin))
+		if (null == (_bucketSensitivityMap = bucketSensitivityMap) || 0 == _bucketSensitivityMap.size())
 		{
-			throw new java.lang.Exception ("BucketAggregate Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("RiskClassSensitivityIR Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Risk Factor Aggregate Map
+	 * Retrieve the Risk Class Bucket Sensitivity Map
 	 * 
-	 * @return The Risk Factor Aggregate Map
+	 * @return The Risk Class Bucket Sensitivity Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.simm20.margin.RiskFactorAggregate>
-		riskFactorAggregateMap()
+	public java.util.Map<java.lang.String, org.drip.simm20.product.BucketSensitivityIR>
+		bucketSensitivityMap()
 	{
-		return _riskFactorAggregateMap;
-	}
-
-	/**
-	 * Retrieve the Bucket's Sensitivity Margin Variance
-	 * 
-	 * @return The Bucket's Sensitivity Margin Variance
-	 */
-
-	public double sensitivityMarginVariance()
-	{
-		return _sensitivityMarginVariance;
-	}
-
-	/**
-	 * Retrieve the Bucket's Cumulative Risk Factor Sensitivity Margin
-	 * 
-	 * @return The Bucket's Cumulative Risk Factor Sensitivity Margin
-	 */
-
-	public double cumulativeRiskFactorSensitivityMargin()
-	{
-		return _cumulativeRiskFactorSensitivityMargin;
-	}
-
-	/**
-	 * Compute the Bounded Sensitivity Margin
-	 * 
-	 * @return The Bounded Sensitivity Margin
-	 */
-
-	public double boundedSensitivityMargin()
-	{
-		double sensitivityMargin = java.lang.Math.sqrt (_sensitivityMarginVariance);
-
-		return java.lang.Math.max (
-			java.lang.Math.min (
-				_cumulativeRiskFactorSensitivityMargin,
-				sensitivityMargin
-			),
-			-1. * sensitivityMargin
-		);
+		return _bucketSensitivityMap;
 	}
 }

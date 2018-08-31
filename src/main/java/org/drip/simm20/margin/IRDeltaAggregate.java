@@ -47,8 +47,8 @@ package org.drip.simm20.margin;
  */
 
 /**
- * IRClassDeltaAggregate holds the IM Delta Margin Co-variances within a single Currency for each of the IR
- *  Risk Factors - OIS, LIBOR 1M, LIBOR 3M, LIBOR 6M LIBOR 12M, PRIME, and MUNICIPAL. The References are:
+ * IRDeltaAggregate holds the IM Delta Margin Co-variances within a single Currency for each of the IR Risk
+ *  Factors - OIS, LIBOR 1M, LIBOR 3M, LIBOR 6M LIBOR 12M, PRIME, and MUNICIPAL. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -69,7 +69,7 @@ package org.drip.simm20.margin;
  * @author Lakshmi Krishnamurthy
  */
 
-public class IRClassDeltaAggregate
+public class IRDeltaAggregate
 {
 	private double _marginCovariance_OIS_OIS = java.lang.Double.NaN;
 	private double _marginCovariance_OIS_PRIME = java.lang.Double.NaN;
@@ -142,7 +142,7 @@ public class IRClassDeltaAggregate
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public IRClassDeltaAggregate (
+	public IRDeltaAggregate (
 		final double marginCovariance_OIS_OIS,
 		final double marginCovariance_OIS_LIBOR1M,
 		final double marginCovariance_OIS_LIBOR3M,
@@ -233,7 +233,7 @@ public class IRClassDeltaAggregate
 			!org.drip.quant.common.NumberUtil.IsValid (_cumulativeMarginCovariance =
 				cumulativeMarginCovariance))
 		{
-			throw new java.lang.Exception ("IRClassDeltaAggregate Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("IRDeltaAggregate Constructor => Invalid Inputs");
 		}
 	}
 

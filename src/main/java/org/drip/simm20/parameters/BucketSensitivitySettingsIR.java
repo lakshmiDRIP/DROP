@@ -47,7 +47,7 @@ package org.drip.simm20.parameters;
  */
 
 /**
- * IRBucketSensitivitySettings holds the Risk Weights, Concentration Thresholds, and Cross-Tenor/Cross-Curve
+ * BucketSensitivitySettingsIR holds the Risk Weights, Concentration Thresholds, and Cross-Tenor/Cross-Curve
  *  Correlations for each Currency Curve and its Tenor. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
@@ -69,7 +69,7 @@ package org.drip.simm20.parameters;
  * @author Lakshmi Krishnamurthy
  */
 
-public class IRBucketSensitivitySettings extends org.drip.simm20.parameters.LiquiditySettings
+public class BucketSensitivitySettingsIR extends org.drip.simm20.parameters.LiquiditySettings
 {
 	private double _crossCurveCorrelation = java.lang.Double.NaN;
 	private org.drip.measure.stochastic.LabelCorrelation _crossTenorCorrelation = null;
@@ -89,7 +89,7 @@ public class IRBucketSensitivitySettings extends org.drip.simm20.parameters.Liqu
 	 * @return The ISDA Standard IR Sensitivity Settings for the Currency
 	 */
 
-	public static final IRBucketSensitivitySettings ISDA (
+	public static final BucketSensitivitySettingsIR ISDA (
 		final java.lang.String currency)
 	{
 		org.drip.simm20.rates.IRThreshold irThreshold = org.drip.simm20.rates.IRThresholdContainer.Threshold
@@ -145,7 +145,7 @@ public class IRBucketSensitivitySettings extends org.drip.simm20.parameters.Liqu
 				null == libor6MRiskWeight ||
 				null == libor12MRiskWeight ||
 				null == primeRiskWeight ||
-				null == municipalRiskWeight ? null : new IRBucketSensitivitySettings (
+				null == municipalRiskWeight ? null : new BucketSensitivitySettingsIR (
 					oisRiskWeight.tenorWeightMap(),
 					libor1MRiskWeight.tenorWeightMap(),
 					libor3MRiskWeight.tenorWeightMap(),
@@ -167,7 +167,7 @@ public class IRBucketSensitivitySettings extends org.drip.simm20.parameters.Liqu
 	}
 
 	/**
-	 * IRBucketSensitivitySettings Constructor
+	 * BucketSensitivitySettingsIR Constructor
 	 * 
 	 * @param oisTenorRiskWeight The OIS Tenor Risk Weight
 	 * @param libor1MTenorRiskWeight The LIBOR 1M Tenor Risk Weight
@@ -183,7 +183,7 @@ public class IRBucketSensitivitySettings extends org.drip.simm20.parameters.Liqu
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public IRBucketSensitivitySettings (
+	public BucketSensitivitySettingsIR (
 		final java.util.Map<java.lang.String, java.lang.Double> oisTenorRiskWeight,
 		final java.util.Map<java.lang.String, java.lang.Double> libor1MTenorRiskWeight,
 		final java.util.Map<java.lang.String, java.lang.Double> libor3MTenorRiskWeight,
@@ -209,7 +209,7 @@ public class IRBucketSensitivitySettings extends org.drip.simm20.parameters.Liqu
 			!org.drip.quant.common.NumberUtil.IsValid (_crossCurveCorrelation = crossCurveCorrelation) ||
 				-1. > _crossCurveCorrelation || 1. < _crossCurveCorrelation)
 		{
-			throw new java.lang.Exception ("IRBucketSensitivitySettings Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("BucketSensitivitySettingsIR Constructor => Invalid Inputs");
 		}
 	}
 

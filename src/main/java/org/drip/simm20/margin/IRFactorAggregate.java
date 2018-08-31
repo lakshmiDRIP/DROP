@@ -370,7 +370,7 @@ public class IRFactorAggregate
 	 */
 
 	public double marginCovariance_OIS_OIS (
-		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -419,7 +419,7 @@ public class IRFactorAggregate
 	 */
 
 	public double marginCovariance_LIBOR1M_LIBOR1M (
-		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -469,7 +469,7 @@ public class IRFactorAggregate
 	 */
 
 	public double marginCovariance_LIBOR3M_LIBOR3M (
-		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -519,7 +519,7 @@ public class IRFactorAggregate
 	 */
 
 	public double marginCovariance_LIBOR6M_LIBOR6M (
-		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -569,7 +569,7 @@ public class IRFactorAggregate
 	 */
 
 	public double marginCovariance_LIBOR12M_LIBOR12M (
-		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -619,7 +619,7 @@ public class IRFactorAggregate
 	 */
 
 	public double marginCovariance_PRIME_PRIME (
-		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -669,7 +669,7 @@ public class IRFactorAggregate
 	 */
 
 	public double marginCovariance_MUNICIPAL_MUNICIPAL (
-		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -719,7 +719,7 @@ public class IRFactorAggregate
 	 */
 
 	public double marginCovariance_OIS_LIBOR1M (
-		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -769,7 +769,7 @@ public class IRFactorAggregate
 	 */
 
 	public double marginCovariance_OIS_LIBOR3M (
-		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -819,7 +819,7 @@ public class IRFactorAggregate
 	 */
 
 	public double marginCovariance_OIS_LIBOR6M (
-		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -869,7 +869,7 @@ public class IRFactorAggregate
 	 */
 
 	public double marginCovariance_OIS_LIBOR12M (
-		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -919,7 +919,7 @@ public class IRFactorAggregate
 	 */
 
 	public double marginCovariance_OIS_PRIME (
-		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -969,7 +969,7 @@ public class IRFactorAggregate
 	 */
 
 	public double marginCovariance_OIS_MUNICIPAL (
-		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -1019,7 +1019,7 @@ public class IRFactorAggregate
 	 */
 
 	public double marginCovariance_LIBOR1M_LIBOR3M (
-		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -1069,7 +1069,7 @@ public class IRFactorAggregate
 	 */
 
 	public double marginCovariance_LIBOR1M_LIBOR6M (
-		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -1119,7 +1119,7 @@ public class IRFactorAggregate
 	 */
 
 	public double marginCovariance_LIBOR1M_LIBOR12M (
-		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -1169,7 +1169,7 @@ public class IRFactorAggregate
 	 */
 
 	public double marginCovariance_LIBOR1M_PRIME (
-		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -1219,7 +1219,7 @@ public class IRFactorAggregate
 	 */
 
 	public double marginCovariance_LIBOR1M_MUNICIPAL (
-		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -1269,7 +1269,7 @@ public class IRFactorAggregate
 	 */
 
 	public double marginCovariance_LIBOR3M_LIBOR6M (
-		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -1319,7 +1319,7 @@ public class IRFactorAggregate
 	 */
 
 	public double marginCovariance_LIBOR3M_LIBOR12M (
-		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -1369,7 +1369,7 @@ public class IRFactorAggregate
 	 */
 
 	public double marginCovariance_LIBOR3M_PRIME (
-		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -1419,7 +1419,7 @@ public class IRFactorAggregate
 	 */
 
 	public double marginCovariance_LIBOR3M_MUNICIPAL (
-		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -1469,7 +1469,7 @@ public class IRFactorAggregate
 	 */
 
 	public double marginCovariance_LIBOR6M_LIBOR12M (
-		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -1519,7 +1519,7 @@ public class IRFactorAggregate
 	 */
 
 	public double marginCovariance_LIBOR6M_PRIME (
-		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -1569,7 +1569,7 @@ public class IRFactorAggregate
 	 */
 
 	public double marginCovariance_LIBOR6M_MUNICIPAL (
-		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -1619,7 +1619,7 @@ public class IRFactorAggregate
 	 */
 
 	public double marginCovariance_LIBOR12M_PRIME (
-		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -1668,7 +1668,7 @@ public class IRFactorAggregate
 	 */
 
 	public double marginCovariance_LIBOR12M_MUNICIPAL (
-		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -1718,7 +1718,7 @@ public class IRFactorAggregate
 	 */
 
 	public double marginCovariance_PRIME_MUNICIPAL (
-		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings)
 		throws java.lang.Exception
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -1765,12 +1765,12 @@ public class IRFactorAggregate
 	 * @return The Complete Net Sensitivity Margin Co-variance
 	 */
 
-	public org.drip.simm20.margin.IRClassDeltaAggregate marginCovariance (
-		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings)
+	public org.drip.simm20.margin.IRDeltaAggregate marginCovariance (
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings)
 	{
 		try
 		{
-			return new org.drip.simm20.margin.IRClassDeltaAggregate (
+			return new org.drip.simm20.margin.IRDeltaAggregate (
 				marginCovariance_OIS_OIS (curveTenorSensitivitySettings),
 				marginCovariance_OIS_LIBOR1M (curveTenorSensitivitySettings),
 				marginCovariance_OIS_LIBOR3M (curveTenorSensitivitySettings),

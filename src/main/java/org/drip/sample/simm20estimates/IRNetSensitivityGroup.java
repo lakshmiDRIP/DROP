@@ -6,10 +6,10 @@ import java.util.Map;
 
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.simm20.margin.IRClassDeltaAggregate;
+import org.drip.simm20.margin.IRDeltaAggregate;
 import org.drip.simm20.margin.IRFactorAggregate;
-import org.drip.simm20.parameters.IRBucketSensitivitySettings;
-import org.drip.simm20.product.IRSensitivity;
+import org.drip.simm20.parameters.BucketSensitivitySettingsIR;
+import org.drip.simm20.product.BucketSensitivityIR;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -160,7 +160,7 @@ public class IRNetSensitivityGroup
 
 		String currency = "USD";
 
-		IRBucketSensitivitySettings curveTenorSensitivitySettings = IRBucketSensitivitySettings.ISDA
+		BucketSensitivitySettingsIR curveTenorSensitivitySettings = BucketSensitivitySettingsIR.ISDA
 			(currency);
 
 		double[] oisTenorSensitivities = new double[]
@@ -269,7 +269,7 @@ public class IRNetSensitivityGroup
 			10. * (Math.random() - 0.5),
 		};
 
-		IRSensitivity irSensitivity = IRSensitivity.Standard (
+		BucketSensitivityIR irSensitivity = BucketSensitivityIR.Standard (
 			TenorSensitivityMap (oisTenorSensitivities),
 			TenorSensitivityMap (libor1MTenorSensitivities),
 			TenorSensitivityMap (libor3MTenorSensitivities),
@@ -284,7 +284,7 @@ public class IRNetSensitivityGroup
 			true
 		);
 
-		IRClassDeltaAggregate irNetMarginCovariance = irNetSensitivity.marginCovariance
+		IRDeltaAggregate irNetMarginCovariance = irNetSensitivity.marginCovariance
 			(curveTenorSensitivitySettings);
 
 		System.out.println ("\t|------------------------------------------------------||");

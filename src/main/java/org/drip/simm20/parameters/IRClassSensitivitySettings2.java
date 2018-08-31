@@ -1,5 +1,5 @@
 
-package org.drip.simm20.margin;
+package org.drip.simm20.parameters;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,8 +47,8 @@ package org.drip.simm20.margin;
  */
 
 /**
- * BucketAggregate holds the Single Bucket Sensitivity Margin, the Cumulative Bucket Risk Factor Sensitivity
- *  Margin, as well as the Aggregate Risk Factor Maps. The References are:
+ * IRClassSensitivitySettings holds the Constituent IR Currency Bucket Curve Tenor Settings and the
+ *  corresponding Cross-Bucket Correlations. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -69,90 +69,128 @@ package org.drip.simm20.margin;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BucketAggregate
+public class IRClassSensitivitySettings2
 {
-	private double _sensitivityMarginVariance = java.lang.Double.NaN;
-	private double _cumulativeRiskFactorSensitivityMargin = java.lang.Double.NaN;
-	private java.util.Map<java.lang.String, org.drip.simm20.margin.RiskFactorAggregate>
-		_riskFactorAggregateMap = null;
+	private double _crossBucketCorrelation = java.lang.Double.NaN;
+
+	private java.util.Map<java.lang.String, org.drip.simm20.parameters.BucketSensitivitySettingsIR>
+		_irBucketSensitivitySettingsMap = new
+			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.simm20.parameters.BucketSensitivitySettingsIR>();
 
 	/**
-	 * BucketAggregate Constructor
+	 * Construct the ISDA Standard IRClassSensitivitySettings
 	 * 
-	 * @param riskFactorAggregateMap The Risk Factor Aggregate Map
-	 * @param sensitivityMarginVariance The Bucket's Sensitivity Margin Variance
-	 * @param cumulativeRiskFactorSensitivityMargin The Cumulative Risk Factor Sensitivity Margin
+	 * @return The ISDA Standard IRClassSensitivitySettings
+	 */
+
+	public static final IRClassSensitivitySettings2 ISDA()
+	{
+		try
+		{
+			return new IRClassSensitivitySettings2
+				(org.drip.simm20.rates.IRSystemics.CROSS_CURRENCY_CORRELATION);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * IRClassSensitivitySettings Constructor
+	 * 
+	 * @param crossBucketCorrelation The Cross Currency Bucket Correlation
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public BucketAggregate (
-		final java.util.Map<java.lang.String, org.drip.simm20.margin.RiskFactorAggregate>
-			riskFactorAggregateMap,
-		final double sensitivityMarginVariance,
-		final double cumulativeRiskFactorSensitivityMargin)
+	public IRClassSensitivitySettings2 (
+		final double crossBucketCorrelation)
 		throws java.lang.Exception
 	{
-		if (null == (_riskFactorAggregateMap = riskFactorAggregateMap) || 0 == _riskFactorAggregateMap.size()
-			|| !org.drip.quant.common.NumberUtil.IsValid (_sensitivityMarginVariance =
-				sensitivityMarginVariance) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_cumulativeRiskFactorSensitivityMargin =
-				cumulativeRiskFactorSensitivityMargin))
+		if (!org.drip.quant.common.NumberUtil.IsValid (_crossBucketCorrelation = crossBucketCorrelation) ||
+			1. < _crossBucketCorrelation || -1. > crossBucketCorrelation)
 		{
-			throw new java.lang.Exception ("BucketAggregate Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("IRClassSensitivitySettings Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Risk Factor Aggregate Map
+	 * Retrieve the Cross Currency Bucket Correlation
 	 * 
-	 * @return The Risk Factor Aggregate Map
+	 * @return The Cross Currency Bucket Correlation
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.simm20.margin.RiskFactorAggregate>
-		riskFactorAggregateMap()
+	public double crossBucketCorrelation()
 	{
-		return _riskFactorAggregateMap;
+		return _crossBucketCorrelation;
 	}
 
 	/**
-	 * Retrieve the Bucket's Sensitivity Margin Variance
+	 * Add the specified Curve Tenor Settings Instance
 	 * 
-	 * @return The Bucket's Sensitivity Margin Variance
+	 * @param currency The Currency
+	 * @param curveTenorSettings The specified Curve Tenor Settings Instance
+	 * 
+	 * @return TRUE - The specified Curve Tenor Settings Instance successfully added
 	 */
 
-	public double sensitivityMarginVariance()
+	public boolean addCurveTenorSettings (
+		final java.lang.String currency,
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSettings)
 	{
-		return _sensitivityMarginVariance;
-	}
+		if (null == currency || currency.isEmpty() || null == curveTenorSettings)
+		{
+			return false;
+		}
 
-	/**
-	 * Retrieve the Bucket's Cumulative Risk Factor Sensitivity Margin
-	 * 
-	 * @return The Bucket's Cumulative Risk Factor Sensitivity Margin
-	 */
-
-	public double cumulativeRiskFactorSensitivityMargin()
-	{
-		return _cumulativeRiskFactorSensitivityMargin;
-	}
-
-	/**
-	 * Compute the Bounded Sensitivity Margin
-	 * 
-	 * @return The Bounded Sensitivity Margin
-	 */
-
-	public double boundedSensitivityMargin()
-	{
-		double sensitivityMargin = java.lang.Math.sqrt (_sensitivityMarginVariance);
-
-		return java.lang.Math.max (
-			java.lang.Math.min (
-				_cumulativeRiskFactorSensitivityMargin,
-				sensitivityMargin
-			),
-			-1. * sensitivityMargin
+		_irBucketSensitivitySettingsMap.put (
+			currency,
+			curveTenorSettings
 		);
+
+		return true;
+	}
+
+	/**
+	 * Indicate if the Currency is available in the Map
+	 * 
+	 * @param currency The Currency
+	 * 
+	 * @return TRUE - The Currency is available in the Map
+	 */
+
+	public boolean containsCurrency (
+		final java.lang.String currency)
+	{
+		return null != currency && !currency.isEmpty() && _irBucketSensitivitySettingsMap.containsKey (currency);
+	}
+
+	/**
+	 * Retrieve the Curve Tenor Settings for the Currency
+	 * 
+	 * @param currency The Currency
+	 * 
+	 * @return The Curve Tenor Settings for the Currency
+	 */
+
+	public org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSettings (
+		final java.lang.String currency)
+	{
+		return containsCurrency (currency) ? _irBucketSensitivitySettingsMap.get (currency) : null;
+	}
+
+	/**
+	 * Retrieve the IR Bucket Sensitivity Settings Map
+	 * 
+	 * @return The IR Bucket Sensitivity Settings Map
+	 */
+
+	public java.util.Map<java.lang.String, org.drip.simm20.parameters.BucketSensitivitySettingsIR>
+		irBucketSensitivitySettingsMap()
+	{
+		return _irBucketSensitivitySettingsMap;
 	}
 }

@@ -1,5 +1,5 @@
 
-package org.drip.simm20.parameters;
+package org.drip.simm20.margin;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,8 +47,8 @@ package org.drip.simm20.parameters;
  */
 
 /**
- * IRClassSensitivitySettings holds the Constituent IR Currency Bucket Curve Tenor Settings and the
- *  corresponding Cross-Bucket Correlations. The References are:
+ * RiskClassAggregateIR holds the Bucket Aggregate and the Computed SIMM Margin for the IR Risk Class. The
+ *  References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -57,7 +57,7 @@ package org.drip.simm20.parameters;
  *  	Calculations, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488, eSSRN.
  *  
  *  - Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
- *  	Framework for Forecasting Initial Margin Requirements,
+ *  	Framework for Forecasting .Initial Margin Requirements,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
  *  
  *  - Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements
@@ -69,128 +69,78 @@ package org.drip.simm20.parameters;
  * @author Lakshmi Krishnamurthy
  */
 
-public class IRClassSensitivitySettings
+public class RiskClassAggregateIR
 {
-	private double _crossBucketCorrelation = java.lang.Double.NaN;
-
-	private java.util.Map<java.lang.String, org.drip.simm20.parameters.IRBucketSensitivitySettings>
-		_irBucketSensitivitySettingsMap = new
-			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.simm20.parameters.IRBucketSensitivitySettings>();
-
-	/**
-	 * Construct the ISDA Standard IRClassSensitivitySettings
-	 * 
-	 * @return The ISDA Standard IRClassSensitivitySettings
-	 */
-
-	public static final IRClassSensitivitySettings ISDA()
-	{
-		try
-		{
-			return new IRClassSensitivitySettings
-				(org.drip.simm20.rates.IRSystemics.CROSS_CURRENCY_CORRELATION);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
+	private double _coreDeltaSBAVariance = java.lang.Double.NaN;
+	private double _residualDeltaSBAVariance = java.lang.Double.NaN;
+	private java.util.Map<java.lang.String, org.drip.simm20.margin.BucketAggregateIR> _bucketAggregateIRMap =
+		null;
 
 	/**
-	 * IRClassSensitivitySettings Constructor
+	 * RiskClassAggregateIR Constructor
 	 * 
-	 * @param crossBucketCorrelation The Cross Currency Bucket Correlation
+	 * @param bucketAggregateIRMap The IR Bucket Aggregate Map
+	 * @param coreDeltaSBAVariance The SBA Based IR Class Core Delta Variance
+	 * @param residualDeltaSBAVariance The SBA Based IR Class Residual Delta Variance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public IRClassSensitivitySettings (
-		final double crossBucketCorrelation)
+	public RiskClassAggregateIR (
+		final java.util.Map<java.lang.String, org.drip.simm20.margin.BucketAggregateIR> bucketAggregateIRMap,
+		final double coreDeltaSBAVariance,
+		final double residualDeltaSBAVariance)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_crossBucketCorrelation = crossBucketCorrelation) ||
-			1. < _crossBucketCorrelation || -1. > crossBucketCorrelation)
+		if (null == (_bucketAggregateIRMap = bucketAggregateIRMap) || 0 == _bucketAggregateIRMap.size() ||
+			!org.drip.quant.common.NumberUtil.IsValid (_coreDeltaSBAVariance = coreDeltaSBAVariance) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_residualDeltaSBAVariance = residualDeltaSBAVariance))
 		{
-			throw new java.lang.Exception ("IRClassSensitivitySettings Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("RiskClassAggregateIR Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Cross Currency Bucket Correlation
+	 * Retrieve the IR Bucket Aggregate Map
 	 * 
-	 * @return The Cross Currency Bucket Correlation
+	 * @return The IR Bucket Aggregate Map
 	 */
 
-	public double crossBucketCorrelation()
+	public java.util.Map<java.lang.String, org.drip.simm20.margin.BucketAggregateIR> bucketAggregateMap()
 	{
-		return _crossBucketCorrelation;
+		return _bucketAggregateIRMap;
 	}
 
 	/**
-	 * Add the specified Curve Tenor Settings Instance
+	 * Retrieve the Risk Class Core Delta Margin Variance
 	 * 
-	 * @param currency The Currency
-	 * @param curveTenorSettings The specified Curve Tenor Settings Instance
-	 * 
-	 * @return TRUE - The specified Curve Tenor Settings Instance successfully added
+	 * @return The Risk Class Core Delta Margin Variance
 	 */
 
-	public boolean addCurveTenorSettings (
-		final java.lang.String currency,
-		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSettings)
+	public double coreDeltaSBAVariance()
 	{
-		if (null == currency || currency.isEmpty() || null == curveTenorSettings)
-		{
-			return false;
-		}
-
-		_irBucketSensitivitySettingsMap.put (
-			currency,
-			curveTenorSettings
-		);
-
-		return true;
+		return _coreDeltaSBAVariance;
 	}
 
 	/**
-	 * Indicate if the Currency is available in the Map
+	 * Retrieve the Risk Class Residual Delta Margin Variance
 	 * 
-	 * @param currency The Currency
-	 * 
-	 * @return TRUE - The Currency is available in the Map
+	 * @return The Risk Class Residual Delta Margin Variance
 	 */
 
-	public boolean containsCurrency (
-		final java.lang.String currency)
+	public double residualDeltaSBAVariance()
 	{
-		return null != currency && !currency.isEmpty() && _irBucketSensitivitySettingsMap.containsKey (currency);
+		return _residualDeltaSBAVariance;
 	}
 
 	/**
-	 * Retrieve the Curve Tenor Settings for the Currency
+	 * Retrieve the Risk Class SBA Based Delta Margin
 	 * 
-	 * @param currency The Currency
-	 * 
-	 * @return The Curve Tenor Settings for the Currency
+	 * @return The Risk Class SBA Based Delta Margin
 	 */
 
-	public org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSettings (
-		final java.lang.String currency)
+	public double deltaSBA()
 	{
-		return containsCurrency (currency) ? _irBucketSensitivitySettingsMap.get (currency) : null;
-	}
-
-	/**
-	 * Retrieve the IR Bucket Sensitivity Settings Map
-	 * 
-	 * @return The IR Bucket Sensitivity Settings Map
-	 */
-
-	public java.util.Map<java.lang.String, org.drip.simm20.parameters.IRBucketSensitivitySettings>
-		irBucketSensitivitySettingsMap()
-	{
-		return _irBucketSensitivitySettingsMap;
+		return java.lang.Math.sqrt (_coreDeltaSBAVariance) + java.lang.Math.sqrt (_residualDeltaSBAVariance);
 	}
 }

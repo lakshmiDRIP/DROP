@@ -7,11 +7,11 @@ import java.util.Map;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.simm20.margin.IRGroupNetSensitivity;
-import org.drip.simm20.margin.IRClassDeltaAggregate;
+import org.drip.simm20.margin.IRDeltaAggregate;
 import org.drip.simm20.margin.IRFactorAggregate;
-import org.drip.simm20.parameters.IRBucketSensitivitySettings;
-import org.drip.simm20.parameters.IRClassSensitivitySettings;
-import org.drip.simm20.product.IRSensitivity;
+import org.drip.simm20.parameters.BucketSensitivitySettingsIR;
+import org.drip.simm20.parameters.IRClassSensitivitySettings2;
+import org.drip.simm20.product.BucketSensitivityIR;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -154,7 +154,7 @@ public class IRGroupDeltaMargin
 	}
 
 	private static final IRFactorAggregate NetSensitivity (
-		final IRBucketSensitivitySettings curveTenorSensitivitySettings)
+		final BucketSensitivitySettingsIR curveTenorSensitivitySettings)
 		throws Exception
 	{
 		double[] oisTenorSensitivities = new double[]
@@ -263,7 +263,7 @@ public class IRGroupDeltaMargin
 			10. * (Math.random() - 0.5),
 		};
 
-		IRSensitivity irSensitivity = IRSensitivity.Standard (
+		BucketSensitivityIR irSensitivity = BucketSensitivityIR.Standard (
 			TenorSensitivityMap (oisTenorSensitivities),
 			TenorSensitivityMap (libor1MTenorSensitivities),
 			TenorSensitivityMap (libor3MTenorSensitivities),
@@ -278,7 +278,7 @@ public class IRGroupDeltaMargin
 			true
 		);
 
-		IRClassDeltaAggregate irNetMarginCovariance = irNetSensitivity.marginCovariance
+		IRDeltaAggregate irNetMarginCovariance = irNetSensitivity.marginCovariance
 			(curveTenorSensitivitySettings);
 
 		System.out.println ("\t|------------------------------------------------------||");
@@ -516,13 +516,13 @@ public class IRGroupDeltaMargin
 		String eur = "EUR";
 		String gbp = "GBP";
 
-		IRBucketSensitivitySettings usdCurveTenorSettings = IRBucketSensitivitySettings.ISDA (usd);
+		BucketSensitivitySettingsIR usdCurveTenorSettings = BucketSensitivitySettingsIR.ISDA (usd);
 
-		IRBucketSensitivitySettings eurCurveTenorSettings = IRBucketSensitivitySettings.ISDA (eur);
+		BucketSensitivitySettingsIR eurCurveTenorSettings = BucketSensitivitySettingsIR.ISDA (eur);
 
-		IRBucketSensitivitySettings gbpCurveTenorSettings = IRBucketSensitivitySettings.ISDA (gbp);
+		BucketSensitivitySettingsIR gbpCurveTenorSettings = BucketSensitivitySettingsIR.ISDA (gbp);
 
-		IRClassSensitivitySettings irGroupSettings = IRClassSensitivitySettings.ISDA();
+		IRClassSensitivitySettings2 irGroupSettings = IRClassSensitivitySettings2.ISDA();
 
 		irGroupSettings.addCurveTenorSettings (
 			usd,

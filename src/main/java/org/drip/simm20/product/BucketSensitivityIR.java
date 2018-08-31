@@ -47,8 +47,9 @@ package org.drip.simm20.product;
  */
 
 /**
- * IRSensitivity holds the ISDA SIMM 2.0 Risk Factor Tenor Bucket Sensitivities across IR Factor Sub Curves.
- *  USD Exposures enhanced with the USD specific Sub-Curve Factors - PRIME and MUNICIPAL. The References are:
+ * BucketSensitivityIR holds the ISDA SIMM 2.0 Risk Factor Tenor Bucket Sensitivities across IR Factor Sub
+ *  Curves. USD Exposures enhanced with the USD specific Sub-Curve Factors - PRIME and MUNICIPAL. The
+ *  References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -69,20 +70,20 @@ package org.drip.simm20.product;
  * @author Lakshmi Krishnamurthy
  */
 
-public class IRSensitivity
+public class BucketSensitivityIR
 {
-	private org.drip.simm20.margin.RiskFactorTenorSensitivity _ois = null;
-	private org.drip.simm20.margin.RiskFactorTenorSensitivity _prime = null;
-	private org.drip.simm20.margin.RiskFactorTenorSensitivity _libor1M = null;
-	private org.drip.simm20.margin.RiskFactorTenorSensitivity _libor3M = null;
-	private org.drip.simm20.margin.RiskFactorTenorSensitivity _libor6M = null;
-	private org.drip.simm20.margin.RiskFactorTenorSensitivity _libor12M = null;
-	private org.drip.simm20.margin.RiskFactorTenorSensitivity _municipal = null;
+	private org.drip.simm20.product.RiskFactorTenorSensitivity _oisTenorSensitivity = null;
+	private org.drip.simm20.product.RiskFactorTenorSensitivity _prime = null;
+	private org.drip.simm20.product.RiskFactorTenorSensitivity _libor1M = null;
+	private org.drip.simm20.product.RiskFactorTenorSensitivity _libor3M = null;
+	private org.drip.simm20.product.RiskFactorTenorSensitivity _libor6M = null;
+	private org.drip.simm20.product.RiskFactorTenorSensitivity _libor12M = null;
+	private org.drip.simm20.product.RiskFactorTenorSensitivity _municipal = null;
 
 	/**
-	 * Generate a Standard Instance of IRSensitivity from the Sensitivity Maps
+	 * Generate a Standard Instance of BucketSensitivityIR from the Sensitivity Maps
 	 * 
-	 * @param ois OIS Unweighted Sensitivity Map
+	 * @param oisTenorSensitivity OIS Tenor Sensitivity Map
 	 * @param libor1M LIBOR 1M Unweighted Sensitivity Map
 	 * @param libor3M LIBOR 3M Unweighted Sensitivity Map
 	 * @param libor6M LIBOR 6M Unweighted Sensitivity Map
@@ -90,11 +91,11 @@ public class IRSensitivity
 	 * @param prime Prime Unweighted Sensitivity Map
 	 * @param municipal Municipal Unweighted Sensitivity Map
 	 * 
-	 * @return Standard Instance of IRSensitivity from the Sensitivity Maps
+	 * @return Standard Instance of IRCurveDeltaSensitivity from the Sensitivity Maps
 	 */
 
-	public static final IRSensitivity Standard (
-		final java.util.Map<java.lang.String, java.lang.Double> ois,
+	public static final BucketSensitivityIR Standard (
+		final java.util.Map<java.lang.String, java.lang.Double> oisTenorSensitivity,
 		final java.util.Map<java.lang.String, java.lang.Double> libor1M,
 		final java.util.Map<java.lang.String, java.lang.Double> libor3M,
 		final java.util.Map<java.lang.String, java.lang.Double> libor6M,
@@ -104,14 +105,14 @@ public class IRSensitivity
 	{
 		try
 		{
-			return new IRSensitivity (
-				new org.drip.simm20.margin.RiskFactorTenorSensitivity (ois),
-				new org.drip.simm20.margin.RiskFactorTenorSensitivity (libor1M),
-				new org.drip.simm20.margin.RiskFactorTenorSensitivity (libor3M),
-				new org.drip.simm20.margin.RiskFactorTenorSensitivity (libor6M),
-				new org.drip.simm20.margin.RiskFactorTenorSensitivity (libor12M),
-				new org.drip.simm20.margin.RiskFactorTenorSensitivity (prime),
-				new org.drip.simm20.margin.RiskFactorTenorSensitivity (municipal)
+			return new BucketSensitivityIR (
+				new org.drip.simm20.product.RiskFactorTenorSensitivity (oisTenorSensitivity),
+				new org.drip.simm20.product.RiskFactorTenorSensitivity (libor1M),
+				new org.drip.simm20.product.RiskFactorTenorSensitivity (libor3M),
+				new org.drip.simm20.product.RiskFactorTenorSensitivity (libor6M),
+				new org.drip.simm20.product.RiskFactorTenorSensitivity (libor12M),
+				new org.drip.simm20.product.RiskFactorTenorSensitivity (prime),
+				new org.drip.simm20.product.RiskFactorTenorSensitivity (municipal)
 			);
 		}
 		catch (java.lang.Exception e)
@@ -123,9 +124,9 @@ public class IRSensitivity
 	}
 
 	/**
-	 * IRSensitivity Constructor
+	 * BucketSensitivityIR Constructor
 	 * 
-	 * @param ois The OIS Risk Factor Sensitivity
+	 * @param oisTenorSensitivity The OIS Risk Factor Tenor Sensitivity
 	 * @param libor1M The LIBOR-1M Risk Factor Sensitivity
 	 * @param libor3M The LIBOR-3M Risk Factor Sensitivity
 	 * @param libor6M The LIBOR-6M Risk Factor Sensitivity
@@ -136,17 +137,17 @@ public class IRSensitivity
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public IRSensitivity (
-		final org.drip.simm20.margin.RiskFactorTenorSensitivity ois,
-		final org.drip.simm20.margin.RiskFactorTenorSensitivity libor1M,
-		final org.drip.simm20.margin.RiskFactorTenorSensitivity libor3M,
-		final org.drip.simm20.margin.RiskFactorTenorSensitivity libor6M,
-		final org.drip.simm20.margin.RiskFactorTenorSensitivity libor12M,
-		final org.drip.simm20.margin.RiskFactorTenorSensitivity prime,
-		final org.drip.simm20.margin.RiskFactorTenorSensitivity municipal)
+	public BucketSensitivityIR (
+		final org.drip.simm20.product.RiskFactorTenorSensitivity oisTenorSensitivity,
+		final org.drip.simm20.product.RiskFactorTenorSensitivity libor1M,
+		final org.drip.simm20.product.RiskFactorTenorSensitivity libor3M,
+		final org.drip.simm20.product.RiskFactorTenorSensitivity libor6M,
+		final org.drip.simm20.product.RiskFactorTenorSensitivity libor12M,
+		final org.drip.simm20.product.RiskFactorTenorSensitivity prime,
+		final org.drip.simm20.product.RiskFactorTenorSensitivity municipal)
 		throws java.lang.Exception
 	{
-		if (null == (_ois = ois) ||
+		if (null == (_oisTenorSensitivity = oisTenorSensitivity) ||
 			null == (_libor1M = libor1M) ||
 			null == (_libor3M = libor3M) ||
 			null == (_libor6M = libor6M) ||
@@ -154,19 +155,19 @@ public class IRSensitivity
 			null == (_prime = prime) ||
 			null == (_municipal = municipal))
 		{
-			throw new java.lang.Exception ("IRSensitivity Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("BucketSensitivityIR Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the OIS Risk Factor Sensitivity
+	 * Retrieve the OIS Risk Factor Tenor Sensitivity
 	 * 
-	 * @return The OIS Risk Factor Sensitivity
+	 * @return The OIS Risk Factor Tenor Sensitivity
 	 */
 
-	public org.drip.simm20.margin.RiskFactorTenorSensitivity ois()
+	public org.drip.simm20.product.RiskFactorTenorSensitivity oisTenorSensitivity()
 	{
-		return _ois;
+		return _oisTenorSensitivity;
 	}
 
 	/**
@@ -175,7 +176,7 @@ public class IRSensitivity
 	 * @return The LIBOR-1M Risk Factor Sensitivity
 	 */
 
-	public org.drip.simm20.margin.RiskFactorTenorSensitivity libor1M()
+	public org.drip.simm20.product.RiskFactorTenorSensitivity libor1M()
 	{
 		return _libor1M;
 	}
@@ -186,7 +187,7 @@ public class IRSensitivity
 	 * @return The LIBOR-3M Risk Factor Sensitivity
 	 */
 
-	public org.drip.simm20.margin.RiskFactorTenorSensitivity libor3M()
+	public org.drip.simm20.product.RiskFactorTenorSensitivity libor3M()
 	{
 		return _libor3M;
 	}
@@ -197,7 +198,7 @@ public class IRSensitivity
 	 * @return The LIBOR-6M Risk Factor Sensitivity
 	 */
 
-	public org.drip.simm20.margin.RiskFactorTenorSensitivity libor6M()
+	public org.drip.simm20.product.RiskFactorTenorSensitivity libor6M()
 	{
 		return _libor6M;
 	}
@@ -208,7 +209,7 @@ public class IRSensitivity
 	 * @return The LIBOR-12M Risk Factor Sensitivity
 	 */
 
-	public org.drip.simm20.margin.RiskFactorTenorSensitivity libor12M()
+	public org.drip.simm20.product.RiskFactorTenorSensitivity libor12M()
 	{
 		return _libor12M;
 	}
@@ -219,7 +220,7 @@ public class IRSensitivity
 	 * @return The PRIME Risk Factor Sensitivity
 	 */
 
-	public org.drip.simm20.margin.RiskFactorTenorSensitivity prime()
+	public org.drip.simm20.product.RiskFactorTenorSensitivity prime()
 	{
 		return _prime;
 	}
@@ -230,26 +231,26 @@ public class IRSensitivity
 	 * @return The MUNICIPAL Risk Factor Sensitivity
 	 */
 
-	public org.drip.simm20.margin.RiskFactorTenorSensitivity municipal()
+	public org.drip.simm20.product.RiskFactorTenorSensitivity municipal()
 	{
 		return _municipal;
 	}
 
 	/**
-	 * Generate the Cumulative Delta
+	 * Generate the Cumulative Tenor Sensitivity
 	 * 
-	 * @return The Cumulative Delta
+	 * @return The Cumulative Tenor Sensitivity
 	 */
 
 	public double cumulative()
 	{
-		return _ois.cumulative() +
-			_libor1M.cumulative() +
-			_libor3M.cumulative() +
-			_libor6M.cumulative() +
-			_libor12M.cumulative() +
-			_prime.cumulative() +
-			_municipal.cumulative();
+		return _oisTenorSensitivity.cumulativeTenorDelta() +
+			_libor1M.cumulativeTenorDelta() +
+			_libor3M.cumulativeTenorDelta() +
+			_libor6M.cumulativeTenorDelta() +
+			_libor12M.cumulativeTenorDelta() +
+			_prime.cumulativeTenorDelta() +
+			_municipal.cumulativeTenorDelta();
 	}
 
 	/**
@@ -268,7 +269,7 @@ public class IRSensitivity
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (concentrationThreshold))
 		{
-			throw new java.lang.Exception ("IRSensitivity::concentrationRiskFactor => Invalid Inputs");
+			throw new java.lang.Exception ("BucketSensitivityIR::concentrationRiskFactor => Invalid Inputs");
 		}
 
 		return java.lang.Math.max (
@@ -283,29 +284,28 @@ public class IRSensitivity
 	}
 
 	/**
-	 * Generate the Weighted/Unweighted Net OIS Sensitivity Map
+	 * Generate the OIS Sensitivity Margin
 	 * 
-	 * @param curveTenorSensitivitySettings The Curve Teno Sensitivity Settings
-	 * @param weighted TRUE - Generate the Weighted Sensitivity Map
+	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
 	 * 
-	 * @return The Weighted/Unweighted Net OIS Sensitivity Map
+	 * @return The OIS Sensitivity Margin
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> oisNet (
-		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings,
-		final boolean weighted)
+	public java.util.Map<java.lang.String, java.lang.Double> oisSensitivityMargin (
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings)
 	{
 		if (null == curveTenorSensitivitySettings)
 		{
 			return null;
 		}
 
-		java.util.Map<java.lang.String, java.lang.Double> oisNet = _ois.netRiskWeight
-			(curveTenorSensitivitySettings.oisTenorRiskWeight());
+		java.util.Map<java.lang.String, java.lang.Double> oisTenorSensitivityMargin =
+			_oisTenorSensitivity.tenorDeltaSensitivityMargin
+				(curveTenorSensitivitySettings.oisTenorRiskWeight());
 
-		if (null == oisNet || !weighted)
+		if (null == oisTenorSensitivityMargin)
 		{
-			return oisNet;
+			return oisTenorSensitivityMargin;
 		}
 
 		double concentrationRiskFactor = java.lang.Double.NaN;
@@ -322,17 +322,18 @@ public class IRSensitivity
 			return null;
 		}
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisNetEntry : oisNet.entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisTenorSensitivityMarginEntry :
+			oisTenorSensitivityMargin.entrySet())
 		{
-			java.lang.String tenor = oisNetEntry.getKey();
+			java.lang.String tenor = oisTenorSensitivityMarginEntry.getKey();
 
-			oisNet.put (
+			oisTenorSensitivityMargin.put (
 				tenor,
-				oisNet.get (tenor) * concentrationRiskFactor
+				oisTenorSensitivityMargin.get (tenor) * concentrationRiskFactor
 			);
 		}
 
-		return oisNet;
+		return oisTenorSensitivityMargin;
 	}
 
 	/**
@@ -345,7 +346,7 @@ public class IRSensitivity
 	 */
 
 	public java.util.Map<java.lang.String, java.lang.Double> libor1MNet (
-		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings,
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings,
 		final boolean weighted)
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -353,7 +354,7 @@ public class IRSensitivity
 			return null;
 		}
 
-		java.util.Map<java.lang.String, java.lang.Double> libor1MNet = _libor1M.netRiskWeight
+		java.util.Map<java.lang.String, java.lang.Double> libor1MNet = _libor1M.tenorDeltaSensitivityMargin
 			(curveTenorSensitivitySettings.libor1MTenorRiskWeight());
 
 		if (null == libor1MNet || !weighted)
@@ -398,7 +399,7 @@ public class IRSensitivity
 	 */
 
 	public java.util.Map<java.lang.String, java.lang.Double> libor3MNet (
-		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings,
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings,
 		final boolean weighted)
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -406,7 +407,7 @@ public class IRSensitivity
 			return null;
 		}
 
-		java.util.Map<java.lang.String, java.lang.Double> libor3MNet = _libor3M.netRiskWeight
+		java.util.Map<java.lang.String, java.lang.Double> libor3MNet = _libor3M.tenorDeltaSensitivityMargin
 			(curveTenorSensitivitySettings.libor3MTenorRiskWeight());
 
 		if (null == libor3MNet || !weighted)
@@ -451,7 +452,7 @@ public class IRSensitivity
 	 */
 
 	public java.util.Map<java.lang.String, java.lang.Double> libor6MNet (
-		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings,
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings,
 		final boolean weighted)
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -459,7 +460,7 @@ public class IRSensitivity
 			return null;
 		}
 
-		java.util.Map<java.lang.String, java.lang.Double> libor6MNet = _libor6M.netRiskWeight
+		java.util.Map<java.lang.String, java.lang.Double> libor6MNet = _libor6M.tenorDeltaSensitivityMargin
 			(curveTenorSensitivitySettings.libor6MTenorRiskWeight());
 
 		if (null == libor6MNet || !weighted)
@@ -504,7 +505,7 @@ public class IRSensitivity
 	 */
 
 	public java.util.Map<java.lang.String, java.lang.Double> libor12MNet (
-		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings,
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings,
 		final boolean weighted)
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -512,7 +513,7 @@ public class IRSensitivity
 			return null;
 		}
 
-		java.util.Map<java.lang.String, java.lang.Double> libor12MNet = _libor12M.netRiskWeight
+		java.util.Map<java.lang.String, java.lang.Double> libor12MNet = _libor12M.tenorDeltaSensitivityMargin
 			(curveTenorSensitivitySettings.libor12MTenorRiskWeight());
 
 		if (null == libor12MNet || !weighted)
@@ -557,7 +558,7 @@ public class IRSensitivity
 	 */
 
 	public java.util.Map<java.lang.String, java.lang.Double> primeNet (
-		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings,
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings,
 		final boolean weighted)
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -565,7 +566,7 @@ public class IRSensitivity
 			return null;
 		}
 
-		java.util.Map<java.lang.String, java.lang.Double> primeNet = _prime.netRiskWeight
+		java.util.Map<java.lang.String, java.lang.Double> primeNet = _prime.tenorDeltaSensitivityMargin
 			(curveTenorSensitivitySettings.primeTenorRiskWeight());
 
 		if (null == primeNet || !weighted)
@@ -610,7 +611,7 @@ public class IRSensitivity
 	 */
 
 	public java.util.Map<java.lang.String, java.lang.Double> municipalNet (
-		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings,
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings,
 		final boolean weighted)
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -618,8 +619,9 @@ public class IRSensitivity
 			return null;
 		}
 
-		java.util.Map<java.lang.String, java.lang.Double> municipalNet = _municipal.netRiskWeight
-			(curveTenorSensitivitySettings.municipalTenorRiskWeight());
+		java.util.Map<java.lang.String, java.lang.Double> municipalNet =
+			_municipal.tenorDeltaSensitivityMargin
+				(curveTenorSensitivitySettings.municipalTenorRiskWeight());
 
 		if (null == municipalNet || !weighted)
 		{
@@ -663,7 +665,7 @@ public class IRSensitivity
 	 */
 
 	public org.drip.simm20.margin.IRFactorAggregate curveNet (
-		final org.drip.simm20.parameters.IRBucketSensitivitySettings curveTenorSensitivitySettings,
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings,
 		final boolean weighted)
 	{
 		if (null == curveTenorSensitivitySettings)
@@ -671,26 +673,28 @@ public class IRSensitivity
 			return null;
 		}
 
-		java.util.Map<java.lang.String, java.lang.Double> oisNet = _ois.netRiskWeight
-			(curveTenorSensitivitySettings.oisTenorRiskWeight());
+		java.util.Map<java.lang.String, java.lang.Double> oisNet =
+			_oisTenorSensitivity.tenorDeltaSensitivityMargin
+				(curveTenorSensitivitySettings.oisTenorRiskWeight());
 
-		java.util.Map<java.lang.String, java.lang.Double> libor1MNet = _libor1M.netRiskWeight
+		java.util.Map<java.lang.String, java.lang.Double> libor1MNet = _libor1M.tenorDeltaSensitivityMargin
 			(curveTenorSensitivitySettings.libor1MTenorRiskWeight());
 
-		java.util.Map<java.lang.String, java.lang.Double> libor3MNet = _libor3M.netRiskWeight
+		java.util.Map<java.lang.String, java.lang.Double> libor3MNet = _libor3M.tenorDeltaSensitivityMargin
 			(curveTenorSensitivitySettings.libor3MTenorRiskWeight());
 
-		java.util.Map<java.lang.String, java.lang.Double> libor6MNet = _libor6M.netRiskWeight
+		java.util.Map<java.lang.String, java.lang.Double> libor6MNet = _libor6M.tenorDeltaSensitivityMargin
 			(curveTenorSensitivitySettings.libor6MTenorRiskWeight());
 
-		java.util.Map<java.lang.String, java.lang.Double> libor12MNet = _libor12M.netRiskWeight
+		java.util.Map<java.lang.String, java.lang.Double> libor12MNet = _libor12M.tenorDeltaSensitivityMargin
 			(curveTenorSensitivitySettings.libor12MTenorRiskWeight());
 
-		java.util.Map<java.lang.String, java.lang.Double> primeNet = _prime.netRiskWeight
+		java.util.Map<java.lang.String, java.lang.Double> primeNet = _prime.tenorDeltaSensitivityMargin
 			(curveTenorSensitivitySettings.primeTenorRiskWeight());
 
-		java.util.Map<java.lang.String, java.lang.Double> municipalNet = _municipal.netRiskWeight
-			(curveTenorSensitivitySettings.municipalTenorRiskWeight());
+		java.util.Map<java.lang.String, java.lang.Double> municipalNet =
+			_municipal.tenorDeltaSensitivityMargin
+				(curveTenorSensitivitySettings.municipalTenorRiskWeight());
 
 		if (null == oisNet || null == libor1MNet || null == libor3MNet || null == libor6MNet ||
 			null == libor12MNet || null == primeNet || null == municipalNet)

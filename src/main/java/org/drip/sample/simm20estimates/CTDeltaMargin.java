@@ -59,7 +59,7 @@ import org.drip.simm20.product.RiskClassSensitivity;
  */
 
 /**
- * CTDeltaMargin illustrates the Computation of the CT Delta Margin for across a Group of Equity Bucket
+ * CTDeltaMargin illustrates the Computation of the CT Delta Margin for across a Group of Commodity Bucket
  *  Exposure Sensitivities. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
@@ -331,8 +331,8 @@ public class CTDeltaMargin
 
 			System.out.println ("\t| " +
 				FormatUtil.FormatDouble (Integer.parseInt (bucketIndex), 2, 0, 1.) + " => " +
-				FormatUtil.FormatDouble (Math.sqrt (bucketDigest.weightedSensitivityVariance()), 5, 0, 1.) + " | " +
-				FormatUtil.FormatDouble (bucketDigest.cumulativeRiskFactorSensitivity(), 5, 0, 1.) + " ||"
+				FormatUtil.FormatDouble (Math.sqrt (bucketDigest.sensitivityMarginVariance()), 5, 0, 1.) + " | " +
+				FormatUtil.FormatDouble (bucketDigest.cumulativeRiskFactorSensitivityMargin(), 5, 0, 1.) + " ||"
 			);
 		}
 

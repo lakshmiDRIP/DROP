@@ -79,7 +79,7 @@ public class RiskClassSensitivity
 	 * 
 	 * @param bucketSensitivityMap The Risk Class Bucket Sensitivity Map
 	 * 
-	 * @throws java.lang.Exception Thrown oif the Inputs are Invalid
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RiskClassSensitivity (
@@ -163,9 +163,9 @@ public class RiskClassSensitivity
 				org.drip.simm20.margin.BucketAggregate bucketAggregateOuter =
 					bucketAggregateMapOuterEntry.getValue();
 
-				double weightedSensitivityVarianceOuter = bucketAggregateOuter.weightedSensitivityVariance();
+				double weightedSensitivityVarianceOuter = bucketAggregateOuter.sensitivityMarginVariance();
 
-				double boundedWeightedSensitivityOuter = bucketAggregateOuter.boundedWeightedSensitivity();
+				double boundedWeightedSensitivityOuter = bucketAggregateOuter.boundedSensitivityMargin();
 
 				for (java.util.Map.Entry<java.lang.String, org.drip.simm20.margin.BucketAggregate>
 					bucketAggregateMapInnerEntry : bucketAggregateMap.entrySet())
@@ -179,7 +179,7 @@ public class RiskClassSensitivity
 								"" + outerKey,
 								"" + innerKey
 							) * boundedWeightedSensitivityOuter *
-							bucketAggregateMapInnerEntry.getValue().boundedWeightedSensitivity()
+							bucketAggregateMapInnerEntry.getValue().boundedSensitivityMargin()
 						);
 					}
 				}
@@ -189,7 +189,7 @@ public class RiskClassSensitivity
 				bucketAggregateMap,
 				coreDeltaSBAVariance,
 				bucketAggregateMap.containsKey ("-1") ?
-					bucketAggregateMap.get ("-1").weightedSensitivityVariance() : 0.
+					bucketAggregateMap.get ("-1").sensitivityMarginVariance() : 0.
 			);
 		}
 		catch (java.lang.Exception e)

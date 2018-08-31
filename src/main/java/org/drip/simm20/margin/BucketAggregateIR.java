@@ -47,8 +47,8 @@ package org.drip.simm20.margin;
  */
 
 /**
- * BucketAggregate holds the Single Bucket Sensitivity Margin, the Cumulative Bucket Risk Factor Sensitivity
- *  Margin, as well as the Aggregate Risk Factor Maps. The References are:
+ * BucketAggregateIR holds the Single Bucket IR Sensitivity Margin, the Cumulative Bucket Risk Factor
+ *  Sensitivity Margin, as well as the IR Aggregate Risk Factor Maps. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -69,50 +69,65 @@ package org.drip.simm20.margin;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BucketAggregate
+public class BucketAggregateIR
 {
 	private double _sensitivityMarginVariance = java.lang.Double.NaN;
+	private org.drip.simm20.margin.IRDeltaAggregate _irDeltaAggregate = null;
 	private double _cumulativeRiskFactorSensitivityMargin = java.lang.Double.NaN;
-	private java.util.Map<java.lang.String, org.drip.simm20.margin.RiskFactorAggregate>
+	private java.util.Map<java.lang.String, org.drip.simm20.margin.RiskFactorAggregateIR>
 		_riskFactorAggregateMap = null;
 
 	/**
-	 * BucketAggregate Constructor
+	 * BucketAggregateIR Constructor
 	 * 
-	 * @param riskFactorAggregateMap The Risk Factor Aggregate Map
+	 * @param riskFactorAggregateMap The Risk Factor Aggregate IR Map
 	 * @param sensitivityMarginVariance The Bucket's Sensitivity Margin Variance
 	 * @param cumulativeRiskFactorSensitivityMargin The Cumulative Risk Factor Sensitivity Margin
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public BucketAggregate (
-		final java.util.Map<java.lang.String, org.drip.simm20.margin.RiskFactorAggregate>
+	public BucketAggregateIR (
+		final java.util.Map<java.lang.String, org.drip.simm20.margin.RiskFactorAggregateIR>
 			riskFactorAggregateMap,
+		final org.drip.simm20.margin.IRDeltaAggregate irDeltaAggregate,
 		final double sensitivityMarginVariance,
 		final double cumulativeRiskFactorSensitivityMargin)
 		throws java.lang.Exception
 	{
-		if (null == (_riskFactorAggregateMap = riskFactorAggregateMap) || 0 == _riskFactorAggregateMap.size()
-			|| !org.drip.quant.common.NumberUtil.IsValid (_sensitivityMarginVariance =
+		if (null == (_riskFactorAggregateMap = riskFactorAggregateMap) ||
+				0 == _riskFactorAggregateMap.size() ||
+			null == (_irDeltaAggregate = irDeltaAggregate) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_sensitivityMarginVariance =
 				sensitivityMarginVariance) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_cumulativeRiskFactorSensitivityMargin =
 				cumulativeRiskFactorSensitivityMargin))
 		{
-			throw new java.lang.Exception ("BucketAggregate Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("BucketAggregateIR Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Risk Factor Aggregate Map
+	 * Retrieve the Risk Factor Aggregate IR Map
 	 * 
-	 * @return The Risk Factor Aggregate Map
+	 * @return The Risk Factor Aggregate IR Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.simm20.margin.RiskFactorAggregate>
+	public java.util.Map<java.lang.String, org.drip.simm20.margin.RiskFactorAggregateIR>
 		riskFactorAggregateMap()
 	{
 		return _riskFactorAggregateMap;
+	}
+
+	/**
+	 * Retrieve the IR Delta Aggregate
+	 * 
+	 * @return The IR Delta Aggregate
+	 */
+
+	public org.drip.simm20.margin.IRDeltaAggregate irDeltaAggregate()
+	{
+		return _irDeltaAggregate;
 	}
 
 	/**
@@ -135,24 +150,5 @@ public class BucketAggregate
 	public double cumulativeRiskFactorSensitivityMargin()
 	{
 		return _cumulativeRiskFactorSensitivityMargin;
-	}
-
-	/**
-	 * Compute the Bounded Sensitivity Margin
-	 * 
-	 * @return The Bounded Sensitivity Margin
-	 */
-
-	public double boundedSensitivityMargin()
-	{
-		double sensitivityMargin = java.lang.Math.sqrt (_sensitivityMarginVariance);
-
-		return java.lang.Math.max (
-			java.lang.Math.min (
-				_cumulativeRiskFactorSensitivityMargin,
-				sensitivityMargin
-			),
-			-1. * sensitivityMargin
-		);
 	}
 }

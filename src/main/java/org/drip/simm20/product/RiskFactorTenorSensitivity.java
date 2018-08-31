@@ -1,5 +1,5 @@
 
-package org.drip.simm20.margin;
+package org.drip.simm20.product;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -275,36 +275,36 @@ public class RiskFactorTenorSensitivity
 	 * @return The Cumulative Tenor Delta
 	 */
 
-	public double cumulative()
+	public double cumulativeTenorDelta()
 	{
-		double cumulative = 0.;
+		double cumulativeTenorDelta = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> tenorDeltaEntry :
 			_tenorDeltaMap.entrySet())
 		{
-			cumulative = cumulative + tenorDeltaEntry.getValue();
+			cumulativeTenorDelta = cumulativeTenorDelta + tenorDeltaEntry.getValue();
 		}
 
-		return cumulative;
+		return cumulativeTenorDelta;
 	}
 
 	/**
-	 * Generate the Weighted Net Risk Weight Map
+	 * Generate the Tenor Delta Sensitivity Margin Map
 	 * 
-	 * @param riskWeightMap The Risk Weight Map
+	 * @param tenorDeltaRiskWeightMap The Tenor Delta Risk Weight Map
 	 * 
-	 * @return The Weighted Net Risk Weight Map
+	 * @return The Tenor Delta Sensitivity Margin Map
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> netRiskWeight (
-		final java.util.Map<java.lang.String, java.lang.Double> riskWeightMap)
+	public java.util.Map<java.lang.String, java.lang.Double> tenorDeltaSensitivityMargin (
+		final java.util.Map<java.lang.String, java.lang.Double> tenorDeltaRiskWeightMap)
 	{
-		if (null == riskWeightMap || 0 == riskWeightMap.size())
+		if (null == tenorDeltaRiskWeightMap || 0 == tenorDeltaRiskWeightMap.size())
 		{
 			return null;
 		}
 
-		java.util.Map<java.lang.String, java.lang.Double> netRiskWeightMap = new
+		java.util.Map<java.lang.String, java.lang.Double> tenorDeltaSensitivityMargin = new
 			java.util.HashMap<java.lang.String, java.lang.Double>();
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> tenorDeltaEntry :
@@ -312,17 +312,17 @@ public class RiskFactorTenorSensitivity
 		{
 			java.lang.String tenor = tenorDeltaEntry.getKey();
 
-			if (!riskWeightMap.containsKey (tenor))
+			if (!tenorDeltaRiskWeightMap.containsKey (tenor))
 			{
 				return null;
 			}
 
-			netRiskWeightMap.put (
+			tenorDeltaSensitivityMargin.put (
 				tenor,
-				tenorDeltaEntry.getValue() * riskWeightMap.get (tenor)
+				tenorDeltaEntry.getValue() * tenorDeltaRiskWeightMap.get (tenor)
 			);
 		}
 
-		return netRiskWeightMap;
+		return tenorDeltaSensitivityMargin;
 	}
 }

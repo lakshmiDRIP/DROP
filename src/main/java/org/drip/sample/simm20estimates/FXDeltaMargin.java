@@ -251,8 +251,8 @@ public class FXDeltaMargin
 
 			System.out.println ("\t| " +
 				bucketIndex + " => " +
-				FormatUtil.FormatDouble (Math.sqrt (bucketDigest.weightedSensitivityVariance()), 4, 0, 1.) + " | " +
-				FormatUtil.FormatDouble (bucketDigest.cumulativeRiskFactorSensitivity(), 4, 0, 1.) + " ||"
+				FormatUtil.FormatDouble (Math.sqrt (bucketDigest.sensitivityMarginVariance()), 4, 0, 1.) + " | " +
+				FormatUtil.FormatDouble (bucketDigest.cumulativeRiskFactorSensitivityMargin(), 4, 0, 1.) + " ||"
 			);
 		}
 

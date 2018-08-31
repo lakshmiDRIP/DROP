@@ -1,5 +1,10 @@
 
-package org.drip.simm20.margin;
+package org.drip.sample.simm20estimates;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,8 +52,8 @@ package org.drip.simm20.margin;
  */
 
 /**
- * BucketAggregate holds the Single Bucket Sensitivity Margin, the Cumulative Bucket Risk Factor Sensitivity
- *  Margin, as well as the Aggregate Risk Factor Maps. The References are:
+ * IRDeltaMargin illustrates the Computation of the IR Delta Margin for across a Group of IR Currency Bucket
+ *  Exposure Sensitivities. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -69,90 +74,84 @@ package org.drip.simm20.margin;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BucketAggregate
+public class IRDeltaMargin
 {
-	private double _sensitivityMarginVariance = java.lang.Double.NaN;
-	private double _cumulativeRiskFactorSensitivityMargin = java.lang.Double.NaN;
-	private java.util.Map<java.lang.String, org.drip.simm20.margin.RiskFactorAggregate>
-		_riskFactorAggregateMap = null;
 
-	/**
-	 * BucketAggregate Constructor
-	 * 
-	 * @param riskFactorAggregateMap The Risk Factor Aggregate Map
-	 * @param sensitivityMarginVariance The Bucket's Sensitivity Margin Variance
-	 * @param cumulativeRiskFactorSensitivityMargin The Cumulative Risk Factor Sensitivity Margin
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public BucketAggregate (
-		final java.util.Map<java.lang.String, org.drip.simm20.margin.RiskFactorAggregate>
-			riskFactorAggregateMap,
-		final double sensitivityMarginVariance,
-		final double cumulativeRiskFactorSensitivityMargin)
-		throws java.lang.Exception
+	private static final Map<String, Double> TenorSensitivityMap (
+		final double[] tenorSensitivities)
+		throws Exception
 	{
-		if (null == (_riskFactorAggregateMap = riskFactorAggregateMap) || 0 == _riskFactorAggregateMap.size()
-			|| !org.drip.quant.common.NumberUtil.IsValid (_sensitivityMarginVariance =
-				sensitivityMarginVariance) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_cumulativeRiskFactorSensitivityMargin =
-				cumulativeRiskFactorSensitivityMargin))
-		{
-			throw new java.lang.Exception ("BucketAggregate Constructor => Invalid Inputs");
-		}
-	}
+		Map<String, Double> oisTenorSensitivities = new HashMap<String, Double>();
 
-	/**
-	 * Retrieve the Risk Factor Aggregate Map
-	 * 
-	 * @return The Risk Factor Aggregate Map
-	 */
-
-	public java.util.Map<java.lang.String, org.drip.simm20.margin.RiskFactorAggregate>
-		riskFactorAggregateMap()
-	{
-		return _riskFactorAggregateMap;
-	}
-
-	/**
-	 * Retrieve the Bucket's Sensitivity Margin Variance
-	 * 
-	 * @return The Bucket's Sensitivity Margin Variance
-	 */
-
-	public double sensitivityMarginVariance()
-	{
-		return _sensitivityMarginVariance;
-	}
-
-	/**
-	 * Retrieve the Bucket's Cumulative Risk Factor Sensitivity Margin
-	 * 
-	 * @return The Bucket's Cumulative Risk Factor Sensitivity Margin
-	 */
-
-	public double cumulativeRiskFactorSensitivityMargin()
-	{
-		return _cumulativeRiskFactorSensitivityMargin;
-	}
-
-	/**
-	 * Compute the Bounded Sensitivity Margin
-	 * 
-	 * @return The Bounded Sensitivity Margin
-	 */
-
-	public double boundedSensitivityMargin()
-	{
-		double sensitivityMargin = java.lang.Math.sqrt (_sensitivityMarginVariance);
-
-		return java.lang.Math.max (
-			java.lang.Math.min (
-				_cumulativeRiskFactorSensitivityMargin,
-				sensitivityMargin
-			),
-			-1. * sensitivityMargin
+		oisTenorSensitivities.put (
+			"2W",
+			tenorSensitivities[0]
 		);
+
+		oisTenorSensitivities.put (
+			"1M",
+			tenorSensitivities[1]
+		);
+
+		oisTenorSensitivities.put (
+			"3M",
+			tenorSensitivities[2]
+		);
+
+		oisTenorSensitivities.put (
+			"6M",
+			tenorSensitivities[3]
+		);
+
+		oisTenorSensitivities.put (
+			"1Y",
+			tenorSensitivities[4]
+		);
+
+		oisTenorSensitivities.put (
+			"2Y",
+			tenorSensitivities[5]
+		);
+
+		oisTenorSensitivities.put (
+			"3Y",
+			tenorSensitivities[6]
+		);
+
+		oisTenorSensitivities.put (
+			"5Y",
+			tenorSensitivities[7]
+		);
+
+		oisTenorSensitivities.put (
+			"10Y",
+			tenorSensitivities[8]
+		);
+
+		oisTenorSensitivities.put (
+			"15Y",
+			tenorSensitivities[9]
+		);
+
+		oisTenorSensitivities.put (
+			"20Y",
+			tenorSensitivities[10]
+		);
+
+		oisTenorSensitivities.put (
+			"30Y",
+			tenorSensitivities[11]
+		);
+
+		return oisTenorSensitivities;
+	}
+
+	public static final void main (
+		final String[] inputArray)
+		throws Exception
+	{
+		EnvManager.InitEnv ("");
+
+		EnvManager.TerminateEnv();
 	}
 }

@@ -7,7 +7,7 @@ import java.util.Map;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.simm20.margin.IRFactorAggregate;
-import org.drip.simm20.parameters.IRBucketSensitivitySettings;
+import org.drip.simm20.parameters.BucketSensitivitySettingsIR;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -158,7 +158,7 @@ public class IRNetSensitivitySolo
 
 		String currency = "USD";
 
-		IRBucketSensitivitySettings curveTenorSensitivitySettings = IRBucketSensitivitySettings.ISDA (currency);
+		BucketSensitivitySettingsIR curveTenorSensitivitySettings = BucketSensitivitySettingsIR.ISDA (currency);
 
 		double[] oisTenorSensitivities = new double[]
 		{

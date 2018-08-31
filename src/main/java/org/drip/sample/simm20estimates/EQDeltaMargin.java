@@ -384,8 +384,8 @@ public class EQDeltaMargin
 
 			System.out.println ("\t| " +
 				FormatUtil.FormatDouble (Integer.parseInt (bucketIndex), 2, 0, 1.) + " => " +
-				FormatUtil.FormatDouble (Math.sqrt (bucketDigest.weightedSensitivityVariance()), 5, 0, 1.) + " | " +
-				FormatUtil.FormatDouble (bucketDigest.cumulativeRiskFactorSensitivity(), 5, 0, 1.) + " ||"
+				FormatUtil.FormatDouble (Math.sqrt (bucketDigest.sensitivityMarginVariance()), 5, 0, 1.) + " | " +
+				FormatUtil.FormatDouble (bucketDigest.cumulativeRiskFactorSensitivityMargin(), 5, 0, 1.) + " ||"
 			);
 		}
 
